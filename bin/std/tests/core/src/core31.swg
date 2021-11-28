@@ -3,7 +3,7 @@
 #test
 {
 	using Core.Input
-	while !isKeyPressed(Key.Space)
+	while !Keyboard.isKeyPressed(Key.Space)
     {
         pt := getMousePos()
         //@print(cast(s64) pt.item0)
@@ -12,7 +12,7 @@
     }
 
 	//@print("pressed")
-	while isKeyPressed(Key.Space) break
+	while Keyboard.isKeyPressed(Key.Space) break
 
 	//@print("unpressed")
 }

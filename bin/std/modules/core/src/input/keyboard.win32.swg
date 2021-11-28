@@ -220,17 +220,17 @@ impl Keyboard
     setupArray(Zoom,                cast(u8) VK_ZOOM)
 }
 
-// Returns true if the given key is pressed
-public func isKeyPressed(key: Key)->bool
-{
-    vkey := Keyboard.mapKeyToVKey[key]
-    if vkey == 0
-        return false
-    return GetAsyncKeyState(cast(s32) vkey) < 0
-}
-
 public impl Keyboard
 {
+    // Returns true if the given key is pressed
+    func isKeyPressed(key: Key)->bool
+    {
+        vkey := Keyboard.mapKeyToVKey[key]
+        if vkey == 0
+            return false
+        return GetAsyncKeyState(cast(s32) vkey) < 0
+    }
+
     // Try to transform the given key to the corresponding rune
     mtd keyToRune(key: Key)->rune
     {
