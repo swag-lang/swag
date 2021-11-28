@@ -31,4 +31,5 @@ struct ThemeMetrics
 
     slider_Width:               f32 = 200
     slider_Height:              f32 = 26
+    slider_stepSize:            f32 = 10
 }

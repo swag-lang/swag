@@ -99,6 +99,19 @@ impl IWnd for Slider
             theme.drawSubRect(bc.painter, middle, &rects.slider_BkMiddle, colorBkMiddle)
         }
 
+        if steps > 0
+        {
+            for x := 0'f32; x < 1 + steps; x += steps
+            {
+                posStep := clientRect
+                posStep.x = clientRect.x + (clientRect.width * x) - metrics.slider_stepSize * 0.5
+                posStep.y = posStep.vertCenter() - metrics.slider_stepSize * 0.5
+                posStep.height = metrics.slider_stepSize
+                posStep.width = posStep.height
+                theme.drawSubRect(bc.painter, posStep, &rects.slider_Mark, colorMark1)
+            }
+        }
+
         // Box value1
         theme.drawSubRect(bc.painter, posBox1, &rects.slider_Mark, colorMark1)
         if isRange
