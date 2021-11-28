@@ -1,24 +1,35 @@
 #global if WINDOWS
-#global public
 #global namespace Input
 using Swag, Win32
 
-private
+impl Keyboard
 {
-    var g_MapKeyToVKey: [256] u8 = ?
-    var g_MapVKeyToKey: [256] u8 = ?
+    var mapKeyToVKey: [256] u8 = ?
+    var mapVKeyToKey: [256] u8 = ?
 
     #[Compiler]
     func setupArray(key: Input.Key, vkey: u8)
     {
-        g_MapKeyToVKey[key] = vkey
-        g_MapVKeyToKey[vkey] = cast(u8) key
+        mapKeyToVKey[key] = vkey
+        mapVKeyToKey[vkey] = cast(u8) key
+    }
+
+    func keyToVirtualKey(key: Key)->VirtualKey
+    {
+        return cast(VirtualKey) mapKeyToVKey[key]
+    }
+
+    func virtualKeyToKey(vkey: VirtualKey)->Key
+    {
+        if vkey > 255
+            return Key.None
+        return cast(Key) mapVKeyToKey[vkey]
     }
 }
 
 #run
 {
-    using Key
+    using Keyboard, Key
     setupArray(A,                   cast(u8) "A"'rune)
     setupArray(Add,                 cast(u8) VK_ADD)
     setupArray(Apps,                cast(u8) VK_APPS)
@@ -209,28 +220,16 @@ private
     setupArray(Zoom,                cast(u8) VK_ZOOM)
 }
 
-private func keyToVirtualKey(key: Key)->VirtualKey
-{
-    return cast(VirtualKey) g_MapKeyToVKey[key]
-}
-
-private func virtualKeyToKey(vkey: VirtualKey)->Key
-{
-    if vkey > 255
-        return Key.None
-    return cast(Key) g_MapVKeyToKey[vkey]
-}
-
 // Returns true if the given key is pressed
-func isKeyPressed(key: Key)->bool
+public func isKeyPressed(key: Key)->bool
 {
-    vkey := g_MapKeyToVKey[key]
+    vkey := Keyboard.mapKeyToVKey[key]
     if vkey == 0
         return false
     return GetAsyncKeyState(cast(s32) vkey) < 0
 }
 
-impl Keyboard
+public impl Keyboard
 {
     // Try to transform the given key to the corresponding rune
     mtd keyToRune(key: Key)->rune
