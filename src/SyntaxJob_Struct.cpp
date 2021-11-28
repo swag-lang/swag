@@ -224,10 +224,19 @@ bool SyntaxJob::doStructContent(AstStruct* structNode, SyntaxStructType structTy
         newScope = Ast::newScope(structNode, structNode->token.text, ScopeKind::Struct, currentScope, true);
         if (newScope->kind != ScopeKind::Struct)
         {
-            auto       implNode = CastAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
-            Diagnostic diag{implNode->identifier, Utf8::format(g_E[Err0441], Scope::getNakedKindName(newScope->kind), implNode->token.text.c_str(), Scope::getNakedKindName(ScopeKind::Struct))};
-            Diagnostic note{structNode, Utf8::format(g_E[Nte0027], implNode->token.text.c_str()), DiagnosticLevel::Note};
-            return sourceFile->report(diag, &note);
+            if (newScope->owner->kind == AstNodeKind::Impl)
+            {
+                auto       implNode = CastAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
+                Diagnostic diag{implNode->identifier, Utf8::format(g_E[Err0441], Scope::getNakedKindName(newScope->kind), implNode->token.text.c_str(), Scope::getNakedKindName(ScopeKind::Struct))};
+                Diagnostic note{structNode, Utf8::format(g_E[Nte0027], implNode->token.text.c_str()), DiagnosticLevel::Note};
+                return sourceFile->report(diag, &note);
+            }
+            else
+            {
+                Diagnostic diag{structNode, Utf8::format(g_E[Err0885], structNode->token.text.c_str(), Scope::getArticleKindName(newScope->kind))};
+                Diagnostic note{newScope->owner, g_E[Nte0036], DiagnosticLevel::Note};
+                return sourceFile->report(diag, &note);
+            }
         }
 
         structNode->scope = newScope;
