@@ -131,7 +131,7 @@ impl TimeSpan
     func totalSeconds(using self)      => ticks * (1.0'f64 / TicksPerSecond)
     func totalMilliSeconds(using self) => ticks * (1.0'f64 / TicksPerMilliSecond)
 
-    private func add(using self, value: u32, scale: u64)
+    protected func add(using self, value: u32, scale: u64)
     {
         millis := value * scale
         Debug.assert(millis <= MaxMillis, "overflow")
@@ -140,7 +140,7 @@ impl TimeSpan
         ticks += millis
     }
 
-    private func remove(using self, value: u32, scale: u64)
+    protected func remove(using self, value: u32, scale: u64)
     {
         millis := value * scale
         Debug.assert(millis <= MaxMillis, "overflow")
