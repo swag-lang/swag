@@ -1,6 +1,7 @@
 #global public
 using Swag, Core
 
+#[Swag.ConstExpr]
 struct Color
 {
     #if Core.BIG_ENDIAN
@@ -252,6 +253,7 @@ impl Color
     }
 
     // Blend two colors, keeping the alpha channel of 'col0' untouched
+    #[Swag.ConstExpr]
     func getBlendKeepAlpha(col0, col1: Color, factor: f32)->Color
     {
         var result: retval = ?
@@ -263,6 +265,7 @@ impl Color
     }
 
     // Blend two colors
+    #[Swag.ConstExpr]
     func getBlend(col0, col1: Color, factor: f32)->Color
     {
         var result: retval = ?
@@ -271,6 +274,14 @@ impl Color
         result.g = cast(u8) Math.lerp(cast(f32) col0.g, cast(f32) col1.g, factor)
         result.b = cast(u8) Math.lerp(cast(f32) col0.b, cast(f32) col1.b, factor)
         return result
+    }
+
+    // Returns a darker color
+    #[Swag.ConstExpr]
+    func getDarken(col: u32, factor: f32)->u32
+    {
+        res := getBlendKeepAlpha(Color.fromArgb(col), Color.fromArgb(Argb.Black), factor)
+        return res.argb
     }
 }
 

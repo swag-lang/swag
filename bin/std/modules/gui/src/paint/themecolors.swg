@@ -131,4 +131,7 @@ struct ThemeColors
     slider_PressedMark:             Color = White
     slider_DisabledMark:            Color = Gray4
     slider_DisabledBk:              Color = Gray6
+    slider_StepBk:                  Color = Color.getDarken(Gray6, 0.1)
+    slider_HilightStepBk:           Color = Color.getDarken(Blue, 0.1)
+    slider_HotStepBk:               Color = White
 }

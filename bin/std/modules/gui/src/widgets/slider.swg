@@ -99,16 +99,26 @@ impl IWnd for Slider
             theme.drawSubRect(bc.painter, middle, &rects.slider_BkMiddle, colorBkMiddle)
         }
 
+        // Display steps
         if steps > 0
         {
             for x := 0'f32; x < 1 + steps; x += steps
             {
                 posStep := clientRect
-                posStep.x = clientRect.x + (clientRect.width * x) - metrics.slider_stepSize * 0.5
-                posStep.y = posStep.vertCenter() - metrics.slider_stepSize * 0.5
-                posStep.height = metrics.slider_stepSize
+                posStep.x = clientRect.x + (clientRect.width * x) - clientRect.height * 0.5
                 posStep.width = posStep.height
-                theme.drawSubRect(bc.painter, posStep, &rects.slider_Mark, colorMark1)
+
+                var colorStep: Color = ?
+                if isHot1 or isHot2
+                    colorStep = colors.slider_HotStepBk
+                else if x <= value1 and hilightBar
+                    colorStep = colors.slider_HilightStepBk
+                else if x >= value1 and x <= value2 and hilightBar and isRange
+                    colorStep = colors.slider_HilightStepBk
+                else
+                    colorStep = colors.slider_StepBk
+
+                theme.drawSubRect(bc.painter, posStep, &rects.slider_Step, colorStep)
             }
         }
 
