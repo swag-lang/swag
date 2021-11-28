@@ -24,7 +24,7 @@ struct ConcatBuffer
 
 impl ConcatBuffer
 {
-    private mtd release()
+    protected mtd release()
     {
         if !firstBucket
             return

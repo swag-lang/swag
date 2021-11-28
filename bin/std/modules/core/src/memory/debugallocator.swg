@@ -13,7 +13,7 @@ public struct DebugAllocator
 }
 
 // This will be address before and after each allocated block
-private
+protected impl DebugAllocator
 {
     const MagicAlloc = 0xC0DEC0DE   // Before and after the user memory
     const AllocByte  = 0xAB         // Fill memory when allocated
@@ -207,7 +207,7 @@ public impl IAllocator for DebugAllocator
                 Memory.set(userAddr + prevSize, AllocByte, request.size - prevSize)
 
             // Stats
-            if !prevSize 
+            if !prevSize
                 self.count += 1
             self.size -= prevSize
             self.size += request.size

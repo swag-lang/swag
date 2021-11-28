@@ -1,10 +1,10 @@
 #global namespace Env
 
 // Get the program command line arguments as a [..] string
-public func getCommandLineArgs() => g_cmdLineArgs
+public func getCommandLineArgs() => g_CmdLineArgs
 
-private var g_cmdLineArgs: [..] string
+private var g_CmdLineArgs: [..] string
 #init
 {
-    g_cmdLineArgs = @args()
+    g_CmdLineArgs = @args()
 }

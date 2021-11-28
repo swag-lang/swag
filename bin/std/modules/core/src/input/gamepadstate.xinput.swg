@@ -3,24 +3,25 @@
 #global namespace Input
 using XInput, Win32
 
-private var g_mapButtons: [@countof(GamePadButton)] GamePadButton = ?
+private var g_MapButtons: [@countof(GamePadButton)] GamePadButton = ?
+
 #run
 {
     using GamePadButton
-    g_mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_A)] = A
-    g_mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_B)] = B
-    g_mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_X)] = X
-    g_mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_Y)] = Y
-    g_mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_LEFT_THUMB)] = LeftStick
-    g_mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_RIGHT_THUMB)] = RightStick
-    g_mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_START)] = Start
-    g_mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_BACK)] = Back
-    g_mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_LEFT_SHOULDER)] = LeftShoulder
-    g_mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_RIGHT_SHOULDER)] = RightShoulder
-    g_mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_DPAD_UP)] = DPadUp
-    g_mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_DPAD_DOWN)] = DPadDown
-    g_mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_DPAD_LEFT)] = DPadLeft
-    g_mapButtons[Math.trailingZeros(XINPUT_GAMEPAD_DPAD_RIGHT)] = DPadRight
+    g_MapButtons[Math.trailingZeros(XINPUT_GAMEPAD_A)] = A
+    g_MapButtons[Math.trailingZeros(XINPUT_GAMEPAD_B)] = B
+    g_MapButtons[Math.trailingZeros(XINPUT_GAMEPAD_X)] = X
+    g_MapButtons[Math.trailingZeros(XINPUT_GAMEPAD_Y)] = Y
+    g_MapButtons[Math.trailingZeros(XINPUT_GAMEPAD_LEFT_THUMB)] = LeftStick
+    g_MapButtons[Math.trailingZeros(XINPUT_GAMEPAD_RIGHT_THUMB)] = RightStick
+    g_MapButtons[Math.trailingZeros(XINPUT_GAMEPAD_START)] = Start
+    g_MapButtons[Math.trailingZeros(XINPUT_GAMEPAD_BACK)] = Back
+    g_MapButtons[Math.trailingZeros(XINPUT_GAMEPAD_LEFT_SHOULDER)] = LeftShoulder
+    g_MapButtons[Math.trailingZeros(XINPUT_GAMEPAD_RIGHT_SHOULDER)] = RightShoulder
+    g_MapButtons[Math.trailingZeros(XINPUT_GAMEPAD_DPAD_UP)] = DPadUp
+    g_MapButtons[Math.trailingZeros(XINPUT_GAMEPAD_DPAD_DOWN)] = DPadDown
+    g_MapButtons[Math.trailingZeros(XINPUT_GAMEPAD_DPAD_LEFT)] = DPadLeft
+    g_MapButtons[Math.trailingZeros(XINPUT_GAMEPAD_DPAD_RIGHT)] = DPadRight
 }
 
 // Returns true if the corresponding 'padIndex' is connected
@@ -61,7 +62,7 @@ impl GamePadState
 
         // GamePadButton pressed state
         loop i: 16'u16
-            pressed[g_mapButtons[i]] = state.Gamepad.wButtons & cast(u16)(1 << i)
+            pressed[g_MapButtons[i]] = state.Gamepad.wButtons & cast(u16)(1 << i)
 
         // Move
         using GamePadButton, state.Gamepad
