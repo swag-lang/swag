@@ -109,8 +109,11 @@ const H = 1024
     {
         slider := Slider.create(view, @{450, 300})
 
-        slider = Slider.create(view, @{450, 340})
+        slider = Slider.create(view, @{450, 330})
         slider.isRange = true
+
+        slider = Slider.create(view, @{450, 360})
+        slider.isDisabled = true
     }
 
     // Labels

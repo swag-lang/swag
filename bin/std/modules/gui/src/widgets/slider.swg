@@ -125,24 +125,48 @@ impl IWnd for Slider
         case MousePressed:
             if evt.button == .Left
             {
+                isMoving = true
                 if isHot1
                 {
-                    isPressed1, isMoving = true
+                    isPressed1 = true
                     posBox := getPosBox1()
                     correcMoving = evt.pos.x - posBox.horzCenter()
                 }
                 else if isHot2
                 {
-                    isPressed2, isMoving = true
+                    isPressed2 = true
                     posBox := getPosBox2()
                     correcMoving = evt.pos.x - posBox.horzCenter()
                 }
-
-                if isMoving
+                else if !isRange
                 {
-                    captureMouse()
-                    invalidate()
+                    correcMoving = 0
+                    isPressed1 = true
+                    clientRect := getOffsetedClientRect()
+                    diff := evt.pos.x - clientRect.x
+                    setValue1(diff / clientRect.width)
                 }
+                else
+                {
+                    correcMoving = 0
+                    clientRect := getOffsetedClientRect()
+                    diff := evt.pos.x - clientRect.x
+                    f := diff / clientRect.width
+                    m := (value1 + value2) * 0.5
+                    if f <= m
+                    {
+                        isPressed1 = true
+                        setValue1(f)
+                    }
+                    else
+                    {
+                        isPressed2 = true
+                        setValue2(f)
+                    }
+                }
+
+                captureMouse()
+                invalidate()
             }
 
         case MouseReleased:

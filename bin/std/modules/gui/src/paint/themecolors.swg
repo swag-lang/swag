@@ -131,6 +131,6 @@ struct ThemeColors
     slider_Mark:                    Color = Blue
     slider_HotMark:                 Color = White
     slider_PressedMark:             Color = White
-    slider_DisabledMark:            Color = Disabled
-    slider_DisabledBk:              Color = Disabled
+    slider_DisabledMark:            Color = Gray4
+    slider_DisabledBk:              Color = Gray6
 }
