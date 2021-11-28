@@ -36,10 +36,9 @@ struct AlternativeScopeVar
 };
 
 static const uint32_t SCOPE_FLAG_HAS_EXPORTS = 0x00000001;
-static const uint32_t SCOPE_PRIVATE          = 0x00000002;
-static const uint32_t SCOPE_ROOT_PRIVATE     = 0x00000004;
-static const uint32_t SCOPE_AUTO_GENERATED   = 0x00000008;
-static const uint32_t SCOPE_IMPORTED         = 0x00000010;
+static const uint32_t SCOPE_FILE          = 0x00000002;
+static const uint32_t SCOPE_AUTO_GENERATED   = 0x00000004;
+static const uint32_t SCOPE_IMPORTED         = 0x00000008;
 
 struct ScopePublicSet
 {
@@ -98,7 +97,6 @@ struct Scope
     Utf8                     fullname;
     VectorNative<Scope*>     childScopes;
     VectorNative<AstNode*>   deferredNodes;
-    map<SourceFile*, Scope*> privateScopes;
     DependentJobs            dependentJobs;
     shared_mutex             mutex;
     VectorNative<AstNode*>   doneDefer;
@@ -115,7 +113,7 @@ struct Scope
     uint32_t  backendStart   = 0;
     uint32_t  backendEnd     = 0;
 
-    Scope* getOrAddChild(AstNode* nodeOwner, const Utf8& scopeName, ScopeKind scopeKind, bool matchName, bool isPrivate);
+    Scope* getOrAddChild(AstNode* nodeOwner, const Utf8& scopeName, ScopeKind scopeKind, bool matchName);
     void   addChildNoLock(Scope* child);
     void   removeChildNoLock(Scope* child);
     bool   isSameOrParentOf(Scope* child);

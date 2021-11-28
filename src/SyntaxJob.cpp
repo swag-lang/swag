@@ -358,17 +358,17 @@ JobResult SyntaxJob::execute()
             }
         }
 
-        // One private scope per file. We do NOT register the scope in the list of childs
+        // One scope per file. We do NOT register the scope in the list of childs
         // of the module scope, to avoid contention in // (and this is useless). That way,
         // no need to lock the module scope each time a file is encountered.
-        sourceFile->computePrivateScopeName();
-        sourceFile->scopePrivate              = Ast::newScope(sourceFile->astRoot, sourceFile->scopeName, ScopeKind::File, nullptr);
-        sourceFile->scopePrivate->parentScope = parentScope;
-        sourceFile->scopePrivate->flags |= SCOPE_ROOT_PRIVATE | SCOPE_PRIVATE;
+        sourceFile->computeFileScopeName();
+        sourceFile->scopeFile              = Ast::newScope(sourceFile->astRoot, sourceFile->scopeName, ScopeKind::File, nullptr);
+        sourceFile->scopeFile->parentScope = parentScope;
+        sourceFile->scopeFile->flags |= SCOPE_FILE;
 
         // By default, everything is private if it comes from the test folder, or for the configuration file
         if (sourceFile->fromTests || sourceFile->isCfgFile)
-            currentScope = sourceFile->scopePrivate;
+            currentScope = sourceFile->scopeFile;
         else
             currentScope = parentScope;
         sourceFile->astRoot->ownerScope = currentScope;

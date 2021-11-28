@@ -167,7 +167,7 @@ Utf8 SourceFile::getLine(long lineNo)
     return allLines[lineNo];
 }
 
-void SourceFile::computePrivateScopeName()
+void SourceFile::computeFileScopeName()
 {
     ScopedLock lk(mutex);
     if (!scopeName.empty())

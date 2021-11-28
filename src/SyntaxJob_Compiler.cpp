@@ -443,7 +443,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
     }
 
     /////////////////////////////////
-    else if (token.id == TokenId::KwdPublic || token.id == TokenId::KwdProtected || token.id == TokenId::KwdPrivate)
+    else if (token.id == TokenId::KwdPublic || token.id == TokenId::KwdProtected)
     {
         SWAG_CHECK(doGlobalAttributeExpose(parent, result, true));
     }

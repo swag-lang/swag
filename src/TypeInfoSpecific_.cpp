@@ -313,7 +313,7 @@ void TypeInfoList::computeWhateverName(Utf8& resName, uint32_t nameType)
 
 Utf8 TypeInfoList::computeTupleName(JobContext* context)
 {
-    Utf8 structName = context->sourceFile->scopePrivate->name + "_tuple_";
+    Utf8 structName = context->sourceFile->scopeFile->name + "_tuple_";
 
     int numChilds = (int) subTypes.size();
     for (int idx = 0; idx < numChilds; idx++)

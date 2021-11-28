@@ -407,13 +407,13 @@ bool SemanticJob::checkImplScopes(SemanticContext* context, AstImpl* node, Scope
     if (scopeImpl != scope)
     {
         Diagnostic note{node->identifier->resolvedSymbolOverload->node, Utf8::format(g_E[Nte0029], node->identifier->token.text.c_str()), DiagnosticLevel::Note};
-        if ((scopeImpl->flags & SCOPE_PRIVATE) && !(scope->flags & SCOPE_PRIVATE))
+        if ((scopeImpl->flags & SCOPE_FILE) && !(scope->flags & SCOPE_FILE))
         {
             Diagnostic diag{node->identifier, Utf8::format(g_E[Err0659], node->identifier->token.text.c_str())};
             return context->report(diag, &note);
         }
 
-        if ((scope->flags & SCOPE_PRIVATE) && !(scopeImpl->flags & SCOPE_PRIVATE))
+        if ((scope->flags & SCOPE_FILE) && !(scopeImpl->flags & SCOPE_FILE))
         {
             Diagnostic diag{node->identifier, Utf8::format(g_E[Err0660], node->identifier->token.text.c_str())};
             return context->report(diag, &note);

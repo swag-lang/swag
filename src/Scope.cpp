@@ -65,7 +65,7 @@ const char* Scope::getArticleKindName(ScopeKind kind)
 
 const Utf8& Scope::getFullName()
 {
-    if (flags & SCOPE_PRIVATE)
+    if (flags & SCOPE_FILE)
         return name;
 
     {
@@ -164,13 +164,6 @@ void Scope::removeChildNoLock(Scope* child)
     childScopes[child->indexInParent]->indexInParent = child->indexInParent;
     child->indexInParent                             = UINT32_MAX;
     childScopes.count--;
-
-    if (child->flags & SCOPE_ROOT_PRIVATE)
-    {
-        auto it = privateScopes.find(child->owner->sourceFile);
-        SWAG_ASSERT(it != privateScopes.end());
-        privateScopes.erase(it);
-    }
 }
 
 bool Scope::isSameOrParentOf(Scope* child)
@@ -192,15 +185,9 @@ void Scope::addChildNoLock(Scope* child)
     child->indexInParent = (uint32_t) childScopes.size();
     childScopes.push_back(child);
     child->parentScope = this;
-    child->flags |= flags & SCOPE_PRIVATE;
-
-    if (child->flags & SCOPE_ROOT_PRIVATE)
-    {
-        privateScopes[child->owner->sourceFile] = child;
-    }
 }
 
-Scope* Scope::getOrAddChild(AstNode* nodeOwner, const Utf8& scopeName, ScopeKind scopeKind, bool matchName, bool isPrivate)
+Scope* Scope::getOrAddChild(AstNode* nodeOwner, const Utf8& scopeName, ScopeKind scopeKind, bool matchName)
 {
     ScopedLock lk(mutex);
 
@@ -222,8 +209,6 @@ Scope* Scope::getOrAddChild(AstNode* nodeOwner, const Utf8& scopeName, ScopeKind
     SWAG_ASSERT(nodeOwner);
     newScope->owner = nodeOwner;
     newScope->name  = scopeName;
-    if (isPrivate)
-        newScope->flags |= SCOPE_ROOT_PRIVATE | SCOPE_PRIVATE;
     if (g_CommandLine->stats)
         g_Stats.memScopes += sizeof(Scope);
 

@@ -253,7 +253,6 @@ void LanguageSpec::setupKeywords()
     keywords.add("namespace", {TokenId::KwdNamespace, LiteralType::TT_MAX});
     keywords.add("public", {TokenId::KwdPublic, LiteralType::TT_MAX});
     keywords.add("protected", {TokenId::KwdProtected, LiteralType::TT_MAX});
-    keywords.add("private", {TokenId::KwdPrivate, LiteralType::TT_MAX});
     keywords.add("alias", {TokenId::KwdAlias, LiteralType::TT_MAX});
     keywords.add("enum", {TokenId::KwdEnum, LiteralType::TT_MAX});
     keywords.add("impl", {TokenId::KwdImpl, LiteralType::TT_MAX});

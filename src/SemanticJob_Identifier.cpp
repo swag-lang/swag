@@ -2549,11 +2549,6 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
 
                 if (addAlternative)
                 {
-                    // Add private scope
-                    auto it = startScope->privateScopes.find(context->sourceFile);
-                    if (it != startScope->privateScopes.end())
-                        scopeHierarchy.push_back_once(it->second);
-
                     // A namespace scope can in fact be shared between multiple nodes, so the 'owner' is not
                     // relevant and we should not use it
                     if (startScope->kind != ScopeKind::Namespace && startScope->owner->extension)
@@ -2654,7 +2649,7 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
                 else
                 {
                     Utf8 displayName;
-                    if (!(identifierRef->startScope->flags & SCOPE_PRIVATE))
+                    if (!(identifierRef->startScope->flags & SCOPE_FILE))
                         displayName = identifierRef->startScope->getFullName();
                     if (displayName.empty() && !identifierRef->startScope->name.empty())
                         displayName = identifierRef->startScope->name;
@@ -2713,13 +2708,8 @@ bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identi
         // Exact same scope
         if (dep.scope == symScope || dep.scope->getFullName() == symScope->getFullName())
             getIt = true;
-
         // The symbol scope is an 'impl' inside a struct (impl for)
         else if (symScope->kind == ScopeKind::Impl && symScope->parentScope == dep.scope)
-            getIt = true;
-
-        // From the normal scope, use something in the private scope
-        else if (symScope->parentScope && dep.scope->getFullName() == symScope->parentScope->getFullName() && symScope->flags & SCOPE_ROOT_PRIVATE)
             getIt = true;
 
         if (getIt)
@@ -3529,11 +3519,11 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
 
     node->byteCodeFct = ByteCodeGenJob::emitIdentifier;
 
-    // Current private scope
-    if (context->sourceFile && context->sourceFile->scopePrivate && node->token.text == context->sourceFile->scopePrivate->name)
+    // Current file scope
+    if (context->sourceFile && context->sourceFile->scopeFile && node->token.text == context->sourceFile->scopeFile->name)
     {
         SWAG_VERIFY(node == identifierRef->childs.front(), context->report({node, g_E[Err0132]}));
-        identifierRef->startScope = context->sourceFile->scopePrivate;
+        identifierRef->startScope = context->sourceFile->scopeFile;
         return true;
     }
 
@@ -3947,9 +3937,9 @@ bool SemanticJob::collectScopeHierarchy(SemanticContext* context, VectorNative<S
         toProcess.push_back(startScope);
     }
 
-    // Add current file private scope
-    scopes.push_back_once(context->sourceFile->scopePrivate);
-    toProcess.push_back(context->sourceFile->scopePrivate);
+    // Add current file scope
+    scopes.push_back_once(context->sourceFile->scopeFile);
+    toProcess.push_back(context->sourceFile->scopeFile);
 
     // Add bootstrap
     SWAG_ASSERT(g_Workspace->bootstrapModule);
@@ -3967,14 +3957,6 @@ bool SemanticJob::collectScopeHierarchy(SemanticContext* context, VectorNative<S
     for (int i = 0; i < toProcess.size(); i++)
     {
         auto scope = toProcess[i];
-
-        // Add private scope
-        auto it = scope->privateScopes.find(context->sourceFile);
-        if (it != scope->privateScopes.end())
-        {
-            scopes.push_back_once(it->second);
-            toProcess.push_back(it->second);
-        }
 
         // For an inline scope, jump right to the function
         if (scope->kind == ScopeKind::Inline)

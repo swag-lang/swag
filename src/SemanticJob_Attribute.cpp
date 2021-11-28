@@ -210,7 +210,8 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
         INHERIT(forNode, ATTRIBUTE_OPTIM_BACKEND_ON | ATTRIBUTE_OPTIM_BACKEND_OFF);
         INHERIT(forNode, ATTRIBUTE_OPTIM_BYTECODE_ON | ATTRIBUTE_OPTIM_BYTECODE_OFF);
         INHERIT(forNode, ATTRIBUTE_SELECTIF_MASK);
-        INHERIT(forNode, ATTRIBUTE_EXPOSE_MASK);
+        if (!(forNode->flags & AST_PRIVATE))
+            INHERIT(forNode, ATTRIBUTE_EXPOSE_MASK);
 
         for (auto child : curAttr->childs)
         {

@@ -27,7 +27,6 @@ namespace Ast
     AstNode* clone(AstNode* source, AstNode* parent, uint64_t forceFlags = 0);
     Utf8     computeGenericParametersReplacement(VectorNative<TypeInfoParam*>& params);
 
-    Scope*             newPrivateScope(AstNode* owner, SourceFile* file, Scope* parentScope);
     Scope*             newScope(AstNode* owner, const Utf8& name, ScopeKind kind, Scope* parentScope, bool matchName = false);
     AstNode*           newNode(SourceFile* sourceFile, AstNodeKind kind, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
     AstStruct*         newStructDecl(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob = nullptr);

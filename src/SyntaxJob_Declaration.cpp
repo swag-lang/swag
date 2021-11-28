@@ -303,8 +303,7 @@ void SyntaxJob::registerSubDecl(AstNode* subDecl)
 {
     SWAG_ASSERT(subDecl->ownerFct);
     subDecl->ownerFct->subDecls.push_back(subDecl);
-    subDecl->attributeFlags |= ATTRIBUTE_PRIVATE;
-    subDecl->flags |= AST_NO_SEMANTIC | AST_SUB_DECL;
+    subDecl->flags |= AST_NO_SEMANTIC | AST_SUB_DECL | AST_PRIVATE;
 
     AstAttrUse* newAttrUse = nullptr;
 
@@ -663,7 +662,6 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent, AstNode** result)
         break;
     case TokenId::KwdPublic:
     case TokenId::KwdProtected:
-    case TokenId::KwdPrivate:
         SWAG_CHECK(doGlobalAttributeExpose(parent, result, false));
         break;
     case TokenId::KwdNamespace:

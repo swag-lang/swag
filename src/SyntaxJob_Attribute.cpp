@@ -48,13 +48,6 @@ bool SyntaxJob::doGlobalAttributeExpose(AstNode* parent, AstNode** result, bool 
 
     switch (token.id)
     {
-    case TokenId::KwdPrivate:
-        attr = ATTRIBUTE_PRIVATE;
-        SWAG_VERIFY(currentScope->isGlobalOrImpl(), error(token, g_E[Err0348]));
-        newScope = Ast::newPrivateScope(parent, parent->sourceFile, currentScope);
-        SWAG_CHECK(eatToken());
-        break;
-
     case TokenId::KwdPublic:
     case TokenId::KwdProtected:
         if (token.id == TokenId::KwdPublic)
@@ -64,12 +57,8 @@ bool SyntaxJob::doGlobalAttributeExpose(AstNode* parent, AstNode** result, bool 
 
         SWAG_VERIFY(currentScope->isGlobalOrImpl(), error(token, Utf8::format(g_E[Err0349], token.text.c_str())));
         SWAG_VERIFY(!sourceFile->forceExport, error(token, Utf8::format(g_E[Err0350], token.text.c_str())));
-        if (newScope->flags & SCOPE_PRIVATE)
-        {
-            SWAG_VERIFY(newScope->isTopLevel(), error(token, Utf8::format(g_E[Err0351], token.text.c_str(), Scope::getNakedKindName(newScope->kind), newScope->name.c_str())));
-            while (newScope->flags & SCOPE_PRIVATE)
-                newScope = newScope->parentScope;
-        }
+        if (newScope->flags & SCOPE_FILE)
+            newScope = newScope->parentScope;
         SWAG_CHECK(eatToken());
         break;
 
@@ -108,8 +97,6 @@ bool SyntaxJob::doGlobalAttributeExpose(AstNode* parent, AstNode** result, bool 
             break;
 
         default:
-            if (attr == ATTRIBUTE_PRIVATE)
-                return error(token, Utf8::format(g_E[Err0352], token.text.c_str()));
             if (attr == ATTRIBUTE_PROTECTED)
                 return error(token, Utf8::format(g_E[Err0353], token.text.c_str()));
             return error(token, Utf8::format(g_E[Err0354], token.text.c_str()));

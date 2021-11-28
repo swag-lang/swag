@@ -22,7 +22,7 @@ struct SourceFile
 
     bool checkFormat();
     void setExternalBuffer(char* buf, uint32_t size);
-    void computePrivateScopeName();
+    void computeFileScopeName();
     void addGlobalUsing(Scope* scope);
 
     shared_mutex mutex;
@@ -55,9 +55,9 @@ struct SourceFile
     bool        isRuntimeFile        = false;
     bool        isScriptFile         = false;
 
-    Scope*   scopePrivate = nullptr;
-    AstNode* sourceNode   = nullptr;
-    Module*  imported     = nullptr;
+    Scope*   scopeFile  = nullptr;
+    AstNode* sourceNode = nullptr;
+    Module*  imported   = nullptr;
 
     char* buffer    = nullptr;
     char* curBuffer = nullptr;

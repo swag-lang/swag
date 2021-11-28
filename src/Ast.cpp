@@ -341,19 +341,10 @@ namespace Ast
             ((AstTypeExpression*) node)->typeFlags |= TYPEFLAG_FORCECONST;
     }
 
-    Scope* newPrivateScope(AstNode* owner, SourceFile* sourceFile, Scope* parentScope)
-    {
-        SWAG_ASSERT(parentScope);
-        if (parentScope == sourceFile->module->scopeRoot)
-            return sourceFile->scopePrivate;
-        sourceFile->computePrivateScopeName();
-        return parentScope->getOrAddChild(owner, sourceFile->scopeName, ScopeKind::File, true, true);
-    }
-
     Scope* newScope(AstNode* owner, const Utf8& name, ScopeKind kind, Scope* parentScope, bool matchName)
     {
         if (parentScope)
-            return parentScope->getOrAddChild(owner, name, kind, matchName, false);
+            return parentScope->getOrAddChild(owner, name, kind, matchName);
 
         auto newScope         = g_Allocator.alloc<Scope>();
         newScope->kind        = kind;

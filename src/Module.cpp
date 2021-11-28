@@ -310,10 +310,10 @@ void Module::addFileNoLock(SourceFile* file)
     file->indexInModule = (uint32_t) files.size();
     files.push_back(file);
 
-    // A file private scope is not registers in the list of childs of
+    // A file scope is not registered in the list of childs of
     // its parent
-    if (file->scopePrivate)
-        file->scopePrivate->parentScope = scopeRoot;
+    if (file->scopeFile)
+        file->scopeFile->parentScope = scopeRoot;
 
     // Keep track of the most recent file
     if (!file->writeTime)
