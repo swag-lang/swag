@@ -122,15 +122,15 @@ struct ThemeColors
     btnToggle_OnPressedMark:        Color = White
     btnToggle_OnPressedBk:          Color = Blue
 
-    slider_BkLeft:                  Color = 0xFFFF0000//Gray6
-    slider_BkMiddle:                Color = 0xFF00FF00//Gray6
-    slider_BkRight:                 Color = 0xFF0000FF//Gray6
+    slider_BkLeft:                  Color = Gray6
+    slider_BkMiddle:                Color = Gray6
+    slider_BkRight:                 Color = Gray6
     slider_HotBkLeft:               Color = Gray6
     slider_HotBkMiddle:             Color = Gray6
     slider_HotBkRight:              Color = Gray6
     slider_Mark:                    Color = Blue
     slider_HotMark:                 Color = White
-    slider_PressedMark:             Color = Blue
+    slider_PressedMark:             Color = White
     slider_DisabledMark:            Color = Disabled
     slider_DisabledBk:              Color = Disabled
 }

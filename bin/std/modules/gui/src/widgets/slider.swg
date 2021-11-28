@@ -3,11 +3,18 @@ using Core, Pixel
 
 struct Slider
 {
-    using button:   Button
+    using wnd:      Wnd
     value1:         f32 = 0.25
     value2:         f32 = 0.75
     isRange:        bool
     sigChanged:     func(*Slider)
+
+    isMoving:       bool
+    isPressed1:     bool
+    isPressed2:     bool
+    isHot1:         bool
+    isHot2:         bool
+    correcMoving:   f32
 }
 
 impl IWnd for Slider
@@ -23,30 +30,37 @@ impl IWnd for Slider
         var colorBkLeft:   Color = ?
         var colorBkMiddle: Color = ?
         var colorBkRight:  Color = ?
-        var colorMark:     Color = ?
+        var colorMark1:    Color = ?
+        var colorMark2:    Color = ?
 
-        switch
+        if isDisabled
         {
-        case isDisabled:
             colorBkLeft   = colors.slider_DisabledBk
             colorBkMiddle = colors.slider_DisabledBk
             colorBkRight  = colors.slider_DisabledBk
-            colorMark     = colors.slider_DisabledMark
-        case isPressed:
-            colorBkLeft   = colors.slider_HotBkLeft
-            colorBkMiddle = colors.slider_HotBkMiddle
-            colorBkRight  = colors.slider_HotBkRight
-            colorMark     = colors.slider_PressedMark
-        case isHot:
-            colorBkLeft   = colors.slider_HotBkLeft
-            colorBkMiddle = colors.slider_HotBkMiddle
-            colorBkRight  = colors.slider_HotBkRight
-            colorMark     = colors.slider_HotMark
-        default:
+            colorMark1    = colors.slider_DisabledMark
+            colorMark2    = colors.slider_DisabledMark
+        }
+        else
+        {
             colorBkLeft   = colors.slider_BkLeft
             colorBkMiddle = colors.slider_BkMiddle
             colorBkRight  = colors.slider_BkRight
-            colorMark     = colors.slider_Mark
+
+            if isPressed1
+                colorMark1 = colors.slider_PressedMark
+            else if isHot1
+                colorMark1 = colors.slider_HotMark
+            else
+                colorMark1 = colors.slider_Mark
+
+            if isPressed2
+                colorMark2 = colors.slider_PressedMark
+            else if isHot2
+                colorMark2 = colors.slider_HotMark
+            else
+                colorMark2 = colors.slider_Mark
+
         }
 
         // Pos box
@@ -79,32 +93,115 @@ impl IWnd for Slider
         }
 
         // Box value1
-        theme.drawSubRect(bc.painter, posBox1, &rects.slider_Mark, colorMark)
+        theme.drawSubRect(bc.painter, posBox1, &rects.slider_Mark, colorMark1)
         if isRange
-        theme.drawSubRect(bc.painter, posBox2, &rects.slider_Mark, colorMark)
+            theme.drawSubRect(bc.painter, posBox2, &rects.slider_Mark, colorMark2)
     }
 
     mtd onMouseEvent(evt: *MouseEvent)
     {
-        if processMouseEvent(evt)
+        switch evt.kind
         {
-            if sigChanged
-                sigChanged(self)
+        case MouseLeave:
+            isHot1, isHot2 = false
+            invalidate()
+
+        case MouseMove:
+            if !isMoving
+            {
+                hitTest(evt.pos)
+                break
+            }
+
+            clientRect := getOffsetedClientRect()
+            diff := (evt.pos.x - correcMoving) - clientRect.x
+            f    := diff / clientRect.width
+            if isPressed1
+            {
+                value1 = Math.clamp(f, 0, 1)
+            }
+            else if isPressed2
+            {
+                value2 = Math.clamp(f, 0, 1)
+            }
+
+            invalidate()
+
+        case MousePressed:
+            if evt.button == .Left
+            {
+                if isHot1
+                {
+                    isPressed1, isMoving = true
+                    posBox := getPosBox1()
+                    correcMoving = evt.pos.x - posBox.horzCenter()
+                }
+                else if isHot2
+                {
+                    isPressed2, isMoving = true
+                    posBox := getPosBox2()
+                    correcMoving = evt.pos.x - posBox.horzCenter()
+                }
+
+                if isMoving
+                {
+                    captureMouse()
+                    invalidate()
+                }
+            }
+
+        case MouseReleased:
+            if isMoving and evt.button == .Left
+            {
+                releaseMouse()
+                isPressed1, isPressed2, isMoving = false
+                hitTest(evt.pos)
+                invalidate()
+            }
         }
     }
 }
 
 private impl Slider
 {
-    mtd getPosBox1()->Math.Rectangle
+    mtd hitTest(pos: Math.Point)
     {
-        var result: retval
-        clientRect := getClientRect()
-        result = clientRect
+        if isHot1 or isHot2
+        {
+            invalidate()
+            isHot1, isHot2 = false
+        }
+
+        rect := getPosBox1()
+        if rect.contains(pos)
+        {
+            isHot1 = true
+            invalidate()
+        }
+        else if isRange
+        {
+            rect = getPosBox2()
+            if rect.contains(pos)
+            {
+                isHot2 = true
+                invalidate()
+            }
+        }
+    }
+
+    mtd getOffsetedClientRect()->Math.Rectangle
+    {
+        var result: retval = getClientRect()
         result.x += (result.height * 0.5)
         result.width -= result.height
+        return result
+    }
+
+    mtd getPosBox1()->Math.Rectangle
+    {
+        var result: retval = getOffsetedClientRect()
         result.x += result.width * value1
-        result.x -= (clientRect.height * 0.5)
+        result.x -= (result.height * 0.5)
 
         result.y = result.vertCenter() - (result.height * 0.5)
         result.width = result.height
@@ -113,13 +210,9 @@ private impl Slider
 
     mtd getPosBox2()->Math.Rectangle
     {
-        var result: retval
-        clientRect := getClientRect()
-        result = clientRect
-        result.x += (result.height * 0.5)
-        result.width -= result.height
+        var result: retval = getOffsetedClientRect()
         result.x += result.width * value2
-        result.x -= (clientRect.height * 0.5)
+        result.x -= (result.height * 0.5)
 
         result.y = result.vertCenter() - (result.height * 0.5)
         result.width = result.height
