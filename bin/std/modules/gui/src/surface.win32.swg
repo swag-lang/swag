@@ -10,7 +10,7 @@ struct NativeSurface
 }
 
 #[Swag.Callback]
-private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
+protected func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
 {
     // Associate pointer to surface with 'hWnd'
     if msg == WM_CREATE

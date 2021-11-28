@@ -4,7 +4,7 @@
 using Win32
 
 #[Swag.Callback]
-private func timerEntry(param: *void)
+protected func timerEntry(param: *void)
 {
     t := cast(*Timer) param
     if !@getcontext()
