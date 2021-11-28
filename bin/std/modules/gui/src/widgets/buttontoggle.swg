@@ -76,12 +76,12 @@ impl IWnd for ButtonToggle
 
 impl ButtonToggle
 {
-    func create(parent: *Wnd, name: string, position: Math.Rectangle, id: string = null)->*ButtonToggle
+    func create(parent: *Wnd, position: Math.Rectangle, id: string = null)->*ButtonToggle
     {
         pos := position
         if pos.height == 0 pos.height = parent.getThemeMetrics().btnToggle_Height
         if pos.width == 0  pos.width  = parent.getThemeMetrics().btnToggle_Width
-        res := Wnd.create'ButtonToggle(parent, name, pos, id)
+        res := Wnd.create'ButtonToggle(parent, "", pos, id)
         evt := CreateEvent{}
         res.sendEvent(&evt)
         return res

@@ -96,13 +96,21 @@ const H = 1024
 
     // Toggle
     {
-        toggle := ButtonToggle.create(view, "", @{360, 300})
+        toggle := ButtonToggle.create(view, @{360, 300})
 
-        toggle = ButtonToggle.create(view, "", @{360, 330})
+        toggle = ButtonToggle.create(view, @{360, 330})
         toggle.isToggled = true
 
-        toggle = ButtonToggle.create(view, "", @{360, 360})
+        toggle = ButtonToggle.create(view, @{360, 360})
         toggle.isDisabled = true
+    }
+
+    // Slider
+    {
+        slider := Slider.create(view, @{450, 300})
+
+        slider = Slider.create(view, @{450, 340})
+        slider.isRange = true
     }
 
     // Labels

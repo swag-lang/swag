@@ -28,4 +28,7 @@ struct ThemeMetrics
 
     btnToggle_Width:            f32 = 50
     btnToggle_Height:           f32 = 26
+
+    slider_Width:               f32 = 128
+    slider_Height:              f32 = 26
 }
