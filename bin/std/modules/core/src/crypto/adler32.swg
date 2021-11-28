@@ -1,22 +1,18 @@
 // https://tools.ietf.org/html/rfc1950#section-9
 // https://github.com/madler/zlib/blob/master/adler32.c
 
-#global public
 #global namespace Hash
 
-private
-{
-    const Base = 65521
-    const NMax = 5552
-}
-
-struct Adler32
+public struct Adler32
 {
     adler: u32 = 1
 }
 
-impl Adler32
+public impl Adler32
 {
+    protected const Base = 65521
+    protected const NMax = 5552
+
     // Initialize the hashing sequence
     mtd init()
     {
