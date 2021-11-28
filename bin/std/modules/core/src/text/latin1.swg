@@ -22,18 +22,19 @@ using Swag
 }
 
 #[Inline, ConstExpr]
+protected func isLowerUtf8(c: u8)->bool
 {
-    private func isLowerUtf8(c: u8)->bool
-    {
-        if isAscii(c) and isLower(c) return true
-        return cast(bool) (CharProperties[c] & CharAttribute.LowerUtf8)
-    }
+    if isAscii(c) and isLower(c)
+        return true
+    return cast(bool) (CharProperties[c] & CharAttribute.LowerUtf8)
+}
 
-    private func isUpperUtf8(c: u8)->bool
-    {
-        if isAscii(c) and isUpper(c) return true
-        return cast(bool) (CharProperties[c] & CharAttribute.UpperUtf8)
-    }
+#[Inline, ConstExpr]
+protected func isUpperUtf8(c: u8)->bool
+{
+    if isAscii(c) and isUpper(c)
+        return true
+    return cast(bool) (CharProperties[c] & CharAttribute.UpperUtf8)
 }
 
 // Make an utf8 buffer upper case, dealing only with latin1 table
