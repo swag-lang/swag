@@ -183,156 +183,6 @@ public impl LinePath
         close()
     }
 
-    protected func getFlattenDistance(quality: PaintQuality)->f32
-    {
-        minDist := 0'f32
-        switch quality
-        {
-        case Draft:  minDist = 2
-        case Normal: minDist = 0.2
-        }
-
-        return minDist
-    }
-
-    private mtd flattenBezier(pos, p1: Vector2, quality: PaintQuality)
-    {
-        minDist := getFlattenDistance(quality)
-        startPt := endPosBuffer
-
-        // We divide a segment by half until the computed point on the curve is close to the corresponding segment
-        var tmp: Array'{factor: f32, pos: Vector2}
-        tmp.add(@{0, endPosBuffer})
-        tmp.add(@{1, pos})
-
-        for i := 0; i < tmp.count - 1; i += 1
-        {
-            t  := (tmp[i].factor + tmp[i + 1].factor) * 0.5
-            it := 1.0 - t
-            a1 := it * it
-            a2 := 2.0 * t * it
-            a3 := t * t
-
-            var point: Vector2 = ?
-            point.x = a1 * startPt.x + a2 * p1.x + a3 * pos.x
-            point.y = a1 * startPt.y + a2 * p1.y + a3 * pos.y
-
-            dist := point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
-            if dist < minDist continue
-
-            tmp.insertAt(cast(uint) i + 1, @{t, point})
-            i -= 1
-        }
-
-        loop i: 1..tmp.count-1
-            flattenLine(tmp[i].pos)
-    }
-
-    private mtd flattenBezier(pos, p1, p2: Vector2, quality: PaintQuality)
-    {
-        v := pos - endPosBuffer
-        minDist := getFlattenDistance(quality)
-        startPt := endPosBuffer
-
-        // We divide a segment by half until the computed point on the curve is close to the corresponding segment
-        var tmp: Array'{factor: f32, pos: Vector2}
-        tmp.add(@{0, endPosBuffer})
-        tmp.add(@{1, pos})
-
-        for i := 0; i < tmp.count - 1; i += 1
-        {
-            t  := (tmp[i].factor + tmp[i + 1].factor) * 0.5
-            it := 1.0 - t
-            a1 := it * it * it
-            a2 := 3.0 * t * it * it
-            a3 := 3.0 * t * t * it
-            a4 := t * t * t
-
-            var point: Vector2 = ?
-            point.x = a1 * startPt.x + a2 * p1.x + a3 * p2.x + a4 * pos.x
-            point.y = a1 * startPt.y + a2 * p1.y + a3 * p2.y + a4 * pos.y
-
-            dist := point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
-            if dist < minDist continue
-
-            tmp.insertAt(cast(uint) i + 1, @{t, point})
-            i -= 1
-        }
-
-        loop i: 1..tmp.count-1
-            flattenLine(tmp[i].pos)
-    }
-
-    private mtd flattenCurve(p0, p1, p2, p3: Vector2, quality: PaintQuality)
-    {
-        minDist := getFlattenDistance(quality)
-        startPt := endPosBuffer
-
-        // We divide a segment by half until the computed point on the curve is close to the corresponding segment
-        var tmp: Array'{factor: f32, pos: Vector2}
-        tmp.add(@{0, endPosBuffer})
-        tmp.add(@{1, p0 + p1 + p2 + p3})
-
-        for i := 0; i < tmp.count - 1; i += 1
-        {
-            t  := (tmp[i].factor + tmp[i + 1].factor) * 0.5
-
-            var point: Vector2 = ?
-            point  = p0 * t * t * t
-            point += p1 * t * t
-            point += p2 * t
-            point += p3
-
-            dist := point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
-            if dist < minDist continue
-
-            tmp.insertAt(cast(uint) i + 1, @{t, point})
-            i -= 1
-        }
-
-        loop i: 1..tmp.count-1
-            flattenLine(tmp[i].pos)
-    }
-
-    private mtd flattenArc(pos, p1, p2: Vector2, quality: PaintQuality)
-    {
-        var endPos: Vector2 = ?
-        endPos.x = pos.x + (Math.sin(p1.y) * p2.x)
-        endPos.y = pos.y + (-Math.cos(p1.y) * p2.y)
-
-        minDist := getFlattenDistance(quality)
-
-        // We divide a segment by half until the computed point on the curve is close to the corresponding segment
-        var tmp: Array'{angle: f32, pos: Vector2}
-        tmp.add(@{p1.x, endPosBuffer})
-        tmp.add(@{p1.y, endPos})
-
-        for i := 0; i < tmp.count - 1; i += 1
-        {
-            angle := (tmp[i].angle + tmp[i + 1].angle) * 0.5
-            point := pos
-            point.x += (Math.sin(angle) * p2.x)
-            point.y += -(Math.cos(angle) * p2.y)
-
-            dist := point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
-            if dist < minDist continue
-
-            tmp.insertAt(cast(uint) i + 1, @{angle, point})
-            i -= 1
-        }
-
-        loop i: 1..tmp.count-1
-            flattenLine(tmp[i].pos)
-    }
-
-    private mtd flattenLine(pos: Vector2)
-    {
-        bvMin = Vector2.min(bvMin, pos)
-        bvMax = Vector2.max(bvMax, pos)
-        polygon.add(pos)
-        endPosBuffer = pos
-    }
-
     // Convert the path to a list of points
     mtd flatten(quality: PaintQuality)
     {
@@ -415,5 +265,158 @@ public impl LinePath
         }
 
         polygon.compute()
+    }
+}
+
+impl LinePath
+{
+    func getFlattenDistance(quality: PaintQuality)->f32
+    {
+        minDist := 0'f32
+        switch quality
+        {
+        case Draft:  minDist = 2
+        case Normal: minDist = 0.2
+        }
+
+        return minDist
+    }
+
+    mtd flattenBezier(pos, p1: Vector2, quality: PaintQuality)
+    {
+        minDist := getFlattenDistance(quality)
+        startPt := endPosBuffer
+
+        // We divide a segment by half until the computed point on the curve is close to the corresponding segment
+        var tmp: Array'{factor: f32, pos: Vector2}
+        tmp.add(@{0, endPosBuffer})
+        tmp.add(@{1, pos})
+
+        for i := 0; i < tmp.count - 1; i += 1
+        {
+            t  := (tmp[i].factor + tmp[i + 1].factor) * 0.5
+            it := 1.0 - t
+            a1 := it * it
+            a2 := 2.0 * t * it
+            a3 := t * t
+
+            var point: Vector2 = ?
+            point.x = a1 * startPt.x + a2 * p1.x + a3 * pos.x
+            point.y = a1 * startPt.y + a2 * p1.y + a3 * pos.y
+
+            dist := point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
+            if dist < minDist continue
+
+            tmp.insertAt(cast(uint) i + 1, @{t, point})
+            i -= 1
+        }
+
+        loop i: 1..tmp.count-1
+            flattenLine(tmp[i].pos)
+    }
+
+    mtd flattenBezier(pos, p1, p2: Vector2, quality: PaintQuality)
+    {
+        v := pos - endPosBuffer
+        minDist := getFlattenDistance(quality)
+        startPt := endPosBuffer
+
+        // We divide a segment by half until the computed point on the curve is close to the corresponding segment
+        var tmp: Array'{factor: f32, pos: Vector2}
+        tmp.add(@{0, endPosBuffer})
+        tmp.add(@{1, pos})
+
+        for i := 0; i < tmp.count - 1; i += 1
+        {
+            t  := (tmp[i].factor + tmp[i + 1].factor) * 0.5
+            it := 1.0 - t
+            a1 := it * it * it
+            a2 := 3.0 * t * it * it
+            a3 := 3.0 * t * t * it
+            a4 := t * t * t
+
+            var point: Vector2 = ?
+            point.x = a1 * startPt.x + a2 * p1.x + a3 * p2.x + a4 * pos.x
+            point.y = a1 * startPt.y + a2 * p1.y + a3 * p2.y + a4 * pos.y
+
+            dist := point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
+            if dist < minDist continue
+
+            tmp.insertAt(cast(uint) i + 1, @{t, point})
+            i -= 1
+        }
+
+        loop i: 1..tmp.count-1
+            flattenLine(tmp[i].pos)
+    }
+
+    mtd flattenCurve(p0, p1, p2, p3: Vector2, quality: PaintQuality)
+    {
+        minDist := getFlattenDistance(quality)
+        startPt := endPosBuffer
+
+        // We divide a segment by half until the computed point on the curve is close to the corresponding segment
+        var tmp: Array'{factor: f32, pos: Vector2}
+        tmp.add(@{0, endPosBuffer})
+        tmp.add(@{1, p0 + p1 + p2 + p3})
+
+        for i := 0; i < tmp.count - 1; i += 1
+        {
+            t  := (tmp[i].factor + tmp[i + 1].factor) * 0.5
+
+            var point: Vector2 = ?
+            point  = p0 * t * t * t
+            point += p1 * t * t
+            point += p2 * t
+            point += p3
+
+            dist := point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
+            if dist < minDist continue
+
+            tmp.insertAt(cast(uint) i + 1, @{t, point})
+            i -= 1
+        }
+
+        loop i: 1..tmp.count-1
+            flattenLine(tmp[i].pos)
+    }
+
+    mtd flattenArc(pos, p1, p2: Vector2, quality: PaintQuality)
+    {
+        var endPos: Vector2 = ?
+        endPos.x = pos.x + (Math.sin(p1.y) * p2.x)
+        endPos.y = pos.y + (-Math.cos(p1.y) * p2.y)
+
+        minDist := getFlattenDistance(quality)
+
+        // We divide a segment by half until the computed point on the curve is close to the corresponding segment
+        var tmp: Array'{angle: f32, pos: Vector2}
+        tmp.add(@{p1.x, endPosBuffer})
+        tmp.add(@{p1.y, endPos})
+
+        for i := 0; i < tmp.count - 1; i += 1
+        {
+            angle := (tmp[i].angle + tmp[i + 1].angle) * 0.5
+            point := pos
+            point.x += (Math.sin(angle) * p2.x)
+            point.y += -(Math.cos(angle) * p2.y)
+
+            dist := point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
+            if dist < minDist continue
+
+            tmp.insertAt(cast(uint) i + 1, @{angle, point})
+            i -= 1
+        }
+
+        loop i: 1..tmp.count-1
+            flattenLine(tmp[i].pos)
+    }
+
+    mtd flattenLine(pos: Vector2)
+    {
+        bvMin = Vector2.min(bvMin, pos)
+        bvMax = Vector2.max(bvMax, pos)
+        polygon.add(pos)
+        endPosBuffer = pos
     }
 }
