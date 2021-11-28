@@ -168,7 +168,6 @@ impl
 interface
 namespace
 null
-private
 protected
 public
 retval
