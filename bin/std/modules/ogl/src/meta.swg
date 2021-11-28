@@ -10,7 +10,7 @@ struct OneFunc
 }
 
 #[Compiler]
-private var g_Functions: Array'OneFunc
+var g_Functions: Array'OneFunc
 
 #message(CompilerMsgMask.SemanticFunc)
 {
