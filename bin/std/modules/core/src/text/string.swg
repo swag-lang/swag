@@ -1,7 +1,7 @@
 #global public
 using Swag
 
-private const SmallSize = 16'uint
+protected const StringSmallSize = 16'uint
 #assert @sizeof(String) == 56
 
 enum CharacterSet
@@ -16,7 +16,7 @@ struct String
     length:     uint
     capacity:   uint
     allocator:  IAllocator
-    padding:    [SmallSize] u8
+    padding:    [StringSmallSize] u8
 }
 
 impl String
@@ -112,7 +112,7 @@ impl String
 
     mtd opPostMove()
     {
-        if buffer and capacity <= SmallSize
+        if buffer and capacity <= StringSmallSize
             buffer = acast &padding[0]
     }
 
@@ -121,7 +121,7 @@ impl String
         if !buffer
             return
 
-        if capacity <= SmallSize
+        if capacity <= StringSmallSize
             buffer = acast &padding[0]
         else
         {
@@ -385,14 +385,14 @@ impl String
             allocator = @getcontext().allocator
 
         // Small size, just be sure with have a valid buffer address
-        if newCapacity <= SmallSize
+        if newCapacity <= StringSmallSize
         {
             // Free dynamic memory if this is not a small string
             if buffer != acast &padding[0]
                 Memory.free(buffer, capacity, allocator)
 
             // This is a small string again
-            capacity = SmallSize
+            capacity = StringSmallSize
             buffer = acast &padding[0]
         }
 
