@@ -180,6 +180,10 @@ impl Painter
             params.textureRect.y = brush.uvRect.y / ht
             params.textureRect.z = brush.uvRect.right() / wt
             params.textureRect.w = brush.uvRect.bottom() / ht
+            params.textureRect.x += 0.5 / wt
+            params.textureRect.y += 0.5 / ht
+            params.textureRect.z -= 0.5 / wt
+            params.textureRect.w -= 0.5 / ht
         }
         else
         {

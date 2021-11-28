@@ -65,7 +65,7 @@ impl IWnd for ButtonRadio
         // Box
         clientRect := getClientRect()
         posBox := clientRect
-        posBox.height = getThemeMetrics().btnCheck_Size
+        posBox.height = metrics.btnCheck_Size
         posBox.y = clientRect.vertCenter() - (posBox.height * 0.5)
         posBox.width = posBox.height
         theme.drawSubRect(bc.painter, posBox, subRectBk, colorBk)
