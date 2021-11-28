@@ -3,11 +3,11 @@
 #global namespace Time
 using Win32
 
-private var g_perfCounterFreq: u64
+private var g_PerfCounterFreq: u64
 
 #init
 {
-    QueryPerformanceFrequency(acast &g_perfCounterFreq)
+    QueryPerformanceFrequency(acast &g_PerfCounterFreq)
 }
 
 // Get current time precise value
@@ -21,5 +21,5 @@ func nowPrecise()->u64
 // The frequency of the precise counter, in ticks per second
 func preciseFrequency()->u64
 {
-    return g_perfCounterFreq
+    return g_PerfCounterFreq
 }
