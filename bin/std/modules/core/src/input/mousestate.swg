@@ -19,7 +19,7 @@ impl MouseState
         visit v: MouseButton
         {
             b := pressed[v]
-            pressed[v] = isMouseButtonPressed(v)
+            pressed[v] = Mouse.isButtonPressed(v)
             if !b and pressed[v]
                 pressedTime[v] = Time.nowMilliseconds()
         }
@@ -30,23 +30,7 @@ impl MouseState
     // Reset the state to its default value
     mtd clear()
     {
-        Memory.clear(&pressed, cast(uint) @sizeof(pressed))
+        Memory.clear(&pressed, @sizeof(pressed))
         position = getMousePos()
     }
-}
-
-// Determins if one given mouse button is pressed or not
-func isMouseButtonPressed(button: MouseButton)->bool
-{
-    using MouseButton
-    switch button
-    {
-    case Left:		return Keyboard.isKeyPressed(Input.Key.LButton)
-    case Middle:	return Keyboard.isKeyPressed(Input.Key.MButton)
-    case Right:		return Keyboard.isKeyPressed(Input.Key.RButton)
-    case XButton1:	return Keyboard.isKeyPressed(Input.Key.XButton1)
-    case XButton2:	return Keyboard.isKeyPressed(Input.Key.XButton2)
-    }
-
-    return false
 }

@@ -15,7 +15,7 @@ impl GamePadState
     // Reset state to its default value
     mtd clear()
     {
-        Memory.clear(&pressed, cast(uint) @sizeof(pressed))
-        Memory.clear(&position, cast(uint) @sizeof(position))
+        Memory.clear(&pressed, @sizeof(pressed))
+        Memory.clear(&position, @sizeof(position))
     }
 }

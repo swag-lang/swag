@@ -47,6 +47,22 @@ impl Mouse
         return dblClk[button]
     }
 
+    // Determins if one given mouse button is pressed or not
+    func isButtonPressed(button: MouseButton)->bool
+    {
+        using MouseButton
+        switch button
+        {
+        case Left:		return Keyboard.isKeyPressed(Input.Key.LButton)
+        case Middle:	return Keyboard.isKeyPressed(Input.Key.MButton)
+        case Right:		return Keyboard.isKeyPressed(Input.Key.RButton)
+        case XButton1:	return Keyboard.isKeyPressed(Input.Key.XButton1)
+        case XButton2:	return Keyboard.isKeyPressed(Input.Key.XButton2)
+        }
+
+        return false
+    }
+
     // Determines whether the specified mouse button is pressed
     mtd isButtonPressed(button: MouseButton)->bool
     {

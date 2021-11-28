@@ -21,6 +21,6 @@ impl KeyboardState
     // Reset keyboard state
     mtd clear()
     {
-        Memory.clear(&pressed, cast(uint) @sizeof(pressed))
+        Memory.clear(&pressed, @sizeof(pressed))
     }
 }
