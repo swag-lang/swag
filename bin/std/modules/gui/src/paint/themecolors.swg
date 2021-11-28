@@ -13,7 +13,7 @@ struct ThemeColors
 
     const White         = 0xFFF0F0F0
     const Gray1         = 0xFFE0E0E0
-    const Gray2         = 0xFF707070
+    const Gray2         = 0xFF6A6A6A
     const Gray3         = 0xFF606060
     const Gray4         = 0xFF505050
     const Gray5         = 0xFF404040
