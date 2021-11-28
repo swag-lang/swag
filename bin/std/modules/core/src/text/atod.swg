@@ -5,8 +5,7 @@
     See LICENCE.md for the corresponding licence.
 */
 
-#global namespace StrConv
-#global private
+#global namespace StrConv.Atod
 #global #[Swag.Safety("overflow", false)]
 using Globalization
 
@@ -871,7 +870,7 @@ func special(s: const [..] u8)->{ value: f64, eat: u32 }
     return result
 }
 
-public func atod(s: const [..] u8) -> { value: f64, eat: u32 } throw
+public func parse(s: const [..] u8) -> { value: f64, eat: u32 } throw
 {
     var result: retval
     countof := @countof(s)

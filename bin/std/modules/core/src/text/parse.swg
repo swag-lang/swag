@@ -246,7 +246,7 @@ func getF32(str: string) -> {value: f32, eat: u32} throw
 
 func getF64(str: string) -> {value: f64, eat: u32} throw
 {
-    return try StrConv.atod(str)
+    return try StrConv.Atod.parse(str)
 }
 
 // Convert an utf8 buffer to a boolean

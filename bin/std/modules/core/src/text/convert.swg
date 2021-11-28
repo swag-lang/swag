@@ -364,7 +364,7 @@ func convertFloat(buf: *ConcatBuffer, fmt: ConvertFormatFloat)
         case f64: value = dref cast(*f64) dataof
     }
 
-    dtoa(buf, value, fmt.fmt, cast(s64) fmt.precision, fmt.forceSign)
+    Dtoa.parse(buf, value, fmt.fmt, cast(s64) fmt.precision, fmt.forceSign)
 }
 
 // Convert an integer to an utf8 string, and put the result in a ConcatBuffer

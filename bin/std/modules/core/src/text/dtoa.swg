@@ -5,8 +5,7 @@
     See LICENCE.md for the corresponding licence.
 */
 
-#global namespace StrConv
-#global private
+#global namespace StrConv.Dtoa
 #global #[Swag.Safety("overflow", false)]
 using Globalization
 
@@ -350,7 +349,7 @@ func roundShortest(d: *Decimal, mant: u64, exp: s64)
 // 'g' ('e' for large exponents, 'f' otherwise)
 // 'G' ('E' for large exponents, 'f' otherwise)
 // Negative precision means "only as much as needed to be exact."
-public func dtoa(buf: *ConcatBuffer, val: f64, fmt: u8, precision: s64, forceSign: bool)
+public func parse(buf: *ConcatBuffer, val: f64, fmt: u8, precision: s64, forceSign: bool)
 {
 	var bits: u64 = bitcast(u64) val
 
