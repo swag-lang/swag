@@ -90,7 +90,7 @@ impl Polygon
         points =,move copy
     }
 
-    protected mtd storeClipperResult(res: Clipper.ClipperPaths)
+    private mtd storeClipperResult(res: Clipper.ClipperPaths)
     {
         clear()
         if !res.count return

@@ -13,7 +13,7 @@ const MaxRunes      = 0x10FFFF'rune
 const SurrogateMin  = 0xD800'rune
 const SurrogateMax  = 0xDFFF'rune
 
-protected
+private
 {
 	const MaskX = 0b00111111
 	const Mask2 = 0b00011111

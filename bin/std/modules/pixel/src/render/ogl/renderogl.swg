@@ -18,7 +18,7 @@ struct RenderOgl
     curRC:              RenderingContext
 }
 
-protected impl RenderOgl
+private impl RenderOgl
 {
     func generateTexture(datas: const [..] u8, w, h: s32)->GLuint
     {

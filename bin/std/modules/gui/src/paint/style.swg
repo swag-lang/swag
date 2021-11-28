@@ -17,12 +17,12 @@ struct Style
 
 impl Style
 {
-    protected mtd opDrop()
+    private mtd opDrop()
     {
         release()
     }
 
-    protected mtd release()
+    private mtd release()
     {
         if !ref
             return
@@ -35,7 +35,7 @@ impl Style
         }
     }
 
-    protected mtd set(theme: *Theme)
+    private mtd set(theme: *Theme)
     {
         ref = Memory.new'StyleRef()
         ref.theme = theme
@@ -51,7 +51,7 @@ impl Style
         set(theme)
     }
 
-    protected mtd compute(owner: *Wnd, parent: *Style)
+    private mtd compute(owner: *Wnd, parent: *Style)
     {
         // First time, initialize to parent
         if !ref

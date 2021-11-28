@@ -20,7 +20,7 @@ public interface IImageEncoder
 
 public impl Image
 {
-    protected var encoders: Array'ImageEncoder
+    private var encoders: Array'ImageEncoder
 
     // Register an image encoder
     func(T) addEncoder()

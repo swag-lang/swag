@@ -49,7 +49,7 @@ bool SyntaxJob::doGlobalAttributeExpose(AstNode* parent, AstNode** result, bool 
     switch (token.id)
     {
     case TokenId::KwdPublic:
-    case TokenId::KwdProtected:
+    case TokenId::KwdPrivate:
         if (token.id == TokenId::KwdPublic)
             attr = ATTRIBUTE_PUBLIC;
         else

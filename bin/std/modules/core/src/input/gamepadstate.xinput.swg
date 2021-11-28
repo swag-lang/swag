@@ -24,7 +24,7 @@ using XInput, Win32
 
 impl GamePadState
 {
-    protected var mapButtons: [@countof(GamePadButton)] GamePadButton = ?
+    private var mapButtons: [@countof(GamePadButton)] GamePadButton = ?
 
     // Compute the current state of the given pad index
     func update(using self, padIndex: u32) throw

@@ -69,7 +69,7 @@ impl Application
 
     // Remove and destroy the given surface
     // To cleanly close a surface, you should call surface.destroy()
-    protected mtd destroySurface(surface: *Surface)
+    private mtd destroySurface(surface: *Surface)
     {
         surfaces.remove(surface)
         if surface == mainSurface
@@ -84,7 +84,7 @@ impl Application
 
     // Destroy a window
     // To cleanly close a window, you should call wnd.destroy()
-    protected mtd destroyWnd(wnd: *Wnd)
+    private mtd destroyWnd(wnd: *Wnd)
     {
         if wnd == mouseEnterWnd
             mouseEnterWnd = null
@@ -164,7 +164,7 @@ impl Application
     }
 
     // Send and process an event
-    protected mtd sendEventPrivate(event: *Event, stopAt: *Wnd)
+    private mtd sendEventPrivate(event: *Event, stopAt: *Wnd)
     {
         if event.kind == .Quit
         {
@@ -192,7 +192,7 @@ impl Application
         }
     }
 
-    protected func skipDisabled(wnd: *Wnd)->*Wnd
+    private func skipDisabled(wnd: *Wnd)->*Wnd
     {
         if !wnd
             return null
@@ -202,7 +202,7 @@ impl Application
         return scan
     }
 
-    protected mtd sendMouseEvents()
+    private mtd sendMouseEvents()
     {
         mouse.update()
 
@@ -288,7 +288,7 @@ impl Application
         }
     }
 
-    protected mtd sendCharEvent(r: rune)
+    private mtd sendCharEvent(r: rune)
     {
         targetWnd := keybFocusWnd
         targetWnd = skipDisabled(targetWnd)
@@ -300,7 +300,7 @@ impl Application
         targetWnd.sendEvent(&evt)
     }
 
-    protected mtd sendKeyboardEvents()
+    private mtd sendKeyboardEvents()
     {
         keyb.update()
 
@@ -334,7 +334,7 @@ impl Application
         }
     }
 
-    protected mtd sendPostedEvents()
+    private mtd sendPostedEvents()
     {
         for i := 0; i < postedEvents.count; i += 1
         {
@@ -346,7 +346,7 @@ impl Application
         postedEvents.clear()
     }
 
-    protected mtd sendDestroyEvents()
+    private mtd sendDestroyEvents()
     {
         for i := 0; i < postDestroy.count; i += 1
         {
@@ -376,7 +376,7 @@ impl Application
         timers.remove(timer)
     }
 
-    protected mtd sendTimerEvents()
+    private mtd sendTimerEvents()
     {
         visit t: timers
         {
@@ -393,7 +393,7 @@ impl Application
         }
     }
 
-    protected mtd runFrame()
+    private mtd runFrame()
     {
         Memory.freeTemp()
 
@@ -427,7 +427,7 @@ impl Application
         endModalExit = exitId
     }
 
-    protected mtd doModalLoop(surface: *Surface)->string
+    private mtd doModalLoop(surface: *Surface)->string
     {
         visit s: surfaces s.disable()
         modalSurfaces.add(surface)

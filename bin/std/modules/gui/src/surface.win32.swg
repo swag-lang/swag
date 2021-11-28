@@ -10,7 +10,7 @@ struct NativeSurface
 }
 
 #[Swag.Callback]
-protected func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
+private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
 {
     // Associate pointer to surface with 'hWnd'
     if msg == WM_CREATE
@@ -185,7 +185,7 @@ impl Surface
     }
 
     // Creates a new (invisible) surface
-    protected func createNative(app: *Application, result: *Surface, x, y, width, height: s32, flags: SurfaceFlags, mainSurface: *Surface) throw
+    private func createNative(app: *Application, result: *Surface, x, y, width, height: s32, flags: SurfaceFlags, mainSurface: *Surface) throw
     {
         // Create class
         #[Swag.Global]
@@ -231,7 +231,7 @@ impl Surface
         result.rc = try app.renderer.native.createContext(result.hWnd, width, height, mainSurface ? mainSurface.rc.hRC : null)
     }
 
-    protected mtd destroyNative()
+    private mtd destroyNative()
     {
         catch DestroyWindow(hWnd)
     }

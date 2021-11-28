@@ -1,7 +1,7 @@
 #global public
 #global namespace Time
 
-protected
+private
 {
     const TicksPerMilliSecond: u64 = 10000
     const TicksPerSecond: u64 = TicksPerMilliSecond * 1000

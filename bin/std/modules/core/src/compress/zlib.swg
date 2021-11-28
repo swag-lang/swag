@@ -9,7 +9,7 @@ struct ZLibDecoder
 
 impl ZLibDecoder
 {
-    protected mtd init(buffer: const [..] u8) throw
+    private mtd init(buffer: const [..] u8) throw
     {
         bs := ByteStream.create(buffer)
         if bs.length() < 6 throw "invalid format"

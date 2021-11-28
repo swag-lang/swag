@@ -43,10 +43,10 @@ public struct Font
 
 public impl Font
 {
-    protected var hashFont: HashTable'(String, *Font)
-    protected var lock:     Sync.Mutex
+    private var hashFont: HashTable'(String, *Font)
+    private var lock:     Sync.Mutex
 
-    protected func mulFix(a, b: s32)->s32
+    private func mulFix(a, b: s32)->s32
     {
         ab := cast(s64) a * cast(s64) b
         return cast(s32) (((ab + 0x8000 - (ab < 0 ? 1 : 0)) >>,safe 16))

@@ -28,7 +28,7 @@ struct RichString
 impl RichString
 {
     #[Swag.Mixin]
-    protected func addChunk(idx: uint, space, eol: bool = false)
+    private func addChunk(idx: uint, space, eol: bool = false)
     {
         if idx - startChunk == 0
             return

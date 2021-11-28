@@ -10,8 +10,8 @@ public struct Adler32
 
 public impl Adler32
 {
-    protected const Base = 65521
-    protected const NMax = 5552
+    private const Base = 65521
+    private const NMax = 5552
 
     // Initialize the hashing sequence
     mtd init()

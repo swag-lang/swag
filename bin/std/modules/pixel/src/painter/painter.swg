@@ -126,7 +126,7 @@ struct Painter
 
 impl Painter
 {
-    protected func getTextureSize(brush: Brush)->{w: s32, h: s32}
+    private func getTextureSize(brush: Brush)->{w: s32, h: s32}
     {
         var result: retval
         var wt, ht: s32 = ?
@@ -145,7 +145,7 @@ impl Painter
         return result
     }
 
-    protected mtd resetTexture0()
+    private mtd resetTexture0()
     {
         if lastTexture0Handle or lastTexture0Type != .SolidColor
         {
@@ -155,7 +155,7 @@ impl Painter
         }
     }
 
-    protected mtd setTexture0(bvMin, bvMax: Vector2, brush: Brush)
+    private mtd setTexture0(bvMin, bvMax: Vector2, brush: Brush)
     {
         if !canSetTexture0
             return
@@ -199,7 +199,7 @@ impl Painter
         lastTexture0Type   = brush.type
     }
 
-    protected mtd resetTextureFont()
+    private mtd resetTextureFont()
     {
         if !hasTextureFont
             return
@@ -207,7 +207,7 @@ impl Painter
         discard newCommand(CommandId.ResetTextureFont, true)
     }
 
-    protected mtd setTextureFont(font: *Font, atlasIndex: s32)
+    private mtd setTextureFont(font: *Font, atlasIndex: s32)
     {
         cmd := newCommand(CommandId.BindTextureFont, true)
         params := &cmd.textureFont
@@ -216,7 +216,7 @@ impl Painter
         hasTextureFont = true
     }
 
-    protected mtd pushTriangleCmd()->*Command
+    private mtd pushTriangleCmd()->*Command
     {
         var cmd: *Command
         if commandBuffer.count
@@ -236,7 +236,7 @@ impl Painter
         return cmd
     }
 
-    protected mtd pushTriangle(p1, p2, p3: Vector2, uv1, uv2, uv3: Vector2, color: Color)->uint
+    private mtd pushTriangle(p1, p2, p3: Vector2, uv1, uv2, uv3: Vector2, color: Color)->uint
     {
         cmd := pushTriangleCmd()
         cmd.drawTriangles.count += 3
@@ -251,7 +251,7 @@ impl Painter
         return vertexBuffer.count - 3
     }
 
-    protected mtd pushTriangle(p1, p2, p3: Vector2, color: Color)->uint
+    private mtd pushTriangle(p1, p2, p3: Vector2, color: Color)->uint
     {
         cmd := pushTriangleCmd()
         cmd.drawTriangles.count += 3
@@ -266,7 +266,7 @@ impl Painter
         return vertexBuffer.count - 3
     }
 
-    protected mtd addEdgeAA(tri: uint, start, end: Vector2)
+    private mtd addEdgeAA(tri: uint, start, end: Vector2)
     {
         loop i: 3
         {
@@ -284,7 +284,7 @@ impl Painter
     }
 
     #[Swag.Inline]
-    protected mtd newCommand(cmd: CommandId, replaceLast = false)->*Command
+    private mtd newCommand(cmd: CommandId, replaceLast = false)->*Command
     {
         Debug.assert(drawingBegin, "begin() not called before")
 
@@ -297,14 +297,14 @@ impl Painter
         return ptr
     }
 
-    protected mtd updateFont(fontRef: *Font)
+    private mtd updateFont(fontRef: *Font)
     {
         if !fontRef.dirty return
         cmd := newCommand(CommandId.UpdateFont, false)
         cmd.font.fontRef = fontRef
     }
 
-    protected mtd startOverlapMode(pen: Pen)
+    private mtd startOverlapMode(pen: Pen)
     {
         alpha := false
         if pen.brush.color.argb & 0xFF000000 != 0xFF000000
@@ -318,7 +318,7 @@ impl Painter
         }
     }
 
-    protected mtd stopOverlapMode()
+    private mtd stopOverlapMode()
     {
         if overlapMode
         {

@@ -1,21 +1,21 @@
 #global public
 using Core, Pixel
 
-protected const DefaultImageName          = "theme/widgets.png"
-protected const DefaultFontRegularName    = "theme/segoeui.ttf"
-protected const DefaultFontBoldName       = "theme/segoeuib.ttf"
-protected const DefaultFontBoldItalicName = "theme/segoeuiz.ttf"
-protected const DefaultFontItalicName     = "theme/segoeuii.ttf"
-protected const DefaultIcons24Name        = "theme/icons24.png"
-protected const DefaultIcons64Name        = "theme/icons64.png"
+private const DefaultImageName          = "theme/widgets.png"
+private const DefaultFontRegularName    = "theme/segoeui.ttf"
+private const DefaultFontBoldName       = "theme/segoeuib.ttf"
+private const DefaultFontBoldItalicName = "theme/segoeuiz.ttf"
+private const DefaultFontItalicName     = "theme/segoeuii.ttf"
+private const DefaultIcons24Name        = "theme/icons24.png"
+private const DefaultIcons64Name        = "theme/icons64.png"
 
-protected const DefaultImage          = #load(DefaultImageName)
-protected const DefaultFontRegular    = #load(DefaultFontRegularName)
-protected const DefaultFontBold       = #load(DefaultFontBoldName)
-protected const DefaultFontBoldItalic = #load(DefaultFontBoldItalicName)
-protected const DefaultFontItalic     = #load(DefaultFontItalicName)
-protected const DefaultIcons24        = #load(DefaultIcons24Name)
-protected const DefaultIcons64        = #load(DefaultIcons64Name)
+private const DefaultImage          = #load(DefaultImageName)
+private const DefaultFontRegular    = #load(DefaultFontRegularName)
+private const DefaultFontBold       = #load(DefaultFontBoldName)
+private const DefaultFontBoldItalic = #load(DefaultFontBoldItalicName)
+private const DefaultFontItalic     = #load(DefaultFontItalicName)
+private const DefaultIcons24        = #load(DefaultIcons24Name)
+private const DefaultIcons64        = #load(DefaultIcons64Name)
 
 
 struct ThemeResources
@@ -40,7 +40,7 @@ struct Theme
 
 impl Theme
 {
-    protected mtd setupDefault(renderer: *RenderOgl)
+    private mtd setupDefault(renderer: *RenderOgl)
     {
         img := assume Image.decode(DefaultImageName, DefaultImage)
         res.imgWidgets = renderer.addImage(img)

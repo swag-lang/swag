@@ -5,9 +5,9 @@
 // Skip the content of the file, like this one (but must be a valid swag file)
 #global skip
 
-// All symbols in the file will be public/protected
+// All symbols in the file will be public/private
 #global public
-#global protected
+#global private
 
 // All symbols in the file will go in the namespace 'Toto'
 #global namespace Toto

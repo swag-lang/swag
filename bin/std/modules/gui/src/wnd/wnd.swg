@@ -398,7 +398,7 @@ impl Wnd
         sendEvent(&evt)
     }
 
-    protected mtd clampSize(pos: *Math.Rectangle)
+    private mtd clampSize(pos: *Math.Rectangle)
     {
         if minSize.x > 0
             pos.width = Math.max(pos.width, minSize.x)

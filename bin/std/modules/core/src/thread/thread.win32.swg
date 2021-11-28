@@ -16,7 +16,7 @@ func yield()
 }
 
 #[Swag.Callback]
-protected func threadEntry(param: *void)
+private func threadEntry(param: *void)
 {
     th := cast(*Thread) param
     @setcontext(th.context)

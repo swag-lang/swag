@@ -113,7 +113,7 @@ public impl MessageDlg
         return Dialog.doModal(surface)
     }
 
-    protected mtd adaptSizeToMessage()
+    private mtd adaptSizeToMessage()
     {
         metrics := getThemeMetrics()
 

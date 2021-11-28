@@ -13,7 +13,7 @@ public struct DebugAllocator
 }
 
 // This will be address before and after each allocated block
-protected impl DebugAllocator
+private impl DebugAllocator
 {
     const MagicAlloc = 0xC0DEC0DE   // Before and after the user memory
     const AllocByte  = 0xAB         // Fill memory when allocated

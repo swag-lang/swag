@@ -132,7 +132,7 @@ impl Surface
         cxt.renderer.end()
     }
 
-    protected mtd sendResizeEvent(width, height: f32)
+    private mtd sendResizeEvent(width, height: f32)
     {
         rc.width = cast(s32) width
         rc.height = cast(s32) height

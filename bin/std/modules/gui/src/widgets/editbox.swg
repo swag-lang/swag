@@ -322,7 +322,7 @@ public impl EditBox
     }
 }
 
-protected impl EditBox
+private impl EditBox
 {
     mtd keyPressed(key: Input.Key, mdf: Input.KeyModifiers)->bool
     {

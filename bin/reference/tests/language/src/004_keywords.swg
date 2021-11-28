@@ -168,7 +168,7 @@ impl
 interface
 namespace
 null
-protected
+private
 public
 retval
 struct
