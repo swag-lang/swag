@@ -5,14 +5,14 @@ using Swag, Win32
 
 private
 {
-    var g_mapKeyToVKey: [256] u8 = ?
-    var g_mapVKeyToKey: [256] u8 = ?
+    var g_MapKeyToVKey: [256] u8 = ?
+    var g_MapVKeyToKey: [256] u8 = ?
 
     #[Compiler]
     func setupArray(key: Input.Key, vkey: u8)
     {
-        g_mapKeyToVKey[key] = vkey
-        g_mapVKeyToKey[vkey] = cast(u8) key
+        g_MapKeyToVKey[key] = vkey
+        g_MapVKeyToKey[vkey] = cast(u8) key
     }
 }
 
@@ -211,20 +211,20 @@ private
 
 private func keyToVirtualKey(key: Key)->VirtualKey
 {
-    return cast(VirtualKey) g_mapKeyToVKey[key]
+    return cast(VirtualKey) g_MapKeyToVKey[key]
 }
 
 private func virtualKeyToKey(vkey: VirtualKey)->Key
 {
     if vkey > 255
         return Key.None
-    return cast(Key) g_mapVKeyToKey[vkey]
+    return cast(Key) g_MapVKeyToKey[vkey]
 }
 
 // Returns true if the given key is pressed
 func isKeyPressed(key: Key)->bool
 {
-    vkey := g_mapKeyToVKey[key]
+    vkey := g_MapKeyToVKey[key]
     if vkey == 0
         return false
     return GetAsyncKeyState(cast(s32) vkey) < 0
@@ -232,6 +232,7 @@ func isKeyPressed(key: Key)->bool
 
 impl Keyboard
 {
+    // Try to transform the given key to the corresponding rune
     mtd keyToRune(key: Key)->rune
     {
         virt := keyToVirtualKey(key)
