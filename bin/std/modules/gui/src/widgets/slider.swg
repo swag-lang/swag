@@ -117,14 +117,9 @@ impl IWnd for Slider
             diff := (evt.pos.x - correcMoving) - clientRect.x
             f    := diff / clientRect.width
             if isPressed1
-            {
-                value1 = Math.clamp(f, 0, 1)
-            }
+                setValue1(f)
             else if isPressed2
-            {
-                value2 = Math.clamp(f, 0, 1)
-            }
-
+                setValue2(f)
             invalidate()
 
         case MousePressed:
@@ -164,6 +159,28 @@ impl IWnd for Slider
 
 private impl Slider
 {
+    mtd setValue1(f: f32)
+    {
+        fc := Math.clamp(f, 0, 1)
+        if isRange
+            fc = Math.min(fc, value2)
+        if fc == value1
+            return
+        value1 = fc
+        invalidate()
+    }
+
+    mtd setValue2(f: f32)
+    {
+        fc := Math.clamp(f, 0, 1)
+        if isRange
+            fc = Math.max(fc, value1)
+        if fc == value2
+            return
+        value2 = fc
+        invalidate()
+    }
+
     mtd hitTest(pos: Math.Point)
     {
         if isHot1 or isHot2
@@ -172,20 +189,22 @@ private impl Slider
             isHot1, isHot2 = false
         }
 
+        if isRange
+        {
+            rect := getPosBox2()
+            if rect.contains(pos)
+            {
+                isHot2 = true
+                invalidate()
+                return
+            }
+        }
+
         rect := getPosBox1()
         if rect.contains(pos)
         {
             isHot1 = true
             invalidate()
-        }
-        else if isRange
-        {
-            rect = getPosBox2()
-            if rect.contains(pos)
-            {
-                isHot2 = true
-                invalidate()
-            }
         }
     }
 
