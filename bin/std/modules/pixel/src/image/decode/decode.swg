@@ -3,7 +3,7 @@ using Swag, Core
 struct ImageDecoder
 {
     type:   const *TypeInfoStruct
-    itf:    IDecoder
+    itf:    IImageDecoder
 }
 
 public struct DecodeOptions
@@ -14,7 +14,7 @@ public struct DecodeOptions
 }
 
 // Interface to decode a buffer
-public interface IDecoder
+public interface IImageDecoder
 {
     canDecode:  func(self, string)->bool
     decode:     func(self, const [..] u8, DecodeOptions)->Image throw
@@ -53,7 +53,7 @@ impl Image
         }
 
         // Decode
-        itf := @mkinterface(ptrDecoder, decoder.type, IDecoder)
+        itf := @mkinterface(ptrDecoder, decoder.type, IImageDecoder)
         return try itf.decode(bytes, options)
     }
 }
@@ -65,11 +65,11 @@ public impl Image
     // Register an image decoder
     func(T) addDecoder()
     {
-        #assert Reflection.hasInterface(@typeof(T), IDecoder)
+        #assert Reflection.hasInterface(@typeof(T), IImageDecoder)
 
         var decoder: ImageDecoder = ?
         decoder.type = @typeof(T)
-        decoder.itf = @mkinterface(null, @typeof(T), IDecoder)
+        decoder.itf = @mkinterface(null, @typeof(T), IImageDecoder)
         decoders.add(decoder)
     }
 

@@ -606,7 +606,7 @@ impl Decoder
     }
 }
 
-public impl IDecoder for Decoder
+public impl IImageDecoder for Decoder
 {
     func canDecode(using self, fileName: string)->bool
     {

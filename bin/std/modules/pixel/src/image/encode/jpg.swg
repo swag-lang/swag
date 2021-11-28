@@ -718,7 +718,7 @@ impl Encoder
     }
 }
 
-public impl IEncoder for Encoder
+public impl IImageEncoder for Encoder
 {
     mtd canEncode(fileName: string)->bool
     {

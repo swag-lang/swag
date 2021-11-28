@@ -50,7 +50,7 @@ public struct Decoder
 {
 }
 
-public impl IDecoder for Decoder
+public impl IImageDecoder for Decoder
 {
     mtd canDecode(fileName: string)->bool
     {

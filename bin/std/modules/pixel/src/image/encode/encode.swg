@@ -3,7 +3,7 @@ using Swag, Core
 struct ImageEncoder
 {
     type:   const *TypeInfoStruct
-    itf:    IEncoder
+    itf:    IImageEncoder
 }
 
 public struct EncodeOptions
@@ -12,7 +12,7 @@ public struct EncodeOptions
 }
 
 // Interface to decode a buffer
-public interface IEncoder
+public interface IImageEncoder
 {
     canEncode:  func(self, string)->bool
     encode:     func(self, *ConcatBuffer, Image, EncodeOptions) throw
@@ -25,11 +25,11 @@ public impl Image
     // Register an image encoder
     func(T) addEncoder()
     {
-        #assert Reflection.hasInterface(@typeof(T), IEncoder)
+        #assert Reflection.hasInterface(@typeof(T), IImageEncoder)
 
         var encoder: ImageEncoder = ?
         encoder.type = @typeof(T)
-        encoder.itf = @mkinterface(null, @typeof(T), IEncoder)
+        encoder.itf = @mkinterface(null, @typeof(T), IImageEncoder)
         encoders.add(encoder)
     }
 
@@ -74,7 +74,7 @@ public impl Image
         }
 
         // Encode
-        itf := @mkinterface(ptrEncoder, found.type, IEncoder)
+        itf := @mkinterface(ptrEncoder, found.type, IImageEncoder)
         var result: ConcatBuffer
         try itf.encode(&result, dref self, options)
         try File.writeAllBytes(fileName, result)

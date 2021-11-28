@@ -7,6 +7,6 @@ using Core, Pixel.Image
     @assert(!@err)
 
     var dec: Bmp.Decoder
-    img := catch dec.IDecoder.decode(bytes.toSlice(), @{})
+    img := catch dec.IImageDecoder.decode(bytes.toSlice(), @{})
     @assert(!@err)
 }
