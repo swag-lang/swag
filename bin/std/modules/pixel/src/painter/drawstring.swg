@@ -50,7 +50,7 @@ struct RichStringFormat
 
 impl Painter
 {
-    private func getGlyphs(text: string, font: *Font)->Array'(const *GlyphDesc)
+    protected func getGlyphs(text: string, font: *Font)->Array'(const *GlyphDesc)
     {
         var result: retval
         result.reserve(@countof(text))
