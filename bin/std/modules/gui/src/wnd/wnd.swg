@@ -358,8 +358,7 @@ impl Wnd
     // Returns the client area, with 'padding' applied
     mtd getClientRectPadding()->Math.Rectangle
     {
-        var result: retval = ?
-        result = getClientRect()
+        var result: retval = getClientRect()
         result.applyPadding(padding)
         return result
     }
