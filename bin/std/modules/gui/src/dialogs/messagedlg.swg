@@ -6,7 +6,7 @@ public struct MessageDlg
     labelIcon:      *Label
     label:          *Label
     wndBottom:      *Wnd
-    buttons:        Array'(*ButtonPush)
+    buttons:        Array'(*PushButton)
 }
 
 impl IWnd for MessageDlg
@@ -168,9 +168,9 @@ public impl MessageDlg
 
     // Add a button
     #[Swag.Discardable]
-    mtd addButton(str, id: string, isDefault: bool = false)->*ButtonPush
+    mtd addButton(str, id: string, isDefault: bool = false)->*PushButton
     {
-        btn := ButtonPush.create(wndBottom, str, @{}, #scopefct.id)
+        btn := PushButton.create(wndBottom, str, @{}, #scopefct.id)
         btn.dockStyle = .Right
         btn.isDefault = isDefault
         metrics := getThemeMetrics()

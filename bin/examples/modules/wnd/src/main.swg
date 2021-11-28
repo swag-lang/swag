@@ -16,47 +16,47 @@ const H = 1024
 
     // Push buttons
     {
-        button := ButtonPush.create(view, "Normal", @{5, 10})
+        button := PushButton.create(view, "Normal", @{5, 10})
         button.icon = app.theme.getIcon24(ThemeIcons24.WndClose)
         button.sigPressed = @(btn: *Button) { btn.name = "Pressed"; }
-        button = ButtonPush.create(view, "Default", @{5, 50})
+        button = PushButton.create(view, "Default", @{5, 50})
         button.sigPressed = @(btn: *Button) { btn.icon = btn.getTheme().getIcon24(ThemeIcons24.WndClose, 18); }
         button.isDefault = true
-        button = ButtonPush.create(view, "Disabled", @{5, 90})
+        button = PushButton.create(view, "Disabled", @{5, 90})
         button.disable()
-        button = ButtonPush.create(view, "ExitExitExitExitExit", @{5, 130})
+        button = PushButton.create(view, "ExitExitExitExitExit", @{5, 130})
         button.cursor = Cursor.from(CursorShape.Help)
     }
 
     {
-        button := ButtonPush.create(view, "YesNo", @{5, 190})
+        button := PushButton.create(view, "YesNo", @{5, 190})
         button.sigPressed = @(btn: *Button) { discard MessageDlg.yesNo(btn.surface, "<u>Are<u> you very very <b>sure<b> ?"); }
-        button = ButtonPush.create(view, "YesNo", @{5, 230})
+        button = PushButton.create(view, "YesNo", @{5, 230})
         button.sigPressed = @(btn: *Button) { discard MessageDlg.yesNo(btn.surface, "Lorem ipsum <p1>dolor sit amet<p1>, consectetur <b>adipiscing<b> elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."); }
-        button = ButtonPush.create(view, "OK", @{5, 270})
+        button = PushButton.create(view, "OK", @{5, 270})
         button.sigPressed = @(btn: *Button) { MessageDlg.ok(btn.surface, "Lorem ipsum <p1>dolor sit amet<p1>, consectetur <b>adipiscing<b> elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."); }
-        button = ButtonPush.create(view, "YesNoCancel", @{5, 310})
+        button = PushButton.create(view, "YesNoCancel", @{5, 310})
         button.sigPressed = @(btn: *Button) { discard MessageDlg.yesNoCancel(btn.surface, "Avant de désinstaller cette application, veuillez nous indiquer si vous souhaitez conserver ou supprimer les notifications, les alertes, les paramètres d'interface, les modules et d'autres préférences. I_a suppression des préférences peut empêcher leur migration vers de nouvelles versions de l'application."); }
     }
 
     // Check buttons
     {
-        button := ButtonCheck.create(view, "Normal", @{125, 10})
-        button = ButtonCheck.create(view, "Disabled", @{125, 40})
+        button := CheckButton.create(view, "Normal", @{125, 10})
+        button = CheckButton.create(view, "Disabled", @{125, 40})
         button.disable()
-        button = ButtonCheck.create(view, "Disabled", @{125, 70})
+        button = CheckButton.create(view, "Disabled", @{125, 70})
         button.disable()
         button.isChecked = .Checked
-        button = ButtonCheck.create(view, "3 State", @{125, 100})
+        button = CheckButton.create(view, "3 State", @{125, 100})
         button.isThreeState = true
     }
 
     // Radio buttons
     {
-        button := ButtonRadio.create(view, "Normal", @{240, 10})
-        button = ButtonRadio.create(view, "Disabled", @{240, 40})
+        button := RadioButton.create(view, "Normal", @{240, 10})
+        button = RadioButton.create(view, "Disabled", @{240, 40})
         button.disable()
-        button = ButtonRadio.create(view, "Disabled", @{240, 70})
+        button = RadioButton.create(view, "Disabled", @{240, 70})
         button.disable()
         button.isChecked = true
     }
@@ -96,12 +96,12 @@ const H = 1024
 
     // Toggle
     {
-        toggle := ButtonToggle.create(view, @{360, 300})
+        toggle := ToggleButton.create(view, @{360, 300})
 
-        toggle = ButtonToggle.create(view, @{360, 330})
+        toggle = ToggleButton.create(view, @{360, 330})
         toggle.isToggled = true
 
-        toggle = ButtonToggle.create(view, @{360, 360})
+        toggle = ToggleButton.create(view, @{360, 360})
         toggle.isDisabled = true
     }
 

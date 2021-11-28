@@ -1,12 +1,12 @@
 #global public
 using Core, Pixel
 
-struct ButtonIcon
+struct IconButton
 {
     using button:   Button
 }
 
-impl IWnd for ButtonIcon
+impl IWnd for IconButton
 {
     mtd onPaintEvent(evt: *PaintEvent)
     {
@@ -55,11 +55,11 @@ impl IWnd for ButtonIcon
     }
 }
 
-impl ButtonIcon
+impl IconButton
 {
-    func create(parent: *Wnd, icon: Icon, position: Math.Rectangle, id: string = null)->*ButtonIcon
+    func create(parent: *Wnd, icon: Icon, position: Math.Rectangle, id: string = null)->*IconButton
     {
-        res := Wnd.create'ButtonIcon(parent, null, position, id)
+        res := Wnd.create'IconButton(parent, null, position, id)
         res.icon = icon
         evt := CreateEvent{}
         res.sendEvent(&evt)

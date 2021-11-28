@@ -1,14 +1,14 @@
 #global public
 using Core, Pixel
 
-struct ButtonRadio
+struct RadioButton
 {
     using button:   Button
     isChecked:      bool
-    sigChanged:     func(*ButtonRadio)
+    sigChanged:     func(*RadioButton)
 }
 
-impl IWnd for ButtonRadio
+impl IWnd for RadioButton
 {
     mtd onPaintEvent(evt: *PaintEvent)
     {
@@ -96,14 +96,14 @@ impl IWnd for ButtonRadio
     }
 }
 
-impl ButtonRadio
+impl RadioButton
 {
-    func create(parent: *Wnd, name: string, position: Math.Rectangle, id: string = null)->*ButtonRadio
+    func create(parent: *Wnd, name: string, position: Math.Rectangle, id: string = null)->*RadioButton
     {
         pos := position
         if pos.height == 0 pos.height = parent.getThemeMetrics().btnPush_Height
         if pos.width == 0  pos.width  = parent.getThemeMetrics().btnPush_Width
-        res := Wnd.create'ButtonRadio(parent, name, pos, id)
+        res := Wnd.create'RadioButton(parent, name, pos, id)
         evt := CreateEvent{}
         res.sendEvent(&evt)
         return res

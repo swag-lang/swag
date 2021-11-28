@@ -8,15 +8,15 @@ enum ButtonCheckState
     Undefined
 }
 
-struct ButtonCheck
+struct CheckButton
 {
     using button:   Button
     isThreeState:   bool
     isChecked:      ButtonCheckState = Normal
-    sigChanged:     func(*ButtonCheck)
+    sigChanged:     func(*CheckButton)
 }
 
-impl IWnd for ButtonCheck
+impl IWnd for CheckButton
 {
     mtd onPaintEvent(evt: *PaintEvent)
     {
@@ -112,14 +112,14 @@ impl IWnd for ButtonCheck
     }
 }
 
-impl ButtonCheck
+impl CheckButton
 {
-    func create(parent: *Wnd, name: string, position: Math.Rectangle, id: string = null)->*ButtonCheck
+    func create(parent: *Wnd, name: string, position: Math.Rectangle, id: string = null)->*CheckButton
     {
         pos := position
         if pos.height == 0 pos.height = parent.getThemeMetrics().btnPush_Height
         if pos.width == 0  pos.width  = parent.getThemeMetrics().btnPush_Width
-        res := Wnd.create'ButtonCheck(parent, name, pos, id)
+        res := Wnd.create'CheckButton(parent, name, pos, id)
         evt := CreateEvent{}
         res.sendEvent(&evt)
         return res

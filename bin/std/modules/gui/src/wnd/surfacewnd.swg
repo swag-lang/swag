@@ -7,9 +7,9 @@ public struct SurfaceWnd
 {
     using base:     FrameWnd
     icon:           Icon
-    minimizeBtn:    *ButtonIcon
-    maximizeBtn:    *ButtonIcon
-    closeBtn:       *ButtonIcon
+    minimizeBtn:    *IconButton
+    maximizeBtn:    *IconButton
+    closeBtn:       *IconButton
     movingSurface:  bool
     sizingBorder:   SizingBorder = Zero
     cursorSet:      bool
@@ -283,19 +283,19 @@ impl SurfaceWnd
         theme := surface.app.theme
         if surface.flags & .MinimizeBtn
         {
-            minimizeBtn = ButtonIcon.create(self, theme.getIcon24(ThemeIcons24.WndMinimize), @{0,0,0,0})
+            minimizeBtn = IconButton.create(self, theme.getIcon24(ThemeIcons24.WndMinimize), @{0,0,0,0})
             minimizeBtn.sigPressed = &onMinimize
         }
 
         if surface.flags & .MaximizeBtn
         {
-            maximizeBtn = ButtonIcon.create(self, theme.getIcon24(ThemeIcons24.WndMaximize), @{0,0,0,0})
+            maximizeBtn = IconButton.create(self, theme.getIcon24(ThemeIcons24.WndMaximize), @{0,0,0,0})
             maximizeBtn.sigPressed = &onMaximize
         }
 
         if surface.flags & .CloseBtn
         {
-            closeBtn = ButtonIcon.create(self, theme.getIcon24(ThemeIcons24.WndClose), @{0,0,0,0})
+            closeBtn = IconButton.create(self, theme.getIcon24(ThemeIcons24.WndClose), @{0,0,0,0})
             closeBtn.sigPressed = &onClose
             using ThemeColors
             closeBtn.style.addStyleSheetColors(@nameof(btnIcon_HotBk)     ~" $"~ @nameof(wnd_BtnCloseBk))

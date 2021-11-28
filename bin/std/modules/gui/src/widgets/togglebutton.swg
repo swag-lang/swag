@@ -1,14 +1,14 @@
 #global public
 using Core, Pixel
 
-struct ButtonToggle
+struct ToggleButton
 {
     using button:   Button
     isToggled:      bool
-    sigChanged:     func(*ButtonToggle)
+    sigChanged:     func(*ToggleButton)
 }
 
-impl IWnd for ButtonToggle
+impl IWnd for ToggleButton
 {
     mtd onPaintEvent(evt: *PaintEvent)
     {
@@ -74,14 +74,14 @@ impl IWnd for ButtonToggle
     }
 }
 
-impl ButtonToggle
+impl ToggleButton
 {
-    func create(parent: *Wnd, position: Math.Rectangle, id: string = null)->*ButtonToggle
+    func create(parent: *Wnd, position: Math.Rectangle, id: string = null)->*ToggleButton
     {
         pos := position
         if pos.height == 0 pos.height = parent.getThemeMetrics().btnToggle_Height
         if pos.width == 0  pos.width  = parent.getThemeMetrics().btnToggle_Width
-        res := Wnd.create'ButtonToggle(parent, "", pos, id)
+        res := Wnd.create'ToggleButton(parent, "", pos, id)
         evt := CreateEvent{}
         res.sendEvent(&evt)
         return res

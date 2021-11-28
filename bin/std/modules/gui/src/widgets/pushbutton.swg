@@ -1,13 +1,13 @@
 #global public
 using Core, Pixel
 
-struct ButtonPush
+struct PushButton
 {
     using button:   Button
     isDefault:      bool
 }
 
-impl IWnd for ButtonPush
+impl IWnd for PushButton
 {
     mtd onPaintEvent(evt: *PaintEvent)
     {
@@ -110,11 +110,11 @@ impl IWnd for ButtonPush
     }
 }
 
-impl ButtonPush
+impl PushButton
 {
-    func create(parent: *Wnd, name: string, position: Math.Rectangle, id: string = null)->*ButtonPush
+    func create(parent: *Wnd, name: string, position: Math.Rectangle, id: string = null)->*PushButton
     {
-        res := Wnd.create'ButtonPush(parent, name, position, id)
+        res := Wnd.create'PushButton(parent, name, position, id)
         if res.position.height == 0
             res.position.height = res.getThemeMetrics().btnPush_Height
         if res.position.width == 0
