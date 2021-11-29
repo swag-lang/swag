@@ -5,6 +5,8 @@ public struct Slider
     using wnd:      Wnd
     value1:         f32
     value2:         f32
+    min:            f32
+    max:            f32 = 1.0
     steps:          f32
     isRange:        bool
     hilightBar:     bool = true
@@ -308,14 +310,43 @@ impl Slider
     }
 }
 
-impl Slider
+public impl Slider
 {
-    public func create(parent: *Wnd, position: Math.Rectangle, id: string = null)->*Slider
+    mtdc getValue()->f32        => getValueLeft()
+    mtdc getValueLeft()->f32    => min + (max - min) * value1
+    mtdc getValueRight()->f32   => min + (max - min) * value2
+    mtd  setValue(f: f32)       { setValueLeft(f); }
+    mtd  setValueLeft(f: f32)   { setValue1((f - min) / (max - min)); }
+    mtd  setValueRight(f: f32)  { setValue2((f - min) / (max - min)); }
+
+    func setMinMax(self, min, max: f32, steps: f32 = 0)
+    {
+        Debug.assert(min < max)
+        Debug.assert(steps < (max - min))
+        self.min = min
+        self.max = max
+        self.steps = steps
+    }
+
+    // Set left and right values, for a range
+    mtd setRangeValues(left, right: f32)
+    {
+        Debug.assert(left < right)
+        Debug.assert(isRange)
+        diff := max - min
+        value1 = (left - min) / diff
+        value2 = (right - min) / diff
+        setValue1(value1)
+        setValue2(value2)
+    }
+
+    func create(parent: *Wnd, position: Math.Rectangle, id: string = null, range: bool = false)->*Slider
     {
         pos := position
         if pos.height == 0 pos.height = parent.getThemeMetrics().slider_Height
         if pos.width == 0  pos.width  = parent.getThemeMetrics().slider_Width
         res := Wnd.create'Slider(parent, "", pos, id)
+        res.isRange = range
         evt := CreateEvent{}
         res.sendEvent(&evt)
         return res

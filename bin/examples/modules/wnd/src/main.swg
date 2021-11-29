@@ -108,16 +108,16 @@ const H = 1024
     // Slider
     {
         slider := Slider.create(view, @{450, 300})
-        slider.value1 = 0.5
+        slider.setMinMax(-127, 128)
+        slider.setValue(0)
+        //slider.sigChanged = @(sld: *Slider) { @print(sld.getValue(), " "); }
 
-        slider = Slider.create(view, @{450, 330})
-        slider.isRange = true
-        slider.value1 = 0.25
-        slider.value2 = 0.75
+        slider = Slider.create(view, @{450, 330}, range: true)
+        slider.setRangeValues(0.25, 0.75)
 
         slider = Slider.create(view, @{450, 360})
-        slider.value1 = 0.5
-        slider.steps = 0.1
+        slider.setMinMax(0, 1, 0.1)
+        slider.setValue(0.55)
 
         slider = Slider.create(view, @{450, 390})
         slider.isDisabled = true
