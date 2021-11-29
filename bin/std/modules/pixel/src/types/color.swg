@@ -278,10 +278,16 @@ impl Color
 
     // Returns a darker color
     #[Swag.ConstExpr]
-    func getDarken(col: u32, factor: f32)->u32
+    func getDarker(col: Color, factor: f32)->Color
     {
-        res := getBlendKeepAlpha(Color.fromArgb(col), Color.fromArgb(Argb.Black), factor)
-        return res.argb
+        return getBlendKeepAlpha(col, Color.fromArgb(Argb.Black), factor)
+    }
+
+    // Returns a lighter color
+    #[Swag.ConstExpr]
+    func getLighter(col: Color, factor: f32)->Color
+    {
+        return getBlendKeepAlpha(col, Color.fromArgb(Argb.White), factor)
     }
 }
 
