@@ -131,26 +131,26 @@ const H = 1024
         slider.isDisabled = true
 
 
-        slider = Slider.create(view, @{450, 420}, id: "slider0")
-        edit  := EditBox.create(view, "0", @{650, 420, 50}, id: "edit0")
+        slider0 := Slider.create(view, @{450, 420}, id: "slider0")
+        edit0   := EditBox.create(view, "0", @{650, 420, 50}, id: "edit0")
 
-        slider.setMinMax(0, 255)
-        slider.sigChanged = @(wnd: *Slider)
+        slider0.setMinMax(0, 255)
+        slider0.sigChanged = @(wnd: *Slider)
         {
             val  := Format.toString("%", cast(s32) wnd.getValue())
             edit := cast(*EditBox) wnd.getTopView().getChildById("edit0")
             edit.setText(val)
         }
 
-        edit.setInputU64(0, 255)
-        edit.sigLoseFocus = @(wnd: *EditBox)
+        edit0.setInputU64(0, 255)
+        edit0.sigLoseFocus = @(wnd: *EditBox)
         {
             (val, ?) := catch Parse.getS32(wnd.text)
             slider := cast(*Slider) wnd.getTopView().getChildById("slider0")
             slider.setValue(cast(f32) val)
         }
 
-        slider.setValue(100)
+        slider0.setValue(100)
     }
 
     // Labels
