@@ -870,7 +870,7 @@ func special(s: const [..] u8)->{ value: f64, eat: u32 }
     return result
 }
 
-public func parse(s: const [..] u8) -> { value: f64, eat: u32 } throw
+public func parse(s: const [..] u8) -> {value: f64, eat: u32, ovf: bool} throw
 {
     var result: retval
     countof := @countof(s)
@@ -917,8 +917,7 @@ public func parse(s: const [..] u8) -> { value: f64, eat: u32 } throw
     // Slow fallback.
 	read.trunc = read.bigtrunc
     (b, ovf) := read.floatBits()
-    if ovf
-        throw Parse.ErrorOverflow
+    result.ovf = ovf
     result.value = bitcast(f64) b
     return result
 }

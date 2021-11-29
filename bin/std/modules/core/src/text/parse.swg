@@ -6,13 +6,13 @@ public
 {
     const ErrorInvalid    = "invalid"
     const ErrorOverflow   = "overflow"
-    const ErrorOutOfRange = "out of range"
     const ErrorIncomplete = "incomplete"
 }
 
 // Convert an utf8 buffer in hexadecimal to an unsigned integer value
 // Returns the value and the number of bytes used to make the conversion
-func getX64(str: string) -> {value: u64, eat: u32} throw
+// 'ovf' will be true in case of overflow
+func getX64(str: string) -> {value: u64, eat: u32, ovf: bool} throw
 {
     var result: retval
 
@@ -28,15 +28,21 @@ func getX64(str: string) -> {value: u64, eat: u32} throw
     while cpt < countof and Latin1.isHexDigit(dref buffer)
     {
         if value & 0xF0000000_00000000
-            throw ErrorOverflow
-        value <<= 4
-        c := dref buffer
-        if Latin1.isDigit(c)
-            value += cast(u64) (c - "0"'u8)
-        else if c <= "F"'u8
-            value += cast(u64) 10 + (c - "A"'u8)
+        {
+            result.ovf = true
+        }
         else
-            value += cast(u64) 10 + (c - "a"'u8)
+        {
+            value <<= 4
+            c := dref buffer
+            if Latin1.isDigit(c)
+                value += cast(u64) (c - "0"'u8)
+            else if c <= "F"'u8
+                value += cast(u64) 10 + (c - "A"'u8)
+            else
+                value += cast(u64) 10 + (c - "a"'u8)
+        }
+
         buffer, cpt += 1
     }
 
@@ -47,7 +53,8 @@ func getX64(str: string) -> {value: u64, eat: u32} throw
 
 // Convert an utf8 buffer in binary to an unsigned integer value
 // Returns the value and the number of bytes used to make the conversion
-func getB64(str: string) -> {value: u64, eat: u32} throw
+// 'ovf' will be true in case of overflow
+func getB64(str: string) -> {value: u64, eat: u32, ovf: bool} throw
 {
     var result: retval
 
@@ -64,9 +71,15 @@ func getB64(str: string) -> {value: u64, eat: u32} throw
     while cpt < countof and Latin1.isBinDigit(dref buffer)
     {
         if value & 0x80000000_00000000
-            throw ErrorOverflow
-        value <<= 1
-        value += cast(u64) (dref buffer - "0"'u8)
+        {
+            result.ovf = true
+        }
+        else
+        {
+            value <<= 1
+            value += cast(u64) (dref buffer - "0"'u8)
+        }
+
         buffer, cpt += 1
     }
 
@@ -77,31 +90,44 @@ func getB64(str: string) -> {value: u64, eat: u32} throw
 
 // Convert an utf8 buffer in decimal to an unsigned integer value
 // Returns the value and the number of bytes used to make the conversion
-func getU8(str: string) -> {value: u8, eat: u32} throw
+// 'ovf' will be true in case of overflow
+func getU8(str: string) -> {value: u8, eat: u32, ovf: bool} throw
 {
-    (res, eat) := try getU64(str)
+    (res, eat, ovf) := try getU64(str)
     if res > Swag.U8.Max
-        throw ErrorOutOfRange
-    return @{cast(u8) res, eat}
+    {
+        res = Swag.U8.Max
+        ovf = true
+    }
+
+    return @{cast(u8) res, eat, ovf}
 }
 
-func getU16(str: string) -> {value: u16, eat: u32} throw
+func getU16(str: string) -> {value: u16, eat: u32, ovf: bool} throw
 {
-    (res, eat) := try getU64(str)
+    (res, eat, ovf) := try getU64(str)
     if res > Swag.U16.Max
-        throw ErrorOutOfRange
-    return @{cast(u16) res, eat}
+    {
+        res = Swag.U16.Max
+        ovf = true
+    }
+
+    return @{cast(u16) res, eat, ovf}
 }
 
-func getU32(str: string) -> {value: u32, eat: u32} throw
+func getU32(str: string) -> {value: u32, eat: u32, ovf: bool} throw
 {
-    (res, eat) := try getU64(str)
+    (res, eat, ovf) := try getU64(str)
     if res > Swag.U32.Max
-        throw ErrorOutOfRange
-    return @{cast(u32) res, eat}
+    {
+        res = Swag.U32.Max
+        ovf = true
+    }
+
+    return @{cast(u32) res, eat, ovf}
 }
 
-func getU64(str: string) -> {value: u64, eat: u32} throw
+func getU64(str: string) -> {value: u64, eat: u32, ovf: bool} throw
 {
     var result: retval
 
@@ -116,7 +142,7 @@ func getU64(str: string) -> {value: u64, eat: u32} throw
         if c == "x"'u8
         {
             one := Tokenize.eatCount(str, 2)
-            (result.value, result.eat) = try getX64(one)
+            (result.value, result.eat, result.ovf) = try getX64(one)
             result.eat += 2
             return result
         }
@@ -124,7 +150,7 @@ func getU64(str: string) -> {value: u64, eat: u32} throw
         if c == "b"'u8
         {
             one := Tokenize.eatCount(str, 2)
-            (result.value, result.eat) = try getB64(one)
+            (result.value, result.eat, result.ovf) = try getB64(one)
             result.eat += 2
             return result
         }
@@ -140,9 +166,17 @@ func getU64(str: string) -> {value: u64, eat: u32} throw
     {
         value *= 10
         add := cast(u64) (dref buffer - "0"'u8)
-        if value +,safe add < value
-            throw ErrorOverflow
-        value += add
+        if !result.ovf
+        {
+            if value +,safe add < value
+            {
+                result.ovf = true
+                value = Swag.U64.Max
+            }
+            else
+                value += add
+        }
+
         buffer, cpt += 1
     }
 
@@ -153,31 +187,59 @@ func getU64(str: string) -> {value: u64, eat: u32} throw
 
 // Convert an utf8 buffer to an signed integer value
 // Returns the value and the number of bytes used to make the conversion
-func getS8(str: string) -> {value: s8, eat: u32} throw
+// 'ovf' will be true in case of overflow
+func getS8(str: string) -> {value: s8, eat: u32, ovf: bool} throw
 {
-    (res, eat) := try getS64(str)
-    if res < Swag.S8.Min or res > Swag.S8.Max
-        throw ErrorOutOfRange
-    return @{cast(s8) res, eat}
+    (res, eat, ovf) := try getS64(str)
+    if res < Swag.S8.Min
+    {
+        res = Swag.S8.Min
+        ovf = true
+    }
+    else if res > Swag.S8.Max
+    {
+        res = Swag.S8.Max
+        ovf = true
+    }
+
+    return @{cast(s8) res, eat, ovf}
 }
 
-func getS16(str: string) -> {value: s16, eat: u32} throw
+func getS16(str: string) -> {value: s16, eat: u32, ovf: bool} throw
 {
-    (res, eat) := try getS64(str)
-    if res < Swag.S16.Min or res > Swag.S16.Max
-        throw ErrorOutOfRange
-    return @{cast(s16) res, eat}
+    (res, eat, ovf) := try getS64(str)
+    if res < Swag.S16.Min
+    {
+        res = Swag.S16.Min
+        ovf = true
+    }
+    else if res > Swag.S16.Max
+    {
+        res = Swag.S16.Max
+        ovf = true
+    }
+
+    return @{cast(s16) res, eat, ovf}
 }
 
-func getS32(str: string) -> {value: s32, eat: u32} throw
+func getS32(str: string) -> {value: s32, eat: u32, ovf: bool} throw
 {
-    (res, eat) := try getS64(str)
-    if res < Swag.S32.Min or res > Swag.S32.Max
-        throw ErrorOutOfRange
-    return @{cast(s32) res, eat}
+    (res, eat, ovf) := try getS64(str)
+    if res < Swag.S32.Min
+    {
+        res = Swag.S32.Min
+        ovf = true
+    }
+    else if res > Swag.S32.Max
+    {
+        res = Swag.S32.Max
+        ovf = true
+    }
+
+    return @{cast(s32) res, eat, ovf}
 }
 
-func getS64(str: string) -> {value: s64, eat: u32} throw
+func getS64(str: string) -> {value: s64, eat: u32, ovf: bool} throw
 {
     var result: retval
 
@@ -214,9 +276,18 @@ func getS64(str: string) -> {value: s64, eat: u32} throw
     while cpt < countof and Latin1.isDigit(dref buffer)
     {
         value *=,safe 10
-        value += cast(u64) (dref buffer - "0"'u8)
-        if value > maxValue
-            throw ErrorOverflow
+        toAdd := cast(u64) (dref buffer - "0"'u8)
+        if !result.ovf
+        {
+            if value + toAdd > maxValue
+            {
+                result.ovf = true
+                value = maxValue
+            }
+            else
+                value += toAdd
+        }
+
         buffer, cpt += 1
     }
 
@@ -236,15 +307,25 @@ func getS64(str: string) -> {value: s64, eat: u32} throw
 
 // Convert an utf8 buffer to a floating point value
 // Returns the value and the number of bytes used to make the conversion
-func getF32(str: string) -> {value: f32, eat: u32} throw
+// 'ovf' will be true in case of overflow
+func getF32(str: string) -> {value: f32, eat: u32, ovf: bool} throw
 {
-    (res, eat) := try getF64(str)
-    if res < Swag.F32.Min or res > Swag.F64.Max
-        throw ErrorOutOfRange
-    return @{cast(f32) res, eat}
+    (res, eat, ovf) := try getF64(str)
+    if res < Swag.F32.Min
+    {
+        res = Swag.F32.Min
+        ovf = true
+    }
+    else if res > Swag.F32.Max
+    {
+        res = Swag.F32.Max
+        ovf = true
+    }
+
+    return @{cast(f32) res, eat, ovf}
 }
 
-func getF64(str: string) -> {value: f64, eat: u32} throw
+func getF64(str: string) -> {value: f64, eat: u32, ovf: bool} throw
 {
     return try StrConv.Atod.parse(str)
 }

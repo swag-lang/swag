@@ -162,56 +162,67 @@ public func pokeValue(addr: *void, type: typeinfo, buf: string)->string throw
 
     // Basic types
     eat := 0'u32
+    ovf := false
     switch type
     {
     case s8:
         var val: s8 = ?
-        (val, eat) = try getS8(one)
+        (val, eat, ovf) = try getS8(one)
+        if ovf throw ErrorOverflow
         dref cast(*s8) patch = val
 
     case s16:
         var val: s16 = ?
-        (val, eat) = try getS16(one)
+        (val, eat, ovf) = try getS16(one)
+        if ovf throw ErrorOverflow
         dref cast(*s16) patch = val
 
     case s32:
         var val: s32 = ?
-        (val, eat) = try getS32(one)
+        (val, eat, ovf) = try getS32(one)
+        if ovf throw ErrorOverflow
         dref cast(*s32) patch = val
 
     case s64, int:
         var val: s64 = ?
-        (val, eat) = try getS64(one)
+        (val, eat, ovf) = try getS64(one)
+        if ovf throw ErrorOverflow
         dref cast(*s64) patch = val
 
     case u8:
         var val: u8 = ?
-        (val, eat) = try getU8(one)
+        (val, eat, ovf) = try getU8(one)
+        if ovf throw ErrorOverflow
         dref cast(*u8) patch = val
 
     case u16:
         var val: u16 = ?
-        (val, eat) = try getU16(one)
+        (val, eat, ovf) = try getU16(one)
+        if ovf throw ErrorOverflow
         dref cast(*u16) patch = val
 
     case u32:
         var val: u32 = ?
-        (val, eat) = try getU32(one)
+        (val, eat, ovf) = try getU32(one)
+        if ovf throw ErrorOverflow
         dref cast(*u32) patch = val
 
     case u64, uint:
         var val: u64 = ?
-        (val, eat) = try getU64(one)
+        (val, eat, ovf) = try getU64(one)
+        if ovf throw ErrorOverflow
         dref cast(*u64) patch = val
 
     case f32:
         var val: f32 = ?
-        (val, eat) = try getF32(one)
+        (val, eat, ovf) = try getF32(one)
+        if ovf throw ErrorOverflow
         dref cast(*f32) patch = val
 
     case f64:
         var val: f64 = ?
-        (val, eat) = try getF64(one)
+        (val, eat, ovf) = try getF64(one)
+        if ovf throw ErrorOverflow
         dref cast(*f64) patch = val
 
     case bool:

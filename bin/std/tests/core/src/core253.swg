@@ -127,7 +127,8 @@ var atoftests: [] atofTest = @[
     {
         v := catch Atod.parse(t.in)
         @assert(!@err or t.error)
-        @assert(!t.error or @err != null)
+        @assert(!t.error or @err != null or v.ovf)
+        if v.ovf continue
 
         cb.clear()
         Dtoa.parse(&cb, v.value, "g"'u8, -1, false)

@@ -8,8 +8,8 @@ using Core, Core.StrConv
     @assert(@err == null)
     discard catch Parse.getX64("c0deC0DEc0deC0DE")
     @assert(@err == null)
-    discard catch Parse.getX64("ffffffffffffffff0")
-    @assert(@err != null)
+    val2 := catch Parse.getX64("ffffffffffffffff0")
+    @assert(val2.ovf)
     discard catch Parse.getX64("toto")
     @assert(@err != null)
 
@@ -17,8 +17,8 @@ using Core, Core.StrConv
     @assert(@err == null)
     discard catch Parse.getB64("1111111111111111111111111111111111111111111111111111111111111111")
     @assert(@err == null)
-    discard catch Parse.getB64("11111111111111111111111111111111111111111111111111111111111111110")
-    @assert(@err != null)
+    val3 := catch Parse.getB64("11111111111111111111111111111111111111111111111111111111111111110")
+    @assert(val3.ovf)
     discard catch Parse.getB64("toto")
     @assert(@err != null)
 
@@ -26,8 +26,8 @@ using Core, Core.StrConv
     @assert(@err != null)
     discard catch Parse.getU64("18446744073709551615")
     @assert(@err == null)
-    discard catch Parse.getU64("18446744073709551616")
-    @assert(@err != null)
+    val1 := catch Parse.getU64("18446744073709551616")
+    @assert(val1.ovf)
 
     discard catch Parse.getS64("toto")
     @assert(@err != null)
@@ -35,6 +35,6 @@ using Core, Core.StrConv
     @assert(@err != null)
     discard catch Parse.getS64("-9223372036854775808")
     @assert(@err == null)
-    discard catch Parse.getS64("9223372036854775808")
-    @assert(@err != null)
+    val := catch Parse.getS64("9223372036854775808")
+    @assert(val.ovf)
 }

@@ -442,7 +442,7 @@ impl EditBox
             {
                 if @err == Parse.ErrorIncomplete
                     res = .Incomplete
-                else if @err == Parse.ErrorOutOfRange or @err == Parse.ErrorOverflow
+                else if @err == Parse.ErrorOverflow
                     res = .InvalidShow
                 else if @err or eat != @countof(text)
                     res = .InvalidDismiss

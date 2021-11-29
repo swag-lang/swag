@@ -37,8 +37,6 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context, AstNode* from
     }
 
     // Leave the current scope
-    // As this will reevaluate some childs, we need to force the BCI_TRYCATCH flags until we are done
-    // and come back here
     SWAG_CHECK(emitLeaveScopeReturn(context, nullptr, true));
     if (context->result != ContextResult::Done)
         return true;
