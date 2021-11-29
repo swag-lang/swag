@@ -369,9 +369,6 @@ bool SemanticJob::resolveVarDeclAfter(SemanticContext* context)
             return true;
     }
 
-    if (context->sourceFile->name == "compiler3246.swg" && node->token.text == "x")
-        int a = 0;
-
     // :opAffectConstExpr
     if (node->resolvedSymbolOverload &&
         node->resolvedSymbolOverload->flags & OVERLOAD_STRUCT_AFFECT &&
