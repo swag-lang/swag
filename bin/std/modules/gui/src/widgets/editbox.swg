@@ -422,19 +422,19 @@ impl EditBox
             case S64:
                 val := catch Parse.getS64(text)
                 eat = val.eat
-                if !@err and val.value < minMaxS64.min or val.value > minMaxS64.max
+                if !@err and eat == text.length and (val.value < minMaxS64.min or val.value > minMaxS64.max)
                     res = .InvalidShow
 
             case U64:
                 val := catch Parse.getU64(text)
                 eat = val.eat
-                if !@err and val.value < minMaxU64.min or val.value > minMaxU64.max
+                if !@err and eat == text.length and (val.value < minMaxU64.min or val.value > minMaxU64.max)
                     res = .InvalidShow
 
             case F64:
                 val := catch Parse.getF64(text)
                 eat = val.eat
-                if !@err and val.value < minMaxF64.min or val.value > minMaxF64.max
+                if !@err and eat == text.length and (val.value < minMaxF64.min or val.value > minMaxF64.max)
                     res = .InvalidShow
             }
 
@@ -449,7 +449,11 @@ impl EditBox
             }
         }
 
-        isInvalid = res == .InvalidShow
+        if res == .Valid
+            isInvalid = false
+        else if res == .InvalidShow
+            isInvalid = true
+
         return res
     }
 
@@ -765,7 +769,7 @@ public impl EditBox
     }
 
     // Editbox will edit floating points
-    mtd setInputF64(min = -Swag.F64.Max, max = -Swag.F64.Max)
+    mtd setInputF64(min = -Swag.F64.Max, max = Swag.F64.Max)
     {
         inputMode = .F64
         minMaxF64.min = min
