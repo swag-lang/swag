@@ -1,7 +1,7 @@
 #global public
 using Swag, Core
 
-#[Swag.ConstExpr]
+#[ConstExpr]
 struct Color
 {
     #if Core.BIG_ENDIAN
@@ -81,10 +81,10 @@ impl Color
     func toArgbf(const self) -> {a: f32, r: f32, g: f32, b: f32}
     {
         var result: retval = ?
-        result.a = self.a / 255.0'f32
-        result.r = self.r / 255.0'f32
-        result.g = self.g / 255.0'f32
-        result.b = self.b / 255.0'f32
+        result.a = self.a / 255.0
+        result.r = self.r / 255.0
+        result.g = self.g / 255.0
+        result.b = self.b / 255.0
         return result
     }
 
@@ -93,9 +93,9 @@ impl Color
     func toRgbf(const self) -> {r: f32, g: f32, b: f32}
     {
         var result: retval = ?
-        result.r = self.r / 255.0'f32
-        result.g = self.g / 255.0'f32
-        result.b = self.b / 255.0'f32
+        result.r = self.r / 255.0
+        result.g = self.g / 255.0
+        result.b = self.b / 255.0
         return result
     }
 
@@ -253,7 +253,7 @@ impl Color
     }
 
     // Blend two colors, keeping the alpha channel of 'col0' untouched
-    #[Swag.ConstExpr]
+    #[ConstExpr]
     func getBlendKeepAlpha(col0, col1: Color, factor: f32)->Color
     {
         var result: retval = ?
@@ -265,7 +265,7 @@ impl Color
     }
 
     // Blend two colors
-    #[Swag.ConstExpr]
+    #[ConstExpr]
     func getBlend(col0, col1: Color, factor: f32)->Color
     {
         var result: retval = ?
@@ -277,17 +277,17 @@ impl Color
     }
 
     // Returns a darker color
-    #[Swag.ConstExpr]
+    #[ConstExpr]
     func getDarker(col: Color, factor: f32)->Color
     {
-        return getBlendKeepAlpha(col, Color.fromArgb(Argb.Black), factor)
+        return col.getBlendKeepAlpha(Color.fromArgb(Argb.Black), factor)
     }
 
     // Returns a lighter color
-    #[Swag.ConstExpr]
+    #[ConstExpr]
     func getLighter(col: Color, factor: f32)->Color
     {
-        return getBlendKeepAlpha(col, Color.fromArgb(Argb.White), factor)
+        return col.getBlendKeepAlpha(Color.fromArgb(Argb.White), factor)
     }
 }
 
