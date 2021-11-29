@@ -10,9 +10,9 @@ public enum EditBoxForm
 public enum EditBoxInputMode
 {
     String
-    Integer
-    UnsignedInteger
-    Float
+    S64
+    U64
+    F64
 }
 
 public enum EditBoxCheckResult
@@ -65,6 +65,7 @@ impl IWnd for EditBox
         {
             timerCaret = surface.app.addTimer(500, self)
             visibleCaret = true
+            computeCaretPos()
         }
         else
         {
@@ -418,19 +419,19 @@ impl EditBox
             eat := 0'u32
             switch inputMode
             {
-            case Integer:
+            case S64:
                 val := catch Parse.getS64(text)
                 eat = val.eat
                 if !@err and val.value < minMaxS64.min or val.value > minMaxS64.max
                     res = .InvalidShow
 
-            case UnsignedInteger:
+            case U64:
                 val := catch Parse.getU64(text)
                 eat = val.eat
                 if !@err and val.value < minMaxU64.min or val.value > minMaxU64.max
                     res = .InvalidShow
 
-            case Float:
+            case F64:
                 val := catch Parse.getF64(text)
                 eat = val.eat
                 if !@err and val.value < minMaxF64.min or val.value > minMaxF64.max
@@ -596,6 +597,8 @@ impl EditBox
 
     mtd computeCaretPos()
     {
+        if getFocus() != self
+            return
         font := getTheme().res.fontDefault.regular
 
         str := @mkstring(text.buffer, selEnd)
@@ -713,6 +716,8 @@ public impl EditBox
     // Set current selection
     mtd setSelection(start, end: uint)
     {
+        if selBeg == start and selEnd == end
+            return
         selBeg = start
         selEnd = end
         checkSelection()
@@ -741,6 +746,30 @@ public impl EditBox
         selBeg, selEnd = 0
         insertString(str)
         notifyChanged()
+    }
+
+    // Editbox will edit signed integers
+    mtd setInputS64(min = Swag.S64.Min, max = Swag.S64.Max)
+    {
+        inputMode = .S64
+        minMaxS64.min = min
+        minMaxS64.max = max
+    }
+
+    // Editbox will edit unsigned integers
+    mtd setInputU64(min = 0'u64, max = Swag.U64.Max)
+    {
+        inputMode = .U64
+        minMaxU64.min = min
+        minMaxU64.max = max
+    }
+
+    // Editbox will edit floating points
+    mtd setInputF64(min = -Swag.F64.Max, max = -Swag.F64.Max)
+    {
+        inputMode = .F64
+        minMaxF64.min = min
+        minMaxF64.max = max
     }
 
     // Set the editbox form

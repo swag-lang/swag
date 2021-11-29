@@ -59,6 +59,8 @@ impl Application
 
         surface.wnd.surface = surface
         surface.wnd.itf = cast(IWnd) surface.wnd
+        surface.wnd.computeStyle()
+        surface.wnd.view.computeStyle()
 
         evt := CreateEvent{}
         surface.wnd.sendEvent(&evt)

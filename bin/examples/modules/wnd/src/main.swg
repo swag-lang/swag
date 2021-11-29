@@ -95,14 +95,12 @@ const H = 1024
         edit = EditBox.create(view, "", @{360, 180, 100})
         edit.setForm(EditBoxForm.Square)
         edit.setNote("-127/128")
-        edit.inputMode = .Integer
-        edit.minMaxS64.min = -127
-        edit.minMaxS64.max = 128
+        edit.setInputS64(-127, 128)
 
         edit = EditBox.create(view, "", @{360, 220, 100})
         edit.setForm(EditBoxForm.Square)
         edit.setNote("Float")
-        edit.inputMode = .Float
+        edit.setInputF64()
     }
 
     // Toggle
@@ -134,6 +132,8 @@ const H = 1024
 
 
         slider = Slider.create(view, @{450, 420}, id: "slider0")
+        edit  := EditBox.create(view, "0", @{650, 420, 50}, id: "edit0")
+
         slider.setMinMax(0, 255)
         slider.sigChanged = @(wnd: *Slider)
         {
@@ -142,16 +142,15 @@ const H = 1024
             edit.setText(val)
         }
 
-        edit := EditBox.create(view, "0", @{650, 420, 50}, id: "edit0")
-        edit.inputMode = .UnsignedInteger
-        edit.minMaxU64.min = 0
-        edit.minMaxU64.max = 255
+        edit.setInputU64(0, 255)
         edit.sigLoseFocus = @(wnd: *EditBox)
         {
             (val, ?) := catch Parse.getS32(wnd.text)
             slider := cast(*Slider) wnd.getTopView().getChildById("slider0")
             slider.setValue(cast(f32) val)
         }
+
+        slider.setValue(100)
     }
 
     // Labels
