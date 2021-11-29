@@ -88,7 +88,8 @@ bool SemanticJob::resolveInlineBefore(SemanticContext* context)
         node->allocateComputedValue();
         node->computedValue->storageOffset = node->ownerScope->startStackSize;
         node->ownerScope->startStackSize += func->returnType->typeInfo->sizeOf;
-        node->ownerFct->stackSize = max(node->ownerFct->stackSize, node->ownerScope->startStackSize);
+        if (node->ownerFct)
+            node->ownerFct->stackSize = max(node->ownerFct->stackSize, node->ownerScope->startStackSize);
     }
 
     node->scope->startStackSize = node->ownerScope->startStackSize;

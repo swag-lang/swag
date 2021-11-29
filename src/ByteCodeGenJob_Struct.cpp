@@ -223,7 +223,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
             {
                 auto exprList = CastAst<AstExpressionList>(varDecl->assignment, AstNodeKind::ExpressionList);
                 SWAG_ASSERT(exprList->computedValue->storageSegment);
-                SWAG_ASSERT(exprList->computedValue->storageOffset != 0xFFFFFFFF);
+                SWAG_ASSERT(exprList->computedValue->storageOffset != UINT32_MAX);
                 emitMakeSegPointer(&cxt, exprList->computedValue->storageSegment, exprList->computedValue->storageOffset, 1);
                 emitMemCpy(&cxt, 0, 1, typeVar->sizeOf);
             }
@@ -236,6 +236,20 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
                 emitInstruction(&cxt, ByteCodeOp::SetImmediate64, 2)->b.u64 = varDecl->assignment->computedValue->text.length();
                 emitInstruction(&cxt, ByteCodeOp::SetAtPointer64, 0, 1);
                 emitInstruction(&cxt, ByteCodeOp::SetAtPointer64, 0, 2)->c.u32 = 8;
+            }
+            // :opAffectConstExpr
+            else if (typeVar->kind == TypeInfoKind::Struct &&
+                     varDecl->resolvedSymbolOverload &&
+                     varDecl->resolvedSymbolOverload->flags & OVERLOAD_STRUCT_AFFECT &&
+                     varDecl->computedValue &&
+                     varDecl->computedValue->storageSegment)
+            {
+                auto storageSegment = varDecl->computedValue->storageSegment;
+                auto storageOffset  = varDecl->computedValue->storageOffset;
+                SWAG_ASSERT(storageSegment);
+                SWAG_ASSERT(storageOffset != UINT32_MAX);
+                emitMakeSegPointer(&cxt, storageSegment, storageOffset, 1);
+                emitMemCpy(&cxt, 0, 1, typeVar->sizeOf);
             }
             else
             {

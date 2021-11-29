@@ -280,7 +280,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
     // A reference to a segment
     if (node->forceTakeAddress())
     {
-        if (node->computedValue->storageSegment && node->computedValue->storageOffset != 0xFFFFFFFF)
+        if (node->computedValue->storageSegment && node->computedValue->storageOffset != UINT32_MAX)
         {
             regList = reserveRegisterRC(context);
             emitMakeSegPointer(context, node->computedValue->storageSegment, node->computedValue->storageOffset, regList[0]);

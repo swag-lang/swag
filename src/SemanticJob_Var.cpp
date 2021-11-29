@@ -369,14 +369,16 @@ bool SemanticJob::resolveVarDeclAfter(SemanticContext* context)
             return true;
     }
 
+    if (context->sourceFile->name == "compiler3246.swg" && node->token.text == "x")
+        int a = 0;
+
     // :opAffectConstExpr
-    if (node->extension &&
-        node->extension->resolvedUserOpSymbolOverload &&
-        node->assignment &&
-        node->assignment->flags & AST_VALUE_COMPUTED &&
+    if (node->resolvedSymbolOverload &&
+        node->resolvedSymbolOverload->flags & OVERLOAD_STRUCT_AFFECT &&
         node->resolvedSymbolOverload->flags & (OVERLOAD_VAR_GLOBAL | OVERLOAD_VAR_STRUCT))
     {
         auto overload = node->resolvedSymbolOverload;
+        SWAG_ASSERT(overload->flags & OVERLOAD_INCOMPLETE);
 
         node->flags &= ~AST_NO_BYTECODE;
         node->flags &= ~AST_VALUE_COMPUTED;
@@ -394,28 +396,21 @@ bool SemanticJob::resolveVarDeclAfter(SemanticContext* context)
         node->flags |= AST_NO_BYTECODE;
         node->assignment->flags |= AST_NO_BYTECODE;
 
-        auto module = node->sourceFile->module;
+        SWAG_ASSERT(node->computedValue->storageSegment);
+        SWAG_ASSERT(node->computedValue->storageOffset != UINT32_MAX);
 
-        DataSegment* storageSegment = overload->computedValue.storageSegment;
-        SWAG_ASSERT(storageSegment);
-
-        // If request segment is compiler, then nothing to do, the value is already stored there
-        if (storageSegment->kind == SegmentKind::Compiler)
-        {
-            overload->computedValue.storageOffset = node->computedValue->storageOffset;
-        }
+        auto wantStorageSegment = SemanticJob::getConstantSegFromContext(node);
 
         // Copy value from compiler segment to real requested segment
-        else
+        if (node->computedValue->storageSegment != wantStorageSegment)
         {
+            auto     addrSrc = node->computedValue->storageSegment->address(node->computedValue->storageOffset);
             uint8_t* addrDest;
-            auto     storageOffset                = storageSegment->reserve(node->typeInfo->sizeOf, &addrDest);
-            overload->computedValue.storageOffset = storageOffset;
-            auto addrSrc                          = module->compilerSegment.address(node->computedValue->storageOffset);
+            auto     storageOffset              = wantStorageSegment->reserve(node->typeInfo->sizeOf, &addrDest);
+            node->computedValue->storageSegment = wantStorageSegment;
+            node->computedValue->storageOffset  = storageOffset;
             memcpy(addrDest, addrSrc, node->typeInfo->sizeOf);
         }
-
-        node->computedValue->storageOffset = node->resolvedSymbolOverload->computedValue.storageOffset;
 
         // Will remove the incomplete flag, and finish the resolve
         node->ownerScope->symTable.addSymbolTypeInfo(context,
@@ -425,8 +420,8 @@ bool SemanticJob::resolveVarDeclAfter(SemanticContext* context)
                                                      nullptr,
                                                      overload->flags & ~OVERLOAD_INCOMPLETE,
                                                      nullptr,
-                                                     overload->computedValue.storageOffset,
-                                                     overload->computedValue.storageSegment);
+                                                     node->computedValue->storageOffset,
+                                                     node->computedValue->storageSegment);
     }
 
     return true;
@@ -478,7 +473,7 @@ bool SemanticJob::resolveVarDeclAfterAssign(SemanticContext* context)
         return true;
 
     // If there's an assignment, but no type, then we need to deduce/generate the type with
-    // the assignment, then do the semmantic on that type
+    // the assignment, then doalu the semmantic on that type
     if (!varDecl->type)
     {
         SWAG_CHECK(convertLiteralTupleToStructDecl(context, varDecl, assign, &varDecl->type));
@@ -802,7 +797,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 // :opAffectConstExpr
                 if (symbolFlags & (OVERLOAD_VAR_STRUCT | OVERLOAD_VAR_GLOBAL))
                 {
-                    symbolFlags |= OVERLOAD_INCOMPLETE;
+                    symbolFlags |= OVERLOAD_INCOMPLETE | OVERLOAD_STRUCT_AFFECT;
                     SWAG_ASSERT(node->extension && node->extension->resolvedUserOpSymbolOverload);
                     if (!(node->extension->resolvedUserOpSymbolOverload->node->attributeFlags & ATTRIBUTE_CONSTEXPR))
                     {
@@ -811,6 +806,10 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                     }
                 }
             }
+
+            // :opAffectConstExp
+            else if (symbolFlags & (OVERLOAD_VAR_STRUCT | OVERLOAD_VAR_GLOBAL))
+                symbolFlags |= OVERLOAD_INCOMPLETE | OVERLOAD_STRUCT_AFFECT;
         }
 
         node->typeInfo = node->type->typeInfo;
