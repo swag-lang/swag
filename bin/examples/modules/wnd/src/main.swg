@@ -22,7 +22,7 @@ const H = 1024
 
         button = PushButton.create(view, "Default", @{5, 50})
         button.sigPressed = @(btn: *Button) { btn.icon = btn.getTheme().getIcon24(ThemeIcons24.WndClose, 18); }
-        button.isDefault = true
+        button.form = .Default
 
         button = PushButton.create(view, "Disabled", @{5, 90})
         button.disable()
@@ -39,9 +39,13 @@ const H = 1024
         button.sigPressed = @(btn: *Button) { discard MessageDlg.yesNo(btn.surface, "Lorem ipsum <p1>dolor sit amet<p1>, consectetur <b>adipiscing<b> elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."); }
 
         button = PushButton.create(view, "OK", @{5, 270})
+        button.form = .Flat
+        button.style.addStyleSheetColors("btnPushFlat_HotBk 0xFF00AA00")
+        button.style.addStyleSheetColors("btnPushFlat_PressedBk 0xFF00BB00")
         button.sigPressed = @(btn: *Button) { MessageDlg.ok(btn.surface, "Lorem ipsum <p1>dolor sit amet<p1>, consectetur <b>adipiscing<b> elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."); }
 
         button = PushButton.create(view, "YesNoCancel", @{5, 310})
+        button.form = .Flat
         button.sigPressed = @(btn: *Button) { discard MessageDlg.yesNoCancel(btn.surface, "Avant de désinstaller cette application, veuillez nous indiquer si vous souhaitez conserver ou supprimer les notifications, les alertes, les paramètres d'interface, les modules et d'autres préférences. I_a suppression des préférences peut empêcher leur migration vers de nouvelles versions de l'application."); }
     }
 

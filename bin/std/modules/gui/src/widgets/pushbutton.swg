@@ -1,9 +1,16 @@
 using Core, Pixel
 
+public enum PushButtonForm
+{
+    Normal
+    Default
+    Flat
+}
+
 public struct PushButton
 {
     using button:   Button
-    isDefault:      bool
+    form:           PushButtonForm = Normal
 }
 
 impl IWnd for PushButton
@@ -22,65 +29,98 @@ impl IWnd for PushButton
         var colorBorder:    Color = ?
         var colorText:      Color = ?
 
-        switch
+        if form == .Default
         {
-        case isDisabled:
-            colorBk       = colors.btnPush_DisabledBk
-            colorBorder   = colors.btnPush_DisabledBorder
-            colorText     = colors.btnPush_DisabledText
-            subRectBk     = &rects.btnPush_Disabled
-            subRectBorder = &rects.btnPush_DisabledBorder
-
-        case isPressed:
-            if isDefault
+            switch
             {
+            case isDisabled:
+                colorBk       = colors.btnPushDefault_DisabledBk
+                colorBorder   = colors.btnPushDefault_DisabledBorder
+                colorText     = colors.btnPushDefault_DisabledText
+                subRectBk     = &rects.btnPush_Disabled
+                subRectBorder = &rects.btnPush_DisabledBorder
+            case isPressed:
                 colorBk       = colors.btnPushDefault_PressedBk
                 colorBorder   = colors.btnPushDefault_PressedBorder
                 colorText     = colors.btnPushDefault_PressedText
-            }
-            else
-            {
-                colorBk       = colors.btnPush_PressedBk
-                colorBorder   = colors.btnPush_PressedBorder
-                colorText     = colors.btnPush_PressedText
-            }
-
-            subRectBk     = &rects.btnPush_Pressed
-            subRectBorder = &rects.btnPush_PressedBorder
-
-        case isHot:
-            if isDefault
-            {
+                subRectBk     = &rects.btnPush_Pressed
+                subRectBorder = &rects.btnPush_PressedBorder
+            case isHot:
                 colorBk       = colors.btnPushDefault_HotBk
                 colorBorder   = colors.btnPushDefault_HotBorder
                 colorText     = colors.btnPushDefault_HotText
-            }
-            else
-            {
-                colorBk       = colors.btnPush_HotBk
-                colorBorder   = colors.btnPush_HotBorder
-                colorText     = colors.btnPush_HotText
-            }
-
-            subRectBk     = &rects.btnPush_Hot
-            subRectBorder = &rects.btnOush_HotBorder
-
-        default:
-            if isDefault
-            {
+                subRectBk     = &rects.btnPush_Hot
+                subRectBorder = &rects.btnOush_HotBorder
+            default:
                 colorBk       = colors.btnPushDefault_Bk
                 colorBorder   = colors.btnPushDefault_Border
                 colorText     = colors.btnPushDefault_Text
+                subRectBk     = &rects.btnPush_Normal
+                subRectBorder = &rects.btnPush_NormalBorder
             }
-            else
+        }
+        else if form == .Flat
+        {
+            switch
             {
+            case isDisabled:
+                colorBk       = colors.btnPushFlat_DisabledBk
+                colorBorder   = colors.btnPushFlat_DisabledBorder
+                colorText     = colors.btnPushFlat_DisabledText
+                subRectBk     = &rects.btnPush_Disabled
+                subRectBorder = &rects.btnPush_DisabledBorder
+            case isPressed:
+                colorBk       = colors.btnPushFlat_PressedBk
+                colorBorder   = colors.btnPushFlat_PressedBorder
+                colorText     = colors.btnPushFlat_PressedText
+                subRectBk     = &rects.btnPush_Pressed
+                subRectBorder = &rects.btnPush_PressedBorder
+            case isHot:
+                colorBk       = colors.btnPushFlat_HotBk
+                colorBorder   = colors.btnPushFlat_HotBorder
+                colorText     = colors.btnPushFlat_HotText
+                subRectBk     = &rects.btnPush_Hot
+                subRectBorder = &rects.btnOush_HotBorder
+            default:
+                colorBk       = colors.btnPushFlat_Bk
+                colorBorder   = colors.btnPushFlat_Border
+                colorText     = colors.btnPushFlat_Text
+                subRectBk     = &rects.btnPush_Normal
+                subRectBorder = &rects.btnPush_NormalBorder
+            }
+        }
+        else
+        {
+            switch
+            {
+            case isDisabled:
+                colorBk       = colors.btnPush_DisabledBk
+                colorBorder   = colors.btnPush_DisabledBorder
+                colorText     = colors.btnPush_DisabledText
+                subRectBk     = &rects.btnPush_Disabled
+                subRectBorder = &rects.btnPush_DisabledBorder
+
+            case isPressed:
+                colorBk       = colors.btnPush_PressedBk
+                colorBorder   = colors.btnPush_PressedBorder
+                colorText     = colors.btnPush_PressedText
+                subRectBk     = &rects.btnPush_Pressed
+                subRectBorder = &rects.btnPush_PressedBorder
+
+            case isHot:
+                colorBk       = colors.btnPush_HotBk
+                colorBorder   = colors.btnPush_HotBorder
+                colorText     = colors.btnPush_HotText
+                subRectBk     = &rects.btnPush_Hot
+                subRectBorder = &rects.btnOush_HotBorder
+
+            default:
                 colorBk       = colors.btnPush_Bk
                 colorBorder   = colors.btnPush_Border
                 colorText     = colors.btnPush_Text
+                subRectBk     = &rects.btnPush_Normal
+                subRectBorder = &rects.btnPush_NormalBorder
             }
-
-            subRectBk     = &rects.btnPush_Normal
-            subRectBorder = &rects.btnPush_NormalBorder
         }
 
         // Background
