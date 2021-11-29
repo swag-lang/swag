@@ -17,6 +17,14 @@ uint32_t SemanticJob::alignOf(AstVarDecl* node)
 }
 
 // Will be called after solving the initial var affect, but before tuple unpacking
+bool SemanticJob::resolveTupleUnpackBeforeVar(SemanticContext* context)
+{
+    SWAG_CHECK(resolveVarDeclAfter(context));
+    SWAG_CHECK(resolveTupleUnpackBefore(context));
+    return true;
+}
+
+// Will be called after solving the initial var affect, but before tuple unpacking
 bool SemanticJob::resolveTupleUnpackBefore(SemanticContext* context)
 {
     auto scopeNode = CastAst<AstNode>(context->node->parent, AstNodeKind::StatementNoScope, AstNodeKind::Statement);
@@ -43,7 +51,7 @@ bool SemanticJob::resolveTupleUnpackBefore(SemanticContext* context)
     auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
     auto numUnpack  = scopeNode->childs.size() - 1;
     SWAG_VERIFY(typeStruct->fields.size(), context->report({varDecl, Utf8::format(g_E[Err0292], typeStruct->getDisplayName().c_str())}));
-    SWAG_VERIFY(numUnpack <= typeStruct->fields.size(), context->report({varDecl, Utf8::format(g_E[Err0293], numUnpack, typeStruct->getDisplayName().c_str(), typeStruct->fields.size())}));
+    SWAG_VERIFY(numUnpack == typeStruct->fields.size(), context->report({varDecl, Utf8::format(g_E[Err0293], numUnpack, typeStruct->fields.size())}));
     return true;
 }
 

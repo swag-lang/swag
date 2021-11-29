@@ -296,29 +296,37 @@ impl Core.StrConv.IPokeValue for Color
     mtd poke(buf: string)->string throw
     {
         var eat: uint
+        var ovf: bool
+
         one := Tokenize.eatSpaces(buf)
-        if @countof(one) == 0 throw "missing color value"
+        if @countof(one) == 0
+            throw "missing color value"
 
         if buf[0] == "0"'u8 and buf[1]|32 == "x"'u8
         {
-            (argb, eat) = try parseU32(one)
+            (argb, eat, ovf) = try parseU32(one)
+            if ovf throw "value overflow"
             one = Tokenize.eatCount(one, eat)
         }
         else if Latin1.isDigit(buf[0])
         {
-            (a, eat) = try parseU8(one)
+            (a, eat, ovf) = try parseU8(one)
+            if ovf throw "value overflow"
             one = Tokenize.eatCount(one, eat)
 
             one = Tokenize.eatSpaces(one)
-            (r, eat) = try parseU8(one)
+            (r, eat, ovf) = try parseU8(one)
+            if ovf throw "value overflow"
             one = Tokenize.eatCount(one, eat)
 
             one = Tokenize.eatSpaces(one)
-            (g, eat) = try parseU8(one)
+            (g, eat, ovf) = try parseU8(one)
+            if ovf throw "value overflow"
             one = Tokenize.eatCount(one, eat)
 
             one = Tokenize.eatSpaces(one)
-            (b, eat) = try parseU8(one)
+            (b, eat, ovf) = try parseU8(one)
+            if ovf throw "value overflow"
             one = Tokenize.eatCount(one, eat)
         }
         else

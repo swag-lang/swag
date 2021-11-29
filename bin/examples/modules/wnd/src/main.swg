@@ -145,7 +145,7 @@ const H = 1024
         edit0.setInputU64(0, 255)
         edit0.sigLoseFocus = @(wnd: *EditBox)
         {
-            (val, ?) := catch Parse.getS32(wnd.text)
+            (val, ?, ?) := catch StrConv.parseS32(wnd.text)
             slider := cast(*Slider) wnd.getTopView().getChildById("slider0")
             slider.setValue(cast(f32) val)
         }

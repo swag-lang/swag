@@ -66,13 +66,13 @@ const tests: [] Test = @[
         switch c.base
         {
         case 2:
-            (value, eat) := assume parseB64(c.out)
+            (value, eat, ovf) := assume parseB64(c.out)
             @assert(value == c.in)
         case 10:
-            (value, eat) := assume parseS64(c.out)
+            (value, eat, ovf) := assume parseS64(c.out)
             @assert(value == c.in)
         case 16:
-            (value, eat) := assume parseX64(c.out)
+            (value, eat, ovf) := assume parseX64(c.out)
             @assert(value == c.in)
         }
     }

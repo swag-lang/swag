@@ -135,11 +135,6 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
         AstVarDecl*    orgVarNode = Ast::newVarDecl(sourceFile, tmpVarName, parentNode, this);
         orgVarNode->kind          = kind;
 
-        orgVarNode->token.startLocation = leftNode->childs.front()->token.startLocation;
-        orgVarNode->token.endLocation   = leftNode->childs.back()->token.endLocation;
-        orgVarNode->allocateExtension();
-        orgVarNode->extension->semanticAfterFct = SemanticJob::resolveTupleUnpackBefore;
-
         // This will avoid to initialize the tuple before the affectation
         orgVarNode->flags |= AST_HAS_FULL_STRUCT_PARAMETERS;
         orgVarNode->flags |= AST_R_VALUE;
@@ -150,6 +145,12 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
         orgVarNode->assignment = assign;
         orgVarNode->assignment->flags |= AST_NO_LEFT_DROP;
         SemanticJob::setVarDeclResolve(orgVarNode);
+
+        // Must be done after 'setVarDeclResolve', because 'semanticAfterFct' is already affected
+        orgVarNode->token.startLocation = leftNode->childs.front()->token.startLocation;
+        orgVarNode->token.endLocation   = leftNode->childs.back()->token.endLocation;
+        orgVarNode->allocateExtension();
+        orgVarNode->extension->semanticAfterFct = SemanticJob::resolveTupleUnpackBeforeVar;
 
         if (currentScope->isGlobalOrImpl())
             SWAG_CHECK(currentScope->symTable.registerSymbolName(&context, orgVarNode, SymbolKind::Variable));
@@ -164,6 +165,9 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
             SWAG_CHECK(checkIsSingleIdentifier(child, "as a variable name"));
             if (child->childs.front()->token.text == '?')
             {
+                Ast::removeFromParent(child);
+                Ast::addChildBack(parentNode, child);
+                child->flags |= AST_NO_SEMANTIC | AST_NO_BYTECODE;
                 idx++;
                 continue;
             }
