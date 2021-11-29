@@ -526,6 +526,21 @@ impl Wnd
         return false
     }
 
+    // Retreive the child with the given id
+    mtd getChildById(childId: string)->*Wnd
+    {
+        visit c: childs
+        {
+            if c.id == childId
+                return c
+            res := c.getChildById(childId)
+            if res
+                return res
+        }
+
+        return null
+    }
+
     //////////////////////////////////////////////
     // Helpers
     //////////////////////////////////////////////

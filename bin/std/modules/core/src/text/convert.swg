@@ -44,7 +44,7 @@ impl ConvertFormatFloat
         cpt := 0'u32
 
         // Force sign for positive numbers
-        if(buffer[cpt] == "+"'u8)
+        if buffer[cpt] == "+"'u8
         {
             forceSign = true
             cpt += 1
@@ -108,7 +108,7 @@ impl ConvertFormatInt
         cpt := 0'u32
 
         // Force sign for positive numbers
-        if(buffer[cpt] == "+"'u8)
+        if buffer[cpt] == "+"'u8
         {
             forceSign = true
             cpt += 1

@@ -33,6 +33,8 @@ public struct EditBox
     maxLength:          s32
     inputMode:          EditBoxInputMode = String
 
+    sigChanged:         func(*EditBox)
+    sigLoseFocus:       func(*EditBox)
     sigEnterPressed:    func(*EditBox)
     sigEscapePressed:   func(*EditBox)
     sigCheckContent:    func(*EditBox)->EditBoxCheckResult
@@ -66,6 +68,8 @@ impl IWnd for EditBox
         }
         else
         {
+            if sigLoseFocus
+                sigLoseFocus(self)
             surface.app.deleteTimer(timerCaret)
             timerCaret = null
         }
@@ -255,70 +259,6 @@ impl IWnd for EditBox
                 insertRune(evt.char)
             }
         }
-    }
-}
-
-public impl EditBox
-{
-    func create(parent: *Wnd, content: string, position: Math.Rectangle, id: string = null)->*EditBox
-    {
-        res := Wnd.create'EditBox(parent, null, position, id)
-        if res.position.height == 0
-            res.position.height = res.getThemeMetrics().editBox_Height
-        if res.position.width == 0
-            res.position.width  = res.getThemeMetrics().editBox_Width
-        res.setForm(EditBoxForm.Square)
-        res.text = content
-        res.focusStrategy = .MousePressed
-
-        evt := CreateEvent{}
-        res.sendEvent(&evt)
-        return res
-    }
-
-    // Delete selected text
-    mtd deleteSelection()
-    {
-        if deleteSelectionPrivate()
-            notifyChanged()
-    }
-
-    // Set current selection
-    mtd setSelection(start, end: uint)
-    {
-        selBeg = start
-        selEnd = end
-        checkSelection()
-        computeCaretPos()
-    }
-
-    // Select all text
-    mtd selectAll()
-    {
-        setSelection(0, text.length)
-    }
-
-    // Set the editbox note
-    mtd setNote(note: string)
-    {
-        name = note
-    }
-
-    // Set the editbox form
-    mtd setForm(form: EditBoxForm)
-    {
-        self.form = #scopefct.form
-        switch self.form
-        {
-        case Square:
-            padding = getTheme().metrics.editBox_SquarePadding
-        case Round:
-            padding = getTheme().metrics.editBox_RoundPadding
-        case Flat:
-            padding = getTheme().metrics.editBox_FlatPadding
-        }
-
-        invalidate()
     }
 }
 
@@ -738,7 +678,85 @@ impl EditBox
 
     mtd notifyChanged()
     {
+        if sigChanged
+            sigChanged(self)
         computeCaretPos()
+        invalidate()
+    }
+}
+
+public impl EditBox
+{
+    func create(parent: *Wnd, content: string, position: Math.Rectangle, id: string = null)->*EditBox
+    {
+        res := Wnd.create'EditBox(parent, null, position, id)
+        if res.position.height == 0
+            res.position.height = res.getThemeMetrics().editBox_Height
+        if res.position.width == 0
+            res.position.width  = res.getThemeMetrics().editBox_Width
+        res.setForm(EditBoxForm.Square)
+        res.text = content
+        res.focusStrategy = .MousePressed
+
+        evt := CreateEvent{}
+        res.sendEvent(&evt)
+        return res
+    }
+
+    // Delete selected text
+    mtd deleteSelection()
+    {
+        if deleteSelectionPrivate()
+            notifyChanged()
+    }
+
+    // Set current selection
+    mtd setSelection(start, end: uint)
+    {
+        selBeg = start
+        selEnd = end
+        checkSelection()
+        computeCaretPos()
+    }
+
+    // Select all text
+    mtd selectAll()
+    {
+        setSelection(0, text.length)
+    }
+
+    // Set the editbox note
+    mtd setNote(note: string)
+    {
+        name = note
+        invalidate()
+    }
+
+    // Set the editbox content
+    mtd setText(str: string)
+    {
+        if text == str
+            return
+        text.clear()
+        selBeg, selEnd = 0
+        insertString(str)
+        notifyChanged()
+    }
+
+    // Set the editbox form
+    mtd setForm(form: EditBoxForm)
+    {
+        self.form = #scopefct.form
+        switch self.form
+        {
+        case Square:
+            padding = getTheme().metrics.editBox_SquarePadding
+        case Round:
+            padding = getTheme().metrics.editBox_RoundPadding
+        case Flat:
+            padding = getTheme().metrics.editBox_FlatPadding
+        }
+
         invalidate()
     }
 }
