@@ -1,5 +1,5 @@
 #global #[Swag.Safety("overflow", false)]
-using Core
+using Core, StrConv
 
 struct Test
 {
@@ -66,13 +66,13 @@ const tests: [] Test = @[
         switch c.base
         {
         case 2:
-            (value, eat) := assume Parse.getB64(c.out)
+            (value, eat) := assume parseB64(c.out)
             @assert(value == c.in)
         case 10:
-            (value, eat) := assume Parse.getS64(c.out)
+            (value, eat) := assume parseS64(c.out)
             @assert(value == c.in)
         case 16:
-            (value, eat) := assume Parse.getX64(c.out)
+            (value, eat) := assume parseX64(c.out)
             @assert(value == c.in)
         }
     }

@@ -374,13 +374,13 @@ impl Decimal
             buffer, cpt += 1
             neg = true
             if !Latin1.isDigit(dref buffer) and cpt == countof
-                throw Parse.ErrorIncomplete
+                throw StrConv.ParseErrorIncomplete
         }
         else if c == plusSign
         {
             buffer, cpt += 1
             if !Latin1.isDigit(dref buffer) and cpt == countof
-                throw Parse.ErrorIncomplete
+                throw StrConv.ParseErrorIncomplete
         }
 
         // digits
@@ -433,7 +433,7 @@ impl Decimal
         }
 
         if !sawDigits
-            throw Parse.ErrorInvalid
+            throw StrConv.ParseErrorInvalid
         if !sawdot
             dp = nd
 
@@ -443,7 +443,7 @@ impl Decimal
         {
             cpt, buffer += 1
             if cpt >= countof
-                throw Parse.ErrorIncomplete
+                throw StrConv.ParseErrorIncomplete
 
             esign := 1
             c = dref buffer
@@ -453,18 +453,18 @@ impl Decimal
                 esign = -1
                 c = dref buffer
                 if !Latin1.isDigit(c) and cpt >= countof
-                    throw Parse.ErrorIncomplete
+                    throw StrConv.ParseErrorIncomplete
             }
             else if c == plusSign
             {
                 buffer, cpt += 1
                 c = dref buffer
                 if !Latin1.isDigit(c) and cpt >= countof
-                    throw Parse.ErrorIncomplete
+                    throw StrConv.ParseErrorIncomplete
             }
 
             if cpt >= countof or c < "0"'u8 or c > "9"'u8
-                throw Parse.ErrorInvalid
+                throw StrConv.ParseErrorInvalid
 
             e := 0
             while cpt < countof

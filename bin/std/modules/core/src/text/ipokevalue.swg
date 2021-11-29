@@ -1,6 +1,6 @@
 #global public
 
-namespace Parse
+namespace StrConv
 {
     public interface IPokeValue
     {

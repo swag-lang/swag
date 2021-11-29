@@ -1,4 +1,4 @@
-#global namespace Parse
+#global namespace StrConv
 using Swag
 
 // Used to add an element in a 'Core.Array' without knowing the type of the element at compile time
@@ -107,7 +107,7 @@ public func pokeValue(addr: *void, type: typeinfo, buf: string)->string throw
         loop
         {
             one = Tokenize.eatSpaces(one)
-            id := try getIdentifier(one)
+            id := try parseIdentifier(one)
             v := Reflection.getEnumValue(type, id)
             if !v throw Format.toString("unknown enum value '%'", id)
 
@@ -167,77 +167,77 @@ public func pokeValue(addr: *void, type: typeinfo, buf: string)->string throw
     {
     case s8:
         var val: s8 = ?
-        (val, eat, ovf) = try getS8(one)
-        if ovf throw ErrorOverflow
+        (val, eat, ovf) = try parseS8(one)
+        if ovf throw ParseErrorOverflow
         dref cast(*s8) patch = val
 
     case s16:
         var val: s16 = ?
-        (val, eat, ovf) = try getS16(one)
-        if ovf throw ErrorOverflow
+        (val, eat, ovf) = try parseS16(one)
+        if ovf throw ParseErrorOverflow
         dref cast(*s16) patch = val
 
     case s32:
         var val: s32 = ?
-        (val, eat, ovf) = try getS32(one)
-        if ovf throw ErrorOverflow
+        (val, eat, ovf) = try parseS32(one)
+        if ovf throw ParseErrorOverflow
         dref cast(*s32) patch = val
 
     case s64, int:
         var val: s64 = ?
-        (val, eat, ovf) = try getS64(one)
-        if ovf throw ErrorOverflow
+        (val, eat, ovf) = try parseS64(one)
+        if ovf throw ParseErrorOverflow
         dref cast(*s64) patch = val
 
     case u8:
         var val: u8 = ?
-        (val, eat, ovf) = try getU8(one)
-        if ovf throw ErrorOverflow
+        (val, eat, ovf) = try parseU8(one)
+        if ovf throw ParseErrorOverflow
         dref cast(*u8) patch = val
 
     case u16:
         var val: u16 = ?
-        (val, eat, ovf) = try getU16(one)
-        if ovf throw ErrorOverflow
+        (val, eat, ovf) = try parseU16(one)
+        if ovf throw ParseErrorOverflow
         dref cast(*u16) patch = val
 
     case u32:
         var val: u32 = ?
-        (val, eat, ovf) = try getU32(one)
-        if ovf throw ErrorOverflow
+        (val, eat, ovf) = try parseU32(one)
+        if ovf throw ParseErrorOverflow
         dref cast(*u32) patch = val
 
     case u64, uint:
         var val: u64 = ?
-        (val, eat, ovf) = try getU64(one)
-        if ovf throw ErrorOverflow
+        (val, eat, ovf) = try parseU64(one)
+        if ovf throw ParseErrorOverflow
         dref cast(*u64) patch = val
 
     case f32:
         var val: f32 = ?
-        (val, eat, ovf) = try getF32(one)
-        if ovf throw ErrorOverflow
+        (val, eat, ovf) = try parseF32(one)
+        if ovf throw ParseErrorOverflow
         dref cast(*f32) patch = val
 
     case f64:
         var val: f64 = ?
-        (val, eat, ovf) = try getF64(one)
-        if ovf throw ErrorOverflow
+        (val, eat, ovf) = try parseF64(one)
+        if ovf throw ParseErrorOverflow
         dref cast(*f64) patch = val
 
     case bool:
         var val: bool = ?
-        (val, eat) = try getBool(one)
+        (val, eat) = try parseBool(one)
         dref cast(*bool) patch = val
 
     case rune:
         var val: rune = ?
-        (val, eat) = try getRune(one)
+        (val, eat) = try parseRune(one)
         dref cast(*rune) patch = val
 
     case String:
         var val: String
-        (val, eat) = try getString(one)
+        (val, eat) = try parseString(one)
         dref cast(*String) patch = val
 
     default:

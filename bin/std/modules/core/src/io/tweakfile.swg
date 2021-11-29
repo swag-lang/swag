@@ -61,7 +61,7 @@ impl TweakFile
             if one[0] == "/"'u8
             {
                 one = Tokenize.eatCount(one, 1)
-                folderName := catch Parse.getIdentifier(one)
+                folderName := catch StrConv.parseIdentifier(one)
                 if @err
                     throw Format.toString("line %: invalid folder name", idx + 1)
 
@@ -84,7 +84,7 @@ impl TweakFile
 
             // Value
             one = Tokenize.eatSpaces(one)
-            id := catch Parse.getIdentifier(one)
+            id := catch StrConv.parseIdentifier(one)
             if @err
                 throw Format.toString("line %: invalid value name", idx + 1)
 
@@ -111,7 +111,7 @@ impl TweakFile
             }
 
             // Get value and poke it
-            one = catch Parse.pokeValue(currentFolder.data + field.offset, field.pointedType, one)
+            one = catch StrConv.pokeValue(currentFolder.data + field.offset, field.pointedType, one)
             if @err
                 throw Format.toString("line %: %", idx + 1, @err)
 

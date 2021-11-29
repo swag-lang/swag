@@ -1,5 +1,5 @@
 #global public
-using Swag, Core
+using Swag, Core, StrConv
 
 #[ConstExpr]
 struct Color
@@ -291,7 +291,7 @@ impl Color
     }
 }
 
-impl Core.Parse.IPokeValue for Color
+impl Core.StrConv.IPokeValue for Color
 {
     mtd poke(buf: string)->string throw
     {
@@ -301,29 +301,29 @@ impl Core.Parse.IPokeValue for Color
 
         if buf[0] == "0"'u8 and buf[1]|32 == "x"'u8
         {
-            (argb, eat) = try Parse.getU32(one)
+            (argb, eat) = try parseU32(one)
             one = Tokenize.eatCount(one, eat)
         }
         else if Latin1.isDigit(buf[0])
         {
-            (a, eat) = try Parse.getU8(one)
+            (a, eat) = try parseU8(one)
             one = Tokenize.eatCount(one, eat)
 
             one = Tokenize.eatSpaces(one)
-            (r, eat) = try Parse.getU8(one)
+            (r, eat) = try parseU8(one)
             one = Tokenize.eatCount(one, eat)
 
             one = Tokenize.eatSpaces(one)
-            (g, eat) = try Parse.getU8(one)
+            (g, eat) = try parseU8(one)
             one = Tokenize.eatCount(one, eat)
 
             one = Tokenize.eatSpaces(one)
-            (b, eat) = try Parse.getU8(one)
+            (b, eat) = try parseU8(one)
             one = Tokenize.eatCount(one, eat)
         }
         else
         {
-            id := try Parse.getIdentifier(one)
+            id := try parseIdentifier(one)
             one = Tokenize.eatCount(one, @countof(id))
             argb = cast(u32) Argb.fromName(id)
         }
