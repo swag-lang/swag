@@ -694,6 +694,7 @@ impl EditBox
 
 public impl EditBox
 {
+    #[Swag.Discardable]
     func create(parent: *Wnd, content: string, position: Math.Rectangle, id: string = null)->*EditBox
     {
         res := Wnd.create'EditBox(parent, null, position, id)

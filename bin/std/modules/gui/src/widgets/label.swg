@@ -75,6 +75,7 @@ impl IWnd for Label
 
 impl Label
 {
+    #[Swag.Discardable]
     public func create(parent: *Wnd, name: string, position: Math.Rectangle, id: string = null)->*Label
     {
         res := Wnd.create'Label(parent, name, position, id)

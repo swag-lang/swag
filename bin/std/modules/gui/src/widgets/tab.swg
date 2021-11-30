@@ -24,7 +24,6 @@ impl IWnd for Tab
         painter := evt.bc.painter
         visit *v: views
         {
-            painter.fillRect(@{v.pos, 0, v.width, barHeight}, Argb.Red)
         }
     }
 
@@ -64,6 +63,7 @@ impl Tab
 
 public impl Tab
 {
+    #[Swag.Discardable]
     func create(parent: *Wnd, position: Math.Rectangle, id: string = null)->*Tab
     {
         res := Wnd.create'Tab(parent, "", position, id)

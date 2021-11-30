@@ -56,6 +56,7 @@ impl IWnd for IconButton
 
 impl IconButton
 {
+    #[Swag.Discardable]
     public func create(parent: *Wnd, icon: Icon, position: Math.Rectangle, id: string = null)->*IconButton
     {
         res := Wnd.create'IconButton(parent, null, position, id)

@@ -75,6 +75,7 @@ impl IWnd for ToggleButton
 
 impl ToggleButton
 {
+    #[Swag.Discardable]
     public func create(parent: *Wnd, position: Math.Rectangle, id: string = null)->*ToggleButton
     {
         pos := position

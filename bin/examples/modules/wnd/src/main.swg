@@ -193,7 +193,13 @@ const H = 1024
         tab := Tab.create(view, @{600, 20, 400, 200}, id: "tab0")
         view0 := Wnd.create'Wnd()
         view0.backgroundStyle = .Dialog
-        tab.addView("toto", view0)
+        tab.addView("toto0", view0)
+        view1 := Wnd.create'Wnd()
+        view1.backgroundStyle = .Dialog
+        tab.addView("toto1", view1)
+
+        Label.create(view0, "view0", @{10, 10, 50, 30})
+        Label.create(view1, "view1", @{10, 10, 50, 30})
     }
 
     //surface1 := try app.createSurface(100+W+10, 100, W, H, SurfaceFlags.Secondary | SurfaceFlags.SmallCaption | SurfaceFlags.CloseBtn)

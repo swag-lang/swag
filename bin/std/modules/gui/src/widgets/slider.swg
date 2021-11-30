@@ -340,6 +340,7 @@ public impl Slider
         setValue2(value2)
     }
 
+    #[Swag.Discardable]
     func create(parent: *Wnd, position: Math.Rectangle, id: string = null, range: bool = false)->*Slider
     {
         pos := position
