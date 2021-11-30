@@ -188,6 +188,14 @@ const H = 1024
         label.vertAlignmentText = .Bottom
     }
 
+    // Tab
+    {
+        tab := Tab.create(view, @{600, 20, 400, 200}, id: "tab0")
+        view0 := Wnd.create'Wnd()
+        view0.backgroundStyle = .Dialog
+        tab.addView("toto", view0)
+    }
+
     //surface1 := try app.createSurface(100+W+10, 100, W, H, SurfaceFlags.Secondary | SurfaceFlags.SmallCaption | SurfaceFlags.CloseBtn)
 
     surface0.show()
