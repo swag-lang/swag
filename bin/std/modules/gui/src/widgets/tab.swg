@@ -20,16 +20,19 @@ public struct Tab
 
 impl IWnd for Tab
 {
-    mtd paintItem(painter: *Painter, v: *TabItem)
+    mtd paintItem(painter: *Painter, v: *TabItem, selected: bool)
     {
         clientRect := getClientRect()
         clientRect.height = barHeight
 
         theme   := getTheme()
         metrics := getThemeMetrics()
+        colors  := getThemeColors()
+
+        colorText := colors.tabItem_selected
 
         var format: RichStringFormat
-        format.palette[0] = Argb.White
+        format.palette[0] = colorText
         format.horzAlignment = .Center
         format.vertAlignment = .Center
         format.flags = .Clip
@@ -47,11 +50,11 @@ impl IWnd for Tab
         {
             if idx == selectedIdx
                 continue
-            paintItem(evt.bc.painter, v)
+            paintItem(evt.bc.painter, v, false)
         }
 
         // Paint selected item
-        paintItem(evt.bc.painter, views[selectedIdx])
+        paintItem(evt.bc.painter, views[selectedIdx], true)
     }
 
     mtd onResizeEvent(evt: *ResizeEvent)

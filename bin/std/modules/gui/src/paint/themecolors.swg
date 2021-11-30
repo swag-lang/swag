@@ -149,5 +149,7 @@ struct ThemeColors
     slider_DisabledBk:              Color = Gray6
     slider_StepBk:                  Color = Color.getLighter(Color.fromArgb(Gray6), 0.1)
     slider_HilightStepBk:           Color = Color.getDarker(Color.fromArgb(Blue), 0.1)
-    slider_HotStepBk:               Color = White
+    slider_HotStepBk:               Color = Color.getDarker(Color.fromArgb(White), 0.3)
+
+    tabItem_selected:               Color = White
 }
