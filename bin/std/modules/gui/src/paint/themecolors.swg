@@ -151,5 +151,5 @@ struct ThemeColors
     slider_HilightStepBk:           Color = Color.getDarker(Color.fromArgb(Blue), 0.1)
     slider_HotStepBk:               Color = Color.getDarker(Color.fromArgb(White), 0.3)
 
-    tabItem_selected:               Color = White
+    tabItem_SelectedText:           Color = White
 }

@@ -29,7 +29,7 @@ impl IWnd for Tab
         metrics := getThemeMetrics()
         colors  := getThemeColors()
 
-        colorText := colors.tabItem_selected
+        colorText := colors.tabItem_SelectedText
 
         var format: RichStringFormat
         format.palette[0] = colorText
@@ -85,6 +85,12 @@ impl IWnd for Tab
 
 impl Tab
 {
+    mtd opDrop()
+    {
+        visit v: views
+            Memory.delete(v)
+    }
+
     mtd hitTest(pos: Math.Point)->u32
     {
         if pos.y >= barHeight
