@@ -62,9 +62,8 @@ impl Application
         surface.wnd.computeStyle()
         surface.wnd.view.computeStyle()
 
-        evt := CreateEvent{}
-        surface.wnd.sendEvent(&evt)
-        surface.wnd.view.sendEvent(&evt)
+        surface.wnd.sendCreateEvent()
+        surface.wnd.view.sendCreateEvent()
 
         return surface
     }

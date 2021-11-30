@@ -348,8 +348,7 @@ public impl Slider
         if pos.width == 0  pos.width  = parent.getThemeMetrics().slider_Width
         res := Wnd.create'Slider(parent, "", pos, id)
         res.isRange = range
-        evt := CreateEvent{}
-        res.sendEvent(&evt)
+        res.sendCreateEvent()
         return res
     }
 }

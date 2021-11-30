@@ -117,9 +117,7 @@ public impl Tab
     {
         res := Wnd.create'Tab(parent, "", position, id)
         res.barHeight = 40
-
-        evt := CreateEvent{}
-        res.sendEvent(&evt)
+        res.sendCreateEvent()
         return res
     }
 

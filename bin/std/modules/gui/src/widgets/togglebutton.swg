@@ -82,8 +82,7 @@ impl ToggleButton
         if pos.height == 0 pos.height = parent.getThemeMetrics().btnToggle_Height
         if pos.width == 0  pos.width  = parent.getThemeMetrics().btnToggle_Width
         res := Wnd.create'ToggleButton(parent, "", pos, id)
-        evt := CreateEvent{}
-        res.sendEvent(&evt)
+        res.sendCreateEvent()
         return res
     }
 }

@@ -614,6 +614,12 @@ impl Wnd
         sendEvent(&evt)
     }
 
+    mtd sendCreateEvent()
+    {
+        evt := CreateEvent{}
+        sendEvent(&evt)
+    }
+
     mtd processEvent(evt: *Event)
     {
         eat := false

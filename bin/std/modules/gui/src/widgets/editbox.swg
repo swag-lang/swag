@@ -705,9 +705,7 @@ public impl EditBox
         res.setForm(EditBoxForm.Square)
         res.text = content
         res.focusStrategy = .MousePressed
-
-        evt := CreateEvent{}
-        res.sendEvent(&evt)
+        res.sendCreateEvent()
         return res
     }
 

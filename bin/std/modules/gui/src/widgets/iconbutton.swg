@@ -61,8 +61,7 @@ impl IconButton
     {
         res := Wnd.create'IconButton(parent, null, position, id)
         res.icon = icon
-        evt := CreateEvent{}
-        res.sendEvent(&evt)
+        res.sendCreateEvent()
         return res
     }
 }

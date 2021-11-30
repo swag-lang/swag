@@ -120,8 +120,7 @@ impl CheckButton
         if pos.height == 0 pos.height = parent.getThemeMetrics().btnPush_Height
         if pos.width == 0  pos.width  = parent.getThemeMetrics().btnPush_Width
         res := Wnd.create'CheckButton(parent, name, pos, id)
-        evt := CreateEvent{}
-        res.sendEvent(&evt)
+        res.sendCreateEvent()
         return res
     }
 }
