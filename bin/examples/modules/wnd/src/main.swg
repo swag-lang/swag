@@ -136,7 +136,8 @@ const H = 1024
 
 
         slider0 := Slider.create(view, @{450, 420}, id: "slider0")
-        edit0   := EditBox.create(view, "0", @{650, 420, 50}, id: "edit0")
+        slider0.hilightBar = false
+        edit0   := EditBox.create(view, "0", @{650, 417, 45}, id: "edit0")
 
         slider0.setMinMax(0, 255)
         slider0.sigChanged = @(wnd: *Slider)
@@ -193,10 +194,10 @@ const H = 1024
         tab := Tab.create(view, @{600, 20, 400, 200}, id: "tab0")
         view0 := Wnd.create'Wnd()
         view0.backgroundStyle = .Dialog
-        tab.addView("toto0", view0)
+        tab.addView("Tab0", view0, app.theme.getIcon24(ThemeIcons24.Search, 16))
         view1 := Wnd.create'Wnd()
         view1.backgroundStyle = .Dialog
-        tab.addView("toto1", view1)
+        tab.addView("Tab1", view1)
 
         Label.create(view0, "view0", @{10, 10, 50, 30})
         Label.create(view1, "view1", @{10, 10, 50, 30})

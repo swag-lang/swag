@@ -27,6 +27,13 @@ struct RichString
 
 impl RichString
 {
+    // We need to recompute chunks, as they contains slices
+    mtd opPostCopy()
+    {
+        chunks.clear()
+        set(raw)
+    }
+
     #[Swag.Mixin]
     private func addChunk(idx: uint, space, eol: bool = false)
     {
@@ -66,7 +73,7 @@ impl RichString
     // Associate a string
     mtd set(text: string)
     {
-        if raw == text
+        if raw == text and chunks.count
             return
         raw = text
 
