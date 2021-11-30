@@ -111,7 +111,7 @@ impl IWnd for Slider
                 posStep.width = posStep.height
 
                 var colorStep: Color = ?
-                if isHot1 or isHot2
+                if isHot1 or isHot2 or isMoving
                     colorStep = colors.slider_HotStepBk
                 else if x <= value1 and hilightBar
                     colorStep = colors.slider_HilightStepBk
@@ -219,7 +219,7 @@ impl Slider
     {
         if steps > 0
         {
-            r := cast(s32) (f / steps)
+            r := cast(s32) ((f / steps) + 0.5)
             return r * steps
         }
 
