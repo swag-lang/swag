@@ -121,7 +121,7 @@ impl IWnd for EditBox
             else
                 colorBorder = colors.edit_Border
 
-            colorBk = colors.edit_SquareBk
+            colorBk = colors.edit_Bk
 
             clientRect := getClientRect()
             theme.drawSubRect(painter, clientRect, subRectBk, colorBk)

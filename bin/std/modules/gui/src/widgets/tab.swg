@@ -142,13 +142,12 @@ impl IWnd for Tab
         curView := views[selectedIdx].view
         clientRect := getClientRect()
         clientRect.moveTop(barHeight)
+        clientRect.applyPadding(padding)
         curView.setPosition(clientRect)
     }
 
     mtd onMouseEvent(evt: *MouseEvent)
     {
-        evt.accepted = true
-
         hit := hitTest(evt.pos)
         if hit != hotIdx
         {
@@ -156,6 +155,10 @@ impl IWnd for Tab
             invalidate()
         }
 
+        if hit == Swag.U32.Max
+            return
+
+        evt.accepted = true
         switch evt.kind
         {
         case .MousePressed:

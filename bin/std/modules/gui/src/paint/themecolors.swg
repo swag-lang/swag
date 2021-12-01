@@ -108,7 +108,7 @@ struct ThemeColors
     edit_FocusBorder:               Color = Blue
     edit_HotBorder:                 Color = Gray3
     edit_DisabledBorder:            Color = White
-    edit_SquareBk:                  Color = Gray6
+    edit_Bk:                        Color = Gray6
     edit_Note:                      Color = Disabled
     edit_Text:                      Color = White
     edit_DisabledText:              Color = Disabled
