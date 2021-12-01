@@ -120,24 +120,24 @@ const H = 1024
 
     // Slider
     {
-        slider := Slider.create(view, @{450, 300})
+        slider := Slider.create(view, @{10, 350})
         slider.setMinMax(-127, 128)
         slider.setValue(0)
 
-        slider = Slider.create(view, @{450, 330}, range: true)
+        slider = Slider.create(view, @{10, 380}, range: true)
         slider.setRangeValues(0.25, 0.75)
 
-        slider = Slider.create(view, @{450, 360})
+        slider = Slider.create(view, @{10, 410})
         slider.setMinMax(0, 1, 0.1)
         slider.setValue(0.55)
 
-        slider = Slider.create(view, @{450, 390})
+        slider = Slider.create(view, @{10, 440})
         slider.isDisabled = true
 
 
-        slider0 := Slider.create(view, @{450, 420}, id: "slider0")
+        slider0 := Slider.create(view, @{10, 470}, id: "slider0")
         slider0.hilightBar = false
-        edit0   := EditBox.create(view, "0", @{645, 414, 45}, id: "edit0")
+        edit0   := EditBox.create(view, "0", @{205, 464, 45}, id: "edit0")
         edit0.setForm(EditBoxForm.Transparent)
 
         slider0.setMinMax(0, 255)
@@ -192,16 +192,33 @@ const H = 1024
 
     // Tab
     {
-        tab := Tab.create(view, @{600, 20, 400, 200}, id: "tab0")
+        tab := Tab.create(view, @{600, 20, 400, 100}, id: "tab0")
         view0 := Wnd.create'Wnd()
         view0.backgroundStyle = .Dialog
         tab.addView("Tab0", view0, app.theme.getIcon24(ThemeIcons24.Search, 16))
         view1 := Wnd.create'Wnd()
         view1.backgroundStyle = .Dialog
         tab.addView("Tab1", view1)
-
         Label.create(view0, "view0", @{10, 10, 50, 30})
         Label.create(view1, "view1", @{10, 10, 50, 30})
+    }
+
+    {
+        tab := Tab.create(view, @{600, 150, 400, 100}, id: "tab0")
+        tab.tabBarLayout = .Fixed
+
+        view0 := Wnd.create'Wnd()
+        view0.backgroundStyle = .Dialog
+        tab.addView("Tab0", view0, app.theme.getIcon24(ThemeIcons24.Search, 16))
+        view1 := Wnd.create'Wnd()
+        view1.backgroundStyle = .Dialog
+        tab.addView("Tab1", view1)
+        view2 := Wnd.create'Wnd()
+        view2.backgroundStyle = .Dialog
+        tab.addView("Tab2", view2)
+        Label.create(view0, "view0", @{10, 10, 50, 30})
+        Label.create(view1, "view1", @{10, 10, 50, 30})
+        Label.create(view2, "view2", @{10, 10, 50, 30})
     }
 
     //surface1 := try app.createSurface(100+W+10, 100, W, H, SurfaceFlags.Secondary | SurfaceFlags.SmallCaption | SurfaceFlags.CloseBtn)

@@ -60,4 +60,7 @@ struct ThemeImageRects
     slider_BkRight:             ThemeImageRect = @{{57,169,27,27}, 13}
     slider_Mark:                ThemeImageRect = @{{85,169,27,27}, 13}
     slider_Step:                ThemeImageRect = @{{113,169,27,27}, 13}
+
+    tabItem_FlatSelected:       ThemeImageRect = @{{57,95,27,27}, 5}
+    tabBar_FlatBk:              ThemeImageRect = @{{57,95,27,27}, 5}
 }

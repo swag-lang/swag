@@ -1,5 +1,24 @@
 using Core, Pixel
 
+public enum TabBarForm
+{
+    Flat
+    Transparent
+}
+
+
+public enum TabItemForm
+{
+    Flat
+    Transparent
+}
+
+public enum TabBarLayout
+{
+    Divide
+    Fixed
+}
+
 public struct TabItem
 {
     view:   *Wnd
@@ -11,25 +30,51 @@ public struct TabItem
 
 public struct Tab
 {
-    using wnd:      Wnd
+    using wnd:              Wnd
+    tabBarForm:             TabBarForm = Flat
+    tabBarLayout:           TabBarLayout = Divide
+    tabItemForm:            TabItemForm = Flat
+    tabBarFixedLayoutWidth: f32 = 100
 
     views:          Array'(*TabItem)
     selectedIdx:    u32
+    hotIdx:         u32
     barHeight:      f32
 }
 
 impl IWnd for Tab
 {
-    mtd paintItem(painter: *Painter, v: *TabItem, selected: bool)
+    mtd paintItem(painter: *Painter, v: *TabItem, idx: u32)
     {
         clientRect := getClientRect()
         clientRect.height = barHeight
+        labelPos := clientRect
+        labelPos.width = v.width
+        labelPos.x = v.pos
 
         theme   := getTheme()
         metrics := getThemeMetrics()
         colors  := getThemeColors()
+        rects   := getThemeRects()
 
-        colorText := colors.tabItem_SelectedText
+        // Item image
+        var subRect:    *ThemeImageRect
+        var colorImg:   Color
+        var colorText:  Color
+
+        if idx == selectedIdx
+        {
+            colorImg = colors.tabItem_FlatSelected
+            subRect = &rects.tabItem_FlatSelected
+            colorText = colors.tabItem_SelectedText
+        }
+        else
+        {
+            colorText = colors.tabItem_UnSelectedText
+        }
+
+        if subRect
+            theme.drawSubRect(painter, labelPos, subRect, colorImg)
 
         var format: RichStringFormat
         format.palette[0] = colorText
@@ -37,24 +82,39 @@ impl IWnd for Tab
         format.vertAlignment = .Center
         format.flags = .Clip
         format.font = theme.res.fontDefault
-        labelPos := clientRect
-        labelPos.width = v.width
-        labelPos.x = v.pos
         Theme.drawIconText(painter, labelPos, v.icon, &v.name, format, metrics.iconText_Margin)
     }
 
     mtd onPaintEvent(evt: *PaintEvent)
     {
+        painter := evt.bc.painter
+        theme   := getTheme()
+        metrics := getThemeMetrics()
+        colors  := getThemeColors()
+        rects   := getThemeRects()
+
+        // Background bar
+        if tabBarForm != .Transparent
+        {
+            clientRect := getClientRect()
+            clientRect.height = barHeight
+            switch tabBarForm
+            {
+            case Flat:
+                painter.fillRect(clientRect, colors.tabBar_FlatBk)
+            }
+        }
+
         // Paint all except selected one, which will be painted last
         visit v, idx: views
         {
             if idx == selectedIdx
                 continue
-            paintItem(evt.bc.painter, v, false)
+            paintItem(painter, v, cast(u32) idx)
         }
 
         // Paint selected item
-        paintItem(evt.bc.painter, views[selectedIdx], true)
+        paintItem(painter, views[selectedIdx], selectedIdx)
     }
 
     mtd onResizeEvent(evt: *ResizeEvent)
@@ -72,12 +132,23 @@ impl IWnd for Tab
     mtd onMouseEvent(evt: *MouseEvent)
     {
         evt.accepted = true
-        if evt.kind == .MousePressed and evt.button == .Left
+
+        hit := hitTest(evt.pos)
+        if hit != hotIdx
         {
-            hit := hitTest(evt.pos)
-            if hit != Swag.U32.Max
+            hotIdx = hit
+            invalidate()
+        }
+
+        switch evt.kind
+        {
+        case .MousePressed:
+            if evt.button == .Left
             {
-                select(hit)
+                if hit != Swag.U32.Max
+                {
+                    select(hit)
+                }
             }
         }
     }
@@ -107,14 +178,27 @@ impl Tab
 
     mtd computeTabLayout()
     {
-        w := cast(f32) (position.width / views.count)
-        x := 0'f32
-
-        visit v: views
+        switch tabBarLayout
         {
-            v.pos = x
-            v.width = w
-            x += w
+        case Divide:
+            w := cast(f32) (position.width / views.count)
+            x := 0'f32
+            visit v: views
+            {
+                v.pos = x
+                v.width = w
+                x += w
+            }
+
+        case Fixed:
+            w := cast(f32) tabBarFixedLayoutWidth
+            x := 0'f32
+            visit v: views
+            {
+                v.pos = x
+                v.width = w
+                x += w
+            }
         }
     }
 }
