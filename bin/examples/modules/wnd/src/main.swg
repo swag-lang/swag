@@ -137,7 +137,8 @@ const H = 1024
 
         slider0 := Slider.create(view, @{450, 420}, id: "slider0")
         slider0.hilightBar = false
-        edit0   := EditBox.create(view, "0", @{650, 417, 45}, id: "edit0")
+        edit0   := EditBox.create(view, "0", @{645, 414, 45}, id: "edit0")
+        edit0.setForm(EditBoxForm.Transparent)
 
         slider0.setMinMax(0, 255)
         slider0.sigChanged = @(wnd: *Slider)

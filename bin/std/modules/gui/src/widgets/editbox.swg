@@ -5,6 +5,7 @@ public enum EditBoxForm
     Square
     Round
     Flat
+    Transparent
 }
 
 public enum EditBoxInputMode
@@ -88,43 +89,46 @@ impl IWnd for EditBox
         metrics := getThemeMetrics()
         rects   := getThemeRects()
 
-        var subRectBk:      *ThemeImageRect
-        var subRectBorder:  *ThemeImageRect
-        var colorBk:        Color = ?
-        var colorBorder:    Color = ?
-        var colorText:      Color = ?
-
-        switch form
+        if form != .Transparent
         {
-        case Square:
-            subRectBk = &rects.edit_SquareBk
-            subRectBorder = &rects.edit_SquareBorder
-        case Round:
-            subRectBk = &rects.edit_RoundBk
-            subRectBorder = &rects.edit_RoundBorder
-        case Flat:
-            subRectBk = &rects.edit_FlatBk
-            subRectBorder = &rects.edit_FlatBorder
+            var subRectBk:      *ThemeImageRect
+            var subRectBorder:  *ThemeImageRect
+            var colorBk:        Color = ?
+            var colorBorder:    Color = ?
+            var colorText:      Color = ?
+
+            switch form
+            {
+            case Square:
+                subRectBk = &rects.edit_SquareBk
+                subRectBorder = &rects.edit_SquareBorder
+            case Round:
+                subRectBk = &rects.edit_RoundBk
+                subRectBorder = &rects.edit_RoundBorder
+            case Flat:
+                subRectBk = &rects.edit_FlatBk
+                subRectBorder = &rects.edit_FlatBorder
+            }
+
+            if bc.isDisabled
+                colorBorder = colors.edit_DisabledBorder
+            else if isInvalid
+                colorBorder = colors.edit_ErrorBorder
+            else if hasFocus()
+                colorBorder = colors.edit_FocusBorder
+            else if isHot
+                colorBorder = colors.edit_HotBorder
+            else
+                colorBorder = colors.edit_Border
+
+            colorBk = colors.edit_SquareBk
+
+            clientRect := getClientRect()
+            theme.drawSubRect(painter, clientRect, subRectBk, colorBk)
+            theme.drawSubRect(painter, clientRect, subRectBorder, colorBorder)
         }
 
-        if bc.isDisabled
-            colorBorder = colors.edit_DisabledBorder
-        else if isInvalid
-            colorBorder = colors.edit_ErrorBorder
-        else if hasFocus()
-            colorBorder = colors.edit_FocusBorder
-        else if isHot
-            colorBorder = colors.edit_HotBorder
-        else
-            colorBorder = colors.edit_Border
-
-        colorBk = colors.edit_SquareBk
-
-        clientRect := getClientRect()
-        theme.drawSubRect(painter, clientRect, subRectBk, colorBk)
-        theme.drawSubRect(painter, clientRect, subRectBorder, colorBorder)
-
-        clientRect = getClientRectPadding()
+        clientRect := getClientRectPadding()
 
         // Icon
         if icon.isValid()
@@ -138,8 +142,7 @@ impl IWnd for EditBox
         if !name.isEmpty() and text.isEmpty()
         {
             var format: RichStringFormat
-            colorText = colors.edit_Note
-            format.palette[0] = colorText
+            format.palette[0] = colors.edit_Note
             format.vertAlignment = .Center
             format.flags = .Clip
             format.font = theme.res.fontDefault
@@ -172,9 +175,8 @@ impl IWnd for EditBox
         }
 
         // Content
-        colorText = colors.edit_Text
         y := clientRect.vertCenter() - font.height * 0.5
-        bc.painter.drawString(clientRect.x, y, text, font, colorText)
+        bc.painter.drawString(clientRect.x, y, text, font, colors.edit_Text)
 
         // Caret
         if visibleCaret and hasFocus()
