@@ -11,6 +11,7 @@ public enum TabItemForm
 {
     Flat
     Transparent
+    Round
 }
 
 public enum TabBarLayout
@@ -62,15 +63,30 @@ impl IWnd for Tab
         var colorImg:   Color
         var colorText:  Color
 
-        if idx == selectedIdx
+        switch tabItemForm
         {
-            colorImg = colors.tabItem_FlatSelected
-            subRect = &rects.tabItem_FlatSelected
-            colorText = colors.tabItem_SelectedText
-        }
-        else
-        {
-            colorText = colors.tabItem_UnSelectedText
+        case Flat:
+            if idx == selectedIdx
+            {
+                colorImg = colors.tabItem_FlatSelected
+                subRect = &rects.tabItem_FlatSelected
+                colorText = colors.tabItem_SelectedText
+            }
+            else
+            {
+                colorText = colors.tabItem_UnSelectedText
+            }
+        case Round:
+            if idx == selectedIdx
+            {
+                colorImg = colors.tabItem_RoundSelected
+                subRect = &rects.tabItem_RoundSelected//&rects.tabItem_FlatSelected
+                colorText = colors.tabItem_SelectedText
+            }
+            else
+            {
+                colorText = colors.tabItem_UnSelectedText
+            }
         }
 
         if subRect

@@ -206,6 +206,9 @@ const H = 1024
     {
         tab := Tab.create(view, @{600, 150, 400, 100}, id: "tab0")
         tab.tabBarLayout = .Fixed
+        tab.tabBarForm = .Transparent
+        tab.tabItemForm = .Round
+        tab.barHeight = 28
 
         view0 := Wnd.create'Wnd()
         view0.backgroundStyle = .Dialog
