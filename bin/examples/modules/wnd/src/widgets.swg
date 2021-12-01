@@ -139,6 +139,7 @@ func createWidgets(view: *Wnd)
         }
 
         edit0.setInputU64(0, 255)
+        edit0.maxLength = 3
         edit0.sigLoseFocus = @(wnd: *EditBox)
         {
             (val, ?, ?) := catch StrConv.parseS32(wnd.text)

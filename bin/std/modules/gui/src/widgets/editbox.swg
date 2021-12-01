@@ -89,46 +89,45 @@ impl IWnd for EditBox
         metrics := getThemeMetrics()
         rects   := getThemeRects()
 
-        if form != .Transparent
+        var subRectBk:      *ThemeImageRect
+        var subRectBorder:  *ThemeImageRect
+        var colorBk:        Color = ?
+        var colorBorder:    Color = ?
+        var colorText:      Color = ?
+
+        switch form
         {
-            var subRectBk:      *ThemeImageRect
-            var subRectBorder:  *ThemeImageRect
-            var colorBk:        Color = ?
-            var colorBorder:    Color = ?
-            var colorText:      Color = ?
-
-            switch form
-            {
-            case Square:
-                subRectBk = &rects.edit_SquareBk
-                subRectBorder = &rects.edit_SquareBorder
-            case Round:
-                subRectBk = &rects.edit_RoundBk
-                subRectBorder = &rects.edit_RoundBorder
-            case Flat:
-                subRectBk = &rects.edit_FlatBk
-                subRectBorder = &rects.edit_FlatBorder
-            }
-
-            if bc.isDisabled
-                colorBorder = colors.edit_DisabledBorder
-            else if isInvalid
-                colorBorder = colors.edit_ErrorBorder
-            else if hasFocus()
-                colorBorder = colors.edit_FocusBorder
-            else if isHot
-                colorBorder = colors.edit_HotBorder
-            else
-                colorBorder = colors.edit_Border
-
-            colorBk = colors.edit_Bk
-
-            clientRect := getClientRect()
-            theme.drawSubRect(painter, clientRect, subRectBk, colorBk)
-            theme.drawSubRect(painter, clientRect, subRectBorder, colorBorder)
+        case Square, Transparent:
+            subRectBk = &rects.edit_SquareBk
+            subRectBorder = &rects.edit_SquareBorder
+        case Round:
+            subRectBk = &rects.edit_RoundBk
+            subRectBorder = &rects.edit_RoundBorder
+        case Flat:
+            subRectBk = &rects.edit_FlatBk
+            subRectBorder = &rects.edit_FlatBorder
         }
 
-        clientRect := getClientRectPadding()
+        if bc.isDisabled
+            colorBorder = colors.edit_DisabledBorder
+        else if isInvalid
+            colorBorder = colors.edit_ErrorBorder
+        else if hasFocus()
+            colorBorder = colors.edit_FocusBorder
+        else if isHot
+            colorBorder = colors.edit_HotBorder
+        else
+            colorBorder = colors.edit_Border
+
+        colorBk = colors.edit_Bk
+
+        clientRect := getClientRect()
+        if form != .Transparent
+            theme.drawSubRect(painter, clientRect, subRectBk, colorBk)
+        if form != .Transparent or isInvalid
+            theme.drawSubRect(painter, clientRect, subRectBorder, colorBorder)
+
+        clientRect = getClientRectPadding()
 
         // Icon
         if icon.isValid()
@@ -259,6 +258,7 @@ impl IWnd for EditBox
             else
             {
                 forceVisibleCaret()
+                deleteSelectionPrivate()
                 insertRune(evt.char)
             }
         }
@@ -721,8 +721,6 @@ public impl EditBox
     // Set current selection
     mtd setSelection(start, end: uint)
     {
-        if selBeg == start and selEnd == end
-            return
         selBeg = start
         selEnd = end
         checkSelection()
@@ -749,6 +747,7 @@ public impl EditBox
             return
         text.clear()
         selBeg, selEnd = 0
+        countRunes = 0
         insertString(str)
         notifyChanged()
     }
