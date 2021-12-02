@@ -65,7 +65,7 @@ impl Surface
         try createNative(app, surface, x, y, width, height, flags, mainSurface)
 
         surface.wnd.minSize = @{128, 128}
-        surface.wnd.resize(cast(f32) width, cast(f32) height)
+        surface.sendResizeEvent(cast(f32) width, cast(f32) height)
     }
 
     // Destroy the surface
@@ -129,6 +129,12 @@ impl Surface
 
         cxt.painter.end()
         cxt.renderer.draw(&painter)
+
+        using Ogl
+        glClearColor(0,0,0,0.9)
+        glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_TRUE)
+        glClear(GL_COLOR_BUFFER_BIT)
+
         cxt.renderer.end()
     }
 
@@ -138,6 +144,8 @@ impl Surface
         rc.height = cast(s32) height
         position.width = width
         position.height = height
-        wnd.resize(width, height)
+
+        sdw := app.theme.metrics.surfaceWnd_ShadowSize
+        wnd.setPosition(@{sdw, sdw, width - 2 * sdw, height - 2 * sdw})
     }
 }

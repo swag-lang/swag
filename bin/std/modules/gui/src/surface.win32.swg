@@ -1,6 +1,20 @@
 #global public
 #global if #os == Swag.TargetOs.Windows
+#foreignlib "dwmapi"
 using Core, Win32
+
+struct MARGINS
+{
+    cxLeftWidth:    s32
+    cxRightWidth:   s32
+    cyTopHeight:    s32
+    cyBottomHeight: s32
+}
+
+#[Swag.Foreign("dwmapi.lib")]
+{
+    func DwmExtendFrameIntoClientArea(hWnd: HWND, pMarInset: *MARGINS);
+}
 
 #[Swag.NoCopy]
 struct NativeSurface
@@ -94,7 +108,7 @@ impl Surface
     {
         clampPos := pos
         wnd.clampSize(&clampPos)
-        catch SetWindowPos(hWnd, null, cast(s32) pos.x, cast(s32) pos.y, cast(s32) clampPos.width, cast(s32) clampPos.height,  SWP_NOCOPYBITS | SWP_DEFERERASE | SWP_NOREDRAW | SWP_NOSENDCHANGING)
+        catch SetWindowPos(hWnd, null, cast(s32) clampPos.x, cast(s32) clampPos.y, cast(s32) clampPos.width, cast(s32) clampPos.height,  SWP_NOCOPYBITS | SWP_DEFERERASE | SWP_NOREDRAW | SWP_NOSENDCHANGING)
     }
 
     // Bring the surface at the top of the Z order
@@ -227,6 +241,11 @@ impl Surface
             GetModuleHandleW(null),
             result
         )
+
+        // Extend frame inside client area. This will also activate composition.
+        var vm: s32 = cast(s32) app.theme.metrics.surfaceWnd_ShadowSize
+        var m:  MARGINS = @{vm,vm,vm,vm}
+        DwmExtendFrameIntoClientArea(result.hWnd, &m)
 
         result.rc = try app.renderer.native.createContext(result.hWnd, width, height, mainSurface ? mainSurface.rc.hRC : null)
     }

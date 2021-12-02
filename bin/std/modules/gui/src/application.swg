@@ -217,6 +217,15 @@ impl Application
             targetWnd = getWndAt(mousePos.x, mousePos.y)
         targetWnd = skipDisabled(targetWnd)
 
+        // If not target window, but one target surface, then we will send
+        // to the surfaceWnd (we probably are in the shadow area)
+        if !targetWnd
+        {
+            targetSurface := getSurfaceAt(mousePos.x, mousePos.y)
+            if targetSurface
+                targetWnd = &targetSurface.wnd
+        }
+
         evt := MouseEvent{}
 
         // Mouse enter/leave

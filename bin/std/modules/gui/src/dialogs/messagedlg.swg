@@ -145,6 +145,9 @@ public impl MessageDlg
         pos := surface.position
         pos.width = w
         pos.height = h
+        sdw := surface.app.theme.metrics.surfaceWnd_ShadowSize
+        pos.width += sdw * 2
+        pos.height += sdw * 2
         surface.setPosition(pos)
     }
 

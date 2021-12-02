@@ -19,17 +19,19 @@ impl IWnd for SurfaceWnd
 {
     mtd hitTestBorders(surfacePos: Math.Point)->SizingBorder
     {
+        sdw := getThemeMetrics().surfaceWnd_ShadowSize
+
         newSizingBorder := SizingBorder.Zero
         if surface.flags & .Sizeable
         {
             const SizeBorder = 10
-            if surfacePos.x < SizeBorder
+            if surfacePos.x > sdw - SizeBorder and surfacePos.x < sdw + SizeBorder
                 newSizingBorder |= .Left
-            if surfacePos.y < SizeBorder
+            if surfacePos.y > sdw - SizeBorder and surfacePos.y < sdw + SizeBorder
                 newSizingBorder |= .Top
-            if surfacePos.x > surface.position.width - SizeBorder
+            if surfacePos.x > surface.position.width - sdw - SizeBorder and surfacePos.x < surface.position.width - sdw + SizeBorder
                 newSizingBorder |= .Right
-            if surfacePos.y > surface.position.height - SizeBorder
+            if surfacePos.y > surface.position.height - sdw - SizeBorder and surfacePos.y < surface.position.height - sdw + SizeBorder
                 newSizingBorder |= .Bottom
         }
 
@@ -171,9 +173,11 @@ impl IWnd for SurfaceWnd
 
     mtd onResizeEvent(evt: *ResizeEvent)
     {
-        pos := position
+        clientRect := getClientRect()
+
+        pos := clientRect
         pos.width = surface.wnd.marginsTopLeft.y * 1.5
-        pos.x = position.right() - pos.width
+        pos.x = clientRect.right() - pos.width
         pos.height = surface.wnd.marginsTopLeft.y
         pos.y = 0
 
@@ -205,13 +209,15 @@ impl IWnd for SurfaceWnd
         colors := getThemeColors()
         rects  := getThemeRects()
 
+        clientRect := getClientRect()
+
         if surface.flags & .Border
         {
             subRect := &rects.wnd_Border
-            theme.drawSubRect(bc.painter, position, subRect, colors.wnd_Caption)
+            theme.drawSubRect(bc.painter, clientRect, subRect, colors.wnd_Caption)
         }
 
-        posCaption := position
+        posCaption := clientRect
         if surface.flags & .BigCaption
         {
             posCaption.height = surface.wnd.marginsTopLeft.y

@@ -3,6 +3,8 @@ using Core
 
 struct ThemeMetrics
 {
+    surfaceWnd_ShadowSize:      f32 = 20
+
     wnd_BorderSize:             f32 = 3
     wnd_BigCaptionCY:           f32 = 30
     wnd_SmallCaptionCY:         f32 = 24
