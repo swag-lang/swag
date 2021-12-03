@@ -14,6 +14,7 @@ struct VertexLayout
 enum CommandId
 {
     Clear
+    ColorMask
     Transform
     DrawTriangles
     BindTexture0
@@ -76,6 +77,7 @@ struct Command
         font:           struct{fontRef: *Font; }
         blendingMode:   struct{mode: BlendingMode = ?; }
         textureFont:    struct{font: *Font; atlasIndex: s32; }
+        colorMask:      struct{r, g, b, a: bool; }
 
         texture0: struct
                 {
@@ -355,10 +357,20 @@ impl Painter
     }
 
     // Clear the rendering surface
-    mtd clear(color: Color, flags: u32 = GL_COLOR_BUFFER_BIT)
+    mtd clear(color: Color)
     {
         cmd := newCommand(CommandId.Clear)
         cmd.clear.color = color
+    }
+
+    // Set color mask
+    mtd colorMask(r, g, b, a: bool)
+    {
+        cmd := newCommand(CommandId.ColorMask)
+        cmd.colorMask.r = r
+        cmd.colorMask.g = g
+        cmd.colorMask.b = b
+        cmd.colorMask.a = a
     }
 
     // Reset the current painting state

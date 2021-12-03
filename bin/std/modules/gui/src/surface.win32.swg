@@ -81,6 +81,13 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
             }
             return 0
 
+        /*case WM_GETMINMAXINFO:
+            discard DefWindowProcW(hWnd, msg, wParam, lParam)
+            mm := cast(*MINMAXINFO) cast(uint) lParam
+            mm.ptMaxPosition.x = -20
+            mm.ptMaxPosition.y = -20
+            return 0*/
+
         case WM_MOVE:
             surface.position.x = LOWORD(lParam)
             surface.position.y = HIWORD(lParam)

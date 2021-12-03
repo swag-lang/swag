@@ -364,9 +364,16 @@ impl RenderOgl
 
             case Clear:
                 params := &cmd.clear
-                (r, g, b) := params.color.toRgbf()
-                glClearColor(r, g, b, 0)
+                (a, r, g, b) := params.color.toArgbf()
+                glClearColor(r, g, b, a)
                 glClear(GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT)
+
+            case ColorMask:
+                params := &cmd.colorMask
+                glColorMask(params.r ? GL_TRUE : GL_FALSE,
+                            params.g ? GL_TRUE : GL_FALSE,
+                            params.b ? GL_TRUE : GL_FALSE,
+                            params.a ? GL_TRUE : GL_FALSE)
 
             case Transform:
                 params := &cmd.transform

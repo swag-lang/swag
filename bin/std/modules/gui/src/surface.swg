@@ -1,14 +1,14 @@
 #global public
-using Core
+using Core, Pixel
 
 struct Surface
 {
     using native:   NativeSurface
     app:            *Application
     wnd:            SurfaceWnd
-    painter:        Pixel.Painter
+    painter:        Painter
 
-    rc:             Pixel.RenderingContext
+    rc:             RenderingContext
     position:       Math.Rectangle
 
     flags:          SurfaceFlags = Zero
@@ -125,16 +125,18 @@ impl Surface
         cxt.painter.begin()
         cxt.clipRect = @{0, 0, rc.width, rc.height}
 
+        subRect := &app.theme.rects.surfaceWnd_Shadow
+        painter.colorMask(true, true, true, true)
+        app.theme.drawSubRect(&painter, @{0, 0, position.width, position.height}, subRect, Color.fromArgb(140,0,0,0))
+
         wnd.paint(&cxt)
 
-        cxt.painter.end()
+        //painter.colorMask(false, false, false, true)
+        //painter.clear(Color.fromArgb(155, 0, 0, 0))
+
+        painter.end()
+
         cxt.renderer.draw(&painter)
-
-        using Ogl
-        glClearColor(0,0,0,0.9)
-        glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_TRUE)
-        glClear(GL_COLOR_BUFFER_BIT)
-
         cxt.renderer.end()
     }
 
