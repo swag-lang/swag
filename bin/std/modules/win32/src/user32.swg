@@ -4,12 +4,13 @@ using Swag
 
 #[Swag.Strict]
 {
-    alias HWND = 	const *void
-    alias HMENU = 	const *void
-    alias HICON =	const *void
-    alias HCURSOR =	const *void
-    alias HBRUSH =	const *void
-    alias HDC =		const *void
+    alias HWND = 	    const *void
+    alias HMENU = 	    const *void
+    alias HICON =	    const *void
+    alias HCURSOR =	    const *void
+    alias HBRUSH =	    const *void
+    alias HDC =		    const *void
+    alias HMONITOR =    const *void
 }
 
 alias WPARAM =      u64
@@ -803,6 +804,18 @@ struct PAINTSTRUCT
     rgbReserved:    [32] BYTE
 }
 
+const MONITOR_DEFAULTTONULL    = 0x00000000
+const MONITOR_DEFAULTTOPRIMARY = 0x00000001
+const MONITOR_DEFAULTTONEAREST = 0x00000002
+
+struct MONITORINFO
+{
+    cbSize:       DWORD
+    rcMonitor:    RECT
+    rcWork:       RECT
+    dwFlags:      DWORD
+}
+
 #[Foreign("user32")]
 {
     func GetAsyncKeyState(vKey: s32)->SHORT;
@@ -842,6 +855,9 @@ struct PAINTSTRUCT
     func IsClipboardFormatAvailable(format: UINT)->BOOL;
     func GetClipboardData(uFormat: UINT)->HANDLE;
     func SetClipboardData(uFormat: UINT, hMem: HANDLE)->HANDLE;
+
+    func MonitorFromPoint(pt: POINT, dwFlags: DWORD)->HMONITOR;
+    func MonitorFromWindow(hwnd: HWND, dwFlags: DWORD)->HMONITOR;
 }
 
 #[Foreign("user32"), Discardable]
@@ -887,6 +903,9 @@ namespace User32Priv
         func SetWindowPos(hWnd, hWndInsertAfter: HWND, x, y, cx, cy: s32, uFlags: UINT)->BOOL;
 
         func SetLayeredWindowAttributes(hwnd: HWND, crKey: COLORREF, bAlpha: BYTE, dwFlags: DWORD)->BOOL;
+
+        func GetMonitorInfoA(hMonitor: HMONITOR, lpmi: *MONITORINFO)->BOOL;
+        func GetMonitorInfoW(hMonitor: HMONITOR, lpmi: *MONITORINFO)->BOOL;
     }
 }
 
@@ -949,6 +968,20 @@ namespace User32Priv
     func SetLayeredWindowAttributes(hwnd: HWND, crKey: COLORREF, bAlpha: BYTE, dwFlags: DWORD) throw
     {
         if !User32Priv.SetLayeredWindowAttributes(hwnd, crKey, bAlpha, dwFlags)
+            try setError(GetLastError())
+    }
+
+    func GetMonitorInfoA(hMonitor: HMONITOR, lpmi: *MONITORINFO) throw
+    {
+        lpmi.cbSize = @sizeof(MONITORINFO)
+        if !User32Priv.GetMonitorInfoA(hMonitor, lpmi)
+            try setError(GetLastError())
+    }
+
+    func GetMonitorInfoW(hMonitor: HMONITOR, lpmi: *MONITORINFO) throw
+    {
+        lpmi.cbSize = @sizeof(MONITORINFO)
+        if !User32Priv.GetMonitorInfoW(hMonitor, lpmi)
             try setError(GetLastError())
     }
 }

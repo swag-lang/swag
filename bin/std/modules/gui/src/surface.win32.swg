@@ -81,12 +81,25 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
             }
             return 0
 
-        /*case WM_GETMINMAXINFO:
-            discard DefWindowProcW(hWnd, msg, wParam, lParam)
-            mm := cast(*MINMAXINFO) cast(uint) lParam
-            mm.ptMaxPosition.x = -20
-            mm.ptMaxPosition.y = -20
-            return 0*/
+        case WM_GETMINMAXINFO:
+            var pt: POINT
+            pt.x = cast(s32) surface.position.x
+            pt.y = cast(s32) surface.position.y
+            hm := MonitorFromPoint(pt, MONITOR_DEFAULTTONEAREST)
+            if hm != null
+            {
+                var info: MONITORINFO
+                catch GetMonitorInfoA(hm, &info)
+                sdw := cast(s32) surface.app.theme.metrics.surfaceWnd_ShadowSize
+
+                mm := cast(*MINMAXINFO) cast(uint) lParam
+                mm.ptMaxPosition.x = (info.rcWork.left - info.rcMonitor.left) - sdw
+                mm.ptMaxPosition.y = (info.rcWork.top - info.rcMonitor.top) - sdw
+                mm.ptMaxSize.x     = (info.rcWork.right - info.rcWork.left) + 2 * sdw
+                mm.ptMaxSize.y     = (info.rcWork.bottom - info.rcWork.top) + 2 * sdw
+            }
+
+            return 0
 
         case WM_MOVE:
             surface.position.x = LOWORD(lParam)
