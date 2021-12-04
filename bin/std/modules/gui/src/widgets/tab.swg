@@ -22,11 +22,11 @@ public enum TabBarLayout
 
 public struct TabItem
 {
-    view:   *Wnd
-    icon:   Icon
     name:   RichString
+    icon:   Icon
     pos:    f32
     width:  f32
+    view:   *Wnd
 }
 
 public struct Tab
@@ -120,6 +120,18 @@ impl IWnd for Tab
                 painter.fillRect(clientRect, colors.tabBar_FlatBk)
             }
         }
+
+        // Paint border and back
+        var subRect:    *ThemeImageRect
+        var colorBk:    Color
+
+        clientRect := getClientRect()
+        clientRect.moveTop(barHeight)
+        subRect = &rects.tabView_FlatBk
+        colorBk = colors.tabView_FlatBk
+        theme.drawSubRect(painter, clientRect, subRect, colorBk)
+        if style.styleSheetColors.isEmpty()
+        painter.fillRect(clientRect, colorBk)
 
         // Paint all except selected one, which will be painted last
         visit v, idx: views
@@ -234,7 +246,7 @@ public impl Tab
     }
 
     // Add a new view
-    mtd addView(tabName: string, view: *Wnd, icon: Icon = @{})
+    mtd addItem(tabName: string, icon: Icon, view: *Wnd)
     {
         if views.isEmpty()
             view.isHidden = false

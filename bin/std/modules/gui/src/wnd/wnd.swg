@@ -13,7 +13,7 @@ enum DockStyle
 
 enum BackgroundStyle
 {
-    None
+    Transparent
     Window
     Dialog
     DialogBar
@@ -63,7 +63,7 @@ struct Wnd
 
     focusStrategy: FocusStategy = MousePressed
 
-    backgroundStyle:    BackgroundStyle = None
+    backgroundStyle:    BackgroundStyle = Transparent
     isDisabled:         bool
     isHidden:           bool
     isAllocated:        bool
