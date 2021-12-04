@@ -194,11 +194,7 @@ func createWidgets(view: *Wnd)
 
     {
         tab := Tab.create(view, @{600, 150, 400, 100}, id: "tab0")
-        tab.barLayout = .Fixed
-        tab.barForm = .Transparent
-        tab.viewForm = .Round
-        tab.itemForm = .Round
-        tab.barHeight = 28
+        tab.setForm(TabForm.Round)
 
         view0 := Wnd.create'Wnd()
         tab.addItem("Tab0", app.theme.getIcon24(ThemeIcons24.Search, 16), view0)

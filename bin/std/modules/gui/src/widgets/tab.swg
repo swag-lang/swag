@@ -1,5 +1,11 @@
 using Core, Pixel
 
+public enum TabForm
+{
+    Flat
+    Round
+}
+
 public enum TabBarForm
 {
     Transparent
@@ -266,9 +272,29 @@ public impl Tab
     func create(parent: *Wnd, position: Math.Rectangle, id: string = null)->*Tab
     {
         res := Wnd.create'Tab(parent, "", position, id)
-        res.barHeight = 40
+        res.setForm(TabForm.Flat)
         res.sendCreateEvent()
         return res
+    }
+
+    mtd setForm(tabForm: TabForm)
+    {
+        switch tabForm
+        {
+        case Flat:
+            barForm = .Flat
+            itemForm = .Flat
+            viewForm = .Flat
+            barHeight = 40
+            barLayout = .Divide
+
+        case Round:
+            barForm = .Transparent
+            itemForm = .Round
+            viewForm = .Round
+            barHeight = 28
+            barLayout = .Fixed
+        }
     }
 
     // Add a new view
