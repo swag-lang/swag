@@ -1,8 +1,8 @@
 #global if #os == Swag.TargetOs.Windows
 using Core, Pixel, Gui
 
-const W = 1024
-const H = 1024
+const W = 1200
+const H = 1000
 
 var app: Gui.Application
 

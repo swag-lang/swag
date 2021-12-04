@@ -7,7 +7,7 @@ public enum TabBarForm
 }
 
 
-public enum Tab_itemForm
+public enum TabItemForm
 {
     Transparent
     Flat
@@ -39,7 +39,7 @@ public struct Tab
 {
     using wnd:           Wnd
     barForm:             TabBarForm = Flat
-    _itemForm:           Tab_itemForm = Flat
+    itemForm:            TabItemForm = Flat
     viewForm:            TabViewForm = Flat
     barLayout:           TabBarLayout = Divide
     barFixedLayoutWidth: f32 = 100
@@ -70,7 +70,7 @@ impl IWnd for Tab
         var colorImg:   Color
         var colorText:  Color
 
-        switch _itemForm
+        switch itemForm
         {
         case Flat:
             if idx == selectedIdx

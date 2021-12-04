@@ -197,7 +197,7 @@ func createWidgets(view: *Wnd)
         tab.barLayout = .Fixed
         tab.barForm = .Transparent
         tab.viewForm = .Round
-        tab._itemForm = .Round
+        tab.itemForm = .Round
         tab.barHeight = 28
 
         view0 := Wnd.create'Wnd()
