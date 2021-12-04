@@ -155,6 +155,7 @@ struct ThemeColors
     tabItem_SelectedText:           Color = White
     tabItem_UnSelectedText:         Color = Color.getDarker(Color.fromArgb(White), 0.3)
     tabItem_FlatSelected:           Color = Blue
+    tabItem_FlatHot:                Color = White
     tabItem_RoundSelected:          Color = Gray6
     tabItem_RoundHot:               Color = Gray4
     tabBar_FlatBk:                  Color = Gray4

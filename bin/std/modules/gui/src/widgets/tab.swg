@@ -81,8 +81,14 @@ impl IWnd for Tab
         case Flat:
             if idx == selectedIdx
             {
-                colorImg = colors.tabItem_FlatSelected
                 subRect = &rects.tabItem_FlatSelected
+                colorImg = colors.tabItem_FlatSelected
+                colorText = colors.tabItem_SelectedText
+            }
+            else if idx == hotIdx
+            {
+                subRect = &rects.tabItem_FlatSelected
+                colorImg = colors.tabItem_FlatHot
                 colorText = colors.tabItem_SelectedText
             }
             else
@@ -277,6 +283,7 @@ public impl Tab
         return res
     }
 
+    // Set the tab form
     mtd setForm(tabForm: TabForm)
     {
         switch tabForm

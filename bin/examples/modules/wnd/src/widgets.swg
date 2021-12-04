@@ -184,6 +184,7 @@ func createWidgets(view: *Wnd)
     // Tab
     {
         tab := Tab.create(view, @{600, 20, 400, 100}, id: "tab0")
+
         view0 := Wnd.create'Wnd()
         tab.addItem("Tab0", app.theme.getIcon24(ThemeIcons24.Search, 16), view0)
         view1 := Wnd.create'Wnd()
