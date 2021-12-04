@@ -2,15 +2,21 @@ using Core, Pixel
 
 public enum TabBarForm
 {
-    Flat
     Transparent
+    Flat
 }
 
 
-public enum TabItemForm
+public enum Tab_itemForm
+{
+    Transparent
+    Flat
+    Round
+}
+
+public enum TabViewForm
 {
     Flat
-    Transparent
     Round
 }
 
@@ -31,11 +37,12 @@ public struct TabItem
 
 public struct Tab
 {
-    using wnd:              Wnd
-    tabBarForm:             TabBarForm = Flat
-    tabBarLayout:           TabBarLayout = Divide
-    tabItemForm:            TabItemForm = Flat
-    tabBarFixedLayoutWidth: f32 = 100
+    using wnd:           Wnd
+    barForm:             TabBarForm = Flat
+    _itemForm:           Tab_itemForm = Flat
+    viewForm:            TabViewForm = Flat
+    barLayout:           TabBarLayout = Divide
+    barFixedLayoutWidth: f32 = 100
 
     views:          Array'(*TabItem)
     selectedIdx:    u32
@@ -63,7 +70,7 @@ impl IWnd for Tab
         var colorImg:   Color
         var colorText:  Color
 
-        switch tabItemForm
+        switch _itemForm
         {
         case Flat:
             if idx == selectedIdx
@@ -110,11 +117,11 @@ impl IWnd for Tab
         rects   := getThemeRects()
 
         // Background bar
-        if tabBarForm != .Transparent
+        if barForm != .Transparent
         {
             clientRect := getClientRect()
             clientRect.height = barHeight
-            switch tabBarForm
+            switch barForm
             {
             case Flat:
                 painter.fillRect(clientRect, colors.tabBar_FlatBk)
@@ -127,11 +134,17 @@ impl IWnd for Tab
 
         clientRect := getClientRect()
         clientRect.moveTop(barHeight)
-        subRect = &rects.tabView_FlatBk
-        colorBk = colors.tabView_FlatBk
+        switch viewForm
+        {
+        case Flat:
+            subRect = &rects.tabView_FlatBk
+            colorBk = colors.tabView_FlatBk
+        case Round:
+            subRect = &rects.tabView_RoundBk
+            colorBk = colors.tabView_RoundBk
+        }
+
         theme.drawSubRect(painter, clientRect, subRect, colorBk)
-        if style.styleSheetColors.isEmpty()
-        painter.fillRect(clientRect, colorBk)
 
         // Paint all except selected one, which will be painted last
         visit v, idx: views
@@ -209,7 +222,7 @@ impl Tab
 
     mtd computeTabLayout()
     {
-        switch tabBarLayout
+        switch barLayout
         {
         case Divide:
             w := cast(f32) (position.width / views.count)
@@ -222,7 +235,7 @@ impl Tab
             }
 
         case Fixed:
-            w := cast(f32) tabBarFixedLayoutWidth
+            w := cast(f32) barFixedLayoutWidth
             x := 0'f32
             visit v: views
             {

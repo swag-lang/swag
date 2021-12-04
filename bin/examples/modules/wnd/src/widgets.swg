@@ -185,10 +185,8 @@ func createWidgets(view: *Wnd)
     {
         tab := Tab.create(view, @{600, 20, 400, 100}, id: "tab0")
         view0 := Wnd.create'Wnd()
-        //view0.backgroundStyle = .Dialog
         tab.addItem("Tab0", app.theme.getIcon24(ThemeIcons24.Search, 16), view0)
         view1 := Wnd.create'Wnd()
-        //view1.backgroundStyle = .Dialog
         tab.addItem("Tab1", @{}, view1)
         Label.create(view0, "view0", @{10, 10, 50, 30})
         Label.create(view1, "view1", @{10, 10, 50, 30})
@@ -196,19 +194,17 @@ func createWidgets(view: *Wnd)
 
     {
         tab := Tab.create(view, @{600, 150, 400, 100}, id: "tab0")
-        tab.tabBarLayout = .Fixed
-        tab.tabBarForm = .Transparent
-        tab.tabItemForm = .Round
+        tab.barLayout = .Fixed
+        tab.barForm = .Transparent
+        tab.viewForm = .Round
+        tab._itemForm = .Round
         tab.barHeight = 28
 
         view0 := Wnd.create'Wnd()
-        //view0.backgroundStyle = .Dialog
         tab.addItem("Tab0", app.theme.getIcon24(ThemeIcons24.Search, 16), view0)
         view1 := Wnd.create'Wnd()
-        //view1.backgroundStyle = .Dialog
         tab.addItem("Tab1", @{}, view1)
         view2 := Wnd.create'Wnd()
-        //view2.backgroundStyle = .Dialog
         tab.addItem("Tab2", @{}, view2)
         Label.create(view0, "view0", @{10, 10, 50, 30})
         Label.create(view1, "view1", @{10, 10, 50, 30})

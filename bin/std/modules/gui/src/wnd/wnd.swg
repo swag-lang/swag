@@ -251,9 +251,7 @@ impl Wnd
 
     mtd computeStyle()
     {
-        if parent
-            style.compute(self, &parent.style)
-        else if surface
+        if surface
             style.compute(self, &surface.app.style)
     }
 

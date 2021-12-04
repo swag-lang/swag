@@ -14,7 +14,7 @@ var app: Gui.Application
 
     tab := Tab.create(surface0.wnd.view, @{})
     tab.dockStyle = .Center
-    tab.tabBarLayout = .Fixed
+    tab.barLayout = .Fixed
     tab.padding = @{10, 10, 10, 10}
     tab.style.addStyleSheetColors("tabView_FlatBk $wnd_Bk")
     view0 := Wnd.create'Wnd()

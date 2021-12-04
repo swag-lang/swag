@@ -157,5 +157,6 @@ struct ThemeColors
     tabItem_FlatSelected:           Color = Blue
     tabItem_RoundSelected:          Color = Gray6
     tabBar_FlatBk:                  Color = Gray4
-    tabView_FlatBk:                 Color = Blue//Gray6
+    tabView_FlatBk:                 Color = Gray6
+    tabView_RoundBk:                Color = Gray6
 }
