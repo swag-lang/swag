@@ -65,6 +65,7 @@ struct ThemeImageRects
 
     tabItem_FlatSelected:       ThemeImageRect = @{{57,95,27,27}, 5}
     tabItem_RoundSelected:      ThemeImageRect = @{{85,95,39,25}, 10}
+    tabItem_RoundHot:           ThemeImageRect = @{{85,95,39,25}, 10}
     tabBar_FlatBk:              ThemeImageRect = @{{57,95,27,27}, 5}
     tabView_FlatBk:             ThemeImageRect = @{{125,95,27,27}, 10}
     tabView_RoundBk:            ThemeImageRect = @{{153,95,27,27}, 10}

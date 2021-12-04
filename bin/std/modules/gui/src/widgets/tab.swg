@@ -86,8 +86,14 @@ impl IWnd for Tab
         case Round:
             if idx == selectedIdx
             {
+                subRect = &rects.tabItem_RoundSelected
                 colorImg = colors.tabItem_RoundSelected
-                subRect = &rects.tabItem_RoundSelected//&rects.tabItem_FlatSelected
+                colorText = colors.tabItem_SelectedText
+            }
+            else if idx == hotIdx
+            {
+                subRect = &rects.tabItem_RoundHot
+                colorImg = colors.tabItem_RoundHot
                 colorText = colors.tabItem_SelectedText
             }
             else
@@ -186,6 +192,13 @@ impl IWnd for Tab
         evt.accepted = true
         switch evt.kind
         {
+        case .MouseLeave:
+            if hotIdx != Swag.U32.Max
+            {
+                hotIdx = Swag.U32.Max
+                invalidate()
+            }
+
         case .MousePressed:
             if evt.button == .Left
             {
