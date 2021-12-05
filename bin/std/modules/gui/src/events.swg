@@ -12,6 +12,7 @@ enum EventKind
     KeyPressed
     KeyReleased
     Char
+    MouseAccept
     MousePressed
     MouseReleased
     MouseDoubleClick

@@ -12,6 +12,26 @@ public struct PopupMenu
     items:      Array'(*PopupMenuItem)
 }
 
+impl IWnd for PopupMenu
+{
+    mtd onPaintEvent(evt: *PaintEvent)
+    {
+        colors := getThemeColors()
+
+        clientRect := getClientRect()
+        evt.bc.painter.fillRect(clientRect, colors.popupMenu_Bk)
+    }
+
+    mtd onMouseEvent(evt: *MouseEvent)
+    {
+        evt.accepted = true
+        if evt.kind == .MousePressed
+        {
+            destroy()
+        }
+    }
+}
+
 impl PopupMenu
 {
     mtd opDrop()
@@ -26,7 +46,7 @@ public impl PopupMenu
     #[Swag.Discardable]
     func create(parent: *Wnd, id: string = null)->*PopupMenu
     {
-        res := Wnd.create'PopupMenu(parent.surface.wnd.view, null, @{}, id)
+        res := Wnd.create'PopupMenu(&parent.surface.wnd, null, @{}, id)
         res.sendCreateEvent()
         res.isHidden = true
         return res
@@ -40,16 +60,11 @@ public impl PopupMenu
         items.add(item)
     }
 
-    mtd display(surfacePos: Math.Point)
+    mtd doModal(surfacePos: Math.Point)
     {
         pt := parent.surfaceToLocal(surfacePos)
-        position.x = pt.x
-        position.y = pt.y
-        position.width = 100
-        position.height = 100
-
-        invalidate()
+        setPosition(@{pt.x, pt.y, 100, 100})
         show()
-        discard surface.app.doModalLoop(surface)
+        captureMouse()
     }
 }

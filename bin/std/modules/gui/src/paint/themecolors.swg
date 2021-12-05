@@ -161,4 +161,6 @@ struct ThemeColors
     tabBar_FlatBk:                  Color = Gray4
     tabView_FlatBk:                 Color = Gray6
     tabView_RoundBk:                Color = Gray6
+
+    popupMenu_Bk:                   Color = Gray6
 }

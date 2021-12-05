@@ -2,7 +2,7 @@ using Core, Gui
 
 func onEvent(wnd: *Wnd, evt: *Event)->bool
 {
-    if evt.kind == .MouseEnter
+    if evt.kind == .MouseAccept
     {
         evt.accepted = true
         return true
@@ -12,7 +12,12 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
     {
         pevt := cast(*MouseEvent) evt
         if pevt.button == .Right
-            @print("x")
+        {
+            menu := PopupMenu.create(wnd)
+            menu.addItem("coucou", @{})
+            menu.addItem("salut", @{})
+            menu.doModal(pevt.surfacePos)
+        }
     }
 
     return false

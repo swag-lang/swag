@@ -111,6 +111,14 @@ impl Application
                 e.target = null
         }
 
+        // Remove from parent
+        if wnd.parent and !wnd.parent.isPendingDestroy
+        {
+            (idx, ok) := Slice.findLinear(wnd.parent.childs.toSlice(), wnd)
+            Debug.assert(ok)
+            wnd.parent.childs.removeAt(idx)
+        }
+
         if wnd.isAllocated
             Memory.delete(@dataof(wnd.itf), @kindof(wnd.itf))
     }
@@ -228,6 +236,17 @@ impl Application
 
         evt := MouseEvent{}
 
+        // Accept
+        if targetWnd
+        {
+            evt.kind = .MouseAccept
+            evt.surfacePos = targetWnd.screenToSurface(mousePos)
+            evt.pos = targetWnd.surfaceToLocal(evt.surfacePos)
+            evt.target = targetWnd
+            sendEventPrivate(&evt, mouseEnterWnd)
+            targetWnd = evt.target
+        }
+
         // Mouse enter/leave
         if !targetWnd or targetWnd != mouseEnterWnd
         {
@@ -239,7 +258,6 @@ impl Application
                 evt.pos = targetWnd.surfaceToLocal(evt.surfacePos)
                 evt.target = targetWnd
                 sendEventPrivate(&evt, mouseEnterWnd)
-                targetWnd = evt.target
             }
 
             // Leave
@@ -439,7 +457,8 @@ impl Application
 
     private mtd doModalLoop(surface: *Surface)->string
     {
-        visit s: surfaces s.disable()
+        visit s: surfaces
+            s.disable()
         modalSurfaces.add(surface)
 
         while !mustQuit and !endModal
@@ -448,8 +467,10 @@ impl Application
         }
 
         surface.destroy()
+
         modalSurfaces.removeBack()
-        visit s: surfaces s.enable()
+        visit s: surfaces
+            s.enable()
 
         if modalSurfaces.count
             modalSurfaces.back().enable()

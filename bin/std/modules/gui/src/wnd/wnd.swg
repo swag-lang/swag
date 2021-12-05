@@ -162,9 +162,10 @@ impl Wnd
         if isPendingDestroy
             return
         isPendingDestroy = true
-        surface.app.postDestroy.add(self)
         visit c: childs
             c.destroy()
+        surface.app.postDestroy.add(self)
+        invalidate()
     }
 
     // Set window parent
@@ -495,8 +496,12 @@ impl Wnd
         if !position.contains(x, y)
             return null
 
-        visit c: childs
+        // Top level window is the last one painted, so it's the last
+        // in the array.
+        // So we must visit in revert order
+        for i := cast(s32) childs.count - 1; i >= 0; i -= 1
         {
+            c := childs[i]
             if c.isHidden and !getHidden
                 continue
             if c.isDisabled and !getDisabled
