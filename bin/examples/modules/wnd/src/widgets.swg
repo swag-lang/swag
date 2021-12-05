@@ -15,7 +15,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         {
             menu := PopupMenu.create(wnd)
             menu.addItem("coucou", @{})
-            menu.addItem("salut", @{})
+            menu.addItem("salut", app.theme.getIcon24(ThemeIcons24.Search, 18))
             menu.doModal(pevt.surfacePos)
         }
     }
