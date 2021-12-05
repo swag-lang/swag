@@ -2,9 +2,17 @@ using Core, Gui
 
 func onEvent(wnd: *Wnd, evt: *Event)->bool
 {
+    if evt.kind == .MouseEnter
+    {
+        evt.accepted = true
+        return true
+    }
+
     if evt.kind == .MousePressed
     {
-        @print("x")
+        pevt := cast(*MouseEvent) evt
+        if pevt.button == .Right
+            @print("x")
     }
 
     return false
