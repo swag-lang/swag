@@ -165,6 +165,8 @@ struct ThemeColors
 
     popupMenu_Bk:                   Color = Gray6
     popupMenu_Border:               Color = Color.getDarker(Color.fromArgb(Gray6), 0.1)
-    popupMenu_Shadow:               Color = 0x40000000
+    popupMenu_Shadow:               Color = 0x80000000
     popupItem_Text:                 Color = White
+    popupItem_HotText:              Color = White
+    popupItem_HotBk:                Color = Blue
 }
