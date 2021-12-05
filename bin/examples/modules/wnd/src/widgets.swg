@@ -1,8 +1,19 @@
 using Core, Gui
 
+func onEvent(wnd: *Wnd, evt: *Event)->bool
+{
+    if evt.kind == .MousePressed
+    {
+        @print("x")
+    }
+
+    return false
+}
+
 func createWidgets(view: *Wnd)
 {
     theme := app.theme
+    view.hookOnEvent = &onEvent
 
     // Push buttons
     {

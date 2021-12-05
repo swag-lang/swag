@@ -199,9 +199,11 @@ impl IWnd for Tab
         }
 
         if hit == Swag.U32.Max
+        {
+            evt.accepted = false
             return
+        }
 
-        evt.accepted = true
         switch evt.kind
         {
         case .MouseLeave:

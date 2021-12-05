@@ -12,12 +12,12 @@ var app: Gui.Application
     surface0.setTitle("Example 0")
     surface0.setIcon(app.theme.getIcon24(ThemeIcons24.WndMinimize, 20))
 
-    tab := Tab.create(surface0.wnd.view, @{})
+    tab := Tab.create(surface0.wnd.view, @{}, id: "bigtab")
     tab.dockStyle = .Center
     tab.barLayout = .Fixed
     tab.padding = @{10, 10, 10, 10}
     tab.style.addStyleSheetColors("tabView_FlatBk $wnd_Bk")
-    view0 := Wnd.create'Wnd()
+    view0 := Wnd.create'Wnd(null, "bigview0")
     tab.addItem("Widgets", @{}, view0)
 
     createWidgets(view0)
