@@ -1249,7 +1249,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     return true;
 }
 
-void SemanticJob::setupContextualGenericTypeReplacement(SemanticContext* context, OneTryMatch& oneTryMatch, SymbolOverload* symOverload)
+void SemanticJob::setupContextualGenericTypeReplacement(SemanticContext* context, OneTryMatch& oneTryMatch, SymbolOverload* symOverload, uint32_t flags)
 {
     auto node = context->node;
 
@@ -1271,6 +1271,9 @@ void SemanticJob::setupContextualGenericTypeReplacement(SemanticContext* context
     // We do not want function to deduce their generic type from context, as the generic type can be deduced from the
     // parameters
     if (node->ownerFct && symOverload->typeInfo->kind != TypeInfoKind::FuncAttr)
+        toCheck.push_back(node->ownerFct);
+    // Except for a second try
+    if (node->ownerFct && symOverload->typeInfo->kind == TypeInfoKind::FuncAttr && flags & MIP_SECOND_GENERIC_TRY)
         toCheck.push_back(node->ownerFct);
 
     if (node->kind == AstNodeKind::Identifier)
@@ -1903,8 +1906,10 @@ bool SemanticJob::isFunctionButNotACall(SemanticContext* context, AstNode* node,
     return false;
 }
 
-bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node, bool justCheck, bool forGhosting)
+bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node, uint32_t flags)
 {
+    bool  justCheck        = flags & MIP_JUST_CHECK;
+    bool  forGhosting      = flags & MIP_FOR_GHOSTING;
     auto  job              = context->job;
     auto& matches          = job->cacheMatches;
     auto& genericMatches   = job->cacheGenericMatches;
@@ -1980,7 +1985,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
             oneOverload.symMatchContext.flags |= SymbolMatchContext::MATCH_UFCS;
 
         // We collect type replacements depending on where the identifier is
-        setupContextualGenericTypeReplacement(context, oneOverload, overload);
+        setupContextualGenericTypeReplacement(context, oneOverload, overload, flags);
 
         oneOverload.symMatchContext.semContext = context;
         if (rawTypeInfo->kind == TypeInfoKind::Struct)
@@ -2161,7 +2166,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
     // This is a generic
     if (genericMatches.size() == 1 && matches.empty())
     {
-        if (justCheck)
+        if (justCheck && !(flags & MIP_SECOND_GENERIC_TRY))
             return true;
         SWAG_CHECK(instantiateGenericSymbol(context, *genericMatches[0], forStruct));
         return true;
@@ -2228,8 +2233,29 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
     // There's no match at all
     if (matches.size() == 0)
     {
+        if (!(flags & MIP_SECOND_GENERIC_TRY))
+        {
+            VectorNative<OneTryMatch*> cpyOverloads;
+            for (auto& oneMatch : overloads)
+            {
+                if (oneMatch->symMatchContext.result == MatchResult::NotEnoughGenericParameters &&
+                    oneMatch->symMatchContext.genericParameters.empty())
+                {
+                    cpyOverloads.push_back(oneMatch);
+                }
+            }
+
+            if (!cpyOverloads.empty())
+            {
+                auto result = matchIdentifierParameters(context, cpyOverloads, node, flags | MIP_JUST_CHECK | MIP_SECOND_GENERIC_TRY);
+                if (result)
+                    return true;
+            }
+        }
+
         if (justCheck)
             return false;
+
         return cannotMatchIdentifierError(context, overloads, node);
     }
 
@@ -3724,7 +3750,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
             break;
         }
 
-        SWAG_CHECK(matchIdentifierParameters(context, listTryMatch, node, false, forGhosting));
+        SWAG_CHECK(matchIdentifierParameters(context, listTryMatch, node, forGhosting ? MIP_FOR_GHOSTING : 0));
         if (context->result == ContextResult::Pending)
             return true;
 

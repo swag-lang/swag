@@ -112,6 +112,7 @@ struct OneMatch
     void reset()
     {
         solvedParameters.clear();
+        paramParameters.clear();
         symbolOverload = nullptr;
         dependentVar   = nullptr;
         ufcs           = false;
@@ -149,6 +150,10 @@ struct OneGenericMatch
 static const uint32_t COLLECT_ALL       = 0x00000000;
 static const uint32_t COLLECT_BACKTICK  = 0x00000001;
 static const uint32_t COLLECT_NO_STRUCT = 0x00000002;
+
+static const uint32_t MIP_JUST_CHECK         = 0x00000001;
+static const uint32_t MIP_FOR_GHOSTING       = 0x00000002;
+static const uint32_t MIP_SECOND_GENERIC_TRY = 0x00000004;
 
 struct SemanticJob : public Job
 {
@@ -220,14 +225,14 @@ struct SemanticJob : public Job
     static bool         storeToSegment(JobContext* context, DataSegment* storageSegment, uint32_t storageOffset, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
     static bool         collectLiteralsToSegment(JobContext* context, DataSegment* storageSegment, uint32_t baseOffset, uint32_t& offset, AstNode* node);
     static bool         collectStructLiterals(JobContext* context, DataSegment* storageSegment, uint32_t offsetStruct, AstNode* node);
-    static void         setupContextualGenericTypeReplacement(SemanticContext* context, OneTryMatch& oneTryMatch, SymbolOverload* symOverload);
+    static void         setupContextualGenericTypeReplacement(SemanticContext* context, OneTryMatch& oneTryMatch, SymbolOverload* symOverload, uint32_t flags);
     static void         getDiagnosticForMatch(SemanticContext* context, OneTryMatch& oneTry, vector<const Diagnostic*>& result0, vector<const Diagnostic*>& result1);
     static void         symbolErrorRemarks(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node, Diagnostic* diag);
     static void         symbolNotFoundHint(SemanticContext* context, AstNode* node, VectorNative<Scope*>& scopeHierarchy, vector<Utf8>& best);
     static bool         isFunctionButNotACall(SemanticContext* context, AstNode* node, SymbolName* symbol);
     static void         symbolErrorNotes(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node, Diagnostic* diag, vector<const Diagnostic*>& notes);
     static bool         cannotMatchIdentifierError(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node);
-    static bool         matchIdentifierParameters(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node, bool justCheck = false, bool forGhosting = false);
+    static bool         matchIdentifierParameters(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node, uint32_t flags = 0);
     static bool         evaluateConstExpression(SemanticContext* context, AstNode* node);
     static bool         evaluateConstExpression(SemanticContext* context, AstNode* node1, AstNode* node2);
     static bool         evaluateConstExpression(SemanticContext* context, AstNode* node1, AstNode* node2, AstNode* node3);

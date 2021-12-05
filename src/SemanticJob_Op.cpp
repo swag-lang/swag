@@ -346,7 +346,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
             }
         }
 
-        SWAG_CHECK(matchIdentifierParameters(context, listTryMatch, nullptr, justCheck));
+        SWAG_CHECK(matchIdentifierParameters(context, listTryMatch, nullptr, justCheck ? MIP_JUST_CHECK : 0));
         if (context->result == ContextResult::Pending)
             return true;
         if (context->result != ContextResult::NewChilds)

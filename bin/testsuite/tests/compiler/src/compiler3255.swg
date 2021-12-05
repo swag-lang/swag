@@ -1,4 +1,4 @@
-#global skip
+//#global skip
 struct Rectangle{ x: s32; }
 
 func(T) create(parent: *void = null, id: string = null)
@@ -10,7 +10,6 @@ func(T) create(parent: *void, name: string, position: Rectangle, id: string = nu
 {
 }
 
-#[Swag.PrintBc, Swag.Optim("", false)]
 #test
 {
     create's32(id: "titi")
