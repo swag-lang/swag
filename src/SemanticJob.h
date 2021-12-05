@@ -23,6 +23,7 @@ struct AstFuncDecl;
 struct DataSegmentLocation;
 struct DataSegment;
 struct SymbolName;
+struct AstFuncCallParam;
 
 struct SemanticContext : public JobContext
 {
@@ -90,6 +91,15 @@ struct OneTryMatch
 struct OneMatch
 {
     VectorNative<TypeInfoParam*> solvedParameters;
+
+    struct ParamParameter
+    {
+        AstFuncCallParam* param;
+        int               indexParam;
+        TypeInfoParam*    resolvedParameter;
+    };
+
+    VectorNative<ParamParameter> paramParameters;
 
     SymbolOverload* symbolOverload = nullptr;
     Scope*          scope          = nullptr;

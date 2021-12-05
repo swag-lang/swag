@@ -626,6 +626,13 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         return context->report({parent->previousResolvedNode, Utf8::format(g_E[Err0086], parent->previousResolvedNode->token.text.c_str(), symbol->name.c_str(), parent->startScope->name.c_str())});
     }
 
+    // Reapply back the values of the match to the call parameter node
+    for (auto& pp : oneMatch.paramParameters)
+    {
+        pp.param->indexParam        = pp.indexParam;
+        pp.param->resolvedParameter = pp.resolvedParameter;
+    }
+
     // Direct reference to a constexpr typeinfo
     if (parent->previousResolvedNode &&
         (parent->previousResolvedNode->flags & AST_VALUE_IS_TYPEINFO) &&
@@ -2078,6 +2085,23 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                 match->dependentVar     = dependentVar;
                 match->ufcs             = oneOverload.ufcs;
                 match->oneOverload      = &oneOverload;
+
+                // As indexParam and resolvedParameter are directly stored in the node, we need to save them
+                // with the corresponding match, as they can be overwritten by another match attempt
+                for (auto p : oneOverload.symMatchContext.parameters)
+                {
+                    if (p->kind != AstNodeKind::FuncCallParam)
+                        continue;
+
+                    OneMatch::ParamParameter pp;
+                    auto                     param = CastAst<AstFuncCallParam>(p, AstNodeKind::FuncCallParam);
+
+                    pp.param             = param;
+                    pp.indexParam        = param->indexParam;
+                    pp.resolvedParameter = param->resolvedParameter;
+                    match->paramParameters.push_back(pp);
+                }
+
                 matches.push_back(match);
             }
         }
