@@ -1444,7 +1444,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     {
         auto errNode = genericParameters ? genericParameters : node ? node
                                                                     : context->node;
-        diag         = new Diagnostic{errNode, Utf8::format(g_E[Err0035], refNiceName.c_str())};
+        diag         = new Diagnostic{errNode, Utf8::format(genericParameters ? g_E[Err0035] : g_E[Err0049], refNiceName.c_str())};
         note         = new Diagnostic{overload->node, Utf8::format(g_E[Nte0008], refNiceName.c_str()), DiagnosticLevel::Note};
         result0.push_back(diag);
         result1.push_back(note);
@@ -1767,6 +1767,7 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
             case MatchResult::NotEnoughParameters:
             case MatchResult::TooManyParameters:
             case MatchResult::SelectIfFailed:
+            case MatchResult::NotEnoughGenericParameters:
                 n.push_back(oneMatch);
                 break;
             }
@@ -1856,8 +1857,9 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
         getDiagnosticForMatch(context, *one, errs0, errs1);
 
         SWAG_ASSERT(!errs0.empty());
-        auto note     = const_cast<Diagnostic*>(errs0[0]);
-        note->textMsg = Utf8::format("[overload %d] %s", overIdx++, note->textMsg.c_str());
+        auto note       = const_cast<Diagnostic*>(errs0[0]);
+        note->textMsg   = Utf8::format("[overload %d] %s", overIdx++, note->textMsg.c_str());
+        note->showRange = false;
 
         // Get the overload site
         if (!errs1.empty())
