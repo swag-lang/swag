@@ -27,6 +27,7 @@ struct ThemeColors
     wnd_CaptionNotActivatedText:    Color = White
     wnd_BtnCloseBk:                 Color = 0xFFd61425
     wnd_BtnCloseHotBk:              Color = 0xFFe62435
+    wnd_Shadow:                     Color = 0x8C000000
 
     dlg_Bk:                         Color = Gray6
     dlg_BtnBarBk:                   Color = Gray7
@@ -164,5 +165,6 @@ struct ThemeColors
 
     popupMenu_Bk:                   Color = Gray6
     popupMenu_Border:               Color = Color.getDarker(Color.fromArgb(Gray6), 0.1)
+    popupMenu_Shadow:               Color = 0x40000000
     popupItem_Text:                 Color = White
 }

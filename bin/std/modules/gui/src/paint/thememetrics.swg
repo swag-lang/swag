@@ -36,4 +36,5 @@ struct ThemeMetrics
 
     popupMenu_Padding:          f32 = 15
     popupMenu_SpaceLines:       f32 = 5
+    popupMenu_ShadowSize:       f32 = 10
 }

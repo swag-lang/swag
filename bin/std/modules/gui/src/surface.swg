@@ -127,13 +127,9 @@ impl Surface
 
         subRect := &app.theme.rects.surfaceWnd_Shadow
         painter.colorMask(true, true, true, true)
-        app.theme.drawSubRect(&painter, @{0, 0, position.width, position.height}, subRect, Color.fromArgb(140,0,0,0))
+        app.theme.drawSubRect(&painter, @{0, 0, position.width, position.height}, subRect, app.theme.colors.wnd_Shadow)
 
         wnd.paint(&cxt)
-
-        //painter.colorMask(false, false, false, true)
-        //painter.clear(Color.fromArgb(155, 0, 0, 0))
-
         painter.end()
 
         cxt.renderer.draw(&painter)
