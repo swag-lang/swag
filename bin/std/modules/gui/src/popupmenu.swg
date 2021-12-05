@@ -16,10 +16,15 @@ impl IWnd for PopupMenu
 {
     mtd onPaintEvent(evt: *PaintEvent)
     {
+        painter := evt.bc.painter
+        theme  := getTheme()
         colors := getThemeColors()
+        rects  := getThemeRects()
 
         clientRect := getClientRect()
-        evt.bc.painter.fillRect(clientRect, colors.popupMenu_Bk)
+
+        theme.drawSubRect(painter, clientRect, &rects.popupMenu_Bk, colors.popupMenu_Bk)
+        theme.drawSubRect(painter, clientRect, &rects.popupMenu_Border, colors.popupMenu_Border)
     }
 
     mtd onMouseEvent(evt: *MouseEvent)

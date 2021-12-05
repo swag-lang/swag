@@ -69,4 +69,7 @@ struct ThemeImageRects
     tabBar_FlatBk:              ThemeImageRect = @{{57,95,27,27}, 5}
     tabView_FlatBk:             ThemeImageRect = @{{125,95,27,27}, 10}
     tabView_RoundBk:            ThemeImageRect = @{{153,95,27,27}, 10}
+
+    popupMenu_Bk:               ThemeImageRect = @{{1,197,27,27}, 5}
+    popupMenu_Border:           ThemeImageRect = @{{29,197,27,27}, 5}
 }
