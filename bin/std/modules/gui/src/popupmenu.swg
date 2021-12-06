@@ -12,7 +12,7 @@ public struct PopupMenu
 {
     using wnd:  Wnd
     items:      Array'(*PopupMenuItem)
-    hotIdx:     u32
+    hotIdx:     u32 = Swag.U32.Max
 }
 
 impl IWnd for PopupMenu
@@ -45,6 +45,8 @@ impl IWnd for PopupMenu
             labelPos.height = i.height
 
             var format: RichStringFormat
+            format.palette[0] = colors.popupItem_Text
+
             if hotIdx == idx
             {
                 backPos := labelPos
@@ -55,16 +57,22 @@ impl IWnd for PopupMenu
                 painter.fillRect(backPos, colors.popupItem_HotBk)
                 format.palette[0] = colors.popupItem_HotText
             }
-            else
+
+            // Icon
+            if i.icon.isValid()
             {
-                format.palette[0] = colors.popupItem_Text
+                i.icon.size = i.height
+                i.icon.paint(painter, labelPos.x, labelPos.vertCenter() - i.icon.size * 0.5)
             }
 
+            labelPos.moveLeft(i.height + metrics.iconText_Margin)
+
+            // Text
             format.horzAlignment = .Left
             format.vertAlignment = .Center
             format.flags = .Clip
             format.font = theme.res.fontDefault
-            Theme.drawIconText(painter, labelPos, i.icon, &i.name, format, metrics.iconText_Margin)
+            painter.drawRichString(labelPos, &i.name, format)
         }
 
         // Border
@@ -123,17 +131,20 @@ impl PopupMenu
         y := clientRect.y
 
         position.width = 0
-        position.height = 0
+        position.height = clientRect.y
 
-        visit i: items
+        var fake: Pixel.Painter{fake: true}
+        var rsf:  Pixel.RichStringFormat
+        rsf.font = surface.app.theme.res.fontDefault
+
+        visit i, idx: items
         {
-            var fake: Pixel.Painter{fake: true}
-            var rsf:  Pixel.RichStringFormat
-            rsf.font = surface.app.theme.res.fontDefault
             fake.drawRichString(@{0, 0, 512, 0}, &i.name, rsf)
 
-            i.pos    = y
-            i.height = i.name.boundRect.height
+            if idx
+                position.height += metrics.popupMenu_SpaceLines
+            i.pos    = position.height
+            i.height = rsf.font.regular.height
 
             w := i.name.boundRect.width
             if i.icon.isValid()
@@ -143,17 +154,17 @@ impl PopupMenu
             }
 
             position.width = Math.max(position.width, w)
-            position.height += i.height + metrics.popupMenu_SpaceLines
-            y += i.height + metrics.popupMenu_SpaceLines
+            position.height += i.height
         }
 
         // Add shadow size
         position.width  += 2 * metrics.popupMenu_ShadowSize
-        position.height += 2 * metrics.popupMenu_ShadowSize
+        position.width  += rsf.font.regular.height + metrics.iconText_Margin
+        position.height += metrics.popupMenu_ShadowSize
 
         // Add padding
         position.width  += padding.x + padding.z
-        position.height += padding.y + padding.w
+        position.height += padding.w
     }
 }
 
