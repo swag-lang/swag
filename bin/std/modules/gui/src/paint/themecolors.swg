@@ -169,4 +169,5 @@ struct ThemeColors
     popupItem_Text:                 Color = White
     popupItem_HotText:              Color = White
     popupItem_HotBk:                Color = Blue
+    popupMenu_Separator:            Color = Color.getLighter(Color.fromArgb(Gray6), 0.2)
 }

@@ -17,6 +17,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
             menu.addItem("Coucou", "0")
             menu.addItem("Salut", "1", app.theme.getIcon24(ThemeIcons24.Search, 18))
             menu.addItem("La", "2", app.theme.getIcon24(ThemeIcons24.WndClose, 18))
+            menu.addSeparator()
             menu.addItem("Foule", "3")
             res := menu.doModal(pevt.surfacePos)
             @print("res: ", res, "\n")

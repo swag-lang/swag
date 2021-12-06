@@ -73,4 +73,5 @@ struct ThemeImageRects
     popupMenu_Shadow:           ThemeImageRect = @{{189,1,66,66}, 24}
     popupMenu_Bk:               ThemeImageRect = @{{1,197,27,27}, 5}
     popupMenu_Border:           ThemeImageRect = @{{29,197,27,27}, 5}
+    popupMenu_Separator:        ThemeImageRect = @{{57,197,27,27}, 5}
 }

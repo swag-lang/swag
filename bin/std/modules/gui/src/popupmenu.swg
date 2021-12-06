@@ -2,11 +2,12 @@ using Core, Pixel
 
 public struct PopupMenuItem
 {
-    name:   RichString
-    icon:   Icon
-    pos:    f32
-    height: f32
-    id:     WndId
+    name:       RichString
+    icon:       Icon
+    pos:        f32
+    height:     f32
+    id:         WndId
+    separator:  bool
 }
 
 public struct PopupMenu
@@ -50,6 +51,13 @@ impl IWnd for PopupMenu
             var format: RichStringFormat
             format.palette[0] = colors.popupItem_Text
 
+            if i.separator
+            {
+                painter.drawLine(labelPos.x, labelPos.vertCenter(), labelPos.right(), labelPos.vertCenter(), Pen.createSolid(colors.popupMenu_Separator))
+                continue
+            }
+
+            // Back selection
             if hotIdx == idx
             {
                 backPos := labelPos
@@ -146,15 +154,22 @@ impl PopupMenu
 
         visit i, idx: items
         {
-            fake.drawRichString(@{0, 0, 512, 0}, &i.name, rsf)
-
             if idx
                 position.height += metrics.popupMenu_SpaceLines
-            i.pos    = position.height
-            i.height = rsf.font.regular.height
+            i.pos = position.height
 
-            w := i.name.boundRect.width
-            position.width = Math.max(position.width, w)
+            if i.separator
+            {
+                i.height = metrics.popupMenu_SeparatorHeight
+            }
+            else
+            {
+                fake.drawRichString(@{0, 0, 512, 0}, &i.name, rsf)
+                i.height = rsf.font.regular.height
+                w := i.name.boundRect.width
+                position.width = Math.max(position.width, w)
+            }
+
             position.height += i.height
         }
 
@@ -188,6 +203,14 @@ public impl PopupMenu
         item.name = itemName
         item.icon = icon
         item.id = #scopefct.id
+        items.add(item)
+    }
+
+    // Add a separator
+    mtd addSeparator()
+    {
+        item := Memory.new'PopupMenuItem()
+        item.separator = true
         items.add(item)
     }
 
