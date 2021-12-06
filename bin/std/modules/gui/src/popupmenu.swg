@@ -8,6 +8,7 @@ public struct PopupMenuItem
     height:     f32
     id:         WndId
     separator:  bool
+    popup:      *PopupMenu
 }
 
 public struct PopupMenu
@@ -84,6 +85,14 @@ impl IWnd for PopupMenu
             format.flags = .Clip
             format.font = theme.res.fontDefault
             painter.drawRichString(labelPos, &i.name, format)
+
+            // Right icon
+            if i.popup
+            {
+                icon := theme.getIcon24(ThemeIcons24.RightPopupArrow)
+                icon.size = i.height
+                icon.paint(painter, labelPos.right() - icon.size, labelPos.vertCenter() - icon.size * 0.5, colors.popupItem_Text)
+            }
         }
 
         // Border
@@ -203,6 +212,16 @@ public impl PopupMenu
         item.name = itemName
         item.icon = icon
         item.id = #scopefct.id
+        items.add(item)
+    }
+
+    // Add a new item
+    mtd addPopup(itemName: string, popup: *PopupMenu, icon: Icon = @{})
+    {
+        item := Memory.new'PopupMenuItem()
+        item.name = itemName
+        item.icon = icon
+        item.popup = popup
         items.add(item)
     }
 
