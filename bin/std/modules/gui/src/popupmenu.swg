@@ -65,7 +65,7 @@ impl IWnd for PopupMenu
                 i.icon.paint(painter, labelPos.x, labelPos.vertCenter() - i.icon.size * 0.5)
             }
 
-            labelPos.moveLeft(i.height + metrics.iconText_Margin)
+            labelPos.moveLeft(i.height + metrics.popupMenu_IconTextMargin)
 
             // Text
             format.horzAlignment = .Left
@@ -147,19 +147,13 @@ impl PopupMenu
             i.height = rsf.font.regular.height
 
             w := i.name.boundRect.width
-            if i.icon.isValid()
-            {
-                w += i.icon.size
-                w += metrics.iconText_Margin
-            }
-
             position.width = Math.max(position.width, w)
             position.height += i.height
         }
 
         // Add shadow size
         position.width  += 2 * metrics.popupMenu_ShadowSize
-        position.width  += rsf.font.regular.height + metrics.iconText_Margin
+        position.width  += rsf.font.regular.height + metrics.popupMenu_IconTextMargin
         position.height += metrics.popupMenu_ShadowSize
 
         // Add padding
@@ -180,7 +174,7 @@ public impl PopupMenu
         return res
     }
 
-    mtd addItem(itemName: string, icon: Icon)
+    mtd addItem(itemName: string, icon: Icon = @{})
     {
         item := Memory.new'PopupMenuItem()
         item.name = itemName

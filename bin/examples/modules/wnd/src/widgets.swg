@@ -14,8 +14,10 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         if pevt.button == .Right
         {
             menu := PopupMenu.create(wnd)
-            menu.addItem("coucou", @{})
-            menu.addItem("salut", app.theme.getIcon24(ThemeIcons24.Search, 18))
+            menu.addItem("Coucou")
+            menu.addItem("Salut", app.theme.getIcon24(ThemeIcons24.Search, 18))
+            menu.addItem("La", app.theme.getIcon24(ThemeIcons24.WndClose, 18))
+            menu.addItem("Foule")
             menu.doModal(pevt.surfacePos)
         }
     }
