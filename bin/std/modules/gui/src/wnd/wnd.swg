@@ -54,7 +54,7 @@ struct Wnd
     childs:     Array'(*Wnd)
 
     name:       RichString
-    id:         String
+    id:         WndId
     cursor:     Cursor
 
     margin:     Math.Vector4
@@ -132,18 +132,18 @@ impl Wnd
     }
 
     #[Swag.Inline]
-    func(T) create(parent: *Wnd = null, id: string = null)->*T
+    func(T) create(parent: *Wnd = null, id: WndId = null)->*T
     {
         return create(parent, "", @{})
     }
 
     #[Swag.Inline]
-    func(T) create(parent: *Wnd, position: Math.Rectangle, id: string = null)->*T
+    func(T) create(parent: *Wnd, position: Math.Rectangle, id: WndId = null)->*T
     {
         return create(parent, "", position)
     }
 
-    func(T) create(parent: *Wnd, name: string, position: Math.Rectangle, id: string = null)->*T
+    func(T) create(parent: *Wnd, name: string, position: Math.Rectangle, id: WndId = null)->*T
     {
         res := Memory.new'T()
         res.isAllocated = true

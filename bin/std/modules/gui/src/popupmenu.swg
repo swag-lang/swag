@@ -6,6 +6,7 @@ public struct PopupMenuItem
     icon:   Icon
     pos:    f32
     height: f32
+    id:     WndId
 }
 
 public struct PopupMenu
@@ -153,7 +154,7 @@ impl PopupMenu
 
         // Add shadow size
         position.width  += 2 * metrics.popupMenu_ShadowSize
-        position.width  += rsf.font.regular.height + metrics.popupMenu_IconTextMargin
+        position.width  += 2 * (rsf.font.regular.height + metrics.popupMenu_IconTextMargin)
         position.height += metrics.popupMenu_ShadowSize
 
         // Add padding
@@ -174,14 +175,18 @@ public impl PopupMenu
         return res
     }
 
-    mtd addItem(itemName: string, icon: Icon = @{})
+    // Add a new item
+    mtd addItem(itemName: string, id: WndId, icon: Icon = @{})
     {
         item := Memory.new'PopupMenuItem()
         item.name = itemName
         item.icon = icon
+        item.id = #scopefct.id
         items.add(item)
     }
 
+    // Make the popup menu modal
+    // Will return the selected id
     mtd doModal(surfacePos: Math.Point)
     {
         computeLayout()

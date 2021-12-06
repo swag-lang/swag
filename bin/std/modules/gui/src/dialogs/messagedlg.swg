@@ -171,7 +171,7 @@ public impl MessageDlg
 
     // Add a button
     #[Swag.Discardable]
-    mtd addButton(str, id: string, isDefault: bool = false)->*PushButton
+    mtd addButton(str: string, id: WndId, isDefault: bool = false)->*PushButton
     {
         btn := PushButton.create(wndBottom, str, @{}, #scopefct.id)
         btn.dockStyle = .Right
@@ -192,7 +192,7 @@ public impl MessageDlg
     }
 
     // Message box with a 'ok' and 'cancel' button
-    func okCancel(from: *Surface, message: string, defaultId = BtnCancel, icon: Icon = @{})->string
+    func okCancel(from: *Surface, message: string, defaultId = BtnCancel, icon: Icon = @{})->WndId
     {
         dlg := create(from, 0, 0, message, icon)
         dlg.addButton("Cancel", BtnCancel, defaultId == BtnCancel)
@@ -201,7 +201,7 @@ public impl MessageDlg
     }
 
     // Message box with a 'yes' and 'no' button
-    func yesNo(from: *Surface, message: string, defaultId = BtnNo, icon: Icon = @{})->string
+    func yesNo(from: *Surface, message: string, defaultId = BtnNo, icon: Icon = @{})->WndId
     {
         dlg := create(from, 0, 0, message, icon.isValid() ? icon : from.app.theme.getIcon64(ThemeIcons64.Question))
         dlg.addButton("No", BtnNo, defaultId == BtnNo)
@@ -210,7 +210,7 @@ public impl MessageDlg
     }
 
     // Message box with a 'yes' and 'no' button
-    func yesNoCancel(from: *Surface, message: string, defaultId = BtnCancel, icon: Icon = @{})->string
+    func yesNoCancel(from: *Surface, message: string, defaultId = BtnCancel, icon: Icon = @{})->WndId
     {
         dlg := create(from, 0, 0, message, icon.isValid() ? icon : from.app.theme.getIcon64(ThemeIcons64.Question))
         dlg.addButton("Cancel", BtnCancel, defaultId == BtnCancel)

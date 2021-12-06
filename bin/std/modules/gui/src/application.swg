@@ -15,7 +15,7 @@ struct Application
     cursorStack:    Array'(Cursor)
     mustQuit:       bool
     endModal:       bool
-    endModalExit:   string
+    endModalExit:   WndId
     isActivated:    bool
     quitCode:       s32
 
@@ -455,7 +455,7 @@ impl Application
         endModalExit = exitId
     }
 
-    private mtd doModalLoop(surface: *Surface)->string
+    private mtd doModalLoop(surface: *Surface)->WndId
     {
         visit s: surfaces
             s.disable()
