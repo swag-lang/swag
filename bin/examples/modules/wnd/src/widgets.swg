@@ -18,7 +18,8 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
             menu.addItem("Salut", "1", app.theme.getIcon24(ThemeIcons24.Search, 18))
             menu.addItem("La", "2", app.theme.getIcon24(ThemeIcons24.WndClose, 18))
             menu.addItem("Foule", "3")
-            menu.doModal(pevt.surfacePos)
+            res := menu.doModal(pevt.surfacePos)
+            @print("res: ", res, "\n")
         }
     }
 

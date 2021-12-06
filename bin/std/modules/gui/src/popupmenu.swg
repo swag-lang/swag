@@ -11,9 +11,11 @@ public struct PopupMenuItem
 
 public struct PopupMenu
 {
-    using wnd:  Wnd
-    items:      Array'(*PopupMenuItem)
-    hotIdx:     u32 = Swag.U32.Max
+    using wnd:      Wnd
+    items:          Array'(*PopupMenuItem)
+    hotIdx:         u32 = Swag.U32.Max
+    endModal:       bool
+    endModalResult: WndId
 }
 
 impl IWnd for PopupMenu
@@ -94,7 +96,9 @@ impl IWnd for PopupMenu
         evt.accepted = true
         if evt.kind == .MousePressed
         {
-            destroy()
+            endModal = true
+            if hotIdx != Swag.U32.Max
+                endModalResult = items[hotIdx].id
         }
     }
 }
@@ -109,10 +113,12 @@ impl PopupMenu
 
     mtd hitTest(pos: Math.Point)->u32
     {
+        metrics := getThemeMetrics()
         clientRect := getClientRect()
+        sl := metrics.popupMenu_SpaceLines
         visit i, idx: items
         {
-            rect := Math.Rectangle{clientRect.x, i.pos, clientRect.width, i.height}
+            rect := Math.Rectangle{clientRect.x, i.pos - sl * 0.5, clientRect.width, i.height + sl}
             if rect.contains(pos)
                 return cast(u32) idx
         }
@@ -187,7 +193,7 @@ public impl PopupMenu
 
     // Make the popup menu modal
     // Will return the selected id
-    mtd doModal(surfacePos: Math.Point)
+    mtd doModal(surfacePos: Math.Point)->WndId
     {
         computeLayout()
         pt := parent.surfaceToLocal(surfacePos)
@@ -195,5 +201,11 @@ public impl PopupMenu
         setPosition(@{pt.x, pt.y, position.width, position.height})
         show()
         captureMouse()
+
+        while !endModal
+            surface.app.runFrame()
+
+        destroy()
+        return endModalResult
     }
 }
