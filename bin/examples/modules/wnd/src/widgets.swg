@@ -20,9 +20,18 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
             menu.addSeparator()
 
             popup := PopupMenu.create(wnd)
-            popup.addItem("Coucou", "0")
-            popup.addItem("Coucou", "1")
-            menu.addPopup("Popup", popup)
+            popup.addItem("Coucou0", "0")
+            popup.addItem("Coucou1", "1")
+            menu.addPopup("Popup1", popup)
+
+            popup1 := PopupMenu.create(wnd)
+            popup1.addItem("Coucou0", "0")
+            popup1.addItem("Coucou1", "1")
+
+            popup = PopupMenu.create(wnd)
+            popup.addItem("Coucou0", "0")
+            popup.addPopup("Coucou1", popup1)
+            menu.addPopup("Popup2", popup)
 
             menu.addSeparator()
             menu.addItem("Foule", "3")

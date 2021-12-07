@@ -19,6 +19,7 @@ public struct PopupMenu
     endModal:       bool
     endModalResult: WndId
     owner:          *PopupMenu
+    subVisible:     *PopupMenu
 }
 
 impl IWnd for PopupMenu
@@ -111,6 +112,18 @@ impl IWnd for PopupMenu
             invalidate()
         }
 
+        if hotIdx == Swag.U32.Max and owner
+        {
+            evt.pos = owner.surfaceToLocal(evt.surfacePos)
+            owner.onMouseEvent(evt)
+            if owner.endModal
+            {
+                endModal = true
+                endModalResult = owner.endModalResult
+                return
+            }
+        }
+
         evt.accepted = true
         if evt.kind != .MousePressed or evt.button != .Left
             return
@@ -119,13 +132,20 @@ impl IWnd for PopupMenu
         {
             if items[hotIdx].popup
             {
+                while subVisible
+                {
+                    subVisible.hide()
+                    subVisible = subVisible.subVisible
+                }
+
                 pos := getSurfaceRect()
                 pos.x = pos.right() - getThemeMetrics().popupMenu_ShadowSize
                 pos.y += items[hotIdx].pos
                 pos.y -= padding.y
-                res := items[hotIdx].popup.doModal(@{pos.x, pos.y})
+                subVisible = items[hotIdx].popup
+                res := subVisible.doModal(@{pos.x, pos.y})
             }
-            else
+            else if !items[hotIdx].separator
             {
                 endModal = true
                 endModalResult = items[hotIdx].id
@@ -275,11 +295,12 @@ public impl PopupMenu
             owner.endModal = true
             owner.endModalResult = endModalResult
             owner.captureMouse()
-            hide()
+            destroy()
         }
         else
         {
             destroy()
+            releaseMouse()
         }
 
         return endModalResult
