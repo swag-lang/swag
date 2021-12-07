@@ -272,6 +272,8 @@ public impl PopupMenu
 
         if owner
         {
+            owner.endModal = true
+            owner.endModalResult = endModalResult
             owner.captureMouse()
             hide()
         }
