@@ -18,6 +18,7 @@ public struct PopupMenu
     hotIdx:         u32 = Swag.U32.Max
     endModal:       bool
     endModalResult: WndId
+    owner:          *PopupMenu
 }
 
 impl IWnd for PopupMenu
@@ -111,11 +112,29 @@ impl IWnd for PopupMenu
         }
 
         evt.accepted = true
-        if evt.kind == .MousePressed
+        if evt.kind != .MousePressed or evt.button != .Left
+            return
+
+        if hotIdx != Swag.U32.Max
+        {
+            if items[hotIdx].popup
+            {
+                pos := getSurfaceRect()
+                pos.x = pos.right() - getThemeMetrics().popupMenu_ShadowSize
+                pos.y += items[hotIdx].pos
+                pos.y -= padding.y
+                res := items[hotIdx].popup.doModal(@{pos.x, pos.y})
+            }
+            else
+            {
+                endModal = true
+                endModalResult = items[hotIdx].id
+            }
+        }
+        else
         {
             endModal = true
-            if hotIdx != Swag.U32.Max
-                endModalResult = items[hotIdx].id
+            endModalResult = null
         }
     }
 }
@@ -222,6 +241,7 @@ public impl PopupMenu
         item.name = itemName
         item.icon = icon
         item.popup = popup
+        popup.owner = self
         items.add(item)
     }
 
@@ -244,10 +264,22 @@ public impl PopupMenu
         show()
         captureMouse()
 
+        endModal = false
+        endModalResult = null
+
         while !endModal
             surface.app.runFrame()
 
-        destroy()
+        if owner
+        {
+            owner.captureMouse()
+            hide()
+        }
+        else
+        {
+            destroy()
+        }
+
         return endModalResult
     }
 }
