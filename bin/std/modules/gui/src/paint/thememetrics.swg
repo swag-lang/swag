@@ -3,6 +3,7 @@ using Core
 
 struct ThemeMetrics
 {
+    defaultFontSize:            u32 = 14
     surfaceWnd_ShadowSize:      f32 = 20
 
     wnd_BorderSize:             f32 = 3

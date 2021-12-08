@@ -60,9 +60,9 @@ impl Theme
         res.typeFaceI  = assume TypeFace.create(DefaultFontItalicName, DefaultFontItalic)
         res.typeFaceBI = assume TypeFace.create(DefaultFontBoldItalicName, DefaultFontBoldItalic)
 
-        res.fontDefault.regular = Font.create(res.typeFaceR, 13)
-        res.fontDefault.bold = Font.create(res.typeFaceB, 13)
-        res.fontDefault.italic = Font.create(res.typeFaceI, 13)
-        res.fontDefault.boldItalic = Font.create(res.typeFaceBI, 13)
+        res.fontDefault.regular = Font.create(res.typeFaceR, metrics.defaultFontSize)
+        res.fontDefault.bold = Font.create(res.typeFaceB, metrics.defaultFontSize)
+        res.fontDefault.italic = Font.create(res.typeFaceI, metrics.defaultFontSize)
+        res.fontDefault.boldItalic = Font.create(res.typeFaceBI, metrics.defaultFontSize)
     }
 }
