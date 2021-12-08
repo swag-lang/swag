@@ -46,6 +46,9 @@ impl IWnd for PopupMenu
         clientRect.applyPadding(padding)
 
         var labelPos: Math.Rectangle = ?
+        var colorText: Color
+        var colorRightText: Color
+
         visit i, idx: items
         {
             labelPos.x = clientRect.x
@@ -60,7 +63,8 @@ impl IWnd for PopupMenu
             }
 
             var format: RichStringFormat
-            format.palette[0] = i.disabled ? colors.popupItem_DisabledText : colors.popupItem_Text
+            colorText = i.disabled ? colors.popupItem_DisabledText : colors.popupItem_Text
+            colorRightText = i.disabled ? colors.popupItem_DisabledText : colors.popupItem_RightText
 
             // Back selection
             if hotIdx == idx and !i.disabled
@@ -71,19 +75,21 @@ impl IWnd for PopupMenu
                 backPos.width = position.width - 2 * metrics.popupMenu_ShadowSize
                 backPos.height += metrics.popupMenu_SpaceLines
                 painter.fillRect(backPos, colors.popupItem_HotBk)
-                format.palette[0] = colors.popupItem_HotText
+                colorText = colors.popupItem_HotText
+                colorRightText = colors.popupItem_HotRightText
             }
 
             // Icon
             if i.icon.isValid()
             {
                 i.icon.size = i.height
-                i.icon.paint(painter, labelPos.x, labelPos.vertCenter() - i.icon.size * 0.5, format.palette[0])
+                i.icon.paint(painter, labelPos.x, labelPos.vertCenter() - i.icon.size * 0.5, colorText)
             }
 
             labelPos.moveLeft(i.height + metrics.popupMenu_IconTextMargin)
 
             // Text
+            format.palette[0] = colorText
             format.horzAlignment = .Left
             format.vertAlignment = .Center
             format.flags = .Clip
@@ -93,7 +99,7 @@ impl IWnd for PopupMenu
             // Text right
             if !i.rightName.isEmpty()
             {
-                format.palette[0] = i.disabled ? colors.popupItem_DisabledText : colors.popupItem_RightText
+                format.palette[0] = colorRightText
                 format.horzAlignment = .Right
                 format.vertAlignment = .Center
                 format.flags = .Clip

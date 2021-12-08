@@ -13,7 +13,7 @@ struct ThemeColors
 
     const White         = 0xFFF0F0F0
     const Gray1         = 0xFFE0E0E0
-    const Gray2         = 0xFF5A5A5A
+    const Gray2         = 0xFF808080
     const Gray3         = 0xFF606060
     const Gray4         = 0xFF505050
     const Gray5         = 0xFF404040
@@ -167,9 +167,10 @@ struct ThemeColors
     popupMenu_Border:               Color = Color.getDarker(Color.fromArgb(Gray6), 0.1)
     popupMenu_Shadow:               Color = 0x80000000
     popupItem_Text:                 Color = White
-    popupItem_RightText:            Color = Gray1
-    popupItem_DisabledText:         Color = Gray3
+    popupItem_RightText:            Color = Gray2
+    popupItem_DisabledText:         Color = Gray2
     popupItem_HotText:              Color = White
+    popupItem_HotRightText:         Color = White
     popupItem_HotBk:                Color = Blue
     popupMenu_Separator:            Color = Color.getLighter(Color.fromArgb(Gray6), 0.2)
 }
