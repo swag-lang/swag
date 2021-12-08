@@ -45,7 +45,7 @@ impl IWnd for PopupMenu
         theme.drawSubRect(painter, clientRect, &rects.popupMenu_Border, colors.popupMenu_Border)
         clientRect.applyPadding(padding)
 
-        var labelPos: Math.Rectangle
+        var labelPos: Math.Rectangle = ?
         visit i, idx: items
         {
             labelPos.x = clientRect.x
@@ -93,6 +93,7 @@ impl IWnd for PopupMenu
             // Text right
             if !i.rightName.isEmpty()
             {
+                format.palette[0] = i.disabled ? colors.popupItem_DisabledText : colors.popupItem_RightText
                 format.horzAlignment = .Right
                 format.vertAlignment = .Center
                 format.flags = .Clip
