@@ -232,8 +232,11 @@ impl PopupMenu
             fake.drawRichString(@{0, 0, 512, 0}, &i.name, rsf)
             w := i.name.boundRect.width
 
-            fake.drawRichString(@{0, 0, 512, 0}, &i.rightName, rsf)
-            w += i.name.boundRect.width
+            if !i.rightName.isEmpty()
+            {
+                fake.drawRichString(@{0, 0, 512, 0}, &i.rightName, rsf)
+                w += i.name.boundRect.width
+            }
 
             position.width = Math.max(position.width, w)
             position.height += i.height
