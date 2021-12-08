@@ -3,6 +3,7 @@ using Core, Pixel
 public struct PopupMenuItem
 {
     name:       RichString
+    rightName:  RichString
     icon:       Icon
     pos:        f32
     height:     f32
@@ -88,6 +89,16 @@ impl IWnd for PopupMenu
             format.flags = .Clip
             format.font = theme.res.fontDefault
             painter.drawRichString(labelPos, &i.name, format)
+
+            // Text right
+            if !i.rightName.isEmpty()
+            {
+                format.horzAlignment = .Right
+                format.vertAlignment = .Center
+                format.flags = .Clip
+                format.font = theme.res.fontDefault
+                painter.drawRichString(labelPos, &i.rightName, format)
+            }
 
             // Right icon
             if i.popup
@@ -212,15 +223,19 @@ impl PopupMenu
             if i.separator
             {
                 i.height = metrics.popupMenu_SeparatorHeight
-            }
-            else
-            {
-                fake.drawRichString(@{0, 0, 512, 0}, &i.name, rsf)
-                i.height = rsf.font.regular.height
-                w := i.name.boundRect.width
-                position.width = Math.max(position.width, w)
+                position.height += i.height
+                continue
             }
 
+            i.height = rsf.font.regular.height
+
+            fake.drawRichString(@{0, 0, 512, 0}, &i.name, rsf)
+            w := i.name.boundRect.width
+
+            fake.drawRichString(@{0, 0, 512, 0}, &i.rightName, rsf)
+            w += i.name.boundRect.width
+
+            position.width = Math.max(position.width, w)
             position.height += i.height
         }
 
@@ -248,10 +263,11 @@ public impl PopupMenu
     }
 
     // Add a new item
-    mtd addItem(itemName: string, id: WndId, icon: Icon = @{}, disabled = false)
+    mtd addItem(itemName: string, id: WndId, icon: Icon = @{}, rightName: string = null, disabled = false)
     {
         item := Memory.new'PopupMenuItem()
         item.name = itemName
+        item.rightName = rightName
         item.icon = icon
         item.id = #scopefct.id
         item.disabled = disabled
