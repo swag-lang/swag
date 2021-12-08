@@ -8,6 +8,7 @@ public struct PopupMenuItem
     height:     f32
     id:         WndId
     separator:  bool
+    disabled:   bool
     popup:      *PopupMenu
 }
 
@@ -51,17 +52,17 @@ impl IWnd for PopupMenu
             labelPos.width = clientRect.width
             labelPos.height = i.height
 
-            var format: RichStringFormat
-            format.palette[0] = colors.popupItem_Text
-
             if i.separator
             {
                 painter.drawLine(labelPos.x, labelPos.vertCenter(), labelPos.right(), labelPos.vertCenter(), Pen.createSolid(colors.popupMenu_Separator))
                 continue
             }
 
+            var format: RichStringFormat
+            format.palette[0] = i.disabled ? colors.popupItem_DisabledText : colors.popupItem_Text
+
             // Back selection
-            if hotIdx == idx
+            if hotIdx == idx and !i.disabled
             {
                 backPos := labelPos
                 backPos.x = metrics.popupMenu_ShadowSize
@@ -76,7 +77,7 @@ impl IWnd for PopupMenu
             if i.icon.isValid()
             {
                 i.icon.size = i.height
-                i.icon.paint(painter, labelPos.x, labelPos.vertCenter() - i.icon.size * 0.5)
+                i.icon.paint(painter, labelPos.x, labelPos.vertCenter() - i.icon.size * 0.5, format.palette[0])
             }
 
             labelPos.moveLeft(i.height + metrics.popupMenu_IconTextMargin)
@@ -120,8 +121,9 @@ impl IWnd for PopupMenu
             {
                 endModal = true
                 endModalResult = owner.endModalResult
-                return
             }
+
+            return
         }
 
         evt.accepted = true
@@ -130,7 +132,8 @@ impl IWnd for PopupMenu
 
         if hotIdx != Swag.U32.Max
         {
-            if items[hotIdx].popup
+            hotItem := items[hotIdx]
+            if hotItem.popup
             {
                 while subVisible
                 {
@@ -140,15 +143,15 @@ impl IWnd for PopupMenu
 
                 pos := getSurfaceRect()
                 pos.x = pos.right() - getThemeMetrics().popupMenu_ShadowSize
-                pos.y += items[hotIdx].pos
+                pos.y += hotItem.pos
                 pos.y -= padding.y
-                subVisible = items[hotIdx].popup
+                subVisible = hotItem.popup
                 res := subVisible.doModal(@{pos.x, pos.y})
             }
-            else if !items[hotIdx].separator
+            else if !hotItem.separator and !hotItem.disabled
             {
                 endModal = true
-                endModalResult = items[hotIdx].id
+                endModalResult = hotItem.id
             }
         }
         else
@@ -245,12 +248,13 @@ public impl PopupMenu
     }
 
     // Add a new item
-    mtd addItem(itemName: string, id: WndId, icon: Icon = @{})
+    mtd addItem(itemName: string, id: WndId, icon: Icon = @{}, disabled = false)
     {
         item := Memory.new'PopupMenuItem()
         item.name = itemName
         item.icon = icon
         item.id = #scopefct.id
+        item.disabled = disabled
         items.add(item)
     }
 
