@@ -83,9 +83,7 @@ impl Application
         Memory.delete(surface)
     }
 
-    // Destroy a window
-    // To cleanly close a window, you should call wnd.destroy()
-    private mtd destroyWnd(wnd: *Wnd)
+    private mtd unregisterWnd(wnd: *Wnd)
     {
         if wnd == mouseEnterWnd
             mouseEnterWnd = null
@@ -110,6 +108,13 @@ impl Application
             if e.target == wnd
                 e.target = null
         }
+    }
+
+    // Destroy a window
+    // To cleanly close a window, you should call wnd.destroy()
+    private mtd destroyWnd(wnd: *Wnd)
+    {
+        unregisterWnd(wnd)
 
         // Remove from parent
         if wnd.parent and !wnd.parent.isPendingDestroy

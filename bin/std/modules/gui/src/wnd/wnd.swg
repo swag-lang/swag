@@ -201,11 +201,7 @@ impl Wnd
         if isHidden
             return
         isHidden = true
-
-        // Check global state
-        if getApp().keybFocusWnd == self
-            getTopView().setFocus()
-
+        getApp().unregisterWnd(self)
         invalidate()
     }
 

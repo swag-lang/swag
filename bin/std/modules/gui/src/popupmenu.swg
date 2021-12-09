@@ -140,6 +140,16 @@ impl IWnd for PopupMenu
             timer.restart()
             hotIdx = hit
             invalidate()
+
+            if hit != Swag.U32.Max
+            {
+                p := owner
+                while p
+                {
+                    p.deleteTimer()
+                    p = p.owner
+                }
+            }
         }
 
         evt.accepted = true
@@ -200,6 +210,8 @@ impl PopupMenu
             subVisible.hide()
             subVisible = subVisible.subVisible
         }
+
+        captureMouse()
     }
 
     mtd deleteTimer()
