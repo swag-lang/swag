@@ -194,11 +194,9 @@ impl PopupMenu
 
     mtd setEndModal(result: WndId)
     {
-        p := owner
-        if !p
-            p = self
-        else
-            while p.owner p = p.owner
+        p := self
+        while p.owner
+            p = p.owner
         p.endModal = true
         p.endModalResult = result
     }
@@ -230,8 +228,9 @@ impl PopupMenu
 
         hotItem := items[hotIdx]
         pos := getSurfaceRect()
+        sdw := getThemeMetrics().popupMenu_ShadowSize
         surfaceRect := pos
-        pos.x = pos.right() - getThemeMetrics().popupMenu_ShadowSize
+        pos.x = pos.right() - sdw
         pos.y += hotItem.pos
         pos.y -= padding.y
         subVisible = hotItem.popup
@@ -242,12 +241,17 @@ impl PopupMenu
         pt := topView.surfaceToLocal(@{pos.x, pos.y})
         subPos := subVisible.position
         if pt.x + subPos.width > topView.position.width
-            pt.x = surfaceRect.x - subPos.width
+            pt.x = surfaceRect.x - subPos.width + sdw
         if pt.y + subPos.height > topView.position.height
-            pt.y = surfaceRect.y - subPos.height
+            pt.y = surfaceRect.y - subPos.height + sdw
         pt = topView.localToSurface(pt)
 
-        discard subVisible.doModal(pt)
+        pt = subVisible.parent.surfaceToLocal(pt)
+        pt -= sdw
+        subVisible.setPosition(@{pt.x, pt.y, subVisible.position.width, subVisible.position.height})
+        subVisible.bringToTop()
+        subVisible.show()
+        subVisible.captureMouse()
     }
 
     mtd hitTest(pos: Math.Point)->u32
@@ -383,13 +387,9 @@ public impl PopupMenu
         pt = parent.surfaceToLocal(pt)
 
         setPosition(@{pt.x, pt.y, position.width, position.height})
-
         bringToTop()
         show()
         captureMouse()
-
-        if owner
-            return endModalResult
 
         endModal = false
         endModalResult = null
@@ -398,7 +398,6 @@ public impl PopupMenu
 
         hideSubVisible()
         hide()
-        releaseMouse()
 
         return endModalResult
     }
