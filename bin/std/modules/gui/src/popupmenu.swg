@@ -160,11 +160,25 @@ impl IWnd for PopupMenu
                 }
 
                 pos := getSurfaceRect()
+                surfaceRect := pos
                 pos.x = pos.right() - getThemeMetrics().popupMenu_ShadowSize
                 pos.y += hotItem.pos
                 pos.y -= padding.y
                 subVisible = hotItem.popup
-                res := subVisible.doModal(@{pos.x, pos.y})
+
+                // Be sure popup menu is in the client area of the top view
+                subVisible.computeLayout()
+                topView := getTopView()
+                pt := topView.surfaceToLocal(@{pos.x, pos.y})
+                pt -= getThemeMetrics().popupMenu_ShadowSize
+                subPos := subVisible.position
+                if pt.x + subPos.width > topView.position.width
+                    pt.x = surfaceRect.x - subPos.width
+                if pt.y + subPos.height > topView.position.height
+                    pt.y = surfaceRect.y - subPos.height
+                pt = topView.localToSurface(pt)
+
+                discard subVisible.doModal(pt)
             }
             else if !hotItem.separator and !hotItem.disabled
             {
@@ -309,6 +323,7 @@ public impl PopupMenu
     {
         computeLayout()
 
+        // Be sure popup menu is in the client area of the top view
         topView := getTopView()
         pt := topView.surfaceToLocal(surfacePos)
         pt -= getThemeMetrics().popupMenu_ShadowSize
