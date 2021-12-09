@@ -136,26 +136,20 @@ impl IWnd for PopupMenu
         if hit != hotIdx
         {
             if !timer
-                timer = surface.app.addTimer(500, self)
+                timer = surface.app.addTimer(300, self)
             timer.restart()
             hotIdx = hit
             invalidate()
         }
 
+        evt.accepted = true
         if hotIdx == Swag.U32.Max and owner
         {
             evt.pos = owner.surfaceToLocal(evt.surfacePos)
             owner.onMouseEvent(evt)
-            if owner.endModal
-            {
-                endModal = true
-                endModalResult = owner.endModalResult
-            }
-
             return
         }
 
-        evt.accepted = true
         if evt.kind != .MousePressed or evt.button != .Left
             return
 
@@ -170,14 +164,12 @@ impl IWnd for PopupMenu
             }
             else if !hotItem.separator and !hotItem.disabled
             {
-                endModal = true
-                endModalResult = hotItem.id
+                setEndModal(hotItem.id)
             }
         }
         else
         {
-            endModal = true
-            endModalResult = null
+            setEndModal(null)
         }
     }
 }
@@ -188,6 +180,17 @@ impl PopupMenu
     {
         visit i: items
             Memory.delete(i)
+    }
+
+    mtd setEndModal(result: WndId)
+    {
+        p := owner
+        if !p
+            p = self
+        else
+            while p.owner p = p.owner
+        p.endModal = true
+        p.endModalResult = result
     }
 
     mtd hideSubVisible()
@@ -373,24 +376,17 @@ public impl PopupMenu
         show()
         captureMouse()
 
+        if owner
+            return endModalResult
+
         endModal = false
         endModalResult = null
-
         while !endModal
             surface.app.runFrame()
 
-        if owner
-        {
-            owner.endModal = true
-            owner.endModalResult = endModalResult
-            owner.captureMouse()
-            destroy()
-        }
-        else
-        {
-            destroy()
-            releaseMouse()
-        }
+        hideSubVisible()
+        hide()
+        releaseMouse()
 
         return endModalResult
     }
