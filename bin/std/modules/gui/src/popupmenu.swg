@@ -22,6 +22,7 @@ public struct PopupMenu
     endModalResult: WndId
     owner:          *PopupMenu
     subVisible:     *PopupMenu
+    timer:          *Timer
 }
 
 impl IWnd for PopupMenu
@@ -122,11 +123,21 @@ impl IWnd for PopupMenu
         theme.drawSubRect(painter, clientRect, &rects.popupMenu_Border, colors.popupMenu_Border)
     }
 
+    mtd onTimerEvent(evt: *TimerEvent)
+    {
+        hideSubVisible()
+        deleteTimer()
+        showHotPopup()
+    }
+
     mtd onMouseEvent(evt: *MouseEvent)
     {
         hit := hitTest(evt.pos)
         if hit != hotIdx
         {
+            if !timer
+                timer = surface.app.addTimer(500, self)
+            timer.restart()
             hotIdx = hit
             invalidate()
         }
@@ -153,31 +164,9 @@ impl IWnd for PopupMenu
             hotItem := items[hotIdx]
             if hotItem.popup
             {
-                while subVisible
-                {
-                    subVisible.hide()
-                    subVisible = subVisible.subVisible
-                }
-
-                pos := getSurfaceRect()
-                surfaceRect := pos
-                pos.x = pos.right() - getThemeMetrics().popupMenu_ShadowSize
-                pos.y += hotItem.pos
-                pos.y -= padding.y
-                subVisible = hotItem.popup
-
-                // Be sure popup menu is in the client area of the top view
-                subVisible.computeLayout()
-                topView := getTopView()
-                pt := topView.surfaceToLocal(@{pos.x, pos.y})
-                subPos := subVisible.position
-                if pt.x + subPos.width > topView.position.width
-                    pt.x = surfaceRect.x - subPos.width
-                if pt.y + subPos.height > topView.position.height
-                    pt.y = surfaceRect.y - subPos.height
-                pt = topView.localToSurface(pt)
-
-                discard subVisible.doModal(pt)
+                hideSubVisible()
+                deleteTimer()
+                showHotPopup()
             }
             else if !hotItem.separator and !hotItem.disabled
             {
@@ -199,6 +188,51 @@ impl PopupMenu
     {
         visit i: items
             Memory.delete(i)
+    }
+
+    mtd hideSubVisible()
+    {
+        while subVisible
+        {
+            subVisible.hide()
+            subVisible = subVisible.subVisible
+        }
+    }
+
+    mtd deleteTimer()
+    {
+        if !timer return
+        surface.app.deleteTimer(timer)
+        timer = null
+    }
+
+    mtd showHotPopup()
+    {
+        if hotIdx == Swag.U32.Max
+            return
+        if !items[hotIdx].popup
+            return
+
+        hotItem := items[hotIdx]
+        pos := getSurfaceRect()
+        surfaceRect := pos
+        pos.x = pos.right() - getThemeMetrics().popupMenu_ShadowSize
+        pos.y += hotItem.pos
+        pos.y -= padding.y
+        subVisible = hotItem.popup
+
+        // Be sure popup menu is in the client area of the top view
+        subVisible.computeLayout()
+        topView := getTopView()
+        pt := topView.surfaceToLocal(@{pos.x, pos.y})
+        subPos := subVisible.position
+        if pt.x + subPos.width > topView.position.width
+            pt.x = surfaceRect.x - subPos.width
+        if pt.y + subPos.height > topView.position.height
+            pt.y = surfaceRect.y - subPos.height
+        pt = topView.localToSurface(pt)
+
+        discard subVisible.doModal(pt)
     }
 
     mtd hitTest(pos: Math.Point)->u32
