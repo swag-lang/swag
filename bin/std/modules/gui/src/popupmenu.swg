@@ -336,6 +336,7 @@ public impl PopupMenu
 
         setPosition(@{pt.x, pt.y, position.width, position.height})
 
+        bringToTop()
         show()
         captureMouse()
 

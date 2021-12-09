@@ -385,6 +385,18 @@ impl Wnd
         resize(rect.width, rect.height)
     }
 
+    // Force the window to be the last painted (on top of siblings)
+    mtd bringToTop()
+    {
+        Debug.assert(parent != null)
+        if parent.childs.back() == self
+            return
+        (idx, found) := Slice.findLinear(parent.childs.toSlice(), self)
+        Debug.assert(found)
+        parent.childs[idx] = parent.childs.back()
+        parent.childs[parent.childs.count - 1] = self
+    }
+
     // Move the wnd
     mtd move(x, y: f32)
     {
