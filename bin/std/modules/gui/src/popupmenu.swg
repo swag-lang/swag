@@ -170,7 +170,6 @@ impl IWnd for PopupMenu
                 subVisible.computeLayout()
                 topView := getTopView()
                 pt := topView.surfaceToLocal(@{pos.x, pos.y})
-                pt -= getThemeMetrics().popupMenu_ShadowSize
                 subPos := subVisible.position
                 if pt.x + subPos.width > topView.position.width
                     pt.x = surfaceRect.x - subPos.width
