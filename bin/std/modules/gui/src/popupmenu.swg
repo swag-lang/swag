@@ -239,15 +239,15 @@ impl PopupMenu
         subVisible.computeLayout()
         topView := getTopView()
         pt := topView.surfaceToLocal(@{pos.x, pos.y})
+        pt -= sdw
         subPos := subVisible.position
         if pt.x + subPos.width > topView.position.width
-            pt.x = surfaceRect.x - subPos.width + sdw
+            pt.x = surfaceRect.x - subPos.width
         if pt.y + subPos.height > topView.position.height
-            pt.y = surfaceRect.y - subPos.height + sdw
+            pt.y = surfaceRect.y - subPos.height
         pt = topView.localToSurface(pt)
 
         pt = subVisible.parent.surfaceToLocal(pt)
-        pt -= sdw
         subVisible.setPosition(@{pt.x, pt.y, subVisible.position.width, subVisible.position.height})
         subVisible.bringToTop()
         subVisible.show()
