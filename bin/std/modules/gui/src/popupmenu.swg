@@ -308,9 +308,19 @@ public impl PopupMenu
     mtd doModal(surfacePos: Math.Point)->WndId
     {
         computeLayout()
-        pt := parent.surfaceToLocal(surfacePos)
+
+        topView := getTopView()
+        pt := topView.surfaceToLocal(surfacePos)
         pt -= getThemeMetrics().popupMenu_ShadowSize
+        if pt.x + position.width > topView.position.width
+            pt.x = topView.position.width - position.width
+        if pt.y + position.height > topView.position.height
+            pt.y = topView.position.height - position.height
+        pt = topView.localToSurface(pt)
+        pt = parent.surfaceToLocal(pt)
+
         setPosition(@{pt.x, pt.y, position.width, position.height})
+
         show()
         captureMouse()
 
