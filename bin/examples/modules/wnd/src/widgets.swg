@@ -13,30 +13,29 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         pevt := cast(*MouseEvent) evt
         if pevt.button == .Right
         {
-            menu := PopupMenu.create(wnd)
+            menu := Menu.createPopup(wnd)
             menu.addItem("Coucou", "0", rightName: "Ctrl+A")
             menu.addItem("Salut", "1", app.theme.getIcon24(ThemeIcons24.Search, 18), disabled: true)
             menu.addItem("La", "2", app.theme.getIcon24(ThemeIcons24.WndClose, 18))
             menu.addSeparator()
 
-            popup := PopupMenu.create(wnd)
+            popup := Menu.createPopup(wnd)
             popup.addItem("Coucou0", "0")
             popup.addItem("Coucou1", "1")
             menu.addPopup("Popup1", popup)
 
-            popup1 := PopupMenu.create(wnd)
+            popup1 := Menu.createPopup(wnd)
             popup1.addItem("Coucou0", "0")
             popup1.addItem("Coucou1", "1")
 
-            popup = PopupMenu.create(wnd)
+            popup = Menu.createPopup(wnd)
             popup.addItem("Coucou0", "0")
             popup.addPopup("Coucou1", popup1)
             menu.addPopup("Popup2", popup)
 
             menu.addSeparator()
             menu.addItem("Foule", "3")
-            res := menu.doModal(pevt.surfacePos)
-            @print("res: ", res, "\n")
+            discard menu.doModal(pevt.surfacePos)
         }
     }
 
@@ -251,4 +250,12 @@ func createWidgets(view: *Wnd)
         Label.create(view1, "view1", @{10, 10, 50, 30})
         Label.create(view2, "view2", @{10, 10, 50, 30})
     }
+
+    // Menu
+    menu := Menu.createBar(view)
+    menu.setPosition(@{600, 350, 250, 40})
+    menu.show()
+    menu.addItem("Coucou", "0")
+    menu.addItem("Salut", "0")
+    menu.addItem("La", "0")
 }
