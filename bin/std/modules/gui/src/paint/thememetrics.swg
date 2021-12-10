@@ -35,9 +35,11 @@ struct ThemeMetrics
     slider_Width:               f32 = 200
     slider_Height:              f32 = 26
 
-    popupMenu_Padding:          f32 = 10
-    popupMenu_SpaceLines:       f32 = 6
-    popupMenu_ShadowSize:       f32 = 10
-    popupMenu_IconTextMargin:   f32 = 6
-    popupMenu_SeparatorHeight:  f32 = 8
+    menuPopup_Padding:          f32 = 10
+    menuPopup_SpaceLines:       f32 = 6
+    menuPopup_ShadowSize:       f32 = 10
+    menuPopup_IconTextMargin:   f32 = 6
+    menuPopup_SeparatorHeight:  f32 = 8
+
+    menuBar_SpaceBetween:       f32 = 24
 }

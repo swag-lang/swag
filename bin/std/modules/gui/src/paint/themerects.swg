@@ -70,8 +70,11 @@ struct ThemeImageRects
     tabView_FlatBk:             ThemeImageRect = @{{125,95,27,27}, 10}
     tabView_RoundBk:            ThemeImageRect = @{{153,95,27,27}, 10}
 
-    popupMenu_Shadow:           ThemeImageRect = @{{189,1,66,66}, 24}
-    popupMenu_Bk:               ThemeImageRect = @{{1,197,27,27}, 12}
-    popupMenu_Border:           ThemeImageRect = @{{29,197,27,27}, 5}
-    popupMenu_Separator:        ThemeImageRect = @{{57,197,27,27}, 5}
+    menuPopup_Shadow:           ThemeImageRect = @{{189,1,66,66}, 24}
+    menuPopup_Bk:               ThemeImageRect = @{{1,197,27,27}, 12}
+    menuPopup_Border:           ThemeImageRect = @{{29,197,27,27}, 5}
+    menuPopup_HotBk:            ThemeImageRect = @{{57,197,27,27}, 12}
+    menuBar_Bk:                 ThemeImageRect = @{{1,197,27,27}, 12}
+    menuBar_Border:             ThemeImageRect = @{{29,197,27,27}, 5}
+    menuBar_HotBk:              ThemeImageRect = @{{57,197,27,27}, 12}
 }

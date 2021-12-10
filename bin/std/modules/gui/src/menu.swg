@@ -44,9 +44,8 @@ impl IWnd for Menu
 
         // Back
         clientRect := getClientRect()
-        theme.drawSubRect(painter, clientRect, &rects.popupMenu_Bk, colors.popupMenu_Bk)
-        theme.drawSubRect(painter, clientRect, &rects.popupMenu_Border, colors.popupMenu_Border)
-        clientRect.applyPadding(padding)
+        theme.drawSubRect(painter, clientRect, &rects.menuBar_Bk, colors.menuBar_Bk)
+        theme.drawSubRect(painter, clientRect, &rects.menuBar_Border, colors.menuBar_Border)
 
         var labelPos: Math.Rectangle = ?
         var colorText: Color
@@ -70,9 +69,9 @@ impl IWnd for Menu
             if hotIdx == idx and !i.disabled
             {
                 backPos := labelPos
-                backPos.x -= metrics.popupMenu_SpaceLines * 0.5
-                backPos.width += metrics.popupMenu_SpaceLines
-                painter.fillRect(backPos, colors.popupItem_HotBk)
+                backPos.x -= metrics.menuBar_SpaceBetween * 0.5
+                backPos.width += metrics.menuBar_SpaceBetween
+                theme.drawSubRect(painter, backPos, &rects.menuPopup_HotBk, colors.popupItem_HotBk)
                 colorText = colors.popupItem_HotText
                 colorRightText = colors.popupItem_HotRightText
             }
@@ -95,8 +94,8 @@ impl IWnd for Menu
 
         // Border
         clientRect = getClientRect()
-        clientRect.inflate(-metrics.popupMenu_ShadowSize)
-        theme.drawSubRect(painter, clientRect, &rects.popupMenu_Border, colors.popupMenu_Border)
+        clientRect.inflate(-metrics.menuPopup_ShadowSize)
+        theme.drawSubRect(painter, clientRect, &rects.menuPopup_Border, colors.menuPopup_Border)
     }
 
     mtd paintPopup(painter: *Painter)
@@ -107,14 +106,14 @@ impl IWnd for Menu
         metrics := getThemeMetrics()
 
         // Shadow
-        subRect := &theme.rects.popupMenu_Shadow
-        theme.drawSubRect(painter, @{0, 0, position.width, position.height}, subRect, colors.popupMenu_Shadow)
+        subRect := &theme.rects.menuPopup_Shadow
+        theme.drawSubRect(painter, @{0, 0, position.width, position.height}, subRect, colors.menuPopup_Shadow)
 
         // Back
         clientRect := getClientRect()
-        clientRect.inflate(-metrics.popupMenu_ShadowSize)
-        theme.drawSubRect(painter, clientRect, &rects.popupMenu_Bk, colors.popupMenu_Bk)
-        theme.drawSubRect(painter, clientRect, &rects.popupMenu_Border, colors.popupMenu_Border)
+        clientRect.inflate(-metrics.menuPopup_ShadowSize)
+        theme.drawSubRect(painter, clientRect, &rects.menuPopup_Bk, colors.menuPopup_Bk)
+        theme.drawSubRect(painter, clientRect, &rects.menuPopup_Border, colors.menuPopup_Border)
         clientRect.applyPadding(padding)
 
         var labelPos: Math.Rectangle = ?
@@ -130,7 +129,7 @@ impl IWnd for Menu
 
             if i.separator
             {
-                painter.drawLine(labelPos.x, labelPos.vertCenter(), labelPos.right(), labelPos.vertCenter(), Pen.createSolid(colors.popupMenu_Separator))
+                painter.drawLine(labelPos.x, labelPos.vertCenter(), labelPos.right(), labelPos.vertCenter(), Pen.createSolid(colors.menuPopup_Separator))
                 continue
             }
 
@@ -142,11 +141,11 @@ impl IWnd for Menu
             if hotIdx == idx and !i.disabled
             {
                 backPos := labelPos
-                backPos.x = metrics.popupMenu_ShadowSize
-                backPos.y -= metrics.popupMenu_SpaceLines * 0.5
-                backPos.width = position.width - 2 * metrics.popupMenu_ShadowSize
-                backPos.height += metrics.popupMenu_SpaceLines
-                painter.fillRect(backPos, colors.popupItem_HotBk)
+                backPos.x = metrics.menuPopup_ShadowSize
+                backPos.y -= metrics.menuPopup_SpaceLines * 0.5
+                backPos.width = position.width - 2 * metrics.menuPopup_ShadowSize
+                backPos.height += metrics.menuPopup_SpaceLines
+                theme.drawSubRect(painter, backPos, &rects.menuPopup_HotBk, colors.popupItem_HotBk)
                 colorText = colors.popupItem_HotText
                 colorRightText = colors.popupItem_HotRightText
             }
@@ -158,7 +157,7 @@ impl IWnd for Menu
                 i.icon.paint(painter, labelPos.x, labelPos.vertCenter() - i.icon.size * 0.5, colorText)
             }
 
-            labelPos.moveLeft(i.size + metrics.popupMenu_IconTextMargin)
+            labelPos.moveLeft(i.size + metrics.menuPopup_IconTextMargin)
 
             // Text
             format.palette[0] = colorText
@@ -190,8 +189,8 @@ impl IWnd for Menu
 
         // Border
         clientRect = getClientRect()
-        clientRect.inflate(-metrics.popupMenu_ShadowSize)
-        theme.drawSubRect(painter, clientRect, &rects.popupMenu_Border, colors.popupMenu_Border)
+        clientRect.inflate(-metrics.menuPopup_ShadowSize)
+        theme.drawSubRect(painter, clientRect, &rects.menuPopup_Border, colors.menuPopup_Border)
     }
 
     mtd onPaintEvent(evt: *PaintEvent)
@@ -308,7 +307,7 @@ impl Menu
 
         hotItem := items[hotIdx]
         pos := getSurfaceRect()
-        sdw := getThemeMetrics().popupMenu_ShadowSize
+        sdw := getThemeMetrics().menuPopup_ShadowSize
         surfaceRect := pos
         pos.x = pos.right() - sdw
         pos.y += hotItem.pos
@@ -338,7 +337,7 @@ impl Menu
     {
         metrics := getThemeMetrics()
         clientRect := getClientRect()
-        sl := metrics.popupMenu_SpaceLines
+        sl := metrics.menuBar_SpaceBetween
         visit i, idx: items
         {
             rect := Math.Rectangle{i.pos - sl * 0.5, clientRect.y, i.size + sl, clientRect.height}
@@ -353,7 +352,7 @@ impl Menu
     {
         metrics := getThemeMetrics()
         clientRect := getClientRect()
-        sl := metrics.popupMenu_SpaceLines
+        sl := metrics.menuPopup_SpaceLines
         visit i, idx: items
         {
             rect := Math.Rectangle{clientRect.x, i.pos - sl * 0.5, clientRect.width, i.size + sl}
@@ -385,14 +384,9 @@ impl Menu
         visit i, idx: items
         {
             i.pos = x
-            if i.separator
-                x += metrics.popupMenu_SeparatorHeight
-            else
-            {
-                fake.drawRichString(@{0, 0, 512, 0}, &i.name, rsf)
-                i.size = i.name.boundRect.width
-                x += i.size + metrics.popupMenu_SpaceLines
-            }
+            fake.drawRichString(@{0, 0, 512, 0}, &i.name, rsf)
+            i.size = i.name.boundRect.width
+            x += i.size + metrics.menuBar_SpaceBetween
         }
     }
 
@@ -402,7 +396,7 @@ impl Menu
         metrics := getThemeMetrics()
 
         clientRect := getClientRect()
-        clientRect.inflate(-metrics.popupMenu_ShadowSize)
+        clientRect.inflate(-metrics.menuPopup_ShadowSize)
         clientRect.applyPadding(padding)
 
         y := clientRect.y
@@ -417,12 +411,12 @@ impl Menu
         visit i, idx: items
         {
             if idx
-                position.height += metrics.popupMenu_SpaceLines
+                position.height += metrics.menuPopup_SpaceLines
             i.pos = position.height
 
             if i.separator
             {
-                i.size = metrics.popupMenu_SeparatorHeight
+                i.size = metrics.menuPopup_SeparatorHeight
                 position.height += i.size
                 continue
             }
@@ -443,9 +437,9 @@ impl Menu
         }
 
         // Add shadow size
-        position.width  += 2 * metrics.popupMenu_ShadowSize
-        position.width  += 2 * (rsf.font.regular.height + metrics.popupMenu_IconTextMargin)
-        position.height += metrics.popupMenu_ShadowSize
+        position.width  += 2 * metrics.menuPopup_ShadowSize
+        position.width  += 2 * (rsf.font.regular.height + metrics.menuPopup_IconTextMargin)
+        position.height += metrics.menuPopup_ShadowSize
 
         // Add padding
         position.width  += padding.x + padding.z
@@ -460,7 +454,7 @@ public impl Menu
     {
         res := Wnd.create'Menu(&parent.surface.wnd, null, @{}, id)
         res.sendCreateEvent()
-        res.padding = res.getThemeMetrics().popupMenu_Padding
+        res.padding = res.getThemeMetrics().menuPopup_Padding
         res.isHidden = true
         return res
     }
@@ -470,7 +464,7 @@ public impl Menu
     {
         res := Wnd.create'Menu(&parent.surface.wnd, null, @{}, id)
         res.sendCreateEvent()
-        res.padding = res.getThemeMetrics().popupMenu_Padding
+        res.padding = res.getThemeMetrics().menuPopup_Padding
         res.bar = true
         return res
     }
@@ -520,7 +514,7 @@ public impl Menu
         // Be sure popup menu is in the client area of the top view
         topView := getTopView()
         pt := topView.surfaceToLocal(surfacePos)
-        pt -= getThemeMetrics().popupMenu_ShadowSize
+        pt -= getThemeMetrics().menuPopup_ShadowSize
         if pt.x + position.width > topView.position.width
             pt.x = topView.position.width - position.width
         if pt.y + position.height > topView.position.height

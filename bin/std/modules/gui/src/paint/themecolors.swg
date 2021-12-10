@@ -163,14 +163,18 @@ struct ThemeColors
     tabView_FlatBk:                 Color = Gray6
     tabView_RoundBk:                Color = Gray6
 
-    popupMenu_Bk:                   Color = Gray6
-    popupMenu_Border:               Color = 0
-    popupMenu_Shadow:               Color = 0xFF000000
+    menuPopup_Bk:                   Color = Gray6
+    menuPopup_Border:               Color = 0
+    menuPopup_Shadow:               Color = 0xFF000000
+    menuPopup_Separator:            Color = Color.getLighter(Color.fromArgb(Gray6), 0.2)
+
     popupItem_Text:                 Color = White
     popupItem_RightText:            Color = Gray2
     popupItem_DisabledText:         Color = Gray2
     popupItem_HotText:              Color = White
     popupItem_HotRightText:         Color = White
     popupItem_HotBk:                Color = Blue
-    popupMenu_Separator:            Color = Color.getLighter(Color.fromArgb(Gray6), 0.2)
+
+    menuBar_Bk:                     Color = Gray6
+    menuBar_Border:                 Color = 0
 }
