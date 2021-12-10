@@ -289,6 +289,8 @@ impl Menu
 
         if !bar
             captureMouse()
+        else
+            releaseMouse()
     }
 
     mtd deleteTimer()
@@ -298,7 +300,42 @@ impl Menu
         timer = null
     }
 
-    mtd showHotPopup()
+    mtd showHotPopupBar()
+    {
+        if hotIdx == Swag.U32.Max
+            return
+        if !items[hotIdx].popup
+            return
+        hotItem := items[hotIdx]
+
+        pos := getSurfaceRect()
+        surfaceRect := pos
+        pos.x += hotItem.pos
+        pos.x -= getThemeMetrics().menuPopup_ShadowSize
+        pos.x -= getThemeMetrics().menuBar_SpaceBetween * 0.5
+        pos.y += pos.height
+        pos.y -= getThemeMetrics().menuPopup_ShadowSize
+        subVisible = hotItem.popup
+
+        // Be sure popup menu is in the client area of the top view
+        subVisible.computeLayoutPopup()
+        topView := getTopView()
+        pt := topView.surfaceToLocal(@{pos.x, pos.y})
+        subPos := subVisible.position
+        if pt.x + subPos.width > topView.position.width
+            pt.x = topView.position.width - subPos.width
+        if pt.y + subPos.height > topView.position.height
+            pt.y = topView.position.height - subPos.height
+        pt = topView.localToSurface(pt)
+
+        pt = subVisible.parent.surfaceToLocal(pt)
+        subVisible.setPosition(@{pt.x, pt.y, subVisible.position.width, subVisible.position.height})
+        subVisible.bringToTop()
+        subVisible.show()
+        subVisible.captureMouse()
+    }
+
+    mtd showHotPopupPopup()
     {
         if hotIdx == Swag.U32.Max
             return
@@ -331,6 +368,14 @@ impl Menu
         subVisible.bringToTop()
         subVisible.show()
         subVisible.captureMouse()
+    }
+
+    mtd showHotPopup()
+    {
+        if bar
+            showHotPopupBar()
+        else
+            showHotPopupPopup()
     }
 
     mtd hitTestBar(pos: Math.Point)->u32
@@ -383,10 +428,10 @@ impl Menu
 
         visit i, idx: items
         {
-            i.pos = x
+            i.pos = x + metrics.menuBar_SpaceBetween * 0.5
             fake.drawRichString(@{0, 0, 512, 0}, &i.name, rsf)
             i.size = i.name.boundRect.width
-            x += i.size + metrics.menuBar_SpaceBetween
+            x = i.pos + i.size + metrics.menuBar_SpaceBetween * 0.5
         }
     }
 

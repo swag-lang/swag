@@ -253,9 +253,16 @@ func createWidgets(view: *Wnd)
 
     // Menu
     menu := Menu.createBar(view)
-    menu.setPosition(@{600, 350, 250, 40})
+    menu.setPosition(@{600, 350, 400, 40})
     menu.show()
     menu.addItem("Coucou", "0")
     menu.addItem("Salut", "0")
     menu.addItem("La", "0")
+
+    popup := Menu.createPopup(view)
+    popup.addItem("Coucou0", "0")
+    popup.addItem("Coucou1", "1")
+    menu.addPopup("Popup1", popup)
+    menu.addPopup("Popup2", popup)
+
 }
