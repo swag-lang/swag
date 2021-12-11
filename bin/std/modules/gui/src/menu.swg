@@ -98,11 +98,6 @@ impl IWnd for Menu
             format.font = theme.res.fontDefault
             painter.drawRichString(labelPos, &i.name, format)
         }
-
-        // Border
-        clientRect = getClientRect()
-        clientRect.inflate(-metrics.menuPopup_ShadowSize)
-        theme.drawSubRect(painter, clientRect, &rects.menuPopup_Border, colors.menuPopup_Border)
     }
 
     mtd paintPopup(painter: *Painter)
@@ -359,14 +354,15 @@ impl Menu
     {
         selectedIdx = hotIdx
         hotItem := items[hotIdx]
+        metrics := getThemeMetrics()
 
         pos := getSurfaceRect()
         surfaceRect := pos
         pos.x += hotItem.pos
-        pos.x -= getThemeMetrics().menuPopup_ShadowSize
-        pos.x -= getThemeMetrics().menuBar_SpaceBetween * 0.5
+        pos.x -= metrics.menuPopup_ShadowSize
+        pos.x -= metrics.menuBar_SpaceBetween * 0.5
         pos.y += pos.height
-        pos.y -= getThemeMetrics().menuPopup_ShadowSize
+        pos.y -= metrics.menuPopup_ShadowSize
         subVisible = hotItem.popup
 
         // Be sure popup menu is in the client area of the top view
@@ -558,7 +554,7 @@ public impl Menu
     #[Swag.Discardable]
     func createBar(parent: *Wnd, position: Math.Rectangle, id: string = null)->*Menu
     {
-        res := Wnd.create'Menu(&parent.surface.wnd, null, position, id)
+        res := Wnd.create'Menu(parent, null, position, id)
         if res.position.height == 0
             res.position.height = res.getThemeMetrics().menuBar_Height
         res.sendCreateEvent()
