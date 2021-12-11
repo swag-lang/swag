@@ -76,5 +76,5 @@ struct ThemeImageRects
     menuPopup_HotBk:            ThemeImageRect = @{{57,197,27,27}, 12}
     menuBar_Bk:                 ThemeImageRect = @{{1,197,27,27}, 12}
     menuBar_Border:             ThemeImageRect = @{{29,197,27,27}, 5}
-    menuBar_HotBk:              ThemeImageRect = @{{57,197,27,27}, 12}
+    menuBar_SelectedBk:         ThemeImageRect = @{{57,197,27,27}, 12}
 }

@@ -21,6 +21,7 @@ public struct Menu
 
     items:          Array'(*PopupMenuItem)
     hotIdx:         u32 = Swag.U32.Max
+    selectedIdx:    u32 = Swag.U32.Max
     bar:            bool
     endModal:       bool
     endModalResult: WndId
@@ -69,14 +70,17 @@ impl IWnd for Menu
             colorRightText = i.disabled ? colors.popupItem_DisabledText : colors.popupItem_RightText
 
             // Back selection
-            if hotIdx == idx and !i.disabled
+            if !i.disabled
             {
-                backPos := labelPos
-                backPos.x -= metrics.menuBar_SpaceBetween * 0.5
-                backPos.width += metrics.menuBar_SpaceBetween
-                theme.drawSubRect(painter, backPos, &rects.menuPopup_HotBk, colors.popupItem_HotBk)
-                colorText = colors.popupItem_HotText
-                colorRightText = colors.popupItem_HotRightText
+                if hotIdx == idx or selectedIdx == idx
+                {
+                    backPos := labelPos
+                    backPos.x -= metrics.menuBar_SpaceBetween * 0.5
+                    backPos.width += metrics.menuBar_SpaceBetween
+                    theme.drawSubRect(painter, backPos, &rects.menuBar_SelectedBk, colors.menuBar_SelectedBk)
+                    colorText = colors.popupItem_HotText
+                    colorRightText = colors.popupItem_HotRightText
+                }
             }
 
             // Icon
@@ -313,6 +317,7 @@ impl Menu
             subVisible = subVisible.subVisible
         }
 
+        selectedIdx = Swag.U32.Max
         if !bar
             captureMouse()
         else
@@ -328,10 +333,7 @@ impl Menu
 
     mtd showHotPopupBar()
     {
-        if hotIdx == Swag.U32.Max
-            return
-        if !items[hotIdx].popup
-            return
+        selectedIdx = hotIdx
         hotItem := items[hotIdx]
 
         pos := getSurfaceRect()
@@ -363,12 +365,9 @@ impl Menu
 
     mtd showHotPopupPopup()
     {
-        if hotIdx == Swag.U32.Max
-            return
-        if !items[hotIdx].popup
-            return
-
+        selectedIdx = hotIdx
         hotItem := items[hotIdx]
+
         pos := getSurfaceRect()
         sdw := getThemeMetrics().menuPopup_ShadowSize
         surfaceRect := pos
@@ -398,6 +397,12 @@ impl Menu
 
     mtd showHotPopup()
     {
+        if hotIdx == Swag.U32.Max or !items[hotIdx].popup
+        {
+            selectedIdx = Swag.U32.Max
+            return
+        }
+
         if bar
             showHotPopupBar()
         else

@@ -177,4 +177,5 @@ struct ThemeColors
 
     menuBar_Bk:                     Color = Gray6
     menuBar_Border:                 Color = 0
+    menuBar_SelectedBk:             Color = Blue
 }
