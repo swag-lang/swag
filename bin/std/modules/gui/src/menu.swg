@@ -339,6 +339,19 @@ impl Menu
         timer = null
     }
 
+    mtd showSubVisible(ptSurface: Math.Point)
+    {
+        pt := subVisible.parent.surfaceToLocal(ptSurface)
+        subVisible.setPosition(@{pt.x, pt.y, subVisible.position.width, subVisible.position.height})
+        subVisible.bringToTop()
+        subVisible.show()
+        subVisible.captureMouse()
+
+        subVisible.hotIdx = Swag.U32.Max
+        subVisible.selectedIdx = Swag.U32.Max
+        subVisible.subVisible = null
+    }
+
     mtd showHotPopupBar()
     {
         selectedIdx = hotIdx
@@ -362,17 +375,9 @@ impl Menu
             pt.x = topView.position.width - subPos.width
         if pt.y + subPos.height > topView.position.height
             pt.y = topView.position.height - subPos.height
+
         pt = topView.localToSurface(pt)
-
-        pt = subVisible.parent.surfaceToLocal(pt)
-        subVisible.setPosition(@{pt.x, pt.y, subVisible.position.width, subVisible.position.height})
-        subVisible.bringToTop()
-        subVisible.show()
-        subVisible.captureMouse()
-
-        /*subVisible.hotIdx = Swag.U32.Max
-        subVisible.selectedIdx = Swag.U32.Max
-        subVisible.subVisible = null*/
+        showSubVisible(pt)
     }
 
     mtd showHotPopupPopup()
@@ -398,13 +403,9 @@ impl Menu
             pt.x = surfaceRect.x - subPos.width
         if pt.y + subPos.height > topView.position.height
             pt.y = surfaceRect.y - subPos.height
-        pt = topView.localToSurface(pt)
 
-        pt = subVisible.parent.surfaceToLocal(pt)
-        subVisible.setPosition(@{pt.x, pt.y, subVisible.position.width, subVisible.position.height})
-        subVisible.bringToTop()
-        subVisible.show()
-        subVisible.captureMouse()
+        pt = topView.localToSurface(pt)
+        showSubVisible(pt)
     }
 
     mtd showHotPopup()
