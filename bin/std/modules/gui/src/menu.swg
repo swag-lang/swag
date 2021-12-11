@@ -15,7 +15,10 @@ public struct PopupMenuItem
 
 public struct Menu
 {
-    using wnd:      Wnd
+    using wnd:          Wnd
+    onValidateResult:   func(self, WndId)
+    onComputeItem:      func(self, *PopupMenuItem)
+
     items:          Array'(*PopupMenuItem)
     hotIdx:         u32 = Swag.U32.Max
     bar:            bool
@@ -213,9 +216,14 @@ impl IWnd for Menu
         hit := hitTest(evt.pos)
         if hit != hotIdx
         {
-            if !timer
-                timer = surface.app.addTimer(300, self)
-            timer.restart()
+            // Timer to auto open/hide sub menus
+            if !bar
+            {
+                if !timer
+                    timer = surface.app.addTimer(300, self)
+                timer.restart()
+            }
+
             hotIdx = hit
             invalidate()
 
@@ -238,26 +246,35 @@ impl IWnd for Menu
             return
         }
 
-        if evt.kind != .MousePressed or evt.button != .Left
-            return
-
-        if hotIdx != Swag.U32.Max
+        // If this is a bar, then track sub popup if one is currently open
+        if bar and subVisible and hotIdx != Swag.U32.Max
         {
-            hotItem := items[hotIdx]
-            if hotItem.popup
-            {
-                hideSubVisible()
-                deleteTimer()
-                showHotPopup()
-            }
-            else if !hotItem.separator and !hotItem.disabled
-            {
-                setEndModal(hotItem.id)
-            }
+            hideSubVisible()
+            deleteTimer()
+            showHotPopup()
         }
-        else
+
+        // On a popup menu, just react to press button
+        else if  evt.kind == .MousePressed and evt.button == .Left
         {
-            setEndModal(null)
+            if hotIdx != Swag.U32.Max
+            {
+                hotItem := items[hotIdx]
+                if hotItem.popup
+                {
+                    hideSubVisible()
+                    deleteTimer()
+                    showHotPopup()
+                }
+                else if !hotItem.separator and !hotItem.disabled
+                {
+                    setEndModal(hotItem.id)
+                }
+            }
+            else
+            {
+                setEndModal(null)
+            }
         }
     }
 }
@@ -274,9 +291,18 @@ impl Menu
     {
         p := self
         while p.owner
+        {
+            p.hide()
             p = p.owner
+        }
+
         p.endModal = true
         p.endModalResult = result
+
+        if onValidateResult and result != null
+            onValidateResult(self, result)
+        if bar
+            hideSubVisible()
     }
 
     mtd hideSubVisible()
@@ -428,6 +454,8 @@ impl Menu
 
         visit i, idx: items
         {
+            if onComputeItem
+                onComputeItem(self, i)
             i.pos = x + metrics.menuBar_SpaceBetween * 0.5
             fake.drawRichString(@{0, 0, 512, 0}, &i.name, rsf)
             i.size = i.name.boundRect.width
@@ -455,6 +483,8 @@ impl Menu
 
         visit i, idx: items
         {
+            if onComputeItem
+                onComputeItem(self, i)
             if idx
                 position.height += metrics.menuPopup_SpaceLines
             i.pos = position.height
@@ -505,9 +535,11 @@ public impl Menu
     }
 
     #[Swag.Discardable]
-    func createBar(parent: *Wnd, id: string = null)->*Menu
+    func createBar(parent: *Wnd, position: Math.Rectangle, id: string = null)->*Menu
     {
-        res := Wnd.create'Menu(&parent.surface.wnd, null, @{}, id)
+        res := Wnd.create'Menu(&parent.surface.wnd, null, position, id)
+        if res.position.height == 0
+            res.position.height = res.getThemeMetrics().menuBar_Height
         res.sendCreateEvent()
         res.padding = res.getThemeMetrics().menuPopup_Padding
         res.bar = true
