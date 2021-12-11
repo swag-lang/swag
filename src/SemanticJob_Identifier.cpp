@@ -2768,9 +2768,18 @@ bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identi
         {
             if (dependentVar)
             {
-                Diagnostic diag{dep.node, g_E[Err0117]};
-                Diagnostic note{dependentVar, g_E[Nte0036], DiagnosticLevel::Note};
-                return context->report(diag, &note);
+                if (dep.node->specFlags & AST_SPEC_DECLPARAM_GENERATED_SELF)
+                {
+                    Diagnostic diag{dependentVar, g_E[Err0117]};
+                    Diagnostic note{dep.node, g_E[Nte0056], DiagnosticLevel::Note};
+                    return context->report(diag, &note);
+                }
+                else
+                {
+                    Diagnostic diag{dep.node, g_E[Err0117]};
+                    Diagnostic note{dependentVar, g_E[Nte0036], DiagnosticLevel::Note};
+                    return context->report(diag, &note);
+                }
             }
 
             dependentVar = dep.node;
