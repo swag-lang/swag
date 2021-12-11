@@ -305,8 +305,16 @@ impl Menu
 
         if onValidateResult and result != null
             onValidateResult(self, result)
+
         if bar
             hideSubVisible()
+
+        if p.bar
+        {
+            p.selectedIdx   = Swag.U32.Max
+            p.hotIdx        = Swag.U32.Max
+            p.subVisible    = null
+        }
     }
 
     mtd hideSubVisible()
@@ -361,6 +369,10 @@ impl Menu
         subVisible.bringToTop()
         subVisible.show()
         subVisible.captureMouse()
+
+        /*subVisible.hotIdx = Swag.U32.Max
+        subVisible.selectedIdx = Swag.U32.Max
+        subVisible.subVisible = null*/
     }
 
     mtd showHotPopupPopup()
