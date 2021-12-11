@@ -175,6 +175,7 @@ struct SyntaxJob : public Job
     bool doScopedCurlyStatement(AstNode* parent, AstNode** result = nullptr, ScopeKind scopeKind = ScopeKind::Statement);
     bool doReturn(AstNode* parent, AstNode** result = nullptr);
     bool doLambdaExpression(AstNode* parent, AstNode** result = nullptr);
+    bool doWith(AstNode* parent, AstNode** result = nullptr);
     bool doUsing(AstNode* parent, AstNode** result = nullptr);
     bool doCast(AstNode* parent, AstNode** result = nullptr);
     bool doBitCast(AstNode* parent, AstNode** result = nullptr);

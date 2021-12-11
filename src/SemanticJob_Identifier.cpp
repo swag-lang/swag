@@ -2455,14 +2455,27 @@ bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* 
         // the first call parameter
         if (dependentVar == identifierRef->previousResolvedNode)
         {
-            auto copyChild = Ast::newIdentifier(node->sourceFile, dependentVar->token.text, idRef, idRef);
-            copyChild->inheritOwners(fctCallParam);
-            copyChild->inheritOrFlag(idRef, AST_IN_MIXIN);
-            copyChild->resolvedSymbolName     = dependentVar->resolvedSymbolOverload->symbol;
-            copyChild->resolvedSymbolOverload = dependentVar->resolvedSymbolOverload;
-            copyChild->typeInfo               = dependentVar->typeInfo;
-            copyChild->byteCodeFct            = ByteCodeGenJob::emitIdentifier;
-            copyChild->flags |= AST_TO_UFCS | AST_L_VALUE;
+            for (auto child : dependentVar->childs)
+            {
+                auto copyChild = Ast::newIdentifier(node->sourceFile, child->token.text.empty() ? dependentVar->token.text : child->token.text, idRef, idRef);
+                copyChild->inheritOwners(fctCallParam);
+                copyChild->inheritOrFlag(idRef, AST_IN_MIXIN);
+                if (!child->resolvedSymbolOverload)
+                {
+                    copyChild->resolvedSymbolName     = dependentVar->resolvedSymbolOverload->symbol;
+                    copyChild->resolvedSymbolOverload = dependentVar->resolvedSymbolOverload;
+                    copyChild->typeInfo               = dependentVar->typeInfo;
+                }
+                else
+                {
+                    copyChild->resolvedSymbolName     = child->resolvedSymbolOverload->symbol;
+                    copyChild->resolvedSymbolOverload = child->resolvedSymbolOverload;
+                    copyChild->typeInfo               = child->typeInfo;
+                }
+
+                copyChild->byteCodeFct = ByteCodeGenJob::emitIdentifier;
+                copyChild->flags |= AST_TO_UFCS | AST_L_VALUE;
+            }
         }
         else
         {
@@ -2755,6 +2768,7 @@ bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identi
     vector<AlternativeScopeVar> toCheck;
 
     // Collect all matches
+    bool hasWith = false;
     for (auto& dep : scopeHierarchyVars)
     {
         bool getIt = false;
@@ -2767,12 +2781,30 @@ bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identi
             getIt = true;
 
         if (getIt)
+        {
+            if (dep.node->parent->kind == AstNodeKind::With)
+                hasWith = true;
             toCheck.push_back(dep);
+        }
+    }
+
+    // With has priority over using
+    if (hasWith)
+    {
+        for (auto& dep : toCheck)
+        {
+            bool isWith = dep.node->parent->kind == AstNodeKind::With;
+            if (!isWith)
+                dep.node = nullptr;
+        }
     }
 
     // Get one
     for (auto& dep : toCheck)
     {
+        if (!dep.node)
+            continue;
+
         if (dependentVar)
         {
             if (dep.node->specFlags & AST_SPEC_DECLPARAM_GENERATED_SELF)

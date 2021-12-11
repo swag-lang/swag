@@ -39,17 +39,55 @@ bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, Ty
     return true;
 }
 
+bool SemanticJob::resolveWith(SemanticContext* context)
+{
+    auto node  = context->node;
+    auto idref = CastAst<AstIdentifierRef>(node->childs[0], AstNodeKind::IdentifierRef);
+    node->flags |= AST_NO_BYTECODE;
+
+    SWAG_ASSERT(idref->resolvedSymbolName);
+    if (idref->resolvedSymbolName->kind == SymbolKind::Variable)
+    {
+        SWAG_VERIFY(idref->resolvedSymbolOverload, context->report({node, g_E[Err0694]}));
+        SWAG_CHECK(resolveUsingVar(context, idref, idref->resolvedSymbolOverload->typeInfo));
+        return true;
+    }
+
+    Scope* scope        = nullptr;
+    auto   typeResolved = idref->resolvedSymbolOverload->typeInfo;
+    switch (typeResolved->kind)
+    {
+    case TypeInfoKind::Namespace:
+    {
+        auto typeInfo = CastTypeInfo<TypeInfoNamespace>(typeResolved, typeResolved->kind);
+        scope         = typeInfo->scope;
+        break;
+    }
+    case TypeInfoKind::Enum:
+    {
+        auto typeInfo = CastTypeInfo<TypeInfoEnum>(typeResolved, typeResolved->kind);
+        scope         = typeInfo->scope;
+        break;
+    }
+    default:
+        return context->report({node, Utf8::format(g_E[Err0703], typeResolved->getDisplayName().c_str())});
+    }
+
+    context->node->addAlternativeScope(scope);
+    return true;
+}
+
 bool SemanticJob::resolveUsing(SemanticContext* context)
 {
     auto node  = context->node;
     auto idref = CastAst<AstIdentifierRef>(node->childs[0], AstNodeKind::IdentifierRef);
-
     node->flags |= AST_NO_BYTECODE;
 
+    SWAG_ASSERT(idref->resolvedSymbolName);
     if (idref->resolvedSymbolName->kind == SymbolKind::Variable)
     {
         SWAG_VERIFY(idref->resolvedSymbolOverload, context->report({node, g_E[Err0694]}));
-        SWAG_CHECK(resolveUsingVar(context, node->childs.front(), idref->resolvedSymbolOverload->typeInfo));
+        SWAG_CHECK(resolveUsingVar(context, idref, idref->resolvedSymbolOverload->typeInfo));
         return true;
     }
 

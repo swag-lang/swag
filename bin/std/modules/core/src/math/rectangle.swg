@@ -216,9 +216,9 @@ impl Rectangle
     }
 
     // Intersect this rectangle with another one
-    mtd intersect(with: Rectangle)
+    mtd intersect(other: Rectangle)
     {
-        dref self = intersect(dref self, with)
+        dref self = intersect(dref self, other)
     }
 
     // Creates a rectangle that represents the intersetion between 'a' and 'b'.
@@ -241,9 +241,9 @@ impl Rectangle
     }
 
     // Creates a rectangle that represents the union
-    mtd setUnion(with: Rectangle)
+    mtd setUnion(other: Rectangle)
     {
-        dref self = getUnion(dref self, with)
+        dref self = getUnion(dref self, other)
     }
 
     // Creates a rectangle that represents the union between 'a' and 'b'.

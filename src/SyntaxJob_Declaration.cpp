@@ -8,6 +8,24 @@
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
 
+bool SyntaxJob::doWith(AstNode* parent, AstNode** result)
+{
+    SWAG_CHECK(eatToken());
+    auto node = Ast::newNode<AstNode>(this, AstNodeKind::With, sourceFile, parent);
+    if (result)
+        *result = node;
+    SWAG_CHECK(doIdentifierRef(node, nullptr, IDENTIFIER_NO_PARAMS));
+
+    AstNode* stmt;
+    SWAG_CHECK(doEmbeddedStatement(parent, &stmt));
+
+    node->ownerScope = stmt->ownerScope;
+    node->allocateExtension();
+    node->semanticFct = SemanticJob::resolveWith;
+
+    return true;
+}
+
 bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
 {
     SWAG_CHECK(eatToken());
@@ -516,6 +534,9 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         break;
     case TokenId::KwdUsing:
         SWAG_CHECK(doUsing(parent, result));
+        break;
+    case TokenId::KwdWith:
+        SWAG_CHECK(doWith(parent, result));
         break;
     case TokenId::KwdVar:
     case TokenId::KwdConst:

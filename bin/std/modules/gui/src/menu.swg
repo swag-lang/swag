@@ -341,17 +341,18 @@ impl Menu
 
     mtd showSubVisible(ptSurface: Math.Point)
     {
-        pt := subVisible.parent.surfaceToLocal(ptSurface)
-        subVisible.setPosition(@{pt.x, pt.y, subVisible.position.width, subVisible.position.height})
-        subVisible.bringToTop()
-        subVisible.show()
-        subVisible.captureMouse()
-
-        // Reset subvisible state
-        subVisible.hotIdx = Swag.U32.Max
-        subVisible.selectedIdx = Swag.U32.Max
-        subVisible.subVisible = null
-        subVisible.timer = null
+        with subVisible
+        {
+            pt := parent.surfaceToLocal(ptSurface)
+            setPosition(@{pt.x, pt.y, position.width, position.height})
+            bringToTop()
+            show()
+            captureMouse()
+            hotIdx = Swag.U32.Max
+            selectedIdx = Swag.U32.Max
+            subVisible = null
+            timer = null
+        }
     }
 
     mtd showHotPopupBar()

@@ -269,6 +269,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("return", {TokenId::KwdReturn, LiteralType::TT_MAX});
     keywords.add("retval", {TokenId::KwdRetVal, LiteralType::TT_MAX});
     keywords.add("using", {TokenId::KwdUsing, LiteralType::TT_MAX});
+    keywords.add("with", {TokenId::KwdWith, LiteralType::TT_MAX});
     keywords.add("cast", {TokenId::KwdCast, LiteralType::TT_MAX});
     keywords.add("bitcast", {TokenId::KwdBitCast, LiteralType::TT_MAX});
     keywords.add("acast", {TokenId::KwdAutoCast, LiteralType::TT_MAX});
