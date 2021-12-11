@@ -258,9 +258,14 @@ func createWidgets(view: *Wnd)
     menu.addItem("Salut", "0")
     menu.addItem("La", "0")
 
+    popup1 := Menu.createPopup(view)
+    popup1.addItem("Coucou0", "0")
+    popup1.addItem("Coucou1", "1")
+
     popup := Menu.createPopup(view)
     popup.addItem("Coucou0", "0")
     popup.addItem("Coucou1", "1")
+    popup.addPopup("Popup1", popup1)
     menu.addPopup("Popup1", popup)
     menu.addPopup("Popup2", popup)
 

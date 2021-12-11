@@ -347,9 +347,11 @@ impl Menu
         subVisible.show()
         subVisible.captureMouse()
 
+        // Reset subvisible state
         subVisible.hotIdx = Swag.U32.Max
         subVisible.selectedIdx = Swag.U32.Max
         subVisible.subVisible = null
+        subVisible.timer = null
     }
 
     mtd showHotPopupBar()
