@@ -2747,12 +2747,14 @@ bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identi
     if (overload->flags & OVERLOAD_VAR_GLOBAL)
         return true;
 
-    auto     job                = context->job;
-    auto     symbol             = overload->symbol;
-    auto&    scopeHierarchyVars = job->cacheScopeHierarchyVars;
-    AstNode* dependentVar       = nullptr;
+    auto                        job                = context->job;
+    auto                        symbol             = overload->symbol;
+    auto&                       scopeHierarchyVars = job->cacheScopeHierarchyVars;
+    AstNode*                    dependentVar       = nullptr;
+    auto                        symScope           = symbol->ownerTable->scope;
+    vector<AlternativeScopeVar> toCheck;
 
-    auto symScope = symbol->ownerTable->scope;
+    // Collect all matches
     for (auto& dep : scopeHierarchyVars)
     {
         bool getIt = false;
@@ -2765,41 +2767,45 @@ bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identi
             getIt = true;
 
         if (getIt)
+            toCheck.push_back(dep);
+    }
+
+    // Get one
+    for (auto& dep : toCheck)
+    {
+        if (dependentVar)
         {
-            if (dependentVar)
+            if (dep.node->specFlags & AST_SPEC_DECLPARAM_GENERATED_SELF)
             {
-                if (dep.node->specFlags & AST_SPEC_DECLPARAM_GENERATED_SELF)
-                {
-                    Diagnostic diag{dependentVar, g_E[Err0117]};
-                    Diagnostic note{dep.node, g_E[Nte0056], DiagnosticLevel::Note};
-                    return context->report(diag, &note);
-                }
-                else
-                {
-                    Diagnostic diag{dep.node, g_E[Err0117]};
-                    Diagnostic note{dependentVar, g_E[Nte0036], DiagnosticLevel::Note};
-                    return context->report(diag, &note);
-                }
+                Diagnostic diag{dependentVar, g_E[Err0117]};
+                Diagnostic note{dep.node, g_E[Nte0056], DiagnosticLevel::Note};
+                return context->report(diag, &note);
             }
-
-            dependentVar = dep.node;
-
-            // This way the ufcs can trigger even with an implicit 'using' var (typically for a 'using self')
-            if (!identifierRef->previousResolvedNode)
+            else
             {
-                if (symbol->kind == SymbolKind::Function)
+                Diagnostic diag{dep.node, g_E[Err0117]};
+                Diagnostic note{dependentVar, g_E[Nte0036], DiagnosticLevel::Note};
+                return context->report(diag, &note);
+            }
+        }
+
+        dependentVar = dep.node;
+
+        // This way the ufcs can trigger even with an implicit 'using' var (typically for a 'using self')
+        if (!identifierRef->previousResolvedNode)
+        {
+            if (symbol->kind == SymbolKind::Function)
+            {
+                // Be sure we have a missing parameter in order to try ufcs
+                auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
+                bool canTry   = canTryUfcs(context, typeFunc, node->callParameters, dependentVar, false);
+                if (context->result == ContextResult::Pending)
+                    return true;
+                if (canTry)
                 {
-                    // Be sure we have a missing parameter in order to try ufcs
-                    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
-                    bool canTry   = canTryUfcs(context, typeFunc, node->callParameters, dependentVar, false);
-                    if (context->result == ContextResult::Pending)
-                        return true;
-                    if (canTry)
-                    {
-                        identifierRef->resolvedSymbolOverload = dependentVar->resolvedSymbolOverload;
-                        identifierRef->resolvedSymbolName     = dependentVar->resolvedSymbolOverload->symbol;
-                        identifierRef->previousResolvedNode   = dependentVar;
-                    }
+                    identifierRef->resolvedSymbolOverload = dependentVar->resolvedSymbolOverload;
+                    identifierRef->resolvedSymbolName     = dependentVar->resolvedSymbolOverload->symbol;
+                    identifierRef->previousResolvedNode   = dependentVar;
                 }
             }
         }
