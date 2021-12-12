@@ -6,7 +6,7 @@
 #include "Module.h"
 #include "ErrorIds.h"
 
-bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, TypeInfo* typeInfoVar)
+bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, TypeInfo* typeInfoVar, bool forWith)
 {
     auto node    = context->node;
     auto regNode = node->ownerScope ? node->ownerScope->owner : node;
@@ -19,7 +19,7 @@ bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, Ty
     {
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfoVar, TypeInfoKind::Struct);
         regNode->allocateExtension();
-        regNode->addAlternativeScope(typeStruct->scope);
+        regNode->addAlternativeScope(typeStruct->scope, forWith ? ALTSCOPE_WITH : 0);
         regNode->addAlternativeScopeVar(typeStruct->scope, varNode);
     }
     else if (typeInfoVar->kind == TypeInfoKind::Pointer)
@@ -28,7 +28,7 @@ bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, Ty
         SWAG_VERIFY(typePointer->pointedType->kind != TypeInfoKind::Enum, context->report({node, g_E[Err0691]}));
         SWAG_VERIFY(typePointer->pointedType->kind == TypeInfoKind::Struct, context->report({node, Utf8::format(g_E[Err0822], typeInfoVar->getDisplayName().c_str())}));
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
-        regNode->addAlternativeScope(typeStruct->scope);
+        regNode->addAlternativeScope(typeStruct->scope, forWith ? ALTSCOPE_WITH : 0);
         regNode->addAlternativeScopeVar(typeStruct->scope, varNode);
     }
     else
@@ -49,7 +49,7 @@ bool SemanticJob::resolveWith(SemanticContext* context)
     if (idref->resolvedSymbolName->kind == SymbolKind::Variable)
     {
         SWAG_VERIFY(idref->resolvedSymbolOverload, context->report({node, g_E[Err0694]}));
-        SWAG_CHECK(resolveUsingVar(context, idref, idref->resolvedSymbolOverload->typeInfo));
+        SWAG_CHECK(resolveUsingVar(context, idref, idref->resolvedSymbolOverload->typeInfo, true));
         return true;
     }
 
@@ -87,7 +87,7 @@ bool SemanticJob::resolveUsing(SemanticContext* context)
     if (idref->resolvedSymbolName->kind == SymbolKind::Variable)
     {
         SWAG_VERIFY(idref->resolvedSymbolOverload, context->report({node, g_E[Err0694]}));
-        SWAG_CHECK(resolveUsingVar(context, idref, idref->resolvedSymbolOverload->typeInfo));
+        SWAG_CHECK(resolveUsingVar(context, idref, idref->resolvedSymbolOverload->typeInfo, false));
         return true;
     }
 

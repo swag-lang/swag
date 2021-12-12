@@ -188,9 +188,11 @@ struct CloneContext
     }
 };
 
+static const uint32_t ALTSCOPE_WITH = 0x00000001;
 struct AlternativeScope
 {
-    Scope* scope;
+    Scope*   scope;
+    uint32_t flags;
 };
 
 struct AlternativeScopeVar
@@ -249,7 +251,7 @@ struct AstNode
     AstNode*    inSimpleReturn();
     bool        forceTakeAddress();
     void        computeEndLocation();
-    void        addAlternativeScope(Scope* scope);
+    void        addAlternativeScope(Scope* scope, uint32_t asflags = 0);
     void        addAlternativeScopes(const VectorNative<AlternativeScope>& scopes);
     void        addAlternativeScopeVar(Scope* scope, AstNode* varNode);
 

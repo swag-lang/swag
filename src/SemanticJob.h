@@ -147,6 +147,18 @@ struct OneGenericMatch
     }
 };
 
+struct OneSymbolMatch
+{
+    SymbolName* first;
+    Scope*      scope;
+    uint32_t    asFlags = 0;
+
+    bool operator==(const OneSymbolMatch& other)
+    {
+        return first == other.first;
+    }
+};
+
 static const uint32_t COLLECT_ALL       = 0x00000000;
 static const uint32_t COLLECT_BACKTICK  = 0x00000001;
 static const uint32_t COLLECT_NO_STRUCT = 0x00000002;
@@ -200,7 +212,8 @@ struct SemanticJob : public Job
     static void         enterState(AstNode* node);
     static void         inheritAttributesFromParent(AstNode* child);
     static void         inheritAttributesFromOwnerFunc(AstNode* child);
-    static void         addAlternativeScope(VectorNative<AlternativeScope>& scopes, Scope* scope);
+    static void         addAlternativeScopeOnce(VectorNative<AlternativeScope>& scopes, Scope* scope, uint32_t flags = 0);
+    static void         addAlternativeScope(VectorNative<AlternativeScope>& scopes, Scope* scope, uint32_t flags = 0);
     static bool         hasAlternativeScope(VectorNative<AlternativeScope>& scopes, Scope* scope);
     static bool         collectAttributes(SemanticContext* context, AstNode* forNode, AttributeList* result);
     static bool         collectAttributes(SemanticContext* context, AstNode* forNode, AttributeList* result, AstAttrUse* attrUse);
@@ -266,6 +279,7 @@ struct SemanticJob : public Job
     static bool         needToWaitForSymbol(SemanticContext* context, AstIdentifier* node, SymbolName* symbol, bool& needToWait);
     static bool         resolveIdentifier(SemanticContext* context, AstIdentifier* node, bool forGhosting);
     static TypeInfo*    findTypeInContext(SemanticContext* context, AstNode* node);
+    static void         addDependentSymbol(VectorNative<OneSymbolMatch>& symbols, SymbolName* symName, Scope* scope, uint32_t asflags);
     static bool         findIdentifierInScopes(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node);
     static bool         ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* identifierRef, OneMatch& match);
     static bool         instantiateGenericSymbol(SemanticContext* context, OneGenericMatch& firstMatch, bool forStruct);
@@ -385,7 +399,7 @@ struct SemanticJob : public Job
     static bool resolveAttrUse(SemanticContext* context);
     static bool resolveReturn(SemanticContext* context);
     static bool resolveRetVal(SemanticContext* context);
-    static bool resolveUsingVar(SemanticContext* context, AstNode* varNode, TypeInfo* typeInfoVar);
+    static bool resolveUsingVar(SemanticContext* context, AstNode* varNode, TypeInfo* typeInfoVar, bool forWith);
     static bool resolveAlias(SemanticContext* context);
     static bool resolveWith(SemanticContext* context);
     static bool resolveUsing(SemanticContext* context);
@@ -481,22 +495,12 @@ struct SemanticJob : public Job
         return res;
     }
 
-    struct OneSymbolMatch
-    {
-        SymbolName* first;
-        Scope*      scope;
-        bool        operator==(const OneSymbolMatch& other)
-        {
-            return first == other.first;
-        }
-    };
-
     VectorNative<AstNode*>            tmpNodes;
     VectorNative<OneSymbolMatch>      cacheDependentSymbols;
     VectorNative<OneSymbolMatch>      cacheToAddSymbols;
     VectorNative<AlternativeScope>    cacheScopeHierarchy;
     VectorNative<AlternativeScopeVar> cacheScopeHierarchyVars;
-    VectorNative<Scope*>              scopesToProcess;
+    VectorNative<AlternativeScope>    scopesToProcess;
     VectorNative<OneOverload>         cacheToSolveOverload;
     VectorNative<OneMatch*>           cacheMatches;
     VectorNative<OneMatch*>           cacheFreeMatches;

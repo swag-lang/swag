@@ -1159,7 +1159,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     // A using on a variable
     if (node->flags & AST_DECL_USING)
     {
-        SWAG_CHECK(resolveUsingVar(context, context->node, node->typeInfo));
+        SWAG_CHECK(resolveUsingVar(context, context->node, node->typeInfo, false));
     }
 
     // Register symbol with its type

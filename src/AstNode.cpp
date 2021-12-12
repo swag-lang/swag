@@ -365,11 +365,13 @@ bool AstNode::isSameStackFrame(SymbolOverload* overload)
     return true;
 }
 
-void AstNode::addAlternativeScope(Scope* scope)
+void AstNode::addAlternativeScope(Scope* scope, uint32_t asflags)
 {
-    allocateExtension();
     AlternativeScope sv;
     sv.scope = scope;
+    sv.flags = asflags;
+
+    allocateExtension();
     extension->alternativeScopes.push_back(sv);
 }
 
@@ -381,10 +383,11 @@ void AstNode::addAlternativeScopes(const VectorNative<AlternativeScope>& scopes)
 
 void AstNode::addAlternativeScopeVar(Scope* scope, AstNode* varNode)
 {
-    allocateExtension();
     AlternativeScopeVar sv;
     sv.scope = scope;
     sv.node  = varNode;
+
+    allocateExtension();
     extension->alternativeScopesVars.push_back(sv);
 }
 
