@@ -38,6 +38,21 @@
         @assert(pt.y == 1)
     }
 
+    // For a variable, you can also use 'with'
+    {
+        struct Point { x, y: s32; }
+
+        var pt: Point
+        with pt
+        {
+            x = 1   // equivalent to pt.x
+            y = 2   // equivalent to pt.y
+        }
+
+        @assert(pt.x == 1)
+        @assert(pt.y == 2)
+    }
+
     // using can be used with a field inside a struct
     {
         struct Point2
