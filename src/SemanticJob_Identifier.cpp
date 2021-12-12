@@ -2532,12 +2532,12 @@ void SemanticJob::addDependentSymbol(VectorNative<OneSymbolMatch>& symbols, Symb
 {
     for (auto& ds : symbols)
     {
-        if (ds.first == symName)
+        if (ds.symbol == symName)
             return;
     }
 
     OneSymbolMatch osm;
-    osm.first   = symName;
+    osm.symbol  = symName;
     osm.scope   = scope;
     osm.asFlags = asflags;
     symbols.push_back(osm);
@@ -3517,15 +3517,21 @@ bool SemanticJob::filterSymbols(SemanticContext* context, AstIdentifier* node)
     if (dependentSymbols.size() == 1)
         return true;
 
-    auto& toAddSymbol = job->cacheToAddSymbols;
-    toAddSymbol.clear();
-    for (const auto& p : dependentSymbols)
+    for (auto& p : dependentSymbols)
     {
-        auto oneSymbol = p.first;
+        auto oneSymbol = p.symbol;
+
         if (node->callParameters && oneSymbol->kind == SymbolKind::Variable)
+        {
+            p.remove = true;
             continue;
+        }
+
         if (!node->callParameters && oneSymbol->kind == SymbolKind::Function)
+        {
+            p.remove = true;
             continue;
+        }
 
         // Reference to a variable inside a struct, without a direct explicit reference
         bool isValid = true;
@@ -3549,16 +3555,19 @@ bool SemanticJob::filterSymbols(SemanticContext* context, AstIdentifier* node)
             }
         }
 
-        if (!isValid)
-            continue;
-
-        toAddSymbol.push_back_once(p);
+        p.remove = !isValid;
     }
 
-    // Register back all valid symbols
-    dependentSymbols.clear();
-    for (auto& s : toAddSymbol)
-        addDependentSymbol(dependentSymbols, s.first, s.scope, s.asFlags);
+    // Eliminate all matches tag as 'remove'
+    for (int i = 0; i < dependentSymbols.size(); i++)
+    {
+        if (dependentSymbols[i].remove)
+        {
+            dependentSymbols[i] = dependentSymbols.back();
+            dependentSymbols.pop_back();
+            i--;
+        }
+    }
 
     return true;
 }
@@ -3686,7 +3695,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
     // If one of my dependent symbol is not fully solved, we need to wait
     for (auto& p : dependentSymbols)
     {
-        auto symbol     = p.first;
+        auto symbol     = p.symbol;
         bool needToWait = false;
 
         // First test, with just a SharedLock for contention
@@ -3733,7 +3742,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
         toSolveOverload.clear();
         for (auto& p : dependentSymbols)
         {
-            auto       symbol = p.first;
+            auto       symbol = p.symbol;
             SharedLock lk(symbol->mutex);
             for (auto over : symbol->overloads)
             {

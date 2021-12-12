@@ -149,13 +149,14 @@ struct OneGenericMatch
 
 struct OneSymbolMatch
 {
-    SymbolName* first;
+    SymbolName* symbol;
     Scope*      scope;
-    uint32_t    asFlags = 0;
+    uint32_t    asFlags;
+    bool        remove = false;
 
     bool operator==(const OneSymbolMatch& other)
     {
-        return first == other.first;
+        return symbol == other.symbol;
     }
 };
 
@@ -497,7 +498,6 @@ struct SemanticJob : public Job
 
     VectorNative<AstNode*>            tmpNodes;
     VectorNative<OneSymbolMatch>      cacheDependentSymbols;
-    VectorNative<OneSymbolMatch>      cacheToAddSymbols;
     VectorNative<AlternativeScope>    cacheScopeHierarchy;
     VectorNative<AlternativeScopeVar> cacheScopeHierarchyVars;
     VectorNative<AlternativeScope>    scopesToProcess;
