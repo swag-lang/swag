@@ -3520,6 +3520,8 @@ bool SemanticJob::filterSymbols(SemanticContext* context, AstIdentifier* node)
     for (auto& p : dependentSymbols)
     {
         auto oneSymbol = p.symbol;
+        if (p.remove)
+            continue;
 
         if (node->callParameters && oneSymbol->kind == SymbolKind::Variable)
         {
@@ -3531,6 +3533,18 @@ bool SemanticJob::filterSymbols(SemanticContext* context, AstIdentifier* node)
         {
             p.remove = true;
             continue;
+        }
+
+        // If symbol comes from a 'with', it has priority
+        if (p.asFlags & ALTSCOPE_WITH)
+        {
+            for (auto& p1 : dependentSymbols)
+            {
+                if (!(p1.asFlags & ALTSCOPE_WITH))
+                {
+                    p1.remove = true;
+                }
+            }
         }
 
         // Reference to a variable inside a struct, without a direct explicit reference

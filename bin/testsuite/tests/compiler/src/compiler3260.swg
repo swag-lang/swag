@@ -1,4 +1,4 @@
-#global skip
+//#global skip
 struct BB
 {
     abc: string
@@ -19,5 +19,14 @@ impl AA
         {
             abc = "1"
         }
+
+        @assert(abc == null)
+        @assert(x.abc == "1")
     }
+}
+
+#test
+{
+    var v: AA
+    v.toto()
 }
