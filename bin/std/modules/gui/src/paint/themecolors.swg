@@ -171,7 +171,7 @@ struct ThemeColors
     menuBar_Border:                 Color = 0
     menuBar_SelectedBk:             Color = Gray5
 
-    popupItem_Text:                 Color = White
+    popupItem_Text:                 Color = Gray1
     popupItem_RightText:            Color = Gray2
     popupItem_DisabledText:         Color = Gray2
     popupItem_HotText:              Color = White

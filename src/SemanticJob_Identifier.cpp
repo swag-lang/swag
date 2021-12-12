@@ -1580,7 +1580,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     }
 }
 
-void SemanticJob::symbolNotFoundHint(SemanticContext* context, AstNode* node, VectorNative<Scope*>& scopeHierarchy, vector<Utf8>& best)
+void SemanticJob::symbolNotFoundHint(SemanticContext* context, AstNode* node, VectorNative<AlternativeScope>& scopeHierarchy, vector<Utf8>& best)
 {
     // Do not take some time if file is supposed to fail, in test mode
     if (context->sourceFile->numTestErrors)
@@ -1596,8 +1596,9 @@ void SemanticJob::symbolNotFoundHint(SemanticContext* context, AstNode* node, Ve
     }
 
     best.clear();
-    for (auto s : scopeHierarchy)
+    for (auto& as : scopeHierarchy)
     {
+        auto s = as.scope;
         for (uint32_t i = 0; i < s->symTable.mapNames.allocated; i++)
         {
             auto one = s->symTable.mapNames.buffer[i];
@@ -2582,7 +2583,7 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
                     auto typeEnum             = CastTypeInfo<TypeInfoEnum>(typeContext, TypeInfoKind::Enum);
                     identifierRef->startScope = typeEnum->scope;
                     scopeHierarchy.clear();
-                    scopeHierarchy.push_back(typeEnum->scope);
+                    addAlternativeScope(scopeHierarchy, typeEnum->scope);
                     break;
                 }
                 }
@@ -2597,7 +2598,7 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
         }
         else
         {
-            scopeHierarchy.push_back_once(startScope);
+            addAlternativeScope(scopeHierarchy, startScope);
 
             // No need to go further if we have found the symbol in the parent identifierRef scope (if specified).
             auto symbol = startScope->symTable.find(node->token.text, crc);
@@ -2618,8 +2619,8 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
                     // relevant and we should not use it
                     if (startScope->kind != ScopeKind::Namespace && startScope->owner->extension)
                     {
-                        for (auto s : startScope->owner->extension->alternativeScopes)
-                            scopeHierarchy.push_back_once(s);
+                        for (auto& as : startScope->owner->extension->alternativeScopes)
+                            addAlternativeScope(scopeHierarchy, as.scope);
                         collectAlternativeScopeVars(startScope->owner, scopeHierarchy, scopeHierarchyVars);
                     }
                 }
@@ -2630,8 +2631,9 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
             break;
 
         // Search symbol in all the scopes of the hierarchy
-        for (auto scope : scopeHierarchy)
+        for (auto& as : scopeHierarchy)
         {
+            auto scope  = as.scope;
             auto symbol = scope->symTable.find(node->token.text, crc);
             if (symbol)
             {
@@ -2682,7 +2684,7 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
             vector<Utf8> best;
             Utf8         appendMsg;
             if (identifierRef->startScope)
-                scopeHierarchy.push_back(identifierRef->startScope);
+                addAlternativeScope(scopeHierarchy, identifierRef->startScope);
             symbolNotFoundHint(context, node, scopeHierarchy, best);
             switch (best.size())
             {
@@ -3865,7 +3867,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
     return true;
 }
 
-void SemanticJob::collectAlternativeScopeVars(AstNode* startNode, VectorNative<Scope*>& scopes, VectorNative<AlternativeScopeVar>& scopesVars)
+void SemanticJob::collectAlternativeScopeVars(AstNode* startNode, VectorNative<AlternativeScope>& scopes, VectorNative<AlternativeScopeVar>& scopesVars)
 {
     // Need to go deep for using vars, because we can have a using on a struct, which has also
     // a using itself, and so on...
@@ -3880,7 +3882,7 @@ void SemanticJob::collectAlternativeScopeVars(AstNode* startNode, VectorNative<S
         if (!done.contains(it0.scope))
         {
             done.push_back(it0.scope);
-            scopes.push_back_once(it0.scope);
+            addAlternativeScope(scopes, it0.scope);
             scopesVars.push_back(it0);
 
             if (it0.scope && it0.scope->kind == ScopeKind::Struct && it0.scope->owner->extension)
@@ -3894,7 +3896,7 @@ void SemanticJob::collectAlternativeScopeVars(AstNode* startNode, VectorNative<S
     }
 }
 
-void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, VectorNative<Scope*>& scopes, VectorNative<AlternativeScopeVar>& scopesVars, AstNode* startNode, uint32_t flags)
+void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, VectorNative<AlternativeScope>& scopes, VectorNative<AlternativeScopeVar>& scopesVars, AstNode* startNode, uint32_t flags)
 {
     if (startNode->extension && !startNode->extension->alternativeScopes.empty())
     {
@@ -3902,11 +3904,12 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, Vec
         auto& toProcess = job->scopesToProcess;
 
         {
-            for (auto p : startNode->extension->alternativeScopes)
+            for (auto& as : startNode->extension->alternativeScopes)
             {
-                if (!scopes.contains(p))
+                auto p = as.scope;
+                if (!hasAlternativeScope(scopes, p))
                 {
-                    scopes.push_back(p);
+                    addAlternativeScope(scopes, p);
                     toProcess.push_back(p);
                 }
             }
@@ -3925,7 +3928,7 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, Vec
     {
         auto inlineNode = CastAst<AstInline>(startNode, AstNodeKind::Inline);
         SWAG_ASSERT(inlineNode->parametersScope);
-        scopes.push_back_once(inlineNode->parametersScope);
+        addAlternativeScope(scopes, inlineNode->parametersScope);
     }
 
     if (startNode->kind == AstNodeKind::CompilerMacro)
@@ -4002,12 +4005,32 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, Vec
         {
             auto inlineNode = CastAst<AstInline>(startNode, AstNodeKind::Inline);
             SWAG_ASSERT(inlineNode->parametersScope);
-            scopes.push_back_once(inlineNode->parametersScope);
+            addAlternativeScope(scopes, inlineNode->parametersScope);
         }
     }
 }
 
-bool SemanticJob::collectScopeHierarchy(SemanticContext* context, VectorNative<Scope*>& scopes, VectorNative<AlternativeScopeVar>& scopesVars, AstNode* startNode, uint32_t flags)
+void SemanticJob::addAlternativeScope(VectorNative<AlternativeScope>& scopes, Scope* scope)
+{
+    if (hasAlternativeScope(scopes, scope))
+        return;
+    AlternativeScope as;
+    as.scope = scope;
+    scopes.push_back(as);
+}
+
+bool SemanticJob::hasAlternativeScope(VectorNative<AlternativeScope>& scopes, Scope* scope)
+{
+    for (auto& as : scopes)
+    {
+        if (as.scope == scope)
+            return true;
+    }
+
+    return false;
+}
+
+bool SemanticJob::collectScopeHierarchy(SemanticContext* context, VectorNative<AlternativeScope>& scopes, VectorNative<AlternativeScopeVar>& scopesVars, AstNode* startNode, uint32_t flags)
 {
     auto  job        = context->job;
     auto& toProcess  = job->scopesToProcess;
@@ -4032,24 +4055,24 @@ bool SemanticJob::collectScopeHierarchy(SemanticContext* context, VectorNative<S
             flags &= ~COLLECT_BACKTICK;
         }
 
-        scopes.push_back_once(startScope);
+        addAlternativeScope(scopes, startScope);
         toProcess.push_back(startScope);
     }
 
     // Add current file scope
-    scopes.push_back_once(context->sourceFile->scopeFile);
+    addAlternativeScope(scopes, context->sourceFile->scopeFile);
     toProcess.push_back(context->sourceFile->scopeFile);
 
     // Add bootstrap
     SWAG_ASSERT(g_Workspace->bootstrapModule);
-    scopes.push_back_once(g_Workspace->bootstrapModule->scopeRoot);
+    addAlternativeScope(scopes, g_Workspace->bootstrapModule->scopeRoot);
     toProcess.push_back(g_Workspace->bootstrapModule->scopeRoot);
 
     // Add runtime, except for the bootstrap
     if (!sourceFile->isBootstrapFile)
     {
         SWAG_ASSERT(g_Workspace->runtimeModule);
-        scopes.push_back_once(g_Workspace->runtimeModule->scopeRoot);
+        addAlternativeScope(scopes, g_Workspace->runtimeModule->scopeRoot);
         toProcess.push_back(g_Workspace->runtimeModule->scopeRoot);
     }
 
@@ -4082,9 +4105,9 @@ bool SemanticJob::collectScopeHierarchy(SemanticContext* context, VectorNative<S
             if (scope->parentScope->kind == ScopeKind::Struct && (flags & COLLECT_NO_STRUCT))
                 continue;
 
-            if (!scopes.contains(scope->parentScope))
+            if (!hasAlternativeScope(scopes, scope->parentScope))
             {
-                scopes.push_back(scope->parentScope);
+                addAlternativeScope(scopes, scope->parentScope);
                 toProcess.push_back(scope->parentScope);
             }
         }

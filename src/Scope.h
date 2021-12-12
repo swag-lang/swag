@@ -29,14 +29,8 @@ enum class ScopeKind
     Macro,
 };
 
-struct AlternativeScopeVar
-{
-    AstNode* node;
-    Scope*   scope;
-};
-
 static const uint32_t SCOPE_FLAG_HAS_EXPORTS = 0x00000001;
-static const uint32_t SCOPE_FILE          = 0x00000002;
+static const uint32_t SCOPE_FILE             = 0x00000002;
 static const uint32_t SCOPE_AUTO_GENERATED   = 0x00000004;
 static const uint32_t SCOPE_IMPORTED         = 0x00000008;
 
@@ -92,15 +86,15 @@ struct Scope
             publicSet = g_Allocator.alloc<ScopePublicSet>();
     }
 
-    SymTable                 symTable;
-    Utf8                     name;
-    Utf8                     fullname;
-    VectorNative<Scope*>     childScopes;
-    VectorNative<AstNode*>   deferredNodes;
-    DependentJobs            dependentJobs;
-    shared_mutex             mutex;
-    VectorNative<AstNode*>   doneDefer;
-    VectorNative<AstNode*>   doneDrop;
+    SymTable               symTable;
+    Utf8                   name;
+    Utf8                   fullname;
+    VectorNative<Scope*>   childScopes;
+    VectorNative<AstNode*> deferredNodes;
+    DependentJobs          dependentJobs;
+    shared_mutex           mutex;
+    VectorNative<AstNode*> doneDefer;
+    VectorNative<AstNode*> doneDrop;
 
     ScopePublicSet* publicSet   = nullptr;
     AstNode*        owner       = nullptr;

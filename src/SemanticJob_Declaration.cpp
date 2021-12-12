@@ -20,7 +20,7 @@ bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, Ty
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfoVar, TypeInfoKind::Struct);
         regNode->allocateExtension();
         regNode->addAlternativeScope(typeStruct->scope);
-        regNode->addAlternativeScopeVar({varNode, typeStruct->scope});
+        regNode->addAlternativeScopeVar(typeStruct->scope, varNode);
     }
     else if (typeInfoVar->kind == TypeInfoKind::Pointer)
     {
@@ -29,7 +29,7 @@ bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, Ty
         SWAG_VERIFY(typePointer->pointedType->kind == TypeInfoKind::Struct, context->report({node, Utf8::format(g_E[Err0822], typeInfoVar->getDisplayName().c_str())}));
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
         regNode->addAlternativeScope(typeStruct->scope);
-        regNode->addAlternativeScopeVar({varNode, typeStruct->scope});
+        regNode->addAlternativeScopeVar(typeStruct->scope, varNode);
     }
     else
     {

@@ -368,19 +368,24 @@ bool AstNode::isSameStackFrame(SymbolOverload* overload)
 void AstNode::addAlternativeScope(Scope* scope)
 {
     allocateExtension();
-    extension->alternativeScopes.push_back(scope);
+    AlternativeScope sv;
+    sv.scope = scope;
+    extension->alternativeScopes.push_back(sv);
 }
 
-void AstNode::addAlternativeScopes(const VectorNative<Scope*>& scopes)
+void AstNode::addAlternativeScopes(const VectorNative<AlternativeScope>& scopes)
 {
     allocateExtension();
     extension->alternativeScopes.append(scopes);
 }
 
-void AstNode::addAlternativeScopeVar(const AlternativeScopeVar& scopeVar)
+void AstNode::addAlternativeScopeVar(Scope* scope, AstNode* varNode)
 {
     allocateExtension();
-    extension->alternativeScopesVars.push_back(scopeVar);
+    AlternativeScopeVar sv;
+    sv.scope = scope;
+    sv.node  = varNode;
+    extension->alternativeScopesVars.push_back(sv);
 }
 
 void AstNode::computeEndLocation()

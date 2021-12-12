@@ -200,11 +200,13 @@ struct SemanticJob : public Job
     static void         enterState(AstNode* node);
     static void         inheritAttributesFromParent(AstNode* child);
     static void         inheritAttributesFromOwnerFunc(AstNode* child);
+    static void         addAlternativeScope(VectorNative<AlternativeScope>& scopes, Scope* scope);
+    static bool         hasAlternativeScope(VectorNative<AlternativeScope>& scopes, Scope* scope);
     static bool         collectAttributes(SemanticContext* context, AstNode* forNode, AttributeList* result);
     static bool         collectAttributes(SemanticContext* context, AstNode* forNode, AttributeList* result, AstAttrUse* attrUse);
-    static void         collectAlternativeScopeVars(AstNode* startNode, VectorNative<Scope*>& scopes, VectorNative<AlternativeScopeVar>& scopesVars);
-    static void         collectAlternativeScopeHierarchy(SemanticContext* context, VectorNative<Scope*>& scopes, VectorNative<AlternativeScopeVar>& scopesVars, AstNode* startNode, uint32_t flags);
-    static bool         collectScopeHierarchy(SemanticContext* context, VectorNative<Scope*>& scopes, VectorNative<AlternativeScopeVar>& scopesVars, AstNode* startNode, uint32_t flags = COLLECT_ALL);
+    static void         collectAlternativeScopeVars(AstNode* startNode, VectorNative<AlternativeScope>& scopes, VectorNative<AlternativeScopeVar>& scopesVars);
+    static void         collectAlternativeScopeHierarchy(SemanticContext* context, VectorNative<AlternativeScope>& scopes, VectorNative<AlternativeScopeVar>& scopesVars, AstNode* startNode, uint32_t flags);
+    static bool         collectScopeHierarchy(SemanticContext* context, VectorNative<AlternativeScope>& scopes, VectorNative<AlternativeScopeVar>& scopesVars, AstNode* startNode, uint32_t flags = COLLECT_ALL);
     static bool         setupIdentifierRef(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
     static bool         derefConstantValue(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, DataSegment* storageSegment, void* ptr);
     static bool         derefConstantValue(SemanticContext* context, AstNode* node, TypeInfoKind kind, NativeTypeKind nativeKind, void* ptr);
@@ -228,7 +230,7 @@ struct SemanticJob : public Job
     static void         setupContextualGenericTypeReplacement(SemanticContext* context, OneTryMatch& oneTryMatch, SymbolOverload* symOverload, uint32_t flags);
     static void         getDiagnosticForMatch(SemanticContext* context, OneTryMatch& oneTry, vector<const Diagnostic*>& result0, vector<const Diagnostic*>& result1);
     static void         symbolErrorRemarks(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node, Diagnostic* diag);
-    static void         symbolNotFoundHint(SemanticContext* context, AstNode* node, VectorNative<Scope*>& scopeHierarchy, vector<Utf8>& best);
+    static void         symbolNotFoundHint(SemanticContext* context, AstNode* node, VectorNative<AlternativeScope>& scopeHierarchy, vector<Utf8>& best);
     static bool         isFunctionButNotACall(SemanticContext* context, AstNode* node, SymbolName* symbol);
     static void         symbolErrorNotes(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node, Diagnostic* diag, vector<const Diagnostic*>& notes);
     static bool         cannotMatchIdentifierError(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node);
@@ -492,7 +494,7 @@ struct SemanticJob : public Job
     VectorNative<AstNode*>            tmpNodes;
     VectorNative<OneSymbolMatch>      cacheDependentSymbols;
     VectorNative<OneSymbolMatch>      cacheToAddSymbols;
-    VectorNative<Scope*>              cacheScopeHierarchy;
+    VectorNative<AlternativeScope>    cacheScopeHierarchy;
     VectorNative<AlternativeScopeVar> cacheScopeHierarchyVars;
     VectorNative<Scope*>              scopesToProcess;
     VectorNative<OneOverload>         cacheToSolveOverload;

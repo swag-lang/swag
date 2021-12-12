@@ -188,6 +188,17 @@ struct CloneContext
     }
 };
 
+struct AlternativeScope
+{
+    Scope* scope;
+};
+
+struct AlternativeScopeVar
+{
+    AstNode* node;
+    Scope*   scope;
+};
+
 struct AstNode
 {
     AstNode* clone(CloneContext& context);
@@ -239,12 +250,12 @@ struct AstNode
     bool        forceTakeAddress();
     void        computeEndLocation();
     void        addAlternativeScope(Scope* scope);
-    void        addAlternativeScopes(const VectorNative<Scope*>& scopes);
-    void        addAlternativeScopeVar(const AlternativeScopeVar& scopeVar);
+    void        addAlternativeScopes(const VectorNative<AlternativeScope>& scopes);
+    void        addAlternativeScopeVar(Scope* scope, AstNode* varNode);
 
     struct Extension
     {
-        VectorNative<Scope*>              alternativeScopes;
+        VectorNative<AlternativeScope>    alternativeScopes;
         VectorNative<AlternativeScopeVar> alternativeScopesVars;
         VectorNative<uint32_t>            registersToRelease;
 

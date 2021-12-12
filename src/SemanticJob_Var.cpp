@@ -332,8 +332,7 @@ bool SemanticJob::resolveVarDeclAfterType(SemanticContext* context)
     if (typeInfo->kind == TypeInfoKind::Enum)
     {
         auto typeEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
-        varDecl->assignment->allocateExtension();
-        varDecl->assignment->extension->alternativeScopes.push_front(typeEnum->scope);
+        varDecl->assignment->addAlternativeScope(typeEnum->scope);
     }
     else if (typeInfo->kind == TypeInfoKind::Array)
     {
@@ -341,8 +340,7 @@ bool SemanticJob::resolveVarDeclAfterType(SemanticContext* context)
         if (typeArr->finalType->kind == TypeInfoKind::Enum)
         {
             auto typeEnum = CastTypeInfo<TypeInfoEnum>(typeArr->finalType, TypeInfoKind::Enum);
-            varDecl->assignment->allocateExtension();
-            varDecl->assignment->extension->alternativeScopes.push_front(typeEnum->scope);
+            varDecl->assignment->addAlternativeScope(typeEnum->scope);
         }
     }
 
