@@ -4,7 +4,7 @@
 
 Swag is a programming language made for fun because, let's be honest, **C++** is now an **horrible and ugly beast** ! This is my third compiler (the other ones were developed for AAA game engines), but that one is by far the most advanced.
 
-For now it's a **toy**, but it's a toy which is more advanced than expected.
+For now it's a **toy**, but it's a toy which is far more advanced than expected.
 
 ### Swag is...
 * **Currently in development** (since 2019), and very very far to be mature. Bugs, unexpected changes, silly decisions, do not use it to send a rocket on the moon !
@@ -14,21 +14,21 @@ For now it's a **toy**, but it's a toy which is more advanced than expected.
 * Only for **Windows 10** and **x86_64** so far, because this is already a lot of work.
 
 ### Swag is not...
-* **Object oriented**, because you know what, this was not a good idea, after all... But with a powerful *using* and with *UFCS* (uniform function call syntax), you can have a feeling of object oriented programming without inheritance or encapsulation.
+* **Object oriented**, because you know what, this was not a good idea, after all... But with *interfaces*, a powerful *using* and with *UFCS* (uniform function call syntax), you can have a feeling of object oriented programming without inheritance or encapsulation.
 * **Safe** at all cost. You should be the one to make your program safe. You should be the one to deal with memory. But Swag can help...
-* **32 bits**. Only 64 bits compile is supported.
+* **32 bits**. Only 64 bits is supported.
 
 ### Swag has...
 * A **nice** and **clean syntax** (i know this is subjective). The goal is to reduce friction as much as possible. Programming should be fun.
 * **Type reflection** at compile time and runtime.
 * **Full compile time execution** (your whole program can be executed by the compiler without any constraint). So Swag can also act like a scripting language.
 * **Meta programming** (you can write code that writes code).
-* **Interfaces** for dynamic dispatch, inspired by **Go**.
+* **Interfaces** for dynamic dispatch, inspired by *Go*.
 * **Modules**, compiled as separate dynamic libraries.
 * **Fast compile time** (at least in debug with the x64 backend) thanks to heavy multithreading.
-* **Simple error system**, inspired by **Zig**.
+* **Simple error system**, inspired by *Zig*.
 * **Generics**, for a simple usage. No template nightmare here...
-* **Powerful macro/mixin** system, without the need of a specific syntax, inspired by **Jai**.
+* **Powerful macro/mixin** system, without the need of a specific syntax, inspired by *Jai*.
 * **Unordered global declarations**, which means that the order of global declarations does not matter (they can be in any files and in whatever order).
 
 ### Swag does not have...
@@ -48,17 +48,16 @@ For now it's a **toy**, but it's a toy which is more advanced than expected.
     @print("Hello mad world !\n")
 }
 ```
-A version that uses the standard *core* module :
+A version that uses the *print* function in the standard *Core* module :
 
 ``` swift
 #main
 {
-    using Core
-    Console.print("Hello mad world !, "\n")
-    Console.printf("%\n", "Hello mad world again !")
+    Core.Console.print("Hello mad world !, "\n")
+    Core.Console.printf("%\n", "Hello mad world again !")
 }
 ```
-A *#run* block is executed at compile time, so the famous message will be printed by the compiler :
+A *#run* block is executed at compile time, so in the following example the famous message will be printed by the compiler :
 
 ``` swift
 #run
