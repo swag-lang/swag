@@ -545,44 +545,61 @@ public impl Menu
     func createPopup(parent: *Wnd, id: string = null)->*Menu
     {
         res := Wnd.create'Menu(&parent.surface.wnd, null, @{}, id)
-        res.sendCreateEvent()
-        res.padding = res.getThemeMetrics().menuPopup_Padding
-        res.isHidden = true
+        with res
+        {
+            padding = getThemeMetrics().menuPopup_Padding
+            isHidden = true
+            sendCreateEvent()
+        }
+
         return res
     }
 
     #[Swag.Discardable]
-    func createBar(parent: *Wnd, position: Math.Rectangle, id: string = null)->*Menu
+    func createBar(parent: *Wnd, pos: Math.Rectangle, id: string = null)->*Menu
     {
-        res := Wnd.create'Menu(parent, null, position, id)
-        if res.position.height == 0
-            res.position.height = res.getThemeMetrics().menuBar_Height
-        res.sendCreateEvent()
-        res.padding = res.getThemeMetrics().menuPopup_Padding
-        res.bar = true
+        res := Wnd.create'Menu(parent, null, pos, id)
+        with res
+        {
+            metrics := getThemeMetrics()
+            if position.height == 0
+                position.height = metrics.menuBar_Height
+            padding = metrics.menuPopup_Padding
+            bar = true
+            sendCreateEvent()
+        }
+
         return res
     }
 
     // Add a new item
-    mtd addItem(itemName: string, id: WndId, icon: Icon = @{}, rightName: string = null, disabled = false)
+    mtd addItem(name: string, id: WndId, icon: Icon = @{}, rightName: string = null, disabled = false)
     {
         item := Memory.new'PopupMenuItem()
-        item.name = itemName
-        item.rightName = rightName
-        item.icon = icon
-        item.id = #scopefct.id
-        item.disabled = disabled
+        with item
+        {
+            name      = #scopefct.name
+            rightName = #scopefct.rightName
+            icon      = #scopefct.icon
+            id        = #scopefct.id
+            disabled  = #scopefct.disabled
+        }
+
         items.add(item)
         dirtyLayout = true
     }
 
     // Add a new item
-    mtd addPopup(itemName: string, popup: *Menu, icon: Icon = @{})
+    mtd addPopup(name: string, popup: *Menu, icon: Icon = @{})
     {
         item := Memory.new'PopupMenuItem()
-        item.name = itemName
-        item.icon = icon
-        item.popup = popup
+        with item
+        {
+            name  = #scopefct.name
+            icon  = #scopefct.icon
+            popup = #scopefct.popup
+        }
+
         popup.owner = self
         items.add(item)
         dirtyLayout = true
