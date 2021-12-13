@@ -221,6 +221,21 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                         auto typeArray   = CastTypeInfo<TypeInfoArray>(callTypeInfo, TypeInfoKind::Array);
                         symbolTypeInfos.push_back(symbolArray->finalType);
                         typeInfos.push_back(typeArray->finalType);
+
+                        // Array dimension was a generic symbol. Set the corresponding symbol in order to check its value
+                        if (symbolArray->flags & TYPEINFO_GENERIC && symbolArray->flags & TYPEINFO_GENERIC_COUNT)
+                        {
+                            SWAG_ASSERT(symbolArray->sizeNode);
+                            SWAG_ASSERT(symbolArray->sizeNode->resolvedSymbolName);
+
+                            ComputedValue* cv = g_Allocator.alloc<ComputedValue>();
+                            cv->reg.s64       = typeArray->count;
+
+                            auto& cstName = symbolArray->sizeNode->resolvedSymbolName->name;
+                            SWAG_ASSERT(context.genericReplaceValues.find(cstName) == context.genericReplaceValues.end());
+                            context.genericReplaceValues[cstName] = {cv, symbolArray->sizeNode->typeInfo};
+                        }
+
                         break;
                     }
 
@@ -444,6 +459,16 @@ static bool valueEqualsTo(const ComputedValue* value, AstNode* node)
     }
 
     node->allocateComputedValue();
+
+    if (node->typeInfo->isNativeIntegerOrRune())
+        return value->reg.u64 == node->computedValue->reg.u64;
+    if (node->typeInfo->isNative(NativeTypeKind::F32))
+        return value->reg.f32 == node->computedValue->reg.f32;
+    if (node->typeInfo->isNative(NativeTypeKind::F64))
+        return value->reg.f32 == node->computedValue->reg.f32;
+    if (node->typeInfo->isNative(NativeTypeKind::String))
+        return value->text == node->computedValue->text;
+
     return *value == *node->computedValue;
 }
 
@@ -623,6 +648,26 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
                     context.result                                      = MatchResult::BadGenericSignature;
                     context.flags |= SymbolMatchContext::MATCH_ERROR_TYPE_VALUE;
                     continue;
+                }
+
+                // If value has been deduced from the call parameters, and if value is also specified by the caller with
+                // the generic parameters, then be sure this matches
+                if (isValue)
+                {
+                    auto it = context.genericReplaceValues.find(symbolParameter->namedParam);
+                    if (it != context.genericReplaceValues.end())
+                    {
+                        if (!valueEqualsTo(it->second.first, callParameter))
+                        {
+                            context.badSignatureInfos.badSignatureParameterIdx = i;
+                            context.badSignatureInfos.badGenMatch              = symbolParameter->namedParam;
+                            context.badSignatureInfos.badGenValue1             = it->second.first;
+                            context.badSignatureInfos.badGenValue2             = callParameter->computedValue;
+                            context.badSignatureInfos.badSignatureGivenType    = typeInfo;
+                            context.result                                     = MatchResult::MismatchGenericValue;
+                            return;
+                        }
+                    }
                 }
             }
         }

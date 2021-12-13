@@ -1482,6 +1482,17 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         return;
     }
 
+    case MatchResult::MismatchGenericValue:
+    {
+        diag = new Diagnostic{match.genericParameters[bi.badSignatureParameterIdx],
+                              Utf8::format(g_E[Err0123],
+                                           bi.badGenMatch.c_str(),
+                                           Ast::literalToString(bi.badSignatureGivenType, *bi.badGenValue1).c_str(),
+                                           Ast::literalToString(bi.badSignatureGivenType, *bi.badGenValue2).c_str())};
+        result0.push_back(diag);
+        return;
+    }
+
     case MatchResult::BadSignature:
     {
         auto paramNode = destFuncDecl ? destFuncDecl->parameters->childs[bi.badSignatureParameterIdx] : nullptr;

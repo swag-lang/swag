@@ -222,6 +222,7 @@ TypeInfo* TypeInfoArray::clone()
     newType->finalType   = finalType;
     newType->count       = count;
     newType->totalCount  = totalCount;
+    newType->sizeNode    = sizeNode;
     newType->copyFrom(this);
     return newType;
 }
@@ -234,8 +235,11 @@ bool TypeInfoArray::isSame(TypeInfo* to, uint32_t isSameFlags)
         return false;
 
     auto other = static_cast<TypeInfoArray*>(to);
-    if (count != other->count)
-        return false;
+    if ((flags & TYPEINFO_GENERIC) == (other->flags & TYPEINFO_GENERIC))
+    {
+        if (count != other->count)
+            return false;
+    }
 
     if (!pointedType->isSame(other->pointedType, isSameFlags))
         return false;

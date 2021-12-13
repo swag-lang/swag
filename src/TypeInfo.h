@@ -63,6 +63,7 @@ static const uint64_t TYPEINFO_HAD_DROP                 = 0x00000002'00000000;
 static const uint64_t TYPEINFO_SHARED                   = 0x00000004'00000000;
 static const uint64_t TYPEINFO_CSTRING                  = 0x00000008'00000000;
 static const uint64_t TYPEINFO_C_VARIADIC               = 0x00000010'00000000;
+static const uint64_t TYPEINFO_GENERIC_COUNT            = 0x00000020'00000000;
 
 static const uint32_t ISSAME_EXACT      = 0x00000001;
 static const uint32_t ISSAME_CAST       = 0x00000002;
@@ -83,15 +84,18 @@ enum class MatchResult
     InvalidNamedParameter,
     MissingNamedParameter,
     DuplicatedNamedParameter,
+    MismatchGenericValue,
     SelectIfFailed,
 };
 
 struct BadSignatureInfos
 {
-    TypeInfo* badSignatureRequestedType;
-    TypeInfo* badSignatureGivenType;
-    Utf8      badGenMatch;
-    int       badSignatureParameterIdx;
+    TypeInfo*      badSignatureRequestedType;
+    TypeInfo*      badSignatureGivenType;
+    Utf8           badGenMatch;
+    int            badSignatureParameterIdx;
+    ComputedValue* badGenValue1;
+    ComputedValue* badGenValue2;
 
     void clear()
     {
@@ -99,6 +103,8 @@ struct BadSignatureInfos
         badSignatureParameterIdx  = -1;
         badSignatureRequestedType = nullptr;
         badSignatureGivenType     = nullptr;
+        badGenValue1              = nullptr;
+        badGenValue2              = nullptr;
     }
 };
 
@@ -141,15 +147,16 @@ struct SymbolMatchContext
         hasNamedParameters = false;
     }
 
-    VectorNative<AstNode*>       genericParameters;
-    VectorNative<AstNode*>       parameters;
-    VectorNative<TypeInfoParam*> solvedParameters;
-    VectorNative<bool>           doneParameters;
-    VectorNative<TypeInfo*>      genericParametersCallTypes;
-    VectorNative<TypeInfo*>      genericParametersGenTypes;
-    map<Utf8, TypeInfo*>         genericReplaceTypes;
-    map<Utf8, uint32_t>          mapGenericTypesIndex;
-    BadSignatureInfos            badSignatureInfos;
+    VectorNative<AstNode*>                     genericParameters;
+    VectorNative<AstNode*>                     parameters;
+    VectorNative<TypeInfoParam*>               solvedParameters;
+    VectorNative<bool>                         doneParameters;
+    VectorNative<TypeInfo*>                    genericParametersCallTypes;
+    VectorNative<TypeInfo*>                    genericParametersGenTypes;
+    map<Utf8, TypeInfo*>                       genericReplaceTypes;
+    map<Utf8, uint32_t>                        mapGenericTypesIndex;
+    map<Utf8, pair<ComputedValue*, TypeInfo*>> genericReplaceValues;
+    BadSignatureInfos                          badSignatureInfos;
 
     SemanticContext* semContext = nullptr;
 
@@ -387,6 +394,7 @@ struct TypeInfoArray : public TypeInfo
 
     TypeInfo* pointedType = nullptr;
     TypeInfo* finalType   = nullptr;
+    AstNode*  sizeNode    = nullptr;
 
     uint32_t count      = 0;
     uint32_t totalCount = 0;

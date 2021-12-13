@@ -361,14 +361,26 @@ bool SemanticJob::resolveType(SemanticContext* context)
             {
                 auto child = typeNode->childs[i];
 
-                SWAG_VERIFY(child->flags & AST_VALUE_COMPUTED, context->report({child, g_E[Err0021]}));
+                uint32_t count        = 0;
+                bool     genericCount = false;
+
+                if (!(child->flags & AST_VALUE_COMPUTED) && child->resolvedSymbolOverload && (child->resolvedSymbolOverload->flags & OVERLOAD_GENERIC))
+                {
+                    genericCount = true;
+                }
+                else
+                {
+                    SWAG_VERIFY(child->flags & AST_VALUE_COMPUTED, context->report({child, g_E[Err0021]}));
+                    count = (uint32_t) child->computedValue->reg.u32;
+                }
+
                 auto childType = TypeManager::concreteReferenceType(child->typeInfo);
                 SWAG_VERIFY(childType->isNativeInteger(), context->report({child, Utf8::format(g_E[Err0022], child->typeInfo->getDisplayName().c_str())}));
-                SWAG_CHECK(context->checkSizeOverflow("array", child->computedValue->reg.u32 * rawType->sizeOf, SWAG_LIMIT_ARRAY_SIZE));
+                SWAG_CHECK(context->checkSizeOverflow("array", count * rawType->sizeOf, SWAG_LIMIT_ARRAY_SIZE));
                 SWAG_VERIFY(!child->isConstant0(), context->report({child, g_E[Err0023]}));
 
                 auto ptrArray   = allocType<TypeInfoArray>();
-                ptrArray->count = (uint32_t) child->computedValue->reg.u32;
+                ptrArray->count = count;
                 totalCount *= ptrArray->count;
                 SWAG_CHECK(context->checkSizeOverflow("array", totalCount * rawType->sizeOf, SWAG_LIMIT_ARRAY_SIZE));
                 ptrArray->totalCount  = totalCount;
@@ -378,6 +390,13 @@ bool SemanticJob::resolveType(SemanticContext* context)
                 if (typeNode->typeFlags & TYPEFLAG_ISCONST)
                     ptrArray->flags |= TYPEINFO_CONST;
                 ptrArray->flags |= (ptrArray->finalType->flags & TYPEINFO_GENERIC);
+
+                if (genericCount)
+                {
+                    ptrArray->flags |= TYPEINFO_GENERIC | TYPEINFO_GENERIC_COUNT;
+                    ptrArray->sizeNode = child;
+                }
+
                 ptrArray->computeName();
                 typeNode->typeInfo = ptrArray;
             }
@@ -678,7 +697,7 @@ bool SemanticJob::resolveTypeAsExpression(SemanticContext* context, AstNode* nod
     auto& typeTable  = module->typeTable;
 
     node->allocateComputedValue();
-    node->computedValue->reg.pointer    = (uint8_t *) typeInfo;
+    node->computedValue->reg.pointer    = (uint8_t*) typeInfo;
     node->computedValue->storageSegment = getConstantSegFromContext(node);
     SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, typeInfo, node->computedValue->storageSegment, &node->computedValue->storageOffset, MAKE_CONCRETE_SHOULD_WAIT | flags, resultTypeInfo));
     if (context->result != ContextResult::Done)
