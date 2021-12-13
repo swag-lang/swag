@@ -1484,7 +1484,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
 
     case MatchResult::MismatchGenericValue:
     {
-        diag = new Diagnostic{match.genericParameters[bi.badSignatureParameterIdx],
+        diag = new Diagnostic{bi.badNode,
                               Utf8::format(g_E[Err0123],
                                            bi.badGenMatch.c_str(),
                                            Ast::literalToString(bi.badSignatureGivenType, *bi.badGenValue1).c_str(),

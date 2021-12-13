@@ -90,6 +90,7 @@ enum class MatchResult
 
 struct BadSignatureInfos
 {
+    AstNode*       badNode;
     TypeInfo*      badSignatureRequestedType;
     TypeInfo*      badSignatureGivenType;
     Utf8           badGenMatch;
@@ -101,6 +102,7 @@ struct BadSignatureInfos
     {
         badGenMatch.clear();
         badSignatureParameterIdx  = -1;
+        badNode                   = nullptr;
         badSignatureRequestedType = nullptr;
         badSignatureGivenType     = nullptr;
         badGenValue1              = nullptr;

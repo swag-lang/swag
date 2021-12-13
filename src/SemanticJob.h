@@ -177,6 +177,8 @@ struct SemanticJob : public Job
         g_Allocator.free<SemanticJob>(this);
     }
 
+    static bool valueEqualsTo(const ComputedValue* value, AstNode* node);
+    static bool valueEqualsTo(const ComputedValue* value1, const ComputedValue* value2, TypeInfo* typeInfo, uint64_t flags);
     static bool checkTypeIsNative(SemanticContext* context, TypeInfo* leftTypeInfo, TypeInfo* rightTypeInfo);
     static bool checkTypeIsNative(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
     static bool checkFuncPrototype(SemanticContext* context, AstFuncDecl* node);

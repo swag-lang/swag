@@ -9,6 +9,64 @@
 #include "ErrorIds.h"
 #include "Timer.h"
 
+bool SemanticJob::valueEqualsTo(const ComputedValue* value, AstNode* node)
+{
+    node->allocateComputedValue();
+    return valueEqualsTo(value, node->computedValue, node->typeInfo, node->flags);
+}
+
+bool SemanticJob::valueEqualsTo(const ComputedValue* value1, const ComputedValue* value2, TypeInfo* typeInfo, uint64_t flags)
+{
+    if (!value1 || !value2)
+        return true;
+
+    // Types
+    if (flags & AST_VALUE_IS_TYPEINFO)
+    {
+        if (!value1)
+            return false;
+        if (value1->reg.u64 == value2->reg.u64)
+            return true;
+
+        auto typeInfo1 = (TypeInfo*) value1->reg.u64;
+        auto typeInfo2 = (TypeInfo*) value2->reg.u64;
+        if (!typeInfo1 || !typeInfo2)
+            return false;
+
+        if (typeInfo1->isSame(typeInfo2, ISSAME_EXACT))
+            return true;
+    }
+
+    if (typeInfo->kind == TypeInfoKind::TypeListArray)
+    {
+        if (!value1)
+            return false;
+        if (value1->storageSegment != value2->storageSegment)
+            return false;
+        if (value1->storageOffset == UINT32_MAX && value2->storageOffset != UINT32_MAX)
+            return false;
+        if (value1->storageOffset != UINT32_MAX && value2->storageOffset == UINT32_MAX)
+            return false;
+        if (value1->storageOffset == value2->storageOffset)
+            return true;
+
+        void* addr1 = value1->storageSegment->address(value1->storageOffset);
+        void* addr2 = value2->storageSegment->address(value2->storageOffset);
+        return memcmp(addr1, addr2, typeInfo->sizeOf) == 0;
+    }
+
+    if (typeInfo->isNativeIntegerOrRune())
+        return value1->reg.u64 == value2->reg.u64;
+    if (typeInfo->isNative(NativeTypeKind::F32))
+        return value1->reg.f32 == value2->reg.f32;
+    if (typeInfo->isNative(NativeTypeKind::F64))
+        return value1->reg.f32 == value2->reg.f32;
+    if (typeInfo->isNative(NativeTypeKind::String))
+        return value1->text == value2->text;
+
+    return *value1 == *value2;
+}
+
 bool SemanticJob::checkTypeIsNative(SemanticContext* context, TypeInfo* leftTypeInfo, TypeInfo* rightTypeInfo)
 {
     if (leftTypeInfo->kind == TypeInfoKind::Native && rightTypeInfo->kind == TypeInfoKind::Native)

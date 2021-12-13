@@ -259,12 +259,18 @@ void TypeInfoArray::computeWhateverName(Utf8& resName, uint32_t nameType)
     }
     else
     {
-        resName += Utf8::format("[%d", count);
+        if (count == 0)
+            resName += Utf8::format("[?", count);
+        else
+            resName += Utf8::format("[%d", count);
         auto pType = pointedType;
         while (pType->kind == TypeInfoKind::Array)
         {
             auto subType = CastTypeInfo<TypeInfoArray>(pType, TypeInfoKind::Array);
-            resName += Utf8::format(",%d", subType->count);
+            if (subType->count == 0)
+                resName += Utf8::format(",?", subType->count);
+            else
+                resName += Utf8::format(",%d", subType->count);
             pType = subType->pointedType;
         }
 

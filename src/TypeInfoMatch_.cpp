@@ -231,9 +231,29 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                             ComputedValue* cv = g_Allocator.alloc<ComputedValue>();
                             cv->reg.s64       = typeArray->count;
 
+                            // Constant already defined ?
                             auto& cstName = symbolArray->sizeNode->resolvedSymbolName->name;
-                            SWAG_ASSERT(context.genericReplaceValues.find(cstName) == context.genericReplaceValues.end());
-                            context.genericReplaceValues[cstName] = {cv, symbolArray->sizeNode->typeInfo};
+                            auto  it1     = context.genericReplaceValues.find(cstName);
+                            if (it1 != context.genericReplaceValues.end())
+                            {
+                                if (!SemanticJob::valueEqualsTo(it1->second.first, cv, symbolArray->sizeNode->typeInfo, 0))
+                                {
+                                    context.badSignatureInfos.badNode               = callParameter;
+                                    context.badSignatureInfos.badGenMatch           = cstName;
+                                    context.badSignatureInfos.badGenValue1          = it1->second.first;
+                                    context.badSignatureInfos.badGenValue2          = cv;
+                                    context.badSignatureInfos.badSignatureGivenType = it1->second.second;
+                                    context.result                                  = MatchResult::MismatchGenericValue;
+                                }
+                                else
+                                {
+                                    g_Allocator.free<ComputedValue>(cv);
+                                }
+                            }
+                            else
+                            {
+                                context.genericReplaceValues[cstName] = {cv, symbolArray->sizeNode->typeInfo};
+                            }
                         }
 
                         break;
@@ -416,60 +436,6 @@ static void matchNamedParameters(SymbolMatchContext& context, VectorNative<TypeI
             }
         }
     }
-}
-
-static bool valueEqualsTo(const ComputedValue* value, AstNode* node)
-{
-    if (!value || !node->computedValue)
-        return true;
-
-    // Types
-    if (node->flags & AST_VALUE_IS_TYPEINFO)
-    {
-        if (!value)
-            return false;
-        if (value->reg.u64 == node->computedValue->reg.u64)
-            return true;
-
-        auto typeInfo1 = (TypeInfo*) value->reg.u64;
-        auto typeInfo2 = (TypeInfo*) node->computedValue->reg.u64;
-        if (!typeInfo1 || !typeInfo2)
-            return false;
-
-        if (typeInfo1->isSame(typeInfo2, ISSAME_EXACT))
-            return true;
-    }
-
-    if (node->typeInfo->kind == TypeInfoKind::TypeListArray)
-    {
-        if (!value)
-            return false;
-        if (value->storageSegment != node->computedValue->storageSegment)
-            return false;
-        if (value->storageOffset == UINT32_MAX && node->computedValue->storageOffset != UINT32_MAX)
-            return false;
-        if (value->storageOffset != UINT32_MAX && node->computedValue->storageOffset == UINT32_MAX)
-            return false;
-        if (value->storageOffset == node->computedValue->storageOffset)
-            return true;
-
-        void* addr1 = value->storageSegment->address(value->storageOffset);
-        void* addr2 = node->computedValue->storageSegment->address(node->computedValue->storageOffset);
-        return memcmp(addr1, addr2, node->typeInfo->sizeOf) == 0;
-    }
-
-    node->allocateComputedValue();
-
-    if (node->typeInfo->isNativeIntegerOrRune())
-        return value->reg.u64 == node->computedValue->reg.u64;
-    if (node->typeInfo->isNative(NativeTypeKind::F32))
-        return value->reg.f32 == node->computedValue->reg.f32;
-    if (node->typeInfo->isNative(NativeTypeKind::F64))
-        return value->reg.f32 == node->computedValue->reg.f32;
-    if (node->typeInfo->isNative(NativeTypeKind::String))
-        return value->text == node->computedValue->text;
-
-    return *value == *node->computedValue;
 }
 
 static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myTypeInfo, VectorNative<TypeInfoParam*>& genericParameters)
@@ -657,14 +623,14 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
                     auto it = context.genericReplaceValues.find(symbolParameter->namedParam);
                     if (it != context.genericReplaceValues.end())
                     {
-                        if (!valueEqualsTo(it->second.first, callParameter))
+                        if (!SemanticJob::valueEqualsTo(it->second.first, callParameter))
                         {
-                            context.badSignatureInfos.badSignatureParameterIdx = i;
-                            context.badSignatureInfos.badGenMatch              = symbolParameter->namedParam;
-                            context.badSignatureInfos.badGenValue1             = it->second.first;
-                            context.badSignatureInfos.badGenValue2             = callParameter->computedValue;
-                            context.badSignatureInfos.badSignatureGivenType    = typeInfo;
-                            context.result                                     = MatchResult::MismatchGenericValue;
+                            context.badSignatureInfos.badNode               = callParameter;
+                            context.badSignatureInfos.badGenMatch           = symbolParameter->namedParam;
+                            context.badSignatureInfos.badGenValue1          = it->second.first;
+                            context.badSignatureInfos.badGenValue2          = callParameter->computedValue;
+                            context.badSignatureInfos.badSignatureGivenType = typeInfo;
+                            context.result                                  = MatchResult::MismatchGenericValue;
                             return;
                         }
                     }
@@ -687,7 +653,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
         // for tuples
         else if ((myTypeInfo->flags & TYPEINFO_GENERIC) ||
                  symbolParameter->typeInfo->kind == TypeInfoKind::Struct ||
-                 (valueEqualsTo(symbolParameter->value, callParameter)))
+                 (SemanticJob::valueEqualsTo(symbolParameter->value, callParameter)))
         {
             auto it = context.genericReplaceTypes.find(symbolParameter->typeInfo->name);
             if (it == context.genericReplaceTypes.end())
