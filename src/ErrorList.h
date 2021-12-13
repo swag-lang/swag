@@ -18,7 +18,7 @@ SWAG_ERROR(Err0017, "invalid type declaration, symbol `%s` is not a type (it`s %
 SWAG_ERROR(Err0018, "cannot make %s public because %s `%s` is not public")
 SWAG_ERROR(Err0020, "missing function call `()` to %s")
 SWAG_ERROR(Err0021, "array dimension cannot be evaluated at compile time")
-SWAG_ERROR(Err0022, "array dimension should be integer, but is `%s`")
+SWAG_ERROR(Err0022, "array dimension should be of type integer, but is `%s`")
 SWAG_ERROR(Err0023, "array dimension is 0")
 SWAG_ERROR(Err0024, "pointer to `Swag.TypeInfo` should be `const`")
 SWAG_ERROR(Err0025, "alias is public but `%s` is not")
