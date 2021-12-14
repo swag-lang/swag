@@ -2108,8 +2108,6 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
         TypeInfoParam*  field;
     };
 
-    TypeInfoParam* foundField = nullptr;
-
     vector<OneField> stack;
     stack.push_back({fromStruct, 0, nullptr});
     while (!stack.empty())
@@ -2122,15 +2120,6 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
             ok = true;
             if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
             {
-                // Ambiguous ! Two fields with a 'using' on the same struct
-                if (foundField)
-                {
-                    Diagnostic diag{fromNode, Utf8::format(g_E[Err0200], fromType->getDisplayName().c_str(), toType->getDisplayName().c_str(), fromStruct->getDisplayName().c_str(), toStruct->getDisplayName().c_str())};
-                    Diagnostic note1{foundField->declNode, g_E[Nte0015], DiagnosticLevel::Note};
-                    Diagnostic note2{it.field->declNode, g_E[Nte0016], DiagnosticLevel::Note};
-                    return context->report(diag, &note1, &note2);
-                }
-
                 // We will have to dereference the pointer to get the real thing
                 if (it.field && it.field->typeInfo->kind == TypeInfoKind::Pointer)
                     fromNode->semFlags |= AST_SEM_DEREF_USING;
@@ -2152,6 +2141,8 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
         if (context->result != ContextResult::Done)
             return true;
 
+        TypeInfoParam*  foundField  = nullptr;
+        TypeInfoStruct* foundStruct = nullptr;
         for (auto field : it.typeStruct->fields)
         {
             if (!(field->flags & TYPEINFO_HAS_USING))
@@ -2171,7 +2162,23 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
             }
 
             if (typeStruct)
+            {
+                // Ambiguous ! Two fields with a 'using' on the same struct
+                if (foundStruct && (foundStruct == typeStruct || foundStruct->isPointerTo(typeStruct) || typeStruct->isPointerTo(foundStruct)))
+                {
+                    if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+                    {
+                        Diagnostic diag{fromNode, Utf8::format(g_E[Err0200], fromType->getDisplayName().c_str(), toType->getDisplayName().c_str(), fromStruct->getDisplayName().c_str(), toStruct->getDisplayName().c_str())};
+                        Diagnostic note1{foundField->declNode, g_E[Nte0015], DiagnosticLevel::Note};
+                        Diagnostic note2{field->declNode, g_E[Nte0016], DiagnosticLevel::Note};
+                        return context->report(diag, &note1, &note2);
+                    }
+                }
+
+                foundField  = field;
+                foundStruct = typeStruct;
                 stack.push_back({typeStruct, it.offset + field->offset, field});
+            }
         }
     }
 
