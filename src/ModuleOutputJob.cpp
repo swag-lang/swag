@@ -85,7 +85,8 @@ JobResult ModuleOutputJob::execute()
             }
         }
 
-        return JobResult::KeepJobAlive;
+        if (!jobsToAdd.empty())
+            return JobResult::KeepJobAlive;
     }
 
     if (pass == ModuleOutputJobPass::WaitForDependencies)
@@ -138,7 +139,8 @@ JobResult ModuleOutputJob::execute()
             jobsToAdd.push_back(compileJob);
         }
 
-        return JobResult::KeepJobAlive;
+        if (!jobsToAdd.empty())
+            return JobResult::KeepJobAlive;
     }
 
     return JobResult::ReleaseJob;
