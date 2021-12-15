@@ -17,7 +17,7 @@ impl IWnd for PushButton
 {
     mtd onPaintEvent(evt: *PaintEvent)
     {
-        bc     := evt.bc
+        bc      := evt.bc
         theme   := getTheme()
         metrics := getThemeMetrics()
         colors  := getThemeColors()

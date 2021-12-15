@@ -273,9 +273,10 @@ func createWidgets(view: *Wnd)
     // Scroll
     {
         swnd := ScrollWnd.create(view, @{600, 350, 400, 200})
-        swnd.view.scrollPos = @{0, 50}
         swnd.view.backgroundStyle = .Dialog
-        button1 := PushButton.create(swnd.view, "Normal", @{5, 55})
-        //button2 := PushButton.create(swnd.view, "Other", @{5, 40})
+        button1 := PushButton.create(swnd.view, "Normal", @{5, 15})
+        button2 := PushButton.create(swnd.view, "Other", @{5, 55})
+        swnd.setScrollSize(0, 400)
+        //swnd.setScrollPos(0, 50)
     }
 }
