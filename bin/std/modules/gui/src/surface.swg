@@ -49,17 +49,17 @@ impl Surface
         app := surface.app
 
         if flags & .BigCaption
-            surface.wnd.marginsTopLeft.y = app.theme.metrics.wnd_BigCaptionCY
+            surface.wnd.padding.y = app.theme.metrics.wnd_BigCaptionCY
         else if flags & .SmallCaption
-            surface.wnd.marginsTopLeft.y = app.theme.metrics.wnd_SmallCaptionCY
+            surface.wnd.padding.y = app.theme.metrics.wnd_SmallCaptionCY
 
         if flags & .Border
         {
             size := app.theme.metrics.wnd_BorderSize
-            surface.wnd.marginsTopLeft.x = size
-            surface.wnd.marginsTopLeft.y = Math.max(surface.wnd.marginsTopLeft.y, size)
-            surface.wnd.marginsBottomRight.x = size
-            surface.wnd.marginsBottomRight.y = size
+            surface.wnd.padding.x = size
+            surface.wnd.padding.y = Math.max(surface.wnd.padding.y, size)
+            surface.wnd.padding.z = size
+            surface.wnd.padding.w = size
         }
 
         try createNative(app, surface, x, y, width, height, flags, mainSurface)

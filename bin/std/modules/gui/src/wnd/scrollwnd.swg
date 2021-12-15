@@ -18,14 +18,14 @@ impl IWnd for ScrollWnd
 
     mtd onPaintEvent(evt: *PaintEvent)
     {
-        bc := evt.bc
+        bc      := evt.bc
+        metrics := getThemeMetrics()
 
         if showRightBar
         {
-            @print(margin.z)
             clientRect := getClientRect()
-            clientRect.x = clientRect.right() - 20
-            clientRect.width = 20
+            clientRect.x = clientRect.right() - padding.z
+            clientRect.width = padding.z
             bc.painter.fillRect(clientRect, Argb.Red)
         }
     }
@@ -35,19 +35,20 @@ impl ScrollWnd
 {
     mtd computeLayout()
     {
+        metrics := getThemeMetrics()
         showRightBar, showBottomBar = false
-        margin.z, margin.w = 0
+        padding.z, padding.w = 0
 
         if scrollSize.y > position.height
         {
             showRightBar = true
-            margin.z = 20
+            padding.z = metrics.scrollBar_size
         }
 
         if scrollSize.x > position.width
         {
             showBottomBar = true
-            margin.w = 20
+            padding.w = metrics.scrollBar_size
         }
 
         invalidate()

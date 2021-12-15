@@ -176,9 +176,9 @@ impl IWnd for SurfaceWnd
         clientRect := getClientRect()
 
         pos := clientRect
-        pos.width = surface.wnd.marginsTopLeft.y * 1.5
+        pos.width = surface.wnd.padding.y * 1.5
         pos.x = clientRect.right() - pos.width
-        pos.height = surface.wnd.marginsTopLeft.y
+        pos.height = surface.wnd.padding.y
         pos.y = 0
 
         if closeBtn
@@ -220,7 +220,7 @@ impl IWnd for SurfaceWnd
         posCaption := clientRect
         if surface.flags & .BigCaption
         {
-            posCaption.height = surface.wnd.marginsTopLeft.y
+            posCaption.height = surface.wnd.padding.y
             subRect := &rects.wnd_Caption
             colorBk := surface.app.isActivated ? colors.wnd_Caption : colors.wnd_CaptionNotActived
             theme.drawSubRect(bc.painter, posCaption, subRect, colorBk)
@@ -228,7 +228,7 @@ impl IWnd for SurfaceWnd
 
         if surface.flags & .SmallCaption
         {
-            posCaption.height = surface.wnd.marginsTopLeft.y
+            posCaption.height = surface.wnd.padding.y
             subRect := &rects.wnd_CaptionSmall
             colorBk := surface.app.isActivated ? colors.wnd_Caption : colors.wnd_CaptionNotActived
             theme.drawSubRect(bc.painter, posCaption, subRect, colorBk)
