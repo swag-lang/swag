@@ -24,5 +24,6 @@ impl FrameWnd
     {
         view = Wnd.create'T(self, "", position)
         view.backgroundStyle = .Window
+        sendResizeEvent()
     }
 }

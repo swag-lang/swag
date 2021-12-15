@@ -252,20 +252,30 @@ func createWidgets(view: *Wnd)
     }
 
     // Menu
-    menu := Menu.createBar(view, @{600, 300, 400})
-    menu.addItem("Coucou", "0")
-    menu.addItem("Salut", "0")
-    menu.addItem("La", "0")
+    {
+        menu := Menu.createBar(view, @{600, 300, 400})
+        menu.addItem("Coucou", "0")
+        menu.addItem("Salut", "0")
+        menu.addItem("La", "0")
 
-    popup1 := Menu.createPopup(view)
-    popup1.addItem("Coucou0", "0")
-    popup1.addItem("Coucou1", "1")
+        popup1 := Menu.createPopup(view)
+        popup1.addItem("Coucou0", "0")
+        popup1.addItem("Coucou1", "1")
 
-    popup := Menu.createPopup(view)
-    popup.addItem("Coucou0", "0")
-    popup.addItem("Coucou1", "1")
-    popup.addPopup("Popup1", popup1)
-    menu.addPopup("Popup1", popup)
-    menu.addPopup("Popup2", popup)
+        popup := Menu.createPopup(view)
+        popup.addItem("Coucou0", "0")
+        popup.addItem("Coucou1", "1")
+        popup.addPopup("Popup1", popup1)
+        menu.addPopup("Popup1", popup)
+        menu.addPopup("Popup2", popup)
+    }
 
+    // Scroll
+    {
+        swnd := ScrollWnd.create(view, @{600, 350, 400, 200})
+        swnd.view.scrollPos = @{0, 30}
+        swnd.view.backgroundStyle = .Dialog
+        button1 := PushButton.create(swnd.view, "Normal", @{5, 5})
+        button2 := PushButton.create(swnd.view, "Other", @{5, 40})
+    }
 }

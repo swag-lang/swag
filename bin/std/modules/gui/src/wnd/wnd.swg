@@ -49,6 +49,7 @@ struct Wnd
     position:   Math.Rectangle
     minSize:    Math.Point
     maxSize:    Math.Point
+    scrollPos:  Math.Point
 
     parent:     *Wnd
     childs:     Array'(*Wnd)
@@ -285,6 +286,9 @@ impl Wnd
         evt := PaintEvent{}
         evt.bc = bc
         sendEvent(&evt)
+
+        //
+        bc.painter.translateTransform(-scrollPos.x, -scrollPos.y)
 
         // Childs
         visit c: childs
