@@ -372,6 +372,8 @@ impl Wnd
         {
             result.x += p.position.x
             result.y += p.position.y
+            result.x -= p.scrollPos.x
+            result.y -= p.scrollPos.y
             p = p.parent
         }
 
@@ -519,7 +521,7 @@ impl Wnd
             if c.isDisabled and !getDisabled
                 continue
 
-            res := c.getWndAt(x - position.x, y - position.y)
+            res := c.getWndAt(x - position.x + scrollPos.x, y - position.y + scrollPos.y)
             if res
                 return res
         }
