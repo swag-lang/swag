@@ -4,8 +4,21 @@ public struct ScrollWnd
 {
     using frameWnd: FrameWnd
     scrollSize:     Math.Point
-    showBottomBar:  bool
-    showRightBar:   bool
+
+    showBarV:       bool
+    posBoxV:        f32
+    sizeBoxV:       f32
+    isHotV:         bool
+    isPressedV:     bool
+
+    showBarH:       bool
+    posBoxH:        f32
+    sizeBoxH:       f32
+    isHotH:         bool
+    isPressedH:     bool
+
+    isMoving:       bool
+    correcMoving:   f32
 }
 
 impl IWnd for ScrollWnd
@@ -16,38 +29,149 @@ impl IWnd for ScrollWnd
         FrameWnd.IWnd.onResizeEvent(self, evt)
     }
 
+    mtd onMouseEvent(evt: *MouseEvent)
+    {
+        switch evt.kind
+        {
+        case MouseLeave:
+            isHotV, isHotH = false
+            invalidate()
+
+        case MouseMove:
+            if !isMoving
+            {
+                hitTest(evt.pos)
+                break
+            }
+
+            clientRect := getClientRect()
+            if isPressedV
+            {
+                f := (evt.pos.y - correcMoving) / clientRect.height
+                f *= scrollSize.y
+                setScrollPos(scrollPos.x, f)
+            }
+
+            invalidate()
+
+        case MousePressed:
+            if evt.button == .Left
+            {
+                isMoving = true
+                if isHotV
+                {
+                    isPressedV = true
+                    correcMoving = evt.pos.y - posBoxV
+                }
+                else if isHotH
+                {
+                    isPressedH = true
+                    correcMoving = evt.pos.x - posBoxH
+                }
+
+                captureMouse()
+                invalidate()
+            }
+
+        case MouseReleased:
+            if isMoving and evt.button == .Left
+            {
+                releaseMouse()
+                isPressedV, isPressedH, isMoving = false
+                hitTest(evt.pos)
+                invalidate()
+            }
+        }
+    }
+
     mtd onPaintEvent(evt: *PaintEvent)
     {
         bc      := evt.bc
         metrics := getThemeMetrics()
 
-        if showRightBar
+        if showBarV
         {
             clientRect := getClientRect()
             clientRect.x = clientRect.right() - padding.z
             clientRect.width = padding.z
             bc.painter.fillRect(clientRect, Argb.Red)
+
+            clientRect.y = posBoxV
+            clientRect.height = sizeBoxV
+            bc.painter.fillRect(clientRect, isHotV ? Argb.Green : Argb.Blue)
         }
     }
 }
 
 impl ScrollWnd
 {
+    mtd hitTest(pos: Math.Point)
+    {
+        if isHotV or isHotH
+        {
+            invalidate()
+            isHotV, isHotH = false
+        }
+
+        rect := getPosBoxV()
+        if rect.contains(pos)
+        {
+            isHotV = true
+            invalidate()
+            return
+        }
+
+        rect = getPosBoxH()
+        if rect.contains(pos)
+        {
+            isHotH = true
+            invalidate()
+        }
+    }
+
+    mtd getPosBoxV()->Math.Rectangle
+    {
+        var result: retval = getClientRect()
+        result.x = result.right() - padding.z
+        result.width = padding.z
+        result.y = posBoxV
+        result.height = sizeBoxV
+        return result
+    }
+
+    mtd getPosBoxH()->Math.Rectangle
+    {
+        var result: retval = getClientRect()
+        result.y = result.bottom() - padding.w
+        result.height = padding.w
+        result.x = posBoxH
+        result.width = sizeBoxH
+        return result
+    }
+
     mtd computeLayout()
     {
+        scrollSize.x = Math.max(scrollSize.x, position.width)
+        scrollSize.y = Math.max(scrollSize.y, position.height)
+
         metrics := getThemeMetrics()
-        showRightBar, showBottomBar = false
+        showBarV, showBarH = false
         padding.z, padding.w = 0
 
         if scrollSize.y > position.height
         {
-            showRightBar = true
+            showBarV = true
             padding.z = metrics.scrollBar_size
+            sizeBoxV = (position.height / scrollSize.y) * position.height
+            sizeBoxV = Math.max(sizeBoxV, 10)
+
+            posBoxV = view.scrollPos.y / scrollSize.y
+            posBoxV *= position.height
         }
 
         if scrollSize.x > position.width
         {
-            showBottomBar = true
+            showBarH = true
             padding.w = metrics.scrollBar_size
         }
 
@@ -75,15 +199,25 @@ public impl ScrollWnd
     // Set the current scroll position
     mtd setScrollPos(x, y: f32)
     {
-        view.scrollPos.x = x
-        view.scrollPos.y = y
+        var newSP: Math.Point = ?
+        newSP.x = Math.max(x, 0)
+        newSP.y = Math.max(y, 0)
+        newSP.x = Math.min(newSP.x, scrollSize.x - position.width)
+        newSP.y = Math.min(newSP.y, scrollSize.y - position.height)
+        if newSP == view.scrollPos
+            return
+
+        view.scrollPos = newSP
+        computeLayout()
     }
 
     // Set the scroll size (window virtual size)
     mtd setScrollSize(x, y: f32)
     {
-        scrollSize.x = x
-        scrollSize.y = y
+        if scrollSize.x == x and scrollSize.y == y
+            return
+
+        scrollSize = @{x, y}
         computeLayout()
         sendResizeEvent()
     }

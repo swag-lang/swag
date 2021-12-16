@@ -276,7 +276,7 @@ func createWidgets(view: *Wnd)
         swnd.view.backgroundStyle = .Dialog
         button1 := PushButton.create(swnd.view, "Normal", @{5, 15})
         button2 := PushButton.create(swnd.view, "Other", @{5, 55})
-        swnd.setScrollSize(0, 400)
-        //swnd.setScrollPos(0, 50)
+        swnd.setScrollSize(0, 600)
+        swnd.setScrollPos(0, 600)
     }
 }
