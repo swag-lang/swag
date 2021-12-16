@@ -51,6 +51,12 @@ impl IWnd for ScrollWnd
                 f *= scrollSize.y
                 setScrollPos(scrollPos.x, f)
             }
+            else if isPressedH
+            {
+                f := (evt.pos.x - correcMoving) / clientRect.width
+                f *= scrollSize.x
+                setScrollPos(f, scrollPos.y)
+            }
 
             invalidate()
 
@@ -99,6 +105,18 @@ impl IWnd for ScrollWnd
             clientRect.y = posBoxV
             clientRect.height = sizeBoxV
             bc.painter.fillRect(clientRect, isHotV ? Argb.Green : Argb.Blue)
+        }
+
+        if showBarH
+        {
+            clientRect := getClientRect()
+            clientRect.y = clientRect.bottom() - padding.w
+            clientRect.height = padding.w
+            bc.painter.fillRect(clientRect, Argb.Red)
+
+            clientRect.x = posBoxH
+            clientRect.width = sizeBoxH
+            bc.painter.fillRect(clientRect, isHotH ? Argb.Green : Argb.Blue)
         }
     }
 }
@@ -162,9 +180,9 @@ impl ScrollWnd
         {
             showBarV = true
             padding.z = metrics.scrollBar_size
+
             sizeBoxV = (position.height / scrollSize.y) * position.height
             sizeBoxV = Math.max(sizeBoxV, 10)
-
             posBoxV = view.scrollPos.y / scrollSize.y
             posBoxV *= position.height
         }
@@ -173,6 +191,11 @@ impl ScrollWnd
         {
             showBarH = true
             padding.w = metrics.scrollBar_size
+
+            sizeBoxH = (position.width / scrollSize.x) * position.width
+            sizeBoxH = Math.max(sizeBoxH, 10)
+            posBoxH = view.scrollPos.x / scrollSize.x
+            posBoxH *= position.width
         }
 
         invalidate()
