@@ -31,6 +31,8 @@ impl IWnd for ScrollWnd
 
     mtd onMouseEvent(evt: *MouseEvent)
     {
+        clientRect := getClientRect()
+
         switch evt.kind
         {
         case MouseLeave:
@@ -44,7 +46,6 @@ impl IWnd for ScrollWnd
                 break
             }
 
-            clientRect := getClientRect()
             if isPressedV
             {
                 f := (evt.pos.y - correcMoving) / clientRect.height
@@ -74,9 +75,26 @@ impl IWnd for ScrollWnd
                     isPressedH = true
                     correcMoving = evt.pos.x - posBoxH
                 }
+                else if evt.pos.x > clientRect.right() - padding.z
+                {
+                    correcMoving = 0
+                    isPressedV = true
+                    f := evt.pos.y / clientRect.height
+                    f *= scrollSize.y
+                    setScrollPos(scrollPos.x, f)
+                }
+                else if evt.pos.y > clientRect.bottom() - padding.w
+                {
+                    correcMoving = 0
+                    isPressedH = true
+                    f := evt.pos.x / clientRect.width
+                    f *= scrollSize.x
+                    setScrollPos(f, scrollPos.y)
+                }
 
                 captureMouse()
                 invalidate()
+                hitTest(evt.pos)
             }
 
         case MouseReleased:
@@ -100,6 +118,8 @@ impl IWnd for ScrollWnd
             clientRect := getClientRect()
             clientRect.x = clientRect.right() - padding.z
             clientRect.width = padding.z
+            if showBarH
+                clientRect.height -= padding.w
             bc.painter.fillRect(clientRect, Argb.Red)
 
             clientRect.y = posBoxV
@@ -112,6 +132,8 @@ impl IWnd for ScrollWnd
             clientRect := getClientRect()
             clientRect.y = clientRect.bottom() - padding.w
             clientRect.height = padding.w
+            if showBarV
+                clientRect.width -= padding.w
             bc.painter.fillRect(clientRect, Argb.Red)
 
             clientRect.x = posBoxH
@@ -177,25 +199,32 @@ impl ScrollWnd
         padding.z, padding.w = 0
 
         if scrollSize.y > position.height
-        {
             showBarV = true
-            padding.z = metrics.scrollBar_size
+        if scrollSize.x > position.width
+            showBarH = true
 
-            sizeBoxV = (position.height / scrollSize.y) * position.height
+        if showBarV
+        {
+            padding.z = metrics.scrollBar_size
+            vh := position.height
+            if showBarH vh -= metrics.scrollBar_size
+
+            sizeBoxV = (vh / scrollSize.y) * position.height
             sizeBoxV = Math.max(sizeBoxV, 10)
             posBoxV = view.scrollPos.y / scrollSize.y
-            posBoxV *= position.height
+            posBoxV *= vh
         }
 
-        if scrollSize.x > position.width
+        if showBarH
         {
-            showBarH = true
             padding.w = metrics.scrollBar_size
+            vh := position.width
+            if showBarV vh -= metrics.scrollBar_size
 
-            sizeBoxH = (position.width / scrollSize.x) * position.width
+            sizeBoxH = (vh / scrollSize.x) * position.width
             sizeBoxH = Math.max(sizeBoxH, 10)
             posBoxH = view.scrollPos.x / scrollSize.x
-            posBoxH *= position.width
+            posBoxH *= vh
         }
 
         invalidate()
