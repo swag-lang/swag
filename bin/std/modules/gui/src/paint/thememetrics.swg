@@ -44,5 +44,6 @@ struct ThemeMetrics
     menuBar_Height:             f32 = 30
     menuBar_SpaceBetween:       f32 = 24
 
-    scrollBar_size:             f32 = 20
+    scrollBar_Size:             f32 = 20
+    scrollBar_BoxPadding:       f32 = 3
 }

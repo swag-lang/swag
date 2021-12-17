@@ -70,10 +70,22 @@ impl Rectangle
     }
 
     // Move the left coordinate, reducing the width
+    mtd moveRight(value: f32)
+    {
+        width += value
+    }
+
+    // Move the left coordinate, reducing the width
     mtd moveTop(value: f32)
     {
         y += value
         height -= value
+    }
+
+    // Move the left coordinate, reducing the width
+    mtd moveBottom(value: f32)
+    {
+        height += value
     }
 
     // Set rectangle to (0, 0, 0, 0)

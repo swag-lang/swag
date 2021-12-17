@@ -111,7 +111,10 @@ impl IWnd for ScrollWnd
     mtd onPaintEvent(evt: *PaintEvent)
     {
         bc      := evt.bc
+        theme   := getTheme()
         metrics := getThemeMetrics()
+        colors  := getThemeColors()
+        rects   := getThemeRects()
 
         if showBarV
         {
@@ -120,11 +123,20 @@ impl IWnd for ScrollWnd
             clientRect.width = padding.z
             if showBarH
                 clientRect.height -= padding.w
-            bc.painter.fillRect(clientRect, Argb.Red)
+            theme.drawSubRect(bc.painter, clientRect, &rects.scrollBar_BkV, colors.scrollBar_Bk)
 
             clientRect.y = posBoxV
             clientRect.height = sizeBoxV
-            bc.painter.fillRect(clientRect, isHotV ? Argb.Green : Argb.Blue)
+
+            var colorBox: Color = ?
+            if isHotV and isPressedV
+                colorBox = colors.scrollBar_PressedBox
+            else if isHotV
+                colorBox = colors.scrollBar_HotBox
+            else
+                colorBox = colors.scrollBar_Box
+            clientRect.inflate(-metrics.scrollBar_BoxPadding)
+            theme.drawSubRect(bc.painter, clientRect, &rects.scrollBar_BoxV, colorBox)
         }
 
         if showBarH
@@ -134,11 +146,30 @@ impl IWnd for ScrollWnd
             clientRect.height = padding.w
             if showBarV
                 clientRect.width -= padding.w
-            bc.painter.fillRect(clientRect, Argb.Red)
+            theme.drawSubRect(bc.painter, clientRect, &rects.scrollBar_BkH, colors.scrollBar_Bk)
 
             clientRect.x = posBoxH
             clientRect.width = sizeBoxH
-            bc.painter.fillRect(clientRect, isHotH ? Argb.Green : Argb.Blue)
+
+            var colorBox: Color = ?
+            if isHotH and isPressedH
+                colorBox = colors.scrollBar_PressedBox
+            else if isHotH
+                colorBox = colors.scrollBar_HotBox
+            else
+                colorBox = colors.scrollBar_Box
+            clientRect.inflate(-metrics.scrollBar_BoxPadding)
+            theme.drawSubRect(bc.painter, clientRect, &rects.scrollBar_BoxH, colorBox)
+        }
+
+        if showBarV and showBarH
+        {
+            clientRect := getClientRect()
+            clientRect.x = clientRect.right() - padding.z
+            clientRect.y = clientRect.bottom() - padding.w
+            clientRect.width = padding.z
+            clientRect.height = padding.w
+            theme.drawSubRect(bc.painter, clientRect, &rects.scrollBar_Corner, colors.scrollBar_Bk)
         }
     }
 }
@@ -205,9 +236,9 @@ impl ScrollWnd
 
         if showBarV
         {
-            padding.z = metrics.scrollBar_size
+            padding.z = metrics.scrollBar_Size
             vh := position.height
-            if showBarH vh -= metrics.scrollBar_size
+            if showBarH vh -= metrics.scrollBar_Size
 
             sizeBoxV = (vh / scrollSize.y) * position.height
             sizeBoxV = Math.max(sizeBoxV, 10)
@@ -217,9 +248,9 @@ impl ScrollWnd
 
         if showBarH
         {
-            padding.w = metrics.scrollBar_size
+            padding.w = metrics.scrollBar_Size
             vh := position.width
-            if showBarV vh -= metrics.scrollBar_size
+            if showBarV vh -= metrics.scrollBar_Size
 
             sizeBoxH = (vh / scrollSize.x) * position.width
             sizeBoxH = Math.max(sizeBoxH, 10)

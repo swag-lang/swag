@@ -77,4 +77,10 @@ struct ThemeImageRects
     menuBar_Bk:                 ThemeImageRect = @{{1,225,27,27}, 12}
     menuBar_Border:             ThemeImageRect = @{{29,225,27,27}, 5}
     menuBar_SelectedBk:         ThemeImageRect = @{{57,197,27,27}, 12}
+
+    scrollBar_BkV:              ThemeImageRect = @{{1,253,27,27}, 0}
+    scrollBar_BkH:              ThemeImageRect = @{{1,253,27,27}, 0}
+    scrollBar_BoxV:             ThemeImageRect = @{{29,253,27,27}, 10}
+    scrollBar_BoxH:             ThemeImageRect = @{{29,253,27,27}, 10}
+    scrollBar_Corner:           ThemeImageRect = @{{1,253,27,27}, 0}
 }

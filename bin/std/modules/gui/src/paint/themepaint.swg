@@ -52,7 +52,7 @@ impl Theme
                 painter.drawTexture(d, s, texture, color)
 
             case 3:
-                d.x = dstRect.x; d.y = dstRect.y + cxd
+                d.x = dstRect.x; d.y = dstRect.y + cyd
                 s.x = subRect.rect.x; s.y = subRect.rect.y + cy
                 d.width = cxd; s.width = cx;
                 d.height = dstRect.height - (cyd * 2)
@@ -69,7 +69,7 @@ impl Theme
 
             case 5:
                 d.x += d.width; s.x += s.width
-                d.width = cxd; s.width = cy
+                d.width = cxd; s.width = cx
                 painter.drawTexture(d, s, texture, color)
 
             case 6:
