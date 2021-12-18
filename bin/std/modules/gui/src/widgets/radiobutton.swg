@@ -3,7 +3,7 @@ using Core, Pixel
 public struct RadioButton
 {
     using button:   Button
-    isChecked:      bool
+    checked:        bool
     sigChanged:     func(*RadioButton)
 }
 
@@ -49,7 +49,7 @@ impl IWnd for RadioButton
             colorText     = colors.btnCheck_Text
         }
 
-        if isChecked
+        if checked
         {
             subRectBk     = &rects.btnRadio_Checked
             subRectBorder = &rects.btnRadio_CheckedBorder
@@ -86,9 +86,9 @@ impl IWnd for RadioButton
 
     mtd onMouseEvent(evt: *MouseEvent)
     {
-        if processMouseEvent(evt) and !isChecked
+        if processMouseEvent(evt) and !checked
         {
-            isChecked = true
+            checked = true
             if sigChanged
                 sigChanged(self)
         }

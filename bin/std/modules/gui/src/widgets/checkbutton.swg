@@ -10,8 +10,8 @@ public enum ButtonCheckState
 public struct CheckButton
 {
     using button:   Button
-    isThreeState:   bool
-    isChecked:      ButtonCheckState = Normal
+    threeState:     bool
+    checked:        ButtonCheckState = Normal
     sigChanged:     func(*CheckButton)
 }
 
@@ -57,7 +57,7 @@ impl IWnd for CheckButton
             colorText     = colors.btnCheck_Text
         }
 
-        switch isChecked
+        switch checked
         {
         case Normal:
             subRectBk     = &rects.btnCheck_Normal
@@ -99,12 +99,12 @@ impl IWnd for CheckButton
     {
         if processMouseEvent(evt)
         {
-            if isChecked == .Normal and isThreeState
-                isChecked = .Undefined
-            else if isChecked == .Checked
-                isChecked = .Normal
+            if checked == .Normal and threeState
+                checked = .Undefined
+            else if checked == .Checked
+                checked = .Normal
             else
-                isChecked = .Checked
+                checked = .Checked
             if sigChanged
                 sigChanged(self)
         }

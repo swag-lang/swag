@@ -91,10 +91,10 @@ func createWidgets(view: *Wnd)
 
         button = CheckButton.create(view, "Disabled", @{125, 70})
         button.disable()
-        button.isChecked = .Checked
+        button.checked = .Checked
 
         button = CheckButton.create(view, "3 State", @{125, 100})
-        button.isThreeState = true
+        button.threeState = true
     }
 
     // Radio buttons
@@ -106,7 +106,7 @@ func createWidgets(view: *Wnd)
 
         button = RadioButton.create(view, "Disabled", @{240, 70})
         button.disable()
-        button.isChecked = true
+        button.checked = true
     }
 
     // EditBox

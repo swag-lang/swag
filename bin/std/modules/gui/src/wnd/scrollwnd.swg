@@ -126,6 +126,7 @@ impl IWnd for ScrollWnd
         colors  := getThemeColors()
         rects   := getThemeRects()
 
+        // Vertical bar
         if showBarV
         {
             clientRect := getClientRect()
@@ -149,6 +150,7 @@ impl IWnd for ScrollWnd
             theme.drawSubRect(bc.painter, clientRect, &rects.scrollBar_BoxV, colorBox)
         }
 
+        // Horizontal bar
         if showBarH
         {
             clientRect := getClientRect()
@@ -172,6 +174,7 @@ impl IWnd for ScrollWnd
             theme.drawSubRect(bc.painter, clientRect, &rects.scrollBar_BoxH, colorBox)
         }
 
+        // Corner
         if showBarV and showBarH
         {
             clientRect := getClientRect()
