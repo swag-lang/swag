@@ -3,6 +3,10 @@ using Core, Pixel
 public struct ScrollWnd
 {
     using frameWnd: FrameWnd
+
+    scrollIncrementV: f32 = 50
+    scrollIncrementH: f32 = 50
+
     scrollSize:     Math.Point
 
     showBarV:       bool
@@ -35,6 +39,12 @@ impl IWnd for ScrollWnd
 
         switch evt.kind
         {
+        case MouseWheel:
+            if evt.modifiers & .Control
+                setScrollPos(view.scrollPos.x - (evt.move.y * scrollIncrementH), view.scrollPos.y)
+            else
+                setScrollPos(view.scrollPos.x, view.scrollPos.y - (evt.move.y * scrollIncrementV))
+
         case MouseLeave:
             isHotV, isHotH = false
             invalidate()

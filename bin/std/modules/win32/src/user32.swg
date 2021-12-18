@@ -407,6 +407,9 @@ const SW_MAX              = 11
 func MAKEINTRESOURCEA(val: s32) => cast(LPCSTR) cast(uint) val
 func MAKEINTRESOURCEW(val: s32) => cast(LPCWSTR) cast(uint) val
 
+const WHEEL_DELTA = 120
+func GET_WHEEL_DELTA_WPARAM(wParam: u64) => HIWORD(wParam)
+
 const IDC_ARROW           = 32512
 const IDC_IBEAM           = 32513
 const IDC_WAIT            = 32514

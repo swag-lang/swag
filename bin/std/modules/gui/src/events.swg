@@ -19,6 +19,7 @@ enum EventKind
     MouseMove
     MouseEnter
     MouseLeave
+    MouseWheel
     Quit
     SysCommand
     SetTheme
@@ -102,6 +103,7 @@ struct MouseEvent
     surfacePos: Math.Point
     pos:        Math.Point
     move:       Math.Point
+    modifiers:  Input.KeyModifiers = .None
 }
 
 struct QuitEvent

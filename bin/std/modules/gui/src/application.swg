@@ -283,6 +283,7 @@ impl Application
 
         evt.surfacePos = targetWnd.screenToSurface(mousePos)
         evt.pos        = targetWnd.surfaceToLocal(evt.surfacePos)
+        evt.modifiers  = keyb.getPressedModifiers()
 
         // Move
         move := mouse.getMove()
@@ -321,15 +322,19 @@ impl Application
         }
     }
 
-    private mtd sendCharEvent(r: rune)
+    private mtd sendMouseWheelEvent(z: s32)
     {
-        targetWnd := keybFocusWnd
+        targetWnd := mouseEnterWnd
         targetWnd = skipDisabled(targetWnd)
         if !targetWnd
             return
-        evt := KeyEvent{kind: EventKind.Char}
-        evt.char = r
-        evt.modifiers = keyb.getPressedModifiers()
+
+        evt := MouseEvent{kind: EventKind.MouseWheel}
+        mousePos := mouse.getPosition()
+        evt.surfacePos = targetWnd.screenToSurface(mousePos)
+        evt.pos        = targetWnd.surfaceToLocal(evt.surfacePos)
+        evt.move.y     = z
+        evt.modifiers  = keyb.getPressedModifiers()
         targetWnd.sendEvent(&evt)
     }
 
@@ -365,6 +370,18 @@ impl Application
                 sendEvent(&evt)
             }
         }
+    }
+
+    private mtd sendCharEvent(r: rune)
+    {
+        targetWnd := keybFocusWnd
+        targetWnd = skipDisabled(targetWnd)
+        if !targetWnd
+            return
+        evt := KeyEvent{kind: EventKind.Char}
+        evt.char = r
+        evt.modifiers = keyb.getPressedModifiers()
+        targetWnd.sendEvent(&evt)
     }
 
     private mtd sendPostedEvents()
