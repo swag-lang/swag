@@ -650,7 +650,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     {
         if (node->attributeFlags & ATTRIBUTE_OPAQUE)
         {
-            SWAG_VERIFY(node->attributeFlags & ATTRIBUTE_PUBLIC, context->report({node, g_E[Err0666]}));
+            SWAG_VERIFY(node->isPublic(), context->report({node, g_E[Err0666]}));
             SWAG_VERIFY(!sourceFile->forceExport, context->report({node, g_E[Err0667]}));
         }
     }

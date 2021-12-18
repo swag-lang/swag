@@ -157,6 +157,19 @@ void AstNode::inheritComputedValue(AstNode* from)
     }
 }
 
+bool AstNode::isPublic()
+{
+    auto checkNode = this;
+    while (checkNode)
+    {
+        if (checkNode->attributeFlags & ATTRIBUTE_PUBLIC)
+            return true;
+        checkNode = checkNode->parent;
+    }
+
+    return false;
+}
+
 bool AstNode::isConstantTrue()
 {
     return (flags & AST_VALUE_COMPUTED) && computedValue->reg.b;

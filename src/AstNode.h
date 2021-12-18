@@ -234,6 +234,7 @@ struct AstNode
     bool isSameStackFrame(SymbolOverload* overload);
     bool isSpecialFunctionName();
     bool isSpecialFunctionGenerated();
+    bool isPublic();
 
     void        setPassThrough();
     static Utf8 getArticleKindName(AstNode* node);
