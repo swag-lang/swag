@@ -5,4 +5,6 @@ public struct AA3270
     {
         x, y: f32 = 5
     }
+
+    g: BB
 }

@@ -610,6 +610,19 @@ bool AstOutput::outputVar(OutputContext& context, Concat& concat, AstVarDecl* no
 
 bool AstOutput::outputStruct(OutputContext& context, Concat& concat, AstStruct* node)
 {
+    // If we need to export as opaque, and the struct has init values, then we add the
+    // #[Swag.ExportType] attribute
+    if (node->attributeFlags & ATTRIBUTE_OPAQUE)
+    {
+        auto typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
+        SWAG_ASSERT(typeStruct);
+        if (typeStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)
+        {
+            CONCAT_FIXED_STR(concat, "#[Swag.ExportType(\"nozero\")]");
+            concat.addEolIndent(context.indent);
+        }
+    }
+
     context.expansionNode.push_back({node, JobContext::ExpansionType::Export});
 
     if (node->kind == AstNodeKind::InterfaceDecl)
@@ -636,7 +649,6 @@ bool AstOutput::outputStruct(OutputContext& context, Concat& concat, AstStruct* 
     concat.addEolIndent(context.indent);
 
     // Opaque export. Just simulate structure with the correct size.
-    // Simulate also TYPEINFO_STRUCT_HAS_INIT_VALUES and TYPEINFO_STRUCT_ALL_UNINITIALIZED flags.
     if (node->attributeFlags & ATTRIBUTE_OPAQUE)
     {
         CONCAT_FIXED_STR(concat, "{");
@@ -645,25 +657,10 @@ bool AstOutput::outputStruct(OutputContext& context, Concat& concat, AstStruct* 
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
         SWAG_ASSERT(typeStruct);
 
-        // We initialize one field with a dummy value to force the compiler to acknowledge that the
-        // struct has some initialized fields (not all to zero)
-        if (typeStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)
-        {
-            if (typeStruct->sizeOf != 1)
-            {
-                concat.addIndent(context.indent + 1);
-                concat.addStringFormat("padding0: [%llu] u8", typeStruct->sizeOf - 1);
-                concat.addEol();
-            }
-
-            concat.addIndent(context.indent + 1);
-            CONCAT_FIXED_STR(concat, "padding1: u8 = 1");
-            concat.addEol();
-        }
-
         // Everything in the structure is not initialized
-        else if (typeStruct->flags & TYPEINFO_STRUCT_ALL_UNINITIALIZED)
+        if (typeStruct->flags & TYPEINFO_STRUCT_ALL_UNINITIALIZED)
         {
+            SWAG_ASSERT(!(typeStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES));
             concat.addIndent(context.indent + 1);
             concat.addStringFormat("padding: [%llu] u8 = ?", typeStruct->sizeOf);
             concat.addEol();

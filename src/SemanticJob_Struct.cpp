@@ -745,6 +745,8 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         // Var is a struct
         if (varDecl->typeInfo->kind == TypeInfoKind::Struct)
         {
+            if (varDecl->typeInfo->declNode->attributeFlags & ATTRIBUTE_EXPORT_TYPE_NOZERO)
+                structFlags |= TYPEINFO_STRUCT_HAS_INIT_VALUES;
             structFlags |= varDecl->typeInfo->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES;
 
             if (!(varDecl->typeInfo->flags & TYPEINFO_STRUCT_ALL_UNINITIALIZED))

@@ -162,6 +162,7 @@ struct LanguageSpec
     Utf8 name_disk;
     Utf8 name_retval;
     Utf8 name_methods;
+    Utf8 name_nozero;
 
     Utf8 name_atalias;
     Utf8 name_atdrop;

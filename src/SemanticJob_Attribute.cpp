@@ -312,6 +312,8 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                     w.trim();
                     if (w == g_LangSpec->name_methods)
                         flags |= ATTRIBUTE_EXPORT_TYPE_METHODS;
+                    else if (w == g_LangSpec->name_nozero)
+                        flags |= ATTRIBUTE_EXPORT_TYPE_NOZERO;
                     else
                         return context->report({child, Utf8::format(g_E[Err0599], w.c_str())});
                 }
