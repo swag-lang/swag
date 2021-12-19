@@ -187,16 +187,17 @@ struct ThemeColors
     scrollBar_HotBox:               Color = Gray2
     scrollBar_PressedBox:           Color = Gray1
 
+    comboBox_Shadow:                Color = 0x80000000
     comboBox_Border:                Color = Gray3
-    comboBox_HotBorder:             Color = Gray3
-    comboBox_DisabledBorder:        Color = White
-    comboBox_SelectedBorder:        Color = Gray3
+    comboBox_HotBorder:             Color = Gray2
+    comboBox_DisabledBorder:        Color = Gray3
+    comboBox_SelectedBorder:        Color = Gray2
     comboBox_Bk:                    Color = Color.getDarker(Color.fromArgb(Gray5), 0.05)
     comboBox_HotBk:                 Color = Gray6
-    comboBox_DisabledBk:            Color = White
+    comboBox_DisabledBk:            Color = Gray5
     comboBox_SelectedBk:            Color = Gray6
     comboBox_Text:                  Color = Gray1
     comboBox_HotText:               Color = White
-    comboBox_DisabledText:          Color = White
+    comboBox_DisabledText:          Color = Gray3
     comboBox_SelectedText:          Color = White
 }

@@ -1,14 +1,5 @@
 using Core, Pixel
 
-public struct ComboBoxItem
-{
-    name:       RichString
-    icon:       Icon
-    pos:        f32
-    size:       f32
-    id:         WndId
-}
-
 public struct ComboBox
 {
     using wnd: Wnd
@@ -19,15 +10,22 @@ public struct ComboBox
     isHot:          bool
     hasIcons:       bool
     popup:          *ComboBoxPopup
-
     items:          Array'(*ComboBoxItem)
     selectedIdx:    u32 = Swag.U32.Max
+}
+
+public struct ComboBoxItem
+{
+    name:       RichString
+    icon:       Icon
+    pos:        f32
+    size:       f32
+    id:         WndId
 }
 
 public struct ComboBoxPopup
 {
     using frameWnd: FrameWnd
-    combo: *ComboBox
 }
 
 public struct ComboBoxPopupView
@@ -39,6 +37,14 @@ public struct ComboBoxPopupView
 
 impl IWnd for ComboBoxPopupView
 {
+    mtd onFocusEvent(evt: *FocusEvent)
+    {
+        if evt.kind != .SetFocus
+        {
+            combo.hidePopup()
+        }
+    }
+
     mtd onMouseEvent(evt: *MouseEvent)
     {
         hit := cast(u32) ((evt.pos.y + scrollPos.y) / combo.heightItem)
@@ -134,13 +140,13 @@ impl IWnd for ComboBoxPopup
 
         // Shadow
         clientRect := getClientRect()
-        subRect := &theme.rects.menuPopup_Shadow
-        theme.drawSubRect(painter, clientRect, subRect, colors.menuPopup_Shadow)
+        subRect := &theme.rects.comboBox_Shadow
+        theme.drawSubRect(painter, clientRect, subRect, colors.comboBox_Shadow)
 
         // Border
-        clientRect.inflate(-metrics.menuPopup_ShadowSize)
+        clientRect.inflate(-metrics.comboBox_ShadowSize)
         subRect = &rects.wnd_Border
-        theme.drawSubRect(bc.painter, clientRect, subRect, colors.wnd_Caption, center: false)
+        theme.drawSubRect(bc.painter, clientRect, subRect, colors.comboBox_Border, center: false)
     }
 }
 
@@ -256,7 +262,7 @@ impl ComboBox
         metrics := getThemeMetrics()
 
         popup = Wnd.create'ComboBoxPopup(&parent.surface.wnd, position, id)
-        popup.padding = metrics.wnd_BorderSize + metrics.menuPopup_ShadowSize
+        popup.padding = metrics.comboBox_BorderSize + metrics.comboBox_ShadowSize
         scrollWnd := ScrollWnd.create'ComboBoxPopupView(popup, @{})
         scrollWnd.dockStyle = .Center
         scrollWnd.setScrollSize(0, cast(f32) items.count * heightItem)
@@ -270,9 +276,11 @@ impl ComboBox
         pos.y = pt.y + position.height
         pos.width = Math.max(position.width, minWidthPopup)
         pos.height = Math.min(scrollWnd.scrollSize.y, maxHeightPopup)
-        pos.height += 2 * metrics.wnd_BorderSize
-        pos.inflate(metrics.menuPopup_ShadowSize)
+        pos.height += 2 * metrics.comboBox_BorderSize
+        pos.inflate(metrics.comboBox_ShadowSize)
         popup.setPosition(pos)
+
+        scrollWnd.view.setFocus()
     }
 
     mtd hidePopup()
