@@ -20,6 +20,10 @@ struct ThemeColors
     const Gray6         = 0xFF353535
     const Gray7         = 0xFF303030
 
+    richColor1: Color = Argb.Red
+    richColor2: Color = Argb.Green
+    richColor3: Color = Argb.Blue
+
     wnd_Bk:                         Color = Gray5
     wnd_Caption:                    Color = Gray4
     wnd_CaptionNotActived:          Color = Gray4

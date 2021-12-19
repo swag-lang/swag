@@ -84,7 +84,7 @@ impl IWnd for CheckButton
 
         // Content
         var format: RichStringFormat
-        format.palette[0] = colorText
+        theme.setTextColors(&format, colorText)
         format.horzAlignment = .Left
         format.vertAlignment = .Center
         format.flags = .Clip

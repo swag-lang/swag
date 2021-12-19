@@ -91,7 +91,7 @@ impl IWnd for Menu
             }
 
             // Text
-            format.palette[0] = colorText
+            theme.setTextColors(&format, colorText)
             format.horzAlignment = .Left
             format.vertAlignment = .Center
             format.flags = .Clip
@@ -162,7 +162,7 @@ impl IWnd for Menu
             labelPos.moveLeft(i.size + metrics.menuPopup_IconTextMargin)
 
             // Text
-            format.palette[0] = colorText
+            theme.setTextColors(&format, colorText)
             format.horzAlignment = .Left
             format.vertAlignment = .Center
             format.flags = .Clip

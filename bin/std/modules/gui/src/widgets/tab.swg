@@ -118,7 +118,7 @@ impl IWnd for Tab
             theme.drawSubRect(painter, labelPos, subRect, colorImg)
 
         var format: RichStringFormat
-        format.palette[0] = colorText
+        theme.setTextColors(&format, colorText)
         format.horzAlignment = .Center
         format.vertAlignment = .Center
         format.flags = .Clip

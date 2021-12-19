@@ -118,4 +118,12 @@ impl Theme
             icon.paint(painter, name.boundRect.x - icon.size - iconMargin, name.boundRect.vertCenter() - (icon.size * 0.5), stringFormat.palette[0])
         }
     }
+
+    mtd setTextColors(fmt: *RichStringFormat, mainColor: Color)
+    {
+        fmt.palette[0] = mainColor
+        fmt.palette[1] = colors.richColor1
+        fmt.palette[2] = colors.richColor2
+        fmt.palette[3] = colors.richColor3
+    }
 }

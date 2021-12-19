@@ -294,9 +294,9 @@ func createWidgets(view: *Wnd)
         combo.addItem("La Foule", "2")
 
         combo = ComboBox.create(view, @{360, 440})
-        combo.addItem("Coucou", "0")
-        combo.addItem("La", "1")
-        combo.addItem("La Foule", "2")
+        combo.addItem("<i>Coucou", "0")
+        combo.addItem("<b>La", "1")
+        combo.addItem("<p1>La Foule", "2")
 
         combo = ComboBox.create(view, @{360, 480})
         combo.addItem("Coucou", "0")

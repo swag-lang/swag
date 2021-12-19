@@ -121,7 +121,7 @@ impl IWnd for ComboBoxPopupView
             }
 
             // Text
-            format.palette[0] = colorText
+            theme.setTextColors(&format, colorText)
             format.horzAlignment = .Left
             format.vertAlignment = .Center
             format.flags = .Clip
@@ -239,7 +239,7 @@ impl IWnd for ComboBox
                 itemRect.moveLeft(metrics.comboBox_IconTextMargin)
             }
 
-            format.palette[0] = colorText
+            theme.setTextColors(&format, colorText)
             format.horzAlignment = .Left
             format.vertAlignment = .Center
             format.flags = .Clip
