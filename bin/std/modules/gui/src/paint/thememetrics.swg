@@ -46,4 +46,7 @@ struct ThemeMetrics
 
     scrollBar_Size:             f32 = 20
     scrollBar_BoxPadding:       f32 = 3
+
+    comboBox_Width:             f32 = 150
+    comboBox_Height:            f32 = 32
 }

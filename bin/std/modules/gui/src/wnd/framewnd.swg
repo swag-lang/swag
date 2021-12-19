@@ -15,7 +15,7 @@ impl IWnd for FrameWnd
     }
 }
 
-impl FrameWnd
+public impl FrameWnd
 {
     mtd(T) createView()
     {
