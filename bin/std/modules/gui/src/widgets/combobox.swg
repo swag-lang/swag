@@ -7,7 +7,7 @@ public struct ComboBox
     minWidthPopup:  f32 = 100
     maxHeightPopup: f32 = 300
     heightItem:     f32 = 30
-    onChanged:      func(*ComboBox, u32)
+    onChanged:      func(*ComboBox, WndId, *void)
 
     isHot:          bool
     hasIcons:       bool
@@ -18,11 +18,10 @@ public struct ComboBox
 
 public struct ComboBoxItem
 {
-    name:   RichString
-    icon:   Icon
-    pos:    f32
-    size:   f32
-    id:     WndId
+    name:       RichString
+    icon:       Icon
+    id:         WndId
+    userData:   *void
 }
 
 public struct ComboBoxPopup
@@ -326,18 +325,19 @@ public impl ComboBox
     }
 
     // Add a new item
-    mtd addItem(name: string, id: WndId, icon: Icon = @{})
+    mtd addItem(name: string, id: WndId, icon: Icon = @{}, userData: *void = null)
     {
         item := Memory.new'ComboBoxItem()
         with item
         {
-            name = #scopefct.name
-            icon = #scopefct.icon
-            if icon.isValid()
-                hasIcons = true
-            id   = #scopefct.id
+            name     = #scopefct.name
+            icon     = #scopefct.icon
+            id       = #scopefct.id
+            userData = #scopefct.userData
         }
 
+        if item.icon.isValid()
+            hasIcons = true
         items.add(item)
     }
 
@@ -353,8 +353,15 @@ public impl ComboBox
             return
 
         selectedIdx = newIdx
+
+        // Notify
         if onChanged
-            onChanged(self, selectedIdx)
+        {
+            if selectedIdx < items.count
+                onChanged(self, items[selectedIdx].id, items[selectedIdx].userData)
+            else
+                onChanged(self, null, null)
+        }
 
         invalidate()
     }
