@@ -1,6 +1,7 @@
+#global public
 using Core, Pixel
 
-public enum EditBoxForm
+enum EditBoxForm
 {
     Square
     Round
@@ -8,7 +9,7 @@ public enum EditBoxForm
     Transparent
 }
 
-public enum EditBoxInputMode
+enum EditBoxInputMode
 {
     String
     S64
@@ -16,7 +17,7 @@ public enum EditBoxInputMode
     F64
 }
 
-public enum EditBoxCheckResult
+enum EditBoxCheckResult
 {
     Incomplete
     Valid
@@ -24,7 +25,7 @@ public enum EditBoxCheckResult
     InvalidShow
 }
 
-public struct EditBox
+struct EditBox
 {
     using wnd:          Wnd
     icon:               Icon
@@ -274,7 +275,7 @@ impl IWnd for EditBox
     }
 }
 
-impl EditBox
+private impl EditBox
 {
     mtd keyPressed(key: Input.Key, mdf: Input.KeyModifiers)->bool
     {
@@ -703,7 +704,7 @@ impl EditBox
     }
 }
 
-public impl EditBox
+impl EditBox
 {
     #[Swag.Discardable]
     func create(parent: *Wnd, content: string, position: Math.Rectangle, id: string = null)->*EditBox

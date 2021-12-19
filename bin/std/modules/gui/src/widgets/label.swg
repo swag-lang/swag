@@ -1,6 +1,7 @@
+#global public
 using Core, Pixel
 
-public struct Label
+struct Label
 {
     using wnd:          Wnd
     icon:               Icon
@@ -76,7 +77,7 @@ impl IWnd for Label
 impl Label
 {
     #[Swag.Discardable]
-    public func create(parent: *Wnd, name: string, position: Math.Rectangle, id: string = null)->*Label
+    func create(parent: *Wnd, name: string, position: Math.Rectangle, id: string = null)->*Label
     {
         res := Wnd.create'Label(parent, name, position, id)
         res.sendCreateEvent()

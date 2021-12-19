@@ -1,6 +1,7 @@
+#global public
 using Core, Pixel
 
-public struct ComboBox
+struct ComboBox
 {
     using wnd: Wnd
 
@@ -16,7 +17,7 @@ public struct ComboBox
     selectedIdx:    u32 = Swag.U32.Max
 }
 
-public struct ComboBoxItem
+struct ComboBoxItem
 {
     name:       RichString
     icon:       Icon
@@ -24,12 +25,12 @@ public struct ComboBoxItem
     userData:   *void
 }
 
-public struct ComboBoxPopup
+struct ComboBoxPopup
 {
     using frameWnd: FrameWnd
 }
 
-public struct ComboBoxPopupView
+struct ComboBoxPopupView
 {
     using wnd:  Wnd
     combo:      *ComboBox
@@ -275,7 +276,7 @@ impl IWnd for ComboBox
     }
 }
 
-impl ComboBox
+private impl ComboBox
 {
     mtd showPopup()
     {
@@ -312,10 +313,16 @@ impl ComboBox
     }
 }
 
-public impl ComboBox
+impl ComboBox
 {
+    mtd opDrop()
+    {
+        visit i: items
+            Memory.delete(i)
+    }
+
     #[Swag.Discardable]
-    public func create(parent: *Wnd, position: Math.Rectangle, id: string = null)->*ComboBox
+    func create(parent: *Wnd, position: Math.Rectangle, id: string = null)->*ComboBox
     {
         pos := position
         if pos.height == 0 pos.height = parent.getThemeMetrics().comboBox_Height

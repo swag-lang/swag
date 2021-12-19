@@ -279,12 +279,6 @@ impl IWnd for Menu
 
 impl Menu
 {
-    mtd opDrop()
-    {
-        visit i: items
-            Memory.delete(i)
-    }
-
     mtd setEndModal(result: WndId)
     {
         p := self
@@ -540,6 +534,12 @@ impl Menu
 
 public impl Menu
 {
+    mtd opDrop()
+    {
+        visit i: items
+            Memory.delete(i)
+    }
+
     #[Swag.Discardable]
     func createPopup(parent: *Wnd, id: string = null)->*Menu
     {

@@ -1,6 +1,7 @@
+#global public
 using Core, Pixel
 
-public struct Slider
+struct Slider
 {
     using wnd:      Wnd
     value1:         f32
@@ -213,7 +214,7 @@ impl IWnd for Slider
     }
 }
 
-impl Slider
+private impl Slider
 {
     mtd clamp(f: f32)->f32
     {
@@ -310,7 +311,7 @@ impl Slider
     }
 }
 
-public impl Slider
+impl Slider
 {
     mtdc getValue()->f32        => getValueLeft()
     mtdc getValueLeft()->f32    => min + (max - min) * value1

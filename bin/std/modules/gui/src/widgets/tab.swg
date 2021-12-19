@@ -1,38 +1,39 @@
+#global public
 using Core, Pixel
 
-public enum TabForm
+enum TabForm
 {
     Flat
     Round
 }
 
-public enum TabBarForm
+enum TabBarForm
 {
     Transparent
     Flat
 }
 
 
-public enum TabItemForm
+enum TabItemForm
 {
     Transparent
     Flat
     Round
 }
 
-public enum TabViewForm
+enum TabViewForm
 {
     Flat
     Round
 }
 
-public enum TabBarLayout
+enum TabBarLayout
 {
     Divide
     Fixed
 }
 
-public struct TabItem
+struct TabItem
 {
     name:   RichString
     icon:   Icon
@@ -41,7 +42,7 @@ public struct TabItem
     view:   *Wnd
 }
 
-public struct Tab
+struct Tab
 {
     using wnd:           Wnd
     barForm:             TabBarForm = Flat
@@ -225,14 +226,8 @@ impl IWnd for Tab
     }
 }
 
-impl Tab
+private impl Tab
 {
-    mtd opDrop()
-    {
-        visit v: views
-            Memory.delete(v)
-    }
-
     mtd hitTest(pos: Math.Point)->u32
     {
         if pos.y >= barHeight
@@ -274,8 +269,14 @@ impl Tab
     }
 }
 
-public impl Tab
+impl Tab
 {
+    mtd opDrop()
+    {
+        visit v: views
+            Memory.delete(v)
+    }
+
     #[Swag.Discardable]
     func create(parent: *Wnd, position: Math.Rectangle, id: string = null)->*Tab
     {
