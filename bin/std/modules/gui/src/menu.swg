@@ -184,7 +184,6 @@ impl IWnd for Menu
             if i.popup
             {
                 icon := theme.getIcon24(ThemeIcons24.RightPopupArrow)
-                icon.size = i.size
                 icon.paint(painter, labelPos.right() - icon.size, labelPos.vertCenter() - icon.size * 0.5, colors.popupItem_Text)
             }
         }

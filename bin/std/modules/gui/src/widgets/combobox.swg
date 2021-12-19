@@ -17,6 +17,7 @@ public struct ComboBox
     heightItem:     f32 = 30
 
     isHot:          bool
+    hasIcons:       bool
     popup:          *ComboBoxPopup
 
     items:          Array'(*ComboBoxItem)
@@ -94,13 +95,17 @@ impl IWnd for ComboBoxPopupView
             labelPos.moveLeft(metrics.comboBox_Padding)
 
             // Icon
+            fntHeight := theme.res.fontDefault.regular.height
             if i.icon.isValid()
             {
-                i.icon.size = theme.res.fontDefault.regular.height
+                i.icon.size = fntHeight
                 i.icon.paint(painter, labelPos.x, labelPos.vertCenter() - i.icon.size * 0.5, colorText)
             }
 
-            labelPos.moveLeft(theme.res.fontDefault.regular.height + metrics.menuPopup_IconTextMargin)
+            if combo.hasIcons
+            {
+                labelPos.moveLeft(fntHeight + metrics.menuPopup_IconTextMargin)
+            }
 
             // Text
             format.palette[0] = colorText
@@ -187,18 +192,23 @@ impl IWnd for ComboBox
         // Item
         if selectedIdx < items.count
         {
+            fntHeight := theme.res.fontDefault.regular.height
+
             var format: RichStringFormat
             item := items[selectedIdx]
             itemRect := clientRect
-            itemRect.inflate(-metrics.comboBox_Padding)
             itemRect.width -= metrics.comboBox_RightMargin
             itemRect.moveLeft(metrics.comboBox_LeftMargin)
 
             if item.icon.isValid()
             {
-                item.icon.size = itemRect.height
+                item.icon.size = fntHeight
                 item.icon.paint(painter, itemRect.x, itemRect.vertCenter() - item.icon.size * 0.5, colorText)
-                itemRect.moveLeft(item.icon.size)
+            }
+
+            if hasIcons
+            {
+                itemRect.moveLeft(fntHeight)
                 itemRect.moveLeft(metrics.iconText_Margin)
             }
 
@@ -294,6 +304,8 @@ public impl ComboBox
         {
             name = #scopefct.name
             icon = #scopefct.icon
+            if icon.isValid()
+                hasIcons = true
             id   = #scopefct.id
         }
 

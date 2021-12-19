@@ -292,5 +292,10 @@ func createWidgets(view: *Wnd)
         combo.addItem("Coucou", "0")
         combo.addItem("Salut", "1", app.theme.getIcon24(ThemeIcons24.Search, 18))
         combo.addItem("La Foule", "2")
+
+        combo = ComboBox.create(view, @{360, 450})
+        combo.addItem("Coucou", "0")
+        combo.addItem("La", "1")
+        combo.addItem("La Foule", "2")
     }
 }
