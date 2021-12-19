@@ -224,7 +224,7 @@ impl IWnd for ComboBox
             item := items[selectedIdx]
             itemRect := clientRect
             itemRect.width -= metrics.comboBox_RightMargin
-            itemRect.moveLeft(metrics.comboBox_LeftMargin)
+            itemRect.moveLeft(metrics.comboBox_Padding)
 
             if item.icon.isValid()
             {
