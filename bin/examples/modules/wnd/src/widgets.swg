@@ -134,6 +134,10 @@ func createWidgets(view: *Wnd)
         edit.setNote("-127/128")
         edit.setInputS64(-127, 128)
 
+        edit = EditBox.create(view, "disabled", @{470, 180, 100})
+        edit.isDisabled = true
+        edit.setForm(EditBoxForm.Square)
+
         edit = EditBox.create(view, "", @{360, 220, 100})
         edit.setForm(EditBoxForm.Square)
         edit.setNote("Float")

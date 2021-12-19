@@ -108,18 +108,27 @@ impl IWnd for EditBox
             subRectBorder = &rects.edit_FlatBorder
         }
 
-        if bc.isDisabled
-            colorBorder = colors.edit_DisabledBorder
-        else if isInvalid
-            colorBorder = colors.edit_ErrorBorder
-        else if hasFocus()
-            colorBorder = colors.edit_FocusBorder
-        else if isHot
-            colorBorder = colors.edit_HotBorder
-        else
-            colorBorder = colors.edit_Border
+        colorText = colors.edit_Text
 
-        colorBk = colors.edit_Bk
+        switch
+        {
+        case bc.isDisabled:
+            colorBorder = colors.edit_DisabledBorder
+            colorBk = colors.edit_DisabledBk
+            colorText = colors.edit_DisabledText
+        case isInvalid:
+            colorBorder = colors.edit_ErrorBorder
+            colorBk = colors.edit_ErrorBk
+        case hasFocus():
+            colorBorder = colors.edit_FocusBorder
+            colorBk = colors.edit_FocusBk
+        case isHot:
+            colorBorder = colors.edit_HotBorder
+            colorBk = colors.edit_HotBk
+        default:
+            colorBorder = colors.edit_Border
+            colorBk = colors.edit_Bk
+        }
 
         clientRect := getClientRect()
         if form != .Transparent
@@ -175,7 +184,7 @@ impl IWnd for EditBox
 
         // Content
         y := clientRect.vertCenter() - font.height * 0.5
-        bc.painter.drawString(clientRect.x, y, text, font, colors.edit_Text)
+        bc.painter.drawString(clientRect.x, y, text, font, colorText)
 
         // Caret
         if visibleCaret and hasFocus()

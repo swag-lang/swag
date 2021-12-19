@@ -108,8 +108,12 @@ struct ThemeColors
     edit_Border:                    Color = Gray3
     edit_FocusBorder:               Color = Blue
     edit_HotBorder:                 Color = Gray3
-    edit_DisabledBorder:            Color = White
+    edit_DisabledBorder:            Color = Gray3
     edit_Bk:                        Color = Gray6
+    edit_DisabledBk:                Color = Gray5
+    edit_ErrorBk:                   Color = Gray6
+    edit_HotBk:                     Color = Gray6
+    edit_FocusBk:                   Color = Gray6
     edit_Note:                      Color = Disabled
     edit_Text:                      Color = White
     edit_DisabledText:              Color = Disabled
@@ -182,4 +186,13 @@ struct ThemeColors
     scrollBar_Box:                  Color = Gray4
     scrollBar_HotBox:               Color = Gray2
     scrollBar_PressedBox:           Color = Gray1
+
+    comboBox_Border:                Color = Gray3
+    comboBox_HotBorder:             Color = Gray3
+    comboBox_DisabledBorder:        Color = White
+    comboBox_SelectedBorder:        Color = Gray3
+    comboBox_Bk:                    Color = Gray5
+    comboBox_HotBk:                 Color = Gray6
+    comboBox_DisabledBk:            Color = White
+    comboBox_SelectedBk:            Color = Gray6
 }

@@ -82,16 +82,21 @@ impl IWnd for ComboBox
         subRectBk = &rects.edit_SquareBk
         subRectBorder = &rects.edit_SquareBorder
 
-        if bc.isDisabled
-            colorBorder = colors.edit_DisabledBorder
-        else if hasFocus()
-            colorBorder = colors.edit_FocusBorder
-        else if isHot
-            colorBorder = colors.edit_HotBorder
-        else
-            colorBorder = colors.edit_Border
-
-        colorBk = colors.edit_Bk
+        switch
+        {
+        case bc.isDisabled:
+            colorBorder = colors.comboBox_DisabledBorder
+            colorBk = colors.comboBox_DisabledBk
+        case popup != null:
+            colorBorder = colors.comboBox_SelectedBorder
+            colorBk = colors.comboBox_SelectedBk
+        case isHot:
+            colorBorder = colors.comboBox_HotBorder
+            colorBk = colors.comboBox_HotBk
+        default:
+            colorBorder = colors.comboBox_Border
+            colorBk = colors.comboBox_Bk
+        }
 
         clientRect := getClientRect()
         theme.drawSubRect(painter, clientRect, subRectBk, colorBk)
