@@ -214,7 +214,7 @@ impl IWnd for SurfaceWnd
         if surface.flags & .Border
         {
             subRect := &rects.wnd_Border
-            theme.drawSubRect(bc.painter, clientRect, subRect, colors.wnd_Caption)
+            theme.drawSubRect(bc.painter, clientRect, subRect, colors.wnd_Caption, center: false)
         }
 
         posCaption := clientRect

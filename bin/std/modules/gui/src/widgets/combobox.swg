@@ -12,8 +12,11 @@ public struct ComboBoxItem
 public struct ComboBox
 {
     using wnd: Wnd
+    minWidthPopup:  f32 = 100
+    maxHeightPopup: f32 = 200
 
     isHot:          bool
+    popup:          *ComboBoxPopup
 
     items:          Array'(*PopupMenuItem)
     selectedIdx:    u32 = Swag.U32.Max
@@ -21,13 +24,22 @@ public struct ComboBox
 
 public struct ComboBoxPopup
 {
-    using wnd:  Wnd
-    combo:      *ComboBox
-    hotIdx:     u32 = Swag.U32.Max
+    using frameWnd: FrameWnd
+
+    combo:          *ComboBox
+    hotIdx:         u32 = Swag.U32.Max
 }
 
 impl IWnd for ComboBoxPopup
 {
+    mtd onCreateEvent(evt: *CreateEvent)
+    {
+        padding = getThemeMetrics().wnd_BorderSize + getThemeMetrics().menuPopup_ShadowSize
+        scrollWnd := ScrollWnd.create'Wnd(self, @{})
+        scrollWnd.dockStyle = .Center
+        scrollWnd.setScrollSize(0, 400)
+    }
+
     mtd onPaintEvent(evt: *PaintEvent)
     {
         bc      := evt.bc
@@ -38,7 +50,14 @@ impl IWnd for ComboBoxPopup
         metrics := getThemeMetrics()
         rects   := getThemeRects()
 
-        painter.fillRect(getClientRect(), Argb.Red)
+        // Shadow
+        clientRect := getClientRect()
+        subRect := &theme.rects.menuPopup_Shadow
+        theme.drawSubRect(painter, clientRect, subRect, colors.menuPopup_Shadow)
+
+        clientRect.inflate(-metrics.menuPopup_ShadowSize)
+        subRect = &rects.wnd_Border
+        theme.drawSubRect(bc.painter, clientRect, subRect, colors.wnd_Caption, center: false)
     }
 }
 
@@ -87,11 +106,10 @@ impl IWnd for ComboBox
         case MousePressed:
             if evt.button != .Left
                 break
-            showPopup()
-
-        case MouseReleased:
-            if evt.button != .Left
-                break
+            if popup
+                hidePopup()
+            else
+                showPopup()
 
         case MouseEnter:
             isHot = true
@@ -108,23 +126,28 @@ impl ComboBox
 {
     mtd showPopup()
     {
-        swnd := ScrollWnd.create'ComboBoxPopup(&parent.surface.wnd, position, id)
-        popup := cast(*ComboBoxPopup) swnd.view
+        Debug.assert(!popup)
+        popup = Wnd.create'ComboBoxPopup(&parent.surface.wnd, position, id)
         popup.combo = self
+        popup.sendCreateEvent()
 
-        rect := getSurfaceRect()
-        pt := swnd.parent.surfaceToLocal(@{rect.x, rect.y})
+        pos := getSurfaceRect()
+        pt := popup.parent.surfaceToLocal(@{pos.x, pos.y})
 
-        pos := position
+        pos = position
         pos.x = pt.x
         pos.y = pt.y + position.height
-        pos.height = 100
-        swnd.setPosition(pos)
+        pos.inflate(getThemeMetrics().menuPopup_ShadowSize)
+        pos.width = Math.max(pos.width, minWidthPopup)
+        pos.height = Math.min(100, maxHeightPopup)
+        popup.setPosition(pos)
     }
 
     mtd hidePopup()
     {
-
+        Debug.assert(popup != null)
+        popup.destroy()
+        popup = null
     }
 }
 

@@ -3,12 +3,12 @@ using Core, Pixel
 
 impl Theme
 {
-    mtd drawSubRect(painter: *Painter, dstRect: Math.Rectangle, subRect: *ThemeImageRect, color: Color)
+    mtd drawSubRect(painter: *Painter, dstRect: Math.Rectangle, subRect: *ThemeImageRect, color: Color, center = true)
     {
-        drawSubRect(painter, res.imgWidgets, dstRect, subRect, color)
+        drawSubRect(painter, res.imgWidgets, dstRect, subRect, color, center)
     }
 
-    func drawSubRect(painter: *Painter, texture: Texture, dstRect: Math.Rectangle, subRect: *ThemeImageRect, color: Color)
+    func drawSubRect(painter: *Painter, texture: Texture, dstRect: Math.Rectangle, subRect: *ThemeImageRect, color: Color, center = true)
     {
         if subRect == null or subRect.rect.isEmpty() or dstRect.isEmpty() or color.a == 0
             return
@@ -65,7 +65,8 @@ impl Theme
                 d.height = dstRect.height - (cyd * 2)
                 s.width = subRect.rect.width - (cx * 2)
                 s.height = subRect.rect.height - (cy * 2)
-                painter.drawTexture(d, s, texture, color)
+                if center
+                    painter.drawTexture(d, s, texture, color)
 
             case 5:
                 d.x += d.width; s.x += s.width

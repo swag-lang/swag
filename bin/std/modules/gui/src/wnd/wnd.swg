@@ -178,6 +178,7 @@ impl Wnd
         {
             surface = who.surface
             who.childs.add(self)
+            who.invalidate()
         }
 
         computeStyle()
