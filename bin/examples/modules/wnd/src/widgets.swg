@@ -286,6 +286,7 @@ func createWidgets(view: *Wnd)
     // Combo
     {
         combo := ComboBox.create(view, @{360, 400})
+        combo.maxHeightPopup = 150
         combo.addItem("Coucou", "0")
         combo.addItem("Salut", "1", app.theme.getIcon24(ThemeIcons24.Search, 18))
         combo.addItem("La Foule", "2")

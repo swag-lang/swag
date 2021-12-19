@@ -76,6 +76,7 @@ impl IWnd for ComboBoxPopupView
         rects   := getThemeRects()
 
         clientRect := getClientRect()
+        clientRect.offset(scrollPos)
         painter.fillRect(clientRect, colors.comboBox_SelectedBk)
 
         var labelPos: Math.Rectangle = ?
