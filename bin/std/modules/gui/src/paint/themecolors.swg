@@ -195,4 +195,8 @@ struct ThemeColors
     comboBox_HotBk:                 Color = Gray6
     comboBox_DisabledBk:            Color = White
     comboBox_SelectedBk:            Color = Gray6
+    comboBox_Text:                  Color = Gray1
+    comboBox_HotText:               Color = White
+    comboBox_DisabledText:          Color = White
+    comboBox_SelectedText:          Color = White
 }

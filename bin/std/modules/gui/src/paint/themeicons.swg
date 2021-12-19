@@ -7,6 +7,7 @@ enum ThemeIcons24
     WndClose
     Search
     RightPopupArrow
+    BottomPopupArrow
 }
 
 enum ThemeIcons64
