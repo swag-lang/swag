@@ -3,9 +3,11 @@ using Core, Pixel
 public struct ComboBox
 {
     using wnd: Wnd
+
     minWidthPopup:  f32 = 100
     maxHeightPopup: f32 = 300
     heightItem:     f32 = 30
+    onChanged:      func(*ComboBox, u32)
 
     isHot:          bool
     hasIcons:       bool
@@ -16,11 +18,11 @@ public struct ComboBox
 
 public struct ComboBoxItem
 {
-    name:       RichString
-    icon:       Icon
-    pos:        f32
-    size:       f32
-    id:         WndId
+    name:   RichString
+    icon:   Icon
+    pos:    f32
+    size:   f32
+    id:     WndId
 }
 
 public struct ComboBoxPopup
@@ -56,7 +58,7 @@ impl IWnd for ComboBoxPopupView
 
         if evt.kind == .MousePressed and evt.button == .Left
         {
-            combo.selectedIdx = hotIdx
+            combo.selectItem(hotIdx)
             combo.hidePopup()
             return
         }
@@ -94,8 +96,8 @@ impl IWnd for ComboBoxPopupView
             // Back selection
             if hotIdx == idx
             {
-                theme.drawSubRect(painter, labelPos, &rects.menuPopup_HotBk, colors.popupItem_HotBk)
-                colorText = colors.popupItem_HotText
+                theme.drawSubRect(painter, labelPos, &rects.comboBoxItem_HotBk, colors.comboBoxItem_HotBk)
+                colorText = colors.comboBoxItem_HotText
             }
 
             labelPos.moveLeft(metrics.comboBox_Padding)
@@ -110,7 +112,12 @@ impl IWnd for ComboBoxPopupView
 
             if combo.hasIcons
             {
-                labelPos.moveLeft(fntHeight + metrics.menuPopup_IconTextMargin)
+                labelPos.moveLeft(fntHeight + metrics.comboBox_IconTextMargin)
+            }
+
+            if idx == combo.selectedIdx
+            {
+                labelPos.setRight(labelPos.right() - fntHeight - metrics.comboBox_IconTextMargin)
             }
 
             // Text
@@ -120,6 +127,20 @@ impl IWnd for ComboBoxPopupView
             format.flags = .Clip
             format.font = theme.res.fontDefault
             painter.drawRichString(labelPos, &i.name, format)
+
+            // Check mark
+            if idx == combo.selectedIdx
+            {
+                labelPos.x = labelPos.right()
+                labelPos.y = labelPos.vertCenter() - (fntHeight * 0.5)
+                labelPos.width = fntHeight
+                labelPos.height = fntHeight
+                if hotIdx == idx
+                    colorText = colors.comboBoxItem_HotCheckMark
+                else
+                    colorText = colors.comboBoxItem_CheckMark
+                theme.drawSubRect(painter, labelPos, &rects.btnCheck_CheckedMark, colorText)
+            }
 
             y += combo.heightItem
         }
@@ -215,7 +236,7 @@ impl IWnd for ComboBox
             if hasIcons
             {
                 itemRect.moveLeft(fntHeight)
-                itemRect.moveLeft(metrics.iconText_Margin)
+                itemRect.moveLeft(metrics.comboBox_IconTextMargin)
             }
 
             format.palette[0] = colorText
@@ -323,10 +344,18 @@ public impl ComboBox
     // Set the selected item index
     mtd selectItem(idx: u32)
     {
+        newIdx := selectedIdx
         if idx >= items.count
-            selectedIdx = Swag.U32.Max
+            newIdx = Swag.U32.Max
         else
-            selectedIdx = idx
+            newIdx = idx
+        if newIdx == selectedIdx
+            return
+
+        selectedIdx = newIdx
+        if onChanged
+            onChanged(self, selectedIdx)
+
         invalidate()
     }
 }

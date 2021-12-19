@@ -45,7 +45,7 @@ struct ThemeMetrics
     menuBar_SpaceBetween:       f32 = 24
 
     scrollBar_Size:             f32 = 20
-    scrollBar_BoxPadding:       f32 = 3
+    scrollBar_BoxPadding:       f32 = 4
 
     comboBox_Width:             f32 = 150
     comboBox_BorderSize:        f32 = 1
@@ -54,4 +54,5 @@ struct ThemeMetrics
     comboBox_LeftMargin:        f32 = 10
     comboBox_RightMargin:       f32 = 30
     comboBox_Padding:           f32 = 6
+    comboBox_IconTextMargin:    f32 = 6
 }

@@ -38,7 +38,7 @@ struct ThemeImageRects
     btnCheck_UndefinedMark:     ThemeImageRect = @{{90,62,32,32}, 16}
     btnCheck_Checked:           ThemeImageRect = @{{90,29,32,32}, 16}
     btnCheck_CheckedBorder:     ThemeImageRect = @{{57,29,32,32}, 16}
-    btnCheck_CheckedMark:       ThemeImageRect = @{{57,62,32,32}, 16}
+    btnCheck_CheckedMark:       ThemeImageRect = @{{57,62,32,32}, 0}
 
     btnRadio_NormalBorder:      ThemeImageRect = @{{123,29,32,32}, 16}
     btnRadio_Normal:            ThemeImageRect = @{{156,29,32,32}, 16}
@@ -85,4 +85,5 @@ struct ThemeImageRects
     scrollBar_Corner:           ThemeImageRect = @{{1,253,27,27}, 0}
 
     comboBox_Shadow:            ThemeImageRect = @{{189,1,66,66}, 24}
+    comboBoxItem_HotBk:         ThemeImageRect = @{{57,197,27,27}, 12}
 }
