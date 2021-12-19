@@ -278,6 +278,15 @@ impl ScrollWnd
 public impl ScrollWnd
 {
     #[Swag.Discardable]
+    func create(parent: *Wnd, position: Math.Rectangle, id: string = null)->*ScrollWnd
+    {
+        res := Wnd.create'ScrollWnd(parent, "", position, id)
+        res.createView'Wnd()
+        res.sendCreateEvent()
+        return res
+    }
+
+    #[Swag.Discardable]
     func(T) create(parent: *Wnd, position: Math.Rectangle, id: string = null)->*ScrollWnd
     {
         res := Wnd.create'ScrollWnd(parent, "", position, id)

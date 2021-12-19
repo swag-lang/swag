@@ -18,28 +18,86 @@ public struct ComboBox
     isHot:          bool
     popup:          *ComboBoxPopup
 
-    items:          Array'(*PopupMenuItem)
+    items:          Array'(*ComboBoxItem)
     selectedIdx:    u32 = Swag.U32.Max
 }
 
 public struct ComboBoxPopup
 {
     using frameWnd: FrameWnd
+    combo: *ComboBox
+}
 
-    combo:          *ComboBox
-    hotIdx:         u32 = Swag.U32.Max
+public struct ComboBoxPopupView
+{
+    using wnd: Wnd
+    combo:  *ComboBox
+    hotIdx: u32 = Swag.U32.Max
+}
+
+impl IWnd for ComboBoxPopupView
+{
+    mtd onPaintEvent(evt: *PaintEvent)
+    {
+        bc      := evt.bc
+        painter := evt.bc.painter
+
+        theme   := getTheme()
+        colors  := getThemeColors()
+        metrics := getThemeMetrics()
+        rects   := getThemeRects()
+
+        clientRect := getClientRect()
+        painter.fillRect(clientRect, colors.comboBox_SelectedBk)
+
+        var labelPos: Math.Rectangle = ?
+        var colorText: Color
+
+        y := 0'f32
+        visit i, idx: combo.items
+        {
+            labelPos.x = clientRect.x
+            labelPos.y = y; y += 30
+            labelPos.width = clientRect.width
+            labelPos.height = 30
+
+            var format: RichStringFormat
+            colorText = colors.popupItem_Text
+
+            // Back selection
+            if hotIdx == idx
+            {
+                backPos := labelPos
+                backPos.x = metrics.menuPopup_ShadowSize
+                backPos.y -= metrics.menuPopup_SpaceLines * 0.5
+                backPos.width = position.width - 2 * metrics.menuPopup_ShadowSize
+                backPos.height += metrics.menuPopup_SpaceLines
+                theme.drawSubRect(painter, backPos, &rects.menuPopup_HotBk, colors.popupItem_HotBk)
+                colorText = colors.popupItem_HotText
+            }
+
+            // Icon
+            if i.icon.isValid()
+            {
+                i.icon.size = i.size
+                i.icon.paint(painter, labelPos.x, labelPos.vertCenter() - i.icon.size * 0.5, colorText)
+            }
+
+            labelPos.moveLeft(i.size + metrics.menuPopup_IconTextMargin)
+
+            // Text
+            format.palette[0] = colorText
+            format.horzAlignment = .Left
+            format.vertAlignment = .Center
+            format.flags = .Clip
+            format.font = theme.res.fontDefault
+            painter.drawRichString(labelPos, &i.name, format)
+        }
+    }
 }
 
 impl IWnd for ComboBoxPopup
 {
-    mtd onCreateEvent(evt: *CreateEvent)
-    {
-        padding = getThemeMetrics().wnd_BorderSize + getThemeMetrics().menuPopup_ShadowSize
-        scrollWnd := ScrollWnd.create'Wnd(self, @{})
-        scrollWnd.dockStyle = .Center
-        scrollWnd.setScrollSize(0, 400)
-    }
-
     mtd onPaintEvent(evt: *PaintEvent)
     {
         bc      := evt.bc
@@ -55,6 +113,7 @@ impl IWnd for ComboBoxPopup
         subRect := &theme.rects.menuPopup_Shadow
         theme.drawSubRect(painter, clientRect, subRect, colors.menuPopup_Shadow)
 
+        // Border
         clientRect.inflate(-metrics.menuPopup_ShadowSize)
         subRect = &rects.wnd_Border
         theme.drawSubRect(bc.painter, clientRect, subRect, colors.wnd_Caption, center: false)
@@ -132,19 +191,24 @@ impl ComboBox
     mtd showPopup()
     {
         Debug.assert(!popup)
+        metrics := getThemeMetrics()
+
         popup = Wnd.create'ComboBoxPopup(&parent.surface.wnd, position, id)
-        popup.combo = self
+        popup.padding = metrics.wnd_BorderSize + metrics.menuPopup_ShadowSize
+        scrollWnd := ScrollWnd.create'ComboBoxPopupView(popup, @{})
+        scrollWnd.dockStyle = .Center
+        scrollWnd.setScrollSize(0, 400)
+        view := cast(*ComboBoxPopupView) scrollWnd.view
+        view.combo = self
         popup.sendCreateEvent()
 
         pos := getSurfaceRect()
         pt := popup.parent.surfaceToLocal(@{pos.x, pos.y})
-
-        pos = position
         pos.x = pt.x
         pos.y = pt.y + position.height
-        pos.inflate(getThemeMetrics().menuPopup_ShadowSize)
-        pos.width = Math.max(pos.width, minWidthPopup)
+        pos.width = Math.max(position.width, minWidthPopup)
         pos.height = Math.min(100, maxHeightPopup)
+        pos.inflate(metrics.menuPopup_ShadowSize)
         popup.setPosition(pos)
     }
 
@@ -167,5 +231,19 @@ public impl ComboBox
         res := Wnd.create'ComboBox(parent, null, pos, id)
         res.sendCreateEvent()
         return res
+    }
+
+    // Add a new item
+    mtd addItem(name: string, id: WndId, icon: Icon = @{})
+    {
+        item := Memory.new'ComboBoxItem()
+        with item
+        {
+            name = #scopefct.name
+            icon = #scopefct.icon
+            id   = #scopefct.id
+        }
+
+        items.add(item)
     }
 }

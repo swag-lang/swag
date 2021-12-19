@@ -283,13 +283,10 @@ impl Wnd
         }
 
         // User paint
-        bc.painter.translateTransform(position.x, position.y)
+        bc.painter.translateTransform(position.x - scrollPos.x, position.y - scrollPos.y)
         evt := PaintEvent{}
         evt.bc = bc
         sendEvent(&evt)
-
-        //
-        bc.painter.translateTransform(-scrollPos.x, -scrollPos.y)
 
         // Childs
         visit c: childs

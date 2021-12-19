@@ -276,7 +276,7 @@ func createWidgets(view: *Wnd)
 
     // Scroll
     {
-        swnd := ScrollWnd.create'Wnd(view, @{600, 350, 400, 200})
+        swnd := ScrollWnd.create(view, @{600, 350, 400, 200}, id: "scroll")
         swnd.view.backgroundStyle = .Dialog
         button1 := PushButton.create(swnd.view, "Normal", @{5, 15})
         button2 := PushButton.create(swnd.view, "Other", @{5, 55})
@@ -286,5 +286,8 @@ func createWidgets(view: *Wnd)
     // Combo
     {
         combo := ComboBox.create(view, @{360, 400})
+        combo.addItem("Coucou", "0")
+        combo.addItem("Salut", "1", app.theme.getIcon24(ThemeIcons24.Search, 18))
+        combo.addItem("La Foule", "2")
     }
 }
