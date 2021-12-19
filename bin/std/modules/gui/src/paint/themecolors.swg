@@ -200,6 +200,7 @@ struct ThemeColors
     comboBox_HotText:               Color = White
     comboBox_DisabledText:          Color = Gray3
     comboBox_SelectedText:          Color = White
+    comboBoxItem_Text:              Color = Gray1
     comboBoxItem_HotBk:             Color = Blue
     comboBoxItem_HotText:           Color = White
     comboBoxItem_CheckMark:         Color = Blue

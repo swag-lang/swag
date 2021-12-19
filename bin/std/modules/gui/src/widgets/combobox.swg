@@ -91,7 +91,7 @@ impl IWnd for ComboBoxPopupView
             labelPos.height = combo.heightItem
 
             var format: RichStringFormat
-            colorText = colors.popupItem_Text
+            colorText = colors.comboBoxItem_Text
 
             // Back selection
             if hotIdx == idx
