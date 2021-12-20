@@ -38,10 +38,10 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
 
         if (callParameter->semFlags & AST_SEM_AUTO_CODE_PARAM)
         {
-            context.cptResolved                               = (int) context.parameters.size();
-            context.solvedParameters[context.cptResolved - 1] = parameters.back();
-            param->resolvedParameter                          = parameters.back();
-            param->indexParam                                 = (int) parameters.size() - 1;
+            context.cptResolved                         = (int) context.parameters.size();
+            param->resolvedParameter                    = parameters.back();
+            param->indexParam                           = (int) parameters.size() - 1;
+            context.solvedParameters[param->indexParam] = parameters.back();
             return;
         }
 
@@ -411,10 +411,10 @@ static void matchNamedParameters(SymbolMatchContext& context, VectorNative<TypeI
         // of the function
         if (param->semFlags & AST_SEM_AUTO_CODE_PARAM)
         {
-            context.cptResolved                               = (int) context.parameters.size();
-            context.solvedParameters[context.cptResolved - 1] = parameters.back();
-            param->resolvedParameter                          = parameters.back();
-            param->indexParam                                 = (int) parameters.size() - 1;
+            context.cptResolved                         = (int) context.parameters.size();
+            param->resolvedParameter                    = parameters.back();
+            param->indexParam                           = (int) parameters.size() - 1;
+            context.solvedParameters[param->indexParam] = parameters.back();
             break;
         }
 

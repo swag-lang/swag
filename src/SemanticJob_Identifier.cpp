@@ -332,9 +332,13 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
     sortParameters(identifier->callParameters);
     auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(identifier->typeInfo, TypeInfoKind::FuncAttr);
     auto maxParams    = identifier->callParameters->childs.size();
-    for (int i = 0; i < maxParams; i++)
+    for (int idx = 0; idx < maxParams; idx++)
     {
-        auto nodeCall = CastAst<AstFuncCallParam>(identifier->callParameters->childs[i], AstNodeKind::FuncCallParam);
+        auto nodeCall = CastAst<AstFuncCallParam>(identifier->callParameters->childs[idx], AstNodeKind::FuncCallParam);
+
+        int i = idx;
+        if (idx < typeInfoFunc->parameters.size() - 1 || !(typeInfoFunc->flags & (TYPEINFO_VARIADIC | TYPEINFO_C_VARIADIC)))
+            i = nodeCall->indexParam;
 
         // This is a lambda that was waiting for a match to have its types, and to continue solving its content
         if (nodeCall->typeInfo->kind == TypeInfoKind::Lambda && (nodeCall->typeInfo->declNode->semFlags & AST_SEM_PENDING_LAMBDA_TYPING))
