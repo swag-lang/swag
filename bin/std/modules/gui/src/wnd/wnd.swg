@@ -633,6 +633,7 @@ impl Wnd
     {
         evt := CreateEvent{}
         sendEvent(&evt)
+        sendResizeEvent()
     }
 
     mtd processEvent(evt: *Event)

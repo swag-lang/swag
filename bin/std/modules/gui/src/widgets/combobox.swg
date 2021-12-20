@@ -10,6 +10,7 @@ struct ComboBox
     heightItem:     f32 = 30
     onChanged:      func(*ComboBox, WndId, *void)
 
+    editBox:        *EditBox
     isHot:          bool
     hasIcons:       bool
     popup:          *ComboBoxPopup
@@ -174,6 +175,16 @@ impl IWnd for ComboBoxPopup
 
 impl IWnd for ComboBox
 {
+    mtd onResizeEvent(evt: *ResizeEvent)
+    {
+        if editBox
+        {
+            clientRect := getClientRect()
+            clientRect.width -= getThemeMetrics().comboBox_RightMargin
+            editBox.setPosition(clientRect)
+        }
+    }
+
     mtd onPaintEvent(evt: *PaintEvent)
     {
         bc      := evt.bc
@@ -218,7 +229,7 @@ impl IWnd for ComboBox
         theme.drawSubRect(painter, clientRect, subRectBorder, colorBorder)
 
         // Item
-        if selectedIdx < items.count
+        if !editBox and selectedIdx < items.count
         {
             fntHeight := theme.res.fontDefault.regular.height
 
@@ -317,19 +328,33 @@ impl ComboBox
 {
     mtd opDrop()
     {
-        visit i: items
-            Memory.delete(i)
+        removeAllItems()
     }
 
     #[Swag.Discardable]
-    func create(parent: *Wnd, position: Math.Rectangle, id: string = null)->*ComboBox
+    func create(parent: *Wnd, position: Math.Rectangle, id: string = null, editBox = false)->*ComboBox
     {
         pos := position
         if pos.height == 0 pos.height = parent.getThemeMetrics().comboBox_Height
         if pos.width == 0  pos.width  = parent.getThemeMetrics().comboBox_Width
         res := Wnd.create'ComboBox(parent, null, pos, id)
+
+        if editBox
+        {
+            res.editBox = EditBox.create(res, "", @{})
+            res.editBox.setForm(EditBoxForm.Transparent)
+        }
+
         res.sendCreateEvent()
         return res
+    }
+
+    // Remove all items
+    mtd removeAllItems()
+    {
+        visit i: items
+            Memory.delete(i)
+        items.clear()
     }
 
     // Add a new item
@@ -369,6 +394,14 @@ impl ComboBox
                 onChanged(self, items[selectedIdx].id, items[selectedIdx].userData)
             else
                 onChanged(self, null, null)
+        }
+
+        if editBox
+        {
+            if selectedIdx < items.count
+                editBox.setText(items[selectedIdx].name.raw)
+            else
+                editBox.setText("")
         }
 
         invalidate()

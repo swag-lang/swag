@@ -308,5 +308,11 @@ func createWidgets(view: *Wnd)
         combo.addItem("Coucou", "0")
         combo.selectItem(0)
         combo.isDisabled = true
+
+        combo = ComboBox.create(view, @{360, 520}, editBox: true)
+        combo.addItem("Coucou", "0")
+        combo.addItem("Coucou1", "1")
+        combo.addItem("Coucou2", "2")
+        combo.selectItem(0)
     }
 }
