@@ -76,4 +76,11 @@ impl IconButton
         res.sendCreateEvent()
         return res
     }
+
+    // Set the button form
+    mtd setForm(form: IconButtonForm)
+    {
+        self.form = #scopefct.form
+        invalidate()
+    }
 }

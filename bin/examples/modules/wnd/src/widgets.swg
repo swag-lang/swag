@@ -132,11 +132,11 @@ func createWidgets(view: *Wnd)
         edit = EditBox.create(view, "toto toto toto", @{470, 140, 100})
         btn := IconButton.create(edit, app.theme.getIcon24(ThemeIcons24.WndClose, 18), @{0, 0, 24, 24})
         btn.dockStyle = .Right
-        btn.form = .Round
+        btn.setForm(IconButtonForm.Round)
         btn.sigPressed = @(btn: *Button) { edt := cast(*EditBox) btn.parent; edt.setText(null); }
         edit.setForm(EditBoxForm.Round)
         edit.setNote("")
-        edit.padding.z = 4
+        edit.setPadding(right: 4.0)
         edit.rightMargin = 24
 
         edit = EditBox.create(view, "", @{360, 180, 100})

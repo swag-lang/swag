@@ -378,6 +378,32 @@ impl Wnd
         return result
     }
 
+    // Set padding for childs
+    // If < 0, value won't be changed
+    mtd setMargin(left, top, right, bottom: f32 = -1)
+    {
+        with margin
+        {
+            if left >= 0   x = left
+            if top >= 0    y = top
+            if right >= 0  z = right
+            if bottom >= 0 w = bottom
+        }
+    }
+
+    // Set padding for childs
+    // If < 0, value won't be changed
+    mtd setPadding(left, top, right, bottom: f32 = -1)
+    {
+        with padding
+        {
+            if left >= 0   x = left
+            if top >= 0    y = top
+            if right >= 0  z = right
+            if bottom >= 0 w = bottom
+        }
+    }
+
     // Move and size the wnd
     mtd setPosition(rect: Math.Rectangle)
     {
