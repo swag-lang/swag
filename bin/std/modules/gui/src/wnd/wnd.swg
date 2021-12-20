@@ -378,8 +378,8 @@ impl Wnd
         return result
     }
 
-    // Set padding for childs
-    // If < 0, value won't be changed
+    // Set margin for childs
+    // If a value is < 0, then won't be changed
     mtd setMargin(left, top, right, bottom: f32 = -1)
     {
         with margin
@@ -392,7 +392,7 @@ impl Wnd
     }
 
     // Set padding for childs
-    // If < 0, value won't be changed
+    // If a value is < 0, then won't be changed
     mtd setPadding(left, top, right, bottom: f32 = -1)
     {
         with padding
