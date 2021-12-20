@@ -32,6 +32,7 @@ struct EditBox
     text:               String
     form:               EditBoxForm = Square
     autoLoseFocus:      bool = true
+    readOnly:           bool = false
     maxLength:          s32
     inputMode:          EditBoxInputMode = String
 
@@ -261,7 +262,7 @@ impl IWnd for EditBox
             if evt.accepted
                 forceVisibleCaret()
         }
-        else if evt.kind == .Char
+        else if evt.kind == .Char and !readOnly
         {
             if evt.char < 32
                 evt.accepted = false
@@ -724,6 +725,8 @@ impl EditBox
     // Delete selected text
     mtd deleteSelection()
     {
+        if readOnly
+            return
         if deleteSelectionPrivate()
             notifyChanged()
     }
