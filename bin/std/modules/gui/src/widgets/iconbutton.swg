@@ -1,9 +1,16 @@
 #global public
 using Core, Pixel
 
+enum IconButtonForm
+{
+    Square
+    Round
+}
+
 struct IconButton
 {
     using button:   Button
+    form:           IconButtonForm = Square
 }
 
 impl IWnd for IconButton
@@ -19,24 +26,28 @@ impl IWnd for IconButton
         var colorBk:    Color = ?
         var colorIcon:  Color = ?
 
+        switch form
+        {
+        case Square:
+            subRectBk = &rects.btnIcon_SquareBk
+        case Round:
+            subRectBk = &rects.btnIcon_RoundBk
+        }
+
         switch
         {
         case isDisabled:
             colorBk    = colors.btnIcon_DisabledBk
             colorIcon  = colors.btnIcon_DisabledIcon
-            subRectBk  = &rects.btnIcon_Disabled
         case isPressed:
             colorBk   = colors.btnIcon_PressedBk
             colorIcon = colors.btnIcon_PressedIcon
-            subRectBk = &rects.btnIcon_Pressed
         case isHot:
             colorBk   = colors.btnIcon_HotBk
             colorIcon = colors.btnIcon_HotIcon
-            subRectBk = &rects.btnIcon_Hot
         default:
             colorBk   = colors.btnIcon_Bk
             colorIcon = colors.btnIcon_Icon
-            subRectBk = &rects.btnIcon_Normal
         }
 
         // Background

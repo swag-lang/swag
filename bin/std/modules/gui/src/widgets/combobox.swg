@@ -8,7 +8,7 @@ struct ComboBox
     minWidthPopup:  f32 = 100
     maxHeightPopup: f32 = 300
     heightItem:     f32 = 30
-    onChanged:      func(*ComboBox, WndId, *void)
+    sigChanged:     func(*ComboBox, WndId, *void)
 
     editBox:        *EditBox
     isHot:          bool
@@ -388,12 +388,12 @@ impl ComboBox
         selectedIdx = newIdx
 
         // Notify
-        if onChanged
+        if sigChanged
         {
             if selectedIdx < items.count
-                onChanged(self, items[selectedIdx].id, items[selectedIdx].userData)
+                sigChanged(self, items[selectedIdx].id, items[selectedIdx].userData)
             else
-                onChanged(self, null, null)
+                sigChanged(self, null, null)
         }
 
         if editBox

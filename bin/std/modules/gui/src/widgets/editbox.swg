@@ -34,6 +34,7 @@ struct EditBox
     autoLoseFocus:      bool = true
     readOnly:           bool = false
     maxLength:          s32
+    rightMargin:        f32
     inputMode:          EditBoxInputMode = String
 
     sigChanged:         func(*EditBox)
@@ -138,7 +139,7 @@ impl IWnd for EditBox
         if form != .Transparent or isInvalid
             theme.drawSubRect(painter, clientRect, subRectBorder, colorBorder)
 
-        clientRect = getClientRectPadding()
+        clientRect = getEditRect()
 
         // Icon
         if icon.isValid()
@@ -533,9 +534,16 @@ private impl EditBox
         return true
     }
 
-    mtd getTextMarginLeft()->f32
+    mtd getEditRect()->Math.Rectangle
     {
         rect := getClientRectPadding()
+        rect.moveRight(-rightMargin)
+        return rect
+    }
+
+    mtd getTextMarginLeft()->f32
+    {
+        rect := getEditRect()
         if icon.isValid()
             rect.x += icon.size + getThemeMetrics().iconText_Margin
         return rect.x
@@ -569,7 +577,7 @@ private impl EditBox
     {
         var result: retval = ?
 
-        clientRect := getClientRectPadding()
+        clientRect := getEditRect()
         if icon.isValid()
             clientRect.x += icon.size + 4
 

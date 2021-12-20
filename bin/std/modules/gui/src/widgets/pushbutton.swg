@@ -51,7 +51,7 @@ impl IWnd for PushButton
                 colorBorder   = colors.btnPushDefault_HotBorder
                 colorText     = colors.btnPushDefault_HotText
                 subRectBk     = &rects.btnPush_Hot
-                subRectBorder = &rects.btnOush_HotBorder
+                subRectBorder = &rects.btnPush_HotBorder
             default:
                 colorBk       = colors.btnPushDefault_Bk
                 colorBorder   = colors.btnPushDefault_Border
@@ -81,7 +81,7 @@ impl IWnd for PushButton
                 colorBorder   = colors.btnPushFlat_HotBorder
                 colorText     = colors.btnPushFlat_HotText
                 subRectBk     = &rects.btnPush_Hot
-                subRectBorder = &rects.btnOush_HotBorder
+                subRectBorder = &rects.btnPush_HotBorder
             default:
                 colorBk       = colors.btnPushFlat_Bk
                 colorBorder   = colors.btnPushFlat_Border
@@ -113,7 +113,7 @@ impl IWnd for PushButton
                 colorBorder   = colors.btnPush_HotBorder
                 colorText     = colors.btnPush_HotText
                 subRectBk     = &rects.btnPush_Hot
-                subRectBorder = &rects.btnOush_HotBorder
+                subRectBorder = &rects.btnPush_HotBorder
 
             default:
                 colorBk       = colors.btnPush_Bk
