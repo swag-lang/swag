@@ -401,17 +401,22 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
         }
         else
         {
-            // Flatten all indices. self and value will be set before the call later
             arrayNode->typeInfo = arrayType;
-            arrayNode->structFlatParams.clear();
-            arrayNode->structFlatParams.push_back(arrayNode->access);
 
-            AstNode* child = arrayNode->array;
-            while (child->kind == AstNodeKind::ArrayPointerIndex)
+            // Flatten all indices. self and value will be set before the call later
+            // Can be already done, so do not overwrite
+            // :StructFlatParamsDone
+            if (arrayNode->structFlatParams.empty())
             {
-                auto arrayChild = CastAst<AstArrayPointerIndex>(child, AstNodeKind::ArrayPointerIndex);
-                arrayNode->structFlatParams.push_front(arrayChild->access);
-                child = arrayChild->array;
+                arrayNode->structFlatParams.push_back(arrayNode->access);
+
+                AstNode* child = arrayNode->array;
+                while (child->kind == AstNodeKind::ArrayPointerIndex)
+                {
+                    auto arrayChild = CastAst<AstArrayPointerIndex>(child, AstNodeKind::ArrayPointerIndex);
+                    arrayNode->structFlatParams.push_front(arrayChild->access);
+                    child = arrayChild->array;
+                }
             }
         }
         break;
@@ -606,6 +611,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
         }
 
         // Flatten all operator parameters : self, then all indices
+        // :StructFlatParamsDone
         arrayNode->structFlatParams.clear();
         arrayNode->structFlatParams.push_back(arrayNode->access);
 

@@ -1243,7 +1243,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             bool covered = false;
             for (int j = 0; j < numCallParams; j++)
             {
-                auto param = static_cast<AstFuncCallParam*>(allParams->childs[j]);
+                auto param = CastAst<AstFuncCallParam>(allParams->childs[j], AstNodeKind::FuncCallParam);
                 if (param->indexParam == i)
                 {
                     if (!param->additionalRegisterRC.cannotFree)
