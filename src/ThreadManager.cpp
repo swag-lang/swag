@@ -46,6 +46,12 @@ void ThreadManager::addJobNoLock(Job* job)
         return;
     }
 
+    // This should not happend... but this can happen
+    // A thread is added, but should not run because a dependency is still running
+    // So, yes, this is an anti bug...
+    if (job->waitOnJobs != 0)
+        return;
+
     SWAG_ASSERT(!(job->flags & JOB_IS_IN_QUEUE));
     job->flags |= JOB_IS_IN_QUEUE;
 
