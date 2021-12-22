@@ -42,7 +42,7 @@ impl IWnd for ComboBoxPopupView
 {
     mtd onFocusEvent(evt: *FocusEvent)
     {
-        if evt.kind != .SetFocus
+        if evt.kind == .KillFocus and evt.other != parent
         {
             combo.hidePopup()
         }
@@ -50,7 +50,11 @@ impl IWnd for ComboBoxPopupView
 
     mtd onMouseEvent(evt: *MouseEvent)
     {
-        hit := cast(u32) ((evt.pos.y + scrollPos.y) / combo.heightItem)
+        var hit: u32
+        if evt.kind == .MouseLeave
+            hit = Swag.U32.Max
+        else
+            hit = cast(u32) ((evt.pos.y + scrollPos.y) / combo.heightItem)
         if hit != hotIdx
         {
             hotIdx = hit
@@ -298,6 +302,7 @@ private impl ComboBox
         popup.padding = metrics.comboBox_BorderSize + metrics.comboBox_ShadowSize
         scrollWnd := ScrollWnd.create'ComboBoxPopupView(popup, @{})
         scrollWnd.dockStyle = .Center
+        scrollWnd.focusStrategy = .None
         scrollWnd.setScrollSize(0, cast(f32) items.count * heightItem)
         view := cast(*ComboBoxPopupView) scrollWnd.view
         view.combo = self
