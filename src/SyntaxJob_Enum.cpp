@@ -7,10 +7,12 @@
 
 bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
 {
-    auto enumNode = Ast::newNode<AstEnum>(this, AstNodeKind::EnumDecl, sourceFile, parent);
+    auto enumNode         = Ast::newNode<AstEnum>(this, AstNodeKind::EnumDecl, sourceFile, parent);
+    enumNode->semanticFct = SemanticJob::resolveEnum;
+    enumNode->allocateExtension();
+    enumNode->extension->semanticAfterFct = SemanticJob::sendCompilerMsgTypeDecl;
     if (result)
         *result = enumNode;
-    enumNode->semanticFct = SemanticJob::resolveEnum;
 
     SWAG_CHECK(eatToken());
     SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Utf8::format(g_E[Err0396], token.text.c_str())));

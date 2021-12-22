@@ -6,6 +6,34 @@
 #include "TypeManager.h"
 #include "ErrorIds.h"
 
+bool SemanticJob::sendCompilerMsgTypeDecl(SemanticContext* context)
+{
+    auto sourceFile = context->sourceFile;
+    auto module     = sourceFile->module;
+    auto node       = context->node;
+
+    // Filter what we send
+    if (module->kind == ModuleKind::BootStrap || module->kind == ModuleKind::Runtime)
+        return true;
+    if (sourceFile->imported)
+        return true;
+    if (!node->ownerScope->isGlobalOrImpl())
+        return true;
+    if (node->flags & (AST_IS_GENERIC | AST_FROM_GENERIC))
+        return true;
+    if (node->typeInfo->flags & (TYPEINFO_STRUCT_IS_TUPLE | TYPEINFO_GENERIC))
+        return true;
+
+    CompilerMessage msg      = {0};
+    msg.concrete.kind        = CompilerMsgKind::SemanticType;
+    msg.concrete.name.buffer = (void*) node->token.text.c_str();
+    msg.concrete.name.count  = node->token.text.length();
+    msg.typeInfo             = node->typeInfo;
+    SWAG_CHECK(module->postCompilerMessage(context, msg));
+
+    return true;
+}
+
 bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
 {
     if (!node)

@@ -191,22 +191,20 @@ bool SemanticJob::resolveAfterFuncDecl(SemanticContext* context)
     auto sourceFile = context->sourceFile;
     auto module     = sourceFile->module;
 
+    // Filter what we send
     if (module->kind == ModuleKind::BootStrap || module->kind == ModuleKind::Runtime)
         return true;
-
-    // Post user message
-    auto node     = CastAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
-    auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
-
-    // Filter what we send
     if (sourceFile->imported)
         return true;
-    if (!node->ownerScope->isGlobalOrImpl())
+    if (!context->node->ownerScope->isGlobalOrImpl())
         return true;
-    if (node->attributeFlags & ATTRIBUTE_GENERATED_FUNC)
+    if (context->node->attributeFlags & ATTRIBUTE_GENERATED_FUNC)
         return true;
-    if (node->flags & AST_IS_GENERIC)
+    if (context->node->flags & (AST_IS_GENERIC | AST_FROM_GENERIC))
         return true;
+
+    auto node     = CastAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
+    auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
 
     CompilerMessage msg      = {0};
     msg.concrete.kind        = CompilerMsgKind::SemanticFunc;

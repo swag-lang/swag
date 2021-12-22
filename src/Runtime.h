@@ -384,6 +384,7 @@ enum class CompilerMsgKind
     PassBeforeOutput,
     PassAllDone,
     SemanticFunc,
+    SemanticType,
     Max
 };
 
@@ -394,6 +395,7 @@ enum class CompilerMsgKindMask : uint64_t
     PassBeforeOutput      = 1 << (uint32_t) CompilerMsgKind::PassBeforeOutput,
     PassAllDone           = 1 << (uint32_t) CompilerMsgKind::PassAllDone,
     SemanticFunc          = 1 << (uint32_t) CompilerMsgKind::SemanticFunc,
+    SemanticType          = 1 << (uint32_t) CompilerMsgKind::SemanticType,
     All                   = 0xFFFFFFFFFFFFFFFF,
 };
 

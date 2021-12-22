@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "Module.h"
 #include "PrepCompilerMsgJob.h"
-#include "SemanticJob.h"
 
 JobResult PrepCompilerMsgJob::execute()
 {
@@ -19,11 +18,8 @@ JobResult PrepCompilerMsgJob::execute()
         auto& msg = module->compilerMessages[i];
         SWAG_ASSERT(!module->byteCodeCompiler[(int) msg.concrete.kind].empty());
 
-        if (msg.concrete.kind == CompilerMsgKind::SemanticFunc)
+        if (msg.typeInfo && !msg.concrete.type)
         {
-            if (msg.concrete.type)
-                continue;
-
             auto     storageSegment = &context.sourceFile->module->compilerSegment;
             uint32_t storageOffset;
 

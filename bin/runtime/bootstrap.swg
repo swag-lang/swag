@@ -547,7 +547,8 @@ namespace Swag
         PassBeforeRunByteCode
         PassBeforeOutput
         PassAllDone
-        SemanticFunc
+        SemFunctions
+        SemTypes
 	}
 
     #[EnumFlags]
@@ -557,7 +558,8 @@ namespace Swag
         PassBeforeRun =         1 << cast(u32) CompilerMsgKind.PassBeforeRunByteCode
         PassBeforeOutput =      1 << cast(u32) CompilerMsgKind.PassBeforeOutput
         PassAllDone =           1 << cast(u32) CompilerMsgKind.PassAllDone
-        SemanticFunc =          1 << cast(u32) CompilerMsgKind.SemanticFunc
+        SemFunctions =          1 << cast(u32) CompilerMsgKind.SemFunctions
+        SemTypes =              1 << cast(u32) CompilerMsgKind.SemTypes
         All =                   0xFFFFFFFF_FFFFFFFF
 	}
 

@@ -13,14 +13,6 @@ bool Module::postCompilerMessage(JobContext* context, CompilerMessage& msg)
         int index = (int) msg.concrete.kind;
         if (byteCodeCompiler[index].empty())
             return true;
-
-        /*if (msg.typeInfo)
-        {
-            auto     storageSegment = &context->sourceFile->module->compilerSegment;
-            uint32_t storageOffset;
-            SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, msg.typeInfo, storageSegment, &storageOffset));
-            msg.concrete.type = (ConcreteTypeInfo*) storageSegment->address(storageOffset);
-        }*/
     }
 
     ScopedLock lk(mutexCompilerMessages);

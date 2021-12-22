@@ -167,6 +167,8 @@ bool SyntaxJob::doStruct(AstNode* parent, AstNode** result)
 {
     auto structNode         = Ast::newNode<AstStruct>(this, AstNodeKind::StructDecl, sourceFile, parent);
     structNode->semanticFct = SemanticJob::resolveStruct;
+    structNode->allocateExtension();
+    structNode->extension->semanticAfterFct = SemanticJob::sendCompilerMsgTypeDecl;
     if (result)
         *result = structNode;
 
