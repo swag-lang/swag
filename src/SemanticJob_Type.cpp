@@ -25,7 +25,7 @@ bool SemanticJob::sendCompilerMsgTypeDecl(SemanticContext* context)
         return true;
 
     CompilerMessage msg      = {0};
-    msg.concrete.kind        = CompilerMsgKind::SemanticType;
+    msg.concrete.kind        = CompilerMsgKind::SemTypes;
     msg.concrete.name.buffer = (void*) node->token.text.c_str();
     msg.concrete.name.count  = node->token.text.length();
     msg.typeInfo             = node->typeInfo;

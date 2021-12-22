@@ -549,6 +549,7 @@ namespace Swag
         PassAllDone
         SemFunctions
         SemTypes
+        SemGlobals
 	}
 
     #[EnumFlags]
@@ -560,6 +561,7 @@ namespace Swag
         PassAllDone =           1 << cast(u32) CompilerMsgKind.PassAllDone
         SemFunctions =          1 << cast(u32) CompilerMsgKind.SemFunctions
         SemTypes =              1 << cast(u32) CompilerMsgKind.SemTypes
+        SemGlobals =            1 << cast(u32) CompilerMsgKind.SemGlobals
         All =                   0xFFFFFFFF_FFFFFFFF
 	}
 

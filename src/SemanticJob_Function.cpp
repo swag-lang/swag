@@ -186,7 +186,7 @@ bool SemanticJob::resolveFuncDeclParams(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveAfterFuncDecl(SemanticContext* context)
+bool SemanticJob::sendCompilerMsgFuncDecl(SemanticContext* context)
 {
     auto sourceFile = context->sourceFile;
     auto module     = sourceFile->module;
@@ -207,7 +207,7 @@ bool SemanticJob::resolveAfterFuncDecl(SemanticContext* context)
     auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
 
     CompilerMessage msg      = {0};
-    msg.concrete.kind        = CompilerMsgKind::SemanticFunc;
+    msg.concrete.kind        = CompilerMsgKind::SemFunctions;
     msg.concrete.name.buffer = (void*) node->token.text.c_str();
     msg.concrete.name.count  = node->token.text.length();
     msg.typeInfo             = typeInfo;

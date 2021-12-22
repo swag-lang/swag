@@ -304,7 +304,9 @@ struct SemanticJob : public Job
     AstNode*            backToSemError();
     static Utf8         getCompilerFunctionString(AstNode* node, TokenId id);
     static bool         preResolveSubstBreakContinue(SemanticContext* context);
+    static bool         sendCompilerMsgFuncDecl(SemanticContext* context);
     static bool         sendCompilerMsgTypeDecl(SemanticContext* context);
+    static bool         sendCompilerMsgGlobalVar(SemanticContext* context);
 
     static bool resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveBinaryOpMinus(SemanticContext* context, AstNode* left, AstNode* right);
@@ -393,7 +395,6 @@ struct SemanticJob : public Job
     static bool resolveEnumType(SemanticContext* context);
     static bool resolveEnumValue(SemanticContext* context);
     static bool resolveFuncDeclParams(SemanticContext* context);
-    static bool resolveAfterFuncDecl(SemanticContext* context);
     static bool resolveFuncDeclAfterSI(SemanticContext* context);
     static bool resolveFuncDecl(SemanticContext* context);
     static bool resolveFuncDeclType(SemanticContext* context);

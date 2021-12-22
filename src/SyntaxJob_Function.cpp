@@ -371,7 +371,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
     auto funcNode         = Ast::newNode<AstFuncDecl>(this, AstNodeKind::FuncDecl, sourceFile, parent, 4);
     funcNode->semanticFct = SemanticJob::resolveFuncDecl;
     funcNode->allocateExtension();
-    funcNode->extension->semanticAfterFct = SemanticJob::resolveAfterFuncDecl;
+    funcNode->extension->semanticAfterFct = SemanticJob::sendCompilerMsgFuncDecl;
     if (result)
         *result = funcNode;
 

@@ -383,8 +383,9 @@ enum class CompilerMsgKind
     PassBeforeRunByteCode,
     PassBeforeOutput,
     PassAllDone,
-    SemanticFunc,
-    SemanticType,
+    SemFunctions,
+    SemTypes,
+    SemGlobals,
     Max
 };
 
@@ -394,8 +395,9 @@ enum class CompilerMsgKindMask : uint64_t
     PassBeforeRunByteCode = 1 << (uint32_t) CompilerMsgKind::PassBeforeRunByteCode,
     PassBeforeOutput      = 1 << (uint32_t) CompilerMsgKind::PassBeforeOutput,
     PassAllDone           = 1 << (uint32_t) CompilerMsgKind::PassAllDone,
-    SemanticFunc          = 1 << (uint32_t) CompilerMsgKind::SemanticFunc,
-    SemanticType          = 1 << (uint32_t) CompilerMsgKind::SemanticType,
+    SemFunctions          = 1 << (uint32_t) CompilerMsgKind::SemFunctions,
+    SemTypes              = 1 << (uint32_t) CompilerMsgKind::SemTypes,
+    SemGlobals            = 1 << (uint32_t) CompilerMsgKind::SemGlobals,
     All                   = 0xFFFFFFFFFFFFFFFF,
 };
 

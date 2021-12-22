@@ -427,6 +427,34 @@ bool SemanticJob::resolveVarDeclAfter(SemanticContext* context)
                                                      node->computedValue->storageSegment);
     }
 
+    // Compiler #message
+    if (node->resolvedSymbolOverload->flags & OVERLOAD_VAR_GLOBAL)
+    {
+        sendCompilerMsgGlobalVar(context);
+    }
+
+    return true;
+}
+
+bool SemanticJob::sendCompilerMsgGlobalVar(SemanticContext* context)
+{
+    auto sourceFile = context->sourceFile;
+    auto module     = sourceFile->module;
+    auto node       = context->node;
+
+    // Filter what we send
+    if (module->kind == ModuleKind::BootStrap || module->kind == ModuleKind::Runtime)
+        return true;
+    if (sourceFile->imported)
+        return true;
+
+    CompilerMessage msg      = {0};
+    msg.concrete.kind        = CompilerMsgKind::SemGlobals;
+    msg.concrete.name.buffer = (void*) node->token.text.c_str();
+    msg.concrete.name.count  = node->token.text.length();
+    msg.typeInfo             = node->typeInfo;
+    SWAG_CHECK(module->postCompilerMessage(context, msg));
+
     return true;
 }
 
