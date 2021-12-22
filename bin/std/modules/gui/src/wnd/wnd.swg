@@ -283,10 +283,13 @@ impl Wnd
         }
 
         // User paint
-        bc.painter.translateTransform(position.x - scrollPos.x, position.y - scrollPos.y)
+        bc.painter.translateTransform(position.x, position.y)
+        curTrs := bc.painter.getTransform()
+        bc.painter.translateTransform(-scrollPos.x, -scrollPos.y)
         evt := PaintEvent{}
         evt.bc = bc
         sendEvent(&evt)
+        bc.painter.setTransform(curTrs)
 
         // Childs
         visit c: childs
@@ -295,6 +298,7 @@ impl Wnd
                 continue
 
             curState := bc.painter.curState
+            bc.painter.translateTransform(-scrollPos.x, -scrollPos.y)
             c.paint(bc)
             bc.painter.setState(curState)
         }

@@ -394,6 +394,8 @@ impl Painter
     // Set the paint position
     mtd translateTransform(x, y: f32)
     {
+        if isZeroEpsilon(x) and isZeroEpsilon(y)
+            return
         tr := Transform2.createTranslation(x, y)
         curState.transform.multiply(tr)
         setTransform(curState.transform)
@@ -402,7 +404,9 @@ impl Painter
     // Set the paint rotation, in degrees
     mtd rotateTransform(angle: f32)
     {
-        rad := Math.toRadians(angle)
+        if isZeroEpsilon(angle)
+            return
+        rad := toRadians(angle)
         tr := Transform2.createRotation(rad, 0, 0)
         curState.transform.multiply(tr)
         setTransform(curState.transform)
@@ -411,7 +415,9 @@ impl Painter
     // Set the paint rotation, in degrees
     mtd rotateTransform(angle: f32, centerX, centerY: f32)
     {
-        rad := Math.toRadians(angle)
+        if isZeroEpsilon(angle)
+            return
+        rad := toRadians(angle)
         tr := Transform2.createRotation(rad, centerX, centerY)
         curState.transform.multiply(tr)
         setTransform(curState.transform)
@@ -420,6 +426,8 @@ impl Painter
     // Set the paint scale
     mtd scaleTransform(x, y: f32)
     {
+        if isZeroEpsilon(x) and isZeroEpsilon(y)
+            return
         tr := Transform2.createScale(x, y, 0, 0)
         curState.transform.multiply(tr)
         setTransform(curState.transform)
@@ -440,6 +448,13 @@ impl Painter
         cmd.transform.tr = tr
     }
 
+    // Returns the current tranformation
+    mtd getTransform()->Transform2
+    {
+        var result: retval = curState.transform
+        return result
+    }
+
     // Set the texture interpolation mode
     mtd setInterpolationMode(mode: InterpolationMode)
     {
@@ -452,7 +467,7 @@ impl Painter
         setClippingRect(@{x, y, width, height})
     }
 
-    mtd setClippingRect(rect: Math.Rectangle)
+    mtd setClippingRect(rect: Rectangle)
     {
         if clippingRect == rect and clippingRectOn
             return
@@ -470,7 +485,7 @@ impl Painter
     }
 
     // Interface the given rectangle with the current clipping rectangle
-    mtd pushClippingRect(rect: Math.Rectangle)
+    mtd pushClippingRect(rect: Rectangle)
     {
         rrect := rect
         rrect.offset(curState.transform.tx, curState.transform.ty)
@@ -503,7 +518,7 @@ impl Painter
     }
 
     // Get the current clipping rectangle
-    mtd getClippingRect()->Math.Rectangle
+    mtd getClippingRect()->Rectangle
     {
         if clippingRectOn
             return clippingRect
