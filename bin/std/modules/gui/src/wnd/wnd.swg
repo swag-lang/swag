@@ -50,6 +50,7 @@ struct Wnd
     minSize:    Math.Point
     maxSize:    Math.Point
     scrollPos:  Math.Point
+    noScroll:   bool
 
     parent:     *Wnd
     childs:     Array'(*Wnd)
@@ -298,7 +299,8 @@ impl Wnd
                 continue
 
             curState := bc.painter.curState
-            bc.painter.translateTransform(-scrollPos.x, -scrollPos.y)
+            if !c.noScroll
+                bc.painter.translateTransform(-scrollPos.x, -scrollPos.y)
             c.paint(bc)
             bc.painter.setState(curState)
         }
@@ -549,7 +551,10 @@ impl Wnd
             if c.isDisabled and !getDisabled
                 continue
 
-            res := c.getWndAt(x - position.x + scrollPos.x, y - position.y + scrollPos.y)
+            pt := Math.Point{x - position.x, y - position.y}
+            if !c.noScroll
+                pt -= scrollPos
+            res := c.getWndAt(pt.x, pt.y)
             if res
                 return res
         }
