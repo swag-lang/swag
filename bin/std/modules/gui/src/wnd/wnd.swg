@@ -551,9 +551,10 @@ impl Wnd
             if c.isDisabled and !getDisabled
                 continue
 
+
             pt := Math.Point{x - position.x, y - position.y}
             if !c.noScroll
-                pt -= scrollPos
+                pt += scrollPos
             res := c.getWndAt(pt.x, pt.y)
             if res
                 return res
