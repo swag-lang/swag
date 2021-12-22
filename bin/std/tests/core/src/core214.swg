@@ -18,7 +18,7 @@ struct OneFunc
 
 var g: Array'OneFunc
 
-#message(CompilerMsgMask.SemanticFunc)
+#message(CompilerMsgMask.SemFunctions)
 {
     itf := @compiler()
     msg := itf.getMessage()

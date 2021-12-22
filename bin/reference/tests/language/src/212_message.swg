@@ -2,7 +2,7 @@
 // The parameter is a mask that tells the compiler when to call the function.
 
 // Here the function will be called each time a function of the module has been typed
-#message(Swag.CompilerMsgMask.SemanticFunc)
+#message(Swag.CompilerMsgMask.SemFunctions)
 {
     itf := @compiler()
     msg := itf.getMessage()
