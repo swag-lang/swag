@@ -72,8 +72,9 @@ bool ByteCodeRun::executeIsConstExprSI(ByteCodeRunContext* context, ByteCodeInst
     auto     callParams = context->callerContext->selectIfParameters;
     if (!callParams)
         return true;
+    if (paramIdx >= callParams->childs.size())
+        return true;
 
-    SWAG_ASSERT(paramIdx < callParams->childs.size());
     auto child = callParams->childs[paramIdx];
 
     // Slice
@@ -109,7 +110,7 @@ void ByteCodeRun::executeGetFromStackSI(ByteCodeRunContext* context, ByteCodeIns
     auto callParams  = context->callerContext->selectIfParameters;
     auto registersRC = context->registersRC[context->curRC]->buffer;
 
-    if (!callParams)
+    if (!callParams || paramIdx >= callParams->childs.size())
     {
         registersRC[ip->a.u32].pointer = nullptr;
         registersRC[ip->b.u32].u64     = 0;
