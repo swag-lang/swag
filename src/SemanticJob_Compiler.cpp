@@ -262,13 +262,13 @@ bool SemanticJob::resolveCompilerAstExpression(SemanticContext* context)
     SWAG_VERIFY(expression->flags & AST_VALUE_COMPUTED, context->report({expression, g_E[Err0798]}));
 
     node->childs.clear();
-    job->nodes.pop_back();
 
     if (!expression->computedValue->text.empty())
     {
         SyntaxJob syntaxJob;
         syntaxJob.constructEmbedded(expression->computedValue->text, node, expression, node->embeddedKind, true);
 
+        job->nodes.pop_back();
         for (int i = (int) node->childs.size() - 1; i >= 0; i--)
             job->nodes.push_back(node->childs[i]);
         job->nodes.push_back(node);
