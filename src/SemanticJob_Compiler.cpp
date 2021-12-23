@@ -29,7 +29,7 @@ void SemanticJob::computeNonConstExprNotes(AstNode* node, vector<const Diagnosti
 
             if (c->resolvedSymbolName->kind == SymbolKind::Function)
             {
-                if (!(c->resolvedSymbolOverload->node->attributeFlags & ATTRIBUTE_CONSTEXPR))
+                if (c->resolvedSymbolOverload && !(c->resolvedSymbolOverload->node->attributeFlags & ATTRIBUTE_CONSTEXPR))
                 {
                     auto note = new Diagnostic(c, Utf8::format(g_E[Nte0042], c->resolvedSymbolName->name.c_str()), DiagnosticLevel::Note);
                     notes.push_back(note);
@@ -144,18 +144,28 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
                     return true;
 
                 // Is the type of the slice supported ?
-                auto typeSlice        = CastTypeInfo<TypeInfoSlice>(TypeManager::concreteType(execParams.specReturnOpSlice->typeInfo), TypeInfoKind::Slice);
-                auto typeSliceContent = TypeManager::concreteType(typeSlice->pointedType);
-                bool ok               = false;
-                if (typeSliceContent->isNative(NativeTypeKind::String) ||
-                    typeSliceContent->isNative(NativeTypeKind::Bool) ||
-                    typeSliceContent->isNativeIntegerOrRune() ||
-                    typeSliceContent->isNativeFloat())
+                bool ok           = false;
+                auto concreteType = TypeManager::concreteType(execParams.specReturnOpSlice->typeInfo);
+                if (concreteType->isNative(NativeTypeKind::String))
                     ok = true;
-                if (typeSliceContent->kind == TypeInfoKind::Struct && (typeSliceContent->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR))
-                    ok = true;
-                if (!ok)
-                    return context->report({node, Utf8::format(g_E[Err0059], typeSliceContent->getDisplayName().c_str())});
+                else if (concreteType->kind == TypeInfoKind::Slice)
+                {
+                    auto typeSlice        = CastTypeInfo<TypeInfoSlice>(concreteType, TypeInfoKind::Slice);
+                    auto typeSliceContent = TypeManager::concreteType(typeSlice->pointedType);
+                    if (typeSliceContent->isNative(NativeTypeKind::String) ||
+                        typeSliceContent->isNative(NativeTypeKind::Bool) ||
+                        typeSliceContent->isNativeIntegerOrRune() ||
+                        typeSliceContent->isNativeFloat())
+                        ok = true;
+                    if (typeSliceContent->kind == TypeInfoKind::Struct && (typeSliceContent->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR))
+                        ok = true;
+                    if (!ok)
+                        return context->report({node, Utf8::format(g_E[Err0059], typeSliceContent->getDisplayName().c_str())});
+                }
+                else
+                {
+                    return context->report({node, Utf8::format(g_E[Err0058], concreteType->getDisplayName().c_str())});
+                }
 
                 // opDrop
                 if (hasUserOp(g_LangSpec->name_opDrop, (TypeInfoStruct*) realType))

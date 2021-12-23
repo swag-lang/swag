@@ -336,6 +336,9 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags, Byt
                     return;
             }
 
+            ScopedLock lk(node->mutex);
+            node->semFlags |= AST_SEM_BYTECODE_GENERATED;
+            node->semFlags |= AST_SEM_BYTECODE_RESOLVED;
             return;
         }
     }

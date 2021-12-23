@@ -165,6 +165,9 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
     {
         SWAG_CHECK(checkFuncPrototypeOpNumParams(context, node, parameters, 3));
         SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, nullptr));
+        auto returnType = TypeManager::concreteType(node->returnType->typeInfo, CONCRETE_ALIAS);
+        if (!returnType->isNative(NativeTypeKind::String) && returnType->kind != TypeInfoKind::Slice)
+            return context->report({node, Utf8::format(g_E[Err0126], node->returnType->typeInfo->getDisplayName().c_str())});
         SWAG_CHECK(checkFuncPrototypeOpParam(context, node, parameters, 1, g_TypeMgr->typeInfoUInt));
         SWAG_CHECK(checkFuncPrototypeOpParam(context, node, parameters, 2, g_TypeMgr->typeInfoUInt));
     }

@@ -24,7 +24,8 @@ impl Struct
     func opPostMove(using self) {}
 
     // Get value by slice [low..up]
-    func opSlice(using self, low, up: uint)->WhateverType { return true; }
+    // Must return a string or a slice
+    func opSlice(using self, low, up: uint)->string { return "true"; }
 
     // Get value by index
     func opIndex(using self, index: uint)->WhateverType { return true; }

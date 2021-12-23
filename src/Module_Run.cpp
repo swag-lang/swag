@@ -5,6 +5,7 @@
 #include "TypeManager.h"
 #include "Context.h"
 #include "SemanticJob.h"
+#include "Ast.h"
 #include "ErrorIds.h"
 
 bool Module::computeExecuteResult(SourceFile* sourceFile, AstNode* node, JobContext* callerContext, ExecuteNodeParams* params)
@@ -100,8 +101,22 @@ bool Module::computeExecuteResult(SourceFile* sourceFile, AstNode* node, JobCont
         if (!g_RunContext.registersRR[0].u64 || !g_RunContext.registersRR[1].u64)
             return callerContext->report({node, Utf8::format(g_E[Err0162], realType->getDisplayName().c_str())});
 
-        auto typeSlice = CastTypeInfo<TypeInfoSlice>(TypeManager::concreteType(params->specReturnOpSlice->typeInfo), TypeInfoKind::Slice);
-        auto sizeSlice = (uint32_t) g_RunContext.registersRR[1].u64 * typeSlice->pointedType->sizeOf;
+        auto      concreteType = TypeManager::concreteType(params->specReturnOpSlice->typeInfo);
+        uint32_t  sizeSlice    = 0;
+        TypeInfo* sliceType    = nullptr;
+
+        if (concreteType->isNative(NativeTypeKind::String))
+        {
+            sizeSlice = (uint32_t) g_RunContext.registersRR[1].u64;
+            sliceType = g_TypeMgr->typeInfoU8;
+        }
+        else
+        {
+            auto typeSlice = CastTypeInfo<TypeInfoSlice>(concreteType, TypeInfoKind::Slice);
+            sizeSlice      = (uint32_t) g_RunContext.registersRR[1].u64 * typeSlice->pointedType->sizeOf;
+            sliceType      = typeSlice->pointedType;
+        }
+
         SWAG_CHECK(callerContext->checkSizeOverflow("array", sizeSlice, SWAG_LIMIT_ARRAY_SIZE));
 
         // Copy the content of the slice to the storage segment
@@ -116,8 +131,8 @@ bool Module::computeExecuteResult(SourceFile* sourceFile, AstNode* node, JobCont
         // Then transform the returned type to a static array
         auto typeArray         = allocType<TypeInfoArray>();
         node->typeInfo         = typeArray;
-        typeArray->pointedType = typeSlice->pointedType;
-        typeArray->finalType   = typeSlice->pointedType;
+        typeArray->pointedType = sliceType;
+        typeArray->finalType   = sliceType;
         typeArray->count       = g_RunContext.registersRR[1].u32;
         typeArray->totalCount  = g_RunContext.registersRR[1].u32;
         typeArray->sizeOf      = sizeSlice;
@@ -171,8 +186,30 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
 
     SWAG_ASSERT(node->semFlags & AST_SEM_BYTECODE_GENERATED);
     SWAG_ASSERT(node->semFlags & AST_SEM_BYTECODE_RESOLVED);
-    SWAG_ASSERT(node->extension && node->extension->bc);
-    SWAG_ASSERT(node->extension->bc->out);
+
+    ByteCode*           bc = nullptr;
+    ByteCode            bcTmp;
+    ByteCodeInstruction instTmp;
+    bool                foreignCall = false;
+
+    // Direct call to a foreign function ?
+    if (!node->extension || !node->extension->bc)
+    {
+        SWAG_ASSERT(node->attributeFlags & ATTRIBUTE_FOREIGN);
+        bc                  = &bcTmp;
+        instTmp.op          = ByteCodeOp::ForeignCall;
+        instTmp.a.pointer   = (uint8_t*) CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
+        instTmp.b.pointer   = (uint8_t*) node->typeInfo;
+        bc->out             = &instTmp;
+        bc->numInstructions = 1;
+        bc->maxInstructions = 1;
+        foreignCall         = true;
+    }
+    else
+    {
+        SWAG_ASSERT(node->extension->bc->out);
+        bc = node->extension->bc;
+    }
 
     // Setup flags before running
     auto cxt = (SwagContext*) OS::tlsGetValue(g_TlsContextId);
@@ -183,7 +220,7 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
     // Global setup
     g_ByteCodeStack.clear();
     g_RunContext.callerContext = callerContext;
-    g_RunContext.setup(sourceFile, node);
+    g_RunContext.setup(sourceFile, node, bc);
 
     // Params ?
     auto module = sourceFile->module;
@@ -191,11 +228,13 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
     {
         for (auto r : params->callParams)
             g_RunContext.push(r);
-        module->runner.localCall(&g_RunContext, node->extension->bc, (uint32_t) params->callParams.size());
+
+        if (!foreignCall)
+            module->runner.localCall(&g_RunContext, bc, (uint32_t) params->callParams.size());
     }
-    else
+    else if (!foreignCall)
     {
-        node->extension->bc->enterByteCode(&g_RunContext);
+        bc->enterByteCode(&g_RunContext);
     }
 
     // We need to take care of the room necessary in the stack, as bytecode instruction IncSPBP is not
@@ -212,16 +251,25 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
         g_RunContext.bp = g_RunContext.sp;
     }
 
-    bool result = module->runner.run(&g_RunContext);
+    bool result = true;
 
-    node->extension->bc->leaveByteCode(&g_RunContext, false);
+    if (foreignCall)
+    {
+        module->runner.ffiCall(&g_RunContext, &bc->out[0]);
+    }
+    else
+    {
+        result = module->runner.run(&g_RunContext);
+        bc->leaveByteCode(&g_RunContext, false);
+    }
+
     g_ByteCodeStack.clear();
 
     if (!result)
         return false;
 
     // Free auto allocated memory
-    for (auto ptr : node->extension->bc->autoFree)
+    for (auto ptr : bc->autoFree)
         g_Allocator.free(ptr.first, ptr.second);
 
     // Get result

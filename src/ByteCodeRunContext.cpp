@@ -31,7 +31,7 @@ void ByteCodeRunContext::releaseStack()
     }
 }
 
-void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd)
+void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd, ByteCode* nodebc)
 {
     if (!registersRR)
     {
@@ -61,13 +61,11 @@ void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd)
     sourceFile = sf;
     node       = nd;
 
-    SWAG_ASSERT(node->extension->bc);
-    SWAG_ASSERT(node->extension->bc->out);
-
     bp = stack + g_CommandLine->stackSizeBC;
     sp = bp;
-    bc = node->extension->bc;
+    bc = nodebc;
     ip = bc->out;
+    SWAG_ASSERT(ip);
 
     curRC    = -1;
     firstRC  = -1;

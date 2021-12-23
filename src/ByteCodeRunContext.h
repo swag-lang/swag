@@ -25,7 +25,7 @@ struct ByteCodeRunContext : public JobContext
 {
     ~ByteCodeRunContext();
 
-    void setup(SourceFile* sf, AstNode* node);
+    void setup(SourceFile* sf, AstNode* node, ByteCode* nodebc);
     void error(const Utf8& msg, SwagCompilerSourceLocation* loc = nullptr);
     void releaseStack();
     void stackOverflow();
