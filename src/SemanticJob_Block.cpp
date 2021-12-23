@@ -536,9 +536,9 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         callVisit->genericParameters->flags |= AST_NO_BYTECODE;
         auto child      = Ast::newFuncCallParam(sourceFile, callVisit->genericParameters);
         child->typeInfo = g_TypeMgr->typeInfoBool;
-        child->allocateComputedValue();
+        child->setFlagsValueIsComputed();
         child->computedValue->reg.b = node->specFlags & AST_SPEC_VISIT_WANTPOINTER;
-        child->flags |= AST_VALUE_COMPUTED | AST_NO_SEMANTIC;
+        child->flags |= AST_NO_SEMANTIC;
 
         // Call with arguments
         callVisit->callParameters = Ast::newFuncCallParams(sourceFile, callVisit);

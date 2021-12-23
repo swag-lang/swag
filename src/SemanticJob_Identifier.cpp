@@ -45,9 +45,9 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
     // Symbol is in fact a constant value : no need for bytecode
     if (node->resolvedSymbolOverload && (node->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE))
     {
-        node->allocateComputedValue();
+        node->setFlagsValueIsComputed();
         *node->computedValue = node->resolvedSymbolOverload->computedValue;
-        node->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR | AST_NO_BYTECODE_CHILDS;
+        node->flags |= AST_NO_BYTECODE_CHILDS;
 
         // If literal is stored in a data segment, then it's still a left value (we can take the address for example)
         if (!node->computedValue->storageSegment || node->computedValue->storageOffset == 0xFFFFFFFF)

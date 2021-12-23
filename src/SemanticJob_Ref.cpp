@@ -251,6 +251,7 @@ bool SemanticJob::resolveArrayPointerIndex(SemanticContext* context)
         SWAG_CHECK(resolveArrayPointerDeRef(context));
     if (context->result == ContextResult::Pending)
         return true;
+    node->inheritAndFlag1(AST_CONST_EXPR);
 
     // If this is not the last child of the IdentifierRef, then this is a reference, and
     // we must take the address and not dereference that identifier

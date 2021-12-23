@@ -321,7 +321,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
         literal.kind                = AstNodeKind::Literal;
         literal.computedValue->text = opConst ? opConst : "";
         literal.typeInfo            = opType ? opType : g_TypeMgr->typeInfoString;
-        literal.flags |= AST_VALUE_COMPUTED;
+        literal.flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR;
         symMatchContext.genericParameters.push_back(&literal);
         parameters.kind   = AstNodeKind::FuncDeclGenericParams;
         genericParameters = &parameters;
