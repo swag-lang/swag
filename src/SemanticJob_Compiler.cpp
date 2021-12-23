@@ -735,11 +735,24 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
     auto node = context->node;
     switch (node->token.id)
     {
+    case TokenId::CompilerSelf:
+        SWAG_VERIFY(node->ownerFct, context->report({node, g_E[Err0348]}));
+        while (node->ownerFct->flags & AST_SPECIAL_COMPILER_FUNC && node->ownerFct->parent->ownerFct)
+            node = node->ownerFct->parent;
+        SWAG_VERIFY(node && node->ownerFct, context->report({node, g_E[Err0348]}));
+        context->node->resolvedSymbolOverload = node->ownerFct->resolvedSymbolOverload;
+        context->node->resolvedSymbolName     = node->ownerFct->resolvedSymbolName;
+        context->node->typeInfo               = node->ownerFct->typeInfo;
+        return true;
+
     case TokenId::CompilerFunction:
         SWAG_VERIFY(node->ownerFct, context->report({node, g_E[Err0256]}));
-        node->setFlagsValueIsComputed();
-        node->computedValue->text = SemanticJob::getCompilerFunctionString(node, node->token.id);
-        node->typeInfo            = g_TypeMgr->typeInfoString;
+        while (node->ownerFct->flags & AST_SPECIAL_COMPILER_FUNC && node->ownerFct->parent->ownerFct)
+            node = node->ownerFct->parent;
+        SWAG_VERIFY(node->ownerFct, context->report({node, g_E[Err0256]}));
+        context->node->setFlagsValueIsComputed();
+        context->node->computedValue->text = SemanticJob::getCompilerFunctionString(node, context->node->token.id);
+        context->node->typeInfo            = g_TypeMgr->typeInfoString;
         return true;
 
     case TokenId::CompilerBackend:

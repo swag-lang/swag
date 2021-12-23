@@ -226,6 +226,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("#callerfunction", {TokenId::CompilerCallerFunction, LiteralType::TT_MAX});
     keywords.add("#location", {TokenId::CompilerLocation, LiteralType::TT_MAX});
     keywords.add("#callerlocation", {TokenId::CompilerCallerLocation, LiteralType::TT_MAX});
+    keywords.add("#self", {TokenId::CompilerSelf, LiteralType::TT_MAX});
     keywords.add("#swagversion", {TokenId::CompilerBuildVersion, LiteralType::TT_MAX});
     keywords.add("#swagrevision", {TokenId::CompilerBuildRevision, LiteralType::TT_MAX});
     keywords.add("#swagbuildnum", {TokenId::CompilerBuildNum, LiteralType::TT_MAX});

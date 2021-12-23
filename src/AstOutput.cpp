@@ -1385,6 +1385,9 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         case TokenId::CompilerFunction:
             CONCAT_FIXED_STR(concat, "#function");
             break;
+        case TokenId::CompilerSelf:
+            CONCAT_FIXED_STR(concat, "#self");
+            break;
         case TokenId::CompilerCallerFunction:
             CONCAT_FIXED_STR(concat, "#callerfunction");
             break;

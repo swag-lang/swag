@@ -145,6 +145,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, A
     Tokenizer::relaxIdentifier(token);
     switch (token.id)
     {
+    case TokenId::CompilerSelf:
     case TokenId::CompilerFunction:
     case TokenId::CompilerCallerFunction:
     case TokenId::CompilerCallerLocation:
