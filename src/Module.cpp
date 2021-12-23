@@ -808,7 +808,11 @@ bool Module::compileString(const Utf8& text)
     auto job          = g_Allocator.alloc<SemanticJob>();
     job->sourceFile   = files[0];
     job->module       = this;
+
     job->dependentJob = g_RunContext.callerContext->baseJob;
+    while (job->dependentJob && job->dependentJob->dependentJob)
+        job->dependentJob = job->dependentJob->dependentJob;
+
     job->nodes.push_back(parent);
     g_ThreadMgr.addJob(job);
     return true;
