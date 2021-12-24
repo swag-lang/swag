@@ -140,6 +140,7 @@ void LanguageSpec::setupNames()
     name_retval     = "retval";
     name_methods    = "methods";
     name_nozero     = "nozero";
+    name_toplevel   = "toplevel";
 
     name_atalias       = "@alias";
     name_atdrop        = "@drop";

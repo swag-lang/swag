@@ -235,11 +235,27 @@ bool SyntaxJob::doCompilerAst(AstNode* parent, AstNode** result, CompilerAstKind
     auto node = Ast::newNode<AstCompilerSpecFunc>(this, AstNodeKind::CompilerAst, sourceFile, parent);
     if (result)
         *result = node;
-    node->embeddedKind = kind;
     node->allocateExtension();
     node->extension->semanticBeforeFct = SemanticJob::preResolveCompilerInstruction;
     node->semanticFct                  = SemanticJob::resolveCompilerAstExpression;
     SWAG_CHECK(eatToken());
+
+    if (token.id == TokenId::SymComma)
+    {
+        SWAG_CHECK(eatToken());
+        if (token.text == g_LangSpec->name_toplevel)
+        {
+            kind = CompilerAstKind::TopLevelInstruction;
+        }
+        else
+        {
+            return sourceFile->report({sourceFile, token, Utf8::format(g_E[Err0351], token.text.c_str())});
+        }
+
+        SWAG_CHECK(eatToken());
+    }
+
+    node->embeddedKind = kind;
 
     ScopedFlags scopedFlags(this, AST_RUN_BLOCK | AST_NO_BACKEND);
     if (token.id == TokenId::SymLeftCurly)
