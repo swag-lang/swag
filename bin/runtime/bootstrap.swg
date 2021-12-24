@@ -47,7 +47,6 @@ namespace Swag
     #[AttrUsage(AttributeUsage.Function)]
     attr Implicit()
 
-    // Hardcoded also for switch
     #[AttrUsage(AttributeUsage.Function)]
     attr Complete()
 
@@ -66,17 +65,8 @@ namespace Swag
     #[AttrUsage(AttributeUsage.Function|AttributeUsage.Struct|AttributeUsage.Enum|AttributeUsage.EnumValue)]
     attr Deprecated(msg: string = null)
 
-    // Hardcoded for type alias
-    attr Strict()
-
-    // Hardcoded for local variables
-    attr Global()
-
     #[AttrUsage(AttributeUsage.Function)]
     attr NotGeneric()
-
-    // Hardcoded for struct and variables
-    attr Align(value: u8)
 
     #[AttrUsage(AttributeUsage.GlobalVariable)]
     attr Tls()
@@ -110,6 +100,11 @@ namespace Swag
 
     #[AttrUsage(AttributeUsage.Struct)]
     attr ExportType(what: string)
+
+    // Hardcoded
+    attr Strict()
+    attr Global()
+    attr Align(value: u8)
 
     // #########################################################
     // Constants

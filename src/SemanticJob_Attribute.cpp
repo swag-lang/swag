@@ -37,55 +37,75 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
     if (typeInfo->attributeUsage == AttributeUsage::All)
         return true;
 
-    bool isGlobalVar = kind == AstNodeKind::VarDecl && checkNode->ownerScope->isGlobalOrImpl();
-    bool isStructVar = kind == AstNodeKind::VarDecl && (checkNode->flags & AST_STRUCT_MEMBER);
-    bool isLocalVar  = kind == AstNodeKind::VarDecl && !isGlobalVar && !isStructVar;
+    bool        isGlobalVar = kind == AstNodeKind::VarDecl && checkNode->ownerScope->isGlobalOrImpl();
+    bool        isStructVar = kind == AstNodeKind::VarDecl && (checkNode->flags & AST_STRUCT_MEMBER);
+    bool        isLocalVar  = kind == AstNodeKind::VarDecl && !isGlobalVar && !isStructVar;
+    const char* specificMsg = nullptr;
 
     // Check specific hard coded attributes
     SWAG_ASSERT(oneAttribute->typeInfo->declNode);
     if (oneAttribute->typeInfo->declNode->sourceFile->isBootstrapFile)
     {
-        if (oneAttribute->token.text == g_LangSpec->name_Complete && kind == AstNodeKind::Switch)
+        if (oneAttribute->token.text == g_LangSpec->name_Complete)
+        {
+            if (kind == AstNodeKind::Switch)
+                return true;
+        }
+        else if (oneAttribute->token.text == g_LangSpec->name_AttrUsage)
+        {
+            if (kind == AstNodeKind::AttrDecl)
+                return true;
+        }
+        else if (oneAttribute->token.text == g_LangSpec->name_AttrMulti)
+        {
+            if (kind == AstNodeKind::AttrDecl)
+                return true;
+        }
+        else if (oneAttribute->token.text == g_LangSpec->name_PrintBc)
+        {
+            if (kind == AstNodeKind::CompilerAst)
+                return true;
+        }
+        else if (oneAttribute->token.text == g_LangSpec->name_Global)
+        {
+            if (isLocalVar)
+                return true;
+            specificMsg = "a local variable";
+        }
+        else if (oneAttribute->token.text == g_LangSpec->name_Align)
+        {
+            if (kind == AstNodeKind::VarDecl || kind == AstNodeKind::StructDecl)
+                return true;
+            specificMsg = "a variable or a struct";
+        }
+        else if (oneAttribute->token.text == g_LangSpec->name_Strict)
+        {
+            if (kind == AstNodeKind::Alias)
+                return true;
+            specificMsg = "a type alias";
+        }
+    }
+
+    if (!specificMsg)
+    {
+        if ((typeInfo->attributeUsage & AttributeUsage::Function) && (kind == AstNodeKind::FuncDecl))
             return true;
-        if (oneAttribute->token.text == g_LangSpec->name_AttrUsage && kind == AstNodeKind::AttrDecl)
+        if ((typeInfo->attributeUsage & AttributeUsage::Struct) && (kind == AstNodeKind::StructDecl))
             return true;
-        if (oneAttribute->token.text == g_LangSpec->name_AttrMulti && kind == AstNodeKind::AttrDecl)
+        if ((typeInfo->attributeUsage & AttributeUsage::Enum) && (kind == AstNodeKind::EnumDecl))
             return true;
-        if (oneAttribute->token.text == g_LangSpec->name_Global && isLocalVar)
+        if ((typeInfo->attributeUsage & AttributeUsage::EnumValue) && (kind == AstNodeKind::EnumValue))
             return true;
-        if (oneAttribute->token.text == g_LangSpec->name_Strict && kind == AstNodeKind::Alias)
+        if ((typeInfo->attributeUsage & AttributeUsage::Variable) && (kind == AstNodeKind::VarDecl))
             return true;
-        if (oneAttribute->token.text == g_LangSpec->name_PrintBc && kind == AstNodeKind::CompilerAst)
+        if ((typeInfo->attributeUsage & AttributeUsage::Constant) && (kind == AstNodeKind::ConstDecl))
             return true;
-        if (oneAttribute->token.text == g_LangSpec->name_Align && (kind == AstNodeKind::VarDecl || kind == AstNodeKind::StructDecl))
+        if ((typeInfo->attributeUsage & AttributeUsage::StructVariable) && isStructVar)
+            return true;
+        if ((typeInfo->attributeUsage & AttributeUsage::GlobalVariable) && isGlobalVar)
             return true;
     }
 
-    if ((typeInfo->attributeUsage & AttributeUsage::Function) && (kind == AstNodeKind::FuncDecl))
-        return true;
-
-    if ((typeInfo->attributeUsage & AttributeUsage::Struct) && (kind == AstNodeKind::StructDecl))
-        return true;
-
-    if ((typeInfo->attributeUsage & AttributeUsage::Enum) && (kind == AstNodeKind::EnumDecl))
-        return true;
-
-    if ((typeInfo->attributeUsage & AttributeUsage::EnumValue) && (kind == AstNodeKind::EnumValue))
-        return true;
-
-    if ((typeInfo->attributeUsage & AttributeUsage::Variable) && (kind == AstNodeKind::VarDecl))
-        return true;
-
-    if ((typeInfo->attributeUsage & AttributeUsage::Constant) && (kind == AstNodeKind::ConstDecl))
-        return true;
-
-    if ((typeInfo->attributeUsage & AttributeUsage::StructVariable) && isStructVar)
-        return true;
-
-    if ((typeInfo->attributeUsage & AttributeUsage::GlobalVariable) && isGlobalVar)
-        return true;
-
-    const char* specificMsg = nullptr;
     switch (typeInfo->attributeUsage)
     {
     case AttributeUsage::Function:
