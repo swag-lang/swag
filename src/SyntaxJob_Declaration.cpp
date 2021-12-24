@@ -763,7 +763,7 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent, AstNode** result)
     {
         AstNode* identifierRef = nullptr;
         SWAG_CHECK(doIdentifierRef(parent, &identifierRef));
-        identifierRef->flags |= AST_GLOBAL_IDENTIFIER;
+        identifierRef->flags |= AST_GLOBAL_MIXIN_CALL;
         if (result)
             *result = identifierRef;
         break;

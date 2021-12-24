@@ -792,7 +792,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     }
 
     // Global identifier call. Must be a call to a mixin function, that's it...
-    if (identifier->identifierRef && identifier->identifierRef->flags & AST_GLOBAL_IDENTIFIER)
+    if (identifier->identifierRef && identifier->identifierRef->flags & AST_GLOBAL_MIXIN_CALL)
     {
         if (symbolKind != SymbolKind::Function)
             return context->report({identifier, Utf8::format(g_E[Err0087], identifier->token.text.c_str(), SymTable::getArticleKindName(symbolKind))});

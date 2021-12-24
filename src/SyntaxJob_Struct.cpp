@@ -488,8 +488,34 @@ bool SyntaxJob::doStructBody(AstNode* parent, SyntaxStructType structType, AstNo
     // A normal declaration
     default:
     {
-        ScopedFlags scopedFlags(this, AST_STRUCT_MEMBER);
-        SWAG_CHECK(doVarDecl(parent, result, AstNodeKind::VarDecl));
+        // If this a function call ?
+        // (a mixin)
+        bool isFunc = false;
+        if (token.id == TokenId::Identifier)
+        {
+            tokenizer.saveState(token);
+            eatToken();
+            if (token.id == TokenId::SymDot || token.id == TokenId::SymLeftParen)
+                isFunc = true;
+            tokenizer.restoreState(token);
+        }
+
+        if (isFunc)
+        {
+            ScopedFlags scopedFlags(this, AST_STRUCT_MEMBER);
+            parent->ownerStructScope->owner->flags |= AST_STRUCT_COMPOUND;
+            AstNode* idRef = nullptr;
+            SWAG_CHECK(doIdentifierRef(parent, &idRef));
+            if (result)
+                *result = idRef;
+            idRef->flags |= AST_GLOBAL_MIXIN_CALL;
+        }
+        else
+        {
+            ScopedFlags scopedFlags(this, AST_STRUCT_MEMBER);
+            SWAG_CHECK(doVarDecl(parent, result, AstNodeKind::VarDecl));
+        }
+
         break;
     }
     }

@@ -593,6 +593,9 @@ void SemanticJob::flattenStructChilds(SemanticContext* context, AstNode* parent,
     {
         switch (child->kind)
         {
+        case AstNodeKind::IdentifierRef:
+        case AstNodeKind::Identifier:
+        case AstNodeKind::Inline:
         case AstNodeKind::Statement:
         case AstNodeKind::CompilerIfBlock:
         case AstNodeKind::CompilerAst:

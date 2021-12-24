@@ -1,4 +1,3 @@
-#global skip
 #[Swag.Mixin]
 func MK_IMPL()
 {
@@ -11,4 +10,10 @@ func MK_IMPL()
 struct X
 {
     MK_IMPL()
+}
+
+#test
+{
+    var v: X
+    @assert(v.x == 666)
 }

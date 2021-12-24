@@ -57,6 +57,26 @@ void Tokenizer::processChar(uint32_t c)
     }
 }
 
+void Tokenizer::saveState(const Token& token)
+{
+    st_token               = token;
+    st_curBuffer           = sourceFile->curBuffer;
+    st_location            = location;
+    st_forceLastTokenIsEOL = forceLastTokenIsEOL;
+    st_lastTokenIsEOL      = lastTokenIsEOL;
+    st_lastTokenIsBlank    = lastTokenIsBlank;
+}
+
+void Tokenizer::restoreState(Token& token)
+{
+    token                 = st_token;
+    sourceFile->curBuffer = st_curBuffer;
+    location              = st_location;
+    forceLastTokenIsEOL   = st_forceLastTokenIsEOL;
+    lastTokenIsEOL        = st_lastTokenIsEOL;
+    lastTokenIsBlank      = st_lastTokenIsBlank;
+}
+
 void Tokenizer::treatChar(uint32_t c, unsigned offset)
 {
     processChar(c);

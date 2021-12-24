@@ -89,6 +89,9 @@ struct Tokenizer
     bool doSymbol(uint32_t c, Token& token);
     bool doStringLiteral(Token& token, bool raw);
 
+    void saveState(const Token &token);
+    void restoreState(Token& token);
+
     static void relaxIdentifier(Token& token);
     static bool isSymbol(TokenId id);
     static bool isLiteral(TokenId id);
@@ -100,6 +103,13 @@ struct Tokenizer
     bool           lastTokenIsEOL      = false;
     bool           lastTokenIsBlank    = false;
     bool           realAppendName      = false;
+
+    Token          st_token;
+    char*          st_curBuffer = nullptr;
+    SourceLocation st_location;
+    bool           st_forceLastTokenIsEOL = false;
+    bool           st_lastTokenIsEOL      = false;
+    bool           st_lastTokenIsBlank    = false;
 };
 
 extern const char*    g_TokenNames[];

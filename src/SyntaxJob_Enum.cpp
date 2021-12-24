@@ -115,7 +115,31 @@ bool SyntaxJob::doEnumContent(AstNode* parent, AstNode** result)
         break;
 
     default:
-        SWAG_CHECK(doEnumValue(parent, result));
+        // If this a function call ?
+        // (a mixin)
+        bool isFunc = false;
+        if (token.id == TokenId::Identifier)
+        {
+            tokenizer.saveState(token);
+            eatToken();
+            if (token.id == TokenId::SymDot || token.id == TokenId::SymLeftParen)
+                isFunc = true;
+            tokenizer.restoreState(token);
+        }
+
+        if (isFunc)
+        {
+            AstNode* idRef = nullptr;
+            SWAG_CHECK(doIdentifierRef(parent, &idRef));
+            if (result)
+                *result = idRef;
+            idRef->flags |= AST_GLOBAL_MIXIN_CALL;
+        }
+        else
+        {
+            SWAG_CHECK(doEnumValue(parent, result));
+        }
+
         break;
     }
 
