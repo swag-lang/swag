@@ -115,13 +115,13 @@ bool SyntaxJob::doCompilerMixin(AstNode* parent, AstNode** result)
             SWAG_CHECK(doEmbeddedInstruction(nullptr, &stmt));
             node->replaceTokens[tokenId] = stmt;
             if (token.id != TokenId::SymRightCurly)
-                SWAG_CHECK(eatSemiCol("'#mixin' replacement statement"));
+                SWAG_CHECK(eatSemiCol("`#mixin` replacement statement"));
         }
 
         SWAG_CHECK(eatToken(TokenId::SymRightCurly));
     }
 
-    SWAG_CHECK(eatSemiCol("'#mixin' expression"));
+    SWAG_CHECK(eatSemiCol("`#mixin` expression"));
     return true;
 }
 
@@ -187,7 +187,7 @@ bool SyntaxJob::doCompilerAssert(AstNode* parent, AstNode** result)
     else
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
 
-    SWAG_CHECK(eatSemiCol("'#assert' expression"));
+    SWAG_CHECK(eatSemiCol("`#assert` expression"));
     return true;
 }
 
@@ -224,7 +224,7 @@ bool SyntaxJob::doCompilerSelectIf(AstNode* parent, AstNode** result)
     else
     {
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
-        SWAG_CHECK(eatSemiCol("'#selectif/#checkif' expression"));
+        SWAG_CHECK(eatSemiCol("`#selectif/#checkif` expression"));
     }
 
     return true;
@@ -259,7 +259,7 @@ bool SyntaxJob::doCompilerAst(AstNode* parent, AstNode** result, CompilerAstKind
     else
     {
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
-        SWAG_CHECK(eatSemiCol("'#ast' expression"));
+        SWAG_CHECK(eatSemiCol("`#ast` expression"));
     }
 
     return true;
@@ -280,7 +280,7 @@ bool SyntaxJob::doCompilerRunTopLevel(AstNode* parent, AstNode** result)
     node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
     node->semanticFct = SemanticJob::resolveCompilerRun;
     SWAG_CHECK(doEmbeddedInstruction(node));
-    SWAG_CHECK(eatSemiCol("'#run' statement"));
+    SWAG_CHECK(eatSemiCol("`#run` statement"));
     return true;
 }
 
@@ -314,7 +314,7 @@ bool SyntaxJob::doCompilerRunEmbedded(AstNode* parent, AstNode** result)
     else
     {
         SWAG_CHECK(doEmbeddedInstruction(node));
-        SWAG_CHECK(eatSemiCol("'#run' expression"));
+        SWAG_CHECK(eatSemiCol("`#run` expression"));
     }
 
     return true;
@@ -355,7 +355,7 @@ bool SyntaxJob::doCompilerPrint(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
 
     SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
-    SWAG_CHECK(eatSemiCol("'#print' expression"));
+    SWAG_CHECK(eatSemiCol("`#print` expression"));
     return true;
 }
 
@@ -375,7 +375,7 @@ bool SyntaxJob::doCompilerForeignLib(AstNode* parent, AstNode** result)
         literal->token.literalType != LiteralType::TT_RAW_STRING &&
         literal->token.literalType != LiteralType::TT_ESCAPE_STRING)
         return error(literal->token, g_E[Err0371]);
-    SWAG_CHECK(eatSemiCol("'#foreignlib'"));
+    SWAG_CHECK(eatSemiCol("`#foreignlib`"));
     return true;
 }
 
@@ -395,7 +395,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
         }
 
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(eatSemiCol("'#global export'"));
+        SWAG_CHECK(eatSemiCol("`#global export`"));
     }
 
     /////////////////////////////////
@@ -405,7 +405,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
         if (sourceFile->imported)
             sourceFile->imported->isSwag = true;
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(eatSemiCol("'#global generated'"));
+        SWAG_CHECK(eatSemiCol("`#global generated`"));
     }
 
     /////////////////////////////////
@@ -429,7 +429,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
         block->flags |= AST_GLOBAL_NODE;
 
         ScopedCompilerIfBlock scopedIf(this, block);
-        SWAG_CHECK(eatSemiCol("'#global if'"));
+        SWAG_CHECK(eatSemiCol("`#global if`"));
         while (token.id != TokenId::EndOfFile)
         {
             SWAG_CHECK(doTopLevelInstruction(block));
@@ -485,7 +485,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
         }
 
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(eatSemiCol("'#global testpass'"));
+        SWAG_CHECK(eatSemiCol("`#global testpass`"));
     }
 
     /////////////////////////////////
@@ -517,7 +517,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
         }
 
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(eatSemiCol("'#global testerror'"));
+        SWAG_CHECK(eatSemiCol("`#global testerror`"));
     }
 
     /////////////////////////////////
@@ -549,7 +549,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
         }
 
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(eatSemiCol("'#global testwarning'"));
+        SWAG_CHECK(eatSemiCol("`#global testwarning`"));
     }
 
     /////////////////////////////////
@@ -582,7 +582,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
         attrUse->extension->ownerAttrUse = sourceFile->astAttrUse;
         attrUse->flags |= AST_GLOBAL_NODE;
         sourceFile->astAttrUse = attrUse;
-        SWAG_CHECK(eatSemiCol("'#global attribute'"));
+        SWAG_CHECK(eatSemiCol("`#global attribute`"));
     }
 
     /////////////////////////////////
@@ -732,7 +732,7 @@ bool SyntaxJob::doCompilerImport(AstNode* parent)
         }
     }
 
-    SWAG_CHECK(eatSemiCol("'#import' expression"));
+    SWAG_CHECK(eatSemiCol("`#import` expression"));
     if (sourceFile->isGenerated || sourceFile->module->kind == ModuleKind::Config)
     {
         if (node->ownerCompilerIfBlock)
@@ -753,7 +753,7 @@ bool SyntaxJob::doCompilerPlaceHolder(AstNode* parent)
     node->inheritTokenName(token);
     node->inheritTokenLocation(token);
     SWAG_CHECK(eatToken());
-    SWAG_CHECK(eatSemiCol("'#placeholder' expression"));
+    SWAG_CHECK(eatSemiCol("`#placeholder` expression"));
 
     currentScope->symTable.registerSymbolName(&context, node, SymbolKind::PlaceHolder);
 
