@@ -622,9 +622,9 @@ bool SyntaxJob::doCompilerSpecialFunction(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doCompilerDefined(AstNode* parent, AstNode** result)
+bool SyntaxJob::doIntrinsicDefined(AstNode* parent, AstNode** result)
 {
-    auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::CompilerDefined, sourceFile, parent);
+    auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::IntrinsicDefined, sourceFile, parent);
     if (result)
         *result = exprNode;
     exprNode->flags |= AST_NO_BYTECODE;
@@ -635,7 +635,7 @@ bool SyntaxJob::doCompilerDefined(AstNode* parent, AstNode** result)
     SWAG_CHECK(doIdentifierRef(exprNode, nullptr, IDENTIFIER_NO_PARAMS));
 
     SWAG_CHECK(eatToken(TokenId::SymRightParen));
-    exprNode->semanticFct = SemanticJob::resolveCompilerDefined;
+    exprNode->semanticFct = SemanticJob::resolveIntrinsicDefined;
     return true;
 }
 

@@ -247,7 +247,6 @@ void LanguageSpec::setupKeywords()
     keywords.add("#mixin", {TokenId::CompilerMixin, LiteralType::TT_MAX});
     keywords.add("#inline", {TokenId::CompilerInline, LiteralType::TT_MAX});
     keywords.add("#macro", {TokenId::CompilerMacro, LiteralType::TT_MAX});
-    keywords.add("#defined", {TokenId::CompilerDefined, LiteralType::TT_MAX});
     keywords.add("#load", {TokenId::CompilerLoad, LiteralType::TT_MAX});
     keywords.add("#scopefct", {TokenId::CompilerScopeFct, LiteralType::TT_MAX});
 
@@ -303,6 +302,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("dref", {TokenId::KwdDeRef, LiteralType::TT_MAX});
     keywords.add("cvarargs", {TokenId::KwdCVarArgs, LiteralType::TT_MAX});
 
+    keywords.add("@defined", {TokenId::IntrinsicDefined, LiteralType::TT_MAX});
     keywords.add("@hastag", {TokenId::IntrinsicHasTag, LiteralType::TT_MAX});
     keywords.add("@gettag", {TokenId::IntrinsicGetTag, LiteralType::TT_MAX});
     keywords.add("@spread", {TokenId::IntrinsicSpread, LiteralType::TT_MAX});

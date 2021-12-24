@@ -703,7 +703,7 @@ bool SemanticJob::resolveCompilerLoad(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveCompilerDefined(SemanticContext* context)
+bool SemanticJob::resolveIntrinsicDefined(SemanticContext* context)
 {
     auto node = context->node;
     node->setFlagsValueIsComputed();

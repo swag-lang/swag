@@ -11,7 +11,6 @@
 #callerlocation
 #cfg
 #code
-#defined
 #file
 #function
 #line
@@ -107,6 +106,7 @@
 @compiler
 @countof
 @dataof
+@defined
 @drop
 @err
 @errormsg

@@ -10,9 +10,9 @@ struct X
     MK_IMPL()
 }
 
-#assert #defined(X.x)
-#assert #defined(X.y)
-#assert !#defined(X.z)
+#assert @defined(X.x)
+#assert @defined(X.y)
+#assert !@defined(X.z)
 #assert @sizeof(X) == 8
 
 #test
