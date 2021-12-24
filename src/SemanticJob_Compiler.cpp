@@ -275,8 +275,18 @@ bool SemanticJob::resolveCompilerAstExpression(SemanticContext* context)
 
     if (!expression->computedValue->text.empty())
     {
+        CompilerAstKind kind = CompilerAstKind::TopLevelInstruction;
+        if (node->ownerScope->kind == ScopeKind::Struct)
+            kind = CompilerAstKind::StructVarDecl;
+        else if (node->ownerScope->kind == ScopeKind::Enum)
+            kind = CompilerAstKind::EnumValue;
+        else if (node->ownerScope->isGlobalOrImpl())
+            kind = CompilerAstKind::TopLevelInstruction;
+        else
+            kind = CompilerAstKind::EmbeddedInstruction;
+
         SyntaxJob syntaxJob;
-        syntaxJob.constructEmbedded(expression->computedValue->text, node, expression, node->embeddedKind, true);
+        syntaxJob.constructEmbedded(expression->computedValue->text, node, expression, kind, true);
 
         job->nodes.pop_back();
         for (int i = (int) node->childs.size() - 1; i >= 0; i--)

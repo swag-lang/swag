@@ -91,7 +91,7 @@ bool SyntaxJob::doEnumContent(AstNode* parent, AstNode** result)
     switch (token.id)
     {
     case TokenId::CompilerAst:
-        SWAG_CHECK(doCompilerAst(parent, result, CompilerAstKind::EnumValue));
+        SWAG_CHECK(doCompilerAst(parent, result));
         break;
     case TokenId::CompilerAssert:
         SWAG_CHECK(doCompilerAssert(parent, result));

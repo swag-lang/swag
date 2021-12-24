@@ -580,7 +580,7 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         SWAG_CHECK(doCompilerRunEmbedded(parent, result));
         break;
     case TokenId::CompilerAst:
-        SWAG_CHECK(doCompilerAst(parent, result, CompilerAstKind::EmbeddedInstruction));
+        SWAG_CHECK(doCompilerAst(parent, result));
         break;
     case TokenId::SymAttrStart:
     {
@@ -717,7 +717,7 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent, AstNode** result)
         break;
     }
     case TokenId::CompilerAst:
-        SWAG_CHECK(doCompilerAst(parent, result, CompilerAstKind::TopLevelInstruction));
+        SWAG_CHECK(doCompilerAst(parent, result));
         break;
     case TokenId::KwdFunc:
     case TokenId::KwdMethod:

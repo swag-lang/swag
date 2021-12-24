@@ -3,7 +3,7 @@ struct X {}
 #[Swag.Mixin]
 func MK_IMPL()
 {
-    #ast,toplevel
+    #ast
     {
         return "impl X {}"
     }

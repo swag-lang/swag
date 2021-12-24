@@ -1003,8 +1003,6 @@ AstNode* AstCompilerSpecFunc::clone(CloneContext& context)
         p->clone(cloneContext)->flags &= ~AST_NO_SEMANTIC;
     }
 
-    newNode->embeddedKind = embeddedKind;
-
     // If the compiler block has an embedded function, we need to restore the semantic pass on that function
     // content now
     if (newNode->childs.size() > 1)

@@ -795,8 +795,6 @@ enum class CompilerAstKind
 struct AstCompilerSpecFunc : public AstNode
 {
     AstNode* clone(CloneContext& context);
-
-    CompilerAstKind embeddedKind;
 };
 
 struct AstNameSpace : public AstNode

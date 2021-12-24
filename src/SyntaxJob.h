@@ -101,7 +101,7 @@ struct SyntaxJob : public Job
     bool doCompilerAssert(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerSemError(AstNode* parent, AstNode** result, bool embedded);
     bool doCompilerPrint(AstNode* parent, AstNode** result = nullptr);
-    bool doCompilerAst(AstNode* parent, AstNode** result, CompilerAstKind kind);
+    bool doCompilerAst(AstNode* parent, AstNode** result);
     bool doCompilerSelectIf(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerRunTopLevel(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerRunEmbedded(AstNode* parent, AstNode** result = nullptr);

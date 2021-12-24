@@ -417,7 +417,7 @@ bool SyntaxJob::doStructBody(AstNode* parent, SyntaxStructType structType, AstNo
         parent->ownerStructScope->owner->flags |= AST_STRUCT_COMPOUND;
         break;
     case TokenId::CompilerAst:
-        SWAG_CHECK(doCompilerAst(parent, result, CompilerAstKind::StructVarDecl));
+        SWAG_CHECK(doCompilerAst(parent, result));
         parent->ownerStructScope->owner->flags |= AST_STRUCT_COMPOUND;
         break;
     case TokenId::CompilerIf:
