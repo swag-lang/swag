@@ -38,6 +38,7 @@ interface IWnd
     onSetThemeEvent:    func(self, *SetThemeEvent)
     onTimerEvent:       func(self, *TimerEvent)
     onFocusEvent:       func(self, *FocusEvent)
+    onCommandEvent:     func(self, *CommandEvent)
 }
 
 struct Wnd
@@ -101,6 +102,8 @@ impl IWnd for Wnd
             itf.onTimerEvent(cast(*TimerEvent) evt)
         case SetFocus, KillFocus:
             itf.onFocusEvent(cast(*FocusEvent) evt)
+        case Command:
+            itf.onCommandEvent(cast(*CommandEvent) evt)            
         }
     }
 
@@ -115,6 +118,7 @@ impl IWnd for Wnd
     mtd onFocusEvent(evt: *FocusEvent)      { evt.accepted = false; }
     mtd onKeyEvent(evt: *KeyEvent)          { evt.accepted = false; }
     mtd onMouseEvent(evt: *MouseEvent)      { evt.accepted = false; }
+    mtd onCommandEvent(evt: *CommandEvent)  { evt.accepted = false; }
 }
 
 impl Wnd
@@ -671,6 +675,16 @@ impl Wnd
         sendEvent(&evt)
         sendResizeEvent()
     }
+
+    mtd postCommandEvent(cmdId: WndId)
+    {
+        if cmdId == null 
+            return
+        evt := Event.create'CommandEvent()
+        evt.id = cmdId
+        evt.source = self
+        postEvent(evt)
+    }    
 
     mtd processEvent(evt: *Event)
     {

@@ -8,6 +8,15 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         return true
     }
 
+    if evt.kind == .Command
+    {
+        pevt := cast(*CommandEvent) evt
+        if pevt.id == "exitBtn"
+        {
+            wnd.surface.destroy()
+        }
+    }
+
     if evt.kind == .MousePressed
     {
         pevt := cast(*MouseEvent) evt
@@ -60,7 +69,7 @@ func createWidgets(view: *Wnd)
         button = PushButton.create(view, "Disabled", @{5, 90})
         button.disable()
 
-        button = PushButton.create(view, "ExitExitExitExitExit", @{5, 130})
+        button = PushButton.create(view, "ExitExitExitExitExit", @{5, 130}, "exitBtn")
         button.cursor = Cursor.from(CursorShape.Help)
     }
 

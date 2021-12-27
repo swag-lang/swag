@@ -26,6 +26,7 @@ enum EventKind
     Timer
     SetFocus
     KillFocus
+    Command
 }
 
 struct Event
@@ -52,6 +53,13 @@ impl Event
         res.kind = kind
         return res
     }
+}
+
+struct CommandEvent
+{
+    using base: Event{kind: EventKind.Command}
+    id:         WndId
+    source:     *Wnd
 }
 
 struct TimerEvent

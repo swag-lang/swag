@@ -108,6 +108,7 @@ impl IWnd for CheckButton
                 checked = .Checked
             if sigChanged
                 sigChanged(self)
+            postCommandEvent(id)
         }
     }
 }

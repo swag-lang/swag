@@ -70,6 +70,7 @@ impl IWnd for ToggleButton
             isToggled = !isToggled
             if sigChanged
                 sigChanged(self)
+            postCommandEvent(id)
         }
     }
 }

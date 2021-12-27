@@ -146,7 +146,8 @@ impl IWnd for PushButton
 
     mtd onMouseEvent(evt: *MouseEvent)
     {
-        discard processMouseEvent(evt)
+        if processMouseEvent(evt)
+            postCommandEvent(id)
     }
 }
 

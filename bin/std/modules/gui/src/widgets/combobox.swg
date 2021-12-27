@@ -392,13 +392,16 @@ impl ComboBox
 
         selectedIdx = newIdx
 
-        // Notify
-        if sigChanged
-        {
-            if selectedIdx < items.count
+        // Notify       
+        if selectedIdx < items.count
+        {     
+            if sigChanged       
                 sigChanged(self, items[selectedIdx].id, items[selectedIdx].userData)
-            else
-                sigChanged(self, null, null)
+            postCommandEvent(items[selectedIdx].id)
+        }
+        else if sigChanged
+        {            
+            sigChanged(self, null, null)
         }
 
         if editBox
