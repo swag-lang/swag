@@ -2,6 +2,7 @@
 #include "SemanticJob.h"
 #include "ByteCodeGenJob.h"
 #include "Ast.h"
+#include "AstOutput.h"
 #include "Module.h"
 #include "TypeManager.h"
 #include "ErrorIds.h"
@@ -271,6 +272,17 @@ bool SemanticJob::resolveIntrinsicStringOf(SemanticContext* context)
             node->computedValue->text = Ast::enumToString(typeInfo, expr->computedValue->text, expr->computedValue->reg);
         else
             return context->report({expr, g_E[Err0799]});
+    }
+    else if (expr->typeInfo->kind == TypeInfoKind::Code)
+    {
+        Concat concat;
+        concat.init(4 * 1024);
+
+        AstOutput::OutputContext outputContext;
+        auto                     typeCode = CastTypeInfo<TypeInfoCode>(expr->typeInfo, TypeInfoKind::Code);
+        AstOutput::outputNode(outputContext, concat, typeCode->content);
+        for (auto b = concat.firstBucket; b; b = b->nextBucket)
+            node->computedValue->text.append((const char*) b->datas, concat.bucketCount(b));
     }
     else if (expr->resolvedSymbolName)
     {
