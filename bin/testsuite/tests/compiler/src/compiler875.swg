@@ -6,7 +6,7 @@ func minMax(array: const [..] s32) -> {min: s32, max: s32}
 		var value = array[@index]
         if value < currentMin
             currentMin = value
-        else if value > currentMax
+        elif value > currentMax
             currentMax = value
     }
 

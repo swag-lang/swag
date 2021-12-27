@@ -166,7 +166,7 @@ impl IWnd for EditBox
         maxDecalX := Painter.measureString(text, theme.res.fontDefault.regular).width - decalX
         if caretPos.x - clientRect.x < scrollPosX
             scrollPosX = caretPos.x - clientRect.x - decalX
-        else if caretPos.x - clientRect.x >= scrollPosX + clientRect.width
+        elif caretPos.x - clientRect.x >= scrollPosX + clientRect.width
             scrollPosX = Math.min(caretPos.x - clientRect.x - decalX, maxDecalX)
         scrollPosX = Math.max(scrollPosX, 0)
 
@@ -263,7 +263,7 @@ impl IWnd for EditBox
             if evt.accepted
                 forceVisibleCaret()
         }
-        else if evt.kind == .Char and !readOnly
+        elif evt.kind == .Char and !readOnly
         {
             if evt.char < 32
                 evt.accepted = false
@@ -299,7 +299,7 @@ private impl EditBox
                 Clipboard.addString(@mkstring(text.buffer + getSelBeg(), getSelEnd() - getSelBeg()))
                 return true
             }
-            else if shift and !ctrl
+            elif shift and !ctrl
             {
                 (str, ok) := Clipboard.getString()
                 if ok
@@ -456,16 +456,16 @@ private impl EditBox
             {
                 if @err == StrConv.ParseErrorIncomplete
                     res = .Incomplete
-                else if @err == StrConv.ParseErrorOverflow
+                elif @err == StrConv.ParseErrorOverflow
                     res = .InvalidShow
-                else if @err or eat != @countof(text)
+                elif @err or eat != @countof(text)
                     res = .InvalidDismiss
             }
         }
 
         if res == .Valid
             isInvalid = false
-        else if res == .InvalidShow
+        elif res == .InvalidShow
             isInvalid = true
 
         return res

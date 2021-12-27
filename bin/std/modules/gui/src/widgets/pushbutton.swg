@@ -60,7 +60,7 @@ impl IWnd for PushButton
                 subRectBorder = &rects.btnPush_NormalBorder
             }
         }
-        else if form == .Flat
+        elif form == .Flat
         {
             switch
             {

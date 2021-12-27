@@ -874,11 +874,11 @@ impl RegExp
 
         if n == 0 and m == -1 // {0,}
             preprocessed.add("*"'rune)
-        else if n == 0 and m == 1 // {0,1}
+        elif n == 0 and m == 1 // {0,1}
             preprocessed.add("?"'rune)
-        else if n == 1 and m == -1 // {1,}
+        elif n == 1 and m == -1 // {1,}
             preprocessed.add("+"'rune)
-        else if n != 1 or m != 1 // {1,1}
+        elif n != 1 or m != 1 // {1,1}
         {
             // Isolate expression to duplicate
             pze := preprocessed.buffer + preprocessed.count - 1
@@ -959,7 +959,7 @@ impl RegExp
                     return pz + 4
                 }
             }
-            else if pz[1] == "S"'rune and pz[3] == "}"'rune
+            elif pz[1] == "S"'rune and pz[3] == "}"'rune
             {
                 switch pz[2]
                 {

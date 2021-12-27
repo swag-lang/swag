@@ -41,7 +41,7 @@ public impl BitArray
 
     mtd opPostCopy()
     {
-        if(buffer)
+        if buffer
         {
             otherBuffer := buffer
             buffer = null

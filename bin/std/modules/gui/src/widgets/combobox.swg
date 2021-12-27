@@ -399,7 +399,7 @@ impl ComboBox
                 sigChanged(self, items[selectedIdx].id, items[selectedIdx].userData)
             postCommandEvent(items[selectedIdx].id)
         }
-        else if sigChanged
+        elif sigChanged
         {            
             sigChanged(self, null, null)
         }

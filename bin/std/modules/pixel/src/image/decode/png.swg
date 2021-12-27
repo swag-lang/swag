@@ -225,7 +225,7 @@ impl Decoder
         }
 
         // 2 bits => 8 bits
-        else if header.bitDepth == 2
+        elif header.bitDepth == 2
         {
             loop height
             {
@@ -255,7 +255,7 @@ impl Decoder
         }
 
         // 4 bits => 8 bits
-        else if header.bitDepth == 4
+        elif header.bitDepth == 4
         {
             loop height
             {
@@ -549,7 +549,7 @@ impl Decoder
         }
 
         // Grayscale without alpha channel, but transparency
-        else if inChannels == 1 and seenTRSN
+        elif inChannels == 1 and seenTRSN
         {
             key := chunkTRNS.datas[1]
             scale := header.bitDepth == 1 ? 255'u8 : header.bitDepth == 2 ? 85'u8 : 17'u8
@@ -568,7 +568,7 @@ impl Decoder
         }
 
         // Grayscale with alpha channel
-        else if inChannels == 2
+        elif inChannels == 2
         {
             result.visitPixels(&dstPixels)
             {
@@ -582,7 +582,7 @@ impl Decoder
         }
 
         // Color without alpha but transparency
-        else if inChannels == 3 and seenTRSN
+        elif inChannels == 3 and seenTRSN
         {
             key := cast(const *u8) @dataof(chunkTRNS.datas)
             key0 := key[1]

@@ -200,7 +200,7 @@ impl Polygon
                 lastC = c
                 first = false
             }
-            else if !Math.isZeroEpsilon(c) and !Math.isZeroEpsilon(lastC) and Math.sign(c) != Math.sign(lastC)
+            elif !Math.isZeroEpsilon(c) and !Math.isZeroEpsilon(lastC) and Math.sign(c) != Math.sign(lastC)
             {
                 isConvex = false
             }

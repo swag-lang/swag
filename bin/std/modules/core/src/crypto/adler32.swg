@@ -38,7 +38,7 @@ public impl Adler32
             if s2 >= Base
                 s2 -= Base
         }
-        else if countof < 16
+        elif countof < 16
         {
             visit b: buffer
             {

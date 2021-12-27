@@ -115,7 +115,7 @@ public func pokeValue(addr: *void, type: typeinfo, buf: string)->string throw
             {
                 dref cast(*string) patch = dref cast(const *string) v.value
             }
-            else if !enumFlags
+            elif !enumFlags
             {
                 switch enumType.sizeof
                 {

@@ -16,7 +16,7 @@ impl Point
 			self.x = pt.x
 			self.y = pt.y
 		}
-		else if op == ">>="
+		elif op == ">>="
 		{
 			self.x = pt.x
 			self.y = pt.y

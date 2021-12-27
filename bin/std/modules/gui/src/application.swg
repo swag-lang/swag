@@ -313,7 +313,7 @@ impl Application
                 evt.button = cast(Input.MouseButton) i
                 targetWnd.sendEvent(&evt)
             }
-            else if lastP and !curP
+            elif lastP and !curP
             {
                 evt.kind = .MouseReleased
                 evt.button = cast(Input.MouseButton) i
@@ -361,7 +361,7 @@ impl Application
                 evt.modifiers = modifiers
                 sendEvent(&evt)
             }
-            else if lastP and !curP
+            elif lastP and !curP
             {
                 evt := KeyEvent{kind: EventKind.KeyReleased}
                 evt.key = cast(Input.Key) i

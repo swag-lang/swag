@@ -74,9 +74,9 @@ func quick(values: [..] s32, cb: func(s32, s32)->s32)
                 end = low - 1
             }
         }
-        /*else if set1 > 0
+        /*elif set1 > 0
             end = low - 1
-        else if set2 > 0
+        elif set2 > 0
             begin = high + 1
         else
             break*/

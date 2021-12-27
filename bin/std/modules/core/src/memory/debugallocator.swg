@@ -203,7 +203,7 @@ public impl IAllocator for DebugAllocator
             // Fill with garbage
             if request.mode == AllocatorMode.Alloc or !request.address
                 Memory.set(userAddr, AllocByte, request.size)
-            else if prevSize < request.size
+            elif prevSize < request.size
                 Memory.set(userAddr + prevSize, AllocByte, request.size - prevSize)
 
             // Stats

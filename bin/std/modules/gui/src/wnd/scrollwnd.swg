@@ -62,7 +62,7 @@ impl IWnd for ScrollWnd
                 f *= scrollSize.y
                 setScrollPos(view.scrollPos.x, f)
             }
-            else if isPressedH
+            elif isPressedH
             {
                 f := (evt.pos.x - correcMoving) / clientRect.width
                 f *= scrollSize.x
@@ -80,12 +80,12 @@ impl IWnd for ScrollWnd
                     isPressedV = true
                     correcMoving = evt.pos.y - posBoxV
                 }
-                else if isHotH
+                elif isHotH
                 {
                     isPressedH = true
                     correcMoving = evt.pos.x - posBoxH
                 }
-                else if evt.pos.x > clientRect.right() - padding.z
+                elif evt.pos.x > clientRect.right() - padding.z
                 {
                     correcMoving = 0
                     isPressedV = true
@@ -93,7 +93,7 @@ impl IWnd for ScrollWnd
                     f *= scrollSize.y
                     setScrollPos(view.scrollPos.x, f)
                 }
-                else if evt.pos.y > clientRect.bottom() - padding.w
+                elif evt.pos.y > clientRect.bottom() - padding.w
                 {
                     correcMoving = 0
                     isPressedH = true
@@ -142,7 +142,7 @@ impl IWnd for ScrollWnd
             var colorBox: Color = ?
             if isHotV and isPressedV
                 colorBox = colors.scrollBar_PressedBox
-            else if isHotV
+            elif isHotV
                 colorBox = colors.scrollBar_HotBox
             else
                 colorBox = colors.scrollBar_Box
@@ -166,7 +166,7 @@ impl IWnd for ScrollWnd
             var colorBox: Color = ?
             if isHotH and isPressedH
                 colorBox = colors.scrollBar_PressedBox
-            else if isHotH
+            elif isHotH
                 colorBox = colors.scrollBar_HotBox
             else
                 colorBox = colors.scrollBar_Box

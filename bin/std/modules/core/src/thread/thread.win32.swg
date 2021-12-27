@@ -64,7 +64,7 @@ impl Thread
         @init(&context.tempAllocator)
         if tempAllocSize < 0
             context.tempAllocator.setup()
-        else if tempAllocSize != 0
+        elif tempAllocSize != 0
             context.tempAllocator.setCapacity(cast(uint) tempAllocSize)
 
         handle = try CreateThread(null, 0, @mkcallback(&threadEntry), self, CREATE_SUSPENDED, &id)

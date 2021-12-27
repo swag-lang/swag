@@ -86,7 +86,7 @@ impl IWnd for Tab
                 colorImg = colors.tabItem_FlatSelected
                 colorText = colors.tabItem_SelectedText
             }
-            else if idx == hotIdx
+            elif idx == hotIdx
             {
                 subRect = &rects.tabItem_FlatSelected
                 colorImg = colors.tabItem_FlatHot
@@ -103,7 +103,7 @@ impl IWnd for Tab
                 colorImg = colors.tabItem_RoundSelected
                 colorText = colors.tabItem_SelectedText
             }
-            else if idx == hotIdx
+            elif idx == hotIdx
             {
                 subRect = &rects.tabItem_RoundHot
                 colorImg = colors.tabItem_RoundHot

@@ -220,7 +220,7 @@ impl DeflateDecoder
                 Memory.set(dest.buffer + dest.count, b, cast(uint) length)
                 dest.count += length
             }
-            else if distance >= length
+            elif distance >= length
             {
                 // Copy an already decoded sequence of bytes
                 var sl: const [..] u8 = @mkslice(dest.buffer + dest.count - distance, length)

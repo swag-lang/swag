@@ -38,14 +38,14 @@ impl Edge
             q = p1
             p = p2
         }
-        else if p1.y == p2.y
+        elif p1.y == p2.y
         {
             if p1.x > p2.x
             {
                 q = p1
                 p = p2
             }
-            else if p1.x == p2.x
+            elif p1.x == p2.x
             {
                 Debug.assert(false, "Edge::Edge: p1 == p2")
             }
@@ -80,9 +80,9 @@ impl Triangle
     {
         if (q == points[0] and p == points[1]) or (q == points[1] and p == points[0])
             constrainedEdge[2] = true
-        else if (q == points[0] and p == points[2]) or (q == points[2] and p == points[0])
+        elif (q == points[0] and p == points[2]) or (q == points[2] and p == points[0])
             constrainedEdge[1] = true
-        else if (q == points[1] and p == points[2]) or (q == points[2] and p == points[1])
+        elif (q == points[1] and p == points[2]) or (q == points[2] and p == points[1])
             constrainedEdge[0] = true
     }
 
@@ -299,9 +299,9 @@ impl Triangle
     {
         if (p1 == points[2] and p2 == points[1]) or (p1 == points[1] and p2 == points[2])
             neighbors[0] = t
-        else if (p1 == points[0] and p2 == points[2]) or (p1 == points[2] and p2 == points[0])
+        elif (p1 == points[0] and p2 == points[2]) or (p1 == points[2] and p2 == points[0])
             neighbors[1] = t
-        else if (p1 == points[0] and p2 == points[1]) or (p1 == points[1] and p2 == points[0])
+        elif (p1 == points[0] and p2 == points[1]) or (p1 == points[1] and p2 == points[0])
             neighbors[2] = t
         else
             Debug.assert(false)
@@ -314,12 +314,12 @@ impl Triangle
             neighbors[0] = t
             t.markNeighbor(points[1], points[2], self)
         }
-        else if t.contains(points[0], points[2])
+        elif t.contains(points[0], points[2])
         {
             neighbors[1] = t
             t.markNeighbor(points[0], points[2], self)
         }
-        else if t.contains(points[0], points[1])
+        elif t.contains(points[0], points[1])
         {
             neighbors[2] = t
             t.markNeighbor(points[0], points[1], self)
@@ -393,13 +393,13 @@ impl AdvancingFront
             {
                 if point == node.prev.point
                     node = node.prev
-                else if point == node.next.point
+                elif point == node.next.point
                     node = node.next
                 else
                     Debug.assert(false)
             }
         }
-        else if px < nx
+        elif px < nx
         {
             node = node.prev
             while node
@@ -927,7 +927,7 @@ impl Tesselate
                 return
             node = node.next
         }
-        else if node.next == basin.rightNode
+        elif node.next == basin.rightNode
         {
             o := orient2d(node.point, node.prev.point, node.prev.prev.point)
             if o == .CCW

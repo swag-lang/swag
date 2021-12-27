@@ -197,7 +197,7 @@ impl Offset
         var y: f64 = ?
         if arcTolerance <= 0.0
             y = DefaultArcTolerance
-        else if arcTolerance > abs(delta) * DefaultArcTolerance
+        elif arcTolerance > abs(delta) * DefaultArcTolerance
             y = abs(delta) * DefaultArcTolerance
         else
             y = arcTolerance
@@ -248,7 +248,7 @@ impl Offset
                         r2 := cround(srcPoly[0].y + y * delta)
                         destPoly.add(IntPoint{r1, r2})
                         if x < 0 x = 1
-                        else if y < 0 y = 1
+                        elif y < 0 y = 1
                         else x = -1
                     }
                 }
@@ -291,9 +291,9 @@ impl Offset
                 return
             }
         }
-        else if sinaVal > 1.0
+        elif sinaVal > 1.0
             sinaVal = 1.0
-        else if sinaVal < -1.0
+        elif sinaVal < -1.0
             sinaVal = -1.0
 
         if sinaVal * deltaVal < 0

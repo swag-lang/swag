@@ -37,7 +37,7 @@ func parseX64(str: string) -> {value: u64, eat: u32, ovf: bool} throw
             c := dref buffer
             if Latin1.isDigit(c)
                 value += cast(u64) (c - "0"'u8)
-            else if c <= "F"'u8
+            elif c <= "F"'u8
                 value += cast(u64) 10 + (c - "A"'u8)
             else
                 value += cast(u64) 10 + (c - "a"'u8)
@@ -196,7 +196,7 @@ func parseS8(str: string) -> {value: s8, eat: u32, ovf: bool} throw
         res = Swag.S8.Min
         ovf = true
     }
-    else if res > Swag.S8.Max
+    elif res > Swag.S8.Max
     {
         res = Swag.S8.Max
         ovf = true
@@ -213,7 +213,7 @@ func parseS16(str: string) -> {value: s16, eat: u32, ovf: bool} throw
         res = Swag.S16.Min
         ovf = true
     }
-    else if res > Swag.S16.Max
+    elif res > Swag.S16.Max
     {
         res = Swag.S16.Max
         ovf = true
@@ -230,7 +230,7 @@ func parseS32(str: string) -> {value: s32, eat: u32, ovf: bool} throw
         res = Swag.S32.Min
         ovf = true
     }
-    else if res > Swag.S32.Max
+    elif res > Swag.S32.Max
     {
         res = Swag.S32.Max
         ovf = true
@@ -263,7 +263,7 @@ func parseS64(str: string) -> {value: s64, eat: u32, ovf: bool} throw
         if !Latin1.isDigit(dref buffer) and cpt == countof
             throw ParseErrorIncomplete
     }
-    else if c == g_CultureInfo.numberFormat.positiveSign
+    elif c == g_CultureInfo.numberFormat.positiveSign
     {
         buffer, cpt += 1
         if !Latin1.isDigit(dref buffer) and cpt == countof
@@ -316,7 +316,7 @@ func parseF32(str: string) -> {value: f32, eat: u32, ovf: bool} throw
         res = Swag.F32.Min
         ovf = true
     }
-    else if res > Swag.F32.Max
+    elif res > Swag.F32.Max
     {
         res = Swag.F32.Max
         ovf = true

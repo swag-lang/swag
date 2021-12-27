@@ -186,7 +186,8 @@ public func waitJob(job: *Job)
 #[Swag.Macro]
 public func(T) parallelVisit(range: [..] T, offset: u32 = 1, userData: *void = null, stmt: code)
 {
-    if(!@countof(range)) return
+    if !@countof(range)
+        return
     Debug.assert(offset != 0)
 
     func jobEntry(jobData: *void)

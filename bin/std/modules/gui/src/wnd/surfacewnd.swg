@@ -99,7 +99,7 @@ impl IWnd for SurfaceWnd
                     }
                 }
             }
-            else if !movingSurface and cursorSet
+            elif !movingSurface and cursorSet
             {
                 cursorSet = false
                 surface.app.popCursor()

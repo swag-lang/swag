@@ -27,7 +27,7 @@ impl Image
                 convArr[i, 2] = cast(f32) c.r
             }
         }
-        else if pf == .RGB8 or pf == .RGBA8
+        elif pf == .RGB8 or pf == .RGBA8
         {
             loop i: 256
             {

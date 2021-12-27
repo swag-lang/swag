@@ -181,9 +181,9 @@ impl Color
             var v: f32 = ?
             if 6 * h < 1
                 v = m1 + (m2 - m1) * h * 6
-            else if 2 * h < 1
+            elif 2 * h < 1
                 v = m2
-            else if 3 * h < 2
+            elif 3 * h < 2
                 v = m1 + (m2 - m1) * ((2.0 / 3.0) - h) * 6
             else
                 v = m1
@@ -239,7 +239,7 @@ impl Color
 
         if rf == max
             result.h = delb - delg
-        else if gf == max
+        elif gf == max
             result.h = (1.0 / 3.0) + delr - delb
         else
             result.h = (2.0 / 3.0) + delg - delr
@@ -308,7 +308,7 @@ impl Core.StrConv.IPokeValue for Color
             if ovf throw "value overflow"
             one = Tokenize.eatCount(one, eat)
         }
-        else if Latin1.isDigit(buf[0])
+        elif Latin1.isDigit(buf[0])
         {
             (a, eat, ovf) = try parseU8(one)
             if ovf throw "value overflow"

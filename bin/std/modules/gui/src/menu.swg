@@ -253,7 +253,7 @@ impl IWnd for Menu
         }
 
         // On a popup menu, just react to press button
-        else if evt.kind == .MousePressed and evt.button == .Left
+        elif evt.kind == .MousePressed and evt.button == .Left
         {
             if hotIdx != Swag.U32.Max
             {
@@ -264,7 +264,7 @@ impl IWnd for Menu
                     deleteTimer()
                     showHotPopup()
                 }
-                else if !hotItem.separator and !hotItem.disabled
+                elif !hotItem.separator and !hotItem.disabled
                 {
                     setEndModal(hotItem.id)
                 }

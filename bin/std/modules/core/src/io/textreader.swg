@@ -33,7 +33,7 @@ impl TextReader
         }
 
         // In utf8 and ascii, just read to the buffer, as we do not have do decode
-        else if encodingType == Ascii or encodingType == Utf8
+        elif encodingType == Ascii or encodingType == Utf8
         {
             buffer.count = File.read(stream, buffer.buffer, buffer.capacity)
             return

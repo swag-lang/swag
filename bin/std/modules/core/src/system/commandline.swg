@@ -127,7 +127,7 @@ func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOption
         }
 
         // All types supported by `Parse.pokeValue`
-        else if typeField == @typeof(Core.String) or
+        elif typeField == @typeof(Core.String) or
                 Reflection.isInteger(typeField) or
                 Reflection.isFloat(typeField) or
                 Reflection.isBool(typeField) or
@@ -145,7 +145,7 @@ func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOption
         }
 
         // Dynamic array of values
-        else if Utf8.startsWith(typeField.name, "Core.Array")
+        elif Utf8.startsWith(typeField.name, "Core.Array")
         {
             try checkNext()
 

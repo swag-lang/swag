@@ -261,7 +261,7 @@ impl Painter
 
         if angle1 > angle0 + Math.ConstF32.Pi
             angle1 -= Math.ConstF32.TwoPi
-        else if angle1 < angle0 - Math.ConstF32.Pi
+        elif angle1 < angle0 - Math.ConstF32.Pi
             angle1 += Math.ConstF32.TwoPi
 
         drawRound(p, radius, angle0, angle1, pen)
@@ -344,7 +344,7 @@ impl Painter
             drawDashCap(cxt, pen.dashEndCapStyle, posCap, normalCap, -1.0)
 
         // AA end edge if no cap
-        else if paintParams & .Antialiased
+        elif paintParams & .Antialiased
         {
             prim2p := vertexBuffer.buffer + prim2
             prim2t := prim2p + 2
@@ -621,7 +621,7 @@ impl Painter
         }
 
         // Closing join between the end and the beginning in case of a closed path
-        else if path.isClosed and !firstLine and !beginLine
+        elif path.isClosed and !firstLine and !beginLine
         {
             drawJoin(cxt, prev, normal, normalFirst)
         }

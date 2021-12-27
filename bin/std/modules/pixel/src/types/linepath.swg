@@ -228,7 +228,7 @@ public impl LinePath
                     p2 = pos
                     p3 = elements[i + 1].position
                 }
-                else if i < lastElem
+                elif i < lastElem
                 {
                     p0 = i == 1 ? startPoint : elements[i - 2].position
                     p1 = elements[i - 1].position

@@ -85,7 +85,8 @@ func getDirectoryName(fullname: string)->string
 #[ConstExpr]
 func getFileNameWithoutExtension(fullname: string)->string
 {
-    if(fullname == null) return null
+    if fullname == null 
+        return null
     Debug.assert(isValidPathName(fullname))
 
     countof := @countof(fullname)
@@ -97,7 +98,7 @@ func getFileNameWithoutExtension(fullname: string)->string
         c := fullname[cpt]
         if c == "."'u8 and last == countof
             last = cpt
-        else if isDirectorySeparator(c) or c == VolumeSeparatorChar
+        elif isDirectorySeparator(c) or c == VolumeSeparatorChar
         {
             if cpt == countof - 1 return null
             return acast @mkslice(@dataof(fullname) + cpt + 1, cast(uint) (last - cpt) - 1)
@@ -112,7 +113,8 @@ func getFileNameWithoutExtension(fullname: string)->string
 #[ConstExpr]
 func getExtension(fullname: string)->string
 {
-    if(fullname == null) return null
+    if fullname == null 
+        return null
     Debug.assert(isValidPathName(fullname))
 
     cpt := @countof(fullname)
@@ -140,7 +142,8 @@ func getExtensionLowerCase(fullname: string)->String
 #[ConstExpr]
 func hasExtension(fullname: string)->bool
 {
-    if(fullname == null) return false
+    if fullname == null 
+        return false
     Debug.assert(isValidPathName(fullname))
 
     cpt := @countof(fullname)

@@ -259,7 +259,7 @@ impl Decimal
                 d[w] = cast(u8) (dig + "0"'u8)
                 w += 1
             }
-            else if dig > 0
+            elif dig > 0
             {
                 trunc = true
             }
@@ -304,7 +304,7 @@ impl Decimal
             w -= 1
             if w < @countof(d)
                 d[w] = cast(u8) (rem + "0"'u8)
-            else if rem != 0
+            elif rem != 0
                 trunc = true
             n = quo
             r -= 1
@@ -318,7 +318,7 @@ impl Decimal
             w -= 1
             if w < @countof(d)
                 d[w] = cast(u8) (rem + "0"'u8)
-            else if rem != 0
+            elif rem != 0
                 trunc = true
             n = quo
         }
@@ -376,7 +376,7 @@ impl Decimal
             if !Latin1.isDigit(dref buffer) and cpt == countof
                 throw StrConv.ParseErrorIncomplete
         }
-        else if c == plusSign
+        elif c == plusSign
         {
             buffer, cpt += 1
             if !Latin1.isDigit(dref buffer) and cpt == countof
@@ -401,7 +401,7 @@ impl Decimal
                 sawdot = true
                 dp = nd
             }
-            else if "0"'u8 <= c and c <= "9"'u8
+            elif "0"'u8 <= c and c <= "9"'u8
             {
                 sawDigits = true
                 if c == "0"'u8 and nd == 0
@@ -419,10 +419,10 @@ impl Decimal
                             mantissa += cast(u64) (c - "0"'u8)
                             ndMant += 1
                         }
-                        else if c != "0"'u8
+                        elif c != "0"'u8
                             trunc = true
                     }
-                    else if c != "0"'u8
+                    elif c != "0"'u8
                         bigtrunc = true
                 }
             }
@@ -455,7 +455,7 @@ impl Decimal
                 if !Latin1.isDigit(c) and cpt >= countof
                     throw StrConv.ParseErrorIncomplete
             }
-            else if c == plusSign
+            elif c == plusSign
             {
                 buffer, cpt += 1
                 c = dref buffer

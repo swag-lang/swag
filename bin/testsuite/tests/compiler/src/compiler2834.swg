@@ -35,7 +35,7 @@ func readF64(str: string)->{neg: bool, mantissa: u64, exp: s32, trunc: bool, eat
         buffer, cpt += 1
         result.neg = true
     }
-    else if c == plusSign
+    elif c == plusSign
     {
         buffer, cpt += 1
     }
@@ -57,7 +57,7 @@ func readF64(str: string)->{neg: bool, mantissa: u64, exp: s32, trunc: bool, eat
 			sawdot = true
 			dp = nd
         }
-        else if "0"'u8 <= c and c <= "9"'u8
+        elif "0"'u8 <= c and c <= "9"'u8
         {
 			sawDigits = true
 			if c == "0"'u8 and nd == 0
@@ -71,7 +71,7 @@ func readF64(str: string)->{neg: bool, mantissa: u64, exp: s32, trunc: bool, eat
                     result.mantissa += cast(u64) (c - "0"'u8)
                     ndMant += 1
                 }
-                else if c != "0"'u8
+                elif c != "0"'u8
                 {
                     result.trunc = true
                 }
@@ -104,7 +104,7 @@ func readF64(str: string)->{neg: bool, mantissa: u64, exp: s32, trunc: bool, eat
             esign = -1
 	        c = dref buffer
         }
-        else if c == plusSign
+        elif c == plusSign
         {
             buffer, cpt += 1
 		    c = dref buffer

@@ -8,13 +8,13 @@ func isValidPathName(fullname: string)->bool
 {
     visit c: fullname
     {
-        if(c <= 32)       return false
-        if(c == "\""'u8)  return false
-        if(c == "<"'u8)   return false
-        if(c == ">"'u8)   return false
-        if(c == "|"'u8)   return false
-        if(c == "*"'u8)   return false
-        if(c == "?"'u8)   return false
+        if c <= 32       return false
+        if c == "\""'u8  return false
+        if c == "<"'u8   return false
+        if c == ">"'u8   return false
+        if c == "|"'u8   return false
+        if c == "*"'u8   return false
+        if c == "?"'u8   return false
     }
 
     return true
@@ -25,16 +25,16 @@ func isValidFileName(fullname: string)->bool
 {
     visit c: fullname
     {
-        if(c <= 32)       return false
-        if(c == "\""'u8)  return false
-        if(c == "<"'u8)   return false
-        if(c == ">"'u8)   return false
-        if(c == "|"'u8)   return false
-        if(c == "*"'u8)   return false
-        if(c == "?"'u8)   return false
-        if(c == ":"'u8)   return false
-        if(c == "/"'u8)   return false
-        if(c == "\\"'u8)  return false
+        if c <= 32       return false
+        if c == "\""'u8  return false
+        if c == "<"'u8   return false
+        if c == ">"'u8   return false
+        if c == "|"'u8   return false
+        if c == "*"'u8   return false
+        if c == "?"'u8   return false
+        if c == ":"'u8   return false
+        if c == "/"'u8   return false
+        if c == "\\"'u8  return false
     }
 
     return true
@@ -102,7 +102,7 @@ func getRootLength(fullname: string)->u32
             }
         }
     }
-    else if pathLength >= volumeSeparatorLength and fullname[volumeSeparatorLength - 1] == VolumeSeparatorChar
+    elif pathLength >= volumeSeparatorLength and fullname[volumeSeparatorLength - 1] == VolumeSeparatorChar
     {
         // Path is at least longer than where we expect a colon, and has a colon (\\?\A:, A:)
         // If the colon is followed by a directory separator,,move past it
@@ -127,7 +127,7 @@ func getAbsolute(fullname: string)->String throw
     res := cast(uint) try GetFullPathNameW(@dataof(winPath), cast(DWORD) tmpArr.capacity, tmpArr.buffer, null)
 
     // No enough room in destination, give it another try
-    if(res >= 100)
+    if res >= 100
     {
         tmpArr.reserve(res + 1)
         res = cast(uint) try GetFullPathNameW(@dataof(winPath), cast(DWORD) tmpArr.capacity, tmpArr.buffer, null)

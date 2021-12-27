@@ -102,7 +102,7 @@ impl IWnd for CheckButton
         {
             if checked == .Normal and threeState
                 checked = .Undefined
-            else if checked == .Checked
+            elif checked == .Checked
                 checked = .Normal
             else
                 checked = .Checked

@@ -12,7 +12,7 @@ func average(x: any)
 		@assert(val[0] == 666)
 		G += 1
 	}
-	else if(tt == @typeof(string))
+	elif(tt == @typeof(string))
 	{
 		val := cast(*string) @dataof(x)
 		@assert(val[0] == "666")

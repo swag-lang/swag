@@ -247,7 +247,7 @@ impl HashSet
 
                 if hashval == HASH_DELETED
                     deleted -= 1
-                else if hashval >= HASH_FIRST
+                elif hashval >= HASH_FIRST
                     count -= 1
                 table[@index].hash = HASH_FREE
 

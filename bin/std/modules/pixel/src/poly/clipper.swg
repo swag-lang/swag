@@ -273,7 +273,7 @@ impl Transform
             e = findNextLocMin(e)
             if e == eMin
                 break
-            else if !eMin
+            elif !eMin
                 eMin = e
 
             var locMin: LocalMinimum
@@ -307,7 +307,7 @@ impl Transform
 
             if locMin.leftBound.outIdx == Skip
                 locMin.leftBound = null
-            else if locMin.rightBound.outIdx == Skip
+            elif locMin.rightBound.outIdx == Skip
                 locMin.rightBound = null
             minimaList.add(locMin)
             if !leftBoundIsForward
@@ -514,7 +514,7 @@ impl Transform
                 if eStart.bot.x != e.bot.x and eStart.top.x != e.bot.x
                     reverseHorizontal(e)
             }
-            else if eStart.bot.x != e.bot.x
+            elif eStart.bot.x != e.bot.x
                 reverseHorizontal(e)
         }
 
@@ -680,7 +680,7 @@ impl Transform
     {
         if (e.next.top == e.top) and !e.next.nextInLML
             return e.next
-        else if (e.prev.top == e.top) and !e.prev.nextInLML
+        elif (e.prev.top == e.top) and !e.prev.nextInLML
             return e.prev
         return null
     }
@@ -869,7 +869,7 @@ impl Transform
                     op2 := addOutPt(ePrev, horzEdge.bot)
                     addJoin(op1, op2, horzEdge.top)
                 }
-                else if eNext and eNext.curr.x == horzEdge.bot.x and
+                elif eNext and eNext.curr.x == horzEdge.bot.x and
                         eNext.curr.y == horzEdge.bot.y and eNext.windDelta != 0 and
                         eNext.outIdx >= 0 and eNext.curr.y > eNext.top.y and slopesEqual(horzEdge, eNext)
                 {
@@ -931,7 +931,7 @@ impl Transform
             edge1.prevInAEL = edge2
             edge1.nextInAEL = next
         }
-        else if edge2.nextInAEL == edge1
+        elif edge2.nextInAEL == edge1
         {
             next := edge1.nextInAEL;
             if next
@@ -964,7 +964,7 @@ impl Transform
 
         if !edge1.prevInAEL
             activeEdges = edge1
-        else if !edge2.prevInAEL
+        elif !edge2.prevInAEL
             activeEdges = edge2
     }
 
@@ -1081,7 +1081,7 @@ impl Transform
                             if usingPolyTree
                                 fixupFirstLefts2(outrec2, outrec)
                         }
-                        else if poly2ContainsPoly1(outrec.pts, outrec2.pts)
+                        elif poly2ContainsPoly1(outrec.pts, outrec2.pts)
                         {
                             outrec2.isHole = outrec.isHole
                             outrec.isHole = !outrec2.isHole
@@ -1164,7 +1164,7 @@ impl Transform
                 pp = pp.prev
                 Memory.delete(tmp)
             }
-            else if pp == lastOK
+            elif pp == lastOK
                 break
             else
             {
@@ -1260,12 +1260,12 @@ impl Transform
                 pt = op1.pt
                 discardLeftSide = (op1.pt.x > op1b.pt.x)
             }
-            else if op2.pt.x >= left and op2.pt.x <= right
+            elif op2.pt.x >= left and op2.pt.x <= right
             {
                 pt = op2.pt
                 discardLeftSide = (op2.pt.x > op2b.pt.x)
             }
-            else if op1b.pt.x >= left and op1b.pt.x <= right
+            elif op1b.pt.x >= left and op1b.pt.x <= right
             {
                 pt = op1b.pt
                 discardLeftSide = op1b.pt.x > op1.pt.x
@@ -1574,9 +1574,9 @@ impl Transform
                 continue
             if poly2ContainsPoly1(outRec.pts, innerOutRec.pts)
                 outRec.firstLeft = innerOutRec
-            else if poly2ContainsPoly1(outRec.pts, outerOutRec.pts)
+            elif poly2ContainsPoly1(outRec.pts, outerOutRec.pts)
                 outRec.firstLeft = outerOutRec
-            else if outRec.firstLeft == innerOutRec or outRec.firstLeft == outerOutRec
+            elif outRec.firstLeft == innerOutRec or outRec.firstLeft == outerOutRec
                 outRec.firstLeft = orfl
         }
     }
@@ -1619,9 +1619,9 @@ impl Transform
             var holeStateRec: *OutRec
             if outRec1 == outRec2
                 holeStateRec = outRec1
-            else if outRec1RightOfOutRec2(outRec1, outRec2)
+            elif outRec1RightOfOutRec2(outRec1, outRec2)
                 holeStateRec = outRec2
-            else if outRec1RightOfOutRec2(outRec2, outRec1)
+            elif outRec1RightOfOutRec2(outRec2, outRec1)
                 holeStateRec = outRec1
             else
                 holeStateRec = getLowermostRec(outRec1, outRec2)
@@ -1647,7 +1647,7 @@ impl Transform
                         reversePolyPtLinks(outRec2.pts)
 
                 }
-                else if poly2ContainsPoly1(outRec1.pts, outRec2.pts)
+                elif poly2ContainsPoly1(outRec1.pts, outRec2.pts)
                 {
                     outRec2.isHole = outRec1.isHole
                     outRec1.isHole = !outRec2.isHole
@@ -1730,7 +1730,7 @@ impl Transform
             deleteFromAEL(e)
             deleteFromAEL(eMaxPair)
         }
-        else if e.outIdx >= 0 and eMaxPair.outIdx >= 0
+        elif e.outIdx >= 0 and eMaxPair.outIdx >= 0
         {
             if e.outIdx >= 0 addLocalMaxPoly(e, eMaxPair, e.top)
             deleteFromAEL(e)
@@ -1829,7 +1829,7 @@ impl Transform
                     op2 := addOutPt(ePrev, e.bot)
                     addJoin(op, op2, e.top)
                 }
-                else if eNext and eNext.curr.x == e.bot.x and
+                elif eNext and eNext.curr.x == e.bot.x and
                     eNext.curr.y == e.bot.y and op and
                     eNext.outIdx >= 0 and eNext.curr.y > eNext.top.y and
                     slopesEqual(e.curr, e.top, eNext.curr, eNext.top) and
@@ -1978,7 +1978,7 @@ impl Transform
             edge1.prevInSEL = edge2
             edge1.nextInSEL = next
         }
-        else if edge2.nextInSEL == edge1
+        elif edge2.nextInSEL == edge1
         {
             next := edge1.nextInSEL
             if next
@@ -2011,7 +2011,7 @@ impl Transform
 
         if !edge1.prevInSEL
             sortedEdges = edge1
-        else if !edge2.prevInSEL
+        elif !edge2.prevInSEL
             sortedEdges = edge2
     }
 
@@ -2036,7 +2036,7 @@ impl Transform
                 ip.y = cround(ip.x / edge2.dx + b2)
             }
         }
-        else if edge2.dx == 0
+        elif edge2.dx == 0
         {
             ip.x = edge2.bot.x
             if isHorizontal(edge1)
@@ -2123,7 +2123,7 @@ impl Transform
             edge.nextInAEL = null
             activeEdges = edge
         }
-        else if !startEdge and e2InsertsBeforeE1(activeEdges, edge)
+        elif !startEdge and e2InsertsBeforeE1(activeEdges, edge)
         {
             edge.prevInAEL = null
             edge.nextInAEL = activeEdges
@@ -2177,13 +2177,13 @@ impl Transform
             edge.windCnt2 = 0
             e = activeEdges
         }
-        else if edge.windDelta == 0 and clipType != .Union
+        elif edge.windDelta == 0 and clipType != .Union
         {
             edge.windCnt = 1
             edge.windCnt2 = e.windCnt2
             e = e.nextInAEL
         }
-        else if isEvenOddFillType(edge)
+        elif isEvenOddFillType(edge)
         {
             if edge.windDelta == 0
             {
@@ -2220,7 +2220,7 @@ impl Transform
             {
                 if edge.windDelta == 0
                     edge.windCnt = (e.windCnt < 0 ? e.windCnt - 1 : e.windCnt + 1)
-                else if e.windDelta * edge.windDelta < 0
+                elif e.windDelta * edge.windDelta < 0
                     edge.windCnt = e.windCnt
                 else
                     edge.windCnt = e.windCnt + edge.windDelta
@@ -2365,7 +2365,7 @@ impl Transform
             {
                 if !eTmp
                     eTmp = e2
-                else if eTmp.outIdx == e2.outIdx
+                elif eTmp.outIdx == e2.outIdx
                     eTmp = null
             }
 
@@ -2577,7 +2577,7 @@ impl Transform
                 pp = p
                 dups = null
             }
-            else if p.pt.y == pp.pt.y and p.pt.x <= pp.pt.x
+            elif p.pt.y == pp.pt.y and p.pt.x <= pp.pt.x
             {
                 if p.pt.x < pp.pt.x
                 {
@@ -2659,7 +2659,7 @@ impl Transform
         var holeStateRec: *OutRec
         if outRec1RightOfOutRec2(outRec1, outRec2)
             holeStateRec = outRec2
-        else if outRec1RightOfOutRec2(outRec2, outRec1)
+        elif outRec1RightOfOutRec2(outRec2, outRec1)
             holeStateRec = outRec1
         else
             holeStateRec = getLowermostRec(outRec1, outRec2)
@@ -2752,7 +2752,7 @@ impl Transform
             e1.outIdx = Unassigned
             e2.outIdx = Unassigned
         }
-        else if e1.outIdx < e2.outIdx
+        elif e1.outIdx < e2.outIdx
             appendPolygon(e1, e2)
         else
             appendPolygon(e2, e1)
@@ -2861,7 +2861,7 @@ impl Transform
                 swapPolyIndexes(e1, e2)
             }
         }
-        else if e1Contributing
+        elif e1Contributing
         {
             if e2Wc == 0 or e2Wc == 1
             {
@@ -2870,7 +2870,7 @@ impl Transform
                 swapPolyIndexes(e1, e2)
             }
         }
-        else if e2Contributing
+        elif e2Contributing
         {
             if e1Wc == 0 or e1Wc == 1
             {
@@ -2879,7 +2879,7 @@ impl Transform
                 swapPolyIndexes(e1, e2)
             }
         }
-        else if (e1Wc == 0 or e1Wc == 1) and (e2Wc == 0 or e2Wc == 1)
+        elif (e1Wc == 0 or e1Wc == 1) and (e2Wc == 0 or e2Wc == 1)
         {
             var e1Wc2, e2Wc2: CInt
             switch e1FillType2
@@ -2900,7 +2900,7 @@ impl Transform
             {
                 addLocalMinPoly(e1, e2, pt);
             }
-            else if e1Wc == 1 and e2Wc == 1
+            elif e1Wc == 1 and e2Wc == 1
             {
                 switch clipType
                 {
@@ -2939,7 +2939,7 @@ impl Transform
                 if isContributing(rb)
                     op1 = addOutPt(rb, rb.bot)
             }
-            else if (!rb)
+            elif (!rb)
             {
                 insertEdgeIntoAEL(lb, null)
                 setWindingCount(lb)

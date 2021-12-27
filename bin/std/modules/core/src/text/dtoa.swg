@@ -96,7 +96,7 @@ func fmtE(dst: *ConcatBuffer, neg, forceSign: bool, d: DecimalSlice, prec: s64, 
 	// sign
 	if neg
 		dst.addByte(g_CultureInfo.numberFormat.negativeSign)
-    else if forceSign
+    elif forceSign
         dst.addByte(g_CultureInfo.numberFormat.positiveSign)
 
 	// first digit
@@ -162,7 +162,7 @@ func fmtF(dst: *ConcatBuffer, neg, forceSign: bool, d: DecimalSlice, prec: s64)
 	// sign
 	if neg
 		dst.addByte(g_CultureInfo.numberFormat.negativeSign)
-    else if forceSign
+    elif forceSign
         dst.addByte(g_CultureInfo.numberFormat.positiveSign)
 
 	// integer, padded with zeros as needed.
@@ -411,7 +411,7 @@ public func parse(buf: *ConcatBuffer, val: f64, fmt: u8, precision: s64, forceSi
             return formatDigits(buf, shortest, neg, forceSign, digs, prec, fmt)
         }
 	}
-    else if fmt != "f"'u8
+    elif fmt != "f"'u8
     {
 		// Fixed number of digits.
 		digits := prec

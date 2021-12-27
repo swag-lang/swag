@@ -21,7 +21,7 @@ impl Image
                 pix[2] = cast(u8) Math.lerp(cast(f32) pix[2], ncol, f)
             }
         }
-        else if pf == .RGB8 or pf == .RGBA8
+        elif pf == .RGB8 or pf == .RGBA8
         {
             visitPixels(&f)
             {

@@ -55,7 +55,7 @@ impl Log
             buf.appendString(Path.getFileName(loc.fileName))
             buf.appendString(flags & (.Line|.FullLoc) ? ":" : " ")
         }
-        else if flags & .LongFileName
+        elif flags & .LongFileName
         {
             buf.appendString(loc.fileName)
             buf.appendString(flags & (.Line|.FullLoc) ? ":" : " ")
@@ -66,7 +66,7 @@ impl Log
             buf.appendAny(loc.lineStart + 1)
             buf.appendString(" ")
         }
-        else if flags & .FullLoc
+        elif flags & .FullLoc
         {
             buf.appendFormat("%:%:%:% ", loc.lineStart + 1, loc.colStart + 1, loc.lineEnd + 1, loc.colEnd + 1)
         }

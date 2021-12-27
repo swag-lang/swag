@@ -50,7 +50,7 @@ impl Surface
 
         if flags & .BigCaption
             surface.wnd.padding.y = app.theme.metrics.wnd_BigCaptionCY
-        else if flags & .SmallCaption
+        elif flags & .SmallCaption
             surface.wnd.padding.y = app.theme.metrics.wnd_SmallCaptionCY
 
         if flags & .Border

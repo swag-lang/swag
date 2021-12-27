@@ -20,7 +20,7 @@ func(T) insertionSort(values: [..] T, cb: func(T, T)->s32)
 func(T) quickSort(values: [..] T, cb: func(T, T)->s32)
 {
     count := cast(int) @countof(values)
-    if(count == 0)
+    if count == 0
         return
 
     begin  := 0'int
@@ -74,9 +74,9 @@ func(T) quickSort(values: [..] T, cb: func(T, T)->s32)
 
             quickSort(@mkslice(buffer + first, (last - first) + 1), cb);
         }
-        else if set1 > 0
+        elif set1 > 0
             end = high - 1
-        else if set2 > 0
+        elif set2 > 0
             begin = high + 1
         else
             break
@@ -95,7 +95,7 @@ func(T) sort(values: [..] T)
 func(T) sort(values: [..] T, cb: func(T, T)->s32)
 {
     Debug.assert(cb != null)
-    if(@countof(values) <= 10)
+    if @countof(values) <= 10
         insertionSort(values, cb)
     else
         quickSort(values, cb)

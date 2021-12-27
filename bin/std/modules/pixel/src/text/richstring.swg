@@ -45,9 +45,9 @@ impl RichString
         chunk.under    = under
         if isBold and isItalic
             chunk.fontStyle = .BoldItalic
-        else if isBold
+        elif isBold
             chunk.fontStyle = .Bold
-        else if isItalic
+        elif isItalic
             chunk.fontStyle = .Italic
         else
             chunk.fontStyle = .Default

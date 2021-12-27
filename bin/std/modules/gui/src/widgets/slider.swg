@@ -59,14 +59,14 @@ impl IWnd for Slider
 
             if isPressed1
                 colorMark1 = colors.slider_PressedMark
-            else if isHot1
+            elif isHot1
                 colorMark1 = colors.slider_HotMark
             else
                 colorMark1 = colors.slider_Mark
 
             if isPressed2
                 colorMark2 = colors.slider_PressedMark
-            else if isHot2
+            elif isHot2
                 colorMark2 = colors.slider_HotMark
             else
                 colorMark2 = colors.slider_Mark
@@ -114,9 +114,9 @@ impl IWnd for Slider
                 var colorStep: Color = ?
                 if isHot1 or isHot2 or isMoving
                     colorStep = colors.slider_HotStepBk
-                else if x <= value1 and hilightBar
+                elif x <= value1 and hilightBar
                     colorStep = colors.slider_HilightStepBk
-                else if x >= value1 and x <= value2 and hilightBar and isRange
+                elif x >= value1 and x <= value2 and hilightBar and isRange
                     colorStep = colors.slider_HilightStepBk
                 else
                     colorStep = colors.slider_StepBk
@@ -151,7 +151,7 @@ impl IWnd for Slider
             f    := diff / clientRect.width
             if isPressed1
                 setValue1(f)
-            else if isPressed2
+            elif isPressed2
                 setValue2(f)
             invalidate()
 
@@ -165,13 +165,13 @@ impl IWnd for Slider
                     posBox := getPosBox1()
                     correcMoving = evt.pos.x - posBox.horzCenter()
                 }
-                else if isHot2
+                elif isHot2
                 {
                     isPressed2 = true
                     posBox := getPosBox2()
                     correcMoving = evt.pos.x - posBox.horzCenter()
                 }
-                else if !isRange
+                elif !isRange
                 {
                     correcMoving = 0
                     isPressed1 = true

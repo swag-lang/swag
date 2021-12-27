@@ -34,7 +34,7 @@ impl Keyboard
                 pressedRepeat[i] = false
                 pressedTime[i] = 0
             }
-            else if canRepeat
+            elif canRepeat
             {
                 // First pressed time
                 if !pressedTime[i]
@@ -50,7 +50,7 @@ impl Keyboard
                         previousState.pressed[i] = false
                     }
                 }
-                else if now - pressedTime[i] >= pressedRepeatTimeMs
+                elif now - pressedTime[i] >= pressedRepeatTimeMs
                 {
                     pressedTime[i] = now
                     previousState.pressed[i] = false

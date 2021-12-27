@@ -200,7 +200,7 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
     {
         if type == ConvertFormatInt
             convertInt(buf, cast(ConvertFormatInt) concreteValue)
-        else if type == ConvertFormatFloat
+        elif type == ConvertFormatFloat
             convertFloat(buf, cast(ConvertFormatFloat) concreteValue)
         else
             convertStruct(buf, concreteValue, strFormat)
@@ -338,7 +338,7 @@ func convertStruct(buf: *ConcatBuffer, value: any, strFormat: string)
     buf.addBytes("{")
     visit field: kindof.fields
     {
-        if(@index != 0)
+        if @index != 0
             buf.addBytes(", ")
         buf.addBytes(field.name)
         buf.addBytes(" = ")
@@ -458,7 +458,7 @@ func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
         tmp[cpt] = cast(u8) g_CultureInfo.numberFormat.negativeSign
         cpt -= 1
     }
-    else if fmt.forceSign
+    elif fmt.forceSign
     {
         tmp[cpt] = cast(u8) g_CultureInfo.numberFormat.positiveSign
         cpt -= 1

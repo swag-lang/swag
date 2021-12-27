@@ -983,7 +983,7 @@ impl Decoder
             maxMcuSizeX     = 8
             maxMcuSizeY     = 8
         }
-        else if compsInFrame == 3
+        elif compsInFrame == 3
         {
             if (compSampH[1] != 1) or (compSampV[1] != 1) or (compSampH[2] != 1) or (compSampV[2] != 1)
                 throw "unsupported samp factors"
@@ -995,21 +995,21 @@ impl Decoder
                 maxMcuSizeX     = 8
                 maxMcuSizeY     = 8
             }
-            else if (compSampH[0] == 2) and (compSampV[0] == 1)
+            elif (compSampH[0] == 2) and (compSampV[0] == 1)
             {
                 scanType        = YH2V1
                 maxBlocksPerMcu = 4
                 maxMcuSizeX     = 16
                 maxMcuSizeY     = 8
             }
-            else if (compSampH[0] == 1) and (compSampV[0] == 2)
+            elif (compSampH[0] == 1) and (compSampV[0] == 2)
             {
                 scanType        = YH1V2
                 maxBlocksPerMcu = 4
                 maxMcuSizeX     = 8
                 maxMcuSizeY     = 16
             }
-            else if (compSampH[0] == 2) and (compSampV[0] == 2)
+            elif (compSampH[0] == 2) and (compSampV[0] == 2)
             {
                 scanType        = YH2V2
                 maxBlocksPerMcu = 6
@@ -1567,7 +1567,7 @@ impl Decoder
                 if spectralEnd
                     throw "bad sos spectral"
             }
-            else if compsInScan != 1
+            elif compsInScan != 1
             {
                 throw "bad sos spectral"
             }
@@ -1946,7 +1946,7 @@ impl Decoder
         c := try processMarkers()
         if c == .M_EOI
             return false
-        else if c != .M_SOS
+        elif c != .M_SOS
             throw "unexpected marker"
         try readSosMarker()
         return true

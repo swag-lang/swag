@@ -9,7 +9,7 @@ impl AA
     {
         if T == bool
             x = 1
-        else if T == s32
+        elif T == s32
             x = 2
         else
             x = 3

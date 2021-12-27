@@ -397,7 +397,7 @@ impl String
         }
 
         // We were in small size mode, and we are no more
-        else if buffer == acast &padding[0]
+        elif buffer == acast &padding[0]
         {
             oldBuffer := buffer
             buffer = acast Memory.alloc(newCapacity, allocator)
