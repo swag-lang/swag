@@ -22,6 +22,10 @@ bool SyntaxJob::doIf(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatToken());
         SWAG_CHECK(doEmbeddedStatement(node, (AstNode**) &node->elseBlock));
     }
+    else if (token.id == TokenId::KwdElif)
+    {
+        SWAG_CHECK(doIf(node, (AstNode**) &node->elseBlock));
+    }
 
     return true;
 }

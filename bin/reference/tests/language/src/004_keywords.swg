@@ -18,6 +18,7 @@
 #module
 #os
 #scopefct
+#self
 #semerror
 #swagbuildnum
 #swagos
@@ -185,6 +186,7 @@ case
 continue
 default
 defer
+elif
 else
 errdefer
 fallthrough

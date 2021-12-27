@@ -277,6 +277,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("acast", {TokenId::KwdAutoCast, LiteralType::TT_MAX});
     keywords.add("if", {TokenId::KwdIf, LiteralType::TT_MAX});
     keywords.add("else", {TokenId::KwdElse, LiteralType::TT_MAX});
+    keywords.add("elif", {TokenId::KwdElif, LiteralType::TT_MAX});
     keywords.add("while", {TokenId::KwdWhile, LiteralType::TT_MAX});
     keywords.add("break", {TokenId::KwdBreak, LiteralType::TT_MAX});
     keywords.add("continue", {TokenId::KwdContinue, LiteralType::TT_MAX});

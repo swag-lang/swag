@@ -33,6 +33,10 @@ bool SyntaxJob::invalidTokenError(InvalidTokenError kind)
         if (kind == InvalidTokenError::EmbeddedInstruction)
             return error(token, g_E[Err0323]);
         break;
+    case TokenId::KwdElif:
+        if (kind == InvalidTokenError::EmbeddedInstruction)
+            return error(token, g_E[Err0351]);
+        break;
     case TokenId::CompilerElse:
         if (kind == InvalidTokenError::EmbeddedInstruction || kind == InvalidTokenError::TopLevelInstruction)
             return error(token, g_E[Err0324]);
