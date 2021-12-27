@@ -5,3 +5,8 @@ func TITI(stmt: code)
 }
 
 TITI() struct X{}
+
+#test
+{
+    var x: X
+}
