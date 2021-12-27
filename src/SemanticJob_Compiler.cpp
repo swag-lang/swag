@@ -759,10 +759,19 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
         SWAG_VERIFY(node->ownerFct, context->report({node, g_E[Err0348]}));
         while (node->ownerFct->flags & AST_SPECIAL_COMPILER_FUNC && node->ownerFct->parent->ownerFct)
             node = node->ownerFct->parent;
-        SWAG_VERIFY(node && node->ownerFct, context->report({node, g_E[Err0348]}));
-        context->node->resolvedSymbolOverload = node->ownerFct->resolvedSymbolOverload;
-        context->node->resolvedSymbolName     = node->ownerFct->resolvedSymbolName;
-        context->node->typeInfo               = node->ownerFct->typeInfo;
+        SWAG_VERIFY(node, context->report({ node, g_E[Err0348] }));
+
+        if (node->ownerScope->kind == ScopeKind::Struct || node->ownerScope->kind == ScopeKind::Enum)
+            node = node->ownerScope->owner;
+        else
+        {
+            SWAG_VERIFY(node->ownerFct, context->report({node, g_E[Err0348]}));
+            node = node->ownerFct;
+        }
+
+        context->node->resolvedSymbolOverload = node->resolvedSymbolOverload;
+        context->node->resolvedSymbolName     = node->resolvedSymbolName;
+        context->node->typeInfo               = node->typeInfo;
         return true;
 
     case TokenId::CompilerFunction:
