@@ -92,6 +92,7 @@ impl IWnd for RadioButton
             checked = true
             if sigChanged
                 sigChanged(self)
+            postCommandEvent(id)
         }
     }
 }
