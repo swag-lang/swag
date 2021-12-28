@@ -518,23 +518,6 @@ bool SemanticJob::preResolveStructContent(SemanticContext* context)
     if (node->attributeFlags & ATTRIBUTE_NO_COPY)
         typeInfo->flags |= TYPEINFO_STRUCT_NO_COPY;
 
-    // Be sure we have only one struct node
-    if (node->resolvedSymbolName && node->resolvedSymbolName->nodes.size() > 1)
-    {
-        Diagnostic  diag({node, Utf8::format(g_E[Err0696], node->resolvedSymbolName->name.c_str())});
-        Diagnostic* note = nullptr;
-        for (auto p : node->resolvedSymbolName->nodes)
-        {
-            if (p != node)
-            {
-                note = new Diagnostic{p, g_E[Nte0036], DiagnosticLevel::Note};
-                break;
-            }
-        }
-
-        return context->report(diag, note);
-    }
-
     typeInfo->declNode = node;
     node->scope->owner = node;
 
