@@ -3000,7 +3000,7 @@ bool SemanticJob::appendLastCodeStatement(SemanticContext* context, AstIdentifie
             {
                 if (node->parent->childParentIdx != node->parent->parent->childs.size() - 1)
                 {
-                    auto brother = node->parent->parent->childs[node->parent->childParentIdx + 1];
+                    auto brother      = node->parent->parent->childs[node->parent->childParentIdx + 1];
                     auto fctCallParam = Ast::newFuncCallParam(context->sourceFile, node->callParameters);
                     auto codeNode     = Ast::newNode<AstNode>(nullptr, AstNodeKind::CompilerCode, node->sourceFile, fctCallParam);
                     codeNode->flags |= AST_NO_BYTECODE;

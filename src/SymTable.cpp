@@ -21,6 +21,12 @@ SymbolName* SymTable::findNoLock(const Utf8& name, uint32_t crc)
     return symbol;
 }
 
+void SymTable::removeSymbolName(SymbolName* sym)
+{
+    ScopedLock lk(mutex);
+    mapNames.remove(sym);
+}
+
 SymbolName* SymTable::registerSymbolName(JobContext* context, AstNode* node, SymbolKind kind, Utf8* aliasName)
 {
     ScopedLock lk(mutex);
@@ -257,17 +263,7 @@ void SymTable::disabledIfBlockOverloadNoLock(AstNode* node, SymbolName* symbol)
     symbol->cptIfBlock--;
     symbol->cptOverloadsInit = min(symbol->cptIfBlock, symbol->cptOverloadsInit);
     symbol->cptOverloads     = min(symbol->cptOverloads, symbol->cptOverloadsInit);
-
-    // Unregister the node in the symbol
-    for (int i = 0; i < symbol->nodes.size(); i++)
-    {
-        if (symbol->nodes[i] == node)
-        {
-            symbol->nodes.erase_unordered(i);
-            break;
-        }
-    }
-
+    symbol->unregisterNode(node);
     if (symbol->cptOverloads == 0)
         symbol->dependentJobs.setRunning();
 }
@@ -544,6 +540,19 @@ Utf8 SymbolName::getFullName()
     return fullName;
 }
 
+void SymbolName::unregisterNode(AstNode* node)
+{
+    // Unregister the node in the symbol
+    for (int i = 0; i < nodes.size(); i++)
+    {
+        if (nodes[i] == node)
+        {
+            nodes.erase_unordered(i);
+            break;
+        }
+    }
+}
+
 SymbolName* SymTableHash::find(const Utf8& str, uint32_t crc)
 {
     if (!allocated)
@@ -561,6 +570,24 @@ SymbolName* SymTableHash::find(const Utf8& str, uint32_t crc)
     }
 
     return nullptr;
+}
+
+void SymTableHash::remove(SymbolName* data)
+{
+    auto crc = data->name.hash();
+
+    uint32_t idx = crc % allocated;
+    while (buffer[idx].hash)
+    {
+        if (buffer[idx].hash == crc && buffer[idx].symbolName == data)
+        {
+            buffer[idx].hash = 0;
+            buffer[idx].symbolName = nullptr;
+            return;
+        }
+
+        idx = (idx + 1) % allocated;
+    }
 }
 
 void SymTableHash::addElem(SymbolName* data, uint32_t crc)

@@ -490,6 +490,10 @@ bool SemanticJob::resolveAlias(SemanticContext* context)
     auto node = context->node;
     auto back = node->childs.back();
 
+    // Be sure symbol is there...
+    if (!node->resolvedSymbolName)
+        node->resolvedSymbolName = node->ownerScope->symTable.registerSymbolName(context, node, SymbolKind::Alias);
+
     // alias x = @typeof
     auto overload = back->resolvedSymbolOverload;
     if (!overload && back->kind == AstNodeKind::IdentifierRef)

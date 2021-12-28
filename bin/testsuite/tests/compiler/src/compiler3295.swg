@@ -4,7 +4,10 @@ func TITI(stmt: code)
     #mixin stmt
 }
 
-TITI() struct X{}
+TITI()
+struct X
+{    
+}
 
 #test
 {
