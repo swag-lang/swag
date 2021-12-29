@@ -31,7 +31,6 @@ bool SyntaxJob::doGenericFuncCallParameters(AstNode* parent, AstNode** result)
             SWAG_CHECK(doIdentifierRef(param, nullptr, IDENTIFIER_NO_FCT_PARAMS));
             break;
         }
-        case TokenId::LiteralCharacter:
         case TokenId::LiteralNumber:
         case TokenId::LiteralString:
             SWAG_CHECK(doLiteral(param));

@@ -183,7 +183,6 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, A
     }
 
     case TokenId::LiteralNumber:
-    case TokenId::LiteralCharacter:
     case TokenId::LiteralString:
         SWAG_CHECK(doLiteral(parent, result));
         break;
