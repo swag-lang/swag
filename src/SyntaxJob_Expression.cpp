@@ -182,6 +182,15 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, A
         break;
     }
 
+    case TokenId::KwdTrue:
+    case TokenId::KwdFalse:
+    case TokenId::KwdNull:
+    case TokenId::CompilerFile:
+    case TokenId::CompilerModule:
+    case TokenId::CompilerLine:
+    case TokenId::CompilerBuildVersion:
+    case TokenId::CompilerBuildRevision:
+    case TokenId::CompilerBuildNum:
     case TokenId::LiteralNumber:
     case TokenId::LiteralString:
         SWAG_CHECK(doLiteral(parent, result));
@@ -206,7 +215,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, A
         SWAG_CHECK(doIdentifierRef(parent, &idref));
         if (result)
             *result = idref;
-        ((AstIdentifierRef*) idref)->specFlags |= AST_SPEC_IDENTIFIERREF_AUTO_SCOPE;
+        ((AstIdentifierRef*)idref)->specFlags |= AST_SPEC_IDENTIFIERREF_AUTO_SCOPE;
         break;
     }
 

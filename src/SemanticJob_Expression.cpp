@@ -2,9 +2,11 @@
 #include "SemanticJob.h"
 #include "ByteCodeGenJob.h"
 #include "Ast.h"
+#include "Module.h"
 #include "TypeManager.h"
 #include "LanguageSpec.h"
 #include "ErrorIds.h"
+#include "Version.h"
 
 bool SemanticJob::getDigitHexa(SemanticContext* context, const char** _pz, int& result, const char* errMsg)
 {
@@ -363,8 +365,58 @@ Utf8 SemanticJob::checkLiteralType(ComputedValue& computedValue, Token& token, T
 
 bool SemanticJob::resolveLiteral(SemanticContext* context)
 {
-    auto   node  = context->node;
-    Token& token = node->token;
+    auto   node       = context->node;
+    auto   sourceFile = context->sourceFile;
+    Token& token      = node->token;
+
+    switch (token.id)
+    {
+    case TokenId::KwdTrue:
+        token.id             = TokenId::LiteralNumber;
+        token.literalType    = LiteralType::TT_BOOL;
+        token.literalValue.b = true;
+        break;
+    case TokenId::KwdFalse:
+        token.id             = TokenId::LiteralNumber;
+        token.literalType    = LiteralType::TT_BOOL;
+        token.literalValue.b = false;
+        break;
+    case TokenId::KwdNull:
+        token.id                   = TokenId::LiteralNumber;
+        token.literalType          = LiteralType::TT_NULL;
+        token.literalValue.pointer = nullptr;
+        break;
+    case TokenId::CompilerFile:
+        token.id          = TokenId::LiteralString;
+        token.literalType = LiteralType::TT_STRING;
+        token.text        = sourceFile->path;
+        break;
+    case TokenId::CompilerModule:
+        token.id          = TokenId::LiteralString;
+        token.literalType = LiteralType::TT_STRING;
+        token.text        = sourceFile->module ? sourceFile->module->name : Utf8("?");
+        break;
+    case TokenId::CompilerLine:
+        token.id               = TokenId::LiteralNumber;
+        token.literalType      = LiteralType::TT_UNTYPED_INT;
+        token.literalValue.u32 = token.startLocation.line + 1;
+        break;
+    case TokenId::CompilerBuildVersion:
+        token.id               = TokenId::LiteralNumber;
+        token.literalType      = LiteralType::TT_S32;
+        token.literalValue.s32 = SWAG_BUILD_VERSION;
+        break;
+    case TokenId::CompilerBuildRevision:
+        token.id               = TokenId::LiteralNumber;
+        token.literalType      = LiteralType::TT_S32;
+        token.literalValue.s32 = SWAG_BUILD_REVISION;
+        break;
+    case TokenId::CompilerBuildNum:
+        token.id               = TokenId::LiteralNumber;
+        token.literalType      = LiteralType::TT_S32;
+        token.literalValue.s32 = SWAG_BUILD_NUM;
+        break;
+    }
 
     node->typeInfo = TypeManager::literalTypeToType(node->token);
     node->setFlagsValueIsComputed();
