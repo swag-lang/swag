@@ -340,7 +340,6 @@ struct SemanticJob : public Job
     static bool resolveIntrinsicRunes(SemanticContext* context);
     static bool resolveIntrinsicSpread(SemanticContext* context);
     static bool resolveIntrinsicKindOf(SemanticContext* context);
-    static bool resolveLiteralSuffix(SemanticContext* context);
     static bool resolveIntrinsicTypeOf(SemanticContext* context);
     static bool resolveIntrinsicProperty(SemanticContext* context);
     static bool resolveLiteral(SemanticContext* context);

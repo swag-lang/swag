@@ -361,7 +361,7 @@ Utf8 SemanticJob::checkLiteralType(ComputedValue& computedValue, Token& token, T
     return "";
 }
 
-bool SemanticJob::resolveLiteralSuffix(SemanticContext* context)
+bool SemanticJob::resolveLiteral(SemanticContext* context)
 {
     auto   node  = context->node;
     Token& token = node->token;
@@ -427,15 +427,8 @@ bool SemanticJob::resolveLiteralSuffix(SemanticContext* context)
     auto errMsg = checkLiteralType(*node->computedValue, token, suffix->typeInfo, negApplied);
     if (!errMsg.empty())
         return context->report({node, errMsg});
-    node->typeInfo = suffix->typeInfo;
 
-    return true;
-}
-
-bool SemanticJob::resolveLiteral(SemanticContext* context)
-{
-    auto node = context->node;
-    SWAG_CHECK(resolveLiteralSuffix(context));
+    node->typeInfo    = suffix->typeInfo;
     node->byteCodeFct = ByteCodeGenJob::emitLiteral;
     return true;
 }
