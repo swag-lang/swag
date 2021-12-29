@@ -438,35 +438,11 @@ void LanguageSpec::setupAttributesFlags()
     attributesFlags.add("NotGeneric", ATTRIBUTE_NOT_GENERIC);
 }
 
-void LanguageSpec::setupNativeTypes()
-{
-    nativeTypes.add("uint", LiteralType::TT_UINT);
-    nativeTypes.add("int", LiteralType::TT_INT);
-    nativeTypes.add("u64", LiteralType::TT_U64);
-    nativeTypes.add("u32", LiteralType::TT_U32);
-    nativeTypes.add("u16", LiteralType::TT_U16);
-    nativeTypes.add("u8", LiteralType::TT_U8);
-    nativeTypes.add("s64", LiteralType::TT_S64);
-    nativeTypes.add("s32", LiteralType::TT_S32);
-    nativeTypes.add("s16", LiteralType::TT_S16);
-    nativeTypes.add("s8", LiteralType::TT_S8);
-    nativeTypes.add("f32", LiteralType::TT_F32);
-    nativeTypes.add("f64", LiteralType::TT_F64);
-    nativeTypes.add("bool", LiteralType::TT_BOOL);
-    nativeTypes.add("rune", LiteralType::TT_RUNE);
-    nativeTypes.add("string", LiteralType::TT_STRING);
-    nativeTypes.add("any", LiteralType::TT_ANY);
-    nativeTypes.add("void", LiteralType::TT_VOID);
-    nativeTypes.add("typeinfo", LiteralType::TT_TYPE);
-    nativeTypes.add("cstring", LiteralType::TT_CSTRING);
-}
-
 void LanguageSpec::setup()
 {
     setupNames();
     setupKeywords();
     setupAttributesFlags();
-    setupNativeTypes();
 }
 
 string LanguageSpec::tokenToName(TokenId id)

@@ -12,12 +12,10 @@ struct LanguageSpec
     void setupNames();
     void setupKeywords();
     void setupAttributesFlags();
-    void setupNativeTypes();
 
     string tokenToName(TokenId id);
 
     LangHashTable<pair<TokenId, LiteralType>, 4096> keywords;
-    LangHashTable<LiteralType, 256>                 nativeTypes;
     LangHashTable<uint64_t, 256>                    attributesFlags;
 
     Utf8 name__setupRuntime;

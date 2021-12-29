@@ -38,14 +38,14 @@ void Workspace::setupUserTags()
             {
                 tokens1[0].trim();
                 tokens1[1].trim();
-                auto it = g_LangSpec->nativeTypes.find(tokens1[1]);
-                if (!it)
+                auto it = g_LangSpec->keywords.find(tokens1[1]);
+                if (!it || (*it).first != TokenId::NativeType)
                 {
                     g_Log.error(Utf8::format(g_E[Err0539], tokens1[0].c_str(), tokens1[1].c_str()));
                     OS::exit(-1);
                 }
 
-                literalType = *it;
+                literalType = (*it).second;
             }
 
             // Get value
