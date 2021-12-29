@@ -284,9 +284,6 @@
     <ClCompile Include="..\src\Tokenizer_NumberLiteral.cpp">
       <Filter>Tokenizer</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Tokenizer_Identifier.cpp">
-      <Filter>Tokenizer</Filter>
-    </ClCompile>
     <ClCompile Include="../src/Tokenizer.cpp">
       <Filter>Tokenizer</Filter>
     </ClCompile>

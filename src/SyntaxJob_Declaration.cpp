@@ -478,7 +478,7 @@ bool SyntaxJob::doLeftInstruction(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
 {
-    Tokenizer::relaxIdentifier(token);
+    relaxIdentifier(token);
     switch (token.id)
     {
     case TokenId::KwdReturn:

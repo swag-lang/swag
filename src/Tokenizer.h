@@ -92,7 +92,6 @@ struct Tokenizer
     void saveState(const Token &token);
     void restoreState(Token& token);
 
-    static void relaxIdentifier(Token& token);
     static bool isSymbol(TokenId id);
     static bool isLiteral(TokenId id);
 

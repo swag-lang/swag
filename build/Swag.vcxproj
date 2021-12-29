@@ -402,7 +402,6 @@
     <ClCompile Include="..\src\SyntaxJob_Struct.cpp" />
     <ClCompile Include="..\src\SyntaxJob_Type.cpp" />
     <ClCompile Include="..\src\SyntaxJob_Var.cpp" />
-    <ClCompile Include="..\src\Tokenizer_Identifier.cpp" />
     <ClCompile Include="..\src\Tokenizer_NumberLiteral.cpp" />
     <ClCompile Include="../src/Log.cpp" />
     <ClCompile Include="../src/pch.cpp">

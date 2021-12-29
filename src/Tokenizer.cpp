@@ -4,6 +4,7 @@
 #include "SourceFile.h"
 #include "ErrorIds.h"
 #include "Timer.h"
+#include "LanguageSpec.h"
 
 const char* g_TokenNames[] =
     {
@@ -145,6 +146,25 @@ bool Tokenizer::doMultiLineComment(Token& token)
             }
         }
     }
+}
+
+void Tokenizer::doIdentifier(Token& token, uint32_t c, unsigned offset)
+{
+    while (SWAG_IS_ALPHA(c) || SWAG_IS_DIGIT(c) || c == '_')
+    {
+        treatChar(c, offset);
+        c = getCharNoSeek(offset);
+    }
+
+    appendTokenName(token);
+
+    auto it = g_LangSpec->keywords.find(token.text);
+    if (it)
+        token.id = (*it).first;
+    else
+        token.id = TokenId::Identifier;
+    if (token.id == TokenId::NativeType)
+        token.literalType = (*it).second;
 }
 
 bool Tokenizer::getToken(Token& token)

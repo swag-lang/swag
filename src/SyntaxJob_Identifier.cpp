@@ -5,6 +5,18 @@
 #include "Scoped.h"
 #include "ErrorIds.h"
 
+void SyntaxJob::relaxIdentifier(Token& token)
+{
+    switch (token.id)
+    {
+    case TokenId::KwdAnd:
+    case TokenId::KwdOr:
+    case TokenId::KwdOrElse:
+        token.id = TokenId::Identifier;
+        return;
+    }
+}
+
 bool SyntaxJob::checkIsValidUserName(AstNode* node)
 {
     if (node->parent && (node->parent->flags & AST_GENERATED))

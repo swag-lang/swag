@@ -142,7 +142,7 @@ bool SyntaxJob::doIntrinsicProp(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
 {
-    Tokenizer::relaxIdentifier(token);
+    relaxIdentifier(token);
     switch (token.id)
     {
     case TokenId::CompilerSelf:
