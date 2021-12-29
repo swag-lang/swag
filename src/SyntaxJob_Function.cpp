@@ -214,17 +214,17 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType)
             // ...
             if (token.id == TokenId::SymDotDotDot)
             {
-                auto newTypeExpression         = Ast::newTypeExpression(sourceFile, paramNode);
-                paramNode->type                = newTypeExpression;
-                newTypeExpression->literalType = g_TypeMgr->typeInfoVariadic;
+                auto newTypeExpression             = Ast::newTypeExpression(sourceFile, paramNode);
+                paramNode->type                    = newTypeExpression;
+                newTypeExpression->typeFromLiteral = g_TypeMgr->typeInfoVariadic;
                 SWAG_CHECK(eatToken());
             }
             // cvarargs
             else if (token.id == TokenId::KwdCVarArgs)
             {
-                auto newTypeExpression         = Ast::newTypeExpression(sourceFile, paramNode);
-                paramNode->type                = newTypeExpression;
-                newTypeExpression->literalType = g_TypeMgr->typeInfoCVariadic;
+                auto newTypeExpression             = Ast::newTypeExpression(sourceFile, paramNode);
+                paramNode->type                    = newTypeExpression;
+                newTypeExpression->typeFromLiteral = g_TypeMgr->typeInfoCVariadic;
                 SWAG_CHECK(eatToken());
             }
             else
@@ -236,9 +236,9 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType)
                 // type...
                 if (token.id == TokenId::SymDotDotDot)
                 {
-                    auto newTypeExpression         = Ast::newTypeExpression(sourceFile, paramNode);
-                    paramNode->type                = newTypeExpression;
-                    newTypeExpression->literalType = g_TypeMgr->typeInfoVariadic;
+                    auto newTypeExpression             = Ast::newTypeExpression(sourceFile, paramNode);
+                    paramNode->type                    = newTypeExpression;
+                    newTypeExpression->typeFromLiteral = g_TypeMgr->typeInfoVariadic;
                     SWAG_CHECK(eatToken());
                     Ast::addChildBack(paramNode->type, typeExpression);
                 }
@@ -552,16 +552,16 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         typeNode->specFlags |= AST_SPEC_FUNCTYPE_RETURN_DEFINED;
         Scoped    scoped(this, newScope);
         ScopedFct scopedFct(this, funcNode);
-        auto      typeExpression    = Ast::newTypeExpression(sourceFile, typeNode, this);
-        typeExpression->literalType = g_TypeMgr->typeInfoString;
+        auto      typeExpression        = Ast::newTypeExpression(sourceFile, typeNode, this);
+        typeExpression->typeFromLiteral = g_TypeMgr->typeInfoString;
     }
     else if (typeFuncId == TokenId::CompilerSelectIf || typeFuncId == TokenId::CompilerCheckIf)
     {
         typeNode->specFlags |= AST_SPEC_FUNCTYPE_RETURN_DEFINED;
         Scoped    scoped(this, newScope);
         ScopedFct scopedFct(this, funcNode);
-        auto      typeExpression    = Ast::newTypeExpression(sourceFile, typeNode, this);
-        typeExpression->literalType = g_TypeMgr->typeInfoBool;
+        auto      typeExpression        = Ast::newTypeExpression(sourceFile, typeNode, this);
+        typeExpression->typeFromLiteral = g_TypeMgr->typeInfoBool;
     }
 
     funcNode->typeInfo->computeName();

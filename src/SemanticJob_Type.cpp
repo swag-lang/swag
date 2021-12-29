@@ -197,7 +197,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
     }
 
     // cvarargs
-    if (typeNode->literalType && typeNode->literalType->flags & TYPEINFO_C_VARIADIC)
+    if (typeNode->typeFromLiteral && typeNode->typeFromLiteral->flags & TYPEINFO_C_VARIADIC)
     {
         auto typeP = typeNode->findParent(AstNodeKind::FuncDeclParam);
         SWAG_VERIFY(typeP && typeNode->ownerFct, context->report({typeNode, g_E[Err0735]}));
@@ -219,9 +219,9 @@ bool SemanticJob::resolveType(SemanticContext* context)
     }
     else
     {
-        if (!typeNode->literalType)
-            typeNode->literalType = TypeManager::literalTypeToType(typeNode->token);
-        typeNode->typeInfo = typeNode->literalType;
+        if (!typeNode->typeFromLiteral)
+            typeNode->typeFromLiteral = TypeManager::literalTypeToType(typeNode->token);
+        typeNode->typeInfo = typeNode->typeFromLiteral;
 
         // Typed variadic ?
         if (typeNode->typeInfo->kind == TypeInfoKind::Variadic && !typeNode->childs.empty())
@@ -231,8 +231,8 @@ bool SemanticJob::resolveType(SemanticContext* context)
             typeVariadic->rawType = typeNode->childs.front()->typeInfo;
             typeVariadic->flags |= (typeVariadic->rawType->flags & TYPEINFO_GENERIC);
             typeVariadic->forceComputeName();
-            typeNode->literalType = typeVariadic;
-            typeNode->typeInfo    = typeVariadic;
+            typeNode->typeFromLiteral = typeVariadic;
+            typeNode->typeInfo        = typeVariadic;
         }
     }
 

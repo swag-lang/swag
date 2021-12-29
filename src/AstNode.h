@@ -607,8 +607,8 @@ struct AstTypeExpression : public AstNode
 
     AstNode* clone(CloneContext& context);
 
-    AstNode*  identifier  = nullptr;
-    TypeInfo* literalType = nullptr;
+    AstNode*  identifier      = nullptr;
+    TypeInfo* typeFromLiteral = nullptr;
 
     uint16_t typeFlags               = 0;
     uint8_t  ptrFlags[MAX_PTR_COUNT] = {0};

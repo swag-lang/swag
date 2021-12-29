@@ -150,8 +150,8 @@ AstNode* SemanticJob::convertTypeToTypeExpression(SemanticContext* context, AstN
     switch (childType->kind)
     {
     case TypeInfoKind::Native:
-        typeExpression->token.id    = TokenId::NativeType;
-        typeExpression->literalType = childType;
+        typeExpression->token.id        = TokenId::NativeType;
+        typeExpression->typeFromLiteral = childType;
         break;
 
     case TypeInfoKind::Enum:

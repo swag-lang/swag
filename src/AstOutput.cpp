@@ -794,12 +794,12 @@ bool AstOutput::outputType(OutputContext& context, Concat& concat, AstTypeExpres
     }
     else
     {
-        auto literalType = node->literalType;
-        if (!literalType)
-            literalType = TypeManager::literalTypeToType(node->token);
-        SWAG_ASSERT(literalType);
-        SWAG_ASSERT(!literalType->name.empty());
-        concat.addString(literalType->name);
+        auto typeFromLiteral = node->typeFromLiteral;
+        if (!typeFromLiteral)
+            typeFromLiteral = TypeManager::literalTypeToType(node->token);
+        SWAG_ASSERT(typeFromLiteral);
+        SWAG_ASSERT(!typeFromLiteral->name.empty());
+        concat.addString(typeFromLiteral->name);
     }
 
     return true;

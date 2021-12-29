@@ -692,9 +692,9 @@ AstNode* AstTypeExpression::clone(CloneContext& context)
     auto newNode = Ast::newNode<AstTypeExpression>();
     newNode->copyFrom(context, this);
 
-    newNode->identifier  = findChildRef(identifier, newNode);
-    newNode->literalType = literalType;
-    newNode->ptrCount    = ptrCount;
+    newNode->identifier      = findChildRef(identifier, newNode);
+    newNode->typeFromLiteral = typeFromLiteral;
+    newNode->ptrCount        = ptrCount;
 
     for (int i = 0; i < ptrCount; i++)
         newNode->ptrFlags[i] = ptrFlags[i];
