@@ -84,10 +84,10 @@ struct SyntaxJob : public Job
     bool checkIsSingleIdentifier(AstNode* node, const char* msg);
 
     bool        convertExpressionListToTuple(AstNode* parent, AstNode** result, bool isConst, bool anonymousStruct, bool anonymousUnion);
-    void        relaxIdentifier(Token& token);
     bool        checkIsValidUserName(AstNode* node);
     bool        checkIsValidVarName(AstNode* node);
     void        registerSubDecl(AstNode* subDecl);
+    static void relaxIdentifier(Token& token);
     static void forceTakeAddress(AstNode* node);
 
     bool doScopeBreakable(AstNode* parent, AstNode** result = nullptr);
