@@ -70,7 +70,7 @@ impl MyStruct
     visit p: t.methods
     {
         // When visiting 'methods', the 'value' field contains the function pointer,
-        // that can be casted to the correct type
+        // which can be casted to the correct type
         switch p.name
         {
         case "returnX": fnX = cast(Lambda) p.value
@@ -79,7 +79,7 @@ impl MyStruct
         }
     }
 
-    // This are now valid functions, that can be called
+    // This are now valid functions, which can be called
     var v: MyStruct
     @assert(fnX(v) == 5)
     @assert(fnY(v) == 10)

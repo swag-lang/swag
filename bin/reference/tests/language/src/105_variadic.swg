@@ -15,11 +15,11 @@
         {
             @assert(@countof(parameters) == 3)
 
-            @assert(@typeof(parameters[0]) == any)
-            @assert(@typeof(parameters[1]) == any)
-            @assert(@typeof(parameters[2]) == any)
+            #assert(@typeof(parameters[0]) == any)
+            #assert(@typeof(parameters[1]) == any)
+            #assert(@typeof(parameters[2]) == any)
 
-            // Use '@kindof' to get the real type of the parameter
+            // Use '@kindof' to get the real type (at runtime) of the parameter
             @assert(@kindof(parameters[0]) == s32)
             @assert(@kindof(parameters[1]) == string)
             @assert(@kindof(parameters[2]) == f32)

@@ -1,9 +1,10 @@
 #test
 {
     // A slice is a pointer on datas, and a 'uint' for the count
+    // It's declared with [..]
     {
         var a: [..] bool
-        @assert(@sizeof(a) == @sizeof(*void) + @sizeof(uint))
+        #assert(@sizeof(a) == @sizeof(*void) + @sizeof(uint))
     }
 
     // You can initialize a slice like an array
@@ -18,8 +19,8 @@
     {
         var a: const [..] u32 = @[10, 20, 30, 40, 50]
         count := @countof(a)
+        addr  := @dataof(a)
         @assert(count == 5)
-        addr := @dataof(a)
         @assert(addr[0] == 10)
         @assert(addr[4] == 50)
 

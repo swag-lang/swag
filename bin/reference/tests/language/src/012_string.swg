@@ -3,17 +3,17 @@
     // Strings are UTF8, and can be compared
     {
         const a = "this is a chinese character: 是"
-        @assert(a == "this is a chinese character: 是")
+        #assert(a == "this is a chinese character: 是")
 
         const b = "this are some cyrillic characters: ӜИ"
-        @assert(b == "this are some cyrillic characters: ӜИ")
+        #assert(b == "this are some cyrillic characters: ӜИ")
     }
 
     // A rune is unicode, and 32 bits
     {
         const a = "是"'rune
-        @assert(a == "是"'rune)
-        @assert(@sizeof(a) == @sizeof(u32))
+        #assert(a == "是"'rune)
+        #assert(@sizeof(a) == @sizeof(u32))
     }
 
     // You cannot index a string to get a rune, except in ascii strings. This is because i didn't want the
@@ -53,8 +53,8 @@
     // You can also use '@stringof' to return the result of a constant expression as a string
     {
         const X = 1
-        @assert(@stringof(X) == "1")
-        @assert(@stringof(X + 10) == "11")
+        #assert(@stringof(X) == "1")
+        #assert(@stringof(X + 10) == "11")
     }
 
     // A string and a character can contain escape sequences for special characters

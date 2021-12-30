@@ -23,12 +23,12 @@
 
     // You can name that index if you want
     {
-        cpt := 0
+        cpt  := 0
         cpt1 := 0
 
         loop i: 5   // index is named 'i'
         {
-            cpt += i
+            cpt  += i
             cpt1 += @index  // @index is always available, even when named
         }
 
@@ -39,7 +39,7 @@
     // loop can be used on every types that accept the '@countof' intrinsic
     {
         arr := @[10, 20, 30, 40]
-        @assert(@countof(arr) == 4)
+        #assert(@countof(arr) == 4)
 
         cpt := 0
         loop arr
@@ -47,7 +47,9 @@
         @assert(cpt == 10+20+30+40)
     }
 
+    // Warning !
     // On a string, it will loop for each byte, not runes (if a rune is encoded in more than one byte)
+    // Note: If you want to iterate on all runes, you will have to use the Std.Core module.
     {
         cpt := 0
         loop "⻘"

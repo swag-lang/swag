@@ -22,7 +22,7 @@
 
         func getWhite()->RGB
         {
-            // To avoid the clear of the struct, we use = ?
+            // To avoid the clear of the returned struct, we use = ?
             var result: retval = ?
             result.x = 0.5
             result.y = 0.1

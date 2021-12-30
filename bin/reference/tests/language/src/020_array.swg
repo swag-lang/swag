@@ -10,8 +10,8 @@
     // You can get the number of elements of an array with '@countof'
     {
         var array: [2] s32
-        @assert(@countof(array) == 2)
-        @assert(@sizeof(array) == 2 * @sizeof(s32))
+        #assert(@countof(array) == 2)
+        #assert(@sizeof(array) == 2 * @sizeof(s32))
     }
 
     // You can get the address of the array with '@dataof'
@@ -28,8 +28,8 @@
     // An array literal has the form @[...]
     {
         arr := @[1, 2, 3, 4]
-        @assert(@countof(arr) == 4)
-        @assert(@typeof(arr) == [4] s32)
+        #assert(@countof(arr) == 4)
+        #assert(@typeof(arr) == [4] s32)
     }
 
     // Size can be deduced from initialisation
@@ -82,8 +82,8 @@
     // for all other members
     {
         arr := @[1'f64, 2, 3, 4]    // Every values are 'f64'
-        @assert(@countof(arr) == 4)
-        @assert(@typeof(arr) == [4] f64)
+        #assert(@countof(arr) == 4)
+        #assert(@typeof(arr) == [4] f64)
         @assert(arr[3] == 4.0)
     }
 }

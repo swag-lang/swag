@@ -17,8 +17,8 @@
         }
 
         a := 0
-        myMixin()
-        myMixin()
+        myMixin()   // Equivalent to 'a += 1'
+        myMixin()   // Equivalent to 'a += 1'
         @assert(a == 2)
     }
 
@@ -31,8 +31,8 @@
         }
 
         a := 0
-        myMixin()
-        myMixin(2)
+        myMixin()   // Equivalent to 'a += 1'
+        myMixin(2)  // Equivalent to 'a += 2'
         @assert(a == 3)
     }
 
@@ -41,7 +41,7 @@
         #[Swag.Mixin]
         func doItTwice(what: code)
         {
-            // You can then 'insert' the code with '#mixin'
+            // You can then insert the code with '#mixin'
             #mixin what
             #mixin what
         }
@@ -62,15 +62,12 @@
         }
 
         a := 0
-        doItTwice(4)
-        {
+        doItTwice(4) {
             a += value
         }
 
         doItTwice(2)
-        {
             a += value
-        }
 
         @assert(a == 12)
     }

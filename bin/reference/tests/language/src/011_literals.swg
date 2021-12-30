@@ -3,8 +3,8 @@
     // Integers in decimal, hexadecimal or binary forms
     {
         const a: u32 = 123456           // Decimal
-        const b: u32 = 0xFFFF           // Hexadecimal
-        const c: u32 = 0b00001111       // Binary
+        const b: u32 = 0xFFFF           // Hexadecimal, with '0x'
+        const c: u32 = 0b00001111       // Binary, with '0b'
         @assert(a == 123456)
         @assert(b == 65535)
         @assert(c == 15)
@@ -21,6 +21,7 @@
     }
 
     // A boolean is 'true' or 'false'
+    // Constants are known at compile time, so we can use #assert to check the values
     {
         const a = true
         #assert(a == true)
@@ -33,6 +34,7 @@
     {
         var a = 1.5
         @assert(a == 1.5)
+        #assert(@typeof(a) == f32)
 
         var b = 0.11
         @assert(b == 0.11)
@@ -51,8 +53,8 @@
     {
         var a = 1.5
         @assert(a == 1.5)
-        @assert(@typeof(a) == f32)
-        @assert(@typeof(a) != f64)
+        #assert(@typeof(a) == f32)
+        #assert(@typeof(a) != f64)
     }
 
     // You can postfix a number by a type, to force it
@@ -60,10 +62,10 @@
         var a = 1.5'f64
         @assert(a == 1.5)
         @assert(a == 1.5'f64)
-        @assert(@typeof(a) == f64)
+        #assert(@typeof(a) == f64)
 
         b := 10'u8
         @assert(b == 10)
-        @assert(@typeof(b) == u8)
+        #assert(@typeof(b) == u8)
     }
 }

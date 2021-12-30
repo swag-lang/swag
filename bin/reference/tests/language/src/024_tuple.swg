@@ -1,6 +1,7 @@
 #test
 {
     // A tuple is an anonymous structure, aka a struct literal
+    // Syntax is @{}
     {
         tuple1 := @{2, 2}
         tuple2 := @{"string", 2, true}

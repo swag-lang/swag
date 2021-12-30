@@ -14,24 +14,27 @@
         enum Values { A; B; }
         type := @typeof(Values)
         @assert(type.rawType == s32)
+        #assert @typeof(Values) == Values
+    }
+
+    // '@kindof' will return the underlying type of the enum
+    {
+        enum RGB: u32 { R; G; B; }
+        #assert(@typeof(RGB) == RGB)
+        #assert(@kindof(RGB) != RGB)
+        #assert(@kindof(RGB) == u32)
     }
 
     // You can specify your own type after the enum name
     {
-        enum Value1: s64
+        enum Values1: s64
         {
             A
             B
             C
         }
-    }
 
-    // @kindof will return the underlying type of the enum
-    {
-        enum RGB: u32 { R; G; B; }
-        @assert(@typeof(RGB) == RGB)
-        @assert(@kindof(RGB) != RGB)
-        @assert(@kindof(RGB) == u32)
+        #assert @kindof(Values1) == s64
     }
 
     // Enum values, if not specified, start at 0 and are increased by 1 at each new value
@@ -43,9 +46,9 @@
             C
         }
 
-        @assert(Value.A == 0)
-        @assert(Value.B == 1)
-        @assert(Value.C == 2)
+        #assert(Value.A == 0)
+        #assert(Value.B == 1)
+        #assert(Value.C == 2)
     }
 
     // You can specify your own values
@@ -57,9 +60,9 @@
             C = 30
         }
 
-        @assert(Value.A == 10)
-        @assert(Value.B == 20)
-        @assert(Value.C == 30)
+        #assert(Value.A == 10)
+        #assert(Value.B == 20)
+        #assert(Value.C == 30)
     }
 
     // If you omit one value, it will be the previous value + 1
@@ -71,9 +74,9 @@
             C // 12
         }
 
-        @assert(Value.A == 10)
-        @assert(Value.B == 11)
-        @assert(Value.C == 12)
+        #assert(Value.A == 10)
+        #assert(Value.B == 11)
+        #assert(Value.C == 12)
     }
 
     // For non integer types, you must specify the values
@@ -85,9 +88,9 @@
             C = "string 3"
         }
 
-        @assert(Value1.A == "string 1")
-        @assert(Value1.B == "string 2")
-        @assert(Value1.C == "string 3")
+        #assert(Value1.A == "string 1")
+        #assert(Value1.B == "string 2")
+        #assert(Value1.C == "string 3")
 
         enum Value2: f32
         {
@@ -96,9 +99,9 @@
             C = 6
         }
 
-        @assert(Value2.A == 1.0)
-        @assert(Value2.B == 3.14)
-        @assert(Value2.C == 6)
+        #assert(Value2.A == 1.0)
+        #assert(Value2.B == 3.14)
+        #assert(Value2.C == 6)
     }
 
     // '@countof' can be used on an enum
@@ -144,10 +147,10 @@
             D
         }
 
-        @assert(MyFlags.A == 0b00000001)
-        @assert(MyFlags.B == 0b00000010)
-        @assert(MyFlags.C == 0b00000100)
-        @assert(MyFlags.D == 0b00001000)
+        #assert(MyFlags.A == 0b00000001)
+        #assert(MyFlags.B == 0b00000010)
+        #assert(MyFlags.C == 0b00000100)
+        #assert(MyFlags.D == 0b00001000)
 
         value := MyFlags.B | MyFlags.C
         @assert(value == 0b00000110)
@@ -198,7 +201,7 @@
     {
         enum Values { A; B; }
         var x: Values = Values.A
-        var y: Values = A       // Here Values.A is replaces with just A
+        var y: Values = A       // Here Values.A is replaced with just A, because 'Values" is deduced
         @assert(x == y)
     }
 

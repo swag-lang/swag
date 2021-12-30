@@ -19,9 +19,10 @@
     }
 
     // '@typeof' will give you 'any', but '@kindof' will give you the real underlying type
+    // In that case, '@kindof' is evaluted at runtime.
     {
         var a: any = "string"
-        @assert(@typeof(a) == any)
+        #assert(@typeof(a) == any)
         @assert(@kindof(a) == string)
     }
 

@@ -31,6 +31,7 @@ func sum2(x, y: s32, unused: f32 = 666)->s32
 func sum3(x, y = 0.0)
 {
     #assert @typeof(x) == f32
+    #assert @typeof(y) == f32
 }
 
 enum Values { A; B; }

@@ -1,6 +1,6 @@
 #test
 {
-    // defer is used to call an expression when the current scope is left.
+    // 'defer' is used to call an expression when the current scope is left.
     // It's purely compile time, so it does not evaluate until the block is left
     {
         v := 0

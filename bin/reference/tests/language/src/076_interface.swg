@@ -54,7 +54,7 @@ impl IReset for Point3
     @assert(pt3.z == 10+2)
 
     // An interface is a real variable, with a size
-    @assert(@sizeof(itf) == 2 * @sizeof(*void))
+    #assert(@sizeof(itf) == 2 * @sizeof(*void))
 
     // You can retrieve the concrete type associated with an interface with '@kindof'
     itf = cast(IReset) pt2

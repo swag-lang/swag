@@ -10,11 +10,11 @@
         @assert(myFunc(b) == b.myFunc())
     }
 
-    // This means that in swag, there are only 'static' functions, but that
+    // This means that in Swag, there are only 'static' functions, but which
     // can be called like 'methods'
     {
         struct Point { x, y: s32; }
-        func set(using pt: *Point, value: s32) = x, y = value
+        func set(using pt: *Point, value: s32) { x, y = value; }
 
         var pt: Point
         pt.set(10)
