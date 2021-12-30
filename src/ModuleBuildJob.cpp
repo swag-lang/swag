@@ -586,7 +586,7 @@ JobResult ModuleBuildJob::execute()
                     jobsToAdd.push_back(outputJob);
                     return JobResult::KeepJobAlive;
                 }
-                else if (module->backend->mustCompile)
+                else if (module->backend && module->backend->mustCompile)
                 {
                     OS::touchFile(module->backend->exportFilePath);
                 }
