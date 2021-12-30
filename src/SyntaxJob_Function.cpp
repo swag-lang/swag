@@ -648,7 +648,7 @@ bool SyntaxJob::doReturn(AstNode* parent, AstNode** result)
 
     // Return value
     SWAG_CHECK(eatToken());
-    if (tokenizer.lastTokenIsEOL)
+    if (token.lastTokenIsEOL)
         return true;
     if (token.id != TokenId::SymSemiColon)
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));

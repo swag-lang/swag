@@ -64,8 +64,6 @@ void Tokenizer::saveState(const Token& token)
     st_curBuffer           = sourceFile->curBuffer;
     st_location            = location;
     st_forceLastTokenIsEOL = forceLastTokenIsEOL;
-    st_lastTokenIsEOL      = lastTokenIsEOL;
-    st_lastTokenIsBlank    = lastTokenIsBlank;
 }
 
 void Tokenizer::restoreState(Token& token)
@@ -74,8 +72,6 @@ void Tokenizer::restoreState(Token& token)
     sourceFile->curBuffer = st_curBuffer;
     location              = st_location;
     forceLastTokenIsEOL   = st_forceLastTokenIsEOL;
-    lastTokenIsEOL        = st_lastTokenIsEOL;
-    lastTokenIsBlank      = st_lastTokenIsBlank;
 }
 
 void Tokenizer::treatChar(uint32_t c, unsigned offset)
@@ -179,11 +175,10 @@ bool Tokenizer::getToken(Token& token)
 {
     Timer timer(&g_Stats.tokenizerTime);
 
-    lastTokenIsEOL      = forceLastTokenIsEOL;
-    forceLastTokenIsEOL = false;
-    lastTokenIsBlank    = false;
-
-    token.literalType = LiteralType::TT_MAX;
+    token.literalType      = LiteralType::TT_MAX;
+    token.lastTokenIsEOL   = forceLastTokenIsEOL;
+    token.lastTokenIsBlank = false;
+    forceLastTokenIsEOL    = false;
 
     unsigned offset;
     while (true)
@@ -206,7 +201,7 @@ bool Tokenizer::getToken(Token& token)
         ///////////////////////////////////////////
         if (SWAG_IS_EOL(c))
         {
-            lastTokenIsEOL = true;
+            token.lastTokenIsEOL = true;
             continue;
         }
 
@@ -214,7 +209,7 @@ bool Tokenizer::getToken(Token& token)
         ///////////////////////////////////////////
         if (SWAG_IS_BLANK(c))
         {
-            lastTokenIsBlank = true;
+            token.lastTokenIsBlank = true;
             continue;
         }
 
@@ -231,7 +226,7 @@ bool Tokenizer::getToken(Token& token)
                 nc = getChar();
                 while (nc && nc != '\n')
                     nc = getChar();
-                lastTokenIsEOL = true;
+                token.lastTokenIsEOL = true;
                 continue;
             }
 

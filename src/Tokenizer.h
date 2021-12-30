@@ -55,9 +55,11 @@ struct SourceLocation
 
 struct Token
 {
-    TokenId     id          = TokenId::Invalid;
-    LiteralType literalType = (LiteralType) 0;
-    uint8_t     padding[6]  = {0};
+    TokenId     id               = TokenId::Invalid;
+    LiteralType literalType      = (LiteralType) 0;
+    bool        lastTokenIsEOL   = false;
+    bool        lastTokenIsBlank = false;
+    uint8_t     padding[4]       = {0};
 
     Utf8           text;
     SourceLocation startLocation;
@@ -72,6 +74,8 @@ struct Tokenizer
     bool error(Token& token, const Utf8& msg);
     void postProcessRawString(Utf8& text);
     void appendTokenName(Token& token);
+    void saveState(const Token& token);
+    void restoreState(Token& token);
 
     uint32_t getChar();
     uint32_t getCharNoSeek(unsigned& offset);
@@ -89,9 +93,6 @@ struct Tokenizer
     bool doSymbol(uint32_t c, Token& token);
     bool doStringLiteral(Token& token, bool raw);
 
-    void saveState(const Token &token);
-    void restoreState(Token& token);
-
     static bool isSymbol(TokenId id);
     static bool isLiteral(TokenId id);
 
@@ -99,16 +100,12 @@ struct Tokenizer
     SourceFile*    sourceFile          = nullptr;
     char*          startTokenName      = nullptr;
     bool           forceLastTokenIsEOL = false;
-    bool           lastTokenIsEOL      = false;
-    bool           lastTokenIsBlank    = false;
     bool           realAppendName      = false;
 
     Token          st_token;
     char*          st_curBuffer = nullptr;
     SourceLocation st_location;
     bool           st_forceLastTokenIsEOL = false;
-    bool           st_lastTokenIsEOL      = false;
-    bool           st_lastTokenIsBlank    = false;
 };
 
 extern const char*    g_TokenNames[];

@@ -315,7 +315,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
 
         auto rightSquareToken = token;
         SWAG_CHECK(eatToken(TokenId::SymRightSquare));
-        if (tokenizer.lastTokenIsEOL)
+        if (token.lastTokenIsEOL)
         {
             if (contextFlags & CONTEXT_FLAG_EXPRESSION)
             {

@@ -392,7 +392,7 @@ bool SyntaxJob::doBreak(AstNode* parent, AstNode** result)
     if (result)
         *result = node;
     SWAG_CHECK(eatToken());
-    if (tokenizer.lastTokenIsEOL)
+    if (token.lastTokenIsEOL)
         return true;
 
     if (token.id != TokenId::SymSemiColon)
@@ -422,7 +422,7 @@ bool SyntaxJob::doContinue(AstNode* parent, AstNode** result)
     if (result)
         *result = node;
     SWAG_CHECK(eatToken());
-    if (tokenizer.lastTokenIsEOL)
+    if (token.lastTokenIsEOL)
         return true;
 
     if (token.id != TokenId::SymSemiColon)
