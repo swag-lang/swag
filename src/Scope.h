@@ -43,48 +43,25 @@ struct ScopePublicSet
 
 struct Scope
 {
-    Scope()
-    {
-        symTable.scope = this;
-    }
+    Scope();
+    void addPublicFunc(AstNode* node);
+    void addPublicAttribute(AstNode* node);
+    void addPublicNode(AstNode* node);
+    void allocPublicSet();
 
-    void               setHasExports();
-    void               addPublicFunc(AstNode* node);
-    void               addPublicAttribute(AstNode* node);
-    void               addPublicNode(AstNode* node);
     static void        makeFullName(Utf8& result, const Utf8& parentName, const Utf8& name);
     const Utf8&        getFullName();
-    const Utf8&        getFullNameForeign();
-    const Utf8&        getFullNameType(AstNode* declNode);
     static const char* getNakedKindName(ScopeKind kind);
     static const char* getArticleKindName(ScopeKind kind);
     static void        collectScopeFromToExcluded(Scope* src, Scope* to, VectorNative<Scope*>& result);
+    Scope*             getOrAddChild(AstNode* nodeOwner, const Utf8& scopeName, ScopeKind scopeKind, bool matchName);
+    void               addChildNoLock(Scope* child);
+    void               removeChildNoLock(Scope* child);
     bool               isParentOf(Scope* child);
-
-    bool isGlobal()
-    {
-        return kind == ScopeKind::Module || kind == ScopeKind::File || kind == ScopeKind::Namespace;
-    }
-
-    bool isTopLevel()
-    {
-        return kind == ScopeKind::Module || kind == ScopeKind::File || (kind == ScopeKind::Namespace && (flags & SCOPE_AUTO_GENERATED));
-    }
-
-    bool isGlobalOrImpl()
-    {
-        if (isGlobal() || kind == ScopeKind::Impl)
-            return true;
-        if (kind == ScopeKind::Struct || kind == ScopeKind::Enum)
-            return !parentScope || parentScope->isGlobal() || parentScope->kind == ScopeKind::Impl;
-        return false;
-    }
-
-    void allocPublicSet()
-    {
-        if (!publicSet)
-            publicSet = g_Allocator.alloc<ScopePublicSet>();
-    }
+    bool               isSameOrParentOf(Scope* child);
+    bool               isGlobal();
+    bool               isTopLevel();
+    bool               isGlobalOrImpl();
 
     SymTable               symTable;
     Utf8                   name;
@@ -106,9 +83,4 @@ struct Scope
     uint32_t  startStackSize = 0;
     uint32_t  backendStart   = 0;
     uint32_t  backendEnd     = 0;
-
-    Scope* getOrAddChild(AstNode* nodeOwner, const Utf8& scopeName, ScopeKind scopeKind, bool matchName);
-    void   addChildNoLock(Scope* child);
-    void   removeChildNoLock(Scope* child);
-    bool   isSameOrParentOf(Scope* child);
 };

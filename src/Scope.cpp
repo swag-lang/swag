@@ -5,6 +5,30 @@
 #include "SourceFile.h"
 #include "Ast.h"
 
+Scope::Scope()
+{
+    symTable.scope = this;
+}
+
+bool Scope::isGlobal()
+{
+    return kind == ScopeKind::Module || kind == ScopeKind::File || kind == ScopeKind::Namespace;
+}
+
+bool Scope::isTopLevel()
+{
+    return kind == ScopeKind::Module || kind == ScopeKind::File || (kind == ScopeKind::Namespace && (flags & SCOPE_AUTO_GENERATED));
+}
+
+bool Scope::isGlobalOrImpl()
+{
+    if (isGlobal() || kind == ScopeKind::Impl)
+        return true;
+    if (kind == ScopeKind::Struct || kind == ScopeKind::Enum)
+        return !parentScope || parentScope->isGlobal() || parentScope->kind == ScopeKind::Impl;
+    return false;
+}
+
 const char* Scope::getNakedKindName(ScopeKind kind)
 {
     switch (kind)
@@ -110,8 +134,11 @@ void Scope::collectScopeFromToExcluded(Scope* src, Scope* to, VectorNative<Scope
     }
 }
 
-void Scope::setHasExports()
+void Scope::allocPublicSet()
 {
+    if (!publicSet)
+        publicSet = g_Allocator.alloc<ScopePublicSet>();
+
     auto pscope = this;
     while (pscope && !(pscope->flags & SCOPE_FLAG_HAS_EXPORTS))
     {
@@ -125,7 +152,6 @@ void Scope::addPublicFunc(AstNode* node)
     ScopedLock lk(mutex);
     allocPublicSet();
     publicSet->publicFunc.insert(node);
-    setHasExports();
 }
 
 void Scope::addPublicAttribute(AstNode* node)
@@ -133,7 +159,6 @@ void Scope::addPublicAttribute(AstNode* node)
     ScopedLock lk(mutex);
     allocPublicSet();
     publicSet->publicAttr.insert(node);
-    setHasExports();
 }
 
 void Scope::addPublicNode(AstNode* node)
@@ -141,7 +166,6 @@ void Scope::addPublicNode(AstNode* node)
     ScopedLock lk(mutex);
     allocPublicSet();
     publicSet->publicNodes.insert(node);
-    setHasExports();
 }
 
 bool Scope::isParentOf(Scope* child)
