@@ -18,14 +18,17 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
 
     attrNode->inheritTokenName(token);
 
-    // Register attribute
-    ScopedLock lk(currentScope->symTable.mutex);
-    auto       typeInfo = allocType<TypeInfoFuncAttr>();
-    typeInfo->declNode  = attrNode;
-
-    auto newScope      = Ast::newScope(attrNode, attrNode->token.text, ScopeKind::Attribute, currentScope);
+    auto typeInfo      = allocType<TypeInfoFuncAttr>();
+    typeInfo->declNode = attrNode;
     attrNode->typeInfo = typeInfo;
-    currentScope->symTable.registerSymbolNameNoLock(&context, attrNode, SymbolKind::Attribute);
+
+    // Register attribute
+    Scope* newScope = nullptr;
+    {
+        ScopedLock lk(currentScope->symTable.mutex);
+        newScope = Ast::newScope(attrNode, attrNode->token.text, ScopeKind::Attribute, currentScope);
+        currentScope->symTable.registerSymbolNameNoLock(&context, attrNode, SymbolKind::Attribute);
+    }
 
     // Parameters
     {

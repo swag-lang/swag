@@ -296,9 +296,7 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
 
 JobResult SyntaxJob::execute()
 {
-    Timer timer(&g_Stats.syntaxTime);
-
-    // First do the setup that does not need to source file to be loaded
+    // First do the setup that does not need the source file to be loaded
     if (!setupDone)
     {
         setupDone          = true;
@@ -370,7 +368,7 @@ JobResult SyntaxJob::execute()
         sourceFile->scopeFile->parentScope = parentScope;
         sourceFile->scopeFile->flags |= SCOPE_FILE;
 
-        // By default, everything is private if it comes from the test folder, or for the configuration file
+        // By default, everything is private if it comes from the test folder, or from the configuration file
         if (sourceFile->fromTests || sourceFile->isCfgFile)
             currentScope = sourceFile->scopeFile;
         else
@@ -392,7 +390,8 @@ JobResult SyntaxJob::execute()
         return JobResult::KeepJobAlive;
     }
 
-    bool ok = eatToken();
+    Timer timer(&g_Stats.syntaxTime);
+    bool  ok = eatToken();
     while (true)
     {
         // If there's an error, then we must stop at syntax pass
