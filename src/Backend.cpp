@@ -288,11 +288,15 @@ JobResult Backend::generateExportFile(Job* ownerJob)
 
 bool Backend::saveExportFile()
 {
-    auto result = bufferSwg.flushToFile(exportFilePath);
-    if (!result)
-        return false;
-    timeExportFile = OS::getFileWriteTime(exportFilePath.c_str());
-    SWAG_ASSERT(timeExportFile);
+    if (g_CommandLine->output)
+    {
+        auto result = bufferSwg.flushToFile(exportFilePath);
+        if (!result)
+            return false;
+        timeExportFile = OS::getFileWriteTime(exportFilePath.c_str());
+        SWAG_ASSERT(timeExportFile);
+    }
+
     module->setHasBeenBuilt(BUILDRES_EXPORT);
     return true;
 }

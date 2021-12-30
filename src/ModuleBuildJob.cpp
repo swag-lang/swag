@@ -577,19 +577,12 @@ JobResult ModuleBuildJob::execute()
 
             if (module->mustOutputSomething())
             {
-                if (g_CommandLine->output)
-                {
-                    module->sendCompilerMessage(CompilerMsgKind::PassBeforeOutput, this);
-                    auto outputJob          = g_Allocator.alloc<ModuleOutputJob>();
-                    outputJob->module       = module;
-                    outputJob->dependentJob = this;
-                    jobsToAdd.push_back(outputJob);
-                    return JobResult::KeepJobAlive;
-                }
-                else if (module->backend && module->backend->mustCompile)
-                {
-                    OS::touchFile(module->backend->exportFilePath);
-                }
+                module->sendCompilerMessage(CompilerMsgKind::PassBeforeOutput, this);
+                auto outputJob          = g_Allocator.alloc<ModuleOutputJob>();
+                outputJob->module       = module;
+                outputJob->dependentJob = this;
+                jobsToAdd.push_back(outputJob);
+                return JobResult::KeepJobAlive;
             }
         }
     }

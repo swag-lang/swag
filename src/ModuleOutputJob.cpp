@@ -9,26 +9,26 @@ JobResult ModuleOutputJob::execute()
 {
     if (pass == ModuleOutputJobPass::Init)
     {
+        // Generate .swg file with public definitions
         pass = ModuleOutputJobPass::PrepareOutput;
 
-        // Generate .swg file with public definitions
-        if (g_CommandLine->output)
-        {
-            auto exportJob = g_Allocator.alloc<ModuleExportJob>();
+        // This can arrive when testing, if the error is raised late, when generating export
+        // Arrives also with --output:false
+        if (!module->backend)
+            module->allocateBackend();
 
-            // This can arrive when testing, if the error is raised late, when generating export
-            if (!module->backend)
-                module->allocateBackend();
-
-            exportJob->backend      = module->backend;
-            exportJob->dependentJob = this;
-            jobsToAdd.push_back(exportJob);
-            return JobResult::KeepJobAlive;
-        }
+        auto exportJob          = g_Allocator.alloc<ModuleExportJob>();
+        exportJob->backend      = module->backend;
+        exportJob->dependentJob = this;
+        jobsToAdd.push_back(exportJob);
+        return JobResult::KeepJobAlive;
     }
 
     if (pass == ModuleOutputJobPass::PrepareOutput)
     {
+        if (!g_CommandLine->output)
+            return JobResult::ReleaseJob;
+
         pass = ModuleOutputJobPass::WaitForDependencies;
 
         // Compute the number of sub modules (i.e the number of output temporary files)
