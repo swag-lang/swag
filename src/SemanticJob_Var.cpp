@@ -620,7 +620,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     bool isLocalConstant    = false;
 
     // Check alias
-    if (node->token.text.find("@alias") == 0 && !(node->flags & AST_GENERATED) && !(node->ownerInline))
+    if (!(node->flags & AST_GENERATED) && !(node->ownerInline) && node->token.text[0] == '@' && node->token.text.find("@alias") == 0)
     {
         auto ownerFct = node->ownerFct;
         while (ownerFct)
