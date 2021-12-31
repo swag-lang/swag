@@ -357,6 +357,7 @@ Job* ThreadManager::getJobNoLock(VectorNative<Job*>& queue)
     job->flags |= JOB_IS_IN_THREAD;
 
     job->waitingKind = JobWaitKind::None;
+    job->jobThread   = nullptr;
 
     if (job->flags & JOB_IS_OPT)
         jobsOptInThreads++;
@@ -370,7 +371,10 @@ Job* ThreadManager::getJob(JobThread* thread)
 {
     auto job = getJob();
     if (job)
+    {
+        job->jobThread = thread;
         return job;
+    }
 
     unique_lock lk(thread->mutexNotify);
 
@@ -380,7 +384,10 @@ Job* ThreadManager::getJob(JobThread* thread)
         // Try another time in case another thread has pushed a job
         job = getJobNoLock();
         if (job)
+        {
+            job->jobThread = thread;
             return job;
+        }
 
         availableThreads.push_back(thread);
     }

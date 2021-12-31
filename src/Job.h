@@ -130,23 +130,22 @@ struct Job
     VectorNative<AstNode*> nodes;
     VectorNative<Job*>     jobsToAdd;
 
-    AstNode*    originalNode = nullptr;
-    SourceFile* sourceFile   = nullptr;
-    Module*     module       = nullptr;
-    Job*        dependentJob = nullptr;
-    Job*        wakeUpBy     = nullptr;
-    JobContext* baseContext  = nullptr;
-
+    JobThread*  jobThread           = nullptr;
+    AstNode*    originalNode        = nullptr;
+    SourceFile* sourceFile          = nullptr;
+    Module*     module              = nullptr;
+    Job*        dependentJob        = nullptr;
+    Job*        wakeUpBy            = nullptr;
+    JobContext* baseContext         = nullptr;
     SymbolName* waitingSymbolSolved = nullptr;
-    JobWaitKind waitingKind         = JobWaitKind::None;
     AstNode*    waitingIdNode       = nullptr;
     TypeInfo*   waitingIdType       = nullptr;
     Job*        waitingJob          = nullptr;
+    JobGroup*   jobGroup            = nullptr;
 
-    JobGroup* jobGroup = nullptr;
-
-    int32_t  waitingJobIndex = -1;
-    uint32_t waitOnJobs      = 0;
+    JobWaitKind waitingKind     = JobWaitKind::None;
+    int32_t     waitingJobIndex = -1;
+    uint32_t    waitOnJobs      = 0;
 
     uint8_t flags = 0;
 };

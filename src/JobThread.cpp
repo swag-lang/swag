@@ -5,7 +5,8 @@
 
 JobThread::JobThread(int rank)
 {
-    thread = new std::thread(&JobThread::loop, this);
+    threadRank = rank;
+    thread     = new std::thread(&JobThread::loop, this);
     OS::setThreadName(thread, "JobThread");
 }
 

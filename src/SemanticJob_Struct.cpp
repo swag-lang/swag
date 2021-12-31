@@ -248,74 +248,73 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         return true;
     }
 
-    // Be sure every functions of the interface has been covered
+    // Be sure every functions of the interface has been covered. If it's not the case,
+    // we generate the missing parts.
     vector<const Diagnostic*> notes;
     InterfaceRef              itfRef;
     bool                      doneItfRef = false;
+    Utf8                      content;
     for (uint32_t idx = 0; idx < numFctInterface; idx++)
     {
-        if (mapItIdxToFunc[idx] == nullptr)
+        // Function is there
+        if (mapItIdxToFunc[idx])
+            continue;
+
+        if (!doneItfRef)
         {
-            auto missingNode = typeInterface->fields[idx];
-
-            if (!doneItfRef)
-            {
-                doneItfRef = true;
-                SWAG_CHECK(TypeManager::collectInterface(context, typeStruct, typeBaseInterface, itfRef, true));
-                if (context->result != ContextResult::Done)
-                    return true;
-            }
-
-            if (itfRef.itf)
-            {
-                SyntaxJob syntaxJob;
-                Utf8      content;
-                content += "func ";
-                content += missingNode->namedParam;
-
-                content += "(using self";
-                auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(missingNode->typeInfo, TypeInfoKind::Lambda);
-                for (int i = 1; i < typeFunc->parameters.size(); i++)
-                {
-                    content += ", ";
-                    content += Utf8::format("p%d: %s", i, typeFunc->parameters[i]->typeInfo->name.c_str());
-                }
-                content += ")";
-
-                content += " => ";
-                content += itfRef.fieldRef;
-                content += ".";
-                content += typeBaseInterface->name;
-                content += ".";
-                content += missingNode->namedParam;
-
-                content += "(";
-                for (int i = 1; i < typeFunc->parameters.size(); i++)
-                {
-                    if (i != 1)
-                        content += ",";
-                    content += Utf8::format("p%d", i);
-                }
-                content += ")";
-
-                SWAG_CHECK(syntaxJob.constructEmbedded(content, node, node, CompilerAstKind::MissingInterfaceMtd, true));
-                context->job->nodes.push_back(node->childs.back());
-                context->result = ContextResult::NewChilds;
-                continue;
-            }
-
-            notes.push_back(new Diagnostic({missingNode->declNode, Utf8::format("missing `%s`", missingNode->namedParam.c_str()), DiagnosticLevel::Note}));
+            doneItfRef = true;
+            SWAG_CHECK(TypeManager::collectInterface(context, typeStruct, typeBaseInterface, itfRef, true));
+            if (context->result != ContextResult::Done)
+                return true;
         }
+
+        auto missingNode = typeInterface->fields[idx];
+        if (!itfRef.itf)
+        {
+            Diagnostic diag{node, Utf8::format(g_E[Err0657], typeBaseInterface->name.c_str())};
+            auto       note = new Diagnostic({missingNode->declNode, Utf8::format("missing `%s`", missingNode->namedParam.c_str()), DiagnosticLevel::Note});
+            return context->report(diag, note);
+        }
+
+        content += "func ";
+        content += missingNode->namedParam;
+
+        content += "(using self";
+        auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(missingNode->typeInfo, TypeInfoKind::Lambda);
+        for (int i = 1; i < typeFunc->parameters.size(); i++)
+        {
+            content += ", ";
+            content += Utf8::format("p%d: %s", i, typeFunc->parameters[i]->typeInfo->name.c_str());
+        }
+        content += ")";
+
+        content += " => ";
+        content += itfRef.fieldRef;
+        content += ".";
+        content += typeBaseInterface->name;
+        content += ".";
+        content += missingNode->namedParam;
+
+        content += "(";
+        for (int i = 1; i < typeFunc->parameters.size(); i++)
+        {
+            if (i != 1)
+                content += ",";
+            content += Utf8::format("p%d", i);
+        }
+        content += ")\n";
     }
 
     // We have generated methods, so restart
-    if (context->result == ContextResult::NewChilds)
-        return true;
-
-    if (!notes.empty())
+    if (!content.empty())
     {
-        Diagnostic diag{node, Utf8::format(g_E[Err0657], typeBaseInterface->name.c_str())};
-        return context->report(diag, notes);
+        int       numChilds = (int) node->childs.size();
+        SyntaxJob syntaxJob;
+        SWAG_CHECK(syntaxJob.constructEmbedded(content, node, node, CompilerAstKind::MissingInterfaceMtd, true));
+        for (int i = numChilds; i < node->childs.size(); i++)
+            context->job->nodes.push_back(node->childs[i]);
+        context->result = ContextResult::NewChilds;
+        return true;
     }
 
     // Construct itable in the constant segment

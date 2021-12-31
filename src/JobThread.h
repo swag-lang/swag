@@ -13,7 +13,8 @@ struct JobThread
     mutex              mutexNotify;
     condition_variable condVar;
 
-    thread* thread = nullptr;
+    thread* thread     = nullptr;
+    int     threadRank = -1;
 
     bool requestEnd = false;
 };
