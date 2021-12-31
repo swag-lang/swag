@@ -67,3 +67,32 @@ func toto(x: s32, y = Values.A)
         @assert(returnMe(y: 10) == 20)
     }
 }
+
+#test
+{
+    // You can return multiple values with a tuple
+    func returns2() -> {x: s32, y: s32}
+    {
+        // You can return a tuple literal
+        if false
+            return @{1, 2}
+
+        // Or use the specifal type 'retval'
+        var result: retval
+        result.x = 1
+        result.y = 2
+        return result
+    }
+
+    // You can access the tuple fields with the names (if specified), or with 'item?'
+    result := returns2()
+    @assert(result.x == 1)
+    @assert(result.item0 == 1)
+    @assert(result.y == 2)
+    @assert(result.item1 == 2)
+
+    // You can destructure the returned tuple
+    (x, y) := returns2()
+    @assert(x == 1)
+    @assert(y == 2)
+}
