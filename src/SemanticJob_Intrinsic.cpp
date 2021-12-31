@@ -344,14 +344,14 @@ bool SemanticJob::resolveIntrinsicRunes(SemanticContext* context)
     }
 
     // :SliceLiteral
-    uint8_t* ptrArr;
+    uint8_t* addrDst;
     auto     storageSegment             = SemanticJob::getConstantSegFromContext(context->node);
     node->computedValue->storageSegment = storageSegment;
-    node->computedValue->storageOffset  = storageSegment->reserve((uint32_t) runes.size() * sizeof(uint32_t), &ptrArr);
+    node->computedValue->storageOffset  = storageSegment->reserve((uint32_t) runes.size() * sizeof(uint32_t), &addrDst);
     node->computedValue->reg.u64        = (uint64_t) runes.size();
 
     // Setup array
-    memcpy(ptrArr, &runes[0], runes.size() * sizeof(uint32_t));
+    memcpy(addrDst, &runes[0], runes.size() * sizeof(uint32_t));
 
     node->typeInfo = g_TypeMgr->typeInfoSliceRunes;
     return true;

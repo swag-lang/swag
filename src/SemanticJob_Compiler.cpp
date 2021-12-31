@@ -673,11 +673,12 @@ bool SemanticJob::resolveCompilerLoad(SemanticContext* context)
         SWAG_VERIFY(rc == 0, context->report({back, Utf8::format(g_E[Err0223], back->computedValue->text.c_str())}));
         SWAG_CHECK(context->checkSizeOverflow("'#load'", stat_buf.st_size, SWAG_LIMIT_COMPILER_LOAD));
 
-        auto newJob                         = g_Allocator.alloc<LoadFileJob>();
-        auto storageSegment                 = getConstantSegFromContext(node);
-        node->computedValue->storageOffset  = storageSegment->reserve(stat_buf.st_size);
+        auto     newJob         = g_Allocator.alloc<LoadFileJob>();
+        auto     storageSegment = getConstantSegFromContext(node);
+        uint8_t* addrDst;
+        node->computedValue->storageOffset  = storageSegment->reserve(stat_buf.st_size, &addrDst);
         node->computedValue->storageSegment = storageSegment;
-        newJob->destBuffer                  = storageSegment->address(node->computedValue->storageOffset);
+        newJob->destBuffer                  = addrDst;
         newJob->sizeBuffer                  = stat_buf.st_size;
 
         newJob->module       = module;
@@ -759,7 +760,7 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
         SWAG_VERIFY(node->ownerFct, context->report({node, g_E[Err0348]}));
         while (node->ownerFct->flags & AST_SPECIAL_COMPILER_FUNC && node->ownerFct->parent->ownerFct)
             node = node->ownerFct->parent;
-        SWAG_VERIFY(node, context->report({ node, g_E[Err0348] }));
+        SWAG_VERIFY(node, context->report({node, g_E[Err0348]}));
 
         if (node->ownerScope->kind == ScopeKind::Struct || node->ownerScope->kind == ScopeKind::Enum)
             node = node->ownerScope->owner;

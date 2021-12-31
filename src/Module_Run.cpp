@@ -14,12 +14,12 @@ bool Module::computeExecuteResult(SourceFile* sourceFile, AstNode* node, JobCont
     // Result is on the stack. Store it in the compiler segment.
     if (node->semFlags & AST_SEM_EXEC_RET_STACK)
     {
-        auto storageSegment = &sourceFile->module->compilerSegment;
-        auto storageOffset  = storageSegment->reserve(node->typeInfo->sizeOf);
+        auto     storageSegment = &sourceFile->module->compilerSegment;
+        uint8_t* addrDst;
+        auto     storageOffset = storageSegment->reserve(node->typeInfo->sizeOf, &addrDst);
         node->allocateComputedValue();
         node->computedValue->storageSegment = storageSegment;
         node->computedValue->storageOffset  = storageOffset;
-        auto addrDst                        = storageSegment->address(storageOffset);
         auto addrSrc                        = g_RunContext.bp;
         memcpy(addrDst, addrSrc, node->typeInfo->sizeOf);
         return true;

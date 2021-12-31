@@ -408,11 +408,11 @@ bool SemanticJob::resolveVarDeclAfter(SemanticContext* context)
         if (node->computedValue->storageSegment != wantStorageSegment)
         {
             auto     addrSrc = node->computedValue->storageSegment->address(node->computedValue->storageOffset);
-            uint8_t* addrDest;
-            auto     storageOffset              = wantStorageSegment->reserve(node->typeInfo->sizeOf, &addrDest);
+            uint8_t* addrDst;
+            auto     storageOffset              = wantStorageSegment->reserve(node->typeInfo->sizeOf, &addrDst);
             node->computedValue->storageSegment = wantStorageSegment;
             node->computedValue->storageOffset  = storageOffset;
-            memcpy(addrDest, addrSrc, node->typeInfo->sizeOf);
+            memcpy(addrDst, addrSrc, node->typeInfo->sizeOf);
         }
 
         // Will remove the incomplete flag, and finish the resolve

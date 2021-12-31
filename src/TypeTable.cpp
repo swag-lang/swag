@@ -355,28 +355,28 @@ bool TypeTable::makeConcreteString(JobContext* context, SwagSlice* result, const
 
 void* TypeTable::makeConcreteSlice(JobContext* context, uint32_t sizeOf, void* concreteTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, void** result, uint32_t& storageArray)
 {
-    uint8_t* addr;
-    storageArray = storageSegment->reserve(sizeOf, &addr);
+    uint8_t* addrDst;
+    storageArray = storageSegment->reserve(sizeOf, &addrDst);
 
     // Offset for bytecode run
-    *result = addr;
+    *result = addrDst;
 
     // Offset for native
     storageSegment->addInitPtr(OFFSETOFR(result), storageArray);
-    return addr;
+    return addrDst;
 }
 
 void* TypeTable::makeConcreteSlice(JobContext* context, uint32_t sizeOf, DataSegment* storageSegment, uint32_t storageOffset, void** result, uint32_t& storageArray)
 {
-    uint8_t* addr;
-    storageArray = storageSegment->reserve(sizeOf, &addr);
+    uint8_t* addrDst;
+    storageArray = storageSegment->reserve(sizeOf, &addrDst);
 
     // Offset for bytecode run
-    *result = addr;
+    *result = addrDst;
 
     // Offset for native
     storageSegment->addInitPtr(storageOffset, storageArray);
-    return addr;
+    return addrDst;
 }
 
 bool TypeTable::makeConcreteAny(JobContext* context, ConcreteAny* ptrAny, DataSegment* storageSegment, uint32_t storageOffset, ComputedValue& computedValue, TypeInfo* typeInfo, uint32_t cflags)
