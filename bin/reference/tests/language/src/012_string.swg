@@ -50,13 +50,6 @@
         @assert(d == "they are 4 apples in 4 baskets")
     }
 
-    // You can also use '@stringof' to return the result of a constant expression as a string
-    {
-        const X = 1
-        #assert(@stringof(X) == "1")
-        #assert(@stringof(X + 10) == "11")
-    }
-
     // A string and a character can contain escape sequences for special characters
     // An escape sequence starts with '\'
     {
@@ -138,5 +131,18 @@
         @assert(a != null)
         a = null
         @assert(a == null)
+    }
+
+    // You can also use '@stringof' to return the result of a constant expression as a string
+    {
+        const X = 1
+        #assert(@stringof(X) == "1")
+        #assert(@stringof(X + 10) == "11")
+    }
+
+    // Bineary operator ~ can be used to convert/concatenate at compile time
+    {
+        x := "value is " ~ 6 ~ " !"
+        @assert(x == "value is 6 !")
     }
 }
