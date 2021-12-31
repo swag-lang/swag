@@ -2,6 +2,7 @@
 #include "DependentJobs.h"
 #include "VectorNative.h"
 #include "Utf8.h"
+#include "ScopedLock.h"
 struct JobThread;
 struct AstNode;
 struct SymbolName;
@@ -123,8 +124,8 @@ struct Job
     void waitTypeCompleted(TypeInfo* typeInfo);
     void setPending(SymbolName* symbolToWait, JobWaitKind waitKind, AstNode* node, TypeInfo* typeInfo);
 
-    shared_mutex           executeMutex;
-    shared_mutex           mutexDependent;
+    SharedMutex            executeMutex;
+    SharedMutex            mutexDependent;
     DependentJobs          dependentJobs;
     VectorNative<AstNode*> nodes;
     VectorNative<Job*>     jobsToAdd;

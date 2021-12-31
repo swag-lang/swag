@@ -4,6 +4,7 @@
 #include "DependentJobs.h"
 #include "SymTable.h"
 #include "VectorNative.h"
+#include "ScopedLock.h"
 struct SyntaxJob;
 struct Scope;
 struct SourceFile;
@@ -69,7 +70,7 @@ struct Scope
     VectorNative<Scope*>   childScopes;
     VectorNative<AstNode*> deferredNodes;
     DependentJobs          dependentJobs;
-    shared_mutex           mutex;
+    SharedMutex            mutex;
     VectorNative<AstNode*> doneDefer;
     VectorNative<AstNode*> doneDrop;
 

@@ -2,6 +2,7 @@
 #include "SwagScope.h"
 #include "Utf8.h"
 #include "Register.h"
+#include "ScopedLock.h"
 struct Module;
 struct Scope;
 struct SourceFile;
@@ -81,7 +82,7 @@ struct Workspace
     fs::path              examplesPath;
     fs::path              modulesPath;
     fs::path              dependenciesPath;
-    shared_mutex          mutexModules;
+    SharedMutex           mutexModules;
     atomic<int>           numErrors = 0;
     VectorNative<Module*> modules;
     Module*               runModule = nullptr;

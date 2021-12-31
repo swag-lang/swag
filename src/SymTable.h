@@ -2,6 +2,7 @@
 #include "DependentJobs.h"
 #include "Register.h"
 #include "RegisterList.h"
+#include "ScopedLock.h"
 struct Scope;
 struct SourceFile;
 struct Token;
@@ -78,7 +79,7 @@ struct SymbolName
     Utf8            getFullName();
     void            unregisterNode(AstNode* node);
 
-    shared_mutex                  mutex;
+    SharedMutex                   mutex;
     VectorNative<SymbolOverload*> overloads;
     Utf8                          name;
     DependentJobs                 dependentJobs;
@@ -140,7 +141,7 @@ struct SymTable
     static const char* getNakedKindName(SymbolKind kind);
     static const char* getNakedKindName(SymbolOverload* overload);
 
-    shared_mutex               mutex;
+    SharedMutex                mutex;
     SymTableHash               mapNames;
     VectorNative<StructToDrop> structVarsToDrop;
 

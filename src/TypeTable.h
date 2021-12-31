@@ -29,7 +29,7 @@ struct TypeTable
 
     struct MapPerSeg
     {
-        shared_mutex                                 mutex;
+        SharedMutex                                 mutex;
         unordered_map<Utf8, MapType, HashUtf8>       concreteTypes;
         unordered_map<Utf8, TypeTableJob*, HashUtf8> concreteTypesJob;
         unordered_map<ConcreteTypeInfo*, TypeInfo*>  concreteTypesReverse;

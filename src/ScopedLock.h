@@ -2,6 +2,46 @@
 #include "Timer.h"
 #include "Stats.h"
 
+struct Mutex
+{
+    mutex mt;
+
+    void lock()
+    {
+        mt.lock();
+    }
+
+    void unlock()
+    {
+        mt.unlock();
+    }
+};
+
+struct SharedMutex
+{
+    shared_mutex mt;
+
+    void lock()
+    {
+        mt.lock();
+    }
+
+    void unlock()
+    {
+        mt.unlock();
+    }
+
+    void lock_shared()
+    {
+        mt.lock_shared();
+    }
+
+    void unlock_shared()
+    {
+        mt.unlock_shared();
+    }
+};
+
 template<typename T>
 struct ScopedLock
 {
@@ -21,7 +61,7 @@ struct ScopedLock
 
 struct SharedLock
 {
-    SharedLock(shared_mutex& mtx)
+    SharedLock(SharedMutex& mtx)
         : mt{&mtx}
     {
         mt->lock_shared();
@@ -32,5 +72,5 @@ struct SharedLock
         mt->unlock_shared();
     }
 
-    shared_mutex* mt = nullptr;
+    SharedMutex* mt = nullptr;
 };

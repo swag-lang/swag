@@ -1,6 +1,7 @@
 #pragma once
 #include "Utf8.h"
 #include "CommandLine.h"
+#include "ScopedLock.h"
 struct Module;
 struct AstNode;
 struct Diagnostic;
@@ -25,9 +26,9 @@ struct SourceFile
     void computeFileScopeName();
     void addGlobalUsing(Scope* scope);
 
-    shared_mutex mutex;
-    Utf8         name;
-    string       path;
+    SharedMutex mutex;
+    Utf8        name;
+    string      path;
 
     vector<string> allLines;
     int            getLineOffset = 0;

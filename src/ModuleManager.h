@@ -1,5 +1,6 @@
 #pragma once
 #include "Utf8.h"
+#include "ScopedLock.h"
 
 struct AstFuncDecl;
 struct ByteCodeRunContext;
@@ -15,8 +16,8 @@ struct ModuleManager
     void  addPatchFuncAddress(void** patchAddress, AstFuncDecl* func);
     bool  applyPatches(const Utf8& moduleName, void* moduleHandle);
 
-    shared_mutex     mutex;
-    shared_mutex     mutexLoaded;
+    SharedMutex      mutex;
+    SharedMutex      mutexLoaded;
     map<Utf8, void*> loadedModules;
     set<Utf8>        failedLoadedModules;
 
@@ -26,9 +27,9 @@ struct ModuleManager
         AstFuncDecl* funcDecl;
     };
 
-    shared_mutex                   mutexPatch;
+    SharedMutex                    mutexPatch;
     map<Utf8, vector<PatchOffset>> patchOffsets;
     Utf8                           loadModuleError;
 };
 
-extern ModuleManager *g_ModuleMgr;
+extern ModuleManager* g_ModuleMgr;

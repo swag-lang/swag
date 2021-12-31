@@ -155,9 +155,9 @@ struct Module
         DependentJobs dependentJobs;
     };
 
-    shared_mutex mutexDependency;
-    shared_mutex mutexFile;
-    shared_mutex mutexByteCode;
+    SharedMutex mutexDependency;
+    SharedMutex mutexFile;
+    SharedMutex mutexByteCode;
     mutex        mutexGlobalVars;
     mutex        mutexBuildPass;
     mutex        mutexGeneratedFile;

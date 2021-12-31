@@ -6,6 +6,7 @@
 #include "VectorNative.h"
 #include "Runtime.h"
 #include "CommandLine.h"
+#include "ScopedLock.h"
 
 struct Scope;
 struct TypeInfo;
@@ -224,7 +225,7 @@ struct TypeInfo
     static const char* getArticleKindName(TypeInfo* typeInfo);
     static const char* getNakedKindName(TypeInfo* typeInfo);
 
-    shared_mutex mutex;
+    SharedMutex mutex;
 
     Utf8 name;
     Utf8 displayName;
@@ -499,7 +500,7 @@ struct TypeInfoStruct : public TypeInfo
     map<Utf8, TypeInfo*>         replaceTypes;
     AttributeList                attributes;
     Utf8                         structName;
-    shared_mutex                 mutexGen;
+    SharedMutex                  mutexGen;
 
     TypeInfoStruct* itable            = nullptr;
     TypeInfoStruct* fromGeneric       = nullptr;

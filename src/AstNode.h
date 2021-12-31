@@ -288,7 +288,7 @@ struct AstNode
     uint8_t             specFlags      = 0;
     uint32_t            childParentIdx = 0;
 
-    shared_mutex           mutex;
+    SharedMutex           mutex;
     Token                  token;
     VectorNative<AstNode*> childs;
     ComputedValue*         computedValue = nullptr;

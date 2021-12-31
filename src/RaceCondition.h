@@ -1,4 +1,5 @@
 #pragma once
+#include "ScopedLock.h"
 
 #ifdef SWAG_HAS_ASSERT
 struct RaceCondition
@@ -7,7 +8,7 @@ struct RaceCondition
     {
         Instance() = default;
 
-        shared_mutex     mutex;
+        SharedMutex      mutex;
         thread::id       lastThreadID;
         std::atomic<int> countWrite = 0;
     };

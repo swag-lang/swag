@@ -96,9 +96,9 @@ struct DataSegment
     void saveValue(void* address, uint32_t size, bool zero);
     void restoreAllValues();
 
-    shared_mutex mutex;
-    shared_mutex mutexPatchMethod;
-    shared_mutex mutexPtr;
+    SharedMutex mutex;
+    SharedMutex mutexPatchMethod;
+    SharedMutex mutexPtr;
 
     VectorNative<Bucket> buckets;
 
