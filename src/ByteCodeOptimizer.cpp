@@ -33,9 +33,6 @@ void ByteCodeOptimizer::genTree(ByteCodeOptContext* context, uint32_t nodeIdx)
     if (node->end->op == ByteCodeOp::Ret)
         return;
 
-    if (node->end->flags & BCI_SAFETY && node->end->op == ByteCodeOp::JumpIfNotZero64)
-        node->flags |= BCOTN_HAS_SAFETY_JINZ64;
-
     bool here = false;
 
     ByteCodeInstruction* nextIp  = node->end + node->end->b.s32 + 1;

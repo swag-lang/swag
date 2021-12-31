@@ -183,7 +183,6 @@ void SemanticJob::inheritAttributesFromOwnerFunc(AstNode* child)
     INHERIT(child, ATTRIBUTE_SAFETY_BOUNDCHECK_ON | ATTRIBUTE_SAFETY_BOUNDCHECK_OFF);
     INHERIT(child, ATTRIBUTE_SAFETY_CASTANY_ON | ATTRIBUTE_SAFETY_CASTANY_OFF);
     INHERIT(child, ATTRIBUTE_SAFETY_MATH_ON | ATTRIBUTE_SAFETY_MATH_OFF);
-    INHERIT(child, ATTRIBUTE_SAFETY_NULLPTR_ON | ATTRIBUTE_SAFETY_NULLPTR_OFF);
     INHERIT(child, ATTRIBUTE_SAFETY_OVERFLOW_ON | ATTRIBUTE_SAFETY_OVERFLOW_OFF);
 
     INHERIT(child, ATTRIBUTE_OPTIM_BACKEND_ON | ATTRIBUTE_OPTIM_BACKEND_OFF);
@@ -225,7 +224,6 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
         INHERIT(forNode, ATTRIBUTE_SAFETY_BOUNDCHECK_ON | ATTRIBUTE_SAFETY_BOUNDCHECK_OFF);
         INHERIT(forNode, ATTRIBUTE_SAFETY_CASTANY_ON | ATTRIBUTE_SAFETY_CASTANY_OFF);
         INHERIT(forNode, ATTRIBUTE_SAFETY_MATH_ON | ATTRIBUTE_SAFETY_MATH_OFF);
-        INHERIT(forNode, ATTRIBUTE_SAFETY_NULLPTR_ON | ATTRIBUTE_SAFETY_NULLPTR_OFF);
         INHERIT(forNode, ATTRIBUTE_SAFETY_OVERFLOW_ON | ATTRIBUTE_SAFETY_OVERFLOW_OFF);
         INHERIT(forNode, ATTRIBUTE_OPTIM_BACKEND_ON | ATTRIBUTE_OPTIM_BACKEND_OFF);
         INHERIT(forNode, ATTRIBUTE_OPTIM_BYTECODE_ON | ATTRIBUTE_OPTIM_BYTECODE_OFF);
@@ -355,7 +353,6 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 if (text.empty())
                 {
                     flags &= ~ATTRIBUTE_SAFETY_MASK;
-                    flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_NULLPTR_ON : ATTRIBUTE_SAFETY_NULLPTR_OFF;
                     flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_BOUNDCHECK_ON : ATTRIBUTE_SAFETY_BOUNDCHECK_OFF;
                     flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_OVERFLOW_ON : ATTRIBUTE_SAFETY_OVERFLOW_OFF;
                     flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_MATH_ON : ATTRIBUTE_SAFETY_MATH_OFF;
@@ -365,12 +362,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 for (auto& w : what)
                 {
                     w.trim();
-                    if (w == g_LangSpec->name_nullptr)
-                    {
-                        flags &= ~(ATTRIBUTE_SAFETY_NULLPTR_ON | ATTRIBUTE_SAFETY_NULLPTR_OFF);
-                        flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_NULLPTR_ON : ATTRIBUTE_SAFETY_NULLPTR_OFF;
-                    }
-                    else if (w == g_LangSpec->name_boundcheck)
+                    if (w == g_LangSpec->name_boundcheck)
                     {
                         flags &= ~(ATTRIBUTE_SAFETY_BOUNDCHECK_ON | ATTRIBUTE_SAFETY_BOUNDCHECK_OFF);
                         flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_BOUNDCHECK_ON : ATTRIBUTE_SAFETY_BOUNDCHECK_OFF;

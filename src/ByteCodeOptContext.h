@@ -9,9 +9,8 @@ struct ByteCodeInstruction;
 struct Module;
 struct Job;
 
-static const uint32_t BCOTN_USER1             = 0x00000001;
-static const uint32_t BCOTN_USER2             = 0x00000002;
-static const uint32_t BCOTN_HAS_SAFETY_JINZ64 = 0x10000000;
+static const uint32_t BCOTN_USER1 = 0x00000001;
+static const uint32_t BCOTN_USER2 = 0x00000002;
 
 struct ByteCodeOptTreeNode
 {

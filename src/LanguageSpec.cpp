@@ -127,7 +127,6 @@ void LanguageSpec::setupNames()
     name_msg        = "msg";
     name_module     = "module";
     name_function   = "function";
-    name_nullptr    = "nullptr";
     name_boundcheck = "boundcheck";
     name_overflow   = "overflow";
     name_math       = "math";

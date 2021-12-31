@@ -35,7 +35,6 @@ bool ByteCodeGenJob::emitIntrinsicMakeCallback(ByteCodeGenContext* context)
     auto ptrNode = node->childs.front();
     emitInstruction(context, ByteCodeOp::IntrinsicMakeCallback, ptrNode->resultRegisterRC);
     node->resultRegisterRC = ptrNode->resultRegisterRC;
-    emitSafetyNullPointer(context, node->resultRegisterRC, "cannot allocate a new external callback, you have too many !");
     return true;
 }
 
@@ -149,7 +148,6 @@ bool ByteCodeGenJob::emitIntrinsicKindOf(ByteCodeGenContext* context)
     // Deref the type from the itable
     if (front->typeInfo->kind == TypeInfoKind::Interface)
     {
-        emitSafetyNullPointer(context, node->resultRegisterRC, g_E[Err0859]);
         auto inst   = emitInstruction(context, ByteCodeOp::DecPointer64, node->resultRegisterRC, 0, node->resultRegisterRC);
         inst->b.u64 = sizeof(void*);
         inst->flags |= BCI_IMM_B;

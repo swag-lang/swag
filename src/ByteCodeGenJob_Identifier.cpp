@@ -344,16 +344,8 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         node->resultRegisterRC = identifier->identifierRef->resultRegisterRC;
         SWAG_VERIFY(node->resultRegisterRC.size() > 0, context->internalError(Utf8::format("emitIdentifier, cannot reference identifier `%s`", identifier->token.text.c_str()).c_str()));
 
-        // If previous node was a pointer index, then no need to check for a null pointer, it has already been done
-        bool safety = true;
-        if (identifier->childParentIdx && identifier->identifierRef->childs[identifier->childParentIdx - 1]->kind == AstNodeKind::ArrayPointerIndex)
-            safety = false;
-
         if (node->resolvedSymbolOverload->computedValue.storageOffset > 0)
         {
-            if (safety)
-                emitSafetyNullPointer(context, node->resultRegisterRC, g_E[Err0859]);
-            safety = false;
             ensureCanBeChangedRC(context, node->resultRegisterRC);
             auto inst = emitInstruction(context, ByteCodeOp::IncPointer64, node->resultRegisterRC, 0, node->resultRegisterRC);
             SWAG_ASSERT(node->resolvedSymbolOverload->computedValue.storageOffset != UINT32_MAX);
@@ -363,14 +355,10 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
 
         if (!(node->forceTakeAddress()))
         {
-            if (safety)
-                emitSafetyNullPointer(context, node->resultRegisterRC, g_E[Err0859]);
-            emitStructDeRef(context, false);
+            emitStructDeRef(context);
         }
         else if (node->parent->flags & AST_ARRAY_POINTER_REF)
         {
-            if (safety)
-                emitSafetyNullPointer(context, node->resultRegisterRC, g_E[Err0859]);
             emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
         }
 

@@ -113,31 +113,6 @@ void ByteCodeGenJob::emitSafetyNotZero(ByteCodeGenContext* context, uint32_t r, 
     emitInstruction(context, ByteCodeOp::InternalPanic)->d.pointer = (uint8_t*) message;
 }
 
-void ByteCodeGenJob::emitSafetyNullPointer(ByteCodeGenContext* context, uint32_t r, const char* message, int sizeInBits)
-{
-    if (!mustEmitSafety(context, ATTRIBUTE_SAFETY_NULLPTR_ON, ATTRIBUTE_SAFETY_NULLPTR_OFF))
-        return;
-
-    emitSafetyNotZero(context, r, sizeInBits, message);
-}
-
-void ByteCodeGenJob::emitSafetyNullLambda(ByteCodeGenContext* context, uint32_t r, const char* message)
-{
-    if (!mustEmitSafety(context, ATTRIBUTE_SAFETY_NULLPTR_ON, ATTRIBUTE_SAFETY_NULLPTR_OFF))
-        return;
-
-    PushICFlags ic(context, BCI_SAFETY);
-    auto        re = reserveRegisterRC(context);
-    emitInstruction(context, ByteCodeOp::CopyRBtoRA64, re, r);
-    auto inst = emitInstruction(context, ByteCodeOp::BinOpBitmaskAnd64, re, 0, re);
-    inst->flags |= BCI_IMM_B;
-    inst->b.u64 = ~SWAG_LAMBDA_MARKER_MASK;
-
-    emitSafetyNotZero(context, re, 64, message);
-
-    freeRegisterRC(context, re);
-}
-
 void ByteCodeGenJob::emitSafetyLeftShift(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, TypeInfo* typeInfo)
 {
     if (!mustEmitSafety(context, ATTRIBUTE_SAFETY_OVERFLOW_ON, ATTRIBUTE_SAFETY_OVERFLOW_OFF))
