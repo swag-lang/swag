@@ -629,11 +629,7 @@ JobResult ByteCodeGenJob::execute()
 
         // Byte code is generated (but not yet resolved, as we need all dependencies to be resolved too)
         {
-            ScopedLock lk(originalNode->mutex);
-            SWAG_ASSERT(originalNode->extension && originalNode->extension->byteCodeJob);
-            getDependantCalls(originalNode, dependentNodes);
-            dependentNodesTmp = dependentNodes;
-
+            // Make one optimization
             if (context.bc &&
                 context.bc->node &&
                 context.bc->node->kind == AstNodeKind::FuncDecl &&
@@ -647,6 +643,11 @@ JobResult ByteCodeGenJob::execute()
                     opt.optimize(context.bc, restart);
                 }
             }
+
+            ScopedLock lk(originalNode->mutex);
+            SWAG_ASSERT(originalNode->extension && originalNode->extension->byteCodeJob);
+            getDependantCalls(originalNode, dependentNodes);
+            dependentNodesTmp = dependentNodes;
 
             originalNode->semFlags |= AST_SEM_BYTECODE_GENERATED;
             dependentJobs.setRunning();
