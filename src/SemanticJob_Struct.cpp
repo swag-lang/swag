@@ -611,6 +611,7 @@ void SemanticJob::flattenStructChilds(SemanticContext* context, AstNode* parent,
     }
 }
 
+#pragma optimize("", off)
 bool SemanticJob::resolveStruct(SemanticContext* context)
 {
     auto node       = CastAst<AstStruct>(context->node, AstNodeKind::StructDecl);
@@ -619,7 +620,6 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     auto job        = context->job;
 
     SWAG_ASSERT(typeInfo->declNode);
-    SWAG_ASSERT(typeInfo->declNode == node);
 
     // Structure packing
     if (node->structFlags & STRUCTFLAG_UNION)
