@@ -127,7 +127,7 @@ const char* Utf8::c_str() const
 
     if (buffer && buffer[count])
     {
-        static mutex mutex;
+        static Mutex mutex;
         ScopedLock   lk(mutex);
         auto         t = const_cast<Utf8*>(this);
         t->allocated   = (int) Allocator::alignSize(count + 1);

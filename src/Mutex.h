@@ -12,6 +12,11 @@ struct Mutex
     {
         mt.unlock();
     }
+
+    bool try_lock()
+    {
+        return mt.try_lock();
+    }
 };
 
 struct SharedMutex

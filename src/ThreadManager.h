@@ -27,7 +27,7 @@ struct ThreadManager
     VectorNative<JobThread*> availableThreads;
     VectorNative<JobThread*> workerThreads;
     VectorNative<Job*>       waitingJobs;
-    mutex                    mutexAdd;
+    Mutex                    mutexAdd;
     condition_variable       condVar;
     mutex                    mutexDone;
     condition_variable       condVarDone;

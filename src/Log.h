@@ -1,6 +1,7 @@
 #pragma once
 #include "Utf8.h"
 #include "CommandLine.h"
+#include "Mutex.h"
 
 enum class LogColor
 {
@@ -85,7 +86,7 @@ struct Log
         length      = 0;
     }
 
-    mutex  mutexAccess;
+    Mutex  mutexAccess;
     bool   countLength = false;
     size_t length      = 0;
 };

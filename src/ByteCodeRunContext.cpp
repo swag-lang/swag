@@ -6,7 +6,7 @@
 
 extern bool g_Exiting;
 
-static mutex g_FreeStackMutex;
+static Mutex g_FreeStackMutex;
 static void* g_FirstFreeStack = nullptr;
 
 ByteCodeRunContext::~ByteCodeRunContext()

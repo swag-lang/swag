@@ -4,6 +4,7 @@
 #include "Assert.h"
 #include "VectorNative.h"
 #include "ByteCodeOp.h"
+#include "Mutex.h"
 
 enum class ByteCodeOp : uint16_t;
 struct AstNode;
@@ -130,7 +131,7 @@ struct ByteCode
     VectorNative<uint32_t>            availableRegistersRC;
     VectorNative<pair<void*, size_t>> autoFree;
 
-    mutex                  mutexCallName;
+    Mutex                  mutexCallName;
     Utf8                   name;
     Utf8                   callName;
     VectorNative<AstNode*> localVars;

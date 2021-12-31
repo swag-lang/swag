@@ -158,9 +158,9 @@ struct Module
     SharedMutex mutexDependency;
     SharedMutex mutexFile;
     SharedMutex mutexByteCode;
-    mutex        mutexGlobalVars;
-    mutex        mutexBuildPass;
-    mutex        mutexGeneratedFile;
+    Mutex        mutexGlobalVars;
+    Mutex        mutexBuildPass;
+    Mutex        mutexGeneratedFile;
 
     string path;
     Utf8   name;
@@ -185,8 +185,8 @@ struct Module
     VectorNative<SourceFile*>       files;
     VectorNative<Module*>           errorModules;
     VectorNative<ByteCode*>         byteCodeCompiler[(int) CompilerMsgKind::Max];
-    mutex                           byteCodeCompilerMutex[(int) CompilerMsgKind::Max];
-    mutex                           mutexCompilerMessages;
+    Mutex                           byteCodeCompilerMutex[(int) CompilerMsgKind::Max];
+    Mutex                           mutexCompilerMessages;
     VectorNative<ByteCode*>         byteCodeFunc;
     VectorNative<ByteCode*>         byteCodeTestFunc;
     VectorNative<ByteCode*>         byteCodeInitFunc;

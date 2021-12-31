@@ -16,7 +16,7 @@ const uint64_t MAGIC_FREE  = 0xCAFECAFECAFECAFE;
 
 thread_local Allocator g_Allocator;
 atomic<int>            g_CompilerAllocTh = 0;
-mutex                  g_AllocatorMutex;
+Mutex                  g_AllocatorMutex;
 Allocator*             g_SharedAllocator = nullptr;
 
 void* operator new(size_t t)

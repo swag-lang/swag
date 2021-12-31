@@ -198,7 +198,7 @@ namespace BackendLinker
         diag_stderr.module = module;
 
         // It's not possible to launch lld linker in parallel (sight), because it's not thread safe.
-        static mutex oo;
+        static Mutex oo;
         while (!oo.try_lock())
         {
             g_ThreadMgr.tryExecuteJob();

@@ -288,7 +288,7 @@ struct AstNode
     uint8_t             specFlags      = 0;
     uint32_t            childParentIdx = 0;
 
-    SharedMutex           mutex;
+    SharedMutex            mutex;
     Token                  token;
     VectorNative<AstNode*> childs;
     ComputedValue*         computedValue = nullptr;
@@ -374,7 +374,7 @@ struct AstFuncDecl : public AstNode
     Utf8                   fullnameForeign;
     VectorNative<AstNode*> subDecls;
     VectorNative<AstNode*> localGlobalVars;
-    std::mutex             funcMutex;
+    Mutex                  funcMutex;
 
     AstNode*       parameters        = nullptr;
     AstNode*       genericParameters = nullptr;

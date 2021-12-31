@@ -5,7 +5,7 @@
 
 struct JobGroup
 {
-    mutex              mutex;
+    Mutex              mutex;
     atomic<int>        runningJobs;
     VectorNative<Job*> jobs;
 
