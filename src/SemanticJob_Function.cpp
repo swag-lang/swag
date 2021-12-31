@@ -9,7 +9,7 @@
 #include "Os.h"
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
-#include "ScopedLock.h"
+#include "Mutex.h"
 
 bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* typeInfo, AstNode* funcNode, AstNode* parameters, bool forGenerics)
 {

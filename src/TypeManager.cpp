@@ -3,7 +3,7 @@
 #include "Tokenizer.h"
 #include "Workspace.h"
 #include "TypeInfo.h"
-#include "ScopedLock.h"
+#include "Mutex.h"
 
 TypeManager* g_TypeMgr = nullptr;
 

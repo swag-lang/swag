@@ -10,8 +10,8 @@
 #include "ErrorIds.h"
 #include "SemanticJob.h"
 #include "LanguageSpec.h"
-#include "ScopedLock.h"
-#include "ScopedLock.h"
+#include "Mutex.h"
+#include "Mutex.h"
 
 bool ByteCodeGenJob::canEmitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* funcDecl, ByteCode* bc)
 {

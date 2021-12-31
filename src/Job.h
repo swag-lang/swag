@@ -2,7 +2,7 @@
 #include "DependentJobs.h"
 #include "VectorNative.h"
 #include "Utf8.h"
-#include "ScopedLock.h"
+#include "Mutex.h"
 struct JobThread;
 struct AstNode;
 struct SymbolName;

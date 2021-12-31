@@ -4,7 +4,7 @@
 #include "DependentJobs.h"
 #include "SymTable.h"
 #include "VectorNative.h"
-#include "ScopedLock.h"
+#include "Mutex.h"
 struct SyntaxJob;
 struct Scope;
 struct SourceFile;

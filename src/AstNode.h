@@ -10,7 +10,7 @@
 #include "Attribute.h"
 #include "Scope.h"
 #include "VectorNative.h"
-#include "ScopedLock.h"
+#include "Mutex.h"
 
 struct AstTypeExpression;
 struct DocContent;

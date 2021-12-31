@@ -1,5 +1,5 @@
 #pragma once
-#include "ScopedLock.h"
+#include "Mutex.h"
 
 #ifdef SWAG_HAS_ASSERT
 struct RaceCondition

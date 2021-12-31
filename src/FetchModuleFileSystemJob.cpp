@@ -5,6 +5,7 @@
 #include "CopyFileJob.h"
 #include "ThreadManager.h"
 #include "ErrorIds.h"
+#include "Os.h"
 
 JobResult FetchModuleFileSystemJob::execute()
 {

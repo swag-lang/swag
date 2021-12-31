@@ -767,7 +767,7 @@
     <ClInclude Include="..\src\OutputFileWin32.h">
       <Filter>Main\Os</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\ScopedLock.h">
+    <ClInclude Include="..\src\Mutex.h">
       <Filter>Main\Threading</Filter>
     </ClInclude>
     <ClInclude Include="..\src\LoadSourceFileJob.h">

@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Utf8.h"
 #include "CommandLine.h"
-#include "ScopedLock.h"
+#include "Mutex.h"
 
 Utf8::Utf8()
 {

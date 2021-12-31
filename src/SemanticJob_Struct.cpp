@@ -10,7 +10,7 @@
 #include "ModuleManager.h"
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
-#include "ScopedLock.h"
+#include "Mutex.h"
 
 bool SemanticJob::waitForStructUserOps(SemanticContext* context, AstNode* node)
 {

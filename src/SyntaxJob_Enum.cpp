@@ -3,7 +3,7 @@
 #include "Scoped.h"
 #include "SemanticJob.h"
 #include "ErrorIds.h"
-#include "ScopedLock.h"
+#include "Mutex.h"
 
 bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
 {

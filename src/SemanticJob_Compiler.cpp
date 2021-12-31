@@ -9,6 +9,7 @@
 #include "Backend.h"
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
+#include "Os.h"
 
 void SemanticJob::computeNonConstExprNotes(AstNode* node, vector<const Diagnostic*>& notes)
 {

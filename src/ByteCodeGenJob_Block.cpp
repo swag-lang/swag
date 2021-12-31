@@ -5,7 +5,7 @@
 #include "ByteCode.h"
 #include "SemanticJob.h"
 #include "Ast.h"
-#include "ScopedLock.h"
+#include "Mutex.h"
 
 bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
 {

@@ -15,7 +15,7 @@
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
 #include "LoadSourceFileJob.h"
-#include "ScopedLock.h"
+#include "Mutex.h"
 
 void ModuleBuildJob::publishFilesToPublic()
 {

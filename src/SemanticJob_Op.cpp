@@ -5,7 +5,7 @@
 #include "SourceFile.h"
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
-#include "ScopedLock.h"
+#include "Mutex.h"
 
 bool SemanticJob::checkFuncPrototype(SemanticContext* context, AstFuncDecl* node)
 {

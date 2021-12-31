@@ -10,6 +10,7 @@
 #include "SemanticJob.h"
 #include "TypeTable.h"
 #include "ErrorIds.h"
+#include "Os.h"
 
 bool ByteCodeGenJob::emitLocalFuncDecl(ByteCodeGenContext* context)
 {

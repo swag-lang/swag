@@ -2,7 +2,7 @@
 #include "SwagScope.h"
 #include "Utf8.h"
 #include "Register.h"
-#include "ScopedLock.h"
+#include "Mutex.h"
 struct Module;
 struct Scope;
 struct SourceFile;

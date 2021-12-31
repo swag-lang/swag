@@ -1,7 +1,4 @@
 #pragma once
-#include "Timer.h"
-#include "Stats.h"
-
 struct Mutex
 {
     mutex mt;

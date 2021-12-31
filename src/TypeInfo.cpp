@@ -2,7 +2,7 @@
 #include "TypeInfo.h"
 #include "AstNode.h"
 #include "TypeManager.h"
-#include "ScopedLock.h"
+#include "Mutex.h"
 
 void TypeInfo::clearName()
 {

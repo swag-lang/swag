@@ -7,7 +7,7 @@
 #include "TypeManager.h"
 #include "Context.h"
 #include "LanguageSpec.h"
-#include "ScopedLock.h"
+#include "Mutex.h"
 #include "ByteCodeOptimizerJob.h"
 
 void ByteCodeGenJob::reserveRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int num)

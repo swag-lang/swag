@@ -1,6 +1,6 @@
 #pragma once
 #include "VectorNative.h"
-#include "ScopedLock.h"
+#include "Mutex.h"
 #include "Job.h"
 
 struct JobGroup

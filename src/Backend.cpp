@@ -8,6 +8,7 @@
 #include "ModuleSaveExportJob.h"
 #include "Backend.h"
 #include "ByteCode.h"
+#include "Os.h"
 #include "BackendFunctionBodyJobBase.h"
 
 JobResult Backend::prepareOutput(const BuildParameters& buildParameters, Job* ownerJob)

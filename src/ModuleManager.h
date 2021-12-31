@@ -1,6 +1,6 @@
 #pragma once
 #include "Utf8.h"
-#include "ScopedLock.h"
+#include "Mutex.h"
 
 struct AstFuncDecl;
 struct ByteCodeRunContext;

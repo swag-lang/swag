@@ -2,6 +2,8 @@
 #include "ByteCodeOptimizer.h"
 #include "ByteCodeOptimizerJob.h"
 #include "Module.h"
+#include "Timer.h"
+
 
 #define OPT_PASS(__func)                     \
     optContext.passHasDoneSomething = false; \

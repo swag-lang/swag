@@ -5,7 +5,7 @@
 #include "Ast.h"
 #include "Module.h"
 #include "ErrorIds.h"
-#include "ScopedLock.h"
+#include "Mutex.h"
 
 SymbolName* SymTable::find(const Utf8& name, uint32_t crc)
 {

@@ -6,7 +6,7 @@
 #include "VectorNative.h"
 #include "Runtime.h"
 #include "CommandLine.h"
-#include "ScopedLock.h"
+#include "Mutex.h"
 
 struct Scope;
 struct TypeInfo;

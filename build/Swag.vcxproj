@@ -259,7 +259,7 @@
     <ClInclude Include="..\src\FetchModuleFileSystemJob.h" />
     <ClInclude Include="..\src\PrepCompilerMsgJob.h" />
     <ClInclude Include="..\src\RaceCondition.h" />
-    <ClInclude Include="..\src\ScopedLock.h" />
+    <ClInclude Include="..\src\Mutex.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="../src/Allocator.cpp" />

@@ -4,7 +4,8 @@
 #include "Os.h"
 #include "Log.h"
 #include "ErrorIds.h"
-#include "ScopedLock.h"
+#include "Mutex.h"
+#include "Timer.h"
 
 const uint64_t ALLOCATOR_BUCKET_SIZE = 1024 * 1024;
 

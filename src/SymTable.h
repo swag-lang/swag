@@ -2,7 +2,7 @@
 #include "DependentJobs.h"
 #include "Register.h"
 #include "RegisterList.h"
-#include "ScopedLock.h"
+#include "Mutex.h"
 struct Scope;
 struct SourceFile;
 struct Token;
