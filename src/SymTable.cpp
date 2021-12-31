@@ -128,7 +128,8 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(JobContext*    context,
         *resultName = symbol;
 
     ScopedLock      lock(symbol->mutex);
-    SymbolOverload* result = nullptr;
+    SymbolOverload* result           = nullptr;
+    SymbolOverload* resultIncomplete = nullptr;
     if (flags & OVERLOAD_STORE_SYMBOLS)
         node->resolvedSymbolName = symbol;
 
@@ -143,8 +144,10 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(JobContext*    context,
         {
             if (resolved->typeInfo == typeInfo && (resolved->flags & OVERLOAD_INCOMPLETE))
             {
-                result = resolved;
-                result->flags &= ~OVERLOAD_INCOMPLETE;
+                resultIncomplete = resolved;
+                result           = resolved;
+                resultIncomplete->mutexIncomplete.lock();
+                resultIncomplete->flags &= ~OVERLOAD_INCOMPLETE;
                 break;
             }
         }
@@ -198,6 +201,9 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(JobContext*    context,
         else if (symbol->kind == SymbolKind::Struct)
             symbol->dependentJobs.setRunning();
     }
+
+    if (resultIncomplete)
+        resultIncomplete->mutexIncomplete.unlock();
 
     return result;
 }
@@ -581,7 +587,7 @@ void SymTableHash::remove(SymbolName* data)
     {
         if (buffer[idx].hash == crc && buffer[idx].symbolName == data)
         {
-            buffer[idx].hash = 0;
+            buffer[idx].hash       = 0;
             buffer[idx].symbolName = nullptr;
             return;
         }

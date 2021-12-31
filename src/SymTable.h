@@ -68,6 +68,7 @@ struct SymbolOverload
     uint64_t      attributeFlags = 0;
     uint32_t      flags          = 0;
     uint32_t      storageIndex   = 0;
+    SharedMutex   mutexIncomplete;
 };
 
 struct SymbolName
