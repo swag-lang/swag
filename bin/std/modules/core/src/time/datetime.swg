@@ -26,13 +26,13 @@ struct DateTime
 
 impl DateTime
 {
-    func opEquals(self, other: Self)->bool
+    mtdc opEquals(other: Self)->bool
     {
         return Memory.compare(self, other, cast(uint) @sizeof(Self)) == 0
     }
 
     // Returns true if this is a valid datatime
-    func isValid(using self)->bool
+    mtdc isValid()->bool
     {
         if year == 0 or year > 9999 return false
         if month == 0 or month > 12 return false
@@ -45,7 +45,7 @@ impl DateTime
     }
 
     // Returns the day of week of the current date
-    func dayOfWeek(using self)->DayOfWeek
+    mtdc dayOfWeek()->DayOfWeek
     {
         m := (month + 9) % 12
         y := year - m/10

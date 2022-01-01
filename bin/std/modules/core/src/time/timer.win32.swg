@@ -23,7 +23,7 @@ impl Timer
     }
 
     // Initialize timer
-    func init(using self, elapsedTimeMs: u32, lambda: func(Timer), periodic = false) throw
+    mtd init(elapsedTimeMs: u32, lambda: func(Timer), periodic = false) throw
     {
         Debug.assert(handle == null)
         Debug.assert(elapsedTimeMs > 0)
@@ -34,7 +34,7 @@ impl Timer
     }
 
     // Release the timer
-    func release(using self)
+    mtd release()
     {
         if !handle
             return

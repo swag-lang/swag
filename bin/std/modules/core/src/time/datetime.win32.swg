@@ -4,7 +4,7 @@ using Win32
 
 impl DateTime
 {
-    func setSYSTEMTIME(using self, systemTime: SYSTEMTIME)
+    mtd setSYSTEMTIME(systemTime: SYSTEMTIME)
     {
         using systemTime
         day         = wDay
@@ -31,7 +31,7 @@ public impl DateTime
     }
 
     // Initialize the structure with the current local date and time
-    func setNow(using self)
+    mtd setNow()
     {
         var systemTime: SYSTEMTIME = ?
         GetLocalTime(&systemTime)

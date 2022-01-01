@@ -16,7 +16,7 @@ struct FrameTiming
 impl FrameTiming
 {
     // Update frame timers
-    func update(using self)
+    mtd update()
     {
         newTick := nowPrecise()
         if paused
@@ -41,13 +41,13 @@ impl FrameTiming
     }
 
     // Pause frame timing & count
-    func pause(using self)
+    mtd pause()
     {
         paused = true
     }
 
     // Unpause frame timing & count
-    func unpause(using self)
+    mtd unpause()
     {
         if !paused
             return

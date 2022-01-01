@@ -9,7 +9,7 @@ struct TimeSpan
 
 impl TimeSpan
 {
-    func opCmp(using self, other: Self)->s32
+    mtd opCmp(other: Self)->s32
     {
         return ticks <=> other.ticks
     }
@@ -22,7 +22,7 @@ impl TimeSpan
     }
 
     // Initialize the TimeSpan with the current date and time
-    func setNow(using self)
+    mtd setNow()
     {
         dateTime := DateTime.now()
         using dateTime
@@ -41,7 +41,7 @@ impl TimeSpan
     }
 
     // Converts a TimeSpan to a DateTime
-    func toDateTime(using self)->DateTime
+    mtd toDateTime()->DateTime
     {
         var dateTime: retval = ?
         using dateTime
@@ -51,14 +51,14 @@ impl TimeSpan
     }
 
     // Add or remove the given amount of years to the TimeSpan
-    func addYears(using self, years: s32)
+    mtd addYears(years: s32)
     {
         Debug.assert(-10000 <= years and years <= 10000, "overflow")
         addMonths(years * 12)
     }
 
     // Add or remove the given amount of months to the TimeSpan
-    func addMonths(using self, months: s32)
+    mtd addMonths(months: s32)
     {
         Debug.assert(-120000 <= months and months <= 120000, "overflow")
         (y, m, d) := ticksToDate(ticks)
@@ -81,7 +81,7 @@ impl TimeSpan
     }
 
     // Add or remove the given amount of days to the TimeSpan
-    func addDays(using self, days: s32)
+    mtd addDays(days: s32)
     {
         if days > 0
             add(cast(u32) days, MillisPerDay)
@@ -90,7 +90,7 @@ impl TimeSpan
     }
 
     // Add or remove the given amount of hours to the TimeSpan
-    func addHours(using self, hours: s32)
+    mtd addHours(hours: s32)
     {
         if hours > 0
             add(cast(u32) hours, MillisPerHour)
@@ -99,7 +99,7 @@ impl TimeSpan
     }
 
     // Add or remove the given amount of minutes to the TimeSpan
-    func addMinutes(using self, minutes: s32)
+    mtd addMinutes(minutes: s32)
     {
         if minutes > 0
             add(cast(u32) minutes, MillisPerMinute)
@@ -108,7 +108,7 @@ impl TimeSpan
     }
 
     // Add or remove the given amount of minutes to the TimeSpan
-    func addSeconds(using self, seconds: s32)
+    mtd addSeconds(seconds: s32)
     {
         if seconds > 0
             add(cast(u32) seconds, MillisPerSecond)
@@ -117,7 +117,7 @@ impl TimeSpan
     }
 
     // Add or remove the given amount of minutes to the TimeSpan
-    func addMilliSeconds(using self, milliSeconds: s32)
+    mtd addMilliSeconds(milliSeconds: s32)
     {
         if milliSeconds > 0
             add(cast(u32) milliSeconds, 1)
@@ -125,13 +125,13 @@ impl TimeSpan
             remove(cast(u32) -milliSeconds, 1)
     }
 
-    func totalDays(using self)         => ticks * (1.0'f64 / TicksPerDay)
-    func totalHours(using self)        => ticks * (1.0'f64 / TicksPerHour)
-    func totalMinutes(using self)      => ticks * (1.0'f64 / TicksPerMinute)
-    func totalSeconds(using self)      => ticks * (1.0'f64 / TicksPerSecond)
-    func totalMilliSeconds(using self) => ticks * (1.0'f64 / TicksPerMilliSecond)
+    mtd totalDays()         => ticks * (1.0'f64 / TicksPerDay)
+    mtd totalHours()        => ticks * (1.0'f64 / TicksPerHour)
+    mtd totalMinutes()      => ticks * (1.0'f64 / TicksPerMinute)
+    mtd totalSeconds()      => ticks * (1.0'f64 / TicksPerSecond)
+    mtd totalMilliSeconds() => ticks * (1.0'f64 / TicksPerMilliSecond)
 
-    private func add(using self, value: u32, scale: u64)
+    private mtd add(value: u32, scale: u64)
     {
         millis := value * scale
         Debug.assert(millis <= MaxMillis, "overflow")
@@ -140,7 +140,7 @@ impl TimeSpan
         ticks += millis
     }
 
-    private func remove(using self, value: u32, scale: u64)
+    private mtd remove(value: u32, scale: u64)
     {
         millis := value * scale
         Debug.assert(millis <= MaxMillis, "overflow")
