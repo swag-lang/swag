@@ -44,6 +44,18 @@ v.add(#code @print(a))
 -------------------------------------
 [*] type (pointeur sur zone mémoire, et pas sur element)
 -------------------------------------
+4'ms  4's   10'°c
+-------------------------------------
+
+
+
+****************************************
+STRANGE
+****************************************
+- Syntax étrange macro & alias : Utf8.visitRunes(|r| str)
+- tuple, {x, y: s32} pas possible, car 'x' peut être un type seul {s32, x: s32}
+- lambda, on peut pas mettre de noms aux paramètres x: func(x, y: s32)
+
 
 
 

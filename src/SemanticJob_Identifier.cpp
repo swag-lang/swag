@@ -2680,9 +2680,12 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
         if (!checkWait)
         {
             // If we dereference something, be sure the owner has been completed
-            job->waitTypeCompleted(startScope->owner->typeInfo);
-            if (context->result == ContextResult::Pending)
-                return true;
+            if (identifierRef->startScope)
+            {
+                job->waitTypeCompleted(identifierRef->startScope->owner->typeInfo);
+                if (context->result == ContextResult::Pending)
+                    return true;
+            }
 
             // Same if dereference is implied by a using var
             for (auto& sv : scopeHierarchyVars)
@@ -3666,6 +3669,9 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
     auto  identifierRef      = node->identifierRef;
 
     node->byteCodeFct = ByteCodeGenJob::emitIdentifier;
+
+    if (node->token.text == "xxxx")
+        int a = 0;
 
     // Current file scope
     if (context->sourceFile && context->sourceFile->scopeFile && node->token.text == context->sourceFile->scopeFile->name)
