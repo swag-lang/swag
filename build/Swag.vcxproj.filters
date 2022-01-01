@@ -488,6 +488,9 @@
     <ClCompile Include="..\src\SemanticJob_Literal.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\SemanticJob_IdentifierError.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/JobThread.h">

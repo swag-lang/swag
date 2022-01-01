@@ -91,7 +91,7 @@ func toto(x: s32, y = Values.A)
     @assert(result.y == 2)
     @assert(result.item1 == 2)
 
-    // You can destructure the returned tuple
+    // You can deconstruct the returned tuple
     (x, y) := returns2()
     @assert(x == 1)
     @assert(y == 2)

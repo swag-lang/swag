@@ -160,6 +160,13 @@ struct OneSymbolMatch
     }
 };
 
+enum class IdentifierSearchFor
+{
+    Whatever,
+    Type,
+    Function
+};
+
 static const uint32_t COLLECT_ALL       = 0x00000000;
 static const uint32_t COLLECT_BACKTICK  = 0x00000001;
 static const uint32_t COLLECT_NO_STRUCT = 0x00000002;
@@ -246,7 +253,7 @@ struct SemanticJob : public Job
     static void         setupContextualGenericTypeReplacement(SemanticContext* context, OneTryMatch& oneTryMatch, SymbolOverload* symOverload, uint32_t flags);
     static void         getDiagnosticForMatch(SemanticContext* context, OneTryMatch& oneTry, vector<const Diagnostic*>& result0, vector<const Diagnostic*>& result1);
     static void         symbolErrorRemarks(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node, Diagnostic* diag);
-    static void         symbolNotFoundHint(SemanticContext* context, AstNode* node, VectorNative<AlternativeScope>& scopeHierarchy, vector<Utf8>& best);
+    static void         findClosestMatches(SemanticContext* context, IdentifierSearchFor searchFor, AstNode* node, VectorNative<AlternativeScope>& scopeHierarchy, vector<Utf8>& best);
     static bool         isFunctionButNotACall(SemanticContext* context, AstNode* node, SymbolName* symbol);
     static void         symbolErrorNotes(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node, Diagnostic* diag, vector<const Diagnostic*>& notes);
     static bool         cannotMatchIdentifierError(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node);
@@ -283,6 +290,7 @@ struct SemanticJob : public Job
     static bool         resolveIdentifier(SemanticContext* context, AstIdentifier* node, bool forGhosting);
     static TypeInfo*    findTypeInContext(SemanticContext* context, AstNode* node);
     static void         addDependentSymbol(VectorNative<OneSymbolMatch>& symbols, SymbolName* symName, Scope* scope, uint32_t asflags);
+    static void         unknownIdentifier(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node);
     static bool         findIdentifierInScopes(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node);
     static bool         ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* identifierRef, OneMatch& match);
     static bool         instantiateGenericSymbol(SemanticContext* context, OneGenericMatch& firstMatch, bool forStruct);
