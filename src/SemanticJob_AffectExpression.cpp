@@ -214,13 +214,33 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                     if (leftTypeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
                         return context->report({node, g_E[Err0574]});
 
-                    if (!hasUserOp(context, g_LangSpec->name_opAffect, left))
+                    if (right->semFlags & AST_SEM_LITERAL_SUFFIX)
                     {
-                        Utf8 msg = Utf8::format(g_E[Err0908], leftTypeInfo->getDisplayName().c_str(), rightTypeInfo->getDisplayName().c_str(), leftTypeInfo->getDisplayName().c_str());
-                        return context->report({node, msg});
-                    }
+                        SWAG_ASSERT(right->kind == AstNodeKind::Literal);
+                        auto suffix = right->childs.front()->token.text;
+                        if (!hasUserOp(context, g_LangSpec->name_opAffectSuffix, left))
+                        {
+                            Utf8 msg  = Utf8::format(g_E[Err0889], leftTypeInfo->getDisplayName().c_str(), rightTypeInfo->getDisplayName().c_str(), leftTypeInfo->getDisplayName().c_str());
+                            auto note = new Diagnostic{right->childs.front(), Utf8::format(g_E[Nte0057], suffix.c_str()), DiagnosticLevel::Note};
+                            return context->report({node, msg}, note);
+                        }
 
-                    SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAffect, nullptr, nullptr, left, right, false));
+                        SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAffectSuffix, suffix, nullptr, left, right, false));
+                        if (context->result != ContextResult::Done)
+                            return true;
+                    }
+                    else
+                    {
+                        if (!hasUserOp(context, g_LangSpec->name_opAffect, left))
+                        {
+                            Utf8 msg = Utf8::format(g_E[Err0908], leftTypeInfo->getDisplayName().c_str(), rightTypeInfo->getDisplayName().c_str(), leftTypeInfo->getDisplayName().c_str());
+                            return context->report({node, msg});
+                        }
+
+                        SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAffect, nullptr, nullptr, left, right, false));
+                        if (context->result != ContextResult::Done)
+                            return true;
+                    }
                 }
             }
 

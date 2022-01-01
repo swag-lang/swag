@@ -818,13 +818,14 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 if (node->assignment->semFlags & AST_SEM_LITERAL_SUFFIX)
                 {
                     SWAG_ASSERT(node->assignment->kind == AstNodeKind::Literal);
+                    auto suffix = node->assignment->childs.front()->token.text;
                     if (!hasUserOp(context, g_LangSpec->name_opAffectSuffix, node->type))
                     {
-                        Utf8 msg = Utf8::format(g_E[Err0889], leftConcreteType->getDisplayName().c_str(), rightConcreteType->getDisplayName().c_str(), node->type->typeInfo->getDisplayName().c_str());
-                        return context->report({node, msg});
+                        Utf8 msg  = Utf8::format(g_E[Err0889], leftConcreteType->getDisplayName().c_str(), rightConcreteType->getDisplayName().c_str(), node->type->typeInfo->getDisplayName().c_str());
+                        auto note = new Diagnostic{node->assignment->childs.front(), Utf8::format(g_E[Nte0057], suffix.c_str()), DiagnosticLevel::Note};
+                        return context->report({node, msg}, note);
                     }
 
-                    auto suffix = node->assignment->childs.front()->token.text;
                     SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAffectSuffix, suffix, nullptr, node->type, node->assignment, false));
                     if (context->result == ContextResult::Pending)
                         return true;
