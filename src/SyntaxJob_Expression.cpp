@@ -17,7 +17,11 @@ bool SyntaxJob::doLiteral(AstNode* parent, AstNode** result)
     if (token.id == TokenId::SymQuote)
     {
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(doTypeExpression(node));
+
+        auto identifierRef         = Ast::newNode<AstIdentifierRef>(this, AstNodeKind::IdentifierRef, sourceFile, node);
+        identifierRef->semanticFct = SemanticJob::resolveIdentifierRef;
+        SWAG_CHECK(doIdentifier(identifierRef, IDENTIFIER_NO_PARAMS | IDENTIFIER_TYPE_DECL));
+        identifierRef->childs.back()->semanticFct = SemanticJob::resolveLiteralSuffix;
     }
 
     return true;
@@ -215,7 +219,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, A
         SWAG_CHECK(doIdentifierRef(parent, &idref));
         if (result)
             *result = idref;
-        ((AstIdentifierRef*)idref)->specFlags |= AST_SPEC_IDENTIFIERREF_AUTO_SCOPE;
+        ((AstIdentifierRef*) idref)->specFlags |= AST_SPEC_IDENTIFIERREF_AUTO_SCOPE;
         break;
     }
 

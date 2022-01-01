@@ -351,6 +351,7 @@ struct SemanticJob : public Job
     static bool resolveIntrinsicTypeOf(SemanticContext* context);
     static bool resolveIntrinsicProperty(SemanticContext* context);
     static bool resolveLiteral(SemanticContext* context);
+    static bool resolveLiteralSuffix(SemanticContext* context);
     static bool resolveGetErr(SemanticContext* context);
     static bool resolveIndex(SemanticContext* context);
     static bool resolveBreak(SemanticContext* context);

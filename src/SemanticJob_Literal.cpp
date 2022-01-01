@@ -5,6 +5,8 @@
 #include "TypeManager.h"
 #include "ErrorIds.h"
 #include "Version.h"
+#include "LanguageSpec.h"
+#include "Ast.h"
 
 bool SemanticJob::getDigitHexa(SemanticContext* context, const char** _pz, int& result, const char* errMsg)
 {
@@ -359,6 +361,28 @@ Utf8 SemanticJob::checkLiteralType(ComputedValue& computedValue, Token& token, T
     }
 
     return "";
+}
+
+bool SemanticJob::resolveLiteralSuffix(SemanticContext* context)
+{
+    auto node = context->node;
+
+    // Can be a predefined native type
+    if (node->token.id == TokenId::NativeType)
+    {
+        auto it = g_LangSpec->nativeTypes.find(node->token.text);
+        SWAG_ASSERT(it);
+        node->typeInfo = TypeManager::literalTypeToType(*it);
+        return true;
+    }
+
+    if (node->token.id != TokenId::Identifier)
+        return context->internalError("resolveLiteralSuffix, invalid token");
+
+    // Search if identifier is a type
+    auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
+    //identifier->identifierRef->flags |= AST_SILENT_CHECK;
+    return resolveIdentifier(context, identifier, false);
 }
 
 bool SemanticJob::resolveLiteral(SemanticContext* context)
