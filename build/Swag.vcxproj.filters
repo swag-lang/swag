@@ -485,6 +485,9 @@
     <ClCompile Include="..\src\BackendX64_CCLocal.cpp">
       <Filter>Backend\X64</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\SemanticJob_Literal.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/JobThread.h">
