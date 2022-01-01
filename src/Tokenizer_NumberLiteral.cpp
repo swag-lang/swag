@@ -315,6 +315,8 @@ bool Tokenizer::doNumberLiteral(uint32_t c, Token& token)
     if (c == '0')
     {
         unsigned offset;
+        auto     startLoc = token.startLocation;
+
         c = getCharNoSeek(offset);
 
         // Hexadecimal
@@ -339,9 +341,9 @@ bool Tokenizer::doNumberLiteral(uint32_t c, Token& token)
 
         if (SWAG_IS_ALPHA(c))
         {
-            token.startLocation = location;
             treatChar(c, offset);
-            token.text = c;
+            token.text          = c;
+            token.startLocation = startLoc;
             return error(token, Utf8::format(g_E[Err0467], token.text.c_str()));
         }
     }
