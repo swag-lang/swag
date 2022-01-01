@@ -815,15 +815,32 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         {
             if ((leftConcreteType->kind != rightConcreteType->kind) || !rightConcreteType->isSame(leftConcreteType, ISSAME_CAST))
             {
-                if (!hasUserOp(context, g_LangSpec->name_opAffect, node->type))
+                if (node->assignment->semFlags & AST_SEM_LITERAL_SUFFIX)
                 {
-                    Utf8 msg = Utf8::format(g_E[Err0908], leftConcreteType->getDisplayName().c_str(), rightConcreteType->getDisplayName().c_str(), node->type->typeInfo->getDisplayName().c_str());
-                    return context->report({node, msg});
-                }
+                    SWAG_ASSERT(node->assignment->kind == AstNodeKind::Literal);
+                    if (!hasUserOp(context, g_LangSpec->name_opAffectSuffix, node->type))
+                    {
+                        Utf8 msg = Utf8::format(g_E[Err0889], leftConcreteType->getDisplayName().c_str(), rightConcreteType->getDisplayName().c_str(), node->type->typeInfo->getDisplayName().c_str());
+                        return context->report({node, msg});
+                    }
 
-                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAffect, nullptr, nullptr, node->type, node->assignment, false));
-                if (context->result == ContextResult::Pending)
-                    return true;
+                    auto suffix = node->assignment->childs.front()->token.text;
+                    SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAffectSuffix, suffix, nullptr, node->type, node->assignment, false));
+                    if (context->result == ContextResult::Pending)
+                        return true;
+                }
+                else
+                {
+                    if (!hasUserOp(context, g_LangSpec->name_opAffect, node->type))
+                    {
+                        Utf8 msg = Utf8::format(g_E[Err0908], leftConcreteType->getDisplayName().c_str(), rightConcreteType->getDisplayName().c_str(), node->type->typeInfo->getDisplayName().c_str());
+                        return context->report({node, msg});
+                    }
+
+                    SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAffect, nullptr, nullptr, node->type, node->assignment, false));
+                    if (context->result == ContextResult::Pending)
+                        return true;
+                }
 
                 // :opAffectConstExpr
                 if (symbolFlags & (OVERLOAD_VAR_STRUCT | OVERLOAD_VAR_GLOBAL))

@@ -62,6 +62,12 @@ impl Struct
     func opAffect(using self, other: OneType) {}
     func opAffect(using self, other: AnotherType) {}
 
+    // Generic function, can be overloaded
+    // Affect struct with a literal value with a specified suffix
+    // Called by '='
+    func(suffix: string) opAffectSuffix(using self, value: OneType) {}
+    func(suffix: string) opAffectSuffix(using self, value: AnotherType) {}
+
     // Can be overloaded
     // Affect struct with another value at a given index
     // Called by '[] ='

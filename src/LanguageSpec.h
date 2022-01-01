@@ -95,6 +95,7 @@ struct LanguageSpec
     Utf8 name_opCount;
     Utf8 name_opData;
     Utf8 name_opAffect;
+    Utf8 name_opAffectSuffix;
     Utf8 name_opSlice;
     Utf8 name_opIndex;
     Utf8 name_opIndexAffect;

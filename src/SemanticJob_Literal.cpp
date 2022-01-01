@@ -380,8 +380,19 @@ bool SemanticJob::resolveLiteralSuffix(SemanticContext* context)
     if (node->token.id == TokenId::Identifier)
     {
         auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
-        //identifier->identifierRef->flags |= AST_SILENT_CHECK;
-        return resolveIdentifier(context, identifier, false);
+
+        // We do not want error. If identifier is not known, then we consider it as a 'user' suffix
+        identifier->identifierRef->flags |= AST_SILENT_CHECK;
+
+        auto res = resolveIdentifier(context, identifier, false);
+        if (context->result != ContextResult::Done)
+            return true;
+        if (res && identifier->typeInfo)
+            return true;
+
+        SWAG_ASSERT(node->parent->parent && node->parent->parent->kind == AstNodeKind::Literal);
+        node->parent->parent->semFlags |= AST_SEM_LITERAL_SUFFIX;
+        return true;
     }
 
     return context->internalError("resolveLiteralSuffix, invalid token");
@@ -450,17 +461,20 @@ bool SemanticJob::resolveLiteral(SemanticContext* context)
 
     processLiteralString(context);
 
-    // No suffix
-    if (node->childs.empty())
+    // Suffix
+    auto suffix = node->childs.empty() ? nullptr : node->childs.front();
+    if (!suffix || !suffix->typeInfo)
     {
+        // If there's a suffix without a type, then this should be a 'user' suffix
+        // Literal must have been flagged
+        SWAG_ASSERT(!suffix || node->semFlags & AST_SEM_LITERAL_SUFFIX);
+
         // By default, a float without a suffix is considered as f32 (not f64 like in C).
         if (node->typeInfo->isNative(NativeTypeKind::F32) && token.literalType == LiteralType::TT_UNTYPED_FLOAT)
             node->computedValue->reg.f32 = (float) token.literalValue.f64;
         return true;
     }
 
-    auto suffix = node->childs.front();
-    SWAG_ASSERT(suffix->typeInfo);
     SWAG_VERIFY(suffix->typeInfo->kind == TypeInfoKind::Native, context->report({suffix, Utf8::format(g_E[Err0437], suffix->typeInfo->getDisplayName().c_str())}));
 
     switch (suffix->typeInfo->nativeType)

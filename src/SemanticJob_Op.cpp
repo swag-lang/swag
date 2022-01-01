@@ -89,7 +89,7 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
     }
 
     // Generic operator must have one generic parameter of type string
-    if (name == g_LangSpec->name_opBinary || name == g_LangSpec->name_opUnary || name == g_LangSpec->name_opAssign || name == g_LangSpec->name_opIndexAssign)
+    if (name == g_LangSpec->name_opBinary || name == g_LangSpec->name_opUnary || name == g_LangSpec->name_opAssign || name == g_LangSpec->name_opIndexAssign || name == g_LangSpec->name_opAffectSuffix)
     {
         SWAG_VERIFY(node->genericParameters && node->genericParameters->childs.size() == 1, context->report({node, Utf8::format(g_E[Err0071], name.c_str())}));
         auto firstGen = node->genericParameters->childs.front();
@@ -156,6 +156,12 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
         SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, g_TypeMgr->typeInfoVoid));
     }
     else if (name == g_LangSpec->name_opAffect)
+    {
+        SWAG_CHECK(checkFuncPrototypeOpNumParams(context, node, parameters, 2));
+        SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, g_TypeMgr->typeInfoVoid));
+        SWAG_VERIFY(!parameters->childs[1]->typeInfo->isSame(typeStruct, ISSAME_CAST | ISSAME_EXACT), context->report({parameters->childs[1], Utf8::format(g_E[Err0077], name.c_str(), typeStruct->name.c_str())}));
+    }
+    else if (name == g_LangSpec->name_opAffectSuffix)
     {
         SWAG_CHECK(checkFuncPrototypeOpNumParams(context, node, parameters, 2));
         SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, g_TypeMgr->typeInfoVoid));

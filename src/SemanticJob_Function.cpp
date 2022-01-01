@@ -494,8 +494,8 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         }
     }
 
-    SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_COMPLETE) || funcNode->token.text == g_LangSpec->name_opAffect, context->report({funcNode, Utf8::format(g_E[Err0753], funcNode->token.text.c_str())}));
-    SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_IMPLICIT) || funcNode->token.text == g_LangSpec->name_opAffect || funcNode->token.text == g_LangSpec->name_opCast, context->report({funcNode, Utf8::format(g_E[Err0754], funcNode->token.text.c_str())}));
+    SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_COMPLETE) || funcNode->token.text == g_LangSpec->name_opAffect || funcNode->token.text == g_LangSpec->name_opAffectSuffix, context->report({funcNode, Utf8::format(g_E[Err0753], funcNode->token.text.c_str())}));
+    SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_IMPLICIT) || funcNode->token.text == g_LangSpec->name_opAffect || funcNode->token.text == g_LangSpec->name_opAffectSuffix || funcNode->token.text == g_LangSpec->name_opCast, context->report({funcNode, Utf8::format(g_E[Err0754], funcNode->token.text.c_str())}));
     SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_NO_RETURN) || (funcNode->attributeFlags & (ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO)), context->report({funcNode, Utf8::format(g_E[Err0755], funcNode->getDisplayName().c_str())}));
 
     // implicit attribute cannot be used on a generic function
