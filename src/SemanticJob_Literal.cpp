@@ -376,13 +376,15 @@ bool SemanticJob::resolveLiteralSuffix(SemanticContext* context)
         return true;
     }
 
-    if (node->token.id != TokenId::Identifier)
-        return context->internalError("resolveLiteralSuffix, invalid token");
-
     // Search if identifier is a type
-    auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
-    //identifier->identifierRef->flags |= AST_SILENT_CHECK;
-    return resolveIdentifier(context, identifier, false);
+    if (node->token.id == TokenId::Identifier)
+    {
+        auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
+        //identifier->identifierRef->flags |= AST_SILENT_CHECK;
+        return resolveIdentifier(context, identifier, false);
+    }
+
+    return context->internalError("resolveLiteralSuffix, invalid token");
 }
 
 bool SemanticJob::resolveLiteral(SemanticContext* context)
