@@ -126,7 +126,9 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
             auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
             if (!(typeFunc->declNode->attributeFlags & ATTRIBUTE_IMPLICIT) && !(castFlags & CASTFLAG_EXPLICIT))
                 continue;
-            if (typeFunc->parameters.size() > 1 && typeFunc->parameters[1]->typeInfo->isSame(fromType, ISSAME_EXACT))
+            if (typeFunc->parameters.size() <= 1)
+                continue;
+            if (makeCompatibles(context, typeFunc->parameters[1]->typeInfo, fromType, nullptr, nullptr, CASTFLAG_NO_LAST_MINUTE | CASTFLAG_TRY_COERCE | CASTFLAG_NO_ERROR | CASTFLAG_JUST_CHECK))
                 toAffect.push_back(over);
         }
 
@@ -220,10 +222,13 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
 bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
     // Last minute change : convert 'fromType' (struct) to 'toType' with an opCast
-    if (tryOpCast(context, toType, fromType, fromNode, castFlags))
-        return true;
-    if (tryOpAffect(context, toType, fromType, fromNode, castFlags))
-        return true;
+    if (!(castFlags & CASTFLAG_NO_LAST_MINUTE))
+    {
+        if (tryOpCast(context, toType, fromType, fromNode, castFlags))
+            return true;
+        if (tryOpAffect(context, toType, fromType, fromNode, castFlags))
+            return true;
+    }
 
     if (!(castFlags & CASTFLAG_NO_ERROR))
     {
