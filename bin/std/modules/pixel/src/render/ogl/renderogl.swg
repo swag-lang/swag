@@ -279,18 +279,16 @@ impl RenderOgl
     }
 
     // Rotate the world transform
-    mtd rotateTransform(angle: f32)
+    mtd rotateTransform(angle: Math.Angle)
     {
-        rad := Math.toRadians(angle)
-        tr := Transform2.createRotation(rad, 0, 0)
+        tr := Transform2.createRotation(angle.rad, 0, 0)
         worldTransform.multiply(tr)
     }
 
     // Rotate the world transform
-    mtd rotateTransform(angle: f32, centerX, centerY: f32)
+    mtd rotateTransform(angle: Math.Angle, centerX, centerY: f32)
     {
-        rad := Math.toRadians(angle)
-        tr := Transform2.createRotation(rad, centerX, centerY)
+        tr := Transform2.createRotation(angle.rad, centerX, centerY)
         worldTransform.multiply(tr)
     }
 

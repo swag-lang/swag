@@ -402,23 +402,21 @@ impl Painter
     }
 
     // Set the paint rotation, in degrees
-    mtd rotateTransform(angle: f32)
+    mtd rotateTransform(angle: Math.Angle)
     {
-        if isZeroEpsilon(angle)
+        if isZeroEpsilon(angle.rad)
             return
-        rad := toRadians(angle)
-        tr := Transform2.createRotation(rad, 0, 0)
+        tr := Transform2.createRotation(angle.rad, 0, 0)
         curState.transform.multiply(tr)
         setTransform(curState.transform)
     }
 
     // Set the paint rotation, in degrees
-    mtd rotateTransform(angle: f32, centerX, centerY: f32)
+    mtd rotateTransform(angle: Math.Angle, centerX, centerY: f32)
     {
-        if isZeroEpsilon(angle)
+        if isZeroEpsilon(angle.rad)
             return
-        rad := toRadians(angle)
-        tr := Transform2.createRotation(rad, centerX, centerY)
+        tr := Transform2.createRotation(angle.rad, centerX, centerY)
         curState.transform.multiply(tr)
         setTransform(curState.transform)
     }

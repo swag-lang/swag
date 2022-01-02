@@ -19,7 +19,8 @@ namespace Res
 var g_ModeAA:       bool = true
 var g_PaintQuality: PaintQuality = Normal
 var g_Pattern:      bool = true
-var g_Page:         s32 = 4
+var g_Page:         s32 = 2
+var g_Angle:        f32 = 0
 const MaxPages = 7
 
 func dataPath()->String
@@ -242,7 +243,7 @@ func displayPage2(painter: *Pixel.Painter)
     painter.setInterpolationMode(InterpolationMode.Linear)
     painter.drawTexture(50, 110, 96, 96, Res.image0)
 
-    painter.rotateTransform(45, 100, 300)
+    painter.rotateTransform(45.0'deg, 100, 300)
     painter.drawTexture(50, 250, 96, 96, Res.image0)
 
     painter.resetTransform()
