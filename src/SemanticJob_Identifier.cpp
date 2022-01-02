@@ -2575,13 +2575,9 @@ bool SemanticJob::solveSelectIf(SemanticContext* context, OneMatch* oneMatch, As
         else
             expNode.type = JobContext::ErrorContextType::SelectIf;
 
-        context->errorContextStack.push_back(expNode);
-
-        auto result                 = executeCompilerNode(context, expr, false);
+        PushErrContext ec(context, expNode);
+        auto           result       = executeCompilerNode(context, expr, false);
         context->selectIfParameters = nullptr;
-
-        context->errorContextStack.pop_back();
-
         if (!result)
             return false;
         if (context->result != ContextResult::Done)

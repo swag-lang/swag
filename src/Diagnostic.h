@@ -164,6 +164,7 @@ struct PushErrContext
     }
 
     PushErrContext(JobContext* context, const JobContext::ErrorContext& expNode)
+        : cxt{context}
     {
         context->errorContextStack.push_back(expNode);
     }

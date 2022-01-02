@@ -70,11 +70,12 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
     }
 
     // Request to generate the corresponding bytecode
-    context->errorContextStack.push_back({node, JobContext::ErrorContextType::Node});
-    ByteCodeGenJob::askForByteCode(context->job, node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED);
-    context->errorContextStack.pop_back();
-    if (context->result != ContextResult::Done)
-        return true;
+    {
+        PushErrContext ec(context, node, JobContext::ErrorContextType::Node);
+        ByteCodeGenJob::askForByteCode(context->job, node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED);
+        if (context->result != ContextResult::Done)
+            return true;
+    }
 
     // Be sure we can deal with the type at compile time
     ExecuteNodeParams execParams;
@@ -118,11 +119,12 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
                 extension->resolvedUserOpSymbolOverload = nullptr;
                 SWAG_ASSERT(execParams.specReturnOpCount);
 
-                context->errorContextStack.push_back({node, JobContext::ErrorContextType::Node});
-                ByteCodeGenJob::askForByteCode(context->job, execParams.specReturnOpCount->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
-                context->errorContextStack.pop_back();
-                if (context->result != ContextResult::Done)
-                    return true;
+                {
+                    PushErrContext ec(context, node, JobContext::ErrorContextType::Node);
+                    ByteCodeGenJob::askForByteCode(context->job, execParams.specReturnOpCount->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
+                    if (context->result != ContextResult::Done)
+                        return true;
+                }
 
                 // opSlice
                 AstNode tmpNode;
@@ -138,11 +140,12 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
                 extension->resolvedUserOpSymbolOverload = nullptr;
                 SWAG_ASSERT(execParams.specReturnOpSlice);
 
-                context->errorContextStack.push_back({node, JobContext::ErrorContextType::Node});
-                ByteCodeGenJob::askForByteCode(context->job, execParams.specReturnOpSlice->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
-                context->errorContextStack.pop_back();
-                if (context->result != ContextResult::Done)
-                    return true;
+                {
+                    PushErrContext ec(context, node, JobContext::ErrorContextType::Node);
+                    ByteCodeGenJob::askForByteCode(context->job, execParams.specReturnOpSlice->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
+                    if (context->result != ContextResult::Done)
+                        return true;
+                }
 
                 // Is the type of the slice supported ?
                 bool ok           = false;
@@ -181,11 +184,12 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
                     extension->resolvedUserOpSymbolOverload = nullptr;
                     SWAG_ASSERT(execParams.specReturnOpDrop);
 
-                    context->errorContextStack.push_back({node, JobContext::ErrorContextType::Node});
-                    ByteCodeGenJob::askForByteCode(context->job, execParams.specReturnOpDrop->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
-                    context->errorContextStack.pop_back();
-                    if (context->result != ContextResult::Done)
-                        return true;
+                    {
+                        PushErrContext ec(context, node, JobContext::ErrorContextType::Node);
+                        ByteCodeGenJob::askForByteCode(context->job, execParams.specReturnOpDrop->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
+                        if (context->result != ContextResult::Done)
+                            return true;
+                    }
                 }
 
                 break;
@@ -212,9 +216,8 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
         }
     }
 
-    context->errorContextStack.push_back({node, JobContext::ErrorContextType::Node});
+    PushErrContext ec(context, node, JobContext::ErrorContextType::Node);
     SWAG_CHECK(module->executeNode(sourceFile, node, context, &execParams));
-    context->errorContextStack.pop_back();
     return true;
 }
 

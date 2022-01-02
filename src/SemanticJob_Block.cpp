@@ -78,6 +78,7 @@ bool SemanticJob::resolveInlineBefore(SemanticContext* context)
     expNode.node = node->parent;
     expNode.type = JobContext::ErrorContextType::Inline;
     context->errorContextStack.push_back(expNode);
+
     if (node->doneFlags & AST_DONE_RESOLVE_INLINED)
         return true;
     node->doneFlags |= AST_DONE_RESOLVE_INLINED;
