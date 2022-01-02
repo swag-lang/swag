@@ -108,7 +108,7 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
     }
     else
     {
-        //SWAG_VERIFY(!node->genericParameters, context->report({ node, Utf8::format(g_E[Err0073], name.c_str()) }));
+        SWAG_VERIFY(!node->genericParameters || node->genericParameters->childs.size() == 1, context->report({node, Utf8::format(g_E[Err0450], name.c_str())}));
     }
 
     // Check each function

@@ -442,7 +442,7 @@ SWAG_ERROR(Err0446, "parameter of type `cvarargs` cannot be passed from function
 SWAG_ERROR(Err0447, "empty tuple definition")
 SWAG_ERROR(Err0448, "identifier expected")
 SWAG_ERROR(Err0449, "invalid token `%s` in tuple type, `,` or `}` are expected here")
-SWAG_ERROR(Err0450, nullptr)
+SWAG_ERROR(Err0450, "too many generic parameters for special function `%s`")
 SWAG_ERROR(Err0451, "`using` on a member is invalid in an interface definition")
 SWAG_ERROR(Err0452, nullptr)
 SWAG_ERROR(Err0453, "`var` is not necessary to declare a field inside a struct")
