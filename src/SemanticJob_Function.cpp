@@ -499,10 +499,10 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_NO_RETURN) || (funcNode->attributeFlags & (ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO)), context->report({funcNode, Utf8::format(g_E[Err0755], funcNode->getDisplayName().c_str())}));
 
     // Implicit attribute cannot be used on a generic function
-    // Can't remember why exactly (for opCast ?). 
+    // This is because "extra" generic parameters must be specified and not deduced, and this is not possible for an implicit cast
     if (funcNode->attributeFlags & ATTRIBUTE_IMPLICIT && (funcNode->flags & (AST_IS_GENERIC | AST_FROM_GENERIC)))
     {
-        if (funcNode->token.text != g_LangSpec->name_opAffectSuffix)
+        if (funcNode->token.text != g_LangSpec->name_opAffectSuffix || funcNode->genericParameters->childs.size() > 1)
             return context->report({funcNode, Utf8::format(g_E[Err0756], funcNode->getDisplayName().c_str())});
     }
 

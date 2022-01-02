@@ -679,13 +679,6 @@ static void fillUserGenericParams(SymbolMatchContext& context, VectorNative<Type
     context.genericParametersCallTypes.expand_clear(wantedNumGenericParams);
     context.genericParametersGenTypes.set_size_clear(wantedNumGenericParams);
 
-    // It's valid to not specify generic parameters. They will be deduced
-    if (numGenericParams && numGenericParams < wantedNumGenericParams)
-    {
-        context.result = MatchResult::NotEnoughGenericParameters;
-        return;
-    }
-
     if (numGenericParams > wantedNumGenericParams)
     {
         context.result = MatchResult::TooManyGenericParameters;

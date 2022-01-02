@@ -17,7 +17,7 @@ bool Generic::updateGenericParameters(SemanticContext* context, bool doType, boo
         if (doType)
         {
             // If the user has specified a generic type, take it
-            if (callGenericParameters)
+            if (callGenericParameters && i < callGenericParameters->childs.size())
             {
                 auto genParam   = callGenericParameters->childs[i];
                 param->typeInfo = genParam->typeInfo;
