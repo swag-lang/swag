@@ -1,18 +1,24 @@
-#global skip
+//#global skip
 //#global testerror
 struct Duration
 {
     val: f32
 }
 
+var G = 0
+
 impl Duration
 {
     mtd(suffix: string, T) opAffectSuffix(v: T)
     {
+        #assert suffix == "s"
+        #assert T == bool
+        G = 1
     }
 }
 
 #test
 {
-    var x: Duration = 5's
+    var x: Duration = true's
+    @assert(G == 1)
 }
