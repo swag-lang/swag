@@ -305,6 +305,6 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
         SWAG_CHECK(eatToken());
     }
 
-    SWAG_CHECK(eatSemiCol("end of a variable declaration"));
+    SWAG_CHECK(eatSemiCol("end of the variable declaration"));
     return true;
 }

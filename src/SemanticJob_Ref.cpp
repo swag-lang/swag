@@ -309,7 +309,11 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
     // (or it will be done later on a pointer, and it will be const too)
     if (arrayNode->parent->parent->kind != AstNodeKind::MakePointer)
     {
-        SWAG_VERIFY(!arrayType->isConst(), context->report({arrayNode->access, Utf8::format(g_E[Err0478], arrayType->getDisplayName().c_str())}));
+        if (arrayType->isConst())
+        {
+            Utf8 hint = Utf8::format(g_E[Hnt0011], arrayType->getDisplayName().c_str());
+            return context->report(hint, {arrayNode, Utf8::format(g_E[Err0564], arrayType->getDisplayName().c_str())});
+        }
     }
     else
     {

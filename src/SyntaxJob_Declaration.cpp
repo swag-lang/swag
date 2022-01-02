@@ -632,6 +632,11 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
     case TokenId::KwdAlias:
         SWAG_CHECK(doAlias(parent, result));
         break;
+
+    case TokenId::KwdPublic:
+    case TokenId::KwdPrivate:
+        return error(token, Utf8::format(g_E[Err0665], token.text.c_str()));
+
     default:
         return invalidTokenError(InvalidTokenError::EmbeddedInstruction);
     }
