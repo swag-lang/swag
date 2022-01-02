@@ -225,6 +225,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                             return context->report({node, msg}, note);
                         }
 
+                        PushErrContext ec(context, right, Utf8::format(g_E[Nte0058], left->typeInfo->getDisplayName().c_str(), right->typeInfo->getDisplayName().c_str(), g_LangSpec->name_opAffectSuffix.c_str()));
                         SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAffectSuffix, suffix, nullptr, left, right, false));
                         if (context->result != ContextResult::Done)
                             return true;
@@ -237,6 +238,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                             return context->report({node, msg});
                         }
 
+                        PushErrContext ec(context, right, Utf8::format(g_E[Nte0058], left->typeInfo->getDisplayName().c_str(), right->typeInfo->getDisplayName().c_str(), g_LangSpec->name_opAffect.c_str()));
                         SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAffect, nullptr, nullptr, left, right, false));
                         if (context->result != ContextResult::Done)
                             return true;

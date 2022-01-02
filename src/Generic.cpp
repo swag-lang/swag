@@ -245,7 +245,7 @@ Job* Generic::end(SemanticContext* context, Job* job, SymbolName* symbol, AstNod
     // Store stack of instantiation contexts
     auto srcCxt  = context;
     auto destCxt = &newJob->context;
-    destCxt->expansionNodes.append(srcCxt->expansionNodes);
+    destCxt->expansionNodes.insert(destCxt->expansionNodes.end(), srcCxt->expansionNodes.begin(), srcCxt->expansionNodes.end());
 
     // New context
     JobContext::ExpansionNode expNode;

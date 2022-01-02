@@ -238,6 +238,13 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
         Utf8        hint;
         switch (exp.type)
         {
+        case JobContext::ExpansionType::Message:
+        {
+            auto note = new Diagnostic{first, exp.msg, DiagnosticLevel::Note};
+            notes.push_back(note);
+            showExpand = false;
+            break;
+        }
         case JobContext::ExpansionType::Export:
             kindName    = g_E[Err0111];
             kindArticle = "of ";
@@ -305,11 +312,24 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
         }
     }
 
-    if (diag.sourceNode && diag.sourceNode->sourceFile && diag.sourceNode->sourceFile->sourceNode)
+    auto sourceNode = diag.sourceNode;
+    if (sourceNode && sourceNode->extension && sourceNode->extension->exportNode)
+        sourceNode = diag.sourceNode->extension->exportNode;
+
+    if (sourceNode)
     {
-        auto sourceNode = diag.sourceNode->sourceFile->sourceNode;
-        auto note       = new Diagnostic{sourceNode, g_E[Nte0004], DiagnosticLevel::Note};
-        notes.push_back(note);
+        if (sourceNode->sourceFile && sourceNode->sourceFile->sourceNode)
+        {
+            auto fileSourceNode = sourceNode->sourceFile->sourceNode;
+            auto note           = new Diagnostic{fileSourceNode, g_E[Nte0004], DiagnosticLevel::Note};
+            notes.push_back(note);
+        }
+
+        if (sourceNode->extension && !sourceNode->extension->errorContextHint.empty())
+        {
+            auto note = new Diagnostic{sourceNode, sourceNode->extension->errorContextHint.c_str(), DiagnosticLevel::Note};
+            notes.push_back(note);
+        }
     }
 }
 

@@ -101,6 +101,7 @@ struct Diagnostic
     {
     }
 
+    bool mustPrintCode() const;
     void printSourceLine(int headerSize) const;
     void report(bool verboseMode = false) const;
 
@@ -139,4 +140,38 @@ struct PushErrHint
     {
         g_ErrorHint = nullptr;
     }
+};
+
+struct PushErrContext
+{
+    PushErrContext(JobContext* context, AstNode* node, JobContext::ExpansionType type)
+        : cxt{context}
+    {
+        JobContext::ExpansionNode expNode;
+        expNode.type = type;
+        expNode.node = node;
+        context->expansionNodes.push_back(expNode);
+    }
+
+    PushErrContext(JobContext* context, AstNode* node, const Utf8& msg)
+        : cxt{context}
+    {
+        JobContext::ExpansionNode expNode;
+        expNode.node = node;
+        expNode.type = JobContext::ExpansionType::Message;
+        expNode.msg  = msg;
+        context->expansionNodes.push_back(expNode);
+    }
+
+    PushErrContext(JobContext* context, const JobContext::ExpansionNode& expNode)
+    {
+        context->expansionNodes.push_back(expNode);
+    }
+
+    ~PushErrContext()
+    {
+        cxt->expansionNodes.pop_back();
+    }
+
+    JobContext* cxt;
 };

@@ -58,15 +58,17 @@ struct JobContext
         CheckIf,
         Node,
         Export,
+        Message,
     };
 
     struct ExpansionNode
     {
-        AstNode*      node;
-        ExpansionType type;
+        AstNode*      node = nullptr;
+        ExpansionType type = ExpansionType::Node;
+        Utf8          msg;
     };
 
-    VectorNative<ExpansionNode> expansionNodes;
+    vector<ExpansionNode> expansionNodes;
 
     Job*        baseJob            = nullptr;
     AstNode*    node               = nullptr;

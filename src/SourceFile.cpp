@@ -183,6 +183,29 @@ void SourceFile::computeFileScopeName()
     Ast::normalizeIdentifierName(scopeName);
 }
 
+void SourceFile::reportNotes(const vector<const Diagnostic*>& notes, bool verbose)
+{
+    if (g_CommandLine->errorNoteOut)
+    {
+        bool prevHasSourceCode = true;
+        for (auto note : notes)
+        {
+            // Separator if we have a bunch of notes without source code, and one that comes after, but with source code
+            auto hasSourceCode = note->mustPrintCode();
+            if (hasSourceCode && !prevHasSourceCode)
+            {
+                g_Log.print(" |");
+                g_Log.eol();
+            }
+            prevHasSourceCode = hasSourceCode;
+
+            note->report(verbose);
+        }
+
+        g_Log.eol();
+    }
+}
+
 bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>& notes)
 {
     if (silent > 0 && !diag.exceptionError)
@@ -239,11 +262,7 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
             if (g_CommandLine->verboseTestErrors)
             {
                 diag.report(true);
-                if (g_CommandLine->errorNoteOut)
-                {
-                    for (auto note : notes)
-                        note->report(true);
-                }
+                reportNotes(notes, true);
             }
 
             return false;
@@ -268,11 +287,7 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
             if (g_CommandLine->verboseTestErrors)
             {
                 diag.report(true);
-                if (g_CommandLine->errorNoteOut)
-                {
-                    for (auto note : notes)
-                        note->report(true);
-                }
+                reportNotes(notes, true);
             }
 
             return false;
@@ -281,12 +296,7 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
 
     // Print error/warning
     diag.report();
-    if (g_CommandLine->errorNoteOut)
-    {
-        for (auto note : notes)
-            note->report();
-        g_Log.eol();
-    }
+    reportNotes(notes);
 
     if (errorLevel == DiagnosticLevel::Error)
     {

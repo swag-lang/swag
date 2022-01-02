@@ -17,6 +17,7 @@ struct SourceFile
     uint32_t getChar(unsigned& offset);
     Utf8     getLine(long lineNo);
 
+    void reportNotes(const vector<const Diagnostic*>& notes, bool verbose = false);
     bool report(const Diagnostic& diag, const Diagnostic* note = nullptr, const Diagnostic* note1 = nullptr);
     bool report(const Diagnostic& diag, const vector<const Diagnostic*>& notes);
     bool internalError(AstNode* node, const char* msg);

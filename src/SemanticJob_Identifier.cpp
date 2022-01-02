@@ -384,6 +384,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                 varNode->extension->exportNode = nodeCall;
 
                 // Give a hint about the conversion
+                // :opAffectHint
                 nodeCall->allocateExtension();
                 nodeCall->extension->errorContextHint = Utf8::format(g_E[Nte0058],
                                                                      nodeCall->castedTypeInfo->getDisplayName().c_str(),

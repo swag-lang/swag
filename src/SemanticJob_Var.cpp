@@ -826,6 +826,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                         return context->report({node, msg}, note);
                     }
 
+                    PushErrContext ec(context, node->assignment, Utf8::format(g_E[Nte0058], node->type->typeInfo->getDisplayName().c_str(), node->assignment->typeInfo->getDisplayName().c_str(), g_LangSpec->name_opAffect.c_str()));
                     SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAffectSuffix, suffix, nullptr, node->type, node->assignment, false));
                     if (context->result == ContextResult::Pending)
                         return true;
@@ -838,6 +839,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                         return context->report({node, msg});
                     }
 
+                    PushErrContext ec(context, node->assignment, Utf8::format(g_E[Nte0058], node->type->typeInfo->getDisplayName().c_str(), node->assignment->typeInfo->getDisplayName().c_str(), g_LangSpec->name_opAffect.c_str()));
                     SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAffect, nullptr, nullptr, node->type, node->assignment, false));
                     if (context->result == ContextResult::Pending)
                         return true;

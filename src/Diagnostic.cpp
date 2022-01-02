@@ -26,6 +26,11 @@ void Diagnostic::printSourceLine(int headerSize) const
         g_Log.print(": ");
 }
 
+bool Diagnostic::mustPrintCode() const
+{
+    return hasFile && !sourceFile->path.empty() && hasLocation && printSource && g_CommandLine->errorSourceOut;
+}
+
 void Diagnostic::report(bool verboseMode) const
 {
     auto verboseColor     = LogColor::DarkCyan;
@@ -105,7 +110,7 @@ void Diagnostic::report(bool verboseMode) const
     g_Log.setColor(codeColor);
 
     // Source code
-    if (hasFile && !sourceFile->path.empty() && hasLocation && printSource && g_CommandLine->errorSourceOut)
+    if (mustPrintCode())
     {
         auto location0 = startLocation;
         auto location1 = endLocation;
