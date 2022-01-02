@@ -227,16 +227,16 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
     if (diag.errorLevel == DiagnosticLevel::Error)
         hasError = true;
 
-    if (expansionNode.size())
+    if (expansionNodes.size())
     {
-        auto& exp = expansionNode[0];
+        auto& exp = expansionNodes[0];
 
-        auto        first       = exp.first;
+        auto        first       = exp.node;
         const char* kindName    = nullptr;
         const char* kindArticle = "";
         bool        showExpand  = true;
         Utf8        hint;
-        switch (exp.second)
+        switch (exp.type)
         {
         case JobContext::ExpansionType::Export:
             kindName    = g_E[Err0111];
@@ -291,18 +291,17 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
             if (name.empty())
                 name = first->token.text;
 
+            Utf8 msg;
             if (!name.empty())
-            {
-                auto note  = new Diagnostic{first, Utf8::format(g_E[Nte0002], kindName, kindArticle, name.c_str()), DiagnosticLevel::Note};
-                note->hint = hint;
-                notes.push_back(note);
-            }
+                msg = Utf8::format(g_E[Nte0002], kindName, kindArticle, name.c_str());
             else
-            {
-                auto note  = new Diagnostic{first, Utf8::format(g_E[Nte0003], kindName), DiagnosticLevel::Note};
-                note->hint = hint;
-                notes.push_back(note);
-            }
+                msg = Utf8::format(g_E[Nte0003], kindName);
+            if (first->extension && first->extension->errorContextHint)
+                msg += Utf8::format(" (%s)", first->extension->errorContextHint.c_str());
+
+            auto note  = new Diagnostic{first, msg, DiagnosticLevel::Note};
+            note->hint = hint;
+            notes.push_back(note);
         }
     }
 

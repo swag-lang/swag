@@ -261,6 +261,7 @@ struct AstNode
         VectorNative<AlternativeScope>    alternativeScopes;
         VectorNative<AlternativeScopeVar> alternativeScopesVars;
         VectorNative<uint32_t>            registersToRelease;
+        Utf8                              errorContextHint;
 
         SemanticFct        semanticBeforeFct            = nullptr;
         SemanticFct        semanticAfterFct             = nullptr;

@@ -2950,9 +2950,9 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
 
             // If we have an expansion, and the first expansion requests test error, then raise
             // in its context to dismiss the error (like an error during a #selectif for example)
-            if (runContext->callerContext->expansionNode.size())
+            if (runContext->callerContext->expansionNodes.size())
             {
-                auto firstSrcFile = runContext->callerContext->expansionNode[0].first->sourceFile;
+                auto firstSrcFile = runContext->callerContext->expansionNodes[0].node->sourceFile;
                 if (firstSrcFile->numTestErrors || firstSrcFile->numTestWarnings)
                 {
                     runContext->ip--;

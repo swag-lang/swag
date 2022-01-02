@@ -229,7 +229,12 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
     {
         SWAG_ASSERT(fromNode);
         if (fromNode != context->node)
-            context->expansionNode.push_back({context->node, JobContext::ExpansionType::Node});
+        {
+            JobContext::ExpansionNode expNode;
+            expNode.node = context->node;
+            expNode.type = JobContext::ExpansionType::Node;
+            context->expansionNodes.push_back(expNode);
+        }
 
         // Is there an explicit cast possible ?
         bool done = false;

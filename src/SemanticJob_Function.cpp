@@ -1229,7 +1229,7 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
                 auto it = cloneContext.usedReplaceNames.find(r.second);
                 if (it == cloneContext.usedReplaceNames.end())
                 {
-                    context->expansionNode.push_back({identifier, JobContext::ExpansionType::Inline});
+                    context->expansionNodes.push_back({identifier, JobContext::ExpansionType::Inline});
                     for (auto& alias : id->aliasNames)
                     {
                         if (alias.text == r.second)
@@ -1264,7 +1264,7 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     // Sub declarations in the inline block, like sub functions
     if (!funcDecl->subDecls.empty())
     {
-        context->expansionNode.push_back({identifier, JobContext::ExpansionType::Inline});
+        context->expansionNodes.push_back({identifier, JobContext::ExpansionType::Inline});
         SWAG_VERIFY(inlineNode->ownerFct, context->report({funcDecl, Utf8::format(g_E[Err0781], identifier->token.text.c_str())}));
 
         // Authorize a sub function to access inline parameters, if possible
@@ -1272,7 +1272,7 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
         cloneContext.alternativeScope = inlineNode->parametersScope;
 
         SWAG_CHECK(funcDecl->cloneSubDecls(context, cloneContext, funcDecl->content, inlineNode->ownerFct, newContent));
-        context->expansionNode.pop_back();
+        context->expansionNodes.pop_back();
     }
 
     // Need to reevaluate the identifier (if this is an identifier) because the makeInline can be called

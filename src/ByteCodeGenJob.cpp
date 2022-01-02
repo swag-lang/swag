@@ -384,7 +384,7 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags, Byt
                 extension->byteCodeJob->dependentJob = job;
             else
                 extension->byteCodeJob->dependentJob = job->dependentJob;
-            extension->byteCodeJob->context.expansionNode = job->baseContext->expansionNode;
+            extension->byteCodeJob->context.expansionNodes = job->baseContext->expansionNodes;
             extension->byteCodeJob->nodes.push_back(node);
             extension->bc               = g_Allocator.alloc<ByteCode>();
             extension->bc->node         = node;

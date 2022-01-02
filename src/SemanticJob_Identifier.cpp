@@ -375,10 +375,23 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
             auto overload = nodeCall->extension->resolvedUserOpSymbolOverload;
             if (overload->symbol->name == g_LangSpec->name_opAffect || overload->symbol->name == g_LangSpec->name_opAffectSuffix)
             {
-                nodeCall->extension->resolvedUserOpSymbolOverload = nullptr;
-                nodeCall->castedTypeInfo                          = nullptr;
+                SWAG_ASSERT(nodeCall->extension->resolvedUserOpSymbolOverload);
+                SWAG_ASSERT(nodeCall->castedTypeInfo);
 
                 auto varNode = Ast::newVarDecl(sourceFile, Utf8::format("__tmp_%d", g_UniqueID.fetch_add(1)), identifier);
+                varNode->flags |= AST_GENERATED;
+                varNode->allocateExtension();
+                varNode->extension->exportNode = nodeCall;
+
+                // Give a hint about the conversion
+                nodeCall->allocateExtension();
+                nodeCall->extension->errorContextHint = Utf8::format(g_E[Nte0058],
+                                                                     nodeCall->castedTypeInfo->getDisplayName().c_str(),
+                                                                     nodeCall->typeInfo->getDisplayName().c_str(),
+                                                                     nodeCall->extension->resolvedUserOpSymbolOverload->symbol->name.c_str());
+
+                nodeCall->extension->resolvedUserOpSymbolOverload = nullptr;
+                nodeCall->castedTypeInfo                          = nullptr;
 
                 // Put child front, because emitCall wants the parameters to be the last
                 Ast::removeFromParent(varNode);
@@ -2553,15 +2566,20 @@ bool SemanticJob::solveSelectIf(SemanticContext* context, OneMatch* oneMatch, As
     {
         auto node                   = context->node;
         context->selectIfParameters = oneMatch->oneOverload->callParameters;
+
+        JobContext::ExpansionNode expNode;
+        expNode.node = node;
         if (funcDecl->selectIf->kind == AstNodeKind::CompilerCheckIf)
-            context->expansionNode.push_back({node, JobContext::ExpansionType::CheckIf});
+            expNode.type = JobContext::ExpansionType::CheckIf;
         else
-            context->expansionNode.push_back({node, JobContext::ExpansionType::SelectIf});
+            expNode.type = JobContext::ExpansionType::SelectIf;
 
-        auto result = executeCompilerNode(context, expr, false);
+        context->expansionNodes.push_back(expNode);
 
+        auto result                 = executeCompilerNode(context, expr, false);
         context->selectIfParameters = nullptr;
-        context->expansionNode.pop_back();
+
+        context->expansionNodes.pop_back();
 
         if (!result)
             return false;

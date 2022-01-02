@@ -47,7 +47,7 @@ struct JobContext
         selectIfParameters = nullptr;
         result             = ContextResult::Done;
         hasError           = false;
-        expansionNode.clear();
+        expansionNodes.clear();
     }
 
     enum class ExpansionType
@@ -60,7 +60,13 @@ struct JobContext
         Export,
     };
 
-    VectorNative<pair<AstNode*, ExpansionType>> expansionNode;
+    struct ExpansionNode
+    {
+        AstNode*      node;
+        ExpansionType type;
+    };
+
+    VectorNative<ExpansionNode> expansionNodes;
 
     Job*        baseJob            = nullptr;
     AstNode*    node               = nullptr;
