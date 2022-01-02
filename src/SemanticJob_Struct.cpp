@@ -12,6 +12,37 @@
 #include "LanguageSpec.h"
 #include "Mutex.h"
 
+bool SemanticJob::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTypeInfo, TypeInfo* rightTypeInfo, AstNode* left, AstNode* right)
+{
+    if (right->semFlags & AST_SEM_LITERAL_SUFFIX)
+    {
+        SWAG_ASSERT(right->kind == AstNodeKind::Literal);
+        auto suffix = right->childs.front()->token.text;
+        if (!hasUserOp(context, g_LangSpec->name_opAffectSuffix, left))
+        {
+            Utf8 msg  = Utf8::format(g_E[Err0889], leftTypeInfo->getDisplayName().c_str(), rightTypeInfo->getDisplayName().c_str(), leftTypeInfo->getDisplayName().c_str());
+            auto note = new Diagnostic{right->childs.front(), Utf8::format(g_E[Nte0057], suffix.c_str()), DiagnosticLevel::Note};
+            return context->report({right, msg}, note);
+        }
+
+        PushErrContext ec(context, right, Utf8::format(g_E[Nte0058], left->typeInfo->getDisplayName().c_str(), right->typeInfo->getDisplayName().c_str(), g_LangSpec->name_opAffectSuffix.c_str()));
+        SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAffectSuffix, suffix, nullptr, left, right, false));
+    }
+    else
+    {
+        if (!hasUserOp(context, g_LangSpec->name_opAffect, left))
+        {
+            Utf8 msg = Utf8::format(g_E[Err0908], leftTypeInfo->getDisplayName().c_str(), rightTypeInfo->getDisplayName().c_str(), leftTypeInfo->getDisplayName().c_str());
+            return context->report({right, msg});
+        }
+
+        PushErrContext ec(context, right, Utf8::format(g_E[Nte0058], left->typeInfo->getDisplayName().c_str(), right->typeInfo->getDisplayName().c_str(), g_LangSpec->name_opAffect.c_str()));
+        SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAffect, nullptr, nullptr, left, right, false));
+    }
+
+    return true;
+}
+
 bool SemanticJob::waitForStructUserOps(SemanticContext* context, AstNode* node)
 {
     waitUserOp(context, g_LangSpec->name_opPostCopy, node);

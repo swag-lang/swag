@@ -237,6 +237,7 @@ struct SemanticJob : public Job
     static bool         derefLiteralStruct(SemanticContext* context, AstIdentifierRef* parent, SymbolOverload* overload);
     static bool         makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* identifier);
     static bool         makeInline(SemanticContext* context, AstFuncDecl* funcDecl, AstNode* identifier);
+    static bool         resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTypeInfo, TypeInfo* rightTypeInfo, AstNode* left, AstNode* right);
     static void         sortParameters(AstNode* allParams);
     static void         dealWithIntrinsic(SemanticContext* context, AstIdentifier* identifier);
     static bool         createTmpVarStruct(SemanticContext* context, AstIdentifier* identifier);
