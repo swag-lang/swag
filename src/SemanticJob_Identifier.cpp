@@ -366,13 +366,14 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
     }
 
     // Deal with opAffect automatic conversion
+    // :opAffectParam
     for (int i = 0; i < maxParams; i++)
     {
         auto nodeCall = CastAst<AstFuncCallParam>(identifier->callParameters->childs[i], AstNodeKind::FuncCallParam);
         if (nodeCall->extension && nodeCall->extension->resolvedUserOpSymbolOverload)
         {
             auto overload = nodeCall->extension->resolvedUserOpSymbolOverload;
-            if (overload->symbol->name == g_LangSpec->name_opAffect)
+            if (overload->symbol->name == g_LangSpec->name_opAffect || overload->symbol->name == g_LangSpec->name_opAffectSuffix)
             {
                 nodeCall->extension->resolvedUserOpSymbolOverload = nullptr;
                 nodeCall->castedTypeInfo                          = nullptr;

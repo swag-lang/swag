@@ -91,13 +91,19 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
             return false;
 
         auto structNode = CastAst<AstStruct>(typeStruct->declNode, AstNodeKind::StructDecl);
-        auto symbol     = structNode->scope->symTable.find(g_LangSpec->name_opAffect);
+        Utf8 nameAffect;
+        if (fromNode && fromNode->semFlags & AST_SEM_LITERAL_SUFFIX)
+            nameAffect = g_LangSpec->name_opAffectSuffix;
+        else
+            nameAffect = g_LangSpec->name_opAffect;
+
+        auto symbol = structNode->scope->symTable.find(nameAffect);
 
         // Instantiated opAffect, in a generic struct, will be in the scope of the original struct, not the intantiated one
         if (!symbol && typeStruct->fromGeneric)
         {
             structNode = CastAst<AstStruct>(typeStruct->fromGeneric->declNode, AstNodeKind::StructDecl);
-            symbol     = structNode->scope->symTable.find(g_LangSpec->name_opAffect);
+            symbol     = structNode->scope->symTable.find(nameAffect);
         }
 
         if (!symbol)
@@ -118,8 +124,6 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
         for (auto over : symbol->overloads)
         {
             auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
-            if (typeFunc->flags & TYPEINFO_GENERIC)
-                continue;
             if (!(typeFunc->declNode->attributeFlags & ATTRIBUTE_IMPLICIT) && !(castFlags & CASTFLAG_EXPLICIT))
                 continue;
             if (typeFunc->parameters.size() > 1 && typeFunc->parameters[1]->typeInfo->isSame(fromType, ISSAME_EXACT))
@@ -129,6 +133,7 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
         if (toAffect.empty())
             return false;
 
+        // :opAffectParam
         if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
         {
             fromNode->castedTypeInfo = fromType;
