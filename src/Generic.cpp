@@ -245,15 +245,15 @@ Job* Generic::end(SemanticContext* context, Job* job, SymbolName* symbol, AstNod
     // Store stack of instantiation contexts
     auto srcCxt  = context;
     auto destCxt = &newJob->context;
-    destCxt->expansionNodes.insert(destCxt->expansionNodes.end(), srcCxt->expansionNodes.begin(), srcCxt->expansionNodes.end());
+    destCxt->errorContextStack.insert(destCxt->errorContextStack.end(), srcCxt->errorContextStack.begin(), srcCxt->errorContextStack.end());
 
     // New context
-    JobContext::ExpansionNode expNode;
+    JobContext::ErrorContext expNode;
     expNode.node = context->node;
     if (expNode.node->extension && expNode.node->extension->exportNode)
         expNode.node = expNode.node->extension->exportNode;
-    expNode.type = JobContext::ExpansionType::Generic;
-    destCxt->expansionNodes.push_back(expNode);
+    expNode.type = JobContext::ErrorContextType::Generic;
+    destCxt->errorContextStack.push_back(expNode);
 
     return newJob;
 }

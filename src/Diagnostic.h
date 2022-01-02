@@ -144,33 +144,33 @@ struct PushErrHint
 
 struct PushErrContext
 {
-    PushErrContext(JobContext* context, AstNode* node, JobContext::ExpansionType type)
+    PushErrContext(JobContext* context, AstNode* node, JobContext::ErrorContextType type)
         : cxt{context}
     {
-        JobContext::ExpansionNode expNode;
+        JobContext::ErrorContext expNode;
         expNode.type = type;
         expNode.node = node;
-        context->expansionNodes.push_back(expNode);
+        context->errorContextStack.push_back(expNode);
     }
 
     PushErrContext(JobContext* context, AstNode* node, const Utf8& msg)
         : cxt{context}
     {
-        JobContext::ExpansionNode expNode;
+        JobContext::ErrorContext expNode;
         expNode.node = node;
-        expNode.type = JobContext::ExpansionType::Message;
+        expNode.type = JobContext::ErrorContextType::Message;
         expNode.msg  = msg;
-        context->expansionNodes.push_back(expNode);
+        context->errorContextStack.push_back(expNode);
     }
 
-    PushErrContext(JobContext* context, const JobContext::ExpansionNode& expNode)
+    PushErrContext(JobContext* context, const JobContext::ErrorContext& expNode)
     {
-        context->expansionNodes.push_back(expNode);
+        context->errorContextStack.push_back(expNode);
     }
 
     ~PushErrContext()
     {
-        cxt->expansionNodes.pop_back();
+        cxt->errorContextStack.pop_back();
     }
 
     JobContext* cxt;

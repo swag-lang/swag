@@ -227,9 +227,9 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
     if (diag.errorLevel == DiagnosticLevel::Error)
         hasError = true;
 
-    if (expansionNodes.size())
+    if (errorContextStack.size())
     {
-        auto& exp = expansionNodes[0];
+        auto& exp = errorContextStack[0];
 
         auto        first       = exp.node;
         const char* kindName    = nullptr;
@@ -238,34 +238,34 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
         Utf8        hint;
         switch (exp.type)
         {
-        case JobContext::ExpansionType::Message:
+        case JobContext::ErrorContextType::Message:
         {
             auto note = new Diagnostic{first, exp.msg, DiagnosticLevel::Note};
             notes.push_back(note);
             showExpand = false;
             break;
         }
-        case JobContext::ExpansionType::Export:
+        case JobContext::ErrorContextType::Export:
             kindName    = g_E[Err0111];
             kindArticle = "of ";
             break;
-        case JobContext::ExpansionType::Generic:
+        case JobContext::ErrorContextType::Generic:
             kindName    = g_E[Err0112];
             kindArticle = "of ";
             break;
-        case JobContext::ExpansionType::Inline:
+        case JobContext::ErrorContextType::Inline:
             kindName    = g_E[Err0118];
             kindArticle = "of ";
             break;
-        case JobContext::ExpansionType::SelectIf:
+        case JobContext::ErrorContextType::SelectIf:
             kindName    = g_E[Err0128];
             kindArticle = "to ";
             break;
-        case JobContext::ExpansionType::CheckIf:
+        case JobContext::ErrorContextType::CheckIf:
             kindName    = g_E[Err0129];
             kindArticle = "to ";
             break;
-        case JobContext::ExpansionType::Node:
+        case JobContext::ErrorContextType::Node:
             kindName    = g_E[Nte0017];
             kindArticle = "";
             if (first->kind == AstNodeKind::AffectOp)

@@ -47,10 +47,10 @@ struct JobContext
         selectIfParameters = nullptr;
         result             = ContextResult::Done;
         hasError           = false;
-        expansionNodes.clear();
+        errorContextStack.clear();
     }
 
-    enum class ExpansionType
+    enum class ErrorContextType
     {
         Generic,
         Inline,
@@ -61,14 +61,14 @@ struct JobContext
         Message,
     };
 
-    struct ExpansionNode
+    struct ErrorContext
     {
-        AstNode*      node = nullptr;
-        ExpansionType type = ExpansionType::Node;
-        Utf8          msg;
+        AstNode*         node = nullptr;
+        ErrorContextType type = ErrorContextType::Node;
+        Utf8             msg;
     };
 
-    vector<ExpansionNode> expansionNodes;
+    vector<ErrorContext> errorContextStack;
 
     Job*        baseJob            = nullptr;
     AstNode*    node               = nullptr;

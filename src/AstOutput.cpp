@@ -169,10 +169,10 @@ bool AstOutput::outputFuncSignature(OutputContext& context, Concat& concat, AstN
 
 bool AstOutput::outputFunc(OutputContext& context, Concat& concat, AstFuncDecl* node)
 {
-    JobContext::ExpansionNode expNode;
+    JobContext::ErrorContext expNode;
     expNode.node = node;
-    expNode.type = JobContext::ExpansionType::Export;
-    context.expansionNodes.push_back(expNode);
+    expNode.type = JobContext::ErrorContextType::Export;
+    context.errorContextStack.push_back(expNode);
 
     CONCAT_FIXED_STR(concat, "func");
 
@@ -221,7 +221,7 @@ bool AstOutput::outputFunc(OutputContext& context, Concat& concat, AstFuncDecl* 
         SWAG_ASSERT(node->content->kind == AstNodeKind::Return);
         SWAG_CHECK(outputNode(context, concat, node->content->childs.front()));
         concat.addEol();
-        context.expansionNodes.pop_back();
+        context.errorContextStack.pop_back();
         return true;
     }
 
@@ -263,13 +263,13 @@ bool AstOutput::outputFunc(OutputContext& context, Concat& concat, AstFuncDecl* 
     CONCAT_FIXED_STR(concat, "}");
     concat.addEol();
 
-    context.expansionNodes.pop_back();
+    context.errorContextStack.pop_back();
     return true;
 }
 
 bool AstOutput::outputEnum(OutputContext& context, Concat& concat, AstEnum* node)
 {
-    context.expansionNodes.push_back({node, JobContext::ExpansionType::Export});
+    context.errorContextStack.push_back({node, JobContext::ErrorContextType::Export});
 
     CONCAT_FIXED_STR(concat, "enum ");
     concat.addString(node->token.text);
@@ -306,7 +306,7 @@ bool AstOutput::outputEnum(OutputContext& context, Concat& concat, AstEnum* node
     CONCAT_FIXED_STR(concat, "}");
     concat.addEol();
 
-    context.expansionNodes.pop_back();
+    context.errorContextStack.pop_back();
     return true;
 }
 
@@ -626,7 +626,7 @@ bool AstOutput::outputStruct(OutputContext& context, Concat& concat, AstStruct* 
         }
     }
 
-    context.expansionNodes.push_back({node, JobContext::ExpansionType::Export});
+    context.errorContextStack.push_back({node, JobContext::ErrorContextType::Export});
 
     if (node->kind == AstNodeKind::InterfaceDecl)
         CONCAT_FIXED_STR(concat, "interface");
@@ -685,7 +685,7 @@ bool AstOutput::outputStruct(OutputContext& context, Concat& concat, AstStruct* 
         SWAG_CHECK(outputNode(context, concat, node->content));
     }
 
-    context.expansionNodes.pop_back();
+    context.errorContextStack.pop_back();
     return true;
 }
 

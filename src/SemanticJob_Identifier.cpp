@@ -2568,19 +2568,19 @@ bool SemanticJob::solveSelectIf(SemanticContext* context, OneMatch* oneMatch, As
         auto node                   = context->node;
         context->selectIfParameters = oneMatch->oneOverload->callParameters;
 
-        JobContext::ExpansionNode expNode;
+        JobContext::ErrorContext expNode;
         expNode.node = node;
         if (funcDecl->selectIf->kind == AstNodeKind::CompilerCheckIf)
-            expNode.type = JobContext::ExpansionType::CheckIf;
+            expNode.type = JobContext::ErrorContextType::CheckIf;
         else
-            expNode.type = JobContext::ExpansionType::SelectIf;
+            expNode.type = JobContext::ErrorContextType::SelectIf;
 
-        context->expansionNodes.push_back(expNode);
+        context->errorContextStack.push_back(expNode);
 
         auto result                 = executeCompilerNode(context, expr, false);
         context->selectIfParameters = nullptr;
 
-        context->expansionNodes.pop_back();
+        context->errorContextStack.pop_back();
 
         if (!result)
             return false;
