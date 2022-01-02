@@ -1,5 +1,4 @@
-
-#global testerror
+//#global testerror
 
 func titi()
 {
@@ -15,5 +14,4 @@ func(T) toto(x: T)
 {
     toto(1)
     toto(1'u32)
-    //toto(1)
 }
