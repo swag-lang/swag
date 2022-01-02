@@ -498,9 +498,13 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_IMPLICIT) || funcNode->token.text == g_LangSpec->name_opAffect || funcNode->token.text == g_LangSpec->name_opAffectSuffix || funcNode->token.text == g_LangSpec->name_opCast, context->report({funcNode, Utf8::format(g_E[Err0754], funcNode->token.text.c_str())}));
     SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_NO_RETURN) || (funcNode->attributeFlags & (ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO)), context->report({funcNode, Utf8::format(g_E[Err0755], funcNode->getDisplayName().c_str())}));
 
-    // implicit attribute cannot be used on a generic function
+    // Implicit attribute cannot be used on a generic function
+    // Can't remember why exactly (for opCast ?). 
     if (funcNode->attributeFlags & ATTRIBUTE_IMPLICIT && (funcNode->flags & (AST_IS_GENERIC | AST_FROM_GENERIC)))
-        return context->report({funcNode, Utf8::format(g_E[Err0756], funcNode->getDisplayName().c_str())});
+    {
+        if (funcNode->token.text != g_LangSpec->name_opAffectSuffix)
+            return context->report({funcNode, Utf8::format(g_E[Err0756], funcNode->getDisplayName().c_str())});
+    }
 
     if (!(funcNode->flags & AST_FROM_GENERIC))
     {
@@ -793,6 +797,8 @@ bool SemanticJob::resolveFuncCallParam(SemanticContext* context)
 
     node->inheritComputedValue(child);
     node->inheritOrFlag(child, AST_CONST_EXPR | AST_IS_GENERIC | AST_VALUE_IS_TYPEINFO);
+    if (node->childs.front()->semFlags & AST_SEM_LITERAL_SUFFIX)
+        node->semFlags |= AST_SEM_LITERAL_SUFFIX;
 
     // Inherit the original type in case of computed values, in order to make the cast if necessary
     if (node->flags & AST_VALUE_COMPUTED)

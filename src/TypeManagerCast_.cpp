@@ -92,7 +92,7 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
 
         auto structNode = CastAst<AstStruct>(typeStruct->declNode, AstNodeKind::StructDecl);
         Utf8 nameAffect;
-        if (fromNode && fromNode->semFlags & AST_SEM_LITERAL_SUFFIX)
+        if ((fromNode && fromNode->semFlags & AST_SEM_LITERAL_SUFFIX) || castFlags & CASTFLAG_LITERAL_SUFFIX)
             nameAffect = g_LangSpec->name_opAffectSuffix;
         else
             nameAffect = g_LangSpec->name_opAffect;
