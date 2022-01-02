@@ -118,3 +118,44 @@ void Log::verbose(const Utf8& message, bool forceEol)
     setDefaultColor();
     unlock();
 }
+
+void Log::lock()
+{
+    mutexAccess.lock();
+}
+
+void Log::unlock()
+{
+    mutexAccess.unlock();
+}
+
+void Log::print(const char* message)
+{
+    if (countLength)
+        length += strlen(message);
+    cout << message;
+}
+
+void Log::printColor(const char* message, LogColor color)
+{
+    setColor(color);
+    cout << message;
+}
+
+void Log::print(const Utf8& message)
+{
+    if (countLength)
+        length += message.length();
+    cout << message.c_str();
+}
+
+void Log::eol()
+{
+    cout << "\n";
+}
+
+void Log::setCountLength(bool b)
+{
+    countLength = b;
+    length      = 0;
+}

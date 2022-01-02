@@ -163,7 +163,8 @@ void Diagnostic::report(bool verboseMode) const
         {
             for (int j = 0; j < headerSize; j++)
                 g_Log.print(" ");
-            g_Log.print(" |  \n");
+            g_Log.print(" |  ");
+            g_Log.eol();
 
             for (int i = 0; i < lines.size(); i++)
             {
