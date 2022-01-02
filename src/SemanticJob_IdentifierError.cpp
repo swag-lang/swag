@@ -218,10 +218,18 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
 
     case MatchResult::NotEnoughGenericParameters:
     {
-        auto errNode = genericParameters ? genericParameters : node ? node
-                                                                    : context->node;
-        diag         = new Diagnostic{errNode, Utf8::format(genericParameters ? g_E[Err0035] : g_E[Err0049], refNiceName.c_str())};
-        note         = new Diagnostic{overload->node, Utf8::format(g_E[Nte0008], refNiceName.c_str()), DiagnosticLevel::Note};
+        AstNode* errNode = genericParameters;
+        if (!errNode)
+            errNode = node;
+        if (!errNode)
+            errNode = context->node;
+        if (destFuncDecl && destFuncDecl->isSpecialFunctionName())
+            diag = new Diagnostic{errNode, Utf8::format(g_E[Err0352], refNiceName.c_str())};
+        else if (genericParameters)
+            diag = new Diagnostic{errNode, Utf8::format(g_E[Err0035], refNiceName.c_str())};
+        else
+            diag = new Diagnostic{errNode, Utf8::format(g_E[Err0049], refNiceName.c_str())};
+        note = new Diagnostic{overload->node, Utf8::format(g_E[Nte0008], refNiceName.c_str()), DiagnosticLevel::Note};
         result0.push_back(diag);
         result1.push_back(note);
         return;
@@ -229,10 +237,13 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
 
     case MatchResult::TooManyGenericParameters:
     {
-        auto errNode = genericParameters ? genericParameters : node ? node
-                                                                    : context->node;
-        diag         = new Diagnostic{errNode, Utf8::format(g_E[Err0044], SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
-        note         = new Diagnostic{overload->node, Utf8::format(g_E[Nte0008], refNiceName.c_str()), DiagnosticLevel::Note};
+        AstNode* errNode = genericParameters;
+        if (!errNode)
+            errNode = node;
+        if (!errNode)
+            errNode = context->node;
+        diag = new Diagnostic{errNode, Utf8::format(g_E[Err0044], SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
+        note = new Diagnostic{overload->node, Utf8::format(g_E[Nte0008], refNiceName.c_str()), DiagnosticLevel::Note};
         result0.push_back(diag);
         result1.push_back(note);
         return;
