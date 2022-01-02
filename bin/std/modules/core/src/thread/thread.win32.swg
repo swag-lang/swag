@@ -4,9 +4,9 @@
 using Win32
 
 // Sleep the current thread for a given amount of milliseconds
-func sleep(ms: u32)
+func sleep(ms: Time.Duration)
 {
-    Sleep(ms)
+    Sleep(ms.toMs())
 }
 
 // Sleep the current thread for a given amount of milliseconds
