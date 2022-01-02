@@ -25,7 +25,7 @@ bool SemanticJob::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTy
             return context->report({right, msg}, note);
         }
 
-        PushErrContext ec(context, right, Utf8::format(g_E[Nte0058], left->typeInfo->getDisplayName().c_str(), right->typeInfo->getDisplayName().c_str(), g_LangSpec->name_opAffectSuffix.c_str()));
+        PushErrContext ec(context, right, Utf8::format(g_E[Nte0058], rightTypeInfo->getDisplayName().c_str(), leftTypeInfo->getDisplayName().c_str(), g_LangSpec->name_opAffectSuffix.c_str()));
         SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAffectSuffix, suffix, nullptr, left, right, false));
     }
     else
@@ -36,7 +36,7 @@ bool SemanticJob::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTy
             return context->report({right, msg});
         }
 
-        PushErrContext ec(context, right, Utf8::format(g_E[Nte0058], left->typeInfo->getDisplayName().c_str(), right->typeInfo->getDisplayName().c_str(), g_LangSpec->name_opAffect.c_str()));
+        PushErrContext ec(context, right, Utf8::format(g_E[Nte0058], rightTypeInfo->getDisplayName().c_str(), leftTypeInfo->getDisplayName().c_str(), g_LangSpec->name_opAffect.c_str()));
         SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAffect, nullptr, nullptr, left, right, false));
     }
 
