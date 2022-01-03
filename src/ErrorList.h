@@ -386,7 +386,7 @@ SWAG_ERROR(Err0388, "a namespace definition should appear either at file scope o
 SWAG_ERROR(Err0389, "missing the namespace name before `{`")
 SWAG_ERROR(Err0390, "missing the namespace name before `;`")
 SWAG_ERROR(Err0391, "a namespace name should be an identifier (`%s` provided)")
-SWAG_ERROR(Err0392, "the `swag` namespace is reserved by the compiler")
+SWAG_ERROR(Err0392, "the `%s` namespace is reserved by the compiler")
 SWAG_ERROR(Err0393, "a namespace cannot have the same name as the module (`%s`)")
 SWAG_ERROR(Err0394, "literal number `%I64u` is not in the range of `u8`")
 SWAG_ERROR(Err0395, "unexpected label identifier `%s`")
