@@ -2300,9 +2300,25 @@ bool TypeManager::castToInterface(SemanticContext* context, TypeInfo* toType, Ty
 
     // Struct to interface
     // We need to take care of "using" fields.
-    if (fromType->kind == TypeInfoKind::Struct)
+    if (fromType->kind == TypeInfoKind::Struct || fromType->isPointerTo(TypeInfoKind::Struct))
     {
-        auto fromTypeStruct = CastTypeInfo<TypeInfoStruct>(fromType, TypeInfoKind::Struct);
+        auto typeStruct = fromType;
+        if (fromType->kind == TypeInfoKind::Pointer)
+        {
+            auto typePointer = CastTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer);
+            typeStruct       = typePointer->pointedType;
+
+            // Not sure why we have to wait here, and not if this is not a pointer
+            // The assert below will probably trigger at some point...
+            context->job->waitAllStructInterfaces(typeStruct);
+            if (context->result != ContextResult::Done)
+            {
+                SWAG_ASSERT(castFlags & CASTFLAG_ACCEPT_PENDING);
+                return true;
+            }
+        }
+
+        auto fromTypeStruct = CastTypeInfo<TypeInfoStruct>(typeStruct, TypeInfoKind::Struct);
 
         InterfaceRef itfRef;
         SWAG_CHECK(collectInterface(context, fromTypeStruct, toTypeItf, itfRef));
@@ -2319,7 +2335,7 @@ bool TypeManager::castToInterface(SemanticContext* context, TypeInfo* toType, Ty
                 fromNode->allocateExtension();
                 fromNode->extension->castOffset = itfRef.fieldOffset;
                 fromNode->extension->castItf    = itfRef.itf;
-                fromNode->castedTypeInfo        = fromType;
+                fromNode->castedTypeInfo        = typeStruct;
                 fromNode->typeInfo              = toTypeItf;
             }
 
