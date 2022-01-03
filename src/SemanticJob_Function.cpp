@@ -992,9 +992,17 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     auto child = node->childs[0];
     SWAG_CHECK(checkIsConcrete(context, child));
 
+    auto concreteType = TypeManager::concreteType(child->typeInfo);
+
+    // No return value in a #run block
+    if (!concreteType->isNative(NativeTypeKind::Void))
+    {
+        if (funcNode->attributeFlags & (ATTRIBUTE_RUN_FUNC | ATTRIBUTE_RUN_GENERATED_FUNC | ATTRIBUTE_MAIN_FUNC | ATTRIBUTE_INIT_FUNC | ATTRIBUTE_DROP_FUNC | ATTRIBUTE_TEST_FUNC))
+            return context->report({child, Utf8::format(g_E[Err0052], funcNode->getDisplayName().c_str())});
+    }
+
     // Be sure we do not specify a return value, and the function does not have a return type
     // (better error message than just letting the makeCompatibles do its job)
-    auto concreteType = TypeManager::concreteType(child->typeInfo);
     if (returnType->isNative(NativeTypeKind::Void) && !concreteType->isNative(NativeTypeKind::Void))
     {
         Diagnostic  diag{child, Utf8::format(g_E[Err0774], concreteType->getDisplayName().c_str(), funcNode->getDisplayName().c_str())};
