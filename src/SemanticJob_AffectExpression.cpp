@@ -52,7 +52,11 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     {
         Utf8 hint;
         if (left->typeInfo->isConst())
+        {
+            if (left->resolvedSymbolOverload && left->resolvedSymbolOverload->flags & OVERLOAD_VAR_FUNC_PARAM)
+                return context->report({left, Utf8::format(g_E[Err0740], left->resolvedSymbolName->name.c_str())});
             hint = Hint::isType(left->typeInfo);
+        }
         else if (left->kind == AstNodeKind::IdentifierRef)
         {
             for (int i = left->childs.count - 1; i >= 0; i--)
