@@ -107,9 +107,9 @@ bool SemanticJob::resolveIntrinsicMakeCallback(SemanticContext* context, AstNode
 
     auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(first->typeInfo, TypeInfoKind::Lambda);
     if (typeFunc->parameters.size() > SWAG_LIMIT_CB_MAX_PARAMS)
-        return context->report({node, Utf8::format(g_E[Err0785], SWAG_LIMIT_CB_MAX_PARAMS)});
+        return context->report(Utf8::format(g_E[Hnt0011], typeFunc->getDisplayName().c_str()), {first, Utf8::format(g_E[Err0785], SWAG_LIMIT_CB_MAX_PARAMS, typeFunc->parameters.size())});
     if (typeFunc->numReturnRegisters() > 1)
-        return context->report({node, Utf8::format(g_E[Err0786], typeFunc->returnType->getDisplayName().c_str())});
+        return context->report(Utf8::format(g_E[Hnt0011], typeFunc->getDisplayName().c_str()), {first, Utf8::format(g_E[Err0786], typeFunc->returnType->getDisplayName().c_str())});
 
     node->typeInfo    = g_TypeMgr->typeInfoPointers[(int) NativeTypeKind::Void];
     node->byteCodeFct = ByteCodeGenJob::emitIntrinsicMakeCallback;
@@ -235,8 +235,7 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
     }
     else if (typeInfo->kind == TypeInfoKind::Struct)
     {
-        if (typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
-            return context->report({node, g_E[Err0796]});
+        SWAG_VERIFY(!(typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE), context->report(Utf8::format(g_E[Hnt0011], typeInfo->getDisplayName().c_str()), {node, g_E[Err0796]}));
         node->typeInfo = typeInfo;
         SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opData, nullptr, nullptr, node, nullptr, false));
         if (context->result == ContextResult::Pending)
@@ -419,8 +418,7 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
     }
     else if (typeInfo->kind == TypeInfoKind::Struct)
     {
-        if (typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
-            return context->report({expression, g_E[Err0800]});
+        SWAG_VERIFY(!(typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE), context->report(Utf8::format(g_E[Hnt0011], typeInfo->getDisplayName().c_str()), {expression, g_E[Err0800]}));
         node->typeInfo = typeInfo;
         SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opCount, nullptr, nullptr, node, nullptr, false));
         if (context->result == ContextResult::Pending)
