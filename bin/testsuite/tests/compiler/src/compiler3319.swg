@@ -2,5 +2,4 @@
 #test
 {
     x := 6's
-    @print(x)
 }

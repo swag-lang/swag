@@ -7,6 +7,8 @@
 #include "TypeManager.h"
 #include "Ast.h"
 #include "SemanticJob.h"
+#include "Diagnostic.h"
+#include "ErrorIds.h"
 
 bool ByteCodeGenJob::emitNullConditionalOp(ByteCodeGenContext* context)
 {
@@ -268,6 +270,8 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
 bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context)
 {
     auto node = context->node;
+    if (node->semFlags & AST_SEM_LITERAL_SUFFIX)
+        return context->report({node->childs.front(), Utf8::format(g_E[Err0532], node->childs.front()->token.text.c_str())});
     SWAG_CHECK(emitLiteral(context, node, nullptr, node->resultRegisterRC));
     return true;
 }

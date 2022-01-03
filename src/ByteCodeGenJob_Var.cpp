@@ -20,11 +20,16 @@ bool ByteCodeGenJob::emitLocalVarDeclBefore(ByteCodeGenContext* context)
             if (typeInfo->kind != TypeInfoKind::Struct && !typeInfo->isArrayOfStruct())
             {
                 if (!node->assignment)
+                {
                     node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
-                else if (node->assignment->flags & AST_VALUE_COMPUTED)
-                    node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
-                else if (!(node->assignment->flags & AST_SIDE_EFFECTS))
-                    node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
+                    return true;
+                }
+
+                if ((node->assignment->flags & AST_VALUE_COMPUTED) || !(node->assignment->flags & AST_SIDE_EFFECTS))
+                {
+                    SWAG_CHECK(skipNodes(context, node));
+                    return true;
+                }
             }
         }
     }

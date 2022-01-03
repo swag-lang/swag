@@ -364,6 +364,19 @@ namespace Ast
             visit(child, fctor);
     }
 
+    bool visit(JobContext* context, AstNode* root, const function<bool(JobContext*, AstNode*)>& fctor)
+    {
+        if (!fctor(context, root))
+            return false;
+        for (auto child : root->childs)
+        {
+            if (!visit(context, child, fctor))
+                return false;
+        }
+
+        return true;
+    }
+
     AstNode* cloneRaw(AstNode* source, AstNode* parent, uint64_t forceFlags)
     {
         if (!source)
