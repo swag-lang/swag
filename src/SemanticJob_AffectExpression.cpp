@@ -63,6 +63,13 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                     hint = Hint::isType(left->typeInfo);
                     break;
                 }
+
+                if (left->childs[i]->kind == AstNodeKind::FuncCall && left->childs[i]->typeInfo->kind == TypeInfoKind::Struct)
+                {
+                    left = left->childs[i];
+                    hint = Utf8::format(g_E[Hnt0039], left->typeInfo->getDisplayName().c_str());
+                    break;
+                }
             }
         }
 

@@ -990,11 +990,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             auto prev = identifier->identifierRef->childs[identifier->childParentIdx - 1];
             if (prev->resolvedSymbolName && prev->resolvedSymbolName->kind == SymbolKind::Variable && !(prev->flags & AST_FROM_UFCS))
             {
-                return context->report({prev,
-                                        Utf8::format(g_E[Err0097],
-                                                     AstNode::getKindName(prev->resolvedSymbolOverload->node).c_str(),
-                                                     prev->token.text.c_str(),
-                                                     identifier->token.text.c_str())});
+                return context->report(g_E[Hnt0026], {prev, Utf8::format(g_E[Err0097], AstNode::getKindName(prev->resolvedSymbolOverload->node).c_str(), prev->token.text.c_str(), identifier->token.text.c_str())});
             }
         }
 
@@ -1008,7 +1004,10 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         if (identifier->callParameters && !identifier->callParameters->aliasNames.empty())
         {
             if (!(overload->node->attributeFlags & (ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN)))
-                return context->report({identifier->callParameters, identifier->callParameters->aliasNames[0], Utf8::format(g_E[Err0099], identifier->token.text.c_str())});
+            {
+                auto cp = identifier->callParameters;
+                return context->report({cp->sourceFile, cp->aliasNames.front().startLocation, cp->aliasNames.back().endLocation, Utf8::format(g_E[Err0099], identifier->token.text.c_str())});
+            }
         }
 
         // Now we need to be sure that the function is now complete
