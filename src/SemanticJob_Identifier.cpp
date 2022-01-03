@@ -377,31 +377,18 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
             {
                 SWAG_ASSERT(nodeCall->extension->resolvedUserOpSymbolOverload);
                 SWAG_ASSERT(nodeCall->castedTypeInfo);
-
-                auto varNode = Ast::newVarDecl(sourceFile, Utf8::format("__tmp_%d", g_UniqueID.fetch_add(1)), identifier);
-                varNode->flags |= AST_GENERATED;
-                varNode->allocateExtension();
-                varNode->extension->exportNode = nodeCall;
-
-                // Give a hint about the conversion
-                // :opAffectHint
-                nodeCall->allocateExtension();
-                nodeCall->extension->errorContextHint = Utf8::format(g_E[Nte0058],
-                                                                     nodeCall->castedTypeInfo->getDisplayName().c_str(),
-                                                                     nodeCall->typeInfo->getDisplayName().c_str(),
-                                                                     nodeCall->extension->resolvedUserOpSymbolOverload->symbol->name.c_str());
-
                 nodeCall->extension->resolvedUserOpSymbolOverload = nullptr;
                 nodeCall->castedTypeInfo                          = nullptr;
+
+                auto varNode = Ast::newVarDecl(sourceFile, Utf8::format("__tmp_%d", g_UniqueID.fetch_add(1)), identifier);
 
                 // Put child front, because emitCall wants the parameters to be the last
                 Ast::removeFromParent(varNode);
                 Ast::addChildFront(identifier, varNode);
 
                 CloneContext cloneContext;
-                cloneContext.parent        = varNode;
-                cloneContext.forceLocation = &identifier->token;
-                cloneContext.parentScope   = identifier->ownerScope;
+                cloneContext.parent      = varNode;
+                cloneContext.parentScope = identifier->ownerScope;
 
                 auto typeExpr = Ast::newTypeExpression(sourceFile, varNode);
                 nodeCall->typeInfo->computeScopedName();

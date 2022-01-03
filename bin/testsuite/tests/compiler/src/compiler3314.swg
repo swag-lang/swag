@@ -1,4 +1,4 @@
-#global skip
+#global testerror
 struct Duration
 {
     val: f32

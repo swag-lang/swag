@@ -303,9 +303,6 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
                 msg = Utf8::format(g_E[Nte0002], kindName, kindArticle, name.c_str());
             else
                 msg = Utf8::format(g_E[Nte0003], kindName);
-            if (first->extension && first->extension->errorContextHint)
-                msg += Utf8::format(" (%s)", first->extension->errorContextHint.c_str());
-
             auto note  = new Diagnostic{first, msg, DiagnosticLevel::Note};
             note->hint = hint;
             notes.push_back(note);
@@ -316,20 +313,11 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
     if (sourceNode && sourceNode->extension && sourceNode->extension->exportNode)
         sourceNode = diag.sourceNode->extension->exportNode;
 
-    if (sourceNode)
+    if (sourceNode && sourceNode->sourceFile && sourceNode->sourceFile->sourceNode)
     {
-        if (sourceNode->sourceFile && sourceNode->sourceFile->sourceNode)
-        {
-            auto fileSourceNode = sourceNode->sourceFile->sourceNode;
-            auto note           = new Diagnostic{fileSourceNode, g_E[Nte0004], DiagnosticLevel::Note};
-            notes.push_back(note);
-        }
-
-        if (sourceNode->extension && !sourceNode->extension->errorContextHint.empty())
-        {
-            auto note = new Diagnostic{sourceNode, sourceNode->extension->errorContextHint.c_str(), DiagnosticLevel::Note};
-            notes.push_back(note);
-        }
+        auto fileSourceNode = sourceNode->sourceFile->sourceNode;
+        auto note           = new Diagnostic{fileSourceNode, g_E[Nte0004], DiagnosticLevel::Note};
+        notes.push_back(note);
     }
 }
 
