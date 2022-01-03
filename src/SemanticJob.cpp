@@ -81,9 +81,16 @@ bool SemanticJob::checkTypeIsNative(SemanticContext* context, AstNode* node, Typ
     return true;
 }
 
-bool SemanticJob::notAllowed(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
+bool SemanticJob::notAllowed(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, const char* msg)
 {
-    return context->report({node, Utf8::format(g_E[Err0005], node->token.text.c_str(), TypeInfo::getNakedKindName(typeInfo), typeInfo->getDisplayName().c_str())});
+    Utf8 text = Utf8::format(g_E[Err0005], node->token.text.c_str(), TypeInfo::getNakedKindName(typeInfo), typeInfo->getDisplayName().c_str());
+    if (msg)
+    {
+        text += " ";
+        text += msg;
+    }
+
+    return context->report({node, text});
 }
 
 bool SemanticJob::error(SemanticContext* context, const Utf8& msg)

@@ -196,7 +196,7 @@ bool SemanticJob::resolveUnaryOp(SemanticContext* context)
     if (typeInfo->kind == TypeInfoKind::Enum)
     {
         if (!(typeInfo->flags & TYPEINFO_ENUM_FLAGS))
-            return notAllowed(context, op, typeInfo);
+            return notAllowed(context, op, typeInfo, g_E[Nte0061]);
     }
 
     typeInfo = TypeManager::concreteReferenceType(child->typeInfo);
