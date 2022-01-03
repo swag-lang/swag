@@ -7,21 +7,20 @@
 #include "ErrorIds.h"
 
 thread_local Utf8 g_ErrorHint;
+static int        HEADER_SIZE = 0;
 
 Utf8 Hint::isType(TypeInfo* typeInfo)
 {
     return Utf8::format(g_E[Hnt0011], typeInfo->getDisplayName().c_str());
 }
 
-void Diagnostic::printSourceLine(int headerSize) const
+bool Diagnostic::mustPrintCode() const
 {
-    if (g_CommandLine->errorSourceOut)
-    {
-        g_Log.print("-->");
-        for (int i = 0; i < headerSize - 3; i++)
-            g_Log.print(" ");
-    }
+    return hasFile && !sourceFile->path.empty() && hasLocation && printSource && g_CommandLine->errorSourceOut;
+}
 
+void Diagnostic::printSourceLine() const
+{
     SWAG_ASSERT(sourceFile);
     fs::path path = sourceFile->path;
     g_Log.print(Utf8::normalizePath(path).c_str());
@@ -33,9 +32,14 @@ void Diagnostic::printSourceLine(int headerSize) const
         g_Log.print(": ");
 }
 
-bool Diagnostic::mustPrintCode() const
+void Diagnostic::printMargin(LogColor color, bool eol) const
 {
-    return hasFile && !sourceFile->path.empty() && hasLocation && printSource && g_CommandLine->errorSourceOut;
+    g_Log.setColor(color);
+    for (int i = 0; i < HEADER_SIZE; i++)
+        g_Log.print(" ");
+    g_Log.print(" |  ");
+    if (eol)
+        g_Log.eol();
 }
 
 void Diagnostic::report(bool verboseMode) const
@@ -96,11 +100,11 @@ void Diagnostic::report(bool verboseMode) const
         break;
     }
 
-    int headerSize = 0;
-
     // Source line right after the header
     if (!g_CommandLine->errorSourceOut && hasFile && !sourceFile->path.empty())
-        printSourceLine(headerSize + 4);
+    {
+        printSourceLine();
+    }
 
     // User message
     g_Log.print(textMsg);
@@ -109,8 +113,18 @@ void Diagnostic::report(bool verboseMode) const
     // Source file and location on their own line
     if (g_CommandLine->errorSourceOut && hasFile && !sourceFile->path.empty())
     {
+        printMargin(codeColor);
+        if (mustPrintCode() &&
+            errorLevel != DiagnosticLevel::CallStack &&
+            errorLevel != DiagnosticLevel::CallStackInlined &&
+            errorLevel != DiagnosticLevel::TraceError)
+        {
+            g_Log.eol();
+            printMargin(codeColor);
+        }
+
         g_Log.setColor(sourceFileColor);
-        printSourceLine(headerSize + 4);
+        printSourceLine();
         g_Log.eol();
     }
 
@@ -173,19 +187,19 @@ void Diagnostic::report(bool verboseMode) const
         // Print all lines
         if (lines.size())
         {
-            for (int j = 0; j < headerSize; j++)
-                g_Log.print(" ");
-            g_Log.print(" |  ");
-            g_Log.eol();
+            if (errorLevel != DiagnosticLevel::CallStack &&
+                errorLevel != DiagnosticLevel::CallStackInlined &&
+                errorLevel != DiagnosticLevel::TraceError)
+            {
+                printMargin(codeColor, true);
+            }
 
             for (int i = 0; i < lines.size(); i++)
             {
                 const char* pz = lines[i].c_str();
                 if (*pz && *pz != '\n' && *pz != '\r')
                 {
-                    for (int j = 0; j < headerSize; j++)
-                        g_Log.print(" ");
-                    g_Log.print(" |  ");
+                    printMargin(codeColor);
                     if (hilightCodeRange && i == lines.size() - 1)
                         break;
                     g_Log.print(lines[i].c_str() + minBlanks);
@@ -292,9 +306,7 @@ void Diagnostic::report(bool verboseMode) const
                 // Display markers
                 else
                 {
-                    for (int j = 0; j < headerSize; j++)
-                        g_Log.print(" ");
-                    g_Log.print(" |  ");
+                    printMargin(codeColor, false);
 
                     for (uint32_t i = minBlanks; i < startLocation.column; i++)
                     {
@@ -335,19 +347,18 @@ void Diagnostic::report(bool verboseMode) const
                     }
 
                     g_Log.eol();
-
-                    g_Log.setColor(codeColor);
-                    for (int j = 0; j < headerSize; j++)
-                        g_Log.print(" ");
-                    g_Log.print(" |  \n");
+                    printMargin(codeColor, true);
                 }
             }
         }
         else if (lines.size())
         {
-            for (int j = 0; j < headerSize; j++)
-                g_Log.print(" ");
-            g_Log.print(" |  \n");
+            if (errorLevel != DiagnosticLevel::CallStack &&
+                errorLevel != DiagnosticLevel::CallStackInlined &&
+                errorLevel != DiagnosticLevel::TraceError)
+            {
+                printMargin(codeColor, true);
+            }
         }
     }
 
@@ -361,7 +372,7 @@ void Diagnostic::report(bool verboseMode) const
             {
                 if (r.empty())
                     continue;
-                for (int i = 0; i < headerSize; i++)
+                for (int i = 0; i < HEADER_SIZE; i++)
                     g_Log.print(" ");
                 g_Log.print("note: ");
                 g_Log.print(r);

@@ -3,6 +3,7 @@
 #include "AstNode.h"
 struct SourceFile;
 struct TypeInfo;
+enum class LogColor;
 
 enum DiagnosticLevel
 {
@@ -103,7 +104,8 @@ struct Diagnostic
     }
 
     bool mustPrintCode() const;
-    void printSourceLine(int headerSize) const;
+    void printSourceLine() const;
+    void printMargin(LogColor color, bool eol = false) const;
     void report(bool verboseMode = false) const;
 
     SourceLocation  startLocation;

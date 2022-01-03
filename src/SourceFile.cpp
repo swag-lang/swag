@@ -201,8 +201,6 @@ void SourceFile::reportNotes(const vector<const Diagnostic*>& notes, bool verbos
 
             note->report(verbose);
         }
-
-        g_Log.eol();
     }
 }
 
@@ -341,6 +339,7 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
         }
     }
 
+    g_Log.eol();
     return errorLevel == DiagnosticLevel::Error ? false : true;
 }
 
