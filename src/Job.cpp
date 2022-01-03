@@ -273,7 +273,7 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
                 kindName    = g_E[Nte0018];
                 kindArticle = "to ";
                 first       = first->childs.front();
-                hint        = Utf8::format(g_E[Hnt0011], first->typeInfo->getDisplayName().c_str());
+                hint        = Hint::isType(first->typeInfo);
             }
             else if (first->kind == AstNodeKind::Return)
             {

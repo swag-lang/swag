@@ -3,8 +3,15 @@
 #include "Log.h"
 #include "SourceFile.h"
 #include "SymTable.h"
+#include "TypeInfo.h"
+#include "ErrorIds.h"
 
 thread_local Utf8 g_ErrorHint;
+
+Utf8 Hint::isType(TypeInfo* typeInfo)
+{
+    return Utf8::format(g_E[Hnt0011], typeInfo->getDisplayName().c_str());
+}
 
 void Diagnostic::printSourceLine(int headerSize) const
 {

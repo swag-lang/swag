@@ -52,7 +52,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     {
         Utf8 hint;
         if (left->typeInfo->isConst())
-            hint = Utf8::format(g_E[Hnt0011], left->typeInfo->getDisplayName().c_str());
+            hint = Hint::isType(left->typeInfo);
         else if (left->kind == AstNodeKind::IdentifierRef)
         {
             for (int i = left->childs.count - 1; i >= 0; i--)
@@ -60,7 +60,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                 if (left->childs[i]->typeInfo && left->childs[i]->typeInfo->isConst())
                 {
                     left = left->childs[i];
-                    hint = Utf8::format(g_E[Hnt0011], left->typeInfo->getDisplayName().c_str());
+                    hint = Hint::isType(left->typeInfo);
                     break;
                 }
             }

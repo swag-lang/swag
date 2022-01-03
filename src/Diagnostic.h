@@ -2,6 +2,7 @@
 #include "Tokenizer.h"
 #include "AstNode.h"
 struct SourceFile;
+struct TypeInfo;
 
 enum DiagnosticLevel
 {
@@ -176,3 +177,8 @@ struct PushErrContext
 
     JobContext* cxt;
 };
+
+namespace Hint
+{
+    Utf8 isType(TypeInfo* typeInfo);
+} // namespace Hint

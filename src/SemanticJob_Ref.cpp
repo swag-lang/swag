@@ -310,10 +310,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
     if (arrayNode->parent->parent->kind != AstNodeKind::MakePointer)
     {
         if (arrayType->isConst())
-        {
-            Utf8 hint = Utf8::format(g_E[Hnt0011], arrayType->getDisplayName().c_str());
-            return context->report(hint, {arrayNode, Utf8::format(g_E[Err0564], arrayType->getDisplayName().c_str())});
-        }
+            return context->report(Hint::isType(arrayType), {arrayNode, Utf8::format(g_E[Err0564], arrayType->getDisplayName().c_str())});
     }
     else
     {
