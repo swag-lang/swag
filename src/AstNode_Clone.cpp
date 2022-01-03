@@ -310,8 +310,7 @@ AstNode* AstIdentifier::clone(CloneContext& context)
             newNode->resolvedSymbolOverload = newNode->typeInfo->declNode->resolvedSymbolOverload;
         }
 
-        newNode->flags |= AST_FROM_GENERIC_REPLACE;
-        newNode->flags |= AST_FROM_GENERIC;
+        newNode->flags |= AST_FROM_GENERIC | AST_FROM_GENERIC_REPLACE;
     }
 
     return newNode;

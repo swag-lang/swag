@@ -431,7 +431,9 @@ bool SemanticJob::resolveCase(SemanticContext* context)
                         return true;
                 }
                 else
+                {
                     SWAG_CHECK(TypeManager::makeCompatibles(context, node->ownerSwitch->expression, oneExpression, CASTFLAG_COMPARE));
+                }
             }
 
             // switch without an expression : a case is a boolean expressions

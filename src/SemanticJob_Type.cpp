@@ -46,6 +46,9 @@ bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
     if (node->kind == AstNodeKind::TypeExpression || node->kind == AstNodeKind::TypeLambda)
         return context->report({node, g_E[Err0012]});
 
+    if (node->flags & AST_FROM_GENERIC_REPLACE)
+        return context->report({node, g_E[Err0012]});
+
     if (node->resolvedSymbolName)
     {
         Utf8 name = SymTable::getNakedKindName(node->resolvedSymbolName->kind);
