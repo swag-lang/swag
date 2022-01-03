@@ -74,11 +74,12 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
         funcParam->declNode   = nodeParam;
 
         // Code is only valid for a macro or mixin
-        auto paramType = nodeParam->typeInfo;
+        auto paramType     = nodeParam->typeInfo;
+        auto paramNodeType = nodeParam->type ? nodeParam->type : nodeParam;
         if (paramType->kind == TypeInfoKind::Code)
-            SWAG_VERIFY(funcNode->attributeFlags & (ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN), context->report({nodeParam, g_E[Err0729]}));
+            SWAG_VERIFY(funcNode->attributeFlags & (ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN), context->report({paramNodeType, g_E[Err0729]}));
         if (paramType->kind == TypeInfoKind::NameAlias)
-            SWAG_VERIFY(funcNode->attributeFlags & (ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN), context->report({nodeParam, g_E[Err0730]}));
+            SWAG_VERIFY(funcNode->attributeFlags & (ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN), context->report({paramNodeType, g_E[Err0730]}));
 
         // Not everything is possible for types for attributes
         if (param->ownerScope->kind == ScopeKind::Attribute)
@@ -96,7 +97,7 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
             if (funcParam->typeInfo->kind == TypeInfoKind::TypedVariadic)
             {
                 auto typeVar = CastTypeInfo<TypeInfoVariadic>(funcParam->typeInfo, TypeInfoKind::TypedVariadic);
-                SWAG_VERIFY(!typeVar->isNative(NativeTypeKind::Any), context->report({nodeParam, Utf8::format(g_E[Err0731], funcParam->typeInfo->getDisplayName().c_str())}));
+                SWAG_VERIFY(!typeVar->isNative(NativeTypeKind::Any), context->report({paramNodeType, Utf8::format(g_E[Err0731], funcParam->typeInfo->getDisplayName().c_str())}));
             }
         }
 

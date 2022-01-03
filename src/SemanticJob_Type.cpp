@@ -398,7 +398,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
                 }
                 else
                 {
-                    SWAG_VERIFY(child->flags & AST_VALUE_COMPUTED, context->report({child, g_E[Err0021]}));
+                    SWAG_VERIFY(child->flags & AST_VALUE_COMPUTED, context->report(g_E[Hnt0038], {child, g_E[Err0021]}));
                     count = (uint32_t) child->computedValue->reg.u32;
                 }
 
