@@ -702,7 +702,7 @@ bool SemanticJob::resolveTilde(SemanticContext* context, AstNode* left, AstNode*
     SWAG_VERIFY(left->flags & AST_VALUE_COMPUTED, context->report({left, g_E[Err0798]}));
     SWAG_VERIFY(right->flags & AST_VALUE_COMPUTED, context->report({right, g_E[Err0798]}));
 
-    if (!left->typeInfo->isNative(NativeTypeKind::String))        
+    if (!left->typeInfo->isNative(NativeTypeKind::String))
         left->computedValue->text = Ast::literalToString(left->typeInfo, *left->computedValue);
     if (!right->typeInfo->isNative(NativeTypeKind::String))
         right->computedValue->text = Ast::literalToString(right->typeInfo, *right->computedValue);
@@ -799,15 +799,19 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
     {
         SWAG_CHECK(TypeManager::makeCompatibles(context, left, right));
 
-        bool ok = true;
-        if (!(leftTypeInfo->flags & TYPEINFO_ENUM_FLAGS) || !(rightTypeInfo->flags & TYPEINFO_ENUM_FLAGS))
-            ok = false;
         if (node->token.id != TokenId::SymVertical &&
             node->token.id != TokenId::SymAmpersand &&
             node->token.id != TokenId::SymCircumflex)
-            ok = false;
-        if (!ok)
             return notAllowed(context, node, leftTypeInfo);
+
+        if (leftTypeInfo->kind == TypeInfoKind::Enum && !(leftTypeInfo->flags & TYPEINFO_ENUM_FLAGS) && rightTypeInfo == leftTypeInfo)
+            return notAllowed(context, node, leftTypeInfo, g_E[Nte0061]);
+
+        if (leftTypeInfo->kind == TypeInfoKind::Enum && !(leftTypeInfo->flags & TYPEINFO_ENUM_FLAGS))
+            return context->report({node, Utf8::format(g_E[Err0037], node->token.text.c_str(), leftTypeInfo->getDisplayName().c_str())});
+        if (rightTypeInfo->kind == TypeInfoKind::Enum && !(rightTypeInfo->flags & TYPEINFO_ENUM_FLAGS))
+            return context->report({node, Utf8::format(g_E[Err0037], node->token.text.c_str(), rightTypeInfo->getDisplayName().c_str())});
+
         isEnumFlags = true;
     }
 
