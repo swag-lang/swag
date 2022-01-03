@@ -250,9 +250,16 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
         }
 
         // Cast from struct to interface
-        if (toType->kind == TypeInfoKind::Interface && fromType->kind == TypeInfoKind::Struct)
+        if (toType->kind == TypeInfoKind::Interface && ((fromType->kind == TypeInfoKind::Struct) || (fromType->isPointerTo(TypeInfoKind::Struct))))
         {
-            context->report({fromNode, Utf8::format(g_E[Err0176], fromType->getDisplayName().c_str(), toType->getDisplayName().c_str())});
+            Utf8 hint;
+            if (fromType->isPointerTo(TypeInfoKind::Struct))
+            {
+                hint     = Hint::isType(fromType);
+                fromType = CastTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer)->pointedType;
+            }
+
+            context->report(hint, {fromNode, Utf8::format(g_E[Err0176], fromType->getDisplayName().c_str(), toType->getDisplayName().c_str())});
             done = true;
         }
 
