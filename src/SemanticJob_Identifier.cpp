@@ -945,7 +945,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             {
                 Diagnostic diag{identifier, g_E[Err0094]};
                 Diagnostic note{overload->node, g_E[Nte0039], DiagnosticLevel::Note};
-                return context->report(diag, &note);
+                return context->report(Hint::isType(typeInfo), diag, &note);
             }
 
             // From now this is considered as a function, not a lambda
@@ -1099,7 +1099,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         {
             Diagnostic diag{identifier, g_E[Err0094]};
             Diagnostic note{overload->node, g_E[Nte0033], DiagnosticLevel::Note};
-            return context->report(diag, &note);
+            return context->report(Hint::isType(identifier->typeInfo), diag, &note);
         }
 
         if (overload->node->mustInline() && !(identifier->specFlags & AST_SPEC_IDENTIFIER_NO_INLINE))

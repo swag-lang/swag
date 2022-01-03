@@ -183,13 +183,13 @@ bool ByteCodeGenJob::skipNodes(ByteCodeGenContext* context, AstNode* node)
 {
     node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
     auto res = Ast::visit(context, node, [](JobContext* cxt, AstNode* n)
-        {
-            if (n->kind != AstNodeKind::Literal)
-                return true;
-            if (n->semFlags & AST_SEM_LITERAL_SUFFIX)
-                return cxt->report({ n, Utf8::format(g_E[Err0532], n->token.text.c_str()) });
-            return true;
-        });
+                          {
+                              if (n->kind != AstNodeKind::Literal)
+                                  return true;
+                              if (n->semFlags & AST_SEM_LITERAL_SUFFIX)
+                                  return cxt->report({n->childs.front(), Utf8::format(g_E[Err0532], n->childs.front()->token.text.c_str())});
+                              return true;
+                          });
 
     return res;
 }

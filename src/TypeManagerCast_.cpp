@@ -2223,7 +2223,7 @@ bool TypeManager::collectInterface(SemanticContext* context, TypeInfoStruct* fro
                 {
                     Diagnostic diag{context->node, Utf8::format(g_E[Err0034], fromTypeStruct->structName.c_str(), toTypeItf->name.c_str())};
                     Diagnostic note1{it.field->declNode, g_E[Nte0006], DiagnosticLevel::Note};
-                    Diagnostic note2{foundField->declNode, g_E[Nte0006], DiagnosticLevel::Note};
+                    Diagnostic note2{foundField->declNode, g_E[Nte0062], DiagnosticLevel::Note};
                     return context->report(diag, &note1, &note2);
                 }
 
