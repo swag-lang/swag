@@ -640,7 +640,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
             }
         }
 
-        bool same = TypeManager::makeCompatibles(context.semContext, symbolParameter->typeInfo, typeInfo, nullptr, nullptr, CASTFLAG_NO_ERROR | CASTFLAG_ACCEPT_PENDING);
+        bool same = TypeManager::makeCompatibles(context.semContext, symbolParameter->typeInfo, typeInfo, nullptr, nullptr, CASTFLAG_NO_ITF | CASTFLAG_NO_ERROR | CASTFLAG_ACCEPT_PENDING);
         if (context.semContext->result == ContextResult::Pending)
             return;
         if (!same)

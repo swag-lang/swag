@@ -2273,6 +2273,9 @@ bool TypeManager::collectInterface(SemanticContext* context, TypeInfoStruct* fro
 
 bool TypeManager::castToInterface(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
+    if (castFlags & CASTFLAG_NO_ITF)
+        return castError(context, toType, fromType, fromNode, castFlags);
+
     auto toTypeItf = CastTypeInfo<TypeInfoStruct>(toType, TypeInfoKind::Interface);
 
     if (fromType == g_TypeMgr->typeInfoNull)
@@ -2310,7 +2313,7 @@ bool TypeManager::castToInterface(SemanticContext* context, TypeInfo* toType, Ty
 
             // Not sure why we have to wait here, and not if this is not a pointer
             // The assert below will probably trigger at some point...
-            context->job->waitAllStructInterfaces(typeStruct);
+            context->job->waitAllStructInterfacesReg(typeStruct);
             if (context->result != ContextResult::Done)
             {
                 SWAG_ASSERT(castFlags & CASTFLAG_ACCEPT_PENDING);
