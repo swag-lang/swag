@@ -426,7 +426,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         case TokenId::CompilerGeneratedRun:
             funcNode->token.text = "__run" + to_string(id);
             funcNode->flags |= AST_GENERATED;
-            funcNode->attributeFlags |= ATTRIBUTE_GENERATED_FUNC | ATTRIBUTE_COMPILER | ATTRIBUTE_SHARP_FUNC;
+            funcNode->attributeFlags |= ATTRIBUTE_RUN_GENERATED_FUNC | ATTRIBUTE_GENERATED_FUNC | ATTRIBUTE_COMPILER | ATTRIBUTE_SHARP_FUNC;
             break;
         case TokenId::CompilerFuncMain:
             funcNode->token.text = "__main" + to_string(id);

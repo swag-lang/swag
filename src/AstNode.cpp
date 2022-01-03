@@ -601,7 +601,7 @@ Utf8 AstFuncDecl::getDisplayName()
 {
     if (attributeFlags & ATTRIBUTE_AST_FUNC)
         return "`#ast` block";
-    if (attributeFlags & ATTRIBUTE_RUN_FUNC)
+    if (attributeFlags & (ATTRIBUTE_RUN_FUNC | ATTRIBUTE_RUN_GENERATED_FUNC))
         return "`#run` block";
     if (attributeFlags & ATTRIBUTE_SELECTIF_FUNC)
         return "`#selectif` block";
