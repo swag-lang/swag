@@ -854,7 +854,7 @@ bool SyntaxJob::doExpression(AstNode* parent, uint32_t exprFlags, AstNode** resu
         SWAG_CHECK(eatToken());
         boolExpression              = Ast::newNode<AstCompilerMixin>(nullptr, AstNodeKind::CompilerMixin, sourceFile, nullptr);
         boolExpression->semanticFct = SemanticJob::resolveCompilerMixin;
-        SWAG_CHECK(doExpression(boolExpression, exprFlags));
+        SWAG_CHECK(doIdentifierRef(boolExpression, nullptr, IDENTIFIER_NO_PARAMS));
         break;
     }
     case TokenId::CompilerCode:
@@ -873,6 +873,13 @@ bool SyntaxJob::doExpression(AstNode* parent, uint32_t exprFlags, AstNode** resu
         boolExpression->flags |= AST_NO_BYTECODE;
         break;
     }
+
+    case TokenId::CompilerAst:
+    case TokenId::CompilerFuncInit:
+    case TokenId::CompilerFuncDrop:
+    case TokenId::CompilerFuncMain:
+    case TokenId::CompilerFuncTest:
+        return error(token, Utf8::format(g_E[Err0055], token.text.c_str()));
 
     default:
         SWAG_CHECK(doBoolExpression(parent, exprFlags, &boolExpression));
