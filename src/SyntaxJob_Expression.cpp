@@ -846,6 +846,7 @@ bool SyntaxJob::doExpression(AstNode* parent, uint32_t exprFlags, AstNode** resu
         SWAG_CHECK(eatToken());
         boolExpression              = Ast::newNode<AstNode>(nullptr, AstNodeKind::CompilerRun, sourceFile, nullptr);
         boolExpression->semanticFct = SemanticJob::resolveCompilerRun;
+        SWAG_VERIFY(token.id != TokenId::SymLeftCurly, error(token, g_E[Err0198]));
         SWAG_CHECK(doBoolExpression(boolExpression, exprFlags));
         break;
     }

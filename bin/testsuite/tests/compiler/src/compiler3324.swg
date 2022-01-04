@@ -1,7 +1,7 @@
 #global testerror
 #test
 {
-    a := #ast
+    a := #run
     {
         /*sum := 0'uint
         loop i: 3
