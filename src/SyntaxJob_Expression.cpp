@@ -861,12 +861,11 @@ bool SyntaxJob::doExpression(AstNode* parent, uint32_t exprFlags, AstNode** resu
     case TokenId::CompilerCode:
     {
         SWAG_CHECK(eatToken());
-        AstNode* block;
         boolExpression = Ast::newNode<AstNode>(nullptr, AstNodeKind::CompilerCode, sourceFile, nullptr);
         if (token.id == TokenId::SymLeftCurly)
-            SWAG_CHECK(doEmbeddedStatement(boolExpression, &block));
+            SWAG_CHECK(doEmbeddedStatement(boolExpression));
         else
-            SWAG_CHECK(doBoolExpression(boolExpression, exprFlags, &block));
+            SWAG_CHECK(doBoolExpression(boolExpression, exprFlags));
         auto typeCode     = allocType<TypeInfoCode>();
         typeCode->content = boolExpression->childs.front();
         typeCode->content->flags |= AST_NO_SEMANTIC;
