@@ -955,14 +955,57 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     node->byteCodeFct      = ByteCodeGenJob::emitReturn;
     node->resolvedFuncDecl = funcNode;
 
+    // As the type of the function is deduced from the return type, be sure they match in case
+    // of multiple returns
+    if (funcNode->returnTypeDeducedNode)
+    {
+        // We return nothing, but the previous return had something
+        if (node->childs.empty())
+        {
+            if (funcNode->returnType->typeInfo != g_TypeMgr->typeInfoVoid)
+            {
+                Diagnostic diag{node, Utf8::format(g_E[Err0779], funcNode->returnType->typeInfo->getDisplayName().c_str())};
+                Diagnostic note{funcNode->returnTypeDeducedNode->childs.front(), g_E[Nte0063], DiagnosticLevel::Note};
+                return context->report(diag, &note);
+            }
+
+            return true;
+        }
+
+        auto child = node->childs[0];
+
+        // We try to return something, but the previous return had nothing
+        if (funcNode->returnType->typeInfo == g_TypeMgr->typeInfoVoid)
+        {
+            Diagnostic diag{node, Utf8::format(g_E[Err0773], funcNode->returnType->typeInfo->getDisplayName().c_str())};
+            Diagnostic note{funcNode->returnTypeDeducedNode, g_E[Nte0063], DiagnosticLevel::Note};
+            return context->report(diag, &note);
+        }
+
+        if (!TypeManager::makeCompatibles(context, funcNode->returnType->typeInfo, nullptr, child, CASTFLAG_NO_ERROR | CASTFLAG_JUST_CHECK | CASTFLAG_UNCONST | CASTFLAG_AUTO_OPCAST | CASTFLAG_TRY_COERCE | CASTFLAG_FOR_AFFECT))
+        {
+            Diagnostic diag{child, Utf8::format(g_E[Err0770], funcNode->returnType->typeInfo->getDisplayName().c_str(), child->typeInfo->getDisplayName().c_str())};
+            Diagnostic note{funcNode->returnTypeDeducedNode->childs.front(), g_E[Nte0063], DiagnosticLevel::Note};
+            return context->report(diag, &note);
+        }
+    }
+
     // Nothing to return
     if (funcNode->returnType->typeInfo == g_TypeMgr->typeInfoVoid && node->childs.empty())
-        return true;
+    {
+        if (funcNode->attributeFlags & ATTRIBUTE_RUN_GENERATED_EXP)
+        {
+            funcNode->returnType->typeInfo  = g_TypeMgr->typeInfoVoid;
+            funcNode->returnTypeDeducedNode = node;
+        }
 
-    // Check return type
+        return true;
+    }
+
+    // Deduce return type
     auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
     bool lateRegister = funcNode->returnType->flags & AST_FORCE_FUNC_LATE_REGISTER;
-    if (funcNode->returnType->typeInfo == g_TypeMgr->typeInfoVoid && !node->childs.empty())
+    if (funcNode->returnType->typeInfo == g_TypeMgr->typeInfoVoid)
     {
         // This is a short lambda without a specified return type. We now have it
         bool tryDeduce = false;
@@ -986,15 +1029,14 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
             }
 
             typeInfoFunc->forceComputeName();
-            funcNode->returnType->typeInfo = typeInfoFunc->returnType;
-            lateRegister                   = true;
+            funcNode->returnType->typeInfo  = typeInfoFunc->returnType;
+            funcNode->returnTypeDeducedNode = node;
+            lateRegister                    = true;
         }
     }
 
     if (node->childs.empty())
-    {
         return context->report({node, Utf8::format(g_E[Err0772], funcNode->returnType->typeInfo->getDisplayName().c_str())});
-    }
 
     auto returnType = funcNode->returnType->typeInfo;
 
@@ -1029,7 +1071,9 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
 
     // If returning retval, then returning nothing, as we will change the return parameter value in place
     if (child->resolvedSymbolOverload && child->resolvedSymbolOverload->flags & OVERLOAD_RETVAL)
+    {
         node->typeInfo = child->typeInfo;
+    }
     else
     {
         // If we are returning an interface, be sure they are defined before casting

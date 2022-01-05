@@ -376,14 +376,15 @@ struct AstFuncDecl : public AstNode
     VectorNative<AstNode*> localGlobalVars;
     Mutex                  funcMutex;
 
-    AstNode*       parameters        = nullptr;
-    AstNode*       genericParameters = nullptr;
-    AstNode*       returnType        = nullptr;
-    AstNode*       content           = nullptr;
-    AstNode*       selectIf          = nullptr;
-    Scope*         scope             = nullptr;
-    TypeInfoParam* methodParam       = nullptr;
-    Job*           pendingLambdaJob  = nullptr;
+    AstNode*       parameters            = nullptr;
+    AstNode*       genericParameters     = nullptr;
+    AstNode*       returnType            = nullptr;
+    AstNode*       content               = nullptr;
+    AstNode*       selectIf              = nullptr;
+    AstNode*       returnTypeDeducedNode = nullptr;
+    Scope*         scope                 = nullptr;
+    TypeInfoParam* methodParam           = nullptr;
+    Job*           pendingLambdaJob      = nullptr;
 
     uint32_t aliasMask         = 0;
     uint32_t stackSize         = 0;

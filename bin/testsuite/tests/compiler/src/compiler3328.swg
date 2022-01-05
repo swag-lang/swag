@@ -4,7 +4,7 @@
 {
     a := #run {
         loop 1
-            return 66.0
+            return
         return true
     }
 
