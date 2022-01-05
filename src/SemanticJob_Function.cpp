@@ -558,6 +558,11 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     if ((funcNode->flags & AST_SHORT_LAMBDA) && !(funcNode->returnType->specFlags & AST_SPEC_FUNCTYPE_RETURN_DEFINED))
         shortLambda = true;
 
+    // :RunGeneratedExp
+    bool mustDeduceReturnType = false;
+    if (funcNode->attributeFlags & ATTRIBUTE_RUN_GENERATED_EXP)
+        mustDeduceReturnType = true;
+
     // No semantic on content if function is generic
     if (funcNode->flags & AST_IS_GENERIC)
     {
@@ -641,7 +646,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
 
     // For a short lambda without a specified return type, we need to defer the symbol registration, as we
     // need to infer it from the lambda expression
-    SWAG_CHECK(registerFuncSymbol(context, funcNode, shortLambda ? OVERLOAD_INCOMPLETE : 0));
+    SWAG_CHECK(registerFuncSymbol(context, funcNode, (shortLambda || mustDeduceReturnType) ? OVERLOAD_INCOMPLETE : 0));
 
     return true;
 }
@@ -960,7 +965,12 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     if (funcNode->returnType->typeInfo == g_TypeMgr->typeInfoVoid && !node->childs.empty())
     {
         // This is a short lambda without a specified return type. We now have it
+        bool tryDeduce = false;
         if ((funcNode->flags & AST_SHORT_LAMBDA) && !(funcNode->returnType->specFlags & AST_SPEC_FUNCTYPE_RETURN_DEFINED))
+            tryDeduce = true;
+        if (funcNode->attributeFlags & ATTRIBUTE_RUN_GENERATED_EXP)
+            tryDeduce = true;
+        if (tryDeduce)
         {
             typeInfoFunc->returnType = TypeManager::concreteType(node->childs.front()->typeInfo, CONCRETE_FUNC);
             typeInfoFunc->returnType = TypeManager::promoteUntyped(typeInfoFunc->returnType);
@@ -975,7 +985,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
                 return true;
             }
 
-            typeInfoFunc->computeName();
+            typeInfoFunc->forceComputeName();
             funcNode->returnType->typeInfo = typeInfoFunc->returnType;
             lateRegister                   = true;
         }

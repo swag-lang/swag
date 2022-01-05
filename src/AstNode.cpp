@@ -407,7 +407,11 @@ void AstNode::addAlternativeScopeVar(Scope* scope, AstNode* varNode)
 void AstNode::computeEndLocation()
 {
     for (auto p : childs)
+    {
+        if (p->kind == AstNodeKind::Statement)
+            break;
         p->computeEndLocation();
+    }
 
     switch (kind)
     {

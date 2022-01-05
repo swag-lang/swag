@@ -428,6 +428,11 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
             funcNode->flags |= AST_GENERATED;
             funcNode->attributeFlags |= ATTRIBUTE_RUN_GENERATED_FUNC | ATTRIBUTE_GENERATED_FUNC | ATTRIBUTE_COMPILER | ATTRIBUTE_SHARP_FUNC;
             break;
+        case TokenId::CompilerGeneratedRunExp:
+            funcNode->token.text = "__run" + to_string(id);
+            funcNode->flags |= AST_GENERATED;
+            funcNode->attributeFlags |= ATTRIBUTE_RUN_GENERATED_EXP | ATTRIBUTE_GENERATED_FUNC | ATTRIBUTE_COMPILER | ATTRIBUTE_SHARP_FUNC;
+            break;
         case TokenId::CompilerFuncMain:
             funcNode->token.text = "__main" + to_string(id);
             funcNode->attributeFlags |= ATTRIBUTE_MAIN_FUNC | ATTRIBUTE_SHARP_FUNC;

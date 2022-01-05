@@ -82,7 +82,7 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
     if (!(node->semFlags & AST_SEM_EXEC_RET_STACK))
     {
         auto realType = TypeManager::concreteReferenceType(node->typeInfo);
-        if (realType->flags & TYPEINFO_RETURN_BY_COPY)
+        if (realType && realType->flags & TYPEINFO_RETURN_BY_COPY)
         {
             switch (realType->kind)
             {
@@ -235,12 +235,19 @@ bool SemanticJob::resolveCompilerRun(SemanticContext* context)
     if (node->flags & AST_IS_GENERIC)
         return true;
 
-    auto expression = context->node->childs.front();
+    auto expression = context->node->childs.back();
+
+    if (!expression->typeInfo)
+        expression->typeInfo = g_TypeMgr->typeInfoVoid;
+
     SWAG_CHECK(executeCompilerNode(context, expression, false));
     if (context->result != ContextResult::Done)
         return true;
 
     context->node->inheritComputedValue(expression);
+    if (context->node->flags & AST_VALUE_COMPUTED)
+        context->node->flags &= ~AST_NO_BYTECODE;
+
     context->node->typeInfo = expression->typeInfo;
     return true;
 }

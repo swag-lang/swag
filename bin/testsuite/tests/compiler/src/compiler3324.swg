@@ -1,20 +1,12 @@
-#global testerror
+//#global skip
+//#global testerror
 #test
 {
-    a := #run
-    {
-        /*sum := 0'uint
-        loop i: 3
-        {
-            var T: typeinfo = ?
-            switch i
-            {
-            case 0: T = f32
-            case 1: T = s8
-            case 2: T = bool
-            }
-
-            sum += @countof(T.flatName)
-        }*/
+    a := #run {
+        ret := 0's32
+        loop 10 ret += 66
+        return ret
     }
+
+    @assert(a == 660)
 }

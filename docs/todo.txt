@@ -44,8 +44,6 @@ v.add(#code @print(a))
 -------------------------------------
 [*] type (pointeur sur zone mémoire, et pas sur element)
 -------------------------------------
-4'ms  4's   10'°c
--------------------------------------
 
 
 
@@ -62,6 +60,10 @@ STRANGE
 ****************************************
 TODO
 ****************************************
+-------------------------------------
+virer __clang__
+-------------------------------------
+++ au lieu de ~
 -------------------------------------
 using XX en global ou dans un bloc impl, merde car exporté si le namespace qui correspond lui ne l'est pas
 (parcequ'il contient que des fonction protected par exemple) test 3244

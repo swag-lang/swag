@@ -22,7 +22,7 @@ JobResult BackendX64FunctionBodyJob::execute()
 
         if (one->node)
         {
-            if (one->node->attributeFlags & (ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO))
+            if (one->node->attributeFlags & (ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO | ATTRIBUTE_COMPILER))
                 continue;
             node     = CastAst<AstFuncDecl>(one->node, AstNodeKind::FuncDecl);
             typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);

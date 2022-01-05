@@ -843,34 +843,64 @@ bool SyntaxJob::doExpression(AstNode* parent, uint32_t exprFlags, AstNode** resu
     case TokenId::CompilerRun:
     {
         ScopedFlags sf(this, AST_RUN_BLOCK);
+        auto        node  = Ast::newNode<AstCompilerSpecFunc>(this, AstNodeKind::CompilerRun, sourceFile, nullptr);
+        node->semanticFct = SemanticJob::resolveCompilerRun;
         SWAG_CHECK(eatToken());
-        boolExpression              = Ast::newNode<AstNode>(nullptr, AstNodeKind::CompilerRun, sourceFile, nullptr);
-        boolExpression->semanticFct = SemanticJob::resolveCompilerRun;
-        SWAG_VERIFY(token.id != TokenId::SymLeftCurly, error(token, g_E[Err0198]));
-        SWAG_CHECK(doBoolExpression(boolExpression, exprFlags));
+
+        //SWAG_VERIFY(token.id != TokenId::SymLeftCurly, error(token, g_E[Err0198]));
+        //
+        // :RunGeneratedExp
+        if (token.id == TokenId::SymLeftCurly)
+        {
+            if (result)
+                *result = node;
+
+            node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
+            node->allocateExtension();
+            node->extension->semanticBeforeFct = SemanticJob::preResolveCompilerInstruction;
+
+            AstNode* funcNode;
+            SWAG_CHECK(doFuncDecl(node, &funcNode, TokenId::CompilerGeneratedRunExp));
+            funcNode->attributeFlags |= ATTRIBUTE_COMPILER;
+
+            ScopedFlags scoped(this, AST_NO_CALLSTACK);
+            auto        idRef               = Ast::newIdentifierRef(sourceFile, funcNode->token.text, node, this);
+            idRef->token.startLocation      = node->token.startLocation;
+            idRef->token.endLocation        = node->token.endLocation;
+            auto identifier                 = CastAst<AstIdentifier>(idRef->childs.back(), AstNodeKind::Identifier);
+            identifier->callParameters      = Ast::newFuncCallParams(sourceFile, identifier, this);
+            identifier->token.startLocation = node->token.startLocation;
+            identifier->token.endLocation   = node->token.endLocation;
+            return true;
+        }
+
+        SWAG_CHECK(doBoolExpression(node, exprFlags));
+        boolExpression = node;
         break;
     }
     case TokenId::CompilerMixin:
     {
+        auto node         = Ast::newNode<AstCompilerMixin>(this, AstNodeKind::CompilerMixin, sourceFile, nullptr);
+        node->semanticFct = SemanticJob::resolveCompilerMixin;
         SWAG_CHECK(eatToken());
-        boolExpression              = Ast::newNode<AstCompilerMixin>(nullptr, AstNodeKind::CompilerMixin, sourceFile, nullptr);
-        boolExpression->semanticFct = SemanticJob::resolveCompilerMixin;
-        SWAG_CHECK(doIdentifierRef(boolExpression, nullptr, IDENTIFIER_NO_PARAMS));
+        SWAG_CHECK(doIdentifierRef(node, nullptr, IDENTIFIER_NO_PARAMS));
+        boolExpression = node;
         break;
     }
     case TokenId::CompilerCode:
     {
+        auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerCode, sourceFile, nullptr);
         SWAG_CHECK(eatToken());
-        boolExpression = Ast::newNode<AstNode>(nullptr, AstNodeKind::CompilerCode, sourceFile, nullptr);
         if (token.id == TokenId::SymLeftCurly)
-            SWAG_CHECK(doEmbeddedStatement(boolExpression));
+            SWAG_CHECK(doEmbeddedStatement(node));
         else
-            SWAG_CHECK(doBoolExpression(boolExpression, exprFlags));
+            SWAG_CHECK(doBoolExpression(node, exprFlags));
         auto typeCode     = allocType<TypeInfoCode>();
-        typeCode->content = boolExpression->childs.front();
+        typeCode->content = node->childs.front();
         typeCode->content->flags |= AST_NO_SEMANTIC;
-        boolExpression->typeInfo = typeCode;
-        boolExpression->flags |= AST_NO_BYTECODE;
+        node->typeInfo = typeCode;
+        node->flags |= AST_NO_BYTECODE;
+        boolExpression = node;
         break;
     }
 
