@@ -34,8 +34,8 @@ impl Struct
 
 impl Struct
 {
-    // If opAffect is supposed to initialize the full content of the struct, you can add @[Swag.Complete]
-    // This will avoid a variable to be initialized to its default values, then changed later
+    // If opAffect is supposed to initialize the full content of the struct, you can add #[Swag.Complete]
+    // This will avoid every variables to be initialized to the default values, then changed later
     // with the 'opAffect' call.
     #[Swag.Complete]
     mtd opAffect(value: u64)  { x, y, z = cast(s32) value; }
@@ -70,21 +70,30 @@ impl Struct
     }
 
     // By default, there's no automatic conversion for a function argument, so you must cast
+    // So here, this will create a 'Struct' on the stack, initialized with a call to 'opAffect(s32)'
     toto(cast(Struct) 5's32)
 
-    // But if opAffect is marked with #[Swag.Implicit], automatic conversion can occur
+    // But if opAffect is marked with #[Swag.Implicit], automatic conversion can occur.
+    // No need for an explicit cast.
     toto(5'u16)
-
-    // Call with a struct literal
-    toto(Struct{5, 5, 666})
-
-    // Type can be deduced from the argument
-    toto(@{5, 5, 666})
-
-    // You can also just specify some parts of the struct, in the declaration order of the fields
-    titi(@{5})      // Initialize x, which is the first field
-    titi(@{5, 666}) // Initialize x and y
-
-    // You can also name the fields, and omit some of them
-    titi(@{x: 5, z: 5}) // Here y will stay to the default value, which is 666
 }
+
+// A structure can be converted to a constant by a call to opAffect if the function is
+// marked with 'Swag.ConstExpr'
+struct Vector2
+{
+    x, y: f32
+}
+
+impl Vector2
+{
+    #[Swag.ConstExpr]
+    mtd opAffect(one: f32)
+    {
+        x, y = one
+    }
+}
+
+const One: Vector2 = 1.0    // This will call opAffect
+#assert One.x == 1.0
+#assert One.y == 1.0

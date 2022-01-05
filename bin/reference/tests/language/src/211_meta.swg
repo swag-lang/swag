@@ -9,7 +9,7 @@
 }
 
 // We need a #placeholder so that every piece of code knows that 'XX' will
-// exist at one point, and must wait if necessary until it does.
+// exist at some point, and must wait if necessary until it does.
 #placeholder XX
 
 #test

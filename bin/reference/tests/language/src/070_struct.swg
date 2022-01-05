@@ -44,13 +44,13 @@
     {
         struct MyStruct
         {
-            x, y: s32
+            x, y: s32 = 1
         }
 
         // Default values
         var v0: MyStruct
-        @assert(v0.x == 0)
-        @assert(v0.y == 0)
+        @assert(v0.x == 1)
+        @assert(v0.y == 1)
 
         // Init in the order of the fields
         var v1: MyStruct{10, 20}
@@ -59,7 +59,7 @@
 
         // Named field
         v2 := MyStruct{y: 20}
-        @assert(v2.x == 0)
+        @assert(v2.x == 1)
         @assert(v2.y == 20)
 
         // With a tuple
@@ -93,4 +93,39 @@
         #assert X.x == 50
         #assert X.y == "value"
     }
+}
+
+// A function can take an argument of type struct.
+// No copy is done (this is equivalent to a const ref in C++)
+struct Struct3
+{
+    x, y, z: s32 = 666
+}
+
+func toto(v: Struct3)
+{
+    @assert(v.x == 5)
+    @assert(v.y == 5)
+    @assert(v.z == 666)
+}
+
+func titi(v: Struct3)
+{
+    @assert(v.y == 666)
+}
+
+#test
+{
+    // Call with a struct literal
+    toto(Struct3{5, 5, 666})
+
+    // Type can be deduced from the argument
+    toto(@{5, 5, 666})
+
+    // You can also just specify some parts of the struct, in the declaration order of the fields
+    titi(@{5})      // Initialize x, which is the first field
+    titi(@{5, 666}) // Initialize x and y
+
+    // You can also name the fields, and omit some of them
+    titi(@{x: 5, z: 5}) // Here y will stay to the default value, which is 666
 }
