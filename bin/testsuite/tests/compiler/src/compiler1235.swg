@@ -1,4 +1,4 @@
 #test
-{  
-    #assert(true, "toto" ~ "titi")
+{
+    #assert(true, "toto" ++ "titi")
 }

@@ -493,7 +493,7 @@ static bool isAssociative(TokenId id)
     case TokenId::SymAsterisk:
     case TokenId::SymVertical:
     case TokenId::SymCircumflex:
-    case TokenId::SymTilde:
+    case TokenId::SymPlusPlus:
         return true;
     }
 
@@ -689,7 +689,7 @@ bool SyntaxJob::doFactorExpression(AstNode** parent, uint32_t exprFlags, AstNode
         (token.id == TokenId::SymVertical) ||
         (token.id == TokenId::SymGreaterGreater) ||
         (token.id == TokenId::SymLowerLower) ||
-        (token.id == TokenId::SymTilde) ||
+        (token.id == TokenId::SymPlusPlus) ||
         (token.id == TokenId::SymCircumflex))
     {
         auto binaryNode = Ast::newNode<AstOp>(this, AstNodeKind::FactorOp, sourceFile, *parent, 2);

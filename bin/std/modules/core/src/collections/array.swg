@@ -90,7 +90,7 @@ impl Array
     mtd(op: string) opIndexAssign(index: uint, value: T)
     {
         Debug.assert(index < count, "index out of range")
-        #ast "buffer[index] " ~op~ " value"
+        #ast "buffer[index] " ++ op ++ " value"
     }
 
     // Initializes an Array that contains values copied from the specified array

@@ -37,16 +37,16 @@
         #assert(a == "this is a string")    // Compile time assertion
     }
 
-    // You can concatenate some values if the values are known at compile time. Use the '~' character for that
+    // You can concatenate some values if the values are known at compile time. Use the '++' operator for that
     {
-        const a = "the devil number is " ~666
+        const a = "the devil number is " ++ 666
         @assert(a == "the devil number is 666")
 
         const b = 666
-        var c = "the devil number is not " ~(b + 1)~ "!"
+        var c = "the devil number is not " ++ (b + 1) ++ "!"
         @assert(c == "the devil number is not 667!")
 
-        var d = "they are " ~ 4 ~ " apples in " ~ (2*2) ~ " baskets"
+        var d = "they are " ++ 4 ++ " apples in " ++ (2*2) ++ " baskets"
         @assert(d == "they are 4 apples in 4 baskets")
     }
 
@@ -140,9 +140,9 @@
         #assert(@stringof(X + 10) == "11")
     }
 
-    // Bineary operator ~ can be used to convert/concatenate at compile time
+    // Bineary operator ++ can be used to convert/concatenate at compile time
     {
-        x := "value is " ~ 6 ~ " !"
+        x := "value is " ++ 6 ++ " !"
         @assert(x == "value is 6 !")
     }
 }

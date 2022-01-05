@@ -26,8 +26,6 @@ func(T) hash(value: T)->u32
         itf := cast(IHash) value
         return itf.hash()
     }
-    //#else
-    //    #assert(false, "cannot hash type " ~ @typeof(T).name)
     return 5
 }
 

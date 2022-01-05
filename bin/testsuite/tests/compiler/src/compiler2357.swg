@@ -3,7 +3,7 @@ func mkVar(name: string, value: s32)
 {
     #ast
     {
-        return "var " ~ name ~ " = " ~ value
+        return "var " ++ name ++ " = " ++ value
     }
 }
 

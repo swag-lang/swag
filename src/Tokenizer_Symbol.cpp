@@ -146,6 +146,11 @@ bool Tokenizer::doSymbol(uint32_t c, Token& token)
             token.id = TokenId::SymPlusEqual;
             treatChar(c, offset);
         }
+        else if (c == '+')
+        {
+            token.id = TokenId::SymPlusPlus;
+            treatChar(c, offset);
+        }
         else
         {
             token.id = TokenId::SymPlus;

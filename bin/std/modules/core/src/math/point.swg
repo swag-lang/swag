@@ -31,7 +31,7 @@ impl Point
         #if   op == "+="    { x += other.x; y += other.y; }
         #elif op == "-="    { x -= other.x; y -= other.y; }
         #elif op == "*="    { x *= other.x; y *= other.y; }
-        #else               #assert(false, "unsupported assign operation '" ~op~ "'")
+        #else               #assert(false, "unsupported assign operation '" ++ op ++ "'")
     }
 
     mtd(op: string) opAssign(value: f32)
@@ -39,7 +39,7 @@ impl Point
         #if   op == "+="    { x += value; y += value; }
         #elif op == "-="    { x -= value; y -= value; }
         #elif op == "*="    { x *= value; y *= value; }
-        #else               #assert(false, "unsupported assign operation '" ~op~ "'")
+        #else               #assert(false, "unsupported assign operation '" ++ op ++ "'")
     }
 
     mtdc(op: string) opBinary(other: Point)->Self
@@ -47,7 +47,7 @@ impl Point
         #if   op == "+" return Point{x + other.x, y + other.y}
         #elif op == "-" return Point{x - other.x, y - other.y}
         #elif op == "*" return Point{x * other.x, y * other.y}
-        #else           #assert(false, "unsupported binary operation '" ~op~ "'")
+        #else           #assert(false, "unsupported binary operation '" ++ op ++ "'")
     }
 
     mtdc(op: string) opBinary(value: f32)->Self
@@ -55,7 +55,7 @@ impl Point
         #if   op == "+" return Point{x + value, y + value}
         #elif op == "-" return Point{x - value, y - value}
         #elif op == "*" return Point{x * value, y * value}
-        #else           #assert(false, "unsupported binary operation '" ~op~ "'")
+        #else           #assert(false, "unsupported binary operation '" ++ op ++ "'")
     }
 
     mtdc(op: string) opUnary()->Self
@@ -69,7 +69,7 @@ impl Point
 		}
         #else
         {
-            #assert(false, "unsupported unary operation '" ~op~ "'")
+            #assert(false, "unsupported unary operation '" ++ op ++ "'")
         }
     }
 

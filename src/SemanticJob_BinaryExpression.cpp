@@ -696,7 +696,7 @@ bool SemanticJob::resolveBitmaskAnd(SemanticContext* context, AstNode* left, Ast
     return true;
 }
 
-bool SemanticJob::resolveTilde(SemanticContext* context, AstNode* left, AstNode* right)
+bool SemanticJob::resolveAppend(SemanticContext* context, AstNode* left, AstNode* right)
 {
     auto node = context->node;
     SWAG_VERIFY(left->flags & AST_VALUE_COMPUTED, context->report({left, g_E[Err0798]}));
@@ -878,8 +878,8 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
     case TokenId::SymPercent:
         SWAG_CHECK(resolveBinaryOpModulo(context, left, right));
         break;
-    case TokenId::SymTilde:
-        SWAG_CHECK(resolveTilde(context, left, right));
+    case TokenId::SymPlusPlus:
+        SWAG_CHECK(resolveAppend(context, left, right));
         break;
 
     case TokenId::SymVertical:

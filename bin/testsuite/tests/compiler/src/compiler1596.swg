@@ -2,7 +2,7 @@ var G: s32
 
 func(op: string) toto(y: s32)
 {
-    #ast "G" ~op~ "y"
+    #ast "G" ++ op ++ "y"
 }
 
 #test

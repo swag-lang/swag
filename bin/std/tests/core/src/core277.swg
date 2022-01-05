@@ -28,7 +28,7 @@ impl AA
 
     mtd(TV) set(v: TV)
     {
-        #assert(isIn(TV), "invalid type " ~ @stringof(@typeof(TV)))
+        #assert(isIn(TV), "invalid type " ++ @stringof(@typeof(TV)))
 
         if cur and cur != TV and cur.flags & Swag.TypeInfoFlags.HasDrop
         {
@@ -43,7 +43,7 @@ impl AA
 
     mtd(TV) get()->TV
     {
-        #assert(isIn(TV), "invalid type " ~ @stringof(@typeof(TV)))
+        #assert(isIn(TV), "invalid type " ++ @stringof(@typeof(TV)))
         @assert(cur == TV)
         return dref cast(*TV) buf
     }

@@ -1,7 +1,7 @@
 #[Swag.Mixin]
 func declare(name: string, value: s32)
 {
-    #ast "const " ~name~ "2 = " ~value
+    #ast "const " ++ name ++ "2 = " ++ value
 }
 
 declare("myVar", 5)

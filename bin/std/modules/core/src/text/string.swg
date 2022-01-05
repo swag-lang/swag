@@ -91,7 +91,7 @@ impl String
         #if op == "+="
             append(value)
         #else
-            #assert(false, "invalid binary operator '" ~ op ~ "'")
+            #assert(false, "invalid binary operator '" ++ op ++ "'")
     }
 
     mtd(op: string) opAssign(value: rune)
@@ -99,7 +99,7 @@ impl String
         #if op == "+="
             append(value)
         #else
-            #assert(false, "invalid binary operator '" ~ op ~ "'")
+            #assert(false, "invalid binary operator '" ++ op ++ "'")
     }
 
     mtd(op: string) opAssign(value: u8)
@@ -107,7 +107,7 @@ impl String
         #if op == "+="
             append(value)
         #else
-            #assert(false, "invalid binary operator '" ~ op ~ "'")
+            #assert(false, "invalid binary operator '" ++ op ++ "'")
     }
 
     mtd opPostMove()

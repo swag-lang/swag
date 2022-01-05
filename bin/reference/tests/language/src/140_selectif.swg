@@ -68,7 +68,7 @@
             {
                 if @typeof(T) == s32 or @typeof(T) == s64
                     return true
-                @errormsg("invalid type " ~ @stringof(T), #location)
+                @errormsg("invalid type " ++ @stringof(T), #location)
                 return false
             }
         {

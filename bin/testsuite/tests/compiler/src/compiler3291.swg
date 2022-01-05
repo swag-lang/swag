@@ -12,7 +12,7 @@ func MK_GET(cd: alias)
     #run
     {
         itf := @compiler()
-        itf.compileString("impl " ~@nameof(#self)~ " {\n mtd get_" ~ @nameof(cd) ~ "() => " ~ @nameof(cd) ~ ";\n}")
+        itf.compileString("impl " ++ @nameof(#self) ++ " {\n mtd get_" ++ @nameof(cd) ++ "() => " ++ @nameof(cd) ++ ";\n}")
     }
 }
 

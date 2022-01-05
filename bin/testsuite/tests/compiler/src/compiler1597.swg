@@ -2,7 +2,7 @@ var G: s32
 
 func(op: string, T) toto(x, y: T)->T
 {
-    #ast "return x" ~op~ "y"
+    #ast "return x" ++ op ++ "y"
 }
 
 #test

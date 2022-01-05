@@ -11,7 +11,7 @@
         #ast
         {
             const INC = 5
-            return "cpt += " ~INC   // Equivalent to 'cpt += 5'
+            return "cpt += " ++ INC   // Equivalent to 'cpt += 5'
         }
 
         @assert(cpt == 7)
@@ -38,7 +38,7 @@
         {
             #ast
             {
-                return "x, y: " ~ @typeof(T).name
+                return "x, y: " ++ @typeof(T).name
             }
 
             z: string
@@ -87,7 +87,7 @@
 #ast
 {
     const value = 666
-    return "const myGeneratedConst = " ~value
+    return "const myGeneratedConst = " ++ value
 }
 
 // You can use '#placeholder' in case you are generating symbols that can be
