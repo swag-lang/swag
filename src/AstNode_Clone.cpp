@@ -73,6 +73,7 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
         extension->stackOffset                  = from->extension->stackOffset;
         extension->anyTypeSegment               = from->extension->anyTypeSegment;
         extension->anyTypeOffset                = from->extension->anyTypeOffset;
+        extension->alternativeScopes            = from->extension->alternativeScopes;
     }
 
     if (from->computedValue)

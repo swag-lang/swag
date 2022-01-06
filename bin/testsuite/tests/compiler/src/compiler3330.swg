@@ -1,4 +1,4 @@
-#global skip
+//#global skip
 #test
 {
     struct V { x: s32; }
