@@ -1653,7 +1653,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
             Diagnostic* note = nullptr;
             for (auto match : matches)
             {
-                if (match->symbolOverload->node != node)
+                if (match->symbolOverload->node != node && !match->symbolOverload->node->isParentOf(node))
                 {
                     note = new Diagnostic{match->symbolOverload->node, g_E[Nte0036], DiagnosticLevel::Note};
                     break;

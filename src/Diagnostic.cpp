@@ -22,7 +22,11 @@ bool Diagnostic::mustPrintCode() const
 void Diagnostic::printSourceLine() const
 {
     SWAG_ASSERT(sourceFile);
-    fs::path path = sourceFile->path;
+    auto checkFile = sourceFile;
+    if (checkFile->fileForSourceLocation)
+        checkFile = checkFile->fileForSourceLocation;
+
+    fs::path path = checkFile->path;
     g_Log.print(Utf8::normalizePath(path).c_str());
     if (hasRangeLocation)
         g_Log.print(Utf8::format(":%d:%d:%d:%d: ", startLocation.line + 1, startLocation.column + 1, endLocation.line + 1, endLocation.column + 1));
@@ -263,7 +267,7 @@ void Diagnostic::report(bool verboseMode) const
                 if (lastLine == 0)
                 {
                     Utf8 errorMsg;
-                    while (startIndex < (int) startLocation.column)
+                    while (startIndex < (int) startLocation.column && startIndex < (uint32_t) backLine.length())
                     {
                         if (backLine[startIndex] >= 32 || backLine[startIndex] == '\t')
                             errorMsg += backLine[startIndex];
@@ -277,7 +281,7 @@ void Diagnostic::report(bool verboseMode) const
 
                     if (startIndex < (uint32_t) backLine.count)
                     {
-                        for (int i = 0; i < range; i++)
+                        for (uint32_t i = 0; i < (uint32_t) range && i < (uint32_t) backLine.length(); i++)
                         {
                             if (backLine[startIndex] >= 32 || backLine[startIndex] == '\t')
                                 errorMsg += backLine[startIndex];
@@ -308,7 +312,7 @@ void Diagnostic::report(bool verboseMode) const
                 {
                     printMargin(codeColor, false);
 
-                    for (uint32_t i = minBlanks; i < startLocation.column; i++)
+                    for (uint32_t i = minBlanks; i < startLocation.column && i < (uint32_t) backLine.length(); i++)
                     {
                         if (backLine[i] == '\t')
                             g_Log.print("\t");

@@ -126,7 +126,11 @@ uint32_t SourceFile::getChar(unsigned& offset)
 Utf8 SourceFile::getLine(long lineNo)
 {
     ScopedLock lk(mutex);
-    if (isExternal)
+    auto       checkFile = this;
+    if (fileForSourceLocation)
+        checkFile = fileForSourceLocation;
+
+    if (isExternal && !fileForSourceLocation)
     {
         if (allLines.empty())
         {
@@ -149,7 +153,7 @@ Utf8 SourceFile::getLine(long lineNo)
         // This is slow, but this is ok, as getLine is not called in normal situations
         if (allLines.empty())
         {
-            ifstream fle(path, ios::binary);
+            ifstream fle(checkFile->path, ios::binary);
             if (!fle.is_open())
                 return "?";
 
