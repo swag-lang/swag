@@ -2318,9 +2318,9 @@ bool TypeManager::castToInterface(SemanticContext* context, TypeInfo* toType, Ty
             auto typePointer = CastTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer);
             typeStruct       = typePointer->pointedType;
 
-            // Not sure why we have to wait here, and not if this is not a pointer
+            // Not sure why we have to wait here, and not have to wait if this is not a pointer.
             // The assert below will probably trigger at some point...
-            context->job->waitAllStructInterfacesReg(typeStruct);
+            context->job->waitAllStructInterfaces(typeStruct);
             if (context->result != ContextResult::Done)
             {
                 SWAG_ASSERT(castFlags & CASTFLAG_ACCEPT_PENDING);

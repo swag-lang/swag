@@ -1,3 +1,3 @@
 :loop
-call std.bat
+call tst.bat
 goto loop
