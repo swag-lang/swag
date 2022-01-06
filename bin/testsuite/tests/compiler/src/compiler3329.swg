@@ -1,9 +1,10 @@
-#global skip
-func toto(values: s32...)
+#global testerror
+func toto()
 {
-    v := 0
-    visit v: values
+    values := @[[1], [2]]
+    a := 0
+    visit b, a: values
     {
-        @print(v)
+        @print(a)
     }
 }

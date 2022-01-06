@@ -577,7 +577,8 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     SWAG_ASSERT(concat.firstBucket->nextBucket == nullptr);
     node->expression->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
 
-    int id = g_UniqueID.fetch_add(1);
+    int firstAliasVar = 0;
+    int id            = g_UniqueID.fetch_add(1);
 
     // Multi dimensional array
     if (typeInfo->kind == TypeInfoKind::Array && ((TypeInfoArray*) typeInfo)->pointedType->kind == TypeInfoKind::Array)
@@ -585,6 +586,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         auto typeArray   = (TypeInfoArray*) typeInfo;
         auto pointedType = typeArray->finalType;
 
+        firstAliasVar = 1;
         content += Utf8::format("{ var __addr%u = cast(*%s) @dataof(%s); ", id, typeArray->finalType->name.c_str(), (const char*) concat.firstBucket->datas);
         content += Utf8::format("const __count%u = @sizeof(%s) / %u; ", id, (const char*) concat.firstBucket->datas, typeArray->finalType->sizeOf);
         content += Utf8::format("loop __count%u { ", id);
@@ -610,6 +612,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         else
             pointedType = ((TypeInfoArray*) typeInfo)->pointedType;
 
+        firstAliasVar = 1;
         content += Utf8::format("{ var __addr%u = @dataof(%s); ", id, (const char*) concat.firstBucket->datas);
         content += Utf8::format("loop %s { ", (const char*) concat.firstBucket->datas);
         if (node->specFlags & AST_SPEC_VISIT_WANTPOINTER)
@@ -630,6 +633,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     {
         content += Utf8::format("{ var __addr%u = @dataof(%s); ", id, (const char*) concat.firstBucket->datas);
         content += Utf8::format("loop %s { ", (const char*) concat.firstBucket->datas);
+        firstAliasVar = 1;
         if (node->specFlags & AST_SPEC_VISIT_WANTPOINTER)
             content += Utf8::format("var %s = __addr%u + @index; ", alias0Name.c_str(), id);
         else
@@ -643,6 +647,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     {
         SWAG_VERIFY(!(node->specFlags & AST_SPEC_VISIT_WANTPOINTER), context->report({node, g_E[Err0627]}));
         content += Utf8::format("{ loop %s { ", (const char*) concat.firstBucket->datas);
+        firstAliasVar = 0;
         content += Utf8::format("var %s = %s[@index]; ", alias0Name.c_str(), (const char*) concat.firstBucket->datas);
         content += Utf8::format("var %s = @index; ", alias1Name.c_str());
         content += "}} ";
@@ -655,6 +660,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         SWAG_VERIFY(!(node->specFlags & AST_SPEC_VISIT_WANTPOINTER), context->report({node, g_E[Err0636]}));
         content += Utf8::format("{ var __addr%u = @typeof(%s); ", id, (const char*) concat.firstBucket->datas);
         content += Utf8::format("loop %d { ", typeEnum->values.size());
+        firstAliasVar = 1;
         content += Utf8::format("var %s = dref cast(const *%s) __addr%u.values[@index].value; ", alias0Name.c_str(), typeInfo->name.c_str(), id);
         content += Utf8::format("var %s = @index; ", alias1Name.c_str());
         content += "}} ";
@@ -691,6 +697,28 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     SyntaxJob syntaxJob;
     syntaxJob.constructEmbedded(content, node, node, CompilerAstKind::EmbeddedInstruction, false);
     newExpression = node->childs.back();
+
+    // In case of error (like an already defined identifier), we need to set the correct location of declared
+    // variables
+    int countVar   = 0;
+    int countAlias = 0;
+    Ast::visit(newExpression, [&](AstNode* x)
+               {
+                   if (countAlias >= node->aliasNames.size())
+                       return;
+                   if (x->kind == AstNodeKind::VarDecl)
+                   {
+                       if (countVar == firstAliasVar)
+                       {
+                           x->token.startLocation = node->aliasNames[countAlias].startLocation;
+                           x->token.endLocation   = node->aliasNames[countAlias].endLocation;
+                           countAlias++;
+                           firstAliasVar++;
+                       }
+
+                       countVar++;
+                   }
+               });
 
     // First child is the let in the statement, and first child of this is the loop node
     auto loopNode = CastAst<AstLoop>(node->childs.back()->childs.back(), AstNodeKind::Loop);
