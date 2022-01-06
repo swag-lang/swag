@@ -131,7 +131,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
 
         // Generate an expression of the form "var __tmp_0 = assignment"
         ScopedLocation scopedLoc(this, &leftNode->childs.front()->token);
-        auto           tmpVarName = Utf8::format("__tmp_%d", g_UniqueID.fetch_add(1));
+        auto           tmpVarName = Utf8::format("__5tmp_%d", g_UniqueID.fetch_add(1));
         AstVarDecl*    orgVarNode = Ast::newVarDecl(sourceFile, tmpVarName, parentNode, this);
         orgVarNode->kind          = kind;
 

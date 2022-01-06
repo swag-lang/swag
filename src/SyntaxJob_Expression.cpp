@@ -1345,7 +1345,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
             else
             {
                 // Generate an expression of the form "var __tmp_0 = assignment"
-                auto        tmpVarName = Utf8::format("__tmp_%d", g_UniqueID.fetch_add(1));
+                auto        tmpVarName = Utf8::format("__4tmp_%d", g_UniqueID.fetch_add(1));
                 AstVarDecl* varNode    = Ast::newVarDecl(sourceFile, tmpVarName, parentNode, this);
                 varNode->flags |= AST_GENERATED | AST_HAS_FULL_STRUCT_PARAMETERS;
                 Ast::addChildBack(varNode, assignment);

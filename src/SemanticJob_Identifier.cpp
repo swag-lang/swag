@@ -267,7 +267,7 @@ bool SemanticJob::createTmpVarStruct(SemanticContext* context, AstIdentifier* id
         varParent = varParent->parent;
 
     // Declare a variable
-    auto varNode = Ast::newVarDecl(sourceFile, Utf8::format("__tmp_%d", g_UniqueID.fetch_add(1)), varParent);
+    auto varNode = Ast::newVarDecl(sourceFile, Utf8::format("__1tmp_%d", g_UniqueID.fetch_add(1)), varParent);
 
     // Inherit alternative scopes.
     if (identifier->parent->extension)
@@ -380,7 +380,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                 nodeCall->extension->resolvedUserOpSymbolOverload = nullptr;
                 nodeCall->castedTypeInfo                          = nullptr;
 
-                auto varNode = Ast::newVarDecl(sourceFile, Utf8::format("__tmp_%d", g_UniqueID.fetch_add(1)), identifier);
+                auto varNode = Ast::newVarDecl(sourceFile, Utf8::format("__2tmp_%d", g_UniqueID.fetch_add(1)), identifier);
 
                 // Put child front, because emitCall wants the parameters to be the last
                 Ast::removeFromParent(varNode);
@@ -470,7 +470,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
 
             if (!covered)
             {
-                auto varNode = Ast::newVarDecl(sourceFile, Utf8::format("__tmp_%d", g_UniqueID.fetch_add(1)), identifier);
+                auto varNode = Ast::newVarDecl(sourceFile, Utf8::format("__3tmp_%d", g_UniqueID.fetch_add(1)), identifier);
 
                 // Put child front, because emitCall wants the parameters to be the last
                 Ast::removeFromParent(varNode);
