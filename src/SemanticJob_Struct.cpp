@@ -710,6 +710,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         job->waitTypeCompleted(child->typeInfo);
         if (context->result != ContextResult::Done)
         {
+            job->waitingHintNode = child;
             return true;
         }
     }

@@ -147,6 +147,7 @@ struct Job
     JobContext* baseContext         = nullptr;
     SymbolName* waitingSymbolSolved = nullptr;
     AstNode*    waitingIdNode       = nullptr;
+    AstNode*    waitingHintNode     = nullptr;
     TypeInfo*   waitingIdType       = nullptr;
     Job*        waitingJob          = nullptr;
     JobGroup*   jobGroup            = nullptr;

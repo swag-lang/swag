@@ -257,6 +257,33 @@ void Workspace::setupTarget()
     cachePath += "/";
 }
 
+void Workspace::errorPendingJobsMsg(Job* prevJob, Job* depJob, vector<const Diagnostic*>& notes)
+{
+    Utf8 msg = Utf8::format(g_E[Nte0046],
+                            AstNode::getKindName(prevJob->originalNode).c_str(),
+                            prevJob->originalNode->token.text.c_str(),
+                            AstNode::getKindName(depJob->originalNode).c_str(),
+                            depJob->originalNode->token.text.c_str());
+
+    auto prevNode = prevJob->nodes.empty() ? prevJob->originalNode : prevJob->nodes.back();
+
+    if (prevJob->waitingHintNode)
+    {
+        switch (prevJob->waitingHintNode->kind)
+        {
+        case AstNodeKind::VarDecl:
+            msg += " ";
+            msg += Utf8::format(g_E[Nte0065], AstNode::getKindName(prevJob->waitingHintNode).c_str(), prevJob->waitingHintNode->token.text.c_str());
+            break;
+        }
+
+        prevNode = prevJob->waitingHintNode;
+    }
+
+    auto note = new Diagnostic{prevNode, msg, DiagnosticLevel::Note};
+    notes.push_back(note);
+}
+
 void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
 {
     set<SymbolName*> doneSymbols;
@@ -291,6 +318,7 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
             depJob = depJob->waitingJob;
         }
 
+        // This is a resolution cycle
         if (isCycle)
         {
             vector<const Diagnostic*> notes;
@@ -299,22 +327,13 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
             auto prevJob = pendingJob;
             while (depJob != pendingJob)
             {
-                Utf8 msg = Utf8::format(g_E[Nte0046], AstNode::getKindName(prevJob->originalNode).c_str(), prevJob->originalNode->token.text.c_str());
-                msg += Utf8::format(g_E[Nte0045], AstNode::getKindName(depJob->originalNode).c_str(), depJob->originalNode->token.text.c_str());
-                auto prevNode = prevJob->nodes.empty() ? prevJob->originalNode : prevJob->nodes.back();
-                auto note     = new Diagnostic{prevNode, msg, DiagnosticLevel::Note};
-                notes.push_back(note);
-
+                errorPendingJobsMsg(prevJob, depJob, notes);
                 prevJob = depJob;
                 depJob->flags |= JOB_NO_PENDING_REPORT;
                 depJob = depJob->waitingJob;
             }
 
-            Utf8 msg = Utf8::format(g_E[Nte0046], AstNode::getKindName(prevJob->originalNode).c_str(), prevJob->originalNode->token.text.c_str());
-            msg += Utf8::format(g_E[Nte0045], AstNode::getKindName(pendingJob->originalNode).c_str(), pendingJob->originalNode->token.text.c_str());
-            auto prevNode = prevJob->nodes.empty() ? prevJob->originalNode : prevJob->nodes.back();
-            auto note     = new Diagnostic{prevNode, msg, DiagnosticLevel::Note};
-            notes.push_back(note);
+            errorPendingJobsMsg(prevJob, pendingJob, notes);
 
             Diagnostic diag{pendingJob->originalNode, Utf8::format(g_E[Err0419], AstNode::getKindName(pendingJob->originalNode).c_str(), pendingJob->originalNode->token.text.c_str())};
             sourceFile->report(diag, notes);

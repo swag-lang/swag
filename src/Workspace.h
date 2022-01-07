@@ -8,6 +8,7 @@ struct Scope;
 struct SourceFile;
 struct AstNode;
 struct BackendTarget;
+struct Diagnostic;
 enum class ModuleKind;
 
 #define SWAG_CACHE_FOLDER "swag_cache"
@@ -41,7 +42,9 @@ struct PendingJob
 };
 
 struct Workspace
+
 {
+    void    errorPendingJobsMsg(Job* prevJob, Job* depJob, vector<const Diagnostic*> &notes);
     void    errorPendingJobs(vector<PendingJob>& pendingJobs);
     void    computeWaitingJobs();
     void    checkPendingJobs();

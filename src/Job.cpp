@@ -200,6 +200,7 @@ void Job::setPending(SymbolName* symbolToWait, JobWaitKind waitKind, AstNode* no
     waitingSymbolSolved = symbolToWait;
     waitingKind         = waitKind;
     waitingIdNode       = node;
+    waitingHintNode     = nullptr;
     waitingIdType       = typeInfo;
     baseContext->result = ContextResult::Pending;
 }
