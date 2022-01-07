@@ -1,11 +1,10 @@
 #global testerror
 struct ST
 {
-    x: ST
+    x: ST1
 }
 
-/*struct ST1
+struct ST1
 {
     x: ST
 }
-*/

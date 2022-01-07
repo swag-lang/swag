@@ -13,6 +13,7 @@
 #include "ModuleCfgManager.h"
 #include "ErrorIds.h"
 #include "ModuleManager.h"
+#include "SymTable.h"
 
 void Workspace::computeModuleName(const fs::path& path, Utf8& moduleName, Utf8& moduleFolder, ModuleKind& kind)
 {
@@ -351,11 +352,7 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
         SWAG_ASSERT(!toSolve->nodes.empty());
         auto declNode = toSolve->nodes.front();
 
-        Utf8 msg;
-        if (toSolve->kind == SymbolKind::PlaceHolder)
-            msg = Utf8::format(g_E[Err0892], toSolve->name.c_str());
-        else
-            msg = Utf8::format(g_E[Err0893], toSolve->name.c_str());
+        Utf8 msg = Utf8::format(g_E[Err0893], SymTable::getNakedKindName(toSolve->kind), toSolve->name.c_str());
 
         // a := func(a) for example
         if (toSolve->kind == SymbolKind::Variable &&
@@ -370,9 +367,10 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
 #ifdef SWAG_DEV_MODE
         diag.remarks.push_back(it.id);
 #endif
-
-        Diagnostic note{declNode, g_E[Nte0028], DiagnosticLevel::Note};
-        sourceFile->report(diag, &note);
+        Diagnostic* note = nullptr;
+        if (node != declNode)
+            note = new Diagnostic{declNode, g_E[Nte0028], DiagnosticLevel::Note};
+        sourceFile->report(diag, note);
     }
 }
 
@@ -490,7 +488,6 @@ void Workspace::checkPendingJobs()
         Utf8 id;
 #ifdef SWAG_DEV_MODE
         id = Utf8::format("[kind: %d]", pendingJob->waitingKind);
-#endif
         if (pendingJob->waitingIdNode)
         {
             id += " ";
@@ -505,6 +502,7 @@ void Workspace::checkPendingJobs()
             id += " ";
             id += pendingJob->waitingIdType->getDisplayName();
         }
+#endif
 
         PendingJob pj;
         pj.pendingJob = pendingJob;

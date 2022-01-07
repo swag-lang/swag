@@ -644,7 +644,6 @@ void SemanticJob::flattenStructChilds(SemanticContext* context, AstNode* parent,
     }
 }
 
-#pragma optimize("", off)
 bool SemanticJob::resolveStruct(SemanticContext* context)
 {
     auto node       = CastAst<AstStruct>(context->node, AstNodeKind::StructDecl);
@@ -699,9 +698,20 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     for (int i = 0; i < childs.size(); i++)
     {
         auto child = childs[i];
+
+        // Waiting for myself !
+        if (child->typeInfo == typeInfo)
+        {
+            Diagnostic diag{node, Utf8::format(g_E[Err0201], typeInfo->getDisplayName().c_str())};
+            Diagnostic note{child, g_E[Nte0064], DiagnosticLevel::Note};
+            return context->report(diag, &note);
+        }
+
         job->waitTypeCompleted(child->typeInfo);
         if (context->result != ContextResult::Done)
+        {
             return true;
+        }
     }
 
     for (int i = 0; i < childs.size(); i++)
