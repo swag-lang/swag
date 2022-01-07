@@ -1,4 +1,4 @@
-//#global testerror
+#global testerror
 struct ST
 {
     x: ST1
