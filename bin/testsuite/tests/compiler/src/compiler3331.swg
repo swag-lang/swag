@@ -1,5 +1,5 @@
 #global skip
-struct(T) ST
+struct ST
 {
     x: ST
 }

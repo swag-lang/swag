@@ -258,6 +258,7 @@ void Workspace::setupTarget()
 
 void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
 {
+    set<SymbolName*> doneSymbols;
     for (auto& it : pendingJobs)
     {
         auto pendingJob = it.pendingJob;
@@ -324,6 +325,14 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
         {
             pendingJob->flags |= JOB_NO_PENDING_REPORT;
             continue;
+        }
+
+        // No need to raise multiple times an error for the same symbol
+        if (pendingJob->waitingSymbolSolved)
+        {
+            if (doneSymbols.find(pendingJob->waitingSymbolSolved) != doneSymbols.end())
+                continue;
+            doneSymbols.insert(pendingJob->waitingSymbolSolved);
         }
 
         // Job is not done, and we do not wait for a specific identifier
@@ -459,7 +468,6 @@ void Workspace::checkPendingJobs()
     computeWaitingJobs();
 
     // Collect unsolved jobs
-    set<SymbolName*>   doneSymbols;
     vector<PendingJob> pendingJobs;
     for (auto pendingJob : g_ThreadMgr.waitingJobs)
     {
@@ -479,16 +487,10 @@ void Workspace::checkPendingJobs()
         if (sourceFile->module->numErrors)
             continue;
 
-        // No need to raise multiple times an error for the same symbol
-        if (pendingJob->waitingSymbolSolved)
-        {
-            if (doneSymbols.find(pendingJob->waitingSymbolSolved) != doneSymbols.end())
-                continue;
-            doneSymbols.insert(pendingJob->waitingSymbolSolved);
-        }
-
-        // No need to raise multiple times an error for the same id
-        Utf8 id = Utf8::format("[kind: %d]", pendingJob->waitingKind);
+        Utf8 id;
+#ifdef SWAG_DEV_MODE
+        id = Utf8::format("[kind: %d]", pendingJob->waitingKind);
+#endif
         if (pendingJob->waitingIdNode)
         {
             id += " ";
