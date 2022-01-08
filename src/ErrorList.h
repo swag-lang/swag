@@ -478,7 +478,7 @@ SWAG_ERROR(Err0482, "cannot dereference a tuple type like a pointer or an array"
 SWAG_ERROR(Err0483, nullptr)
 SWAG_ERROR(Err0484, nullptr)
 SWAG_ERROR(Err0485, "an array access type should be integer, but is `%s`")
-SWAG_ERROR(Err0486, "cannot dereference a `void` pointer")
+SWAG_ERROR(Err0486, "cannot dereference a pointer to `void`")
 SWAG_ERROR(Err0487, nullptr)
 SWAG_ERROR(Err0488, "%s `%s` cannot be dereferenced like a pointer")
 SWAG_ERROR(Err0489, "the `@init` first parameter should be a pointer (`%s` provided)")
