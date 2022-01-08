@@ -275,23 +275,6 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         return;
     }
 
-    case MatchResult::BadGenericMatch:
-    {
-        SWAG_ASSERT(callParameters);
-        diag       = new Diagnostic{match.parameters[bi.badSignatureParameterIdx],
-                              Utf8::format(g_E[Err0047],
-                                           getTheNiceParameterRank(badParamIdx).c_str(),
-                                           refNiceName.c_str(),
-                                           bi.badGenMatch.c_str(),
-                                           bi.badSignatureRequestedType->getDisplayName().c_str(),
-                                           bi.badSignatureGivenType->getDisplayName().c_str())};
-        diag->hint = explicitCastHint;
-        note       = new Diagnostic{overload->node, Utf8::format(g_E[Nte0008], refNiceName.c_str()), DiagnosticLevel::Note};
-        result0.push_back(diag);
-        result1.push_back(note);
-        return;
-    }
-
     case MatchResult::MismatchGenericValue:
     {
         diag = new Diagnostic{bi.badNode,
@@ -351,6 +334,31 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
             note = new Diagnostic{destFuncDecl, destFuncDecl->token, Utf8::format(g_E[Nte0008], refNiceName.c_str()), DiagnosticLevel::Note};
         }
         else if (destFuncDecl && bi.badSignatureParameterIdx < destFuncDecl->parameters->childs.size())
+        {
+            auto reqParam = destFuncDecl->parameters->childs[bi.badSignatureParameterIdx];
+            note          = new Diagnostic{reqParam, Utf8::format(g_E[Nte0066], reqParam->token.text.c_str(), refNiceName.c_str()), DiagnosticLevel::Note};
+        }
+        else
+            note = new Diagnostic{overload->node, Utf8::format(g_E[Nte0008], refNiceName.c_str()), DiagnosticLevel::Note};
+
+        result0.push_back(diag);
+        result1.push_back(note);
+        return;
+    }
+
+    case MatchResult::BadGenericMatch:
+    {
+        SWAG_ASSERT(callParameters);
+        diag       = new Diagnostic{match.parameters[bi.badSignatureParameterIdx],
+                              Utf8::format(g_E[Err0047],
+                                           getTheNiceParameterRank(badParamIdx).c_str(),
+                                           refNiceName.c_str(),
+                                           bi.badGenMatch.c_str(),
+                                           bi.badSignatureRequestedType->getDisplayName().c_str(),
+                                           bi.badSignatureGivenType->getDisplayName().c_str())};
+        diag->hint = explicitCastHint;
+
+        if (destFuncDecl && bi.badSignatureParameterIdx < destFuncDecl->parameters->childs.size())
         {
             auto reqParam = destFuncDecl->parameters->childs[bi.badSignatureParameterIdx];
             note          = new Diagnostic{reqParam, Utf8::format(g_E[Nte0066], reqParam->token.text.c_str(), refNiceName.c_str()), DiagnosticLevel::Note};
