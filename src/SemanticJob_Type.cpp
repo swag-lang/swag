@@ -57,7 +57,7 @@ bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
         // Reference to a static struct member
         if (node->resolvedSymbolOverload && node->resolvedSymbolOverload->flags & OVERLOAD_VAR_STRUCT)
         {
-            name = "struct member";
+            name = "the struct member";
             hint = Utf8::format(g_E[Hnt0003], node->resolvedSymbolOverload->symbol->ownerTable->scope->name.c_str());
         }
 

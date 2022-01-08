@@ -87,7 +87,7 @@ bool SemanticJob::resolveEnumType(SemanticContext* context)
         typeInfo->flags |= TYPEINFO_ENUM_FLAGS;
         auto concreteType = TypeManager::concreteType(rawTypeInfo);
         if (!(concreteType->isNativeInteger()) || concreteType->isNativeIntegerSigned())
-            return context->report({typeNode->childs[0], Utf8::format(g_E[Err0697], rawTypeInfo->getDisplayName().c_str())});
+            return context->report({typeNode->childs.front(), Utf8::format(g_E[Err0697], rawTypeInfo->getDisplayName().c_str())});
     }
 
     if (enumNode->attributeFlags & ATTRIBUTE_ENUM_INDEX)
@@ -95,7 +95,7 @@ bool SemanticJob::resolveEnumType(SemanticContext* context)
         typeInfo->flags |= TYPEINFO_ENUM_INDEX;
         auto concreteType = TypeManager::concreteType(rawTypeInfo);
         if (!(concreteType->isNativeInteger()))
-            return context->report({typeNode->childs[0], Utf8::format(g_E[Err0698], rawTypeInfo->getDisplayName().c_str())});
+            return context->report({typeNode->childs.front(), Utf8::format(g_E[Err0698], rawTypeInfo->getDisplayName().c_str())});
     }
 
     rawTypeInfo = TypeManager::concreteType(rawTypeInfo, CONCRETE_ALIAS);
@@ -126,6 +126,8 @@ bool SemanticJob::resolveEnumType(SemanticContext* context)
         break;
     }
 
+    if (!typeNode->childs.empty())
+        typeNode = typeNode->childs.front();
     return context->report({typeNode, Utf8::format(g_E[Err0702], rawTypeInfo->getDisplayName().c_str())});
 }
 

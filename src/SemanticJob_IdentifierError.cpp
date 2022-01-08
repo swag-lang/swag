@@ -70,11 +70,11 @@ Utf8 SemanticJob::getNiceParameterRank(int idx)
     switch (idx)
     {
     case 1:
-        return "first parameter";
+        return "the first parameter";
     case 2:
-        return "second parameter";
+        return "the second parameter";
     case 3:
-        return "third parameter";
+        return "the third parameter";
     }
     return Utf8::format("parameter `%d`", idx);
 }
