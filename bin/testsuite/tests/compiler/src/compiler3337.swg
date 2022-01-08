@@ -3,7 +3,7 @@
 #test
 {
     struct A {}
-    struct B { v: A; }
+    struct B { vv: A; }
     var x: B
-    x.x = 0
+    x.Vv = 0
 }

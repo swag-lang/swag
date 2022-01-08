@@ -110,6 +110,20 @@ const Utf8& Scope::getFullName()
     }
 }
 
+Utf8 Scope::getDisplayFullName()
+{
+    if (flags & SCOPE_FILE)
+        return name;
+    if (!parentScope)
+        return name;
+    if (!parentScope->isGlobalOrImpl())
+        return name;
+
+    Utf8 result;
+    makeFullName(result, parentScope->getFullName(), name);
+    return result;
+}
+
 void Scope::makeFullName(Utf8& result, const Utf8& parentName, const Utf8& name)
 {
     if (parentName.empty())

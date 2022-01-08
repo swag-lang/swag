@@ -3162,25 +3162,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
         // We want to force the ufcs
         if (node->semFlags & AST_SEM_FORCE_UFCS)
         {
-            if (identifierRef->startScope)
-            {
-                auto typeRef = TypeManager::concreteReference(identifierRef->typeInfo);
-                if (typeRef)
-                {
-                    if (typeRef->kind == TypeInfoKind::Pointer)
-                        typeRef = ((TypeInfoPointer*) typeRef)->pointedType;
-                    if (typeRef->flags & TYPEINFO_STRUCT_IS_TUPLE)
-                        return context->report({node, Utf8::format(g_E[Err0120], node->token.text.c_str())});
-                }
-
-                auto displayName = identifierRef->startScope->getFullName();
-                if (identifierRef->startScope->name.empty() && identifierRef->typeInfo)
-                    displayName = identifierRef->typeInfo->name;
-                if (!displayName.empty())
-                    return context->report({node, Utf8::format(g_E[Err0110], node->token.text.c_str(), Scope::getNakedKindName(identifierRef->startScope->kind), displayName.c_str())});
-            }
-
-            return context->report({node, Utf8::format(g_E[Err0122], node->token.text.c_str())});
+            unknownIdentifier(context, identifierRef, CastAst<AstIdentifier>(node, AstNodeKind::Identifier));
+            return false;
         }
 
         return false;

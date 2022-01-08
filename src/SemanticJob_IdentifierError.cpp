@@ -725,20 +725,20 @@ void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* 
 
     // What kind of thing to we search for ?
     auto searchFor = IdentifierSearchFor::Whatever;
-    if (node->kind == AstNodeKind::Identifier)
-    {
-        auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
-        if (identifier->parent->parent && identifier->parent->parent->kind == AstNodeKind::TypeExpression && identifier->parent->childs.back() == identifier)
-            searchFor = IdentifierSearchFor::Type;
-        else if (identifier->callParameters)
-            searchFor = IdentifierSearchFor::Function;
-    }
+    if (node->parent->parent && node->parent->parent->kind == AstNodeKind::TypeExpression && node->parent->childs.back() == node)
+        searchFor = IdentifierSearchFor::Type;
+    else if (node->callParameters)
+        searchFor = IdentifierSearchFor::Function;
 
     // Find best matches
     vector<Utf8> best;
     Utf8         appendMsg;
     if (identifierRef->startScope)
+    {
+        scopeHierarchy.clear();
         addAlternativeScopeOnce(scopeHierarchy, identifierRef->startScope);
+    }
+
     findClosestMatches(context, searchFor, node, scopeHierarchy, best);
     switch (best.size())
     {
@@ -787,7 +787,7 @@ void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* 
         {
             Utf8 displayName;
             if (!(identifierRef->startScope->flags & SCOPE_FILE))
-                displayName = identifierRef->startScope->getFullName();
+                displayName = identifierRef->startScope->getDisplayFullName();
             if (displayName.empty() && !identifierRef->startScope->name.empty())
                 displayName = identifierRef->startScope->name;
             if (displayName.empty() && typeRef)
