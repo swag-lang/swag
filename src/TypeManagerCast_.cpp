@@ -8,6 +8,20 @@
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
 
+bool TypeManager::errorOutOfRange(SemanticContext* context, AstNode* fromNode, TypeInfo* fromType, TypeInfo* toType, bool isNeg)
+{
+    if (isNeg)
+        return context->report({fromNode, Utf8::format(g_E[Err0180], fromNode->computedValue->reg.s64, toType->getDisplayName().c_str())});
+
+    if (fromNode->kind == AstNodeKind::Literal && fromNode->token.text.length() > 2)
+    {
+        if (std::tolower(fromNode->token.text[1]) == 'x' || std::tolower(fromNode->token.text[1]) == 'b')
+            return context->report({fromNode, Utf8::format(g_E[Err0183], fromNode->token.text.c_str(), fromNode->computedValue->reg.u64, toType->getDisplayName().c_str())});
+    }
+
+    return context->report({fromNode, Utf8::format(g_E[Err0181], fromNode->computedValue->reg.u64, toType->getDisplayName().c_str())});
+}
+
 bool TypeManager::safetyComputedValue(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
     if (!fromNode || !(fromNode->flags & AST_VALUE_COMPUTED))
@@ -594,7 +608,7 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
                 if (fromNode->computedValue->reg.s64 < 0)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, Utf8::format(g_E[Err0178], fromNode->computedValue->reg.s64)});
+                        errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoU8, true);
                     return false;
                 }
             }
@@ -617,7 +631,7 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
                 if (fromNode->computedValue->reg.u64 > UINT8_MAX)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, Utf8::format(g_E[Err0179], fromNode->computedValue->reg.u64)});
+                        errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoU8);
                     return false;
                 }
 
@@ -711,7 +725,7 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
                 if (fromNode->computedValue->reg.s64 < 0)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, Utf8::format(g_E[Err0180], fromNode->computedValue->reg.s64)});
+                        errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoU16, true);
                     return false;
                 }
             }
@@ -734,7 +748,7 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
                 if (fromNode->computedValue->reg.u64 > UINT16_MAX)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, Utf8::format(g_E[Err0181], fromNode->computedValue->reg.u64)});
+                        errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoU16);
                     return false;
                 }
 
@@ -828,7 +842,7 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
                 if (fromNode->computedValue->reg.s64 < 0)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, Utf8::format(g_E[Err0182], fromNode->computedValue->reg.s64)});
+                        errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoU32, true);
                     return false;
                 }
             }
@@ -851,7 +865,7 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
                 if (fromNode->computedValue->reg.u64 > UINT32_MAX)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, Utf8::format(g_E[Err0183], fromNode->computedValue->reg.u64)});
+                        errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoU32);
                     return false;
                 }
 
@@ -936,7 +950,7 @@ bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, 
                 if (fromNode->computedValue->reg.s64 < 0)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, Utf8::format(g_E[Err0185], fromNode->computedValue->reg.s64)});
+                        errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoU64, true);
                     return false;
                 }
             }
@@ -1046,7 +1060,7 @@ bool TypeManager::castToNativeUInt(SemanticContext* context, TypeInfo* fromType,
                 if (fromNode->computedValue->reg.s64 < 0)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, Utf8::format(g_E[Err0185], fromNode->computedValue->reg.s64)});
+                        errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoUInt, true);
                     return false;
                 }
             }
@@ -1155,7 +1169,7 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
                 if (fromNode->computedValue->reg.s64 < INT8_MIN || fromNode->computedValue->reg.s64 > INT8_MAX)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, Utf8::format(g_E[Err0186], fromNode->computedValue->reg.s64)});
+                        errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS8);
                     return false;
                 }
 
@@ -1254,7 +1268,7 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
                 if (fromNode->computedValue->reg.s64 < INT16_MIN || fromNode->computedValue->reg.s64 > INT16_MAX)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, Utf8::format(g_E[Err0187], fromNode->computedValue->reg.s64)});
+                        errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS16);
                     return false;
                 }
 
@@ -1343,7 +1357,7 @@ bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, 
                 if (fromNode->computedValue->reg.s64 < INT32_MIN || fromNode->computedValue->reg.s64 > INT32_MAX)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, Utf8::format(g_E[Err0188], fromNode->computedValue->reg.s64)});
+                        errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS32);
                     return false;
                 }
 
@@ -1422,7 +1436,7 @@ bool TypeManager::castToNativeS64(SemanticContext* context, TypeInfo* fromType, 
                 if (fromNode->computedValue->reg.s64 < INT64_MIN || fromNode->computedValue->reg.s64 > INT64_MAX)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, Utf8::format(g_E[Err0189], fromNode->computedValue->reg.s64)});
+                        errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS64);
                     return false;
                 }
 
@@ -1497,7 +1511,7 @@ bool TypeManager::castToNativeInt(SemanticContext* context, TypeInfo* fromType, 
                 if (fromNode->computedValue->reg.s64 < INT64_MIN || fromNode->computedValue->reg.s64 > INT64_MAX)
                 {
                     if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, Utf8::format(g_E[Err0189], fromNode->computedValue->reg.s64)});
+                        errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoInt);
                     return false;
                 }
 
