@@ -3344,9 +3344,6 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
         }
     }
 
-    //if (!result)
-    //    return castError(context, toType, fromType, fromNode, castFlags);
-
     // Const mismatch
     if (toType->kind != TypeInfoKind::Generic && toType->kind != TypeInfoKind::Lambda && !(castFlags & CASTFLAG_FORCE_UNCONST))
     {

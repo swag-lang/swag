@@ -66,6 +66,7 @@ struct JobContext
         AstNode*         node = nullptr;
         ErrorContextType type = ErrorContextType::Node;
         Utf8             msg  = "";
+        bool             hide = false;
     };
 
     vector<ErrorContext> errorContextStack;

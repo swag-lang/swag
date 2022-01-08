@@ -1,5 +1,3 @@
-
-
 //#[Swag.PrintBc]
 #global testerror
 func(T) toto(x: T)->s32

@@ -230,83 +230,115 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
 
     if (errorContextStack.size())
     {
-        auto& exp = errorContextStack[0];
-
-        auto        first       = exp.node;
-        const char* kindName    = nullptr;
-        const char* kindArticle = "";
-        bool        showExpand  = true;
-        Utf8        hint;
-        switch (exp.type)
+        bool doneGeneric = false;
+        bool doneInline  = false;
+        for (int i = 0; i < (int) errorContextStack.size(); i++)
         {
-        case JobContext::ErrorContextType::Message:
-        {
-            auto note = new Diagnostic{first, exp.msg, DiagnosticLevel::Note};
-            notes.push_back(note);
-            showExpand = false;
-            break;
-        }
-        case JobContext::ErrorContextType::Export:
-            kindName    = g_E[Err0111];
-            kindArticle = "of ";
-            break;
-        case JobContext::ErrorContextType::Generic:
-            kindName    = g_E[Err0112];
-            kindArticle = "of ";
-            break;
-        case JobContext::ErrorContextType::Inline:
-            kindName    = g_E[Err0118];
-            kindArticle = "of ";
-            break;
-        case JobContext::ErrorContextType::SelectIf:
-            kindName    = g_E[Err0128];
-            kindArticle = "to ";
-            break;
-        case JobContext::ErrorContextType::CheckIf:
-            kindName    = g_E[Err0129];
-            kindArticle = "to ";
-            break;
-        case JobContext::ErrorContextType::Node:
-            kindName    = g_E[Nte0017];
-            kindArticle = "";
-            if (first->kind == AstNodeKind::AffectOp)
+            auto& exp = errorContextStack[i];
+            switch (exp.type)
             {
-                kindName    = g_E[Nte0018];
+            case JobContext::ErrorContextType::Generic:
+                exp.hide    = doneGeneric;
+                doneGeneric = true;
+                break;
+            case JobContext::ErrorContextType::Inline:
+                exp.hide   = doneInline;
+                doneInline = true;
+                break;
+            }
+        }
+
+        for (int i = (int) errorContextStack.size() - 1; i >= 0; i--)
+        {
+            auto& exp = errorContextStack[i];
+            if (exp.hide)
+                continue;
+
+            auto        first       = exp.node;
+            const char* kindName    = nullptr;
+            const char* kindArticle = "";
+            bool        showContext = true;
+            Utf8        hint;
+            switch (exp.type)
+            {
+            case JobContext::ErrorContextType::Message:
+            {
+                auto note = new Diagnostic{first, exp.msg, DiagnosticLevel::Note};
+                notes.push_back(note);
+                showContext = false;
+                break;
+            }
+            case JobContext::ErrorContextType::Export:
+                kindName    = g_E[Err0111];
+                kindArticle = "of ";
+                break;
+            case JobContext::ErrorContextType::Generic:
+                kindName    = g_E[Err0112];
+                kindArticle = "of ";
+                break;
+            case JobContext::ErrorContextType::Inline:
+                kindName    = g_E[Err0118];
+                kindArticle = "of ";
+                break;
+            case JobContext::ErrorContextType::SelectIf:
+                kindName    = g_E[Err0128];
                 kindArticle = "to ";
-                first       = first->childs.front();
-                hint        = Hint::isType(first->typeInfo);
-            }
-            else if (first->kind == AstNodeKind::Return)
-            {
-                auto returnNode = CastAst<AstReturn>(first, AstNodeKind::Return);
-                if (returnNode->resolvedFuncDecl)
+                break;
+            case JobContext::ErrorContextType::CheckIf:
+                kindName    = g_E[Err0129];
+                kindArticle = "to ";
+                break;
+            case JobContext::ErrorContextType::Node:
+                kindName    = g_E[Nte0017];
+                kindArticle = "";
+                switch (first->kind)
                 {
-                    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(returnNode->resolvedFuncDecl->typeInfo, TypeInfoKind::FuncAttr);
-                    hint          = Utf8::format(g_E[Hnt0012], returnNode->resolvedFuncDecl->getDisplayName().c_str(), typeFunc->returnType->getDisplayName().c_str());
+                case AstNodeKind::AffectOp:
+                    kindName    = g_E[Nte0018];
+                    kindArticle = "to ";
+                    first       = first->childs.front();
+                    hint        = Hint::isType(first->typeInfo);
+                    break;
+                case AstNodeKind::Return:
+                {
+                    auto returnNode = CastAst<AstReturn>(first, AstNodeKind::Return);
+                    if (returnNode->resolvedFuncDecl)
+                    {
+                        auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(returnNode->resolvedFuncDecl->typeInfo, TypeInfoKind::FuncAttr);
+                        first         = returnNode->resolvedFuncDecl->returnType;
+                        if (!first->childs.empty())
+                            first = first->childs.front();
+                        auto note = new Diagnostic{first, Utf8::format(g_E[Nte0067], typeFunc->returnType->getDisplayName().c_str()), DiagnosticLevel::Note};
+                        notes.push_back(note);
+                        showContext = false;
+                    }
+                    else
+                        showContext = false;
                 }
+                break;
+                default:
+                    showContext = false;
+                    break;
+                }
+
+                break;
             }
-            else
+
+            if (showContext)
             {
-                showExpand = false;
+                auto name = first->resolvedSymbolName ? first->resolvedSymbolName->name : first->token.text;
+                if (name.empty())
+                    name = first->token.text;
+
+                Utf8 msg;
+                if (!name.empty())
+                    msg = Utf8::format(g_E[Nte0002], kindName, kindArticle, name.c_str());
+                else
+                    msg = Utf8::format(g_E[Nte0003], kindName);
+                auto note  = new Diagnostic{first, msg, DiagnosticLevel::Note};
+                note->hint = hint;
+                notes.push_back(note);
             }
-
-            break;
-        }
-
-        if (showExpand)
-        {
-            auto name = first->resolvedSymbolName ? first->resolvedSymbolName->name : first->token.text;
-            if (name.empty())
-                name = first->token.text;
-
-            Utf8 msg;
-            if (!name.empty())
-                msg = Utf8::format(g_E[Nte0002], kindName, kindArticle, name.c_str());
-            else
-                msg = Utf8::format(g_E[Nte0003], kindName);
-            auto note  = new Diagnostic{first, msg, DiagnosticLevel::Note};
-            note->hint = hint;
-            notes.push_back(note);
         }
     }
 
