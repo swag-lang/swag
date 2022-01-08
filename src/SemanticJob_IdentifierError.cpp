@@ -70,11 +70,23 @@ Utf8 SemanticJob::getNiceParameterRank(int idx)
     switch (idx)
     {
     case 1:
-        return "the first parameter";
+        return "first parameter";
     case 2:
-        return "the second parameter";
+        return "second parameter";
     case 3:
-        return "the third parameter";
+        return "third parameter";
+    }
+    return Utf8::format("parameter `%d`", idx);
+}
+
+Utf8 SemanticJob::getTheNiceParameterRank(int idx)
+{
+    switch (idx)
+    {
+    case 1:
+    case 2:
+    case 3:
+        return "the " + getNiceParameterRank(idx);
     }
     return Utf8::format("parameter `%d`", idx);
 }
@@ -268,7 +280,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         SWAG_ASSERT(callParameters);
         diag       = new Diagnostic{match.parameters[bi.badSignatureParameterIdx],
                               Utf8::format(g_E[Err0047],
-                                           getNiceParameterRank(badParamIdx).c_str(),
+                                           getTheNiceParameterRank(badParamIdx).c_str(),
                                            refNiceName.c_str(),
                                            bi.badGenMatch.c_str(),
                                            bi.badSignatureRequestedType->getDisplayName().c_str(),
@@ -301,7 +313,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
             auto typeStruct = CastTypeInfo<TypeInfoStruct>(overload->typeInfo, TypeInfoKind::Struct);
             diag            = new Diagnostic{match.parameters[bi.badSignatureParameterIdx],
                                   Utf8::format(g_E[Err0050],
-                                               getNiceParameterRank(badParamIdx).c_str(),
+                                               getTheNiceParameterRank(badParamIdx).c_str(),
                                                refNiceName.c_str(),
                                                bi.badSignatureRequestedType->getDisplayName().c_str(),
                                                typeStruct->fields[badParamIdx - 1]->namedParam.c_str(),
@@ -327,7 +339,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         {
             diag = new Diagnostic{match.parameters[bi.badSignatureParameterIdx],
                                   Utf8::format(g_E[Err0053],
-                                               getNiceParameterRank(badParamIdx).c_str(),
+                                               getTheNiceParameterRank(badParamIdx).c_str(),
                                                refNiceName.c_str(),
                                                bi.badSignatureRequestedType->getDisplayName().c_str(),
                                                bi.badSignatureGivenType->getDisplayName().c_str())};
@@ -358,7 +370,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         {
             diag = new Diagnostic{match.genericParameters[bi.badSignatureParameterIdx],
                                   Utf8::format(g_E[Err0054],
-                                               badParamIdx,
+                                               getNiceParameterRank(badParamIdx).c_str(),
                                                refNiceName.c_str())};
             note = new Diagnostic{overload->node, Utf8::format(g_E[Nte0008], refNiceName.c_str()), DiagnosticLevel::Note};
             result0.push_back(diag);
@@ -368,7 +380,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         {
             diag = new Diagnostic{match.genericParameters[bi.badSignatureParameterIdx],
                                   Utf8::format(g_E[Err0057],
-                                               badParamIdx,
+                                               getNiceParameterRank(badParamIdx).c_str(),
                                                refNiceName.c_str())};
             note = new Diagnostic{overload->node, Utf8::format(g_E[Nte0008], refNiceName.c_str()), DiagnosticLevel::Note};
             result0.push_back(diag);
@@ -378,7 +390,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         {
             diag = new Diagnostic{match.genericParameters[bi.badSignatureParameterIdx],
                                   Utf8::format(g_E[Err0070],
-                                               badParamIdx,
+                                               getNiceParameterRank(badParamIdx).c_str(),
                                                refNiceName.c_str(),
                                                bi.badSignatureRequestedType->getDisplayName().c_str(),
                                                bi.badSignatureGivenType->getDisplayName().c_str())};

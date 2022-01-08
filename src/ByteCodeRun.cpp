@@ -2896,13 +2896,13 @@ bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
                 ByteCode::getLocation(context->bc, ip, &sourceFile, &location);
                 if (location || !ip->node)
                 {
-                    Diagnostic diag{sourceFile, *location, g_E[Err0434] + context->errorMsg};
+                    Diagnostic diag{sourceFile, *location, "[compile time execution] " + context->errorMsg};
                     errorContext->sourceFile = sourceFile;
                     errorContext->report(diag);
                 }
                 else
                 {
-                    Diagnostic diag{ip->node, g_E[Err0434] + context->errorMsg};
+                    Diagnostic diag{ip->node, "[compile time execution] " + context->errorMsg};
                     errorContext->sourceFile = ip->node->sourceFile;
                     errorContext->report(diag);
                 }
