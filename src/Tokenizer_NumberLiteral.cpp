@@ -110,7 +110,7 @@ bool Tokenizer::doHexLiteral(Token& token)
 
     // Be sure we don't have 0x without nothing
     if (rank == 0)
-        SWAG_CHECK(error(token, g_E[Err0151]));
+        SWAG_CHECK(error(token, g_E[Err0434]));
     // Be sure we don't have a number with a separator at its end
     if (!acceptSep)
         SWAG_CHECK(error(token, g_E[Err0152]));
