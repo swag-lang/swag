@@ -3265,6 +3265,88 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     if (toType->kind == TypeInfoKind::TypedVariadic)
         toType = ((TypeInfoVariadic*) toType)->rawType;
 
+    bool result = false;
+
+    // From a reference
+    if (fromType->kind == TypeInfoKind::Reference)
+    {
+        auto fromTypeRef = TypeManager::concreteReference(fromType);
+        if (fromTypeRef == toType)
+            result = true;
+        else if (fromTypeRef->isSame(toType, ISSAME_CAST))
+            result = true;
+    }
+
+    // Can cast to name alias, can be anything
+    if (!result)
+    {
+        if (toType->kind == TypeInfoKind::NameAlias)
+            result = true;
+    }
+
+    if (!result)
+    {
+        auto isSameFlags = ISSAME_CAST;
+        if (castFlags & CASTFLAG_FOR_AFFECT)
+            isSameFlags |= ISSAME_FOR_AFFECT;
+        if (fromType->isSame(toType, isSameFlags))
+            result = true;
+    }
+
+    // Always match against a generic
+    if (!result)
+    {
+        if (toType->kind == TypeInfoKind::Generic)
+            result = true;
+    }
+
+    if (!result)
+    {
+        switch (toType->kind)
+        {
+            // Cast to reference
+        case TypeInfoKind::Reference:
+            SWAG_CHECK(castToReference(context, toType, fromType, fromNode, castFlags));
+            break;
+
+            // Cast to pointer
+        case TypeInfoKind::Pointer:
+            SWAG_CHECK(castToPointer(context, toType, fromType, fromNode, castFlags));
+            break;
+
+            // Cast to native type
+        case TypeInfoKind::Native:
+            SWAG_CHECK(castToNative(context, toType, fromType, toNode, fromNode, castFlags));
+            break;
+
+            // Cast to array
+        case TypeInfoKind::Array:
+            SWAG_CHECK(castToArray(context, toType, fromType, fromNode, castFlags));
+            break;
+
+            // Cast to slice
+        case TypeInfoKind::Slice:
+            SWAG_CHECK(castToSlice(context, toType, fromType, fromNode, castFlags));
+            break;
+
+            // Cast to interface
+        case TypeInfoKind::Interface:
+            SWAG_CHECK(castToInterface(context, toType, fromType, fromNode, castFlags));
+            break;
+
+            // Cast to lambda
+        case TypeInfoKind::Lambda:
+            SWAG_CHECK(castToLambda(context, toType, fromType, fromNode, castFlags));
+            break;
+
+        default:
+            return castError(context, toType, fromType, fromNode, castFlags);
+        }
+    }
+
+    //if (!result)
+    //    return castError(context, toType, fromType, fromNode, castFlags);
+
     // Const mismatch
     if (toType->kind != TypeInfoKind::Generic && toType->kind != TypeInfoKind::Lambda && !(castFlags & CASTFLAG_FORCE_UNCONST))
     {
@@ -3285,62 +3367,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
         }
     }
 
-    // From a reference
-    if (fromType->kind == TypeInfoKind::Reference)
-    {
-        auto fromTypeRef = TypeManager::concreteReference(fromType);
-        if (fromTypeRef == toType)
-            return true;
-        if (fromTypeRef->isSame(toType, ISSAME_CAST))
-            return true;
-    }
-
-    // Can cast to name alias, can be anything
-    if (toType->kind == TypeInfoKind::NameAlias)
-        return true;
-
-    auto isSameFlags = ISSAME_CAST;
-    if (castFlags & CASTFLAG_FOR_AFFECT)
-        isSameFlags |= ISSAME_FOR_AFFECT;
-    if (fromType->isSame(toType, isSameFlags))
-        return true;
-
-    // Always match against a generic
-    if (toType->kind == TypeInfoKind::Generic)
-        return true;
-
-    switch (toType->kind)
-    {
-    // Cast to reference
-    case TypeInfoKind::Reference:
-        return castToReference(context, toType, fromType, fromNode, castFlags);
-
-    // Cast to pointer
-    case TypeInfoKind::Pointer:
-        return castToPointer(context, toType, fromType, fromNode, castFlags);
-
-    // Cast to native type
-    case TypeInfoKind::Native:
-        return castToNative(context, toType, fromType, toNode, fromNode, castFlags);
-
-    // Cast to array
-    case TypeInfoKind::Array:
-        return castToArray(context, toType, fromType, fromNode, castFlags);
-
-    // Cast to slice
-    case TypeInfoKind::Slice:
-        return castToSlice(context, toType, fromType, fromNode, castFlags);
-
-    // Cast to interface
-    case TypeInfoKind::Interface:
-        return castToInterface(context, toType, fromType, fromNode, castFlags);
-
-    // Cast to lambda
-    case TypeInfoKind::Lambda:
-        return castToLambda(context, toType, fromType, fromNode, castFlags);
-    }
-
-    return castError(context, toType, fromType, fromNode, castFlags);
+    return true;
 }
 
 static const ConcreteTypeInfo* concreteAlias(const ConcreteTypeInfo* type1)
