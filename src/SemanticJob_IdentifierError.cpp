@@ -654,14 +654,57 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
     return context->report(diag, notes);
 }
 
+void SemanticJob::findClosestMatches(SemanticContext* context, const Utf8& searchName, const vector<Utf8>& searchList, vector<Utf8>& result)
+{
+    uint32_t bestScore = UINT32_MAX;
+    result.clear();
+
+    auto searchName1 = searchName;
+    searchName1.makeLower();
+
+    for (uint32_t i = 0; i < (uint32_t) searchList.size(); i++)
+    {
+        auto searchName2 = searchList[i];
+        searchName2.makeLower();
+
+        auto score = Utf8::fuzzyCompare(searchName1, searchName2);
+
+        // If number of changes is too big considering the size of the text, cancel
+        if (score > (uint32_t) searchName.count / 2)
+            continue;
+        // If too much changes, cancel
+        if (score > 2)
+            continue;
+
+        if (score < bestScore)
+            result.clear();
+        if (score <= bestScore)
+        {
+            // Be sure it's not already in the best list
+            bool here = false;
+            for (auto& n : result)
+            {
+                if (n == searchName)
+                {
+                    here = true;
+                    break;
+                }
+            }
+
+            if (!here)
+                result.push_back(searchList[i]);
+            bestScore = score;
+        }
+    }
+}
+
 void SemanticJob::findClosestMatches(SemanticContext* context, IdentifierSearchFor searchFor, AstNode* node, VectorNative<AlternativeScope>& scopeHierarchy, vector<Utf8>& best)
 {
     // Do not take some time if file is supposed to fail, in test mode
     if (context->sourceFile->numTestErrors)
         return;
 
-    uint32_t bestScore = UINT32_MAX;
-    best.clear();
+    vector<Utf8> searchList;
     for (auto& as : scopeHierarchy)
     {
         auto s = as.scope;
@@ -686,36 +729,30 @@ void SemanticJob::findClosestMatches(SemanticContext* context, IdentifierSearchF
                 one.symbolName->kind != SymbolKind::Interface)
                 continue;
 
-            auto score = Utf8::fuzzyCompare(node->token.text, one.symbolName->name);
-
-            // If number of changes is too big considering the size of the text, cancel
-            if (score > (uint32_t) node->token.text.count / 2)
-                continue;
-            // If too much changes, cancel
-            if (score > 2)
-                continue;
-
-            if (score < bestScore)
-                best.clear();
-            if (score <= bestScore)
-            {
-                // Be sure it's not already in the best list
-                bool here = false;
-                for (auto& n : best)
-                {
-                    if (n == one.symbolName->name)
-                    {
-                        here = true;
-                        break;
-                    }
-                }
-
-                if (!here)
-                    best.push_back(one.symbolName->name);
-                bestScore = score;
-            }
+            searchList.push_back(one.symbolName->name);
         }
     }
+
+    findClosestMatches(context, node->token.text, searchList, best);
+}
+
+Utf8 SemanticJob::findClosestMatchesMsg(SemanticContext* context, vector<Utf8>& best)
+{
+    Utf8 appendMsg;
+    switch (best.size())
+    {
+    case 1:
+        appendMsg = Utf8::format(g_E[Nte0053], best[0].c_str());
+        break;
+    case 2:
+        appendMsg = Utf8::format(g_E[Nte0054], best[0].c_str(), best[1].c_str());
+        break;
+    case 3:
+        appendMsg = Utf8::format(g_E[Nte0055], best[0].c_str(), best[1].c_str(), best[2].c_str());
+        break;
+    }
+
+    return appendMsg;
 }
 
 void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node)
@@ -732,7 +769,6 @@ void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* 
 
     // Find best matches
     vector<Utf8> best;
-    Utf8         appendMsg;
     if (identifierRef->startScope)
     {
         scopeHierarchy.clear();
@@ -740,18 +776,7 @@ void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* 
     }
 
     findClosestMatches(context, searchFor, node, scopeHierarchy, best);
-    switch (best.size())
-    {
-    case 1:
-        appendMsg = Utf8::format(g_E[Nte0053], best[0].c_str());
-        break;
-    case 2:
-        appendMsg = Utf8::format(g_E[Nte0054], best[0].c_str(), best[1].c_str());
-        break;
-    case 3:
-        appendMsg = Utf8::format(g_E[Nte0055], best[0].c_str(), best[1].c_str(), best[2].c_str());
-        break;
-    }
+    Utf8 appendMsg = " (" + findClosestMatchesMsg(context, best) + ")";
 
     vector<const Diagnostic*> notes;
     Diagnostic*               diag = nullptr;

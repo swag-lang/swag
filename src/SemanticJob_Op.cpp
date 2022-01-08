@@ -263,7 +263,32 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
     }
     else
     {
-        return context->report({node, node->tokenName, Utf8::format(g_E[Err0078], name.c_str())});
+        vector<Utf8> searchList;
+        vector<Utf8> best;
+
+        searchList.push_back(g_LangSpec->name_opBinary);
+        searchList.push_back(g_LangSpec->name_opUnary);
+        searchList.push_back(g_LangSpec->name_opAssign);
+        searchList.push_back(g_LangSpec->name_opIndexAssign);
+        searchList.push_back(g_LangSpec->name_opCast);
+        searchList.push_back(g_LangSpec->name_opEquals);
+        searchList.push_back(g_LangSpec->name_opCmp);
+        searchList.push_back(g_LangSpec->name_opPostCopy);
+        searchList.push_back(g_LangSpec->name_opPostMove);
+        searchList.push_back(g_LangSpec->name_opDrop);
+        searchList.push_back(g_LangSpec->name_opCount);
+        searchList.push_back(g_LangSpec->name_opData);
+        searchList.push_back(g_LangSpec->name_opAffect);
+        searchList.push_back(g_LangSpec->name_opAffectSuffix);
+        searchList.push_back(g_LangSpec->name_opSlice);
+        searchList.push_back(g_LangSpec->name_opIndex);
+        searchList.push_back(g_LangSpec->name_opIndexAffect);
+        searchList.push_back(g_LangSpec->name_opVisit);
+
+        findClosestMatches(context, node->tokenName.text, searchList, best);
+        Utf8 appendMsg = findClosestMatchesMsg(context, best);
+
+        return context->report(appendMsg, {node, node->tokenName, Utf8::format(g_E[Err0078], name.c_str())});
     }
 
     return true;
