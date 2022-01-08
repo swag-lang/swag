@@ -380,9 +380,6 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
                                   Utf8::format(g_E[Err0054],
                                                getNiceParameterRank(badParamIdx).c_str(),
                                                refNiceName.c_str())};
-            note = new Diagnostic{overload->node, Utf8::format(g_E[Nte0008], refNiceName.c_str()), DiagnosticLevel::Note};
-            result0.push_back(diag);
-            result1.push_back(note);
         }
         else if (match.flags & SymbolMatchContext::MATCH_ERROR_TYPE_VALUE)
         {
@@ -390,9 +387,6 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
                                   Utf8::format(g_E[Err0057],
                                                getNiceParameterRank(badParamIdx).c_str(),
                                                refNiceName.c_str())};
-            note = new Diagnostic{overload->node, Utf8::format(g_E[Nte0008], refNiceName.c_str()), DiagnosticLevel::Note};
-            result0.push_back(diag);
-            result1.push_back(note);
         }
         else
         {
@@ -404,11 +398,17 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
                                                bi.badSignatureGivenType->getDisplayName().c_str())};
 
             diag->hint = explicitCastHint;
-            note       = new Diagnostic{overload->node, Utf8::format(g_E[Nte0008], refNiceName.c_str()), DiagnosticLevel::Note};
-            result0.push_back(diag);
-            result1.push_back(note);
         }
 
+        if (destFuncDecl && bi.badSignatureParameterIdx < destFuncDecl->genericParameters->childs.size())
+        {
+            auto reqParam = destFuncDecl->genericParameters->childs[bi.badSignatureParameterIdx];
+            note          = new Diagnostic{reqParam, Utf8::format(g_E[Nte0068], reqParam->token.text.c_str(), refNiceName.c_str()), DiagnosticLevel::Note};
+        }
+        else
+            note = new Diagnostic{overload->node, Utf8::format(g_E[Nte0008], refNiceName.c_str()), DiagnosticLevel::Note};
+        result0.push_back(diag);
+        result1.push_back(note);
         return;
     }
     }
