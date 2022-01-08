@@ -319,6 +319,10 @@ void TypeInfoList::computeWhateverName(Utf8& resName, uint32_t nameType)
             resName += subTypes[0]->typeInfo->name;
         }
     }
+    else if (nameType == COMPUTE_DISPLAY_NAME)
+    {
+        resName = "tuple";
+    }
 }
 
 Utf8 TypeInfoList::computeTupleName(JobContext* context)
