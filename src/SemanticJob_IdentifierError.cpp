@@ -65,6 +65,20 @@ void SemanticJob::checkDeprecated(SemanticContext* context, AstNode* identifier)
     }
 }
 
+Utf8 SemanticJob::getNiceParameterRank(int idx)
+{
+    switch (idx)
+    {
+    case 1:
+        return "first parameter";
+    case 2:
+        return "second parameter";
+    case 3:
+        return "third parameter";
+    }
+    return Utf8::format("parameter `%d`", idx);
+}
+
 void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& oneTry, vector<const Diagnostic*>& result0, vector<const Diagnostic*>& result1)
 {
     auto              node              = context->node;
@@ -254,7 +268,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         SWAG_ASSERT(callParameters);
         diag       = new Diagnostic{match.parameters[bi.badSignatureParameterIdx],
                               Utf8::format(g_E[Err0047],
-                                           badParamIdx,
+                                           getNiceParameterRank(badParamIdx).c_str(),
                                            refNiceName.c_str(),
                                            bi.badGenMatch.c_str(),
                                            bi.badSignatureRequestedType->getDisplayName().c_str(),
@@ -287,7 +301,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
             auto typeStruct = CastTypeInfo<TypeInfoStruct>(overload->typeInfo, TypeInfoKind::Struct);
             diag            = new Diagnostic{match.parameters[bi.badSignatureParameterIdx],
                                   Utf8::format(g_E[Err0050],
-                                               badParamIdx,
+                                               getNiceParameterRank(badParamIdx).c_str(),
                                                refNiceName.c_str(),
                                                bi.badSignatureRequestedType->getDisplayName().c_str(),
                                                typeStruct->fields[badParamIdx - 1]->namedParam.c_str(),
@@ -313,7 +327,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         {
             diag = new Diagnostic{match.parameters[bi.badSignatureParameterIdx],
                                   Utf8::format(g_E[Err0053],
-                                               badParamIdx,
+                                               getNiceParameterRank(badParamIdx).c_str(),
                                                refNiceName.c_str(),
                                                bi.badSignatureRequestedType->getDisplayName().c_str(),
                                                bi.badSignatureGivenType->getDisplayName().c_str())};
@@ -321,9 +335,14 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
 
         diag->hint = explicitCastHint;
         if (paramNode && paramNode->specFlags & AST_SPEC_DECLPARAM_GENERATED_SELF)
+        {
             note = new Diagnostic{destFuncDecl, destFuncDecl->token, Utf8::format(g_E[Nte0008], refNiceName.c_str()), DiagnosticLevel::Note};
+        }
         else if (destFuncDecl && bi.badSignatureParameterIdx < destFuncDecl->parameters->childs.size())
-            note = new Diagnostic{destFuncDecl->parameters->childs[bi.badSignatureParameterIdx], Utf8::format(g_E[Nte0008], refNiceName.c_str()), DiagnosticLevel::Note};
+        {
+            auto reqParam = destFuncDecl->parameters->childs[bi.badSignatureParameterIdx];
+            note          = new Diagnostic{reqParam, Utf8::format(g_E[Nte0066], reqParam->token.text.c_str(), refNiceName.c_str()), DiagnosticLevel::Note};
+        }
         else
             note = new Diagnostic{overload->node, Utf8::format(g_E[Nte0008], refNiceName.c_str()), DiagnosticLevel::Note};
 
