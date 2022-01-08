@@ -15,6 +15,50 @@ bool SemanticJob::checkFuncPrototype(SemanticContext* context, AstFuncDecl* node
     return true;
 }
 
+Utf8 SemanticJob::getSpecialOpSignature(AstFuncDecl* node)
+{
+    Utf8 result = "the signature should be ";
+
+    if (node->token.text == g_LangSpec->name_opDrop)
+        result += "`func opDrop(self)`";
+    else if (node->token.text == g_LangSpec->name_opPostCopy)
+        result += "`func opPostCopy(self)`";
+    else if (node->token.text == g_LangSpec->name_opPostMove)
+        result += "`func opPostMove(self)`";
+    else if (node->token.text == g_LangSpec->name_opSlice)
+        result += "`func opSlice(self, low, up: uint) -> <string or slice>`";
+    else if (node->token.text == g_LangSpec->name_opIndex)
+        result += "`func opIndex(self, index: uint) -> WhateverType`";
+    else if (node->token.text == g_LangSpec->name_opCount)
+        result += "`func opCount(self) -> uint`";
+    else if (node->token.text == g_LangSpec->name_opData)
+        result += "`func opData(self) -> *WhateverType`";
+    else if (node->token.text == g_LangSpec->name_opCast)
+        result += "`func opCast(self) -> WhateverType`";
+    else if (node->token.text == g_LangSpec->name_opEquals)
+        result += "`func opEquals(self, value: WhateverType) -> bool`";
+    else if (node->token.text == g_LangSpec->name_opCmp)
+        result += "`func opCmp(self, value: WhateverType) -> s32`";
+    else if (node->token.text == g_LangSpec->name_opAffect)
+        result += "`func opAffect(self, value: WhateverType)`";
+    else if (node->token.text == g_LangSpec->name_opAffectSuffix)
+        result += "`func(suffix: string) opAffectSuffix(self, value: WhateverType)`";
+    else if (node->token.text == g_LangSpec->name_opIndexAffect)
+        result += "`func opIndexAffect(self, index: uint, value: WhateverType)`";
+    else if (node->token.text == g_LangSpec->name_opBinary)
+        result += "`func(op: string) opBinary(self, other: WhateverType) -> Self`";
+    else if (node->token.text == g_LangSpec->name_opUnary)
+        result += "`func(op: string) opUnary(self) -> Self`";
+    else if (node->token.text == g_LangSpec->name_opAssign)
+        result += "`func(op: string) opAssign(self, value: WhateverType)`";
+    else if (node->token.text == g_LangSpec->name_opIndexAssign)
+        result += "`func(op: string) opIndexAssign(self, index: uint, value: WhateverType)`";
+    else if (node->token.text.find(g_LangSpec->name_opVisit) == 0)
+        result += "`func(ptr: bool) opVisit(self, stmt: code)`";
+
+    return result;
+}
+
 bool SemanticJob::checkFuncPrototypeOpNumParams(SemanticContext* context, AstFuncDecl* node, AstNode* parameters, uint32_t numWanted, bool exact)
 {
     auto numCur = parameters->childs.size();
@@ -48,7 +92,7 @@ bool SemanticJob::checkFuncPrototypeOpParam(SemanticContext* context, AstFuncDec
 {
     auto typeParam = TypeManager::concreteType(parameters->childs[index]->typeInfo, CONCRETE_ALIAS);
     if (!typeParam->isSame(wanted, ISSAME_CAST))
-        return context->report({parameters->childs[index], Utf8::format(g_E[Err0066], getNiceParameterRank(index + 1).c_str(), node->token.text.c_str(), wanted->getDisplayName().c_str(), typeParam->getDisplayName().c_str())});
+        return context->report({parameters->childs[index], Utf8::format(g_E[Err0066], getTheNiceParameterRank(index + 1).c_str(), node->token.text.c_str(), wanted->getDisplayName().c_str(), typeParam->getDisplayName().c_str())});
     return true;
 }
 
@@ -57,8 +101,10 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
     if (!node->isSpecialFunctionName())
         return true;
 
+    PushErrContext ec(context, nullptr, getSpecialOpSignature(node));
+
     auto& name      = node->token.text;
-    bool  isOpVisit = name.find("opVisit") == 0;
+    bool  isOpVisit = name.find(g_LangSpec->name_opVisit) == 0;
 
     auto parent = node->parent;
     while (parent && parent->kind != AstNodeKind::Impl)

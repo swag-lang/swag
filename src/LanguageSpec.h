@@ -100,6 +100,7 @@ struct LanguageSpec
     Utf8 name_opIndex;
     Utf8 name_opIndexAffect;
     Utf8 name_opInit;
+    Utf8 name_opVisit;
 
     Utf8 name_TypeInfo;
     Utf8 name_TypeInfoNative;

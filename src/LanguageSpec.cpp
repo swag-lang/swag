@@ -77,6 +77,7 @@ void LanguageSpec::setupNames()
     name_opIndex        = "opIndex";
     name_opIndexAffect  = "opIndexAffect";
     name_opInit         = "opInit";
+    name_opVisit        = "opVisit";
 
     name_TypeInfo          = "TypeInfo";
     name_TypeInfoNative    = "TypeInfoNative";

@@ -318,6 +318,7 @@ struct SemanticJob : public Job
     static bool         sendCompilerMsgFuncDecl(SemanticContext* context);
     static bool         sendCompilerMsgTypeDecl(SemanticContext* context);
     static bool         sendCompilerMsgGlobalVar(SemanticContext* context);
+    static Utf8         getSpecialOpSignature(AstFuncDecl* node);
 
     static bool resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveBinaryOpMinus(SemanticContext* context, AstNode* left, AstNode* right);
