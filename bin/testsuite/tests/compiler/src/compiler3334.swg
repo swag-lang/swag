@@ -7,8 +7,7 @@ struct(T) VV
 //#[Swag.PrintBc]
 func toto(t: *VV)
 {
-    //@assert(@typeof(t) == *VV'f32 or @typeof(t) == *VV'bool)
-    #print @typeof(t).flatName
+    @assert(@typeof(t) == *VV'f32 or @typeof(t) == *VV'bool)
 }
 
 #test
