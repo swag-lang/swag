@@ -516,9 +516,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
             funcNode->flags |= AST_IS_GENERIC;
 
         if (funcNode->parameters)
-        {
             funcNode->inheritOrFlag(funcNode->parameters, AST_IS_GENERIC);
-        }
 
         if (funcNode->genericParameters)
         {

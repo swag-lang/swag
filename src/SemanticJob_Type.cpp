@@ -306,6 +306,8 @@ bool SemanticJob::resolveType(SemanticContext* context)
                 ptrFlags |= TYPEINFO_SELF;
             if (typeNode->typeFlags & TYPEFLAG_USING)
                 ptrFlags |= TYPEINFO_HAS_USING;
+            if (ptrFlags & TYPEINFO_GENERIC)
+                typeNode->flags |= AST_IS_GENERIC;
 
             auto ptrPointer1 = g_TypeMgr->makePointerTo(firstType, isConst, ptrFlags);
 
