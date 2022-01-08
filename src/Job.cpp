@@ -263,6 +263,9 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
             {
             case JobContext::ErrorContextType::Message:
             {
+                showContext = false;
+                if (exp.msg.empty())
+                    break;
                 if (first)
                 {
                     auto note = new Diagnostic{first, exp.msg, DiagnosticLevel::Note};
@@ -273,7 +276,6 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
                     auto note = new Diagnostic{exp.msg, DiagnosticLevel::Note};
                     notes.push_back(note);
                 }
-                showContext = false;
                 break;
             }
             case JobContext::ErrorContextType::Export:

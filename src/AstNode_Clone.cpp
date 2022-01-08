@@ -411,6 +411,7 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
     newNode->aliasMask   = aliasMask;
     newNode->stackSize   = stackSize;
     newNode->methodParam = methodParam;
+    newNode->tokenName   = tokenName;
 
     auto cloneContext     = context;
     cloneContext.ownerFct = newNode;

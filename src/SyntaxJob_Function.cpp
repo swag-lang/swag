@@ -474,6 +474,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         {
             relaxIdentifier(token);
             SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Utf8::format(g_E[Err0414], token.text.c_str())));
+            funcNode->tokenName = token;
         }
 
         funcNode->inheritTokenName(token);

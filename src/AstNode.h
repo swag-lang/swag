@@ -375,6 +375,7 @@ struct AstFuncDecl : public AstNode
     VectorNative<AstNode*> subDecls;
     VectorNative<AstNode*> localGlobalVars;
     Mutex                  funcMutex;
+    Token                  tokenName;
 
     AstNode*       parameters            = nullptr;
     AstNode*       genericParameters     = nullptr;

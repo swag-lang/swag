@@ -55,6 +55,8 @@ Utf8 SemanticJob::getSpecialOpSignature(AstFuncDecl* node)
         result += "`func(op: string) opIndexAssign(self, index: uint, value: WhateverType)`";
     else if (node->token.text.find(g_LangSpec->name_opVisit) == 0)
         result += "`func(ptr: bool) opVisit(self, stmt: code)`";
+    else
+        result = "";
 
     return result;
 }
@@ -261,7 +263,7 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
     }
     else
     {
-        return context->report({node, Utf8::format(g_E[Err0078], name.c_str())});
+        return context->report({node, node->tokenName, Utf8::format(g_E[Err0078], name.c_str())});
     }
 
     return true;
