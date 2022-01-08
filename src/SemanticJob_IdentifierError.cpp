@@ -776,7 +776,10 @@ void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* 
     }
 
     findClosestMatches(context, searchFor, node, scopeHierarchy, best);
-    Utf8 appendMsg = " (" + findClosestMatchesMsg(context, best) + ")";
+    Utf8 appendMsg;
+    Utf8 bestMatch = findClosestMatchesMsg(context, best);
+    if (!bestMatch.empty())
+        appendMsg = "(" + bestMatch + ")";
 
     vector<const Diagnostic*> notes;
     Diagnostic*               diag = nullptr;
