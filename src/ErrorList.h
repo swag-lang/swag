@@ -939,6 +939,8 @@ SWAG_ERROR(Hnt0036, "this is a pointer and cannot be visited")
 SWAG_ERROR(Hnt0037, "this pointer could be dereferenced with `dref`")
 SWAG_ERROR(Hnt0038, "this is not a constant")
 SWAG_ERROR(Hnt0039, "this function call returns an immutable `%s`")
+SWAG_ERROR(Hnt0040, "this is a `typeinfo` value")
+
 SWAG_ERROR(Nte0000, "here is its declaration")
 SWAG_ERROR(Nte0001, "`%s` is %s of type `%s` which does not contain a subscope")
 SWAG_ERROR(Nte0002, "occurred %s %s`%s`")

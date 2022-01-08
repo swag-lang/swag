@@ -237,15 +237,13 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
             context->errorContextStack.push_back({context->node, JobContext::ErrorContextType::Node});
 
         // Is there an explicit cast possible ?
-        bool done = false;
         if (!(castFlags & CASTFLAG_EXPLICIT))
         {
             if (TypeManager::makeCompatibles(context, toType, fromType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
             {
                 PushErrHint errh(Utf8::format(g_E[Hnt0032], fromType->getDisplayName().c_str(), toType->getDisplayName().c_str()));
                 Diagnostic  diag{fromNode, Utf8::format(g_E[Err0175], fromType->getDisplayName().c_str(), toType->getDisplayName().c_str())};
-                context->report(diag);
-                done = true;
+                return context->report(diag);
             }
         }
 
@@ -259,12 +257,8 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
                 fromType = CastTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer)->pointedType;
             }
 
-            context->report(hint, {fromNode, Utf8::format(g_E[Err0176], fromType->getDisplayName().c_str(), toType->getDisplayName().c_str())});
-            done = true;
+            return context->report(hint, {fromNode, Utf8::format(g_E[Err0176], fromType->getDisplayName().c_str(), toType->getDisplayName().c_str())});
         }
-
-        if (done)
-            return false;
 
         if (toType->kind == TypeInfoKind::Pointer && (fromType->isNativeIntegerOrRune() || fromType->isNativeFloat() || fromType->isNative(NativeTypeKind::Bool)))
         {
@@ -276,6 +270,12 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
         {
             PushErrHint errh(g_E[Hnt0022]);
             return context->report({fromNode, Utf8::format(g_E[Err0418], fromType->getDisplayName().c_str(), toType->getDisplayName().c_str())});
+        }
+
+        if (fromType->isPointerToTypeInfo() && !toType->isPointerToTypeInfo())
+        {
+            PushErrHint errh(g_E[Hnt0040]);
+            return context->report({fromNode, Utf8::format(g_E[Err0177], fromType->getDisplayName().c_str(), toType->getDisplayName().c_str())});
         }
 
         // General cast error
