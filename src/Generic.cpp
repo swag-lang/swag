@@ -105,7 +105,7 @@ TypeInfo* Generic::doTypeSubstitution(map<Utf8, TypeInfo*>& replaceTypes, TypeIn
         {
             typeVariadic          = CastTypeInfo<TypeInfoVariadic>(typeVariadic->clone(), TypeInfoKind::TypedVariadic);
             typeVariadic->rawType = newType;
-            typeVariadic->flags &= ~TYPEINFO_GENERIC;
+            typeVariadic->removeGenericFlag();
             typeVariadic->forceComputeName();
             return typeVariadic;
         }
@@ -121,7 +121,7 @@ TypeInfo* Generic::doTypeSubstitution(map<Utf8, TypeInfo*>& replaceTypes, TypeIn
         {
             typeAlias          = CastTypeInfo<TypeInfoAlias>(typeAlias->clone(), TypeInfoKind::Alias);
             typeAlias->rawType = newType;
-            typeAlias->flags &= ~TYPEINFO_GENERIC;
+            typeAlias->removeGenericFlag();
             typeAlias->forceComputeName();
             return typeAlias;
         }
@@ -137,7 +137,7 @@ TypeInfo* Generic::doTypeSubstitution(map<Utf8, TypeInfo*>& replaceTypes, TypeIn
         {
             typePointer              = CastTypeInfo<TypeInfoPointer>(typePointer->clone(), TypeInfoKind::Pointer);
             typePointer->pointedType = newType;
-            typePointer->flags &= ~TYPEINFO_GENERIC;
+            typePointer->removeGenericFlag();
             typePointer->forceComputeName();
             return typePointer;
         }
@@ -159,7 +159,7 @@ TypeInfo* Generic::doTypeSubstitution(map<Utf8, TypeInfo*>& replaceTypes, TypeIn
             typeArray              = CastTypeInfo<TypeInfoArray>(typeArray->clone(), TypeInfoKind::Array);
             typeArray->pointedType = newPointedType;
             typeArray->finalType   = newFinalType;
-            typeArray->flags &= ~TYPEINFO_GENERIC;
+            typeArray->removeGenericFlag();
             typeArray->forceComputeName();
             return typeArray;
         }
@@ -175,7 +175,7 @@ TypeInfo* Generic::doTypeSubstitution(map<Utf8, TypeInfo*>& replaceTypes, TypeIn
         {
             typeSlice              = CastTypeInfo<TypeInfoSlice>(typeSlice->clone(), TypeInfoKind::Slice);
             typeSlice->pointedType = newType;
-            typeSlice->flags &= ~TYPEINFO_GENERIC;
+            typeSlice->removeGenericFlag();
             typeSlice->forceComputeName();
             return typeSlice;
         }
@@ -193,7 +193,7 @@ TypeInfo* Generic::doTypeSubstitution(map<Utf8, TypeInfo*>& replaceTypes, TypeIn
         if (newType != typeLambda->returnType)
         {
             newLambda = CastTypeInfo<TypeInfoFuncAttr>(typeLambda->clone(), typeLambda->kind);
-            newLambda->flags &= ~TYPEINFO_GENERIC;
+            newLambda->removeGenericFlag();
             newLambda->returnType   = newType;
             newLambda->replaceTypes = replaceTypes;
         }
@@ -208,7 +208,7 @@ TypeInfo* Generic::doTypeSubstitution(map<Utf8, TypeInfo*>& replaceTypes, TypeIn
                 if (!newLambda)
                 {
                     newLambda = CastTypeInfo<TypeInfoFuncAttr>(typeLambda->clone(), TypeInfoKind::FuncAttr, TypeInfoKind::Lambda);
-                    newLambda->flags &= ~TYPEINFO_GENERIC;
+                    newLambda->removeGenericFlag();
                     newLambda->replaceTypes = replaceTypes;
                 }
 
@@ -316,7 +316,7 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
 
     // Make a new type
     auto newType = CastTypeInfo<TypeInfoStruct>(genericStructType->clone(), genericStructType->kind);
-    newType->flags &= ~TYPEINFO_GENERIC;
+    newType->removeGenericFlag();
     newType->fromGeneric = genericStructType;
 
     // Replace generic types in the struct generic parameters
@@ -416,7 +416,7 @@ void Generic::instantiateSpecialFunc(SemanticContext* context, Job* structJob, C
     if (newTypeFunc->flags & TYPEINFO_GENERIC)
     {
         newTypeFunc = CastTypeInfo<TypeInfoFuncAttr>(newFunc->typeInfo->clone(), newFunc->typeInfo->kind);
-        newTypeFunc->flags &= ~TYPEINFO_GENERIC;
+        newTypeFunc->removeGenericFlag();
         newFunc->typeInfo = newTypeFunc;
     }
 
@@ -520,7 +520,7 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     if (newTypeFunc->flags & TYPEINFO_GENERIC || noReplaceTypes)
     {
         newTypeFunc = CastTypeInfo<TypeInfoFuncAttr>(newFunc->typeInfo->clone(), newFunc->typeInfo->kind);
-        newTypeFunc->flags &= ~TYPEINFO_GENERIC;
+        newTypeFunc->removeGenericFlag();
         newTypeFunc->declNode     = newFunc;
         newTypeFunc->replaceTypes = cloneContext.replaceTypes;
         newFunc->typeInfo         = newTypeFunc;

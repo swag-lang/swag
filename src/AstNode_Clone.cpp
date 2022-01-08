@@ -369,7 +369,7 @@ bool AstFuncDecl::cloneSubDecls(JobContext* context, CloneContext& cloneContext,
             break;
         }
 
-        subDecl->typeInfo->flags &= ~TYPEINFO_GENERIC;
+        subDecl->typeInfo->removeGenericFlag();
         subDecl->typeInfo->declNode = subDecl;
 
         subDecl->doneFlags |= AST_DONE_FILE_JOB_PASS;
@@ -765,7 +765,7 @@ AstNode* AstStruct::clone(CloneContext& context)
     if (newNode->typeInfo)
     {
         newNode->typeInfo = newNode->typeInfo->clone();
-        newNode->typeInfo->flags &= ~TYPEINFO_GENERIC;
+        newNode->typeInfo->removeGenericFlag();
         newNode->typeInfo->declNode = newNode;
         newNode->typeInfo->forceComputeName();
     }
@@ -805,7 +805,7 @@ AstNode* AstImpl::clone(CloneContext& context)
             // Be sure we have a specific no generic typeinfo
             SWAG_ASSERT(newFunc->typeInfo);
             newFunc->typeInfo = newFunc->typeInfo->clone();
-            newFunc->typeInfo->flags &= ~TYPEINFO_GENERIC;
+            newFunc->typeInfo->removeGenericFlag();
             newFunc->typeInfo->declNode = newFunc;
             newFunc->typeInfo->forceComputeName();
         }
@@ -837,7 +837,7 @@ AstNode* AstEnum::clone(CloneContext& context)
 
     SWAG_ASSERT(newNode->typeInfo);
     newNode->typeInfo = newNode->typeInfo->clone();
-    newNode->typeInfo->flags &= ~TYPEINFO_GENERIC;
+    newNode->typeInfo->removeGenericFlag();
     newNode->typeInfo->declNode = newNode;
 
     return newNode;

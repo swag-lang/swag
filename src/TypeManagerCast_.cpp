@@ -2468,21 +2468,23 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
         if (castFlags & CASTFLAG_EXPLICIT)
             return true;
 
-        // Pointer to *void
-        if (toTypePointer->isPointerVoid())
-            return true;
-
         // Fine to compare pointers of TypeInfos, even if not of the same type
-        if (castFlags & CASTFLAG_COMPARE)
-        {
-            if ((fromType->isPointerToTypeInfo()) && (toType->isPointerToTypeInfo()))
-                return true;
-        }
-
-        // From *void
-        auto fromTypePointer = CastTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer);
-        if (fromTypePointer->isPointerVoid())
+        if (castFlags & CASTFLAG_COMPARE && fromType->isPointerToTypeInfo() && toType->isPointerToTypeInfo())
             return true;
+
+        // Pointer to *void or *void to pointer
+        if (toType->isPointerVoid() || fromType->isPointerVoid())
+        {
+            if (castFlags & CASTFLAG_PARAMS)
+            {
+                if (toType->flags & TYPEINFO_GENERIC)
+                    return castError(context, toType, fromType, fromNode, castFlags);
+                if (toType->flags & TYPEINFO_FROM_GENERIC)
+                    return castError(context, toType, fromType, fromNode, castFlags);
+            }
+
+            return true;
+        }
     }
 
     // Array to pointer of the same type

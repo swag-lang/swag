@@ -350,6 +350,15 @@ void TypeInfo::copyFrom(TypeInfo* from)
     sizeOf     = from->sizeOf;
 }
 
+void TypeInfo::removeGenericFlag()
+{
+    if (flags & TYPEINFO_GENERIC)
+    {
+        flags &= ~TYPEINFO_GENERIC;
+        flags |= TYPEINFO_FROM_GENERIC;
+    }
+}
+
 int TypeInfoParam::numRegisters()
 {
     return typeInfo->numRegisters();

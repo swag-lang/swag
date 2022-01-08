@@ -32,6 +32,7 @@ static const uint32_t CASTFLAG_ACCEPT_PENDING = 0x00040000;
 static const uint32_t CASTFLAG_LITERAL_SUFFIX = 0x00080000;
 static const uint32_t CASTFLAG_NO_LAST_MINUTE = 0x00100000;
 static const uint32_t CASTFLAG_NO_ITF         = 0x00200000;
+static const uint32_t CASTFLAG_PARAMS         = 0x00400000;
 
 static const uint32_t CONCRETE_ALL        = 0xFFFFFFFF;
 static const uint32_t CONCRETE_ENUM       = 0x00000001;
