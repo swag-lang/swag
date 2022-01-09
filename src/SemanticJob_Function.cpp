@@ -334,7 +334,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
             {
                 if (node->semFlags & AST_SEM_FCT_HAS_RETURN)
                     return context->report({node, Utf8::format(g_E[Err0748], node->getDisplayName().c_str())});
-                return context->report({node, Utf8::format(g_E[Err0749], node->getDisplayName().c_str(), node->returnType->typeInfo->getDisplayName().c_str())});
+                return context->report({node->returnType->childs.front(), Utf8::format(g_E[Err0749], node->getDisplayName().c_str(), node->returnType->typeInfo->getDisplayName().c_str())});
             }
         }
     }
