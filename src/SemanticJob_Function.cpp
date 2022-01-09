@@ -657,7 +657,7 @@ bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* func
 
         // The function wants to return something, but has the 'Swag.NoReturn' attribute
         if (!funcNode->returnType->typeInfo->isNative(NativeTypeKind::Void) && (funcNode->attributeFlags & ATTRIBUTE_NO_RETURN))
-            return context->report({funcNode->returnType, g_E[Err0766]});
+            return context->report({funcNode->returnType->childs.front(), g_E[Err0766]});
         // The function returns nothing but has the 'Swag.Discardable' attribute
         if (funcNode->returnType->typeInfo->isNative(NativeTypeKind::Void) && funcNode->attributeFlags & ATTRIBUTE_DISCARDABLE)
             return context->report({funcNode, Utf8::format(g_E[Err0767], funcNode->token.text.c_str())});
@@ -1052,7 +1052,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     if (!concreteType->isNative(NativeTypeKind::Void))
     {
         if (funcNode->attributeFlags & (ATTRIBUTE_RUN_FUNC | ATTRIBUTE_RUN_GENERATED_FUNC | ATTRIBUTE_MAIN_FUNC | ATTRIBUTE_INIT_FUNC | ATTRIBUTE_DROP_FUNC | ATTRIBUTE_TEST_FUNC))
-            return context->report({child, Utf8::format(g_E[Err0052], funcNode->getDisplayName().c_str())});
+            return context->report(g_E[Hnt0026], {child, Utf8::format(g_E[Err0052], funcNode->getDisplayName().c_str())});
     }
 
     // Be sure we do not specify a return value, and the function does not have a return type

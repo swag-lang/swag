@@ -208,9 +208,9 @@ bool SemanticJob::resolveIntrinsicMakeInterface(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
+bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, AstNode* expression)
 {
-    typeInfo = TypeManager::concreteReferenceType(typeInfo);
+    auto typeInfo = TypeManager::concreteReferenceType(expression->typeInfo);
     if (typeInfo->isNative(NativeTypeKind::String))
     {
         node->typeInfo    = g_TypeMgr->typeInfoConstPointers[(int) NativeTypeKind::U8];
@@ -235,7 +235,7 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
     }
     else if (typeInfo->kind == TypeInfoKind::Struct)
     {
-        SWAG_VERIFY(!(typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE), context->report(Hint::isType(typeInfo), {node, g_E[Err0796]}));
+        SWAG_VERIFY(!(typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE), context->report(Hint::isType(typeInfo), {expression, g_E[Err0796]}));
         node->typeInfo = typeInfo;
         SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opData, nullptr, nullptr, node, nullptr, false));
         if (context->result == ContextResult::Pending)
@@ -730,7 +730,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
     {
         auto expr = node->childs.front();
         SWAG_CHECK(checkIsConcrete(context, expr));
-        SWAG_CHECK(resolveIntrinsicDataOf(context, node, expr->typeInfo));
+        SWAG_CHECK(resolveIntrinsicDataOf(context, node, expr));
         break;
     }
 

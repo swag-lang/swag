@@ -347,7 +347,7 @@ struct SemanticJob : public Job
     static bool resolveIntrinsicMakeForeign(SemanticContext* context);
     static bool resolveIntrinsicMakeSlice(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, const char* name);
     static bool resolveIntrinsicMakeInterface(SemanticContext* context);
-    static bool resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
+    static bool resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, AstNode* expression);
     static bool resolveIntrinsicCountOf(SemanticContext* context, AstNode* node, AstNode* expression);
     static bool resolveIntrinsicStringOf(SemanticContext* context);
     static bool resolveIntrinsicNameOf(SemanticContext* context);
