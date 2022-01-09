@@ -21,6 +21,7 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
     auto typeInfo      = allocType<TypeInfoFuncAttr>();
     typeInfo->declNode = attrNode;
     attrNode->typeInfo = typeInfo;
+    typeInfo->flags |= TYPEINFO_FUNC_IS_ATTR;
 
     // Register attribute
     Scope* newScope = nullptr;

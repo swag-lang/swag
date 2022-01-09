@@ -13,6 +13,7 @@ struct Diagnostic;
 struct TypeInfo;
 struct AstFuncDecl;
 struct JobGroup;
+enum class DiagnosticLevel;
 
 static const uint8_t JOB_IS_IN_QUEUE       = 0x01;
 static const uint8_t JOB_IS_IN_THREAD      = 0x02;
@@ -65,6 +66,7 @@ struct JobContext
     {
         AstNode*         node = nullptr;
         ErrorContextType type = ErrorContextType::Node;
+        DiagnosticLevel  level;
         Utf8             msg  = "";
         bool             hide = false;
     };

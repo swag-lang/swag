@@ -5,7 +5,7 @@ struct SourceFile;
 struct TypeInfo;
 enum class LogColor;
 
-enum DiagnosticLevel
+enum class DiagnosticLevel
 {
     Error,
     Warning,
@@ -157,13 +157,14 @@ struct PushErrContext
         context->errorContextStack.push_back(expNode);
     }
 
-    PushErrContext(JobContext* context, AstNode* node, const Utf8& msg)
+    PushErrContext(JobContext* context, AstNode* node, const Utf8& msg, DiagnosticLevel level = DiagnosticLevel::Note)
         : cxt{context}
     {
         JobContext::ErrorContext expNode;
-        expNode.node = node;
-        expNode.type = JobContext::ErrorContextType::Message;
-        expNode.msg  = msg;
+        expNode.node  = node;
+        expNode.type  = JobContext::ErrorContextType::Message;
+        expNode.level = level;
+        expNode.msg   = msg;
         context->errorContextStack.push_back(expNode);
     }
 

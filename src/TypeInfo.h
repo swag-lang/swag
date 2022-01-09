@@ -66,6 +66,7 @@ static const uint64_t TYPEINFO_CSTRING                  = 0x00000008'00000000;
 static const uint64_t TYPEINFO_C_VARIADIC               = 0x00000010'00000000;
 static const uint64_t TYPEINFO_GENERIC_COUNT            = 0x00000020'00000000;
 static const uint64_t TYPEINFO_FROM_GENERIC             = 0x00000040'00000000;
+static const uint64_t TYPEINFO_FUNC_IS_ATTR             = 0x00000080'00000000;
 
 static const uint32_t ISSAME_EXACT      = 0x00000001;
 static const uint32_t ISSAME_CAST       = 0x00000002;

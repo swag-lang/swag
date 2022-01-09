@@ -103,7 +103,7 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
     if (!node->isSpecialFunctionName())
         return true;
 
-    PushErrContext ec(context, nullptr, getSpecialOpSignature(node));
+    PushErrContext ec(context, nullptr, getSpecialOpSignature(node), DiagnosticLevel::Help);
 
     auto& name      = node->token.text;
     bool  isOpVisit = name.find(g_LangSpec->name_opVisit) == 0;

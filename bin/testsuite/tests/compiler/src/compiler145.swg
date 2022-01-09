@@ -1,7 +1,5 @@
+#global testerror
 
-;
-
-#global testerror;
 func main (b: bool)
 {
 }

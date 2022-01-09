@@ -268,12 +268,12 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
                     break;
                 if (first)
                 {
-                    auto note = new Diagnostic{first, exp.msg, DiagnosticLevel::Note};
+                    auto note = new Diagnostic{first, exp.msg, exp.level};
                     notes.push_back(note);
                 }
                 else
                 {
-                    auto note = new Diagnostic{exp.msg, DiagnosticLevel::Note};
+                    auto note = new Diagnostic{exp.msg, exp.level};
                     notes.push_back(note);
                 }
                 break;
