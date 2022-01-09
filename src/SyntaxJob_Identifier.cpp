@@ -205,6 +205,12 @@ bool SyntaxJob::doDiscard(AstNode* parent, AstNode** result)
         SWAG_CHECK(doCatch(parent, &idRef));
         break;
     default:
+        if (Tokenizer::isIntrinsicReturn(token.id))
+        {
+            PushErrHint eh(g_E[Hnt0008]);
+            return error(token, Utf8::format(g_E[Err0888], token.text.c_str()));
+        }
+
         return error(token, Utf8::format(g_E[Err0841], token.text.c_str()));
     }
 
