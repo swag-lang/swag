@@ -36,24 +36,17 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     if (context->result != ContextResult::Done)
         return true;
 
-    if (!(left->flags & AST_L_VALUE))
-    {
-        if (left->resolvedSymbolOverload && left->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE)
-            return context->report(g_E[Hnt0018], {left, g_E[Err0564]});
-        return context->report({left, g_E[Err0565]});
-    }
-
-    SWAG_VERIFY(left->resolvedSymbolName, context->report({left, g_E[Err0566]}));
+    SWAG_VERIFY(left->resolvedSymbolName && left->resolvedSymbolOverload, context->report({left, g_E[Err0566]}));
     SWAG_VERIFY(left->resolvedSymbolName->kind == SymbolKind::Variable, context->report({left, g_E[Err0567]}));
 
     // Check that left type is mutable
     // If not, try to find the culprit type
-    if (left->flags & AST_IS_CONST)
+    if ((left->flags & AST_IS_CONST) || !(left->flags & AST_L_VALUE))
     {
         Utf8 hint;
         if (left->typeInfo->isConst())
         {
-            if (left->resolvedSymbolOverload && left->resolvedSymbolOverload->flags & OVERLOAD_VAR_FUNC_PARAM)
+            if (left->resolvedSymbolOverload->flags & OVERLOAD_VAR_FUNC_PARAM)
                 return context->report({left, Utf8::format(g_E[Err0740], left->resolvedSymbolName->name.c_str())});
             hint = Hint::isType(left->typeInfo);
         }
@@ -61,7 +54,8 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         {
             for (int i = left->childs.count - 1; i >= 0; i--)
             {
-                if (left->childs[i]->typeInfo && left->childs[i]->typeInfo->isConst())
+                auto typeChild = TypeManager::concreteType(left->childs[i]->typeInfo, CONCRETE_ALIAS);
+                if (typeChild && typeChild->isConst())
                 {
                     left = left->childs[i];
                     hint = Hint::isType(left->typeInfo);
@@ -77,7 +71,15 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             }
         }
 
-        return context->report(hint, {left, g_E[Err0564]});
+        if (left->flags & AST_L_VALUE)
+            return context->report(hint, {left, g_E[Err0564]});
+    }
+
+    if (!(left->flags & AST_L_VALUE))
+    {
+        if (left->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE)
+            return context->report(g_E[Hnt0018], {left, g_E[Err0564]});
+        return context->report({left, g_E[Err0565]});
     }
 
     // Special case for enum : nothing is possible, except for flags
