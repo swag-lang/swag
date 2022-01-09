@@ -785,11 +785,17 @@
     <ClInclude Include="..\src\PrepCompilerMsgJob.h">
       <Filter>Main\Jobs</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\ErrorList.h">
+    <ClInclude Include="..\src\ErrorList_Err.h">
       <Filter>Main\Global</Filter>
     </ClInclude>
     <ClInclude Include="..\src\AstOutput.h">
       <Filter>Lexer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ErrorList_Note.h">
+      <Filter>Main\Global</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ErrorList_Hint.h">
+      <Filter>Main\Global</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
