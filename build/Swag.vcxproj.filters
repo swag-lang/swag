@@ -797,6 +797,9 @@
     <ClInclude Include="..\src\ErrorList_Hint.h">
       <Filter>Main\Global</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\ErrorList_Help.h">
+      <Filter>Main\Global</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Main">

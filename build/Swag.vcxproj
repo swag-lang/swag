@@ -218,6 +218,7 @@
     <ClInclude Include="../src/ModuleGenOutputJob.h" />
     <ClInclude Include="../src/ModuleOutputJob.h" />
     <ClInclude Include="..\src\ErrorList_Err.h" />
+    <ClInclude Include="..\src\ErrorList_Help.h" />
     <ClInclude Include="..\src\ErrorList_Hint.h" />
     <ClInclude Include="..\src\ErrorList_Note.h" />
     <ClInclude Include="..\src\JobGroup.h" />

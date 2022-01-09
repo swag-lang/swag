@@ -83,7 +83,10 @@ void Diagnostic::report(bool verboseMode) const
         break;
     case DiagnosticLevel::Note:
         g_Log.setColor(noteColor);
-        g_Log.print("note: ");
+        if (isHelpNote)
+            g_Log.print("help: ");
+        else
+            g_Log.print("note: ");
         break;
     case DiagnosticLevel::CallStack:
     {

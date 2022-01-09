@@ -103,21 +103,42 @@ bool SyntaxJob::invalidTokenError(InvalidTokenError kind)
     return error(token, msg);
 }
 
-bool SyntaxJob::error(AstNode* node, const Utf8& msg)
+bool SyntaxJob::error(AstNode* node, const Utf8& msg, const char* help)
 {
-    sourceFile->report({node, msg.c_str()});
+    Diagnostic  diag{node, msg.c_str()};
+    Diagnostic* note = nullptr;
+    if (help)
+    {
+        note             = new Diagnostic{help, DiagnosticLevel::Note};
+        note->isHelpNote = true;
+    }
+    sourceFile->report(diag, note);
     return false;
 }
 
-bool SyntaxJob::error(const Token& tk, const Utf8& msg)
+bool SyntaxJob::error(const Token& tk, const Utf8& msg, const char* help)
 {
-    sourceFile->report({sourceFile, tk, msg.c_str()});
+    Diagnostic  diag{sourceFile, tk, msg.c_str()};
+    Diagnostic* note = nullptr;
+    if (help)
+    {
+        note             = new Diagnostic{help, DiagnosticLevel::Note};
+        note->isHelpNote = true;
+    }
+    sourceFile->report(diag, note);
     return false;
 }
 
-bool SyntaxJob::error(const SourceLocation& startLocation, const SourceLocation& endLocation, const Utf8& msg)
+bool SyntaxJob::error(const SourceLocation& startLocation, const SourceLocation& endLocation, const Utf8& msg, const char* help)
 {
-    sourceFile->report({sourceFile, startLocation, endLocation, msg.c_str()});
+    Diagnostic  diag{sourceFile, startLocation, endLocation, msg.c_str()};
+    Diagnostic* note = nullptr;
+    if (help)
+    {
+        note             = new Diagnostic{help, DiagnosticLevel::Note};
+        note->isHelpNote = true;
+    }
+    sourceFile->report(diag, note);
     return false;
 }
 

@@ -128,6 +128,7 @@ struct Diagnostic
     bool showRange             = true;
     bool showMultipleCodeLines = true;
     bool exceptionError        = false;
+    bool isHelpNote            = false;
 };
 
 extern thread_local Utf8 g_ErrorHint;

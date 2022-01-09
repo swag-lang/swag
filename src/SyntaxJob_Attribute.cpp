@@ -37,8 +37,8 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
         SWAG_CHECK(doFuncDeclParameters(attrNode, &attrNode->parameters));
     }
 
-    SWAG_VERIFY(token.id != TokenId::SymMinusGreat, error(token, g_E[Err0726]));
-    SWAG_VERIFY(token.id != TokenId::KwdThrow, error(token, g_E[Err0190]));
+    SWAG_VERIFY(token.id != TokenId::SymMinusGreat, error(token, g_E[Err0726], g_E[Hlp0000]));
+    SWAG_VERIFY(token.id != TokenId::KwdThrow, error(token, g_E[Err0190], g_E[Hlp0001]));
     SWAG_CHECK(eatSemiCol("attribute definition"));
 
     return true;

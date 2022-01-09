@@ -71,9 +71,9 @@ struct SyntaxJob : public Job
     JobResult execute() override;
     bool      constructEmbedded(const Utf8& content, AstNode* parent, AstNode* fromNode, enum class CompilerAstKind kind, bool logGenerated);
 
-    bool error(const Token& tk, const Utf8& msg);
-    bool error(AstNode* node, const Utf8& msg);
-    bool error(const SourceLocation& startLocation, const SourceLocation& endLocation, const Utf8& msg);
+    bool error(const Token& tk, const Utf8& msg, const char* help = nullptr);
+    bool error(AstNode* node, const Utf8& msg, const char* help = nullptr);
+    bool error(const SourceLocation& startLocation, const SourceLocation& endLocation, const Utf8& msg, const char* help = nullptr);
     bool invalidTokenError(InvalidTokenError kind);
     bool verifyError(const Token& tk, bool expr, const Utf8& msg);
 
