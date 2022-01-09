@@ -779,7 +779,7 @@ void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* 
     Utf8 appendMsg;
     Utf8 bestMatch = findClosestMatchesMsg(context, best);
     if (!bestMatch.empty())
-        appendMsg = "(" + bestMatch + ")";
+        appendMsg = " (" + bestMatch + ")";
 
     vector<const Diagnostic*> notes;
     Diagnostic*               diag = nullptr;

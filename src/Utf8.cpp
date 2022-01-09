@@ -313,12 +313,14 @@ char Utf8::back() const
 
 void Utf8::makeUpper()
 {
+    makeLocal();
     for (int i = 0; i < count; i++)
         buffer[i] = (char) toupper(buffer[i]);
 }
 
 void Utf8::makeLower()
 {
+    makeLocal();
     for (int i = 0; i < count; i++)
         buffer[i] = (char) tolower(buffer[i]);
 }
@@ -332,6 +334,7 @@ bool Utf8::compareNoCase(const Utf8& txt1)
 
 void Utf8::replaceAll(char src, char dst)
 {
+    makeLocal();
     for (int i = 0; i < count; i++)
     {
         if (buffer[i] == src)
@@ -343,6 +346,8 @@ void Utf8::trimLeft()
 {
     if (!count)
         return;
+
+    makeLocal();
     auto pz       = buffer;
     auto newCount = count;
     while (SWAG_IS_BLANK(*pz))
@@ -360,6 +365,8 @@ void Utf8::trimRight()
 {
     if (!count)
         return;
+
+    makeLocal();
     while (count && SWAG_IS_BLANK(buffer[count - 1]))
     {
         count--;
