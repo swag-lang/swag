@@ -933,7 +933,8 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
             // User cannot name its variables itemX
             if (!(node->flags & AST_GENERATED) && hasItemName)
             {
-                return context->report({child, Utf8::format(g_E[Err0674], child->token.text.c_str())});
+                Diagnostic note{g_E[Hlp0009], DiagnosticLevel::Help};
+                return context->report({child, Utf8::format(g_E[Err0674], child->token.text.c_str())}, &note);
             }
 
             if (!hasItemName)

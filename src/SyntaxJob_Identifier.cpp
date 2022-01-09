@@ -64,6 +64,8 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
         return error(token, Utf8::format(g_E[Err0835], token.text.c_str()));
     else if (Tokenizer::isLiteral(token.id))
         return error(token, Utf8::format(g_E[Err0285], token.text.c_str()));
+    else if (token.id == TokenId::EndOfFile)
+        return error(token, g_E[Err0849]);
 
     auto identifier = Ast::newNode<AstIdentifier>(this, AstNodeKind::Identifier, sourceFile, parent);
     identifier->inheritTokenLocation(token);
