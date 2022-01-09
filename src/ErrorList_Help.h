@@ -4,3 +4,5 @@ SWAG_ERROR(Hlp0002, "if this is an array literal and not a type declaration, use
 SWAG_ERROR(Hlp0003, "if this is a tuple literal and not a type declaration, use `@{` instead of `{`")
 SWAG_ERROR(Hlp0004, "if you want to declare a lambda, you should use `func(`")
 SWAG_ERROR(Hlp0005, "if you want to dereference variable `%s` like in C, use `dref %s`")
+SWAG_ERROR(Hlp0006, "to access an array with multiple dimensions, the syntax is [x, y], not [x][y]")
+

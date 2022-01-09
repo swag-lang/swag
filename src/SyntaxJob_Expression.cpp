@@ -79,7 +79,7 @@ bool SyntaxJob::doArrayPointerIndex(AstNode** exprNode)
         }
 
         SWAG_CHECK(eatToken(TokenId::SymRightSquare));
-        SWAG_VERIFY(token.id != TokenId::SymLeftSquare, error(token, g_E[Err0826]));
+        SWAG_VERIFY(token.id != TokenId::SymLeftSquare, error(token, g_E[Err0826], g_E[Hlp0006]));
     }
 
     return true;

@@ -817,7 +817,7 @@ SWAG_ERROR(Err0822, "`using` on a variable with a pointer type is only possible 
 SWAG_ERROR(Err0823, "the `case` statement is empty, you should add a `break`")
 SWAG_ERROR(Err0824, "fatal error: cannot create file `%s`")
 SWAG_ERROR(Err0825, "expected `,` or `]`, found `%s`")
-SWAG_ERROR(Err0826, "invalid access to an array with multiple dimensions, syntax is [x, y], not [x][y]")
+SWAG_ERROR(Err0826, "unexpected `[` when accessing an array with multiple dimensions")
 SWAG_ERROR(Err0827, "unexpected negation of an unsigned type (`%s`)")
 SWAG_ERROR(Err0828, "the minus operation is not allowed on type `%s`")
 SWAG_ERROR(Err0829, "cannot negate number `%d` because `%u` is not in the range of `s8`")
