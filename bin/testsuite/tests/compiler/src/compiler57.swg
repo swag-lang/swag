@@ -1,4 +1,4 @@
-﻿#global testerror
+﻿//#global testerror
 //#global testpass lexer;
 
 var x = 21474838'f32

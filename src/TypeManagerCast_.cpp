@@ -1546,18 +1546,6 @@ bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, 
     {
         if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
         {
-            if (!(castFlags & CASTFLAG_EXPLICIT))
-            {
-                float   tmpF = (float) fromNode->computedValue->reg.s64;
-                int64_t tmpI = (int64_t) tmpF;
-                if (tmpI != fromNode->computedValue->reg.s64)
-                {
-                    if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, Utf8::format(g_E[Err0191], fromNode->computedValue->reg.s64)});
-                    return false;
-                }
-            }
-
             if (!(castFlags & CASTFLAG_JUST_CHECK))
             {
                 fromNode->computedValue->reg.f32 = (float) fromNode->computedValue->reg.s64;
@@ -1604,18 +1592,6 @@ bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, 
     {
         if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
         {
-            if (!(castFlags & CASTFLAG_EXPLICIT))
-            {
-                float    tmpF = (float) fromNode->computedValue->reg.u64;
-                uint64_t tmpI = (uint64_t) tmpF;
-                if (tmpI != fromNode->computedValue->reg.u64)
-                {
-                    if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, Utf8::format(g_E[Err0192], fromNode->computedValue->reg.u64)});
-                    return false;
-                }
-            }
-
             if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
             {
                 fromNode->computedValue->reg.f32 = (float) fromNode->computedValue->reg.u64;
@@ -1633,18 +1609,6 @@ bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, 
     {
         if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
         {
-            if (!(castFlags & CASTFLAG_EXPLICIT))
-            {
-                float  tmpF = (float) fromNode->computedValue->reg.f64;
-                double tmpD = (double) tmpF;
-                if (tmpD != fromNode->computedValue->reg.f64)
-                {
-                    if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, Utf8::format(g_E[Err0193], fromNode->computedValue->reg.f64)});
-                    return false;
-                }
-            }
-
             if (!(castFlags & CASTFLAG_JUST_CHECK))
             {
                 fromNode->computedValue->reg.f32 = (float) fromNode->computedValue->reg.f64;
@@ -1677,18 +1641,6 @@ bool TypeManager::castToNativeF64(SemanticContext* context, TypeInfo* fromType, 
     {
         if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
         {
-            if (!(castFlags & CASTFLAG_EXPLICIT))
-            {
-                double  tmpF = (double) fromNode->computedValue->reg.s64;
-                int64_t tmpI = (int64_t) tmpF;
-                if (tmpI != fromNode->computedValue->reg.s64)
-                {
-                    if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, Utf8::format(g_E[Err0194], fromNode->computedValue->reg.s64)});
-                    return false;
-                }
-            }
-
             if (!(castFlags & CASTFLAG_JUST_CHECK))
             {
                 fromNode->computedValue->reg.f64 = (double) fromNode->computedValue->reg.s64;
@@ -1735,18 +1687,6 @@ bool TypeManager::castToNativeF64(SemanticContext* context, TypeInfo* fromType, 
     {
         if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
         {
-            if (!(castFlags & CASTFLAG_EXPLICIT))
-            {
-                double   tmpF = (double) fromNode->computedValue->reg.u64;
-                uint64_t tmpI = (uint64_t) tmpF;
-                if (tmpI != fromNode->computedValue->reg.u64)
-                {
-                    if (!(castFlags & CASTFLAG_NO_ERROR))
-                        context->report({fromNode, Utf8::format(g_E[Err0195], fromNode->computedValue->reg.u64)});
-                    return false;
-                }
-            }
-
             if (!(castFlags & CASTFLAG_JUST_CHECK))
             {
                 fromNode->allocateComputedValue();

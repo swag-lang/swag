@@ -284,23 +284,11 @@ Utf8 SemanticJob::checkLiteralType(ComputedValue& computedValue, Token& token, T
             break;
 
         case NativeTypeKind::F32:
-        {
-            float   tmpF = static_cast<float>(computedValue.reg.s64);
-            int64_t tmp  = static_cast<int64_t>(tmpF);
-            if (tmp != computedValue.reg.s64)
-                return Utf8::format(g_E[Err0363], computedValue.reg.s64);
-            computedValue.reg.f32 = tmpF;
+            computedValue.reg.f32 = static_cast<float>(computedValue.reg.s64);
             break;
-        }
         case NativeTypeKind::F64:
-        {
-            double  tmpF = static_cast<double>(computedValue.reg.s64);
-            int64_t tmp  = static_cast<int64_t>(tmpF);
-            if (tmp != computedValue.reg.s64)
-                return Utf8::format(g_E[Err0372], computedValue.reg.s64);
-            computedValue.reg.f64 = tmpF;
+            computedValue.reg.f64 = static_cast<double>(computedValue.reg.s64);
             break;
-        }
 
         default:
             return Utf8::format(g_E[Err0387], computedValue.reg.u64);
