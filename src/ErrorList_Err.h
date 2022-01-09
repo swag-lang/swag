@@ -225,7 +225,7 @@ SWAG_ERROR(Err0227, "cannot access `%s` by index because special function `opInd
 SWAG_ERROR(Err0228, "use of an unknown function `%s`")
 SWAG_ERROR(Err0229, "[safety] bad slicing, lower bound is greater than upper bound")
 SWAG_ERROR(Err0230, "[safety] bad slicing, upper bound is out of range")
-SWAG_ERROR(Err0231, "the copy semantic is disabled for type `%s` because of the `Swag.NoCopy` attribute")
+SWAG_ERROR(Err0231, "the copy of type `%s` is disabled because the struct is marked with `Swag.NoCopy`")
 SWAG_ERROR(Err0232, "`#dependencies` should only be used in the module configuration file (`module.swg`)")
 SWAG_ERROR(Err0233, "a `#selectif` expression should be of type `bool` (`%s` provided)")
 SWAG_ERROR(Err0234, "`#ast` expression should be of type `string` (`%s` provided)")
