@@ -78,7 +78,6 @@ bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* child)
     return true;
 }
 
-#include "SourceFile.h"
 bool SemanticJob::resolveUnaryOpExclam(SemanticContext* context, AstNode* child)
 {
     auto typeInfo = TypeManager::concreteReferenceType(child->typeInfo, CONCRETE_ALIAS);
@@ -196,7 +195,7 @@ bool SemanticJob::resolveUnaryOp(SemanticContext* context)
     if (typeInfo->kind == TypeInfoKind::Enum)
     {
         if (!(typeInfo->flags & TYPEINFO_ENUM_FLAGS))
-            return notAllowed(context, op, typeInfo, g_E[Nte0061]);
+            return notAllowed(context, op, typeInfo, "because the enum is not marked with `Swag.EnumFlags`");
     }
 
     typeInfo = TypeManager::concreteReferenceType(child->typeInfo);

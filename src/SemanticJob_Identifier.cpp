@@ -1052,9 +1052,16 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 auto fctAttributes = ownerFct->attributeFlags;
 
                 if (!(fctAttributes & ATTRIBUTE_COMPILER) && (overload->node->attributeFlags & ATTRIBUTE_COMPILER) && !(identifier->flags & AST_RUN_BLOCK))
-                    return context->report({identifier, Utf8::format(g_E[Err0107], overload->node->token.text.c_str(), ownerFct->getDisplayName().c_str())});
+                {
+                    Diagnostic note{overload->node, Utf8::format(g_E[Nte0029], overload->node->token.text.c_str()), DiagnosticLevel::Note};
+                    return context->report({identifier, Utf8::format(g_E[Err0107], overload->node->token.text.c_str(), ownerFct->getDisplayName().c_str())}, &note);
+                }
+
                 if (!(fctAttributes & ATTRIBUTE_TEST_FUNC) && (overload->node->attributeFlags & ATTRIBUTE_TEST_FUNC))
-                    return context->report({identifier, Utf8::format(g_E[Err0108], overload->node->token.text.c_str(), ownerFct->token.text.c_str())});
+                {
+                    Diagnostic note{overload->node, Utf8::format(g_E[Nte0029], overload->node->token.text.c_str()), DiagnosticLevel::Note};
+                    return context->report({identifier, Utf8::format(g_E[Err0108], overload->node->token.text.c_str(), ownerFct->getDisplayName().c_str())}, &note);
+                }
             }
         }
 
