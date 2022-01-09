@@ -70,6 +70,8 @@ void Diagnostic::report(bool verboseMode) const
         g_Log.print("error: ");
         break;
     case DiagnosticLevel::Warning:
+        if (g_CommandLine->errorSourceOut)
+            g_Log.eol();
         if (g_CommandLine->warningsAsErrors)
         {
             g_Log.setColor(errorColor);
