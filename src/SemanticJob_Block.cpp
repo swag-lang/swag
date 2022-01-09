@@ -7,6 +7,7 @@
 #include "Module.h"
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
+#include "Array.h"
 
 bool SemanticJob::resolveIf(SemanticContext* context)
 {
@@ -283,8 +284,9 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
     SWAG_VERIFY(!node->cases.empty(), context->report({node, g_E[Err0610]}));
 
     // Collect constant expressions, to avoid double definitions
-    set<uint64_t> val64;
-    set<Utf8>     valText;
+    Array<AstNode*> valDef;
+    Array<uint64_t> val64;
+    Array<Utf8>     valText;
     for (auto switchCase : node->cases)
     {
         for (auto expr : switchCase->expressions)
@@ -294,9 +296,15 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
                 auto typeExpr = TypeManager::concreteType(expr->typeInfo);
                 if (typeExpr->isNative(NativeTypeKind::String))
                 {
-                    if (valText.find(expr->computedValue->text) != valText.end())
-                        return context->report({expr, Utf8::format(g_E[Err0611], expr->computedValue->text.c_str())});
-                    valText.insert(expr->computedValue->text);
+                    int idx = valText.find(expr->computedValue->text);
+                    if (idx != -1)
+                    {
+                        Diagnostic note{valDef[idx], g_E[Nte0014], DiagnosticLevel::Note};
+                        return context->report({expr, Utf8::format(g_E[Err0611], expr->computedValue->text.c_str())}, &note);
+                    }
+
+                    valText.push_back(expr->computedValue->text);
+                    valDef.push_back(expr);
                 }
                 else
                 {
@@ -304,18 +312,21 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
                     if (expr->flags & AST_VALUE_IS_TYPEINFO)
                         value = expr->computedValue->storageOffset;
 
-                    if (val64.find(value) != val64.end())
+                    int idx = val64.find(value);
+                    if (idx != -1)
                     {
+                        Diagnostic note{valDef[idx], g_E[Nte0014], DiagnosticLevel::Note};
                         if (expr->flags & AST_VALUE_IS_TYPEINFO)
-                            return context->report({expr, Utf8::format(g_E[Err0611], expr->token.text.c_str())});
+                            return context->report({expr, Utf8::format(g_E[Err0611], expr->token.text.c_str())}, &note);
                         if (expr->typeInfo->kind == TypeInfoKind::Enum)
-                            return context->report({expr, Utf8::format(g_E[Err0612], expr->token.text.c_str())});
+                            return context->report({expr, Utf8::format(g_E[Err0612], expr->token.text.c_str())}, &note);
                         if (typeExpr->isNativeInteger())
-                            return context->report({expr, Utf8::format(g_E[Err0613], expr->computedValue->reg.u64)});
-                        return context->report({expr, Utf8::format(g_E[Err0614], expr->computedValue->reg.f64)});
+                            return context->report({expr, Utf8::format(g_E[Err0613], expr->computedValue->reg.u64)}, &note);
+                        return context->report({expr, Utf8::format(g_E[Err0614], expr->computedValue->reg.f64)}, &note);
                     }
 
-                    val64.insert(expr->computedValue->reg.u64);
+                    val64.push_back(expr->computedValue->reg.u64);
+                    valDef.push_back(expr);
                 }
             }
             else if (node->attributeFlags & ATTRIBUTE_COMPLETE)
@@ -346,7 +357,7 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
                 {
                     for (auto one : typeEnum->values)
                     {
-                        if (valText.find(one->value->text) == valText.end())
+                        if (valText.contains(one->value->text))
                         {
                             Diagnostic diag{node, Utf8::format(g_E[Err0620], typeEnum->name.c_str(), one->namedParam.c_str())};
                             Diagnostic note{one->declNode, g_E[Nte0034], DiagnosticLevel::Note};
@@ -361,7 +372,7 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
                 {
                     for (auto one : typeEnum->values)
                     {
-                        if (val64.find(one->value->reg.u64) == val64.end())
+                        if (val64.contains(one->value->reg.u64))
                         {
                             Diagnostic diag{node, Utf8::format(g_E[Err0620], typeEnum->name.c_str(), one->namedParam.c_str())};
                             Diagnostic note{one->declNode, g_E[Nte0034], DiagnosticLevel::Note};

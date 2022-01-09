@@ -800,6 +800,9 @@
     <ClInclude Include="..\src\ErrorList_Help.h">
       <Filter>Main\Global</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\Array.h">
+      <Filter>Main\Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Main">
