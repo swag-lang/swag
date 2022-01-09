@@ -243,7 +243,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
             {
                 if (isHereTmp.contains(typeInfo))
                 {
-                    Diagnostic diag{forNode, Utf8::format(g_E[Err0591], child->token.text.c_str(), forNode->token.text.c_str(), child->token.text.c_str())};
+                    Diagnostic diag{forNode, Utf8::format(g_E[Err0591], child->token.text.c_str(), child->token.text.c_str())};
                     Diagnostic note{child, g_E[Nte0032], DiagnosticLevel::Note};
                     return context->report(diag, &note);
                 }
