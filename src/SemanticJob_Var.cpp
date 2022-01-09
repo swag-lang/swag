@@ -47,7 +47,13 @@ bool SemanticJob::resolveTupleUnpackBefore(SemanticContext* context)
         typeVar                                   = varDecl->typeInfo;
     }
 
-    SWAG_VERIFY(typeVar->kind == TypeInfoKind::Struct, context->report({varDecl, Utf8::format(g_E[Err0291], typeVar->name.c_str())}));
+    if (typeVar->kind != TypeInfoKind::Struct)
+    {
+        if (varDecl->assignment)
+            return context->report(Hint::isType(TypeManager::concreteType(varDecl->assignment->typeInfo)), {varDecl->assignment, Utf8::format(g_E[Err0291], typeVar->getDisplayName().c_str())});
+        return context->report({varDecl, Utf8::format(g_E[Err0291], typeVar->getDisplayName().c_str())});
+    }
+
     auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
     auto numUnpack  = scopeNode->childs.size() - 1;
     SWAG_VERIFY(typeStruct->fields.size(), context->report({varDecl, Utf8::format(g_E[Err0292], typeStruct->getDisplayName().c_str())}));
