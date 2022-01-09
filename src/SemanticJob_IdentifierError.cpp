@@ -188,7 +188,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     case MatchResult::MissingNamedParameter:
     {
         SWAG_ASSERT(failedParam);
-        diag = new Diagnostic{failedParam, Utf8::format(g_E[Err0006], badParamIdx)};
+        diag = new Diagnostic{failedParam, Utf8::format(g_E[Err0006], getTheNiceParameterRank(badParamIdx).c_str())};
         result0.push_back(diag);
         return;
     }
