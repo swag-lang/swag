@@ -10,12 +10,13 @@ enum class TokenId : uint8_t
 #include "TokenIds.h"
 };
 
-static const uint32_t TOKEN_SYM           = 0x00000001;
-static const uint32_t TOKEN_INTRINSIC     = 0x00000002;
-static const uint32_t TOKEN_KWD           = 0x00000004;
-static const uint32_t TOKEN_COMPILER      = 0x00000008;
-static const uint32_t TOKEN_LITERAL       = 0x00000010;
-static const uint32_t TOKEN_COMPILER_FUNC = 0x00000020;
+static const uint32_t TOKEN_SYM                = 0x00000001;
+static const uint32_t TOKEN_INTRINSIC_NORETURN = 0x00000002;
+static const uint32_t TOKEN_INTRINSIC_RETURN   = 0x00000004;
+static const uint32_t TOKEN_KWD                = 0x00000008;
+static const uint32_t TOKEN_COMPILER           = 0x00000010;
+static const uint32_t TOKEN_LITERAL            = 0x00000020;
+static const uint32_t TOKEN_COMPILER_FUNC      = 0x00000040;
 
 enum class LiteralType : uint8_t
 {
@@ -95,6 +96,8 @@ struct Tokenizer
 
     static bool isSymbol(TokenId id);
     static bool isLiteral(TokenId id);
+    static bool isIntrinsicReturn(TokenId id);
+    static bool isIntrinsicNoReturn(TokenId id);
 
     SourceLocation location;
     SourceFile*    sourceFile          = nullptr;

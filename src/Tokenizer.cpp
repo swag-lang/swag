@@ -30,6 +30,16 @@ bool Tokenizer::isLiteral(TokenId id)
     return g_TokenFlags[(int) id] & TOKEN_LITERAL;
 }
 
+bool Tokenizer::isIntrinsicReturn(TokenId id)
+{
+    return g_TokenFlags[(int) id] & TOKEN_INTRINSIC_RETURN;
+}
+
+bool Tokenizer::isIntrinsicNoReturn(TokenId id)
+{
+    return g_TokenFlags[(int) id] & TOKEN_INTRINSIC_NORETURN;
+}
+
 void Tokenizer::appendTokenName(Token& token)
 {
     if (realAppendName)

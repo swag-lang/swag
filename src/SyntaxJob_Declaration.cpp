@@ -396,6 +396,27 @@ void SyntaxJob::registerSubDecl(AstNode* subDecl)
     Ast::addChildBack(newParent, subDecl);
 }
 
+bool SyntaxJob::doScopeBreakable(AstNode* parent, AstNode** result)
+{
+    auto labelNode = Ast::newNode<AstScopeBreakable>(this, AstNodeKind::ScopeBreakable, sourceFile, parent);
+    if (result)
+        *result = labelNode;
+    labelNode->semanticFct = SemanticJob::resolveScopeBreakable;
+
+    SWAG_CHECK(eatToken());
+    if (token.id != TokenId::SymLeftCurly)
+    {
+        SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Utf8::format(g_E[Err0395], token.text.c_str())));
+        labelNode->inheritTokenName(token);
+        labelNode->inheritTokenLocation(token);
+        SWAG_CHECK(eatToken());
+    }
+
+    ScopedBreakable scoped(this, labelNode);
+    SWAG_CHECK(doEmbeddedInstruction(labelNode, &labelNode->block));
+    return true;
+}
+
 bool SyntaxJob::doLeftInstruction(AstNode* parent, AstNode** result)
 {
     switch (token.id)
@@ -443,9 +464,13 @@ bool SyntaxJob::doLeftInstruction(AstNode* parent, AstNode** result)
     case TokenId::IntrinsicPostMove:
         SWAG_CHECK(doDropCopyMove(parent, result));
         break;
+
     case TokenId::SymBackTick:
     case TokenId::CompilerScopeFct:
     case TokenId::Identifier:
+    case TokenId::SymLeftParen:
+    case TokenId::KwdDeRef:
+
     case TokenId::IntrinsicPrint:
     case TokenId::IntrinsicAssert:
     case TokenId::IntrinsicBcDbg:
@@ -467,8 +492,6 @@ bool SyntaxJob::doLeftInstruction(AstNode* parent, AstNode** result)
     case TokenId::IntrinsicCVaStart:
     case TokenId::IntrinsicCVaEnd:
     case TokenId::IntrinsicCVaArg:
-    case TokenId::SymLeftParen:
-    case TokenId::KwdDeRef:
         SWAG_CHECK(doAffectExpression(parent, result));
         break;
     }
@@ -493,13 +516,17 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
     case TokenId::KwdCatch:
     case TokenId::KwdThrow:
     case TokenId::KwdDiscard:
+    case TokenId::KwdDeRef:
+
+    case TokenId::SymBackTick:
+    case TokenId::SymLeftParen:
+    case TokenId::Identifier:
+    case TokenId::CompilerScopeFct:
+
     case TokenId::IntrinsicInit:
     case TokenId::IntrinsicDrop:
     case TokenId::IntrinsicPostCopy:
     case TokenId::IntrinsicPostMove:
-    case TokenId::SymBackTick:
-    case TokenId::CompilerScopeFct:
-    case TokenId::Identifier:
     case TokenId::IntrinsicPrint:
     case TokenId::IntrinsicAssert:
     case TokenId::IntrinsicBcDbg:
@@ -521,8 +548,6 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
     case TokenId::IntrinsicCVaStart:
     case TokenId::IntrinsicCVaEnd:
     case TokenId::IntrinsicCVaArg:
-    case TokenId::SymLeftParen:
-    case TokenId::KwdDeRef:
         SWAG_CHECK(doLeftInstruction(parent, result));
         break;
 
@@ -641,27 +666,6 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         return invalidTokenError(InvalidTokenError::EmbeddedInstruction);
     }
 
-    return true;
-}
-
-bool SyntaxJob::doScopeBreakable(AstNode* parent, AstNode** result)
-{
-    auto labelNode = Ast::newNode<AstScopeBreakable>(this, AstNodeKind::ScopeBreakable, sourceFile, parent);
-    if (result)
-        *result = labelNode;
-    labelNode->semanticFct = SemanticJob::resolveScopeBreakable;
-
-    SWAG_CHECK(eatToken());
-    if (token.id != TokenId::SymLeftCurly)
-    {
-        SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Utf8::format(g_E[Err0395], token.text.c_str())));
-        labelNode->inheritTokenName(token);
-        labelNode->inheritTokenLocation(token);
-        SWAG_CHECK(eatToken());
-    }
-
-    ScopedBreakable scoped(this, labelNode);
-    SWAG_CHECK(doEmbeddedInstruction(labelNode, &labelNode->block));
     return true;
 }
 
