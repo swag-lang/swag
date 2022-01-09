@@ -1094,9 +1094,9 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
 
             // Verify signature
             typeParam->typeInfo = TypeManager::concreteType(child->typeInfo, CONCRETE_ALIAS);
-            SWAG_VERIFY(typeParam->typeInfo->kind == TypeInfoKind::Lambda, context->report({child, Utf8::format(g_E[Err0676], child->typeInfo->getDisplayName().c_str())}));
+            SWAG_VERIFY(typeParam->typeInfo->kind == TypeInfoKind::Lambda, context->report({varDecl->type, Utf8::format(g_E[Err0676], child->typeInfo->getDisplayName().c_str())}));
             auto typeLambda = CastTypeInfo<TypeInfoFuncAttr>(typeParam->typeInfo, TypeInfoKind::Lambda);
-            SWAG_VERIFY(typeLambda->parameters.size() >= 1, context->report({child, Utf8::format(g_E[Err0677], child->token.text.c_str())}));
+            SWAG_VERIFY(typeLambda->parameters.size() >= 1, context->report({varDecl->type, Utf8::format(g_E[Err0677], child->token.text.c_str())}));
             auto firstParamType = typeLambda->parameters[0]->typeInfo;
             SWAG_VERIFY(firstParamType->kind == TypeInfoKind::Pointer, context->report({typeLambda->parameters[0]->declNode, Utf8::format(g_E[Err0679], firstParamType->getDisplayName().c_str())}));
             auto firstParamPtr = CastTypeInfo<TypeInfoPointer>(firstParamType, TypeInfoKind::Pointer);
