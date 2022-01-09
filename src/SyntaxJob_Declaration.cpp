@@ -470,6 +470,12 @@ bool SyntaxJob::doLeftInstruction(AstNode* parent, AstNode** result)
     case TokenId::Identifier:
     case TokenId::SymLeftParen:
     case TokenId::KwdDeRef:
+        SWAG_CHECK(doAffectExpression(parent, result));
+        break;
+
+    case TokenId::IntrinsicGetContext:
+        SWAG_CHECK(doAffectExpression(parent, result));
+        break;
 
     case TokenId::IntrinsicPrint:
     case TokenId::IntrinsicAssert:
@@ -481,7 +487,6 @@ bool SyntaxJob::doLeftInstruction(AstNode* parent, AstNode** result)
     case TokenId::IntrinsicMemMove:
     case TokenId::IntrinsicMemSet:
     case TokenId::IntrinsicSetContext:
-    case TokenId::IntrinsicGetContext:
     case TokenId::IntrinsicAtomicAdd:
     case TokenId::IntrinsicAtomicAnd:
     case TokenId::IntrinsicAtomicOr:
@@ -492,7 +497,7 @@ bool SyntaxJob::doLeftInstruction(AstNode* parent, AstNode** result)
     case TokenId::IntrinsicCVaStart:
     case TokenId::IntrinsicCVaEnd:
     case TokenId::IntrinsicCVaArg:
-        SWAG_CHECK(doAffectExpression(parent, result));
+        SWAG_CHECK(doIdentifierRef(parent, result));
         break;
     }
 

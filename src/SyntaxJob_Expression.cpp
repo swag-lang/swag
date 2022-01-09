@@ -1154,27 +1154,7 @@ bool SyntaxJob::doLeftExpressionAffect(AstNode* parent, AstNode** result)
 {
     switch (token.id)
     {
-    case TokenId::IntrinsicPrint:
-    case TokenId::IntrinsicAssert:
-    case TokenId::IntrinsicBcDbg:
-    case TokenId::IntrinsicPanic:
-    case TokenId::IntrinsicErrorMsg:
-    case TokenId::IntrinsicFree:
-    case TokenId::IntrinsicMemCpy:
-    case TokenId::IntrinsicMemMove:
-    case TokenId::IntrinsicMemSet:
-    case TokenId::IntrinsicSetContext:
     case TokenId::IntrinsicGetContext:
-    case TokenId::IntrinsicAtomicAdd:
-    case TokenId::IntrinsicAtomicAnd:
-    case TokenId::IntrinsicAtomicOr:
-    case TokenId::IntrinsicAtomicXor:
-    case TokenId::IntrinsicAtomicXchg:
-    case TokenId::IntrinsicAtomicCmpXchg:
-    case TokenId::IntrinsicSetErr:
-    case TokenId::IntrinsicCVaStart:
-    case TokenId::IntrinsicCVaEnd:
-    case TokenId::IntrinsicCVaArg:
         SWAG_CHECK(doIdentifierRef(parent, result));
         return true;
     case TokenId::SymLeftParen:
