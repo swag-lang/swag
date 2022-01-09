@@ -1034,7 +1034,11 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     }
 
     if (node->childs.empty())
-        return context->report({node, Utf8::format(g_E[Err0772], funcNode->returnType->typeInfo->getDisplayName().c_str())});
+    {
+        Diagnostic diag{node, Utf8::format(g_E[Err0772], funcNode->returnType->typeInfo->getDisplayName().c_str())};
+        Diagnostic note{funcNode->returnType->childs.front(), Utf8::format(g_E[Nte0067], typeInfoFunc->returnType->getDisplayName().c_str()), DiagnosticLevel::Note};
+        return context->report(diag, &note);
+    }
 
     auto returnType = funcNode->returnType->typeInfo;
 
