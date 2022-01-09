@@ -52,8 +52,10 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
 
     if (token.id == TokenId::SymBackTick)
     {
+        auto backTickToken = token;
         SWAG_CHECK(eatToken());
-        backTick = true;
+        token.startLocation = backTickToken.startLocation;
+        backTick            = true;
         if (token.id == TokenId::SymQuestion)
             return error(token, Utf8::format(g_E[Err0835], token.text.c_str()));
     }

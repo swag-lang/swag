@@ -3390,7 +3390,7 @@ bool SemanticJob::collectScopeHierarchy(SemanticContext* context, VectorNative<A
         {
             while (startScope && startScope->kind != ScopeKind::Inline && startScope->kind != ScopeKind::Macro)
                 startScope = startScope->parentScope;
-            SWAG_VERIFY(startScope, context->report({context->node, g_E[Err0135]}));
+            SWAG_VERIFY(startScope, context->report({context->node, g_E[Err0136]}));
             startScope = startScope->parentScope;
             flags &= ~COLLECT_BACKTICK;
         }
