@@ -100,6 +100,12 @@ bool SyntaxJob::doGlobalAttributeExpose(AstNode* parent, AstNode** result, bool 
         case TokenId::KwdNamespace:
             break;
 
+        case TokenId::SymAttrStart:
+        {
+            PushErrHint eh(Utf8::format(g_E[Hnt0043], tokenAttr.text.c_str()));
+            return error(token, Utf8::format(g_E[Err0354], token.text.c_str(), tokenAttr.text.c_str()));
+        }
+
         default:
             return error(token, Utf8::format(g_E[Err0353], token.text.c_str(), tokenAttr.text.c_str()));
         }

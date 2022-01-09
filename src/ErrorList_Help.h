@@ -6,3 +6,5 @@ SWAG_ERROR(Hlp0004, "if you want to declare a lambda, you should use `func(`")
 SWAG_ERROR(Hlp0005, "if you want to dereference variable `%s` like in C, use `dref %s`")
 SWAG_ERROR(Hlp0006, "to access an array with multiple dimensions, the syntax is [x, y], not [x][y]")
 SWAG_ERROR(Hlp0007, "methods (`mtd` and `mtdc`) are reserved for struct")
+SWAG_ERROR(Hlp0008, "a function name starting with `@` is reserved for intrinsics")
+
