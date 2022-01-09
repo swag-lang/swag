@@ -233,9 +233,7 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
     if (maxBound && (node->upperBound->flags & AST_VALUE_COMPUTED))
     {
         if (node->upperBound->computedValue->reg.u64 > maxBound)
-        {
-            return context->report({node->upperBound, Utf8::format(g_E[Err0477], node->upperBound->computedValue->reg.u64)});
-        }
+            return context->report({node->upperBound, Utf8::format(g_E[Err0477], node->upperBound->computedValue->reg.u64, maxBound)});
     }
 
     node->byteCodeFct = ByteCodeGenJob::emitMakeArrayPointerSlicing;

@@ -426,9 +426,9 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     {
         auto parameters = funcNode->parameters;
         auto paramType  = TypeManager::concreteType(parameters->typeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
-        SWAG_VERIFY(paramType->kind == TypeInfoKind::Enum, context->report({parameters, g_E[Err0750]}));
+        SWAG_VERIFY(paramType->kind == TypeInfoKind::Enum, context->report({parameters, Utf8::format(g_E[Err0804], paramType->getDisplayName().c_str())}));
         paramType->computeScopedName();
-        SWAG_VERIFY(paramType->scopedName == g_LangSpec->name_Swag_CompilerMsgMask, context->report({parameters, g_E[Err0750]}));
+        SWAG_VERIFY(paramType->scopedName == g_LangSpec->name_Swag_CompilerMsgMask, context->report({parameters, Utf8::format(g_E[Err0804], paramType->getDisplayName().c_str())}));
         SWAG_CHECK(evaluateConstExpression(context, parameters));
         if (context->result != ContextResult::Done)
             return true;
