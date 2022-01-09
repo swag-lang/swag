@@ -449,23 +449,16 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     }
 
     // We should have types to replace
-    bool noReplaceTypes = false;
-    if (match.genericReplaceTypes.empty())
+    bool noReplaceTypes = match.genericReplaceTypes.empty();
+    if (noReplaceTypes)
     {
-        noReplaceTypes = true;
-
         // If we do not have types to replace, perhaps we will be able to deduce them in case of a
         // function call parameter
-        auto parent = node->parent;
-        while (parent && parent->kind != AstNodeKind::FuncCallParam)
-            parent = parent->parent;
-
-        if (!parent)
+        if (!node->findParent(AstNodeKind::FuncCallParam))
         {
             if (contextualNode)
                 return context->report({contextualNode, Utf8::format(g_E[Err0041], node->token.text.c_str())});
-            else
-                return context->report({node, Utf8::format(g_E[Err0042], node->token.text.c_str())});
+            return context->report({node, Utf8::format(g_E[Err0042], node->token.text.c_str())});
         }
     }
 
