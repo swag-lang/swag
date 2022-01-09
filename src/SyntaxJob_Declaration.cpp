@@ -528,31 +528,32 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
     case TokenId::Identifier:
     case TokenId::CompilerScopeFct:
 
-    case TokenId::IntrinsicInit:
-    case TokenId::IntrinsicDrop:
-    case TokenId::IntrinsicPostCopy:
-    case TokenId::IntrinsicPostMove:
-    case TokenId::IntrinsicPrint:
+    case TokenId::IntrinsicAtomicAdd:
+    case TokenId::IntrinsicAtomicAnd:
+    case TokenId::IntrinsicAtomicCmpXchg:
+    case TokenId::IntrinsicAtomicOr:
+    case TokenId::IntrinsicAtomicXchg:
+    case TokenId::IntrinsicAtomicXor:
+
     case TokenId::IntrinsicAssert:
     case TokenId::IntrinsicBcDbg:
-    case TokenId::IntrinsicPanic:
+    case TokenId::IntrinsicCVaArg:
+    case TokenId::IntrinsicCVaEnd:
+    case TokenId::IntrinsicCVaStart:
+    case TokenId::IntrinsicDrop:
     case TokenId::IntrinsicErrorMsg:
     case TokenId::IntrinsicFree:
+    case TokenId::IntrinsicGetContext:
+    case TokenId::IntrinsicInit:
     case TokenId::IntrinsicMemCpy:
     case TokenId::IntrinsicMemMove:
     case TokenId::IntrinsicMemSet:
+    case TokenId::IntrinsicPanic:
+    case TokenId::IntrinsicPostCopy:
+    case TokenId::IntrinsicPostMove:
+    case TokenId::IntrinsicPrint:
     case TokenId::IntrinsicSetContext:
-    case TokenId::IntrinsicGetContext:
-    case TokenId::IntrinsicAtomicAdd:
-    case TokenId::IntrinsicAtomicAnd:
-    case TokenId::IntrinsicAtomicOr:
-    case TokenId::IntrinsicAtomicXor:
-    case TokenId::IntrinsicAtomicXchg:
-    case TokenId::IntrinsicAtomicCmpXchg:
     case TokenId::IntrinsicSetErr:
-    case TokenId::IntrinsicCVaStart:
-    case TokenId::IntrinsicCVaEnd:
-    case TokenId::IntrinsicCVaArg:
         SWAG_CHECK(doLeftInstruction(parent, result));
         break;
 
@@ -668,6 +669,12 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         return error(token, Utf8::format(g_E[Err0665], token.text.c_str()));
 
     default:
+        if (Tokenizer::isIntrinsicReturn(token.id))
+        {
+            PushErrHint eh(g_E[Hnt0008]);
+            return error(token, Utf8::format(g_E[Err0892], token.text.c_str()));
+        }
+
         return invalidTokenError(InvalidTokenError::EmbeddedInstruction);
     }
 

@@ -1,4 +1,4 @@
 #test
 {
-	//discard @countof("1")
+	discard @countof("1")
 }
