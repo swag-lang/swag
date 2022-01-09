@@ -182,7 +182,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, A
         expr->flags |= AST_IN_ATOMIC_EXPR;
         if (result)
             *result = expr;
-        SWAG_CHECK(eatToken(TokenId::SymRightParen, g_E[Nte0021]));
+        SWAG_CHECK(eatToken(TokenId::SymRightParen, "to close the left expression"));
         break;
     }
 

@@ -273,7 +273,7 @@ void Workspace::errorPendingJobsMsg(Job* prevJob, Job* depJob, vector<const Diag
         {
         case AstNodeKind::VarDecl:
             msg += " ";
-            msg += Utf8::format(g_E[Nte0065], AstNode::getKindName(prevJob->waitingHintNode).c_str(), prevJob->waitingHintNode->token.text.c_str());
+            msg += Utf8::format("because of %s `%s`", AstNode::getKindName(prevJob->waitingHintNode).c_str(), prevJob->waitingHintNode->token.text.c_str());
             break;
         }
 

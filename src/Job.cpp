@@ -299,12 +299,12 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
                 kindArticle = "to ";
                 break;
             case JobContext::ErrorContextType::Node:
-                kindName    = g_E[Nte0017];
+                kindName    = "when solving";
                 kindArticle = "";
                 switch (first->kind)
                 {
                 case AstNodeKind::AffectOp:
-                    kindName    = g_E[Nte0018];
+                    kindName    = "when solving affectation";
                     kindArticle = "to ";
                     first       = first->childs.front();
                     hint        = Hint::isType(first->typeInfo);

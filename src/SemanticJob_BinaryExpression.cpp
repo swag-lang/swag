@@ -805,7 +805,7 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
             return notAllowed(context, node, leftTypeInfo);
 
         if (leftTypeInfo->kind == TypeInfoKind::Enum && !(leftTypeInfo->flags & TYPEINFO_ENUM_FLAGS) && rightTypeInfo == leftTypeInfo)
-            return notAllowed(context, node, leftTypeInfo, g_E[Nte0061]);
+            return notAllowed(context, node, leftTypeInfo, "because the enum is not marked with `Swag.EnumFlags`");
 
         if (leftTypeInfo->kind == TypeInfoKind::Enum && !(leftTypeInfo->flags & TYPEINFO_ENUM_FLAGS))
             return context->report({node, Utf8::format(g_E[Err0037], node->token.text.c_str(), leftTypeInfo->getDisplayName().c_str())});

@@ -28,7 +28,7 @@ bool BackendX64::emitOS(const BuildParameters& buildParameters)
     }
     else
     {
-        module->error(Utf8::format(g_E[Nte0018], Backend::GetOsName(g_CommandLine->target)));
+        module->error(Utf8::format(g_E[Err0056], Backend::GetOsName(g_CommandLine->target)));
         return false;
     }
 }

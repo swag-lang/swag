@@ -171,7 +171,7 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result, bool forGlobal)
     }
     else
     {
-        SWAG_CHECK(eatToken(TokenId::SymLeftCurly, g_E[Nte0022]));
+        SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the namespace body"));
 
         // Content of namespace is toplevel
         Scoped scoped(this, newScope);
@@ -181,7 +181,7 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result, bool forGlobal)
         }
 
         SWAG_CHECK(verifyError(openCurly, token.id != TokenId::EndOfFile, g_E[Err0880]));
-        SWAG_CHECK(eatToken(TokenId::SymRightCurly, g_E[Nte0023]));
+        SWAG_CHECK(eatToken(TokenId::SymRightCurly, "to close the namespace body"));
     }
 
     return true;

@@ -312,7 +312,7 @@ bool SyntaxJob::doLoop(AstNode* parent, AstNode** result)
             tokenName = node->expression->token;
             if (token.id == TokenId::SymColon)
             {
-                SWAG_CHECK(checkIsSingleIdentifier(node->expression, g_E[Nte0052]));
+                SWAG_CHECK(checkIsSingleIdentifier(node->expression, "as a `loop` variable name"));
                 SWAG_CHECK(checkIsValidVarName(node->expression->childs.back()));
                 name = node->expression->childs.back()->token.text;
                 SWAG_CHECK(eatToken());
