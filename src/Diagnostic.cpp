@@ -83,10 +83,11 @@ void Diagnostic::report(bool verboseMode) const
         break;
     case DiagnosticLevel::Note:
         g_Log.setColor(noteColor);
-        if (isHelpNote)
-            g_Log.print("help: ");
-        else
-            g_Log.print("note: ");
+        g_Log.print("note: ");
+        break;
+    case DiagnosticLevel::Help:
+        g_Log.setColor(noteColor);
+        g_Log.print("help: ");
         break;
     case DiagnosticLevel::CallStack:
     {
@@ -151,6 +152,7 @@ void Diagnostic::report(bool verboseMode) const
             errorLevel != DiagnosticLevel::CallStack &&
             errorLevel != DiagnosticLevel::CallStackInlined &&
             errorLevel != DiagnosticLevel::Note &&
+            errorLevel != DiagnosticLevel::Help &&
             errorLevel != DiagnosticLevel::TraceError)
         {
             for (int i = -2; i <= 0; i++)
@@ -329,6 +331,7 @@ void Diagnostic::report(bool verboseMode) const
                         g_Log.setColor(errorColor);
                         break;
                     case DiagnosticLevel::Note:
+                    case DiagnosticLevel::Help:
                         g_Log.setColor(rangeNoteColor);
                         break;
                     }

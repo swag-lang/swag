@@ -320,7 +320,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
             if (contextFlags & CONTEXT_FLAG_EXPRESSION)
             {
                 Diagnostic diag{sourceFile, rightSquareToken, g_E[Err0561]};
-                Diagnostic note{sourceFile, leftSquareToken, g_E[Nte0059], DiagnosticLevel::Note};
+                Diagnostic note{sourceFile, leftSquareToken, g_E[Hlp0002], DiagnosticLevel::Help};
                 return sourceFile->report(diag, &note);
             }
             else
@@ -335,7 +335,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
             token.id != TokenId::SymAsterisk)
         {
             Diagnostic diag{sourceFile, token, Utf8::format(g_E[Err0343], token.text.c_str())};
-            Diagnostic note{sourceFile, leftSquareToken, g_E[Nte0059], DiagnosticLevel::Note};
+            Diagnostic note{sourceFile, leftSquareToken, g_E[Hlp0002], DiagnosticLevel::Help};
             return sourceFile->report(diag, &note);
         }
 
@@ -346,7 +346,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
             if (callParam)
             {
                 Diagnostic diag{sourceFile, token, Utf8::format(g_E[Err0171], token.text.c_str())};
-                Diagnostic note{sourceFile, leftSquareToken, g_E[Nte0059], DiagnosticLevel::Note};
+                Diagnostic note{sourceFile, leftSquareToken, g_E[Hlp0002], DiagnosticLevel::Help};
                 return sourceFile->report(diag, &note);
             }
             else
@@ -441,14 +441,14 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
     if (parent && parent->kind == AstNodeKind::TupleContent)
     {
         Diagnostic diag{sourceFile, token, Utf8::format(g_E[Err0202], token.text.c_str())};
-        Diagnostic note{sourceFile, parent->token, g_E[Nte0060], DiagnosticLevel::Note};
+        Diagnostic note{sourceFile, parent->token, g_E[Hlp0003], DiagnosticLevel::Help};
         return sourceFile->report(diag, &note);
     }
 
     if (token.id == TokenId::SymLeftParen)
     {
         Diagnostic diag{sourceFile, token, Utf8::format(g_E[Err0343], token.text.c_str())};
-        Diagnostic note{sourceFile, token, g_E[Nte0020], DiagnosticLevel::Note};
+        Diagnostic note{sourceFile, token, g_E[Hlp0004], DiagnosticLevel::Help};
         return sourceFile->report(diag, &note);
     }
 

@@ -108,10 +108,7 @@ bool SyntaxJob::error(AstNode* node, const Utf8& msg, const char* help)
     Diagnostic  diag{node, msg.c_str()};
     Diagnostic* note = nullptr;
     if (help)
-    {
-        note             = new Diagnostic{help, DiagnosticLevel::Note};
-        note->isHelpNote = true;
-    }
+        note = new Diagnostic{help, DiagnosticLevel::Help};
     sourceFile->report(diag, note);
     return false;
 }
@@ -121,10 +118,7 @@ bool SyntaxJob::error(const Token& tk, const Utf8& msg, const char* help)
     Diagnostic  diag{sourceFile, tk, msg.c_str()};
     Diagnostic* note = nullptr;
     if (help)
-    {
-        note             = new Diagnostic{help, DiagnosticLevel::Note};
-        note->isHelpNote = true;
-    }
+        note = new Diagnostic{help, DiagnosticLevel::Help};
     sourceFile->report(diag, note);
     return false;
 }
@@ -134,10 +128,7 @@ bool SyntaxJob::error(const SourceLocation& startLocation, const SourceLocation&
     Diagnostic  diag{sourceFile, startLocation, endLocation, msg.c_str()};
     Diagnostic* note = nullptr;
     if (help)
-    {
-        note             = new Diagnostic{help, DiagnosticLevel::Note};
-        note->isHelpNote = true;
-    }
+        note = new Diagnostic{help, DiagnosticLevel::Help};
     sourceFile->report(diag, note);
     return false;
 }

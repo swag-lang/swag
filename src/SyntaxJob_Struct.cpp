@@ -332,7 +332,7 @@ bool SyntaxJob::doStructBodyTuple(AstNode* parent, bool acceptEmpty)
         }
 
         Diagnostic diag{sourceFile, token, Utf8::format(g_E[Err0447], token.text.c_str())};
-        Diagnostic note{sourceFile, curly, g_E[Nte0060], DiagnosticLevel::Note};
+        Diagnostic note{sourceFile, curly, g_E[Hlp0003], DiagnosticLevel::Help};
         return sourceFile->report(diag, &note);
     }
 

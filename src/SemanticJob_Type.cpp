@@ -274,7 +274,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
                     {
                         if (symOver->typeInfo->kind == TypeInfoKind::Pointer)
                         {
-                            Diagnostic note1{Utf8::format(g_E[Nte0014], symName->name.c_str(), symName->name.c_str()), DiagnosticLevel::Note};
+                            Diagnostic note1{Utf8::format(g_E[Hlp0005], symName->name.c_str(), symName->name.c_str()), DiagnosticLevel::Help};
                             return context->report(g_E[Hnt0024], diag, &note1, &note);
                         }
                         else
