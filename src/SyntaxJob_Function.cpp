@@ -293,7 +293,7 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result, bool acc
 
     // To avoid calling 'format' in case we know this is fine, otherwise it will be called each time, even when ok
     if (token.id != TokenId::SymLeftParen)
-        SWAG_CHECK(eatToken(TokenId::SymLeftParen, Utf8::format("to declare function parameters of `%s`", parent->token.text.c_str())));
+        SWAG_CHECK(eatToken(TokenId::SymLeftParen, Utf8::format("to declare the function parameters of `%s`", parent->token.text.c_str())));
     else
         SWAG_CHECK(eatToken());
 
@@ -388,7 +388,23 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
     bool isConstMethod = token.id == TokenId::KwdConstMethod;
     if (isMethod || isConstMethod)
     {
-        SWAG_VERIFY(funcNode->ownerStructScope && funcNode->ownerStructScope->kind == ScopeKind::Struct, error(token, g_E[Err0407]));
+        if (!funcNode->ownerStructScope)
+        {
+            PushErrHint eh(g_E[Hnt0042]);
+            return error(token, g_E[Err0407]);
+        }
+
+        if (funcNode->ownerStructScope->kind == ScopeKind::Enum)
+        {
+            PushErrHint eh(g_E[Hnt0042]);
+            return error(token, g_E[Err0452], g_E[Hlp0007]);
+        }
+
+        if (funcNode->ownerStructScope->kind != ScopeKind::Struct)
+        {
+            PushErrHint eh(g_E[Hnt0042]);
+            return error(token, g_E[Err0407], g_E[Hlp0007]);
+        }
     }
 
     if (typeFuncId == TokenId::Invalid)

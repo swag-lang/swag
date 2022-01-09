@@ -123,6 +123,7 @@ bool Tokenizer::doMultiLineComment(Token& token)
         {
             location = token.startLocation;
             location.column += 2;
+            PushErrHint eh(g_E[Hnt0041]);
             error(token, g_E[Err0080]);
             return false;
         }
