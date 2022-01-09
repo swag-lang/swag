@@ -46,8 +46,9 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doGlobalAttributeExpose(AstNode* parent, AstNode** result, bool forGlobal)
 {
-    uint32_t attr     = 0;
-    Scope*   newScope = currentScope;
+    uint32_t attr      = 0;
+    Scope*   newScope  = currentScope;
+    auto     tokenAttr = token;
 
     switch (token.id)
     {
@@ -56,7 +57,7 @@ bool SyntaxJob::doGlobalAttributeExpose(AstNode* parent, AstNode** result, bool 
         if (token.id == TokenId::KwdPublic)
             attr = ATTRIBUTE_PUBLIC;
         else
-            attr = ATTRIBUTE_PROTECTED;
+            attr = ATTRIBUTE_PRIVATE;
 
         SWAG_VERIFY(currentScope->isGlobalOrImpl(), error(token, Utf8::format(g_E[Err0349], token.text.c_str())));
         SWAG_VERIFY(!sourceFile->forceExport, error(token, Utf8::format(g_E[Err0350], token.text.c_str())));
@@ -100,9 +101,7 @@ bool SyntaxJob::doGlobalAttributeExpose(AstNode* parent, AstNode** result, bool 
             break;
 
         default:
-            if (attr == ATTRIBUTE_PROTECTED)
-                return error(token, Utf8::format(g_E[Err0353], token.text.c_str()));
-            return error(token, Utf8::format(g_E[Err0354], token.text.c_str()));
+            return error(token, Utf8::format(g_E[Err0353], token.text.c_str(), tokenAttr.text.c_str()));
         }
 
         SWAG_CHECK(doTopLevelInstruction(attrUse, &topStmt));
