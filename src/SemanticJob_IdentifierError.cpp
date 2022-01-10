@@ -211,24 +211,25 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         return;
     }
 
-    case MatchResult::NotEnoughParameters:
+    case MatchResult::MissingParameters:
     {
-        if (!callParameters)
-        {
-            diag       = new Diagnostic{node, Utf8::format(g_E[Err0119], refNiceName.c_str())};
-            diag->hint = g_E[Hnt0044];
-        }
-        else
-            diag = new Diagnostic{callParameters, Utf8::format(g_E[Err0016], refNiceName.c_str())};
-        note = new Diagnostic{overload->node, Utf8::format(g_E[Nte0008], refNiceName.c_str()), DiagnosticLevel::Note};
+        diag       = new Diagnostic{callParameters ? callParameters : node, Utf8::format(g_E[Err0020], refNiceName.c_str())};
+        diag->hint = g_E[Hnt0044];
+        note       = new Diagnostic{overload->node, Utf8::format(g_E[Nte0008], refNiceName.c_str()), DiagnosticLevel::Note};
         result0.push_back(diag);
         result1.push_back(note);
         return;
     }
 
-    case MatchResult::MissingParameters:
+    case MatchResult::NotEnoughParameters:
     {
-        diag = new Diagnostic{callParameters ? callParameters : node, Utf8::format(g_E[Err0020], refNiceName.c_str())};
+        if (!callParameters)
+        {
+            diag       = new Diagnostic{node, Utf8::format(g_E[Err0020], refNiceName.c_str())};
+            diag->hint = g_E[Hnt0044];
+        }
+        else
+            diag = new Diagnostic{callParameters, Utf8::format(g_E[Err0016], refNiceName.c_str())};
         note = new Diagnostic{overload->node, Utf8::format(g_E[Nte0008], refNiceName.c_str()), DiagnosticLevel::Note};
         result0.push_back(diag);
         result1.push_back(note);
