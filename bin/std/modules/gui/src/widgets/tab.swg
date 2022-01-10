@@ -192,7 +192,7 @@ impl IWnd for Tab
 
     mtd onMouseEvent(evt: *MouseEvent)
     {
-        hit := hitTest(evt.pos)
+        hit := hitTest(evt.surfacePos)
         if hit != hotIdx
         {
             hotIdx = hit
@@ -228,8 +228,9 @@ impl IWnd for Tab
 
 private impl Tab
 {
-    mtd hitTest(pos: Math.Point)->u32
+    mtd hitTest(surfacePos: Math.Point)->u32
     {
+        pos := surfaceToLocal(surfacePos)
         if pos.y >= barHeight
             return Swag.U32.Max
 

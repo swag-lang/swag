@@ -18,7 +18,7 @@ bool SemanticJob::resolveMove(SemanticContext* context)
 
     if (node->flags & AST_FORCE_MOVE)
     {
-        SWAG_VERIFY(!right->typeInfo->isConst(), context->report({right, Fmt(Err(Err0559), right->typeInfo->getDisplayNameC())}));
+        SWAG_VERIFY(!right->typeInfo->isConst(), context->report(right, Fmt(Err(Err0559), right->typeInfo->getDisplayNameC())));
     }
 
     return true;
@@ -36,8 +36,8 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     if (context->result != ContextResult::Done)
         return true;
 
-    SWAG_VERIFY(left->resolvedSymbolName && left->resolvedSymbolOverload, context->report({left, Err(Err0566)}));
-    SWAG_VERIFY(left->resolvedSymbolName->kind == SymbolKind::Variable, context->report({left, Err(Err0567)}));
+    SWAG_VERIFY(left->resolvedSymbolName && left->resolvedSymbolOverload, context->report(left, Err(Err0566)));
+    SWAG_VERIFY(left->resolvedSymbolName->kind == SymbolKind::Variable, context->report(left, Err(Err0567)));
 
     // Check that left type is mutable
     // If not, try to find the culprit type
@@ -84,7 +84,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     {
         if (left->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE)
             return context->report(Hnt(Hnt0018), {left, Err(Err0564)});
-        return context->report({left, Err(Err0565)});
+        return context->report(left, Err(Err0565));
     }
 
     // Special case for enum : nothing is possible, except for flags

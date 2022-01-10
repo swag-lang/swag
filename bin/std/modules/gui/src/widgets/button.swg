@@ -14,6 +14,7 @@ impl Button
 {
     mtd processMouseEvent(evt: *MouseEvent)->bool
     {
+        pos := surfaceToLocal(evt.surfacePos)
         switch evt.kind
         {
         case MouseEnter:
@@ -28,7 +29,7 @@ impl Button
             if !isPressing
                 break
             rect := getClientRect()
-            if !rect.contains(evt.pos)
+            if !rect.contains(pos)
             {
                 isPressed = false
                 isIn = false

@@ -246,7 +246,6 @@ impl Application
         {
             evt.kind = .MouseAccept
             evt.surfacePos = targetWnd.screenToSurface(mousePos)
-            evt.pos = targetWnd.surfaceToLocal(evt.surfacePos)
             evt.target = targetWnd
             sendEventPrivate(&evt, mouseEnterWnd)
             targetWnd = evt.target
@@ -260,7 +259,6 @@ impl Application
             {
                 evt.kind = .MouseEnter
                 evt.surfacePos = targetWnd.screenToSurface(mousePos)
-                evt.pos = targetWnd.surfaceToLocal(evt.surfacePos)
                 evt.target = targetWnd
                 sendEventPrivate(&evt, mouseEnterWnd)
             }
@@ -270,7 +268,6 @@ impl Application
             {
                 evt.kind = .MouseLeave
                 evt.surfacePos = mouseEnterWnd.screenToSurface(mousePos)
-                evt.pos = mouseEnterWnd.surfaceToLocal(evt.surfacePos)
                 mouseEnterWnd.sendEvent(&evt)
             }
 
@@ -282,7 +279,6 @@ impl Application
             return
 
         evt.surfacePos = targetWnd.screenToSurface(mousePos)
-        evt.pos        = targetWnd.surfaceToLocal(evt.surfacePos)
         evt.modifiers  = keyb.getPressedModifiers()
 
         // Move
@@ -332,7 +328,6 @@ impl Application
         evt := MouseEvent{kind: EventKind.MouseWheel}
         mousePos := mouse.getPosition()
         evt.surfacePos = targetWnd.screenToSurface(mousePos)
-        evt.pos        = targetWnd.surfaceToLocal(evt.surfacePos)
         evt.move.y     = z
         evt.modifiers  = keyb.getPressedModifiers()
         targetWnd.sendEvent(&evt)

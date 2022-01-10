@@ -133,6 +133,7 @@ impl IWnd for Slider
 
     mtd onMouseEvent(evt: *MouseEvent)
     {
+        pos := surfaceToLocal(evt.surfacePos)
         switch evt.kind
         {
         case MouseLeave:
@@ -142,12 +143,12 @@ impl IWnd for Slider
         case MouseMove:
             if !isMoving
             {
-                hitTest(evt.pos)
+                hitTest(evt.surfacePos)
                 break
             }
 
             clientRect := getOffsetedClientRect()
-            diff := (evt.pos.x - correcMoving) - clientRect.x
+            diff := (pos.x - correcMoving) - clientRect.x
             f    := diff / clientRect.width
             if isPressed1
                 setValue1(f)
@@ -163,27 +164,27 @@ impl IWnd for Slider
                 {
                     isPressed1 = true
                     posBox := getPosBox1()
-                    correcMoving = evt.pos.x - posBox.horzCenter()
+                    correcMoving = pos.x - posBox.horzCenter()
                 }
                 elif isHot2
                 {
                     isPressed2 = true
                     posBox := getPosBox2()
-                    correcMoving = evt.pos.x - posBox.horzCenter()
+                    correcMoving = pos.x - posBox.horzCenter()
                 }
                 elif !isRange
                 {
                     correcMoving = 0
                     isPressed1 = true
                     clientRect := getOffsetedClientRect()
-                    diff := evt.pos.x - clientRect.x
+                    diff := pos.x - clientRect.x
                     setValue1(diff / clientRect.width)
                 }
                 else
                 {
                     correcMoving = 0
                     clientRect := getOffsetedClientRect()
-                    diff := evt.pos.x - clientRect.x
+                    diff := pos.x - clientRect.x
                     f := diff / clientRect.width
                     m := (value1 + value2) * 0.5
                     if f <= m
@@ -207,7 +208,7 @@ impl IWnd for Slider
             {
                 releaseMouse()
                 isPressed1, isPressed2, isMoving = false
-                hitTest(evt.pos)
+                hitTest(evt.surfacePos)
                 invalidate()
             }
         }
@@ -253,8 +254,9 @@ private impl Slider
         invalidate()
     }
 
-    mtd hitTest(pos: Math.Point)
+    mtd hitTest(surfacePos: Math.Point)
     {
+        pos := surfaceToLocal(surfacePos)
         if isHot1 or isHot2
         {
             invalidate()

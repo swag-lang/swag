@@ -17,10 +17,14 @@ var app: Gui.Application
     tab.barLayout = .Fixed
     tab.padding = @{10, 10, 10, 10}
     tab.style.addStyleSheetColors("tabView_FlatBk $wnd_Bk")
+
     view0 := Wnd.create'Wnd(null, "bigview0")
     tab.addItem("Widgets", @{}, view0)
+    view1 := Wnd.create'Wnd(null, "bigview1")
+    tab.addItem("List", @{}, view1)
 
-    createWidgets(view0)
+    createView0(view0)
+    createView1(view1)
     surface0.show()
 
     //surface1 := try app.createSurface(100+W+10, 100, W, H, SurfaceFlags.Secondary | SurfaceFlags.SmallCaption | SurfaceFlags.CloseBtn)

@@ -51,10 +51,12 @@ impl IWnd for ComboBoxPopupView
     mtd onMouseEvent(evt: *MouseEvent)
     {
         var hit: u32
+
+        pos := surfaceToLocal(evt.surfacePos)
         if evt.kind == .MouseLeave
             hit = Swag.U32.Max
         else
-            hit = cast(u32) ((evt.pos.y + scrollPos.y) / combo.heightItem)
+            hit = cast(u32) ((pos.y + scrollPos.y) / combo.heightItem)
         if hit != hotIdx
         {
             hotIdx = hit
@@ -392,15 +394,15 @@ impl ComboBox
 
         selectedIdx = newIdx
 
-        // Notify       
+        // Notify
         if selectedIdx < items.count
-        {     
-            if sigChanged       
+        {
+            if sigChanged
                 sigChanged(self, items[selectedIdx].id, items[selectedIdx].userData)
             postCommandEvent(items[selectedIdx].id)
         }
         elif sigChanged
-        {            
+        {
             sigChanged(self, null, null)
         }
 

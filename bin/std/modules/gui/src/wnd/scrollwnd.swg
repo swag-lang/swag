@@ -36,6 +36,7 @@ impl IWnd for ScrollWnd
     mtd onMouseEvent(evt: *MouseEvent)
     {
         clientRect := getClientRect()
+        pos := surfaceToLocal(evt.surfacePos)
 
         switch evt.kind
         {
@@ -52,19 +53,19 @@ impl IWnd for ScrollWnd
         case MouseMove:
             if !isMoving
             {
-                hitTest(evt.pos)
+                hitTest(evt.surfacePos)
                 break
             }
 
             if isPressedV
             {
-                f := (evt.pos.y - correcMoving) / clientRect.height
+                f := (pos.y - correcMoving) / clientRect.height
                 f *= scrollSize.y
                 setScrollPos(view.scrollPos.x, f)
             }
             elif isPressedH
             {
-                f := (evt.pos.x - correcMoving) / clientRect.width
+                f := (pos.x - correcMoving) / clientRect.width
                 f *= scrollSize.x
                 setScrollPos(f, view.scrollPos.y)
             }
@@ -78,33 +79,33 @@ impl IWnd for ScrollWnd
                 if isHotV
                 {
                     isPressedV = true
-                    correcMoving = evt.pos.y - posBoxV
+                    correcMoving = pos.y - posBoxV
                 }
                 elif isHotH
                 {
                     isPressedH = true
-                    correcMoving = evt.pos.x - posBoxH
+                    correcMoving = pos.x - posBoxH
                 }
-                elif evt.pos.x > clientRect.right() - padding.z
+                elif pos.x > clientRect.right() - padding.z
                 {
                     correcMoving = 0
                     isPressedV = true
-                    f := evt.pos.y / clientRect.height
+                    f := pos.y / clientRect.height
                     f *= scrollSize.y
                     setScrollPos(view.scrollPos.x, f)
                 }
-                elif evt.pos.y > clientRect.bottom() - padding.w
+                elif pos.y > clientRect.bottom() - padding.w
                 {
                     correcMoving = 0
                     isPressedH = true
-                    f := evt.pos.x / clientRect.width
+                    f := pos.x / clientRect.width
                     f *= scrollSize.x
                     setScrollPos(f, view.scrollPos.y)
                 }
 
                 captureMouse()
                 invalidate()
-                hitTest(evt.pos)
+                hitTest(evt.surfacePos)
             }
 
         case MouseReleased:
@@ -112,7 +113,7 @@ impl IWnd for ScrollWnd
             {
                 releaseMouse()
                 isPressedV, isPressedH, isMoving = false
-                hitTest(evt.pos)
+                hitTest(evt.surfacePos)
                 invalidate()
             }
         }
@@ -189,8 +190,9 @@ impl IWnd for ScrollWnd
 
 impl ScrollWnd
 {
-    mtd hitTest(pos: Math.Point)
+    mtd hitTest(surfacePos: Math.Point)
     {
+        pos := surfaceToLocal(surfacePos)
         if isHotV or isHotH
         {
             invalidate()

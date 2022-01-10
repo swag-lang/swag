@@ -211,7 +211,7 @@ impl IWnd for Menu
 
     mtd onMouseEvent(evt: *MouseEvent)
     {
-        hit := hitTest(evt.pos)
+        hit := hitTest(evt.surfacePos)
         if hit != hotIdx
         {
             // Timer to auto open/hide sub menus
@@ -239,7 +239,6 @@ impl IWnd for Menu
         evt.accepted = true
         if hotIdx == Swag.U32.Max and owner
         {
-            evt.pos = owner.surfaceToLocal(evt.surfacePos)
             owner.onMouseEvent(evt)
             return
         }
@@ -414,8 +413,9 @@ impl Menu
             showHotPopupPopup()
     }
 
-    mtd hitTestBar(pos: Math.Point)->u32
+    mtd hitTestBar(surfacePos: Math.Point)->u32
     {
+        pos := surfaceToLocal(surfacePos)
         metrics := getThemeMetrics()
         clientRect := getClientRect()
         sl := metrics.menuBar_SpaceBetween
@@ -429,8 +429,9 @@ impl Menu
         return Swag.U32.Max
     }
 
-    mtd hitTestPopup(pos: Math.Point)->u32
+    mtd hitTestPopup(surfacePos: Math.Point)->u32
     {
+        pos := surfaceToLocal(surfacePos)
         metrics := getThemeMetrics()
         clientRect := getClientRect()
         sl := metrics.menuPopup_SpaceLines
@@ -444,9 +445,9 @@ impl Menu
         return Swag.U32.Max
     }
 
-    mtd hitTest(pos: Math.Point)->u32
+    mtd hitTest(surfacePos: Math.Point)->u32
     {
-        return bar ? hitTestBar(pos) : hitTestPopup(pos)
+        return bar ? hitTestBar(surfacePos) : hitTestPopup(surfacePos)
     }
 
     mtd computeLayoutBar()

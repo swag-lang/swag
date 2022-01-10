@@ -109,7 +109,6 @@ struct MouseEvent
     using base: Event
     button:     Input.MouseButton = ?
     surfacePos: Math.Point
-    pos:        Math.Point
     move:       Math.Point
     modifiers:  Input.KeyModifiers = .None
 }

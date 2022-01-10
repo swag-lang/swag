@@ -51,7 +51,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
     return false
 }
 
-func createWidgets(view: *Wnd)
+func createView0(view: *Wnd)
 {
     theme := app.theme
     view.hookOnEvent = &onEvent

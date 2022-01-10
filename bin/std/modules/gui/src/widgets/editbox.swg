@@ -201,6 +201,7 @@ impl IWnd for EditBox
 
     mtd onMouseEvent(evt: *MouseEvent)
     {
+        pos := surfaceToLocal(evt.surfacePos)
         switch evt.kind
         {
         case MouseDoubleClick:
@@ -214,7 +215,7 @@ impl IWnd for EditBox
             if evt.button != .Left
                 break
             marginLeft := getTextMarginLeft()
-            x := getByteIndexAtPos(evt.pos.x - marginLeft + scrollPosX)
+            x := getByteIndexAtPos(pos.x - marginLeft + scrollPosX)
             setSelection(x, x)
             forceVisibleCaret()
             evt.accepted = true
@@ -234,7 +235,7 @@ impl IWnd for EditBox
                 break
             evt.accepted = true
             marginLeft := getTextMarginLeft()
-            x := getByteIndexAtPos(evt.pos.x - marginLeft + scrollPosX)
+            x := getByteIndexAtPos(pos.x - marginLeft + scrollPosX)
             setSelection(selBeg, x)
 
         case MouseEnter:
