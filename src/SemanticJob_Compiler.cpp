@@ -81,7 +81,7 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
                     break;
 
                 if (realType->flags & TYPEINFO_STRUCT_IS_TUPLE)
-                    return context->report({node, Fmt(g_E[Err0321], realType->getDisplayName().c_str())});
+                    return context->report({node, Fmt(g_E[Err0321], realType->getDisplayNameC())});
 
                 // It is possible to convert a complex struct to a constant static array of values if the struct
                 // implements 'opCount' and 'opSlice'
@@ -92,7 +92,7 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
                 auto symCount = hasUserOp(g_LangSpec->name_opCount, (TypeInfoStruct*) realType);
                 auto symSlice = hasUserOp(g_LangSpec->name_opSlice, (TypeInfoStruct*) realType);
                 if (!symCount || !symSlice)
-                    return context->report({node, Fmt(g_E[Err0281], realType->getDisplayName().c_str())});
+                    return context->report({node, Fmt(g_E[Err0281], realType->getDisplayNameC())});
 
                 VectorNative<AstNode*> params;
                 SWAG_ASSERT(!context->node->extension || !context->node->extension->resolvedUserOpSymbolOverload);
@@ -153,11 +153,11 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
                     if (typeSliceContent->kind == TypeInfoKind::Struct && (typeSliceContent->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR))
                         ok = true;
                     if (!ok)
-                        return context->report({node, Fmt(g_E[Err0059], typeSliceContent->getDisplayName().c_str())});
+                        return context->report({node, Fmt(g_E[Err0059], typeSliceContent->getDisplayNameC())});
                 }
                 else
                 {
-                    return context->report({node, Fmt(g_E[Err0058], concreteType->getDisplayName().c_str())});
+                    return context->report({node, Fmt(g_E[Err0058], concreteType->getDisplayNameC())});
                 }
 
                 // opDrop
@@ -188,7 +188,7 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
                 break;
 
             default:
-                return context->report({node, Fmt(g_E[Err0280], realType->getDisplayName().c_str())});
+                return context->report({node, Fmt(g_E[Err0280], realType->getDisplayNameC())});
             }
         }
     }
@@ -249,7 +249,7 @@ bool SemanticJob::resolveCompilerSelectIfExpression(SemanticContext* context)
 
     auto expression = context->node->childs.back();
     auto typeInfo   = TypeManager::concreteType(expression->typeInfo);
-    SWAG_VERIFY(typeInfo->isNative(NativeTypeKind::Bool), context->report({expression, Fmt(g_E[Err0233], expression->typeInfo->getDisplayName().c_str())}));
+    SWAG_VERIFY(typeInfo->isNative(NativeTypeKind::Bool), context->report({expression, Fmt(g_E[Err0233], expression->typeInfo->getDisplayNameC())}));
 
     return true;
 }
@@ -263,7 +263,7 @@ bool SemanticJob::resolveCompilerAstExpression(SemanticContext* context)
     auto job        = context->job;
     auto expression = context->node->childs.back();
     auto typeInfo   = TypeManager::concreteType(expression->typeInfo);
-    SWAG_VERIFY(typeInfo->isNative(NativeTypeKind::String), context->report({expression, Fmt(g_E[Err0234], expression->typeInfo->getDisplayName().c_str())}));
+    SWAG_VERIFY(typeInfo->isNative(NativeTypeKind::String), context->report({expression, Fmt(g_E[Err0234], expression->typeInfo->getDisplayNameC())}));
 
     SWAG_CHECK(executeCompilerNode(context, expression, true));
     if (context->result != ContextResult::Done)
@@ -309,7 +309,7 @@ bool SemanticJob::resolveCompilerAssert(SemanticContext* context)
     {
         auto msg     = node->childs[1];
         auto typeMsg = TypeManager::concreteType(msg->typeInfo, CONCRETE_FUNC);
-        SWAG_VERIFY(typeMsg->isNative(NativeTypeKind::String), context->report({msg, Fmt(g_E[Err0236], msg->typeInfo->getDisplayName().c_str())}));
+        SWAG_VERIFY(typeMsg->isNative(NativeTypeKind::String), context->report({msg, Fmt(g_E[Err0236], msg->typeInfo->getDisplayNameC())}));
         SWAG_CHECK(evaluateConstExpression(context, msg));
         if (context->result != ContextResult::Done)
             return true;
@@ -380,7 +380,7 @@ bool SemanticJob::resolveCompilerMixin(SemanticContext* context)
     node->doneFlags |= AST_DONE_COMPILER_INSERT;
 
     auto expr = node->childs[0];
-    SWAG_VERIFY(expr->typeInfo->kind == TypeInfoKind::Code, context->report({expr, Fmt(g_E[Err0240], expr->typeInfo->getDisplayName().c_str())}));
+    SWAG_VERIFY(expr->typeInfo->kind == TypeInfoKind::Code, context->report({expr, Fmt(g_E[Err0240], expr->typeInfo->getDisplayNameC())}));
 
     node->allocateExtension();
     node->extension->byteCodeBeforeFct = ByteCodeGenJob::emitDebugNop;
@@ -518,13 +518,13 @@ bool SemanticJob::resolveCompilerPrint(SemanticContext* context)
             g_Log.print(expr->computedValue->text);
             break;
         default:
-            g_Log.print(Fmt("<%s>", typeInfo->getDisplayName().c_str()));
+            g_Log.print(Fmt("<%s>", typeInfo->getDisplayNameC()));
             break;
         }
     }
     else
     {
-        g_Log.print(Fmt("<%s>", typeInfo->getDisplayName().c_str()));
+        g_Log.print(Fmt("<%s>", typeInfo->getDisplayNameC()));
     }
 
     g_Log.eol();
@@ -639,7 +639,7 @@ bool SemanticJob::resolveCompilerLoad(SemanticContext* context)
     auto back   = node->childs[0];
 
     SWAG_CHECK(checkIsConstExpr(context, back->flags & AST_VALUE_COMPUTED, back, g_E[Err0242]));
-    SWAG_VERIFY(back->typeInfo == g_TypeMgr->typeInfoString, context->report({back, Fmt(g_E[Err0243], back->typeInfo->getDisplayName().c_str())}));
+    SWAG_VERIFY(back->typeInfo == g_TypeMgr->typeInfoString, context->report({back, Fmt(g_E[Err0243], back->typeInfo->getDisplayNameC())}));
     node->setFlagsValueIsComputed();
 
     if (!(node->doneFlags & AST_DONE_LOAD))

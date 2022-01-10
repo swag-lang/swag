@@ -84,20 +84,20 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
         // Not everything is possible for types for attributes
         if (param->ownerScope->kind == ScopeKind::Attribute)
         {
-            SWAG_VERIFY(!funcParam->typeInfo->isNative(NativeTypeKind::Any), context->report({nodeParam, Fmt(g_E[Err0731], funcParam->typeInfo->getDisplayName().c_str())}));
+            SWAG_VERIFY(!funcParam->typeInfo->isNative(NativeTypeKind::Any), context->report({nodeParam, Fmt(g_E[Err0731], funcParam->typeInfo->getDisplayNameC())}));
 
             if (funcParam->typeInfo->kind != TypeInfoKind::Native &&
                 funcParam->typeInfo->kind != TypeInfoKind::Enum &&
                 !funcParam->typeInfo->isPointerToTypeInfo() &&
                 funcParam->typeInfo->kind != TypeInfoKind::TypedVariadic)
             {
-                return context->report({nodeParam, Fmt(g_E[Err0731], funcParam->typeInfo->getDisplayName().c_str())});
+                return context->report({nodeParam, Fmt(g_E[Err0731], funcParam->typeInfo->getDisplayNameC())});
             }
 
             if (funcParam->typeInfo->kind == TypeInfoKind::TypedVariadic)
             {
                 auto typeVar = CastTypeInfo<TypeInfoVariadic>(funcParam->typeInfo, TypeInfoKind::TypedVariadic);
-                SWAG_VERIFY(!typeVar->isNative(NativeTypeKind::Any), context->report({paramNodeType, Fmt(g_E[Err0731], funcParam->typeInfo->getDisplayName().c_str())}));
+                SWAG_VERIFY(!typeVar->isNative(NativeTypeKind::Any), context->report({paramNodeType, Fmt(g_E[Err0731], funcParam->typeInfo->getDisplayNameC())}));
             }
         }
 
@@ -314,7 +314,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
 
         if (node->attributeFlags & ATTRIBUTE_PUBLIC)
         {
-            SWAG_VERIFY(node->ownerScope->isGlobalOrImpl(), context->report({node, Fmt(g_E[Err0747], node->getDisplayName().c_str())}));
+            SWAG_VERIFY(node->ownerScope->isGlobalOrImpl(), context->report({node, Fmt(g_E[Err0747], node->getDisplayNameC())}));
         }
     }
 
@@ -333,8 +333,8 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
             if (!(node->semFlags & AST_SEM_SCOPE_HAS_RETURN))
             {
                 if (node->semFlags & AST_SEM_FCT_HAS_RETURN)
-                    return context->report({node, Fmt(g_E[Err0748], node->getDisplayName().c_str())});
-                return context->report({node->returnType->childs.front(), Fmt(g_E[Err0749], node->getDisplayName().c_str(), node->returnType->typeInfo->getDisplayName().c_str())});
+                    return context->report({node, Fmt(g_E[Err0748], node->getDisplayNameC())});
+                return context->report({node->returnType->childs.front(), Fmt(g_E[Err0749], node->getDisplayNameC(), node->returnType->typeInfo->getDisplayNameC())});
             }
         }
     }
@@ -426,9 +426,9 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     {
         auto parameters = funcNode->parameters;
         auto paramType  = TypeManager::concreteType(parameters->typeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
-        SWAG_VERIFY(paramType->kind == TypeInfoKind::Enum, context->report({parameters, Fmt(g_E[Err0804], paramType->getDisplayName().c_str())}));
+        SWAG_VERIFY(paramType->kind == TypeInfoKind::Enum, context->report({parameters, Fmt(g_E[Err0804], paramType->getDisplayNameC())}));
         paramType->computeScopedName();
-        SWAG_VERIFY(paramType->scopedName == g_LangSpec->name_Swag_CompilerMsgMask, context->report({parameters, Fmt(g_E[Err0804], paramType->getDisplayName().c_str())}));
+        SWAG_VERIFY(paramType->scopedName == g_LangSpec->name_Swag_CompilerMsgMask, context->report({parameters, Fmt(g_E[Err0804], paramType->getDisplayNameC())}));
         SWAG_CHECK(evaluateConstExpression(context, parameters));
         if (context->result != ContextResult::Done)
             return true;
@@ -472,39 +472,39 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
 
         if (funcNode->attributeFlags & ATTRIBUTE_MACRO)
         {
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({funcNode, Fmt(g_E[Err0757], funcNode->getDisplayName().c_str())}));
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MIXIN), context->report({funcNode, Fmt(g_E[Err0758], funcNode->getDisplayName().c_str())}));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({funcNode, Fmt(g_E[Err0757], funcNode->getDisplayNameC())}));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MIXIN), context->report({funcNode, Fmt(g_E[Err0758], funcNode->getDisplayNameC())}));
             funcNode->attributeFlags |= ATTRIBUTE_INLINE;
         }
 
         if (funcNode->attributeFlags & ATTRIBUTE_MIXIN)
         {
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({funcNode, Fmt(g_E[Err0759], funcNode->getDisplayName().c_str())}));
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MACRO), context->report({funcNode, Fmt(g_E[Err0760], funcNode->getDisplayName().c_str())}));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({funcNode, Fmt(g_E[Err0759], funcNode->getDisplayNameC())}));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MACRO), context->report({funcNode, Fmt(g_E[Err0760], funcNode->getDisplayNameC())}));
             funcNode->attributeFlags |= ATTRIBUTE_INLINE;
             funcNode->attributeFlags |= ATTRIBUTE_MACRO;
         }
 
         if (funcNode->flags & AST_SPECIAL_COMPILER_FUNC)
         {
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MACRO), context->report({funcNode, Fmt(g_E[Err0761], funcNode->getDisplayName().c_str())}));
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MIXIN), context->report({funcNode, Fmt(g_E[Err0762], funcNode->getDisplayName().c_str())}));
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({funcNode, Fmt(g_E[Err0763], funcNode->getDisplayName().c_str())}));
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_NOT_GENERIC), context->report({funcNode, Fmt(g_E[Err0860], funcNode->getDisplayName().c_str())}));
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_NO_RETURN), context->report({funcNode, Fmt(g_E[Err0512], funcNode->getDisplayName().c_str())}));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MACRO), context->report({funcNode, Fmt(g_E[Err0761], funcNode->getDisplayNameC())}));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MIXIN), context->report({funcNode, Fmt(g_E[Err0762], funcNode->getDisplayNameC())}));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({funcNode, Fmt(g_E[Err0763], funcNode->getDisplayNameC())}));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_NOT_GENERIC), context->report({funcNode, Fmt(g_E[Err0860], funcNode->getDisplayNameC())}));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_NO_RETURN), context->report({funcNode, Fmt(g_E[Err0512], funcNode->getDisplayNameC())}));
         }
     }
 
     SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_COMPLETE) || funcNode->token.text == g_LangSpec->name_opAffect || funcNode->token.text == g_LangSpec->name_opAffectSuffix, context->report({funcNode, Fmt(g_E[Err0753], funcNode->token.ctext())}));
     SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_IMPLICIT) || funcNode->token.text == g_LangSpec->name_opAffect || funcNode->token.text == g_LangSpec->name_opAffectSuffix || funcNode->token.text == g_LangSpec->name_opCast, context->report({funcNode, Fmt(g_E[Err0754], funcNode->token.ctext())}));
-    SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_NO_RETURN) || (funcNode->attributeFlags & (ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO)), context->report({funcNode, Fmt(g_E[Err0755], funcNode->getDisplayName().c_str())}));
+    SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_NO_RETURN) || (funcNode->attributeFlags & (ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO)), context->report({funcNode, Fmt(g_E[Err0755], funcNode->getDisplayNameC())}));
 
     // Implicit attribute cannot be used on a generic function
     // This is because "extra" generic parameters must be specified and not deduced, and this is not possible for an implicit cast
     if (funcNode->attributeFlags & ATTRIBUTE_IMPLICIT && (funcNode->flags & (AST_IS_GENERIC | AST_FROM_GENERIC)))
     {
         if (funcNode->token.text != g_LangSpec->name_opAffectSuffix || funcNode->genericParameters->childs.size() > 1)
-            return context->report({funcNode, Fmt(g_E[Err0756], funcNode->getDisplayName().c_str())});
+            return context->report({funcNode, Fmt(g_E[Err0756], funcNode->getDisplayNameC())});
     }
 
     if (!(funcNode->flags & AST_FROM_GENERIC))
@@ -589,7 +589,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         typeInfo->returnType->kind != TypeInfoKind::Reference &&
         typeInfo->returnType->kind != TypeInfoKind::Array &&
         typeInfo->returnType->kind != TypeInfoKind::Pointer)
-        return context->report({typeNode->childs.front(), Fmt(g_E[Err0764], typeInfo->returnType->getDisplayName().c_str())});
+        return context->report({typeNode->childs.front(), Fmt(g_E[Err0764], typeInfo->returnType->getDisplayNameC())});
 
     typeInfo->forceComputeName();
 
@@ -609,7 +609,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
             auto       typeStruct  = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
             ScopedLock lk(typeStruct->mutex);
             typeStruct->opUserDropFct = funcNode;
-            SWAG_VERIFY(!(typeStruct->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR), context->report({funcNode, Fmt(g_E[Err0199], typeStruct->getDisplayName().c_str())}));
+            SWAG_VERIFY(!(typeStruct->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR), context->report({funcNode, Fmt(g_E[Err0199], typeStruct->getDisplayNameC())}));
         }
         else if (funcNode->token.text == g_LangSpec->name_opPostCopy)
         {
@@ -962,7 +962,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
         {
             if (funcNode->returnType->typeInfo != g_TypeMgr->typeInfoVoid)
             {
-                Diagnostic diag{node, Fmt(g_E[Err0779], funcNode->returnType->typeInfo->getDisplayName().c_str())};
+                Diagnostic diag{node, Fmt(g_E[Err0779], funcNode->returnType->typeInfo->getDisplayNameC())};
                 Diagnostic note{funcNode->returnTypeDeducedNode->childs.front(), g_E[Nte0063], DiagnosticLevel::Note};
                 return context->report(diag, &note);
             }
@@ -975,14 +975,14 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
         // We try to return something, but the previous return had nothing
         if (funcNode->returnType->typeInfo == g_TypeMgr->typeInfoVoid)
         {
-            Diagnostic diag{node, Fmt(g_E[Err0773], funcNode->returnType->typeInfo->getDisplayName().c_str())};
+            Diagnostic diag{node, Fmt(g_E[Err0773], funcNode->returnType->typeInfo->getDisplayNameC())};
             Diagnostic note{funcNode->returnTypeDeducedNode, g_E[Nte0063], DiagnosticLevel::Note};
             return context->report(diag, &note);
         }
 
         if (!TypeManager::makeCompatibles(context, funcNode->returnType->typeInfo, nullptr, child, CASTFLAG_NO_ERROR | CASTFLAG_JUST_CHECK | CASTFLAG_UNCONST | CASTFLAG_AUTO_OPCAST | CASTFLAG_TRY_COERCE | CASTFLAG_FOR_AFFECT))
         {
-            Diagnostic diag{child, Fmt(g_E[Err0770], funcNode->returnType->typeInfo->getDisplayName().c_str(), child->typeInfo->getDisplayName().c_str())};
+            Diagnostic diag{child, Fmt(g_E[Err0770], funcNode->returnType->typeInfo->getDisplayNameC(), child->typeInfo->getDisplayNameC())};
             Diagnostic note{funcNode->returnTypeDeducedNode->childs.front(), g_E[Nte0063], DiagnosticLevel::Note};
             return context->report(diag, &note);
         }
@@ -1035,8 +1035,8 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
 
     if (node->childs.empty())
     {
-        Diagnostic diag{node, Fmt(g_E[Err0772], funcNode->returnType->typeInfo->getDisplayName().c_str())};
-        Diagnostic note{funcNode->returnType->childs.front(), Fmt(g_E[Nte0067], typeInfoFunc->returnType->getDisplayName().c_str()), DiagnosticLevel::Note};
+        Diagnostic diag{node, Fmt(g_E[Err0772], funcNode->returnType->typeInfo->getDisplayNameC())};
+        Diagnostic note{funcNode->returnType->childs.front(), Fmt(g_E[Nte0067], typeInfoFunc->returnType->getDisplayNameC()), DiagnosticLevel::Note};
         return context->report(diag, &note);
     }
 
@@ -1052,19 +1052,19 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     if (!concreteType->isNative(NativeTypeKind::Void))
     {
         if (funcNode->attributeFlags & (ATTRIBUTE_RUN_FUNC | ATTRIBUTE_RUN_GENERATED_FUNC | ATTRIBUTE_MAIN_FUNC | ATTRIBUTE_INIT_FUNC | ATTRIBUTE_DROP_FUNC | ATTRIBUTE_TEST_FUNC))
-            return context->report(g_E[Hnt0026], {child, Fmt(g_E[Err0052], funcNode->getDisplayName().c_str())});
+            return context->report(g_E[Hnt0026], {child, Fmt(g_E[Err0052], funcNode->getDisplayNameC())});
     }
 
     // Be sure we do not specify a return value, and the function does not have a return type
     // (better error message than just letting the makeCompatibles do its job)
     if (returnType->isNative(NativeTypeKind::Void) && !concreteType->isNative(NativeTypeKind::Void))
     {
-        Diagnostic  diag{child, Fmt(g_E[Err0774], concreteType->getDisplayName().c_str(), funcNode->getDisplayName().c_str())};
+        Diagnostic  diag{child, Fmt(g_E[Err0774], concreteType->getDisplayNameC(), funcNode->getDisplayNameC())};
         PushErrHint errh(g_E[Hnt0026]);
 
         if (node->ownerInline && !(node->semFlags & AST_SEM_EMBEDDED_RETURN))
         {
-            Diagnostic note{funcNode, Fmt(g_E[Nte0011], node->ownerInline->func->getDisplayName().c_str(), funcNode->getDisplayName().c_str()), DiagnosticLevel::Note};
+            Diagnostic note{funcNode, Fmt(g_E[Nte0011], node->ownerInline->func->getDisplayNameC(), funcNode->getDisplayNameC()), DiagnosticLevel::Note};
             return context->report(diag, &note);
         }
 

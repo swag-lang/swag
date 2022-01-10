@@ -20,12 +20,12 @@ bool SemanticJob::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTy
         auto suffix = right->childs.front()->token.text;
         if (!hasUserOp(context, g_LangSpec->name_opAffectSuffix, left))
         {
-            Utf8 msg  = Fmt(g_E[Err0889], leftTypeInfo->getDisplayName().c_str(), rightTypeInfo->getDisplayName().c_str(), leftTypeInfo->getDisplayName().c_str());
+            Utf8 msg  = Fmt(g_E[Err0889], leftTypeInfo->getDisplayNameC(), rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC());
             auto note = new Diagnostic{right->childs.front(), Fmt(g_E[Nte0057], suffix.c_str()), DiagnosticLevel::Note};
             return context->report({right, msg}, note);
         }
 
-        PushErrContext ec(context, right, Fmt(g_E[Nte0058], rightTypeInfo->getDisplayName().c_str(), leftTypeInfo->getDisplayName().c_str(), g_LangSpec->name_opAffectSuffix.c_str()));
+        PushErrContext ec(context, right, Fmt(g_E[Nte0058], rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC(), g_LangSpec->name_opAffectSuffix.c_str()));
         SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAffectSuffix, suffix, nullptr, left, right, false));
         if (context->result != ContextResult::Done)
             return true;
@@ -35,11 +35,11 @@ bool SemanticJob::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTy
     {
         if (!hasUserOp(context, g_LangSpec->name_opAffect, left))
         {
-            Utf8 msg = Fmt(g_E[Err0908], leftTypeInfo->getDisplayName().c_str(), rightTypeInfo->getDisplayName().c_str(), leftTypeInfo->getDisplayName().c_str());
+            Utf8 msg = Fmt(g_E[Err0908], leftTypeInfo->getDisplayNameC(), rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC());
             return context->report({right, msg});
         }
 
-        PushErrContext ec(context, right, Fmt(g_E[Nte0058], rightTypeInfo->getDisplayName().c_str(), leftTypeInfo->getDisplayName().c_str(), g_LangSpec->name_opAffect.c_str()));
+        PushErrContext ec(context, right, Fmt(g_E[Nte0058], rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC(), g_LangSpec->name_opAffect.c_str()));
         SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAffect, nullptr, nullptr, left, right, false));
     }
 
@@ -266,9 +266,9 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         // First parameter in the impl block must be a pointer to the struct
         SWAG_VERIFY(typeFunc->parameters.size(), context->report({child, Fmt(g_E[Err0654], child->token.ctext())}));
         auto firstParamType = typeFunc->parameters[0]->typeInfo;
-        SWAG_VERIFY(firstParamType->kind == TypeInfoKind::Pointer, context->report({typeFunc->parameters[0]->declNode, Fmt(g_E[Err0655], firstParamType->getDisplayName().c_str())}));
+        SWAG_VERIFY(firstParamType->kind == TypeInfoKind::Pointer, context->report({typeFunc->parameters[0]->declNode, Fmt(g_E[Err0655], firstParamType->getDisplayNameC())}));
         auto firstParamPtr = CastTypeInfo<TypeInfoPointer>(firstParamType, TypeInfoKind::Pointer);
-        SWAG_VERIFY(firstParamPtr->pointedType == typeStruct, context->report({typeFunc->parameters[0]->declNode, Fmt(g_E[Err0655], firstParamType->getDisplayName().c_str())}));
+        SWAG_VERIFY(firstParamPtr->pointedType == typeStruct, context->report({typeFunc->parameters[0]->declNode, Fmt(g_E[Err0655], firstParamType->getDisplayNameC())}));
 
         // use resolvedUserOpSymbolOverload to store the match
         mapItToFunc[symbolName]           = child;
@@ -702,7 +702,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         // Waiting for myself !
         if (child->typeInfo == typeInfo)
         {
-            Diagnostic diag{node, Fmt(g_E[Err0201], typeInfo->getDisplayName().c_str())};
+            Diagnostic diag{node, Fmt(g_E[Err0201], typeInfo->getDisplayNameC())};
             Diagnostic note{child, g_E[Nte0064], DiagnosticLevel::Note};
             return context->report(diag, &note);
         }
@@ -727,7 +727,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         if (child->flags & AST_DECL_USING && child->kind == AstNodeKind::ConstDecl)
             return context->report({child, g_E[Err0668]});
         if (child->flags & AST_DECL_USING && child->typeInfo->kind != TypeInfoKind::Struct && !child->typeInfo->isPointerTo(TypeInfoKind::Struct))
-            return context->report({child, Fmt(g_E[Err0669], child->typeInfo->getDisplayName().c_str())});
+            return context->report({child, Fmt(g_E[Err0669], child->typeInfo->getDisplayNameC())});
 
         TypeInfoParam* typeParam = nullptr;
         if (!(node->flags & AST_FROM_GENERIC) || !(child->semFlags & AST_SEM_STRUCT_REGISTERED))
@@ -853,8 +853,8 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
                 if (varDecl->type)
                     child = varDecl->type;
                 if (!node->genericParameters)
-                    return context->report({child, Fmt(g_E[Err0671], child->typeInfo->getDisplayName().c_str(), node->token.ctext())});
-                return context->report({child, Fmt(g_E[Err0672], node->token.ctext(), child->typeInfo->getDisplayName().c_str())});
+                    return context->report({child, Fmt(g_E[Err0671], child->typeInfo->getDisplayNameC(), node->token.ctext())});
+                return context->report({child, Fmt(g_E[Err0672], node->token.ctext(), child->typeInfo->getDisplayNameC())});
             }
         }
 
@@ -1094,13 +1094,13 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
 
             // Verify signature
             typeParam->typeInfo = TypeManager::concreteType(child->typeInfo, CONCRETE_ALIAS);
-            SWAG_VERIFY(typeParam->typeInfo->kind == TypeInfoKind::Lambda, context->report({varDecl->type, Fmt(g_E[Err0676], child->typeInfo->getDisplayName().c_str())}));
+            SWAG_VERIFY(typeParam->typeInfo->kind == TypeInfoKind::Lambda, context->report({varDecl->type, Fmt(g_E[Err0676], child->typeInfo->getDisplayNameC())}));
             auto typeLambda = CastTypeInfo<TypeInfoFuncAttr>(typeParam->typeInfo, TypeInfoKind::Lambda);
             SWAG_VERIFY(typeLambda->parameters.size() >= 1, context->report({varDecl->type, Fmt(g_E[Err0677], child->token.ctext())}));
             auto firstParamType = typeLambda->parameters[0]->typeInfo;
-            SWAG_VERIFY(firstParamType->kind == TypeInfoKind::Pointer, context->report({typeLambda->parameters[0]->declNode, Fmt(g_E[Err0679], firstParamType->getDisplayName().c_str())}));
+            SWAG_VERIFY(firstParamType->kind == TypeInfoKind::Pointer, context->report({typeLambda->parameters[0]->declNode, Fmt(g_E[Err0679], firstParamType->getDisplayNameC())}));
             auto firstParamPtr = CastTypeInfo<TypeInfoPointer>(firstParamType, TypeInfoKind::Pointer);
-            SWAG_VERIFY(firstParamPtr->pointedType == typeInterface, context->report({typeLambda->parameters[0]->declNode, Fmt(g_E[Err0679], firstParamType->getDisplayName().c_str())}));
+            SWAG_VERIFY(firstParamPtr->pointedType == typeInterface, context->report({typeLambda->parameters[0]->declNode, Fmt(g_E[Err0679], firstParamType->getDisplayNameC())}));
         }
 
         typeParam           = typeITable->fields[storageIndex];
@@ -1112,7 +1112,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
 
         if (!(node->flags & AST_IS_GENERIC))
         {
-            SWAG_VERIFY(!(child->typeInfo->flags & TYPEINFO_GENERIC), context->report({child, Fmt(g_E[Err0681], child->typeInfo->getDisplayName().c_str())}));
+            SWAG_VERIFY(!(child->typeInfo->flags & TYPEINFO_GENERIC), context->report({child, Fmt(g_E[Err0681], child->typeInfo->getDisplayNameC())}));
         }
 
         if (typeParam->attributes.hasAttribute(g_LangSpec->name_Swag_Offset))

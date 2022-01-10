@@ -26,7 +26,7 @@ bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, Ty
     {
         auto typePointer = CastTypeInfo<TypeInfoPointer>(typeInfoVar, TypeInfoKind::Pointer);
         SWAG_VERIFY(typePointer->pointedType->kind != TypeInfoKind::Enum, context->report({node, g_E[Err0691]}));
-        SWAG_VERIFY(typePointer->pointedType->kind == TypeInfoKind::Struct, context->report({node, Fmt(g_E[Err0822], typeInfoVar->getDisplayName().c_str())}));
+        SWAG_VERIFY(typePointer->pointedType->kind == TypeInfoKind::Struct, context->report({node, Fmt(g_E[Err0822], typeInfoVar->getDisplayNameC())}));
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
         regNode->addAlternativeScope(typeStruct->scope, forWith ? ALTSCOPE_WITH : 0);
         regNode->addAlternativeScopeVar(typeStruct->scope, varNode);
@@ -70,7 +70,7 @@ bool SemanticJob::resolveWith(SemanticContext* context)
         break;
     }
     default:
-        return context->report({node, Fmt(g_E[Err0703], typeResolved->getDisplayName().c_str())});
+        return context->report({node, Fmt(g_E[Err0703], typeResolved->getDisplayNameC())});
     }
 
     context->node->addAlternativeScope(scope);
@@ -114,7 +114,7 @@ bool SemanticJob::resolveUsing(SemanticContext* context)
         break;
     }
     default:
-        return context->report({node, Fmt(g_E[Err0695], typeResolved->getDisplayName().c_str())});
+        return context->report({node, Fmt(g_E[Err0695], typeResolved->getDisplayNameC())});
     }
 
     node->parent->addAlternativeScope(scope);

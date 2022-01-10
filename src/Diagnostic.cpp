@@ -11,7 +11,7 @@ static int        HEADER_SIZE = 0;
 
 Utf8 Hint::isType(TypeInfo* typeInfo)
 {
-    return Fmt(g_E[Hnt0011], typeInfo->getDisplayName().c_str());
+    return Fmt(g_E[Hnt0011], typeInfo->getDisplayNameC());
 }
 
 bool Diagnostic::mustPrintCode() const

@@ -408,7 +408,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
                 }
 
                 auto childType = TypeManager::concreteReferenceType(child->typeInfo);
-                SWAG_VERIFY(childType->isNativeInteger(), context->report({child, Fmt(g_E[Err0022], child->typeInfo->getDisplayName().c_str())}));
+                SWAG_VERIFY(childType->isNativeInteger(), context->report({child, Fmt(g_E[Err0022], child->typeInfo->getDisplayNameC())}));
                 SWAG_CHECK(context->checkSizeOverflow("array", count * rawType->sizeOf, SWAG_LIMIT_ARRAY_SIZE));
                 SWAG_VERIFY(!child->isConstant0(), context->report({child, g_E[Err0023]}));
 
@@ -680,14 +680,14 @@ bool SemanticJob::resolveExplicitBitCast(SemanticContext* context)
 
     if (!(typeInfo->flags & (TYPEINFO_INTEGER | TYPEINFO_FLOAT)) &&
         (!typeInfo->isNative(NativeTypeKind::Rune)))
-        return context->report({typeNode, Fmt(g_E[Err0031], typeInfo->getDisplayName().c_str())});
+        return context->report({typeNode, Fmt(g_E[Err0031], typeInfo->getDisplayNameC())});
 
     if (!(exprTypeInfo->flags & (TYPEINFO_INTEGER | TYPEINFO_FLOAT)) &&
         (!exprTypeInfo->isNative(NativeTypeKind::Rune)) &&
         (exprTypeInfo->kind != TypeInfoKind::Pointer))
-        return context->report({exprNode, Fmt(g_E[Err0032], exprTypeInfo->getDisplayName().c_str())});
+        return context->report({exprNode, Fmt(g_E[Err0032], exprTypeInfo->getDisplayNameC())});
 
-    SWAG_VERIFY(typeInfo->sizeOf <= exprTypeInfo->sizeOf, context->report({exprNode, Fmt(g_E[Err0033], typeInfo->getDisplayName().c_str(), exprTypeInfo->getDisplayName().c_str())}));
+    SWAG_VERIFY(typeInfo->sizeOf <= exprTypeInfo->sizeOf, context->report({exprNode, Fmt(g_E[Err0033], typeInfo->getDisplayNameC(), exprTypeInfo->getDisplayNameC())}));
 
     node->typeInfo = typeNode->typeInfo;
     node->setPassThrough();

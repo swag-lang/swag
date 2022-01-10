@@ -176,7 +176,7 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
             }
             else
             {
-                return moduleToGen->internalError(Fmt("emitFuncWrapperPublic, invalid return type `%s`", returnType->getDisplayName().c_str()));
+                return moduleToGen->internalError(Fmt("emitFuncWrapperPublic, invalid return type `%s`", returnType->getDisplayNameC()));
             }
         }
         else if (numReturnRegs == 2)

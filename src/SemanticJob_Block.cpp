@@ -166,8 +166,8 @@ bool SemanticJob::resolveInlineAfter(SemanticContext* context)
             if (!(node->semFlags & AST_SEM_SCOPE_HAS_RETURN))
             {
                 if (node->semFlags & AST_SEM_FCT_HAS_RETURN)
-                    return context->report({fct, Fmt(g_E[Err0748], fct->getDisplayName().c_str())});
-                return context->report({fct, Fmt(g_E[Err0606], fct->getDisplayName().c_str())});
+                    return context->report({fct, Fmt(g_E[Err0748], fct->getDisplayNameC())});
+                return context->report({fct, Fmt(g_E[Err0606], fct->getDisplayNameC())});
             }
         }
     }
@@ -278,7 +278,7 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
     case TypeInfoKind::Slice:
     case TypeInfoKind::Array:
     case TypeInfoKind::Interface:
-        return context->report({node->expression, Fmt(g_E[Err0609], typeSwitch->getDisplayName().c_str())});
+        return context->report({node->expression, Fmt(g_E[Err0609], typeSwitch->getDisplayNameC())});
     }
 
     SWAG_VERIFY(!node->cases.empty(), context->report({node, g_E[Err0610]}));
@@ -344,9 +344,9 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
         SWAG_VERIFY(!back->expressions.empty(), context->report({back, g_E[Err0616]}));
 
         if (node->typeInfo->kind != TypeInfoKind::Enum && !node->beforeAutoCastType)
-            return context->report({node, Fmt(g_E[Err0617], node->typeInfo->getDisplayName().c_str())});
+            return context->report({node, Fmt(g_E[Err0617], node->typeInfo->getDisplayNameC())});
         if (node->beforeAutoCastType)
-            return context->report({node, Fmt(g_E[Err0617], node->beforeAutoCastType->getDisplayName().c_str())});
+            return context->report({node, Fmt(g_E[Err0617], node->beforeAutoCastType->getDisplayNameC())});
 
         if (node->typeInfo->kind == TypeInfoKind::Enum)
         {
@@ -572,7 +572,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         return true;
     }
 
-    SWAG_VERIFY(node->extraNameToken.text.empty(), context->report({node, node->extraNameToken, Fmt(g_E[Err0625], typeInfo->getDisplayName().c_str())}));
+    SWAG_VERIFY(node->extraNameToken.text.empty(), context->report({node, node->extraNameToken, Fmt(g_E[Err0625], typeInfo->getDisplayNameC())}));
     SWAG_VERIFY(node->aliasNames.size() <= 2, context->report({node, node->aliasNames[2], Fmt(g_E[Err0626], node->aliasNames.size())}));
 
     Utf8 alias0Name = node->aliasNames.empty() ? Utf8("@alias0") : node->aliasNames[0].text;
@@ -692,17 +692,17 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
                 typePtr->pointedType->isNative(NativeTypeKind::String))
             {
                 PushErrHint errh(g_E[Hnt0037]);
-                return context->report({node->expression, Fmt(g_E[Err0628], typeInfo->getDisplayName().c_str())});
+                return context->report({node->expression, Fmt(g_E[Err0628], typeInfo->getDisplayNameC())});
             }
             else
             {
                 PushErrHint errh(g_E[Hnt0036]);
-                return context->report({node->expression, Fmt(g_E[Err0628], typeInfo->getDisplayName().c_str())});
+                return context->report({node->expression, Fmt(g_E[Err0628], typeInfo->getDisplayNameC())});
             }
         }
 
         PushErrHint errh(g_E[Hnt0006]);
-        return context->report({node->expression, Fmt(g_E[Err0629], typeInfo->getDisplayName().c_str())});
+        return context->report({node->expression, Fmt(g_E[Err0629], typeInfo->getDisplayNameC())});
     }
 
     SyntaxJob syntaxJob;

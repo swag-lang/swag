@@ -260,7 +260,7 @@ bool SemanticJob::createTmpVarStruct(SemanticContext* context, AstIdentifier* id
 
     // Be sure it's the NAME{} syntax
     if (!(identifier->callParameters->flags & AST_CALL_FOR_STRUCT))
-        return context->report({callP, Fmt(g_E[Err0082], identifier->typeInfo->getDisplayName().c_str())});
+        return context->report({callP, Fmt(g_E[Err0082], identifier->typeInfo->getDisplayNameC())});
 
     auto varParent = identifier->identifierRef->parent;
     while (varParent->kind == AstNodeKind::ExpressionList)
@@ -560,7 +560,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         parent->previousResolvedNode->typeInfo->kind != TypeInfoKind::Pointer &&
         parent->previousResolvedNode->typeInfo->kind != TypeInfoKind::Struct)
     {
-        return context->report({parent->previousResolvedNode, Fmt(g_E[Err0085], parent->previousResolvedNode->token.ctext(), parent->previousResolvedNode->typeInfo->getDisplayName().c_str())});
+        return context->report({parent->previousResolvedNode, Fmt(g_E[Err0085], parent->previousResolvedNode->token.ctext(), parent->previousResolvedNode->typeInfo->getDisplayNameC())});
     }
 
     // If a variable on the left has only been used for scoping, and not evaluated as an ufcs source, then this is an
@@ -747,7 +747,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         auto funcDecl = CastAst<AstFuncDecl>(identifier->typeInfo->declNode, AstNodeKind::FuncDecl);
         if (!(funcDecl->attributeFlags & ATTRIBUTE_MIXIN))
         {
-            Diagnostic diag{identifier, Fmt(g_E[Err0088], funcDecl->getDisplayName().c_str())};
+            Diagnostic diag{identifier, Fmt(g_E[Err0088], funcDecl->getDisplayNameC())};
             Diagnostic note{funcDecl, g_E[Nte0033], DiagnosticLevel::Note};
             return context->report(diag, &note);
         }
@@ -789,7 +789,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
         // Be sure it's the NAME{} syntax
         if (identifier->callParameters && !(identifier->flags & AST_GENERATED) && !(identifier->callParameters->flags & AST_CALL_FOR_STRUCT))
-            return context->report({identifier, Fmt(g_E[Err0082], identifier->typeInfo->getDisplayName().c_str())});
+            return context->report({identifier, Fmt(g_E[Err0082], identifier->typeInfo->getDisplayNameC())});
 
         // Need to make all types compatible, in case a cast is necessary
         if (identifier->callParameters)
@@ -868,7 +868,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             auto fctAttributes = ownerFct->attributeFlags;
             if (!(fctAttributes & ATTRIBUTE_COMPILER) && (overload->node->attributeFlags & ATTRIBUTE_COMPILER) && !(ownerFct->flags & AST_RUN_BLOCK))
             {
-                return context->report({identifier, Fmt(g_E[Err0091], AstNode::getKindName(overload->node).c_str(), overload->node->token.ctext(), ownerFct->getDisplayName().c_str())});
+                return context->report({identifier, Fmt(g_E[Err0091], AstNode::getKindName(overload->node).c_str(), overload->node->token.ctext(), ownerFct->getDisplayNameC())});
             }
         }
 
@@ -1054,13 +1054,13 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 if (!(fctAttributes & ATTRIBUTE_COMPILER) && (overload->node->attributeFlags & ATTRIBUTE_COMPILER) && !(identifier->flags & AST_RUN_BLOCK))
                 {
                     Diagnostic note{overload->node, Fmt(g_E[Nte0029], overload->node->token.ctext()), DiagnosticLevel::Note};
-                    return context->report({identifier, Fmt(g_E[Err0107], overload->node->token.ctext(), ownerFct->getDisplayName().c_str())}, &note);
+                    return context->report({identifier, Fmt(g_E[Err0107], overload->node->token.ctext(), ownerFct->getDisplayNameC())}, &note);
                 }
 
                 if (!(fctAttributes & ATTRIBUTE_TEST_FUNC) && (overload->node->attributeFlags & ATTRIBUTE_TEST_FUNC))
                 {
                     Diagnostic note{overload->node, Fmt(g_E[Nte0029], overload->node->token.ctext()), DiagnosticLevel::Note};
-                    return context->report({identifier, Fmt(g_E[Err0108], overload->node->token.ctext(), ownerFct->getDisplayName().c_str())}, &note);
+                    return context->report({identifier, Fmt(g_E[Err0108], overload->node->token.ctext(), ownerFct->getDisplayNameC())}, &note);
                 }
             }
         }
@@ -1676,7 +1676,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
             for (auto match : matches)
             {
                 auto overload = match->symbolOverload;
-                auto couldBe  = Fmt("could be %s of type `%s`", SymTable::getArticleKindName(match->symbolOverload->symbol->kind), overload->typeInfo->getDisplayName().c_str());
+                auto couldBe  = Fmt("could be %s of type `%s`", SymTable::getArticleKindName(match->symbolOverload->symbol->kind), overload->typeInfo->getDisplayNameC());
                 auto note     = new Diagnostic{overload->node, couldBe, DiagnosticLevel::Note};
 
                 if (overload->typeInfo->kind == TypeInfoKind::FuncAttr)
@@ -2141,13 +2141,13 @@ bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identi
         {
             if (dep.node->specFlags & AST_SPEC_DECLPARAM_GENERATED_SELF)
             {
-                Diagnostic diag{dependentVar, Fmt(g_E[Err0117], dependentVar->typeInfo->getDisplayName().c_str())};
+                Diagnostic diag{dependentVar, Fmt(g_E[Err0117], dependentVar->typeInfo->getDisplayNameC())};
                 Diagnostic note{dep.node, g_E[Nte0056], DiagnosticLevel::Note};
                 return context->report(diag, &note);
             }
             else
             {
-                Diagnostic diag{dep.node, Fmt(g_E[Err0117], dependentVar->typeInfo->getDisplayName().c_str())};
+                Diagnostic diag{dep.node, Fmt(g_E[Err0117], dependentVar->typeInfo->getDisplayNameC())};
                 Diagnostic note{dependentVar, g_E[Nte0036], DiagnosticLevel::Note};
                 return context->report(diag, &note);
             }
@@ -2271,7 +2271,7 @@ bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifier
                     return true;
                 if (canTry)
                     *ufcsFirstParam = identifierRef->previousResolvedNode;
-                SWAG_VERIFY(node->callParameters, context->report(g_E[Hnt0044], {node, Fmt(g_E[Err0020], typeFunc->getDisplayName().c_str())}));
+                SWAG_VERIFY(node->callParameters, context->report(g_E[Hnt0044], {node, Fmt(g_E[Err0020], typeFunc->getDisplayNameC())}));
             }
         }
     }
@@ -2344,7 +2344,7 @@ bool SemanticJob::fillMatchContextCallParameters(SemanticContext* context, Symbo
             auto firstNode = symbol->nodes.front();
             if (symbolKind == SymbolKind::Variable)
             {
-                Diagnostic diag{node, Fmt(g_E[Err0125], node->token.ctext(), symbol->overloads[0]->typeInfo->getDisplayName().c_str())};
+                Diagnostic diag{node, Fmt(g_E[Err0125], node->token.ctext(), symbol->overloads[0]->typeInfo->getDisplayNameC())};
                 Diagnostic note{firstNode->sourceFile, firstNode->token.startLocation, firstNode->token.endLocation, Fmt(g_E[Nte0040], node->token.ctext()), DiagnosticLevel::Note};
                 return context->report(diag, &note);
             }

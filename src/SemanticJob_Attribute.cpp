@@ -28,7 +28,7 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
 
     SWAG_ASSERT(oneAttribute->typeInfo);
     if (oneAttribute->typeInfo->kind != TypeInfoKind::FuncAttr)
-        return context->report({oneAttribute, Fmt(g_E[Err0582], oneAttribute->typeInfo->getDisplayName().c_str(), TypeInfo::getArticleKindName(oneAttribute->typeInfo))});
+        return context->report({oneAttribute, Fmt(g_E[Err0582], oneAttribute->typeInfo->getDisplayNameC(), TypeInfo::getArticleKindName(oneAttribute->typeInfo))});
 
     auto kind     = checkNode->kind;
     auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(oneAttribute->typeInfo, TypeInfoKind::FuncAttr);
@@ -308,7 +308,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                         break;
                     }
                     default:
-                        return context->report({c, Fmt(g_E[Err0695], typeChild->getDisplayName().c_str())});
+                        return context->report({c, Fmt(g_E[Err0695], typeChild->getDisplayNameC())});
                     }
 
                     forNode->addAlternativeScope(scope);

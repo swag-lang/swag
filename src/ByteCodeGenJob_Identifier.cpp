@@ -101,7 +101,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             }
             else
             {
-                return context->report({node, Fmt(g_E[Err0462], typeInfo->getDisplayName().c_str())});
+                return context->report({node, Fmt(g_E[Err0462], typeInfo->getDisplayNameC())});
             }
         }
         else if (typeInfo->isPointerTo(TypeInfoKind::Interface) && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)))

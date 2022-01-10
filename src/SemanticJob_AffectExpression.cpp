@@ -18,7 +18,7 @@ bool SemanticJob::resolveMove(SemanticContext* context)
 
     if (node->flags & AST_FORCE_MOVE)
     {
-        SWAG_VERIFY(!right->typeInfo->isConst(), context->report({right, Fmt(g_E[Err0559], right->typeInfo->getDisplayName().c_str())}));
+        SWAG_VERIFY(!right->typeInfo->isConst(), context->report({right, Fmt(g_E[Err0559], right->typeInfo->getDisplayNameC())}));
     }
 
     return true;
@@ -70,7 +70,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                 if (left->childs[i]->kind == AstNodeKind::FuncCall && left->childs[i]->typeInfo->kind == TypeInfoKind::Struct)
                 {
                     left = left->childs[i];
-                    hint = Fmt(g_E[Hnt0039], left->typeInfo->getDisplayName().c_str());
+                    hint = Fmt(g_E[Hnt0039], left->typeInfo->getDisplayNameC());
                     break;
                 }
             }
@@ -176,7 +176,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             leftTypeInfo->kind != TypeInfoKind::Array &&
             leftTypeInfo->kind != TypeInfoKind::Alias &&
             leftTypeInfo->kind != TypeInfoKind::Enum)
-            return context->report({left, Fmt(g_E[Err0571], TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->getDisplayName().c_str())});
+            return context->report({left, Fmt(g_E[Err0571], TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->getDisplayNameC())});
         if (rightTypeInfo->kind != TypeInfoKind::Native &&
             rightTypeInfo->kind != TypeInfoKind::Pointer &&
             rightTypeInfo->kind != TypeInfoKind::Reference &&
@@ -188,7 +188,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             rightTypeInfo->kind != TypeInfoKind::Interface &&
             rightTypeInfo->kind != TypeInfoKind::Array &&
             rightTypeInfo->kind != TypeInfoKind::Alias)
-            return context->report({right, Fmt(g_E[Err0572], rightTypeInfo->getDisplayName().c_str(), TypeInfo::getArticleKindName(rightTypeInfo))});
+            return context->report({right, Fmt(g_E[Err0572], rightTypeInfo->getDisplayNameC(), TypeInfo::getArticleKindName(rightTypeInfo))});
 
         if (forStruct)
         {
@@ -208,7 +208,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                 {
                     if (!hasUserOp(context, g_LangSpec->name_opIndexAffect, left))
                     {
-                        Utf8 msg = Fmt(g_E[Err0225], leftTypeInfo->getDisplayName().c_str(), rightTypeInfo->getDisplayName().c_str(), leftTypeInfo->getDisplayName().c_str());
+                        Utf8 msg = Fmt(g_E[Err0225], leftTypeInfo->getDisplayNameC(), rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC());
                         return context->report({node, msg});
                     }
 
@@ -338,7 +338,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         {
             SWAG_VERIFY((leftTypeInfo->isPointerToTypeInfo()) == 0, context->report({left, g_E[Err0144]}));
             rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
-            SWAG_VERIFY(rightTypeInfo->isNativeInteger(), context->report({right, Fmt(g_E[Err0579], rightTypeInfo->getDisplayName().c_str())}));
+            SWAG_VERIFY(rightTypeInfo->isNativeInteger(), context->report({right, Fmt(g_E[Err0579], rightTypeInfo->getDisplayNameC())}));
             SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoUInt, left, right, CASTFLAG_TRY_COERCE));
             break;
         }

@@ -603,6 +603,12 @@ Utf8 AstFuncDecl::getNameForUserCompiler()
     return getScopedName();
 }
 
+const char* AstFuncDecl::getDisplayNameC()
+{
+    auto res = getDisplayName();
+    return _strdup(res.c_str()); // Leak and slow, but only for messages
+}
+
 Utf8 AstFuncDecl::getDisplayName()
 {
     if (attributeFlags & ATTRIBUTE_AST_FUNC)

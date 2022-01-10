@@ -358,11 +358,12 @@ static const uint32_t FUNC_FLAG_PARTIAL_RESOLVE = 0x00000002;
 
 struct AstFuncDecl : public AstNode
 {
-    AstNode* clone(CloneContext& context);
-    bool     cloneSubDecls(JobContext* context, CloneContext& cloneContext, AstNode* oldOwnerNode, AstFuncDecl* newFctNode, AstNode* refNode);
-    void     computeFullNameForeign(bool forExport);
-    Utf8     getDisplayName();
-    Utf8     getNameForUserCompiler();
+    AstNode*    clone(CloneContext& context);
+    bool        cloneSubDecls(JobContext* context, CloneContext& cloneContext, AstNode* oldOwnerNode, AstFuncDecl* newFctNode, AstNode* refNode);
+    void        computeFullNameForeign(bool forExport);
+    Utf8        getDisplayName();
+    const char* getDisplayNameC();
+    Utf8        getNameForUserCompiler();
 
     bool isForeign()
     {

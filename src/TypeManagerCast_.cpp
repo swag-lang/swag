@@ -11,15 +11,15 @@
 bool TypeManager::errorOutOfRange(SemanticContext* context, AstNode* fromNode, TypeInfo* fromType, TypeInfo* toType, bool isNeg)
 {
     if (isNeg)
-        return context->report({fromNode, Fmt(g_E[Err0180], fromNode->computedValue->reg.s64, toType->getDisplayName().c_str())});
+        return context->report({fromNode, Fmt(g_E[Err0180], fromNode->computedValue->reg.s64, toType->getDisplayNameC())});
 
     if (fromNode->kind == AstNodeKind::Literal && fromNode->token.text.length() > 2)
     {
         if (std::tolower(fromNode->token.text[1]) == 'x' || std::tolower(fromNode->token.text[1]) == 'b')
-            return context->report({fromNode, Fmt(g_E[Err0183], fromNode->token.ctext(), fromNode->computedValue->reg.u64, toType->getDisplayName().c_str())});
+            return context->report({fromNode, Fmt(g_E[Err0183], fromNode->token.ctext(), fromNode->computedValue->reg.u64, toType->getDisplayNameC())});
     }
 
-    return context->report({fromNode, Fmt(g_E[Err0181], fromNode->computedValue->reg.u64, toType->getDisplayName().c_str())});
+    return context->report({fromNode, Fmt(g_E[Err0181], fromNode->computedValue->reg.u64, toType->getDisplayNameC())});
 }
 
 bool TypeManager::safetyComputedValue(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
@@ -255,8 +255,8 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
         {
             if (TypeManager::makeCompatibles(context, toType, fromType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
             {
-                PushErrHint errh(Fmt(g_E[Hnt0032], fromType->getDisplayName().c_str(), toType->getDisplayName().c_str()));
-                Diagnostic  diag{fromNode, Fmt(g_E[Err0175], fromType->getDisplayName().c_str(), toType->getDisplayName().c_str())};
+                PushErrHint errh(Fmt(g_E[Hnt0032], fromType->getDisplayNameC(), toType->getDisplayNameC()));
+                Diagnostic  diag{fromNode, Fmt(g_E[Err0175], fromType->getDisplayNameC(), toType->getDisplayNameC())};
                 return context->report(diag);
             }
         }
@@ -271,29 +271,29 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
                 fromType = CastTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer)->pointedType;
             }
 
-            return context->report(hint, {fromNode, Fmt(g_E[Err0176], fromType->getDisplayName().c_str(), toType->getDisplayName().c_str())});
+            return context->report(hint, {fromNode, Fmt(g_E[Err0176], fromType->getDisplayNameC(), toType->getDisplayNameC())});
         }
 
         if (toType->kind == TypeInfoKind::Pointer && (fromType->isNativeIntegerOrRune() || fromType->isNativeFloat() || fromType->isNative(NativeTypeKind::Bool)))
         {
             PushErrHint errh(g_E[Hnt0005]);
-            return context->report({fromNode, Fmt(g_E[Err0907], fromType->getDisplayName().c_str())});
+            return context->report({fromNode, Fmt(g_E[Err0907], fromType->getDisplayNameC())});
         }
 
         if (castFlags & CASTFLAG_CONST_ERR)
         {
             PushErrHint errh(g_E[Hnt0022]);
-            return context->report({fromNode, Fmt(g_E[Err0418], fromType->getDisplayName().c_str(), toType->getDisplayName().c_str())});
+            return context->report({fromNode, Fmt(g_E[Err0418], fromType->getDisplayNameC(), toType->getDisplayNameC())});
         }
 
         if (fromType->isPointerToTypeInfo() && !toType->isPointerToTypeInfo())
         {
             PushErrHint errh(g_E[Hnt0040]);
-            return context->report({fromNode, Fmt(g_E[Err0177], fromType->getDisplayName().c_str(), toType->getDisplayName().c_str())});
+            return context->report({fromNode, Fmt(g_E[Err0177], fromType->getDisplayNameC(), toType->getDisplayNameC())});
         }
 
         // General cast error
-        return context->report({fromNode, Fmt(g_E[Err0177], fromType->getDisplayName().c_str(), toType->getDisplayName().c_str())});
+        return context->report({fromNode, Fmt(g_E[Err0177], fromType->getDisplayNameC(), toType->getDisplayNameC())});
     }
 
     return false;
@@ -2149,7 +2149,7 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
                 {
                     if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
                     {
-                        Diagnostic diag{fromNode, Fmt(g_E[Err0200], fromType->getDisplayName().c_str(), toType->getDisplayName().c_str(), fromStruct->getDisplayName().c_str(), toStruct->getDisplayName().c_str())};
+                        Diagnostic diag{fromNode, Fmt(g_E[Err0200], fromType->getDisplayNameC(), toType->getDisplayNameC(), fromStruct->getDisplayNameC(), toStruct->getDisplayNameC())};
                         Diagnostic note1{foundField->declNode, g_E[Nte0015], DiagnosticLevel::Note};
                         Diagnostic note2{field->declNode, g_E[Nte0016], DiagnosticLevel::Note};
                         return context->report(diag, &note1, &note2);

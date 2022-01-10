@@ -42,6 +42,12 @@ Utf8 TypeInfo::getDisplayName()
     return str.empty() ? name : str;
 }
 
+const char* TypeInfo::getDisplayNameC()
+{
+    auto res = getDisplayName();
+    return _strdup(res.c_str()); // Leak and slow, but only for messages
+}
+
 const Utf8& TypeInfo::computeWhateverName(uint32_t nameType)
 {
     ScopedLock lk(mutex);

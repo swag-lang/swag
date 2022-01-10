@@ -324,25 +324,25 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
                                   Fmt(g_E[Err0050],
                                                getTheNiceParameterRank(badParamIdx).c_str(),
                                                refNiceName.c_str(),
-                                               bi.badSignatureRequestedType->getDisplayName().c_str(),
+                                               bi.badSignatureRequestedType->getDisplayNameC(),
                                                typeStruct->fields[badParamIdx - 1]->namedParam.c_str(),
-                                               bi.badSignatureGivenType->getDisplayName().c_str())};
+                                               bi.badSignatureGivenType->getDisplayNameC())};
         }
         else if (paramNode && paramNode->typeInfo->flags & TYPEINFO_SELF && bi.badSignatureParameterIdx == 0)
         {
             diag = new Diagnostic{match.parameters[bi.badSignatureParameterIdx],
                                   Fmt(g_E[Err0106],
                                                refNiceName.c_str(),
-                                               bi.badSignatureRequestedType->getDisplayName().c_str(),
-                                               bi.badSignatureGivenType->getDisplayName().c_str())};
+                                               bi.badSignatureRequestedType->getDisplayNameC(),
+                                               bi.badSignatureGivenType->getDisplayNameC())};
         }
         else if (oneTry.ufcs && bi.badSignatureParameterIdx == 0)
         {
             diag = new Diagnostic{match.parameters[bi.badSignatureParameterIdx],
                                   Fmt(g_E[Err0095],
                                                refNiceName.c_str(),
-                                               bi.badSignatureRequestedType->getDisplayName().c_str(),
-                                               bi.badSignatureGivenType->getDisplayName().c_str())};
+                                               bi.badSignatureRequestedType->getDisplayNameC(),
+                                               bi.badSignatureGivenType->getDisplayNameC())};
         }
         else
         {
@@ -350,8 +350,8 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
                                   Fmt(g_E[Err0053],
                                                getTheNiceParameterRank(badParamIdx).c_str(),
                                                refNiceName.c_str(),
-                                               bi.badSignatureRequestedType->getDisplayName().c_str(),
-                                               bi.badSignatureGivenType->getDisplayName().c_str())};
+                                               bi.badSignatureRequestedType->getDisplayNameC(),
+                                               bi.badSignatureGivenType->getDisplayNameC())};
         }
 
         diag->hint = explicitCastHint;
@@ -380,8 +380,8 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
                                            getTheNiceParameterRank(badParamIdx).c_str(),
                                            refNiceName.c_str(),
                                            bi.badGenMatch.c_str(),
-                                           bi.badSignatureRequestedType->getDisplayName().c_str(),
-                                           bi.badSignatureGivenType->getDisplayName().c_str())};
+                                           bi.badSignatureRequestedType->getDisplayNameC(),
+                                           bi.badSignatureGivenType->getDisplayNameC())};
         diag->hint = explicitCastHint;
 
         if (destFuncDecl && bi.badSignatureParameterIdx < destFuncDecl->parameters->childs.size())
@@ -420,8 +420,8 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
                                   Fmt(g_E[Err0070],
                                                getNiceParameterRank(badParamIdx).c_str(),
                                                refNiceName.c_str(),
-                                               bi.badSignatureRequestedType->getDisplayName().c_str(),
-                                               bi.badSignatureGivenType->getDisplayName().c_str())};
+                                               bi.badSignatureRequestedType->getDisplayNameC(),
+                                               bi.badSignatureGivenType->getDisplayNameC())};
 
             diag->hint = explicitCastHint;
         }
@@ -480,7 +480,7 @@ void SemanticJob::symbolErrorNotes(SemanticContext* context, VectorNative<OneTry
             {
                 if (prev->typeInfo)
                 {
-                    auto note = new Diagnostic{prev, Fmt(g_E[Nte0001], prev->token.ctext(), SymTable::getArticleKindName(prev->resolvedSymbolName->kind), prev->typeInfo->getDisplayName().c_str()), DiagnosticLevel::Note};
+                    auto note = new Diagnostic{prev, Fmt(g_E[Nte0001], prev->token.ctext(), SymTable::getArticleKindName(prev->resolvedSymbolName->kind), prev->typeInfo->getDisplayNameC()), DiagnosticLevel::Note};
                     notes.push_back(note);
                 }
                 else
@@ -523,7 +523,7 @@ void SemanticJob::symbolErrorRemarks(SemanticContext* context, VectorNative<OneT
 
         if (notFound && notFound == overloads.size())
         {
-            diag->remarks.push_back(Fmt(g_E[Nte0043], node->token.ctext(), identifier->identifierRef->typeInfo->getDisplayName().c_str()));
+            diag->remarks.push_back(Fmt(g_E[Nte0043], node->token.ctext(), identifier->identifierRef->typeInfo->getDisplayNameC()));
             for (auto s : identifier->identifierRef->startScope->childScopes)
             {
                 if (s->kind == ScopeKind::Impl)

@@ -124,7 +124,7 @@ void ByteCodeRun::executeGetFromStackSI(ByteCodeRunContext* context, ByteCodeIns
         if (!getVariadicSI(context, ip, &registersRC[ip->a.u32], &registersRC[ip->b.u32]))
         {
             context->hasError = true;
-            context->errorMsg = Fmt(g_E[Err0090], solved->typeInfo->getDisplayName().c_str());
+            context->errorMsg = Fmt(g_E[Err0090], solved->typeInfo->getDisplayNameC());
         }
 
         return;
@@ -153,7 +153,7 @@ void ByteCodeRun::executeGetFromStackSI(ByteCodeRunContext* context, ByteCodeIns
         }
 
         context->hasError = true;
-        context->errorMsg = Fmt(g_E[Err0090], solved->typeInfo->getDisplayName().c_str());
+        context->errorMsg = Fmt(g_E[Err0090], solved->typeInfo->getDisplayNameC());
         return;
     }
 
@@ -189,5 +189,5 @@ void ByteCodeRun::executeGetFromStackSI(ByteCodeRunContext* context, ByteCodeIns
     }
 
     context->hasError = true;
-    context->errorMsg = Fmt(g_E[Err0102], solved->typeInfo->getDisplayName().c_str());
+    context->errorMsg = Fmt(g_E[Err0102], solved->typeInfo->getDisplayNameC());
 }

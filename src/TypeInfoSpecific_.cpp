@@ -929,6 +929,12 @@ bool TypeInfoStruct::canRawCopy()
     return !opPostCopy && !opUserPostCopyFct && !opPostMove && !opUserPostMoveFct;
 }
 
+const char* TypeInfoStruct::getDisplayNameC()
+{
+    auto res = getDisplayName();
+    return _strdup(res.c_str()); // Leak and slow, but only for messages
+}
+
 Utf8 TypeInfoStruct::getDisplayName()
 {
     if (flags & TYPEINFO_STRUCT_IS_TUPLE)

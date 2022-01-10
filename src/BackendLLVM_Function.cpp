@@ -142,7 +142,7 @@ bool BackendLLVM::swagTypeToLLVMType(const BuildParameters& buildParameters, Mod
         }
     }
 
-    return moduleToGen->internalError(Fmt("swagTypeToLLVMType, invalid type `%s`", typeInfo->getDisplayName().c_str()));
+    return moduleToGen->internalError(Fmt("swagTypeToLLVMType, invalid type `%s`", typeInfo->getDisplayNameC()));
 }
 
 llvm::BasicBlock* BackendLLVM::getOrCreateLabel(LLVMPerThread& pp, llvm::Function* func, int32_t ip)

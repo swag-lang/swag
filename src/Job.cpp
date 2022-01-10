@@ -318,7 +318,7 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
                         first         = returnNode->resolvedFuncDecl->returnType;
                         if (!first->childs.empty())
                             first = first->childs.front();
-                        auto note = new Diagnostic{first, Fmt(g_E[Nte0067], typeFunc->returnType->getDisplayName().c_str()), DiagnosticLevel::Note};
+                        auto note = new Diagnostic{first, Fmt(g_E[Nte0067], typeFunc->returnType->getDisplayNameC()), DiagnosticLevel::Note};
                         notes.push_back(note);
                         showContext = false;
                     }

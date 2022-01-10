@@ -124,7 +124,7 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo
     default:
     {
         auto node = context->node;
-        context->report({node, Fmt(g_E[Err0537], typeInfo->getDisplayName().c_str())});
+        context->report({node, Fmt(g_E[Err0537], typeInfo->getDisplayNameC())});
         return false;
     }
     }

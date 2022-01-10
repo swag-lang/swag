@@ -179,7 +179,7 @@ Utf8 SemanticJob::checkLiteralType(ComputedValue& computedValue, Token& token, T
         }
 
         if (typeSuffix->nativeType != NativeTypeKind::Bool)
-            return Fmt(g_E[Err0261], typeSuffix->getDisplayName().c_str());
+            return Fmt(g_E[Err0261], typeSuffix->getDisplayNameC());
         break;
 
     case LiteralType::TT_RAW_STRING:
@@ -218,7 +218,7 @@ Utf8 SemanticJob::checkLiteralType(ComputedValue& computedValue, Token& token, T
             break;
 
         default:
-            return Fmt(g_E[Err0302], typeSuffix->getDisplayName().c_str());
+            return Fmt(g_E[Err0302], typeSuffix->getDisplayNameC());
         }
         break;
     }
@@ -463,7 +463,7 @@ bool SemanticJob::resolveLiteral(SemanticContext* context)
         return true;
     }
 
-    SWAG_VERIFY(suffix->typeInfo->kind == TypeInfoKind::Native, context->report({suffix, Fmt(g_E[Err0437], suffix->typeInfo->getDisplayName().c_str())}));
+    SWAG_VERIFY(suffix->typeInfo->kind == TypeInfoKind::Native, context->report({suffix, Fmt(g_E[Err0437], suffix->typeInfo->getDisplayNameC())}));
 
     switch (suffix->typeInfo->nativeType)
     {
@@ -482,7 +482,7 @@ bool SemanticJob::resolveLiteral(SemanticContext* context)
     case NativeTypeKind::F64:
         break;
     default:
-        return context->report({suffix, Fmt(g_E[Err0439], suffix->typeInfo->getDisplayName().c_str())});
+        return context->report({suffix, Fmt(g_E[Err0439], suffix->typeInfo->getDisplayNameC())});
     }
 
     // Check if this is in fact a negative literal. This is important to know now, in order

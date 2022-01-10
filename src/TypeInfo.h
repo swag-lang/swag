@@ -204,11 +204,12 @@ struct TypeInfo
     bool isStrict()                         { return (flags & TYPEINFO_STRICT); }
     // clang-format on
 
-    virtual bool      isSame(TypeInfo* from, uint32_t isSameFlags);
-    virtual TypeInfo* clone() = 0;
-    virtual int       numRegisters();
-    virtual Utf8      getDisplayName();
-    virtual void      computeWhateverName(Utf8& resName, uint32_t nameType);
+    virtual bool        isSame(TypeInfo* from, uint32_t isSameFlags);
+    virtual TypeInfo*   clone() = 0;
+    virtual int         numRegisters();
+    virtual Utf8        getDisplayName();
+    virtual const char* getDisplayNameC();
+    virtual void        computeWhateverName(Utf8& resName, uint32_t nameType);
 
     void copyFrom(TypeInfo* from);
     void setConst();
@@ -493,6 +494,7 @@ struct TypeInfoStruct : public TypeInfo
     TypeInfoParam* findChildByNameNoLock(const Utf8& childName);
     TypeInfoParam* hasInterface(TypeInfoStruct* itf);
     TypeInfoParam* hasInterfaceNoLock(TypeInfoStruct* itf);
+    const char*    getDisplayNameC() override;
     Utf8           getDisplayName() override;
     bool           canRawCopy();
 
