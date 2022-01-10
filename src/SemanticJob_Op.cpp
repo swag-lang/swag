@@ -166,7 +166,7 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
     }
     else if (name == g_LangSpec->name_opCast)
     {
-        SWAG_VERIFY(!node->genericParameters, context->report({node, Fmt(Err(Err0478), name.c_str())}));
+        SWAG_VERIFY(!node->genericParameters, context->report(node, Fmt(Err(Err0478), name.c_str())));
     }
     else
     {
@@ -243,7 +243,7 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
         SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, nullptr));
         auto returnType = TypeManager::concreteType(node->returnType->typeInfo, CONCRETE_ALIAS);
         if (!returnType->isNative(NativeTypeKind::String) && returnType->kind != TypeInfoKind::Slice)
-            return context->report({node, Fmt(Err(Err0126), node->returnType->typeInfo->getDisplayNameC())});
+            return context->report(node, Fmt(Err(Err0126), node->returnType->typeInfo->getDisplayNameC()));
         SWAG_CHECK(checkFuncPrototypeOpParam(context, node, parameters, 1, g_TypeMgr->typeInfoUInt));
         SWAG_CHECK(checkFuncPrototypeOpParam(context, node, parameters, 2, g_TypeMgr->typeInfoUInt));
     }
@@ -390,7 +390,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
             return false;
 
         auto leftType = TypeManager::concreteType(left->typeInfo);
-        return context->report({left->parent, Fmt(Err(Err0079), name.c_str(), leftType->getDisplayNameC())});
+        return context->report(left->parent, Fmt(Err(Err0079), name.c_str(), leftType->getDisplayNameC()));
     }
 
     if (context->result != ContextResult::Done)

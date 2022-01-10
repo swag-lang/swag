@@ -1416,7 +1416,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
             if (isFunctionButNotACall(context, node, symbol))
             {
                 if (callParameters)
-                    return context->report({callParameters, Err(Err0114)});
+                    return context->report(callParameters, Err(Err0114));
                 oneOverload.symMatchContext.result = MatchResult::Ok;
                 forcedFine                         = true;
             }
@@ -1973,7 +1973,7 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
             {
                 auto typeContext = findTypeInContext(context, identifierRef);
                 if (!typeContext)
-                    return context->report({identifierRef, Err(Err0881)});
+                    return context->report(identifierRef, Err(Err0881));
 
                 switch (typeContext->kind)
                 {
@@ -2282,7 +2282,7 @@ bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifier
         {
             auto subNode = identifierRef->previousResolvedNode ? identifierRef->previousResolvedNode : node;
             auto msg     = Fmt(Err(Err0124), identifierRef->resolvedSymbolName->name.c_str(), SymTable::getArticleKindName(identifierRef->resolvedSymbolName->kind));
-            return context->report({subNode, msg});
+            return context->report(subNode, msg);
         }
     }
 
@@ -2391,7 +2391,7 @@ bool SemanticJob::fillMatchContextCallParameters(SemanticContext* context, Symbo
                     oneParam->typeInfo->kind == TypeInfoKind::TypedVariadic ||
                     oneParam->typeInfo->kind == TypeInfoKind::CVariadic)
                 {
-                    return context->report({oneParam, Err(Err0734)});
+                    return context->report(oneParam, Err(Err0734));
                 }
             }
         }
@@ -3056,7 +3056,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
     // Filter symbols
     SWAG_CHECK(filterSymbols(context, node));
     if (dependentSymbols.empty())
-        return context->report({node, Fmt(Err(Err0133), node->token.ctext())});
+        return context->report(node, Fmt(Err(Err0133), node->token.ctext()));
 
     auto orgResolvedSymbolOverload = identifierRef->resolvedSymbolOverload;
     auto orgResolvedSymbolName     = identifierRef->resolvedSymbolName;
@@ -3090,7 +3090,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
         {
             if (identifierRef->flags & AST_SILENT_CHECK)
                 return true;
-            return context->report({node, Fmt(Err(Err0133), node->token.ctext())});
+            return context->report(node, Fmt(Err(Err0133), node->token.ctext()));
         }
 
         auto& listTryMatch = job->cacheListTryMatch;
@@ -3388,7 +3388,7 @@ bool SemanticJob::collectScopeHierarchy(SemanticContext* context, VectorNative<A
         {
             while (startScope && startScope->kind != ScopeKind::Inline && startScope->kind != ScopeKind::Macro)
                 startScope = startScope->parentScope;
-            SWAG_VERIFY(startScope, context->report({context->node, Err(Err0136)}));
+            SWAG_VERIFY(startScope, context->report(context->node, Err(Err0136)));
             startScope = startScope->parentScope;
             flags &= ~COLLECT_BACKTICK;
         }
@@ -3452,7 +3452,7 @@ bool SemanticJob::collectScopeHierarchy(SemanticContext* context, VectorNative<A
         }
     }
 
-    SWAG_VERIFY(!(flags & COLLECT_BACKTICK), context->report({startNode, Err(Err0136)}));
+    SWAG_VERIFY(!(flags & COLLECT_BACKTICK), context->report(startNode, Err(Err0136)));
 
     return true;
 }
@@ -3471,10 +3471,10 @@ bool SemanticJob::checkCanThrow(SemanticContext* context)
     auto parentFct = (node->semFlags & AST_SEM_EMBEDDED_RETURN) ? node->ownerInline->func : node->ownerFct;
 
     if (parentFct->isSpecialFunctionName())
-        return context->report({node, Fmt(Err(Err0137), node->token.ctext())});
+        return context->report(node, Fmt(Err(Err0137), node->token.ctext()));
 
     if (!(parentFct->typeInfo->flags & TYPEINFO_CAN_THROW) && !(parentFct->flags & AST_SPECIAL_COMPILER_FUNC))
-        return context->report({node, Fmt(Err(Err0138), node->token.ctext(), parentFct->token.ctext())});
+        return context->report(node, Fmt(Err(Err0138), node->token.ctext(), parentFct->token.ctext()));
 
     return true;
 }
@@ -3493,7 +3493,7 @@ bool SemanticJob::checkCanCatch(SemanticContext* context)
     }
 
     auto lastChild = identifierRef->childs.back();
-    return context->report({node, Fmt(Err(Err0139), node->token.ctext(), lastChild->token.ctext(), SymTable::getArticleKindName(lastChild->resolvedSymbolName->kind))});
+    return context->report(node, Fmt(Err(Err0139), node->token.ctext(), lastChild->token.ctext(), SymTable::getArticleKindName(lastChild->resolvedSymbolName->kind)));
 }
 
 bool SemanticJob::resolveTryBlock(SemanticContext* context)
