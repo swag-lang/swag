@@ -11,42 +11,38 @@
 #include "LanguageSpec.h"
 #include "Os.h"
 
-void SemanticJob::computeNonConstExprNotes(AstNode* node, vector<const Diagnostic*>& notes)
+Diagnostic* SemanticJob::computeNonConstExprNote(AstNode* node)
 {
-    auto                      childs = node->childs;
-    VectorNative<SymbolName*> done;
-    while (!childs.empty())
+    VectorNative<AstNode*> childs;
+    Ast::visit(node, [&](AstNode* n)
+               { childs.push_back(n); });
+
+    for (int i = (int) childs.size() - 1; i >= 0; i--)
     {
-        auto c = childs.back();
-        childs.pop_back();
+        auto c = childs[i];
         if (c->flags & AST_CONST_EXPR)
             continue;
 
         if (c->resolvedSymbolName)
         {
-            if (done.contains(c->resolvedSymbolName))
-                continue;
-            done.push_back(c->resolvedSymbolName);
-
             if (c->resolvedSymbolName->kind == SymbolKind::Function)
             {
                 if (c->resolvedSymbolOverload && !(c->resolvedSymbolOverload->node->attributeFlags & ATTRIBUTE_CONSTEXPR))
                 {
-                    auto note = new Diagnostic(c, Utf8::format(g_E[Nte0042], c->resolvedSymbolName->name.c_str()), DiagnosticLevel::Note);
-                    notes.push_back(note);
+                    auto result  = new Diagnostic(c, Utf8::format(g_E[Nte0042], c->resolvedSymbolName->name.c_str()), DiagnosticLevel::Note);
+                    result->hint = g_E[Hnt0046];
+                    return result;
                 }
             }
 
             if (c->resolvedSymbolName->kind == SymbolKind::Variable)
             {
-                auto note = new Diagnostic(c, Utf8::format(g_E[Nte0041], c->resolvedSymbolName->name.c_str()), DiagnosticLevel::Note);
-                notes.push_back(note);
+                return new Diagnostic(c, Utf8::format(g_E[Nte0041], c->resolvedSymbolName->name.c_str()), DiagnosticLevel::Note);
             }
         }
-
-        if (c->childs.size())
-            childs.append(c->childs);
     }
+
+    return nullptr;
 }
 
 bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, bool onlyconstExpr)
@@ -59,14 +55,7 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
     auto module     = sourceFile->module;
     if (onlyconstExpr)
     {
-        // Given some clues about childs which are not constexpr
-        if (!(node->flags & AST_CONST_EXPR))
-        {
-            Diagnostic                diag{node, g_E[Err0798]};
-            vector<const Diagnostic*> notes;
-            computeNonConstExprNotes(node, notes);
-            return context->report(diag, notes);
-        }
+        SWAG_CHECK(checkIsConstExpr(context, node));
     }
 
     // Request to generate the corresponding bytecode

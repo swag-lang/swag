@@ -762,10 +762,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             {
                 if (!(node->assignment->flags & AST_CONST_EXPR))
                 {
-                    Diagnostic                diag{node->assignment, g_E[Err0670]};
-                    vector<const Diagnostic*> notes;
-                    computeNonConstExprNotes(node, notes);
-                    return context->report(diag, notes);
+                    Diagnostic diag{node->assignment, g_E[Err0670]};
+                    return context->report(diag, computeNonConstExprNote(node));
                 }
             }
         }

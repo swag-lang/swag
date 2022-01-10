@@ -156,7 +156,7 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
         if (rawTypeInfo->kind == TypeInfoKind::Array)
         {
             SWAG_ASSERT(!(assignNode->flags & AST_VALUE_COMPUTED));
-            SWAG_VERIFY(assignNode->flags & AST_CONST_EXPR, context->report({assignNode, g_E[Err0798]}));
+            SWAG_CHECK(checkIsConstExpr(context, assignNode));
             SWAG_CHECK(TypeManager::makeCompatibles(context, rawTypeInfo, nullptr, assignNode, CASTFLAG_CONCRETE_ENUM));
 
             assignNode->setFlagsValueIsComputed();
@@ -167,7 +167,7 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
         }
         else if (rawTypeInfo->kind == TypeInfoKind::Slice)
         {
-            SWAG_VERIFY(assignNode->flags & AST_CONST_EXPR, context->report({assignNode, g_E[Err0798]}));
+            SWAG_CHECK(checkIsConstExpr(context, assignNode));
             SWAG_CHECK(TypeManager::makeCompatibles(context, rawTypeInfo, nullptr, assignNode, CASTFLAG_CONCRETE_ENUM));
 
             assignNode->setFlagsValueIsComputed();
