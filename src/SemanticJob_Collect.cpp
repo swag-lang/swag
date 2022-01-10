@@ -11,20 +11,6 @@ bool SemanticJob::reserveAndStoreToSegment(JobContext* context, DataSegment* sto
     return storeToSegment(context, storageSegment, storageOffset, value, typeInfo, assignment);
 }
 
-bool SemanticJob::checkIsConstExpr(JobContext* context, bool test, AstNode* expression, const char* errMsg)
-{
-    if (test)
-        return true;
-
-    Diagnostic diag{expression, errMsg? errMsg : Err(Err0798)};
-    return context->report(diag, computeNonConstExprNote(expression));
-}
-
-bool SemanticJob::checkIsConstExpr(JobContext* context, AstNode* expression)
-{
-    return checkIsConstExpr(context, expression->flags & AST_CONST_EXPR, expression);
-}
-
 bool SemanticJob::storeToSegment(JobContext* context, DataSegment* storageSegment, uint32_t storageOffset, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment)
 {
     uint8_t* ptrDest = storageSegment->address(storageOffset);
@@ -72,7 +58,7 @@ bool SemanticJob::storeToSegment(JobContext* context, DataSegment* storageSegmen
     {
         if (assignment)
         {
-            SWAG_VERIFY(assignment->kind == AstNodeKind::ExpressionList, context->report({assignment, Err(Err0798)}));
+            SWAG_VERIFY(assignment->kind == AstNodeKind::ExpressionList, context->report(assignment, Err(Err0798)));
             SWAG_CHECK(checkIsConstExpr(context, assignment));
 
             // Store value in constant storageSegment

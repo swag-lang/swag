@@ -51,13 +51,13 @@ bool SemanticJob::resolveTupleUnpackBefore(SemanticContext* context)
     {
         if (varDecl->assignment)
             return context->report(Hint::isType(TypeManager::concreteType(varDecl->assignment->typeInfo)), {varDecl->assignment, Fmt(Err(Err0291), typeVar->getDisplayNameC())});
-        return context->report({varDecl, Fmt(Err(Err0291), typeVar->getDisplayNameC())});
+        return context->report(varDecl, Fmt(Err(Err0291), typeVar->getDisplayNameC()));
     }
 
     auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
     auto numUnpack  = scopeNode->childs.size() - 1;
-    SWAG_VERIFY(typeStruct->fields.size(), context->report({varDecl, Fmt(Err(Err0292), typeStruct->getDisplayNameC())}));
-    SWAG_VERIFY(numUnpack == typeStruct->fields.size(), context->report({varDecl, Fmt(Err(Err0293), numUnpack, typeStruct->fields.size())}));
+    SWAG_VERIFY(typeStruct->fields.size(), context->report(varDecl, Fmt(Err(Err0292), typeStruct->getDisplayNameC())));
+    SWAG_VERIFY(numUnpack == typeStruct->fields.size(), context->report(varDecl, Fmt(Err(Err0293), numUnpack, typeStruct->fields.size())));
     return true;
 }
 
@@ -186,7 +186,7 @@ AstNode* SemanticJob::convertTypeToTypeExpression(SemanticContext* context, AstN
     }
 
     default:
-        context->report({assignment, Fmt(Err(Err0294), orgType->getDisplayNameC()).c_str()});
+        context->report(assignment, Fmt(Err(Err0294), orgType->getDisplayNameC()).c_str());
         return nullptr;
     }
 
@@ -527,7 +527,7 @@ bool SemanticJob::resolveVarDeclAfterAssign(SemanticContext* context)
         return true;
 
     auto identifier = CastAst<AstIdentifier>(typeExpression->identifier->childs.back(), AstNodeKind::Identifier);
-    SWAG_VERIFY(!identifier->callParameters, context->report({assign, Err(Err0295)}));
+    SWAG_VERIFY(!identifier->callParameters, context->report(assign, Err(Err0295)));
 
     auto sourceFile            = context->sourceFile;
     identifier->callParameters = Ast::newFuncCallParams(sourceFile, identifier);
@@ -675,7 +675,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     }
 
     if (node->attributeFlags & ATTRIBUTE_DISCARDABLE && concreteNodeType->kind != TypeInfoKind::Lambda)
-        return context->report({node, Fmt(Err(Err0297), concreteNodeType->getDisplayNameC())});
+        return context->report(node, Fmt(Err(Err0297), concreteNodeType->getDisplayNameC()));
 
     // Check for missing initialization
     // This is ok to not have an initialization for structs, as they are initialized by default
@@ -742,7 +742,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 concreteNodeType->kind != TypeInfoKind::Slice &&
                 concreteNodeType->kind != TypeInfoKind::Pointer)
             {
-                SWAG_VERIFY(node->assignment->typeInfo->kind != TypeInfoKind::Array, context->report({node->assignment, Err(Err0301)}));
+                SWAG_VERIFY(node->assignment->typeInfo->kind != TypeInfoKind::Array, context->report(node->assignment, Err(Err0301)));
             }
         }
     }
@@ -754,7 +754,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         {
             if (node->assignment->typeInfo->kind == TypeInfoKind::Lambda)
             {
-                SWAG_VERIFY(!isCompilerConstant, context->report({node->assignment, Err(Err0160)}));
+                SWAG_VERIFY(!isCompilerConstant, context->report(node->assignment, Err(Err0160)));
                 auto funcNode = CastAst<AstFuncDecl>(node->assignment->typeInfo->declNode, AstNodeKind::FuncDecl, AstNodeKind::TypeLambda);
                 SWAG_CHECK(checkCanMakeFuncPointer(context, funcNode, node->assignment));
             }
@@ -770,7 +770,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     {
         auto typeArray = CastTypeInfo<TypeInfoArray>(concreteNodeType, TypeInfoKind::Array);
         SWAG_VERIFY(typeArray->count != UINT32_MAX || node->assignment, context->report(node, Err(Err0303)));
-        SWAG_VERIFY(!node->assignment || node->assignment->kind == AstNodeKind::ExpressionList || node->assignment->kind == AstNodeKind::ExplicitNoInit, context->report({node->assignment, Err(Err0304)}));
+        SWAG_VERIFY(!node->assignment || node->assignment->kind == AstNodeKind::ExpressionList || node->assignment->kind == AstNodeKind::ExplicitNoInit, context->report(node->assignment, Err(Err0304)));
 
         // Deduce size of array
         if (typeArray->count == UINT32_MAX)
@@ -831,7 +831,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                     if (!(node->extension->resolvedUserOpSymbolOverload->node->attributeFlags & ATTRIBUTE_CONSTEXPR))
                     {
                         PushErrHint errh(Fmt(Hnt(Hnt0002), leftConcreteType->getDisplayNameC()));
-                        return context->report({node->assignment, Err(Err0906)});
+                        return context->report(node->assignment, Err(Err0906));
                     }
                 }
             }
@@ -846,7 +846,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         // A slice initialized with an expression list must be immutable
         if (leftConcreteType->kind == TypeInfoKind::Slice && rightConcreteType->kind == TypeInfoKind::TypeListArray && (node->assignment->flags & AST_CONST_EXPR))
         {
-            SWAG_VERIFY(leftConcreteType->isConst(), context->report({node->type, Err(Err0306)}));
+            SWAG_VERIFY(leftConcreteType->isConst(), context->report(node->type, Err(Err0306)));
         }
     }
 
@@ -874,7 +874,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 return context->report(diag, &note);
             }
 
-            return context->report({node->assignment, Err(Err0307)});
+            return context->report(node->assignment, Err(Err0307));
         }
 
         // We need to decide which integer/float type it is
@@ -930,7 +930,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     SWAG_VERIFY(node->typeInfo != g_TypeMgr->typeInfoNull, context->report(node, Err(Err0308)));
 
     // We should have a type here !
-    SWAG_VERIFY(node->typeInfo, context->report({node, Fmt(Err(Err0309), AstNode::getKindName(node).c_str(), node->token.ctext())}));
+    SWAG_VERIFY(node->typeInfo, context->report(node, Fmt(Err(Err0309), AstNode::getKindName(node).c_str(), node->token.ctext())));
 
     // Determine if the call parameters cover everything (to avoid calling default initialization)
     // i.e. set AST_HAS_FULL_STRUCT_PARAMETERS
@@ -1002,7 +1002,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         node->flags |= AST_NO_BYTECODE | AST_R_VALUE;
         if (!isGeneric)
         {
-            SWAG_VERIFY(!(node->typeInfo->flags & TYPEINFO_GENERIC), context->report({node, Fmt(Err(Err0311), node->typeInfo->getDisplayNameC())}));
+            SWAG_VERIFY(!(node->typeInfo->flags & TYPEINFO_GENERIC), context->report(node, Fmt(Err(Err0311), node->typeInfo->getDisplayNameC())));
 
             storageSegment = getSegmentForVar(context, node);
             if (node->extension && node->extension->resolvedUserOpSymbolOverload)
@@ -1059,7 +1059,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     }
     else if (symbolFlags & OVERLOAD_VAR_GLOBAL)
     {
-        SWAG_VERIFY(!(node->typeInfo->flags & TYPEINFO_GENERIC), context->report({node, Fmt(Err(Err0312), node->typeInfo->getDisplayNameC())}));
+        SWAG_VERIFY(!(node->typeInfo->flags & TYPEINFO_GENERIC), context->report(node, Fmt(Err(Err0312), node->typeInfo->getDisplayNameC())));
         SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_PUBLIC), context->report(node, Err(Err0313)));
 
         node->flags |= AST_R_VALUE;

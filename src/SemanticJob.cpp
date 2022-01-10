@@ -67,12 +67,26 @@ bool SemanticJob::valueEqualsTo(const ComputedValue* value1, const ComputedValue
     return *value1 == *value2;
 }
 
+bool SemanticJob::checkIsConstExpr(JobContext* context, bool test, AstNode* expression, const char* errMsg)
+{
+    if (test)
+        return true;
+
+    Diagnostic diag{expression, errMsg ? errMsg : Err(Err0798)};
+    return context->report(diag, computeNonConstExprNote(expression));
+}
+
+bool SemanticJob::checkIsConstExpr(JobContext* context, AstNode* expression)
+{
+    return checkIsConstExpr(context, expression->flags & AST_CONST_EXPR, expression);
+}
+
 bool SemanticJob::checkTypeIsNative(SemanticContext* context, TypeInfo* leftTypeInfo, TypeInfo* rightTypeInfo)
 {
     if (leftTypeInfo->kind == TypeInfoKind::Native && rightTypeInfo->kind == TypeInfoKind::Native)
         return true;
     auto node = context->node;
-    return context->report({node, Fmt(Err(Err0504), node->token.ctext(), leftTypeInfo->getDisplayNameC(), rightTypeInfo->getDisplayNameC())});
+    return context->report(node, Fmt(Err(Err0504), node->token.ctext(), leftTypeInfo->getDisplayNameC(), rightTypeInfo->getDisplayNameC()));
 }
 
 bool SemanticJob::checkTypeIsNative(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
@@ -90,12 +104,12 @@ bool SemanticJob::notAllowed(SemanticContext* context, AstNode* node, TypeInfo* 
         text += msg;
     }
 
-    return context->report({node, text});
+    return context->report(node, text);
 }
 
 bool SemanticJob::error(SemanticContext* context, const Utf8& msg)
 {
-    context->report({context->node, msg});
+    context->report(context->node, msg);
     return false;
 }
 
