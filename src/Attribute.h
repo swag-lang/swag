@@ -1,6 +1,7 @@
 #pragma once
 #include "Register.h"
 #include "Runtime.h"
+#include "Tokenizer.h"
 struct TypeInfo;
 
 static const uint64_t ATTRIBUTE_CONSTEXPR           = 0x0000000000000001;
@@ -57,9 +58,9 @@ struct AstNode;
 
 struct AttributeParameter
 {
-    Utf8          name;
-    TypeInfo*     typeInfo;
+    Token         token;
     ComputedValue value;
+    TypeInfo*     typeInfo;
 };
 
 struct OneAttribute

@@ -549,9 +549,10 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
                 SWAG_VERIFY(param->flags & AST_VALUE_COMPUTED, context->report({param, g_E[Err0602]}));
 
                 AttributeParameter attrParam;
-                attrParam.name     = param->resolvedParameter->namedParam;
-                attrParam.typeInfo = param->resolvedParameter->typeInfo;
-                attrParam.value    = *param->computedValue;
+                attrParam.token      = one->token;
+                attrParam.token.text = param->resolvedParameter->namedParam;
+                attrParam.typeInfo   = param->resolvedParameter->typeInfo;
+                attrParam.value      = *param->computedValue;
                 oneAttribute.parameters.emplace_back(move(attrParam));
             }
         }
@@ -565,7 +566,7 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
             SWAG_ASSERT(param->assignment);
 
             AttributeParameter attrParam;
-            attrParam.name     = param->token.text;
+            attrParam.token    = param->token;
             attrParam.typeInfo = param->typeInfo;
             attrParam.value    = *param->assignment->computedValue;
             oneAttribute.parameters.emplace_back(move(attrParam));

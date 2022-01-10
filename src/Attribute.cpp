@@ -20,7 +20,7 @@ const ComputedValue* AttributeList::getValue(const Utf8& fullName, const Utf8& p
         {
             for (auto& param : it.parameters)
             {
-                if (param.name == parameter)
+                if (param.token.text == parameter)
                 {
                     return &param.value;
                 }

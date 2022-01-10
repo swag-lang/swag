@@ -985,7 +985,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         OneAttribute       ot;
         AttributeParameter otp;
         ot.name           = g_LangSpec->name_Swag_Align;
-        otp.name          = g_LangSpec->name_value;
+        otp.token.text    = g_LangSpec->name_value;
         otp.typeInfo      = g_TypeMgr->typeInfoU8;
         otp.value.reg.u64 = typeInfo->alignOf;
         ot.parameters.push_back(otp);

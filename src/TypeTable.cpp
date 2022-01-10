@@ -488,7 +488,7 @@ bool TypeTable::makeConcreteAttributes(JobContext* context, AttributeList& attri
             {
                 // Name of the parameter
                 ptrString = (SwagSlice*) ptrStorageAllParams;
-                SWAG_CHECK(makeConcreteString(context, ptrString, oneParam.name, storageSegment, curOffsetParams));
+                SWAG_CHECK(makeConcreteString(context, ptrString, oneParam.token.text, storageSegment, curOffsetParams));
                 curOffsetParams += sizeof(SwagSlice);
                 ptrStorageAllParams += sizeof(SwagSlice);
 
