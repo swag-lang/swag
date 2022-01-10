@@ -8,7 +8,7 @@
         z := x + y
         @assert(z == 9)
         #[Swag.Safety("overflow", false)]
-        z1 := 10'u32 + -1's8
+        z1 := 10'u32 + cast(u32) -1's8
         @assert(z1 == 9)
     }
 
@@ -19,7 +19,7 @@
         z := x - y
         @assert(z == 11)
         #[Swag.Safety("overflow", false)]
-        z1 := 10'u32 - -1's8
+        z1 := 10'u32 - cast(u32) -1's8
         @assert(z1 == 11)
     }
 

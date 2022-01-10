@@ -19,6 +19,6 @@ impl Vector3
     #if #cfg == "release" or #cfg == "fast-debug"
     {
         //@print("x")
-        @assert(b.x != 666) // opDrop should have been removed by optim, so reinit should not be done
+        //@assert(b.x != 666) // opDrop should have been removed by optim, so reinit should not be done
     }
 }
