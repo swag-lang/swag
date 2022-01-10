@@ -162,7 +162,7 @@ TypeInfo* TypeInfoPointer::clone()
 
 void TypeInfoPointer::computeWhateverName(Utf8& resName, uint32_t nameType)
 {
-    if (flags & TYPEINFO_CSTRING)
+    if (flags & TYPEINFO_C_STRING)
     {
         resName = "cstring";
         return;

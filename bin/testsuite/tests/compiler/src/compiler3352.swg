@@ -16,9 +16,5 @@ impl Vector3
     a := Vector3{}
     b := Vector3{1, 2, 3}
     a =,move b
-    #if #cfg == "release" or #cfg == "fast-debug"
-    {
-        //@print("x")
-        //@assert(b.x != 666) // opDrop should have been removed by optim, so reinit should not be done
-    }
+    @assert(b.x == 666)
 }

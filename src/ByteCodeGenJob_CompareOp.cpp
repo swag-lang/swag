@@ -240,7 +240,7 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* le
         }
 
         // CString compare
-        else if (leftTypeInfo->flags & TYPEINFO_CSTRING)
+        else if (leftTypeInfo->flags & TYPEINFO_C_STRING)
         {
             emitInstruction(context, ByteCodeOp::IntrinsicStrCmp, r2, r0, r1);
             emitInstruction(context, ByteCodeOp::ZeroToTrue, r2);

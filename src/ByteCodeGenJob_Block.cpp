@@ -858,9 +858,6 @@ bool ByteCodeGenJob::emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scop
         if (one.overload && !(one.overload->flags & OVERLOAD_EMITTED))
             continue;
 
-        if (!canEmitOpCallUser(context, one.typeStruct->opUserDropFct, one.typeStruct->opDrop))
-            continue;
-
         if (one.typeInfo->kind == TypeInfoKind::Array)
         {
             auto typeArray = CastTypeInfo<TypeInfoArray>(one.typeInfo, TypeInfoKind::Array);

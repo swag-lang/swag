@@ -195,7 +195,6 @@ struct ByteCodeGenJob : public Job
     static void collectLiteralsChilds(AstNode* node, VectorNative<AstNode*>* orderedChilds);
     static void computeSourceLocation(JobContext* context, AstNode* node, uint32_t* storageOffset, DataSegment** storageSegment);
     static void releaseByteCodeJob(AstNode* node);
-    static bool canEmitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* funcDecl, ByteCode* bc = nullptr);
     static bool checkCatchError(ByteCodeGenContext* context, AstNode* callNode, AstNode* funcNode, AstNode* parent, TypeInfo* typeInfoFunc);
     static bool sameStackFrame(ByteCodeGenContext* context, SymbolOverload* overload);
     static void freeStructParametersRegisters(ByteCodeGenContext* context);

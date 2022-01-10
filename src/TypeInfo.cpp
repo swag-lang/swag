@@ -265,7 +265,7 @@ bool TypeInfo::isCString()
 {
     if (kind != TypeInfoKind::Pointer)
         return false;
-    return flags & TYPEINFO_CSTRING;
+    return flags & TYPEINFO_C_STRING;
 }
 
 bool TypeInfo::isInitializerList()

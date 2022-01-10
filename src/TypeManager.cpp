@@ -54,7 +54,7 @@ void TypeManager::setup()
     typeInfoCString         = new TypeInfoPointer();
     typeInfoCString->sizeOf = sizeof(Register);
     typeInfoCString->setConst();
-    typeInfoCString->flags |= TYPEINFO_CSTRING;
+    typeInfoCString->flags |= TYPEINFO_C_STRING;
     typeInfoCString->pointedType = typeInfoU8;
     typeInfoCString->name.setView("cstring", 7);
 

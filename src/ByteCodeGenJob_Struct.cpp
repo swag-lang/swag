@@ -8,24 +8,6 @@
 #include "SemanticJob.h"
 #include "LanguageSpec.h"
 
-bool ByteCodeGenJob::canEmitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* funcDecl, ByteCode* bc)
-{
-    if (!funcDecl && !bc)
-        return false;
-
-    auto node        = context->node;
-    auto module      = node->sourceFile->module;
-    bool foreignCall = funcDecl && !bc && (funcDecl->attributeFlags & ATTRIBUTE_FOREIGN);
-    if (foreignCall)
-        return true;
-
-    SWAG_ASSERT(bc || (funcDecl && funcDecl->extension && funcDecl->extension->bc));
-    bc = bc ? bc : funcDecl->extension->bc;
-    if (bc->isDoingNothing() && module->mustOptimizeBC(funcDecl))
-        return false;
-    return true;
-}
-
 void ByteCodeGenJob::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* funcDecl, ByteCode* bc, bool pushParam, uint32_t offset, uint32_t numParams)
 {
     if (!funcDecl && !bc)
@@ -372,7 +354,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
     if (typeInfoStruct->opUserDropFct)
     {
         needDrop = true;
-        askForByteCode(context->job, (AstFuncDecl*) typeInfoStruct->opUserDropFct, ASKBC_WAIT_SEMANTIC_RESOLVED /* | ASKBC_WAIT_DONE*/, context->bc);
+        askForByteCode(context->job, (AstFuncDecl*) typeInfoStruct->opUserDropFct, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
         if (context->result == ContextResult::Pending)
             return true;
     }
@@ -394,7 +376,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
             return true;
         if (typeStructVar->opDrop || typeStructVar->opUserDropFct)
             needDrop = true;
-        if (typeStructVar->opDrop || typeStructVar->opUserDropFct || typeStructVar->flags & TYPEINFO_HAD_DROP)
+        if (typeStructVar->opDrop || typeStructVar->opUserDropFct)
             SWAG_VERIFY(!(structNode->structFlags & STRUCTFLAG_UNION), context->report({typeParam->declNode, Utf8::format(g_E[Err0911], typeStructVar->getDisplayName().c_str())}));
     }
 
@@ -437,8 +419,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
         cxt.bc->node->semFlags |= AST_SEM_BYTECODE_RESOLVED | AST_SEM_BYTECODE_GENERATED;
 
     // Call user function if defined
-    if (canEmitOpCallUser(&cxt, typeInfoStruct->opUserDropFct))
-        emitOpCallUser(&cxt, typeInfoStruct->opUserDropFct);
+    emitOpCallUser(&cxt, typeInfoStruct->opUserDropFct);
 
     for (auto typeParam : typeInfoStruct->fields)
     {
@@ -446,8 +427,6 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
         if (typeVar->kind != TypeInfoKind::Struct)
             continue;
         auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
-        if (!canEmitOpCallUser(&cxt, typeStructVar->opUserDropFct, typeStructVar->opDrop))
-            continue;
         emitOpCallUser(&cxt, typeStructVar->opUserDropFct, typeStructVar->opDrop, true, typeParam->offset);
     }
 
@@ -458,15 +437,6 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
     {
         ScopedLock lk1(cxt.bc->sourceFile->module->mutexByteCode);
         cxt.bc->sourceFile->module->byteCodePrintBC.push_back(cxt.bc);
-    }
-
-    // Revert back function because is empty
-    if (!canEmitOpCallUser(&cxt, nullptr, cxt.bc))
-    {
-        typeInfoStruct->opDrop        = nullptr;
-        typeInfoStruct->opUserDropFct = nullptr;
-        typeInfoStruct->flags |= TYPEINFO_STRUCT_NO_DROP | TYPEINFO_HAD_DROP;
-        return true;
     }
 
     sourceFile->module->addByteCodeFunc(opDrop);
@@ -505,7 +475,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
     if (typeInfoStruct->opUserPostMoveFct)
     {
         needPostMove = true;
-        askForByteCode(context->job, (AstFuncDecl*) typeInfoStruct->opUserPostMoveFct, ASKBC_WAIT_SEMANTIC_RESOLVED /*| ASKBC_WAIT_DONE*/, context->bc);
+        askForByteCode(context->job, (AstFuncDecl*) typeInfoStruct->opUserPostMoveFct, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
         if (context->result == ContextResult::Pending)
             return true;
     }
@@ -527,7 +497,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
             return true;
         if (typeStructVar->opPostMove || typeStructVar->opUserPostMoveFct)
             needPostMove = true;
-        if (typeStructVar->opPostMove || typeStructVar->opUserPostMoveFct || typeStructVar->flags & TYPEINFO_HAD_POST_MOVE)
+        if (typeStructVar->opPostMove || typeStructVar->opUserPostMoveFct)
             SWAG_VERIFY(!(structNode->structFlags & STRUCTFLAG_UNION), context->report({typeParam->declNode, Utf8::format(g_E[Err0910], typeStructVar->getDisplayName().c_str())}));
     }
 
@@ -575,14 +545,11 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
         if (typeVar->kind != TypeInfoKind::Struct)
             continue;
         auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
-        if (!canEmitOpCallUser(&cxt, typeStructVar->opUserPostMoveFct, typeStructVar->opPostMove))
-            continue;
         emitOpCallUser(&cxt, typeStructVar->opUserPostMoveFct, typeStructVar->opPostMove, true, typeParam->offset);
     }
 
     // Then call user function if defined
-    if (canEmitOpCallUser(&cxt, typeInfoStruct->opUserPostMoveFct))
-        emitOpCallUser(&cxt, typeInfoStruct->opUserPostMoveFct);
+    emitOpCallUser(&cxt, typeInfoStruct->opUserPostMoveFct);
 
     emitInstruction(&cxt, ByteCodeOp::Ret);
     emitInstruction(&cxt, ByteCodeOp::End);
@@ -591,14 +558,6 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
     {
         ScopedLock lk1(cxt.bc->sourceFile->module->mutexByteCode);
         cxt.bc->sourceFile->module->byteCodePrintBC.push_back(cxt.bc);
-    }
-
-    // Revert back function because it's empty
-    if (!canEmitOpCallUser(&cxt, nullptr, cxt.bc))
-    {
-        typeInfoStruct->opPostMove = nullptr;
-        typeInfoStruct->flags |= TYPEINFO_STRUCT_NO_POST_MOVE | TYPEINFO_HAD_POST_MOVE;
-        return true;
     }
 
     sourceFile->module->addByteCodeFunc(opPostMove);
@@ -637,7 +596,7 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
     if (typeInfoStruct->opUserPostCopyFct)
     {
         needPostCopy = true;
-        askForByteCode(context->job, (AstFuncDecl*) typeInfoStruct->opUserPostCopyFct, ASKBC_WAIT_SEMANTIC_RESOLVED /*| ASKBC_WAIT_DONE*/, context->bc);
+        askForByteCode(context->job, (AstFuncDecl*) typeInfoStruct->opUserPostCopyFct, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
         if (context->result == ContextResult::Pending)
             return true;
     }
@@ -659,7 +618,7 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
             return true;
         if (typeStructVar->opPostCopy || typeStructVar->opUserPostCopyFct)
             needPostCopy = true;
-        if (typeStructVar->opPostCopy || typeStructVar->opUserPostCopyFct || typeStructVar->flags & TYPEINFO_HAD_POST_COPY)
+        if (typeStructVar->opPostCopy || typeStructVar->opUserPostCopyFct)
             SWAG_VERIFY(!(structNode->structFlags & STRUCTFLAG_UNION), context->report({typeParam->declNode, Utf8::format(g_E[Err0909], typeStructVar->getDisplayName().c_str())}));
     }
 
@@ -707,14 +666,11 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
         if (typeVar->kind != TypeInfoKind::Struct)
             continue;
         auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
-        if (!canEmitOpCallUser(&cxt, typeStructVar->opUserPostCopyFct, typeStructVar->opPostCopy))
-            continue;
         emitOpCallUser(&cxt, typeStructVar->opUserPostCopyFct, typeStructVar->opPostCopy, true, typeParam->offset);
     }
 
     // Then call user function if defined
-    if (canEmitOpCallUser(&cxt, typeInfoStruct->opUserPostCopyFct))
-        emitOpCallUser(&cxt, typeInfoStruct->opUserPostCopyFct);
+    emitOpCallUser(&cxt, typeInfoStruct->opUserPostCopyFct);
 
     emitInstruction(&cxt, ByteCodeOp::Ret);
     emitInstruction(&cxt, ByteCodeOp::End);
@@ -723,14 +679,6 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
     {
         ScopedLock lk1(cxt.bc->sourceFile->module->mutexByteCode);
         cxt.bc->sourceFile->module->byteCodePrintBC.push_back(cxt.bc);
-    }
-
-    // Revert back function because it's empty
-    if (!canEmitOpCallUser(&cxt, nullptr, cxt.bc))
-    {
-        typeInfoStruct->opPostCopy = nullptr;
-        typeInfoStruct->flags |= TYPEINFO_STRUCT_NO_POST_COPY | TYPEINFO_HAD_POST_COPY;
-        return true;
     }
 
     sourceFile->module->addByteCodeFunc(opPostCopy);

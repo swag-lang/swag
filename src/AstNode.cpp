@@ -521,7 +521,7 @@ Utf8 AstNode::getKindName(AstNode* node)
     case AstNodeKind::IntrinsicProp:
         return "intrinsic";
     case AstNodeKind::FuncCall:
-        return "funcation call";
+        return "function call";
     }
 
     return Utf8::format("<%d>", node->kind);
