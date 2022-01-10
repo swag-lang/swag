@@ -22,7 +22,7 @@ SWAG_ERROR(Err0022, "the array dimension should be of type integer (and `%s` is 
 SWAG_ERROR(Err0023, "the array dimension is 0")
 SWAG_ERROR(Err0024, "a pointer to `Swag.TypeInfo` should be `const`")
 SWAG_ERROR(Err0025, "the alias is public but `%s` is not")
-SWAG_ERROR(Err0026, "too many parameters for %s")
+SWAG_ERROR(Err0026, "too many parameters for %s (`%d` expected, `%d` provided)")
 SWAG_ERROR(Err0027, "an alias should only be used with a type or an identifier")
 SWAG_ERROR(Err0028, "the `Swag.Strict` attribute should only be used on a type alias")
 SWAG_ERROR(Err0029, "cannot alias a struct member")

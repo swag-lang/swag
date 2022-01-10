@@ -235,19 +235,6 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         return;
     }
 
-    case MatchResult::TooManyParameters:
-    {
-        AstNode* site = failedParam;
-        if (!site)
-            site = callParameters;
-        SWAG_ASSERT(site);
-        diag = new Diagnostic{site, Utf8::format(g_E[Err0026], refNiceName.c_str())};
-        note = new Diagnostic{overload->node, Utf8::format(g_E[Nte0008], refNiceName.c_str()), DiagnosticLevel::Note};
-        result0.push_back(diag);
-        result1.push_back(note);
-        return;
-    }
-
     case MatchResult::NotEnoughGenericParameters:
     {
         AstNode* errNode = genericParameters;
@@ -261,6 +248,23 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
             diag = new Diagnostic{errNode, Utf8::format(g_E[Err0035], refNiceName.c_str())};
         else
             diag = new Diagnostic{errNode, Utf8::format(g_E[Err0049], refNiceName.c_str())};
+        note = new Diagnostic{overload->node, Utf8::format(g_E[Nte0008], refNiceName.c_str()), DiagnosticLevel::Note};
+        result0.push_back(diag);
+        result1.push_back(note);
+        return;
+    }
+
+    case MatchResult::TooManyParameters:
+    {
+        AstNode* site = failedParam;
+        if (!site)
+            site = callParameters;
+        SWAG_ASSERT(site);
+        diag = new Diagnostic{site,
+                              Utf8::format(g_E[Err0026],
+                                           refNiceName.c_str(),
+                                           match.badSignatureInfos.badSignatureNum2,
+                                           match.badSignatureInfos.badSignatureNum1)};
         note = new Diagnostic{overload->node, Utf8::format(g_E[Nte0008], refNiceName.c_str()), DiagnosticLevel::Note};
         result0.push_back(diag);
         result1.push_back(note);

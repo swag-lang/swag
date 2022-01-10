@@ -32,6 +32,8 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
         if (i >= parameters.size() && !isAfterVariadic)
         {
             context.badSignatureInfos.badSignatureParameterIdx = i;
+            context.badSignatureInfos.badSignatureNum1         = numParams;
+            context.badSignatureInfos.badSignatureNum2         = (int) parameters.size();
             context.result                                     = MatchResult::TooManyParameters;
             return;
         }
