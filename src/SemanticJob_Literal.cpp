@@ -482,7 +482,7 @@ bool SemanticJob::resolveLiteral(SemanticContext* context)
     case NativeTypeKind::F64:
         break;
     default:
-        return context->report({suffix, Fmt(Err(Err0439), suffix->typeInfo->getDisplayNameC())});
+        return context->report(suffix, Fmt(Err(Err0439), suffix->typeInfo->getDisplayNameC()));
     }
 
     // Check if this is in fact a negative literal. This is important to know now, in order
@@ -504,7 +504,7 @@ bool SemanticJob::resolveLiteral(SemanticContext* context)
 
     auto errMsg = checkLiteralType(*node->computedValue, token, suffix->typeInfo, negApplied);
     if (!errMsg.empty())
-        return context->report({node, errMsg});
+        return context->report(node, errMsg);
 
     node->typeInfo    = suffix->typeInfo;
     node->byteCodeFct = ByteCodeGenJob::emitLiteral;
