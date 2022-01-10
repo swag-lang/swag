@@ -47,7 +47,12 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         if (left->typeInfo->isConst())
         {
             if (left->resolvedSymbolOverload->flags & OVERLOAD_VAR_FUNC_PARAM)
-                return context->report({left, Utf8::format(g_E[Err0740], left->resolvedSymbolName->name.c_str())});
+            {
+                Diagnostic note{g_E[Hlp0016], DiagnosticLevel::Help};
+                Diagnostic diag{left, Utf8::format(g_E[Err0740], left->resolvedSymbolName->name.c_str())};
+                return context->report(diag, &note);
+            }
+
             hint = Hint::isType(left->typeInfo);
         }
         else if (left->kind == AstNodeKind::IdentifierRef)

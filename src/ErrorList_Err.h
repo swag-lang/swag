@@ -731,7 +731,7 @@ SWAG_ERROR(Err0736, "the type `code` should only be used for a function paramete
 SWAG_ERROR(Err0737, "compiler instruction `%s` is invalid as a default parameter value")
 SWAG_ERROR(Err0738, "the parameter `%d` should have a default value because some parameters before have one")
 SWAG_ERROR(Err0739, "the `#main` function has already been defined")
-SWAG_ERROR(Err0740, "a function parameter (`%s`) is immutable and cannot be affected")
+SWAG_ERROR(Err0740, "the affectation is not allowed because the function argument `%s` is immutable (`const`)")
 SWAG_ERROR(Err0741, "all `@alias` names are not contiguous in the function `%s` (missing `@alias%u`)")
 SWAG_ERROR(Err0742, "a function with the `Swag.Foreign` attribute cannot have a body")
 SWAG_ERROR(Err0743, "compiler special function cannot have the `Swag.Inline` attribute")
