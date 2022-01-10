@@ -65,9 +65,15 @@ bool SemanticJob::checkFuncPrototypeOpNumParams(SemanticContext* context, AstFun
 {
     auto numCur = parameters->childs.size();
     if (exact && (numCur != numWanted))
+    {
         return context->report({parameters, Utf8::format(g_E[Err0061], node->token.text.c_str(), numWanted, numCur)});
+    }
+
     if (!exact && (numCur < numWanted))
+    {
         return context->report({parameters, Utf8::format(g_E[Err0062], node->token.text.c_str(), numWanted, numCur)});
+    }
+
     return true;
 }
 
@@ -105,19 +111,19 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
 
     auto& name      = node->token.text;
     bool  isOpVisit = name.find(g_LangSpec->name_opVisit) == 0;
+    auto  parent    = node->findParent(AstNodeKind::Impl);
 
-    auto parent = node->parent;
-    while (parent && parent->kind != AstNodeKind::Impl)
-        parent = parent->parent;
-
-    auto parameters = node->parameters;
-
-    // Special function outside an impl block. This is valid from some...
+    // Special function outside an impl block
     if (!parent)
-        return context->report({node, Utf8::format(g_E[Err0067], node->getDisplayName().c_str())});
+    {
+        Diagnostic note{g_E[Hlp0015], DiagnosticLevel::Help};
+        Diagnostic diag{node, node->tokenName, Utf8::format(g_E[Err0067], node->token.text.c_str())};
+        return context->report(diag, &note);
+    }
 
     PushErrContext ec(context, nullptr, getSpecialOpSignature(node), DiagnosticLevel::Help);
 
+    auto      parameters = node->parameters;
     TypeInfo* typeStruct = nullptr;
     if (parent)
     {
