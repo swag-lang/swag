@@ -66,6 +66,8 @@ bool SemanticJob::checkFuncPrototypeOpNumParams(SemanticContext* context, AstFun
     auto numCur = parameters->childs.size();
     if (exact && (numCur != numWanted))
     {
+        if (numCur > numWanted)
+            return context->report({parameters->childs[numWanted], Utf8::format(g_E[Err0043], node->token.text.c_str(), numWanted, numCur)});
         return context->report({parameters, Utf8::format(g_E[Err0061], node->token.text.c_str(), numWanted, numCur)});
     }
 
@@ -91,8 +93,10 @@ bool SemanticJob::checkFuncPrototypeOpReturnType(SemanticContext* context, AstFu
 
     if (wanted != g_TypeMgr->typeInfoVoid && returnType == g_TypeMgr->typeInfoVoid)
         return context->report({node, Utf8::format(g_E[Err0064], node->token.text.c_str(), wanted->getDisplayName().c_str())});
+
     if (!returnType->isSame(wanted, ISSAME_CAST))
-        return context->report({node->returnType, Utf8::format(g_E[Err0065], node->token.text.c_str(), wanted->name.c_str(), returnType->getDisplayName().c_str())});
+        return context->report({node->returnType->childs.front(), Utf8::format(g_E[Err0065], node->token.text.c_str(), wanted->name.c_str(), returnType->getDisplayName().c_str())});
+
     return true;
 }
 
