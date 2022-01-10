@@ -1,17 +1,12 @@
 #include "pch.h"
 #include "ByteCodeGenJob.h"
-#include "ByteCodeOp.h"
 #include "ByteCode.h"
 #include "Ast.h"
-#include "SourceFile.h"
 #include "Module.h"
 #include "TypeManager.h"
-#include "Diagnostic.h"
 #include "ErrorIds.h"
 #include "SemanticJob.h"
 #include "LanguageSpec.h"
-#include "Mutex.h"
-#include "Mutex.h"
 
 bool ByteCodeGenJob::canEmitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* funcDecl, ByteCode* bc)
 {
@@ -26,7 +21,7 @@ bool ByteCodeGenJob::canEmitOpCallUser(ByteCodeGenContext* context, AstFuncDecl*
 
     SWAG_ASSERT(bc || (funcDecl && funcDecl->extension && funcDecl->extension->bc));
     bc = bc ? bc : funcDecl->extension->bc;
-    if (bc->isDoingNothing() && module->mustOptimizeBC(node))
+    if (bc->isDoingNothing() && module->mustOptimizeBC(funcDecl))
         return false;
     return true;
 }
@@ -377,7 +372,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
     if (typeInfoStruct->opUserDropFct)
     {
         needDrop = true;
-        askForByteCode(context->job, (AstFuncDecl*) typeInfoStruct->opUserDropFct, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
+        askForByteCode(context->job, (AstFuncDecl*) typeInfoStruct->opUserDropFct, ASKBC_WAIT_SEMANTIC_RESOLVED /* | ASKBC_WAIT_DONE*/, context->bc);
         if (context->result == ContextResult::Pending)
             return true;
     }
@@ -510,7 +505,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
     if (typeInfoStruct->opUserPostMoveFct)
     {
         needPostMove = true;
-        askForByteCode(context->job, (AstFuncDecl*) typeInfoStruct->opUserPostMoveFct, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
+        askForByteCode(context->job, (AstFuncDecl*) typeInfoStruct->opUserPostMoveFct, ASKBC_WAIT_SEMANTIC_RESOLVED /*| ASKBC_WAIT_DONE*/, context->bc);
         if (context->result == ContextResult::Pending)
             return true;
     }
@@ -642,7 +637,7 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
     if (typeInfoStruct->opUserPostCopyFct)
     {
         needPostCopy = true;
-        askForByteCode(context->job, (AstFuncDecl*) typeInfoStruct->opUserPostCopyFct, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
+        askForByteCode(context->job, (AstFuncDecl*) typeInfoStruct->opUserPostCopyFct, ASKBC_WAIT_SEMANTIC_RESOLVED /*| ASKBC_WAIT_DONE*/, context->bc);
         if (context->result == ContextResult::Pending)
             return true;
     }

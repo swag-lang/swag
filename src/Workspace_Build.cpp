@@ -259,13 +259,16 @@ void Workspace::setupTarget()
 
 void Workspace::errorPendingJobsMsg(Job* prevJob, Job* depJob, vector<const Diagnostic*>& notes)
 {
-    Utf8 msg = Utf8::format(g_E[Nte0046],
-                            AstNode::getKindName(prevJob->originalNode).c_str(),
-                            prevJob->originalNode->token.text.c_str(),
-                            AstNode::getKindName(depJob->originalNode).c_str(),
-                            depJob->originalNode->token.text.c_str());
-
     auto prevNode = prevJob->nodes.empty() ? prevJob->originalNode : prevJob->nodes.back();
+    auto depNode  = depJob->nodes.empty() ? depJob->originalNode : depJob->nodes.back();
+    SWAG_ASSERT(prevNode);
+    SWAG_ASSERT(depNode);
+
+    Utf8 msg = Utf8::format(g_E[Nte0046],
+                            AstNode::getKindName(prevNode).c_str(),
+                            prevNode->token.text.c_str(),
+                            AstNode::getKindName(depNode).c_str(),
+                            depNode->token.text.c_str());
 
     if (prevJob->waitingHintNode)
     {
