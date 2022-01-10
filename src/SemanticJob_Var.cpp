@@ -635,8 +635,12 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 break;
             ownerFct = ownerFct->ownerFct;
         }
+
         if (!ownerFct)
-            return context->report({node, Utf8::format(g_E[Err0296], node->token.text.c_str())});
+        {
+            Diagnostic note{g_E[Hlp0010], DiagnosticLevel::Help};
+            return context->report({node, Utf8::format(g_E[Err0410], node->token.text.c_str())}, &note);
+        }
     }
 
     uint32_t symbolFlags = 0;

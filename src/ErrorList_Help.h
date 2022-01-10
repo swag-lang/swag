@@ -8,4 +8,6 @@ SWAG_ERROR(Hlp0006, "to access an array with multiple dimensions, the syntax is 
 SWAG_ERROR(Hlp0007, "methods (`mtd` and `mtdc`) are reserved for struct")
 SWAG_ERROR(Hlp0008, "a function name starting with `@` is reserved for intrinsics")
 SWAG_ERROR(Hlp0009, "a struct member name starting with `item` is reserved by the language")
+SWAG_ERROR(Hlp0010, "`@alias` should only be used inside a `Swag.Macro` or a `Swag.Mixin` function")
+
 
