@@ -12,5 +12,7 @@ SWAG_ERROR(Hlp0010, "`@alias` should only be used inside a `Swag.Macro` or a `Sw
 SWAG_ERROR(Hlp0011, "`Swag.Safety` valid values are `boundcheck`, `overflow`, `math` and `castany`")
 SWAG_ERROR(Hlp0012, "`Swag.Optim` valid values are `bytecode` and `backend`")
 SWAG_ERROR(Hlp0013, "`Swag.ExportType` valid values are `methods` and `nozero`")
+SWAG_ERROR(Hlp0014, "a function name starting with `op` and followed by a letter in upper case is reserved for struct special functions")
+
 
 

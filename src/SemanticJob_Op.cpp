@@ -288,7 +288,9 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
         findClosestMatches(context, node->tokenName.text, searchList, best);
         Utf8 appendMsg = findClosestMatchesMsg(context, best);
 
-        return context->report(appendMsg, {node, node->tokenName, Utf8::format(g_E[Err0078], name.c_str())});
+        Diagnostic diag{node, node->tokenName, Utf8::format(g_E[Err0078], name.c_str())};
+        Diagnostic note{g_E[Hlp0014], DiagnosticLevel::Help};
+        return context->report(appendMsg, diag, &note);
     }
 
     return true;
