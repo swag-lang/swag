@@ -1572,10 +1572,9 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         vector<const Diagnostic*> notes;
         for (auto match : genericMatches)
         {
-            auto overload     = match->symbolOverload;
-            auto couldBe      = "could be: " + overload->typeInfo->getDisplayName();
-            auto note         = new Diagnostic{overload->node, couldBe, DiagnosticLevel::Note};
-            note->printSource = false;
+            auto overload = match->symbolOverload;
+            auto couldBe  = "could be " + overload->typeInfo->getDisplayName();
+            auto note     = new Diagnostic{overload->node, couldBe, DiagnosticLevel::Note};
 
             Utf8 width;
             for (auto og : match->genericReplaceTypes)
@@ -1676,10 +1675,9 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
             vector<const Diagnostic*> notes;
             for (auto match : matches)
             {
-                auto overload     = match->symbolOverload;
-                auto couldBe      = Utf8::format("could be: %s of type `%s`", SymTable::getArticleKindName(match->symbolOverload->symbol->kind), overload->typeInfo->getDisplayName().c_str());
-                auto note         = new Diagnostic{overload->node, couldBe, DiagnosticLevel::Note};
-                note->printSource = false;
+                auto overload = match->symbolOverload;
+                auto couldBe  = Utf8::format("could be %s of type `%s`", SymTable::getArticleKindName(match->symbolOverload->symbol->kind), overload->typeInfo->getDisplayName().c_str());
+                auto note     = new Diagnostic{overload->node, couldBe, DiagnosticLevel::Note};
 
                 if (overload->typeInfo->kind == TypeInfoKind::FuncAttr)
                 {
