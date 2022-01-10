@@ -274,7 +274,22 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
             errNode = node;
         if (!errNode)
             errNode = context->node;
-        diag = new Diagnostic{errNode, Utf8::format(g_E[Err0044], SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
+        if (!match.badSignatureInfos.badSignatureNum2)
+        {
+            diag = new Diagnostic{errNode, Utf8::format(g_E[Err0135], SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
+        }
+        else
+        {
+            if (genericParameters)
+                errNode = genericParameters->childs[match.badSignatureInfos.badSignatureNum2];
+            diag = new Diagnostic{errNode,
+                                  Utf8::format(g_E[Err0044],
+                                               SymTable::getNakedKindName(symbol->kind),
+                                               symbol->name.c_str(),
+                                               match.badSignatureInfos.badSignatureNum2,
+                                               match.badSignatureInfos.badSignatureNum1)};
+        }
+
         note = new Diagnostic{overload->node, Utf8::format(g_E[Nte0008], refNiceName.c_str()), DiagnosticLevel::Note};
         result0.push_back(diag);
         result1.push_back(note);

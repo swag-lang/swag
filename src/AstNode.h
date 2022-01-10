@@ -93,7 +93,6 @@ enum class AstNodeKind : uint8_t
     FuncDeclParams,
     FuncDeclParam,
     FuncDeclType,
-    FuncDeclGenericParams,
     FuncCallParams,
     FuncCallParam,
     FuncCall,

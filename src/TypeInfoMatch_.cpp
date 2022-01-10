@@ -681,7 +681,9 @@ static void fillUserGenericParams(SymbolMatchContext& context, VectorNative<Type
 
     if (numGenericParams > wantedNumGenericParams)
     {
-        context.result = MatchResult::TooManyGenericParameters;
+        context.badSignatureInfos.badSignatureNum1 = numGenericParams;
+        context.badSignatureInfos.badSignatureNum2 = wantedNumGenericParams;
+        context.result                             = MatchResult::TooManyGenericParameters;
         return;
     }
 

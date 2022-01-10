@@ -100,6 +100,8 @@ struct BadSignatureInfos
     int            badSignatureParameterIdx;
     ComputedValue* badGenValue1;
     ComputedValue* badGenValue2;
+    int            badSignatureNum1;
+    int            badSignatureNum2;
 
     void clear()
     {
@@ -110,6 +112,8 @@ struct BadSignatureInfos
         badSignatureGivenType     = nullptr;
         badGenValue1              = nullptr;
         badGenValue2              = nullptr;
+        badSignatureNum1          = 0;
+        badSignatureNum2          = 0;
     }
 };
 
