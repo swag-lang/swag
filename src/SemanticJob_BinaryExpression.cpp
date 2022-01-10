@@ -699,8 +699,7 @@ bool SemanticJob::resolveBitmaskAnd(SemanticContext* context, AstNode* left, Ast
 bool SemanticJob::resolveAppend(SemanticContext* context, AstNode* left, AstNode* right)
 {
     auto node = context->node;
-    SWAG_VERIFY(left->flags & AST_VALUE_COMPUTED, context->report({left, g_E[Err0798]}));
-    SWAG_VERIFY(right->flags & AST_VALUE_COMPUTED, context->report({right, g_E[Err0798]}));
+    SWAG_CHECK(checkIsConstExpr(context, left->flags & AST_VALUE_COMPUTED, left));
 
     if (!left->typeInfo->isNative(NativeTypeKind::String))
         left->computedValue->text = Ast::literalToString(left->typeInfo, *left->computedValue);

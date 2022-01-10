@@ -325,7 +325,7 @@ bool SemanticJob::resolveIntrinsicRunes(SemanticContext* context)
     auto expr     = node->childs.front();
     auto typeInfo = expr->typeInfo;
 
-    SWAG_VERIFY(expr->flags & AST_VALUE_COMPUTED, context->report({expr, g_E[Err0798]}));
+    SWAG_CHECK(checkIsConstExpr(context, expr->flags & AST_VALUE_COMPUTED, expr));
     SWAG_VERIFY(typeInfo->isNative(NativeTypeKind::String), context->report({expr, Utf8::format(g_E[Err0084], typeInfo->getDisplayName().c_str())}));
     node->setFlagsValueIsComputed();
 
@@ -521,7 +521,7 @@ bool SemanticJob::resolveIntrinsicKindOf(SemanticContext* context)
     auto  sourceFile = context->sourceFile;
     auto& typeTable  = sourceFile->module->typeTable;
 
-    SWAG_VERIFY(expr->typeInfo, context->report({expr, g_E[Err0798]}));
+    SWAG_CHECK(checkIsConstExpr(context, expr->typeInfo, expr));
 
     // Will be runtime for an 'any' type
     if (expr->typeInfo->isNative(NativeTypeKind::Any) || expr->typeInfo->kind == TypeInfoKind::Interface)
@@ -609,7 +609,7 @@ bool SemanticJob::resolveIntrinsicTypeOf(SemanticContext* context)
     auto node = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
     auto expr = node->childs.front();
 
-    SWAG_VERIFY(expr->typeInfo, context->report({expr, g_E[Err0798]}));
+    SWAG_CHECK(checkIsConstExpr(context, expr->typeInfo, expr));
     SWAG_VERIFY(expr->typeInfo->kind != TypeInfoKind::Generic, context->report({expr, g_E[Err0810]}));
 
     // If we have a function, then we transform it to a lambda type, as this makes no sens to
@@ -659,7 +659,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
     case TokenId::IntrinsicSizeOf:
     {
         auto expr = node->childs.front();
-        SWAG_VERIFY(expr->typeInfo, context->report({expr, g_E[Err0798]}));
+        SWAG_CHECK(checkIsConstExpr(context, expr->typeInfo, expr));
         SWAG_VERIFY(expr->typeInfo->kind != TypeInfoKind::Generic, context->report({expr, g_E[Err0812]}));
         node->setFlagsValueIsComputed();
         node->computedValue->reg.u64 = expr->typeInfo->sizeOf;
@@ -673,7 +673,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
     case TokenId::IntrinsicAlignOf:
     {
         auto expr = node->childs.front();
-        SWAG_VERIFY(expr->typeInfo, context->report({expr, g_E[Err0798]}));
+        SWAG_CHECK(checkIsConstExpr(context, expr->typeInfo, expr));
         SWAG_VERIFY(expr->typeInfo->kind != TypeInfoKind::Generic, context->report({expr, g_E[Err0814]}));
         node->setFlagsValueIsComputed();
         node->computedValue->reg.u64 = TypeManager::alignOf(expr->typeInfo);
@@ -687,7 +687,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
     case TokenId::IntrinsicOffsetOf:
     {
         auto expr = node->childs.front();
-        SWAG_VERIFY(expr->resolvedSymbolOverload, context->report({expr, g_E[Err0798]}));
+        SWAG_CHECK(checkIsConstExpr(context, expr->resolvedSymbolOverload, expr));
         node->setFlagsValueIsComputed();
         node->computedValue->reg.u64 = expr->resolvedSymbolOverload->computedValue.storageOffset;
         if (node->computedValue->reg.u64 > 0xFFFFFFFF)

@@ -181,7 +181,7 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
         }
         else
         {
-            SWAG_VERIFY(assignNode->flags & AST_VALUE_COMPUTED, context->report({assignNode, g_E[Err0798]}));
+            SWAG_CHECK(checkIsConstExpr(context, assignNode->flags & AST_VALUE_COMPUTED, assignNode));
             SWAG_CHECK(TypeManager::makeCompatibles(context, rawTypeInfo, nullptr, assignNode, CASTFLAG_CONCRETE_ENUM));
             enumNode->computedValue = assignNode->computedValue;
         }

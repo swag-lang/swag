@@ -11,13 +11,18 @@ bool SemanticJob::reserveAndStoreToSegment(JobContext* context, DataSegment* sto
     return storeToSegment(context, storageSegment, storageOffset, value, typeInfo, assignment);
 }
 
-bool SemanticJob::checkIsConstExpr(JobContext* context, AstNode* expression)
+bool SemanticJob::checkIsConstExpr(JobContext* context, bool test, AstNode* expression)
 {
-    if (expression->flags & AST_CONST_EXPR)
+    if (test)
         return true;
 
     Diagnostic diag{expression, g_E[Err0798]};
     return context->report(diag, computeNonConstExprNote(expression));
+}
+
+bool SemanticJob::checkIsConstExpr(JobContext* context, AstNode* expression)
+{
+    return checkIsConstExpr(context, expression->flags & AST_CONST_EXPR, expression);
 }
 
 bool SemanticJob::storeToSegment(JobContext* context, DataSegment* storageSegment, uint32_t storageOffset, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment)

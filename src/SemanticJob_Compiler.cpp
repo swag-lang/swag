@@ -269,7 +269,7 @@ bool SemanticJob::resolveCompilerAstExpression(SemanticContext* context)
     if (context->result != ContextResult::Done)
         return true;
 
-    SWAG_VERIFY(expression->flags & AST_VALUE_COMPUTED, context->report({expression, g_E[Err0798]}));
+    SWAG_CHECK(checkIsConstExpr(context, expression->flags & AST_VALUE_COMPUTED, expression));
 
     node->childs.clear();
 
