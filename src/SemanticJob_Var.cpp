@@ -760,11 +760,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             }
             else
             {
-                if (!(node->assignment->flags & AST_CONST_EXPR))
-                {
-                    Diagnostic diag{node->assignment, g_E[Err0670]};
-                    return context->report(diag, computeNonConstExprNote(node));
-                }
+                SWAG_CHECK(checkIsConstExpr(context, node->assignment->flags & AST_CONST_EXPR, node->assignment, g_E[Err0670]));
             }
         }
     }

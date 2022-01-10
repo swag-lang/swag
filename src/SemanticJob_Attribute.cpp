@@ -560,7 +560,7 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
             for (auto one : identifier->callParameters->childs)
             {
                 auto param = CastAst<AstFuncCallParam>(one, AstNodeKind::FuncCallParam);
-                SWAG_VERIFY(param->flags & AST_VALUE_COMPUTED, context->report({param, g_E[Err0602]}));
+                SWAG_CHECK(checkIsConstExpr(context, param->flags & AST_VALUE_COMPUTED, param, g_E[Err0602]));
 
                 AttributeParameter attrParam;
                 attrParam.token      = one->token;

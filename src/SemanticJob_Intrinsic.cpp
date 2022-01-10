@@ -20,7 +20,7 @@ bool SemanticJob::resolveIntrinsicTag(SemanticContext* context)
         SWAG_CHECK(evaluateConstExpression(context, front));
         if (context->result == ContextResult::Pending)
             return true;
-        SWAG_VERIFY(front->flags & AST_VALUE_COMPUTED, context->report({front, g_E[Err0248]}));
+        SWAG_CHECK(checkIsConstExpr(context, front->flags & AST_VALUE_COMPUTED, front, g_E[Err0248]));
         SWAG_VERIFY(front->typeInfo->isNative(NativeTypeKind::String), context->report({front, Utf8::format(g_E[Err0249], front->typeInfo->getDisplayName().c_str())}));
         auto tag       = g_Workspace->hasTag(front->computedValue->text);
         node->typeInfo = g_TypeMgr->typeInfoBool;
@@ -41,7 +41,7 @@ bool SemanticJob::resolveIntrinsicTag(SemanticContext* context)
         if (context->result == ContextResult::Pending)
             return true;
 
-        SWAG_VERIFY(nameNode->flags & AST_VALUE_COMPUTED, context->report({nameNode, g_E[Err0250]}));
+        SWAG_CHECK(checkIsConstExpr(context, nameNode->flags & AST_VALUE_COMPUTED, nameNode, g_E[Err0250]));
         SWAG_VERIFY(!(nameNode->flags & AST_VALUE_IS_TYPEINFO), context->report({nameNode, g_E[Err0245]}));
         SWAG_VERIFY(nameNode->typeInfo->isNative(NativeTypeKind::String), context->report({nameNode, Utf8::format(g_E[Err0251], nameNode->typeInfo->getDisplayName().c_str())}));
         SWAG_VERIFY(!(defaultVal->flags & AST_VALUE_IS_TYPEINFO), context->report({defaultVal, g_E[Err0283]}));

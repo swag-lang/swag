@@ -331,7 +331,7 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
             }
             else if (node->attributeFlags & ATTRIBUTE_COMPLETE)
             {
-                return context->report({expr, g_E[Err0615]});
+                return checkIsConstExpr(context, expr->flags & AST_VALUE_COMPUTED, expr, g_E[Err0615]);
             }
         }
     }

@@ -313,7 +313,7 @@ bool SemanticJob::resolveCompilerAssert(SemanticContext* context)
         SWAG_CHECK(evaluateConstExpression(context, msg));
         if (context->result != ContextResult::Done)
             return true;
-        SWAG_VERIFY(msg->flags & AST_VALUE_COMPUTED, context->report({msg, g_E[Err0237]}));
+        SWAG_CHECK(checkIsConstExpr(context, msg->flags & AST_VALUE_COMPUTED, msg, g_E[Err0237]));
     }
 
     // Expression to check
@@ -638,7 +638,7 @@ bool SemanticJob::resolveCompilerLoad(SemanticContext* context)
     auto module = context->sourceFile->module;
     auto back   = node->childs[0];
 
-    SWAG_VERIFY(back->flags & AST_VALUE_COMPUTED, context->report({back, g_E[Err0242]}));
+    SWAG_CHECK(checkIsConstExpr(context, back->flags & AST_VALUE_COMPUTED, back, g_E[Err0242]));
     SWAG_VERIFY(back->typeInfo == g_TypeMgr->typeInfoString, context->report({back, Utf8::format(g_E[Err0243], back->typeInfo->getDisplayName().c_str())}));
     node->setFlagsValueIsComputed();
 
