@@ -449,17 +449,19 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
             //////
             else if (child->token.text == g_LangSpec->name_Pack)
             {
-                auto attrValue = curAttr->attributes.getValue(g_LangSpec->name_Swag_Pack, g_LangSpec->name_value);
+                auto attrParam = curAttr->attributes.getParam(g_LangSpec->name_Swag_Pack, g_LangSpec->name_value);
+                auto attrValue = &attrParam->value;
                 SWAG_ASSERT(attrValue);
-                SWAG_VERIFY(!attrValue->reg.u8 || isPowerOfTwo(attrValue->reg.u8), context->report({child, Utf8::format(g_E[Err0595], attrValue->reg.u8)}));
+                SWAG_VERIFY(!attrValue->reg.u8 || isPowerOfTwo(attrValue->reg.u8), context->report({child, attrParam->token, Utf8::format(g_E[Err0595], attrValue->reg.u8)}));
             }
 
             //////
             else if (child->token.text == g_LangSpec->name_Align)
             {
-                auto attrValue = curAttr->attributes.getValue(g_LangSpec->name_Swag_Align, g_LangSpec->name_value);
+                auto attrParam = curAttr->attributes.getParam(g_LangSpec->name_Swag_Align, g_LangSpec->name_value);
+                auto attrValue = &attrParam->value;
                 SWAG_ASSERT(attrValue);
-                SWAG_VERIFY(isPowerOfTwo(attrValue->reg.u8), context->report({child, Utf8::format(g_E[Err0596], attrValue->reg.u8)}));
+                SWAG_VERIFY(isPowerOfTwo(attrValue->reg.u8), context->report({child, attrParam->token, Utf8::format(g_E[Err0596], attrValue->reg.u8)}));
             }
 
             // Remember attributes that's here
