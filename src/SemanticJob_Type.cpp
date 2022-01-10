@@ -26,7 +26,7 @@ bool SemanticJob::sendCompilerMsgTypeDecl(SemanticContext* context)
 
     CompilerMessage msg      = {0};
     msg.concrete.kind        = CompilerMsgKind::SemTypes;
-    msg.concrete.name.buffer = (void*) node->token.text.c_str();
+    msg.concrete.name.buffer = (void*) node->token.ctext();
     msg.concrete.name.count  = node->token.text.length();
     msg.typeInfo             = node->typeInfo;
     SWAG_CHECK(module->postCompilerMessage(context, msg));
@@ -268,7 +268,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
                     symName->kind != SymbolKind::Struct &&
                     symName->kind != SymbolKind::Interface)
                 {
-                    Diagnostic diag{child->sourceFile, child->token, Utf8::format(g_E[Err0017], child->token.text.c_str(), SymTable::getArticleKindName(symName->kind))};
+                    Diagnostic diag{child->sourceFile, child->token, Utf8::format(g_E[Err0017], child->token.ctext(), SymTable::getArticleKindName(symName->kind))};
                     Diagnostic note{symOver->node, Utf8::format(g_E[Nte0029], symName->name.c_str()), DiagnosticLevel::Note};
                     if (typeNode->ptrCount && symName->kind == SymbolKind::Variable)
                     {
@@ -478,7 +478,7 @@ bool SemanticJob::checkPublicAlias(SemanticContext* context, AstNode* node)
             auto overload = back->resolvedSymbolOverload;
             if (overload && !(overload->node->attributeFlags & ATTRIBUTE_PUBLIC) && !overload->node->sourceFile->isGenerated)
             {
-                Diagnostic diag{back, Utf8::format(g_E[Err0025], back->token.text.c_str())};
+                Diagnostic diag{back, Utf8::format(g_E[Err0025], back->token.ctext())};
                 Diagnostic note{overload->node, Utf8::format(g_E[Nte0029], node->resolvedSymbolName->name.c_str()), DiagnosticLevel::Note};
                 return context->report(diag, &note);
             }

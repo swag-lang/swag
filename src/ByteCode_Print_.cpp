@@ -345,7 +345,7 @@ void ByteCode::print(ByteCodeInstruction* curIp)
     {
         g_Log.print(AstNode::getKindName(node).c_str());
         g_Log.print(" ");
-        g_Log.print(node->token.text.c_str());
+        g_Log.print(node->token.ctext());
     }
     else
     {

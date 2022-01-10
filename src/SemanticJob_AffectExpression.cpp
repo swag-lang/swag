@@ -117,7 +117,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     // No direct operations on any, except affect any to any
     if (leftTypeInfo->isNative(NativeTypeKind::Any) && node->token.id != TokenId::SymEqual)
     {
-        return context->report({node, Utf8::format(g_E[Err0570], node->token.text.c_str())});
+        return context->report({node, Utf8::format(g_E[Err0570], node->token.ctext())});
     }
 
     // Is this an array like affectation ?

@@ -587,10 +587,10 @@ bool SyntaxJob::doModifiers(Token& forNode, uint32_t& mdfFlags)
             case TokenId::SymGreaterGreaterEqual:
                 break;
             default:
-                return error(token, Utf8::format(g_E[Err0266], forNode.text.c_str()));
+                return error(token, Utf8::format(g_E[Err0266], forNode.ctext()));
             }
 
-            SWAG_VERIFY(!(mdfFlags & MODIFIER_SAFE), error(token, Utf8::format(g_E[Err0265], token.text.c_str())));
+            SWAG_VERIFY(!(mdfFlags & MODIFIER_SAFE), error(token, Utf8::format(g_E[Err0265], token.ctext())));
             mdfFlags |= MODIFIER_SAFE;
             SWAG_CHECK(eatToken());
             continue;
@@ -606,10 +606,10 @@ bool SyntaxJob::doModifiers(Token& forNode, uint32_t& mdfFlags)
             case TokenId::SymGreaterGreaterEqual:
                 break;
             default:
-                return error(token, Utf8::format(g_E[Err0266], forNode.text.c_str()));
+                return error(token, Utf8::format(g_E[Err0266], forNode.ctext()));
             }
 
-            SWAG_VERIFY(!(mdfFlags & MODIFIER_SMALL), error(token, Utf8::format(g_E[Err0265], token.text.c_str())));
+            SWAG_VERIFY(!(mdfFlags & MODIFIER_SMALL), error(token, Utf8::format(g_E[Err0265], token.ctext())));
             mdfFlags |= MODIFIER_SMALL;
             SWAG_CHECK(eatToken());
             continue;
@@ -623,10 +623,10 @@ bool SyntaxJob::doModifiers(Token& forNode, uint32_t& mdfFlags)
             case TokenId::SymColonEqual:
                 break;
             default:
-                return error(token, Utf8::format(g_E[Err0266], forNode.text.c_str()));
+                return error(token, Utf8::format(g_E[Err0266], forNode.ctext()));
             }
 
-            SWAG_VERIFY(!(mdfFlags & MODIFIER_NOLEFTDROP), error(token, Utf8::format(g_E[Err0265], token.text.c_str())));
+            SWAG_VERIFY(!(mdfFlags & MODIFIER_NOLEFTDROP), error(token, Utf8::format(g_E[Err0265], token.ctext())));
             mdfFlags |= MODIFIER_NOLEFTDROP;
             SWAG_CHECK(eatToken());
             continue;
@@ -640,10 +640,10 @@ bool SyntaxJob::doModifiers(Token& forNode, uint32_t& mdfFlags)
             case TokenId::SymColonEqual:
                 break;
             default:
-                return error(token, Utf8::format(g_E[Err0266], forNode.text.c_str()));
+                return error(token, Utf8::format(g_E[Err0266], forNode.ctext()));
             }
 
-            SWAG_VERIFY(!(mdfFlags & MODIFIER_MOVE), error(token, Utf8::format(g_E[Err0265], token.text.c_str())));
+            SWAG_VERIFY(!(mdfFlags & MODIFIER_MOVE), error(token, Utf8::format(g_E[Err0265], token.ctext())));
             mdfFlags |= MODIFIER_MOVE;
             SWAG_CHECK(eatToken());
             continue;
@@ -657,16 +657,16 @@ bool SyntaxJob::doModifiers(Token& forNode, uint32_t& mdfFlags)
             case TokenId::SymColonEqual:
                 break;
             default:
-                return error(token, Utf8::format(g_E[Err0266], forNode.text.c_str()));
+                return error(token, Utf8::format(g_E[Err0266], forNode.ctext()));
             }
 
-            SWAG_VERIFY(!(mdfFlags & MODIFIER_NORIGHTDROP), error(token, Utf8::format(g_E[Err0265], token.text.c_str())));
+            SWAG_VERIFY(!(mdfFlags & MODIFIER_NORIGHTDROP), error(token, Utf8::format(g_E[Err0265], token.ctext())));
             mdfFlags |= MODIFIER_MOVE | MODIFIER_NORIGHTDROP;
             SWAG_CHECK(eatToken());
             continue;
         }
 
-        return error(token, Utf8::format(g_E[Err0264], token.text.c_str()));
+        return error(token, Utf8::format(g_E[Err0264], token.ctext()));
     }
 
     return true;
@@ -909,7 +909,7 @@ bool SyntaxJob::doExpression(AstNode* parent, uint32_t exprFlags, AstNode** resu
     case TokenId::CompilerFuncDrop:
     case TokenId::CompilerFuncMain:
     case TokenId::CompilerFuncTest:
-        return error(token, Utf8::format(g_E[Err0055], token.text.c_str()));
+        return error(token, Utf8::format(g_E[Err0055], token.ctext()));
 
     default:
         SWAG_CHECK(doBoolExpression(parent, exprFlags, &boolExpression));
@@ -1104,7 +1104,7 @@ bool SyntaxJob::doLeftExpressionVar(AstNode* parent, AstNode** result, uint32_t 
         SWAG_CHECK(eatToken());
         while (true)
         {
-            SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::SymQuestion, error(token, Utf8::format(g_E[Err0271], token.text.c_str())));
+            SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::SymQuestion, error(token, Utf8::format(g_E[Err0271], token.ctext())));
             SWAG_CHECK(doIdentifierRef(multi, nullptr, identifierFlags | IDENTIFIER_ACCEPT_QUESTION));
             if (token.id != TokenId::SymComma)
                 break;

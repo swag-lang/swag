@@ -288,7 +288,7 @@ void Generic::waitForGenericParameters(SemanticContext* context, OneGenericMatch
 bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match)
 {
     auto node = context->node;
-    SWAG_VERIFY(!match.genericReplaceTypes.empty(), context->report({node, Utf8::format(g_E[Err0039], node->token.text.c_str())}));
+    SWAG_VERIFY(!match.genericReplaceTypes.empty(), context->report({node, Utf8::format(g_E[Err0039], node->token.ctext())}));
 
     // Be sure all methods have been registered, because we need opDrop & co to be known, as we need
     // to instantiate them also (because those functions can be called by the compiler itself, not by the user)
@@ -312,7 +312,7 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     // In that case, we need to retrieve the real struct
     auto genericStructType = CastTypeInfo<TypeInfoStruct>(overload->typeInfo, overload->typeInfo->kind);
     auto sourceSymbol      = match.symbolName;
-    SWAG_VERIFY(sourceNode->kind == AstNodeKind::StructDecl, context->report({node, Utf8::format(g_E[Err0040], node->token.text.c_str())}));
+    SWAG_VERIFY(sourceNode->kind == AstNodeKind::StructDecl, context->report({node, Utf8::format(g_E[Err0040], node->token.ctext())}));
 
     // Make a new type
     auto newType = CastTypeInfo<TypeInfoStruct>(genericStructType->clone(), genericStructType->kind);
@@ -457,8 +457,8 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
         if (!node->findParent(AstNodeKind::FuncCallParam))
         {
             if (contextualNode)
-                return context->report({contextualNode, Utf8::format(g_E[Err0041], node->token.text.c_str())});
-            return context->report({node, Utf8::format(g_E[Err0042], node->token.text.c_str())});
+                return context->report({contextualNode, Utf8::format(g_E[Err0041], node->token.ctext())});
+            return context->report({node, Utf8::format(g_E[Err0042], node->token.ctext())});
         }
     }
 

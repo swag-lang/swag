@@ -160,7 +160,7 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
                     break;
 
                 default:
-                    context->report({nodeParam->assignment, Utf8::format(g_E[Err0737], nodeParam->assignment->token.text.c_str())});
+                    context->report({nodeParam->assignment, Utf8::format(g_E[Err0737], nodeParam->assignment->token.ctext())});
                     break;
                 }
             }
@@ -209,7 +209,7 @@ bool SemanticJob::sendCompilerMsgFuncDecl(SemanticContext* context)
 
     CompilerMessage msg      = {0};
     msg.concrete.kind        = CompilerMsgKind::SemFunctions;
-    msg.concrete.name.buffer = (void*) node->token.text.c_str();
+    msg.concrete.name.buffer = (void*) node->token.ctext();
     msg.concrete.name.count  = node->token.text.length();
     msg.typeInfo             = typeInfo;
     SWAG_CHECK(module->postCompilerMessage(context, msg));
@@ -274,7 +274,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         for (uint32_t n = 0; n < 32 - maxN; n++)
         {
             if ((mask & 1) == 0)
-                return context->report({node, Utf8::format(g_E[Err0741], node->token.text.c_str(), n)});
+                return context->report({node, Utf8::format(g_E[Err0741], node->token.ctext(), n)});
             mask >>= 1;
         }
     }
@@ -495,8 +495,8 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         }
     }
 
-    SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_COMPLETE) || funcNode->token.text == g_LangSpec->name_opAffect || funcNode->token.text == g_LangSpec->name_opAffectSuffix, context->report({funcNode, Utf8::format(g_E[Err0753], funcNode->token.text.c_str())}));
-    SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_IMPLICIT) || funcNode->token.text == g_LangSpec->name_opAffect || funcNode->token.text == g_LangSpec->name_opAffectSuffix || funcNode->token.text == g_LangSpec->name_opCast, context->report({funcNode, Utf8::format(g_E[Err0754], funcNode->token.text.c_str())}));
+    SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_COMPLETE) || funcNode->token.text == g_LangSpec->name_opAffect || funcNode->token.text == g_LangSpec->name_opAffectSuffix, context->report({funcNode, Utf8::format(g_E[Err0753], funcNode->token.ctext())}));
+    SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_IMPLICIT) || funcNode->token.text == g_LangSpec->name_opAffect || funcNode->token.text == g_LangSpec->name_opAffectSuffix || funcNode->token.text == g_LangSpec->name_opCast, context->report({funcNode, Utf8::format(g_E[Err0754], funcNode->token.ctext())}));
     SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_NO_RETURN) || (funcNode->attributeFlags & (ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO)), context->report({funcNode, Utf8::format(g_E[Err0755], funcNode->getDisplayName().c_str())}));
 
     // Implicit attribute cannot be used on a generic function
@@ -520,7 +520,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
 
         if (funcNode->genericParameters)
         {
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_NOT_GENERIC), context->report({funcNode->genericParameters, Utf8::format(g_E[Err0752], funcNode->token.text.c_str())}));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_NOT_GENERIC), context->report({funcNode->genericParameters, Utf8::format(g_E[Err0752], funcNode->token.ctext())}));
             funcNode->flags |= AST_IS_GENERIC;
         }
 
@@ -528,7 +528,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
             typeInfo->flags |= TYPEINFO_GENERIC;
 
         if ((funcNode->attributeFlags & ATTRIBUTE_NOT_GENERIC) && funcNode->flags & AST_IS_GENERIC)
-            return context->report({funcNode, Utf8::format(g_E[Err0751], funcNode->token.text.c_str())});
+            return context->report({funcNode, Utf8::format(g_E[Err0751], funcNode->token.ctext())});
 
         SWAG_CHECK(setupFuncDeclParams(context, typeInfo, funcNode, funcNode->genericParameters, true));
         if (context->result != ContextResult::Done)
@@ -660,7 +660,7 @@ bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* func
             return context->report({funcNode->returnType->childs.front(), g_E[Err0766]});
         // The function returns nothing but has the 'Swag.Discardable' attribute
         if (funcNode->returnType->typeInfo->isNative(NativeTypeKind::Void) && funcNode->attributeFlags & ATTRIBUTE_DISCARDABLE)
-            return context->report({funcNode, Utf8::format(g_E[Err0767], funcNode->token.text.c_str())});
+            return context->report({funcNode, Utf8::format(g_E[Err0767], funcNode->token.ctext())});
     }
 
     if (funcNode->flags & AST_IS_GENERIC)
@@ -1138,7 +1138,7 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     while (ownerInline)
     {
         if (ownerInline->func == funcDecl)
-            return context->report({identifier, Utf8::format(g_E[Err0775], identifier->token.text.c_str())});
+            return context->report({identifier, Utf8::format(g_E[Err0775], identifier->token.ctext())});
         ownerInline = ownerInline->ownerInline;
     }
 
@@ -1300,7 +1300,7 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
                         if (alias.text == r.second)
                         {
                             PushErrHint errh(g_E[Hnt0026]);
-                            return context->report({id, alias, Utf8::format(g_E[Err0780], alias.text.c_str())});
+                            return context->report({id, alias, Utf8::format(g_E[Err0780], alias.ctext())});
                         }
                     }
 
@@ -1309,7 +1309,7 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
                         if (alias.text == r.second)
                         {
                             PushErrHint errh(g_E[Hnt0026]);
-                            return context->report({id, alias, Utf8::format(g_E[Err0780], alias.text.c_str())});
+                            return context->report({id, alias, Utf8::format(g_E[Err0780], alias.ctext())});
                         }
                     }
                 }
@@ -1330,7 +1330,7 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     if (!funcDecl->subDecls.empty())
     {
         PushErrContext ec(context, identifier, JobContext::ErrorContextType::Inline);
-        SWAG_VERIFY(inlineNode->ownerFct, context->report({funcDecl, Utf8::format(g_E[Err0781], identifier->token.text.c_str())}));
+        SWAG_VERIFY(inlineNode->ownerFct, context->report({funcDecl, Utf8::format(g_E[Err0781], identifier->token.ctext())}));
 
         // Authorize a sub function to access inline parameters, if possible
         // This will work for compile time values, otherwise we will have an out of stack frame when generating the code

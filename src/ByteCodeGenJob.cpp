@@ -187,7 +187,7 @@ bool ByteCodeGenJob::skipNodes(ByteCodeGenContext* context, AstNode* node)
                               if (n->kind != AstNodeKind::Literal)
                                   return true;
                               if (n->semFlags & AST_SEM_LITERAL_SUFFIX)
-                                  return cxt->report({n->childs.front(), Utf8::format(g_E[Err0532], n->childs.front()->token.text.c_str())});
+                                  return cxt->report({n->childs.front(), Utf8::format(g_E[Err0532], n->childs.front()->token.ctext())});
                               return true;
                           });
 
@@ -748,13 +748,13 @@ JobResult ByteCodeGenJob::execute()
         // Be sure that every used registers have been released
         if (context.bc->maxReservedRegisterRC > context.bc->availableRegistersRC.size())
         {
-            context.sourceFile->internalError(context.bc->node, Utf8::format("function `%s` does not release all registers !", context.bc->node->token.text.c_str()));
+            context.sourceFile->internalError(context.bc->node, Utf8::format("function `%s` does not release all registers !", context.bc->node->token.ctext()));
             if (originalNode->attributeFlags & ATTRIBUTE_PRINT_BC)
                 context.bc->print();
         }
         else if (context.bc->maxReservedRegisterRC < context.bc->availableRegistersRC.size())
         {
-            context.sourceFile->internalError(context.bc->node, Utf8::format("function `%s` releases too many registers !", context.bc->node->token.text.c_str()));
+            context.sourceFile->internalError(context.bc->node, Utf8::format("function `%s` releases too many registers !", context.bc->node->token.ctext()));
             if (originalNode->attributeFlags & ATTRIBUTE_PRINT_BC)
                 context.bc->print();
         }

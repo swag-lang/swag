@@ -1034,8 +1034,8 @@ bool ByteCodeGenJob::checkCatchError(ByteCodeGenContext* context, AstNode* callN
     bool raiseErrors = typeInfoFunc->flags & TYPEINFO_CAN_THROW;
     if (raiseErrors && (!callNode->extension || !callNode->extension->ownerTryCatchAssume))
     {
-        Diagnostic diag{callNode, Utf8::format(g_E[Err0534], funcNode->token.text.c_str())};
-        Diagnostic note{typeInfoFunc->declNode, Utf8::format(g_E[Nte0040], typeInfoFunc->declNode->token.text.c_str()), DiagnosticLevel::Note};
+        Diagnostic diag{callNode, Utf8::format(g_E[Err0534], funcNode->token.ctext())};
+        Diagnostic note{typeInfoFunc->declNode, Utf8::format(g_E[Nte0040], typeInfoFunc->declNode->token.ctext()), DiagnosticLevel::Note};
         return context->report(diag, &note);
     }
 
@@ -1045,8 +1045,8 @@ bool ByteCodeGenJob::checkCatchError(ByteCodeGenContext* context, AstNode* callN
             parent->kind == AstNodeKind::Catch ||
             parent->kind == AstNodeKind::Assume)
         {
-            Diagnostic diag{parent, Utf8::format(g_E[Err0535], parent->token.text.c_str())};
-            Diagnostic note{typeInfoFunc->declNode, Utf8::format(g_E[Nte0040], typeInfoFunc->declNode->token.text.c_str()), DiagnosticLevel::Note};
+            Diagnostic diag{parent, Utf8::format(g_E[Err0535], parent->token.ctext())};
+            Diagnostic note{typeInfoFunc->declNode, Utf8::format(g_E[Nte0040], typeInfoFunc->declNode->token.ctext()), DiagnosticLevel::Note};
             return context->report(diag, &note);
         }
     }

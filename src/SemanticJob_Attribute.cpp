@@ -134,9 +134,9 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
     if (specificMsg)
     {
         auto       nakedName = AstNode::getKindName(checkNode);
-        Diagnostic diag{oneAttribute, Utf8::format(g_E[Err0583], oneAttribute->token.text.c_str(), specificMsg)};
+        Diagnostic diag{oneAttribute, Utf8::format(g_E[Err0583], oneAttribute->token.ctext(), specificMsg)};
         Diagnostic note1{checkNode, Utf8::format(g_E[Nte0019], nakedName.c_str()), DiagnosticLevel::Note};
-        Diagnostic note2{oneAttribute->resolvedSymbolOverload->node, Utf8::format(g_E[Nte0025], oneAttribute->token.text.c_str()), DiagnosticLevel::Note};
+        Diagnostic note2{oneAttribute->resolvedSymbolOverload->node, Utf8::format(g_E[Nte0025], oneAttribute->token.ctext()), DiagnosticLevel::Note};
         return context->report(diag, &note1, &note2);
     }
     else
@@ -144,16 +144,16 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
         auto nakedName = AstNode::getArticleKindName(checkNode);
         if (nakedName == "<node>")
         {
-            Diagnostic diag{oneAttribute, Utf8::format(g_E[Err0586], oneAttribute->token.text.c_str())};
-            Diagnostic note1{oneAttribute->resolvedSymbolOverload->node, Utf8::format(g_E[Nte0025], oneAttribute->token.text.c_str()), DiagnosticLevel::Note};
+            Diagnostic diag{oneAttribute, Utf8::format(g_E[Err0586], oneAttribute->token.ctext())};
+            Diagnostic note1{oneAttribute->resolvedSymbolOverload->node, Utf8::format(g_E[Nte0025], oneAttribute->token.ctext()), DiagnosticLevel::Note};
             return context->report(diag, &note1);
         }
         else
         {
             auto       nakedName1 = AstNode::getKindName(checkNode);
-            Diagnostic diag{oneAttribute, Utf8::format(g_E[Err0588], oneAttribute->token.text.c_str(), nakedName.c_str())};
+            Diagnostic diag{oneAttribute, Utf8::format(g_E[Err0588], oneAttribute->token.ctext(), nakedName.c_str())};
             Diagnostic note1{checkNode, Utf8::format(g_E[Nte0026], nakedName1.c_str()), DiagnosticLevel::Note};
-            Diagnostic note2{oneAttribute->resolvedSymbolOverload->node, Utf8::format(g_E[Nte0025], oneAttribute->token.text.c_str()), DiagnosticLevel::Note};
+            Diagnostic note2{oneAttribute->resolvedSymbolOverload->node, Utf8::format(g_E[Nte0025], oneAttribute->token.ctext()), DiagnosticLevel::Note};
             return context->report(diag, &note1, &note2);
         }
     }
@@ -243,7 +243,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
             {
                 if (isHereTmp.contains(typeInfo))
                 {
-                    Diagnostic diag{forNode, Utf8::format(g_E[Err0591], child->token.text.c_str(), child->token.text.c_str())};
+                    Diagnostic diag{forNode, Utf8::format(g_E[Err0591], child->token.ctext(), child->token.ctext())};
                     Diagnostic note{child, g_E[Nte0032], DiagnosticLevel::Note};
                     return context->report(diag, &note);
                 }

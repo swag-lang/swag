@@ -52,12 +52,12 @@ bool AstOutput::checkIsPublic(OutputContext& context, AstNode* testNode, AstNode
                 else
                     what = "declaration";
 
-                Diagnostic diag{usedNode, Utf8::format(g_E[Err0018], what.c_str(), typeWhat.c_str(), overload->node->token.text.c_str())};
-                Diagnostic note{overload->node, Utf8::format(g_E[Nte0040], overload->node->token.text.c_str()), DiagnosticLevel::Note};
+                Diagnostic diag{usedNode, Utf8::format(g_E[Err0018], what.c_str(), typeWhat.c_str(), overload->node->token.ctext())};
+                Diagnostic note{overload->node, Utf8::format(g_E[Nte0040], overload->node->token.ctext()), DiagnosticLevel::Note};
                 return context.report(diag, &note);
             }
 
-            Diagnostic diag{overload->node, Utf8::format(g_E[Err0316], typeWhat.c_str(), overload->node->token.text.c_str())};
+            Diagnostic diag{overload->node, Utf8::format(g_E[Err0316], typeWhat.c_str(), overload->node->token.ctext())};
             return context.report(diag);
         }
     }

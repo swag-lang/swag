@@ -315,13 +315,13 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
              leftTypeInfo->kind != TypeInfoKind::Slice &&
              leftTypeInfo->kind != TypeInfoKind::Interface)
     {
-        return context->report({left, Utf8::format(g_E[Err0005], node->token.text.c_str(), TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->getDisplayName().c_str())});
+        return context->report({left, Utf8::format(g_E[Err0005], node->token.ctext(), TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->getDisplayName().c_str())});
     }
     else if (rightTypeInfo->kind != TypeInfoKind::Native &&
              rightTypeInfo->kind != TypeInfoKind::Pointer &&
              rightTypeInfo->kind != TypeInfoKind::Struct)
     {
-        return context->report({right, Utf8::format(g_E[Err0005], node->token.text.c_str(), TypeInfo::getNakedKindName(rightTypeInfo), rightTypeInfo->getDisplayName().c_str())});
+        return context->report({right, Utf8::format(g_E[Err0005], node->token.ctext(), TypeInfo::getNakedKindName(rightTypeInfo), rightTypeInfo->getDisplayName().c_str())});
     }
 
     // Cannot compare tuples
@@ -342,7 +342,7 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     if (leftTypeInfo->kind == TypeInfoKind::Slice || leftTypeInfo->kind == TypeInfoKind::Interface)
     {
         if (node->token.id != TokenId::SymEqualEqual && node->token.id != TokenId::SymExclamEqual)
-            return context->report({left, Utf8::format(g_E[Err0005], node->token.text.c_str(), TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->getDisplayName().c_str())});
+            return context->report({left, Utf8::format(g_E[Err0005], node->token.ctext(), TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->getDisplayName().c_str())});
     }
 
     if (node->token.id == TokenId::SymLowerEqualGreater)

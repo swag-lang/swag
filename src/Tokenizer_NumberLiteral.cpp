@@ -42,7 +42,7 @@ bool Tokenizer::doBinLiteral(Token& token)
     {
         token.startLocation = location;
         token.text          = c;
-        SWAG_CHECK(error(token, Utf8::format(g_E[Err0460], token.text.c_str())));
+        SWAG_CHECK(error(token, Utf8::format(g_E[Err0460], token.ctext())));
     }
 
     // Be sure we don't have 0x without nothing
@@ -105,7 +105,7 @@ bool Tokenizer::doHexLiteral(Token& token)
     {
         token.startLocation = location;
         token.text          = c;
-        SWAG_CHECK(error(token, Utf8::format(g_E[Err0463], token.text.c_str())));
+        SWAG_CHECK(error(token, Utf8::format(g_E[Err0463], token.ctext())));
     }
 
     // Be sure we don't have 0x without nothing
@@ -344,7 +344,7 @@ bool Tokenizer::doNumberLiteral(uint32_t c, Token& token)
             treatChar(c, offset);
             token.text          = c;
             token.startLocation = startLoc;
-            return error(token, Utf8::format(g_E[Err0467], token.text.c_str()));
+            return error(token, Utf8::format(g_E[Err0467], token.ctext()));
         }
     }
 

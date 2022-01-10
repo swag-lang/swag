@@ -67,13 +67,13 @@ bool SemanticJob::checkFuncPrototypeOpNumParams(SemanticContext* context, AstFun
     if (exact && (numCur != numWanted))
     {
         if (numCur > numWanted)
-            return context->report({parameters->childs[numWanted], Utf8::format(g_E[Err0043], node->token.text.c_str(), numWanted, numCur)});
-        return context->report({parameters, Utf8::format(g_E[Err0061], node->token.text.c_str(), numWanted, numCur)});
+            return context->report({parameters->childs[numWanted], Utf8::format(g_E[Err0043], node->token.ctext(), numWanted, numCur)});
+        return context->report({parameters, Utf8::format(g_E[Err0061], node->token.ctext(), numWanted, numCur)});
     }
 
     if (!exact && (numCur < numWanted))
     {
-        return context->report({parameters, Utf8::format(g_E[Err0062], node->token.text.c_str(), numWanted, numCur)});
+        return context->report({parameters, Utf8::format(g_E[Err0062], node->token.ctext(), numWanted, numCur)});
     }
 
     return true;
@@ -87,15 +87,15 @@ bool SemanticJob::checkFuncPrototypeOpReturnType(SemanticContext* context, AstFu
     if (wanted == nullptr)
     {
         if (returnType == g_TypeMgr->typeInfoVoid)
-            return context->report({node, Utf8::format(g_E[Err0063], node->token.text.c_str())});
+            return context->report({node, Utf8::format(g_E[Err0063], node->token.ctext())});
         return true;
     }
 
     if (wanted != g_TypeMgr->typeInfoVoid && returnType == g_TypeMgr->typeInfoVoid)
-        return context->report({node, Utf8::format(g_E[Err0064], node->token.text.c_str(), wanted->getDisplayName().c_str())});
+        return context->report({node, Utf8::format(g_E[Err0064], node->token.ctext(), wanted->getDisplayName().c_str())});
 
     if (!returnType->isSame(wanted, ISSAME_CAST))
-        return context->report({node->returnType->childs.front(), Utf8::format(g_E[Err0065], node->token.text.c_str(), wanted->name.c_str(), returnType->getDisplayName().c_str())});
+        return context->report({node->returnType->childs.front(), Utf8::format(g_E[Err0065], node->token.ctext(), wanted->name.c_str(), returnType->getDisplayName().c_str())});
 
     return true;
 }
@@ -104,7 +104,7 @@ bool SemanticJob::checkFuncPrototypeOpParam(SemanticContext* context, AstFuncDec
 {
     auto typeParam = TypeManager::concreteType(parameters->childs[index]->typeInfo, CONCRETE_ALIAS);
     if (!typeParam->isSame(wanted, ISSAME_CAST))
-        return context->report({parameters->childs[index], Utf8::format(g_E[Err0066], getTheNiceParameterRank(index + 1).c_str(), node->token.text.c_str(), wanted->getDisplayName().c_str(), typeParam->getDisplayName().c_str())});
+        return context->report({parameters->childs[index], Utf8::format(g_E[Err0066], getTheNiceParameterRank(index + 1).c_str(), node->token.ctext(), wanted->getDisplayName().c_str(), typeParam->getDisplayName().c_str())});
     return true;
 }
 
@@ -121,7 +121,7 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
     if (!parent)
     {
         Diagnostic note{g_E[Hlp0015], DiagnosticLevel::Help};
-        Diagnostic diag{node, node->tokenName, Utf8::format(g_E[Err0067], node->token.text.c_str())};
+        Diagnostic diag{node, node->tokenName, Utf8::format(g_E[Err0067], node->token.ctext())};
         return context->report(diag, &note);
     }
 

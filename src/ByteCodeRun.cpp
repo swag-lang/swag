@@ -1059,7 +1059,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
                 else if (module->bssCannotChange)
                 {
                     SymbolOverload* over = (SymbolOverload*) ip->c.pointer;
-                    context->error(Utf8::format(g_E[Err0431], over->node->token.text.c_str()));
+                    context->error(Utf8::format(g_E[Err0431], over->node->token.ctext()));
                 }
             }
             registersRC[ip->a.u32].pointer = ptr;
@@ -1080,7 +1080,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
                     else if (module->bssCannotChange)
                     {
                         SymbolOverload* over = (SymbolOverload*) ip->c.pointer;
-                        context->error(Utf8::format(g_E[Err0431], over->node->token.text.c_str()));
+                        context->error(Utf8::format(g_E[Err0431], over->node->token.ctext()));
                     }
                 }
             }

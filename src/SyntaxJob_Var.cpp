@@ -14,9 +14,9 @@ bool SyntaxJob::checkIsValidVarName(AstNode* node)
     {
         auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
         if (identifier->genericParameters)
-            return error(identifier->genericParameters, Utf8::format(g_E[Err0273], identifier->token.text.c_str()));
+            return error(identifier->genericParameters, Utf8::format(g_E[Err0273], identifier->token.ctext()));
         if (identifier->callParameters)
-            return error(identifier->callParameters, Utf8::format(g_E[Err0274], identifier->token.text.c_str()));
+            return error(identifier->callParameters, Utf8::format(g_E[Err0274], identifier->token.ctext()));
     }
 
     if (node->token.text[0] != '@')
@@ -36,7 +36,7 @@ bool SyntaxJob::checkIsValidVarName(AstNode* node)
             while (pz != endpz)
             {
                 if (!SWAG_IS_DIGIT(*pz))
-                    return error(node->token, Utf8::format(g_E[Err0276], node->token.text.c_str(), node->token.text.c_str() + 6));
+                    return error(node->token, Utf8::format(g_E[Err0276], node->token.ctext(), node->token.ctext() + 6));
                 num *= 10;
                 num += *pz - '0';
                 pz++;
@@ -51,7 +51,7 @@ bool SyntaxJob::checkIsValidVarName(AstNode* node)
         }
     }
 
-    return error(node->token, Utf8::format(g_E[Err0278], node->token.text.c_str()));
+    return error(node->token, Utf8::format(g_E[Err0278], node->token.ctext()));
 }
 
 bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, AstNodeKind kind, AstNode** result)
@@ -231,13 +231,13 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result)
     {
         kind = AstNodeKind::ConstDecl;
         SWAG_CHECK(eatToken());
-        SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::SymLeftParen, error(token, Utf8::format(g_E[Err0622], token.text.c_str())));
+        SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::SymLeftParen, error(token, Utf8::format(g_E[Err0622], token.ctext())));
     }
     else
     {
         kind = AstNodeKind::VarDecl;
         SWAG_CHECK(eatToken());
-        SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::SymLeftParen, error(token, Utf8::format(g_E[Err0315], token.text.c_str())));
+        SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::SymLeftParen, error(token, Utf8::format(g_E[Err0315], token.ctext())));
     }
 
     SWAG_CHECK(doVarDecl(parent, result, kind));
@@ -253,8 +253,8 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
         Ast::removeFromParent(leftNode);
 
         SWAG_VERIFY(token.id != TokenId::SymEqualEqual, error(token, g_E[Err0454]));
-        SWAG_VERIFY(token.id != TokenId::SymSemiColon, error(token, Utf8::format(g_E[Err0623], token.text.c_str())));
-        SWAG_VERIFY(token.id == TokenId::SymColon || token.id == TokenId::SymEqual, error(token, Utf8::format(g_E[Err0455], token.text.c_str())));
+        SWAG_VERIFY(token.id != TokenId::SymSemiColon, error(token, Utf8::format(g_E[Err0623], token.ctext())));
+        SWAG_VERIFY(token.id == TokenId::SymColon || token.id == TokenId::SymEqual, error(token, Utf8::format(g_E[Err0455], token.ctext())));
 
         AstNode* type = nullptr;
         if (token.id == TokenId::SymColon)

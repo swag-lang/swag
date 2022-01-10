@@ -66,6 +66,11 @@ struct Token
     SourceLocation startLocation;
     SourceLocation endLocation;
     Register       literalValue;
+
+    const char* ctext()
+    {
+        return text.c_str();
+    }
 };
 
 struct Tokenizer

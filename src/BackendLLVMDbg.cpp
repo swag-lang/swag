@@ -428,7 +428,7 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
             auto          location  = debugLocGet(loc.line + 1, loc.column, SP);
             llvm::DIType* type      = getType(typeParam, file);
 
-            llvm::DILocalVariable* var = dbgBuilder->createParameterVariable(SP, child->token.text.c_str(), idxParam + 1, file, loc.line + 1, type, !isOptimized, llvm::DINode::FlagZero);
+            llvm::DILocalVariable* var = dbgBuilder->createParameterVariable(SP, child->token.ctext(), idxParam + 1, file, loc.line + 1, type, !isOptimized, llvm::DINode::FlagZero);
             dbgBuilder->insertDeclare(func->getArg(idxParam), var, dbgBuilder->createExpression(), location, pp.builder->GetInsertBlock());
 
             idxParam += 2;
@@ -463,7 +463,7 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
                 break;
             }
 
-            llvm::DILocalVariable* var   = dbgBuilder->createParameterVariable(scope, child->token.text.c_str(), idxParam + 1, file, loc.line + 1, type, !isOptimized, flags);
+            llvm::DILocalVariable* var   = dbgBuilder->createParameterVariable(scope, child->token.ctext(), idxParam + 1, file, loc.line + 1, type, !isOptimized, flags);
             llvm::Value*           value = func->getArg(idxParam);
 
             // Parameters are "optimized away" by the debugger, most of the time.
@@ -497,7 +497,7 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
             {
                 llvm::DIType*          type  = getPointerToType(typeInfo, file);
                 auto                   scope = getOrCreateScope(file, localVar->ownerScope);
-                llvm::DILocalVariable* var   = dbgBuilder->createParameterVariable(SP, localVar->token.text.c_str(), 1, file, loc.line + 1, type, !isOptimized);
+                llvm::DILocalVariable* var   = dbgBuilder->createParameterVariable(SP, localVar->token.ctext(), 1, file, loc.line + 1, type, !isOptimized);
                 auto                   v     = func->getArg(0);
                 vector<int64_t>        expr;
                 dbgBuilder->insertDeclare(v, var, dbgBuilder->createExpression(expr), debugLocGet(loc.line + 1, loc.column, scope), pp.builder->GetInsertBlock());
@@ -507,7 +507,7 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
         {
             llvm::DIType*          type  = getType(typeInfo, file);
             auto                   scope = getOrCreateScope(file, localVar->ownerScope);
-            llvm::DILocalVariable* var   = dbgBuilder->createAutoVariable(scope, localVar->token.text.c_str(), file, localVar->token.startLocation.line, type, !isOptimized);
+            llvm::DILocalVariable* var   = dbgBuilder->createAutoVariable(scope, localVar->token.ctext(), file, localVar->token.startLocation.line, type, !isOptimized);
             auto                   v     = builder.CreateInBoundsGEP(stack, pp.builder->getInt32(overload->computedValue.storageOffset));
             dbgBuilder->insertDeclare(v, var, dbgBuilder->createExpression(), debugLocGet(loc.line + 1, loc.column, scope), pp.builder->GetInsertBlock());
         }
@@ -687,7 +687,7 @@ void BackendLLVMDbg::createGlobalVariablesForSegment(const BuildParameters& buil
 
         varType         = varType->getPointerTo();
         constExpr       = llvm::ConstantExpr::getPointerCast(constExpr, varType);
-        auto name       = node->token.text.c_str();
+        auto name       = node->token.ctext();
         auto g          = new llvm::GlobalVariable(modu, varType, false, llvm::GlobalValue::ExternalLinkage, constExpr, name);
         auto dbgRefType = getReferenceToType(typeInfo, file);
         auto gve        = pp.dbg->dbgBuilder->createGlobalVariableExpression(compileUnit, name, name, file, 0, dbgRefType, dbgType, true);

@@ -456,7 +456,7 @@ bool SemanticJob::sendCompilerMsgGlobalVar(SemanticContext* context)
 
     CompilerMessage msg      = {0};
     msg.concrete.kind        = CompilerMsgKind::SemGlobals;
-    msg.concrete.name.buffer = (void*) node->token.text.c_str();
+    msg.concrete.name.buffer = (void*) node->token.ctext();
     msg.concrete.name.count  = node->token.text.length();
     msg.typeInfo             = node->typeInfo;
     SWAG_CHECK(module->postCompilerMessage(context, msg));
@@ -639,7 +639,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         if (!ownerFct)
         {
             Diagnostic note{g_E[Hlp0010], DiagnosticLevel::Help};
-            return context->report({node, Utf8::format(g_E[Err0410], node->token.text.c_str())}, &note);
+            return context->report({node, Utf8::format(g_E[Err0410], node->token.ctext())}, &note);
         }
     }
 
@@ -930,7 +930,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     SWAG_VERIFY(node->typeInfo != g_TypeMgr->typeInfoNull, context->report({node, g_E[Err0308]}));
 
     // We should have a type here !
-    SWAG_VERIFY(node->typeInfo, context->report({node, Utf8::format(g_E[Err0309], AstNode::getKindName(node).c_str(), node->token.text.c_str())}));
+    SWAG_VERIFY(node->typeInfo, context->report({node, Utf8::format(g_E[Err0309], AstNode::getKindName(node).c_str(), node->token.ctext())}));
 
     // Determine if the call parameters cover everything (to avoid calling default initialization)
     // i.e. set AST_HAS_FULL_STRUCT_PARAMETERS

@@ -266,9 +266,9 @@ void Workspace::errorPendingJobsMsg(Job* prevJob, Job* depJob, vector<const Diag
 
     Utf8 msg = Utf8::format(g_E[Nte0046],
                             AstNode::getKindName(prevNode).c_str(),
-                            prevNode->token.text.c_str(),
+                            prevNode->token.ctext(),
                             AstNode::getKindName(depNode).c_str(),
-                            depNode->token.text.c_str());
+                            depNode->token.ctext());
 
     if (prevJob->waitingHintNode)
     {
@@ -276,7 +276,7 @@ void Workspace::errorPendingJobsMsg(Job* prevJob, Job* depJob, vector<const Diag
         {
         case AstNodeKind::VarDecl:
             msg += " ";
-            msg += Utf8::format("because of %s `%s`", AstNode::getKindName(prevJob->waitingHintNode).c_str(), prevJob->waitingHintNode->token.text.c_str());
+            msg += Utf8::format("because of %s `%s`", AstNode::getKindName(prevJob->waitingHintNode).c_str(), prevJob->waitingHintNode->token.ctext());
             break;
         }
 
@@ -339,7 +339,7 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
 
             errorPendingJobsMsg(prevJob, pendingJob, notes);
 
-            Diagnostic diag{pendingJob->originalNode, Utf8::format(g_E[Err0419], AstNode::getKindName(pendingJob->originalNode).c_str(), pendingJob->originalNode->token.text.c_str())};
+            Diagnostic diag{pendingJob->originalNode, Utf8::format(g_E[Err0419], AstNode::getKindName(pendingJob->originalNode).c_str(), pendingJob->originalNode->token.ctext())};
             sourceFile->report(diag, notes);
             doneOne = true;
             continue;
@@ -364,7 +364,7 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
         auto toSolve = pendingJob->waitingSymbolSolved;
         if (!toSolve)
         {
-            Diagnostic diag{node, Utf8::format(g_E[Err0549], pendingJob->module->name.c_str(), AstNode::getKindName(node).c_str(), node->token.text.c_str())};
+            Diagnostic diag{node, Utf8::format(g_E[Err0549], pendingJob->module->name.c_str(), AstNode::getKindName(node).c_str(), node->token.ctext())};
 #ifdef SWAG_DEV_MODE
             diag.remarks.push_back(it.id);
 #endif
@@ -408,7 +408,7 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
             auto       node       = it.node;
             auto       pendingJob = it.pendingJob;
             auto       sourceFile = pendingJob->sourceFile;
-            Diagnostic diag{node, Utf8::format(g_E[Err0549], pendingJob->module->name.c_str(), AstNode::getKindName(node).c_str(), node->token.text.c_str())};
+            Diagnostic diag{node, Utf8::format(g_E[Err0549], pendingJob->module->name.c_str(), AstNode::getKindName(node).c_str(), node->token.ctext())};
             sourceFile->report(diag);
         }
     }

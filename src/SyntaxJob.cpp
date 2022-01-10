@@ -78,13 +78,13 @@ bool SyntaxJob::invalidTokenError(InvalidTokenError kind)
     }
 
     if (Tokenizer::isSymbol(token.id))
-        msg += Utf8::format(", found symbol `%s` ", token.text.c_str());
+        msg += Utf8::format(", found symbol `%s` ", token.ctext());
     else if (token.id == TokenId::Identifier)
-        msg += Utf8::format(", found identifier `%s` ", token.text.c_str());
+        msg += Utf8::format(", found identifier `%s` ", token.ctext());
     else if (token.id == TokenId::NativeType)
-        msg += Utf8::format(", found type `%s` ", token.text.c_str());
+        msg += Utf8::format(", found type `%s` ", token.ctext());
     else
-        msg += Utf8::format(", found `%s` ", token.text.c_str());
+        msg += Utf8::format(", found `%s` ", token.ctext());
 
     switch (token.id)
     {
@@ -148,7 +148,7 @@ bool SyntaxJob::eatToken(TokenId id, const char* msg)
         if (token.id == TokenId::EndOfFile)
             SWAG_CHECK(error(token, Utf8::format(g_E[Err0329], g_LangSpec->tokenToName(id).c_str(), msg)));
         else
-            SWAG_CHECK(error(token, Utf8::format(g_E[Err0330], g_LangSpec->tokenToName(id).c_str(), token.text.c_str(), msg)));
+            SWAG_CHECK(error(token, Utf8::format(g_E[Err0330], g_LangSpec->tokenToName(id).c_str(), token.ctext(), msg)));
     }
 
     SWAG_CHECK(eatToken());
@@ -160,7 +160,7 @@ bool SyntaxJob::eatTokenNoEOL(TokenId id, const char* msg)
     auto lastToken = token;
     SWAG_CHECK(eatToken(id, msg));
     if (token.lastTokenIsEOL)
-        SWAG_CHECK(error(lastToken, Utf8::format(g_E[Err0858], lastToken.text.c_str(), msg)));
+        SWAG_CHECK(error(lastToken, Utf8::format(g_E[Err0858], lastToken.ctext(), msg)));
     return true;
 }
 
@@ -172,7 +172,7 @@ bool SyntaxJob::eatSemiCol(const char* msg)
             msg = "";
 
         PushErrHint errh(g_E[Hnt0013]);
-        SWAG_CHECK(error(token, Utf8::format(g_E[Err0331], token.text.c_str(), msg)));
+        SWAG_CHECK(error(token, Utf8::format(g_E[Err0331], token.ctext(), msg)));
     }
 
     if (token.id == TokenId::SymSemiColon)

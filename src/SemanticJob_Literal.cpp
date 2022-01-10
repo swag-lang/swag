@@ -189,7 +189,7 @@ Utf8 SemanticJob::checkLiteralType(ComputedValue& computedValue, Token& token, T
         VectorNative<uint32_t> uni;
         computedValue.text.toUni32(uni);
         if (uni.size() != 1)
-            return Utf8::format(g_E[Err0262], token.text.c_str());
+            return Utf8::format(g_E[Err0262], token.ctext());
 
         switch (typeSuffix->nativeType)
         {

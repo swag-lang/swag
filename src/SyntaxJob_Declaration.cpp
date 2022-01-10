@@ -117,12 +117,12 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result, bool forGlobal)
         case TokenId::SymSemiColon:
             return error(token, g_E[Err0390]);
         default:
-            return error(token, Utf8::format(g_E[Err0391], token.text.c_str()));
+            return error(token, Utf8::format(g_E[Err0391], token.ctext()));
         }
 
         // Be sure this is not the swag namespace, except for a runtime file
         if (!sourceFile->isBootstrapFile && !sourceFile->isRuntimeFile)
-            SWAG_VERIFY(!token.text.compareNoCase(g_LangSpec->name_Swag), error(token, Utf8::format(g_E[Err0392], token.text.c_str())));
+            SWAG_VERIFY(!token.text.compareNoCase(g_LangSpec->name_Swag), error(token, Utf8::format(g_E[Err0392], token.ctext())));
 
         // Add/Get namespace
         {
@@ -406,7 +406,7 @@ bool SyntaxJob::doScopeBreakable(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
     if (token.id != TokenId::SymLeftCurly)
     {
-        SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Utf8::format(g_E[Err0395], token.text.c_str())));
+        SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Utf8::format(g_E[Err0395], token.ctext())));
         labelNode->inheritTokenName(token);
         labelNode->inheritTokenLocation(token);
         SWAG_CHECK(eatToken());
@@ -666,13 +666,13 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
 
     case TokenId::KwdPublic:
     case TokenId::KwdPrivate:
-        return error(token, Utf8::format(g_E[Err0665], token.text.c_str()));
+        return error(token, Utf8::format(g_E[Err0665], token.ctext()));
 
     default:
         if (Tokenizer::isIntrinsicReturn(token.id))
         {
             PushErrHint eh(g_E[Hnt0008]);
-            return error(token, Utf8::format(g_E[Err0892], token.text.c_str()));
+            return error(token, Utf8::format(g_E[Err0892], token.ctext()));
         }
 
         return invalidTokenError(InvalidTokenError::EmbeddedInstruction);

@@ -198,12 +198,12 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
             case NativeTypeKind::String:
             case NativeTypeKind::F32:
             case NativeTypeKind::F64:
-                return context->report({valNode, Utf8::format(g_E[Err0706], valNode->token.text.c_str(), rawTypeInfo->getDisplayName().c_str())});
+                return context->report({valNode, Utf8::format(g_E[Err0706], valNode->token.ctext(), rawTypeInfo->getDisplayName().c_str())});
             }
             break;
 
         case TypeInfoKind::Slice:
-            return context->report({valNode, Utf8::format(g_E[Err0706], valNode->token.text.c_str(), rawTypeInfo->getDisplayName().c_str())});
+            return context->report({valNode, Utf8::format(g_E[Err0706], valNode->token.ctext(), rawTypeInfo->getDisplayName().c_str())});
         }
     }
 
@@ -231,11 +231,11 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
             {
             case NativeTypeKind::U8:
                 if (enumNode->computedValue->reg.u8 == UINT8_MAX)
-                    return context->report({valNode, Utf8::format(g_E[Err0708], valNode->token.text.c_str())});
+                    return context->report({valNode, Utf8::format(g_E[Err0708], valNode->token.ctext())});
                 if (isFlags && enumNode->computedValue->reg.u8)
                 {
                     auto n = enumNode->computedValue->reg.u8;
-                    SWAG_VERIFY((n & (n - 1)) == 0, context->report({valNode, Utf8::format(g_E[Err0709], valNode->token.text.c_str())}));
+                    SWAG_VERIFY((n & (n - 1)) == 0, context->report({valNode, Utf8::format(g_E[Err0709], valNode->token.ctext())}));
                     enumNode->computedValue->reg.u8 <<= 1;
                 }
                 else
@@ -243,11 +243,11 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
                 break;
             case NativeTypeKind::U16:
                 if (enumNode->computedValue->reg.u16 == UINT16_MAX)
-                    return context->report({valNode, Utf8::format(g_E[Err0710], valNode->token.text.c_str())});
+                    return context->report({valNode, Utf8::format(g_E[Err0710], valNode->token.ctext())});
                 if (isFlags && enumNode->computedValue->reg.u16)
                 {
                     auto n = enumNode->computedValue->reg.u16;
-                    SWAG_VERIFY((n & (n - 1)) == 0, context->report({valNode, Utf8::format(g_E[Err0709], valNode->token.text.c_str())}));
+                    SWAG_VERIFY((n & (n - 1)) == 0, context->report({valNode, Utf8::format(g_E[Err0709], valNode->token.ctext())}));
                     enumNode->computedValue->reg.u16 <<= 1;
                 }
                 else
@@ -255,11 +255,11 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
                 break;
             case NativeTypeKind::U32:
                 if (enumNode->computedValue->reg.u32 == UINT32_MAX)
-                    return context->report({valNode, Utf8::format(g_E[Err0712], valNode->token.text.c_str())});
+                    return context->report({valNode, Utf8::format(g_E[Err0712], valNode->token.ctext())});
                 if (isFlags && enumNode->computedValue->reg.u32)
                 {
                     auto n = enumNode->computedValue->reg.u32;
-                    SWAG_VERIFY((n & (n - 1)) == 0, context->report({valNode, Utf8::format(g_E[Err0709], valNode->token.text.c_str())}));
+                    SWAG_VERIFY((n & (n - 1)) == 0, context->report({valNode, Utf8::format(g_E[Err0709], valNode->token.ctext())}));
                     enumNode->computedValue->reg.u32 <<= 1;
                 }
                 else
@@ -268,11 +268,11 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
             case NativeTypeKind::U64:
             case NativeTypeKind::UInt:
                 if (enumNode->computedValue->reg.u64 == UINT64_MAX)
-                    return context->report({valNode, Utf8::format(g_E[Err0714], valNode->token.text.c_str())});
+                    return context->report({valNode, Utf8::format(g_E[Err0714], valNode->token.ctext())});
                 if (isFlags && enumNode->computedValue->reg.u64)
                 {
                     auto n = enumNode->computedValue->reg.u64;
-                    SWAG_VERIFY((n & (n - 1)) == 0, context->report({valNode, Utf8::format(g_E[Err0709], valNode->token.text.c_str())}));
+                    SWAG_VERIFY((n & (n - 1)) == 0, context->report({valNode, Utf8::format(g_E[Err0709], valNode->token.ctext())}));
                     enumNode->computedValue->reg.u64 <<= 1;
                 }
                 else
@@ -281,23 +281,23 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
 
             case NativeTypeKind::S8:
                 if (enumNode->computedValue->reg.s8 <= INT8_MIN || enumNode->computedValue->reg.s8 >= INT8_MAX)
-                    return context->report({valNode, Utf8::format(g_E[Err0716], valNode->token.text.c_str())});
+                    return context->report({valNode, Utf8::format(g_E[Err0716], valNode->token.ctext())});
                 enumNode->computedValue->reg.s8++;
                 break;
             case NativeTypeKind::S16:
                 if (enumNode->computedValue->reg.s16 <= INT16_MIN || enumNode->computedValue->reg.s16 >= INT16_MAX)
-                    return context->report({valNode, Utf8::format(g_E[Err0717], valNode->token.text.c_str())});
+                    return context->report({valNode, Utf8::format(g_E[Err0717], valNode->token.ctext())});
                 enumNode->computedValue->reg.s16++;
                 break;
             case NativeTypeKind::S32:
                 if (enumNode->computedValue->reg.s32 <= INT32_MIN || enumNode->computedValue->reg.s32 >= INT32_MAX)
-                    return context->report({valNode, Utf8::format(g_E[Err0718], valNode->token.text.c_str())});
+                    return context->report({valNode, Utf8::format(g_E[Err0718], valNode->token.ctext())});
                 enumNode->computedValue->reg.s32++;
                 break;
             case NativeTypeKind::S64:
             case NativeTypeKind::Int:
                 if (enumNode->computedValue->reg.s64 <= INT64_MIN || enumNode->computedValue->reg.s64 >= INT64_MAX)
-                    return context->report({valNode, Utf8::format(g_E[Err0719], valNode->token.text.c_str())});
+                    return context->report({valNode, Utf8::format(g_E[Err0719], valNode->token.ctext())});
                 enumNode->computedValue->reg.s64++;
                 break;
             }

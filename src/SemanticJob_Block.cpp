@@ -317,9 +317,9 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
                     {
                         Diagnostic note{valDef[idx], g_E[Nte0014], DiagnosticLevel::Note};
                         if (expr->flags & AST_VALUE_IS_TYPEINFO)
-                            return context->report({expr, Utf8::format(g_E[Err0611], expr->token.text.c_str())}, &note);
+                            return context->report({expr, Utf8::format(g_E[Err0611], expr->token.ctext())}, &note);
                         if (expr->typeInfo->kind == TypeInfoKind::Enum)
-                            return context->report({expr, Utf8::format(g_E[Err0612], expr->token.text.c_str())}, &note);
+                            return context->report({expr, Utf8::format(g_E[Err0612], expr->token.ctext())}, &note);
                         if (typeExpr->isNativeInteger())
                             return context->report({expr, Utf8::format(g_E[Err0613], expr->computedValue->reg.u64)}, &note);
                         return context->report({expr, Utf8::format(g_E[Err0614], expr->computedValue->reg.f64)}, &note);
@@ -544,7 +544,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         SWAG_VERIFY(node->expression->kind == AstNodeKind::IdentifierRef, sourceFile->internalError(node->expression, "resolveVisit expression, should be an identifier"));
 
         auto identifierRef    = (AstIdentifierRef*) Ast::clone(node->expression, node);
-        auto callVisit        = Ast::newIdentifier(sourceFile, Utf8::format("opVisit%s", node->extraNameToken.text.c_str()), identifierRef, identifierRef);
+        auto callVisit        = Ast::newIdentifier(sourceFile, Utf8::format("opVisit%s", node->extraNameToken.ctext()), identifierRef, identifierRef);
         callVisit->aliasNames = node->aliasNames;
         callVisit->inheritTokenLocation(node);
 

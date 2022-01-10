@@ -16,7 +16,7 @@ bool TypeManager::errorOutOfRange(SemanticContext* context, AstNode* fromNode, T
     if (fromNode->kind == AstNodeKind::Literal && fromNode->token.text.length() > 2)
     {
         if (std::tolower(fromNode->token.text[1]) == 'x' || std::tolower(fromNode->token.text[1]) == 'b')
-            return context->report({fromNode, Utf8::format(g_E[Err0183], fromNode->token.text.c_str(), fromNode->computedValue->reg.u64, toType->getDisplayName().c_str())});
+            return context->report({fromNode, Utf8::format(g_E[Err0183], fromNode->token.ctext(), fromNode->computedValue->reg.u64, toType->getDisplayName().c_str())});
     }
 
     return context->report({fromNode, Utf8::format(g_E[Err0181], fromNode->computedValue->reg.u64, toType->getDisplayName().c_str())});

@@ -807,9 +807,9 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
             return notAllowed(context, node, leftTypeInfo, "because the enum is not marked with `Swag.EnumFlags`");
 
         if (leftTypeInfo->kind == TypeInfoKind::Enum && !(leftTypeInfo->flags & TYPEINFO_ENUM_FLAGS))
-            return context->report({node, Utf8::format(g_E[Err0037], node->token.text.c_str(), leftTypeInfo->getDisplayName().c_str())});
+            return context->report({node, Utf8::format(g_E[Err0037], node->token.ctext(), leftTypeInfo->getDisplayName().c_str())});
         if (rightTypeInfo->kind == TypeInfoKind::Enum && !(rightTypeInfo->flags & TYPEINFO_ENUM_FLAGS))
-            return context->report({node, Utf8::format(g_E[Err0037], node->token.text.c_str(), rightTypeInfo->getDisplayName().c_str())});
+            return context->report({node, Utf8::format(g_E[Err0037], node->token.ctext(), rightTypeInfo->getDisplayName().c_str())});
 
         isEnumFlags = true;
     }
@@ -831,9 +831,9 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
 
     // Cannot compare tuples
     if (leftTypeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
-        return context->report({left, Utf8::format(g_E[Err0168], node->token.text.c_str())});
+        return context->report({left, Utf8::format(g_E[Err0168], node->token.ctext())});
     if (rightTypeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
-        return context->report({right, Utf8::format(g_E[Err0168], node->token.text.c_str())});
+        return context->report({right, Utf8::format(g_E[Err0168], node->token.ctext())});
 
     node->byteCodeFct = ByteCodeGenJob::emitBinaryOp;
     node->inheritAndFlag2(AST_CONST_EXPR, AST_R_VALUE);

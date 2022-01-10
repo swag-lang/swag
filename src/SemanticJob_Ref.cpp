@@ -42,7 +42,7 @@ bool SemanticJob::checkCanMakeFuncPointer(SemanticContext* context, AstFuncDecl*
     {
         PushErrHint errh(msg1);
         Diagnostic  diag{node, msg};
-        Diagnostic  note{funcNode, Utf8::format(g_E[Nte0029], funcNode->token.text.c_str()), DiagnosticLevel::Note};
+        Diagnostic  note{funcNode, Utf8::format(g_E[Nte0029], funcNode->token.ctext()), DiagnosticLevel::Note};
         return context->report(diag, &note);
     }
 
@@ -209,7 +209,7 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
         auto typeInfo = node->array->typeInfo;
         if (!hasUserOp(context, g_LangSpec->name_opSlice, node->array))
         {
-            Utf8 msg = Utf8::format(g_E[Err0320], node->array->token.text.c_str(), typeInfo->getDisplayName().c_str());
+            Utf8 msg = Utf8::format(g_E[Err0320], node->array->token.ctext(), typeInfo->getDisplayName().c_str());
             return context->report({node->array, msg});
         }
 
@@ -637,7 +637,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
             }
             else
             {
-                Utf8 msg = Utf8::format(g_E[Err0227], arrayNode->array->token.text.c_str(), typeInfo->getDisplayName().c_str());
+                Utf8 msg = Utf8::format(g_E[Err0227], arrayNode->array->token.ctext(), typeInfo->getDisplayName().c_str());
                 return context->report({arrayNode->access, msg});
             }
         }
@@ -735,7 +735,7 @@ bool SemanticJob::resolveDropCopyMove(SemanticContext* context)
     auto node               = CastAst<AstDropCopyMove>(context->node, AstNodeKind::Drop, AstNodeKind::PostCopy, AstNodeKind::PostMove);
     auto expressionTypeInfo = TypeManager::concreteType(node->expression->typeInfo);
 
-    SWAG_VERIFY(expressionTypeInfo->kind == TypeInfoKind::Pointer, context->report({node->expression, Utf8::format(g_E[Err0495], node->token.text.c_str(), expressionTypeInfo->getDisplayName().c_str())}));
+    SWAG_VERIFY(expressionTypeInfo->kind == TypeInfoKind::Pointer, context->report({node->expression, Utf8::format(g_E[Err0495], node->token.ctext(), expressionTypeInfo->getDisplayName().c_str())}));
 
     // Be sure struct if not marked as nocopy
     if (node->kind == AstNodeKind::PostCopy)
@@ -751,7 +751,7 @@ bool SemanticJob::resolveDropCopyMove(SemanticContext* context)
     if (node->count)
     {
         auto countTypeInfo = TypeManager::concreteType(node->count->typeInfo);
-        SWAG_VERIFY(countTypeInfo->isNativeInteger(), context->report({node->count, Utf8::format(g_E[Err0498], node->token.text.c_str(), countTypeInfo->getDisplayName().c_str())}));
+        SWAG_VERIFY(countTypeInfo->isNativeInteger(), context->report({node->count, Utf8::format(g_E[Err0498], node->token.ctext(), countTypeInfo->getDisplayName().c_str())}));
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoUInt, nullptr, node->count, CASTFLAG_TRY_COERCE));
     }
 

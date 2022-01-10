@@ -627,14 +627,14 @@ Utf8 AstFuncDecl::getDisplayName()
         return "lambda";
 
     if (flags & AST_SPECIAL_COMPILER_FUNC)
-        return Utf8::format("`%s` block", token.text.c_str());
+        return Utf8::format("`%s` block", token.ctext());
 
     if (attributeFlags & ATTRIBUTE_MIXIN)
-        return Utf8::format("mixin `%s`", token.text.c_str());
+        return Utf8::format("mixin `%s`", token.ctext());
     if (attributeFlags & ATTRIBUTE_MACRO)
-        return Utf8::format("macro `%s`", token.text.c_str());
+        return Utf8::format("macro `%s`", token.ctext());
 
-    return Utf8::format("function `%s`", token.text.c_str());
+    return Utf8::format("function `%s`", token.ctext());
 }
 
 void AstFuncDecl::computeFullNameForeign(bool forExport)
