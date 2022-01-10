@@ -11,15 +11,15 @@
 bool TypeManager::errorOutOfRange(SemanticContext* context, AstNode* fromNode, TypeInfo* fromType, TypeInfo* toType, bool isNeg)
 {
     if (isNeg)
-        return context->report({fromNode, Fmt(g_E[Err0180], fromNode->computedValue->reg.s64, toType->getDisplayNameC())});
+        return context->report({fromNode, Fmt(Err(Err0180), fromNode->computedValue->reg.s64, toType->getDisplayNameC())});
 
     if (fromNode->kind == AstNodeKind::Literal && fromNode->token.text.length() > 2)
     {
         if (std::tolower(fromNode->token.text[1]) == 'x' || std::tolower(fromNode->token.text[1]) == 'b')
-            return context->report({fromNode, Fmt(g_E[Err0183], fromNode->token.ctext(), fromNode->computedValue->reg.u64, toType->getDisplayNameC())});
+            return context->report({fromNode, Fmt(Err(Err0183), fromNode->token.ctext(), fromNode->computedValue->reg.u64, toType->getDisplayNameC())});
     }
 
-    return context->report({fromNode, Fmt(g_E[Err0181], fromNode->computedValue->reg.u64, toType->getDisplayNameC())});
+    return context->report({fromNode, Fmt(Err(Err0181), fromNode->computedValue->reg.u64, toType->getDisplayNameC())});
 }
 
 bool TypeManager::safetyComputedValue(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
@@ -255,8 +255,8 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
         {
             if (TypeManager::makeCompatibles(context, toType, fromType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
             {
-                PushErrHint errh(Fmt(g_E[Hnt0032], fromType->getDisplayNameC(), toType->getDisplayNameC()));
-                Diagnostic  diag{fromNode, Fmt(g_E[Err0175], fromType->getDisplayNameC(), toType->getDisplayNameC())};
+                PushErrHint errh(Fmt(Hnt(Hnt0032), fromType->getDisplayNameC(), toType->getDisplayNameC()));
+                Diagnostic  diag{fromNode, Fmt(Err(Err0175), fromType->getDisplayNameC(), toType->getDisplayNameC())};
                 return context->report(diag);
             }
         }
@@ -271,29 +271,29 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
                 fromType = CastTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer)->pointedType;
             }
 
-            return context->report(hint, {fromNode, Fmt(g_E[Err0176], fromType->getDisplayNameC(), toType->getDisplayNameC())});
+            return context->report(hint, {fromNode, Fmt(Err(Err0176), fromType->getDisplayNameC(), toType->getDisplayNameC())});
         }
 
         if (toType->kind == TypeInfoKind::Pointer && (fromType->isNativeIntegerOrRune() || fromType->isNativeFloat() || fromType->isNative(NativeTypeKind::Bool)))
         {
-            PushErrHint errh(g_E[Hnt0005]);
-            return context->report({fromNode, Fmt(g_E[Err0907], fromType->getDisplayNameC())});
+            PushErrHint errh(Hnt(Hnt0005));
+            return context->report({fromNode, Fmt(Err(Err0907), fromType->getDisplayNameC())});
         }
 
         if (castFlags & CASTFLAG_CONST_ERR)
         {
-            PushErrHint errh(g_E[Hnt0022]);
-            return context->report({fromNode, Fmt(g_E[Err0418], fromType->getDisplayNameC(), toType->getDisplayNameC())});
+            PushErrHint errh(Hnt(Hnt0022));
+            return context->report({fromNode, Fmt(Err(Err0418), fromType->getDisplayNameC(), toType->getDisplayNameC())});
         }
 
         if (fromType->isPointerToTypeInfo() && !toType->isPointerToTypeInfo())
         {
-            PushErrHint errh(g_E[Hnt0040]);
-            return context->report({fromNode, Fmt(g_E[Err0177], fromType->getDisplayNameC(), toType->getDisplayNameC())});
+            PushErrHint errh(Hnt(Hnt0040));
+            return context->report({fromNode, Fmt(Err(Err0177), fromType->getDisplayNameC(), toType->getDisplayNameC())});
         }
 
         // General cast error
-        return context->report({fromNode, Fmt(g_E[Err0177], fromType->getDisplayNameC(), toType->getDisplayNameC())});
+        return context->report({fromNode, Fmt(Err(Err0177), fromType->getDisplayNameC(), toType->getDisplayNameC())});
     }
 
     return false;
@@ -1873,9 +1873,9 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
             bool hasChanged   = false;
 
             if (toTypeStruct->fields.size() > child->childs.size())
-                return context->report({child, Fmt(g_E[Err0196], toTypeStruct->name.c_str(), toTypeStruct->fields.size(), child->childs.size())});
+                return context->report({child, Fmt(Err(Err0196), toTypeStruct->name.c_str(), toTypeStruct->fields.size(), child->childs.size())});
             if (toTypeStruct->fields.size() < child->childs.size())
-                return context->report({child, Fmt(g_E[Err0197], toTypeStruct->name.c_str(), toTypeStruct->fields.size(), child->childs.size())});
+                return context->report({child, Fmt(Err(Err0197), toTypeStruct->name.c_str(), toTypeStruct->fields.size(), child->childs.size())});
 
             auto count = toTypeStruct->fields.size();
             for (int j = 0; j < count; j++)
@@ -2149,9 +2149,9 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
                 {
                     if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
                     {
-                        Diagnostic diag{fromNode, Fmt(g_E[Err0200], fromType->getDisplayNameC(), toType->getDisplayNameC(), fromStruct->getDisplayNameC(), toStruct->getDisplayNameC())};
-                        Diagnostic note1{foundField->declNode, g_E[Nte0015], DiagnosticLevel::Note};
-                        Diagnostic note2{field->declNode, g_E[Nte0016], DiagnosticLevel::Note};
+                        Diagnostic diag{fromNode, Fmt(Err(Err0200), fromType->getDisplayNameC(), toType->getDisplayNameC(), fromStruct->getDisplayNameC(), toStruct->getDisplayNameC())};
+                        Diagnostic note1{foundField->declNode, Nte(Nte0015), DiagnosticLevel::Note};
+                        Diagnostic note2{field->declNode, Nte(Nte0016), DiagnosticLevel::Note};
                         return context->report(diag, &note1, &note2);
                     }
                 }
@@ -2192,9 +2192,9 @@ bool TypeManager::collectInterface(SemanticContext* context, TypeInfoStruct* fro
             {
                 if (foundField)
                 {
-                    Diagnostic diag{context->node, Fmt(g_E[Err0034], fromTypeStruct->structName.c_str(), toTypeItf->name.c_str())};
-                    Diagnostic note1{it.field->declNode, g_E[Nte0006], DiagnosticLevel::Note};
-                    Diagnostic note2{foundField->declNode, g_E[Nte0062], DiagnosticLevel::Note};
+                    Diagnostic diag{context->node, Fmt(Err(Err0034), fromTypeStruct->structName.c_str(), toTypeItf->name.c_str())};
+                    Diagnostic note1{it.field->declNode, Nte(Nte0006), DiagnosticLevel::Note};
+                    Diagnostic note2{foundField->declNode, Nte(Nte0062), DiagnosticLevel::Note};
                     return context->report(diag, &note1, &note2);
                 }
 
@@ -2644,9 +2644,9 @@ bool TypeManager::castToArray(SemanticContext* context, TypeInfo* toType, TypeIn
             if (!(castFlags & CASTFLAG_NO_ERROR))
             {
                 if (toTypeArray->count > fromTypeList->subTypes.size())
-                    context->report({fromNode, Fmt(g_E[Err0203], toTypeArray->count, fromTypeList->subTypes.size())});
+                    context->report({fromNode, Fmt(Err(Err0203), toTypeArray->count, fromTypeList->subTypes.size())});
                 else
-                    context->report({fromNode, Fmt(g_E[Err0204], toTypeArray->count, fromTypeList->subTypes.size())});
+                    context->report({fromNode, Fmt(Err(Err0204), toTypeArray->count, fromTypeList->subTypes.size())});
             }
 
             return false;
@@ -3057,7 +3057,7 @@ bool TypeManager::convertLiteralTupleToStructVar(SemanticContext* context, TypeI
 
     // For a tuple initialization, every parameters must be covered
     if ((typeStruct->flags & TYPEINFO_STRUCT_IS_TUPLE) && countParams != typeStruct->fields.size())
-        return context->report({identifier, Fmt(g_E[Err0205], typeStruct->fields.size(), countParams)});
+        return context->report({identifier, Fmt(Err(Err0205), typeStruct->fields.size(), countParams)});
 
     // Add the 2 nodes to the semantic
     auto b = context->job->nodes.back();

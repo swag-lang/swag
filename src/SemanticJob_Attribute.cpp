@@ -28,7 +28,7 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
 
     SWAG_ASSERT(oneAttribute->typeInfo);
     if (oneAttribute->typeInfo->kind != TypeInfoKind::FuncAttr)
-        return context->report({oneAttribute, Fmt(g_E[Err0582], oneAttribute->typeInfo->getDisplayNameC(), TypeInfo::getArticleKindName(oneAttribute->typeInfo))});
+        return context->report({oneAttribute, Fmt(Err(Err0582), oneAttribute->typeInfo->getDisplayNameC(), TypeInfo::getArticleKindName(oneAttribute->typeInfo))});
 
     auto kind     = checkNode->kind;
     auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(oneAttribute->typeInfo, TypeInfoKind::FuncAttr);
@@ -134,9 +134,9 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
     if (specificMsg)
     {
         auto       nakedName = AstNode::getKindName(checkNode);
-        Diagnostic diag{oneAttribute, Fmt(g_E[Err0583], oneAttribute->token.ctext(), specificMsg)};
-        Diagnostic note1{checkNode, Fmt(g_E[Nte0019], nakedName.c_str()), DiagnosticLevel::Note};
-        Diagnostic note2{oneAttribute->resolvedSymbolOverload->node, Fmt(g_E[Nte0025], oneAttribute->token.ctext()), DiagnosticLevel::Note};
+        Diagnostic diag{oneAttribute, Fmt(Err(Err0583), oneAttribute->token.ctext(), specificMsg)};
+        Diagnostic note1{checkNode, Fmt(Nte(Nte0019), nakedName.c_str()), DiagnosticLevel::Note};
+        Diagnostic note2{oneAttribute->resolvedSymbolOverload->node, Fmt(Nte(Nte0025), oneAttribute->token.ctext()), DiagnosticLevel::Note};
         return context->report(diag, &note1, &note2);
     }
     else
@@ -144,16 +144,16 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
         auto nakedName = AstNode::getArticleKindName(checkNode);
         if (nakedName == "<node>")
         {
-            Diagnostic diag{oneAttribute, Fmt(g_E[Err0586], oneAttribute->token.ctext())};
-            Diagnostic note1{oneAttribute->resolvedSymbolOverload->node, Fmt(g_E[Nte0025], oneAttribute->token.ctext()), DiagnosticLevel::Note};
+            Diagnostic diag{oneAttribute, Fmt(Err(Err0586), oneAttribute->token.ctext())};
+            Diagnostic note1{oneAttribute->resolvedSymbolOverload->node, Fmt(Nte(Nte0025), oneAttribute->token.ctext()), DiagnosticLevel::Note};
             return context->report(diag, &note1);
         }
         else
         {
             auto       nakedName1 = AstNode::getKindName(checkNode);
-            Diagnostic diag{oneAttribute, Fmt(g_E[Err0588], oneAttribute->token.ctext(), nakedName.c_str())};
-            Diagnostic note1{checkNode, Fmt(g_E[Nte0026], nakedName1.c_str()), DiagnosticLevel::Note};
-            Diagnostic note2{oneAttribute->resolvedSymbolOverload->node, Fmt(g_E[Nte0025], oneAttribute->token.ctext()), DiagnosticLevel::Note};
+            Diagnostic diag{oneAttribute, Fmt(Err(Err0588), oneAttribute->token.ctext(), nakedName.c_str())};
+            Diagnostic note1{checkNode, Fmt(Nte(Nte0026), nakedName1.c_str()), DiagnosticLevel::Note};
+            Diagnostic note2{oneAttribute->resolvedSymbolOverload->node, Fmt(Nte(Nte0025), oneAttribute->token.ctext()), DiagnosticLevel::Note};
             return context->report(diag, &note1, &note2);
         }
     }
@@ -243,8 +243,8 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
             {
                 if (isHereTmp.contains(typeInfo))
                 {
-                    Diagnostic diag{forNode, Fmt(g_E[Err0591], child->token.ctext(), child->token.ctext())};
-                    Diagnostic note{child, g_E[Nte0032], DiagnosticLevel::Note};
+                    Diagnostic diag{forNode, Fmt(Err(Err0591), child->token.ctext(), child->token.ctext())};
+                    Diagnostic note{child, Nte(Nte0032), DiagnosticLevel::Note};
                     return context->report(diag, &note);
                 }
 
@@ -278,7 +278,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
             else if (child->token.text == g_LangSpec->name_Using)
             {
                 auto id = CastAst<AstIdentifier>(child->childs.back(), AstNodeKind::Identifier);
-                SWAG_VERIFY(id->callParameters && id->callParameters->childs.size() >= 1, context->report({id, g_E[Err0601]}));
+                SWAG_VERIFY(id->callParameters && id->callParameters->childs.size() >= 1, context->report({id, Err(Err0601)}));
                 for (auto c : id->callParameters->childs)
                 {
                     SWAG_ASSERT(c->flags & AST_VALUE_IS_TYPEINFO);
@@ -308,7 +308,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                         break;
                     }
                     default:
-                        return context->report({c, Fmt(g_E[Err0695], typeChild->getDisplayNameC())});
+                        return context->report({c, Fmt(Err(Err0695), typeChild->getDisplayNameC())});
                     }
 
                     forNode->addAlternativeScope(scope);
@@ -335,8 +335,8 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                         flags |= ATTRIBUTE_EXPORT_TYPE_NOZERO;
                     else
                     {
-                        Diagnostic note{g_E[Hlp0013], DiagnosticLevel::Help};
-                        return context->report({child, attrParam->token, Fmt(g_E[Err0599], w.c_str())}, &note);
+                        Diagnostic note{Hlp(Hlp0013), DiagnosticLevel::Help};
+                        return context->report({child, attrParam->token, Fmt(Err(Err0599), w.c_str())}, &note);
                     }
                 }
             }
@@ -389,8 +389,8 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                     }
                     else
                     {
-                        Diagnostic note{g_E[Hlp0011], DiagnosticLevel::Help};
-                        return context->report({child, attrParam->token, Fmt(g_E[Err0593], w.c_str())}, &note);
+                        Diagnostic note{Hlp(Hlp0011), DiagnosticLevel::Help};
+                        return context->report({child, attrParam->token, Fmt(Err(Err0593), w.c_str())}, &note);
                     }
                 }
             }
@@ -431,8 +431,8 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                     }
                     else
                     {
-                        Diagnostic note{g_E[Hlp0012], DiagnosticLevel::Help};
-                        return context->report({child, attrParam->token, Fmt(g_E[Err0594], w.c_str())}, &note);
+                        Diagnostic note{Hlp(Hlp0012), DiagnosticLevel::Help};
+                        return context->report({child, attrParam->token, Fmt(Err(Err0594), w.c_str())}, &note);
                     }
                 }
             }
@@ -452,7 +452,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 auto attrParam = curAttr->attributes.getParam(g_LangSpec->name_Swag_Pack, g_LangSpec->name_value);
                 auto attrValue = &attrParam->value;
                 SWAG_ASSERT(attrValue);
-                SWAG_VERIFY(!attrValue->reg.u8 || isPowerOfTwo(attrValue->reg.u8), context->report({child, attrParam->token, Fmt(g_E[Err0595], attrValue->reg.u8)}));
+                SWAG_VERIFY(!attrValue->reg.u8 || isPowerOfTwo(attrValue->reg.u8), context->report({child, attrParam->token, Fmt(Err(Err0595), attrValue->reg.u8)}));
             }
 
             //////
@@ -461,7 +461,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 auto attrParam = curAttr->attributes.getParam(g_LangSpec->name_Swag_Align, g_LangSpec->name_value);
                 auto attrValue = &attrParam->value;
                 SWAG_ASSERT(attrValue);
-                SWAG_VERIFY(isPowerOfTwo(attrValue->reg.u8), context->report({child, attrParam->token, Fmt(g_E[Err0596], attrValue->reg.u8)}));
+                SWAG_VERIFY(isPowerOfTwo(attrValue->reg.u8), context->report({child, attrParam->token, Fmt(Err(Err0596), attrValue->reg.u8)}));
             }
 
             // Remember attributes that's here
@@ -507,7 +507,7 @@ bool SemanticJob::resolveAttrDecl(SemanticContext* context)
 bool SemanticJob::resolveAttrUse(SemanticContext* context)
 {
     auto node = CastAst<AstAttrUse>(context->node->parent, AstNodeKind::AttrUse);
-    SWAG_VERIFY(node->content || (node->specFlags & AST_SPEC_ATTRUSE_GLOBAL), context->report({node, g_E[Err0597]}));
+    SWAG_VERIFY(node->content || (node->specFlags & AST_SPEC_ATTRUSE_GLOBAL), context->report({node, Err(Err0597)}));
 
     for (auto child : node->childs)
     {
@@ -528,8 +528,8 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
         auto resolved     = identifier->resolvedSymbolOverload;
         if (resolvedName->kind != SymbolKind::Attribute)
         {
-            Diagnostic diag{identifier, Fmt(g_E[Err0598], resolvedName->name.c_str())};
-            Diagnostic note{resolved->node, Fmt(g_E[Nte0029], resolvedName->name.c_str()), DiagnosticLevel::Note};
+            Diagnostic diag{identifier, Fmt(Err(Err0598), resolvedName->name.c_str())};
+            Diagnostic note{resolved->node, Fmt(Nte(Nte0029), resolvedName->name.c_str()), DiagnosticLevel::Note};
             context->report(diag, &note);
             return false;
         }
@@ -540,8 +540,8 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
             auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FuncAttr);
             if (!(typeInfo->attributeUsage & AttributeUsage::File))
             {
-                Diagnostic diag{identifier, Fmt(g_E[Err0600], resolvedName->name.c_str())};
-                Diagnostic note{resolved->node, Fmt(g_E[Nte0029], resolvedName->name.c_str()), DiagnosticLevel::Note};
+                Diagnostic diag{identifier, Fmt(Err(Err0600), resolvedName->name.c_str())};
+                Diagnostic note{resolved->node, Fmt(Nte(Nte0029), resolvedName->name.c_str()), DiagnosticLevel::Note};
                 context->report(diag, &note);
                 return false;
             }
@@ -560,7 +560,7 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
             for (auto one : identifier->callParameters->childs)
             {
                 auto param = CastAst<AstFuncCallParam>(one, AstNodeKind::FuncCallParam);
-                SWAG_CHECK(checkIsConstExpr(context, param->flags & AST_VALUE_COMPUTED, param, g_E[Err0602]));
+                SWAG_CHECK(checkIsConstExpr(context, param->flags & AST_VALUE_COMPUTED, param, Err(Err0602)));
 
                 AttributeParameter attrParam;
                 attrParam.token      = one->token;

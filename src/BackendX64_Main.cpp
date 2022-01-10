@@ -8,6 +8,7 @@
 #include "Workspace.h"
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
+#include "Diagnostic.h"
 
 bool BackendX64::emitOS(const BuildParameters& buildParameters)
 {
@@ -28,7 +29,7 @@ bool BackendX64::emitOS(const BuildParameters& buildParameters)
     }
     else
     {
-        module->error(Fmt(g_E[Err0056], Backend::GetOsName(g_CommandLine->target)));
+        module->error(Fmt(Err(Err0056), Backend::GetOsName(g_CommandLine->target)));
         return false;
     }
 }
@@ -50,7 +51,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
         entryPoint = "mainCRTStartup";
         break;
     default:
-        module->error(Fmt(g_E[Err0056], Backend::GetOsName(g_CommandLine->target)));
+        module->error(Fmt(Err(Err0056), Backend::GetOsName(g_CommandLine->target)));
         return false;
     }
 

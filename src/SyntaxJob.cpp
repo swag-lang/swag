@@ -23,35 +23,35 @@ bool SyntaxJob::invalidTokenError(InvalidTokenError kind)
     {
     case TokenId::SymAmpersandAmpersand:
         if (kind == InvalidTokenError::EmbeddedInstruction)
-            return error(token, Fmt(g_E[Err0891], "&&", "and"));
+            return error(token, Fmt(Err(Err0891), "&&", "and"));
         break;
     case TokenId::SymVerticalVertical:
         if (kind == InvalidTokenError::EmbeddedInstruction)
-            return error(token, Fmt(g_E[Err0891], "||", "or"));
+            return error(token, Fmt(Err(Err0891), "||", "or"));
         break;
     case TokenId::KwdElse:
         if (kind == InvalidTokenError::EmbeddedInstruction)
-            return error(token, g_E[Err0323]);
+            return error(token, Err(Err0323));
         break;
     case TokenId::KwdElif:
         if (kind == InvalidTokenError::EmbeddedInstruction)
-            return error(token, g_E[Err0351]);
+            return error(token, Err(Err0351));
         break;
     case TokenId::CompilerElse:
         if (kind == InvalidTokenError::EmbeddedInstruction || kind == InvalidTokenError::TopLevelInstruction)
-            return error(token, g_E[Err0324]);
+            return error(token, Err(Err0324));
         break;
     case TokenId::CompilerElseIf:
         if (kind == InvalidTokenError::EmbeddedInstruction || kind == InvalidTokenError::TopLevelInstruction)
-            return error(token, g_E[Err0325]);
+            return error(token, Err(Err0325));
         break;
 
     case TokenId::SymRightParen:
-        return error(token, g_E[Err0326]);
+        return error(token, Err(Err0326));
     case TokenId::SymRightCurly:
-        return error(token, g_E[Err0327]);
+        return error(token, Err(Err0327));
     case TokenId::SymRightSquare:
-        return error(token, g_E[Err0328]);
+        return error(token, Err(Err0328));
     }
 
     Utf8 msg;
@@ -60,20 +60,20 @@ bool SyntaxJob::invalidTokenError(InvalidTokenError kind)
     switch (kind)
     {
     case InvalidTokenError::TopLevelInstruction:
-        msg += g_E[Err0895];
-        hint = g_E[Hnt0014];
+        msg += Err(Err0895);
+        hint = Hnt(Hnt0014);
         break;
     case InvalidTokenError::EmbeddedInstruction:
-        msg += g_E[Err0896];
+        msg += Err(Err0896);
         break;
     case InvalidTokenError::LeftExpression:
-        msg += g_E[Err0897];
+        msg += Err(Err0897);
         break;
     case InvalidTokenError::LeftExpressionVar:
-        msg += g_E[Err0898];
+        msg += Err(Err0898);
         break;
     case InvalidTokenError::PrimaryExpression:
-        msg += g_E[Err0899];
+        msg += Err(Err0899);
         break;
     }
 
@@ -146,9 +146,9 @@ bool SyntaxJob::eatToken(TokenId id, const char* msg)
         if (!msg)
             msg = "";
         if (token.id == TokenId::EndOfFile)
-            SWAG_CHECK(error(token, Fmt(g_E[Err0329], g_LangSpec->tokenToName(id).c_str(), msg)));
+            SWAG_CHECK(error(token, Fmt(Err(Err0329), g_LangSpec->tokenToName(id).c_str(), msg)));
         else
-            SWAG_CHECK(error(token, Fmt(g_E[Err0330], g_LangSpec->tokenToName(id).c_str(), token.ctext(), msg)));
+            SWAG_CHECK(error(token, Fmt(Err(Err0330), g_LangSpec->tokenToName(id).c_str(), token.ctext(), msg)));
     }
 
     SWAG_CHECK(eatToken());
@@ -160,7 +160,7 @@ bool SyntaxJob::eatTokenNoEOL(TokenId id, const char* msg)
     auto lastToken = token;
     SWAG_CHECK(eatToken(id, msg));
     if (token.lastTokenIsEOL)
-        SWAG_CHECK(error(lastToken, Fmt(g_E[Err0858], lastToken.ctext(), msg)));
+        SWAG_CHECK(error(lastToken, Fmt(Err(Err0858), lastToken.ctext(), msg)));
     return true;
 }
 
@@ -171,8 +171,8 @@ bool SyntaxJob::eatSemiCol(const char* msg)
         if (!msg)
             msg = "";
 
-        PushErrHint errh(g_E[Hnt0013]);
-        SWAG_CHECK(error(token, Fmt(g_E[Err0331], token.ctext(), msg)));
+        PushErrHint errh(Hnt(Hnt0013));
+        SWAG_CHECK(error(token, Fmt(Err(Err0331), token.ctext(), msg)));
     }
 
     if (token.id == TokenId::SymSemiColon)
@@ -217,7 +217,7 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
                     fopen_s(&modl->handleGeneratedFile, publicPath.c_str(), "a+N");
                 if (!modl->handleGeneratedFile)
                 {
-                    g_Log.errorOS(Fmt(g_E[Err0524], publicPath.c_str()));
+                    g_Log.errorOS(Fmt(Err(Err0524), publicPath.c_str()));
                     return false;
                 }
             }

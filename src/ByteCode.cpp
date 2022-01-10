@@ -5,6 +5,7 @@
 #include "Module.h"
 #include "TypeManager.h"
 #include "ErrorIds.h"
+#include "Diagnostic.h"
 
 #undef BYTECODE_OP
 #define BYTECODE_OP(__op, __flags, __dis, __nump) {#__op, (int) strlen(#__op), __flags, __dis, __nump},
@@ -98,7 +99,7 @@ void ByteCode::enterByteCode(ByteCodeRunContext* context, uint32_t popParamsOnRe
     if (g_CommandLine->maxRecurse && context->curRC == (int) g_CommandLine->maxRecurse)
     {
         context->hasError = true;
-        context->errorMsg = Fmt(g_E[Err0076], g_CommandLine->maxRecurse);
+        context->errorMsg = Fmt(Err(Err0076), g_CommandLine->maxRecurse);
         return;
     }
 

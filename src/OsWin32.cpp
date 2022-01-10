@@ -120,7 +120,7 @@ namespace OS
         saAttr.lpSecurityDescriptor = nullptr;
         if (!CreatePipe(&hChildStdoutRd, &hChildStdoutWr, &saAttr, 0))
         {
-            g_Log.error(Fmt(g_E[Err0045], cmdline.c_str()));
+            g_Log.error(Fmt(Err(Err0045), cmdline.c_str()));
             return false;
         }
 
@@ -144,7 +144,7 @@ namespace OS
                                 &si,
                                 &pi))
             {
-                g_Log.errorOS(Fmt(g_E[Err0046], cmdline.c_str()));
+                g_Log.errorOS(Fmt(Err(Err0046), cmdline.c_str()));
                 return false;
             }
         }
@@ -358,7 +358,7 @@ namespace OS
                                 &si,
                                 &pi))
             {
-                g_Log.errorOS(Fmt(g_E[Err0046], cmdline.c_str()));
+                g_Log.errorOS(Fmt(Err(Err0046), cmdline.c_str()));
                 return;
             }
         }

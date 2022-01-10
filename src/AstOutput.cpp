@@ -52,12 +52,12 @@ bool AstOutput::checkIsPublic(OutputContext& context, AstNode* testNode, AstNode
                 else
                     what = "declaration";
 
-                Diagnostic diag{usedNode, Fmt(g_E[Err0018], what.c_str(), typeWhat.c_str(), overload->node->token.ctext())};
-                Diagnostic note{overload->node, Fmt(g_E[Nte0040], overload->node->token.ctext()), DiagnosticLevel::Note};
+                Diagnostic diag{usedNode, Fmt(Err(Err0018), what.c_str(), typeWhat.c_str(), overload->node->token.ctext())};
+                Diagnostic note{overload->node, Fmt(Nte(Nte0040), overload->node->token.ctext()), DiagnosticLevel::Note};
                 return context.report(diag, &note);
             }
 
-            Diagnostic diag{overload->node, Fmt(g_E[Err0316], typeWhat.c_str(), overload->node->token.ctext())};
+            Diagnostic diag{overload->node, Fmt(Err(Err0316), typeWhat.c_str(), overload->node->token.ctext())};
             return context.report(diag);
         }
     }

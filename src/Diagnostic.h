@@ -186,3 +186,8 @@ namespace Hint
 {
     Utf8 isType(TypeInfo* typeInfo);
 } // namespace Hint
+
+#define Err(__num) g_E[__num]
+#define Nte(__num) g_E[__num]
+#define Hnt(__num) g_E[__num]
+#define Hlp(__num) g_E[__num]

@@ -20,8 +20,8 @@ bool SemanticJob::resolveIntrinsicTag(SemanticContext* context)
         SWAG_CHECK(evaluateConstExpression(context, front));
         if (context->result == ContextResult::Pending)
             return true;
-        SWAG_CHECK(checkIsConstExpr(context, front->flags & AST_VALUE_COMPUTED, front, g_E[Err0248]));
-        SWAG_VERIFY(front->typeInfo->isNative(NativeTypeKind::String), context->report({front, Fmt(g_E[Err0249], front->typeInfo->getDisplayNameC())}));
+        SWAG_CHECK(checkIsConstExpr(context, front->flags & AST_VALUE_COMPUTED, front, Err(Err0248)));
+        SWAG_VERIFY(front->typeInfo->isNative(NativeTypeKind::String), context->report({front, Fmt(Err(Err0249), front->typeInfo->getDisplayNameC())}));
         auto tag       = g_Workspace->hasTag(front->computedValue->text);
         node->typeInfo = g_TypeMgr->typeInfoBool;
         node->setFlagsValueIsComputed();
@@ -41,10 +41,10 @@ bool SemanticJob::resolveIntrinsicTag(SemanticContext* context)
         if (context->result == ContextResult::Pending)
             return true;
 
-        SWAG_CHECK(checkIsConstExpr(context, nameNode->flags & AST_VALUE_COMPUTED, nameNode, g_E[Err0250]));
-        SWAG_VERIFY(!(nameNode->flags & AST_VALUE_IS_TYPEINFO), context->report({nameNode, g_E[Err0245]}));
-        SWAG_VERIFY(nameNode->typeInfo->isNative(NativeTypeKind::String), context->report({nameNode, Fmt(g_E[Err0251], nameNode->typeInfo->getDisplayNameC())}));
-        SWAG_VERIFY(!(defaultVal->flags & AST_VALUE_IS_TYPEINFO), context->report({defaultVal, g_E[Err0283]}));
+        SWAG_CHECK(checkIsConstExpr(context, nameNode->flags & AST_VALUE_COMPUTED, nameNode, Err(Err0250)));
+        SWAG_VERIFY(!(nameNode->flags & AST_VALUE_IS_TYPEINFO), context->report({nameNode, Err(Err0245)}));
+        SWAG_VERIFY(nameNode->typeInfo->isNative(NativeTypeKind::String), context->report({nameNode, Fmt(Err(Err0251), nameNode->typeInfo->getDisplayNameC())}));
+        SWAG_VERIFY(!(defaultVal->flags & AST_VALUE_IS_TYPEINFO), context->report({defaultVal, Err(Err0283)}));
         SWAG_CHECK(TypeManager::makeCompatibles(context, typeNode->typeInfo, defaultVal->typeInfo, nullptr, defaultVal, CASTFLAG_DEFAULT));
 
         node->typeInfo = typeNode->typeInfo;
@@ -55,8 +55,8 @@ bool SemanticJob::resolveIntrinsicTag(SemanticContext* context)
         {
             if (!TypeManager::makeCompatibles(context, typeNode->typeInfo, tag->type, nullptr, typeNode, CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
             {
-                Diagnostic diag{typeNode, Fmt(g_E[Err0252], typeNode->typeInfo->getDisplayNameC(), tag->type->getDisplayNameC(), tag->name.c_str())};
-                Diagnostic note{typeNode, Fmt(g_E[Nte0038], tag->cmdLine.c_str()), DiagnosticLevel::Note};
+                Diagnostic diag{typeNode, Fmt(Err(Err0252), typeNode->typeInfo->getDisplayNameC(), tag->type->getDisplayNameC(), tag->name.c_str())};
+                Diagnostic note{typeNode, Fmt(Nte(Nte0038), tag->cmdLine.c_str()), DiagnosticLevel::Note};
                 note.hasFile     = false;
                 note.printSource = false;
                 return context->report(diag, &note);
@@ -84,13 +84,13 @@ bool SemanticJob::resolveIntrinsicMakeForeign(SemanticContext* context)
 
     // Check first parameter
     if (first->typeInfo->kind != TypeInfoKind::Lambda)
-        return context->report({first, g_E[Err0782]});
+        return context->report({first, Err(Err0782)});
     first->flags |= AST_NO_BYTECODE;
 
     // Check expression
     SWAG_CHECK(checkIsConcrete(context, expr));
     if (!expr->typeInfo->isSame(g_TypeMgr->typeInfoConstPointers[(int) NativeTypeKind::Void], ISSAME_CAST))
-        return context->report({expr, g_E[Err0783]});
+        return context->report({expr, Err(Err0783)});
 
     node->typeInfo    = first->typeInfo;
     node->byteCodeFct = ByteCodeGenJob::emitIntrinsicMakeForeign;
@@ -103,13 +103,13 @@ bool SemanticJob::resolveIntrinsicMakeCallback(SemanticContext* context, AstNode
 
     // Check first parameter
     if (first->typeInfo->kind != TypeInfoKind::Lambda)
-        return context->report({node, g_E[Err0784]});
+        return context->report({node, Err(Err0784)});
 
     auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(first->typeInfo, TypeInfoKind::Lambda);
     if (typeFunc->parameters.size() > SWAG_LIMIT_CB_MAX_PARAMS)
-        return context->report(Hint::isType(typeFunc), {first, Fmt(g_E[Err0785], SWAG_LIMIT_CB_MAX_PARAMS, typeFunc->parameters.size())});
+        return context->report(Hint::isType(typeFunc), {first, Fmt(Err(Err0785), SWAG_LIMIT_CB_MAX_PARAMS, typeFunc->parameters.size())});
     if (typeFunc->numReturnRegisters() > 1)
-        return context->report(Hint::isType(typeFunc), {first, Fmt(g_E[Err0786], typeFunc->returnType->getDisplayNameC())});
+        return context->report(Hint::isType(typeFunc), {first, Fmt(Err(Err0786), typeFunc->returnType->getDisplayNameC())});
 
     node->typeInfo    = g_TypeMgr->typeInfoPointers[(int) NativeTypeKind::Void];
     node->byteCodeFct = ByteCodeGenJob::emitIntrinsicMakeCallback;
@@ -123,11 +123,11 @@ bool SemanticJob::resolveIntrinsicMakeSlice(SemanticContext* context, AstNode* n
 
     // Must start with a pointer of the same type as the slice
     if (first->typeInfo->kind != TypeInfoKind::Pointer)
-        return context->report({first, Fmt(g_E[Err0787], name)});
+        return context->report({first, Fmt(Err(Err0787), name)});
 
     auto ptrPointer = CastTypeInfo<TypeInfoPointer>(first->typeInfo, TypeInfoKind::Pointer);
     if (!ptrPointer->pointedType)
-        return context->report({first, Fmt(g_E[Err0788], name)});
+        return context->report({first, Fmt(Err(Err0788), name)});
 
     // Slice count
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoUInt, second->typeInfo, nullptr, second, CASTFLAG_TRY_COERCE));
@@ -151,24 +151,24 @@ bool SemanticJob::resolveIntrinsicMakeAny(SemanticContext* context, AstNode* nod
 
     // Check first parameter
     if (first->typeInfo->kind != TypeInfoKind::Pointer)
-        return context->report({first, g_E[Err0789]});
+        return context->report({first, Err(Err0789)});
 
     auto ptrPointer = CastTypeInfo<TypeInfoPointer>(first->typeInfo, TypeInfoKind::Pointer);
     if (!ptrPointer->pointedType)
-        return context->report({first, g_E[Err0790]});
+        return context->report({first, Err(Err0790)});
 
     // Check second parameter
     if (second->flags & AST_VALUE_IS_TYPEINFO)
     {
         if (!TypeManager::makeCompatibles(context, ptrPointer->pointedType, second->typeInfo, nullptr, second, CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
-            return context->report({node, Fmt(g_E[Err0791], ptrPointer->pointedType->getDisplayNameC(), second->typeInfo->getDisplayNameC())});
+            return context->report({node, Fmt(Err(Err0791), ptrPointer->pointedType->getDisplayNameC(), second->typeInfo->getDisplayNameC())});
     }
 
     SWAG_CHECK(checkIsConcreteOrType(context, second));
     if (context->result != ContextResult::Done)
         return true;
     if (!(second->typeInfo->isPointerToTypeInfo()))
-        return context->report({node, Fmt(g_E[Err0792], second->typeInfo->getDisplayNameC())});
+        return context->report({node, Fmt(Err(Err0792), second->typeInfo->getDisplayNameC())});
 
     node->typeInfo    = g_TypeMgr->typeInfoAny;
     node->byteCodeFct = ByteCodeGenJob::emitIntrinsicMakeAny;
@@ -196,10 +196,10 @@ bool SemanticJob::resolveIntrinsicMakeInterface(SemanticContext* context)
         return true;
 
     auto firstTypeInfo = TypeManager::concreteReferenceType(first->typeInfo, CONCRETE_ALIAS);
-    SWAG_VERIFY(firstTypeInfo->kind == TypeInfoKind::Pointer || firstTypeInfo->kind == TypeInfoKind::Struct, context->report({first, g_E[Err0793]}));
-    SWAG_VERIFY(second->typeInfo->isPointerToTypeInfo(), context->report({second, g_E[Err0794]}));
+    SWAG_VERIFY(firstTypeInfo->kind == TypeInfoKind::Pointer || firstTypeInfo->kind == TypeInfoKind::Struct, context->report({first, Err(Err0793)}));
+    SWAG_VERIFY(second->typeInfo->isPointerToTypeInfo(), context->report({second, Err(Err0794)}));
     auto thirdTypeInfo = TypeManager::concreteReferenceType(third->typeInfo, CONCRETE_ALIAS);
-    SWAG_VERIFY(thirdTypeInfo->kind == TypeInfoKind::Interface, context->report({third, g_E[Err0795]}));
+    SWAG_VERIFY(thirdTypeInfo->kind == TypeInfoKind::Interface, context->report({third, Err(Err0795)}));
 
     node->typeInfo = third->typeInfo;
     third->flags |= AST_NO_BYTECODE;
@@ -235,7 +235,7 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
     }
     else if (typeInfo->kind == TypeInfoKind::Struct)
     {
-        SWAG_VERIFY(!(typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE), context->report(Hint::isType(typeInfo), {expression, g_E[Err0796]}));
+        SWAG_VERIFY(!(typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE), context->report(Hint::isType(typeInfo), {expression, Err(Err0796)}));
         node->typeInfo = typeInfo;
         SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opData, nullptr, nullptr, node, nullptr, false));
         if (context->result == ContextResult::Pending)
@@ -246,7 +246,7 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
     }
     else
     {
-        return context->report({node, Fmt(g_E[Err0797], typeInfo->getDisplayNameC())});
+        return context->report({node, Fmt(Err(Err0797), typeInfo->getDisplayNameC())});
     }
 
     return true;
@@ -270,7 +270,7 @@ bool SemanticJob::resolveIntrinsicStringOf(SemanticContext* context)
         else if (typeInfo->kind == TypeInfoKind::Enum)
             node->computedValue->text = Ast::enumToString(typeInfo, expr->computedValue->text, expr->computedValue->reg);
         else
-            return context->report({expr, g_E[Err0799]});
+            return context->report({expr, Err(Err0799)});
     }
     else if (expr->typeInfo->kind == TypeInfoKind::Code)
     {
@@ -293,7 +293,7 @@ bool SemanticJob::resolveIntrinsicStringOf(SemanticContext* context)
     }
     else
     {
-        return context->report({expr, g_E[Err0799]});
+        return context->report({expr, Err(Err0799)});
     }
 
     node->typeInfo = g_TypeMgr->typeInfoString;
@@ -313,7 +313,7 @@ bool SemanticJob::resolveIntrinsicNameOf(SemanticContext* context)
     else if (expr->resolvedSymbolOverload)
         node->computedValue->text = expr->resolvedSymbolOverload->symbol->name;
     else
-        return context->report({expr, g_E[Err0803]});
+        return context->report({expr, Err(Err0803)});
 
     node->typeInfo = g_TypeMgr->typeInfoString;
     return true;
@@ -326,7 +326,7 @@ bool SemanticJob::resolveIntrinsicRunes(SemanticContext* context)
     auto typeInfo = expr->typeInfo;
 
     SWAG_CHECK(checkIsConstExpr(context, expr->flags & AST_VALUE_COMPUTED, expr));
-    SWAG_VERIFY(typeInfo->isNative(NativeTypeKind::String), context->report({expr, Fmt(g_E[Err0084], typeInfo->getDisplayNameC())}));
+    SWAG_VERIFY(typeInfo->isNative(NativeTypeKind::String), context->report({expr, Fmt(Err(Err0084), typeInfo->getDisplayNameC())}));
     node->setFlagsValueIsComputed();
 
     // Convert
@@ -418,7 +418,7 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
     }
     else if (typeInfo->kind == TypeInfoKind::Struct)
     {
-        SWAG_VERIFY(!(typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE), context->report(Hint::isType(typeInfo), {expression, g_E[Err0800]}));
+        SWAG_VERIFY(!(typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE), context->report(Hint::isType(typeInfo), {expression, Err(Err0800)}));
         node->typeInfo = typeInfo;
         SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opCount, nullptr, nullptr, node, nullptr, false));
         if (context->result == ContextResult::Pending)
@@ -429,7 +429,7 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
     }
     else
     {
-        SWAG_VERIFY(typeInfo->isNativeInteger(), context->report({expression, Fmt(g_E[Err0801], typeInfo->getDisplayNameC())}));
+        SWAG_VERIFY(typeInfo->isNativeInteger(), context->report({expression, Fmt(Err(Err0801), typeInfo->getDisplayNameC())}));
         if (node->flags & AST_VALUE_COMPUTED)
         {
             if (!(typeInfo->flags & TYPEINFO_UNSIGNED))
@@ -438,20 +438,20 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
                 {
                 case NativeTypeKind::S8:
                     if (node->computedValue->reg.s8 < 0)
-                        return context->report({expression, Fmt(g_E[Err0802], node->computedValue->reg.s8)});
+                        return context->report({expression, Fmt(Err(Err0802), node->computedValue->reg.s8)});
                     break;
                 case NativeTypeKind::S16:
                     if (node->computedValue->reg.s16 < 0)
-                        return context->report({expression, Fmt(g_E[Err0802], node->computedValue->reg.s16)});
+                        return context->report({expression, Fmt(Err(Err0802), node->computedValue->reg.s16)});
                     break;
                 case NativeTypeKind::S32:
                     if (node->computedValue->reg.s32 < 0)
-                        return context->report({expression, Fmt(g_E[Err0802], node->computedValue->reg.s32)});
+                        return context->report({expression, Fmt(Err(Err0802), node->computedValue->reg.s32)});
                     break;
                 case NativeTypeKind::S64:
                 case NativeTypeKind::Int:
                     if (node->computedValue->reg.s64 < 0)
-                        return context->report({expression, Fmt(g_E[Err0805], node->computedValue->reg.s64)});
+                        return context->report({expression, Fmt(Err(Err0805), node->computedValue->reg.s64)});
                     break;
                 }
             }
@@ -470,7 +470,7 @@ bool SemanticJob::resolveIntrinsicSpread(SemanticContext* context)
     auto typeInfo     = TypeManager::concreteReferenceType(expr->typeInfo);
     node->byteCodeFct = ByteCodeGenJob::emitIntrinsicSpread;
 
-    SWAG_VERIFY(node->parent && node->parent->parent && node->parent->parent->kind == AstNodeKind::FuncCallParam, context->report({node, g_E[Err0806]}));
+    SWAG_VERIFY(node->parent && node->parent->parent && node->parent->parent->kind == AstNodeKind::FuncCallParam, context->report({node, Err(Err0806)}));
 
     if (typeInfo->kind == TypeInfoKind::Array)
     {
@@ -502,7 +502,7 @@ bool SemanticJob::resolveIntrinsicSpread(SemanticContext* context)
     }
     else
     {
-        return context->report({expr, Fmt(g_E[Err0807], typeInfo->getDisplayNameC())});
+        return context->report({expr, Fmt(Err(Err0807), typeInfo->getDisplayNameC())});
     }
 
     auto typeVar     = allocType<TypeInfoVariadic>(TypeInfoKind::TypedVariadic);
@@ -610,7 +610,7 @@ bool SemanticJob::resolveIntrinsicTypeOf(SemanticContext* context)
     auto expr = node->childs.front();
 
     SWAG_CHECK(checkIsConstExpr(context, expr->typeInfo, expr));
-    SWAG_VERIFY(expr->typeInfo->kind != TypeInfoKind::Generic, context->report({expr, g_E[Err0810]}));
+    SWAG_VERIFY(expr->typeInfo->kind != TypeInfoKind::Generic, context->report({expr, Err(Err0810)}));
 
     // If we have a function, then we transform it to a lambda type, as this makes no sens to
     // get the real function type with @typeof
@@ -660,7 +660,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
     {
         auto expr = node->childs.front();
         SWAG_CHECK(checkIsConstExpr(context, expr->typeInfo, expr));
-        SWAG_VERIFY(expr->typeInfo->kind != TypeInfoKind::Generic, context->report({expr, g_E[Err0812]}));
+        SWAG_VERIFY(expr->typeInfo->kind != TypeInfoKind::Generic, context->report({expr, Err(Err0812)}));
         node->setFlagsValueIsComputed();
         node->computedValue->reg.u64 = expr->typeInfo->sizeOf;
         if (node->computedValue->reg.u64 > 0xFFFFFFFF)
@@ -674,7 +674,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
     {
         auto expr = node->childs.front();
         SWAG_CHECK(checkIsConstExpr(context, expr->typeInfo, expr));
-        SWAG_VERIFY(expr->typeInfo->kind != TypeInfoKind::Generic, context->report({expr, g_E[Err0814]}));
+        SWAG_VERIFY(expr->typeInfo->kind != TypeInfoKind::Generic, context->report({expr, Err(Err0814)}));
         node->setFlagsValueIsComputed();
         node->computedValue->reg.u64 = TypeManager::alignOf(expr->typeInfo);
         if (node->computedValue->reg.u64 > 0xFFFFFFFF)
@@ -785,13 +785,13 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
     {
         auto typeInfo = node->childs[0]->typeInfo;
         typeInfo->computeScopedName();
-        SWAG_VERIFY(typeInfo->scopedName == "*Swag.CVaList", context->report({node, Fmt(g_E[Err0048], typeInfo->getDisplayNameC())}));
+        SWAG_VERIFY(typeInfo->scopedName == "*Swag.CVaList", context->report({node, Fmt(Err(Err0048), typeInfo->getDisplayNameC())}));
 
         if (node->token.id == TokenId::IntrinsicCVaStart)
         {
-            SWAG_VERIFY(node->ownerFct && node->ownerFct->parameters && node->ownerFct->parameters->childs.size(), context->report({node, g_E[Err0442]}));
+            SWAG_VERIFY(node->ownerFct && node->ownerFct->parameters && node->ownerFct->parameters->childs.size(), context->report({node, Err(Err0442)}));
             auto typeParam = node->ownerFct->parameters->childs.back()->typeInfo;
-            SWAG_VERIFY(typeParam->kind == TypeInfoKind::CVariadic, context->report({node, g_E[Err0442]}));
+            SWAG_VERIFY(typeParam->kind == TypeInfoKind::CVariadic, context->report({node, Err(Err0442)}));
             node->byteCodeFct = ByteCodeGenJob::emitIntrinsicCVaStart;
         }
         else if (node->token.id == TokenId::IntrinsicCVaEnd)
@@ -802,14 +802,14 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         {
             node->typeInfo = node->childs[1]->typeInfo;
 
-            SWAG_VERIFY(node->typeInfo->numRegisters() == 1, context->report({node->childs[1], Fmt(g_E[Err0443], node->typeInfo->getDisplayNameC())}));
+            SWAG_VERIFY(node->typeInfo->numRegisters() == 1, context->report({node->childs[1], Fmt(Err(Err0443), node->typeInfo->getDisplayNameC())}));
 
-            SWAG_VERIFY(!node->typeInfo->isNative(NativeTypeKind::F32), context->report({node->childs[1], Fmt(g_E[Err0445], node->typeInfo->getDisplayNameC(), "f64")}));
-            SWAG_VERIFY(!node->typeInfo->isNative(NativeTypeKind::S8), context->report({node->childs[1], Fmt(g_E[Err0445], node->typeInfo->getDisplayNameC(), "s32")}));
-            SWAG_VERIFY(!node->typeInfo->isNative(NativeTypeKind::S16), context->report({node->childs[1], Fmt(g_E[Err0445], node->typeInfo->getDisplayNameC(), "s32")}));
-            SWAG_VERIFY(!node->typeInfo->isNative(NativeTypeKind::U8), context->report({node->childs[1], Fmt(g_E[Err0445], node->typeInfo->getDisplayNameC(), "u32")}));
-            SWAG_VERIFY(!node->typeInfo->isNative(NativeTypeKind::U16), context->report({node->childs[1], Fmt(g_E[Err0445], node->typeInfo->getDisplayNameC(), "u32")}));
-            SWAG_VERIFY(!node->typeInfo->isNative(NativeTypeKind::Bool), context->report({node->childs[1], Fmt(g_E[Err0445], node->typeInfo->getDisplayNameC(), "u32")}));
+            SWAG_VERIFY(!node->typeInfo->isNative(NativeTypeKind::F32), context->report({node->childs[1], Fmt(Err(Err0445), node->typeInfo->getDisplayNameC(), "f64")}));
+            SWAG_VERIFY(!node->typeInfo->isNative(NativeTypeKind::S8), context->report({node->childs[1], Fmt(Err(Err0445), node->typeInfo->getDisplayNameC(), "s32")}));
+            SWAG_VERIFY(!node->typeInfo->isNative(NativeTypeKind::S16), context->report({node->childs[1], Fmt(Err(Err0445), node->typeInfo->getDisplayNameC(), "s32")}));
+            SWAG_VERIFY(!node->typeInfo->isNative(NativeTypeKind::U8), context->report({node->childs[1], Fmt(Err(Err0445), node->typeInfo->getDisplayNameC(), "u32")}));
+            SWAG_VERIFY(!node->typeInfo->isNative(NativeTypeKind::U16), context->report({node->childs[1], Fmt(Err(Err0445), node->typeInfo->getDisplayNameC(), "u32")}));
+            SWAG_VERIFY(!node->typeInfo->isNative(NativeTypeKind::Bool), context->report({node->childs[1], Fmt(Err(Err0445), node->typeInfo->getDisplayNameC(), "u32")}));
 
             node->byteCodeFct = ByteCodeGenJob::emitIntrinsicCVaArg;
         }

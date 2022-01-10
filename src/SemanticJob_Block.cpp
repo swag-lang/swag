@@ -166,8 +166,8 @@ bool SemanticJob::resolveInlineAfter(SemanticContext* context)
             if (!(node->semFlags & AST_SEM_SCOPE_HAS_RETURN))
             {
                 if (node->semFlags & AST_SEM_FCT_HAS_RETURN)
-                    return context->report({fct, Fmt(g_E[Err0748], fct->getDisplayNameC())});
-                return context->report({fct, Fmt(g_E[Err0606], fct->getDisplayNameC())});
+                    return context->report({fct, Fmt(Err(Err0748), fct->getDisplayNameC())});
+                return context->report({fct, Fmt(Err(Err0606), fct->getDisplayNameC())});
             }
         }
     }
@@ -253,7 +253,7 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
 
     // Deal with complete
     SWAG_CHECK(collectAttributes(context, node, nullptr));
-    SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_COMPLETE) || node->expression, context->report({node, g_E[Err0607]}));
+    SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_COMPLETE) || node->expression, context->report({node, Err(Err0607)}));
 
     node->byteCodeFct = ByteCodeGenJob::emitSwitch;
     if (!node->expression)
@@ -272,16 +272,16 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
     auto typeSwitch = TypeManager::concreteType(node->typeInfo);
 
     // Verify switch expression type is valid
-    SWAG_VERIFY(!typeSwitch->isNative(NativeTypeKind::Any), context->report({node->expression, g_E[Err0608]}));
+    SWAG_VERIFY(!typeSwitch->isNative(NativeTypeKind::Any), context->report({node->expression, Err(Err0608)}));
     switch (typeSwitch->kind)
     {
     case TypeInfoKind::Slice:
     case TypeInfoKind::Array:
     case TypeInfoKind::Interface:
-        return context->report({node->expression, Fmt(g_E[Err0609], typeSwitch->getDisplayNameC())});
+        return context->report({node->expression, Fmt(Err(Err0609), typeSwitch->getDisplayNameC())});
     }
 
-    SWAG_VERIFY(!node->cases.empty(), context->report({node, g_E[Err0610]}));
+    SWAG_VERIFY(!node->cases.empty(), context->report({node, Err(Err0610)}));
 
     // Collect constant expressions, to avoid double definitions
     Array<AstNode*> valDef;
@@ -299,8 +299,8 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
                     int idx = valText.find(expr->computedValue->text);
                     if (idx != -1)
                     {
-                        Diagnostic note{valDef[idx], g_E[Nte0014], DiagnosticLevel::Note};
-                        return context->report({expr, Fmt(g_E[Err0611], expr->computedValue->text.c_str())}, &note);
+                        Diagnostic note{valDef[idx], Nte(Nte0014), DiagnosticLevel::Note};
+                        return context->report({expr, Fmt(Err(Err0611), expr->computedValue->text.c_str())}, &note);
                     }
 
                     valText.push_back(expr->computedValue->text);
@@ -315,14 +315,14 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
                     int idx = val64.find(value);
                     if (idx != -1)
                     {
-                        Diagnostic note{valDef[idx], g_E[Nte0014], DiagnosticLevel::Note};
+                        Diagnostic note{valDef[idx], Nte(Nte0014), DiagnosticLevel::Note};
                         if (expr->flags & AST_VALUE_IS_TYPEINFO)
-                            return context->report({expr, Fmt(g_E[Err0611], expr->token.ctext())}, &note);
+                            return context->report({expr, Fmt(Err(Err0611), expr->token.ctext())}, &note);
                         if (expr->typeInfo->kind == TypeInfoKind::Enum)
-                            return context->report({expr, Fmt(g_E[Err0612], expr->token.ctext())}, &note);
+                            return context->report({expr, Fmt(Err(Err0612), expr->token.ctext())}, &note);
                         if (typeExpr->isNativeInteger())
-                            return context->report({expr, Fmt(g_E[Err0613], expr->computedValue->reg.u64)}, &note);
-                        return context->report({expr, Fmt(g_E[Err0614], expr->computedValue->reg.f64)}, &note);
+                            return context->report({expr, Fmt(Err(Err0613), expr->computedValue->reg.u64)}, &note);
+                        return context->report({expr, Fmt(Err(Err0614), expr->computedValue->reg.f64)}, &note);
                     }
 
                     val64.push_back(expr->computedValue->reg.u64);
@@ -331,7 +331,7 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
             }
             else if (node->attributeFlags & ATTRIBUTE_COMPLETE)
             {
-                return checkIsConstExpr(context, expr->flags & AST_VALUE_COMPUTED, expr, g_E[Err0615]);
+                return checkIsConstExpr(context, expr->flags & AST_VALUE_COMPUTED, expr, Err(Err0615));
             }
         }
     }
@@ -341,12 +341,12 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
     {
         // No default for a complete switch
         auto back = node->cases.back();
-        SWAG_VERIFY(!back->expressions.empty(), context->report({back, g_E[Err0616]}));
+        SWAG_VERIFY(!back->expressions.empty(), context->report({back, Err(Err0616)}));
 
         if (node->typeInfo->kind != TypeInfoKind::Enum && !node->beforeAutoCastType)
-            return context->report({node, Fmt(g_E[Err0617], node->typeInfo->getDisplayNameC())});
+            return context->report({node, Fmt(Err(Err0617), node->typeInfo->getDisplayNameC())});
         if (node->beforeAutoCastType)
-            return context->report({node, Fmt(g_E[Err0617], node->beforeAutoCastType->getDisplayNameC())});
+            return context->report({node, Fmt(Err(Err0617), node->beforeAutoCastType->getDisplayNameC())});
 
         if (node->typeInfo->kind == TypeInfoKind::Enum)
         {
@@ -359,8 +359,8 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
                     {
                         if (valText.contains(one->value->text))
                         {
-                            Diagnostic diag{node, Fmt(g_E[Err0620], typeEnum->name.c_str(), one->namedParam.c_str())};
-                            Diagnostic note{one->declNode, g_E[Nte0034], DiagnosticLevel::Note};
+                            Diagnostic diag{node, Fmt(Err(Err0620), typeEnum->name.c_str(), one->namedParam.c_str())};
+                            Diagnostic note{one->declNode, Nte(Nte0034), DiagnosticLevel::Note};
                             return context->report(diag, &note);
                         }
                     }
@@ -374,8 +374,8 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
                     {
                         if (val64.contains(one->value->reg.u64))
                         {
-                            Diagnostic diag{node, Fmt(g_E[Err0620], typeEnum->name.c_str(), one->namedParam.c_str())};
-                            Diagnostic note{one->declNode, g_E[Nte0034], DiagnosticLevel::Note};
+                            Diagnostic diag{node, Fmt(Err(Err0620), typeEnum->name.c_str(), one->namedParam.c_str())};
+                            Diagnostic note{one->declNode, Nte(Nte0034), DiagnosticLevel::Note};
                             return context->report(diag, &note);
                         }
                     }
@@ -420,7 +420,7 @@ bool SemanticJob::resolveCase(SemanticContext* context)
             }
             else
             {
-                return context->report({rangeNode, g_E[Err0337]});
+                return context->report({rangeNode, Err(Err0337)});
             }
         }
 
@@ -540,7 +540,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     AstNode* newExpression = nullptr;
     if (typeInfo->kind == TypeInfoKind::Struct)
     {
-        SWAG_VERIFY(!(typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE), context->report(Hint::isType(typeInfo), {node->expression, g_E[Err0624]}));
+        SWAG_VERIFY(!(typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE), context->report(Hint::isType(typeInfo), {node->expression, Err(Err0624)}));
         SWAG_VERIFY(node->expression->kind == AstNodeKind::IdentifierRef, sourceFile->internalError(node->expression, "resolveVisit expression, should be an identifier"));
 
         auto identifierRef    = (AstIdentifierRef*) Ast::clone(node->expression, node);
@@ -572,8 +572,8 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         return true;
     }
 
-    SWAG_VERIFY(node->extraNameToken.text.empty(), context->report({node, node->extraNameToken, Fmt(g_E[Err0625], typeInfo->getDisplayNameC())}));
-    SWAG_VERIFY(node->aliasNames.size() <= 2, context->report({node, node->aliasNames[2], Fmt(g_E[Err0626], node->aliasNames.size())}));
+    SWAG_VERIFY(node->extraNameToken.text.empty(), context->report({node, node->extraNameToken, Fmt(Err(Err0625), typeInfo->getDisplayNameC())}));
+    SWAG_VERIFY(node->aliasNames.size() <= 2, context->report({node, node->aliasNames[2], Fmt(Err(Err0626), node->aliasNames.size())}));
 
     Utf8 alias0Name = node->aliasNames.empty() ? Utf8("@alias0") : node->aliasNames[0].text;
     Utf8 alias1Name = node->aliasNames.size() <= 1 ? Utf8("@alias1") : node->aliasNames[1].text;
@@ -656,7 +656,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     // Variadic
     else if (typeInfo->kind == TypeInfoKind::Variadic || typeInfo->kind == TypeInfoKind::TypedVariadic)
     {
-        SWAG_VERIFY(!(node->specFlags & AST_SPEC_VISIT_WANTPOINTER), context->report({node, g_E[Err0627]}));
+        SWAG_VERIFY(!(node->specFlags & AST_SPEC_VISIT_WANTPOINTER), context->report({node, Err(Err0627)}));
         content += Fmt("{ loop %s { ", (const char*) concat.firstBucket->datas);
         firstAliasVar = 0;
         content += Fmt("var %s = %s[@index]; ", alias0Name.c_str(), (const char*) concat.firstBucket->datas);
@@ -668,7 +668,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     else if (typeInfo->kind == TypeInfoKind::Enum)
     {
         auto typeEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
-        SWAG_VERIFY(!(node->specFlags & AST_SPEC_VISIT_WANTPOINTER), context->report({node, g_E[Err0636]}));
+        SWAG_VERIFY(!(node->specFlags & AST_SPEC_VISIT_WANTPOINTER), context->report({node, Err(Err0636)}));
         content += Fmt("{ var __addr%u = @typeof(%s); ", id, (const char*) concat.firstBucket->datas);
         content += Fmt("loop %d { ", typeEnum->values.size());
         firstAliasVar = 1;
@@ -691,18 +691,18 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
                 typePtr->pointedType->kind == TypeInfoKind::Struct ||
                 typePtr->pointedType->isNative(NativeTypeKind::String))
             {
-                PushErrHint errh(g_E[Hnt0037]);
-                return context->report({node->expression, Fmt(g_E[Err0628], typeInfo->getDisplayNameC())});
+                PushErrHint errh(Hnt(Hnt0037));
+                return context->report({node->expression, Fmt(Err(Err0628), typeInfo->getDisplayNameC())});
             }
             else
             {
-                PushErrHint errh(g_E[Hnt0036]);
-                return context->report({node->expression, Fmt(g_E[Err0628], typeInfo->getDisplayNameC())});
+                PushErrHint errh(Hnt(Hnt0036));
+                return context->report({node->expression, Fmt(Err(Err0628), typeInfo->getDisplayNameC())});
             }
         }
 
-        PushErrHint errh(g_E[Hnt0006]);
-        return context->report({node->expression, Fmt(g_E[Err0629], typeInfo->getDisplayNameC())});
+        PushErrHint errh(Hnt(Hnt0006));
+        return context->report({node->expression, Fmt(Err(Err0629), typeInfo->getDisplayNameC())});
     }
 
     SyntaxJob syntaxJob;
@@ -772,7 +772,7 @@ bool SemanticJob::resolveIndex(SemanticContext* context)
     auto ownerBreakable = node->ownerBreakable;
     while (ownerBreakable && !(ownerBreakable->breakableFlags & BREAKABLE_CAN_HAVE_INDEX))
         ownerBreakable = ownerBreakable->ownerBreakable;
-    SWAG_VERIFY(ownerBreakable, context->report({node, g_E[Err0630]}));
+    SWAG_VERIFY(ownerBreakable, context->report({node, Err(Err0630)}));
 
     ownerBreakable->breakableFlags |= BREAKABLE_NEED_INDEX;
 
@@ -812,11 +812,11 @@ bool SemanticJob::resolveBreak(SemanticContext* context)
         auto breakable = node->ownerBreakable;
         while (breakable && (breakable->kind != AstNodeKind::ScopeBreakable || breakable->token.text != node->label))
             breakable = breakable->ownerBreakable;
-        SWAG_VERIFY(breakable, context->report({node, Fmt(g_E[Err0631], node->label.c_str())}));
+        SWAG_VERIFY(breakable, context->report({node, Fmt(Err(Err0631), node->label.c_str())}));
         node->ownerBreakable = breakable;
     }
 
-    SWAG_VERIFY(node->ownerBreakable, context->report({node, g_E[Err0632]}));
+    SWAG_VERIFY(node->ownerBreakable, context->report({node, Err(Err0632)}));
     node->ownerBreakable->breakList.push_back(node);
 
     SWAG_CHECK(checkUnreachableCode(context));
@@ -827,19 +827,19 @@ bool SemanticJob::resolveBreak(SemanticContext* context)
 bool SemanticJob::resolveFallThrough(SemanticContext* context)
 {
     auto node = CastAst<AstBreakContinue>(context->node, AstNodeKind::FallThrough);
-    SWAG_VERIFY(node->ownerBreakable && node->ownerBreakable->kind == AstNodeKind::Switch, context->report({node, g_E[Err0633]}));
+    SWAG_VERIFY(node->ownerBreakable && node->ownerBreakable->kind == AstNodeKind::Switch, context->report({node, Err(Err0633)}));
     node->ownerBreakable->fallThroughList.push_back(node);
 
     // Be sure we are in a case
     auto parent = node->parent;
     while (parent && parent->kind != AstNodeKind::SwitchCase && parent != node->ownerBreakable)
         parent = parent->parent;
-    SWAG_VERIFY(parent && parent->kind == AstNodeKind::SwitchCase, context->report({node, g_E[Err0634]}));
+    SWAG_VERIFY(parent && parent->kind == AstNodeKind::SwitchCase, context->report({node, Err(Err0634)}));
     node->switchCase = CastAst<AstSwitchCase>(parent, AstNodeKind::SwitchCase);
 
     // 'fallthrough' cannot be used on the last case, this has no sens
     auto switchBlock = CastAst<AstSwitch>(node->ownerBreakable, AstNodeKind::Switch);
-    SWAG_VERIFY(node->switchCase->caseIndex < switchBlock->cases.size() - 1, context->report({node, g_E[Err0635]}));
+    SWAG_VERIFY(node->switchCase->caseIndex < switchBlock->cases.size() - 1, context->report({node, Err(Err0635)}));
 
     SWAG_CHECK(checkUnreachableCode(context));
     node->byteCodeFct = ByteCodeGenJob::emitFallThrough;
@@ -863,16 +863,16 @@ bool SemanticJob::resolveContinue(SemanticContext* context)
             breakable = breakable->ownerBreakable;
         }
 
-        SWAG_VERIFY(breakable, context->report({node, Fmt(g_E[Err0631], node->label.c_str())}));
+        SWAG_VERIFY(breakable, context->report({node, Fmt(Err(Err0631), node->label.c_str())}));
         node->ownerBreakable = lastBreakable;
     }
 
-    SWAG_VERIFY(node->ownerBreakable, context->report({node, g_E[Err0637]}));
+    SWAG_VERIFY(node->ownerBreakable, context->report({node, Err(Err0637)}));
 
     auto checkBreakable = node->ownerBreakable;
     while (checkBreakable && !(checkBreakable->breakableFlags & BREAKABLE_CAN_HAVE_CONTINUE))
         checkBreakable = checkBreakable->ownerBreakable;
-    SWAG_VERIFY(checkBreakable, context->report({node, g_E[Err0637]}));
+    SWAG_VERIFY(checkBreakable, context->report({node, Err(Err0637)}));
     checkBreakable->continueList.push_back(node);
 
     SWAG_CHECK(checkUnreachableCode(context));

@@ -44,10 +44,10 @@ bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
         return true;
 
     if (node->kind == AstNodeKind::TypeExpression || node->kind == AstNodeKind::TypeLambda)
-        return context->report({node, g_E[Err0012]});
+        return context->report({node, Err(Err0012)});
 
     if (node->flags & AST_FROM_GENERIC_REPLACE)
-        return context->report({node, g_E[Err0012]});
+        return context->report({node, Err(Err0012)});
 
     if (node->resolvedSymbolName)
     {
@@ -58,10 +58,10 @@ bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
         if (node->resolvedSymbolOverload && node->resolvedSymbolOverload->flags & OVERLOAD_VAR_STRUCT)
         {
             name = "the struct member";
-            hint = Fmt(g_E[Hnt0003], node->resolvedSymbolOverload->symbol->ownerTable->scope->name.c_str());
+            hint = Fmt(Hnt(Hnt0003), node->resolvedSymbolOverload->symbol->ownerTable->scope->name.c_str());
         }
 
-        Diagnostic  diag{node, Fmt(g_E[Err0013], name.c_str(), node->resolvedSymbolName->name.c_str())};
+        Diagnostic  diag{node, Fmt(Err(Err0013), name.c_str(), node->resolvedSymbolName->name.c_str())};
         Diagnostic* note = nullptr;
 
         // Missing self ?
@@ -69,7 +69,7 @@ bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
         {
             if (node->ownerStructScope->symTable.find(node->resolvedSymbolName->name))
             {
-                note = new Diagnostic{g_E[Nte0005], DiagnosticLevel::Note};
+                note = new Diagnostic{Nte(Nte0005), DiagnosticLevel::Note};
             }
         }
 
@@ -194,7 +194,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
     if (typeNode->typeFlags & TYPEFLAG_ISCODE)
     {
         auto typeP = typeNode->findParent(AstNodeKind::FuncDeclParam);
-        SWAG_VERIFY(typeP && typeNode->ownerFct, context->report({typeNode, g_E[Err0736]}));
+        SWAG_VERIFY(typeP && typeNode->ownerFct, context->report({typeNode, Err(Err0736)}));
         typeNode->typeInfo = g_TypeMgr->typeInfoCode;
         return true;
     }
@@ -203,7 +203,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
     if (typeNode->typeFromLiteral && typeNode->typeFromLiteral->flags & TYPEINFO_C_VARIADIC)
     {
         auto typeP = typeNode->findParent(AstNodeKind::FuncDeclParam);
-        SWAG_VERIFY(typeP && typeNode->ownerFct, context->report({typeNode, g_E[Err0735]}));
+        SWAG_VERIFY(typeP && typeNode->ownerFct, context->report({typeNode, Err(Err0735)}));
         typeNode->typeInfo = g_TypeMgr->typeInfoCVariadic;
         return true;
     }
@@ -268,17 +268,17 @@ bool SemanticJob::resolveType(SemanticContext* context)
                     symName->kind != SymbolKind::Struct &&
                     symName->kind != SymbolKind::Interface)
                 {
-                    Diagnostic diag{child->sourceFile, child->token, Fmt(g_E[Err0017], child->token.ctext(), SymTable::getArticleKindName(symName->kind))};
-                    Diagnostic note{symOver->node, Fmt(g_E[Nte0029], symName->name.c_str()), DiagnosticLevel::Note};
+                    Diagnostic diag{child->sourceFile, child->token, Fmt(Err(Err0017), child->token.ctext(), SymTable::getArticleKindName(symName->kind))};
+                    Diagnostic note{symOver->node, Fmt(Nte(Nte0029), symName->name.c_str()), DiagnosticLevel::Note};
                     if (typeNode->ptrCount && symName->kind == SymbolKind::Variable)
                     {
                         if (symOver->typeInfo->kind == TypeInfoKind::Pointer)
                         {
-                            Diagnostic note1{Fmt(g_E[Hlp0005], symName->name.c_str(), symName->name.c_str()), DiagnosticLevel::Help};
-                            return context->report(g_E[Hnt0024], diag, &note1, &note);
+                            Diagnostic note1{Fmt(Hlp(Hlp0005), symName->name.c_str(), symName->name.c_str()), DiagnosticLevel::Help};
+                            return context->report(Hnt(Hnt0024), diag, &note1, &note);
                         }
                         else
-                            return context->report(g_E[Hnt0024], diag, &note);
+                            return context->report(Hnt(Hnt0024), diag, &note);
                     }
 
                     return context->report(diag, &note);
@@ -403,14 +403,14 @@ bool SemanticJob::resolveType(SemanticContext* context)
                 }
                 else
                 {
-                    SWAG_CHECK(checkIsConstExpr(context, child->flags & AST_VALUE_COMPUTED, child, g_E[Err0021]));
+                    SWAG_CHECK(checkIsConstExpr(context, child->flags & AST_VALUE_COMPUTED, child, Err(Err0021)));
                     count = (uint32_t) child->computedValue->reg.u32;
                 }
 
                 auto childType = TypeManager::concreteReferenceType(child->typeInfo);
-                SWAG_VERIFY(childType->isNativeInteger(), context->report({child, Fmt(g_E[Err0022], child->typeInfo->getDisplayNameC())}));
+                SWAG_VERIFY(childType->isNativeInteger(), context->report({child, Fmt(Err(Err0022), child->typeInfo->getDisplayNameC())}));
                 SWAG_CHECK(context->checkSizeOverflow("array", count * rawType->sizeOf, SWAG_LIMIT_ARRAY_SIZE));
-                SWAG_VERIFY(!child->isConstant0(), context->report({child, g_E[Err0023]}));
+                SWAG_VERIFY(!child->isConstant0(), context->report({child, Err(Err0023)}));
 
                 auto ptrArray   = allocType<TypeInfoArray>();
                 ptrArray->count = count;
@@ -460,7 +460,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
         auto typePtr = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
         if (typePtr->pointedType->flags & TYPEINFO_STRUCT_TYPEINFO)
         {
-            SWAG_VERIFY(typeInfo->isConst(), context->report({typeNode, g_E[Err0024]}));
+            SWAG_VERIFY(typeInfo->isConst(), context->report({typeNode, Err(Err0024)}));
         }
     }
 
@@ -478,8 +478,8 @@ bool SemanticJob::checkPublicAlias(SemanticContext* context, AstNode* node)
             auto overload = back->resolvedSymbolOverload;
             if (overload && !(overload->node->attributeFlags & ATTRIBUTE_PUBLIC) && !overload->node->sourceFile->isGenerated)
             {
-                Diagnostic diag{back, Fmt(g_E[Err0025], back->token.ctext())};
-                Diagnostic note{overload->node, Fmt(g_E[Nte0029], node->resolvedSymbolName->name.c_str()), DiagnosticLevel::Note};
+                Diagnostic diag{back, Fmt(Err(Err0025), back->token.ctext())};
+                Diagnostic note{overload->node, Fmt(Nte(Nte0029), node->resolvedSymbolName->name.c_str()), DiagnosticLevel::Note};
                 return context->report(diag, &note);
             }
 
@@ -512,8 +512,8 @@ bool SemanticJob::resolveAlias(SemanticContext* context)
         }
     }
 
-    SWAG_VERIFY(back->kind != AstNodeKind::ArrayPointerIndex, context->report({back, g_E[Err0819]}));
-    SWAG_VERIFY(overload, context->report({back, g_E[Err0027]}));
+    SWAG_VERIFY(back->kind != AstNodeKind::ArrayPointerIndex, context->report({back, Err(Err0819)}));
+    SWAG_VERIFY(overload, context->report({back, Err(Err0027)}));
     auto symbol       = overload->symbol;
     auto typeResolved = overload->typeInfo;
 
@@ -527,7 +527,7 @@ bool SemanticJob::resolveAlias(SemanticContext* context)
 
     // Collect all attributes for the variable
     SWAG_CHECK(collectAttributes(context, node, nullptr));
-    SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_STRICT), context->report({node, g_E[Err0028]}));
+    SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_STRICT), context->report({node, Err(Err0028)}));
 
     node->flags |= AST_NO_BYTECODE;
 
@@ -542,7 +542,7 @@ bool SemanticJob::resolveAlias(SemanticContext* context)
             {
                 if (c->resolvedSymbolName && c->resolvedSymbolName->kind == SymbolKind::Variable)
                 {
-                    SWAG_VERIFY(cptVar == 0, context->report({back, g_E[Err0029]}));
+                    SWAG_VERIFY(cptVar == 0, context->report({back, Err(Err0029)}));
                     cptVar++;
                 }
             }
@@ -558,7 +558,7 @@ bool SemanticJob::resolveAlias(SemanticContext* context)
     case SymbolKind::TypeAlias:
         break;
     default:
-        return context->report({back, Fmt(g_E[Err0030], SymTable::getArticleKindName(symbol->kind))});
+        return context->report({back, Fmt(Err(Err0030), SymTable::getArticleKindName(symbol->kind))});
     }
 
     SWAG_ASSERT(overload);
@@ -680,14 +680,14 @@ bool SemanticJob::resolveExplicitBitCast(SemanticContext* context)
 
     if (!(typeInfo->flags & (TYPEINFO_INTEGER | TYPEINFO_FLOAT)) &&
         (!typeInfo->isNative(NativeTypeKind::Rune)))
-        return context->report({typeNode, Fmt(g_E[Err0031], typeInfo->getDisplayNameC())});
+        return context->report({typeNode, Fmt(Err(Err0031), typeInfo->getDisplayNameC())});
 
     if (!(exprTypeInfo->flags & (TYPEINFO_INTEGER | TYPEINFO_FLOAT)) &&
         (!exprTypeInfo->isNative(NativeTypeKind::Rune)) &&
         (exprTypeInfo->kind != TypeInfoKind::Pointer))
-        return context->report({exprNode, Fmt(g_E[Err0032], exprTypeInfo->getDisplayNameC())});
+        return context->report({exprNode, Fmt(Err(Err0032), exprTypeInfo->getDisplayNameC())});
 
-    SWAG_VERIFY(typeInfo->sizeOf <= exprTypeInfo->sizeOf, context->report({exprNode, Fmt(g_E[Err0033], typeInfo->getDisplayNameC(), exprTypeInfo->getDisplayNameC())}));
+    SWAG_VERIFY(typeInfo->sizeOf <= exprTypeInfo->sizeOf, context->report({exprNode, Fmt(Err(Err0033), typeInfo->getDisplayNameC(), exprTypeInfo->getDisplayNameC())}));
 
     node->typeInfo = typeNode->typeInfo;
     node->setPassThrough();

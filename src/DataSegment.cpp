@@ -5,6 +5,7 @@
 #include "ErrorIds.h"
 #include "AstNode.h"
 #include "ByteCode.h"
+#include "Diagnostic.h"
 
 void DataSegment::setup(SegmentKind _kind, Module* _module)
 {
@@ -163,7 +164,7 @@ uint32_t DataSegment::reserveNoLock(uint32_t size, uint8_t** resultPtr)
         if (!overflow)
         {
             overflow = true;
-            module->error(Fmt(g_E[Err0834], name));
+            module->error(Fmt(Err(Err0834), name));
         }
     }
 

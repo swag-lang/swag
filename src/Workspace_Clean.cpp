@@ -2,6 +2,7 @@
 #include "Workspace.h"
 #include "Os.h"
 #include "ErrorIds.h"
+#include "Diagnostic.h"
 
 void Workspace::cleanFolderContent(const fs::path& path)
 {
@@ -13,7 +14,7 @@ void Workspace::cleanFolderContent(const fs::path& path)
                           std::error_code err;
                           if (fs::remove_all(cFileName, err) == -1)
                           {
-                              g_Log.errorOS(Fmt(g_E[Err0344], cFileName));
+                              g_Log.errorOS(Fmt(Err(Err0344), cFileName));
                               OS::exit(-1);
                           }
                       });
@@ -21,7 +22,7 @@ void Workspace::cleanFolderContent(const fs::path& path)
     std::error_code err;
     if (fs::remove_all(path, err) == -1)
     {
-        g_Log.errorOS(Fmt(g_E[Err0345], path.string().c_str()));
+        g_Log.errorOS(Fmt(Err(Err0345), path.string().c_str()));
         OS::exit(-1);
     }
 }

@@ -6,6 +6,7 @@
 #include "Module.h"
 #include "Stats.h"
 #include "ErrorIds.h"
+#include "Diagnostic.h"
 
 JobResult ModulePrepOutputJob::execute()
 {
@@ -18,7 +19,7 @@ JobResult ModulePrepOutputJob::execute()
     {
         if (!module->mainIsDefined)
         {
-            module->error(g_E[Err0269]);
+            module->error(Err(Err0269));
             return JobResult::ReleaseJob;
         }
     }

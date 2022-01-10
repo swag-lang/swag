@@ -1059,7 +1059,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
                 else if (module->bssCannotChange)
                 {
                     SymbolOverload* over = (SymbolOverload*) ip->c.pointer;
-                    context->error(Fmt(g_E[Err0431], over->node->token.ctext()));
+                    context->error(Fmt(Err(Err0431), over->node->token.ctext()));
                 }
             }
             registersRC[ip->a.u32].pointer = ptr;
@@ -1080,7 +1080,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
                     else if (module->bssCannotChange)
                     {
                         SymbolOverload* over = (SymbolOverload*) ip->c.pointer;
-                        context->error(Fmt(g_E[Err0431], over->node->token.ctext()));
+                        context->error(Fmt(Err(Err0431), over->node->token.ctext()));
                     }
                 }
             }
@@ -2986,9 +2986,9 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
 
     runContext->ip--;
     auto       ip = runContext->ip;
-    Diagnostic diag{ip->node, g_E[Err0435]};
-    Diagnostic note1{g_E[Err0436], DiagnosticLevel::Note};
-    Diagnostic note2{g_E[Nte0009], DiagnosticLevel::Note};
+    Diagnostic diag{ip->node, Err(Err0435)};
+    Diagnostic note1{Err(Err0436), DiagnosticLevel::Note};
+    Diagnostic note2{Nte(Nte0009), DiagnosticLevel::Note};
     diag.exceptionError            = true;
     g_ByteCodeStack.currentContext = runContext;
     runContext->bc->sourceFile->report(diag, &note1, &note2);

@@ -42,7 +42,7 @@ void* ByteCodeRun::ffiGetFuncAddress(JobContext* context, AstFuncDecl* nodeFunc)
 #ifdef SWAG_DEV_MODE
             SWAG_ASSERT(false);
 #endif
-            Diagnostic diag{nodeFunc, Fmt(g_E[Err0257], moduleName->text.c_str(), funcName.c_str(), g_ModuleMgr->loadModuleError.c_str())};
+            Diagnostic diag{nodeFunc, Fmt(Err(Err0257), moduleName->text.c_str(), funcName.c_str(), g_ModuleMgr->loadModuleError.c_str())};
             diag.printSource = false;
             context->report(diag);
             return nullptr;
@@ -61,7 +61,7 @@ void* ByteCodeRun::ffiGetFuncAddress(JobContext* context, AstFuncDecl* nodeFunc)
 #ifdef SWAG_DEV_MODE
         SWAG_ASSERT(false);
 #endif
-        context->report({Fmt(g_E[Err0258], funcName.c_str())});
+        context->report({Fmt(Err(Err0258), funcName.c_str())});
         return nullptr;
     }
 

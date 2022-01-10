@@ -61,7 +61,7 @@ void ModuleCfgManager::registerCfgFile(SourceFile* file)
     // Register it
     if (getCfgModule(moduleName))
     {
-        g_Log.error(Fmt(g_E[Err0169], moduleName.c_str(), moduleFolder.c_str()));
+        g_Log.error(Fmt(Err(Err0169), moduleName.c_str(), moduleFolder.c_str()));
         OS::exit(-1);
     }
 
@@ -149,13 +149,13 @@ bool ModuleCfgManager::fetchModuleCfgLocal(ModuleDependency* dep, Utf8& cfgFileP
     // No cfg file, we are done, and this is ok, we have found a module without
     // a specific configuration file. This is legit.
     if (!fs::exists(remotePath))
-        return dep->node->sourceFile->report({dep->node, dep->tokenLocation, Fmt(g_E[Err0508], SWAG_CFG_FILE, remotePath.c_str())});
+        return dep->node->sourceFile->report({dep->node, dep->tokenLocation, Fmt(Err(Err0508), SWAG_CFG_FILE, remotePath.c_str())});
 
     // Otherwise we copy the config file to the cache path, with a unique name.
     // Then later we will parse that file to get informations from the module
     FILE* fsrc = nullptr;
     if (!openFile(&fsrc, remotePath.c_str(), "rbN"))
-        return dep->node->sourceFile->report({dep->node, dep->tokenLocation, Fmt(g_E[Err0509], remotePath.c_str())});
+        return dep->node->sourceFile->report({dep->node, dep->tokenLocation, Fmt(Err(Err0509), remotePath.c_str())});
 
     // Remove source configuration file
     FILE* fdest    = nullptr;
@@ -170,7 +170,7 @@ bool ModuleCfgManager::fetchModuleCfgLocal(ModuleDependency* dep, Utf8& cfgFileP
     if (!openFile(&fdest, destPath.c_str(), "wbN"))
     {
         closeFile(&fsrc);
-        return dep->node->sourceFile->report({dep->node, dep->tokenLocation, Fmt(g_E[Err0510], SWAG_CFG_FILE, dep->name.c_str())});
+        return dep->node->sourceFile->report({dep->node, dep->tokenLocation, Fmt(Err(Err0510), SWAG_CFG_FILE, dep->name.c_str())});
     }
 
     // Copy content
@@ -202,7 +202,7 @@ bool ModuleCfgManager::fetchModuleCfgSwag(ModuleDependency* dep, Utf8& cfgFilePa
     remotePath = fs::canonical(remotePath).string();
     remotePath = Utf8::normalizePath(fs::path(remotePath.c_str()));
     if (!fs::exists(remotePath))
-        return dep->node->sourceFile->report({dep->node, dep->tokenLocation, Fmt(g_E[Err0511], remotePath.c_str())});
+        return dep->node->sourceFile->report({dep->node, dep->tokenLocation, Fmt(Err(Err0511), remotePath.c_str())});
     dep->resolvedLocation = remotePath;
 
     return fetchModuleCfgLocal(dep, cfgFilePath, cfgFileName);
@@ -219,7 +219,7 @@ bool ModuleCfgManager::fetchModuleCfgDisk(ModuleDependency* dep, Utf8& cfgFilePa
     remotePath = fs::canonical(remotePath).string();
     remotePath = Utf8::normalizePath(fs::path(remotePath.c_str()));
     if (!fs::exists(remotePath))
-        return dep->node->sourceFile->report({dep->node, dep->tokenLocation, Fmt(g_E[Err0511], remotePath.c_str())});
+        return dep->node->sourceFile->report({dep->node, dep->tokenLocation, Fmt(Err(Err0511), remotePath.c_str())});
     dep->resolvedLocation = remotePath;
 
     return fetchModuleCfgLocal(dep, cfgFilePath, cfgFileName);
@@ -228,20 +228,20 @@ bool ModuleCfgManager::fetchModuleCfgDisk(ModuleDependency* dep, Utf8& cfgFilePa
 bool ModuleCfgManager::fetchModuleCfg(ModuleDependency* dep, Utf8& cfgFilePath, Utf8& cfgFileName)
 {
     if (dep->location.empty())
-        return dep->node->sourceFile->report({dep->node, Fmt(g_E[Err0513], dep->name.c_str())});
+        return dep->node->sourceFile->report({dep->node, Fmt(Err(Err0513), dep->name.c_str())});
 
     vector<Utf8> tokens;
     Utf8::tokenize(dep->location.c_str(), '@', tokens);
     if (tokens.size() != 2)
     {
         if (dep->isLocalToWorkspace)
-            return dep->node->sourceFile->report({dep->node, g_E[Err0514]});
-        return dep->node->sourceFile->report({dep->node, dep->tokenLocation, g_E[Err0514]});
+            return dep->node->sourceFile->report({dep->node, Err(Err0514)});
+        return dep->node->sourceFile->report({dep->node, dep->tokenLocation, Err(Err0514)});
     }
 
     // Check mode
     if (tokens[0] != g_LangSpec->name_swag && tokens[0] != g_LangSpec->name_disk)
-        return dep->node->sourceFile->report({dep->node, dep->tokenLocation, Fmt(g_E[Err0515], tokens[0].c_str())});
+        return dep->node->sourceFile->report({dep->node, dep->tokenLocation, Fmt(Err(Err0515), tokens[0].c_str())});
     dep->locationParam = tokens[1];
 
     cfgFilePath.clear();
@@ -343,8 +343,8 @@ bool ModuleCfgManager::resolveModuleDependency(Module* srcModule, ModuleDependen
         case CompareVersionResult::VERSION_GREATER:
         case CompareVersionResult::VERSION_LOWER:
         {
-            Diagnostic diag{dep->node, Fmt(g_E[Err0516], dep->name.c_str(), dep->verNum, cfgModule->fetchDep->verNum)};
-            Diagnostic note{cfgModule->fetchDep->node, g_E[Nte0035], DiagnosticLevel::Note};
+            Diagnostic diag{dep->node, Fmt(Err(Err0516), dep->name.c_str(), dep->verNum, cfgModule->fetchDep->verNum)};
+            Diagnostic note{cfgModule->fetchDep->node, Nte(Nte0035), DiagnosticLevel::Note};
             dep->node->sourceFile->report(diag, &note);
             return false;
         }
@@ -540,7 +540,7 @@ bool ModuleCfgManager::execute()
         auto cmp = compareVersions(dep->verNum, dep->revNum, dep->buildNum, module->buildCfg.moduleVersion, module->buildCfg.moduleRevision, module->buildCfg.moduleBuildNum);
         if (cmp != CompareVersionResult::EQUAL)
         {
-            Diagnostic diag{dep->node, Fmt(g_E[Err0518], dep->name.c_str(), dep->version.c_str(), dep->resolvedLocation.c_str())};
+            Diagnostic diag{dep->node, Fmt(Err(Err0518), dep->name.c_str(), dep->version.c_str(), dep->resolvedLocation.c_str())};
             dep->node->sourceFile->report(diag);
             ok = false;
         }
@@ -605,7 +605,7 @@ bool ModuleCfgManager::execute()
                 pathSrc += m.second->name.c_str();
                 if (!fs::exists(pathSrc) && !fs::create_directories(pathSrc, errorCode))
                 {
-                    g_Log.errorOS(Fmt(g_E[Err0604], pathSrc.c_str()));
+                    g_Log.errorOS(Fmt(Err(Err0604), pathSrc.c_str()));
                     ok = false;
                     continue;
                 }

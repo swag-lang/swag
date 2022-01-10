@@ -279,23 +279,23 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
                 break;
             }
             case JobContext::ErrorContextType::Export:
-                kindName    = g_E[Err0111];
+                kindName    = Err(Err0111);
                 kindArticle = "of ";
                 break;
             case JobContext::ErrorContextType::Generic:
-                kindName    = g_E[Err0112];
+                kindName    = Err(Err0112);
                 kindArticle = "of ";
                 break;
             case JobContext::ErrorContextType::Inline:
-                kindName    = g_E[Err0118];
+                kindName    = Err(Err0118);
                 kindArticle = "of ";
                 break;
             case JobContext::ErrorContextType::SelectIf:
-                kindName    = g_E[Err0128];
+                kindName    = Err(Err0128);
                 kindArticle = "to ";
                 break;
             case JobContext::ErrorContextType::CheckIf:
-                kindName    = g_E[Err0129];
+                kindName    = Err(Err0129);
                 kindArticle = "to ";
                 break;
             case JobContext::ErrorContextType::Node:
@@ -318,7 +318,7 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
                         first         = returnNode->resolvedFuncDecl->returnType;
                         if (!first->childs.empty())
                             first = first->childs.front();
-                        auto note = new Diagnostic{first, Fmt(g_E[Nte0067], typeFunc->returnType->getDisplayNameC()), DiagnosticLevel::Note};
+                        auto note = new Diagnostic{first, Fmt(Nte(Nte0067), typeFunc->returnType->getDisplayNameC()), DiagnosticLevel::Note};
                         notes.push_back(note);
                         showContext = false;
                     }
@@ -342,9 +342,9 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
 
                 Utf8 msg;
                 if (!name.empty())
-                    msg = Fmt(g_E[Nte0002], kindName, kindArticle, name.c_str());
+                    msg = Fmt(Nte(Nte0002), kindName, kindArticle, name.c_str());
                 else
-                    msg = Fmt(g_E[Nte0003], kindName);
+                    msg = Fmt(Nte(Nte0003), kindName);
                 auto note  = new Diagnostic{first, msg, DiagnosticLevel::Note};
                 note->hint = hint;
                 notes.push_back(note);
@@ -360,7 +360,7 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
     if (sourceNode && sourceNode->sourceFile && sourceNode->sourceFile->sourceNode && !sourceNode->sourceFile->fileForSourceLocation)
     {
         auto fileSourceNode = sourceNode->sourceFile->sourceNode;
-        auto note           = new Diagnostic{fileSourceNode, g_E[Nte0004], DiagnosticLevel::Note};
+        auto note           = new Diagnostic{fileSourceNode, Nte(Nte0004), DiagnosticLevel::Note};
         notes.push_back(note);
     }
 }
@@ -377,7 +377,7 @@ bool JobContext::checkSizeOverflow(const char* typeOverflow, uint64_t value, uin
 {
     if (value <= maxValue)
         return true;
-    return report({node, Fmt(g_E[Err0505], typeOverflow, maxValue)});
+    return report({node, Fmt(Err(Err0505), typeOverflow, maxValue)});
 }
 
 bool JobContext::internalError(const char* msg, AstNode* specNode)

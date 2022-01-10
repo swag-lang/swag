@@ -16,7 +16,7 @@ bool SemanticJob::checkIsConstExpr(JobContext* context, bool test, AstNode* expr
     if (test)
         return true;
 
-    Diagnostic diag{expression, errMsg? errMsg : g_E[Err0798]};
+    Diagnostic diag{expression, errMsg? errMsg : Err(Err0798)};
     return context->report(diag, computeNonConstExprNote(expression));
 }
 
@@ -72,7 +72,7 @@ bool SemanticJob::storeToSegment(JobContext* context, DataSegment* storageSegmen
     {
         if (assignment)
         {
-            SWAG_VERIFY(assignment->kind == AstNodeKind::ExpressionList, context->report({assignment, g_E[Err0798]}));
+            SWAG_VERIFY(assignment->kind == AstNodeKind::ExpressionList, context->report({assignment, Err(Err0798)}));
             SWAG_CHECK(checkIsConstExpr(context, assignment));
 
             // Store value in constant storageSegment
@@ -326,7 +326,7 @@ bool SemanticJob::collectAssignment(SemanticContext* context, DataSegment* stora
             auto assign   = node->assignment;
             auto overload = assign->resolvedSymbolOverload;
             if (node->type && (node->type->flags & AST_HAS_STRUCT_PARAMETERS))
-                return context->report(g_E[Hnt0045], {assign, g_E[Err0645]});
+                return context->report(Hnt(Hnt0045), {assign, Err(Err0645)});
 
             // Copy from a constant
             SWAG_ASSERT(assign->flags & AST_CONST_EXPR);

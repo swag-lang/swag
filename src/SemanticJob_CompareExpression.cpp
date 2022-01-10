@@ -74,7 +74,7 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
             break;
 
         default:
-            return context->report({context->node, Fmt(g_E[Err0001], leftTypeInfo->getDisplayNameC())});
+            return context->report({context->node, Fmt(Err(Err0001), leftTypeInfo->getDisplayNameC())});
         }
     }
     else if (leftTypeInfo->kind == TypeInfoKind::Struct || rightTypeInfo->kind == TypeInfoKind::Struct)
@@ -137,7 +137,7 @@ bool SemanticJob::resolveCompOp3Way(SemanticContext* context, AstNode* left, Ast
             break;
 
         default:
-            return context->report({context->node, Fmt(g_E[Err0001], leftTypeInfo->getDisplayNameC())});
+            return context->report({context->node, Fmt(Err(Err0001), leftTypeInfo->getDisplayNameC())});
         }
     }
     else if (leftTypeInfo->kind == TypeInfoKind::Struct)
@@ -197,7 +197,7 @@ bool SemanticJob::resolveCompOpLower(SemanticContext* context, AstNode* left, As
             break;
 
         default:
-            return context->report({context->node, Fmt(g_E[Err0001], leftTypeInfo->getDisplayNameC())});
+            return context->report({context->node, Fmt(Err(Err0001), leftTypeInfo->getDisplayNameC())});
         }
     }
     else if (leftTypeInfo->kind == TypeInfoKind::Struct)
@@ -257,7 +257,7 @@ bool SemanticJob::resolveCompOpGreater(SemanticContext* context, AstNode* left, 
             break;
 
         default:
-            return context->report({context->node, Fmt(g_E[Err0001], leftTypeInfo->getDisplayNameC())});
+            return context->report({context->node, Fmt(Err(Err0001), leftTypeInfo->getDisplayNameC())});
         }
     }
     else if (leftTypeInfo->kind == TypeInfoKind::Struct)
@@ -315,34 +315,34 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
              leftTypeInfo->kind != TypeInfoKind::Slice &&
              leftTypeInfo->kind != TypeInfoKind::Interface)
     {
-        return context->report({left, Fmt(g_E[Err0005], node->token.ctext(), TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->getDisplayNameC())});
+        return context->report({left, Fmt(Err(Err0005), node->token.ctext(), TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->getDisplayNameC())});
     }
     else if (rightTypeInfo->kind != TypeInfoKind::Native &&
              rightTypeInfo->kind != TypeInfoKind::Pointer &&
              rightTypeInfo->kind != TypeInfoKind::Struct)
     {
-        return context->report({right, Fmt(g_E[Err0005], node->token.ctext(), TypeInfo::getNakedKindName(rightTypeInfo), rightTypeInfo->getDisplayNameC())});
+        return context->report({right, Fmt(Err(Err0005), node->token.ctext(), TypeInfo::getNakedKindName(rightTypeInfo), rightTypeInfo->getDisplayNameC())});
     }
 
     // Cannot compare tuples
     if (leftTypeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
-        return context->report({left, g_E[Err0007]});
+        return context->report({left, Err(Err0007)});
     if (rightTypeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
-        return context->report({right, g_E[Err0007]});
+        return context->report({right, Err(Err0007)});
 
     // Slice can only be compared to null
     if (leftTypeInfo->kind == TypeInfoKind::Slice && rightTypeInfo != g_TypeMgr->typeInfoNull)
-        return context->report({left, g_E[Err0009]});
+        return context->report({left, Err(Err0009)});
 
     // Interface can only be compared to null
     if (leftTypeInfo->kind == TypeInfoKind::Interface && rightTypeInfo != g_TypeMgr->typeInfoNull)
-        return context->report({left, g_E[Err0010]});
+        return context->report({left, Err(Err0010)});
 
     // Some types can only be compared for equality
     if (leftTypeInfo->kind == TypeInfoKind::Slice || leftTypeInfo->kind == TypeInfoKind::Interface)
     {
         if (node->token.id != TokenId::SymEqualEqual && node->token.id != TokenId::SymExclamEqual)
-            return context->report({left, Fmt(g_E[Err0005], node->token.ctext(), TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->getDisplayNameC())});
+            return context->report({left, Fmt(Err(Err0005), node->token.ctext(), TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->getDisplayNameC())});
     }
 
     if (node->token.id == TokenId::SymLowerEqualGreater)

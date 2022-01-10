@@ -5,6 +5,7 @@
 #include "ThreadManager.h"
 #include "Log.h"
 #include "ErrorIds.h"
+#include "Diagnostic.h"
 
 bool OutputFileWin32::openWrite(const string& path)
 {
@@ -15,7 +16,7 @@ bool OutputFileWin32::openWrite(const string& path)
     winHandle = ::CreateFileA(path.c_str(), GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_FLAG_OVERLAPPED, NULL);
     if (winHandle == INVALID_HANDLE_VALUE)
     {
-        g_Log.errorOS(Fmt(g_E[Err0524], path.c_str()));
+        g_Log.errorOS(Fmt(Err(Err0524), path.c_str()));
         return false;
     }
 
@@ -47,7 +48,7 @@ bool OutputFileWin32::save(void* buffer, uint32_t count)
         auto err = GetLastError();
         if (err != ERROR_IO_PENDING)
         {
-            g_Log.errorOS(Fmt(g_E[Err0525], filePath.c_str()));
+            g_Log.errorOS(Fmt(Err(Err0525), filePath.c_str()));
             return false;
         }
 

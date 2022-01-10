@@ -381,7 +381,7 @@ bool AstFuncDecl::cloneSubDecls(JobContext* context, CloneContext& cloneContext,
             auto sym = subFuncScope->symTable.find(subDecl->token.text);
             if (sym)
             {
-                Diagnostic diag{subDecl, Fmt(g_E[Err0346], subDecl->token.ctext())};
+                Diagnostic diag{subDecl, Fmt(Err(Err0346), subDecl->token.ctext())};
                 return context->report(diag);
             }
         }

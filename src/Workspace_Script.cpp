@@ -2,6 +2,7 @@
 #include "Workspace.h"
 #include "Os.h"
 #include "ErrorIds.h"
+#include "Diagnostic.h"
 
 void Workspace::setScriptWorkspace(const Utf8& name)
 {
@@ -15,7 +16,7 @@ void Workspace::setScriptWorkspace(const Utf8& name)
     error_code errorCode;
     if (!fs::exists(cacheWorkspace) && !fs::create_directories(cacheWorkspace, errorCode))
     {
-        g_Log.errorOS(Fmt(g_E[Err0547], cacheWorkspace.c_str()));
+        g_Log.errorOS(Fmt(Err(Err0547), cacheWorkspace.c_str()));
         OS::exit(-1);
     }
 
@@ -23,7 +24,7 @@ void Workspace::setScriptWorkspace(const Utf8& name)
     cacheWorkspace.append(name.c_str());
     if (!fs::exists(cacheWorkspace) && !fs::create_directories(cacheWorkspace, errorCode))
     {
-        g_Log.errorOS(Fmt(g_E[Err0547], cacheWorkspace.c_str()));
+        g_Log.errorOS(Fmt(Err(Err0547), cacheWorkspace.c_str()));
         OS::exit(-1);
     }
 
@@ -40,7 +41,7 @@ void Workspace::scriptCommand()
 {
     if (g_CommandLine->scriptName.empty())
     {
-        g_Log.error(Fmt(g_E[Err0318], g_CommandLine->scriptName.c_str()));
+        g_Log.error(Fmt(Err(Err0318), g_CommandLine->scriptName.c_str()));
         OS::exit(-1);
     }
 
@@ -49,7 +50,7 @@ void Workspace::scriptCommand()
     g_CommandLine->scriptName = Utf8::normalizePath(pathF.string());
     if (!fs::exists(g_CommandLine->scriptName))
     {
-        g_Log.error(Fmt(g_E[Err0166], g_CommandLine->scriptName.c_str()));
+        g_Log.error(Fmt(Err(Err0166), g_CommandLine->scriptName.c_str()));
         OS::exit(-1);
     }
 
@@ -60,7 +61,7 @@ void Workspace::scriptCommand()
     g_Workspace->setupCachePath();
     if (!fs::exists(g_Workspace->cachePath))
     {
-        g_Log.error(Fmt(g_E[Err0546], g_Workspace->cachePath.string().c_str()));
+        g_Log.error(Fmt(Err(Err0546), g_Workspace->cachePath.string().c_str()));
         OS::exit(-1);
     }
 

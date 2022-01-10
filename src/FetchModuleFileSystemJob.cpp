@@ -6,6 +6,7 @@
 #include "ThreadManager.h"
 #include "ErrorIds.h"
 #include "Os.h"
+#include "Diagnostic.h"
 
 JobResult FetchModuleFileSystemJob::execute()
 {
@@ -61,7 +62,7 @@ JobResult FetchModuleFileSystemJob::execute()
                 continue;
             if (!fs::remove(n))
             {
-                g_Log.errorOS(Fmt(g_E[Err0603], n.c_str()));
+                g_Log.errorOS(Fmt(Err(Err0603), n.c_str()));
                 return JobResult::ReleaseJob;
             }
         }
@@ -77,7 +78,7 @@ JobResult FetchModuleFileSystemJob::execute()
         auto folder = destFileName.parent_path();
         if (!fs::exists(folder) && !fs::create_directories(folder, errorCode))
         {
-            g_Log.errorOS(Fmt(g_E[Err0604], folder.c_str()));
+            g_Log.errorOS(Fmt(Err(Err0604), folder.c_str()));
             return JobResult::ReleaseJob;
         }
 

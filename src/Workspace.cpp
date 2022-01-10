@@ -41,7 +41,7 @@ void Workspace::setupUserTags()
                 auto it = g_LangSpec->keywords.find(tokens1[1]);
                 if (!it || *it != TokenId::NativeType)
                 {
-                    g_Log.error(Fmt(g_E[Err0539], tokens1[0].c_str(), tokens1[1].c_str()));
+                    g_Log.error(Fmt(Err(Err0539), tokens1[0].c_str(), tokens1[1].c_str()));
                     OS::exit(-1);
                 }
 
@@ -86,7 +86,7 @@ void Workspace::setupUserTags()
 
                 if (token.id != TokenId::LiteralNumber && token.id != TokenId::LiteralString)
                 {
-                    g_Log.error(Fmt(g_E[Err0538], tokenVal.c_str(), tokens1[0].c_str()));
+                    g_Log.error(Fmt(Err(Err0538), tokenVal.c_str(), tokens1[0].c_str()));
                     OS::exit(-1);
                 }
 
@@ -99,7 +99,7 @@ void Workspace::setupUserTags()
                 auto errMsg = SemanticJob::checkLiteralType(oneTag.value, token, oneTag.type, neg);
                 if (!errMsg.empty())
                 {
-                    auto err = Fmt(g_E[Err0322], tokens1[0].c_str(), errMsg.c_str());
+                    auto err = Fmt(Err(Err0322), tokens1[0].c_str(), errMsg.c_str());
                     g_Log.error(err);
                     OS::exit(-1);
                 }
@@ -130,25 +130,25 @@ void Workspace::setup()
 
     if (workspacePath.empty())
     {
-        g_Log.error(g_E[Err0540]);
+        g_Log.error(Err(Err0540));
         OS::exit(-1);
     }
 
     bool invalid = false;
     if (!fs::exists(workspacePath))
     {
-        g_Log.error(Fmt(g_E[Err0541], workspacePath.string().c_str()));
+        g_Log.error(Fmt(Err(Err0541), workspacePath.string().c_str()));
         invalid = true;
     }
     else if (!g_CommandLine->scriptCommand && !fs::exists(modulesPath) && !fs::exists(testsPath))
     {
-        g_Log.error(Fmt(g_E[Err0542], workspacePath.string().c_str()));
+        g_Log.error(Fmt(Err(Err0542), workspacePath.string().c_str()));
         invalid = true;
     }
 
     if (invalid)
     {
-        g_Log.message(g_E[Nte0012]);
+        g_Log.message(Nte(Nte0012));
         OS::exit(-1);
     }
 

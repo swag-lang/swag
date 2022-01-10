@@ -6,6 +6,7 @@
 #include "Module.h"
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
+#include "Diagnostic.h"
 
 bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
 {
@@ -296,7 +297,7 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     auto        target = llvm::TargetRegistry::lookupTarget(targetTriple, error);
     if (!target)
     {
-        g_Log.error(Fmt(g_E[Err0558], targetTriple.c_str()));
+        g_Log.error(Fmt(Err(Err0558), targetTriple.c_str()));
         return false;
     }
 

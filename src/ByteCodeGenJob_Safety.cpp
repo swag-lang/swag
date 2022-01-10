@@ -22,59 +22,59 @@ const char* ByteCodeGenJob::safetyMsg(SafetyMsg msg, TypeInfo* toType, TypeInfo*
         {
         case SafetyMsg::CastTruncated:
             SWAG_ASSERT(toType && fromType);
-            typedMsg[m][i][j] = Fmt(g_E[Err0207], fromType->name.c_str(), toType->name.c_str());
+            typedMsg[m][i][j] = Fmt(Err(Err0207), fromType->name.c_str(), toType->name.c_str());
             break;
         case SafetyMsg::CastNeg:
             SWAG_ASSERT(toType && fromType);
-            typedMsg[m][i][j] = Fmt(g_E[Err0208], fromType->name.c_str(), toType->name.c_str());
+            typedMsg[m][i][j] = Fmt(Err(Err0208), fromType->name.c_str(), toType->name.c_str());
             break;
         case SafetyMsg::IFPlus:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = Fmt(g_E[Err0209], toType->name.c_str());
+            typedMsg[m][i][j] = Fmt(Err(Err0209), toType->name.c_str());
             break;
         case SafetyMsg::IFMinus:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = Fmt(g_E[Err0210], toType->name.c_str());
+            typedMsg[m][i][j] = Fmt(Err(Err0210), toType->name.c_str());
             break;
         case SafetyMsg::IFMul:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = Fmt(g_E[Err0211], toType->name.c_str());
+            typedMsg[m][i][j] = Fmt(Err(Err0211), toType->name.c_str());
             break;
         case SafetyMsg::IFPlusEq:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = Fmt(g_E[Err0212], toType->name.c_str());
+            typedMsg[m][i][j] = Fmt(Err(Err0212), toType->name.c_str());
             break;
         case SafetyMsg::IFMinusEq:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = Fmt(g_E[Err0213], toType->name.c_str());
+            typedMsg[m][i][j] = Fmt(Err(Err0213), toType->name.c_str());
             break;
         case SafetyMsg::IFMulEq:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = Fmt(g_E[Err0214], toType->name.c_str());
+            typedMsg[m][i][j] = Fmt(Err(Err0214), toType->name.c_str());
             break;
         case SafetyMsg::ShiftLeftOp:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = Fmt(g_E[Err0215], toType->name.c_str(), (toType->sizeOf * 8) - 1);
+            typedMsg[m][i][j] = Fmt(Err(Err0215), toType->name.c_str(), (toType->sizeOf * 8) - 1);
             break;
         case SafetyMsg::ShiftRightOp:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = Fmt(g_E[Err0216], toType->name.c_str(), (toType->sizeOf * 8) - 1);
+            typedMsg[m][i][j] = Fmt(Err(Err0216), toType->name.c_str(), (toType->sizeOf * 8) - 1);
             break;
         case SafetyMsg::ShiftLeftOf:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = Fmt(g_E[Err0217], toType->name.c_str());
+            typedMsg[m][i][j] = Fmt(Err(Err0217), toType->name.c_str());
             break;
         case SafetyMsg::ShiftRightOf:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = Fmt(g_E[Err0218], toType->name.c_str());
+            typedMsg[m][i][j] = Fmt(Err(Err0218), toType->name.c_str());
             break;
         case SafetyMsg::NegAbs:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = Fmt(g_E[Err0219], toType->name.c_str());
+            typedMsg[m][i][j] = Fmt(Err(Err0219), toType->name.c_str());
             break;
         case SafetyMsg::Neg:
             SWAG_ASSERT(toType);
-            typedMsg[m][i][j] = Fmt(g_E[Err0220], toType->name.c_str());
+            typedMsg[m][i][j] = Fmt(Err(Err0220), toType->name.c_str());
             break;
         }
     }
@@ -395,7 +395,7 @@ void ByteCodeGenJob::emitSafetyDivZero(ByteCodeGenContext* context, uint32_t r, 
     if (!mustEmitSafety(context, ATTRIBUTE_SAFETY_MATH_ON, ATTRIBUTE_SAFETY_MATH_OFF))
         return;
 
-    emitSafetyNotZero(context, r, bits, g_E[Err0221]);
+    emitSafetyNotZero(context, r, bits, Err(Err0221));
 }
 
 void ByteCodeGenJob::emitSafetyBoundCheckLowerU32(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
@@ -404,7 +404,7 @@ void ByteCodeGenJob::emitSafetyBoundCheckLowerU32(ByteCodeGenContext* context, u
 
     auto re = reserveRegisterRC(context);
     emitInstruction(context, ByteCodeOp::CompareOpLowerU32, r0, r1, re);
-    emitAssert(context, re, g_E[Err0222]);
+    emitAssert(context, re, Err(Err0222));
     freeRegisterRC(context, re);
 }
 
@@ -414,7 +414,7 @@ void ByteCodeGenJob::emitSafetyBoundCheckLowerU64(ByteCodeGenContext* context, u
 
     auto re = reserveRegisterRC(context);
     emitInstruction(context, ByteCodeOp::CompareOpLowerU64, r0, r1, re);
-    emitAssert(context, re, g_E[Err0222]);
+    emitAssert(context, re, Err(Err0222));
     freeRegisterRC(context, re);
 }
 
@@ -475,7 +475,7 @@ void ByteCodeGenJob::emitSafetyBoundCheckLowerEqU64(ByteCodeGenContext* context,
 
     auto re = reserveRegisterRC(context);
     emitInstruction(context, ByteCodeOp::CompareOpLowerEqU64, r0, r1, re);
-    emitAssert(context, re, g_E[Err0222]);
+    emitAssert(context, re, Err(Err0222));
     freeRegisterRC(context, re);
 }
 
@@ -565,7 +565,7 @@ void ByteCodeGenJob::emitSafetyArrayPointerSlicing(ByteCodeGenContext* context, 
         auto re = reserveRegisterRC(context);
         context->pushLocation(&node->lowerBound->token.startLocation);
         emitInstruction(context, ByteCodeOp::CompareOpLowerEqU64, node->lowerBound->resultRegisterRC, node->upperBound->resultRegisterRC, re);
-        emitAssert(context, re, g_E[Err0229]);
+        emitAssert(context, re, Err(Err0229));
         context->popLocation();
         freeRegisterRC(context, re);
     }
@@ -576,7 +576,7 @@ void ByteCodeGenJob::emitSafetyArrayPointerSlicing(ByteCodeGenContext* context, 
         auto re = reserveRegisterRC(context);
         context->pushLocation(&node->upperBound->token.startLocation);
         emitInstruction(context, ByteCodeOp::CompareOpLowerU64, node->upperBound->resultRegisterRC, maxBoundReg, re);
-        emitAssert(context, re, g_E[Err0230]);
+        emitAssert(context, re, Err(Err0230));
         context->popLocation();
         freeRegisterRC(context, re);
         if (freeMaxBoundReg)

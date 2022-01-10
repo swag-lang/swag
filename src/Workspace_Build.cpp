@@ -224,7 +224,7 @@ void Workspace::setupTarget()
     error_code errorCode;
     if (!fs::exists(targetPath) && !fs::create_directories(targetPath, errorCode))
     {
-        g_Log.errorOS(Fmt(g_E[Err0545], targetPath.string().c_str()));
+        g_Log.errorOS(Fmt(Err(Err0545), targetPath.string().c_str()));
         OS::exit(-1);
     }
 
@@ -232,14 +232,14 @@ void Workspace::setupTarget()
     setupCachePath();
     if (!fs::exists(cachePath))
     {
-        g_Log.errorOS(Fmt(g_E[Err0546], cachePath.string().c_str()));
+        g_Log.errorOS(Fmt(Err(Err0546), cachePath.string().c_str()));
         OS::exit(-1);
     }
 
     cachePath.append(SWAG_CACHE_FOLDER);
     if (!fs::exists(cachePath) && !fs::create_directories(cachePath, errorCode))
     {
-        g_Log.errorOS(Fmt(g_E[Err0547], cachePath.string().c_str()));
+        g_Log.errorOS(Fmt(Err(Err0547), cachePath.string().c_str()));
         OS::exit(-1);
     }
 
@@ -247,7 +247,7 @@ void Workspace::setupTarget()
     cachePath.append(workspacePath.filename().string() + "-" + targetFullName.c_str());
     if (!fs::exists(cachePath) && !fs::create_directories(cachePath, errorCode))
     {
-        g_Log.errorOS(Fmt(g_E[Err0547], cachePath.string().c_str()));
+        g_Log.errorOS(Fmt(Err(Err0547), cachePath.string().c_str()));
         OS::exit(-1);
     }
 
@@ -264,7 +264,7 @@ void Workspace::errorPendingJobsMsg(Job* prevJob, Job* depJob, vector<const Diag
     SWAG_ASSERT(prevNode);
     SWAG_ASSERT(depNode);
 
-    Utf8 msg = Fmt(g_E[Nte0046],
+    Utf8 msg = Fmt(Nte(Nte0046),
                             AstNode::getKindName(prevNode).c_str(),
                             prevNode->token.ctext(),
                             AstNode::getKindName(depNode).c_str(),
@@ -339,7 +339,7 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
 
             errorPendingJobsMsg(prevJob, pendingJob, notes);
 
-            Diagnostic diag{pendingJob->originalNode, Fmt(g_E[Err0419], AstNode::getKindName(pendingJob->originalNode).c_str(), pendingJob->originalNode->token.ctext())};
+            Diagnostic diag{pendingJob->originalNode, Fmt(Err(Err0419), AstNode::getKindName(pendingJob->originalNode).c_str(), pendingJob->originalNode->token.ctext())};
             sourceFile->report(diag, notes);
             doneOne = true;
             continue;
@@ -364,7 +364,7 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
         auto toSolve = pendingJob->waitingSymbolSolved;
         if (!toSolve)
         {
-            Diagnostic diag{node, Fmt(g_E[Err0549], pendingJob->module->name.c_str(), AstNode::getKindName(node).c_str(), node->token.ctext())};
+            Diagnostic diag{node, Fmt(Err(Err0549), pendingJob->module->name.c_str(), AstNode::getKindName(node).c_str(), node->token.ctext())};
 #ifdef SWAG_DEV_MODE
             diag.remarks.push_back(it.id);
 #endif
@@ -377,7 +377,7 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
         SWAG_ASSERT(!toSolve->nodes.empty());
         auto declNode = toSolve->nodes.front();
 
-        Utf8 msg = Fmt(g_E[Err0893], SymTable::getNakedKindName(toSolve->kind), toSolve->name.c_str());
+        Utf8 msg = Fmt(Err(Err0893), SymTable::getNakedKindName(toSolve->kind), toSolve->name.c_str());
 
         // a := func(a) for example
         if (toSolve->kind == SymbolKind::Variable &&
@@ -385,7 +385,7 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
             declNode->sourceFile == node->sourceFile &&
             declNode->token.startLocation.line == node->token.startLocation.line)
         {
-            msg = Fmt(g_E[Err0894], toSolve->name.c_str());
+            msg = Fmt(Err(Err0894), toSolve->name.c_str());
         }
 
         Diagnostic diag{node, msg};
@@ -394,7 +394,7 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
 #endif
         Diagnostic* note = nullptr;
         if (node != declNode)
-            note = new Diagnostic{declNode, g_E[Nte0028], DiagnosticLevel::Note};
+            note = new Diagnostic{declNode, Nte(Nte0028), DiagnosticLevel::Note};
         sourceFile->report(diag, note);
         doneOne = true;
     }
@@ -408,7 +408,7 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
             auto       node       = it.node;
             auto       pendingJob = it.pendingJob;
             auto       sourceFile = pendingJob->sourceFile;
-            Diagnostic diag{node, Fmt(g_E[Err0549], pendingJob->module->name.c_str(), AstNode::getKindName(node).c_str(), node->token.ctext())};
+            Diagnostic diag{node, Fmt(Err(Err0549), pendingJob->module->name.c_str(), AstNode::getKindName(node).c_str(), node->token.ctext())};
             sourceFile->report(diag);
         }
     }
@@ -567,7 +567,7 @@ bool Workspace::buildRTModule(Module* module)
 
     if (module->numErrors)
     {
-        g_Log.error(module->kind == ModuleKind::BootStrap ? g_E[Err0552] : g_E[Err0554]);
+        g_Log.error(module->kind == ModuleKind::BootStrap ? Err(Err0552) : Err(Err0554));
         return false;
     }
 
@@ -585,7 +585,7 @@ bool Workspace::buildRTModule(Module* module)
     // Errors !!!
     if (module->numErrors)
     {
-        g_Log.error(module->kind == ModuleKind::BootStrap ? g_E[Err0552] : g_E[Err0554]);
+        g_Log.error(module->kind == ModuleKind::BootStrap ? Err(Err0552) : Err(Err0554));
         return false;
     }
 
@@ -650,7 +650,7 @@ bool Workspace::buildTarget()
     {
         if (!filteredModule)
         {
-            g_Log.error(Fmt(g_E[Err0556], g_CommandLine->moduleName.c_str()));
+            g_Log.error(Fmt(Err(Err0556), g_CommandLine->moduleName.c_str()));
             return false;
         }
 
@@ -665,7 +665,7 @@ bool Workspace::buildTarget()
                 auto       it = g_Workspace->mapModulesNames.find(dep->name);
                 if (it == g_Workspace->mapModulesNames.end())
                 {
-                    g_Log.error(Fmt(g_E[Err0557], dep->name.c_str()));
+                    g_Log.error(Fmt(Err(Err0557), dep->name.c_str()));
                     return false;
                 }
 

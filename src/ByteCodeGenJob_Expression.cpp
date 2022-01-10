@@ -271,7 +271,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context)
 {
     auto node = context->node;
     if (node->semFlags & AST_SEM_LITERAL_SUFFIX)
-        return context->report({node->childs.front(), Fmt(g_E[Err0532], node->childs.front()->token.ctext())});
+        return context->report({node->childs.front(), Fmt(Err(Err0532), node->childs.front()->token.ctext())});
     SWAG_CHECK(emitLiteral(context, node, nullptr, node->resultRegisterRC));
     return true;
 }

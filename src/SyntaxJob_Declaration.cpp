@@ -57,8 +57,8 @@ bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
                         break;
                 default:
                 {
-                    Diagnostic diag{node, g_E[Err0386]};
-                    Diagnostic note{child, g_E[Nte0024], DiagnosticLevel::Note};
+                    Diagnostic diag{node, Err(Err0386)};
+                    Diagnostic note{child, Nte(Nte0024), DiagnosticLevel::Note};
                     return sourceFile->report(diag, &note);
                 }
                 }
@@ -80,7 +80,7 @@ bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result)
 {
-    SWAG_VERIFY(currentScope->isGlobal(), error(token, g_E[Err0388]));
+    SWAG_VERIFY(currentScope->isGlobal(), error(token, Err(Err0388)));
     SWAG_CHECK(doNamespace(parent, result, false));
     return true;
 }
@@ -113,16 +113,16 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result, bool forGlobal)
         case TokenId::Identifier:
             break;
         case TokenId::SymLeftCurly:
-            return error(token, g_E[Err0389]);
+            return error(token, Err(Err0389));
         case TokenId::SymSemiColon:
-            return error(token, g_E[Err0390]);
+            return error(token, Err(Err0390));
         default:
-            return error(token, Fmt(g_E[Err0391], token.ctext()));
+            return error(token, Fmt(Err(Err0391), token.ctext()));
         }
 
         // Be sure this is not the swag namespace, except for a runtime file
         if (!sourceFile->isBootstrapFile && !sourceFile->isRuntimeFile)
-            SWAG_VERIFY(!token.text.compareNoCase(g_LangSpec->name_Swag), error(token, Fmt(g_E[Err0392], token.ctext())));
+            SWAG_VERIFY(!token.text.compareNoCase(g_LangSpec->name_Swag), error(token, Fmt(Err(Err0392), token.ctext())));
 
         // Add/Get namespace
         {
@@ -139,9 +139,9 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result, bool forGlobal)
             }
             else if (symbol->kind != SymbolKind::Namespace)
             {
-                Utf8       msg = Fmt(g_E[Err0886], symbol->name.c_str());
+                Utf8       msg = Fmt(Err(Err0886), symbol->name.c_str());
                 Diagnostic diag{sourceFile, token.startLocation, token.endLocation, msg};
-                Utf8       note = g_E[Nte0036];
+                Utf8       note = Nte(Nte0036);
                 Diagnostic diagNote{symbol->nodes.front(), note, DiagnosticLevel::Note};
                 return sourceFile->report(diag, &diagNote);
             }
@@ -180,7 +180,7 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result, bool forGlobal)
             SWAG_CHECK(doTopLevelInstruction(namespaceNode));
         }
 
-        SWAG_CHECK(verifyError(openCurly, token.id != TokenId::EndOfFile, g_E[Err0880]));
+        SWAG_CHECK(verifyError(openCurly, token.id != TokenId::EndOfFile, Err(Err0880)));
         SWAG_CHECK(eatToken(TokenId::SymRightCurly, "to close the namespace body"));
     }
 
@@ -199,7 +199,7 @@ bool SyntaxJob::doGlobalCurlyStatement(AstNode* parent, AstNode** result)
     while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
         SWAG_CHECK(doTopLevelInstruction(node));
 
-    SWAG_CHECK(verifyError(openCurly, token.id != TokenId::EndOfFile, g_E[Err0880]));
+    SWAG_CHECK(verifyError(openCurly, token.id != TokenId::EndOfFile, Err(Err0880)));
     SWAG_CHECK(eatToken(TokenId::SymRightCurly));
     return true;
 }
@@ -226,7 +226,7 @@ bool SyntaxJob::doCurlyStatement(AstNode* parent, AstNode** result)
         }
     }
 
-    SWAG_CHECK(verifyError(openCurly, token.id != TokenId::EndOfFile, g_E[Err0880]));
+    SWAG_CHECK(verifyError(openCurly, token.id != TokenId::EndOfFile, Err(Err0880)));
     node->token.endLocation = token.startLocation;
     SWAG_CHECK(eatToken(TokenId::SymRightCurly));
     return true;
@@ -406,7 +406,7 @@ bool SyntaxJob::doScopeBreakable(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
     if (token.id != TokenId::SymLeftCurly)
     {
-        SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(g_E[Err0395], token.ctext())));
+        SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Err0395), token.ctext())));
         labelNode->inheritTokenName(token);
         labelNode->inheritTokenLocation(token);
         SWAG_CHECK(eatToken());
@@ -666,13 +666,13 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
 
     case TokenId::KwdPublic:
     case TokenId::KwdPrivate:
-        return error(token, Fmt(g_E[Err0665], token.ctext()));
+        return error(token, Fmt(Err(Err0665), token.ctext()));
 
     default:
         if (Tokenizer::isIntrinsicReturn(token.id))
         {
-            PushErrHint eh(g_E[Hnt0008]);
-            return error(token, Fmt(g_E[Err0892], token.ctext()));
+            PushErrHint eh(Hnt(Hnt0008));
+            return error(token, Fmt(Err(Err0892), token.ctext()));
         }
 
         return invalidTokenError(InvalidTokenError::EmbeddedInstruction);
