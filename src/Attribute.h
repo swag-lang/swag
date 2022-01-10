@@ -73,11 +73,12 @@ struct OneAttribute
 
 struct AttributeList
 {
-    OneAttribute*        getAttribute(const Utf8& fullName);
-    const ComputedValue* getValue(const Utf8& fullName, const Utf8& parameter);
-    bool                 hasAttribute(const Utf8& fullName);
-    void                 emplace(OneAttribute& other);
-    void                 add(AttributeList& other);
+    OneAttribute*             getAttribute(const Utf8& fullName);
+    const AttributeParameter* getParam(const Utf8& fullName, const Utf8& parameter);
+    const ComputedValue*      getValue(const Utf8& fullName, const Utf8& parameter);
+    bool                      hasAttribute(const Utf8& fullName);
+    void                      emplace(OneAttribute& other);
+    void                      add(AttributeList& other);
 
     void reset()
     {

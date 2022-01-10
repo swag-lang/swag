@@ -12,6 +12,27 @@ OneAttribute* AttributeList::getAttribute(const Utf8& fullName)
     return nullptr;
 }
 
+const AttributeParameter* AttributeList::getParam(const Utf8& fullName, const Utf8& parameter)
+{
+    for (auto& it : allAttributes)
+    {
+        if (it.name == fullName)
+        {
+            for (auto& param : it.parameters)
+            {
+                if (param.token.text == parameter)
+                {
+                    return &param;
+                }
+            }
+
+            return nullptr;
+        }
+    }
+
+    return nullptr;
+}
+
 const ComputedValue* AttributeList::getValue(const Utf8& fullName, const Utf8& parameter)
 {
     for (auto& it : allAttributes)

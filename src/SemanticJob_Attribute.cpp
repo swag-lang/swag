@@ -318,7 +318,8 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
             //////
             else if (child->token.text == g_LangSpec->name_ExportType)
             {
-                auto attrWhat = curAttr->attributes.getValue(g_LangSpec->name_Swag_ExportType, g_LangSpec->name_what);
+                auto attrParam = curAttr->attributes.getParam(g_LangSpec->name_Swag_ExportType, g_LangSpec->name_what);
+                auto attrWhat  = &attrParam->value;
                 SWAG_ASSERT(attrWhat);
                 auto text = attrWhat->text;
                 text.trim();
@@ -333,14 +334,18 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                     else if (w == g_LangSpec->name_nozero)
                         flags |= ATTRIBUTE_EXPORT_TYPE_NOZERO;
                     else
-                        return context->report({child, Utf8::format(g_E[Err0599], w.c_str())});
+                    {
+                        Diagnostic note{g_E[Hlp0013], DiagnosticLevel::Help};
+                        return context->report({child, attrParam->token, Utf8::format(g_E[Err0599], w.c_str())}, &note);
+                    }
                 }
             }
 
             //////
             else if (child->token.text == g_LangSpec->name_Safety)
             {
-                auto attrWhat = curAttr->attributes.getValue(g_LangSpec->name_Swag_Safety, g_LangSpec->name_what);
+                auto attrParam = curAttr->attributes.getParam(g_LangSpec->name_Swag_Safety, g_LangSpec->name_what);
+                auto attrWhat  = &attrParam->value;
                 SWAG_ASSERT(attrWhat);
                 auto text = attrWhat->text;
                 text.trim();
@@ -383,14 +388,18 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                         flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_CASTANY_ON : ATTRIBUTE_SAFETY_CASTANY_OFF;
                     }
                     else
-                        return context->report({child, Utf8::format(g_E[Err0593], w.c_str())});
+                    {
+                        Diagnostic note{g_E[Hlp0011], DiagnosticLevel::Help};
+                        return context->report({child, attrParam->token, Utf8::format(g_E[Err0593], w.c_str())}, &note);
+                    }
                 }
             }
 
             //////
             else if (child->token.text == g_LangSpec->name_Optim)
             {
-                auto attrWhat = curAttr->attributes.getValue(g_LangSpec->name_Swag_Optim, g_LangSpec->name_what);
+                auto attrParam = curAttr->attributes.getParam(g_LangSpec->name_Swag_Optim, g_LangSpec->name_what);
+                auto attrWhat  = &attrParam->value;
                 SWAG_ASSERT(attrWhat);
                 auto text = attrWhat->text;
                 text.trim();
@@ -421,7 +430,10 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                         flags |= attrValue->reg.b ? ATTRIBUTE_OPTIM_BACKEND_ON : ATTRIBUTE_OPTIM_BACKEND_OFF;
                     }
                     else
-                        return context->report({child, Utf8::format(g_E[Err0594], w.c_str())});
+                    {
+                        Diagnostic note{g_E[Hlp0012], DiagnosticLevel::Help};
+                        return context->report({child, attrParam->token, Utf8::format(g_E[Err0594], w.c_str())}, &note);
+                    }
                 }
             }
 
