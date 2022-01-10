@@ -113,7 +113,7 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
             }
             else
             {
-                return moduleToGen->internalError(Utf8::format("emitFuncWrapperPublic, invalid param type `%s`", typeParam->name.c_str()));
+                return moduleToGen->internalError(Fmt("emitFuncWrapperPublic, invalid param type `%s`", typeParam->name.c_str()));
             }
 
             argIdx += typeParam->numRegisters();
@@ -176,7 +176,7 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
             }
             else
             {
-                return moduleToGen->internalError(Utf8::format("emitFuncWrapperPublic, invalid return type `%s`", returnType->getDisplayName().c_str()));
+                return moduleToGen->internalError(Fmt("emitFuncWrapperPublic, invalid return type `%s`", returnType->getDisplayName().c_str()));
             }
         }
         else if (numReturnRegs == 2)

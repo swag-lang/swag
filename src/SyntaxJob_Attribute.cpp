@@ -14,7 +14,7 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
         *result = attrNode;
 
     SWAG_CHECK(eatToken());
-    SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Utf8::format(g_E[Err0355], token.ctext())));
+    SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(g_E[Err0355], token.ctext())));
 
     attrNode->inheritTokenName(token);
 
@@ -60,8 +60,8 @@ bool SyntaxJob::doGlobalAttributeExpose(AstNode* parent, AstNode** result, bool 
         else
             attr = ATTRIBUTE_PRIVATE;
 
-        SWAG_VERIFY(currentScope->isGlobalOrImpl(), error(token, Utf8::format(g_E[Err0349], token.ctext())));
-        SWAG_VERIFY(!sourceFile->forceExport, error(token, Utf8::format(g_E[Err0350], token.ctext())));
+        SWAG_VERIFY(currentScope->isGlobalOrImpl(), error(token, Fmt(g_E[Err0349], token.ctext())));
+        SWAG_VERIFY(!sourceFile->forceExport, error(token, Fmt(g_E[Err0350], token.ctext())));
         if (newScope->flags & SCOPE_FILE)
             newScope = newScope->parentScope;
         SWAG_CHECK(eatToken());
@@ -103,12 +103,12 @@ bool SyntaxJob::doGlobalAttributeExpose(AstNode* parent, AstNode** result, bool 
 
         case TokenId::SymAttrStart:
         {
-            PushErrHint eh(Utf8::format(g_E[Hnt0043], tokenAttr.ctext()));
-            return error(token, Utf8::format(g_E[Err0354], token.ctext(), tokenAttr.ctext()));
+            PushErrHint eh(Fmt(g_E[Hnt0043], tokenAttr.ctext()));
+            return error(token, Fmt(g_E[Err0354], token.ctext(), tokenAttr.ctext()));
         }
 
         default:
-            return error(token, Utf8::format(g_E[Err0353], token.ctext(), tokenAttr.ctext()));
+            return error(token, Fmt(g_E[Err0353], token.ctext(), tokenAttr.ctext()));
         }
 
         SWAG_CHECK(doTopLevelInstruction(attrUse, &topStmt));
@@ -147,12 +147,12 @@ bool SyntaxJob::doAttrUse(AstNode* parent, AstNode** result, bool single)
             SWAG_CHECK(doIdentifierRef(attrBlockNode, &params));
             params->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
 
-            SWAG_VERIFY(token.id == TokenId::SymRightSquare || token.id == TokenId::SymComma, error(token, Utf8::format(g_E[Err0825], token.ctext())));
+            SWAG_VERIFY(token.id == TokenId::SymRightSquare || token.id == TokenId::SymComma, error(token, Fmt(g_E[Err0825], token.ctext())));
 
             if (token.id != TokenId::SymRightSquare)
             {
                 SWAG_CHECK(eatToken(TokenId::SymComma));
-                SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Utf8::format(g_E[Err0355], token.ctext())));
+                SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(g_E[Err0355], token.ctext())));
             }
         }
 

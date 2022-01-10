@@ -3027,7 +3027,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 break;
             default:
                 ok = false;
-                moduleToGen->internalError(Utf8::format("unknown intrinsic `%s` during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                moduleToGen->internalError(Fmt("unknown intrinsic `%s` during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
 
@@ -3065,7 +3065,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 break;
             default:
                 ok = false;
-                moduleToGen->internalError(Utf8::format("unknown intrinsic `%s` during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                moduleToGen->internalError(Fmt("unknown intrinsic `%s` during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
 
@@ -3102,7 +3102,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 break;
             default:
                 ok = false;
-                moduleToGen->internalError(Utf8::format("unknown intrinsic `%s` during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                moduleToGen->internalError(Fmt("unknown intrinsic `%s` during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
 
@@ -3139,7 +3139,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 break;
             default:
                 ok = false;
-                moduleToGen->internalError(Utf8::format("unknown intrinsic `%s` during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                moduleToGen->internalError(Fmt("unknown intrinsic `%s` during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
 
@@ -3163,7 +3163,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 break;
             default:
                 ok = false;
-                moduleToGen->internalError(Utf8::format("unknown intrinsic `%s` during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                moduleToGen->internalError(Fmt("unknown intrinsic `%s` during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
 
@@ -3186,7 +3186,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 break;
             default:
                 ok = false;
-                moduleToGen->internalError(Utf8::format("unknown intrinsic `%s` during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                moduleToGen->internalError(Fmt("unknown intrinsic `%s` during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
 
@@ -3209,7 +3209,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 break;
             default:
                 ok = false;
-                moduleToGen->internalError(Utf8::format("unknown intrinsic `%s` during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                moduleToGen->internalError(Fmt("unknown intrinsic `%s` during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
 
@@ -3232,7 +3232,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 break;
             default:
                 ok = false;
-                moduleToGen->internalError(Utf8::format("unknown intrinsic `%s` during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                moduleToGen->internalError(Fmt("unknown intrinsic `%s` during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
 
@@ -3256,7 +3256,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 break;
             default:
                 ok = false;
-                moduleToGen->internalError(Utf8::format("unknown intrinsic `%s` during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                moduleToGen->internalError(Fmt("unknown intrinsic `%s` during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
 
@@ -3279,7 +3279,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 break;
             default:
                 ok = false;
-                moduleToGen->internalError(Utf8::format("unknown intrinsic `%s` during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                moduleToGen->internalError(Fmt("unknown intrinsic `%s` during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
 
@@ -3302,7 +3302,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 break;
             default:
                 ok = false;
-                moduleToGen->internalError(Utf8::format("unknown intrinsic `%s` during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                moduleToGen->internalError(Fmt("unknown intrinsic `%s` during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
 
@@ -3325,7 +3325,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 break;
             default:
                 ok = false;
-                moduleToGen->internalError(Utf8::format("unknown intrinsic `%s` during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                moduleToGen->internalError(Fmt("unknown intrinsic `%s` during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
 
@@ -3353,7 +3353,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 break;
             default:
                 ok = false;
-                moduleToGen->internalError(Utf8::format("unknown intrinsic `%s` during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                moduleToGen->internalError(Fmt("unknown intrinsic `%s` during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
             BackendX64Inst::emit_StoreF32_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
@@ -3379,7 +3379,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 break;
             default:
                 ok = false;
-                moduleToGen->internalError(Utf8::format("unknown intrinsic `%s` during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                moduleToGen->internalError(Fmt("unknown intrinsic `%s` during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
             BackendX64Inst::emit_StoreF64_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
@@ -3455,7 +3455,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 break;
             default:
                 ok = false;
-                moduleToGen->internalError(Utf8::format("unknown intrinsic `%s` during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                moduleToGen->internalError(Fmt("unknown intrinsic `%s` during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
 
@@ -3535,7 +3535,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 break;
             default:
                 ok = false;
-                moduleToGen->internalError(Utf8::format("unknown intrinsic `%s` during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+                moduleToGen->internalError(Fmt("unknown intrinsic `%s` during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
 
@@ -3580,7 +3580,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         default:
             ok = false;
-            moduleToGen->internalError(Utf8::format("unknown instruction `%s` during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
+            moduleToGen->internalError(Fmt("unknown instruction `%s` during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
             break;
         }
     }

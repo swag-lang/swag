@@ -1034,8 +1034,8 @@ bool ByteCodeGenJob::checkCatchError(ByteCodeGenContext* context, AstNode* callN
     bool raiseErrors = typeInfoFunc->flags & TYPEINFO_CAN_THROW;
     if (raiseErrors && (!callNode->extension || !callNode->extension->ownerTryCatchAssume))
     {
-        Diagnostic diag{callNode, Utf8::format(g_E[Err0534], funcNode->token.ctext())};
-        Diagnostic note{typeInfoFunc->declNode, Utf8::format(g_E[Nte0040], typeInfoFunc->declNode->token.ctext()), DiagnosticLevel::Note};
+        Diagnostic diag{callNode, Fmt(g_E[Err0534], funcNode->token.ctext())};
+        Diagnostic note{typeInfoFunc->declNode, Fmt(g_E[Nte0040], typeInfoFunc->declNode->token.ctext()), DiagnosticLevel::Note};
         return context->report(diag, &note);
     }
 
@@ -1045,8 +1045,8 @@ bool ByteCodeGenJob::checkCatchError(ByteCodeGenContext* context, AstNode* callN
             parent->kind == AstNodeKind::Catch ||
             parent->kind == AstNodeKind::Assume)
         {
-            Diagnostic diag{parent, Utf8::format(g_E[Err0535], parent->token.ctext())};
-            Diagnostic note{typeInfoFunc->declNode, Utf8::format(g_E[Nte0040], typeInfoFunc->declNode->token.ctext()), DiagnosticLevel::Note};
+            Diagnostic diag{parent, Fmt(g_E[Err0535], parent->token.ctext())};
+            Diagnostic note{typeInfoFunc->declNode, Fmt(g_E[Nte0040], typeInfoFunc->declNode->token.ctext()), DiagnosticLevel::Note};
             return context->report(diag, &note);
         }
     }
@@ -1619,7 +1619,7 @@ bool ByteCodeGenJob::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
     if (funcNode->stackSize)
     {
         if (funcNode->stackSize > g_CommandLine->stackSizeRT)
-            context->sourceFile->report({funcNode, Utf8::format(g_E[Err0536], Utf8::toNiceSize(g_CommandLine->stackSizeRT).c_str())});
+            context->sourceFile->report({funcNode, Fmt(g_E[Err0536], Utf8::toNiceSize(g_CommandLine->stackSizeRT).c_str())});
         emitInstruction(context, ByteCodeOp::DecSPBP)->a.u32 = funcNode->stackSize;
     }
 

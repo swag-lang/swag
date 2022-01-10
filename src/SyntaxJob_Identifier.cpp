@@ -28,7 +28,7 @@ bool SyntaxJob::checkIsValidUserName(AstNode* node)
     if (!sourceFile->isGenerated && !sourceFile->isBootstrapFile && !sourceFile->isRuntimeFile)
     {
         if (node->token.text.length() > 1 && node->token.text[0] == '_' && node->token.text[1] == '_')
-            return error(node->token, Utf8::format(g_E[Err0272], node->token.ctext()));
+            return error(node->token, Fmt(g_E[Err0272], node->token.ctext()));
     }
 
     return true;
@@ -40,7 +40,7 @@ bool SyntaxJob::checkIsSingleIdentifier(AstNode* node, const char* msg)
         node->childs.size() > 1 ||
         node->childs.back()->kind != AstNodeKind::Identifier)
     {
-        return error(node, Utf8::format(g_E[Err0121], msg));
+        return error(node, Fmt(g_E[Err0121], msg));
     }
 
     return true;
@@ -57,15 +57,15 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
         token.startLocation = backTickToken.startLocation;
         backTick            = true;
         if (token.id == TokenId::SymQuestion)
-            return error(token, Utf8::format(g_E[Err0835], token.ctext()));
+            return error(token, Fmt(g_E[Err0835], token.ctext()));
     }
 
     if (token.id == TokenId::SymQuestion && !(identifierFlags & IDENTIFIER_ACCEPT_QUESTION))
-        return error(token, Utf8::format(g_E[Err0835], token.ctext()));
+        return error(token, Fmt(g_E[Err0835], token.ctext()));
     else if (token.id != TokenId::SymQuestion && Tokenizer::isSymbol(token.id))
-        return error(token, Utf8::format(g_E[Err0835], token.ctext()));
+        return error(token, Fmt(g_E[Err0835], token.ctext()));
     else if (Tokenizer::isLiteral(token.id))
-        return error(token, Utf8::format(g_E[Err0285], token.ctext()));
+        return error(token, Fmt(g_E[Err0285], token.ctext()));
     else if (token.id == TokenId::EndOfFile)
         return error(token, g_E[Err0849]);
 
@@ -111,7 +111,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
         if (token.id == TokenId::SymLeftParen)
         {
             if (identifierFlags & IDENTIFIER_TYPE_DECL)
-                return sourceFile->report({identifier, token, Utf8::format(g_E[Err0082], identifier->token.ctext())});
+                return sourceFile->report({identifier, token, Fmt(g_E[Err0082], identifier->token.ctext())});
 
             SWAG_CHECK(eatToken(TokenId::SymLeftParen));
             SWAG_CHECK(doFuncCallParameters(identifier, &identifier->callParameters, TokenId::SymRightParen));
@@ -212,10 +212,10 @@ bool SyntaxJob::doDiscard(AstNode* parent, AstNode** result)
         if (Tokenizer::isIntrinsicReturn(token.id))
         {
             PushErrHint eh(g_E[Hnt0008]);
-            return error(token, Utf8::format(g_E[Err0888], token.ctext()));
+            return error(token, Fmt(g_E[Err0888], token.ctext()));
         }
 
-        return error(token, Utf8::format(g_E[Err0841], token.ctext()));
+        return error(token, Fmt(g_E[Err0841], token.ctext()));
     }
 
     if (result)
@@ -256,7 +256,7 @@ bool SyntaxJob::doTryAssume(AstNode* parent, AstNode** result, bool afterDiscard
 
     if (result)
         *result = node;
-    SWAG_VERIFY(node->ownerFct, error(node, Utf8::format(g_E[Err0842], node->token.ctext())));
+    SWAG_VERIFY(node->ownerFct, error(node, Fmt(g_E[Err0842], node->token.ctext())));
     SWAG_CHECK(eatToken());
 
     ScopedTryCatchAssume sc(this, (AstTryCatchAssume*) node);
@@ -272,11 +272,11 @@ bool SyntaxJob::doTryAssume(AstNode* parent, AstNode** result, bool afterDiscard
     }
     else
     {
-        SWAG_VERIFY(token.id != TokenId::KwdTry, error(token, Utf8::format(g_E[Err0843], node->token.ctext())));
-        SWAG_VERIFY(token.id != TokenId::KwdCatch, error(token, Utf8::format(g_E[Err0844], node->token.ctext())));
-        SWAG_VERIFY(token.id != TokenId::KwdAssume, error(token, Utf8::format(g_E[Err0845], node->token.ctext())));
-        SWAG_VERIFY(token.id != TokenId::KwdThrow, error(token, Utf8::format(g_E[Err0846], node->token.ctext())));
-        SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Utf8::format(g_E[Err0853], node->token.ctext())));
+        SWAG_VERIFY(token.id != TokenId::KwdTry, error(token, Fmt(g_E[Err0843], node->token.ctext())));
+        SWAG_VERIFY(token.id != TokenId::KwdCatch, error(token, Fmt(g_E[Err0844], node->token.ctext())));
+        SWAG_VERIFY(token.id != TokenId::KwdAssume, error(token, Fmt(g_E[Err0845], node->token.ctext())));
+        SWAG_VERIFY(token.id != TokenId::KwdThrow, error(token, Fmt(g_E[Err0846], node->token.ctext())));
+        SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(g_E[Err0853], node->token.ctext())));
         SWAG_CHECK(doIdentifierRef(node));
     }
 
@@ -293,11 +293,11 @@ bool SyntaxJob::doCatch(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
 
     ScopedTryCatchAssume sc(this, (AstTryCatchAssume*) node);
-    SWAG_VERIFY(token.id != TokenId::KwdTry, error(token, Utf8::format(g_E[Err0843], node->token.ctext())));
-    SWAG_VERIFY(token.id != TokenId::KwdCatch, error(token, Utf8::format(g_E[Err0844], node->token.ctext())));
-    SWAG_VERIFY(token.id != TokenId::KwdAssume, error(token, Utf8::format(g_E[Err0845], node->token.ctext())));
-    SWAG_VERIFY(token.id != TokenId::KwdThrow, error(token, Utf8::format(g_E[Err0846], node->token.ctext())));
-    SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Utf8::format(g_E[Err0853], node->token.ctext())));
+    SWAG_VERIFY(token.id != TokenId::KwdTry, error(token, Fmt(g_E[Err0843], node->token.ctext())));
+    SWAG_VERIFY(token.id != TokenId::KwdCatch, error(token, Fmt(g_E[Err0844], node->token.ctext())));
+    SWAG_VERIFY(token.id != TokenId::KwdAssume, error(token, Fmt(g_E[Err0845], node->token.ctext())));
+    SWAG_VERIFY(token.id != TokenId::KwdThrow, error(token, Fmt(g_E[Err0846], node->token.ctext())));
+    SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(g_E[Err0853], node->token.ctext())));
     SWAG_CHECK(doIdentifierRef(node));
     return true;
 }
@@ -311,10 +311,10 @@ bool SyntaxJob::doThrow(AstNode* parent, AstNode** result)
         *result = node;
     SWAG_CHECK(eatToken());
 
-    SWAG_VERIFY(token.id != TokenId::KwdTry, error(token, Utf8::format(g_E[Err0843], node->token.ctext())));
-    SWAG_VERIFY(token.id != TokenId::KwdCatch, error(token, Utf8::format(g_E[Err0844], node->token.ctext())));
-    SWAG_VERIFY(token.id != TokenId::KwdAssume, error(token, Utf8::format(g_E[Err0845], node->token.ctext())));
-    SWAG_VERIFY(token.id != TokenId::KwdThrow, error(token, Utf8::format(g_E[Err0846], node->token.ctext())));
+    SWAG_VERIFY(token.id != TokenId::KwdTry, error(token, Fmt(g_E[Err0843], node->token.ctext())));
+    SWAG_VERIFY(token.id != TokenId::KwdCatch, error(token, Fmt(g_E[Err0844], node->token.ctext())));
+    SWAG_VERIFY(token.id != TokenId::KwdAssume, error(token, Fmt(g_E[Err0845], node->token.ctext())));
+    SWAG_VERIFY(token.id != TokenId::KwdThrow, error(token, Fmt(g_E[Err0846], node->token.ctext())));
     SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE));
     return true;
 }

@@ -21,7 +21,7 @@ bool SemanticJob::resolveIntrinsicTag(SemanticContext* context)
         if (context->result == ContextResult::Pending)
             return true;
         SWAG_CHECK(checkIsConstExpr(context, front->flags & AST_VALUE_COMPUTED, front, g_E[Err0248]));
-        SWAG_VERIFY(front->typeInfo->isNative(NativeTypeKind::String), context->report({front, Utf8::format(g_E[Err0249], front->typeInfo->getDisplayName().c_str())}));
+        SWAG_VERIFY(front->typeInfo->isNative(NativeTypeKind::String), context->report({front, Fmt(g_E[Err0249], front->typeInfo->getDisplayName().c_str())}));
         auto tag       = g_Workspace->hasTag(front->computedValue->text);
         node->typeInfo = g_TypeMgr->typeInfoBool;
         node->setFlagsValueIsComputed();
@@ -43,7 +43,7 @@ bool SemanticJob::resolveIntrinsicTag(SemanticContext* context)
 
         SWAG_CHECK(checkIsConstExpr(context, nameNode->flags & AST_VALUE_COMPUTED, nameNode, g_E[Err0250]));
         SWAG_VERIFY(!(nameNode->flags & AST_VALUE_IS_TYPEINFO), context->report({nameNode, g_E[Err0245]}));
-        SWAG_VERIFY(nameNode->typeInfo->isNative(NativeTypeKind::String), context->report({nameNode, Utf8::format(g_E[Err0251], nameNode->typeInfo->getDisplayName().c_str())}));
+        SWAG_VERIFY(nameNode->typeInfo->isNative(NativeTypeKind::String), context->report({nameNode, Fmt(g_E[Err0251], nameNode->typeInfo->getDisplayName().c_str())}));
         SWAG_VERIFY(!(defaultVal->flags & AST_VALUE_IS_TYPEINFO), context->report({defaultVal, g_E[Err0283]}));
         SWAG_CHECK(TypeManager::makeCompatibles(context, typeNode->typeInfo, defaultVal->typeInfo, nullptr, defaultVal, CASTFLAG_DEFAULT));
 
@@ -55,8 +55,8 @@ bool SemanticJob::resolveIntrinsicTag(SemanticContext* context)
         {
             if (!TypeManager::makeCompatibles(context, typeNode->typeInfo, tag->type, nullptr, typeNode, CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
             {
-                Diagnostic diag{typeNode, Utf8::format(g_E[Err0252], typeNode->typeInfo->getDisplayName().c_str(), tag->type->getDisplayName().c_str(), tag->name.c_str())};
-                Diagnostic note{typeNode, Utf8::format(g_E[Nte0038], tag->cmdLine.c_str()), DiagnosticLevel::Note};
+                Diagnostic diag{typeNode, Fmt(g_E[Err0252], typeNode->typeInfo->getDisplayName().c_str(), tag->type->getDisplayName().c_str(), tag->name.c_str())};
+                Diagnostic note{typeNode, Fmt(g_E[Nte0038], tag->cmdLine.c_str()), DiagnosticLevel::Note};
                 note.hasFile     = false;
                 note.printSource = false;
                 return context->report(diag, &note);
@@ -107,9 +107,9 @@ bool SemanticJob::resolveIntrinsicMakeCallback(SemanticContext* context, AstNode
 
     auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(first->typeInfo, TypeInfoKind::Lambda);
     if (typeFunc->parameters.size() > SWAG_LIMIT_CB_MAX_PARAMS)
-        return context->report(Hint::isType(typeFunc), {first, Utf8::format(g_E[Err0785], SWAG_LIMIT_CB_MAX_PARAMS, typeFunc->parameters.size())});
+        return context->report(Hint::isType(typeFunc), {first, Fmt(g_E[Err0785], SWAG_LIMIT_CB_MAX_PARAMS, typeFunc->parameters.size())});
     if (typeFunc->numReturnRegisters() > 1)
-        return context->report(Hint::isType(typeFunc), {first, Utf8::format(g_E[Err0786], typeFunc->returnType->getDisplayName().c_str())});
+        return context->report(Hint::isType(typeFunc), {first, Fmt(g_E[Err0786], typeFunc->returnType->getDisplayName().c_str())});
 
     node->typeInfo    = g_TypeMgr->typeInfoPointers[(int) NativeTypeKind::Void];
     node->byteCodeFct = ByteCodeGenJob::emitIntrinsicMakeCallback;
@@ -123,11 +123,11 @@ bool SemanticJob::resolveIntrinsicMakeSlice(SemanticContext* context, AstNode* n
 
     // Must start with a pointer of the same type as the slice
     if (first->typeInfo->kind != TypeInfoKind::Pointer)
-        return context->report({first, Utf8::format(g_E[Err0787], name)});
+        return context->report({first, Fmt(g_E[Err0787], name)});
 
     auto ptrPointer = CastTypeInfo<TypeInfoPointer>(first->typeInfo, TypeInfoKind::Pointer);
     if (!ptrPointer->pointedType)
-        return context->report({first, Utf8::format(g_E[Err0788], name)});
+        return context->report({first, Fmt(g_E[Err0788], name)});
 
     // Slice count
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoUInt, second->typeInfo, nullptr, second, CASTFLAG_TRY_COERCE));
@@ -161,14 +161,14 @@ bool SemanticJob::resolveIntrinsicMakeAny(SemanticContext* context, AstNode* nod
     if (second->flags & AST_VALUE_IS_TYPEINFO)
     {
         if (!TypeManager::makeCompatibles(context, ptrPointer->pointedType, second->typeInfo, nullptr, second, CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR))
-            return context->report({node, Utf8::format(g_E[Err0791], ptrPointer->pointedType->getDisplayName().c_str(), second->typeInfo->getDisplayName().c_str())});
+            return context->report({node, Fmt(g_E[Err0791], ptrPointer->pointedType->getDisplayName().c_str(), second->typeInfo->getDisplayName().c_str())});
     }
 
     SWAG_CHECK(checkIsConcreteOrType(context, second));
     if (context->result != ContextResult::Done)
         return true;
     if (!(second->typeInfo->isPointerToTypeInfo()))
-        return context->report({node, Utf8::format(g_E[Err0792], second->typeInfo->getDisplayName().c_str())});
+        return context->report({node, Fmt(g_E[Err0792], second->typeInfo->getDisplayName().c_str())});
 
     node->typeInfo    = g_TypeMgr->typeInfoAny;
     node->byteCodeFct = ByteCodeGenJob::emitIntrinsicMakeAny;
@@ -246,7 +246,7 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
     }
     else
     {
-        return context->report({node, Utf8::format(g_E[Err0797], typeInfo->getDisplayName().c_str())});
+        return context->report({node, Fmt(g_E[Err0797], typeInfo->getDisplayName().c_str())});
     }
 
     return true;
@@ -326,7 +326,7 @@ bool SemanticJob::resolveIntrinsicRunes(SemanticContext* context)
     auto typeInfo = expr->typeInfo;
 
     SWAG_CHECK(checkIsConstExpr(context, expr->flags & AST_VALUE_COMPUTED, expr));
-    SWAG_VERIFY(typeInfo->isNative(NativeTypeKind::String), context->report({expr, Utf8::format(g_E[Err0084], typeInfo->getDisplayName().c_str())}));
+    SWAG_VERIFY(typeInfo->isNative(NativeTypeKind::String), context->report({expr, Fmt(g_E[Err0084], typeInfo->getDisplayName().c_str())}));
     node->setFlagsValueIsComputed();
 
     // Convert
@@ -429,7 +429,7 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
     }
     else
     {
-        SWAG_VERIFY(typeInfo->isNativeInteger(), context->report({expression, Utf8::format(g_E[Err0801], typeInfo->getDisplayName().c_str())}));
+        SWAG_VERIFY(typeInfo->isNativeInteger(), context->report({expression, Fmt(g_E[Err0801], typeInfo->getDisplayName().c_str())}));
         if (node->flags & AST_VALUE_COMPUTED)
         {
             if (!(typeInfo->flags & TYPEINFO_UNSIGNED))
@@ -438,20 +438,20 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
                 {
                 case NativeTypeKind::S8:
                     if (node->computedValue->reg.s8 < 0)
-                        return context->report({expression, Utf8::format(g_E[Err0802], node->computedValue->reg.s8)});
+                        return context->report({expression, Fmt(g_E[Err0802], node->computedValue->reg.s8)});
                     break;
                 case NativeTypeKind::S16:
                     if (node->computedValue->reg.s16 < 0)
-                        return context->report({expression, Utf8::format(g_E[Err0802], node->computedValue->reg.s16)});
+                        return context->report({expression, Fmt(g_E[Err0802], node->computedValue->reg.s16)});
                     break;
                 case NativeTypeKind::S32:
                     if (node->computedValue->reg.s32 < 0)
-                        return context->report({expression, Utf8::format(g_E[Err0802], node->computedValue->reg.s32)});
+                        return context->report({expression, Fmt(g_E[Err0802], node->computedValue->reg.s32)});
                     break;
                 case NativeTypeKind::S64:
                 case NativeTypeKind::Int:
                     if (node->computedValue->reg.s64 < 0)
-                        return context->report({expression, Utf8::format(g_E[Err0805], node->computedValue->reg.s64)});
+                        return context->report({expression, Fmt(g_E[Err0805], node->computedValue->reg.s64)});
                     break;
                 }
             }
@@ -502,7 +502,7 @@ bool SemanticJob::resolveIntrinsicSpread(SemanticContext* context)
     }
     else
     {
-        return context->report({expr, Utf8::format(g_E[Err0807], typeInfo->getDisplayName().c_str())});
+        return context->report({expr, Fmt(g_E[Err0807], typeInfo->getDisplayName().c_str())});
     }
 
     auto typeVar     = allocType<TypeInfoVariadic>(TypeInfoKind::TypedVariadic);
@@ -785,7 +785,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
     {
         auto typeInfo = node->childs[0]->typeInfo;
         typeInfo->computeScopedName();
-        SWAG_VERIFY(typeInfo->scopedName == "*Swag.CVaList", context->report({node, Utf8::format(g_E[Err0048], typeInfo->getDisplayName().c_str())}));
+        SWAG_VERIFY(typeInfo->scopedName == "*Swag.CVaList", context->report({node, Fmt(g_E[Err0048], typeInfo->getDisplayName().c_str())}));
 
         if (node->token.id == TokenId::IntrinsicCVaStart)
         {
@@ -802,14 +802,14 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         {
             node->typeInfo = node->childs[1]->typeInfo;
 
-            SWAG_VERIFY(node->typeInfo->numRegisters() == 1, context->report({node->childs[1], Utf8::format(g_E[Err0443], node->typeInfo->getDisplayName().c_str())}));
+            SWAG_VERIFY(node->typeInfo->numRegisters() == 1, context->report({node->childs[1], Fmt(g_E[Err0443], node->typeInfo->getDisplayName().c_str())}));
 
-            SWAG_VERIFY(!node->typeInfo->isNative(NativeTypeKind::F32), context->report({node->childs[1], Utf8::format(g_E[Err0445], node->typeInfo->getDisplayName().c_str(), "f64")}));
-            SWAG_VERIFY(!node->typeInfo->isNative(NativeTypeKind::S8), context->report({node->childs[1], Utf8::format(g_E[Err0445], node->typeInfo->getDisplayName().c_str(), "s32")}));
-            SWAG_VERIFY(!node->typeInfo->isNative(NativeTypeKind::S16), context->report({node->childs[1], Utf8::format(g_E[Err0445], node->typeInfo->getDisplayName().c_str(), "s32")}));
-            SWAG_VERIFY(!node->typeInfo->isNative(NativeTypeKind::U8), context->report({node->childs[1], Utf8::format(g_E[Err0445], node->typeInfo->getDisplayName().c_str(), "u32")}));
-            SWAG_VERIFY(!node->typeInfo->isNative(NativeTypeKind::U16), context->report({node->childs[1], Utf8::format(g_E[Err0445], node->typeInfo->getDisplayName().c_str(), "u32")}));
-            SWAG_VERIFY(!node->typeInfo->isNative(NativeTypeKind::Bool), context->report({node->childs[1], Utf8::format(g_E[Err0445], node->typeInfo->getDisplayName().c_str(), "u32")}));
+            SWAG_VERIFY(!node->typeInfo->isNative(NativeTypeKind::F32), context->report({node->childs[1], Fmt(g_E[Err0445], node->typeInfo->getDisplayName().c_str(), "f64")}));
+            SWAG_VERIFY(!node->typeInfo->isNative(NativeTypeKind::S8), context->report({node->childs[1], Fmt(g_E[Err0445], node->typeInfo->getDisplayName().c_str(), "s32")}));
+            SWAG_VERIFY(!node->typeInfo->isNative(NativeTypeKind::S16), context->report({node->childs[1], Fmt(g_E[Err0445], node->typeInfo->getDisplayName().c_str(), "s32")}));
+            SWAG_VERIFY(!node->typeInfo->isNative(NativeTypeKind::U8), context->report({node->childs[1], Fmt(g_E[Err0445], node->typeInfo->getDisplayName().c_str(), "u32")}));
+            SWAG_VERIFY(!node->typeInfo->isNative(NativeTypeKind::U16), context->report({node->childs[1], Fmt(g_E[Err0445], node->typeInfo->getDisplayName().c_str(), "u32")}));
+            SWAG_VERIFY(!node->typeInfo->isNative(NativeTypeKind::Bool), context->report({node->childs[1], Fmt(g_E[Err0445], node->typeInfo->getDisplayName().c_str(), "u32")}));
 
             node->byteCodeFct = ByteCodeGenJob::emitIntrinsicCVaArg;
         }

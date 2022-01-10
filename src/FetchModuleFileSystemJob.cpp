@@ -11,7 +11,7 @@ JobResult FetchModuleFileSystemJob::execute()
 {
     auto dep = module->fetchDep;
 
-    auto depName = Utf8::format("%s %u.%d.%d", dep->name.c_str(), dep->module->buildCfg.moduleVersion, dep->module->buildCfg.moduleRevision, dep->module->buildCfg.moduleBuildNum);
+    auto depName = Fmt("%s %u.%d.%d", dep->name.c_str(), dep->module->buildCfg.moduleVersion, dep->module->buildCfg.moduleRevision, dep->module->buildCfg.moduleBuildNum);
     if (collectSourceFiles)
         g_Log.messageHeaderCentered("Copying", depName.c_str());
     else
@@ -61,7 +61,7 @@ JobResult FetchModuleFileSystemJob::execute()
                 continue;
             if (!fs::remove(n))
             {
-                g_Log.errorOS(Utf8::format(g_E[Err0603], n.c_str()));
+                g_Log.errorOS(Fmt(g_E[Err0603], n.c_str()));
                 return JobResult::ReleaseJob;
             }
         }
@@ -77,7 +77,7 @@ JobResult FetchModuleFileSystemJob::execute()
         auto folder = destFileName.parent_path();
         if (!fs::exists(folder) && !fs::create_directories(folder, errorCode))
         {
-            g_Log.errorOS(Utf8::format(g_E[Err0604], folder.c_str()));
+            g_Log.errorOS(Fmt(g_E[Err0604], folder.c_str()));
             return JobResult::ReleaseJob;
         }
 

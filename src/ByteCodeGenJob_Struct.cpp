@@ -377,7 +377,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
         if (typeStructVar->opDrop || typeStructVar->opUserDropFct)
             needDrop = true;
         if (typeStructVar->opDrop || typeStructVar->opUserDropFct)
-            SWAG_VERIFY(!(structNode->structFlags & STRUCTFLAG_UNION), context->report({typeParam->declNode, Utf8::format(g_E[Err0911], typeStructVar->getDisplayName().c_str())}));
+            SWAG_VERIFY(!(structNode->structFlags & STRUCTFLAG_UNION), context->report({typeParam->declNode, Fmt(g_E[Err0911], typeStructVar->getDisplayName().c_str())}));
     }
 
     if (!needDrop)
@@ -498,7 +498,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
         if (typeStructVar->opPostMove || typeStructVar->opUserPostMoveFct)
             needPostMove = true;
         if (typeStructVar->opPostMove || typeStructVar->opUserPostMoveFct)
-            SWAG_VERIFY(!(structNode->structFlags & STRUCTFLAG_UNION), context->report({typeParam->declNode, Utf8::format(g_E[Err0910], typeStructVar->getDisplayName().c_str())}));
+            SWAG_VERIFY(!(structNode->structFlags & STRUCTFLAG_UNION), context->report({typeParam->declNode, Fmt(g_E[Err0910], typeStructVar->getDisplayName().c_str())}));
     }
 
     if (!needPostMove)
@@ -619,7 +619,7 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
         if (typeStructVar->opPostCopy || typeStructVar->opUserPostCopyFct)
             needPostCopy = true;
         if (typeStructVar->opPostCopy || typeStructVar->opUserPostCopyFct)
-            SWAG_VERIFY(!(structNode->structFlags & STRUCTFLAG_UNION), context->report({typeParam->declNode, Utf8::format(g_E[Err0909], typeStructVar->getDisplayName().c_str())}));
+            SWAG_VERIFY(!(structNode->structFlags & STRUCTFLAG_UNION), context->report({typeParam->declNode, Fmt(g_E[Err0909], typeStructVar->getDisplayName().c_str())}));
     }
 
     if (!needPostCopy)
@@ -734,7 +734,7 @@ bool ByteCodeGenJob::emitCopyStruct(ByteCodeGenContext* context, RegisterList& r
     {
         if (typeInfoStruct->flags & TYPEINFO_STRUCT_NO_COPY)
         {
-            return context->report({from, Utf8::format(g_E[Err0231], typeInfo->getDisplayName().c_str())});
+            return context->report({from, Fmt(g_E[Err0231], typeInfo->getDisplayName().c_str())});
         }
 
         PushICFlags sf(context, BCI_POST_COPYMOVE);

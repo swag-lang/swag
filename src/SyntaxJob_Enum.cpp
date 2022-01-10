@@ -15,7 +15,7 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
         *result = enumNode;
 
     SWAG_CHECK(eatToken());
-    SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Utf8::format(g_E[Err0396], token.ctext())));
+    SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(g_E[Err0396], token.ctext())));
     enumNode->inheritTokenName(token);
     SWAG_CHECK(checkIsValidUserName(enumNode));
 
@@ -27,9 +27,9 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
         if (newScope->kind != ScopeKind::Enum)
         {
             auto        implNode = CastAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
-            PushErrHint errh(Utf8::format(g_E[Hnt0019], implNode->token.ctext()));
-            Diagnostic  diag{implNode->identifier, Utf8::format(g_E[Err0441], Scope::getNakedKindName(newScope->kind), implNode->token.ctext(), Scope::getNakedKindName(ScopeKind::Enum))};
-            Diagnostic  note{enumNode, Utf8::format(g_E[Nte0027], implNode->token.ctext()), DiagnosticLevel::Note};
+            PushErrHint errh(Fmt(g_E[Hnt0019], implNode->token.ctext()));
+            Diagnostic  diag{implNode->identifier, Fmt(g_E[Err0441], Scope::getNakedKindName(newScope->kind), implNode->token.ctext(), Scope::getNakedKindName(ScopeKind::Enum))};
+            Diagnostic  note{enumNode, Fmt(g_E[Nte0027], implNode->token.ctext()), DiagnosticLevel::Note};
             return sourceFile->report(diag, &note);
         }
 
@@ -63,7 +63,7 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
         SWAG_CHECK(doTypeExpression(typeNode));
     }
 
-    SWAG_VERIFY(token.id == TokenId::SymLeftCurly, error(token, Utf8::format(g_E[Err0399], token.ctext())));
+    SWAG_VERIFY(token.id == TokenId::SymLeftCurly, error(token, Fmt(g_E[Err0399], token.ctext())));
 
     // Content of enum
     Scoped scoped(this, newScope);
@@ -148,7 +148,7 @@ bool SyntaxJob::doEnumContent(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doEnumValue(AstNode* parent, AstNode** result)
 {
-    SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Utf8::format(g_E[Err0400], token.ctext())));
+    SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(g_E[Err0400], token.ctext())));
     auto enumValue = Ast::newNode<AstEnumValue>(this, AstNodeKind::EnumValue, sourceFile, parent);
     if (result)
         *result = enumValue;

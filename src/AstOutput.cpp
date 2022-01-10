@@ -45,19 +45,19 @@ bool AstOutput::checkIsPublic(OutputContext& context, AstNode* testNode, AstNode
                 if (context.exportedNode && context.exportedNode->resolvedSymbolOverload)
                 {
                     auto symName = context.exportedNode->resolvedSymbolOverload->symbol;
-                    what         = Utf8::format("%s `%s`", SymTable::getNakedKindName(symName->kind), symName->name.c_str());
+                    what         = Fmt("%s `%s`", SymTable::getNakedKindName(symName->kind), symName->name.c_str());
                 }
                 else if (usedNode->kind == AstNodeKind::FuncCall)
                     what = "function call";
                 else
                     what = "declaration";
 
-                Diagnostic diag{usedNode, Utf8::format(g_E[Err0018], what.c_str(), typeWhat.c_str(), overload->node->token.ctext())};
-                Diagnostic note{overload->node, Utf8::format(g_E[Nte0040], overload->node->token.ctext()), DiagnosticLevel::Note};
+                Diagnostic diag{usedNode, Fmt(g_E[Err0018], what.c_str(), typeWhat.c_str(), overload->node->token.ctext())};
+                Diagnostic note{overload->node, Fmt(g_E[Nte0040], overload->node->token.ctext()), DiagnosticLevel::Note};
                 return context.report(diag, &note);
             }
 
-            Diagnostic diag{overload->node, Utf8::format(g_E[Err0316], typeWhat.c_str(), overload->node->token.ctext())};
+            Diagnostic diag{overload->node, Fmt(g_E[Err0316], typeWhat.c_str(), overload->node->token.ctext())};
             return context.report(diag);
         }
     }

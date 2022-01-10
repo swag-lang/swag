@@ -699,7 +699,7 @@ uint32_t Utf8::hash(const char* buffer, int count)
     return hash;
 }
 
-Utf8 Utf8::format(const char* format, ...)
+Utf8 Fmt(const char* format, ...)
 {
     va_list args;
     va_start(args, format);
@@ -793,7 +793,7 @@ string Utf8::normalizePath(const fs::path& path)
 
 Utf8 Utf8::toStringF64(double v)
 {
-    Utf8 s = Utf8::format("%.35lf", v);
+    Utf8 s = Fmt("%.35lf", v);
     while (s.buffer[s.count - 1] == '0')
     {
         s.buffer[s.count - 1] = 0;
@@ -807,12 +807,12 @@ Utf8 Utf8::toStringF64(double v)
 Utf8 Utf8::toNiceSize(size_t size)
 {
     if (size < 1024)
-        return Utf8::format("%u bytes", size);
+        return Fmt("%u bytes", size);
     if (size < 1024 * 1024)
-        return Utf8::format("%.1f Kb", size / 1024.0f);
+        return Fmt("%.1f Kb", size / 1024.0f);
     if (size < 1024 * 1024 * 1024)
-        return Utf8::format("%.1f Mb", size / (1024.0f * 1024.0f));
-    return Utf8::format("%.1f Gb", size / (1024.0f * 1024.0f * 1024.0f));
+        return Fmt("%.1f Mb", size / (1024.0f * 1024.0f));
+    return Fmt("%.1f Gb", size / (1024.0f * 1024.0f * 1024.0f));
 }
 
 uint32_t Utf8::fuzzyCompare(const Utf8& str1, const Utf8& str2)

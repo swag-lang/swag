@@ -48,7 +48,7 @@ int main(int argc, const char* argv[])
         command != "version" &&
         command != "script")
     {
-        g_Log.error(Utf8::format(g_E[Err0000], argv[1]));
+        g_Log.error(Fmt(g_E[Err0000], argv[1]));
         OS::exit(-1);
     }
 
@@ -112,7 +112,7 @@ int main(int argc, const char* argv[])
     }
     else if (command == "version")
     {
-        g_Log.message(Utf8::format("swag version %d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
+        g_Log.message(Fmt("swag version %d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
     }
     else if (command == "new")
     {

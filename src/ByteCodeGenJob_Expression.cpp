@@ -271,7 +271,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context)
 {
     auto node = context->node;
     if (node->semFlags & AST_SEM_LITERAL_SUFFIX)
-        return context->report({node->childs.front(), Utf8::format(g_E[Err0532], node->childs.front()->token.ctext())});
+        return context->report({node->childs.front(), Fmt(g_E[Err0532], node->childs.front()->token.ctext())});
     SWAG_CHECK(emitLiteral(context, node, nullptr, node->resultRegisterRC));
     return true;
 }
@@ -292,7 +292,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
         }
         else
         {
-            return context->internalError(Utf8::format("emitLiteral, unsupported ptr type `%s`", typeInfo->getDisplayName().c_str()).c_str());
+            return context->internalError(Fmt("emitLiteral, unsupported ptr type `%s`", typeInfo->getDisplayName().c_str()).c_str());
         }
     }
 
@@ -438,7 +438,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
     }
     else
     {
-        return context->internalError(Utf8::format("emitLiteral, unsupported type `%s`", typeInfo->getDisplayName().c_str()).c_str());
+        return context->internalError(Fmt("emitLiteral, unsupported type `%s`", typeInfo->getDisplayName().c_str()).c_str());
     }
 
     return true;

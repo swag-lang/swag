@@ -243,7 +243,7 @@ void BackendX64::dbgEmitCompilerFlagsDebugS(Concat& concat)
     concat.addU16(0);
 
     // Compiler version
-    Utf8 version = Utf8::format("swag %d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
+    Utf8 version = Fmt("swag %d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
     concat.addString(version.c_str(), version.length() + 1);
     concat.align(4);
     *patchRecordCount = (uint16_t) (concat.totalCount() - patchRecordOffset);

@@ -16,77 +16,77 @@ void Stats::print()
 
     if (g_CommandLine->statsWhat == StatsWhat::All || g_CommandLine->statsWhat == StatsWhat::Count)
     {
-        g_Log.messageHeaderDot("workers", Utf8::format("%u", numWorkers));
-        g_Log.messageHeaderDot("modules", Utf8::format("%u", numModules.load()));
-        g_Log.messageHeaderDot("files", Utf8::format("%u", numFiles.load()));
-        g_Log.messageHeaderDot("source lines", Utf8::format("%u", numLines.load()));
-        g_Log.messageHeaderDot("lines/s", Utf8::format("%u", (int) (numLines.load() / OS::timerToSeconds(totalTime.load()))));
-        g_Log.messageHeaderDot("tokens", Utf8::format("%u", numTokens.load()));
-        g_Log.messageHeaderDot("ast nodes", Utf8::format("%u", numNodes.load()));
+        g_Log.messageHeaderDot("workers", Fmt("%u", numWorkers));
+        g_Log.messageHeaderDot("modules", Fmt("%u", numModules.load()));
+        g_Log.messageHeaderDot("files", Fmt("%u", numFiles.load()));
+        g_Log.messageHeaderDot("source lines", Fmt("%u", numLines.load()));
+        g_Log.messageHeaderDot("lines/s", Fmt("%u", (int) (numLines.load() / OS::timerToSeconds(totalTime.load()))));
+        g_Log.messageHeaderDot("tokens", Fmt("%u", numTokens.load()));
+        g_Log.messageHeaderDot("ast nodes", Fmt("%u", numNodes.load()));
         if (g_CommandLine->output)
-            g_Log.messageHeaderDot("output modules", Utf8::format("%u", numGenModules.load()));
+            g_Log.messageHeaderDot("output modules", Fmt("%u", numGenModules.load()));
         if (g_CommandLine->test)
-            g_Log.messageHeaderDot("executed #test", Utf8::format("%u", testFunctions.load()));
-        g_Log.messageHeaderDot("executed #run", Utf8::format("%u", runFunctions.load()));
+            g_Log.messageHeaderDot("executed #test", Fmt("%u", testFunctions.load()));
+        g_Log.messageHeaderDot("executed #run", Fmt("%u", runFunctions.load()));
         if (g_Workspace->numErrors)
-            g_Log.messageHeaderDot("errors", Utf8::format("%u", g_Workspace->numErrors.load()), LogColor::Red);
+            g_Log.messageHeaderDot("errors", Fmt("%u", g_Workspace->numErrors.load()), LogColor::Red);
         g_Log.print("\n");
 
-        g_Log.messageHeaderDot("instructions", Utf8::format("%u", numInstructions.load()));
+        g_Log.messageHeaderDot("instructions", Fmt("%u", numInstructions.load()));
         float pc = (totalOptimsBC.load() * 100.0f) / (numInstructions.load());
-        g_Log.messageHeaderDot("kicked", Utf8::format("%d %.1f%%", totalOptimsBC.load(), pc));
-        g_Log.messageHeaderDot("total", Utf8::format("%u", numInstructions.load() - totalOptimsBC.load()));
+        g_Log.messageHeaderDot("kicked", Fmt("%d %.1f%%", totalOptimsBC.load(), pc));
+        g_Log.messageHeaderDot("total", Fmt("%u", numInstructions.load() - totalOptimsBC.load()));
         g_Log.print("\n");
 
-        g_Log.messageHeaderDot("concrete types", Utf8::format("%u", totalConcreteTypes.load()));
-        g_Log.messageHeaderDot("concrete struct types", Utf8::format("%u", totalConcreteStructTypes.load()));
-        g_Log.messageHeaderDot("init ptr", Utf8::format("%u", numInitPtr.load()));
-        g_Log.messageHeaderDot("init func ptr", Utf8::format("%u", numInitFuncPtr.load()));
+        g_Log.messageHeaderDot("concrete types", Fmt("%u", totalConcreteTypes.load()));
+        g_Log.messageHeaderDot("concrete struct types", Fmt("%u", totalConcreteStructTypes.load()));
+        g_Log.messageHeaderDot("init ptr", Fmt("%u", numInitPtr.load()));
+        g_Log.messageHeaderDot("init func ptr", Fmt("%u", numInitFuncPtr.load()));
         g_Log.print("\n");
     }
 
     if (g_CommandLine->statsWhat == StatsWhat::All || g_CommandLine->statsWhat == StatsWhat::Time)
     {
-        g_Log.messageHeaderDot("cfg time", Utf8::format("%.3fs", OS::timerToSeconds(cfgTime.load())));
-        g_Log.messageHeaderDot("tokenizer time", Utf8::format("%.3fs", OS::timerToSeconds(tokenizerTime.load())));
-        g_Log.messageHeaderDot("syntax time", Utf8::format("%.3fs", OS::timerToSeconds(syntaxTime.load())));
-        g_Log.messageHeaderDot("read files", Utf8::format("%.3fs", OS::timerToSeconds(readFilesTime.load())));
-        g_Log.messageHeaderDot("semantic time", Utf8::format("%.3fs", OS::timerToSeconds(semanticTime.load())));
-        g_Log.messageHeaderDot("run time", Utf8::format("%.3fs", OS::timerToSeconds(runTime.load())));
-        g_Log.messageHeaderDot("run test time", Utf8::format("%.3fs", OS::timerToSeconds(runTestTime.load())));
-        g_Log.messageHeaderDot("prep out time", Utf8::format("%.3fs (genfunc: %.3fs saveobj: %.3fs)", OS::timerToSeconds(prepOutputTimeJob.load()), OS::timerToSeconds(prepOutputTimeJob_GenFunc.load()), OS::timerToSeconds(prepOutputTimeJob_SaveObj.load())));
-        g_Log.messageHeaderDot("gen out time", Utf8::format("%.3fs", OS::timerToSeconds(genOutputTimeJob.load())));
-        g_Log.messageHeaderDot("optim bc time", Utf8::format("%.3fs", OS::timerToSeconds(optimBCTime.load())));
-        g_Log.messageHeaderDot("alloc time", Utf8::format("%.3fs", OS::timerToSeconds(allocTime.load())));
-        g_Log.messageHeaderDot("free time", Utf8::format("%.3fs", OS::timerToSeconds(freeTime.load())));
-        g_Log.messageHeaderDot("total time", Utf8::format("%.3fs", OS::timerToSeconds(totalTime.load())));
+        g_Log.messageHeaderDot("cfg time", Fmt("%.3fs", OS::timerToSeconds(cfgTime.load())));
+        g_Log.messageHeaderDot("tokenizer time", Fmt("%.3fs", OS::timerToSeconds(tokenizerTime.load())));
+        g_Log.messageHeaderDot("syntax time", Fmt("%.3fs", OS::timerToSeconds(syntaxTime.load())));
+        g_Log.messageHeaderDot("read files", Fmt("%.3fs", OS::timerToSeconds(readFilesTime.load())));
+        g_Log.messageHeaderDot("semantic time", Fmt("%.3fs", OS::timerToSeconds(semanticTime.load())));
+        g_Log.messageHeaderDot("run time", Fmt("%.3fs", OS::timerToSeconds(runTime.load())));
+        g_Log.messageHeaderDot("run test time", Fmt("%.3fs", OS::timerToSeconds(runTestTime.load())));
+        g_Log.messageHeaderDot("prep out time", Fmt("%.3fs (genfunc: %.3fs saveobj: %.3fs)", OS::timerToSeconds(prepOutputTimeJob.load()), OS::timerToSeconds(prepOutputTimeJob_GenFunc.load()), OS::timerToSeconds(prepOutputTimeJob_SaveObj.load())));
+        g_Log.messageHeaderDot("gen out time", Fmt("%.3fs", OS::timerToSeconds(genOutputTimeJob.load())));
+        g_Log.messageHeaderDot("optim bc time", Fmt("%.3fs", OS::timerToSeconds(optimBCTime.load())));
+        g_Log.messageHeaderDot("alloc time", Fmt("%.3fs", OS::timerToSeconds(allocTime.load())));
+        g_Log.messageHeaderDot("free time", Fmt("%.3fs", OS::timerToSeconds(freeTime.load())));
+        g_Log.messageHeaderDot("total time", Fmt("%.3fs", OS::timerToSeconds(totalTime.load())));
         g_Log.print("\n");
     }
 
     if (g_CommandLine->statsWhat == StatsWhat::All || g_CommandLine->statsWhat == StatsWhat::Memory)
     {
-        g_Log.messageHeaderDot("mem total", Utf8::format("%s", Utf8::toNiceSize(allocatorMemory.load()).c_str()));
-        g_Log.messageHeaderDot("mem wasted", Utf8::format("%s", Utf8::toNiceSize(wastedMemory.load()).c_str()));
+        g_Log.messageHeaderDot("mem total", Fmt("%s", Utf8::toNiceSize(allocatorMemory.load()).c_str()));
+        g_Log.messageHeaderDot("mem wasted", Fmt("%s", Utf8::toNiceSize(wastedMemory.load()).c_str()));
         g_Log.print("\n");
-        g_Log.messageHeaderDot("mem nodes", Utf8::format("%s", Utf8::toNiceSize(memNodes.load()).c_str()));
-        g_Log.messageHeaderDot("mem nodes ext", Utf8::format("%s", Utf8::toNiceSize(memNodesExt.load()).c_str()));
-        g_Log.messageHeaderDot("mem scopes", Utf8::format("%s", Utf8::toNiceSize(memScopes.load()).c_str()));
-        g_Log.messageHeaderDot("mem seg", Utf8::format("%s", Utf8::toNiceSize(memSeg.load()).c_str()));
-        g_Log.messageHeaderDot("mem concat", Utf8::format("%s", Utf8::toNiceSize(memConcat.load()).c_str()));
-        g_Log.messageHeaderDot("mem types", Utf8::format("%s", Utf8::toNiceSize(memTypes.load()).c_str()));
-        g_Log.messageHeaderDot("mem params", Utf8::format("%s", Utf8::toNiceSize(memParams.load()).c_str()));
-        g_Log.messageHeaderDot("mem bcinstr", Utf8::format("%s", Utf8::toNiceSize(memInstructions.load()).c_str()));
-        g_Log.messageHeaderDot("mem bcstack", Utf8::format("%s", Utf8::toNiceSize(memBcStack.load()).c_str()));
-        g_Log.messageHeaderDot("mem symtable", Utf8::format("%s", Utf8::toNiceSize(memSymTable.load()).c_str()));
-        g_Log.messageHeaderDot("mem symname", Utf8::format("%s", Utf8::toNiceSize(memSymName.load()).c_str()));
-        g_Log.messageHeaderDot("mem symover", Utf8::format("%s", Utf8::toNiceSize(memSymOver.load()).c_str()));
-        g_Log.messageHeaderDot("mem utf8", Utf8::format("%s", Utf8::toNiceSize(memUtf8.load()).c_str()));
-        g_Log.messageHeaderDot("mem new", Utf8::format("%s", Utf8::toNiceSize(memNew.load()).c_str()));
+        g_Log.messageHeaderDot("mem nodes", Fmt("%s", Utf8::toNiceSize(memNodes.load()).c_str()));
+        g_Log.messageHeaderDot("mem nodes ext", Fmt("%s", Utf8::toNiceSize(memNodesExt.load()).c_str()));
+        g_Log.messageHeaderDot("mem scopes", Fmt("%s", Utf8::toNiceSize(memScopes.load()).c_str()));
+        g_Log.messageHeaderDot("mem seg", Fmt("%s", Utf8::toNiceSize(memSeg.load()).c_str()));
+        g_Log.messageHeaderDot("mem concat", Fmt("%s", Utf8::toNiceSize(memConcat.load()).c_str()));
+        g_Log.messageHeaderDot("mem types", Fmt("%s", Utf8::toNiceSize(memTypes.load()).c_str()));
+        g_Log.messageHeaderDot("mem params", Fmt("%s", Utf8::toNiceSize(memParams.load()).c_str()));
+        g_Log.messageHeaderDot("mem bcinstr", Fmt("%s", Utf8::toNiceSize(memInstructions.load()).c_str()));
+        g_Log.messageHeaderDot("mem bcstack", Fmt("%s", Utf8::toNiceSize(memBcStack.load()).c_str()));
+        g_Log.messageHeaderDot("mem symtable", Fmt("%s", Utf8::toNiceSize(memSymTable.load()).c_str()));
+        g_Log.messageHeaderDot("mem symname", Fmt("%s", Utf8::toNiceSize(memSymName.load()).c_str()));
+        g_Log.messageHeaderDot("mem symover", Fmt("%s", Utf8::toNiceSize(memSymOver.load()).c_str()));
+        g_Log.messageHeaderDot("mem utf8", Fmt("%s", Utf8::toNiceSize(memUtf8.load()).c_str()));
+        g_Log.messageHeaderDot("mem new", Fmt("%s", Utf8::toNiceSize(memNew.load()).c_str()));
 
         if (g_CommandLine->backendGenType == BackendGenType::X64)
         {
             g_Log.print("\n");
-            g_Log.messageHeaderDot("mem x64 dbg", Utf8::format("%s", Utf8::toNiceSize(sizeBackendDbg.load()).c_str()));
+            g_Log.messageHeaderDot("mem x64 dbg", Fmt("%s", Utf8::toNiceSize(sizeBackendDbg.load()).c_str()));
         }
     }
 

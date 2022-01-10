@@ -74,7 +74,7 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
             break;
 
         default:
-            return context->report({context->node, Utf8::format(g_E[Err0001], leftTypeInfo->getDisplayName().c_str())});
+            return context->report({context->node, Fmt(g_E[Err0001], leftTypeInfo->getDisplayName().c_str())});
         }
     }
     else if (leftTypeInfo->kind == TypeInfoKind::Struct || rightTypeInfo->kind == TypeInfoKind::Struct)
@@ -137,7 +137,7 @@ bool SemanticJob::resolveCompOp3Way(SemanticContext* context, AstNode* left, Ast
             break;
 
         default:
-            return context->report({context->node, Utf8::format(g_E[Err0001], leftTypeInfo->getDisplayName().c_str())});
+            return context->report({context->node, Fmt(g_E[Err0001], leftTypeInfo->getDisplayName().c_str())});
         }
     }
     else if (leftTypeInfo->kind == TypeInfoKind::Struct)
@@ -197,7 +197,7 @@ bool SemanticJob::resolveCompOpLower(SemanticContext* context, AstNode* left, As
             break;
 
         default:
-            return context->report({context->node, Utf8::format(g_E[Err0001], leftTypeInfo->getDisplayName().c_str())});
+            return context->report({context->node, Fmt(g_E[Err0001], leftTypeInfo->getDisplayName().c_str())});
         }
     }
     else if (leftTypeInfo->kind == TypeInfoKind::Struct)
@@ -257,7 +257,7 @@ bool SemanticJob::resolveCompOpGreater(SemanticContext* context, AstNode* left, 
             break;
 
         default:
-            return context->report({context->node, Utf8::format(g_E[Err0001], leftTypeInfo->getDisplayName().c_str())});
+            return context->report({context->node, Fmt(g_E[Err0001], leftTypeInfo->getDisplayName().c_str())});
         }
     }
     else if (leftTypeInfo->kind == TypeInfoKind::Struct)
@@ -315,13 +315,13 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
              leftTypeInfo->kind != TypeInfoKind::Slice &&
              leftTypeInfo->kind != TypeInfoKind::Interface)
     {
-        return context->report({left, Utf8::format(g_E[Err0005], node->token.ctext(), TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->getDisplayName().c_str())});
+        return context->report({left, Fmt(g_E[Err0005], node->token.ctext(), TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->getDisplayName().c_str())});
     }
     else if (rightTypeInfo->kind != TypeInfoKind::Native &&
              rightTypeInfo->kind != TypeInfoKind::Pointer &&
              rightTypeInfo->kind != TypeInfoKind::Struct)
     {
-        return context->report({right, Utf8::format(g_E[Err0005], node->token.ctext(), TypeInfo::getNakedKindName(rightTypeInfo), rightTypeInfo->getDisplayName().c_str())});
+        return context->report({right, Fmt(g_E[Err0005], node->token.ctext(), TypeInfo::getNakedKindName(rightTypeInfo), rightTypeInfo->getDisplayName().c_str())});
     }
 
     // Cannot compare tuples
@@ -342,7 +342,7 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     if (leftTypeInfo->kind == TypeInfoKind::Slice || leftTypeInfo->kind == TypeInfoKind::Interface)
     {
         if (node->token.id != TokenId::SymEqualEqual && node->token.id != TokenId::SymExclamEqual)
-            return context->report({left, Utf8::format(g_E[Err0005], node->token.ctext(), TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->getDisplayName().c_str())});
+            return context->report({left, Fmt(g_E[Err0005], node->token.ctext(), TypeInfo::getNakedKindName(leftTypeInfo), leftTypeInfo->getDisplayName().c_str())});
     }
 
     if (node->token.id == TokenId::SymLowerEqualGreater)

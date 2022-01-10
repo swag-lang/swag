@@ -69,7 +69,7 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo
     if (storageSegment->kind != SegmentKind::Compiler)
     {
         if (context && g_CommandLine->verboseConcreteTypes)
-            g_Log.verbose(Utf8::format("%s %s\n", context->sourceFile->module->name.c_str(), typeName.c_str()));
+            g_Log.verbose(Fmt("%s %s\n", context->sourceFile->module->name.c_str(), typeName.c_str()));
         if (g_CommandLine->stats)
             g_Stats.totalConcreteTypes++;
     }
@@ -124,7 +124,7 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo
     default:
     {
         auto node = context->node;
-        context->report({node, Utf8::format(g_E[Err0537], typeInfo->getDisplayName().c_str())});
+        context->report({node, Fmt(g_E[Err0537], typeInfo->getDisplayName().c_str())});
         return false;
     }
     }

@@ -20,7 +20,7 @@ bool BackendX64::emitFuncWrapperPublic(const BuildParameters& buildParameters, M
 
     // Symbol
     uint32_t symbolFuncIndex = getOrAddSymbol(pp, node->fullnameForeign, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
-    pp.directives += Utf8::format("/EXPORT:%s ", node->fullnameForeign.c_str());
+    pp.directives += Fmt("/EXPORT:%s ", node->fullnameForeign.c_str());
     auto coffFct     = registerFunction(pp, node, symbolFuncIndex);
     coffFct->wrapper = true;
 

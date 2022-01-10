@@ -23,11 +23,11 @@ bool SyntaxJob::invalidTokenError(InvalidTokenError kind)
     {
     case TokenId::SymAmpersandAmpersand:
         if (kind == InvalidTokenError::EmbeddedInstruction)
-            return error(token, Utf8::format(g_E[Err0891], "&&", "and"));
+            return error(token, Fmt(g_E[Err0891], "&&", "and"));
         break;
     case TokenId::SymVerticalVertical:
         if (kind == InvalidTokenError::EmbeddedInstruction)
-            return error(token, Utf8::format(g_E[Err0891], "||", "or"));
+            return error(token, Fmt(g_E[Err0891], "||", "or"));
         break;
     case TokenId::KwdElse:
         if (kind == InvalidTokenError::EmbeddedInstruction)
@@ -78,13 +78,13 @@ bool SyntaxJob::invalidTokenError(InvalidTokenError kind)
     }
 
     if (Tokenizer::isSymbol(token.id))
-        msg += Utf8::format(", found symbol `%s` ", token.ctext());
+        msg += Fmt(", found symbol `%s` ", token.ctext());
     else if (token.id == TokenId::Identifier)
-        msg += Utf8::format(", found identifier `%s` ", token.ctext());
+        msg += Fmt(", found identifier `%s` ", token.ctext());
     else if (token.id == TokenId::NativeType)
-        msg += Utf8::format(", found type `%s` ", token.ctext());
+        msg += Fmt(", found type `%s` ", token.ctext());
     else
-        msg += Utf8::format(", found `%s` ", token.ctext());
+        msg += Fmt(", found `%s` ", token.ctext());
 
     switch (token.id)
     {
@@ -146,9 +146,9 @@ bool SyntaxJob::eatToken(TokenId id, const char* msg)
         if (!msg)
             msg = "";
         if (token.id == TokenId::EndOfFile)
-            SWAG_CHECK(error(token, Utf8::format(g_E[Err0329], g_LangSpec->tokenToName(id).c_str(), msg)));
+            SWAG_CHECK(error(token, Fmt(g_E[Err0329], g_LangSpec->tokenToName(id).c_str(), msg)));
         else
-            SWAG_CHECK(error(token, Utf8::format(g_E[Err0330], g_LangSpec->tokenToName(id).c_str(), token.ctext(), msg)));
+            SWAG_CHECK(error(token, Fmt(g_E[Err0330], g_LangSpec->tokenToName(id).c_str(), token.ctext(), msg)));
     }
 
     SWAG_CHECK(eatToken());
@@ -160,7 +160,7 @@ bool SyntaxJob::eatTokenNoEOL(TokenId id, const char* msg)
     auto lastToken = token;
     SWAG_CHECK(eatToken(id, msg));
     if (token.lastTokenIsEOL)
-        SWAG_CHECK(error(lastToken, Utf8::format(g_E[Err0858], lastToken.ctext(), msg)));
+        SWAG_CHECK(error(lastToken, Fmt(g_E[Err0858], lastToken.ctext(), msg)));
     return true;
 }
 
@@ -172,7 +172,7 @@ bool SyntaxJob::eatSemiCol(const char* msg)
             msg = "";
 
         PushErrHint errh(g_E[Hnt0013]);
-        SWAG_CHECK(error(token, Utf8::format(g_E[Err0331], token.ctext(), msg)));
+        SWAG_CHECK(error(token, Fmt(g_E[Err0331], token.ctext(), msg)));
     }
 
     if (token.id == TokenId::SymSemiColon)
@@ -217,14 +217,14 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
                     fopen_s(&modl->handleGeneratedFile, publicPath.c_str(), "a+N");
                 if (!modl->handleGeneratedFile)
                 {
-                    g_Log.errorOS(Utf8::format(g_E[Err0524], publicPath.c_str()));
+                    g_Log.errorOS(Fmt(g_E[Err0524], publicPath.c_str()));
                     return false;
                 }
             }
 
             modl->firstGenerated = false;
 
-            Utf8 sourceCode = Utf8::format("// %s:%d:%d:%d:%d\n", fromNode->sourceFile->path.c_str(), fromNode->token.startLocation.line + 1, fromNode->token.startLocation.column + 1, fromNode->token.endLocation.line + 1, fromNode->token.endLocation.column + 1);
+            Utf8 sourceCode = Fmt("// %s:%d:%d:%d:%d\n", fromNode->sourceFile->path.c_str(), fromNode->token.startLocation.line + 1, fromNode->token.startLocation.column + 1, fromNode->token.endLocation.line + 1, fromNode->token.endLocation.column + 1);
             fwrite(sourceCode.c_str(), sourceCode.length(), 1, modl->handleGeneratedFile);
             modl->countLinesGeneratedFile += 1;
             previousLogLine = modl->countLinesGeneratedFile;

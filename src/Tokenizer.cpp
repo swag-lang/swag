@@ -272,7 +272,7 @@ bool Tokenizer::getToken(Token& token)
 
             if (token.id == TokenId::Identifier)
             {
-                error(token, Utf8::format(g_E[Err0140], token.ctext()));
+                error(token, Fmt(g_E[Err0140], token.ctext()));
                 return false;
             }
 
@@ -319,7 +319,7 @@ bool Tokenizer::getToken(Token& token)
             if (!token.text.count)
             {
                 token.startLocation = location;
-                error(token, Utf8::format(g_E[Err0141], nc));
+                error(token, Fmt(g_E[Err0141], nc));
                 return false;
             }
 
@@ -365,7 +365,7 @@ bool Tokenizer::getToken(Token& token)
         ///////////////////////////////////////////
         token.text = c;
         token.id   = TokenId::Invalid;
-        error(token, Utf8::format(g_E[Err0081], token.ctext()));
+        error(token, Fmt(g_E[Err0081], token.ctext()));
         return false;
     }
 

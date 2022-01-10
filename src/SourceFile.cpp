@@ -91,7 +91,7 @@ bool SourceFile::load()
         g_Allocator.free(buffer, allocBufferSize);
         buffer = nullptr;
         closeFile(&handle);
-        g_Log.errorOS(Utf8::format(g_E[Err0153], path.c_str()));
+        g_Log.errorOS(Fmt(g_E[Err0153], path.c_str()));
         return false;
     }
 
@@ -360,7 +360,7 @@ bool SourceFile::report(const Diagnostic& diag, const Diagnostic* note, const Di
 
 bool SourceFile::internalError(AstNode* node, const char* msg)
 {
-    report({node, Utf8::format("[compiler internal] %s", msg)});
+    report({node, Fmt("[compiler internal] %s", msg)});
     return false;
 }
 

@@ -120,7 +120,7 @@ void Module::computePublicPath()
             error_code errorCode;
             if (!fs::create_directories(publicPath.c_str(), errorCode))
             {
-                g_Log.errorOS(Utf8::format(g_E[Err0543], publicPath.c_str()));
+                g_Log.errorOS(Fmt(g_E[Err0543], publicPath.c_str()));
                 OS::exit(-1);
             }
         }
@@ -136,7 +136,7 @@ void Module::computePublicPath()
             error_code errorCode;
             if (!fs::create_directories(publicPath.c_str(), errorCode))
             {
-                g_Log.errorOS(Utf8::format(g_E[Err0543], publicPath.c_str()));
+                g_Log.errorOS(Fmt(g_E[Err0543], publicPath.c_str()));
                 OS::exit(-1);
             }
         }
@@ -177,7 +177,7 @@ bool Module::isValidName(const Utf8& name, Utf8& errorStr)
             if (!isalnum(name[i]) && name[i] != '_')
             {
                 error  = true;
-                reason = Utf8::format("forbidden character '%c'", name[i]);
+                reason = Fmt("forbidden character '%c'", name[i]);
                 break;
             }
         }
@@ -185,7 +185,7 @@ bool Module::isValidName(const Utf8& name, Utf8& errorStr)
 
     if (error)
     {
-        errorStr = Utf8::format("invalid module name `%s`, ", name.c_str());
+        errorStr = Fmt("invalid module name `%s`, ", name.c_str());
         errorStr += reason;
         return false;
     }
@@ -449,14 +449,14 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
         {
             if (dep->location != tokenLocation.text && !tokenLocation.text.empty() && !dep->location.empty())
             {
-                Diagnostic diag{importNode, tokenLocation, Utf8::format(g_E[Err0284], dep->location.c_str())};
+                Diagnostic diag{importNode, tokenLocation, Fmt(g_E[Err0284], dep->location.c_str())};
                 Diagnostic note{dep->node, g_E[Nte0037], DiagnosticLevel::Note};
                 return importNode->sourceFile->report(diag, &note);
             }
 
             if (dep->version != tokenVersion.text && !tokenVersion.text.empty() && !dep->version.empty())
             {
-                Diagnostic diag{importNode, tokenVersion, Utf8::format(g_E[Err0286], dep->version.c_str())};
+                Diagnostic diag{importNode, tokenVersion, Fmt(g_E[Err0286], dep->version.c_str())};
                 Diagnostic note{dep->node, g_E[Nte0037], DiagnosticLevel::Note};
                 return importNode->sourceFile->report(diag, &note);
             }
@@ -529,10 +529,10 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
         switch (i)
         {
         case 1:
-            SWAG_VERIFY(dep->verNum != -1, importNode->sourceFile->report({importNode, tokenVersion, Utf8::format(g_E[Err0335], dep->revNum)}));
+            SWAG_VERIFY(dep->verNum != -1, importNode->sourceFile->report({importNode, tokenVersion, Fmt(g_E[Err0335], dep->revNum)}));
             break;
         case 2:
-            SWAG_VERIFY(dep->revNum != -1, importNode->sourceFile->report({importNode, tokenVersion, Utf8::format(g_E[Err0336], dep->buildNum)}));
+            SWAG_VERIFY(dep->revNum != -1, importNode->sourceFile->report({importNode, tokenVersion, Fmt(g_E[Err0336], dep->buildNum)}));
             break;
         }
     }
@@ -630,7 +630,7 @@ bool Module::error(const Utf8& msg)
     g_Log.lock();
     g_Log.setColor(LogColor::Red);
     g_Log.print("error: ");
-    g_Log.print(Utf8::format("module %s: ", name.c_str()));
+    g_Log.print(Fmt("module %s: ", name.c_str()));
     g_Log.print(msg);
     g_Log.eol();
     g_Log.setDefaultColor();
@@ -646,7 +646,7 @@ bool Module::internalError(const Utf8& msg)
     g_Log.lock();
     g_Log.setColor(LogColor::Red);
     g_Log.print("error: ");
-    g_Log.print(Utf8::format("module %s: [compiler internal] ", name.c_str()));
+    g_Log.print(Fmt("module %s: [compiler internal] ", name.c_str()));
     g_Log.print(msg);
     g_Log.eol();
     g_Log.setDefaultColor();

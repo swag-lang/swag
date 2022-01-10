@@ -100,3 +100,5 @@ struct HashUtf8
         return node.hash();
     }
 };
+
+#define Fmt(__format, ...) Utf8::format(__format, __VA_ARGS__)

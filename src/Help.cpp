@@ -12,7 +12,7 @@ static void printExamples()
 
 static void printVersion()
 {
-    g_Log.message(Utf8::format("swag compiler version %d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
+    g_Log.message(Fmt("swag compiler version %d.%d.%d\n", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM));
 }
 
 void help(CommandLineParser& cmdParser, const string& cmd)

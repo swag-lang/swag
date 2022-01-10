@@ -189,7 +189,7 @@ JobResult BackendLLVM::prepareOutput(const BuildParameters& buildParameters, Job
     {
         pp.pass = BackendPreCompilePass::FunctionBodies;
 
-        pp.filename = Utf8::format("%s%d", buildParameters.outputFileName.c_str(), precompileIndex);
+        pp.filename = Fmt("%s%d", buildParameters.outputFileName.c_str(), precompileIndex);
         pp.filename += Backend::getObjectFileExtension(g_CommandLine->target);
 
         pp.context = new llvm::LLVMContext();
@@ -287,7 +287,7 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
         break;
     }
 
-    string targetTriple = Utf8::format("%s-%s-%s-%s", archName.c_str(), vendorName.c_str(), osName.c_str(), abiName.c_str()).c_str();
+    string targetTriple = Fmt("%s-%s-%s-%s", archName.c_str(), vendorName.c_str(), osName.c_str(), abiName.c_str()).c_str();
     bool   isDebug      = !buildParameters.buildCfg->backendOptimizeSpeed && !buildParameters.buildCfg->backendOptimizeSize;
 
     // Setup target
@@ -296,7 +296,7 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     auto        target = llvm::TargetRegistry::lookupTarget(targetTriple, error);
     if (!target)
     {
-        g_Log.error(Utf8::format(g_E[Err0558], targetTriple.c_str()));
+        g_Log.error(Fmt(g_E[Err0558], targetTriple.c_str()));
         return false;
     }
 

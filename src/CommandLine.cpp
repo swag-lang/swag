@@ -12,14 +12,14 @@ bool CommandLine::check()
     stackSizeRT = (uint32_t) Allocator::alignSize(stackSizeRT);
     if (stackSizeRT < SWAG_LIMIT_MIN_STACK || stackSizeRT > SWAG_LIMIT_MAX_STACK)
     {
-        g_Log.error(Utf8::format(g_E[Err0519], Utf8::toNiceSize(stackSizeRT).c_str(), Utf8::toNiceSize(SWAG_LIMIT_MIN_STACK).c_str(), Utf8::toNiceSize(SWAG_LIMIT_MAX_STACK).c_str()));
+        g_Log.error(Fmt(g_E[Err0519], Utf8::toNiceSize(stackSizeRT).c_str(), Utf8::toNiceSize(SWAG_LIMIT_MIN_STACK).c_str(), Utf8::toNiceSize(SWAG_LIMIT_MAX_STACK).c_str()));
         return false;
     }
 
     stackSizeBC = (uint32_t) Allocator::alignSize(stackSizeBC);
     if (stackSizeBC < SWAG_LIMIT_MIN_STACK || stackSizeBC > SWAG_LIMIT_MAX_STACK)
     {
-        g_Log.error(Utf8::format(g_E[Err0519], Utf8::toNiceSize(stackSizeBC).c_str(), Utf8::toNiceSize(SWAG_LIMIT_MIN_STACK).c_str(), Utf8::toNiceSize(SWAG_LIMIT_MAX_STACK).c_str()));
+        g_Log.error(Fmt(g_E[Err0519], Utf8::toNiceSize(stackSizeBC).c_str(), Utf8::toNiceSize(SWAG_LIMIT_MIN_STACK).c_str(), Utf8::toNiceSize(SWAG_LIMIT_MAX_STACK).c_str()));
         return false;
     }
 
@@ -39,13 +39,13 @@ bool CommandLine::check()
     {
         if (target.os != SwagTargetOs::Windows)
         {
-            g_Log.error(Utf8::format(g_E[Err0522], Backend::GetOsName(target)));
+            g_Log.error(Fmt(g_E[Err0522], Backend::GetOsName(target)));
             return false;
         }
 
         if (target.arch != SwagTargetArch::X86_64)
         {
-            g_Log.error(Utf8::format(g_E[Err0523], Backend::GetArchName(target)));
+            g_Log.error(Fmt(g_E[Err0523], Backend::GetArchName(target)));
             return false;
         }
     }
@@ -73,7 +73,7 @@ bool CommandLine::check()
         }
         else if (p.extension().string() != ".swgs")
         {
-            g_Log.error(Utf8::format(g_E[Err0319], p.extension().string().c_str()));
+            g_Log.error(Fmt(g_E[Err0319], p.extension().string().c_str()));
             return false;
         }
     }

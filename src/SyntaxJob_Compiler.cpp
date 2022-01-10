@@ -103,7 +103,7 @@ bool SyntaxJob::doCompilerMixin(AstNode* parent, AstNode** result)
         SWAG_VERIFY(node->ownerBreakable, error(token, g_E[Err0364]));
         SWAG_CHECK(eatToken());
         if (token.id != TokenId::KwdBreak && token.id != TokenId::KwdContinue)
-            return error(token, Utf8::format(g_E[Err0365], token.ctext()));
+            return error(token, Fmt(g_E[Err0365], token.ctext()));
         SWAG_VERIFY(token.id != TokenId::SymRightCurly, error(token, g_E[Err0366]));
 
         AstNode* stmt;
@@ -479,7 +479,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
         }
         else
         {
-            sourceFile->report({sourceFile, token, Utf8::format(g_E[Err0373], token.ctext())});
+            sourceFile->report({sourceFile, token, Fmt(g_E[Err0373], token.ctext())});
             return false;
         }
 
@@ -587,7 +587,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
     /////////////////////////////////
     else
     {
-        return sourceFile->report({sourceFile, token, Utf8::format(g_E[Err0376], token.ctext())});
+        return sourceFile->report({sourceFile, token, Fmt(g_E[Err0376], token.ctext())});
     }
 
     return true;
@@ -710,7 +710,7 @@ bool SyntaxJob::doCompilerImport(AstNode* parent)
                 SWAG_CHECK(eatToken());
                 SWAG_CHECK(eatToken(TokenId::SymEqual));
                 SWAG_VERIFY(tokenLocation.text.empty(), error(token, g_E[Err0380]));
-                SWAG_VERIFY(token.id == TokenId::LiteralString, error(token, Utf8::format(g_E[Err0381], token.ctext())));
+                SWAG_VERIFY(token.id == TokenId::LiteralString, error(token, Fmt(g_E[Err0381], token.ctext())));
                 tokenLocation = token;
                 SWAG_CHECK(eatToken());
                 continue;
@@ -721,7 +721,7 @@ bool SyntaxJob::doCompilerImport(AstNode* parent)
                 SWAG_CHECK(eatToken());
                 SWAG_CHECK(eatToken(TokenId::SymEqual));
                 SWAG_VERIFY(tokenVersion.text.empty(), error(token, g_E[Err0382]));
-                SWAG_VERIFY(token.id == TokenId::LiteralString, error(token, Utf8::format(g_E[Err0383], token.ctext())));
+                SWAG_VERIFY(token.id == TokenId::LiteralString, error(token, Fmt(g_E[Err0383], token.ctext())));
                 tokenVersion = token;
                 SWAG_CHECK(eatToken());
                 continue;

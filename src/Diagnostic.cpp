@@ -11,7 +11,7 @@ static int        HEADER_SIZE = 0;
 
 Utf8 Hint::isType(TypeInfo* typeInfo)
 {
-    return Utf8::format(g_E[Hnt0011], typeInfo->getDisplayName().c_str());
+    return Fmt(g_E[Hnt0011], typeInfo->getDisplayName().c_str());
 }
 
 bool Diagnostic::mustPrintCode() const
@@ -29,9 +29,9 @@ void Diagnostic::printSourceLine() const
     fs::path path = checkFile->path;
     g_Log.print(Utf8::normalizePath(path).c_str());
     if (hasRangeLocation)
-        g_Log.print(Utf8::format(":%d:%d:%d:%d: ", startLocation.line + 1, startLocation.column + 1, endLocation.line + 1, endLocation.column + 1));
+        g_Log.print(Fmt(":%d:%d:%d:%d: ", startLocation.line + 1, startLocation.column + 1, endLocation.line + 1, endLocation.column + 1));
     else if (hasLocation)
-        g_Log.print(Utf8::format(":%d:%d:%d:%d: ", startLocation.line + 1, startLocation.column + 1, startLocation.line + 1, startLocation.column + 1));
+        g_Log.print(Fmt(":%d:%d:%d:%d: ", startLocation.line + 1, startLocation.column + 1, startLocation.line + 1, startLocation.column + 1));
     else
         g_Log.print(": ");
 }
@@ -95,9 +95,9 @@ void Diagnostic::report(bool verboseMode) const
     {
         g_Log.setColor(stackColor);
         if (currentStackLevel)
-            g_Log.print(Utf8::format("callstack:[%03u]: ", stackLevel));
+            g_Log.print(Fmt("callstack:[%03u]: ", stackLevel));
         else
-            g_Log.print(Utf8::format("callstack:%03u: ", stackLevel));
+            g_Log.print(Fmt("callstack:%03u: ", stackLevel));
         break;
     }
     case DiagnosticLevel::CallStackInlined:

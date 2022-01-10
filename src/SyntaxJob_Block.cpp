@@ -333,7 +333,7 @@ bool SyntaxJob::doLoop(AstNode* parent, AstNode** result)
                     node->expression->childs.back()->kind == AstNodeKind::Identifier &&
                     token.id == TokenId::LiteralNumber)
                 {
-                    return error(token, Utf8::format(g_E[Err0912], node->expression->childs.back()->token.ctext()));
+                    return error(token, Fmt(g_E[Err0912], node->expression->childs.back()->token.ctext()));
                 }
             }
         }

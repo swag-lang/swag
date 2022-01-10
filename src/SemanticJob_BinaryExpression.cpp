@@ -30,7 +30,7 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
     {
         node->typeInfo = leftTypeInfo;
         SWAG_VERIFY((leftTypeInfo->isPointerToTypeInfo()) == 0, context->report({left, g_E[Err0144]}));
-        SWAG_VERIFY(rightTypeInfo->isNativeInteger(), context->report({right, Utf8::format(g_E[Err0579], rightTypeInfo->getDisplayName().c_str())}));
+        SWAG_VERIFY(rightTypeInfo->isNativeInteger(), context->report({right, Fmt(g_E[Err0579], rightTypeInfo->getDisplayName().c_str())}));
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoUInt, left, right, CASTFLAG_TRY_COERCE));
         return true;
     }
@@ -39,12 +39,12 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
     {
         node->typeInfo = rightTypeInfo;
         SWAG_VERIFY((rightTypeInfo->isPointerToTypeInfo()) == 0, context->report({right, g_E[Err0144]}));
-        SWAG_VERIFY(leftTypeInfo->isNativeInteger(), context->report({left, Utf8::format(g_E[Err0579], leftTypeInfo->getDisplayName().c_str())}));
+        SWAG_VERIFY(leftTypeInfo->isNativeInteger(), context->report({left, Fmt(g_E[Err0579], leftTypeInfo->getDisplayName().c_str())}));
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoUInt, right, left, CASTFLAG_TRY_COERCE));
         return true;
     }
 
-    SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, context->report({right, Utf8::format(g_E[Err0142], rightTypeInfo->getDisplayName().c_str())}));
+    SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, context->report({right, Fmt(g_E[Err0142], rightTypeInfo->getDisplayName().c_str())}));
     SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_TRY_COERCE));
     leftTypeInfo = TypeManager::concreteReferenceType(left->typeInfo);
 
@@ -61,7 +61,7 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
     case NativeTypeKind::UInt:
         break;
     default:
-        return context->report({left, Utf8::format(g_E[Err0143], leftTypeInfo->getDisplayName().c_str())});
+        return context->report({left, Fmt(g_E[Err0143], leftTypeInfo->getDisplayName().c_str())});
     }
 
     node->typeInfo = leftTypeInfo;
@@ -152,12 +152,12 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
 
         // Pointer arithmetic
         SWAG_VERIFY((leftTypeInfo->isPointerToTypeInfo()) == 0, context->report({left, g_E[Err0144]}));
-        SWAG_VERIFY(rightTypeInfo->isNativeInteger(), context->report({right, Utf8::format(g_E[Err0579], rightTypeInfo->getDisplayName().c_str())}));
+        SWAG_VERIFY(rightTypeInfo->isNativeInteger(), context->report({right, Fmt(g_E[Err0579], rightTypeInfo->getDisplayName().c_str())}));
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoUInt, left, right, CASTFLAG_TRY_COERCE));
         return true;
     }
 
-    SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, context->report({right, Utf8::format(g_E[Err0146], rightTypeInfo->getDisplayName().c_str())}));
+    SWAG_VERIFY(rightTypeInfo->kind == TypeInfoKind::Native, context->report({right, Fmt(g_E[Err0146], rightTypeInfo->getDisplayName().c_str())}));
     SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_TRY_COERCE));
     leftTypeInfo = TypeManager::concreteReferenceType(left->typeInfo);
 
@@ -174,7 +174,7 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
     case NativeTypeKind::UInt:
         break;
     default:
-        return context->report({left, Utf8::format(g_E[Err0147], leftTypeInfo->getDisplayName().c_str())});
+        return context->report({left, Fmt(g_E[Err0147], leftTypeInfo->getDisplayName().c_str())});
     }
 
     node->typeInfo = leftTypeInfo;
@@ -262,7 +262,7 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
     case NativeTypeKind::UInt:
         break;
     default:
-        return context->report({node, Utf8::format(g_E[Err0148], leftTypeInfo->getDisplayName().c_str())});
+        return context->report({node, Fmt(g_E[Err0148], leftTypeInfo->getDisplayName().c_str())});
     }
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
@@ -359,7 +359,7 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
     case NativeTypeKind::UInt:
         break;
     default:
-        return context->report({node, Utf8::format(g_E[Err0149], leftTypeInfo->getDisplayName().c_str())});
+        return context->report({node, Fmt(g_E[Err0149], leftTypeInfo->getDisplayName().c_str())});
     }
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
@@ -440,7 +440,7 @@ bool SemanticJob::resolveBinaryOpModulo(SemanticContext* context, AstNode* left,
     case NativeTypeKind::UInt:
         break;
     default:
-        return context->report({node, Utf8::format(g_E[Err0157], leftTypeInfo->getDisplayName().c_str())});
+        return context->report({node, Fmt(g_E[Err0157], leftTypeInfo->getDisplayName().c_str())});
     }
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
@@ -512,7 +512,7 @@ bool SemanticJob::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstN
     case NativeTypeKind::UInt:
         break;
     default:
-        return context->report({node, Utf8::format(g_E[Err0163], leftTypeInfo->getDisplayName().c_str())});
+        return context->report({node, Fmt(g_E[Err0163], leftTypeInfo->getDisplayName().c_str())});
     }
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
@@ -620,7 +620,7 @@ bool SemanticJob::resolveBitmaskAnd(SemanticContext* context, AstNode* left, Ast
     case NativeTypeKind::UInt:
         break;
     default:
-        return context->report({node, Utf8::format(g_E[Err0164], leftTypeInfo->getDisplayName().c_str())});
+        return context->report({node, Fmt(g_E[Err0164], leftTypeInfo->getDisplayName().c_str())});
     }
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
@@ -736,7 +736,7 @@ bool SemanticJob::resolveXor(SemanticContext* context, AstNode* left, AstNode* r
     case NativeTypeKind::UInt:
         break;
     default:
-        return context->report({context->node, Utf8::format(g_E[Err0167], leftTypeInfo->getDisplayName().c_str())});
+        return context->report({context->node, Fmt(g_E[Err0167], leftTypeInfo->getDisplayName().c_str())});
     }
 
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
@@ -807,9 +807,9 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
             return notAllowed(context, node, leftTypeInfo, "because the enum is not marked with `Swag.EnumFlags`");
 
         if (leftTypeInfo->kind == TypeInfoKind::Enum && !(leftTypeInfo->flags & TYPEINFO_ENUM_FLAGS))
-            return context->report({node, Utf8::format(g_E[Err0037], node->token.ctext(), leftTypeInfo->getDisplayName().c_str())});
+            return context->report({node, Fmt(g_E[Err0037], node->token.ctext(), leftTypeInfo->getDisplayName().c_str())});
         if (rightTypeInfo->kind == TypeInfoKind::Enum && !(rightTypeInfo->flags & TYPEINFO_ENUM_FLAGS))
-            return context->report({node, Utf8::format(g_E[Err0037], node->token.ctext(), rightTypeInfo->getDisplayName().c_str())});
+            return context->report({node, Fmt(g_E[Err0037], node->token.ctext(), rightTypeInfo->getDisplayName().c_str())});
 
         isEnumFlags = true;
     }
@@ -831,9 +831,9 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
 
     // Cannot compare tuples
     if (leftTypeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
-        return context->report({left, Utf8::format(g_E[Err0168], node->token.ctext())});
+        return context->report({left, Fmt(g_E[Err0168], node->token.ctext())});
     if (rightTypeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
-        return context->report({right, Utf8::format(g_E[Err0168], node->token.ctext())});
+        return context->report({right, Fmt(g_E[Err0168], node->token.ctext())});
 
     node->byteCodeFct = ByteCodeGenJob::emitBinaryOp;
     node->inheritAndFlag2(AST_CONST_EXPR, AST_R_VALUE);
@@ -921,9 +921,9 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
     }
 
     if (!leftTypeInfo->isNativeIntegerOrRune())
-        return context->report({left, Utf8::format(g_E[Err0170], leftTypeInfo->getDisplayName().c_str())});
+        return context->report({left, Fmt(g_E[Err0170], leftTypeInfo->getDisplayName().c_str())});
     if (!rightTypeInfo->isNative(NativeTypeKind::U32))
-        return context->report({right, Utf8::format(g_E[Err0173], rightTypeInfo->getDisplayName().c_str())});
+        return context->report({right, Fmt(g_E[Err0173], rightTypeInfo->getDisplayName().c_str())});
 
     bool isSmall = node->specFlags & AST_SPEC_OP_SMALL;
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))
@@ -1057,9 +1057,9 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
     }
 
     if (!leftTypeInfo->isNativeIntegerOrRune())
-        return context->report({left, Utf8::format(g_E[Err0172], leftTypeInfo->getDisplayName().c_str())});
+        return context->report({left, Fmt(g_E[Err0172], leftTypeInfo->getDisplayName().c_str())});
     if (!rightTypeInfo->isNative(NativeTypeKind::U32))
-        return context->report({right, Utf8::format(g_E[Err0173], rightTypeInfo->getDisplayName().c_str())});
+        return context->report({right, Fmt(g_E[Err0173], rightTypeInfo->getDisplayName().c_str())});
 
     bool isSmall = node->specFlags & AST_SPEC_OP_SMALL;
     if ((left->flags & AST_VALUE_COMPUTED) && (right->flags & AST_VALUE_COMPUTED))

@@ -300,7 +300,7 @@ bool SemanticJob::resolveNullConditionalOp(SemanticContext* context)
                  !(typeInfo->isNativeFloat()) &&
                  typeInfo->kind != TypeInfoKind::Lambda)
         {
-            return context->report({expression, Utf8::format(g_E[Err0332], typeInfo->getDisplayName().c_str())});
+            return context->report({expression, Fmt(g_E[Err0332], typeInfo->getDisplayName().c_str())});
         }
 
         SWAG_CHECK(TypeManager::makeCompatibles(context, expression, ifTrue, CASTFLAG_COMMUTATIVE | CASTFLAG_STRICT));
@@ -332,7 +332,7 @@ bool SemanticJob::resolveRange(SemanticContext* context)
 
     auto typeInfo = TypeManager::concreteReferenceType(node->expressionLow->typeInfo);
     if (!typeInfo->isNativeIntegerOrRune() && !typeInfo->isNativeFloat())
-        return context->report(Hint::isType(typeInfo), {node->expressionLow, Utf8::format(g_E[Err0002], node->expressionLow->typeInfo->getDisplayName().c_str())});
+        return context->report(Hint::isType(typeInfo), {node->expressionLow, Fmt(g_E[Err0002], node->expressionLow->typeInfo->getDisplayName().c_str())});
 
     SWAG_CHECK(TypeManager::makeCompatibles(context, node->expressionLow, node->expressionUp, CASTFLAG_COMMUTATIVE));
 

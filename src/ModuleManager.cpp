@@ -75,7 +75,7 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem)
     // will initialize it with its internal function
     auto callName = name;
     Ast::normalizeIdentifierName(callName);
-    Utf8 funcName = Utf8::format("%s_globalInit", callName.c_str());
+    Utf8 funcName = Fmt("%s_globalInit", callName.c_str());
     auto ptr      = OS::getProcAddress(h, funcName.c_str());
     if (ptr)
     {

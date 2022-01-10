@@ -12,7 +12,7 @@ bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, Ty
     auto regNode = node->ownerScope ? node->ownerScope->owner : node;
 
     SWAG_ASSERT(regNode);
-    SWAG_VERIFY(node->ownerFct || node->ownerScope->kind == ScopeKind::Struct, context->report({node, Utf8::format(g_E[Err0689], Scope::getNakedKindName(node->ownerScope->kind))}));
+    SWAG_VERIFY(node->ownerFct || node->ownerScope->kind == ScopeKind::Struct, context->report({node, Fmt(g_E[Err0689], Scope::getNakedKindName(node->ownerScope->kind))}));
 
     typeInfoVar = TypeManager::concreteReference(typeInfoVar);
     if (typeInfoVar->kind == TypeInfoKind::Struct)
@@ -26,14 +26,14 @@ bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, Ty
     {
         auto typePointer = CastTypeInfo<TypeInfoPointer>(typeInfoVar, TypeInfoKind::Pointer);
         SWAG_VERIFY(typePointer->pointedType->kind != TypeInfoKind::Enum, context->report({node, g_E[Err0691]}));
-        SWAG_VERIFY(typePointer->pointedType->kind == TypeInfoKind::Struct, context->report({node, Utf8::format(g_E[Err0822], typeInfoVar->getDisplayName().c_str())}));
+        SWAG_VERIFY(typePointer->pointedType->kind == TypeInfoKind::Struct, context->report({node, Fmt(g_E[Err0822], typeInfoVar->getDisplayName().c_str())}));
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
         regNode->addAlternativeScope(typeStruct->scope, forWith ? ALTSCOPE_WITH : 0);
         regNode->addAlternativeScopeVar(typeStruct->scope, varNode);
     }
     else
     {
-        return context->report({node, Utf8::format(g_E[Err0692], typeInfoVar->name.c_str())});
+        return context->report({node, Fmt(g_E[Err0692], typeInfoVar->name.c_str())});
     }
 
     return true;
@@ -70,7 +70,7 @@ bool SemanticJob::resolveWith(SemanticContext* context)
         break;
     }
     default:
-        return context->report({node, Utf8::format(g_E[Err0703], typeResolved->getDisplayName().c_str())});
+        return context->report({node, Fmt(g_E[Err0703], typeResolved->getDisplayName().c_str())});
     }
 
     context->node->addAlternativeScope(scope);
@@ -114,7 +114,7 @@ bool SemanticJob::resolveUsing(SemanticContext* context)
         break;
     }
     default:
-        return context->report({node, Utf8::format(g_E[Err0695], typeResolved->getDisplayName().c_str())});
+        return context->report({node, Fmt(g_E[Err0695], typeResolved->getDisplayName().c_str())});
     }
 
     node->parent->addAlternativeScope(scope);

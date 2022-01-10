@@ -1059,7 +1059,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
                 else if (module->bssCannotChange)
                 {
                     SymbolOverload* over = (SymbolOverload*) ip->c.pointer;
-                    context->error(Utf8::format(g_E[Err0431], over->node->token.ctext()));
+                    context->error(Fmt(g_E[Err0431], over->node->token.ctext()));
                 }
             }
             registersRC[ip->a.u32].pointer = ptr;
@@ -1080,7 +1080,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
                     else if (module->bssCannotChange)
                     {
                         SymbolOverload* over = (SymbolOverload*) ip->c.pointer;
-                        context->error(Utf8::format(g_E[Err0431], over->node->token.ctext()));
+                        context->error(Fmt(g_E[Err0431], over->node->token.ctext()));
                     }
                 }
             }
@@ -2851,7 +2851,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
     default:
         if (ip->op < ByteCodeOp::End)
-            context->internalError(Utf8::format("unknown bytecode instruction `%s`", g_ByteCodeOpDesc[(int) ip->op].name), ip->node);
+            context->internalError(Fmt("unknown bytecode instruction `%s`", g_ByteCodeOpDesc[(int) ip->op].name), ip->node);
         break;
     }
 

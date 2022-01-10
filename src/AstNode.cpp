@@ -524,7 +524,7 @@ Utf8 AstNode::getKindName(AstNode* node)
         return "function call";
     }
 
-    return Utf8::format("<%d>", node->kind);
+    return Fmt("<%d>", node->kind);
 }
 
 AstNode* AstNode::findParent(AstNodeKind parentKind)
@@ -627,14 +627,14 @@ Utf8 AstFuncDecl::getDisplayName()
         return "lambda";
 
     if (flags & AST_SPECIAL_COMPILER_FUNC)
-        return Utf8::format("`%s` block", token.ctext());
+        return Fmt("`%s` block", token.ctext());
 
     if (attributeFlags & ATTRIBUTE_MIXIN)
-        return Utf8::format("mixin `%s`", token.ctext());
+        return Fmt("mixin `%s`", token.ctext());
     if (attributeFlags & ATTRIBUTE_MACRO)
-        return Utf8::format("macro `%s`", token.ctext());
+        return Fmt("macro `%s`", token.ctext());
 
-    return Utf8::format("function `%s`", token.ctext());
+    return Fmt("function `%s`", token.ctext());
 }
 
 void AstFuncDecl::computeFullNameForeign(bool forExport)

@@ -318,7 +318,7 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
                         first         = returnNode->resolvedFuncDecl->returnType;
                         if (!first->childs.empty())
                             first = first->childs.front();
-                        auto note = new Diagnostic{first, Utf8::format(g_E[Nte0067], typeFunc->returnType->getDisplayName().c_str()), DiagnosticLevel::Note};
+                        auto note = new Diagnostic{first, Fmt(g_E[Nte0067], typeFunc->returnType->getDisplayName().c_str()), DiagnosticLevel::Note};
                         notes.push_back(note);
                         showContext = false;
                     }
@@ -342,9 +342,9 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
 
                 Utf8 msg;
                 if (!name.empty())
-                    msg = Utf8::format(g_E[Nte0002], kindName, kindArticle, name.c_str());
+                    msg = Fmt(g_E[Nte0002], kindName, kindArticle, name.c_str());
                 else
-                    msg = Utf8::format(g_E[Nte0003], kindName);
+                    msg = Fmt(g_E[Nte0003], kindName);
                 auto note  = new Diagnostic{first, msg, DiagnosticLevel::Note};
                 note->hint = hint;
                 notes.push_back(note);
@@ -377,7 +377,7 @@ bool JobContext::checkSizeOverflow(const char* typeOverflow, uint64_t value, uin
 {
     if (value <= maxValue)
         return true;
-    return report({node, Utf8::format(g_E[Err0505], typeOverflow, maxValue)});
+    return report({node, Fmt(g_E[Err0505], typeOverflow, maxValue)});
 }
 
 bool JobContext::internalError(const char* msg, AstNode* specNode)

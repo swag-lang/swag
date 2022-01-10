@@ -227,8 +227,8 @@ bool BackendX64::createRuntime(const BuildParameters& buildParameters)
         pp.symCSIndex  = getOrAddSymbol(pp, "__cs", CoffSymbolKind::Custom, 0, pp.sectionIndexCS)->index;
         pp.symMSIndex  = getOrAddSymbol(pp, "__ms", CoffSymbolKind::Custom, 0, pp.sectionIndexMS)->index;
         pp.symTLSIndex = getOrAddSymbol(pp, "__tls", CoffSymbolKind::Custom, 0, pp.sectionIndexTLS)->index;
-        pp.symCOIndex  = getOrAddSymbol(pp, Utf8::format("__co%d", precompileIndex), CoffSymbolKind::Custom, 0, pp.sectionIndexText)->index;
-        pp.symXDIndex  = getOrAddSymbol(pp, Utf8::format("__xd%d", precompileIndex), CoffSymbolKind::Custom, 0, pp.sectionIndexXD)->index;
+        pp.symCOIndex  = getOrAddSymbol(pp, Fmt("__co%d", precompileIndex), CoffSymbolKind::Custom, 0, pp.sectionIndexText)->index;
+        pp.symXDIndex  = getOrAddSymbol(pp, Fmt("__xd%d", precompileIndex), CoffSymbolKind::Custom, 0, pp.sectionIndexXD)->index;
 
         // This should match the structure SwagContext declared in Runtime.h
         auto offset                         = pp.globalSegment.reserve(sizeof(SwagContext), nullptr, sizeof(uint64_t));
@@ -281,8 +281,8 @@ bool BackendX64::createRuntime(const BuildParameters& buildParameters)
         pp.symCSIndex  = getOrAddSymbol(pp, "__cs", CoffSymbolKind::Extern)->index;
         pp.symMSIndex  = getOrAddSymbol(pp, "__ms", CoffSymbolKind::Extern)->index;
         pp.symTLSIndex = getOrAddSymbol(pp, "__tls", CoffSymbolKind::Extern)->index;
-        pp.symCOIndex  = getOrAddSymbol(pp, Utf8::format("__co%d", precompileIndex), CoffSymbolKind::Custom, 0, pp.sectionIndexText)->index;
-        pp.symXDIndex  = getOrAddSymbol(pp, Utf8::format("__xd%d", precompileIndex), CoffSymbolKind::Custom, 0, pp.sectionIndexXD)->index;
+        pp.symCOIndex  = getOrAddSymbol(pp, Fmt("__co%d", precompileIndex), CoffSymbolKind::Custom, 0, pp.sectionIndexText)->index;
+        pp.symXDIndex  = getOrAddSymbol(pp, Fmt("__xd%d", precompileIndex), CoffSymbolKind::Custom, 0, pp.sectionIndexXD)->index;
 
         pp.symPI_argsAddr       = getOrAddSymbol(pp, "swag_process_infos_argsAddr", CoffSymbolKind::Extern)->index;
         pp.symPI_argsCount      = getOrAddSymbol(pp, "swag_process_infos_argsCount", CoffSymbolKind::Extern)->index;
@@ -320,7 +320,7 @@ JobResult BackendX64::prepareOutput(const BuildParameters& buildParameters, Job*
     {
         pp.pass = BackendPreCompilePass::FunctionBodies;
 
-        pp.filename = Utf8::format("%s%d", buildParameters.outputFileName.c_str(), precompileIndex);
+        pp.filename = Fmt("%s%d", buildParameters.outputFileName.c_str(), precompileIndex);
         pp.filename += Backend::getObjectFileExtension(g_CommandLine->target);
 
         emitHeader(buildParameters);
@@ -547,7 +547,7 @@ void BackendX64::emitGlobalString(X64PerThread& pp, int precompileIndex, const U
         sym = &pp.allSymbols[it->second];
     else
     {
-        Utf8 symName          = Utf8::format("__str%u", (uint32_t) pp.globalStrings.size());
+        Utf8 symName          = Fmt("__str%u", (uint32_t) pp.globalStrings.size());
         sym                   = getOrAddSymbol(pp, symName, CoffSymbolKind::GlobalString);
         pp.globalStrings[str] = sym->index;
         sym->value            = pp.stringSegment.addStringNoLock(str);

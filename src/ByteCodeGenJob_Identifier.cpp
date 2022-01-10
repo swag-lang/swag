@@ -16,7 +16,7 @@ bool ByteCodeGenJob::emitIdentifierRef(ByteCodeGenContext* context)
 bool ByteCodeGenJob::sameStackFrame(ByteCodeGenContext* context, SymbolOverload* overload)
 {
     if (!context->node->isSameStackFrame(overload))
-        return context->report({context->node, Utf8::format(g_E[Err0206], overload->symbol->name.c_str())});
+        return context->report({context->node, Fmt(g_E[Err0206], overload->symbol->name.c_str())});
     return true;
 }
 
@@ -101,7 +101,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             }
             else
             {
-                return context->report({node, Utf8::format(g_E[Err0462], typeInfo->getDisplayName().c_str())});
+                return context->report({node, Fmt(g_E[Err0462], typeInfo->getDisplayName().c_str())});
             }
         }
         else if (typeInfo->isPointerTo(TypeInfoKind::Interface) && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)))
@@ -342,7 +342,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     {
         SWAG_ASSERT(!(resolved->flags & OVERLOAD_VAR_INLINE));
         node->resultRegisterRC = identifier->identifierRef->resultRegisterRC;
-        SWAG_VERIFY(node->resultRegisterRC.size() > 0, context->internalError(Utf8::format("emitIdentifier, cannot reference identifier `%s`", identifier->token.ctext()).c_str()));
+        SWAG_VERIFY(node->resultRegisterRC.size() > 0, context->internalError(Fmt("emitIdentifier, cannot reference identifier `%s`", identifier->token.ctext()).c_str()));
 
         if (node->resolvedSymbolOverload->computedValue.storageOffset > 0)
         {
@@ -374,7 +374,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
 
         // We need to copy register, and not use it directly, because the register can be changed by
         // some code after (like when dereferencing something)
-        SWAG_VERIFY(resolved->registers.size() > 0, context->internalError(Utf8::format("emitIdentifier, identifier not generated `%s`", identifier->token.ctext()).c_str()));
+        SWAG_VERIFY(resolved->registers.size() > 0, context->internalError(Fmt("emitIdentifier, identifier not generated `%s`", identifier->token.ctext()).c_str()));
 
         reserveRegisterRC(context, node->resultRegisterRC, resolved->registers.size());
         for (int i = 0; i < node->resultRegisterRC.size(); i++)

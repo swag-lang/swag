@@ -114,7 +114,7 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result
             if (token.id == TokenId::SymColon)
             {
                 if (paramExpression->kind != AstNodeKind::IdentifierRef || paramExpression->childs.size() != 1)
-                    return sourceFile->report({paramExpression, Utf8::format(g_E[Err0403], token.ctext())});
+                    return sourceFile->report({paramExpression, Fmt(g_E[Err0403], token.ctext())});
                 param->namedParamNode = paramExpression->childs.front();
                 param->namedParam     = param->namedParamNode->token.text;
                 SWAG_CHECK(eatToken());
@@ -154,7 +154,7 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType)
         paramNode->flags |= AST_DECL_USING;
     }
 
-    SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::KwdConst, error(token, Utf8::format(g_E[Err0410], token.ctext())));
+    SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::KwdConst, error(token, Fmt(g_E[Err0410], token.ctext())));
     paramNode->token.text = token.text;
 
     // 'self'
@@ -204,7 +204,7 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType)
         while (token.id == TokenId::SymComma)
         {
             SWAG_CHECK(eatToken());
-            SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Utf8::format(g_E[Err0408], token.ctext())));
+            SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(g_E[Err0408], token.ctext())));
 
             AstVarDecl* otherVarNode = Ast::newVarDecl(sourceFile, token.text, parent, this, AstNodeKind::FuncDeclParam);
             SWAG_CHECK(eatToken());
@@ -293,7 +293,7 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result, bool acc
 
     // To avoid calling 'format' in case we know this is fine, otherwise it will be called each time, even when ok
     if (token.id != TokenId::SymLeftParen)
-        SWAG_CHECK(eatToken(TokenId::SymLeftParen, Utf8::format("to declare the function parameters of `%s`", parent->token.ctext())));
+        SWAG_CHECK(eatToken(TokenId::SymLeftParen, Fmt("to declare the function parameters of `%s`", parent->token.ctext())));
     else
         SWAG_CHECK(eatToken());
 
@@ -328,7 +328,7 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result, bool acc
             if (token.id == TokenId::SymRightParen)
                 break;
             SWAG_CHECK(eatToken(TokenId::SymComma));
-            SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::KwdUsing, error(token, Utf8::format(g_E[Err0410], token.ctext())));
+            SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::KwdUsing, error(token, Fmt(g_E[Err0410], token.ctext())));
         }
     }
 
@@ -484,12 +484,12 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         isIntrinsic = token.text[0] == '@';
         if (isIntrinsic)
         {
-            SWAG_VERIFY(sourceFile->isBootstrapFile || sourceFile->isRuntimeFile, error(token, Utf8::format(g_E[Err0413], token.ctext()), g_E[Hlp0008]));
+            SWAG_VERIFY(sourceFile->isBootstrapFile || sourceFile->isRuntimeFile, error(token, Fmt(g_E[Err0413], token.ctext()), g_E[Hlp0008]));
         }
         else
         {
             relaxIdentifier(token);
-            SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Utf8::format(g_E[Err0414], token.ctext())));
+            SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(g_E[Err0414], token.ctext())));
             funcNode->tokenName = token;
         }
 
@@ -609,7 +609,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
     // If we have now a semi colon, then this is an empty function, like a forward decl in c++
     if (token.id == TokenId::SymSemiColon)
     {
-        SWAG_VERIFY(!funcForCompiler, error(token, Utf8::format(g_E[Err0416], funcNode->getDisplayName().c_str())));
+        SWAG_VERIFY(!funcForCompiler, error(token, Fmt(g_E[Err0416], funcNode->getDisplayName().c_str())));
         SWAG_CHECK(eatSemiCol("function declaration"));
         funcNode->flags |= AST_EMPTY_FCT;
         return true;
