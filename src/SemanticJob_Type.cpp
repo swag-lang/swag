@@ -44,10 +44,10 @@ bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
         return true;
 
     if (node->kind == AstNodeKind::TypeExpression || node->kind == AstNodeKind::TypeLambda)
-        return context->report({node, Err(Err0012)});
+        return context->report(node, Err(Err0012));
 
     if (node->flags & AST_FROM_GENERIC_REPLACE)
-        return context->report({node, Err(Err0012)});
+        return context->report(node, Err(Err0012));
 
     if (node->resolvedSymbolName)
     {
@@ -527,7 +527,7 @@ bool SemanticJob::resolveAlias(SemanticContext* context)
 
     // Collect all attributes for the variable
     SWAG_CHECK(collectAttributes(context, node, nullptr));
-    SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_STRICT), context->report({node, Err(Err0028)}));
+    SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_STRICT), context->report(node, Err(Err0028)));
 
     node->flags |= AST_NO_BYTECODE;
 

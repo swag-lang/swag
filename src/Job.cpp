@@ -211,6 +211,12 @@ bool JobContext::report(const char* hint, const Diagnostic& diag, const Diagnost
     return report(diag, note, note1);
 }
 
+bool JobContext::report(AstNode* fromNode, const Utf8& msg)
+{
+    Diagnostic diag{fromNode, msg};
+    return report(diag);
+}
+
 bool JobContext::report(const Diagnostic& diag, const Diagnostic* note, const Diagnostic* note1)
 {
     vector<const Diagnostic*> notes;

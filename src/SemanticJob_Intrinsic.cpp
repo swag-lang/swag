@@ -103,7 +103,7 @@ bool SemanticJob::resolveIntrinsicMakeCallback(SemanticContext* context, AstNode
 
     // Check first parameter
     if (first->typeInfo->kind != TypeInfoKind::Lambda)
-        return context->report({node, Err(Err0784)});
+        return context->report(node, Err(Err0784));
 
     auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(first->typeInfo, TypeInfoKind::Lambda);
     if (typeFunc->parameters.size() > SWAG_LIMIT_CB_MAX_PARAMS)
@@ -470,7 +470,7 @@ bool SemanticJob::resolveIntrinsicSpread(SemanticContext* context)
     auto typeInfo     = TypeManager::concreteReferenceType(expr->typeInfo);
     node->byteCodeFct = ByteCodeGenJob::emitIntrinsicSpread;
 
-    SWAG_VERIFY(node->parent && node->parent->parent && node->parent->parent->kind == AstNodeKind::FuncCallParam, context->report({node, Err(Err0806)}));
+    SWAG_VERIFY(node->parent && node->parent->parent && node->parent->parent->kind == AstNodeKind::FuncCallParam, context->report(node, Err(Err0806)));
 
     if (typeInfo->kind == TypeInfoKind::Array)
     {
@@ -789,9 +789,9 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
 
         if (node->token.id == TokenId::IntrinsicCVaStart)
         {
-            SWAG_VERIFY(node->ownerFct && node->ownerFct->parameters && node->ownerFct->parameters->childs.size(), context->report({node, Err(Err0442)}));
+            SWAG_VERIFY(node->ownerFct && node->ownerFct->parameters && node->ownerFct->parameters->childs.size(), context->report(node, Err(Err0442)));
             auto typeParam = node->ownerFct->parameters->childs.back()->typeInfo;
-            SWAG_VERIFY(typeParam->kind == TypeInfoKind::CVariadic, context->report({node, Err(Err0442)}));
+            SWAG_VERIFY(typeParam->kind == TypeInfoKind::CVariadic, context->report(node, Err(Err0442)));
             node->byteCodeFct = ByteCodeGenJob::emitIntrinsicCVaStart;
         }
         else if (node->token.id == TokenId::IntrinsicCVaEnd)

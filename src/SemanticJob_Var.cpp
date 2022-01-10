@@ -665,7 +665,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
     // Check attributes
     if (node->attributeFlags & ATTRIBUTE_TLS && node->attributeFlags & ATTRIBUTE_COMPILER)
-        return context->report({node, Err(Err0159)});
+        return context->report(node, Err(Err0159));
 
     // Register public global constant
     if (isCompilerConstant && (node->attributeFlags & ATTRIBUTE_PUBLIC))
@@ -682,14 +682,14 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     if (!node->type || concreteNodeType->kind != TypeInfoKind::Struct)
     {
         if (isCompilerConstant && !node->assignment && !(node->flags & AST_VALUE_COMPUTED))
-            return context->report({node, Err(Err0298)});
+            return context->report(node, Err(Err0298));
         if ((symbolFlags & OVERLOAD_CONST_ASSIGN) && !node->assignment && node->kind != AstNodeKind::FuncDeclParam)
-            return context->report({node, Err(Err0299)});
+            return context->report(node, Err(Err0299));
 
         if (node->type && node->type->typeInfo->kind == TypeInfoKind::Reference && node->kind != AstNodeKind::FuncDeclParam)
         {
             if (!node->assignment && !(node->flags & AST_EXPLICITLY_NOT_INITIALIZED))
-                return context->report({node, Err(Err0300)});
+                return context->report(node, Err(Err0300));
         }
     }
 
@@ -769,7 +769,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     if (concreteNodeType && concreteNodeType->kind == TypeInfoKind::Array)
     {
         auto typeArray = CastTypeInfo<TypeInfoArray>(concreteNodeType, TypeInfoKind::Array);
-        SWAG_VERIFY(typeArray->count != UINT32_MAX || node->assignment, context->report({node, Err(Err0303)}));
+        SWAG_VERIFY(typeArray->count != UINT32_MAX || node->assignment, context->report(node, Err(Err0303)));
         SWAG_VERIFY(!node->assignment || node->assignment->kind == AstNodeKind::ExpressionList || node->assignment->kind == AstNodeKind::ExplicitNoInit, context->report({node->assignment, Err(Err0304)}));
 
         // Deduce size of array
@@ -784,7 +784,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
     if (node->flags & AST_EXPLICITLY_NOT_INITIALIZED)
     {
-        SWAG_VERIFY(!isCompilerConstant, context->report({node, Err(Err0305)}));
+        SWAG_VERIFY(!isCompilerConstant, context->report(node, Err(Err0305)));
     }
 
     // Types and assignements are specified
@@ -927,7 +927,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     }
 
     // Type should be a correct one
-    SWAG_VERIFY(node->typeInfo != g_TypeMgr->typeInfoNull, context->report({node, Err(Err0308)}));
+    SWAG_VERIFY(node->typeInfo != g_TypeMgr->typeInfoNull, context->report(node, Err(Err0308)));
 
     // We should have a type here !
     SWAG_VERIFY(node->typeInfo, context->report({node, Fmt(Err(Err0309), AstNode::getKindName(node).c_str(), node->token.ctext())}));
@@ -978,7 +978,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         if (typeInfo->kind == TypeInfoKind::Enum ||
             (typeInfo->kind == TypeInfoKind::Array && ((TypeInfoArray*) typeInfo)->pointedType->kind == TypeInfoKind::Enum))
         {
-            return context->report({node, Err(Err0310)});
+            return context->report(node, Err(Err0310));
         }
     }
 
@@ -1060,7 +1060,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     else if (symbolFlags & OVERLOAD_VAR_GLOBAL)
     {
         SWAG_VERIFY(!(node->typeInfo->flags & TYPEINFO_GENERIC), context->report({node, Fmt(Err(Err0312), node->typeInfo->getDisplayNameC())}));
-        SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_PUBLIC), context->report({node, Err(Err0313)}));
+        SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_PUBLIC), context->report(node, Err(Err0313)));
 
         node->flags |= AST_R_VALUE;
         storageSegment = getSegmentForVar(context, node);

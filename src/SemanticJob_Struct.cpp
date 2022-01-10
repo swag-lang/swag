@@ -36,7 +36,7 @@ bool SemanticJob::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTy
         if (!hasUserOp(context, g_LangSpec->name_opAffect, left))
         {
             Utf8 msg = Fmt(Err(Err0908), leftTypeInfo->getDisplayNameC(), rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC());
-            return context->report({right, msg});
+            return context->report(right, msg);
         }
 
         PushErrContext ec(context, right, Fmt(Nte(Nte0058), rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC(), g_LangSpec->name_opAffect.c_str()));
@@ -668,8 +668,8 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     {
         if (node->attributeFlags & ATTRIBUTE_OPAQUE)
         {
-            SWAG_VERIFY(node->isPublic(), context->report({node, Err(Err0666)}));
-            SWAG_VERIFY(!sourceFile->forceExport, context->report({node, Err(Err0667)}));
+            SWAG_VERIFY(node->isPublic(), context->report(node, Err(Err0666)));
+            SWAG_VERIFY(!sourceFile->forceExport, context->report(node, Err(Err0667)));
         }
     }
 

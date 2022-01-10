@@ -162,7 +162,7 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
         SWAG_VERIFY(node->genericParameters && node->genericParameters->childs.size() <= 2, context->report({node, Fmt(Err(Err0073), name.c_str())}));
         auto firstGen = node->genericParameters->childs.front();
         SWAG_VERIFY(firstGen->typeInfo->isSame(g_TypeMgr->typeInfoBool, ISSAME_CAST), context->report({firstGen, Fmt(Err(Err0074), name.c_str(), firstGen->typeInfo->getDisplayNameC())}));
-        SWAG_VERIFY(node->attributeFlags & ATTRIBUTE_MACRO, context->report({node, Err(Err0075)}));
+        SWAG_VERIFY(node->attributeFlags & ATTRIBUTE_MACRO, context->report(node, Err(Err0075)));
     }
     else if (name == g_LangSpec->name_opCast)
     {

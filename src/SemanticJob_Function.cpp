@@ -296,18 +296,18 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
 
     // Check attributes
     if ((node->attributeFlags & ATTRIBUTE_FOREIGN) && node->content)
-        return context->report({node, Err(Err0742)});
+        return context->report(node, Err(Err0742));
 
     if (!(node->attributeFlags & ATTRIBUTE_GENERATED_FUNC))
     {
         if (node->flags & AST_SPECIAL_COMPILER_FUNC)
         {
-            SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_INLINE), context->report({node, Err(Err0743)}));
+            SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_INLINE), context->report(node, Err(Err0743)));
         }
 
         if (node->attributeFlags & ATTRIBUTE_TEST_FUNC)
         {
-            SWAG_VERIFY(module->kind == ModuleKind::Test, context->report({node, Err(Err0744)}));
+            SWAG_VERIFY(module->kind == ModuleKind::Test, context->report(node, Err(Err0744)));
             SWAG_VERIFY(node->returnType->typeInfo == g_TypeMgr->typeInfoVoid, context->report({node->returnType, Err(Err0745)}));
             SWAG_VERIFY(!node->parameters || node->parameters->childs.size() == 0, context->report({node->parameters, Err(Err0746)}));
         }
@@ -772,7 +772,7 @@ bool SemanticJob::resolveFuncCallParam(SemanticContext* context)
     auto child     = node->childs.front();
     node->typeInfo = child->typeInfo;
 
-    SWAG_VERIFY(node->typeInfo->kind != TypeInfoKind::CVariadic, context->report({node, Err(Err0446)}));
+    SWAG_VERIFY(node->typeInfo->kind != TypeInfoKind::CVariadic, context->report(node, Err(Err0446)));
 
     // Force const if necessary
     // func([.., ...]) must be const
@@ -864,12 +864,12 @@ bool SemanticJob::resolveRetVal(SemanticContext* context)
     auto node    = context->node;
     auto fctDecl = node->ownerInline ? node->ownerInline->func : node->ownerFct;
 
-    SWAG_VERIFY(fctDecl, context->report({node, Err(Err0769)}));
-    SWAG_VERIFY(node->ownerScope && node->ownerScope->kind != ScopeKind::Function, context->report({node, Err(Err0769)}));
+    SWAG_VERIFY(fctDecl, context->report(node, Err(Err0769)));
+    SWAG_VERIFY(node->ownerScope && node->ownerScope->kind != ScopeKind::Function, context->report(node, Err(Err0769)));
 
     auto fct     = CastAst<AstFuncDecl>(fctDecl, AstNodeKind::FuncDecl);
     auto typeFct = CastTypeInfo<TypeInfoFuncAttr>(fct->typeInfo, TypeInfoKind::FuncAttr);
-    SWAG_VERIFY(typeFct->returnType && !typeFct->returnType->isNative(NativeTypeKind::Void), context->report({node, Err(Err0771)}));
+    SWAG_VERIFY(typeFct->returnType && !typeFct->returnType->isNative(NativeTypeKind::Void), context->report(node, Err(Err0771)));
 
     // If this is a simple return type, remove the retval stuff.
     // Variable will behaves normally, in the stack

@@ -332,7 +332,7 @@ bool SemanticJob::resolveCompilerAssert(SemanticContext* context)
             context->report({node, msg->computedValue->text});
         }
         else
-            context->report({node, Err(Err0238)});
+            context->report(node, Err(Err0238));
         return false;
     }
 
@@ -350,7 +350,7 @@ bool SemanticJob::resolveCompilerMacro(SemanticContext* context)
 
     // Be sure #macro is used inside a macro
     if (!node->ownerInline || (node->ownerInline->attributeFlags & ATTRIBUTE_MIXIN) || !(node->ownerInline->attributeFlags & ATTRIBUTE_MACRO))
-        return context->report({node, Err(Err0239)});
+        return context->report(node, Err(Err0239));
 
     return true;
 }
@@ -718,8 +718,8 @@ bool SemanticJob::resolveCompilerScopeFct(SemanticContext* context)
     auto node          = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier);
     auto identifierRef = node->identifierRef;
 
-    SWAG_VERIFY(!identifierRef->startScope, context->report({node, Err(Err0246)}));
-    SWAG_VERIFY(node->ownerFct, context->report({node, Err(Err0247)}));
+    SWAG_VERIFY(!identifierRef->startScope, context->report(node, Err(Err0246)));
+    SWAG_VERIFY(node->ownerFct, context->report(node, Err(Err0247)));
 
     node->semFlags |= AST_SEM_FORCE_SCOPE;
     node->typeInfo = g_TypeMgr->typeInfoVoid;
@@ -757,16 +757,16 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
     switch (node->token.id)
     {
     case TokenId::CompilerSelf:
-        SWAG_VERIFY(node->ownerFct, context->report({node, Err(Err0348)}));
+        SWAG_VERIFY(node->ownerFct, context->report(node, Err(Err0348)));
         while (node->ownerFct->flags & AST_SPECIAL_COMPILER_FUNC && node->ownerFct->parent->ownerFct)
             node = node->ownerFct->parent;
-        SWAG_VERIFY(node, context->report({node, Err(Err0348)}));
+        SWAG_VERIFY(node, context->report(node, Err(Err0348)));
 
         if (node->ownerScope->kind == ScopeKind::Struct || node->ownerScope->kind == ScopeKind::Enum)
             node = node->ownerScope->owner;
         else
         {
-            SWAG_VERIFY(node->ownerFct, context->report({node, Err(Err0348)}));
+            SWAG_VERIFY(node->ownerFct, context->report(node, Err(Err0348)));
             node = node->ownerFct;
         }
 
@@ -776,10 +776,10 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
         return true;
 
     case TokenId::CompilerFunction:
-        SWAG_VERIFY(node->ownerFct, context->report({node, Err(Err0256)}));
+        SWAG_VERIFY(node->ownerFct, context->report(node, Err(Err0256)));
         while (node->ownerFct->flags & AST_SPECIAL_COMPILER_FUNC && node->ownerFct->parent->ownerFct)
             node = node->ownerFct->parent;
-        SWAG_VERIFY(node->ownerFct, context->report({node, Err(Err0256)}));
+        SWAG_VERIFY(node->ownerFct, context->report(node, Err(Err0256)));
         context->node->setFlagsValueIsComputed();
         context->node->computedValue->text = SemanticJob::getCompilerFunctionString(node, context->node->token.id);
         context->node->typeInfo            = g_TypeMgr->typeInfoString;
@@ -846,12 +846,12 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
     }
 
     case TokenId::CompilerCallerLocation:
-        SWAG_VERIFY(node->parent->kind == AstNodeKind::FuncDeclParam, context->report({node, Err(Err0254)}));
+        SWAG_VERIFY(node->parent->kind == AstNodeKind::FuncDeclParam, context->report(node, Err(Err0254)));
         node->typeInfo = g_Workspace->swagScope.regTypeInfoSourceLoc;
         return true;
 
     case TokenId::CompilerCallerFunction:
-        SWAG_VERIFY(node->parent->kind == AstNodeKind::FuncDeclParam, context->report({node, Err(Err0255)}));
+        SWAG_VERIFY(node->parent->kind == AstNodeKind::FuncDeclParam, context->report(node, Err(Err0255)));
         node->typeInfo = g_TypeMgr->typeInfoString;
         return true;
 

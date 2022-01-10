@@ -52,7 +52,7 @@ bool SemanticJob::checkCanMakeFuncPointer(SemanticContext* context, AstFuncDecl*
 bool SemanticJob::checkCanTakeAddress(SemanticContext* context, AstNode* node)
 {
     if (node->kind != AstNodeKind::IdentifierRef && node->kind != AstNodeKind::ArrayPointerIndex)
-        return context->report({node, Err(Err0470)});
+        return context->report(node, Err(Err0470));
 
     if (!(node->flags & AST_L_VALUE))
     {
