@@ -287,6 +287,7 @@ void Workspace::errorPendingJobsMsg(Job* prevJob, Job* depJob, vector<const Diag
 void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
 {
     set<SymbolName*> doneSymbols;
+    bool             doneOne = false;
     for (auto& it : pendingJobs)
     {
         auto pendingJob = it.pendingJob;
@@ -337,6 +338,7 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
 
             Diagnostic diag{pendingJob->originalNode, Utf8::format(g_E[Err0419], AstNode::getKindName(pendingJob->originalNode).c_str(), pendingJob->originalNode->token.text.c_str())};
             sourceFile->report(diag, notes);
+            doneOne = true;
             continue;
         }
 
@@ -364,6 +366,7 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
             diag.remarks.push_back(it.id);
 #endif
             sourceFile->report(diag);
+            doneOne = true;
             continue;
         }
 
@@ -390,6 +393,21 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
         if (node != declNode)
             note = new Diagnostic{declNode, g_E[Nte0028], DiagnosticLevel::Note};
         sourceFile->report(diag, note);
+        doneOne = true;
+    }
+
+    // Because of internal bugs, it can happen than we exit silently
+    // Be sure we have logged something.
+    if (!doneOne)
+    {
+        for (auto& it : pendingJobs)
+        {
+            auto       node       = it.node;
+            auto       pendingJob = it.pendingJob;
+            auto       sourceFile = pendingJob->sourceFile;
+            Diagnostic diag{node, Utf8::format(g_E[Err0549], pendingJob->module->name.c_str(), AstNode::getKindName(node).c_str(), node->token.text.c_str())};
+            sourceFile->report(diag);
+        }
     }
 }
 
