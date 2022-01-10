@@ -156,4 +156,21 @@
 
         @assert(success)
     }
+
+    // A case expression doesn't need to be constant, except if the switch
+    // is marked with 'Swag.Complete'
+    {
+        test := 2
+        a := 0
+        b := 1
+        switch test
+        {
+        case a:     // Test with a variable
+            @assert(false)
+        case b:     // Test with a variable
+            @assert(false)
+        case b + 1: // Test with an expression
+            @assert(true)
+        }
+    }
 }
