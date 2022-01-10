@@ -58,7 +58,7 @@ bool SemanticJob::checkCanTakeAddress(SemanticContext* context, AstNode* node)
     {
         if (node->resolvedSymbolName->kind != SymbolKind::Variable)
             return context->report({node, Utf8::format(g_E[Err0465], SymTable::getArticleKindName(node->resolvedSymbolName->kind))});
-        return context->report({node, g_E[Err0469]});
+        return context->report({node, Utf8::format(g_E[Err0469], node->typeInfo->getDisplayName().c_str())});
     }
 
     return true;
