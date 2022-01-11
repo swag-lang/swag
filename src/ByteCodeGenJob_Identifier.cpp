@@ -16,7 +16,7 @@ bool ByteCodeGenJob::emitIdentifierRef(ByteCodeGenContext* context)
 bool ByteCodeGenJob::sameStackFrame(ByteCodeGenContext* context, SymbolOverload* overload)
 {
     if (!context->node->isSameStackFrame(overload))
-        return context->report({context->node, Fmt(Err(Err0206), overload->symbol->name.c_str())});
+        return context->report(context->node, Fmt(Err(Err0206), overload->symbol->name.c_str()));
     return true;
 }
 
@@ -101,7 +101,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             }
             else
             {
-                return context->report({node, Fmt(Err(Err0462), typeInfo->getDisplayNameC())});
+                return context->report(node, Fmt(Err(Err0462), typeInfo->getDisplayNameC()));
             }
         }
         else if (typeInfo->isPointerTo(TypeInfoKind::Interface) && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)))

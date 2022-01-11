@@ -11,15 +11,15 @@
 bool TypeManager::errorOutOfRange(SemanticContext* context, AstNode* fromNode, TypeInfo* fromType, TypeInfo* toType, bool isNeg)
 {
     if (isNeg)
-        return context->report({fromNode, Fmt(Err(Err0180), fromNode->computedValue->reg.s64, toType->getDisplayNameC())});
+        return context->report(fromNode, Fmt(Err(Err0180), fromNode->computedValue->reg.s64, toType->getDisplayNameC()));
 
     if (fromNode->kind == AstNodeKind::Literal && fromNode->token.text.length() > 2)
     {
         if (std::tolower(fromNode->token.text[1]) == 'x' || std::tolower(fromNode->token.text[1]) == 'b')
-            return context->report({fromNode, Fmt(Err(Err0183), fromNode->token.ctext(), fromNode->computedValue->reg.u64, toType->getDisplayNameC())});
+            return context->report(fromNode, Fmt(Err(Err0183), fromNode->token.ctext(), fromNode->computedValue->reg.u64, toType->getDisplayNameC()));
     }
 
-    return context->report({fromNode, Fmt(Err(Err0181), fromNode->computedValue->reg.u64, toType->getDisplayNameC())});
+    return context->report(fromNode, Fmt(Err(Err0181), fromNode->computedValue->reg.u64, toType->getDisplayNameC()));
 }
 
 bool TypeManager::safetyComputedValue(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
@@ -38,50 +38,50 @@ bool TypeManager::safetyComputedValue(SemanticContext* context, TypeInfo* toType
 
     // Negative value to unsigned type
     if (fromType->isNativeIntegerSigned() && toType->isNativeIntegerUnsignedOrRune() && fromNode->computedValue->reg.s64 < 0)
-        return context->report({fromNode ? fromNode : context->node, msg1});
+        return context->report(fromNode ? fromNode : context->node, msg1);
 
     switch (toType->nativeType)
     {
     case NativeTypeKind::U8:
         if (fromNode->computedValue->reg.u64 > UINT8_MAX)
-            return context->report({fromNode ? fromNode : context->node, msg});
+            return context->report(fromNode ? fromNode : context->node, msg);
         break;
     case NativeTypeKind::U16:
         if (fromNode->computedValue->reg.u64 > UINT16_MAX)
-            return context->report({fromNode ? fromNode : context->node, msg});
+            return context->report(fromNode ? fromNode : context->node, msg);
         break;
     case NativeTypeKind::U32:
     case NativeTypeKind::Rune:
         if (fromNode->computedValue->reg.u64 > UINT32_MAX)
-            return context->report({fromNode ? fromNode : context->node, msg});
+            return context->report(fromNode ? fromNode : context->node, msg);
         break;
     case NativeTypeKind::U64:
     case NativeTypeKind::UInt:
         if (fromType->isNativeIntegerSigned())
         {
             if (fromNode->computedValue->reg.u64 > INT64_MAX)
-                return context->report({fromNode ? fromNode : context->node, msg});
+                return context->report(fromNode ? fromNode : context->node, msg);
         }
         break;
 
     case NativeTypeKind::S8:
         if (fromNode->computedValue->reg.s64 < INT8_MIN || fromNode->computedValue->reg.s64 > INT8_MAX)
-            return context->report({fromNode ? fromNode : context->node, msg});
+            return context->report(fromNode ? fromNode : context->node, msg);
         break;
     case NativeTypeKind::S16:
         if (fromNode->computedValue->reg.s64 < INT16_MIN || fromNode->computedValue->reg.s64 > INT16_MAX)
-            return context->report({fromNode ? fromNode : context->node, msg});
+            return context->report(fromNode ? fromNode : context->node, msg);
         break;
     case NativeTypeKind::S32:
         if (fromNode->computedValue->reg.s64 < INT32_MIN || fromNode->computedValue->reg.s64 > INT32_MAX)
-            return context->report({fromNode ? fromNode : context->node, msg});
+            return context->report(fromNode ? fromNode : context->node, msg);
         break;
     case NativeTypeKind::S64:
     case NativeTypeKind::Int:
         if (!fromType->isNativeIntegerSigned())
         {
             if (fromNode->computedValue->reg.u64 > INT64_MAX)
-                return context->report({fromNode ? fromNode : context->node, msg});
+                return context->report(fromNode ? fromNode : context->node, msg);
         }
         break;
     }
@@ -277,23 +277,23 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
         if (toType->kind == TypeInfoKind::Pointer && (fromType->isNativeIntegerOrRune() || fromType->isNativeFloat() || fromType->isNative(NativeTypeKind::Bool)))
         {
             PushErrHint errh(Hnt(Hnt0005));
-            return context->report({fromNode, Fmt(Err(Err0907), fromType->getDisplayNameC())});
+            return context->report(fromNode, Fmt(Err(Err0907), fromType->getDisplayNameC()));
         }
 
         if (castFlags & CASTFLAG_CONST_ERR)
         {
             PushErrHint errh(Hnt(Hnt0022));
-            return context->report({fromNode, Fmt(Err(Err0418), fromType->getDisplayNameC(), toType->getDisplayNameC())});
+            return context->report(fromNode, Fmt(Err(Err0418), fromType->getDisplayNameC(), toType->getDisplayNameC()));
         }
 
         if (fromType->isPointerToTypeInfo() && !toType->isPointerToTypeInfo())
         {
             PushErrHint errh(Hnt(Hnt0040));
-            return context->report({fromNode, Fmt(Err(Err0177), fromType->getDisplayNameC(), toType->getDisplayNameC())});
+            return context->report(fromNode, Fmt(Err(Err0177), fromType->getDisplayNameC(), toType->getDisplayNameC()));
         }
 
         // General cast error
-        return context->report({fromNode, Fmt(Err(Err0177), fromType->getDisplayNameC(), toType->getDisplayNameC())});
+        return context->report(fromNode, Fmt(Err(Err0177), fromType->getDisplayNameC(), toType->getDisplayNameC()));
     }
 
     return false;
@@ -1873,9 +1873,9 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
             bool hasChanged   = false;
 
             if (toTypeStruct->fields.size() > child->childs.size())
-                return context->report({child, Fmt(Err(Err0196), toTypeStruct->name.c_str(), toTypeStruct->fields.size(), child->childs.size())});
+                return context->report(child, Fmt(Err(Err0196), toTypeStruct->name.c_str(), toTypeStruct->fields.size(), child->childs.size()));
             if (toTypeStruct->fields.size() < child->childs.size())
-                return context->report({child, Fmt(Err(Err0197), toTypeStruct->name.c_str(), toTypeStruct->fields.size(), child->childs.size())});
+                return context->report(child, Fmt(Err(Err0197), toTypeStruct->name.c_str(), toTypeStruct->fields.size(), child->childs.size()));
 
             auto count = toTypeStruct->fields.size();
             for (int j = 0; j < count; j++)
@@ -2644,9 +2644,9 @@ bool TypeManager::castToArray(SemanticContext* context, TypeInfo* toType, TypeIn
             if (!(castFlags & CASTFLAG_NO_ERROR))
             {
                 if (toTypeArray->count > fromTypeList->subTypes.size())
-                    context->report({fromNode, Fmt(Err(Err0203), toTypeArray->count, fromTypeList->subTypes.size())});
+                    context->report(fromNode, Fmt(Err(Err0203), toTypeArray->count, fromTypeList->subTypes.size()));
                 else
-                    context->report({fromNode, Fmt(Err(Err0204), toTypeArray->count, fromTypeList->subTypes.size())});
+                    context->report(fromNode, Fmt(Err(Err0204), toTypeArray->count, fromTypeList->subTypes.size()));
             }
 
             return false;
@@ -3057,7 +3057,7 @@ bool TypeManager::convertLiteralTupleToStructVar(SemanticContext* context, TypeI
 
     // For a tuple initialization, every parameters must be covered
     if ((typeStruct->flags & TYPEINFO_STRUCT_IS_TUPLE) && countParams != typeStruct->fields.size())
-        return context->report({identifier, Fmt(Err(Err0205), typeStruct->fields.size(), countParams)});
+        return context->report(identifier, Fmt(Err(Err0205), typeStruct->fields.size(), countParams));
 
     // Add the 2 nodes to the semantic
     auto b = context->job->nodes.back();
