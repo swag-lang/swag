@@ -466,10 +466,10 @@ impl Application
     }
 
     // Register a new timer for the given 'target'
-    mtd addTimer(timeMs: s32, target: *Wnd)->*Timer
+    mtd addTimer(time: Time.Duration, target: *Wnd)->*Timer
     {
         timer := Memory.new'Timer()
-        timer.timeMs = timeMs
+        timer.timeMs = time.toMs()
         timer.target = target
         timers.add(timer)
         return timer

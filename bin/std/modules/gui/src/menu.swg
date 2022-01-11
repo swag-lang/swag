@@ -218,7 +218,7 @@ impl IWnd for Menu
             if !bar
             {
                 if !timer
-                    timer = surface.app.addTimer(300, self)
+                    timer = surface.app.addTimer(300'ms, self)
                 timer.restart()
             }
 

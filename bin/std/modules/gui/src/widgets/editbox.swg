@@ -67,7 +67,7 @@ impl IWnd for EditBox
     {
         if evt.kind == .SetFocus
         {
-            timerCaret = surface.app.addTimer(500, self)
+            timerCaret = surface.app.addTimer(500'ms, self)
             visibleCaret = true
             computeCaretPos()
         }
