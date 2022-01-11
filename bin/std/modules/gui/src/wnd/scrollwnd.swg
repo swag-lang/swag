@@ -8,6 +8,7 @@ public struct ScrollWnd
     scrollIncrementH: f32 = 50
 
     scrollSize:     Math.Point
+    smallBarSize:   bool
 
     showBarV:       bool
     posBoxV:        f32
@@ -249,11 +250,13 @@ impl ScrollWnd
         if scrollSize.x > position.width
             showBarH = true
 
+        barSize := smallBarSize ? metrics.scrollBar_SmallSize : metrics.scrollBar_NormalSize
+
         if showBarV
         {
-            padding.z = metrics.scrollBar_Size
+            padding.z = barSize
             vh := position.height
-            if showBarH vh -= metrics.scrollBar_Size
+            if showBarH vh -= barSize
 
             sizeBoxV = (vh / scrollSize.y) * position.height
             sizeBoxV = Math.max(sizeBoxV, 10)
@@ -263,9 +266,9 @@ impl ScrollWnd
 
         if showBarH
         {
-            padding.w = metrics.scrollBar_Size
+            padding.w = barSize
             vh := position.width
-            if showBarV vh -= metrics.scrollBar_Size
+            if showBarV vh -= barSize
 
             sizeBoxH = (vh / scrollSize.x) * position.width
             sizeBoxH = Math.max(sizeBoxH, 10)

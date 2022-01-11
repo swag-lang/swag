@@ -305,6 +305,7 @@ private impl ComboBox
         scrollWnd := ScrollWnd.create'ComboBoxPopupView(popup, @{})
         scrollWnd.dockStyle = .Center
         scrollWnd.focusStrategy = .None
+        scrollWnd.smallBarSize = true
         scrollWnd.setScrollSize(0, cast(f32) items.count * heightItem)
         view := cast(*ComboBoxPopupView) scrollWnd.view
         view.combo = self
