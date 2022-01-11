@@ -490,7 +490,7 @@ impl Menu
 
         var fake: Pixel.Painter{fake: true}
         var rsf:  Pixel.RichStringFormat
-        rsf.font = surface.app.theme.res.fontDefault
+        rsf.font = theme.res.fontDefault
 
         visit i, idx: items
         {

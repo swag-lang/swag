@@ -99,7 +99,7 @@ struct MoveEvent
 struct KeyEvent
 {
     using base: Event
-    modifiers:  Input.KeyModifiers = .None
+    modifiers:  Input.KeyModifiers = None
     key:        Input.Key = ?
     char:       rune
 }
@@ -110,7 +110,7 @@ struct MouseEvent
     button:     Input.MouseButton = ?
     surfacePos: Math.Point
     move:       Math.Point
-    modifiers:  Input.KeyModifiers = .None
+    modifiers:  Input.KeyModifiers = None
 }
 
 struct QuitEvent
