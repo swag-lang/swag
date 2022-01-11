@@ -552,14 +552,17 @@ private impl EditBox
 
     mtd getFormPadding()->Math.Vector4
     {
+        #[Swag.Complete]
         switch form
         {
         case Square:
-            return getTheme().metrics.editBox_SquarePadding
+            return getThemeMetrics().editBox_SquarePadding
         case Round:
-            return getTheme().metrics.editBox_RoundPadding
+            return getThemeMetrics().editBox_RoundPadding
         case Flat:
-            return getTheme().metrics.editBox_FlatPadding
+            return getThemeMetrics().editBox_FlatPadding
+        case Transparent:
+            break
         }
 
         return @{}
@@ -802,14 +805,18 @@ impl EditBox
     mtd setForm(form: EditBoxForm)
     {
         self.form = #scopefct.form
+
+        #[Swag.Complete]
         switch self.form
         {
         case Square:
-            padding = getTheme().metrics.editBox_SquarePadding
+            padding = getThemeMetrics().editBox_SquarePadding
         case Round:
-            padding = getTheme().metrics.editBox_RoundPadding
+            padding = getThemeMetrics().editBox_RoundPadding
         case Flat:
-            padding = getTheme().metrics.editBox_FlatPadding
+            padding = getThemeMetrics().editBox_FlatPadding
+        case Transparent:
+            break
         }
 
         invalidate()
