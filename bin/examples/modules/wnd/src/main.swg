@@ -1,14 +1,10 @@
-#global if #os == Swag.TargetOs.Windows
 using Core, Pixel, Gui
 
-const W = 1200
-const H = 1000
-
-var app: Gui.Application
+var app: Application
 
 #main
 {
-    surface0 := try app.createSurface(100, 100, W, H, SurfaceFlags.OverlappedWindow)
+    surface0 := try app.createSurface(100, 100, 1200, 1000, SurfaceFlags.OverlappedWindow)
     surface0.setTitle("Example 0")
     surface0.setIcon(app.theme.getIcon24(ThemeIcons24.WndMinimize, 20))
 

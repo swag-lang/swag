@@ -50,16 +50,6 @@ impl Application
         return null
     }
 
-    mtd pushCursor(cursor: Cursor)
-    {
-        cursorStack.add(cursor)
-    }
-
-    mtd popCursor()
-    {
-        cursorStack.removeBack()
-    }
-
     mtd changeCursor(wnd: *Wnd)
     {
         if cursorStack.count

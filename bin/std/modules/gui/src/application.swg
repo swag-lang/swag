@@ -26,159 +26,10 @@ struct Application
     keybFocusWnd:       *Wnd
 }
 
-impl Application
+private impl Application
 {
-    // Get application variables
-    mtd getRenderer() => &renderer
-    mtd getKeyboard() => &keyb
-
-    // Creates a new surface
-    mtd createSurface(x, y, width, height: s32, flags: SurfaceFlags = SurfaceFlags.Zero, view: *Wnd = null)->*Surface throw
-    {
-        surface := Memory.new'Surface()
-        surface.app = self
-        surface.position = @{x, y, width, height}
-
-        if !mainSurface
-        {
-            theme = Memory.new'Theme()
-            style.set(theme)
-        }
-
-        try Surface.create(surface, view, x, y, width, height, flags, mainSurface)
-
-        if !mainSurface
-        {
-            renderer.setCurrentContext(surface.rc)
-            renderer.init()
-            theme.setupDefault(&renderer)
-            mainSurface = surface
-        }
-
-        surfaces.add(surface)
-
-        surface.wnd.surface = surface
-        surface.wnd.itf = cast(IWnd) surface.wnd
-        surface.wnd.computeStyle()
-        surface.wnd.view.computeStyle()
-
-        surface.wnd.sendCreateEvent()
-        surface.wnd.view.sendCreateEvent()
-
-        return surface
-    }
-
-    // Remove and destroy the given surface
-    // To cleanly close a surface, you should call surface.destroy()
-    private mtd destroySurface(surface: *Surface)
-    {
-        surfaces.remove(surface)
-        if surface == mainSurface
-            postQuitEvent()
-
-        if modalSurfaces.count and surface == modalSurfaces.back()
-            endModal = true
-
-        surface.destroyNative()
-        Memory.delete(surface)
-    }
-
-    private mtd unregisterWnd(wnd: *Wnd)
-    {
-        if wnd == mouseEnterWnd
-            mouseEnterWnd = null
-        if wnd == mouseCaptureWnd
-            mouseCaptureWnd = null
-        if wnd == keybFocusWnd
-            keybFocusWnd = null
-
-        // Be sure there's no timer for that window
-        for i := 0; i < timers.count; i += 1
-        {
-            if timers[i].target == wnd
-            {
-                deleteTimer(timers[i])
-                i -= 1
-            }
-        }
-
-        // Be sure there's no posted event for that window
-        visit e: postedEvents
-        {
-            if e.target == wnd
-                e.target = null
-        }
-    }
-
-    // Destroy a window
-    // To cleanly close a window, you should call wnd.destroy()
-    private mtd destroyWnd(wnd: *Wnd)
-    {
-        unregisterWnd(wnd)
-
-        // Remove from parent
-        if wnd.parent and !wnd.parent.isPendingDestroy
-        {
-            (idx, ok) := Slice.findLinear(wnd.parent.childs.toSlice(), wnd)
-            Debug.assert(ok)
-            wnd.parent.childs.removeAt(idx)
-        }
-
-        if wnd.isAllocated
-            Memory.delete(@dataof(wnd.itf), @kindof(wnd.itf))
-    }
-
-    // Returns the window under the given point
-    mtd getWndAt(x, y: f32)->*Wnd
-    {
-        mousePos := mouse.getPosition()
-        targetSurface := getSurfaceAt(mousePos.x, mousePos.y)
-        if !targetSurface
-            return null
-        targetSurface.screenToSurface(&mousePos)
-        targetWnd := targetSurface.wnd.getWndAt(mousePos.x, mousePos.y)
-        return targetWnd
-    }
-
-    // Set activated state
-    mtd setActivated(activated: bool)
-    {
-        if isActivated == activated
-            return
-        isActivated = activated
-        visit s: modalSurfaces
-            s.bringToTop()
-        invalidate()
-    }
-
-    // Force all surfaces to be painted
-    mtd invalidate()
-    {
-        visit s: surfaces
-            s.invalidate()
-    }
-
-    // Ask to exit the application
-    mtd postQuitEvent(quitCode: s32 = 0)
-    {
-        evt := Event.create'QuitEvent()
-        evt.quitCode = #scopefct.quitCode
-        postEvent(evt)
-    }
-
-    // Post a new event
-    mtd postEvent(event: *Event)
-    {
-        postedEvents.add(event)
-    }
-
-    mtd sendEvent(event: *Event)
-    {
-        sendEventPrivate(event, null)
-    }
-
     // Send and process an event
-    private mtd sendEventPrivate(event: *Event, stopAt: *Wnd)
+    mtd sendEventPrivate(event: *Event, stopAt: *Wnd)
     {
         if event.kind == .Quit
         {
@@ -206,7 +57,7 @@ impl Application
         }
     }
 
-    private func skipDisabled(wnd: *Wnd)->*Wnd
+    func skipDisabled(wnd: *Wnd)->*Wnd
     {
         if !wnd
             return null
@@ -216,7 +67,7 @@ impl Application
         return scan
     }
 
-    private mtd sendMouseEvents()
+    mtd sendMouseEvents()
     {
         mouse.update()
 
@@ -318,7 +169,7 @@ impl Application
         }
     }
 
-    private mtd sendMouseWheelEvent(z: s32)
+    mtd sendMouseWheelEvent(z: s32)
     {
         targetWnd := mouseEnterWnd
         targetWnd = skipDisabled(targetWnd)
@@ -333,7 +184,7 @@ impl Application
         targetWnd.sendEvent(&evt)
     }
 
-    private mtd sendKeyboardEvents()
+    mtd sendKeyboardEvents()
     {
         keyb.update()
 
@@ -367,7 +218,7 @@ impl Application
         }
     }
 
-    private mtd sendCharEvent(r: rune)
+    mtd sendCharEvent(r: rune)
     {
         targetWnd := keybFocusWnd
         targetWnd = skipDisabled(targetWnd)
@@ -379,7 +230,7 @@ impl Application
         targetWnd.sendEvent(&evt)
     }
 
-    private mtd sendPostedEvents()
+    mtd sendPostedEvents()
     {
         for i := 0; i < postedEvents.count; i += 1
         {
@@ -391,7 +242,7 @@ impl Application
         postedEvents.clear()
     }
 
-    private mtd sendDestroyEvents()
+    mtd sendDestroyEvents()
     {
         for i := 0; i < postDestroy.count; i += 1
         {
@@ -404,75 +255,67 @@ impl Application
         postDestroy.clear()
     }
 
-    // Register a new timer for the given 'target'
-    mtd addTimer(timeMs: s32, target: *Wnd)->*Timer
+    // Remove and destroy the given surface
+    // To cleanly close a surface, you should call surface.destroy()
+    mtd destroySurface(surface: *Surface)
     {
-        timer := Memory.new'Timer()
-        timer.timeMs = timeMs
-        timer.target = target
-        timers.add(timer)
-        return timer
+        surfaces.remove(surface)
+        if surface == mainSurface
+            postQuitEvent()
+
+        if modalSurfaces.count and surface == modalSurfaces.back()
+            endModal = true
+
+        surface.destroyNative()
+        Memory.delete(surface)
     }
 
-    // Delete and unregister timer
-    mtd deleteTimer(timer: *Timer)
+    mtd unregisterWnd(wnd: *Wnd)
     {
-        Memory.delete(timer)
-        timers.remove(timer)
-    }
+        if wnd == mouseEnterWnd
+            mouseEnterWnd = null
+        if wnd == mouseCaptureWnd
+            mouseCaptureWnd = null
+        if wnd == keybFocusWnd
+            keybFocusWnd = null
 
-    private mtd sendTimerEvents()
-    {
-        visit t: timers
+        // Be sure there's no timer for that window
+        for i := 0; i < timers.count; i += 1
         {
-            if !t.stopwatch.isStarted
-                t.stopwatch.start()
-
-            if t.stopwatch.elapsedMillisecondsNow() >= t.timeMs
+            if timers[i].target == wnd
             {
-                evt := TimerEvent{}
-                evt.timer = t
-                t.target.sendEvent(&evt)
-                t.stopwatch.restart()
+                deleteTimer(timers[i])
+                i -= 1
             }
         }
-    }
 
-    private mtd runFrame()
-    {
-        Memory.freeTemp()
-
-        sendTimerEvents()
-        sendSystemEvents()
-        sendKeyboardEvents()
-        sendMouseEvents()
-        sendPostedEvents()
-        sendDestroyEvents()
-
-        visit s:
-            surfaces s.paint()
-    }
-
-    // Run until exit
-    #[Swag.Discardable]
-    mtd run()->s32
-    {
-        while !mustQuit
+        // Be sure there's no posted event for that window
+        visit e: postedEvents
         {
-            runFrame()
+            if e.target == wnd
+                e.target = null
+        }
+    }
+
+    // Destroy a window
+    // To cleanly close a window, you should call wnd.destroy()
+    mtd destroyWnd(wnd: *Wnd)
+    {
+        unregisterWnd(wnd)
+
+        // Remove from parent
+        if wnd.parent and !wnd.parent.isPendingDestroy
+        {
+            (idx, ok) := Slice.findLinear(wnd.parent.childs.toSlice(), wnd)
+            Debug.assert(ok)
+            wnd.parent.childs.removeAt(idx)
         }
 
-        return quitCode
+        if wnd.isAllocated
+            Memory.delete(@dataof(wnd.itf), @kindof(wnd.itf))
     }
 
-    // End current modal loop
-    mtd exitModal(exitId: string)
-    {
-        endModal = true
-        endModalExit = exitId
-    }
-
-    private mtd doModalLoop(surface: *Surface)->WndId
+    mtd doModalLoop(surface: *Surface)->WndId
     {
         visit s: surfaces
             s.disable()
@@ -494,5 +337,177 @@ impl Application
 
         endModal = false
         return endModalExit
+    }
+
+    mtd sendTimerEvents()
+    {
+        visit t: timers
+        {
+            if !t.stopwatch.isStarted
+                t.stopwatch.start()
+
+            if t.stopwatch.elapsedMillisecondsNow() >= t.timeMs
+            {
+                evt := TimerEvent{}
+                evt.timer = t
+                t.target.sendEvent(&evt)
+                t.stopwatch.restart()
+            }
+        }
+    }
+
+    mtd runFrame()
+    {
+        Memory.freeTemp()
+
+        sendTimerEvents()
+        sendSystemEvents()
+        sendKeyboardEvents()
+        sendMouseEvents()
+        sendPostedEvents()
+        sendDestroyEvents()
+
+        visit s:
+            surfaces s.paint()
+    }
+}
+
+impl Application
+{
+    // Get application variables
+    mtd getRenderer() => &renderer
+    mtd getKeyboard() => &keyb
+
+    // Creates a new surface
+    mtd createSurface(x, y, width, height: s32, flags: SurfaceFlags = SurfaceFlags.Zero, view: *Wnd = null)->*Surface throw
+    {
+        surface := Memory.new'Surface()
+        surface.app = self
+        surface.position = @{x, y, width, height}
+
+        if !mainSurface
+        {
+            theme = Memory.new'Theme()
+            style.set(theme)
+        }
+
+        try Surface.create(surface, view, x, y, width, height, flags, mainSurface)
+
+        if !mainSurface
+        {
+            renderer.setCurrentContext(surface.rc)
+            renderer.init()
+            theme.setupDefault(&renderer)
+            mainSurface = surface
+        }
+
+        surfaces.add(surface)
+
+        with surface
+        {
+            wnd.surface = surface
+            wnd.itf = cast(IWnd) surface.wnd
+            wnd.computeStyle()
+            wnd.view.computeStyle()
+            wnd.sendCreateEvent()
+            wnd.view.sendCreateEvent()
+        }
+
+        return surface
+    }
+
+    // Returns the window under the given point
+    mtd getWndAt(x, y: f32)->*Wnd
+    {
+        mousePos := mouse.getPosition()
+        targetSurface := getSurfaceAt(mousePos.x, mousePos.y)
+        if !targetSurface
+            return null
+        targetSurface.screenToSurface(&mousePos)
+        targetWnd := targetSurface.wnd.getWndAt(mousePos.x, mousePos.y)
+        return targetWnd
+    }
+
+    // Set activated state
+    mtd setActivated(activated: bool)
+    {
+        if isActivated == activated
+            return
+        isActivated = activated
+        visit s: modalSurfaces
+            s.bringToTop()
+        invalidate()
+    }
+
+    // Force all surfaces to be painted
+    mtd invalidate()
+    {
+        visit s: surfaces
+            s.invalidate()
+    }
+
+    // Ask to exit the application
+    mtd postQuitEvent(quitCode: s32 = 0)
+    {
+        evt := Event.create'QuitEvent()
+        evt.quitCode = #scopefct.quitCode
+        postEvent(evt)
+    }
+
+    // Post a new event
+    mtd postEvent(event: *Event)
+    {
+        postedEvents.add(event)
+    }
+
+    mtd sendEvent(event: *Event)
+    {
+        sendEventPrivate(event, null)
+    }
+
+    // Register a new timer for the given 'target'
+    mtd addTimer(timeMs: s32, target: *Wnd)->*Timer
+    {
+        timer := Memory.new'Timer()
+        timer.timeMs = timeMs
+        timer.target = target
+        timers.add(timer)
+        return timer
+    }
+
+    // Delete and unregister timer
+    mtd deleteTimer(timer: *Timer)
+    {
+        Memory.delete(timer)
+        timers.remove(timer)
+    }
+
+    mtd pushCursor(cursor: Cursor)
+    {
+        cursorStack.add(cursor)
+    }
+
+    mtd popCursor()
+    {
+        cursorStack.removeBack()
+    }
+
+    // Run until exit
+    #[Swag.Discardable]
+    mtd run()->s32
+    {
+        while !mustQuit
+        {
+            runFrame()
+        }
+
+        return quitCode
+    }
+
+    // End current modal loop
+    mtd exitModal(exitId: string)
+    {
+        endModal = true
+        endModalExit = exitId
     }
 }
