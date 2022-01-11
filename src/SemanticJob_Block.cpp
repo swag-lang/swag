@@ -166,8 +166,8 @@ bool SemanticJob::resolveInlineAfter(SemanticContext* context)
             if (!(node->semFlags & AST_SEM_SCOPE_HAS_RETURN))
             {
                 if (node->semFlags & AST_SEM_FCT_HAS_RETURN)
-                    return context->report({fct, Fmt(Err(Err0748), fct->getDisplayNameC())});
-                return context->report({fct, Fmt(Err(Err0606), fct->getDisplayNameC())});
+                    return context->report(fct, Fmt(Err(Err0748), fct->getDisplayNameC()));
+                return context->report(fct, Fmt(Err(Err0606), fct->getDisplayNameC()));
             }
         }
     }
@@ -272,13 +272,13 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
     auto typeSwitch = TypeManager::concreteType(node->typeInfo);
 
     // Verify switch expression type is valid
-    SWAG_VERIFY(!typeSwitch->isNative(NativeTypeKind::Any), context->report({node->expression, Err(Err0608)}));
+    SWAG_VERIFY(!typeSwitch->isNative(NativeTypeKind::Any), context->report(node->expression, Err(Err0608)));
     switch (typeSwitch->kind)
     {
     case TypeInfoKind::Slice:
     case TypeInfoKind::Array:
     case TypeInfoKind::Interface:
-        return context->report({node->expression, Fmt(Err(Err0609), typeSwitch->getDisplayNameC())});
+        return context->report(node->expression, Fmt(Err(Err0609), typeSwitch->getDisplayNameC()));
     }
 
     SWAG_VERIFY(!node->cases.empty(), context->report(node, Err(Err0610)));
@@ -341,12 +341,12 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
     {
         // No default for a complete switch
         auto back = node->cases.back();
-        SWAG_VERIFY(!back->expressions.empty(), context->report({back, Err(Err0616)}));
+        SWAG_VERIFY(!back->expressions.empty(), context->report(back, Err(Err0616)));
 
         if (node->typeInfo->kind != TypeInfoKind::Enum && !node->beforeAutoCastType)
-            return context->report({node, Fmt(Err(Err0617), node->typeInfo->getDisplayNameC())});
+            return context->report(node, Fmt(Err(Err0617), node->typeInfo->getDisplayNameC()));
         if (node->beforeAutoCastType)
-            return context->report({node, Fmt(Err(Err0617), node->beforeAutoCastType->getDisplayNameC())});
+            return context->report(node, Fmt(Err(Err0617), node->beforeAutoCastType->getDisplayNameC()));
 
         if (node->typeInfo->kind == TypeInfoKind::Enum)
         {
@@ -420,7 +420,7 @@ bool SemanticJob::resolveCase(SemanticContext* context)
             }
             else
             {
-                return context->report({rangeNode, Err(Err0337)});
+                return context->report(rangeNode, Err(Err0337));
             }
         }
 
@@ -692,17 +692,17 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
                 typePtr->pointedType->isNative(NativeTypeKind::String))
             {
                 PushErrHint errh(Hnt(Hnt0037));
-                return context->report({node->expression, Fmt(Err(Err0628), typeInfo->getDisplayNameC())});
+                return context->report(node->expression, Fmt(Err(Err0628), typeInfo->getDisplayNameC()));
             }
             else
             {
                 PushErrHint errh(Hnt(Hnt0036));
-                return context->report({node->expression, Fmt(Err(Err0628), typeInfo->getDisplayNameC())});
+                return context->report(node->expression, Fmt(Err(Err0628), typeInfo->getDisplayNameC()));
             }
         }
 
         PushErrHint errh(Hnt(Hnt0006));
-        return context->report({node->expression, Fmt(Err(Err0629), typeInfo->getDisplayNameC())});
+        return context->report(node->expression, Fmt(Err(Err0629), typeInfo->getDisplayNameC()));
     }
 
     SyntaxJob syntaxJob;
@@ -812,7 +812,7 @@ bool SemanticJob::resolveBreak(SemanticContext* context)
         auto breakable = node->ownerBreakable;
         while (breakable && (breakable->kind != AstNodeKind::ScopeBreakable || breakable->token.text != node->label))
             breakable = breakable->ownerBreakable;
-        SWAG_VERIFY(breakable, context->report({node, Fmt(Err(Err0631), node->label.c_str())}));
+        SWAG_VERIFY(breakable, context->report(node, Fmt(Err(Err0631), node->label.c_str())));
         node->ownerBreakable = breakable;
     }
 
@@ -863,7 +863,7 @@ bool SemanticJob::resolveContinue(SemanticContext* context)
             breakable = breakable->ownerBreakable;
         }
 
-        SWAG_VERIFY(breakable, context->report({node, Fmt(Err(Err0631), node->label.c_str())}));
+        SWAG_VERIFY(breakable, context->report(node, Fmt(Err(Err0631), node->label.c_str())));
         node->ownerBreakable = lastBreakable;
     }
 

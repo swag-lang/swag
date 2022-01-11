@@ -288,7 +288,7 @@ void Generic::waitForGenericParameters(SemanticContext* context, OneGenericMatch
 bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match)
 {
     auto node = context->node;
-    SWAG_VERIFY(!match.genericReplaceTypes.empty(), context->report({node, Fmt(Err(Err0039), node->token.ctext())}));
+    SWAG_VERIFY(!match.genericReplaceTypes.empty(), context->report(node, Fmt(Err(Err0039), node->token.ctext())));
 
     // Be sure all methods have been registered, because we need opDrop & co to be known, as we need
     // to instantiate them also (because those functions can be called by the compiler itself, not by the user)
@@ -312,7 +312,7 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     // In that case, we need to retrieve the real struct
     auto genericStructType = CastTypeInfo<TypeInfoStruct>(overload->typeInfo, overload->typeInfo->kind);
     auto sourceSymbol      = match.symbolName;
-    SWAG_VERIFY(sourceNode->kind == AstNodeKind::StructDecl, context->report({node, Fmt(Err(Err0040), node->token.ctext())}));
+    SWAG_VERIFY(sourceNode->kind == AstNodeKind::StructDecl, context->report(node, Fmt(Err(Err0040), node->token.ctext())));
 
     // Make a new type
     auto newType = CastTypeInfo<TypeInfoStruct>(genericStructType->clone(), genericStructType->kind);
@@ -457,8 +457,8 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
         if (!node->findParent(AstNodeKind::FuncCallParam))
         {
             if (contextualNode)
-                return context->report({contextualNode, Fmt(Err(Err0041), node->token.ctext())});
-            return context->report({node, Fmt(Err(Err0042), node->token.ctext())});
+                return context->report(contextualNode, Fmt(Err(Err0041), node->token.ctext()));
+            return context->report(node, Fmt(Err(Err0042), node->token.ctext()));
         }
     }
 
@@ -554,7 +554,7 @@ bool Generic::instantiateDefaultGeneric(SemanticContext* context, AstVarDecl* no
                     {
                         auto param = CastAst<AstVarDecl>(p, AstNodeKind::FuncDeclParam);
                         if (!param->assignment)
-                            return context->report({node, Fmt(Err(Err0312), node->typeInfo->getDisplayNameC())});
+                            return context->report(node, Fmt(Err(Err0312), node->typeInfo->getDisplayNameC()));
 
                         auto child          = Ast::newFuncCallParam(context->sourceFile, identifier->genericParameters);
                         cloneContext.parent = child;
@@ -573,5 +573,5 @@ bool Generic::instantiateDefaultGeneric(SemanticContext* context, AstVarDecl* no
         }
     }
 
-    return context->report({node, Fmt(Err(Err0312), node->typeInfo->getDisplayNameC())});
+    return context->report(node, Fmt(Err(Err0312), node->typeInfo->getDisplayNameC()));
 }
