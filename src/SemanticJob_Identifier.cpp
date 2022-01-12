@@ -1962,6 +1962,20 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
         {
             SWAG_VERIFY(parent->ownerFct, context->report(parent, Err(Err0348)));
             parent = parent->ownerFct;
+
+            // Force scope
+            if (!node->callParameters && node != identifierRef->childs.back())
+            {
+                node->semFlags |= AST_SEM_FORCE_SCOPE;
+                node->typeInfo                      = g_TypeMgr->typeInfoVoid;
+                identifierRef->previousResolvedNode = node;
+                if (node->ownerInline)
+                    identifierRef->startScope = node->ownerInline->parametersScope;
+                else
+                    identifierRef->startScope = node->ownerFct->scope;
+                node->flags |= AST_NO_BYTECODE;
+                return true;
+            }
         }
 
         addDependentSymbol(dependentSymbols, parent->resolvedSymbolName, nullptr, 0);
@@ -3039,6 +3053,11 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
         SWAG_CHECK(findIdentifierInScopes(context, identifierRef, node));
         if (context->result == ContextResult::Pending)
             return true;
+
+        // Because of #self
+        if (node->semFlags & AST_SEM_FORCE_SCOPE)
+            return true;
+
         if (dependentSymbols.empty())
         {
             SWAG_ASSERT(identifierRef->flags & AST_SILENT_CHECK);
