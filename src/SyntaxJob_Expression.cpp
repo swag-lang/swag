@@ -149,7 +149,6 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, A
     relaxIdentifier(token);
     switch (token.id)
     {
-    case TokenId::CompilerSelf:
     case TokenId::CompilerCallerFunction:
     case TokenId::CompilerCallerLocation:
     case TokenId::CompilerBuildCfg:
@@ -171,6 +170,12 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, A
     case TokenId::CompilerLoad:
         SWAG_CHECK(doCompilerLoad(parent, result));
         break;
+
+    case TokenId::CompilerScopeFct:
+    case TokenId::CompilerSelf:
+        SWAG_CHECK(doIdentifierRef(parent, result));
+        break;
+
 
     case TokenId::SymLeftParen:
     {
@@ -208,7 +213,6 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, A
         break;
     case TokenId::SymBackTick:
     case TokenId::Identifier:
-    case TokenId::CompilerScopeFct:
         SWAG_CHECK(doIdentifierRef(parent, result));
         break;
     case TokenId::SymDot:
@@ -1117,6 +1121,7 @@ bool SyntaxJob::doLeftExpressionVar(AstNode* parent, AstNode** result, uint32_t 
     case TokenId::Identifier:
     case TokenId::SymBackTick:
     case TokenId::CompilerScopeFct:
+    case TokenId::CompilerSelf:
     {
         AstNode* exprNode = nullptr;
         AstNode* multi    = nullptr;

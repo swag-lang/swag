@@ -1944,6 +1944,30 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
         return true;
     }
 
+    // #self
+    if (node->token.text == g_LangSpec->name_sharpself)
+    {
+        SWAG_VERIFY(node->ownerFct, context->report(node, Err(Err0348)));
+        AstNode* parent = node;
+        while (parent->ownerFct->flags & AST_SPECIAL_COMPILER_FUNC && parent->ownerFct->parent->ownerFct)
+            parent = parent->ownerFct->parent;
+        SWAG_VERIFY(parent, context->report(parent, Err(Err0348)));
+
+        if (parent->ownerScope->kind == ScopeKind::Struct || parent->ownerScope->kind == ScopeKind::Enum)
+        {
+            parent = parent->ownerScope->owner;
+            node->flags |= AST_CAN_MATCH_INCOMPLETE;
+        }
+        else
+        {
+            SWAG_VERIFY(parent->ownerFct, context->report(parent, Err(Err0348)));
+            parent = parent->ownerFct;
+        }
+
+        addDependentSymbol(dependentSymbols, parent->resolvedSymbolName, nullptr, 0);
+        return true;
+    }
+
     auto& scopeHierarchy     = job->cacheScopeHierarchy;
     auto& scopeHierarchyVars = job->cacheScopeHierarchyVars;
     auto  crc                = node->token.text.hash();

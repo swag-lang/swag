@@ -178,6 +178,8 @@ struct LanguageSpec
     Utf8 name_atstrcmp;
     Utf8 name_attypecmp;
 
+    Utf8 name_sharpself;
+
     Utf8 name_powf;
     Utf8 name_atan2f;
     Utf8 name_pow;

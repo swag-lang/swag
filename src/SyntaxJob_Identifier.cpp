@@ -71,7 +71,10 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
 
     auto identifier = Ast::newNode<AstIdentifier>(this, AstNodeKind::Identifier, sourceFile, parent);
     identifier->inheritTokenLocation(token);
-    if (token.id == TokenId::CompilerScopeFct)
+    //if (token.id == TokenId::CompilerSelf)
+    //    identifier->semanticFct = SemanticJob::resolveCompilerSpecialFunction;
+    //else 
+        if (token.id == TokenId::CompilerScopeFct)
         identifier->semanticFct = SemanticJob::resolveCompilerScopeFct;
     else
         identifier->semanticFct = SemanticJob::resolveIdentifier;

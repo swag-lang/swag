@@ -755,25 +755,6 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
     auto node = context->node;
     switch (node->token.id)
     {
-    case TokenId::CompilerSelf:
-        SWAG_VERIFY(node->ownerFct, context->report(node, Err(Err0348)));
-        while (node->ownerFct->flags & AST_SPECIAL_COMPILER_FUNC && node->ownerFct->parent->ownerFct)
-            node = node->ownerFct->parent;
-        SWAG_VERIFY(node, context->report(node, Err(Err0348)));
-
-        if (node->ownerScope->kind == ScopeKind::Struct || node->ownerScope->kind == ScopeKind::Enum)
-            node = node->ownerScope->owner;
-        else
-        {
-            SWAG_VERIFY(node->ownerFct, context->report(node, Err(Err0348)));
-            node = node->ownerFct;
-        }
-
-        context->node->resolvedSymbolOverload = node->resolvedSymbolOverload;
-        context->node->resolvedSymbolName     = node->resolvedSymbolName;
-        context->node->typeInfo               = node->typeInfo;
-        return true;
-
     case TokenId::CompilerBackend:
         node->setFlagsValueIsComputed();
         switch (g_CommandLine->backendGenType)

@@ -467,6 +467,7 @@ bool SyntaxJob::doLeftInstruction(AstNode* parent, AstNode** result)
 
     case TokenId::SymBackTick:
     case TokenId::CompilerScopeFct:
+    case TokenId::CompilerSelf:
     case TokenId::Identifier:
     case TokenId::SymLeftParen:
     case TokenId::KwdDeRef:
@@ -527,6 +528,7 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
     case TokenId::SymLeftParen:
     case TokenId::Identifier:
     case TokenId::CompilerScopeFct:
+    case TokenId::CompilerSelf:
 
     case TokenId::IntrinsicAtomicAdd:
     case TokenId::IntrinsicAtomicAnd:

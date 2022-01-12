@@ -154,6 +154,7 @@ void LanguageSpec::setupNames()
     name_atinterfaceof = "@interfaceof";
     name_atstrcmp      = "@stringcmp";
     name_attypecmp     = "@typecmp";
+    name_sharpself     = "#self";
 
     name_memcpy  = "memcpy";
     name_memset  = "memset";
