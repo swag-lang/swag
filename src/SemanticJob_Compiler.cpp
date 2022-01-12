@@ -738,7 +738,6 @@ Utf8 SemanticJob::getCompilerFunctionString(AstNode* node, TokenId id)
 {
     switch (id)
     {
-    case TokenId::CompilerFunction:
     case TokenId::CompilerCallerFunction:
         return node->ownerFct->getNameForUserCompiler();
     case TokenId::CompilerBuildCfg:
@@ -773,16 +772,6 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
         context->node->resolvedSymbolOverload = node->resolvedSymbolOverload;
         context->node->resolvedSymbolName     = node->resolvedSymbolName;
         context->node->typeInfo               = node->typeInfo;
-        return true;
-
-    case TokenId::CompilerFunction:
-        SWAG_VERIFY(node->ownerFct, context->report(node, Err(Err0256)));
-        while (node->ownerFct->flags & AST_SPECIAL_COMPILER_FUNC && node->ownerFct->parent->ownerFct)
-            node = node->ownerFct->parent;
-        SWAG_VERIFY(node->ownerFct, context->report(node, Err(Err0256)));
-        context->node->setFlagsValueIsComputed();
-        context->node->computedValue->text = SemanticJob::getCompilerFunctionString(node, context->node->token.id);
-        context->node->typeInfo            = g_TypeMgr->typeInfoString;
         return true;
 
     case TokenId::CompilerBackend:

@@ -2,4 +2,4 @@
 
 using Swag
 
-#assert #function == "toto"
+#assert @stringof(#self] == "toto"

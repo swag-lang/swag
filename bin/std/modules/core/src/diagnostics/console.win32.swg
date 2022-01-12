@@ -78,7 +78,7 @@ public func printf(message: string, params: ...)
     #checkif
     {
         if !@isconstexpr(message) or !@isconstexpr(params) return true
-        Format.checkFormat(#function, message, params)
+        Format.checkFormat(@nameof(#self), message, params)
         return true
     }
 {

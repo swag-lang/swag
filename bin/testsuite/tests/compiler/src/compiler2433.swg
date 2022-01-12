@@ -1,7 +1,7 @@
 func append()
     #selectif
     {
-        @assert(#function == "__compiler2433.append")
+        @assert(@stringof(#self) == "__compiler2433.append")
         return true
     }
 {

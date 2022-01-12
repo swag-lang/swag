@@ -39,7 +39,7 @@ func toString(fmt: string, values: ...)->String
     #checkif
     {
         if !@isconstexpr(fmt) return true
-        checkFormat(#function, fmt, values)
+        checkFormat(@nameof(#self), fmt, values)
         return true
     }
 {
@@ -54,7 +54,7 @@ func append(buf: *ConcatBuffer, fmt: string, values: ...)
     #checkif
     {
         if !@isconstexpr(fmt) or !@isconstexpr(values) return true
-        checkFormat(#function, fmt, values)
+        checkFormat(@nameof(#self), fmt, values)
         return true
     }
 {

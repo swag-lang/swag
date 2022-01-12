@@ -12,7 +12,6 @@
 #cfg
 #code
 #file
-#function
 #line
 #location
 #module
