@@ -1,4 +1,4 @@
-#global skip
+//#global skip
 
 public struct AA3244 {}
 
