@@ -1161,6 +1161,7 @@ bool SyntaxJob::doLeftExpressionAffect(AstNode* parent, AstNode** result)
     case TokenId::SymLeftParen:
     case TokenId::Identifier:
     case TokenId::SymBackTick:
+    case TokenId::CompilerSelf:
         SWAG_CHECK(doLeftExpressionVar(parent, result));
         Ast::removeFromParent(*result);
         return true;
