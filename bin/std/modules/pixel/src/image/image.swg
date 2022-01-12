@@ -73,9 +73,9 @@ impl Image
     mtd init(width, height: s32, pf: PixelFormat)
     {
         self.pixels = null
-        self.width = #scopefct.width
-        self.height = #scopefct.height
-        self.pf = #scopefct.pf
+        self.width = #self.width
+        self.height = #self.height
+        self.pf = #self.pf
 
         bpp    = self.pf.bpp()
         bpp8   = cast(u8) (bpp >> 3)

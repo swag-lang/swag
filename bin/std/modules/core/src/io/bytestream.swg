@@ -19,7 +19,7 @@ public impl ByteStream
     func init(using self, buffer: const [..] u8)
     {
         @init(self)
-        self.buffer = #scopefct.buffer
+        self.buffer = #self.buffer
     }
 
     // Returns a slice of the remaing bytes to read

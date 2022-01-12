@@ -249,7 +249,6 @@ void LanguageSpec::setupKeywords()
     keywords.add("#inline", TokenId::CompilerInline);
     keywords.add("#macro", TokenId::CompilerMacro);
     keywords.add("#load", TokenId::CompilerLoad);
-    keywords.add("#scopefct", TokenId::CompilerScopeFct);
 
     keywords.add("var", TokenId::KwdVar);
     keywords.add("const", TokenId::KwdConst);

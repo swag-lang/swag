@@ -713,27 +713,6 @@ bool SemanticJob::resolveIntrinsicDefined(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveCompilerScopeFct(SemanticContext* context)
-{
-    auto node          = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier);
-    auto identifierRef = node->identifierRef;
-
-    SWAG_VERIFY(!identifierRef->startScope, context->report(node, Err(Err0246)));
-    SWAG_VERIFY(node->ownerFct, context->report(node, Err(Err0247)));
-
-    node->semFlags |= AST_SEM_FORCE_SCOPE;
-    node->typeInfo = g_TypeMgr->typeInfoVoid;
-
-    identifierRef->previousResolvedNode = node;
-    if (node->ownerInline)
-        identifierRef->startScope = node->ownerInline->parametersScope;
-    else
-        identifierRef->startScope = node->ownerFct->scope;
-    node->flags |= AST_NO_BYTECODE;
-
-    return true;
-}
-
 Utf8 SemanticJob::getCompilerFunctionString(AstNode* node, TokenId id)
 {
     switch (id)

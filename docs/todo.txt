@@ -66,8 +66,6 @@ TODO
 -------------------------------------
 pb des mixin globaux et des declarations #code
 -------------------------------------
-rationaliser #scopefct #function #self => #self.var #self(args) devrait rester que #self
--------------------------------------
 erreur si opDrop est privé et la struct publique (on doit exporter)
 -------------------------------------
 on doit exporter les implementation d'interface pour un truc public ?

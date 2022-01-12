@@ -804,7 +804,7 @@ impl EditBox
     // Set the editbox form
     mtd setForm(form: EditBoxForm)
     {
-        self.form = #scopefct.form
+        self.form = #self.form
 
         #[Swag.Complete]
         switch self.form

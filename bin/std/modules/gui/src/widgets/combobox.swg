@@ -371,10 +371,10 @@ impl ComboBox
         item := Memory.new'ComboBoxItem()
         with item
         {
-            name     = #scopefct.name
-            icon     = #scopefct.icon
-            id       = #scopefct.id
-            userData = #scopefct.userData
+            name     = #self.name
+            icon     = #self.icon
+            id       = #self.id
+            userData = #self.userData
         }
 
         if item.icon.isValid()

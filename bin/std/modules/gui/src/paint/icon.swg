@@ -22,9 +22,9 @@ impl Icon
 
     mtd set(imageList: *ImageList, index: s32, size: f32 = 24)
     {
-        self.imageList = #scopefct.imageList
-        self.index = #scopefct.index
-        self.size = #scopefct.size orelse cast(f32) self.imageList.sizeX
+        self.imageList = #self.imageList
+        self.index = #self.index
+        self.size = #self.size orelse cast(f32) self.imageList.sizeX
     }
 
     mtdc paint(painter: *Painter, x, y: f32, color: Color = Argb.White)

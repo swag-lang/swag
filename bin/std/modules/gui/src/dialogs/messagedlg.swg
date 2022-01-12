@@ -173,7 +173,7 @@ public impl MessageDlg
     #[Swag.Discardable]
     mtd addButton(str: string, id: WndId, isDefault: bool = false)->*PushButton
     {
-        btn := PushButton.create(wndBottom, str, @{}, #scopefct.id)
+        btn := PushButton.create(wndBottom, str, @{}, #self.id)
         btn.dockStyle = .Right
         btn.form = isDefault ? .Default : .Normal
         metrics := getThemeMetrics()

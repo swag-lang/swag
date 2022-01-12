@@ -578,11 +578,11 @@ public impl Menu
         item := Memory.new'PopupMenuItem()
         with item
         {
-            name      = #scopefct.name
-            rightName = #scopefct.rightName
-            icon      = #scopefct.icon
-            id        = #scopefct.id
-            disabled  = #scopefct.disabled
+            name      = #self.name
+            rightName = #self.rightName
+            icon      = #self.icon
+            id        = #self.id
+            disabled  = #self.disabled
         }
 
         items.add(item)
@@ -595,9 +595,9 @@ public impl Menu
         item := Memory.new'PopupMenuItem()
         with item
         {
-            name  = #scopefct.name
-            icon  = #scopefct.icon
-            popup = #scopefct.popup
+            name  = #self.name
+            icon  = #self.icon
+            popup = #self.popup
         }
 
         popup.owner = self

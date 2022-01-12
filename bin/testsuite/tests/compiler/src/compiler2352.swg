@@ -7,6 +7,6 @@ impl AA
 {
     func toto(using self, x: s32)
     {
-        self.x = #scopefct.x
+        self.x = #self.x
     }
 }

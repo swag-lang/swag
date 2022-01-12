@@ -16,7 +16,6 @@
 #location
 #module
 #os
-#scopefct
 #self
 #semerror
 #swagbuildnum

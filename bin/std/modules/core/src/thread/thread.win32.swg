@@ -70,8 +70,8 @@ impl Thread
         handle = try CreateThread(null, 0, @mkcallback(&threadEntry), self, CREATE_SUSPENDED, &id)
         userLambda = lambda
 
-        self.userParam = #scopefct.userParam
-        try setPriority(#scopefct.priority)
+        self.userParam = #self.userParam
+        try setPriority(#self.priority)
     }
 
     // Resume the given thread, if it was paused
@@ -86,7 +86,7 @@ impl Thread
     {
         Debug.assert(isValid())
 
-        newPrio := #scopefct.priority
+        newPrio := #self.priority
         if self.priority == newPrio
             return
         self.priority = newPrio

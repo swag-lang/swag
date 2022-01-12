@@ -83,7 +83,7 @@ impl Log
     mtd setPrefix(prefix: string)
     {
         Sync.scopedLock(&lock)
-        self.prefix = #scopefct.prefix
+        self.prefix = #self.prefix
     }
 
     // Set the logger prefix
@@ -97,7 +97,7 @@ impl Log
     mtd setFlags(flags: LogFlags)
     {
         Sync.scopedLock(&lock)
-        self.flags = #scopefct.flags
+        self.flags = #self.flags
     }
 
     // Set the logger prefix

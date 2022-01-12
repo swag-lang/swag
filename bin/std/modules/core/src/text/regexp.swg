@@ -126,7 +126,7 @@ impl RegExp
     public mtd compile(str: string, ignoreCase: bool = false) throw
     {
         clear()
-        self.ignoreCase = #scopefct.ignoreCase
+        self.ignoreCase = #self.ignoreCase
         try preprocess(str)
         try nfaBuild()
         try dfaBuild()

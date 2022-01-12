@@ -81,7 +81,7 @@ impl IconButton
     // Set the button form
     mtd setForm(form: IconButtonForm)
     {
-        self.form = #scopefct.form
+        self.form = #self.form
         invalidate()
     }
 }

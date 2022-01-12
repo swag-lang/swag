@@ -67,8 +67,8 @@ impl Vector2
     #[Swag.Inline]
     mtd set(x, y: f32)
     {
-        self.x = #scopefct.x
-        self.y = #scopefct.y
+        self.x = #self.x
+        self.y = #self.y
     }
 
     // Return sthe length of the vector

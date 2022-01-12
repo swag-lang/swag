@@ -171,11 +171,9 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, A
         SWAG_CHECK(doCompilerLoad(parent, result));
         break;
 
-    case TokenId::CompilerScopeFct:
     case TokenId::CompilerSelf:
         SWAG_CHECK(doIdentifierRef(parent, result));
         break;
-
 
     case TokenId::SymLeftParen:
     {
@@ -1120,7 +1118,6 @@ bool SyntaxJob::doLeftExpressionVar(AstNode* parent, AstNode** result, uint32_t 
 
     case TokenId::Identifier:
     case TokenId::SymBackTick:
-    case TokenId::CompilerScopeFct:
     case TokenId::CompilerSelf:
     {
         AstNode* exprNode = nullptr;

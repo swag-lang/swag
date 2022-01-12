@@ -450,7 +450,7 @@ impl Application
     mtd postQuitEvent(quitCode: s32 = 0)
     {
         evt := Event.create'QuitEvent()
-        evt.quitCode = #scopefct.quitCode
+        evt.quitCode = #self.quitCode
         postEvent(evt)
     }
 
