@@ -1640,22 +1640,12 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     case AstNodeKind::FuncCallParams:
     {
         auto funcCallParams = CastAst<AstFuncCallParams>(node, AstNodeKind::FuncCallParams);
-        bool first          = true;
-        for (auto child : funcCallParams->childs)
-        {
-            if (child->flags & AST_GENERATED)
-                continue;
-            if (!first)
-                CONCAT_FIXED_STR(concat, ", ");
-            first = false;
-            SWAG_CHECK(outputNode(context, concat, child));
-        }
 
-        // Capture parameters
+        // Aliases
+        bool first = true;
         if (!funcCallParams->aliasNames.empty())
         {
-            first = true;
-            CONCAT_FIXED_STR(concat, " <- |");
+            CONCAT_FIXED_STR(concat, "|");
             for (auto& t : funcCallParams->aliasNames)
             {
                 if (!first)
@@ -1664,7 +1654,18 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
                 first = false;
             }
 
-            CONCAT_FIXED_STR(concat, "|");
+            CONCAT_FIXED_STR(concat, "| ");
+        }
+
+        first = true;
+        for (auto child : funcCallParams->childs)
+        {
+            if (child->flags & AST_GENERATED)
+                continue;
+            if (!first)
+                CONCAT_FIXED_STR(concat, ", ");
+            first = false;
+            SWAG_CHECK(outputNode(context, concat, child));
         }
 
         break;
