@@ -2456,7 +2456,7 @@ bool SemanticJob::fillMatchContextGenericParameters(SemanticContext* context, Sy
             symbolKind != SymbolKind::TypeAlias)
         {
             auto       firstNode = symbol->nodes.front();
-            Diagnostic diag{callParameters, Fmt(Err(Err0130), node->token.ctext(), SymTable::getArticleKindName(symbol->kind))};
+            Diagnostic diag{genericParameters, Fmt(Err(Err0130), node->token.ctext(), SymTable::getArticleKindName(symbol->kind))};
             Diagnostic note{firstNode->sourceFile, firstNode->token.startLocation, firstNode->token.endLocation, Fmt(Nte(Nte0040), node->token.ctext()), DiagnosticLevel::Note};
             return context->report(diag, &note);
         }

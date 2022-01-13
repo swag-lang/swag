@@ -1,19 +1,7 @@
-#global skip
+#global testerror
+
 struct A
 {
-}
-
-#[Swag.Macro]
-func toto(x: s32, stmt: code)
-{
-    loop x
-    {
-        #macro
-        {
-            var @alias0 = @index
-            #mixin `stmt
-        }
-    }
 }
 
 impl A
@@ -25,20 +13,16 @@ impl A
     }
 
     #[Swag.Macro]
-    func(ptr: bool) opVisit(using self, stmt: code)
+    func(ptr: bool) toto(using self, v: s32, stmt: code)
     {
-        x := titi()
-        toto(|@alias0| x)
-        {
-            #mixin stmt
-        }
+        x := v
     }
 }
 
 #test
 {
     var v: A
-    visit v
+    v'false.toto(0)
     {
     }
 }
