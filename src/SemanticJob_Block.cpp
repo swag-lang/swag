@@ -114,6 +114,7 @@ bool SemanticJob::resolveInlineBefore(SemanticContext* context)
             // constant scope, not in the caller (for mixins)/inline scope.
             // This is a separated scope because mixins do not have their own scope, and we must have a
             // different symbol registration for each constant value
+            // :InlineUsingParam
             bool isConstant = false;
             if (identifier && identifier->callParameters)
             {
@@ -141,7 +142,14 @@ bool SemanticJob::resolveInlineBefore(SemanticContext* context)
             }
 
             if (!isConstant)
-                node->parametersScope->symTable.addSymbolTypeInfo(context, funcParam, funcParam->typeInfo, SymbolKind::Variable, nullptr, OVERLOAD_VAR_INLINE | OVERLOAD_CONST_ASSIGN);
+            {
+                node->parametersScope->symTable.addSymbolTypeInfo(context,
+                                                                  funcParam,
+                                                                  funcParam->typeInfo,
+                                                                  SymbolKind::Variable,
+                                                                  nullptr,
+                                                                  OVERLOAD_VAR_INLINE | OVERLOAD_CONST_ASSIGN);
+            }
         }
     }
 

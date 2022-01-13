@@ -1848,6 +1848,25 @@ bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* 
                     copyChild->resolvedSymbolName     = dependentVar->resolvedSymbolOverload->symbol;
                     copyChild->resolvedSymbolOverload = dependentVar->resolvedSymbolOverload;
                     copyChild->typeInfo               = dependentVar->typeInfo;
+
+                    // In case of a parameter of an inlined function, we will have to find the real OVERLOAD_VAR_INLINE variable
+                    // :InlineUsingParam
+                    if (dependentVar->kind == AstNodeKind::FuncDeclParam && copyChild->ownerInline && copyChild->ownerInline->parametersScope)
+                    {
+                        // Really, but REALLY not sure about that fix !! Seems really like a hack...
+                        if (!copyChild->isSameStackFrame(copyChild->resolvedSymbolOverload))
+                        {
+                            auto sym = copyChild->ownerInline->parametersScope->symTable.find(dependentVar->resolvedSymbolOverload->symbol->name);
+                            if (sym)
+                            {
+                                ScopedLock lk(sym->mutex);
+                                SWAG_ASSERT(sym->overloads.size() == 1);
+                                copyChild->resolvedSymbolOverload = sym->overloads[0];
+                                copyChild->resolvedSymbolName     = copyChild->resolvedSymbolOverload->symbol;
+                                copyChild->typeInfo               = copyChild->resolvedSymbolOverload->typeInfo;
+                            }
+                        }
+                    }
                 }
                 else
                 {
@@ -2445,9 +2464,8 @@ bool SemanticJob::fillMatchContextGenericParameters(SemanticContext* context, Sy
     // User generic parameters
     if (genericParameters)
     {
-        auto symbol         = overload->symbol;
-        auto symbolKind     = symbol->kind;
-        auto callParameters = node->callParameters;
+        auto symbol     = overload->symbol;
+        auto symbolKind = symbol->kind;
 
         node->inheritOrFlag(genericParameters, AST_IS_GENERIC);
         if (symbolKind != SymbolKind::Function &&
