@@ -139,11 +139,24 @@ impl String
             Memory.free(buffer, capacity, allocator)
     }
 
+    // Returns the byte at the given index
     mtd opIndex(index: uint)->u8
     {
         if !length
             return 0
         return buffer[index]
+    }
+
+    // Visit the string runes
+    // See Utf8.visitRunes for aliases
+    #[Macro]
+    mtd(ptr: bool) opVisitRunes(stmt: code)
+    {
+        #assert(!ptr, "visiting runes by pointer is not supported")
+        Utf8.visitRunes(|@alias0, @alias1, @alias2| toSlice())
+        {
+            #mixin stmt
+        }
     }
 
     // Visit the String utf8 bytes

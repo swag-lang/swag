@@ -28,8 +28,7 @@ impl A
     #[Swag.Macro]
     func(ptr: bool) opVisit(using self, stmt: code)
     {
-        x := titi()
-        toto(|@alias0| x)
+        toto(|@alias0| titi())
         {
             #mixin stmt
         }
@@ -39,7 +38,11 @@ impl A
 #test
 {
     var v: A
-    visit v
+    xx := 0
+    visit i: v
     {
+        xx += i
     }
+
+    @assert(xx == 45)
 }

@@ -1070,6 +1070,21 @@ AstNode* AstFuncCallParams::clone(CloneContext& context)
     auto newNode = Ast::newNode<AstFuncCallParams>();
     newNode->copyFrom(context, this);
     newNode->aliasNames = aliasNames;
+
+    // Propagate aliases
+    int idx = 0;
+    for (auto it : newNode->aliasNames)
+    {
+        auto itn = context.replaceNames.find(it.text);
+        if (itn != context.replaceNames.end())
+        {
+            context.usedReplaceNames.insert(itn->second);
+            newNode->aliasNames[idx].text = itn->second;
+        }
+
+        idx++;
+    }
+
     return newNode;
 }
 
