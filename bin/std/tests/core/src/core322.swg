@@ -1,0 +1,41 @@
+//#global skip
+using Core, StrConv
+
+struct(T) SoaTest
+{
+    #ast
+    {
+        var sb: StringBuilder
+        visit p: @typeof(T).fields
+            sb.appendFormat("%: Array'%\n", p.name, p.pointedType.flatName)
+        return sb.moveToString()
+    }
+}
+
+impl SoaTest
+{
+    mtd reserve(size: uint)
+    {
+        #ast
+        {
+            var sb: StringBuilder
+            visit p: @typeof(T).fields
+                sb.appendFormat("%.reserve(size)\n", p.name)
+            return sb.moveToString()
+        }
+    }
+}
+
+#test
+{
+    struct Test
+    {
+        x, y, z: f32
+    }
+
+    var v: SoaTest'Test
+    v.reserve(10)
+    @assert(v.x.capacity == 10)
+    @assert(v.y.capacity == 10)
+    @assert(v.z.capacity == 10)
+}

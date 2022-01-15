@@ -1,17 +1,17 @@
 using Core, StrConv
 
-struct(T) Soa
+struct(T) SoaTest
 {
     #ast
     {
         var sb: StringBuilder
         visit p: @typeof(T).fields
-            sb.appendFormat("%: *%\n", p.name, p.pointedType.flatName)
+            sb.appendFormat("%: Array'%\n", p.name, p.pointedType.flatName)
         return sb.moveToString()
     }
 }
 
-impl Soa
+impl SoaTest
 {
     #run
     {
@@ -28,5 +28,8 @@ impl Soa
         x, y, z: f32
     }
 
-    var v: Soa'Test
+    var v: SoaTest'Test
+    v.x.reserve(10)
+    v.y.reserve(10)
+    v.z.reserve(10)
 }

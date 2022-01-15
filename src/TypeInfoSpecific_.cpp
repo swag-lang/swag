@@ -850,10 +850,6 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
 
     auto other = CastTypeInfo<TypeInfoStruct>(to, to->kind);
 
-    int childCount = (int) fields.size();
-    if (childCount != other->fields.size())
-        return false;
-
     // Do not compare names for tuples
     bool isTuple  = flags & TYPEINFO_STRUCT_IS_TUPLE;
     bool sameName = declNode->ownerScope == to->declNode->ownerScope && structName == other->structName;
@@ -894,6 +890,10 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
             return false;
         if (scope != other->scope)
             return false;
+        int childCount = (int) fields.size();
+        if (childCount != other->fields.size())
+            return false;
+
         for (int i = 0; i < childCount; i++)
         {
             if (!fields[i]->isSame(other->fields[i], isSameFlags))
@@ -903,6 +903,9 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
     else if (isTuple && !sameName)
     {
         if ((flags & TYPEINFO_GENERIC) != (other->flags & TYPEINFO_GENERIC))
+            return false;
+        int childCount = (int) fields.size();
+        if (childCount != other->fields.size())
             return false;
 
         // Two tuple types will match if their content is equal, including specific user names
