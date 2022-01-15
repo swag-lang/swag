@@ -1,10 +1,12 @@
-#global skip
+//#global skip
+var G = 0
 struct(TTT) Soa
 {
     #ast
     {
         visit p: @typeof(TTT).fields
         {
+            G += 1
         }
 
         return ""
@@ -15,4 +17,6 @@ struct(TTT) Soa
 {
     struct Test { x, y, z: f32; }
     var v: Soa'Test
+    if @isbytecode()
+        @assert(G == 3)
 }

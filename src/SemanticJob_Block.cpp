@@ -596,22 +596,9 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     SWAG_ASSERT(concat.firstBucket->nextBucket == nullptr);
     node->expression->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
 
-    int firstAliasVar = 0;
-    int id            = g_UniqueID.fetch_add(1);
-
-    // If the visit expression has a function call, we will have to store the result in a temporary
-    // variable, and use that variable in the visit, in order to avoid calling the function twice :
-    // - once for the @dataof
-    // - once for the @countof
-    bool needToCopyExpression = false;
-    Utf8 nameExpression;
-    if (node->expression->flags & AST_SIDE_EFFECTS)
-    {
-        needToCopyExpression = true;
-        nameExpression       = Utf8::format("__tmp%u", id);
-    }
-    else
-        nameExpression = (const char*) concat.firstBucket->datas;
+    AstNode* newVar        = nullptr;
+    int      firstAliasVar = 0;
+    int      id            = g_UniqueID.fetch_add(1);
 
     // Multi dimensional array
     if (typeInfo->kind == TypeInfoKind::Array && ((TypeInfoArray*) typeInfo)->pointedType->kind == TypeInfoKind::Array)
@@ -647,9 +634,19 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         auto typeArray   = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         auto pointedType = typeArray->pointedType;
 
+        auto varDecl                      = Ast::newVarDecl(sourceFile, Utf8::format("__addr%u", id), node);
+        varDecl->assignment               = Ast::newNode<AstIntrinsicProp>(nullptr, AstNodeKind::IntrinsicProp, sourceFile, varDecl);
+        varDecl->assignment->token.id     = TokenId::IntrinsicDataOf;
+        varDecl->assignment->semanticFct  = SemanticJob::resolveIntrinsicProperty;
+        auto cloneExpr                    = Ast::clone(node->expression, varDecl->assignment);
+        cloneExpr->typeInfo               = node->expression->typeInfo;
+        cloneExpr->resolvedSymbolOverload = node->expression->resolvedSymbolOverload;
+        cloneExpr->resolvedSymbolName     = node->expression->resolvedSymbolName;
+        cloneExpr->flags &= ~(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS);
+        newVar = varDecl;
+
         firstAliasVar = 1;
         content += "{ ";
-        content += Fmt("var __addr%u = @dataof(%s); ", id, (const char*) concat.firstBucket->datas);
         content += Fmt("loop %u { ", typeArray->totalCount);
         if (node->specFlags & AST_SPEC_VISIT_WANTPOINTER)
             content += Fmt("var %s = __addr%u + @index; ", alias0Name.c_str(), id);
@@ -759,6 +756,11 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     SyntaxJob syntaxJob;
     syntaxJob.constructEmbedded(content, node, node, CompilerAstKind::EmbeddedInstruction, false);
     newExpression = node->childs.back();
+    if (newVar)
+    {
+        Ast::removeFromParent(newVar);
+        Ast::addChildFront(newExpression, newVar);
+    }
 
     // In case of error (like an already defined identifier), we need to set the correct location of declared
     // variables
