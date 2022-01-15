@@ -616,7 +616,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     // Multi dimensional array
     if (typeInfo->kind == TypeInfoKind::Array && ((TypeInfoArray*) typeInfo)->pointedType->kind == TypeInfoKind::Array)
     {
-        auto typeArray   = (TypeInfoArray*) typeInfo;
+        auto typeArray   = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         auto pointedType = typeArray->finalType;
 
         firstAliasVar = 1;
@@ -642,13 +642,39 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     }
 
     // One dimensional array
-    else if (typeInfo->kind == TypeInfoKind::Slice || typeInfo->kind == TypeInfoKind::Array)
+    else if (typeInfo->kind == TypeInfoKind::Array)
     {
-        TypeInfo* pointedType;
-        if (typeInfo->kind == TypeInfoKind::Slice)
-            pointedType = ((TypeInfoSlice*) typeInfo)->pointedType;
+        auto typeArray   = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        auto pointedType = typeArray->pointedType;
+
+        firstAliasVar = 1;
+        content += "{ ";
+        if (needToCopyExpression)
+        {
+            firstAliasVar++;
+            content += Fmt("var %s = %s; ", nameExpression.c_str(), (const char*) concat.firstBucket->datas);
+        }
+
+        content += Fmt("var __addr%u = @dataof(%s); ", id, nameExpression.c_str());
+        content += Fmt("loop %s { ", nameExpression.c_str());
+        if (node->specFlags & AST_SPEC_VISIT_WANTPOINTER)
+            content += Fmt("var %s = __addr%u + @index; ", alias0Name.c_str(), id);
+        else if (pointedType->kind == TypeInfoKind::Struct)
+        {
+            pointedType->computeScopedName();
+            content += Fmt("var %s = cast(const *%s) __addr%u[@index]; ", alias0Name.c_str(), pointedType->scopedName.c_str(), id);
+        }
         else
-            pointedType = ((TypeInfoArray*) typeInfo)->pointedType;
+            content += Fmt("var %s = __addr%u[@index]; ", alias0Name.c_str(), id);
+        content += Fmt("var %s = @index; ", alias1Name.c_str());
+        content += "}} ";
+    }
+
+    // Slice
+    else if (typeInfo->kind == TypeInfoKind::Slice)
+    {
+        auto typeSlice   = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
+        auto pointedType = typeSlice->pointedType;
 
         firstAliasVar = 1;
         content += "{ ";
