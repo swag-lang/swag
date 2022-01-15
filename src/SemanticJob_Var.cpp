@@ -738,12 +738,6 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             }
 
             node->doneFlags |= AST_DONE_ASSIGN_COMPUTED;
-            if (node->type &&
-                concreteNodeType->kind != TypeInfoKind::Slice &&
-                concreteNodeType->kind != TypeInfoKind::Pointer)
-            {
-                //SWAG_VERIFY(node->assignment->typeInfo->kind != TypeInfoKind::Array, context->report(node->assignment, Err(Err0301)));
-            }
         }
     }
 
@@ -770,7 +764,6 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     {
         auto typeArray = CastTypeInfo<TypeInfoArray>(concreteNodeType, TypeInfoKind::Array);
         SWAG_VERIFY(typeArray->count != UINT32_MAX || node->assignment, context->report(node, Err(Err0303)));
-        SWAG_VERIFY(!node->assignment || node->assignment->kind == AstNodeKind::ExpressionList || node->assignment->kind == AstNodeKind::ExplicitNoInit, context->report(node->assignment, Err(Err0304)));
 
         // Deduce size of array
         if (typeArray->count == UINT32_MAX)

@@ -60,8 +60,6 @@ TODO
 ****************************************
 
 -------------------------------------
-a = b ok si array, mais var a = b interdit, c'est incohérent
--------------------------------------
 pb des mixin globaux et des declarations #code
 -------------------------------------
 erreur si opDrop est privé et la struct publique (on doit exporter)
