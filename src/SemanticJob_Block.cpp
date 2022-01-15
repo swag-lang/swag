@@ -621,13 +621,15 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
 
         firstAliasVar = 1;
         content += "{ ";
-        if (needToCopyExpression)
-            content += Fmt("var %s = %s; ", nameExpression.c_str(), (const char*) concat.firstBucket->datas);
-        content += Fmt("var __addr%u = cast(*%s) @dataof(%s); ", id, typeArray->finalType->name.c_str(), nameExpression.c_str());
-        content += Fmt("const __count%u = @sizeof(%s) / %u; ", id, nameExpression.c_str(), typeArray->finalType->sizeOf);
-        content += Fmt("loop __count%u { ", id);
+        if (typeArray->isConst())
+            content += Fmt("var __addr%u = cast(const *%s) @dataof(%s); ", id, typeArray->finalType->name.c_str(), nameExpression.c_str());
+        else
+            content += Fmt("var __addr%u = cast(*%s) @dataof(%s); ", id, typeArray->finalType->name.c_str(), nameExpression.c_str());
+        content += Fmt("loop %d { ", typeArray->totalCount);
         if (node->specFlags & AST_SPEC_VISIT_WANTPOINTER)
+        {
             content += Fmt("var %s = __addr%u + @index; ", alias0Name.c_str(), id);
+        }
         else if (pointedType->kind == TypeInfoKind::Struct)
         {
             pointedType->computeScopedName();
@@ -651,7 +653,11 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         firstAliasVar = 1;
         content += "{ ";
         if (needToCopyExpression)
+        {
+            firstAliasVar++;
             content += Fmt("var %s = %s; ", nameExpression.c_str(), (const char*) concat.firstBucket->datas);
+        }
+
         content += Fmt("var __addr%u = @dataof(%s); ", id, nameExpression.c_str());
         content += Fmt("loop %s { ", nameExpression.c_str());
         if (node->specFlags & AST_SPEC_VISIT_WANTPOINTER)
@@ -670,12 +676,16 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     // String
     else if (typeInfo->isNative(NativeTypeKind::String))
     {
+        firstAliasVar = 1;
         content += "{ ";
         if (needToCopyExpression)
+        {
+            firstAliasVar++;
             content += Fmt("var %s = %s; ", nameExpression.c_str(), (const char*) concat.firstBucket->datas);
+        }
+
         content += Fmt("var __addr%u = @dataof(%s); ", id, nameExpression.c_str());
         content += Fmt("loop %s { ", nameExpression.c_str());
-        firstAliasVar = 1;
         if (node->specFlags & AST_SPEC_VISIT_WANTPOINTER)
             content += Fmt("var %s = __addr%u + @index; ", alias0Name.c_str(), id);
         else
