@@ -1,22 +1,3 @@
-#global skip
-struct(TTT) Soa
-{
-    #ast
-    {
-        visit p: @typeof(TTT).fields
-        {
-        }
-
-        return ""
-    }
-}
-
-#test
-{
-    struct Test { x, y, z: f32; }
-    var v: Soa'Test
-}
-
 ****************************************
 LANGUAGE
 ****************************************
@@ -78,6 +59,8 @@ STRANGE
 TODO
 ****************************************
 
+-------------------------------------
+a = b ok si array, mais var a = b interdit, c'est incohérent
 -------------------------------------
 pb des mixin globaux et des declarations #code
 -------------------------------------
