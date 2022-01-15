@@ -700,6 +700,7 @@ bool SemanticJob::isMethod(AstFuncDecl* funcNode)
         funcNode->parent->kind != AstNodeKind::CompilerSelectIf &&
         funcNode->parent->kind != AstNodeKind::CompilerCheckIf &&
         !(funcNode->flags & AST_FROM_GENERIC) &&
+        !(funcNode->flags & AST_SPECIAL_COMPILER_FUNC) &&
         (funcNode->ownerScope->kind == ScopeKind::Struct) &&
         (funcNode->ownerStructScope->owner->typeInfo->kind == TypeInfoKind::Struct))
     {

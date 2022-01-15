@@ -5,10 +5,19 @@ struct(T) Soa
     #ast
     {
         var sb: StringBuilder
-        type := @typeof(T)
-        visit p: type.fields
+        visit p: @typeof(T).fields
             sb.appendFormat("%: *%\n", p.name, p.pointedType.flatName)
         return sb.moveToString()
+    }
+}
+
+impl Soa
+{
+    #run
+    {
+        itf := @compiler()
+        var sb: StringBuilder
+        itf.compileString(sb.moveToString())
     }
 }
 
