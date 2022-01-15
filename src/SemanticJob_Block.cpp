@@ -680,9 +680,12 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     // String
     else if (typeInfo->isNative(NativeTypeKind::String))
     {
-        firstAliasVar = 2;
+        auto varDecl        = Ast::newVarDecl(sourceFile, Utf8::format("__tmp%u", id), node);
+        varDecl->assignment = Ast::clone(node->expression, varDecl, 0, AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS);
+        newVar              = varDecl;
+
+        firstAliasVar = 1;
         content += "{ ";
-        content += Fmt("var __tmp%u = %s; ", id, (const char*) concat.firstBucket->datas);
         content += Fmt("var __addr%u = @dataof(__tmp%u); ", id, id);
         content += Fmt("loop __tmp%u { ", id);
         if (node->specFlags & AST_SPEC_VISIT_WANTPOINTER)
