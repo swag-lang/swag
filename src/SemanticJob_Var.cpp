@@ -742,7 +742,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 concreteNodeType->kind != TypeInfoKind::Slice &&
                 concreteNodeType->kind != TypeInfoKind::Pointer)
             {
-                SWAG_VERIFY(node->assignment->typeInfo->kind != TypeInfoKind::Array, context->report(node->assignment, Err(Err0301)));
+                //SWAG_VERIFY(node->assignment->typeInfo->kind != TypeInfoKind::Array, context->report(node->assignment, Err(Err0301)));
             }
         }
     }
