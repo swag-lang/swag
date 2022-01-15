@@ -540,7 +540,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     auto sourceFile = context->sourceFile;
     auto node       = CastAst<AstVisit>(context->node, AstNodeKind::Visit);
 
-    auto typeInfo = TypeManager::concreteReference(node->expression->typeInfo);
+    auto typeInfo = TypeManager::concreteReferenceType(node->expression->typeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
     if (typeInfo->kind != TypeInfoKind::Enum)
         SWAG_CHECK(checkIsConcrete(context, node->expression));
 
@@ -599,6 +599,20 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     int firstAliasVar = 0;
     int id            = g_UniqueID.fetch_add(1);
 
+    // If the visit expression has a function call, we will have to store the result in a temporary
+    // variable, and use that variable in the visit, in order to avoid calling the function twice :
+    // - once for the @dataof
+    // - once for the @countof
+    bool needToCopyExpression = false;
+    Utf8 nameExpression;
+    if (node->expression->flags & AST_SIDE_EFFECTS)
+    {
+        needToCopyExpression = true;
+        nameExpression       = Utf8::format("__tmp%u", id);
+    }
+    else
+        nameExpression = (const char*) concat.firstBucket->datas;
+
     // Multi dimensional array
     if (typeInfo->kind == TypeInfoKind::Array && ((TypeInfoArray*) typeInfo)->pointedType->kind == TypeInfoKind::Array)
     {
@@ -606,8 +620,11 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         auto pointedType = typeArray->finalType;
 
         firstAliasVar = 1;
-        content += Fmt("{ var __addr%u = cast(*%s) @dataof(%s); ", id, typeArray->finalType->name.c_str(), (const char*) concat.firstBucket->datas);
-        content += Fmt("const __count%u = @sizeof(%s) / %u; ", id, (const char*) concat.firstBucket->datas, typeArray->finalType->sizeOf);
+        content += "{ ";
+        if (needToCopyExpression)
+            content += Fmt("var %s = %s; ", nameExpression.c_str(), (const char*) concat.firstBucket->datas);
+        content += Fmt("var __addr%u = cast(*%s) @dataof(%s); ", id, typeArray->finalType->name.c_str(), nameExpression.c_str());
+        content += Fmt("const __count%u = @sizeof(%s) / %u; ", id, nameExpression.c_str(), typeArray->finalType->sizeOf);
         content += Fmt("loop __count%u { ", id);
         if (node->specFlags & AST_SPEC_VISIT_WANTPOINTER)
             content += Fmt("var %s = __addr%u + @index; ", alias0Name.c_str(), id);
@@ -632,8 +649,11 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
             pointedType = ((TypeInfoArray*) typeInfo)->pointedType;
 
         firstAliasVar = 1;
-        content += Fmt("{ var __addr%u = @dataof(%s); ", id, (const char*) concat.firstBucket->datas);
-        content += Fmt("loop %s { ", (const char*) concat.firstBucket->datas);
+        content += "{ ";
+        if (needToCopyExpression)
+            content += Fmt("var %s = %s; ", nameExpression.c_str(), (const char*) concat.firstBucket->datas);
+        content += Fmt("var __addr%u = @dataof(%s); ", id, nameExpression.c_str());
+        content += Fmt("loop %s { ", nameExpression.c_str());
         if (node->specFlags & AST_SPEC_VISIT_WANTPOINTER)
             content += Fmt("var %s = __addr%u + @index; ", alias0Name.c_str(), id);
         else if (pointedType->kind == TypeInfoKind::Struct)
@@ -650,8 +670,11 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     // String
     else if (typeInfo->isNative(NativeTypeKind::String))
     {
-        content += Fmt("{ var __addr%u = @dataof(%s); ", id, (const char*) concat.firstBucket->datas);
-        content += Fmt("loop %s { ", (const char*) concat.firstBucket->datas);
+        content += "{ ";
+        if (needToCopyExpression)
+            content += Fmt("var %s = %s; ", nameExpression.c_str(), (const char*) concat.firstBucket->datas);
+        content += Fmt("var __addr%u = @dataof(%s); ", id, nameExpression.c_str());
+        content += Fmt("loop %s { ", nameExpression.c_str());
         firstAliasVar = 1;
         if (node->specFlags & AST_SPEC_VISIT_WANTPOINTER)
             content += Fmt("var %s = __addr%u + @index; ", alias0Name.c_str(), id);
