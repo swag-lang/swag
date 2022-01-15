@@ -606,12 +606,10 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         auto typeArray   = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         auto pointedType = typeArray->finalType;
 
-        firstAliasVar = 1;
+        firstAliasVar = 2;
         content += "{ ";
-        if (typeArray->isConst())
-            content += Fmt("var __addr%u = cast(const *%s) @dataof(%s); ", id, typeArray->finalType->name.c_str(), (const char*) concat.firstBucket->datas);
-        else
-            content += Fmt("var __addr%u = cast(*%s) @dataof(%s); ", id, typeArray->finalType->name.c_str(), (const char*) concat.firstBucket->datas);
+        content += Fmt("var __tmp%u = @dataof(%s); ", id, (const char*) concat.firstBucket->datas);
+        content += Fmt("var __addr%u = cast(%s *%s) __tmp%u; ", id, typeArray->isConst() ? "const" : "", typeArray->finalType->name.c_str(), id);
         content += Fmt("loop %u { ", typeArray->totalCount);
         if (node->specFlags & AST_SPEC_VISIT_WANTPOINTER)
         {
@@ -634,15 +632,9 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         auto typeArray   = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         auto pointedType = typeArray->pointedType;
 
-        auto varDecl                      = Ast::newVarDecl(sourceFile, Utf8::format("__addr%u", id), node);
-        varDecl->assignment               = Ast::newNode<AstIntrinsicProp>(nullptr, AstNodeKind::IntrinsicProp, sourceFile, varDecl);
-        varDecl->assignment->token.id     = TokenId::IntrinsicDataOf;
-        varDecl->assignment->semanticFct  = SemanticJob::resolveIntrinsicProperty;
-        auto cloneExpr                    = Ast::clone(node->expression, varDecl->assignment);
-        cloneExpr->typeInfo               = node->expression->typeInfo;
-        cloneExpr->resolvedSymbolOverload = node->expression->resolvedSymbolOverload;
-        cloneExpr->resolvedSymbolName     = node->expression->resolvedSymbolName;
-        cloneExpr->flags &= ~(AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS);
+        auto varDecl        = Ast::newVarDecl(sourceFile, Utf8::format("__addr%u", id), node);
+        varDecl->assignment = Ast::newIntrinsicProp(sourceFile, TokenId::IntrinsicDataOf, varDecl);
+        Ast::clone(node->expression, varDecl->assignment, 0, AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS);
         newVar = varDecl;
 
         firstAliasVar = 1;

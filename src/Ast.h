@@ -24,8 +24,8 @@ namespace Ast
     Utf8     enumToString(TypeInfo* typeInfo, const Utf8& text, const Register& reg);
     Utf8     literalToString(TypeInfo* typeInfo, const ComputedValue& value);
     void     normalizeIdentifierName(Utf8& name);
-    AstNode* cloneRaw(AstNode* source, AstNode* parent, uint64_t forceFlags = 0);
-    AstNode* clone(AstNode* source, AstNode* parent, uint64_t forceFlags = 0);
+    AstNode* cloneRaw(AstNode* source, AstNode* parent, uint64_t forceFlags = 0, uint64_t removeFlags = 0);
+    AstNode* clone(AstNode* source, AstNode* parent, uint64_t forceFlags = 0, uint64_t removeFlags = 0);
     Utf8     computeGenericParametersReplacement(VectorNative<TypeInfoParam*>& params);
 
     Scope*             newScope(AstNode* owner, const Utf8& name, ScopeKind kind, Scope* parentScope, bool matchName = false);
@@ -34,6 +34,7 @@ namespace Ast
     AstFuncCallParams* newFuncCallParams(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
     AstFuncCallParam*  newFuncCallParam(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
     AstVarDecl*        newVarDecl(SourceFile* sourceFile, const Utf8& name, AstNode* parent, SyntaxJob* syntaxJob = nullptr, AstNodeKind kind = AstNodeKind::VarDecl);
+    AstIntrinsicProp*  newIntrinsicProp(SourceFile* sourceFile, TokenId id, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
     AstTypeExpression* newTypeExpression(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
     AstIdentifier*     newIdentifier(SourceFile* sourceFile, const Utf8& name, AstIdentifierRef* identifierRef, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
     AstIdentifierRef*  newIdentifierRef(SourceFile* sourceFile, const Utf8& name, AstNode* parent, SyntaxJob* syntaxJob = nullptr);
