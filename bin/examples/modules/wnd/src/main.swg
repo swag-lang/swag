@@ -14,9 +14,9 @@ var app: Application
     tab.padding = @{10, 10, 10, 10}
     tab.style.addStyleSheetColors("tabView_FlatBk $wnd_Bk")
 
-    view0 := Wnd.create'Wnd(null, "bigview0")
+    view0 := Wnd.create'Wnd(tab, "bigview0")
     tab.addItem("Widgets", @{}, view0)
-    view1 := Wnd.create'Wnd(null, "bigview1")
+    view1 := Wnd.create'Wnd(tab, "bigview1")
     tab.addItem("List", @{}, view1)
 
     createView0(view0)

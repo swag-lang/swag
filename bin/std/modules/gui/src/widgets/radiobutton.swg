@@ -106,7 +106,6 @@ impl RadioButton
         if pos.height == 0 pos.height = parent.getThemeMetrics().btnPush_Height
         if pos.width == 0  pos.width  = parent.getThemeMetrics().btnPush_Width
         res := Wnd.create'RadioButton(parent, name, pos, id)
-        res.sendCreateEvent()
         return res
     }
 }

@@ -56,7 +56,6 @@ impl List
         listView.backgroundStyle = .Transparent
         listView.list = list
 
-        list.sendCreateEvent()
         return list
     }
 

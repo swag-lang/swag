@@ -161,7 +161,6 @@ impl PushButton
             res.position.height = res.getThemeMetrics().btnPush_Height
         if res.position.width == 0
             res.position.width  = res.getThemeMetrics().btnPush_Width
-        res.sendCreateEvent()
         return res
     }
 }

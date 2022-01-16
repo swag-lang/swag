@@ -159,6 +159,10 @@ impl Wnd
         res.position = position
         res.isAllocated = true
         res.setParent(parent)
+
+        evt := CreateEvent{}
+        res.sendEvent(&evt)
+        res.sendResizeEvent()
         return res
     }
 
@@ -177,6 +181,10 @@ impl Wnd
     // Set window parent
     mtd setParent(who: *Wnd)
     {
+        Debug.assert(who != null)
+        if who == parent
+            return
+
         Debug.assert(!parent)
         parent = who
         if who
@@ -667,13 +675,6 @@ impl Wnd
         evt.oldSize.x = position.width
         evt.oldSize.y = position.height
         sendEvent(&evt)
-    }
-
-    mtd sendCreateEvent()
-    {
-        evt := CreateEvent{}
-        sendEvent(&evt)
-        sendResizeEvent()
     }
 
     mtd postCommandEvent(cmdId: WndId)

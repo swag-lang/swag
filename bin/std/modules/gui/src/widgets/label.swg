@@ -79,8 +79,6 @@ impl Label
     #[Swag.Discardable]
     func create(parent: *Wnd, name: string, position: Math.Rectangle, id: string = null)->*Label
     {
-        res := Wnd.create'Label(parent, name, position, id)
-        res.sendCreateEvent()
-        return res
+        return Wnd.create'Label(parent, name, position, id)
     }
 }

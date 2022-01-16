@@ -283,7 +283,6 @@ impl Tab
     {
         res := Wnd.create'Tab(parent, "", position, id)
         res.setForm(TabForm.Flat)
-        res.sendCreateEvent()
         return res
     }
 

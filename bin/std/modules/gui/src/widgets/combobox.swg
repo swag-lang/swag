@@ -312,7 +312,6 @@ private impl ComboBox
         view.combo = self
 
         scrollWnd.setScrollSize(0, cast(f32) items.count * heightItem)
-        popup.sendCreateEvent()
 
         pos := getSurfaceRect()
         pt := popup.parent.surfaceToLocal(@{pos.x, pos.y})
@@ -356,7 +355,6 @@ impl ComboBox
             res.editBox.setForm(EditBoxForm.Transparent)
         }
 
-        res.sendCreateEvent()
         return res
     }
 

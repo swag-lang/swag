@@ -549,7 +549,6 @@ public impl Menu
         {
             padding = getThemeMetrics().menuPopup_Padding
             isHidden = true
-            sendCreateEvent()
         }
 
         return res
@@ -566,7 +565,6 @@ public impl Menu
                 position.height = metrics.menuBar_Height
             padding = metrics.menuPopup_Padding
             bar = true
-            sendCreateEvent()
         }
 
         return res

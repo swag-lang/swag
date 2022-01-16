@@ -409,8 +409,6 @@ impl Application
             wnd.itf = cast(IWnd) surface.wnd
             wnd.computeStyle()
             wnd.view.computeStyle()
-            wnd.sendCreateEvent()
-            wnd.view.sendCreateEvent()
         }
 
         return surface
