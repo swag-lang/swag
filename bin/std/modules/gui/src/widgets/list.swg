@@ -21,16 +21,17 @@ enum ListForm
 
 struct List
 {
-    using scrollWnd:  ScrollWnd
-    form:       ListForm = Square
-    lines:      Array'(*ListLine)
-    lineHeight: f32 = 20
-    isVirtual:  bool
+    using frameWnd: FrameWnd
+    form:           ListForm = Square
+    lines:          Array'(*ListLine)
+    lineHeight:     f32 = 20
+    isVirtual:      bool
 }
 
 struct ListView
 {
-    using wnd: Wnd
+    using wnd:  Wnd
+    list:       *List
 }
 
 impl IWnd for List
@@ -38,7 +39,6 @@ impl IWnd for List
     mtd onPaintEvent(evt: *PaintEvent)
     {
         paintBackBorders(evt.bc)
-        ScrollWnd.IWnd.onPaintEvent(self, evt)
     }
 }
 
@@ -46,8 +46,6 @@ impl IWnd for ListView
 {
     mtd onPaintEvent(evt: *PaintEvent)
     {
-        list := cast(*List) parent
-
         y := 0'f32
         font := getTheme().res.fontDefault.regular
         visit line: list.lines
@@ -109,9 +107,16 @@ impl List
     #[Swag.Discardable]
     func createSimple(parent: *Wnd, position: Math.Rectangle, id: string = null)->*List
     {
-        list     := Wnd.create'List(parent, "", position, id)
-        listView := list.createView'ListView()
+        list := Wnd.create'List(parent, "", position, id)
+        scrollWnd := ScrollWnd.create'ListView(list, @{})
+        scrollWnd.dockStyle = .Center
+        scrollWnd.focusStrategy = .None
+        scrollWnd.backgroundStyle = .Transparent
+
+        list.view = scrollWnd
+        listView := cast(*ListView) scrollWnd.view
         listView.backgroundStyle = .Transparent
+        listView.list = list
 
         list.sendCreateEvent()
         return list
@@ -122,7 +127,8 @@ impl List
         clientRect   := getClientRect()
         scrollWidth  := clientRect.width
         scrollHeight := cast(f32) lines.count * lineHeight
-        setScrollSize(scrollWidth, scrollHeight)
+        scrollWnd := cast(*ScrollWnd) view
+        scrollWnd.setScrollSize(scrollWidth, scrollHeight)
         invalidate()
     }
 
