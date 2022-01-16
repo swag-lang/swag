@@ -210,10 +210,10 @@ struct ThemeColors
     comboBoxItem_CheckMark:         Color = Blue
     comboBoxItem_HotCheckMark:      Color = White
 
-    list_Border:                    Color = Gray3
-    list_FocusBorder:               Color = Blue
-    list_DisabledBorder:            Color = Gray3
-    list_Bk:                        Color = Gray6
-    list_DisabledBk:                Color = Gray5
-    list_FocusBk:                   Color = Gray6
+    frameWnd_Border:                Color = Gray3
+    frameWnd_FocusBorder:           Color = Blue
+    frameWnd_DisabledBorder:        Color = Gray3
+    frameWnd_Bk:                    Color = Gray6
+    frameWnd_DisabledBk:            Color = Gray5
+    frameWnd_FocusBk:               Color = Gray6
 }

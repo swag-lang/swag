@@ -11,9 +11,10 @@ enum FrameWndForm
 
 struct FrameWnd
 {
-    using wnd:  Wnd
-    view:       *Wnd
-    frameForm:  FrameWndForm = Transparent
+    using wnd:      Wnd
+    view:           *Wnd
+    frameForm       = FrameWndForm.Transparent
+    focusBorder     = true
 }
 
 impl IWnd for FrameWnd
@@ -46,17 +47,26 @@ impl IWnd for FrameWnd
             subRectBk = &rects.list_FlatBk
         }
 
+        // Display focus borders when the focus wnd is a child of me
+        showFocus := focusBorder
+        if showFocus
+        {
+            focus := getFocus()
+            if !focus or !isParentOf(focus)
+                showFocus = false
+        }
+
         switch
         {
         case bc.isDisabled:
-            colorBorder = colors.list_DisabledBorder
-            colorBk = colors.list_DisabledBk
-        case hasFocus():
-            colorBorder = colors.list_FocusBorder
-            colorBk = colors.list_FocusBk
+            colorBorder = colors.frameWnd_DisabledBorder
+            colorBk = colors.frameWnd_DisabledBk
+        case showFocus:
+            colorBorder = colors.frameWnd_FocusBorder
+            colorBk = colors.frameWnd_FocusBk
         default:
-            colorBorder = colors.list_Border
-            colorBk = colors.list_Bk
+            colorBorder = colors.frameWnd_Border
+            colorBk = colors.frameWnd_Bk
         }
 
         clientRect := getClientRect()
@@ -94,11 +104,11 @@ impl FrameWnd
         switch self.frameForm
         {
         case Square:
-            padding = getThemeMetrics().list_SquarePadding
+            padding = getThemeMetrics().frameWnd_SquarePadding
         case Round:
-            padding = getThemeMetrics().list_RoundPadding
+            padding = getThemeMetrics().frameWnd_RoundPadding
         case Flat:
-            padding = getThemeMetrics().list_FlatPadding
+            padding = getThemeMetrics().frameWnd_FlatPadding
         case Transparent:
             padding = @{0, 0, 0, 0}
         }
