@@ -18,11 +18,18 @@ struct List
 {
     using frameWnd: FrameWnd
     width:          f32
+    isVirtual:      bool
+    isMultiSel:     bool
+    virtualFill:    func(*ListLine, u32)
+
     lines:          Array'(*ListLine)
     selection:      Array'(*ListLine)
     focusIndex:     u32 = Swag.U32.Max
     lineHeight:     f32 = 20
-    isVirtual:      bool
+
+    virtualCount:       u32
+    virtualFirstSel:    u32 = Swag.U32.Max
+    virtualLastSel:     u32 = Swag.U32.Max
 }
 
 struct ListView
@@ -48,6 +55,9 @@ impl IWnd for ListView
             return
         }
 
+        if evt.button != .Left
+            return
+
         idx := hitTest(evt.surfacePos)
 
         // We select by mouse release when the hittest line is selected
@@ -63,13 +73,13 @@ impl IWnd for ListView
         ctrl  := evt.modifiers & .Control
         shift := evt.modifiers & .Shift
 
-        if !ctrl and !shift
+        if !list.isMultiSel or (!ctrl and !shift)
             list.unselectAll()
 
         if idx != Swag.U32.Max
         {
             // Range selection
-            if shift
+            if shift and list.isMultiSel
             {
                 startIdx := list.focusIndex == Swag.U32.Max ? 0 : list.focusIndex
                 loop i: startIdx..idx
@@ -90,7 +100,7 @@ impl IWnd for ListView
 
     mtd onPaintEvent(evt: *PaintEvent)
     {
-        if list.lines.isEmpty()
+        if list.getLineCount() == 0
             return
 
         bc      := evt.bc
@@ -105,11 +115,25 @@ impl IWnd for ListView
         lastIdx  := getLastVisibleLineIndex()
         rect.y = firstIdx * list.lineHeight
 
-        loop i: firstIdx..lastIdx
+        if list.isVirtual
         {
-            line := list.lines[i]
-            paintLine(bc, line, rect)
-            rect.y = rect.bottom()
+            loop i: firstIdx..lastIdx
+            {
+                var line: ListLine
+                if list.virtualFill
+                    list.virtualFill(&line, i)
+                paintLine(bc, &line, rect)
+                rect.y = rect.bottom()
+            }
+        }
+        else
+        {
+            loop i: firstIdx..lastIdx
+            {
+                line := list.lines[i]
+                paintLine(bc, line, rect)
+                rect.y = rect.bottom()
+            }
         }
     }
 }
@@ -131,28 +155,31 @@ private impl ListView
 
     mtd getFirstVisibleLineIndex()->u32
     {
+        lc := list.getLineCount()
         idx := cast(u32) (scrollPos.y / list.lineHeight)
-        if idx >= list.lines.count
+        if idx >= lc
             return Swag.U32.Max
         return idx
     }
 
     mtd getLastVisibleLineIndex()->u32
     {
-        if list.lines.count == 0
+        lc := list.getLineCount()
+        if lc == 0
             return Swag.U32.Max
         idx := cast(u32) ((scrollPos.y + position.height) / list.lineHeight)
-        if idx >= list.lines.count
-            return cast(u32) list.lines.count - 1
+        if idx >= lc
+            return cast(u32) lc - 1
         return idx
     }
 
     mtd hitTest(surfacePos: Math.Point)->u32
     {
+        lc := list.getLineCount()
         res := surfaceToLocal(surfacePos)
         res.y += scrollPos.y
         idx := cast(u32) (res.y / list.lineHeight)
-        if idx >= list.lines.count
+        if idx >= lc
             return Swag.U32.Max
         return idx
     }
@@ -187,12 +214,22 @@ impl List
     // Unselect all lines
     mtd unselectAll()
     {
-        if selection.isEmpty()
-            return
+        if isVirtual
+        {
+            if virtualFirstSel == Swag.U32.Max
+                return
+            virtualFirstSel = Swag.U32.Max
+            virtualLastSel  = Swag.U32.Max
+        }
+        else
+        {
+            if selection.isEmpty()
+                return
+            visit line: selection
+                line.selectedIdx = Swag.U32.Max
+            selection.clear()
+        }
 
-        visit line: selection
-            line.selectedIdx = Swag.U32.Max
-        selection.clear()
         invalidate()
     }
 
@@ -237,17 +274,34 @@ impl List
         scrollWnd    := cast(*ScrollWnd) view
         clientRect   := scrollWnd.getClientRect()
         scrollWidth  := width orelse clientRect.width
-        scrollHeight := cast(f32) lines.count * lineHeight
+        scrollHeight := getLineCount() * lineHeight
         scrollWnd.setScrollSize(scrollWidth, scrollHeight)
         invalidate()
+    }
+
+    // Returns the number of lines in the list
+    mtd getLineCount()->u32
+    {
+        if isVirtual
+            return virtualCount
+        return cast(u32) lines.count
     }
 
     // Add one new line
     mtd createLine()->*ListLine
     {
-        Debug.assert(!isVirtual)
+        Debug.assert(!isVirtual, "createLine cannot be called on a virtual list")
         line := Memory.new'ListLine()
         lines.add(line)
         return line
+    }
+
+    // Set the number of lines in a virtual list
+    mtd setVirtualCount(count: u32)
+    {
+        Debug.assert(lines.isEmpty(), "setVirtualCount must only be called on a virtual list")
+        isVirtual = true
+        virtualCount = count
+        computeLayout()
     }
 }

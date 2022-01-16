@@ -56,7 +56,7 @@ struct ThemeMetrics
     comboBox_Padding:           f32 = 6
     comboBox_IconTextMargin:    f32 = 6
 
-    frameWnd_SquarePadding:     Math.Vector4 = @{3, 3, 3, 3}
+    frameWnd_SquarePadding:     Math.Vector4 = @{5, 5, 5, 5}
     frameWnd_RoundPadding:      Math.Vector4 = @{5, 5, 5, 5}
     frameWnd_FlatPadding:       Math.Vector4 = @{2, 2, 2, 2}
 }
