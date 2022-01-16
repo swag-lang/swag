@@ -254,14 +254,21 @@ func createView0(view: *Wnd)
 
     // Tab
     {
-        tab := Tab.create(view, @{600, 20, 400, 100}, id: "tab0")
+        frame := Wnd.create'FrameWnd(view, @{600, 20, 400, 100})
+        tab := Tab.create(frame, @{})
+        frame.view = tab
+        frame.setFrameForm(FrameWndForm.Round)
+        tab.dockStyle = .Center
 
         view0 := Wnd.create'Wnd(tab)
         view1 := Wnd.create'Wnd(tab)
-        tab.addItem("Tab0", app.theme.getIcon24(ThemeIcons24.Search, 16), view0)
-        tab.addItem("Tab1", @{}, view1)
         Label.create(view0, "view0", @{10, 10, 50, 30})
         Label.create(view1, "view1", @{10, 10, 50, 30})
+
+        tab.addItem("Tab0", app.theme.getIcon24(ThemeIcons24.Search, 16), view0)
+        tab.addItem("Tab1", @{}, view1)
+
+        frame.sendResizeEvent()
     }
 
     {

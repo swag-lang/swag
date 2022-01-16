@@ -536,7 +536,7 @@ impl Painter
         cmd.clippingRegion.mode = mode
     }
 
-    // Start painting in the clipping buffer
+    // Set the clipping region mode
     mtd setClippingRegionMode(mode: ClippingMode)
     {
         cmd := newCommand(CommandId.SetClippingRegionMode, true)

@@ -283,6 +283,7 @@ impl Tab
     {
         Debug.assert(parent != null)
         res := Wnd.create'Tab(parent, null, position, id)
+        res.focusStrategy = .None
         res.setForm(TabForm.Flat)
         return res
     }
