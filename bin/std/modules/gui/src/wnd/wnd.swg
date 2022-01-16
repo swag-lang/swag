@@ -103,7 +103,7 @@ impl IWnd for Wnd
         case SetFocus, KillFocus:
             itf.onFocusEvent(cast(*FocusEvent) evt)
         case Command:
-            itf.onCommandEvent(cast(*CommandEvent) evt)            
+            itf.onCommandEvent(cast(*CommandEvent) evt)
         }
     }
 
@@ -623,6 +623,7 @@ impl Wnd
             evt := FocusEvent{kind: EventKind.KillFocus}
             evt.other = self
             surface.app.keybFocusWnd.sendEvent(&evt)
+            surface.app.keybFocusWnd.invalidate()
         }
 
         evt := FocusEvent{kind: EventKind.SetFocus}
@@ -678,13 +679,13 @@ impl Wnd
 
     mtd postCommandEvent(cmdId: WndId)
     {
-        if cmdId == null 
+        if cmdId == null
             return
         evt := Event.create'CommandEvent()
         evt.id = cmdId
         evt.source = self
         postEvent(evt)
-    }    
+    }
 
     mtd processEvent(evt: *Event)
     {

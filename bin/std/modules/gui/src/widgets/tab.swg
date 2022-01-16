@@ -53,7 +53,7 @@ struct Tab
 
     views:          Array'(*TabItem)
     selectedIdx:    u32
-    hotIdx:         u32
+    hotIdx:         u32 = Swag.U32.Max
     barHeight:      f32
 }
 

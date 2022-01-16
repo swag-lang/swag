@@ -84,4 +84,11 @@ struct ThemeImageRects
 
     comboBox_Shadow:            ThemeImageRect = @{{189,1,66,66}, 24}
     comboBoxItem_HotBk:         ThemeImageRect = @{{57,197,27,27}, 12}
+
+    list_SquareBk:              ThemeImageRect = @{{1,57,27,27}, 5}
+    list_SquareBorder:          ThemeImageRect = @{{29,57,27,27}, 5}
+    list_RoundBk:               ThemeImageRect = @{{1,85,27,27}, 13}
+    list_RoundBorder:           ThemeImageRect = @{{29,85,27,27}, 13}
+    list_FlatBk:                ThemeImageRect = @{{1,113,27,27}, 5}
+    list_FlatBorder:            ThemeImageRect = @{{29,113,27,27}, 5}
 }

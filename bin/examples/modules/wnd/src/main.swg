@@ -21,6 +21,7 @@ var app: Application
 
     createView0(view0)
     createView1(view1)
+    tab.select(1)
     surface0.show()
 
     //surface1 := try app.createSurface(100+W+10, 100, W, H, SurfaceFlags.Secondary | SurfaceFlags.SmallCaption | SurfaceFlags.CloseBtn)
