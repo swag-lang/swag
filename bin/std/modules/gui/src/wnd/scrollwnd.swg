@@ -26,7 +26,7 @@ public struct ScrollWnd
     correcMoving:   f32
 }
 
-impl IWnd for ScrollWnd
+public impl IWnd for ScrollWnd
 {
     mtd onResizeEvent(evt: *ResizeEvent)
     {
@@ -282,24 +282,6 @@ impl ScrollWnd
 
 public impl ScrollWnd
 {
-    #[Swag.Discardable]
-    func create(parent: *Wnd, position: Math.Rectangle, id: string = null)->*ScrollWnd
-    {
-        res := Wnd.create'ScrollWnd(parent, "", position, id)
-        res.createView'Wnd()
-        res.sendCreateEvent()
-        return res
-    }
-
-    #[Swag.Discardable]
-    func(T) create(parent: *Wnd, position: Math.Rectangle, id: string = null)->*ScrollWnd
-    {
-        res := Wnd.create'ScrollWnd(parent, "", position, id)
-        res.createView'T()
-        res.sendCreateEvent()
-        return res
-    }
-
     // Get the current scroll position
     mtd getScrollPos()->Math.Point
     {

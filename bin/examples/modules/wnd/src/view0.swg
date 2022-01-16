@@ -300,7 +300,8 @@ func createView0(view: *Wnd)
 
     // Scroll
     {
-        swnd := ScrollWnd.create(view, @{600, 350, 400, 200}, id: "scroll")
+        swnd := Wnd.create'ScrollWnd(view, @{600, 350, 400, 200}, id: "scroll")
+        swnd.createView'Wnd()
         swnd.view.backgroundStyle = .Dialog
         button1 := PushButton.create(swnd.view, "Normal", @{5, 15})
         button2 := PushButton.create(swnd.view, "Other", @{5, 55})

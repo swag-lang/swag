@@ -302,13 +302,16 @@ private impl ComboBox
 
         popup = Wnd.create'ComboBoxPopup(&parent.surface.wnd, position, id)
         popup.padding = metrics.comboBox_BorderSize + metrics.comboBox_ShadowSize
-        scrollWnd := ScrollWnd.create'ComboBoxPopupView(popup, @{})
+
+        scrollWnd := popup.createView'ScrollWnd()
         scrollWnd.dockStyle = .Center
         scrollWnd.focusStrategy = .None
         scrollWnd.smallBarSize = true
-        scrollWnd.setScrollSize(0, cast(f32) items.count * heightItem)
-        view := cast(*ComboBoxPopupView) scrollWnd.view
+
+        view := scrollWnd.createView'ComboBoxPopupView()
         view.combo = self
+
+        scrollWnd.setScrollSize(0, cast(f32) items.count * heightItem)
         popup.sendCreateEvent()
 
         pos := getSurfaceRect()
