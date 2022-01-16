@@ -118,10 +118,12 @@ impl CheckButton
     #[Swag.Discardable]
     func create(parent: *Wnd, name: string, position: Math.Rectangle, id: string = null)->*CheckButton
     {
+        Debug.assert(parent != null)
         pos := position
-        if pos.height == 0 pos.height = parent.getThemeMetrics().btnPush_Height
-        if pos.width == 0  pos.width  = parent.getThemeMetrics().btnPush_Width
-        res := Wnd.create'CheckButton(parent, name, pos, id)
-        return res
+        if pos.height == 0
+            pos.height = parent.getThemeMetrics().btnPush_Height
+        if pos.width == 0
+            pos.width = parent.getThemeMetrics().btnPush_Width
+        return Wnd.create'CheckButton(parent, name, pos, id)
     }
 }

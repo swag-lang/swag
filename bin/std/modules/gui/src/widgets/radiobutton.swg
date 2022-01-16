@@ -102,10 +102,12 @@ impl RadioButton
     #[Swag.Discardable]
     func create(parent: *Wnd, name: string, position: Math.Rectangle, id: string = null)->*RadioButton
     {
+        Debug.assert(parent != null)
         pos := position
-        if pos.height == 0 pos.height = parent.getThemeMetrics().btnPush_Height
-        if pos.width == 0  pos.width  = parent.getThemeMetrics().btnPush_Width
-        res := Wnd.create'RadioButton(parent, name, pos, id)
-        return res
+        if pos.height == 0
+            pos.height = parent.getThemeMetrics().btnPush_Height
+        if pos.width == 0
+            pos.width = parent.getThemeMetrics().btnPush_Width
+        return Wnd.create'RadioButton(parent, name, pos, id)
     }
 }

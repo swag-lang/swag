@@ -156,11 +156,12 @@ impl PushButton
     #[Swag.Discardable]
     func create(parent: *Wnd, name: string, position: Math.Rectangle, id: string = null)->*PushButton
     {
-        res := Wnd.create'PushButton(parent, name, position, id)
-        if res.position.height == 0
-            res.position.height = res.getThemeMetrics().btnPush_Height
-        if res.position.width == 0
-            res.position.width  = res.getThemeMetrics().btnPush_Width
-        return res
+        Debug.assert(parent != null)
+        pos := position
+        if pos.height == 0
+            pos.height = parent.getThemeMetrics().btnPush_Height
+        if pos.width == 0
+            pos.width = parent.getThemeMetrics().btnPush_Width
+        return Wnd.create'PushButton(parent, name, pos, id)
     }
 }

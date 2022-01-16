@@ -722,11 +722,14 @@ impl EditBox
     #[Swag.Discardable]
     func create(parent: *Wnd, content: string, position: Math.Rectangle, id: string = null)->*EditBox
     {
-        res := Wnd.create'EditBox(parent, null, position, id)
-        if res.position.height == 0
-            res.position.height = res.getThemeMetrics().editBox_Height
-        if res.position.width == 0
-            res.position.width  = res.getThemeMetrics().editBox_Width
+        Debug.assert(parent != null)
+        pos := position
+        if pos.height == 0
+            pos.height = parent.getThemeMetrics().editBox_Height
+        if pos.width == 0
+            pos.width = parent.getThemeMetrics().editBox_Width
+        res := Wnd.create'EditBox(parent, null, pos, id)
+
         res.setForm(EditBoxForm.Square)
         res.text = content
         res.focusStrategy = .MousePressed

@@ -72,6 +72,7 @@ impl IconButton
     #[Swag.Discardable]
     func create(parent: *Wnd, icon: Icon, position: Math.Rectangle, id: string = null)->*IconButton
     {
+        Debug.assert(parent != null)
         res := Wnd.create'IconButton(parent, null, position, id)
         res.icon = icon
         return res

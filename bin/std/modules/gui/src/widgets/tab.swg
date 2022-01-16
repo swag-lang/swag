@@ -281,7 +281,8 @@ impl Tab
     #[Swag.Discardable]
     func create(parent: *Wnd, position: Math.Rectangle, id: string = null)->*Tab
     {
-        res := Wnd.create'Tab(parent, "", position, id)
+        Debug.assert(parent != null)
+        res := Wnd.create'Tab(parent, null, position, id)
         res.setForm(TabForm.Flat)
         return res
     }

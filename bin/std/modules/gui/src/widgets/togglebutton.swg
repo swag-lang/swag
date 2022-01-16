@@ -80,9 +80,12 @@ impl ToggleButton
     #[Swag.Discardable]
     func create(parent: *Wnd, position: Math.Rectangle, id: string = null)->*ToggleButton
     {
+        Debug.assert(parent != null)
         pos := position
-        if pos.height == 0 pos.height = parent.getThemeMetrics().btnToggle_Height
-        if pos.width == 0  pos.width  = parent.getThemeMetrics().btnToggle_Width
-        return Wnd.create'ToggleButton(parent, "", pos, id)
+        if pos.height == 0
+            pos.height = parent.getThemeMetrics().btnToggle_Height
+        if pos.width == 0
+            pos.width = parent.getThemeMetrics().btnToggle_Width
+        return Wnd.create'ToggleButton(parent, null, pos, id)
     }
 }

@@ -346,10 +346,13 @@ impl Slider
     #[Swag.Discardable]
     func create(parent: *Wnd, position: Math.Rectangle, id: string = null, range: bool = false)->*Slider
     {
+        Debug.assert(parent != null)
         pos := position
-        if pos.height == 0 pos.height = parent.getThemeMetrics().slider_Height
-        if pos.width == 0  pos.width  = parent.getThemeMetrics().slider_Width
-        res := Wnd.create'Slider(parent, "", pos, id)
+        if pos.height == 0
+            pos.height = parent.getThemeMetrics().slider_Height
+        if pos.width == 0
+            pos.width  = parent.getThemeMetrics().slider_Width
+        res := Wnd.create'Slider(parent, null, pos, id)
         res.isRange = range
         return res
     }

@@ -344,14 +344,17 @@ impl ComboBox
     #[Swag.Discardable]
     func create(parent: *Wnd, position: Math.Rectangle, id: string = null, editBox = false)->*ComboBox
     {
+        Debug.assert(parent != null)
         pos := position
-        if pos.height == 0 pos.height = parent.getThemeMetrics().comboBox_Height
-        if pos.width == 0  pos.width  = parent.getThemeMetrics().comboBox_Width
+        if pos.height == 0
+            pos.height = parent.getThemeMetrics().comboBox_Height
+        if pos.width == 0
+            pos.width = parent.getThemeMetrics().comboBox_Width
         res := Wnd.create'ComboBox(parent, null, pos, id)
 
         if editBox
         {
-            res.editBox = EditBox.create(res, "", @{})
+            res.editBox = EditBox.create(res, null, @{})
             res.editBox.setForm(EditBoxForm.Transparent)
         }
 

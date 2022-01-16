@@ -79,6 +79,7 @@ impl Label
     #[Swag.Discardable]
     func create(parent: *Wnd, name: string, position: Math.Rectangle, id: string = null)->*Label
     {
+        Debug.assert(parent != null)
         return Wnd.create'Label(parent, name, position, id)
     }
 }
