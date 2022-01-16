@@ -217,5 +217,6 @@ struct ThemeColors
     frameWnd_DisabledBk:            Color = Gray5
     frameWnd_FocusBk:               Color = Gray6
 
-    listItem_SelectedBk:            Color = Blue
+    listItem_FocusSelectedBk:       Color = Blue
+    listItem_SelectedBk:            Color = Gray5
 }

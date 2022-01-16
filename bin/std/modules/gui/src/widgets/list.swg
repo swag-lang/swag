@@ -26,8 +26,9 @@ struct List
 
 struct ListView
 {
-    using wnd:  Wnd
-    list:       *List
+    using wnd:              Wnd
+    list:                   *List
+    discardMouseRelease:    bool
 }
 
 public impl ListLine
@@ -46,10 +47,16 @@ impl IWnd for ListView
             return
         }
 
-        if evt.kind != .MouseReleased
+        idx := hitTest(evt.surfacePos)
+        if evt.kind == .MousePressed and idx != Swag.U32.Max and list.lines[idx].isSelected()
+        {
+            discardMouseRelease = false
             return
+        }
+        if evt.kind == .MouseReleased and discardMouseRelease
+            return
+        discardMouseRelease = evt.kind == .MousePressed
 
-        idx   := hitTest(evt.surfacePos)
         ctrl  := evt.modifiers & .Control
         shift := evt.modifiers & .Shift
 
@@ -91,8 +98,9 @@ impl IWnd for ListView
         font := getTheme().res.fontDefault.regular
         visit line: list.lines
         {
+            // Selection
             if line.isSelected()
-                painter.fillRect(rect, colors.listItem_SelectedBk)
+                painter.fillRect(rect, hasFocus() ? colors.listItem_FocusSelectedBk : colors.listItem_SelectedBk)
 
             painter.drawString(rect.x, rect.y, "Zaa", font, Argb.White)
             rect.y = rect.bottom()
