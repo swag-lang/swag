@@ -1203,8 +1203,9 @@ void ByteCodeOptimizer::reduceCmpJump(ByteCodeOptContext* context, ByteCodeInstr
     // NegBool followed by jump bool
     if (ip[0].op == ByteCodeOp::NegBool &&
         ip[1].op == ByteCodeOp::JumpIfFalse &&
+        !(ip[0].flags & BCI_IMM_B) &&
         !(ip[1].flags & BCI_IMM_A) &&
-        !(ip[1].flags & BCI_JUMP_DEST) &&
+        !(ip[1].flags & BCI_START_STMT) &&
         ip[0].a.u32 == ip[1].a.u32)
     {
         SET_OP(ip + 1, ByteCodeOp::JumpIfTrue);
@@ -1213,8 +1214,9 @@ void ByteCodeOptimizer::reduceCmpJump(ByteCodeOptContext* context, ByteCodeInstr
 
     if (ip[0].op == ByteCodeOp::NegBool &&
         ip[1].op == ByteCodeOp::JumpIfTrue &&
+        !(ip[0].flags & BCI_IMM_B) &&
         !(ip[1].flags & BCI_IMM_A) &&
-        !(ip[1].flags & BCI_JUMP_DEST) &&
+        !(ip[1].flags & BCI_START_STMT) &&
         ip[0].a.u32 == ip[1].a.u32)
     {
         SET_OP(ip + 1, ByteCodeOp::JumpIfFalse);
