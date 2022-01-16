@@ -98,6 +98,9 @@ impl FrameWnd
     // Set the editbox form
     mtd setFrameForm(form: FrameWndForm)
     {
+        if self.frameForm == #self.form
+            return
+
         self.frameForm = #self.form
 
         #[Swag.Complete]
@@ -113,6 +116,6 @@ impl FrameWnd
             padding = @{0, 0, 0, 0}
         }
 
-        invalidate()
+        sendResizeEvent()
     }
 }

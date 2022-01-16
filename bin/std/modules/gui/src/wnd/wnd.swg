@@ -476,8 +476,7 @@ impl Wnd
     // Apply the current layout (childs constraints)
     mtd applyLayout()
     {
-        clientRect := getClientRect()
-        clientRect.applyPadding(padding)
+        clientRect := getClientRectPadding()
 
         var centerLayout: Array'(*Wnd)
         visit c: childs

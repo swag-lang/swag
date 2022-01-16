@@ -34,7 +34,7 @@ impl IWnd for ListView
         font := getTheme().res.fontDefault.regular
         visit line: list.lines
         {
-            evt.bc.painter.drawString(0, y, "aaa", font, Argb.White)
+            evt.bc.painter.drawString(0, y, "Zaa", font, Argb.White)
             y += 20
         }
     }
@@ -62,10 +62,10 @@ impl List
 
     mtd computeLayout()
     {
-        clientRect   := getClientRect()
+        scrollWnd    := cast(*ScrollWnd) view
+        clientRect   := scrollWnd.getClientRect()
         scrollWidth  := clientRect.width
         scrollHeight := cast(f32) lines.count * lineHeight
-        scrollWnd := cast(*ScrollWnd) view
         scrollWnd.setScrollSize(scrollWidth, scrollHeight)
         invalidate()
     }

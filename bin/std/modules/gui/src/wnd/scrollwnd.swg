@@ -238,16 +238,16 @@ impl ScrollWnd
 
     mtd computeLayout()
     {
-        scrollSize.x = Math.max(scrollSize.x, position.width)
-        scrollSize.y = Math.max(scrollSize.y, position.height)
+        sx := Math.max(scrollSize.x, position.width)
+        sy := Math.max(scrollSize.y, position.height)
 
         metrics := getThemeMetrics()
         showBarV, showBarH = false
         padding.z, padding.w = 0
 
-        if scrollSize.y > position.height
+        if sy > position.height
             showBarV = true
-        if scrollSize.x > position.width
+        if sx > position.width
             showBarH = true
 
         barSize := smallBarSize ? metrics.scrollBar_SmallSize : metrics.scrollBar_NormalSize
@@ -258,9 +258,9 @@ impl ScrollWnd
             vh := position.height
             if showBarH vh -= barSize
 
-            sizeBoxV = (vh / scrollSize.y) * position.height
+            sizeBoxV = (vh / sy) * position.height
             sizeBoxV = Math.max(sizeBoxV, 10)
-            posBoxV = view.scrollPos.y / scrollSize.y
+            posBoxV = view.scrollPos.y / sy
             posBoxV *= vh
         }
 
@@ -270,9 +270,9 @@ impl ScrollWnd
             vh := position.width
             if showBarV vh -= barSize
 
-            sizeBoxH = (vh / scrollSize.x) * position.width
+            sizeBoxH = (vh / sx) * position.width
             sizeBoxH = Math.max(sizeBoxH, 10)
-            posBoxH = view.scrollPos.x / scrollSize.x
+            posBoxH = view.scrollPos.x / sx
             posBoxH *= vh
         }
 
