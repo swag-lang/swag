@@ -256,6 +256,7 @@ func createView0(view: *Wnd)
     {
         frame := Wnd.create'FrameWnd(view, @{600, 20, 400, 100})
         tab := Tab.create(frame, @{})
+        tab.style.addStyleSheetColors("tabBar_FlatBk 0x0")
         frame.view = tab
         frame.setFrameForm(FrameWndForm.Round)
         tab.dockStyle = .Center
