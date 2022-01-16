@@ -5,6 +5,7 @@ struct ListLine
 {
     items:          Array'(*ListItem)
     selectedIdx:    u32 = Swag.U32.Max
+    userData:       *void
 }
 
 struct ListItem
@@ -31,7 +32,7 @@ struct ListView
     discardMouseRelease:    bool
 }
 
-public impl ListLine
+impl ListLine
 {
     #[Swag.Inline]
     mtd isSelected() => selectedIdx != Swag.U32.Max
@@ -48,6 +49,8 @@ impl IWnd for ListView
         }
 
         idx := hitTest(evt.surfacePos)
+
+        // We select by mouse release when the hittest line is selected
         if evt.kind == .MousePressed and idx != Swag.U32.Max and list.lines[idx].isSelected()
         {
             discardMouseRelease = false
@@ -87,6 +90,9 @@ impl IWnd for ListView
 
     mtd onPaintEvent(evt: *PaintEvent)
     {
+        if list.lines.isEmpty()
+            return
+
         bc      := evt.bc
         painter := bc.painter
         colors  := getThemeColors()
@@ -95,14 +101,14 @@ impl IWnd for ListView
         rect.width = getDisplayWidth()
         rect.height = list.lineHeight
 
-        font := getTheme().res.fontDefault.regular
-        visit line: list.lines
-        {
-            // Selection
-            if line.isSelected()
-                painter.fillRect(rect, hasFocus() ? colors.listItem_FocusSelectedBk : colors.listItem_SelectedBk)
+        firstIdx := getFirstVisibleLineIndex()
+        lastIdx  := getLastVisibleLineIndex()
+        rect.y = firstIdx * list.lineHeight
 
-            painter.drawString(rect.x, rect.y, "Zaa", font, Argb.White)
+        loop i: firstIdx..lastIdx
+        {
+            line := list.lines[i]
+            paintLine(bc, line, rect)
             rect.y = rect.bottom()
         }
     }
@@ -110,6 +116,37 @@ impl IWnd for ListView
 
 private impl ListView
 {
+    mtd paintLine(bc: PaintContext, line: *ListLine, rect: Math.Rectangle)
+    {
+        painter := bc.painter
+        colors  := getThemeColors()
+        font    := getTheme().res.fontDefault.regular
+
+        if line.isSelected()
+            painter.fillRect(rect, hasFocus() ? colors.listItem_FocusSelectedBk : colors.listItem_SelectedBk)
+
+        str := Format.toString("Zaa %", line)
+        painter.drawString(rect.x, rect.y, str, font, Argb.White)
+    }
+
+    mtd getFirstVisibleLineIndex()->u32
+    {
+        idx := cast(u32) (scrollPos.y / list.lineHeight)
+        if idx >= list.lines.count
+            return Swag.U32.Max
+        return idx
+    }
+
+    mtd getLastVisibleLineIndex()->u32
+    {
+        if list.lines.count == 0
+            return Swag.U32.Max
+        idx := cast(u32) ((scrollPos.y + position.height) / list.lineHeight)
+        if idx >= list.lines.count
+            return cast(u32) list.lines.count - 1
+        return idx
+    }
+
     mtd hitTest(surfacePos: Math.Point)->u32
     {
         res := surfaceToLocal(surfacePos)
@@ -188,6 +225,11 @@ impl List
         invalidate()
     }
 
+    // Retreive selected lines
+    mtd getSelection()->Array'(*ListLine)
+    {
+        return selection
+    }
 
     // Compute global layout, once all lines have been added
     mtd computeLayout()
