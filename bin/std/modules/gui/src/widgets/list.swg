@@ -46,13 +46,13 @@ impl List
     func createSimple(parent: *Wnd, position: Math.Rectangle, id: string = null)->*List
     {
         list := Wnd.create'List(parent, "", position, id)
-        scrollWnd := ScrollWnd.create'ListView(list, @{})
+
+        scrollWnd := list.createView'ScrollWnd()
         scrollWnd.dockStyle = .Center
         scrollWnd.focusStrategy = .None
         scrollWnd.backgroundStyle = .Transparent
 
-        list.view = scrollWnd
-        listView := cast(*ListView) scrollWnd.view
+        listView := scrollWnd.createView'ListView()
         listView.backgroundStyle = .Transparent
         listView.list = list
 
