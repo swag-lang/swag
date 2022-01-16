@@ -24,6 +24,8 @@ public struct ScrollWnd
 
     isMoving:       bool
     correcMoving:   f32
+    offsetClientV:  f32
+    offsetClientH:  f32
 }
 
 public impl IWnd for ScrollWnd
@@ -60,13 +62,13 @@ public impl IWnd for ScrollWnd
 
             if isPressedV
             {
-                f := (pos.y - correcMoving) / clientRect.height
+                f := (pos.y - correcMoving) / (clientRect.height - offsetClientV)
                 f *= scrollSize.y
                 setScrollPos(view.scrollPos.x, f)
             }
             elif isPressedH
             {
-                f := (pos.x - correcMoving) / clientRect.width
+                f := (pos.x - correcMoving) / (clientRect.width - offsetClientH)
                 f *= scrollSize.x
                 setScrollPos(f, view.scrollPos.y)
             }
@@ -259,7 +261,13 @@ impl ScrollWnd
             if showBarH vh -= barSize
 
             sizeBoxV = (vh / sy) * position.height
-            sizeBoxV = Math.max(sizeBoxV, 10)
+            if sizeBoxV < metrics.scrollBar_BoxMinHeight
+            {
+                offsetClientV = metrics.scrollBar_BoxMinHeight - sizeBoxV
+                vh -= offsetClientV
+                sizeBoxV = metrics.scrollBar_BoxMinHeight
+            }
+
             posBoxV = view.scrollPos.y / sy
             posBoxV *= vh
         }
@@ -271,7 +279,13 @@ impl ScrollWnd
             if showBarV vh -= barSize
 
             sizeBoxH = (vh / sx) * position.width
-            sizeBoxH = Math.max(sizeBoxH, 10)
+            if sizeBoxH < metrics.scrollBar_BoxMinHeight
+            {
+                offsetClientH = metrics.scrollBar_BoxMinHeight - sizeBoxH
+                vh -= offsetClientH
+                sizeBoxH = metrics.scrollBar_BoxMinHeight
+            }
+
             posBoxH = view.scrollPos.x / sx
             posBoxH *= vh
         }

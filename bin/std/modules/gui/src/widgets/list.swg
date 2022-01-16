@@ -122,7 +122,7 @@ impl IWnd for ListView
                 var line: ListLine
                 if list.virtualFill
                     list.virtualFill(&line, i)
-                paintLine(bc, &line, rect)
+                paintLine(bc, i, &line, rect)
                 rect.y = rect.bottom()
             }
         }
@@ -131,7 +131,7 @@ impl IWnd for ListView
             loop i: firstIdx..lastIdx
             {
                 line := list.lines[i]
-                paintLine(bc, line, rect)
+                paintLine(bc, i, line, rect)
                 rect.y = rect.bottom()
             }
         }
@@ -140,7 +140,7 @@ impl IWnd for ListView
 
 private impl ListView
 {
-    mtd paintLine(bc: PaintContext, line: *ListLine, rect: Math.Rectangle)
+    mtd paintLine(bc: PaintContext, idx: u32, line: *ListLine, rect: Math.Rectangle)
     {
         painter := bc.painter
         colors  := getThemeColors()
@@ -149,7 +149,7 @@ private impl ListView
         if line.isSelected()
             painter.fillRect(rect, hasFocus() ? colors.listItem_FocusSelectedBk : colors.listItem_SelectedBk)
 
-        str := Format.toString("Zaa %", line)
+        str := Format.toString("Zaa %", idx)
         painter.drawString(rect.x, rect.y, str, font, Argb.White)
     }
 
