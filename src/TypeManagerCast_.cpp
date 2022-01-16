@@ -3058,10 +3058,11 @@ bool TypeManager::convertLiteralTupleToStructVar(SemanticContext* context, TypeI
     // For a tuple initialization, every parameters must be covered
     if (typeStruct->flags & TYPEINFO_STRUCT_IS_TUPLE)
     {
-        if (countParams > typeStruct->fields.size())
-            return context->report(fromNode->childs[(int) typeStruct->fields.size()], Fmt(Err(Err0195), typeStruct->fields.size(), countParams));
-        if (countParams < typeStruct->fields.size())
-            return context->report(fromNode->childs.back(), Fmt(Err(Err0205), typeStruct->fields.size(), countParams));
+        int maxCount = (int) typeStruct->fields.size();
+        if (countParams > maxCount)
+            return context->report(fromNode->childs[maxCount], Fmt(Err(Err0195), maxCount, countParams));
+        if (countParams < maxCount)
+            return context->report(fromNode->childs.back(), Fmt(Err(Err0205), maxCount, countParams));
     }
 
     // Add the 2 nodes to the semantic
