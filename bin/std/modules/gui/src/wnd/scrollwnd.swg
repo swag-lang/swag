@@ -258,14 +258,15 @@ impl ScrollWnd
         {
             padding.z = barSize
             vh := position.height
-            if showBarH vh -= barSize
+            if showBarH
+                vh -= barSize
 
             sizeBoxV = (vh / sy) * position.height
-            if sizeBoxV < metrics.scrollBar_BoxMinHeight
+            if sizeBoxV < metrics.scrollBar_BoxMinSize
             {
-                offsetClientV = metrics.scrollBar_BoxMinHeight - sizeBoxV
+                offsetClientV = metrics.scrollBar_BoxMinSize - sizeBoxV
                 vh -= offsetClientV
-                sizeBoxV = metrics.scrollBar_BoxMinHeight
+                sizeBoxV = metrics.scrollBar_BoxMinSize
             }
 
             posBoxV = view.scrollPos.y / sy
@@ -276,14 +277,15 @@ impl ScrollWnd
         {
             padding.w = barSize
             vh := position.width
-            if showBarV vh -= barSize
+            if showBarV
+                vh -= barSize
 
             sizeBoxH = (vh / sx) * position.width
-            if sizeBoxH < metrics.scrollBar_BoxMinHeight
+            if sizeBoxH < metrics.scrollBar_BoxMinSize
             {
-                offsetClientH = metrics.scrollBar_BoxMinHeight - sizeBoxH
+                offsetClientH = metrics.scrollBar_BoxMinSize - sizeBoxH
                 vh -= offsetClientH
-                sizeBoxH = metrics.scrollBar_BoxMinHeight
+                sizeBoxH = metrics.scrollBar_BoxMinSize
             }
 
             posBoxH = view.scrollPos.x / sx
