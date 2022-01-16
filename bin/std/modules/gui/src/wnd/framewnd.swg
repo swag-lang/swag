@@ -19,10 +19,12 @@ impl IWnd for FrameWnd
 
 public impl FrameWnd
 {
-    mtd(T) createView()
+    #[Swag.Discardable]
+    mtd(T) createView()->*T
     {
         view = Wnd.create'T(self, "", position)
         view.backgroundStyle = .Window
         sendResizeEvent()
+        return cast(*T) view
     }
 }

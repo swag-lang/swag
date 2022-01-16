@@ -22,18 +22,50 @@ enum ListForm
 struct List
 {
     using scrollWnd:  ScrollWnd
-    form: ListForm = Square
+    form:       ListForm = Square
+    lines:      Array'(*ListLine)
+    lineHeight: f32 = 20
+    isVirtual:  bool
+}
+
+struct ListView
+{
+    using wnd: Wnd
 }
 
 impl IWnd for List
 {
     mtd onPaintEvent(evt: *PaintEvent)
     {
-        bc     := evt.bc
+        paintBackBorders(evt.bc)
+        ScrollWnd.IWnd.onPaintEvent(self, evt)
+    }
+}
+
+impl IWnd for ListView
+{
+    mtd onPaintEvent(evt: *PaintEvent)
+    {
+        list := cast(*List) parent
+
+        y := 0'f32
+        font := getTheme().res.fontDefault.regular
+        visit line: list.lines
+        {
+            evt.bc.painter.drawString(0, y, "aaa", font, Argb.White)
+            y += 20
+        }
+    }
+}
+
+private impl List
+{
+    mtd paintBackBorders(bc: *PaintContext)
+    {
         painter := bc.painter
-        theme  := getTheme()
-        colors := getThemeColors()
-        rects  := getThemeRects()
+        theme   := getTheme()
+        colors  := getThemeColors()
+        rects   := getThemeRects()
 
         var subRectBk:      *ThemeImageRect
         var subRectBorder:  *ThemeImageRect
@@ -72,18 +104,34 @@ impl IWnd for List
     }
 }
 
-private impl List
-{
-}
-
 impl List
 {
     #[Swag.Discardable]
     func createSimple(parent: *Wnd, position: Math.Rectangle, id: string = null)->*List
     {
-        res := Wnd.create'List(parent, null, position, id)
-        res.sendCreateEvent()
-        return res
+        list     := Wnd.create'List(parent, "", position, id)
+        listView := list.createView'ListView()
+        listView.backgroundStyle = .Transparent
+
+        list.sendCreateEvent()
+        return list
+    }
+
+    mtd computeLayout()
+    {
+        clientRect   := getClientRect()
+        scrollWidth  := clientRect.width
+        scrollHeight := cast(f32) lines.count * lineHeight
+        setScrollSize(scrollWidth, scrollHeight)
+        invalidate()
+    }
+
+    mtd createLine()->*ListLine
+    {
+        Debug.assert(!isVirtual)
+        line := Memory.new'ListLine()
+        lines.add(line)
+        return line
     }
 
     // Set the editbox form
@@ -95,11 +143,11 @@ impl List
         switch self.form
         {
         case Square:
-            padding = getThemeMetrics().editBox_SquarePadding
+            padding = getThemeMetrics().list_SquarePadding
         case Round:
-            padding = getThemeMetrics().editBox_RoundPadding
+            padding = getThemeMetrics().list_RoundPadding
         case Flat:
-            padding = getThemeMetrics().editBox_FlatPadding
+            padding = getThemeMetrics().list_FlatPadding
         }
 
         invalidate()
