@@ -5,7 +5,6 @@ enum FrameWndForm
 {
     Square
     Round
-    Flat
     Transparent
 }
 
@@ -14,6 +13,7 @@ struct FrameWnd
     using wnd:      Wnd
     view:           *Wnd
     frameForm       = FrameWndForm.Transparent
+    hasBorders      = true
     focusBorder     = false
 }
 
@@ -22,6 +22,8 @@ impl IWnd for FrameWnd
     mtd onPaintEvent(evt: *PaintEvent)
     {
         if frameForm == .Transparent
+            return
+        if !hasBorders and evt.kind == .PostChilds
             return
 
         bc      := evt.bc
@@ -43,8 +45,6 @@ impl IWnd for FrameWnd
         case Round:
             subRectBk = &rects.frame_RoundBk
             subRectBorder = &rects.frame_RoundBorder
-        case Flat:
-            subRectBk = &rects.frame_FlatBk
         }
 
         // Display focus borders when the focus wnd is a child of me
@@ -72,7 +72,7 @@ impl IWnd for FrameWnd
         clientRect := getClientRect()
         if evt.kind == .BeforeChilds
             theme.drawSubRect(painter, clientRect, subRectBk, colorBk)
-        if frameForm != .Flat and evt.kind == .PostChilds
+        elif evt.kind == .PostChilds
             theme.drawSubRect(painter, clientRect, subRectBorder, colorBorder)
     }
 
@@ -103,7 +103,6 @@ impl FrameWnd
             return
 
         self.frameForm = #self.form
-        hasPostChildsPaint = false
 
         #[Swag.Complete]
         switch self.frameForm
@@ -114,10 +113,9 @@ impl FrameWnd
         case Round:
             hasPostChildsPaint = true
             padding = getThemeMetrics().frameWnd_RoundPadding
-        case Flat:
-            padding = getThemeMetrics().frameWnd_FlatPadding
         case Transparent:
-            padding = @{0, 0, 0, 0}
+            hasPostChildsPaint = false
+            padding.clear()
         }
 
         sendResizeEvent()

@@ -29,6 +29,7 @@ func createView1(view: *Wnd)
 
     {
         list := createListSimple(view)
+        list.setFrameForm(FrameWndForm.Square)
         list.selectionMode = .None
         list.setPosition(@{280, 5, 250, 300})
     }
@@ -41,7 +42,8 @@ func createView1(view: *Wnd)
 
     {
         list := List.createSimple(view, @{830, 5, 250, 300})
-        list.setFrameForm(FrameWndForm.Square)
+        list.setFrameForm(FrameWndForm.Round)
+        list.hasBorders = false
         list.selectionMode = .MultiSimple
         list.hideSelection = true
         list.horizontalExtent = 500
