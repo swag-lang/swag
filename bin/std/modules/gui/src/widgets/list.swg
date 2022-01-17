@@ -1,16 +1,46 @@
 #global public
 using Core, Pixel
 
+struct ListItem
+{
+    name:   RichString
+    icon:   Icon
+    column: u32
+}
+
 struct ListLine
 {
     items:      Array'(*ListItem)
     userData:   *void
 }
 
-struct ListItem
+impl ListLine
 {
-    name:   RichString
-    icon:   Icon
+    mtd opDrop()
+    {
+        visit item: items
+            Memory.delete(item)
+    }
+
+    // Initialize a given column item
+    mtd setItem(column: u32, name: string, icon: Icon = @{})
+    {
+        visit item: items
+        {
+            if item.column == column
+            {
+                item.name = name
+                item.icon = icon
+                return
+            }
+        }
+
+        item := Memory.new'ListItem()
+        item.column = column
+        item.name = name
+        item.icon = icon
+        items.add(item)
+    }
 }
 
 struct List
@@ -141,14 +171,34 @@ private impl ListView
     mtd paintLine(bc: PaintContext, idx: u32, line: *ListLine, rect: Math.Rectangle)
     {
         painter := bc.painter
+        theme   := getTheme()
         colors  := getThemeColors()
-        font    := getTheme().res.fontDefault.regular
+        metrics := getThemeMetrics()
+        font    := theme.res.fontDefault.regular
 
         if list.isLineSelected(idx)
             painter.fillRect(rect, hasFocus() ? colors.listItem_FocusSelectedBk : colors.listItem_SelectedBk)
 
-        str := Format.toString("Zaa %", idx)
-        painter.drawString(rect.x, rect.y, str, font, Argb.White)
+        var colorText: Color = ?
+        switch
+        {
+            case bc.isDisabled:
+                colorText = colors.listItem_DisabledText
+            default:
+                colorText = colors.listItem_Text
+        }
+
+        var format: RichStringFormat
+        visit item: line.items
+        {
+            theme.setTextColors(&format, colorText)
+            format.horzAlignment = .Left
+            format.vertAlignment = .Center
+            format.flags = .Clip
+            format.font = theme.res.fontDefault
+            labelPos := rect
+            Theme.drawIconText(painter, labelPos, item.icon, &item.name, format, metrics.iconText_Margin)
+        }
     }
 
     mtd hitTest(surfacePos: Math.Point)->u32
@@ -323,6 +373,13 @@ impl List
         Debug.assert(!isVirtual, "createLine cannot be called on a virtual list")
         line := Memory.new'ListLine()
         lines.add(line)
+        return line
+    }
+
+    mtd createLine(name: string, icon: Icon = @{})->*ListLine
+    {
+        line := createLine()
+        line.setItem(0, name, icon)
         return line
     }
 

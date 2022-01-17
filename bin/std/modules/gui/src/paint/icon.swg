@@ -13,6 +13,11 @@ impl Icon
     #[Swag.Inline]
     mtdc isValid() => imageList != null
 
+    mtd clear()
+    {
+        imageList = null
+    }
+
     func from(imageList: *ImageList, index: s32, size: f32 = 24)->Icon
     {
         var result: retval
@@ -23,8 +28,8 @@ impl Icon
     mtd set(imageList: *ImageList, index: s32, size: f32 = 24)
     {
         self.imageList = #self.imageList
-        self.index = #self.index
-        self.size = #self.size orelse cast(f32) self.imageList.sizeX
+        self.index     = #self.index
+        self.size      = #self.size orelse cast(f32) self.imageList.sizeX
     }
 
     mtdc paint(painter: *Painter, x, y: f32, color: Color = Argb.White)
