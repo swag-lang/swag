@@ -14,7 +14,7 @@ struct FrameWnd
     using wnd:      Wnd
     view:           *Wnd
     frameForm       = FrameWndForm.Transparent
-    focusBorder     = true
+    focusBorder     = false
 }
 
 impl IWnd for FrameWnd

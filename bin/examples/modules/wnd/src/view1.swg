@@ -9,7 +9,7 @@ func createListSimple(view: *Wnd)->*List
 
     loop i: 50
     {
-        str := Format.toString("item%", i)
+        str := Format.toString("item %", i)
         icon := app.theme.getIcon24(ThemeIcons24.Search, 16)
         if i % 2 == 0 icon.clear()
         line := list.createLine(str, icon)
@@ -23,12 +23,13 @@ func createView1(view: *Wnd)
 {
     {
         list := createListSimple(view)
+        list.focusBorder = true
         list.setPosition(@{5, 5, 250, 300})
     }
 
     {
         list := createListSimple(view)
-        list.hideSelection = true
+        list.selectionMode = .None
         list.setPosition(@{280, 5, 250, 300})
     }
 
@@ -42,11 +43,12 @@ func createView1(view: *Wnd)
         list := List.createSimple(view, @{830, 5, 250, 300})
         list.setFrameForm(FrameWndForm.Square)
         list.selectionMode = .MultiSimple
+        list.hideSelection = true
         list.horizontalExtent = 500
 
         list.setVirtualCount(1_000_000)
         list.sigVirtualFill = @(line: *ListLine, idx: u32) {
-            str := Format.toString("item%", idx)
+            str := Format.toString("virtual %", idx)
             line.setItem(0, str)
         }
     }

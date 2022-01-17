@@ -90,6 +90,8 @@ impl IWnd for ListView
 
         if evt.button != .Left
             return
+        if list.selectionMode == .None
+            return
 
         idx := hitTest(evt.surfacePos)
 
