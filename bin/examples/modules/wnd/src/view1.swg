@@ -6,6 +6,7 @@ func createView1(view: *Wnd)
         list := List.createSimple(view, @{5, 5, 250, 300})
         list.setFrameForm(FrameWndForm.Round)
         list.isMultiSel = true
+        list.iconSize = 16
 
         loop i: 50
         {

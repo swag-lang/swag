@@ -48,6 +48,7 @@ struct List
     using frameWnd: FrameWnd
     width:          f32
     lineHeight:     f32 = 20
+    iconSize:       f32
     isMultiSel:     bool
     sigVirtualFill: func(*ListLine, u32)
     sigSelChanged:  func()
@@ -176,7 +177,8 @@ private impl ListView
         metrics := getThemeMetrics()
         font    := theme.res.fontDefault.regular
 
-        if list.isLineSelected(idx)
+        isSelected := list.isLineSelected(idx)
+        if isSelected
             painter.fillRect(rect, hasFocus() ? colors.listItem_FocusSelectedBk : colors.listItem_SelectedBk)
 
         var colorText: Color = ?
@@ -184,6 +186,8 @@ private impl ListView
         {
             case bc.isDisabled:
                 colorText = colors.listItem_DisabledText
+            case isSelected:
+                colorText = colors.listItem_SelectedText
             default:
                 colorText = colors.listItem_Text
         }
@@ -196,8 +200,18 @@ private impl ListView
             format.vertAlignment = .Center
             format.flags = .Clip
             format.font = theme.res.fontDefault
+
             labelPos := rect
-            Theme.drawIconText(painter, labelPos, item.icon, &item.name, format, metrics.iconText_Margin)
+            icon     := item.icon
+            if list.iconSize > 0
+            {
+                if !icon.isValid()
+                    labelPos.moveLeft(list.iconSize + metrics.iconText_Margin)
+                else
+                    icon.size = list.iconSize
+            }
+
+            Theme.drawIconText(painter, labelPos, icon, &item.name, format, metrics.iconText_Margin)
         }
     }
 
