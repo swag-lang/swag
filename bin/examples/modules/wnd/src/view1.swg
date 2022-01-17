@@ -22,7 +22,7 @@ func createView1(view: *Wnd)
 
         list.isVirtual = true
         list.setVirtualCount(1_000_000)
-        list.virtualFill = @(line: *ListLine, idx: u32) {
+        list.sigVirtualFill = @(line: *ListLine, idx: u32) {
         }
     }
 }

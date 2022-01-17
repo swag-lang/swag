@@ -17,16 +17,17 @@ struct List
 {
     using frameWnd: FrameWnd
     width:          f32
-    isVirtual:      bool
+    lineHeight:     f32 = 20
     isMultiSel:     bool
-    virtualFill:    func(*ListLine, u32)
+    sigVirtualFill: func(*ListLine, u32)
+    sigSelChanged:  func()
 
     lines:          Array'(*ListLine)
     selection:      Array'{start: u32, end: u32}
     focusIndex:     u32 = Swag.U32.Max
-    lineHeight:     f32 = 20
 
     virtualCount:   u32
+    isVirtual:      bool
 }
 
 struct ListView
@@ -78,19 +79,20 @@ impl IWnd for ListView
             {
                 startIdx := list.focusIndex == Swag.U32.Max ? 0 : list.focusIndex
                 loop i: startIdx..idx
-                    list.selectLine(i, true)
+                    list.selectLinePrivate(i, true)
             }
 
             // Invert selection
             else
             {
-                list.selectLine(idx, !list.isLineSelected(idx))
+                list.selectLinePrivate(idx, !list.isLineSelected(idx))
             }
-
-            invalidate()
         }
 
         list.focusIndex = idx
+        invalidate()
+        if list.sigSelChanged
+            list.sigSelChanged()
     }
 
     mtd onPaintEvent(evt: *PaintEvent)
@@ -106,17 +108,17 @@ impl IWnd for ListView
         rect.width = getDisplayWidth()
         rect.height = list.lineHeight
 
-        firstIdx := getFirstVisibleLineIndex()
-        lastIdx  := getLastVisibleLineIndex()
+        firstIdx := list.getFirstVisibleLineIndex()
+        lastIdx  := list.getLastVisibleLineIndex()
         rect.y = firstIdx * list.lineHeight
 
         if list.isVirtual
         {
+            Debug.assert(list.sigVirtualFill != null)
             loop i: firstIdx..lastIdx
             {
                 var line: ListLine
-                if list.virtualFill
-                    list.virtualFill(&line, i)
+                list.sigVirtualFill(&line, i)
                 paintLine(bc, i, &line, rect)
                 rect.y = rect.bottom()
             }
@@ -146,26 +148,6 @@ private impl ListView
 
         str := Format.toString("Zaa %", idx)
         painter.drawString(rect.x, rect.y, str, font, Argb.White)
-    }
-
-    mtd getFirstVisibleLineIndex()->u32
-    {
-        lc := list.getLineCount()
-        idx := cast(u32) (scrollPos.y / list.lineHeight)
-        if idx >= lc
-            return Swag.U32.Max
-        return idx
-    }
-
-    mtd getLastVisibleLineIndex()->u32
-    {
-        lc := list.getLineCount()
-        if lc == 0
-            return Swag.U32.Max
-        idx := cast(u32) ((scrollPos.y + position.height) / list.lineHeight)
-        if idx >= lc
-            return cast(u32) lc - 1
-        return idx
     }
 
     mtd hitTest(surfacePos: Math.Point)->u32
@@ -282,8 +264,12 @@ impl List
     // Unselect all lines
     mtd unselectAll()
     {
+        if selection.isEmpty()
+            return
         unselectAllPrivate()
         invalidate()
+        if sigSelChanged
+            sigSelChanged()
     }
 
     // Returns
@@ -297,6 +283,18 @@ impl List
     {
         selectLinePrivate(idx, select)
         invalidate()
+        if sigSelChanged
+            sigSelChanged()
+    }
+
+    // Select a range of lines
+    mtd selectLines(start, end: u32, select: bool = true)
+    {
+        loop i: start..end
+            selectLinePrivate(i, select)
+        invalidate()
+        if sigSelChanged
+            sigSelChanged()
     }
 
     // Compute global layout, once all lines have been added
@@ -334,5 +332,27 @@ impl List
         isVirtual = true
         virtualCount = count
         computeLayout()
+    }
+
+    // Returns the first visible line index
+    mtd getFirstVisibleLineIndex()->u32
+    {
+        lc := getLineCount()
+        idx := cast(u32) (scrollPos.y / lineHeight)
+        if idx >= lc
+            return Swag.U32.Max
+        return idx
+    }
+
+    // Returns the last visible line index
+    mtd getLastVisibleLineIndex()->u32
+    {
+        lc := getLineCount()
+        if lc == 0
+            return Swag.U32.Max
+        idx := cast(u32) ((scrollPos.y + position.height) / lineHeight)
+        if idx >= lc
+            return cast(u32) lc - 1
+        return idx
     }
 }
