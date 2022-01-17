@@ -96,8 +96,7 @@ impl Vector2
     // Set the vector to zero
     mtd clear()
     {
-        x = 0
-        y = 0
+        x, y = 0
     }
 
     // Negate the vector

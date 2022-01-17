@@ -67,10 +67,11 @@ struct Wnd
     focusStrategy: FocusStategy = MousePressed
 
     backgroundStyle:    BackgroundStyle = Transparent
-    isDisabled:         bool
-    isHidden:           bool
-    isAllocated:        bool
-    isPendingDestroy:   bool
+    isDisabled:             bool
+    isHidden:               bool
+    isAllocated:            bool
+    isPendingDestroy:       bool
+    hasPostChildsPaint:     bool
 
     hookOnEvent: func(*Wnd, *Event)->bool
 }
@@ -299,6 +300,7 @@ impl Wnd
         bc.painter.translateTransform(position.x, position.y)
         curTrs := bc.painter.getTransform()
         bc.painter.translateTransform(-scrollPos.x, -scrollPos.y)
+        meTrs := bc.painter.getTransform()
         evt := PaintEvent{}
         evt.bc = bc
         sendEvent(&evt)
@@ -315,6 +317,13 @@ impl Wnd
                 bc.painter.translateTransform(-scrollPos.x, -scrollPos.y)
             c.paint(bc)
             bc.painter.setState(curState)
+        }
+
+        if hasPostChildsPaint
+        {
+            bc.painter.setTransform(meTrs)
+            evt.kind = .PostChilds
+            sendEvent(&evt)
         }
 
         bc.isDisabled = lastDisabled

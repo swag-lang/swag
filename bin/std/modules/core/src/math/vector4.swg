@@ -13,4 +13,10 @@ impl Vector4
     {
         x, y, z, w = value
     }
+
+    // Set the vector to zero
+    mtd clear()
+    {
+        x, y, z, w = 0
+    }
 }

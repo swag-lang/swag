@@ -38,13 +38,13 @@ impl IWnd for FrameWnd
         switch frameForm
         {
         case Square:
-            subRectBk = &rects.list_SquareBk
-            subRectBorder = &rects.list_SquareBorder
+            subRectBk = &rects.frame_SquareBk
+            subRectBorder = &rects.frame_SquareBorder
         case Round:
-            subRectBk = &rects.list_RoundBk
-            subRectBorder = &rects.list_RoundBorder
+            subRectBk = &rects.frame_RoundBk
+            subRectBorder = &rects.frame_RoundBorder
         case Flat:
-            subRectBk = &rects.list_FlatBk
+            subRectBk = &rects.frame_FlatBk
         }
 
         // Display focus borders when the focus wnd is a child of me
@@ -70,8 +70,9 @@ impl IWnd for FrameWnd
         }
 
         clientRect := getClientRect()
-        theme.drawSubRect(painter, clientRect, subRectBk, colorBk)
-        if frameForm != .Flat
+        if evt.kind == .BeforeChilds
+            theme.drawSubRect(painter, clientRect, subRectBk, colorBk)
+        if frameForm != .Flat and evt.kind == .PostChilds
             theme.drawSubRect(painter, clientRect, subRectBorder, colorBorder)
     }
 
@@ -102,13 +103,16 @@ impl FrameWnd
             return
 
         self.frameForm = #self.form
+        hasPostChildsPaint = false
 
         #[Swag.Complete]
         switch self.frameForm
         {
         case Square:
+            hasPostChildsPaint = true
             padding = getThemeMetrics().frameWnd_SquarePadding
         case Round:
+            hasPostChildsPaint = true
             padding = getThemeMetrics().frameWnd_RoundPadding
         case Flat:
             padding = getThemeMetrics().frameWnd_FlatPadding

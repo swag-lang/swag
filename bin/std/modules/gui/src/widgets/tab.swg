@@ -11,6 +11,7 @@ enum TabBarForm
 {
     Transparent
     Flat
+    FlatRound
 }
 
 
@@ -144,6 +145,8 @@ impl IWnd for Tab
             {
             case Flat:
                 painter.fillRect(clientRect, colors.tabBar_FlatBk)
+            case FlatRound:
+                theme.drawSubRect(painter, clientRect, &rects.tabBar_FlatRoundBk, colors.tabBar_FlatBk)
             }
         }
 
