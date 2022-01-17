@@ -3,9 +3,8 @@ using Core, Pixel
 
 struct ListLine
 {
-    items:          Array'(*ListItem)
-    selectedIdx:    u32 = Swag.U32.Max
-    userData:       *void
+    items:      Array'(*ListItem)
+    userData:   *void
 }
 
 struct ListItem
@@ -23,13 +22,11 @@ struct List
     virtualFill:    func(*ListLine, u32)
 
     lines:          Array'(*ListLine)
-    selection:      Array'(*ListLine)
+    selection:      Array'{start: u32, end: u32}
     focusIndex:     u32 = Swag.U32.Max
     lineHeight:     f32 = 20
 
-    virtualCount:       u32
-    virtualFirstSel:    u32 = Swag.U32.Max
-    virtualLastSel:     u32 = Swag.U32.Max
+    virtualCount:   u32
 }
 
 struct ListView
@@ -37,12 +34,6 @@ struct ListView
     using wnd:              Wnd
     list:                   *List
     discardMouseRelease:    bool
-}
-
-impl ListLine
-{
-    #[Swag.Inline]
-    mtd isSelected() => selectedIdx != Swag.U32.Max
 }
 
 impl IWnd for ListView
@@ -61,20 +52,24 @@ impl IWnd for ListView
         idx := hitTest(evt.surfacePos)
 
         // We select by mouse release when the hittest line is selected
-        if evt.kind == .MousePressed and idx != Swag.U32.Max and list.lines[idx].isSelected()
+        if evt.kind == .MousePressed and idx != Swag.U32.Max and list.isLineSelected(idx)
         {
             discardMouseRelease = false
             return
         }
+
         if evt.kind == .MouseReleased and discardMouseRelease
+        {
             return
+        }
+
         discardMouseRelease = evt.kind == .MousePressed
 
         ctrl  := evt.modifiers & .Control
         shift := evt.modifiers & .Shift
 
         if !list.isMultiSel or (!ctrl and !shift)
-            list.unselectAll()
+            list.unselectAllPrivate()
 
         if idx != Swag.U32.Max
         {
@@ -89,7 +84,7 @@ impl IWnd for ListView
             // Invert selection
             else
             {
-                list.selectLine(idx, !list.lines[idx].isSelected())
+                list.selectLine(idx, !list.isLineSelected(idx))
             }
 
             invalidate()
@@ -146,7 +141,7 @@ private impl ListView
         colors  := getThemeColors()
         font    := getTheme().res.fontDefault.regular
 
-        if line.isSelected()
+        if list.isLineSelected(idx)
             painter.fillRect(rect, hasFocus() ? colors.listItem_FocusSelectedBk : colors.listItem_SelectedBk)
 
         str := Format.toString("Zaa %", idx)
@@ -192,6 +187,79 @@ private impl ListView
     }
 }
 
+private impl List
+{
+    mtd unselectAllPrivate()
+    {
+        selection.clear()
+    }
+
+    mtd isLineSelectedPrivate(idx: u32)->u32
+    {
+        if idx >= getLineCount()
+            return Swag.U32.Max
+
+        visit *r, i: selection
+        {
+            if idx >= r.start and idx <= r.end
+                return cast(u32) i
+        }
+
+        return Swag.U32.Max
+    }
+
+    mtd selectLinePrivate(idx: u32, select: bool)
+    {
+        if idx >= getLineCount()
+            return
+
+        isSelectedRange := isLineSelectedPrivate(idx)
+        isSelected := isSelectedRange != Swag.U32.Max
+        if select == isSelected
+            return
+
+        line := lines[idx]
+
+        if select
+        {
+            // Prepend/Append to an existing range
+            visit *r, i: selection
+            {
+                if r.start and idx == r.start - 1
+                {
+                    r.start -= 1
+                    return
+                }
+
+                if idx == r.end + 1
+                {
+                    r.end += 1
+                    return
+                }
+            }
+
+            // Need to make a new range
+            selection.add(@{idx, idx})
+        }
+        else
+        {
+            range := selection[isSelectedRange]
+            if range.start == range.end
+                selection.removeAt(cast(uint) isSelectedRange)
+            elif range.start == idx
+                range.start += 1
+            elif range.end == idx
+                range.end -= 1
+            else
+            {
+                end := range.end
+                range.end = idx - 1
+                selection.add(@{idx + 1, end})
+            }
+        }
+    }
+}
+
 impl List
 {
     #[Swag.Discardable]
@@ -214,58 +282,21 @@ impl List
     // Unselect all lines
     mtd unselectAll()
     {
-        if isVirtual
-        {
-            if virtualFirstSel == Swag.U32.Max
-                return
-            virtualFirstSel = Swag.U32.Max
-            virtualLastSel  = Swag.U32.Max
-        }
-        else
-        {
-            if selection.isEmpty()
-                return
-            visit line: selection
-                line.selectedIdx = Swag.U32.Max
-            selection.clear()
-        }
-
+        unselectAllPrivate()
         invalidate()
+    }
+
+    // Returns
+    mtd isLineSelected(idx: u32)->bool
+    {
+        return isLineSelectedPrivate(idx) != Swag.U32.Max
     }
 
     // Select of unselect the given line
     mtd selectLine(idx: u32, select: bool = true)
     {
-        if idx >= lines.count
-            return
-        if select and lines[idx].selectedIdx != Swag.U32.Max
-            return
-        if !select and lines[idx].selectedIdx == Swag.U32.Max
-            return
-
-        line := lines[idx]
-
-        if select
-        {
-            line.selectedIdx = cast(u32) selection.count
-            selection.add(line)
-        }
-        else
-        {
-            selectedIdx := line.selectedIdx
-            line.selectedIdx = Swag.U32.Max
-            selection.removeAt(cast(uint) selectedIdx)
-            if selectedIdx < selection.count
-                selection[selectedIdx].selectedIdx = selectedIdx
-        }
-
+        selectLinePrivate(idx, select)
         invalidate()
-    }
-
-    // Retreive selected lines
-    mtd getSelection()->Array'(*ListLine)
-    {
-        return selection
     }
 
     // Compute global layout, once all lines have been added
