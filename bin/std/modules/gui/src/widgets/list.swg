@@ -43,15 +43,24 @@ impl ListLine
     }
 }
 
+enum ListSelectionMode
+{
+    None
+    Single
+    MultiSimple
+    MultiExtended
+}
+
 struct List
 {
-    using frameWnd: FrameWnd
-    width:          f32
-    lineHeight:     f32 = 20
-    iconSize:       f32
-    isMultiSel:     bool
-    sigVirtualFill: func(*ListLine, u32)
-    sigSelChanged:  func()
+    using frameWnd:     FrameWnd
+    horizontalExtent:   f32
+    lineHeight:         f32 = 20
+    iconSize:           f32
+    hideSelection:      bool
+    selectionMode:      ListSelectionMode = Single
+    sigVirtualFill:     func(*ListLine, u32)
+    sigSelChanged:      func()
 
     lines:          Array'(*ListLine)
     selection:      Array'{start: u32, end: u32}
@@ -101,13 +110,16 @@ impl IWnd for ListView
         ctrl  := evt.modifiers & .Control
         shift := evt.modifiers & .Shift
 
-        if !list.isMultiSel or (!ctrl and !shift)
-            list.unselectAllPrivate()
+        if list.selectionMode != .MultiSimple
+        {
+            if list.selectionMode == .Single or (!ctrl and !shift)
+                list.unselectAllPrivate()
+        }
 
         if idx != Swag.U32.Max
         {
             // Range selection
-            if shift and list.isMultiSel
+            if shift and list.selectionMode == .MultiExtended
             {
                 startIdx := list.focusIndex == Swag.U32.Max ? 0 : list.focusIndex
                 loop i: startIdx..idx
@@ -178,7 +190,7 @@ private impl ListView
         font    := theme.res.fontDefault.regular
 
         isSelected := list.isLineSelected(idx)
-        if isSelected
+        if isSelected and (!list.hideSelection or hasFocus()) and !bc.isDisabled
             painter.fillRect(rect, hasFocus() ? colors.listItem_FocusSelectedBk : colors.listItem_SelectedBk)
 
         var colorText: Color = ?
@@ -228,8 +240,8 @@ private impl ListView
 
     mtd getDisplayWidth()->f32
     {
-        if list.width > 0
-            return list.width
+        if list.horizontalExtent > 0
+            return list.horizontalExtent
         return position.width
     }
 }
@@ -340,12 +352,16 @@ impl List
     // Returns
     mtd isLineSelected(idx: u32)->bool
     {
+        if selectionMode == .None
+            return false
         return isLineSelectedPrivate(idx) != Swag.U32.Max
     }
 
     // Select of unselect the given line
     mtd selectLine(idx: u32, select: bool = true)
     {
+        if selectionMode == .None
+            return
         selectLinePrivate(idx, select)
         invalidate()
         if sigSelChanged
@@ -355,6 +371,8 @@ impl List
     // Select a range of lines
     mtd selectLines(start, end: u32, select: bool = true)
     {
+        if selectionMode == .None
+            return
         loop i: start..end
             selectLinePrivate(i, select)
         invalidate()
@@ -367,7 +385,7 @@ impl List
     {
         scrollWnd    := cast(*ScrollWnd) view
         clientRect   := scrollWnd.getClientRect()
-        scrollWidth  := width orelse clientRect.width
+        scrollWidth  := horizontalExtent orelse clientRect.width
         scrollHeight := getLineCount() * lineHeight
         scrollWnd.setScrollSize(scrollWidth, scrollHeight)
         invalidate()
@@ -393,7 +411,7 @@ impl List
     mtd createLine(name: string, icon: Icon = @{})->*ListLine
     {
         line := createLine()
-        line.setItem(0, name, icon)
+        line.setItem(0, #self.name, #self.icon)
         return line
     }
 

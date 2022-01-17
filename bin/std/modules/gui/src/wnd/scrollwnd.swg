@@ -130,6 +130,15 @@ public impl IWnd for ScrollWnd
         colors  := getThemeColors()
         rects   := getThemeRects()
 
+        var colorBk: Color = ?
+        switch
+        {
+            case bc.isDisabled:
+                colorBk = colors.scrollBar_DisabledBk
+            default:
+                colorBk = colors.scrollBar_Bk
+        }
+
         // Vertical bar
         if showBarV
         {
@@ -138,7 +147,7 @@ public impl IWnd for ScrollWnd
             clientRect.width = padding.z
             if showBarH
                 clientRect.height -= padding.w
-            theme.drawSubRect(bc.painter, clientRect, &rects.scrollBar_BkV, colors.scrollBar_Bk)
+            theme.drawSubRect(bc.painter, clientRect, &rects.scrollBar_BkV, colorBk)
 
             clientRect.y = posBoxV
             clientRect.height = sizeBoxV
@@ -162,7 +171,7 @@ public impl IWnd for ScrollWnd
             clientRect.height = padding.w
             if showBarV
                 clientRect.width -= padding.w
-            theme.drawSubRect(bc.painter, clientRect, &rects.scrollBar_BkH, colors.scrollBar_Bk)
+            theme.drawSubRect(bc.painter, clientRect, &rects.scrollBar_BkH, colorBk)
 
             clientRect.x = posBoxH
             clientRect.width = sizeBoxH

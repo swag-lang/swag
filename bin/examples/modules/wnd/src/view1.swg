@@ -1,30 +1,49 @@
 using Core, Gui
 
+func createListSimple(view: *Wnd)->*List
+{
+    list := List.createSimple(view, @{5, 5, 250, 300})
+    list.setFrameForm(FrameWndForm.Round)
+    list.selectionMode = .MultiExtended
+    list.iconSize = 16
+
+    loop i: 50
+    {
+        str := Format.toString("item%", i)
+        icon := app.theme.getIcon24(ThemeIcons24.Search, 16)
+        if i % 2 == 0 icon.clear()
+        line := list.createLine(str, icon)
+    }
+
+    list.computeLayout()
+    return list
+}
+
 func createView1(view: *Wnd)
 {
     {
-        list := List.createSimple(view, @{5, 5, 250, 300})
-        list.setFrameForm(FrameWndForm.Round)
-        list.isMultiSel = true
-        list.iconSize = 16
-
-        loop i: 50
-        {
-            str := Format.toString("item%", i)
-            icon := app.theme.getIcon24(ThemeIcons24.Search, 16)
-            if i % 2 == 0 icon.clear()
-            line := list.createLine(str, icon)
-        }
-
-        list.computeLayout()
+        list := createListSimple(view)
+        list.setPosition(@{5, 5, 250, 300})
     }
 
     {
-        list := List.createSimple(view, @{310, 5, 250, 300})
-        list.setFrameForm(FrameWndForm.Square)
-        list.isMultiSel = true
+        list := createListSimple(view)
+        list.hideSelection = true
+        list.setPosition(@{280, 5, 250, 300})
+    }
 
-        list.isVirtual = true
+    {
+        list := createListSimple(view)
+        list.isDisabled = true
+        list.setPosition(@{560, 5, 250, 300})
+    }
+
+    {
+        list := List.createSimple(view, @{830, 5, 250, 300})
+        list.setFrameForm(FrameWndForm.Square)
+        list.selectionMode = .MultiSimple
+        list.horizontalExtent = 500
+
         list.setVirtualCount(1_000_000)
         list.sigVirtualFill = @(line: *ListLine, idx: u32) {
             str := Format.toString("item%", idx)

@@ -187,6 +187,7 @@ struct ThemeColors
     popupItem_HotBk:                Color = Blue
 
     scrollBar_Bk:                   Color = Gray6
+    scrollBar_DisabledBk:           Color = 0
     scrollBar_Box:                  Color = Gray4
     scrollBar_HotBox:               Color = Gray2
     scrollBar_PressedBox:           Color = Gray1
