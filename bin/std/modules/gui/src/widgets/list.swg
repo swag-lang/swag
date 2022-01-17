@@ -25,6 +25,7 @@ struct List
     lines:          Array'(*ListLine)
     selection:      Array'{start: u32, end: u32}
     focusIndex:     u32 = Swag.U32.Max
+    listView:       *ListView
 
     virtualCount:   u32
     isVirtual:      bool
@@ -254,9 +255,9 @@ impl List
         scrollWnd.focusStrategy = .None
         scrollWnd.backgroundStyle = .Transparent
 
-        listView := scrollWnd.createView'ListView()
-        listView.backgroundStyle = .Transparent
-        listView.list = list
+        list.listView = scrollWnd.createView'ListView()
+        list.listView.backgroundStyle = .Transparent
+        list.listView.list = list
 
         return list
     }
@@ -338,7 +339,7 @@ impl List
     mtd getFirstVisibleLineIndex()->u32
     {
         lc := getLineCount()
-        idx := cast(u32) (scrollPos.y / lineHeight)
+        idx := cast(u32) (listView.scrollPos.y / lineHeight)
         if idx >= lc
             return Swag.U32.Max
         return idx
@@ -350,7 +351,7 @@ impl List
         lc := getLineCount()
         if lc == 0
             return Swag.U32.Max
-        idx := cast(u32) ((scrollPos.y + position.height) / lineHeight)
+        idx := cast(u32) ((listView.scrollPos.y + position.height) / lineHeight)
         if idx >= lc
             return cast(u32) lc - 1
         return idx
