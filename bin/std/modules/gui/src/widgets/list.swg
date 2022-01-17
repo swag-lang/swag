@@ -23,7 +23,7 @@ impl ListLine
     }
 
     // Initialize a given column item
-    mtd setItem(column: u32, name: string, icon: Icon = @{})
+    mtd setItem(name: string, icon: Icon = @{}, column: u32 = 0)
     {
         visit item: items
         {
@@ -413,7 +413,7 @@ impl List
     mtd createLine(name: string, icon: Icon = @{})->*ListLine
     {
         line := createLine()
-        line.setItem(0, #self.name, #self.icon)
+        line.setItem(#self.name, #self.icon)
         return line
     }
 
