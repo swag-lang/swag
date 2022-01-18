@@ -65,7 +65,9 @@ struct List
     lines:          Array'(*ListLine)
     selection:      Array'{start: u32, end: u32}
     focusIndex:     u32 = Swag.U32.Max
+    scrollWnd:      *ScrollWnd
     listView:       *ListView
+    header:         *Header
 
     virtualCount:   u32
     isVirtual:      bool
@@ -328,14 +330,49 @@ impl List
     {
         list := Wnd.create'List(parent, "", position, id)
 
-        scrollWnd := list.createView'ScrollWnd()
-        scrollWnd.dockStyle = .Center
-        scrollWnd.focusStrategy = .None
-        scrollWnd.backgroundStyle = .Transparent
+        with list
+        {
+            scrollWnd = createView'ScrollWnd()
+            scrollWnd.dockStyle = .Center
+            scrollWnd.focusStrategy = .None
+            scrollWnd.backgroundStyle = .Transparent
+            scrollWnd.padding = #self.parent.getThemeMetrics().list_Padding
 
-        list.listView = scrollWnd.createView'ListView()
-        list.listView.backgroundStyle = .Transparent
-        list.listView.list = list
+            listView = scrollWnd.createView'ListView()
+            listView.backgroundStyle = .Transparent
+            listView.list = list
+        }
+
+        return list
+    }
+
+    #[Swag.Discardable]
+    func createMultiColumns(parent: *Wnd, position: Math.Rectangle, id: string = null)->*List
+    {
+        list := Wnd.create'List(parent, "", position, id)
+
+        fwnd := list.createView'Wnd()
+        fwnd.dockStyle = .Center
+        fwnd.backgroundStyle = .Transparent
+        fwnd.clipChilds = false
+
+        with list
+        {
+            header = Header.create(fwnd, @{})
+            header.dockStyle = .Top
+            header.form = .FlatRound
+            header.margin = @{-5, -5, -5, 0}
+
+            scrollWnd = Wnd.create'ScrollWnd(fwnd, @{})
+            scrollWnd.dockStyle = .Center
+            scrollWnd.focusStrategy = .None
+            scrollWnd.backgroundStyle = .Transparent
+            scrollWnd.padding = #self.parent.getThemeMetrics().list_Padding
+
+            listView = scrollWnd.createView'ListView()
+            listView.backgroundStyle = .Transparent
+            listView.list = list
+        }
 
         return list
     }
@@ -385,7 +422,6 @@ impl List
     // Compute global layout, once all lines have been added
     mtd computeLayout()
     {
-        scrollWnd    := cast(*ScrollWnd) view
         clientRect   := scrollWnd.getClientRect()
         scrollWidth  := horizontalExtent orelse clientRect.width
         scrollHeight := getLineCount() * lineHeight

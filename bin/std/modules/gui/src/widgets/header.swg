@@ -127,9 +127,9 @@ impl IWnd for Header
             }
 
         case .MousePressed:
-            if evt.button == .Left
+            if evt.button == .Left and hit != Swag.U32.Max
             {
-                if hit != Swag.U32.Max
+                if hotSeparator
                 {
                 }
             }

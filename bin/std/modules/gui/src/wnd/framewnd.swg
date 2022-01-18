@@ -80,8 +80,9 @@ impl IWnd for FrameWnd
     {
         if !view
             return
-        view.move(padding.x, padding.y)
-        view.resize(position.width - padding.x - padding.z, position.height - padding.y - padding.w)
+        rect := getClientRectPadding()
+        rect.applyPadding(view.margin)
+        view.setPosition(rect)
     }
 }
 
@@ -103,6 +104,7 @@ impl FrameWnd
             return
 
         self.frameForm = #self.form
+        padding.clear()
 
         #[Swag.Complete]
         switch self.frameForm
@@ -115,7 +117,6 @@ impl FrameWnd
             padding = getThemeMetrics().frameWnd_RoundPadding
         case Transparent:
             hasPostChildsPaint = false
-            padding.clear()
         }
 
         sendResizeEvent()

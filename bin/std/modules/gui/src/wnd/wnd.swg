@@ -52,6 +52,7 @@ struct Wnd
     maxSize:    Math.Point
     scrollPos:  Math.Point
     noScroll:   bool
+    clipChilds: bool = true
 
     parent:     *Wnd
     childs:     Array'(*Wnd)
@@ -271,10 +272,15 @@ impl Wnd
     mtd paint(bc: *PaintContext)
     {
         // Clipping
-        bc.painter.pushClippingRect(position)
-        defer bc.painter.popClippingRect()
-        if bc.painter.isEmptyClippingRect()
-            return
+        if clipChilds
+        {
+            bc.painter.pushClippingRect(position)
+            if bc.painter.isEmptyClippingRect()
+            {
+                bc.painter.popClippingRect()
+                return
+            }
+        }
 
         // Recompute style if necessary
         computeStyle()
@@ -328,6 +334,9 @@ impl Wnd
 
         bc.isDisabled = lastDisabled
         style.dirty = false
+
+        if clipChilds
+            bc.painter.popClippingRect()
     }
 
     // Force the window to be repainted
@@ -546,6 +555,7 @@ impl Wnd
         visit c: centerLayout
         {
             pos := clientRect
+            pos.applyPadding(c.margin)
             c.setPosition(pos)
         }
 

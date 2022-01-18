@@ -26,6 +26,8 @@ public struct ScrollWnd
     correcMoving:   f32
     offsetClientV:  f32
     offsetClientH:  f32
+    paddingZ:       f32
+    paddingW:       f32
 }
 
 public impl IWnd for ScrollWnd
@@ -33,7 +35,13 @@ public impl IWnd for ScrollWnd
     mtd onResizeEvent(evt: *ResizeEvent)
     {
         computeLayout()
-        FrameWnd.IWnd.onResizeEvent(self, evt)
+        if !view
+            return
+        rect := getClientRectPadding()
+        rect.width -= paddingZ
+        rect.height -= paddingW
+        rect.applyPadding(view.margin)
+        view.setPosition(rect)
     }
 
     mtd onMouseEvent(evt: *MouseEvent)
@@ -89,7 +97,7 @@ public impl IWnd for ScrollWnd
                     isPressedH = true
                     correcMoving = pos.x - posBoxH
                 }
-                elif pos.x > clientRect.right() - padding.z
+                elif pos.x > clientRect.right() - paddingZ
                 {
                     correcMoving = 0
                     isPressedV = true
@@ -97,7 +105,7 @@ public impl IWnd for ScrollWnd
                     f *= scrollSize.y
                     setScrollPos(view.scrollPos.x, f)
                 }
-                elif pos.y > clientRect.bottom() - padding.w
+                elif pos.y > clientRect.bottom() - paddingW
                 {
                     correcMoving = 0
                     isPressedH = true
@@ -143,10 +151,10 @@ public impl IWnd for ScrollWnd
         if showBarV
         {
             clientRect := getClientRect()
-            clientRect.x = clientRect.right() - padding.z
-            clientRect.width = padding.z
+            clientRect.x = clientRect.right() - paddingZ
+            clientRect.width = paddingZ
             if showBarH
-                clientRect.height -= padding.w
+                clientRect.height -= paddingW
             theme.drawSubRect(bc.painter, clientRect, &rects.scrollBar_BkV, colorBk)
 
             clientRect.y = posBoxV
@@ -167,10 +175,10 @@ public impl IWnd for ScrollWnd
         if showBarH
         {
             clientRect := getClientRect()
-            clientRect.y = clientRect.bottom() - padding.w
-            clientRect.height = padding.w
+            clientRect.y = clientRect.bottom() - paddingW
+            clientRect.height = paddingW
             if showBarV
-                clientRect.width -= padding.w
+                clientRect.width -= paddingW
             theme.drawSubRect(bc.painter, clientRect, &rects.scrollBar_BkH, colorBk)
 
             clientRect.x = posBoxH
@@ -191,10 +199,10 @@ public impl IWnd for ScrollWnd
         if showBarV and showBarH
         {
             clientRect := getClientRect()
-            clientRect.x = clientRect.right() - padding.z
-            clientRect.y = clientRect.bottom() - padding.w
-            clientRect.width = padding.z
-            clientRect.height = padding.w
+            clientRect.x = clientRect.right() - paddingZ
+            clientRect.y = clientRect.bottom() - paddingW
+            clientRect.width = paddingZ
+            clientRect.height = paddingW
             theme.drawSubRect(bc.painter, clientRect, &rects.scrollBar_Corner, colors.scrollBar_Bk)
         }
     }
@@ -230,8 +238,8 @@ impl ScrollWnd
     mtd getPosBoxV()->Math.Rectangle
     {
         var result: retval = getClientRect()
-        result.x = result.right() - padding.z
-        result.width = padding.z
+        result.x = result.right() - paddingZ
+        result.width = paddingZ
         result.y = posBoxV
         result.height = sizeBoxV
         return result
@@ -240,8 +248,8 @@ impl ScrollWnd
     mtd getPosBoxH()->Math.Rectangle
     {
         var result: retval = getClientRect()
-        result.y = result.bottom() - padding.w
-        result.height = padding.w
+        result.y = result.bottom() - paddingW
+        result.height = paddingW
         result.x = posBoxH
         result.width = sizeBoxH
         return result
@@ -254,7 +262,7 @@ impl ScrollWnd
 
         metrics := getThemeMetrics()
         showBarV, showBarH = false
-        padding.z, padding.w = 0
+        paddingZ, paddingW = 0
 
         if sy > position.height
             showBarV = true
@@ -265,7 +273,7 @@ impl ScrollWnd
 
         if showBarV
         {
-            padding.z = barSize
+            paddingZ = barSize
             vh := position.height
             if showBarH
                 vh -= barSize
@@ -284,7 +292,7 @@ impl ScrollWnd
 
         if showBarH
         {
-            padding.w = barSize
+            paddingW = barSize
             vh := position.width
             if showBarV
                 vh -= barSize

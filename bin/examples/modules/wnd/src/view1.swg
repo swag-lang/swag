@@ -19,6 +19,25 @@ func createListSimple(view: *Wnd)->*List
     return list
 }
 
+func createListMulti(view: *Wnd)->*List
+{
+    list := List.createMultiColumns(view, @{5, 5, 250, 300})
+    list.setFrameForm(FrameWndForm.Round)
+    list.selectionMode = .MultiExtended
+    list.iconSize = 16
+
+    loop i: 50
+    {
+        str := Format.toString("item %", i)
+        icon := app.theme.getIcon24(ThemeIcons24.Search, 16)
+        if i % 2 == 0 icon.clear()
+        line := list.createLine(str, icon)
+    }
+
+    list.computeLayout()
+    return list
+}
+
 func createView1(view: *Wnd)
 {
     {
@@ -61,5 +80,11 @@ func createView1(view: *Wnd)
         header.addItem("header1")
         header.addItem("header2")
         header.addItem("header3")
+    }
+
+    {
+        list := createListMulti(view)
+        list.focusBorder = true
+        list.setPosition(@{5, 400, 250, 300})
     }
 }
