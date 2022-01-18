@@ -70,13 +70,15 @@ public impl IWnd for ScrollWnd
 
             if isPressedV
             {
-                f := (pos.y - correcMoving) / (clientRect.height - offsetClientV)
+                vh := position.height - paddingW
+                f := (pos.y - correcMoving) / (vh - offsetClientV)
                 f *= scrollSize.y
                 setScrollPos(view.scrollPos.x, f)
             }
             elif isPressedH
             {
-                f := (pos.x - correcMoving) / (clientRect.width - offsetClientH)
+                vh := position.width - paddingZ
+                f := (pos.x - correcMoving) / (vh - offsetClientH)
                 f *= scrollSize.x
                 setScrollPos(f, view.scrollPos.y)
             }
@@ -278,7 +280,7 @@ impl ScrollWnd
             if showBarH
                 vh -= barSize
 
-            sizeBoxV = (vh / sy) * position.height
+            sizeBoxV = (vh / sy) * vh
             if sizeBoxV < metrics.scrollBar_BoxMinSize
             {
                 offsetClientV = metrics.scrollBar_BoxMinSize - sizeBoxV
@@ -297,7 +299,7 @@ impl ScrollWnd
             if showBarV
                 vh -= barSize
 
-            sizeBoxH = (vh / sx) * position.width
+            sizeBoxH = (vh / sx) * vh
             if sizeBoxH < metrics.scrollBar_BoxMinSize
             {
                 offsetClientH = metrics.scrollBar_BoxMinSize - sizeBoxH
@@ -327,8 +329,8 @@ public impl ScrollWnd
         var newSP: Math.Point = ?
         newSP.x = Math.max(x, 0)
         newSP.y = Math.max(y, 0)
-        newSP.x = Math.min(newSP.x, scrollSize.x - position.width)
-        newSP.y = Math.min(newSP.y, scrollSize.y - position.height)
+        newSP.x = Math.min(newSP.x, scrollSize.x - (position.width - paddingZ))
+        newSP.y = Math.min(newSP.y, scrollSize.y - (position.height - paddingW))
         if newSP == view.scrollPos
             return
 
