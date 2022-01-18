@@ -20,8 +20,9 @@ struct Header
     using wnd:  Wnd
     form:       HeaderForm = Flat
 
-    items:      Array'(*HeaderItem)
-    hotIdx:     u32 = Swag.U32.Max
+    items:          Array'(*HeaderItem)
+    hotIdx:         u32 = Swag.U32.Max
+    hotSeparator:   bool
 }
 
 impl IWnd for Header
@@ -92,12 +93,25 @@ impl IWnd for Header
 
    mtd onMouseEvent(evt: *MouseEvent)
     {
-        hit := hitTest(evt.surfacePos)
+        (hit, sep) := hitTest(evt.surfacePos)
+        Console.print(hit, " ", sep, "\n")
+
         if hit != hotIdx
         {
             hotIdx = hit
             invalidate()
         }
+
+        if hotSeparator != sep
+        {
+            hotSeparator = sep
+            invalidate()
+        }
+
+        if hotSeparator
+            cursor = Cursor.from(CursorShape.SizeWE)
+        else
+            cursor.clear()
 
         if hit == Swag.U32.Max
         {
@@ -127,7 +141,7 @@ impl IWnd for Header
 
 private impl Header
 {
-    mtd hitTest(surfacePos: Math.Point)->u32
+    mtd hitTest(surfacePos: Math.Point)->{idx: u32, sep: bool}
     {
         metrics := getThemeMetrics()
         pos := surfaceToLocal(surfacePos)
@@ -135,11 +149,14 @@ private impl Header
         visit item, idx: items
         {
             if pos.x >= x and pos.x < x + item.width
-                return acast idx
-            x += item.width + metrics.header_Separator
+                return @{cast(u32) idx, false}
+            x += item.width
+            if pos.x >= x and pos.x <= x + metrics.header_Separator
+                return @{cast(u32) idx, true}
+            x += metrics.header_Separator
         }
 
-        return Swag.U32.Max
+        return @{Swag.U32.Max, false}
     }
 }
 

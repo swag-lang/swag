@@ -30,4 +30,10 @@ impl Cursor
     {
         return NativeCursor.defaultCursors[shape]
     }
+
+
+    public mtd clear()
+    {
+        cursor = null
+    }
 }
