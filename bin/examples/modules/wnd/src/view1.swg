@@ -54,4 +54,12 @@ func createView1(view: *Wnd)
             line.setItem(str)
         }
     }
+
+    {
+        header := Header.create(view, @{5, 320, 300})
+        header.form = .FlatRound
+        header.addItem("header1")
+        header.addItem("header2")
+        header.addItem("header3")
+    }
 }

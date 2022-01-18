@@ -223,4 +223,9 @@ struct ThemeColors
     listItem_DisabledText:          Color = Gray3
     listItem_SelectedText:          Color = White
     listItem_Text:                  Color = White
+
+    headerItem_DisabledText:        Color = Gray4
+    headerItem_HotText:             Color = White
+    headerItem_Text:                Color = White
+    header_Bk:                      Color = Gray4
 }

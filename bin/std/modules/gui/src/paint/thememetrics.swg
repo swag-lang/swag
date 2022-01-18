@@ -60,4 +60,8 @@ struct ThemeMetrics
     frameWnd_SquarePadding:     Math.Vector4 = @{5, 5, 5, 5}
     frameWnd_RoundPadding:      Math.Vector4 = @{5, 5, 5, 5}
     frameWnd_FlatPadding:       Math.Vector4 = @{2, 2, 2, 2}
+
+    header_Height:              f32 = 30
+    header_Padding:             Math.Vector4 = @{10, 5, 5, 10}
+    header_Separator:           f32 = 10
 }
