@@ -90,7 +90,7 @@ public impl MessageDlg
         using dlg
         label = Label.create(srf.wnd.view, message, @{})
         label.dockStyle = .Center
-        label.padding = metrics.msgDlg_Padding
+        label.setAllPaddings(metrics.msgDlg_Padding)
         label.horzAlignmentText = .Justify
 
         h := srf.app.theme.metrics.btnPush_Height
@@ -98,7 +98,7 @@ public impl MessageDlg
         wndBottom = Wnd.create'Wnd(srf.wnd.view, "", @{0, 0, 0, h})
         wndBottom.dockStyle = .Bottom
         wndBottom.backgroundStyle = .DialogBar
-        wndBottom.padding = metrics.msgDlg_Padding
+        wndBottom.setAllPaddings(metrics.msgDlg_Padding)
 
         dlg.setIcon(icon)
         dlg.setFocus()
@@ -161,7 +161,7 @@ public impl MessageDlg
             h := icon.size + icon.size * 0.5
             labelIcon = Label.create(surface.wnd.view, "", @{0,0,0,h})
             labelIcon.dockStyle = .Top
-            labelIcon.padding = getThemeMetrics().msgDlg_Padding
+            labelIcon.setAllPaddings(getThemeMetrics().msgDlg_Padding)
         }
 
         labelIcon.icon = icon

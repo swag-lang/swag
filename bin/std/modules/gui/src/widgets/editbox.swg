@@ -812,11 +812,11 @@ impl EditBox
         switch self.form
         {
         case Square:
-            padding = getThemeMetrics().editBox_SquarePadding
+            setAllPaddings(getThemeMetrics().editBox_SquarePadding)
         case Round:
-            padding = getThemeMetrics().editBox_RoundPadding
+            setAllPaddings(getThemeMetrics().editBox_RoundPadding)
         case Flat:
-            padding = getThemeMetrics().editBox_FlatPadding
+            setAllPaddings(getThemeMetrics().editBox_FlatPadding)
         case Transparent:
             break
         }

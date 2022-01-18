@@ -301,7 +301,7 @@ private impl ComboBox
         metrics := getThemeMetrics()
 
         popup = Wnd.create'ComboBoxPopup(&parent.surface.wnd, position, id)
-        popup.padding = metrics.comboBox_BorderSize + metrics.comboBox_ShadowSize
+        popup.setAllPaddings(metrics.comboBox_BorderSize + metrics.comboBox_ShadowSize)
 
         scrollWnd := popup.createView'ScrollWnd()
         scrollWnd.dockStyle = .Center

@@ -336,7 +336,7 @@ impl List
             scrollWnd.dockStyle = .Center
             scrollWnd.focusStrategy = .None
             scrollWnd.backgroundStyle = .Transparent
-            scrollWnd.padding = #self.parent.getThemeMetrics().list_Padding
+            scrollWnd.setAllPaddings(getThemeMetrics().list_Padding)
 
             listView = scrollWnd.createView'ListView()
             listView.backgroundStyle = .Transparent
@@ -354,7 +354,7 @@ impl List
         fwnd := list.createView'Wnd()
         fwnd.dockStyle = .Center
         fwnd.backgroundStyle = .Transparent
-        fwnd.clipChilds = false
+        fwnd.clipChildren = false
 
         with list
         {
@@ -367,7 +367,7 @@ impl List
             scrollWnd.dockStyle = .Center
             scrollWnd.focusStrategy = .None
             scrollWnd.backgroundStyle = .Transparent
-            scrollWnd.padding = #self.parent.getThemeMetrics().list_Padding
+            scrollWnd.setAllPaddings(getThemeMetrics().list_Padding)
 
             listView = scrollWnd.createView'ListView()
             listView.backgroundStyle = .Transparent

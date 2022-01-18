@@ -11,7 +11,7 @@ var app: Application
     tab := Tab.create(surface0.wnd.view, @{}, id: "bigtab")
     tab.dockStyle = .Center
     tab.barLayout = .Fixed
-    tab.padding = @{10, 10, 10, 10}
+    tab.setAllPaddings(10)
     tab.style.addStyleSheetColors("tabView_FlatBk $wnd_Bk")
 
     view0 := Wnd.create'Wnd(tab, "bigview0")

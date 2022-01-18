@@ -547,7 +547,7 @@ public impl Menu
         res := Wnd.create'Menu(&parent.surface.wnd, null, @{}, id)
         with res
         {
-            padding = getThemeMetrics().menuPopup_Padding
+            setAllPaddings(getThemeMetrics().menuPopup_Padding)
             isHidden = true
         }
 
@@ -563,7 +563,7 @@ public impl Menu
             metrics := getThemeMetrics()
             if position.height == 0
                 position.height = metrics.menuBar_Height
-            padding = metrics.menuPopup_Padding
+            setAllPaddings(metrics.menuPopup_Padding)
             bar = true
         }
 

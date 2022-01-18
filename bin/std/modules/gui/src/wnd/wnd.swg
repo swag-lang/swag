@@ -47,12 +47,12 @@ struct Wnd
     surface:    *Surface
     style:      Style
 
-    position:   Math.Rectangle
-    minSize:    Math.Point
-    maxSize:    Math.Point
-    scrollPos:  Math.Point
-    noScroll:   bool
-    clipChilds: bool = true
+    position:       Math.Rectangle
+    minSize:        Math.Point
+    maxSize:        Math.Point
+    scrollPos:      Math.Point
+    noScroll:       bool
+    clipChildren:   bool = true
 
     parent:     *Wnd
     childs:     Array'(*Wnd)
@@ -272,7 +272,7 @@ impl Wnd
     mtd paint(bc: *PaintContext)
     {
         // Clipping
-        if clipChilds
+        if clipChildren
         {
             bc.painter.pushClippingRect(position)
             if bc.painter.isEmptyClippingRect()
@@ -335,7 +335,7 @@ impl Wnd
         bc.isDisabled = lastDisabled
         style.dirty = false
 
-        if clipChilds
+        if clipChildren
             bc.painter.popClippingRect()
     }
 
@@ -415,37 +415,41 @@ impl Wnd
     }
 
     // Set margin for childs
-    // If a value is < 0, then won't be changed
-    mtd setMargin(left, top, right, bottom: f32 = -1)
+    // If a value is Swag.F32.Inf, then it won't be changed
+    mtd setMargin(left, top, right, bottom: f32 = Swag.F32.Inf)
     {
         with margin
         {
-            if left >= 0   x = left
-            if top >= 0    y = top
-            if right >= 0  z = right
-            if bottom >= 0 w = bottom
+            if left   != Swag.F32.Inf x = left
+            if top    != Swag.F32.Inf y = top
+            if right  != Swag.F32.Inf z = right
+            if bottom != Swag.F32.Inf w = bottom
         }
+
+        if parent
+            parent.sendResizeEvent()
     }
 
+    mtd setAllMargins(value: f32)          = setMargin(value, value, value, value)
+    mtd setAllMargins(value: Math.Vector4) = setMargin(value.x, value.y, value.z, value.w)
+
     // Set padding for childs
-    // If a value is < 0, then won't be changed
-    mtd setPadding(left, top, right, bottom: f32 = -1)
+    // If a value is Swag.F32.Inf, then it won't be changed
+    mtd setPadding(left, top, right, bottom: f32 = Swag.F32.Inf)
     {
         with padding
         {
-            if left >= 0   x = left
-            if top >= 0    y = top
-            if right >= 0  z = right
-            if bottom >= 0 w = bottom
+            if left   != Swag.F32.Inf x = left
+            if top    != Swag.F32.Inf y = top
+            if right  != Swag.F32.Inf z = right
+            if bottom != Swag.F32.Inf w = bottom
         }
+
+        sendResizeEvent()
     }
 
-    // Move and size the wnd
-    mtd setPosition(rect: Math.Rectangle)
-    {
-        move(rect.x, rect.y)
-        resize(rect.width, rect.height)
-    }
+    mtd setAllPaddings(value: f32)          = setPadding(value, value, value, value)
+    mtd setAllPaddings(value: Math.Vector4) = setPadding(value.x, value.y, value.z, value.w)
 
     // Force the window to be the last painted (on top of siblings)
     mtd bringToTop()
@@ -457,6 +461,13 @@ impl Wnd
         Debug.assert(found)
         parent.childs[idx] = parent.childs.back()
         parent.childs[parent.childs.count - 1] = self
+    }
+
+    // Move and size the wnd
+    mtd setPosition(rect: Math.Rectangle)
+    {
+        move(rect.x, rect.y)
+        resize(rect.width, rect.height)
     }
 
     // Move the wnd

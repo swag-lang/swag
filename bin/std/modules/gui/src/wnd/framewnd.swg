@@ -100,23 +100,22 @@ impl FrameWnd
     // Set the editbox form
     mtd setFrameForm(form: FrameWndForm)
     {
-        if self.frameForm == #self.form
+        if frameForm == #self.form
             return
-
-        self.frameForm = #self.form
-        padding.clear()
+        frameForm = #self.form
 
         #[Swag.Complete]
         switch self.frameForm
         {
         case Square:
             hasPostChildsPaint = true
-            padding = getThemeMetrics().frameWnd_SquarePadding
+            setAllPaddings(getThemeMetrics().frameWnd_SquarePadding)
         case Round:
             hasPostChildsPaint = true
-            padding = getThemeMetrics().frameWnd_RoundPadding
+            setAllPaddings(getThemeMetrics().frameWnd_RoundPadding)
         case Transparent:
             hasPostChildsPaint = false
+            setAllPaddings(0)
         }
 
         sendResizeEvent()
