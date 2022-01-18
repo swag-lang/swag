@@ -257,30 +257,34 @@ impl ScrollWnd
         return result
     }
 
+    #[Swag.Optim("", false)]
     mtd computeLayout()
     {
-        sx := Math.max(scrollSize.x, position.width)
-        sy := Math.max(scrollSize.y, position.height)
+        clientRect := getClientRectPadding()
+        sx := Math.max(scrollSize.x, clientRect.width)
+        sy := Math.max(scrollSize.y, clientRect.height)
 
         metrics := getThemeMetrics()
-        showBarV, showBarH = false
-        paddingZ, paddingW = 0
 
-        if sy > position.height
+        showBarV, showBarH = false
+        if sy > clientRect.height
             showBarV = true
-        if sx > position.width
+        if sx > clientRect.width
             showBarH = true
 
         barSize := smallBarSize ? metrics.scrollBar_SmallSize : metrics.scrollBar_NormalSize
 
+        paddingZ, paddingW = 0
+        if showBarV
+            paddingZ = barSize
+        if showBarH
+            paddingW = barSize
+
         if showBarV
         {
-            paddingZ = barSize
-            vh := position.height
-            if showBarH
-                vh -= barSize
-
+            vh := clientRect.height - paddingW
             sizeBoxV = (vh / sy) * vh
+            vh = position.height - paddingW
             if sizeBoxV < metrics.scrollBar_BoxMinSize
             {
                 offsetClientV = metrics.scrollBar_BoxMinSize - sizeBoxV
@@ -294,12 +298,9 @@ impl ScrollWnd
 
         if showBarH
         {
-            paddingW = barSize
-            vh := position.width
-            if showBarV
-                vh -= barSize
-
+            vh := clientRect.width - paddingZ
             sizeBoxH = (vh / sx) * vh
+            vh = position.width - paddingZ
             if sizeBoxH < metrics.scrollBar_BoxMinSize
             {
                 offsetClientH = metrics.scrollBar_BoxMinSize - sizeBoxH
@@ -327,10 +328,12 @@ public impl ScrollWnd
     mtd setScrollPos(x, y: f32)
     {
         var newSP: Math.Point = ?
+
+        clientRect := getClientRectPadding()
         newSP.x = Math.max(x, 0)
         newSP.y = Math.max(y, 0)
-        newSP.x = Math.min(newSP.x, scrollSize.x - (position.width - paddingZ))
-        newSP.y = Math.min(newSP.y, scrollSize.y - (position.height - paddingW))
+        newSP.x = Math.min(newSP.x, scrollSize.x - (clientRect.width - paddingZ))
+        newSP.y = Math.min(newSP.y, scrollSize.y - (clientRect.height - paddingW))
         if newSP == view.scrollPos
             return
 

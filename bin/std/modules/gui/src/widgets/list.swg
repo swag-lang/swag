@@ -336,7 +336,7 @@ impl List
             scrollWnd.dockStyle = .Center
             scrollWnd.focusStrategy = .None
             scrollWnd.backgroundStyle = .Transparent
-            //scrollWnd.padding = #self.parent.getThemeMetrics().list_Padding
+            scrollWnd.padding = 40//#self.parent.getThemeMetrics().list_Padding
 
             listView = scrollWnd.createView'ListView()
             listView.backgroundStyle = .Transparent
@@ -422,7 +422,7 @@ impl List
     // Compute global layout, once all lines have been added
     mtd computeLayout()
     {
-        clientRect   := scrollWnd.getClientRect()
+        clientRect   := scrollWnd.getClientRectPadding()
         scrollWidth  := horizontalExtent orelse clientRect.width
         scrollHeight := getLineCount() * lineHeight
         scrollWnd.setScrollSize(scrollWidth, scrollHeight)
