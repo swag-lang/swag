@@ -94,8 +94,6 @@ impl IWnd for Header
    mtd onMouseEvent(evt: *MouseEvent)
     {
         (hit, sep) := hitTest(evt.surfacePos)
-        Console.print(hit, " ", sep, "\n")
-
         if hit != hotIdx
         {
             hotIdx = hit
