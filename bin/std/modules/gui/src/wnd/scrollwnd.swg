@@ -257,7 +257,6 @@ impl ScrollWnd
         return result
     }
 
-    #[Swag.Optim("", false)]
     mtd computeLayout()
     {
         if position.width == 0 or position.height == 0
