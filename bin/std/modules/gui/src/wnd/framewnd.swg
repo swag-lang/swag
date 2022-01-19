@@ -73,7 +73,7 @@ impl IWnd for FrameWnd
         if evt.kind == .BeforeChilds
             theme.drawSubRect(painter, clientRect, subRectBk, colorBk)
         elif evt.kind == .PostChilds
-            theme.drawSubRect(painter, clientRect, subRectBorder, colorBorder)
+            theme.drawSubRect(painter, clientRect, subRectBorder, colorBorder, false)
     }
 
     mtd onResizeEvent(evt: *ResizeEvent)

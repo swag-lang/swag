@@ -80,7 +80,7 @@ impl IWnd for Header
             switch form
             {
             case Flat:
-                painter.fillRect(clientRect, colors.header_Bk)
+                theme.drawSubRect(painter, clientRect, &rects.header_FlatBk, colors.header_Bk)
             case Round:
                 theme.drawSubRect(painter, clientRect, &rects.header_RoundBk, colors.header_Bk)
             }
