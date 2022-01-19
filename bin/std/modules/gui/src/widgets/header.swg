@@ -10,9 +10,11 @@ enum HeaderForm
 
 struct HeaderItem
 {
-    name:   RichString
-    icon:   Icon
-    width:  f32
+    name:       RichString
+    icon:       Icon
+    width:      f32
+    minWidth:   f32
+    maxWidth:   f32
 }
 
 struct Header
@@ -23,6 +25,8 @@ struct Header
     items:          Array'(*HeaderItem)
     hotIdx:         u32 = Swag.U32.Max
     hotSeparator:   bool
+    moving:         bool
+    correctMoving:  f32
 }
 
 impl IWnd for Header
@@ -93,25 +97,34 @@ impl IWnd for Header
 
    mtd onMouseEvent(evt: *MouseEvent)
     {
-        (hit, sep) := hitTest(evt.surfacePos)
-        if hit != hotIdx
+        if moving and evt.kind == .MouseReleased and evt.button == .Left
         {
-            hotIdx = hit
-            invalidate()
+            moving = false
+            surface.app.releaseMouse()
         }
 
-        if hotSeparator != sep
+        if !moving
         {
-            hotSeparator = sep
-            invalidate()
+            (hit, sep) := hitTest(evt.surfacePos)
+            if hit != hotIdx
+            {
+                hotIdx = hit
+                invalidate()
+            }
+
+            if hotSeparator != sep
+            {
+                hotSeparator = sep
+                invalidate()
+            }
+
+            if hotSeparator
+                cursor = Cursor.from(CursorShape.SizeWE)
+            else
+                cursor.clear()
         }
 
-        if hotSeparator
-            cursor = Cursor.from(CursorShape.SizeWE)
-        else
-            cursor.clear()
-
-        if hit == Swag.U32.Max
+        if hotIdx == Swag.U32.Max
         {
             evt.accepted = false
             return
@@ -119,18 +132,36 @@ impl IWnd for Header
 
         switch evt.kind
         {
-        case .MouseLeave:
+        case MouseMove:
+            if moving
+            {
+                item := items[hotIdx]
+                pos := surfaceToLocal(evt.surfacePos)
+                move := pos.x - getItemPosition(hotIdx) + padding.x
+                move -= correctMoving
+                move = Math.max(move, item.minWidth)
+                if item.maxWidth > 0 move = Math.min(move, item.maxWidth)
+                item.width = move
+                invalidate()
+            }
+
+        case MouseLeave:
             if hotIdx != Swag.U32.Max
             {
                 hotIdx = Swag.U32.Max
                 invalidate()
             }
 
-        case .MousePressed:
-            if evt.button == .Left and hit != Swag.U32.Max
+        case MousePressed:
+            if evt.button == .Left and hotIdx != Swag.U32.Max
             {
                 if hotSeparator
                 {
+                    moving = true
+                    pos := surfaceToLocal(evt.surfacePos)
+                    correctMoving = pos.x - getItemPosition(hotIdx) + padding.x
+                    correctMoving -= getItemWidth(hotIdx)
+                    surface.app.captureMouse(self)
                 }
             }
         }
@@ -202,7 +233,7 @@ impl Header
     }
 
     // Get an item position
-    mtd getItemPos(column: u32)->f32
+    mtd getItemPosition(column: u32)->f32
     {
         x := 0'f32
         m := parent.getThemeMetrics().header_Separator

@@ -105,9 +105,9 @@ impl Theme
             switch stringFormat.horzAlignment
             {
             case Left:
-                pos.x += icon.size + iconMargin
+                pos.moveLeft(icon.size + iconMargin)
             case Center:
-                pos.x += (icon.size + iconMargin) * 0.5
+                pos.moveLeft((icon.size + iconMargin) * 0.5)
             }
         }
 

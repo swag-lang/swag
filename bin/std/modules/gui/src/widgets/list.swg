@@ -222,7 +222,7 @@ private impl ListView
             // Right
             if list.header
             {
-                labelPos.x = list.header.getItemPos(item.column)
+                labelPos.x = list.header.getItemPosition(item.column)
                 labelPos.width = list.header.getItemWidth(item.column)
             }
 
