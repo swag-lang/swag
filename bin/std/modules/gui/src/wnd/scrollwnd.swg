@@ -335,6 +335,8 @@ public impl ScrollWnd
         newSP.y = Math.max(y, 0)
         newSP.x = Math.min(newSP.x, scrollSize.x - clientRect.width)
         newSP.y = Math.min(newSP.y, scrollSize.y - clientRect.height)
+        newSP.x = Math.max(newSP.x, 0)
+        newSP.y = Math.max(newSP.y, 0)
         if newSP == view.scrollPos
             return
 
