@@ -22,6 +22,9 @@ func createListSimple(view: *Wnd)->*List
 func createListMulti(view: *Wnd)->*List
 {
     list := List.createMultiColumns(view, @{5, 5, 250, 300})
+    list.addColumn("column 0")
+    list.addColumn("column 1")
+    list.addColumn("column 2")
     list.setFrameForm(FrameWndForm.Round)
     list.selectionMode = .MultiExtended
     list.iconSize = 16
@@ -32,6 +35,8 @@ func createListMulti(view: *Wnd)->*List
         icon := app.theme.getIcon24(ThemeIcons24.Search, 16)
         if i % 2 == 0 icon.clear()
         line := list.createLine(str, icon)
+        line.setItem(1, str, icon)
+        line.setItem(2, str, icon)
     }
 
     list.computeLayout()
@@ -70,13 +75,13 @@ func createView1(view: *Wnd)
         list.setVirtualCount(1_000_000)
         list.sigVirtualFill = @(line: *ListLine, idx: u32) {
             str := Format.toString("virtual %", idx)
-            line.setItem(str)
+            line.setItem(0, str)
         }
     }
 
     {
         header := Header.create(view, @{5, 320, 300})
-        header.form = .FlatRound
+        header.form = .Round
         header.addItem("header1")
         header.addItem("header2")
         header.addItem("header3")
@@ -85,13 +90,13 @@ func createView1(view: *Wnd)
     {
         list := createListMulti(view)
         list.focusBorder = true
-        list.setPosition(@{5, 400, 250, 300})
+        list.setPosition(@{5, 400, 400, 300})
     }
 
     {
         list := createListMulti(view)
         list.focusBorder = true
         list.setFrameForm(FrameWndForm.Square)
-        list.setPosition(@{280, 400, 250, 300})
+        list.setPosition(@{420, 400, 400, 300})
     }
 }

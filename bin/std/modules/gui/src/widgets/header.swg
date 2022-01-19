@@ -5,7 +5,7 @@ enum HeaderForm
 {
     Transparent
     Flat
-    FlatRound
+    Round
 }
 
 struct HeaderItem
@@ -54,7 +54,7 @@ impl IWnd for Header
 
         var format: RichStringFormat
         theme.setTextColors(&format, colorText)
-        format.horzAlignment = .Center
+        format.horzAlignment = .Left
         format.vertAlignment = .Center
         format.flags = .Clip
         format.font = theme.res.fontDefault
@@ -77,8 +77,8 @@ impl IWnd for Header
             {
             case Flat:
                 painter.fillRect(clientRect, colors.header_Bk)
-            case FlatRound:
-                theme.drawSubRect(painter, clientRect, &rects.header_FlatRoundBk, colors.header_Bk)
+            case Round:
+                theme.drawSubRect(painter, clientRect, &rects.header_RoundBk, colors.header_Bk)
             }
         }
 
@@ -187,5 +187,32 @@ impl Header
         item.icon = icon
         item.width = width
         items.add(item)
+    }
+
+    // Get an item width
+    mtd getItemWidth(column: u32)->f32
+    {
+        visit item, i: items
+        {
+            if i == column
+                return item.width
+        }
+
+        return 0
+    }
+
+    // Get an item position
+    mtd getItemPos(column: u32)->f32
+    {
+        x := 0'f32
+        m := parent.getThemeMetrics().header_Separator
+        visit item, i: items
+        {
+            if i == column
+                return x
+            x += item.width + m
+        }
+
+        return 0
     }
 }

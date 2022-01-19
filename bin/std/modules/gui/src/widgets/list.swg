@@ -23,7 +23,7 @@ impl ListLine
     }
 
     // Initialize a given column item
-    mtd setItem(name: string, icon: Icon = @{}, column: u32 = 0)
+    mtd setItem(column: u32, name: string, icon: Icon = @{})
     {
         visit item: items
         {
@@ -218,7 +218,16 @@ private impl ListView
             format.font = theme.res.fontDefault
 
             labelPos := rect
-            icon     := item.icon
+
+            // Right
+            if list.header
+            {
+                labelPos.x = list.header.getItemPos(item.column)
+                labelPos.width = list.header.getItemWidth(item.column)
+            }
+
+            // Left margin, or icon
+            icon := item.icon
             if list.iconSize > 0
             {
                 if !icon.isValid()
@@ -367,7 +376,7 @@ impl List
             switch list.frameForm
             {
             case Round:
-                header.form = .FlatRound
+                header.form = .Round
                 header.margin = -wnd.getThemeMetrics().frameWnd_RoundPadding
             case Square:
                 header.form = .Flat
@@ -385,7 +394,7 @@ impl List
         {
             header = Header.create(fwnd, @{})
             header.dockStyle = .Top
-            header.form = .FlatRound
+            header.form = .Round
 
             scrollWnd = Wnd.create'ScrollWnd(fwnd, @{})
             scrollWnd.dockStyle = .Center
@@ -470,11 +479,19 @@ impl List
         return line
     }
 
+    // Add one line, and set first column
     mtd createLine(name: string, icon: Icon = @{})->*ListLine
     {
         line := createLine()
-        line.setItem(#self.name, #self.icon)
+        line.setItem(0, #self.name, #self.icon)
         return line
+    }
+
+    // Add one column in a multi columns list
+    mtd addColumn(name: string, width: s32 = 100, icon: Icon = @{})
+    {
+        Debug.assert(header != null)
+        header.addItem(#self.name, width, #self.icon)
     }
 
     // Set the number of lines in a virtual list

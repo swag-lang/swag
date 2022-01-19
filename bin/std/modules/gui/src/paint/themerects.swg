@@ -92,5 +92,5 @@ struct ThemeImageRects
     frame_RoundBorder:          ThemeImageRect = @{{29,85,27,27}, 13}
 
     header_FlatBk:              ThemeImageRect = @{{57,95,27,27}, 5}
-    header_FlatRoundBk:         ThemeImageRect = @{{57,253,27,27}, 13}
+    header_RoundBk:             ThemeImageRect = @{{57,253,27,27}, 13}
 }
