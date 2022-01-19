@@ -353,6 +353,10 @@ impl Painter
         if text.chunks.count == 0
             return
 
+        // Recompute layout if rectangle has changed
+        if text.layoutRect != pos or forceCompute
+            computeLayout(pos, text, format)
+
         // Clipping
         if format.flags & .Clip
         {
@@ -363,10 +367,6 @@ impl Painter
                 return
             }
         }
-
-        // Recompute layout if rectangle has changed
-        if text.layoutRect != pos or forceCompute
-            computeLayout(pos, text, format)
 
         // Draw
         visit *c: text.chunks

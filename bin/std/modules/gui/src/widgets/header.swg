@@ -19,8 +19,9 @@ struct HeaderItem
 
 struct Header
 {
-    using wnd:  Wnd
-    form:       HeaderForm = Flat
+    using wnd:          Wnd
+    form:               HeaderForm = Flat
+    sigLayoutChanged:   func(*Self)
 
     items:          Array'(*HeaderItem)
     hotIdx:         u32 = Swag.U32.Max
@@ -142,6 +143,8 @@ impl IWnd for Header
                 move = Math.max(move, item.minWidth)
                 if item.maxWidth > 0 move = Math.min(move, item.maxWidth)
                 item.width = move
+                if sigLayoutChanged
+                    sigLayoutChanged(self)
                 invalidate()
             }
 
@@ -245,5 +248,12 @@ impl Header
         }
 
         return 0
+    }
+
+    mtd getTotalItemsWidth()->f32
+    {
+        w := getItemPosition(cast(u32) items.count - 1)
+        w += items.back().width
+        return w
     }
 }

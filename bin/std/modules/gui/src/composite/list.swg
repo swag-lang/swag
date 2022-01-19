@@ -392,9 +392,15 @@ impl List
 
         with list
         {
+            // Header
+            // Need to recompute layout when header size has changed
             header = Header.create(fwnd, @{})
             header.dockStyle = .Top
             header.form = .Round
+            header.sigLayoutChanged = @(header: *Header) {
+                list := cast(*List) header.parent.parent
+                list.computeLayout()
+            }
 
             scrollWnd = Wnd.create'ScrollWnd(fwnd, @{})
             scrollWnd.dockStyle = .Center
@@ -456,7 +462,14 @@ impl List
     mtd computeLayout()
     {
         clientRect   := scrollWnd.getClientRectPadding()
-        scrollWidth  := horizontalExtent orelse clientRect.width
+
+        var scrollWidth: f32
+        if horizontalExtent > 0
+            scrollWidth = horizontalExtent
+        elif header
+            scrollWidth = header.getTotalItemsWidth()
+        else
+            scrollWidth = clientRect.width
         scrollHeight := getLineCount() * lineHeight
         scrollWnd.setScrollSize(scrollWidth, scrollHeight)
         invalidate()
