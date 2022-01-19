@@ -87,4 +87,11 @@ func createView1(view: *Wnd)
         list.focusBorder = true
         list.setPosition(@{5, 400, 250, 300})
     }
+
+    {
+        list := createListMulti(view)
+        list.focusBorder = true
+        list.setFrameForm(FrameWndForm.Square)
+        list.setPosition(@{280, 400, 250, 300})
+    }
 }

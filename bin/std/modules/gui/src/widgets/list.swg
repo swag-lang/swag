@@ -356,12 +356,36 @@ impl List
         fwnd.backgroundStyle = .Transparent
         fwnd.clipChildren = false
 
+        // Adapt header to the frame container
+        list.hookOnEvent = @(wnd: *Wnd, evt: *Event)->bool
+        {
+            if evt.kind != .Resize
+                return false
+
+            list   := cast(*List) wnd
+            header := list.header
+            switch list.frameForm
+            {
+            case Round:
+                header.form = .FlatRound
+                header.margin = -wnd.getThemeMetrics().frameWnd_RoundPadding
+            case Square:
+                header.form = .Flat
+                header.margin = -wnd.getThemeMetrics().frameWnd_SquarePadding
+            case Transparent:
+                header.form = .Flat
+                header.margin = -wnd.getThemeMetrics().frameWnd_FlatPadding
+            }
+
+            header.setMargin(bottom: 0)
+            return false
+        }
+
         with list
         {
             header = Header.create(fwnd, @{})
             header.dockStyle = .Top
             header.form = .FlatRound
-            header.margin = @{-5, -5, -5, 0}
 
             scrollWnd = Wnd.create'ScrollWnd(fwnd, @{})
             scrollWnd.dockStyle = .Center
