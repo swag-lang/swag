@@ -355,7 +355,7 @@ public impl ScrollWnd
             return
 
         scrollSize = @{x, y}
-        computeLayout()
+        setScrollPos(view.scrollPos.x, view.scrollPos.y)
         sendResizeEvent()
     }
 }
