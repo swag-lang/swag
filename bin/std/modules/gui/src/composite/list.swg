@@ -191,11 +191,18 @@ private impl ListView
         theme   := getTheme()
         colors  := getThemeColors()
         metrics := getThemeMetrics()
+        rects   := getThemeRects()
         font    := theme.res.fontDefault.regular
 
+        // Selection box
         isSelected := list.isLineSelected(idx)
         if isSelected and (!list.hideSelection or hasFocus()) and !bc.isDisabled
-            painter.fillRect(rect, hasFocus() ? colors.listItem_FocusSelectedBk : colors.listItem_SelectedBk)
+        {
+            colorSel := hasFocus() ? colors.listItem_FocusSelectedBk : colors.listItem_SelectedBk
+            posSel := rect
+            posSel.x += scrollPos.x
+            theme.drawSubRect(painter, posSel, &rects.selectionBox_Bk, colorSel)
+        }
 
         var colorText: Color = ?
         switch
@@ -403,6 +410,7 @@ impl List
                 list.computeLayout()
             }
 
+            // Scroll that contains the list view
             scrollWnd = Wnd.create'ScrollWnd(fwnd, @{})
             scrollWnd.dockStyle = .Center
             scrollWnd.focusStrategy = .None
@@ -416,6 +424,7 @@ impl List
                 header.invalidate()
             }
 
+            // List view
             listView = scrollWnd.createView'ListView()
             listView.backgroundStyle = .Transparent
             listView.list = list

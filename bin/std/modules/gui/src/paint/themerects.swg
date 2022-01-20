@@ -84,7 +84,6 @@ struct ThemeImageRects
     scrollBar_Corner:           ThemeImageRect = @{{1,253,27,27}, 0}
 
     comboBox_Shadow:            ThemeImageRect = @{{189,1,66,66}, 24}
-    comboBoxItem_HotBk:         ThemeImageRect = @{{57,197,27,27}, 12}
 
     frame_SquareBk:             ThemeImageRect = @{{1,57,27,27}, 5}
     frame_SquareBorder:         ThemeImageRect = @{{29,57,27,27}, 5}
@@ -93,4 +92,6 @@ struct ThemeImageRects
 
     header_FlatBk:              ThemeImageRect = @{{57,225,27,27}, 13}
     header_RoundBk:             ThemeImageRect = @{{57,253,27,27}, 13}
+
+    selectionBox_Bk:            ThemeImageRect = @{{57,197,27,27}, 12}
 }

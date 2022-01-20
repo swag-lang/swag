@@ -104,7 +104,7 @@ impl IWnd for ComboBoxPopupView
             // Back selection
             if hotIdx == idx
             {
-                theme.drawSubRect(painter, labelPos, &rects.comboBoxItem_HotBk, colors.comboBoxItem_HotBk)
+                theme.drawSubRect(painter, labelPos, &rects.selectionBox_Bk, colors.comboBoxItem_HotBk)
                 colorText = colors.comboBoxItem_HotText
             }
 

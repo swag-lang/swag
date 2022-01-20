@@ -208,11 +208,13 @@ impl Header
     func create(parent: *Wnd, position: Math.Rectangle, id: string = null)->*Header
     {
         Debug.assert(parent != null)
+
+        metrics := parent.getThemeMetrics()
         pos := position
         if pos.height == 0
-            pos.height = parent.getThemeMetrics().header_Height
+            pos.height = metrics.header_Height
         res := Wnd.create'Header(parent, null, pos, id)
-        res.padding = parent.getThemeMetrics().header_Padding
+        res.padding = metrics.header_Padding
         res.focusStrategy = .None
         return res
     }
