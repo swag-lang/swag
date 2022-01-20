@@ -10,6 +10,8 @@ public struct ScrollWnd
     scrollSize:     Math.Point
     smallBarSize:   bool
 
+    sigScrollPosChanged:    func(*Self, Math.Point)
+
     showBarV:       bool
     posBoxV:        f32
     sizeBoxV:       f32
@@ -341,6 +343,8 @@ public impl ScrollWnd
             return
 
         view.scrollPos = newSP
+        if sigScrollPosChanged
+            sigScrollPosChanged(self, newSP)
         computeLayout()
     }
 

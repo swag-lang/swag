@@ -78,6 +78,7 @@ impl IWnd for Header
         if form != .Transparent
         {
             clientRect := getClientRect()
+            clientRect.offset(scrollPos)
             switch form
             {
             case Flat:
@@ -138,6 +139,7 @@ impl IWnd for Header
             {
                 item := items[hotIdx]
                 pos := surfaceToLocal(evt.surfacePos)
+                pos += scrollPos.x
                 move := pos.x - getItemPosition(hotIdx) + padding.x
                 move -= correctMoving
                 move = Math.max(move, item.minWidth)
@@ -162,6 +164,7 @@ impl IWnd for Header
                 {
                     moving = true
                     pos := surfaceToLocal(evt.surfacePos)
+                    pos += scrollPos.x
                     correctMoving = pos.x - getItemPosition(hotIdx) + padding.x
                     correctMoving -= getItemWidth(hotIdx)
                     surface.app.captureMouse(self)
@@ -177,6 +180,7 @@ private impl Header
     {
         metrics := getThemeMetrics()
         pos := surfaceToLocal(surfacePos)
+        pos += scrollPos.x
         x := padding.x
         visit item, idx: items
         {

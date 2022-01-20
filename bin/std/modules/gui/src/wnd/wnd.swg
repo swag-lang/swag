@@ -46,6 +46,7 @@ struct Wnd
     itf:        IWnd
     surface:    *Surface
     style:      Style
+    userData:   *void
 
     position:       Math.Rectangle
     minSize:        Math.Point
