@@ -69,7 +69,7 @@ func createView1(view: *Wnd)
         list.setFrameForm(FrameWndForm.Round)
         list.frameFlags ^= .Borders
         list.selectionMode = .MultiSimple
-        list.hideSelection = true
+        list.listFlags |= .HideSelection
         list.horizontalExtent = 500
 
         list.setVirtualCount(1_000_000)

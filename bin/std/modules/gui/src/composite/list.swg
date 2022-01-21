@@ -51,14 +51,21 @@ enum ListSelectionMode
     MultiExtended
 }
 
+#[Swag.EnumFlags]
+enum ListFlags
+{
+    None
+    HideSelection
+}
+
 struct List
 {
     using frameWnd:     FrameWnd
     horizontalExtent:   f32
     lineHeight:         f32 = 20
     iconSize:           f32
-    hideSelection:      bool
-    selectionMode:      ListSelectionMode = Single
+    listFlags           = ListFlags.None
+    selectionMode       = ListSelectionMode.Single
     sigVirtualFill:     func(*ListLine, u32)
     sigSelChanged:      func()
 
@@ -196,7 +203,8 @@ private impl ListView
 
         // Selection box
         isSelected := list.isLineSelected(idx)
-        if isSelected and (!list.hideSelection or hasFocus()) and !bc.isDisabled
+        hideSel := cast(bool) (list.listFlags & .HideSelection)
+        if isSelected and (!hideSel or hasFocus()) and !bc.isDisabled
         {
             colorSel := hasFocus() ? colors.listItem_FocusSelectedBk : colors.listItem_SelectedBk
             posSel := rect
