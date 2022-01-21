@@ -97,13 +97,10 @@ impl IWnd for Header
             paintItem(evt.bc, item, cast(u32) idx, x)
             x += item.width
 
-            if idx != items.count - 1
-            {
-                rect := clientRect
-                rect.x = x
-                rect.width = metrics.header_Separator
-                theme.drawSubRect(painter, rect, &rects.headerItem_Separator, colors.headerItem_Separator)
-            }
+            rect := clientRect
+            rect.x = x
+            rect.width = metrics.header_Separator
+            theme.drawSubRect(painter, rect, &rects.headerItem_Separator, colors.headerItem_Separator)
 
             x += metrics.header_Separator
         }
@@ -154,16 +151,7 @@ impl IWnd for Header
                 pos += scrollPos.x
                 move := pos.x - getItemPosition(hotIdx) + padding.x
                 move -= correctMoving
-                move = Math.max(move, item.minWidth)
-                if item.maxWidth > 0
-                    move = Math.min(move, item.maxWidth)
-                if item.width != move
-                {
-                    item.width = move
-                    if sigLayoutChanged
-                        sigLayoutChanged(self)
-                    invalidate()
-                }
+                setItemWidth(hotIdx, move)
             }
 
         case MouseLeave:
@@ -279,5 +267,22 @@ impl Header
         w := getItemPosition(cast(u32) items.count - 1)
         w += items.back().width
         return w
+    }
+
+    // Set an item width
+    mtd setItemWidth(idx: u32, width: f32)
+    {
+        Debug.assert(idx < items.count)
+
+        item := items[idx]
+        move := Math.max(width, item.minWidth)
+        if item.maxWidth > 0
+            move = Math.min(move, item.maxWidth)
+        if item.width == move
+            return
+        item.width = move
+        if sigLayoutChanged
+            sigLayoutChanged(self)
+        invalidate()
     }
 }
