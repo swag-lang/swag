@@ -47,7 +47,7 @@ func createView1(view: *Wnd)
 {
     {
         list := createListSimple(view)
-        list.focusBorder = true
+        list.frameStyle |= .FocusBorder
         list.setPosition(@{5, 5, 250, 300})
     }
 
@@ -67,7 +67,7 @@ func createView1(view: *Wnd)
     {
         list := List.createSimple(view, @{830, 5, 250, 300})
         list.setFrameForm(FrameWndForm.Round)
-        list.hasBorders = false
+        list.frameStyle ^= .Borders
         list.selectionMode = .MultiSimple
         list.hideSelection = true
         list.horizontalExtent = 500
@@ -91,13 +91,13 @@ func createView1(view: *Wnd)
 
     {
         list := createListMulti(view)
-        list.focusBorder = true
+        list.frameStyle |= .FocusBorder
         list.setPosition(@{5, 400, 400, 300})
     }
 
     {
         list := createListMulti(view)
-        list.focusBorder = true
+        list.frameStyle |= .FocusBorder
         list.setFrameForm(FrameWndForm.Square)
         list.setPosition(@{420, 400, 400, 300})
     }
