@@ -3,8 +3,7 @@ public struct Button
     using wnd: Wnd
 
     icon:           Icon
-    sigPressed:     func(*Button)
-
+    sigPressed:     func(*Self)
     isPressed:      bool
     isPressing:     bool
     isHot:          bool

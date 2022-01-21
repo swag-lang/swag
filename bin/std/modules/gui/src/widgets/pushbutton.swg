@@ -12,7 +12,7 @@ struct PushButton
 {
     using button: Button
 
-    form            = PushButtonForm.Normal
+    form = PushButtonForm.Normal
 }
 
 impl IWnd for PushButton

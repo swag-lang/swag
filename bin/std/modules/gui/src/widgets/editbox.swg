@@ -45,11 +45,11 @@ struct EditBox
     maxLength:          s32
     rightMargin:        f32
 
-    sigChanged:         func(*EditBox)
-    sigLoseFocus:       func(*EditBox)
-    sigEnterPressed:    func(*EditBox)
-    sigEscapePressed:   func(*EditBox)
-    sigCheckContent:    func(*EditBox)->EditBoxCheckResult
+    sigChanged:         func(*Self)
+    sigLoseFocus:       func(*Self)
+    sigEnterPressed:    func(*Self)
+    sigEscapePressed:   func(*Self)
+    sigCheckContent:    func(*Self)->EditBoxCheckResult
 
     using minMax: union{
         minMaxS64: {min: s64, max: s64} = @{Swag.S64.Min, Swag.S64.Max}

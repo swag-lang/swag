@@ -21,7 +21,7 @@ struct CheckButton
 
     checked             = ButtonCheckState.Normal
     checkButtonFlags    = CheckButtonFlags.None
-    sigChanged:         func(*CheckButton)
+    sigChanged:         func(*Self)
 }
 
 impl IWnd for CheckButton

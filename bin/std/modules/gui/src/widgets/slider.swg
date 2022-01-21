@@ -19,7 +19,7 @@ struct Slider
     max:            f32 = 1.0
     steps:          f32
     sliderFlags     = SliderFlags.HilightBar
-    sigChanged:     func(*Slider)
+    sigChanged:     func(*Self)
 
     isMoving:       bool
     isPressed1:     bool

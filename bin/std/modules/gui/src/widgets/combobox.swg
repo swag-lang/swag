@@ -8,7 +8,7 @@ struct ComboBox
     minWidthPopup:  f32 = 100
     maxHeightPopup: f32 = 300
     heightItem:     f32 = 30
-    sigChanged:     func(*ComboBox, WndId, *void)
+    sigChanged:     func(*Self, WndId, *void)
 
     editBox:        *EditBox
     isHot:          bool

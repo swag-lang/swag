@@ -6,7 +6,7 @@ struct ToggleButton
     using button: Button
 
     isToggled:      bool
-    sigChanged:     func(*ToggleButton)
+    sigChanged:     func(*Self)
 }
 
 impl IWnd for ToggleButton

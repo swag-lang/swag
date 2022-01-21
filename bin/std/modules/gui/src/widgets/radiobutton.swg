@@ -5,7 +5,7 @@ struct RadioButton
 {
     using button:   Button
     checked:        bool
-    sigChanged:     func(*RadioButton)
+    sigChanged:     func(*Self)
 }
 
 impl IWnd for RadioButton

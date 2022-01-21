@@ -60,14 +60,15 @@ enum ListFlags
 
 struct List
 {
-    using frameWnd:     FrameWnd
+    using frameWnd: FrameWnd
+
     horizontalExtent:   f32
     lineHeight:         f32 = 20
     iconSize:           f32
     listFlags           = ListFlags.None
     selectionMode       = ListSelectionMode.Single
-    sigVirtualFill:     func(*ListLine, u32)
-    sigSelChanged:      func()
+    sigVirtualFill:     func(*Self, *ListLine, u32)
+    sigSelChanged:      func(*Self)
 
     lines:          Array'(*ListLine)
     selection:      Array'{start: u32, end: u32}
@@ -75,7 +76,6 @@ struct List
     scrollWnd:      *ScrollWnd
     listView:       *ListView
     header:         *Header
-
     virtualCount:   u32
     isVirtual:      bool
 }
@@ -449,7 +449,7 @@ impl List
         unselectAllPrivate()
         invalidate()
         if sigSelChanged
-            sigSelChanged()
+            sigSelChanged(self)
     }
 
     // Returns
@@ -468,7 +468,7 @@ impl List
         selectLinePrivate(idx, select)
         invalidate()
         if sigSelChanged
-            sigSelChanged()
+            sigSelChanged(self)
     }
 
     // Select a range of lines
@@ -480,7 +480,7 @@ impl List
             selectLinePrivate(i, select)
         invalidate()
         if sigSelChanged
-            sigSelChanged()
+            sigSelChanged(self)
     }
 
     // Compute global layout, once all lines have been added
