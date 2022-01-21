@@ -197,7 +197,7 @@ func createView0(view: *Wnd)
 
 
         slider0 := Slider.create(view, @{10, 470}, id: "slider0")
-        slider0.hilightBar = false
+        slider0.sliderFlags &= ~.HilightBar
         edit0   := EditBox.create(view, "0", @{205, 464, 45}, id: "edit0")
         edit0.setForm(EditBoxForm.Transparent)
 

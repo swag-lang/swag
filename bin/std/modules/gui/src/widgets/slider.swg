@@ -1,6 +1,14 @@
 #global public
 using Core, Pixel
 
+#[Swag.EnumFlags]
+enum SliderFlags
+{
+    None
+    Range
+    HilightBar
+}
+
 struct Slider
 {
     using wnd:      Wnd
@@ -9,8 +17,7 @@ struct Slider
     min:            f32
     max:            f32 = 1.0
     steps:          f32
-    isRange:        bool
-    hilightBar:     bool = true
+    sliderFlags     = SliderFlags.HilightBar
     sigChanged:     func(*Slider)
 
     isMoving:       bool
@@ -48,11 +55,11 @@ impl IWnd for Slider
         else
         {
             colorBkRight  = colors.slider_BkRight
-            if !isRange and hilightBar
+            if !(sliderFlags & .Range) and (sliderFlags & .HilightBar)
                 colorBkLeft = colors.slider_HilightBk
             else
                 colorBkLeft   = colors.slider_BkLeft
-            if isRange and hilightBar
+            if (sliderFlags & .Range) and (sliderFlags & .HilightBar)
                 colorBkMiddle = colors.slider_HilightBk
             else
                 colorBkMiddle = colors.slider_BkMiddle
@@ -87,14 +94,14 @@ impl IWnd for Slider
         theme.drawSubRect(bc.painter, left, &rects.slider_BkLeft, colorBkLeft)
 
         // Bar right
-        valueRight := isRange ? value2 : value1
+        valueRight := sliderFlags & .Range ? value2 : value1
         right := clientRect
         right.x += (clientRect.width * valueRight)
         right.width -= (clientRect.width * valueRight)
         theme.drawSubRect(bc.painter, right, &rects.slider_BkRight, colorBkRight)
 
         // Bar middle
-        if isRange
+        if sliderFlags & .Range
         {
             middle := clientRect
             middle.x = left.right()
@@ -114,9 +121,9 @@ impl IWnd for Slider
                 var colorStep: Color = ?
                 if isHot1 or isHot2 or isMoving
                     colorStep = colors.slider_HotStepBk
-                elif x <= value1 and hilightBar
+                elif x <= value1 and (sliderFlags & .HilightBar)
                     colorStep = colors.slider_HilightStepBk
-                elif x >= value1 and x <= value2 and hilightBar and isRange
+                elif x >= value1 and x <= value2 and (sliderFlags & .HilightBar) and (sliderFlags & .Range)
                     colorStep = colors.slider_HilightStepBk
                 else
                     colorStep = colors.slider_StepBk
@@ -127,7 +134,7 @@ impl IWnd for Slider
 
         // Box value1
         theme.drawSubRect(bc.painter, posBox1, &rects.slider_Mark, colorMark1)
-        if isRange
+        if (sliderFlags & .Range)
             theme.drawSubRect(bc.painter, posBox2, &rects.slider_Mark, colorMark2)
     }
 
@@ -172,7 +179,7 @@ impl IWnd for Slider
                     posBox := getPosBox2()
                     correcMoving = pos.x - posBox.horzCenter()
                 }
-                elif !isRange
+                elif !(sliderFlags & .Range)
                 {
                     correcMoving = 0
                     isPressed1 = true
@@ -231,7 +238,7 @@ private impl Slider
     mtd setValue1(f: f32)
     {
         fc := clamp(Math.clamp(f, 0, 1))
-        if isRange
+        if sliderFlags & .Range
             fc = Math.min(fc, value2)
         if fc == value1
             return
@@ -244,7 +251,7 @@ private impl Slider
     mtd setValue2(f: f32)
     {
         fc := clamp(Math.clamp(f, 0, 1))
-        if isRange
+        if sliderFlags & .Range
             fc = Math.max(fc, value1)
         if fc == value2
             return
@@ -263,7 +270,7 @@ private impl Slider
             isHot1, isHot2 = false
         }
 
-        if isRange
+        if sliderFlags & .Range
         {
             rect := getPosBox2()
             if rect.contains(pos)
@@ -335,7 +342,7 @@ impl Slider
     mtd setRangeValues(left, right: f32)
     {
         Debug.assert(left < right)
-        Debug.assert(isRange)
+        Debug.assert(cast(bool) (sliderFlags & .Range))
         diff := max - min
         value1 = (left - min) / diff
         value2 = (right - min) / diff
@@ -353,7 +360,8 @@ impl Slider
         if pos.width == 0
             pos.width  = parent.getThemeMetrics().slider_Width
         res := Wnd.create'Slider(parent, null, pos, id)
-        res.isRange = range
+        if range
+            res.sliderFlags |= .Range
         return res
     }
 }
