@@ -12,6 +12,8 @@ struct ListLine
 {
     items:      Array'(*ListItem)
     userData:   *void
+    colorBk:    Color
+    colorFg:    Color
 }
 
 impl ListLine
@@ -56,6 +58,7 @@ enum ListFlags
 {
     None
     HideSelection
+    AlternateLines
 }
 
 struct List
@@ -201,15 +204,28 @@ private impl ListView
         rects   := getThemeRects()
         font    := theme.res.fontDefault.regular
 
+        posSel := rect
+        posSel.x += scrollPos.x
+
         // Selection box
         isSelected := list.isLineSelected(idx)
         hideSel := cast(bool) (list.listFlags & .HideSelection)
         if isSelected and (!hideSel or hasFocus()) and !bc.isDisabled
         {
             colorSel := hasFocus() ? colors.listItem_FocusSelectedBk : colors.listItem_SelectedBk
-            posSel := rect
-            posSel.x += scrollPos.x
-            theme.drawSubRect(painter, posSel, &rects.selectionBox_Bk, colorSel)
+            painter.fillRect(posSel, colorSel)
+        }
+
+        // User background
+        elif line.colorBk.a
+        {
+            painter.fillRect(posSel, line.colorBk)
+        }
+
+        // Alternate lines
+        elif (list.listFlags & .AlternateLines) and idx % 2 == 1
+        {
+            painter.fillRect(posSel, colors.listItem_AlternateBk)
         }
 
         var colorText: Color = ?
@@ -219,6 +235,8 @@ private impl ListView
                 colorText = colors.listItem_DisabledText
             case isSelected:
                 colorText = colors.listItem_SelectedText
+            case line.colorFg.a > 0:
+                colorText = line.colorFg
             default:
                 colorText = colors.listItem_Text
         }
@@ -561,5 +579,11 @@ impl List
         if idx >= lc
             return cast(u32) lc - 1
         return idx
+    }
+
+    // Get a line by index
+    mtd getLine(idx: u32)->*ListLine
+    {
+        return lines[idx]
     }
 }
