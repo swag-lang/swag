@@ -41,19 +41,26 @@ interface IWnd
     onCommandEvent:     func(self, *CommandEvent)
 }
 
+#[Swag.EnumFlags]
+enum WndFlags
+{
+    None
+    NoScroll
+    ClipChildren
+}
+
 struct Wnd
 {
     itf:        IWnd
     surface:    *Surface
     style:      Style
+    wndFlags    = WndFlags.ClipChildren
     userData:   *void
 
     position:       Math.Rectangle
     minSize:        Math.Point
     maxSize:        Math.Point
     scrollPos:      Math.Point
-    noScroll:       bool
-    clipChildren:   bool = true
 
     parent:     *Wnd
     childs:     Array'(*Wnd)
@@ -273,7 +280,7 @@ impl Wnd
     mtd paint(bc: *PaintContext)
     {
         // Clipping
-        if clipChildren
+        if wndFlags & .ClipChildren
         {
             bc.painter.pushClippingRect(position)
             if bc.painter.isEmptyClippingRect()
@@ -320,7 +327,7 @@ impl Wnd
                 continue
 
             curState := bc.painter.curState
-            if !c.noScroll
+            if !(c.wndFlags & .NoScroll)
                 bc.painter.translateTransform(-scrollPos.x, -scrollPos.y)
             c.paint(bc)
             bc.painter.setState(curState)
@@ -336,7 +343,7 @@ impl Wnd
         bc.isDisabled = lastDisabled
         style.dirty = false
 
-        if clipChildren
+        if wndFlags & .ClipChildren
             bc.painter.popClippingRect()
     }
 
@@ -595,7 +602,7 @@ impl Wnd
 
 
             pt := Math.Point{x - position.x, y - position.y}
-            if !c.noScroll
+            if !(c.wndFlags & .NoScroll)
                 pt += scrollPos
             res := c.getWndAt(pt.x, pt.y)
             if res

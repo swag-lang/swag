@@ -9,7 +9,7 @@ enum FrameWndForm
 }
 
 #[Swag.EnumFlags]
-enum FrameWndStyle
+enum FrameWndFlags
 {
     None
     Borders
@@ -21,7 +21,7 @@ struct FrameWnd
     using wnd:  Wnd
     view:       *Wnd
     frameForm   = FrameWndForm.Transparent
-    frameStyle  = FrameWndStyle.Borders
+    frameFlags  = FrameWndFlags.Borders
 }
 
 impl IWnd for FrameWnd
@@ -30,7 +30,7 @@ impl IWnd for FrameWnd
     {
         if frameForm == .Transparent
             return
-        if !(frameStyle & .Borders) and evt.kind == .PostChilds
+        if !(frameFlags & .Borders) and evt.kind == .PostChilds
             return
 
         bc      := evt.bc
@@ -55,7 +55,7 @@ impl IWnd for FrameWnd
         }
 
         // Display focus borders when the focus wnd is a child of me
-        showFocus := cast(bool) (frameStyle & .FocusBorder)
+        showFocus := cast(bool) (frameFlags & .FocusBorder)
         if showFocus
         {
             focus := getFocus()

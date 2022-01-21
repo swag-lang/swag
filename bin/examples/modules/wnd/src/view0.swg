@@ -318,7 +318,7 @@ func createView0(view: *Wnd)
         button2 := PushButton.create(swnd.view, "Other", @{5, 55})
         edit := EditBox.create(swnd.view, "NoScroll", @{5, 100})
         edit.setNote("NoScroll")
-        edit.noScroll = true
+        edit.wndFlags |= .NoScroll
         edit.dockStyle = .Bottom
         swnd.setScrollSize(600, 600)
     }

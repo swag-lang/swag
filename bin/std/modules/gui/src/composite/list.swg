@@ -370,7 +370,7 @@ impl List
         fwnd := list.createView'Wnd()
         fwnd.dockStyle = .Center
         fwnd.backgroundStyle = .Transparent
-        fwnd.clipChildren = false
+        fwnd.wndFlags ^= .ClipChildren
 
         // Adapt header to the frame container
         list.hookOnEvent = @(wnd: *Wnd, evt: *Event)->bool
@@ -420,7 +420,7 @@ impl List
             scrollWnd.sigScrollPosChanged = @(scrollWnd: *ScrollWnd, sp: Math.Point) {
                 list := cast(*List) scrollWnd.userData
                 header := list.header
-                header.scrollPos = sp
+                header.scrollPos.x = sp.x
                 header.invalidate()
             }
 
