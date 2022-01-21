@@ -25,17 +25,24 @@ enum EditBoxCheckResult
     InvalidShow
 }
 
+#[Swag.EnumFlags]
+enum EditBoxFlags
+{
+    None
+    AutoLoseFocus
+    ReadOnly
+}
+
 struct EditBox
 {
     using wnd:          Wnd
     icon:               Icon
     text:               String
-    form:               EditBoxForm = Square
-    autoLoseFocus:      bool = true
-    readOnly:           bool = false
+    form                = EditBoxForm.Square
+    editBoxFlags        = EditBoxFlags.AutoLoseFocus
+    inputMode           = EditBoxInputMode.String
     maxLength:          s32
     rightMargin:        f32
-    inputMode:          EditBoxInputMode = String
 
     sigChanged:         func(*EditBox)
     sigLoseFocus:       func(*EditBox)
@@ -264,7 +271,7 @@ impl IWnd for EditBox
             if evt.accepted
                 forceVisibleCaret()
         }
-        elif evt.kind == .Char and !readOnly
+        elif evt.kind == .Char and !(editBoxFlags & .ReadOnly)
         {
             if evt.char < 32
                 evt.accepted = false
@@ -335,14 +342,14 @@ private impl EditBox
         case Return:
             if sigEnterPressed
                 sigEnterPressed(self)
-            if autoLoseFocus
+            if editBoxFlags & .AutoLoseFocus
                 getTopView().setFocus()
             return true
 
         case Escape:
             if sigEscapePressed
                 sigEscapePressed(self)
-            if autoLoseFocus
+            if editBoxFlags & .AutoLoseFocus
                 getTopView().setFocus()
             return true
 
@@ -739,7 +746,7 @@ impl EditBox
     // Delete selected text
     mtd deleteSelection()
     {
-        if readOnly
+        if editBoxFlags & .ReadOnly
             return
         if deleteSelectionPrivate()
             notifyChanged()

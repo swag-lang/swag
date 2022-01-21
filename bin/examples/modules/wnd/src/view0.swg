@@ -163,7 +163,7 @@ func createView0(view: *Wnd)
         edit.setInputF64()
 
         edit = EditBox.create(view, "ReadOnly", @{470, 220, 100})
-        edit.readOnly = true
+        edit.editBoxFlags |= .ReadOnly
         edit.setForm(EditBoxForm.Square)
         edit.setNote("ReadOnly")
     }
