@@ -28,7 +28,7 @@ impl IWnd for RadioButton
 
         switch
         {
-        case isDisabled:
+        case bc.isDisabled:
             colorBk       = colors.btnCheck_DisabledBk
             colorBorder   = colors.btnCheck_DisabledBorder
             colorMark     = colors.btnCheck_DisabledMark

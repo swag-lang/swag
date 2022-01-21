@@ -47,6 +47,8 @@ enum WndFlags
     None
     NoScroll
     ClipChildren
+    Disabled
+    Hidden
 }
 
 struct Wnd
@@ -75,9 +77,7 @@ struct Wnd
 
     focusStrategy: FocusStategy = MousePressed
 
-    backgroundStyle:    BackgroundStyle = Transparent
-    isDisabled:             bool
-    isHidden:               bool
+    backgroundStyle:        BackgroundStyle = Transparent
     isAllocated:            bool
     isPendingDestroy:       bool
     hasPostChildsPaint:     bool
@@ -214,18 +214,18 @@ impl Wnd
     // Show the window
     mtd show()
     {
-        if !isHidden
+        if !(wndFlags & .Hidden)
             return
-        isHidden = false
+        wndFlags &= ~.Hidden
         invalidate()
     }
 
     // Hide the window
     mtd hide()
     {
-        if isHidden
+        if wndFlags & .Hidden
             return
-        isHidden = true
+        wndFlags |= .Hidden
         getApp().unregisterWnd(self)
         invalidate()
     }
@@ -233,18 +233,18 @@ impl Wnd
     // Enable the window
     mtd enable()
     {
-        if !isDisabled
+        if !(wndFlags & .Disabled)
             return
-        isDisabled = false
+        wndFlags &= ~.Disabled
         invalidate()
     }
 
     // Disable the window
     mtd disable()
     {
-        if isDisabled
+        if wndFlags & .Disabled
             return
-        isDisabled = true
+        wndFlags |= .Disabled
 
         // Check global state
         if getApp().keybFocusWnd == self
@@ -259,7 +259,7 @@ impl Wnd
         check := self
         while check
         {
-            if check.isDisabled
+            if check.wndFlags & .Disabled
                 return false
             check = check.parent
         }
@@ -295,7 +295,7 @@ impl Wnd
 
         // Transmit disabled state to childs
         lastDisabled := bc.isDisabled
-        if isDisabled
+        if wndFlags & .Disabled
             bc.isDisabled = true
 
         // Background
@@ -323,7 +323,7 @@ impl Wnd
         // Childs
         visit c: childs
         {
-            if c.isHidden
+            if c.wndFlags & .Hidden
                 continue
 
             curState := bc.painter.curState
@@ -595,9 +595,9 @@ impl Wnd
         for i := cast(s32) childs.count - 1; i >= 0; i -= 1
         {
             c := childs[i]
-            if c.isHidden and !getHidden
+            if c.wndFlags & .Hidden and !getHidden
                 continue
-            if c.isDisabled and !getDisabled
+            if c.wndFlags & .Disabled and !getDisabled
                 continue
 
 

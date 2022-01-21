@@ -154,7 +154,7 @@ func createView0(view: *Wnd)
         edit.setInputS64(-127, 128)
 
         edit = EditBox.create(view, "disabled", @{470, 180, 100})
-        edit.isDisabled = true
+        edit.disable()
         edit.setForm(EditBoxForm.Square)
 
         edit = EditBox.create(view, "", @{360, 220, 100})
@@ -176,7 +176,7 @@ func createView0(view: *Wnd)
         toggle.isToggled = true
 
         toggle = ToggleButton.create(view, @{360, 340})
-        toggle.isDisabled = true
+        toggle.disable()
     }
 
     // Slider
@@ -193,7 +193,7 @@ func createView0(view: *Wnd)
         slider.setValue(0.55)
 
         slider = Slider.create(view, @{10, 440})
-        slider.isDisabled = true
+        slider.disable()
 
 
         slider0 := Slider.create(view, @{10, 470}, id: "slider0")
@@ -342,7 +342,7 @@ func createView0(view: *Wnd)
         combo = ComboBox.create(view, @{360, 480})
         combo.addItem("Coucou", "0")
         combo.selectItem(0)
-        combo.isDisabled = true
+        combo.disable()
 
         combo = ComboBox.create(view, @{360, 520}, editBox: true)
         combo.addItem("Coucou", "0")

@@ -548,7 +548,7 @@ public impl Menu
         with res
         {
             setAllPaddings(getThemeMetrics().menuPopup_Padding)
-            isHidden = true
+            wndFlags |= .Hidden
         }
 
         return res

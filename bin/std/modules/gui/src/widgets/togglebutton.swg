@@ -27,7 +27,7 @@ impl IWnd for ToggleButton
 
         switch
         {
-        case isDisabled:
+        case bc.isDisabled:
             colorBk       = colors.btnToggle_DisabledBk
             colorBorder   = colors.btnToggle_DisabledBorder
             colorMark     = colors.btnToggle_DisabledMark

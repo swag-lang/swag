@@ -316,9 +316,9 @@ impl Tab
     mtd addItem(tabName: string, icon: Icon, view: *Wnd)
     {
         if views.isEmpty()
-            view.isHidden = false
+            view.wndFlags &= ~.Hidden
         else
-            view.isHidden = true
+            view.wndFlags |= .Hidden
         view.setParent(self)
 
         item := Memory.new'TabItem()
@@ -336,9 +336,9 @@ impl Tab
         if selectedIdx == idx or selectedIdx >= views.count
             return
 
-        views[selectedIdx].view.isHidden = true
+        views[selectedIdx].view.wndFlags |= .Hidden
         selectedIdx = idx
-        views[selectedIdx].view.isHidden = false
+        views[selectedIdx].view.wndFlags &= ~.Hidden
         sendResizeEvent()
 
         invalidate()

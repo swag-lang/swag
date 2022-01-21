@@ -60,7 +60,7 @@ func createView1(view: *Wnd)
 
     {
         list := createListSimple(view)
-        list.isDisabled = true
+        list.disable()
         list.setPosition(@{560, 5, 250, 300})
     }
 

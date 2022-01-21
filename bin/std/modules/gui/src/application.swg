@@ -62,7 +62,7 @@ private impl Application
         if !wnd
             return null
         scan := wnd
-        while scan and scan.isDisabled
+        while scan and !scan.isEnabled()
             scan = scan.parent
         return scan
     }

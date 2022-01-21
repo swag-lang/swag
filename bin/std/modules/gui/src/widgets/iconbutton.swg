@@ -36,7 +36,7 @@ impl IWnd for IconButton
 
         switch
         {
-        case isDisabled:
+        case bc.isDisabled:
             colorBk    = colors.btnIcon_DisabledBk
             colorIcon  = colors.btnIcon_DisabledIcon
         case isPressed:

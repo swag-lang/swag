@@ -18,6 +18,7 @@ impl IWnd for Label
 {
     mtd onPaintEvent(evt: *PaintEvent)
     {
+        bc      := evt.bc
         theme   := getTheme()
         painter := evt.bc.painter
 
@@ -48,7 +49,7 @@ impl IWnd for Label
             }
 
             // Icon
-            color := isDisabled ? theme.colors.label_DisabledIcon : theme.colors.label_Icon
+            color := (wndFlags & .Disabled) ? theme.colors.label_DisabledIcon : theme.colors.label_Icon
             icon.paint(painter, posIcon.x, posIcon.y, color)
         }
 
@@ -65,10 +66,10 @@ impl IWnd for Label
             sf.font = theme.res.fontDefault
             sf.horzAlignment = horzAlignmentText
             sf.vertAlignment = vertAlignmentText
-            sf.palette[0] = isDisabled ? theme.colors.label_DisabledText : theme.colors.label_Text
-            sf.palette[1] = isDisabled ? theme.colors.label_DisabledText : theme.colors.label_Text1
-            sf.palette[2] = isDisabled ? theme.colors.label_DisabledText : theme.colors.label_Text2
-            sf.palette[3] = isDisabled ? theme.colors.label_DisabledText : theme.colors.label_Text3
+            sf.palette[0] = bc.isDisabled ? theme.colors.label_DisabledText : theme.colors.label_Text
+            sf.palette[1] = bc.isDisabled ? theme.colors.label_DisabledText : theme.colors.label_Text1
+            sf.palette[2] = bc.isDisabled ? theme.colors.label_DisabledText : theme.colors.label_Text2
+            sf.palette[3] = bc.isDisabled ? theme.colors.label_DisabledText : theme.colors.label_Text3
             painter.drawRichString(posText, &name, sf)
         }
     }

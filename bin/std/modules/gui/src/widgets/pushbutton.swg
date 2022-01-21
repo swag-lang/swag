@@ -34,7 +34,7 @@ impl IWnd for PushButton
         {
             switch
             {
-            case isDisabled:
+            case bc.isDisabled:
                 colorBk       = colors.btnPushDefault_DisabledBk
                 colorBorder   = colors.btnPushDefault_DisabledBorder
                 colorText     = colors.btnPushDefault_DisabledText
@@ -64,7 +64,7 @@ impl IWnd for PushButton
         {
             switch
             {
-            case isDisabled:
+            case bc.isDisabled:
                 colorBk       = colors.btnPushFlat_DisabledBk
                 colorBorder   = colors.btnPushFlat_DisabledBorder
                 colorText     = colors.btnPushFlat_DisabledText
@@ -94,7 +94,7 @@ impl IWnd for PushButton
         {
             switch
             {
-            case isDisabled:
+            case bc.isDisabled:
                 colorBk       = colors.btnPush_DisabledBk
                 colorBorder   = colors.btnPush_DisabledBorder
                 colorText     = colors.btnPush_DisabledText

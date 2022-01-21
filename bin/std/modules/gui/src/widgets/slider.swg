@@ -37,7 +37,7 @@ impl IWnd for Slider
         var colorMark1:    Color = ?
         var colorMark2:    Color = ?
 
-        if isDisabled
+        if bc.isDisabled
         {
             colorBkLeft   = colors.slider_DisabledBk
             colorBkMiddle = colors.slider_DisabledBk
