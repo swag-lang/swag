@@ -10,7 +10,7 @@ enum IconButtonForm
 struct IconButton
 {
     using button:   Button
-    form:           IconButtonForm = Square
+    form            = IconButtonForm.Square
 }
 
 impl IWnd for IconButton

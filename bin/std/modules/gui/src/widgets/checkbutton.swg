@@ -8,12 +8,19 @@ enum ButtonCheckState
     Undefined
 }
 
+#[Swag.EnumFlags]
+enum CheckButtonFlags
+{
+    None
+    ThreeState
+}
+
 struct CheckButton
 {
-    using button:   Button
-    threeState:     bool
-    checked:        ButtonCheckState = Normal
-    sigChanged:     func(*CheckButton)
+    using button:       Button
+    checked             = ButtonCheckState.Normal
+    checkButtonFlags    = CheckButtonFlags.None
+    sigChanged:         func(*CheckButton)
 }
 
 impl IWnd for CheckButton
@@ -100,7 +107,7 @@ impl IWnd for CheckButton
     {
         if processMouseEvent(evt)
         {
-            if checked == .Normal and threeState
+            if checked == .Normal and (checkButtonFlags & .ThreeState)
                 checked = .Undefined
             elif checked == .Checked
                 checked = .Normal

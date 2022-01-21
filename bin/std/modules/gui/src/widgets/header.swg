@@ -20,11 +20,11 @@ struct HeaderItem
 struct Header
 {
     using wnd:          Wnd
-    form:               HeaderForm = Flat
+    form                = HeaderForm.Flat
     sigLayoutChanged:   func(*Self)
 
     items:          Array'(*HeaderItem)
-    hotIdx:         u32 = Swag.U32.Max
+    hotIdx          = Swag.U32.Max
     hotSeparator:   bool
     moving:         bool
     correctMoving:  f32

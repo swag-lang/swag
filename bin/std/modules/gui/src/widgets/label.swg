@@ -1,15 +1,22 @@
 #global public
 using Core, Pixel
 
+#[Swag.EnumFlags]
+enum LabelFlags
+{
+    None
+    WordWrap
+}
+
 struct Label
 {
     using wnd:          Wnd
     icon:               Icon
-    isWordWrap:         bool = true
-    horzAlignmentIcon:  StringHorzAlignment = Left
-    vertAlignmentIcon:  StringVertAlignment = Center
-    horzAlignmentText:  StringHorzAlignment = Left
-    vertAlignmentText:  StringVertAlignment = Center
+    labelFlags          = LabelFlags.None
+    horzAlignmentIcon   = StringHorzAlignment.Left
+    vertAlignmentIcon   = StringVertAlignment.Center
+    horzAlignmentText   = StringHorzAlignment.Left
+    vertAlignmentText   = StringVertAlignment.Center
     paddingText:        Math.Vector4
     paddingIcon:        Math.Vector4
 }
@@ -61,7 +68,7 @@ impl IWnd for Label
 
             var sf: RichStringFormat
             sf.flags |= .Clip
-            if isWordWrap
+            if labelFlags & .WordWrap
                 sf.flags |= .WordWrap
             sf.font = theme.res.fontDefault
             sf.horzAlignment = horzAlignmentText

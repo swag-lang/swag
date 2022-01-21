@@ -103,7 +103,7 @@ func createView0(view: *Wnd)
         button.checked = .Checked
 
         button = CheckButton.create(view, "3 State", @{125, 100})
-        button.threeState = true
+        button.checkButtonFlags |= .ThreeState
     }
 
     // Radio buttons
