@@ -64,6 +64,6 @@ struct ThemeMetrics
     list_Padding:               f32 = 5
 
     header_Height:              f32 = 35
-    header_Padding:             Math.Vector4 = @{10, 5, 5, 10}
-    header_Separator:           f32 = 10
+    header_Padding:             Math.Vector4 = @{10, 5, 10, 5}
+    header_Separator:           f32 = 27
 }

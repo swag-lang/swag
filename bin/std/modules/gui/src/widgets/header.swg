@@ -89,11 +89,23 @@ impl IWnd for Header
         }
 
         // Paint all except selected one, which will be painted last
+        clientRect := getClientRectPadding()
+        clientRect.offset(scrollPos)
         x := padding.x
         visit item, idx: items
         {
             paintItem(evt.bc, item, cast(u32) idx, x)
-            x += item.width + metrics.header_Separator
+            x += item.width
+
+            if idx != items.count - 1
+            {
+                rect := clientRect
+                rect.x = x
+                rect.width = metrics.header_Separator
+                theme.drawSubRect(painter, rect, &rects.headerItem_Separator, colors.headerItem_Separator)
+            }
+
+            x += metrics.header_Separator
         }
     }
 
@@ -143,11 +155,15 @@ impl IWnd for Header
                 move := pos.x - getItemPosition(hotIdx) + padding.x
                 move -= correctMoving
                 move = Math.max(move, item.minWidth)
-                if item.maxWidth > 0 move = Math.min(move, item.maxWidth)
-                item.width = move
-                if sigLayoutChanged
-                    sigLayoutChanged(self)
-                invalidate()
+                if item.maxWidth > 0
+                    move = Math.min(move, item.maxWidth)
+                if item.width != move
+                {
+                    item.width = move
+                    if sigLayoutChanged
+                        sigLayoutChanged(self)
+                    invalidate()
+                }
             }
 
         case MouseLeave:
@@ -220,13 +236,15 @@ impl Header
     }
 
     // Add a new view
-    mtd addItem(tabName: string, width = 50, icon: Icon = @{})
+    #[Swag.Discardable]
+    mtd addItem(tabName: string, width = 50, icon: Icon = @{})->*HeaderItem
     {
         item := Memory.new'HeaderItem()
         item.name = tabName
         item.icon = icon
         item.width = width
         items.add(item)
+        return item
     }
 
     // Get an item width

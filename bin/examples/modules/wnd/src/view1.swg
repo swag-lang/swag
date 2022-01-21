@@ -80,10 +80,12 @@ func createView1(view: *Wnd)
     }
 
     {
-        header := Header.create(view, @{5, 320, 300})
+        header := Header.create(view, @{5, 320, 500})
         header.form = .Round
-        header.addItem("header1")
-        header.addItem("header2")
+        item := header.addItem("header1")
+        item.minWidth = 20
+        item = header.addItem("header2")
+        item.maxWidth = 100
         header.addItem("header3")
     }
 

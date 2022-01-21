@@ -228,4 +228,5 @@ struct ThemeColors
     headerItem_HotText:             Color = White
     headerItem_Text:                Color = White
     header_Bk:                      Color = Gray4
+    headerItem_Separator:           Color = Color.getLighter(Color.fromArgb(Gray4), 0.2)
 }
