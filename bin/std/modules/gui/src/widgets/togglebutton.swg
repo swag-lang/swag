@@ -3,7 +3,8 @@ using Core, Pixel
 
 struct ToggleButton
 {
-    using button:   Button
+    using button: Button
+
     isToggled:      bool
     sigChanged:     func(*ToggleButton)
 }

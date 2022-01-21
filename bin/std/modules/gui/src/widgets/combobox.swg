@@ -15,7 +15,7 @@ struct ComboBox
     hasIcons:       bool
     popup:          *ComboBoxPopup
     items:          Array'(*ComboBoxItem)
-    selectedIdx:    u32 = Swag.U32.Max
+    selectedIdx     = Swag.U32.Max
 }
 
 struct ComboBoxItem
@@ -306,7 +306,7 @@ private impl ComboBox
         scrollWnd := popup.createView'ScrollWnd()
         scrollWnd.dockStyle = .Center
         scrollWnd.focusStrategy = .None
-        scrollWnd.smallBarSize = true
+        scrollWnd.scrollWndFlags |= .SmallBar
 
         view := scrollWnd.createView'ComboBoxPopupView()
         view.combo = self

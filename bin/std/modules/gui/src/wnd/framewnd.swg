@@ -18,7 +18,8 @@ enum FrameWndFlags
 
 struct FrameWnd
 {
-    using wnd:  Wnd
+    using wnd: Wnd
+
     view:       *Wnd
     frameForm   = FrameWndForm.Transparent
     frameFlags  = FrameWndFlags.Borders

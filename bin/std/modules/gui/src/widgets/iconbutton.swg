@@ -9,7 +9,8 @@ enum IconButtonForm
 
 struct IconButton
 {
-    using button:   Button
+    using button: Button
+
     form            = IconButtonForm.Square
 }
 

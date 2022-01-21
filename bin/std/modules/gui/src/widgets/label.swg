@@ -10,7 +10,8 @@ enum LabelFlags
 
 struct Label
 {
-    using wnd:          Wnd
+    using wnd: Wnd
+
     icon:               Icon
     labelFlags          = LabelFlags.None
     horzAlignmentIcon   = StringHorzAlignment.Left

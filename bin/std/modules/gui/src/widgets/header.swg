@@ -19,7 +19,8 @@ struct HeaderItem
 
 struct Header
 {
-    using wnd:          Wnd
+    using wnd: Wnd
+
     form                = HeaderForm.Flat
     sigLayoutChanged:   func(*Self)
 

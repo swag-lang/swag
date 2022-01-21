@@ -11,7 +11,8 @@ enum SliderFlags
 
 struct Slider
 {
-    using wnd:      Wnd
+    using wnd: Wnd
+
     value1:         f32
     value2:         f32
     min:            f32

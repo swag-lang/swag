@@ -1,5 +1,12 @@
 using Core, Pixel
 
+#[Swag.EnumFlags]
+public enum ScrollWndFlags
+{
+    None
+    SmallBar
+}
+
 public struct ScrollWnd
 {
     using frameWnd: FrameWnd
@@ -8,7 +15,7 @@ public struct ScrollWnd
     scrollIncrementH: f32 = 50
 
     scrollSize:     Math.Point
-    smallBarSize:   bool
+    scrollWndFlags  = ScrollWndFlags.None
 
     sigScrollPosChanged:    func(*Self, Math.Point)
 
@@ -275,7 +282,7 @@ impl ScrollWnd
         if sx > clientRect.width
             showBarH = true
 
-        barSize := smallBarSize ? metrics.scrollBar_SmallSize : metrics.scrollBar_NormalSize
+        barSize := (scrollWndFlags & .SmallBar) ? metrics.scrollBar_SmallSize : metrics.scrollBar_NormalSize
 
         paddingZ, paddingW = 0
         if showBarV

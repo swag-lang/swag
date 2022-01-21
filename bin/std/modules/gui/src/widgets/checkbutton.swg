@@ -17,7 +17,8 @@ enum CheckButtonFlags
 
 struct CheckButton
 {
-    using button:       Button
+    using button: Button
+
     checked             = ButtonCheckState.Normal
     checkButtonFlags    = CheckButtonFlags.None
     sigChanged:         func(*CheckButton)

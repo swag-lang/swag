@@ -45,12 +45,13 @@ struct TabItem
 
 struct Tab
 {
-    using wnd:           Wnd
-    barForm:             TabBarForm = Flat
-    itemForm:            TabItemForm = Flat
-    viewForm:            TabViewForm = Flat
-    barLayout:           TabBarLayout = Divide
-    barFixedLayoutWidth: f32 = 100
+    using wnd: Wnd
+
+    barForm                 = TabBarForm.Flat
+    itemForm                = TabItemForm.Flat
+    viewForm                = TabViewForm.Flat
+    barLayout               = TabBarLayout.Divide
+    barFixedLayoutWidth:    f32 = 100
 
     views:          Array'(*TabItem)
     selectedIdx:    u32

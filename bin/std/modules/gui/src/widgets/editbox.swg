@@ -35,7 +35,8 @@ enum EditBoxFlags
 
 struct EditBox
 {
-    using wnd:          Wnd
+    using wnd: Wnd
+
     icon:               Icon
     text:               String
     form                = EditBoxForm.Square
