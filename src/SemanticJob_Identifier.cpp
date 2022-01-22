@@ -3104,7 +3104,9 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
             if (!needToWaitForSymbol(context, node, symbol, needToWait))
                 continue;
             if (needToWait)
+            {
                 job->waitSymbolNoLock(symbol);
+            }
         }
 
         // In case identifier is part of a reference, need to initialize it

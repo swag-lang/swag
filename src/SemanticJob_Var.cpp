@@ -905,9 +905,38 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
     if (!node->typeInfo || node->typeInfo == g_TypeMgr->typeInfoUndefined)
     {
+        // :DeduceLambdaType
+        bool lambdaExpr = false;
+        if (node->ownerFct && node->kind == AstNodeKind::FuncDeclParam && (node->ownerFct->flags & AST_IS_LAMBDA_EXPRESSION))
+            lambdaExpr = true;
+        if (lambdaExpr)
+        {
+            TypeInfoFuncAttr* typeLambda = nullptr;
+            if (node->ownerFct->makePointerLambda && node->ownerFct->makePointerLambda->parent->kind == AstNodeKind::AffectOp)
+            {
+                auto op    = CastAst<AstOp>(node->ownerFct->makePointerLambda->parent, AstNodeKind::AffectOp);
+                auto front = op->childs.front();
+                SWAG_ASSERT(front->typeInfo);
+                SWAG_ASSERT(front->typeInfo->kind == TypeInfoKind::Lambda);
+                typeLambda = CastTypeInfo<TypeInfoFuncAttr>(front->typeInfo, TypeInfoKind::Lambda);
+                if (typeLambda)
+                {
+                    if (node->childParentIdx >= (uint32_t) typeLambda->parameters.count)
+                    {
+                        PushErrContext ec(context, node->ownerFct->makePointerLambda->parent, JobContext::ErrorContextType::Node);
+                        Diagnostic     diag{node, Fmt(Err(Err0026), "lambda", (uint32_t) typeLambda->parameters.count, (uint32_t) node->parent->childs.count)};
+                        return context->report(diag);
+                    }
+
+                    node->typeInfo = typeLambda->parameters[node->childParentIdx]->typeInfo;
+                    lambdaExpr     = false;
+                    genericType    = false;
+                }
+            }
+        }
+
         // If this is a lambda parameter in an expression, this is fine, we will try to deduce the type
-        if ((node->ownerFct && node->kind == AstNodeKind::FuncDeclParam && (node->ownerFct->flags & AST_IS_LAMBDA_EXPRESSION)) ||
-            node->typeInfo == g_TypeMgr->typeInfoUndefined)
+        if (lambdaExpr || node->typeInfo == g_TypeMgr->typeInfoUndefined)
         {
             node->typeInfo = g_TypeMgr->typeInfoUndefined;
             genericType    = false;

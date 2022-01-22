@@ -437,9 +437,24 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
 
     // Return type
     if (!typeNode->childs.empty())
+    {
         typeNode->typeInfo = typeNode->childs.front()->typeInfo;
+    }
     else
+    {
         typeNode->typeInfo = g_TypeMgr->typeInfoVoid;
+
+        // :DeduceLambdaType
+        if (funcNode->makePointerLambda && funcNode->makePointerLambda->parent->kind == AstNodeKind::AffectOp && !(funcNode->flags & AST_SHORT_LAMBDA))
+        {
+            auto op    = CastAst<AstOp>(funcNode->makePointerLambda->parent, AstNodeKind::AffectOp);
+            auto front = op->childs.front();
+            SWAG_ASSERT(front->typeInfo);
+            SWAG_ASSERT(front->typeInfo->kind == TypeInfoKind::Lambda);
+            auto typeFct       = CastTypeInfo<TypeInfoFuncAttr>(front->typeInfo, TypeInfoKind::Lambda);
+            typeNode->typeInfo = typeFct->returnType;
+        }
+    }
 
     // If the function returns a reference, then transform it to a normal return type if
     // this is not a reference to a "by copy" type
@@ -712,6 +727,9 @@ bool SemanticJob::isMethod(AstFuncDecl* funcNode)
 
 void SemanticJob::launchResolveSubDecl(JobContext* context, AstNode* node)
 {
+    if (node->flags & AST_SPEC_SEMANTIC)
+        return;
+
     // If AST_DONE_FILE_JOB_PASS is set, then the file job has already seen the sub declaration, ignored it
     // because of AST_NO_SEMANTIC, but the attribute context is ok. So we need to trigger the job by hand.
     // If AST_DONE_FILE_JOB_PASS is not set, then we just have to remove the AST_NO_SEMANTIC flag, and the

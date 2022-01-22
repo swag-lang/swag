@@ -34,6 +34,8 @@ struct TypeInfoStruct;
 struct AstReturn;
 struct AstCompilerIfBlock;
 struct AstFuncCallParams;
+struct AstMakePointerLambda;
+struct TypeInfoFuncAttr;
 enum class TypeInfoListKind;
 
 typedef bool (*SemanticFct)(SemanticContext* context);
@@ -377,15 +379,16 @@ struct AstFuncDecl : public AstNode
     Mutex                  funcMutex;
     Token                  tokenName;
 
-    AstNode*       parameters            = nullptr;
-    AstNode*       genericParameters     = nullptr;
-    AstNode*       returnType            = nullptr;
-    AstNode*       content               = nullptr;
-    AstNode*       selectIf              = nullptr;
-    AstNode*       returnTypeDeducedNode = nullptr;
-    Scope*         scope                 = nullptr;
-    TypeInfoParam* methodParam           = nullptr;
-    Job*           pendingLambdaJob      = nullptr;
+    AstNode*              parameters            = nullptr;
+    AstNode*              genericParameters     = nullptr;
+    AstNode*              returnType            = nullptr;
+    AstNode*              content               = nullptr;
+    AstNode*              selectIf              = nullptr;
+    AstNode*              returnTypeDeducedNode = nullptr;
+    Scope*                scope                 = nullptr;
+    TypeInfoParam*        methodParam           = nullptr;
+    Job*                  pendingLambdaJob      = nullptr;
+    AstMakePointerLambda* makePointerLambda     = nullptr;
 
     uint32_t aliasMask         = 0;
     uint32_t stackSize         = 0;
@@ -826,6 +829,9 @@ struct AstCast : public AstNode
 
 struct AstOp : public AstNode
 {
+    AstNode* clone(CloneContext& context);
+
+    AstNode* dependentNode = nullptr;
 };
 
 struct AstRange : public AstNode

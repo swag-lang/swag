@@ -230,6 +230,8 @@ AstNode* AstNode::clone(CloneContext& context)
         return ((AstRange*) this)->clone(context);
     case AstNodeKind::MakePointerLambda:
         return ((AstMakePointerLambda*) this)->clone(context);
+    case AstNodeKind::AffectOp:
+        return ((AstOp*) this)->clone(context);
 
     default:
     {
@@ -424,6 +426,7 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
     newNode->parameters        = parameters ? parameters->clone(cloneContext) : nullptr;
     newNode->selectIf          = selectIf ? selectIf->clone(cloneContext) : nullptr;
     newNode->nodeCounts        = nodeCounts;
+    newNode->makePointerLambda = newNode->makePointerLambda;
 
     //cloneContext.parentScope = context.parentScope;
     newNode->returnType = returnType ? returnType->clone(cloneContext) : nullptr;
@@ -1102,5 +1105,13 @@ AstNode* AstMakePointerLambda::clone(CloneContext& context)
     auto newNode = Ast::newNode<AstMakePointerLambda>();
     newNode->copyFrom(context, this);
     newNode->lambda = lambda;
+    return newNode;
+}
+
+AstNode* AstOp::clone(CloneContext& context)
+{
+    auto newNode = Ast::newNode<AstOp>();
+    newNode->copyFrom(context, this);
+    newNode->dependentNode = dependentNode;
     return newNode;
 }

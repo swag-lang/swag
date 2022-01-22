@@ -5,6 +5,7 @@
 #include "ByteCodeGenJob.h"
 #include "Module.h"
 #include "ErrorIds.h"
+#include "ThreadManager.h"
 #include "LanguageSpec.h"
 
 bool SemanticJob::resolveMove(SemanticContext* context)
@@ -24,9 +25,25 @@ bool SemanticJob::resolveMove(SemanticContext* context)
     return true;
 }
 
+bool SemanticJob::resolveAfterAffectLeft(SemanticContext* context)
+{
+    auto node = context->node;
+    if (node->typeInfo->kind == TypeInfoKind::Lambda)
+    {
+        auto op = CastAst<AstOp>(node->parent, AstNodeKind::AffectOp);
+        if (op->dependentNode)
+        {
+            op->dependentNode->flags &= ~AST_SPEC_SEMANTIC;
+            launchResolveSubDecl(context, op->dependentNode);
+        }
+    }
+
+    return true;
+}
+
 bool SemanticJob::resolveAffect(SemanticContext* context)
 {
-    auto node    = context->node;
+    auto node    = CastAst<AstOp>(context->node, AstNodeKind::AffectOp);
     auto left    = node->childs[0];
     auto right   = node->childs[1];
     auto tokenId = node->token.id;

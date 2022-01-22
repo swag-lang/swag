@@ -59,6 +59,7 @@ static const uint64_t AST_IS_LAMBDA_EXPRESSION       = 0x01000000'00000000;
 static const uint64_t AST_EMPTY_FCT                  = 0x02000000'00000000;
 static const uint64_t AST_GENERATED_USER             = 0x04000000'00000000;
 static const uint64_t AST_PRIVATE                    = 0x08000000'00000000;
+static const uint64_t AST_SPEC_SEMANTIC              = 0x10000000'00000000;
 
 static const uint32_t AST_DONE_VARDECL_STRUCT_PARAMETERS = 0x00000001;
 static const uint32_t AST_DONE_VARDECL_REF_CALL          = 0x00000002;

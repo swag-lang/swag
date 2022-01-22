@@ -346,7 +346,7 @@ impl List
         fwnd.wndFlags ^= .ClipChildren
 
         // Adapt header to the frame container
-        list.hookOnEvent = @(wnd: *Wnd, evt: *Event)->bool
+        list.hookOnEvent = @(wnd, evt)->bool
         {
             if evt.kind != .Resize
                 return false
@@ -378,7 +378,7 @@ impl List
             header.dockStyle = .Top
             header.form = .Round
             header.userData = list
-            header.sigLayoutChanged = @(header: *Header) {
+            header.sigLayoutChanged = @(header) {
                 list := cast(*List) header.userData
                 list.computeLayout()
             }
@@ -390,7 +390,7 @@ impl List
             scrollWnd.backgroundStyle = .Transparent
             scrollWnd.setAllPaddings(getThemeMetrics().list_Padding)
             scrollWnd.userData = list
-            scrollWnd.sigScrollPosChanged = @(scrollWnd: *ScrollWnd, sp: Math.Point) {
+            scrollWnd.sigScrollPosChanged = @(scrollWnd, sp) {
                 list := cast(*List) scrollWnd.userData
                 header := list.header
                 header.scrollPos.x = sp.x

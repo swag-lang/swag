@@ -57,4 +57,16 @@
         @assert(toDo(4, @(x) => x + x) == 8)
         @assert(toDo(4, @(x)->s32 { return x - x; }) == 0)
     }
+
+    // When you affect a lambda to a variable, the type of parameters and the return type can also be
+    // omitted, as they will be deduced from the variable type
+    {
+        var fct: func(s32, s32)->bool
+
+        fct = @(x, y) => x == y
+        @assert(fct(10, 10))
+
+        fct = @(x, y) { return x != y; }
+        @assert(fct(20, 120))
+    }
 }

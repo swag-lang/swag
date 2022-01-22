@@ -754,7 +754,7 @@ bool SyntaxJob::doLambdaExpression(AstNode* parent, AstNode** result)
 {
     // We accept missing types only if lambda is in a function call, because this is the only way
     // we will be able to deduce the type
-    bool     acceptMissingType = inFunCall;
+    bool     acceptMissingType = inFunCall || parent->kind == AstNodeKind::AffectOp;
     AstNode* lambda            = nullptr;
 
     {
@@ -778,6 +778,17 @@ bool SyntaxJob::doLambdaExpression(AstNode* parent, AstNode** result)
     AstNode* identifierRef = Ast::newIdentifierRef(sourceFile, lambda->token.text, exprNode, this);
     identifierRef->inheritTokenLocation(lambda);
     forceTakeAddress(identifierRef);
+
+    // :DeduceLambdaType
+    if (exprNode->parent->kind == AstNodeKind::AffectOp)
+    {
+        auto op           = CastAst<AstOp>(exprNode->parent, AstNodeKind::AffectOp);
+        op->dependentNode = lambda;
+
+        auto lambdaFunc               = CastAst<AstFuncDecl>(lambda, AstNodeKind::FuncDecl);
+        lambdaFunc->makePointerLambda = exprNode;
+        lambdaFunc->flags |= AST_NO_SEMANTIC | AST_SPEC_SEMANTIC;
+    }
 
     if (result)
         *result = exprNode;
