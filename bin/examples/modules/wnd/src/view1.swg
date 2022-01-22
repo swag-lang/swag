@@ -93,6 +93,7 @@ func createView1(view: *Wnd)
         list := createListMulti(view)
         list.frameFlags |= .FocusBorder
         list.setPosition(@{5, 400, 400, 300})
+        list.ensureVisibleLine(list.getLineCount() - 1)
     }
 
     {

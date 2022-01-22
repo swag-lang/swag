@@ -88,7 +88,7 @@ struct List
     sigSelChanged:      func(*Self)
 
     lines:          Array'(*ListLine)
-    selection:      Array'{start: u32, end: u32}
+    selModel:       SelModel
     focusIndex:     u32 = Swag.U32.Max
     scrollWnd:      *ScrollWnd
     listView:       *ListView
@@ -141,7 +141,7 @@ impl IWnd for ListView
         if list.selectionMode != .MultiSimple
         {
             if list.selectionMode == .Single or (!ctrl and !shift)
-                list.unselectAllPrivate()
+                list.selModel.unselectAll()
         }
 
         if idx != Swag.U32.Max
@@ -151,13 +151,13 @@ impl IWnd for ListView
             {
                 startIdx := list.focusIndex == Swag.U32.Max ? 0 : list.focusIndex
                 loop i: startIdx..idx
-                    list.selectLinePrivate(i, true)
+                    list.selModel.select(i, true)
             }
 
             // Invert selection
             else
             {
-                list.selectLinePrivate(idx, !list.isLineSelected(idx))
+                list.selModel.select(idx, !list.selModel.isSelected(idx))
             }
         }
 
@@ -311,79 +311,6 @@ private impl ListView
     }
 }
 
-private impl List
-{
-    mtd unselectAllPrivate()
-    {
-        selection.clear()
-    }
-
-    mtd isLineSelectedPrivate(idx: u32)->u32
-    {
-        if idx >= getLineCount()
-            return Swag.U32.Max
-
-        visit *r, i: selection
-        {
-            if idx >= r.start and idx <= r.end
-                return cast(u32) i
-        }
-
-        return Swag.U32.Max
-    }
-
-    mtd selectLinePrivate(idx: u32, select: bool)
-    {
-        if idx >= getLineCount()
-            return
-
-        isSelectedRange := isLineSelectedPrivate(idx)
-        isSelected := isSelectedRange != Swag.U32.Max
-        if select == isSelected
-            return
-
-        line := lines[idx]
-
-        if select
-        {
-            // Prepend/Append to an existing range
-            visit *r, i: selection
-            {
-                if r.start and idx == r.start - 1
-                {
-                    r.start -= 1
-                    return
-                }
-
-                if idx == r.end + 1
-                {
-                    r.end += 1
-                    return
-                }
-            }
-
-            // Need to make a new range
-            selection.add(@{idx, idx})
-        }
-        else
-        {
-            range := selection[isSelectedRange]
-            if range.start == range.end
-                selection.removeAt(cast(uint) isSelectedRange)
-            elif range.start == idx
-                range.start += 1
-            elif range.end == idx
-                range.end -= 1
-            else
-            {
-                end := range.end
-                range.end = idx - 1
-                selection.add(@{idx + 1, end})
-            }
-        }
-    }
-}
-
 impl List
 {
     #[Swag.Discardable]
@@ -481,9 +408,9 @@ impl List
     // Unselect all lines
     mtd unselectAll()
     {
-        if selection.isEmpty()
+        if selModel.isEmpty()
             return
-        unselectAllPrivate()
+        selModel.unselectAll()
         invalidate()
         if sigSelChanged
             sigSelChanged(self)
@@ -492,17 +419,21 @@ impl List
     // Returns
     mtd isLineSelected(idx: u32)->bool
     {
+        Debug.assert(idx < getLineCount())
+
         if selectionMode == .None
             return false
-        return isLineSelectedPrivate(idx) != Swag.U32.Max
+        return selModel.isSelected(idx)
     }
 
     // Select of unselect the given line
     mtd selectLine(idx: u32, select: bool = true)
     {
+        Debug.assert(idx < getLineCount())
+
         if selectionMode == .None
             return
-        selectLinePrivate(idx, select)
+        selModel.select(idx, select)
         invalidate()
         if sigSelChanged
             sigSelChanged(self)
@@ -511,10 +442,13 @@ impl List
     // Select a range of lines
     mtd selectLines(start, end: u32, select: bool = true)
     {
+        Debug.assert(start < getLineCount())
+        Debug.assert(end < getLineCount())
+
         if selectionMode == .None
             return
         loop i: start..end
-            selectLinePrivate(i, select)
+            selModel.select(i, select)
         invalidate()
         if sigSelChanged
             sigSelChanged(self)
@@ -535,6 +469,12 @@ impl List
         scrollHeight := getLineCount() * lineHeight
         scrollWnd.setScrollSize(scrollWidth, scrollHeight)
         invalidate()
+    }
+
+    // Get a line by index
+    mtd getLine(idx: u32)->*ListLine
+    {
+        return lines[idx]
     }
 
     // Returns the number of lines in the list
@@ -600,9 +540,14 @@ impl List
         return idx
     }
 
-    // Get a line by index
-    mtd getLine(idx: u32)->*ListLine
+    // Set the corresponding line visible
+    mtd ensureVisibleLine(idx: u32)
     {
-        return lines[idx]
+        first := getFirstVisibleLineIndex()
+        last  := getLastVisibleLineIndex()
+        if idx >= first and idx <= last return
+
+        sc := scrollWnd.getScrollPos()
+        scrollWnd.setScrollPos(sc.x, idx * lineHeight)
     }
 }
