@@ -6,9 +6,9 @@ struct SelModel
     selection: Array'{start: u32, end: u32}
 }
 
-private impl SelModel
+impl SelModel
 {
-    mtd isSelectedRange(idx: u32)->u32
+    mtd getSelectedRangeIndex(idx: u32)->u32
     {
         visit *r, i: selection
         {
@@ -18,21 +18,23 @@ private impl SelModel
 
         return Swag.U32.Max
     }
-}
 
-impl SelModel
-{
-    mtd isEmpty()            => selection.isEmpty()
-    mtd isSelected(idx: u32) => isSelectedRange(idx) != Swag.U32.Max
+    #[Swag.Inline]
+    {
+        mtd isEmpty()            => selection.isEmpty()
+        mtd isSelected(idx: u32) => getSelectedRangeIndex(idx) != Swag.U32.Max
+    }
 
+    // Unselect all
     mtd unselectAll()
     {
         selection.clear()
     }
 
+    // Select the given index
     mtd select(idx: u32, select: bool)
     {
-        isSelectedRange := isSelectedRange(idx)
+        isSelectedRange := getSelectedRangeIndex(idx)
         isSelected := isSelectedRange != Swag.U32.Max
         if select == isSelected
             return

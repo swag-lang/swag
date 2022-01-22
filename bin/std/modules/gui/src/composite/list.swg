@@ -3,6 +3,7 @@ using Core, Pixel
 
 struct ListItem
 {
+    userData:   *void
     name:       RichString
     icon:       Icon
     colorBk:    Color
@@ -13,9 +14,9 @@ struct ListItem
 struct ListLine
 {
     items:      Array'(*ListItem)
-    userData:   *void
     colorBk:    Color
     colorFg:    Color
+    userData:   *void
 }
 
 impl ListLine
