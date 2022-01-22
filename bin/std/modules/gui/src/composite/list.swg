@@ -3,9 +3,11 @@ using Core, Pixel
 
 struct ListItem
 {
-    name:   RichString
-    icon:   Icon
-    column: u32
+    name:       RichString
+    icon:       Icon
+    colorBk:    Color
+    colorFg:    Color
+    column:     u32
 }
 
 struct ListLine
@@ -22,6 +24,18 @@ impl ListLine
     {
         visit item: items
             Memory.delete(item)
+    }
+
+    // Get an item by index
+    mtd getItem(column: u32)->*ListItem
+    {
+        visit item: items
+        {
+            if item.column == column
+                return item
+        }
+
+        return null
     }
 
     // Initialize a given column item
@@ -235,7 +249,7 @@ private impl ListView
                 colorText = colors.listItem_DisabledText
             case isSelected:
                 colorText = colors.listItem_SelectedText
-            case line.colorFg.a > 0:
+            case line.colorFg.a:
                 colorText = line.colorFg
             default:
                 colorText = colors.listItem_Text
@@ -244,7 +258,8 @@ private impl ListView
         var format: RichStringFormat
         visit item: line.items
         {
-            theme.setTextColors(&format, colorText)
+            colorFg := item.colorFg.a ? item.colorFg : colorText
+            theme.setTextColors(&format, colorFg)
             format.horzAlignment = .Left
             format.vertAlignment = .Center
             format.flags = .Clip
@@ -258,6 +273,10 @@ private impl ListView
                 labelPos.x = list.header.getItemPosition(item.column)
                 labelPos.width = list.header.getItemWidth(item.column)
             }
+
+            // Background color ?
+            if item.colorBk.a
+                painter.fillRect(labelPos, item.colorBk)
 
             // Left margin, or icon
             icon := item.icon

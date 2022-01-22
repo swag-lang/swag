@@ -101,7 +101,10 @@ func createView1(view: *Wnd)
         list.listFlags |= .AlternateLines
         list.setFrameForm(FrameWndForm.Square)
         list.setPosition(@{420, 400, 400, 300})
+
         list.getLine(0).colorBk = Argb.Red
         list.getLine(0).colorFg = Argb.Blue
+        list.getLine(0).getItem(0).colorFg = Argb.Green
+        list.getLine(0).getItem(0).colorBk = Argb.Blue
     }
 }
