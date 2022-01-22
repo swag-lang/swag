@@ -752,10 +752,13 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptM
 
 bool SyntaxJob::doLambdaExpression(AstNode* parent, AstNode** result)
 {
-    // We accept missing types only if lambda is in a function call, because this is the only way
-    // we will be able to deduce the type
-    bool     acceptMissingType = inFunCall || parent->kind == AstNodeKind::AffectOp;
-    AstNode* lambda            = nullptr;
+    // We accept missing types if lambda is in a function call
+    bool acceptMissingType = inFunCall;
+    // We accept missing types if lambda is in an affectation
+    if (parent->kind == AstNodeKind::AffectOp && parent->token.id == TokenId::SymEqual)
+        acceptMissingType = true;
+
+    AstNode* lambda = nullptr;
 
     {
         ScopedBreakable sb(this, nullptr);
@@ -780,7 +783,7 @@ bool SyntaxJob::doLambdaExpression(AstNode* parent, AstNode** result)
     forceTakeAddress(identifierRef);
 
     // :DeduceLambdaType
-    if (exprNode->parent->kind == AstNodeKind::AffectOp)
+    if (exprNode->parent->kind == AstNodeKind::AffectOp && acceptMissingType)
     {
         auto op           = CastAst<AstOp>(exprNode->parent, AstNodeKind::AffectOp);
         op->dependentNode = lambda;
