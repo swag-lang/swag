@@ -73,7 +73,7 @@ func createView1(view: *Wnd)
         list.horizontalExtent = 500
 
         list.setVirtualCount(1_000_000)
-        list.sigVirtualFill = @(list: *List, line: *ListLine, idx: u32) {
+        list.sigVirtualFill = @(list, line, idx) {
             str := Format.toString("virtual %", idx)
             line.setItem(0, str)
         }
