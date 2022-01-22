@@ -455,10 +455,10 @@ bool SemanticJob::resolveCase(SemanticContext* context)
                 }
             }
 
-            // switch without an expression : a case is a boolean expressions
+            // switch without an expression : a case is a boolean expression
             else
             {
-                SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, oneExpression->typeInfo, nullptr, oneExpression, CASTFLAG_COMPARE));
+                SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, oneExpression->typeInfo, nullptr, oneExpression, CASTFLAG_COMPARE | CASTFLAG_AUTO_BOOL));
             }
         }
     }
