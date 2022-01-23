@@ -118,7 +118,7 @@ func createView1(view: *Wnd)
         }
         list.header.sigClicked = @(header, col) {
             list := cast(*List) header.getParentById("list")
-            list.lines.sort(@(a, b)->s32 {
+            list.lines.sort(@(a, b) {
                 return a.getItem(0).name.raw <=> b.getItem(0).name.raw
             })
         }

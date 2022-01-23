@@ -334,7 +334,9 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
             {
                 if (node->semFlags & AST_SEM_FCT_HAS_RETURN)
                     return context->report(node, Fmt(Err(Err0748), node->getDisplayNameC()));
-                return context->report(node->returnType->childs.front(), Fmt(Err(Err0749), node->getDisplayNameC(), node->returnType->typeInfo->getDisplayNameC()));
+                if (!node->returnType->childs.empty())
+                    return context->report(node->returnType->childs.front(), Fmt(Err(Err0749), node->getDisplayNameC(), node->returnType->typeInfo->getDisplayNameC()));
+                return context->report(node, Fmt(Err(Err0749), node->getDisplayNameC(), node->returnType->typeInfo->getDisplayNameC()));
             }
         }
     }
@@ -557,7 +559,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     // It will be done in the same way as parameters
     if (!(funcNode->flags & AST_IS_GENERIC))
     {
-        if ((funcNode->semFlags & AST_SEM_PENDING_LAMBDA_TYPING) && (funcNode->flags & AST_SHORT_LAMBDA) && (typeNode->typeInfo == g_TypeMgr->typeInfoVoid))
+        if ((funcNode->semFlags & AST_SEM_PENDING_LAMBDA_TYPING) && (typeNode->typeInfo == g_TypeMgr->typeInfoVoid))
         {
             typeNode->typeInfo = g_TypeMgr->typeInfoUndefined;
             funcNode->flags &= ~AST_SHORT_LAMBDA;
