@@ -723,7 +723,7 @@ SWAG_ERROR(Err0728, "command line error: argument `%s` should be followed by an 
 SWAG_ERROR(Err0729, "the type `code` is only valid in a `Swag.Macro` or `Swag.Mixin` function")
 SWAG_ERROR(Err0730, "the type `alias` is only valid in a `Swag.Macro` or `Swag.Mixin` function")
 SWAG_ERROR(Err0731, "unexpected type `%s` for attribute parameter")
-SWAG_ERROR(Err0732, nullptr)
+SWAG_ERROR(Err0732, "unexpected function return type `void`, this is not necessary")
 SWAG_ERROR(Err0733, "the inline function has variadic arguments, this is not yet supported")
 SWAG_ERROR(Err0734, "a variadic argument should be the last one")
 SWAG_ERROR(Err0735, "the type `cvarargs` should only be used for a function parameter")

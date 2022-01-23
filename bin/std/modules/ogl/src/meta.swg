@@ -43,7 +43,10 @@ var g_Functions: Array'OneFunc
             builderVars.appendFormat("p%: %", i, p.pointedType.flatName)
         }
 
-        builderVars.appendFormat(")->%\n{\n", typeFunc.returnType.flatName)
+        if typeFunc.returnType == void
+            builderVars.appendFormat(")\n{\n")
+        else
+            builderVars.appendFormat(")->%\n{\n", typeFunc.returnType.flatName)
         builderVars.appendFormat("\treturn ext_%(", e.name)
         visit p, i: typeFunc.parameters
         {

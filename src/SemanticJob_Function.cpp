@@ -440,7 +440,10 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     // Return type
     if (!typeNode->childs.empty())
     {
-        typeNode->typeInfo = typeNode->childs.front()->typeInfo;
+        auto front         = typeNode->childs.front();
+        typeNode->typeInfo = front->typeInfo;
+        Diagnostic diag{typeNode->sourceFile, typeNode->token.startLocation, front->token.endLocation, Err(Err0732)};
+        SWAG_VERIFY(!typeNode->typeInfo->isNative(NativeTypeKind::Void), context->report(Hnt(Hnt0026), diag));
     }
     else
     {
