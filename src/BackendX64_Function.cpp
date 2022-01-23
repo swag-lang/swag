@@ -2754,8 +2754,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
 
             // Test if it's a bytecode lambda
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            concat.addString4("\x48\x0F\xBA\xE0"); // bt rax, ??
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), R10, RDI);
+            concat.addString4("\x49\x0F\xBA\xE2"); // bt r10, ??
             concat.addU8(SWAG_LAMBDA_BC_MARKER_BIT);
             concat.addString2("\x0f\x82"); // jb ???????? => jump to bytecode lambda
             concat.addU32(0);
@@ -2763,7 +2763,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             auto jumpToBCOffset = concat.totalCount();
 
             // Test if it's a foreign lambda (and clear the bit if it is)
-            concat.addString4("\x48\x0F\xBA\xF0"); // btr rax, ??
+            concat.addString4("\x49\x0F\xBA\xF2"); // btr r10, ??
             concat.addU8(SWAG_LAMBDA_FOREIGN_MARKER_BIT);
             concat.addString2("\x0f\x82"); // jb ???????? => jump to foreign lambda
             concat.addU32(0);
@@ -2772,7 +2772,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
             // Local lambda
             //////////////////
-            BackendX64Inst::emit_Copy64(pp, RAX, R10);
             emitLocalCallParameters(pp, sizeParamsStack, typeFuncBC, offsetRT, pushRAParams, pushRVParams);
             concat.addString3("\x41\xFF\xD2"); // call r10
 
@@ -2785,7 +2784,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             //////////////////
             *jumpToForeignAddr = concat.totalCount() - jumpToForeignOffset;
 
-            BackendX64Inst::emit_Copy64(pp, RAX, R10);
             SWAG_CHECK(emitForeignCallParameters(pp, moduleToGen, offsetRT, typeFuncBC, pushRAParams));
             concat.addString3("\x41\xFF\xD2"); // call r10
             emitForeignCallResult(pp, typeFuncBC, offsetRT);
@@ -2799,7 +2797,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             //////////////////
             *jumpToBCAddr = concat.totalCount() - jumpToBCOffset;
 
-            BackendX64Inst::emit_Copy64(pp, RAX, RCX);
+            BackendX64Inst::emit_Copy64(pp, R10, RCX);
             emitByteCodeLambdaParams(pp, typeFuncBC, offsetRT, pushRAParams);
             BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symPI_byteCodeRun, 0);
             BackendX64Inst::emit_Load64_Indirect(pp, 0, RAX, RAX);
