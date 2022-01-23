@@ -125,9 +125,8 @@ bool TypeInfoAlias::isSame(TypeInfo* to, uint32_t isSameFlags)
 
 TypeInfo* TypeInfoReference::clone()
 {
-    auto newType          = allocType<TypeInfoReference>();
-    newType->pointedType  = pointedType;
-    newType->originalType = originalType;
+    auto newType         = allocType<TypeInfoReference>();
+    newType->pointedType = pointedType;
     newType->copyFrom(this);
     return newType;
 }

@@ -341,6 +341,9 @@ bool SemanticJob::resolveUserOpCommutative(SemanticContext* context, const Utf8&
 
 SymbolName* SemanticJob::hasUserOp(const Utf8& name, TypeInfoStruct* leftStruct)
 {
+    if (leftStruct->flags & TYPEINFO_STRUCT_IS_TUPLE)
+        return nullptr;
+
     // In case of a generic instance, symbols are defined in the original generic structure scope, not
     // in the instance
     if (leftStruct->fromGeneric)

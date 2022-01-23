@@ -3009,6 +3009,7 @@ bool TypeManager::convertLiteralTupleToStructVar(SemanticContext* context, TypeI
     typeNode->flags |= AST_HAS_STRUCT_PARAMETERS;
     varNode->type = typeNode;
 
+    SWAG_ASSERT(typeStruct->declNode);
     varNode->addAlternativeScope(typeStruct->declNode->ownerScope);
     typeNode->identifier = Ast::newIdentifierRef(sourceFile, typeStruct->declNode->token.text, typeNode);
 

@@ -129,10 +129,9 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
         // A struct/interface is forced to be a const reference
         else if (paramType->kind == TypeInfoKind::Struct)
         {
-            auto typeRef          = allocType<TypeInfoReference>();
-            typeRef->flags        = paramType->flags | TYPEINFO_CONST;
-            typeRef->pointedType  = paramType;
-            typeRef->originalType = paramType;
+            auto typeRef         = allocType<TypeInfoReference>();
+            typeRef->flags       = paramType->flags | TYPEINFO_CONST;
+            typeRef->pointedType = paramType;
             typeRef->computeName();
             nodeParam->typeInfo = typeRef;
         }

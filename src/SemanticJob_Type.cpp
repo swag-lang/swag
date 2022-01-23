@@ -328,9 +328,8 @@ bool SemanticJob::resolveType(SemanticContext* context)
 
             if (typeNode->ptrFlags[i] & AstTypeExpression::PTR_REF)
             {
-                auto ptrRef          = allocType<TypeInfoReference>();
-                ptrRef->pointedType  = ptrPointer1->pointedType;
-                ptrRef->originalType = nullptr;
+                auto ptrRef         = allocType<TypeInfoReference>();
+                ptrRef->pointedType = ptrPointer1->pointedType;
                 if (typeNode->ptrFlags[i] & AstTypeExpression::PTR_CONST)
                     ptrRef->flags |= TYPEINFO_CONST;
                 ptrRef->flags |= (firstType->flags & TYPEINFO_GENERIC);
@@ -352,9 +351,8 @@ bool SemanticJob::resolveType(SemanticContext* context)
     // In fact, this is a reference
     else if (typeNode->typeFlags & TYPEFLAG_ISREF)
     {
-        auto ptrRef          = allocType<TypeInfoReference>();
-        ptrRef->pointedType  = typeNode->typeInfo;
-        ptrRef->originalType = nullptr;
+        auto ptrRef         = allocType<TypeInfoReference>();
+        ptrRef->pointedType = typeNode->typeInfo;
         if (typeNode->typeFlags & TYPEFLAG_ISCONST)
             ptrRef->flags |= TYPEINFO_CONST;
         ptrRef->flags |= (typeNode->typeInfo->flags & TYPEINFO_GENERIC);

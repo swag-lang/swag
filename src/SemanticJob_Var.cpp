@@ -1194,10 +1194,9 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 if (typeInfo->flags & TYPEINFO_FAKE_ALIAS)
                     typeInfo = ((TypeInfoAlias*) typeInfo)->rawType;
 
-                auto typeRef          = allocType<TypeInfoReference>();
-                typeRef->flags        = typeInfo->flags | TYPEINFO_CONST;
-                typeRef->pointedType  = typeInfo;
-                typeRef->originalType = node->typeInfo;
+                auto typeRef         = allocType<TypeInfoReference>();
+                typeRef->flags       = typeInfo->flags | TYPEINFO_CONST;
+                typeRef->pointedType = typeInfo;
                 typeRef->computeName();
                 node->typeInfo = typeRef;
             }

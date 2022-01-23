@@ -820,13 +820,11 @@ bool AstOutput::outputType(OutputContext& context, Concat& concat, AstNode* node
     // Other types
     /////////////////////////////////
 
-    // Be sure to keep the original reference. That way, only user references are exported as references, otherwise
-    // we take the 'converted' original struct type
+    // When this is a reference, take the original (struct) type instead
     if (typeInfo->kind == TypeInfoKind::Reference)
     {
         auto typeRef = CastTypeInfo<TypeInfoReference>(typeInfo, TypeInfoKind::Reference);
-        if (typeRef->originalType)
-            typeInfo = typeRef->originalType;
+        typeInfo     = typeRef->pointedType;
     }
 
     if (typeInfo->flags & TYPEINFO_SELF)
