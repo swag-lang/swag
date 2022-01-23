@@ -277,7 +277,14 @@ private impl ListView
 
             // Background color ?
             if item.colorBk.a
+            {
                 painter.fillRect(labelPos, item.colorBk)
+            }
+
+            if list.header
+            {
+                labelPos.moveLeft(list.header.marginItems)
+            }
 
             // Left margin, or icon
             icon := item.icon

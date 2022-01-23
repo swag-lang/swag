@@ -108,6 +108,8 @@ func createView1(view: *Wnd)
         list.getLine(0).getItem(0).colorFg = Argb.Green
         list.getLine(0).getItem(0).colorBk = Argb.Blue
 
+        list.header.getItem(0).canSize = false
+
         list.sigSelChanged = @(list) {
             visit i: list.selModel
             {

@@ -92,7 +92,6 @@ struct ThemeImageRects
 
     header_FlatBk:              ThemeImageRect = @{{57,225,27,27}, 13}
     header_RoundBk:             ThemeImageRect = @{{57,253,27,27}, 13}
-    headerItem_Separator:       ThemeImageRect = @{{85,197,27,27}, 0}
 
     selectionBox_Bk:            ThemeImageRect = @{{57,197,27,27}, 12}
 }

@@ -88,7 +88,7 @@ impl SelModel
                 #macro
                 {
                     var @alias0 = `i
-                    var @alias1 = `@index
+                    var @alias1 = @index
                     #mixin `stmt { break = break Up; }
                 }
             }

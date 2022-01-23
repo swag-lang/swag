@@ -15,6 +15,7 @@ struct HeaderItem
     width:      f32
     minWidth:   f32
     maxWidth:   f32
+    canSize:    bool = true
 }
 
 struct Header
@@ -22,6 +23,7 @@ struct Header
     using wnd: Wnd
 
     form                = HeaderForm.Flat
+    marginItems:        f32 = 5
     sigLayoutChanged:   func(*Self)
 
     items:          Array'(*HeaderItem)
@@ -39,8 +41,8 @@ impl IWnd for Header
 
         clientRect := getClientRect()
         labelPos := clientRect
-        labelPos.width = item.width
-        labelPos.x = x
+        labelPos.x = x + marginItems
+        labelPos.width = item.width - marginItems
 
         theme   := getTheme()
         metrics := getThemeMetrics()
@@ -101,7 +103,7 @@ impl IWnd for Header
             rect := clientRect
             rect.x = x
             rect.width = metrics.header_Separator
-            theme.drawSubRect(painter, rect, &rects.headerItem_Separator, colors.headerItem_Separator)
+            painter.drawLine(rect.x, rect.y, rect.x, rect.bottom(), colors.headerItem_Separator, 1)
 
             x += metrics.header_Separator
         }
@@ -192,7 +194,7 @@ private impl Header
             if pos.x >= x and pos.x < x + item.width
                 return @{cast(u32) idx, false}
             x += item.width
-            if pos.x >= x and pos.x <= x + metrics.header_Separator
+            if pos.x >= x and pos.x <= x + metrics.header_Separator and item.canSize
                 return @{cast(u32) idx, true}
             x += metrics.header_Separator
         }
@@ -226,7 +228,7 @@ impl Header
 
     // Add a new view
     #[Swag.Discardable]
-    mtd addItem(tabName: string, width = 50, icon: Icon = @{})->*HeaderItem
+    mtd addItem(tabName: string, width = 100, icon: Icon = @{})->*HeaderItem
     {
         item := Memory.new'HeaderItem()
         item.name = tabName
@@ -234,6 +236,13 @@ impl Header
         item.width = width
         items.add(item)
         return item
+    }
+
+    // Returns the given item, by rank
+    mtd getItem(idx: u32)->*HeaderItem
+    {
+        Debug.assert(idx < items.count)
+        return items[idx]
     }
 
     // Get an item width
