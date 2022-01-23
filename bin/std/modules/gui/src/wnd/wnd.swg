@@ -641,6 +641,20 @@ impl Wnd
         return null
     }
 
+    // Retreive the parent with the given id
+    mtd getParentById(parentId: string)->*Wnd
+    {
+        p := parent
+        while p
+        {
+            if p.id == parentId
+                return p
+            p = p.parent
+        }
+
+        return null
+    }
+
     //////////////////////////////////////////////
     // Helpers
     //////////////////////////////////////////////

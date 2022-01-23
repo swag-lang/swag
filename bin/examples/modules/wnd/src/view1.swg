@@ -98,6 +98,7 @@ func createView1(view: *Wnd)
 
     {
         list := createListMulti(view)
+        list.id = "list"
         list.frameFlags |= .FocusBorder
         list.listFlags |= .AlternateLines
         list.setFrameForm(FrameWndForm.Square)
@@ -116,6 +117,10 @@ func createView1(view: *Wnd)
                 Console.printf("%\n", list.getLine(i).getItem(0).name.raw)
         }
         list.header.sigClicked = @(header, col) {
+            list := cast(*List) header.getParentById("list")
+            list.lines.sort(@(a, b)->s32 {
+                return a.getItem(0).name.raw <=> b.getItem(0).name.raw
+            })
         }
     }
 }
