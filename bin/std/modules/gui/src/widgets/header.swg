@@ -15,7 +15,9 @@ struct HeaderItem
     width:      f32
     minWidth:   f32
     maxWidth:   f32
-    canSize:    bool = true
+    canSize     = true
+    clickable   = true
+    column:     u32
 }
 
 struct Header
@@ -25,11 +27,13 @@ struct Header
     form                = HeaderForm.Flat
     marginItems:        f32 = 5
     sigLayoutChanged:   func(*Self)
+    sigClicked:         func(*Self, u32)
 
     items:          Array'(*HeaderItem)
     hotIdx          = Swag.U32.Max
     hotSeparator:   bool
     moving:         bool
+    clicked:        bool
     correctMoving:  f32
 }
 
@@ -41,13 +45,23 @@ impl IWnd for Header
 
         clientRect := getClientRect()
         labelPos := clientRect
-        labelPos.x = x + marginItems
-        labelPos.width = item.width - marginItems
+        labelPos.x = x
+        labelPos.width = item.width
 
         theme   := getTheme()
         metrics := getThemeMetrics()
         colors  := getThemeColors()
         rects   := getThemeRects()
+
+        if item.clickable and hotIdx == idx
+        {
+            labelPosBk := labelPos
+            labelPosBk.x -= (metrics.header_Separator * 0.5)
+            labelPosBk.width += metrics.header_Separator
+            painter.fillRect(labelPosBk, clicked ? colors.headerItem_ClickedBk : colors.headerItem_HotBk)
+        }
+
+        labelPos.moveLeft(marginItems)
 
         var colorText: Color
         switch
@@ -101,8 +115,7 @@ impl IWnd for Header
             x += item.width
 
             rect := clientRect
-            rect.x = x
-            rect.width = metrics.header_Separator
+            rect.x = x + (metrics.header_Separator * 0.5)
             painter.drawLine(rect.x, rect.y, rect.x, rect.bottom(), colors.headerItem_Separator, 1)
 
             x += metrics.header_Separator
@@ -111,13 +124,24 @@ impl IWnd for Header
 
    mtd onMouseEvent(evt: *MouseEvent)
     {
-        if moving and evt.kind == .MouseReleased and evt.button == .Left
+        if evt.kind == .MouseReleased and evt.button == .Left
         {
-            moving = false
-            surface.app.releaseMouse()
+            if clicked and sigClicked
+            {
+                (hit, sep) := hitTest(evt.surfacePos)
+                if hit == hotIdx
+                    sigClicked(self, items[hotIdx].column)
+            }
+
+            if moving or clicked
+            {
+                moving, clicked = false
+                surface.app.releaseMouse()
+                invalidate()
+            }
         }
 
-        if !moving
+        if !moving and !clicked
         {
             (hit, sep) := hitTest(evt.surfacePos)
             if hit != hotIdx
@@ -175,6 +199,12 @@ impl IWnd for Header
                     correctMoving = pos.x - getItemPosition(hotIdx) + padding.x
                     correctMoving -= getItemWidth(hotIdx)
                     surface.app.captureMouse(self)
+                }
+                elif items[hotIdx].clickable
+                {
+                    clicked = true
+                    surface.app.captureMouse(self)
+                    invalidate()
                 }
             }
         }
@@ -234,37 +264,70 @@ impl Header
         item.name = tabName
         item.icon = icon
         item.width = width
+        item.column = acast items.count
         items.add(item)
         return item
     }
 
-    // Returns the given item, by rank
+    // Returns the given item, by index
     mtd getItem(idx: u32)->*HeaderItem
     {
         Debug.assert(idx < items.count)
         return items[idx]
     }
 
-    // Get an item width
-    mtd getItemWidth(column: u32)->f32
+    // Returns the given item, by column
+    mtd getItemByCol(column: u32)->*HeaderItem
     {
-        visit item, i: items
+        Debug.assert(column < items.count)
+
+        visit item: items
         {
-            if i == column
+            if item.column == column
+                return item
+        }
+
+        return null
+    }
+
+    // Get an item width by index
+    mtd getItemWidth(idx: u32)->f32
+    {
+        Debug.assert(idx < items.count)
+        return getItemWidthByCol(items[idx].column)
+    }
+
+    // Get an item width by column
+    mtd getItemWidthByCol(column: u32)->f32
+    {
+        Debug.assert(column < items.count)
+
+        visit item: items
+        {
+            if item.column == column
                 return item.width
         }
 
         return 0
     }
 
-    // Get an item position
-    mtd getItemPosition(column: u32)->f32
+    // Get an item position by index
+    mtd getItemPosition(idx: u32)->f32
     {
+        Debug.assert(idx < cast(u32) items.count)
+        return getItemPositionByCol(items[idx].column)
+    }
+
+    // Get an item position by column
+    mtd getItemPositionByCol(column: u32)->f32
+    {
+        Debug.assert(column < items.count)
+
         x := 0'f32
         m := parent.getThemeMetrics().header_Separator
         visit item, i: items
         {
-            if i == column
+            if item.column == column
                 return x
             x += item.width + m
         }
@@ -272,6 +335,7 @@ impl Header
         return 0
     }
 
+    // Get the header total width
     mtd getTotalItemsWidth()->f32
     {
         w := getItemPosition(cast(u32) items.count - 1)
@@ -279,12 +343,19 @@ impl Header
         return w
     }
 
-    // Set an item width
+    // Set an item width by index
     mtd setItemWidth(idx: u32, width: f32)
     {
         Debug.assert(idx < items.count)
+        setItemWidthByCol(items[idx].column, width)
+    }
 
-        item := items[idx]
+    // Set an item width by column
+    mtd setItemWidthByCol(column: u32, width: f32)
+    {
+        Debug.assert(column < items.count)
+
+        item := getItemByCol(column)
         move := Math.max(width, item.minWidth)
         if item.maxWidth > 0
             move = Math.min(move, item.maxWidth)

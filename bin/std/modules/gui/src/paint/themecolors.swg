@@ -227,6 +227,8 @@ struct ThemeColors
 
     headerItem_DisabledText:        Color = Gray4
     headerItem_HotText:             Color = White
+    headerItem_HotBk:               Color = 0x10FFFFFF
+    headerItem_ClickedBk:           Color = 0x20FFFFFF
     headerItem_Text:                Color = White
     header_Bk:                      Color = Gray4
     headerItem_Separator:           Color = Color.getLighter(Color.fromArgb(Gray4), 0.2)

@@ -271,8 +271,8 @@ private impl ListView
             // Right
             if list.header
             {
-                labelPos.x = list.header.getItemPosition(item.column)
-                labelPos.width = list.header.getItemWidth(item.column)
+                labelPos.x = list.header.getItemPositionByCol(item.column)
+                labelPos.width = list.header.getItemWidthByCol(item.column)
             }
 
             // Background color ?
