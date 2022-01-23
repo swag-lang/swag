@@ -263,9 +263,9 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         SWAG_ASSERT(site);
         diag = new Diagnostic{site,
                               Fmt(Err(Err0026),
-                                           refNiceName.c_str(),
-                                           match.badSignatureInfos.badSignatureNum2,
-                                           match.badSignatureInfos.badSignatureNum1)};
+                                  refNiceName.c_str(),
+                                  match.badSignatureInfos.badSignatureNum2,
+                                  match.badSignatureInfos.badSignatureNum1)};
         note = new Diagnostic{overload->node, Fmt(Nte(Nte0008), refNiceName.c_str()), DiagnosticLevel::Note};
         result0.push_back(diag);
         result1.push_back(note);
@@ -289,10 +289,10 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
                 errNode = genericParameters->childs[match.badSignatureInfos.badSignatureNum2];
             diag = new Diagnostic{errNode,
                                   Fmt(Err(Err0044),
-                                               SymTable::getNakedKindName(symbol->kind),
-                                               symbol->name.c_str(),
-                                               match.badSignatureInfos.badSignatureNum2,
-                                               match.badSignatureInfos.badSignatureNum1)};
+                                      SymTable::getNakedKindName(symbol->kind),
+                                      symbol->name.c_str(),
+                                      match.badSignatureInfos.badSignatureNum2,
+                                      match.badSignatureInfos.badSignatureNum1)};
         }
 
         note = new Diagnostic{overload->node, Fmt(Nte(Nte0008), refNiceName.c_str()), DiagnosticLevel::Note};
@@ -305,9 +305,9 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     {
         diag = new Diagnostic{bi.badNode,
                               Fmt(Err(Err0123),
-                                           bi.badGenMatch.c_str(),
-                                           Ast::literalToString(bi.badSignatureGivenType, *bi.badGenValue1).c_str(),
-                                           Ast::literalToString(bi.badSignatureGivenType, *bi.badGenValue2).c_str())};
+                                  bi.badGenMatch.c_str(),
+                                  Ast::literalToString(bi.badSignatureGivenType, *bi.badGenValue1).c_str(),
+                                  Ast::literalToString(bi.badSignatureGivenType, *bi.badGenValue2).c_str())};
         result0.push_back(diag);
         return;
     }
@@ -316,42 +316,57 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     {
         auto paramNode = destFuncDecl ? destFuncDecl->parameters->childs[bi.badSignatureParameterIdx] : nullptr;
 
+        // In case of lambda, replace undefined with the corresponding match, if possible
+        if (bi.badSignatureRequestedType->kind == TypeInfoKind::Lambda && bi.badSignatureGivenType->kind == TypeInfoKind::Lambda)
+        {
+            auto type1 = CastTypeInfo<TypeInfoFuncAttr>(bi.badSignatureRequestedType, TypeInfoKind::Lambda);
+            auto type2 = CastTypeInfo<TypeInfoFuncAttr>(bi.badSignatureGivenType, TypeInfoKind::Lambda);
+            for (int i = 0; i < min(type1->parameters.count, type2->parameters.count); i++)
+            {
+                if (type2->parameters[i]->typeInfo->isNative(NativeTypeKind::Undefined))
+                    type2->parameters[i]->typeInfo = type1->parameters[i]->typeInfo;
+            }
+
+            if (type2->returnType && type1->returnType && type2->returnType->isNative(NativeTypeKind::Undefined))
+                type2->returnType = type1->returnType;
+        }
+
         SWAG_ASSERT(callParameters);
         if (overload->typeInfo->kind == TypeInfoKind::Struct)
         {
             auto typeStruct = CastTypeInfo<TypeInfoStruct>(overload->typeInfo, TypeInfoKind::Struct);
             diag            = new Diagnostic{match.parameters[bi.badSignatureParameterIdx],
                                   Fmt(Err(Err0050),
-                                               getTheNiceParameterRank(badParamIdx).c_str(),
-                                               refNiceName.c_str(),
-                                               bi.badSignatureRequestedType->getDisplayNameC(),
-                                               typeStruct->fields[badParamIdx - 1]->namedParam.c_str(),
-                                               bi.badSignatureGivenType->getDisplayNameC())};
+                                      getTheNiceParameterRank(badParamIdx).c_str(),
+                                      refNiceName.c_str(),
+                                      bi.badSignatureRequestedType->getDisplayNameC(),
+                                      typeStruct->fields[badParamIdx - 1]->namedParam.c_str(),
+                                      bi.badSignatureGivenType->getDisplayNameC())};
         }
         else if (paramNode && paramNode->typeInfo->flags & TYPEINFO_SELF && bi.badSignatureParameterIdx == 0)
         {
             diag = new Diagnostic{match.parameters[bi.badSignatureParameterIdx],
                                   Fmt(Err(Err0106),
-                                               refNiceName.c_str(),
-                                               bi.badSignatureRequestedType->getDisplayNameC(),
-                                               bi.badSignatureGivenType->getDisplayNameC())};
+                                      refNiceName.c_str(),
+                                      bi.badSignatureRequestedType->getDisplayNameC(),
+                                      bi.badSignatureGivenType->getDisplayNameC())};
         }
         else if (oneTry.ufcs && bi.badSignatureParameterIdx == 0)
         {
             diag = new Diagnostic{match.parameters[bi.badSignatureParameterIdx],
                                   Fmt(Err(Err0095),
-                                               refNiceName.c_str(),
-                                               bi.badSignatureRequestedType->getDisplayNameC(),
-                                               bi.badSignatureGivenType->getDisplayNameC())};
+                                      refNiceName.c_str(),
+                                      bi.badSignatureRequestedType->getDisplayNameC(),
+                                      bi.badSignatureGivenType->getDisplayNameC())};
         }
         else
         {
             diag = new Diagnostic{match.parameters[bi.badSignatureParameterIdx],
                                   Fmt(Err(Err0053),
-                                               getTheNiceParameterRank(badParamIdx).c_str(),
-                                               refNiceName.c_str(),
-                                               bi.badSignatureRequestedType->getDisplayNameC(),
-                                               bi.badSignatureGivenType->getDisplayNameC())};
+                                      getTheNiceParameterRank(badParamIdx).c_str(),
+                                      refNiceName.c_str(),
+                                      bi.badSignatureRequestedType->getDisplayNameC(),
+                                      bi.badSignatureGivenType->getDisplayNameC())};
         }
 
         diag->hint = explicitCastHint;
@@ -377,11 +392,11 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         SWAG_ASSERT(callParameters);
         diag       = new Diagnostic{match.parameters[bi.badSignatureParameterIdx],
                               Fmt(Err(Err0047),
-                                           getTheNiceParameterRank(badParamIdx).c_str(),
-                                           refNiceName.c_str(),
-                                           bi.badGenMatch.c_str(),
-                                           bi.badSignatureRequestedType->getDisplayNameC(),
-                                           bi.badSignatureGivenType->getDisplayNameC())};
+                                  getTheNiceParameterRank(badParamIdx).c_str(),
+                                  refNiceName.c_str(),
+                                  bi.badGenMatch.c_str(),
+                                  bi.badSignatureRequestedType->getDisplayNameC(),
+                                  bi.badSignatureGivenType->getDisplayNameC())};
         diag->hint = explicitCastHint;
 
         if (destFuncDecl && bi.badSignatureParameterIdx < destFuncDecl->parameters->childs.size())
@@ -404,24 +419,24 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         {
             diag = new Diagnostic{match.genericParameters[bi.badSignatureParameterIdx],
                                   Fmt(Err(Err0054),
-                                               getNiceParameterRank(badParamIdx).c_str(),
-                                               refNiceName.c_str())};
+                                      getNiceParameterRank(badParamIdx).c_str(),
+                                      refNiceName.c_str())};
         }
         else if (match.flags & SymbolMatchContext::MATCH_ERROR_TYPE_VALUE)
         {
             diag = new Diagnostic{match.genericParameters[bi.badSignatureParameterIdx],
                                   Fmt(Err(Err0057),
-                                               getNiceParameterRank(badParamIdx).c_str(),
-                                               refNiceName.c_str())};
+                                      getNiceParameterRank(badParamIdx).c_str(),
+                                      refNiceName.c_str())};
         }
         else
         {
             diag = new Diagnostic{match.genericParameters[bi.badSignatureParameterIdx],
                                   Fmt(Err(Err0070),
-                                               getNiceParameterRank(badParamIdx).c_str(),
-                                               refNiceName.c_str(),
-                                               bi.badSignatureRequestedType->getDisplayNameC(),
-                                               bi.badSignatureGivenType->getDisplayNameC())};
+                                      getNiceParameterRank(badParamIdx).c_str(),
+                                      refNiceName.c_str(),
+                                      bi.badSignatureRequestedType->getDisplayNameC(),
+                                      bi.badSignatureGivenType->getDisplayNameC())};
 
             diag->hint = explicitCastHint;
         }
