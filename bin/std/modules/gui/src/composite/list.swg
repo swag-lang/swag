@@ -551,4 +551,14 @@ impl List
         sc := scrollWnd.getScrollPos()
         scrollWnd.setScrollPos(sc.x, idx * lineHeight)
     }
+
+    // Returns a selected line
+    // Mostly for singlesel mode
+    mtd getSelectedLine()->*ListLine
+    {
+        if selModel.isEmpty()
+            return null
+        one := selModel.selection.front().start
+        return lines[one]
+    }
 }

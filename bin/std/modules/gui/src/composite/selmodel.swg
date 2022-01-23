@@ -77,4 +77,21 @@ impl SelModel
             }
         }
     }
+
+    #[Swag.Macro]
+    mtd(ptr: bool) opVisit(stmt: code)
+    {
+        scope Up visit *r: selection
+        {
+            loop i: r.start..r.end
+            {
+                #macro
+                {
+                    var @alias0 = `i
+                    var @alias1 = `@index
+                    #mixin `stmt { break = break Up; }
+                }
+            }
+        }
+    }
 }

@@ -107,5 +107,12 @@ func createView1(view: *Wnd)
         list.getLine(0).colorFg = Argb.Blue
         list.getLine(0).getItem(0).colorFg = Argb.Green
         list.getLine(0).getItem(0).colorBk = Argb.Blue
+
+        list.sigSelChanged = @(list) {
+            visit i: list.selModel
+            {
+                Console.printf("%\n", list.getLine(i).getItem(0).name.raw)
+            }
+        }
     }
 }
