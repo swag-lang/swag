@@ -197,9 +197,12 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     {
         SWAG_ASSERT(failedParam);
         diag = new Diagnostic{failedParam->namedParamNode ? failedParam->namedParamNode : failedParam, Fmt(Err(Err0008), failedParam->namedParam.c_str())};
-        note = new Diagnostic{overload->node, Fmt(Nte(Nte0008), refNiceName.c_str()), DiagnosticLevel::Note};
         result0.push_back(diag);
-        result1.push_back(note);
+        if (!(overload->node->flags & AST_GENERATED))
+        {
+            note = new Diagnostic{overload->node, Fmt(Nte(Nte0008), refNiceName.c_str()), DiagnosticLevel::Note};
+            result1.push_back(note);
+        }
         return;
     }
 
