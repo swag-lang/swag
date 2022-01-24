@@ -126,9 +126,11 @@ struct OneGenericMatch
     VectorNative<TypeInfo*> genericParametersGenTypes;
     map<Utf8, TypeInfo*>    genericReplaceTypes;
 
-    SymbolName*     symbolName        = nullptr;
-    SymbolOverload* symbolOverload    = nullptr;
-    AstNode*        genericParameters = nullptr;
+    SymbolName*                  symbolName        = nullptr;
+    SymbolOverload*              symbolOverload    = nullptr;
+    AstNode*                     genericParameters = nullptr;
+    VectorNative<AstNode*>       parameters;
+    VectorNative<TypeInfoParam*> solvedParameters;
 
     uint32_t numOverloadsWhenChecked     = 0;
     uint32_t numOverloadsInitWhenChecked = 0;
@@ -139,6 +141,8 @@ struct OneGenericMatch
         genericParametersCallTypes.clear();
         genericParametersGenTypes.clear();
         genericReplaceTypes.clear();
+        parameters.clear();
+        solvedParameters.clear();
         symbolName              = nullptr;
         symbolOverload          = nullptr;
         genericParameters       = nullptr;

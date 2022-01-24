@@ -1462,6 +1462,8 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                 match->genericParametersGenTypes   = move(oneOverload.symMatchContext.genericParametersGenTypes);
                 match->genericReplaceTypes         = move(oneOverload.symMatchContext.genericReplaceTypes);
                 match->genericParameters           = genericParameters;
+                match->parameters                  = move(oneOverload.symMatchContext.parameters);
+                match->solvedParameters            = move(oneOverload.symMatchContext.solvedParameters);
                 match->numOverloadsWhenChecked     = oneOverload.cptOverloads;
                 match->numOverloadsInitWhenChecked = oneOverload.cptOverloadsInit;
                 if (overload->node->flags & AST_HAS_SELECT_IF)
@@ -3216,6 +3218,12 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
         SWAG_CHECK(matchIdentifierParameters(context, listTryMatch, node, forGhosting ? MIP_FOR_GHOSTING : 0));
         if (context->result == ContextResult::Pending)
             return true;
+
+        if (context->result == ContextResult::NewChilds1)
+        {
+            context->result = ContextResult::NewChilds;
+            return true;
+        }
 
         // The number of overloads for a given symbol has been changed by another thread, which
         // means that we need to restart everything...

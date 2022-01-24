@@ -190,7 +190,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                         if (callTypeInfo->kind == TypeInfoKind::Struct)
                         {
                             auto typeStruct = CastTypeInfo<TypeInfoStruct>(callTypeInfo, TypeInfoKind::Struct);
-                            auto num        = symbolStruct->genericParameters.size();
+                            auto num        = min(symbolStruct->genericParameters.size(), typeStruct->genericParameters.size());
                             for (int idx = 0; idx < num; idx++)
                             {
                                 auto genTypeInfo = symbolStruct->genericParameters[idx]->typeInfo;

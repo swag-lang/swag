@@ -2971,7 +2971,7 @@ void TypeManager::promoteOne(AstNode* left, AstNode* right)
     }
 }
 
-bool TypeManager::convertLiteralTupleToStructVar(SemanticContext* context, TypeInfo* toType, AstNode* fromNode)
+bool TypeManager::convertLiteralTupleToStructVar(SemanticContext* context, TypeInfo* toType, AstNode* fromNode, bool fromType)
 {
     if (fromNode->doneFlags & AST_DONE_STRUCT_CONVERT)
         return true;
@@ -3057,7 +3057,7 @@ bool TypeManager::convertLiteralTupleToStructVar(SemanticContext* context, TypeI
     }
 
     // For a tuple initialization, every parameters must be covered
-    if (typeStruct->flags & TYPEINFO_STRUCT_IS_TUPLE)
+    if (!fromType && (typeStruct->flags & TYPEINFO_STRUCT_IS_TUPLE))
     {
         int maxCount = (int) typeStruct->fields.size();
         if (countParams > maxCount)
@@ -3066,15 +3066,107 @@ bool TypeManager::convertLiteralTupleToStructVar(SemanticContext* context, TypeI
             return context->report(fromNode->childs.back(), Fmt(Err(Err0205), maxCount, countParams));
     }
 
-    // Add the 2 nodes to the semantic
-    auto b = context->job->nodes.back();
-    context->job->nodes.pop_back();
-    context->job->nodes.push_back(identifierRef);
-    context->job->nodes.push_back(varNode);
-    context->job->nodes.push_back(b);
-
     fromNode->typeInfo = toType;
     fromNode->setPassThrough();
+
+    // Add the 2 nodes to the semantic
+    if (fromType)
+    {
+        fromNode->parent->typeInfo = toType;
+        context->job->nodes.push_back(identifierRef);
+        context->job->nodes.push_back(varNode);
+    }
+    else
+    {
+        auto b = context->job->nodes.back();
+        context->job->nodes.pop_back();
+        context->job->nodes.push_back(identifierRef);
+        context->job->nodes.push_back(varNode);
+        context->job->nodes.push_back(b);
+    }
+
+    return true;
+}
+
+bool TypeManager::convertLiteralTupleToStructType(SemanticContext* context, TypeInfoStruct* toType, AstNode* fromNode)
+{
+    auto sourceFile = context->sourceFile;
+    auto typeList   = CastTypeInfo<TypeInfoList>(fromNode->typeInfo, TypeInfoKind::TypeListTuple);
+
+    // :SubDeclParent
+    auto newParent = fromNode->parent;
+    while (newParent != sourceFile->astRoot && !(newParent->flags & AST_GLOBAL_NODE) && (newParent->kind != AstNodeKind::Namespace))
+    {
+        newParent = newParent->parent;
+        SWAG_ASSERT(newParent);
+    }
+
+    auto structNode = Ast::newStructDecl(sourceFile, fromNode, nullptr);
+    structNode->flags |= AST_PRIVATE | AST_GENERATED;
+    structNode->doneFlags |= AST_DONE_FILE_JOB_PASS;
+    Ast::removeFromParent(structNode);
+    Ast::addChildBack(newParent, structNode);
+    structNode->originalParent = newParent;
+    structNode->allocateExtension();
+    structNode->extension->semanticBeforeFct = SemanticJob::preResolveGeneratedStruct;
+
+    auto contentNode    = Ast::newNode(sourceFile, AstNodeKind::TupleContent, structNode, nullptr);
+    structNode->content = contentNode;
+    contentNode->allocateExtension();
+    contentNode->extension->semanticBeforeFct = SemanticJob::preResolveStructContent;
+
+    Utf8 name = sourceFile->scopeFile->name + "_tuple_";
+    name += Fmt("%d", g_UniqueID.fetch_add(1));
+    structNode->token.text = move(name);
+
+    // Add struct type and scope
+    Scope* rootScope;
+    if (sourceFile->fromTests)
+        rootScope = sourceFile->scopeFile;
+    else
+        rootScope = newParent->ownerScope;
+    structNode->allocateExtension();
+    structNode->addAlternativeScope(fromNode->parent->ownerScope);
+    structNode->extension->alternativeNode = newParent;
+
+    auto newScope     = Ast::newScope(structNode, structNode->token.text, ScopeKind::Struct, rootScope, true);
+    structNode->scope = newScope;
+
+    // Create type
+    auto typeInfo        = allocType<TypeInfoStruct>();
+    structNode->typeInfo = typeInfo;
+    typeInfo->flags |= TYPEINFO_STRUCT_IS_TUPLE | TYPEINFO_GENERATED_TUPLE;
+    typeInfo->declNode   = structNode;
+    typeInfo->name       = structNode->token.text;
+    typeInfo->structName = structNode->token.text;
+    typeInfo->scope      = newScope;
+
+    {
+        int i = 0;
+        for (auto p : typeList->subTypes)
+        {
+            Utf8 nameVar = toType->fields[i]->namedParam;
+            if (nameVar.empty())
+                nameVar = Fmt("item%d", i);
+            i++;
+
+            auto varNode  = Ast::newVarDecl(sourceFile, nameVar, contentNode);
+            auto typeNode = Ast::newTypeExpression(sourceFile, varNode);
+            varNode->flags |= AST_GENERATED | AST_STRUCT_MEMBER;
+            varNode->type                  = typeNode;
+            varNode->ownerScope            = newScope;
+            structNode->resolvedSymbolName = newScope->symTable.registerSymbolNameNoLock(context, structNode, SymbolKind::Variable);
+
+            typeNode->typeInfo = p->typeInfo;
+            typeNode->flags |= AST_NO_SEMANTIC;
+        }
+    }
+
+    SWAG_CHECK(convertLiteralTupleToStructVar(context, typeInfo, fromNode, true));
+
+    context->job->nodes.push_back(structNode);
+    context->result = ContextResult::NewChilds1;
+
     return true;
 }
 

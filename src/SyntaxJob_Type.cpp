@@ -123,7 +123,7 @@ bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, 
 
     // Name
     Utf8 name = sourceFile->scopeFile->name + "_tuple_";
-    name += Fmt("%d", token.startLocation);
+    name += Fmt("%d", g_UniqueID.fetch_add(1));
     structNode->token.text = move(name);
 
     // :SubDeclParent

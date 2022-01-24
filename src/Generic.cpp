@@ -478,6 +478,26 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
         }
     }
 
+    for (auto& v : match.genericReplaceTypes)
+    {
+        if (v.second->kind == TypeInfoKind::TypeListTuple)
+        {
+            auto tpt = CastTypeInfo<TypeInfoList>(v.second, TypeInfoKind::TypeListTuple);
+            int  idx = 0;
+            for (auto p : match.parameters)
+            {
+                if (p->typeInfo == tpt)
+                {
+                    auto typeDest = CastTypeInfo<TypeInfoStruct>(match.solvedParameters[idx]->typeInfo, TypeInfoKind::Struct);
+                    SWAG_CHECK(TypeManager::convertLiteralTupleToStructType(context, typeDest, p));
+                    return true;
+                }
+
+                idx++;
+            }
+        }
+    }
+
     // Types replacements
     CloneContext cloneContext;
     cloneContext.replaceTypes = move(match.genericReplaceTypes);
@@ -494,15 +514,6 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
                 cloneContext.replaceTypes[p->typeInfo->name] = g_TypeMgr->typeInfoUndefined;
         }
     }
-
-    /*for (auto& v : cloneContext.replaceTypes)
-    {
-        if (v.second->kind == TypeInfoKind::TypeListTuple)
-        {
-            auto tpt = CastTypeInfo<TypeInfoList>(v.second, TypeInfoKind::TypeListTuple);
-            v.second = TypeManager::convertTypeListToStruct(context, tpt, false);
-        }
-    }*/
 
     // Clone original node
     auto         overload = match.symbolOverload;

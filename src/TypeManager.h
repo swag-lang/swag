@@ -86,7 +86,8 @@ struct TypeManager
     static bool castToLambda(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags);
     static bool castToSlice(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags);
 
-    static bool            convertLiteralTupleToStructVar(SemanticContext* context, TypeInfo* toType, AstNode* fromNode);
+    static bool            convertLiteralTupleToStructVar(SemanticContext* context, TypeInfo* toType, AstNode* fromNode, bool fromType = false);
+    static bool            convertLiteralTupleToStructType(SemanticContext* context, TypeInfoStruct* toType, AstNode* fromNode);
     static TypeInfoArray*  convertTypeListToArray(JobContext* jobContext, TypeInfoList* typeList, bool isCompilerConstant);
     static TypeInfoStruct* convertTypeListToStruct(JobContext* jobContext, TypeInfoList* typeList, bool isCompilerConstant);
 

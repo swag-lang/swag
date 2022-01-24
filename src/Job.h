@@ -29,6 +29,7 @@ enum class ContextResult
     Done,
     Pending,
     NewChilds,
+    NewChilds1,
 };
 
 struct JobContext

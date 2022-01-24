@@ -856,29 +856,32 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
         return false;
 
     // Compare generic parameters
-    auto numGenParams = genericParameters.size();
-    if (numGenParams != other->genericParameters.size())
-        return false;
-    for (int i = 0; i < numGenParams; i++)
+    if (!(flags & TYPEINFO_GENERATED_TUPLE) && !(other->flags & TYPEINFO_GENERATED_TUPLE))
     {
-        auto myGenParam    = genericParameters[i];
-        auto otherGenParam = other->genericParameters[i];
-        if (isSameFlags & ISSAME_CAST)
-        {
-            if (otherGenParam->typeInfo->kind == TypeInfoKind::Generic)
-                continue;
-        }
-
-        if (myGenParam->flags & TYPEINFO_DEFINED_VALUE || otherGenParam->flags & TYPEINFO_DEFINED_VALUE)
-        {
-            SemanticContext cxt;
-            if (!TypeManager::makeCompatibles(&cxt, otherGenParam->typeInfo, myGenParam->typeInfo, nullptr, nullptr, CASTFLAG_NO_ERROR | CASTFLAG_JUST_CHECK | CASTFLAG_COMMUTATIVE))
-                if (!TypeManager::makeCompatibles(&cxt, myGenParam->typeInfo, otherGenParam->typeInfo, nullptr, nullptr, CASTFLAG_NO_ERROR | CASTFLAG_JUST_CHECK | CASTFLAG_COMMUTATIVE))
-                    return false;
-        }
-        else if (!myGenParam->typeInfo->isSame(otherGenParam->typeInfo, isSameFlags))
-        {
+        auto numGenParams = genericParameters.size();
+        if (numGenParams != other->genericParameters.size())
             return false;
+        for (int i = 0; i < numGenParams; i++)
+        {
+            auto myGenParam    = genericParameters[i];
+            auto otherGenParam = other->genericParameters[i];
+            if (isSameFlags & ISSAME_CAST)
+            {
+                if (otherGenParam->typeInfo->kind == TypeInfoKind::Generic)
+                    continue;
+            }
+
+            if (myGenParam->flags & TYPEINFO_DEFINED_VALUE || otherGenParam->flags & TYPEINFO_DEFINED_VALUE)
+            {
+                SemanticContext cxt;
+                if (!TypeManager::makeCompatibles(&cxt, otherGenParam->typeInfo, myGenParam->typeInfo, nullptr, nullptr, CASTFLAG_NO_ERROR | CASTFLAG_JUST_CHECK | CASTFLAG_COMMUTATIVE))
+                    if (!TypeManager::makeCompatibles(&cxt, myGenParam->typeInfo, otherGenParam->typeInfo, nullptr, nullptr, CASTFLAG_NO_ERROR | CASTFLAG_JUST_CHECK | CASTFLAG_COMMUTATIVE))
+                        return false;
+            }
+            else if (!myGenParam->typeInfo->isSame(otherGenParam->typeInfo, isSameFlags))
+            {
+                return false;
+            }
         }
     }
 
@@ -901,8 +904,12 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
     }
     else if (isTuple && !sameName)
     {
-        if ((flags & TYPEINFO_GENERIC) != (other->flags & TYPEINFO_GENERIC))
-            return false;
+        if (!(flags & TYPEINFO_GENERATED_TUPLE) && !(other->flags & TYPEINFO_GENERATED_TUPLE))
+        {
+            if ((flags & TYPEINFO_GENERIC) != (other->flags & TYPEINFO_GENERIC))
+                return false;
+        }
+
         int childCount = (int) fields.size();
         if (childCount != other->fields.size())
             return false;
