@@ -3150,9 +3150,21 @@ bool TypeManager::convertLiteralTupleToStructType(SemanticContext* context, Type
 
     {
         int i = 0;
-        for (auto p : typeList->subTypes)
+        for (auto p : toType->fields)
         {
-            Utf8 nameVar = toType->fields[i]->namedParam;
+            auto p1        = typeList->subTypes[i];
+            auto typeField = p1->typeInfo;
+            Utf8 nameVar   = p->namedParam;
+
+            for (int j = 0; j < typeList->subTypes.size(); j++)
+            {
+                if (nameVar == typeList->subTypes[j]->namedParam)
+                {
+                    typeField = typeList->subTypes[j]->typeInfo;
+                    break;
+                }
+            }
+
             if (nameVar.empty())
                 nameVar = Fmt("item%d", i);
             i++;
@@ -3164,7 +3176,7 @@ bool TypeManager::convertLiteralTupleToStructType(SemanticContext* context, Type
             varNode->ownerScope            = newScope;
             structNode->resolvedSymbolName = newScope->symTable.registerSymbolNameNoLock(context, structNode, SymbolKind::Variable);
 
-            typeNode->typeInfo = p->typeInfo;
+            typeNode->typeInfo = typeField;
             typeNode->flags |= AST_NO_SEMANTIC;
         }
     }
