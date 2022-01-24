@@ -3141,6 +3141,13 @@ bool TypeManager::convertLiteralTupleToStructType(SemanticContext* context, Type
     typeInfo->structName = structNode->token.text;
     typeInfo->scope      = newScope;
 
+    int countParams = (int) typeList->subTypes.size();
+    int maxCount    = (int) toType->fields.size();
+    if (countParams > maxCount)
+        return context->report(fromNode->childs.front()->childs[maxCount], Fmt(Err(Err0195), maxCount, countParams));
+    if (countParams < maxCount)
+        return context->report(fromNode->childs.front()->childs.back(), Fmt(Err(Err0205), maxCount, countParams));
+
     {
         int i = 0;
         for (auto p : typeList->subTypes)
