@@ -3148,6 +3148,9 @@ bool TypeManager::convertLiteralTupleToStructType(SemanticContext* context, Type
     if (countParams < maxCount)
         return context->report(fromNode->childs.front()->childs.back(), Fmt(Err(Err0205), maxCount, countParams));
 
+    // Each field of the toType struct must have a type given by the tuple.
+    // But as that tuple can have named parameters, we need to find the correct type depending
+    // on the name (if specified).
     {
         int i = 0;
         for (auto p : toType->fields)
@@ -3155,12 +3158,12 @@ bool TypeManager::convertLiteralTupleToStructType(SemanticContext* context, Type
             auto p1        = typeList->subTypes[i];
             auto typeField = p1->typeInfo;
             Utf8 nameVar   = p->namedParam;
-
             for (int j = 0; j < typeList->subTypes.size(); j++)
             {
                 if (nameVar == typeList->subTypes[j]->namedParam)
                 {
-                    typeField = typeList->subTypes[j]->typeInfo;
+                    p1        = typeList->subTypes[j];
+                    typeField = p1->typeInfo;
                     break;
                 }
             }
@@ -3168,6 +3171,12 @@ bool TypeManager::convertLiteralTupleToStructType(SemanticContext* context, Type
             if (nameVar.empty())
                 nameVar = Fmt("item%d", i);
             i++;
+
+            // This is used for generic automatic deduction. We can use typeInfo->genericParameters, or we would
+            // have to construct a struct AST with generic parameters too, and this is not possible as the struct
+            // is not generic in all cases (generic types used in the struct can come from the function for example).
+            if (p->typeInfo->flags & TYPEINFO_GENERIC)
+                typeInfo->deducedGenericParameters.push_back(p1);
 
             auto varNode  = Ast::newVarDecl(sourceFile, nameVar, contentNode);
             auto typeNode = Ast::newTypeExpression(sourceFile, varNode);

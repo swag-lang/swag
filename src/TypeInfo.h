@@ -499,6 +499,7 @@ struct TypeInfoStruct : public TypeInfo
     bool           canRawCopy();
 
     VectorNative<TypeInfoParam*> genericParameters;
+    VectorNative<TypeInfoParam*> deducedGenericParameters;
     VectorNative<TypeInfoParam*> fields;
     VectorNative<TypeInfoParam*> consts;
     VectorNative<TypeInfoParam*> methods;

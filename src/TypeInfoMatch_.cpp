@@ -190,15 +190,71 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                         if (callTypeInfo->kind == TypeInfoKind::Struct)
                         {
                             auto typeStruct = CastTypeInfo<TypeInfoStruct>(callTypeInfo, TypeInfoKind::Struct);
-                            auto num        = min(symbolStruct->genericParameters.size(), typeStruct->genericParameters.size());
+                            if (!typeStruct->genericParameters.empty())
+                            {
+                                auto num = min(symbolStruct->genericParameters.size(), typeStruct->genericParameters.size());
+                                for (int idx = 0; idx < num; idx++)
+                                {
+                                    auto genTypeInfo = symbolStruct->genericParameters[idx]->typeInfo;
+                                    auto rawTypeInfo = typeStruct->genericParameters[idx]->typeInfo;
+                                    symbolTypeInfos.push_back(genTypeInfo);
+                                    typeInfos.push_back(rawTypeInfo);
+                                }
+                            }
+                            else
+                            {
+                                auto num = min(symbolStruct->genericParameters.size(), typeStruct->deducedGenericParameters.size());
+                                for (int idx = 0; idx < num; idx++)
+                                {
+                                    auto genTypeInfo = symbolStruct->genericParameters[idx]->typeInfo;
+                                    auto rawTypeInfo = typeStruct->deducedGenericParameters[idx]->typeInfo;
+                                    symbolTypeInfos.push_back(genTypeInfo);
+                                    typeInfos.push_back(rawTypeInfo);
+                                }
+                            }
+                        }
+                        else if (callTypeInfo->kind == TypeInfoKind::TypeListTuple)
+                        {
+                            auto typeList = CastTypeInfo<TypeInfoList>(callTypeInfo, TypeInfoKind::TypeListTuple);
+                            auto num      = min(symbolStruct->genericParameters.size(), typeList->subTypes.size());
                             for (int idx = 0; idx < num; idx++)
                             {
-                                auto genTypeInfo = symbolStruct->genericParameters[idx]->typeInfo;
-                                auto rawTypeInfo = typeStruct->genericParameters[idx]->typeInfo;
+                                // A tuple typelist like @{a: 1, b: 2} can have named parameters, which means that the order of
+                                // fields is irrelevant, as we can write @{b: 2, a: 1} too.
+                                //
+                                // We have a generic parameter. We search in the struct the field that correspond to that type, in
+                                // order to get the corresponding field name. Then we will search for the name in the typelist (if
+                                // specified).
+                                auto p       = symbolStruct->genericParameters[idx];
+                                Utf8 nameVar = p->namedParam;
+                                for (int idx1 = 0; idx1 < (int) symbolStruct->fields.size(); idx1++)
+                                {
+                                    if (symbolStruct->fields[idx1]->typeInfo->name == symbolStruct->genericParameters[idx]->typeInfo->name)
+                                    {
+                                        nameVar = symbolStruct->fields[idx1]->namedParam;
+                                        break;
+                                    }
+                                }
+
+                                // Then the corresponding field name is searched in the typelist in case the user has specified one.
+                                auto p1        = typeList->subTypes[idx];
+                                auto typeField = p1->typeInfo;
+                                for (int j = 0; j < typeList->subTypes.size(); j++)
+                                {
+                                    if (nameVar == typeList->subTypes[j]->namedParam)
+                                    {
+                                        typeField = typeList->subTypes[j]->typeInfo;
+                                        break;
+                                    }
+                                }
+
+                                auto genTypeInfo = p->typeInfo;
+                                auto rawTypeInfo = typeField;
                                 symbolTypeInfos.push_back(genTypeInfo);
                                 typeInfos.push_back(rawTypeInfo);
                             }
                         }
+
                         break;
                     }
 
