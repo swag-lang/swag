@@ -230,6 +230,8 @@ bool TypeInfoArray::isSame(TypeInfo* to, uint32_t isSameFlags)
 {
     if (this == to)
         return true;
+    if (to->kind == TypeInfoKind::Generic)
+        return true;
     if (!TypeInfo::isSame(to, isSameFlags))
         return false;
 

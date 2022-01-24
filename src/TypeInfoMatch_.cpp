@@ -207,7 +207,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                                 for (int idx = 0; idx < num; idx++)
                                 {
                                     auto genTypeInfo = symbolStruct->genericParameters[idx]->typeInfo;
-                                    auto rawTypeInfo = typeStruct->deducedGenericParameters[idx]->typeInfo;
+                                    auto rawTypeInfo = typeStruct->deducedGenericParameters[idx];
                                     symbolTypeInfos.push_back(genTypeInfo);
                                     typeInfos.push_back(rawTypeInfo);
                                 }

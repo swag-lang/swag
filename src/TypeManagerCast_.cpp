@@ -3172,11 +3172,16 @@ bool TypeManager::convertLiteralTupleToStructType(SemanticContext* context, Type
                 nameVar = Fmt("item%d", i);
             i++;
 
+            if (typeField->kind == TypeInfoKind::TypeListArray)
+                typeField = TypeManager::convertTypeListToArray(context, (TypeInfoList*) typeField, false);
+            if (typeField->kind == TypeInfoKind::TypeListTuple)
+                return context->report(fromNode, Err(Err0119));
+
             // This is used for generic automatic deduction. We can use typeInfo->genericParameters, or we would
             // have to construct a struct AST with generic parameters too, and this is not possible as the struct
             // is not generic in all cases (generic types used in the struct can come from the function for example).
             if (p->typeInfo->flags & TYPEINFO_GENERIC)
-                typeInfo->deducedGenericParameters.push_back(p1);
+                typeInfo->deducedGenericParameters.push_back(typeField);
 
             auto varNode  = Ast::newVarDecl(sourceFile, nameVar, contentNode);
             auto typeNode = Ast::newTypeExpression(sourceFile, varNode);

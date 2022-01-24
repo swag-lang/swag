@@ -91,6 +91,18 @@ TypeInfo* Generic::doTypeSubstitution(map<Utf8, TypeInfo*>& replaceTypes, TypeIn
             return t;
         }
 
+        if (it->second->kind == TypeInfoKind::TypeListArray)
+        {
+            it->second->declNode->sourceFile->internalError(it->second->declNode, "unsupported array literal in generic instantiation");
+            return nullptr;
+        }
+
+        if (it->second->kind == TypeInfoKind::TypeListTuple)
+        {
+            it->second->declNode->sourceFile->internalError(it->second->declNode, "unsupported struct literal in generic instantiation");
+            return nullptr;
+        }
+
         return it->second;
     }
 
