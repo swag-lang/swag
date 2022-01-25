@@ -65,6 +65,7 @@ static const uint64_t TYPEINFO_SHARED                   = 0x00000004'00000000;
 static const uint64_t TYPEINFO_C_STRING                 = 0x00000008'00000000;
 static const uint64_t TYPEINFO_C_VARIADIC               = 0x00000010'00000000;
 static const uint64_t TYPEINFO_GENERATED_TUPLE          = 0x00000020'00000000;
+static const uint64_t TYPEINFO_CLOSURE                  = 0x00000040'00000000;
 
 static const uint32_t ISSAME_EXACT      = 0x00000001;
 static const uint32_t ISSAME_CAST       = 0x00000002;

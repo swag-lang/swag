@@ -448,7 +448,7 @@ SWAG_ERROR(Err0452, "a method should not be declared inside an `enum impl` block
 SWAG_ERROR(Err0453, "`var` is not necessary to declare a field inside a struct")
 SWAG_ERROR(Err0454, "unexpected affect operator `==`, do you mean `=` ?")
 SWAG_ERROR(Err0455, "expected `:` or `=` in the variable declaration, found `%s`")
-SWAG_ERROR(Err0456, nullptr)
+SWAG_ERROR(Err0456, "expected `(` to start the closure parameters")
 SWAG_ERROR(Err0457, "the variable should have a type or should be initialized")
 SWAG_ERROR(Err0458, nullptr)
 SWAG_ERROR(Err0459, "too many digits in the literal number")

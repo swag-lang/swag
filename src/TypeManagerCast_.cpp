@@ -2690,7 +2690,7 @@ bool TypeManager::castToLambda(SemanticContext* context, TypeInfo* toType, TypeI
         }
     }
 
-    if (fromType->kind == TypeInfoKind::Closure)
+    if (fromType->flags & TYPEINFO_CLOSURE)
     {
         if (!(castFlags & CASTFLAG_NO_ERROR))
         {
@@ -2703,7 +2703,7 @@ bool TypeManager::castToLambda(SemanticContext* context, TypeInfo* toType, TypeI
 
 bool TypeManager::castToClosure(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
-    TypeInfoFuncAttr* toTypeLambda = CastTypeInfo<TypeInfoFuncAttr>(toType, TypeInfoKind::Closure);
+    TypeInfoFuncAttr* toTypeLambda = CastTypeInfo<TypeInfoFuncAttr>(toType, TypeInfoKind::Lambda);
     if (castFlags & CASTFLAG_EXPLICIT)
     {
         if (fromType == g_TypeMgr->typeInfoNull)
@@ -2718,7 +2718,7 @@ bool TypeManager::castToClosure(SemanticContext* context, TypeInfo* toType, Type
         }
     }
 
-    if (fromType->kind == TypeInfoKind::Lambda)
+    if (fromType->kind == TypeInfoKind::Lambda && !(fromType->flags & TYPEINFO_CLOSURE))
     {
         if (!(castFlags & CASTFLAG_NO_ERROR))
         {
@@ -3468,12 +3468,10 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
 
             // Cast to lambda
         case TypeInfoKind::Lambda:
-            SWAG_CHECK(castToLambda(context, toType, fromType, fromNode, castFlags));
-            break;
-
-            // Cast to closure
-        case TypeInfoKind::Closure:
-            SWAG_CHECK(castToClosure(context, toType, fromType, fromNode, castFlags));
+            if (toType->flags & TYPEINFO_CLOSURE)
+                SWAG_CHECK(castToClosure(context, toType, fromType, fromNode, castFlags));
+            else
+                SWAG_CHECK(castToLambda(context, toType, fromType, fromNode, castFlags));
             break;
 
         default:

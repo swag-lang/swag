@@ -313,6 +313,14 @@ bool Tokenizer::getToken(Token& token)
                 return true;
             }
 
+            if (nc == '|')
+            {
+                treatChar(nc, offset);
+                token.text = "@|";
+                token.id   = TokenId::SymLiteralVertical;
+                return true;
+            }
+
             doIdentifier(token, nc, offset);
             token.endLocation = location;
 

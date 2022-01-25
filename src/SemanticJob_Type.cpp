@@ -109,7 +109,7 @@ bool SemanticJob::checkIsConcreteOrType(SemanticContext* context, AstNode* node)
 bool SemanticJob::resolveTypeLambdaClosure(SemanticContext* context)
 {
     auto node          = CastAst<AstTypeLambda>(context->node, AstNodeKind::TypeLambda, AstNodeKind::TypeClosure);
-    auto typeInfo      = allocType<TypeInfoFuncAttr>(node->kind == AstNodeKind::TypeLambda ? TypeInfoKind::Lambda : TypeInfoKind::Closure);
+    auto typeInfo      = allocType<TypeInfoFuncAttr>(TypeInfoKind::Lambda);
     typeInfo->declNode = node;
 
     if (node->specFlags & AST_SPEC_TYPELAMBDA_CANTHROW)
@@ -141,14 +141,14 @@ bool SemanticJob::resolveTypeLambdaClosure(SemanticContext* context)
 
     typeInfo->computeName();
 
-    if (typeInfo->kind == TypeInfoKind::Lambda)
+    if (node->kind == AstNodeKind::TypeClosure)
     {
-        typeInfo->sizeOf = sizeof(void*);
+        typeInfo->sizeOf = SWAG_LIMIT_CLOSURE_SIZEOF;
+        typeInfo->flags |= TYPEINFO_RETURN_BY_COPY | TYPEINFO_CLOSURE;
     }
     else
     {
-        typeInfo->sizeOf = SWAG_LIMIT_CLOSURE_SIZEOF;
-        typeInfo->flags |= TYPEINFO_RETURN_BY_COPY;
+        typeInfo->sizeOf = sizeof(void*);
     }
 
     node->typeInfo = typeInfo;

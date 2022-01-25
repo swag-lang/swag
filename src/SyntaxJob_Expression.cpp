@@ -339,6 +339,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, A
         break;
 
     case TokenId::SymLiteralParen:
+    case TokenId::SymLiteralVertical:
         if (exprFlags & EXPR_FLAG_SIMPLE)
             return invalidTokenError(InvalidTokenError::PrimaryExpression);
         SWAG_CHECK(doLambdaExpression(parent, result));

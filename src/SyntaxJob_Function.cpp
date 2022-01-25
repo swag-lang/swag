@@ -696,10 +696,22 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptM
     funcNode->scope    = newScope;
     currentScope->symTable.registerSymbolName(&context, funcNode, SymbolKind::Function);
 
+    // Closure capture
+    if (token.id == TokenId::SymLiteralVertical)
+    {
+        SWAG_CHECK(eatToken());
+        SWAG_CHECK(eatToken(TokenId::SymVertical));
+        SWAG_VERIFY(token.id == TokenId::SymLeftParen, error(token, Err(Err0456)));
+        typeInfo->flags |= TYPEINFO_CLOSURE;
+    }
+    else
+    {
+        SWAG_CHECK(eatToken());
+    }
+
     {
         Scoped    scoped(this, newScope);
         ScopedFct scopedFct(this, funcNode);
-        SWAG_CHECK(eatToken());
         SWAG_CHECK(doFuncDeclParameters(funcNode, &funcNode->parameters, acceptMissingType));
     }
 

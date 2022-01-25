@@ -278,7 +278,6 @@ namespace Swag
         Enum
         Func
         Lambda
-        Closure
         Pointer
         Reference
         Array

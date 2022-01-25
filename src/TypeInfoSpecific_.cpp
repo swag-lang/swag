@@ -571,7 +571,7 @@ void TypeInfoFuncAttr::computeWhateverName(Utf8& resName, uint32_t nameType)
     computeNameGenericParameters(genericParameters, resName, nameType);
 
     // Closure
-    if (kind == TypeInfoKind::Closure)
+    if (flags & TYPEINFO_CLOSURE)
     {
         resName += "|";
         for (int i = 0; i < capture.size(); i++)
@@ -612,6 +612,8 @@ void TypeInfoFuncAttr::computeWhateverName(Utf8& resName, uint32_t nameType)
 bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t isSameFlags)
 {
     if (parameters.size() != other->parameters.size())
+        return false;
+    if ((flags & TYPEINFO_CLOSURE) != (other->flags & TYPEINFO_CLOSURE))
         return false;
 
     if (genericParameters.size() != other->genericParameters.size())
