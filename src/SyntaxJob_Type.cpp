@@ -42,7 +42,7 @@ bool SyntaxJob::doAlias(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doTypeExpressionLambda(AstNode* parent, AstNode** result)
+bool SyntaxJob::doTypeExpressionLambdaClosure(AstNode* parent, AstNode** result)
 {
     AstNodeKind kind = token.id == TokenId::KwdFunc ? AstNodeKind::TypeLambda : AstNodeKind::TypeClosure;
     SWAG_CHECK(eatToken());
@@ -52,11 +52,28 @@ bool SyntaxJob::doTypeExpressionLambda(AstNode* parent, AstNode** result)
     if (result)
         *result = node;
 
+    AstNode* params = nullptr;
+
+    // A closure always has at least one parameter : the capture context
+    if (kind == AstNodeKind::TypeClosure)
+    {
+        params           = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclParams, sourceFile, node);
+        node->parameters = params;
+
+        auto typeNode      = Ast::newTypeExpression(sourceFile, params);
+        typeNode->typeInfo = g_TypeMgr->typeInfoPointers[(int) NativeTypeKind::Void];
+        typeNode->flags |= AST_NO_SEMANTIC;
+    }
+
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
     if (token.id != TokenId::SymRightParen)
     {
-        auto params      = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclParams, sourceFile, node);
-        node->parameters = params;
+        if (!params)
+        {
+            params           = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclParams, sourceFile, node);
+            node->parameters = params;
+        }
+
         while (true)
         {
             bool isConst = false;
@@ -231,7 +248,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
     // This is a lambda
     if (token.id == TokenId::KwdFunc || token.id == TokenId::KwdClosure)
     {
-        return doTypeExpressionLambda(parent, result);
+        return doTypeExpressionLambdaClosure(parent, result);
     }
 
     // retval

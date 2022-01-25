@@ -709,10 +709,22 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptM
         SWAG_CHECK(eatToken());
     }
 
+    // Lambda parameters
     {
         Scoped    scoped(this, newScope);
         ScopedFct scopedFct(this, funcNode);
         SWAG_CHECK(doFuncDeclParameters(funcNode, &funcNode->parameters, acceptMissingType));
+    }
+
+    // Closure first parameter is a void* pointer that will point to the context
+    if (typeInfo->flags & TYPEINFO_CLOSURE)
+    {
+        auto v = Ast::newVarDecl(sourceFile, "__context", funcNode->parameters, this, AstNodeKind::FuncDeclParam);
+        Ast::removeFromParent(v);
+        Ast::addChildFront(funcNode->parameters, v);
+        v->type           = Ast::newTypeExpression(sourceFile, v, this);
+        v->type->typeInfo = g_TypeMgr->typeInfoPointers[(int) NativeTypeKind::Void];
+        v->type->flags |= AST_NO_SEMANTIC;
     }
 
     // Return type
