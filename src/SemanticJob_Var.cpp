@@ -366,6 +366,7 @@ bool SemanticJob::resolveVarDeclAfter(SemanticContext* context)
         if (!context->job->tmpIdRef)
         {
             context->job->tmpIdRef = Ast::newIdentifierRef(context->sourceFile, node->token.text, nullptr, nullptr);
+            context->job->tmpIdRef->childs.back()->flags |= AST_SILENT_CHECK;
             context->job->tmpIdRef->flags |= AST_SILENT_CHECK;
         }
 

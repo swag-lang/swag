@@ -328,10 +328,24 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
     if (!identifier->callParameters)
         return true;
 
-    auto sourceFile = context->sourceFile;
-    sortParameters(identifier->callParameters);
+    auto sourceFile   = context->sourceFile;
     auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(identifier->typeInfo, TypeInfoKind::FuncAttr);
-    auto maxParams    = identifier->callParameters->childs.size();
+
+    // :ClosureForceFirstParam
+    // Add a first dummy parameter in case of closure
+    if (typeInfoFunc->flags & TYPEINFO_CLOSURE && !(identifier->doneFlags & AST_DONE_CLOSURE_FIRST_PARAM))
+    {
+        auto fcp = Ast::newFuncCallParam(sourceFile, identifier->callParameters);
+        Ast::removeFromParent(fcp);
+        Ast::addChildFront(identifier->callParameters, fcp);
+        fcp->setFlagsValueIsComputed();
+        fcp->computedValue->reg.pointer = nullptr;
+        fcp->typeInfo                   = g_TypeMgr->typeInfoNull;
+        identifier->doneFlags |= AST_DONE_CLOSURE_FIRST_PARAM;
+    }
+
+    sortParameters(identifier->callParameters);
+    auto maxParams = identifier->callParameters->childs.size();
     for (int idx = 0; idx < maxParams; idx++)
     {
         auto nodeCall = CastAst<AstFuncCallParam>(identifier->callParameters->childs[idx], AstNodeKind::FuncCallParam);
@@ -2387,6 +2401,15 @@ bool SemanticJob::fillMatchContextCallParameters(SemanticContext* context, Symbo
     auto symbol         = overload->symbol;
     auto symbolKind     = symbol->kind;
     auto callParameters = node->callParameters;
+
+    // :ClosureForceFirstParam
+    // A closure has always a first parameter of type *void
+    if (overload->typeInfo->flags & TYPEINFO_CLOSURE && node->callParameters)
+    {
+        context->job->closureFirstParam.kind     = AstNodeKind::FuncCallParam;
+        context->job->closureFirstParam.typeInfo = g_TypeMgr->typeInfoPointers[(int) NativeTypeKind::Void];
+        symMatchContext.parameters.push_back(&context->job->closureFirstParam);
+    }
 
     if (ufcsFirstParam)
         symMatchContext.parameters.push_back(ufcsFirstParam);

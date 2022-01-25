@@ -537,6 +537,7 @@ struct SemanticJob : public Job
     Concat                            tmpConcat;
     AstIdentifierRef*                 tmpIdRef = nullptr;
 
+    AstFuncCallParam  closureFirstParam;
     MatchResult       bestMatchResult;
     BadSignatureInfos bestSignatureInfos;
     SymbolOverload*   bestOverload = nullptr;

@@ -54,6 +54,7 @@ bool SyntaxJob::doTypeExpressionLambdaClosure(AstNode* parent, AstNode** result)
 
     AstNode* params = nullptr;
 
+    // :ClosureForceFirstParam
     // A closure always has at least one parameter : the capture context
     if (kind == AstNodeKind::TypeClosure)
     {

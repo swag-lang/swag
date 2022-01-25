@@ -716,6 +716,7 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptM
         SWAG_CHECK(doFuncDeclParameters(funcNode, &funcNode->parameters, acceptMissingType));
     }
 
+    // :ClosureForceFirstParam
     // Closure first parameter is a void* pointer that will point to the context
     if (typeInfo->flags & TYPEINFO_CLOSURE)
     {
