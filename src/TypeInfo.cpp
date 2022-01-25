@@ -137,6 +137,8 @@ const char* TypeInfo::getArticleKindName(TypeInfo* typeInfo)
         return "a function";
     case TypeInfoKind::Lambda:
         return "a lambda";
+    case TypeInfoKind::Closure:
+        return "a closure";
     case TypeInfoKind::TypeListTuple:
         return "a tuple";
     case TypeInfoKind::TypeListArray:
@@ -180,6 +182,8 @@ const char* TypeInfo::getNakedKindName(TypeInfo* typeInfo)
         return "function";
     case TypeInfoKind::Lambda:
         return "lambda";
+    case TypeInfoKind::Closure:
+        return "closure";
     case TypeInfoKind::TypeListTuple:
         return "tuple";
     case TypeInfoKind::TypeListArray:

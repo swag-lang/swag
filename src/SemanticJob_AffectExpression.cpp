@@ -186,6 +186,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             leftTypeInfo->kind != TypeInfoKind::Reference &&
             leftTypeInfo->kind != TypeInfoKind::Slice &&
             leftTypeInfo->kind != TypeInfoKind::Lambda &&
+            leftTypeInfo->kind != TypeInfoKind::Closure &&
             leftTypeInfo->kind != TypeInfoKind::TypeListTuple &&
             leftTypeInfo->kind != TypeInfoKind::TypeListArray &&
             leftTypeInfo->kind != TypeInfoKind::Struct &&
@@ -199,6 +200,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             rightTypeInfo->kind != TypeInfoKind::Reference &&
             rightTypeInfo->kind != TypeInfoKind::Slice &&
             rightTypeInfo->kind != TypeInfoKind::Lambda &&
+            rightTypeInfo->kind != TypeInfoKind::Closure &&
             rightTypeInfo->kind != TypeInfoKind::TypeListTuple &&
             rightTypeInfo->kind != TypeInfoKind::TypeListArray &&
             rightTypeInfo->kind != TypeInfoKind::Struct &&

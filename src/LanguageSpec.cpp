@@ -262,6 +262,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("union", TokenId::KwdUnion);
     keywords.add("interface", TokenId::KwdInterface);
     keywords.add("func", TokenId::KwdFunc);
+    keywords.add("closure", TokenId::KwdClosure);
     keywords.add("mtd", TokenId::KwdMethod);
     keywords.add("mtdc", TokenId::KwdConstMethod);
     keywords.add("true", TokenId::KwdTrue);

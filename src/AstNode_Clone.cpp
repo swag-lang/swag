@@ -174,6 +174,7 @@ AstNode* AstNode::clone(CloneContext& context)
     case AstNodeKind::TypeExpression:
         return ((AstTypeExpression*) this)->clone(context);
     case AstNodeKind::TypeLambda:
+    case AstNodeKind::TypeClosure:
         return ((AstTypeLambda*) this)->clone(context);
     case AstNodeKind::ArrayPointerSlicing:
         return ((AstArrayPointerSlicing*) this)->clone(context);

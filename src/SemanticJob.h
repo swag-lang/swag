@@ -339,7 +339,7 @@ struct SemanticJob : public Job
     static bool resolveTypeAsExpression(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, TypeInfo** resultTypeInfo, uint32_t flags = 0);
     static bool resolveTypeAsExpression(SemanticContext* context, AstNode* node, TypeInfo** resultTypeInfo, uint32_t flags = 0);
     static bool resolveType(SemanticContext* context);
-    static bool resolveTypeLambda(SemanticContext* context);
+    static bool resolveTypeLambdaClosure(SemanticContext* context);
     static bool resolveVarDeclAfterType(SemanticContext* context);
     static bool resolveVarDeclBefore(SemanticContext* context);
     static bool resolveVarDeclAfter(SemanticContext* context);

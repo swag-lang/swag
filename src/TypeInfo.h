@@ -342,6 +342,7 @@ struct TypeInfoFuncAttr : public TypeInfo
     int       numReturnRegisters();
     int       numTotalRegisters();
 
+    VectorNative<TypeInfoParam*> capture;
     VectorNative<TypeInfoParam*> genericParameters;
     VectorNative<TypeInfoParam*> parameters;
     AttributeList                attributes;

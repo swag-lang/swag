@@ -570,6 +570,19 @@ void TypeInfoFuncAttr::computeWhateverName(Utf8& resName, uint32_t nameType)
 
     computeNameGenericParameters(genericParameters, resName, nameType);
 
+    // Closure
+    if (kind == TypeInfoKind::Closure)
+    {
+        resName += "|";
+        for (int i = 0; i < capture.size(); i++)
+        {
+            if (i)
+                resName += ", ";
+            resName += capture[i]->typeInfo->computeWhateverName(nameType);
+        }
+        resName += "|";
+    }
+
     // Parameters
     resName += "(";
     for (int i = 0; i < parameters.size(); i++)

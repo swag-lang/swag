@@ -44,8 +44,11 @@ bool SyntaxJob::doAlias(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doTypeExpressionLambda(AstNode* parent, AstNode** result)
 {
-    auto node         = Ast::newNode<AstTypeLambda>(this, AstNodeKind::TypeLambda, sourceFile, parent);
-    node->semanticFct = SemanticJob::resolveTypeLambda;
+    AstNodeKind kind = token.id == TokenId::KwdFunc ? AstNodeKind::TypeLambda : AstNodeKind::TypeClosure;
+    SWAG_CHECK(eatToken());
+
+    auto node         = Ast::newNode<AstTypeLambda>(this, kind, sourceFile, parent);
+    node->semanticFct = SemanticJob::resolveTypeLambdaClosure;
     if (result)
         *result = node;
 
@@ -226,9 +229,8 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
     }
 
     // This is a lambda
-    if (token.id == TokenId::KwdFunc)
+    if (token.id == TokenId::KwdFunc || token.id == TokenId::KwdClosure)
     {
-        SWAG_CHECK(eatToken());
         return doTypeExpressionLambda(parent, result);
     }
 

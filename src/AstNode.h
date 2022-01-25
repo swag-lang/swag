@@ -61,6 +61,7 @@ enum class AstNodeKind : uint8_t
     Identifier,
     TypeExpression,
     TypeLambda,
+    TypeClosure,
     Namespace,
     Using,
     With,

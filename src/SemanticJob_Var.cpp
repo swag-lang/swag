@@ -71,7 +71,7 @@ AstNode* SemanticJob::convertTypeToTypeExpression(SemanticContext* context, AstN
     {
         auto typeLambda             = CastTypeInfo<TypeInfoFuncAttr>(childType, TypeInfoKind::Lambda);
         auto typeExprLambda         = Ast::newNode<AstTypeLambda>(nullptr, AstNodeKind::TypeLambda, sourceFile, parent);
-        typeExprLambda->semanticFct = SemanticJob::resolveTypeLambda;
+        typeExprLambda->semanticFct = SemanticJob::resolveTypeLambdaClosure;
         if (childType->flags & TYPEINFO_CAN_THROW)
             typeExprLambda->specFlags |= AST_SPEC_TYPELAMBDA_CANTHROW;
 
