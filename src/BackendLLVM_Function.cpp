@@ -3864,13 +3864,42 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.SetInsertPoint(blockLambdaLocal);
             {
                 auto                       r0 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
-                auto                       FT = createFunctionTypeLocal(buildParameters, typeFuncBC);
-                auto                       PT = llvm::PointerType::getUnqual(FT);
-                auto                       r1 = builder.CreatePointerCast(r0, PT);
                 VectorNative<llvm::Value*> fctParams;
                 getLocalCallParameters(buildParameters, allocR, allocRR, allocT, fctParams, typeFuncBC, pushRAParams, {});
-                builder.CreateCall(FT, r1, {fctParams.begin(), fctParams.end()});
-                builder.CreateBr(blockNext);
+
+                if (typeFuncBC->flags & TYPEINFO_CLOSURE)
+                {
+                    llvm::BasicBlock* blockLambda  = llvm::BasicBlock::Create(context, "", func);
+                    llvm::BasicBlock* blockClosure = llvm::BasicBlock::Create(context, "", func);
+
+                    // Test closure context pointer. If null, this is a lambda.
+                    auto v0 = builder.CreateLoad(GEP_I32(allocR, pushRAParams.back()));
+                    auto v2 = builder.CreateIsNotNull(v0);
+                    builder.CreateCondBr(v2, blockClosure, blockLambda);
+
+                    // Lambda call. We must eliminate the first parameter (closure context)
+                    builder.SetInsertPoint(blockLambda);
+                    auto tt = (TypeInfoFuncAttr*) typeFuncBC->clone();
+                    tt->parameters.erase_unordered(0);
+                    auto l_FT = createFunctionTypeLocal(buildParameters, tt);
+                    auto l_r1 = builder.CreatePointerCast(r0, llvm::PointerType::getUnqual(l_FT));
+                    builder.CreateCall(l_FT, l_r1, {fctParams.begin() + 1, fctParams.end()});
+                    builder.CreateBr(blockNext);
+
+                    // Closure call. Normal call, as the type contains the first parameter.
+                    builder.SetInsertPoint(blockClosure);
+                    auto c_FT = createFunctionTypeLocal(buildParameters, typeFuncBC);
+                    auto c_r1 = builder.CreatePointerCast(r0, llvm::PointerType::getUnqual(c_FT));
+                    builder.CreateCall(c_FT, c_r1, {fctParams.begin(), fctParams.end()});
+                    builder.CreateBr(blockNext);
+                }
+                else
+                {
+                    auto FT = createFunctionTypeLocal(buildParameters, typeFuncBC);
+                    auto r1 = builder.CreatePointerCast(r0, llvm::PointerType::getUnqual(FT));
+                    builder.CreateCall(FT, r1, {fctParams.begin(), fctParams.end()});
+                    builder.CreateBr(blockNext);
+                }
             }
 
             builder.SetInsertPoint(blockLambdaBC);
