@@ -293,6 +293,16 @@ bool TypeInfo::isArrayOfStruct()
     return ptr->finalType->kind == TypeInfoKind::Struct;
 }
 
+bool TypeInfo::isClosure()
+{
+    return flags & TYPEINFO_CLOSURE;
+}
+
+bool TypeInfo::isLambda()
+{
+    return (kind == TypeInfoKind::Lambda) && !(flags & TYPEINFO_CLOSURE);
+}
+
 bool TypeInfo::isMethod()
 {
     if (kind != TypeInfoKind::FuncAttr)

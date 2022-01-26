@@ -292,6 +292,11 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
             return context->report(fromNode, Fmt(Err(Err0177), fromType->getDisplayNameC(), toType->getDisplayNameC()));
         }
 
+        if (fromType->isClosure() && toType->isLambda())
+        {
+            return context->report({fromNode, Fmt(Err(Err0178))});
+        }
+
         // General cast error
         return context->report(fromNode, Fmt(Err(Err0177), fromType->getDisplayNameC(), toType->getDisplayNameC()));
     }
@@ -2687,14 +2692,6 @@ bool TypeManager::castToLambda(SemanticContext* context, TypeInfo* toType, TypeI
             }
 
             return true;
-        }
-    }
-
-    if (fromType->flags & TYPEINFO_CLOSURE)
-    {
-        if (!(castFlags & CASTFLAG_NO_ERROR))
-        {
-            return context->report({fromNode, Fmt(Err(Err0178))});
         }
     }
 
