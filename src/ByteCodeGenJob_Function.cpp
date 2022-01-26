@@ -875,13 +875,30 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitLambdaCall(ByteCodeGenContext* context)
 {
-    AstNode* node     = context->node;
+    AstNode* node     = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier);
     auto     overload = node->resolvedSymbolOverload;
 
     SWAG_CHECK(emitIdentifier(context));
     node->additionalRegisterRC = node->resultRegisterRC;
     auto allParams             = node->childs.empty() ? nullptr : node->childs.back();
     SWAG_ASSERT(!allParams || allParams->kind == AstNodeKind::FuncCallParams);
+
+    // A closure is the pointer to the variable, not the function address
+    // Function address is stored first
+    // Then comes 8 or 0 if it's a real closure or a lambda
+    if (overload->typeInfo->flags & TYPEINFO_CLOSURE)
+    {
+        // Deref capture context. If 0, no context.
+        node->additionalRegisterRC += reserveRegisterRC(context);
+        emitInstruction(context, ByteCodeOp::DeRef64, node->additionalRegisterRC[1], node->additionalRegisterRC[0])->c.u64 = 8;
+
+        // If 0, keep it 0, otherwhise compte the capture context context by adding that offset to the address of the closure storage
+        emitInstruction(context, ByteCodeOp::JumpIfZero64, node->additionalRegisterRC[1])->b.s64 = 1;
+        emitInstruction(context, ByteCodeOp::BinOpPlusU64, node->additionalRegisterRC[1], node->additionalRegisterRC[0], node->additionalRegisterRC[1]);
+
+        // Deref function pointer
+        emitInstruction(context, ByteCodeOp::DeRef64, node->additionalRegisterRC[0], node->additionalRegisterRC[0]);
+    }
 
     SWAG_CHECK(emitCall(context, allParams, nullptr, (AstVarDecl*) overload->node, node->additionalRegisterRC, false, true, true));
     SWAG_ASSERT(context->result == ContextResult::Done);
@@ -1000,8 +1017,22 @@ bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode*
 
 void ByteCodeGenJob::emitPushRAParams(ByteCodeGenContext* context, VectorNative<uint32_t>& accParams)
 {
+    auto node = context->node;
+
     int cpt = (int) accParams.size();
-    int i   = 0;
+
+    if (node->typeInfo && node->typeInfo->flags & TYPEINFO_CLOSURE)
+    {
+        // The first argument of the function needs to be the capture context, which is stored in
+        // node->additionalRegisterRC as the second register.
+        accParams[(int) accParams.size() - 1] = node->additionalRegisterRC[1];
+
+        // The last pushParam needs to be treated in a different way in case of closure, because
+        // if in fact we call a lambda, it does not exists (the closure context)
+        cpt--;
+    }
+
+    int i = 0;
     while (i < cpt)
     {
         if (cpt - i >= 4)
@@ -1024,6 +1055,13 @@ void ByteCodeGenJob::emitPushRAParams(ByteCodeGenContext* context, VectorNative<
             emitInstruction(context, ByteCodeOp::PushRAParam, accParams[i]);
             i += 1;
         }
+    }
+
+    // Closure context
+    if (node->typeInfo && node->typeInfo->flags & TYPEINFO_CLOSURE)
+    {
+        emitInstruction(context, ByteCodeOp::JumpIfZero64, accParams.back())->b.s64 = 1;
+        emitInstruction(context, ByteCodeOp::PushRAParam, accParams.back());
     }
 
     accParams.clear();

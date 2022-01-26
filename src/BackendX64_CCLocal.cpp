@@ -4,6 +4,43 @@
 #include "BackendX64_Macros.h"
 #include "TypeManager.h"
 
+void BackendX64::emitLocalFctCall(X64PerThread&                 pp,
+                                  TypeInfoFuncAttr*             typeFuncBC,
+                                  int                           offsetStack,
+                                  int                           numCallParams,
+                                  int&                          popRAidx,
+                                  int&                          callerIndex,
+                                  const VectorNative<uint32_t>& pushRAParams,
+                                  int                           firstIdxCall)
+{
+    // Lambda call parameters (do not use the first parameter)
+    for (int idxCall = firstIdxCall; idxCall < numCallParams; idxCall++)
+    {
+        auto typeParam = typeFuncBC->parameters[idxCall]->typeInfo;
+        typeParam      = TypeManager::concreteReferenceType(typeParam);
+        for (int j = 0; j < typeParam->numRegisters(); j++)
+        {
+            SWAG_ASSERT(popRAidx >= 0);
+            auto index = pushRAParams[popRAidx--];
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(index), RAX, RDI);
+            BackendX64Inst::emit_Store64_Indirect(pp, offsetStack, RAX, RSP);
+            storeRAXToCDeclParam(pp, typeParam, callerIndex);
+            callerIndex++;
+            offsetStack += 8;
+        }
+    }
+
+    // Emit the rest
+    for (int j = popRAidx; j >= 0; j--)
+    {
+        BackendX64Inst::emit_Load64_Indirect(pp, regOffset(pushRAParams[j]), RAX, RDI);
+        BackendX64Inst::emit_Store64_Indirect(pp, offsetStack, RAX, RSP);
+        storeRAXToCDeclParam(pp, nullptr, callerIndex);
+        callerIndex++;
+        offsetStack += 8;
+    }
+}
+
 void BackendX64::emitLocalCallParameters(X64PerThread& pp, uint32_t sizeParamsStack, TypeInfoFuncAttr* typeFuncBC, uint32_t stackRR, const VectorNative<uint32_t>& pushRAParams, const VectorNative<pair<uint32_t, uint32_t>>& pushRVParams)
 {
     uint32_t sizeStack = (uint32_t) (pushRAParams.size() * sizeof(Register));
@@ -92,34 +129,45 @@ void BackendX64::emitLocalCallParameters(X64PerThread& pp, uint32_t sizeParamsSt
         numCallParams--;
     }
 
-    // Func call parameters
-    for (int idxCall = 0; idxCall < numCallParams; idxCall++)
+    // If the closure is assigned to a lambda, then we must not use the first parameter (the first
+    // parameter is the capture context, which does not exits in a normal function)
+    // But as this is dynamic, we need to have two call path : one for the closure (normal call), and
+    // one for the lambda (omit first parameter)
+    if (typeFuncBC->flags & TYPEINFO_CLOSURE)
     {
-        auto typeParam = typeFuncBC->parameters[idxCall]->typeInfo;
-        typeParam      = TypeManager::concreteReferenceType(typeParam);
-        for (int j = 0; j < typeParam->numRegisters(); j++)
-        {
-            SWAG_ASSERT(popRAidx >= 0);
-            auto index = pushRAParams[popRAidx--];
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(index), RAX, RDI);
-            BackendX64Inst::emit_Store64_Indirect(pp, offsetStack, RAX, RSP);
-            storeRAXToCDeclParam(pp, typeParam, callerIndex);
-            callerIndex++;
+        auto reg = pushRAParams[popRAidx];
+        BackendX64Inst::emit_Load64_Indirect(pp, regOffset(reg), RAX, RDI);
+        BackendX64Inst::emit_Test64(pp, RAX, RAX);
 
-            offsetStack += 8;
-        }
+        // If not zero, jump to closure call
+        BackendX64Inst::emit_LongJumpOp(pp, BackendX64Inst::JNZ);
+        pp.concat.addU32(0);
+        auto seekPtrClosure = pp.concat.getSeekPtr() - 4;
+        auto seekJmpClosure = pp.concat.totalCount();
+
+        auto savepopRAidx    = popRAidx;
+        auto savecallerIndex = callerIndex;
+        auto saveOffsetStack = offsetStack;
+        savepopRAidx--;
+
+        emitLocalFctCall(pp, typeFuncBC, saveOffsetStack, numCallParams, savepopRAidx, savecallerIndex, pushRAParams, 1);
+
+        // Jump to after closure call
+        BackendX64Inst::emit_LongJumpOp(pp, BackendX64Inst::JUMP);
+        pp.concat.addU32(0);
+        auto seekPtrAfterClosure = pp.concat.getSeekPtr() - 4;
+        auto seekJmpAfterClosure = pp.concat.totalCount();
+
+        // Update jump to closure call
+        *seekPtrClosure = (uint8_t) (pp.concat.totalCount() - seekJmpClosure);
+
+        emitLocalFctCall(pp, typeFuncBC, offsetStack, numCallParams, popRAidx, callerIndex, pushRAParams, 0);
+
+        *seekPtrAfterClosure = (uint8_t) (pp.concat.totalCount() - seekJmpAfterClosure);
     }
-
-    // Emit the rest
-    for (int j = popRAidx; j >= 0; j--)
+    else
     {
-        BackendX64Inst::emit_Load64_Indirect(pp, regOffset(pushRAParams[j]), RAX, RDI);
-        BackendX64Inst::emit_Store64_Indirect(pp, offsetStack, RAX, RSP);
-        storeRAXToCDeclParam(pp, nullptr, callerIndex);
-
-        callerIndex++;
-
-        offsetStack += 8;
+        emitLocalFctCall(pp, typeFuncBC, offsetStack, numCallParams, popRAidx, callerIndex, pushRAParams, 0);
     }
 }
 

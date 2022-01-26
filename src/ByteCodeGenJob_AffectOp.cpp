@@ -117,7 +117,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
             {
                 auto inst = emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[1]);
                 inst->flags |= BCI_IMM_B;
-                inst->b.u32 = sizeof(void*);
+                inst->b.u32 = 2 * sizeof(void*); // Offset to the capture storage (2 pointers from the start)
                 inst->c.u32 = sizeof(void*);
             }
             else
