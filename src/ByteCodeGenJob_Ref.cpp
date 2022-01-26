@@ -454,11 +454,7 @@ bool ByteCodeGenJob::emitMakeLambda(ByteCodeGenContext* context)
     }
 
     freeRegisterRC(context, front);
-
-    if (funcNode->typeInfo->isClosure())
-        reserveLinearRegisterRC2(context, node->resultRegisterRC);
-    else
-        node->resultRegisterRC = reserveRegisterRC(context);
+    node->resultRegisterRC = reserveRegisterRC(context);
 
     auto inst       = emitInstruction(context, ByteCodeOp::MakeLambda, node->resultRegisterRC);
     inst->b.pointer = (uint8_t*) funcNode;

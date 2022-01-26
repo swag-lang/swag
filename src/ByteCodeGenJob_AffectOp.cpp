@@ -64,7 +64,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
 {
     AstNode*  node         = context->node;
     auto      typeInfo     = forcedTypeInfo ? forcedTypeInfo : node->childs.front()->typeInfo;
-    TypeInfo* fromTypeInfo = from ? from->typeInfo : nullptr;
+    TypeInfo* fromTypeInfo = from ? from->typeInfo : typeInfo;
 
     if (typeInfo->kind == TypeInfoKind::Reference)
     {
@@ -104,24 +104,34 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
         return true;
     }
 
-    if (typeInfo->kind == TypeInfoKind::Lambda)
+    if (typeInfo->isLambda())
     {
-        // Lambda pointer
+        SWAG_ASSERT(!fromTypeInfo->isClosure());
         emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1);
+        return true;
+    }
 
-        // For closure, we need to store the relative pointer to the context (8)
-        // For lambda, we store 0 as the second pointer of the storage
-        if (typeInfo->isClosure())
+    if (typeInfo->isClosure() && fromTypeInfo->isLambda())
+    {
+        emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1);
+        emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0)->b.u32 = sizeof(void*);
+        return true;
+    }
+
+    if (typeInfo->isClosure() && fromTypeInfo->isClosure())
+    {
+        SWAG_ASSERT(from);
+        if (from->kind == AstNodeKind::MakePointerLambda)
         {
-            if (r1.countResults == 2) // Indicates that this is a closure
-            {
-                auto inst = emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[1]);
-                inst->flags |= BCI_IMM_B;
-                inst->b.u32 = 2 * sizeof(void*); // Offset to the capture storage (2 pointers from the start)
-                inst->c.u32 = sizeof(void*);
-            }
-            else
-                emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0)->b.u32 = sizeof(void*);
+            emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1);
+            auto inst = emitInstruction(context, ByteCodeOp::SetAtPointer64, r0);
+            inst->flags |= BCI_IMM_B;
+            inst->b.u32 = 2 * sizeof(void*); // Offset to the capture storage (2 pointers from the start)
+            inst->c.u32 = sizeof(void*);
+        }
+        else
+        {
+            emitMemCpy(context, r0, r1, typeInfo->sizeOf);
         }
 
         return true;
@@ -129,7 +139,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
 
     if (typeInfo->kind == TypeInfoKind::Interface)
     {
-        if (fromTypeInfo && fromTypeInfo == g_TypeMgr->typeInfoNull)
+        if (fromTypeInfo == g_TypeMgr->typeInfoNull)
         {
             emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0);
             emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0)->b.u32 = 8;
@@ -145,7 +155,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
 
     if (typeInfo->kind == TypeInfoKind::Slice)
     {
-        if (fromTypeInfo && fromTypeInfo == g_TypeMgr->typeInfoNull)
+        if (fromTypeInfo == g_TypeMgr->typeInfoNull)
         {
             emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0);
             emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0)->b.u32 = 8;
@@ -173,7 +183,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
 
     if (typeInfo->isNative(NativeTypeKind::String))
     {
-        if (fromTypeInfo && fromTypeInfo == g_TypeMgr->typeInfoNull)
+        if (fromTypeInfo == g_TypeMgr->typeInfoNull)
         {
             emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0);
             emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0)->b.u32 = 8;
