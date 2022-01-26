@@ -585,10 +585,16 @@ void TypeInfoFuncAttr::computeWhateverName(Utf8& resName, uint32_t nameType)
 
     // Parameters
     resName += "(";
+    bool first = true;
     for (int i = 0; i < parameters.size(); i++)
     {
-        if (i)
+        // First parameter of a closure is generated, so do not count it in the name
+        if (flags & TYPEINFO_CLOSURE && !i)
+            continue;
+
+        if (!first)
             resName += ", ";
+        first = false;
         resName += parameters[i]->typeInfo->computeWhateverName(nameType);
     }
 
@@ -611,10 +617,22 @@ void TypeInfoFuncAttr::computeWhateverName(Utf8& resName, uint32_t nameType)
 
 bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t isSameFlags)
 {
-    if (parameters.size() != other->parameters.size())
+    // Cannot convert a closure to a lambda
+    if ((flags & TYPEINFO_CLOSURE) && !(other->flags & TYPEINFO_CLOSURE))
         return false;
-    if ((flags & TYPEINFO_CLOSURE) != (other->flags & TYPEINFO_CLOSURE))
-        return false;
+
+    // Can convert a lambda to a closure, but do not take care of closure first parameter
+    // as it is generated
+    if (!(flags & TYPEINFO_CLOSURE) && (other->flags & TYPEINFO_CLOSURE))
+    {
+        if (parameters.size() + 1 != other->parameters.size())
+            return false;
+    }
+    else
+    {
+        if (parameters.size() != other->parameters.size())
+            return false;
+    }
 
     if (genericParameters.size() != other->genericParameters.size())
     {
@@ -670,14 +688,36 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t isSameFlags)
         }
     }
 
+    // Compare capture argument only if not converting a lambda to a closure
+    if ((flags & TYPEINFO_CLOSURE) && (other->flags & TYPEINFO_CLOSURE))
+    {
+        if (capture.size() != other->capture.size())
+            return false;
+        for (int i = 0; i < capture.size(); i++)
+        {
+            if (capture[i]->typeInfo->isNative(NativeTypeKind::Undefined))
+                continue;
+            if (other->capture[i]->typeInfo->isNative(NativeTypeKind::Undefined))
+                continue;
+            auto type1 = TypeManager::concreteReference(capture[i]->typeInfo);
+            auto type2 = TypeManager::concreteReference(other->capture[i]->typeInfo);
+            if (!type1->isSame(type2, isSameFlags))
+                return false;
+        }
+    }
+
+    int firstParam = 0;
+    if (!(flags & TYPEINFO_CLOSURE) && (other->flags & TYPEINFO_CLOSURE))
+        firstParam = 1;
+
     for (int i = 0; i < parameters.size(); i++)
     {
         if (parameters[i]->typeInfo->isNative(NativeTypeKind::Undefined))
             continue;
-        if (other->parameters[i]->typeInfo->isNative(NativeTypeKind::Undefined))
+        if (other->parameters[i + firstParam]->typeInfo->isNative(NativeTypeKind::Undefined))
             continue;
         auto type1 = TypeManager::concreteReference(parameters[i]->typeInfo);
-        auto type2 = TypeManager::concreteReference(other->parameters[i]->typeInfo);
+        auto type2 = TypeManager::concreteReference(other->parameters[i + firstParam]->typeInfo);
         if (!type1->isSame(type2, isSameFlags))
             return false;
     }

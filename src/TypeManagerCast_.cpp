@@ -2718,17 +2718,6 @@ bool TypeManager::castToClosure(SemanticContext* context, TypeInfo* toType, Type
         }
     }
 
-    if (fromType->kind == TypeInfoKind::Lambda && !(fromType->flags & TYPEINFO_CLOSURE))
-    {
-        if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
-        {
-            fromNode->castedTypeInfo = fromNode->typeInfo;
-            fromNode->typeInfo       = toTypeLambda;
-        }
-
-        return true;
-    }
-
     return castError(context, toType, fromType, fromNode, castFlags);
 }
 
