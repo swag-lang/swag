@@ -106,7 +106,24 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
 
     if (typeInfo->kind == TypeInfoKind::Lambda)
     {
+        // Lambda pointer
         emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1);
+
+        // For closure, we need to store the relative pointer to the context (8)
+        // For lambda, we store 0 as the second pointer of the storage
+        if (typeInfo->flags & TYPEINFO_CLOSURE)
+        {
+            if (r1.countResults == 2) // Indicates that this is a closure
+            {
+                auto inst = emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[1]);
+                inst->flags |= BCI_IMM_B;
+                inst->b.u32 = sizeof(void*);
+                inst->c.u32 = sizeof(void*);
+            }
+            else
+                emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0)->b.u32 = sizeof(void*);
+        }
+
         return true;
     }
 

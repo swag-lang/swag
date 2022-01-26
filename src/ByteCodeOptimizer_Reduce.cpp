@@ -294,6 +294,38 @@ void ByteCodeOptimizer::reduceSwap(ByteCodeOptContext* context, ByteCodeInstruct
 
 void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
+    if ((ip[0].op == ByteCodeOp::MakeStackPointer) &&
+        (ip[1].op == ByteCodeOp::SetZeroAtPointer8) &&
+        (ip[0].a.u32 == ip[1].a.u32))
+    {
+        SET_OP(ip + 1, ByteCodeOp::SetZeroStack8);
+        ip[1].a.u32 = ip[1].b.u32 + ip->b.u32;
+    }
+
+    if ((ip[0].op == ByteCodeOp::MakeStackPointer) &&
+        (ip[1].op == ByteCodeOp::SetZeroAtPointer16) &&
+        (ip[0].a.u32 == ip[1].a.u32))
+    {
+        SET_OP(ip + 1, ByteCodeOp::SetZeroStack16);
+        ip[1].a.u32 = ip[1].b.u32 + ip->b.u32;
+    }
+
+    if ((ip[0].op == ByteCodeOp::MakeStackPointer) &&
+        (ip[1].op == ByteCodeOp::SetZeroAtPointer32) &&
+        (ip[0].a.u32 == ip[1].a.u32))
+    {
+        SET_OP(ip + 1, ByteCodeOp::SetZeroStack32);
+        ip[1].a.u32 = ip[1].b.u32 + ip->b.u32;
+    }
+
+    if ((ip[0].op == ByteCodeOp::MakeStackPointer) &&
+        (ip[1].op == ByteCodeOp::SetZeroAtPointer64) &&
+        (ip[0].a.u32 == ip[1].a.u32))
+    {
+        SET_OP(ip + 1, ByteCodeOp::SetZeroStack64);
+        ip[1].a.u32 = ip[1].b.u32 + ip->b.u32;
+    }
+
     if ((ip[0].op == ByteCodeOp::GetFromStackParam64) &&
         (ip[1].op == ByteCodeOp::ClearMaskU32) &&
         (ip[1].b.u32 == 0xFF) &&
