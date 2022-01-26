@@ -309,7 +309,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             inst->b.u64 = resolved->computedValue.storageOffset;
             inst->d.u64 = resolved->computedValue.storageOffset + 8;
         }
-        else if (typeInfo->flags & TYPEINFO_CLOSURE)
+        else if (typeInfo->isClosure())
         {
             auto inst   = emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
             inst->b.u64 = resolved->computedValue.storageOffset;

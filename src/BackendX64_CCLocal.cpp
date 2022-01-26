@@ -133,7 +133,7 @@ void BackendX64::emitLocalCallParameters(X64PerThread& pp, uint32_t sizeParamsSt
     // parameter is the capture context, which does not exits in a normal function)
     // But as this is dynamic, we need to have two call path : one for the closure (normal call), and
     // one for the lambda (omit first parameter)
-    if (typeFuncBC->flags & TYPEINFO_CLOSURE)
+    if (typeFuncBC->isClosure())
     {
         auto reg = pushRAParams[popRAidx];
         BackendX64Inst::emit_Load64_Indirect(pp, regOffset(reg), RAX, RDI);

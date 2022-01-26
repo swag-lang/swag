@@ -718,7 +718,7 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptM
 
     // :ClosureForceFirstParam
     // Closure first parameter is a void* pointer that will point to the context
-    if (typeInfo->flags & TYPEINFO_CLOSURE)
+    if (typeInfo->isClosure())
     {
         auto v = Ast::newVarDecl(sourceFile, "__context", funcNode->parameters, this, AstNodeKind::FuncDeclParam);
         Ast::removeFromParent(v);

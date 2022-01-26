@@ -3457,7 +3457,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
 
             // Cast to lambda
         case TypeInfoKind::Lambda:
-            if (toType->flags & TYPEINFO_CLOSURE)
+            if (toType->isClosure())
                 SWAG_CHECK(castToClosure(context, toType, fromType, fromNode, castFlags));
             else
                 SWAG_CHECK(castToLambda(context, toType, fromType, fromNode, castFlags));

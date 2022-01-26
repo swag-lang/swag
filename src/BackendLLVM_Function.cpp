@@ -3867,7 +3867,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 VectorNative<llvm::Value*> fctParams;
                 getLocalCallParameters(buildParameters, allocR, allocRR, allocT, fctParams, typeFuncBC, pushRAParams, {});
 
-                if (typeFuncBC->flags & TYPEINFO_CLOSURE)
+                if (typeFuncBC->isClosure())
                 {
                     llvm::BasicBlock* blockLambda  = llvm::BasicBlock::Create(context, "", func);
                     llvm::BasicBlock* blockClosure = llvm::BasicBlock::Create(context, "", func);

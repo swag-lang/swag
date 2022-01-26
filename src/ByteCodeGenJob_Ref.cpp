@@ -455,7 +455,7 @@ bool ByteCodeGenJob::emitMakeLambda(ByteCodeGenContext* context)
 
     freeRegisterRC(context, front);
 
-    if (funcNode->typeInfo->flags & TYPEINFO_CLOSURE)
+    if (funcNode->typeInfo->isClosure())
         reserveLinearRegisterRC2(context, node->resultRegisterRC);
     else
         node->resultRegisterRC = reserveRegisterRC(context);

@@ -136,7 +136,7 @@ const char* TypeInfo::getArticleKindName(TypeInfo* typeInfo)
     case TypeInfoKind::FuncAttr:
         return "a function";
     case TypeInfoKind::Lambda:
-        if (typeInfo->flags & TYPEINFO_CLOSURE)
+        if (typeInfo->isClosure())
             return "a closure";
         return "a lambda";
     case TypeInfoKind::TypeListTuple:
@@ -181,7 +181,7 @@ const char* TypeInfo::getNakedKindName(TypeInfo* typeInfo)
     case TypeInfoKind::FuncAttr:
         return "function";
     case TypeInfoKind::Lambda:
-        if (typeInfo->flags & TYPEINFO_CLOSURE)
+        if (typeInfo->isClosure())
             return "closure";
         return "lambda";
     case TypeInfoKind::TypeListTuple:
@@ -300,7 +300,7 @@ bool TypeInfo::isClosure()
 
 bool TypeInfo::isLambda()
 {
-    return (kind == TypeInfoKind::Lambda) && !(flags & TYPEINFO_CLOSURE);
+    return (kind == TypeInfoKind::Lambda) && !(isClosure());
 }
 
 bool TypeInfo::isMethod()
@@ -336,7 +336,7 @@ bool TypeInfo::isSame(TypeInfo* from, uint32_t isSameFlags)
             return false;
         if ((flags & TYPEINFO_AUTO_CAST) != (from->flags & TYPEINFO_AUTO_CAST))
             return false;
-        if ((flags & TYPEINFO_CLOSURE) != (from->flags & TYPEINFO_CLOSURE))
+        if ((isClosure()) != (from->isClosure()))
             return false;
     }
 

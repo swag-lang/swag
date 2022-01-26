@@ -111,7 +111,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
 
         // For closure, we need to store the relative pointer to the context (8)
         // For lambda, we store 0 as the second pointer of the storage
-        if (typeInfo->flags & TYPEINFO_CLOSURE)
+        if (typeInfo->isClosure())
         {
             if (r1.countResults == 2) // Indicates that this is a closure
             {

@@ -571,7 +571,7 @@ void TypeInfoFuncAttr::computeWhateverName(Utf8& resName, uint32_t nameType)
     computeNameGenericParameters(genericParameters, resName, nameType);
 
     // Closure
-    if (flags & TYPEINFO_CLOSURE)
+    if (isClosure())
     {
         resName += "|";
         for (int i = 0; i < capture.size(); i++)
@@ -589,7 +589,7 @@ void TypeInfoFuncAttr::computeWhateverName(Utf8& resName, uint32_t nameType)
     for (int i = 0; i < parameters.size(); i++)
     {
         // First parameter of a closure is generated, so do not count it in the name
-        if (flags & TYPEINFO_CLOSURE && !i)
+        if (isClosure() && !i)
             continue;
 
         if (!first)
@@ -618,12 +618,12 @@ void TypeInfoFuncAttr::computeWhateverName(Utf8& resName, uint32_t nameType)
 bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t isSameFlags)
 {
     // Cannot convert a closure to a lambda
-    if ((flags & TYPEINFO_CLOSURE) && !(other->flags & TYPEINFO_CLOSURE))
+    if ((isClosure()) && !(other->isClosure()))
         return false;
 
     // Can convert a lambda to a closure, but do not take care of closure first parameter
     // as it is generated
-    if (!(flags & TYPEINFO_CLOSURE) && (other->flags & TYPEINFO_CLOSURE))
+    if (!(isClosure()) && (other->isClosure()))
     {
         if (parameters.size() + 1 != other->parameters.size())
             return false;
@@ -689,7 +689,7 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t isSameFlags)
     }
 
     // Compare capture argument only if not converting a lambda to a closure
-    if ((flags & TYPEINFO_CLOSURE) && (other->flags & TYPEINFO_CLOSURE))
+    if ((isClosure()) && (other->isClosure()))
     {
         if (capture.size() != other->capture.size())
             return false;
@@ -707,7 +707,7 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t isSameFlags)
     }
 
     int firstParam = 0;
-    if (!(flags & TYPEINFO_CLOSURE) && (other->flags & TYPEINFO_CLOSURE))
+    if (!(isClosure()) && (other->isClosure()))
         firstParam = 1;
 
     for (int i = 0; i < parameters.size(); i++)

@@ -333,7 +333,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
 
     // :ClosureForceFirstParam
     // Add a first dummy parameter in case of closure
-    if (typeInfoFunc->flags & TYPEINFO_CLOSURE && !(identifier->doneFlags & AST_DONE_CLOSURE_FIRST_PARAM))
+    if (typeInfoFunc->isClosure() && !(identifier->doneFlags & AST_DONE_CLOSURE_FIRST_PARAM))
     {
         auto fcp = Ast::newFuncCallParam(sourceFile, identifier->callParameters);
         Ast::removeFromParent(fcp);
@@ -2404,7 +2404,7 @@ bool SemanticJob::fillMatchContextCallParameters(SemanticContext* context, Symbo
 
     // :ClosureForceFirstParam
     // A closure has always a first parameter of type *void
-    if (overload->typeInfo->flags & TYPEINFO_CLOSURE && node->callParameters)
+    if (overload->typeInfo->isClosure() && node->callParameters)
     {
         context->job->closureFirstParam.kind     = AstNodeKind::FuncCallParam;
         context->job->closureFirstParam.typeInfo = g_TypeMgr->typeInfoPointers[(int) NativeTypeKind::Void];
