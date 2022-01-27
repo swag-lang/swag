@@ -707,7 +707,7 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptM
         while (token.id != TokenId::SymVertical)
         {
             bool byRef = false;
-            if (token.id == TokenId::SymAsterisk)
+            if (token.id == TokenId::SymAmpersand)
             {
                 byRef = true;
                 eatToken();
@@ -715,10 +715,11 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptM
 
             AstNode* idRef = nullptr;
             SWAG_CHECK(doIdentifierRef(capture, &idRef, IDENTIFIER_NO_PARAMS));
-            if (token.id == TokenId::SymVertical)
-                break;
             if (byRef)
                 idRef->childs.back()->specFlags |= AST_SPEC_IDENTIFIER_CAPTURE_REF;
+
+            if (token.id == TokenId::SymVertical)
+                break;
 
             SWAG_CHECK(eatToken(TokenId::SymComma, "in capture block"));
             SWAG_VERIFY(token.id != TokenId::SymVertical, error(token, Err(Err0120)));
@@ -818,6 +819,41 @@ bool SyntaxJob::doLambdaExpression(AstNode* parent, AstNode** result)
     auto lambdaDecl = CastAst<AstFuncDecl>(lambda, AstNodeKind::FuncDecl);
     if (!lambda->ownerFct && lambdaDecl->captureParameters)
         return error(lambdaDecl, Err(Err0179), Hlp(Hlp0017));
+
+    // Create the capture block (a tuple)
+    if (lambdaDecl->captureParameters)
+    {
+        lambdaDecl->captureParameters->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
+
+        Utf8 nameBlock = Fmt("__captureblock%d", g_UniqueID.fetch_add(1));
+        auto block     = Ast::newVarDecl(sourceFile, nameBlock, parent, this);
+        block->flags |= AST_GENERATED;
+        auto exprList         = Ast::newNode<AstExpressionList>(this, AstNodeKind::ExpressionList, sourceFile, block);
+        exprList->semanticFct = SemanticJob::resolveExpressionListTuple;
+        exprList->specFlags |= AST_SPEC_EXPRLIST_FORTUPLE;
+        block->assignment = exprList;
+
+        for (auto c : lambdaDecl->captureParameters->childs)
+        {
+            auto     id = CastAst<AstIdentifier>(c->childs.back(), AstNodeKind::Identifier);
+            AstNode* p  = exprList;
+
+            // Capture by address
+            if (id->specFlags & AST_SPEC_IDENTIFIER_CAPTURE_REF)
+            {
+                p              = Ast::newNode<AstNode>(this, AstNodeKind::MakePointer, sourceFile, exprList);
+                p->semanticFct = SemanticJob::resolveMakePointer;
+            }
+
+            auto idRef = Ast::newIdentifierRef(sourceFile, id->token.text, p, this);
+
+            // Capture by address
+            if (id->specFlags & AST_SPEC_IDENTIFIER_CAPTURE_REF)
+            {
+                forceTakeAddress(idRef);
+            }
+        }
+    }
 
     // Lambda sub function will be resolved by the owner function
     if (lambda->ownerFct)
