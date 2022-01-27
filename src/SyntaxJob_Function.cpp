@@ -696,10 +696,34 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptM
     funcNode->scope    = newScope;
     currentScope->symTable.registerSymbolName(&context, funcNode, SymbolKind::Function);
 
-    // Closure capture
+    // Closure capture arguments
     if (token.id == TokenId::SymLiteralVertical)
     {
         SWAG_CHECK(eatToken());
+
+        auto capture                = Ast::newFuncCallParams(sourceFile, parent, this);
+        funcNode->captureParameters = capture;
+
+        while (token.id != TokenId::SymVertical)
+        {
+            bool byRef = false;
+            if (token.id == TokenId::SymAsterisk)
+            {
+                byRef = true;
+                eatToken();
+            }
+
+            AstNode* idRef = nullptr;
+            SWAG_CHECK(doIdentifierRef(capture, &idRef, IDENTIFIER_NO_PARAMS));
+            if (token.id == TokenId::SymVertical)
+                break;
+            if (byRef)
+                idRef->childs.back()->specFlags |= AST_SPEC_IDENTIFIER_CAPTURE_REF;
+
+            SWAG_CHECK(eatToken(TokenId::SymComma, "in capture block"));
+            SWAG_VERIFY(token.id != TokenId::SymVertical, error(token, Err(Err0120)));
+        }
+
         SWAG_CHECK(eatToken(TokenId::SymVertical));
         SWAG_VERIFY(token.id == TokenId::SymLeftParen, error(token, Err(Err0456)));
         typeInfo->flags |= TYPEINFO_CLOSURE;
@@ -783,7 +807,8 @@ bool SyntaxJob::doLambdaExpression(AstNode* parent, AstNode** result)
     if (parent->kind == AstNodeKind::AffectOp && parent->token.id == TokenId::SymEqual)
         acceptMissingType = true;
 
-    AstNode* lambda = nullptr;
+    AstNode* lambda  = nullptr;
+    AstNode* capture = nullptr;
 
     {
         ScopedBreakable sb(this, nullptr);

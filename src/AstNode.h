@@ -380,6 +380,7 @@ struct AstFuncDecl : public AstNode
     Mutex                  funcMutex;
     Token                  tokenName;
 
+    AstNode*              captureParameters      = nullptr;
     AstNode*              parameters            = nullptr;
     AstNode*              genericParameters     = nullptr;
     AstNode*              returnType            = nullptr;

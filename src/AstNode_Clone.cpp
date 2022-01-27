@@ -422,7 +422,9 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
     auto functionScope    = Ast::newScope(newNode, newNode->token.text, ScopeKind::Function, context.parentScope ? context.parentScope : ownerScope);
     newNode->scope        = functionScope;
 
-    cloneContext.parentScope   = functionScope;
+    cloneContext.parentScope = functionScope;
+
+    newNode->captureParameters  = captureParameters ? captureParameters->clone(cloneContext) : nullptr;
     newNode->genericParameters = genericParameters ? genericParameters->clone(cloneContext) : nullptr;
     newNode->parameters        = parameters ? parameters->clone(cloneContext) : nullptr;
     newNode->selectIf          = selectIf ? selectIf->clone(cloneContext) : nullptr;
