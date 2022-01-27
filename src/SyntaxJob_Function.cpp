@@ -699,10 +699,11 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptM
     // Closure capture arguments
     if (token.id == TokenId::SymLiteralVertical)
     {
-        SWAG_CHECK(eatToken());
-
-        auto capture                = Ast::newFuncCallParams(sourceFile, parent, this);
+        auto capture = Ast::newFuncCallParams(sourceFile, funcNode, this);
+        capture->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
+        capture->semanticFct        = SemanticJob::resolveCaptureFuncCallParams;
         funcNode->captureParameters = capture;
+        SWAG_CHECK(eatToken());
 
         while (token.id != TokenId::SymVertical)
         {
@@ -725,6 +726,7 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptM
             SWAG_VERIFY(token.id != TokenId::SymVertical, error(token, Err(Err0120)));
         }
 
+        capture->token.endLocation = token.endLocation;
         SWAG_CHECK(eatToken(TokenId::SymVertical));
         SWAG_VERIFY(token.id == TokenId::SymLeftParen, error(token, Err(Err0456)));
         typeInfo->flags |= TYPEINFO_CLOSURE;
@@ -821,17 +823,19 @@ bool SyntaxJob::doLambdaExpression(AstNode* parent, AstNode** result)
         return error(lambdaDecl, Err(Err0179), Hlp(Hlp0017));
 
     // Create the capture block (a tuple)
+    Utf8 nameCaptureBlock;
     if (lambdaDecl->captureParameters)
     {
         lambdaDecl->captureParameters->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
 
-        Utf8 nameBlock = Fmt("__captureblock%d", g_UniqueID.fetch_add(1));
-        auto block     = Ast::newVarDecl(sourceFile, nameBlock, parent, this);
+        nameCaptureBlock = Fmt("__captureblock%d", g_UniqueID.fetch_add(1));
+        auto block       = Ast::newVarDecl(sourceFile, nameCaptureBlock, parent, this);
         block->flags |= AST_GENERATED;
         auto exprList         = Ast::newNode<AstExpressionList>(this, AstNodeKind::ExpressionList, sourceFile, block);
         exprList->semanticFct = SemanticJob::resolveExpressionListTuple;
         exprList->specFlags |= AST_SPEC_EXPRLIST_FORTUPLE;
         block->assignment = exprList;
+        SemanticJob::setVarDeclResolve(block);
 
         for (auto c : lambdaDecl->captureParameters->childs)
         {
@@ -870,6 +874,14 @@ bool SyntaxJob::doLambdaExpression(AstNode* parent, AstNode** result)
     AstNode* identifierRef = Ast::newIdentifierRef(sourceFile, lambda->token.text, exprNode, this);
     identifierRef->inheritTokenLocation(lambda);
     forceTakeAddress(identifierRef);
+
+    // Reference to the captured block
+    if (!nameCaptureBlock.empty())
+    {
+        identifierRef = Ast::newIdentifierRef(sourceFile, nameCaptureBlock, exprNode, this);
+        identifierRef->childs.back()->inheritTokenLocation(lambdaDecl->captureParameters);
+        forceTakeAddress(identifierRef);
+    }
 
     // :DeduceLambdaType
     if (exprNode->parent->kind == AstNodeKind::AffectOp && acceptMissingType)

@@ -76,6 +76,7 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
     node->resolvedSymbolName = child->resolvedSymbolName;
 
     // Lambda
+    //////////////////////////////////////
     if (child->resolvedSymbolName->kind == SymbolKind::Function)
     {
         auto funcNode = child->resolvedSymbolOverload->node;
@@ -86,59 +87,68 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
         lambdaType->sizeOf = sizeof(void*);
         node->typeInfo     = lambdaType;
         node->byteCodeFct  = ByteCodeGenJob::emitMakeLambda;
+
+        // :CaptureBlock
+        // Block capture
+        if (node->childs.size() == 2)
+        {
+            auto       typeBlock = CastTypeInfo<TypeInfoStruct>(node->childs.back()->typeInfo, TypeInfoKind::Struct);
+            const auto MaxSize   = SWAG_LIMIT_CLOSURE_SIZEOF - 2 * sizeof(void*);
+            SWAG_VERIFY(typeBlock->sizeOf <= MaxSize, context->report(node->childs.back(), Fmt(Err(Err0882), typeBlock->sizeOf, MaxSize)));
+        }
+
+        return true;
     }
 
     // Expression
-    else
+    //////////////////////////////////////
+    node->byteCodeFct = ByteCodeGenJob::emitMakePointer;
+
+    // A new pointer
+    TypeInfoPointer* ptrType = allocType<TypeInfoPointer>();
+
+    // If this is a reference (struct as parameter), then pointer is just a const pointer
+    // to the original type, and we do not have to generate specific bytecode.
+    if (typeInfo->kind == TypeInfoKind::Reference)
     {
-        node->byteCodeFct = ByteCodeGenJob::emitMakePointer;
-
-        // A new pointer
-        TypeInfoPointer* ptrType = allocType<TypeInfoPointer>();
-
-        // If this is a reference (struct as parameter), then pointer is just a const pointer
-        // to the original type, and we do not have to generate specific bytecode.
-        if (typeInfo->kind == TypeInfoKind::Reference)
-        {
-            typeInfo = TypeManager::concreteReference(typeInfo);
-            child->semFlags |= AST_SEM_FORCE_NO_TAKE_ADDRESS;
-            child->childs.back()->semFlags |= AST_SEM_FORCE_NO_TAKE_ADDRESS;
-            node->byteCodeFct = ByteCodeGenJob::emitPassThrough;
-        }
-
-        // If this is an array, then this is legit, the pointer will address the first
-        // element : need to find it's type
-        else if (typeInfo->kind == TypeInfoKind::Array)
-        {
-            while (typeInfo->kind == TypeInfoKind::Array)
-            {
-                auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-                typeInfo       = typeArray->pointedType;
-            }
-        }
-
-        ptrType->pointedType = typeInfo;
-        ptrType->sizeOf      = sizeof(void*);
-        ptrType->computeName();
-
-        // Type is constant if we take address of a readonly variable
-        if (child->resolvedSymbolOverload)
-        {
-            auto typeResolved = TypeManager::concreteType(child->resolvedSymbolOverload->typeInfo, CONCRETE_ALIAS);
-
-            if ((child->resolvedSymbolOverload->flags & OVERLOAD_CONST_ASSIGN) && (typeResolved->kind != TypeInfoKind::Array))
-                ptrType->setConst();
-
-            if (typeResolved->isNative(NativeTypeKind::String))
-                ptrType->setConst();
-            else if (typeResolved->isConst() && typeResolved->kind == TypeInfoKind::Slice)
-                ptrType->setConst();
-            else if (node->flags & AST_IS_CONST)
-                ptrType->setConst();
-        }
-
-        node->typeInfo = ptrType;
+        typeInfo = TypeManager::concreteReference(typeInfo);
+        child->semFlags |= AST_SEM_FORCE_NO_TAKE_ADDRESS;
+        child->childs.back()->semFlags |= AST_SEM_FORCE_NO_TAKE_ADDRESS;
+        node->byteCodeFct = ByteCodeGenJob::emitPassThrough;
     }
+
+    // If this is an array, then this is legit, the pointer will address the first
+    // element : need to find it's type
+    else if (typeInfo->kind == TypeInfoKind::Array)
+    {
+        while (typeInfo->kind == TypeInfoKind::Array)
+        {
+            auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+            typeInfo       = typeArray->pointedType;
+        }
+    }
+
+    ptrType->pointedType = typeInfo;
+    ptrType->sizeOf      = sizeof(void*);
+    ptrType->computeName();
+
+    // Type is constant if we take address of a readonly variable
+    if (child->resolvedSymbolOverload)
+    {
+        auto typeResolved = TypeManager::concreteType(child->resolvedSymbolOverload->typeInfo, CONCRETE_ALIAS);
+
+        if ((child->resolvedSymbolOverload->flags & OVERLOAD_CONST_ASSIGN) && (typeResolved->kind != TypeInfoKind::Array))
+            ptrType->setConst();
+
+        if (typeResolved->isNative(NativeTypeKind::String))
+            ptrType->setConst();
+        else if (typeResolved->isConst() && typeResolved->kind == TypeInfoKind::Slice)
+            ptrType->setConst();
+        else if (node->flags & AST_IS_CONST)
+            ptrType->setConst();
+    }
+
+    node->typeInfo = ptrType;
 
     return true;
 }

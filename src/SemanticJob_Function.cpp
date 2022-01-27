@@ -781,6 +781,32 @@ void SemanticJob::resolveSubDecls(JobContext* context, AstFuncDecl* funcNode)
     }
 }
 
+bool SemanticJob::resolveCaptureFuncCallParams(SemanticContext* context)
+{
+    auto node = context->node;
+    node->inheritOrFlag(AST_IS_GENERIC);
+    node->inheritAndFlag1(AST_CONST_EXPR);
+
+    /*for (auto c : node->childs)
+    {
+        auto typeField = c->typeInfo;
+        if (typeField->kind == TypeInfoKind::Pointer)
+            continue;
+        if (typeField->kind == TypeInfoKind::Native)
+        {
+            switch (typeField->nativeType)
+            {
+            case NativeTypeKind::Bool:
+                continue;
+            }
+        }
+
+        return context->report(c, "toto");
+    }*/
+
+    return true;
+}
+
 bool SemanticJob::resolveFuncCallParams(SemanticContext* context)
 {
     auto node = context->node;

@@ -456,6 +456,13 @@ bool ByteCodeGenJob::emitMakeLambda(ByteCodeGenContext* context)
     freeRegisterRC(context, front);
     node->resultRegisterRC = reserveRegisterRC(context);
 
+    // :CaptureBlock
+    // Block capture
+    if (node->childs.size() == 2)
+    {
+        freeRegisterRC(context, node->childs.back());
+    }
+
     auto inst       = emitInstruction(context, ByteCodeOp::MakeLambda, node->resultRegisterRC);
     inst->b.pointer = (uint8_t*) funcNode;
     SWAG_ASSERT(funcNode->extension);
