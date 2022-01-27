@@ -1,4 +1,3 @@
-//#[Swag.PrintBc]
 #test
 {
     a, b := 666

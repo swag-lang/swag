@@ -807,14 +807,17 @@ bool SyntaxJob::doLambdaExpression(AstNode* parent, AstNode** result)
     if (parent->kind == AstNodeKind::AffectOp && parent->token.id == TokenId::SymEqual)
         acceptMissingType = true;
 
-    AstNode* lambda  = nullptr;
-    AstNode* capture = nullptr;
+    AstNode* lambda = nullptr;
 
     {
         ScopedBreakable sb(this, nullptr);
         SWAG_CHECK(doLambdaFuncDecl(currentFct, &lambda, acceptMissingType));
         lambda->flags |= AST_IS_LAMBDA_EXPRESSION;
     }
+
+    auto lambdaDecl = CastAst<AstFuncDecl>(lambda, AstNodeKind::FuncDecl);
+    if (!lambda->ownerFct && lambdaDecl->captureParameters)
+        return error(lambdaDecl, Err(Err0179), Hlp(Hlp0017));
 
     // Lambda sub function will be resolved by the owner function
     if (lambda->ownerFct)
