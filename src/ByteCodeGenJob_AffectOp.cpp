@@ -123,6 +123,8 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
         SWAG_ASSERT(from);
         if (from->kind == AstNodeKind::MakePointerLambda)
         {
+            // Copy to r0 + 16 of r1[1] of sizeof(closure) - 2 * sizeof(void*)
+
             emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1);
             auto inst = emitInstruction(context, ByteCodeOp::SetAtPointer64, r0);
             inst->flags |= BCI_IMM_B;
