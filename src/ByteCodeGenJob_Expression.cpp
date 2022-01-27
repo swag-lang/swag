@@ -175,7 +175,7 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
             return true;
     }
 
-    if (node->specFlags & AST_SPEC_EXPRLIST_FORTUPLE)
+    if (node->specFlags & AST_SPEC_EXPRLIST_FOR_TUPLE)
         node->resultRegisterRC = reserveRegisterRC(context);
     else
         reserveLinearRegisterRC2(context, node->resultRegisterRC);
@@ -243,7 +243,7 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
 
         // Reference to the stack, and store the number of element in a register
         emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC[0])->b.u64 = listNode->computedValue->storageOffset;
-        if (!(node->specFlags & AST_SPEC_EXPRLIST_FORTUPLE))
+        if (!(node->specFlags & AST_SPEC_EXPRLIST_FOR_TUPLE))
             emitInstruction(context, ByteCodeOp::SetImmediate64, node->resultRegisterRC[1])->b.u64 = listNode->childs.size();
     }
     else
@@ -260,7 +260,7 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
         }
 
         emitMakeSegPointer(context, node->computedValue->storageSegment, node->computedValue->storageOffset, node->resultRegisterRC[0]);
-        if (!(node->specFlags & AST_SPEC_EXPRLIST_FORTUPLE))
+        if (!(node->specFlags & AST_SPEC_EXPRLIST_FOR_TUPLE))
             emitInstruction(context, ByteCodeOp::SetImmediate64, node->resultRegisterRC[1])->b.u64 = typeList->subTypes.size();
     }
 

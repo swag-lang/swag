@@ -273,7 +273,7 @@ struct SemanticJob : public Job
     static bool         evaluateConstExpression(SemanticContext* context, AstNode* node1, AstNode* node2);
     static bool         evaluateConstExpression(SemanticContext* context, AstNode* node1, AstNode* node2, AstNode* node3);
     static bool         waitForStructUserOps(SemanticContext* context, AstNode* node);
-    static AstNode*     convertTypeToTypeExpression(SemanticContext* context, AstNode* parent, AstNode* assignment, TypeInfo* childType);
+    static AstNode*     convertTypeToTypeExpression(SemanticContext* context, AstNode* parent, AstNode* assignment, TypeInfo* childType, bool raiseErrors = true);
     static bool         convertLiteralTupleToStructDecl(SemanticContext* context, AstNode* assignment, AstStruct** result);
     static bool         convertLiteralTupleToStructDecl(SemanticContext* context, AstNode* parent, AstNode* assignment, AstNode** result);
     static bool         collectAssignment(SemanticContext* context, DataSegment* storageSegment, uint32_t& storageOffset, AstVarDecl* node);

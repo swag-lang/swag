@@ -61,7 +61,7 @@ bool SemanticJob::resolveTupleUnpackBefore(SemanticContext* context)
     return true;
 }
 
-AstNode* SemanticJob::convertTypeToTypeExpression(SemanticContext* context, AstNode* parent, AstNode* assignment, TypeInfo* childType)
+AstNode* SemanticJob::convertTypeToTypeExpression(SemanticContext* context, AstNode* parent, AstNode* assignment, TypeInfo* childType, bool raiseErrors)
 {
     auto sourceFile = context->sourceFile;
     auto orgType    = childType;
@@ -80,7 +80,7 @@ AstNode* SemanticJob::convertTypeToTypeExpression(SemanticContext* context, AstN
         typeExprLambda->parameters = params;
         for (auto p : typeLambda->parameters)
         {
-            auto typeParam = convertTypeToTypeExpression(context, params, assignment, p->typeInfo);
+            auto typeParam = convertTypeToTypeExpression(context, params, assignment, p->typeInfo, raiseErrors);
             if (!typeParam)
                 return nullptr;
         }
@@ -88,7 +88,7 @@ AstNode* SemanticJob::convertTypeToTypeExpression(SemanticContext* context, AstN
         // Return type
         if (typeLambda->returnType && !typeLambda->returnType->isNative(NativeTypeKind::Void))
         {
-            typeExprLambda->returnType = convertTypeToTypeExpression(context, typeExprLambda, assignment, typeLambda->returnType);
+            typeExprLambda->returnType = convertTypeToTypeExpression(context, typeExprLambda, assignment, typeLambda->returnType, raiseErrors);
             if (!typeExprLambda->returnType)
                 return nullptr;
         }
@@ -186,7 +186,8 @@ AstNode* SemanticJob::convertTypeToTypeExpression(SemanticContext* context, AstN
     }
 
     default:
-        context->report(assignment, Fmt(Err(Err0294), orgType->getDisplayNameC()).c_str());
+        if (raiseErrors)
+            context->report(assignment, Fmt(Err(Err0294), orgType->getDisplayNameC()).c_str());
         return nullptr;
     }
 
@@ -241,7 +242,16 @@ bool SemanticJob::convertLiteralTupleToStructDecl(SemanticContext* context, AstN
             paramNode->flags |= AST_AUTO_NAME;
         }
 
-        paramNode->type = convertTypeToTypeExpression(context, paramNode, subAffect, childType);
+        paramNode->type = convertTypeToTypeExpression(context, paramNode, subAffect, childType, !(assignment->specFlags & AST_SPEC_EXPRLIST_FOR_CAPTURE));
+
+        // Special case for tuple capture. If type is null (type not compatible with tuple), put undefined,
+        // as we will catch the error later
+        if (!paramNode->type && assignment->specFlags & AST_SPEC_EXPRLIST_FOR_CAPTURE)
+        {
+            static AstNode fakeNode;
+            fakeNode.typeInfo = g_TypeMgr->typeInfoBool;
+            paramNode->type   = &fakeNode;
+        }
 
         // This can avoid some initialization before assignment, because everything will be covered
         // as this is a tuple
@@ -507,7 +517,7 @@ bool SemanticJob::resolveVarDeclAfterAssign(SemanticContext* context)
         return true;
 
     auto exprList = CastAst<AstExpressionList>(assign, AstNodeKind::ExpressionList);
-    if (!(exprList->specFlags & AST_SPEC_EXPRLIST_FORTUPLE))
+    if (!(exprList->specFlags & AST_SPEC_EXPRLIST_FOR_TUPLE))
         return true;
 
     // If there's an assignment, but no type, then we need to deduce/generate the type with

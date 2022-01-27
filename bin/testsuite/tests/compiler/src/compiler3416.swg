@@ -1,0 +1,8 @@
+#global testerror
+//#[Swag.PrintBc, Swag.Optim("", false)]
+#test
+{
+    var a: [100] s32
+    var v: closure(s32) = @|a|(x: s32) { }
+    //v(5)
+}

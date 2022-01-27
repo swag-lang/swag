@@ -1112,7 +1112,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     case AstNodeKind::ExpressionList:
     {
         auto exprNode = CastAst<AstExpressionList>(node, AstNodeKind::ExpressionList);
-        if (exprNode->specFlags & AST_SPEC_EXPRLIST_FORTUPLE)
+        if (exprNode->specFlags & AST_SPEC_EXPRLIST_FOR_TUPLE)
             concat.addString2("@{");
         else
             concat.addString2("@[");
@@ -1127,7 +1127,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
             SWAG_CHECK(outputNode(context, concat, child));
         }
 
-        if (exprNode->specFlags & AST_SPEC_EXPRLIST_FORTUPLE)
+        if (exprNode->specFlags & AST_SPEC_EXPRLIST_FOR_TUPLE)
             concat.addChar('}');
         else
             concat.addChar(']');

@@ -699,10 +699,13 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptM
     // Closure capture arguments
     if (token.id == TokenId::SymLiteralVertical)
     {
+        // captureParameters will be solved with capture block, that's why we do NOT put it as a child
+        // of the function.
         auto capture = Ast::newFuncCallParams(sourceFile, funcNode, this);
-        capture->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
+        Ast::removeFromParent(capture);
         capture->semanticFct        = SemanticJob::resolveCaptureFuncCallParams;
         funcNode->captureParameters = capture;
+
         SWAG_CHECK(eatToken());
 
         while (token.id != TokenId::SymVertical)
@@ -828,12 +831,15 @@ bool SyntaxJob::doLambdaExpression(AstNode* parent, AstNode** result)
     {
         lambdaDecl->captureParameters->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
 
+        // To solve captured parameters
+        Ast::addChildBack(parent, lambdaDecl->captureParameters);
+
         nameCaptureBlock = Fmt("__captureblock%d", g_UniqueID.fetch_add(1));
         auto block       = Ast::newVarDecl(sourceFile, nameCaptureBlock, parent, this);
         block->flags |= AST_GENERATED;
         auto exprList         = Ast::newNode<AstExpressionList>(this, AstNodeKind::ExpressionList, sourceFile, block);
         exprList->semanticFct = SemanticJob::resolveExpressionListTuple;
-        exprList->specFlags |= AST_SPEC_EXPRLIST_FORTUPLE;
+        exprList->specFlags |= AST_SPEC_EXPRLIST_FOR_TUPLE | AST_SPEC_EXPRLIST_FOR_CAPTURE;
         block->assignment = exprList;
         SemanticJob::setVarDeclResolve(block);
 

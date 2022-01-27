@@ -964,7 +964,7 @@ bool SyntaxJob::doExpressionListTuple(AstNode* parent, AstNode** result)
 {
     auto initNode         = Ast::newNode<AstExpressionList>(this, AstNodeKind::ExpressionList, sourceFile, parent);
     initNode->semanticFct = SemanticJob::resolveExpressionListTuple;
-    initNode->specFlags |= AST_SPEC_EXPRLIST_FORTUPLE;
+    initNode->specFlags |= AST_SPEC_EXPRLIST_FOR_TUPLE;
     SWAG_CHECK(eatToken());
 
     if (result)

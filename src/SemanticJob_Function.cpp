@@ -30,7 +30,7 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
             continue;
 
         auto nodeExpr = CastAst<AstExpressionList>(nodeParam->assignment, AstNodeKind::ExpressionList);
-        if (!(nodeExpr->specFlags & AST_SPEC_EXPRLIST_FORTUPLE))
+        if (!(nodeExpr->specFlags & AST_SPEC_EXPRLIST_FOR_TUPLE))
             continue;
 
         if (!nodeParam->type)
@@ -787,22 +787,16 @@ bool SemanticJob::resolveCaptureFuncCallParams(SemanticContext* context)
     node->inheritOrFlag(AST_IS_GENERIC);
     node->inheritAndFlag1(AST_CONST_EXPR);
 
-    /*for (auto c : node->childs)
+    // Check capture types
+    for (auto c : node->childs)
     {
         auto typeField = c->typeInfo;
         if (typeField->kind == TypeInfoKind::Pointer)
             continue;
         if (typeField->kind == TypeInfoKind::Native)
-        {
-            switch (typeField->nativeType)
-            {
-            case NativeTypeKind::Bool:
-                continue;
-            }
-        }
-
-        return context->report(c, "toto");
-    }*/
+            continue;
+        return context->report(Hint::isType(c->typeInfo), {c, Fmt(Err(Err0887), typeField->getDisplayNameC())});
+    }
 
     return true;
 }
