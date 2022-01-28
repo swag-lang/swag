@@ -667,7 +667,10 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         uint32_t storageOffset = 0;
         for (auto c : funcNode->captureParameters->childs)
         {
-            auto overload = funcNode->scope->symTable.addSymbolTypeInfo(context, c, c->typeInfo, SymbolKind::Variable, nullptr, OVERLOAD_VAR_CAPTURE);
+            Utf8 name = c->token.text;
+            if (c->kind == AstNodeKind::MakePointer)
+                name = c->childs.front()->token.text;
+            auto overload = funcNode->scope->symTable.addSymbolTypeInfo(context, c, c->typeInfo, SymbolKind::Variable, nullptr, OVERLOAD_VAR_CAPTURE, nullptr, 0, nullptr, &name);
             if (!overload)
                 return false;
             overload->computedValue.storageOffset = storageOffset;

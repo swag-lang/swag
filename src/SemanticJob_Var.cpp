@@ -527,7 +527,7 @@ bool SemanticJob::resolveVarDeclAfterAssign(SemanticContext* context)
         return true;
 
     // If there's an assignment, but no type, then we need to deduce/generate the type with
-    // the assignment, then doalu the semmantic on that type
+    // the assignment, then do the semmantic on that type
     if (!varDecl->type)
     {
         SWAG_CHECK(convertLiteralTupleToStructDecl(context, varDecl, assign, &varDecl->type));

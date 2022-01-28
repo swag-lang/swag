@@ -710,17 +710,21 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptM
 
         while (token.id != TokenId::SymVertical)
         {
-            bool byRef = false;
+            auto parentId = (AstNode*) capture;
+            auto byRef    = false;
             if (token.id == TokenId::SymAmpersand)
             {
-                byRef = true;
+                parentId              = Ast::newNode<AstNode>(this, AstNodeKind::MakePointer, sourceFile, capture);
+                parentId->semanticFct = SemanticJob::resolveMakePointer;
                 eatToken();
+                byRef = true;
             }
 
             AstNode* idRef = nullptr;
-            SWAG_CHECK(doIdentifierRef(capture, &idRef, IDENTIFIER_NO_PARAMS));
+            SWAG_CHECK(doIdentifierRef(parentId, &idRef, IDENTIFIER_NO_PARAMS));
+
             if (byRef)
-                idRef->childs.back()->specFlags |= AST_SPEC_IDENTIFIER_CAPTURE_REF;
+                forceTakeAddress(idRef);
 
             if (token.id == TokenId::SymVertical)
                 break;
@@ -852,25 +856,7 @@ bool SyntaxJob::doLambdaExpression(AstNode* parent, AstNode** result)
 
         for (auto c : lambdaDecl->captureParameters->childs)
         {
-            auto     id = CastAst<AstIdentifier>(c->childs.back(), AstNodeKind::Identifier);
-            AstNode* p  = exprList;
-
-            // Capture by address
-            if (id->specFlags & AST_SPEC_IDENTIFIER_CAPTURE_REF)
-            {
-                p              = Ast::newNode<AstNode>(this, AstNodeKind::MakePointer, sourceFile, exprList);
-                p->semanticFct = SemanticJob::resolveMakePointer;
-            }
-
-            auto idRef = Ast::newIdentifierRef(sourceFile, id->token.text, p, this);
-            idRef->childs.back()->inheritTokenLocation(c);
-            idRef->inheritTokenLocation(c);
-
-            // Capture by address
-            if (id->specFlags & AST_SPEC_IDENTIFIER_CAPTURE_REF)
-            {
-                forceTakeAddress(idRef);
-            }
+            Ast::clone(c, exprList);
         }
     }
 
