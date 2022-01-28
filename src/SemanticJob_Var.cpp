@@ -240,6 +240,8 @@ bool SemanticJob::convertLiteralTupleToStructDecl(SemanticContext* context, AstN
         }
 
         auto paramNode = Ast::newVarDecl(sourceFile, varName, contentNode);
+        paramNode->inheritTokenLocation(subAffect);
+
         if (autoName)
         {
             typeParam->flags |= TYPEINFO_AUTO_NAME;

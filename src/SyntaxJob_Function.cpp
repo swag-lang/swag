@@ -863,6 +863,8 @@ bool SyntaxJob::doLambdaExpression(AstNode* parent, AstNode** result)
             }
 
             auto idRef = Ast::newIdentifierRef(sourceFile, id->token.text, p, this);
+            idRef->childs.back()->inheritTokenLocation(c);
+            idRef->inheritTokenLocation(c);
 
             // Capture by address
             if (id->specFlags & AST_SPEC_IDENTIFIER_CAPTURE_REF)
