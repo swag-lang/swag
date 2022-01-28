@@ -750,7 +750,9 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptM
     // Closure first parameter is a void* pointer that will point to the context
     if (typeInfo->isClosure())
     {
-        auto v = Ast::newVarDecl(sourceFile, "__context", funcNode->parameters, this, AstNodeKind::FuncDeclParam);
+        Scoped    scoped(this, newScope);
+        ScopedFct scopedFct(this, funcNode);
+        auto      v = Ast::newVarDecl(sourceFile, "__captureCxt", funcNode->parameters, this, AstNodeKind::FuncDeclParam);
         Ast::removeFromParent(v);
         Ast::addChildFront(funcNode->parameters, v);
         v->type           = Ast::newTypeExpression(sourceFile, v, this);

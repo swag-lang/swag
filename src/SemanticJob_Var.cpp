@@ -201,6 +201,10 @@ bool SemanticJob::convertLiteralTupleToStructDecl(SemanticContext* context, AstN
     *result               = structNode;
     structNode->flags |= AST_GENERATED;
 
+    // A capture block is packed
+    if (assignment->specFlags & AST_SPEC_EXPRLIST_FOR_CAPTURE)
+        structNode->packing = 1;
+
     auto contentNode = Ast::newNode(sourceFile, AstNodeKind::TupleContent, structNode);
     contentNode->allocateExtension();
     contentNode->extension->semanticBeforeFct = SemanticJob::preResolveStructContent;

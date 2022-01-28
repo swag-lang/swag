@@ -123,13 +123,15 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
         SWAG_ASSERT(from);
         if (from->kind == AstNodeKind::MakePointerLambda)
         {
-            // Copy to r0 + 16 of r1[1] of sizeof(closure) - 2 * sizeof(void*)
-
             emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1);
             auto inst = emitInstruction(context, ByteCodeOp::SetAtPointer64, r0);
             inst->flags |= BCI_IMM_B;
             inst->b.u32 = 2 * sizeof(void*); // Offset to the capture storage (2 pointers from the start)
             inst->c.u32 = sizeof(void*);
+
+            // Copy closure capture buffer
+            emitInstruction(context, ByteCodeOp::Add64byVB64, r0)->b.u64 = 2 * sizeof(void*);
+            emitMemCpy(context, r0, r1[1], SWAG_LIMIT_CLOSURE_SIZEOF - 2 * sizeof(void*));
         }
         else
         {
