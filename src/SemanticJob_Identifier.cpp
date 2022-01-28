@@ -2848,6 +2848,22 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
             }
         }
 
+        // Closure variable has a priority over a "out of scope" one
+        if (curMatch->symbolOverload->symbol->kind == SymbolKind::Variable && !(curMatch->symbolOverload->flags & OVERLOAD_VAR_CAPTURE))
+        {
+            for (int j = 0; j < countMatches; j++)
+            {
+                if (matches[j]->symbolOverload->symbol->kind == SymbolKind::Variable && (matches[j]->symbolOverload->flags & OVERLOAD_VAR_CAPTURE))
+                {
+                    if (curMatch->symbolOverload->node->ownerScope->isParentOf(matches[j]->symbolOverload->node->ownerScope))
+                    {
+                        curMatch->remove = true;
+                        break;
+                    }
+                }
+            }
+        }
+
         // If we didn't match with ufcs, then priority to a match that do not start with 'self'
         if (!curMatch->ufcs && over->typeInfo->kind == TypeInfoKind::FuncAttr)
         {

@@ -50,6 +50,31 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             return true;
     }
 
+    // A captured variable
+    if (resolved->flags & OVERLOAD_VAR_CAPTURE)
+    {
+        node->resultRegisterRC = reserveRegisterRC(context);
+
+        // Get capture block pointer (first parameter)
+        auto inst   = emitInstruction(context, ByteCodeOp::GetFromStackParam64, node->resultRegisterRC);
+        inst->b.u64 = node->ownerFct->parameters->childs.front()->resolvedSymbolOverload->computedValue.storageOffset;
+        inst->c.u64 = 0;
+
+        if (typeInfo->numRegisters() == 2)
+        {
+            reserveLinearRegisterRC2(context, node->resultRegisterRC);
+            emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC[0]);
+            emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC[0])->c.u64 = 8;
+            return true;
+        }
+
+        if (typeInfo->numRegisters() == 1)
+        {
+            emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC[0]);
+            return true;
+        }
+    }
+
     // Function parameter : it's a register on the stack
     if (resolved->flags & OVERLOAD_VAR_FUNC_PARAM)
     {
