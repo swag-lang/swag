@@ -299,9 +299,7 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result, bool acc
 
     if (token.id != TokenId::SymRightParen || isMethod || isConstMethod)
     {
-        auto allParams         = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclParams, sourceFile, parent);
-        allParams->semanticFct = SemanticJob::resolveFuncDeclParams;
-        allParams->flags |= AST_NO_BYTECODE_CHILDS; // We do not want default assignations to generate bytecode
+        auto allParams = Ast::newFuncDeclParams(sourceFile, parent, this);
         if (result)
             *result = allParams;
 
@@ -756,7 +754,10 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptM
     {
         Scoped    scoped(this, newScope);
         ScopedFct scopedFct(this, funcNode);
-        auto      v = Ast::newVarDecl(sourceFile, "__captureCxt", funcNode->parameters, this, AstNodeKind::FuncDeclParam);
+
+        if (!funcNode->parameters)
+            funcNode->parameters = Ast::newFuncDeclParams(sourceFile, funcNode, this);
+        auto v = Ast::newVarDecl(sourceFile, "__captureCxt", funcNode->parameters, this, AstNodeKind::FuncDeclParam);
         Ast::removeFromParent(v);
         Ast::addChildFront(funcNode->parameters, v);
         v->type           = Ast::newTypeExpression(sourceFile, v, this);

@@ -618,12 +618,12 @@ void TypeInfoFuncAttr::computeWhateverName(Utf8& resName, uint32_t nameType)
 bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint32_t isSameFlags)
 {
     // Cannot convert a closure to a lambda
-    if ((isClosure()) && !(other->isClosure()))
+    if (isClosure() && !other->isClosure())
         return false;
 
     // Can convert a lambda to a closure, but do not take care of closure first parameter
     // as it is generated
-    if (!(isClosure()) && (other->isClosure()))
+    if (!isClosure() && other->isClosure())
     {
         if (parameters.size() + 1 != other->parameters.size())
             return false;

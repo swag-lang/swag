@@ -468,6 +468,14 @@ namespace Ast
         return node;
     }
 
+    AstNode* newFuncDeclParams(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob)
+    {
+        auto node         = Ast::newNode<AstNode>(syntaxJob, AstNodeKind::FuncDeclParams, sourceFile, parent);
+        node->semanticFct = SemanticJob::resolveFuncDeclParams;
+        node->flags |= AST_NO_BYTECODE_CHILDS; // We do not want default assignations to generate bytecode
+        return node;
+    }
+
     AstFuncCallParams* newFuncCallParams(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob)
     {
         auto node         = Ast::newNode<AstFuncCallParams>(syntaxJob, AstNodeKind::FuncCallParams, sourceFile, parent);
