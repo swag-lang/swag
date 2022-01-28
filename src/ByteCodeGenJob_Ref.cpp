@@ -447,8 +447,14 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitMakeLambda(ByteCodeGenContext* context)
 {
-    auto node     = context->node;
-    auto front    = node->childs.front();
+    auto node = CastAst<AstMakePointer>(context->node, AstNodeKind::MakePointerLambda, AstNodeKind::MakePointer);
+
+    AstNode* front;
+    if (node->lambda && node->lambda->captureParameters)
+        front = node->childs[1];
+    else
+        front = node->childs.front();
+
     auto funcNode = CastAst<AstFuncDecl>(front->resolvedSymbolOverload->node, AstNodeKind::FuncDecl);
 
     if (!(funcNode->attributeFlags & ATTRIBUTE_FOREIGN))
@@ -469,8 +475,10 @@ bool ByteCodeGenJob::emitMakeLambda(ByteCodeGenContext* context)
 
     // :CaptureBlock
     // Block capture
-    if (node->childs.size() == 2)
+    if (node->lambda && node->lambda->captureParameters)
+    {
         node->resultRegisterRC += node->childs.back()->resultRegisterRC[0];
+    }
 
     return true;
 }

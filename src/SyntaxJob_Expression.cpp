@@ -388,7 +388,7 @@ bool SyntaxJob::doPrimaryExpression(AstNode* parent, uint32_t exprFlags, AstNode
     // Take pointer
     if (token.id == TokenId::SymAmpersand)
     {
-        exprNode              = Ast::newNode<AstNode>(this, AstNodeKind::MakePointer, sourceFile, nullptr);
+        exprNode              = Ast::newNode<AstMakePointer>(this, AstNodeKind::MakePointer, sourceFile, nullptr);
         exprNode->semanticFct = SemanticJob::resolveMakePointer;
         SWAG_CHECK(eatToken());
 

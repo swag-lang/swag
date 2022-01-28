@@ -229,8 +229,9 @@ AstNode* AstNode::clone(CloneContext& context)
         return ((AstFuncCallParams*) this)->clone(context);
     case AstNodeKind::Range:
         return ((AstRange*) this)->clone(context);
+    case AstNodeKind::MakePointer:
     case AstNodeKind::MakePointerLambda:
-        return ((AstMakePointerLambda*) this)->clone(context);
+        return ((AstMakePointer*) this)->clone(context);
     case AstNodeKind::AffectOp:
         return ((AstOp*) this)->clone(context);
 
@@ -424,7 +425,7 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
 
     cloneContext.parentScope = functionScope;
 
-    newNode->captureParameters  = captureParameters ? captureParameters->clone(cloneContext) : nullptr;
+    newNode->captureParameters = captureParameters ? captureParameters->clone(cloneContext) : nullptr;
     newNode->genericParameters = genericParameters ? genericParameters->clone(cloneContext) : nullptr;
     newNode->parameters        = parameters ? parameters->clone(cloneContext) : nullptr;
     newNode->selectIf          = selectIf ? selectIf->clone(cloneContext) : nullptr;
@@ -1103,9 +1104,9 @@ AstNode* AstRange::clone(CloneContext& context)
     return newNode;
 }
 
-AstNode* AstMakePointerLambda::clone(CloneContext& context)
+AstNode* AstMakePointer::clone(CloneContext& context)
 {
-    auto newNode = Ast::newNode<AstMakePointerLambda>();
+    auto newNode = Ast::newNode<AstMakePointer>();
     newNode->copyFrom(context, this);
     newNode->lambda = lambda;
     return newNode;

@@ -1076,7 +1076,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
     case AstNodeKind::MakePointerLambda:
     {
-        auto lambdaNode = CastAst<AstMakePointerLambda>(node, AstNodeKind::MakePointerLambda);
+        auto lambdaNode = CastAst<AstMakePointer>(node, AstNodeKind::MakePointerLambda);
         SWAG_CHECK(outputLambdaExpression(context, concat, lambdaNode->lambda));
         break;
     }

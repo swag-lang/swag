@@ -34,7 +34,7 @@ struct TypeInfoStruct;
 struct AstReturn;
 struct AstCompilerIfBlock;
 struct AstFuncCallParams;
-struct AstMakePointerLambda;
+struct AstMakePointer;
 struct TypeInfoFuncAttr;
 enum class TypeInfoListKind;
 
@@ -380,17 +380,17 @@ struct AstFuncDecl : public AstNode
     Mutex                  funcMutex;
     Token                  tokenName;
 
-    AstNode*              captureParameters     = nullptr;
-    AstNode*              parameters            = nullptr;
-    AstNode*              genericParameters     = nullptr;
-    AstNode*              returnType            = nullptr;
-    AstNode*              content               = nullptr;
-    AstNode*              selectIf              = nullptr;
-    AstNode*              returnTypeDeducedNode = nullptr;
-    Scope*                scope                 = nullptr;
-    TypeInfoParam*        methodParam           = nullptr;
-    Job*                  pendingLambdaJob      = nullptr;
-    AstMakePointerLambda* makePointerLambda     = nullptr;
+    AstNode*        captureParameters     = nullptr;
+    AstNode*        parameters            = nullptr;
+    AstNode*        genericParameters     = nullptr;
+    AstNode*        returnType            = nullptr;
+    AstNode*        content               = nullptr;
+    AstNode*        selectIf              = nullptr;
+    AstNode*        returnTypeDeducedNode = nullptr;
+    Scope*          scope                 = nullptr;
+    TypeInfoParam*  methodParam           = nullptr;
+    Job*            pendingLambdaJob      = nullptr;
+    AstMakePointer* makePointerLambda     = nullptr;
 
     uint32_t aliasMask         = 0;
     uint32_t stackSize         = 0;
@@ -844,10 +844,10 @@ struct AstRange : public AstNode
     AstNode* expressionUp  = nullptr;
 };
 
-struct AstMakePointerLambda : public AstNode
+struct AstMakePointer : public AstNode
 {
-    AstNode* clone(CloneContext& context);
-    AstNode* lambda = nullptr;
+    AstNode*     clone(CloneContext& context);
+    AstFuncDecl* lambda = nullptr;
 };
 
 struct AstSubstBreakContinue : public AstNode

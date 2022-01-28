@@ -712,7 +712,7 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptM
             auto byRef    = false;
             if (token.id == TokenId::SymAmpersand)
             {
-                parentId              = Ast::newNode<AstNode>(this, AstNodeKind::MakePointer, sourceFile, capture);
+                parentId              = Ast::newNode<AstMakePointer>(this, AstNodeKind::MakePointer, sourceFile, capture);
                 parentId->semanticFct = SemanticJob::resolveMakePointer;
                 eatToken();
                 byRef = true;
@@ -832,12 +832,39 @@ bool SyntaxJob::doLambdaExpression(AstNode* parent, AstNode** result)
     if (!lambda->ownerFct && lambdaDecl->captureParameters)
         return error(lambdaDecl, Err(Err0179), Hlp(Hlp0017));
 
-    Utf8 nameCaptureBlock;
+    // Lambda sub function will be resolved by the owner function
+    if (lambda->ownerFct)
+        registerSubDecl(lambda);
+    // If the lambda is created at global scope, register it as a normal function
+    else
+        Ast::addChildBack(sourceFile->astRoot, lambda);
+
+    // Retrieve the pointer of the function
+    auto exprNode = Ast::newNode<AstMakePointer>(this, AstNodeKind::MakePointerLambda, sourceFile, parent);
+    exprNode->inheritTokenLocation(lambda);
+    exprNode->lambda      = lambdaDecl;
+    exprNode->semanticFct = SemanticJob::resolveMakePointerLambda;
+
     if (lambdaDecl->captureParameters)
     {
+        // To solve captured parameters
+        auto cp = CastAst<AstFuncCallParams>(lambdaDecl->captureParameters, AstNodeKind::FuncCallParams);
+        Ast::addChildBack(exprNode, cp);
+        cp->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
+        cp->captureClosure = lambdaDecl;
+
+        // We want the lambda to be evaluated only once the captured block has been typed
+        // See resolveCaptureFuncCallParams
+        lambdaDecl->flags |= AST_NO_SEMANTIC | AST_SPEC_SEMANTIC;
+
+        // Reference to the function
+        AstNode* identifierRef = Ast::newIdentifierRef(sourceFile, lambda->token.text, exprNode, this);
+        identifierRef->inheritTokenLocation(lambda);
+        forceTakeAddress(identifierRef);
+
         // Create the capture block (a tuple)
-        nameCaptureBlock = Fmt("__captureblock%d", g_UniqueID.fetch_add(1));
-        auto block       = Ast::newVarDecl(sourceFile, nameCaptureBlock, parent, this);
+        auto nameCaptureBlock = Fmt("__captureblock%d", g_UniqueID.fetch_add(1));
+        auto block            = Ast::newVarDecl(sourceFile, nameCaptureBlock, exprNode, this);
         block->flags |= AST_GENERATED;
         auto exprList         = Ast::newNode<AstExpressionList>(this, AstNodeKind::ExpressionList, sourceFile, block);
         exprList->semanticFct = SemanticJob::resolveExpressionListTuple;
@@ -850,38 +877,16 @@ bool SyntaxJob::doLambdaExpression(AstNode* parent, AstNode** result)
             Ast::clone(c, exprList);
         }
 
-        // To solve captured parameters
-        auto cp = CastAst<AstFuncCallParams>(lambdaDecl->captureParameters, AstNodeKind::FuncCallParams);
-        Ast::addChildBack(parent, cp);
-        cp->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
-        cp->captureClosure = lambdaDecl;
-
-        // We want the lambda to be evaluated only once the captured block has been typed
-        // See resolveCaptureFuncCallParams
-        lambdaDecl->flags |= AST_NO_SEMANTIC | AST_SPEC_SEMANTIC;
-    }
-
-    // Lambda sub function will be resolved by the owner function
-    if (lambda->ownerFct)
-        registerSubDecl(lambda);
-    // If the lambda is created at global scope, register it as a normal function
-    else
-        Ast::addChildBack(sourceFile->astRoot, lambda);
-
-    // Retrieve the pointer of the function
-    auto exprNode = Ast::newNode<AstMakePointerLambda>(this, AstNodeKind::MakePointerLambda, sourceFile, parent);
-    exprNode->inheritTokenLocation(lambda);
-    exprNode->lambda       = lambda;
-    exprNode->semanticFct  = SemanticJob::resolveMakePointer;
-    AstNode* identifierRef = Ast::newIdentifierRef(sourceFile, lambda->token.text, exprNode, this);
-    identifierRef->inheritTokenLocation(lambda);
-    forceTakeAddress(identifierRef);
-
-    // Reference to the captured block
-    if (!nameCaptureBlock.empty())
-    {
+        // Reference to the captured block
         identifierRef = Ast::newIdentifierRef(sourceFile, nameCaptureBlock, exprNode, this);
         identifierRef->childs.back()->inheritTokenLocation(lambdaDecl->captureParameters);
+        forceTakeAddress(identifierRef);
+    }
+    else
+    {
+        // Reference to the function
+        AstNode* identifierRef = Ast::newIdentifierRef(sourceFile, lambda->token.text, exprNode, this);
+        identifierRef->inheritTokenLocation(lambda);
         forceTakeAddress(identifierRef);
     }
 

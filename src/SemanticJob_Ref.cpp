@@ -64,45 +64,58 @@ bool SemanticJob::checkCanTakeAddress(SemanticContext* context, AstNode* node)
     return true;
 }
 
-bool SemanticJob::resolveMakePointer(SemanticContext* context)
+bool SemanticJob::resolveMakePointerLambda(SemanticContext* context)
 {
-    auto node     = context->node;
-    auto child    = node->childs.front();
-    auto typeInfo = child->typeInfo;
+    auto     node  = CastAst<AstMakePointer>(context->node, AstNodeKind::MakePointerLambda, AstNodeKind::MakePointer);
+    AstNode* child = nullptr;
+
+    // When this is a closure, we have /capture params/ref to the function/capture block/ref to the capture block
+    if (node->lambda && node->lambda->captureParameters)
+        child = node->childs[1];
+    else
+        child = node->childs.front();
 
     SWAG_CHECK(checkCanTakeAddress(context, child));
     SWAG_CHECK(checkIsConcrete(context, child));
     node->flags |= AST_R_VALUE;
     node->resolvedSymbolName = child->resolvedSymbolName;
 
-    // Lambda
-    //////////////////////////////////////
-    if (child->resolvedSymbolName->kind == SymbolKind::Function)
+    auto funcNode = child->resolvedSymbolOverload->node;
+    SWAG_CHECK(checkCanMakeFuncPointer(context, (AstFuncDecl*) funcNode, child));
+
+    auto lambdaType    = child->typeInfo->clone();
+    lambdaType->kind   = TypeInfoKind::Lambda;
+    lambdaType->sizeOf = sizeof(void*);
+    node->typeInfo     = lambdaType;
+    node->byteCodeFct  = ByteCodeGenJob::emitMakeLambda;
+
+    // :CaptureBlock
+    // Block capture
+    if (node->lambda && node->lambda->captureParameters)
     {
-        auto funcNode = child->resolvedSymbolOverload->node;
-        SWAG_CHECK(checkCanMakeFuncPointer(context, (AstFuncDecl*) funcNode, child));
-
-        auto lambdaType    = child->typeInfo->clone();
-        lambdaType->kind   = TypeInfoKind::Lambda;
-        lambdaType->sizeOf = sizeof(void*);
-        node->typeInfo     = lambdaType;
-        node->byteCodeFct  = ByteCodeGenJob::emitMakeLambda;
-
-        // :CaptureBlock
-        // Block capture
-        if (node->childs.size() == 2)
-        {
-            auto       typeBlock = CastTypeInfo<TypeInfoStruct>(node->childs.back()->typeInfo, TypeInfoKind::Struct);
-            const auto MaxSize   = SWAG_LIMIT_CLOSURE_SIZEOF - 2 * sizeof(void*);
-            SWAG_VERIFY(typeBlock->sizeOf <= MaxSize, context->report(node->childs.back(), Fmt(Err(Err0882), typeBlock->sizeOf, MaxSize)));
-        }
-
-        return true;
+        auto       typeBlock = CastTypeInfo<TypeInfoStruct>(node->childs.back()->typeInfo, TypeInfoKind::Struct);
+        const auto MaxSize   = SWAG_LIMIT_CLOSURE_SIZEOF - 2 * sizeof(void*);
+        SWAG_VERIFY(typeBlock->sizeOf <= MaxSize, context->report(node->childs.back(), Fmt(Err(Err0882), typeBlock->sizeOf, MaxSize)));
     }
 
-    // Expression
-    //////////////////////////////////////
-    node->byteCodeFct = ByteCodeGenJob::emitMakePointer;
+    return true;
+}
+
+bool SemanticJob::resolveMakePointer(SemanticContext* context)
+{
+    auto node     = CastAst<AstMakePointer>(context->node, AstNodeKind::MakePointer);
+    auto child    = node->childs.front();
+    auto typeInfo = child->typeInfo;
+
+    SWAG_ASSERT(child->resolvedSymbolName);
+    if (child->resolvedSymbolName->kind == SymbolKind::Function)
+        return resolveMakePointerLambda(context);
+
+    SWAG_CHECK(checkCanTakeAddress(context, child));
+    SWAG_CHECK(checkIsConcrete(context, child));
+    node->flags |= AST_R_VALUE;
+    node->resolvedSymbolName = child->resolvedSymbolName;
+    node->byteCodeFct        = ByteCodeGenJob::emitMakePointer;
 
     // A new pointer
     TypeInfoPointer* ptrType = allocType<TypeInfoPointer>();

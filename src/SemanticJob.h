@@ -280,6 +280,7 @@ struct SemanticJob : public Job
     static void         disableCompilerIfBlock(SemanticContext* context, AstCompilerIfBlock* block);
     static void         propagateReturn(AstReturn* node);
     static bool         resolveMakePointer(SemanticContext* context);
+    static bool         resolveMakePointerLambda(SemanticContext* context);
     static bool         boundCheck(SemanticContext* context, AstNode* arrayAccess, uint64_t maxCount);
     static bool         getConstantArrayPtr(SemanticContext* context, uint32_t* storageOffset, DataSegment** storageSegment);
     static void         forceConstType(SemanticContext* context, AstTypeExpression* node);

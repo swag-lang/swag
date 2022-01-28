@@ -816,7 +816,7 @@ bool SemanticJob::resolveCaptureFuncCallParams(SemanticContext* context)
     }
 
     // If this is a capture block, then now we can evaluate the function
-    if (node->captureClosure)
+    if (node->captureClosure && (node->captureClosure->flags & AST_SPEC_SEMANTIC))
     {
         node->captureClosure->flags &= ~AST_SPEC_SEMANTIC;
         launchResolveSubDecl(context, node->captureClosure);
