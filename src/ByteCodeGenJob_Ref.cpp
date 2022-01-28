@@ -177,6 +177,12 @@ bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context)
         return true;
     }
 
+    if (typeInfo->isClosure())
+    {
+        truncRegisterRC(context, node->resultRegisterRC, 1);
+        return true;
+    }
+
     if (typeInfo->kind == TypeInfoKind::FuncAttr)
     {
         truncRegisterRC(context, node->resultRegisterRC, 1);

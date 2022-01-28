@@ -2273,6 +2273,11 @@ bool SemanticJob::canTryUfcs(SemanticContext* context, TypeInfoFuncAttr* typeFun
         return false;
 
     auto numParams = parameters ? parameters->childs.size() : 0;
+
+    // Take care of closure first dummy parameter (do not count it)
+    if (typeFunc->isClosure())
+        numParams++;
+
     if (numParams < typeFunc->parameters.size())
         return true;
 
