@@ -380,7 +380,7 @@ struct AstFuncDecl : public AstNode
     Mutex                  funcMutex;
     Token                  tokenName;
 
-    AstNode*              captureParameters      = nullptr;
+    AstNode*              captureParameters     = nullptr;
     AstNode*              parameters            = nullptr;
     AstNode*              genericParameters     = nullptr;
     AstNode*              returnType            = nullptr;
@@ -419,6 +419,7 @@ struct AstFuncCallParams : public AstNode
 {
     AstNode* clone(CloneContext& context);
 
+    AstNode*      captureClosure = nullptr;
     vector<Token> aliasNames;
 };
 

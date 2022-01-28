@@ -831,10 +831,15 @@ bool SyntaxJob::doLambdaExpression(AstNode* parent, AstNode** result)
     Utf8 nameCaptureBlock;
     if (lambdaDecl->captureParameters)
     {
-        lambdaDecl->captureParameters->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
-
         // To solve captured parameters
-        Ast::addChildBack(parent, lambdaDecl->captureParameters);
+        auto cp = CastAst<AstFuncCallParams>(lambdaDecl->captureParameters, AstNodeKind::FuncCallParams);
+        Ast::addChildBack(parent, cp);
+        cp->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
+        cp->captureClosure = lambdaDecl;
+
+        // We want the lambda to be evaluated only once the captured block has been typed
+        // See resolveCaptureFuncCallParams
+        lambdaDecl->flags |= AST_NO_SEMANTIC | AST_SPEC_SEMANTIC;
 
         nameCaptureBlock = Fmt("__captureblock%d", g_UniqueID.fetch_add(1));
         auto block       = Ast::newVarDecl(sourceFile, nameCaptureBlock, parent, this);

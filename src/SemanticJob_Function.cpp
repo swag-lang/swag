@@ -783,7 +783,7 @@ void SemanticJob::resolveSubDecls(JobContext* context, AstFuncDecl* funcNode)
 
 bool SemanticJob::resolveCaptureFuncCallParams(SemanticContext* context)
 {
-    auto node = context->node;
+    auto node = CastAst<AstFuncCallParams>(context->node, AstNodeKind::FuncCallParams);
     node->inheritOrFlag(AST_IS_GENERIC);
     node->inheritAndFlag1(AST_CONST_EXPR);
 
@@ -796,6 +796,13 @@ bool SemanticJob::resolveCaptureFuncCallParams(SemanticContext* context)
         if (typeField->kind == TypeInfoKind::Native)
             continue;
         return context->report(Hint::isType(c->typeInfo), {c, Fmt(Err(Err0887), typeField->getDisplayNameC())});
+    }
+
+    // If this is a capture block, then now we can evaluate the function
+    if (node->captureClosure)
+    {
+        node->captureClosure->flags &= ~AST_SPEC_SEMANTIC;
+        launchResolveSubDecl(context, node->captureClosure);
     }
 
     return true;
