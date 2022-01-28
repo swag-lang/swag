@@ -62,17 +62,15 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
 
         if (typeInfo->numRegisters() == 2)
         {
-            reserveLinearRegisterRC2(context, node->resultRegisterRC);
-            emitInstruction(context, ByteCodeOp::Add64byVB64, node->resultRegisterRC[0], resolved->computedValue.storageOffset);
-            emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC[0]);
-            emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC[0])->c.u64 = 8;
+            transformResultToLinear2(context, node->resultRegisterRC);
+            emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC[1], node->resultRegisterRC[0])->c.u64 = resolved->computedValue.storageOffset + 8;
+            emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC[0], node->resultRegisterRC[0])->c.u64 = resolved->computedValue.storageOffset;
             return true;
         }
 
         if (typeInfo->numRegisters() == 1)
         {
-            emitInstruction(context, ByteCodeOp::Add64byVB64, node->resultRegisterRC[0], resolved->computedValue.storageOffset);
-            emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC[0]);
+            emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC[0], node->resultRegisterRC[0])->c.u64 = resolved->computedValue.storageOffset;
             return true;
         }
     }
