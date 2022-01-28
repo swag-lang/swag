@@ -832,20 +832,10 @@ bool SyntaxJob::doLambdaExpression(AstNode* parent, AstNode** result)
     if (!lambda->ownerFct && lambdaDecl->captureParameters)
         return error(lambdaDecl, Err(Err0179), Hlp(Hlp0017));
 
-    // Create the capture block (a tuple)
     Utf8 nameCaptureBlock;
     if (lambdaDecl->captureParameters)
     {
-        // To solve captured parameters
-        auto cp = CastAst<AstFuncCallParams>(lambdaDecl->captureParameters, AstNodeKind::FuncCallParams);
-        Ast::addChildBack(parent, cp);
-        cp->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
-        cp->captureClosure = lambdaDecl;
-
-        // We want the lambda to be evaluated only once the captured block has been typed
-        // See resolveCaptureFuncCallParams
-        lambdaDecl->flags |= AST_NO_SEMANTIC | AST_SPEC_SEMANTIC;
-
+        // Create the capture block (a tuple)
         nameCaptureBlock = Fmt("__captureblock%d", g_UniqueID.fetch_add(1));
         auto block       = Ast::newVarDecl(sourceFile, nameCaptureBlock, parent, this);
         block->flags |= AST_GENERATED;
@@ -859,6 +849,16 @@ bool SyntaxJob::doLambdaExpression(AstNode* parent, AstNode** result)
         {
             Ast::clone(c, exprList);
         }
+
+        // To solve captured parameters
+        auto cp = CastAst<AstFuncCallParams>(lambdaDecl->captureParameters, AstNodeKind::FuncCallParams);
+        Ast::addChildBack(parent, cp);
+        cp->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
+        cp->captureClosure = lambdaDecl;
+
+        // We want the lambda to be evaluated only once the captured block has been typed
+        // See resolveCaptureFuncCallParams
+        lambdaDecl->flags |= AST_NO_SEMANTIC | AST_SPEC_SEMANTIC;
     }
 
     // Lambda sub function will be resolved by the owner function
