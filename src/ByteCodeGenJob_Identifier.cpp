@@ -63,6 +63,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         if (typeInfo->numRegisters() == 2)
         {
             reserveLinearRegisterRC2(context, node->resultRegisterRC);
+            emitInstruction(context, ByteCodeOp::Add64byVB64, node->resultRegisterRC[0], resolved->computedValue.storageOffset);
             emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC[0]);
             emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC[0])->c.u64 = 8;
             return true;
@@ -70,6 +71,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
 
         if (typeInfo->numRegisters() == 1)
         {
+            emitInstruction(context, ByteCodeOp::Add64byVB64, node->resultRegisterRC[0], resolved->computedValue.storageOffset);
             emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC[0]);
             return true;
         }
