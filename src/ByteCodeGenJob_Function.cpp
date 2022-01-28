@@ -161,6 +161,15 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
                 emitInstruction(context, ByteCodeOp::CopyRCtoRR2, child->resultRegisterRC[0], child->resultRegisterRC[1]);
                 freeRegisterRC(context, child->resultRegisterRC);
             }
+            else if (returnType->isClosure())
+            {
+                auto         child = node->childs.front();
+                RegisterList r1    = reserveRegisterRC(context);
+                emitInstruction(context, ByteCodeOp::CopyRRtoRC, r1);
+                emitMemCpy(context, r1, child->resultRegisterRC, SWAG_LIMIT_CLOSURE_SIZEOF);
+                freeRegisterRC(context, r1);
+                freeRegisterRC(context, child->resultRegisterRC);
+            }
             else
             {
                 SWAG_ASSERT(node->childs.size() == 1);

@@ -111,14 +111,15 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
         return true;
     }
 
-    if (typeInfo->isClosure() && fromTypeInfo->isLambda())
+    auto aliasFrom = TypeManager::concreteReferenceType(fromTypeInfo);
+    if (typeInfo->isClosure() && aliasFrom->isLambda())
     {
         emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1);
         emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0)->b.u32 = sizeof(void*);
         return true;
     }
 
-    if (typeInfo->isClosure() && fromTypeInfo->isClosure())
+    if (typeInfo->isClosure() && aliasFrom->isClosure())
     {
         SWAG_ASSERT(from);
         if (from->kind == AstNodeKind::MakePointerLambda)
