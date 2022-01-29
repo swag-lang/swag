@@ -72,7 +72,10 @@ void BackendLLVM::getLocalCallParameters(const BuildParameters&      buildParame
 
     int idxFirst = 0;
     if (typeFuncBC->isClosure() && closureToLambda)
-        idxFirst = 1;
+    {
+        idxFirst = 1; 
+        popRAidx--;
+    }
 
     for (int idxCall = idxFirst; idxCall < numCallParams; idxCall++)
     {

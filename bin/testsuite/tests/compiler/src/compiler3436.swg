@@ -10,6 +10,6 @@ func toto(v: closure(s32)->s32)->s32
     v := toto(@(x: s32)->s32 {
         return x
     })
-    @print(v)
-    //@assert(v == 5)
+
+    @assert(v == 5)
 }
