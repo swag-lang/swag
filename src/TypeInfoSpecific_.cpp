@@ -995,7 +995,7 @@ bool TypeInfoStruct::canRawCopy()
     return !opPostCopy && !opUserPostCopyFct && !opPostMove && !opUserPostMoveFct;
 }
 
-bool TypeInfoStruct::isPlainData()
+bool TypeInfoStruct::isPlainOldData()
 {
     return canRawCopy() && !opDrop & !opUserDropFct;
 }

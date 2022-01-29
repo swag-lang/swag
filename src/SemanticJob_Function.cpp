@@ -821,7 +821,7 @@ bool SemanticJob::resolveCaptureFuncCallParams(SemanticContext* context)
             continue;
         if (typeField->kind == TypeInfoKind::Slice)
             continue;
-        if (typeField->kind == TypeInfoKind::Lambda)
+        if (typeField->isLambda())
             continue;
 
         if (typeField->kind == TypeInfoKind::Struct)
@@ -830,11 +830,13 @@ bool SemanticJob::resolveCaptureFuncCallParams(SemanticContext* context)
             if (context->result == ContextResult::Pending)
                 return true;
             auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeField, TypeInfoKind::Struct);
-            if (!typeStruct->isPlainData())
+            if (!typeStruct->isPlainOldData())
                 return context->report(Hint::isType(c->typeInfo), {c, Fmt(Err(Err0884), c->token.text.c_str())});
             continue;
         }
 
+        if (typeField->isClosure())
+            return context->report(Hint::isType(c->typeInfo), {c, Fmt(Err(Err0875), c->token.text.c_str())});
         return context->report(Hint::isType(c->typeInfo), {c, Fmt(Err(Err0887), c->token.text.c_str(), typeField->getDisplayNameC())});
     }
 

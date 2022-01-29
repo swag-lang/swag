@@ -501,7 +501,7 @@ struct TypeInfoStruct : public TypeInfo
     const char*    getDisplayNameC() override;
     Utf8           getDisplayName() override;
     bool           canRawCopy();
-    bool           isPlainData();
+    bool           isPlainOldData();
 
     VectorNative<TypeInfoParam*> genericParameters;
     VectorNative<TypeInfo*>      deducedGenericParameters;
