@@ -104,7 +104,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         }
 
         SWAG_CHECK(sameStackFrame(context, resolved));
-        if ((node->forceTakeAddress()) && typeInfo->kind != TypeInfoKind::Lambda && typeInfo->kind != TypeInfoKind::Array)
+        if (node->forceTakeAddress() && typeInfo->kind != TypeInfoKind::Lambda && typeInfo->kind != TypeInfoKind::Array)
         {
             if (node->parent->flags & AST_ARRAY_POINTER_REF)
             {
@@ -155,6 +155,12 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
                 inst->b.u64 = resolved->computedValue.storageOffset;
                 inst->c.u64 = resolved->storageIndex;
             }
+        }
+        else if (typeInfo->isClosure())
+        {
+            auto inst   = emitInstruction(context, ByteCodeOp::GetFromStackParam64, node->resultRegisterRC);
+            inst->b.u64 = resolved->computedValue.storageOffset;
+            inst->c.u64 = resolved->storageIndex;
         }
         else if (typeInfo->numRegisters() == 2)
         {
@@ -218,7 +224,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             if (node->forceTakeAddress())
                 inst->c.pointer = (uint8_t*) resolved;
         }
-        else if ((node->forceTakeAddress()) && (!typeInfo->isNative(NativeTypeKind::String) || node->parent->kind != AstNodeKind::ArrayPointerIndex))
+        else if (node->forceTakeAddress() && (!typeInfo->isNative(NativeTypeKind::String) || node->parent->kind != AstNodeKind::ArrayPointerIndex))
         {
             ByteCodeInstruction* inst = emitMakeSegPointer(context, resolved->computedValue.storageSegment, resolved->computedValue.storageOffset, node->resultRegisterRC);
             inst->c.pointer           = (uint8_t*) resolved;
@@ -308,7 +314,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             auto inst   = emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
             inst->b.u64 = resolved->computedValue.storageOffset;
         }
-        else if ((node->forceTakeAddress()) && (!typeInfo->isNative(NativeTypeKind::String) || node->parent->kind != AstNodeKind::ArrayPointerIndex))
+        else if (node->forceTakeAddress() && (!typeInfo->isNative(NativeTypeKind::String) || node->parent->kind != AstNodeKind::ArrayPointerIndex))
         {
             auto inst   = emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
             inst->b.u64 = resolved->computedValue.storageOffset;
@@ -387,7 +393,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             inst->flags |= BCI_IMM_B;
         }
 
-        if (!(node->forceTakeAddress()))
+        if (!node->forceTakeAddress())
         {
             emitStructDeRef(context);
         }
