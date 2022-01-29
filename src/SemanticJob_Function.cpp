@@ -821,6 +821,8 @@ bool SemanticJob::resolveCaptureFuncCallParams(SemanticContext* context)
             continue;
         if (typeField->kind == TypeInfoKind::Slice)
             continue;
+        if (typeField->kind == TypeInfoKind::Lambda)
+            continue;
 
         if (typeField->kind == TypeInfoKind::Struct)
         {
