@@ -475,7 +475,7 @@ bool ByteCodeGenJob::emitMakeLambda(ByteCodeGenContext* context)
 
     // :CaptureBlock
     // Block capture
-    if (node->lambda && node->lambda->captureParameters)
+    if (node->typeInfo->isClosure())
     {
         node->resultRegisterRC += node->childs.back()->resultRegisterRC[0];
     }

@@ -395,10 +395,22 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
             Ast::addChildFront(identifier, varNode);
 
             auto fcp = nodeCall->childs.front();
-            fcp->semFlags |= AST_SEM_ONCE;
-            Ast::removeFromParent(fcp);
-            Ast::addChildBack(varNode, fcp);
-            varNode->assignment = fcp;
+            if (fcp->typeInfo->isLambda())
+            {
+                varNode->assignment = Ast::clone(fcp, varNode);
+                Ast::removeFromParent(fcp);
+            }
+            else
+            {
+                fcp->semFlags |= AST_SEM_ONCE;
+                Ast::removeFromParent(fcp);
+                Ast::addChildBack(varNode, fcp);
+                varNode->assignment = fcp;
+            }
+
+            varNode->type           = Ast::newTypeExpression(sourceFile, varNode);
+            varNode->type->typeInfo = toType;
+            varNode->type->flags |= AST_NO_SEMANTIC;
 
             auto idRef = Ast::newIdentifierRef(sourceFile, varNode->token.text, nodeCall);
 
