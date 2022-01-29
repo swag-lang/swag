@@ -809,6 +809,12 @@ bool SemanticJob::resolveCaptureFuncCallParams(SemanticContext* context)
     {
         auto typeField = c->typeInfo;
 
+        if (typeField->kind == TypeInfoKind::Array)
+        {
+            auto typeArray = CastTypeInfo<TypeInfoArray>(typeField, TypeInfoKind::Array);
+            typeField      = typeArray->finalType;
+        }
+
         if (typeField->kind == TypeInfoKind::Pointer)
             continue;
         if (typeField->kind == TypeInfoKind::Native)
