@@ -241,6 +241,10 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             else if (node->flags & AST_TO_UFCS) // Get the struct pointer
                 emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
         }
+        else if (typeInfo->isClosure())
+        {
+            emitMakeSegPointer(context, resolved->computedValue.storageSegment, resolved->computedValue.storageOffset, node->resultRegisterRC);
+        }
         else if (typeInfo->numRegisters() == 2)
         {
             reserveLinearRegisterRC2(context, node->resultRegisterRC);
@@ -327,17 +331,17 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             else if (node->flags & AST_TO_UFCS) // Get the structure pointer
                 emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
         }
+        else if (typeInfo->isClosure())
+        {
+            auto inst   = emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
+            inst->b.u64 = resolved->computedValue.storageOffset;
+        }
         else if (typeInfo->numRegisters() == 2)
         {
             reserveLinearRegisterRC2(context, node->resultRegisterRC);
             auto inst   = emitInstruction(context, ByteCodeOp::GetFromStack64x2, node->resultRegisterRC[0], 0, node->resultRegisterRC[1], 0);
             inst->b.u64 = resolved->computedValue.storageOffset;
             inst->d.u64 = resolved->computedValue.storageOffset + 8;
-        }
-        else if (typeInfo->isClosure())
-        {
-            auto inst   = emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
-            inst->b.u64 = resolved->computedValue.storageOffset;
         }
         else
         {
