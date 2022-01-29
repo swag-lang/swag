@@ -808,11 +808,25 @@ bool SemanticJob::resolveCaptureFuncCallParams(SemanticContext* context)
     for (auto c : node->childs)
     {
         auto typeField = c->typeInfo;
+
         if (typeField->kind == TypeInfoKind::Pointer)
             continue;
+
         if (typeField->kind == TypeInfoKind::Native)
             continue;
-        return context->report(Hint::isType(c->typeInfo), {c, Fmt(Err(Err0887), typeField->getDisplayNameC())});
+
+        if (typeField->kind == TypeInfoKind::Struct)
+        {
+            SWAG_CHECK(waitForStructUserOps(context, c));
+            if (context->result == ContextResult::Pending)
+                return true;
+            auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeField, TypeInfoKind::Struct);
+            if (!typeStruct->isPlainData())
+                return context->report(Hint::isType(c->typeInfo), {c, Fmt(Err(Err0884), c->token.text.c_str())});
+            continue;
+        }
+
+        return context->report(Hint::isType(c->typeInfo), {c, Fmt(Err(Err0887), c->token.text.c_str(), typeField->getDisplayNameC())});
     }
 
     // If this is a capture block, then now we can evaluate the function

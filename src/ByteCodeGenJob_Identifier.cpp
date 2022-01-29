@@ -53,14 +53,24 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     // A captured variable
     if (resolved->flags & OVERLOAD_VAR_CAPTURE)
     {
-        node->resultRegisterRC = reserveRegisterRC(context);
+        node->resultRegisterRC                      = reserveRegisterRC(context);
+        identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;
+        node->parent->resultRegisterRC              = node->resultRegisterRC;
 
         // Get capture block pointer (first parameter)
         auto inst   = emitInstruction(context, ByteCodeOp::GetFromStackParam64, node->resultRegisterRC);
         inst->b.u64 = node->ownerFct->parameters->childs.front()->resolvedSymbolOverload->computedValue.storageOffset;
         inst->c.u64 = 0;
 
-        if (typeInfo->numRegisters() == 2)
+        if (typeInfo->kind == TypeInfoKind::Array ||
+            typeInfo->kind == TypeInfoKind::TypeListTuple ||
+            typeInfo->kind == TypeInfoKind::TypeListArray ||
+            typeInfo->kind == TypeInfoKind::Struct)
+        {
+            emitInstruction(context, ByteCodeOp::Add64byVB64, node->resultRegisterRC[0])->b.u64 = resolved->computedValue.storageOffset;
+            return true;
+        }
+        else if (typeInfo->numRegisters() == 2)
         {
             transformResultToLinear2(context, node->resultRegisterRC);
             emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC[1], node->resultRegisterRC[0])->c.u64 = resolved->computedValue.storageOffset + 8;

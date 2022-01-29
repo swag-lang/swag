@@ -995,6 +995,11 @@ bool TypeInfoStruct::canRawCopy()
     return !opPostCopy && !opUserPostCopyFct && !opPostMove && !opUserPostMoveFct;
 }
 
+bool TypeInfoStruct::isPlainData()
+{
+    return canRawCopy() && !opDrop & !opUserDropFct;
+}
+
 const char* TypeInfoStruct::getDisplayNameC()
 {
     auto res = getDisplayName();
