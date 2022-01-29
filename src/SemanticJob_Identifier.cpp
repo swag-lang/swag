@@ -362,10 +362,17 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
         if (i == 0 && oneMatch.ufcs)
             castFlags |= CASTFLAG_UFCS;
 
+        TypeInfo* toType = nullptr;
         if (i < oneMatch.solvedParameters.size() && oneMatch.solvedParameters[i])
-            SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch.solvedParameters[i]->typeInfo, nullptr, nodeCall, castFlags));
+        {
+            toType = oneMatch.solvedParameters[i]->typeInfo;
+            SWAG_CHECK(TypeManager::makeCompatibles(context, toType, nullptr, nodeCall, castFlags));
+        }
         else if (oneMatch.solvedParameters.size() && oneMatch.solvedParameters.back() && oneMatch.solvedParameters.back()->typeInfo->kind == TypeInfoKind::TypedVariadic)
+        {
+            toType = oneMatch.solvedParameters.back()->typeInfo;
             SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch.solvedParameters.back()->typeInfo, nullptr, nodeCall));
+        }
 
         // For a variadic parameter, we need to generate the concrete typeinfo for the corresponding 'any' type
         if (i >= typeInfoFunc->parameters.size() - 1 && (typeInfoFunc->flags & TYPEINFO_VARIADIC))
@@ -377,6 +384,35 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
             nodeCall->computedValue->storageSegment = getConstantSegFromContext(nodeCall);
             SWAG_CHECK(typeTable.makeConcreteTypeInfo(context, concreteType, nodeCall->computedValue->storageSegment, &nodeCall->computedValue->storageOffset));
         }
+
+        // If passing a closure
+        if (!nodeCall->childs.empty() && nodeCall->childs.front()->kind == AstNodeKind::MakePointerLambda && toType->isClosure())
+        {
+            auto varNode = Ast::newVarDecl(sourceFile, Fmt("__ctmp_%d", g_UniqueID.fetch_add(1)), identifier);
+
+            // Put child front, because emitCall wants the parameters to be the last
+            Ast::removeFromParent(varNode);
+            Ast::addChildFront(identifier, varNode);
+
+            auto fcp = nodeCall->childs.front();
+            fcp->semFlags |= AST_SEM_ONCE;
+            Ast::removeFromParent(fcp);
+            Ast::addChildBack(varNode, fcp);
+            varNode->assignment = fcp;
+
+            auto idRef = Ast::newIdentifierRef(sourceFile, varNode->token.text, nodeCall);
+
+            // Add the 2 nodes to the semantic
+            context->job->nodes.push_back(idRef);
+            context->job->nodes.push_back(varNode);
+
+            // If call is inlined, then the identifier will be reevaluated, and the new variable, which is a child,
+            // will be reevaluated too, so twice because of the push above. So we set a special flag to not reevaluate
+            // it twice.
+            varNode->semFlags |= AST_SEM_ONCE;
+
+            context->result = ContextResult::NewChilds;
+        }
     }
 
     // Deal with opAffect automatic conversion
@@ -384,6 +420,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
     for (int i = 0; i < maxParams; i++)
     {
         auto nodeCall = CastAst<AstFuncCallParam>(identifier->callParameters->childs[i], AstNodeKind::FuncCallParam);
+
         if (nodeCall->extension && nodeCall->extension->resolvedUserOpSymbolOverload)
         {
             auto overload = nodeCall->extension->resolvedUserOpSymbolOverload;

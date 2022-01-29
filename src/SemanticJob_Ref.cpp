@@ -83,11 +83,17 @@ bool SemanticJob::resolveMakePointerLambda(SemanticContext* context)
     auto funcNode = child->resolvedSymbolOverload->node;
     SWAG_CHECK(checkCanMakeFuncPointer(context, (AstFuncDecl*) funcNode, child));
 
-    auto lambdaType    = child->typeInfo->clone();
-    lambdaType->kind   = TypeInfoKind::Lambda;
-    lambdaType->sizeOf = sizeof(void*);
-    node->typeInfo     = lambdaType;
-    node->byteCodeFct  = ByteCodeGenJob::emitMakeLambda;
+    auto lambdaType  = child->typeInfo->clone();
+    lambdaType->kind = TypeInfoKind::Lambda;
+    if (child->typeInfo->isClosure())
+    {
+        lambdaType->flags |= TYPEINFO_RETURN_BY_COPY;
+        lambdaType->sizeOf = SWAG_LIMIT_CLOSURE_SIZEOF;
+    }
+    else
+        lambdaType->sizeOf = sizeof(void*);
+    node->typeInfo    = lambdaType;
+    node->byteCodeFct = ByteCodeGenJob::emitMakeLambda;
 
     // :CaptureBlock
     // Block capture
