@@ -64,7 +64,6 @@ bool SemanticJob::resolveTupleUnpackBefore(SemanticContext* context)
 AstNode* SemanticJob::convertTypeToTypeExpression(SemanticContext* context, AstNode* parent, AstNode* assignment, TypeInfo* childType, bool raiseErrors)
 {
     auto sourceFile = context->sourceFile;
-    auto orgType    = childType;
 
     // Tuple item is a lambda
     if (childType->kind == TypeInfoKind::Lambda)
@@ -101,96 +100,17 @@ AstNode* SemanticJob::convertTypeToTypeExpression(SemanticContext* context, AstN
     if (childType->isConst())
         typeExpression->typeFlags |= TYPEFLAG_ISCONST;
 
-    switch (childType->kind)
-    {
-    case TypeInfoKind::FuncAttr:
-    {
-        auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(childType, TypeInfoKind::FuncAttr);
-        childType         = typeInfoFunc->returnType;
-        break;
-    }
-
-    case TypeInfoKind::Slice:
-    {
-        auto typeInfoSlice = CastTypeInfo<TypeInfoSlice>(childType, TypeInfoKind::Slice);
-        typeExpression->typeFlags |= TYPEFLAG_ISSLICE;
-        childType = typeInfoSlice->pointedType;
-        break;
-    }
-
-    case TypeInfoKind::Pointer:
-    {
-        auto typeInfoPointer        = CastTypeInfo<TypeInfoPointer>(childType, TypeInfoKind::Pointer);
-        typeExpression->ptrCount    = 1;
-        typeExpression->ptrFlags[0] = typeInfoPointer->isConst() ? AstTypeExpression::PTR_CONST : 0;
-        childType                   = typeInfoPointer->pointedType;
-
-        while (childType->kind == TypeInfoKind::Pointer)
-        {
-            typeInfoPointer                                    = CastTypeInfo<TypeInfoPointer>(childType, TypeInfoKind::Pointer);
-            typeExpression->ptrFlags[typeExpression->ptrCount] = typeInfoPointer->isConst() ? AstTypeExpression::PTR_CONST : 0;
-            typeExpression->ptrCount++;
-            childType = typeInfoPointer->pointedType;
-        }
-
-        if (childType->kind == TypeInfoKind::Reference)
-        {
-            typeExpression->ptrFlags[typeExpression->ptrCount - 1] |= AstTypeExpression::PTR_REF | AstTypeExpression::PTR_CONST;
-            auto typeInfoRef = CastTypeInfo<TypeInfoReference>(childType, TypeInfoKind::Reference);
-            childType        = typeInfoRef->pointedType;
-        }
-        break;
-    }
-
-    case TypeInfoKind::Reference:
-    {
-        auto typeInfoRef = CastTypeInfo<TypeInfoReference>(childType, TypeInfoKind::Reference);
-        typeExpression->typeFlags |= TYPEFLAG_ISCONST | TYPEFLAG_ISREF;
-        childType = typeInfoRef->pointedType;
-        parent->flags |= AST_EXPLICITLY_NOT_INITIALIZED;
-        break;
-    }
-    }
-
-    // Convert typeinfo to TypeExpression
-    switch (childType->kind)
-    {
-    case TypeInfoKind::Native:
-        typeExpression->token.id        = TokenId::NativeType;
-        typeExpression->typeFromLiteral = childType;
-        break;
-
-    case TypeInfoKind::Enum:
-    {
-        ScopedLock lk(childType->mutex); // race condition with 'name'
-        typeExpression->identifier = Ast::newIdentifierRef(sourceFile, childType->name, typeExpression);
-        parent->flags |= AST_EXPLICITLY_NOT_INITIALIZED;
-        break;
-    }
-
-    case TypeInfoKind::Struct:
-    case TypeInfoKind::Interface:
-    {
-        ScopedLock lk(childType->mutex); // race condition with 'name'
-        typeExpression->identifier = Ast::newIdentifierRef(sourceFile, childType->name, typeExpression);
-        break;
-    }
-
-    case TypeInfoKind::TypeListTuple:
+    if (childType->kind == TypeInfoKind::TypeListTuple)
     {
         AstStruct* inStructNode;
         if (!convertLiteralTupleToStructDecl(context, assignment, &inStructNode))
             return nullptr;
         typeExpression->identifier = Ast::newIdentifierRef(sourceFile, inStructNode->token.text, typeExpression);
-        break;
+        return typeExpression;
     }
 
-    default:
-        if (raiseErrors)
-            context->report(assignment, Fmt(Err(Err0294), orgType->getDisplayNameC()).c_str());
-        return nullptr;
-    }
-
+    typeExpression->typeInfo = childType;
+    typeExpression->flags |= AST_NO_SEMANTIC;
     return typeExpression;
 }
 
