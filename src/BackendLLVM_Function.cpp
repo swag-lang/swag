@@ -3879,11 +3879,11 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
                     // Lambda call. We must eliminate the first parameter (closure context)
                     builder.SetInsertPoint(blockLambda);
-                    auto tt = (TypeInfoFuncAttr*) typeFuncBC->clone();
-                    tt->parameters.erase_unordered(0);
-                    auto l_FT = createFunctionTypeLocal(buildParameters, tt);
-                    auto l_r1 = builder.CreatePointerCast(r0, llvm::PointerType::getUnqual(l_FT));
-                    builder.CreateCall(l_FT, l_r1, {fctParams.begin() + 1, fctParams.end()});
+                    auto                       l_FT = createFunctionTypeLocal(buildParameters, typeFuncBC, true);
+                    auto                       l_r1 = builder.CreatePointerCast(r0, llvm::PointerType::getUnqual(l_FT));
+                    VectorNative<llvm::Value*> fctParamsLocal;
+                    getLocalCallParameters(buildParameters, allocR, allocRR, allocT, fctParamsLocal, typeFuncBC, pushRAParams, {}, true);
+                    builder.CreateCall(l_FT, l_r1, {fctParamsLocal.begin(), fctParamsLocal.end()});
                     builder.CreateBr(blockNext);
 
                     // Closure call. Normal call, as the type contains the first parameter.

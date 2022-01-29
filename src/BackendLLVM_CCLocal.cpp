@@ -11,7 +11,8 @@ void BackendLLVM::getLocalCallParameters(const BuildParameters&      buildParame
                                          VectorNative<llvm::Value*>& params,
                                          TypeInfoFuncAttr*           typeFuncBC,
                                          VectorNative<uint32_t>&     pushRAParams,
-                                         const vector<llvm::Value*>& values)
+                                         const vector<llvm::Value*>& values,
+                                         bool                        closureToLambda)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
@@ -69,7 +70,11 @@ void BackendLLVM::getLocalCallParameters(const BuildParameters&      buildParame
         numCallParams--;
     }
 
-    for (int idxCall = 0; idxCall < numCallParams; idxCall++)
+    int idxFirst = 0;
+    if (typeFuncBC->isClosure() && closureToLambda)
+        idxFirst = 1;
+
+    for (int idxCall = idxFirst; idxCall < numCallParams; idxCall++)
     {
         auto typeParam = typeFuncBC->parameters[idxCall]->typeInfo;
         typeParam      = TypeManager::concreteReferenceType(typeParam);
@@ -138,7 +143,7 @@ void BackendLLVM::getLocalCallParameters(const BuildParameters&      buildParame
     }
 }
 
-llvm::FunctionType* BackendLLVM::createFunctionTypeLocal(const BuildParameters& buildParameters, TypeInfoFuncAttr* typeFuncBC)
+llvm::FunctionType* BackendLLVM::createFunctionTypeLocal(const BuildParameters& buildParameters, TypeInfoFuncAttr* typeFuncBC, bool closureToLambda)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
@@ -152,9 +157,18 @@ llvm::FunctionType* BackendLLVM::createFunctionTypeLocal(const BuildParameters& 
     }
 
     // Already done ?
-    auto it = pp.mapFctTypeInternal.find(typeFuncBC);
-    if (it != pp.mapFctTypeInternal.end())
-        return it->second;
+    if (closureToLambda)
+    {
+        auto it = pp.mapFctTypeClosure.find(typeFuncBC);
+        if (it != pp.mapFctTypeClosure.end())
+            return it->second;
+    }
+    else
+    {
+        auto it = pp.mapFctTypeInternal.find(typeFuncBC);
+        if (it != pp.mapFctTypeInternal.end())
+            return it->second;
+    }
 
     // Registers to get the result
     VectorNative<llvm::Type*> params;
@@ -176,7 +190,11 @@ llvm::FunctionType* BackendLLVM::createFunctionTypeLocal(const BuildParameters& 
         numParams--;
     }
 
-    for (int i = 0; i < numParams; i++)
+    int startIdx = 0;
+    if (typeFuncBC->isClosure() && closureToLambda)
+        startIdx = 1;
+
+    for (int i = startIdx; i < numParams; i++)
     {
         auto param     = typeFuncBC->parameters[i];
         auto typeParam = TypeManager::concreteReferenceType(param->typeInfo);
@@ -193,8 +211,11 @@ llvm::FunctionType* BackendLLVM::createFunctionTypeLocal(const BuildParameters& 
         }
     }
 
-    auto result                       = llvm::FunctionType::get(llvm::Type::getVoidTy(context), {params.begin(), params.end()}, isVarArg);
-    pp.mapFctTypeInternal[typeFuncBC] = result;
+    auto result = llvm::FunctionType::get(llvm::Type::getVoidTy(context), {params.begin(), params.end()}, isVarArg);
+    if (closureToLambda)
+        pp.mapFctTypeClosure[typeFuncBC] = result;
+    else
+        pp.mapFctTypeInternal[typeFuncBC] = result;
     return result;
 }
 
@@ -214,7 +235,7 @@ bool BackendLLVM::storeLocalParam(const BuildParameters& buildParameters, llvm::
         // This can be casted to an integer
         if (sizeOf)
         {
-            if(sizeOf == sizeof(void*))
+            if (sizeOf == sizeof(void*))
                 builder.CreateStore(arg, r0);
             else
                 builder.CreateStore(builder.CreateIntCast(arg, builder.getInt64Ty(), false), r0);
