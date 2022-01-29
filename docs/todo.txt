@@ -95,6 +95,8 @@ OPTIMS
 ****************************************
 
 -------------------------------------
+passer en switch/case sur ip[0].op les fonction d'optim
+-------------------------------------
 x64 binaryop div, transformer en shift si log2
 -------------------------------------
 BinOpModuloS32/div immediate mode

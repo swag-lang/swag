@@ -1255,1230 +1255,1364 @@ void ByteCodeOptimizer::reduceX2(ByteCodeOptContext* context, ByteCodeInstructio
 
 void ByteCodeOptimizer::reduceCmpJump(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
+    switch (ip->op)
+    {
     // NegBool followed by jump bool
-    if (ip[0].op == ByteCodeOp::NegBool &&
-        ip[1].op == ByteCodeOp::JumpIfFalse &&
-        !(ip[0].flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_IMM_A) &&
-        !(ip[1].flags & BCI_START_STMT) &&
-        ip[0].a.u32 == ip[1].a.u32)
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfTrue);
-        ip[1].a.u32 = ip->b.u32;
-    }
+    case ByteCodeOp::NegBool:
+        if (ip[1].op == ByteCodeOp::JumpIfFalse &&
+            !(ip[0].flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_IMM_A) &&
+            !(ip[1].flags & BCI_START_STMT) &&
+            ip[0].a.u32 == ip[1].a.u32)
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfTrue);
+            ip[1].a.u32 = ip->b.u32;
+            break;
+        }
 
-    if (ip[0].op == ByteCodeOp::NegBool &&
-        ip[1].op == ByteCodeOp::JumpIfTrue &&
-        !(ip[0].flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_IMM_A) &&
-        !(ip[1].flags & BCI_START_STMT) &&
-        ip[0].a.u32 == ip[1].a.u32)
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfFalse);
-        ip[1].a.u32 = ip->b.u32;
-    }
+        if (ip[1].op == ByteCodeOp::JumpIfTrue &&
+            !(ip[0].flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_IMM_A) &&
+            !(ip[1].flags & BCI_START_STMT) &&
+            ip[0].a.u32 == ip[1].a.u32)
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfFalse);
+            ip[1].a.u32 = ip->b.u32;
+            break;
+        }
+        break;
 
     // Cast bool followed by a jump. Change the jump
-    if (ip->op == ByteCodeOp::CastBool8 &&
-        ip[1].op == ByteCodeOp::JumpIfTrue &&
-        ip->a.u32 == ip[1].a.u32 &&
-        !(ip[0].flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_IMM_A) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfNotZero8);
-        ip[1].a.u32 = ip->b.u32;
-    }
+    case ByteCodeOp::CastBool8:
+        if (ip[1].op == ByteCodeOp::JumpIfTrue &&
+            ip->a.u32 == ip[1].a.u32 &&
+            !(ip[0].flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_IMM_A) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfNotZero8);
+            ip[1].a.u32 = ip->b.u32;
+            break;
+        }
 
-    if (ip->op == ByteCodeOp::CastBool16 &&
-        ip[1].op == ByteCodeOp::JumpIfTrue &&
-        ip->a.u32 == ip[1].a.u32 &&
-        !(ip[0].flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_IMM_A) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfNotZero16);
-        ip[1].a.u32 = ip->b.u32;
-    }
+        if (ip[1].op == ByteCodeOp::JumpIfFalse &&
+            ip->a.u32 == ip[1].a.u32 &&
+            !(ip[0].flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_IMM_A) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfZero8);
+            ip[1].a.u32 = ip->b.u32;
+            break;
+        }
 
-    if (ip->op == ByteCodeOp::CastBool32 &&
-        ip[1].op == ByteCodeOp::JumpIfTrue &&
-        ip->a.u32 == ip[1].a.u32 &&
-        !(ip[0].flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_IMM_A) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfNotZero32);
-        ip[1].a.u32 = ip->b.u32;
-    }
+        break;
 
-    if (ip->op == ByteCodeOp::CastBool64 &&
-        ip[1].op == ByteCodeOp::JumpIfTrue &&
-        ip->a.u32 == ip[1].a.u32 &&
-        !(ip[0].flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_IMM_A) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfNotZero64);
-        ip[1].a.u32 = ip->b.u32;
-    }
+    case ByteCodeOp::CastBool16:
+        if (ip[1].op == ByteCodeOp::JumpIfTrue &&
+            ip->a.u32 == ip[1].a.u32 &&
+            !(ip[0].flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_IMM_A) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfNotZero16);
+            ip[1].a.u32 = ip->b.u32;
+            break;
+        }
 
-    //
-    if (ip->op == ByteCodeOp::CastBool8 &&
-        ip[1].op == ByteCodeOp::JumpIfFalse &&
-        ip->a.u32 == ip[1].a.u32 &&
-        !(ip[0].flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_IMM_A) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfZero8);
-        ip[1].a.u32 = ip->b.u32;
-    }
+        if (ip[1].op == ByteCodeOp::JumpIfFalse &&
+            ip->a.u32 == ip[1].a.u32 &&
+            !(ip[0].flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_IMM_A) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfZero16);
+            ip[1].a.u32 = ip->b.u32;
+            break;
+        }
 
-    if (ip->op == ByteCodeOp::CastBool16 &&
-        ip[1].op == ByteCodeOp::JumpIfFalse &&
-        ip->a.u32 == ip[1].a.u32 &&
-        !(ip[0].flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_IMM_A) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfZero16);
-        ip[1].a.u32 = ip->b.u32;
-    }
+        break;
 
-    if (ip->op == ByteCodeOp::CastBool32 &&
-        ip[1].op == ByteCodeOp::JumpIfFalse &&
-        ip->a.u32 == ip[1].a.u32 &&
-        !(ip[0].flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_IMM_A) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfZero32);
-        ip[1].a.u32 = ip->b.u32;
-    }
+    case ByteCodeOp::CastBool32:
+        if (ip[1].op == ByteCodeOp::JumpIfTrue &&
+            ip->a.u32 == ip[1].a.u32 &&
+            !(ip[0].flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_IMM_A) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfNotZero32);
+            ip[1].a.u32 = ip->b.u32;
+            break;
+        }
 
-    if (ip->op == ByteCodeOp::CastBool64 &&
-        ip[1].op == ByteCodeOp::JumpIfFalse &&
-        ip->a.u32 == ip[1].a.u32 &&
-        !(ip[0].flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_IMM_A) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfZero64);
-        ip[1].a.u32 = ip->b.u32;
+        if (ip[1].op == ByteCodeOp::JumpIfFalse &&
+            ip->a.u32 == ip[1].a.u32 &&
+            !(ip[0].flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_IMM_A) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfZero32);
+            ip[1].a.u32 = ip->b.u32;
+            break;
+        }
+
+        break;
+
+    case ByteCodeOp::CastBool64:
+        if (ip[1].op == ByteCodeOp::JumpIfTrue &&
+            ip->a.u32 == ip[1].a.u32 &&
+            !(ip[0].flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_IMM_A) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfNotZero64);
+            ip[1].a.u32 = ip->b.u32;
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::JumpIfFalse &&
+            ip->a.u32 == ip[1].a.u32 &&
+            !(ip[0].flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_IMM_A) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfZero64);
+            ip[1].a.u32 = ip->b.u32;
+            break;
+        }
+
+        break;
+
+        // Mix compare and jump
+    case ByteCodeOp::CompareOpEqual8:
+        if (ip[1].op == ByteCodeOp::JumpIfFalse &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfNotEqual8);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::JumpIfTrue &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfEqual8);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        break;
+
+    case ByteCodeOp::CompareOpEqual16:
+        if (ip[1].op == ByteCodeOp::JumpIfFalse &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfNotEqual16);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::JumpIfTrue &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfEqual16);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        break;
+
+    case ByteCodeOp::CompareOpEqual32:
+        if (ip[1].op == ByteCodeOp::JumpIfFalse &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfNotEqual32);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::JumpIfTrue &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfEqual32);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        break;
+
+    case ByteCodeOp::CompareOpEqual64:
+        if (ip[1].op == ByteCodeOp::JumpIfFalse &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfNotEqual64);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::JumpIfTrue &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfEqual64);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        break;
+
+        // Mix compare and jump
+    case ByteCodeOp::CompareOpNotEqual8:
+        if (ip[1].op == ByteCodeOp::JumpIfFalse &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfEqual8);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::JumpIfTrue &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfNotEqual8);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        break;
+
+    case ByteCodeOp::CompareOpNotEqual16:
+        if (ip[1].op == ByteCodeOp::JumpIfFalse &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfEqual16);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::JumpIfTrue &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfNotEqual16);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        break;
+
+    case ByteCodeOp::CompareOpNotEqual32:
+        if (ip[1].op == ByteCodeOp::JumpIfFalse &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfEqual32);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::JumpIfTrue &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfNotEqual32);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        break;
+
+    case ByteCodeOp::CompareOpNotEqual64:
+        if (ip[1].op == ByteCodeOp::JumpIfFalse &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfEqual64);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::JumpIfTrue &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfNotEqual64);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        break;
+
+        // Mix compare and jump
+    case ByteCodeOp::CompareOpLowerU32:
+        if (ip[1].op == ByteCodeOp::JumpIfTrue &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfLowerU32);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        // Mix compare and jump
+        if (ip[1].op == ByteCodeOp::JumpIfFalse &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfGreaterEqU32);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        break;
+
+    case ByteCodeOp::CompareOpLowerU64:
+        if (ip[1].op == ByteCodeOp::JumpIfTrue &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfLowerU64);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::JumpIfFalse &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfGreaterEqU64);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        break;
+
+    case ByteCodeOp::CompareOpLowerS32:
+        if (ip[1].op == ByteCodeOp::JumpIfTrue &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfLowerS32);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::JumpIfFalse &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfGreaterEqS32);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        break;
+
+    case ByteCodeOp::CompareOpLowerS64:
+        if (ip[1].op == ByteCodeOp::JumpIfTrue &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfLowerS64);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::JumpIfFalse &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfGreaterEqS64);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        break;
+
+    case ByteCodeOp::CompareOpLowerF32:
+        if (ip[1].op == ByteCodeOp::JumpIfTrue &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfLowerF32);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::JumpIfFalse &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfGreaterEqF32);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        break;
+
+    case ByteCodeOp::CompareOpLowerF64:
+        if (ip[1].op == ByteCodeOp::JumpIfTrue &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfLowerF64);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::JumpIfFalse &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfGreaterEqF64);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        break;
+
+        // Mix compare and jump
+    case ByteCodeOp::CompareOpGreaterEqU32:
+        if (ip[1].op == ByteCodeOp::JumpIfFalse &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfLowerU32);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        // Mix compare and jump
+        if (ip[1].op == ByteCodeOp::JumpIfTrue &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfGreaterEqU32);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        break;
+
+    case ByteCodeOp::CompareOpGreaterEqU64:
+        if (ip[1].op == ByteCodeOp::JumpIfFalse &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfLowerU64);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::JumpIfTrue &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfGreaterEqU64);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        break;
+
+    case ByteCodeOp::CompareOpGreaterEqS32:
+        if (ip[1].op == ByteCodeOp::JumpIfFalse &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfLowerS32);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::JumpIfTrue &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfGreaterEqS32);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        break;
+
+    case ByteCodeOp::CompareOpGreaterEqS64:
+        if (ip[1].op == ByteCodeOp::JumpIfFalse &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfLowerS64);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::JumpIfTrue &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfGreaterEqS64);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        break;
+
+    case ByteCodeOp::CompareOpGreaterEqF32:
+        if (ip[1].op == ByteCodeOp::JumpIfFalse &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfLowerF32);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::JumpIfTrue &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfGreaterEqF32);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        break;
+
+    case ByteCodeOp::CompareOpGreaterEqF64:
+        if (ip[1].op == ByteCodeOp::JumpIfFalse &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfLowerF64);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::JumpIfTrue &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfGreaterEqF64);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        break;
+
+        // Mix compare and jump
+    case ByteCodeOp::CompareOpGreaterU32:
+        if (ip[1].op == ByteCodeOp::JumpIfTrue &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfGreaterU32);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::JumpIfFalse &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfLowerEqU32);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        break;
+
+    case ByteCodeOp::CompareOpGreaterU64:
+        if (ip[1].op == ByteCodeOp::JumpIfTrue &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfGreaterU64);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::JumpIfFalse &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfLowerEqU64);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        break;
+
+    case ByteCodeOp::CompareOpGreaterS32:
+        if (ip[1].op == ByteCodeOp::JumpIfTrue &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfGreaterS32);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::JumpIfFalse &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfLowerEqS32);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        break;
+
+    case ByteCodeOp::CompareOpGreaterS64:
+        if (ip[1].op == ByteCodeOp::JumpIfTrue &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfGreaterS64);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::JumpIfFalse &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfLowerEqS64);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        break;
+
+    case ByteCodeOp::CompareOpGreaterF32:
+        if (ip[1].op == ByteCodeOp::JumpIfTrue &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfGreaterF32);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::JumpIfFalse &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfLowerEqF32);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        break;
+
+    case ByteCodeOp::CompareOpGreaterF64:
+        if (ip[1].op == ByteCodeOp::JumpIfTrue &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfGreaterF64);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::JumpIfFalse &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfLowerEqF64);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        break;
+
+        // Mix compare and jump
+    case ByteCodeOp::CompareOpLowerEqU32:
+        if (ip[1].op == ByteCodeOp::JumpIfFalse &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfGreaterU32);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::JumpIfTrue &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfLowerEqU32);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        break;
+
+    case ByteCodeOp::CompareOpLowerEqU64:
+        if (ip[1].op == ByteCodeOp::JumpIfFalse &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfGreaterU64);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::JumpIfTrue &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfLowerEqU64);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        break;
+
+    case ByteCodeOp::CompareOpLowerEqS32:
+        if (ip[1].op == ByteCodeOp::JumpIfFalse &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfGreaterS32);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::JumpIfTrue &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfLowerEqS32);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        break;
+
+    case ByteCodeOp::CompareOpLowerEqS64:
+        if (ip[1].op == ByteCodeOp::JumpIfFalse &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfGreaterS64);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::JumpIfTrue &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfLowerEqS64);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        break;
+
+    case ByteCodeOp::CompareOpLowerEqF32:
+        if (ip[1].op == ByteCodeOp::JumpIfFalse &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfGreaterF32);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::JumpIfTrue &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfLowerEqF32);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        break;
+
+    case ByteCodeOp::CompareOpLowerEqF64:
+        if (ip[1].op == ByteCodeOp::JumpIfFalse &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfGreaterF64);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::JumpIfTrue &&
+            ip[1].a.u32 == ip->c.u32 &&
+            ip->a.u32 != ip->c.u32 &&
+            (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfLowerEqF64);
+            ip[1].a.u64 = ip->a.u64;
+            ip[1].c.u64 = ip->b.u64;
+            ip[1].flags |= ip->flags & BCI_IMM_A;
+            ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
+            break;
+        }
+
+        break;
     }
 
     // Compare to == 0
     if (ip->flags & BCI_IMM_B && ip->a.u32 != ip->c.u32)
     {
-        if (ip->op == ByteCodeOp::CompareOpEqual8 &&
-            ip->b.u8 == 0 &&
-            ip[1].op == ByteCodeOp::JumpIfFalse &&
-            ip[1].a.u32 == ip->c.u32 &&
-            !(ip[1].flags & BCI_START_STMT))
+        switch (ip->op)
         {
-            SET_OP(ip + 1, ByteCodeOp::JumpIfNotZero8);
-            ip[1].a.u32 = ip->a.u32;
-        }
+        case ByteCodeOp::CompareOpEqual8:
+            if (ip->b.u8 == 0 &&
+                ip[1].op == ByteCodeOp::JumpIfFalse &&
+                ip[1].a.u32 == ip->c.u32 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip + 1, ByteCodeOp::JumpIfNotZero8);
+                ip[1].a.u32 = ip->a.u32;
+                break;
+            }
 
-        if (ip->op == ByteCodeOp::CompareOpEqual8 &&
-            ip->b.u8 == 0 &&
-            ip[1].op == ByteCodeOp::JumpIfTrue &&
-            ip[1].a.u32 == ip->c.u32 &&
-            !(ip[1].flags & BCI_START_STMT))
-        {
-            SET_OP(ip + 1, ByteCodeOp::JumpIfZero8);
-            ip[1].a.u32 = ip->a.u32;
-        }
+            if (ip->b.u8 == 0 &&
+                ip[1].op == ByteCodeOp::JumpIfTrue &&
+                ip[1].a.u32 == ip->c.u32 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip + 1, ByteCodeOp::JumpIfZero8);
+                ip[1].a.u32 = ip->a.u32;
+                break;
+            }
 
-        if (ip->op == ByteCodeOp::CompareOpEqual16 &&
-            ip->b.u16 == 0 &&
-            ip[1].op == ByteCodeOp::JumpIfFalse &&
-            ip[1].a.u32 == ip->c.u32 &&
-            !(ip[1].flags & BCI_START_STMT))
-        {
-            SET_OP(ip + 1, ByteCodeOp::JumpIfNotZero16);
-            ip[1].a.u32 = ip->a.u32;
-        }
+            if (ip->b.u8 == 0 &&
+                ip[1].op == ByteCodeOp::JumpIfZero8 &&
+                ip[1].a.u32 == ip->c.u32)
+            {
+                setNop(context, ip);
+                SET_OP(ip + 1, ByteCodeOp::JumpIfZero8);
+                ip[1].a.u32 = ip->a.u32;
+                break;
+            }
 
-        if (ip->op == ByteCodeOp::CompareOpEqual16 &&
-            ip->b.u16 == 0 &&
-            ip[1].op == ByteCodeOp::JumpIfTrue &&
-            ip[1].a.u32 == ip->c.u32 &&
-            !(ip[1].flags & BCI_START_STMT))
-        {
-            SET_OP(ip + 1, ByteCodeOp::JumpIfZero16);
-            ip[1].a.u32 = ip->a.u32;
-        }
+            break;
 
-        if (ip->op == ByteCodeOp::CompareOpEqual32 &&
-            ip->b.u32 == 0 &&
-            ip[1].op == ByteCodeOp::JumpIfFalse &&
-            ip[1].a.u32 == ip->c.u32 &&
-            !(ip[1].flags & BCI_START_STMT))
-        {
-            SET_OP(ip + 1, ByteCodeOp::JumpIfNotZero32);
-            ip[1].a.u32 = ip->a.u32;
-        }
+        case ByteCodeOp::CompareOpEqual16:
+            if (ip->b.u16 == 0 &&
+                ip[1].op == ByteCodeOp::JumpIfFalse &&
+                ip[1].a.u32 == ip->c.u32 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip + 1, ByteCodeOp::JumpIfNotZero16);
+                ip[1].a.u32 = ip->a.u32;
+                break;
+            }
 
-        if (ip->op == ByteCodeOp::CompareOpEqual32 &&
-            ip->b.u32 == 0 &&
-            ip[1].op == ByteCodeOp::JumpIfTrue &&
-            ip[1].a.u32 == ip->c.u32 &&
-            !(ip[1].flags & BCI_START_STMT))
-        {
-            SET_OP(ip + 1, ByteCodeOp::JumpIfZero32);
-            ip[1].a.u32 = ip->a.u32;
-        }
+            if (ip->b.u16 == 0 &&
+                ip[1].op == ByteCodeOp::JumpIfTrue &&
+                ip[1].a.u32 == ip->c.u32 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip + 1, ByteCodeOp::JumpIfZero16);
+                ip[1].a.u32 = ip->a.u32;
+                break;
+            }
 
-        if (ip->op == ByteCodeOp::CompareOpEqual64 &&
-            ip->b.u64 == 0 &&
-            ip[1].op == ByteCodeOp::JumpIfFalse &&
-            ip[1].a.u32 == ip->c.u32 &&
-            !(ip[1].flags & BCI_START_STMT))
-        {
-            SET_OP(ip + 1, ByteCodeOp::JumpIfNotZero64);
-            ip[1].a.u32 = ip->a.u32;
-        }
+            if (ip->b.u8 == 0 &&
+                ip[1].op == ByteCodeOp::JumpIfZero16 &&
+                ip[1].a.u32 == ip->c.u32)
+            {
+                setNop(context, ip);
+                SET_OP(ip + 1, ByteCodeOp::JumpIfZero16);
+                ip[1].a.u32 = ip->a.u32;
+                break;
+            }
 
-        if (ip->op == ByteCodeOp::CompareOpEqual64 &&
-            ip->b.u64 == 0 &&
-            ip[1].op == ByteCodeOp::JumpIfTrue &&
-            ip[1].a.u32 == ip->c.u32 &&
-            !(ip[1].flags & BCI_START_STMT))
-        {
-            SET_OP(ip + 1, ByteCodeOp::JumpIfZero64);
-            ip[1].a.u32 = ip->a.u32;
-        }
+            break;
 
-        if (ip->op == ByteCodeOp::CompareOpEqual8 &&
-            ip->b.u8 == 0 &&
-            ip[1].op == ByteCodeOp::JumpIfZero8 &&
-            ip[1].a.u32 == ip->c.u32)
-        {
-            setNop(context, ip);
-            SET_OP(ip + 1, ByteCodeOp::JumpIfZero8);
-            ip[1].a.u32 = ip->a.u32;
-        }
+        case ByteCodeOp::CompareOpEqual32:
+            if (ip->b.u32 == 0 &&
+                ip[1].op == ByteCodeOp::JumpIfFalse &&
+                ip[1].a.u32 == ip->c.u32 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip + 1, ByteCodeOp::JumpIfNotZero32);
+                ip[1].a.u32 = ip->a.u32;
+                break;
+            }
 
-        if (ip->op == ByteCodeOp::CompareOpEqual16 &&
-            ip->b.u8 == 0 &&
-            ip[1].op == ByteCodeOp::JumpIfZero16 &&
-            ip[1].a.u32 == ip->c.u32)
-        {
-            setNop(context, ip);
-            SET_OP(ip + 1, ByteCodeOp::JumpIfZero16);
-            ip[1].a.u32 = ip->a.u32;
-        }
+            if (ip->b.u32 == 0 &&
+                ip[1].op == ByteCodeOp::JumpIfTrue &&
+                ip[1].a.u32 == ip->c.u32 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip + 1, ByteCodeOp::JumpIfZero32);
+                ip[1].a.u32 = ip->a.u32;
+                break;
+            }
 
-        if (ip->op == ByteCodeOp::CompareOpEqual32 &&
-            ip->b.u8 == 0 &&
-            ip[1].op == ByteCodeOp::JumpIfZero32 &&
-            ip[1].a.u32 == ip->c.u32)
-        {
-            setNop(context, ip);
-            SET_OP(ip + 1, ByteCodeOp::JumpIfZero32);
-            ip[1].a.u32 = ip->a.u32;
-        }
+            if (ip->b.u8 == 0 &&
+                ip[1].op == ByteCodeOp::JumpIfZero32 &&
+                ip[1].a.u32 == ip->c.u32)
+            {
+                setNop(context, ip);
+                SET_OP(ip + 1, ByteCodeOp::JumpIfZero32);
+                ip[1].a.u32 = ip->a.u32;
+                break;
+            }
 
-        if (ip->op == ByteCodeOp::CompareOpEqual64 &&
-            ip->b.u64 == 0 &&
-            ip[1].op == ByteCodeOp::JumpIfNotZero8 &&
-            ip[1].a.u32 == ip->c.u32)
-        {
-            setNop(context, ip);
-            SET_OP(ip + 1, ByteCodeOp::JumpIfZero64);
-            ip[1].a.u32 = ip->a.u32;
-        }
+            break;
+
+        case ByteCodeOp::CompareOpEqual64:
+            if (ip->b.u64 == 0 &&
+                ip[1].op == ByteCodeOp::JumpIfFalse &&
+                ip[1].a.u32 == ip->c.u32 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip + 1, ByteCodeOp::JumpIfNotZero64);
+                ip[1].a.u32 = ip->a.u32;
+                break;
+            }
+
+            if (ip->b.u64 == 0 &&
+                ip[1].op == ByteCodeOp::JumpIfTrue &&
+                ip[1].a.u32 == ip->c.u32 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip + 1, ByteCodeOp::JumpIfZero64);
+                ip[1].a.u32 = ip->a.u32;
+                break;
+            }
+
+            if (ip->b.u64 == 0 &&
+                ip[1].op == ByteCodeOp::JumpIfNotZero8 &&
+                ip[1].a.u32 == ip->c.u32)
+            {
+                setNop(context, ip);
+                SET_OP(ip + 1, ByteCodeOp::JumpIfZero64);
+                ip[1].a.u32 = ip->a.u32;
+            }
+
+            break;
 
         // Compare to != 0
-        if (ip->op == ByteCodeOp::CompareOpNotEqual8 &&
-            ip->b.u8 == 0 &&
-            ip[1].op == ByteCodeOp::JumpIfFalse &&
-            ip[1].a.u32 == ip->c.u32 &&
-            !(ip[1].flags & BCI_START_STMT))
-        {
-            SET_OP(ip + 1, ByteCodeOp::JumpIfZero8);
-            ip[1].a.u32 = ip->a.u32;
+        case ByteCodeOp::CompareOpNotEqual8:
+            if (ip->b.u8 == 0 &&
+                ip[1].op == ByteCodeOp::JumpIfFalse &&
+                ip[1].a.u32 == ip->c.u32 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip + 1, ByteCodeOp::JumpIfZero8);
+                ip[1].a.u32 = ip->a.u32;
+                break;
+            }
+
+            if (ip->b.u8 == 0 &&
+                ip[1].op == ByteCodeOp::JumpIfTrue &&
+                ip[1].a.u32 == ip->c.u32 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip + 1, ByteCodeOp::JumpIfNotZero8);
+                ip[1].a.u32 = ip->a.u32;
+                break;
+            }
+
+            break;
+
+        case ByteCodeOp::CompareOpNotEqual16:
+            if (ip->b.u16 == 0 &&
+                ip[1].op == ByteCodeOp::JumpIfFalse &&
+                ip[1].a.u32 == ip->c.u32 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip + 1, ByteCodeOp::JumpIfZero16);
+                ip[1].a.u32 = ip->a.u32;
+                break;
+            }
+
+            if (ip->b.u16 == 0 &&
+                ip[1].op == ByteCodeOp::JumpIfTrue &&
+                ip[1].a.u32 == ip->c.u32 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip + 1, ByteCodeOp::JumpIfNotZero16);
+                ip[1].a.u32 = ip->a.u32;
+                break;
+            }
+
+            break;
+
+        case ByteCodeOp::CompareOpNotEqual32:
+            if (ip->b.u32 == 0 &&
+                ip[1].op == ByteCodeOp::JumpIfFalse &&
+                ip[1].a.u32 == ip->c.u32 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip + 1, ByteCodeOp::JumpIfZero32);
+                ip[1].a.u32 = ip->a.u32;
+                break;
+            }
+
+            if (ip->b.u32 == 0 &&
+                ip[1].op == ByteCodeOp::JumpIfTrue &&
+                ip[1].a.u32 == ip->c.u32 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip + 1, ByteCodeOp::JumpIfNotZero32);
+                ip[1].a.u32 = ip->a.u32;
+                break;
+            }
+
+            break;
+
+        case ByteCodeOp::CompareOpNotEqual64:
+            if (ip->b.u64 == 0 &&
+                ip[1].op == ByteCodeOp::JumpIfFalse &&
+                ip[1].a.u32 == ip->c.u32 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip + 1, ByteCodeOp::JumpIfZero64);
+                ip[1].a.u32 = ip->a.u32;
+                break;
+            }
+
+            if (ip->b.u64 == 0 &&
+                ip[1].op == ByteCodeOp::JumpIfTrue &&
+                ip[1].a.u32 == ip->c.u32 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip + 1, ByteCodeOp::JumpIfNotZero64);
+                ip[1].a.u32 = ip->a.u32;
+                break;
+            }
+
+            break;
         }
-
-        if (ip->op == ByteCodeOp::CompareOpNotEqual8 &&
-            ip->b.u8 == 0 &&
-            ip[1].op == ByteCodeOp::JumpIfTrue &&
-            ip[1].a.u32 == ip->c.u32 &&
-            !(ip[1].flags & BCI_START_STMT))
-        {
-            SET_OP(ip + 1, ByteCodeOp::JumpIfNotZero8);
-            ip[1].a.u32 = ip->a.u32;
-        }
-
-        if (ip->op == ByteCodeOp::CompareOpNotEqual16 &&
-            ip->b.u16 == 0 &&
-            ip[1].op == ByteCodeOp::JumpIfFalse &&
-            ip[1].a.u32 == ip->c.u32 &&
-            !(ip[1].flags & BCI_START_STMT))
-        {
-            SET_OP(ip + 1, ByteCodeOp::JumpIfZero16);
-            ip[1].a.u32 = ip->a.u32;
-        }
-
-        if (ip->op == ByteCodeOp::CompareOpNotEqual16 &&
-            ip->b.u16 == 0 &&
-            ip[1].op == ByteCodeOp::JumpIfTrue &&
-            ip[1].a.u32 == ip->c.u32 &&
-            !(ip[1].flags & BCI_START_STMT))
-        {
-            SET_OP(ip + 1, ByteCodeOp::JumpIfNotZero16);
-            ip[1].a.u32 = ip->a.u32;
-        }
-
-        if (ip->op == ByteCodeOp::CompareOpNotEqual32 &&
-            ip->b.u32 == 0 &&
-            ip[1].op == ByteCodeOp::JumpIfFalse &&
-            ip[1].a.u32 == ip->c.u32 &&
-            !(ip[1].flags & BCI_START_STMT))
-        {
-            SET_OP(ip + 1, ByteCodeOp::JumpIfZero32);
-            ip[1].a.u32 = ip->a.u32;
-        }
-
-        if (ip->op == ByteCodeOp::CompareOpNotEqual32 &&
-            ip->b.u32 == 0 &&
-            ip[1].op == ByteCodeOp::JumpIfTrue &&
-            ip[1].a.u32 == ip->c.u32 &&
-            !(ip[1].flags & BCI_START_STMT))
-        {
-            SET_OP(ip + 1, ByteCodeOp::JumpIfNotZero32);
-            ip[1].a.u32 = ip->a.u32;
-        }
-
-        if (ip->op == ByteCodeOp::CompareOpNotEqual64 &&
-            ip->b.u64 == 0 &&
-            ip[1].op == ByteCodeOp::JumpIfFalse &&
-            ip[1].a.u32 == ip->c.u32 &&
-            !(ip[1].flags & BCI_START_STMT))
-        {
-            SET_OP(ip + 1, ByteCodeOp::JumpIfZero64);
-            ip[1].a.u32 = ip->a.u32;
-        }
-
-        if (ip->op == ByteCodeOp::CompareOpNotEqual64 &&
-            ip->b.u64 == 0 &&
-            ip[1].op == ByteCodeOp::JumpIfTrue &&
-            ip[1].a.u32 == ip->c.u32 &&
-            !(ip[1].flags & BCI_START_STMT))
-        {
-            SET_OP(ip + 1, ByteCodeOp::JumpIfNotZero64);
-            ip[1].a.u32 = ip->a.u32;
-        }
-    }
-
-    // Mix compare and jump
-    if (ip->op == ByteCodeOp::CompareOpEqual8 &&
-        ip[1].op == ByteCodeOp::JumpIfFalse &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfNotEqual8);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    if (ip->op == ByteCodeOp::CompareOpEqual16 &&
-        ip[1].op == ByteCodeOp::JumpIfFalse &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfNotEqual16);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    if (ip->op == ByteCodeOp::CompareOpEqual32 &&
-        ip[1].op == ByteCodeOp::JumpIfFalse &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfNotEqual32);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    if (ip->op == ByteCodeOp::CompareOpEqual64 &&
-        ip[1].op == ByteCodeOp::JumpIfFalse &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfNotEqual64);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    // Mix compare and jump
-    if (ip->op == ByteCodeOp::CompareOpEqual8 &&
-        ip[1].op == ByteCodeOp::JumpIfTrue &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfEqual8);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    if (ip->op == ByteCodeOp::CompareOpEqual16 &&
-        ip[1].op == ByteCodeOp::JumpIfTrue &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfEqual16);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    if (ip->op == ByteCodeOp::CompareOpEqual32 &&
-        ip[1].op == ByteCodeOp::JumpIfTrue &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfEqual32);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    if (ip->op == ByteCodeOp::CompareOpEqual64 &&
-        ip[1].op == ByteCodeOp::JumpIfTrue &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfEqual64);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    // Mix compare and jump
-    if (ip->op == ByteCodeOp::CompareOpNotEqual8 &&
-        ip[1].op == ByteCodeOp::JumpIfFalse &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfEqual8);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    if (ip->op == ByteCodeOp::CompareOpNotEqual16 &&
-        ip[1].op == ByteCodeOp::JumpIfFalse &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfEqual16);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    if (ip->op == ByteCodeOp::CompareOpNotEqual32 &&
-        ip[1].op == ByteCodeOp::JumpIfFalse &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfEqual32);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    if (ip->op == ByteCodeOp::CompareOpNotEqual64 &&
-        ip[1].op == ByteCodeOp::JumpIfFalse &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfEqual64);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    // Mix compare and jump
-    if (ip->op == ByteCodeOp::CompareOpNotEqual8 &&
-        ip[1].op == ByteCodeOp::JumpIfTrue &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfNotEqual8);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    if (ip->op == ByteCodeOp::CompareOpNotEqual16 &&
-        ip[1].op == ByteCodeOp::JumpIfTrue &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfNotEqual16);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    if (ip->op == ByteCodeOp::CompareOpNotEqual32 &&
-        ip[1].op == ByteCodeOp::JumpIfTrue &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfNotEqual32);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    if (ip->op == ByteCodeOp::CompareOpNotEqual64 &&
-        ip[1].op == ByteCodeOp::JumpIfTrue &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfNotEqual64);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    // Mix compare and jump
-    if (ip->op == ByteCodeOp::CompareOpLowerU32 &&
-        ip[1].op == ByteCodeOp::JumpIfTrue &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfLowerU32);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    if (ip->op == ByteCodeOp::CompareOpLowerU64 &&
-        ip[1].op == ByteCodeOp::JumpIfTrue &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfLowerU64);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    if (ip->op == ByteCodeOp::CompareOpLowerS32 &&
-        ip[1].op == ByteCodeOp::JumpIfTrue &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfLowerS32);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    if (ip->op == ByteCodeOp::CompareOpLowerS64 &&
-        ip[1].op == ByteCodeOp::JumpIfTrue &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfLowerS64);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    if (ip->op == ByteCodeOp::CompareOpLowerF32 &&
-        ip[1].op == ByteCodeOp::JumpIfTrue &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfLowerF32);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    if (ip->op == ByteCodeOp::CompareOpLowerF64 &&
-        ip[1].op == ByteCodeOp::JumpIfTrue &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfLowerF64);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    // Mix compare and jump
-    if (ip->op == ByteCodeOp::CompareOpGreaterEqU32 &&
-        ip[1].op == ByteCodeOp::JumpIfFalse &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfLowerU32);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    if (ip->op == ByteCodeOp::CompareOpGreaterEqU64 &&
-        ip[1].op == ByteCodeOp::JumpIfFalse &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfLowerU64);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    if (ip->op == ByteCodeOp::CompareOpGreaterEqS32 &&
-        ip[1].op == ByteCodeOp::JumpIfFalse &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfLowerS32);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    if (ip->op == ByteCodeOp::CompareOpGreaterEqS64 &&
-        ip[1].op == ByteCodeOp::JumpIfFalse &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfLowerS64);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    if (ip->op == ByteCodeOp::CompareOpGreaterEqF32 &&
-        ip[1].op == ByteCodeOp::JumpIfFalse &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfLowerF32);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    if (ip->op == ByteCodeOp::CompareOpGreaterEqF64 &&
-        ip[1].op == ByteCodeOp::JumpIfFalse &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfLowerF64);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    // Mix compare and jump
-    if (ip->op == ByteCodeOp::CompareOpLowerU32 &&
-        ip[1].op == ByteCodeOp::JumpIfFalse &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfGreaterEqU32);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    if (ip->op == ByteCodeOp::CompareOpLowerU64 &&
-        ip[1].op == ByteCodeOp::JumpIfFalse &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfGreaterEqU64);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    if (ip->op == ByteCodeOp::CompareOpLowerS32 &&
-        ip[1].op == ByteCodeOp::JumpIfFalse &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfGreaterEqS32);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    if (ip->op == ByteCodeOp::CompareOpLowerS64 &&
-        ip[1].op == ByteCodeOp::JumpIfFalse &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfGreaterEqS64);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    if (ip->op == ByteCodeOp::CompareOpLowerF32 &&
-        ip[1].op == ByteCodeOp::JumpIfFalse &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfGreaterEqF32);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    if (ip->op == ByteCodeOp::CompareOpLowerF64 &&
-        ip[1].op == ByteCodeOp::JumpIfFalse &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfGreaterEqF64);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    // Mix compare and jump
-    if (ip->op == ByteCodeOp::CompareOpGreaterEqU32 &&
-        ip[1].op == ByteCodeOp::JumpIfTrue &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfGreaterEqU32);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    if (ip->op == ByteCodeOp::CompareOpGreaterEqU64 &&
-        ip[1].op == ByteCodeOp::JumpIfTrue &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfGreaterEqU64);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    if (ip->op == ByteCodeOp::CompareOpGreaterEqS32 &&
-        ip[1].op == ByteCodeOp::JumpIfTrue &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfGreaterEqS32);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    if (ip->op == ByteCodeOp::CompareOpGreaterEqS64 &&
-        ip[1].op == ByteCodeOp::JumpIfTrue &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfGreaterEqS64);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    if (ip->op == ByteCodeOp::CompareOpGreaterEqF32 &&
-        ip[1].op == ByteCodeOp::JumpIfTrue &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfGreaterEqF32);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    if (ip->op == ByteCodeOp::CompareOpGreaterEqF64 &&
-        ip[1].op == ByteCodeOp::JumpIfTrue &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfGreaterEqF64);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    // Mix compare and jump
-    if (ip->op == ByteCodeOp::CompareOpGreaterU32 &&
-        ip[1].op == ByteCodeOp::JumpIfTrue &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfGreaterU32);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    if (ip->op == ByteCodeOp::CompareOpGreaterU64 &&
-        ip[1].op == ByteCodeOp::JumpIfTrue &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfGreaterU64);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    if (ip->op == ByteCodeOp::CompareOpGreaterS32 &&
-        ip[1].op == ByteCodeOp::JumpIfTrue &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfGreaterS32);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    if (ip->op == ByteCodeOp::CompareOpGreaterS64 &&
-        ip[1].op == ByteCodeOp::JumpIfTrue &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfGreaterS64);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    if (ip->op == ByteCodeOp::CompareOpGreaterF32 &&
-        ip[1].op == ByteCodeOp::JumpIfTrue &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfGreaterF32);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    if (ip->op == ByteCodeOp::CompareOpGreaterF64 &&
-        ip[1].op == ByteCodeOp::JumpIfTrue &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfGreaterF64);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    // Mix compare and jump
-    if (ip->op == ByteCodeOp::CompareOpLowerEqU32 &&
-        ip[1].op == ByteCodeOp::JumpIfFalse &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfGreaterU32);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    if (ip->op == ByteCodeOp::CompareOpLowerEqU64 &&
-        ip[1].op == ByteCodeOp::JumpIfFalse &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfGreaterU64);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    if (ip->op == ByteCodeOp::CompareOpLowerEqS32 &&
-        ip[1].op == ByteCodeOp::JumpIfFalse &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfGreaterS32);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    if (ip->op == ByteCodeOp::CompareOpLowerEqS64 &&
-        ip[1].op == ByteCodeOp::JumpIfFalse &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfGreaterS64);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    if (ip->op == ByteCodeOp::CompareOpLowerEqF32 &&
-        ip[1].op == ByteCodeOp::JumpIfFalse &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfGreaterF32);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    if (ip->op == ByteCodeOp::CompareOpLowerEqF64 &&
-        ip[1].op == ByteCodeOp::JumpIfFalse &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfGreaterF64);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    // Mix compare and jump
-    if (ip->op == ByteCodeOp::CompareOpLowerEqU32 &&
-        ip[1].op == ByteCodeOp::JumpIfTrue &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfLowerEqU32);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    if (ip->op == ByteCodeOp::CompareOpLowerEqU64 &&
-        ip[1].op == ByteCodeOp::JumpIfTrue &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfLowerEqU64);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    if (ip->op == ByteCodeOp::CompareOpLowerEqS32 &&
-        ip[1].op == ByteCodeOp::JumpIfTrue &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfLowerEqS32);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    if (ip->op == ByteCodeOp::CompareOpLowerEqS64 &&
-        ip[1].op == ByteCodeOp::JumpIfTrue &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfLowerEqS64);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    if (ip->op == ByteCodeOp::CompareOpLowerEqF32 &&
-        ip[1].op == ByteCodeOp::JumpIfTrue &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfLowerEqF32);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    if (ip->op == ByteCodeOp::CompareOpLowerEqF64 &&
-        ip[1].op == ByteCodeOp::JumpIfTrue &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfLowerEqF64);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    // Mix compare and jump
-    if (ip->op == ByteCodeOp::CompareOpGreaterU32 &&
-        ip[1].op == ByteCodeOp::JumpIfFalse &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfLowerEqU32);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    if (ip->op == ByteCodeOp::CompareOpGreaterU64 &&
-        ip[1].op == ByteCodeOp::JumpIfFalse &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfLowerEqU64);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    if (ip->op == ByteCodeOp::CompareOpGreaterS32 &&
-        ip[1].op == ByteCodeOp::JumpIfFalse &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfLowerEqS32);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    if (ip->op == ByteCodeOp::CompareOpGreaterS64 &&
-        ip[1].op == ByteCodeOp::JumpIfFalse &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfLowerEqS64);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    if (ip->op == ByteCodeOp::CompareOpGreaterF32 &&
-        ip[1].op == ByteCodeOp::JumpIfFalse &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfLowerEqF32);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
-    }
-
-    if (ip->op == ByteCodeOp::CompareOpGreaterF64 &&
-        ip[1].op == ByteCodeOp::JumpIfFalse &&
-        ip[1].a.u32 == ip->c.u32 &&
-        ip->a.u32 != ip->c.u32 &&
-        (ip->b.u32 != ip->c.u32 || ip->flags & BCI_IMM_B) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfLowerEqF64);
-        ip[1].a.u64 = ip->a.u64;
-        ip[1].c.u64 = ip->b.u64;
-        ip[1].flags |= ip->flags & BCI_IMM_A;
-        ip[1].flags |= ip->flags & BCI_IMM_B ? BCI_IMM_C : 0;
     }
 }
 
