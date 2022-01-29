@@ -70,6 +70,13 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             emitInstruction(context, ByteCodeOp::Add64byVB64, node->resultRegisterRC[0])->b.u64 = resolved->computedValue.storageOffset;
             return true;
         }
+        else if (node->forceTakeAddress() && (!typeInfo->isNative(NativeTypeKind::String) || node->parent->kind != AstNodeKind::ArrayPointerIndex))
+        {
+            emitInstruction(context, ByteCodeOp::Add64byVB64, node->resultRegisterRC[0])->b.u64 = resolved->computedValue.storageOffset;
+            if (node->parent->flags & AST_ARRAY_POINTER_REF)
+                emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
+            return true;
+        }
         else if (typeInfo->numRegisters() == 2)
         {
             transformResultToLinear2(context, node->resultRegisterRC);
