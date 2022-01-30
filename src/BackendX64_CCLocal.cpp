@@ -8,8 +8,8 @@ void BackendX64::emitLocalFctCall(X64PerThread&                 pp,
                                   TypeInfoFuncAttr*             typeFuncBC,
                                   int                           offsetStack,
                                   int                           numCallParams,
-                                  int&                          popRAidx,
-                                  int&                          callerIndex,
+                                  int                           popRAidx,
+                                  int                           callerIndex,
                                   const VectorNative<uint32_t>& pushRAParams,
                                   int                           firstIdxCall)
 {
@@ -140,17 +140,12 @@ void BackendX64::emitLocalCallParameters(X64PerThread& pp, uint32_t sizeParamsSt
         BackendX64Inst::emit_Test64(pp, RAX, RAX);
 
         // If not zero, jump to closure call
-        BackendX64Inst::emit_LongJumpOp(pp, BackendX64Inst::JNZ);
+        BackendX64Inst::emit_LongJumpOp(pp, BackendX64Inst::JZ);
         pp.concat.addU32(0);
         auto seekPtrClosure = pp.concat.getSeekPtr() - 4;
         auto seekJmpClosure = pp.concat.totalCount();
 
-        auto savepopRAidx    = popRAidx;
-        auto savecallerIndex = callerIndex;
-        auto saveOffsetStack = offsetStack;
-        savepopRAidx--;
-
-        emitLocalFctCall(pp, typeFuncBC, saveOffsetStack, numCallParams, savepopRAidx, savecallerIndex, pushRAParams, 1);
+        emitLocalFctCall(pp, typeFuncBC, offsetStack, numCallParams, popRAidx, callerIndex, pushRAParams, 0);
 
         // Jump to after closure call
         BackendX64Inst::emit_LongJumpOp(pp, BackendX64Inst::JUMP);
@@ -161,7 +156,7 @@ void BackendX64::emitLocalCallParameters(X64PerThread& pp, uint32_t sizeParamsSt
         // Update jump to closure call
         *seekPtrClosure = (uint8_t) (pp.concat.totalCount() - seekJmpClosure);
 
-        emitLocalFctCall(pp, typeFuncBC, offsetStack, numCallParams, popRAidx, callerIndex, pushRAParams, 0);
+        emitLocalFctCall(pp, typeFuncBC, offsetStack, numCallParams, popRAidx - 1, callerIndex, pushRAParams, 1);
 
         *seekPtrAfterClosure = (uint8_t) (pp.concat.totalCount() - seekJmpAfterClosure);
     }
