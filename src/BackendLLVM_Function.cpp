@@ -3846,21 +3846,60 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 builder.CreateCondBr(v2, blockLambdaForeign, blockLambdaLocal);
             }
 
+            // Foreign
+            //////////////////////////////
             builder.SetInsertPoint(blockLambdaForeign);
             {
-                auto                v0 = builder.CreateLoad(GEP_I32(allocR, ip->a.u32));
-                auto                v1 = builder.CreateAnd(v0, builder.getInt64(~SWAG_LAMBDA_FOREIGN_MARKER));
-                llvm::FunctionType* FT;
-                SWAG_CHECK(createFunctionTypeForeign(buildParameters, moduleToGen, typeFuncBC, &FT));
-                auto                       PT = llvm::PointerType::getUnqual(FT);
-                auto                       r1 = builder.CreateIntToPtr(v1, PT);
+                llvm::FunctionType*        FT = nullptr;
+                auto                       r0 = builder.CreateLoad(GEP_I32(allocR, ip->a.u32));
+                auto                       v1 = builder.CreateAnd(r0, builder.getInt64(~SWAG_LAMBDA_FOREIGN_MARKER));
                 VectorNative<llvm::Value*> fctParams;
                 getForeignCallParameters(buildParameters, allocR, allocRR, moduleToGen, typeFuncBC, fctParams, pushRAParams);
-                auto result = builder.CreateCall(FT, r1, {fctParams.begin(), fctParams.end()});
-                SWAG_CHECK(getForeignCallReturnValue(buildParameters, allocRR, moduleToGen, typeFuncBC, result));
-                builder.CreateBr(blockNext);
+
+                if (typeFuncBC->isClosure())
+                {
+                    llvm::BasicBlock* blockLambda  = llvm::BasicBlock::Create(context, "", func);
+                    llvm::BasicBlock* blockClosure = llvm::BasicBlock::Create(context, "", func);
+
+                    // Test closure context pointer. If null, this is a lambda.
+                    auto v0 = builder.CreateLoad(GEP_I32(allocR, pushRAParams.back()));
+                    auto v2 = builder.CreateIsNotNull(v0);
+                    builder.CreateCondBr(v2, blockClosure, blockLambda);
+
+                    // Lambda call. We must eliminate the first parameter (closure context)
+                    builder.SetInsertPoint(blockLambda);
+                    VectorNative<llvm::Value*> fctParamsLocal;
+                    getForeignCallParameters(buildParameters, allocR, allocRR, moduleToGen, typeFuncBC, fctParamsLocal, pushRAParams, true);
+
+                    SWAG_CHECK(createFunctionTypeForeign(buildParameters, moduleToGen, typeFuncBC, &FT, true));
+                    auto l_PT     = llvm::PointerType::getUnqual(FT);
+                    auto l_r1     = builder.CreateIntToPtr(v1, l_PT);
+                    auto l_result = builder.CreateCall(FT, l_r1, {fctParamsLocal.begin(), fctParamsLocal.end()});
+                    SWAG_CHECK(getForeignCallReturnValue(buildParameters, allocRR, moduleToGen, typeFuncBC, l_result));
+                    builder.CreateBr(blockNext);
+
+                    // Closure call. Normal call, as the type contains the first parameter.
+                    builder.SetInsertPoint(blockClosure);
+                    SWAG_CHECK(createFunctionTypeForeign(buildParameters, moduleToGen, typeFuncBC, &FT));
+                    auto c_PT     = llvm::PointerType::getUnqual(FT);
+                    auto c_r1     = builder.CreateIntToPtr(v1, c_PT);
+                    auto c_result = builder.CreateCall(FT, c_r1, {fctParams.begin(), fctParams.end()});
+                    SWAG_CHECK(getForeignCallReturnValue(buildParameters, allocRR, moduleToGen, typeFuncBC, c_result));
+                    builder.CreateBr(blockNext);
+                }
+                else
+                {
+                    SWAG_CHECK(createFunctionTypeForeign(buildParameters, moduleToGen, typeFuncBC, &FT));
+                    auto PT     = llvm::PointerType::getUnqual(FT);
+                    auto r1     = builder.CreateIntToPtr(v1, PT);
+                    auto result = builder.CreateCall(FT, r1, {fctParams.begin(), fctParams.end()});
+                    SWAG_CHECK(getForeignCallReturnValue(buildParameters, allocRR, moduleToGen, typeFuncBC, result));
+                    builder.CreateBr(blockNext);
+                }
             }
 
+            // Local
+            //////////////////////////////
             builder.SetInsertPoint(blockLambdaLocal);
             {
                 auto                       r0 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
@@ -3902,6 +3941,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 }
             }
 
+            // Bytecode
+            //////////////////////////////
             builder.SetInsertPoint(blockLambdaBC);
             {
                 auto                       v0 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));

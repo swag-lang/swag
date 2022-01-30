@@ -162,8 +162,8 @@ llvm::FunctionType* BackendLLVM::createFunctionTypeLocal(const BuildParameters& 
     // Already done ?
     if (closureToLambda)
     {
-        auto it = pp.mapFctTypeClosure.find(typeFuncBC);
-        if (it != pp.mapFctTypeClosure.end())
+        auto it = pp.mapFctTypeInternalClosure.find(typeFuncBC);
+        if (it != pp.mapFctTypeInternalClosure.end())
             return it->second;
     }
     else
@@ -216,7 +216,7 @@ llvm::FunctionType* BackendLLVM::createFunctionTypeLocal(const BuildParameters& 
 
     auto result = llvm::FunctionType::get(llvm::Type::getVoidTy(context), {params.begin(), params.end()}, isVarArg);
     if (closureToLambda)
-        pp.mapFctTypeClosure[typeFuncBC] = result;
+        pp.mapFctTypeInternalClosure[typeFuncBC] = result;
     else
         pp.mapFctTypeInternal[typeFuncBC] = result;
     return result;

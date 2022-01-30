@@ -203,7 +203,7 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
     return true;
 }
 
-bool BackendLLVM::createFunctionTypeForeign(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, llvm::FunctionType** result)
+bool BackendLLVM::createFunctionTypeForeign(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, llvm::FunctionType** result, bool closureToLambda)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
@@ -211,11 +211,23 @@ bool BackendLLVM::createFunctionTypeForeign(const BuildParameters& buildParamete
     auto& builder         = *pp.builder;
 
     // Already done ?
-    auto it = pp.mapFctTypeForeign.find(typeFunc);
-    if (it != pp.mapFctTypeForeign.end())
+    if (closureToLambda)
     {
-        *result = it->second;
-        return true;
+        auto it = pp.mapFctTypeForeignClosure.find(typeFunc);
+        if (it != pp.mapFctTypeForeignClosure.end())
+        {
+            *result = it->second;
+            return true;
+        }
+    }
+    else
+    {
+        auto it = pp.mapFctTypeForeign.find(typeFunc);
+        if (it != pp.mapFctTypeForeign.end())
+        {
+            *result = it->second;
+            return true;
+        }
     }
 
     VectorNative<llvm::Type*> params;
@@ -246,8 +258,12 @@ bool BackendLLVM::createFunctionTypeForeign(const BuildParameters& buildParamete
             }
         }
 
+        int idxFirst = 0;
+        if (typeFunc->isClosure() && closureToLambda)
+            idxFirst = 1;
+
         llvm::Type* cType = nullptr;
-        for (int i = 0; i < numParams; i++)
+        for (int i = idxFirst; i < numParams; i++)
         {
             auto param = TypeManager::concreteReferenceType(typeFunc->parameters[i]->typeInfo);
 
@@ -284,7 +300,10 @@ bool BackendLLVM::createFunctionTypeForeign(const BuildParameters& buildParamete
 
     *result = llvm::FunctionType::get(returnType, {params.begin(), params.end()}, false);
 
-    pp.mapFctTypeForeign[typeFunc] = *result;
+    if (closureToLambda)
+        pp.mapFctTypeForeignClosure[typeFunc] = *result;
+    else
+        pp.mapFctTypeForeign[typeFunc] = *result;
 
     return true;
 }
@@ -295,7 +314,8 @@ bool BackendLLVM::getForeignCallParameters(const BuildParameters&        buildPa
                                            Module*                       moduleToGen,
                                            TypeInfoFuncAttr*             typeFuncBC,
                                            VectorNative<llvm::Value*>&   params,
-                                           const VectorNative<uint32_t>& pushParams)
+                                           const VectorNative<uint32_t>& pushParams,
+                                           bool                          closureToLambda)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
@@ -323,8 +343,15 @@ bool BackendLLVM::getForeignCallParameters(const BuildParameters&        buildPa
         }
     }
 
+    int idxFirst = 0;
+    if (typeFuncBC->isClosure() && closureToLambda)
+    {
+        idxFirst = 1;
+        idxParam--;
+    }
+
     // All parameters
-    for (int idxCall = 0; idxCall < numCallParams; idxCall++)
+    for (int idxCall = idxFirst; idxCall < numCallParams; idxCall++)
     {
         auto typeParam = TypeManager::concreteReferenceType(typeFuncBC->parameters[idxCall]->typeInfo);
 
