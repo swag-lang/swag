@@ -23,42 +23,47 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
 
         auto flags = g_ByteCodeOpDesc[(int) ip->op].flags;
 
-        // CopyRBRA X, X
-        if (ip->op == op && ip->a.u32 == ip->b.u32)
-            setNop(context, ip);
-
-        // CopyRBRA X, Y followed by CopyRBRA Y, X
-        if (ip->op == op &&
-            ip[1].op == op &&
-            ip->a.u32 == ip[1].b.u32 &&
-            ip->b.u32 == ip[1].a.u32)
+        if (ip->op == op)
         {
-            setNop(context, ip + 1);
+            // CopyRBRA X, X
+            if (ip->a.u32 == ip->b.u32)
+            {
+                setNop(context, ip);
+            }
+
+            // CopyRBRA X, Y followed by CopyRBRA Y, X
+            if (ip[1].op == op &&
+                ip->a.u32 == ip[1].b.u32 &&
+                ip->b.u32 == ip[1].a.u32)
+            {
+                setNop(context, ip + 1);
+            }
         }
 
-        // CopyRBRA followed by one single pushraparam, take the original register
-        if (ip->op == ByteCodeOp::CopyRBtoRA64 &&
-            ip[1].op == ByteCodeOp::PushRAParam &&
-            ip[0].a.u32 == ip[1].a.u32 &&
-            !(ip[1].flags & BCI_START_STMT))
+        if (ip->op == ByteCodeOp::CopyRBtoRA64)
         {
-            ip[1].a.u32                   = ip[0].b.u32;
-            context->passHasDoneSomething = true;
-        }
+            // CopyRBRA followed by one single pushraparam, take the original register
+            if (ip[1].op == ByteCodeOp::PushRAParam &&
+                ip[0].a.u32 == ip[1].a.u32 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                ip[1].a.u32                   = ip[0].b.u32;
+                context->passHasDoneSomething = true;
+            }
 
-        // 2 CopyRBRA followed by one single pushraparam2, take the original registers
-        if (ip[0].op == ByteCodeOp::CopyRBtoRA64 &&
-            ip[1].op == ByteCodeOp::CopyRBtoRA64 &&
-            ip[2].op == ByteCodeOp::PushRAParam2 &&
-            ip[0].a.u32 == ip[2].b.u32 &&
-            ip[1].a.u32 == ip[2].a.u32 &&
-            !(ip[0].flags & BCI_START_STMT) &&
-            !(ip[1].flags & BCI_START_STMT) &&
-            !(ip[2].flags & BCI_START_STMT))
-        {
-            ip[2].a.u32                   = ip[1].b.u32;
-            ip[2].b.u32                   = ip[0].b.u32;
-            context->passHasDoneSomething = true;
+            // 2 CopyRBRA followed by one single pushraparam2, take the original registers
+            if (ip[1].op == ByteCodeOp::CopyRBtoRA64 &&
+                ip[2].op == ByteCodeOp::PushRAParam2 &&
+                ip[0].a.u32 == ip[2].b.u32 &&
+                ip[1].a.u32 == ip[2].a.u32 &&
+                !(ip[0].flags & BCI_START_STMT) &&
+                !(ip[1].flags & BCI_START_STMT) &&
+                !(ip[2].flags & BCI_START_STMT))
+            {
+                ip[2].a.u32                   = ip[1].b.u32;
+                ip[2].b.u32                   = ip[0].b.u32;
+                context->passHasDoneSomething = true;
+            }
         }
 
         if (ip->op == op)
@@ -85,7 +90,34 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
             continue;
         }
 
-        if (op == ByteCodeOp::CopyRBtoRA64)
+        // If we use a register that comes from a CopyRBRA, then use the initial
+        // register instead (that way, the Copy can become deadstore and removed later)
+        // Do it for specific intructions, when sizes are a match
+        if (op == ByteCodeOp::CopyRBtoRA32)
+        {
+            if ((flags & OPFLAG_READ_B) && !(ip->flags & BCI_IMM_B) && !(flags & OPFLAG_WRITE_B))
+            {
+                switch (ip->op)
+                {
+                case ByteCodeOp::SetAtPointer32:
+                case ByteCodeOp::SetAtStackPointer32:
+                case ByteCodeOp::AffectOpPlusEqS32:
+                    auto it = mapCopyRA.find(ip->b.u32);
+                    if (it != mapCopyRA.end())
+                    {
+                        auto it1 = mapCopyRB.find(it->second->b.u32);
+                        if (it1 != mapCopyRB.end() && it->second == it1->second)
+                        {
+                            ip->b.u32                     = it->second->b.u32;
+                            context->passHasDoneSomething = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        else if (op == ByteCodeOp::CopyRBtoRA64)
         {
             // If we use a register that comes from a CopyRBRA, then use the initial
             // register instead (that way, the Copy can become deadstore and removed later)
@@ -150,33 +182,6 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
                         {
                             ip->d.u32                     = it->second->b.u32;
                             context->passHasDoneSomething = true;
-                        }
-                    }
-                }
-            }
-        }
-
-        // If we use a register that comes from a CopyRBRA, then use the initial
-        // register instead (that way, the Copy can become deadstore and removed later)
-        // Do it for specific intructions, when sizes are a match
-        if (op == ByteCodeOp::CopyRBtoRA32)
-        {
-            if ((flags & OPFLAG_READ_B) && !(ip->flags & BCI_IMM_B) && !(flags & OPFLAG_WRITE_B))
-            {
-                switch (ip->op)
-                {
-                case ByteCodeOp::SetAtPointer32:
-                case ByteCodeOp::SetAtStackPointer32:
-                case ByteCodeOp::AffectOpPlusEqS32:
-                    auto it = mapCopyRA.find(ip->b.u32);
-                    if (it != mapCopyRA.end())
-                    {
-                        auto it1 = mapCopyRB.find(it->second->b.u32);
-                        if (it1 != mapCopyRB.end() && it->second == it1->second)
-                        {
-                            ip->b.u32                     = it->second->b.u32;
-                            context->passHasDoneSomething = true;
-                            break;
                         }
                     }
                 }

@@ -38,6 +38,7 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
             ip->flags &= ~BCI_IMM_C;
             ip->flags &= ~BCI_IMM_D;
             break;
+
         case ByteCodeOp::ClearRA2:
             regsRW[ip->a.u32] = 0;
             regsRW[ip->b.u32] = 0;
@@ -46,6 +47,7 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
             ip->flags &= ~BCI_IMM_C;
             ip->flags &= ~BCI_IMM_D;
             break;
+
         case ByteCodeOp::ClearRA3:
             regsRW[ip->a.u32] = 0;
             regsRW[ip->b.u32] = 0;
@@ -56,6 +58,7 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
             ip->flags &= ~BCI_IMM_C;
             ip->flags &= ~BCI_IMM_D;
             break;
+
         case ByteCodeOp::ClearRA4:
             regsRW[ip->a.u32] = 0;
             regsRW[ip->b.u32] = 0;
@@ -68,18 +71,21 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
             ip->flags &= ~BCI_IMM_C;
             ip->flags &= ~BCI_IMM_D;
             break;
+
         case ByteCodeOp::SetImmediate32:
             regsRW[ip->a.u32] = ip->b.u32;
             regs[ip->a.u32]   = ip;
             ip->flags &= ~BCI_IMM_C;
             ip->flags &= ~BCI_IMM_D;
             break;
+
         case ByteCodeOp::SetImmediate64:
             regsRW[ip->a.u32] = ip->b.u64;
             regs[ip->a.u32]   = ip;
             ip->flags &= ~BCI_IMM_C;
             ip->flags &= ~BCI_IMM_D;
             break;
+
         default:
             // Read/write to A, and A is a constant, we store the current value in B. The constant folding pass can take care of that
             // depending on the instruction
