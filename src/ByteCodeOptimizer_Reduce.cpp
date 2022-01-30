@@ -1209,110 +1209,124 @@ void ByteCodeOptimizer::reduceSetAt(ByteCodeOptContext* context, ByteCodeInstruc
 
 void ByteCodeOptimizer::reduceX2(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
-    if (ip[0].op == ByteCodeOp::ClearRA &&
-        ip[1].op == ByteCodeOp::ClearRA &&
-        ip[2].op == ByteCodeOp::ClearRA &&
-        ip[3].op == ByteCodeOp::ClearRA &&
-        !(ip[0].flags & BCI_START_STMT) &&
-        !(ip[1].flags & BCI_START_STMT) &&
-        !(ip[2].flags & BCI_START_STMT) &&
-        !(ip[3].flags & BCI_START_STMT))
+    switch (ip->op)
     {
-        ip[0].b.u32 = ip[1].a.u32;
-        ip[0].c.u32 = ip[2].a.u32;
-        ip[0].d.u32 = ip[3].a.u32;
-        SET_OP(ip, ByteCodeOp::ClearRA4);
-        setNop(context, ip + 1);
-        setNop(context, ip + 2);
-        setNop(context, ip + 3);
-    }
+    case ByteCodeOp::ClearRA:
+        if (ip[1].op == ByteCodeOp::ClearRA &&
+            ip[2].op == ByteCodeOp::ClearRA &&
+            ip[3].op == ByteCodeOp::ClearRA &&
+            !(ip[0].flags & BCI_START_STMT) &&
+            !(ip[1].flags & BCI_START_STMT) &&
+            !(ip[2].flags & BCI_START_STMT) &&
+            !(ip[3].flags & BCI_START_STMT))
+        {
+            ip[0].b.u32 = ip[1].a.u32;
+            ip[0].c.u32 = ip[2].a.u32;
+            ip[0].d.u32 = ip[3].a.u32;
+            SET_OP(ip, ByteCodeOp::ClearRA4);
+            setNop(context, ip + 1);
+            setNop(context, ip + 2);
+            setNop(context, ip + 3);
+            break;
+        }
 
-    if (ip[0].op == ByteCodeOp::ClearRA &&
-        ip[1].op == ByteCodeOp::ClearRA &&
-        ip[2].op == ByteCodeOp::ClearRA &&
-        !(ip[0].flags & BCI_START_STMT) &&
-        !(ip[1].flags & BCI_START_STMT) &&
-        !(ip[2].flags & BCI_START_STMT))
-    {
-        ip[0].b.u32 = ip[1].a.u32;
-        ip[0].c.u32 = ip[2].a.u32;
-        SET_OP(ip, ByteCodeOp::ClearRA3);
-        setNop(context, ip + 1);
-        setNop(context, ip + 2);
-    }
+        if (ip[1].op == ByteCodeOp::ClearRA &&
+            ip[2].op == ByteCodeOp::ClearRA &&
+            !(ip[0].flags & BCI_START_STMT) &&
+            !(ip[1].flags & BCI_START_STMT) &&
+            !(ip[2].flags & BCI_START_STMT))
+        {
+            ip[0].b.u32 = ip[1].a.u32;
+            ip[0].c.u32 = ip[2].a.u32;
+            SET_OP(ip, ByteCodeOp::ClearRA3);
+            setNop(context, ip + 1);
+            setNop(context, ip + 2);
+            break;
+        }
 
-    if (ip[0].op == ByteCodeOp::ClearRA &&
-        ip[1].op == ByteCodeOp::ClearRA &&
-        !(ip[0].flags & BCI_START_STMT) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        ip[0].b.u32 = ip[1].a.u32;
-        SET_OP(ip, ByteCodeOp::ClearRA2);
-        setNop(context, ip + 1);
-    }
+        if (ip[1].op == ByteCodeOp::ClearRA &&
+            !(ip[0].flags & BCI_START_STMT) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            ip[0].b.u32 = ip[1].a.u32;
+            SET_OP(ip, ByteCodeOp::ClearRA2);
+            setNop(context, ip + 1);
+            break;
+        }
 
-    // SetAtStackPointer x2
-    if (ip[0].op == ByteCodeOp::SetAtStackPointer8 &&
-        ip[1].op == ByteCodeOp::SetAtStackPointer8 &&
-        !(ip[0].flags & BCI_START_STMT) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip, ByteCodeOp::SetAtStackPointer8x2);
-        ip[0].c.u64 = ip[1].a.u64;
-        ip[0].d.u64 = ip[1].b.u64;
-        if (ip[1].flags & BCI_IMM_B)
-            ip[0].flags |= BCI_IMM_D;
-        setNop(context, ip + 1);
-    }
+        break;
 
-    if (ip[0].op == ByteCodeOp::SetAtStackPointer16 &&
-        ip[1].op == ByteCodeOp::SetAtStackPointer16 &&
-        !(ip[0].flags & BCI_START_STMT) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip, ByteCodeOp::SetAtStackPointer16x2);
-        ip[0].c.u64 = ip[1].a.u64;
-        ip[0].d.u64 = ip[1].b.u64;
-        if (ip[1].flags & BCI_IMM_B)
-            ip[0].flags |= BCI_IMM_D;
-        setNop(context, ip + 1);
-    }
+        // SetAtStackPointer x2
+    case ByteCodeOp::SetAtStackPointer8:
+        if (ip[1].op == ByteCodeOp::SetAtStackPointer8 &&
+            !(ip[0].flags & BCI_START_STMT) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip, ByteCodeOp::SetAtStackPointer8x2);
+            ip[0].c.u64 = ip[1].a.u64;
+            ip[0].d.u64 = ip[1].b.u64;
+            if (ip[1].flags & BCI_IMM_B)
+                ip[0].flags |= BCI_IMM_D;
+            setNop(context, ip + 1);
+            break;
+        }
+        break;
 
-    if (ip[0].op == ByteCodeOp::SetAtStackPointer32 &&
-        ip[1].op == ByteCodeOp::SetAtStackPointer32 &&
-        !(ip[0].flags & BCI_START_STMT) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip, ByteCodeOp::SetAtStackPointer32x2);
-        ip[0].c.u64 = ip[1].a.u64;
-        ip[0].d.u64 = ip[1].b.u64;
-        if (ip[1].flags & BCI_IMM_B)
-            ip[0].flags |= BCI_IMM_D;
-        setNop(context, ip + 1);
-    }
+    case ByteCodeOp::SetAtStackPointer16:
+        if (ip[1].op == ByteCodeOp::SetAtStackPointer16 &&
+            !(ip[0].flags & BCI_START_STMT) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip, ByteCodeOp::SetAtStackPointer16x2);
+            ip[0].c.u64 = ip[1].a.u64;
+            ip[0].d.u64 = ip[1].b.u64;
+            if (ip[1].flags & BCI_IMM_B)
+                ip[0].flags |= BCI_IMM_D;
+            setNop(context, ip + 1);
+        }
 
-    if (ip[0].op == ByteCodeOp::SetAtStackPointer64 &&
-        ip[1].op == ByteCodeOp::SetAtStackPointer64 &&
-        !(ip[0].flags & BCI_START_STMT) &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip, ByteCodeOp::SetAtStackPointer64x2);
-        ip[0].c.u64 = ip[1].a.u64;
-        ip[0].d.u64 = ip[1].b.u64;
-        if (ip[1].flags & BCI_IMM_B)
-            ip[0].flags |= BCI_IMM_D;
-        setNop(context, ip + 1);
-    }
+    case ByteCodeOp::SetAtStackPointer32:
+        if (ip[1].op == ByteCodeOp::SetAtStackPointer32 &&
+            !(ip[0].flags & BCI_START_STMT) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip, ByteCodeOp::SetAtStackPointer32x2);
+            ip[0].c.u64 = ip[1].a.u64;
+            ip[0].d.u64 = ip[1].b.u64;
+            if (ip[1].flags & BCI_IMM_B)
+                ip[0].flags |= BCI_IMM_D;
+            setNop(context, ip + 1);
+            break;
+        }
+        break;
 
-    // GetFromStack64x2
-    if (ip[0].op == ByteCodeOp::GetFromStack64 &&
-        ip[1].op == ByteCodeOp::GetFromStack64 &&
-        !(ip[1].flags & BCI_START_STMT))
-    {
-        SET_OP(ip, ByteCodeOp::GetFromStack64x2);
-        ip[0].c.u64 = ip[1].a.u64;
-        ip[0].d.u64 = ip[1].b.u64;
-        setNop(context, ip + 1);
+    case ByteCodeOp::SetAtStackPointer64:
+        if (ip[1].op == ByteCodeOp::SetAtStackPointer64 &&
+            !(ip[0].flags & BCI_START_STMT) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip, ByteCodeOp::SetAtStackPointer64x2);
+            ip[0].c.u64 = ip[1].a.u64;
+            ip[0].d.u64 = ip[1].b.u64;
+            if (ip[1].flags & BCI_IMM_B)
+                ip[0].flags |= BCI_IMM_D;
+            setNop(context, ip + 1);
+            break;
+        }
+        break;
+
+        // GetFromStack64x2
+    case ByteCodeOp::GetFromStack64:
+        if (ip[1].op == ByteCodeOp::GetFromStack64 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip, ByteCodeOp::GetFromStack64x2);
+            ip[0].c.u64 = ip[1].a.u64;
+            ip[0].d.u64 = ip[1].b.u64;
+            setNop(context, ip + 1);
+            break;
+        }
+        break;
     }
 }
 
