@@ -90,24 +90,24 @@ static void optimRetCopy(ByteCodeOptContext* context, ByteCodeInstruction* ipOrg
 void ByteCodeOptimizer::registerParamsReg(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
     if (ip->op == ByteCodeOp::PushRAParam)
-        context->paramsReg.push_back(ip->a.u32);
+        context->vecReg.push_back(ip->a.u32);
     else if (ip->op == ByteCodeOp::PushRAParam2)
     {
-        context->paramsReg.push_back(ip->a.u32);
-        context->paramsReg.push_back(ip->b.u32);
+        context->vecReg.push_back(ip->a.u32);
+        context->vecReg.push_back(ip->b.u32);
     }
     else if (ip->op == ByteCodeOp::PushRAParam3)
     {
-        context->paramsReg.push_back(ip->a.u32);
-        context->paramsReg.push_back(ip->b.u32);
-        context->paramsReg.push_back(ip->c.u32);
+        context->vecReg.push_back(ip->a.u32);
+        context->vecReg.push_back(ip->b.u32);
+        context->vecReg.push_back(ip->c.u32);
     }
     else if (ip->op == ByteCodeOp::PushRAParam4)
     {
-        context->paramsReg.push_back(ip->a.u32);
-        context->paramsReg.push_back(ip->b.u32);
-        context->paramsReg.push_back(ip->c.u32);
-        context->paramsReg.push_back(ip->d.u32);
+        context->vecReg.push_back(ip->a.u32);
+        context->vecReg.push_back(ip->b.u32);
+        context->vecReg.push_back(ip->c.u32);
+        context->vecReg.push_back(ip->d.u32);
     }
 }
 
@@ -158,7 +158,7 @@ bool ByteCodeOptimizer::optimizePassRetCopyLocal(ByteCodeOptContext* context)
             auto ipOrg = ip;
 
             // Find the following call
-            context->paramsReg.clear();
+            context->vecReg.clear();
             while (ip->op != ByteCodeOp::End && ip->op != ByteCodeOp::LocalCall && ip->op != ByteCodeOp::ForeignCall && ip->op != ByteCodeOp::LambdaCall)
                 ip++;
 
@@ -206,7 +206,7 @@ bool ByteCodeOptimizer::optimizePassRetCopyGlobal(ByteCodeOptContext* context)
             auto ipOrg = ip;
 
             // Find the following call
-            context->paramsReg.clear();
+            context->vecReg.clear();
             while (ip->op != ByteCodeOp::End && ip->op != ByteCodeOp::LocalCall && ip->op != ByteCodeOp::ForeignCall && ip->op != ByteCodeOp::LambdaCall)
             {
                 registerParamsReg(context, ip);
@@ -231,7 +231,7 @@ bool ByteCodeOptimizer::optimizePassRetCopyGlobal(ByteCodeOptContext* context)
                 auto it = context->mapRegReg.find(ip->a.u32);
                 if (it)
                 {
-                    for (auto it1 : context->paramsReg)
+                    for (auto it1 : context->vecReg)
                     {
                         auto it2 = context->mapRegReg.find(it1);
                         if (!it2)
