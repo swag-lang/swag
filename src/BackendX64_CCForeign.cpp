@@ -315,94 +315,10 @@ void BackendX64::emitForeignCallResult(X64PerThread& pp, TypeInfoFuncAttr* typeF
     }
 }
 
-bool BackendX64::emitForeignCallParameters(X64PerThread& pp, Module* moduleToGen, uint32_t offsetRT, TypeInfoFuncAttr* typeFuncBC, const VectorNative<uint32_t>& pushRAParams)
+bool BackendX64::emitForeignFctCall(X64PerThread& pp, Module* moduleToGen, TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& paramsRegisters, VectorNative<TypeInfo*>& paramsTypes)
 {
-    int numCallParams = (int) typeFuncBC->parameters.size();
-
-    VectorNative<uint32_t>  paramsRegisters;
-    VectorNative<TypeInfo*> paramsTypes;
-
-    int indexParam = (int) pushRAParams.size() - 1;
-
-    // Variadic are first
-    if (numCallParams)
-    {
-        auto typeParam = TypeManager::concreteReferenceType(typeFuncBC->parameters.back()->typeInfo);
-        if (typeParam->kind == TypeInfoKind::Variadic || typeParam->kind == TypeInfoKind::TypedVariadic)
-        {
-            auto index = pushRAParams[indexParam--];
-            paramsRegisters.push_back(index);
-            paramsTypes.push_back(g_TypeMgr->typeInfoU64);
-
-            index = pushRAParams[indexParam--];
-            paramsRegisters.push_back(index);
-            paramsTypes.push_back(g_TypeMgr->typeInfoU64);
-            numCallParams--;
-        }
-    }
-
-    // All parameters
-    for (int i = 0; i < (int) numCallParams; i++)
-    {
-        auto typeParam = TypeManager::concreteReferenceType(typeFuncBC->parameters[i]->typeInfo);
-
-        auto index = pushRAParams[indexParam--];
-
-        if (typeParam->kind == TypeInfoKind::Pointer ||
-            typeParam->kind == TypeInfoKind::Lambda ||
-            typeParam->kind == TypeInfoKind::Array)
-        {
-            paramsRegisters.push_back(index);
-            paramsTypes.push_back(g_TypeMgr->typeInfoU64);
-        }
-        else if (typeParam->kind == TypeInfoKind::Struct)
-        {
-            paramsRegisters.push_back(index);
-            paramsTypes.push_back(typeParam);
-        }
-        else if (typeParam->kind == TypeInfoKind::Slice ||
-                 typeParam->isNative(NativeTypeKind::String))
-        {
-            paramsRegisters.push_back(index);
-            paramsTypes.push_back(g_TypeMgr->typeInfoU64);
-            index = pushRAParams[indexParam--];
-            paramsRegisters.push_back(index);
-            paramsTypes.push_back(g_TypeMgr->typeInfoU64);
-        }
-        else if (typeParam->isNative(NativeTypeKind::Any) ||
-                 typeParam->kind == TypeInfoKind::Interface)
-        {
-            paramsRegisters.push_back(index);
-            paramsTypes.push_back(g_TypeMgr->typeInfoU64);
-            index = pushRAParams[indexParam--];
-            paramsRegisters.push_back(index);
-            paramsTypes.push_back(g_TypeMgr->typeInfoU64);
-        }
-        else
-        {
-            if (typeParam->sizeOf > sizeof(void*))
-                return moduleToGen->internalError(typeFuncBC->declNode, typeFuncBC->declNode->token, "emitForeignCall, invalid parameter type");
-            paramsRegisters.push_back(index);
-            paramsTypes.push_back(typeParam);
-        }
-    }
-
-    // Return by parameter
     auto returnType   = TypeManager::concreteReferenceType(typeFuncBC->returnType);
     bool returnByCopy = returnType->flags & TYPEINFO_RETURN_BY_COPY;
-    if (returnType->kind == TypeInfoKind::Slice ||
-        returnType->kind == TypeInfoKind::Interface ||
-        returnType->isNative(NativeTypeKind::Any) ||
-        returnType->isNative(NativeTypeKind::String))
-    {
-        paramsRegisters.push_back(offsetRT);
-        paramsTypes.push_back(g_TypeMgr->typeInfoUndefined);
-    }
-    else if (returnByCopy)
-    {
-        paramsRegisters.push_back(offsetRT);
-        paramsTypes.push_back(g_TypeMgr->typeInfoUndefined);
-    }
 
     // Set the first 4 parameters. Can be return register, or function parameter.
     for (int i = 0; i < min(4, (int) paramsRegisters.size()); i++)
@@ -510,6 +426,136 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, Module* moduleToGen
             // Push is always aligned
             offsetStack += 8;
         }
+    }
+
+    return true;
+}
+
+bool BackendX64::emitForeignCallParameters(X64PerThread& pp, Module* moduleToGen, uint32_t offsetRT, TypeInfoFuncAttr* typeFuncBC, const VectorNative<uint32_t>& pushRAParams)
+{
+    int numCallParams = (int) typeFuncBC->parameters.size();
+
+    VectorNative<uint32_t>  paramsRegisters;
+    VectorNative<TypeInfo*> paramsTypes;
+
+    int indexParam = (int) pushRAParams.size() - 1;
+
+    // Variadic are first
+    if (numCallParams)
+    {
+        auto typeParam = TypeManager::concreteReferenceType(typeFuncBC->parameters.back()->typeInfo);
+        if (typeParam->kind == TypeInfoKind::Variadic || typeParam->kind == TypeInfoKind::TypedVariadic)
+        {
+            auto index = pushRAParams[indexParam--];
+            paramsRegisters.push_back(index);
+            paramsTypes.push_back(g_TypeMgr->typeInfoU64);
+
+            index = pushRAParams[indexParam--];
+            paramsRegisters.push_back(index);
+            paramsTypes.push_back(g_TypeMgr->typeInfoU64);
+            numCallParams--;
+        }
+    }
+
+    // All parameters
+    for (int i = 0; i < (int) numCallParams; i++)
+    {
+        auto typeParam = TypeManager::concreteReferenceType(typeFuncBC->parameters[i]->typeInfo);
+
+        auto index = pushRAParams[indexParam--];
+
+        if (typeParam->kind == TypeInfoKind::Pointer ||
+            typeParam->kind == TypeInfoKind::Lambda ||
+            typeParam->kind == TypeInfoKind::Array)
+        {
+            paramsRegisters.push_back(index);
+            paramsTypes.push_back(g_TypeMgr->typeInfoU64);
+        }
+        else if (typeParam->kind == TypeInfoKind::Struct)
+        {
+            paramsRegisters.push_back(index);
+            paramsTypes.push_back(typeParam);
+        }
+        else if (typeParam->kind == TypeInfoKind::Slice ||
+                 typeParam->isNative(NativeTypeKind::String))
+        {
+            paramsRegisters.push_back(index);
+            paramsTypes.push_back(g_TypeMgr->typeInfoU64);
+            index = pushRAParams[indexParam--];
+            paramsRegisters.push_back(index);
+            paramsTypes.push_back(g_TypeMgr->typeInfoU64);
+        }
+        else if (typeParam->isNative(NativeTypeKind::Any) ||
+                 typeParam->kind == TypeInfoKind::Interface)
+        {
+            paramsRegisters.push_back(index);
+            paramsTypes.push_back(g_TypeMgr->typeInfoU64);
+            index = pushRAParams[indexParam--];
+            paramsRegisters.push_back(index);
+            paramsTypes.push_back(g_TypeMgr->typeInfoU64);
+        }
+        else
+        {
+            if (typeParam->sizeOf > sizeof(void*))
+                return moduleToGen->internalError(typeFuncBC->declNode, typeFuncBC->declNode->token, "emitForeignCall, invalid parameter type");
+            paramsRegisters.push_back(index);
+            paramsTypes.push_back(typeParam);
+        }
+    }
+
+    // Return by parameter
+    auto returnType   = TypeManager::concreteReferenceType(typeFuncBC->returnType);
+    bool returnByCopy = returnType->flags & TYPEINFO_RETURN_BY_COPY;
+    if (returnType->kind == TypeInfoKind::Slice ||
+        returnType->kind == TypeInfoKind::Interface ||
+        returnType->isNative(NativeTypeKind::Any) ||
+        returnType->isNative(NativeTypeKind::String))
+    {
+        paramsRegisters.push_back(offsetRT);
+        paramsTypes.push_back(g_TypeMgr->typeInfoUndefined);
+    }
+    else if (returnByCopy)
+    {
+        paramsRegisters.push_back(offsetRT);
+        paramsTypes.push_back(g_TypeMgr->typeInfoUndefined);
+    }
+
+    // If the closure is assigned to a lambda, then we must not use the first parameter (the first
+    // parameter is the capture context, which does not exist in a normal function)
+    // But as this is dynamic, we need to have two call path : one for the closure (normal call), and
+    // one for the lambda (omit first parameter)
+    if (typeFuncBC->isClosure())
+    {
+        auto reg = paramsRegisters[0];
+        BackendX64Inst::emit_Load64_Indirect(pp, regOffset(reg), RAX, RDI);
+        BackendX64Inst::emit_Test64(pp, RAX, RAX);
+
+        // If not zero, jump to closure call
+        BackendX64Inst::emit_LongJumpOp(pp, BackendX64Inst::JZ);
+        pp.concat.addU32(0);
+        auto seekPtrClosure = pp.concat.getSeekPtr() - 4;
+        auto seekJmpClosure = pp.concat.totalCount();
+
+        SWAG_CHECK(emitForeignFctCall(pp, moduleToGen, typeFuncBC, paramsRegisters, paramsTypes));
+
+        // Jump to after closure call
+        BackendX64Inst::emit_LongJumpOp(pp, BackendX64Inst::JUMP);
+        pp.concat.addU32(0);
+        auto seekPtrAfterClosure = pp.concat.getSeekPtr() - 4;
+        auto seekJmpAfterClosure = pp.concat.totalCount();
+
+        // Update jump to closure call
+        *seekPtrClosure = (uint8_t) (pp.concat.totalCount() - seekJmpClosure);
+
+        paramsRegisters.erase(0);
+        paramsTypes.erase(0);
+        SWAG_CHECK(emitForeignFctCall(pp, moduleToGen, typeFuncBC, paramsRegisters, paramsTypes));
+
+        *seekPtrAfterClosure = (uint8_t) (pp.concat.totalCount() - seekJmpAfterClosure);
+    }
+    else
+    {
+        SWAG_CHECK(emitForeignFctCall(pp, moduleToGen, typeFuncBC, paramsRegisters, paramsTypes));
     }
 
     return true;

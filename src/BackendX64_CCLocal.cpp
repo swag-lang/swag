@@ -130,7 +130,7 @@ void BackendX64::emitLocalCallParameters(X64PerThread& pp, uint32_t sizeParamsSt
     }
 
     // If the closure is assigned to a lambda, then we must not use the first parameter (the first
-    // parameter is the capture context, which does not exits in a normal function)
+    // parameter is the capture context, which does not exist in a normal function)
     // But as this is dynamic, we need to have two call path : one for the closure (normal call), and
     // one for the lambda (omit first parameter)
     if (typeFuncBC->isClosure())
