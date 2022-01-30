@@ -263,12 +263,10 @@ void ByteCodeOptimizer::optimizePassDupCopyOp(ByteCodeOptContext* context, ByteC
         if (ip->flags & BCI_START_STMT || ByteCode::isJump(ip))
             mapRA.clear();
 
-        auto flags = g_ByteCodeOpDesc[(int) ip->op].flags;
-
         if (ip->op == op)
         {
             auto it = mapRA.find(ip->a.u32);
-            if (it && *it)
+            if (it)
             {
                 if ((*it)->b.u64 == ip->b.u64 &&
                     (*it)->c.u64 == ip->c.u64 &&
@@ -276,15 +274,16 @@ void ByteCodeOptimizer::optimizePassDupCopyOp(ByteCodeOptContext* context, ByteC
                     (*it)->flags == ip->flags)
                 {
                     setNop(context, ip);
-                    mapRA.set(ip->a.u32, nullptr);
+                    mapRA.remove(ip->a.u32);
                     continue;
                 }
             }
 
             mapRA.set(ip->a.u32, ip);
         }
-        else
+        else if (mapRA.count)
         {
+            auto flags = g_ByteCodeOpDesc[(int) ip->op].flags;
             if ((flags & OPFLAG_WRITE_A) && !(ip->flags & BCI_IMM_A))
                 mapRA.remove(ip->a.u32);
             if ((flags & OPFLAG_WRITE_B) && !(ip->flags & BCI_IMM_B))
