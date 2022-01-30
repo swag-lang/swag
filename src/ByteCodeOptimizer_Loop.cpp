@@ -4,8 +4,8 @@
 // Try to move some 'constant' assignment outside simple loops
 bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
 {
-    auto& mapRA = context->mapU32InstA;
-    auto& mapRB = context->mapU32InstB;
+    auto& mapRA = context->mapRegInstA;
+    auto& mapRB = context->mapRegInstB;
 
     for (int idx = 0; idx < context->jumps.size(); idx++)
     {
@@ -32,33 +32,37 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
 
                 if (ipScan->op == ByteCodeOp::MakeStackPointer)
                 {
-                    if (mapRA.find(ipScan->a.u32) != mapRA.end())
-                        mapRB[ipScan->a.u32] = ipScan;
-                    mapRA[ipScan->a.u32] = ipScan;
+                    if (mapRA.contains(ipScan->a.u32))
+                        mapRB.set(ipScan->a.u32, ipScan);
+                    mapRA.set(ipScan->a.u32, ipScan);
                     ipScan++;
                     continue;
                 }
 
                 if (flags & OPFLAG_WRITE_A && !(ipScan->flags & BCI_IMM_A))
-                    mapRB[ipScan->a.u32] = ipScan;
+                    mapRB.set(ipScan->a.u32, ipScan);
                 if (flags & OPFLAG_WRITE_B && !(ipScan->flags & BCI_IMM_B))
-                    mapRB[ipScan->b.u32] = ipScan;
+                    mapRB.set(ipScan->b.u32, ipScan);
                 if (flags & OPFLAG_WRITE_C && !(ipScan->flags & BCI_IMM_C))
-                    mapRB[ipScan->c.u32] = ipScan;
+                    mapRB.set(ipScan->c.u32, ipScan);
                 if (flags & OPFLAG_WRITE_D && !(ipScan->flags & BCI_IMM_D))
-                    mapRB[ipScan->d.u32] = ipScan;
+                    mapRB.set(ipScan->d.u32, ipScan);
 
                 ipScan++;
             }
 
-            for (auto& it : mapRA)
+            if (mapRA.count == 0)
+                continue;
+            for(uint32_t i = 0; i < RegisterList::MAX_REGISTERS; i++)
             {
-                if (mapRB.find(it.first) != mapRB.end())
+                if (!mapRA.contains(i))
+                    continue;
+                if (mapRB.contains(i))
                     continue;
 
                 // Move instruction to the start of the loop, and shift all the rest
-                auto cpy = *it.second;
-                memmove(ipStart + 1, ipStart, (it.second - ipStart) * sizeof(ByteCodeInstruction));
+                auto cpy = *mapRA.val[i];
+                memmove(ipStart + 1, ipStart, (mapRA.val[i] - ipStart) * sizeof(ByteCodeInstruction));
                 *ipStart = cpy;
                 ipStart->flags |= BCI_JUMP_DEST;
                 ipStart->flags |= BCI_START_STMT;

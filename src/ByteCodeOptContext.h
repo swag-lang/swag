@@ -2,6 +2,7 @@
 #include "ByteCode.h"
 #include "ByteCodeOp.h"
 #include "Job.h"
+#include "MapRegTo.h"
 
 struct ByteCode;
 struct ByteCodeGenContext;
@@ -47,8 +48,8 @@ struct ByteCodeOptContext : public JobContext
     VectorNative<ByteCodeInstruction*>                  vecInst;
     VectorNative<uint64_t>                              vecU64;
     map<uint32_t, uint32_t>                             mapU32U32;
-    map<uint32_t, ByteCodeInstruction*>                 mapU32InstA;
-    map<uint32_t, ByteCodeInstruction*>                 mapU32InstB;
+    MapRegTo<ByteCodeInstruction*>                      mapRegInstA;
+    MapRegTo<ByteCodeInstruction*>                      mapRegInstB;
     map<uint64_t, pair<uint64_t, ByteCodeInstruction*>> mapCst;
     VectorNative<uint32_t>                              paramsReg;
 
@@ -64,8 +65,8 @@ struct ByteCodeOptContext : public JobContext
         vecInst.clear();
         vecU64.clear();
         mapU32U32.clear();
-        mapU32InstA.clear();
-        mapU32InstB.clear();
+        mapRegInstA.clear();
+        mapRegInstB.clear();
         mapCst.clear();
         tree.clear();
         mapInstNode.clear();

@@ -803,6 +803,9 @@
     <ClInclude Include="..\src\Array.h">
       <Filter>Main\Core</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\MapRegTo.h">
+      <Filter>ByteCode\Optimize</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Main">
