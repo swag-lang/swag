@@ -18,3 +18,5 @@ struct JobThread
 
     bool requestEnd = false;
 };
+
+extern thread_local int g_ThreadIndex;

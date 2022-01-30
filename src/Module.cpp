@@ -9,6 +9,7 @@
 #include "SemanticJob.h"
 #include "ModuleManager.h"
 #include "ErrorIds.h"
+#include "CommandLine.h"
 
 void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
 {
@@ -19,6 +20,9 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
     bssSegment.setup(SegmentKind::Bss, this);
     compilerSegment.setup(SegmentKind::Compiler, this);
     tlsSegment.setup(SegmentKind::Tls, this);
+
+    handleGeneratedFile.set_size_clear(g_CommandLine->numCores);
+    appendGeneratedFile.set_size_clear(g_CommandLine->numCores);
 
     name           = moduleName;
     nameNormalized = name;

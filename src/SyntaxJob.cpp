@@ -9,6 +9,7 @@
 #include "Workspace.h"
 #include "ErrorIds.h"
 #include "LoadSourceFileJob.h"
+#include "JobThread.h"
 
 bool SyntaxJob::verifyError(const Token& tk, bool expr, const Utf8& msg)
 {
@@ -194,7 +195,7 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
         {
             auto publicPath = modl->publicPath;
             tmpFilePath     = publicPath;
-            tmpFileName     = modl->name + ".gwg";
+            tmpFileName     = Fmt("%s%d.gwg", modl->name.c_str(), g_ThreadIndex);
 
             publicPath += tmpFileName;
 
@@ -207,33 +208,35 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
                 pz++;
             }
 
-            ScopedLock lk(modl->mutexGeneratedFile);
+            FILE* h = modl->handleGeneratedFile[g_ThreadIndex];
 
-            if (!modl->handleGeneratedFile)
+            if (!h)
             {
-                if (modl->firstGenerated)
-                    fopen_s(&modl->handleGeneratedFile, publicPath.c_str(), "wN");
+                if (modl->appendGeneratedFile[g_ThreadIndex])
+                    fopen_s(&h, publicPath.c_str(), "a+N");
                 else
-                    fopen_s(&modl->handleGeneratedFile, publicPath.c_str(), "a+N");
-                if (!modl->handleGeneratedFile)
+                    fopen_s(&h, publicPath.c_str(), "wN");
+                modl->handleGeneratedFile[g_ThreadIndex] = h;
+
+                if (!h)
                 {
                     g_Log.errorOS(Fmt(Err(Err0524), publicPath.c_str()));
                     return false;
                 }
             }
 
-            modl->firstGenerated = false;
+            modl->appendGeneratedFile[g_ThreadIndex] = true;
 
             Utf8 sourceCode = Fmt("// %s:%d:%d:%d:%d\n", fromNode->sourceFile->path.c_str(), fromNode->token.startLocation.line + 1, fromNode->token.startLocation.column + 1, fromNode->token.endLocation.line + 1, fromNode->token.endLocation.column + 1);
-            fwrite(sourceCode.c_str(), sourceCode.length(), 1, modl->handleGeneratedFile);
+            fwrite(sourceCode.c_str(), sourceCode.length(), 1, h);
             modl->countLinesGeneratedFile += 1;
             previousLogLine = modl->countLinesGeneratedFile;
 
-            fwrite(content.c_str(), content.length(), 1, modl->handleGeneratedFile);
+            fwrite(content.c_str(), content.length(), 1, h);
             modl->countLinesGeneratedFile += countEol;
 
             static const char* eol = "\n\n";
-            fwrite(eol, 1, 2, modl->handleGeneratedFile);
+            fwrite(eol, 1, 2, h);
             modl->countLinesGeneratedFile += 2;
         }
     }

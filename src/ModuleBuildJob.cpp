@@ -404,10 +404,13 @@ JobResult ModuleBuildJob::execute()
             return JobResult::ReleaseJob;
 
         // Close generated file
-        if (module->handleGeneratedFile)
+        for (auto& h : module->handleGeneratedFile)
         {
-            fclose(module->handleGeneratedFile);
-            module->handleGeneratedFile = nullptr;
+            if (h)
+            {
+                fclose(h);
+                h = nullptr;
+            }
         }
 
         pass = ModuleBuildPass::WaitForDependenciesEffective;

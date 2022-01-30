@@ -158,9 +158,8 @@ struct Module
     SharedMutex mutexDependency;
     SharedMutex mutexFile;
     SharedMutex mutexByteCode;
-    Mutex        mutexGlobalVars;
-    Mutex        mutexBuildPass;
-    Mutex        mutexGeneratedFile;
+    Mutex       mutexGlobalVars;
+    Mutex       mutexBuildPass;
 
     string path;
     Utf8   name;
@@ -202,14 +201,15 @@ struct Module
     map<Utf8, ByteCode*>            mapRuntimeFcts;
     map<Utf8, ForToSolve>           implForToSolve;
     JobGroup                        syntaxGroup;
+    VectorNative<FILE*>             handleGeneratedFile;
+    VectorNative<bool>              appendGeneratedFile;
 
-    AstNode*          astRoot             = nullptr;
-    Scope*            scopeRoot           = nullptr;
-    Backend*          backend             = nullptr;
-    FILE*             handleGeneratedFile = nullptr;
-    ByteCode*         byteCodeMainFunc    = nullptr;
-    AstNode*          mainIsDefined       = nullptr;
-    ModuleDependency* fetchDep            = nullptr;
+    AstNode*          astRoot          = nullptr;
+    Scope*            scopeRoot        = nullptr;
+    Backend*          backend          = nullptr;
+    ByteCode*         byteCodeMainFunc = nullptr;
+    AstNode*          mainIsDefined    = nullptr;
+    ModuleDependency* fetchDep         = nullptr;
     void*             compilerItf[2];
 
     uint64_t moreRecentSourceFile = 0;
@@ -232,7 +232,6 @@ struct Module
     bool saveMutableValues  = false;
     bool bssCannotChange    = false;
     bool isSwag             = false;
-    bool firstGenerated     = true;
     bool isLocalToWorkspace = false;
     bool dependenciesDone   = false;
     bool mustFetchDep       = false;
