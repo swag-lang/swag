@@ -1090,107 +1090,120 @@ void ByteCodeOptimizer::reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruct
 
 void ByteCodeOptimizer::reduceSetAt(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
-    // Reduce SetZeroStack
     if (!(ip[1].flags & BCI_START_STMT))
     {
+        // Reduce SetZeroStack
         uint32_t offset0, offset1;
         auto     size0 = ByteCode::getSetZeroStackSize(ip, offset0);
-        auto     size1 = ByteCode::getSetZeroStackSize(ip + 1, offset1);
-        if (size0 && size1 && offset0 + size0 == offset1)
+        if (size0)
         {
-            auto totalSize = size0 + size1;
-            switch (totalSize)
+            auto size1 = ByteCode::getSetZeroStackSize(ip + 1, offset1);
+            if (size1 && offset0 + size0 == offset1)
             {
-            case 2:
-                SET_OP(ip, ByteCodeOp::SetZeroStack16);
-                break;
-            case 4:
-                SET_OP(ip, ByteCodeOp::SetZeroStack32);
-                break;
-            case 8:
-                SET_OP(ip, ByteCodeOp::SetZeroStack64);
-                break;
-            default:
-                SET_OP(ip, ByteCodeOp::SetZeroStackX);
-                ip->a.u32 = offset0;
-                SWAG_ASSERT(totalSize <= 0x7FFFFFFF);
-                ip->b.u32 = totalSize;
-                break;
-            }
+                auto totalSize = size0 + size1;
+                switch (totalSize)
+                {
+                case 2:
+                    SET_OP(ip, ByteCodeOp::SetZeroStack16);
+                    break;
+                case 4:
+                    SET_OP(ip, ByteCodeOp::SetZeroStack32);
+                    break;
+                case 8:
+                    SET_OP(ip, ByteCodeOp::SetZeroStack64);
+                    break;
+                default:
+                    SET_OP(ip, ByteCodeOp::SetZeroStackX);
+                    ip->a.u32 = offset0;
+                    SWAG_ASSERT(totalSize <= 0x7FFFFFFF);
+                    ip->b.u32 = totalSize;
+                    break;
+                }
 
-            setNop(context, ip + 1);
+                setNop(context, ip + 1);
+            }
+        }
+
+        // Reduce SetZeroAtPointer
+        size0 = ByteCode::getSetZeroAtPointerSize(ip, offset0);
+        if (size0)
+        {
+            auto size1 = ByteCode::getSetZeroAtPointerSize(ip + 1, offset1);
+            if (size1 && offset0 + size0 == offset1)
+            {
+                auto totalSize = size0 + size1;
+                switch (totalSize)
+                {
+                case 2:
+                    SET_OP(ip, ByteCodeOp::SetZeroAtPointer16);
+                    break;
+                case 4:
+                    SET_OP(ip, ByteCodeOp::SetZeroAtPointer32);
+                    break;
+                case 8:
+                    SET_OP(ip, ByteCodeOp::SetZeroAtPointer64);
+                    break;
+                default:
+                    SET_OP(ip, ByteCodeOp::SetZeroAtPointerX);
+                    ip->c.s64 = offset0;
+                    SWAG_ASSERT(totalSize <= 0x7FFFFFFF);
+                    ip->b.s64 = totalSize;
+                    break;
+                }
+
+                setNop(context, ip + 1);
+            }
         }
     }
-    // Reduce SetZeroAtPointer
-    if (!(ip[1].flags & BCI_START_STMT))
+
+    switch (ip->op)
     {
-        uint32_t offset0, offset1;
-        auto     size0 = ByteCode::getSetZeroAtPointerSize(ip, offset0);
-        auto     size1 = ByteCode::getSetZeroAtPointerSize(ip + 1, offset1);
-        if (size0 && size1 && offset0 + size0 == offset1)
+    case ByteCodeOp::SetAtStackPointer8:
+        if (ip[1].op == ByteCodeOp::SetAtStackPointer8 &&
+            ip->a.u32 + sizeof(uint8_t) == ip[1].a.u32 &&
+            !(ip[0].flags & BCI_START_STMT) &&
+            !(ip[1].flags & BCI_START_STMT) &&
+            (ip->flags & BCI_IMM_B) &&
+            (ip[1].flags & BCI_IMM_B))
         {
-            auto totalSize = size0 + size1;
-            switch (totalSize)
-            {
-            case 2:
-                SET_OP(ip, ByteCodeOp::SetZeroAtPointer16);
-                break;
-            case 4:
-                SET_OP(ip, ByteCodeOp::SetZeroAtPointer32);
-                break;
-            case 8:
-                SET_OP(ip, ByteCodeOp::SetZeroAtPointer64);
-                break;
-            default:
-                SET_OP(ip, ByteCodeOp::SetZeroAtPointerX);
-                ip->c.s64 = offset0;
-                SWAG_ASSERT(totalSize <= 0x7FFFFFFF);
-                ip->b.s64 = totalSize;
-                break;
-            }
-
+            SET_OP(ip, ByteCodeOp::SetAtStackPointer16);
+            ip->b.u16 |= ip[1].b.u8 << 8;
             setNop(context, ip + 1);
+            break;
         }
-    }
 
-    // Reduce SetAtStackPointer
-    if (ip->op == ByteCodeOp::SetAtStackPointer8 &&
-        ip[1].op == ByteCodeOp::SetAtStackPointer8 &&
-        ip->a.u32 + sizeof(uint8_t) == ip[1].a.u32 &&
-        !(ip[0].flags & BCI_START_STMT) &&
-        !(ip[1].flags & BCI_START_STMT) &&
-        (ip->flags & BCI_IMM_B) &&
-        (ip[1].flags & BCI_IMM_B))
-    {
-        SET_OP(ip, ByteCodeOp::SetAtStackPointer16);
-        ip->b.u16 |= ip[1].b.u8 << 8;
-        setNop(context, ip + 1);
-    }
+        break;
 
-    if (ip->op == ByteCodeOp::SetAtStackPointer16 &&
-        ip[1].op == ByteCodeOp::SetAtStackPointer16 &&
-        ip->a.u32 + sizeof(uint16_t) == ip[1].a.u32 &&
-        !(ip[0].flags & BCI_START_STMT) &&
-        !(ip[1].flags & BCI_START_STMT) &&
-        (ip->flags & BCI_IMM_B) &&
-        (ip[1].flags & BCI_IMM_B))
-    {
-        SET_OP(ip, ByteCodeOp::SetAtStackPointer32);
-        ip->b.u32 |= ip[1].b.u16 << 16;
-        setNop(context, ip + 1);
-    }
+    case ByteCodeOp::SetAtStackPointer16:
+        if (ip[1].op == ByteCodeOp::SetAtStackPointer16 &&
+            ip->a.u32 + sizeof(uint16_t) == ip[1].a.u32 &&
+            !(ip[0].flags & BCI_START_STMT) &&
+            !(ip[1].flags & BCI_START_STMT) &&
+            (ip->flags & BCI_IMM_B) &&
+            (ip[1].flags & BCI_IMM_B))
+        {
+            SET_OP(ip, ByteCodeOp::SetAtStackPointer32);
+            ip->b.u32 |= ip[1].b.u16 << 16;
+            setNop(context, ip + 1);
+            break;
+        }
+        break;
 
-    if (ip->op == ByteCodeOp::SetAtStackPointer32 &&
-        ip[1].op == ByteCodeOp::SetAtStackPointer32 &&
-        ip->a.u32 + sizeof(uint32_t) == ip[1].a.u32 &&
-        !(ip[0].flags & BCI_START_STMT) &&
-        !(ip[1].flags & BCI_START_STMT) &&
-        (ip->flags & BCI_IMM_B) &&
-        (ip[1].flags & BCI_IMM_B))
-    {
-        SET_OP(ip, ByteCodeOp::SetAtStackPointer64);
-        ip->b.u64 |= (uint64_t) ip[1].b.u32 << 32;
-        setNop(context, ip + 1);
+    case ByteCodeOp::SetAtStackPointer32:
+        if (ip[1].op == ByteCodeOp::SetAtStackPointer32 &&
+            ip->a.u32 + sizeof(uint32_t) == ip[1].a.u32 &&
+            !(ip[0].flags & BCI_START_STMT) &&
+            !(ip[1].flags & BCI_START_STMT) &&
+            (ip->flags & BCI_IMM_B) &&
+            (ip[1].flags & BCI_IMM_B))
+        {
+            SET_OP(ip, ByteCodeOp::SetAtStackPointer64);
+            ip->b.u64 |= (uint64_t) ip[1].b.u32 << 32;
+            setNop(context, ip + 1);
+            break;
+        }
+
+        break;
     }
 }
 
