@@ -24,23 +24,6 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
 
         auto flags = g_ByteCodeOpDesc[(int) ip->op].flags;
 
-        if (ip->op == op)
-        {
-            // CopyRBRA X, X
-            if (ip->a.u32 == ip->b.u32)
-            {
-                setNop(context, ip);
-            }
-
-            // CopyRBRA X, Y followed by CopyRBRA Y, X
-            if (ip[1].op == op &&
-                ip->a.u32 == ip[1].b.u32 &&
-                ip->b.u32 == ip[1].a.u32)
-            {
-                setNop(context, ip + 1);
-            }
-        }
-
         if (ip->op == ByteCodeOp::CopyRBtoRA64)
         {
             // CopyRBRA followed by one single pushraparam, take the original register
@@ -69,6 +52,20 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
 
         if (ip->op == op)
         {
+            // CopyRBRA X, X
+            if (ip->a.u32 == ip->b.u32)
+            {
+                setNop(context, ip);
+            }
+
+            // CopyRBRA X, Y followed by CopyRBRA Y, X
+            if (ip[1].op == op &&
+                ip->a.u32 == ip[1].b.u32 &&
+                ip->b.u32 == ip[1].a.u32)
+            {
+                setNop(context, ip + 1);
+            }
+
             auto it = mapCopyRA.find(ip->a.u32);
             if (it)
             {
@@ -245,6 +242,10 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
 
 bool ByteCodeOptimizer::optimizePassDupCopyRBRA(ByteCodeOptContext* context)
 {
+    // See setContextFlags if you add one instruction
+    if (!(context->contextBcFlags & OCF_HAS_COPYRBRA))
+        return true;
+
     optimizePassDupCopyRBRAOp(context, ByteCodeOp::CopyRBtoRA8);
     optimizePassDupCopyRBRAOp(context, ByteCodeOp::CopyRBtoRA16);
     optimizePassDupCopyRBRAOp(context, ByteCodeOp::CopyRBtoRA32);
@@ -285,21 +286,13 @@ void ByteCodeOptimizer::optimizePassDupCopyOp(ByteCodeOptContext* context, ByteC
         else
         {
             if ((flags & OPFLAG_WRITE_A) && !(ip->flags & BCI_IMM_A))
-            {
                 mapRA.remove(ip->a.u32);
-            }
             if ((flags & OPFLAG_WRITE_B) && !(ip->flags & BCI_IMM_B))
-            {
                 mapRA.remove(ip->b.u32);
-            }
             if ((flags & OPFLAG_WRITE_C) && !(ip->flags & BCI_IMM_C))
-            {
                 mapRA.remove(ip->c.u32);
-            }
             if ((flags & OPFLAG_WRITE_D) && !(ip->flags & BCI_IMM_D))
-            {
                 mapRA.remove(ip->d.u32);
-            }
         }
     }
 }
@@ -307,6 +300,10 @@ void ByteCodeOptimizer::optimizePassDupCopyOp(ByteCodeOptContext* context, ByteC
 // Remove duplicated pure instructions (set RA to a constant)
 bool ByteCodeOptimizer::optimizePassDupCopy(ByteCodeOptContext* context)
 {
+    // See setContextFlags if you add one instruction
+    if (!(context->contextBcFlags & OCF_HAS_DUPCOPY))
+        return true;
+
     optimizePassDupCopyOp(context, ByteCodeOp::CopyRRtoRC);
     optimizePassDupCopyOp(context, ByteCodeOp::MakeBssSegPointer);
     optimizePassDupCopyOp(context, ByteCodeOp::MakeConstantSegPointer);

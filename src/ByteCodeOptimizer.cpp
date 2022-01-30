@@ -201,6 +201,33 @@ void ByteCodeOptimizer::removeNops(ByteCodeOptContext* context)
     context->nops.clear();
 }
 
+void ByteCodeOptimizer::setContextFlags(ByteCodeOptContext* context)
+{
+    context->contextBcFlags = 0;
+    for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
+    {
+        switch (ip->op)
+        {
+        case ByteCodeOp::CopyRBtoRA8:
+        case ByteCodeOp::CopyRBtoRA16:
+        case ByteCodeOp::CopyRBtoRA32:
+        case ByteCodeOp::CopyRBtoRA64:
+            context->contextBcFlags |= OCF_HAS_COPYRBRA;
+            break;
+
+        case ByteCodeOp::CopyRRtoRC:
+        case ByteCodeOp::MakeBssSegPointer:
+        case ByteCodeOp::MakeConstantSegPointer:
+        case ByteCodeOp::MakeMutableSegPointer:
+        case ByteCodeOp::GetFromStackParam64:
+        case ByteCodeOp::SetImmediate32:
+        case ByteCodeOp::SetImmediate64:
+            context->contextBcFlags |= OCF_HAS_DUPCOPY;
+            break;
+        }
+    }
+}
+
 void ByteCodeOptimizer::setJumps(ByteCodeOptContext* context)
 {
     if (!context->bc->numJumps)

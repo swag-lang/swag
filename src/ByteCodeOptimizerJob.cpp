@@ -21,6 +21,7 @@ bool ByteCodeOptimizerJob::optimize(ByteCode* bc, bool& restart)
     while (true)
     {
         ByteCodeOptimizer::genTree(&optContext);
+        ByteCodeOptimizer::setContextFlags(&optContext);
         ByteCodeOptimizer::setJumps(&optContext);
 
         if (optContext.hasError)

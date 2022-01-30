@@ -35,12 +35,16 @@ struct ByteCodeOptTreeParseContext
     function<void(ByteCodeOptContext*, ByteCodeOptTreeParseContext&)> cb;
 };
 
+static const uint32_t OCF_HAS_COPYRBRA = 0x00000001;
+static const uint32_t OCF_HAS_DUPCOPY  = 0x00000002;
+
 struct ByteCodeOptContext : public JobContext
 {
     ByteCode*                          bc;
     Module*                            module;
     VectorNative<ByteCodeInstruction*> jumps;
     VectorNative<ByteCodeInstruction*> nops;
+    uint32_t                           contextBcFlags = 0;
 
     vector<ByteCodeOptTreeNode>         tree;
     map<ByteCodeInstruction*, uint32_t> mapInstNode;
@@ -59,7 +63,8 @@ struct ByteCodeOptContext : public JobContext
     void reset()
     {
         JobContext::reset();
-        bc = nullptr;
+        bc             = nullptr;
+        contextBcFlags = 0;
         jumps.clear();
         nops.clear();
         vecInst.clear();
