@@ -80,6 +80,9 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
             continue;
         }
 
+        if (!mapCopyRA.count && !mapCopyRB.count)
+            continue;
+
         // If we use a register that comes from a CopyRBRA, then use the initial
         // register instead (that way, the Copy can become deadstore and removed later)
         // Do it for specific intructions, when sizes are a match
@@ -198,6 +201,7 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
 
             mapCopyRB.remove(ip->a.u32);
         }
+
         if ((flags & OPFLAG_WRITE_B) && !(ip->flags & BCI_IMM_B))
         {
             auto it = mapCopyRA.find(ip->b.u32);
@@ -211,6 +215,7 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
 
             mapCopyRB.remove(ip->b.u32);
         }
+
         if ((flags & OPFLAG_WRITE_C) && !(ip->flags & BCI_IMM_C))
         {
             auto it = mapCopyRA.find(ip->c.u32);
@@ -224,6 +229,7 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
 
             mapCopyRB.remove(ip->c.u32);
         }
+
         if ((flags & OPFLAG_WRITE_D) && !(ip->flags & BCI_IMM_D))
         {
             auto it = mapCopyRA.find(ip->d.u32);
