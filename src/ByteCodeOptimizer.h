@@ -18,8 +18,6 @@ struct ByteCodeOptimizer
     inline static bool hasRefToReg(ByteCodeInstruction* inst, uint32_t reg)  { return hasRefToRegA(inst, reg) || hasRefToRegB(inst, reg) || hasRefToRegC(inst, reg) || hasRefToRegD(inst, reg); }
     // clang-format on
 
-    static bool isJumpBlock(ByteCodeInstruction* inst);
-
     static uint32_t newTreeNode(ByteCodeOptContext* context, ByteCodeInstruction* ip, bool& here);
     static void     genTree(ByteCodeOptContext* context, uint32_t nodeIdx);
     static void     genTree(ByteCodeOptContext* context);

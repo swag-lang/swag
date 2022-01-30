@@ -3,6 +3,7 @@
 #include "TypeInfo.h"
 #include "TypeManager.h"
 #include "SourceFile.h"
+#include "ByteCode.h"
 
 // If a CopyRBRA is followed by the same CopyRBRA, and between them there's no write to RA or RB,
 // then the second CopyRBRA is useless
@@ -181,7 +182,7 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
         }
 
         // Reset CopyRARB map
-        if (isJumpBlock(ip))
+        if (ByteCode::isJump(ip))
         {
             mapCopyRA.clear();
             mapCopyRB.clear();
@@ -258,7 +259,7 @@ void ByteCodeOptimizer::optimizePassDupCopyOp(ByteCodeOptContext* context, ByteC
 
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
-        if (ip->flags & BCI_START_STMT || isJumpBlock(ip))
+        if (ip->flags & BCI_START_STMT || ByteCode::isJump(ip))
             mapRA.clear();
 
         auto flags = g_ByteCodeOpDesc[(int) ip->op].flags;

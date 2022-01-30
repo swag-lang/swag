@@ -187,7 +187,7 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
         if (flags & OPFLAG_READ_D && !(ip->flags & BCI_IMM_D))
             regs[ip->d.u32] = nullptr;
 
-        if (isJumpBlock(ip))
+        if (ByteCode::isJump(ip))
             memset(regs.buffer, 0, maxReg * sizeof(void*));
     }
 
