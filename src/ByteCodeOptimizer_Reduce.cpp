@@ -946,73 +946,92 @@ void ByteCodeOptimizer::reduceIncPtr(ByteCodeOptContext* context, ByteCodeInstru
 
 void ByteCodeOptimizer::reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
-    // Remove unecessary DebugNop
-    if (ip->op == ByteCodeOp::DebugNop && ip->location == ip[1].location)
-        setNop(context, ip);
-
-    // Useless pop/push
-    if (ip[0].op == ByteCodeOp::InternalPushErr &&
-        ip[1].op == ByteCodeOp::InternalPopErr)
+    switch (ip->op)
     {
-        setNop(context, ip);
-        setNop(context, ip + 1);
-    }
+        // Remove unecessary DebugNop
+    case ByteCodeOp::DebugNop:
+        if (ip->location == ip[1].location)
+        {
+            setNop(context, ip);
+            break;
+        }
+        break;
 
-    // Useless multi return
-    if (ip[0].op == ByteCodeOp::Ret &&
-        ip[1].op == ByteCodeOp::Ret)
-    {
-        setNop(context, ip);
-    }
+        // Useless pop/push
+    case ByteCodeOp::InternalPushErr:
+        if (ip[1].op == ByteCodeOp::InternalPopErr)
+        {
+            setNop(context, ip);
+            setNop(context, ip + 1);
+            break;
+        }
 
-    // Duplicated safety
-    if (ip[0].op == ByteCodeOp::JumpIfNotZero64 &&
-        ip[1].op == ByteCodeOp::InternalPanic &&
-        ip[2].op == ByteCodeOp::JumpIfNotZero64 &&
-        ip[3].op == ByteCodeOp::InternalPanic &&
-        ip[0].a.u32 == ip[2].a.u32 &&
-        ip[0].b.s32 == 1 &&
-        ip[2].b.s32 == 1)
-    {
-        setNop(context, ip);
-        setNop(context, ip + 1);
-    }
+        // Useless multi return
+    case ByteCodeOp::Ret:
+        if (ip[1].op == ByteCodeOp::Ret)
+        {
+            setNop(context, ip);
+            break;
+        }
+        break;
 
-    // GetFromStack8/16/32 clear the other bits by convention, so no need to
-    // have a ClearMask after
-    if (ip[0].op == ByteCodeOp::GetFromStack8 &&
-        ip[1].op == ByteCodeOp::ClearMaskU64 &&
-        ip[0].a.u32 == ip[1].a.u32)
-    {
-        setNop(context, ip + 1);
-    }
+        // Duplicated safety
+    case ByteCodeOp::JumpIfNotZero64:
+        if (ip[1].op == ByteCodeOp::InternalPanic &&
+            ip[2].op == ByteCodeOp::JumpIfNotZero64 &&
+            ip[3].op == ByteCodeOp::InternalPanic &&
+            ip[0].a.u32 == ip[2].a.u32 &&
+            ip[0].b.s32 == 1 &&
+            ip[2].b.s32 == 1)
+        {
+            setNop(context, ip);
+            setNop(context, ip + 1);
+            break;
+        }
+        break;
 
-    if (ip[0].op == ByteCodeOp::GetFromStack16 &&
-        ip[1].op == ByteCodeOp::ClearMaskU64 &&
-        ip[0].a.u32 == ip[1].a.u32)
-    {
-        setNop(context, ip + 1);
-    }
+        // GetFromStack8/16/32 clear the other bits by convention, so no need to
+        // have a ClearMask after
+    case ByteCodeOp::GetFromStack8:
+        if (ip[1].op == ByteCodeOp::ClearMaskU64 &&
+            ip[0].a.u32 == ip[1].a.u32)
+        {
+            setNop(context, ip + 1);
+            break;
+        }
 
-    if (ip[0].op == ByteCodeOp::GetFromStack8 &&
-        ip[1].op == ByteCodeOp::ClearMaskU32 &&
-        ip[0].a.u32 == ip[1].a.u32)
-    {
-        setNop(context, ip + 1);
-    }
+        if (ip[1].op == ByteCodeOp::ClearMaskU32 &&
+            ip[0].a.u32 == ip[1].a.u32)
+        {
+            setNop(context, ip + 1);
+            break;
+        }
 
-    if (ip[0].op == ByteCodeOp::GetFromStack16 &&
-        ip[1].op == ByteCodeOp::ClearMaskU32 &&
-        ip[0].a.u32 == ip[1].a.u32)
-    {
-        setNop(context, ip + 1);
-    }
+        break;
 
-    if (ip[0].op == ByteCodeOp::GetFromStack32 &&
-        ip[1].op == ByteCodeOp::ClearMaskU64 &&
-        ip[0].a.u32 == ip[1].a.u32)
-    {
-        setNop(context, ip + 1);
+    case ByteCodeOp::GetFromStack16:
+        if (ip[1].op == ByteCodeOp::ClearMaskU64 &&
+            ip[0].a.u32 == ip[1].a.u32)
+        {
+            setNop(context, ip + 1);
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::ClearMaskU32 &&
+            ip[0].a.u32 == ip[1].a.u32)
+        {
+            setNop(context, ip + 1);
+            break;
+        }
+        break;
+
+    case ByteCodeOp::GetFromStack32:
+        if (ip[1].op == ByteCodeOp::ClearMaskU64 &&
+            ip[0].a.u32 == ip[1].a.u32)
+        {
+            setNop(context, ip + 1);
+            break;
+        }
     }
 
     // Remove operators which do nothing
