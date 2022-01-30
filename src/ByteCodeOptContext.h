@@ -50,9 +50,9 @@ struct ByteCodeOptContext : public JobContext
     map<ByteCodeInstruction*, uint32_t> mapInstNode;
 
     VectorNative<ByteCodeInstruction*>                  vecInst;
-    VectorNative<uint64_t>                              vecU64;
     VectorNative<uint32_t>                              vecReg;
     MapRegTo<uint32_t>                                  mapRegReg;
+    MapRegTo<uint64_t>                                  mapRegU64;
     MapRegTo<ByteCodeInstruction*>                      mapRegInstA;
     MapRegTo<ByteCodeInstruction*>                      mapRegInstB;
     map<uint64_t, pair<uint64_t, ByteCodeInstruction*>> mapCst;
@@ -68,7 +68,6 @@ struct ByteCodeOptContext : public JobContext
         jumps.clear();
         nops.clear();
         vecInst.clear();
-        vecU64.clear();
         mapRegReg.clear();
         mapRegInstA.clear();
         mapRegInstB.clear();
