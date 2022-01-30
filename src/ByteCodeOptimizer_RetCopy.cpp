@@ -118,11 +118,11 @@ void ByteCodeOptimizer::registerMakeAddr(ByteCodeOptContext* context, ByteCodeIn
         ip->op == ByteCodeOp::MakeMutableSegPointer ||
         ip->op == ByteCodeOp::MakeCompilerSegPointer)
     {
-        context->mapU32U32[ip->a.u32] = ip->b.u32;
+        context->mapRegReg.set(ip->a.u32, ip->b.u32);
     }
     else if (ip->op == ByteCodeOp::InternalGetTlsPtr)
     {
-        context->mapU32U32[ip->a.u32] = UINT32_MAX; // Disable optim whatever
+        context->mapRegReg.set(ip->a.u32, UINT32_MAX); // Disable optim whatever
     }
 }
 
@@ -189,7 +189,7 @@ bool ByteCodeOptimizer::optimizePassRetCopyLocal(ByteCodeOptContext* context)
 
 bool ByteCodeOptimizer::optimizePassRetCopyGlobal(ByteCodeOptContext* context)
 {
-    context->mapU32U32.clear();
+    context->mapRegReg.clear();
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
         bool startOk = false;
@@ -228,15 +228,15 @@ bool ByteCodeOptimizer::optimizePassRetCopyGlobal(ByteCodeOptContext* context)
                 // Pointer aliasing. Do not make the optimization if the wanted result is also a parameter
                 // to the call. For example a = toto(a, b).
                 bool ok = true;
-                auto it = context->mapU32U32.find(ip->a.u32);
-                if (it != context->mapU32U32.end())
+                auto it = context->mapRegReg.find(ip->a.u32);
+                if (it)
                 {
                     for (auto it1 : context->paramsReg)
                     {
-                        auto it2 = context->mapU32U32.find(it1);
-                        if (it2 == context->mapU32U32.end())
+                        auto it2 = context->mapRegReg.find(it1);
+                        if (!it2)
                             continue;
-                        if (it2->second == UINT32_MAX || it->second == UINT32_MAX || it2->second == it->second)
+                        if ((*it2) == UINT32_MAX || (*it) == UINT32_MAX || *it2 == *it)
                         {
                             ok = false;
                             ip = ipOrg;
@@ -276,7 +276,7 @@ bool ByteCodeOptimizer::optimizePassRetCopyGlobal(ByteCodeOptContext* context)
                 ip = ipOrg;
             }
 
-            context->mapU32U32.clear();
+            context->mapRegReg.clear();
         }
     }
 
