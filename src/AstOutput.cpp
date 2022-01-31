@@ -892,6 +892,8 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         bool first = true;
         for (auto c : node->childs)
         {
+            if ((c->flags & AST_GENERATED) && !(c->flags & AST_GENERATED_USER))
+                continue;
             if (!first)
                 CONCAT_FIXED_STR(concat, ", ");
             first = false;
@@ -1782,9 +1784,13 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         break;
 
     case AstNodeKind::TypeLambda:
+    case AstNodeKind::TypeClosure:
     {
         AstTypeLambda* typeNode = static_cast<AstTypeLambda*>(node);
-        CONCAT_FIXED_STR(concat, "func");
+        if (node->kind == AstNodeKind::TypeLambda)
+            CONCAT_FIXED_STR(concat, "func");
+        else
+            CONCAT_FIXED_STR(concat, "closure");
         if (!typeNode->parameters)
             CONCAT_FIXED_STR(concat, "()");
         else

@@ -758,6 +758,7 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptM
         if (!funcNode->parameters)
             funcNode->parameters = Ast::newFuncDeclParams(sourceFile, funcNode, this);
         auto v = Ast::newVarDecl(sourceFile, "__captureCxt", funcNode->parameters, this, AstNodeKind::FuncDeclParam);
+        v->flags |= AST_GENERATED;
         Ast::removeFromParent(v);
         Ast::addChildFront(funcNode->parameters, v);
         v->type           = Ast::newTypeExpression(sourceFile, v, this);

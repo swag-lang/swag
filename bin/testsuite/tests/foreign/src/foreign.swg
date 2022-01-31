@@ -487,3 +487,8 @@ public struct AZE
 {
     x: {s32} = @{0}
 }
+
+public func tcf_toto30(f: closure(s32))
+{
+    f(10)
+}

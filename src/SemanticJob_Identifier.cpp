@@ -341,6 +341,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
         fcp->setFlagsValueIsComputed();
         fcp->computedValue->reg.pointer = nullptr;
         fcp->typeInfo                   = g_TypeMgr->typeInfoNull;
+        fcp->flags |= AST_GENERATED;
         identifier->doneFlags |= AST_DONE_CLOSURE_FIRST_PARAM;
     }
 

@@ -58,12 +58,12 @@ bool SyntaxJob::doTypeExpressionLambdaClosure(AstNode* parent, AstNode** result)
     // A closure always has at least one parameter : the capture context
     if (kind == AstNodeKind::TypeClosure)
     {
-        params           = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclParams, sourceFile, node);
+        params = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclParams, sourceFile, node);
         node->parameters = params;
 
         auto typeNode      = Ast::newTypeExpression(sourceFile, params);
         typeNode->typeInfo = g_TypeMgr->typeInfoPointers[(int) NativeTypeKind::Void];
-        typeNode->flags |= AST_NO_SEMANTIC;
+        typeNode->flags |= AST_NO_SEMANTIC | AST_GENERATED;
     }
 
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
