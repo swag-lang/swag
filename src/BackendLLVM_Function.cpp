@@ -3945,15 +3945,43 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             //////////////////////////////
             builder.SetInsertPoint(blockLambdaBC);
             {
-                auto                       v0 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
+                auto                       r0 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
                 VectorNative<llvm::Value*> fctParams;
-                fctParams.push_front(v0);
+                fctParams.push_front(r0);
+                getLocalCallParameters(buildParameters, allocR, allocRR, allocT, fctParams, typeFuncBC, pushRAParams, {});
+
                 auto r1 = builder.CreateLoad(TO_PTR_PTR_I8(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst3_i32})));
                 auto PT = llvm::PointerType::getUnqual(pp.bytecodeRunTy);
                 auto r2 = builder.CreatePointerCast(r1, PT);
-                getLocalCallParameters(buildParameters, allocR, allocRR, allocT, fctParams, typeFuncBC, pushRAParams, {});
-                builder.CreateCall(pp.bytecodeRunTy, r2, {fctParams.begin(), fctParams.end()});
-                builder.CreateBr(blockNext);
+
+                if (typeFuncBC->isClosure())
+                {
+                    llvm::BasicBlock* blockLambda  = llvm::BasicBlock::Create(context, "", func);
+                    llvm::BasicBlock* blockClosure = llvm::BasicBlock::Create(context, "", func);
+
+                    // Test closure context pointer. If null, this is a lambda.
+                    auto v0 = builder.CreateLoad(GEP_I32(allocR, pushRAParams.back()));
+                    auto v2 = builder.CreateIsNotNull(v0);
+                    builder.CreateCondBr(v2, blockClosure, blockLambda);
+
+                    // Lambda call. We must eliminate the first parameter (closure context)
+                    builder.SetInsertPoint(blockLambda);
+                    VectorNative<llvm::Value*> fctParamsLocal;
+                    fctParamsLocal.push_front(r0);
+                    getLocalCallParameters(buildParameters, allocR, allocRR, allocT, fctParamsLocal, typeFuncBC, pushRAParams, {}, true);
+                    builder.CreateCall(pp.bytecodeRunTy, r2, {fctParamsLocal.begin(), fctParamsLocal.end()});
+                    builder.CreateBr(blockNext);
+
+                    // Closure call. Normal call, as the type contains the first parameter.
+                    builder.SetInsertPoint(blockClosure);
+                    builder.CreateCall(pp.bytecodeRunTy, r2, {fctParams.begin(), fctParams.end()});
+                    builder.CreateBr(blockNext);
+                }
+                else
+                {
+                    builder.CreateCall(pp.bytecodeRunTy, r2, {fctParams.begin(), fctParams.end()});
+                    builder.CreateBr(blockNext);
+                }
             }
 
             builder.SetInsertPoint(blockNext);
