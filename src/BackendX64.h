@@ -359,6 +359,7 @@ struct BackendX64 : public Backend
     bool         dbgEmitFctDebugS(const BuildParameters& buildParameters);
     bool         dbgEmitScope(X64PerThread& pp, Concat& concat, CoffFunction& f, Scope* scope);
     bool         emitDebug(const BuildParameters& buildParameters);
+    void         emitByteCodeLambdaFctCall(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams);
     void         emitByteCodeLambdaParams(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams);
 
     bool saveObjFile(const BuildParameters& buildParameters);
