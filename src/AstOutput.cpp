@@ -495,14 +495,47 @@ bool AstOutput::outputLiteral(OutputContext& context, Concat& concat, AstNode* n
 bool AstOutput::outputLambdaExpression(OutputContext& context, Concat& concat, AstNode* node)
 {
     AstFuncDecl* funcDecl = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
-    concat.addString("@(");
+    concat.addChar('@');
 
+    // Closure capture parameters
+    if (funcDecl->captureParameters)
+    {
+        concat.addChar('|');
+
+        bool first = true;
+        for (auto p : funcDecl->captureParameters->childs)
+        {
+            if (!first)
+                CONCAT_FIXED_STR(concat, ", ");
+            first = false;
+
+            if (p->kind == AstNodeKind::MakePointer)
+            {
+                concat.addChar('&');
+                concat.addString(p->childs.front()->token.text);
+            }
+            else
+            {
+                concat.addString(p->token.text);
+            }
+        }
+
+        concat.addChar('|');
+    }
+
+    // Parameters
+    concat.addChar('(');
     if (funcDecl->parameters && !funcDecl->parameters->childs.empty())
     {
+        bool first = true;
         for (auto p : funcDecl->parameters->childs)
         {
-            if (p != funcDecl->parameters->childs.front())
+            if ((p->flags & AST_GENERATED) && !(p->flags & AST_GENERATED_USER))
+                continue;
+            if (!first)
                 CONCAT_FIXED_STR(concat, ", ");
+
+            first = false;
             concat.addString(p->token.text);
             if (!p->childs.empty())
             {

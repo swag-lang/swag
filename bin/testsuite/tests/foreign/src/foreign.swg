@@ -492,3 +492,17 @@ public func tcf_toto30(f: closure(s32))
 {
     f(10)
 }
+
+#[Swag.Inline]
+public func tcf_toto31()
+{
+    x := @||() {}
+}
+
+#[Swag.Inline]
+public func tcf_toto32()
+{
+    a := 0
+    b := 0
+    x := @|a, &b|(x: s32) {}
+}
