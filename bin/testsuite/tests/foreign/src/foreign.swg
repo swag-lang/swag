@@ -513,3 +513,15 @@ public func tcf_toto33()
 {
     a, b := 0
 }
+
+#[Swag.Inline]
+public func tcf_toto34()
+{
+    func titi(f: closure(s32))
+    {
+
+    }
+
+    titi(@||(x: s32) {
+    })
+}
