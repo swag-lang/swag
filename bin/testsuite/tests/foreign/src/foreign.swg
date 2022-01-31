@@ -505,4 +505,11 @@ public func tcf_toto32()
     a := 0
     b := 0
     x := @|a, &b|(x: s32) {}
+    x(4)
+}
+
+#[Swag.Inline]
+public func tcf_toto33()
+{
+    a, b := 0
 }

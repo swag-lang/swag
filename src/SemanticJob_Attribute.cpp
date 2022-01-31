@@ -12,7 +12,7 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
     if (!checkNode)
         return true;
 
-    if (checkNode->kind == AstNodeKind::Statement)
+    if (checkNode->kind == AstNodeKind::Statement || checkNode->kind == AstNodeKind::StatementNoScope)
     {
         for (auto s : checkNode->childs)
             SWAG_CHECK(checkAttribute(context, oneAttribute, s));

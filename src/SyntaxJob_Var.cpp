@@ -66,7 +66,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
         auto parentNode = parent;
         if (acceptDeref || parent->kind == AstNodeKind::AttrUse)
         {
-            parentNode = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
+            parentNode = Ast::newNode<AstNode>(this, AstNodeKind::StatementNoScope, sourceFile, parent);
             if (result)
                 *result = parentNode;
         }
@@ -109,7 +109,6 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
             }
             else
             {
-                ScopedFlags lk(this, AST_GENERATED);
                 varNode->assignment = Ast::newIdentifierRef(sourceFile, front->token.text, varNode, this);
             }
 
