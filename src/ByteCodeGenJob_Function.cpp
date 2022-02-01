@@ -1507,10 +1507,24 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         toFree.push_back(r0[0]);
         toFree.push_back(r0[1]);
 
-        auto inst       = emitInstruction(context, ByteCodeOp::CopySPVaargs, r0[0]);
-        inst->b.u32     = (uint32_t) offset * sizeof(Register);
+        auto inst   = emitInstruction(context, ByteCodeOp::CopySPVaargs, r0[0]);
+        inst->b.u32 = (uint32_t) offset * sizeof(Register);
+
+        // If this is a closure, the first parameter is optionnal, depending on node->additionalRegisterRC[1] content
+        // So we remove the first parameter by default, and will add it below is necessary
+        if (node->typeInfo && node->typeInfo->isClosure())
+            inst->b.u32 -= sizeof(Register);
+
         inst->c.b       = foreign || lambda;
         inst->d.pointer = (uint8_t*) typeInfoFunc;
+
+        // In case of a real closure not affected to a lambda, we must count the first parameter
+        // So we add sizeof(Register) to the CopySP pointer
+        if (node->typeInfo && node->typeInfo->isClosure())
+        {
+            emitInstruction(context, ByteCodeOp::JumpIfZero64, node->additionalRegisterRC[1])->b.s64 = 1;
+            emitInstruction(context, ByteCodeOp::Add64byVB64, r0[0])->b.s64                          = sizeof(Register);
+        }
 
         emitInstruction(context, ByteCodeOp::SetImmediate64, r0[1])->b.u64 = numVariadic;
         emitInstruction(context, ByteCodeOp::PushRAParam2, r0[1], r0[0]);
