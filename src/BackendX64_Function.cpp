@@ -2607,9 +2607,15 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             }
             else
             {
+                // All of this is complicated. But ip->b.u32 has been reduced by one register in case of closure, and
+                // we have a dynamic test for bytecode execution. But for runtime, be put it back.
+                auto sizeB = ip->b.u32;
+                if (typeFuncCall->isClosure())
+                    sizeB += sizeof(Register);
+
                 // We need to flatten all variadic registers, in order, in the stack, and emit the address of that array
                 // We compute the number of variadic registers by removing registers of normal parameters (ip->b.u32)
-                int      idxParam          = (int) pushRAParams.size() - (ip->b.u32 / sizeof(Register)) - 1;
+                int      idxParam          = (int) pushRAParams.size() - (sizeB / sizeof(Register)) - 1;
                 uint32_t variadicStackSize = (idxParam + 1) * sizeof(Register);
                 MK_ALIGN16(variadicStackSize);
                 uint32_t offset = sizeParamsStack - variadicStackSize;

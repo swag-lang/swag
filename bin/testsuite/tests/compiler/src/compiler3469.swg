@@ -1,4 +1,4 @@
-#global skip
+//#global skip
 func toto(x: ...)
 {
     @assert(@countof(x) == 2)

@@ -3701,6 +3701,13 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             {
                 auto allocVA = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(pushRAParams.size()));
 
+                // All of this is complicated. But ip->b.u32 has been reduced by one register in case of closure, and
+                // we have a dynamic test for bytecode execution. But for runtime, be put it back.
+                auto typeFuncCall = CastTypeInfo<TypeInfoFuncAttr>((TypeInfo*) ip->d.pointer, TypeInfoKind::FuncAttr, TypeInfoKind::Lambda);
+                auto sizeB        = ip->b.u32;
+                if (typeFuncCall->isClosure())
+                    sizeB += sizeof(Register);
+
                 // In the pushRAParams array, we have first all the variadic registers
                 //
                 // And then, we have all normal parameters. So we start at pushRAParams.size() less the number of registers
@@ -3708,7 +3715,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 //
                 // The number of normal parameters is deduced from the 'offset' of the CopySPVaargs instruction (ip->b.u32)
                 int idx      = 0;
-                int idxParam = (int) pushRAParams.size() - (ip->b.u32 / sizeof(Register)) - 1;
+                int idxParam = (int) pushRAParams.size() - (sizeB / sizeof(Register)) - 1;
                 while (idxParam >= 0)
                 {
                     auto r0 = GEP_I32(allocVA, idx);

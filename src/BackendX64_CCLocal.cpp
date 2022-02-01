@@ -13,7 +13,6 @@ void BackendX64::emitLocalFctCall(X64PerThread&                 pp,
                                   const VectorNative<uint32_t>& pushRAParams,
                                   int                           firstIdxCall)
 {
-    // Lambda call parameters (do not use the first parameter)
     for (int idxCall = firstIdxCall; idxCall < numCallParams; idxCall++)
     {
         auto typeParam = typeFuncBC->parameters[idxCall]->typeInfo;
