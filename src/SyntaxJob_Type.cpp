@@ -114,6 +114,16 @@ bool SyntaxJob::doTypeExpressionLambdaClosure(AstNode* parent, AstNode** result)
                 AstNode* typeExpr;
                 SWAG_CHECK(doTypeExpression(params, &typeExpr));
                 ((AstTypeExpression*) typeExpr)->typeFlags |= isConst ? TYPEFLAG_ISCONST : 0;
+
+                // type...
+                if (token.id == TokenId::SymDotDotDot)
+                {
+                    Ast::removeFromParent(typeExpr);
+                    auto newTypeExpression             = Ast::newTypeExpression(sourceFile, params);
+                    newTypeExpression->typeFromLiteral = g_TypeMgr->typeInfoVariadic;
+                    SWAG_CHECK(eatToken());
+                    Ast::addChildBack(newTypeExpression, typeExpr);
+                }
             }
 
             if (token.id != TokenId::SymComma)
