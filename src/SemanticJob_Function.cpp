@@ -748,7 +748,7 @@ bool SemanticJob::isMethod(AstFuncDecl* funcNode)
 
 void SemanticJob::launchResolveSubDecl(JobContext* context, AstNode* node)
 {
-    if (node->flags & AST_SPEC_SEMANTIC)
+    if (node->flags & AST_SPEC_SEMANTICX)
         return;
 
     // If AST_DONE_FILE_JOB_PASS is set, then the file job has already seen the sub declaration, ignored it
@@ -841,9 +841,10 @@ bool SemanticJob::resolveCaptureFuncCallParams(SemanticContext* context)
     }
 
     // If this is a capture block, then now we can evaluate the function
-    if (node->captureClosure && (node->captureClosure->flags & AST_SPEC_SEMANTIC))
+    if (node->captureClosure)
     {
-        node->captureClosure->flags &= ~AST_SPEC_SEMANTIC;
+        ScopedLock lk(node->captureClosure->mutex);
+        node->captureClosure->flags &= ~AST_SPEC_SEMANTIC1;
         launchResolveSubDecl(context, node->captureClosure);
     }
 

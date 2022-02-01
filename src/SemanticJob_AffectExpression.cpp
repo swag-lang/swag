@@ -33,7 +33,8 @@ bool SemanticJob::resolveAfterAffectLeft(SemanticContext* context)
         auto op = CastAst<AstOp>(node->parent, AstNodeKind::AffectOp);
         if (op->dependentNode)
         {
-            op->dependentNode->flags &= ~AST_SPEC_SEMANTIC;
+            ScopedLock lk(op->dependentNode->mutex);
+            op->dependentNode->flags &= ~AST_SPEC_SEMANTIC2;
             launchResolveSubDecl(context, op->dependentNode);
         }
     }

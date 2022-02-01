@@ -855,7 +855,7 @@ bool SyntaxJob::doLambdaExpression(AstNode* parent, AstNode** result)
 
         // We want the lambda to be evaluated only once the captured block has been typed
         // See resolveCaptureFuncCallParams
-        lambdaDecl->flags |= AST_NO_SEMANTIC | AST_SPEC_SEMANTIC;
+        lambdaDecl->flags |= AST_NO_SEMANTIC | AST_SPEC_SEMANTIC1;
 
         // Reference to the function
         AstNode* identifierRef = Ast::newIdentifierRef(sourceFile, lambda->token.text, exprNode, this);
@@ -898,7 +898,7 @@ bool SyntaxJob::doLambdaExpression(AstNode* parent, AstNode** result)
 
         auto lambdaFunc               = CastAst<AstFuncDecl>(lambda, AstNodeKind::FuncDecl);
         lambdaFunc->makePointerLambda = exprNode;
-        lambdaFunc->flags |= AST_NO_SEMANTIC | AST_SPEC_SEMANTIC;
+        lambdaFunc->flags |= AST_NO_SEMANTIC | AST_SPEC_SEMANTIC2;
     }
 
     if (result)
