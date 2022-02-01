@@ -491,6 +491,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     {
         if (ip->node->flags & AST_NO_BACKEND)
             continue;
+        if (ip->flags & BCI_NO_BACKEND)
+            continue;
 
         if (debug)
             dbgSetLocation(coffFct, bc, ip, concat.totalCount() - beforeProlog);

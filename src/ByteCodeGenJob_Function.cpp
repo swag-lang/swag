@@ -1500,8 +1500,12 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         // So we add sizeof(Register) to the CopySP pointer
         if (node->typeInfo && node->typeInfo->isClosure())
         {
-            emitInstruction(context, ByteCodeOp::JumpIfZero64, node->additionalRegisterRC[1])->b.s64 = 1;
-            emitInstruction(context, ByteCodeOp::Add64byVB64, r0[0])->b.s64 = sizeof(Register);
+            inst = emitInstruction(context, ByteCodeOp::JumpIfZero64, node->additionalRegisterRC[1]);
+            inst->flags |= BCI_NO_BACKEND;
+            inst->b.s64 = 1;
+            inst        = emitInstruction(context, ByteCodeOp::Add64byVB64, r0[0]);
+            inst->b.s64 = sizeof(Register);
+            inst->flags |= BCI_NO_BACKEND;
         }
 
         emitInstruction(context, ByteCodeOp::SetImmediate64, r0[1])->b.u64 = numVariadic;
@@ -1536,8 +1540,12 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         // So we add sizeof(Register) to the CopySP pointer
         if (node->typeInfo && node->typeInfo->isClosure())
         {
-            emitInstruction(context, ByteCodeOp::JumpIfZero64, node->additionalRegisterRC[1])->b.s64 = 1;
-            emitInstruction(context, ByteCodeOp::Add64byVB64, r0[0])->b.s64                          = sizeof(Register);
+            inst = emitInstruction(context, ByteCodeOp::JumpIfZero64, node->additionalRegisterRC[1]);
+            inst->flags |= BCI_NO_BACKEND;
+            inst->b.s64 = 1;
+            inst        = emitInstruction(context, ByteCodeOp::Add64byVB64, r0[0]);
+            inst->flags |= BCI_NO_BACKEND;
+            inst->b.s64 = sizeof(Register);
         }
 
         emitInstruction(context, ByteCodeOp::SetImmediate64, r0[1])->b.u64 = numVariadic;
