@@ -128,14 +128,38 @@ bool SemanticJob::resolveTypeLambdaClosure(SemanticContext* context)
 
     if (node->parameters)
     {
+        int index = 0;
         for (auto param : node->parameters->childs)
         {
             auto typeParam      = g_TypeMgr->makeParam();
             typeParam->typeInfo = param->typeInfo;
             typeParam->declNode = param;
+
             if (typeParam->typeInfo->flags & TYPEINFO_GENERIC)
                 typeInfo->flags |= TYPEINFO_GENERIC;
+
+            // Variadic must be the last one
+            if (typeParam->typeInfo->kind == TypeInfoKind::Variadic)
+            {
+                typeInfo->flags |= TYPEINFO_VARIADIC;
+                if (index != node->parameters->childs.size() - 1)
+                    return context->report(param, Err(Err0734));
+            }
+            else if (typeParam->typeInfo->kind == TypeInfoKind::TypedVariadic)
+            {
+                typeInfo->flags |= TYPEINFO_TYPED_VARIADIC;
+                if (index != node->parameters->childs.size() - 1)
+                    return context->report(param, Err(Err0734));
+            }
+            else if (typeParam->typeInfo->kind == TypeInfoKind::CVariadic)
+            {
+                typeInfo->flags |= TYPEINFO_C_VARIADIC;
+                if (index != node->parameters->childs.size() - 1)
+                    return context->report(param, Err(Err0734));
+            }
+
             typeInfo->parameters.push_back(typeParam);
+            index++;
         }
     }
 

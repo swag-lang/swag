@@ -430,6 +430,12 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     // x64 calling convention, space for at least 4 parameters when calling a function
     // (should ideally be reserved only if we have a call)
     uint32_t sizeParamsStack = max(4 * sizeof(Register), (bc->maxCallParams + 1) * sizeof(Register));
+
+    // Because of variadic parameters in fct calls, we need to add some extra room, in case we have to flatten them
+    // We want to be sure to have the room to flatten the array of variadics (make all params contiguous). That's
+    // why we multiply by 2.
+    sizeParamsStack *= 2;
+
     MK_ALIGN16(sizeParamsStack);
 
     auto     beforeProlog = concat.totalCount();
@@ -2550,9 +2556,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::CopySPVaargs:
         {
-            auto typeFuncCall = CastTypeInfo<TypeInfoFuncAttr>((TypeInfo*) ip->d.pointer, TypeInfoKind::FuncAttr, TypeInfoKind::Lambda);
-            bool foreign      = ip->c.b;
-            if (!foreign)
+            auto typeFuncCall    = CastTypeInfo<TypeInfoFuncAttr>((TypeInfo*) ip->d.pointer, TypeInfoKind::FuncAttr, TypeInfoKind::Lambda);
+            bool foreignOrLambda = ip->c.b;
+            if (!foreignOrLambda)
             {
                 // We are close to the byte code, as all PushRaParams are already in the correct order for variadics.
                 // We need the RAX register to address the stack where all are stored.

@@ -58,7 +58,7 @@ bool SyntaxJob::doTypeExpressionLambdaClosure(AstNode* parent, AstNode** result)
     // A closure always has at least one parameter : the capture context
     if (kind == AstNodeKind::TypeClosure)
     {
-        params = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclParams, sourceFile, node);
+        params           = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclParams, sourceFile, node);
         node->parameters = params;
 
         auto typeNode      = Ast::newTypeExpression(sourceFile, params);
@@ -94,6 +94,20 @@ bool SyntaxJob::doTypeExpressionLambdaClosure(AstNode* parent, AstNode** result)
                 typeNode->typeFlags |= isConst ? TYPEFLAG_ISCONST : 0;
                 typeNode->typeFlags |= TYPEFLAG_ISSELF;
                 typeNode->identifier = Ast::newIdentifierRef(sourceFile, currentStructScope->name, typeNode, this);
+            }
+            // ...
+            else if (token.id == TokenId::SymDotDotDot)
+            {
+                auto typeExpr             = Ast::newTypeExpression(sourceFile, params);
+                typeExpr->typeFromLiteral = g_TypeMgr->typeInfoVariadic;
+                SWAG_CHECK(eatToken());
+            }
+            // cvarargs
+            else if (token.id == TokenId::KwdCVarArgs)
+            {
+                auto typeExpr             = Ast::newTypeExpression(sourceFile, params);
+                typeExpr->typeFromLiteral = g_TypeMgr->typeInfoCVariadic;
+                SWAG_CHECK(eatToken());
             }
             else
             {
