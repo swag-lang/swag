@@ -355,8 +355,16 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                         auto num = symbolLambda->parameters.size();
                         for (int idx = 0; idx < num; idx++)
                         {
-                            auto symbolParam = symbolLambda->parameters[idx];
-                            auto typeParam   = typeLambda->parameters[idx];
+                            if (symbolLambda->isClosure() && !idx)
+                                continue;
+                            TypeInfoParam* symbolParam = symbolLambda->parameters[idx];
+
+                            TypeInfoParam* typeParam;
+                            if (symbolLambda->isClosure() && typeLambda->isLambda())
+                                typeParam = typeLambda->parameters[idx - 1];
+                            else
+                                typeParam = typeLambda->parameters[idx];
+
                             if (symbolParam->typeInfo->flags & TYPEINFO_GENERIC &&
                                 !typeParam->typeInfo->isNative(NativeTypeKind::Undefined)) // For lambda literals, with deduced types
                             {

@@ -204,8 +204,13 @@ void SemanticJob::resolvePendingLambdaTyping(AstFuncCallParam* nodeCall, OneMatc
     // Replace every parameters types
     for (int paramIdx = 0; paramIdx < typeUndefinedFct->parameters.size(); paramIdx++)
     {
-        auto childType   = funcDecl->parameters->childs[paramIdx];
-        auto definedType = typeDefinedFct->parameters[paramIdx]->typeInfo;
+        auto childType = funcDecl->parameters->childs[paramIdx];
+
+        TypeInfo* definedType;
+        if (typeDefinedFct->isClosure() && !typeUndefinedFct->isClosure())
+            definedType = typeDefinedFct->parameters[paramIdx + 1]->typeInfo;
+        else
+            definedType = typeDefinedFct->parameters[paramIdx]->typeInfo;
 
         childType->typeInfo                              = definedType;
         childType->resolvedSymbolOverload->typeInfo      = definedType;
