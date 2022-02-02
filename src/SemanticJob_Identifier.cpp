@@ -343,6 +343,11 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
         fcp->typeInfo                   = g_TypeMgr->typeInfoNull;
         fcp->flags |= AST_GENERATED;
         identifier->doneFlags |= AST_DONE_CLOSURE_FIRST_PARAM;
+
+        auto node = Ast::newNode<AstNode>(nullptr, AstNodeKind::Literal, context->sourceFile, fcp);
+        node->setFlagsValueIsComputed();
+        node->flags |= AST_GENERATED;
+        node->typeInfo = g_TypeMgr->typeInfoNull;
     }
 
     sortParameters(identifier->callParameters);
@@ -2369,7 +2374,7 @@ bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifier
     if (canDoUfcs)
     {
         // If a variable is defined just before a function call, then this can be an UFCS (uniform function call syntax)
-        if (identifierRef->resolvedSymbolName)
+        if (identifierRef->resolvedSymbolName && identifierRef->previousResolvedNode)
         {
             bool canTry = false;
 
@@ -2381,12 +2386,10 @@ bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifier
                 canTry = true;
             // Before was a function call
             else if (identifierRef->resolvedSymbolName->kind == SymbolKind::Function &&
-                     identifierRef->previousResolvedNode &&
                      identifierRef->previousResolvedNode->kind == AstNodeKind::FuncCall)
                 canTry = true;
             // Before was an inlined function call
             else if (identifierRef->resolvedSymbolName->kind == SymbolKind::Function &&
-                     identifierRef->previousResolvedNode &&
                      identifierRef->previousResolvedNode->kind == AstNodeKind::Identifier &&
                      identifierRef->previousResolvedNode->childs.size() &&
                      identifierRef->previousResolvedNode->childs.front()->kind == AstNodeKind::FuncCallParams &&

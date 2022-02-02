@@ -861,7 +861,7 @@ bool SemanticJob::resolveFuncCallParams(SemanticContext* context)
 
 bool SemanticJob::resolveFuncCallParam(SemanticContext* context)
 {
-    auto node      = CastAst<AstFuncCallParam>(context->node, AstNodeKind::FuncCallParam);
+    auto node = CastAst<AstFuncCallParam>(context->node, AstNodeKind::FuncCallParam);
     auto child     = node->childs.front();
     node->typeInfo = child->typeInfo;
 
