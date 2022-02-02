@@ -2467,10 +2467,13 @@ bool SemanticJob::fillMatchContextCallParameters(SemanticContext* context, Symbo
     // A closure has always a first parameter of type *void
     if (overload->typeInfo->isClosure() && node->callParameters)
     {
-        context->job->closureFirstParam.kind     = AstNodeKind::FuncCallParam;
-        context->job->closureFirstParam.typeInfo = g_TypeMgr->typeInfoPointers[(int) NativeTypeKind::Void];
-        symMatchContext.parameters.push_back(&context->job->closureFirstParam);
-        symMatchContext.flags |= SymbolMatchContext::MATCH_CLOSURE_PARAM;
+        if (!(node->doneFlags & AST_DONE_CLOSURE_FIRST_PARAM))
+        {
+            context->job->closureFirstParam.kind     = AstNodeKind::FuncCallParam;
+            context->job->closureFirstParam.typeInfo = g_TypeMgr->typeInfoPointers[(int) NativeTypeKind::Void];
+            symMatchContext.parameters.push_back(&context->job->closureFirstParam);
+            symMatchContext.flags |= SymbolMatchContext::MATCH_CLOSURE_PARAM;
+        }
     }
 
     if (ufcsFirstParam)

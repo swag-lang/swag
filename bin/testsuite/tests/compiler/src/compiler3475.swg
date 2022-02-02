@@ -1,12 +1,12 @@
 #[Swag.Inline]
-func toto(x: closure(...))
+func toto(x: closure(s32...))
 {
     x(40, 50, 60, 70)
 }
 
 #test
 {
-    toto(@(x: ...)
+    toto(@(x: s32...)
     {
         @assert(@countof(x) == 4)
         @assert(cast(s32) x[0] == 40)

@@ -89,9 +89,6 @@
     <ClCompile Include="..\src\SyntaxJob_Type.cpp">
       <Filter>Lexer</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SyntaxJob_Var.cpp">
-      <Filter>Lexer</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\SemanticJob_Expression.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
@@ -490,6 +487,9 @@
     </ClCompile>
     <ClCompile Include="..\src\SemanticJob_IdentifierError.cpp">
       <Filter>Semantic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SyntaxJob_Var.cpp">
+      <Filter>Main</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

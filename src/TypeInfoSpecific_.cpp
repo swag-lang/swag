@@ -167,12 +167,15 @@ void TypeInfoPointer::computeWhateverName(Utf8& resName, uint32_t nameType)
         return;
     }
 
+    if (!pointedType)
+    {
+        resName = "null";
+        return;
+    }
+
     if (flags & TYPEINFO_CONST)
         resName += "const ";
     resName += "*";
-    if (!pointedType) // "null"
-        return;
-
     resName += pointedType->computeWhateverName(nameType);
 }
 
