@@ -489,7 +489,7 @@
       <Filter>Semantic</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SyntaxJob_Var.cpp">
-      <Filter>Main</Filter>
+      <Filter>Lexer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

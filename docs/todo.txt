@@ -62,8 +62,6 @@ TODO
 -------------------------------------
 lambda short form in declaration var x: func(s32) = @(x) {}
 -------------------------------------
-variadics in lambda/closures
--------------------------------------
 context & tempallocator, y'a vraiment aucun usage dans std, c'est pas normal, faut se pencher sur l'utilisation de ce truc
 -------------------------------------
 pb des mixin globaux et des declarations #code
@@ -95,7 +93,7 @@ OPTIMS
 ****************************************
 
 -------------------------------------
-passer en switch/case sur ip[0].op les fonction d'optim
+passer en switch/case sur ip[0].op les fonction d'optim (et pas pleins de if à ralonge, ça prend du temps !)
 -------------------------------------
 x64 binaryop div, transformer en shift si log2
 -------------------------------------
