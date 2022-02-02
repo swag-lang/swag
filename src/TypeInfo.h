@@ -125,6 +125,7 @@ struct SymbolMatchContext
     static const uint32_t MATCH_ERROR_TYPE_VALUE  = 0x00000010;
     static const uint32_t MATCH_UNCONST           = 0x00000020;
     static const uint32_t MATCH_UFCS              = 0x00000040;
+    static const uint32_t MATCH_CLOSURE_PARAM     = 0x00000080;
 
     SymbolMatchContext()
     {

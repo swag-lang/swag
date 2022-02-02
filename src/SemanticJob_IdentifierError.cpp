@@ -111,12 +111,19 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     int badParamIdx = bi.badSignatureParameterIdx;
     if (badParamIdx && callParameters && !callParameters->childs.empty() && callParameters->childs.front()->flags & (AST_FROM_UFCS | AST_TO_UFCS))
         badParamIdx--;
+    // This is a closure with a generated first parameter
+    if(oneTry.symMatchContext.flags & SymbolMatchContext::MATCH_CLOSURE_PARAM)
+        badParamIdx--;
     badParamIdx += 1;
 
     // Nice name to reference it
     Utf8 refNiceName;
     if (overload->typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE)
         refNiceName = "the tuple";
+    else if (overload->typeInfo->isLambda())
+        refNiceName = Fmt("the lambda `%s`", symbol->name.c_str());
+    else if (overload->typeInfo->isClosure())
+        refNiceName = Fmt("the closure `%s`", symbol->name.c_str());
     else
         refNiceName = Fmt("%s `%s`", SymTable::getNakedKindName(symbol->kind), symbol->name.c_str());
 

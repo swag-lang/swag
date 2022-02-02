@@ -2467,6 +2467,7 @@ bool SemanticJob::fillMatchContextCallParameters(SemanticContext* context, Symbo
         context->job->closureFirstParam.kind     = AstNodeKind::FuncCallParam;
         context->job->closureFirstParam.typeInfo = g_TypeMgr->typeInfoPointers[(int) NativeTypeKind::Void];
         symMatchContext.parameters.push_back(&context->job->closureFirstParam);
+        symMatchContext.flags |= SymbolMatchContext::MATCH_CLOSURE_PARAM;
     }
 
     if (ufcsFirstParam)
