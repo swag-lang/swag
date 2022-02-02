@@ -19,6 +19,8 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     doneFlags |= from->doneFlags & AST_DONE_INLINED;
     doneFlags |= from->doneFlags & AST_DONE_CHECK_ATTR;
     doneFlags |= from->doneFlags & AST_DONE_STRUCT_CONVERT;
+    doneFlags |= from->doneFlags & AST_DONE_CLOSURE_FIRST_PARAM;
+
     semFlags |= from->semFlags & AST_SEM_STRUCT_REGISTERED;
 
     ownerStructScope     = context.ownerStructScope ? context.ownerStructScope : from->ownerStructScope;
