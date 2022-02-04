@@ -591,6 +591,10 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
             break;
         }
         break;
+    case ByteCodeOp::PushRAParamCond:
+        if (registersRC[ip->a.u32].u64)
+            context->push(registersRC[ip->b.u32].u64);
+        break;
     case ByteCodeOp::PushRAParam:
         context->push(registersRC[ip->a.u32].u64);
         break;
@@ -610,11 +614,15 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         context->push(registersRC[ip->d.u32].u64);
         break;
 
+    case ByteCodeOp::IncSPPostCallCond:
+        if (registersRC[ip->a.u32].u64)
+            context->incSP(ip->b.u32);
+        break;
     case ByteCodeOp::IncSPPostCall:
-    {
+
         context->incSP(ip->a.u32);
         break;
-    }
+
     case ByteCodeOp::DecSPBP:
     {
         context->decSP(ip->a.u32);

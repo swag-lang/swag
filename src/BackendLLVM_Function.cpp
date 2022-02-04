@@ -3608,6 +3608,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             pushRVParams.push_back({ip->a.u32, ip->b.u32});
             break;
         case ByteCodeOp::PushRAParam:
+        case ByteCodeOp::PushRAParamCond:
             pushRAParams.push_back(ip->a.u32);
             break;
         case ByteCodeOp::PushRAParam2:
@@ -4000,6 +4001,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
 
         case ByteCodeOp::IncSPPostCall:
+        case ByteCodeOp::IncSPPostCallCond:
             pushRAParams.clear();
             pushRVParams.clear();
             break;

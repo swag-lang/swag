@@ -1068,10 +1068,7 @@ void ByteCodeGenJob::emitPushRAParams(ByteCodeGenContext* context, VectorNative<
 
     // Closure context
     if (node->typeInfo && node->typeInfo->isClosure())
-    {
-        emitInstruction(context, ByteCodeOp::JumpIfZero64, accParams.back())->b.s64 = 1;
-        emitInstruction(context, ByteCodeOp::PushRAParam, accParams.back());
-    }
+        emitInstruction(context, ByteCodeOp::PushRAParamCond, accParams.back(), accParams.back());
 
     accParams.clear();
 }
@@ -1614,8 +1611,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     {
         if (node->typeInfo && node->typeInfo->isClosure())
         {
-            emitInstruction(context, ByteCodeOp::JumpIfZero64, node->additionalRegisterRC[1])->b.s64 = 1;
-            emitInstruction(context, ByteCodeOp::IncSPPostCall, sizeof(void*));
+            emitInstruction(context, ByteCodeOp::IncSPPostCallCond, node->additionalRegisterRC[1], sizeof(void*));
             if (precallStack - sizeof(void*))
                 emitInstruction(context, ByteCodeOp::IncSPPostCall, precallStack - sizeof(void*));
         }

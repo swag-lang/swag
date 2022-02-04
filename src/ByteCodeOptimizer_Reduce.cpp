@@ -93,8 +93,12 @@ void ByteCodeOptimizer::reduceEmptyFct(ByteCodeOptContext* context, ByteCodeInst
 
         // We eliminate the call to the function that does nothing
         setNop(context, ip);
+        if (ip[1].op == ByteCodeOp::IncSPPostCallCond)
+            setNop(context, ip + 1);
         if (ip[1].op == ByteCodeOp::IncSPPostCall)
             setNop(context, ip + 1);
+        if (ip[2].op == ByteCodeOp::IncSPPostCall)
+            setNop(context, ip + 2);
 
         // Then we can eliminate some instructions related to the function call parameters
         auto backIp = ip;
