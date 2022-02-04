@@ -397,47 +397,51 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
         }
 
         // If passing a closure
-        if (!nodeCall->childs.empty() && nodeCall->childs.front()->kind == AstNodeKind::MakePointerLambda && toType->isClosure())
+        if (!nodeCall->childs.empty() && toType && toType->isClosure())
         {
-            auto makePtrL = nodeCall->childs.front();
-            auto varNode  = Ast::newVarDecl(sourceFile, Fmt("__ctmp_%d", g_UniqueID.fetch_add(1)), identifier);
-
-            // Put child front, because emitCall wants the parameters to be the last
-            Ast::removeFromParent(varNode);
-            Ast::addChildFront(identifier, varNode);
-
-            auto fcp = nodeCall->childs.front();
-            if (fcp->typeInfo->isLambda())
+            auto front = nodeCall->childs.front();
+            if (front->kind == AstNodeKind::MakePointer || front->kind == AstNodeKind::MakePointerLambda)
             {
-                varNode->assignment = Ast::clone(fcp, varNode);
-                Ast::removeFromParent(fcp);
+                auto makePtrL = nodeCall->childs.front();
+                auto varNode  = Ast::newVarDecl(sourceFile, Fmt("__ctmp_%d", g_UniqueID.fetch_add(1)), identifier);
+
+                // Put child front, because emitCall wants the parameters to be the last
+                Ast::removeFromParent(varNode);
+                Ast::addChildFront(identifier, varNode);
+
+                auto fcp = nodeCall->childs.front();
+                if (fcp->typeInfo->isLambda())
+                {
+                    varNode->assignment = Ast::clone(fcp, varNode);
+                    Ast::removeFromParent(fcp);
+                }
+                else
+                {
+                    fcp->semFlags |= AST_SEM_ONCE;
+                    Ast::removeFromParent(fcp);
+                    Ast::addChildBack(varNode, fcp);
+                    varNode->assignment = fcp;
+                }
+
+                varNode->type           = Ast::newTypeExpression(sourceFile, varNode);
+                varNode->type->typeInfo = toType;
+                varNode->type->flags |= AST_NO_SEMANTIC;
+
+                auto idRef = Ast::newIdentifierRef(sourceFile, varNode->token.text, nodeCall);
+                idRef->allocateExtension();
+                idRef->extension->exportNode = makePtrL;
+
+                // Add the 2 nodes to the semantic
+                context->job->nodes.push_back(idRef);
+                context->job->nodes.push_back(varNode);
+
+                // If call is inlined, then the identifier will be reevaluated, and the new variable, which is a child,
+                // will be reevaluated too, so twice because of the push above. So we set a special flag to not reevaluate
+                // it twice.
+                varNode->semFlags |= AST_SEM_ONCE;
+
+                context->result = ContextResult::NewChilds;
             }
-            else
-            {
-                fcp->semFlags |= AST_SEM_ONCE;
-                Ast::removeFromParent(fcp);
-                Ast::addChildBack(varNode, fcp);
-                varNode->assignment = fcp;
-            }
-
-            varNode->type           = Ast::newTypeExpression(sourceFile, varNode);
-            varNode->type->typeInfo = toType;
-            varNode->type->flags |= AST_NO_SEMANTIC;
-
-            auto idRef = Ast::newIdentifierRef(sourceFile, varNode->token.text, nodeCall);
-            idRef->allocateExtension();
-            idRef->extension->exportNode = makePtrL;
-
-            // Add the 2 nodes to the semantic
-            context->job->nodes.push_back(idRef);
-            context->job->nodes.push_back(varNode);
-
-            // If call is inlined, then the identifier will be reevaluated, and the new variable, which is a child,
-            // will be reevaluated too, so twice because of the push above. So we set a special flag to not reevaluate
-            // it twice.
-            varNode->semFlags |= AST_SEM_ONCE;
-
-            context->result = ContextResult::NewChilds;
         }
     }
 

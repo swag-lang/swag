@@ -1,0 +1,16 @@
+func toto(x: closure(s32, s32)->s32)->s32
+{
+    return x(1, 2)
+}
+
+func cmp(a, b: s32)->s32
+{
+    return a + b + 663
+}
+
+//#[Swag.PrintBc]
+#test
+{
+    v := toto(&cmp)
+    @assert(v == 666)
+}
