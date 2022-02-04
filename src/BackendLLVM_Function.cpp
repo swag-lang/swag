@@ -1189,6 +1189,17 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
+        case ByteCodeOp::MulAddVC64:
+        {
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto r1 = GEP_I32(allocR, ip->b.u32);
+            auto v1 = builder.CreateAdd(builder.CreateLoad(r1), CST_RC64);
+            auto v2 = builder.CreateMul(builder.CreateLoad(r0), v1);
+            auto r2 = GEP_I32(allocR, ip->a.u32);
+            builder.CreateStore(v2, r2);
+            break;
+        }
+
         case ByteCodeOp::Add32byVB32:
         {
             auto r0 = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));

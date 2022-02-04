@@ -19,6 +19,8 @@ BYTECODE_OP(PushRAParam2, OPFLAG_READ_A | OPFLAG_READ_B, "pushstack _ra_, _rb_",
 BYTECODE_OP(PushRAParam3, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_READ_C, "pushstack _ra_, _rb_, _rc_", 0)
 BYTECODE_OP(PushRAParam4, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_READ_C | OPFLAG_READ_D, "pushstack _ra_, _rb_, _rc_, _rd_", 0)
 
+BYTECODE_OP(MulAddVC64, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_READ_VAL64_C, "_ra_ = _ra_ * (_rb_ + _rcu8_)", 0)
+
 BYTECODE_OP(LocalCall, OPFLAG_READ_VAL64_A, "call", 0)
 BYTECODE_OP(LambdaCall, OPFLAG_READ_A | OPFLAG_READ_VAL64_B, "call [_ra_]", 0)
 BYTECODE_OP(ForeignCall, OPFLAG_READ_VAL64_D, "call", 0)

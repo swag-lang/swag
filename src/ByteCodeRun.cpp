@@ -1917,6 +1917,12 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
     }
 
+    case ByteCodeOp::MulAddVC64:
+    {
+        registersRC[ip->a.u32].u64 = registersRC[ip->a.u32].u64 * (registersRC[ip->b.u32].u64 + ip->c.u32);
+        break;
+    }
+
     case ByteCodeOp::CompareOp3WayS32:
     case ByteCodeOp::CompareOp3WayU32:
     {

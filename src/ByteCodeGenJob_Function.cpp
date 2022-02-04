@@ -902,8 +902,7 @@ bool ByteCodeGenJob::emitLambdaCall(ByteCodeGenContext* context)
         emitInstruction(context, ByteCodeOp::DeRef64, node->additionalRegisterRC[1], node->additionalRegisterRC[0])->c.u64 = 8;
 
         // If 0, keep it 0, otherwhise compte the capture context context by adding that offset to the address of the closure storage
-        emitInstruction(context, ByteCodeOp::JumpIfZero64, node->additionalRegisterRC[1])->b.s64 = 1;
-        emitInstruction(context, ByteCodeOp::BinOpPlusU64, node->additionalRegisterRC[1], node->additionalRegisterRC[0], node->additionalRegisterRC[1]);
+        emitInstruction(context, ByteCodeOp::MulAddVC64, node->additionalRegisterRC[1], node->additionalRegisterRC[0])->c.u64 = 16;
 
         // Deref function pointer
         emitInstruction(context, ByteCodeOp::DeRef64, node->additionalRegisterRC[0], node->additionalRegisterRC[0]);

@@ -517,6 +517,15 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             concat.addU8(0x90); // nop
             break;
 
+        case ByteCodeOp::MulAddVC64:
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+            concat.addString3("\x48\x83\xc1"); // add rcx, ??
+            concat.addU8(ip->c.u8);
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            concat.addString3("\x48\xf7\xe1"); // mul rax, rcx
+            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            break;
+
         case ByteCodeOp::Add32byVB32:
             BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             if (ip->b.u32 <= 0x7F)
