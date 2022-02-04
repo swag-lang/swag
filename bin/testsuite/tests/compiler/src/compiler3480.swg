@@ -1,4 +1,3 @@
-#[Swag.PrintBc]
 func(T) toto(cb: closure(T, T))
 {
     cb(10, 20)
