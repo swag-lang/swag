@@ -2,7 +2,7 @@
 #global namespace Slice
 
 // Insertion sort algorithm (slow)
-func(T) insertionSort(values: [..] T, cb: func(T, T)->s32)
+func(T) insertionSort(values: [..] T, cb: closure(T, T)->s32)
 {
     buffer := @dataof(values)
     count := @countof(values)
@@ -17,7 +17,7 @@ func(T) insertionSort(values: [..] T, cb: func(T, T)->s32)
 }
 
 // Quick sort algorithm
-func(T) quickSort(values: [..] T, cb: func(T, T)->s32)
+func(T) quickSort(values: [..] T, cb: closure(T, T)->s32)
 {
     count := cast(int) @countof(values)
     if count == 0
@@ -92,7 +92,7 @@ func(T) sort(values: [..] T)
 
 // Sort the slice, by picking the right algorithm depending on the type and the
 // number of elements
-func(T) sort(values: [..] T, cb: func(T, T)->s32)
+func(T) sort(values: [..] T, cb: closure(T, T)->s32)
 {
     Debug.assert(cb != null)
     if @countof(values) <= 10
@@ -108,7 +108,7 @@ func(T) isSorted(values: const [..] T)->bool
 }
 
 // Returns true if the slice is sorted
-func(T) isSorted(values: const [..] T, cb: func(T, T)->s32)->bool
+func(T) isSorted(values: const [..] T, cb: closure(T, T)->s32)->bool
 {
     Debug.assert(cb != null)
     countof := @countof(values)

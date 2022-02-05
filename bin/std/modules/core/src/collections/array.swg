@@ -441,7 +441,7 @@ impl Array
     }
 
     // Sort array
-    mtd sort(cb: func(T, T)->s32)
+    mtd sort(cb: closure(T, T)->s32)
     {
         Debug.assert(cb != null)
         Slice.sort(@mkslice(buffer, count), cb)
