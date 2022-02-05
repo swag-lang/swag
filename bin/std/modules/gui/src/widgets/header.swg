@@ -27,7 +27,7 @@ struct Header
     form                = HeaderForm.Flat
     marginItems:        f32 = 5
     sigLayoutChanged:   func(*Self)
-    sigClicked:         func(*Self, u32)
+    sigClicked:         closure(*Self, u32)
 
     items:          Array'(*HeaderItem)
     hotIdx          = Swag.U32.Max

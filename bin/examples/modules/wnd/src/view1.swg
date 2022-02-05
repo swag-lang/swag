@@ -116,10 +116,11 @@ func createView1(view: *Wnd)
             visit i: list.selModel
                 Console.printf("%\n", list.getLine(i).getItem(0).name.raw)
         }
-        list.header.sigClicked = @(header, col) {
-            list := cast(*List) header.getParentById("list")
+        list.header.sigClicked = @|list|(header, col) {
             list.lines.sort(@|col|(a, b) {
-                return a.getItem(0).name.raw <=> b.getItem(0).name.raw
+                if col == 1
+                    return a.getItem(0).name.raw <=> b.getItem(0).name.raw
+                return b.getItem(0).name.raw <=> a.getItem(0).name.raw
             })
         }
     }
