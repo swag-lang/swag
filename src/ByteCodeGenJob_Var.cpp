@@ -236,6 +236,10 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
             for (int i = 0; i < resolved->registers.size(); i++)
                 emitInstruction(context, ByteCodeOp::ClearRA)->a.u32 = resolved->registers[i];
         }
+        else if (typeInfo->isClosure())
+        {
+            emitInstruction(context, ByteCodeOp::SetZeroStack64)->a.u32 = resolved->computedValue.storageOffset;
+        }
         else
         {
             SWAG_ASSERT(resolved->computedValue.storageOffset != UINT32_MAX);

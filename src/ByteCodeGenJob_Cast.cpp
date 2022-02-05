@@ -141,7 +141,12 @@ bool ByteCodeGenJob::emitCastToNativeBool(ByteCodeGenContext* context, AstNode* 
 {
     auto r0 = reserveRegisterRC(context);
 
-    if (typeInfo->kind == TypeInfoKind::Pointer || typeInfo->kind == TypeInfoKind::Lambda)
+    if (typeInfo->isClosure())
+    {
+        emitInstruction(context, ByteCodeOp::DeRef64, r0, exprNode->resultRegisterRC);
+        emitInstruction(context, ByteCodeOp::CastBool64, r0, r0);
+    }
+    else if (typeInfo->kind == TypeInfoKind::Pointer || typeInfo->kind == TypeInfoKind::Lambda)
     {
         emitInstruction(context, ByteCodeOp::CastBool64, r0, exprNode->resultRegisterRC);
     }
