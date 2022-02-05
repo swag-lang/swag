@@ -231,6 +231,24 @@ TypeInfo* Generic::doTypeSubstitution(map<Utf8, TypeInfo*>& replaceTypes, TypeIn
         {
             auto param = typeLambda->parameters[idx];
             newType    = doTypeSubstitution(replaceTypes, param->typeInfo);
+
+            // If generic parameter is a closure, but the instantiated type is a lambda, then a conversion will
+            // take place.
+            // But we want to be sure that the closure stays a closure in ordre for the conversion to take place.
+            // So transform the replaced lambda type by a closure one.
+            if (param->typeInfo->isClosure() && newType->isLambda())
+            {
+                newType = newType->clone();
+                newType->flags |= TYPEINFO_CLOSURE;
+                newType->sizeOf = SWAG_LIMIT_CLOSURE_SIZEOF;
+                newType->flags |= TYPEINFO_RETURN_BY_COPY | TYPEINFO_CLOSURE;
+
+                auto newParam      = g_TypeMgr->makeParam();
+                newParam->typeInfo = g_TypeMgr->typeInfoPointers[(int) NativeTypeKind::Void];
+                auto newTypeFct    = CastTypeInfo<TypeInfoFuncAttr>(newType, newType->kind);
+                newTypeFct->parameters.push_front(newParam);
+            }
+
             if (newType != param->typeInfo)
             {
                 if (!newLambda)
