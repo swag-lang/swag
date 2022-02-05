@@ -858,14 +858,20 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 typeLambda = CastTypeInfo<TypeInfoFuncAttr>(front->typeInfo, TypeInfoKind::Lambda);
                 if (typeLambda)
                 {
-                    if (node->childParentIdx >= (uint32_t) typeLambda->parameters.count)
+                    auto paramIdx = node->childParentIdx;
+
+                    // Do not deduce from the context closure generated parameter
+                    if (typeLambda->isClosure() && !node->ownerFct->captureParameters)
+                        paramIdx += 1;
+
+                    if (paramIdx >= (uint32_t) typeLambda->parameters.count)
                     {
                         PushErrContext ec(context, node->ownerFct->makePointerLambda->parent, JobContext::ErrorContextType::Node);
                         Diagnostic     diag{node, Fmt(Err(Err0026), "lambda", (uint32_t) typeLambda->parameters.count, (uint32_t) node->parent->childs.count)};
                         return context->report(diag);
                     }
 
-                    node->typeInfo = typeLambda->parameters[node->childParentIdx]->typeInfo;
+                    node->typeInfo = typeLambda->parameters[paramIdx]->typeInfo;
                     lambdaExpr     = false;
                     genericType    = false;
                 }
