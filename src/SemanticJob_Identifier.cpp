@@ -400,7 +400,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
         if (!nodeCall->childs.empty() && toType && toType->isClosure())
         {
             auto front = nodeCall->childs.front();
-            if (front->kind == AstNodeKind::MakePointer || front->kind == AstNodeKind::MakePointerLambda)
+            if (front->kind == AstNodeKind::MakePointer || front->kind == AstNodeKind::MakePointerLambda || (front->typeInfo && front->typeInfo->isLambda()))
             {
                 auto makePtrL = nodeCall->childs.front();
                 auto varNode  = Ast::newVarDecl(sourceFile, Fmt("__ctmp_%d", g_UniqueID.fetch_add(1)), identifier);
