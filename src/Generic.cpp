@@ -91,19 +91,9 @@ TypeInfo* Generic::doTypeSubstitution(map<Utf8, TypeInfo*>& replaceTypes, TypeIn
             return t;
         }
 
-        if (it->second->kind == TypeInfoKind::TypeListArray)
-        {
-            it->second->declNode->sourceFile->internalError(it->second->declNode, "unsupported array literal in generic instantiation");
-            return nullptr;
-        }
-
-        if (it->second->kind == TypeInfoKind::TypeListTuple)
-        {
-            it->second->declNode->sourceFile->internalError(it->second->declNode, "unsupported struct literal in generic instantiation");
-            return nullptr;
-        }
-
-        return it->second;
+        // Do not substitute with unconverted TypeList
+        if (it->second->kind != TypeInfoKind::TypeListArray)
+            return it->second;
     }
 
     // When type is a compound, we do substitution in the raw type
@@ -520,6 +510,7 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
                 {
                     auto typeDest = CastTypeInfo<TypeInfoStruct>(match.solvedParameters[idx]->typeInfo, TypeInfoKind::Struct);
                     SWAG_CHECK(TypeManager::convertLiteralTupleToStructType(context, typeDest, p));
+                    SWAG_ASSERT(context->result != ContextResult::Done);
                     return true;
                 }
 

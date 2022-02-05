@@ -24,9 +24,10 @@ bool SemanticJob::computeExpressionListTupleType(SemanticContext* context, AstNo
             return true;
     }
 
-    auto typeInfo    = allocType<TypeInfoList>(TypeInfoKind::TypeListTuple);
-    typeInfo->name   = "{";
-    typeInfo->sizeOf = 0;
+    auto typeInfo      = allocType<TypeInfoList>(TypeInfoKind::TypeListTuple);
+    typeInfo->name     = "{";
+    typeInfo->sizeOf   = 0;
+    typeInfo->declNode = node;
 
     int idx = 0;
     node->flags |= AST_CONST_EXPR | AST_R_VALUE;
@@ -103,6 +104,7 @@ bool SemanticJob::resolveExpressionListArray(SemanticContext* context)
 
     auto typeInfo = allocType<TypeInfoList>(TypeInfoKind::TypeListArray);
     SWAG_ASSERT(node->childs.size());
+    typeInfo->declNode = node;
 
     node->flags |= AST_CONST_EXPR | AST_R_VALUE;
     for (auto child : node->childs)
