@@ -17,7 +17,7 @@ public struct ScrollWnd
     scrollSize:     Math.Point
     scrollWndFlags  = ScrollWndFlags.None
 
-    sigScrollPosChanged:    func(*Self, Math.Point)
+    sigScrollPosChanged:    closure(*Self, Math.Point)
 
     showBarV:       bool
     posBoxV:        f32

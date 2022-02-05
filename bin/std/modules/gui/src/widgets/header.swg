@@ -26,7 +26,7 @@ struct Header
 
     form                = HeaderForm.Flat
     marginItems:        f32 = 5
-    sigLayoutChanged:   func(*Self)
+    sigLayoutChanged:   closure(*Self)
     sigClicked:         closure(*Self, u32)
 
     items:          Array'(*HeaderItem)

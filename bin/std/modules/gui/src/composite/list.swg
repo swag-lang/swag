@@ -384,9 +384,7 @@ impl List
             header = Header.create(fwnd, @{})
             header.dockStyle = .Top
             header.form = .Round
-            header.userData = list
-            header.sigLayoutChanged = @(header) {
-                list := cast(*List) header.userData
+            header.sigLayoutChanged = @|list|(header) {
                 list.computeLayout()
             }
 
@@ -396,10 +394,7 @@ impl List
             scrollWnd.focusStrategy = .None
             scrollWnd.backgroundStyle = .Transparent
             scrollWnd.setAllPaddings(getThemeMetrics().list_Padding)
-            scrollWnd.userData = list
-            scrollWnd.sigScrollPosChanged = @(scrollWnd, sp) {
-                list := cast(*List) scrollWnd.userData
-                header := list.header
+            scrollWnd.sigScrollPosChanged = @|header|(scrollWnd, sp) {
                 header.scrollPos.x = sp.x
                 header.invalidate()
             }
