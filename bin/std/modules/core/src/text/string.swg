@@ -153,10 +153,7 @@ impl String
     mtd(ptr: bool) opVisitRunes(stmt: code)
     {
         #assert(!ptr, "visiting runes by pointer is not supported")
-        Utf8.visitRunes(|@alias0, @alias1, @alias2| toSlice())
-        {
-            #mixin stmt
-        }
+        Utf8.visitRunes(|@alias0, @alias1, @alias2| toSlice(), stmt)
     }
 
     // Visit the String utf8 bytes
@@ -169,7 +166,7 @@ impl String
             return
 
         // Little trick to avoid labels. That way a 'continue' in the user code will work
-        // correctly, that's why we increment 'scan' before the use code, and take -1 to start.
+        // correctly, that's why we increment 'scan' before the user code, and take -1 to start.
         scan := buffer - 1
 
         loop length
@@ -184,48 +181,6 @@ impl String
                 var @alias1 = @index
                 #mixin `stmt
             }
-        }
-    }
-
-    // Visit the String unicode characters
-    // @alias0 will contain the character or the pointer to the character
-    // @alias1 will contain the byte index of that character within the utf8 sequence
-    // @alias2 will contain the character index
-    #[Macro]
-    mtd(ptr: bool) opVisit(stmt: code)
-    {
-        if !length
-            return
-
-        byteIdx := 0'uint
-        charIdx := 0'uint
-        count := length
-        scan := buffer
-
-        scope up
-        loop
-        {
-            sl := @mkslice(scan, count)
-            var (c, eat) = Utf8.decodeRune(sl)
-            if eat == 0
-                break
-
-            scope down
-            #macro
-            {
-                #if `ptr
-                    var @alias0 = `scan
-                #else
-                    var @alias0 = `c
-                var @alias1 = `byteIdx
-                var @alias2 = `charIdx
-                #mixin `stmt { break = break up; continue = break down; }
-            }
-
-            byteIdx += eat
-            charIdx += 1
-            scan += eat
-            count -= eat
         }
     }
 

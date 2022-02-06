@@ -1,5 +1,4 @@
-﻿
-using Core
+﻿using Core
 
 
 //#[Swag.PrintBc]
@@ -7,7 +6,7 @@ using Core
 {
     var str: String = "toto"
     cpt := 0
-    visit str
+    visit(Runes) str
     {
         cpt += 1
     }

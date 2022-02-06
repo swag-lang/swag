@@ -1,4 +1,4 @@
-
+//#global skip
 using Core
 
 #test
@@ -6,14 +6,14 @@ using Core
     var str: String = "toto"
 
     cpt := 0
-    visit str
+    visit(Runes) str
     {
         break
     }
 
     @assert(cpt == 0)
 
-    visit str
+    visit(Runes) str
     {
         cpt += 1
         continue

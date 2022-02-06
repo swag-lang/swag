@@ -1,11 +1,10 @@
-
 using Core
 
 //#[Swag.PrintBc]
 #test
 {
     var str: String = "A⻨C"
-    visit c, i: str
+    visit(Runes) c, ir, i: str
     {
         switch i
         {
