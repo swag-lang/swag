@@ -114,6 +114,35 @@ struct ListView
 
 impl IWnd for ListView
 {
+    mtd onKeyEvent(evt: *KeyEvent)
+    {
+        evt.accepted = true
+        if evt.kind != .KeyPressed
+            return
+
+        shift := evt.modifiers & .Shift
+        switch evt.key
+        {
+        case Up:
+            if list.focusIndex == 0 or list.focusIndex == Swag.U32.Max
+                break
+            list.focusIndex -= 1
+            if !shift or list.selectionMode == .Single
+                list.selModel.unselectAll()
+            list.selectLine(list.focusIndex, true)
+            list.ensureVisibleLine(list.focusIndex)
+
+        case Down:
+            if list.focusIndex == list.getLineCount() - 1 or list.focusIndex == Swag.U32.Max
+                break
+            list.focusIndex += 1
+            if !shift or list.selectionMode == .Single
+                list.selModel.unselectAll()
+            list.selectLine(list.focusIndex, true)
+            list.ensureVisibleLine(list.focusIndex)
+        }
+    }
+
     mtd onMouseEvent(evt: *MouseEvent)
     {
         if evt.kind != .MousePressed and evt.kind != .MouseReleased
@@ -345,7 +374,7 @@ private impl ListView
                 theme.drawSubRect(painter, posBox, subRectMark, colorFg)
                 theme.drawSubRect(painter, posBox, subRectBorder, colorFg)
 
-                labelPos.moveLeft(widthCheck + 4)
+                labelPos.moveLeft(widthCheck)
             }
 
             // Take care of header item margin
@@ -503,12 +532,14 @@ impl List
     // Select of unselect the given line
     mtd selectLine(idx: u32, select: bool = true)
     {
-        Debug.assert(idx < getLineCount())
+        lineCount := getLineCount()
+        Debug.assert(idx < lineCount)
 
-        if selectionMode == .None or lines.isEmpty()
+        if selectionMode == .None or lineCount == 0
             return
 
-        selModel.select(lines[idx].index, select)
+        idxLine := isVirtual ? idx : lines[idx].index
+        selModel.select(idxLine, select)
         invalidate()
 
         if sigSelChanged
@@ -518,14 +549,19 @@ impl List
     // Select a range of lines
     mtd selectLines(start, end: u32, select: bool = true)
     {
-        Debug.assert(start < getLineCount())
-        Debug.assert(end < getLineCount())
+        lineCount := getLineCount()
+        Debug.assert(start < lineCount)
+        Debug.assert(end < lineCount)
 
-        if selectionMode == .None or lines.isEmpty()
+        if selectionMode == .None or lineCount == 0
             return
 
         loop i: start..end
-            selModel.select(lines[i].index, select)
+        {
+            idxLine := isVirtual ? i : lines[i].index
+            selModel.select(idxLine, select)
+        }
+
         invalidate()
 
         if sigSelChanged
@@ -621,7 +657,11 @@ impl List
         lc := getLineCount()
         if lc == 0
             return Swag.U32.Max
-        idx := cast(u32) ((listView.scrollPos.y + position.height) / lineHeight)
+
+        y := listView.scrollPos.y + scrollWnd.view.position.height
+        y -= scrollWnd.view.padding.y
+        y -= scrollWnd.view.padding.w
+        idx := cast(u32) (y / lineHeight)
         if idx >= lc
             return cast(u32) lc - 1
         return idx
@@ -632,9 +672,8 @@ impl List
     {
         first := getFirstVisibleLineIndex()
         last  := getLastVisibleLineIndex()
-        if idx >= first and idx <= last
+        if idx > first and idx < last
             return
-
         sc := scrollWnd.getScrollPos()
         scrollWnd.setScrollPos(sc.x, idx * lineHeight)
     }
