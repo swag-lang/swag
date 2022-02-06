@@ -91,6 +91,7 @@ struct List
     sigSort:            func(*ListLine, *ListLine, u32, bool)->s32
 
     lines:          Array'(*ListLine)
+    idxLineToIdx:   HashTable'(u32, u32)
     selModel:       SelModel
     focusIndex:     u32 = Swag.U32.Max
     scrollWnd:      *ScrollWnd
@@ -508,6 +509,7 @@ impl List
         Debug.assert(!isVirtual, "createLine cannot be called on a virtual list")
         line := Memory.new'ListLine()
         line.index = cast(u32) lines.count
+        idxLineToIdx.add(line.index, line.index)
         lines.add(line)
         return line
     }
@@ -584,10 +586,13 @@ impl List
         if isVirtual or selModel.isEmpty()
             return result
 
-        visit l, i: lines
+        visit r: selModel.selection
         {
-            if isSelectedLine(cast(u32) i)
-                result.add(l)
+            loop i: r.start..r.end
+            {
+                idx := idxLineToIdx.find(i).value
+                result.add(lines[idx])
+            }
         }
 
         return result
@@ -595,18 +600,20 @@ impl List
 
     // Returns a selected line
     // Mostly for singlesel mode
-    mtd getSelectedLine()->*ListLine
+    mtdc getSelectedLine()->*ListLine
     {
         if isVirtual or selModel.isEmpty()
             return null
+        range := selModel.selection.front()
+        idx   := idxLineToIdx.find(range.start).value
+        return lines[idx]
+    }
 
-        visit l, i: lines
-        {
-            if isSelectedLine(cast(u32) i)
-                return l
-        }
-
-        return null
+    private mtd mapIndexes()
+    {
+        idxLineToIdx.clear()
+        visit l, idx: lines
+            idxLineToIdx.add(l.index, cast(u32) idx)
     }
 
     // Sort the list by a given column
@@ -627,6 +634,7 @@ impl List
         }
 
         lines.sort(cb)
+        mapIndexes()
 
         if header and persistent
         {
