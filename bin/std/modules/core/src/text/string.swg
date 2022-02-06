@@ -509,7 +509,7 @@ impl String
     }
 
     // Returns a new String in lower case
-    func toLower(using self, set = CharacterSet.Latin1)->String
+    mtd toLower(set = CharacterSet.Latin1)->String
     {
         var result: retval = dref self
         result.makeLower(set)

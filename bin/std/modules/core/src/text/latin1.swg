@@ -40,35 +40,30 @@ private func isUpperUtf8(c: u8)->bool
 // Make an utf8 buffer upper case, dealing only with latin1 table
 func makeUpper(buffer: [..] u8)
 {
-    p := @dataof(buffer)
-    loop @countof(buffer)
+    visit *p: buffer
     {
-        c := dref p
-        if isLowerUtf8(c)
+        if isLowerUtf8(dref p)
             dref p -= 0x20
-        p += 1
     }
 }
 
 // Make an utf8 buffer lower case, dealing only with latin1 table
 func makeLower(buffer: [..] u8)
 {
-    p := @dataof(buffer)
-    loop @countof(buffer)
+    visit *p: buffer
     {
-        c := dref p
-        if isUpperUtf8(c)
+        if isUpperUtf8(dref p)
             dref p += 0x20
-        p += 1
     }
 }
 
-// Compare two latin1 strings, and returns -1, 0 or 1
+// Compare two utf8 strings, dealing only with latin1 table
+// Returns -1, 0 or 1
 func compare(src, dst: const [..] u8, ignoreCase = false)->s32
 {
-    length := @countof(src)
+    length      := @countof(src)
     otherLength := @countof(dst)
-    minLen := Math.min(length, otherLength)
+    minLen      := Math.min(length, otherLength)
 
     var result: s32
     if ignoreCase
@@ -83,7 +78,8 @@ func compare(src, dst: const [..] u8, ignoreCase = false)->s32
             c1 += isUpperUtf8(c1) ? 0x20 : 0
             c2 += isUpperUtf8(c2) ? 0x20 : 0
             result = cast(s32) c1 - cast(s32) c2
-            if result != 0 return Math.sign(result)
+            if result != 0
+                return Math.sign(result)
         }
     }
     else
@@ -91,6 +87,7 @@ func compare(src, dst: const [..] u8, ignoreCase = false)->s32
         result = Memory.compare(@dataof(src), @dataof(dst), minLen)
     }
 
-    if result != 0 return Math.sign(result)
+    if result != 0
+        return Math.sign(result)
     return length <=> otherLength
 }

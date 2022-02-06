@@ -112,7 +112,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     if (badParamIdx && callParameters && !callParameters->childs.empty() && callParameters->childs.front()->flags & (AST_FROM_UFCS | AST_TO_UFCS))
         badParamIdx--;
     // This is a closure with a generated first parameter
-    if(oneTry.symMatchContext.flags & SymbolMatchContext::MATCH_CLOSURE_PARAM)
+    if (oneTry.symMatchContext.flags & SymbolMatchContext::MATCH_CLOSURE_PARAM)
         badParamIdx--;
     badParamIdx += 1;
 
@@ -548,7 +548,8 @@ void SemanticJob::symbolErrorRemarks(SemanticContext* context, VectorNative<OneT
 
         if (notFound && notFound == overloads.size())
         {
-            diag->remarks.push_back(Fmt(Nte(Nte0043), node->token.ctext(), identifier->identifierRef->typeInfo->getDisplayNameC()));
+            if (identifier->identifierRef->typeInfo)
+                diag->remarks.push_back(Fmt(Nte(Nte0043), node->token.ctext(), identifier->identifierRef->typeInfo->getDisplayNameC()));
             for (auto s : identifier->identifierRef->startScope->childScopes)
             {
                 if (s->kind == ScopeKind::Impl)

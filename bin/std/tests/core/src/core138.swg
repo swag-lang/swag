@@ -5,15 +5,15 @@ using Core
 #test
 {
     var x: String = "élémenT"
-    x.makeUpper(CharacterSet.Latin1)
+    x.makeUpper()
     @assert(x == "ÉLÉMENT")
-    x.makeLower(CharacterSet.Latin1)
+    x.makeLower()
     @assert(x == "élément")
 
     var x1: String = "âäàéèëî"
-    x1.makeUpper(CharacterSet.Latin1)
+    x1.makeUpper()
     @assert(x1 == "ÂÄÀÉÈËÎ")
-    x1.makeLower(CharacterSet.Latin1)
+    x1.makeLower()
     @assert(x1 == "âäàéèëî")
 
     var x2: String = "AbCdEf"
