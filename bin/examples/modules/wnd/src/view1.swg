@@ -95,6 +95,12 @@ func createView1(view: *Wnd)
         list.header.headerFlags ^= .Clickable
         list.setPosition(@{5, 400, 400, 300})
         list.ensureVisibleLine(list.getLineCount() - 1)
+
+        list.sigSelChanged = @(list) {
+            sl := list.getSelectedLine()
+            if sl
+                Console.printf("%\n", sl.getItem(0).name.raw)
+        }
     }
 
     {
@@ -114,8 +120,9 @@ func createView1(view: *Wnd)
         list.header.getItem(0).clickable = false
 
         list.sigSelChanged = @(list) {
-            visit i: list.selModel
-                Console.printf("%\n", list.getLine(i).getItem(0).name.raw)
+            sel := list.getSelectedLines()
+            visit l: sel
+                Console.printf("%\n", l.getItem(0).name.raw)
         }
     }
 }

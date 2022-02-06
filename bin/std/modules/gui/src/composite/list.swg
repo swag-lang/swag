@@ -17,6 +17,7 @@ struct ListLine
     colorBk:    Color
     colorFg:    Color
     userData:   *void
+    index:      u32
 }
 
 impl ListLine
@@ -143,7 +144,9 @@ impl IWnd for ListView
         if list.selectionMode != .MultiSimple
         {
             if list.selectionMode == .Single or (!ctrl and !shift)
+            {
                 list.selModel.unselectAll()
+            }
         }
 
         if idx != Swag.U32.Max
@@ -153,13 +156,18 @@ impl IWnd for ListView
             {
                 startIdx := list.focusIndex == Swag.U32.Max ? 0 : list.focusIndex
                 loop i: startIdx..idx
-                    list.selModel.select(i, true)
+                {
+                    idxLine := list.isVirtual ? i : list.lines[i].index
+                    list.selModel.select(idxLine, true)
+                }
             }
 
             // Invert selection
             else
             {
-                list.selModel.select(idx, !list.selModel.isSelected(idx))
+                idxLine := list.isVirtual ? idx : list.lines[idx].index
+                toSel   := !list.selModel.isSelected(idxLine)
+                list.selModel.select(idxLine, toSel)
             }
         }
 
@@ -428,10 +436,11 @@ impl List
     mtd isLineSelected(idx: u32)->bool
     {
         Debug.assert(idx < getLineCount())
-
         if selectionMode == .None
             return false
-        return selModel.isSelected(idx)
+        if isVirtual
+            return selModel.isSelected(idx)
+        return selModel.isSelected(lines[idx].index)
     }
 
     // Select of unselect the given line
@@ -498,6 +507,7 @@ impl List
     {
         Debug.assert(!isVirtual, "createLine cannot be called on a virtual list")
         line := Memory.new'ListLine()
+        line.index = cast(u32) lines.count
         lines.add(line)
         return line
     }
@@ -560,16 +570,43 @@ impl List
         scrollWnd.setScrollPos(sc.x, idx * lineHeight)
     }
 
+    // Returns true if the line at the given index is selected
+    mtdc isSelectedLine(idx: u32)->bool
+    {
+        idxLine := isVirtual ? idx : lines[idx].index
+        return selModel.isSelected(idxLine)
+    }
+
+    // Get all the selected lines
+    mtdc getSelectedLines()->Array'(*ListLine)
+    {
+        var result: retval
+        if isVirtual or selModel.isEmpty()
+            return result
+
+        visit l, i: lines
+        {
+            if isSelectedLine(cast(u32) i)
+                result.add(l)
+        }
+
+        return result
+    }
+
     // Returns a selected line
     // Mostly for singlesel mode
     mtd getSelectedLine()->*ListLine
     {
-        if isVirtual
+        if isVirtual or selModel.isEmpty()
             return null
-        if selModel.isEmpty()
-            return null
-        one := selModel.selection.front().start
-        return lines[one]
+
+        visit l, i: lines
+        {
+            if isSelectedLine(cast(u32) i)
+                return l
+        }
+
+        return null
     }
 
     // Sort the list by a given column
