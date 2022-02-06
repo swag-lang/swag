@@ -110,7 +110,7 @@ struct ThemeColors
     btnCheck_DisabledBk:            Color = Transparent
     btnCheck_CheckedText:           Color = White
     btnCheck_CheckedBk:             Color = Transparent
-    btnCheck_CheckedBorder:         Color = LightBlue
+    btnCheck_CheckedBorder:         Color = White
     btnCheck_CheckedMark:           Color = White
 
     edit_Border:                    Color = Gray3

@@ -83,7 +83,7 @@ struct List
     using frameWnd: FrameWnd
 
     horizontalExtent:   f32
-    lineHeight:         f32 = 20
+    lineHeight:         f32 = 22
     iconSize:           f32
     listFlags           = ListFlags.None
     selectionMode       = ListSelectionMode.Single
@@ -480,6 +480,9 @@ private impl ListView
                 idxLine := list.isVirtual ? idx : list.lines[idx].index
                 checked := list.checkModel.isSelected(idxLine)
 
+                colorBorder := colorFg
+                colorMark   := colorFg
+
                 if checked
                 {
                     subRectBorder = &rects.btnCheck_CheckedBorder
@@ -495,8 +498,8 @@ private impl ListView
                 posBox.height = widthCheck
                 posBox.y = labelPos.vertCenter() - (posBox.height * 0.5)
                 posBox.width = posBox.height
-                theme.drawSubRect(painter, posBox, subRectMark, colorFg)
-                theme.drawSubRect(painter, posBox, subRectBorder, colorFg)
+                theme.drawSubRect(painter, posBox, subRectMark, colorMark)
+                theme.drawSubRect(painter, posBox, subRectBorder, colorBorder)
 
                 labelPos.moveLeft(widthCheck + 4)
             }
