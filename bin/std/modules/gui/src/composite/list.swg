@@ -450,10 +450,12 @@ impl List
     {
         Debug.assert(idx < getLineCount())
 
-        if selectionMode == .None
+        if selectionMode == .None or lines.isEmpty()
             return
-        selModel.select(idx, select)
+
+        selModel.select(lines[idx].index, select)
         invalidate()
+
         if sigSelChanged
             sigSelChanged(self)
     }
@@ -464,11 +466,13 @@ impl List
         Debug.assert(start < getLineCount())
         Debug.assert(end < getLineCount())
 
-        if selectionMode == .None
+        if selectionMode == .None or lines.isEmpty()
             return
+
         loop i: start..end
-            selModel.select(i, select)
+            selModel.select(lines[i].index, select)
         invalidate()
+
         if sigSelChanged
             sigSelChanged(self)
     }
@@ -587,13 +591,10 @@ impl List
         if isVirtual or selModel.isEmpty()
             return result
 
-        visit r: selModel.selection
+        visit i: selModel
         {
-            loop i: r.start..r.end
-            {
-                idx := idxLineToIdx.find(i).value
-                result.add(lines[idx])
-            }
+            idx := idxLineToIdx.find(i).value
+            result.add(lines[idx])
         }
 
         return result
