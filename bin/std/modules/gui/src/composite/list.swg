@@ -19,7 +19,6 @@ struct ListLine
     colorFg:    Color
     userData:   *void
     index:      u32
-    checked:    bool
 }
 
 impl ListLine
@@ -91,11 +90,13 @@ struct List
     selectionMode       = ListSelectionMode.Single
     sigVirtualFill:     func(*Self, *ListLine, u32)
     sigSelChanged:      func(*Self)
+    sigCheckChanged:    func(*Self)
     sigSort:            func(*ListLine, *ListLine, u32, bool)->s32
 
     lines:          Array'(*ListLine)
     idxLineToIdx:   HashTable'(u32, u32)
     selModel:       SelModel
+    checkModel:     SelModel
     focusIndex:     u32 = Swag.U32.Max
     scrollWnd:      *ScrollWnd
     listView:       *ListView
@@ -137,11 +138,17 @@ impl IWnd for ListView
             {
                 if evt.kind == .MouseReleased
                     return
-                line := list.lines[idx]
-                checked := !line.checked
-                sel := list.getSelectedLines()
-                visit l: sel
-                    l.checked = checked
+                idxLine := list.isVirtual ? idx : list.lines[idx].index
+                checked := !list.checkModel.isSelected(idxLine)
+                if list.isLineSelected(idx)
+                {
+                    visit l: list.selModel
+                        list.checkModel.select(l, checked)
+                }
+                else
+                    list.checkModel.select(idxLine, checked)
+                if list.sigCheckChanged
+                    list.sigCheckChanged(list)
                 invalidate()
                 return
             }
@@ -317,7 +324,10 @@ private impl ListView
                 var subRectBorder:  *ThemeImageRect
                 var subRectMark:    *ThemeImageRect
 
-                if line.checked
+                idxLine := list.isVirtual ? idx : list.lines[idx].index
+                checked := list.checkModel.isSelected(idxLine)
+
+                if checked
                 {
                     subRectBorder = &rects.btnCheck_CheckedBorder
                     subRectMark   = &rects.btnCheck_CheckedMark
@@ -643,6 +653,22 @@ impl List
             return result
 
         visit i: selModel
+        {
+            idx := idxLineToIdx.find(i).value
+            result.add(lines[idx])
+        }
+
+        return result
+    }
+
+    // Get all the checked lines
+    mtdc getCheckedLines()->Array'(*ListLine)
+    {
+        var result: retval
+        if isVirtual or checkModel.isEmpty()
+            return result
+
+        visit i: checkModel
         {
             idx := idxLineToIdx.find(i).value
             result.add(lines[idx])
