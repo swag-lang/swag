@@ -553,7 +553,8 @@ impl List
     {
         first := getFirstVisibleLineIndex()
         last  := getLastVisibleLineIndex()
-        if idx >= first and idx <= last return
+        if idx >= first and idx <= last
+            return
 
         sc := scrollWnd.getScrollPos()
         scrollWnd.setScrollPos(sc.x, idx * lineHeight)
@@ -563,6 +564,8 @@ impl List
     // Mostly for singlesel mode
     mtd getSelectedLine()->*ListLine
     {
+        if isVirtual
+            return null
         if selModel.isEmpty()
             return null
         one := selModel.selection.front().start
