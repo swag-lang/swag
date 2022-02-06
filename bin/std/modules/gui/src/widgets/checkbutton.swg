@@ -3,7 +3,7 @@ using Core, Pixel
 
 enum ButtonCheckState
 {
-    Normal
+    UnChecked
     Checked
     Undefined
 }
@@ -19,7 +19,7 @@ struct CheckButton
 {
     using button: Button
 
-    checked             = ButtonCheckState.Normal
+    checked             = ButtonCheckState.UnChecked
     checkButtonFlags    = CheckButtonFlags.None
     sigChanged:         func(*Self)
 }
@@ -28,7 +28,8 @@ impl IWnd for CheckButton
 {
     mtd onPaintEvent(evt: *PaintEvent)
     {
-        bc     := evt.bc
+        bc      := evt.bc
+        painter := bc.painter
         theme   := getTheme()
         metrics := getThemeMetrics()
         colors  := getThemeColors()
@@ -68,7 +69,7 @@ impl IWnd for CheckButton
 
         switch checked
         {
-        case Normal:
+        case UnChecked:
             subRectBk     = &rects.btnCheck_Normal
             subRectBorder = &rects.btnCheck_NormalBorder
         case Checked:
@@ -87,9 +88,9 @@ impl IWnd for CheckButton
         posBox.height = metrics.btnCheck_Size
         posBox.y = clientRect.vertCenter() - (posBox.height * 0.5)
         posBox.width = posBox.height
-        theme.drawSubRect(bc.painter, posBox, subRectBk, colorBk)
-        theme.drawSubRect(bc.painter, posBox, subRectBorder, colorBorder)
-        theme.drawSubRect(bc.painter, posBox, subRectMark, colorMark)
+        theme.drawSubRect(painter, posBox, subRectBk, colorBk)
+        theme.drawSubRect(painter, posBox, subRectBorder, colorBorder)
+        theme.drawSubRect(painter, posBox, subRectMark, colorMark)
 
         // Content
         var format: RichStringFormat
@@ -101,17 +102,17 @@ impl IWnd for CheckButton
         labelPos := clientRect
         labelPos.x += posBox.width + metrics.btnCheck_Padding
         labelPos.width -= posBox.width + metrics.btnCheck_Padding
-        Theme.drawIconText(bc.painter, labelPos, icon, &name, format, metrics.iconText_Margin)
+        Theme.drawIconText(painter, labelPos, icon, &name, format, metrics.iconText_Margin)
     }
 
     mtd onMouseEvent(evt: *MouseEvent)
     {
         if processMouseEvent(evt)
         {
-            if checked == .Normal and (checkButtonFlags & .ThreeState)
+            if checked == .UnChecked and (checkButtonFlags & .ThreeState)
                 checked = .Undefined
             elif checked == .Checked
-                checked = .Normal
+                checked = .UnChecked
             else
                 checked = .Checked
             if sigChanged

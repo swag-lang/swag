@@ -19,6 +19,7 @@ struct ListLine
     colorFg:    Color
     userData:   *void
     index:      u32
+    checked:    bool
 }
 
 impl ListLine
@@ -76,6 +77,7 @@ enum ListFlags
     None
     HideSelection
     AlternateLines
+    Checkable
 }
 
 struct List
@@ -125,6 +127,25 @@ impl IWnd for ListView
             return
 
         idx := hitTest(evt.surfacePos)
+
+        // On checkbox
+        if list.listFlags & .Checkable and idx != Swag.U32.Max
+        {
+            localPos := surfaceToLocal(evt.surfacePos)
+            localPos.x += scrollPos.x
+            if localPos.x < getThemeMetrics().btnCheck_Size
+            {
+                if evt.kind == .MouseReleased
+                    return
+                line := list.lines[idx]
+                checked := !line.checked
+                sel := list.getSelectedLines()
+                visit l: sel
+                    l.checked = checked
+                invalidate()
+                return
+            }
+        }
 
         // We select by mouse release when the hittest line is selected
         if evt.kind == .MousePressed and idx != Swag.U32.Max and list.isLineSelected(idx)
@@ -268,7 +289,7 @@ private impl ListView
         }
 
         var format: RichStringFormat
-        visit item: line.items
+        visit item, idxItem: line.items
         {
             colorFg := item.colorFg.a ? item.colorFg : colorText
             theme.setTextColors(&format, colorFg)
@@ -288,14 +309,37 @@ private impl ListView
 
             // Background color ?
             if item.colorBk.a
-            {
                 painter.fillRect(labelPos, item.colorBk)
+
+            // Checkbox
+            if idxItem == 0 and list.listFlags & .Checkable
+            {
+                var subRectBorder:  *ThemeImageRect
+                var subRectMark:    *ThemeImageRect
+
+                if line.checked
+                {
+                    subRectBorder = &rects.btnCheck_CheckedBorder
+                    subRectMark   = &rects.btnCheck_CheckedMark
+                }
+                else
+                {
+                    subRectBorder = &rects.btnCheck_NormalBorder
+                }
+
+                posBox := labelPos
+                posBox.height = metrics.btnCheck_Size
+                posBox.y = labelPos.vertCenter() - (posBox.height * 0.5)
+                posBox.width = posBox.height
+                theme.drawSubRect(painter, posBox, subRectMark, colorFg)
+                theme.drawSubRect(painter, posBox, subRectBorder, colorFg)
+
+                labelPos.moveLeft(metrics.btnCheck_Size + 4)
             }
 
+            // Take care of header item margin
             if list.header
-            {
                 labelPos.moveLeft(list.header.marginItems)
-            }
 
             // Left margin, or icon
             icon := item.icon
@@ -480,9 +524,9 @@ impl List
     // Compute global layout, once all lines have been added
     mtd computeLayout()
     {
-        clientRect   := scrollWnd.getClientRectPadding()
+        clientRect := scrollWnd.getClientRectPadding()
 
-        var scrollWidth: f32
+        var scrollWidth: f32 = ?
         if horizontalExtent > 0
             scrollWidth = horizontalExtent
         elif header
@@ -528,10 +572,17 @@ impl List
     }
 
     // Add one column in a multi columns list
-    mtd addColumn(name: string, width: s32 = 100, icon: Icon = @{})
+    mtd addColumn(name: string, width: f32 = 100, icon: Icon = @{})
     {
         Debug.assert(header != null)
         header.addItem(#self.name, width, #self.icon)
+    }
+
+    // Set the column width
+    mtd setColumnWidth(idx: u32, width: f32)
+    {
+        Debug.assert(header != null)
+        header.setItemWidth(idx, width)
     }
 
     // Set the number of lines in a virtual list

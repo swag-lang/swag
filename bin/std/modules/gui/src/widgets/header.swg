@@ -296,7 +296,7 @@ impl Header
 
     // Add a new view
     #[Swag.Discardable]
-    mtd addItem(tabName: string, width = 100, icon: Icon = @{})->*HeaderItem
+    mtd addItem(tabName: string, width = 100'f32, icon: Icon = @{})->*HeaderItem
     {
         item := Memory.new'HeaderItem()
         item.name = tabName

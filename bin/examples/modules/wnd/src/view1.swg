@@ -92,9 +92,11 @@ func createView1(view: *Wnd)
     {
         list := createListMulti(view)
         list.frameFlags |= .FocusBorder
+        list.listFlags |= .Checkable
         list.header.headerFlags ^= .Clickable
         list.setPosition(@{5, 400, 400, 300})
         list.ensureVisibleLine(list.getLineCount() - 1)
+        list.setColumnWidth(0, 150)
 
         list.sigSelChanged = @(list) {
             sl := list.getSelectedLine()
