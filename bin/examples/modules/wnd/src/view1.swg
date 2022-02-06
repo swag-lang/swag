@@ -109,6 +109,11 @@ func createView1(view: *Wnd)
             visit l: sl
                 Console.printf("checked: %\n", l.getItem(0).name.raw)
         }
+        list.sigRightClick = @(list, pt) {
+            sel := list.getSelectedLines()
+            visit l: sel
+                Console.printf("%\n", l.getItem(0).name.raw)
+        }
     }
 
     {

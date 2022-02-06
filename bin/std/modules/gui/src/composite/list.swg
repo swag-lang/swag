@@ -91,6 +91,8 @@ struct List
     sigVirtualFill:     func(*Self, *ListLine, u32)
     sigSelChanged:      func(*Self)
     sigCheckChanged:    func(*Self)
+    sigRightClick:      func(*Self, Math.Point)
+    sigLeftDoubleClick: func(*Self, Math.Point)
     sigSort:            func(*ListLine, *ListLine, u32, bool)->s32
 
     lines:          Array'(*ListLine)
@@ -214,12 +216,47 @@ impl IWnd for ListView
             return
         }
 
+        idx := hitTest(evt.surfacePos)
+
+        ctrl  := cast(bool) (evt.modifiers & .Control)
+        shift := cast(bool) (evt.modifiers & .Shift)
+
+        // Right mouse button
+        // ============================
+
+        if evt.button == .Right
+        {
+            if idx != Swag.U32.Max and !shift and !ctrl
+            {
+                if evt.kind == .MousePressed
+                {
+                    idxLine := list.isVirtual ? idx : list.lines[idx].index
+                    if !list.selModel.isSelected(idxLine)
+                    {
+                        list.selModel.unselectAll()
+                        list.selModel.select(idxLine, true)
+                        list.focusIndex = idx
+                        invalidate()
+                    }
+                }
+                elif evt.kind == .MouseReleased
+                {
+                    if list.sigRightClick
+                    {
+                        pt := surfaceToLocal(evt.surfacePos)
+                        list.sigRightClick(list, pt)
+                    }
+                }
+            }
+
+            return
+        }
+
+        // Check boxes
+        // ============================
+
         if evt.button != .Left
             return
-        if list.selectionMode == .None
-            return
-
-        idx := hitTest(evt.surfacePos)
 
         // On checkbox
         if list.listFlags & .Checkable and idx != Swag.U32.Max
@@ -241,7 +278,7 @@ impl IWnd for ListView
                     return
                 idxLine := list.isVirtual ? idx : list.lines[idx].index
                 checked := !list.checkModel.isSelected(idxLine)
-                if list.isLineSelected(idx)
+                if list.selModel.isSelected(idxLine)
                 {
                     visit l: list.selModel
                         list.checkModel.select(l, checked)
@@ -254,6 +291,26 @@ impl IWnd for ListView
                 return
             }
         }
+
+        // User double click
+        // ============================
+
+        if evt.kind == .MouseDoubleClick
+        {
+            if list.sigLeftDoubleClick
+            {
+                pt := surfaceToLocal(evt.surfacePos)
+                list.sigLeftDoubleClick(list, pt)
+            }
+
+            return
+        }
+
+        // Selection by left button
+        // ============================
+
+        if list.selectionMode == .None
+            return
 
         // We select by mouse release when the hittest line is selected
         if evt.kind == .MousePressed and idx != Swag.U32.Max and list.isLineSelected(idx)
@@ -268,9 +325,6 @@ impl IWnd for ListView
         }
 
         discardMouseRelease = evt.kind == .MousePressed
-
-        ctrl  := evt.modifiers & .Control
-        shift := evt.modifiers & .Shift
 
         if list.selectionMode != .MultiSimple
         {
