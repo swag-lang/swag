@@ -120,25 +120,55 @@ impl IWnd for ListView
         if evt.kind != .KeyPressed
             return
 
+        lineCount := list.getLineCount()
+        if !lineCount
+            return
+        if list.focusIndex == Swag.U32.Max
+            return
+
         shift := evt.modifiers & .Shift
+
+        selChanged := false
+        var startSelIdx, endSelIdx: u32
+
         switch evt.key
         {
+        case Home:
+            startSelIdx = list.focusIndex
+            endSelIdx = 0
+            selChanged = true
+
+        case End:
+            startSelIdx = list.focusIndex
+            endSelIdx = lineCount - 1
+            selChanged = true
+
         case Up:
-            if list.focusIndex == 0 or list.focusIndex == Swag.U32.Max
-                break
-            list.focusIndex -= 1
-            if !shift or list.selectionMode == .Single
-                list.selModel.unselectAll()
-            list.selectLine(list.focusIndex, true)
-            list.ensureVisibleLine(list.focusIndex)
+            if list.focusIndex == 0
+                startSelIdx, endSelIdx = 0
+            else
+                startSelIdx, endSelIdx = list.focusIndex - 1
+            selChanged = true
 
         case Down:
-            if list.focusIndex == list.getLineCount() - 1 or list.focusIndex == Swag.U32.Max
-                break
-            list.focusIndex += 1
+            if list.focusIndex == lineCount - 1
+                startSelIdx, endSelIdx = lineCount - 1
+            else
+                startSelIdx, endSelIdx = list.focusIndex + 1
+            selChanged = true
+        }
+
+        if selChanged
+        {
             if !shift or list.selectionMode == .Single
+            {
                 list.selModel.unselectAll()
-            list.selectLine(list.focusIndex, true)
+                startSelIdx = endSelIdx
+            }
+
+            loop i: startSelIdx..endSelIdx
+                list.selectLine(i, true)
+            list.focusIndex = endSelIdx
             list.ensureVisibleLine(list.focusIndex)
         }
     }
@@ -327,7 +357,11 @@ private impl ListView
         var format: RichStringFormat
         visit item, idxItem: line.items
         {
-            colorFg := item.colorFg.a ? item.colorFg : colorText
+            var colorFg: Color = ?
+            if item.colorFg.a and !isSelected
+                colorFg = item.colorFg
+            else
+                colorFg = colorText
             theme.setTextColors(&format, colorFg)
             format.horzAlignment = .Left
             format.vertAlignment = .Center
@@ -344,7 +378,7 @@ private impl ListView
             }
 
             // Background color ?
-            if item.colorBk.a
+            if item.colorBk.a and !isSelected
                 painter.fillRect(labelPos, item.colorBk)
 
             // Checkbox
