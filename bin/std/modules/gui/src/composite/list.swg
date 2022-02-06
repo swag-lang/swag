@@ -208,7 +208,7 @@ impl IWnd for ListView
 
     mtd onMouseEvent(evt: *MouseEvent)
     {
-        if evt.kind != .MousePressed and evt.kind != .MouseReleased
+        if evt.kind != .MousePressed and evt.kind != .MouseReleased and evt.kind != .MouseDoubleClick
         {
             evt.accepted = false
             return
@@ -224,9 +224,18 @@ impl IWnd for ListView
         // On checkbox
         if list.listFlags & .Checkable and idx != Swag.U32.Max
         {
-            localPos := surfaceToLocal(evt.surfacePos)
-            localPos.x += scrollPos.x
-            if localPos.x < Math.min(getThemeMetrics().btnCheck_Size, list.lineHeight)
+            eatCheck := false
+            if evt.kind == .MouseDoubleClick
+                eatCheck = true
+            else
+            {
+                localPos := surfaceToLocal(evt.surfacePos)
+                localPos.x += scrollPos.x
+                if localPos.x < Math.min(getThemeMetrics().btnCheck_Size, list.lineHeight)
+                    eatCheck = true
+            }
+
+            if eatCheck
             {
                 if evt.kind == .MouseReleased
                     return
