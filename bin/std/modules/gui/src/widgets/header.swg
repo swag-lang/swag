@@ -35,6 +35,8 @@ struct Header
     moving:         bool
     clicked:        bool
     correctMoving:  f32
+    sortColumn:     u32
+    sortMark:       s32
 }
 
 impl IWnd for Header
@@ -72,6 +74,24 @@ impl IWnd for Header
             colorText = colors.headerItem_HotText
         default:
             colorText = colors.headerItem_Text
+        }
+
+        // Sort mark
+        if sortMark != 0 and sortColumn == idx
+        {
+            var icon: Icon = ?
+            if sortMark == 1
+                icon = theme.getIcon24(ThemeIcons24.SortArrowDown)
+            else
+                icon = theme.getIcon24(ThemeIcons24.SortArrowUp)
+            if labelPos.width > icon.size
+            {
+                sortPos := labelPos
+                sortPos.x = Math.max(sortPos.x, sortPos.right() - icon.size)
+                sortPos.y = sortPos.vertCenter() - (icon.size * 0.5)
+                icon.paint(painter, sortPos.x, sortPos.y, colorText)
+                labelPos.width -= icon.size
+            }
         }
 
         var format: RichStringFormat

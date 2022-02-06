@@ -87,6 +87,7 @@ struct List
     selectionMode       = ListSelectionMode.Single
     sigVirtualFill:     func(*Self, *ListLine, u32)
     sigSelChanged:      func(*Self)
+    sigSort:            func(*ListLine, *ListLine, u32, bool)->s32
 
     lines:          Array'(*ListLine)
     selModel:       SelModel
@@ -562,5 +563,34 @@ impl List
             return null
         one := selModel.selection.front().start
         return lines[one]
+    }
+
+    // Sort the list by a given column
+    // If 'persistent' is true, then the sorted column will be displayed in the
+    // header (if it exists)
+    mtd sort(column: u32, descentOrder, persistent = false)
+    {
+        if isVirtual
+            return
+
+        cb := @|self, column, descentOrder|(a, b: *ListLine)->s32
+        {
+            if self.sigSort
+                return self.sigSort(a, b, column, descentOrder)
+            res := a.getItem(column).name.raw <=> b.getItem(column).name.raw
+            if descentOrder res *= -1
+            return res
+        }
+
+        lines.sort(cb)
+
+        if header and persistent
+        {
+            header.sortColumn = column
+            header.sortMark = descentOrder ? -1 : 1
+            header.invalidate()
+        }
+
+        invalidate()
     }
 }

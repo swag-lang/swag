@@ -8,6 +8,8 @@ enum ThemeIcons24
     Search
     RightPopupArrow
     BottomPopupArrow
+    SortArrowDown
+    SortArrowUp
 }
 
 enum ThemeIcons64
