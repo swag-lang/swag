@@ -1,13 +1,13 @@
 using Core, Gui, Pixel
 
-func createListSimple(view: *Wnd)->*List
+func createListSimple(view: *Wnd, maxItems = 50)->*List
 {
     list := List.createSimple(view, @{5, 5, 250, 300})
     list.setFrameForm(FrameWndForm.Round)
     list.selectionMode = .MultiExtended
     list.iconSize = 16
 
-    loop i: 50
+    loop i: maxItems
     {
         str := Format.toString("item %", i)
         icon := app.theme.getIcon24(ThemeIcons24.Search, 16)
@@ -46,8 +46,9 @@ func createListMulti(view: *Wnd)->*List
 func createView1(view: *Wnd)
 {
     {
-        list := createListSimple(view)
+        list := createListSimple(view, 10)
         list.frameFlags |= .FocusBorder
+        list.selectionMode = .Single
         list.setPosition(@{5, 5, 250, 300})
     }
 

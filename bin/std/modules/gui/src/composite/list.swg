@@ -126,13 +126,46 @@ impl IWnd for ListView
         if list.focusIndex == Swag.U32.Max
             return
 
-        shift := evt.modifiers & .Shift
+        shift := cast(bool) (evt.modifiers & .Shift)
+        ctrl  := cast(bool) (evt.modifiers & .Control)
 
         selChanged := false
         var startSelIdx, endSelIdx: u32
 
         switch evt.key
         {
+        case Space:
+            if !(list.listFlags & .Checkable)
+                break
+
+            visit l: list.selModel
+            {
+                checked := !list.checkModel.isSelected(l)
+                list.checkModel.select(l, checked)
+            }
+
+            if list.sigCheckChanged
+                list.sigCheckChanged(list)
+            invalidate()
+
+        case Enter:
+            if !(list.listFlags & .Checkable)
+                break
+            visit l: list.selModel
+                list.checkModel.select(l, true)
+            if list.sigCheckChanged
+                list.sigCheckChanged(list)
+            invalidate()
+
+        case A:
+            if !ctrl or list.selectionMode == .Single
+                break
+            shift = true
+            list.selModel.unselectAll()
+            endSelIdx = 0
+            startSelIdx = list.getLineCount() - 1
+            selChanged = true
+
         case Home:
             startSelIdx = list.focusIndex
             endSelIdx = 0
