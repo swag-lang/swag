@@ -107,13 +107,16 @@ func compareNatural(src, dst: const [..] u8, ignoreCase = false)->s32
         b := dst
         loop
         {
-            da := dref a
-            db := dref b
-            if !isDigit(da) and !isDigit(db)
+            da  := dref a
+            db  := dref b
+            dga := isDigit(da)
+            dgb := isDigit(db)
+
+            if !dga and !dgb
                 return 0
-            if !isDigit(da)
+            if !dga
                 return -1
-            if !isDigit(db)
+            if !dgb
                 return 1
             if da < db
                 return -1
@@ -133,13 +136,16 @@ func compareNatural(src, dst: const [..] u8, ignoreCase = false)->s32
 
         loop
         {
-            da := dref a
-            db := dref b
-            if !isDigit(da) and !isDigit(db)
+            da  := dref a
+            db  := dref b
+            dga := isDigit(da)
+            dgb := isDigit(db)
+
+            if !dga and !dgb
                 return bias
-            if !isDigit(da)
+            if !dga
                 return -1
-            if !isDigit(db)
+            if !dgb
                 return 1
 
             if da < db
