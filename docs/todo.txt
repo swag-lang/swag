@@ -120,5 +120,4 @@ GUI
 ****************************************
 
 - tab, popup menu si trop de tabs
-- list, get key to sort lines (au lieu de prendre systématiquement le nom)
 - hide/show column

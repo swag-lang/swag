@@ -5,6 +5,7 @@ struct ListItem
 {
     userData:   *void
     name:       RichString
+    sortKey:    String
     icon:       Icon
     colorBk:    Color
     colorFg:    Color
@@ -628,7 +629,11 @@ impl List
         {
             if self.sigSort
                 return self.sigSort(a, b, column, descentOrder)
-            res := Latin1.compareNatural(a.getItem(column).name.raw, b.getItem(column).name.raw)
+            it0 := a.getItem(column)
+            it1 := b.getItem(column)
+            sort0 := it0.sortKey.isEmpty() ? &it0.name.raw : &it0.sortKey
+            sort1 := it1.sortKey.isEmpty() ? &it1.name.raw : &it1.sortKey
+            res := Latin1.compareNatural(dref sort0, dref sort1)
             if descentOrder res *= -1
             return res
         }
