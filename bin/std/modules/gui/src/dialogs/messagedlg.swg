@@ -81,27 +81,31 @@ public impl MessageDlg
     // Creates the message box
     func create(from: *Surface, x, y: s32, message: string, icon: Icon = @{})->*MessageDlg
     {
-        dlg := Wnd.create'MessageDlg(null)
+        dlg := Wnd.create'MessageDlg()
 
         srf := assume from.app.createSurface(x, y, 500, 300, SurfaceFlags.Border | SurfaceFlags.Secondary, dlg)
         srf.wnd.view.backgroundStyle = .Dialog
         metrics := &from.app.theme.metrics
 
-        using dlg
-        label = Label.create(srf.wnd.view, message, @{})
-        label.dockStyle = .Center
-        label.setAllPaddings(metrics.msgDlg_Padding)
-        label.horzAlignmentText = .Justify
+        with dlg
+        {
+            label = Label.create(srf.wnd.view, message, @{})
+            label.dockStyle = .Center
+            label.setAllPaddings(metrics.msgDlg_Padding)
+            label.horzAlignmentText = .Justify
 
-        h := srf.app.theme.metrics.btnPush_Height
-        h += 2 * metrics.msgDlg_Padding
-        wndBottom = Wnd.create'Wnd(srf.wnd.view, "", @{0, 0, 0, h})
-        wndBottom.dockStyle = .Bottom
-        wndBottom.backgroundStyle = .DialogBar
-        wndBottom.setAllPaddings(metrics.msgDlg_Padding)
+            h := srf.app.theme.metrics.btnPush_Height
+            h += 2 * metrics.msgDlg_Padding
+            wndBottom = Wnd.create'Wnd(srf.wnd.view, "", @{0, 0, 0, h})
+            wndBottom.dockStyle = .Bottom
+            wndBottom.backgroundStyle = .DialogBar
+            wndBottom.setAllPaddings(metrics.msgDlg_Padding)
 
-        dlg.setIcon(icon)
-        dlg.setFocus()
+            setIcon(icon)
+            setFocus()
+        }
+
+        dlg.sendResizeEvent()
         return dlg
     }
 

@@ -167,11 +167,14 @@ impl Wnd
         res.id = id
         res.position = position
         res.isAllocated = true
-        res.setParent(parent)
+        if parent
+        {
+            res.setParent(parent)
+            evt := CreateEvent{}
+            res.sendEvent(&evt)
+            res.sendResizeEvent()
+        }
 
-        evt := CreateEvent{}
-        res.sendEvent(&evt)
-        res.sendResizeEvent()
         return res
     }
 

@@ -229,7 +229,7 @@ impl Painter
             }
 
             // Wrap
-            if format.flags & .WordWrap
+            if format.flags & .WordWrap or format.horzAlignment == .Justify
             {
                 curW := line.width
                 if format.horzAlignment == .Justify
