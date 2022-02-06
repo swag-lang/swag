@@ -101,16 +101,18 @@ func compare(src, dst: const [..] u8, ignoreCase = false)->s32
 // See LICENCE.md for the corresponding licence.
 func compareNatural(src, dst: const [..] u8, ignoreCase = false)->s32
 {
-    func compareLeft(src, dst: const *u8)->s32
+    func compareLeft(src, dst: const [..] u8)->s32
     {
-        a := src
-        b := dst
+        csrc := @countof(src)
+        cdst := @countof(dst)
+        ai, bi := 0
         loop
         {
-            da  := dref a
-            db  := dref b
-            dga := isDigit(da)
-            dgb := isDigit(db)
+            ca := !csrc ? 0 : src[ai]
+            cb := !cdst ? 0 : dst[bi]
+
+            dga := isDigit(ca)
+            dgb := isDigit(cb)
 
             if !dga and !dgb
                 return 0
@@ -118,28 +120,31 @@ func compareNatural(src, dst: const [..] u8, ignoreCase = false)->s32
                 return -1
             if !dgb
                 return 1
-            if da < db
+            if ca < cb
                 return -1
-            if da > db
+            if ca > cb
                 return 1
-            a, b += 1
+
+            ai, bi += 1
+            csrc, cdst -= 1
         }
 
         return 0
     }
 
-    func compareRight(src, dst: const *u8)->s32
+    func compareRight(src, dst: const [..] u8)->s32
     {
-        bias := 0
-        a := src
-        b := dst
-
+        bias   := 0
+        csrc   := @countof(src)
+        cdst   := @countof(dst)
+        ai, bi := 0
         loop
         {
-            da  := dref a
-            db  := dref b
-            dga := isDigit(da)
-            dgb := isDigit(db)
+            ca := !csrc ? 0 : src[ai]
+            cb := !cdst ? 0 : dst[bi]
+
+            dga := isDigit(ca)
+            dgb := isDigit(cb)
 
             if !dga and !dgb
                 return bias
@@ -148,20 +153,21 @@ func compareNatural(src, dst: const [..] u8, ignoreCase = false)->s32
             if !dgb
                 return 1
 
-            if da < db
+            if ca < cb
             {
                 if !bias
                     bias = -1
             }
-            elif da > db
+            elif ca > cb
             {
                 if !bias
                     bias = 1
             }
-            elif !da and !db
+            elif !ca and !cb
                 return bias
 
-            a, b += 1
+            ai, bi += 1
+            csrc, cdst -= 1
         }
 
         return 0;
@@ -175,19 +181,21 @@ func compareNatural(src, dst: const [..] u8, ignoreCase = false)->s32
     ai, bi := 0
     loop
     {
-        ca := ai == csrc ? 0 : src[ai]
-        cb := bi == cdst ? 0 : dst[bi]
+        ca := !csrc ? 0 : src[ai]
+        cb := !cdst ? 0 : dst[bi]
 
         // Skip over leading spaces or zeros
         while isSpace(ca)
         {
             ai += 1
+            csrc -= 1
             ca = src[ai]
         }
 
         while isSpace(cb)
         {
             bi += 1
+            cdst -= 1
             cb = dst[bi]
         }
 
@@ -195,10 +203,12 @@ func compareNatural(src, dst: const [..] u8, ignoreCase = false)->s32
         if isDigit(ca) and isDigit(cb)
         {
             result := 0
+            sl0 := @mkslice(dsrc + ai, csrc)
+            sl1 := @mkslice(ddst + bi, cdst)
             if ca == "0"'u8 or cb == "0"'u8
-                result = compareLeft(dsrc + ai, ddst + bi)
+                result = compareLeft(sl0, sl1)
             else
-                result = compareRight(dsrc + ai, ddst + bi)
+                result = compareRight(sl0, sl1)
             if result
                 return result
         }
@@ -216,7 +226,9 @@ func compareNatural(src, dst: const [..] u8, ignoreCase = false)->s32
             return -1
         if ca > cb
             return 1
+
         ai, bi += 1
+        csrc, cdst -= 1
     }
 
     return 0

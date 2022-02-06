@@ -16,4 +16,18 @@ using Core
         r := Latin1.compareNatural(a, b)
         @assert(r == -1)
     }
+
+    {
+        a := "11"
+        b := "21"
+        r := Latin1.compareNatural(a, b)
+        @assert(r == -1)
+    }
+
+    {
+        a := "011"
+        b := "021"
+        r := Latin1.compareNatural(a, b)
+        @assert(r == -1)
+    }
 }
