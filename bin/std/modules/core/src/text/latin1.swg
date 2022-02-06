@@ -161,18 +161,16 @@ func compareNatural(src, dst: const [..] u8, ignoreCase = false)->s32
         return 0;
     }
 
-    ai, bi := 0
-    ca, cb := 0'u8
-
     dsrc := @dataof(src)
     ddst := @dataof(dst)
     csrc := @countof(src)
     cdst := @countof(dst)
 
+    ai, bi := 0
     loop
     {
-        ca = ai == csrc ? 0 : src[ai]
-        cb = bi == cdst ? 0 : dst[bi]
+        ca := ai == csrc ? 0 : src[ai]
+        cb := bi == cdst ? 0 : dst[bi]
 
         // Skip over leading spaces or zeros
         while isSpace(ca)
@@ -190,20 +188,13 @@ func compareNatural(src, dst: const [..] u8, ignoreCase = false)->s32
         // Process run of digits
         if isDigit(ca) and isDigit(cb)
         {
-            fractional := ca == "0"'u8 or cb == "0"'u8
-
-            if fractional
-            {
-                result := compareLeft(dsrc + ai, ddst + bi)
-                if result
-                    return result
-            }
+            result := 0
+            if ca == "0"'u8 or cb == "0"'u8
+                result = compareLeft(dsrc + ai, ddst + bi)
             else
-            {
-                result := compareRight(dsrc + ai, ddst + bi)
-                if result
-                    return result
-            }
+                result = compareRight(dsrc + ai, ddst + bi)
+            if result
+                return result
         }
 
         if !ca and !cb
@@ -215,8 +206,10 @@ func compareNatural(src, dst: const [..] u8, ignoreCase = false)->s32
             cb = toUpper(cb)
         }
 
-        if ca < cb return -1
-        if ca > cb return 1
+        if ca < cb
+            return -1
+        if ca > cb
+            return 1
         ai, bi += 1
     }
 
