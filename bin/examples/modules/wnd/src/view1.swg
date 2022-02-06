@@ -4,7 +4,7 @@ func createListSimple(view: *Wnd, maxItems = 50)->*List
 {
     list := List.createSimple(view, @{5, 5, 250, 300})
     list.setFrameForm(FrameWndForm.Round)
-    list.selectionMode = .MultiExtended
+    list.selectionMode = .Multi
     list.iconSize = 16
 
     loop i: maxItems
@@ -26,7 +26,7 @@ func createListMulti(view: *Wnd)->*List
     list.addColumn("column 1")
     list.addColumn("column 2")
     list.setFrameForm(FrameWndForm.Round)
-    list.selectionMode = .MultiExtended
+    list.selectionMode = .Multi
     list.iconSize = 16
 
     loop i: 50
@@ -69,7 +69,7 @@ func createView1(view: *Wnd)
         list := List.createSimple(view, @{830, 5, 250, 300})
         list.setFrameForm(FrameWndForm.Round)
         list.frameFlags ^= .Borders
-        list.selectionMode = .MultiSimple
+        list.selectionMode = .Multi
         list.listFlags |= .HideSelection
         list.horizontalExtent = 500
 

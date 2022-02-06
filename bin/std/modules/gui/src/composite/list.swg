@@ -66,8 +66,7 @@ enum ListSelectionMode
 {
     None
     Single
-    MultiSimple
-    MultiExtended
+    Multi
 }
 
 #[Swag.EnumFlags]
@@ -326,18 +325,13 @@ impl IWnd for ListView
 
         discardMouseRelease = evt.kind == .MousePressed
 
-        if list.selectionMode != .MultiSimple
-        {
-            if list.selectionMode == .Single or (!ctrl and !shift)
-            {
-                list.selModel.unselectAll()
-            }
-        }
+        if list.selectionMode == .Single or (!ctrl and !shift)
+            list.selModel.unselectAll()
 
         if idx != Swag.U32.Max
         {
             // Range selection
-            if shift and list.selectionMode == .MultiExtended
+            if shift and list.selectionMode == .Multi
             {
                 startIdx := list.focusIndex == Swag.U32.Max ? 0 : list.focusIndex
                 loop i: startIdx..idx
@@ -504,7 +498,7 @@ private impl ListView
                 theme.drawSubRect(painter, posBox, subRectMark, colorFg)
                 theme.drawSubRect(painter, posBox, subRectBorder, colorFg)
 
-                labelPos.moveLeft(widthCheck)
+                labelPos.moveLeft(widthCheck + 4)
             }
 
             // Take care of header item margin
