@@ -389,6 +389,10 @@ impl List
                 list.computeLayout()
             }
 
+            header.sigClicked = @|list|(header, col) {
+                list.sort(col, header.sortMark <= 0 ? false : true, true)
+            }
+
             // Scroll that contains the list view
             scrollWnd = Wnd.create'ScrollWnd(fwnd, @{})
             scrollWnd.dockStyle = .Center

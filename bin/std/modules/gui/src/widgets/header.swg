@@ -15,9 +15,16 @@ struct HeaderItem
     width:      f32
     minWidth:   f32
     maxWidth:   f32
-    canSize     = true
+    sizeable    = true
     clickable   = true
     column:     u32
+}
+
+#[Swag.EnumFlags]
+enum HeaderFlags
+{
+    None
+    Clickable
 }
 
 struct Header
@@ -25,6 +32,7 @@ struct Header
     using wnd: Wnd
 
     form                = HeaderForm.Flat
+    headerFlags         = HeaderFlags.Clickable
     marginItems:        f32 = 5
     sigLayoutChanged:   closure(*Self)
     sigClicked:         closure(*Self, u32)
@@ -55,7 +63,7 @@ impl IWnd for Header
         colors  := getThemeColors()
         rects   := getThemeRects()
 
-        if item.clickable and hotIdx == idx
+        if hotIdx == idx and !hotSeparator
         {
             labelPosBk := labelPos
             labelPosBk.x -= (metrics.header_Separator * 0.5)
@@ -164,6 +172,16 @@ impl IWnd for Header
         if !moving and !clicked
         {
             (hit, sep) := hitTest(evt.surfacePos)
+
+            // Hot, if not a separator, is disabled if item is not clickable
+            if hit != Swag.U32.Max
+            {
+                if !(headerFlags & .Clickable) and !sep
+                    hit = Swag.U32.Max
+                elif !items[hit].clickable
+                    hit = Swag.U32.Max
+            }
+
             if hit != hotIdx
             {
                 hotIdx = hit
@@ -244,7 +262,7 @@ private impl Header
             if pos.x >= x and pos.x < x + item.width
                 return @{cast(u32) idx, false}
             x += item.width
-            if pos.x >= x and pos.x <= x + metrics.header_Separator and item.canSize
+            if pos.x >= x and pos.x <= x + metrics.header_Separator and item.sizeable
                 return @{cast(u32) idx, true}
             x += metrics.header_Separator
         }

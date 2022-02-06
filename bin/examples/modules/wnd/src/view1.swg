@@ -92,6 +92,7 @@ func createView1(view: *Wnd)
     {
         list := createListMulti(view)
         list.frameFlags |= .FocusBorder
+        list.header.headerFlags ^= .Clickable
         list.setPosition(@{5, 400, 400, 300})
         list.ensureVisibleLine(list.getLineCount() - 1)
     }
@@ -109,15 +110,12 @@ func createView1(view: *Wnd)
         list.getLine(0).getItem(0).colorFg = Argb.Green
         list.getLine(0).getItem(0).colorBk = Argb.Blue
 
-        list.header.getItem(0).canSize = false
+        list.header.getItem(0).sizeable = false
         list.header.getItem(0).clickable = false
 
         list.sigSelChanged = @(list) {
             visit i: list.selModel
                 Console.printf("%\n", list.getLine(i).getItem(0).name.raw)
-        }
-        list.header.sigClicked = @|list|(header, col) {
-            list.sort(col, list.header.sortMark <= 0 ? false : true, true)
         }
     }
 }
