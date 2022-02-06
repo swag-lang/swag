@@ -581,7 +581,7 @@ impl List
         {
             if self.sigSort
                 return self.sigSort(a, b, column, descentOrder)
-            res := a.getItem(column).name.raw <=> b.getItem(column).name.raw
+            res := Latin1.compareNatural(a.getItem(column).name.raw, b.getItem(column).name.raw)
             if descentOrder res *= -1
             return res
         }
