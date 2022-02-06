@@ -99,16 +99,16 @@ func createView1(view: *Wnd)
 
     {
         list := createListMulti(view)
-        list.id = "list"
         list.frameFlags |= .FocusBorder
         list.listFlags |= .AlternateLines
         list.setFrameForm(FrameWndForm.Square)
         list.setPosition(@{420, 400, 400, 300})
 
-        list.getLine(0).colorBk = Argb.Red
-        list.getLine(0).colorFg = Argb.Blue
-        list.getLine(0).getItem(0).colorFg = Argb.Green
-        list.getLine(0).getItem(0).colorBk = Argb.Blue
+        line0 := list.getLine(0)
+        line0.colorBk = Argb.Red
+        line0.colorFg = Argb.Blue
+        line0.getItem(0).colorFg = Argb.Green
+        line0.getItem(0).colorBk = Argb.Blue
 
         list.header.getItem(0).sizeable = false
         list.header.getItem(0).clickable = false
