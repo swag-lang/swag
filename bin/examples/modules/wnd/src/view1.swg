@@ -101,12 +101,12 @@ func createView1(view: *Wnd)
         list.sigSelChanged = @(list) {
             sl := list.getSelectedLine()
             if sl
-                Console.printf("%\n", sl.getItem(0).name.raw)
+                Console.printf("selected: %\n", sl.getItem(0).name.raw)
         }
         list.sigCheckChanged = @(list) {
             sl := list.getCheckedLines()
             visit l: sl
-                Console.printf("%\n", l.getItem(0).name.raw)
+                Console.printf("checked: %\n", l.getItem(0).name.raw)
         }
     }
 

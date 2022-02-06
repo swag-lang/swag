@@ -134,7 +134,7 @@ impl IWnd for ListView
         {
             localPos := surfaceToLocal(evt.surfacePos)
             localPos.x += scrollPos.x
-            if localPos.x < getThemeMetrics().btnCheck_Size
+            if localPos.x < Math.min(getThemeMetrics().btnCheck_Size, list.lineHeight)
             {
                 if evt.kind == .MouseReleased
                     return
@@ -337,14 +337,15 @@ private impl ListView
                     subRectBorder = &rects.btnCheck_NormalBorder
                 }
 
+                widthCheck := Math.min(metrics.btnCheck_Size, list.lineHeight)
                 posBox := labelPos
-                posBox.height = metrics.btnCheck_Size
+                posBox.height = widthCheck
                 posBox.y = labelPos.vertCenter() - (posBox.height * 0.5)
                 posBox.width = posBox.height
                 theme.drawSubRect(painter, posBox, subRectMark, colorFg)
                 theme.drawSubRect(painter, posBox, subRectBorder, colorFg)
 
-                labelPos.moveLeft(metrics.btnCheck_Size + 4)
+                labelPos.moveLeft(widthCheck + 4)
             }
 
             // Take care of header item margin
