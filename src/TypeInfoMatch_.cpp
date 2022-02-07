@@ -154,6 +154,8 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                         bool canReg = true;
                         if (wantedTypeInfo->kind == TypeInfoKind::Pointer)
                             canReg = false;
+                        else if (wantedTypeInfo->kind == TypeInfoKind::Struct && callTypeInfo->kind == TypeInfoKind::Struct)
+                            canReg = wantedTypeInfo->isSame(callTypeInfo, ISSAME_CAST);
 
                         // Do not register type replacement if the concrete type is a pending lambda typing (we do not know
                         // yet the type of parameters)

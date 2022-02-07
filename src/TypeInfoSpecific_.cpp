@@ -446,6 +446,8 @@ bool TypeInfoGeneric::isSame(TypeInfo* to, uint32_t isSameFlags)
 {
     if (this == to)
         return true;
+    if (!(isSameFlags & ISSAME_EXACT) && to->kind != TypeInfoKind::Generic)
+        return true;
     if (to->kind == kind)
         return name == to->name;
     if (isSameFlags & ISSAME_EXACT)
@@ -978,7 +980,7 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint32_t isSameFlags)
         // {x: s32} := {y: s32}
         for (int i = 0; i < childCount; i++)
         {
-            if (!fields[i]->isSame(other->fields[i], isSameFlags | ISSAME_EXACT))
+            if (!fields[i]->isSame(other->fields[i], isSameFlags))
                 return false;
 
             // But this is ok to affect one tuple to another even if they do not have the same fields names
