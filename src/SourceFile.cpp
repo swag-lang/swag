@@ -161,7 +161,7 @@ Utf8 SourceFile::getLine(long lineNo)
             line.reserve(1024);
             while (std::getline(fle, line))
             {
-                if (line.back() == '\r')
+                if (!line.empty() && line.back() == '\r')
                     line.resize(line.size() - 1);
                 allLines.push_back(line);
             }
