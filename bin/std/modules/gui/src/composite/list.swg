@@ -104,6 +104,7 @@ struct List
     header:         *Header
     virtualCount:   u32
     isVirtual:      bool
+    nextListIndex:  u32
 }
 
 struct ListView
@@ -543,6 +544,11 @@ private impl ListView
 
 impl List
 {
+    mtd opDrop()
+    {
+        clear()
+    }
+
     #[Swag.Discardable]
     func createSimple(parent: *Wnd, position: Math.Rectangle, id: string = null)->*List
     {
@@ -730,9 +736,11 @@ impl List
     mtd createLine()->*ListLine
     {
         Debug.assert(!isVirtual, "createLine cannot be called on a virtual list")
+
         line := Memory.new'ListLine()
-        line.index = cast(u32) lines.count
+        line.index = nextListIndex
         idxLineToIdx.add(line.index, line.index)
+        nextListIndex += 1
         lines.add(line)
         return line
     }
@@ -743,6 +751,17 @@ impl List
         line := createLine()
         line.setItem(0, #self.name, #self.icon)
         return line
+    }
+
+    // Clear all lines
+    mtd clear()
+    {
+        visit l: lines
+            Memory.delete(l)
+        lines.clear()
+
+        virtualCount = 0
+        idxLineToIdx.clear()
     }
 
     // Add one column in a multi columns list
@@ -762,7 +781,7 @@ impl List
     // Set the number of lines in a virtual list
     mtd setVirtualCount(count: u32)
     {
-        Debug.assert(lines.isEmpty(), "setVirtualCount must only be called on a virtual list")
+        clear()
         isVirtual = true
         virtualCount = count
         computeLayout()
