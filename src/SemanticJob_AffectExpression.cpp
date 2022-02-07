@@ -234,6 +234,9 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                 {
                     if (!hasUserOp(context, g_LangSpec->name_opIndexAffect, left))
                     {
+                        if (context->result != ContextResult::Done)
+                            return true;
+
                         Utf8 msg = Fmt(Err(Err0225), leftTypeInfo->getDisplayNameC(), rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC());
                         return context->report(node, msg);
                     }

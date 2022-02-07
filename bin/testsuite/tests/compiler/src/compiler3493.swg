@@ -1,4 +1,5 @@
 //#global skip
+
 struct A
 {
     a: s32 = 666
@@ -16,7 +17,6 @@ impl A
 
 struct B
 {
-    d: f32
     using a: A
 }
 

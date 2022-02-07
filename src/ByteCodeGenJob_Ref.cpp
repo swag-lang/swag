@@ -262,6 +262,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     auto job      = context->job;
     auto node     = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
     auto typeInfo = TypeManager::concreteReferenceType(node->array->typeInfo);
+    auto castInfo = node->array->castedTypeInfo ? node->array->castedTypeInfo : nullptr;
 
     if (!(node->access->doneFlags & AST_DONE_CAST1))
     {
@@ -314,6 +315,26 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         node->resultRegisterRC         = node->array->resultRegisterRC;
         node->parent->resultRegisterRC = node->resultRegisterRC;
         freeRegisterRC(context, node->access);
+    }
+
+    // Dereference a struct
+    else if (typeInfo->kind == TypeInfoKind::Struct ||
+             (typeInfo->isPointerTo(TypeInfoKind::Struct) && castInfo && castInfo->kind == TypeInfoKind::Struct) ||
+             node->doneFlags & AST_DONE_FORCE_CAST_PTR_STRUCT)
+    {
+        // User special function
+        if (node->hasSpecialFuncCall())
+        {
+            if (!job->allParamsTmp)
+                job->allParamsTmp = Ast::newFuncCallParams(node->sourceFile, nullptr);
+            job->allParamsTmp->childs = node->structFlatParams;
+            SWAG_CHECK(emitUserOp(context, job->allParamsTmp));
+            if (context->result != ContextResult::Done)
+            {
+                node->doneFlags |= AST_DONE_FORCE_CAST_PTR_STRUCT;
+                return true;
+            }
+        }
     }
 
     // Dereference of a pointer
@@ -421,21 +442,6 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         node->resultRegisterRC         = node->array->resultRegisterRC;
         node->parent->resultRegisterRC = node->resultRegisterRC;
         freeRegisterRC(context, node->access);
-    }
-
-    // Dereference a struct
-    else if (typeInfo->kind == TypeInfoKind::Struct)
-    {
-        // User special function
-        if (node->hasSpecialFuncCall())
-        {
-            if (!job->allParamsTmp)
-                job->allParamsTmp = Ast::newFuncCallParams(node->sourceFile, nullptr);
-            job->allParamsTmp->childs = node->structFlatParams;
-            SWAG_CHECK(emitUserOp(context, job->allParamsTmp));
-            if (context->result != ContextResult::Done)
-                return true;
-        }
     }
     else
     {

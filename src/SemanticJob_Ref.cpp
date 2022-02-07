@@ -238,6 +238,9 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
         auto typeInfo = node->array->typeInfo;
         if (!hasUserOp(context, g_LangSpec->name_opSlice, node->array))
         {
+            if (context->result != ContextResult::Done)
+                return true;
+
             Utf8 msg = Fmt(Err(Err0320), node->array->token.ctext(), typeInfo->getDisplayNameC());
             return context->report(node->array, msg);
         }
@@ -659,6 +662,9 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
         auto typeInfo = arrayNode->array->typeInfo;
         if (!hasUserOp(context, g_LangSpec->name_opIndex, arrayNode->array))
         {
+            if (context->result != ContextResult::Done)
+                return true;
+
             if (arrayNode->array->token.text.empty())
             {
                 Utf8 msg = Fmt(Err(Err0226), typeInfo->getDisplayNameC());

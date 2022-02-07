@@ -2108,13 +2108,26 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
             ok = true;
             if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
             {
+                if (toType->flags & TYPEINFO_SELF)
+                {
+                    if (it.offset)
+                    {
+                        fromNode->allocateExtension();
+                        fromNode->extension->castOffset = it.offset;
+                        fromNode->castedTypeInfo        = fromNode->typeInfo;
+                        fromNode->typeInfo              = toType;
+                    }
+
+                    continue;
+                }
+
                 // We will have to dereference the pointer to get the real thing
                 if (it.field && it.field->typeInfo->kind == TypeInfoKind::Pointer)
                     fromNode->semFlags |= AST_SEM_DEREF_USING;
                 fromNode->semFlags |= AST_SEM_USING;
 
                 fromNode->allocateExtension();
-                fromNode->extension->castOffset = it.field ? it.field->offset : 0;
+                fromNode->extension->castOffset = it.offset;
                 fromNode->castedTypeInfo        = fromNode->typeInfo;
                 fromNode->typeInfo              = toType;
                 continue;

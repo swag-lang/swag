@@ -217,7 +217,7 @@ struct SemanticJob : public Job
     static void         decreaseInterfaceRegCount(TypeInfoStruct* typeInfoStruct);
     static void         decreaseInterfaceCount(TypeInfoStruct* typeInfoStruct);
     static void         decreaseMethodCount(AstFuncDecl* funcNode, TypeInfoStruct* typeInfoStruct);
-    static SymbolName*  hasUserOp(const Utf8& name, TypeInfoStruct* leftStruct);
+    static SymbolName*  hasUserOp(SemanticContext* context, const Utf8& name, TypeInfoStruct* leftStruct);
     static SymbolName*  hasUserOp(SemanticContext* context, const Utf8& name, AstNode* left);
     static SymbolName*  waitUserOp(SemanticContext* context, const Utf8& name, AstNode* left);
     static uint32_t     alignOf(AstVarDecl* node);

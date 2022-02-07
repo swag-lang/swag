@@ -878,6 +878,22 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
     {
         ensureCanBeChangedRC(context, exprNode->resultRegisterRC);
 
+        if (fromTypeInfo->kind == TypeInfoKind::Struct)
+        {
+            truncRegisterRC(context, exprNode->resultRegisterRC, 1);
+            node->resultRegisterRC   = exprNode->resultRegisterRC;
+            exprNode->castedTypeInfo = nullptr;
+
+            if (exprNode->extension && exprNode->extension->castOffset)
+            {
+                auto inst   = emitInstruction(context, ByteCodeOp::IncPointer64, node->resultRegisterRC, 0, node->resultRegisterRC);
+                inst->b.u64 = exprNode->extension->castOffset;
+                inst->flags |= BCI_IMM_B;
+            }
+
+            return true;
+        }
+
         if (fromTypeInfo->kind == TypeInfoKind::Array ||
             fromTypeInfo->kind == TypeInfoKind::Pointer ||
             fromTypeInfo->kind == TypeInfoKind::Struct ||

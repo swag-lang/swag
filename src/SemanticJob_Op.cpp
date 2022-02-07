@@ -339,7 +339,7 @@ bool SemanticJob::resolveUserOpCommutative(SemanticContext* context, const Utf8&
     return resolveUserOp(context, name, opConst, opType, right, left, false);
 }
 
-SymbolName* SemanticJob::hasUserOp(const Utf8& name, TypeInfoStruct* leftStruct)
+SymbolName* SemanticJob::hasUserOp(SemanticContext* context, const Utf8& name, TypeInfoStruct* leftStruct)
 {
     if (leftStruct->flags & TYPEINFO_STRUCT_IS_TUPLE)
         return nullptr;
@@ -348,7 +348,37 @@ SymbolName* SemanticJob::hasUserOp(const Utf8& name, TypeInfoStruct* leftStruct)
     // in the instance
     if (leftStruct->fromGeneric)
         leftStruct = leftStruct->fromGeneric;
-    return leftStruct->scope->symTable.find(name);
+
+    auto result = leftStruct->scope->symTable.find(name);
+
+    if (!result && name != g_LangSpec->name_opPostCopy && name != g_LangSpec->name_opPostMove && name != g_LangSpec->name_opDrop)
+    {
+        // Struct in using hierarchy
+        for (auto field : leftStruct->fields)
+        {
+            if (!(field->flags & TYPEINFO_HAS_USING))
+                continue;
+            auto typeS = field->typeInfo->getStructOrPointedStruct();
+            if (typeS)
+            {
+                context->job->waitAllStructSpecialMethods(typeS);
+                if (context->result != ContextResult::Done)
+                    return nullptr;
+
+                auto newResult = hasUserOp(context, name, typeS);
+                if (context->result != ContextResult::Done)
+                    return nullptr;
+
+                if (newResult)
+                {
+                    SWAG_ASSERT(!result); // TODO
+                    result = newResult;
+                }
+            }
+        }
+    }
+
+    return result;
 }
 
 SymbolName* SemanticJob::hasUserOp(SemanticContext* context, const Utf8& name, AstNode* left)
@@ -357,7 +387,7 @@ SymbolName* SemanticJob::hasUserOp(SemanticContext* context, const Utf8& name, A
     if (leftType->kind == TypeInfoKind::Array)
         leftType = CastTypeInfo<TypeInfoArray>(leftType, TypeInfoKind::Array)->finalType;
     auto leftStruct = CastTypeInfo<TypeInfoStruct>(leftType, TypeInfoKind::Struct);
-    return hasUserOp(name, leftStruct);
+    return hasUserOp(context, name, leftStruct);
 }
 
 SymbolName* SemanticJob::waitUserOp(SemanticContext* context, const Utf8& name, AstNode* left)
@@ -451,6 +481,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
                 t->dependentVar      = nullptr;
                 t->cptOverloads      = (uint32_t) symbol->overloads.size();
                 t->cptOverloadsInit  = symbol->cptOverloadsInit;
+                t->ufcs              = true;
                 listTryMatch.push_back(t);
             }
         }
@@ -463,7 +494,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
         context->result = ContextResult::Done;
     }
 
-    uint32_t castFlags = CASTFLAG_UNCONST | CASTFLAG_AUTO_OPCAST;
+    uint32_t castFlags = CASTFLAG_UNCONST | CASTFLAG_AUTO_OPCAST | CASTFLAG_UFCS;
     if (justCheck)
         castFlags |= CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR;
     if (job->cacheMatches.empty())
@@ -484,6 +515,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
         node->allocateExtension();
         node->extension->resolvedUserOpSymbolOverload = overload;
         SWAG_ASSERT(symbol && symbol->kind == SymbolKind::Function);
+        SWAG_ASSERT(overload);
 
         // Allocate room on the stack to store the result of the function call
         auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);

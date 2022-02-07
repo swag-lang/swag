@@ -20,6 +20,9 @@ bool SemanticJob::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTy
         auto suffix = right->childs.front()->token.text;
         if (!hasUserOp(context, g_LangSpec->name_opAffectSuffix, left))
         {
+            if (context->result != ContextResult::Done)
+                return true;
+
             Utf8 msg  = Fmt(Err(Err0889), leftTypeInfo->getDisplayNameC(), rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC());
             auto note = new Diagnostic{right->childs.front(), Fmt(Nte(Nte0057), suffix.c_str()), DiagnosticLevel::Note};
             return context->report({right, msg}, note);
@@ -35,6 +38,9 @@ bool SemanticJob::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTy
     {
         if (!hasUserOp(context, g_LangSpec->name_opAffect, left))
         {
+            if (context->result != ContextResult::Done)
+                return true;
+
             Utf8 msg = Fmt(Err(Err0908), leftTypeInfo->getDisplayNameC(), rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC());
             return context->report(right, msg);
         }
