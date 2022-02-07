@@ -37,7 +37,7 @@ impl Array
         buffer = null
         realloc(count)
 
-        #if Reflection.hasPostCopy(@typeof(T))
+        #if Reflection.hasPostCopy(T)
         {
             loop count
                 buffer[@index] =,nodrop oldBuffer[@index]
@@ -81,7 +81,7 @@ impl Array
     }
 
     mtd opIndexAffect(index: uint, value: T)
-        #selectif Reflection.canCopy(@typeof(T))
+        #selectif Reflection.canCopy(T)
     {
         Debug.assert(index < count, "index out of range")
         buffer[index] = value
@@ -95,7 +95,7 @@ impl Array
 
     // Initializes an Array that contains values copied from the specified array
     mtd opAffect(arr: const [..] T)
-        #selectif Reflection.canCopy(@typeof(T))
+        #selectif Reflection.canCopy(T)
     {
         clear()
         countof := @countof(arr)
@@ -103,7 +103,7 @@ impl Array
         dataof := @dataof(arr)
 
         grow(countof)
-        #if Reflection.hasPostCopy(@typeof(T))
+        #if Reflection.hasPostCopy(T)
         {
             loop i: countof
                 buffer[i] =,nodrop dataof[i]
@@ -149,7 +149,7 @@ impl Array
             return
 
         // Need to drop every structs
-        #if Reflection.hasDrop(@typeof(T))
+        #if Reflection.hasDrop(T)
         {
             loop count
                 @drop(buffer + @index)
@@ -169,11 +169,11 @@ impl Array
         // in place
         if buffer and newBuffer != buffer
         {
-            #if Reflection.hasPostMove(@typeof(T))
+            #if Reflection.hasPostMove(T)
             {
                 @postmove(newBuffer, count)
             }
-            #elif Reflection.canCopy(@typeof(T))
+            #elif Reflection.canCopy(T)
             {
                 @postcopy(newBuffer, count)
                 @drop(buffer, count)
@@ -253,7 +253,7 @@ impl Array
     // Set the number of elements to 0
     mtd clear()
     {
-        #if Reflection.hasDrop(@typeof(T))
+        #if Reflection.hasDrop(T)
         {
             loop count
                 @drop(buffer + @index)
@@ -264,7 +264,7 @@ impl Array
 
     // Add a copy of one element at the end of the array
     mtd addOnce(value: T)
-        #selectif Reflection.canCopy(@typeof(T))
+        #selectif Reflection.canCopy(T)
     {
         if contains(value)
             return
@@ -275,7 +275,7 @@ impl Array
 
     // Add a copy of one element at the end of the array
     mtd add(value: T)
-        #selectif Reflection.canCopy(@typeof(T))
+        #selectif Reflection.canCopy(T)
     {
         grow(count + 1)
         buffer[count] =,nodrop value
@@ -285,7 +285,7 @@ impl Array
     // Add any value, as long as the type T accepts an opAffect of type G
     // or an implicit cast
     mtd(G) addAny(value: G)
-        #selectif Reflection.canCopy(@typeof(G))
+        #selectif Reflection.canCopy(G)
     {
         #if @typeof(G) != @typeof(T)
         {
@@ -319,7 +319,7 @@ impl Array
     // the value is added at the end of the array.
     // Order is preserved.
     mtd insertAt(index: uint, value: T)
-        #selectif Reflection.canCopy(@typeof(T))
+        #selectif Reflection.canCopy(T)
     {
         Debug.assert(index <= count, "index out of range")
         if index == count
@@ -352,7 +352,7 @@ impl Array
 
     // Append a slice to the end of this instance
     mtd add(values: const [..] T)
-        #selectif Reflection.canCopy(@typeof(T))
+        #selectif Reflection.canCopy(T)
     {
         sliceCount := @countof(values)
         if !sliceCount
@@ -366,7 +366,7 @@ impl Array
         oldCount := count
         count += sliceCount
 
-        #if Reflection.hasPostCopy(@typeof(T))
+        #if Reflection.hasPostCopy(T)
         {
             destPtr := buffer + oldCount
             loop sliceCount
