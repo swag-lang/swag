@@ -20,6 +20,7 @@ struct TypeInfoFuncAttr;
 struct AstFuncDecl;
 struct JobContext;
 struct SemanticContext;
+struct TypeInfoStruct;
 enum class Intrisic;
 
 static const int COMPUTE_NAME               = 0;
@@ -184,18 +185,19 @@ struct TypeInfo
     TypeInfo(TypeInfoKind kind) : kind{kind} {}
     // clang-format on
 
-    bool isPointerTo(NativeTypeKind pointerKind);
-    bool isPointerTo(TypeInfoKind pointerKind);
-    bool isPointerTo(TypeInfo* finalType);
-    bool isPointerVoid();
-    bool isPointerConstVoid();
-    bool isPointerToTypeInfo();
-    bool isCString();
-    bool isInitializerList();
-    bool isArrayOfStruct();
-    bool isMethod();
-    bool isClosure();
-    bool isLambda();
+    bool            isPointerTo(NativeTypeKind pointerKind);
+    bool            isPointerTo(TypeInfoKind pointerKind);
+    bool            isPointerTo(TypeInfo* finalType);
+    bool            isPointerVoid();
+    bool            isPointerConstVoid();
+    bool            isPointerToTypeInfo();
+    bool            isCString();
+    bool            isInitializerList();
+    bool            isArrayOfStruct();
+    bool            isMethod();
+    bool            isClosure();
+    bool            isLambda();
+    TypeInfoStruct* getStructOrPointedStruct();
 
     // clang-format off
     bool isNative(NativeTypeKind native)    { return (kind == TypeInfoKind::Native) && (nativeType == native); }

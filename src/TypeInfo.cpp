@@ -225,6 +225,21 @@ bool TypeInfo::isPointerConstVoid()
     return isPointerVoid() && isConst();
 }
 
+TypeInfoStruct* TypeInfo::getStructOrPointedStruct()
+{
+    if (kind == TypeInfoKind::Struct)
+        return CastTypeInfo<TypeInfoStruct>(this, TypeInfoKind::Struct);
+
+    if (kind == TypeInfoKind::Pointer)
+    {
+        auto typePointer = CastTypeInfo<TypeInfoPointer>(this, TypeInfoKind::Pointer);
+        if (typePointer->pointedType->kind == TypeInfoKind::Struct)
+            CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
+    }
+
+    return nullptr;
+}
+
 bool TypeInfo::isPointerTo(NativeTypeKind pointerKind)
 {
     if (kind != TypeInfoKind::Pointer)

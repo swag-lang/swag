@@ -2101,7 +2101,9 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
         auto it = stack.back();
         stack.pop_back();
 
-        if (it.typeStruct == toStruct || it.typeStruct->isPointerTo(toStruct))
+        auto testStruct = it.typeStruct->getStructOrPointedStruct();
+        SWAG_ASSERT(testStruct);
+        if (testStruct->isSame(toStruct, ISSAME_CAST))
         {
             ok = true;
             if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
@@ -2150,14 +2152,19 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
             if (typeStruct)
             {
                 // Ambiguous ! Two fields with a 'using' on the same struct
-                if (foundStruct && (foundStruct == typeStruct || foundStruct->isPointerTo(typeStruct) || typeStruct->isPointerTo(foundStruct)))
+                if (foundStruct)
                 {
-                    if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+                    auto foundTypeStruct0 = foundStruct->getStructOrPointedStruct();
+                    auto foundTypeStruct1 = typeStruct->getStructOrPointedStruct();
+                    if (foundTypeStruct0 && foundTypeStruct1 && foundTypeStruct0->isSame(foundTypeStruct1, ISSAME_CAST))
                     {
-                        Diagnostic diag{fromNode, Fmt(Err(Err0200), fromType->getDisplayNameC(), toType->getDisplayNameC(), fromStruct->getDisplayNameC(), toStruct->getDisplayNameC())};
-                        Diagnostic note1{foundField->declNode, Nte(Nte0015), DiagnosticLevel::Note};
-                        Diagnostic note2{field->declNode, Nte(Nte0016), DiagnosticLevel::Note};
-                        return context->report(diag, &note1, &note2);
+                        if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+                        {
+                            Diagnostic diag{fromNode, Fmt(Err(Err0200), fromType->getDisplayNameC(), toType->getDisplayNameC(), fromStruct->getDisplayNameC(), toStruct->getDisplayNameC())};
+                            Diagnostic note1{foundField->declNode, Nte(Nte0015), DiagnosticLevel::Note};
+                            Diagnostic note2{field->declNode, Nte(Nte0016), DiagnosticLevel::Note};
+                            return context->report(diag, &note1, &note2);
+                        }
                     }
                 }
 
