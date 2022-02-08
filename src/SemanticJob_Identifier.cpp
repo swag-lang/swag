@@ -3241,6 +3241,11 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
     auto orgResolvedSymbolName     = identifierRef->resolvedSymbolName;
     auto orgPreviousResolvedNode   = identifierRef->previousResolvedNode;
 
+    // In case of a reevaluation, ufcsFirstParam will be null, but we still want to cast for ufcs
+    bool hasForcedUfcs = false;
+    if (node->callParameters && !node->callParameters->childs.empty() && node->callParameters->childs.front()->flags & AST_TO_UFCS)
+        hasForcedUfcs = true;
+
     while (true)
     {
         // Collect all overloads to solve. We collect also the number of overloads when the collect is done, in
@@ -3308,9 +3313,10 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
             tryMatch->dependentVar      = dependentVar;
             tryMatch->overload          = symbolOverload;
             tryMatch->scope             = oneOver.scope;
-            tryMatch->ufcs              = ufcsFirstParam;
-            tryMatch->cptOverloads      = oneOver.cptOverloads;
-            tryMatch->cptOverloadsInit  = oneOver.cptOverloadsInit;
+            tryMatch->ufcs              = ufcsFirstParam || hasForcedUfcs;
+
+            tryMatch->cptOverloads     = oneOver.cptOverloads;
+            tryMatch->cptOverloadsInit = oneOver.cptOverloadsInit;
 
             SWAG_CHECK(fillMatchContextCallParameters(context, symMatchContext, node, symbolOverload, ufcsFirstParam));
             if (context->result == ContextResult::Pending)
@@ -3365,7 +3371,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
     // Deal with ufcs. Now that the match is done, we will change the ast in order to
     // add the ufcs parameters to the function call parameters
     auto& match = job->cacheMatches[0];
-    if (match->ufcs)
+    if (match->ufcs && !hasForcedUfcs)
     {
         // Do not change AST if this is code inside a generic function
         if (!node->ownerFct || !(node->ownerFct->flags & AST_IS_GENERIC))
