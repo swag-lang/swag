@@ -30,7 +30,7 @@ impl C
 {
     mtd titi()
     {
-        v.toto(4)
+        v.toto(null)
     }
 }
 

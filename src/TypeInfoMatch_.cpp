@@ -269,6 +269,16 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                             symbolTypeInfos.push_back(symbolPtr->pointedType);
                             typeInfos.push_back(typePtr->pointedType);
                         }
+                        else if (callTypeInfo->kind == TypeInfoKind::Struct)
+                        {
+                            auto typePtr = CastTypeInfo<TypeInfoPointer>(wantedTypeInfo, TypeInfoKind::Pointer);
+                            auto canNext = typePtr->pointedType->isSame(callTypeInfo, ISSAME_CAST);
+                            if (canNext)
+                            {
+                                symbolTypeInfos.push_back(symbolPtr->pointedType);
+                                typeInfos.push_back(callTypeInfo);
+                            }
+                        }
                         else
                         {
                             symbolTypeInfos.push_back(symbolPtr->pointedType);

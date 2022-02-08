@@ -1310,15 +1310,29 @@ void SemanticJob::setupContextualGenericTypeReplacement(SemanticContext* context
     // parameters
     if (node->ownerFct && symOverload->typeInfo->kind != TypeInfoKind::FuncAttr)
         toCheck.push_back(node->ownerFct);
+
     // Except for a second try
     if (node->ownerFct && symOverload->typeInfo->kind == TypeInfoKind::FuncAttr && flags & MIP_SECOND_GENERIC_TRY)
         toCheck.push_back(node->ownerFct);
 
+    // With A.B form, we try to get generic parameters from A if they exist
     if (node->kind == AstNodeKind::Identifier)
     {
         auto identifier = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier);
         if (identifier->identifierRef->startScope)
             toCheck.push_back(identifier->identifierRef->startScope->owner);
+    }
+
+    // Except that with using, B could be in fact in another struct the A.
+    // In that case we have a dependentVar, so replace what needs to be replaced.
+    // What a mess...
+    if (oneTryMatch.dependentVar)
+    {
+        if (oneTryMatch.dependentVar->typeInfo && oneTryMatch.dependentVar->typeInfo->kind == TypeInfoKind::Struct)
+        {
+            auto typeStruct = CastTypeInfo<TypeInfoStruct>(oneTryMatch.dependentVar->typeInfo, TypeInfoKind::Struct);
+            toCheck.push_back(typeStruct->declNode);
+        }
     }
 
     // Collect from the owner structure
