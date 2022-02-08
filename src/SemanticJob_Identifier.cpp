@@ -2172,8 +2172,7 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
                     // relevant and we should not use it
                     if (startScope->kind != ScopeKind::Namespace && startScope->owner->extension)
                     {
-                        for (auto& as : startScope->owner->extension->alternativeScopes)
-                            addAlternativeScopeOnce(scopeHierarchy, as.scope, as.flags);
+                        collectAlternativeScopes(startScope->owner, scopeHierarchy);
                         collectAlternativeScopeVars(startScope->owner, scopeHierarchy, scopeHierarchyVars);
                     }
                 }
@@ -3404,6 +3403,34 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
     node->typeInfo = match->symbolOverload->typeInfo;
     SWAG_CHECK(setSymbolMatch(context, identifierRef, node, *match));
     return true;
+}
+
+void SemanticJob::collectAlternativeScopes(AstNode* startNode, VectorNative<AlternativeScope>& scopes)
+{
+    // Need to go deep for using vars, because we can have a using on a struct, which has also
+    // a using itself, and so on...
+    VectorNative<AlternativeScope> toAdd;
+    VectorNative<Scope*>           done;
+    toAdd.append(startNode->extension->alternativeScopes);
+    while (!toAdd.empty())
+    {
+        auto it0 = toAdd.back();
+        toAdd.pop_back();
+
+        if (!done.contains(it0.scope))
+        {
+            done.push_back(it0.scope);
+            addAlternativeScopeOnce(scopes, it0.scope);
+
+            if (it0.scope && it0.scope->kind == ScopeKind::Struct && it0.scope->owner->extension)
+            {
+                // We register the sub scope with the original "node" (top level), because the original node will in the end
+                // become the dependentVar node, and will be converted by cast to the correct type.
+                for (auto& it1 : it0.scope->owner->extension->alternativeScopes)
+                    toAdd.push_back({it1.scope, it1.flags});
+            }
+        }
+    }
 }
 
 void SemanticJob::collectAlternativeScopeVars(AstNode* startNode, VectorNative<AlternativeScope>& scopes, VectorNative<AlternativeScopeVar>& scopesVars)

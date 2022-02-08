@@ -231,6 +231,7 @@ struct SemanticJob : public Job
     static bool         hasAlternativeScope(VectorNative<AlternativeScope>& scopes, Scope* scope);
     static bool         collectAttributes(SemanticContext* context, AstNode* forNode, AttributeList* result);
     static bool         collectAttributes(SemanticContext* context, AstNode* forNode, AttributeList* result, AstAttrUse* attrUse);
+    static void         collectAlternativeScopes(AstNode* startNode, VectorNative<AlternativeScope>& scopes);
     static void         collectAlternativeScopeVars(AstNode* startNode, VectorNative<AlternativeScope>& scopes, VectorNative<AlternativeScopeVar>& scopesVars);
     static void         collectAlternativeScopeHierarchy(SemanticContext* context, VectorNative<AlternativeScope>& scopes, VectorNative<AlternativeScopeVar>& scopesVars, AstNode* startNode, uint32_t flags);
     static bool         collectScopeHierarchy(SemanticContext* context, VectorNative<AlternativeScope>& scopes, VectorNative<AlternativeScopeVar>& scopesVars, AstNode* startNode, uint32_t flags = COLLECT_ALL);
