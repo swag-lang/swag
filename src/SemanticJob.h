@@ -171,6 +171,13 @@ enum class IdentifierSearchFor
     Function
 };
 
+struct FindUserOp
+{
+    SymbolName*     symbol;
+    TypeInfoStruct* parentStruct;
+    TypeInfoParam*  usingField;
+};
+
 static const uint32_t COLLECT_ALL       = 0x00000000;
 static const uint32_t COLLECT_BACKTICK  = 0x00000001;
 static const uint32_t COLLECT_NO_STRUCT = 0x00000002;
@@ -217,9 +224,10 @@ struct SemanticJob : public Job
     static void         decreaseInterfaceRegCount(TypeInfoStruct* typeInfoStruct);
     static void         decreaseInterfaceCount(TypeInfoStruct* typeInfoStruct);
     static void         decreaseMethodCount(AstFuncDecl* funcNode, TypeInfoStruct* typeInfoStruct);
-    static SymbolName*  hasUserOp(SemanticContext* context, const Utf8& name, TypeInfoStruct* leftStruct);
-    static SymbolName*  hasUserOp(SemanticContext* context, const Utf8& name, AstNode* left);
-    static SymbolName*  waitUserOp(SemanticContext* context, const Utf8& name, AstNode* left);
+    static bool         hasUserOp(SemanticContext* context, const Utf8& name, TypeInfoStruct* leftStruct, TypeInfoParam* parentField, VectorNative<FindUserOp>& result);
+    static bool         hasUserOp(SemanticContext* context, const Utf8& name, TypeInfoStruct* leftStruct, SymbolName** result);
+    static bool         hasUserOp(SemanticContext* context, const Utf8& name, AstNode* left, SymbolName** result);
+    static bool         waitUserOp(SemanticContext* context, const Utf8& name, AstNode* left, SymbolName** result);
     static uint32_t     alignOf(AstVarDecl* node);
     static bool         isCompilerContext(AstNode* node);
     static DataSegment* getConstantSegFromContext(AstNode* node, bool forceCompiler = false);

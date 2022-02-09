@@ -18,7 +18,10 @@ bool SemanticJob::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTy
     {
         SWAG_ASSERT(right->kind == AstNodeKind::Literal);
         auto suffix = right->childs.front()->token.text;
-        if (!hasUserOp(context, g_LangSpec->name_opAffectSuffix, left))
+
+        SymbolName* symbol = nullptr;
+        SWAG_CHECK(hasUserOp(context, g_LangSpec->name_opAffectSuffix, left, &symbol));
+        if (!symbol)
         {
             if (context->result != ContextResult::Done)
                 return true;
@@ -36,7 +39,9 @@ bool SemanticJob::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTy
     }
     else
     {
-        if (!hasUserOp(context, g_LangSpec->name_opAffect, left))
+        SymbolName* symbol = nullptr;
+        SWAG_CHECK(hasUserOp(context, g_LangSpec->name_opAffect, left, &symbol));
+        if (!symbol)
         {
             if (context->result != ContextResult::Done)
                 return true;
@@ -54,13 +59,14 @@ bool SemanticJob::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTy
 
 bool SemanticJob::waitForStructUserOps(SemanticContext* context, AstNode* node)
 {
-    waitUserOp(context, g_LangSpec->name_opPostCopy, node);
+    SymbolName* symbol = nullptr;
+    SWAG_CHECK(waitUserOp(context, g_LangSpec->name_opPostCopy, node, &symbol));
     if (context->result == ContextResult::Pending)
         return true;
-    waitUserOp(context, g_LangSpec->name_opPostMove, node);
+    SWAG_CHECK(waitUserOp(context, g_LangSpec->name_opPostMove, node, &symbol));
     if (context->result == ContextResult::Pending)
         return true;
-    waitUserOp(context, g_LangSpec->name_opDrop, node);
+    SWAG_CHECK(waitUserOp(context, g_LangSpec->name_opDrop, node, &symbol));
     if (context->result == ContextResult::Pending)
         return true;
     return true;

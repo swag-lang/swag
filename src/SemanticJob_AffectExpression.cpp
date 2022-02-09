@@ -232,7 +232,9 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                 }
                 else
                 {
-                    if (!hasUserOp(context, g_LangSpec->name_opIndexAffect, left))
+                    SymbolName* symbol = nullptr;
+                    SWAG_CHECK(hasUserOp(context, g_LangSpec->name_opIndexAffect, left, &symbol));
+                    if (!symbol)
                     {
                         if (context->result != ContextResult::Done)
                             return true;

@@ -89,8 +89,11 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
                 if (context->result != ContextResult::Done)
                     return true;
 
-                auto symCount = hasUserOp(context, g_LangSpec->name_opCount, (TypeInfoStruct*) realType);
-                auto symSlice = hasUserOp(context, g_LangSpec->name_opSlice, (TypeInfoStruct*) realType);
+                SymbolName* symCount = nullptr;
+                SymbolName* symSlice = nullptr;
+                SWAG_CHECK(hasUserOp(context, g_LangSpec->name_opCount, (TypeInfoStruct*) realType, &symCount));
+                SWAG_CHECK(hasUserOp(context, g_LangSpec->name_opSlice, (TypeInfoStruct*) realType, &symSlice));
+
                 if (!symCount || !symSlice)
                     return context->report(node, Fmt(Err(Err0281), realType->getDisplayNameC()));
 
@@ -161,7 +164,9 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
                 }
 
                 // opDrop
-                if (hasUserOp(context, g_LangSpec->name_opDrop, (TypeInfoStruct*) realType))
+                SymbolName* symDrop = nullptr;
+                SWAG_CHECK(hasUserOp(context, g_LangSpec->name_opDrop, (TypeInfoStruct*) realType, &symDrop));
+                if (symDrop)
                 {
                     params.clear();
                     params.push_back(node);

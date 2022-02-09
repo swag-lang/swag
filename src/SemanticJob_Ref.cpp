@@ -235,8 +235,10 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
         node->structFlatParams.push_front(node->array);
 
         // Resolve call
-        auto typeInfo = node->array->typeInfo;
-        if (!hasUserOp(context, g_LangSpec->name_opSlice, node->array))
+        auto        typeInfo = node->array->typeInfo;
+        SymbolName* symbol   = nullptr;
+        SWAG_CHECK(hasUserOp(context, g_LangSpec->name_opSlice, node->array, &symbol));
+        if (!symbol)
         {
             if (context->result != ContextResult::Done)
                 return true;
@@ -659,8 +661,10 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
         arrayNode->structFlatParams.push_front(arrayNode->array);
 
         // Resolve call
-        auto typeInfo = arrayNode->array->typeInfo;
-        if (!hasUserOp(context, g_LangSpec->name_opIndex, arrayNode->array))
+        auto        typeInfo = arrayNode->array->typeInfo;
+        SymbolName* symbol   = nullptr;
+        SWAG_CHECK(hasUserOp(context, g_LangSpec->name_opIndex, arrayNode->array, &symbol));
+        if (!symbol)
         {
             if (context->result != ContextResult::Done)
                 return true;

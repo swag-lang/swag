@@ -339,19 +339,48 @@ bool SemanticJob::resolveUserOpCommutative(SemanticContext* context, const Utf8&
     return resolveUserOp(context, name, opConst, opType, right, left, false);
 }
 
-SymbolName* SemanticJob::hasUserOp(SemanticContext* context, const Utf8& name, TypeInfoStruct* leftStruct)
+bool SemanticJob::hasUserOp(SemanticContext* context, const Utf8& name, TypeInfoStruct* leftStruct, SymbolName** result)
 {
+    *result = nullptr;
     if (leftStruct->flags & TYPEINFO_STRUCT_IS_TUPLE)
-        return nullptr;
+        return true;
 
+    VectorNative<FindUserOp> results;
+    SWAG_CHECK(hasUserOp(context, name, leftStruct, nullptr, results));
+    if (context->result != ContextResult::Done)
+        return true;
+    if (results.empty())
+        return true;
+
+    if (results.size() > 1)
+    {
+        Diagnostic                diag{context->node, Fmt(Err(Err0182), name.c_str())};
+        vector<const Diagnostic*> notes;
+        for (auto& f : results)
+        {
+            auto note = new Diagnostic{f.usingField->declNode, Fmt("`%s` has been found in `%s` because of a using field", name.c_str(), f.parentStruct->getDisplayNameC()), DiagnosticLevel::Note};
+            notes.push_back(note);
+        }
+
+        return context->report(diag, notes);
+    }
+
+    *result = results[0].symbol;
+    return true;
+}
+
+bool SemanticJob::hasUserOp(SemanticContext* context, const Utf8& name, TypeInfoStruct* leftStruct, TypeInfoParam* parentField, VectorNative<FindUserOp>& result)
+{
     // In case of a generic instance, symbols are defined in the original generic structure scope, not
     // in the instance
     if (leftStruct->fromGeneric)
         leftStruct = leftStruct->fromGeneric;
 
-    auto result = leftStruct->scope->symTable.find(name);
+    auto symbol = leftStruct->scope->symTable.find(name);
+    if (symbol)
+        result.push_back({symbol, leftStruct, parentField});
 
-    if (!result && name != g_LangSpec->name_opPostCopy && name != g_LangSpec->name_opPostMove && name != g_LangSpec->name_opDrop)
+    if (!symbol && name != g_LangSpec->name_opPostCopy && name != g_LangSpec->name_opPostMove && name != g_LangSpec->name_opDrop)
     {
         // Struct in using hierarchy
         for (auto field : leftStruct->fields)
@@ -359,48 +388,43 @@ SymbolName* SemanticJob::hasUserOp(SemanticContext* context, const Utf8& name, T
             if (!(field->flags & TYPEINFO_HAS_USING))
                 continue;
             auto typeS = field->typeInfo->getStructOrPointedStruct();
-            if (typeS)
-            {
-                context->job->waitAllStructSpecialMethods(typeS);
-                if (context->result != ContextResult::Done)
-                    return nullptr;
+            if (!typeS)
+                continue;
 
-                auto newResult = hasUserOp(context, name, typeS);
-                if (context->result != ContextResult::Done)
-                    return nullptr;
+            context->job->waitAllStructSpecialMethods(typeS);
+            if (context->result != ContextResult::Done)
+                return true;
 
-                if (newResult)
-                {
-                    SWAG_ASSERT(!result); // TODO
-                    result = newResult;
-                }
-            }
+            SWAG_CHECK(hasUserOp(context, name, typeS, field, result));
+            if (context->result != ContextResult::Done)
+                return true;
         }
     }
 
-    return result;
+    return true;
 }
 
-SymbolName* SemanticJob::hasUserOp(SemanticContext* context, const Utf8& name, AstNode* left)
+bool SemanticJob::hasUserOp(SemanticContext* context, const Utf8& name, AstNode* left, SymbolName** result)
 {
     auto leftType = TypeManager::concreteReferenceType(left->typeInfo);
     if (leftType->kind == TypeInfoKind::Array)
         leftType = CastTypeInfo<TypeInfoArray>(leftType, TypeInfoKind::Array)->finalType;
     auto leftStruct = CastTypeInfo<TypeInfoStruct>(leftType, TypeInfoKind::Struct);
-    return hasUserOp(context, name, leftStruct);
+    return hasUserOp(context, name, leftStruct, result);
 }
 
-SymbolName* SemanticJob::waitUserOp(SemanticContext* context, const Utf8& name, AstNode* left)
+bool SemanticJob::waitUserOp(SemanticContext* context, const Utf8& name, AstNode* left, SymbolName** result)
 {
-    auto symbol = hasUserOp(context, name, left);
-    if (!symbol)
-        return nullptr;
+    SWAG_CHECK(hasUserOp(context, name, left, result));
+    if (!*result)
+        return true;
 
+    auto       symbol = *result;
     ScopedLock lkn(symbol->mutex);
     if (symbol->cptOverloads)
         context->job->waitSymbolNoLock(symbol);
 
-    return symbol;
+    return true;
 }
 
 bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, const char* opConst, TypeInfo* opType, AstNode* left, AstNode* right, bool justCheck)
@@ -415,7 +439,8 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
 
 bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, const char* opConst, TypeInfo* opType, AstNode* left, VectorNative<AstNode*>& params, bool justCheck)
 {
-    auto symbol = waitUserOp(context, name, left);
+    SymbolName* symbol = nullptr;
+    SWAG_CHECK(waitUserOp(context, name, left, &symbol));
 
     if (!symbol)
     {
