@@ -1323,14 +1323,14 @@ void SemanticJob::setupContextualGenericTypeReplacement(SemanticContext* context
             toCheck.push_back(identifier->identifierRef->startScope->owner);
     }
 
-    // Except that with using, B could be in fact in another struct the A.
+    // Except that with using, B could be in fact in another struct than A.
     // In that case we have a dependentVar, so replace what needs to be replaced.
     // What a mess...
-    if (oneTryMatch.dependentVar)
+    if (oneTryMatch.dependentVarLeaf)
     {
-        if (oneTryMatch.dependentVar->typeInfo && oneTryMatch.dependentVar->typeInfo->kind == TypeInfoKind::Struct)
+        if (oneTryMatch.dependentVarLeaf->typeInfo && oneTryMatch.dependentVarLeaf->typeInfo->kind == TypeInfoKind::Struct)
         {
-            auto typeStruct = CastTypeInfo<TypeInfoStruct>(oneTryMatch.dependentVar->typeInfo, TypeInfoKind::Struct);
+            auto typeStruct = CastTypeInfo<TypeInfoStruct>(oneTryMatch.dependentVarLeaf->typeInfo, TypeInfoKind::Struct);
             toCheck.push_back(typeStruct->declNode);
         }
     }
@@ -2239,7 +2239,7 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
     return true;
 }
 
-bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node, SymbolOverload* overload, AstNode** result)
+bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node, SymbolOverload* overload, AstNode** result, AstNode** resultLeaf)
 {
     // Not for a global symbol
     if (overload->flags & OVERLOAD_VAR_GLOBAL)
@@ -2248,7 +2248,6 @@ bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identi
     auto                        job                = context->job;
     auto                        symbol             = overload->symbol;
     auto&                       scopeHierarchyVars = job->cacheScopeHierarchyVars;
-    AstNode*                    dependentVar       = nullptr;
     auto                        symScope           = symbol->ownerTable->scope;
     vector<AlternativeScopeVar> toCheck;
 
@@ -2278,6 +2277,7 @@ bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identi
     {
         for (auto& dep : toCheck)
         {
+            SWAG_ASSERT(dep.node->parent);
             bool isWith = dep.node->parent->kind == AstNodeKind::With;
             if (!isWith)
                 dep.node = nullptr;
@@ -2285,6 +2285,8 @@ bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identi
     }
 
     // Get one
+    AstNode* dependentVar     = nullptr;
+    AstNode* dependentVarLeaf = nullptr;
     for (auto& dep : toCheck)
     {
         if (!dep.node)
@@ -2306,7 +2308,8 @@ bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identi
             }
         }
 
-        dependentVar = dep.node;
+        dependentVar     = dep.node;
+        dependentVarLeaf = dep.leafNode;
 
         // This way the ufcs can trigger even with an implicit 'using' var (typically for a 'using self')
         if (!identifierRef->previousResolvedNode)
@@ -2328,7 +2331,8 @@ bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identi
         }
     }
 
-    *result = dependentVar;
+    *result     = dependentVar;
+    *resultLeaf = dependentVarLeaf;
     return true;
 }
 
@@ -3313,8 +3317,9 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
             identifierRef->previousResolvedNode   = orgPreviousResolvedNode;
 
             // Is there a using variable associated with the symbol to solve ?
-            AstNode* dependentVar = nullptr;
-            SWAG_CHECK(getUsingVar(context, identifierRef, node, symbolOverload, &dependentVar));
+            AstNode* dependentVar     = nullptr;
+            AstNode* dependentVarLeaf = nullptr;
+            SWAG_CHECK(getUsingVar(context, identifierRef, node, symbolOverload, &dependentVar, &dependentVarLeaf));
             if (context->result == ContextResult::Pending)
                 return true;
 
@@ -3336,6 +3341,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
             tryMatch->genericParameters = node->genericParameters;
             tryMatch->callParameters    = node->callParameters;
             tryMatch->dependentVar      = dependentVar;
+            tryMatch->dependentVarLeaf  = dependentVarLeaf;
             tryMatch->overload          = symbolOverload;
             tryMatch->scope             = oneOver.scope;
             tryMatch->ufcs              = ufcsFirstParam || hasForcedUfcs;
@@ -3468,7 +3474,7 @@ void SemanticJob::collectAlternativeScopeVars(AstNode* startNode, VectorNative<A
                 // We register the sub scope with the original "node" (top level), because the original node will in the end
                 // become the dependentVar node, and will be converted by cast to the correct type.
                 for (auto& it1 : it0.scope->owner->extension->alternativeScopesVars)
-                    toAdd.push_back({it0.node, it1.scope});
+                    toAdd.push_back({it0.node, it1.node, it1.scope});
             }
         }
     }

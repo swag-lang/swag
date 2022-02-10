@@ -69,6 +69,7 @@ struct OneTryMatch
     SymbolOverload*    overload          = nullptr;
     Scope*             scope             = nullptr;
     AstNode*           dependentVar      = nullptr;
+    AstNode*           dependentVarLeaf  = nullptr;
     AstNode*           callParameters    = nullptr;
     AstNode*           genericParameters = nullptr;
     uint32_t           cptOverloads      = 0;
@@ -81,6 +82,7 @@ struct OneTryMatch
         overload          = nullptr;
         scope             = nullptr;
         dependentVar      = nullptr;
+        dependentVarLeaf  = nullptr;
         callParameters    = nullptr;
         genericParameters = nullptr;
         cptOverloads      = 0;
@@ -301,7 +303,7 @@ struct SemanticJob : public Job
     static bool         processLiteralString(SemanticContext* context);
     static bool         computeExpressionListTupleType(SemanticContext* context, AstNode* node);
     static bool         preResolveCompilerInstruction(SemanticContext* context);
-    static bool         getUsingVar(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node, SymbolOverload* overload, AstNode** result);
+    static bool         getUsingVar(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node, SymbolOverload* overload, AstNode** result, AstNode** resultLeaf);
     static bool         canTryUfcs(SemanticContext* context, TypeInfoFuncAttr* typeFunc, AstFuncCallParams* parameters, AstNode* ufcsNode, bool nodeIsExplicit);
     static bool         getUfcs(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node, SymbolOverload* overload, AstNode** ufcsFirstParam);
     static bool         appendLastCodeStatement(SemanticContext* context, AstIdentifier* node, SymbolOverload* overload);

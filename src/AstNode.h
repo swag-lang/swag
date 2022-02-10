@@ -202,6 +202,7 @@ struct AlternativeScope
 struct AlternativeScopeVar
 {
     AstNode* node;
+    AstNode* leafNode;
     Scope*   scope;
 };
 

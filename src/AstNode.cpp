@@ -397,8 +397,9 @@ void AstNode::addAlternativeScopes(const VectorNative<AlternativeScope>& scopes)
 void AstNode::addAlternativeScopeVar(Scope* scope, AstNode* varNode)
 {
     AlternativeScopeVar sv;
-    sv.scope = scope;
-    sv.node  = varNode;
+    sv.scope    = scope;
+    sv.node     = varNode;
+    sv.leafNode = varNode;
 
     allocateExtension();
     extension->alternativeScopesVars.push_back(sv);
