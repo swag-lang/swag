@@ -3048,6 +3048,18 @@ bool SemanticJob::filterSymbols(SemanticContext* context, AstIdentifier* node)
             }
         }
 
+        // If a generic type does not come from a 'using', it has priority
+        if (!(p.asFlags & ALTSCOPE_USING) && p.symbol->kind == SymbolKind::GenericType)
+        {
+            for (auto& p1 : dependentSymbols)
+            {
+                if (p1.asFlags & ALTSCOPE_USING && p1.symbol->kind == SymbolKind::GenericType)
+                {
+                    p1.remove = true;
+                }
+            }
+        }
+
         // Reference to a variable inside a struct, without a direct explicit reference
         bool isValid = true;
         if (oneSymbol->kind != SymbolKind::Function &&

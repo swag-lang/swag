@@ -14,12 +14,16 @@ bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, Ty
     SWAG_ASSERT(regNode);
     SWAG_VERIFY(node->ownerFct || node->ownerScope->kind == ScopeKind::Struct, context->report(node, Fmt(Err(Err0689), Scope::getNakedKindName(node->ownerScope->kind))));
 
+    uint32_t altFlags = ALTSCOPE_USING;
+    if (forWith)
+        altFlags |= ALTSCOPE_WITH;
+
     typeInfoVar = TypeManager::concreteReference(typeInfoVar);
     if (typeInfoVar->kind == TypeInfoKind::Struct)
     {
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfoVar, TypeInfoKind::Struct);
         regNode->allocateExtension();
-        regNode->addAlternativeScope(typeStruct->scope, forWith ? ALTSCOPE_WITH : 0);
+        regNode->addAlternativeScope(typeStruct->scope, altFlags);
         regNode->addAlternativeScopeVar(typeStruct->scope, varNode);
     }
     else if (typeInfoVar->kind == TypeInfoKind::Pointer)
@@ -28,7 +32,7 @@ bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, Ty
         SWAG_VERIFY(typePointer->pointedType->kind != TypeInfoKind::Enum, context->report(node, Err(Err0691)));
         SWAG_VERIFY(typePointer->pointedType->kind == TypeInfoKind::Struct, context->report(node, Fmt(Err(Err0822), typeInfoVar->getDisplayNameC())));
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
-        regNode->addAlternativeScope(typeStruct->scope, forWith ? ALTSCOPE_WITH : 0);
+        regNode->addAlternativeScope(typeStruct->scope, altFlags);
         regNode->addAlternativeScopeVar(typeStruct->scope, varNode);
     }
     else
