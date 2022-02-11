@@ -191,6 +191,26 @@ impl IWnd for ListView
             else
                 startSelIdx, endSelIdx = list.focusIndex + 1
             selChanged = true
+
+        case PageDown:
+            first := list.getFirstVisibleLineIndex()
+            last  := list.getLastVisibleLineIndex()
+            startSelIdx, endSelIdx = list.focusIndex + (last - first)
+            startSelIdx = Math.min(startSelIdx, lineCount - 1)
+            endSelIdx = Math.min(endSelIdx, lineCount - 1)
+            selChanged = true
+            break
+
+        case PageUp:
+            first := list.getFirstVisibleLineIndex()
+            last  := list.getLastVisibleLineIndex()
+            offset := last - first
+            if offset > list.focusIndex
+                startSelIdx, endSelIdx = 0
+            else
+                startSelIdx, endSelIdx = list.focusIndex - offset
+            selChanged = true
+            break
         }
 
         if selChanged
