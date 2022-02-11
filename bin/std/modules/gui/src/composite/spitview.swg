@@ -39,13 +39,13 @@ impl IWnd for SplitView
             {
                 if isVertical()
                 {
-                    diff := local.y - rect.y + correctMoving
+                    diff := local.y - (rect.y + correctMoving)
                     size += diff
                     sendResizeEvent()
                 }
                 else
                 {
-                    diff := local.x - rect.x + correctMoving
+                    diff := local.x - (rect.x + correctMoving)
                     size += diff
                     sendResizeEvent()
                 }
