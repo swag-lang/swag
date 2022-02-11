@@ -12,7 +12,8 @@ struct SplitView
 {
     using frameWnd: FrameWnd
     splitViewFlags  = SplitViewFlags.None
-    size:           f32 = 100
+    paneSize:       f32 = 100
+    minPaneSize:    f32 = 5
 
     correctMoving:  f32
     isHot:          bool
@@ -47,14 +48,12 @@ impl IWnd for SplitView
                 if isVertical()
                 {
                     diff := local.y - (rect.y + correctMoving)
-                    size += diff
-                    sendResizeEvent()
+                    setPaneSize(paneSize + diff)
                 }
                 else
                 {
                     diff := local.x - (rect.x + correctMoving)
-                    size += diff
-                    sendResizeEvent()
+                    setPaneSize(paneSize + diff)
                 }
             }
             else
@@ -92,7 +91,8 @@ impl IWnd for SplitView
         if !pane0
             return
 
-        size0 := size
+        setPaneSizePrivate(paneSize)
+        size0 := paneSize
         client := getClientRectPadding()
 
         if isVertical()
@@ -133,15 +133,11 @@ impl IWnd for SplitView
 
             if isVertical()
             {
-                rect.x -= padding.x
-                rect.width += padding.x + padding.z
                 rectBar := isHot ? &rects.splitView_HorzBarHotBk : &rects.splitView_HorzBarBk
                 theme.drawSubRect(painter, rect, rectBar, colorBar)
             }
             else
             {
-                rect.y -= padding.y
-                rect.height += padding.y + padding.w
                 rectBar := isHot ? &rects.splitView_VertBarHotBk : &rects.splitView_VertBarBk
                 theme.drawSubRect(painter, rect, rectBar, colorBar)
             }
@@ -156,16 +152,35 @@ private impl SplitView
         var result: retval = getClientRectPadding()
         if isVertical()
         {
-            result.y += size
+            result.y += paneSize
             result.height = getThemeMetrics().splitView_BarSize
         }
         else
         {
-            result.x += size
+            result.x += paneSize
             result.width = getThemeMetrics().splitView_BarSize
         }
 
         return result
+    }
+
+    mtd setPaneSizePrivate(newSize: f32)
+    {
+        paneSize = Math.max(minPaneSize, newSize)
+        rect := getClientRectPadding()
+
+        if isVertical()
+        {
+            size1 := rect.height - (paneSize + getThemeMetrics().splitView_BarSize)
+            if size1 < minPaneSize
+                paneSize = rect.height - (minPaneSize + getThemeMetrics().splitView_BarSize)
+        }
+        else
+        {
+            size1 := rect.width - (paneSize + getThemeMetrics().splitView_BarSize)
+            if size1 < minPaneSize
+                paneSize = rect.width - (minPaneSize + getThemeMetrics().splitView_BarSize)
+        }
     }
 }
 
@@ -187,4 +202,11 @@ impl SplitView
 
     #[Swag.Inline]
     mtd isVertical() => cast(bool) (splitViewFlags & .Vertical)
+
+    // Set the pane size (size of the first view)
+    mtd setPaneSize(newSize: f32)
+    {
+        setPaneSizePrivate(newSize)
+        sendResizeEvent()
+    }
 }

@@ -15,6 +15,7 @@ func createView2(view: *Wnd)
 
     {
         split := SplitView.create(view, @{320, 10, 400, 300}, vertical: false)
+        split.frameFlags |= .FocusBorder
         split.setFrameForm(FrameWndForm.Square)
 
         list0 := createListSimple(split)
