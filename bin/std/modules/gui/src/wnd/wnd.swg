@@ -315,7 +315,8 @@ impl Wnd
         // User paint
         bc.painter.translateTransform(position.x, position.y)
         curTrs := bc.painter.getTransform()
-        bc.painter.translateTransform(-scrollPos.x, -scrollPos.y)
+        if !(wndFlags & .NoScroll)
+            bc.painter.translateTransform(-scrollPos.x, -scrollPos.y)
         meTrs := bc.painter.getTransform()
         evt := PaintEvent{}
         evt.bc = bc

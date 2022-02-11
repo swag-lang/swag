@@ -392,7 +392,12 @@ impl IWnd for ListView
 
         firstIdx := list.getFirstVisibleLineIndex()
         lastIdx  := list.getLastVisibleLineIndex()
-        rect.y = firstIdx * list.lineHeight
+
+        // Do not display with bigs coordinates to avoid precision issues
+        // So we do the scroll by hand, and draw will small coordinates
+        y := cast(f64) firstIdx * list.lineHeight
+        y -= scrollPos.y
+        rect.y = cast(f32) y
 
         if list.isVirtual
         {
@@ -428,28 +433,25 @@ private impl ListView
         rects   := getThemeRects()
         font    := theme.res.fontDefault.regular
 
-        posSel := rect
-        posSel.x += scrollPos.x
-
         // Selection box
         isSelected := list.isLineSelected(idx)
         hideSel := cast(bool) (list.listFlags & .HideSelection)
         if isSelected and (!hideSel or hasFocus()) and !bc.isDisabled
         {
             colorSel := hasFocus() ? colors.listItem_FocusSelectedBk : colors.listItem_SelectedBk
-            painter.fillRect(posSel, colorSel)
+            painter.fillRect(rect, colorSel)
         }
 
         // User background
         elif line.colorBk.a
         {
-            painter.fillRect(posSel, line.colorBk)
+            painter.fillRect(rect, line.colorBk)
         }
 
         // Alternate lines
         elif (list.listFlags & .AlternateLines) and idx % 2 == 1
         {
-            painter.fillRect(posSel, colors.listItem_AlternateBk)
+            painter.fillRect(rect, colors.listItem_AlternateBk)
         }
 
         var colorText: Color = ?
@@ -487,6 +489,8 @@ private impl ListView
                 labelPos.x = list.header.getItemPositionByCol(item.column)
                 labelPos.width = list.header.getItemWidthByCol(item.column)
             }
+
+            labelPos.x -= scrollPos.x
 
             // Background color ?
             if item.colorBk.a and !isSelected
@@ -585,6 +589,7 @@ impl List
             listView = scrollWnd.createView'ListView()
             listView.backgroundStyle = .Transparent
             listView.list = list
+            listView.wndFlags |= .NoScroll
         }
 
         return list
@@ -655,6 +660,7 @@ impl List
             listView = scrollWnd.createView'ListView()
             listView.backgroundStyle = .Transparent
             listView.list = list
+            listView.wndFlags |= .NoScroll
         }
 
         return list
