@@ -34,6 +34,13 @@ impl IWnd for SplitView
 
         switch evt.kind
         {
+        case MouseLeave:
+            if isHot
+            {
+                isHot = false
+                invalidate()
+            }
+
         case MouseMove:
             if moving
             {
@@ -53,7 +60,8 @@ impl IWnd for SplitView
             else
             {
                 newHot := rect.contains(local)
-                if newHot != isHot invalidate()
+                if newHot != isHot
+                    invalidate()
                 isHot = newHot
             }
 
@@ -113,16 +121,25 @@ impl IWnd for SplitView
     {
         frameWnd.IWnd.onPaintEvent(evt)
 
+        painter := evt.bc.painter
+        theme   := getTheme()
+        rects   := getThemeRects()
+        colors  := getThemeColors()
+
         if evt.kind != .PostChilds
         {
             rect := getBarRect()
+            colorBar := isHot ? colors.splitView_BarHot : colors.splitView_Bar
+
             if isVertical()
             {
-                evt.bc.painter.fillRect(rect, Argb.Red)
+                rectBar := isHot ? &rects.splitView_HorzBarHotBk : &rects.splitView_HorzBarBk
+                theme.drawSubRect(painter, rect, rectBar, colorBar)
             }
             else
             {
-                evt.bc.painter.fillRect(rect, Argb.Red)
+                rectBar := isHot ? &rects.splitView_VertBarHotBk : &rects.splitView_VertBarBk
+                theme.drawSubRect(painter, rect, rectBar, colorBar)
             }
         }
     }

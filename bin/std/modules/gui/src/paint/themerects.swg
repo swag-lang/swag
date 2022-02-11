@@ -94,4 +94,9 @@ struct ThemeImageRects
     header_RoundBk:             ThemeImageRect = @{{57,253,27,27}, 13}
 
     selectionBox_Bk:            ThemeImageRect = @{{57,197,27,27}, 12}
+
+    splitView_HorzBarBk:        ThemeImageRect = @{{85,197,27,27}, 0}
+    splitView_HorzBarHotBk:     ThemeImageRect = @{{113,197,27,27}, 0}
+    splitView_VertBarBk:        ThemeImageRect = @{{85,225,27,27}, 0}
+    splitView_VertBarHotBk:     ThemeImageRect = @{{113,225,27,27}, 0}
 }
