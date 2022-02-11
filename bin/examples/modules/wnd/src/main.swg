@@ -18,10 +18,13 @@ var app: Application
     tab.addItem("Widgets", @{}, view0)
     view1 := Wnd.create'Wnd(tab, "bigview1")
     tab.addItem("List", @{}, view1)
+    view2 := Wnd.create'Wnd(tab, "bigview2")
+    tab.addItem("SplitView", @{}, view2)
 
     createView0(view0)
     createView1(view1)
-    tab.select(1)
+    createView2(view2)
+    tab.select(2)
     surface0.show()
 
     //surface1 := try app.createSurface(100+W+10, 100, W, H, SurfaceFlags.Secondary | SurfaceFlags.SmallCaption | SurfaceFlags.CloseBtn)

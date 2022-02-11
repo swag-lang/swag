@@ -66,4 +66,6 @@ struct ThemeMetrics
     header_Height:              f32 = 35
     header_Padding:             Math.Vector4 = @{10, 5, 10, 5}
     header_Separator:           f32 = 5
+
+    splitView_BarSize:          f32 = 6
 }

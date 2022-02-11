@@ -481,6 +481,13 @@ impl Wnd
         resize(rect.width, rect.height)
     }
 
+    // Move and size the wnd
+    mtd setPosition(x, y, w, h: f32)
+    {
+        move(x, y)
+        resize(w, h)
+    }
+
     // Move the wnd
     mtd move(x, y: f32)
     {
