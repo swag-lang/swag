@@ -133,11 +133,15 @@ impl IWnd for SplitView
 
             if isVertical()
             {
+                rect.x -= padding.x
+                rect.width += padding.x + padding.z
                 rectBar := isHot ? &rects.splitView_HorzBarHotBk : &rects.splitView_HorzBarBk
                 theme.drawSubRect(painter, rect, rectBar, colorBar)
             }
             else
             {
+                rect.y -= padding.y
+                rect.height += padding.y + padding.w
                 rectBar := isHot ? &rects.splitView_VertBarHotBk : &rects.splitView_VertBarBk
                 theme.drawSubRect(painter, rect, rectBar, colorBar)
             }
