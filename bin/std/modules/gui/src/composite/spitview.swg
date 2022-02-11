@@ -97,22 +97,30 @@ impl IWnd for SplitView
 
         if isVertical()
         {
-            pane0.setPosition(client.x, client.y, client.width, size0)
+            paneRect := Math.Rectangle{client.x, client.y, client.width, size0}
+            paneRect.applyPadding(pane0.margin)
+            pane0.setPosition(paneRect)
             if pane1
             {
                 barSize := getThemeMetrics().splitView_BarSize
                 size0 += barSize
-                pane1.setPosition(client.x, client.y + size0, client.width, client.height - size0)
+                paneRect = Math.Rectangle{client.x, client.y + size0, client.width, client.height - size0}
+                paneRect.applyPadding(pane1.margin)
+                pane1.setPosition(paneRect)
             }
         }
         else
         {
-            pane0.setPosition(client.x, client.y, size0, client.height)
+            paneRect := Math.Rectangle{client.x, client.y, size0, client.height}
+            paneRect.applyPadding(pane0.margin)
+            pane0.setPosition(paneRect)
             if pane1
             {
                 barSize := getThemeMetrics().splitView_BarSize
                 size0 += barSize
-                pane1.setPosition(client.x + size0, client.y, client.width - size0, client.height)
+                paneRect = Math.Rectangle{client.x + size0, client.y, client.width - size0, client.height}
+                paneRect.applyPadding(pane1.margin)
+                pane1.setPosition(paneRect)
             }
         }
     }
