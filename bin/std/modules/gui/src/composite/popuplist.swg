@@ -1,14 +1,6 @@
 #global public
 using Core, Pixel
 
-struct PopupListItem
-{
-    name:       RichString
-    icon:       Icon
-    id:         WndId
-    userData:   *void
-}
-
 struct PopupList
 {
     using frameWnd: FrameWnd
@@ -18,7 +10,7 @@ struct PopupList
 
     sigSelected:    closure(*Self, u32)
 
-    items:          ArrayPtr'PopupListItem
+    items:          ArrayPtr'Item
     selectedIdx     = Swag.U32.Max
     scrollWnd:      *ScrollWnd
     hasIcons:       bool

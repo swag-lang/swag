@@ -13,16 +13,8 @@ struct ComboBox
     isHot:          bool
     hasIcons:       bool
     popup:          *PopupList
-    items:          ArrayPtr'ComboBoxItem
+    items:          ArrayPtr'Item
     selectedIdx     = Swag.U32.Max
-}
-
-struct ComboBoxItem
-{
-    name:       RichString
-    icon:       Icon
-    id:         WndId
-    userData:   *void
 }
 
 impl IWnd for ComboBox
