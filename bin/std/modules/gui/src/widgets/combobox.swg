@@ -14,7 +14,7 @@ struct ComboBox
     isHot:          bool
     hasIcons:       bool
     popup:          *ComboBoxPopup
-    items:          Array'(*ComboBoxItem)
+    items:          ArrayPtr'ComboBoxItem
     selectedIdx     = Swag.U32.Max
 }
 
@@ -336,11 +336,6 @@ private impl ComboBox
 
 impl ComboBox
 {
-    mtd opDrop()
-    {
-        removeAllItems()
-    }
-
     #[Swag.Discardable]
     func create(parent: *Wnd, position: Math.Rectangle, id: string = null, editBox = false)->*ComboBox
     {
@@ -364,15 +359,13 @@ impl ComboBox
     // Remove all items
     mtd removeAllItems()
     {
-        visit i: items
-            Memory.delete(i)
         items.clear()
     }
 
     // Add a new item
     mtd addItem(name: string, id: WndId, icon: Icon = @{}, userData: *void = null)
     {
-        item := Memory.new'ComboBoxItem()
+        item := items.newPtr()
         with item
         {
             name     = #self.name

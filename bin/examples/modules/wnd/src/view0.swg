@@ -279,15 +279,12 @@ func createView0(view: *Wnd)
         tab := Tab.create(view, @{600, 150, 400, 100}, id: "tab0")
         tab.setForm(TabForm.Round)
 
-        view0 := Wnd.create'Wnd(tab)
-        view1 := Wnd.create'Wnd(tab)
-        view2 := Wnd.create'Wnd(tab)
-        tab.addItem("Tab0", app.theme.getIcon24(ThemeIcons24.Search, 16), view0)
-        tab.addItem("Tab1", @{}, view1)
-        tab.addItem("Tab2", @{}, view2)
-        Label.create(view0, "view0", @{10, 10, 50, 30})
-        Label.create(view1, "view1", @{10, 10, 50, 30})
-        Label.create(view2, "view2", @{10, 10, 50, 30})
+        loop 5
+        {
+            view0 := Wnd.create'Wnd(tab)
+            tab.addItem("Tab0", app.theme.getIcon24(ThemeIcons24.Search, 16), view0)
+            Label.create(view0, "view0", @{10, 10, 50, 30})
+        }
     }
 
     // Menu
