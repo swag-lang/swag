@@ -12,14 +12,16 @@ struct PopupListItem
 struct PopupList
 {
     using frameWnd: FrameWnd
-    heightItem:     f32 = 20
+    heightItem:     f32 = 30
     minWidthPopup:  f32 = 100
     maxHeightPopup: f32 = 300
-    hasIcons:       bool
-    selectedIdx     = Swag.U32.Max
+
+    sigSelected:    closure(*Self, u32)
 
     items:          ArrayPtr'PopupListItem
+    selectedIdx     = Swag.U32.Max
     scrollWnd:      *ScrollWnd
+    hasIcons:       bool
 }
 
 struct PopupListView
@@ -35,7 +37,10 @@ impl IWnd for PopupListView
     {
         if evt.kind == .KillFocus and evt.other != parent
         {
-            list.destroy()
+            if list.sigSelected
+                list.sigSelected(list, Swag.U32.Max)
+            else
+                list.destroy()
         }
     }
 
@@ -56,8 +61,10 @@ impl IWnd for PopupListView
 
         if evt.kind == .MousePressed and evt.button == .Left
         {
-            //list.selectItem(hotIdx)
-            //list.hidePopup()
+            if list.sigSelected
+                list.sigSelected(list, hotIdx)
+            else
+                list.destroy()
             return
         }
 
@@ -172,6 +179,7 @@ impl IWnd for PopupList
 
 impl PopupList
 {
+    // Create the popup list, but do not display it
     func create(owner: *Wnd)->*PopupList
     {
         metrics := owner.getThemeMetrics()
@@ -185,13 +193,14 @@ impl PopupList
             scrollWnd.dockStyle = .Center
             scrollWnd.focusStrategy = .None
             scrollWnd.scrollWndFlags |= .SmallBar
-            scrollWnd.createView'PopupListView()
+            popupView := scrollWnd.createView'PopupListView()
+            popupView.list = popup
         }
 
         return popup
     }
 
-    // Add a new item
+    // Add a new item in the list
     mtd addItem(name: string, id: WndId, icon: Icon = @{}, userData: *void = null)
     {
         item := items.newPtr()
@@ -209,7 +218,7 @@ impl PopupList
     }
 
     // Show popup
-    mtd doModal(surfacePos: Math.Rectangle)
+    mtd show(surfacePos: Math.Rectangle)
     {
         metrics := getThemeMetrics()
 
