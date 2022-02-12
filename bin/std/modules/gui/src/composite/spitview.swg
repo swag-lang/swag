@@ -8,15 +8,22 @@ enum SplitViewFlags
     Vertical
 }
 
+struct SplitViewItem
+{
+    view:       *Wnd
+    size:       f32
+    minSize:    f32 = 5
+}
+
 struct SplitView
 {
     using frameWnd: FrameWnd
     splitViewFlags  = SplitViewFlags.None
-    paneSize:       f32 = 100
-    minPaneSize:    f32 = 5
+
+    items:          Array'(*SplitViewItem)
 
     correctMoving:  f32
-    isHot:          bool
+    hotIdx          = Swag.U32.Max
     moving:         bool
 }
 
@@ -26,9 +33,8 @@ impl IWnd for SplitView
     {
         evt.accepted = true
         local := surfaceToLocal(evt.surfacePos)
-        rect  := getBarRect()
 
-        if isHot
+        if hotIdx != Swag.U32.Max
             cursor = isVertical() ? Cursor.from(CursorShape.SizeNS) : Cursor.from(CursorShape.SizeWE)
         else
             cursor.clear()
@@ -36,37 +42,39 @@ impl IWnd for SplitView
         switch evt.kind
         {
         case MouseLeave:
-            if isHot
+            if hotIdx != Swag.U32.Max
             {
-                isHot = false
+                hotIdx = Swag.U32.Max
                 invalidate()
             }
 
         case MouseMove:
             if moving
             {
+                rect := getBarRect(hotIdx)
                 if isVertical()
                 {
                     diff := local.y - (rect.y + correctMoving)
-                    setPaneSize(paneSize + diff)
+                    setPaneSize(hotIdx, items[hotIdx].size + diff)
                 }
                 else
                 {
                     diff := local.x - (rect.x + correctMoving)
-                    setPaneSize(paneSize + diff)
+                    setPaneSize(hotIdx, items[hotIdx].size + diff)
                 }
             }
             else
             {
-                newHot := rect.contains(local)
-                if newHot != isHot
+                newHot := hitTest(evt.surfacePos)
+                if newHot != hotIdx
                     invalidate()
-                isHot = newHot
+                hotIdx = newHot
             }
 
         case MousePressed:
-            if evt.button == .Left and isHot
+            if evt.button == .Left and hotIdx != Swag.U32.Max
             {
+                rect := getBarRect(hotIdx)
                 moving = true
                 surface.app.captureMouse(self)
                 if isVertical()
@@ -91,36 +99,28 @@ impl IWnd for SplitView
         if !pane0
             return
 
-        setPaneSizePrivate(paneSize)
-        size0 := paneSize
-        client := getClientRectPadding()
+        computeLayout()
 
-        if isVertical()
+        client := getClientRectPadding()
+        x := client.x
+        y := client.y
+        barSize := getThemeMetrics().splitView_BarSize
+
+        visit item: items
         {
-            paneRect := Math.Rectangle{client.x, client.y, client.width, size0}
-            paneRect.applyPadding(pane0.margin)
-            pane0.setPosition(paneRect)
-            if pane1
+            if isVertical()
             {
-                barSize := getThemeMetrics().splitView_BarSize
-                size0 += barSize
-                paneRect = Math.Rectangle{client.x, client.y + size0, client.width, client.height - size0}
-                paneRect.applyPadding(pane1.margin)
-                pane1.setPosition(paneRect)
+                paneRect := Math.Rectangle{client.x, y, client.width, item.size}
+                paneRect.applyPadding(item.view.margin)
+                item.view.setPosition(paneRect)
+                y += item.size + barSize
             }
-        }
-        else
-        {
-            paneRect := Math.Rectangle{client.x, client.y, size0, client.height}
-            paneRect.applyPadding(pane0.margin)
-            pane0.setPosition(paneRect)
-            if pane1
+            else
             {
-                barSize := getThemeMetrics().splitView_BarSize
-                size0 += barSize
-                paneRect = Math.Rectangle{client.x + size0, client.y, client.width - size0, client.height}
-                paneRect.applyPadding(pane1.margin)
-                pane1.setPosition(paneRect)
+                paneRect := Math.Rectangle{x, client.y, item.size, client.height}
+                paneRect.applyPadding(item.view.margin)
+                item.view.setPosition(paneRect)
+                x += item.size + barSize
             }
         }
     }
@@ -136,18 +136,22 @@ impl IWnd for SplitView
 
         if evt.kind != .PostChilds
         {
-            rect := getBarRect()
-            colorBar := isHot ? colors.splitView_BarHot : colors.splitView_Bar
+            loop idx: items
+            {
+                rect := getBarRect(cast(u32) idx)
+                isHot := hotIdx == idx
+                colorBar := isHot ? colors.splitView_BarHot : colors.splitView_Bar
 
-            if isVertical()
-            {
-                rectBar := isHot ? &rects.splitView_HorzBarHotBk : &rects.splitView_HorzBarBk
-                theme.drawSubRect(painter, rect, rectBar, colorBar)
-            }
-            else
-            {
-                rectBar := isHot ? &rects.splitView_VertBarHotBk : &rects.splitView_VertBarBk
-                theme.drawSubRect(painter, rect, rectBar, colorBar)
+                if isVertical()
+                {
+                    rectBar := isHot ? &rects.splitView_HorzBarHotBk : &rects.splitView_HorzBarBk
+                    theme.drawSubRect(painter, rect, rectBar, colorBar)
+                }
+                else
+                {
+                    rectBar := isHot ? &rects.splitView_VertBarHotBk : &rects.splitView_VertBarBk
+                    theme.drawSubRect(painter, rect, rectBar, colorBar)
+                }
             }
         }
     }
@@ -155,40 +159,115 @@ impl IWnd for SplitView
 
 private impl SplitView
 {
-    mtd getBarRect()->Math.Rectangle
+    mtd computeLayout()
+    {
+        rect    := getClientRectPadding()
+        barSize := getThemeMetrics().splitView_BarSize
+
+        // Compute the current total sizes of panes
+        var dispatch: f32
+        if items.count > 0
+        {
+            totalSize := 0'f32
+            visit item, idx: items
+                totalSize += item.size
+            totalSize += cast(f32) ((items.count - 1) * barSize)
+            if isVertical()
+                dispatch = cast(f32) ((totalSize - rect.height) / items.count)
+            else
+                dispatch = cast(f32) ((totalSize - rect.width) / items.count)
+        }
+
+        visit item: items
+            item.size -= dispatch
+
+        visit item, idx: items
+        {
+            setPaneSizePrivate(cast(u32) idx, item.size)
+        }
+    }
+
+    mtd hitTest(surfacePos: Math.Point)->u32
+    {
+        client := getClientRectPadding()
+        local  := surfaceToLocal(surfacePos)
+
+        x := client.x
+        y := client.y
+        barSize := getThemeMetrics().splitView_BarSize
+
+        visit v, idx: items
+        {
+            rect := client
+            if isVertical()
+            {
+                rect.y = y + v.size
+                rect.height = barSize
+                if rect.contains(local)
+                    return cast(u32) idx
+                y = rect.bottom()
+            }
+            else
+            {
+                rect.x = x + v.size
+                rect.width = barSize
+                if rect.contains(local)
+                    return cast(u32) idx
+                x = rect.right()
+            }
+        }
+
+        return Swag.U32.Max
+    }
+
+    mtd getBarRect(idx: u32)->Math.Rectangle
     {
         var result: retval = getClientRectPadding()
-        if isVertical()
+
+        barSize := getThemeMetrics().splitView_BarSize
+        loop i: 0..idx
         {
-            result.y += paneSize
-            result.height = getThemeMetrics().splitView_BarSize
-        }
-        else
-        {
-            result.x += paneSize
-            result.width = getThemeMetrics().splitView_BarSize
+            if isVertical()
+            {
+                result.y += items[i].size
+                if i != idx
+                    result.y += barSize
+                result.height = barSize
+            }
+            else
+            {
+                result.x += items[i].size
+                if i != idx
+                    result.x += barSize
+                result.width = barSize
+            }
         }
 
         return result
     }
 
-    mtd setPaneSizePrivate(newSize: f32)
+    mtd setPaneSizePrivate(idx: u32, newSize: f32)
     {
-        paneSize = Math.max(minPaneSize, newSize)
-        rect := getClientRectPadding()
+        curPane := items[idx]
 
-        if isVertical()
+        reqSize := Math.max(curPane.minSize, newSize)
+        diff    := reqSize - curPane.size
+
+        if items.count > 1
         {
-            size1 := rect.height - (paneSize + getThemeMetrics().splitView_BarSize)
-            if size1 < minPaneSize
-                paneSize = rect.height - (minPaneSize + getThemeMetrics().splitView_BarSize)
+            otherPane := idx == items.count - 1 ? items[idx - 1] : items[idx + 1]
+            if otherPane.size - diff < otherPane.minSize
+            {
+                diff = otherPane.minSize - otherPane.size
+                otherPane.size = otherPane.minSize
+            }
+            else
+            {
+                otherPane.size -= diff
+            }
         }
-        else
-        {
-            size1 := rect.width - (paneSize + getThemeMetrics().splitView_BarSize)
-            if size1 < minPaneSize
-                paneSize = rect.width - (minPaneSize + getThemeMetrics().splitView_BarSize)
-        }
+
+        curPane.size += diff
     }
 }
 
@@ -211,10 +290,34 @@ impl SplitView
     #[Swag.Inline]
     mtd isVertical() => cast(bool) (splitViewFlags & .Vertical)
 
-    // Set the pane size (size of the first view)
-    mtd setPaneSize(newSize: f32)
+    // Add a new pane
+    mtd addPane(pane: *Wnd, sizeHint: f32 = 100)
     {
-        setPaneSizePrivate(newSize)
+        pane.setParent(self)
+
+        item := Memory.new'SplitViewItem()
+        item.view = pane
+        items.add(item)
+
+        if items.count == 1
+        {
+            rect := getClientRectPadding()
+            if isVertical()
+                item.size = rect.height
+            else
+                item.size = rect.width
+        }
+        else
+        {
+            setPaneSize(cast(u32) items.count - 1, sizeHint)
+        }
+    }
+
+    // Set the pane size (size of the first view)
+    mtd setPaneSize(idx: u32, newSize: f32)
+    {
+        Debug.assert(idx < items.count)
+        setPaneSizePrivate(idx, newSize)
         sendResizeEvent()
     }
 }

@@ -10,7 +10,9 @@ func createView2(view: *Wnd)
         list0.setFrameForm(FrameWndForm.Transparent)
         list1 := createListSimple(split)
         list1.setFrameForm(FrameWndForm.Transparent)
-        split.sendResizeEvent()
+
+        split.addPane(list0)
+        split.addPane(list1)
     }
 
     {
@@ -23,6 +25,24 @@ func createView2(view: *Wnd)
         list1 := createListMulti(split)
         list1.setFrameForm(FrameWndForm.Transparent)
         list1.setAllMargins(5)
-        split.sendResizeEvent()
+
+        split.addPane(list0)
+        split.addPane(list1)
+    }
+
+    {
+        split := SplitView.create(view, @{10, 320, 600, 300}, vertical: false)
+        split.setFrameForm(FrameWndForm.Square)
+
+        list0 := createListSimple(split)
+        list1 := createListMulti(split)
+        list2 := createListSimple(split)
+        list0.setFrameForm(FrameWndForm.Transparent)
+        list1.setFrameForm(FrameWndForm.Transparent)
+        list2.setFrameForm(FrameWndForm.Transparent)
+
+        split.addPane(list0)
+        split.addPane(list1)
+        split.addPane(list2)
     }
 }
