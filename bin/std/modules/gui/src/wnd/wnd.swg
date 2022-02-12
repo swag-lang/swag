@@ -49,6 +49,7 @@ enum WndFlags
     ClipChildren
     Disabled
     Hidden
+    PostChildsPaint
 }
 
 struct Wnd
@@ -76,10 +77,9 @@ struct Wnd
 
     focusStrategy: FocusStategy = MousePressed
 
-    backgroundStyle:        BackgroundStyle = Transparent
-    isAllocated:            bool
-    isPendingDestroy:       bool
-    hasPostChildsPaint:     bool
+    backgroundStyle:  BackgroundStyle = Transparent
+    isAllocated:      bool
+    isPendingDestroy: bool
 
     hookOnEvent: func(*Wnd, *Event)->bool
 }
@@ -336,7 +336,7 @@ impl Wnd
             bc.painter.setState(curState)
         }
 
-        if hasPostChildsPaint
+        if wndFlags & .PostChildsPaint
         {
             bc.painter.setTransform(meTrs)
             evt.kind = .PostChilds

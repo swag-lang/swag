@@ -126,7 +126,7 @@ impl IWnd for SplitView
 
     mtd onPaintEvent(evt: *PaintEvent)
     {
-        hasPostChildsPaint = true
+        wndFlags |= .PostChildsPaint
 
         if evt.kind == .PostChilds
         {

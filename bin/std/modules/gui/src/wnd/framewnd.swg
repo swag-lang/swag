@@ -116,13 +116,13 @@ impl FrameWnd
         switch self.frameForm
         {
         case Square:
-            hasPostChildsPaint = true
+            wndFlags |= .PostChildsPaint
             setAllPaddings(getThemeMetrics().frameWnd_SquarePadding)
         case Round:
-            hasPostChildsPaint = true
+            wndFlags |= .PostChildsPaint
             setAllPaddings(getThemeMetrics().frameWnd_RoundPadding)
         case Transparent:
-            hasPostChildsPaint = false
+            wndFlags &= ~.PostChildsPaint
             setAllPaddings(0)
         }
 
