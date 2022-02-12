@@ -173,13 +173,20 @@ private impl SplitView
                 totalSize += item.size
             totalSize += cast(f32) ((items.count - 1) * barSize)
             if isVertical()
-                dispatch = cast(f32) ((totalSize - rect.height) / items.count)
+                dispatch = cast(f32) (totalSize - rect.height)
             else
-                dispatch = cast(f32) ((totalSize - rect.width) / items.count)
-        }
+                dispatch = cast(f32) (totalSize - rect.width)
 
-        visit item: items
-            item.size -= dispatch
+            diff := cast(f32) Math.round(dispatch / items.count)
+            visit item, idx: items
+            {
+                if idx == items.count - 1
+                    item.size -= dispatch
+                else
+                    item.size -= diff
+                dispatch -= diff
+            }
+        }
 
         visit item, idx: items
         {

@@ -46,4 +46,22 @@ func createView2(view: *Wnd)
         split.addPane(list1)
         split.addPane(list2)
     }
+
+    {
+        split := SplitView.create(view, @{0, 0, 300, 0}, vertical: true)
+        split.dockStyle = .Right
+        split.setFrameForm(FrameWndForm.Square)
+        split.setMargin(bottom: 10)
+
+        list0 := createListSimple(split)
+        list1 := createListMulti(split)
+        list2 := createListSimple(split)
+        list0.setFrameForm(FrameWndForm.Transparent)
+        list1.setFrameForm(FrameWndForm.Transparent)
+        list2.setFrameForm(FrameWndForm.Transparent)
+
+        split.addPane(list0)
+        split.addPane(list1)
+        split.addPane(list2)
+    }
 }
