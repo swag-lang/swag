@@ -32,6 +32,7 @@ func createView2(view: *Wnd)
 
     {
         split := SplitView.create(view, @{10, 320, 600, 300}, vertical: false)
+        split.dockStyle = .Bottom
         split.setFrameForm(FrameWndForm.Square)
 
         list0 := createListSimple(split)

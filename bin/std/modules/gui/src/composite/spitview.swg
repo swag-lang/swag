@@ -250,21 +250,23 @@ private impl SplitView
     {
         curPane := items[idx]
 
-        reqSize := Math.max(curPane.minSize, newSize)
-        diff    := reqSize - curPane.size
-
-        if items.count > 1
+        reqSize  := Math.max(curPane.minSize, newSize)
+        diff     := reqSize - curPane.size
+        if items.count == 1
         {
-            otherPane := idx == items.count - 1 ? items[idx - 1] : items[idx + 1]
-            if otherPane.size - diff < otherPane.minSize
-            {
-                diff = otherPane.minSize - otherPane.size
-                otherPane.size = otherPane.minSize
-            }
-            else
-            {
-                otherPane.size -= diff
-            }
+            curPane.size += diff
+            return
+        }
+
+        otherPane := idx == items.count - 1 ? items[idx - 1] : items[idx + 1]
+        if otherPane.size - diff < otherPane.minSize
+        {
+            diff = otherPane.size - otherPane.minSize
+            otherPane.size = otherPane.minSize
+        }
+        else
+        {
+            otherPane.size -= diff
         }
 
         curPane.size += diff
