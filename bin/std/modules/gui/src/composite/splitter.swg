@@ -2,31 +2,31 @@
 using Core, Pixel
 
 #[Swag.EnumFlags]
-enum SplitViewFlags
+enum SplitterFlags
 {
     None
     Vertical
 }
 
-struct SplitViewItem
+struct SplitterItem
 {
     view:       *Wnd
     size:       f32
     minSize:    f32 = 5
 }
 
-struct SplitView
+struct Splitter
 {
     using frameWnd: FrameWnd
-    splitViewFlags  = SplitViewFlags.None
+    splitViewFlags  = SplitterFlags.None
 
-    items:          ArrayPtr'SplitViewItem
+    items:          ArrayPtr'SplitterItem
     correctMoving:  f32
     hotIdx          = Swag.U32.Max
     moving:         bool
 }
 
-impl IWnd for SplitView
+impl IWnd for Splitter
 {
     mtd onMouseEvent(evt: *MouseEvent)
     {
@@ -166,7 +166,7 @@ impl IWnd for SplitView
     }
 }
 
-private impl SplitView
+private impl Splitter
 {
     mtd computeLayout()
     {
@@ -289,15 +289,15 @@ private impl SplitView
     }
 }
 
-impl SplitView
+impl Splitter
 {
     #[Swag.Discardable]
-    func create(parent: *Wnd, position: Math.Rectangle, vertical = false, id: string = null)->*SplitView
+    func create(parent: *Wnd, position: Math.Rectangle, vertical = false, id: string = null)->*Splitter
     {
         Debug.assert(parent != null)
 
         pos := position
-        res := Wnd.create'SplitView(parent, null, pos, id)
+        res := Wnd.create'Splitter(parent, null, pos, id)
         res.focusStrategy = .None
         if vertical
             res.splitViewFlags |= .Vertical

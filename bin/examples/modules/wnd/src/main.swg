@@ -19,7 +19,7 @@ var app: Application
     view1 := Wnd.create'Wnd(tab, "bigview1")
     tab.addItem("List", @{}, view1)
     view2 := Wnd.create'Wnd(tab, "bigview2")
-    tab.addItem("SplitView", @{}, view2)
+    tab.addItem("Splitter", @{}, view2)
 
     createView0(view0)
     createView1(view1)
