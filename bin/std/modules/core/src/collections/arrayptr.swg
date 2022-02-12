@@ -10,8 +10,14 @@ impl ArrayPtr
 {
     mtd opDrop()
     {
+        clear()
+    }
+
+    mtd clear()
+    {
         visit item: dref self
             Memory.delete(item, allocator)
+        base.count = 0
     }
 
     // Allocate a new pointer by using the contextual allocator

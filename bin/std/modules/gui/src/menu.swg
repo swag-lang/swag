@@ -19,7 +19,7 @@ public struct Menu
     onValidateResult:   func(self, WndId)
     onComputeItem:      func(self, *PopupMenuItem)
 
-    items:          Array'(*PopupMenuItem)
+    items:          ArrayPtr'PopupMenuItem
     hotIdx:         u32 = Swag.U32.Max
     selectedIdx:    u32 = Swag.U32.Max
     bar:            bool
@@ -535,12 +535,6 @@ impl Menu
 
 public impl Menu
 {
-    mtd opDrop()
-    {
-        visit i: items
-            Memory.delete(i)
-    }
-
     #[Swag.Discardable]
     func createPopup(parent: *Wnd, id: string = null)->*Menu
     {
@@ -573,7 +567,7 @@ public impl Menu
     // Add a new item
     mtd addItem(name: string, id: WndId, icon: Icon = @{}, rightName: string = null, disabled = false)
     {
-        item := Memory.new'PopupMenuItem()
+        item := items.newPtr()
         with item
         {
             name      = #self.name
@@ -590,7 +584,7 @@ public impl Menu
     // Add a new item
     mtd addPopup(name: string, popup: *Menu, icon: Icon = @{})
     {
-        item := Memory.new'PopupMenuItem()
+        item := items.newPtr()
         with item
         {
             name  = #self.name
@@ -606,7 +600,7 @@ public impl Menu
     // Add a separator
     mtd addSeparator()
     {
-        item := Memory.new'PopupMenuItem()
+        item := items.newPtr()
         item.separator = true
         items.add(item)
         dirtyLayout = true

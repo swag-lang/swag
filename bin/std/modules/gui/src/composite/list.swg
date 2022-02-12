@@ -14,7 +14,7 @@ struct ListItem
 
 struct ListLine
 {
-    items:      Array'(*ListItem)
+    items:      ArrayPtr'ListItem
     colorBk:    Color
     colorFg:    Color
     userData:   *void
@@ -23,12 +23,6 @@ struct ListLine
 
 impl ListLine
 {
-    mtd opDrop()
-    {
-        visit item: items
-            Memory.delete(item)
-    }
-
     // Get an item by index
     mtd getItem(column: u32)->*ListItem
     {
@@ -54,7 +48,7 @@ impl ListLine
             }
         }
 
-        item := Memory.new'ListItem()
+        item := items.newPtr()
         item.column = column
         item.name = name
         item.icon = icon
@@ -94,7 +88,7 @@ struct List
     sigLeftDoubleClick: func(*Self, Math.Point)
     sigSort:            func(*ListLine, *ListLine, u32, bool)->s32
 
-    lines:          Array'(*ListLine)
+    lines:          ArrayPtr'ListLine
     idxLineToIdx:   HashTable'(u32, u32)
     selModel:       SelModel
     checkModel:     SelModel
@@ -568,11 +562,6 @@ private impl ListView
 
 impl List
 {
-    mtd opDrop()
-    {
-        clear()
-    }
-
     #[Swag.Discardable]
     func createSimple(parent: *Wnd, position: Math.Rectangle, id: string = null)->*List
     {
@@ -763,7 +752,7 @@ impl List
     {
         Debug.assert(!isVirtual, "createLine cannot be called on a virtual list")
 
-        line := Memory.new'ListLine()
+        line := lines.newPtr()
         line.index = nextListIndex
         idxLineToIdx.add(line.index, line.index)
         nextListIndex += 1
@@ -782,10 +771,7 @@ impl List
     // Clear all lines
     mtd clear()
     {
-        visit l: lines
-            Memory.delete(l)
         lines.clear()
-
         virtualCount = 0
         idxLineToIdx.clear()
     }

@@ -53,7 +53,7 @@ struct Tab
     barLayout               = TabBarLayout.Divide
     barFixedLayoutWidth:    f32 = 100
 
-    views:          Array'(*TabItem)
+    views:          ArrayPtr'TabItem
     selectedIdx:    u32
     hotIdx:         u32 = Swag.U32.Max
     barHeight:      f32
@@ -276,12 +276,6 @@ private impl Tab
 
 impl Tab
 {
-    mtd opDrop()
-    {
-        visit v: views
-            Memory.delete(v)
-    }
-
     #[Swag.Discardable]
     func create(parent: *Wnd, position: Math.Rectangle, id: string = null)->*Tab
     {
@@ -322,7 +316,7 @@ impl Tab
             view.wndFlags |= .Hidden
         view.setParent(self)
 
-        item := Memory.new'TabItem()
+        item := views.newPtr()
         item.view = view
         item.name = tabName
         item.icon = icon
