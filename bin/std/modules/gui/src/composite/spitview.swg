@@ -20,8 +20,7 @@ struct SplitView
     using frameWnd: FrameWnd
     splitViewFlags  = SplitViewFlags.None
 
-    items:          Array'(*SplitViewItem)
-
+    items:          ArrayPtr'SplitViewItem
     correctMoving:  f32
     hotIdx          = Swag.U32.Max
     moving:         bool
@@ -300,11 +299,11 @@ impl SplitView
     mtd isVertical() => cast(bool) (splitViewFlags & .Vertical)
 
     // Add a new pane
-    mtd addPane(pane: *Wnd, sizeHint: f32 = 100)
+    mtd addPane(pane: *Wnd, paneSize: f32 = 100)
     {
         pane.setParent(self)
 
-        item := Memory.new'SplitViewItem()
+        item := items.newPtr()
         item.view = pane
         items.add(item)
 
@@ -318,7 +317,7 @@ impl SplitView
         }
         else
         {
-            setPaneSize(cast(u32) items.count - 1, sizeHint)
+            setPaneSize(cast(u32) items.count - 1, paneSize)
         }
     }
 
