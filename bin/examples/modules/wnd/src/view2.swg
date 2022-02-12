@@ -24,7 +24,6 @@ func createView2(view: *Wnd)
         list0.setFrameForm(FrameWndForm.Transparent)
         list1 := createListMulti(split)
         list1.setFrameForm(FrameWndForm.Transparent)
-        list1.setAllMargins(5)
 
         split.addPane(list0)
         split.addPane(list1)
