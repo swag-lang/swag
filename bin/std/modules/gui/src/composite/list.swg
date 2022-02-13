@@ -817,6 +817,8 @@ impl List
         y := listView.scrollPos.y + scrollWnd.view.position.height
         y -= scrollWnd.view.padding.y
         y -= scrollWnd.view.padding.w
+        if y < 0
+            return cast(u32) (listView.scrollPos.y / lineHeight)
         idx := cast(u32) (y / lineHeight)
         if idx >= lc
             return cast(u32) lc - 1
