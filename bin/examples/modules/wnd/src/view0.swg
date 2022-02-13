@@ -282,8 +282,9 @@ func createView0(view: *Wnd)
         loop 5
         {
             view0 := Wnd.create'Wnd(tab)
-            tab.addItem("Tab0", app.theme.getIcon24(ThemeIcons24.Search, 16), view0)
-            Label.create(view0, "view0", @{10, 10, 50, 30})
+            n := Format.toString("Tab%", @index)
+            tab.addItem(n, app.theme.getIcon24(ThemeIcons24.Search, 16), view0)
+            Label.create(view0, n, @{10, 10, 50, 30})
         }
     }
 

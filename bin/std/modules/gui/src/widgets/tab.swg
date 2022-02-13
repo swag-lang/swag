@@ -50,12 +50,17 @@ struct Tab
     itemForm                = TabItemForm.Flat
     viewForm                = TabViewForm.Flat
     barLayout               = TabBarLayout.Divide
-    barFixedLayoutWidth:    f32 = 100
+    itemFixedLayoutWidth:   f32 = 100
+    itemMinWidth:           f32 = 25
 
-    views:          ArrayPtr'TabItem
-    selectedIdx:    u32
-    hotIdx:         u32 = Swag.U32.Max
-    barHeight:      f32
+    buttonPopup:        *IconButton
+    views:              ArrayPtr'TabItem
+    popup:              *PopupList
+    selectedIdx:        u32
+    firstVisibleIdx:    u32 = 0
+    hotIdx:             u32 = Swag.U32.Max
+    barHeight:          f32
+    totalWidth:         f32
 }
 
 impl IWnd for Tab
@@ -169,15 +174,22 @@ impl IWnd for Tab
         theme.drawSubRect(painter, clientRect, subRect, colorBk)
 
         // Paint all except selected one, which will be painted last
-        visit v, idx: views
+        if !views.isEmpty()
         {
-            if idx == selectedIdx
-                continue
-            paintItem(painter, v, cast(u32) idx)
-        }
+            clientRect = getBarRectItems()
+            loop idx: firstVisibleIdx..cast(u32) views.count-1
+            {
+                if idx == selectedIdx
+                    continue
+                v := views[idx]
+                if v.pos + v.width > clientRect.right()
+                    break
+                paintItem(painter, v, cast(u32) idx)
+            }
 
-        // Paint selected item
-        paintItem(painter, views[selectedIdx], selectedIdx)
+            // Paint selected item
+            paintItem(painter, views[selectedIdx], selectedIdx)
+        }
     }
 
     mtd onResizeEvent(evt: *ResizeEvent)
@@ -186,6 +198,7 @@ impl IWnd for Tab
             return
 
         computeTabLayout()
+
         curView := views[selectedIdx].view
         clientRect := getClientRect()
         clientRect.moveTop(barHeight)
@@ -231,14 +244,47 @@ impl IWnd for Tab
 
 private impl Tab
 {
+    mtd showPopup(x, y: f32)
+    {
+        popup = PopupList.create(self)
+        visit item: views
+            popup.addItem(item.name.raw, item.id, item.icon, item.userData)
+
+        popup.sigSelected = @|self|(list, idx) {
+            if idx != Swag.U32.Max
+                self.select(idx)
+            self.hidePopup()
+        }
+
+        popup.show(x, y)
+    }
+
+    mtd hidePopup()
+    {
+        popup.destroy()
+        popup = null
+    }
+
+    mtd getBarRectItems()->Math.Rectangle
+    {
+        rect := getClientRectPadding()
+        if buttonPopup
+            rect.setRight(buttonPopup.position.x - 4)
+        return rect
+    }
+
     mtd hitTest(surfacePos: Math.Point)->u32
     {
         pos := surfaceToLocal(surfacePos)
         if pos.y >= barHeight
             return Swag.U32.Max
 
-        visit v, idx: views
+        rect := getBarRectItems()
+        loop idx: firstVisibleIdx..cast(u32) views.count - 1
         {
+            v := views[idx]
+            if v.pos + v.width > rect.right()
+                break
             if pos.x >= v.pos and pos.x < v.pos + v.width
                 return acast idx
         }
@@ -248,27 +294,64 @@ private impl Tab
 
     mtd computeTabLayout()
     {
+        rect := getBarRectItems()
+
+        totalWidth = 0
         switch barLayout
         {
         case Divide:
-            w := cast(f32) (position.width / views.count)
-            x := 0'f32
+            w := cast(f32) (rect.width / views.count)
+            w = Math.max(w, itemMinWidth)
             visit v: views
             {
-                v.pos = x
                 v.width = w
-                x += w
+                totalWidth += w
             }
 
         case Fixed:
-            w := cast(f32) barFixedLayoutWidth
-            x := 0'f32
+            w := Math.max(itemFixedLayoutWidth, itemMinWidth)
             visit v: views
             {
-                v.pos = x
                 v.width = w
-                x += w
+                totalWidth += w
             }
+        }
+
+        x := rect.x
+        loop idx: firstVisibleIdx..cast(u32) views.count - 1
+        {
+            v := views[idx]
+            v.pos = x
+            x += v.width
+        }
+
+        createDestroyButtonPopup()
+    }
+
+    mtd createDestroyButtonPopup()
+    {
+        barRect := getClientRectPadding()
+        if totalWidth > barRect.right()
+        {
+            // Create a button if there are too many items for the given size
+            if !buttonPopup
+            {
+                buttonPopup = IconButton.create(self, getTheme().getIcon24(ThemeIcons24.BottomPopupArrow), @{})
+                buttonPopup.form = .Round
+                buttonPopup.sigPressed = @|self|(btn)
+                {
+                    rect := btn.getSurfaceRect()
+                    self.showPopup(rect.x, rect.y + btn.position.height)
+                }
+            }
+
+            x := barRect.right() - 32
+            buttonPopup.setPosition(@{x, 0, 24, 24})
+        }
+        else if buttonPopup
+        {
+            buttonPopup.destroy()
+            buttonPopup = null
         }
     }
 }
@@ -333,7 +416,24 @@ impl Tab
         views[selectedIdx].view.wndFlags |= .Hidden
         selectedIdx = idx
         views[selectedIdx].view.wndFlags &= ~.Hidden
+
         sendResizeEvent()
+
+        rect := getBarRectItems()
+        if idx < firstVisibleIdx or views[idx].pos + views[idx].width >= rect.right()
+        {
+            x := rect.right() - views[firstVisibleIdx].width
+            firstVisibleIdx = idx
+            while firstVisibleIdx
+            {
+                x -= views[firstVisibleIdx - 1].width
+                if x < rect.x
+                    break
+                firstVisibleIdx -= 1
+            }
+
+            computeTabLayout()
+        }
 
         invalidate()
     }

@@ -148,7 +148,8 @@ private impl ComboBox
             self.hidePopup()
         }
 
-        popup.show(getSurfaceRect())
+        rect := getSurfaceRect()
+        popup.show(rect.x, rect.bottom(), rect.width)
     }
 
     mtd hidePopup()

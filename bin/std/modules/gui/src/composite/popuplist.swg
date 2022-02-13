@@ -210,17 +210,15 @@ impl PopupList
     }
 
     // Show popup
-    mtd show(surfacePos: Math.Rectangle)
+    mtd show(x, y: f32, width: f32 = 10)
     {
         metrics := getThemeMetrics()
 
         scrollWnd.setScrollSize(0, cast(f32) items.count * heightItem)
 
-        pos := surfacePos
-        pt := parent.surfaceToLocal(@{pos.x, pos.y})
-        pos.x = pt.x
-        pos.y = pt.y + position.height
-        pos.width = Math.max(position.width, minWidthPopup)
+        pt := parent.surfaceToLocal(@{x, y})
+        pos := Math.Rectangle{pt.x, pt.y, 0, 0}
+        pos.width = Math.max(width, minWidthPopup)
         pos.height = Math.min(scrollWnd.scrollSize.y, maxHeightPopup)
         pos.height += 2 * metrics.comboBox_BorderSize
         pos.inflate(metrics.comboBox_ShadowSize)
