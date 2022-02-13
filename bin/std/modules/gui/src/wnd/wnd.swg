@@ -680,6 +680,11 @@ impl Wnd
         surface.app.releaseMouse()
     }
 
+    mtd getMouseCapture()->*Wnd
+    {
+        return surface.app.getMouseCapture()
+    }
+
     // Set the keyboard focus
     mtd setFocus()
     {

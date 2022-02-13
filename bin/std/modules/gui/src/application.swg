@@ -414,6 +414,12 @@ impl Application
         return surface
     }
 
+    // Return the captured wnd for mouse
+    mtd getMouseCapture()->*Wnd
+    {
+        return mouseCaptureWnd
+    }
+
     // Returns the window under the given point
     mtd getWndAt(x, y: f32)->*Wnd
     {

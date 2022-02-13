@@ -19,6 +19,8 @@ public struct ScrollWnd
 
     sigScrollPosChanged:    closure(*Self, Math.Point)
 
+    oldMouseCapture:    *Wnd
+
     showBarV:       bool
     posBoxV:        f32
     sizeBoxV:       f32
@@ -125,15 +127,18 @@ public impl IWnd for ScrollWnd
                     setScrollPos(f, view.scrollPos.y)
                 }
 
+                oldMouseCapture = getMouseCapture()
                 captureMouse()
                 invalidate()
-                hitTest(evt.surfacePos)
+                //hitTest(evt.surfacePos)
             }
 
         case MouseReleased:
             if isMoving and evt.button == .Left
             {
                 releaseMouse()
+                if oldMouseCapture
+                    oldMouseCapture.captureMouse()
                 isPressedV, isPressedH, isMoving = false
                 hitTest(evt.surfacePos)
                 invalidate()

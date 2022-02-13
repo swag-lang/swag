@@ -40,8 +40,11 @@ impl IWnd for PopupListView
     {
         var hit: u32
 
+        surfaceRect := getSurfaceRect()
+        mouseInRect := surfaceRect.contains(evt.surfacePos)
+
         pos := surfaceToLocal(evt.surfacePos)
-        if evt.kind == .MouseLeave
+        if evt.kind == .MouseLeave or !mouseInRect
             hit = Swag.U32.Max
         else
             hit = cast(u32) ((pos.y + scrollPos.y) / list.heightItem)
@@ -51,16 +54,30 @@ impl IWnd for PopupListView
             invalidate()
         }
 
-        if evt.kind == .MousePressed and evt.button == .Left
+        if evt.kind == .MousePressed and evt.button == .Left and mouseInRect
         {
             if list.sigSelected
                 list.sigSelected(list, hotIdx)
-            else
-                list.destroy()
+            releaseMouse()
+            list.destroy()
             return
         }
 
-        evt.accepted = false
+        surfaceRect = parent.getSurfaceRect()
+        mouseInRect = surfaceRect.contains(evt.surfacePos)
+        if evt.kind == .MousePressed and evt.button == .Left and !mouseInRect
+        {
+            if list.sigSelected
+                list.sigSelected(list, Swag.U32.Max)
+            releaseMouse()
+            list.destroy()
+            return
+        }
+
+        if evt.kind == .MouseLeave
+            evt.accepted = true
+        else
+            evt.accepted = false
     }
 
     mtd onPaintEvent(evt: *PaintEvent)
@@ -183,7 +200,8 @@ impl PopupList
         pos.height += padding.y + padding.w
         setPosition(pos)
 
-        scrollWnd.view.setFocus()
+        //scrollWnd.view.setFocus()
+        scrollWnd.view.captureMouse()
     }
 
     // Add a new item in the list
