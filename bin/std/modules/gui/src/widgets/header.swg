@@ -133,8 +133,11 @@ impl IWnd for Header
             }
         }
 
-        // Paint all except selected one, which will be painted last
         clientRect := getClientRectPadding()
+        painter.pushClippingRect(clientRect)
+        defer painter.popClippingRect()
+
+        // Paint all except selected one, which will be painted last
         clientRect.offset(scrollPos)
         x := padding.x
         visit item, idx: items
@@ -164,7 +167,7 @@ impl IWnd for Header
             if moving or clicked
             {
                 moving, clicked = false
-                surface.app.releaseMouse()
+                releaseMouse()
                 invalidate()
             }
         }
@@ -236,12 +239,12 @@ impl IWnd for Header
                     pos += scrollPos.x
                     correctMoving = pos.x - getItemPosition(hotIdx) + padding.x
                     correctMoving -= getItemWidth(hotIdx)
-                    surface.app.captureMouse(self)
+                    captureMouse()
                 }
                 elif items[hotIdx].clickable
                 {
                     clicked = true
-                    surface.app.captureMouse(self)
+                    captureMouse()
                     invalidate()
                 }
             }
