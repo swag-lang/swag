@@ -214,7 +214,7 @@ struct ThemeColors
     comboBoxItem_CheckMark:         Color = Blue
     comboBoxItem_HotCheckMark:      Color = White
 
-    frameWnd_SmallShadow:           Color = 0x80000000
+    frameWnd_SmallShadow:           Color = 0x50000000
     frameWnd_Border:                Color = Gray3
     frameWnd_FocusBorder:           Color = Blue
     frameWnd_DisabledBorder:        Color = Gray3

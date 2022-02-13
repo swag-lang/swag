@@ -42,12 +42,12 @@ impl IWnd for FrameWnd
         rects   := getThemeRects()
         metrics := getThemeMetrics()
 
-        if evt.kind != .PostChilds
+        if evt.kind == .BeforeChilds
         {
             if frameFlags & .SmallShadow
             {
                 clientRect := getClientRect()
-                clientRect.inflate(metrics.frameWnd_SmallShadowSize)
+                clientRect.applyPadding(metrics.frameWnd_SmallShadowSize)
                 subRect := &theme.rects.frameWnd_SmallShadow
                 theme.drawSubRect(painter, clientRect, subRect, colors.frameWnd_SmallShadow)
             }
