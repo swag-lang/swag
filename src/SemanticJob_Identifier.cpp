@@ -782,6 +782,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                     context->job->nodes.push_back(idNode);
                     if (i == 0)
                         idNode->specFlags |= identifier->specFlags & AST_SPEC_IDENTIFIER_BACKTICK;
+                    idNode->semFlags |= AST_SEM_FROM_DEPVAR;
                 }
             }
             else
@@ -801,6 +802,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 idNode->specFlags |= identifier->specFlags & AST_SPEC_IDENTIFIER_BACKTICK;
                 Ast::insertChild(idRef, idNode, newParent->childParentIdx);
                 context->job->nodes.push_back(idNode);
+                idNode->semFlags |= AST_SEM_FROM_DEPVAR;
             }
 
             context->node->semanticState = AstNodeResolveState::Enter;
@@ -3041,13 +3043,16 @@ bool SemanticJob::filterSymbols(SemanticContext* context, AstIdentifier* node)
         }
 
         // If symbol comes from a 'with', it has priority
-        if (p.asFlags & ALTSCOPE_WITH)
+        if (!(node->semFlags & AST_SEM_FROM_DEPVAR))
         {
-            for (auto& p1 : dependentSymbols)
+            if (p.asFlags & ALTSCOPE_WITH)
             {
-                if (!(p1.asFlags & ALTSCOPE_WITH))
+                for (auto& p1 : dependentSymbols)
                 {
-                    p1.remove = true;
+                    if (!(p1.asFlags & ALTSCOPE_WITH))
+                    {
+                        p1.remove = true;
+                    }
                 }
             }
         }
@@ -3438,14 +3443,14 @@ void SemanticJob::collectAlternativeScopes(AstNode* startNode, VectorNative<Alte
         if (!done.contains(it0.scope))
         {
             done.push_back(it0.scope);
-            addAlternativeScopeOnce(scopes, it0.scope);
+            addAlternativeScopeOnce(scopes, it0.scope, it0.flags);
 
             if (it0.scope && it0.scope->kind == ScopeKind::Struct && it0.scope->owner->extension)
             {
                 // We register the sub scope with the original "node" (top level), because the original node will in the end
                 // become the dependentVar node, and will be converted by cast to the correct type.
                 for (auto& it1 : it0.scope->owner->extension->alternativeScopes)
-                    toAdd.push_back({it1.scope, it1.flags});
+                    toAdd.push_back({it1.scope, it1.flags | it0.flags & ALTSCOPE_WITH});
             }
         }
     }
@@ -3466,7 +3471,7 @@ void SemanticJob::collectAlternativeScopeVars(AstNode* startNode, VectorNative<A
         if (!done.contains(it0.scope))
         {
             done.push_back(it0.scope);
-            addAlternativeScopeOnce(scopes, it0.scope);
+            addAlternativeScopeOnce(scopes, it0.scope, it0.flags);
             scopesVars.push_back(it0);
 
             if (it0.scope && it0.scope->kind == ScopeKind::Struct && it0.scope->owner->extension)
@@ -3474,7 +3479,7 @@ void SemanticJob::collectAlternativeScopeVars(AstNode* startNode, VectorNative<A
                 // We register the sub scope with the original "node" (top level), because the original node will in the end
                 // become the dependentVar node, and will be converted by cast to the correct type.
                 for (auto& it1 : it0.scope->owner->extension->alternativeScopesVars)
-                    toAdd.push_back({it0.node, it1.node, it1.scope});
+                    toAdd.push_back({it0.node, it1.node, it1.scope, it1.flags | it0.flags & ALTSCOPE_WITH});
             }
         }
     }
@@ -3485,14 +3490,6 @@ void SemanticJob::addAlternativeScopeOnce(VectorNative<AlternativeScope>& scopes
     if (hasAlternativeScope(scopes, scope))
         return;
     addAlternativeScope(scopes, scope, flags);
-}
-
-void SemanticJob::addAlternativeScope(VectorNative<AlternativeScope>& scopes, Scope* scope, uint32_t flags)
-{
-    AlternativeScope as;
-    as.scope = scope;
-    as.flags = flags;
-    scopes.push_back(as);
 }
 
 bool SemanticJob::hasAlternativeScope(VectorNative<AlternativeScope>& scopes, Scope* scope)
@@ -3506,6 +3503,14 @@ bool SemanticJob::hasAlternativeScope(VectorNative<AlternativeScope>& scopes, Sc
     return false;
 }
 
+void SemanticJob::addAlternativeScope(VectorNative<AlternativeScope>& scopes, Scope* scope, uint32_t flags)
+{
+    AlternativeScope as;
+    as.scope = scope;
+    as.flags = flags;
+    scopes.push_back(as);
+}
+
 void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, VectorNative<AlternativeScope>& scopes, VectorNative<AlternativeScopeVar>& scopesVars, AstNode* startNode, uint32_t flags)
 {
     // Add registered alternative scopes of the current node
@@ -3515,11 +3520,10 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext* context, Vec
         auto& toProcess = job->scopesToProcess;
         for (auto& as : startNode->extension->alternativeScopes)
         {
-            auto p = as.scope;
-            if (!hasAlternativeScope(scopes, p))
+            if (!hasAlternativeScope(scopes, as.scope))
             {
                 addAlternativeScope(scopes, as.scope, as.flags);
-                addAlternativeScope(toProcess, p);
+                addAlternativeScopeOnce(toProcess, as.scope);
             }
         }
 

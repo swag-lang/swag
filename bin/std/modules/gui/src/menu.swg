@@ -2,13 +2,11 @@ using Core, Pixel
 
 public struct PopupMenuItem
 {
-    name:       RichString
+    using item: Item
     rightName:  RichString
-    icon:       Icon
+    popup:      *Menu
     pos:        f32
     size:       f32
-    id:         WndId
-    popup:      *Menu
     separator:  bool
     disabled:   bool
 }
@@ -567,25 +565,25 @@ public impl Menu
     // Add a new item
     mtd addItem(name: string, id: WndId, icon: Icon = @{}, rightName: string = null, disabled = false)
     {
-        item := items.newPtr()
-        with item
+        mitem := items.newPtr()
+        with mitem
         {
             name      = #self.name
-            rightName = #self.rightName
             icon      = #self.icon
             id        = #self.id
+            rightName = #self.rightName
             disabled  = #self.disabled
         }
 
-        items.add(item)
+        items.add(mitem)
         dirtyLayout = true
     }
 
     // Add a new item
     mtd addPopup(name: string, popup: *Menu, icon: Icon = @{})
     {
-        item := items.newPtr()
-        with item
+        mitem := items.newPtr()
+        with mitem
         {
             name  = #self.name
             icon  = #self.icon
@@ -593,7 +591,7 @@ public impl Menu
         }
 
         popup.owner = self
-        items.add(item)
+        items.add(mitem)
         dirtyLayout = true
     }
 

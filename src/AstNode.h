@@ -204,6 +204,7 @@ struct AlternativeScopeVar
     AstNode* node;
     AstNode* leafNode;
     Scope*   scope;
+    uint32_t flags;
 };
 
 struct AstNode
@@ -257,9 +258,9 @@ struct AstNode
     AstNode*    inSimpleReturn();
     bool        forceTakeAddress();
     void        computeEndLocation();
-    void        addAlternativeScope(Scope* scope, uint32_t asflags = 0);
+    void        addAlternativeScope(Scope* scope, uint32_t altFlags = 0);
+    void        addAlternativeScopeVar(Scope* scope, AstNode* varNode, uint32_t altFlags = 0);
     void        addAlternativeScopes(const VectorNative<AlternativeScope>& scopes);
-    void        addAlternativeScopeVar(Scope* scope, AstNode* varNode);
 
     struct Extension
     {

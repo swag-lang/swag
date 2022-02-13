@@ -36,11 +36,10 @@ enum TabBarLayout
 
 struct TabItem
 {
-    name:   RichString
-    icon:   Icon
-    pos:    f32
-    width:  f32
-    view:   *Wnd
+    using item: Item
+    pos:        f32
+    width:      f32
+    view:       *Wnd
 }
 
 struct Tab

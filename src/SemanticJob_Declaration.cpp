@@ -14,7 +14,7 @@ bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, Ty
     SWAG_ASSERT(regNode);
     SWAG_VERIFY(node->ownerFct || node->ownerScope->kind == ScopeKind::Struct, context->report(node, Fmt(Err(Err0689), Scope::getNakedKindName(node->ownerScope->kind))));
 
-    uint32_t altFlags = ALTSCOPE_USING;
+    uint32_t altFlags = node->flags & AST_STRUCT_MEMBER ? ALTSCOPE_USING : 0;
     if (forWith)
         altFlags |= ALTSCOPE_WITH;
 
@@ -24,7 +24,7 @@ bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, Ty
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfoVar, TypeInfoKind::Struct);
         regNode->allocateExtension();
         regNode->addAlternativeScope(typeStruct->scope, altFlags);
-        regNode->addAlternativeScopeVar(typeStruct->scope, varNode);
+        regNode->addAlternativeScopeVar(typeStruct->scope, varNode, altFlags);
     }
     else if (typeInfoVar->kind == TypeInfoKind::Pointer)
     {
@@ -33,7 +33,7 @@ bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, Ty
         SWAG_VERIFY(typePointer->pointedType->kind == TypeInfoKind::Struct, context->report(node, Fmt(Err(Err0822), typeInfoVar->getDisplayNameC())));
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
         regNode->addAlternativeScope(typeStruct->scope, altFlags);
-        regNode->addAlternativeScopeVar(typeStruct->scope, varNode);
+        regNode->addAlternativeScopeVar(typeStruct->scope, varNode, altFlags);
     }
     else
     {

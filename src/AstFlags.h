@@ -118,6 +118,7 @@ static const uint64_t AST_SEM_FORCE_UFCS              = 0x00400000;
 static const uint64_t AST_SEM_STRUCT_REGISTERED       = 0x00800000;
 static const uint64_t AST_SEM_PENDING_LAMBDA_TYPING   = 0x01000000;
 static const uint64_t AST_SEM_IS_CONST_ASSIGN         = 0x02000000;
+static const uint64_t AST_SEM_FROM_DEPVAR             = 0x04000000;
 
 static const uint8_t AST_SPEC_IDENTIFIERREF_AUTO_SCOPE = 0x01;
 static const uint8_t AST_SPEC_IDENTIFIER_BACKTICK      = 0x01;

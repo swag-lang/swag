@@ -3,10 +3,8 @@ using Core, Pixel
 
 struct ListItem
 {
-    userData:   *void
-    name:       RichString
+    using item: Item
     sortKey:    String
-    icon:       Icon
     colorBk:    Color
     colorFg:    Color
     column:     u32
