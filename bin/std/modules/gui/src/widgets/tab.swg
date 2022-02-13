@@ -336,7 +336,7 @@ private impl Tab
             // Create a button if there are too many items for the given size
             if !buttonPopup
             {
-                buttonPopup = IconButton.create(self, getTheme().getIcon24(ThemeIcons24.BottomPopupArrow), @{})
+                buttonPopup = IconButton.create(self, getTheme().getIcon24(ThemeIcons24.TabArrowDown), @{})
                 buttonPopup.form = .Round
                 buttonPopup.sigPressed = @|self|(btn)
                 {

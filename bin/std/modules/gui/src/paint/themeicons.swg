@@ -10,6 +10,7 @@ enum ThemeIcons24
     BottomPopupArrow
     SortArrowDown
     SortArrowUp
+    TabArrowDown
 }
 
 enum ThemeIcons64
