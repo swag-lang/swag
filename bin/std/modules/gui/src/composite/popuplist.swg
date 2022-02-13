@@ -145,30 +145,6 @@ impl IWnd for PopupListView
     }
 }
 
-impl IWnd for PopupList
-{
-    mtd onPaintEvent(evt: *PaintEvent)
-    {
-        bc      := evt.bc
-        painter := evt.bc.painter
-
-        theme   := getTheme()
-        colors  := getThemeColors()
-        metrics := getThemeMetrics()
-        rects   := getThemeRects()
-
-        // Shadow
-        clientRect := getClientRect()
-        subRect := &theme.rects.popupList_Shadow
-        theme.drawSubRect(painter, clientRect, subRect, colors.popupList_Shadow)
-
-        // Border
-        clientRect.inflate(-metrics.popupList_ShadowSize)
-        subRect = &rects.wnd_Border
-        theme.drawSubRect(bc.painter, clientRect, subRect, colors.popupList_Border, center: false)
-    }
-}
-
 impl PopupList
 {
     // Create the popup list, but do not display it
@@ -180,7 +156,8 @@ impl PopupList
 
         with popup
         {
-            setAllPaddings(metrics.popupList_BorderSize + metrics.popupList_ShadowSize)
+            popup.frameFlags |= .SmallShadow
+            setFrameForm(FrameWndForm.Square)
             scrollWnd = createView'ScrollWnd()
             scrollWnd.dockStyle = .Center
             scrollWnd.focusStrategy = .None
@@ -190,6 +167,23 @@ impl PopupList
         }
 
         return popup
+    }
+
+    // Show popup
+    mtd show(x, y: f32, width: f32 = 10)
+    {
+        metrics := getThemeMetrics()
+
+        scrollWnd.setScrollSize(0, cast(f32) items.count * heightItem)
+
+        pt := parent.surfaceToLocal(@{x, y})
+        pos := Math.Rectangle{pt.x, pt.y, 0, 0}
+        pos.width = Math.max(width, minWidthPopup)
+        pos.height = Math.min(scrollWnd.scrollSize.y, maxHeightPopup)
+        pos.height += padding.y + padding.w
+        setPosition(pos)
+
+        scrollWnd.view.setFocus()
     }
 
     // Add a new item in the list
@@ -207,23 +201,5 @@ impl PopupList
         if item.icon.isValid()
             hasIcons = true
         items.add(item)
-    }
-
-    // Show popup
-    mtd show(x, y: f32, width: f32 = 10)
-    {
-        metrics := getThemeMetrics()
-
-        scrollWnd.setScrollSize(0, cast(f32) items.count * heightItem)
-
-        pt := parent.surfaceToLocal(@{x, y})
-        pos := Math.Rectangle{pt.x, pt.y, 0, 0}
-        pos.width = Math.max(width, minWidthPopup)
-        pos.height = Math.min(scrollWnd.scrollSize.y, maxHeightPopup)
-        pos.height += 2 * metrics.popupList_BorderSize
-        pos.inflate(metrics.popupList_ShadowSize)
-        setPosition(pos)
-
-        scrollWnd.view.setFocus()
     }
 }

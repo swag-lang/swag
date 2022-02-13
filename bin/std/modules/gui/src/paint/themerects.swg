@@ -83,12 +83,11 @@ struct ThemeImageRects
     scrollBar_BoxH:             ThemeImageRect = @{{29,253,27,27}, 10}
     scrollBar_Corner:           ThemeImageRect = @{{1,253,27,27}, 0}
 
-    popupList_Shadow:           ThemeImageRect = @{{189,1,66,66}, 24}
-
-    frame_SquareBk:             ThemeImageRect = @{{1,57,27,27}, 5}
-    frame_SquareBorder:         ThemeImageRect = @{{29,57,27,27}, 5}
-    frame_RoundBk:              ThemeImageRect = @{{1,85,27,27}, 13}
-    frame_RoundBorder:          ThemeImageRect = @{{29,85,27,27}, 13}
+    frameWnd_SmallShadow:       ThemeImageRect = @{{189,1,66,66}, 24}
+    frameWnd_SquareBk:          ThemeImageRect = @{{1,57,27,27}, 5}
+    frameWnd_SquareBorder:      ThemeImageRect = @{{29,57,27,27}, 5}
+    frameWnd_RoundBk:           ThemeImageRect = @{{1,85,27,27}, 13}
+    frameWnd_RoundBorder:       ThemeImageRect = @{{29,85,27,27}, 13}
 
     header_FlatBk:              ThemeImageRect = @{{57,225,27,27}, 13}
     header_RoundBk:             ThemeImageRect = @{{57,253,27,27}, 13}

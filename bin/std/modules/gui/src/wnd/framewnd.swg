@@ -3,9 +3,9 @@ using Core, Pixel
 
 enum FrameWndForm
 {
+    Transparent
     Square
     Round
-    Transparent
 }
 
 #[Swag.EnumFlags]
@@ -14,6 +14,7 @@ enum FrameWndFlags
     None
     Borders
     FocusBorder
+    SmallShadow
 }
 
 struct FrameWnd
@@ -39,6 +40,18 @@ impl IWnd for FrameWnd
         theme   := getTheme()
         colors  := getThemeColors()
         rects   := getThemeRects()
+        metrics := getThemeMetrics()
+
+        if evt.kind != .PostChilds
+        {
+            if frameFlags & .SmallShadow
+            {
+                clientRect := getClientRect()
+                clientRect.inflate(metrics.frameWnd_SmallShadowSize)
+                subRect := &theme.rects.frameWnd_SmallShadow
+                theme.drawSubRect(painter, clientRect, subRect, colors.frameWnd_SmallShadow)
+            }
+        }
 
         var subRectBk:      *ThemeImageRect
         var subRectBorder:  *ThemeImageRect
@@ -48,11 +61,11 @@ impl IWnd for FrameWnd
         switch frameForm
         {
         case Square:
-            subRectBk = &rects.frame_SquareBk
-            subRectBorder = &rects.frame_SquareBorder
+            subRectBk = &rects.frameWnd_SquareBk
+            subRectBorder = &rects.frameWnd_SquareBorder
         case Round:
-            subRectBk = &rects.frame_RoundBk
-            subRectBorder = &rects.frame_RoundBorder
+            subRectBk = &rects.frameWnd_RoundBk
+            subRectBorder = &rects.frameWnd_RoundBorder
         }
 
         // Display focus borders when the focus wnd is a child of me

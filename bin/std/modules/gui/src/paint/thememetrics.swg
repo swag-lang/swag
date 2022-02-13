@@ -55,12 +55,10 @@ struct ThemeMetrics
     comboBox_Padding:           f32 = 6
     comboBox_IconTextMargin:    f32 = 6
 
-    popupList_ShadowSize:       f32 = 15
-    popupList_BorderSize:       f32 = 1
-
     frameWnd_SquarePadding:     f32 = 5
     frameWnd_RoundPadding:      f32 = 5
     frameWnd_FlatPadding:       f32 = 2
+    frameWnd_SmallShadowSize:   f32 = 15
 
     list_Padding:               f32 = 5
 

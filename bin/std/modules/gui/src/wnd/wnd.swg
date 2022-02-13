@@ -281,16 +281,8 @@ impl Wnd
 
     mtd paint(bc: *PaintContext)
     {
-        // Clipping
-        if wndFlags & .ClipChildren
-        {
-            bc.painter.pushClippingRect(position)
-            if bc.painter.isEmptyClippingRect()
-            {
-                bc.painter.popClippingRect()
-                return
-            }
-        }
+        if bc.painter.isEmptyClippingRect()
+            return
 
         // Recompute style if necessary
         computeStyle()
@@ -323,19 +315,31 @@ impl Wnd
         sendEvent(&evt)
         bc.painter.setTransform(curTrs)
 
-        // Childs
-        visit c: childs
-        {
-            if c.wndFlags & .Hidden
-                continue
+        // Clipping
+        if wndFlags & .ClipChildren
+            bc.painter.pushClippingRect(getClientRect())
 
-            curState := bc.painter.curState
-            if !(c.wndFlags & .NoScroll)
-                bc.painter.translateTransform(-scrollPos.x, -scrollPos.y)
-            c.paint(bc)
-            bc.painter.setState(curState)
+        // Childs
+        if !bc.painter.isEmptyClippingRect()
+        {
+            visit c: childs
+            {
+                if c.wndFlags & .Hidden
+                    continue
+
+                curState := bc.painter.curState
+                if !(c.wndFlags & .NoScroll)
+                    bc.painter.translateTransform(-scrollPos.x, -scrollPos.y)
+                c.paint(bc)
+                bc.painter.setState(curState)
+            }
         }
 
+        // Restore clipping
+        if wndFlags & .ClipChildren
+            bc.painter.popClippingRect()
+
+        // Post paint
         if wndFlags & .PostChildsPaint
         {
             bc.painter.setTransform(meTrs)
@@ -345,9 +349,6 @@ impl Wnd
 
         bc.isDisabled = lastDisabled
         style.dirty = false
-
-        if wndFlags & .ClipChildren
-            bc.painter.popClippingRect()
     }
 
     // Force the window to be repainted
