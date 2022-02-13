@@ -83,7 +83,7 @@ struct ThemeImageRects
     scrollBar_BoxH:             ThemeImageRect = @{{29,253,27,27}, 10}
     scrollBar_Corner:           ThemeImageRect = @{{1,253,27,27}, 0}
 
-    comboBox_Shadow:            ThemeImageRect = @{{189,1,66,66}, 24}
+    popupList_Shadow:           ThemeImageRect = @{{189,1,66,66}, 24}
 
     frame_SquareBk:             ThemeImageRect = @{{1,57,27,27}, 5}
     frame_SquareBorder:         ThemeImageRect = @{{29,57,27,27}, 5}

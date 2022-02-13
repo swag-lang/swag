@@ -159,13 +159,13 @@ impl IWnd for PopupList
 
         // Shadow
         clientRect := getClientRect()
-        subRect := &theme.rects.comboBox_Shadow
-        theme.drawSubRect(painter, clientRect, subRect, colors.comboBox_Shadow)
+        subRect := &theme.rects.popupList_Shadow
+        theme.drawSubRect(painter, clientRect, subRect, colors.popupList_Shadow)
 
         // Border
-        clientRect.inflate(-metrics.comboBox_ShadowSize)
+        clientRect.inflate(-metrics.popupList_ShadowSize)
         subRect = &rects.wnd_Border
-        theme.drawSubRect(bc.painter, clientRect, subRect, colors.comboBox_Border, center: false)
+        theme.drawSubRect(bc.painter, clientRect, subRect, colors.popupList_Border, center: false)
     }
 }
 
@@ -180,7 +180,7 @@ impl PopupList
 
         with popup
         {
-            setAllPaddings(metrics.comboBox_BorderSize + metrics.comboBox_ShadowSize)
+            setAllPaddings(metrics.popupList_BorderSize + metrics.popupList_ShadowSize)
             scrollWnd = createView'ScrollWnd()
             scrollWnd.dockStyle = .Center
             scrollWnd.focusStrategy = .None
@@ -220,8 +220,8 @@ impl PopupList
         pos := Math.Rectangle{pt.x, pt.y, 0, 0}
         pos.width = Math.max(width, minWidthPopup)
         pos.height = Math.min(scrollWnd.scrollSize.y, maxHeightPopup)
-        pos.height += 2 * metrics.comboBox_BorderSize
-        pos.inflate(metrics.comboBox_ShadowSize)
+        pos.height += 2 * metrics.popupList_BorderSize
+        pos.inflate(metrics.popupList_ShadowSize)
         setPosition(pos)
 
         scrollWnd.view.setFocus()

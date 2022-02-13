@@ -196,7 +196,6 @@ struct ThemeColors
     scrollBar_HotBox:               Color = Gray2
     scrollBar_PressedBox:           Color = Gray1
 
-    comboBox_Shadow:                Color = 0x80000000
     comboBox_Border:                Color = Gray3
     comboBox_HotBorder:             Color = Gray2
     comboBox_DisabledBorder:        Color = Gray3
@@ -214,6 +213,9 @@ struct ThemeColors
     comboBoxItem_HotText:           Color = White
     comboBoxItem_CheckMark:         Color = Blue
     comboBoxItem_HotCheckMark:      Color = White
+
+    popupList_Shadow:               Color = 0x80000000
+    popupList_Border:               Color = Gray3
 
     frameWnd_Border:                Color = Gray3
     frameWnd_FocusBorder:           Color = Blue
@@ -234,8 +236,8 @@ struct ThemeColors
     headerItem_HotBk:               Color = 0x10FFFFFF
     headerItem_ClickedBk:           Color = 0x20FFFFFF
     headerItem_Text:                Color = White
-    header_Bk:                      Color = Gray4
     headerItem_Separator:           Color = Color.getLighter(Color.fromArgb(Gray4), 0.2)
+    header_Bk:                      Color = Gray4
 
     splitView_Bar:                  Color = Gray4
     splitView_BarHot:               Color = Blue
