@@ -133,6 +133,12 @@ impl IWnd for Header
             }
         }
 
+        // Clipping, take care of padding
+        clipRect := getSurfaceRect()
+        clipRect.applyPadding(padding)
+        painter.pushClippingSurfaceRect(clipRect)
+        defer painter.popClippingRect()
+
         // Paint all except selected one, which will be painted last
         clientRect := getClientRectPadding()
         clientRect.offset(scrollPos)

@@ -483,10 +483,17 @@ impl Painter
     }
 
     // Interface the given rectangle with the current clipping rectangle
-    mtd pushClippingRect(rect: Rectangle)
+    mtd pushClippingSurfaceRect(rect: Rectangle)
+    {
+        pushClippingRect(rect, true)
+    }
+
+    // Interface the given rectangle with the current clipping rectangle
+    mtd pushClippingRect(rect: Rectangle, isSurfacePos = false)
     {
         rrect := rect
-        rrect.offset(curState.transform.tx, curState.transform.ty)
+        if !isSurfacePos
+            rrect.offset(curState.transform.tx, curState.transform.ty)
 
         if clippingRectOn
         {

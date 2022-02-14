@@ -382,6 +382,12 @@ impl IWnd for ListView
         rect.width = getDisplayWidth()
         rect.height = list.lineHeight
 
+        // Clipping, take care of padding
+        clipRect := getSurfaceRect()
+        clipRect.applyPadding(padding)
+        painter.pushClippingSurfaceRect(clipRect)
+        defer painter.popClippingRect()
+
         firstIdx := list.getFirstVisibleLineIndex()
         lastIdx  := list.getLastVisibleLineIndex()
 
