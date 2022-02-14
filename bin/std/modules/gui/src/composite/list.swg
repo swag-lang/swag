@@ -378,10 +378,6 @@ impl IWnd for ListView
         painter := bc.painter
         colors  := getThemeColors()
 
-        clientRect := getClientRectPadding()
-        painter.pushClippingRect(clientRect)
-        defer painter.popClippingRect()
-
         var rect: Math.Rectangle
         rect.width = getDisplayWidth()
         rect.height = list.lineHeight

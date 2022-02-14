@@ -31,7 +31,9 @@ interface IWnd
     onCreateEvent:      func(self, *CreateEvent)
     onDestroyEvent:     func(self, *DestroyEvent)
     onResizeEvent:      func(self, *ResizeEvent)
+    onPrePaintEvent:    func(self, *PaintEvent)
     onPaintEvent:       func(self, *PaintEvent)
+    onPostPaintEvent:   func(self, *PaintEvent)
     onKeyEvent:         func(self, *KeyEvent)
     onMouseEvent:       func(self, *MouseEvent)
     onSysCommandEvent:  func(self, *SysCommandEvent)
@@ -49,6 +51,7 @@ enum WndFlags
     ClipChildren
     Disabled
     Hidden
+    PreChildsPaint
     PostChildsPaint
 }
 
@@ -97,8 +100,12 @@ impl IWnd for Wnd
             itf.onDestroyEvent(cast(*DestroyEvent) evt)
         case Resize:
             itf.onResizeEvent(cast(*ResizeEvent) evt)
+        case PrePaint:
+            itf.onPrePaintEvent(cast(*PaintEvent) evt)
         case Paint:
             itf.onPaintEvent(cast(*PaintEvent) evt)
+        case PostPaint:
+            itf.onPostPaintEvent(cast(*PaintEvent) evt)
         case SysCommand:
             itf.onSysCommandEvent(cast(*SysCommandEvent) evt)
         case KeyPressed, KeyReleased, Char:
@@ -119,7 +126,9 @@ impl IWnd for Wnd
     mtd onCreateEvent(evt: *CreateEvent)            {}
     mtd onDestroyEvent(evt: *DestroyEvent)          {}
     mtd onResizeEvent(evt: *ResizeEvent)            {}
+    mtd onPrePaintEvent(evt: *PaintEvent)           {}
     mtd onPaintEvent(evt: *PaintEvent)              {}
+    mtd onPostPaintEvent(evt: *PaintEvent)          {}
     mtd onSysCommandEvent(evt: *SysCommandEvent)    {}
     mtd onSetThemeEvent(evt: *SetThemeEvent)        {}
     mtd onTimerEvent(evt: *TimerEvent)              {}
@@ -304,20 +313,28 @@ impl Wnd
             theme.drawSubRect(bc.painter, position, &theme.rects.dlg_BtnBar, theme.colors.dlg_BtnBarBk)
         }
 
-        // User paint
         bc.painter.translateTransform(position.x, position.y)
         curTrs := bc.painter.getTransform()
-        if !(wndFlags & .NoScroll)
-            bc.painter.translateTransform(-scrollPos.x, -scrollPos.y)
-        meTrs := bc.painter.getTransform()
         evt := PaintEvent{}
         evt.bc = bc
-        sendEvent(&evt)
-        bc.painter.setTransform(curTrs)
+
+        // Pre paint. Clipping is parent. No scroll
+        if wndFlags & .PreChildsPaint
+        {
+            evt.kind = .PrePaint
+            sendEvent(&evt)
+        }
 
         // Clipping
         if wndFlags & .ClipChildren
             bc.painter.pushClippingRect(getClientRect())
+
+        // Maint
+        if !(wndFlags & .NoScroll)
+            bc.painter.translateTransform(-scrollPos.x, -scrollPos.y)
+        evt.kind = .Paint
+        sendEvent(&evt)
+        bc.painter.setTransform(curTrs)
 
         // Childs
         if !bc.painter.isEmptyClippingRect()
@@ -339,11 +356,11 @@ impl Wnd
         if wndFlags & .ClipChildren
             bc.painter.popClippingRect()
 
-        // Post paint
+        // Post paint. Clipping is parent. No scroll
         if wndFlags & .PostChildsPaint
         {
-            bc.painter.setTransform(meTrs)
-            evt.kind = .PostChilds
+            bc.painter.setTransform(curTrs)
+            evt.kind = .PostPaint
             sendEvent(&evt)
         }
 

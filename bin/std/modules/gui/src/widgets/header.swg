@@ -133,11 +133,8 @@ impl IWnd for Header
             }
         }
 
-        clientRect := getClientRectPadding()
-        painter.pushClippingRect(clientRect)
-        defer painter.popClippingRect()
-
         // Paint all except selected one, which will be painted last
+        clientRect := getClientRectPadding()
         clientRect.offset(scrollPos)
         x := padding.x
         visit item, idx: items

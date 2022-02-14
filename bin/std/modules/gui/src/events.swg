@@ -8,7 +8,9 @@ enum EventKind
     Destroy
     Resize
     Move
+    PrePaint
     Paint
+    PostPaint
     KeyPressed
     KeyReleased
     Char
@@ -82,14 +84,6 @@ struct PaintEvent
 {
     using base: Event{kind: EventKind.Paint}
     bc: *PaintContext
-
-    enum Kind
-    {
-        BeforeChilds
-        PostChilds
-    }
-
-    kind: Kind = BeforeChilds
 }
 
 struct ResizeEvent

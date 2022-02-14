@@ -124,45 +124,40 @@ impl IWnd for Splitter
         }
     }
 
-    mtd onPaintEvent(evt: *PaintEvent)
+    mtd onPostPaintEvent(evt: *PaintEvent)
     {
-        wndFlags |= .PostChildsPaint
+        painter := evt.bc.painter
+        theme   := getTheme()
+        rects   := getThemeRects()
+        colors  := getThemeColors()
 
-        if evt.kind == .PostChilds
+        loop idx: items.count - 1
         {
-            painter := evt.bc.painter
-            theme   := getTheme()
-            rects   := getThemeRects()
-            colors  := getThemeColors()
+            rect := getBarRect(cast(u32) idx)
+            isHot := hotIdx == idx
+            colorBar := isHot ? colors.splitView_BarHot : colors.splitView_Bar
 
-            loop idx: items.count - 1
+            if isVertical()
             {
-                rect := getBarRect(cast(u32) idx)
-                isHot := hotIdx == idx
-                colorBar := isHot ? colors.splitView_BarHot : colors.splitView_Bar
-
-                if isVertical()
-                {
-                    rectBar := isHot ? &rects.splitView_HorzBarHotBk : &rects.splitView_HorzBarBk
-                    rect.x -= padding.x
-                    rect.width += padding.x + padding.z
-                    rect.x += 1
-                    rect.width -= 2
-                    theme.drawSubRect(painter, rect, rectBar, colorBar)
-                }
-                else
-                {
-                    rectBar := isHot ? &rects.splitView_VertBarHotBk : &rects.splitView_VertBarBk
-                    rect.y -= padding.y
-                    rect.height += padding.y + padding.w
-                    rect.y += 1
-                    rect.height -= 2
-                    theme.drawSubRect(painter, rect, rectBar, colorBar)
-                }
+                rectBar := isHot ? &rects.splitView_HorzBarHotBk : &rects.splitView_HorzBarBk
+                rect.x -= padding.x
+                rect.width += padding.x + padding.z
+                rect.x += 1
+                rect.width -= 2
+                theme.drawSubRect(painter, rect, rectBar, colorBar)
+            }
+            else
+            {
+                rectBar := isHot ? &rects.splitView_VertBarHotBk : &rects.splitView_VertBarBk
+                rect.y -= padding.y
+                rect.height += padding.y + padding.w
+                rect.y += 1
+                rect.height -= 2
+                theme.drawSubRect(painter, rect, rectBar, colorBar)
             }
         }
 
-        frameWnd.IWnd.onPaintEvent(evt)
+        frameWnd.IWnd.onPostPaintEvent(evt)
     }
 }
 
@@ -299,6 +294,7 @@ impl Splitter
         pos := position
         res := Wnd.create'Splitter(parent, null, pos, id)
         res.focusStrategy = .None
+        res.wndFlags |= .PostChildsPaint
         if vertical
             res.splitViewFlags |= .Vertical
         return res

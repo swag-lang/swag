@@ -173,7 +173,7 @@ impl PopupList
 
         with popup
         {
-            popup.frameFlags |= .SmallShadow
+            popup.setFrameFlags(FrameWndFlags.SmallShadow)
             setFrameForm(FrameWndForm.Square)
             scrollWnd = createView'ScrollWnd()
             scrollWnd.dockStyle = .Center

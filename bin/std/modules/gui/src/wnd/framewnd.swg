@@ -28,11 +28,27 @@ struct FrameWnd
 
 impl IWnd for FrameWnd
 {
+    mtd onPrePaintEvent(evt: *PaintEvent)
+    {
+        if frameFlags & .SmallShadow
+        {
+            bc      := evt.bc
+            painter := bc.painter
+            theme   := getTheme()
+            colors  := getThemeColors()
+            rects   := getThemeRects()
+            metrics := getThemeMetrics()
+
+            clientRect := getClientRect()
+            clientRect.applyPadding(metrics.frameWnd_SmallShadowSize)
+            subRect := &theme.rects.frameWnd_SmallShadow
+            theme.drawSubRect(painter, clientRect, subRect, colors.frameWnd_SmallShadow)
+        }
+    }
+
     mtd onPaintEvent(evt: *PaintEvent)
     {
         if frameForm == .Transparent
-            return
-        if !(frameFlags & .Borders) and evt.kind == .PostChilds
             return
 
         bc      := evt.bc
@@ -42,29 +58,62 @@ impl IWnd for FrameWnd
         rects   := getThemeRects()
         metrics := getThemeMetrics()
 
-        if evt.kind == .BeforeChilds
-        {
-            if frameFlags & .SmallShadow
-            {
-                clientRect := getClientRect()
-                clientRect.applyPadding(metrics.frameWnd_SmallShadowSize)
-                subRect := &theme.rects.frameWnd_SmallShadow
-                theme.drawSubRect(painter, clientRect, subRect, colors.frameWnd_SmallShadow)
-            }
-        }
-
-        var subRectBk:      *ThemeImageRect
-        var subRectBorder:  *ThemeImageRect
-        var colorBk:        Color = ?
-        var colorBorder:    Color = ?
+        var subRectBk:  *ThemeImageRect
+        var colorBk:    Color = ?
 
         switch frameForm
         {
         case Square:
             subRectBk = &rects.frameWnd_SquareBk
-            subRectBorder = &rects.frameWnd_SquareBorder
         case Round:
             subRectBk = &rects.frameWnd_RoundBk
+        }
+
+        // Display focus borders when the focus wnd is a child of me
+        showFocus := cast(bool) (frameFlags & .FocusBorder)
+        if showFocus
+        {
+            focus := getFocus()
+            if !focus or !isParentOf(focus)
+                showFocus = false
+        }
+
+        switch
+        {
+        case bc.isDisabled:
+            colorBk = colors.frameWnd_DisabledBk
+        case showFocus:
+            colorBk = colors.frameWnd_FocusBk
+        default:
+            colorBk = colors.frameWnd_Bk
+        }
+
+        clientRect := getClientRect()
+        theme.drawSubRect(painter, clientRect, subRectBk, colorBk)
+    }
+
+    mtd onPostPaintEvent(evt: *PaintEvent)
+    {
+        if frameForm == .Transparent
+            return
+        if !(frameFlags & .Borders)
+            return
+
+        bc      := evt.bc
+        painter := bc.painter
+        theme   := getTheme()
+        colors  := getThemeColors()
+        rects   := getThemeRects()
+        metrics := getThemeMetrics()
+
+        var subRectBorder:  *ThemeImageRect
+        var colorBorder:    Color = ?
+
+        switch frameForm
+        {
+        case Square:
+            subRectBorder = &rects.frameWnd_SquareBorder
+        case Round:
             subRectBorder = &rects.frameWnd_RoundBorder
         }
 
@@ -81,21 +130,16 @@ impl IWnd for FrameWnd
         {
         case bc.isDisabled:
             colorBorder = colors.frameWnd_DisabledBorder
-            colorBk = colors.frameWnd_DisabledBk
         case showFocus:
             colorBorder = colors.frameWnd_FocusBorder
-            colorBk = colors.frameWnd_FocusBk
         default:
             colorBorder = colors.frameWnd_Border
-            colorBk = colors.frameWnd_Bk
         }
 
         clientRect := getClientRect()
-        if evt.kind == .BeforeChilds
-            theme.drawSubRect(painter, clientRect, subRectBk, colorBk)
-        elif evt.kind == .PostChilds
-            theme.drawSubRect(painter, clientRect, subRectBorder, colorBorder, false)
+        theme.drawSubRect(painter, clientRect, subRectBorder, colorBorder, false)
     }
+
 
     mtd onResizeEvent(evt: *ResizeEvent)
     {
@@ -118,7 +162,19 @@ impl FrameWnd
         return cast(*T) view
     }
 
-    // Set the editbox form
+    // Set the frame wnd flags
+    mtd setFrameFlags(add, remove = FrameWndFlags.None)
+    {
+        frameFlags |= add
+        frameFlags &= ~remove
+
+        if frameFlags & .SmallShadow
+            wndFlags |= .PreChildsPaint
+        else
+            wndFlags &= ~.PreChildsPaint
+    }
+
+    // Set the frame wnd form
     mtd setFrameForm(form: FrameWndForm)
     {
         if frameForm == #self.form
