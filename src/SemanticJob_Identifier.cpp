@@ -2861,9 +2861,6 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
             {
                 if (matches[j]->oneOverload && !(matches[j]->oneOverload->symMatchContext.flags & CASTFLAG_RESULT_STRUCT_CONVERT))
                 {
-                    printf("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n");
-                    printf("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n");
-                    printf("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n");
                     curMatch->remove = true;
                     break;
                 }
