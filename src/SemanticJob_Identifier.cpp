@@ -2854,6 +2854,22 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
             }
         }
 
+        // Priority if no CASTFLAG_RESULT_STRUCT_CONVERT
+        if (curMatch->oneOverload && curMatch->oneOverload->symMatchContext.flags & CASTFLAG_RESULT_STRUCT_CONVERT)
+        {
+            for (int j = 0; j < countMatches; j++)
+            {
+                if (matches[j]->oneOverload && !(matches[j]->oneOverload->symMatchContext.flags & CASTFLAG_RESULT_STRUCT_CONVERT))
+                {
+                    printf("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n");
+                    printf("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n");
+                    printf("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n");
+                    curMatch->remove = true;
+                    break;
+                }
+            }
+        }
+
         // Priority to a concrete type versus a generic one
         auto lastOverloadType = overSym->ownerTable->scope->owner->typeInfo;
         if (lastOverloadType && lastOverloadType->flags & TYPEINFO_GENERIC)

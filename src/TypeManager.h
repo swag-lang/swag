@@ -34,6 +34,9 @@ static const uint32_t CASTFLAG_NO_LAST_MINUTE = 0x00100000;
 static const uint32_t CASTFLAG_NO_ITF         = 0x00200000;
 static const uint32_t CASTFLAG_PARAMS         = 0x00400000;
 
+// Stored in SymbolMatchContext.flags
+static const uint32_t CASTFLAG_RESULT_STRUCT_CONVERT = 0x01000000;
+
 static const uint32_t CONCRETE_ALL        = 0xFFFFFFFF;
 static const uint32_t CONCRETE_ENUM       = 0x00000001;
 static const uint32_t CONCRETE_FUNC       = 0x00000002;

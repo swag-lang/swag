@@ -86,9 +86,11 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
             castFlags |= CASTFLAG_LITERAL_SUFFIX;
         castFlags |= forceCastFlags | CASTFLAG_PARAMS;
 
-        bool same = TypeManager::makeCompatibles(context.semContext, wantedTypeInfo, callTypeInfo, nullptr, nullptr, castFlags);
+        context.semContext->castFlagsResult = 0;
+        bool same                           = TypeManager::makeCompatibles(context.semContext, wantedTypeInfo, callTypeInfo, nullptr, nullptr, castFlags);
         if (context.semContext->result != ContextResult::Done)
             return;
+        context.flags |= context.semContext->castFlagsResult;
 
         if (!same)
         {

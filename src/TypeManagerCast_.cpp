@@ -2424,7 +2424,10 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
             bool ok         = false;
             SWAG_CHECK(castStructToStruct(context, toStruct, fromStruct, toType, fromType, fromNode, castFlags, ok));
             if (ok || context->result == ContextResult::Pending)
+            {
+                context->castFlagsResult |= CASTFLAG_RESULT_STRUCT_CONVERT;
                 return true;
+            }
         }
     }
 
