@@ -2378,9 +2378,14 @@ bool TypeManager::castToReference(SemanticContext* context, TypeInfo* toType, Ty
         bool ok         = false;
         SWAG_CHECK(castStructToStruct(context, toStruct, fromStruct, toType, fromType, fromNode, castFlags, ok));
         if (ok || context->result == ContextResult::Pending)
+        {
+            if (fromStruct != toStruct)
+                context->castFlagsResult |= CASTFLAG_RESULT_STRUCT_CONVERT;
             return true;
+        }
     }
 
+    // Struct to struct pointer
     if (fromType->isPointerTo(TypeInfoKind::Struct) && toTypeReference->pointedType->kind == TypeInfoKind::Struct)
     {
         auto fromPtr    = CastTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer);
@@ -2389,7 +2394,11 @@ bool TypeManager::castToReference(SemanticContext* context, TypeInfo* toType, Ty
         bool ok         = false;
         SWAG_CHECK(castStructToStruct(context, toStruct, fromStruct, toType, fromType, fromNode, castFlags, ok));
         if (ok || context->result == ContextResult::Pending)
+        {
+            if (fromStruct != toStruct)
+                context->castFlagsResult |= CASTFLAG_RESULT_STRUCT_CONVERT;
             return true;
+        }
     }
 
     return castError(context, toType, fromType, fromNode, castFlags);
@@ -2425,7 +2434,8 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
             SWAG_CHECK(castStructToStruct(context, toStruct, fromStruct, toType, fromType, fromNode, castFlags, ok));
             if (ok || context->result == ContextResult::Pending)
             {
-                context->castFlagsResult |= CASTFLAG_RESULT_STRUCT_CONVERT;
+                if (fromStruct != toStruct)
+                    context->castFlagsResult |= CASTFLAG_RESULT_STRUCT_CONVERT;
                 return true;
             }
         }
@@ -2440,7 +2450,11 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
         bool ok         = false;
         SWAG_CHECK(castStructToStruct(context, toStruct, fromStruct, toType, fromType, fromNode, castFlags, ok));
         if (ok || context->result == ContextResult::Pending)
+        {
+            if (fromStruct != toStruct)
+                context->castFlagsResult |= CASTFLAG_RESULT_STRUCT_CONVERT;
             return true;
+        }
     }
 
     // Lambda to *void
