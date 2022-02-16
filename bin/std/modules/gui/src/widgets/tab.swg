@@ -198,6 +198,7 @@ impl IWnd for Tab
             return
 
         computeTabLayout()
+        ensureVisible(selectedIdx)
 
         curView := views[selectedIdx].view
         clientRect := getClientRect()
@@ -346,12 +347,33 @@ private impl Tab
             }
 
             x := barRect.right() - 32
-            buttonPopup.setPosition(@{x, 0, 24, 24})
+            buttonPopup.setPosition(@{x, (barHeight * 0.5) - 12, 24, 24})
         }
         else if buttonPopup
         {
+            firstVisibleIdx = 0
             buttonPopup.destroy()
             buttonPopup = null
+            computeTabLayout()
+        }
+    }
+
+    mtd ensureVisible(idx: u32)
+    {
+        rect := getBarRectItems()
+        if idx < firstVisibleIdx or views[idx].pos + views[idx].width >= rect.right()
+        {
+            x := rect.right() - views[firstVisibleIdx].width
+            firstVisibleIdx = idx
+            while firstVisibleIdx
+            {
+                x -= views[firstVisibleIdx - 1].width
+                if x < rect.x
+                    break
+                firstVisibleIdx -= 1
+            }
+
+            computeTabLayout()
         }
     }
 }
@@ -418,23 +440,7 @@ impl Tab
         views[selectedIdx].view.wndFlags &= ~.Hidden
 
         sendResizeEvent()
-
-        rect := getBarRectItems()
-        if idx < firstVisibleIdx or views[idx].pos + views[idx].width >= rect.right()
-        {
-            x := rect.right() - views[firstVisibleIdx].width
-            firstVisibleIdx = idx
-            while firstVisibleIdx
-            {
-                x -= views[firstVisibleIdx - 1].width
-                if x < rect.x
-                    break
-                firstVisibleIdx -= 1
-            }
-
-            computeTabLayout()
-        }
-
+        ensureVisible(idx)
         invalidate()
     }
 }
