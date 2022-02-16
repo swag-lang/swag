@@ -119,7 +119,7 @@ func createView1(view: *Wnd)
     {
         list := createListMulti(view)
         list.frameFlags |= .FocusBorder
-        list.listFlags |= .AlternateLines
+        list.listFlags |= .AlternateLines | .HorzLines | .VertLines
         list.setFrameForm(FrameWndForm.Square)
         list.setPosition(@{420, 400, 400, 300})
 

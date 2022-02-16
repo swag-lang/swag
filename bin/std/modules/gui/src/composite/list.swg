@@ -68,6 +68,8 @@ enum ListFlags
     HideSelection
     AlternateLines
     Checkable
+    HorzLines
+    VertLines
 }
 
 struct List
@@ -377,6 +379,7 @@ impl IWnd for ListView
         bc      := evt.bc
         painter := bc.painter
         colors  := getThemeColors()
+        metrics := getThemeMetrics()
 
         var rect: Math.Rectangle
         rect.width = getDisplayWidth()
@@ -406,6 +409,9 @@ impl IWnd for ListView
                 list.sigVirtualFill(&line, i)
                 paintLine(bc, i, &line, rect)
                 rect.y = rect.bottom()
+
+                if list.listFlags & .HorzLines
+                    painter.drawLine(rect.x, rect.y, rect.right(), rect.y, colors.listItem_Line, 1)
             }
         }
         else
@@ -415,13 +421,41 @@ impl IWnd for ListView
                 line := list.lines[i]
                 paintLine(bc, i, line, rect)
                 rect.y = rect.bottom()
+
+                if list.listFlags & .HorzLines
+                    painter.drawLine(rect.x, rect.y, rect.right(), rect.y, colors.listItem_Line, 1)
             }
+        }
+
+        if list.header and list.listFlags & .VertLines
+        {
+            rect = getClientRectPadding()
+            loop idx: 1..list.header.items.count-1
+            {
+                x := getXPos(list.header.items[idx].column)
+                x -= metrics.header_Separator * 0.5
+                painter.drawLine(x, rect.y, x, rect.bottom(), colors.listItem_Line, 1)
+            }
+
+            last := list.header.items.back()
+            x := getXPos(last.column)
+            x += last.width
+            x += metrics.header_Separator * 0.5
+            painter.drawLine(x, rect.y, x, rect.bottom(), colors.listItem_Line, 1)
         }
     }
 }
 
 private impl ListView
 {
+    mtd getXPos(column: u32)->f32
+    {
+        x := list.header.getItemPositionByCol(column)
+        x += list.header.getSurfaceRect().x
+        x -= getSurfaceRect().x
+        return x
+    }
+
     mtd paintLine(bc: PaintContext, idx: u32, line: *ListLine, rect: Math.Rectangle)
     {
         painter := bc.painter
@@ -484,7 +518,7 @@ private impl ListView
             // Right
             if list.header
             {
-                labelPos.x = list.header.getItemPositionByCol(item.column)
+                labelPos.x = getXPos(item.column)
                 labelPos.width = list.header.getItemWidthByCol(item.column)
             }
 

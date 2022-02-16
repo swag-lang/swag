@@ -367,8 +367,8 @@ impl Header
     {
         Debug.assert(column < items.count)
 
-        x := 0'f32
-        m := parent.getThemeMetrics().header_Separator
+        x := padding.x
+        m := getThemeMetrics().header_Separator
         visit item, i: items
         {
             if item.column == column
@@ -384,6 +384,7 @@ impl Header
     {
         w := getItemPosition(cast(u32) items.count - 1)
         w += items.back().width
+        w += getThemeMetrics().header_Separator
         return w
     }
 
