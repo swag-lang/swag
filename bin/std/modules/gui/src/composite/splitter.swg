@@ -33,11 +33,6 @@ impl IWnd for Splitter
         evt.accepted = true
         local := surfaceToLocal(evt.surfacePos)
 
-        if hotIdx != Swag.U32.Max
-            cursor = isVertical() ? Cursor.from(CursorShape.SizeNS) : Cursor.from(CursorShape.SizeWE)
-        else
-            cursor.clear()
-
         switch evt.kind
         {
         case MouseLeave:
@@ -89,6 +84,11 @@ impl IWnd for Splitter
                 surface.app.releaseMouse()
             }
         }
+
+        if hotIdx != Swag.U32.Max
+            cursor = isVertical() ? Cursor.from(CursorShape.SizeNS) : Cursor.from(CursorShape.SizeWE)
+        else
+            cursor.clear()
     }
 
     mtd onResizeEvent(evt: *ResizeEvent)
