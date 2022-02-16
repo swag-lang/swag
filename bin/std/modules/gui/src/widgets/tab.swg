@@ -60,7 +60,7 @@ struct Tab
     firstVisibleIdx:    u32 = 0
     hotIdx:             u32 = Swag.U32.Max
     barHeight:          f32
-    totalWidth:         f32
+    mostRightPos:       f32
 }
 
 impl IWnd for Tab
@@ -297,7 +297,7 @@ private impl Tab
     {
         rect := getBarRectItems()
 
-        totalWidth = 0
+        mostRightPos = rect.x
         switch barLayout
         {
         case Divide:
@@ -306,7 +306,7 @@ private impl Tab
             visit v: views
             {
                 v.width = w
-                totalWidth += w
+                mostRightPos += w
             }
 
         case Fixed:
@@ -314,7 +314,7 @@ private impl Tab
             visit v: views
             {
                 v.width = w
-                totalWidth += w
+                mostRightPos += w
             }
         }
 
@@ -332,7 +332,7 @@ private impl Tab
     mtd createDestroyButtonPopup()
     {
         barRect := getClientRectPadding()
-        if totalWidth > barRect.right()
+        if mostRightPos > barRect.right()
         {
             // Create a button if there are too many items for the given size
             if !buttonPopup
@@ -440,7 +440,6 @@ impl Tab
         views[selectedIdx].view.wndFlags &= ~.Hidden
 
         sendResizeEvent()
-        ensureVisible(idx)
         invalidate()
     }
 }
