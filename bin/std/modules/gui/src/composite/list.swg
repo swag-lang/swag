@@ -433,12 +433,14 @@ impl IWnd for ListView
             loop idx: 1..list.header.items.count-1
             {
                 x := getXPos(list.header.items[idx].column)
+                x -= scrollPos.x
                 x -= metrics.header_Separator * 0.5
                 painter.drawLine(x, rect.y, x, rect.bottom(), colors.listItem_Line, 1)
             }
 
             last := list.header.items.back()
             x := getXPos(last.column)
+            x -= scrollPos.x
             x += last.width
             x += metrics.header_Separator * 0.5
             painter.drawLine(x, rect.y, x, rect.bottom(), colors.listItem_Line, 1)
@@ -531,6 +533,9 @@ private impl ListView
                 rectPos.width += metrics.header_Separator * 0.5
                 painter.fillRect(rectPos, item.colorBk)
             }
+
+            painter.pushClippingRect(labelPos)
+            defer painter.popClippingRect()
 
             // Checkbox
             if idxItem == 0 and list.listFlags & .Checkable
