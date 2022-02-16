@@ -388,8 +388,8 @@ impl IWnd for ListView
         // Clipping, take care of padding
         clipRect := getSurfaceRect()
         clipRect.applyPadding(padding)
-        painter.pushClippingSurfaceRect(clipRect)
-        defer painter.popClippingRect()
+        //painter.pushClippingSurfaceRect(clipRect)
+        //defer painter.popClippingRect()
 
         firstIdx := list.getFirstVisibleLineIndex()
         lastIdx  := list.getLastVisibleLineIndex()
@@ -526,7 +526,11 @@ private impl ListView
 
             // Background color ?
             if item.colorBk.a and !isSelected
-                painter.fillRect(labelPos, item.colorBk)
+            {
+                rectPos := labelPos
+                rectPos.width += metrics.header_Separator * 0.5
+                painter.fillRect(rectPos, item.colorBk)
+            }
 
             // Checkbox
             if idxItem == 0 and list.listFlags & .Checkable
