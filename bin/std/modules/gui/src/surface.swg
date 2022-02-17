@@ -10,6 +10,8 @@ struct Surface
 
     rc:             RenderingContext
     position:       Math.Rectangle
+    minSize:        Math.Point
+    maxSize:        Math.Point
 
     flags:          SurfaceFlags = Zero
 
@@ -64,7 +66,7 @@ impl Surface
 
         try createNative(app, surface, x, y, width, height, flags, mainSurface)
 
-        surface.wnd.minSize = @{128, 128}
+        surface.minSize = @{256, 256}
         surface.sendResizeEvent(cast(f32) width, cast(f32) height)
     }
 
