@@ -564,32 +564,6 @@ struct MyView
 
 impl IWnd for MyView
 {
-    mtd onCreateEvent(event: *CreateEvent)
-    {
-        assume
-        {
-            rdr := surface.app.getRenderer()
-            img0 := Image.load(imagePath("basn0g01.png"))
-            img1 := Image.load(imagePath("rgba.bmp"))
-            Res.image0 = rdr.addImage(img0)
-            Res.image1 = rdr.addImage(img1)
-            Res.image2 = rdr.addImage(img1)
-            img1.grayScale()
-            img1.setAlpha(128)
-            rdr.updateTexture(Res.image2, img1.pixels)
-
-            Res.typeface = TypeFace.load(imagePath("arial.ttf"))
-            Res.fontDefault = Font.create(Res.typeface, cast(u32) ((12 * 96) / 72))
-            Res.font40 = Font.create(Res.typeface, 40)
-            Res.font80 = Font.create(Res.typeface, 80)
-
-            Res.fontFam.regular = Font.create(imagePath("arial.ttf"), 20)
-            Res.fontFam.bold = Font.create(imagePath("arialbd.ttf"), 20)
-            Res.fontFam.italic = Font.create(imagePath("ariali.ttf"), 20)
-            Res.fontFam.boldItalic = Font.create(imagePath("arialbi.ttf"), 20)
-        }
-    }
-
     mtd onPaintEvent(event: *PaintEvent)
     {
         painter := event.bc.painter
@@ -655,6 +629,29 @@ impl IWnd for MyView
 
     view := Wnd.create'MyView()
     surface := try app.createSurface(100, 100, W, H, view: view)
+
+    assume
+    {
+        rdr := surface.app.getRenderer()
+        img0 := Image.load(imagePath("basn0g01.png"))
+        img1 := Image.load(imagePath("rgba.bmp"))
+        Res.image0 = rdr.addImage(img0)
+        Res.image1 = rdr.addImage(img1)
+        Res.image2 = rdr.addImage(img1)
+        img1.grayScale()
+        img1.setAlpha(128)
+        rdr.updateTexture(Res.image2, img1.pixels)
+
+        Res.typeface = TypeFace.load(imagePath("arial.ttf"))
+        Res.fontDefault = Font.create(Res.typeface, cast(u32) ((12 * 96) / 72))
+        Res.font40 = Font.create(Res.typeface, 40)
+        Res.font80 = Font.create(Res.typeface, 80)
+
+        Res.fontFam.regular = Font.create(imagePath("arial.ttf"), 20)
+        Res.fontFam.bold = Font.create(imagePath("arialbd.ttf"), 20)
+        Res.fontFam.italic = Font.create(imagePath("ariali.ttf"), 20)
+        Res.fontFam.boldItalic = Font.create(imagePath("arialbi.ttf"), 20)
+    }
 
     surface.show()
     app.run()

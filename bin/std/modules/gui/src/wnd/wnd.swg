@@ -83,6 +83,7 @@ struct Wnd
     backgroundStyle:  BackgroundStyle = Transparent
     isAllocated:      bool
     isPendingDestroy: bool
+    createEventDone:  bool
 
     hookOnEvent: func(*Wnd, *Event)->bool
 }
@@ -181,6 +182,7 @@ impl Wnd
             res.setParent(parent)
             evt := CreateEvent{}
             res.sendEvent(&evt)
+            res.createEventDone = true
             res.sendResizeEvent()
         }
 
@@ -216,6 +218,13 @@ impl Wnd
         }
 
         computeStyle()
+
+        if !createEventDone
+        {
+            createEventDone = true
+            evt := CreateEvent{}
+            sendEvent(&evt)
+        }
     }
 
     //////////////////////////////////////////////
