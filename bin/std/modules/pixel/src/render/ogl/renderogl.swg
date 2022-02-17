@@ -363,7 +363,7 @@ impl RenderOgl
             case Clear:
                 params := &cmd.clear
                 (a, r, g, b) := params.color.toArgbf()
-                glClearColor(r, g, b, a)
+                glClearColor(r, g, b, 0)
                 glClear(GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT)
 
             case ColorMask:
