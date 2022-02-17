@@ -119,7 +119,8 @@ private impl Application
             {
                 evt.kind = .MouseLeave
                 evt.surfacePos = mouseEnterWnd.screenToSurface(mousePos)
-                mouseEnterWnd.sendEvent(&evt)
+                evt.target = mouseEnterWnd
+                sendEventPrivate(&evt, mouseCaptureWnd)
             }
 
             mouseEnterWnd = targetWnd
