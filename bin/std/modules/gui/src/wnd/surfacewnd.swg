@@ -238,6 +238,16 @@ impl IWnd for SurfaceWnd
         {
             posCaption.x += theme.metrics.wnd_CaptionMarginTitle
 
+            posClip := posCaption
+            if surface.flags & .MinimizeBtn
+                posClip.setRight(minimizeBtn.position.x)
+            elif surface.flags & .MaximizeBtn
+                posClip.setRight(maximizeBtn.position.x)
+            elif surface.flags & .CloseBtn
+                posClip.setRight(closeBtn.position.x)
+            bc.painter.pushClippingRect(posClip)
+            defer bc.painter.popClippingRect()
+
             if icon.isValid()
             {
                 icon.paint(bc.painter, posCaption.x, posCaption.vertCenter() - icon.size * 0.5)
