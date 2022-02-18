@@ -4,10 +4,10 @@
     // There's no memory footprint if the type is a value or a string
     {
         const a = 666
-        #assert(a == 666)
+        #assert a == 666
 
         const b: string = "string"
-        #assert(b == "string")
+        #assert b == "string"
     }
 
     // Const can be more than just a simple type.
@@ -15,7 +15,8 @@
     // That means that you can take the address of such a constant at runtime
     {
         const a: [3] s32 = @[0, 1, 2]   // static array of size 3, type s32
-        ptr := &a[0]
+
+        ptr := &a[0] // Take the address of the first element
         @assert(ptr[0] == 0)
         @assert(ptr[2] == 2)
     }

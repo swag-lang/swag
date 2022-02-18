@@ -73,7 +73,7 @@
     // A <=> B == 1  if A > B
     {
         a := -1.5 <=> 2.31
-        @assert(@typeof(a) == s32)
+        #assert @typeof(a) == s32
         @assert(a == -1)
 
         @assert(-1 <=>  1 == -1)
@@ -98,7 +98,7 @@
     }
 
     // Null conditional operator 'orelse'
-    // Works with strings, pointers and structures with the 'opData' special function
+    // Works with strings, pointers and structures with the 'opData' special function (we'll see later)
     {
         a := "string1"
         b := "string2"

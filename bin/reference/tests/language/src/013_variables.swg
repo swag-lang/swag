@@ -45,15 +45,15 @@
     {
         var a = 1.5
         @assert(a == 1.5)
-        #assert(@typeof(a) == f32)
+        #assert @typeof(a) == f32
 
         var b = "string"
         @assert(b == "string")
-        #assert(@typeof(b) == string)
+        #assert @typeof(b) == string
 
         var c = 1.5'f64
         @assert(c == 1.5)
-        #assert(@typeof(c) == f64)
+        #assert @typeof(c) == f64
     }
 
     // Same for multiple variables
@@ -61,29 +61,29 @@
         var a, b = true
         @assert(a == true)
         @assert(b == true)
-        #assert(@typeof(a) == @typeof(true))
-        #assert(@typeof(b) == @typeof(a))
+        #assert @typeof(a) == @typeof(true)
+        #assert @typeof(b) == @typeof(a)
 
         var c = 1.5, d = "string"
         @assert(c == 1.5)
         @assert(d == "string")
-        #assert(@typeof(c) == f32)
-        #assert(@typeof(d) == string)
+        #assert @typeof(c) == f32
+        #assert @typeof(d) == string
     }
 
     // Even 'var' is optional if you use ':='
     {
         a := 1.5
         @assert(a == 1.5)
-        #assert(@typeof(a) == f32)
+        #assert @typeof(a) == f32
 
         b := "string"
         @assert(b == "string")
-        #assert(@typeof(b) == string)
+        #assert @typeof(b) == string
 
         c := 1.5'f64
         @assert(c == 1.5)
-        #assert(@typeof(c) == f64)
+        #assert @typeof(c) == f64
     }
 
     // A local variable declared with the #[Swag.Global] attribute will be global (like 'static' in C++)
@@ -91,6 +91,7 @@
         func toto()->s32
         {
             #[Swag.Global] var x = 1
+
             x += 1
             return x
         }

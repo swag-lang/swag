@@ -39,7 +39,7 @@
     // loop can be used on every types that accept the '@countof' intrinsic
     {
         arr := @[10, 20, 30, 40]
-        #assert(@countof(arr) == 4)
+        #assert @countof(arr) == 4
 
         cpt := 0
         loop arr

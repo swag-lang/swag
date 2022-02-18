@@ -29,10 +29,11 @@
     }
 
     // Both names are optional. In that case, you can use '@alias0' and '@alias1'
+    // '@alias0' for the value, and '@alias1' for the index
     {
         visit "ABC"
         {
-            a := @alias1
+            a := @alias1    // This is the index
             @assert(a == @index)
             switch a
             {
@@ -49,9 +50,7 @@
 
         result := 0
         visit it: array
-        {
             result += it
-        }
 
         @assert(result == 10+20+30)
     }
@@ -63,6 +62,7 @@
         result := 0
         visit it: array
             result += it
+
         @assert(result == 10+20+30+40)
     }
 
@@ -73,9 +73,7 @@
 
         result := 0
         visit *it: array
-        {
             result += dref it
-        }
 
         @assert(result == 1+2+3+4)
     }

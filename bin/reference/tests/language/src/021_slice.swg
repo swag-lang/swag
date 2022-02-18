@@ -4,7 +4,7 @@
     // It's declared with [..]
     {
         var a: [..] bool
-        #assert(@sizeof(a) == @sizeof(*void) + @sizeof(uint))
+        #assert @sizeof(a) == @sizeof(*void) + @sizeof(uint)
     }
 
     // You can initialize a slice like an array

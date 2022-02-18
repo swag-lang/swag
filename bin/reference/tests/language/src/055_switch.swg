@@ -107,8 +107,9 @@
     // If the switch expression is omitted, then it will behave like a serie of if/else,
     // resolved in order
     {
-        value := 6
+        value  := 6
         value1 := "true"
+
         switch
         {
         case value == 6 or value == 7:
@@ -124,6 +125,7 @@
     // When used on an 'any' variable, switch is done on the underlying variable type
     {
         var x: any = "value"
+
         switch x
         {
         case string: break

@@ -32,7 +32,7 @@
         @assert(c == 3)
         @assert(d == 4)
 
-        // '@sizeof' gives the size, in bytes, of a variable
+        // The instrinsic '@sizeof' gives the size, in bytes, of a variable
         @assert(@sizeof(a) == 1)
         @assert(@sizeof(b) == 2)
         @assert(@sizeof(c) == 4)
@@ -62,11 +62,11 @@
         @assert(@sizeof(b) == 1)
     }
 
-    // The string type. Strings are UTF8, and are stored as two 64 bits (pointer to value, and length)
+    // The string type. Strings are UTF8, and are stored as two 64 bits (the pointer to the value and the string length in bytes)
     {
         var a: string = "string 是"
         @assert(a == "string 是")
-        @assert(@sizeof(a) == 16)
+        @assert(@sizeof(a) == 2 * @sizeof(*void))
     }
 
     // The 'rune' type uses the string syntax, postfix with the type 'rune'. It's a 32 bits unicode code point.

@@ -4,7 +4,7 @@
     {
         x := 1.0
         y := cast(s32) x
-        #assert(@typeof(y) == s32)
+        #assert @typeof(y) == s32
         @assert(y == 1)
     }
 
@@ -12,7 +12,7 @@
     {
         var x: f32 = 1.0
         var y: s32 = acast x    // cast to 's32'
-        #assert(@typeof(y) == s32)
+        #assert @typeof(y) == s32
         @assert(y == 1)
     }
 

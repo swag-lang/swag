@@ -34,7 +34,7 @@
     {
         var a = 1.5
         @assert(a == 1.5)
-        #assert(@typeof(a) == f32)
+        #assert @typeof(a) == f32
 
         var b = 0.11
         @assert(b == 0.11)
@@ -53,8 +53,8 @@
     {
         var a = 1.5
         @assert(a == 1.5)
-        #assert(@typeof(a) == f32)
-        #assert(@typeof(a) != f64)
+        #assert @typeof(a) == f32
+        #assert @typeof(a) != f64
     }
 
     // You can postfix a number by a type, to force it
@@ -62,10 +62,10 @@
         var a = 1.5'f64
         @assert(a == 1.5)
         @assert(a == 1.5'f64)
-        #assert(@typeof(a) == f64)
+        #assert @typeof(a) == f64
 
         b := 10'u8
         @assert(b == 10)
-        #assert(@typeof(b) == u8)
+        #assert @typeof(b) == u8
     }
 }

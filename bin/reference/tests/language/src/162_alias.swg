@@ -15,8 +15,8 @@
         alias Float64 = f64
         var x: Float32 = 1.0
         var y: Float64 = 1.0
-        @assert(@typeof(Float32) == f32)
-        @assert(@typeof(Float64) == f64)
+        #assert @typeof(Float32) == f32
+        #assert @typeof(Float64) == f64
     }
 
     // A type alias can be marked with the 'Swag.Strict' attribute
@@ -25,7 +25,7 @@
     {
         #[Swag.Strict]
         alias MyType = s32
-        @assert(@typeof(MyType) != s32)
+        #assert @typeof(MyType) != s32
         var x: MyType = cast(MyType) 0
     }
 

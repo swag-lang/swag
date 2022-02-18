@@ -22,7 +22,7 @@
     // In that case, '@kindof' is evaluted at runtime.
     {
         var a: any = "string"
-        #assert(@typeof(a) == any)
+        #assert @typeof(a) == any
         @assert(@kindof(a) == string)
     }
 

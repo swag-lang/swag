@@ -36,9 +36,8 @@
     {
         cpt := 0'uint
         for var i: u32 = 10; i < 15; i += 1;
-        {
             cpt += @index
-        }
+
         @assert(cpt == 0+1+2+3+4)
     }
 }

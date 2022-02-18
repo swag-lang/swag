@@ -53,7 +53,7 @@ impl Vector3
     @assert(b.x == 666)
 
     // If you know what you're doing, you can avoid the first call to 'opDrop' with '=,nodrop'
-    // Do it when you know the state of 'a' and do not want an extra unecessary call
+    // Do it when you know the state of 'a' and do not want an extra unnecessary call
     // (for example if 'a' is in an undetermined state)
     a =,nodrop b
     a =,nodrop,move b

@@ -3,17 +3,17 @@
     // Strings are UTF8, and can be compared
     {
         const a = "this is a chinese character: 是"
-        #assert(a == "this is a chinese character: 是")
+        #assert a == "this is a chinese character: 是"
 
         const b = "this are some cyrillic characters: ӜИ"
-        #assert(b == "this are some cyrillic characters: ӜИ")
+        #assert b == "this are some cyrillic characters: ӜИ"
     }
 
     // A rune is unicode, and 32 bits
     {
         const a = "是"'rune
-        #assert(a == "是"'rune)
-        #assert(@sizeof(a) == @sizeof(u32))
+        #assert a == "是"'rune
+        #assert @sizeof(a) == @sizeof(u32)
     }
 
     // You cannot index a string to get a rune, except in ascii strings. This is because i didn't want the
@@ -22,25 +22,25 @@
     {
         const a = "this is a chinese character: 是"
         const b = a[0]
-        #assert(b == "t"'u8)
-        #assert(@typeof(b) == @typeof(u8))
+        #assert b == "t"'u8
+        #assert @typeof(b) == @typeof(u8)
 
         // Here, the 'X' character in the middle does not have the index '1', because the chinese character before is
         // encoded in UTF8 with more than 1 byte
         const c = "是X是"
-        #assert(c[1] != "X"'u8) // False because the byte number 1 is not the character 'X'
+        #assert c[1] != "X"'u8 // False because the byte number 1 is not the character 'X'
     }
 
     // Multiple strings are compiled as one
     {
         const a = "this is "   "a"   " string"
-        #assert(a == "this is a string")    // Compile time assertion
+        #assert a == "this is a string"
     }
 
     // You can concatenate some values if the values are known at compile time. Use the '++' operator for that
     {
         const a = "the devil number is " ++ 666
-        @assert(a == "the devil number is 666")
+        #assert a == "the devil number is 666"
 
         const b = 666
         var c = "the devil number is not " ++ (b + 1) ++ "!"
@@ -50,7 +50,7 @@
         @assert(d == "they are 4 apples in 4 baskets")
     }
 
-    // A string and a character can contain escape sequences for special characters
+    // A string and a rune can contain escape sequences for special characters
     // An escape sequence starts with '\'
     {
         const a = "this is code ascii 0x00:   \0"
@@ -73,15 +73,15 @@
         const c = "\U26262626"  // 4 bytes, hexadecimal, unicode 32 bits
 
         const d = "\u2F46"
-        @assert(d == "⽆")
+        #assert d == "⽆"
     }
 
     // A raw string does not transform the escape sequences
     // A raw string starts and ends with the character '@'
     {
         const a = @"\u2F46"@
-        @assert(a != "⽆")
-        @assert(a == @"\u2F46"@)
+        #assert a != "⽆"
+        #assert a == @"\u2F46"@
     }
 
     // A raw string can be declared on several lines because <eol> is now
@@ -136,13 +136,7 @@
     // You can also use '@stringof' to return the result of a constant expression as a string
     {
         const X = 1
-        #assert(@stringof(X) == "1")
-        #assert(@stringof(X + 10) == "11")
-    }
-
-    // Bineary operator ++ can be used to convert/concatenate at compile time
-    {
-        x := "value is " ++ 6 ++ " !"
-        @assert(x == "value is 6 !")
+        #assert @stringof(X) == "1"
+        #assert @stringof(X + 10) == "11"
     }
 }

@@ -158,6 +158,7 @@ attr
 bitcast
 cast
 catch
+closure
 const
 discard
 enum
