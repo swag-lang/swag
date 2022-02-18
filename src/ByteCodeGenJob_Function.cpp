@@ -181,7 +181,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
                     auto nodeCapture = CastAst<AstMakePointer>(child, AstNodeKind::MakePointerLambda);
                     SWAG_ASSERT(nodeCapture->lambda->captureParameters);
                     auto typeBlock = CastTypeInfo<TypeInfoStruct>(nodeCapture->childs.back()->typeInfo, TypeInfoKind::Struct);
-                    if (typeBlock->sizeOf)
+                    if (typeBlock->fields.size())
                     {
                         emitInstruction(context, ByteCodeOp::Add64byVB64, r1)->b.u64 = 2 * sizeof(void*);
                         emitMemCpy(context, r1, child->resultRegisterRC[1], typeBlock->sizeOf);

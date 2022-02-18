@@ -133,8 +133,14 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
             inst->c.u32 = sizeof(void*);
 
             // Copy closure capture buffer
-            emitInstruction(context, ByteCodeOp::Add64byVB64, r0)->b.u64 = 2 * sizeof(void*);
-            emitMemCpy(context, r0, r1[1], SWAG_LIMIT_CLOSURE_SIZEOF - 2 * sizeof(void*));
+            auto nodeCapture = CastAst<AstMakePointer>(from, AstNodeKind::MakePointerLambda);
+            SWAG_ASSERT(nodeCapture->lambda->captureParameters);
+            auto typeBlock = CastTypeInfo<TypeInfoStruct>(nodeCapture->childs.back()->typeInfo, TypeInfoKind::Struct);
+            if (typeBlock->fields.size())
+            {
+                emitInstruction(context, ByteCodeOp::Add64byVB64, r0)->b.u64 = 2 * sizeof(void*);
+                emitMemCpy(context, r0, r1[1], typeBlock->sizeOf);
+            }
         }
         else
         {
