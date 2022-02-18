@@ -163,10 +163,35 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
             }
             else if (returnType->isClosure())
             {
-                auto         child = node->childs.front();
-                RegisterList r1    = reserveRegisterRC(context);
+                auto child = node->childs.front();
+
+                RegisterList r1 = reserveRegisterRC(context);
                 emitInstruction(context, ByteCodeOp::CopyRRtoRC, r1);
-                emitMemCpy(context, r1, child->resultRegisterRC, SWAG_LIMIT_CLOSURE_SIZEOF);
+
+                // :ConvertToClosure
+                if (child->kind == AstNodeKind::MakePointerLambda)
+                {
+                    emitInstruction(context, ByteCodeOp::SetAtPointer64, r1, child->resultRegisterRC[0]);
+                    auto inst = emitInstruction(context, ByteCodeOp::SetAtPointer64, r1);
+                    inst->flags |= BCI_IMM_B;
+                    inst->b.u32 = 1; // <> 0 for closure, 0 for lambda
+                    inst->c.u32 = sizeof(void*);
+
+                    // Copy closure capture buffer
+                    auto nodeCapture = CastAst<AstMakePointer>(child, AstNodeKind::MakePointerLambda);
+                    SWAG_ASSERT(nodeCapture->lambda->captureParameters);
+                    auto typeBlock = CastTypeInfo<TypeInfoStruct>(nodeCapture->childs.back()->typeInfo, TypeInfoKind::Struct);
+                    if (typeBlock->sizeOf)
+                    {
+                        emitInstruction(context, ByteCodeOp::Add64byVB64, r1)->b.u64 = 2 * sizeof(void*);
+                        emitMemCpy(context, r1, child->resultRegisterRC[1], typeBlock->sizeOf);
+                    }
+                }
+                else
+                {
+                    emitMemCpy(context, r1, child->resultRegisterRC, SWAG_LIMIT_CLOSURE_SIZEOF);
+                }
+
                 freeRegisterRC(context, r1);
                 freeRegisterRC(context, child->resultRegisterRC);
             }
@@ -1184,8 +1209,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
              {
                  AstFuncCallParam* p1 = CastAst<AstFuncCallParam>(n1, AstNodeKind::FuncCallParam);
                  AstFuncCallParam* p2 = CastAst<AstFuncCallParam>(n2, AstNodeKind::FuncCallParam);
-                 return p1->indexParam < p2->indexParam;
-             });
+                 return p1->indexParam < p2->indexParam; });
     }
     else if (allParams && (allParams->semFlags & AST_SEM_INVERSE_PARAMS))
     {

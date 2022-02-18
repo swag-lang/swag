@@ -122,12 +122,14 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
     if (typeInfo->isClosure() && aliasFrom->isClosure())
     {
         SWAG_ASSERT(from);
+
+        // :ConvertToClosure
         if (from->kind == AstNodeKind::MakePointerLambda)
         {
             emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1);
             auto inst = emitInstruction(context, ByteCodeOp::SetAtPointer64, r0);
             inst->flags |= BCI_IMM_B;
-            inst->b.u32 = 1; // Offset to the capture storage (2 pointers from the start)
+            inst->b.u32 = 1; // <> 0 for closure, 0 for lambda
             inst->c.u32 = sizeof(void*);
 
             // Copy closure capture buffer
