@@ -116,6 +116,39 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
                 SWAG_CHECK(emitCopyArray(context, returnType, node->ownerInline->resultRegisterRC, returnExpression->resultRegisterRC, returnExpression));
                 freeRegisterRC(context, returnExpression);
             }
+            else if (returnType->isClosure())
+            {
+                // :ConvertToClosure
+                if (returnExpression->kind == AstNodeKind::MakePointerLambda)
+                {
+                    // Copy closure capture buffer
+                    // Do it first, because source stack can be shared with node->ownerInline->resultRegisterRC
+                    auto nodeCapture = CastAst<AstMakePointer>(returnExpression, AstNodeKind::MakePointerLambda);
+                    SWAG_ASSERT(nodeCapture->lambda->captureParameters);
+                    auto typeBlock = CastTypeInfo<TypeInfoStruct>(nodeCapture->childs.back()->typeInfo, TypeInfoKind::Struct);
+                    if (typeBlock->fields.size())
+                    {
+                        auto r1 = reserveRegisterRC(context);
+                        emitInstruction(context, ByteCodeOp::CopyRBtoRA64, r1, node->ownerInline->resultRegisterRC);
+                        emitInstruction(context, ByteCodeOp::Add64byVB64, r1)->b.u64 = 2 * sizeof(void*);
+                        emitMemCpy(context, r1, returnExpression->resultRegisterRC[1], typeBlock->sizeOf);
+                        freeRegisterRC(context, r1);
+                    }
+
+                    emitInstruction(context, ByteCodeOp::SetAtPointer64, node->ownerInline->resultRegisterRC, returnExpression->resultRegisterRC[0]);
+                    auto inst = emitInstruction(context, ByteCodeOp::SetAtPointer64, node->ownerInline->resultRegisterRC);
+                    inst->flags |= BCI_IMM_B;
+                    inst->b.u32 = 1; // <> 0 for closure, 0 for lambda
+                    inst->c.u32 = sizeof(void*);
+
+                }
+                else
+                {
+                    emitMemCpy(context, node->ownerInline->resultRegisterRC, returnExpression->resultRegisterRC, SWAG_LIMIT_CLOSURE_SIZEOF);
+                }
+
+                freeRegisterRC(context, returnExpression);
+            }
             else
             {
                 for (auto child : node->childs)

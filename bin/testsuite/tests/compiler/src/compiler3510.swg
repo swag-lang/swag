@@ -1,7 +1,8 @@
+//#global skip
 //#[Swag.PrintBc]
 #test
 {
-    //#[Swag.Inline]
+    #[Swag.Inline]
     func getInc()->closure()->s32
     {
         x := 10
