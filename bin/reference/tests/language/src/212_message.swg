@@ -1,11 +1,11 @@
-// #message is a special function that will be called by the compiler
+// '#message' is a special function that will be called by the compiler
 // The parameter is a mask that tells the compiler when to call the function.
 
 // Here the function will be called each time a function of the module has been typed
 #message(Swag.CompilerMsgMask.SemFunctions)
 {
-    itf := @compiler()
-    msg := itf.getMessage()
+    itf := @compiler()          // Get the interface to communicate with the compiler
+    msg := itf.getMessage()     // Get the current message
 
     typeFunc := cast(const *Swag.TypeInfoFunc) msg.type
     nameFunc := msg.name

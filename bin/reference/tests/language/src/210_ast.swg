@@ -45,14 +45,14 @@
         }
 
         var v: MyStruct'bool
-        @assert(@typeof(v.x) == bool)
-        @assert(@typeof(v.y) == bool)
-        @assert(@typeof(v.z) == string)
+        #assert @typeof(v.x) == bool
+        #assert @typeof(v.y) == bool
+        #assert @typeof(v.z) == string
 
         var v1: MyStruct'f64
-        @assert(@typeof(v1.x) == f64)
-        @assert(@typeof(v1.y) == f64)
-        @assert(@typeof(v1.z) == string)
+        #assert @typeof(v1.x) == f64
+        #assert @typeof(v1.y) == f64
+        #assert @typeof(v1.z) == string
     }
 
     // '#ast' needs to return a 'string like' value, that can be dynamic

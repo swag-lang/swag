@@ -7,8 +7,8 @@ struct Struct
     x, y: s32
 }
 
-alias OneType = bool
-alias AnotherType = s32
+alias OneType      = bool
+alias AnotherType  = s32
 alias WhateverType = bool
 
 impl Struct
@@ -31,74 +31,75 @@ impl Struct
     func opIndex(using self, index: uint)->WhateverType { return true; }
 
     // Called by @countof
-    // Use in 'loop' block
+    // Use in a 'loop' block for example
     func opCount(using self)->uint          { return 0; }
     // Called by @dataof
     func opData(using self)->*WhateverType  { return null; }
 
-    // Can be overloaded by a different return type
     // Called for explicit/implicit casting between struct value and return type
+    // Can be overloaded by a different return type
     // Example: x := cast(OneType) v
     func opCast(using self)->OneType      { return true; }
     func opCast(using self)->AnotherType  { return 0; }
 
-    // Can be overloaded
     // Called to compare the struct value with something else
+    // Can be overloaded
     // Returns true if they are equal, otherwise returns false
     // Called by '==', '!='
     func opEquals(using self, other: OneType)->bool      { return false; }
     func opEquals(using self, other: AnotherType)->bool  { return false; }
 
-    // Can be overloaded
     // Called to compare the struct value with something else
+    // Can be overloaded
     // Returns -1, 0 or 1
     // Called by '<', '>', '<=', '>=', '<=>'
     func opCmp(using self, other: OneType)->s32      { return 0; }
     func opCmp(using self, other: AnotherType)->s32  { return 0; }
 
-    // Can be overloaded
     // Affect struct with another value
+    // Can be overloaded
     // Called by '='
     func opAffect(using self, other: OneType) {}
     func opAffect(using self, other: AnotherType) {}
 
-    // Generic function, can be overloaded
     // Affect struct with a literal value with a specified suffix
+    // Generic function, can be overloaded
     // Called by '='
     func(suffix: string) opAffectSuffix(using self, value: OneType) {}
     func(suffix: string) opAffectSuffix(using self, value: AnotherType) {}
 
-    // Can be overloaded
     // Affect struct with another value at a given index
+    // Can be overloaded
     // Called by '[] ='
     func opIndexAffect(using self, index: uint, value: OneType) {}
     func opIndexAffect(using self, index: uint, value: AnotherType) {}
 
+    // Binary operator. 'op' generic argument contains the operator string
     // Generic function, can be overloaded
-    // Binary operator. 'op' generic argument contains the operator string (see below)
     // Called by '+', '-', '*', '/', '%', '|', '&', '^', '<<', '>>'
     func(op: string) opBinary(using self, other: OneType)->Self     { return @{1, 2}; }
     func(op: string) opBinary(using self, other: AnotherType)->Self { return @{1, 2}; }
 
-    // Generic function
     // Unary operator. 'op' generic argument contains the operator string (see below)
+    // Generic function
     // Called by '!', '-', '~'
     func(op: string) opUnary(using self)->Self { return @{1, 2}; }
 
-    // Generic function, can be overloaded
     // Affect operator. 'op' generic argument contains the operator string (see below)
+    // Generic function, can be overloaded
     // Called by '+=', '-=', '*=', '/=', '%=', '|=', '&=', '^=', '<<=', '>>='
     func(op: string) opAssign(using self, other: OneType) {}
     func(op: string) opAssign(using self, other: AnotherType)  {}
 
-    // Generic function, can be overloaded
     // Affect operator. 'op' generic argument contains the operator string (see below)
+    // Generic function, can be overloaded
     // Called by '+=', '-=', '*=', '/=', '%=', '|=', '&=', '^=', '<<=', '>>='
     func(op: string) opIndexAssign(using self, index: uint, value: OneType) {}
     func(op: string) opIndexAssign(using self, index: uint, value: AnotherType) {}
 
     // Called by a 'visit' block
     // Can have multiple versions, by adding a name after 'opVisit'
+    // This is the way to go for iterators
     #[Swag.Macro]
     {
         func(ptr: bool) opVisit(using self, stmt: code) {}

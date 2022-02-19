@@ -19,11 +19,11 @@
         res2 := sum's64(10, 20)
         @assert(res2 == 30)
 
-        // This would generate a compile error because type is 'f32'
-        //res1 := sum'f32(1, 2)
+        // This would generate a compile error because type is 'f32', so there's no match for that type
+        // res1 := sum'f32(1, 2)
     }
 
-    // You can use #selectif to make a kind of generic specialisation
+    // You can use #selectif to make a kind of a generic specialisation
     {
         // s32 version
         func(T) isNull(x: T)->bool
@@ -60,7 +60,7 @@
         }
     }
 
-    // By using @errormsg, you can trigger errors at compile time if the
+    // By using '@errormsg', you can trigger errors at compile time if the
     // type is incorrect for example
     {
         func(T) sum(x, y: T)->T
@@ -76,7 +76,7 @@
         }
 
         // This will trigger an error
-        //x := sum'f32(1, 2)
+        // x := sum'f32(1, 2)
     }
 
     // Instead of #selectif, you can use #checkif.
@@ -101,7 +101,7 @@
         x1 := div(1, 1)
 
         // Error at compile time, division by zero
-        //x2 := div(1, 0)
+        // x2 := div(1, 0)
     }
 
     {

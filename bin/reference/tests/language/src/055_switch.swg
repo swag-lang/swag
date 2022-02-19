@@ -1,6 +1,7 @@
 #test
 {
-    // 'switch' works like in C, except that no 'break' is necessary (except if the 'case' is empty)
+    // 'switch' works like in C/C++, except that no 'break' is necessary (except if the 'case' is empty)
+    // That means that there's no automic 'fallthrough' from one case to another
     {
         value := 6
         switch value
@@ -51,7 +52,7 @@
         }
     }
 
-    // If you want to pass from one case to another like in C, use 'fallthrough'
+    // If you want to pass from one case to another like in C/C++, use 'fallthrough'
     {
         value := 6
         switch value
@@ -90,7 +91,8 @@
         }
     }
 
-    // switch can be marked with 'Swag.Complete' to force all cases to be covered
+    // switch can be marked with 'Swag.Complete' to force all the cases to be covered.
+    // If one or more values are missing, an error will be raised by the compiler
     {
         enum Color { Red; Green; Blue; }
         color := Color.Red

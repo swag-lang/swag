@@ -15,16 +15,16 @@
         // not always necessary
         func(T) myFunc(val: T) => 2 * val
 
-        @assert(myFunc(2's32) == 4)
-        @assert(myFunc(2.0'f32) == 4.0)
+        @assert(myFunc(2's32) == 4)         // T is deduced to be s32
+        @assert(myFunc(2.0'f32) == 4.0)     // T is deduced to be f32
     }
 
     {
-        // You can specify more than one generic parameter
+        // Of course you can specify more than one generic parameter
         func(K, V) myFunc(key: K, value: V) => value
 
-        @assert(myFunc(2's32, "value") == "value")
-        @assert(myFunc'(s32, string)(2, "value") == "value")
+        @assert(myFunc(2's32, "value") == "value")              // K and V are deduced
+        @assert(myFunc'(s32, string)(2, "value") == "value")    // K and V are explicit
 
         @assert(myFunc(2's32, true) == true)
         @assert(myFunc'(s32, bool)(2, true) == true)

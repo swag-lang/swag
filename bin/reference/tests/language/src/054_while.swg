@@ -8,7 +8,7 @@
         @assert(i == 10)
     }
 
-    // You can also break
+    // You can also break and continue inside a while
     {
         i := 0
         while i < 10

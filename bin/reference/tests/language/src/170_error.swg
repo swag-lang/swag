@@ -1,4 +1,5 @@
-// swag contains a simple error system used to deal with function returning errors
+// swag contains a *very* simple error system used to deal with function returning errors
+// Will probably be changed at some point
 
 // A function that can return an error must be marked with 'throw'
 // It must then raise an error with the 'throw' keyword, passing an error message.
@@ -36,7 +37,7 @@ func myFunc1() throw
 }
 
 // The caller can also panic if an error is raised, with 'assume'.
-// This can be disabled in release builds (in that case behaviour is undefined).
+// This can be disabled in release builds (in that case the behaviour is undefined).
 func myFunc2()
 {
     // Here the program will stop with a panic message if 'count()' throws an error

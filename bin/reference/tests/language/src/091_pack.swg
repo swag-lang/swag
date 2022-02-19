@@ -12,6 +12,7 @@
             z: s64      // offset 8: aligned to 8 bytes
         }
 
+        // '@offsetof' can be used to retrieve the offset of a field
         #assert @offsetof(MyStruct.x) == 0
         #assert @offsetof(MyStruct.y) == 4
         #assert @offsetof(MyStruct.z) == 8

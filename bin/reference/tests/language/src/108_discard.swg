@@ -5,7 +5,7 @@
     func sum(x, y: s32) => x + y
 
     // This would generated an error, because the return value of 'sum' is not used
-    //sum(2, 3)
+    // sum(2, 3)
 
     // To force the return value to be ignored, you can use 'discard'
     discard sum(2, 3)
@@ -16,6 +16,6 @@
     #[Swag.Discardable]
     func mul(x, y: s32)->s32 => x * y
 
-    // This is fine to ignore the return value of 'mul'
+    // This is fine to ignore the return value of 'mul' (even if strange)
     mul(2, 4)
 }

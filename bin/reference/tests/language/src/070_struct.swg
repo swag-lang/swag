@@ -2,17 +2,17 @@
 {
     // This is a struct declaration. 'var' is not necessary for the fields.
     {
-        struct MyStruct1
+        struct MyStruct
         {
             name: string
         }
 
-        struct MyStruct
+        struct MyStruct1
         {
             x:      s32
             y, z:   s32
             val:    bool
-            myS:    MyStruct1
+            myS:    MyStruct
         }
     }
 

@@ -1,6 +1,7 @@
 #test
 {
     // 'for' accepts a start statement, an expression to test, and an ending statement
+    // This is close to the C/C++ 'for'
     {
         cpt := 0
         for i := 0; i < 10; i += 1
@@ -15,6 +16,7 @@
         }
         @assert(cpt == 20)
 
+        // Instead of one single expression, you can use a statement
         for { i := 0; cpt = 0; }
             i < 10
             i += 1
@@ -35,9 +37,13 @@
     // Like 'loop' and 'while', you have access to '@index', the current loop index
     {
         cpt := 0'uint
-        for var i: u32 = 10; i < 15; i += 1;
+        for var i: u32 = 10; i < 15; i += 1
             cpt += @index
-
         @assert(cpt == 0+1+2+3+4)
+
+        cpt1 := 0'uint
+        for i := 10; i < 15; i += 1
+            cpt1 += @index
+        @assert(cpt1 == 0+1+2+3+4)
     }
 }

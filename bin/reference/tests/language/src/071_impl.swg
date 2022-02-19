@@ -1,6 +1,6 @@
-// 'impl' is used to declare some stuff in the scope of a struct
+// Like for an enum, 'impl' is used to declare some stuff in the scope of a struct
 
-#[Swag.ExportType("methods")]
+#[Swag.ExportType("methods")]   // See later, used to export 'methods' in type reflection
 struct MyStruct
 {
     x: s32 = 5
@@ -29,7 +29,7 @@ impl MyStruct
     // 'self' is an alias for 'var self: Self'
     func returnX(using self) => x
     func returnY(self)       => self.y
-    // 'Self' is the corresponding type
+    // 'Self' is the corresponding type, in that case 'MyStruct'
     func returnZ(me: Self)   => me.z
 }
 
@@ -61,11 +61,14 @@ impl MyStruct
 // is declared with #[Swag.ExportType("methods")] (by default, methods are not exported)
 #test
 {
+    // Creates a type alias named 'Lambda'
     alias Lambda = func(MyStruct)->s32
+
     var fnX: Lambda
     var fnY: Lambda
     var fnZ: Lambda
 
+    // The 'typeinfo' of a struct contains a field 'methods' which is a slice
     t := @typeof(MyStruct)
     visit p: t.methods
     {

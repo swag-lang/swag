@@ -13,7 +13,7 @@ var G: [5] f32 = ?
     }
 }
 
-// #test are executed after #run, even at compile time (during testings)
+// #test are executed after #run, even at compile time (during testing)
 // So we can test the values of G here.
 #test
 {

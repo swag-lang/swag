@@ -1,4 +1,4 @@
-// You can get an interface to the compiler with @compiler, and use
+// You can get an interface to the compiler with '@compiler', and use
 // 'compileString' to request a build.
 #run
 {

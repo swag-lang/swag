@@ -53,16 +53,16 @@ impl IReset for Point3
     @assert(pt3.y == 10+1)
     @assert(pt3.z == 10+2)
 
-    // An interface is a real type, with a size
+    // An interface is a real type, with a size equivalent to 2 pointers
     #assert @sizeof(itf) == 2 * @sizeof(*void)
 
-    // You can retrieve the concrete type associated with an interface with '@kindof'
+    // You can retrieve the concrete type associated with an interface instance with '@kindof'
     itf = cast(IReset) pt2
     @assert(@kindof(itf) == Point2)
     itf = cast(IReset) pt3
     @assert(@kindof(itf) == Point3)
 
-    // You can retrieve the concrete data associated with an interface with '@dataof'
+    // You can retrieve the concrete data associated with an interface instance with '@dataof'
     itf = cast(IReset) pt2
     @assert(@dataof(itf) == &pt2)
     itf = cast(IReset) pt3

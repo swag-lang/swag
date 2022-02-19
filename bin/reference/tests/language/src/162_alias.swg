@@ -19,8 +19,8 @@
         #assert @typeof(Float64) == f64
     }
 
-    // A type alias can be marked with the 'Swag.Strict' attribute
-    // in that case, implicit cast is not done, but explicit cast is
+    // A type alias can be marked with the 'Swag.Strict' attribute.
+    // In that case, implicit cast is not done, but explicit cast is
     // still possible
     {
         #[Swag.Strict]

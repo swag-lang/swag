@@ -93,7 +93,7 @@
             {
                 #macro
                 {
-                    var index = `a
+                    index := `a
                     #mixin `what
                 }
 
@@ -114,8 +114,7 @@
         #[Swag.Macro]
         func repeatSquare(count: u32, what: code)
         {
-            scope Up
-            loop count
+            scope Up loop count
             {
                 loop count
                 {

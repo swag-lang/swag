@@ -1,6 +1,7 @@
 #test
 {
     // You can get the type of an expression with '@typeof' or just with the type itself
+    // (in Swag types are values)
     {
         ptr1 := @typeof(s8)
         @assert(ptr1.name == "s8")
@@ -19,7 +20,8 @@
         @assert(ptr4 == s64)
     }
 
-    // The return result is a const pointer to a Swag.TypeInfo kind of structure
+    // The return result of '@typeof' is a const pointer to a Swag.TypeInfo kind of structure
+    // This is an alias for the 'typeinfo' type.
     {
         ptr := bool
         @assert(@typeof(ptr) == @typeof(const *Swag.TypeInfoNative))

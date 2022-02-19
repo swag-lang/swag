@@ -73,8 +73,16 @@
 
         result := 0
         visit &it: array
+        {
             result += dref it
+            dref it = 555
+        }
 
         @assert(result == 1+2+3+4)
+
+        @assert(array[0, 0] == 555)
+        @assert(array[0, 1] == 555)
+        @assert(array[1, 0] == 555)
+        @assert(array[1, 1] == 555)
     }
 }

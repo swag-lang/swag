@@ -1,16 +1,16 @@
-// Swag supports a limited set of closure
+// Swag supports a limited set of the 'closure' concept
 // Only a given amount of bytes of capture are possible (for now 48 bytes)
 // That way there's never an hidden allocation
-// You can also only capture 'simple' variables (no struct with 'opDrop', 'opPostCopy', 'opPostMove' for example)
+// Another limitation is that you can only capture 'simple' variables (no struct with 'opDrop', 'opPostCopy', 'opPostMove' for example)
 
 #test
 {
-    // Captured are declared like lambdas, with the captured variables between |...| and before
-    // parameters
+    // A closure is declared like a lambda, with the captured variables between |...| before the function parameters
     {
         a := 125
         b := 521
 
+        // Capture 'a' and 'b'
         var fct: closure() = @|a, b|()
         {
             @assert(a == 125)
@@ -20,11 +20,14 @@
         fct()
     }
 
-    // You can capture by pointer
+    // You can also capture by pointer with '&' (otherwise it's a copy)
     {
         a := 125
+
+        // Capture 'a' by pointer
         var fct: closure() = @|&a|()
         {
+            // We can change the value of the local variable 'a'
             dref a += 1
         }
 
@@ -48,6 +51,8 @@
         x := @[1, 2, 3]
 
         var fct: closure(s32)->s32
+
+        // Capture the array 'x' by making a copy
         fct = @|x|(toAdd)
         {
             res := 0
@@ -61,11 +66,13 @@
         @assert(result == 1 + 2 + 3 + 4)
     }
 
-    // Captured variables are copied, and are mutable
+    // Captured variables are mutable, and part of the closure
+    // So you can modify them
     {
         func getInc()->closure()->s32
         {
             x := 10
+
             return @|x|()->s32 {
                 x += 1
                 return x

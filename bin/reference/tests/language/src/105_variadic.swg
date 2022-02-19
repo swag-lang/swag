@@ -13,13 +13,15 @@
     {
         func myFunction(parameters: ...)
         {
+            // We can know the number of parameters at runtime with '@countof'
             @assert(@countof(parameters) == 3)
 
+            // Each parameter is a type 'any'
             #assert @typeof(parameters[0]) == any
             #assert @typeof(parameters[1]) == any
             #assert @typeof(parameters[2]) == any
 
-            // Use '@kindof' to get the real type (at runtime) of the parameter
+            // But you can use '@kindof' to get the real type (at runtime) of the parameter
             @assert(@kindof(parameters[0]) == s32)
             @assert(@kindof(parameters[1]) == string)
             @assert(@kindof(parameters[2]) == f32)
@@ -28,15 +30,15 @@
         myFunction(4, "true", 5.6)
     }
 
-    // If all variadic parameters are of the same type, you can force it
+    // If all variadic parameters are of the same type, you can force it.
     // Parameters then won't be of type 'any'
     {
         func myFunction(value: bool, parameters: s32...)
         {
-            @assert(@typeof(parameters[0]).name == "s32")
-            @assert(@typeof(parameters[1]).name == "s32")
-            @assert(@typeof(parameters[2]) == s32)
-            @assert(@typeof(parameters[3]) == s32)
+            #assert @typeof(parameters[0]).name == "s32"
+            #assert @typeof(parameters[1]).name == "s32"
+            #assert @typeof(parameters[2]) == s32
+            #assert @typeof(parameters[3]) == s32
 
             @assert(parameters[0] == 10)
             @assert(parameters[1] == 20)
@@ -66,10 +68,11 @@
         B("value", true)
     }
 
-    // You can spread the content of an array or slice to variadic parameters with '@spread'
+    // You can spread the content of an array or a slice to variadic parameters with '@spread'
     {
         func sum(params: s32...)->s32
         {
+            // Note that variadic parameters can be visited, as this is a slice
             total := 0
             visit v: params
                 total += v

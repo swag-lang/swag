@@ -69,8 +69,8 @@ impl Struct
         @assert(v.y == 666)
     }
 
-    // By default, there's no automatic conversion for a function argument, so you must cast
-    // So here, this will create a 'Struct' on the stack, initialized with a call to 'opAffect(s32)'
+    // By default, there's no automatic conversion for a function argument, so you must cast.
+    // Here, this will create a 'Struct' on the stack, initialized with a call to 'opAffect(s32)'
     toto(cast(Struct) 5's32)
 
     // But if opAffect is marked with #[Swag.Implicit], automatic conversion can occur.
@@ -94,6 +94,6 @@ impl Vector2
     }
 }
 
-const One: Vector2 = 1.0    // This will call opAffect
+const One: Vector2 = 1.0    // This will call opAffect(1.0)
 #assert One.x == 1.0
 #assert One.y == 1.0

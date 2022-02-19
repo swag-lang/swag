@@ -51,7 +51,7 @@
         @assert(a == 2)
     }
 
-    // When the last parameter of a mixin is of type 'code', caller
+    // When the last parameter of a mixin is of type 'code', the caller
     // can declare that code in a statement just after the call
     {
         #[Swag.Mixin]

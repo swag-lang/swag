@@ -27,7 +27,7 @@
         @assert(cpt == 10)
     }
 
-    // You can name a scope with the 'scope' keyword, and exit to the end of it with a 'break'
+    // But you can name a scope with the 'scope' keyword, and exit to the end of it with a 'break'
     {
         cpt := 0
         scope BigScope
@@ -35,12 +35,13 @@
             loop 10
             {
                 cpt += 1
-                break BigScope
+                break BigScope  // Break to the outer scope...
             }
 
             @assert(false)
         }
 
+        // ...and continue execution here
         @assert(cpt == 1)
     }
 
@@ -53,7 +54,7 @@
             cpt += 1
             if cpt == 5
                 break
-            continue
+            continue    // Loop
         }
 
         @assert(cpt == 5)
@@ -85,10 +86,9 @@
         }
     }
 
-    // A scope can be followed by a simple statement
+    // Note that a scope can be followed by a simple statement, not always a block
     {
-        scope Up
-        loop 10
+        scope Up loop 10
         {
             loop 10
             {

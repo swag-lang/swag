@@ -9,7 +9,7 @@
         @assert(G == 1)
     }
 
-    // using can be also used with a variable or a function parameter
+    // using can also be used with a variable or a function parameter
     {
         struct Point { x: s32; y: s32; }
 
@@ -29,6 +29,7 @@
         func setOne(using point: *Point)
         {
             // Here there's no need to specify 'point'
+            // So this is the equivalent to the hidden 'this' in C++
             x, y = 1
         }
 

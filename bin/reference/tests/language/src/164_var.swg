@@ -6,7 +6,7 @@ var G = 0
 #test
 {
     // A local variable can be tagged with #[Swag.Global] to make it global
-    // (aka static in C++)
+    // (aka static in C/C++)
     {
         func toto()->s32
         {
