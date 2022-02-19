@@ -1,7 +1,7 @@
 REM llvm version 12.0.1 (https://github.com/llvm/llvm-project/releases/tag/llvmorg-12.0.1)
 REM llvm project must be stored in "swag/llvm" subfolder
 
-call "build_cfg.bat"
+call "vs_build_cfg.bat"
 
 cd "../llvm"
 mkdir build
