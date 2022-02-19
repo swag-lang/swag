@@ -24,4 +24,14 @@
         #assert a[1] == 1
         #assert a[2] == 2
     }
+
+    // A multidimensional array as a constant
+    {
+        const M4x4: [4, 4] f32 = @[
+            @[1, 0, 0, 0],
+            @[0, 1, 0, 0],
+            @[0, 0, 1, 0],
+            @[0, 0, 0, 1]
+        ]
+    }
 }

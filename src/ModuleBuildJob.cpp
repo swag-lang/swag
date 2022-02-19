@@ -467,6 +467,9 @@ JobResult ModuleBuildJob::execute()
         if (module->criticalErrors)
             return JobResult::ReleaseJob;
 
+        // This is too late for meta programming...
+        module->acceptsCompileString = false;
+
         // #init functions are only executed in script mode, if the module has a #main
         bool callInitDrop = !module->byteCodeInitFunc.empty() && g_CommandLine->scriptMode && module->byteCodeMainFunc;
         // OR in a test module, during testing

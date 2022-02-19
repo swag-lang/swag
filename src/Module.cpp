@@ -798,8 +798,16 @@ bool Module::compileString(const Utf8& text)
     SWAG_ASSERT(g_RunContext.ip->node);
     SWAG_ASSERT(g_RunContext.ip->node->sourceFile);
 
-    auto      sourceFile = g_RunContext.ip->node->sourceFile;
-    AstNode*  parent     = Ast::newNode(files[0], AstNodeKind::StatementNoScope, sourceFile->astRoot);
+    auto sourceFile = g_RunContext.ip->node->sourceFile;
+
+    // Is it still possible to generate some code ?
+    if (!acceptsCompileString)
+    {
+        g_RunContext.ip->node->sourceFile->report({g_RunContext.ip->node, Err(Err0859)});
+        return false;
+    }
+
+    AstNode*  parent = Ast::newNode(files[0], AstNodeKind::StatementNoScope, sourceFile->astRoot);
     SyntaxJob syntaxJob;
     if (!syntaxJob.constructEmbedded(text, parent, g_RunContext.ip->node, CompilerAstKind::TopLevelInstruction, true))
         return false;

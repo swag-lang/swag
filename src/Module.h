@@ -227,15 +227,16 @@ struct Module
     atomic<int> criticalErrors          = 0;
     int         optimPass               = 0;
 
-    bool addedToBuild       = false;
-    bool saveBssValues      = false;
-    bool saveMutableValues  = false;
-    bool bssCannotChange    = false;
-    bool isSwag             = false;
-    bool isLocalToWorkspace = false;
-    bool dependenciesDone   = false;
-    bool mustFetchDep       = false;
-    bool wasAddedDep        = false;
-    bool isErrorModule      = false;
-    bool isScriptFile       = false;
+    bool addedToBuild         = false;
+    bool saveBssValues        = false;
+    bool saveMutableValues    = false;
+    bool bssCannotChange      = false;
+    bool isSwag               = false;
+    bool isLocalToWorkspace   = false;
+    bool dependenciesDone     = false;
+    bool mustFetchDep         = false;
+    bool wasAddedDep          = false;
+    bool isErrorModule        = false;
+    bool isScriptFile         = false;
+    bool acceptsCompileString = true;
 };
