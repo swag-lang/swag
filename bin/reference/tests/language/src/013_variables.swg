@@ -2,6 +2,7 @@
 {
     // To declare a variable, use the 'var' keyword, followed by ':' and then the type
     {
+        // Variable 'a' is of type 'u32' and its value is '1'
         var a: u32 = 1
         @assert(a == 1)
 
@@ -84,20 +85,5 @@
         c := 1.5'f64
         @assert(c == 1.5)
         #assert @typeof(c) == f64
-    }
-
-    // A local variable declared with the #[Swag.Global] attribute will be global (like 'static' in C++)
-    {
-        func toto()->s32
-        {
-            #[Swag.Global] var x = 1
-
-            x += 1
-            return x
-        }
-
-        @assert(toto() == 2)
-        @assert(toto() == 3)
-        @assert(toto() == 4)
     }
 }

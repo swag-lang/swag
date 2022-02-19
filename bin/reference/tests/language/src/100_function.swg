@@ -70,7 +70,27 @@ func toto(x: s32, y = Values.A)
 
 #test
 {
-    // You can return multiple values with a tuple
+    // A tuple can be used to return multiple values in a function
+    {
+        func myFunction() -> {f32, f32}
+        {
+            return @{1.0, 2.0}
+        }
+
+        result := myFunction()
+        @assert(result.item0 == 1.0)
+        @assert(result.item1 == 2.0)
+
+        var (x, y) = myFunction()
+        @assert(x == 1.0)
+        @assert(y == 2.0)
+
+        (z, w) := myFunction()
+        @assert(z == 1.0)
+        @assert(w == 2.0)
+    }
+
+    // You can name the fields of the function result too
     func returns2() -> {x: s32, y: s32}
     {
         // You can return a tuple literal

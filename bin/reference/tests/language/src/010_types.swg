@@ -8,10 +8,13 @@
         var d: s64 = -4     // 64 bits signed integer
         var e: int = -4     // 64 bits signed integer
 
+        // The instrinsic '@assert' will panic at runtime if the enclosed expression is false
         @assert(a == -1)
         @assert(b == -2)
         @assert(c == -3)
         @assert(d == -4)
+
+        // The instrinsic '@sizeof' gives the size, in bytes, of a variable
         @assert(@sizeof(a) == 1)
         @assert(@sizeof(b) == 2)
         @assert(@sizeof(c) == 4)
@@ -32,7 +35,6 @@
         @assert(c == 3)
         @assert(d == 4)
 
-        // The instrinsic '@sizeof' gives the size, in bytes, of a variable
         @assert(@sizeof(a) == 1)
         @assert(@sizeof(b) == 2)
         @assert(@sizeof(c) == 4)
@@ -47,6 +49,7 @@
 
         @assert(a == 3.14)
         @assert(b == 3.14159)
+
         @assert(@sizeof(a) == 4)
         @assert(@sizeof(b) == 8)
     }
@@ -58,24 +61,28 @@
 
         @assert(a == true)
         @assert(b == false)
+
         @assert(@sizeof(a) == 1)
         @assert(@sizeof(b) == 1)
     }
 
-    // The string type. Strings are UTF8, and are stored as two 64 bits (the pointer to the value and the string length in bytes)
+    // The string type.
+    // Strings are UTF8, and are stored as two 64 bits (the pointer to the value and the string length in bytes)
     {
         var a: string = "string 是"
         @assert(a == "string 是")
         @assert(@sizeof(a) == 2 * @sizeof(*void))
     }
 
-    // The 'rune' type uses the string syntax, postfix with the type 'rune'. It's a 32 bits unicode code point.
+    // The 'rune' type uses the string syntax, postfix with the type 'rune'.
+    // It's a 32 bits unicode code point.
     {
         var a: rune = "是"'rune
         @assert(a == "是"'rune)
         @assert(@sizeof(a) == 4)
     }
 
+    // Swag has type reflection.
     // You can use '@typeof' to get the type of an expression
     {
         var a = 0
@@ -84,7 +91,7 @@
         @assert(@typeof(a) == s32)
 
         // As the types of 'a' and 'b' are known at compile time, we can use #assert instead
-        // The #assert will be done by the compiler, and will not generate runtime code
+        // The #assert will be done by the compiler, and will not generate runtime code (unlike '@assert')
         #assert @typeof(a) == @typeof(b)
         #assert @typeof(a) == s32
     }

@@ -1,29 +1,39 @@
 #test
 {
-    // 'any' is a specific type that can be every other types
+    // 'any' is a specific type that can store every other types
     {
         var a: any
+
+        // Store a s32
         a = 6
         @assert(a == 6)
+
+        // Then store a string instead
         a = "string"
         @assert(a == "string")
+
+        // Then store a bool instead
         a = true
         @assert(a == true)
     }
 
     // 'any' is in fact a pointer to the value, and a 'typeinfo'
+    // '@dataof' can be used to retrieve the pointer to the value.
     {
         var a: any = 6
         ptr := cast(const *s32) @dataof(a)
         @assert(dref ptr == 6)
     }
 
-    // '@typeof' will give you 'any', but '@kindof' will give you the real underlying type
+    // '@typeof' will give you the type 'any', but '@kindof' will give you the real underlying type
     // In that case, '@kindof' is evaluted at runtime.
     {
         var a: any = "string"
         #assert @typeof(a) == any
         @assert(@kindof(a) == string)
+
+        a = true
+        @assert(@kindof(a) == bool)
     }
 
     // You can declare an array with multiple types, with 'any'

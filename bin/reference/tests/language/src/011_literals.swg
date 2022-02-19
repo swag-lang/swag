@@ -20,17 +20,30 @@
         @assert(c == 15)
     }
 
-    // A boolean is 'true' or 'false'
-    // Constants are known at compile time, so we can use #assert to check the values
+    // The default type of an hexadecimal number or a binary number is 'u32' or 'u64' depending on its value
     {
-        const a = true
-        #assert(a == true)
-        const b, c = false
-        #assert(b == false)
-        #assert(c == false)
+        const a = 0xFF
+        #assert @typeof(a) == u32
+        const b = 0xFFFFFF_FFFFFF
+        #assert @typeof(b) == u64
+        const c = 0b00000001
+        #assert @typeof(c) == u32
+        const d = 0b00000001_00000001_00000001_00000001_00000001
+        #assert @typeof(d) == u64
     }
 
-    // A float value has the usual format
+    // A boolean is 'true' or 'false'
+    // Note that as constants are known at compile time, we can use #assert to check the values
+    {
+        const a = true
+        #assert a == true
+
+        const b, c = false
+        #assert b == false
+        #assert c == false
+    }
+
+    // A float value has the usual format C/C++ form
     {
         var a = 1.5
         @assert(a == 1.5)
@@ -57,7 +70,7 @@
         #assert @typeof(a) != f64
     }
 
-    // You can postfix a number by a type, to force it
+    // You can postfix a number literal by a type, to force it
     {
         var a = 1.5'f64
         @assert(a == 1.5)
@@ -67,5 +80,8 @@
         b := 10'u8
         @assert(b == 10)
         #assert @typeof(b) == u8
+
+        c := 1'u32
+        #assert @typeof(c) == u32
     }
 }

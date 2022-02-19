@@ -90,7 +90,7 @@
         @assert(x3 == 0)
     }
 
-    // Logic operator. This is not '&&' and '||' like in C++.
+    // Logical operator. This is not '&&' and '||' like in C/C++.
     {
         a := false
         a = (1 > 10) and (10 < 1)
@@ -108,6 +108,13 @@
         a = null
         c = a orelse b
         @assert(c == "string2")
+    }
+
+    {
+        a := 0
+        b := 1
+        c := a orelse b
+        @assert(c == b)
     }
 
     // Basic comparison operators

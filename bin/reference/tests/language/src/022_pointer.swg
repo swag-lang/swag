@@ -6,7 +6,7 @@
         var ptr2: **u8
     }
 
-    // A pointer can be null
+    // A pointer can be null (i know some of you will collapse here)
     {
         var ptr1: *u8
         @assert(ptr1 == null)

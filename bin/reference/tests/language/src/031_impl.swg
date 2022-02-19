@@ -1,4 +1,5 @@
 // 'impl' can be used to declare some stuff in the scope of an enum
+// The keyword 'self' represents the enum value
 
 enum RGB { R; G; B; }
 impl enum RGB
@@ -15,6 +16,8 @@ impl enum RGB
     using RGB
     @assert(isRedOrBlue(R))
     @assert(isRedOrBlue(B))
+
+    // A first look at 'ufcs' (uniform function all syntax)
     @assert(R.isRedOrBlue())
     @assert(!RGB.G.isRedOrBlue())
 }

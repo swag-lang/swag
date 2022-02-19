@@ -8,13 +8,13 @@
 * Launch `swag/build/vs_build_llvm.bat` (this will take some time !).
 * Launch `swag/build/vs_build_swag.bat`.
 
-Once LLVM has been compiled once, you can also use the `Swag.sln` workspace in the `build` subfolder.
+If LLVM has been compiled once, you can also use the `Swag.sln` workspace in the `build` subfolder.
 
 ## LLVM
 
 Swag has two backends, a `x86_64` custom backend written for fast compile, but with far from optimal generated code, and `llvm` for optimized builds.
 
-The LLVM source tree is included in the Swag source tree for convenience. Version is 12.0.1.
+The LLVM source tree is included in the Swag source tree for convenience. Version is `12.0.1`
 
 https://releases.llvm.org/download.html
 

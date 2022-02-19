@@ -663,7 +663,7 @@ impl Wnd
         return false
     }
 
-    // Retreive the child with the given id
+    // Retrieve the child with the given id
     mtd getChildById(childId: string)->*Wnd
     {
         visit c: childs
@@ -678,7 +678,7 @@ impl Wnd
         return null
     }
 
-    // Retreive the parent with the given id
+    // Retrieve the parent with the given id
     mtd getParentById(parentId: string)->*Wnd
     {
         p := parent

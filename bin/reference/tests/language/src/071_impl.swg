@@ -57,7 +57,7 @@ impl MyStruct
     @assert(c.returnZ() == 20)
 }
 
-// All functions in an impl block can be retreived by reflection, as long as the struct
+// All functions in an impl block can be retrieved by reflection, as long as the struct
 // is declared with #[Swag.ExportType("methods")] (by default, methods are not exported)
 #test
 {

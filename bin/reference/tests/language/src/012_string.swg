@@ -16,7 +16,7 @@
         #assert @sizeof(a) == @sizeof(u32)
     }
 
-    // You cannot index a string to get a rune, except in ascii strings. This is because i didn't want the
+    // You *cannot* index a string to get a rune, except in ascii strings. This is because i didn't want the
     // runtime to come with UTF8 decoding.
     // So in that case you will retrieve a byte.
     {
@@ -66,7 +66,7 @@
         const k = "this is code ascii 0x5C:   \\"
     }
 
-    // An escape sequence can be used to specify an ascii or unicode value
+    // An escape sequence can be used to specify an ascii or an unicode value
     {
         const a = "\x26"        // 1 byte, hexadecimal, extended ascii
         const b = "\u2626"      // 2 bytes, hexadecimal, unicode 16 bits

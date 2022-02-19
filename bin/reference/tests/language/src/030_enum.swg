@@ -1,6 +1,6 @@
 #test
 {
-    // Enums values, unlike C, must end with ';' or an <eol> (like a normal Swag declaration)
+    // Enums values, unlike C/C++, must end with ';' or an <eol> (like a normal Swag declaration)
     {
         enum Values
         {
@@ -13,16 +13,19 @@
     {
         enum Values { A; B; }
         type := @typeof(Values)
+
+        // 'type' here is a 'typeinfo' dedicated to the enum type.
+        // In that case, 'type.rawType' is the enum underlying type.
         @assert(type.rawType == s32)
         #assert @typeof(Values) == Values
     }
 
     // '@kindof' will return the underlying type of the enum
     {
-        enum RGB: u32 { R; G; B; }
+        enum RGB { R; G; B; }
         #assert @typeof(RGB) == RGB
         #assert @kindof(RGB) != RGB
-        #assert @kindof(RGB) == u32
+        #assert @kindof(RGB) == s32
     }
 
     // You can specify your own type after the enum name
@@ -35,6 +38,7 @@
         }
 
         #assert @kindof(Values1) == s64
+        #assert @typeof(Values1.A) == Values1
     }
 
     // Enum values, if not specified, start at 0 and are increased by 1 at each new value
@@ -65,7 +69,7 @@
         #assert Value.C == 30
     }
 
-    // If you omit one value, it will be the previous value + 1
+    // If you omit one value, it will assigned to the previous value + 1
     {
         enum Value: u32
         {
@@ -79,7 +83,7 @@
         #assert Value.C == 12
     }
 
-    // For non integer types, you must specify the values
+    // For non integer types, you *must* specify the values as they cannot be deduced
     {
         enum Value1: string
         {
@@ -104,7 +108,7 @@
         #assert Value2.C == 6
     }
 
-    // '@countof' can be used on an enum
+    // '@countof' returns the number of values of an enum
     {
         enum Value: string
         {
@@ -117,7 +121,7 @@
         #assert @countof(Value) == 3
     }
 
-    // You can use 'using' for an enum
+    // You can use the keyword 'using' for an enum
     {
         enum Value
         {
@@ -127,24 +131,28 @@
         }
 
         using Value
-        @assert(A == 0) // No need for Value.A thanks to the 'using'
+
+        // No need to say 'Value.A' thanks to the 'using' above
+        @assert(A == 0)
         @assert(B == 1)
         @assert(C == 2)
+
+        // But the normal form is still possible
         @assert(Value.A == 0)
         @assert(Value.B == 1)
         @assert(Value.C == 2)
     }
 
     // Enum can be a set of flags with the #[Swag.EnumFlags] attribute
-    // Type should be u8, u16, u32 or u64
+    // Type should be u8, u16, u32, u64 or uint
     {
         #[Swag.EnumFlags]
         enum MyFlags: u8
         {
-            A
-            B
-            C
-            D
+            A   // First value is 1
+            B   // Value is 2
+            C   // Value is 4
+            D   // Value is 8
         }
 
         #assert MyFlags.A == 0b00000001
@@ -201,8 +209,13 @@
     // The type of the enum is not necessary in the assignement expression when declaring a variable
     {
         enum Values { A; B; }
+
+        // The normal form
         var x: Values = Values.A
-        var y: Values = A       // Here Values.A is replaced with just A, because 'Values" is deduced
+
+        // But in fact 'Values' is not necessary because it can be deduced
+        var y: Values = A
+
         @assert(x == y)
     }
 
@@ -210,35 +223,44 @@
     {
         enum Values { A; B; }
         x := Values.A
-        switch x
-        {
-        case A: break
-        case B: break
-        }
 
+        // The 'normal' form
         switch x
         {
         case Values.A: break
         case Values.B: break
+        }
+
+        // The 'simplified' form
+        switch x
+        {
+        case A: break
+        case B: break
         }
     }
 
     // In an expression, and if the enum name can be deduced, you can omit it and use the '.Value' syntax
     {
         enum Values { A; B; }
+
+        // The normal form
         x := Values.A
-        @assert(x == .A) // Short version, because 'Values' can be deduced from type of x
+
+        // The simplified form, because 'Values' can be deduced from type of x
+        @assert(x == .A)
         @assert(x != .B)
     }
 
+    // Works also for flags
     {
         #[Swag.EnumFlags]
         enum Values { A; B; }
+
         x := Values.A | Values.B
         @assert((x & .A) and (x & .B))
     }
 
-    // You can loop/visit all values of an enum
+    // By type reflection, you can loop/visit all values of an enum
     {
         enum RGB { R; G; B; }
 

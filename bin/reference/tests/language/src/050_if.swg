@@ -1,7 +1,7 @@
 #test
 {
     // A basic test with 'if'. Curlies are optional.
-    // Expression doesn't need to be enclosed with ()
+    // The expression doesn't need to be enclosed with () unlike C/C++
     a := 0
     if a == 1
         @assert(false)

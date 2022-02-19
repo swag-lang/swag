@@ -19,5 +19,9 @@
         ptr := &a[0] // Take the address of the first element
         @assert(ptr[0] == 0)
         @assert(ptr[2] == 2)
+
+        #assert a[0] == 0
+        #assert a[1] == 1
+        #assert a[2] == 2
     }
 }

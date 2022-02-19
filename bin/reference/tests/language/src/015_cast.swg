@@ -3,6 +3,8 @@
     // use 'cast(type)' to cast from one type to another
     {
         x := 1.0
+        #assert @typeof(x) == f32
+
         y := cast(s32) x
         #assert @typeof(y) == s32
         @assert(y == 1)

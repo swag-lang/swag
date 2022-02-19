@@ -17,7 +17,7 @@ Some identifiers start with '#'. This indicates a compiler special keyword.
 #main
 ...
 
-Some identifiers start with '@'. This indicates a buildin (intrinsic) function.
+Some identifiers start with '@'. This indicates an intrinsic function.
 
 @min()
 @max()

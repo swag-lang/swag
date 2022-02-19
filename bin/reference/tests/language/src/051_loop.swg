@@ -1,16 +1,16 @@
 #test
 {
     // loop are used to iterate a given amount of time
-    // The loop expression value is evaluated once.
+    // The loop expression value is evaluated *once*.
     // The loop expression must be a positive value.
     {
         cpt := 0
-        loop 10
+        loop 10 // Loops 10 times
             cpt += 1
         @assert(cpt == 10)
     }
 
-    // The intrinsic '@index' returns the current index of the loop.
+    // The intrinsic '@index' returns the current index of the loop (starting at 0)
     {
         cpt := 0'uint
         loop 5
@@ -32,7 +32,7 @@
             cpt1 += @index  // @index is always available, even when named
         }
 
-        @assert(cpt == 0+1+2+3+4)
+        @assert(cpt  == 0+1+2+3+4)
         @assert(cpt1 == cpt)
     }
 
@@ -42,20 +42,20 @@
         #assert @countof(arr) == 4
 
         cpt := 0
-        loop arr
+        loop arr    // The array contains 4 elements, so the loop count is 4
             cpt += arr[@index]
         @assert(cpt == 10+20+30+40)
     }
 
     // Warning !
-    // On a string, it will loop for each byte, not runes (if a rune is encoded in more than one byte)
+    // On a string, it will loop for each byte, *not* runes (if a rune is encoded in more than one byte)
     // Note: If you want to iterate on all runes, you will have to use the Std.Core module.
     {
         cpt := 0
         loop "⻘"
             cpt += 1
 
-        // cpt is equal to 3 because '⻘' is endoded in 3 bytes
+        // cpt is equal to 3 because '⻘' is endoded with 3 bytes
         @assert(cpt == 3)
     }
 
@@ -115,7 +115,7 @@
 
     // You can exclude the last value with the ..< syntax
     {
-        // Will loop from 1 to 2
+        // Will loop from 1 to 2 and *not* 1 to 3
         cpt := 0
         loop i: 1..<3
         {
@@ -125,7 +125,7 @@
         @assert(cpt == 1+2)
     }
 
-    // A loop without an expression but with a block is infinite
+    // A loop without an expression but with a block is infinite.
     // This is equivalent to while true {}
     // @index is still valid in that case (but cannot be renamed)
     loop
@@ -133,25 +133,4 @@
         if @index == 4
             break
     }
-}
-
-// You can loop on a struct value if 'opCount' has been defined
-struct MyStruct
-{
-}
-
-impl MyStruct
-{
-    mtd opCount() => 4'uint
-}
-
-#test
-{
-    v   := MyStruct{}
-    cpt := 0
-
-    loop v
-        cpt += 1
-
-    @assert(cpt == 4)
 }

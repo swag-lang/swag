@@ -1,6 +1,6 @@
 /*
 
-The 'swag/bin/reference/language' module is a short explanation of the Swag language, its basic syntax and usage.
+This 'swag/bin/reference/language' module is a short explanation of the Swag language, the basic syntax and usage.
 It will only describe the language itself, without the need of the Swag standard libraries (Std).
 
 Things like dynamic arrays, dynamic strings, hash maps and so on are written in the 'Std.Core' module, so

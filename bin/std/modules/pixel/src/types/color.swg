@@ -76,7 +76,7 @@ impl Color
         self.b = acast (Math.clamp(b, 0, 1) * 255)
     }
 
-    // Retreive all components as floating point values between 0 and 1
+    // Retrieve all components as floating point values between 0 and 1
     #[Inline]
     func toArgbf(const self) -> {a: f32, r: f32, g: f32, b: f32}
     {
@@ -88,7 +88,7 @@ impl Color
         return result
     }
 
-    // Retreive all components as floating point values between 0 and 1
+    // Retrieve all components as floating point values between 0 and 1
     #[Inline]
     func toRgbf(const self) -> {r: f32, g: f32, b: f32}
     {

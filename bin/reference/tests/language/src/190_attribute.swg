@@ -36,7 +36,7 @@ struct struct1
 
 #test
 {
-    // Attributes can be retreived by reflection
+    // Attributes can be retrieved by reflection
     {
         type := @typeof(function2)
         @assert(@countof(type.attributes) == 1)

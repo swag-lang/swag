@@ -1,3 +1,6 @@
+// Remember that dynamic arrays are part of the 'Std.Core' module.
+// Here we are only talking about native static arrays.
+
 #test
 {
     // A static array is declared with [] followed by the type
@@ -18,8 +21,10 @@
     {
         var array: [2] s32
         ptr0 := @dataof(array)
-        ptr1 := &array[0]           // This is equivalent
         ptr0[0] = 1
+
+        // This is equivalent to take the address of the first element
+        ptr1 := &array[0]
         ptr1[1] = 2
 
         @assert(array[0] == 1)
@@ -33,31 +38,34 @@
         #assert @typeof(arr) == [4] s32
     }
 
-    // Size can be deduced from initialisation
+    // The size of the array can be deduced from the initialisation expression
     {
         var array: [] s32 = @[1, 2]
         @assert(array[0] == 1)
         @assert(array[1] == 2)
+        #assert @countof(array) == 2
 
         array1 := @["10", "20", "30"]
         @assert(array1[0] == "10")
         @assert(array1[1] == "20")
         @assert(array1[2] == "30")
+        #assert @countof(array1) == 3
     }
 
-    // Like every other types, array is initialized by default to 0
+    // Like every other types, an array is initialized by default to 0
     {
         var array: [2] s32
         @assert(array[0] == 0)
         @assert(array[1] == 0)
     }
 
-    // For speed, you can force the array not to be initialized with '?'
+    // But for speed, you can force the array to be not initialized with '?'
     {
         var array: [100] s32 = ?
     }
 
     // An array can have multiple dimensions
+    // Syntax is *not* [X][Y] like in C/C++, but is [X, Y]
     {
         var array: [2, 2] s32
         array[0, 0] = 1
@@ -66,7 +74,7 @@
         array[1, 1] = 4
     }
 
-    // Sizes can be deduced from initialization too
+    // The sizes can be deduced from the initialization expression too
     {
         array  := @[1, 2, 3, 4]
         array1 := @[[1, 2], [3, 4]]
@@ -82,10 +90,10 @@
         #assert array[3] == 4
     }
 
-    // If the type is not specified, the type of the first literal value will be used
+    // If the type of the array is not specified, the type of the first literal value will be used
     // for all other members
     {
-        arr := @[1'f64, 2, 3, 4]    // Every values are 'f64'
+        arr := @[1'f64, 2, 3, 4]    // Every values are forced to be 'f64'
 
         #assert @countof(arr) == 4
         #assert @typeof(arr) == [4] f64

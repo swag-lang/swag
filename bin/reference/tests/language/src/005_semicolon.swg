@@ -1,7 +1,7 @@
 #test
 {
-    // No need for ';' to end a statement like in C++
-    // A end of line is enough.
+    // No need for ';' to end a statement like in C/C++
+    // Most of the time a end of line is enough.
     {
         var x, y = 0
         x += 1
