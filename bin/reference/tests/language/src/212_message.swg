@@ -29,3 +29,17 @@ var G = 0
 func XXTestFunc1() {}
 func XXTestFunc2() {}
 func XXTestFunc3() {}
+
+// This will be called for every global variables of the module
+#message(Swag.CompilerMsgMask.SemGlobals)
+{
+    itf := @compiler()
+    msg := itf.getMessage()
+}
+
+// This will be called for every global types of the module (structs, enums, interfaces...)
+#message(Swag.CompilerMsgMask.SemTypes)
+{
+    itf := @compiler()
+    msg := itf.getMessage()
+}
