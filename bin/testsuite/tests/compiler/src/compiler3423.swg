@@ -1,6 +1,6 @@
 //#global skip
 
-//#[Swag.PrintBc, Swag.Optim("", false)]
+//#[Swag.PrintBc]
 #test
 {
     a := 10
