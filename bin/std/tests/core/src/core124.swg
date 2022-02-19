@@ -13,6 +13,6 @@ using Core
     @assert(dref arr[1] == "2")
     @assert(dref arr[2] == "1")
     @assert(dref arr[3] == "0")
-    //visit *it: arr
+    //visit &it: arr
     //    Console.write("%", :it)
 }

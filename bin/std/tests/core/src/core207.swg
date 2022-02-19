@@ -52,7 +52,7 @@ const validTests: [] ValidTest = @[
 
 #test
 {
-    visit *it: validTests
+    visit &it: validTests
     {
         res := Crc32.compute(it.in1)
         @assert(res == it.out1)

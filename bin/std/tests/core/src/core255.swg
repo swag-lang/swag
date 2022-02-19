@@ -16,7 +16,7 @@ func entry(th: Threading.Thread)
 #test
 {
     var th: [N] Threading.Thread
-    visit *t: th catch t.init(&entry)
-    visit *t: th catch t.start()
+    visit &t: th catch t.init(&entry)
+    visit &t: th catch t.start()
     Threading.wait(&th[0], &th[1], &th[2])
 }

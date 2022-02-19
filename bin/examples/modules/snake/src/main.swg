@@ -125,7 +125,7 @@ func main()
             bDead = true
 
         // Collision Detect Snake V Snake
-        visit *i: snakeArr
+        visit &i: snakeArr
             if @index and i.x == snakeArr[0].x and i.y == snakeArr[0].y
                 bDead = true
 
@@ -146,7 +146,7 @@ func main()
         }
 
         // Draw Snake Body
-        visit *s: snakeArr
+        visit &s: snakeArr
             screen[s.y * nScreenWidth + s.x] = bDead ? "+"'u8 : "O"'u8
 
         // Draw Snake Head

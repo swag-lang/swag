@@ -1353,7 +1353,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         CONCAT_FIXED_STR(concat, "visit ");
 
         if (visitNode->specFlags & AST_SPEC_VISIT_WANTPOINTER)
-            concat.addChar('*');
+            concat.addChar('&');
 
         bool first = true;
         for (auto& a : visitNode->aliasNames)

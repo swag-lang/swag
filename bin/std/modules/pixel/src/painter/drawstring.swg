@@ -193,7 +193,7 @@ impl Painter
         startLine := 0
         lastWasSpace := false
 
-        visit *c, idx: text.chunks
+        visit &c, idx: text.chunks
         {
             // Attributes
             fs := c.fontStyle
@@ -315,7 +315,7 @@ impl Painter
         text.boundRect.height = 0
 
         // Layout
-        visit *line, idxLine: lines
+        visit &line, idxLine: lines
         {
             x1 := x
             y1 := y
@@ -369,7 +369,7 @@ impl Painter
         }
 
         // Draw
-        visit *c: text.chunks
+        visit &c: text.chunks
         {
             drawString(c.pos.x, c.pos.y, c.slice, c.font, format.palette[c.colorIdx], c.under)
         }

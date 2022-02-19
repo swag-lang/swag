@@ -8,7 +8,7 @@ using Core
 #test
 {
     var x: BitArray = [true, false, true, false]
-    visit *ptr: x
+    visit &ptr: x
     {
         @print("XX\n")
     }

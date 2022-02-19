@@ -96,7 +96,7 @@ impl Offset
         doOffset(delta)
 
         var clpr: Transform
-        visit *p: destPolys
+        visit &p: destPolys
             clpr.addPath(p, PolyType.Subject)
 
         if delta > 0

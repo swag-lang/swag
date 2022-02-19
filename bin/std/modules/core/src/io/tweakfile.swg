@@ -65,7 +65,7 @@ impl TweakFile
                 if @err
                     throw Format.toString("line %: invalid folder name", idx + 1)
 
-                visit *folder: folders
+                visit &folder: folders
                 {
                     if folder.type.flatName == folderName
                     {

@@ -213,7 +213,7 @@ bool SyntaxJob::doVisit(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatToken(TokenId::SymRightParen));
     }
 
-    if (token.id == TokenId::SymAsterisk)
+    if (token.id == TokenId::SymAmpersand)
     {
         node->wantPointerToken = token;
         node->specFlags        = AST_SPEC_VISIT_WANTPOINTER;

@@ -12,7 +12,7 @@ using Core
         total += v
     @assert(total == 10)
 
-    visit *v: x
+    visit &v: x
         v[0] = 5
 
     total = 0

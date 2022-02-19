@@ -6,7 +6,7 @@
     //@print(cast(s64) @countof(arr))
 
     cpt := 0
-    visit *xxx: arr
+    visit &xxx: arr
     {
         cpt += cast(s32) dref xxx
     }

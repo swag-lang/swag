@@ -95,7 +95,7 @@ impl Polygon
         clear()
         if !res.count return
 
-        visit *pt: dref res[0]
+        visit &pt: dref res[0]
         {
             vec := Math.Vector2{cast(f32) (pt.x / ClipperScaleCoords), cast(f32) (pt.y / ClipperScaleCoords)}
             add(vec)

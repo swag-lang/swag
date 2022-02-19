@@ -119,9 +119,9 @@ public func setNumWorkers(numWorkers: u32 = 0) throw
 
     g_numWorkers = numWorkers orelse Env.getProcessorCount()
     g_workers.resize(cast(uint) g_numWorkers)
-    visit *th: g_workers
+    visit &th: g_workers
         try th.init(&workerEntry)
-    visit *th: g_workers
+    visit &th: g_workers
         try th.start()
 }
 
@@ -233,7 +233,7 @@ public func(T) parallelVisit(range: [..] T, offset: u32 = 1, userData: *void = n
     sliceJobs.resize(cast(uint) numWorkers)
 
     ptr := @dataof(range)
-    visit *j: sliceJobs
+    visit &j: sliceJobs
     {
         sizeSlice := @index == sliceJobs.count - 1 ? lastSplitSize : splitSize
 
@@ -248,7 +248,7 @@ public func(T) parallelVisit(range: [..] T, offset: u32 = 1, userData: *void = n
     }
 
     // Sync
-    visit *j: sliceJobs waitJob(j)
+    visit &j: sliceJobs waitJob(j)
 }
 
 // Do a for loop in parallel chunks
@@ -299,7 +299,7 @@ public func parallelFor(count: u32, userData: *void = null, stmt: code)
     sliceJobs.resize(cast(uint) numWorkers)
 
     startIndex := 0'u32
-    visit *j: sliceJobs
+    visit &j: sliceJobs
     {
         sizeSlice := @index == sliceJobs.count - 1 ? lastSplitSize : splitSize
 
@@ -314,5 +314,5 @@ public func parallelFor(count: u32, userData: *void = null, stmt: code)
     }
 
     // Sync
-    visit *j: sliceJobs waitJob(j)
+    visit &j: sliceJobs waitJob(j)
 }

@@ -34,7 +34,7 @@ const validTests: [] ValidTest = @[
 
 #test
 {
-    visit *it: validTests
+    visit &it: validTests
     {
         @assert(isValid(it.in) == it.out)
     }

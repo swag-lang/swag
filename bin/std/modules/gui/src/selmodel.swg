@@ -10,7 +10,7 @@ impl SelModel
 {
     mtd getSelectedRangeIndex(idx: u32)->u32
     {
-        visit *r, i: selection
+        visit &r, i: selection
         {
             if idx >= r.start and idx <= r.end
                 return cast(u32) i
@@ -42,7 +42,7 @@ impl SelModel
         if select
         {
             // Prepend/Append to an existing range
-            visit *r, i: selection
+            visit &r, i: selection
             {
                 if r.start and idx == r.start - 1
                 {
@@ -81,7 +81,7 @@ impl SelModel
     #[Swag.Macro]
     mtd(ptr: bool) opVisit(stmt: code)
     {
-        scope Up visit *r: selection
+        scope Up visit &r: selection
         {
             loop i: r.start..r.end
             {

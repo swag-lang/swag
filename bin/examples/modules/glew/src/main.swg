@@ -34,7 +34,7 @@ func findFirstLine(what: string)
 
 func findLine(what: string)->*String
 {
-    visit *line: lines
+    visit &line: lines
     {
         idx := line.indexOf(what)
         if idx == Swag.UInt.Max continue

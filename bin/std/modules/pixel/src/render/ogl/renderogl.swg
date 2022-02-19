@@ -442,7 +442,7 @@ impl RenderOgl
                 font := cmd.font.fontRef
                 font.dirty = false
                 glActiveTexture(GL_TEXTURE1)
-                visit *atlas: font.atlases
+                visit &atlas: font.atlases
                 {
                     if !atlas.dirty continue
                     atlas.dirty = false

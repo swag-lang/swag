@@ -124,7 +124,7 @@ var caseTest: [] CaseT = @[
 
 #test
 {
-    visit *c: caseTest
+    visit &c: caseTest
     {
         switch c.cas
         {

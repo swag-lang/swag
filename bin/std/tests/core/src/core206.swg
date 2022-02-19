@@ -61,7 +61,7 @@ const validTests: [] ValidTest = @[
 
 #test
 {
-    visit *it: validTests
+    visit &it: validTests
     {
         res := Adler32.compute(it.in)
         @assert(res == it.out)

@@ -248,7 +248,7 @@ func isInTable(ranges: const [..] Range, r: rune)->bool
     const LinearLimit = 18
     if @countof(ranges) <= LinearLimit or r <= 255
     {
-        visit *range: ranges
+        visit &range: ranges
         {
             if r < range.lo  return false
             if r <= range.hi return range.stride == 1 or (r - range.lo) % range.stride == 0

@@ -44,7 +44,7 @@ var utf8Map: [] Utf8Map = @[
 
 #test
 {
-    visit *it: utf8Map
+    visit &it: utf8Map
     {
         @assert(isValidRune(it.c))
 
