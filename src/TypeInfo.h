@@ -102,6 +102,8 @@ struct BadSignatureInfos
     ComputedValue* badGenValue2;
     int            badSignatureNum1;
     int            badSignatureNum2;
+    Utf8           castErrorHint;
+    Utf8           castErrorMsg;
 
     void clear()
     {
@@ -114,6 +116,8 @@ struct BadSignatureInfos
         badGenValue2              = nullptr;
         badSignatureNum1          = 0;
         badSignatureNum2          = 0;
+        castErrorMsg.clear();
+        castErrorHint.clear();
     }
 };
 

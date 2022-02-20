@@ -87,9 +87,13 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
         castFlags |= forceCastFlags | CASTFLAG_PARAMS;
 
         context.semContext->castFlagsResult = 0;
-        bool same                           = TypeManager::makeCompatibles(context.semContext, wantedTypeInfo, callTypeInfo, nullptr, nullptr, castFlags);
+        context.semContext->castErrorHint.clear();
+        context.semContext->castErrorMsg.clear();
+
+        bool same = TypeManager::makeCompatibles(context.semContext, wantedTypeInfo, callTypeInfo, nullptr, nullptr, castFlags);
         if (context.semContext->result != ContextResult::Done)
             return;
+
         context.flags |= context.semContext->castFlagsResult;
 
         if (!same)
@@ -100,6 +104,8 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                 context.badSignatureInfos.badSignatureParameterIdx  = i;
                 context.badSignatureInfos.badSignatureRequestedType = wantedTypeInfo;
                 context.badSignatureInfos.badSignatureGivenType     = callTypeInfo;
+                context.badSignatureInfos.castErrorMsg              = context.semContext->castErrorMsg;
+                context.badSignatureInfos.castErrorHint             = context.semContext->castErrorHint;
                 SWAG_ASSERT(context.badSignatureInfos.badSignatureRequestedType);
             }
 
@@ -817,7 +823,7 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
 
     // Not enough parameters
     int firstDefault = firstDefaultValueIdx == -1 ? (int) parameters.size() : firstDefaultValueIdx;
-    if (context.cptResolved < firstDefault && parameters.size() && context.result == MatchResult::Ok)
+    if (context.cptResolved < firstDefault && parameters.size() && (context.result == MatchResult::Ok || context.result == MatchResult::BadSignature))
     {
         auto back = parameters.back()->typeInfo;
         if (back->kind != TypeInfoKind::Variadic && back->kind != TypeInfoKind::TypedVariadic && back->kind != TypeInfoKind::CVariadic)

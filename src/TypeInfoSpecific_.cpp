@@ -135,7 +135,8 @@ void TypeInfoReference::computeWhateverName(Utf8& resName, uint32_t nameType)
 {
     if (flags & TYPEINFO_CONST)
         resName += "const ";
-    resName += "&";
+    if (nameType != COMPUTE_DISPLAY_NAME)
+        resName += "&";
     resName += pointedType->computeWhateverName(nameType);
 }
 

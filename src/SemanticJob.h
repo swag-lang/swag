@@ -30,6 +30,8 @@ struct SemanticContext : public JobContext
     SemanticJob*              job = nullptr;
     VectorNative<SymbolName*> currentLockedSymbol;
     uint32_t                  castFlagsResult = 0;
+    Utf8                      castErrorMsg;
+    Utf8                      castErrorHint;
 };
 
 struct LockSymbolOncePerContext

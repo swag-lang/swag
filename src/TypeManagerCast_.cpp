@@ -244,6 +244,42 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
             return true;
     }
 
+    // More specific message
+    Utf8 hint, msg;
+    if (toType->kind == TypeInfoKind::Interface && ((fromType->kind == TypeInfoKind::Struct) || (fromType->isPointerTo(TypeInfoKind::Struct))))
+    {
+        auto fromTypeCpy = fromType;
+        if (fromTypeCpy->isPointerTo(TypeInfoKind::Struct))
+        {
+            hint        = Hint::isType(fromTypeCpy);
+            fromTypeCpy = CastTypeInfo<TypeInfoPointer>(fromTypeCpy, TypeInfoKind::Pointer)->pointedType;
+        }
+
+        msg = Fmt(Err(Err0176), fromTypeCpy->getDisplayNameC(), toType->getDisplayNameC());
+    }
+    else if (toType->kind == TypeInfoKind::Pointer && (fromType->isNativeIntegerOrRune() || fromType->isNativeFloat() || fromType->isNative(NativeTypeKind::Bool)))
+    {
+        hint = Hnt(Hnt0005);
+        msg  = Fmt(Err(Err0907), fromType->getDisplayNameC());
+    }
+    else if (castFlags & CASTFLAG_CONST_ERR)
+    {
+        hint = Hnt(Hnt0022);
+        msg  = Fmt(Err(Err0418), fromType->getDisplayNameC(), toType->getDisplayNameC());
+    }
+    else if (fromType->isPointerToTypeInfo() && !toType->isPointerToTypeInfo())
+    {
+        hint = Hnt(Hnt0040);
+        msg  = Fmt(Err(Err0177), fromType->getDisplayNameC(), toType->getDisplayNameC());
+    }
+    else if (fromType->isClosure() && toType->isLambda())
+    {
+        msg = Fmt(Err(Err0178));
+    }
+
+    context->castErrorMsg  = msg;
+    context->castErrorHint = hint;
+
     if (!(castFlags & CASTFLAG_NO_ERROR))
     {
         SWAG_ASSERT(fromNode);
@@ -261,40 +297,11 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
             }
         }
 
-        // Cast from struct to interface
-        if (toType->kind == TypeInfoKind::Interface && ((fromType->kind == TypeInfoKind::Struct) || (fromType->isPointerTo(TypeInfoKind::Struct))))
+        // A specific error message ?
+        if (!msg.empty())
         {
-            Utf8 hint;
-            if (fromType->isPointerTo(TypeInfoKind::Struct))
-            {
-                hint     = Hint::isType(fromType);
-                fromType = CastTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer)->pointedType;
-            }
-
-            return context->report(hint, {fromNode, Fmt(Err(Err0176), fromType->getDisplayNameC(), toType->getDisplayNameC())});
-        }
-
-        if (toType->kind == TypeInfoKind::Pointer && (fromType->isNativeIntegerOrRune() || fromType->isNativeFloat() || fromType->isNative(NativeTypeKind::Bool)))
-        {
-            PushErrHint errh(Hnt(Hnt0005));
-            return context->report(fromNode, Fmt(Err(Err0907), fromType->getDisplayNameC()));
-        }
-
-        if (castFlags & CASTFLAG_CONST_ERR)
-        {
-            PushErrHint errh(Hnt(Hnt0022));
-            return context->report(fromNode, Fmt(Err(Err0418), fromType->getDisplayNameC(), toType->getDisplayNameC()));
-        }
-
-        if (fromType->isPointerToTypeInfo() && !toType->isPointerToTypeInfo())
-        {
-            PushErrHint errh(Hnt(Hnt0040));
-            return context->report(fromNode, Fmt(Err(Err0177), fromType->getDisplayNameC(), toType->getDisplayNameC()));
-        }
-
-        if (fromType->isClosure() && toType->isLambda())
-        {
-            return context->report({fromNode, Fmt(Err(Err0178))});
+            PushErrHint errh(hint);
+            return context->report(hint, {fromNode, msg});
         }
 
         // General cast error

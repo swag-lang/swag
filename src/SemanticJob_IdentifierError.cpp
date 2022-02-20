@@ -393,6 +393,15 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
             note = new Diagnostic{overload->node, Fmt(Nte(Nte0008), refNiceName.c_str()), DiagnosticLevel::Note};
 
         result0.push_back(diag);
+
+        // A more specific message ?
+        if (!bi.castErrorMsg.empty())
+        {
+            auto note1  = new Diagnostic{diag->sourceNode, bi.castErrorMsg, DiagnosticLevel::Note};
+            note1->hint = bi.castErrorHint;
+            result1.push_back(note1);
+        }
+
         result1.push_back(note);
         return;
     }
