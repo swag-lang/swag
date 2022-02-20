@@ -288,7 +288,7 @@ bool Tokenizer::getToken(Token& token)
             if (nc == '"')
             {
                 treatChar(nc, offset);
-                SWAG_CHECK(doStringLiteral(token, true));
+                SWAG_CHECK(doStringLiteral(token, true, true));
                 return true;
             }
 
@@ -356,7 +356,16 @@ bool Tokenizer::getToken(Token& token)
         ///////////////////////////////////////////
         if (c == '"')
         {
-            SWAG_CHECK(doStringLiteral(token, false));
+            if (sourceFile->curBuffer[0] == '"' && sourceFile->curBuffer[1] == '"')
+            {
+                sourceFile->curBuffer += 2;
+                SWAG_CHECK(doStringLiteral(token, false, true));
+            }
+            else
+            {
+                SWAG_CHECK(doStringLiteral(token, false, false));
+            }
+
             return true;
         }
 

@@ -100,6 +100,30 @@
         // string
     }
 
+    // A multiline string starts and ends with """
+    // Unlink raw strings, they still evaluate escape sequences
+    {
+        const a = """this is
+                     a
+                     string
+                     """
+
+        // Equivalent to :
+        // this is
+        // a
+        // string
+    }
+
+    // In a multiline or raw string, if you end a line with '\', the
+    // following eol will *NOT* be part of the string
+    {
+        const a = """this is \
+                     a \
+                     string \
+                     """
+        @print(a)
+    }
+
     // A single character can be casted to every unsigned int type
     {
         var a = "0"'u8

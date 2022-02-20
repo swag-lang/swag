@@ -78,7 +78,7 @@ struct Tokenizer
     void setFile(SourceFile* file);
     bool getToken(Token& token);
     bool error(Token& token, const Utf8& msg);
-    void postProcessRawString(Utf8& text);
+    void trimMultilineString(Utf8& text);
     void appendTokenName(Token& token);
     void saveState(const Token& token);
     void restoreState(Token& token);
@@ -97,7 +97,7 @@ struct Tokenizer
     bool doIntLiteral(uint32_t c, Token& token);
     bool doFloatLiteral(uint32_t c, Token& token);
     bool doSymbol(uint32_t c, Token& token);
-    bool doStringLiteral(Token& token, bool raw);
+    bool doStringLiteral(Token& token, bool raw, bool multiline);
 
     static bool isSymbol(TokenId id);
     static bool isLiteral(TokenId id);

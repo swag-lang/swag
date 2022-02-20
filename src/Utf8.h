@@ -8,6 +8,7 @@
 #define SWAG_IS_NUMSEP(__c) (__c == '_')
 #define SWAG_IS_BLANK(__c) (__c == ' ' || __c == '\t' || __c == '\v' || __c == '\f' || __c == '\r')
 #define SWAG_IS_EOL(__c) (__c == '\n')
+#define SWAG_IS_WIN_EOL(__c) (__c == '\r')
 #define SWAG_IS_ALNUM(__c) (SWAG_IS_ALPHA(__c) || SWAG_IS_DIGIT(__c))
 
 struct Utf8

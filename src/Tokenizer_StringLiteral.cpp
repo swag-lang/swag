@@ -7,7 +7,7 @@
 // This function is used to 'align' text. This is the same rule as in swift : all blanks before the end mark ("@) will be removed
 // from every other lines.
 // This is necessary to be able to indent a multiline string in the code
-void Tokenizer::postProcessRawString(Utf8& text)
+void Tokenizer::trimMultilineString(Utf8& text)
 {
     // Count the blanks before the end
     const char* pz    = text.c_str() + text.length() - 1;
@@ -33,7 +33,7 @@ void Tokenizer::postProcessRawString(Utf8& text)
         while (SWAG_IS_BLANK(*pz) && toRemove)
         {
             pz++;
-            toRemove++;
+            toRemove--;
         }
 
         while (*pz != '\n' && *pz)
@@ -48,7 +48,7 @@ void Tokenizer::postProcessRawString(Utf8& text)
     text = copyText;
 }
 
-bool Tokenizer::doStringLiteral(Token& token, bool raw)
+bool Tokenizer::doStringLiteral(Token& token, bool raw, bool multiline)
 {
     unsigned offset;
     token.id            = TokenId::LiteralString;
@@ -64,7 +64,7 @@ bool Tokenizer::doStringLiteral(Token& token, bool raw)
             auto c = getCharNoSeek(offset);
 
             // Can't have a newline inside a normal string (but this is legit in raw string literals)
-            if (!raw && SWAG_IS_EOL(c))
+            if (!multiline && SWAG_IS_EOL(c))
             {
                 token.startLocation = location;
                 error(token, Err(Err0905));
@@ -75,8 +75,34 @@ bool Tokenizer::doStringLiteral(Token& token, bool raw)
             if (!c)
             {
                 location = token.startLocation;
-                error(token, Err(Err0905));
+                error(token, Err(Err0857));
                 return false;
+            }
+
+            // Skip next eol
+            if (multiline && c == '\\')
+            {
+                // Window \r\n
+                if (SWAG_IS_WIN_EOL(sourceFile->curBuffer[1]) && SWAG_IS_EOL(sourceFile->curBuffer[2]))
+                {
+                    appendTokenName(token);
+                    processChar('\n');
+                    realAppendName = true;
+                    sourceFile->curBuffer += 3;
+                    startTokenName    = sourceFile->curBuffer;
+                    token.endLocation = location;
+                    continue;
+                }
+                else if (SWAG_IS_EOL(sourceFile->curBuffer[1]))
+                {
+                    appendTokenName(token);
+                    processChar('\n');
+                    realAppendName = true;
+                    sourceFile->curBuffer += 2;
+                    startTokenName    = sourceFile->curBuffer;
+                    token.endLocation = location;
+                    continue;
+                }
             }
 
             // Escape sequence
@@ -94,19 +120,26 @@ bool Tokenizer::doStringLiteral(Token& token, bool raw)
             // End marker
             if (c == '"')
             {
-                if (!raw)
+                if (!raw && !multiline)
                 {
                     appendTokenName(token);
                     treatChar(c, offset);
                     break;
                 }
 
-                auto nc = sourceFile->curBuffer[1];
-                if (nc == '@')
+                if (multiline && sourceFile->curBuffer[1] == '"' && sourceFile->curBuffer[2] == '"')
+                {
+                    appendTokenName(token);
+                    sourceFile->curBuffer += 3;
+                    trimMultilineString(token.text);
+                    break;
+                }
+
+                if (raw && sourceFile->curBuffer[1] == '@')
                 {
                     appendTokenName(token);
                     sourceFile->curBuffer += 2;
-                    postProcessRawString(token.text);
+                    trimMultilineString(token.text);
                     break;
                 }
             }

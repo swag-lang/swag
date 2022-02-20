@@ -575,11 +575,11 @@ func @panic(message: string, loc: CompilerSourceLocation)
 
     // Message to the user
     const title = "Swag Panic !"
-    const info =
-    @"- Press Cancel to exit
+    const info = """\
+      - Press Cancel to exit
       - Press Retry to debug
       - Press Continue to ignore
-      "@
+      """
 
     @memcpy(&str[len], @dataof(info), @countof(info))
     len += @countof(info)

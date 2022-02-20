@@ -1,0 +1,20 @@
+// https://youtu.be/k-O8PuT9Lzk
+
+#dependencies
+{
+    #import "core" location="swag@std"
+}
+
+using Core
+
+#run
+{
+    text := """\
+        function hello() {
+            console.log("name\tage")
+        }
+
+        hello()\
+        """
+    Console.print(text)
+}
