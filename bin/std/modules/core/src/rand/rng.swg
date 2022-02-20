@@ -1,6 +1,8 @@
 #global namespace Random
 #global public
 
+alias DefaultRng = Rng'MWC
+
 struct(T = MWC) Rng
 {
     rng: T

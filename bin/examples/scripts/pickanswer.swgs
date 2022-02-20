@@ -51,7 +51,7 @@ func update(game: *Game, guess: s32)
     game.guesses += 1
 }
 
-func pickAnswer(high: s32, rng: *Random.Rng)->s32
+func pickAnswer(high: s32, rng: *Random.DefaultRng)->s32
 {
     rng.seedNow()
     return rng.nextS32(0, high)
@@ -61,7 +61,7 @@ func pickAnswer(high: s32, rng: *Random.Rng)->s32
 {
     const High = 100
 
-    rng    := Random.Rng{}
+    rng    := Random.DefaultRng{}
     answer := pickAnswer(High, &rng)
     game   := Game{answer: answer, high: High}
 
