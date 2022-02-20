@@ -377,7 +377,7 @@ func parseIdentifier(str: string)->string throw
     return @mkstring(@dataof(str), cpt)
 }
 
-// Convert an utf8 buffer to a string
+// Convert an utf8 buffer to a Core.String
 // String in the buffer can be quoted (but the result will not be in that case)
 func parseString(str: string) -> {value: String, eat: u32} throw
 {

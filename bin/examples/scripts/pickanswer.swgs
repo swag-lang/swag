@@ -1,0 +1,79 @@
+// https://www.youtube.com/watch?v=olISecOUX1g&t=557s
+
+#dependencies
+{
+    #import "core" location="swag@std"
+}
+
+using Core
+var errCount: s32
+
+func askGuess(high: s32)->s32 throw
+{
+    Console.printf("Guess a number between 1 and %: ", high)
+    text := Console.prompt()
+    return try StrConv.parseS32(text).value
+}
+
+func askGuessMulti(high: s32)->s32
+{
+    loop
+    {
+        res := catch askGuess(high)
+        if !@err return res
+        Console.print("I didn't understand\n")
+        errCount += 1
+    }
+}
+
+func report(game: Game, guess: s32)
+{
+    description := guess < game.answer ? "too low" :
+                   guess > game.answer ? "too high" :
+                   "the answer!"
+    Console.printf("% is %\n", guess, description)
+}
+
+func play(game: *Game)
+{
+    while !game.done
+    {
+        guess := askGuessMulti(game.high)
+        report(game, guess)
+        update(game, guess)
+    }
+}
+
+func update(game: *Game, guess: s32)
+{
+    if guess == game.answer
+        game.done = true
+    game.guesses += 1
+}
+
+func pickAnswer(high: s32, rng: *Random.Rng)->s32
+{
+    rng.seedNow()
+    return rng.nextS32(0, high)
+}
+
+#run
+{
+    const High = 100
+
+    rng    := Random.Rng{}
+    answer := pickAnswer(High, &rng)
+    game   := Game{answer: answer, high: High}
+
+    play(&game)
+    Console.printf("Finished in % guesses\n", game.guesses)
+    Console.printf("Total input errors: %\n", errCount)
+}
+
+struct Game
+{
+    answer:     s32
+    done:       bool
+    guesses:    s32
+    high:       s32
+}
