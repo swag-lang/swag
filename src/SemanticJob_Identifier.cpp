@@ -166,8 +166,7 @@ void SemanticJob::sortParameters(AstNode* allParams)
          {
              AstFuncCallParam* p1 = CastAst<AstFuncCallParam>(n1, AstNodeKind::FuncCallParam);
              AstFuncCallParam* p2 = CastAst<AstFuncCallParam>(n2, AstNodeKind::FuncCallParam);
-             return p1->indexParam < p2->indexParam;
-         });
+             return p1->indexParam < p2->indexParam; });
 
     allParams->flags ^= AST_MUST_SORT_CHILDS;
 }
@@ -238,8 +237,7 @@ void SemanticJob::resolvePendingLambdaTyping(AstFuncCallParam* nodeCall, OneMatc
                    p->token.text = it->second->name;
                    if (p->resolvedSymbolOverload)
                        p->resolvedSymbolOverload->typeInfo = it->second;
-                   p->typeInfo = it->second;
-               });
+                   p->typeInfo = it->second; });
 
     // Set return type
     if (typeUndefinedFct->returnType->isNative(NativeTypeKind::Undefined))
@@ -891,7 +889,6 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         // A struct with parameters is in fact the creation of a temporary variable
         if (identifier->callParameters && !(identifier->flags & AST_GENERATED))
         {
-            //identifier->flags |= AST_R_VALUE;
             if (!(identifier->flags & AST_IN_TYPE_VAR_DECLARATION) && !(identifier->flags & AST_IN_FUNC_DECL_PARAMS))
             {
                 if (identifier->parent->parent->kind == AstNodeKind::VarDecl || identifier->parent->parent->kind == AstNodeKind::ConstDecl)
@@ -908,6 +905,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                             varNode->type       = typeNode;
                             varNode->assignment = nullptr;
                             typeNode->flags |= AST_HAS_STRUCT_PARAMETERS;
+                            typeNode->specFlags |= AST_SPEC_TYPEEXPRESSION_DONEGEN;
                             identifier->semFlags |= AST_SEM_ONCE;
                             Ast::removeFromParent(identifier->parent);
                             Ast::addChildBack(typeNode, identifier->parent);
@@ -919,6 +917,10 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                             return true;
                         }
                     }
+                }
+                else if (identifier->parent->parent->kind == AstNodeKind::TypeExpression && identifier->parent->parent->specFlags & AST_SPEC_TYPEEXPRESSION_DONEGEN)
+                {
+                    return true;
                 }
 
                 SWAG_CHECK(createTmpVarStruct(context, identifier));

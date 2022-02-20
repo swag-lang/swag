@@ -1,4 +1,3 @@
-#global skip
 struct(T = s32) A
 {
 
@@ -6,5 +5,6 @@ struct(T = s32) A
 
 #test
 {
-    x := A{}
+    //var x: A
+    y := A{}
 }

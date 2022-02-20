@@ -25,5 +25,4 @@ Standard: Cpp11
 UseTab: Never
 AllowShortFunctionsOnASingleLine: None
 ColumnLimit: 0
-MacroBlockBegin: "^CB_DECLARE_BEG"
-MacroBlockEnd: "^CB_DECLARE_END"
+#LambdaBodyIndentation: LBI_OuterScope

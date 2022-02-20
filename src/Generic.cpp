@@ -622,8 +622,12 @@ bool Generic::instantiateDefaultGeneric(SemanticContext* context, AstVarDecl* no
                     identifier->flags &= ~AST_IS_GENERIC;
                     node->flags &= ~AST_IS_GENERIC;
                     node->type->flags &= ~AST_IS_GENERIC;
+
+                    // Force the reevaluation of the variable and its childs
                     context->result     = ContextResult::NewChilds;
                     node->semanticState = AstNodeResolveState::Enter;
+                    Ast::visit(node, [](AstNode* n)
+                               { n->semFlags &= ~AST_SEM_ONCE; });
                     return true;
                 }
             }
