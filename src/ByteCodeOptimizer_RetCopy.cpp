@@ -76,7 +76,7 @@ static void optimRetCopy(ByteCodeOptContext* context, ByteCodeInstruction* ipOrg
 
     // Remove the MakeStackPointer
     // NO ! The register can be necessary for some code after, especially if this is a CopyRRtoRC
-    //ByteCodeOptimizer::setNop(context, ip);
+    // ByteCodeOptimizer::setNop(context, ip);
 
     // Remove the memcpy
     ByteCodeOptimizer::setNop(context, ip + 1);
@@ -108,21 +108,6 @@ void ByteCodeOptimizer::registerParamsReg(ByteCodeOptContext* context, ByteCodeI
         context->vecReg.push_back(ip->b.u32);
         context->vecReg.push_back(ip->c.u32);
         context->vecReg.push_back(ip->d.u32);
-    }
-}
-
-void ByteCodeOptimizer::registerMakeAddr(ByteCodeOptContext* context, ByteCodeInstruction* ip)
-{
-    if (ip->op == ByteCodeOp::MakeStackPointer ||
-        ip->op == ByteCodeOp::MakeBssSegPointer ||
-        ip->op == ByteCodeOp::MakeMutableSegPointer ||
-        ip->op == ByteCodeOp::MakeCompilerSegPointer)
-    {
-        context->mapRegReg.set(ip->a.u32, ip->b.u32);
-    }
-    else if (ip->op == ByteCodeOp::InternalGetTlsPtr)
-    {
-        context->mapRegReg.set(ip->a.u32, UINT32_MAX); // Disable optim whatever
     }
 }
 
@@ -185,6 +170,22 @@ bool ByteCodeOptimizer::optimizePassRetCopyLocal(ByteCodeOptContext* context)
     }
 
     return true;
+}
+
+void ByteCodeOptimizer::registerMakeAddr(ByteCodeOptContext* context, ByteCodeInstruction* ip)
+{
+    if (ip->op == ByteCodeOp::MakeStackPointer ||
+        ip->op == ByteCodeOp::MakeBssSegPointer ||
+        ip->op == ByteCodeOp::MakeMutableSegPointer ||
+        ip->op == ByteCodeOp::MakeCompilerSegPointer)
+    {
+        context->mapRegReg.set(ip->a.u32, ip->b.u32);
+    }
+    else if (ip->op == ByteCodeOp::InternalGetTlsPtr ||
+             ip->op == ByteCodeOp::GetFromStackParam64)
+    {
+        context->mapRegReg.set(ip->a.u32, UINT32_MAX); // Disable optim whatever
+    }
 }
 
 bool ByteCodeOptimizer::optimizePassRetCopyGlobal(ByteCodeOptContext* context)
@@ -310,13 +311,6 @@ bool ByteCodeOptimizer::optimizePassRetCopyInline(ByteCodeOptContext* context)
                 ip++;
 
             // This will copy the result in the real variable
-            /*if (ByteCode::isMemCpy(ip) && ip->b.u32 == ipOrg->a.u32 && ipOrg->a.u32 == ipOrg[1].node->ownerInline->resultRegisterRC[0])
-            {
-                SET_OP(ipOrg, ByteCodeOp::CopyRBtoRA64);
-                ipOrg->b.u32 = ip->a.u32;
-                setNop(context, ip);
-            }
-            else */
             if (ip->op == ByteCodeOp::MakeStackPointer && ByteCode::isMemCpy(ip + 1) && ip[1].b.u32 == ipOrg->a.u32)
                 optimRetCopy(context, ipOrg, ip);
             else
