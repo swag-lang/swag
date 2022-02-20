@@ -54,8 +54,7 @@ void ModuleBuildJob::publishFilesToPublic()
                        auto path = publicPath + "/";
                        path += filename;
                        error_code errorCode;
-                       fs::remove(path, errorCode);
-                   });
+                       fs::remove(path, errorCode); });
 
     // Add all #public files
     for (auto one : module->exportSourceFiles)
@@ -85,8 +84,7 @@ void ModuleBuildJob::publishFilesToTarget()
                        job->sourcePath   = publishPath + "/" + cFileName;
                        job->destPath     = g_Workspace->targetPath.string() + "/" + cFileName;
                        job->dependentJob = this;
-                       jobsToAdd.push_back(job);
-                   });
+                       jobsToAdd.push_back(job); });
 
     // Everything in a sub folder named 'os-arch' will be copied only if this matches the current os and arch
     auto osArchPath = publishPath;
@@ -103,8 +101,7 @@ void ModuleBuildJob::publishFilesToTarget()
                            job->sourcePath   = osArchPath + "/" + cFileName;
                            job->destPath     = g_Workspace->targetPath.string() + "/" + cFileName;
                            job->dependentJob = this;
-                           jobsToAdd.push_back(job);
-                       });
+                           jobsToAdd.push_back(job); });
     }
 }
 
@@ -144,8 +141,7 @@ bool ModuleBuildJob::loadDependency(ModuleDependency* dep)
                                file->path     = Utf8::normalizePath(file->path);
                                file->imported = depModule;
                                files.push_back(file);
-                           }
-                       });
+                           } });
     }
 
     // One syntax job per dependency file
@@ -491,7 +487,8 @@ JobResult ModuleBuildJob::execute()
         if (!module->byteCodeRunFunc.empty())
         {
             // A #run pass cannot modify a bss variable
-            module->bssCannotChange = true;
+            if (!g_CommandLine->scriptMode)
+                module->bssCannotChange = true;
 
             for (auto func : module->byteCodeRunFunc)
             {
