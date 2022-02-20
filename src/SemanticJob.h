@@ -290,7 +290,7 @@ struct SemanticJob : public Job
     static bool         convertLiteralTupleToStructDecl(SemanticContext* context, AstNode* parent, AstNode* assignment, AstNode** result);
     static bool         collectAssignment(SemanticContext* context, DataSegment* storageSegment, uint32_t& storageOffset, AstVarDecl* node);
     static void         disableCompilerIfBlock(SemanticContext* context, AstCompilerIfBlock* block);
-    static void         propagateReturn(AstReturn* node);
+    static void         propagateReturn(AstNode* node);
     static bool         resolveMakePointer(SemanticContext* context);
     static bool         resolveMakePointerLambda(SemanticContext* context);
     static bool         boundCheck(SemanticContext* context, AstNode* arrayAccess, uint64_t maxCount);

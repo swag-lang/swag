@@ -861,7 +861,7 @@ bool SemanticJob::resolveFuncCallParams(SemanticContext* context)
 
 bool SemanticJob::resolveFuncCallParam(SemanticContext* context)
 {
-    auto node = CastAst<AstFuncCallParam>(context->node, AstNodeKind::FuncCallParam);
+    auto node      = CastAst<AstFuncCallParam>(context->node, AstNodeKind::FuncCallParam);
     auto child     = node->childs.front();
     node->typeInfo = child->typeInfo;
 
@@ -976,13 +976,46 @@ bool SemanticJob::resolveRetVal(SemanticContext* context)
     return true;
 }
 
-void SemanticJob::propagateReturn(AstReturn* node)
+void SemanticJob::propagateReturn(AstNode* node)
 {
     auto stopFct = node->ownerFct->parent;
     if (node->semFlags & AST_SEM_EMBEDDED_RETURN)
         stopFct = node->ownerInline->parent;
 
     AstNode* scanNode = node;
+
+    // Search if we are in an infinit loop
+    auto breakable = node->ownerBreakable;
+    while (breakable)
+    {
+        if (breakable->kind == AstNodeKind::Loop)
+        {
+            auto loopNode = CastAst<AstLoop>(breakable, AstNodeKind::Loop);
+            if (!loopNode->expression)
+                loopNode->breakableFlags |= BREAKABLE_RETURN_IN_INFINIT_LOOP;
+            break;
+        }
+
+        if (breakable->kind == AstNodeKind::While)
+        {
+            auto whileNode = CastAst<AstWhile>(breakable, AstNodeKind::While);
+            if ((whileNode->boolExpression->flags & AST_VALUE_COMPUTED) && (whileNode->boolExpression->computedValue->reg.b))
+                whileNode->breakableFlags |= BREAKABLE_RETURN_IN_INFINIT_LOOP;
+            break;
+        }
+
+        if (breakable->kind == AstNodeKind::For)
+        {
+            auto forNode = CastAst<AstFor>(breakable, AstNodeKind::For);
+            if ((forNode->boolExpression->flags & AST_VALUE_COMPUTED) && (forNode->boolExpression->computedValue->reg.b))
+                forNode->breakableFlags |= BREAKABLE_RETURN_IN_INFINIT_LOOP;
+            break;
+        }
+
+        breakable = breakable->ownerBreakable;
+    }
+
+    // Propage the return in the corresponding scope
     while (scanNode && scanNode != stopFct)
     {
         if (scanNode->semFlags & AST_SEM_SCOPE_HAS_RETURN && !(scanNode->semFlags & AST_SEM_SCOPE_FORCE_HAS_RETURN))
@@ -1017,6 +1050,7 @@ void SemanticJob::propagateReturn(AstReturn* node)
         scanNode = scanNode->parent;
     }
 
+    // To tell that the function as at least one return (this will change the error message)
     while (scanNode && scanNode != stopFct)
     {
         if (scanNode->semFlags & AST_SEM_FCT_HAS_RETURN)

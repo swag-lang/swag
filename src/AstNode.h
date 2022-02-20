@@ -478,10 +478,11 @@ struct AstBreakContinue : public AstNode
     int jumpInstruction = 0;
 };
 
-const uint32_t BREAKABLE_CAN_HAVE_INDEX    = 0x00000001;
-const uint32_t BREAKABLE_CAN_HAVE_CONTINUE = 0x00000002;
-const uint32_t BREAKABLE_NEED_INDEX        = 0x00000004;
-const uint32_t BREAKABLE_NEED_INDEX1       = 0x00000008;
+const uint32_t BREAKABLE_CAN_HAVE_INDEX         = 0x00000001;
+const uint32_t BREAKABLE_CAN_HAVE_CONTINUE      = 0x00000002;
+const uint32_t BREAKABLE_NEED_INDEX             = 0x00000004;
+const uint32_t BREAKABLE_NEED_INDEX1            = 0x00000008;
+const uint32_t BREAKABLE_RETURN_IN_INFINIT_LOOP = 0x00000010;
 
 struct AstBreakable : public AstNode
 {

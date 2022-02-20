@@ -68,6 +68,11 @@ bool SemanticJob::resolveWhile(SemanticContext* context)
     node->boolExpression->extension->byteCodeAfterFct  = ByteCodeGenJob::emitWhileAfterExpr;
     node->block->allocateExtension();
     node->block->extension->byteCodeAfterFct = ByteCodeGenJob::emitLoopAfterBlock;
+
+    // :SpecPropagateReturn
+    if (node->breakableFlags & BREAKABLE_RETURN_IN_INFINIT_LOOP && node->breakList.empty())
+        propagateReturn(node->parent);
+
     return true;
 }
 
@@ -217,6 +222,11 @@ bool SemanticJob::resolveFor(SemanticContext* context)
 
     node->block->allocateExtension();
     node->block->extension->byteCodeAfterFct = ByteCodeGenJob::emitLoopAfterBlock;
+
+    // :SpecPropagateReturn
+    if (node->breakableFlags & BREAKABLE_RETURN_IN_INFINIT_LOOP && node->breakList.empty())
+        propagateReturn(node->parent);
+
     return true;
 }
 
@@ -531,6 +541,10 @@ bool SemanticJob::resolveLoop(SemanticContext* context)
     if (!node->expression)
         node->block->extension->byteCodeBeforeFct = ByteCodeGenJob::emitLoopBeforeBlock;
 
+    // :SpecPropagateReturn
+    if (node->breakableFlags & BREAKABLE_RETURN_IN_INFINIT_LOOP && node->breakList.empty())
+        propagateReturn(node->parent);
+
     return true;
 }
 
@@ -783,8 +797,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
                        }
 
                        countVar++;
-                   }
-               });
+                   } });
 
     // First child is the let in the statement, and first child of this is the loop node
     auto loopNode = CastAst<AstLoop>(node->childs.back()->childs.back(), AstNodeKind::Loop);
@@ -794,8 +807,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     Ast::visit(node->block, [&](AstNode* x)
                {
                    if (!x->ownerBreakable)
-                       x->ownerBreakable = loopNode;
-               });
+                       x->ownerBreakable = loopNode; });
     node->block->flags &= ~AST_NO_SEMANTIC;
     loopNode->block->token.endLocation = node->block->token.endLocation;
 

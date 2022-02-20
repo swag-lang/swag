@@ -35,17 +35,20 @@ void ByteCodeOptimizer::genTree(ByteCodeOptContext* context, uint32_t nodeIdx)
 
     bool here = false;
 
-    ByteCodeInstruction* nextIp  = node->end + node->end->b.s32 + 1;
-    auto                 newNode = newTreeNode(context, nextIp, here);
-    if (!here)
-        genTree(context, newNode);
-    node        = &context->tree[nodeIdx];
-    node->next1 = newNode;
-
-    if (node->end->op != ByteCodeOp::Jump)
+    ByteCodeInstruction* nextIp = node->end + node->end->b.s32 + 1;
+    if (nextIp->op != ByteCodeOp::End)
     {
-        nextIp  = node->end + 1;
-        newNode = newTreeNode(context, nextIp, here);
+        auto newNode = newTreeNode(context, nextIp, here);
+        if (!here)
+            genTree(context, newNode);
+        node        = &context->tree[nodeIdx];
+        node->next1 = newNode;
+    }
+
+    if (node->end->op != ByteCodeOp::Jump && node->end->op != ByteCodeOp::End)
+    {
+        nextIp       = node->end + 1;
+        auto newNode = newTreeNode(context, nextIp, here);
         if (!here)
             genTree(context, newNode);
         node        = &context->tree[nodeIdx];
