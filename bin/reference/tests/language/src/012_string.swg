@@ -139,4 +139,10 @@
         #assert @stringof(X) == "1"
         #assert @stringof(X + 10) == "11"
     }
+
+    // You can also use '@nameof' to return the name of a variable, function etc.
+    {
+        const X = 1
+        #assert @nameof(X) == "X"
+    }
 }
