@@ -50,7 +50,12 @@
 	Last Updated: 30/03/2017
 */
 
-#global if #os == Swag.TargetOs.Windows
+//#global if #os == Swag.TargetOs.Windows
+#dependencies
+{
+    #import "core" location="swag@std"
+}
+
 using Core, Win32
 
 var nScreenWidth = 120'u32			// Console Screen Size X (columns)
@@ -110,6 +115,11 @@ func DoesPieceFit(nTetromino, nRotation, nPosX, nPosY: s32)->bool
 //#[Swag.PrintBc]
 func main()
 {
+    var csbi: CONSOLE_SCREEN_BUFFER_INFO
+    assume GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi)
+    nScreenWidth = csbi.srWindow.right - csbi.srWindow.left + 1
+    nScreenHeight = csbi.srWindow.bottom - csbi.srWindow.top + 1
+
     var screen: *u8 = @alloc(cast(uint) nScreenWidth*nScreenHeight)
     loop i: nScreenWidth*nScreenHeight
         screen[i] = " "'u8
@@ -280,7 +290,7 @@ func main()
     CloseHandle(hConsole)
 }
 
-#main
+#run
 {
     main()
 }

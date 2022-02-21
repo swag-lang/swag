@@ -36,7 +36,12 @@
     Last Updated: 24/06/2017
 */
 
-#global if #os == Swag.TargetOs.Windows
+#dependencies
+{
+    #import "core" location="swag@std"
+}
+
+//#global if #os == Swag.TargetOs.Windows
 using Win32, Core.Input
 
 var nScreenWidth  = 120'u32
@@ -49,6 +54,11 @@ struct SnakeSegment
 
 func main()
 {
+    var csbi: CONSOLE_SCREEN_BUFFER_INFO
+    assume GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi)
+    nScreenWidth = csbi.srWindow.right - csbi.srWindow.left + 1
+    nScreenHeight = csbi.srWindow.bottom - csbi.srWindow.top + 1
+
     var screen: *u8 = @alloc(cast(uint) nScreenWidth*nScreenHeight)
     loop i: nScreenWidth*nScreenHeight
         screen[i] = " "'u8
@@ -162,7 +172,7 @@ func main()
     CloseHandle(hConsole)
 }
 
-#main
+#run
 {
     main()
 }
