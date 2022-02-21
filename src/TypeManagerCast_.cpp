@@ -152,6 +152,7 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
         // :opAffectParam
         if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
         {
+            fromNode->flags |= AST_OPAFFECT_CAST;
             fromNode->castedTypeInfo = fromType;
             fromNode->typeInfo       = toType;
             fromNode->allocateExtension();

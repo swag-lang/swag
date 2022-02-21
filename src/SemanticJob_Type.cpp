@@ -666,7 +666,7 @@ bool SemanticJob::resolveExplicitCast(SemanticContext* context)
     node->toCastTypeInfo = typeNode->typeInfo;
 
     node->byteCodeFct = ByteCodeGenJob::emitExplicitCast;
-    node->inheritOrFlag(exprNode, AST_CONST_EXPR | AST_VALUE_IS_TYPEINFO | AST_VALUE_COMPUTED | AST_R_VALUE | AST_L_VALUE | AST_SIDE_EFFECTS);
+    node->inheritOrFlag(exprNode, AST_CONST_EXPR | AST_VALUE_IS_TYPEINFO | AST_VALUE_COMPUTED | AST_R_VALUE | AST_L_VALUE | AST_SIDE_EFFECTS | AST_OPAFFECT_CAST);
     node->inheritComputedValue(exprNode);
     node->resolvedSymbolName     = exprNode->resolvedSymbolName;
     node->resolvedSymbolOverload = exprNode->resolvedSymbolOverload;
@@ -684,7 +684,7 @@ bool SemanticJob::resolveExplicitCast(SemanticContext* context)
     // (we cannot use castedTypeInfo from node, because an explicit cast result could be casted itself with an implicit cast)
     if (exprNode->castedTypeInfo)
     {
-        if (!(node->flags & AST_VALUE_COMPUTED))
+        if (!(node->flags & (AST_VALUE_COMPUTED | AST_OPAFFECT_CAST)))
         {
             exprNode->typeInfo       = exprNode->castedTypeInfo;
             exprNode->castedTypeInfo = nullptr;

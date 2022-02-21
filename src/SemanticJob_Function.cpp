@@ -893,15 +893,15 @@ bool SemanticJob::resolveFuncCallParam(SemanticContext* context)
     }
 
     node->inheritComputedValue(child);
-    node->inheritOrFlag(child, AST_CONST_EXPR | AST_IS_GENERIC | AST_VALUE_IS_TYPEINFO);
+    node->inheritOrFlag(child, AST_CONST_EXPR | AST_IS_GENERIC | AST_VALUE_IS_TYPEINFO | AST_OPAFFECT_CAST);
     if (node->childs.front()->semFlags & AST_SEM_LITERAL_SUFFIX)
         node->semFlags |= AST_SEM_LITERAL_SUFFIX;
 
     // Inherit the original type in case of computed values, in order to make the cast if necessary
-    if (node->flags & AST_VALUE_COMPUTED)
+    if (node->flags & (AST_VALUE_COMPUTED | node->flags & AST_OPAFFECT_CAST))
         node->castedTypeInfo = child->castedTypeInfo;
 
-    if (checkForConcrete)
+    if (checkForConcrete & !(node->flags & AST_OPAFFECT_CAST))
     {
         SWAG_CHECK(evaluateConstExpression(context, node));
         if (context->result == ContextResult::Pending)
