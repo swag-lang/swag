@@ -522,7 +522,12 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     // This is because "extra" generic parameters must be specified and not deduced, and this is not possible for an implicit cast
     if (funcNode->attributeFlags & ATTRIBUTE_IMPLICIT && (funcNode->flags & (AST_IS_GENERIC | AST_FROM_GENERIC)))
     {
-        if (funcNode->token.text != g_LangSpec->name_opAffectSuffix || funcNode->genericParameters->childs.size() > 1)
+        bool ok = false;
+        if (funcNode->token.text == g_LangSpec->name_opAffectSuffix && funcNode->genericParameters->childs.size() <= 1)
+            ok = true;
+        if (funcNode->token.text == g_LangSpec->name_opAffect && !funcNode->genericParameters)
+            ok = true;
+        if (!ok)
             return context->report(funcNode, Fmt(Err(Err0756), funcNode->getDisplayNameC()));
     }
 
