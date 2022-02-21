@@ -469,10 +469,10 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                 cloneContext.parent      = varNode;
                 cloneContext.parentScope = identifier->ownerScope;
 
-                auto typeExpr = Ast::newTypeExpression(sourceFile, varNode);
-                nodeCall->typeInfo->computeScopedName();
-                typeExpr->identifier = Ast::newIdentifierRef(sourceFile, nodeCall->typeInfo->scopedName, typeExpr);
-                varNode->type        = typeExpr;
+                auto typeExpr      = Ast::newTypeExpression(sourceFile, varNode);
+                typeExpr->typeInfo = nodeCall->typeInfo;
+                typeExpr->flags |= AST_NO_SEMANTIC;
+                varNode->type = typeExpr;
 
                 auto assign = nodeCall->childs.front();
                 if (assign->kind == AstNodeKind::Cast)
