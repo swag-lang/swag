@@ -1572,30 +1572,54 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
             }
             else
             {
-                auto match              = job->getOneMatch();
-                match->symbolOverload   = overload;
-                match->solvedParameters = move(oneOverload.symMatchContext.solvedParameters);
-                match->dependentVar     = dependentVar;
-                match->ufcs             = oneOverload.ufcs;
-                match->oneOverload      = &oneOverload;
+                bool canRegisterInstance = true;
 
-                // As indexParam and resolvedParameter are directly stored in the node, we need to save them
-                // with the corresponding match, as they can be overwritten by another match attempt
-                for (auto p : oneOverload.symMatchContext.parameters)
+                // Be sure that we are not an identifier with generic parameters.
+                // In that case we do not want to have instances.
+                // Weird.
+                if (node && node->kind == AstNodeKind::Identifier)
                 {
-                    if (p->kind != AstNodeKind::FuncCallParam)
-                        continue;
-
-                    OneMatch::ParamParameter pp;
-                    auto                     param = CastAst<AstFuncCallParam>(p, AstNodeKind::FuncCallParam);
-
-                    pp.param             = param;
-                    pp.indexParam        = param->indexParam;
-                    pp.resolvedParameter = param->resolvedParameter;
-                    match->paramParameters.push_back(pp);
+                    auto id = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
+                    if (id->genericParameters)
+                    {
+                        for (auto p : id->genericParameters->childs)
+                        {
+                            if (p->flags & AST_IS_GENERIC)
+                            {
+                                canRegisterInstance = false;
+                                break;
+                            }
+                        }
+                    }
                 }
 
-                matches.push_back(match);
+                if (canRegisterInstance)
+                {
+                    auto match              = job->getOneMatch();
+                    match->symbolOverload   = overload;
+                    match->solvedParameters = move(oneOverload.symMatchContext.solvedParameters);
+                    match->dependentVar     = dependentVar;
+                    match->ufcs             = oneOverload.ufcs;
+                    match->oneOverload      = &oneOverload;
+
+                    // As indexParam and resolvedParameter are directly stored in the node, we need to save them
+                    // with the corresponding match, as they can be overwritten by another match attempt
+                    for (auto p : oneOverload.symMatchContext.parameters)
+                    {
+                        if (p->kind != AstNodeKind::FuncCallParam)
+                            continue;
+
+                        OneMatch::ParamParameter pp;
+                        auto                     param = CastAst<AstFuncCallParam>(p, AstNodeKind::FuncCallParam);
+
+                        pp.param             = param;
+                        pp.indexParam        = param->indexParam;
+                        pp.resolvedParameter = param->resolvedParameter;
+                        match->paramParameters.push_back(pp);
+                    }
+
+                    matches.push_back(match);
+                }
             }
         }
     }

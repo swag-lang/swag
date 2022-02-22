@@ -57,8 +57,6 @@ func area_per_perimeter(shape: IShape)->f64
 
     var circles: Array'Circle = @[c1, c2]
     var shapes:  Array'IShape = @[c1, c2, r1, r2]
-
-    a := shapes[0]
     visit shape: shapes
         Console.printf("%\n", shape.area_per_perimeter())
 }
