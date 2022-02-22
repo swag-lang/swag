@@ -1924,7 +1924,10 @@ bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* 
             // We want to generate bytecode for the expression on the left only if the lambda is dereferenced from a struct/itf
             // Otherwise the left expression is only used for scoping
             if (!identifierRef->startScope || identifierRef->startScope != match.symbolOverload->node->ownerStructScope)
+            {
                 child->flags |= AST_NO_BYTECODE;
+                copyChild->flags |= AST_UFCS_FCT;
+            }
 
             if (child == identifierRef->previousResolvedNode)
             {
