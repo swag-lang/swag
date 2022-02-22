@@ -1945,9 +1945,21 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
 
     if (fromNode && (fromTypeList->sizeOf != newSizeof))
     {
-        fromTypeList         = (TypeInfoList*) fromTypeList->clone();
+        auto oldSizeof = fromTypeList->sizeOf;
+        fromTypeList   = (TypeInfoList*) fromTypeList->clone();
+        for (int i = 0; i < fromTypeList->subTypes.size(); i++)
+            fromTypeList->subTypes[i]->typeInfo = fromNode->childs[i]->typeInfo;
         fromTypeList->sizeOf = newSizeof;
         fromNode->typeInfo   = fromTypeList;
+
+        // :ExprListArrayStorage
+        if (!(fromNode->flags & AST_CONST_EXPR) && fromNode->ownerScope && fromNode->ownerFct)
+        {
+            SWAG_ASSERT(fromNode->computedValue);
+            fromNode->ownerScope->startStackSize -= oldSizeof;
+            fromNode->ownerScope->startStackSize += newSizeof;
+            fromNode->ownerFct->stackSize = max(fromNode->ownerFct->stackSize, fromNode->ownerScope->startStackSize);
+        }
     }
 
     return true;

@@ -128,6 +128,7 @@ bool SemanticJob::resolveExpressionListArray(SemanticContext* context)
     // If the literal array is not constant, then we need to reserve some space in the
     // stack in order to store it.
     // Otherwise the array will come from the constant segment.
+    // :ExprListArrayStorage
     if (!(node->flags & AST_CONST_EXPR) && node->ownerScope && node->ownerFct)
     {
         node->allocateComputedValue();

@@ -213,8 +213,7 @@ bool SemanticJob::convertLiteralTupleToStructDecl(SemanticContext* context, AstN
         Ast::visit(structNode->content, [&](AstNode* n)
                    {
                        n->ownerStructScope = newScope;
-                       n->ownerScope       = newScope;
-                   });
+                       n->ownerScope       = newScope; });
 
         rootScope->symTable.registerSymbolNameNoLock(context, structNode, SymbolKind::Struct);
         Ast::addChildBack(sourceFile->astRoot, structNode);

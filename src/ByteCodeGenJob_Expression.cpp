@@ -230,11 +230,18 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
         for (auto child : job->collectChilds)
         {
             child->flags |= AST_NO_LEFT_DROP;
+
             auto inst = emitInstruction(context, ByteCodeOp::IncPointer64, node->resultRegisterRC, 0, r0);
             SWAG_ASSERT(totalOffset != 0xFFFFFFFF);
             inst->b.u64 = totalOffset;
             inst->flags |= BCI_IMM_B;
+
+            auto saveR = context->node->resultRegisterRC;
+            SWAG_CHECK(emitCast(context, child, child->typeInfo, child->castedTypeInfo));
+            context->node->resultRegisterRC = saveR;
+
             emitAffectEqual(context, r0, child->resultRegisterRC, child->typeInfo, child);
+
             SWAG_ASSERT(context->result == ContextResult::Done);
             freeRegisterRC(context, child);
             totalOffset += oneOffset;

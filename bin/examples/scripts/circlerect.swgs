@@ -35,7 +35,13 @@ impl IShape for Rectangle
     mtd perimeter() => 2 * (width + height)
 }
 
-func area_per_perimeter(shape: IShape) => shape.area() / shape.perimeter()
+func area_per_perimeter(shape: IShape)->f64
+{
+    Console.print(@kindof(shape), "\n")
+    Console.print(@kindof(shape).sizeof, "\n")
+    Console.print(@sizeof(shape), "\n")
+    return shape.area() / shape.perimeter()
+}
 
 #run
 {
@@ -44,18 +50,13 @@ func area_per_perimeter(shape: IShape) => shape.area() / shape.perimeter()
     r1 := Rectangle{width: 3, height: 3}
     r2 := Rectangle{width: 4, height: 6}
 
-    sc1 := cast(IShape) c1
-    Console.printf("%: % %\n", c1, sc1.area(), sc1.perimeter())
+    Console.printf("%: % %\n", c1, c1.IShape.area(), c1.IShape.perimeter())
     Console.printf("%\n", c1.area_per_perimeter())
     Console.printf("%\n", r1.area_per_perimeter())
     Console.print("-- vec --\n")
 
     var circles: Array'Circle = @[c1, c2]
-    var shapes:  Array'IShape //= @[c1, c2, r1, r2]
-    shapes.add(c1)
-    shapes.add(c2)
-    shapes.add(r1)
-    shapes.add(r2)
+    var shapes:  Array'IShape = @[c1, c2, r1, r2]
 
     a := shapes[0]
     visit shape: shapes
