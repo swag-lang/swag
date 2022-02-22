@@ -1935,6 +1935,8 @@ bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* 
     }
     else
     {
+        identifierRef->previousResolvedNode->flags |= AST_UFCS_FCT;
+
         // If ufcs comes from a using var, then we must make a reference to the using var in
         // the first call parameter
         if (dependentVar == identifierRef->previousResolvedNode)
@@ -1978,6 +1980,7 @@ bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* 
 
                 copyChild->byteCodeFct = ByteCodeGenJob::emitIdentifier;
                 copyChild->flags |= AST_TO_UFCS | AST_L_VALUE;
+                copyChild->flags |= AST_UFCS_FCT;
             }
         }
         else
@@ -1992,6 +1995,7 @@ bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* 
                 if (child == identifierRef->previousResolvedNode)
                 {
                     copyChild->flags |= AST_TO_UFCS;
+                    copyChild->flags |= AST_UFCS_FCT;
                     break;
                 }
             }
