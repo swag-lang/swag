@@ -519,7 +519,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
         context->result = ContextResult::Done;
     }
 
-    uint32_t castFlags = CASTFLAG_UNCONST | CASTFLAG_AUTO_OPCAST | CASTFLAG_UFCS;
+    uint32_t castFlags = CASTFLAG_UNCONST | CASTFLAG_AUTO_OPCAST | CASTFLAG_UFCS | CASTFLAG_ACCEPT_PENDING;
     if (justCheck)
         castFlags |= CASTFLAG_JUST_CHECK | CASTFLAG_NO_ERROR;
     if (job->cacheMatches.empty())
@@ -529,7 +529,11 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
     for (int i = 0; i < params.size(); i++)
     {
         if (i < oneMatch->solvedParameters.size() && oneMatch->solvedParameters[i])
+        {
             SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch->solvedParameters[i]->typeInfo, nullptr, params[i], castFlags));
+            if (context->result == ContextResult::Pending)
+                return true;
+        }
     }
 
     // Make the real cast for all the call parameters
