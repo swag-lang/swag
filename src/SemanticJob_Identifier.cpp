@@ -2428,11 +2428,6 @@ bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifier
     if (isFunctionButNotACall(context, node, symbol))
         canDoUfcs = false;
 
-    // The ufcs parameter has already been set in we are evaluating an identifier for the second time
-    // (when we inline a function call)
-    if (node->callParameters && !node->callParameters->childs.empty() && node->callParameters->childs.front()->flags & AST_TO_UFCS)
-        canDoUfcs = false;
-
     if (canDoUfcs)
     {
         // If a variable is defined just before a function call, then this can be an UFCS (uniform function call syntax)
@@ -3377,11 +3372,17 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
 
             // Get the ufcs first parameter if we can
             AstNode* ufcsFirstParam = nullptr;
-            SWAG_CHECK(getUfcs(context, identifierRef, node, symbolOverload, &ufcsFirstParam));
-            if (context->result == ContextResult::Pending)
-                return true;
-            if ((node->semFlags & AST_SEM_FORCE_UFCS) && !ufcsFirstParam)
-                continue;
+
+            // The ufcs parameter has already been set in we are evaluating an identifier for the second time
+            // (when we inline a function call)
+            if (!node->callParameters || node->callParameters->childs.empty() || !(node->callParameters->childs.front()->flags & AST_TO_UFCS))
+            {
+                SWAG_CHECK(getUfcs(context, identifierRef, node, symbolOverload, &ufcsFirstParam));
+                if (context->result == ContextResult::Pending)
+                    return true;
+                if ((node->semFlags & AST_SEM_FORCE_UFCS) && !ufcsFirstParam)
+                    continue;
+            }
 
             // If the last parameter of a function is of type 'code', and the last call parameter is not,
             // then we take the next statement, after the function, and put it as the last parameter
