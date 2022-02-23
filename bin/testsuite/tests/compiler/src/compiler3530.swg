@@ -1,0 +1,32 @@
+struct(T, N: uint) StaticArray
+{
+    buffer: [N] T
+}
+
+impl StaticArray
+{
+    mtd opCount()->uint => N
+    mtd opIndex(idx: uint)->T => buffer[idx]
+}
+
+alias Vec2 = StaticArray'(f32, 2)
+
+func(T) dot(x, y: T)->f32
+{
+    var result: f32
+    loop i: x
+        result += x[i] * y[i]
+    return result
+}
+
+func(T) norm(a: T)->f32
+{
+    return @sqrt(dot(a, a))
+}
+
+//#[Swag.PrintBc]
+#test
+{
+    const x = Vec2{@[1.5, 2]}
+    @assert(norm(x) == 2.5)
+}

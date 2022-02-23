@@ -47,6 +47,14 @@ bool Generic::updateGenericParameters(SemanticContext* context, bool doType, boo
 
         SWAG_ASSERT(param->typeInfo);
 
+        // Value
+        auto it1 = match.genericReplaceValues.find(param->namedParam);
+        if (it1 != match.genericReplaceValues.end())
+        {
+            param->allocateComputedValue();
+            *param->value = *it1->second.first;
+        }
+
         // We should not instantiate with unresolved types
         auto genGen = match.genericParametersGenTypes[i];
         if (genGen->kind == TypeInfoKind::Generic)

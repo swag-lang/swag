@@ -328,11 +328,13 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                                 else
                                 {
                                     g_Allocator.free<ComputedValue>(cv);
+                                    context.genericReplaceTypes[it1->second.second->name] = it1->second.second;
                                 }
                             }
                             else
                             {
-                                context.genericReplaceValues[cstName] = {cv, symbolArray->sizeNode->typeInfo};
+                                context.genericReplaceValues[cstName]                              = {cv, symbolArray->sizeNode->typeInfo};
+                                context.genericReplaceTypes[symbolArray->sizeNode->typeInfo->name] = symbolArray->sizeNode->typeInfo;
                             }
                         }
 

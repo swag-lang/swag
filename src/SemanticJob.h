@@ -127,9 +127,10 @@ struct OneMatch
 
 struct OneGenericMatch
 {
-    VectorNative<TypeInfo*> genericParametersCallTypes;
-    VectorNative<TypeInfo*> genericParametersGenTypes;
-    map<Utf8, TypeInfo*>    genericReplaceTypes;
+    VectorNative<TypeInfo*>                    genericParametersCallTypes;
+    VectorNative<TypeInfo*>                    genericParametersGenTypes;
+    map<Utf8, TypeInfo*>                       genericReplaceTypes;
+    map<Utf8, pair<ComputedValue*, TypeInfo*>> genericReplaceValues;
 
     SymbolName*                  symbolName        = nullptr;
     SymbolOverload*              symbolOverload    = nullptr;
@@ -146,6 +147,7 @@ struct OneGenericMatch
         genericParametersCallTypes.clear();
         genericParametersGenTypes.clear();
         genericReplaceTypes.clear();
+        genericReplaceValues.clear();
         parameters.clear();
         solvedParameters.clear();
         symbolName              = nullptr;
