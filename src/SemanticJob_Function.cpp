@@ -845,13 +845,13 @@ bool SemanticJob::resolveCaptureFuncCallParams(SemanticContext* context)
         return context->report(Hint::isType(c->typeInfo), {c, Fmt(Err(Err0887), c->token.text.c_str(), typeField->getDisplayNameC())});
     }
 
-    // If this is a capture block, then now we can evaluate the function
-    if (node->captureClosure)
-    {
-        ScopedLock lk(node->captureClosure->mutex);
-        node->captureClosure->flags &= ~AST_SPEC_SEMANTIC1;
-        launchResolveSubDecl(context, node->captureClosure);
-    }
+    // As this is the capture block resolved in the right context, we can now evaluate the corresponding slosure
+    auto mpl = CastAst<AstMakePointer>(node->parent, AstNodeKind::MakePointerLambda);
+    SWAG_ASSERT(mpl->lambda);
+
+    ScopedLock lk(mpl->lambda->mutex);
+    mpl->lambda->flags &= ~AST_SPEC_SEMANTIC1;
+    launchResolveSubDecl(context, mpl->lambda);
 
     return true;
 }

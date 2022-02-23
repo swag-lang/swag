@@ -528,8 +528,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         Ast::visit(funcNode->genericParameters, [&](AstNode* n)
                    {
                        n->ownerFct   = funcNode;
-                       n->ownerScope = newScope;
-                   });
+                       n->ownerScope = newScope; });
     }
 
     // Parameters
@@ -851,7 +850,6 @@ bool SyntaxJob::doLambdaExpression(AstNode* parent, AstNode** result)
         auto cp = CastAst<AstFuncCallParams>(lambdaDecl->captureParameters, AstNodeKind::FuncCallParams);
         Ast::addChildBack(exprNode, cp);
         cp->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
-        cp->captureClosure = lambdaDecl;
 
         // We want the lambda to be evaluated only once the captured block has been typed
         // See resolveCaptureFuncCallParams

@@ -30,6 +30,15 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     ownerFct             = context.ownerFct ? context.ownerFct : from->ownerFct;
     ownerCompilerIfBlock = context.ownerCompilerIfBlock ? context.ownerCompilerIfBlock : from->ownerCompilerIfBlock;
 
+    // Update direct node references
+    for (auto p : context.nodeRefsToUpdate)
+    {
+        if (*p == from)
+        {
+            *p = this;
+        }
+    }
+
     if (context.ownerTryCatchAssume || (from->extension && from->extension->ownerTryCatchAssume))
     {
         allocateExtension();
@@ -360,6 +369,12 @@ bool AstFuncDecl::cloneSubDecls(JobContext* context, CloneContext& cloneContext,
             if (cloneContext.alternativeScope)
                 nodeFunc->addAlternativeScope(cloneContext.alternativeScope);
             symKind = SymbolKind::Function;
+
+            // Function is supposed to start semantic when captured parameters have been evaluated
+            // So no semantic on it now
+            if (nodeFunc->captureParameters)
+                nodeFunc->flags |= AST_NO_SEMANTIC | AST_SPEC_SEMANTIC1;
+
             break;
         }
         case AstNodeKind::StructDecl:
@@ -431,14 +446,17 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
 
     cloneContext.parentScope = functionScope;
 
+    // Capture parameters are not part of the func hierarchy
     newNode->captureParameters = captureParameters ? captureParameters->clone(cloneContext) : nullptr;
+    if (newNode->captureParameters)
+        newNode->childs.pop_back();
+
     newNode->genericParameters = genericParameters ? genericParameters->clone(cloneContext) : nullptr;
     newNode->parameters        = parameters ? parameters->clone(cloneContext) : nullptr;
     newNode->selectIf          = selectIf ? selectIf->clone(cloneContext) : nullptr;
     newNode->nodeCounts        = nodeCounts;
     newNode->makePointerLambda = newNode->makePointerLambda;
 
-    //cloneContext.parentScope = context.parentScope;
     newNode->returnType = returnType ? returnType->clone(cloneContext) : nullptr;
     if (newNode->returnType)
         newNode->returnType->ownerScope = context.parentScope ? context.parentScope : ownerScope;
@@ -1114,7 +1132,13 @@ AstNode* AstMakePointer::clone(CloneContext& context)
 {
     auto newNode = Ast::newNode<AstMakePointer>();
     newNode->copyFrom(context, this);
-    newNode->lambda = lambda;
+
+    if (lambda)
+    {
+        newNode->lambda = lambda;
+        context.nodeRefsToUpdate.push_back((AstNode**) &newNode->lambda);
+    }
+
     return newNode;
 }
 

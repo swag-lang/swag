@@ -164,10 +164,11 @@ enum class AstNodeKind : uint8_t
 
 struct CloneContext
 {
-    map<Utf8, TypeInfo*>   replaceTypes;
-    map<TokenId, AstNode*> replaceTokens;
-    map<Utf8, Utf8>        replaceNames;
-    set<Utf8>              usedReplaceNames;
+    map<Utf8, TypeInfo*>    replaceTypes;
+    map<TokenId, AstNode*>  replaceTokens;
+    map<Utf8, Utf8>         replaceNames;
+    set<Utf8>               usedReplaceNames;
+    VectorNative<AstNode**> nodeRefsToUpdate;
 
     AstInline*          ownerInline            = nullptr;
     AstBreakable*       replaceTokensBreakable = nullptr;
@@ -423,7 +424,6 @@ struct AstFuncCallParams : public AstNode
 {
     AstNode* clone(CloneContext& context);
 
-    AstNode*      captureClosure = nullptr;
     vector<Token> aliasNames;
 };
 
