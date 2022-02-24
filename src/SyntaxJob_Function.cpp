@@ -127,10 +127,19 @@ bool SyntaxJob::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result
 
             if (token.id == closeToken)
                 break;
+
+            auto tokenComma = token;
             if (callParams->flags & AST_CALL_FOR_STRUCT)
                 SWAG_CHECK(eatToken(TokenId::SymComma, "in struct initialization parameters"));
             else
                 SWAG_CHECK(eatToken(TokenId::SymComma, "in function call parameters"));
+
+            // Accept ending comma in struct initialization
+            if (closeToken == TokenId::SymRightCurly && token.id == closeToken)
+                break;
+
+            if (token.id == closeToken)
+                return sourceFile->report({callParams, tokenComma, Err(Err0856)});
         }
     }
 
@@ -324,7 +333,12 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result, bool acc
             SWAG_CHECK(doFuncDeclParameter(allParams, acceptMissingType));
             if (token.id == TokenId::SymRightParen)
                 break;
+
+            auto tokenComma = token;
             SWAG_CHECK(eatToken(TokenId::SymComma));
+            if (token.id == TokenId::SymRightParen)
+                return sourceFile->report({allParams, tokenComma, Err(Err0855)});
+
             SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::KwdUsing, error(token, Fmt(Err(Err0410), token.ctext())));
         }
     }
