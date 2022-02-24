@@ -554,7 +554,9 @@ bool ByteCodeGenJob::emitMakeArrayPointerSlicing(ByteCodeGenContext* context)
     RegisterList r0;
     reserveLinearRegisterRC2(context, r0);
 
+
     // Compute size of slice
+    ensureCanBeChangedRC(context, node->upperBound->resultRegisterRC);
     if (node->lowerBound)
         emitInstruction(context, ByteCodeOp::BinOpMinusS64, node->upperBound->resultRegisterRC, node->lowerBound->resultRegisterRC, node->upperBound->resultRegisterRC);
     emitInstruction(context, ByteCodeOp::Add64byVB64, node->upperBound->resultRegisterRC)->b.u64 = 1;

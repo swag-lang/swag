@@ -1,0 +1,49 @@
+// https://youtu.be/hjeOZN7YGng
+
+#dependencies
+{
+    #import "core" location="swag@std"
+}
+
+using Core
+
+struct Resource
+{
+    name: string
+}
+
+impl Resource
+{
+    func init(name: string)->Resource throw
+    {
+        Console.printf("open %\n", name)
+        return Resource{name}
+    }
+
+    mtd deinit()
+    {
+        Console.printf("close %\n", name)
+    }
+}
+
+func prepOut(outName: string, prepNames: const [..] string)->Resource throw
+{
+    writer := try Resource.init(outName)
+    errdefer writer.deinit()
+    visit name: prepNames
+    {
+        reader := try Resource.init(name)
+        //throw "error"
+        defer reader.deinit()
+        Console.printf("use %\n", name)
+    }
+
+    return writer
+}
+
+#run
+{
+    writer := try prepOut("out", @["a", "b"])
+    defer writer.deinit()
+    Console.print("use out\n")
+}
