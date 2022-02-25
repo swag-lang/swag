@@ -1159,8 +1159,12 @@ bool ByteCodeGenJob::emitReturnByCopyAddress(ByteCodeGenContext* context, AstNod
     node->resultRegisterRC = reserveRegisterRC(context);
 
     auto testReturn = node;
-    if (testReturn->kind == AstNodeKind::Identifier)
-        testReturn = testReturn->parent;
+    if (testReturn->kind == AstNodeKind::Identifier || testReturn->kind == AstNodeKind::FuncCall)
+    {
+        // We need a copy in #ast functions
+        if (!node->ownerFct || !(node->ownerFct->attributeFlags & ATTRIBUTE_AST_FUNC))
+            testReturn = testReturn->parent;
+    }
 
     // If in a return expression, just push the caller retval
     AstNode* parentReturn = testReturn ? testReturn->inSimpleReturn() : nullptr;
