@@ -4,11 +4,11 @@ using Core, Pixel, Gui, Math
 const W = 1024
 const H = 1024
 
-namespace Res
-{
-    var image0:         Texture
-    var image1:         Texture
-}
+var g_Image0: Image
+var g_Image1: Image
+var g_Texture0: Texture
+var g_Texture1: Texture
+var g_Texture2: Texture
 
 #main
 {
@@ -21,12 +21,15 @@ namespace Res
     {
         rdr := surface.app.getRenderer()
         dataPath := Path.getDirectoryName(#location.fileName)
-        img0 := Image.load(Path.combine(dataPath, "img1.jpg"))
-        img1 := Image.load(Path.combine(dataPath, "img2.jpg"))
-        Res.image0 = rdr.addImage(img0)
-        Res.image1 = rdr.addImage(img1)
+        g_Image0 = Image.load(Path.combine(dataPath, "img1.jpg"))
+        g_Image1 = Image.load(Path.combine(dataPath, "img2.jpg"))
+        g_Texture0 = rdr.addImage(g_Image0)
+        g_Texture1 = rdr.addImage(g_Image1)
+        g_Texture2 = rdr.addImage(g_Image0)
     }
 
+    genInit()
     surface.show()
+
     app.run()
 }
