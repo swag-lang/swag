@@ -1156,6 +1156,8 @@ bool ByteCodeGenJob::checkCatchError(ByteCodeGenContext* context, AstNode* callN
 
 bool ByteCodeGenJob::emitReturnByCopyAddress(ByteCodeGenContext* context, AstNode* node, TypeInfoFuncAttr* typeInfoFunc)
 {
+    node->resultRegisterRC = reserveRegisterRC(context);
+
     auto testReturn = node;
     if (testReturn->kind == AstNodeKind::Identifier)
         testReturn = testReturn->parent;
@@ -1164,7 +1166,6 @@ bool ByteCodeGenJob::emitReturnByCopyAddress(ByteCodeGenContext* context, AstNod
     AstNode* parentReturn = testReturn ? testReturn->inSimpleReturn() : nullptr;
     if (parentReturn)
     {
-        node->resultRegisterRC = reserveRegisterRC(context);
         if (node->ownerInline)
             emitInstruction(context, ByteCodeOp::CopyRCtoRT, node->ownerInline->resultRegisterRC);
         else
@@ -1178,10 +1179,33 @@ bool ByteCodeGenJob::emitReturnByCopyAddress(ByteCodeGenContext* context, AstNod
         return true;
     }
 
+    // A function call used to initialized the field of a struct
+    // No need to put the result on the stack and copy the result later, just make a direct reference to
+    // the field address
+    if (node->parent->parent->kind == AstNodeKind::FuncCallParam &&
+        node->parent->parent->parent->parent->kind == AstNodeKind::Identifier &&
+        node->parent->parent->parent->parent->typeInfo->kind == TypeInfoKind::Struct &&
+        node->parent->parent->parent->parent->parent->parent->kind == AstNodeKind::TypeExpression &&
+        node->parent->parent->parent->parent->parent->parent->flags & AST_HAS_STRUCT_PARAMETERS &&
+        node->parent->parent->parent->parent->parent->parent->parent->kind == AstNodeKind::VarDecl)
+    {
+        auto varNode  = CastAst<AstVarDecl>(node->parent->parent->parent->parent->parent->parent->parent, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
+        auto resolved = varNode->resolvedSymbolOverload;
+        auto param    = CastAst<AstFuncCallParam>(node->parent->parent, AstNodeKind::FuncCallParam);
+        SWAG_ASSERT(param->resolvedParameter);
+        auto typeParam = param->resolvedParameter;
+
+        emitRetValRef(context, node->resultRegisterRC, false, resolved->computedValue.storageOffset + typeParam->offset);
+        emitInstruction(context, ByteCodeOp::CopyRCtoRT, node->resultRegisterRC);
+        context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
+
+        node->parent->parent->doneFlags |= AST_DONE_FIELD_STRUCT;
+        return true;
+    }
+
     // Store in RR0 the address of the stack to store the result
-    node->resultRegisterRC = reserveRegisterRC(context);
-    auto inst              = emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
-    inst->b.u64            = node->computedValue->storageOffset;
+    auto inst   = emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
+    inst->b.u64 = node->computedValue->storageOffset;
     emitInstruction(context, ByteCodeOp::CopyRCtoRT, node->resultRegisterRC);
     context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
 

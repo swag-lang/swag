@@ -875,6 +875,13 @@ void ByteCodeGenJob::emitStructParameters(ByteCodeGenContext* context, uint32_t 
         {
             for (auto child : identifier->callParameters->childs)
             {
+                // Already set by something else, as a direct reference, so no need to copy
+                if (child->doneFlags & AST_DONE_FIELD_STRUCT)
+                {
+                    freeRegisterRC(context, child);
+                    continue;
+                }
+
                 auto param = CastAst<AstFuncCallParam>(child, AstNodeKind::FuncCallParam);
                 SWAG_ASSERT(param->resolvedParameter);
                 auto typeParam = param->resolvedParameter;
