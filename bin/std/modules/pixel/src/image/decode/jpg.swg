@@ -214,7 +214,7 @@ const Zag: [64] u32 = @[
 {
     func descale(x: s32, n: u32)->s16 => cast(s16) ((x + (1's32 << (n - 1))) >> n)
     func rol(i, j: u32)->u32          => cast(u32) ((i << j) | (i >> (32 - j)))
-    func clamp(i: u32)->u8            => cast(u8) ((i &0xFFFFFF00) ? (((~i) >> 31) & 0xFF) : i)
+    func clamp(i: s32)->u8            => cast(u8) ((i &0xFFFFFF00) ? (((~i) >> 31) & 0xFF) : i)
     func clampd(i: s32)->u8           => cast(u8) ((i &0xFF00) ? (((~i) >> 15) & 0xFF) : i)
 }
 
@@ -819,7 +819,7 @@ impl Decoder
         {
             loop j: 8
             {
-                y  := s[j]
+                y  := cast(s32) s[j]
                 cb := s[64 + j]
                 cr := s[128 + j]
 
@@ -855,7 +855,7 @@ impl Decoder
                 rc := crr[cr]
                 gc := ((crg[cr] + cbg[cb]) >>,safe 16)
                 bc := cbb[cb]
-                yy := y[j]
+                yy := cast(s32) y[j]
 
                 d0[2] = clamp(yy +,safe rc)
                 d0[1] = clamp(yy +,safe gc)
@@ -891,7 +891,7 @@ impl Decoder
                     rc := crr[cr]
                     gc := (crg[cr] + cbg[cb]) >>,safe 16
                     bc := cbb[cb]
-                    yy := y[j << 1]
+                    yy := cast(s32) y[j << 1]
 
                     d0[2] = clamp(yy +,safe rc)
                     d0[1] = clamp(yy +,safe gc)
@@ -939,7 +939,7 @@ impl Decoder
                     rc := crr[cr]
                     gc := (crg[cr] + cbg[cb]) >>,safe 16
                     bc := cbb[cb]
-                    yy := y[j]
+                    yy := cast(s32) y[j]
 
                     d0[2] = clamp(yy +,safe rc)
                     d0[1] = clamp(yy +,safe gc)
