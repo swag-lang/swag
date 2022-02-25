@@ -23,6 +23,7 @@ struct AstNode;
 struct AstFuncCallParam;
 struct AstArrayPointerSlicing;
 struct TypeInfoPointer;
+struct TypeInfoFuncAttr;
 struct DataSegment;
 enum class ByteCodeOp : uint16_t;
 enum class TokenId : uint8_t;
@@ -239,6 +240,7 @@ struct ByteCodeGenJob : public Job
     static bool emitCompareOp(ByteCodeGenContext* context);
     static bool emitCall(ByteCodeGenContext* context);
     static void emitPushRAParams(ByteCodeGenContext* context, VectorNative<uint32_t>& accParams);
+    static bool emitReturnByCopyAddress(ByteCodeGenContext* context, AstNode* node, TypeInfoFuncAttr* typeInfoFunc);
     static bool emitCall(ByteCodeGenContext* context, AstNode* allParams, AstFuncDecl* funcNode, AstVarDecl* varNode, RegisterList& varNodeRegisters, bool foreign, bool lambda, bool freeRegistersParams);
     static bool emitLambdaCall(ByteCodeGenContext* context);
     static bool emitForeignCall(ByteCodeGenContext* context);

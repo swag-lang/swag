@@ -140,7 +140,6 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
                     inst->flags |= BCI_IMM_B;
                     inst->b.u32 = 1; // <> 0 for closure, 0 for lambda
                     inst->c.u32 = sizeof(void*);
-
                 }
                 else
                 {
@@ -1155,6 +1154,48 @@ bool ByteCodeGenJob::checkCatchError(ByteCodeGenContext* context, AstNode* callN
     return true;
 }
 
+bool ByteCodeGenJob::emitReturnByCopyAddress(ByteCodeGenContext* context, AstNode* node, TypeInfoFuncAttr* typeInfoFunc)
+{
+    auto testReturn = node;
+    if (testReturn->kind == AstNodeKind::Identifier)
+        testReturn = testReturn->parent;
+
+    // If in a return expression, just push the caller retval
+    AstNode* parentReturn = testReturn ? testReturn->inSimpleReturn() : nullptr;
+    if (parentReturn)
+    {
+        node->resultRegisterRC = reserveRegisterRC(context);
+        if (node->ownerInline)
+            emitInstruction(context, ByteCodeOp::CopyRCtoRT, node->ownerInline->resultRegisterRC);
+        else
+        {
+            emitInstruction(context, ByteCodeOp::CopyRRtoRC, node->resultRegisterRC);
+            emitInstruction(context, ByteCodeOp::CopyRCtoRT, node->resultRegisterRC);
+        }
+
+        context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
+        parentReturn->doneFlags |= AST_DONE_RETVAL;
+        return true;
+    }
+
+    // Store in RR0 the address of the stack to store the result
+    node->resultRegisterRC = reserveRegisterRC(context);
+    auto inst              = emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
+    inst->b.u64            = node->computedValue->storageOffset;
+    emitInstruction(context, ByteCodeOp::CopyRCtoRT, node->resultRegisterRC);
+    context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
+
+    if (node->resolvedSymbolOverload)
+        node->resolvedSymbolOverload->flags |= OVERLOAD_EMITTED;
+
+    node->ownerScope->symTable.addVarToDrop(node->resolvedSymbolOverload, typeInfoFunc->returnType, node->computedValue->storageOffset);
+
+    if (node->flags & AST_DISCARD)
+        freeRegisterRC(context, node->resultRegisterRC);
+
+    return true;
+}
+
 bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, AstFuncDecl* funcNode, AstVarDecl* varNode, RegisterList& varNodeRegisters, bool foreign, bool lambda, bool freeRegistersParams)
 {
     AstNode*          node         = context->node;
@@ -1191,46 +1232,11 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         rr0Saved = true;
     }
 
+    // Return by copy
     auto returnType = typeInfoFunc->returnType;
     if (returnType && (returnType->flags & TYPEINFO_RETURN_BY_COPY))
     {
-        auto testReturn = node;
-        if (testReturn->kind == AstNodeKind::Identifier)
-            testReturn = testReturn->parent;
-
-        // If in a return expression, just push the caller retval
-        AstNode* parentReturn = testReturn ? testReturn->inSimpleReturn() : nullptr;
-        if (parentReturn)
-        {
-            node->resultRegisterRC = reserveRegisterRC(context);
-            if (node->ownerInline)
-                emitInstruction(context, ByteCodeOp::CopyRCtoRT, node->ownerInline->resultRegisterRC);
-            else
-            {
-                emitInstruction(context, ByteCodeOp::CopyRRtoRC, node->resultRegisterRC);
-                emitInstruction(context, ByteCodeOp::CopyRCtoRT, node->resultRegisterRC);
-            }
-
-            context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
-            parentReturn->doneFlags |= AST_DONE_RETVAL;
-        }
-        else
-        {
-            // Store in RR0 the address of the stack to store the result
-            node->resultRegisterRC = reserveRegisterRC(context);
-            auto inst              = emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
-            inst->b.u64            = node->computedValue->storageOffset;
-            emitInstruction(context, ByteCodeOp::CopyRCtoRT, node->resultRegisterRC);
-            context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
-
-            if (node->resolvedSymbolOverload)
-                node->resolvedSymbolOverload->flags |= OVERLOAD_EMITTED;
-
-            node->ownerScope->symTable.addVarToDrop(node->resolvedSymbolOverload, typeInfoFunc->returnType, node->computedValue->storageOffset);
-
-            if (node->flags & AST_DISCARD)
-                freeRegisterRC(context, node->resultRegisterRC);
-        }
+        SWAG_CHECK(emitReturnByCopyAddress(context, node, typeInfoFunc));
     }
 
     uint32_t maxCallParams = typeInfoFunc->numReturnRegisters();
