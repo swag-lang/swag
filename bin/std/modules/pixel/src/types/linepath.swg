@@ -221,6 +221,12 @@ public impl LinePath
 
             case Curve:
                 var p0, p1, p2, p3: Vector2 = ?
+                if lastElem <= 1
+                {
+                    flattenLine(pos)
+                    break
+                }
+
                 if i == 0
                 {
                     p0 = isClosed ? elements[lastElem - 1].position : (startPoint - pos) + startPoint

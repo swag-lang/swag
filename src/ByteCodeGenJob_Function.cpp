@@ -1186,16 +1186,20 @@ bool ByteCodeGenJob::emitReturnByCopyAddress(ByteCodeGenContext* context, AstNod
     // A function call used to initialized the field of a struct
     // No need to put the result on the stack and copy the result later, just make a direct reference to
     // the field address
-    if (node->parent->parent->kind == AstNodeKind::FuncCallParam &&
-        node->parent->parent->parent->parent->kind == AstNodeKind::Identifier &&
-        node->parent->parent->parent->parent->typeInfo->kind == TypeInfoKind::Struct &&
-        node->parent->parent->parent->parent->parent->parent->kind == AstNodeKind::TypeExpression &&
-        node->parent->parent->parent->parent->parent->parent->flags & AST_HAS_STRUCT_PARAMETERS &&
-        node->parent->parent->parent->parent->parent->parent->parent->kind == AstNodeKind::VarDecl)
+    testReturn = node;
+    if (testReturn->kind == AstNodeKind::Identifier || testReturn->kind == AstNodeKind::FuncCall)
+        testReturn = testReturn->parent;
+
+    if (testReturn->parent->kind == AstNodeKind::FuncCallParam &&
+        testReturn->parent->parent->parent->kind == AstNodeKind::Identifier &&
+        testReturn->parent->parent->parent->typeInfo->kind == TypeInfoKind::Struct &&
+        testReturn->parent->parent->parent->parent->parent->kind == AstNodeKind::TypeExpression &&
+        testReturn->parent->parent->parent->parent->parent->flags & AST_HAS_STRUCT_PARAMETERS &&
+        testReturn->parent->parent->parent->parent->parent->parent->kind == AstNodeKind::VarDecl)
     {
-        auto varNode  = CastAst<AstVarDecl>(node->parent->parent->parent->parent->parent->parent->parent, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
+        auto varNode  = CastAst<AstVarDecl>(testReturn->parent->parent->parent->parent->parent->parent, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
         auto resolved = varNode->resolvedSymbolOverload;
-        auto param    = CastAst<AstFuncCallParam>(node->parent->parent, AstNodeKind::FuncCallParam);
+        auto param    = CastAst<AstFuncCallParam>(testReturn->parent, AstNodeKind::FuncCallParam);
         SWAG_ASSERT(param->resolvedParameter);
         auto typeParam = param->resolvedParameter;
 
@@ -1203,7 +1207,7 @@ bool ByteCodeGenJob::emitReturnByCopyAddress(ByteCodeGenContext* context, AstNod
         emitInstruction(context, ByteCodeOp::CopyRCtoRT, node->resultRegisterRC);
         context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
 
-        node->parent->parent->doneFlags |= AST_DONE_FIELD_STRUCT;
+        testReturn->parent->doneFlags |= AST_DONE_FIELD_STRUCT;
         return true;
     }
 
