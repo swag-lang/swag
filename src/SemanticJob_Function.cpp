@@ -1414,41 +1414,6 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     // Clone !
     auto newContent = funcDecl->content->clone(cloneContext);
 
-    // Check used aliases
-    // Error if an alias has been defined, but not 'eaten' by the function
-    if (identifier->kind == AstNodeKind::Identifier)
-    {
-        if (cloneContext.replaceNames.size() != cloneContext.usedReplaceNames.size())
-        {
-            auto id = CastAst<AstIdentifier>(identifier, AstNodeKind::Identifier);
-            for (auto& r : cloneContext.replaceNames)
-            {
-                auto it = cloneContext.usedReplaceNames.find(r.second);
-                if (it == cloneContext.usedReplaceNames.end())
-                {
-                    context->errorContextStack.push_back({identifier, JobContext::ErrorContextType::Inline});
-                    for (auto& alias : id->aliasNames)
-                    {
-                        if (alias.text == r.second)
-                        {
-                            PushErrHint errh(Hnt(Hnt0026));
-                            return context->report({id, alias, Fmt(Err(Err0780), alias.ctext())});
-                        }
-                    }
-
-                    for (auto& alias : id->callParameters->aliasNames)
-                    {
-                        if (alias.text == r.second)
-                        {
-                            PushErrHint errh(Hnt(Hnt0026));
-                            return context->report({id, alias, Fmt(Err(Err0780), alias.ctext())});
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     if (newContent->extension)
     {
         newContent->extension->byteCodeBeforeFct = nullptr;
@@ -1483,6 +1448,41 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
 
         identifier->semanticState = AstNodeResolveState::Enter;
         identifier->bytecodeState = AstNodeResolveState::Enter;
+    }
+
+    // Check used aliases
+    // Error if an alias has been defined, but not 'eaten' by the function
+    if (identifier->kind == AstNodeKind::Identifier)
+    {
+        if (cloneContext.replaceNames.size() != cloneContext.usedReplaceNames.size())
+        {
+            auto id = CastAst<AstIdentifier>(identifier, AstNodeKind::Identifier);
+            for (auto& r : cloneContext.replaceNames)
+            {
+                auto it = cloneContext.usedReplaceNames.find(r.second);
+                if (it == cloneContext.usedReplaceNames.end())
+                {
+                    context->errorContextStack.push_back({identifier, JobContext::ErrorContextType::Inline});
+                    for (auto& alias : id->aliasNames)
+                    {
+                        if (alias.text == r.second)
+                        {
+                            PushErrHint errh(Hnt(Hnt0026));
+                            return context->report({id, alias, Fmt(Err(Err0780), alias.ctext())});
+                        }
+                    }
+
+                    for (auto& alias : id->callParameters->aliasNames)
+                    {
+                        if (alias.text == r.second)
+                        {
+                            PushErrHint errh(Hnt(Hnt0026));
+                            return context->report({id, alias, Fmt(Err(Err0780), alias.ctext())});
+                        }
+                    }
+                }
+            }
+        }
     }
 
     return true;
