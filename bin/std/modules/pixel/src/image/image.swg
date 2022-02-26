@@ -135,25 +135,25 @@ impl Image
 
     // Macro to visit all pixels of the image in parallel chunks
     // Exported variables:
-    // - pix: address of the pixel
-    // - userData
+    // - pix:   address of the pixel
     // - image: the processed image
     // - index: the pixel index
-    // - x, y: the pixel coordinates
+    // - x, y:  the pixel coordinates
+    // - userData
     #[Swag.Macro]
     mtd visitPixels(userData: *void = null, stride: s32 = 1, stmt: code)
     {
         Debug.assert(stride > 0)
 
         p := @{self, userData}
-        Jobs.parallelVisit(@mkslice(pixels, size), cast(u32) bpp8 * stride, &p)
+        Jobs.parallelVisit(|buffer, data| @mkslice(pixels, size), cast(u32) bpp8 * stride, &p)
         {
             p := cast(*@typeof(p)) data
             #macro
             {
-                image := `p.self
+                image    := `p.self
                 userData := `p.userData
-                pix := `buffer
+                pix      := `buffer
 
                 index := (cast(uint) (pix - image.pixels)) / image.bpp8
                 x := cast(s32) index % image.width

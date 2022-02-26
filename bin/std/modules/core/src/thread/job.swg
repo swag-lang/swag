@@ -204,9 +204,8 @@ public func(T) parallelVisit(range: [..] T, offset: u32 = 1, userData: *void = n
         {
             #macro
             {
-                buffer := `scan
-                data   := `userData
-
+                @alias0 := `scan
+                @alias1 := `userData
                 #mixin `stmt
             }
 
