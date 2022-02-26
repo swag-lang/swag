@@ -138,7 +138,7 @@ func genGo()->*Solution
     nextGenIdx := (g_CurGen + 1) % 2
     numChilds := PopulationCount - TakeBest - TakeWorst
 
-    Jobs.parallelFor(numChilds, null)
+    Jobs.parallelFor(|index| numChilds)
     {
         //params := cast(*@typeof(f)) data
         nextGenIdx := (g_CurGen + 1) % 2
