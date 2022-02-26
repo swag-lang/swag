@@ -1,4 +1,3 @@
-#global if #os == Swag.TargetOs.Windows
 using Core, Pixel, Gui, Math
 
 const W = 1024
@@ -21,10 +20,10 @@ var g_Texture2: Texture
     {
         rdr := surface.app.getRenderer()
         dataPath := Path.getDirectoryName(#location.fileName)
-        g_Image0 = Image.load(Path.combine(dataPath, "img1.jpg"))
-        g_Image1 = Image.load(Path.combine(dataPath, "img2.jpg"))
+        g_Image0 = Image.load(Path.combine(dataPath, "img3.jpg"))
+        g_Image1 = Image.load(Path.combine(dataPath, "img1.jpg"))
 
-        const SIZE = 96
+        const SIZE = 64
         g_Image0.resize(SIZE, SIZE)
         g_Image1.resize(SIZE, SIZE)
 

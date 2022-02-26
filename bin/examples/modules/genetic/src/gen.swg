@@ -7,7 +7,7 @@ struct Generation
 
 const PopulationCount = 200'u32
 const TakeBest        = 20
-const TakeWorst       = 2
+const TakeWorst       = 4
 const MaxShuffle      = 128'u32
 const MutationRate    = 2
 
@@ -148,13 +148,18 @@ func genGo()->*Solution
         mother := pickToMate(father)
 
         // Cross point
-        crossPoint := cast(uint) g_Rng.nextU32(1, g_NumGenes - 2)
-        crossPoint *= 3
+        crossPoint1 := cast(uint) g_Rng.nextU32(1, g_NumGenes - 2)
+        crossPoint1 *= 3
+        crossPoint2 := cast(uint) g_Rng.nextU32(1, g_NumGenes - 2)
+        crossPoint2 *= 3
+        if crossPoint2 < crossPoint1
+            swap(&crossPoint1, &crossPoint2)
 
         // Cross chromosomes
         child1 := g_Gen[nextGenIdx].all[index]
-        Memory.copy(child1.genes.buffer, father.genes.buffer, crossPoint)
-        Memory.copy(child1.genes.buffer + crossPoint, mother.genes.buffer + crossPoint, (mother.genes.count - crossPoint))
+        Memory.copy(child1.genes.buffer, father.genes.buffer, crossPoint1)
+        Memory.copy(child1.genes.buffer + crossPoint1, mother.genes.buffer + crossPoint1, (crossPoint2 - crossPoint1))
+        Memory.copy(child1.genes.buffer + crossPoint2, father.genes.buffer + crossPoint2, (father.genes.count - crossPoint2))
         mutate(child1)
         evaluateSolution(child1)
     }
