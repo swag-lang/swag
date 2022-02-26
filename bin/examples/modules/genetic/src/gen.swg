@@ -11,6 +11,7 @@ const TakeWorst       = 2
 const MaxShuffle      = 128'u32
 const MutationRate    = 2
 
+#[Swag.Tls]
 var g_Rng:          Random.DefaultRng
 var g_NumGenes:     u32
 var g_Gen:          [2] Generation
@@ -28,6 +29,8 @@ struct Solution
 
 func genInit()
 {
+    assume Jobs.setNumWorkers()
+
     g_NumGenes = g_Image0.width * g_Image0.height
 
     // Generate initial population
@@ -42,19 +45,7 @@ func genInit()
         soluce.genes.resize(cast(uint) g_NumGenes * 3)
         g_Gen[0].all.add(soluce)
 
-        cpt := 0'uint
-        while ranks.count
-        {
-            idx := cpt / 3 //g_Rng.nextU32(0, cast(u32) ranks.count)
-            idxP := ranks[idx]
-            ranks.removeAt(cast(uint) idx)
-
-            soluce.genes[cpt]   = g_Image0.pixels[idxP*3]
-            soluce.genes[cpt+1] = g_Image0.pixels[(idxP*3)+1]
-            soluce.genes[cpt+2] = g_Image0.pixels[(idxP*3)+2]
-
-            cpt += 3
-        }
+        Memory.copy(soluce.genes.buffer, g_Image0.pixels, cast(uint) g_NumGenes * 3)
 
         evaluateSolution(soluce)
     }
@@ -71,16 +62,6 @@ func genInit()
         soluce.genes.resize(cast(uint) g_NumGenes * 3)
         g_Gen[1].all.add(soluce)
     }
-}
-
-#[Swag.Safety("overflow", false)]
-func colorDistance(rs, gs, bs, rd, gd, bd: u8)->f32
-{
-    rmean := cast(s32) ((rs + rd) / 2)
-    r := cast(s32) rs - cast(s32) rd
-    g := cast(s32) gs - cast(s32) gd
-    b := cast(s32) bs - cast(s32) bd
-    return Math.sqrt(cast(f32) ((((512+rmean)*r*r)>>8) + 4*g*g + (((767-rmean)*b*b)>>8)))
 }
 
 func evaluateSolution(soluce: *Solution)
@@ -155,24 +136,13 @@ func genGo()->*Solution
     }
 
     nextGenIdx := (g_CurGen + 1) % 2
-    numChilds := 0'u32
+    numChilds := PopulationCount - TakeBest - TakeWorst
 
-    // Get from previous generation
-    loop TakeBest
+    Jobs.parallelFor(numChilds, null)
     {
-        copyToNext(numChilds, numChilds)
-        numChilds += 1
-    }
+        //params := cast(*@typeof(f)) data
+        nextGenIdx := (g_CurGen + 1) % 2
 
-    loop i: TakeWorst
-    {
-        copyToNext(numChilds, PopulationCount - i - 1)
-        numChilds += 1
-    }
-
-
-    while numChilds < PopulationCount
-    {
         // Selection
         father := pickToMate()
         mother := pickToMate(father)
@@ -182,11 +152,23 @@ func genGo()->*Solution
         crossPoint *= 3
 
         // Cross chromosomes
-        child1 := g_Gen[nextGenIdx].all[numChilds]
+        child1 := g_Gen[nextGenIdx].all[index]
         Memory.copy(child1.genes.buffer, father.genes.buffer, crossPoint)
         Memory.copy(child1.genes.buffer + crossPoint, mother.genes.buffer + crossPoint, (mother.genes.count - crossPoint))
         mutate(child1)
         evaluateSolution(child1)
+    }
+
+    // Get from previous generation
+    loop i: TakeBest
+    {
+        copyToNext(numChilds, cast(u32) i)
+        numChilds += 1
+    }
+
+    loop i: TakeWorst
+    {
+        copyToNext(numChilds, PopulationCount - i - 1)
         numChilds += 1
     }
 
@@ -204,9 +186,6 @@ func genGo()->*Solution
         g_BestScore = bestScore
         @print(g_NumGen, ": ", bestScore, "\n")
     }
-
-    //if g_NumGen == 10000
-    //    Env.exit(0)
 
     return g_Gen[g_CurGen].all[0]
 }

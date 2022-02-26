@@ -24,8 +24,9 @@ var g_Texture2: Texture
         g_Image0 = Image.load(Path.combine(dataPath, "img1.jpg"))
         g_Image1 = Image.load(Path.combine(dataPath, "img2.jpg"))
 
-        g_Image0.resize(128, 128)
-        g_Image1.resize(128, 128)
+        const SIZE = 96
+        g_Image0.resize(SIZE, SIZE)
+        g_Image1.resize(SIZE, SIZE)
 
         g_Texture0 = rdr.addImage(g_Image0)
         g_Texture1 = rdr.addImage(g_Image1)
