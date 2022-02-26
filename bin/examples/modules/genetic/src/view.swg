@@ -1,5 +1,4 @@
-#global if #os == Swag.TargetOs.Windows
-using Gui, Pixel
+using Core, Gui, Pixel
 
 struct MyView
 {
@@ -13,22 +12,12 @@ impl IWnd for MyView
         painter := event.bc.painter
         painter.clear(Argb.White)
 
-        painter.drawTexture(10, 10, g_Texture0)
-        painter.drawTexture(10, 300, g_Texture1)
+        painter.drawTexture(@{20, 20, 256, 256}, g_Texture0)
+        painter.drawTexture(@{296, 296, 256, 256}, g_Texture1)
 
         best := genGo()
-        img := Image.create(g_Image0.width, g_Image0.height, PixelFormat.RGB8)
-        visit idx, cpt: best.genes
-        {
-            idxPixel := idx * 3
-            cptPixel := cpt * 3
-            img.pixels[cptPixel] = g_Image0.pixels[idxPixel]
-            img.pixels[cptPixel+1] = g_Image0.pixels[idxPixel+1]
-            img.pixels[cptPixel+2] = g_Image0.pixels[idxPixel+2]
-        }
-
-        surface.app.getRenderer().updateTexture(g_Texture2, img.pixels)
-        painter.drawTexture(300, 10, g_Texture2)
+        surface.app.getRenderer().updateTexture(g_Texture2, best.genes.buffer)
+        painter.drawTexture(@{20, 296, 256, 256}, g_Texture2)
 
         invalidate()
     }
