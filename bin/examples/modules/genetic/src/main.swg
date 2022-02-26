@@ -23,6 +23,10 @@ var g_Texture2: Texture
         dataPath := Path.getDirectoryName(#location.fileName)
         g_Image0 = Image.load(Path.combine(dataPath, "img1.jpg"))
         g_Image1 = Image.load(Path.combine(dataPath, "img2.jpg"))
+
+        g_Image0.resize(128, 128)
+        g_Image1.resize(128, 128)
+
         g_Texture0 = rdr.addImage(g_Image0)
         g_Texture1 = rdr.addImage(g_Image1)
         g_Texture2 = rdr.addImage(g_Image0)

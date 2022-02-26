@@ -289,6 +289,17 @@ impl Color
     {
         return col.getBlendKeepAlpha(Color.fromArgb(Argb.White), factor)
     }
+
+    // Returns the distance between the other color
+    #[ConstExpr, Safety("overflow", false)]
+    mtd getDistanceRgb(col: Color)->f32
+    {
+        rmean := cast(s32) ((r + col.r) / 2)
+        rx := cast(s32) r - cast(s32) col.r
+        gx := cast(s32) g - cast(s32) col.g
+        bx := cast(s32) b - cast(s32) col.b
+        return Math.sqrt(cast(f32) ((((512+rmean)*rx*rx)>>8) + 4*gx*gx + (((767-rmean)*bx*bx)>>8))) / 255.0
+    }
 }
 
 impl Core.StrConv.IPokeValue for Color

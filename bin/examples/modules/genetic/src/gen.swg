@@ -5,10 +5,10 @@ struct Generation
     all: Array'(*Solution)
 }
 
-const PopulationCount = 400'u32
-const TakeBest        = 40
-const TakeWorst       = 4
-const MaxShuffle      = 256'u32
+const PopulationCount = 200'u32
+const TakeBest        = 20
+const TakeWorst       = 2
+const MaxShuffle      = 128'u32
 const MutationRate    = 2
 
 var g_Rng:          Random.DefaultRng
@@ -45,7 +45,7 @@ func genInit()
         cpt := 0'uint
         while ranks.count
         {
-            idx := g_Rng.nextU32(0, cast(u32) ranks.count)
+            idx := cpt / 3 //g_Rng.nextU32(0, cast(u32) ranks.count)
             idxP := ranks[idx]
             ranks.removeAt(cast(uint) idx)
 
@@ -88,19 +88,17 @@ func evaluateSolution(soluce: *Solution)
     soluce.score = 0
     for idx := 0; idx < soluce.genes.count; idx += 3
     {
-        rs := /*cast(f32)*/ soluce.genes[idx]
-        gs := /*cast(f32)*/ soluce.genes[idx+1]
-        bs := /*cast(f32)*/ soluce.genes[idx+2]
+        var a, b: Pixel.Color = ?
 
-        rd := /*cast(f32)*/ g_Image1.pixels[idx]
-        gd := /*cast(f32)*/ g_Image1.pixels[idx+1]
-        bd := /*cast(f32)*/ g_Image1.pixels[idx+2]
+        a.r = soluce.genes[idx]
+        a.g = soluce.genes[idx+1]
+        a.b = soluce.genes[idx+2]
 
-        //dist := Math.abs(rs - rd) + Math.abs(gs - gd) + Math.abs(bs - bd)
-        //dist /= 255*3
+        b.r = g_Image1.pixels[idx]
+        b.g = g_Image1.pixels[idx+1]
+        b.b = g_Image1.pixels[idx+2]
 
-        dist := colorDistance(rs, gs, bs, rd, gd, bd) / 255.0
-
+        dist := a.getDistanceRgb(b)
         soluce.score += dist
     }
 
