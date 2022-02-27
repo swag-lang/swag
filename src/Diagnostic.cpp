@@ -120,27 +120,8 @@ void Diagnostic::report(bool verboseMode) const
     g_Log.print(textMsg);
     g_Log.eol();
 
-    // Source file and location on their own line
-    if (g_CommandLine->errorSourceOut && hasFile && !sourceFile->path.empty())
-    {
-        printMargin(codeColor);
-        if (mustPrintCode() &&
-            errorLevel != DiagnosticLevel::CallStack &&
-            errorLevel != DiagnosticLevel::CallStackInlined &&
-            errorLevel != DiagnosticLevel::TraceError)
-        {
-            g_Log.eol();
-            printMargin(codeColor);
-        }
-
-        g_Log.setColor(sourceFileColor);
-        printSourceLine();
-        g_Log.eol();
-    }
-
-    g_Log.setColor(codeColor);
-
     // Source code
+    g_Log.setColor(codeColor);
     if (mustPrintCode())
     {
         auto location0 = startLocation;
@@ -372,6 +353,16 @@ void Diagnostic::report(bool verboseMode) const
                 printMargin(codeColor, true);
             }
         }
+    }
+
+    // Source file and location on their own line
+    if (g_CommandLine->errorSourceOut && hasFile && !sourceFile->path.empty())
+    {
+        printMargin(codeColor);
+        g_Log.setColor(sourceFileColor);
+        printSourceLine();
+        g_Log.eol();
+        printMargin(codeColor, true);
     }
 
     // Code remarks
