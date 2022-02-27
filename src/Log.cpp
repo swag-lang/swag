@@ -162,13 +162,21 @@ void Log::print(const char* message)
             tt += "\x1b[4m";
 
             message++;
+            Utf8 totoSingle;
             while (*message && *message != '`')
+            {
+                totoSingle += *message;
                 tt += *message++;
+            }
+
             if (*message)
                 message++;
             tt += "\x1b[0m";
 
-            cout << tt.c_str();
+            if (totoSingle.count <= 1)
+                cout << totoSingle.c_str();
+            else
+                cout << tt.c_str();
             tt.clear();
 
             setColor(oldColor);
