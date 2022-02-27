@@ -2167,7 +2167,7 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
             {
                 auto typeContext = findTypeInContext(context, identifierRef);
                 if (!typeContext)
-                    return context->report(identifierRef, Err(Err0881));
+                    return context->report(identifierRef, Fmt(Err(Err0881), node->token.text.c_str()));
 
                 switch (typeContext->kind)
                 {
