@@ -1699,7 +1699,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         for (auto match : genericMatches)
         {
             auto overload = match->symbolOverload;
-            auto couldBe  = "could be of type ... " + overload->typeInfo->getDisplayName();
+            auto couldBe  = Fmt("could be of type `%s`", overload->typeInfo->getDisplayNameC());
 
             VectorNative<TypeInfoParam*> params;
             for (auto og : match->genericReplaceTypes)
