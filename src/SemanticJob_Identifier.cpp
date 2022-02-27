@@ -1699,20 +1699,24 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         for (auto match : genericMatches)
         {
             auto overload = match->symbolOverload;
-            auto couldBe  = "could be " + overload->typeInfo->getDisplayName();
-            auto note     = new Diagnostic{overload->node, couldBe, DiagnosticLevel::Note};
+            auto couldBe  = "could be of type ... " + overload->typeInfo->getDisplayName();
 
-            Utf8 width;
+            VectorNative<TypeInfoParam*> params;
             for (auto og : match->genericReplaceTypes)
             {
-                if (!width.empty())
-                    width += " and ";
-                else
-                    width = "widh ";
-                width += Fmt("%s = %s", og.first.c_str(), og.second->name.c_str());
+                auto p        = g_TypeMgr->makeParam();
+                p->namedParam = og.first.c_str();
+                p->typeInfo   = og.second;
+                params.push_back(p);
             }
 
-            note->remarks.push_back(width);
+            auto with = Ast::computeGenericParametersReplacement(params);
+            couldBe += " ... ";
+            couldBe += with;
+
+            auto note = new Diagnostic{overload->node, couldBe, DiagnosticLevel::Note};
+            // note->remarks.push_back(with);
+
             note->showRange             = false;
             note->showMultipleCodeLines = false;
             notes.push_back(note);
