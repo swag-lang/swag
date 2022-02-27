@@ -9,19 +9,48 @@ var g_Texture0: Texture
 var g_Texture1: Texture
 var g_Texture2: Texture
 
+struct MyView
+{
+    using wnd: Wnd
+}
+
+impl IWnd for MyView
+{
+    mtd onKeyEvent(event: *KeyEvent)
+    {
+        if event.key == .Escape
+            event.target.postQuitEvent()
+    }
+
+    mtd onPaintEvent(event: *PaintEvent)
+    {
+        painter := event.bc.painter
+        painter.clear(Argb.White)
+
+        painter.drawTexture(@{20, 20, 256, 256}, g_Texture0)
+        painter.drawTexture(@{296, 296, 256, 256}, g_Texture1)
+
+        best := genGo()
+        surface.app.getRenderer().updateTexture(g_Texture2, best.genes.buffer)
+        painter.drawTexture(@{20, 296, 256, 256}, g_Texture2)
+
+        invalidate()
+    }
+}
+
 #main
 {
     var app: Gui.Application
 
-    view := Wnd.create'MyView()
-    surface := try app.createSurface(100, 100, W, H, view: view)
-
     assume
     {
+        view := Wnd.create'MyView()
+        surface := app.createSurface(100, 100, W, H, view: view)
+
         rdr := surface.app.getRenderer()
         dataPath := Path.getDirectoryName(#location.fileName)
-        g_Image0 = Image.load(Path.combine(dataPath, "img3.jpg"))
-        g_Image1 = Image.load(Path.combine(dataPath, "img1.jpg"))
+        g_Image0 = Image.load(Path.combine(dataPath, "img5.jpg"))
+        g_Image1 = Image.load(Path.combine(dataPath, "img2.jpg"))
 
         const SIZE = 64
         g_Image0.resize(SIZE, SIZE)

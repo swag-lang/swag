@@ -25,4 +25,12 @@ impl ArrayPtr
     {
         return Memory.new'T(allocator)
     }
+
+    // Allocate a new pointer, and add it to the array
+    mtd addNewPtr()->*T
+    {
+        ptr := newPtr()
+        base.add(ptr)
+        return ptr
+    }
 }

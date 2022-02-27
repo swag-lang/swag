@@ -1,10 +1,5 @@
 using Core
 
-struct Generation
-{
-    all: Array'(*Solution)
-}
-
 const PopulationCount = 200'u32
 const TakeBest        = 20
 const TakeWorst       = 4
@@ -19,6 +14,11 @@ var g_CurGen:       u32
 var g_TotalWeight   = 0'f32
 var g_BestScore     = Swag.F32.Max
 var g_NumGen:       u32
+
+struct Generation
+{
+    all: ArrayPtr'Solution
+}
 
 struct Solution
 {
@@ -35,15 +35,14 @@ func genInit()
 
     // Generate initial population
     var ranks: Array'u32
-    loop indiv: PopulationCount
+    loop PopulationCount
     {
         ranks.resize(cast(uint) g_NumGenes)
         loop i: g_NumGenes
             ranks[i] = i
 
-        soluce := Memory.new'Solution()
+        soluce := g_Gen[0].all.addNewPtr()
         soluce.genes.resize(cast(uint) g_NumGenes * 3)
-        g_Gen[0].all.add(soluce)
 
         Memory.copy(soluce.genes.buffer, g_Image0.pixels, cast(uint) g_NumGenes * 3)
 
@@ -56,11 +55,10 @@ func genInit()
     })
 
     // Placeholder for the next generation
-    loop indiv: PopulationCount
+    loop PopulationCount
     {
-        soluce := Memory.new'Solution()
+        soluce := g_Gen[1].all.addNewPtr()
         soluce.genes.resize(cast(uint) g_NumGenes * 3)
-        g_Gen[1].all.add(soluce)
     }
 }
 
@@ -107,8 +105,8 @@ func mutate(child: *Solution)
         rnd1 := g_Rng.nextU32(0, MaxShuffle)
         loop rnd1
         {
-            src := g_Rng.nextU32(0, g_NumGenes) * 3
-            dst := g_Rng.nextU32(0, g_NumGenes) * 3
+            src := g_Rng.nextU32(0, cast(u32) g_NumGenes) * 3
+            dst := g_Rng.nextU32(0, cast(u32) g_NumGenes) * 3
             swap(child.genes.buffer + src, child.genes.buffer + dst)
             swap(child.genes.buffer + (src+1), child.genes.buffer + (dst+1))
             swap(child.genes.buffer + (src+2), child.genes.buffer + (dst+2))
@@ -140,7 +138,6 @@ func genGo()->*Solution
 
     Jobs.parallelFor(|index| numChilds)
     {
-        //params := cast(*@typeof(f)) data
         nextGenIdx := (g_CurGen + 1) % 2
 
         // Selection
@@ -148,9 +145,9 @@ func genGo()->*Solution
         mother := pickToMate(father)
 
         // Cross point
-        crossPoint1 := cast(uint) g_Rng.nextU32(1, g_NumGenes - 2)
+        crossPoint1 := cast(uint) g_Rng.nextU32(1, cast(u32) g_NumGenes - 2)
         crossPoint1 *= 3
-        crossPoint2 := cast(uint) g_Rng.nextU32(1, g_NumGenes - 2)
+        crossPoint2 := cast(uint) g_Rng.nextU32(1, cast(u32) g_NumGenes - 2)
         crossPoint2 *= 3
         if crossPoint2 < crossPoint1
             swap(&crossPoint1, &crossPoint2)
@@ -189,7 +186,7 @@ func genGo()->*Solution
     if bestScore < g_BestScore
     {
         g_BestScore = bestScore
-        @print(g_NumGen, ": ", bestScore, "\n")
+        Console.print(g_NumGen, ": ", bestScore, "\n")
     }
 
     return g_Gen[g_CurGen].all[0]
