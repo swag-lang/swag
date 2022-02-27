@@ -274,13 +274,30 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                         if (callTypeInfo->kind == TypeInfoKind::Pointer)
                         {
                             auto typePtr = CastTypeInfo<TypeInfoPointer>(callTypeInfo, TypeInfoKind::Pointer);
-                            symbolTypeInfos.push_back(symbolPtr->pointedType);
-                            typeInfos.push_back(typePtr->pointedType);
+                            if (symbolPtr->isPointerTo(TypeInfoKind::Struct) && typePtr->isPointerTo(TypeInfoKind::Struct))
+                            {
+                                // Because of using var cast, we can have here *A and *B with a match.
+                                // But we do not want A and B to match in generic replacement.
+                                // So we check they are the same.
+                                auto canNext = symbolPtr->pointedType->isSame(typePtr->pointedType, ISSAME_CAST);
+                                if (canNext)
+                                {
+                                    symbolTypeInfos.push_back(symbolPtr->pointedType);
+                                    typeInfos.push_back(typePtr->pointedType);
+                                }
+                            }
+                            else
+                            {
+                                symbolTypeInfos.push_back(symbolPtr->pointedType);
+                                typeInfos.push_back(typePtr->pointedType);
+                            }
                         }
                         else if (callTypeInfo->kind == TypeInfoKind::Struct)
                         {
-                            auto typePtr = CastTypeInfo<TypeInfoPointer>(wantedTypeInfo, TypeInfoKind::Pointer);
-                            auto canNext = typePtr->pointedType->isSame(callTypeInfo, ISSAME_CAST);
+                            // Because of using var cast, we can have here *A and *B with a match.
+                            // But we do not want A and B to match in generic replacement.
+                            // So we check they are the same.
+                            auto canNext = symbolPtr->pointedType->isSame(callTypeInfo, ISSAME_CAST);
                             if (canNext)
                             {
                                 symbolTypeInfos.push_back(symbolPtr->pointedType);

@@ -3528,6 +3528,16 @@ void SemanticJob::collectAlternativeScopeVars(AstNode* startNode, VectorNative<A
                 // become the dependentVar node, and will be converted by cast to the correct type.
                 for (auto& it1 : it0.scope->owner->extension->alternativeScopesVars)
                     toAdd.push_back({it0.node, it1.node, it1.scope, it1.flags | it0.flags & ALTSCOPE_WITH});
+
+                // If this is a struct that comes from a generic, we need to also register the generic scope in order
+                // to be able to find generic functions to instantiate
+                SWAG_ASSERT(it0.scope->owner->typeInfo->kind == TypeInfoKind::Struct);
+                auto typeStruct = CastTypeInfo<TypeInfoStruct>(it0.scope->owner->typeInfo, TypeInfoKind::Struct);
+                if (typeStruct->fromGeneric)
+                {
+                    auto structDecl = CastAst<AstStruct>(typeStruct->fromGeneric->declNode, AstNodeKind::StructDecl);
+                    addAlternativeScopeOnce(scopes, structDecl->scope, 0);
+                }
             }
         }
     }

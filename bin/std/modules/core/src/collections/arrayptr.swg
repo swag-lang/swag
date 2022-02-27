@@ -10,7 +10,7 @@ impl ArrayPtr
 {
     mtd opDrop()
     {
-        clear()
+        self.clear()
     }
 
     mtd clear()
@@ -30,7 +30,7 @@ impl ArrayPtr
     mtd addNewPtr()->*T
     {
         ptr := newPtr()
-        base.add(ptr)
+        add(ptr)
         return ptr
     }
 }

@@ -22,6 +22,7 @@
       <Item Name="[kind]">kind</Item>
       <Item Name="[name]">name</Item>
       <Item Name="[parent]">parentScope</Item>
+	  <Item Name="[owner]">owner</Item>
       <Item Name="[childs]">childScopes</Item>
     </Expand>
   </Type>
