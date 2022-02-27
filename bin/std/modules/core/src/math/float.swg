@@ -30,14 +30,29 @@ alias ConstF64 = Const'f64
 {
     func sign(x: f32) => x < 0 ? -1 : 1
     func sign(x: f64) => x < 0 ? -1 : 1
+
     func saturate(x: f32) => clamp(x, 0, 1)
     func saturate(x: f64) => clamp(x, 0, 1)
     func lerp(x, y, factor: f32) => ((1 - factor) * x) + (factor * y)
     func lerp(x, y, factor: f64) => ((1 - factor) * x) + (factor * y)
+
+    func smoothstep(edge0, edge1, x: f32)->f32
+    {
+        t := clamp((x - edge0) / (edge1 - edge0), 0, 1)
+        return t * t * (3 - 2*t)
+    }
+
+    func smoothstep(edge0, edge1, x: f64)->f64
+    {
+        t := clamp((x - edge0) / (edge1 - edge0), 0, 1)
+        return t * t * (3 - 2*t)
+    }
+
     func toDegrees(x: f32) => x * 57.295779513082320876798154814105'f32
     func toRadians(x: f32) => x * 0.017453292519943295769236907684886'f32
     func toDegrees(x: f64) => x * (180'f64 / ConstF64.Pi)
     func toRadians(x: f64) => x * (ConstF64.Pi / 180'f64)
+
     func isZeroEpsilon(x: f32, eps = ConstF32.Epsilon) => abs(x) < eps
     func isZeroEpsilon(x: f64, eps = ConstF64.Epsilon) => abs(x) < eps
     func isEqualEpsilon(x, y: f32, eps = ConstF32.Epsilon) => abs(x - y) < eps
