@@ -298,7 +298,9 @@ impl Color
         rx := cast(s32) r - cast(s32) col.r
         gx := cast(s32) g - cast(s32) col.g
         bx := cast(s32) b - cast(s32) col.b
-        return Math.sqrt(cast(f32) ((((512+rmean)*rx*rx)>>8) + 4*gx*gx + (((767-rmean)*bx*bx)>>8))) / 255.0
+
+        res := Math.sqrt(cast(f32) ((((512+rmean)*rx*rx)>>8) + 4*gx*gx + (((767-rmean)*bx*bx)>>8)))
+        return Math.saturate(res / 255.0)
     }
 }
 

@@ -1,10 +1,10 @@
 using Core
 
 const PopulationCount = 200'u32
-const TakeBest        = 20
-const TakeWorst       = 4
-const MaxShuffle      = 128'u32
-const MutationRate    = 2
+const TakeBest        = 40
+const TakeWorst       = 5
+const MaxShuffle      = 8'u32
+const MutationRate    = 1
 
 #[Swag.Tls]
 var g_Rng:          Random.DefaultRng
@@ -14,6 +14,7 @@ var g_CurGen:       u32
 var g_TotalWeight   = 0'f32
 var g_BestScore     = Swag.F32.Max
 var g_NumGen:       u32
+var g_Result:       Array'u8
 
 struct Generation
 {
@@ -22,7 +23,7 @@ struct Generation
 
 struct Solution
 {
-    genes:  Array'u8
+    genes:  Array'u32
     score:  f32
     weight: f32
 }
@@ -34,17 +35,21 @@ func genInit()
     g_NumGenes = g_Image0.width * g_Image0.height
 
     // Generate initial population
-    var ranks: Array'u32
     loop PopulationCount
     {
-        ranks.resize(cast(uint) g_NumGenes)
-        loop i: g_NumGenes
-            ranks[i] = i
-
         soluce := g_Gen[0].all.addNewPtr()
-        soluce.genes.resize(cast(uint) g_NumGenes * 3)
+        soluce.genes.resize(cast(uint) g_NumGenes)
+        loop i: g_NumGenes
+        {
+            soluce.genes[i] = i
+        }
 
-        Memory.copy(soluce.genes.buffer, g_Image0.pixels, cast(uint) g_NumGenes * 3)
+        loop i: g_NumGenes
+        {
+            src := g_Rng.nextU32(0, cast(u32) g_NumGenes)
+            dst := g_Rng.nextU32(0, cast(u32) g_NumGenes)
+            swap(soluce.genes.buffer + src, soluce.genes.buffer + dst)
+        }
 
         evaluateSolution(soluce)
     }
@@ -58,24 +63,28 @@ func genInit()
     loop PopulationCount
     {
         soluce := g_Gen[1].all.addNewPtr()
-        soluce.genes.resize(cast(uint) g_NumGenes * 3)
+        soluce.genes.resize(cast(uint) g_NumGenes)
     }
+
+    g_Result.resize(cast(uint) g_NumGenes * 3)
 }
 
 func evaluateSolution(soluce: *Solution)
 {
     soluce.score = 0
-    for idx := 0; idx < soluce.genes.count; idx += 3
+    loop i: soluce.genes
     {
         var a, b: Pixel.Color = ?
 
-        a.r = soluce.genes[idx]
-        a.g = soluce.genes[idx+1]
-        a.b = soluce.genes[idx+2]
+        idx := soluce.genes[i]
 
-        b.r = g_Image1.pixels[idx]
-        b.g = g_Image1.pixels[idx+1]
-        b.b = g_Image1.pixels[idx+2]
+        a.r = g_Image0.pixels[(idx*3)+0]
+        a.g = g_Image0.pixels[(idx*3)+1]
+        a.b = g_Image0.pixels[(idx*3)+2]
+
+        b.r = g_Image1.pixels[(i*3)+0]
+        b.g = g_Image1.pixels[(i*3)+1]
+        b.b = g_Image1.pixels[(i*3)+2]
 
         dist := a.getDistanceRgb(b)
         soluce.score += dist
@@ -105,11 +114,9 @@ func mutate(child: *Solution)
         rnd1 := g_Rng.nextU32(0, MaxShuffle)
         loop rnd1
         {
-            src := g_Rng.nextU32(0, cast(u32) g_NumGenes) * 3
-            dst := g_Rng.nextU32(0, cast(u32) g_NumGenes) * 3
+            src := g_Rng.nextU32(0, cast(u32) g_NumGenes)
+            dst := g_Rng.nextU32(0, cast(u32) g_NumGenes)
             swap(child.genes.buffer + src, child.genes.buffer + dst)
-            swap(child.genes.buffer + (src+1), child.genes.buffer + (dst+1))
-            swap(child.genes.buffer + (src+2), child.genes.buffer + (dst+2))
         }
     }
 }
@@ -117,11 +124,11 @@ func mutate(child: *Solution)
 func copyToNext(idxNext, idxCur: u32)
 {
     nextGenIdx := (g_CurGen + 1) % 2
-    Memory.copy(g_Gen[nextGenIdx].all[idxNext].genes.buffer, g_Gen[g_CurGen].all[idxCur].genes.buffer, cast(uint) g_NumGenes * 3)
+    g_Gen[nextGenIdx].all[idxNext].genes = g_Gen[g_CurGen].all[idxCur].genes
     evaluateSolution(g_Gen[nextGenIdx].all[idxNext])
 }
 
-func genGo()->*Solution
+func genGo()->*u8
 {
     g_NumGen += 1
 
@@ -146,17 +153,46 @@ func genGo()->*Solution
 
         // Cross point
         crossPoint1 := cast(uint) g_Rng.nextU32(1, cast(u32) g_NumGenes - 2)
-        crossPoint1 *= 3
-        crossPoint2 := cast(uint) g_Rng.nextU32(1, cast(u32) g_NumGenes - 2)
-        crossPoint2 *= 3
-        if crossPoint2 < crossPoint1
-            swap(&crossPoint1, &crossPoint2)
 
-        // Cross chromosomes
+        // Copy solution from father
         child1 := g_Gen[nextGenIdx].all[index]
-        Memory.copy(child1.genes.buffer, father.genes.buffer, crossPoint1)
-        Memory.copy(child1.genes.buffer + crossPoint1, mother.genes.buffer + crossPoint1, (crossPoint2 - crossPoint1))
-        Memory.copy(child1.genes.buffer + crossPoint2, father.genes.buffer + crossPoint2, (father.genes.count - crossPoint2))
+        Memory.copy(child1.genes.buffer, father.genes.buffer, crossPoint1 * @sizeof(u32))
+
+        var done: Array'bool
+        done.resize(cast(uint) g_NumGenes)
+
+        // Register father solution
+        loop i: crossPoint1
+            done[child1.genes.buffer[i]] = true
+
+        // Copy solution from mother, in order, except of already present
+        var holes: Array'u32
+        cpt := 0
+        loop i: g_NumGenes - crossPoint1
+        {
+            g := mother.genes[i + crossPoint1]
+            if !done[g]
+            {
+                done[g] = true
+                child1.genes[crossPoint1 + cpt] = g
+            }
+            else
+            {
+                holes.add(cast(u32) (crossPoint1 + cpt))
+            }
+
+            cpt += 1
+        }
+
+        // Fill the rest
+        loop i: g_NumGenes
+        {
+            if done[i] continue
+            idxHole := holes.popBack()
+            child1.genes[idxHole] = i
+            cpt += 1
+        }
+
         mutate(child1)
         evaluateSolution(child1)
     }
@@ -182,12 +218,23 @@ func genGo()->*Solution
     })
 
     // Returns the best score
-    bestScore := g_Gen[g_CurGen].all[0].score
+    best      := g_Gen[g_CurGen].all[0]
+    bestScore := best.score
     if bestScore < g_BestScore
     {
         g_BestScore = bestScore
         Console.print(g_NumGen, ": ", bestScore, "\n")
+
+        loop i: best.genes
+        {
+            idx := best.genes[i]
+            g_Result[(i*3)+0] = g_Image0.pixels[(idx*3)+0]
+            g_Result[(i*3)+1] = g_Image0.pixels[(idx*3)+1]
+            g_Result[(i*3)+2] = g_Image0.pixels[(idx*3)+2]
+        }
+
+        return g_Result.buffer
     }
 
-    return g_Gen[g_CurGen].all[0]
+    return null
 }

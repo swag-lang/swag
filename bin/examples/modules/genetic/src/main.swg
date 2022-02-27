@@ -31,7 +31,7 @@ impl IWnd for MyView
         painter.drawTexture(@{296, 296, 256, 256}, g_Texture1)
 
         best := genGo()
-        surface.app.getRenderer().updateTexture(g_Texture2, best.genes.buffer)
+        if best surface.app.getRenderer().updateTexture(g_Texture2, best)
         painter.drawTexture(@{20, 296, 256, 256}, g_Texture2)
 
         invalidate()
@@ -49,12 +49,12 @@ impl IWnd for MyView
 
         rdr := surface.app.getRenderer()
         dataPath := Path.getDirectoryName(#location.fileName)
-        g_Image0 = Image.load(Path.combine(dataPath, "img5.jpg"))
+        g_Image0 = Image.load(Path.combine(dataPath, "img4.jpg"))
         g_Image1 = Image.load(Path.combine(dataPath, "img2.jpg"))
 
         const SIZE = 64
-        g_Image0.resize(SIZE, SIZE)
-        g_Image1.resize(SIZE, SIZE)
+        g_Image0.resize(SIZE, SIZE, Image.ResizeMode.Bilinear)
+        g_Image1.resize(SIZE, SIZE, Image.ResizeMode.Bilinear)
 
         g_Texture0 = rdr.addImage(g_Image0)
         g_Texture1 = rdr.addImage(g_Image1)
