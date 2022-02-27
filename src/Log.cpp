@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Log.h"
 #include "Os.h"
+#include "CommandLine.h"
 
 Log g_Log;
 
@@ -11,6 +12,7 @@ void Log::setDefaultColor()
 
 void Log::setColor(LogColor color)
 {
+    curColor = color;
     OS::consoleSetColor(color);
 }
 
@@ -131,6 +133,53 @@ void Log::unlock()
 
 void Log::print(const char* message)
 {
+    // Markdown
+    if (!countLength && g_CommandLine->errorMarkdown)
+    {
+        while (*message)
+        {
+            Utf8 tt;
+            while (*message && *message != '`')
+                tt += *message++;
+            cout << tt.c_str();
+            tt.clear();
+            if (*message == 0)
+                break;
+
+            cout << "`";
+
+            auto oldColor = curColor;
+
+            switch (curColor)
+            {
+            case LogColor::Red:
+                tt += "\x1b[91m";
+                break;
+            case LogColor::White:
+                tt += "\x1b[97m";
+                break;
+            }
+            tt += "\x1b[4m";
+
+            message++;
+            while (*message && *message != '`')
+                tt += *message++;
+            if (*message)
+                message++;
+            tt += "\x1b[0m";
+
+            cout << tt.c_str();
+            tt.clear();
+
+            setColor(oldColor);
+            cout << "`";
+            if (*message == 0)
+                break;
+        }
+
+        return;
+    }
+
     if (countLength)
         length += strlen(message);
     cout << message;
@@ -144,9 +193,7 @@ void Log::printColor(const char* message, LogColor color)
 
 void Log::print(const Utf8& message)
 {
-    if (countLength)
-        length += message.length();
-    cout << message.c_str();
+    print(message.c_str());
 }
 
 void Log::eol()

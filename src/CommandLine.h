@@ -69,6 +69,7 @@ struct CommandLine
     bool      verboseBackendCommand = false;
     bool      errorSourceOut        = true;
     bool      errorNoteOut          = true;
+    bool      errorMarkdown         = true;
 
     // Output
     string buildCfg           = "fast-debug";

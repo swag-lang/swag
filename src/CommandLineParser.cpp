@@ -17,6 +17,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("te", "--verbose-testerrors", nullptr, CommandLineType::Bool, &cmdLine->verboseTestErrors, nullptr, "log errors during test");
     addArg("bu sc", "--error-out-source", nullptr, CommandLineType::Bool, &cmdLine->errorSourceOut, nullptr, "display source code when an error is raised");
     addArg("bu sc", "--error-out-note", nullptr, CommandLineType::Bool, &cmdLine->errorNoteOut, nullptr, "display notes when an error is raised");
+    addArg("bu sc", "--error-markdown", nullptr, CommandLineType::Bool, &cmdLine->errorMarkdown, nullptr, "hilight markdown format");
 
     addArg("bu ne cl li ge", "--workspace", "-w", CommandLineType::String, &cmdLine->workspacePath, nullptr, "the path to the workspace to work with");
     addArg("bu ne", "--module", "-m", CommandLineType::String, &cmdLine->moduleName, nullptr, "module name");

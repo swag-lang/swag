@@ -53,9 +53,10 @@ struct Log
     void eol();
     void setCountLength(bool b);
 
-    Mutex  mutexAccess;
-    bool   countLength = false;
-    size_t length      = 0;
+    Mutex    mutexAccess;
+    bool     countLength = false;
+    size_t   length      = 0;
+    LogColor curColor;
 };
 
 extern Log g_Log;
