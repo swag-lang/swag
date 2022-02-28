@@ -2113,9 +2113,15 @@ TypeInfo* SemanticJob::findTypeInContext(SemanticContext* context, AstNode* node
                 // More that one possible type (at least two enums in the function signature)
                 else
                 {
-                    if (fctCallParam->childParentIdx < (uint32_t) typeFunc->parameters.count)
+                    auto childIdx = fctCallParam->childParentIdx;
+
+                    // Ufcs
+                    if (idref->previousResolvedNode && idref->previousResolvedNode->resolvedSymbolName && idref->previousResolvedNode->resolvedSymbolName->kind == SymbolKind::Variable)
+                        childIdx++;
+
+                    if (childIdx < (uint32_t) typeFunc->parameters.count)
                     {
-                        auto typeParam = typeFunc->parameters[fctCallParam->childParentIdx]->typeInfo;
+                        auto typeParam = typeFunc->parameters[childIdx]->typeInfo;
                         typeParam      = findTypeInContext(context, typeParam);
                         if (typeParam)
                             result.push_back_once(typeParam);
