@@ -3419,7 +3419,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     if (fromType->kind == TypeInfoKind::Alias)
         fromType = TypeManager::concreteType(fromType, CONCRETE_ALIAS | (castFlags & CASTFLAG_EXPLICIT ? CONCRETE_FORCEALIAS : 0));
 
-    if ((castFlags & CASTFLAG_CONCRETE_ENUM) || (castFlags & CASTFLAG_EXPLICIT))
+    if ((castFlags & CASTFLAG_CONCRETE_ENUM) || (castFlags & CASTFLAG_EXPLICIT) || toType->flags & TYPEINFO_INCOMPLETE)
     {
         toType   = TypeManager::concreteType(toType, CONCRETE_ENUM);
         fromType = TypeManager::concreteType(fromType, CONCRETE_ENUM);

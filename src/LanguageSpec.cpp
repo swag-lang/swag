@@ -449,6 +449,7 @@ void LanguageSpec::setupAttributesFlags()
     attributesFlags.add("Macro", ATTRIBUTE_MACRO);
     attributesFlags.add("Mixin", ATTRIBUTE_MIXIN);
     attributesFlags.add("Complete", ATTRIBUTE_COMPLETE);
+    attributesFlags.add("Incomplete", ATTRIBUTE_INCOMPLETE);
     attributesFlags.add("Implicit", ATTRIBUTE_IMPLICIT);
     attributesFlags.add("NoReturn", ATTRIBUTE_NO_RETURN);
     attributesFlags.add("Discardable", ATTRIBUTE_DISCARDABLE);

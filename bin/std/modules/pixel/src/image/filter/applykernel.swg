@@ -3,6 +3,7 @@ using Core
 impl Image
 {
     // Kernel format is : kernelSize, kernelNormalizeValue, kernelValues...
+    #[Swag.Incomplete]
     public enum Kernel: const [..] s32
     {
         GaussianBlur3x3A     = @[3, 8,    0, 1, 0, 1, 4, 1, 0, 1, 0]
@@ -35,7 +36,7 @@ impl Image
     }
 
     #[Swag.Safety("", false)]
-    mtd doKernel(dstImage: *Image, kernel: const [..] s32)
+    mtd doKernel(dstImage: *Image, kernel: Kernel)
     {
         // unsupported pixel format
         if pf.channels() < 3 or pf.bitDepth() != 8
@@ -108,7 +109,7 @@ impl Image
     }
 
     // Apply a kernel to the image
-    public mtd applyKernel(kernel: const [..] s32)
+    public mtd applyKernel(kernel: Kernel)
     {
         Debug.assert(pixels != null)
         allocWorkingBuffer()
@@ -117,7 +118,7 @@ impl Image
     }
 
     // Apply a kernel to the image
-    public mtd toApplyKernel(kernel: const [..] s32)->Image
+    public mtd toApplyKernel(kernel: Kernel)->Image
     {
         Debug.assert(pixels != null)
         var result: retval = create(width, height, pf)

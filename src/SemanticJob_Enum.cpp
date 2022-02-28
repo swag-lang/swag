@@ -98,6 +98,9 @@ bool SemanticJob::resolveEnumType(SemanticContext* context)
             return context->report(typeNode->childs.front(), Fmt(Err(Err0698), rawTypeInfo->getDisplayNameC()));
     }
 
+    if (enumNode->attributeFlags & ATTRIBUTE_INCOMPLETE)
+        typeInfo->flags |= TYPEINFO_INCOMPLETE;
+
     rawTypeInfo = TypeManager::concreteType(rawTypeInfo, CONCRETE_ALIAS);
     switch (rawTypeInfo->kind)
     {

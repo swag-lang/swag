@@ -47,8 +47,12 @@ namespace Swag
     #[AttrUsage(AttributeUsage.Function)]
     attr Implicit()
 
+    // Also hardcoded for switch
     #[AttrUsage(AttributeUsage.Function)]
     attr Complete()
+
+    #[AttrUsage(AttributeUsage.Enum)]
+    attr Incomplete()
 
     #[AttrUsage(AttributeUsage.Function)]
     attr NoReturn()
