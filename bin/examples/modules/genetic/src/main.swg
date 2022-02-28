@@ -53,8 +53,8 @@ impl IWnd for MyView
         g_Image1 = Image.load(Path.combine(dataPath, "img2.jpg"))
 
         const SIZE = 64
-        g_Image0.resize(SIZE, SIZE, Image.ResizeMode.Bilinear)
-        g_Image1.resize(SIZE, SIZE, Image.ResizeMode.Bilinear)
+        g_Image0.resize(SIZE, SIZE, .Bilinear)
+        g_Image1.resize(SIZE, SIZE, .Bilinear)
 
         g_Texture0 = rdr.addImage(g_Image0)
         g_Texture1 = rdr.addImage(g_Image1)

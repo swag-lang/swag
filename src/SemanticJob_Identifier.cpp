@@ -2041,23 +2041,103 @@ bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* 
     return true;
 }
 
+TypeInfo* SemanticJob::findTypeInContext(SemanticContext* context, TypeInfo* typeInfo)
+{
+    typeInfo = TypeManager::concreteReferenceType(typeInfo, CONCRETE_FUNC);
+    if (!typeInfo)
+        return nullptr;
+
+    switch (typeInfo->kind)
+    {
+    case TypeInfoKind::Enum:
+        return typeInfo;
+    }
+
+    return nullptr;
+}
+
 TypeInfo* SemanticJob::findTypeInContext(SemanticContext* context, AstNode* node)
 {
     bool done   = false;
     auto parent = node->parent;
+
+    // If this is a parameter of a function call, we will try to deduce the type with a function signature
+    if (parent->kind == AstNodeKind::FuncCallParam &&
+        parent->parent->kind == AstNodeKind::FuncCallParams &&
+        parent->parent->parent->kind == AstNodeKind::Identifier)
+    {
+        auto fctCallParam = CastAst<AstFuncCallParam>(parent, AstNodeKind::FuncCallParam);
+        parent            = parent->parent->parent;
+
+        AstIdentifierRef*            idref = CastAst<AstIdentifierRef>(parent->parent, AstNodeKind::IdentifierRef);
+        AstIdentifier*               id    = CastAst<AstIdentifier>(parent, AstNodeKind::Identifier);
+        VectorNative<OneSymbolMatch> symbolMatch;
+        context->silentError++;
+
+        auto found = findIdentifierInScopes(context, symbolMatch, idref, id);
+        context->silentError--;
+        if (found && symbolMatch.size() == 1)
+        {
+            auto symbol = symbolMatch.front().symbol;
+            if (symbol->kind != SymbolKind::Function)
+                return nullptr;
+
+            LockSymbolOncePerContext ls(context, symbol);
+            if (symbol->cptOverloads)
+            {
+                context->job->waitSymbolNoLock(symbol);
+                return nullptr;
+            }
+
+            VectorNative<TypeInfo*> result;
+            for (auto& overload : symbol->overloads)
+            {
+                if (overload->typeInfo->kind != TypeInfoKind::FuncAttr)
+                    continue;
+                auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
+
+                // If there's only one corresponding type in the function, then take it
+                // If it's not the correct parameter, the match will not be done, so we do not really care here
+                VectorNative<TypeInfo*> subResult;
+                for (auto p : typeFunc->parameters)
+                {
+                    auto typeParam = findTypeInContext(context, p->typeInfo);
+                    if (typeParam)
+                        subResult.push_back_once(typeParam);
+                }
+
+                if (subResult.size() == 1)
+                {
+                    result.push_back_once(subResult.front());
+                }
+
+                // More that one possible type (at least two enums in the function signature)
+                else
+                {
+                    if (fctCallParam->childParentIdx < (uint32_t) typeFunc->parameters.count)
+                    {
+                        auto typeParam = typeFunc->parameters[fctCallParam->childParentIdx]->typeInfo;
+                        typeParam      = findTypeInContext(context, typeParam);
+                        if (typeParam)
+                            result.push_back_once(typeParam);
+                    }
+                }
+            }
+
+            if (result.size() == 1)
+                return result.front();
+            return nullptr;
+        }
+    }
+
+    // We go up in the hierarchy until we find a statement, or a contextual type to return
     while (parent && parent->kind != AstNodeKind::Statement && !done)
     {
         for (auto c : parent->childs)
         {
-            auto cType = TypeManager::concreteReferenceType(c->typeInfo, CONCRETE_FUNC);
+            auto cType = findTypeInContext(context, c->typeInfo);
             if (cType)
-            {
-                switch (cType->kind)
-                {
-                case TypeInfoKind::Enum:
-                    return cType;
-                }
-            }
+                return cType;
         }
 
         parent = parent->parent;
@@ -2083,8 +2163,12 @@ void SemanticJob::addDependentSymbol(VectorNative<OneSymbolMatch>& symbols, Symb
 
 bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node)
 {
-    auto  job              = context->job;
-    auto& dependentSymbols = job->cacheDependentSymbols;
+    return findIdentifierInScopes(context, context->job->cacheDependentSymbols, identifierRef, node);
+}
+
+bool SemanticJob::findIdentifierInScopes(SemanticContext* context, VectorNative<OneSymbolMatch>& dependentSymbols, AstIdentifierRef* identifierRef, AstIdentifier* node)
+{
+    auto job = context->job;
 
     // When this is "retval" type, no need to do fancy things, we take the corresponding function
     // return symbol. This will avoid some ambiguous resolutions with multiple tuples/structs.
@@ -2166,6 +2250,8 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifier
             if (identifierRef->specFlags & AST_SPEC_IDENTIFIERREF_AUTO_SCOPE)
             {
                 auto typeContext = findTypeInContext(context, identifierRef);
+                if (context->result == ContextResult::Pending)
+                    return true;
                 if (!typeContext)
                     return context->report(identifierRef, Fmt(Err(Err0881), node->token.text.c_str()));
 
@@ -2678,6 +2764,9 @@ bool SemanticJob::filterMatchesInContext(SemanticContext* context, VectorNative<
         auto oneMatch    = matches[i];
         auto over        = oneMatch->symbolOverload;
         auto typeContext = findTypeInContext(context, over->node);
+        if (context->result != ContextResult::Done)
+            return true;
+
         if (typeContext)
         {
             switch (typeContext->kind)

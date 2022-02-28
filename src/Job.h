@@ -50,6 +50,7 @@ struct JobContext
         selectIfParameters = nullptr;
         result             = ContextResult::Done;
         hasError           = false;
+        silentError        = 0;
         errorContextStack.clear();
     }
 
@@ -80,6 +81,7 @@ struct JobContext
     SourceFile* sourceFile         = nullptr;
     AstNode*    selectIfParameters = nullptr;
     bool        hasError           = false;
+    uint32_t    silentError        = false;
 
     ContextResult result = ContextResult::Done;
 };

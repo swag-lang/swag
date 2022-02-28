@@ -373,6 +373,9 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
 
 bool JobContext::report(const Diagnostic& diag, const vector<const Diagnostic*>& notes)
 {
+    if (silentError)
+        return false;
+
     auto copyNotes = notes;
     setErrorContext(diag, copyNotes);
     SWAG_ASSERT(sourceFile);

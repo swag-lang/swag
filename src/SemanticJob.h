@@ -316,10 +316,12 @@ struct SemanticJob : public Job
     static bool         fillMatchContextGenericParameters(SemanticContext* context, SymbolMatchContext& symMatchContext, AstIdentifier* node, SymbolOverload* overload);
     static bool         needToWaitForSymbol(SemanticContext* context, AstIdentifier* node, SymbolName* symbol, bool& needToWait);
     static bool         resolveIdentifier(SemanticContext* context, AstIdentifier* node, bool forGhosting);
+    static TypeInfo*    findTypeInContext(SemanticContext* context, TypeInfo* typeInfo);
     static TypeInfo*    findTypeInContext(SemanticContext* context, AstNode* node);
     static void         addDependentSymbol(VectorNative<OneSymbolMatch>& symbols, SymbolName* symName, Scope* scope, uint32_t asflags);
     static void         unknownIdentifier(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node);
     static bool         findIdentifierInScopes(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node);
+    static bool         findIdentifierInScopes(SemanticContext* context, VectorNative<OneSymbolMatch>& dependentSymbols, AstIdentifierRef* identifierRef, AstIdentifier* node);
     static bool         ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* identifierRef, OneMatch& match);
     static bool         instantiateGenericSymbol(SemanticContext* context, OneGenericMatch& firstMatch, bool forStruct);
     static bool         filterGenericMatches(SemanticContext* context, VectorNative<OneGenericMatch*>& matches);

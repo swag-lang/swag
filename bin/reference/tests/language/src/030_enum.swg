@@ -260,6 +260,13 @@
         @assert((x & .A) and (x & .B))
     }
 
+    // Works also (most of the time), for functions
+    {
+        enum Values { A; B; }
+        func toto(v1, v2: Values) {}
+        toto(.A, .B)
+    }
+
     // By type reflection, you can loop/visit all values of an enum
     {
         enum RGB { R; G; B; }
