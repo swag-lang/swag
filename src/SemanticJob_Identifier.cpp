@@ -2062,15 +2062,13 @@ TypeInfo* SemanticJob::findTypeInContext(SemanticContext* context, AstNode* node
     auto parent = node->parent;
 
     // If this is a parameter of a function call, we will try to deduce the type with a function signature
-    if (parent->kind == AstNodeKind::FuncCallParam &&
-        parent->parent->kind == AstNodeKind::FuncCallParams &&
-        parent->parent->parent->kind == AstNodeKind::Identifier)
+    auto fctCallParam = node->findParent(AstNodeKind::FuncCallParam);
+    if (fctCallParam &&
+        fctCallParam->parent->kind == AstNodeKind::FuncCallParams &&
+        fctCallParam->parent->parent->kind == AstNodeKind::Identifier)
     {
-        auto fctCallParam = CastAst<AstFuncCallParam>(parent, AstNodeKind::FuncCallParam);
-        parent            = parent->parent->parent;
-
-        AstIdentifierRef*            idref = CastAst<AstIdentifierRef>(parent->parent, AstNodeKind::IdentifierRef);
-        AstIdentifier*               id    = CastAst<AstIdentifier>(parent, AstNodeKind::Identifier);
+        AstIdentifierRef*            idref = CastAst<AstIdentifierRef>(fctCallParam->parent->parent->parent, AstNodeKind::IdentifierRef);
+        AstIdentifier*               id    = CastAst<AstIdentifier>(fctCallParam->parent->parent, AstNodeKind::Identifier);
         VectorNative<OneSymbolMatch> symbolMatch;
         context->silentError++;
 
@@ -2094,6 +2092,7 @@ TypeInfo* SemanticJob::findTypeInContext(SemanticContext* context, AstNode* node
             {
                 if (overload->typeInfo->kind != TypeInfoKind::FuncAttr)
                     continue;
+
                 auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
 
                 // If there's only one corresponding type in the function, then take it
@@ -2126,7 +2125,6 @@ TypeInfo* SemanticJob::findTypeInContext(SemanticContext* context, AstNode* node
 
             if (result.size() == 1)
                 return result.front();
-            return nullptr;
         }
     }
 
