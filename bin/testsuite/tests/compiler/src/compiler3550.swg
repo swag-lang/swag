@@ -1,0 +1,36 @@
+#global skip
+
+#[Swag.Macro]
+func parallelFor(count: u32, stmt: code)
+{
+    func visitFor()
+    {
+        #macro
+        {
+            #mixin `stmt
+        }
+    }
+}
+
+struct(T) A
+{
+    count: u32
+}
+
+impl A
+{
+    #[Swag.Macro]
+    mtd titi()
+    {
+        count = 0
+    }
+}
+
+#test
+{
+    parallelFor(0)
+    {
+        var a: A's32
+        a.titi()
+    }
+}

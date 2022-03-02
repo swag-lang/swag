@@ -49,7 +49,7 @@ impl IWnd for MyView
 
         rdr := surface.app.getRenderer()
         dataPath := Path.getDirectoryName(#location.fileName)
-        g_Image0 = Image.load(Path.combine(dataPath, "img4.jpg"))
+        g_Image0 = Image.load(Path.combine(dataPath, "img1.jpg"))
         g_Image1 = Image.load(Path.combine(dataPath, "img2.jpg"))
 
         const SIZE = 64

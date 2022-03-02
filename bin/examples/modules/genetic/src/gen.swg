@@ -1,10 +1,8 @@
 using Core
 
 const PopulationCount = 200'u32
-const TakeBest        = 40
-const TakeWorst       = 5
-const MaxShuffle      = 8'u32
-const MutationRate    = 1
+const TakeBest        = 50'u32
+const TakeWorst       = 1'u32
 
 #[Swag.Tls]
 var g_Rng:          Random.DefaultRng
@@ -46,8 +44,8 @@ func genInit()
 
         loop i: g_NumGenes
         {
-            src := g_Rng.nextU32(0, cast(u32) g_NumGenes)
-            dst := g_Rng.nextU32(0, cast(u32) g_NumGenes)
+            src := g_Rng.nextU32(0, g_NumGenes)
+            dst := g_Rng.nextU32(0, g_NumGenes)
             swap(soluce.genes.buffer + src, soluce.genes.buffer + dst)
         }
 
@@ -69,27 +67,34 @@ func genInit()
     g_Result.resize(cast(uint) g_NumGenes * 3)
 }
 
+func evaluateSolution(idxSrc, idxDst: u32)->f32
+{
+    var a, b: Pixel.Color = ?
+
+    a.r = g_Image0.pixels[(idxSrc*3)+0]
+    a.g = g_Image0.pixels[(idxSrc*3)+1]
+    a.b = g_Image0.pixels[(idxSrc*3)+2]
+
+    b.r = g_Image1.pixels[(idxDst*3)+0]
+    b.g = g_Image1.pixels[(idxDst*3)+1]
+    b.b = g_Image1.pixels[(idxDst*3)+2]
+
+    x1 := cast(f32) a.r - b.r
+    x2 := cast(f32) a.g - b.g
+    x3 := cast(f32) a.b - b.b
+
+    dist := Math.sqrt((x1*x1) + (x2*x2) + (x3*x3))
+    dist /= 255*3
+    //dist := a.getDistanceRgb(b)
+
+    return dist
+}
+
 func evaluateSolution(soluce: *Solution)
 {
     soluce.score = 0
     loop i: soluce.genes
-    {
-        var a, b: Pixel.Color = ?
-
-        idx := soluce.genes[i]
-
-        a.r = g_Image0.pixels[(idx*3)+0]
-        a.g = g_Image0.pixels[(idx*3)+1]
-        a.b = g_Image0.pixels[(idx*3)+2]
-
-        b.r = g_Image1.pixels[(i*3)+0]
-        b.g = g_Image1.pixels[(i*3)+1]
-        b.b = g_Image1.pixels[(i*3)+2]
-
-        dist := a.getDistanceRgb(b)
-        soluce.score += dist
-    }
-
+        soluce.score += evaluateSolution(soluce.genes[i], acast i)
     soluce.score /= g_NumGenes
 }
 
@@ -106,16 +111,33 @@ func pickToMate(other: *Solution = null)->*Solution
     return g_Gen[g_CurGen].all[0]
 }
 
-func mutate(child: *Solution)
+func mutate(child: *Solution, idx: u32)
 {
-    rnd := g_Rng.nextU32(0, 100)
-    if rnd <= MutationRate
+    var mutRate, mutNum: u32
+
+    switch
     {
-        rnd1 := g_Rng.nextU32(0, MaxShuffle)
-        loop rnd1
+    case idx < PopulationCount/4:
+        mutRate = 5
+        mutNum  = 10
+    case idx < PopulationCount/2:
+        mutRate = 25
+        mutNum  = 100
+    case idx < PopulationCount/2 + PopulationCount/4:
+        mutRate = 50
+        mutNum  = 500
+    default:
+        mutRate = 50
+        mutNum  = 1000
+    }
+
+    rnd := g_Rng.nextU32(0, 100)
+    if rnd <= mutRate
+    {
+        loop mutNum
         {
-            src := g_Rng.nextU32(0, cast(u32) g_NumGenes)
-            dst := g_Rng.nextU32(0, cast(u32) g_NumGenes)
+            src := g_Rng.nextU32(0, g_NumGenes)
+            dst := g_Rng.nextU32(0, g_NumGenes)
             swap(child.genes.buffer + src, child.genes.buffer + dst)
         }
     }
@@ -151,56 +173,77 @@ func genGo()->*u8
         father := pickToMate()
         mother := pickToMate(father)
 
-        // Cross point
-        crossPoint1 := cast(uint) g_Rng.nextU32(1, cast(u32) g_NumGenes - 2)
+        var done:   Array'bool
+        var remain: Array'u32
+        done.resize(cast(uint) g_NumGenes)
 
         // Copy solution from father
         child1 := g_Gen[nextGenIdx].all[index]
-        Memory.copy(child1.genes.buffer, father.genes.buffer, crossPoint1 * @sizeof(u32))
-
-        var done: Array'bool
-        done.resize(cast(uint) g_NumGenes)
-
-        // Register father solution
-        loop i: crossPoint1
-            done[child1.genes.buffer[i]] = true
-
-        // Copy solution from mother, in order, except of already present
-        var holes: Array'u32
-        cpt := 0
-        loop i: g_NumGenes - crossPoint1
+        for i := 0; i < g_NumGenes; i += 1
         {
-            g := mother.genes[i + crossPoint1]
-            if !done[g]
+            idx1 := father.genes[i]
+            idx2 := mother.genes[i]
+
+            var idxRes: u32
+            var idxRemain: u32 = Swag.U32.Max
+
+            if done[idx1] and done[idx2]
             {
-                done[g] = true
-                child1.genes[crossPoint1 + cpt] = g
+                a := 0
+                rank := 0'uint
+                idxRes = remain[rank]
+                remain.removeAt(rank)
+            }
+            elif !done[idx1] and done[idx2]
+            {
+                idxRes = idx1
+            }
+            elif done[idx1] and !done[idx2]
+            {
+                idxRes = idx2
             }
             else
             {
-                holes.add(cast(u32) (crossPoint1 + cpt))
+                dist1 := evaluateSolution(idx1, cast(u32) i)
+                dist2 := evaluateSolution(idx2, cast(u32) i)
+                /*if Math.abs(dist1 - dist2) < 0.1
+                {
+                    if g_Rng.nextU32(0, 2) == 1
+                    {
+                        idxRes = idx1
+                        idxRemain = idx2
+                    }
+                    else
+                    {
+                        idxRes = idx2
+                        idxRemain = idx1
+                    }
+                }
+                el*/if dist1 < dist2
+                {
+                    idxRes = idx1
+                    idxRemain = idx2
+                }
+                else
+                {
+                    idxRes = idx2
+                    idxRemain = idx1
+                }
             }
 
-            cpt += 1
+            child1.genes[i] = idxRes
+            done[idxRes]    = true
+            if idxRemain != Swag.U32.Max
+                remain.add(idxRemain)
         }
 
-        // Fill the rest
-        loop i: g_NumGenes
-        {
-            if done[i] continue
-            idxHole := holes.popBack()
-            child1.genes[idxHole] = i
-            cpt += 1
-        }
-
-        mutate(child1)
         evaluateSolution(child1)
     }
 
     // Get from previous generation
     loop i: TakeBest
     {
-        copyToNext(numChilds, cast(u32) i)
+        copyToNext(numChilds, i)
         numChilds += 1
     }
 
@@ -208,6 +251,17 @@ func genGo()->*u8
     {
         copyToNext(numChilds, PopulationCount - i - 1)
         numChilds += 1
+    }
+
+    // Mutate
+    g_Gen[nextGenIdx].all.sort(@(x, y) {
+        return x.score <=> y.score
+    })
+
+    visit c, idx: g_Gen[nextGenIdx].all
+    {
+        mutate(c, acast idx)
+        evaluateSolution(c)
     }
 
     g_CurGen = (g_CurGen + 1) % 2

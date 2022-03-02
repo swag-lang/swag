@@ -512,8 +512,8 @@ bool SemanticJob::resolveLoop(SemanticContext* context)
             {
                 if (!node->expression->computedValue->reg.u64)
                 {
-                    node->expression->flags |= AST_NO_BYTECODE;
-                    node->block->flags |= AST_NO_BYTECODE;
+                    node->flags |= AST_NO_BYTECODE;
+                    node->flags |= AST_NO_BYTECODE_CHILDS;
                     return true;
                 }
             }
