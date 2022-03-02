@@ -336,10 +336,6 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     llvm::CGSCCAnalysisManager    cgsccMgr;
     llvm::ModuleAnalysisManager   moduleMgr;
 
-    // Register the AA manager first so that our version is the one used
-    //functionMgr.registerPass([&]
-    //                         { return passBuilder.buildDefaultAAPipeline(); });
-
     passBuilder.registerModuleAnalyses(moduleMgr);
     passBuilder.registerCGSCCAnalyses(cgsccMgr);
     passBuilder.registerFunctionAnalyses(functionMgr);

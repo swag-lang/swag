@@ -320,6 +320,15 @@ void Backend::addFunctionsToJob(Module* moduleToGen, BackendFunctionBodyJobBase*
                 continue;
             if (!node->content && !node->isSpecialFunctionGenerated())
                 continue;
+
+            if (node->sourceFile->isBootstrapFile || node->sourceFile->isRuntimeFile)
+                one->isUsed = true;
+            else if (node->attributeFlags & (ATTRIBUTE_PUBLIC | ATTRIBUTE_MAIN_FUNC | ATTRIBUTE_INIT_FUNC | ATTRIBUTE_DROP_FUNC | ATTRIBUTE_TEST_FUNC))
+                one->isUsed = true;
+            else if (node->specFlags & AST_SPEC_FUNCDECL_PATCH)
+                one->isUsed = true;
+            if (!one->isUsed)
+                continue;
         }
 
         job->byteCodeFunc.push_back(one);

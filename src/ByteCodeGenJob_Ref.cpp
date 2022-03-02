@@ -478,6 +478,8 @@ bool ByteCodeGenJob::emitMakeLambda(ByteCodeGenContext* context)
     inst->b.pointer = (uint8_t*) funcNode;
     SWAG_ASSERT(funcNode->extension);
     inst->c.pointer = (uint8_t*) funcNode->extension->bc;
+    if (funcNode->extension->bc)
+        funcNode->extension->bc->isUsed = true;
 
     // :CaptureBlock
     // Block capture
@@ -553,7 +555,6 @@ bool ByteCodeGenJob::emitMakeArrayPointerSlicing(ByteCodeGenContext* context)
 
     RegisterList r0;
     reserveLinearRegisterRC2(context, r0);
-
 
     // Compute size of slice
     ensureCanBeChangedRC(context, node->upperBound->resultRegisterRC);

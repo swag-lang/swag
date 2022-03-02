@@ -1657,8 +1657,9 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     {
         auto inst = emitInstruction(context, ByteCodeOp::LocalCall);
         SWAG_ASSERT(funcNode->extension && funcNode->extension->bc);
-        inst->a.pointer = (uint8_t*) funcNode->extension->bc;
-        inst->b.pointer = (uint8_t*) typeInfoFunc;
+        inst->a.pointer                 = (uint8_t*) funcNode->extension->bc;
+        inst->b.pointer                 = (uint8_t*) typeInfoFunc;
+        funcNode->extension->bc->isUsed = true;
     }
     else
     {

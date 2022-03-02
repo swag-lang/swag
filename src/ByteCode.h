@@ -154,6 +154,7 @@ struct ByteCode
     bool isAddedToList       = false;
     bool isDirtyRegistersRC  = false;
     bool hasFunctionCalls    = false;
+    bool isUsed              = false;
 
     atomic<bool> isEmpty;
 };

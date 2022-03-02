@@ -387,12 +387,16 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         }
         else if (funcChild->attributeFlags & ATTRIBUTE_CALLBACK)
         {
+            funcChild->extension->bc->isUsed = true;
+
             *ptrITable = ByteCode::doByteCodeLambda(funcChild->extension->bc);
             funcChild->computeFullNameForeign(true);
             constSegment->addInitPtrFunc(offset, funcChild->fullnameForeign, DataSegment::RelocType::Foreign);
         }
         else
         {
+            funcChild->extension->bc->isUsed = true;
+
             *ptrITable = ByteCode::doByteCodeLambda(funcChild->extension->bc);
             constSegment->addInitPtrFunc(offset, funcChild->extension->bc->getCallName(), DataSegment::RelocType::Local);
         }
@@ -405,6 +409,142 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
     // Setup constant segment offset. We put the offset to the start of the functions, not to the concrete type offset (0)
     typeParamItf->offset = itableOffset + sizeof(void*);
     decreaseInterfaceCount(typeStruct);
+
+    return true;
+}
+
+bool SemanticJob::resolveInterface(SemanticContext* context)
+{
+    auto node          = CastAst<AstStruct>(context->node, AstNodeKind::InterfaceDecl);
+    auto sourceFile    = context->sourceFile;
+    auto typeInterface = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Interface);
+    auto job           = context->job;
+
+    typeInterface->declNode   = node;
+    typeInterface->name       = node->token.text;
+    typeInterface->structName = node->token.text;
+
+    uint32_t storageOffset = 0;
+    uint32_t storageIndex  = 0;
+
+    VectorNative<AstNode*>& childs = (node->flags & AST_STRUCT_COMPOUND) ? job->tmpNodes : node->content->childs;
+    if (node->flags & AST_STRUCT_COMPOUND)
+    {
+        job->tmpNodes.clear();
+        flattenStructChilds(context, node->content, job->tmpNodes);
+    }
+
+    // itable
+    auto typeITable        = allocType<TypeInfoStruct>();
+    typeITable->name       = node->token.text;
+    typeITable->structName = node->token.text;
+    typeITable->scope      = Ast::newScope(node, node->token.text, ScopeKind::Struct, nullptr);
+
+    for (int i = 0; i < childs.size(); i++)
+    {
+        auto child = childs[i];
+        if (child->kind != AstNodeKind::VarDecl)
+            continue;
+
+        auto varDecl = CastAst<AstVarDecl>(child, AstNodeKind::VarDecl);
+
+        TypeInfoParam* typeParam = nullptr;
+        if (!(node->flags & AST_FROM_GENERIC))
+        {
+            typeParam             = g_TypeMgr->makeParam();
+            typeParam->namedParam = child->token.text;
+            typeParam->name       = child->typeInfo->name;
+            typeParam->offset     = storageOffset;
+            typeParam->declNode   = child;
+            SWAG_CHECK(collectAttributes(context, child, &typeParam->attributes));
+            typeITable->fields.push_back(typeParam);
+
+            // Verify signature
+            typeParam->typeInfo = TypeManager::concreteType(child->typeInfo, CONCRETE_ALIAS);
+            SWAG_VERIFY(typeParam->typeInfo->kind == TypeInfoKind::Lambda, context->report(varDecl->type, Fmt(Err(Err0676), child->typeInfo->getDisplayNameC())));
+            auto typeLambda = CastTypeInfo<TypeInfoFuncAttr>(typeParam->typeInfo, TypeInfoKind::Lambda);
+            SWAG_VERIFY(typeLambda->parameters.size() >= 1, context->report(varDecl->type, Fmt(Err(Err0677), child->token.ctext())));
+            auto firstParamType = typeLambda->parameters[0]->typeInfo;
+            SWAG_VERIFY(firstParamType->kind == TypeInfoKind::Pointer, context->report(typeLambda->parameters[0]->declNode, Fmt(Err(Err0679), firstParamType->getDisplayNameC())));
+            auto firstParamPtr = CastTypeInfo<TypeInfoPointer>(firstParamType, TypeInfoKind::Pointer);
+            SWAG_VERIFY(firstParamPtr->pointedType == typeInterface, context->report(typeLambda->parameters[0]->declNode, Fmt(Err(Err0679), firstParamType->getDisplayNameC())));
+        }
+
+        typeParam           = typeITable->fields[storageIndex];
+        typeParam->typeInfo = child->typeInfo;
+        typeParam->declNode = child;
+        typeParam->index    = storageIndex;
+
+        SWAG_VERIFY(!varDecl->assignment, context->report(varDecl->assignment, Err(Err0680)));
+
+        if (!(node->flags & AST_IS_GENERIC))
+        {
+            SWAG_VERIFY(!(child->typeInfo->flags & TYPEINFO_GENERIC), context->report(child, Fmt(Err(Err0681), child->typeInfo->getDisplayNameC())));
+        }
+
+        if (typeParam->attributes.hasAttribute(g_LangSpec->name_Swag_Offset))
+        {
+            auto attr = typeParam->attributes.getAttribute(g_LangSpec->name_Swag_Offset);
+            SWAG_ASSERT(attr);
+            return context->report(attr->node, Err(Err0682));
+        }
+
+        typeParam->offset                                          = storageOffset;
+        child->resolvedSymbolOverload->computedValue.storageOffset = storageOffset;
+        child->resolvedSymbolOverload->storageIndex                = storageIndex;
+
+        SWAG_ASSERT(child->typeInfo->sizeOf == sizeof(void*));
+        typeITable->sizeOf += sizeof(void*);
+
+        // Register lambda variable in the scope of the itable struct
+        auto  overload = child->resolvedSymbolOverload;
+        auto& symTable = typeITable->scope->symTable;
+        symTable.addSymbolTypeInfo(context, child, child->typeInfo, SymbolKind::Variable, nullptr, overload->flags, nullptr, overload->computedValue.storageOffset);
+
+        storageOffset += sizeof(void*);
+        storageIndex++;
+    }
+
+    SWAG_VERIFY(!typeITable->fields.empty(), context->report(node, Fmt(Err(Err0683), node->token.ctext())));
+    typeInterface->itable = typeITable;
+
+    // Struct interface, with one pointer for the data, and one pointer for itable
+    if (!(node->flags & AST_FROM_GENERIC))
+    {
+        auto typeParam      = g_TypeMgr->makeParam();
+        typeParam->typeInfo = g_TypeMgr->typeInfoPointers[(int) NativeTypeKind::Void];
+        typeParam->name     = typeParam->typeInfo->name;
+        typeParam->offset   = 0;
+        typeInterface->fields.push_back(typeParam);
+        typeInterface->sizeOf += sizeof(void*);
+
+        typeParam           = g_TypeMgr->makeParam();
+        typeParam->typeInfo = typeITable;
+        typeParam->name     = typeParam->typeInfo->name;
+        typeParam->offset   = sizeof(void*);
+        typeParam->index    = 1;
+        typeInterface->fields.push_back(typeParam);
+        typeInterface->sizeOf += sizeof(void*);
+    }
+
+    // Check public
+    if (node->attributeFlags & ATTRIBUTE_PUBLIC)
+    {
+        if (!node->ownerScope->isGlobal())
+            return context->report(node, Fmt(Err(Err0684), node->token.ctext()));
+
+        if (!(node->flags & AST_FROM_GENERIC))
+            node->ownerScope->addPublicNode(node);
+    }
+
+    // Register symbol with its type
+    node->typeInfo               = typeInterface;
+    node->resolvedSymbolOverload = node->ownerScope->symTable.addSymbolTypeInfo(context, node, node->typeInfo, SymbolKind::Interface);
+    SWAG_CHECK(node->resolvedSymbolOverload);
+
+    // We are parsing the swag module
+    if (sourceFile->isBootstrapFile)
+        g_Workspace->swagScope.registerType(node->typeInfo);
 
     return true;
 }
@@ -545,8 +685,7 @@ bool SemanticJob::preResolveGeneratedStruct(SemanticContext* context)
                        n->inheritOwners(structNode);
                        n->ownerStructScope = structNode->scope;
                        n->ownerScope       = structNode->scope;
-                       n->flags |= AST_IS_GENERIC;
-                   });
+                       n->flags |= AST_IS_GENERIC; });
     }
 
     return true;
@@ -1054,142 +1193,6 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         node->byteCodeFct = ByteCodeGenJob::emitStruct;
         g_ThreadMgr.addJob(extension->byteCodeJob);
     }
-
-    return true;
-}
-
-bool SemanticJob::resolveInterface(SemanticContext* context)
-{
-    auto node          = CastAst<AstStruct>(context->node, AstNodeKind::InterfaceDecl);
-    auto sourceFile    = context->sourceFile;
-    auto typeInterface = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Interface);
-    auto job           = context->job;
-
-    typeInterface->declNode   = node;
-    typeInterface->name       = node->token.text;
-    typeInterface->structName = node->token.text;
-
-    uint32_t storageOffset = 0;
-    uint32_t storageIndex  = 0;
-
-    VectorNative<AstNode*>& childs = (node->flags & AST_STRUCT_COMPOUND) ? job->tmpNodes : node->content->childs;
-    if (node->flags & AST_STRUCT_COMPOUND)
-    {
-        job->tmpNodes.clear();
-        flattenStructChilds(context, node->content, job->tmpNodes);
-    }
-
-    // itable
-    auto typeITable        = allocType<TypeInfoStruct>();
-    typeITable->name       = node->token.text;
-    typeITable->structName = node->token.text;
-    typeITable->scope      = Ast::newScope(node, node->token.text, ScopeKind::Struct, nullptr);
-
-    for (int i = 0; i < childs.size(); i++)
-    {
-        auto child = childs[i];
-        if (child->kind != AstNodeKind::VarDecl)
-            continue;
-
-        auto varDecl = CastAst<AstVarDecl>(child, AstNodeKind::VarDecl);
-
-        TypeInfoParam* typeParam = nullptr;
-        if (!(node->flags & AST_FROM_GENERIC))
-        {
-            typeParam             = g_TypeMgr->makeParam();
-            typeParam->namedParam = child->token.text;
-            typeParam->name       = child->typeInfo->name;
-            typeParam->offset     = storageOffset;
-            typeParam->declNode   = child;
-            SWAG_CHECK(collectAttributes(context, child, &typeParam->attributes));
-            typeITable->fields.push_back(typeParam);
-
-            // Verify signature
-            typeParam->typeInfo = TypeManager::concreteType(child->typeInfo, CONCRETE_ALIAS);
-            SWAG_VERIFY(typeParam->typeInfo->kind == TypeInfoKind::Lambda, context->report(varDecl->type, Fmt(Err(Err0676), child->typeInfo->getDisplayNameC())));
-            auto typeLambda = CastTypeInfo<TypeInfoFuncAttr>(typeParam->typeInfo, TypeInfoKind::Lambda);
-            SWAG_VERIFY(typeLambda->parameters.size() >= 1, context->report(varDecl->type, Fmt(Err(Err0677), child->token.ctext())));
-            auto firstParamType = typeLambda->parameters[0]->typeInfo;
-            SWAG_VERIFY(firstParamType->kind == TypeInfoKind::Pointer, context->report(typeLambda->parameters[0]->declNode, Fmt(Err(Err0679), firstParamType->getDisplayNameC())));
-            auto firstParamPtr = CastTypeInfo<TypeInfoPointer>(firstParamType, TypeInfoKind::Pointer);
-            SWAG_VERIFY(firstParamPtr->pointedType == typeInterface, context->report(typeLambda->parameters[0]->declNode, Fmt(Err(Err0679), firstParamType->getDisplayNameC())));
-        }
-
-        typeParam           = typeITable->fields[storageIndex];
-        typeParam->typeInfo = child->typeInfo;
-        typeParam->declNode = child;
-        typeParam->index    = storageIndex;
-
-        SWAG_VERIFY(!varDecl->assignment, context->report(varDecl->assignment, Err(Err0680)));
-
-        if (!(node->flags & AST_IS_GENERIC))
-        {
-            SWAG_VERIFY(!(child->typeInfo->flags & TYPEINFO_GENERIC), context->report(child, Fmt(Err(Err0681), child->typeInfo->getDisplayNameC())));
-        }
-
-        if (typeParam->attributes.hasAttribute(g_LangSpec->name_Swag_Offset))
-        {
-            auto attr = typeParam->attributes.getAttribute(g_LangSpec->name_Swag_Offset);
-            SWAG_ASSERT(attr);
-            return context->report(attr->node, Err(Err0682));
-        }
-
-        typeParam->offset                                          = storageOffset;
-        child->resolvedSymbolOverload->computedValue.storageOffset = storageOffset;
-        child->resolvedSymbolOverload->storageIndex                = storageIndex;
-
-        SWAG_ASSERT(child->typeInfo->sizeOf == sizeof(void*));
-        typeITable->sizeOf += sizeof(void*);
-
-        // Register lambda variable in the scope of the itable struct
-        auto  overload = child->resolvedSymbolOverload;
-        auto& symTable = typeITable->scope->symTable;
-        symTable.addSymbolTypeInfo(context, child, child->typeInfo, SymbolKind::Variable, nullptr, overload->flags, nullptr, overload->computedValue.storageOffset);
-
-        storageOffset += sizeof(void*);
-        storageIndex++;
-    }
-
-    SWAG_VERIFY(!typeITable->fields.empty(), context->report(node, Fmt(Err(Err0683), node->token.ctext())));
-    typeInterface->itable = typeITable;
-
-    // Struct interface, with one pointer for the data, and one pointer for itable
-    if (!(node->flags & AST_FROM_GENERIC))
-    {
-        auto typeParam      = g_TypeMgr->makeParam();
-        typeParam->typeInfo = g_TypeMgr->typeInfoPointers[(int) NativeTypeKind::Void];
-        typeParam->name     = typeParam->typeInfo->name;
-        typeParam->offset   = 0;
-        typeInterface->fields.push_back(typeParam);
-        typeInterface->sizeOf += sizeof(void*);
-
-        typeParam           = g_TypeMgr->makeParam();
-        typeParam->typeInfo = typeITable;
-        typeParam->name     = typeParam->typeInfo->name;
-        typeParam->offset   = sizeof(void*);
-        typeParam->index    = 1;
-        typeInterface->fields.push_back(typeParam);
-        typeInterface->sizeOf += sizeof(void*);
-    }
-
-    // Check public
-    if (node->attributeFlags & ATTRIBUTE_PUBLIC)
-    {
-        if (!node->ownerScope->isGlobal())
-            return context->report(node, Fmt(Err(Err0684), node->token.ctext()));
-
-        if (!(node->flags & AST_FROM_GENERIC))
-            node->ownerScope->addPublicNode(node);
-    }
-
-    // Register symbol with its type
-    node->typeInfo               = typeInterface;
-    node->resolvedSymbolOverload = node->ownerScope->symTable.addSymbolTypeInfo(context, node, node->typeInfo, SymbolKind::Interface);
-    SWAG_CHECK(node->resolvedSymbolOverload);
-
-    // We are parsing the swag module
-    if (sourceFile->isBootstrapFile)
-        g_Workspace->swagScope.registerType(node->typeInfo);
 
     return true;
 }

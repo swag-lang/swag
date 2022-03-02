@@ -365,6 +365,7 @@ void DataSegment::addPatchMethod(AstFuncDecl* funcDecl, uint32_t storageOffset)
 {
     ScopedLock lk(mutexPatchMethod);
     patchMethods.push_back({funcDecl, storageOffset});
+    funcDecl->specFlags |= AST_SPEC_FUNCDECL_PATCH;
 }
 
 void DataSegment::doPatchMethods(JobContext* context)
