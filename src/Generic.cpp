@@ -566,8 +566,13 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     // an alternative scope
     if (contextualStruct)
         newFunc->addAlternativeScope(contextualStruct->scope);
-    if (node->ownerFct && node->ownerFct->extension && node->ownerFct->extension->alternativeScopes.size())
+
+    // If we are in a function, inherit also the scopes from the function.
+    // Be carreful that if the call is inside a #macro, we do not want to inherit the function (3550)
+    if (node->ownerFct && node->ownerFct->extension && node->ownerFct->extension->alternativeScopes.size() && !node->findParent(AstNodeKind::CompilerMacro))
         newFunc->addAlternativeScopes(node->ownerFct->extension->alternativeScopes);
+
+    // Inherit alternative scopes from the generic function
     if (funcNode->extension && funcNode->extension->alternativeScopes.size())
         newFunc->addAlternativeScopes(funcNode->extension->alternativeScopes);
 

@@ -1,4 +1,4 @@
-#global skip
+//#global skip
 
 #[Swag.Macro]
 func parallelFor(count: u32, stmt: code)
@@ -12,6 +12,7 @@ func parallelFor(count: u32, stmt: code)
     }
 }
 
+//struct A
 struct(T) A
 {
     count: u32
@@ -30,6 +31,7 @@ impl A
 {
     parallelFor(0)
     {
+        //var a: A
         var a: A's32
         a.titi()
     }
