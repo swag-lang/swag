@@ -73,7 +73,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     emitSymbolRelocation(pp, bcAlloc->getCallName());
     BackendX64Inst::emit_Store64_Indirect(pp, 0, RCX, RAX);
 
-    //mainContext.allocator.itable = &defaultAllocTable;
+    // mainContext.allocator.itable = &defaultAllocTable;
     BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symMC_mainContext_allocator_itable, 0);
     BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RCX);
 
@@ -230,7 +230,8 @@ bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
     auto symbolFuncIndex = getOrAddSymbol(pp, thisInit, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
     auto coffFct         = registerFunction(pp, nullptr, symbolFuncIndex);
 
-    pp.directives += Fmt("/EXPORT:%s ", thisInit.c_str());
+    if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
+        pp.directives += Fmt("/EXPORT:%s ", thisInit.c_str());
 
     auto beforeProlog = concat.totalCount();
     BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, 40);
@@ -283,7 +284,8 @@ bool BackendX64::emitGlobalDrop(const BuildParameters& buildParameters)
     auto symbolFuncIndex = getOrAddSymbol(pp, thisDrop, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
     auto coffFct         = registerFunction(pp, nullptr, symbolFuncIndex);
 
-    pp.directives += Fmt("/EXPORT:%s ", thisDrop.c_str());
+    if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
+        pp.directives += Fmt("/EXPORT:%s ", thisDrop.c_str());
 
     auto beforeProlog = concat.totalCount();
     BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, 40);

@@ -108,14 +108,14 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
     auto allocFct = modu.getOrInsertFunction(bcAlloc->getCallName().c_str(), pp.allocatorTy);
     builder.CreateStore(allocFct.getCallee(), pp.defaultAllocTable);
 
-    //mainContext.allocator.itable = &defaultAllocTable
+    // mainContext.allocator.itable = &defaultAllocTable
     {
         auto toTable   = builder.CreateInBoundsGEP(pp.mainContext, {pp.cst0_i32, pp.cst0_i32, pp.cst1_i32});
         auto fromTable = builder.CreatePointerCast(pp.defaultAllocTable, llvm::Type::getInt8PtrTy(context));
         builder.CreateStore(fromTable, toTable);
     }
 
-    //mainContext.flags = 0
+    // mainContext.flags = 0
     {
         auto     toFlags      = builder.CreateInBoundsGEP(pp.mainContext, {pp.cst0_i32, pp.cst1_i32});
         uint64_t contextFlags = getDefaultContextFlags(module);
@@ -243,7 +243,8 @@ bool BackendLLVM::emitGlobalInit(const BuildParameters& buildParameters)
 
     auto            fctType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), {pp.processInfosTy->getPointerTo()}, false);
     llvm::Function* fct     = llvm::Function::Create(fctType, llvm::Function::ExternalLinkage, Fmt("%s_globalInit", module->nameNormalized.c_str()).c_str(), modu);
-    fct->setDLLStorageClass(llvm::GlobalValue::DLLExportStorageClass);
+    if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
+        fct->setDLLStorageClass(llvm::GlobalValue::DLLExportStorageClass);
 
     llvm::BasicBlock* BB = llvm::BasicBlock::Create(context, "entry", fct);
     builder.SetInsertPoint(BB);
@@ -292,7 +293,8 @@ bool BackendLLVM::emitGlobalDrop(const BuildParameters& buildParameters)
 
     auto            fctType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), false);
     llvm::Function* fct     = llvm::Function::Create(fctType, llvm::Function::ExternalLinkage, Fmt("%s_globalDrop", module->nameNormalized.c_str()).c_str(), modu);
-    fct->setDLLStorageClass(llvm::GlobalValue::DLLExportStorageClass);
+    if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
+        fct->setDLLStorageClass(llvm::GlobalValue::DLLExportStorageClass);
 
     llvm::BasicBlock* BB = llvm::BasicBlock::Create(context, "entry", fct);
     builder.SetInsertPoint(BB);

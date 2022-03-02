@@ -23,7 +23,8 @@ bool BackendLLVM::emitFuncWrapperPublic(const BuildParameters& buildParameters, 
     // Create function
     node->computeFullNameForeign(true);
     llvm::Function* func = (llvm::Function*) modu.getOrInsertFunction(node->fullnameForeign.c_str(), funcType).getCallee();
-    func->setDLLStorageClass(llvm::GlobalValue::DLLExportStorageClass);
+    if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
+        func->setDLLStorageClass(llvm::GlobalValue::DLLExportStorageClass);
 
     // Content
     llvm::BasicBlock* block = llvm::BasicBlock::Create(context, "entry", func);
