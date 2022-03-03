@@ -203,6 +203,7 @@ struct Module
     JobGroup                        syntaxGroup;
     VectorNative<FILE*>             handleGeneratedFile;
     VectorNative<bool>              appendGeneratedFile;
+    VectorNative<uint32_t>          countLinesGeneratedFile;
 
     AstNode*          astRoot          = nullptr;
     Scope*            scopeRoot        = nullptr;
@@ -215,17 +216,16 @@ struct Module
     uint64_t moreRecentSourceFile = 0;
 
     ModuleKind  kind;
-    BuildPass   buildPass               = BuildPass::Full;
-    uint32_t    countLinesGeneratedFile = 0;
-    uint32_t    hasBeenBuilt            = BUILDRES_NONE;
-    atomic<int> numTestErrors           = 0;
-    atomic<int> numTestWarnings         = 0;
-    atomic<int> optimNeedRestart        = 0;
-    atomic<int> numCompilerFunctions    = 0;
-    atomic<int> numErrors               = 0;
-    atomic<int> numWarnings             = 0;
-    atomic<int> criticalErrors          = 0;
-    int         optimPass               = 0;
+    BuildPass   buildPass            = BuildPass::Full;
+    uint32_t    hasBeenBuilt         = BUILDRES_NONE;
+    atomic<int> numTestErrors        = 0;
+    atomic<int> numTestWarnings      = 0;
+    atomic<int> optimNeedRestart     = 0;
+    atomic<int> numCompilerFunctions = 0;
+    atomic<int> numErrors            = 0;
+    atomic<int> numWarnings          = 0;
+    atomic<int> criticalErrors       = 0;
+    int         optimPass            = 0;
 
     bool addedToBuild         = false;
     bool saveBssValues        = false;

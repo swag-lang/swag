@@ -229,15 +229,15 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
 
             Utf8 sourceCode = Fmt("// %s:%d:%d:%d:%d\n", fromNode->sourceFile->path.c_str(), fromNode->token.startLocation.line + 1, fromNode->token.startLocation.column + 1, fromNode->token.endLocation.line + 1, fromNode->token.endLocation.column + 1);
             fwrite(sourceCode.c_str(), sourceCode.length(), 1, h);
-            modl->countLinesGeneratedFile += 1;
-            previousLogLine = modl->countLinesGeneratedFile;
+            modl->countLinesGeneratedFile[g_ThreadIndex] += 1;
+            previousLogLine = modl->countLinesGeneratedFile[g_ThreadIndex];
 
             fwrite(content.c_str(), content.length(), 1, h);
-            modl->countLinesGeneratedFile += countEol;
+            modl->countLinesGeneratedFile[g_ThreadIndex] += countEol;
 
             static const char* eol = "\n\n";
             fwrite(eol, 1, 2, h);
-            modl->countLinesGeneratedFile += 2;
+            modl->countLinesGeneratedFile[g_ThreadIndex] += 2;
         }
     }
 

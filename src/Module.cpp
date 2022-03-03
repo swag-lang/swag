@@ -23,6 +23,7 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
 
     handleGeneratedFile.set_size_clear(g_CommandLine->numCores);
     appendGeneratedFile.set_size_clear(g_CommandLine->numCores);
+    countLinesGeneratedFile.set_size_clear(g_CommandLine->numCores);
 
     name           = moduleName;
     nameNormalized = name;
