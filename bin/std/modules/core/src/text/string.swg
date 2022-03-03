@@ -524,3 +524,11 @@ impl String
         return result
     }
 }
+
+impl Hash.IHash32 for String
+{
+    mtdc compute()->u32
+    {
+        return Hash.Crc32.compute(@mkslice(buffer, length))
+    }
+}

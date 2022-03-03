@@ -1,6 +1,11 @@
 #global namespace Hash
 using Swag
 
+public interface IHash32
+{
+    compute: func(const self)->u32
+}
+
 // Hash the given value and returns the corresponding u32
 #[ConstExpr, Safety("", false)]
 public func(T) hash32(value: T)->u32
