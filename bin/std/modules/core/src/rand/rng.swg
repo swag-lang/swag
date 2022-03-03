@@ -123,4 +123,16 @@ impl Rng
         value := nextF64()
         return min + (value * range)
     }
+
+    // Change the order of a slice
+    mtd(V) shuffle(slice: [..] V)
+    {
+        countOf := @countof(slice)
+        dataOf  := @dataof(slice)
+        loop i: slice
+        {
+            o := nextU64(0, countOf)
+            Core.swap(dataOf + i, dataOf + o)
+        }
+    }
 }

@@ -37,18 +37,8 @@ func genInit()
     {
         soluce := g_Gen[0].all.addNewPtr()
         soluce.genes.resize(cast(uint) g_NumGenes)
-        loop i: g_NumGenes
-        {
-            soluce.genes[i] = i
-        }
-
-        loop i: g_NumGenes
-        {
-            src := g_Rng.nextU32(0, g_NumGenes)
-            dst := g_Rng.nextU32(0, g_NumGenes)
-            swap(soluce.genes.buffer + src, soluce.genes.buffer + dst)
-        }
-
+        loop i: g_NumGenes soluce.genes[i] = i
+        g_Rng.shuffle(soluce.genes.toSlice())
         evaluateSolution(soluce)
     }
 
