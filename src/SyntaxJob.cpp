@@ -191,7 +191,7 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
     if (logGenerated && !fromNode->sourceFile->numTestErrors && !fromNode->sourceFile->numTestWarnings && g_CommandLine->output)
     {
         auto modl = fromNode->sourceFile->module;
-        if (modl->buildCfg.backendDebugInformations)
+        if (modl->buildCfg.backendDebugInformations && !g_CommandLine->scriptCommand)
         {
             auto publicPath = modl->publicPath;
             tmpFilePath     = publicPath;
@@ -220,6 +220,7 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
 
                 if (!h)
                 {
+                    modl->numErrors++;
                     g_Log.errorOS(Fmt(Err(Err0524), publicPath.c_str()));
                     return false;
                 }
