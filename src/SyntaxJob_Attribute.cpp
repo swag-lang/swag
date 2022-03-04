@@ -3,6 +3,7 @@
 #include "Ast.h"
 #include "Scoped.h"
 #include "ErrorIds.h"
+#include "LanguageSpec.h"
 
 bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
 {
@@ -41,6 +42,17 @@ bool SyntaxJob::doAttrDecl(AstNode* parent, AstNode** result)
     SWAG_VERIFY(token.id != TokenId::SymMinusGreat, error(token, Err(Err0726), Hlp(Hlp0000)));
     SWAG_VERIFY(token.id != TokenId::KwdThrow, error(token, Err(Err0190), Hlp(Hlp0001)));
     SWAG_CHECK(eatSemiCol("attribute definition"));
+
+    //////
+    if (sourceFile->isBootstrapFile || sourceFile->isRuntimeFile)
+    {
+        if (attrNode->token.text == g_LangSpec->name_Align)
+            typeInfo->attributeUsage = 0;
+        else if (attrNode->token.text == g_LangSpec->name_Strict)
+            typeInfo->attributeUsage = 0;
+        else if (attrNode->token.text == g_LangSpec->name_Global)
+            typeInfo->attributeUsage = 0;
+    }
 
     return true;
 }

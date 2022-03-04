@@ -29,7 +29,14 @@ bool SemanticJob::sendCompilerMsgTypeDecl(SemanticContext* context)
     msg.concrete.name.buffer = (void*) node->token.ctext();
     msg.concrete.name.count  = node->token.text.length();
     msg.typeInfo             = node->typeInfo;
+    msg.node                 = node;
     SWAG_CHECK(module->postCompilerMessage(context, msg));
+
+    if (node->attributeFlags & ATTRIBUTE_GEN)
+    {
+        msg.concrete.kind = CompilerMsgKind::AttributeGen;
+        SWAG_CHECK(module->postCompilerMessage(context, msg));
+    }
 
     return true;
 }

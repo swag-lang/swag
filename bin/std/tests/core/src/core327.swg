@@ -1,0 +1,62 @@
+using Swag, Core, StrConv
+
+#[AttrUsage(AttributeUsage.Struct|AttributeUsage.KindMsgGen)]
+attr GenOpEquals();
+
+#[GenOpEquals]
+struct A
+{
+    a: String
+    b: f32
+}
+
+#message(Swag.CompilerMsgMask.AttributeGen)
+{
+    itf := @compiler()
+    msg := itf.getMessage()
+
+    if msg.type.kind != .Struct
+        return
+    if !Reflection.hasAttribute(msg.type, @stringof(GenOpEquals))
+        return
+
+    types := cast(const *TypeInfoStruct) msg.type
+
+    var sb: StringBuilder
+    sb.appendFormat("impl % {\n", msg.type.flatName)
+    sb.appendString("mtd opEquals(other: Self)->bool {\n")
+    sb.appendString("\treturn ")
+
+    visit f: types.fields
+    {
+        if @index
+            sb.appendString(" and ")
+        sb.appendFormat("% == other.%", f.name, f.name)
+    }
+
+    sb.appendString("\n}\n")
+    sb.appendString("}\n")
+
+    itf.compileString(sb.moveToString())
+}
+
+//#[PrintBc]
+#test
+{
+    var x, y: A
+    x.a = "toto"
+    x.b = 1
+    y.a = "toto"
+    y.b = 1
+    @assert(x == y)
+}
+
+#test
+{
+    var x, y: A
+    x.a = "toto"
+    x.b = 1
+    y.a = "tata"
+    y.b = 1
+    @assert(x != y)
+}

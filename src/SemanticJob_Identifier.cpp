@@ -3255,7 +3255,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
 
 bool SemanticJob::needToWaitForSymbol(SemanticContext* context, AstIdentifier* node, SymbolName* symbol, bool& needToWait)
 {
-    if (!symbol->cptOverloads)
+    if (!symbol->cptOverloads && !(symbol->flags & SYMBOL_ATTRIBUTE_GEN))
         return false;
 
     // This is enough to resolve, as we just need parameters, and that case means that some functions

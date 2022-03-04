@@ -34,7 +34,7 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
     auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(oneAttribute->typeInfo, TypeInfoKind::FuncAttr);
     SWAG_ASSERT(checkNode);
 
-    if (typeInfo->attributeUsage == AttributeUsage::All)
+    if (typeInfo->attributeUsage & AttributeUsage::KindAll)
         return true;
 
     bool        isGlobalVar = kind == AstNodeKind::VarDecl && checkNode->ownerScope->isGlobalOrImpl();
@@ -106,7 +106,7 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
             return true;
     }
 
-    switch (typeInfo->attributeUsage)
+    switch (typeInfo->attributeUsage & AttributeUsage::All)
     {
     case AttributeUsage::Function:
         specificMsg = "a function";
@@ -255,18 +255,33 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
             // Attribute on an attribute : usage
             if (forNode->kind == AstNodeKind::AttrDecl)
             {
-                auto value = curAttr->attributes.getValue(g_LangSpec->name_Swag_AttrUsage, g_LangSpec->name_usage);
+                auto typeAttr = CastTypeInfo<TypeInfoFuncAttr>(forNode->typeInfo, TypeInfoKind::FuncAttr);
+                auto value    = curAttr->attributes.getValue(g_LangSpec->name_Swag_AttrUsage, g_LangSpec->name_usage);
+
                 if (value)
-                {
-                    auto typeAttr            = CastTypeInfo<TypeInfoFuncAttr>(forNode->typeInfo, TypeInfoKind::FuncAttr);
                     typeAttr->attributeUsage = value->reg.u32;
-                }
 
                 if (curAttr->attributes.hasAttribute(g_LangSpec->name_Swag_AttrMulti))
+                    typeAttr->attributeUsage |= AttributeUsage::KindMulti;
+
+                // Some checks
+                if (typeAttr->attributeUsage & AttributeUsage::KindMsgGen)
                 {
-                    auto typeAttr = CastTypeInfo<TypeInfoFuncAttr>(forNode->typeInfo, TypeInfoKind::FuncAttr);
-                    typeAttr->attributeUsage |= AttributeUsage::Multi;
+                    auto what = typeAttr->attributeUsage;
+                    if (!(what & (AttributeUsage::Struct | AttributeUsage::Enum)))
+                        return context->report({curAttr, Err(Err0852)});
+
+                    what &= ~AttributeUsage::Struct;
+                    what &= ~AttributeUsage::Enum;
+                    what &= ~AttributeUsage::KindMsgGen;
+                    if (typeAttr->attributeUsage & what)
+                        return context->report({curAttr, Err(Err0852)});
                 }
+            }
+
+            if (typeInfo->attributeUsage & AttributeUsage::KindMsgGen)
+            {
+                flags |= ATTRIBUTE_GEN;
             }
 
             // Predefined attributes will mark some flags (to speed up detection)

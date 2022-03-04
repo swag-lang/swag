@@ -750,6 +750,9 @@ bool SemanticJob::preResolveStructContent(SemanticContext* context)
         break;
     }
 
+    if (node->attributeFlags & ATTRIBUTE_GEN)
+        node->resolvedSymbolName->flags |= SYMBOL_ATTRIBUTE_GEN;
+
     SWAG_CHECK(node->ownerScope->symTable.addSymbolTypeInfo(context, node, node->typeInfo, symbolKind, nullptr, symbolFlags | OVERLOAD_INCOMPLETE | OVERLOAD_STORE_SYMBOLS, nullptr, 0));
     return true;
 }

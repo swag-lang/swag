@@ -32,7 +32,9 @@ enum AttributeUsage
     Constant       = 0x00000100,
     All            = 0x0FFFFFFF,
     // Flags
-    Multi = 0x80000000,
+    KindMulti  = 0x10000000,
+    KindMsgGen = 0x20000000,
+    KindAll    = 0x40000000,
 };
 
 enum class ContextFlags : uint64_t
@@ -384,6 +386,7 @@ enum class CompilerMsgKind
     SemFunctions,
     SemTypes,
     SemGlobals,
+    AttributeGen,
     Max
 };
 
@@ -396,6 +399,7 @@ enum class CompilerMsgKindMask : uint64_t
     SemFunctions          = 1 << (uint32_t) CompilerMsgKind::SemFunctions,
     SemTypes              = 1 << (uint32_t) CompilerMsgKind::SemTypes,
     SemGlobals            = 1 << (uint32_t) CompilerMsgKind::SemGlobals,
+    AttributeGen          = 1 << (uint32_t) CompilerMsgKind::AttributeGen,
     All                   = 0xFFFFFFFFFFFFFFFF,
 };
 

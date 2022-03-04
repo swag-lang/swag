@@ -66,6 +66,14 @@ bool Module::flushCompilerMessages(JobContext* context)
     {
         SWAG_ASSERT(!byteCodeCompiler[(int) msg.concrete.kind].empty());
         sendCompilerMessage(&msg.concrete, context->baseJob);
+
+        // Release symbol
+        if (msg.concrete.kind == CompilerMsgKind::AttributeGen)
+        {
+            SWAG_ASSERT(msg.node->resolvedSymbolName);
+            msg.node->resolvedSymbolName->flags &= ~SYMBOL_ATTRIBUTE_GEN;
+            msg.node->resolvedSymbolName->dependentJobs.setRunning();
+        }
     }
 
     compilerMessages.clear();
@@ -102,5 +110,6 @@ bool Module::sendCompilerMessage(ConcreteCompilerMessage* msg, Job* dependentJob
     }
 
     g_RunContext.currentCompilerMessage = nullptr;
+
     return true;
 }

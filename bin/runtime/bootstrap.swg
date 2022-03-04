@@ -13,6 +13,9 @@ namespace Swag
         File            = 0x00000080
         Constant        = 0x00000100
         All             = 0x0FFFFFFF
+        KindMulti       = 0x10000000
+        KindMsgGen      = 0x20000000
+        KindAll         = 0x40000000
     }
 
     // #########################################################
@@ -50,9 +53,6 @@ namespace Swag
     // Also hardcoded for switch
     #[AttrUsage(AttributeUsage.Function)]
     attr Complete()
-
-    #[AttrUsage(AttributeUsage.Enum)]
-    attr Incomplete()
 
     #[AttrUsage(AttributeUsage.Function)]
     attr NoReturn()
@@ -93,17 +93,23 @@ namespace Swag
     #[AttrUsage(AttributeUsage.Enum)]
     attr EnumIndex()
 
-    #[AttrUsage(AttributeUsage.All)]
+    #[AttrUsage(AttributeUsage.Enum)]
+    attr Incomplete()
+
+    #[AttrUsage(AttributeUsage.Struct)]
+    attr ExportType(what: string)
+
+    #[AttrUsage(AttributeUsage.Struct)]
+    attr Gen(what: string)
+
+    #[AttrUsage(AttributeUsage.KindAll|AttributeUsage.File)]
     attr Safety(what: string, value: bool)
 
-    #[AttrUsage(AttributeUsage.All)]
+    #[AttrUsage(AttributeUsage.KindAll)]
     attr SelectIf(value: bool)
 
     #[AttrUsage(AttributeUsage.Function|AttributeUsage.File)]
     attr Optim(what: string, value: bool)
-
-    #[AttrUsage(AttributeUsage.Struct)]
-    attr ExportType(what: string)
 
     // Hardcoded
     attr Strict()
@@ -548,6 +554,7 @@ namespace Swag
         SemFunctions
         SemTypes
         SemGlobals
+        AttributeGen
 	}
 
     #[EnumFlags]
@@ -560,6 +567,7 @@ namespace Swag
         SemFunctions =          1 << cast(u32) CompilerMsgKind.SemFunctions
         SemTypes =              1 << cast(u32) CompilerMsgKind.SemTypes
         SemGlobals =            1 << cast(u32) CompilerMsgKind.SemGlobals
+        AttributeGen =          1 << cast(u32) CompilerMsgKind.AttributeGen
         All =                   0xFFFFFFFF_FFFFFFFF
 	}
 

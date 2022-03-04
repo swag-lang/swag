@@ -41,7 +41,7 @@ static const uint32_t OVERLOAD_USED               = 0x00100000;
 static const uint32_t OVERLOAD_STRUCT_AFFECT      = 0x00200000;
 static const uint32_t OVERLOAD_VAR_CAPTURE        = 0x00400000;
 
-enum class SymbolKind
+enum class SymbolKind : uint8_t
 {
     Invalid,
     Variable,
@@ -58,6 +58,8 @@ enum class SymbolKind
     Label,
     PlaceHolder,
 };
+
+const uint16_t SYMBOL_ATTRIBUTE_GEN = 0x0001;
 
 struct SymbolOverload
 {
@@ -89,10 +91,12 @@ struct SymbolName
 
     SymTable* ownerTable = nullptr;
 
-    SymbolKind kind             = SymbolKind::Invalid;
     uint32_t   cptOverloads     = 0;
     uint32_t   cptOverloadsInit = 0;
     uint32_t   cptIfBlock       = 0;
+    uint16_t   flags            = 0;
+    uint8_t    padding;
+    SymbolKind kind = SymbolKind::Invalid;
 };
 
 struct SymTableHash

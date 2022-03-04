@@ -79,6 +79,7 @@ struct CompilerMessage
 {
     ConcreteCompilerMessage concrete;
     TypeInfo*               typeInfo;
+    AstNode*                node;
 };
 
 static const uint32_t BUILDRES_NONE     = 0x00000000;

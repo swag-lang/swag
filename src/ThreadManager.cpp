@@ -156,6 +156,10 @@ void ThreadManager::jobHasEnded(Job* job, JobResult result)
     if (result != JobResult::KeepJobAlive || (job->waitingSymbolSolved && job->waitingSymbolSolved->kind == SymbolKind::PlaceHolder))
         wakeUpParent = true;
 
+    // Same if the symbol is waiting for code generation
+    else if (job->waitingSymbolSolved && job->waitingSymbolSolved->flags & SYMBOL_ATTRIBUTE_GEN)
+        wakeUpParent = true;
+
     // Notify my parent job that i am done
     if (wakeUpParent && job->dependentJob)
     {

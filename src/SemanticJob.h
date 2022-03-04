@@ -15,7 +15,7 @@ struct AstIdentifierRef;
 struct SymbolOverload;
 struct AstAttrUse;
 enum class AstNodeKind : uint8_t;
-enum class SymbolKind;
+enum class SymbolKind : uint8_t;
 struct AttributeList;
 struct ByteCodeGenJob;
 struct AstIdentifier;
