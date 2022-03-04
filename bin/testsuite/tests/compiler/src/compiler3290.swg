@@ -1,18 +1,19 @@
+#global skip
 struct X
 {
     x: s32 = 1
     y: s32 = 10
-    MK_GET(#code x)
-    MK_GET(#code y)
+    MK_GET(|x|)
+    MK_GET(|y|)
 }
 
 #[Swag.Mixin]
-func MK_GET(cd: alias)
+func MK_GET()
 {
     #run
     {
         itf := @compiler()
-        itf.compileString("impl X {\n mtd get_" ++ @nameof(cd) ++ "() => " ++ @nameof(cd) ++ ";\n}")
+        itf.compileString("impl X {\n mtd get_" ++ @nameof(@alias0) ++ "() => " ++ @nameof(@alias0) ++ ";\n}")
     }
 }
 

@@ -89,8 +89,7 @@ void TypeManager::setup()
     MAKE_PTR(NativeTypeKind::Any, typeInfoAny);
 
     // The rest
-    typeInfoCode      = new TypeInfoCode();
-    typeInfoNameAlias = new TypeInfoNameAlias();
+    typeInfoCode = new TypeInfoCode();
 
     typeInfoOpCall             = new TypeInfoFuncAttr();
     typeInfoOpCall->returnType = typeInfoVoid;

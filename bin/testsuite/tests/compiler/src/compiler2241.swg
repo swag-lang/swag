@@ -1,7 +1,7 @@
 #[Swag.Mixin]
-func mix(v, val: alias)
+func mix()
 {
-    v += val
+    @alias0 += @alias1
 }
 
 
@@ -10,8 +10,8 @@ func mix(v, val: alias)
 {
     z := 4
     x, y := 0
-    mix(x, z)
-    mix(y, z)
+    mix(|x, z|)
+    mix(|y, z|)
     @assert(x == 4)
     @assert(y == 4)
 }

@@ -1,11 +1,11 @@
 #[Swag.Mixin]
-func declare(name: alias, value: s32)
+func declare(value: s32)
 {
-    const name: s32 = value
+    const @alias0: s32 = value
 }
 
-declare(#code myVar, 5)
-declare(#code myVar1, 10)
+declare(|myVar| 5)
+declare(|myVar1| 10)
 
 #placeholder myVar
 #assert myVar == 5

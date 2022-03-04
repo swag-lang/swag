@@ -119,5 +119,4 @@ rc[0] = r12 etc... chiant
 GUI
 ****************************************
 
-- tab, popup menu si trop de tabs
 - hide/show column

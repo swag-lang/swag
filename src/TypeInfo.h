@@ -575,17 +575,6 @@ struct TypeInfoCode : public TypeInfo
     AstNode* content = nullptr;
 };
 
-struct TypeInfoNameAlias : public TypeInfo
-{
-    TypeInfoNameAlias()
-        : TypeInfo{"alias", TypeInfoKind::NameAlias}
-    {
-    }
-
-    bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
-    TypeInfo* clone() override;
-};
-
 template<typename T>
 T* allocType(TypeInfoKind k = TypeInfoKind::Invalid)
 {

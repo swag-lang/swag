@@ -249,13 +249,6 @@ bool SemanticJob::resolveType(SemanticContext* context)
         return true;
     }
 
-    // NameAlias
-    if (typeNode->typeFlags & TYPEFLAG_ISNAMEALIAS)
-    {
-        typeNode->typeInfo = g_TypeMgr->typeInfoNameAlias;
-        return true;
-    }
-
     if (typeNode->identifier)
     {
         typeNode->typeInfo = typeNode->identifier->typeInfo;

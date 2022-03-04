@@ -72,30 +72,29 @@
         @assert(a == 12)
     }
 
-    // You can use special type 'alias' to create a named alias for an identifier
+    // You can use special name '@alias' to create a named alias for an identifier
     {
         #[Swag.Mixin]
-        func inc10(variable: alias)
+        func inc10()
         {
-            variable += 10
+            @alias0 += 10
         }
 
         a, b := 0
-        inc10(a)
-        inc10(b)
+        inc10(|a|)  // Passing alias name 'a'
+        inc10(|b|)  // Passing alias name 'b'
         @assert(a == b and b == 10)
     }
 
-    // You can also use special type 'alias' and '#code' to create a named alias for a variable declaration
     {
         #[Swag.Mixin]
-        func setVar(variable: alias, value: s32)
+        func setVar(value: s32)
         {
-            var variable = value
+            var @alias0 = value
         }
 
-        setVar(#code a, 10)
-        setVar(#code b, 20)
+        setVar(|a| 10)  // Passing alias name 'a'
+        setVar(|b| 20)  // Passing alias name 'b'
         @assert(a == 10)
         @assert(b == 20)
     }
@@ -103,13 +102,13 @@
 
 // A mixin function can be called in the global scope
 #[Swag.Mixin]
-func declare(name: alias, value: s32)
+func declare(value: s32)
 {
-    const name: s32 = value
+    const @alias0: s32 = value
 }
 
-declare(#code myVar, 5)
-declare(#code myVar1, 10)
+declare(|myVar| 5)
+declare(|myVar1| 10)
 
 #placeholder myVar
 #assert myVar == 5
