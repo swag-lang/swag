@@ -74,8 +74,6 @@ PB du cross compile avec le full compile time exec. BIG BIG BIG !!!
 -------------------------------------
 foreign a cvarargs
 -------------------------------------
-debugger : print divers (memoire ?)
--------------------------------------
 cast interface vers struct (avec safety)
 -------------------------------------
 llvm debug, pas à jour

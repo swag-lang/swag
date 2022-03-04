@@ -16,6 +16,136 @@ static void printRegister(ByteCodeRunContext* context, uint32_t curRC, uint32_t 
     g_Log.print(str);
 }
 
+static uint64_t getAddrValue(const void* addr, uint32_t bitCount)
+{
+    __try
+    {
+        switch (bitCount)
+        {
+        case 8:
+        default:
+            return *(uint8_t*) addr;
+        case 16:
+            return *(uint16_t*) addr;
+        case 32:
+            return *(uint32_t*) addr;
+        case 64:
+            return *(uint64_t*) addr;
+        }
+    }
+    __except (EXCEPTION_EXECUTE_HANDLER)
+    {
+        return 0;
+    }
+}
+
+static void printMemory(ByteCodeRunContext* context, uint32_t curRC, const char* addr, int count, uint32_t bitCount = 8)
+{
+    count = max(count, 1);
+    count = min(count, 4096);
+
+    uint64_t addrVal = 0;
+
+    if (addr[0] == 'r')
+    {
+        addr += 1;
+        auto reg         = atoi(addr);
+        auto registersRC = context->registersRC[curRC]->buffer;
+        addrVal          = registersRC[reg].u64;
+    }
+    else
+    {
+        while (*addr)
+        {
+            addrVal <<= 4;
+            if (*addr >= 'a' && *addr <= 'f')
+                addrVal += 10 + (*addr - 'a');
+            else if (*addr >= 'A' && *addr <= 'F')
+                addrVal += 10 + (*addr - 'A');
+            else if (*addr >= '0' && *addr <= '9')
+                addrVal += (*addr - '0');
+            addr++;
+        }
+    }
+
+    int perLine = 8;
+    switch (bitCount)
+    {
+    case 8:
+        perLine = 16;
+        break;
+    case 16:
+        perLine = 8;
+        break;
+    case 32:
+        perLine = 8;
+        break;
+    case 64:
+        perLine = 4;
+        break;
+    }
+
+    const uint8_t* addrB = (const uint8_t*) addrVal;
+
+    g_Log.setColor(LogColor::Gray);
+
+    while (count > 0)
+    {
+        auto addrLine = addrB;
+
+        for (int i = 0; i < min(count, perLine); i++)
+        {
+            switch (bitCount)
+            {
+            case 8:
+            default:
+                g_Log.print(Fmt("%02llx ", getAddrValue(addrB, 8)));
+                addrB += 1;
+                break;
+
+            case 16:
+                g_Log.print(Fmt("%04llx ", getAddrValue(addrB, 16)));
+                addrB += 2;
+                break;
+
+            case 32:
+                g_Log.print(Fmt("%08llx ", getAddrValue(addrB, 32)));
+                break;
+
+            case 64:
+                g_Log.print(Fmt("%016llx ", getAddrValue(addrB, 64)));
+                addrB += 8;
+                break;
+            }
+        }
+
+        addrB = addrLine;
+        if (bitCount == 8)
+        {
+            for (int i = 0; i < perLine - min(count, perLine); i++)
+                g_Log.print("   ");
+
+            g_Log.print(" ");
+            for (int i = 0; i < min(count, perLine); i++)
+            {
+                auto c = getAddrValue(addrB, 8);
+                if (c < 32 || c > 127)
+                    c = '.';
+                g_Log.print(Fmt("%c", c));
+                addrB += 1;
+            }
+        }
+
+        g_Log.eol();
+
+        addrB = addrLine;
+        addrB += count * (bitCount / 8);
+        count -= min(count, 8);
+        if (!count)
+            break;
+    }
+}
+
 static void printContext(ByteCodeRunContext* context)
 {
     auto ipNode = context->debugCxtIp->node;
@@ -297,34 +427,40 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             {
                 g_Log.setColor(LogColor::Gray);
                 g_Log.eol();
-                g_Log.print("<return>           runs the current instruction\n");
-                g_Log.print("s                  runs to the next line\n");
-                g_Log.print("n                  like s, but does not step into functions\n");
-                g_Log.print("c                  runs until another break is reached\n");
-                g_Log.print("f                  runs until the current function is done\n");
+                g_Log.print("<return>               runs the current instruction\n");
+                g_Log.print("s                      runs to the next line\n");
+                g_Log.print("n                      like s, but does not step into functions\n");
+                g_Log.print("c                      runs until another break is reached\n");
+                g_Log.print("f                      runs until the current function is done\n");
                 g_Log.eol();
 
-                g_Log.print("stk, stack         print callstack\n");
-                g_Log.print("up [num]           move stack frame <num> level up\n");
-                g_Log.print("down [num]         move stack frame <num> level down\n");
-                g_Log.print("frame <num>        move stack frame to level <num>\n");
+                g_Log.print("stk, stack             print callstack\n");
+                g_Log.print("up [num]               move stack frame <num> level up\n");
+                g_Log.print("down [num]             move stack frame <num> level down\n");
+                g_Log.print("frame <num>            move stack frame to level <num>\n");
                 g_Log.eol();
 
-                g_Log.print("i                  print the current instruction\n");
-                g_Log.print("i <num>            print the current instruction and <num> instructions around\n");
-                g_Log.print("cxt, context       print contextual informations\n");
-                g_Log.print("r                  print all registers\n");
-                g_Log.print("r <num>            print register <num>\n");
-                g_Log.print("list               print current source code line\n");
-                g_Log.print("bc, printbc        print current function bytecode\n");
+                g_Log.print("i                      print the current instruction\n");
+                g_Log.print("i <num>                print the current instruction and <num> instructions around\n");
+                g_Log.print("cxt, context           print contextual informations\n");
+                g_Log.print("r                      print all registers\n");
+                g_Log.print("r <num>                print register <num>\n");
+                g_Log.print("list                   print current source code line\n");
+                g_Log.print("bc, printbc            print current function bytecode\n");
                 g_Log.eol();
 
-                g_Log.print("info locals        print local variables\n");
-                g_Log.print("info args          print function arguments\n");
+                g_Log.print("x8  <addr|reg> [num]   print memory at address <addr> or register value <reg>, in 8 bits\n");
+                g_Log.print("x16 <addr|reg> [num]   print memory at address or register value, in 16 bits\n");
+                g_Log.print("x32 <addr|reg> [num]   print memory at address or register value, in 32 bits\n");
+                g_Log.print("x64 <addr|reg> [num]   print memory at address or register value, in 64 bits\n");
                 g_Log.eol();
 
-                g_Log.print("?                  print this list of commands\n");
-                g_Log.print("q, quit            quit the compiler\n");
+                g_Log.print("info locals            print local variables\n");
+                g_Log.print("info args              print function arguments\n");
+                g_Log.eol();
+
+                g_Log.print("?                      print this list of commands\n");
+                g_Log.print("q, quit                quit the compiler\n");
                 g_Log.eol();
                 continue;
             }
@@ -381,6 +517,34 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             if (cmd == "list" && cmds.size() == 1)
             {
                 context->debugCxtBc->printSourceCode(context->debugCxtIp);
+                continue;
+            }
+
+            if (cmd == "x8" && cmds.size() >= 2)
+            {
+                int count = cmds.size() >= 3 ? atoi(cmds[2].c_str()) : 64;
+                printMemory(context, context->debugCxtRc, cmds[1].c_str(), count, 8);
+                continue;
+            }
+
+            if (cmd == "x16" && cmds.size() >= 2)
+            {
+                int count = cmds.size() >= 3 ? atoi(cmds[2].c_str()) : 64;
+                printMemory(context, context->debugCxtRc, cmds[1].c_str(), count, 16);
+                continue;
+            }
+
+            if (cmd == "x32" && cmds.size() >= 2)
+            {
+                int count = cmds.size() >= 3 ? atoi(cmds[2].c_str()) : 64;
+                printMemory(context, context->debugCxtRc, cmds[1].c_str(), count, 32);
+                continue;
+            }
+
+            if (cmd == "x64" && cmds.size() >= 2)
+            {
+                int count = cmds.size() >= 3 ? atoi(cmds[2].c_str()) : 64;
+                printMemory(context, context->debugCxtRc, cmds[1].c_str(), count, 64);
                 continue;
             }
 
