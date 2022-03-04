@@ -33,7 +33,9 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo
         SWAG_ASSERT(!typeInfo->scopedName.empty());
     }
 
-    auto& typeName = getTypeName(typeInfo, cflags & MAKE_CONCRETE_FORCE_NO_SCOPE);
+    auto typeName = getTypeName(typeInfo, cflags & MAKE_CONCRETE_FORCE_NO_SCOPE);
+    if (cflags & MAKE_CONCRETE_PARTIAL)
+        typeName += "__partial";
     SWAG_ASSERT(!typeName.empty());
 
     auto& mapPerSeg = getMapPerSeg(storageSegment);

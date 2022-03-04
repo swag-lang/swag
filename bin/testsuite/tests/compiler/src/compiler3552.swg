@@ -29,5 +29,7 @@ var G = 0
         @assert(G == 0)
     }
 
+    t := @typeof(A)
+    @assert(t.opDrop != null)
     @assert(G == 1)
 }

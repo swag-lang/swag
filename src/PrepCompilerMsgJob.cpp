@@ -26,7 +26,7 @@ JobResult PrepCompilerMsgJob::execute()
             context.result = ContextResult::Done;
 
             uint32_t makeFlags = MAKE_CONCRETE_SHOULD_WAIT;
-            if (msg.concrete.kind == CompilerMsgKind::AttributeGen)
+            if (pass == 0)
                 makeFlags |= MAKE_CONCRETE_PARTIAL;
 
             if (!module->typeTable.makeConcreteTypeInfo(&context, msg.typeInfo, storageSegment, &storageOffset, makeFlags))

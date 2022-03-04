@@ -1194,7 +1194,11 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         extension->byteCodeJob->dependentJob = context->job->dependentJob;
         extension->byteCodeJob->nodes.push_back(node);
         node->byteCodeFct = ByteCodeGenJob::emitStruct;
-        g_ThreadMgr.addJob(extension->byteCodeJob);
+
+        if (node->attributeFlags & ATTRIBUTE_GEN)
+            node->resolvedSymbolName->addDependentJob(extension->byteCodeJob);
+        else
+            g_ThreadMgr.addJob(extension->byteCodeJob);
     }
 
     return true;
