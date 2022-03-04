@@ -34,7 +34,7 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
     auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(oneAttribute->typeInfo, TypeInfoKind::FuncAttr);
     SWAG_ASSERT(checkNode);
 
-    if (typeInfo->attributeUsage & AttributeUsage::KindAll)
+    if (typeInfo->attributeUsage & AttributeUsage::All)
         return true;
 
     bool        isGlobalVar = kind == AstNodeKind::VarDecl && checkNode->ownerScope->isGlobalOrImpl();
@@ -262,10 +262,10 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                     typeAttr->attributeUsage = value->reg.u32;
 
                 if (curAttr->attributes.hasAttribute(g_LangSpec->name_Swag_AttrMulti))
-                    typeAttr->attributeUsage |= AttributeUsage::KindMulti;
+                    typeAttr->attributeUsage |= AttributeUsage::Multi;
 
                 // Some checks
-                if (typeAttr->attributeUsage & AttributeUsage::KindMsgGen)
+                if (typeAttr->attributeUsage & AttributeUsage::Gen)
                 {
                     auto what = typeAttr->attributeUsage;
                     if (!(what & (AttributeUsage::Struct | AttributeUsage::Enum)))
@@ -273,13 +273,13 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
 
                     what &= ~AttributeUsage::Struct;
                     what &= ~AttributeUsage::Enum;
-                    what &= ~AttributeUsage::KindMsgGen;
+                    what &= ~AttributeUsage::Gen;
                     if (typeAttr->attributeUsage & what)
                         return context->report({curAttr, Err(Err0852)});
                 }
             }
 
-            if (typeInfo->attributeUsage & AttributeUsage::KindMsgGen)
+            if (typeInfo->attributeUsage & AttributeUsage::Gen)
             {
                 flags |= ATTRIBUTE_GEN;
             }

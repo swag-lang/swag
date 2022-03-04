@@ -1,6 +1,6 @@
 using Swag, Core, StrConv
 
-#[AttrUsage(AttributeUsage.Struct|AttributeUsage.KindMsgGen)]
+#[AttrUsage(AttributeUsage.Struct|AttributeUsage.Gen)]
 attr GenOpEquals();
 
 #[GenOpEquals]

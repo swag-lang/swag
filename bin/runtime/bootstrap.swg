@@ -12,10 +12,10 @@ namespace Swag
         Function        = 0x00000040
         File            = 0x00000080
         Constant        = 0x00000100
-        All             = 0x0FFFFFFF
-        KindMulti       = 0x10000000
-        KindMsgGen      = 0x20000000
-        KindAll         = 0x40000000
+        //
+        Multi           = 0x01000000
+        Gen             = 0x02000000
+        All             = 0x04000000
     }
 
     // #########################################################
@@ -99,13 +99,10 @@ namespace Swag
     #[AttrUsage(AttributeUsage.Struct)]
     attr ExportType(what: string)
 
-    #[AttrUsage(AttributeUsage.Struct)]
-    attr Gen(what: string)
-
-    #[AttrUsage(AttributeUsage.KindAll|AttributeUsage.File)]
+    #[AttrUsage(AttributeUsage.All|AttributeUsage.File)]
     attr Safety(what: string, value: bool)
 
-    #[AttrUsage(AttributeUsage.KindAll)]
+    #[AttrUsage(AttributeUsage.All)]
     attr SelectIf(value: bool)
 
     #[AttrUsage(AttributeUsage.Function|AttributeUsage.File)]

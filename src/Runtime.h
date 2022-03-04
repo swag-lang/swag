@@ -30,11 +30,10 @@ enum AttributeUsage
     Function       = 0x00000040,
     File           = 0x00000080,
     Constant       = 0x00000100,
-    All            = 0x0FFFFFFF,
     // Flags
-    KindMulti  = 0x10000000,
-    KindMsgGen = 0x20000000,
-    KindAll    = 0x40000000,
+    Multi = 0x01000000,
+    Gen   = 0x02000000,
+    All   = 0x04000000,
 };
 
 enum class ContextFlags : uint64_t

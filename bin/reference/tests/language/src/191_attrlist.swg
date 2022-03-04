@@ -70,7 +70,7 @@ attr EnumFlags()
 #[AttrUsage(AttributeUsage.Enum)]
 attr EnumIndex()
 
-#[AttrUsage(AttributeUsage.All)]
+#[AttrUsage(AttributeUsage.All|AttributeUsage.File)]
 attr Safety(what: string, value: bool)
 
 #[AttrUsage(AttributeUsage.All)]

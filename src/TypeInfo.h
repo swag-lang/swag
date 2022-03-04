@@ -363,7 +363,7 @@ struct TypeInfoFuncAttr : public TypeInfo
 
     int      firstDefaultValueIdx = -1;
     int      stackSize            = 0;
-    uint32_t attributeUsage       = AttributeUsage::KindAll;
+    uint32_t attributeUsage       = AttributeUsage::All;
 };
 
 struct TypeInfoPointer : public TypeInfo

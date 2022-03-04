@@ -4,7 +4,7 @@ using Swag
 // we need typeinfo to be defined
 namespace Swag
 {
-    #[AttrUsage(AttributeUsage.KindAll)]
+    #[AttrUsage(AttributeUsage.All)]
     attr Using(what: typeinfo...)
 }
 
