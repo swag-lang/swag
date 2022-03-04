@@ -93,8 +93,6 @@ OPTIMS
 ****************************************
 
 -------------------------------------
-passer en switch/case sur ip[0].op les fonction d'optim (et pas pleins de if à ralonge, ça prend du temps !)
--------------------------------------
 x64 binaryop div, transformer en shift si log2
 -------------------------------------
 BinOpModuloS32/div immediate mode
