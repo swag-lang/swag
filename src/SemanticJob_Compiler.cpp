@@ -291,6 +291,7 @@ bool SemanticJob::resolveCompilerAstExpression(SemanticContext* context)
             kind = CompilerAstKind::EmbeddedInstruction;
 
         SyntaxJob syntaxJob;
+        syntaxJob.module = context->sourceFile->module;
         syntaxJob.constructEmbedded(expression->computedValue->text, node, expression, kind, true);
 
         job->nodes.pop_back();

@@ -377,8 +377,8 @@ JobResult ModuleBuildJob::execute()
             return JobResult::ReleaseJob;
 
         // This is a dummy job, in case the user code does not trigger new jobs during the message pass
-        auto semanticJob = g_Allocator.alloc<ModuleSemanticJob>();
-        semanticJob->module = nullptr;
+        auto semanticJob          = g_Allocator.alloc<ModuleSemanticJob>();
+        semanticJob->module       = nullptr;
         semanticJob->dependentJob = this;
         jobsToAdd.push_back(semanticJob);
 
@@ -404,6 +404,9 @@ JobResult ModuleBuildJob::execute()
     {
         if (module->numErrors)
             return JobResult::ReleaseJob;
+
+        // This is too late for meta programming of 'impl' blocks...
+        module->acceptsCompileImpl = false;
 
         if (!module->flushCompilerMessages(&context, 1))
             return JobResult::ReleaseJob;

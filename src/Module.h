@@ -240,4 +240,5 @@ struct Module
     bool isErrorModule        = false;
     bool isScriptFile         = false;
     bool acceptsCompileString = true;
+    bool acceptsCompileImpl   = true;
 };

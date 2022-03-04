@@ -356,6 +356,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
     {
         int       numChilds = (int) node->childs.size();
         SyntaxJob syntaxJob;
+        syntaxJob.module = context->sourceFile->module;
         SWAG_CHECK(syntaxJob.constructEmbedded(content, node, node, CompilerAstKind::MissingInterfaceMtd, true));
         for (int i = numChilds; i < node->childs.size(); i++)
             context->job->nodes.push_back(node->childs[i]);

@@ -12,6 +12,8 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
     if (result)
         *result = implNode;
 
+    SWAG_VERIFY(module->acceptsCompileImpl, sourceFile->report({implNode, Err(Err0851)}));
+
     auto scopeKind = ScopeKind::Struct;
     SWAG_CHECK(eatToken());
     switch (token.id)
@@ -287,8 +289,7 @@ bool SyntaxJob::doStructContent(AstStruct* structNode, SyntaxStructType structTy
                        {
                            auto param = CastAst<AstVarDecl>(n, AstNodeKind::FuncDeclParam);
                            newScope->symTable.registerSymbolName(&context, n, param->type ? SymbolKind::Variable : SymbolKind::GenericType);
-                       }
-                   });
+                       } });
     }
 
     SWAG_CHECK(eatToken());

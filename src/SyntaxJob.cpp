@@ -186,6 +186,7 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
     Utf8     tmpFileName     = "<generated>";
     Utf8     tmpFilePath     = "<generated>";
     uint32_t previousLogLine = 0;
+    SWAG_ASSERT(module);
 
     // Log the generated code in '<module>.swg'
     if (logGenerated && !fromNode->sourceFile->numTestErrors && !fromNode->sourceFile->numTestWarnings && g_CommandLine->output)
@@ -250,11 +251,13 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
     tmpFile->path   = tmpFilePath;
     tmpFile->path += tmpFileName;
     tmpFile->sourceNode = fromNode;
-    sourceFile          = tmpFile;
-    currentScope        = parent->ownerScope;
-    currentStructScope  = parent->ownerStructScope;
-    currentFct          = parent->ownerFct;
-    currentInline       = parent->ownerInline;
+    tmpFile->numTestErrors.store(fromNode->sourceFile->numTestErrors);
+    tmpFile->numTestWarnings.store(fromNode->sourceFile->numTestWarnings);
+    sourceFile         = tmpFile;
+    currentScope       = parent->ownerScope;
+    currentStructScope = parent->ownerStructScope;
+    currentFct         = parent->ownerFct;
+    currentInline      = parent->ownerInline;
 
     if (kind == CompilerAstKind::MissingInterfaceMtd)
     {

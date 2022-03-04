@@ -1,0 +1,40 @@
+using Swag
+
+#[AttrUsage(AttributeUsage.Struct|AttributeUsage.Gen)]
+attr GenStuff();
+
+#[GenStuff]
+struct A
+{
+}
+
+impl A
+{
+}
+
+interface I
+{
+    toto: func(self)
+}
+
+var G = 0
+#message(Swag.CompilerMsgMask.AttributeGen)
+{
+    itf := @compiler()
+    msg := itf.getMessage()
+    if msg.type.kind != .Struct return
+
+    typeS := cast(const *TypeInfoStruct) msg.type
+    if @countof(typeS.attributes) != 1 return
+    if typeS.attributes[0].name != "__compiler3556.GenStuff" return
+    itf.compileString("impl I for A {\n mtd toto() {\nG += 1\n}\n}")
+}
+
+//#[PrintBc]
+#test
+{
+    var x: A
+    i := cast(I) x
+    i.toto()
+    @assert(G == 1)
+}

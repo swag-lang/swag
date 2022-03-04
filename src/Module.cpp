@@ -810,6 +810,8 @@ bool Module::compileString(const Utf8& text)
 
     AstNode*  parent = Ast::newNode(files[0], AstNodeKind::StatementNoScope, sourceFile->astRoot);
     SyntaxJob syntaxJob;
+    syntaxJob.module = this;
+
     if (!syntaxJob.constructEmbedded(text, parent, g_RunContext.ip->node, CompilerAstKind::TopLevelInstruction, true))
         return false;
 
