@@ -117,8 +117,7 @@ bool ByteCodeOptimizer::optimizePassDeadStore(ByteCodeOptContext* context)
                   if (hasRead)
                       return;
 
-                  setNop(context, ip);
-              });
+                  setNop(context, ip); });
 
     return true;
 }

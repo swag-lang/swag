@@ -89,25 +89,26 @@ static void optimRetCopy(ByteCodeOptContext* context, ByteCodeInstruction* ipOrg
 
 void ByteCodeOptimizer::registerParamsReg(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
-    if (ip->op == ByteCodeOp::PushRAParam)
-        context->vecReg.push_back(ip->a.u32);
-    else if (ip->op == ByteCodeOp::PushRAParam2)
+    switch (ip->op)
     {
+    case ByteCodeOp::PushRAParam:
+        context->vecReg.push_back(ip->a.u32);
+        break;
+    case ByteCodeOp::PushRAParam2:
         context->vecReg.push_back(ip->a.u32);
         context->vecReg.push_back(ip->b.u32);
-    }
-    else if (ip->op == ByteCodeOp::PushRAParam3)
-    {
+        break;
+    case ByteCodeOp::PushRAParam3:
         context->vecReg.push_back(ip->a.u32);
         context->vecReg.push_back(ip->b.u32);
         context->vecReg.push_back(ip->c.u32);
-    }
-    else if (ip->op == ByteCodeOp::PushRAParam4)
-    {
+        break;
+    case ByteCodeOp::PushRAParam4:
         context->vecReg.push_back(ip->a.u32);
         context->vecReg.push_back(ip->b.u32);
         context->vecReg.push_back(ip->c.u32);
         context->vecReg.push_back(ip->d.u32);
+        break;
     }
 }
 
@@ -174,17 +175,18 @@ bool ByteCodeOptimizer::optimizePassRetCopyLocal(ByteCodeOptContext* context)
 
 void ByteCodeOptimizer::registerMakeAddr(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
-    if (ip->op == ByteCodeOp::MakeStackPointer ||
-        ip->op == ByteCodeOp::MakeBssSegPointer ||
-        ip->op == ByteCodeOp::MakeMutableSegPointer ||
-        ip->op == ByteCodeOp::MakeCompilerSegPointer)
+    switch (ip->op)
     {
+    case ByteCodeOp::MakeStackPointer:
+    case ByteCodeOp::MakeBssSegPointer:
+    case ByteCodeOp::MakeMutableSegPointer:
+    case ByteCodeOp::MakeCompilerSegPointer:
         context->mapRegReg.set(ip->a.u32, ip->b.u32);
-    }
-    else if (ip->op == ByteCodeOp::InternalGetTlsPtr ||
-             ip->op == ByteCodeOp::GetFromStackParam64)
-    {
+        break;
+    case ByteCodeOp::InternalGetTlsPtr:
+    case ByteCodeOp::GetFromStackParam64:
         context->mapRegReg.set(ip->a.u32, UINT32_MAX); // Disable optim whatever
+        break;
     }
 }
 

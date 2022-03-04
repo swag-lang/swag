@@ -100,5 +100,7 @@
         setVar(|b| 20)  // Passing alias name 'b'
         @assert(a == 10)
         @assert(b == 20)
+        setVar(30)      // No alias, so name is @alias0
+        @assert(@alias0 == 30)
     }
 }
