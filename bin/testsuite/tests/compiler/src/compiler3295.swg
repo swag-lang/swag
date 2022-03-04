@@ -1,4 +1,4 @@
-#test
+/*#test
 {
     #[Swag.Mixin]
     func TITI(stmt: code)
@@ -7,9 +7,11 @@
     }
 
     TITI()
-    struct X
     {
+        struct X
+        {
+        }
     }
 
     var x: X
-}
+}*/

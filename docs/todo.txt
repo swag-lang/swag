@@ -66,8 +66,6 @@ closure & ufcs (exemple 3477)
 -------------------------------------
 context & tempallocator, y'a vraiment aucun usage dans std, c'est pas normal, faut se pencher sur l'utilisation de ce truc
 -------------------------------------
-pb des mixin globaux et des declarations #code
--------------------------------------
 erreur si opDrop est privé et la struct publique (on doit exporter)
 -------------------------------------
 on doit exporter les implementation d'interface pour un truc public ?

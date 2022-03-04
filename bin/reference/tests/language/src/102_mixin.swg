@@ -62,12 +62,15 @@
         }
 
         a := 0
-        doItTwice(4) {
+        doItTwice(4)
+        {
             a += value
         }
 
         doItTwice(2)
+        {
             a += value
+        }
 
         @assert(a == 12)
     }

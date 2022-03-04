@@ -2577,18 +2577,21 @@ bool SemanticJob::appendLastCodeStatement(SemanticContext* context, AstIdentifie
             {
                 if (node->parent->childParentIdx != node->parent->parent->childs.size() - 1)
                 {
-                    auto brother      = node->parent->parent->childs[node->parent->childParentIdx + 1];
-                    auto fctCallParam = Ast::newFuncCallParam(context->sourceFile, node->callParameters);
-                    auto codeNode     = Ast::newNode<AstNode>(nullptr, AstNodeKind::CompilerCode, node->sourceFile, fctCallParam);
-                    codeNode->flags |= AST_NO_BYTECODE;
-                    Ast::removeFromParent(brother);
-                    Ast::addChildBack(codeNode, brother);
-                    auto typeCode     = allocType<TypeInfoCode>();
-                    typeCode->content = brother;
-                    brother->flags |= AST_NO_SEMANTIC;
-                    fctCallParam->semFlags |= AST_SEM_AUTO_CODE_PARAM;
-                    fctCallParam->typeInfo = typeCode;
-                    codeNode->typeInfo     = typeCode;
+                    auto brother = node->parent->parent->childs[node->parent->childParentIdx + 1];
+                    if (brother->kind == AstNodeKind::Statement)
+                    {
+                        auto fctCallParam = Ast::newFuncCallParam(context->sourceFile, node->callParameters);
+                        auto codeNode     = Ast::newNode<AstNode>(nullptr, AstNodeKind::CompilerCode, node->sourceFile, fctCallParam);
+                        codeNode->flags |= AST_NO_BYTECODE;
+                        Ast::removeFromParent(brother);
+                        Ast::addChildBack(codeNode, brother);
+                        auto typeCode     = allocType<TypeInfoCode>();
+                        typeCode->content = brother;
+                        brother->flags |= AST_NO_SEMANTIC;
+                        fctCallParam->semFlags |= AST_SEM_AUTO_CODE_PARAM;
+                        fctCallParam->typeInfo = typeCode;
+                        codeNode->typeInfo     = typeCode;
+                    }
                 }
             }
         }
