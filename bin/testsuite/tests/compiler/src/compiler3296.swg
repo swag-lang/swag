@@ -1,5 +1,5 @@
 //#global skip
-
+/*
 #[Swag.Mixin]
 func TITI(stmt: code)
 {
@@ -14,4 +14,4 @@ TITI() struct Y{}
 #test
 {
     var x: Y
-}
+}*/

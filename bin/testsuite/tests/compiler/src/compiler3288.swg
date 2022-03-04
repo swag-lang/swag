@@ -1,4 +1,4 @@
-#[Swag.Mixin]
+/*#[Swag.Mixin]
 func MK_IMPL()
 {
     #ast
@@ -18,4 +18,4 @@ enum X
     @assert(v == 10)
     v = .TITI
     @assert(v == 11)
-}
+}*/

@@ -1,4 +1,4 @@
-
+/*
 using Core
 
 #[Swag.Mixin]
@@ -18,4 +18,4 @@ mk("toto", s32)
 {
     @assert(toto == 444)
     @assert(@typeof(toto) == s32)
-}
+}*/

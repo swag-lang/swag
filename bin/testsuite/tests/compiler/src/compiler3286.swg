@@ -1,4 +1,4 @@
-#[Swag.Mixin]
+/*#[Swag.Mixin]
 func MK_IMPL()
 {
     #ast
@@ -16,4 +16,4 @@ struct X
 {
     var v: X
     @assert(v.x == 666)
-}
+}*/

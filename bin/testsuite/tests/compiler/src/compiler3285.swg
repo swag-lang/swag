@@ -1,4 +1,4 @@
-struct X {}
+/*struct X {}
 
 #[Swag.Mixin]
 func MK_IMPL()
@@ -9,4 +9,4 @@ func MK_IMPL()
     }
 }
 
-MK_IMPL()
+MK_IMPL()*/

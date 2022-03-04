@@ -1,4 +1,4 @@
-#[Swag.Mixin]
+/*#[Swag.Mixin]
 func declare(name: string, value: s32)
 {
     #ast "const " ++ name ++ "2 = " ++ value
@@ -7,3 +7,4 @@ func declare(name: string, value: s32)
 declare("myVar", 5)
 #placeholder myVar2
 #assert myVar2 == 5
+*/

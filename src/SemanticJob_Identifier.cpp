@@ -820,19 +820,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     }
 
     // Global identifier call. Must be a call to a mixin function, that's it...
-    if (identifier->identifierRef && identifier->identifierRef->flags & AST_GLOBAL_MIXIN_CALL)
-    {
-        if (symbolKind != SymbolKind::Function)
-            return context->report(identifier, Fmt(Err(Err0087), identifier->token.ctext(), SymTable::getArticleKindName(symbolKind)));
-
-        auto funcDecl = CastAst<AstFuncDecl>(identifier->typeInfo->declNode, AstNodeKind::FuncDecl);
-        if (!(funcDecl->attributeFlags & ATTRIBUTE_MIXIN))
-        {
-            Diagnostic diag{identifier, Fmt(Err(Err0088), funcDecl->getDisplayNameC())};
-            Diagnostic note{funcDecl, Nte(Nte0033), DiagnosticLevel::Note};
-            return context->report(diag, &note);
-        }
-    }
+    if (identifier->identifierRef && identifier->identifierRef->flags & AST_GLOBAL_CALL)
+        return context->report(identifier, Fmt(Err(Err0087), identifier->token.ctext(), SymTable::getArticleKindName(symbolKind)));
 
     checkDeprecated(context, identifier);
 

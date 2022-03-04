@@ -509,7 +509,7 @@ bool SyntaxJob::doStructBody(AstNode* parent, SyntaxStructType structType, AstNo
             SWAG_CHECK(doIdentifierRef(parent, &idRef));
             if (result)
                 *result = idRef;
-            idRef->flags |= AST_GLOBAL_MIXIN_CALL;
+            idRef->flags |= AST_GLOBAL_CALL;
         }
         else
         {

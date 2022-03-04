@@ -1,18 +1,21 @@
-#[Swag.Mixin]
-func TITI(stmt: code)
-{    
-    #run
-    {
-        @assert(@strlen(@stringof(stmt)) > 0)
-    }
-}
-
-TITI()
+#test
 {
-    struct A
-    {   
-        a: b1
-        b: b1
-        c: b1
+    #[Swag.Mixin]
+    func TITI(stmt: code)
+    {
+        #run
+        {
+            @assert(@strlen(@stringof(stmt)) > 0)
+        }
+    }
+
+    TITI()
+    {
+        struct A
+        {
+            a: u32
+            b: u32
+            c: u32
+        }
     }
 }

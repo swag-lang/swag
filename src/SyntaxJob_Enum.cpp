@@ -133,7 +133,7 @@ bool SyntaxJob::doEnumContent(AstNode* parent, AstNode** result)
             SWAG_CHECK(doIdentifierRef(parent, &idRef));
             if (result)
                 *result = idRef;
-            idRef->flags |= AST_GLOBAL_MIXIN_CALL;
+            idRef->flags |= AST_GLOBAL_CALL;
         }
         else
         {
