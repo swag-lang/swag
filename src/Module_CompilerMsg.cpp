@@ -16,42 +16,46 @@ bool Module::postCompilerMessage(JobContext* context, CompilerMessage& msg)
     }
 
     ScopedLock lk(mutexCompilerMessages);
-    compilerMessages.push_back(msg);
+    if (msg.concrete.kind == CompilerMsgKind::AttributeGen)
+        compilerMessages[0].push_back(msg);
+    else
+        compilerMessages[1].push_back(msg);
     return true;
 }
 
-bool Module::prepareCompilerMessages(JobContext* context)
+bool Module::prepareCompilerMessages(JobContext* context, uint32_t pass)
 {
     // Eliminate messages without a corresponding #message
-    for (int i = 0; i < compilerMessages.size(); i++)
+    for (int i = 0; i < compilerMessages[pass].size(); i++)
     {
-        auto& msg = compilerMessages[i];
+        auto& msg = compilerMessages[pass][i];
 
         // If no #message function corresponding to the message, remove
         int index = (int) msg.concrete.kind;
         if (byteCodeCompiler[index].empty())
         {
-            compilerMessages[i] = move(compilerMessages.back());
-            compilerMessages.pop_back();
+            compilerMessages[pass][i] = move(compilerMessages[pass].back());
+            compilerMessages[pass].pop_back();
             i--;
             continue;
         }
     }
 
-    if (compilerMessages.empty())
+    if (compilerMessages[pass].empty())
         return true;
 
     // Batch prepare
-    auto count     = (int) compilerMessages.size() / g_Stats.numWorkers;
+    auto count     = (int) compilerMessages[pass].size() / g_Stats.numWorkers;
     count          = max(count, 1);
-    count          = min(count, (int) compilerMessages.size());
+    count          = min(count, (int) compilerMessages[pass].size());
     int startIndex = 0;
-    while (startIndex < compilerMessages.size())
+    while (startIndex < compilerMessages[pass].size())
     {
         auto newJob          = g_Allocator.alloc<PrepCompilerMsgJob>();
         newJob->module       = this;
+        newJob->pass         = pass;
         newJob->startIndex   = startIndex;
-        newJob->endIndex     = min(startIndex + count, (int) compilerMessages.size());
+        newJob->endIndex     = min(startIndex + count, (int) compilerMessages[pass].size());
         newJob->dependentJob = context->baseJob;
         startIndex += count;
         context->baseJob->jobsToAdd.push_back(newJob);
@@ -60,9 +64,9 @@ bool Module::prepareCompilerMessages(JobContext* context)
     return true;
 }
 
-bool Module::flushCompilerMessages(JobContext* context)
+bool Module::flushCompilerMessages(JobContext* context, uint32_t pass)
 {
-    for (auto& msg : compilerMessages)
+    for (auto& msg : compilerMessages[pass])
     {
         SWAG_ASSERT(!byteCodeCompiler[(int) msg.concrete.kind].empty());
         sendCompilerMessage(&msg.concrete, context->baseJob);
@@ -76,8 +80,8 @@ bool Module::flushCompilerMessages(JobContext* context)
         }
     }
 
-    compilerMessages.clear();
-    compilerMessages.shrink_to_fit();
+    compilerMessages[pass].clear();
+    compilerMessages[pass].shrink_to_fit();
     return true;
 }
 

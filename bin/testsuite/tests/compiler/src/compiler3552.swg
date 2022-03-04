@@ -13,22 +13,11 @@ var G = 0
 {
     itf := @compiler()
     msg := itf.getMessage()
-    //@print(msg.type.name)
+    if msg.type.kind != .Struct return
 
-    /*typeS := cast(const *TypeInfoStruct) msg.type
-    visit f: typeS.attributes
-    {
-        //@print(f.name)
-        visit p: f.params
-        {
-            //@print(p.name)
-            if @kindof(p.value) == string
-            {
-                @print(cast(string) p.value)
-            }
-        }
-    }*/
-
+    typeS := cast(const *TypeInfoStruct) msg.type
+    if @countof(typeS.attributes) != 1 return
+    if typeS.attributes[0].name != "__compiler3552.GenStuff" return
     itf.compileString("impl A {\n mtd opDrop() {\nG += 1\n}\n}")
 }
 

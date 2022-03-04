@@ -15,7 +15,7 @@ JobResult PrepCompilerMsgJob::execute()
 
     for (int i = startIndex; i < endIndex; i++)
     {
-        auto& msg = module->compilerMessages[i];
+        auto& msg = module->compilerMessages[pass][i];
         SWAG_ASSERT(!module->byteCodeCompiler[(int) msg.concrete.kind].empty());
 
         if (msg.typeInfo && !msg.concrete.type)
@@ -24,7 +24,12 @@ JobResult PrepCompilerMsgJob::execute()
             uint32_t storageOffset;
 
             context.result = ContextResult::Done;
-            if (!module->typeTable.makeConcreteTypeInfo(&context, msg.typeInfo, storageSegment, &storageOffset, MAKE_CONCRETE_SHOULD_WAIT))
+
+            uint32_t makeFlags = MAKE_CONCRETE_SHOULD_WAIT;
+            if (msg.concrete.kind == CompilerMsgKind::AttributeGen)
+                makeFlags |= MAKE_CONCRETE_PARTIAL;
+
+            if (!module->typeTable.makeConcreteTypeInfo(&context, msg.typeInfo, storageSegment, &storageOffset, makeFlags))
                 return JobResult::ReleaseJob;
             if (context.result != ContextResult::Done)
                 return JobResult::KeepJobAlive;

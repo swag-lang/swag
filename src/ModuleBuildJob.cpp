@@ -340,7 +340,7 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::SemanticModule)
     {
-        pass = ModuleBuildPass::BeforeCompilerMessages;
+        pass = ModuleBuildPass::BeforeCompilerMessagesPass0;
         if (module->numErrors)
             return JobResult::ReleaseJob;
 
@@ -352,14 +352,48 @@ JobResult ModuleBuildJob::execute()
     }
 
     //////////////////////////////////////////////////
-    if (pass == ModuleBuildPass::BeforeCompilerMessages)
+    if (pass == ModuleBuildPass::BeforeCompilerMessagesPass0)
+    {
+        if (module->numErrors)
+            return JobResult::ReleaseJob;
+
+        pass = ModuleBuildPass::CompilerMessagesPass0;
+
+        if (!module->prepareCompilerMessages(&context, 0))
+            return JobResult::ReleaseJob;
+        if (!jobsToAdd.empty())
+            return JobResult::KeepJobAlive;
+    }
+
+    //////////////////////////////////////////////////
+    if (pass == ModuleBuildPass::CompilerMessagesPass0)
+    {
+        if (module->numErrors)
+            return JobResult::ReleaseJob;
+
+        pass = ModuleBuildPass::BeforeCompilerMessagesPass1;
+
+        if (!module->flushCompilerMessages(&context, 0))
+            return JobResult::ReleaseJob;
+
+        // This is a dummy job, in case the user code does not trigger new jobs during the message pass
+        auto semanticJob = g_Allocator.alloc<ModuleSemanticJob>();
+        semanticJob->module = nullptr;
+        semanticJob->dependentJob = this;
+        jobsToAdd.push_back(semanticJob);
+
+        return JobResult::KeepJobAlive;
+    }
+
+    //////////////////////////////////////////////////
+    if (pass == ModuleBuildPass::BeforeCompilerMessagesPass1)
     {
         if (module->numErrors)
             return JobResult::ReleaseJob;
 
         pass = ModuleBuildPass::AfterSemantic;
 
-        if (!module->prepareCompilerMessages(&context))
+        if (!module->prepareCompilerMessages(&context, 1))
             return JobResult::ReleaseJob;
         if (!jobsToAdd.empty())
             return JobResult::KeepJobAlive;
@@ -371,7 +405,7 @@ JobResult ModuleBuildJob::execute()
         if (module->numErrors)
             return JobResult::ReleaseJob;
 
-        if (!module->flushCompilerMessages(&context))
+        if (!module->flushCompilerMessages(&context, 1))
             return JobResult::ReleaseJob;
         if (context.result != ContextResult::Done)
             return JobResult::KeepJobAlive;
@@ -383,8 +417,7 @@ JobResult ModuleBuildJob::execute()
 
         module->sendCompilerMessage(CompilerMsgKind::PassAfterSemantic, this);
 
-        // This is a dummy job, in case the user code does not trigger new jobs during the
-        // CompilerMsgKind::PassAfterSemantic pass
+        // This is a dummy job, in case the user code does not trigger new jobs during the message pass
         auto semanticJob          = g_Allocator.alloc<ModuleSemanticJob>();
         semanticJob->module       = nullptr;
         semanticJob->dependentJob = this;

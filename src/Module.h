@@ -124,8 +124,8 @@ struct Module
     bool sendCompilerMessage(CompilerMsgKind msgKind, Job* dependentJob);
     bool sendCompilerMessage(ConcreteCompilerMessage* msg, Job* dependentJob);
     bool postCompilerMessage(JobContext* context, CompilerMessage& msg);
-    bool prepareCompilerMessages(JobContext* context);
-    bool flushCompilerMessages(JobContext* context);
+    bool prepareCompilerMessages(JobContext* context, uint32_t pass);
+    bool flushCompilerMessages(JobContext* context, uint32_t pass);
 
     void              addCompilerFunc(ByteCode* bc);
     void              addByteCodeFunc(ByteCode* bc);
@@ -197,7 +197,7 @@ struct Module
     VectorNative<AstNode*>          globalVarsBss;
     VectorNative<AstNode*>          globalVarsMutable;
     VectorNative<AstNode*>          globalVarsConstant;
-    vector<CompilerMessage>         compilerMessages;
+    vector<CompilerMessage>         compilerMessages[2];
     set<SourceFile*>                exportSourceFiles;
     map<Utf8, ByteCode*>            mapRuntimeFcts;
     map<Utf8, ForToSolve>           implForToSolve;

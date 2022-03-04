@@ -1,7 +1,7 @@
-#global skip
+//#global skip
 using Swag
 
-#[AttrUsage(AttributeUsage.Struct|AttributeUsage.KindMsgGen)]
+#[AttrUsage(AttributeUsage.Struct|AttributeUsage.Gen)]
 attr GenStuff1(v: string);
 
 #[GenStuff1("opEquals")]

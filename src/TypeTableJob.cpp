@@ -14,16 +14,19 @@ bool TypeTableJob::computeStruct()
     concreteType->base.sizeOf = realType->sizeOf;
 
     // Flags
-    if (realType->flags & TYPEINFO_STRUCT_NO_COPY)
-        concreteTypeInfoValue->flags &= ~(uint16_t) TypeInfoFlags::CanCopy;
-    if (realType->opPostCopy || realType->opUserPostCopyFct)
-        concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::HasPostCopy;
-    if (realType->opPostMove || realType->opUserPostMoveFct)
-        concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::HasPostMove;
-    if (realType->opDrop || realType->opUserDropFct)
-        concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::HasDrop;
-    if (realType->flags & TYPEINFO_STRUCT_IS_TUPLE)
-        concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::Tuple;
+    if (!(cflags & MAKE_CONCRETE_PARTIAL))
+    {
+        if (realType->flags & TYPEINFO_STRUCT_NO_COPY)
+            concreteTypeInfoValue->flags &= ~(uint16_t) TypeInfoFlags::CanCopy;
+        if (realType->opPostCopy || realType->opUserPostCopyFct)
+            concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::HasPostCopy;
+        if (realType->opPostMove || realType->opUserPostMoveFct)
+            concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::HasPostMove;
+        if (realType->opDrop || realType->opUserDropFct)
+            concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::HasDrop;
+        if (realType->flags & TYPEINFO_STRUCT_IS_TUPLE)
+            concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::Tuple;
+    }
 
     // Special functions lambdas
     concreteType->opInit     = nullptr;
@@ -31,63 +34,66 @@ bool TypeTableJob::computeStruct()
     concreteType->opPostCopy = nullptr;
     concreteType->opPostMove = nullptr;
 
-    if (realType->opInit || (realType->opUserInitFct && realType->opUserInitFct->isForeign()))
+    if (!(cflags & MAKE_CONCRETE_PARTIAL))
     {
-        concreteType->opInit = ByteCodeRun::makeLambda(baseContext, realType->opUserInitFct, realType->opInit);
-        if (!realType->opInit)
+        if (realType->opInit || (realType->opUserInitFct && realType->opUserInitFct->isForeign()))
         {
-            realType->opUserInitFct->computeFullNameForeign(false);
-            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opInit), realType->opUserInitFct->fullnameForeign, DataSegment::RelocType::Foreign);
+            concreteType->opInit = ByteCodeRun::makeLambda(baseContext, realType->opUserInitFct, realType->opInit);
+            if (!realType->opInit)
+            {
+                realType->opUserInitFct->computeFullNameForeign(false);
+                storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opInit), realType->opUserInitFct->fullnameForeign, DataSegment::RelocType::Foreign);
+            }
+            else
+            {
+                realType->opInit->isUsed = true;
+                storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opInit), realType->opInit->getCallName(), DataSegment::RelocType::Local);
+            }
         }
-        else
-        {
-            realType->opInit->isUsed = true;
-            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opInit), realType->opInit->getCallName(), DataSegment::RelocType::Local);
-        }
-    }
 
-    if (realType->opDrop || (realType->opUserDropFct && realType->opUserDropFct->isForeign()))
-    {
-        concreteType->opDrop = ByteCodeRun::makeLambda(baseContext, realType->opUserDropFct, realType->opDrop);
-        if (!realType->opDrop)
+        if (realType->opDrop || (realType->opUserDropFct && realType->opUserDropFct->isForeign()))
         {
-            realType->opUserDropFct->computeFullNameForeign(false);
-            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opDrop), realType->opUserDropFct->fullnameForeign, DataSegment::RelocType::Foreign);
+            concreteType->opDrop = ByteCodeRun::makeLambda(baseContext, realType->opUserDropFct, realType->opDrop);
+            if (!realType->opDrop)
+            {
+                realType->opUserDropFct->computeFullNameForeign(false);
+                storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opDrop), realType->opUserDropFct->fullnameForeign, DataSegment::RelocType::Foreign);
+            }
+            else
+            {
+                realType->opDrop->isUsed = true;
+                storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opDrop), realType->opDrop->getCallName(), DataSegment::RelocType::Local);
+            }
         }
-        else
-        {
-            realType->opDrop->isUsed = true;
-            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opDrop), realType->opDrop->getCallName(), DataSegment::RelocType::Local);
-        }
-    }
 
-    if (realType->opPostCopy || (realType->opUserPostCopyFct && realType->opUserPostCopyFct->isForeign()))
-    {
-        concreteType->opPostCopy = ByteCodeRun::makeLambda(baseContext, realType->opUserPostCopyFct, realType->opPostCopy);
-        if (!realType->opPostCopy)
+        if (realType->opPostCopy || (realType->opUserPostCopyFct && realType->opUserPostCopyFct->isForeign()))
         {
-            realType->opUserPostCopyFct->computeFullNameForeign(false);
-            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opPostCopy), realType->opUserPostCopyFct->fullnameForeign, DataSegment::RelocType::Foreign);
+            concreteType->opPostCopy = ByteCodeRun::makeLambda(baseContext, realType->opUserPostCopyFct, realType->opPostCopy);
+            if (!realType->opPostCopy)
+            {
+                realType->opUserPostCopyFct->computeFullNameForeign(false);
+                storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opPostCopy), realType->opUserPostCopyFct->fullnameForeign, DataSegment::RelocType::Foreign);
+            }
+            else
+            {
+                realType->opPostCopy->isUsed = true;
+                storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opPostCopy), realType->opPostCopy->getCallName(), DataSegment::RelocType::Local);
+            }
         }
-        else
-        {
-            realType->opPostCopy->isUsed = true;
-            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opPostCopy), realType->opPostCopy->getCallName(), DataSegment::RelocType::Local);
-        }
-    }
 
-    if (realType->opPostMove || (realType->opUserPostMoveFct && realType->opUserPostMoveFct->isForeign()))
-    {
-        concreteType->opPostMove = ByteCodeRun::makeLambda(baseContext, realType->opUserPostMoveFct, realType->opPostMove);
-        if (!realType->opPostMove)
+        if (realType->opPostMove || (realType->opUserPostMoveFct && realType->opUserPostMoveFct->isForeign()))
         {
-            realType->opUserPostMoveFct->computeFullNameForeign(false);
-            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opPostMove), realType->opUserPostMoveFct->fullnameForeign, DataSegment::RelocType::Foreign);
-        }
-        else
-        {
-            realType->opPostMove->isUsed = true;
-            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opPostMove), realType->opPostMove->getCallName(), DataSegment::RelocType::Local);
+            concreteType->opPostMove = ByteCodeRun::makeLambda(baseContext, realType->opUserPostMoveFct, realType->opPostMove);
+            if (!realType->opPostMove)
+            {
+                realType->opUserPostMoveFct->computeFullNameForeign(false);
+                storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opPostMove), realType->opUserPostMoveFct->fullnameForeign, DataSegment::RelocType::Foreign);
+            }
+            else
+            {
+                realType->opPostMove->isUsed = true;
+                storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opPostMove), realType->opPostMove->getCallName(), DataSegment::RelocType::Local);
+            }
         }
     }
 
@@ -151,49 +157,56 @@ bool TypeTableJob::computeStruct()
     // Methods
     concreteType->methods.buffer = 0;
     concreteType->methods.count  = 0;
-    if (attributes & ATTRIBUTE_EXPORT_TYPE_METHODS)
+    if (!(cflags & MAKE_CONCRETE_PARTIAL))
     {
-        concreteType->methods.count = realType->methods.size();
-        if (concreteType->methods.count)
+        if (attributes & ATTRIBUTE_EXPORT_TYPE_METHODS)
         {
-            uint32_t count = (uint32_t) concreteType->methods.count;
-            uint32_t storageArray;
-            auto     addrArray = (ConcreteTypeInfoParam*) typeTable->makeConcreteSlice(baseContext, count * sizeof(ConcreteTypeInfoParam), concreteTypeInfoValue, storageSegment, storageOffset, &concreteType->methods.buffer, storageArray);
-            for (int param = 0; param < concreteType->methods.count; param++)
+            concreteType->methods.count = realType->methods.size();
+            if (concreteType->methods.count)
             {
-                SWAG_CHECK(typeTable->makeConcreteParam(baseContext, addrArray + param, storageSegment, storageArray, realType->methods[param], cflags));
+                uint32_t count = (uint32_t) concreteType->methods.count;
+                uint32_t storageArray;
+                auto     addrArray = (ConcreteTypeInfoParam*) typeTable->makeConcreteSlice(baseContext, count * sizeof(ConcreteTypeInfoParam), concreteTypeInfoValue, storageSegment, storageOffset, &concreteType->methods.buffer, storageArray);
+                for (int param = 0; param < concreteType->methods.count; param++)
+                {
+                    SWAG_CHECK(typeTable->makeConcreteParam(baseContext, addrArray + param, storageSegment, storageArray, realType->methods[param], cflags));
 
-                // 'value' will contain a pointer to the lambda.
-                // Register it for later patches
-                uint32_t     fieldOffset = storageArray + offsetof(ConcreteTypeInfoParam, value);
-                AstFuncDecl* funcNode    = CastAst<AstFuncDecl>(realType->methods[param]->typeInfo->declNode, AstNodeKind::FuncDecl);
-                patchMethods.push_back({funcNode, fieldOffset});
+                    // 'value' will contain a pointer to the lambda.
+                    // Register it for later patches
+                    uint32_t     fieldOffset = storageArray + offsetof(ConcreteTypeInfoParam, value);
+                    AstFuncDecl* funcNode    = CastAst<AstFuncDecl>(realType->methods[param]->typeInfo->declNode, AstNodeKind::FuncDecl);
+                    patchMethods.push_back({funcNode, fieldOffset});
 
-                storageArray += sizeof(ConcreteTypeInfoParam);
+                    storageArray += sizeof(ConcreteTypeInfoParam);
+                }
             }
         }
     }
 
     // Interfaces
     concreteType->interfaces.buffer = 0;
-    concreteType->interfaces.count  = realType->interfaces.size();
-    if (concreteType->interfaces.count)
+    concreteType->interfaces.count  = 0;
+    if (!(cflags & MAKE_CONCRETE_PARTIAL))
     {
-        uint32_t count = (uint32_t) concreteType->interfaces.count;
-        uint32_t storageArray;
-        auto     addrArray = (ConcreteTypeInfoParam*) typeTable->makeConcreteSlice(baseContext, count * sizeof(ConcreteTypeInfoParam), concreteTypeInfoValue, storageSegment, storageOffset, &concreteType->interfaces.buffer, storageArray);
-        for (int param = 0; param < concreteType->interfaces.count; param++)
+        concreteType->interfaces.count = realType->interfaces.size();
+        if (concreteType->interfaces.count)
         {
-            SWAG_CHECK(typeTable->makeConcreteParam(baseContext, addrArray + param, storageSegment, storageArray, realType->interfaces[param], cflags));
+            uint32_t count = (uint32_t) concreteType->interfaces.count;
+            uint32_t storageArray;
+            auto     addrArray = (ConcreteTypeInfoParam*) typeTable->makeConcreteSlice(baseContext, count * sizeof(ConcreteTypeInfoParam), concreteTypeInfoValue, storageSegment, storageOffset, &concreteType->interfaces.buffer, storageArray);
+            for (int param = 0; param < concreteType->interfaces.count; param++)
+            {
+                SWAG_CHECK(typeTable->makeConcreteParam(baseContext, addrArray + param, storageSegment, storageArray, realType->interfaces[param], cflags));
 
-            // :ItfIsConstantSeg
-            // Compute the storage of the interface for @interfaceof
-            uint32_t fieldOffset = offsetof(ConcreteTypeInfoParam, value);
-            uint32_t valueOffset = storageArray + fieldOffset;
-            storageSegment->addInitPtr(valueOffset, realType->interfaces[param]->offset, SegmentKind::Constant);
-            addrArray[param].value = module->constantSegment.address(realType->interfaces[param]->offset);
+                // :ItfIsConstantSeg
+                // Compute the storage of the interface for @interfaceof
+                uint32_t fieldOffset = offsetof(ConcreteTypeInfoParam, value);
+                uint32_t valueOffset = storageArray + fieldOffset;
+                storageSegment->addInitPtr(valueOffset, realType->interfaces[param]->offset, SegmentKind::Constant);
+                addrArray[param].value = module->constantSegment.address(realType->interfaces[param]->offset);
 
-            storageArray += sizeof(ConcreteTypeInfoParam);
+                storageArray += sizeof(ConcreteTypeInfoParam);
+            }
         }
     }
 
@@ -216,30 +229,34 @@ JobResult TypeTableJob::execute()
     waitTypeCompleted(typeInfo);
     if (baseContext->result == ContextResult::Pending)
         return JobResult::KeepJobAlive;
-    waitAllStructInterfaces(realType);
-    if (baseContext->result == ContextResult::Pending)
-        return JobResult::KeepJobAlive;
-    waitAllStructMethods(realType);
-    if (baseContext->result == ContextResult::Pending)
-        return JobResult::KeepJobAlive;
-    waitStructGenerated(realType);
-    if (baseContext->result == ContextResult::Pending)
-        return JobResult::KeepJobAlive;
 
-    // We also wait for dependencies, because we need to know the foreign address of special
-    // functions that will be stored in the struct type.
-    // And we cannot retrieve thoses addresses before the dlls have been generated.
-    bool mustWait = false;
-    if (!realType->opInit && realType->opUserInitFct && realType->opUserInitFct->isForeign())
-        mustWait = true;
-    if (!realType->opDrop && realType->opUserDropFct && realType->opUserDropFct->isForeign())
-        mustWait = true;
-    if (!realType->opPostCopy && realType->opUserPostCopyFct && realType->opUserPostCopyFct->isForeign())
-        mustWait = true;
-    if (!realType->opPostMove && realType->opUserPostMoveFct && realType->opUserPostMoveFct->isForeign())
-        mustWait = true;
-    if (mustWait && !sourceFile->module->waitForDependenciesDone(this))
-        return JobResult::KeepJobAlive;
+    if (!(cflags & MAKE_CONCRETE_PARTIAL))
+    {
+        waitAllStructInterfaces(realType);
+        if (baseContext->result == ContextResult::Pending)
+            return JobResult::KeepJobAlive;
+        waitAllStructMethods(realType);
+        if (baseContext->result == ContextResult::Pending)
+            return JobResult::KeepJobAlive;
+        waitStructGenerated(realType);
+        if (baseContext->result == ContextResult::Pending)
+            return JobResult::KeepJobAlive;
+
+        // We also wait for dependencies, because we need to know the foreign address of special
+        // functions that will be stored in the struct type.
+        // And we cannot retrieve thoses addresses before the dlls have been generated.
+        bool mustWait = false;
+        if (!realType->opInit && realType->opUserInitFct && realType->opUserInitFct->isForeign())
+            mustWait = true;
+        if (!realType->opDrop && realType->opUserDropFct && realType->opUserDropFct->isForeign())
+            mustWait = true;
+        if (!realType->opPostCopy && realType->opUserPostCopyFct && realType->opUserPostCopyFct->isForeign())
+            mustWait = true;
+        if (!realType->opPostMove && realType->opUserPostMoveFct && realType->opUserPostMoveFct->isForeign())
+            mustWait = true;
+        if (mustWait && !sourceFile->module->waitForDependenciesDone(this))
+            return JobResult::KeepJobAlive;
+    }
 
     computeStruct();
 

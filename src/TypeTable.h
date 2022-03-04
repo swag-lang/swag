@@ -16,6 +16,7 @@ struct TypeTableJob;
 
 static uint32_t MAKE_CONCRETE_SHOULD_WAIT    = 0x00000001;
 static uint32_t MAKE_CONCRETE_FORCE_NO_SCOPE = 0x00000002;
+static uint32_t MAKE_CONCRETE_PARTIAL        = 0x00000004;
 
 struct TypeTable
 {
@@ -29,7 +30,7 @@ struct TypeTable
 
     struct MapPerSeg
     {
-        SharedMutex                                 mutex;
+        SharedMutex                                  mutex;
         unordered_map<Utf8, MapType, HashUtf8>       concreteTypes;
         unordered_map<Utf8, TypeTableJob*, HashUtf8> concreteTypesJob;
         unordered_map<ConcreteTypeInfo*, TypeInfo*>  concreteTypesReverse;
@@ -55,5 +56,5 @@ struct TypeTable
     MapPerSeg mapPerSegment[2];
 };
 
-#define OFFSETOF(__field) (storageOffset + (uint32_t)((uint64_t) & (__field) - (uint64_t) concreteTypeInfoValue))
-#define OFFSETOFR(__field) (storageOffset + (uint32_t)((uint64_t) __field - (uint64_t) concreteTypeInfoValue))
+#define OFFSETOF(__field) (storageOffset + (uint32_t) ((uint64_t) & (__field) - (uint64_t) concreteTypeInfoValue))
+#define OFFSETOFR(__field) (storageOffset + (uint32_t) ((uint64_t) __field - (uint64_t) concreteTypeInfoValue))
