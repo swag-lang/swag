@@ -3453,13 +3453,6 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
             result = true;
     }
 
-    // Can cast to name alias, can be anything
-    if (!result)
-    {
-        if (toType->kind == TypeInfoKind::NameAlias)
-            result = true;
-    }
-
     if (!result)
     {
         auto isSameFlags = ISSAME_CAST;

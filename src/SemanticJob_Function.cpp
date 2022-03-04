@@ -78,8 +78,6 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
         auto paramNodeType = nodeParam->type ? nodeParam->type : nodeParam;
         if (paramType->kind == TypeInfoKind::Code)
             SWAG_VERIFY(funcNode->attributeFlags & (ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN), context->report(paramNodeType, Err(Err0729)));
-        if (paramType->kind == TypeInfoKind::NameAlias)
-            SWAG_VERIFY(funcNode->attributeFlags & (ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN), context->report(paramNodeType, Err(Err0730)));
 
         // Not everything is possible for types for attributes
         if (param->ownerScope->kind == ScopeKind::Attribute)
@@ -1393,20 +1391,6 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
             if (param->typeInfo->kind == TypeInfoKind::Code)
             {
                 inlineNode->parametersScope->symTable.addSymbolTypeInfo(context, param, param->typeInfo, SymbolKind::Variable, nullptr, 0, nullptr, 0, nullptr, &param->resolvedParameter->namedParam);
-            }
-
-            // Replace named aliases
-            if (param->resolvedParameter->typeInfo->kind == TypeInfoKind::NameAlias)
-            {
-                SWAG_VERIFY(child->kind == AstNodeKind::FuncCallParam, context->report(child, Err(Err0776)));
-                auto back = child->childs.back();
-                if (back->kind == AstNodeKind::CompilerCode)
-                    back = back->childs.front();
-                SWAG_VERIFY(back->kind == AstNodeKind::IdentifierRef, context->report(child, Err(Err0777)));
-
-                auto idRef = CastAst<AstIdentifierRef>(back, AstNodeKind::IdentifierRef);
-                SWAG_VERIFY(idRef->childs.size() == 1, context->report(child, Err(Err0778)));
-                cloneContext.replaceNames[param->resolvedParameter->namedParam] = idRef->childs.back()->token.text;
             }
         }
     }

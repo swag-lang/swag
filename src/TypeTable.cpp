@@ -114,7 +114,6 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo
         break;
     case TypeInfoKind::Generic:
     case TypeInfoKind::Code:
-    case TypeInfoKind::NameAlias:
         typeStruct = swagScope.regTypeInfoGeneric;
         break;
     case TypeInfoKind::Alias:
