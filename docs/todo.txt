@@ -78,11 +78,10 @@ debugger : print divers (memoire ?)
 -------------------------------------
 cast interface vers struct (avec safety)
 -------------------------------------
-x64/llvm debug
-- mettre les constants, les enums (void CodeViewDebug::emitStaticConstMemberList())
--------------------------------------
 llvm debug, pas à jour
 - variables local en #[Swag.global]
+- mettre les constants
+- mettre les enums (void CodeViewDebug::emitStaticConstMemberList())
 -------------------------------------
 
 
@@ -108,11 +107,3 @@ detecter les exit (ret) de fonctions dupliquées et faire des jumps (reduction c
 x64: et si les premiers registres étaient des vrais registres x64 volatiles plutot que des accès indirects à la mémoire ?
 rc[0] = r12 etc... chiant
 -------------------------------------
-
-
-
-****************************************
-GUI
-****************************************
-
-- hide/show column

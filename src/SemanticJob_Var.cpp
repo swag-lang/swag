@@ -1013,7 +1013,10 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
             node->inheritComputedValue(node->assignment);
             SWAG_ASSERT(node->computedValue);
-            module->addGlobalVar(node, GlobalVarKind::Constant);
+            if (node->ownerFct)
+                node->ownerFct->localConstants.push_back(node);
+            else
+                module->addGlobalVar(node, GlobalVarKind::Constant);
         }
     }
     else if (symbolFlags & OVERLOAD_VAR_STRUCT)

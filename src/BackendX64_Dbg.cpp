@@ -918,7 +918,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
     return (DbgTypeIndex) SimpleTypeKind::UInt64;
 }
 
-void BackendX64::dbgEmitConstant(X64PerThread& pp, Concat& concat, AstNode* node)
+void BackendX64::dbgEmitConstant(X64PerThread& pp, Concat& concat, AstNode* node, const Utf8& name)
 {
     if (node->typeInfo->kind == TypeInfoKind::Native && node->typeInfo->sizeOf <= 8)
     {
@@ -944,8 +944,7 @@ void BackendX64::dbgEmitConstant(X64PerThread& pp, Concat& concat, AstNode* node
             break;
         }
 
-        auto nn = dbgGetScopedName(node);
-        dbgEmitTruncatedString(concat, nn);
+        dbgEmitTruncatedString(concat, name);
         dbgEndRecord(pp, concat);
     }
 }
@@ -961,7 +960,7 @@ void BackendX64::dbgEmitGlobalDebugS(X64PerThread& pp, Concat& concat, VectorNat
         // Compile time constant
         if (p->flags & AST_VALUE_COMPUTED)
         {
-            dbgEmitConstant(pp, concat, p);
+            dbgEmitConstant(pp, concat, p, dbgGetScopedName(p));
             continue;
         }
 
@@ -1294,6 +1293,17 @@ bool BackendX64::dbgEmitScope(X64PerThread& pp, Concat& concat, CoffFunction& f,
 
         dbgEmitTruncatedString(concat, localVar->token.text);
         dbgEndRecord(pp, concat);
+    }
+
+    // Local constants
+    /////////////////////////////////
+    for (int i = 0; i < (int) funcDecl->localConstants.size(); i++)
+    {
+        auto localConst = funcDecl->localConstants[i];
+        if (localConst->ownerScope != scope)
+            continue;
+
+        dbgEmitConstant(pp, concat, localConst, localConst->token.text);
     }
 
     // Local variables

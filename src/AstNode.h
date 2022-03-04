@@ -382,6 +382,7 @@ struct AstFuncDecl : public AstNode
     Utf8                   fullnameForeign;
     VectorNative<AstNode*> subDecls;
     VectorNative<AstNode*> localGlobalVars;
+    VectorNative<AstNode*> localConstants;
     Mutex                  funcMutex;
     Token                  tokenName;
 

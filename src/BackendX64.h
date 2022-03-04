@@ -353,7 +353,7 @@ struct BackendX64 : public Backend
     Utf8         dbgGetScopedName(AstNode* node);
     void         dbgSetLocation(CoffFunction* coffFct, ByteCode* bc, ByteCodeInstruction* ip, uint32_t byteOffset);
     void         dbgEmitCompilerFlagsDebugS(Concat& concat);
-    void         dbgEmitConstant(X64PerThread& pp, Concat& concat, AstNode* node);
+    void         dbgEmitConstant(X64PerThread& pp, Concat& concat, AstNode* node, const Utf8& name);
     void         dbgEmitGlobalDebugS(X64PerThread& pp, Concat& concat, VectorNative<AstNode*>& gVars, uint32_t segSymIndex);
     bool         dbgEmitDataDebugT(const BuildParameters& buildParameters);
     bool         dbgEmitFctDebugS(const BuildParameters& buildParameters);
