@@ -26,7 +26,7 @@ bool SyntaxJob::doAlias(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatSemiCol("`alias` expression"));
 
     // This is a type alias
-    if (expr->kind == AstNodeKind::TypeExpression || expr->kind == AstNodeKind::TypeLambda)
+    if (expr->kind == AstNodeKind::TypeExpression || expr->kind == AstNodeKind::TypeLambda || expr->kind == AstNodeKind::TypeClosure)
     {
         node->allocateExtension();
         node->extension->semanticBeforeFct = SemanticJob::resolveTypeAliasBefore;

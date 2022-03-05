@@ -310,6 +310,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, A
     case TokenId::KwdConst:
     case TokenId::KwdCode:
     case TokenId::KwdFunc:
+    case TokenId::KwdClosure:
     case TokenId::KwdStruct:
     case TokenId::KwdUnion:
     case TokenId::NativeType:
@@ -849,9 +850,9 @@ bool SyntaxJob::doExpression(AstNode* parent, uint32_t exprFlags, AstNode** resu
         node->semanticFct = SemanticJob::resolveCompilerRun;
         SWAG_CHECK(eatToken());
 
-        //SWAG_VERIFY(token.id != TokenId::SymLeftCurly, error(token, Err(Err0198)));
+        // SWAG_VERIFY(token.id != TokenId::SymLeftCurly, error(token, Err(Err0198)));
         //
-        // :RunGeneratedExp
+        //  :RunGeneratedExp
         if (token.id == TokenId::SymLeftCurly)
         {
             if (result)
