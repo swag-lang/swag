@@ -27,8 +27,12 @@ impl Theme
             cxd = dstRect.width / 2
         if cyd * 2 > dstRect.height
             cyd = dstRect.height / 2
-        cxd = Math.min(cxd, cyd)
-        cyd = cxd
+
+        if subRect.keepBordersRatio
+        {
+            cxd = Math.min(cxd, cyd)
+            cyd = cxd
+        }
 
         d := dstRect
         s := subRect.rect

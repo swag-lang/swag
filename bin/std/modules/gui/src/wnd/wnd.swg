@@ -696,6 +696,11 @@ impl Wnd
     // Helpers
     //////////////////////////////////////////////
 
+    mtd getTiming()->*Time.FrameTiming
+    {
+        return &surface.app.timing
+    }
+
     mtd captureMouse()
     {
         surface.app.captureMouse(self)

@@ -3,8 +3,9 @@ using Core
 
 struct ThemeImageRect
 {
-    rect:   Math.Rectangle
-    corner: f32
+    rect:               Math.Rectangle
+    corner:             f32
+    keepBordersRatio    = true
 }
 
 struct ThemeImageRects

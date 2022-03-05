@@ -245,6 +245,6 @@ struct ThemeColors
     progressBar_DisabledBk:         Color = Transparent
     progressBar_DisabledMark:       Color = Gray3
     progressBar_Border:             Color = Gray2
-    progressBar_Bk:                 Color = Gray7
+    progressBar_Bk:                 Color = Gray6
     progressBar_Mark:               Color = Blue
 }

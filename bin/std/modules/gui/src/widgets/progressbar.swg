@@ -71,7 +71,7 @@ impl IWnd for ProgressBar
             posBox.x = -w + (progression * wt)
 
             // Automatic update of progresssion
-            progression += surface.app.timing.dt * metrics.progressBar_SpeedInf
+            progression += getTiming().dt * metrics.progressBar_SpeedInf
             if progression > 1 progression = 0
             invalidate()
         }
@@ -82,11 +82,7 @@ impl IWnd for ProgressBar
 
         theme.drawSubRect(bc.painter, posBox, subRectMark, colorMark)
 
-        // Text
         bc.painter.resetClippingRegion()
-        if !(prgBarFlags & .Infinite)
-        {
-        }
 
         // Border
         theme.drawSubRect(bc.painter, clientRect, subRectBorder, colorBorder)
