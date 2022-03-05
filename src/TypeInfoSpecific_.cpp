@@ -551,24 +551,35 @@ void TypeInfoFuncAttr::computeWhateverName(Utf8& resName, uint32_t nameType)
 {
     if (nameType != COMPUTE_NAME && nameType != COMPUTE_DISPLAY_NAME)
     {
-        getScopedName(resName);
-        SWAG_ASSERT(declNode);
-        resName += declNode->token.text;
+        if (kind != TypeInfoKind::Lambda || nameType != COMPUTE_SCOPED_NAME_EXPORT)
+        {
+            getScopedName(resName);
+            SWAG_ASSERT(declNode);
+            resName += declNode->token.text;
+        }
     }
 
     computeNameGenericParameters(genericParameters, resName, nameType);
 
     // Closure
-    if (isClosure())
+    if (kind == TypeInfoKind::Lambda)
     {
-        resName += "|";
-        for (int i = 0; i < capture.size(); i++)
+        if (isClosure())
         {
-            if (i)
-                resName += ", ";
-            resName += capture[i]->typeInfo->computeWhateverName(nameType);
+            if (nameType == COMPUTE_SCOPED_NAME_EXPORT)
+                resName += "closure";
+            resName += "|";
+            resName += "|";
+            for (int i = 0; i < capture.size(); i++)
+            {
+                if (i)
+                    resName += ", ";
+                resName += capture[i]->typeInfo->computeWhateverName(nameType);
+            }
+            resName += "|";
         }
-        resName += "|";
+        else if (nameType == COMPUTE_SCOPED_NAME_EXPORT)
+            resName += "func";
     }
 
     // Parameters
