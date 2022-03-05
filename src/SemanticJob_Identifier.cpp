@@ -2608,7 +2608,8 @@ bool SemanticJob::fillMatchContextCallParameters(SemanticContext* context, Symbo
 
     // :ClosureForceFirstParam
     // A closure has always a first parameter of type *void
-    if (overload->typeInfo->isClosure() && node->callParameters)
+    auto typeRef = TypeManager::concreteType(overload->typeInfo, CONCRETE_ALIAS);
+    if (typeRef->isClosure() && node->callParameters)
     {
         if (!(node->doneFlags & AST_DONE_CLOSURE_FIRST_PARAM))
         {

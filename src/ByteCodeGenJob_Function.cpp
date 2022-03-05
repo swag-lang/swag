@@ -952,7 +952,8 @@ bool ByteCodeGenJob::emitLambdaCall(ByteCodeGenContext* context)
     // A closure is the pointer to the variable, not the function address
     // Function address is stored first
     // Then comes 8 or 0 if it's a real closure or a lambda
-    if (overload->typeInfo->isClosure())
+    auto typeRef = TypeManager::concreteType(overload->typeInfo, CONCRETE_ALIAS);
+    if (typeRef->isClosure())
     {
         // Deref capture context. If 0, no context.
         node->additionalRegisterRC += reserveRegisterRC(context);
