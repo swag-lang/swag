@@ -20,10 +20,13 @@ var app: Application
     tab.addItem("List", @{}, view1)
     view2 := Wnd.create'Wnd(tab, "bigview2")
     tab.addItem("Splitter", @{}, view2)
+    view3 := Wnd.create'Wnd(tab, "bigview3")
+    tab.addItem("Color", @{}, view3)
 
     createView0(tab, view0)
     createView1(tab, view1)
     createView2(tab, view2)
+    createView3(tab, view3)
     tab.select(0)
     surface0.show()
 
