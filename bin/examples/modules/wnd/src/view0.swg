@@ -357,5 +357,8 @@ func createView0(view: *Wnd)
 
     {
         prg := ProgressBar.create(view, @{20, 560, 200})
+        view.surface.app.registerFrameCallback(@|prg|(app) {
+            prg.progression += prg.surface.app.timing.dt
+        })
     }
 }

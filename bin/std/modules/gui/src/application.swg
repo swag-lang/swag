@@ -1,6 +1,8 @@
 #global public
 using Core
 
+alias FrameCallback = closure(*Application)
+
 struct Application
 {
     renderer:       Pixel.RenderOgl
@@ -19,6 +21,7 @@ struct Application
     isActivated:    bool
     quitCode:       s32
     timing:         Time.FrameTiming
+    frameCbs:       Array'FrameCallback
 
     timers:             Array'(*Timer)
     modalSurfaces:      Array'(*Surface)
@@ -363,6 +366,9 @@ private impl Application
         timing.update()
         Memory.freeTemp()
 
+        visit cb: frameCbs
+            cb(self)
+
         sendTimerEvents()
         sendSystemEvents()
         sendKeyboardEvents()
@@ -516,5 +522,11 @@ impl Application
     {
         endModal = true
         endModalExit = exitId
+    }
+
+    // Register a callback called every frames
+    mtd registerFrameCallback(cb: FrameCallback)
+    {
+        frameCbs.add(cb)
     }
 }

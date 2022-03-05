@@ -395,7 +395,8 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
         }
 
         // If passing a closure
-        if (!nodeCall->childs.empty() && toType && toType->isClosure())
+        auto toTypeRef = TypeManager::concreteType(toType, CONCRETE_ALIAS);
+        if (!nodeCall->childs.empty() && toTypeRef && toTypeRef->isClosure())
         {
             auto front = nodeCall->childs.front();
             if (front->kind == AstNodeKind::MakePointer || front->kind == AstNodeKind::MakePointerLambda || (front->typeInfo && front->typeInfo->isLambda()))
