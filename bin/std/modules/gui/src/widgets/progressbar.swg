@@ -21,17 +21,15 @@ impl IWnd for ProgressBar
     mtd onPaintEvent(evt: *PaintEvent)
     {
         bc     := evt.bc
+        painter := bc.painter
         theme   := getTheme()
         metrics := getThemeMetrics()
         colors  := getThemeColors()
         rects   := getThemeRects()
 
-        var subRectBk:      *ThemeImageRect
-        var subRectBorder:  *ThemeImageRect
-        var subRectMark:    *ThemeImageRect
-        var colorBk:        Color = ?
-        var colorBorder:    Color = ?
-        var colorMark:      Color = ?
+        var colorBk:     Color = ?
+        var colorBorder: Color = ?
+        var colorMark:   Color = ?
 
         switch
         {
@@ -45,19 +43,19 @@ impl IWnd for ProgressBar
             colorMark     = colors.progressBar_Mark
         }
 
-        subRectBk     = &rects.progressBar_Bk
-        subRectBorder = &rects.progressBar_Border
-        subRectMark   = &rects.progressBar_Mark
+        subRectBk     := &rects.progressBar_Bk
+        subRectBorder := &rects.progressBar_Border
+        subRectMark   := &rects.progressBar_Mark
 
         // Bk
         clientRect := getClientRect()
-        theme.drawSubRect(bc.painter, clientRect, subRectBk, colorBk)
+        theme.drawSubRect(painter, clientRect, subRectBk, colorBk)
 
-        bc.painter.startClippingRegion()
+        painter.startClippingRegion()
         clip := clientRect
         clip.inflate(-metrics.progressBar_ClipOffset)
-        theme.drawSubRect(bc.painter, clip, subRectBk, Argb.White)
-        bc.painter.endClippingRegion()
+        theme.drawSubRect(painter, clip, subRectBk, Argb.White)
+        painter.endClippingRegion()
 
         // Bar
         posBox := clientRect
@@ -80,12 +78,11 @@ impl IWnd for ProgressBar
             posBox.width = clientRect.width * progression
         }
 
-        theme.drawSubRect(bc.painter, posBox, subRectMark, colorMark)
-
-        bc.painter.resetClippingRegion()
+        theme.drawSubRect(painter, posBox, subRectMark, colorMark)
+        painter.resetClippingRegion()
 
         // Border
-        theme.drawSubRect(bc.painter, clientRect, subRectBorder, colorBorder)
+        theme.drawSubRect(painter, clientRect, subRectBorder, colorBorder)
     }
 }
 
