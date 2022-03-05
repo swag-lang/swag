@@ -53,6 +53,8 @@ struct Tab
     itemFixedLayoutWidth:   f32 = 100
     itemMinWidth:           f32 = 25
 
+    sigSelChanged:      closure(self)
+
     buttonPopup:        *IconButton
     views:              ArrayPtr'TabItem
     popup:              *PopupList
@@ -438,6 +440,9 @@ impl Tab
         views[selectedIdx].view.wndFlags |= .Hidden
         selectedIdx = idx
         views[selectedIdx].view.wndFlags &= ~.Hidden
+
+        if sigSelChanged
+            sigSelChanged(self)
 
         sendResizeEvent()
         invalidate()

@@ -1,6 +1,6 @@
 using Core, Gui, Pixel
 
-func createView2(view: *Wnd)
+func createView2(tabView: *Tab, view: *Wnd)
 {
     {
         split := Splitter.create(view, @{10, 10, 300, 300}, vertical: true)

@@ -21,9 +21,9 @@ var app: Application
     view2 := Wnd.create'Wnd(tab, "bigview2")
     tab.addItem("Splitter", @{}, view2)
 
-    createView0(view0)
-    createView1(view1)
-    createView2(view2)
+    createView0(tab, view0)
+    createView1(tab, view1)
+    createView2(tab, view2)
     tab.select(0)
     surface0.show()
 

@@ -43,7 +43,7 @@ func createListMulti(view: *Wnd)->*List
     return list
 }
 
-func createView1(view: *Wnd)
+func createView1(tabView: *Tab, view: *Wnd)
 {
     {
         list := createListSimple(view, 10)

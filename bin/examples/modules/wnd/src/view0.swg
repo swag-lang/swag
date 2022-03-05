@@ -51,7 +51,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
     return false
 }
 
-func createView0(view: *Wnd)
+func createView0(tabView: *Tab, view: *Wnd)
 {
     theme := app.theme
     view.hookOnEvent = &onEvent
@@ -357,9 +357,12 @@ func createView0(view: *Wnd)
 
     {
         prg := ProgressBar.create(view, @{20, 550, 200})
-        view.surface.app.registerFrameCallback(@|prg|(app) {
+        view.getApp().registerFrameCallback(@|prg|(app) {
             prg.setProgression(prg.progression + prg.getTiming().dt)
         })
+        tabView.sigSelChanged = @|prg|(tab) {
+            prg.setProgression(0)
+        }
     }
 
     {

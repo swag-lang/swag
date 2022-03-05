@@ -154,6 +154,7 @@ impl Wnd
         mtd getThemeMetrics()   => &style.ref.theme.metrics
         mtd getThemeColors()    => &style.ref.theme.colors
         mtd getThemeRects()     => &style.ref.theme.rects
+        mtd getTiming()         => &surface.app.timing
     }
 
     #[Swag.Inline]
@@ -695,11 +696,6 @@ impl Wnd
     //////////////////////////////////////////////
     // Helpers
     //////////////////////////////////////////////
-
-    mtd getTiming()->*Time.FrameTiming
-    {
-        return &surface.app.timing
-    }
 
     mtd captureMouse()
     {
