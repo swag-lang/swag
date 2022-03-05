@@ -98,4 +98,8 @@ struct ThemeImageRects
     splitView_HorzBarHotBk:     ThemeImageRect = @{{113,197,27,27}, 0}
     splitView_VertBarBk:        ThemeImageRect = @{{85,225,27,27}, 0}
     splitView_VertBarHotBk:     ThemeImageRect = @{{113,225,27,27}, 0}
+
+    progressBar_Bk:             ThemeImageRect = @{{113,141,27,27}, 13}
+    progressBar_Border:         ThemeImageRect = @{{141,141,27,27}, 13}
+    progressBar_Mark:           ThemeImageRect = @{{169,141,27,27}, 13}
 }

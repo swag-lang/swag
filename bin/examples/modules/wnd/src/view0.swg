@@ -348,4 +348,14 @@ func createView0(view: *Wnd)
         combo.addItem("Coucou2", "2")
         combo.selectItem(0)
     }
+
+    // Progress Bar
+    {
+        prg := ProgressBar.create(view, @{20, 520, 200})
+        prg.prgBarFlags |= .Infinite
+    }
+
+    {
+        prg := ProgressBar.create(view, @{20, 560, 200})
+    }
 }

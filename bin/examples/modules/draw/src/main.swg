@@ -238,16 +238,16 @@ func displayPage2(painter: *Pixel.Painter)
 {
     painter.drawTexture(200, 0, Res.image1)
 
-    painter.setInterpolationMode(InterpolationMode.Pixel)
+    painter.setInterpolationMode(.Pixel)
     painter.drawTexture(50, 0, 96, 96, Res.image0)
-    painter.setInterpolationMode(InterpolationMode.Linear)
+    painter.setInterpolationMode(.Linear)
     painter.drawTexture(50, 110, 96, 96, Res.image0)
 
     painter.rotateTransform(45.0'deg, 100, 300)
     painter.drawTexture(50, 250, 96, 96, Res.image0)
 
     painter.resetTransform()
-    pen := Pen.createHatch(HatchStyle.SolidDiamond, Argb.Black, 20)
+    pen := Pen.createHatch(.SolidDiamond, Argb.Black, 20)
     painter.drawRoundRect(400, 700, 200, 200, 10, 10, pen)
 
     painter.drawTexture(50, 500, 150, 150, @{228, 103, 206, 167}, Res.image1)
@@ -257,15 +257,15 @@ func displayPage2(painter: *Pixel.Painter)
 
 func displayPage3(painter: *Pixel.Painter)
 {
-    brush := Brush.createHatch(HatchStyle.SolidDiamond, Argb.Black)
+    brush := Brush.createHatch(.SolidDiamond, Argb.Black)
     painter.setClippingRect(0, 0, 100, 100)
     painter.fillCircle(100, 100, 100, brush)
     painter.drawCircle(100, 100, 100, Argb.Red, 4)
     painter.resetClippingRect()
 
-    painter.startClippingRegion(ClippingMode.Set)
+    painter.startClippingRegion(.Set)
     painter.fillRoundRect(150, 0, 100, 100, 20, 20, Argb.Green)
-    painter.setClippingRegionMode(ClippingMode.Clear)
+    painter.setClippingRegionMode(.Clear)
     painter.fillCircle(200, 50, 50, Argb.White)
     painter.endClippingRegion()
 

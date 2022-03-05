@@ -68,4 +68,6 @@ void main()
     color = vcolor * texture(inTexture0, vuv0);
     color.w *= computeAlphaEdgesAA();
     color.w *= texture(inTexture1, vuv1).r;
+    if(color.w == 0)
+        discard;
 }

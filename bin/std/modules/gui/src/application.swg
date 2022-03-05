@@ -18,6 +18,7 @@ struct Application
     endModalExit:   WndId
     isActivated:    bool
     quitCode:       s32
+    timing:         Time.FrameTiming
 
     timers:             Array'(*Timer)
     modalSurfaces:      Array'(*Surface)
@@ -359,6 +360,7 @@ private impl Application
 
     mtd runFrame()
     {
+        timing.update()
         Memory.freeTemp()
 
         sendTimerEvents()

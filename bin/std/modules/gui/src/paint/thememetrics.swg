@@ -67,4 +67,8 @@ struct ThemeMetrics
     header_Separator:           f32 = 5
 
     splitView_BarSize:          f32 = 8
+
+    progressBar_Height:         f32 = 26
+    progressBar_ClipOffset:     f32 = 2
+    progressBar_SpeedInf:       f32 = 0.5
 }
