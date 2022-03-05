@@ -104,4 +104,14 @@ impl ProgressBar
             pos.height = parent.getThemeMetrics().progressBar_Height
         return Wnd.create'ProgressBar(parent, null, pos, id)
     }
+
+    // Set the progression in [0..1] range
+    mtd setProgression(prg: f32)
+    {
+        newPrg := Math.saturate(prg)
+        if newPrg == progression
+            return
+        progression = newPrg
+        invalidate()
+    }
 }

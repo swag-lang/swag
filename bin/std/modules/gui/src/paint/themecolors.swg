@@ -242,9 +242,9 @@ struct ThemeColors
     splitView_BarHot:               Color = Blue
 
     progressBar_DisabledBorder:     Color = Gray3
-    progressBar_DisabledBk:         Color = Gray4
-    progressBar_DisabledMark:       Color = Gray5
-    progressBar_Border:             Color = Gray3
-    progressBar_Bk:                 Color = Transparent
+    progressBar_DisabledBk:         Color = Transparent
+    progressBar_DisabledMark:       Color = Gray3
+    progressBar_Border:             Color = Gray2
+    progressBar_Bk:                 Color = Gray7
     progressBar_Mark:               Color = Blue
 }

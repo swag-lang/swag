@@ -21,12 +21,14 @@ impl Theme
             return
         }
 
-        cx, cy := subRect.corner
+        cx, cy   := subRect.corner
         cxd, cyd := subRect.corner
         if cxd * 2 > dstRect.width
             cxd = dstRect.width / 2
         if cyd * 2 > dstRect.height
             cyd = dstRect.height / 2
+        cxd = Math.min(cxd, cyd)
+        cyd = cxd
 
         d := dstRect
         s := subRect.rect
