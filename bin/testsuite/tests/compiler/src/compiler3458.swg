@@ -1,11 +1,14 @@
+//#global skip
+
 var G = 0
-func toto()
-{
-    G = 10
-}
 
 #test
 {
+    func toto()
+    {
+        G = 10
+    }
+
     v := @|&toto|() {
         toto()
     }

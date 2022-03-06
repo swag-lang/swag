@@ -1486,6 +1486,10 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
             auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(rawTypeInfo, TypeInfoKind::Lambda);
             typeInfo->match(oneOverload.symMatchContext);
         }
+        else if (rawTypeInfo->kind == TypeInfoKind::Generic)
+        {
+            oneOverload.symMatchContext.result = MatchResult::Ok;
+        }
         else
         {
             SWAG_ASSERT(false);
@@ -2632,6 +2636,7 @@ bool SemanticJob::fillMatchContextCallParameters(SemanticContext* context, Symbo
             symbolKind != SymbolKind::Struct &&
             symbolKind != SymbolKind::Interface &&
             symbolKind != SymbolKind::TypeAlias &&
+            symbol->overloads[0]->typeInfo->kind != TypeInfoKind::Generic &&
             TypeManager::concreteType(symbol->overloads[0]->typeInfo, CONCRETE_ALIAS)->kind != TypeInfoKind::Lambda)
         {
             auto firstNode = symbol->nodes.front();
@@ -3046,6 +3051,26 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
             }
         }
 
+        // Priority to lambda call in a parameter over a function outside the actual function
+        if (over->typeInfo->kind == TypeInfoKind::Lambda)
+        {
+            auto callParams = over->node->findParent(AstNodeKind::FuncCallParams);
+            if (callParams)
+            {
+                for (int j = 0; j < countMatches; j++)
+                {
+                    if (matches[j]->symbolOverload->symbol->kind == SymbolKind::Function)
+                    {
+                        auto nodeFct = matches[j]->symbolOverload->node;
+                        if (!callParams->ownerFct->isParentOf(nodeFct))
+                        {
+                            matches[j]->remove = true;
+                        }
+                    }
+                }
+            }
+        }
+
         // Priority to the same inline scope
         if (node->ownerInline)
         {
@@ -3162,12 +3187,6 @@ bool SemanticJob::filterSymbols(SemanticContext* context, AstIdentifier* node)
         auto oneSymbol = p.symbol;
         if (p.remove)
             continue;
-
-        if (node->callParameters && oneSymbol->kind == SymbolKind::Variable)
-        {
-            p.remove = true;
-            continue;
-        }
 
         if (!node->callParameters && oneSymbol->kind == SymbolKind::Function)
         {

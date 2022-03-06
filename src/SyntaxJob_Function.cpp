@@ -711,7 +711,8 @@ bool SyntaxJob::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptM
     {
         // captureParameters will be solved with capture block, that's why we do NOT put it as a child
         // of the function.
-        auto capture = Ast::newFuncCallParams(sourceFile, funcNode, this);
+        auto capture      = Ast::newFuncCallParams(sourceFile, funcNode, this);
+        capture->ownerFct = funcNode;
         Ast::removeFromParent(capture);
         capture->semanticFct        = SemanticJob::resolveCaptureFuncCallParams;
         funcNode->captureParameters = capture;
