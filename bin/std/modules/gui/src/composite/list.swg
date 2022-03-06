@@ -642,7 +642,7 @@ impl List
         fwnd.wndFlags ^= .ClipChildren
 
         // Adapt header to the frame container
-        list.hookOnEvent = @(wnd, evt)->bool
+        list.hookOnEvent = @(wnd, evt)
         {
             if evt.kind != .Resize
                 return false

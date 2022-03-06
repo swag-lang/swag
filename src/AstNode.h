@@ -603,14 +603,14 @@ struct AstSwitchCaseBlock : public AstNode
     int seekJumpNextCase = 0;
 };
 
-const uint16_t TYPEFLAG_ISREF       = 0x0001;
-const uint16_t TYPEFLAG_ISSLICE     = 0x0002;
-const uint16_t TYPEFLAG_ISCONST     = 0x0004;
-const uint16_t TYPEFLAG_ISCODE      = 0x0008;
-const uint16_t TYPEFLAG_FORCECONST  = 0x0010;
-const uint16_t TYPEFLAG_ISSELF      = 0x0020;
-const uint16_t TYPEFLAG_RETVAL      = 0x0040;
-const uint16_t TYPEFLAG_USING       = 0x0080;
+const uint16_t TYPEFLAG_ISREF      = 0x0001;
+const uint16_t TYPEFLAG_ISSLICE    = 0x0002;
+const uint16_t TYPEFLAG_ISCONST    = 0x0004;
+const uint16_t TYPEFLAG_ISCODE     = 0x0008;
+const uint16_t TYPEFLAG_FORCECONST = 0x0010;
+const uint16_t TYPEFLAG_ISSELF     = 0x0020;
+const uint16_t TYPEFLAG_RETVAL     = 0x0040;
+const uint16_t TYPEFLAG_USING      = 0x0080;
 
 struct AstTypeExpression : public AstNode
 {
@@ -839,7 +839,8 @@ struct AstOp : public AstNode
 {
     AstNode* clone(CloneContext& context);
 
-    AstNode* dependentNode = nullptr;
+    AstNode*          dependentNode     = nullptr;
+    TypeInfoFuncAttr* deducedLambdaType = nullptr;
 };
 
 struct AstRange : public AstNode

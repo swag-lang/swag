@@ -114,12 +114,14 @@ bool SyntaxJob::error(AstNode* node, const Utf8& msg, const char* help)
     return false;
 }
 
-bool SyntaxJob::error(const Token& tk, const Utf8& msg, const char* help)
+bool SyntaxJob::error(const Token& tk, const Utf8& msg, const char* help, const char* hint)
 {
     Diagnostic  diag{sourceFile, tk, msg.c_str()};
     Diagnostic* note = nullptr;
     if (help)
         note = new Diagnostic{help, DiagnosticLevel::Help};
+    if (hint)
+        diag.hint = hint;
     sourceFile->report(diag, note);
     return false;
 }

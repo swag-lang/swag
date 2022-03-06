@@ -16,6 +16,8 @@ SWAG_ERROR(Hlp0014, "a function name starting with `op` and followed by a letter
 SWAG_ERROR(Hlp0015, "a struct special function should be defined in a `impl` scope")
 SWAG_ERROR(Hlp0016, "all function arguments are immutable and cannot be changed")
 SWAG_ERROR(Hlp0017, "a closure can only be defined in a function")
+SWAG_ERROR(Hlp0018, "a lambda with its parameters deduced must deduce its return type too")
+SWAG_ERROR(Hlp0019, "you cannot mix deduced and specified types in lambda parameters")
 
 
 

@@ -55,7 +55,7 @@
 
         @assert(toDo(4, @(x) => x * x) == 16)
         @assert(toDo(4, @(x) => x + x) == 8)
-        @assert(toDo(4, @(x)->s32 { return x - x; }) == 0)
+        @assert(toDo(4, @(x) { return x - x; }) == 0)
     }
 
     // When you affect a lambda to a variable, the type of parameters and the return type can also be

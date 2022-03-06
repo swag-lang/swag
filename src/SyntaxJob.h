@@ -71,7 +71,7 @@ struct SyntaxJob : public Job
     JobResult execute() override;
     bool      constructEmbedded(const Utf8& content, AstNode* parent, AstNode* fromNode, enum class CompilerAstKind kind, bool logGenerated);
 
-    bool error(const Token& tk, const Utf8& msg, const char* help = nullptr);
+    bool error(const Token& tk, const Utf8& msg, const char* help = nullptr, const char* hint = nullptr);
     bool error(AstNode* node, const Utf8& msg, const char* help = nullptr);
     bool error(const SourceLocation& startLocation, const SourceLocation& endLocation, const Utf8& msg, const char* help = nullptr);
     bool invalidTokenError(InvalidTokenError kind);
@@ -161,10 +161,10 @@ struct SyntaxJob : public Job
     bool doExpression(AstNode* parent, uint32_t exprFlags, AstNode** result = nullptr);
     bool doMoveExpression(Token& forToken, AstNode* parent, AstNode** result = nullptr);
     bool doGenericDeclParameters(AstNode* parent, AstNode** result = nullptr);
-    bool doLambdaFuncDecl(AstNode* parent, AstNode** result = nullptr, bool acceptMissingType = false);
+    bool doLambdaFuncDecl(AstNode* parent, AstNode** result = nullptr, bool acceptMissingType = false, bool* hasMissingType = nullptr);
     bool doFuncDecl(AstNode* parent, AstNode** result = nullptr, TokenId typeFuncId = TokenId::Invalid);
-    bool doFuncDeclParameter(AstNode* parent, bool acceptMissingType = false);
-    bool doFuncDeclParameters(AstNode* parent, AstNode** result = nullptr, bool acceptMissingType = false, bool isMethod = false, bool isConstMethod = false);
+    bool doFuncDeclParameter(AstNode* parent, bool acceptMissingType = false, bool* hasMissingType = nullptr);
+    bool doFuncDeclParameters(AstNode* parent, AstNode** result = nullptr, bool acceptMissingType = false, bool* hasMissingType = nullptr, bool isMethod = false, bool isConstMethod = false);
     bool doAttrDecl(AstNode* parent, AstNode** result = nullptr);
     bool doAttrUse(AstNode* parent, AstNode** result = nullptr, bool single = false);
     bool doEmbeddedInstruction(AstNode* parent, AstNode** result = nullptr);

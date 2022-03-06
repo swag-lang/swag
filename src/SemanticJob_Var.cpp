@@ -552,6 +552,65 @@ DataSegment* SemanticJob::getSegmentForVar(SemanticContext* context, AstVarDecl*
     return &module->mutableSegment;
 }
 
+// :DeduceLambdaType
+bool SemanticJob::deduceLambdaTypeAffect(SemanticContext* context, AstVarDecl* node, bool& lambdaExpr, bool& genericType)
+{
+    if (!node->ownerFct->makePointerLambda || node->ownerFct->makePointerLambda->parent->kind != AstNodeKind::AffectOp)
+        return true;
+
+    TypeInfoFuncAttr* typeLambda = nullptr;
+    auto              op         = CastAst<AstOp>(node->ownerFct->makePointerLambda->parent, AstNodeKind::AffectOp);
+    if (!op->dependentNode)
+        return true;
+
+    auto front = op->childs.front();
+    SWAG_ASSERT(front->typeInfo);
+
+    SymbolName* symbol;
+    if (front->typeInfo->kind == TypeInfoKind::Struct)
+    {
+        if (op->deducedLambdaType)
+            typeLambda = op->deducedLambdaType;
+        else
+        {
+            SWAG_CHECK(waitUserOp(context, g_LangSpec->name_opAffect, front, &symbol));
+            if (context->result != ContextResult::Done)
+                return true;
+
+            if (symbol->overloads.size() == 1)
+            {
+                auto typeOverload = CastTypeInfo<TypeInfoFuncAttr>(symbol->overloads.front()->typeInfo, TypeInfoKind::FuncAttr);
+                typeLambda        = CastTypeInfo<TypeInfoFuncAttr>(typeOverload->parameters[1]->typeInfo, TypeInfoKind::Lambda);
+            }
+        }
+    }
+    else
+    {
+        SWAG_ASSERT(front->typeInfo->kind == TypeInfoKind::Lambda);
+        typeLambda = CastTypeInfo<TypeInfoFuncAttr>(front->typeInfo, TypeInfoKind::Lambda);
+    }
+
+    auto paramIdx = node->childParentIdx;
+
+    // Do not deduce from the context closure generated parameter
+    if (typeLambda->isClosure() && !node->ownerFct->captureParameters)
+        paramIdx += 1;
+
+    if (paramIdx >= (uint32_t) typeLambda->parameters.count)
+    {
+        PushErrContext ec(context, node->ownerFct->makePointerLambda->parent, JobContext::ErrorContextType::Node);
+        Diagnostic     diag{node, Fmt(Err(Err0026), "lambda", (uint32_t) typeLambda->parameters.count, (uint32_t) node->parent->childs.count)};
+        return context->report(diag);
+    }
+
+    op->deducedLambdaType = typeLambda;
+    node->typeInfo        = typeLambda->parameters[paramIdx]->typeInfo;
+    lambdaExpr            = false;
+    genericType           = false;
+
+    return true;
+}
+
 bool SemanticJob::resolveVarDecl(SemanticContext* context)
 {
     auto sourceFile = context->sourceFile;
@@ -841,40 +900,14 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
     if (!node->typeInfo || node->typeInfo == g_TypeMgr->typeInfoUndefined)
     {
-        // :DeduceLambdaType
         bool lambdaExpr = false;
         if (node->ownerFct && node->kind == AstNodeKind::FuncDeclParam && (node->ownerFct->flags & AST_IS_LAMBDA_EXPRESSION))
             lambdaExpr = true;
         if (lambdaExpr)
         {
-            TypeInfoFuncAttr* typeLambda = nullptr;
-            if (node->ownerFct->makePointerLambda && node->ownerFct->makePointerLambda->parent->kind == AstNodeKind::AffectOp)
-            {
-                auto op    = CastAst<AstOp>(node->ownerFct->makePointerLambda->parent, AstNodeKind::AffectOp);
-                auto front = op->childs.front();
-                SWAG_ASSERT(front->typeInfo);
-                SWAG_ASSERT(front->typeInfo->kind == TypeInfoKind::Lambda);
-                typeLambda = CastTypeInfo<TypeInfoFuncAttr>(front->typeInfo, TypeInfoKind::Lambda);
-                if (typeLambda)
-                {
-                    auto paramIdx = node->childParentIdx;
-
-                    // Do not deduce from the context closure generated parameter
-                    if (typeLambda->isClosure() && !node->ownerFct->captureParameters)
-                        paramIdx += 1;
-
-                    if (paramIdx >= (uint32_t) typeLambda->parameters.count)
-                    {
-                        PushErrContext ec(context, node->ownerFct->makePointerLambda->parent, JobContext::ErrorContextType::Node);
-                        Diagnostic     diag{node, Fmt(Err(Err0026), "lambda", (uint32_t) typeLambda->parameters.count, (uint32_t) node->parent->childs.count)};
-                        return context->report(diag);
-                    }
-
-                    node->typeInfo = typeLambda->parameters[paramIdx]->typeInfo;
-                    lambdaExpr     = false;
-                    genericType    = false;
-                }
-            }
+            SWAG_CHECK(deduceLambdaTypeAffect(context, node, lambdaExpr, genericType));
+            if (context->result != ContextResult::Done)
+                return true;
         }
 
         // If this is a lambda parameter in an expression, this is fine, we will try to deduce the type

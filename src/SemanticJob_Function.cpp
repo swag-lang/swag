@@ -449,12 +449,17 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         // :DeduceLambdaType
         if (funcNode->makePointerLambda && funcNode->makePointerLambda->parent->kind == AstNodeKind::AffectOp && !(funcNode->flags & AST_SHORT_LAMBDA))
         {
-            auto op    = CastAst<AstOp>(funcNode->makePointerLambda->parent, AstNodeKind::AffectOp);
-            auto front = op->childs.front();
-            SWAG_ASSERT(front->typeInfo);
-            SWAG_ASSERT(front->typeInfo->kind == TypeInfoKind::Lambda);
-            auto typeFct       = CastTypeInfo<TypeInfoFuncAttr>(front->typeInfo, TypeInfoKind::Lambda);
-            typeNode->typeInfo = typeFct->returnType;
+            auto op = CastAst<AstOp>(funcNode->makePointerLambda->parent, AstNodeKind::AffectOp);
+            if (op->deducedLambdaType)
+                typeNode->typeInfo = op->deducedLambdaType->returnType;
+            else
+            {
+                auto front = op->childs.front();
+                SWAG_ASSERT(front->typeInfo);
+                SWAG_ASSERT(front->typeInfo->kind == TypeInfoKind::Lambda);
+                auto typeFct       = CastTypeInfo<TypeInfoFuncAttr>(front->typeInfo, TypeInfoKind::Lambda);
+                typeNode->typeInfo = typeFct->returnType;
+            }
         }
     }
 

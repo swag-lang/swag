@@ -28,7 +28,7 @@ bool SemanticJob::resolveMove(SemanticContext* context)
 bool SemanticJob::resolveAfterAffectLeft(SemanticContext* context)
 {
     auto node = context->node;
-    if (node->typeInfo->kind == TypeInfoKind::Lambda)
+    if (node->typeInfo->kind == TypeInfoKind::Lambda || node->typeInfo->kind == TypeInfoKind::Struct)
     {
         auto op = CastAst<AstOp>(node->parent, AstNodeKind::AffectOp);
         if (op->dependentNode)
