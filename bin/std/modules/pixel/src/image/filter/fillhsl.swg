@@ -4,9 +4,11 @@ impl Image
 {
     public enum FillHslType
     {
-        HueHorz
         HueVert
+        HueHorz
+        SaturationVert
         SaturationHorz
+        LightnessVert
         LightnessHorz
         HueSaturation
         HueLightness
@@ -56,6 +58,19 @@ impl Image
                 Memory.copy(pix, image.pixels, cast(uint) image.width * image.bpp8)
             }
 
+        case SaturationVert:
+            pms := @{hsl, swapRB}
+            visitPixels(&pms)
+            {
+                params := dref cast(*@typeof(pms)) userData
+                swapRB := params.swapRB
+                factor0 := y / cast(f32) image.height
+                col := Color.fromHsl(params.hsl.h, factor0, 0.5)
+                if swapRB { pix[0] = col.r; pix[1] = col.g; pix[2] = col.b; }
+                else      { pix[0] = col.b; pix[1] = col.g; pix[2] = col.r; }
+                if image.pf.hasAlpha() pix[3] = 255
+            }
+
         case SaturationHorz:
             pix := pixels
             loop x: width
@@ -71,6 +86,19 @@ impl Image
             visitPixels(stride: width)
             {
                 Memory.copy(pix, image.pixels, cast(uint) image.width * image.bpp8)
+            }
+
+        case LightnessVert:
+            pms := @{hsl, swapRB}
+            visitPixels(&pms)
+            {
+                params := dref cast(*@typeof(pms)) userData
+                swapRB := params.swapRB
+                factor0 := y / cast(f32) image.height
+                col := Color.fromHsl(params.hsl.h, 1, factor0)
+                if swapRB { pix[0] = col.r; pix[1] = col.g; pix[2] = col.b; }
+                else      { pix[0] = col.b; pix[1] = col.g; pix[2] = col.r; }
+                if image.pf.hasAlpha() pix[3] = 255
             }
 
         case LightnessHorz:

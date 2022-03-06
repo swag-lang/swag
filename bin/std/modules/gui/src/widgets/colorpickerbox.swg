@@ -5,6 +5,8 @@ enum ColorPickerBoxMode
 {
     SaturationLightness
     HueVert
+    LightnessVert
+    SaturationVert
 }
 
 struct ColorPickerBox
@@ -36,6 +38,10 @@ impl IWnd for ColorPickerBox
             yCur = cast(s32) (l2 * clientRect.height)
         case HueVert:
             yCur = cast(s32) ((1 - hue) * clientRect.height)
+        case LightnessVert:
+            yCur = cast(s32) ((1 - lum) * clientRect.height)
+        case SaturationVert:
+            yCur = cast(s32) ((1 - sat) * clientRect.height)
         }
     }
 
@@ -59,6 +65,8 @@ impl IWnd for ColorPickerBox
             {
             case SaturationLightness:   modeFill = .SaturationLightness
             case HueVert:               modeFill = .HueVert
+            case LightnessVert:         modeFill = .LightnessVert
+            case SaturationVert:        modeFill = .SaturationVert
             }
 
             img.fillHsl(modeFill, Color.fromHsl(hue, sat, lum))
@@ -87,7 +95,7 @@ impl IWnd for ColorPickerBox
             painter.drawRect(rect, Argb.White, 1)
             rect.inflate(-1, -1)
             painter.drawRect(rect, Argb.Black, 1)
-        case HueVert:
+        case HueVert, LightnessVert, SaturationVert:
             rect := Math.Rectangle{-4, yCur-4, clientRect.width+8, 8}
             painter.drawRect(rect, Argb.White, 1)
             rect.inflate(-1, -1)
@@ -129,6 +137,10 @@ impl IWnd for ColorPickerBox
                     lum = l
                 case HueVert:
                     hue = h
+                case LightnessVert:
+                    lum = l
+                case SaturationVert:
+                    sat = s
                 }
 
                 invalidate()
