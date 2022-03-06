@@ -1,11 +1,17 @@
 #global public
 using Core, Pixel
 
+enum ColorPickerBoxMode
+{
+    SaturationLightness
+    HueVert
+}
+
 struct ColorPickerBox
 {
     using wnd:      Wnd
     hue, sat, lum:  f32
-    mode            = Image.FillHslType.SaturationLightness
+    mode            = ColorPickerBoxMode.SaturationLightness
 
     dirty:      bool = true
     isMoving:   bool
@@ -19,15 +25,17 @@ impl IWnd for ColorPickerBox
     mtd computeXY()
     {
         clientRect := getClientRect()
+
+        #[Swag.Complete]
         switch mode
         {
         case SaturationLightness:
             xCur = cast(s32) (sat * clientRect.width)
             l1 := Math.lerp(1, 0.5, sat)
-            l2 := lum / l1
+            l2 := 1 - (lum / l1)
             yCur = cast(s32) (l2 * clientRect.height)
         case HueVert:
-            yCur = cast(s32) (hue * clientRect.height)
+            yCur = cast(s32) ((1 - hue) * clientRect.height)
         }
     }
 
@@ -43,7 +51,18 @@ impl IWnd for ColorPickerBox
             dirty = false
             if !img.pixels
                 img = Image.create(cast(s32) clientRect.width, cast(s32) clientRect.height, .RGBA8)
-            img.fillHsl(mode, Color.fromHsl(hue, sat, lum))
+
+            var modeFill: Image.FillHslType = ?
+
+            #[Swag.Complete]
+            switch mode
+            {
+            case SaturationLightness:   modeFill = .SaturationLightness
+            case HueVert:               modeFill = .HueVert
+            }
+
+            img.fillHsl(modeFill, Color.fromHsl(hue, sat, lum))
+
             if texture.valid
                 getApp().renderer.updateTexture(texture, img.pixels)
             else
@@ -60,6 +79,7 @@ impl IWnd for ColorPickerBox
         painter := bc.painter
         clientRect := getClientRect()
 
+        #[Swag.Complete]
         switch mode
         {
         case SaturationLightness:
@@ -100,6 +120,8 @@ impl IWnd for ColorPickerBox
                 yCur = cast(s32) pos.y
                 pix := img.getPixelColor(xCur, yCur)
                 (h, s, l) := pix.toHsl()
+
+                #[Swag.Complete]
                 switch mode
                 {
                 case SaturationLightness:
@@ -109,7 +131,6 @@ impl IWnd for ColorPickerBox
                     hue = h
                 }
 
-                computeXY()
                 invalidate()
             }
 
@@ -144,8 +165,14 @@ impl ColorPickerBox
         invalidate()
     }
 
+    // Returns the selected color
+    mtd getColor()->Color
+    {
+        return Color.fromHsl(hue, sat, lum)
+    }
+
     // Set the base color, and repaint
-    mtd setMode(mode: Image.FillHslType)
+    mtd setMode(mode: ColorPickerBoxMode)
     {
         self.mode = #self.mode
         dirty = true

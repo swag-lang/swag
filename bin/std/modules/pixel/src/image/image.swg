@@ -211,6 +211,7 @@ impl Image
         var result: retval
         x := Math.clamp(pixX, 0, width - 1)
         y := Math.clamp(pixY, 0, height - 1)
+        y = height - y - 1
 
         #[Swag.Complete]
         switch pf
