@@ -170,7 +170,7 @@ impl Color
     }
 
     // Initialize color with hue, saturation, lightness
-    func setHsl(using self, h, s, l: f32)
+    mtd setHsl(h, s, l: f32)
     {
         func hueToCol(m1, m2, hue: f32)->u8
         {

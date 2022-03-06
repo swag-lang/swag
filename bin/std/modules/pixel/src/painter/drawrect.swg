@@ -14,6 +14,11 @@ impl Painter
         drawRect(left, top, width, height, sharedSolidPen)
     }
 
+    func drawRect(using self, rect: Math.Rectangle, color: Color, penSize: f32)
+    {
+        drawRect(rect.x, rect.y, rect.width, rect.height, color, penSize)
+    }
+
     func drawRect(using self, left, top, width, height: f32, pen: Pen)
     {
         if width == 0 or height == 0 or pen.brush.color.a == 0 or pen.size == 0

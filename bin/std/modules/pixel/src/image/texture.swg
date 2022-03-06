@@ -2,9 +2,10 @@
 
 struct Texture
 {
-    handle:        TextureHandle
-    pf:            PixelFormat = ?
-    width, height: s32
+    handle:         TextureHandle
+    pf:             PixelFormat = ?
+    width, height:  s32
+    valid:          bool
 }
 
 enum InterpolationMode

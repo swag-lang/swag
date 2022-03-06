@@ -27,7 +27,7 @@ var app: Application
     createView1(tab, view1)
     createView2(tab, view2)
     createView3(tab, view3)
-    tab.select(0)
+    tab.select(3)
     surface0.show()
 
     //surface1 := try app.createSurface(100+W+10, 100, W, H, SurfaceFlags.Secondary | SurfaceFlags.SmallCaption | SurfaceFlags.CloseBtn)

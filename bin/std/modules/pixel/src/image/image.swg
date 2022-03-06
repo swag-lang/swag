@@ -204,4 +204,43 @@ impl Image
         #if PF == .RGB8  { pixDst[0] = r; pixDst[1] = g; pixDst[2] = b; }
         #if PF == .RGBA8 { pixDst[0] = r; pixDst[1] = g; pixDst[2] = b; pixDst[3] = a; }
     }
+
+    // Returns the color at the given coordinate
+    mtd getPixelColor(pixX, pixY: s32)->Color
+    {
+        var result: retval
+        x := Math.clamp(pixX, 0, width - 1)
+        y := Math.clamp(pixY, 0, height - 1)
+
+        #[Swag.Complete]
+        switch pf
+        {
+        case RGBA8:
+            pix := pixels + (x * 4) + (y * width * 4)
+            result.r = pix[0]
+            result.g = pix[1]
+            result.b = pix[2]
+            result.a = pix[3]
+        case RGB8:
+            pix := pixels + (x * 3) + (y * width * 3)
+            result.r = pix[0]
+            result.g = pix[1]
+            result.b = pix[2]
+            result.a = 255
+        case BGRA8:
+            pix := pixels + (x * 4) + (y * width * 4)
+            result.b = pix[0]
+            result.g = pix[1]
+            result.r = pix[2]
+            result.a = pix[3]
+        case BGR8:
+            pix := pixels + (x * 3) + (y * width * 3)
+            result.b = pix[0]
+            result.g = pix[1]
+            result.r = pix[2]
+            result.a = 255
+        }
+
+        return result
+    }
 }

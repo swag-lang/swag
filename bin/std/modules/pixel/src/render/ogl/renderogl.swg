@@ -243,6 +243,7 @@ impl RenderOgl
         result.width = image.width
         result.height = image.height
         result.pf = image.pf
+        result.valid = true
         return result
     }
 
@@ -266,9 +267,10 @@ impl RenderOgl
     }
 
     // Unregister a texture created with 'addImage'
-    mtd removeTexture(texture: Texture)
+    mtd removeTexture(texture: *Texture)
     {
         glDeleteTextures(1, cast (*GLuint) &texture.handle)
+        texture.valid = false
     }
 
     // Translate the world transform
