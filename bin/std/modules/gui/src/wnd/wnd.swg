@@ -1,6 +1,8 @@
 #global public
 using Core, Pixel
 
+alias WndId = string
+
 enum DockStyle
 {
     None

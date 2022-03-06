@@ -1,1 +1,0 @@
-public alias WndId = string
