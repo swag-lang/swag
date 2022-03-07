@@ -249,12 +249,21 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo
         // Parameters
         concreteType->parameters.buffer = 0;
         concreteType->parameters.count  = realType->parameters.size();
+
+        // Do not count the first generated parameter of a closure
+        int firstParam = 0;
+        if (realType->isClosure())
+        {
+            concreteType->parameters.count--;
+            firstParam = 1;
+        }
+
         if (concreteType->parameters.count)
         {
             uint32_t count = (uint32_t) realType->parameters.size();
             uint32_t storageArray;
             auto     addrArray = (ConcreteTypeInfoParam*) makeConcreteSlice(context, count * sizeof(ConcreteTypeInfoParam), concreteTypeInfoValue, storageSegment, storageOffset, &concreteType->parameters.buffer, storageArray);
-            for (int param = 0; param < concreteType->parameters.count; param++)
+            for (int param = firstParam; param < realType->parameters.size(); param++)
             {
                 SWAG_CHECK(makeConcreteParam(context, addrArray + param, storageSegment, storageArray, realType->parameters[param], cflags));
                 storageArray += sizeof(ConcreteTypeInfoParam);
