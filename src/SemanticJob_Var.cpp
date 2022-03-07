@@ -597,7 +597,12 @@ bool SemanticJob::deduceLambdaTypeAffect(SemanticContext* context, AstVarDecl* n
                 }
 
                 typeLambda = CastTypeInfo<TypeInfoFuncAttr>(typeOverload->parameters[1]->typeInfo, TypeInfoKind::Lambda);
-                if (typeLambda->parameters.count != node->parent->childs.size())
+
+                auto paramCount = node->parent->childs.size();
+                if (typeLambda->isClosure() && !node->ownerFct->captureParameters)
+                    paramCount += 1;
+
+                if (typeLambda->parameters.count != paramCount)
                 {
                     checkOver.erase_unordered(i);
                     i--;
