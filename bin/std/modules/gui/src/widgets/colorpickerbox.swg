@@ -171,6 +171,35 @@ impl ColorPickerBox
         return ret
     }
 
+    mtd changeHsl(h, s, l: f32 = -1)
+    {
+        changed := false
+        if h >= 0 and h != hue
+        {
+            hue = h
+            changed = true
+        }
+
+        if s >= 0 and s != sat
+        {
+            sat = s
+            changed = true
+        }
+
+        if l >= 0 and l != lum
+        {
+            lum = l
+            changed = true
+        }
+
+        if changed
+        {
+            dirty = true
+            invalidate()
+            sigChanged.call(self)
+        }
+    }
+
     // Set the base color, and repaint
     mtd setColor(col: Color)
     {

@@ -9,12 +9,10 @@ func createView3(tabView: *Tab, view: *Wnd)
 
         sb1 := ColorPickerBox.create(view, @{240, 10, 30, 200})
         sb1.setMode(.HueVert)
-        sb1.setColor(Argb.Green)
         sb1.sigChanged += @|sb0|(t) {
-            sb0.hue = t.hue
-            sb0.dirty = true
-            sb0.invalidate()
+            sb0.changeHsl(h: t.hue)
         }
+        sb1.setColor(Argb.Green)
     }
 
     {
