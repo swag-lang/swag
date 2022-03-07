@@ -371,6 +371,12 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
     }
 }
 
+bool JobContext::report(const char* hint, const Diagnostic& diag, const vector<const Diagnostic*>& notes)
+{
+    PushErrHint errh(hint);
+    return report(diag, notes);
+}
+
 bool JobContext::report(const Diagnostic& diag, const vector<const Diagnostic*>& notes)
 {
     if (silentError)

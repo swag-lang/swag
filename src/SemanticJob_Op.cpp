@@ -358,11 +358,11 @@ bool SemanticJob::hasUserOp(SemanticContext* context, const Utf8& name, TypeInfo
         vector<const Diagnostic*> notes;
         for (auto& f : results)
         {
-            auto note = new Diagnostic{f.usingField->declNode, Fmt("`%s` has been found in `%s` because of a using field", name.c_str(), f.parentStruct->getDisplayNameC()), DiagnosticLevel::Note};
+            auto note = new Diagnostic{f.usingField->declNode, Fmt(Nte(Nte0017), name.c_str(), f.parentStruct->getDisplayNameC()), DiagnosticLevel::Note};
             notes.push_back(note);
         }
 
-        return context->report(diag, notes);
+        return context->report(Fmt(Hnt(Hnt0047), name.c_str()), diag, notes);
     }
 
     *result = results[0].symbol;
