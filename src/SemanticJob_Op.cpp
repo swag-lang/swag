@@ -514,8 +514,9 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
     if (context->result != ContextResult::Done)
         return true;
 
-    auto node = context->node;
-    auto job  = context->job;
+    auto node       = context->node;
+    auto job        = context->job;
+    auto sourceFile = context->sourceFile;
 
     SymbolMatchContext symMatchContext;
     symMatchContext.flags |= SymbolMatchContext::MATCH_UNCONST; // Do not test const
@@ -591,9 +592,68 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
     {
         if (i < oneMatch->solvedParameters.size() && oneMatch->solvedParameters[i])
         {
-            SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch->solvedParameters[i]->typeInfo, nullptr, params[i], castFlags));
+            auto toType = oneMatch->solvedParameters[i]->typeInfo;
+            SWAG_CHECK(TypeManager::makeCompatibles(context, toType, nullptr, params[i], castFlags));
             if (context->result == ContextResult::Pending)
                 return true;
+
+            auto makePtrL = params[i];
+
+            // If passing a closure
+            auto toTypeRef = TypeManager::concreteType(toType, CONCRETE_ALIAS);
+            if (makePtrL && toTypeRef && toTypeRef->isClosure())
+            {
+                if (makePtrL->kind == AstNodeKind::MakePointer || makePtrL->kind == AstNodeKind::MakePointerLambda || (makePtrL->typeInfo && makePtrL->typeInfo->isLambda()))
+                {
+                    auto oldParent = makePtrL->parent;
+                    auto oldIdx    = makePtrL->childParentIdx;
+                    Ast::removeFromParent(makePtrL);
+
+                    auto nodeCall = Ast::newFuncCallParam(makePtrL->sourceFile, oldParent);
+                    nodeCall->flags |= AST_REVERSE_SEMANTIC;
+                    Ast::removeFromParent(nodeCall);
+                    Ast::insertChild(oldParent, nodeCall, oldIdx);
+                    Ast::addChildBack(nodeCall, makePtrL);
+
+                    auto varNode = Ast::newVarDecl(sourceFile, Fmt("__ctmp_%d", g_UniqueID.fetch_add(1)), nodeCall);
+
+                    if (makePtrL->typeInfo->isLambda())
+                    {
+                        varNode->assignment = Ast::clone(makePtrL, varNode);
+                        Ast::removeFromParent(makePtrL);
+                    }
+                    else
+                    {
+                        makePtrL->semFlags |= AST_SEM_ONCE;
+                        Ast::removeFromParent(makePtrL);
+                        Ast::addChildBack(varNode, makePtrL);
+                        varNode->assignment = makePtrL;
+                    }
+
+                    varNode->type           = Ast::newTypeExpression(sourceFile, varNode);
+                    varNode->type->typeInfo = toType;
+                    varNode->type->flags |= AST_NO_SEMANTIC;
+
+                    auto idRef = Ast::newIdentifierRef(sourceFile, varNode->token.text, nodeCall);
+                    idRef->allocateExtension();
+                    idRef->extension->exportNode = makePtrL;
+
+                    // Put child front, because emitFuncCallParam wants the parameter to be the first
+                    Ast::removeFromParent(idRef);
+                    Ast::addChildFront(nodeCall, idRef);
+
+                    // Add the 2 nodes to the semantic
+                    context->job->nodes.push_back(nodeCall);
+
+                    // If call is inlined, then the identifier will be reevaluated, and the new variable, which is a child,
+                    // will be reevaluated too, so twice because of the push above. So we set a special flag to not reevaluate
+                    // it twice.
+                    //varNode->semFlags |= AST_SEM_ONCE;
+
+                    context->result = ContextResult::NewChilds;
+                    return true;
+                }
+            }
         }
     }
 

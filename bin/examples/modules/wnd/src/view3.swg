@@ -3,15 +3,18 @@ using Core, Gui, Pixel
 func createView3(tabView: *Tab, view: *Wnd)
 {
     {
-        sb := ColorPickerBox.create(view, @{10, 10, 200, 200})
-        sb.setMode(.SaturationLightness)
-        sb.setColor(Argb.Blue)
-    }
+        sb0 := ColorPickerBox.create(view, @{10, 10, 200, 200})
+        sb0.setMode(.SaturationLightness)
+        sb0.setColor(Argb.Blue)
 
-    {
-        sb := ColorPickerBox.create(view, @{240, 10, 30, 200})
-        sb.setMode(.HueVert)
-        sb.setColor(Argb.Green)
+        sb1 := ColorPickerBox.create(view, @{240, 10, 30, 200})
+        sb1.setMode(.HueVert)
+        sb1.setColor(Argb.Green)
+        sb1.sigChanged += @|sb0|(t) {
+            sb0.hue = t.hue
+            sb0.dirty = true
+            sb0.invalidate()
+        }
     }
 
     {

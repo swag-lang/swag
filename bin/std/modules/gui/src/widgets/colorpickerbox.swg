@@ -14,6 +14,7 @@ struct ColorPickerBox
     using wnd:      Wnd
     hue, sat, lum:  f32
     mode            = ColorPickerBoxMode.SaturationLightness
+    sigChanged:     SigArray'closure(*Self)
 
     dirty:      bool = true
     isMoving:   bool
@@ -143,6 +144,7 @@ impl IWnd for ColorPickerBox
                     sat = s
                 }
 
+                sigChanged.call(self)
                 invalidate()
             }
 
@@ -175,6 +177,7 @@ impl ColorPickerBox
         (hue, sat, lum) = col.toHsl()
         dirty = true
         invalidate()
+        sigChanged.call(self)
     }
 
     // Returns the selected color

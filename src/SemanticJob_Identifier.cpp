@@ -396,30 +396,29 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
 
         // If passing a closure
         auto toTypeRef = TypeManager::concreteType(toType, CONCRETE_ALIAS);
-        if (!nodeCall->childs.empty() && toTypeRef && toTypeRef->isClosure())
+        auto makePtrL  = nodeCall->childs.empty() ? nullptr : nodeCall->childs.front();
+
+        if (makePtrL && toTypeRef && toTypeRef->isClosure())
         {
-            auto front = nodeCall->childs.front();
-            if (front->kind == AstNodeKind::MakePointer || front->kind == AstNodeKind::MakePointerLambda || (front->typeInfo && front->typeInfo->isLambda()))
+            if (makePtrL->kind == AstNodeKind::MakePointer || makePtrL->kind == AstNodeKind::MakePointerLambda || (makePtrL->typeInfo && makePtrL->typeInfo->isLambda()))
             {
-                auto makePtrL = nodeCall->childs.front();
-                auto varNode  = Ast::newVarDecl(sourceFile, Fmt("__ctmp_%d", g_UniqueID.fetch_add(1)), identifier);
+                auto varNode = Ast::newVarDecl(sourceFile, Fmt("__ctmp_%d", g_UniqueID.fetch_add(1)), identifier);
 
                 // Put child front, because emitCall wants the parameters to be the last
                 Ast::removeFromParent(varNode);
                 Ast::addChildFront(identifier, varNode);
 
-                auto fcp = nodeCall->childs.front();
-                if (fcp->typeInfo->isLambda())
+                if (makePtrL->typeInfo->isLambda())
                 {
-                    varNode->assignment = Ast::clone(fcp, varNode);
-                    Ast::removeFromParent(fcp);
+                    varNode->assignment = Ast::clone(makePtrL, varNode);
+                    Ast::removeFromParent(makePtrL);
                 }
                 else
                 {
-                    fcp->semFlags |= AST_SEM_ONCE;
-                    Ast::removeFromParent(fcp);
-                    Ast::addChildBack(varNode, fcp);
-                    varNode->assignment = fcp;
+                    makePtrL->semFlags |= AST_SEM_ONCE;
+                    Ast::removeFromParent(makePtrL);
+                    Ast::addChildBack(varNode, makePtrL);
+                    varNode->assignment = makePtrL;
                 }
 
                 varNode->type           = Ast::newTypeExpression(sourceFile, varNode);
