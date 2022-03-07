@@ -1,0 +1,28 @@
+//#global skip
+
+struct A
+{
+    x: closure()
+}
+
+impl A
+{
+    #[Swag.Inline]
+    mtd opAffect(p: closure())
+    {
+        x = p
+    }
+}
+
+var G = 0
+
+//#[Swag.PrintBc]
+#test
+{
+    var x: A
+    x = @() {
+        G = 1
+    }
+    x.x()
+    @assert(G == 1)
+}

@@ -395,6 +395,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
         }
 
         // If passing a closure
+        // :FctCallParamClosure
         auto toTypeRef = TypeManager::concreteType(toType, CONCRETE_ALIAS);
         auto makePtrL  = nodeCall->childs.empty() ? nullptr : nodeCall->childs.front();
 

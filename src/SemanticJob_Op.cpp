@@ -600,11 +600,13 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
             auto makePtrL = params[i];
 
             // If passing a closure
+            // :FctCallParamClosure
             auto toTypeRef = TypeManager::concreteType(toType, CONCRETE_ALIAS);
             if (makePtrL && toTypeRef && toTypeRef->isClosure())
             {
                 if (makePtrL->kind == AstNodeKind::MakePointer || makePtrL->kind == AstNodeKind::MakePointerLambda || (makePtrL->typeInfo && makePtrL->typeInfo->isLambda()))
                 {
+                    // Create a function call param node, and move the node inside it
                     auto oldParent = makePtrL->parent;
                     auto oldIdx    = makePtrL->childParentIdx;
                     Ast::removeFromParent(makePtrL);
@@ -644,11 +646,6 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
 
                     // Add the 2 nodes to the semantic
                     context->job->nodes.push_back(nodeCall);
-
-                    // If call is inlined, then the identifier will be reevaluated, and the new variable, which is a child,
-                    // will be reevaluated too, so twice because of the push above. So we set a special flag to not reevaluate
-                    // it twice.
-                    //varNode->semFlags |= AST_SEM_ONCE;
 
                     context->result = ContextResult::NewChilds;
                     return true;
