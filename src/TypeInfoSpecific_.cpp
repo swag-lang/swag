@@ -569,7 +569,6 @@ void TypeInfoFuncAttr::computeWhateverName(Utf8& resName, uint32_t nameType)
             if (nameType == COMPUTE_SCOPED_NAME_EXPORT)
                 resName += "closure";
             resName += "|";
-            resName += "|";
             for (int i = 0; i < capture.size(); i++)
             {
                 if (i)
