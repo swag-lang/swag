@@ -571,6 +571,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
             }
         }
 
+        PushErrHint eh(Fmt(Hnt(Hnt0047), name.c_str()));
         SWAG_CHECK(matchIdentifierParameters(context, listTryMatch, nullptr, justCheck ? MIP_JUST_CHECK : 0));
         if (context->result == ContextResult::Pending)
             return true;

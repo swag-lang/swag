@@ -584,15 +584,33 @@ bool SemanticJob::deduceLambdaTypeAffect(SemanticContext* context, AstVarDecl* n
             if (!symbol || symbol->overloads.empty())
                 return true;
 
-            if (symbol->overloads.size() == 1)
+            // Just keep overloads with a lambda as a parameter
+            auto checkOver = symbol->overloads;
+            for (int i = 0; i < checkOver.size(); i++)
             {
-                auto typeOverload = CastTypeInfo<TypeInfoFuncAttr>(symbol->overloads.front()->typeInfo, TypeInfoKind::FuncAttr);
-                typeLambda        = CastTypeInfo<TypeInfoFuncAttr>(typeOverload->parameters[1]->typeInfo, TypeInfoKind::Lambda);
+                auto typeOverload = CastTypeInfo<TypeInfoFuncAttr>(checkOver[i]->typeInfo, TypeInfoKind::FuncAttr);
+                if (typeOverload->parameters[1]->typeInfo->kind != TypeInfoKind::Lambda)
+                {
+                    checkOver.erase_unordered(i);
+                    i--;
+                    continue;
+                }
+
+                typeLambda = CastTypeInfo<TypeInfoFuncAttr>(typeOverload->parameters[1]->typeInfo, TypeInfoKind::Lambda);
+                if (typeLambda->parameters.count != node->parent->childs.size())
+                {
+                    checkOver.erase_unordered(i);
+                    i--;
+                    continue;
+                }
             }
-            else
-            {
-                SWAG_ASSERT(false); // TODO
-            }
+
+            // Will raise an error later
+            if (checkOver.size() != 1)
+                return true;
+
+            auto typeOverload = CastTypeInfo<TypeInfoFuncAttr>(checkOver.front()->typeInfo, TypeInfoKind::FuncAttr);
+            typeLambda        = CastTypeInfo<TypeInfoFuncAttr>(typeOverload->parameters[1]->typeInfo, TypeInfoKind::Lambda);
         }
     }
     else

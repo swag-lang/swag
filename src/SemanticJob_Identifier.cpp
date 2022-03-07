@@ -1688,7 +1688,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
             return false;
 
         auto                      symbol = overloads[0]->overload->symbol;
-        Diagnostic                diag{node, Fmt(Err(Err0115), SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
+        Diagnostic                diag{node ? node : context->node, Fmt(Err(Err0115), SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())};
         vector<const Diagnostic*> notes;
         for (auto match : genericMatches)
         {
@@ -1705,11 +1705,13 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
             }
 
             auto with = Ast::computeGenericParametersReplacement(params);
-            couldBe += " ... ";
-            couldBe += with;
+            if (!with.empty())
+            {
+                couldBe += " ... ";
+                couldBe += with;
+            }
 
             auto note = new Diagnostic{overload->node, couldBe, DiagnosticLevel::Note};
-            // note->remarks.push_back(with);
 
             note->showRange             = false;
             note->showMultipleCodeLines = false;

@@ -582,15 +582,20 @@ namespace Ast
         if (params.empty())
             return "";
 
-        Utf8 result = "with ";
+        Utf8 result;
         for (int i = 0; i < (int) params.size(); i++)
         {
             if (i)
                 result += ", ";
             auto param = params[i];
-            result += param->namedParam;
-            result += " = ";
-            result += param->typeInfo->name;
+            if (param->namedParam != param->typeInfo->name)
+            {
+                if (result.empty())
+                    result = "with ";
+                result += param->namedParam;
+                result += " = ";
+                result += param->typeInfo->name;
+            }
         }
 
         return result;
