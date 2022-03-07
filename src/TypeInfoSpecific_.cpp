@@ -562,22 +562,11 @@ void TypeInfoFuncAttr::computeWhateverName(Utf8& resName, uint32_t nameType)
     computeNameGenericParameters(genericParameters, resName, nameType);
 
     // Closure
-    if (kind == TypeInfoKind::Lambda)
+    if (kind == TypeInfoKind::Lambda && nameType == COMPUTE_SCOPED_NAME_EXPORT)
     {
         if (isClosure())
-        {
-            if (nameType == COMPUTE_SCOPED_NAME_EXPORT)
-                resName += "closure";
-            resName += "|";
-            for (int i = 0; i < capture.size(); i++)
-            {
-                if (i)
-                    resName += ", ";
-                resName += capture[i]->typeInfo->computeWhateverName(nameType);
-            }
-            resName += "|";
-        }
-        else if (nameType == COMPUTE_SCOPED_NAME_EXPORT)
+            resName += "closure";
+        else
             resName += "func";
     }
 
