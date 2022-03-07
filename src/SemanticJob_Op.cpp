@@ -437,6 +437,56 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
     return resolveUserOp(context, name, opConst, opType, left, params, justCheck);
 }
 
+bool SemanticJob::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTypeInfo, TypeInfo* rightTypeInfo, AstNode* left, AstNode* right)
+{
+    // opAffectSuffix
+    if (right->semFlags & AST_SEM_LITERAL_SUFFIX)
+    {
+        SWAG_ASSERT(right->kind == AstNodeKind::Literal);
+        auto suffix = right->childs.front()->token.text;
+
+        SymbolName* symbol = nullptr;
+        SWAG_CHECK(hasUserOp(context, g_LangSpec->name_opAffectSuffix, left, &symbol));
+        if (!symbol)
+        {
+            if (context->result != ContextResult::Done)
+                return true;
+
+            Diagnostic diag{context->node, Fmt(Err(Err0889), leftTypeInfo->getDisplayNameC(), rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC())};
+            auto       note0 = new Diagnostic{right->childs.front(), Fmt(Nte(Nte0057), suffix.c_str()), DiagnosticLevel::Note};
+            auto       note1 = new Diagnostic{leftTypeInfo->declNode, Fmt(Nte(Nte0027), leftTypeInfo->getDisplayNameC()), DiagnosticLevel::Note};
+            return context->report(Fmt(Hnt(Hnt0047), g_LangSpec->name_opAffectSuffix.c_str()), diag, note0, note1);
+        }
+
+        PushErrContext ec(context, right, Fmt(Nte(Nte0058), rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC(), g_LangSpec->name_opAffectSuffix.c_str()));
+        SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAffectSuffix, suffix, nullptr, left, right, false));
+        if (context->result != ContextResult::Done)
+            return true;
+        right->semFlags &= ~AST_SEM_LITERAL_SUFFIX;
+    }
+
+    // opAffect
+    else
+    {
+        SymbolName* symbol = nullptr;
+        SWAG_CHECK(hasUserOp(context, g_LangSpec->name_opAffect, left, &symbol));
+        if (!symbol)
+        {
+            if (context->result != ContextResult::Done)
+                return true;
+
+            auto       note = new Diagnostic{leftTypeInfo->declNode, Fmt(Nte(Nte0027), leftTypeInfo->getDisplayNameC()), DiagnosticLevel::Note};
+            Diagnostic diag{context->node, Fmt(Err(Err0908), leftTypeInfo->getDisplayNameC(), rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC())};
+            return context->report(Fmt(Hnt(Hnt0047), g_LangSpec->name_opAffect.c_str()), diag, note);
+        }
+
+        PushErrContext ec(context, right, Fmt(Nte(Nte0058), rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC(), g_LangSpec->name_opAffect.c_str()));
+        SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAffect, nullptr, nullptr, left, right, false));
+    }
+
+    return true;
+}
+
 bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, const char* opConst, TypeInfo* opType, AstNode* left, VectorNative<AstNode*>& params, bool justCheck)
 {
     SymbolName* symbol = nullptr;
@@ -448,7 +498,17 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
             return false;
 
         auto leftType = TypeManager::concreteType(left->typeInfo);
-        return context->report(left->parent, Fmt(Err(Err0079), name.c_str(), leftType->getDisplayNameC()));
+        auto note     = new Diagnostic{leftType->declNode, Fmt(Nte(Nte0027), leftType->getDisplayNameC()), DiagnosticLevel::Note};
+        if (!opConst)
+        {
+            Diagnostic diag{left->parent, Fmt(Err(Err0079), name.c_str(), leftType->getDisplayNameC())};
+            return context->report(Fmt(Hnt(Hnt0047), name.c_str()), diag, note);
+        }
+        else
+        {
+            Diagnostic diag{left->parent, Fmt(Err(Err0186), name.c_str(), leftType->getDisplayNameC(), opConst)};
+            return context->report(Fmt(Hnt(Hnt0047), name.c_str()), diag, note);
+        }
     }
 
     if (context->result != ContextResult::Done)

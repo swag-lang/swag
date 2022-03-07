@@ -12,51 +12,6 @@
 #include "LanguageSpec.h"
 #include "Mutex.h"
 
-bool SemanticJob::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTypeInfo, TypeInfo* rightTypeInfo, AstNode* left, AstNode* right)
-{
-    if (right->semFlags & AST_SEM_LITERAL_SUFFIX)
-    {
-        SWAG_ASSERT(right->kind == AstNodeKind::Literal);
-        auto suffix = right->childs.front()->token.text;
-
-        SymbolName* symbol = nullptr;
-        SWAG_CHECK(hasUserOp(context, g_LangSpec->name_opAffectSuffix, left, &symbol));
-        if (!symbol)
-        {
-            if (context->result != ContextResult::Done)
-                return true;
-
-            Utf8 msg  = Fmt(Err(Err0889), leftTypeInfo->getDisplayNameC(), rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC());
-            auto note = new Diagnostic{right->childs.front(), Fmt(Nte(Nte0057), suffix.c_str()), DiagnosticLevel::Note};
-            return context->report({right, msg}, note);
-        }
-
-        PushErrContext ec(context, right, Fmt(Nte(Nte0058), rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC(), g_LangSpec->name_opAffectSuffix.c_str()));
-        SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAffectSuffix, suffix, nullptr, left, right, false));
-        if (context->result != ContextResult::Done)
-            return true;
-        right->semFlags &= ~AST_SEM_LITERAL_SUFFIX;
-    }
-    else
-    {
-        SymbolName* symbol = nullptr;
-        SWAG_CHECK(hasUserOp(context, g_LangSpec->name_opAffect, left, &symbol));
-        if (!symbol)
-        {
-            if (context->result != ContextResult::Done)
-                return true;
-
-            Utf8 msg = Fmt(Err(Err0908), leftTypeInfo->getDisplayNameC(), rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC());
-            return context->report(right, msg);
-        }
-
-        PushErrContext ec(context, right, Fmt(Nte(Nte0058), rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC(), g_LangSpec->name_opAffect.c_str()));
-        SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAffect, nullptr, nullptr, left, right, false));
-    }
-
-    return true;
-}
-
 bool SemanticJob::waitForStructUserOps(SemanticContext* context, AstNode* node)
 {
     SymbolName* symbol = nullptr;

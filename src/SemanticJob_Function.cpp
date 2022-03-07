@@ -456,9 +456,11 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
             {
                 auto front = op->childs.front();
                 SWAG_ASSERT(front->typeInfo);
-                SWAG_ASSERT(front->typeInfo->kind == TypeInfoKind::Lambda);
-                auto typeFct       = CastTypeInfo<TypeInfoFuncAttr>(front->typeInfo, TypeInfoKind::Lambda);
-                typeNode->typeInfo = typeFct->returnType;
+                if (front->typeInfo->kind == TypeInfoKind::Lambda)
+                {
+                    auto typeFct       = CastTypeInfo<TypeInfoFuncAttr>(front->typeInfo, TypeInfoKind::Lambda);
+                    typeNode->typeInfo = typeFct->returnType;
+                }
             }
         }
     }

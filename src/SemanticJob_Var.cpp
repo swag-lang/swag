@@ -580,10 +580,18 @@ bool SemanticJob::deduceLambdaTypeAffect(SemanticContext* context, AstVarDecl* n
             if (context->result != ContextResult::Done)
                 return true;
 
+            // Will raise an error later
+            if (!symbol || symbol->overloads.empty())
+                return true;
+
             if (symbol->overloads.size() == 1)
             {
                 auto typeOverload = CastTypeInfo<TypeInfoFuncAttr>(symbol->overloads.front()->typeInfo, TypeInfoKind::FuncAttr);
                 typeLambda        = CastTypeInfo<TypeInfoFuncAttr>(typeOverload->parameters[1]->typeInfo, TypeInfoKind::Lambda);
+            }
+            else
+            {
+                SWAG_ASSERT(false); // TODO
             }
         }
     }
