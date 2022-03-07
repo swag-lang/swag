@@ -564,58 +564,92 @@ bool SemanticJob::deduceLambdaTypeAffect(SemanticContext* context, AstVarDecl* n
         return true;
 
     auto front = op->childs.front();
+    auto back  = op->childs.back();
     SWAG_ASSERT(front->typeInfo);
 
-    SymbolName* symbol;
     if (front->typeInfo->kind == TypeInfoKind::Struct)
     {
         if (op->deducedLambdaType)
             typeLambda = op->deducedLambdaType;
         else
         {
-            if (op->token.id == TokenId::SymEqual)
-                SWAG_CHECK(waitUserOp(context, g_LangSpec->name_opAffect, front, &symbol));
-            else
-                SWAG_CHECK(waitUserOp(context, g_LangSpec->name_opAssign, front, &symbol));
-            if (context->result != ContextResult::Done)
-                return true;
-
-            // Will raise an error later
-            if (!symbol || symbol->overloads.empty())
-                return true;
-
-            // Just keep overloads with a lambda as a parameter
-            auto checkOver = symbol->overloads;
-            for (int i = 0; i < checkOver.size(); i++)
+            SymbolName* symbol = nullptr;
+            for (int oneTry = 0; oneTry < 2; oneTry++)
             {
-                auto typeOverload = CastTypeInfo<TypeInfoFuncAttr>(checkOver[i]->typeInfo, TypeInfoKind::FuncAttr);
-                if (typeOverload->parameters[1]->typeInfo->kind != TypeInfoKind::Lambda)
+                if (op->token.id == TokenId::SymEqual)
                 {
-                    checkOver.erase_unordered(i);
-                    i--;
-                    continue;
+                    if (oneTry == 0)
+                    {
+                        SWAG_CHECK(waitUserOp(context, g_LangSpec->name_opAffect, front, &symbol));
+                        if (context->result != ContextResult::Done)
+                            return true;
+                    }
+                    else
+                    {
+                        back->typeInfo = g_TypeMgr->typeInfoUndefined;
+                        SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAffect, nullptr, nullptr, front, back, false));
+                        if (context->result != ContextResult::Done)
+                            return true;
+                    }
+                }
+                else
+                {
+                    if (oneTry == 0)
+                    {
+                        SWAG_CHECK(waitUserOp(context, g_LangSpec->name_opAssign, front, &symbol));
+                        if (context->result != ContextResult::Done)
+                            return true;
+                    }
+                    else
+                    {
+                        back->typeInfo = g_TypeMgr->typeInfoUndefined;
+                        SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAssign, op->token.text, nullptr, front, back, false));
+                        if (context->result != ContextResult::Done)
+                            return true;
+                    }
                 }
 
-                typeLambda = CastTypeInfo<TypeInfoFuncAttr>(typeOverload->parameters[1]->typeInfo, TypeInfoKind::Lambda);
+                // Will raise an error later
+                if (!symbol || symbol->overloads.empty())
+                    return true;
 
-                auto paramCount = node->parent->childs.size();
-                if (typeLambda->isClosure() && !node->ownerFct->captureParameters)
-                    paramCount += 1;
-
-                if (typeLambda->parameters.count != paramCount)
+                // Just keep overloads with a lambda as a parameter
+                auto checkOver = symbol->overloads;
+                for (int i = 0; i < checkOver.size(); i++)
                 {
-                    checkOver.erase_unordered(i);
-                    i--;
-                    continue;
+                    auto typeOverload = CastTypeInfo<TypeInfoFuncAttr>(checkOver[i]->typeInfo, TypeInfoKind::FuncAttr);
+                    if (typeOverload->parameters[1]->typeInfo->kind != TypeInfoKind::Lambda)
+                    {
+                        checkOver.erase_unordered(i);
+                        i--;
+                        continue;
+                    }
+
+                    typeLambda = CastTypeInfo<TypeInfoFuncAttr>(typeOverload->parameters[1]->typeInfo, TypeInfoKind::Lambda);
+
+                    auto paramCount = node->parent->childs.size();
+                    if (typeLambda->isClosure() && !node->ownerFct->captureParameters)
+                        paramCount += 1;
+
+                    if (typeLambda->parameters.count != paramCount)
+                    {
+                        checkOver.erase_unordered(i);
+                        i--;
+                        continue;
+                    }
                 }
+
+                // Will raise an error later
+                if (checkOver.size() != 1)
+                    continue;
+
+                auto typeOverload = CastTypeInfo<TypeInfoFuncAttr>(checkOver.front()->typeInfo, TypeInfoKind::FuncAttr);
+                typeLambda        = CastTypeInfo<TypeInfoFuncAttr>(typeOverload->parameters[1]->typeInfo, TypeInfoKind::Lambda);
+                break;
             }
 
-            // Will raise an error later
-            if (checkOver.size() != 1)
+            if (!typeLambda)
                 return true;
-
-            auto typeOverload = CastTypeInfo<TypeInfoFuncAttr>(checkOver.front()->typeInfo, TypeInfoKind::FuncAttr);
-            typeLambda        = CastTypeInfo<TypeInfoFuncAttr>(typeOverload->parameters[1]->typeInfo, TypeInfoKind::Lambda);
         }
     }
     else
