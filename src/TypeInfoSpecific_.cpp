@@ -19,6 +19,8 @@ bool TypeInfoNative::isSame(TypeInfo* to, uint32_t isSameFlags)
     {
         if (to->kind == TypeInfoKind::Generic)
             return true;
+        if (nativeType == NativeTypeKind::Undefined)
+            return true;
     }
 
     if (to->kind == TypeInfoKind::Alias)
@@ -562,12 +564,20 @@ void TypeInfoFuncAttr::computeWhateverName(Utf8& resName, uint32_t nameType)
     computeNameGenericParameters(genericParameters, resName, nameType);
 
     // Closure
-    if (kind == TypeInfoKind::Lambda && nameType == COMPUTE_SCOPED_NAME_EXPORT)
+    if (kind == TypeInfoKind::Lambda)
     {
-        if (isClosure())
-            resName += "closure";
-        else
-            resName += "func";
+        if (nameType == COMPUTE_SCOPED_NAME_EXPORT)
+        {
+            if (isClosure())
+                resName += "closure";
+            else
+                resName += "func";
+        }
+        else if (nameType == COMPUTE_DISPLAY_NAME)
+        {
+            if (isClosure())
+                resName += "||";
+        }
     }
 
     // Parameters
