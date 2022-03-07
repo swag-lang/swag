@@ -855,7 +855,7 @@ bool SyntaxJob::doLambdaExpression(AstNode* parent, AstNode** result)
     // We accept missing types if lambda is in a function call
     bool acceptMissingType = inFunCall;
     // We accept missing types if lambda is in an affectation
-    if (parent->kind == AstNodeKind::AffectOp && parent->token.id == TokenId::SymEqual)
+    if (parent->kind == AstNodeKind::AffectOp)
         acceptMissingType = true;
 
     AstNode* lambda         = nullptr;

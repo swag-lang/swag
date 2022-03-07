@@ -573,7 +573,10 @@ bool SemanticJob::deduceLambdaTypeAffect(SemanticContext* context, AstVarDecl* n
             typeLambda = op->deducedLambdaType;
         else
         {
-            SWAG_CHECK(waitUserOp(context, g_LangSpec->name_opAffect, front, &symbol));
+            if (op->token.id == TokenId::SymEqual)
+                SWAG_CHECK(waitUserOp(context, g_LangSpec->name_opAffect, front, &symbol));
+            else
+                SWAG_CHECK(waitUserOp(context, g_LangSpec->name_opAssign, front, &symbol));
             if (context->result != ContextResult::Done)
                 return true;
 
@@ -593,6 +596,7 @@ bool SemanticJob::deduceLambdaTypeAffect(SemanticContext* context, AstVarDecl* n
     auto paramIdx = node->childParentIdx;
 
     // Do not deduce from the context closure generated parameter
+    SWAG_ASSERT(typeLambda);
     if (typeLambda->isClosure() && !node->ownerFct->captureParameters)
         paramIdx += 1;
 

@@ -1381,18 +1381,14 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
             Ast::addChildBack(affectNode, leftNode);
             forceTakeAddress(leftNode);
 
-            if (affectNode->token.id == TokenId::SymEqual)
-            {
-                auto front = affectNode->childs.front();
-                front->allocateExtension();
-                front->extension->semanticAfterFct = SemanticJob::resolveAfterAffectLeft;
+            auto front = affectNode->childs.front();
+            front->allocateExtension();
+            front->extension->semanticAfterFct = SemanticJob::resolveAfterAffectLeft;
 
+            if (affectNode->token.id == TokenId::SymEqual)
                 SWAG_CHECK(doMoveExpression(affectNode->token, affectNode));
-            }
             else
-            {
                 SWAG_CHECK(doExpression(affectNode, EXPR_FLAG_NONE));
-            }
 
             if (result)
                 *result = affectNode;
