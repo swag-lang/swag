@@ -1914,6 +1914,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->a.u32].pointer = (uint8_t*) g_Allocator.alloc(size);
         context->bc->autoFree.push_back({(void*) registersRC[ip->a.u32].pointer, size});
         memcpy((void*) registersRC[ip->a.u32].pointer, ptr, count + 1);
+        registersRC[ip->a.u32].pointer[count] = 0;
         break;
     }
 

@@ -1,0 +1,44 @@
+struct A
+{
+    vv: s32 = 666
+}
+
+var G = 0
+impl A
+{
+    mtd opDrop()
+    {
+        G += 1
+        @assert(vv == 666)
+        //@print("drop ", vv, "\n");
+    }
+
+    mtd opCount()->uint     { return 6; }
+    mtd opSlice(a, b: uint)->string { return "abcdef"; }
+    mtd toString()->string  { return "abc:=0"; }
+}
+
+//#[Swag.Compiler]
+#[Swag.ConstExpr]
+func toto()->A
+{
+    var x: A
+    return x
+}
+
+//#[Swag.PrintBc]
+//#[Swag.Optim("", false)]
+#test
+{
+    //#[Swag.PrintBc]
+    //#ast
+    //{
+        r := toto()
+        @assert(cast(string) r == "abcdef")
+        //@print(@typeof(r).name)
+     //   return cast(string) r //.toString()
+    //}
+
+    if @isbytecode()
+        @assert(G == 1)
+}

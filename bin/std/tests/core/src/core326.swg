@@ -6,8 +6,9 @@ struct Employee
     date: Time.DateTime
 }
 
-#[Swag.Compiler, Swag.ConstExpr]
-func gen(type: const *Swag.TypeInfoStruct)->string
+#[Swag.Compiler]
+#[Swag.ConstExpr]
+func gen(type: const *Swag.TypeInfoStruct)->String
 {
     var result: String = "return "
 
@@ -17,18 +18,22 @@ func gen(type: const *Swag.TypeInfoStruct)->string
             result += " and "
         result += f.name
         result += " == "
-        result += " other."
+        result += "other."
         result += f.name
     }
 
-    return result.toString()
+    return result
 }
 
 impl Employee
 {
     mtd opEquals(other: Self)->bool
     {
-        #ast gen(Employee)
+        #ast
+        {
+            res := gen(Employee)
+            return cast(string) res
+        }
     }
 }
 

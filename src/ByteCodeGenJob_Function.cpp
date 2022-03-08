@@ -1221,7 +1221,10 @@ bool ByteCodeGenJob::emitReturnByCopyAddress(ByteCodeGenContext* context, AstNod
     if (node->resolvedSymbolOverload)
         node->resolvedSymbolOverload->flags |= OVERLOAD_EMITTED;
 
-    node->ownerScope->symTable.addVarToDrop(node->resolvedSymbolOverload, typeInfoFunc->returnType, node->computedValue->storageOffset);
+    // Push a var drop, except if we are in an expression (constexpr).
+    // So check that the ownerScope will be executed (the bytecode should be a parent of the scope).
+    if (context->bc->node->isParentOf(node->ownerScope->owner))
+        node->ownerScope->symTable.addVarToDrop(node->resolvedSymbolOverload, typeInfoFunc->returnType, node->computedValue->storageOffset);
 
     if (node->flags & AST_DISCARD)
         freeRegisterRC(context, node->resultRegisterRC);

@@ -85,7 +85,7 @@ func getDirectoryName(fullname: string)->string
 #[ConstExpr]
 func getFileNameWithoutExtension(fullname: string)->string
 {
-    if fullname == null 
+    if fullname == null
         return null
     Debug.assert(isValidPathName(fullname))
 
@@ -113,7 +113,7 @@ func getFileNameWithoutExtension(fullname: string)->string
 #[ConstExpr]
 func getExtension(fullname: string)->string
 {
-    if fullname == null 
+    if fullname == null
         return null
     Debug.assert(isValidPathName(fullname))
 
@@ -142,7 +142,7 @@ func getExtensionLowerCase(fullname: string)->String
 #[ConstExpr]
 func hasExtension(fullname: string)->bool
 {
-    if fullname == null 
+    if fullname == null
         return false
     Debug.assert(isValidPathName(fullname))
 

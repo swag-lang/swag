@@ -33,12 +33,16 @@ bool Module::computeExecuteResult(SourceFile* sourceFile, AstNode* node, JobCont
     node->typeInfo = TypeManager::concreteReferenceType(node->typeInfo, CONCRETE_FUNC);
     node->setFlagsValueIsComputed();
 
+    g_RunContext.registersRR[0].u64 = g_RunContext.registersRC[0]->buffer[node->resultRegisterRC[0]].u64;
+    if (node->resultRegisterRC.size() > 1)
+        g_RunContext.registersRR[1].u64 = g_RunContext.registersRC[0]->buffer[node->resultRegisterRC[1]].u64;
+
     // String
     if (realType->isNative(NativeTypeKind::String))
     {
         SWAG_ASSERT(node->resultRegisterRC.size() == 2);
-        const char* pz  = (const char*) g_RunContext.registersRC[0]->buffer[node->resultRegisterRC[0]].pointer;
-        uint32_t    len = g_RunContext.registersRC[0]->buffer[node->resultRegisterRC[1]].u32;
+        const char* pz  = (const char*) g_RunContext.registersRR[0].pointer;
+        uint32_t    len = g_RunContext.registersRR[1].u32;
         node->computedValue->text.reserve(len + 1);
         node->computedValue->text.count = len;
         memcpy(node->computedValue->text.buffer, pz, len);
@@ -159,16 +163,16 @@ bool Module::computeExecuteResult(SourceFile* sourceFile, AstNode* node, JobCont
         switch (realType->sizeOf)
         {
         case 1:
-            node->computedValue->reg.u64 = g_RunContext.registersRC[0]->buffer[node->resultRegisterRC[0]].u8;
+            node->computedValue->reg.u64 = g_RunContext.registersRR[0].u8;
             return true;
         case 2:
-            node->computedValue->reg.u64 = g_RunContext.registersRC[0]->buffer[node->resultRegisterRC[0]].u16;
+            node->computedValue->reg.u64 = g_RunContext.registersRR[0].u16;
             return true;
         case 4:
-            node->computedValue->reg.u64 = g_RunContext.registersRC[0]->buffer[node->resultRegisterRC[0]].u32;
+            node->computedValue->reg.u64 = g_RunContext.registersRR[0].u32;
             return true;
         case 8:
-            node->computedValue->reg.u64 = g_RunContext.registersRC[0]->buffer[node->resultRegisterRC[0]].u64;
+            node->computedValue->reg.u64 = g_RunContext.registersRR[0].u64;
             return true;
         }
     }
