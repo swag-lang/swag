@@ -244,7 +244,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                         return context->report(node, msg);
                     }
 
-                    SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opIndexAffect, nullptr, nullptr, left, arrayNode->structFlatParams, false));
+                    SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opIndexAffect, nullptr, nullptr, left, arrayNode->structFlatParams));
                 }
             }
             else
@@ -283,9 +283,9 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         {
             const char* op = tokenId == TokenId::SymLowerLowerEqual ? "<<=" : ">>=";
             if (arrayNode)
-                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opIndexAssign, op, nullptr, left, arrayNode->structFlatParams, false));
+                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opIndexAssign, op, nullptr, left, arrayNode->structFlatParams));
             else
-                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAssign, op, nullptr, left, right, false));
+                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAssign, op, nullptr, left, right));
             break;
         }
 
@@ -335,9 +335,9 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             else if (tokenId == TokenId::SymCircumflexEqual)
                 op = "^=";
             if (arrayNode)
-                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opIndexAssign, op, nullptr, left, arrayNode->structFlatParams, false));
+                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opIndexAssign, op, nullptr, left, arrayNode->structFlatParams));
             else
-                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAssign, op, nullptr, left, right, false));
+                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAssign, op, nullptr, left, right));
             break;
         }
 
@@ -359,9 +359,9 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         {
             const char* op = tokenId == TokenId::SymPlusEqual ? "+=" : "-=";
             if (arrayNode)
-                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opIndexAssign, op, nullptr, left, arrayNode->structFlatParams, false));
+                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opIndexAssign, op, nullptr, left, arrayNode->structFlatParams));
             else
-                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAssign, op, nullptr, left, right, false));
+                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAssign, op, nullptr, left, right));
             break;
         }
 
@@ -390,9 +390,9 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         else if (forStruct)
         {
             if (arrayNode)
-                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opIndexAssign, "/=", nullptr, left, arrayNode->structFlatParams, false));
+                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opIndexAssign, "/=", nullptr, left, arrayNode->structFlatParams));
             else
-                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAssign, "/=", nullptr, left, right, false));
+                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAssign, "/=", nullptr, left, right));
             break;
         }
 
@@ -413,9 +413,9 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         {
             const char* op = tokenId == TokenId::SymPercentEqual ? "%=" : "*=";
             if (arrayNode)
-                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opIndexAssign, op, nullptr, left, arrayNode->structFlatParams, false));
+                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opIndexAssign, op, nullptr, left, arrayNode->structFlatParams));
             else
-                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAssign, op, nullptr, left, right, false));
+                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAssign, op, nullptr, left, right));
             break;
         }
 

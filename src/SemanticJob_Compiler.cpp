@@ -102,7 +102,7 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
 
                 // opCount
                 params.push_back(node);
-                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opCount, nullptr, nullptr, node, params, false));
+                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opCount, nullptr, nullptr, node, params));
                 if (context->result != ContextResult::Done)
                     return true;
 
@@ -124,7 +124,7 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
                 tmpNode.typeInfo = g_TypeMgr->typeInfoUInt;
                 params.push_back(&tmpNode);
                 params.push_back(&tmpNode);
-                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opSlice, nullptr, nullptr, node, params, false));
+                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opSlice, nullptr, nullptr, node, params));
                 if (context->result != ContextResult::Done)
                     return true;
 
@@ -170,7 +170,7 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
                 {
                     params.clear();
                     params.push_back(node);
-                    SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opDrop, nullptr, nullptr, node, params, false));
+                    SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opDrop, nullptr, nullptr, node, params));
                     if (context->result != ContextResult::Done)
                         return true;
 

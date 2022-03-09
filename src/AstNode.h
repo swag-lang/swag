@@ -841,6 +841,7 @@ struct AstOp : public AstNode
 
     AstNode*          dependentNode     = nullptr;
     TypeInfoFuncAttr* deducedLambdaType = nullptr;
+    TypeInfoFuncAttr* tryLambdaType     = nullptr;
 };
 
 struct AstRange : public AstNode

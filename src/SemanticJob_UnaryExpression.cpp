@@ -205,13 +205,13 @@ bool SemanticJob::resolveUnaryOp(SemanticContext* context)
         switch (op->token.id)
         {
         case TokenId::SymExclam:
-            SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opUnary, "!", nullptr, child, nullptr, false));
+            SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opUnary, "!", nullptr, child, nullptr));
             break;
         case TokenId::SymMinus:
-            SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opUnary, "-", nullptr, child, nullptr, false));
+            SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opUnary, "-", nullptr, child, nullptr));
             break;
         case TokenId::SymTilde:
-            SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opUnary, "~", nullptr, child, nullptr, false));
+            SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opUnary, "~", nullptr, child, nullptr));
             break;
         }
 

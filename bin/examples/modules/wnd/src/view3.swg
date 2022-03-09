@@ -36,7 +36,7 @@ func createView3(tabView: *Tab, view: *Wnd)
         sb.addSatColors(8, Argb.Green)
         sb.addColor(Argb.Black)
         sb.addColor(Argb.White)
-        sb.sigChanged += @|sb0|(t: *PalettePicker) {
+        sb.sigChanged += @|sb0|(t) {
             sb0.setColor(t.selectedColor)
         }
     }

@@ -314,29 +314,29 @@ bool SemanticJob::resolveUserOpCommutative(SemanticContext* context, const Utf8&
 
     // Simple case
     if (leftTypeInfo->kind == TypeInfoKind::Struct && rightTypeInfo->kind != TypeInfoKind::Struct)
-        return resolveUserOp(context, name, opConst, opType, left, right, false);
+        return resolveUserOp(context, name, opConst, opType, left, right);
 
     bool okLeft  = false;
     bool okRight = false;
     if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
-        okLeft = resolveUserOp(context, name, opConst, opType, left, right, true);
+        okLeft = resolveUserOp(context, name, opConst, opType, left, right, ROP_JUST_CHECK);
         if (context->result != ContextResult::Done)
             return true;
     }
 
     if (rightTypeInfo->kind == TypeInfoKind::Struct)
     {
-        okRight = resolveUserOp(context, name, opConst, opType, right, left, true);
+        okRight = resolveUserOp(context, name, opConst, opType, right, left, ROP_JUST_CHECK);
         if (context->result != ContextResult::Done)
             return true;
     }
 
     if (okLeft || (!okRight && leftTypeInfo->kind == TypeInfoKind::Struct))
-        return resolveUserOp(context, name, opConst, opType, left, right, false);
+        return resolveUserOp(context, name, opConst, opType, left, right);
 
     node->semFlags |= AST_SEM_INVERSE_PARAMS;
-    return resolveUserOp(context, name, opConst, opType, right, left, false);
+    return resolveUserOp(context, name, opConst, opType, right, left);
 }
 
 bool SemanticJob::hasUserOp(SemanticContext* context, const Utf8& name, TypeInfoStruct* leftStruct, SymbolName** result)
@@ -427,16 +427,6 @@ bool SemanticJob::waitUserOp(SemanticContext* context, const Utf8& name, AstNode
     return true;
 }
 
-bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, const char* opConst, TypeInfo* opType, AstNode* left, AstNode* right, bool justCheck)
-{
-    VectorNative<AstNode*> params;
-    SWAG_ASSERT(left);
-    params.push_back(left);
-    if (right)
-        params.push_back(right);
-    return resolveUserOp(context, name, opConst, opType, left, params, justCheck);
-}
-
 bool SemanticJob::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTypeInfo, TypeInfo* rightTypeInfo, AstNode* left, AstNode* right)
 {
     // opAffectSuffix
@@ -459,7 +449,7 @@ bool SemanticJob::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTy
         }
 
         PushErrContext ec(context, right, Fmt(Nte(Nte0058), rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC(), g_LangSpec->name_opAffectSuffix.c_str()));
-        SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAffectSuffix, suffix, nullptr, left, right, false));
+        SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAffectSuffix, suffix, nullptr, left, right));
         if (context->result != ContextResult::Done)
             return true;
         right->semFlags &= ~AST_SEM_LITERAL_SUFFIX;
@@ -481,16 +471,28 @@ bool SemanticJob::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTy
         }
 
         PushErrContext ec(context, right, Fmt(Nte(Nte0058), rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC(), g_LangSpec->name_opAffect.c_str()));
-        SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAffect, nullptr, nullptr, left, right, false));
+        SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAffect, nullptr, nullptr, left, right));
     }
 
     return true;
 }
 
-bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, const char* opConst, TypeInfo* opType, AstNode* left, VectorNative<AstNode*>& params, bool justCheck)
+bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, const char* opConst, TypeInfo* opType, AstNode* left, AstNode* right, uint32_t ropFlags)
+{
+    VectorNative<AstNode*> params;
+    SWAG_ASSERT(left);
+    params.push_back(left);
+    if (right)
+        params.push_back(right);
+    return resolveUserOp(context, name, opConst, opType, left, params, ropFlags);
+}
+
+bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, const char* opConst, TypeInfo* opType, AstNode* left, VectorNative<AstNode*>& params, uint32_t ropFlags)
 {
     SymbolName* symbol = nullptr;
     SWAG_CHECK(waitUserOp(context, name, left, &symbol));
+
+    bool justCheck = ropFlags & ROP_JUST_CHECK;
 
     if (!symbol)
     {
@@ -601,54 +603,57 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
 
             // If passing a closure
             // :FctCallParamClosure
-            auto toTypeRef = TypeManager::concreteType(toType, CONCRETE_ALIAS);
-            if (makePtrL && toTypeRef && toTypeRef->isClosure())
+            if (!(ropFlags & ROP_SIMPLE_CAST))
             {
-                if (makePtrL->kind == AstNodeKind::MakePointer || makePtrL->kind == AstNodeKind::MakePointerLambda || (makePtrL->typeInfo && makePtrL->typeInfo->isLambda()))
+                auto toTypeRef = TypeManager::concreteType(toType, CONCRETE_ALIAS);
+                if (makePtrL && toTypeRef && toTypeRef->isClosure())
                 {
-                    // Create a function call param node, and move the node inside it
-                    auto oldParent = makePtrL->parent;
-                    auto oldIdx    = makePtrL->childParentIdx;
-                    Ast::removeFromParent(makePtrL);
-
-                    auto nodeCall = Ast::newFuncCallParam(makePtrL->sourceFile, oldParent);
-                    nodeCall->flags |= AST_REVERSE_SEMANTIC;
-                    Ast::removeFromParent(nodeCall);
-                    Ast::insertChild(oldParent, nodeCall, oldIdx);
-                    Ast::addChildBack(nodeCall, makePtrL);
-
-                    auto varNode = Ast::newVarDecl(sourceFile, Fmt("__ctmp_%d", g_UniqueID.fetch_add(1)), nodeCall);
-
-                    if (makePtrL->typeInfo->isLambda())
+                    if (makePtrL->kind == AstNodeKind::MakePointer || makePtrL->kind == AstNodeKind::MakePointerLambda || (makePtrL->typeInfo && makePtrL->typeInfo->isLambda()))
                     {
-                        varNode->assignment = Ast::clone(makePtrL, varNode);
+                        // Create a function call param node, and move the node inside it
+                        auto oldParent = makePtrL->parent;
+                        auto oldIdx    = makePtrL->childParentIdx;
                         Ast::removeFromParent(makePtrL);
+
+                        auto nodeCall = Ast::newFuncCallParam(makePtrL->sourceFile, oldParent);
+                        nodeCall->flags |= AST_REVERSE_SEMANTIC;
+                        Ast::removeFromParent(nodeCall);
+                        Ast::insertChild(oldParent, nodeCall, oldIdx);
+                        Ast::addChildBack(nodeCall, makePtrL);
+
+                        auto varNode = Ast::newVarDecl(sourceFile, Fmt("__ctmp_%d", g_UniqueID.fetch_add(1)), nodeCall);
+
+                        if (makePtrL->typeInfo->isLambda())
+                        {
+                            varNode->assignment = Ast::clone(makePtrL, varNode);
+                            Ast::removeFromParent(makePtrL);
+                        }
+                        else
+                        {
+                            makePtrL->semFlags |= AST_SEM_ONCE;
+                            Ast::removeFromParent(makePtrL);
+                            Ast::addChildBack(varNode, makePtrL);
+                            varNode->assignment = makePtrL;
+                        }
+
+                        varNode->type           = Ast::newTypeExpression(sourceFile, varNode);
+                        varNode->type->typeInfo = toType;
+                        varNode->type->flags |= AST_NO_SEMANTIC;
+
+                        auto idRef = Ast::newIdentifierRef(sourceFile, varNode->token.text, nodeCall);
+                        idRef->allocateExtension();
+                        idRef->extension->exportNode = makePtrL;
+
+                        // Put child front, because emitFuncCallParam wants the parameter to be the first
+                        Ast::removeFromParent(idRef);
+                        Ast::addChildFront(nodeCall, idRef);
+
+                        // Add the 2 nodes to the semantic
+                        context->job->nodes.push_back(nodeCall);
+
+                        context->result = ContextResult::NewChilds;
+                        return true;
                     }
-                    else
-                    {
-                        makePtrL->semFlags |= AST_SEM_ONCE;
-                        Ast::removeFromParent(makePtrL);
-                        Ast::addChildBack(varNode, makePtrL);
-                        varNode->assignment = makePtrL;
-                    }
-
-                    varNode->type           = Ast::newTypeExpression(sourceFile, varNode);
-                    varNode->type->typeInfo = toType;
-                    varNode->type->flags |= AST_NO_SEMANTIC;
-
-                    auto idRef = Ast::newIdentifierRef(sourceFile, varNode->token.text, nodeCall);
-                    idRef->allocateExtension();
-                    idRef->extension->exportNode = makePtrL;
-
-                    // Put child front, because emitFuncCallParam wants the parameter to be the first
-                    Ast::removeFromParent(idRef);
-                    Ast::addChildFront(nodeCall, idRef);
-
-                    // Add the 2 nodes to the semantic
-                    context->job->nodes.push_back(nodeCall);
-
-                    context->result = ContextResult::NewChilds;
-                    return true;
                 }
             }
         }

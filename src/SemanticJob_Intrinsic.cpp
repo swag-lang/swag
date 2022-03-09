@@ -237,7 +237,7 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
     {
         SWAG_VERIFY(!(typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE), context->report(Hint::isType(typeInfo), {expression, Err(Err0796)}));
         node->typeInfo = typeInfo;
-        SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opData, nullptr, nullptr, node, nullptr, false));
+        SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opData, nullptr, nullptr, node, nullptr));
         if (context->result == ContextResult::Pending)
             return true;
         node->typeInfo = g_TypeMgr->typeInfoPointers[(int) NativeTypeKind::Void];
@@ -420,7 +420,7 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
     {
         SWAG_VERIFY(!(typeInfo->flags & TYPEINFO_STRUCT_IS_TUPLE), context->report(Hint::isType(typeInfo), {expression, Err(Err0800)}));
         node->typeInfo = typeInfo;
-        SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opCount, nullptr, nullptr, node, nullptr, false));
+        SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opCount, nullptr, nullptr, node, nullptr));
         if (context->result == ContextResult::Pending)
             return true;
         node->typeInfo = g_TypeMgr->typeInfoUInt;

@@ -193,6 +193,9 @@ static const uint32_t MIP_JUST_CHECK         = 0x00000001;
 static const uint32_t MIP_FOR_GHOSTING       = 0x00000002;
 static const uint32_t MIP_SECOND_GENERIC_TRY = 0x00000004;
 
+static const uint32_t ROP_JUST_CHECK  = 0x00000001;
+static const uint32_t ROP_SIMPLE_CAST = 0x00000002;
+
 struct SemanticJob : public Job
 {
     JobResult execute() override;
@@ -411,8 +414,8 @@ struct SemanticJob : public Job
     static bool resolveIntrinsicDefined(SemanticContext* context);
     static bool resolveCompilerLoad(SemanticContext* context);
     static bool resolveUserOpCommutative(SemanticContext* context, const Utf8& name, const char* opConst, TypeInfo* opType, AstNode* left, AstNode* right);
-    static bool resolveUserOp(SemanticContext* context, const Utf8& name, const char* opConst, TypeInfo* opType, AstNode* left, AstNode* right, bool justCheck);
-    static bool resolveUserOp(SemanticContext* context, const Utf8& name, const char* opConst, TypeInfo* opType, AstNode* left, VectorNative<AstNode*>& params, bool justCheck);
+    static bool resolveUserOp(SemanticContext* context, const Utf8& name, const char* opConst, TypeInfo* opType, AstNode* left, AstNode* right, uint32_t ropFlags = 0);
+    static bool resolveUserOp(SemanticContext* context, const Utf8& name, const char* opConst, TypeInfo* opType, AstNode* left, VectorNative<AstNode*>& params, uint32_t ropFlags = 0);
     static bool resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveCompOpLower(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveCompOp3Way(SemanticContext* context, AstNode* left, AstNode* right);

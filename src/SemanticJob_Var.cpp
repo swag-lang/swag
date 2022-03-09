@@ -573,81 +573,48 @@ bool SemanticJob::deduceLambdaTypeAffect(SemanticContext* context, AstVarDecl* n
             typeLambda = op->deducedLambdaType;
         else
         {
-            SymbolName* symbol = nullptr;
-            for (int oneTry = 0; oneTry < 2; oneTry++)
+            // Generate an undefined type to make the match
+            if (!op->tryLambdaType)
             {
-                if (op->token.id == TokenId::SymEqual)
+                auto tryType  = allocType<TypeInfoFuncAttr>();
+                tryType->kind = TypeInfoKind::Lambda;
+                if (node->ownerFct->captureParameters)
+                    tryType->flags |= TYPEINFO_CLOSURE;
+
+                for (int i = 0; i < node->ownerFct->parameters->childs.size(); i++)
                 {
-                    if (oneTry == 0)
-                    {
-                        SWAG_CHECK(waitUserOp(context, g_LangSpec->name_opAffect, front, &symbol));
-                        if (context->result != ContextResult::Done)
-                            return true;
-                    }
-                    else
-                    {
-                        back->typeInfo = g_TypeMgr->typeInfoUndefined;
-                        SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAffect, nullptr, nullptr, front, back, false));
-                        if (context->result != ContextResult::Done)
-                            return true;
-                    }
-                }
-                else
-                {
-                    if (oneTry == 0)
-                    {
-                        SWAG_CHECK(waitUserOp(context, g_LangSpec->name_opAssign, front, &symbol));
-                        if (context->result != ContextResult::Done)
-                            return true;
-                    }
-                    else
-                    {
-                        back->typeInfo = g_TypeMgr->typeInfoUndefined;
-                        SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAssign, op->token.text, nullptr, front, back, false));
-                        if (context->result != ContextResult::Done)
-                            return true;
-                    }
+                    auto p      = g_TypeMgr->makeParam();
+                    p->typeInfo = g_TypeMgr->typeInfoUndefined;
+                    tryType->parameters.push_back(p);
                 }
 
-                // Will raise an error later
-                if (!symbol || symbol->overloads.empty())
-                    return true;
-
-                // Just keep overloads with a lambda as a parameter
-                auto checkOver = symbol->overloads;
-                for (int i = 0; i < checkOver.size(); i++)
-                {
-                    auto typeOverload = CastTypeInfo<TypeInfoFuncAttr>(checkOver[i]->typeInfo, TypeInfoKind::FuncAttr);
-                    if (typeOverload->parameters[1]->typeInfo->kind != TypeInfoKind::Lambda)
-                    {
-                        checkOver.erase_unordered(i);
-                        i--;
-                        continue;
-                    }
-
-                    typeLambda = CastTypeInfo<TypeInfoFuncAttr>(typeOverload->parameters[1]->typeInfo, TypeInfoKind::Lambda);
-
-                    auto paramCount = node->parent->childs.size();
-                    if (typeLambda->isClosure() && !node->ownerFct->captureParameters)
-                        paramCount += 1;
-
-                    if (typeLambda->parameters.count != paramCount)
-                    {
-                        checkOver.erase_unordered(i);
-                        i--;
-                        continue;
-                    }
-                }
-
-                // Will raise an error later
-                if (checkOver.size() != 1)
-                    continue;
-
-                auto typeOverload = CastTypeInfo<TypeInfoFuncAttr>(checkOver.front()->typeInfo, TypeInfoKind::FuncAttr);
-                typeLambda        = CastTypeInfo<TypeInfoFuncAttr>(typeOverload->parameters[1]->typeInfo, TypeInfoKind::Lambda);
-                break;
+                op->tryLambdaType = tryType;
             }
 
+            // op match
+            if (op->token.id == TokenId::SymEqual)
+            {
+                back->typeInfo = g_TypeMgr->typeInfoUndefined;
+                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAffect, nullptr, nullptr, front, back, ROP_SIMPLE_CAST));
+                if (context->result != ContextResult::Done)
+                    return true;
+            }
+            else
+            {
+                back->typeInfo = op->tryLambdaType;
+                SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAssign, op->token.text, nullptr, front, back, ROP_SIMPLE_CAST));
+                if (context->result != ContextResult::Done)
+                    return true;
+            }
+
+            if (context->job->cacheMatches.empty() || context->job->cacheMatches.size() > 1)
+                return true;
+
+            auto typeOverload = CastTypeInfo<TypeInfoFuncAttr>(context->job->cacheMatches[0]->oneOverload->overload->typeInfo, TypeInfoKind::FuncAttr);
+            if (typeOverload->parameters[1]->typeInfo->kind != TypeInfoKind::Lambda)
+                return true;
+
+            typeLambda = CastTypeInfo<TypeInfoFuncAttr>(typeOverload->parameters[1]->typeInfo, TypeInfoKind::Lambda);
             if (!typeLambda)
                 return true;
         }

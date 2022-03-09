@@ -247,7 +247,7 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
             return context->report(node->array, msg);
         }
 
-        SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opSlice, nullptr, nullptr, node->array, node->structFlatParams, false));
+        SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opSlice, nullptr, nullptr, node->array, node->structFlatParams));
     }
     else
     {
@@ -681,7 +681,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
             }
         }
 
-        SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opIndex, nullptr, nullptr, arrayNode->array, arrayNode->structFlatParams, false));
+        SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opIndex, nullptr, nullptr, arrayNode->array, arrayNode->structFlatParams));
         break;
     }
 
