@@ -69,14 +69,7 @@ func evaluateSolution(idxSrc, idxDst: u32)->f32
     b.g = g_Image1.pixels[(idxDst*3)+1]
     b.b = g_Image1.pixels[(idxDst*3)+2]
 
-    x1 := cast(f32) a.r - b.r
-    x2 := cast(f32) a.g - b.g
-    x3 := cast(f32) a.b - b.b
-
-    dist := Math.sqrt((x1*x1) + (x2*x2) + (x3*x3))
-    dist /= 255*3
-    //dist := a.getDistanceRgb(b)
-
+    dist := a.getDistanceRgb(b)
     return dist
 }
 

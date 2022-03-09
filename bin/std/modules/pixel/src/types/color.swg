@@ -291,16 +291,14 @@ impl Color
     }
 
     // Returns the distance between the other color
-    #[ConstExpr, Safety("overflow", false)]
     mtd getDistanceRgb(col: Color)->f32
     {
-        rmean := cast(s32) ((r + col.r) / 2)
-        rx := cast(s32) r - cast(s32) col.r
-        gx := cast(s32) g - cast(s32) col.g
-        bx := cast(s32) b - cast(s32) col.b
-
-        res := Math.sqrt(cast(f32) ((((512+rmean)*rx*rx)>>8) + 4*gx*gx + (((767-rmean)*bx*bx)>>8)))
-        return Math.saturate(res / 255.0)
+        x1 := cast(f32) r - col.r
+        x2 := cast(f32) g - col.g
+        x3 := cast(f32) b - col.b
+        dist := Math.sqrt((x1*x1) + (x2*x2) + (x3*x3))
+        dist /= 255*3
+        return dist
     }
 }
 
