@@ -247,4 +247,7 @@ struct ThemeColors
     progressBar_Border:             Color = Gray2
     progressBar_Bk:                 Color = Gray6
     progressBar_Mark:               Color = Blue
+
+    palPicker_Border:               Color = Gray7
+    palPicker_HotBorder:            Color = Blue
 }
