@@ -1,7 +1,7 @@
 #global public
 using Core, Pixel
 
-enum ColorPickerBoxMode
+enum ColorPickerMode
 {
     SaturationLightness
     HueVert
@@ -9,11 +9,11 @@ enum ColorPickerBoxMode
     SaturationVert
 }
 
-struct ColorPickerBox
+struct ColorPicker
 {
     using wnd:      Wnd
     hue, sat, lum:  f32
-    mode            = ColorPickerBoxMode.SaturationLightness
+    mode            = ColorPickerMode.SaturationLightness
     sigChanged:     SigArray'closure(*Self)
 
     dirty:      bool = true
@@ -23,7 +23,7 @@ struct ColorPickerBox
     xCur, yCur: s32
 }
 
-impl IWnd for ColorPickerBox
+impl IWnd for ColorPicker
 {
     mtd computeXY()
     {
@@ -159,13 +159,13 @@ impl IWnd for ColorPickerBox
     }
 }
 
-impl ColorPickerBox
+impl ColorPicker
 {
     #[Swag.Discardable]
-    func create(parent: *Wnd, position: Math.Rectangle, id: string = null)->*ColorPickerBox
+    func create(parent: *Wnd, position: Math.Rectangle, id: string = null)->*ColorPicker
     {
         Debug.assert(parent != null)
-        ret := Wnd.create'ColorPickerBox(parent, null, position, id)
+        ret := Wnd.create'ColorPicker(parent, null, position, id)
         ret.wndFlags |= .PostChildsPaint
         ret.setColor(Argb.Red)
         return ret
@@ -216,7 +216,7 @@ impl ColorPickerBox
     }
 
     // Set the base color, and repaint
-    mtd setMode(mode: ColorPickerBoxMode)
+    mtd setMode(mode: ColorPickerMode)
     {
         self.mode = #self.mode
         dirty = true
