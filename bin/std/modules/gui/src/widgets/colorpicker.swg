@@ -36,11 +36,24 @@ impl IWnd for ColorPicker
             xCur = cast(s32) (sat * clientRect.width)
             l1 := Math.lerp(1, 0.5, sat)
             l2 := 1 - (lum / l1)
-            yCur = cast(s32) (l2 * clientRect.height)
+            if l2 < 0
+            {
+                l2 = -l2
+                l2 = 1 - l2
+                yCur = 0
+                xCur = cast(s32) (l2 * clientRect.width)
+            }
+            else
+            {
+                yCur = cast(s32) (l2 * clientRect.height)
+            }
+
         case HueVert:
             yCur = cast(s32) ((1 - hue) * clientRect.height)
+
         case LightnessVert:
             yCur = cast(s32) ((1 - lum) * clientRect.height)
+
         case SaturationVert:
             yCur = cast(s32) ((1 - sat) * clientRect.height)
         }
