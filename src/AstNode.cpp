@@ -480,7 +480,7 @@ Utf8 AstNode::getArticleKindName(AstNode* node)
         return "an " + result;
     }
 
-    return "<node>";
+    return "node";
 }
 
 Utf8 AstNode::getKindName(AstNode* node)
@@ -524,9 +524,11 @@ Utf8 AstNode::getKindName(AstNode* node)
         return "intrinsic";
     case AstNodeKind::FuncCall:
         return "function call";
+    case AstNodeKind::TypeExpression:
+        return "type";
     }
 
-    return Fmt("<%d>", node->kind);
+    return "node";
 }
 
 AstNode* AstNode::findParent(AstNodeKind parentKind)

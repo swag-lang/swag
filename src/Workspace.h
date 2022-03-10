@@ -38,13 +38,12 @@ struct PendingJob
 {
     Job*     pendingJob;
     AstNode* node;
-    Utf8     id;
 };
 
 struct Workspace
 
 {
-    void    errorPendingJobsMsg(Job* prevJob, Job* depJob, vector<const Diagnostic*> &notes);
+    void    errorPendingJobsMsg(Job* prevJob, Job* depJob, vector<const Diagnostic*>& notes);
     void    errorPendingJobs(vector<PendingJob>& pendingJobs);
     void    computeWaitingJobs();
     void    checkPendingJobs();

@@ -265,10 +265,10 @@ void Workspace::errorPendingJobsMsg(Job* prevJob, Job* depJob, vector<const Diag
     SWAG_ASSERT(depNode);
 
     Utf8 msg = Fmt(Nte(Nte0046),
-                            AstNode::getKindName(prevNode).c_str(),
-                            prevNode->token.ctext(),
-                            AstNode::getKindName(depNode).c_str(),
-                            depNode->token.ctext());
+                   AstNode::getKindName(prevNode).c_str(),
+                   prevNode->token.ctext(),
+                   AstNode::getKindName(depNode).c_str(),
+                   depNode->token.ctext());
 
     if (prevJob->waitingHintNode)
     {
@@ -364,11 +364,16 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
         auto toSolve = pendingJob->waitingSymbolSolved;
         if (!toSolve)
         {
-            Diagnostic diag{node, Fmt(Err(Err0549), pendingJob->module->name.c_str(), AstNode::getKindName(node).c_str(), node->token.ctext())};
-#ifdef SWAG_DEV_MODE
-            diag.remarks.push_back(it.id);
-#endif
-            sourceFile->report(diag);
+            if (pendingJob->waitingIdType)
+            {
+                Diagnostic diag{node, Fmt(Err(Err0550), pendingJob->module->name.c_str(), pendingJob->waitingIdType->getDisplayNameC())};
+                sourceFile->report(diag);
+            }
+            else
+            {
+                Diagnostic diag{node, Fmt(Err(Err0549), pendingJob->module->name.c_str(), AstNode::getKindName(node).c_str(), node->token.ctext())};
+                sourceFile->report(diag);
+            }
             doneOne = true;
             continue;
         }
@@ -388,10 +393,7 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
             msg = Fmt(Err(Err0894), toSolve->name.c_str());
         }
 
-        Diagnostic diag{node, msg};
-#ifdef SWAG_DEV_MODE
-        diag.remarks.push_back(it.id);
-#endif
+        Diagnostic  diag{node, msg};
         Diagnostic* note = nullptr;
         if (node != declNode)
             note = new Diagnostic{declNode, Nte(Nte0028), DiagnosticLevel::Note};
@@ -510,8 +512,11 @@ void Workspace::checkPendingJobs()
     for (auto pendingJob : g_ThreadMgr.waitingJobs)
     {
         auto sourceFile = pendingJob->sourceFile;
-        auto firstNode  = pendingJob->originalNode;
-        if (!firstNode)
+        if (!sourceFile)
+            continue;
+
+        // Do not generate errors if we already have some errors
+        if (sourceFile->module->numErrors)
             continue;
 
         // Get the node the job was trying to resolve
@@ -519,35 +524,13 @@ void Workspace::checkPendingJobs()
         if (!pendingJob->nodes.empty())
             node = pendingJob->nodes.back();
         if (!node)
-            node = firstNode;
-
-        // Do not generate errors if we already have some errors
-        if (sourceFile->module->numErrors)
+            node = pendingJob->originalNode;
+        if (!node)
             continue;
-
-        Utf8 id;
-#ifdef SWAG_DEV_MODE
-        id = Fmt("[kind: %d]", pendingJob->waitingKind);
-        if (pendingJob->waitingIdNode)
-        {
-            id += " ";
-            if (pendingJob->waitingIdNode->typeInfo)
-                id += pendingJob->waitingIdNode->typeInfo->getDisplayName();
-            else
-                id += pendingJob->waitingIdNode->token.text;
-        }
-
-        if (pendingJob->waitingIdType)
-        {
-            id += " ";
-            id += pendingJob->waitingIdType->getDisplayName();
-        }
-#endif
 
         PendingJob pj;
         pj.pendingJob = pendingJob;
         pj.node       = node;
-        pj.id         = id;
         pendingJobs.push_back(pj);
     }
 
