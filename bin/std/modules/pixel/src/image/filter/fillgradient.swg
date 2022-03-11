@@ -2,7 +2,7 @@ using Core
 
 impl Image
 {
-    // Fill with a gradient from 'color0' to 'color1'
+    // Fill with an horizontal gradient from 'color0' to 'color1'
     public mtd fillGradient2(color0, color1: Color)
     {
         // unsupported pixel format
@@ -60,7 +60,7 @@ impl Image
                 colH1 := Color.getBlend(params.topLeft, params.topRight, factor0)
                 colH0 := Color.getBlend(params.bottomLeft, params.bottomRight, factor0)
                 col := Color.getBlend(colH0, colH1, factor1)
-                setPixelRGBA8'PF(pix, col.r, col.g, col.b, 255)
+                setPixelRGBA8'PF(pix, col.r, col.g, col.b, col.a)
             }
         }
 

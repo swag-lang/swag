@@ -31,12 +31,14 @@ func createView3(tabView: *Tab, view: *Wnd)
         sb := ColorPicker.create(view, @{300, 10, 20, 200})
         sb.setMode(.LightnessVert)
         sb.setColor(Argb.Orange)
-    }
 
-    {
-        sb := ColorPicker.create(view, @{360, 10, 20, 200})
-        sb.setMode(.SaturationVert)
-        sb.setColor(Argb.Purple)
+        sb1 := ColorPicker.create(view, @{330, 10, 20, 200})
+        sb1.setMode(.SaturationVert)
+        sb1.setColor(Argb.Purple)
+
+        sb2 := ColorPicker.create(view, @{360, 10, 20, 200})
+        sb2.setMode(.AlphaVert)
+        sb2.setColor(Argb.Purple)
     }
 
     {
@@ -46,5 +48,7 @@ func createView3(tabView: *Tab, view: *Wnd)
         sb1.setMode(.LightnessHorz)
         sb2 := ColorPicker.create(view, @{10, 310, 200, 20})
         sb2.setMode(.SaturationHorz)
+        sb3 := ColorPicker.create(view, @{10, 340, 200, 20})
+        sb3.setMode(.AlphaHorz)
     }
 }

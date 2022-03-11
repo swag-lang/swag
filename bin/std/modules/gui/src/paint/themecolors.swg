@@ -252,4 +252,5 @@ struct ThemeColors
     palPicker_HotBorder:            Color = Blue
 
     colorPicker_Border:             Color = Argb.Black
+    colorPicker_BackAlpha:          Color = Gray7
 }

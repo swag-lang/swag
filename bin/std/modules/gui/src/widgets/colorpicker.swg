@@ -10,12 +10,15 @@ enum ColorPickerMode
     LightnessHorz
     SaturationVert
     SaturationHorz
+    AlphaHorz
+    AlphaVert
 }
 
 struct ColorPicker
 {
     using wnd:      Wnd
     hue, sat, lum:  f32
+    alpha:          f32
     mode            = ColorPickerMode.SaturationLightness
     sigChanged:     SigArray'closure(*Self)
 
@@ -65,6 +68,11 @@ impl IWnd for ColorPicker
             yCur = cast(s32) ((1 - sat) * clientRect.height)
         case SaturationHorz:
             xCur = cast(s32) ((1 - sat) * clientRect.width)
+
+        case AlphaHorz:
+            xCur = cast(s32) ((1 - alpha) * clientRect.width)
+        case AlphaVert:
+            yCur = cast(s32) ((1 - alpha) * clientRect.height)
         }
     }
 
@@ -86,19 +94,35 @@ impl IWnd for ColorPicker
 
             var modeFill: Image.FillHslType = ?
 
-            #[Swag.Complete]
-            switch mode
+            if mode == .AlphaHorz
             {
-            case SaturationLightness:   modeFill = .SaturationLightness
-            case HueVert:               modeFill = .HueVert
-            case HueHorz:               modeFill = .HueHorz
-            case LightnessVert:         modeFill = .LightnessVert
-            case LightnessHorz:         modeFill = .LightnessHorz
-            case SaturationVert:        modeFill = .SaturationVert
-            case SaturationHorz:        modeFill = .SaturationHorz
+                c := Color.fromHsl(hue, sat, lum)
+                c1 := c; c1.a = 0
+                c2 := c; c2.a = 255
+                img.fillGradient2(c1, c2)
             }
+            elif mode == .AlphaVert
+            {
+                c := Color.fromHsl(hue, sat, lum)
+                c1 := c; c1.a = 255
+                c2 := c; c2.a = 0
+                img.fillGradient4(c1, c1, c2, c2)
+            }
+            else
+            {
+                switch mode
+                {
+                case SaturationLightness:   modeFill = .SaturationLightness
+                case HueVert:               modeFill = .HueVert
+                case HueHorz:               modeFill = .HueHorz
+                case LightnessVert:         modeFill = .LightnessVert
+                case LightnessHorz:         modeFill = .LightnessHorz
+                case SaturationVert:        modeFill = .SaturationVert
+                case SaturationHorz:        modeFill = .SaturationHorz
+                }
 
-            img.fillHsl(modeFill, Color.fromHsl(hue, sat, lum))
+                img.fillHsl(modeFill, Color.fromHsl(hue, sat, lum))
+            }
 
             if texture.valid
                 getApp().renderer.updateTexture(texture, img.pixels)
@@ -107,16 +131,18 @@ impl IWnd for ColorPicker
             computeXY()
         }
 
-        // Clipping + image
+        // Clipping
         painter.startClippingRegion()
-        clientRect.inflate(-1, -1)
         theme.drawSubRect(painter, clientRect, &rects.colorPicker_Bk, Argb.White)
         painter.endClippingRegion()
+
+        // Image
+        if mode == .AlphaHorz or mode == .AlphaVert
+            painter.fillRect(clientRect, Brush.createHatch(.CheckBoardLarge, colors.colorPicker_BackAlpha))
         painter.drawTexture(clientRect, texture)
         painter.resetClippingRegion()
 
         // Border
-        clientRect.inflate(1, 1)
         theme.drawSubRect(painter, clientRect, &rects.colorPicker_Border, colors.colorPicker_Border)
     }
 
@@ -139,14 +165,14 @@ impl IWnd for ColorPicker
             rect.inflate(1, 1)
             theme.drawSubRect(painter, rect, &rects.colorPicker_RoundPick, Argb.White)
 
-        case HueVert, LightnessVert, SaturationVert:
+        case AlphaVert, HueVert, LightnessVert, SaturationVert:
             size := metrics.colorPicker_SquarePickH
             rect := Math.Rectangle{-size, yCur-size, clientRect.width+2*size, 2*size}
             theme.drawSubRect(painter, rect, &rects.colorPicker_SquarePick, Argb.Black)
             rect.inflate(1, 1)
             theme.drawSubRect(painter, rect, &rects.colorPicker_SquarePick, Argb.White)
 
-        case HueHorz, LightnessHorz, SaturationHorz:
+        case AlphaHorz, HueHorz, LightnessHorz, SaturationHorz:
             sizeX := metrics.colorPicker_SquarePickH
             sizeY := metrics.colorPicker_SquarePickV
             rect := Math.Rectangle{xCur-sizeX, -sizeY, 2*sizeX, clientRect.height+2*sizeY}
@@ -194,6 +220,8 @@ impl IWnd for ColorPicker
                     lum = l
                 case SaturationVert, SaturationHorz:
                     sat = s
+                case AlphaHorz, AlphaVert:
+                    alpha = pix.a / 255.0
                 }
 
                 sigChanged.call(self)
@@ -256,6 +284,7 @@ impl ColorPicker
     mtd setColor(col: Color)
     {
         (hue, sat, lum) = col.toHsl()
+        alpha = 1.0 / col.a
         dirty = true
         invalidate()
         sigChanged.call(self)
@@ -264,7 +293,9 @@ impl ColorPicker
     // Returns the selected color
     mtd getColor()->Color
     {
-        return Color.fromHsl(hue, sat, lum)
+        c := Color.fromHsl(hue, sat, lum)
+        c.a = cast(u8) (alpha * 255)
+        return c
     }
 
     // Set the base color, and repaint
