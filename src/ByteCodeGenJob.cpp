@@ -188,8 +188,7 @@ bool ByteCodeGenJob::skipNodes(ByteCodeGenContext* context, AstNode* node)
                                   return true;
                               if (n->semFlags & AST_SEM_LITERAL_SUFFIX)
                                   return cxt->report(n->childs.front(), Fmt(Err(Err0532), n->childs.front()->token.ctext()));
-                              return true;
-                          });
+                              return true; });
 
     return res;
 }
@@ -399,9 +398,13 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags, Byt
                 extension->byteCodeJob->dependentJob = job->dependentJob;
             extension->byteCodeJob->context.errorContextStack = job->baseContext->errorContextStack;
             extension->byteCodeJob->nodes.push_back(node);
-            extension->bc               = g_Allocator.alloc<ByteCode>();
-            extension->bc->node         = node;
-            extension->bc->sourceFile   = node->sourceFile;
+            if (!extension->bc)
+            {
+                extension->bc             = g_Allocator.alloc<ByteCode>();
+                extension->bc->node       = node;
+                extension->bc->sourceFile = node->sourceFile;
+            }
+
             extension->bc->typeInfoFunc = funcDecl ? (TypeInfoFuncAttr*) funcDecl->typeInfo : nullptr;
             if (node->flags & AST_DEFINED_INTRINSIC)
                 extension->bc->name = node->token.text;
