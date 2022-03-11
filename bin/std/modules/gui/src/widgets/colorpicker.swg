@@ -5,8 +5,11 @@ enum ColorPickerMode
 {
     SaturationLightness
     HueVert
+    HueHorz
     LightnessVert
+    LightnessHorz
     SaturationVert
+    SaturationHorz
 }
 
 struct ColorPicker
@@ -50,12 +53,18 @@ impl IWnd for ColorPicker
 
         case HueVert:
             yCur = cast(s32) ((1 - hue) * clientRect.height)
+        case HueHorz:
+            xCur = cast(s32) ((1 - hue) * clientRect.width)
 
         case LightnessVert:
             yCur = cast(s32) ((1 - lum) * clientRect.height)
+        case LightnessHorz:
+            xCur = cast(s32) ((1 - lum) * clientRect.width)
 
         case SaturationVert:
             yCur = cast(s32) ((1 - sat) * clientRect.height)
+        case SaturationHorz:
+            xCur = cast(s32) ((1 - sat) * clientRect.width)
         }
     }
 
@@ -79,8 +88,11 @@ impl IWnd for ColorPicker
             {
             case SaturationLightness:   modeFill = .SaturationLightness
             case HueVert:               modeFill = .HueVert
+            case HueHorz:               modeFill = .HueHorz
             case LightnessVert:         modeFill = .LightnessVert
+            case LightnessHorz:         modeFill = .LightnessHorz
             case SaturationVert:        modeFill = .SaturationVert
+            case SaturationHorz:        modeFill = .SaturationHorz
             }
 
             img.fillHsl(modeFill, Color.fromHsl(hue, sat, lum))
@@ -119,6 +131,13 @@ impl IWnd for ColorPicker
             theme.drawSubRect(painter, rect, &rects.colorPicker_SquarePick, Argb.Black)
             rect.inflate(1, 1)
             theme.drawSubRect(painter, rect, &rects.colorPicker_SquarePick, Argb.White)
+
+        case HueHorz, LightnessHorz, SaturationHorz:
+            size := getThemeMetrics().colorPicker_SquarePick
+            rect := Math.Rectangle{xCur-size, -size, 2*size, clientRect.height+2*size}
+            theme.drawSubRect(painter, rect, &rects.colorPicker_SquarePick, Argb.Black)
+            rect.inflate(1, 1)
+            theme.drawSubRect(painter, rect, &rects.colorPicker_SquarePick, Argb.White)
         }
     }
 
@@ -154,11 +173,11 @@ impl IWnd for ColorPicker
                 case SaturationLightness:
                     sat = s
                     lum = l
-                case HueVert:
+                case HueVert, HueHorz:
                     hue = h
-                case LightnessVert:
+                case LightnessVert, LightnessHorz:
                     lum = l
-                case SaturationVert:
+                case SaturationVert, SaturationHorz:
                     sat = s
                 }
 
