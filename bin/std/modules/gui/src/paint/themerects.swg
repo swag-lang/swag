@@ -105,7 +105,7 @@ struct ThemeImageRects
     progressBar_Mark:           ThemeImageRect = @{{169,141,27,27}, 13}
 
     colorPicker_RoundPick:      ThemeImageRect = @{{141,169,27,27}, 13}
-    colorPicker_SquarePick:     ThemeImageRect = @{{141,169,27,27}, 13}
+    colorPicker_SquarePick:     ThemeImageRect = @{{169,169,27,27}, 6}
     colorPicker_Bk:             ThemeImageRect = @{{85,253,27,27}, 8}
     colorPicker_Border:         ThemeImageRect = @{{113,253,27,27}, 8}
 

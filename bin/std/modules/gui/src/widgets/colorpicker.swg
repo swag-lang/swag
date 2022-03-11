@@ -127,27 +127,29 @@ impl IWnd for ColorPicker
         theme       := getTheme()
         rects       := getThemeRects()
         clientRect  := getClientRect()
+        metrics     := getThemeMetrics()
 
         #[Swag.Complete]
         switch mode
         {
         case SaturationLightness:
-            size := getThemeMetrics().colorPicker_RoundPick
+            size := metrics.colorPicker_RoundPick
             rect := Math.Rectangle{xCur-size, yCur-size, 2*size, 2*size}
             theme.drawSubRect(painter, rect, &rects.colorPicker_RoundPick, Argb.Black)
             rect.inflate(1, 1)
             theme.drawSubRect(painter, rect, &rects.colorPicker_RoundPick, Argb.White)
 
         case HueVert, LightnessVert, SaturationVert:
-            size := getThemeMetrics().colorPicker_SquarePick
+            size := metrics.colorPicker_SquarePickH
             rect := Math.Rectangle{-size, yCur-size, clientRect.width+2*size, 2*size}
             theme.drawSubRect(painter, rect, &rects.colorPicker_SquarePick, Argb.Black)
             rect.inflate(1, 1)
             theme.drawSubRect(painter, rect, &rects.colorPicker_SquarePick, Argb.White)
 
         case HueHorz, LightnessHorz, SaturationHorz:
-            size := getThemeMetrics().colorPicker_SquarePick
-            rect := Math.Rectangle{xCur-size, -size, 2*size, clientRect.height+2*size}
+            sizeX := metrics.colorPicker_SquarePickH
+            sizeY := metrics.colorPicker_SquarePickV
+            rect := Math.Rectangle{xCur-sizeX, -sizeY, 2*sizeX, clientRect.height+2*sizeY}
             theme.drawSubRect(painter, rect, &rects.colorPicker_SquarePick, Argb.Black)
             rect.inflate(1, 1)
             theme.drawSubRect(painter, rect, &rects.colorPicker_SquarePick, Argb.White)
