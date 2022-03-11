@@ -55,9 +55,9 @@ impl IWnd for ColorPicker
             }
 
         case HueVert:
-            yCur = cast(s32) ((1 - hue) * clientRect.height)
+            yCur = cast(s32) (hue * clientRect.height)
         case HueHorz:
-            xCur = cast(s32) ((1 - hue) * clientRect.width)
+            xCur = cast(s32) (hue * clientRect.width)
 
         case LightnessVert:
             yCur = cast(s32) ((1 - lum) * clientRect.height)
@@ -70,9 +70,9 @@ impl IWnd for ColorPicker
             xCur = cast(s32) ((1 - sat) * clientRect.width)
 
         case AlphaHorz:
-            xCur = cast(s32) ((1 - alpha) * clientRect.width)
+            xCur = cast(s32) (alpha * clientRect.width)
         case AlphaVert:
-            yCur = cast(s32) ((1 - alpha) * clientRect.height)
+            yCur = cast(s32) (alpha * clientRect.height)
         }
     }
 
@@ -154,6 +154,7 @@ impl IWnd for ColorPicker
         rects       := getThemeRects()
         clientRect  := getClientRect()
         metrics     := getThemeMetrics()
+        colors      := getThemeColors()
 
         #[Swag.Complete]
         switch mode
@@ -163,14 +164,14 @@ impl IWnd for ColorPicker
             rect := Math.Rectangle{xCur-size, yCur-size, 2*size, 2*size}
             theme.drawSubRect(painter, rect, &rects.colorPicker_RoundPick, Argb.Black)
             rect.inflate(1, 1)
-            theme.drawSubRect(painter, rect, &rects.colorPicker_RoundPick, Argb.White)
+            theme.drawSubRect(painter, rect, &rects.colorPicker_RoundPick, colors.colorPicker_Mark)
 
         case AlphaVert, HueVert, LightnessVert, SaturationVert:
             size := metrics.colorPicker_SquarePickH
             rect := Math.Rectangle{-size, yCur-size, clientRect.width+2*size, 2*size}
             theme.drawSubRect(painter, rect, &rects.colorPicker_SquarePick, Argb.Black)
             rect.inflate(1, 1)
-            theme.drawSubRect(painter, rect, &rects.colorPicker_SquarePick, Argb.White)
+            theme.drawSubRect(painter, rect, &rects.colorPicker_SquarePick, colors.colorPicker_Mark)
 
         case AlphaHorz, HueHorz, LightnessHorz, SaturationHorz:
             sizeX := metrics.colorPicker_SquarePickH
@@ -178,7 +179,7 @@ impl IWnd for ColorPicker
             rect := Math.Rectangle{xCur-sizeX, -sizeY, 2*sizeX, clientRect.height+2*sizeY}
             theme.drawSubRect(painter, rect, &rects.colorPicker_SquarePick, Argb.Black)
             rect.inflate(1, 1)
-            theme.drawSubRect(painter, rect, &rects.colorPicker_SquarePick, Argb.White)
+            theme.drawSubRect(painter, rect, &rects.colorPicker_SquarePick, colors.colorPicker_Mark)
         }
     }
 
@@ -284,7 +285,7 @@ impl ColorPicker
     mtd setColor(col: Color)
     {
         (hue, sat, lum) = col.toHsl()
-        alpha = 1.0 / col.a
+        alpha = 255.0 / col.a
         dirty = true
         invalidate()
         sigChanged.call(self)

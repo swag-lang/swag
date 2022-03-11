@@ -51,4 +51,10 @@ func createView3(tabView: *Tab, view: *Wnd)
         sb3 := ColorPicker.create(view, @{10, 340, 200, 20})
         sb3.setMode(.AlphaHorz)
     }
+
+    {
+        pv := ColorPickerView.create(view, @{10, 450, 400, 400})
+        pv.setFrameForm(.Round)
+        pv.setColor(Argb.Purple)
+    }
 }
