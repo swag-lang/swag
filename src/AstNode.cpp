@@ -517,7 +517,13 @@ Utf8 AstNode::getKindName(AstNode* node)
     case AstNodeKind::InterfaceDecl:
         return "interface";
     case AstNodeKind::Impl:
-        return "implementation block";
+    {
+        auto ast = CastAst<AstImpl>(node, AstNodeKind::Impl);
+        if (ast->identifierFor)
+            return "interface implementation block";
+        else
+            return "implementation block";
+    }
     case AstNodeKind::Identifier:
         return "identifier";
     case AstNodeKind::IntrinsicProp:

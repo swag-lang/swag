@@ -14,6 +14,7 @@
 #include "ErrorIds.h"
 #include "ModuleManager.h"
 #include "SymTable.h"
+#include "TypeTableJob.h"
 
 void Workspace::computeModuleName(const fs::path& path, Utf8& moduleName, Utf8& moduleFolder, ModuleKind& kind)
 {
@@ -287,10 +288,31 @@ void Workspace::errorPendingJobsMsg(Job* prevJob, Job* depJob, vector<const Diag
     notes.push_back(note);
 }
 
+static Utf8 errorPendingJobsType(Job* pendingJob)
+{
+    Utf8 sym;
+    if (pendingJob->waitingSymbolSolved)
+        sym = Fmt("%s `%s`", SymTable::getNakedKindName(pendingJob->waitingSymbolSolved->kind), pendingJob->waitingSymbolSolved->name.c_str());
+
+    switch (pendingJob->waitingKind)
+    {
+    case JobWaitKind::WaitInterfaces:
+        return "waiting for all interfaces to be solved";
+    case JobWaitKind::MakeConcrete:
+        return "waiting for type to be generated";
+    case JobWaitKind::SemFullResolve:
+        return Fmt("waiting for %s to be fully solved", sym.c_str());
+    case JobWaitKind::WaitSymbol:
+        return Fmt("waiting for %s to be solved", sym.c_str());
+    }
+
+    return "";
+}
+
 void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
 {
-    set<SymbolName*> doneSymbols;
-    bool             doneOne = false;
+    set<void*> doneSymbols;
+    bool       doneOne = false;
     for (auto& it : pendingJobs)
     {
         auto pendingJob = it.pendingJob;
@@ -346,11 +368,13 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
         }
 
         // If this job is waiting for another job, then we will raise an error for the waiting job only
+#ifndef SWAG_DEV_MODE
         if (pendingJob->waitingJob)
         {
             pendingJob->flags |= JOB_NO_PENDING_REPORT;
             continue;
         }
+#endif
 
         // No need to raise multiple times an error for the same symbol
         if (pendingJob->waitingSymbolSolved)
@@ -361,43 +385,30 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
         }
 
         // Job is not done, and we do not wait for a specific identifier
-        auto toSolve = pendingJob->waitingSymbolSolved;
-        if (!toSolve)
+        Diagnostic* diag = nullptr;
+        if (dynamic_cast<TypeTableJob*>(pendingJob))
+        {
+            diag = new Diagnostic{pendingJob->waitingIdType->declNode, Fmt(Err(Err0550), pendingJob->module->name.c_str(), pendingJob->waitingIdType->getDisplayNameC())};
+        }
+        else if (pendingJob->waitingIdType)
         {
             if (pendingJob->waitingIdType)
             {
-                Diagnostic diag{node, Fmt(Err(Err0550), pendingJob->module->name.c_str(), pendingJob->waitingIdType->getDisplayNameC())};
-                sourceFile->report(diag);
+                if (doneSymbols.find(pendingJob->waitingIdType) != doneSymbols.end())
+                    continue;
+                doneSymbols.insert(pendingJob->waitingIdType);
             }
-            else
-            {
-                Diagnostic diag{node, Fmt(Err(Err0549), pendingJob->module->name.c_str(), AstNode::getKindName(node).c_str(), node->token.ctext())};
-                sourceFile->report(diag);
-            }
-            doneOne = true;
-            continue;
+
+            diag = new Diagnostic{node, Fmt(Err(Err0550), pendingJob->module->name.c_str(), pendingJob->waitingIdType->getDisplayNameC())};
         }
-
-        // We have an identifier
-        SWAG_ASSERT(!toSolve->nodes.empty());
-        auto declNode = toSolve->nodes.front();
-
-        Utf8 msg = Fmt(Err(Err0893), SymTable::getNakedKindName(toSolve->kind), toSolve->name.c_str());
-
-        // a := func(a) for example
-        if (toSolve->kind == SymbolKind::Variable &&
-            declNode->kind == AstNodeKind::VarDecl &&
-            declNode->sourceFile == node->sourceFile &&
-            declNode->token.startLocation.line == node->token.startLocation.line)
+        else
         {
-            msg = Fmt(Err(Err0894), toSolve->name.c_str());
+            diag = new Diagnostic{node, Fmt(Err(Err0549), pendingJob->module->name.c_str(), AstNode::getKindName(node).c_str(), node->token.ctext())};
         }
 
-        Diagnostic  diag{node, msg};
-        Diagnostic* note = nullptr;
-        if (node != declNode)
-            note = new Diagnostic{declNode, Nte(Nte0028), DiagnosticLevel::Note};
-        sourceFile->report(diag, note);
+        diag->remarks.push_back(errorPendingJobsType(pendingJob));
+        sourceFile->report(*diag);
+
         doneOne = true;
     }
 
