@@ -45,11 +45,11 @@ struct EditBox
     maxLength:          s32
     rightMargin:        f32
 
-    sigChanged:         func(*Self)
-    sigLoseFocus:       func(*Self)
-    sigEnterPressed:    func(*Self)
-    sigEscapePressed:   func(*Self)
-    sigCheckContent:    func(*Self)->EditBoxCheckResult
+    sigChanged:         SigArray'closure(*Self)
+    sigLoseFocus:       SigArray'closure(*Self)
+    sigEnterPressed:    SigArray'closure(*Self)
+    sigEscapePressed:   SigArray'closure(*Self)
+    sigCheckContent:    closure(*Self)->EditBoxCheckResult
 
     using minMax: union{
         minMaxS64: {min: s64, max: s64} = @{Swag.S64.Min, Swag.S64.Max}
@@ -81,8 +81,7 @@ impl IWnd for EditBox
         }
         else
         {
-            if sigLoseFocus
-                sigLoseFocus(self)
+            sigLoseFocus.call(self)
             surface.app.deleteTimer(timerCaret)
             timerCaret = null
         }
@@ -341,15 +340,13 @@ private impl EditBox
             }
 
         case Return:
-            if sigEnterPressed
-                sigEnterPressed(self)
+            sigEnterPressed.call(self)
             if editBoxFlags & .AutoLoseFocus
                 getTopView().setFocus()
             return true
 
         case Escape:
-            if sigEscapePressed
-                sigEscapePressed(self)
+            sigEscapePressed.call(self)
             if editBoxFlags & .AutoLoseFocus
                 getTopView().setFocus()
             return true
@@ -718,8 +715,7 @@ private impl EditBox
 
     mtd notifyChanged()
     {
-        if sigChanged
-            sigChanged(self)
+        sigChanged.call(self)
         computeCaretPos()
         invalidate()
     }

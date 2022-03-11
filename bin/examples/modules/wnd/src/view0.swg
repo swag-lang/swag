@@ -211,7 +211,7 @@ func createView0(tabView: *Tab, view: *Wnd)
 
         edit0.setInputU64(0, 255)
         edit0.maxLength = 3
-        edit0.sigLoseFocus = @(wnd)
+        edit0.sigLoseFocus += @(wnd)
         {
             (val, ?, ?) := catch StrConv.parseS32(wnd.text)
             slider := cast(*Slider) wnd.getTopView().getChildById("slider0")
