@@ -71,4 +71,7 @@ struct ThemeMetrics
     progressBar_Height:         f32 = 18
     progressBar_ClipOffset:     f32 = 2
     progressBar_SpeedInf:       f32 = 0.5
+
+    colorPicker_RoundPick:      f32 = 4
+    colorPicker_SquarePick:     f32 = 4
 }
