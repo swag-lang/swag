@@ -71,8 +71,11 @@ impl IWnd for ColorPicker
     mtd onPaintEvent(evt: *PaintEvent)
     {
         bc := evt.bc
-        painter := bc.painter
+        painter    := bc.painter
         clientRect := getClientRect()
+        theme      := getTheme()
+        rects      := getThemeRects()
+        colors     := getThemeColors()
 
         // Reconstruct image
         if dirty
@@ -104,7 +107,17 @@ impl IWnd for ColorPicker
             computeXY()
         }
 
+        // Clipping + image
+        painter.startClippingRegion()
+        clientRect.inflate(-1, -1)
+        theme.drawSubRect(painter, clientRect, &rects.colorPicker_Bk, Argb.White)
+        painter.endClippingRegion()
         painter.drawTexture(clientRect, texture)
+        painter.resetClippingRegion()
+
+        // Border
+        clientRect.inflate(1, 1)
+        theme.drawSubRect(painter, clientRect, &rects.colorPicker_Border, colors.colorPicker_Border)
     }
 
     mtd onPostPaintEvent(evt: *PaintEvent)
