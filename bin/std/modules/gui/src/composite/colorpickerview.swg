@@ -124,11 +124,16 @@ impl ColorPickerView
             editA = EditBox.create(v, "", @{185, 265, 50})
             editH = EditBox.create(v, "", @{240, 265, 90})
 
-            Label.create(v, "R", @{editR.position.x, editR.position.bottom() + 0, editR.position.width})
-            Label.create(v, "G", @{editG.position.x, editG.position.bottom() + 0, editG.position.width})
-            Label.create(v, "B", @{editB.position.x, editB.position.bottom() + 0, editB.position.width})
-            Label.create(v, "A", @{editA.position.x, editA.position.bottom() + 0, editA.position.width})
-            Label.create(v, "HEX", @{editH.position.x, editH.position.bottom() + 0, editH.position.width})
+            l := Label.create(v, "R", @{editR.position.x, editR.position.bottom() + 0, editR.position.width})
+            l.labelFlags |= .LightText
+            l = Label.create(v, "G", @{editG.position.x, editG.position.bottom() + 0, editG.position.width})
+            l.labelFlags |= .LightText
+            l = Label.create(v, "B", @{editB.position.x, editB.position.bottom() + 0, editB.position.width})
+            l.labelFlags |= .LightText
+            l = Label.create(v, "A", @{editA.position.x, editA.position.bottom() + 0, editA.position.width})
+            l.labelFlags |= .LightText
+            l = Label.create(v, "HEX", @{editH.position.x, editH.position.bottom() + 0, editH.position.width})
+            l.labelFlags |= .LightText
 
             radioH = RadioButton.create(v, "H", @{280, 10, 40})
             radioS = RadioButton.create(v, "S", @{280, 40, 40})

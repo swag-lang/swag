@@ -37,7 +37,7 @@ struct ThemeColors
     dlg_BtnBarBk:                   Color = Gray7
 
     btnPush_Text:                   Color = White
-    btnPush_Border:                 Color = White
+    btnPush_Border:                 Color = Gray2//White
     btnPush_Bk:                     Color = Transparent
     btnPush_PressedText:            Color = Gray5
     btnPush_PressedBorder:          Color = White
@@ -84,7 +84,8 @@ struct ThemeColors
     btnIcon_HotIcon:                Color = White
     btnIcon_HotBk:                  Color = LighterMedium
 
-    label_Text:                     Color = Gray2
+    label_Text:                     Color = Gray1
+    label_TextLight:                Color = Gray2
     label_Text1:                    Color = 0xFFFF5555
     label_Text2:                    Color = 0xFF55FF55
     label_Text3:                    Color = 0xFFFF5555
@@ -251,7 +252,7 @@ struct ThemeColors
     palPicker_Border:               Color = Gray7
     palPicker_HotBorder:            Color = Blue
 
-    colorPicker_Border:             Color = Argb.Black
+    colorPicker_Border:             Color = 0x3F000000
     colorPicker_BackAlpha:          Color = Gray4
     colorPicker_Mark:               Color = Gray1
 }

@@ -260,9 +260,6 @@ impl IWnd for ColorPicker
         case SaturationLightness, HueSaturation, HueLightness, GreenBlue, RedBlue, RedGreen:
             size := metrics.colorPicker_RoundPick
             rect := Math.Rectangle{xCur-size, yCur-size, 2*size, 2*size}
-            rect.inflate(-1, -1)
-            theme.drawSubRect(painter, rect, &rects.colorPicker_RoundPick, Argb.Black)
-            rect.inflate(1, 1)
             theme.drawSubRect(painter, rect, &rects.colorPicker_RoundPick, colors.colorPicker_Mark)
 
         case RedVert, GreenVert, BlueVert, AlphaVert, HueVert, LightnessVert, SaturationVert:

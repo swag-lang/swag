@@ -6,6 +6,7 @@ enum LabelFlags
 {
     None
     WordWrap
+    LightText
 }
 
 struct Label
@@ -74,10 +75,25 @@ impl IWnd for Label
             sf.font = theme.res.fontDefault
             sf.horzAlignment = horzAlignmentText
             sf.vertAlignment = vertAlignmentText
-            sf.palette[0] = bc.isDisabled ? theme.colors.label_DisabledText : theme.colors.label_Text
-            sf.palette[1] = bc.isDisabled ? theme.colors.label_DisabledText : theme.colors.label_Text1
-            sf.palette[2] = bc.isDisabled ? theme.colors.label_DisabledText : theme.colors.label_Text2
-            sf.palette[3] = bc.isDisabled ? theme.colors.label_DisabledText : theme.colors.label_Text3
+
+            if bc.isDisabled
+            {
+                sf.palette[0] = theme.colors.label_DisabledText
+                sf.palette[1] = theme.colors.label_DisabledText
+                sf.palette[2] = theme.colors.label_DisabledText
+                sf.palette[3] = theme.colors.label_DisabledText
+            }
+            else
+            {
+                if labelFlags & .LightText
+                    sf.palette[0] = theme.colors.label_TextLight
+                else
+                    sf.palette[0] = theme.colors.label_Text
+                sf.palette[1] = theme.colors.label_Text1
+                sf.palette[2] = theme.colors.label_Text2
+                sf.palette[3] = theme.colors.label_Text3
+            }
+
             painter.drawRichString(posText, &name, sf)
         }
     }
