@@ -6,6 +6,7 @@ enum ColorPickerViewMode
     SaturationLightness
     HueSaturation
     HueLightness
+    GreenBlue
 }
 
 struct ColorPickerView
@@ -26,6 +27,7 @@ struct ColorPickerView
     radioH:         *RadioButton
     radioL:         *RadioButton
     radioS:         *RadioButton
+    radioR:         *RadioButton
 }
 
 impl IWnd for ColorPickerView
@@ -55,6 +57,7 @@ private impl ColorPickerView
         radioH.setChecked(mode == .SaturationLightness)
         radioL.setChecked(mode == .HueSaturation)
         radioS.setChecked(mode == .HueLightness)
+        radioR.setChecked(mode == .GreenBlue)
     }
 
     mtd updatePickers()
@@ -121,6 +124,10 @@ impl ColorPickerView
                     v.color.setArgb(v.color.a, c.r, c.g, c.b)
                     v.pickHue.change(h: cb.hue, l: cb.lum)
                     v.pickAlpha.change(h: cb.hue, l: cb.lum)
+                case GreenBlue:
+                    v.color.g = cast(u8) (cb.g * 255)
+                    v.color.b = cast(u8) (cb.b * 255)
+                    v.updatePickers()
                 }
                 v.updateEdits()
             }
@@ -144,6 +151,9 @@ impl ColorPickerView
                     v.color.setArgb(v.color.a, c.r, c.g, c.b)
                     v.pickBox.change(s: cb.sat)
                     v.pickAlpha.change(s: cb.sat)
+                case GreenBlue:
+                    v.color.r = cast(u8) (cb.r * 255)
+                    v.updatePickers()
                 }
                 v.updateEdits()
             }
@@ -151,7 +161,7 @@ impl ColorPickerView
             pickAlpha = ColorPicker.create(v, @{10, 240, 200, 16})
             pickAlpha.setMode(.AlphaHorz)
             pickAlpha.sigChanged += @|v|(cb) {
-                v.color.a = cast(u8) (cb.alpha * 255)
+                v.color.a = cast(u8) (cb.a * 255)
                 v.updateEdits()
             }
 
@@ -217,6 +227,11 @@ impl ColorPickerView
                 v.setMode(.HueLightness)
                 v.updateAll()
             }
+            radioR = RadioButton.create(v, "R", @{300, 230, 40})
+            radioR.sigChanged += @|v|(bt) {
+                v.setMode(.GreenBlue)
+                v.updateAll()
+            }
         }
 
         v.setMode(v.mode)
@@ -237,6 +252,9 @@ impl ColorPickerView
         case HueLightness:
             pickBox.setMode(.HueLightness)
             pickHue.setMode(.SaturationHorz)
+        case GreenBlue:
+            pickBox.setMode(.GreenBlue)
+            pickHue.setMode(.RedHorz)
         }
     }
 

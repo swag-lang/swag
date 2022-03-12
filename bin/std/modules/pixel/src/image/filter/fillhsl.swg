@@ -12,10 +12,8 @@ impl Image
         LightnessHorz
         HueSaturation
         HueLightness
-
-        // (h,0,1) (h,1,0.5)
-        // (h,0,0) (h,1,0)
-        SaturationLightness
+        SaturationLightness // (h,0,1) (h,1,0.5) (h,0,0) (h,1,0)
+        GreenBlue
     }
 
     public mtd fillHsl(fillType: FillHslType , color: Color = Argb.White)
@@ -24,7 +22,7 @@ impl Image
         if pf.channels() < 3 or pf.bitDepth() != 8
             return
 
-        hsl := color.toHsl()
+        hsl    := color.toHsl()
         swapRB := pf == .RGB8 or pf == .RGBA8
 
         #[Swag.Complete]
@@ -154,6 +152,19 @@ impl Image
                 l := 0.5 + ((1 - factor0) * 0.5)
                 l = Math.lerp(0, l, factor1)
                 col := Color.fromHsl(params.hsl.h, factor0, l)
+                if params.swapRB { pix[0] = col.r; pix[1] = col.g; pix[2] = col.b; }
+                else             { pix[0] = col.b; pix[1] = col.g; pix[2] = col.r; }
+                if image.pf.hasAlpha() pix[3] = 255
+            }
+
+        case GreenBlue:
+            pms := @{color.r / 255.0, swapRB}
+            visitPixels(&pms)
+            {
+                params := dref cast(*@typeof(pms)) userData
+                factor0 := x / cast(f32) image.width
+                factor1 := 1 - (y / cast(f32) image.height)
+                col := Color.fromRgbf(params.item0, factor0, factor1)
                 if params.swapRB { pix[0] = col.r; pix[1] = col.g; pix[2] = col.b; }
                 else             { pix[0] = col.b; pix[1] = col.g; pix[2] = col.r; }
                 if image.pf.hasAlpha() pix[3] = 255

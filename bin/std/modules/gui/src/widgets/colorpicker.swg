@@ -6,6 +6,7 @@ enum ColorPickerMode
     SaturationLightness
     HueSaturation
     HueLightness
+    GreenBlue
     HueVert
     HueHorz
     LightnessVert
@@ -14,13 +15,15 @@ enum ColorPickerMode
     SaturationHorz
     AlphaHorz
     AlphaVert
+    RedHorz
+    RedVert
 }
 
 struct ColorPicker
 {
     using wnd:      Wnd
     hue, sat, lum:  f32
-    alpha:          f32
+    a, r, g, b:     f32
     mode            = ColorPickerMode.SaturationLightness
     sigChanged:     SigArray'closure(*Self)
 
@@ -62,6 +65,9 @@ impl IWnd for ColorPicker
         case HueLightness:
             xCur = cast(s32) (hue * clientRect.width)
             yCur = cast(s32) ((1 - lum) * clientRect.height)
+        case GreenBlue:
+            xCur = cast(s32) (g * clientRect.width)
+            yCur = cast(s32) (b * clientRect.height)
 
         case HueVert:
             yCur = cast(s32) (hue * clientRect.height)
@@ -79,9 +85,14 @@ impl IWnd for ColorPicker
             xCur = cast(s32) (sat * clientRect.width)
 
         case AlphaHorz:
-            xCur = cast(s32) (alpha * clientRect.width)
+            xCur = cast(s32) (a * clientRect.width)
         case AlphaVert:
-            yCur = cast(s32) (alpha * clientRect.height)
+            yCur = cast(s32) (a * clientRect.height)
+
+        case RedHorz:
+            xCur = cast(s32) (r * clientRect.width)
+        case RedVert:
+            yCur = cast(s32) (r * clientRect.height)
         }
     }
 
@@ -117,6 +128,20 @@ impl IWnd for ColorPicker
                 c2 := c; c2.a = 0
                 img.fillGradient4(c1, c1, c2, c2)
             }
+            elif mode == .RedHorz
+            {
+                c := Color.fromRgbf(r, g, b)
+                c1 := c; c1.r = 0
+                c2 := c; c2.r = 255
+                img.fillGradient2(c1, c2)
+            }
+            elif mode == .RedVert
+            {
+                c := Color.fromRgbf(r, g, b)
+                c1 := c; c1.r = 255
+                c2 := c; c2.r = 0
+                img.fillGradient4(c1, c1, c2, c2)
+            }
             else
             {
                 switch mode
@@ -124,6 +149,7 @@ impl IWnd for ColorPicker
                 case SaturationLightness:   modeFill = .SaturationLightness
                 case HueSaturation:         modeFill = .HueSaturation
                 case HueLightness:          modeFill = .HueLightness
+                case GreenBlue:             modeFill = .GreenBlue
                 case HueVert:               modeFill = .HueVert
                 case HueHorz:               modeFill = .HueHorz
                 case LightnessVert:         modeFill = .LightnessVert
@@ -157,6 +183,18 @@ impl IWnd for ColorPicker
         theme.drawSubRect(painter, clientRect, &rects.colorPicker_Border, colors.colorPicker_Border)
     }
 
+    private mtd computeRGB()
+    {
+        c := Color.fromHsl(hue, sat, lum)
+        (r, g, b) = c.toRgbf()
+    }
+
+    private mtd computeHsl()
+    {
+        c := Color.fromRgbf(r, g, b)
+        (hue, sat, lum) = c.toHsl()
+    }
+
     mtd onPostPaintEvent(evt: *PaintEvent)
     {
         bc := evt.bc
@@ -170,7 +208,7 @@ impl IWnd for ColorPicker
         #[Swag.Complete]
         switch mode
         {
-        case SaturationLightness, HueSaturation, HueLightness:
+        case SaturationLightness, HueSaturation, HueLightness, GreenBlue:
             size := metrics.colorPicker_RoundPick
             rect := Math.Rectangle{xCur-size, yCur-size, 2*size, 2*size}
             rect.inflate(-1, -1)
@@ -178,12 +216,12 @@ impl IWnd for ColorPicker
             rect.inflate(1, 1)
             theme.drawSubRect(painter, rect, &rects.colorPicker_RoundPick, colors.colorPicker_Mark)
 
-        case AlphaVert, HueVert, LightnessVert, SaturationVert:
+        case RedVert, AlphaVert, HueVert, LightnessVert, SaturationVert:
             size := metrics.colorPicker_SquarePick
             rect := Math.Rectangle{clientRect.horzCenter()-size, yCur-size, 2*size, 2*size}
             theme.drawSubRect(painter, rect, &rects.colorPicker_SquarePick, colors.colorPicker_Mark)
 
-        case AlphaHorz, HueHorz, LightnessHorz, SaturationHorz:
+        case RedHorz, AlphaHorz, HueHorz, LightnessHorz, SaturationHorz:
             size := metrics.colorPicker_SquarePick
             rect := Math.Rectangle{xCur-size, clientRect.vertCenter()-size, 2*size, 2*size}
             theme.drawSubRect(painter, rect, &rects.colorPicker_SquarePick, colors.colorPicker_Mark)
@@ -221,21 +259,20 @@ impl IWnd for ColorPicker
                     sat = Math.clamp(x, 0, 1)
                     l1 := Math.lerp(1, 0.5, sat)
                     lum = Math.lerp(l1, 0, y)
-                case HueSaturation:
-                    hue = x
-                    sat = 1 - y
-                case HueLightness:
-                    hue = x
-                    lum = 1 - y
 
-                case HueHorz:           hue = x
-                case HueVert:           hue = y
-                case LightnessHorz:     lum = x
-                case LightnessVert:     lum = y
-                case SaturationHorz:    sat = x
-                case SaturationVert:    sat = y
-                case AlphaHorz:         alpha = x
-                case AlphaVert:         alpha = y
+                case HueSaturation:     hue = x; sat = 1 - y; computeRGB()
+                case HueLightness:      hue = x; lum = 1 - y; computeRGB()
+                case GreenBlue:         g = x; b = y; computeHsl()
+                case HueHorz:           hue = x; computeRGB()
+                case HueVert:           hue = y; computeRGB()
+                case LightnessHorz:     lum = x; computeRGB()
+                case LightnessVert:     lum = y; computeRGB()
+                case SaturationHorz:    sat = x; computeRGB()
+                case SaturationVert:    sat = y; computeRGB()
+                case AlphaHorz:         a = x
+                case AlphaVert:         a = y
+                case RedHorz:           r = x; computeHsl()
+                case RedVert:           r = y; computeHsl()
                 }
 
                 computeXY()
@@ -288,9 +325,9 @@ impl ColorPicker
             changed = true
         }
 
-        if a >= 0 and a != alpha
+        if #self.a >= 0 and self.a != #self.a
         {
-            alpha = a
+            self.a = #self.a
             changed = true
         }
 
@@ -306,7 +343,7 @@ impl ColorPicker
     mtd setColor(col: Color)
     {
         (hue, sat, lum) = col.toHsl()
-        alpha = col.a / 255.0
+        (a, r, g, b)    = col.toArgbf()
         dirty = true
         invalidate()
         sigChanged.call(self)
@@ -315,9 +352,7 @@ impl ColorPicker
     // Returns the selected color
     mtd getColor()->Color
     {
-        c := Color.fromHsl(hue, sat, lum)
-        c.a = cast(u8) (alpha * 255)
-        return c
+        return Color.fromArgbf(a, r, g, b)
     }
 
     // Set the color picker box mode
