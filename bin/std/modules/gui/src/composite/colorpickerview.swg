@@ -185,7 +185,7 @@ impl ColorPickerView
                 v.updateEdits()
             }
 
-            editRed = EditBox.create(v, "", @{240, 10, 50})
+            editRed = EditBox.create(v, "", @{315, 10, 50})
             editRed.setInputU64(0, 255)
             editRed.maxLength = 3
             editRed.sigLoseFocus += @|v|(ed) {
@@ -194,7 +194,7 @@ impl ColorPickerView
                 v.updateAll()
             }
 
-            editGreen = EditBox.create(v, "", @{240, 45, 50})
+            editGreen = EditBox.create(v, "", @{315, 45, 50})
             editGreen.setInputU64(0, 255)
             editGreen.maxLength = 3
             editGreen.sigLoseFocus += @|v|(ed) {
@@ -203,7 +203,7 @@ impl ColorPickerView
                 v.updateAll()
             }
 
-            editBlue = EditBox.create(v, "", @{240, 80, 50})
+            editBlue = EditBox.create(v, "", @{315, 80, 50})
             editBlue.setInputU64(0, 255)
             editBlue.maxLength = 3
             editBlue.sigLoseFocus += @|v|(ed) {
@@ -232,32 +232,33 @@ impl ColorPickerView
 
             staticRes = Wnd.create'Wnd(v, "", @{240, 190, 40, 40})
 
-            radioH = RadioButton.create(v, "H", @{240, 230, 40})
+            radioH = RadioButton.create(v, "H", @{220, 10, 40})
             radioH.sigChanged += @|v|(bt) {
                 v.setMode(.SaturationLightness)
                 v.updateAll()
             }
-            radioL = RadioButton.create(v, "L", @{240, 250, 40})
-            radioL.sigChanged += @|v|(bt) {
-                v.setMode(.HueSaturation)
-                v.updateAll()
-            }
-            radioS = RadioButton.create(v, "S", @{240, 270, 40})
+            radioS = RadioButton.create(v, "S", @{220, 45, 40})
             radioS.sigChanged += @|v|(bt) {
                 v.setMode(.HueLightness)
                 v.updateAll()
             }
-            radioR = RadioButton.create(v, "R", @{300, 230, 40})
+            radioL = RadioButton.create(v, "L", @{220, 80, 40})
+            radioL.sigChanged += @|v|(bt) {
+                v.setMode(.HueSaturation)
+                v.updateAll()
+            }
+
+            radioR = RadioButton.create(v, "R", @{270, 10, 40})
             radioR.sigChanged += @|v|(bt) {
                 v.setMode(.GreenBlue)
                 v.updateAll()
             }
-            radioG = RadioButton.create(v, "G", @{300, 250, 40})
+            radioG = RadioButton.create(v, "G", @{270, 45, 40})
             radioG.sigChanged += @|v|(bt) {
                 v.setMode(.RedBlue)
                 v.updateAll()
             }
-            radioB = RadioButton.create(v, "B", @{300, 270, 40})
+            radioB = RadioButton.create(v, "B", @{270, 80, 40})
             radioB.sigChanged += @|v|(bt) {
                 v.setMode(.RedGreen)
                 v.updateAll()
@@ -268,6 +269,7 @@ impl ColorPickerView
         return v
     }
 
+    // Change the display mode
     mtd setMode(mode: ColorPickerViewMode)
     {
         self.mode = #self.mode
