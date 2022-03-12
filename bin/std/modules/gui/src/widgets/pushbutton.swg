@@ -6,6 +6,7 @@ enum PushButtonForm
     Normal
     Default
     Flat
+    Strong
 }
 
 struct PushButton
@@ -117,9 +118,19 @@ impl IWnd for PushButton
                 subRectBorder = &rects.btnPush_HotBorder
 
             default:
-                colorBk       = colors.btnPush_Bk
-                colorBorder   = colors.btnPush_Border
-                colorText     = colors.btnPush_Text
+                if form == .Strong
+                {
+                    colorBk     = colors.btnPush_StrongBk
+                    colorBorder = colors.btnPush_StrongBorder
+                    colorText   = colors.btnPush_StrongText
+                }
+                else
+                {
+                    colorBk     = colors.btnPush_Bk
+                    colorBorder = colors.btnPush_Border
+                    colorText   = colors.btnPush_Text
+                }
+
                 subRectBk     = &rects.btnPush_Normal
                 subRectBorder = &rects.btnPush_NormalBorder
             }
@@ -139,7 +150,8 @@ impl IWnd for PushButton
         format.vertAlignment = .Center
         format.flags = .Clip
         format.font = theme.res.fontDefault
-        format.fontStyle = .Bold
+        if form == .Strong
+            format.fontStyle = .Bold
         labelPos := clientRect
         labelPos.inflate(-metrics.btnPush_Padding)
         Theme.drawIconText(bc.painter, labelPos, icon, &name, format, metrics.iconText_Margin)

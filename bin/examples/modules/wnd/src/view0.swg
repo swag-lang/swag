@@ -83,9 +83,11 @@ func createView0(tabView: *Tab, view: *Wnd)
 
     {
         button := PushButton.create(view, "YesNo", @{5, 190})
+        button.form = .Strong
         button.sigPressed = @(btn) { discard MessageDlg.yesNo(btn.surface, "<u>Are<u> you very very <b>sure<b> ?"); }
 
         button = PushButton.create(view, "YesNo", @{5, 230})
+        button.form = .Strong
         button.sigPressed = @(btn) { discard MessageDlg.yesNo(btn.surface, "Lorem ipsum <p1>dolor sit amet<p1>, consectetur <b>adipiscing<b> elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."); }
 
         button = PushButton.create(view, "OK", @{5, 270})

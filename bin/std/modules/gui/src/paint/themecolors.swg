@@ -36,8 +36,12 @@ struct ThemeColors
     dlg_Bk:                         Color = Gray6
     dlg_BtnBarBk:                   Color = Gray7
 
+    btnPush_StrongText:             Color = White
+    btnPush_StrongBorder:           Color = White
+    btnPush_StrongBk:               Color = Transparent
+
     btnPush_Text:                   Color = White
-    btnPush_Border:                 Color = Gray2//White
+    btnPush_Border:                 Color = Gray2
     btnPush_Bk:                     Color = Transparent
     btnPush_PressedText:            Color = Gray5
     btnPush_PressedBorder:          Color = White

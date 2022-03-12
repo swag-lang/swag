@@ -179,7 +179,7 @@ public impl MessageDlg
     {
         btn := PushButton.create(wndBottom, str, @{}, #self.id)
         btn.dockStyle = .Right
-        btn.form = isDefault ? .Default : .Normal
+        btn.form = isDefault ? .Default : .Strong
         metrics := getThemeMetrics()
         btn.margin = @{metrics.msgDlg_BtnPadding, 0, metrics.msgDlg_BtnPadding, 0}
         btn.sigPressed = @(using btn: *Button) { surface.app.exitModal(btn.id); }
