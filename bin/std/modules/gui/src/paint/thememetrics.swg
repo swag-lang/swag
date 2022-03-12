@@ -74,4 +74,6 @@ struct ThemeMetrics
 
     colorPicker_RoundPick:      f32 = 6
     colorPicker_SquarePick:     f32 = 6
+
+    label_Height:               f32 = 24
 }

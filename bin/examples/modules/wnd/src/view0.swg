@@ -235,6 +235,8 @@ func createView0(tabView: *Tab, view: *Wnd)
         label.icon = theme.getIcon24(ThemeIcons24.WndClose)
         label.style.addStyleSheetColors("label_Icon 0xFFFF0000")
         label.backgroundStyle = .Dialog
+        label.horzAlignmentText = .Left
+        label.horzAlignmentIcon = .Left
         label.paddingText = @{24, -3}
 
         label = Label.create(view, "Align Right", @{125, 180, 140, 30})
@@ -248,6 +250,7 @@ func createView0(tabView: *Tab, view: *Wnd)
         label.icon = theme.getIcon24(ThemeIcons24.WndClose)
         label.backgroundStyle = .Dialog
         label.horzAlignmentText = .Center
+        label.horzAlignmentIcon = .Left
 
         label = Label.create(view, "TopLeft", @{125, 260, 140, 30})
         label.backgroundStyle = .Dialog

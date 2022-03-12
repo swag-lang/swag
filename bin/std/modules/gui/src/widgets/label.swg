@@ -14,9 +14,9 @@ struct Label
 
     icon:               Icon
     labelFlags          = LabelFlags.None
-    horzAlignmentIcon   = StringHorzAlignment.Left
+    horzAlignmentIcon   = StringHorzAlignment.Center
     vertAlignmentIcon   = StringVertAlignment.Center
-    horzAlignmentText   = StringHorzAlignment.Left
+    horzAlignmentText   = StringHorzAlignment.Center
     vertAlignmentText   = StringVertAlignment.Center
     paddingText:        Math.Vector4
     paddingIcon:        Math.Vector4
@@ -89,6 +89,9 @@ impl Label
     func create(parent: *Wnd, name: string, position: Math.Rectangle, id: string = null)->*Label
     {
         Debug.assert(parent != null)
-        return Wnd.create'Label(parent, name, position, id)
+        pos := position
+        if pos.height == 0
+            pos.height = parent.getThemeMetrics().label_Height
+        return Wnd.create'Label(parent, name, pos, id)
     }
 }

@@ -84,7 +84,7 @@ struct ThemeColors
     btnIcon_HotIcon:                Color = White
     btnIcon_HotBk:                  Color = LighterMedium
 
-    label_Text:                     Color = White
+    label_Text:                     Color = Gray2
     label_Text1:                    Color = 0xFFFF5555
     label_Text2:                    Color = 0xFF55FF55
     label_Text3:                    Color = 0xFFFF5555

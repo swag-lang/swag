@@ -21,11 +21,11 @@ struct ColorPickerView
     pickBox:        *ColorPicker
     pickBar:        *ColorPicker
     pickAlpha:      *ColorPicker
-    editRed:        *EditBox
-    editGreen:      *EditBox
-    editBlue:       *EditBox
-    editAlpha:      *EditBox
-    editHex:        *EditBox
+    editR:        *EditBox
+    editG:      *EditBox
+    editB:       *EditBox
+    editA:      *EditBox
+    editH:        *EditBox
     radioH:         *RadioButton
     radioL:         *RadioButton
     radioS:         *RadioButton
@@ -84,15 +84,15 @@ private impl ColorPickerView
     mtd updateEdits()
     {
         t := Format.toString("%", color.r)
-        editRed.setText(t)
+        editR.setText(t)
         t = Format.toString("%", color.g)
-        editGreen.setText(t)
+        editG.setText(t)
         t = Format.toString("%", color.b)
-        editBlue.setText(t)
+        editB.setText(t)
         t = Format.toString("%", color.a)
-        editAlpha.setText(t)
+        editA.setText(t)
         t = Format.toString("%{X08}", color.argb)
-        editHex.setText(t)
+        editH.setText(t)
     }
 
     mtd updateAll()
@@ -112,7 +112,32 @@ impl ColorPickerView
 
         with v
         {
-            pickBox = ColorPicker.create(v, @{10, 10, 200, 200})
+            pickBox   = ColorPicker.create(v, @{10, 10, 260, 185})
+            pickBar   = ColorPicker.create(v, @{10, 215, 220, 16})
+            pickAlpha = ColorPicker.create(v, @{10, 240, 220, 16})
+
+            staticRes = Wnd.create'Wnd(v, "", @{240, 215, 45, 40})
+
+            editR = EditBox.create(v, "", @{10, 265, 50})
+            editG = EditBox.create(v, "", @{65, 265, 50})
+            editB = EditBox.create(v, "", @{120, 265, 50})
+            editA = EditBox.create(v, "", @{185, 265, 50})
+            editH = EditBox.create(v, "", @{240, 265, 90})
+
+            Label.create(v, "R", @{editR.position.x, editR.position.bottom() + 0, editR.position.width})
+            Label.create(v, "G", @{editG.position.x, editG.position.bottom() + 0, editG.position.width})
+            Label.create(v, "B", @{editB.position.x, editB.position.bottom() + 0, editB.position.width})
+            Label.create(v, "A", @{editA.position.x, editA.position.bottom() + 0, editA.position.width})
+            Label.create(v, "HEX", @{editH.position.x, editH.position.bottom() + 0, editH.position.width})
+
+            radioH = RadioButton.create(v, "H", @{280, 10, 40})
+            radioS = RadioButton.create(v, "S", @{280, 40, 40})
+            radioL = RadioButton.create(v, "L", @{280, 70, 40})
+            radioR = RadioButton.create(v, "R", @{280, 100, 40})
+            radioG = RadioButton.create(v, "G", @{280, 130, 40})
+            radioB = RadioButton.create(v, "B", @{280, 160, 40})
+
+
             pickBox.sigChanged += @|v|(cb) {
                 switch v.mode
                 {
@@ -146,7 +171,6 @@ impl ColorPickerView
                 v.updateEdits()
             }
 
-            pickBar = ColorPicker.create(v, @{10, 215, 200, 16})
             pickBar.sigChanged += @|v|(cb) {
                 switch v.mode
                 {
@@ -178,87 +202,73 @@ impl ColorPickerView
                 v.updateEdits()
             }
 
-            pickAlpha = ColorPicker.create(v, @{10, 240, 200, 16})
             pickAlpha.setMode(.AlphaHorz)
             pickAlpha.sigChanged += @|v|(cb) {
                 v.color.a = cast(u8) (cb.a * 255)
                 v.updateEdits()
             }
 
-            editRed = EditBox.create(v, "", @{315, 10, 50})
-            editRed.setInputU64(0, 255)
-            editRed.maxLength = 3
-            editRed.sigLoseFocus += @|v|(ed) {
+            editR.setInputU64(0, 255)
+            editR.maxLength = 3
+            editR.sigLoseFocus += @|v|(ed) {
                 res := catch StrConv.parseU32(ed.text)
                 v.color.r = acast Math.clamp(res.value, 0, 255)
                 v.updateAll()
             }
 
-            editGreen = EditBox.create(v, "", @{315, 45, 50})
-            editGreen.setInputU64(0, 255)
-            editGreen.maxLength = 3
-            editGreen.sigLoseFocus += @|v|(ed) {
+            editG.setInputU64(0, 255)
+            editG.maxLength = 3
+            editG.sigLoseFocus += @|v|(ed) {
                 res := catch StrConv.parseU32(ed.text)
                 v.color.g = acast Math.clamp(res.value, 0, 255)
                 v.updateAll()
             }
 
-            editBlue = EditBox.create(v, "", @{315, 80, 50})
-            editBlue.setInputU64(0, 255)
-            editBlue.maxLength = 3
-            editBlue.sigLoseFocus += @|v|(ed) {
+            editB.setInputU64(0, 255)
+            editB.maxLength = 3
+            editB.sigLoseFocus += @|v|(ed) {
                 res := catch StrConv.parseU32(ed.text)
                 v.color.b = acast Math.clamp(res.value, 0, 255)
                 v.updateAll()
             }
 
-            editAlpha = EditBox.create(v, "", @{240, 115, 50})
-            editAlpha.setInputU64(0, 255)
-            editAlpha.maxLength = 3
-            editAlpha.sigLoseFocus += @|v|(ed) {
+            editA.setInputU64(0, 255)
+            editA.maxLength = 3
+            editA.sigLoseFocus += @|v|(ed) {
                 res := catch StrConv.parseU32(ed.text)
                 v.color.a = acast Math.clamp(res.value, 0, 255)
                 v.pickAlpha.setColor(v.color)
                 v.updateEdits()
             }
 
-            editHex = EditBox.create(v, "", @{240, 150, 90})
-            editHex.sigLoseFocus += @|v|(ed) {
+            editH.sigLoseFocus += @|v|(ed) {
                 res := catch StrConv.parseX64(ed.text)
                 v.color.argb = cast(u32) res.value
                 v.pickAlpha.setColor(v.color)
                 v.updateAll()
             }
 
-            staticRes = Wnd.create'Wnd(v, "", @{240, 190, 40, 40})
-
-            radioH = RadioButton.create(v, "H", @{220, 10, 40})
             radioH.sigChanged += @|v|(bt) {
                 v.setMode(.SaturationLightness)
                 v.updateAll()
             }
-            radioS = RadioButton.create(v, "S", @{220, 45, 40})
             radioS.sigChanged += @|v|(bt) {
                 v.setMode(.HueLightness)
                 v.updateAll()
             }
-            radioL = RadioButton.create(v, "L", @{220, 80, 40})
             radioL.sigChanged += @|v|(bt) {
                 v.setMode(.HueSaturation)
                 v.updateAll()
             }
 
-            radioR = RadioButton.create(v, "R", @{270, 10, 40})
             radioR.sigChanged += @|v|(bt) {
                 v.setMode(.GreenBlue)
                 v.updateAll()
             }
-            radioG = RadioButton.create(v, "G", @{270, 45, 40})
             radioG.sigChanged += @|v|(bt) {
                 v.setMode(.RedBlue)
                 v.updateAll()
             }
-            radioB = RadioButton.create(v, "B", @{270, 80, 40})
             radioB.sigChanged += @|v|(bt) {
                 v.setMode(.RedGreen)
                 v.updateAll()
