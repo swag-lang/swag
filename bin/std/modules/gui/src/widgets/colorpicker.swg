@@ -307,7 +307,7 @@ impl ColorPicker
         return c
     }
 
-    // Set the base color, and repaint
+    // Set the color picker box mode
     mtd setMode(mode: ColorPickerMode)
     {
         self.mode = #self.mode

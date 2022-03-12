@@ -212,7 +212,7 @@ impl Color
     }
 
     // Returns hue, saturation, lightness
-    func toHsl(using const self) -> {h: f32, s: f32, l: f32}
+    mtdc toHsl() -> {h: f32, s: f32, l: f32}
     {
         var result: retval = ?
 

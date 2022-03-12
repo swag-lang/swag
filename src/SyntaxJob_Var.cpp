@@ -158,8 +158,10 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
         orgVarNode->publicName = "(";
 
         int idx = 0;
-        for (auto child : leftNode->childs)
+        for (int i = 0; i < leftNode->childs.size(); i++)
         {
+            auto child = leftNode->childs[i];
+
             // Ignore field if '?', otherwise check that this is a valid variable name
             SWAG_CHECK(checkIsSingleIdentifier(child, "as a variable name"));
             if (child->childs.front()->token.text == '?')
@@ -167,6 +169,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
                 Ast::removeFromParent(child);
                 Ast::addChildBack(parentNode, child);
                 child->flags |= AST_NO_SEMANTIC | AST_NO_BYTECODE;
+                i--;
                 idx++;
                 continue;
             }
