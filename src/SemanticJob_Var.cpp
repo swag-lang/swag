@@ -312,6 +312,7 @@ bool SemanticJob::resolveVarDeclAfter(SemanticContext* context)
         id->token.text = node->token.text;
         id->inheritOwners(node);
         id->inheritTokenLocation(node);
+        id->semFlags |= AST_SEM_NO_WITH_PRIO;
         SWAG_CHECK(resolveIdentifier(context, id, true));
         if (context->result != ContextResult::Done)
             return true;

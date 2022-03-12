@@ -781,7 +781,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                     context->job->nodes.push_back(idNode);
                     if (i == 0)
                         idNode->specFlags |= identifier->specFlags & AST_SPEC_IDENTIFIER_BACKTICK;
-                    idNode->semFlags |= AST_SEM_FROM_DEPVAR;
+                    idNode->semFlags |= AST_SEM_NO_WITH_PRIO;
                 }
             }
             else
@@ -801,7 +801,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 idNode->specFlags |= identifier->specFlags & AST_SPEC_IDENTIFIER_BACKTICK;
                 Ast::insertChild(idRef, idNode, newParent->childParentIdx);
                 context->job->nodes.push_back(idNode);
-                idNode->semFlags |= AST_SEM_FROM_DEPVAR;
+                idNode->semFlags |= AST_SEM_NO_WITH_PRIO;
             }
 
             context->node->semanticState = AstNodeResolveState::Enter;
@@ -3197,7 +3197,7 @@ bool SemanticJob::filterSymbols(SemanticContext* context, AstIdentifier* node)
         }
 
         // If symbol comes from a 'with', it has priority
-        if (!(node->semFlags & AST_SEM_FROM_DEPVAR))
+        if (!(node->semFlags & AST_SEM_NO_WITH_PRIO))
         {
             if (p.asFlags & ALTSCOPE_WITH)
             {
