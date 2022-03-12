@@ -252,7 +252,12 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* le
             emitInstruction(context, ByteCodeOp::CompareOpEqual64, r0, r1, r2);
         }
     }
-    else if (leftTypeInfo->kind == TypeInfoKind::Lambda)
+    else if (leftTypeInfo->isClosure())
+    {
+        emitInstruction(context, ByteCodeOp::DeRef64, r0, r0);
+        emitInstruction(context, ByteCodeOp::CompareOpEqual64, r0, r1, r2);
+    }
+    else if (leftTypeInfo->isLambda())
     {
         emitInstruction(context, ByteCodeOp::CompareOpEqual64, r0, r1, r2);
     }
@@ -344,7 +349,12 @@ bool ByteCodeGenJob::emitCompareOpNotEqual(ByteCodeGenContext* context, AstNode*
         else
             emitInstruction(context, ByteCodeOp::CompareOpNotEqual64, r0, r1, r2);
     }
-    else if (leftTypeInfo->kind == TypeInfoKind::Lambda)
+    else if (leftTypeInfo->isClosure())
+    {
+        emitInstruction(context, ByteCodeOp::DeRef64, r0, r0);
+        emitInstruction(context, ByteCodeOp::CompareOpNotEqual64, r0, r1, r2);
+    }
+    else if (leftTypeInfo->isLambda())
     {
         emitInstruction(context, ByteCodeOp::CompareOpNotEqual64, r0, r1, r2);
     }
