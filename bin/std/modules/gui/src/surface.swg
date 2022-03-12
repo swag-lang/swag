@@ -127,9 +127,11 @@ impl Surface
         cxt.painter.begin()
         cxt.clipRect = @{0, 0, rc.width, rc.height}
 
+        // Draw shadow around surface
         subRect := &app.theme.rects.surfaceWnd_Shadow
         painter.colorMask(true, true, true, true)
-        app.theme.drawSubRect(&painter, @{0, 0, position.width, position.height}, subRect, app.theme.colors.wnd_Shadow)
+        painter.clear(Color.fromArgb(0, 0, 0, 0))
+        app.theme.drawSubRect(&painter, @{0, 0, position.width, position.height}, subRect, app.theme.colors.wnd_Shadow, false)
 
         wnd.paint(&cxt)
         painter.end()
