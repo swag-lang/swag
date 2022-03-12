@@ -21,9 +21,9 @@ struct Application
     isActivated:    bool
     quitCode:       s32
     timing:         Time.FrameTiming
-    frameCbs:       Array'FrameCallback
 
     timers:             Array'(*Timer)
+    frameEvents:        Array'(*Wnd)
     modalSurfaces:      Array'(*Surface)
     mouseEnterWnd:      *Wnd
     mouseCaptureWnd:    *Wnd
@@ -294,6 +294,9 @@ private impl Application
             }
         }
 
+        // Be sure there's no frame event
+        frameEvents.remove(wnd)
+
         // Be sure there's no posted event for that window
         visit e: postedEvents
         {
@@ -361,14 +364,21 @@ private impl Application
         }
     }
 
+    mtd sendFrameEvents()
+    {
+        visit t: frameEvents
+        {
+            evt := FrameEvent{}
+            t.sendEvent(&evt)
+        }
+    }
+
     mtd runFrame()
     {
         timing.update()
         Memory.freeTemp()
 
-        visit cb: frameCbs
-            cb(self)
-
+        sendFrameEvents()
         sendTimerEvents()
         sendSystemEvents()
         sendKeyboardEvents()
@@ -495,11 +505,25 @@ impl Application
         timers.remove(timer)
     }
 
+    // Register a window to receive a FrameEvent each running loop
+    mtd registerFrameEvent(target: *Wnd)
+    {
+        frameEvents.add(target)
+    }
+
+    // Unregister a window that receives a FrameEvent each running loop
+    mtd unregisterFrameEvent(target: *Wnd)
+    {
+        frameEvents.remove(target)
+    }
+
+    // Push a new mouse cursor
     mtd pushCursor(cursor: Cursor)
     {
         cursorStack.add(cursor)
     }
 
+    // Pop a new mouse cursor
     mtd popCursor()
     {
         cursorStack.removeBack()
@@ -522,11 +546,5 @@ impl Application
     {
         endModal = true
         endModalExit = exitId
-    }
-
-    // Register a callback called every frames
-    mtd registerFrameCallback(cb: FrameCallback)
-    {
-        frameCbs.add(cb)
     }
 }

@@ -29,6 +29,7 @@ enum EventKind
     SetFocus
     KillFocus
     Command
+    Frame
 }
 
 struct Event
@@ -68,6 +69,11 @@ struct TimerEvent
 {
     using base: Event{kind: EventKind.Timer}
     timer:      *Timer
+}
+
+struct FrameEvent
+{
+    using base: Event{kind: EventKind.Frame}
 }
 
 struct CreateEvent

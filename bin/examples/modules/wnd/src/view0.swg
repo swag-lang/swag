@@ -1,5 +1,7 @@
 using Core, Gui
 
+var g_Prg: *ProgressBar
+
 func onEvent(wnd: *Wnd, evt: *Event)->bool
 {
     if evt.kind == .MouseAccept
@@ -15,6 +17,11 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         {
             wnd.surface.destroy()
         }
+    }
+
+    if evt.kind == .Frame
+    {
+        g_Prg.setProgression(g_Prg.progression + wnd.getTiming().dt)
     }
 
     if evt.kind == .MousePressed
@@ -55,6 +62,7 @@ func createView0(tabView: *Tab, view: *Wnd)
 {
     theme := app.theme
     view.hookOnEvent = &onEvent
+    view.getApp().registerFrameEvent(view)
 
     // Push buttons
     {
@@ -357,9 +365,7 @@ func createView0(tabView: *Tab, view: *Wnd)
 
     {
         prg := ProgressBar.create(view, @{20, 550, 200})
-        view.getApp().registerFrameCallback(@|prg|(app) {
-            prg.setProgression(prg.progression + prg.getTiming().dt)
-        })
+        g_Prg = prg
         tabView.sigSelChanged = @|prg|(tab) {
             prg.setProgression(0)
         }

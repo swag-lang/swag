@@ -413,18 +413,20 @@ impl Array
     }
 
     // Remove the given 'value'
+    // If not found, does nothing
     mtd remove(value: T)
     {
         (idx, found) := Slice.findLinear(@mkslice(buffer, count), value)
-        Debug.assert(found)
+        if !found return
         removeAt(idx)
     }
 
     // Remove the given 'value'
+    // If not found, does nothing
     mtd removeOrdered(value: T)
     {
         (idx, found) := Slice.findLinear(@mkslice(buffer, count), value)
-        Debug.assert(found)
+        if !found return
         removeAtOrdered(idx)
     }
 
