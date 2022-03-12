@@ -18,9 +18,17 @@ private impl ColorPickerView
 {
     mtd updatePickers()
     {
-        pickBox.setColorInternal(color)
-        pickHue.setColorInternal(color)
-        pickAlpha.setColorInternal(color)
+        pickBox.sigChanged.disable()
+        pickBox.setColor(color)
+        pickBox.sigChanged.enable()
+
+        pickHue.sigChanged.disable()
+        pickHue.setColor(color)
+        pickHue.sigChanged.enable()
+
+        pickAlpha.sigChanged.disable()
+        pickAlpha.setColor(color)
+        pickAlpha.sigChanged.enable()
     }
 
     mtd updateEdits()
@@ -109,7 +117,7 @@ impl ColorPickerView
             editAlpha.sigLoseFocus += @|v|(ed) {
                 res := catch StrConv.parseU32(ed.text)
                 v.color.a = acast Math.clamp(res.value, 0, 255)
-                v.pickAlpha.setColorInternal(v.color)
+                v.pickAlpha.setColor(v.color)
                 v.updateEdits()
             }
         }

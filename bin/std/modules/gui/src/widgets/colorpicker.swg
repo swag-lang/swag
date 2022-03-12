@@ -290,18 +290,12 @@ impl ColorPicker
     }
 
     // Set the base color, and repaint
-    mtd setColorInternal(col: Color)
+    mtd setColor(col: Color)
     {
         (hue, sat, lum) = col.toHsl()
         alpha = col.a / 255.0
         dirty = true
         invalidate()
-    }
-
-    // Set the base color, and repaint
-    mtd setColor(col: Color)
-    {
-        setColorInternal(col)
         sigChanged.call(self)
     }
 

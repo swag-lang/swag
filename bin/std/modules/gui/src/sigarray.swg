@@ -3,7 +3,8 @@ using Core
 
 struct(T) SigArray
 {
-    arr: Array'T
+    arr:        Array'T
+    disabled:   s32
 }
 
 impl SigArray
@@ -14,8 +15,21 @@ impl SigArray
         arr.add(fn)
     }
 
+    mtd disable()
+    {
+        disabled += 1
+    }
+
+    mtd enable()
+    {
+        Debug.assert(disabled > 0)
+        disabled -= 1
+    }
+
     mtd call(params: ...)
     {
+        if disabled
+            return
         visit fn: arr
         {
             #ast
