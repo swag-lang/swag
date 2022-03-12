@@ -253,7 +253,8 @@ impl ColorPicker
         return ret
     }
 
-    mtd changeHsl(h, s, l, a: f32 = -1)
+    // Change one component, HSL or alpha
+    mtd change(h, s, l, a: f32 = -1)
     {
         changed := false
         if h >= 0 and h != hue
