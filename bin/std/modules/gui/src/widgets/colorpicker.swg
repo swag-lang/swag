@@ -204,27 +204,28 @@ impl IWnd for ColorPicker
         case MouseMove:
             if isMoving
             {
-                xCur = cast(s32) pos.x
-                yCur = cast(s32) pos.y
-                pix := img.getPixelColor(xCur, yCur)
-                (h, s, l) := pix.toHsl()
+                x := Math.clamp(pos.x / clientRect.width, 0, 1)
+                y := Math.clamp(pos.y / clientRect.height, 0, 1)
 
                 #[Swag.Complete]
                 switch mode
                 {
                 case SaturationLightness:
-                    sat = s
-                    lum = l
-                case HueVert, HueHorz:
-                    hue = h
-                case LightnessVert, LightnessHorz:
-                    lum = l
-                case SaturationVert, SaturationHorz:
-                    sat = s
-                case AlphaHorz, AlphaVert:
-                    alpha = pix.a / 255.0
+                    sat = Math.clamp(x, 0, 1)
+                    l1 := Math.lerp(1, 0.5, sat)
+                    lum = Math.lerp(l1, 0, y)
+
+                case HueHorz:           hue = x
+                case HueVert:           hue = y
+                case LightnessHorz:     lum = 1 - x
+                case LightnessVert:     lum = 1 - y
+                case SaturationHorz:    sat = 1 - x
+                case SaturationVert:    sat = 1 - y
+                case AlphaHorz:         alpha = x
+                case AlphaVert:         alpha = y
                 }
 
+                computeXY()
                 sigChanged.call(self)
                 invalidate()
             }

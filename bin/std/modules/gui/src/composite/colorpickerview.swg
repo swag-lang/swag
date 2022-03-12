@@ -10,6 +10,7 @@ struct ColorPickerView
     editRed:        *EditBox
     editGreen:      *EditBox
     editBlue:       *EditBox
+    editAlpha:      *EditBox
 }
 
 private impl ColorPickerView
@@ -23,6 +24,8 @@ private impl ColorPickerView
         editGreen.setText(t)
         t = Format.toString("%", c.b)
         editBlue.setText(t)
+        t = Format.toString("%", c.a)
+        editAlpha.setText(t)
     }
 }
 
@@ -82,6 +85,16 @@ impl ColorPickerView
                 res := catch StrConv.parseU32(ed.text)
                 c := v.getColor()
                 c.b = acast Math.clamp(res.value, 0, 255)
+                v.setColor(c)
+            }
+
+            editAlpha = EditBox.create(v, "", @{240, 115, 50})
+            editAlpha.setInputU64(0, 255)
+            editAlpha.maxLength = 3
+            editAlpha.sigLoseFocus += @|v|(ed) {
+                res := catch StrConv.parseU32(ed.text)
+                c := v.getColor()
+                c.a = acast Math.clamp(res.value, 0, 255)
                 v.setColor(c)
             }
         }
