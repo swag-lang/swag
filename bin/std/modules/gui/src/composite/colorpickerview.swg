@@ -7,6 +7,8 @@ enum ColorPickerViewMode
     HueSaturation
     HueLightness
     GreenBlue
+    RedBlue
+    RedGreen
 }
 
 struct ColorPickerView
@@ -17,7 +19,7 @@ struct ColorPickerView
     mode            = ColorPickerViewMode.SaturationLightness
     staticRes:      *Wnd
     pickBox:        *ColorPicker
-    pickHue:        *ColorPicker
+    pickBar:        *ColorPicker
     pickAlpha:      *ColorPicker
     editRed:        *EditBox
     editGreen:      *EditBox
@@ -28,6 +30,8 @@ struct ColorPickerView
     radioL:         *RadioButton
     radioS:         *RadioButton
     radioR:         *RadioButton
+    radioG:         *RadioButton
+    radioB:         *RadioButton
 }
 
 impl IWnd for ColorPickerView
@@ -58,6 +62,8 @@ private impl ColorPickerView
         radioL.setChecked(mode == .HueSaturation)
         radioS.setChecked(mode == .HueLightness)
         radioR.setChecked(mode == .GreenBlue)
+        radioG.setChecked(mode == .RedBlue)
+        radioB.setChecked(mode == .RedGreen)
     }
 
     mtd updatePickers()
@@ -66,9 +72,9 @@ private impl ColorPickerView
         pickBox.setColor(color)
         pickBox.sigChanged.enable()
 
-        pickHue.sigChanged.disable()
-        pickHue.setColor(color)
-        pickHue.sigChanged.enable()
+        pickBar.sigChanged.disable()
+        pickBar.setColor(color)
+        pickBar.sigChanged.enable()
 
         pickAlpha.sigChanged.disable()
         pickAlpha.setColor(color)
@@ -111,48 +117,62 @@ impl ColorPickerView
                 switch v.mode
                 {
                 case SaturationLightness:
-                    c := Color.fromHsl(v.pickHue.hue, cb.sat, cb.lum)
+                    c := Color.fromHsl(v.pickBar.hue, cb.sat, cb.lum)
                     v.color.setArgb(v.color.a, c.r, c.g, c.b)
                     v.pickAlpha.change(s: cb.sat, l: cb.lum)
                 case HueSaturation:
-                    c := Color.fromHsl(cb.hue, cb.sat, v.pickHue.lum)
+                    c := Color.fromHsl(cb.hue, cb.sat, v.pickBar.lum)
                     v.color.setArgb(v.color.a, c.r, c.g, c.b)
-                    v.pickHue.change(h: cb.hue, s: cb.sat)
+                    v.pickBar.change(h: cb.hue, s: cb.sat)
                     v.pickAlpha.change(h: cb.hue, s: cb.sat)
                 case HueLightness:
-                    c := Color.fromHsl(cb.hue, v.pickHue.sat, cb.lum)
+                    c := Color.fromHsl(cb.hue, v.pickBar.sat, cb.lum)
                     v.color.setArgb(v.color.a, c.r, c.g, c.b)
-                    v.pickHue.change(h: cb.hue, l: cb.lum)
+                    v.pickBar.change(h: cb.hue, l: cb.lum)
                     v.pickAlpha.change(h: cb.hue, l: cb.lum)
                 case GreenBlue:
                     v.color.g = cast(u8) (cb.g * 255)
                     v.color.b = cast(u8) (cb.b * 255)
                     v.updatePickers()
+                case RedBlue:
+                    v.color.r = cast(u8) (cb.r * 255)
+                    v.color.b = cast(u8) (cb.b * 255)
+                    v.updatePickers()
+                case RedGreen:
+                    v.color.r = cast(u8) (cb.r * 255)
+                    v.color.g = cast(u8) (cb.g * 255)
+                    v.updatePickers()
                 }
                 v.updateEdits()
             }
 
-            pickHue = ColorPicker.create(v, @{10, 215, 200, 16})
-            pickHue.sigChanged += @|v|(cb) {
+            pickBar = ColorPicker.create(v, @{10, 215, 200, 16})
+            pickBar.sigChanged += @|v|(cb) {
                 switch v.mode
                 {
                 case SaturationLightness:
-                    c := Color.fromHsl(v.pickHue.hue, v.pickBox.sat, v.pickBox.lum)
+                    c := Color.fromHsl(v.pickBar.hue, v.pickBox.sat, v.pickBox.lum)
                     v.color.setArgb(v.color.a, c.r, c.g, c.b)
                     v.pickBox.change(h: cb.hue)
                     v.pickAlpha.change(h: cb.hue)
                 case HueSaturation:
-                    c := Color.fromHsl(v.pickBox.hue, v.pickBox.sat, v.pickHue.lum)
+                    c := Color.fromHsl(v.pickBox.hue, v.pickBox.sat, v.pickBar.lum)
                     v.color.setArgb(v.color.a, c.r, c.g, c.b)
                     v.pickBox.change(l: cb.lum)
                     v.pickAlpha.change(l: cb.lum)
                 case HueLightness:
-                    c := Color.fromHsl(v.pickBox.hue, v.pickHue.sat, v.pickBox.lum)
+                    c := Color.fromHsl(v.pickBox.hue, v.pickBar.sat, v.pickBox.lum)
                     v.color.setArgb(v.color.a, c.r, c.g, c.b)
                     v.pickBox.change(s: cb.sat)
                     v.pickAlpha.change(s: cb.sat)
                 case GreenBlue:
                     v.color.r = cast(u8) (cb.r * 255)
+                    v.updatePickers()
+                case RedBlue:
+                    v.color.g = cast(u8) (cb.g * 255)
+                    v.updatePickers()
+                case RedGreen:
+                    v.color.b = cast(u8) (cb.b * 255)
                     v.updatePickers()
                 }
                 v.updateEdits()
@@ -232,6 +252,16 @@ impl ColorPickerView
                 v.setMode(.GreenBlue)
                 v.updateAll()
             }
+            radioG = RadioButton.create(v, "G", @{300, 250, 40})
+            radioG.sigChanged += @|v|(bt) {
+                v.setMode(.RedBlue)
+                v.updateAll()
+            }
+            radioB = RadioButton.create(v, "B", @{300, 270, 40})
+            radioB.sigChanged += @|v|(bt) {
+                v.setMode(.RedGreen)
+                v.updateAll()
+            }
         }
 
         v.setMode(v.mode)
@@ -245,16 +275,22 @@ impl ColorPickerView
         {
         case SaturationLightness:
             pickBox.setMode(.SaturationLightness)
-            pickHue.setMode(.HueHorz)
+            pickBar.setMode(.HueHorz)
         case HueSaturation:
             pickBox.setMode(.HueSaturation)
-            pickHue.setMode(.LightnessHorz)
+            pickBar.setMode(.LightnessHorz)
         case HueLightness:
             pickBox.setMode(.HueLightness)
-            pickHue.setMode(.SaturationHorz)
+            pickBar.setMode(.SaturationHorz)
         case GreenBlue:
             pickBox.setMode(.GreenBlue)
-            pickHue.setMode(.RedHorz)
+            pickBar.setMode(.RedHorz)
+        case RedBlue:
+            pickBox.setMode(.RedBlue)
+            pickBar.setMode(.GreenHorz)
+        case RedGreen:
+            pickBox.setMode(.RedGreen)
+            pickBar.setMode(.BlueHorz)
         }
     }
 

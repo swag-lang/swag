@@ -14,6 +14,8 @@ impl Image
         HueLightness
         SaturationLightness // (h,0,1) (h,1,0.5) (h,0,0) (h,1,0)
         GreenBlue
+        RedBlue
+        RedGreen
     }
 
     public mtd fillHsl(fillType: FillHslType , color: Color = Argb.White)
@@ -165,6 +167,32 @@ impl Image
                 factor0 := x / cast(f32) image.width
                 factor1 := 1 - (y / cast(f32) image.height)
                 col := Color.fromRgbf(params.item0, factor0, factor1)
+                if params.swapRB { pix[0] = col.r; pix[1] = col.g; pix[2] = col.b; }
+                else             { pix[0] = col.b; pix[1] = col.g; pix[2] = col.r; }
+                if image.pf.hasAlpha() pix[3] = 255
+            }
+
+        case RedBlue:
+            pms := @{color.g / 255.0, swapRB}
+            visitPixels(&pms)
+            {
+                params := dref cast(*@typeof(pms)) userData
+                factor0 := x / cast(f32) image.width
+                factor1 := 1 - (y / cast(f32) image.height)
+                col := Color.fromRgbf(factor0, params.item0, factor1)
+                if params.swapRB { pix[0] = col.r; pix[1] = col.g; pix[2] = col.b; }
+                else             { pix[0] = col.b; pix[1] = col.g; pix[2] = col.r; }
+                if image.pf.hasAlpha() pix[3] = 255
+            }
+
+        case RedGreen:
+            pms := @{color.b / 255.0, swapRB}
+            visitPixels(&pms)
+            {
+                params := dref cast(*@typeof(pms)) userData
+                factor0 := x / cast(f32) image.width
+                factor1 := 1 - (y / cast(f32) image.height)
+                col := Color.fromRgbf(factor0, factor1, params.item0)
                 if params.swapRB { pix[0] = col.r; pix[1] = col.g; pix[2] = col.b; }
                 else             { pix[0] = col.b; pix[1] = col.g; pix[2] = col.r; }
                 if image.pf.hasAlpha() pix[3] = 255
