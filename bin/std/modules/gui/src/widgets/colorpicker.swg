@@ -5,6 +5,7 @@ enum ColorPickerMode
 {
     SaturationLightness
     HueSaturation
+    HueLightness
     HueVert
     HueHorz
     LightnessVert
@@ -58,6 +59,9 @@ impl IWnd for ColorPicker
         case HueSaturation:
             xCur = cast(s32) (hue * clientRect.width)
             yCur = cast(s32) ((1 - sat) * clientRect.height)
+        case HueLightness:
+            xCur = cast(s32) (hue * clientRect.width)
+            yCur = cast(s32) ((1 - lum) * clientRect.height)
 
         case HueVert:
             yCur = cast(s32) (hue * clientRect.height)
@@ -70,9 +74,9 @@ impl IWnd for ColorPicker
             xCur = cast(s32) (lum * clientRect.width)
 
         case SaturationVert:
-            yCur = cast(s32) ((1 - sat) * clientRect.height)
+            yCur = cast(s32) (sat * clientRect.height)
         case SaturationHorz:
-            xCur = cast(s32) ((1 - sat) * clientRect.width)
+            xCur = cast(s32) (sat * clientRect.width)
 
         case AlphaHorz:
             xCur = cast(s32) (alpha * clientRect.width)
@@ -119,6 +123,7 @@ impl IWnd for ColorPicker
                 {
                 case SaturationLightness:   modeFill = .SaturationLightness
                 case HueSaturation:         modeFill = .HueSaturation
+                case HueLightness:          modeFill = .HueLightness
                 case HueVert:               modeFill = .HueVert
                 case HueHorz:               modeFill = .HueHorz
                 case LightnessVert:         modeFill = .LightnessVert
@@ -165,7 +170,7 @@ impl IWnd for ColorPicker
         #[Swag.Complete]
         switch mode
         {
-        case SaturationLightness, HueSaturation:
+        case SaturationLightness, HueSaturation, HueLightness:
             size := metrics.colorPicker_RoundPick
             rect := Math.Rectangle{xCur-size, yCur-size, 2*size, 2*size}
             rect.inflate(-1, -1)
@@ -219,13 +224,16 @@ impl IWnd for ColorPicker
                 case HueSaturation:
                     hue = x
                     sat = 1 - y
+                case HueLightness:
+                    hue = x
+                    lum = 1 - y
 
                 case HueHorz:           hue = x
                 case HueVert:           hue = y
                 case LightnessHorz:     lum = x
                 case LightnessVert:     lum = y
-                case SaturationHorz:    sat = 1 - x
-                case SaturationVert:    sat = 1 - y
+                case SaturationHorz:    sat = x
+                case SaturationVert:    sat = y
                 case AlphaHorz:         alpha = x
                 case AlphaVert:         alpha = y
                 }

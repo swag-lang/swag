@@ -5,6 +5,7 @@ enum ColorPickerViewMode
 {
     SaturationLightness
     HueSaturation
+    HueLightness
 }
 
 struct ColorPickerView
@@ -24,6 +25,7 @@ struct ColorPickerView
     editHex:        *EditBox
     radioH:         *RadioButton
     radioL:         *RadioButton
+    radioS:         *RadioButton
 }
 
 impl IWnd for ColorPickerView
@@ -52,6 +54,7 @@ private impl ColorPickerView
     {
         radioH.setChecked(mode == .SaturationLightness)
         radioL.setChecked(mode == .HueSaturation)
+        radioS.setChecked(mode == .HueLightness)
     }
 
     mtd updatePickers()
@@ -113,6 +116,11 @@ impl ColorPickerView
                     v.color.setArgb(v.color.a, c.r, c.g, c.b)
                     v.pickHue.change(h: cb.hue, s: cb.sat)
                     v.pickAlpha.change(h: cb.hue, s: cb.sat)
+                case HueLightness:
+                    c := Color.fromHsl(cb.hue, v.pickHue.sat, cb.lum)
+                    v.color.setArgb(v.color.a, c.r, c.g, c.b)
+                    v.pickHue.change(h: cb.hue, l: cb.lum)
+                    v.pickAlpha.change(h: cb.hue, l: cb.lum)
                 }
                 v.updateEdits()
             }
@@ -131,6 +139,11 @@ impl ColorPickerView
                     v.color.setArgb(v.color.a, c.r, c.g, c.b)
                     v.pickBox.change(l: cb.lum)
                     v.pickAlpha.change(l: cb.lum)
+                case HueLightness:
+                    c := Color.fromHsl(v.pickBox.hue, v.pickHue.sat, v.pickBox.lum)
+                    v.color.setArgb(v.color.a, c.r, c.g, c.b)
+                    v.pickBox.change(s: cb.sat)
+                    v.pickAlpha.change(s: cb.sat)
                 }
                 v.updateEdits()
             }
@@ -199,6 +212,11 @@ impl ColorPickerView
                 v.setMode(.HueSaturation)
                 v.updateAll()
             }
+            radioS = RadioButton.create(v, "S", @{240, 270, 40})
+            radioS.sigChanged += @|v|(bt) {
+                v.setMode(.HueLightness)
+                v.updateAll()
+            }
         }
 
         v.setMode(v.mode)
@@ -216,6 +234,9 @@ impl ColorPickerView
         case HueSaturation:
             pickBox.setMode(.HueSaturation)
             pickHue.setMode(.LightnessHorz)
+        case HueLightness:
+            pickBox.setMode(.HueLightness)
+            pickHue.setMode(.SaturationHorz)
         }
     }
 

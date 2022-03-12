@@ -119,7 +119,7 @@ impl Image
             }
 
         case HueSaturation:
-        pms := @{hsl, swapRB}
+            pms := @{hsl, swapRB}
             visitPixels(&pms)
             {
                 params := dref cast(*@typeof(pms)) userData
@@ -138,7 +138,7 @@ impl Image
                 params := dref cast(*@typeof(pms)) userData
                 factor0 := x / cast(f32) image.width
                 factor1 := y / cast(f32) image.height
-                col := Color.fromHsl(factor0, params.hsl.s, factor1)
+                col := Color.fromHsl(factor0, 1, factor1)
                 if params.swapRB { pix[0] = col.r; pix[1] = col.g; pix[2] = col.b; }
                 else             { pix[0] = col.b; pix[1] = col.g; pix[2] = col.r; }
                 if image.pf.hasAlpha() pix[3] = 255
