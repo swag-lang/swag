@@ -5,7 +5,7 @@ struct RadioButton
 {
     using button:   Button
     checked:        bool
-    sigChanged:     func(*Self)
+    sigChanged:     SigArray'closure(*Self)
 }
 
 impl IWnd for RadioButton
@@ -95,8 +95,7 @@ impl IWnd for RadioButton
         if processMouseEvent(evt) and !checked
         {
             checked = true
-            if sigChanged
-                sigChanged(self)
+            sigChanged.call(self)
             postCommandEvent(id)
         }
     }
@@ -114,5 +113,14 @@ impl RadioButton
         if pos.width == 0
             pos.width = parent.getThemeMetrics().btnPush_Width
         return Wnd.create'RadioButton(parent, name, pos, id)
+    }
+
+    // Set the checked state
+    mtd setChecked(checked: bool)
+    {
+        if self.checked == #self.checked
+            return
+        self.checked = #self.checked
+        invalidate()
     }
 }
