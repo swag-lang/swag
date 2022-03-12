@@ -253,7 +253,7 @@ impl ColorPicker
         return ret
     }
 
-    mtd changeHsl(h, s, l: f32 = -1)
+    mtd changeHsl(h, s, l, a: f32 = -1)
     {
         changed := false
         if h >= 0 and h != hue
@@ -274,6 +274,12 @@ impl ColorPicker
             changed = true
         }
 
+        if a >= 0 and a != alpha
+        {
+            alpha = a
+            changed = true
+        }
+
         if changed
         {
             dirty = true
@@ -286,7 +292,7 @@ impl ColorPicker
     mtd setColor(col: Color)
     {
         (hue, sat, lum) = col.toHsl()
-        alpha = 255.0 / col.a
+        alpha = col.a / 255.0
         dirty = true
         invalidate()
         sigChanged.call(self)

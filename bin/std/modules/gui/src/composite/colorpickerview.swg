@@ -95,7 +95,7 @@ impl ColorPickerView
                 res := catch StrConv.parseU32(ed.text)
                 c := v.getColor()
                 c.a = acast Math.clamp(res.value, 0, 255)
-                v.setColor(c)
+                v.pickAlpha.changeHsl(a: c.a / 255.0)
             }
         }
 
