@@ -206,6 +206,9 @@ struct Module
     VectorNative<bool>              appendGeneratedFile;
     VectorNative<uint32_t>          countLinesGeneratedFile;
 
+    Mutex                              mutexMapCrcBc;
+    unordered_map<uint32_t, ByteCode*> mapCrcBc;
+
     AstNode*          astRoot          = nullptr;
     Scope*            scopeRoot        = nullptr;
     Backend*          backend          = nullptr;

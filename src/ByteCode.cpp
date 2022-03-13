@@ -219,3 +219,88 @@ bool ByteCode::isByteCodeLambda(void* ptr)
     uint64_t u = (uint64_t) ptr;
     return u & SWAG_LAMBDA_BC_MARKER;
 }
+
+void ByteCode::computeCrc()
+{
+    if (!sourceFile)
+        return;
+    auto module = sourceFile->module;
+
+    // Compute hash content
+    uint32_t hash = 0;
+    for (uint32_t i = 0; i < numInstructions; i++)
+    {
+#define ADDH(__a)           \
+    hash += (uint32_t) __a; \
+    hash ^= hash << 10;     \
+    hash += hash >> 1;      \
+    hash ^= hash << 3;      \
+    hash += hash >> 5;      \
+    hash ^= hash << 4;      \
+    hash += hash >> 17;     \
+    hash ^= hash << 25;     \
+    hash += hash >> 6;
+
+        auto& ins = out[i];
+        ADDH(ins.op);
+        ADDH(ins.flags);
+        ADDH(ins.a.u32);
+        ADDH(ins.b.u32);
+        ADDH(ins.c.u32);
+        ADDH(ins.d.u32);
+    }
+
+    contentCrc = hash;
+
+    ScopedLock lk(module->mutexMapCrcBc);
+    auto       it = module->mapCrcBc.find(hash);
+    if (it == module->mapCrcBc.end())
+    {
+        module->mapCrcBc[hash] = this;
+    }
+    else if (it->second->numInstructions != numInstructions)
+    {
+        nextCrc                = it->second->nextCrc;
+        module->mapCrcBc[hash] = this;
+    }
+    else
+    {
+        auto      other  = it->second;
+        ByteCode* sameAs = nullptr;
+        while (other)
+        {
+            bool isSame = true;
+            for (uint32_t i = 0; i < numInstructions; i++)
+            {
+                if (other->out[i].op != out[i].op ||
+                    other->out[i].flags != out[i].flags ||
+                    other->out[i].a.u64 != out[i].a.u64 ||
+                    other->out[i].b.u64 != out[i].b.u64 ||
+                    other->out[i].c.u64 != out[i].c.u64 ||
+                    other->out[i].d.u64 != out[i].d.u64)
+                {
+                    isSame = false;
+                    break;
+                }
+            }
+
+            if (isSame)
+            {
+                sameAs = other;
+                break;
+            }
+
+            other = other->nextCrc;
+        }
+
+        if (!sameAs)
+        {
+            nextCrc                = it->second->nextCrc;
+            module->mapCrcBc[hash] = this;
+        }
+        else
+        {
+            substitution = sameAs;
+        }
+    }
+}
