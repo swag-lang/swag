@@ -75,7 +75,6 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
         extension->semanticAfterFct             = from->extension->semanticAfterFct;
         extension->byteCodeBeforeFct            = from->extension->byteCodeBeforeFct;
         extension->byteCodeAfterFct             = from->extension->byteCodeAfterFct;
-        extension->bc                           = from->extension->bc;
         extension->resolvedUserOpSymbolOverload = from->extension->resolvedUserOpSymbolOverload;
         extension->collectTypeInfo              = from->extension->collectTypeInfo;
         extension->exportNode                   = from->extension->exportNode;

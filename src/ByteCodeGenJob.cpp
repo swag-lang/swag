@@ -416,8 +416,10 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags, Byt
                 extension->bc->name += "_";
                 extension->bc->name += node->token.text;
             }
+
             if (node->kind == AstNodeKind::FuncDecl)
                 sourceFile->module->addByteCodeFunc(node->extension->bc);
+
             if (flags & ASKBC_WAIT_DONE)
                 job->jobsToAdd.push_back(node->extension->byteCodeJob);
             else
