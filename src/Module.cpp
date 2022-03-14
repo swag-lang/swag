@@ -118,7 +118,7 @@ void Module::computePublicPath()
     publicPath += "/";
     publicPath = Utf8::normalizePath(fs::path(publicPath.c_str()));
 
-    if (!isScriptFile && kind != ModuleKind::Script)
+    if (!isScriptFile && kind != ModuleKind::Script && !isErrorModule)
     {
         if (!fs::exists(publicPath.c_str()))
         {
@@ -134,7 +134,7 @@ void Module::computePublicPath()
     publicPath += g_Workspace->getTargetFullName(g_CommandLine->buildCfg, g_CommandLine->target).c_str();
     publicPath += "/";
 
-    if (!isScriptFile && kind != ModuleKind::Script)
+    if (!isScriptFile && kind != ModuleKind::Script && !isErrorModule)
     {
         if (!fs::exists(publicPath.c_str()))
         {
