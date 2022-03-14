@@ -80,7 +80,13 @@ public impl DebugAllocator
 
         orgAddr := cast(*u8) addr
         ptrHeader := cast(*Header) (orgAddr - @sizeof(Header))
-        ptrFooter := cast(*Footer) (orgAddr + ptrHeader.userSize)
+        checkOne(ptrHeader)
+    }
+
+    private mtd checkOne(ptrHeader: *Header)
+    {
+        ptrEnd := cast(*u8) (ptrHeader + 1)
+        ptrFooter := cast(*Footer) (ptrEnd + ptrHeader.userSize)
 
         Debug.assert(ptrHeader.magic == MagicAlloc)
         Debug.assert(ptrFooter.magic == MagicAlloc)
@@ -95,14 +101,9 @@ public impl DebugAllocator
     mtd checkAll()
     {
         ptrHeader := cast(*Header) first
-        while(ptrHeader)
+        while ptrHeader
         {
-            Debug.assert(ptrHeader.magic == MagicAlloc)
-            Debug.assert(ptrHeader.allocId != 0)
-            Debug.assert(ptrHeader.prev or first == ptrHeader)
-            Debug.assert(!ptrHeader.prev or ptrHeader.prev.next == ptrHeader)
-            Debug.assert(!ptrHeader.next or ptrHeader.next.prev == ptrHeader)
-
+            checkOne(ptrHeader)
             ptrHeader = ptrHeader.next
         }
     }
