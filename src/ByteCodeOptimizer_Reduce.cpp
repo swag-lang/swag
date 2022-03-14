@@ -961,15 +961,6 @@ void ByteCodeOptimizer::reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruct
 {
     switch (ip->op)
     {
-        // Remove unecessary DebugNop
-    case ByteCodeOp::DebugNop:
-        if (ip->location == ip[1].location)
-        {
-            setNop(context, ip);
-            break;
-        }
-        break;
-
         // Useless pop/push
     case ByteCodeOp::InternalPushErr:
         if (ip[1].op == ByteCodeOp::InternalPopErr)

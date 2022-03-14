@@ -195,7 +195,7 @@ bool ByteCodeGenJob::skipNodes(ByteCodeGenContext* context, AstNode* node)
 
 void ByteCodeGenJob::emitDebugLine(ByteCodeGenContext* context, AstNode* node)
 {
-    if (!context->sourceFile->module->buildCfg.byteCodeOptimize)
+    if (context->sourceFile->module->buildCfg.backendDebugInformations)
     {
         PushLocation lk(context, &node->token.endLocation);
         emitInstruction(context, ByteCodeOp::DebugNop);

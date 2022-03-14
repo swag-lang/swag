@@ -60,15 +60,18 @@ TODO
 ****************************************
 
 -------------------------------------
+erreur si opDrop est privé et la struct publique (on doit exporter)
+-------------------------------------
+on doit exporter les implementation d'interface pour un truc public ?
+-------------------------------------
+si on "hérite" par using d'une interface, il faut forcer l'export d'un impl for, même vide, de manière
+à ce que le "kindof" sur l'interface donne le bon type, et pas celui du "parent"
+-------------------------------------
 lambda short form in declaration var x: func(s32) = @(x) {}
 -------------------------------------
 closure & ufcs (exemple 3477)
 -------------------------------------
 context & tempallocator, y'a vraiment aucun usage dans std, c'est pas normal, faut se pencher sur l'utilisation de ce truc
--------------------------------------
-erreur si opDrop est privé et la struct publique (on doit exporter)
--------------------------------------
-on doit exporter les implementation d'interface pour un truc public ?
 -------------------------------------
 PB du cross compile avec le full compile time exec. BIG BIG BIG !!!
 -------------------------------------
