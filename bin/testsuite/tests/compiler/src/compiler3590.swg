@@ -26,7 +26,6 @@ func(T) alloc()
 {
     var x: *T
     itf := cast(I) x
-    @print(@kindof(itf).name)
 }
 
 #test
