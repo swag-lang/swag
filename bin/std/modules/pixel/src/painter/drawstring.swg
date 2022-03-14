@@ -50,9 +50,10 @@ struct RichStringFormat
 
 impl Painter
 {
-    private func getGlyphs(text: string, font: *Font)->Array'(const *GlyphDesc)
+    private func getTempGlyphs(text: string, font: *Font)->Array'(const *GlyphDesc)
     {
         var result: retval
+        result.allocator = @getcontext().tempAllocator
         result.reserve(@countof(text))
         Utf8.visitRunes(|c| text)
         {
@@ -77,7 +78,7 @@ impl Painter
         result.y = y
         bottom := top
 
-        arr := getGlyphs(text, font)
+        arr := getTempGlyphs(text, font)
         visit ref: arr
         {
             result.y = Math.min(result.y, y - ref.shiftY)
@@ -106,7 +107,7 @@ impl Painter
         if @countof(text) == 0 or brush.color.a == 0
             return
 
-        arr := getGlyphs(text, font)
+        arr := getTempGlyphs(text, font)
         if arr.isEmpty() return
 
         x := Math.round(left)

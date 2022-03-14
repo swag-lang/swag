@@ -184,6 +184,15 @@ impl Array
         capacity = newCapacity
     }
 
+    // Create a temporary array
+    #[Swag.Inline]
+    func(TA) createTemp()->Array'TA
+    {
+        var result: retval
+        result.allocator = @getcontext().tempAllocator
+        return result
+    }
+
     // Create a working buffer
     #[Swag.NotGeneric]
     func createBuffer(size: uint)->Array'u8

@@ -2154,6 +2154,10 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
             }
         }
 
+        // No using ! We're done
+        if (castFlags & CASTFLAG_NO_USING_ST && !(it.typeStruct->flags & TYPEINFO_STRUCT_TYPEINFO))
+            return true;
+
         auto structNode = CastAst<AstStruct>(it.typeStruct->declNode, AstNodeKind::StructDecl);
         if (!(structNode->specFlags & AST_SPEC_STRUCTDECL_HAS_USING))
             continue;

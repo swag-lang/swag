@@ -33,6 +33,7 @@ static const uint32_t CASTFLAG_LITERAL_SUFFIX = 0x00080000;
 static const uint32_t CASTFLAG_NO_LAST_MINUTE = 0x00100000;
 static const uint32_t CASTFLAG_NO_ITF         = 0x00200000;
 static const uint32_t CASTFLAG_PARAMS         = 0x00400000;
+static const uint32_t CASTFLAG_NO_USING_ST    = 0x00800000;
 
 // Stored in SymbolMatchContext.flags
 static const uint32_t CASTFLAG_RESULT_STRUCT_CONVERT = 0x01000000;
@@ -145,16 +146,16 @@ struct TypeManager
     TypeInfoPointer* typeInfoConstPointers[(int) NativeTypeKind::Count] = {0};
     TypeInfoPointer* typeInfoPointers[(int) NativeTypeKind::Count]      = {0};
 
-    TypeInfoPointer*   typeInfoTypeType       = nullptr;
-    TypeInfoVariadic*  typeInfoVariadic       = nullptr;
-    TypeInfoVariadic*  typeInfoCVariadic      = nullptr;
-    TypeInfoNative*    typeInfoUntypedInt     = nullptr;
-    TypeInfoNative*    typeInfoUntypedBinHexa = nullptr;
-    TypeInfoNative*    typeInfoUntypedFloat   = nullptr;
-    TypeInfoFuncAttr*  typeInfoOpCall         = nullptr;
-    TypeInfoFuncAttr*  typeInfoOpCall2        = nullptr;
-    TypeInfoCode*      typeInfoCode           = nullptr;
-    TypeInfoSlice*     typeInfoSliceRunes     = nullptr;
+    TypeInfoPointer*  typeInfoTypeType       = nullptr;
+    TypeInfoVariadic* typeInfoVariadic       = nullptr;
+    TypeInfoVariadic* typeInfoCVariadic      = nullptr;
+    TypeInfoNative*   typeInfoUntypedInt     = nullptr;
+    TypeInfoNative*   typeInfoUntypedBinHexa = nullptr;
+    TypeInfoNative*   typeInfoUntypedFloat   = nullptr;
+    TypeInfoFuncAttr* typeInfoOpCall         = nullptr;
+    TypeInfoFuncAttr* typeInfoOpCall2        = nullptr;
+    TypeInfoCode*     typeInfoCode           = nullptr;
+    TypeInfoSlice*    typeInfoSliceRunes     = nullptr;
 
     TypeInfoNative* promoteMatrix[(int) NativeTypeKind::Count][(int) NativeTypeKind::Count] = {{0}};
 };

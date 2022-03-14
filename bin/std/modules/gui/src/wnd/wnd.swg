@@ -566,7 +566,7 @@ impl Wnd
     {
         clientRect := getClientRectPadding()
 
-        var centerLayout: Array'(*Wnd)
+        centerLayout := Array.createTemp'(*Wnd)()
         visit c: childs
         {
             switch c.dockStyle
