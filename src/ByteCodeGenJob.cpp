@@ -195,9 +195,16 @@ bool ByteCodeGenJob::skipNodes(ByteCodeGenContext* context, AstNode* node)
 
 void ByteCodeGenJob::emitDebugLine(ByteCodeGenContext* context, AstNode* node)
 {
+    if (!node)
+        return;
+    PushLocation lk(context, &node->token.endLocation);
+    emitDebugLine(context);
+}
+
+void ByteCodeGenJob::emitDebugLine(ByteCodeGenContext* context)
+{
     if (context->sourceFile->module->buildCfg.backendDebugInformations)
     {
-        PushLocation lk(context, &node->token.endLocation);
         emitInstruction(context, ByteCodeOp::DebugNop);
     }
 }

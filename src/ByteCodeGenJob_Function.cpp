@@ -28,7 +28,9 @@ bool ByteCodeGenJob::emitLocalFuncDecl(ByteCodeGenContext* context)
     if (context->result != ContextResult::Done)
         return true;
 
+    emitDebugLine(context);
     emitInstruction(context, ByteCodeOp::Ret)->a.u32 = funcDecl->stackSize;
+
     return true;
 }
 

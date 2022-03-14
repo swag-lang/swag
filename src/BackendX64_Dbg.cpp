@@ -712,7 +712,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
         tr0->LF_FieldList.fields.push_back(field);
 
         field.kind          = LF_MEMBER;
-        field.type          = (DbgTypeIndex) (SimpleTypeKind::UnsignedCharacter | (NearPointer64 << 8));
+        field.type          = dbgGetOrCreatePointerPointerToType(pp, g_Workspace->swagScope.regTypeInfoStruct);
         field.value.reg.u32 = sizeof(void*);
         field.name          = "itable";
         tr0->LF_FieldList.fields.push_back(field);

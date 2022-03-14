@@ -60,6 +60,7 @@ enum WndFlags
 struct Wnd
 {
     itf:        IWnd
+    structName: string
     surface:    *Surface
     style:      Style
     wndFlags    = WndFlags.ClipChildren
@@ -176,6 +177,7 @@ impl Wnd
         res := Memory.new'T()
         res.isAllocated = true
         res.itf = cast(IWnd) dref res
+        res.structName = @kindof(res.itf).name
         Debug.assert(@kindof(res.itf) == T)
         res.name = name
         res.id = id
