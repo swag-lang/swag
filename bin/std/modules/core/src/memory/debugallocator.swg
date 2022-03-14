@@ -52,16 +52,16 @@ public impl DebugAllocator
     }
 
     // Initialize the allocator
-    func init(using self, allocator: IAllocator = null)
+    mtd init(allocator: IAllocator = null)
     {
         self.allocator = #self.allocator orelse @getcontext().allocator
     }
 
     // Returns true if there are some remaining allocations
-    func isEmpty(using self) => first == null
+    mtd isEmpty() => first == null
 
     // Output to the console the list of all allocated blocks (leaks)
-    func printAllocated(using self)
+    mtd printAllocated()
     {
         scan := cast(*Header) first
         Console.printf("% block(s), % byte(s)\n", count, size)
@@ -74,7 +74,7 @@ public impl DebugAllocator
 
     // This function will assert if the given address is not conform
     // to an allocated block
-    func assertIsAllocated(using self, addr: *void)
+    mtd assertIsAllocated(addr: *void)
     {
         if !addr return
 
@@ -89,6 +89,22 @@ public impl DebugAllocator
         Debug.assert(ptrHeader.prev or first == ptrHeader)
         Debug.assert(!ptrHeader.prev or ptrHeader.prev.next == ptrHeader)
         Debug.assert(!ptrHeader.next or ptrHeader.next.prev == ptrHeader)
+    }
+
+    // Check all allocated pointers
+    mtd checkAll()
+    {
+        ptrHeader := cast(*Header) first
+        while(ptrHeader)
+        {
+            Debug.assert(ptrHeader.magic == MagicAlloc)
+            Debug.assert(ptrHeader.allocId != 0)
+            Debug.assert(ptrHeader.prev or first == ptrHeader)
+            Debug.assert(!ptrHeader.prev or ptrHeader.prev.next == ptrHeader)
+            Debug.assert(!ptrHeader.next or ptrHeader.next.prev == ptrHeader)
+
+            ptrHeader = ptrHeader.next
+        }
     }
 }
 
@@ -219,12 +235,22 @@ public impl IAllocator for DebugAllocator
             self.nextId += 1
             header.allocId = self.nextId
 
+            // To but a breakpoint on a given allocator id
+            #[Swag.Global]
+            var breakId: u32
+            if header.allocId == breakId
+            {
+                Debug.assert(false)
+            }
+
             // Link to list of allocated blocks
             header.prev = null
             header.next = self.first
             if header.next
                 header.next.prev = header
             self.first = header
+
+            //checkAll()
         }
     }
 }

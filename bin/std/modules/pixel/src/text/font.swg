@@ -123,10 +123,14 @@ public impl Font
             if atlas.curX + bmp.width > atlas.width
             {
                 atlas.curX = 0
-                if atlas.nextY + bmp.rows > atlas.width
+                if atlas.nextY + bmp.rows > atlas.height
                     atlas = null
                 else
                     atlas.curY = atlas.nextY
+            }
+            elif atlas.curY + bmp.rows > atlas.height
+            {
+                atlas = null
             }
         }
 
