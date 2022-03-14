@@ -107,12 +107,13 @@ struct ByteCode
     static bool     isJump(ByteCodeInstruction* inst)       { return g_ByteCodeOpDesc[(int) inst->op].flags & OPFLAG_IS_JUMP; }
     // clang-format on
 
-    void addCallStack(ByteCodeRunContext* context);
-    void enterByteCode(ByteCodeRunContext* context, uint32_t popParamsOnRet = 0, uint32_t returnReg = UINT32_MAX);
-    void leaveByteCode(ByteCodeRunContext* context, bool popCallStack = true);
-    void markLabels();
-    bool isDoingNothing();
-    void computeCrc();
+    void      addCallStack(ByteCodeRunContext* context);
+    void      enterByteCode(ByteCodeRunContext* context, uint32_t popParamsOnRet = 0, uint32_t returnReg = UINT32_MAX);
+    void      leaveByteCode(ByteCodeRunContext* context, bool popCallStack = true);
+    void      markLabels();
+    bool      isDoingNothing();
+    void      computeCrc();
+    ByteCode* getSubstitution();
 
     static void* doForeignLambda(void* ptr);
     static bool  isForeignLambda(void* ptr);

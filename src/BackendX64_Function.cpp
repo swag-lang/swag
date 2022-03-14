@@ -396,7 +396,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
     pp.labels.clear();
     pp.labelsToSolve.clear();
-    bc->markLabels();
 
     // Symbol
     auto symbolFuncIndex  = getOrAddSymbol(pp, bc->getCallName(), CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;

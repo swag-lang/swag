@@ -6,6 +6,7 @@
 #include "TypeManager.h"
 #include "ErrorIds.h"
 #include "Diagnostic.h"
+#include "Backend.h"
 
 #undef BYTECODE_OP
 #define BYTECODE_OP(__op, __flags, __dis, __nump) {#__op, (int) strlen(#__op), __flags, __dis, __nump},
@@ -15,6 +16,8 @@ ByteCodeOpDesc g_ByteCodeOpDesc[] = {
 
 void ByteCode::release()
 {
+    if (substitution)
+        return;
     auto s = Allocator::alignSize(maxInstructions * sizeof(ByteCodeInstruction));
     g_Allocator.free(out, s);
 }
@@ -224,6 +227,9 @@ void ByteCode::computeCrc()
 {
     if (!sourceFile)
         return;
+    if (!Backend::canEmitFunction(this))
+        return;
+
     auto module = sourceFile->module;
 
     // Compute hash content
@@ -300,7 +306,20 @@ void ByteCode::computeCrc()
         }
         else
         {
-            substitution = sameAs;
+            substitution   = sameAs;
+            sameAs->isUsed = true;
         }
     }
+}
+
+ByteCode* ByteCode::getSubstitution()
+{
+    if (!substitution)
+        return this;
+
+    auto res = substitution;
+    while (res->substitution)
+        res = res->substitution;
+
+    return res;
 }

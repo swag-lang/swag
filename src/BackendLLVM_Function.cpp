@@ -388,7 +388,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     bool              blockIsClosed = false;
     builder.SetInsertPoint(block);
     pp.labels.clear();
-    bc->markLabels();
 
     // Reserve registers
     llvm::AllocaInst* allocR = nullptr;

@@ -21,7 +21,7 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
             while (ipScan != ip)
             {
                 // Do not optimize if complex context
-                if (ByteCode::isJump(ipScan) || ipScan->flags & BCI_START_STMT || ipScan->flags & BCI_JUMP_DEST)
+                if (ByteCode::isJump(ipScan) || ipScan->flags & BCI_START_STMT)
                 {
                     mapRA.clear();
                     mapRB.clear();
@@ -53,7 +53,7 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
 
             if (mapRA.count == 0)
                 continue;
-            for(uint32_t i = 0; i < RegisterList::MAX_REGISTERS; i++)
+            for (uint32_t i = 0; i < RegisterList::MAX_REGISTERS; i++)
             {
                 if (!mapRA.contains(i))
                     continue;
@@ -64,7 +64,6 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
                 auto cpy = *mapRA.val[i];
                 memmove(ipStart + 1, ipStart, (mapRA.val[i] - ipStart) * sizeof(ByteCodeInstruction));
                 *ipStart = cpy;
-                ipStart->flags |= BCI_JUMP_DEST;
                 ipStart->flags |= BCI_START_STMT;
                 ipStart->location = ipStart[1].location;
 

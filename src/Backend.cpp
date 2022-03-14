@@ -302,33 +302,52 @@ bool Backend::saveExportFile()
     return true;
 }
 
+bool Backend::canEmitFunction(ByteCode* bc)
+{
+    if (!bc->node)
+        return true;
+
+    auto node = CastAst<AstFuncDecl>(bc->node, AstNodeKind::FuncDecl);
+
+    // Do we need to generate that function ?
+    if (node->attributeFlags & ATTRIBUTE_COMPILER)
+        return false;
+    if ((node->attributeFlags & ATTRIBUTE_TEST_FUNC) && !g_CommandLine->test)
+        return false;
+    if (node->attributeFlags & ATTRIBUTE_FOREIGN)
+        return false;
+    if (!node->content && !node->isSpecialFunctionGenerated())
+        return false;
+
+    if (node->sourceFile->isBootstrapFile || node->sourceFile->isRuntimeFile)
+        return true;
+    if (node->attributeFlags & (ATTRIBUTE_PUBLIC | ATTRIBUTE_MAIN_FUNC | ATTRIBUTE_INIT_FUNC | ATTRIBUTE_DROP_FUNC | ATTRIBUTE_TEST_FUNC))
+        return true;
+    if (node->specFlags & AST_SPEC_FUNCDECL_PATCH)
+        return true;
+
+    if (!bc->isUsed)
+        return false;
+
+    return true;
+}
+
 void Backend::addFunctionsToJob(Module* moduleToGen, BackendFunctionBodyJobBase* job, int start, int end)
 {
     for (int i = start; i < end; i++)
     {
         auto one = moduleToGen->byteCodeFunc[i];
-        if (one->node)
+        if (!canEmitFunction(one))
+            continue;
+
+        if (!one->substitution)
+            one->markLabels();
+        else
         {
-            auto node = CastAst<AstFuncDecl>(one->node, AstNodeKind::FuncDecl);
-
-            // Do we need to generate that function ?
-            if (node->attributeFlags & ATTRIBUTE_COMPILER)
-                continue;
-            if ((node->attributeFlags & ATTRIBUTE_TEST_FUNC) && !g_CommandLine->test)
-                continue;
-            if (node->attributeFlags & ATTRIBUTE_FOREIGN)
-                continue;
-            if (!node->content && !node->isSpecialFunctionGenerated())
-                continue;
-
-            if (node->sourceFile->isBootstrapFile || node->sourceFile->isRuntimeFile)
-                one->isUsed = true;
-            else if (node->attributeFlags & (ATTRIBUTE_PUBLIC | ATTRIBUTE_MAIN_FUNC | ATTRIBUTE_INIT_FUNC | ATTRIBUTE_DROP_FUNC | ATTRIBUTE_TEST_FUNC))
-                one->isUsed = true;
-            else if (node->specFlags & AST_SPEC_FUNCDECL_PATCH)
-                one->isUsed = true;
-            if (!one->isUsed)
-                continue;
+            auto subst           = one->getSubstitution();
+            one->out             = subst->out;
+            one->numInstructions = subst->numInstructions;
+            one->maxInstructions = subst->maxInstructions;
         }
 
         job->byteCodeFunc.push_back(one);

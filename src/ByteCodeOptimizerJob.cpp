@@ -4,7 +4,6 @@
 #include "Module.h"
 #include "Timer.h"
 
-
 #define OPT_PASS(__func)                     \
     optContext.passHasDoneSomething = false; \
     if (!__func(&optContext))                \
@@ -59,6 +58,8 @@ bool ByteCodeOptimizerJob::optimize()
     for (int i = startIndex; i < endIndex; i++)
     {
         auto bc = module->byteCodeFunc[i];
+        if (bc->substitution)
+            continue;
         SWAG_CHECK(optimize(bc, restart));
     }
 
