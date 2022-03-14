@@ -107,13 +107,11 @@ struct ByteCode
     static bool     isJump(ByteCodeInstruction* inst)       { return g_ByteCodeOpDesc[(int) inst->op].flags & OPFLAG_IS_JUMP; }
     // clang-format on
 
-    void      addCallStack(ByteCodeRunContext* context);
-    void      enterByteCode(ByteCodeRunContext* context, uint32_t popParamsOnRet = 0, uint32_t returnReg = UINT32_MAX);
-    void      leaveByteCode(ByteCodeRunContext* context, bool popCallStack = true);
-    void      markLabels();
-    bool      isDoingNothing();
-    void      computeCrc();
-    ByteCode* getSubstitution();
+    void addCallStack(ByteCodeRunContext* context);
+    void enterByteCode(ByteCodeRunContext* context, uint32_t popParamsOnRet = 0, uint32_t returnReg = UINT32_MAX);
+    void leaveByteCode(ByteCodeRunContext* context, bool popCallStack = true);
+    void markLabels();
+    bool isDoingNothing();
 
     static void* doForeignLambda(void* ptr);
     static bool  isForeignLambda(void* ptr);
@@ -144,8 +142,6 @@ struct ByteCode
     SourceFile*          sourceFile   = nullptr;
     TypeInfoFuncAttr*    typeInfoFunc = nullptr;
     AstNode*             node         = nullptr;
-    ByteCode*            nextCrc      = nullptr;
-    ByteCode*            substitution = nullptr;
 
     uint32_t numInstructions       = 0;
     uint32_t maxInstructions       = 0;
@@ -153,7 +149,6 @@ struct ByteCode
     uint32_t maxCallParams         = 0;
     uint32_t maxReservedRegisterRC = 0;
     uint32_t numJumps              = 0;
-    uint32_t contentCrc            = 0;
 
     bool isCompilerGenerated = false;
     bool isAddedToList       = false;

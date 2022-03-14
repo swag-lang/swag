@@ -58,8 +58,6 @@ bool ByteCodeOptimizerJob::optimize()
     for (int i = startIndex; i < endIndex; i++)
     {
         auto bc = module->byteCodeFunc[i];
-        if (bc->substitution)
-            continue;
         SWAG_CHECK(optimize(bc, restart));
     }
 

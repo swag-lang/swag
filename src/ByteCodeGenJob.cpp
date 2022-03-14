@@ -655,14 +655,10 @@ JobResult ByteCodeGenJob::execute()
             {
                 if (sourceFile->module->kind != ModuleKind::BootStrap && sourceFile->module->kind != ModuleKind::Runtime)
                 {
-                    context.bc->computeCrc();
-                    if (!context.bc->substitution)
-                    {
-                        ByteCodeOptimizerJob opt;
-                        bool                 restart;
-                        opt.module = module;
-                        opt.optimize(context.bc, restart);
-                    }
+                    ByteCodeOptimizerJob opt;
+                    bool                 restart;
+                    opt.module = module;
+                    opt.optimize(context.bc, restart);
                 }
             }
 

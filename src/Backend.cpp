@@ -339,18 +339,6 @@ void Backend::addFunctionsToJob(Module* moduleToGen, BackendFunctionBodyJobBase*
         auto one = moduleToGen->byteCodeFunc[i];
         if (!canEmitFunction(one))
             continue;
-
-        if (!one->substitution)
-            one->markLabels();
-        else
-        {
-            auto subst = one->getSubstitution();
-            one->releaseOut();
-            one->out             = subst->out;
-            one->numInstructions = subst->numInstructions;
-            one->maxInstructions = subst->maxInstructions;
-        }
-
         job->byteCodeFunc.push_back(one);
     }
 }
