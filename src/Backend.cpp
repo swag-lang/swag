@@ -344,7 +344,8 @@ void Backend::addFunctionsToJob(Module* moduleToGen, BackendFunctionBodyJobBase*
             one->markLabels();
         else
         {
-            auto subst           = one->getSubstitution();
+            auto subst = one->getSubstitution();
+            one->releaseOut();
             one->out             = subst->out;
             one->numInstructions = subst->numInstructions;
             one->maxInstructions = subst->maxInstructions;

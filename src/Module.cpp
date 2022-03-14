@@ -286,7 +286,7 @@ void Module::release()
     tlsSegment.release();
 
     for (auto& b : byteCodeFunc)
-        b->release();
+        b->releaseOut();
 }
 
 void Module::addExportSourceFile(SourceFile* file)

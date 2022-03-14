@@ -14,7 +14,7 @@ ByteCodeOpDesc g_ByteCodeOpDesc[] = {
 #include "ByteCodeOpList.h"
 };
 
-void ByteCode::release()
+void ByteCode::releaseOut()
 {
     if (substitution)
         return;
