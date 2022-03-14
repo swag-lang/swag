@@ -162,6 +162,10 @@ impl IWnd for PopupListView
     }
 }
 
+impl IWnd for PopupList
+{
+}
+
 impl PopupList
 {
     // Create the popup list, but do not display it
@@ -169,7 +173,7 @@ impl PopupList
     {
         metrics := owner.getThemeMetrics()
 
-        popup := Wnd.create'PopupList(&owner.parent.surface.wnd, owner.position, owner.id)
+        popup := Wnd.create'PopupList(owner.parent.surface.wnd, owner.position, owner.id)
 
         with popup
         {

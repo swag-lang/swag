@@ -21,8 +21,8 @@ private const DefaultIcons64        = #load(DefaultIcons64Name)
 struct ThemeResources
 {
     imgWidgets:     Texture
-    icons24:        ImageList
-    icons64:        ImageList
+    icons24:        *ImageList
+    icons64:        *ImageList
     typeFaceR:      const *TypeFace
     typeFaceB:      const *TypeFace
     typeFaceI:      const *TypeFace
@@ -46,11 +46,13 @@ impl Theme
         res.imgWidgets = renderer.addImage(img)
 
         img = assume Image.decode(DefaultIcons24Name, DefaultIcons24)
+        res.icons24 = Memory.new'ImageList()
         res.icons24.texture = renderer.addImage(img)
         res.icons24.sizeX = 24
         res.icons24.sizeY = 24
 
         img = assume Image.decode(DefaultIcons64Name, DefaultIcons64)
+        res.icons64 = Memory.new'ImageList()
         res.icons64.texture = renderer.addImage(img)
         res.icons64.sizeX = 64
         res.icons64.sizeY = 64

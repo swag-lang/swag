@@ -412,6 +412,13 @@ impl Array
         }
     }
 
+    // Returns true if the given 'value' is in the array
+    mtd contains(value: T)->bool
+    {
+        res := Slice.findLinear(@mkslice(buffer, count), value)
+        return res.success
+    }
+
     // Remove the given 'value'
     // If not found, does nothing
     mtd remove(value: T)

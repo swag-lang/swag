@@ -5,7 +5,7 @@ struct Surface
 {
     using native:   NativeSurface
     app:            *Application
-    wnd:            SurfaceWnd
+    wnd:            *SurfaceWnd
     painter:        Painter
 
     rc:             RenderingContext
@@ -44,10 +44,10 @@ impl Surface
     func create(surface: *Surface, view: *Wnd, x, y, width, height: s32, flags: SurfaceFlags, mainSurface: *Surface) throw
     {
         surface.flags = flags
+        surface.wnd = Memory.new'SurfaceWnd()
         surface.wnd.itf = cast(IWnd) surface.wnd
         surface.wnd.surface = surface
         surface.wnd.focusStrategy = .None
-        surface.wnd.create(view)
         app := surface.app
 
         if flags & .BigCaption

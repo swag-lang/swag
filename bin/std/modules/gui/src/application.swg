@@ -91,7 +91,7 @@ private impl Application
         {
             targetSurface := getSurfaceAt(mousePos.x, mousePos.y)
             if targetSurface
-                targetWnd = &targetSurface.wnd
+                targetWnd = targetSurface.wnd
         }
 
         evt := MouseEvent{}
@@ -424,10 +424,12 @@ impl Application
 
         with surface
         {
+            wnd.create(view)
             wnd.surface = surface
             wnd.itf = cast(IWnd) surface.wnd
             wnd.computeStyle()
             wnd.view.computeStyle()
+            wnd.sendResizeEvent()
         }
 
         return surface

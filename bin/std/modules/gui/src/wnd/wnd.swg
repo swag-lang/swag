@@ -176,6 +176,7 @@ impl Wnd
         res := Memory.new'T()
         res.isAllocated = true
         res.itf = cast(IWnd) dref res
+        Debug.assert(@kindof(res.itf) == T)
         res.name = name
         res.id = id
         res.position = position

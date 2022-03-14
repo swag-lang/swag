@@ -536,7 +536,7 @@ public impl Menu
     #[Swag.Discardable]
     func createPopup(parent: *Wnd, id: string = null)->*Menu
     {
-        res := Wnd.create'Menu(&parent.surface.wnd, null, @{}, id)
+        res := Wnd.create'Menu(parent.surface.wnd, null, @{}, id)
         with res
         {
             setAllPaddings(getThemeMetrics().menuPopup_Padding)
