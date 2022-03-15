@@ -26,6 +26,7 @@ struct RichEdit
     sigModified:    SigArray'closure(*Self)
 
     styles:         [256] RichEditCharStyle
+    stylesSelect:   [2] RichEditCharStyle
     cursorPos:      RichEditCharPos
     selBeg:         RichEditCharPos
     lines:          ArrayPtr'RichEditLine
@@ -58,6 +59,11 @@ private impl RichEdit
         colors := getThemeColors()
         loop i: @countof(styles)
             styles[i].colFg = colors.richEdit_Text
+
+        stylesSelect[0].colFg = colors.richEdit_SelText
+        stylesSelect[0].colBk = colors.richEdit_SelBk
+        stylesSelect[1].colFg = colors.richEdit_SelTextNoFocus
+        stylesSelect[1].colBk = colors.richEdit_SelBkNoFocus
     }
 
     mtd resetVolatileFind()

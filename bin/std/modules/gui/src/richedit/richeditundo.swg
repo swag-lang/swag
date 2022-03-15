@@ -56,7 +56,7 @@ impl RichEdit
     {
         Debug.assert(undoCounter != 0)
         undoCounter -= 1
-        cmdSelSetRect(false)
+        cmdSetSelRect(false)
 
         loop i: toUndo.count
         {

@@ -261,5 +261,9 @@ struct ThemeColors
     colorPicker_Mark:               Color = Gray1
 
     richEdit_Text:                  Color = White
+    richEdit_SelText:               Color = White
+    richEdit_SelTextNoFocus:        Color = White
+    richEdit_SelBk:                 Color = Blue
+    richEdit_SelBkNoFocus:          Color = Transparent
     richEdit_Caret:                 Color = White
 }

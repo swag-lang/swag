@@ -40,7 +40,7 @@ impl RichEdit
         cp := getBegSelection()
         undoDeleteText(cp, getEndSelection(), hasSelRect)
         //ComputeScrollY();
-        cmdSelCursorSet(cp)
+        cmdSetCursorPos(cp)
         selBeg = cp
         return true
     }

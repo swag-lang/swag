@@ -11,6 +11,7 @@ public enum RichEditCommand
     CursorEndFile
     CursorStartLine
     CursorEndLine
+    SelectRuneRight
 }
 
 impl RichEdit
@@ -39,6 +40,7 @@ impl RichEdit
     {
         addMapping(Input.Key.Left,  Input.KeyModifiers.None,    RichEditCommand.CursorLeft)
         addMapping(Input.Key.Right, Input.KeyModifiers.None,    RichEditCommand.CursorRight)
+        addMapping(Input.Key.Right, Input.KeyModifiers.Shift,   RichEditCommand.SelectRuneRight)
         addMapping(Input.Key.Up,    Input.KeyModifiers.None,    RichEditCommand.CursorUp)
         addMapping(Input.Key.Down,  Input.KeyModifiers.None,    RichEditCommand.CursorDown)
         addMapping(Input.Key.Home,  Input.KeyModifiers.None,    RichEditCommand.CursorStartLine)
@@ -56,78 +58,83 @@ impl RichEdit
             if isSelectionEmpty()
                 cmdCursorLeft(&cursorPos)
             else
-                cmdSelCursorSet(getBegSelection())
-            cmdSelClear()
+                cmdSetCursorPos(getBegSelection())
+            cmdClearSelection()
             resetVolatileFind()
 
         case CursorRight:
             if isSelectionEmpty()
                 cmdCursorRight(&cursorPos)
             else
-                cmdSelCursorSet(getEndSelection())
-            cmdSelClear()
+                cmdSetCursorPos(getEndSelection())
+            cmdClearSelection()
             resetVolatileFind()
 
         case CursorUp:
             if !isSelectionEmpty()
             {
                 pt := getCharacterPos(cursorPos)
-                cmdSelCursorSet(getBegSelection())
+                cmdSetCursorPos(getBegSelection())
                 cmdCursorUp(&cursorPos, pt)
             }
             else
                 cmdCursorUp(&cursorPos)
-            cmdSelClear()
+            cmdClearSelection()
             resetVolatileFind()
 
         case CursorDown:
             if !isSelectionEmpty()
             {
                 pt := getCharacterPos(cursorPos)
-                cmdSelCursorSet(getEndSelection())
+                cmdSetCursorPos(getEndSelection())
                 cmdCursorDown(&cursorPos, pt)
             }
             else
                 cmdCursorDown(&cursorPos)
-            cmdSelClear()
+            cmdClearSelection()
             resetVolatileFind()
 
         case CursorStartLine:
             cmdCursorStartLine(&cursorPos)
-            cmdSelClear()
+            cmdClearSelection()
             resetVolatileFind()
 
         case CursorEndLine:
             cmdCursorEndLine(&cursorPos)
-            cmdSelClear()
+            cmdClearSelection()
             resetVolatileFind()
 
         case CursorStartFile:
             cmdCursorStartFile(&cursorPos)
-            cmdSelClear()
+            cmdClearSelection()
             resetVolatileFind()
 
         case CursorEndFile:
             cmdCursorEndFile(&cursorPos)
-            cmdSelClear()
+            cmdClearSelection()
             resetVolatileFind()
+
+        case SelectRuneRight:
+            cmdCursorRight(&cursorPos)
+            resetVolatileFind()
+            cmdSetSelRect(false)
         }
     }
 
-    mtd cmdSelCursorSet(cp: RichEditCharPos)
+    mtd cmdSetCursorPos(cp: RichEditCharPos)
     {
         cursorPos = cp
     }
 
-    mtd cmdSelSetRect(selRect: bool)
+    mtd cmdSetSelRect(selRect: bool)
     {
         hasSelRect = selRect
     }
 
-    mtd cmdSelClear()
+    mtd cmdClearSelection()
     {
         selBeg = cursorPos
-        cmdSelSetRect(false)
+        cmdSetSelRect(false)
     }
 
     mtd cmdDeleteSelection()

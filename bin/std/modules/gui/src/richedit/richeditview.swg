@@ -98,8 +98,15 @@ impl RichEditView
         font := getTheme().res.fontDefault.getFont(strStyle.fontMode)
         me := Painter.measureString(str, font)
 
+        // Background rectangle
         if visible and strStyle.colBk.a
         {
+            var rect: Math.Rectangle
+            rect.x = x
+            rect.y = y
+            rect.width = me.width
+            rect.height = ed.getXExtent().y
+            painter.fillRect(rect, strStyle.colBk)
         }
 
         painter.drawString(x, y, str, font, strStyle.colFg, strStyle.underline)
@@ -130,12 +137,36 @@ impl RichEditView
         oldStyle = ed.styles[0]
         x := ed.getMarginLeft()
 
+        sel0 := ed.getBegSelection()
+        sel1 := ed.getEndSelection()
+
         i := 0
         while i < count
         {
             defer { i += 1; pChar += 1; pStyle += 1; }
-
             newStyle = ed.styles[dref pStyle]
+
+            selected := false
+            if (ed.hasSelRect) // and m_SelRect.IsInRect(charpos))
+            {
+                selected = true
+            }
+            elif (!ed.hasSelRect and
+                    ((lineIndex > sel0.lineIndex and lineIndex < sel1.lineIndex) or
+                    (lineIndex != sel1.lineIndex and lineIndex == sel0.lineIndex and i >= sel0.charPosInLine) or
+                    (lineIndex != sel0.lineIndex and lineIndex == sel1.lineIndex and i < sel1.charPosInLine) or
+                    (lineIndex == sel0.lineIndex and sel0.lineIndex == sel1.lineIndex and i >= sel0.charPosInLine and i < sel1.charPosInLine)))
+            {
+                selected = true
+            }
+
+            if selected
+            {
+                newStyle = hasFocus() ? ed.stylesSelect[0] : ed.stylesSelect[1]
+                if !newStyle.colFg.a
+                    newStyle.colFg = ed.styles[dref pStyle].colFg
+            }
+
 
             // Paint accumulated string if we have a change of style
             styleChange := newStyle != oldStyle
