@@ -73,36 +73,30 @@ private impl RichEdit
             if countOf == 1 and text[0] == "\n"'u8
                 singleEol = true
 
-            rankBeg := 0
-            rankEnd := 0
+            str  := text
+            line := lines[lineIndex]
             loop
             {
-                line := lines[lineIndex]
-                if !text[rankEnd] or text[rankEnd] == "\n"'u8 or text[rankEnd] == "\r"'u8
+                (c, eat) := Utf8.decodeRune(str)
+                if !eat
+                    break
+                str = Tokenize.eatCount(str, cast(uint) eat)
+
+                if c == "\n"'rune or c == "\r"'rune
                 {
-                    posIns := posInLine
-                    if posIns > line.length()
-                        posIns = line.length()
-
-                    line.insertText(posIns, @mkstring(@dataof(text) + rankBeg, rankEnd - rankBeg))
-                    if !text[rankEnd] or !text[rankEnd + 1]
-                        break
-
                     lineIndex += 1
                     if lineIndex == lines.count
                     {
-                        newLine(lineIndex)
+                        line = newLine(lineIndex)
                         posInLine = 0
                     }
-
-                    rankEnd += 1
-                    rankBeg = rankEnd
-                    continue
                 }
-
-                if !text[rankEnd]
-                    break
-                rankEnd += 1
+                else
+                {
+                    posIns := Math.min(posInLine, line.length())
+                    line.insertRune(posIns, c)
+                    posInLine += 1
+                }
             }
         }
         else

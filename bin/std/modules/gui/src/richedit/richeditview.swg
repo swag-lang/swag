@@ -45,7 +45,7 @@ impl RichEditView
         line := ed.lines[lineIndex]
 
         // Dummy character for empty lines, so that a selected line display something
-        dummyChar  := " "'u8
+        dummyChar  := " "'rune
         dummyStyle := 0'u8
         count  := line.length()
         pChar  := line.chars.buffer
