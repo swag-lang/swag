@@ -182,7 +182,7 @@ public impl MessageDlg
         btn.form = isDefault ? .Default : .Strong
         metrics := getThemeMetrics()
         btn.margin = @{metrics.msgDlg_BtnPadding, 0, metrics.msgDlg_BtnPadding, 0}
-        btn.sigPressed = @(using btn: *Button) { surface.app.exitModal(btn.id); }
+        btn.sigPressed += @(btn) { btn.surface.app.exitModal(btn.id); }
         buttons.insertAt(0, btn)
         return btn
     }

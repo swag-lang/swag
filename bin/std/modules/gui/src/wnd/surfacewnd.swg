@@ -300,19 +300,19 @@ impl SurfaceWnd
         if surface.flags & .MinimizeBtn
         {
             minimizeBtn = IconButton.create(self, theme.getIcon24(ThemeIcons24.WndMinimize), @{0,0,0,0})
-            minimizeBtn.sigPressed = &onMinimize
+            minimizeBtn.sigPressed += &onMinimize
         }
 
         if surface.flags & .MaximizeBtn
         {
             maximizeBtn = IconButton.create(self, theme.getIcon24(ThemeIcons24.WndMaximize), @{0,0,0,0})
-            maximizeBtn.sigPressed = &onMaximize
+            maximizeBtn.sigPressed += &onMaximize
         }
 
         if surface.flags & .CloseBtn
         {
             closeBtn = IconButton.create(self, theme.getIcon24(ThemeIcons24.WndClose), @{0,0,0,0})
-            closeBtn.sigPressed = &onClose
+            closeBtn.sigPressed += &onClose
             using ThemeColors
             closeBtn.style.addStyleSheetColors(@nameof(btnIcon_HotBk)     ++" $" ++ @nameof(wnd_BtnCloseBk))
             closeBtn.style.addStyleSheetColors(@nameof(btnIcon_PressedBk) ++" $" ++ @nameof(wnd_BtnCloseHotBk))

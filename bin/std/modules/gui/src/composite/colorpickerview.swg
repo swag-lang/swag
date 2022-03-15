@@ -21,11 +21,11 @@ struct ColorPickerView
     pickBox:        *ColorPicker
     pickBar:        *ColorPicker
     pickAlpha:      *ColorPicker
-    editR:        *EditBox
-    editG:      *EditBox
-    editB:       *EditBox
-    editA:      *EditBox
-    editH:        *EditBox
+    editR:          *EditBox
+    editG:          *EditBox
+    editB:          *EditBox
+    editA:          *EditBox
+    editH:          *EditBox
     radioH:         *RadioButton
     radioL:         *RadioButton
     radioS:         *RadioButton
@@ -116,7 +116,8 @@ impl ColorPickerView
             pickBar   = ColorPicker.create(v, @{10, 215, 220, 16})
             pickAlpha = ColorPicker.create(v, @{10, 240, 220, 16})
 
-            staticRes = Wnd.create'Wnd(v, "", @{240, 215, 45, 40})
+            staticRes = Wnd.create'Wnd(v, "", @{245, 215, 40, 40})
+            picker := IconButton.create(v, v.getTheme().getIcon24(.Picker), @{245, 215, 40, 40})
 
             editR = EditBox.create(v, "", @{10, 265, 50})
             editG = EditBox.create(v, "", @{65, 265, 50})
@@ -142,6 +143,24 @@ impl ColorPickerView
             radioG = RadioButton.create(v, "G", @{280, 130, 40})
             radioB = RadioButton.create(v, "B", @{280, 160, 40})
 
+            picker.sigPressed += @|v|(cb) {
+                save := v.getColor()
+                box := v
+                discard cb.surface.app.doModalLoop(null, @|box,save|(app) {
+                    if app.mouse.isButtonPressed(.Right)
+                    {
+                        box.setColor(save)
+                        app.exitModal("")
+                        return
+                    }
+
+                    col := app.pickColorAtMouse()
+                    box.setColor(col)
+
+                    if app.mouse.isButtonPressed(.Left)
+                        app.exitModal("")
+                })
+            }
 
             pickBox.sigChanged += @|v|(cb) {
                 switch v.mode

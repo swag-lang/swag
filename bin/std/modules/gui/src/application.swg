@@ -323,30 +323,6 @@ private impl Application
             Memory.delete(@dataof(wnd.itf), @kindof(wnd.itf))
     }
 
-    mtd doModalLoop(surface: *Surface)->WndId
-    {
-        visit s: surfaces
-            s.disable()
-        modalSurfaces.add(surface)
-
-        while !mustQuit and !endModal
-        {
-            runFrame()
-        }
-
-        surface.destroy()
-
-        modalSurfaces.removeBack()
-        visit s: surfaces
-            s.enable()
-
-        if modalSurfaces.count
-            modalSurfaces.back().enable()
-
-        endModal = false
-        return endModalExit
-    }
-
     mtd sendTimerEvents()
     {
         visit t: timers
@@ -388,6 +364,39 @@ private impl Application
 
         visit s:
             surfaces s.paint()
+    }
+
+    mtd doModalLoop(surface: *Surface, cb: closure(self) = null)->WndId
+    {
+        visit s: surfaces
+            s.disable()
+
+        if surface
+        {
+            modalSurfaces.add(surface)
+        }
+
+        while !mustQuit and !endModal
+        {
+            runFrame()
+            if cb
+                cb(self)
+        }
+
+        if surface
+        {
+            surface.destroy()
+            modalSurfaces.removeBack()
+        }
+
+        visit s: surfaces
+            s.enable()
+
+        if modalSurfaces.count
+            modalSurfaces.back().enable()
+
+        endModal = false
+        return endModalExit
     }
 }
 

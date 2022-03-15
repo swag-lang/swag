@@ -153,6 +153,18 @@ impl Color
 
     // Create a new Color with specified values
     #[Inline]
+    func fromAbgr(abgr: u32)->Color
+    {
+        var result: retval
+        result.a = acast (abgr >>,safe 24)
+        result.b = acast ((abgr >>,safe 16) & 0xFF)
+        result.g = acast ((abgr >>,safe 8) & 0xFF)
+        result.r = acast (abgr & 0xFF)
+        return result
+    }
+
+    // Create a new Color with specified values
+    #[Inline]
     func fromArgbf(a, r, g, b: f32)->Color
     {
         var result: retval = ?

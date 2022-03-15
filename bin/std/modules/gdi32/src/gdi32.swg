@@ -61,6 +61,7 @@ const PFD_STEREO_DONTCARE         = 0x80000000
 
 #[Foreign("Gdi32")]
 {
+    func GetPixel(hdc: HDC, x, y: s32)->COLORREF;
 }
 
 namespace gdi32priv

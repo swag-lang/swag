@@ -1,8 +1,20 @@
 #global if #os == Swag.TargetOs.Windows
-using Win32
+using Win32, Core, Pixel, Gdi32
 
 impl Application
 {
+    mtd pickColorAtMouse()->Color
+    {
+        hdc := GetDC(null)
+
+        var pt: POINT
+        GetCursorPos(&pt)
+        col := GetPixel(hdc, pt.x, pt.y) | 0xFF000000
+
+        ReleaseDC(null, hdc)
+        return Color.fromAbgr(col)
+    }
+
     // Capture mouse, on the window and surface
     mtd captureMouse(wnd: *Wnd)
     {

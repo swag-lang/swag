@@ -3,7 +3,7 @@ public struct Button
     using wnd: Wnd
 
     icon:           Icon
-    sigPressed:     closure(*Self)
+    sigPressed:     SigArray'closure(*Self)
     isPressed:      bool
     isPressing:     bool
     isHot:          bool
@@ -58,8 +58,8 @@ impl Button
             {
                 releaseMouse()
                 isPressed, isPressing = false
-                if isIn and sigPressed
-                    sigPressed(self)
+                if isIn
+                    sigPressed.call(self)
                 invalidate()
                 return isIn
             }

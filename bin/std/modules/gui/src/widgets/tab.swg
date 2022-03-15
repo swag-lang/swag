@@ -341,7 +341,7 @@ private impl Tab
             {
                 buttonPopup = IconButton.create(self, getTheme().getIcon24(ThemeIcons24.TabArrowDown), @{})
                 buttonPopup.form = .Round
-                buttonPopup.sigPressed = @|self|(btn)
+                buttonPopup.sigPressed += @|self|(btn)
                 {
                     rect := btn.getSurfaceRect()
                     self.showPopup(rect.x, rect.y + btn.position.height)

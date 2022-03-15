@@ -11,6 +11,7 @@ enum ThemeIcons24
     SortArrowDown
     SortArrowUp
     TabArrowDown
+    Picker
 }
 
 enum ThemeIcons64
