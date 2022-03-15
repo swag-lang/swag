@@ -17,7 +17,7 @@ impl IWnd for RichEditView
 
         visit l, i: ed.lines
         {
-            paintLine(painter, i, y, true)
+            discard paintLine(painter, i, y, true)
             y += 20
         }
     }
@@ -25,19 +25,22 @@ impl IWnd for RichEditView
 
 impl RichEditView
 {
-    mtd paintString(bc: *PaintContext, x, y: f32, str: String, strStyle: OneStyle, visible: bool)->f32
+    mtd paintString(bc: *PaintContext, x, y: f32, str: String, strStyle: RichEditCharStyle, visible: bool)->f32
     {
         painter := bc.painter
+
+        font := getTheme().res.fontDefault.getFont(strStyle.fontMode)
+        me := Painter.measureString(str, font)
+
         if visible and strStyle.colBk.a
         {
         }
 
-        font := getTheme().res.fontDefault.getFont(strStyle.fontMode)
-        painter.drawString(x, y, str, font, strStyle.colFg)
-        return x
+        painter.drawString(x, y, str, font, strStyle.colFg, strStyle.underline)
+        return x + me.width
     }
 
-    mtd paintLine(bc: *PaintContext, lineIndex: uint, y: f32, visible: bool)
+    mtd paintLine(bc: *PaintContext, lineIndex: uint, y: f32, visible: bool)->f32
     {
         line := ed.lines[lineIndex]
 
@@ -57,20 +60,37 @@ impl RichEditView
         var str: String{allocator: @getcontext().tempAllocator}
         str.reserve(line.length())
 
-        var oldStyle, newStyle: OneStyle
+        var oldStyle, newStyle: RichEditCharStyle
+        oldStyle = ed.styles[0]
         x := padding.x
-        oldStyle.colFg = Argb.White
 
         i := 0
         while i < count
         {
             defer { i += 1; pChar += 1; pStyle += 1; }
+
+            newStyle = ed.styles[dref pStyle]
+
+            // Paint accumulated string if we have a change of style
+            styleChange := newStyle != oldStyle
+            if styleChange
+            {
+                x1 := paintString(bc, x, y, str, oldStyle, visible)
+                x = x1
+                oldStyle = newStyle
+                str.clear()
+            }
+
             str += line.chars[i]
         }
 
+        // Remaining string
         if !str.isEmpty()
         {
             x1 := paintString(bc, x, y, str, oldStyle, visible)
+            x = x1
         }
+
+        return x
     }
 }

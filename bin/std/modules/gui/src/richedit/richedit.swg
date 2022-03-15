@@ -5,6 +5,7 @@ struct RichEdit
 {
     using frameWnd: FrameWnd
 
+    styles:     [256] RichEditCharStyle
     lines:      ArrayPtr'RichEditLine
     freeLines:  ArrayPtr'RichEditLine
     scrollWnd:  *ScrollWnd
@@ -17,15 +18,15 @@ struct CharPos
     charPosInLine:  uint
 }
 
-struct OneStyle
-{
-    colBk:      Color
-    colFg:      Color
-    fontMode    = FontFamilyStyle.Regular
-}
-
 private impl RichEdit
 {
+    mtd setDefaultStyles()
+    {
+        colors := getThemeColors()
+        loop i: @countof(styles)
+            styles[i].colFg = colors.richEdit_Text
+    }
+
     mtd clearPrivate()
     {
     }
@@ -122,6 +123,8 @@ impl RichEdit
             edView.backgroundStyle = .Transparent
             edView.ed = ed
             edView.wndFlags |= .NoScroll
+
+            setDefaultStyles()
         }
 
         return ed

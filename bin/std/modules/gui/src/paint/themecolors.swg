@@ -259,4 +259,6 @@ struct ThemeColors
     colorPicker_Border:             Color = 0x3F000000
     colorPicker_BackAlpha:          Color = Gray4
     colorPicker_Mark:               Color = Gray1
+
+    richEdit_Text:                  Color = White
 }
