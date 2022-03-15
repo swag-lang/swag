@@ -607,10 +607,6 @@ private impl ListView
     }
 }
 
-impl IWnd for List
-{
-}
-
 impl List
 {
     #[Swag.Discardable]

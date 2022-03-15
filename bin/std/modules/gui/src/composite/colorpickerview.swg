@@ -16,6 +16,7 @@ struct ColorPickerView
     using frameWnd: FrameWnd
     oldColor:       Color
     color:          Color
+    oldColorDone:   bool
     mode            = ColorPickerViewMode.SaturationLightness
     staticRes:      *Wnd
     pickBox:        *ColorPicker
@@ -345,8 +346,15 @@ impl ColorPickerView
     {
         if self.color == #self.color
             return
-        self.oldColor = #self.color
+
+        if !oldColorDone
+        {
+            self.oldColor = #self.color
+            oldColorDone = true
+        }
+
         self.color = #self.color
+
         updateAll()
     }
 }

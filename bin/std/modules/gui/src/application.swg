@@ -325,7 +325,7 @@ private impl Application
         }
 
         if wnd.isAllocated
-            Memory.delete(@dataof(wnd.itf), @kindof(wnd.itf))
+            Memory.delete(wnd, wnd.type)
     }
 
     mtd sendTimerEvents()

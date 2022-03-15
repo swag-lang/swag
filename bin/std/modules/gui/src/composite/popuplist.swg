@@ -162,10 +162,6 @@ impl IWnd for PopupListView
     }
 }
 
-impl IWnd for PopupList
-{
-}
-
 impl PopupList
 {
     // Create the popup list, but do not display it
