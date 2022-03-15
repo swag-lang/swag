@@ -547,6 +547,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                 typeParam->kind != TypeInfoKind::TypeListTuple &&
                 typeParam->kind != TypeInfoKind::TypeListArray &&
                 !typeParam->isNative(NativeTypeKind::Any) &&
+                !typeParam->isClosure() &&
                 (funcParam->assignment->flags & AST_VALUE_COMPUTED))
                 continue;
 
@@ -580,7 +581,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
 
                 // Need to test sizeof because assignement can be @{}. In that case, we just reference
                 // the temporary variable
-                if (funcParam->assignment->typeInfo->sizeOf)
+                if (funcParam->assignment->typeInfo->sizeOf && funcParam->assignment->typeInfo != g_TypeMgr->typeInfoNull)
                 {
                     varNode->assignment = funcParam->assignment->clone(cloneContext);
                     varNode->assignment->inheritOwners(identifier);
