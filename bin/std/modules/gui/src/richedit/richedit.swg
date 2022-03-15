@@ -166,12 +166,6 @@ private impl RichEdit
 
         if !selRect
         {
-            // This is just an EOL
-            singleEol := false;
-            countOf   := @countof(text)
-            if countOf == 1 and text[0] == "\n"'u8
-                singleEol = true
-
             str  := text
             line := lines[cp.lineIndex]
             loop
@@ -183,12 +177,14 @@ private impl RichEdit
 
                 if c == "\n"'rune or c == "\r"'rune
                 {
+                    discard newLine(cp.lineIndex + 1)
+                    linep := lines[cp.lineIndex]
+                    line  = lines[cp.lineIndex + 1]
+                    if cp.charPosInLine < linep.length()
+                        line.insertRunes(0, linep, cp.charPosInLine, linep.length() - cp.charPosInLine)
+                    linep.setLength(cp.charPosInLine)
                     cp.lineIndex += 1
-                    if cp.lineIndex == lines.count
-                    {
-                        line = newLine(cp.lineIndex)
-                        cp.charPosInLine = 0
-                    }
+                    cp.charPosInLine = 0
                 }
                 else
                 {

@@ -68,7 +68,7 @@ impl Painter
     {
         var result: retval
         desc := font.getGlyphDesc(c)
-        result.x = desc.shiftX + desc.width
+        result.x = desc.advanceX
         result.y = desc.shiftY + desc.height
         return result
     }

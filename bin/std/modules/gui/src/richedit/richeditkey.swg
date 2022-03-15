@@ -4,8 +4,6 @@ impl RichEdit
 {
     mtd charPressed(char: rune, mdf: Input.KeyModifiers)->bool
     {
-        if char < 32
-            return false
         if isReadOnly()
             return true
 
