@@ -63,12 +63,23 @@ impl Painter
         return result
     }
 
+    // Get a rune size for a given font
+    func measureRune(c: rune, font: *Font)->Math.Point
+    {
+        var result: retval
+        desc := font.getGlyphDesc(c)
+        result.x = desc.shiftX + desc.width
+        result.y = desc.shiftY + desc.height
+        return result
+    }
+
     // Returns the bounding rectangle if a given text, at a given position
     func measureString(text: string, font: *Font)->StringMetrics
     {
         return measureString(0, 0, text, font)
     }
 
+    // Returns the bounding rectangle if a given text, at a given position
     func measureString(left, top: f32, text: string, font: *Font)->StringMetrics
     {
         var result: retval

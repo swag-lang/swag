@@ -12,9 +12,12 @@ struct RichEdit
 {
     using frameWnd: FrameWnd
     richEdFlags     = RichEditFlags.None
+    lineSpacing:    f32
+    overwriteMode:  bool
     sigIsReadOnly:  SigArray'closure(*bool)
 
     styles:     [256] RichEditCharStyle
+    cursorPos:  RichEditCharPos
     lines:      ArrayPtr'RichEditLine
     freeLines:  ArrayPtr'RichEditLine
     scrollWnd:  *ScrollWnd

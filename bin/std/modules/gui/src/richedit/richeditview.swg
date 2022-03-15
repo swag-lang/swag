@@ -11,15 +11,27 @@ impl IWnd for RichEditView
 {
     mtd onPaintEvent(evt: *PaintEvent)
     {
-        painter := evt.bc
+        painter := evt.bc.painter
 
-        y := padding.y
+        x    := ed.getMarginLeft()
+        y    := ed.padding.y
+        size := ed.getXExtent()
 
         visit l, i: ed.lines
         {
-            discard paintLine(painter, i, y, true)
-            y += 20
+            x1 := paintLine(evt.bc, i, y, true)
+
+            l.drawingRect.x = x
+            l.drawingRect.y = y
+            l.drawingRect.width = x1 - x
+            l.drawingRect.height = size.y
+
+            y += l.drawingRect.height
         }
+
+        // Caret
+        posCaret := ed.getCaretPos()
+        painter.fillRect(posCaret, getThemeColors().richEdit_Caret)
     }
 }
 

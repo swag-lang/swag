@@ -261,4 +261,5 @@ struct ThemeColors
     colorPicker_Mark:               Color = Gray1
 
     richEdit_Text:                  Color = White
+    richEdit_Caret:                 Color = White
 }

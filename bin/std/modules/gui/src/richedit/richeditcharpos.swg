@@ -13,19 +13,17 @@ impl RichEdit
     {
         var size: retval
 
-        /*if line.chars[i] == "\t"'u8
+        if line.chars[i] == "\t"'rune
         {
-            //size.x = GetTabOffset(_x);
+            Debug.assert(false) // todo
         }
         else
         {
             styleIdx := line.styles[i]
             font := getTheme().res.fontDefault.getFont(styles[styleIdx].fontMode)
-            me := Painter.measureString(line.chars[i], font)
-            size.x = me.width
-            size.y = me.height
-            size.y += m_LineSpacing
-        }*/
+            size = Painter.measureRune(line.chars[i], font)
+            size.y += lineSpacing
+        }
 
         return size
     }
@@ -45,6 +43,25 @@ impl RichEdit
             result.x += size.x
         }
 
+        return result
+    }
+
+    mtd getXExtent()->Math.Point
+    {
+        font := getTheme().res.fontDefault.getFont(styles[0].fontMode)
+        return Painter.measureRune("X"'rune, font)
+    }
+
+    mtd getCaretPos()->Math.Rectangle
+    {
+        pt := getCharacterPos(cursorPos)
+        size := getXExtent()
+
+        var result: retval
+        result.x = pt.x
+        result.y = overwriteMode ? pt.y - 2 : pt.y - size.y
+        result.width = overwriteMode ? size.x : 2
+        result.height = overwriteMode ? 2 : size.y
         return result
     }
 }
