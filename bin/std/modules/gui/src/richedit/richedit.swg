@@ -8,6 +8,13 @@ enum RichEditFlags
     ReadOnly
 }
 
+struct RichEditMapping
+{
+    key:        Input.Key = ?
+    modifiers:  Input.KeyModifiers = ?
+    command:    RichEditCommand = ?
+}
+
 struct RichEdit
 {
     using frameWnd: FrameWnd
@@ -15,6 +22,8 @@ struct RichEdit
     lineSpacing:    f32
     overwriteMode:  bool
     sigIsReadOnly:  SigArray'closure(*bool)
+    sigChanged:     SigArray'closure(*Self)
+    sigModified:    SigArray'closure(*Self)
 
     styles:         [256] RichEditCharStyle
     cursorPos:      RichEditCharPos
@@ -24,9 +33,11 @@ struct RichEdit
     scrollWnd:      *ScrollWnd
     edView:         *RichEditView
     hasSelRect:     bool
+    modified:       bool
 
     undoMgr:            ArrayPtr'RichEditUndo
     toUndo:             ArrayPtr'RichEditUndo
+    mapping:            Array'RichEditMapping
     currentUndo:        uint
     undoCounter:        uint
     modifiedUndoMarker: uint
@@ -49,12 +60,28 @@ private impl RichEdit
             styles[i].colFg = colors.richEdit_Text
     }
 
+    mtd resetVolatileFind()
+    {
+    }
+
     mtd clearPrivate()
     {
     }
 
+    mtd setModified(mdf: bool)
+    {
+        if mdf
+            sigChanged.call(self)
+        if modified == mdf
+            return
+        modified = mdf
+        sigModified.call(self)
+    }
+
     mtd resetModified()
     {
+        setModified(false)
+        modifiedUndoMarker = currentUndo
     }
 
     #[Swag.Discardable]
@@ -69,6 +96,23 @@ private impl RichEdit
         p := Memory.new'RichEditLine()
         lines.insertAt(index, p)
         return p
+    }
+
+    mtd getPreviousVisibleLine(lineIndex: uint)->uint
+    {
+        if !lineIndex
+            return 0
+        i := lineIndex - 1
+        loop
+        {
+            if lines[i].isVisible()
+                return i
+            if !i
+                break
+            i -= 1
+        }
+
+        return lineIndex
     }
 
     mtd getNextVisibleLine(lineIndex: uint)->uint
@@ -198,10 +242,25 @@ private impl RichEdit
         {
             Debug.assert(false) // todo
         }
+
+        setModified(true)
     }
 
     mtd deleteTextPrivate(posStart, posEnd: RichEditCharPos, selRect: bool)
     {
+        // Nothing to delete
+        if posStart.lineIndex == posEnd.lineIndex and posStart.charPosInLine == posEnd.charPosInLine
+            return
+
+        if !selRect
+        {
+        }
+        else
+        {
+            Debug.assert(false) // todo
+        }
+
+        setModified(true)
     }
 }
 
@@ -225,12 +284,14 @@ impl RichEdit
             edView.ed = ed
             edView.wndFlags |= .NoScroll
 
+            setDefaultMapping()
             setDefaultStyles()
         }
 
         return ed
     }
 
+    // Returns true if the rich edit is read only
     mtd isReadOnly()->bool
     {
         ro := false
@@ -241,7 +302,8 @@ impl RichEdit
     // Set the edit text
     mtd setText(text: string)
     {
-        if isReadOnly() return
+        if isReadOnly()
+            return
 
         clearPrivate()
 

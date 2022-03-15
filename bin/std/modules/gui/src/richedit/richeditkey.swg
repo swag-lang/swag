@@ -95,6 +95,12 @@ impl RichEdit
 
     mtd keyPressed(key: Input.Key, mdf: Input.KeyModifiers)->bool
     {
+        cmd := getMappingCommand(key, mdf)
+        if cmd == .None
+            return true
+
+        cmdExecute(cmd)
+        ensureCaretIsVisible()
         return true
     }
 }
