@@ -98,6 +98,30 @@ private impl RichEdit
         return p
     }
 
+    mtd getFirstVisibleLine()->uint
+    {
+        loop i: lines.count
+        {
+            if lines[i].isVisible()
+                return i
+        }
+
+        return 0
+    }
+
+    mtd getLastVisibleLine()->uint
+    {
+        if !lines.count
+            return 0
+        for i := lines.count - 1; i >= 0; i -= 0
+        {
+            if lines[i].isVisible()
+                return i
+        }
+
+        return 0
+    }
+
     mtd getPreviousVisibleLine(lineIndex: uint)->uint
     {
         if !lineIndex
