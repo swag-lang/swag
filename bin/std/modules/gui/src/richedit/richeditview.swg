@@ -4,11 +4,39 @@ using Core, Pixel
 struct RichEditView
 {
     using wnd:  Wnd
-    ed:         *RichEdit
+
+    ed:             *RichEdit
+    visibleCaret:   bool
+    timerCaret:     *Timer
 }
 
 impl IWnd for RichEditView
 {
+    mtd onFocusEvent(evt: *FocusEvent)
+    {
+        if evt.kind == .SetFocus
+        {
+            timerCaret = surface.app.addTimer(500'ms, self)
+            visibleCaret = true
+        }
+        else
+        {
+            surface.app.deleteTimer(timerCaret)
+            timerCaret = null
+            visibleCaret = false
+        }
+
+        invalidate()
+    }
+
+    mtd onTimerEvent(evt: *TimerEvent)
+    {
+        visibleCaret = !visibleCaret
+        pos := ed.getCaretPos()
+        pos.inflate(1)
+        invalidateRect(pos)
+    }
+
     mtd onPaintEvent(evt: *PaintEvent)
     {
         painter := evt.bc.painter
@@ -31,7 +59,8 @@ impl IWnd for RichEditView
 
         // Caret
         posCaret := ed.getCaretPos()
-        painter.fillRect(posCaret, getThemeColors().richEdit_Caret)
+        if visibleCaret
+            painter.fillRect(posCaret, getThemeColors().richEdit_Caret)
     }
 }
 

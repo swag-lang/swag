@@ -84,6 +84,7 @@ impl IWnd for EditBox
             sigLoseFocus.call(self)
             surface.app.deleteTimer(timerCaret)
             timerCaret = null
+            visibleCaret = false
         }
 
         invalidate()
