@@ -9,6 +9,8 @@ public enum RichEditCommand
     CursorDown
     CursorStartFile
     CursorEndFile
+    CursorStartLine
+    CursorEndLine
 }
 
 impl RichEdit
@@ -39,7 +41,9 @@ impl RichEdit
         addMapping(Input.Key.Right, Input.KeyModifiers.None,    RichEditCommand.CursorRight)
         addMapping(Input.Key.Up,    Input.KeyModifiers.None,    RichEditCommand.CursorUp)
         addMapping(Input.Key.Down,  Input.KeyModifiers.None,    RichEditCommand.CursorDown)
+        addMapping(Input.Key.Home,  Input.KeyModifiers.None,    RichEditCommand.CursorStartLine)
         addMapping(Input.Key.Home,  Input.KeyModifiers.Control, RichEditCommand.CursorStartFile)
+        addMapping(Input.Key.End,   Input.KeyModifiers.None,    RichEditCommand.CursorEndLine)
         addMapping(Input.Key.End,   Input.KeyModifiers.Control, RichEditCommand.CursorEndFile)
     }
 
@@ -85,6 +89,16 @@ impl RichEdit
             }
             else
                 cmdCursorDown(&cursorPos)
+            cmdSelClear()
+            resetVolatileFind()
+
+        case CursorStartLine:
+            cmdCursorStartLine(&cursorPos)
+            cmdSelClear()
+            resetVolatileFind()
+
+        case CursorEndLine:
+            cmdCursorEndLine(&cursorPos)
             cmdSelClear()
             resetVolatileFind()
 
@@ -245,6 +259,45 @@ impl RichEdit
         }
 
         return true
+    }
+
+    mtd cmdCursorStartLine(cp: *RichEditCharPos)
+    {
+        line := lines[cp.lineIndex]
+        i    := cast(s32) cp.charPosInLine
+
+        var firstBlank: bool
+        if !i
+        {
+            firstBlank = true
+        }
+        else
+        {
+            firstBlank = false
+            i -= 1
+            while i >= 0
+            {
+                if !Unicode.isSpace(line.chars[i])
+                {
+                    firstBlank = true
+                    break
+                }
+
+                i -= 1
+            }
+        }
+
+        cp.charPosInLine = 0
+        if firstBlank
+        {
+            while cp.charPosInLine < line.length() and Unicode.isSpace(line.chars[cp.charPosInLine])
+                cp.charPosInLine += 1
+        }
+    }
+
+    mtd cmdCursorEndLine(cp: *RichEditCharPos)
+    {
+        cp.charPosInLine = lines[cp.lineIndex].length()
     }
 
     mtd cmdCursorStartFile(cp: *RichEditCharPos)
