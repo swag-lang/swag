@@ -27,12 +27,15 @@ var app: Application
     tab.addItem("Splitter", @{}, view2)
     view3 := Wnd.create'Wnd(tab, "bigview3")
     tab.addItem("Color", @{}, view3)
+    view4 := Wnd.create'Wnd(tab, "bigview4")
+    tab.addItem("RichEdit", @{}, view4)
 
     createView0(tab, view0)
     createView1(tab, view1)
     createView2(tab, view2)
     createView3(tab, view3)
-    tab.select(3)
+    createView4(tab, view4)
+    tab.select(4)
     surface0.show()
 
     //surface1 := try app.createSurface(100+W+10, 100, W, H, SurfaceFlags.Secondary | SurfaceFlags.SmallCaption | SurfaceFlags.CloseBtn)

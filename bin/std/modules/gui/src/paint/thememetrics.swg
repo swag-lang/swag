@@ -76,4 +76,6 @@ struct ThemeMetrics
     colorPicker_SquarePick:     f32 = 6
 
     label_Height:               f32 = 24
+
+    richEdit_Padding:           f32 = 5
 }

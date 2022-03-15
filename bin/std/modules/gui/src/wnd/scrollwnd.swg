@@ -278,6 +278,8 @@ impl ScrollWnd
         clientRect := getClientRectPadding()
         sx := Math.max(scrollSize.x, clientRect.width)
         sy := Math.max(scrollSize.y, clientRect.height)
+        sx = Math.max(sx, 1)
+        sy = Math.max(sy, 1)
 
         metrics := getThemeMetrics()
 
