@@ -12,6 +12,21 @@ struct RichEditView
 
 impl IWnd for RichEditView
 {
+    mtd onKeyEvent(evt: *KeyEvent)
+    {
+        if evt.kind == .KeyPressed
+        {
+            evt.accepted = ed.keyPressed(evt.key, evt.modifiers)
+            if evt.accepted forceVisibleCaret()
+        }
+        elif evt.kind == .Char
+        {
+            evt.accepted = ed.charPressed(evt.char, evt.modifiers)
+            if evt.accepted forceVisibleCaret()
+
+        }
+    }
+
     mtd onFocusEvent(evt: *FocusEvent)
     {
         if evt.kind == .SetFocus
@@ -66,6 +81,16 @@ impl IWnd for RichEditView
 
 impl RichEditView
 {
+    mtd forceVisibleCaret()
+    {
+        if timerCaret
+        {
+            visibleCaret = true
+            timerCaret.restart()
+            invalidate()
+        }
+    }
+
     mtd paintString(bc: *PaintContext, x, y: f32, str: String, strStyle: RichEditCharStyle, visible: bool)->f32
     {
         painter := bc.painter

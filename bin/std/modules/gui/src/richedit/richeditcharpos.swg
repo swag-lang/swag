@@ -64,4 +64,8 @@ impl RichEdit
         result.height = overwriteMode ? 2 : size.y
         return result
     }
+
+    mtd ensureCaretIsVisible()
+    {
+    }
 }
