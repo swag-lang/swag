@@ -608,7 +608,14 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
                 auto toTypeRef = TypeManager::concreteType(toType, CONCRETE_ALIAS);
                 if (makePtrL && toTypeRef && toTypeRef->isClosure())
                 {
-                    if (makePtrL->kind == AstNodeKind::MakePointer || makePtrL->kind == AstNodeKind::MakePointerLambda || (makePtrL->typeInfo && makePtrL->typeInfo->isLambda()))
+                    bool convert = false;
+                    if (makePtrL->kind == AstNodeKind::MakePointer || makePtrL->kind == AstNodeKind::MakePointerLambda)
+                        convert = true;
+                    if (makePtrL->typeInfo && makePtrL->typeInfo->isLambda())
+                        convert = true;
+                    if (makePtrL->typeInfo == g_TypeMgr->typeInfoNull)
+                        convert = true;
+                    if (convert)
                     {
                         // Create a function call param node, and move the node inside it
                         auto oldParent = makePtrL->parent;
@@ -626,6 +633,12 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
                         if (makePtrL->typeInfo->isLambda())
                         {
                             varNode->assignment = Ast::clone(makePtrL, varNode);
+                            Ast::removeFromParent(makePtrL);
+                        }
+                        else if (makePtrL->typeInfo == g_TypeMgr->typeInfoNull)
+                        {
+                            nodeCall->flags &= ~AST_VALUE_COMPUTED;
+                            makePtrL->flags |= AST_NO_BYTECODE;
                             Ast::removeFromParent(makePtrL);
                         }
                         else
