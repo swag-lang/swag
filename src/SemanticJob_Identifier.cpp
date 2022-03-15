@@ -3103,10 +3103,12 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
         }
 
         // Closure variable has a priority over a "out of scope" one
-        if (curMatch->symbolOverload->symbol->kind == SymbolKind::Variable && !(curMatch->symbolOverload->flags & OVERLOAD_VAR_CAPTURE))
+        if (curMatch->symbolOverload->symbol->kind == SymbolKind::Variable)
         {
             for (int j = 0; j < countMatches; j++)
             {
+                if (i == j)
+                    continue;
                 if (matches[j]->symbolOverload->symbol->kind == SymbolKind::Variable && (matches[j]->symbolOverload->flags & OVERLOAD_VAR_CAPTURE))
                 {
                     if (curMatch->symbolOverload->node->ownerScope->isParentOf(matches[j]->symbolOverload->node->ownerScope))

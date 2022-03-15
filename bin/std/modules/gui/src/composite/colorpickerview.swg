@@ -145,17 +145,16 @@ impl ColorPickerView
 
             picker.sigPressed += @|v|(cb) {
                 save := v.getColor()
-                box := v
-                discard cb.surface.app.doModalLoop(null, @|box,save|(app) {
+                discard cb.surface.app.doModalLoop(null, @|v,save|(app) {
                     if app.mouse.isButtonPressed(.Right)
                     {
-                        box.setColor(save)
+                        v.setColor(save)
                         app.exitModal("")
                         return
                     }
 
                     col := app.pickColorAtMouse()
-                    box.setColor(col)
+                    v.setColor(col)
 
                     if app.mouse.isButtonPressed(.Left)
                         app.exitModal("")
