@@ -147,17 +147,20 @@ impl RichEditView
             newStyle = ed.styles[dref pStyle]
 
             selected := false
-            if (ed.hasSelRect) // and m_SelRect.IsInRect(charpos))
+            if ed.hasSelRect
             {
+                 // and m_SelRect.IsInRect(charpos))
                 selected = true
             }
-            elif (!ed.hasSelRect and
-                    ((lineIndex > sel0.lineIndex and lineIndex < sel1.lineIndex) or
-                    (lineIndex != sel1.lineIndex and lineIndex == sel0.lineIndex and i >= sel0.charPosInLine) or
-                    (lineIndex != sel0.lineIndex and lineIndex == sel1.lineIndex and i < sel1.charPosInLine) or
-                    (lineIndex == sel0.lineIndex and sel0.lineIndex == sel1.lineIndex and i >= sel0.charPosInLine and i < sel1.charPosInLine)))
+            else
             {
-                selected = true
+                if (lineIndex > sel0.lineIndex and lineIndex < sel1.lineIndex) or
+                   (lineIndex != sel1.lineIndex and lineIndex == sel0.lineIndex and i >= sel0.charPosInLine) or
+                   (lineIndex != sel0.lineIndex and lineIndex == sel1.lineIndex and i < sel1.charPosInLine) or
+                   (lineIndex == sel0.lineIndex and sel0.lineIndex == sel1.lineIndex and i >= sel0.charPosInLine and i < sel1.charPosInLine)
+                {
+                    selected = true
+                }
             }
 
             if selected
