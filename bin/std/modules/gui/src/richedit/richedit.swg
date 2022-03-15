@@ -1,9 +1,18 @@
 #global public
 using Core, Pixel
 
+#[Swag.EnumFlags]
+enum RichEditFlags
+{
+    None
+    ReadOnly
+}
+
 struct RichEdit
 {
     using frameWnd: FrameWnd
+    richEdFlags     = RichEditFlags.None
+    sigIsReadOnly:  SigArray'closure(*bool)
 
     styles:     [256] RichEditCharStyle
     lines:      ArrayPtr'RichEditLine
@@ -12,14 +21,13 @@ struct RichEdit
     edView:     *RichEditView
 }
 
-struct CharPos
-{
-    lineIndex:      uint
-    charPosInLine:  uint
-}
-
 private impl RichEdit
 {
+    mtd getMarginLeft()->f32
+    {
+        return padding.x
+    }
+
     mtd setDefaultStyles()
     {
         colors := getThemeColors()
@@ -49,15 +57,15 @@ private impl RichEdit
         return p
     }
 
-    mtd insertTextPrivate(charPos: CharPos, text: string, selRect: bool)
+    mtd insertTextPrivate(cp: RichEditCharPos, text: string, selRect: bool)
     {
         if lines.isEmpty()
             newLine(0)
 
         if !selRect
         {
-            lineIndex := charPos.lineIndex
-            posInLine := charPos.charPosInLine
+            lineIndex := cp.lineIndex
+            posInLine := cp.charPosInLine
 
             // This is just an EOL
             singleEol := false;
@@ -130,7 +138,12 @@ impl RichEdit
         return ed
     }
 
-    mtd isReadOnly() => false
+    mtd isReadOnly()->bool
+    {
+        ro := false
+        sigIsReadOnly.call(&ro)
+        return ro or richEdFlags & .ReadOnly
+    }
 
     // Set the edit text
     mtd setText(text: string)

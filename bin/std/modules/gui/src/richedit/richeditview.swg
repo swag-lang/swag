@@ -62,7 +62,7 @@ impl RichEditView
 
         var oldStyle, newStyle: RichEditCharStyle
         oldStyle = ed.styles[0]
-        x := padding.x
+        x := ed.getMarginLeft()
 
         i := 0
         while i < count

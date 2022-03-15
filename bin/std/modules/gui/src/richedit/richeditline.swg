@@ -7,6 +7,7 @@ struct RichEditLine
     styles:         Array'u8
     dirtyStyle:     bool
     dirtyFold:      bool
+    drawingRect:    Math.Rectangle
 }
 
 impl RichEditLine
