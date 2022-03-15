@@ -401,7 +401,14 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
 
         if (makePtrL && toTypeRef && toTypeRef->isClosure())
         {
-            if (makePtrL->kind == AstNodeKind::MakePointer || makePtrL->kind == AstNodeKind::MakePointerLambda || (makePtrL->typeInfo && makePtrL->typeInfo->isLambda()))
+            bool convert = false;
+            if (makePtrL->kind == AstNodeKind::MakePointer || makePtrL->kind == AstNodeKind::MakePointerLambda)
+                convert = true;
+            if (makePtrL->typeInfo && makePtrL->typeInfo->isLambda())
+                convert = true;
+            if (makePtrL->typeInfo == g_TypeMgr->typeInfoNull)
+                convert = true;
+            if (convert)
             {
                 auto varNode = Ast::newVarDecl(sourceFile, Fmt("__ctmp_%d", g_UniqueID.fetch_add(1)), identifier);
 
@@ -412,6 +419,12 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                 if (makePtrL->typeInfo->isLambda())
                 {
                     varNode->assignment = Ast::clone(makePtrL, varNode);
+                    Ast::removeFromParent(makePtrL);
+                }
+                else if (makePtrL->typeInfo == g_TypeMgr->typeInfoNull)
+                {
+                    nodeCall->flags &= ~AST_VALUE_COMPUTED;
+                    makePtrL->flags |= AST_NO_BYTECODE;
                     Ast::removeFromParent(makePtrL);
                 }
                 else
