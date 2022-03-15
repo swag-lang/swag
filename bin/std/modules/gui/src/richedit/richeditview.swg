@@ -147,7 +147,7 @@ impl RichEditView
                 str.clear()
             }
 
-            str += line.chars[i]
+            str += dref pChar
         }
 
         // Remaining string
