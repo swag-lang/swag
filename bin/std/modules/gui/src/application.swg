@@ -65,6 +65,8 @@ private impl Application
     {
         if !wnd
             return null
+        if wnd.surface.isDisabled
+            return null
         scan := wnd
         while scan and !scan.isEnabled()
             scan = scan.parent

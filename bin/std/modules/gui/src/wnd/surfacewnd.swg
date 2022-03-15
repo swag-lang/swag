@@ -86,16 +86,16 @@ impl IWnd for SurfaceWnd
                     {
                     case Left, Right:
                         cursorSet = true
-                        surface.app.pushCursor(Cursor.from(CursorShape.SizeWE))
+                        surface.app.pushCursor(Cursor.from(.SizeWE))
                     case Top, Bottom:
                         cursorSet = true
-                        surface.app.pushCursor(Cursor.from(CursorShape.SizeNS))
+                        surface.app.pushCursor(Cursor.from(.SizeNS))
                     case Right|Bottom, Left|Top:
                         cursorSet = true
-                        surface.app.pushCursor(Cursor.from(CursorShape.SizeNWSE))
+                        surface.app.pushCursor(Cursor.from(.SizeNWSE))
                     case Right|Top, Left|Bottom:
                         cursorSet = true
-                        surface.app.pushCursor(Cursor.from(CursorShape.SizeNESW))
+                        surface.app.pushCursor(Cursor.from(.SizeNESW))
                     }
                 }
             }

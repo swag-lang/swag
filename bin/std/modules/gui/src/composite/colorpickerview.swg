@@ -144,6 +144,9 @@ impl ColorPickerView
             radioB = RadioButton.create(v, "B", @{280, 160, 40})
 
             picker.sigPressed += @|v|(cb) {
+                app := cb.getApp()
+                app.pushCursor(Cursor.from(.Cross))
+
                 save := v.getColor()
                 discard cb.surface.app.doModalLoop(null, @|v,save|(app) {
                     if app.mouse.isButtonPressed(.Right)
@@ -159,6 +162,8 @@ impl ColorPickerView
                     if app.mouse.isButtonPressed(.Left)
                         app.exitModal("")
                 })
+
+                app.popCursor()
             }
 
             pickBox.sigChanged += @|v|(cb) {

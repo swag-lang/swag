@@ -29,7 +29,7 @@ impl Application
         ReleaseCapture()
     }
 
-    func sendSystemEvents()
+    mtd sendSystemEvents()
     {
         var msg: MSG
         while PeekMessageW(&msg, null, 0, 0, PM_REMOVE) != 0
