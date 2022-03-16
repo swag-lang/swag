@@ -37,7 +37,6 @@ struct RichEdit
     hasSelRect:                 bool
     modified:                   bool
     recomputeScroll:            bool
-    processedAsChar:            bool
     dirtyFirstLineView:         bool
     forceCaretVisible:          bool
     forceCaretVisibleCenter:    bool
@@ -158,7 +157,7 @@ private impl RichEdit
     mtd deleteLine(lineIndex: uint)
     {
         freeLines.add(lines[lineIndex])
-        lines.removeAt(lineIndex)
+        lines.removeAtOrdered(lineIndex)
         recomputeScroll = true
     }
 

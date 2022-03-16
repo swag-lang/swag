@@ -2,22 +2,24 @@ using Core
 
 impl RichEdit
 {
-    mtd charPressed(char: rune, mdf: Input.KeyModifiers)->bool
+    mtd charPressed(ch: rune, mdf: Input.KeyModifiers)->bool
     {
         if isReadOnly()
             return true
 
         if mdf & .Control
             return true
+        c := ch
+
 
         // Some special characters will be treated as commands
-        if mdf == .None
+        if mdf == .None and c < " "'rune
         {
-            if char == "\t"'rune or char == "\b"'rune
+            if c == "\t"'rune or c == "\b"'rune
                 return true
+            if c == "\r"'rune
+                c = "\n"'rune
         }
-
-        processedAsChar = true
 
         // A new undo action needs to be regenerate ?
         forceUndo := false
@@ -72,7 +74,7 @@ impl RichEdit
         }
 
         var az: [4] u8
-        cpt := Utf8.encodeRune(az, char)
+        cpt := Utf8.encodeRune(az, c)
 
         // Add a deletion
         if currentUndo > 1
@@ -92,7 +94,7 @@ impl RichEdit
 
         // Append the character to the last undo
         pundo = undoMgr[currentUndo - 1]
-        pundo.text.add(char)
+        pundo.text.add(c)
 
         // Do action
         insertTextPrivate(&cursorPos, @mkstring(&az[0], cpt), false)
@@ -107,12 +109,6 @@ impl RichEdit
 
     mtd keyPressed(key: Input.Key, mdf: Input.KeyModifiers)->bool
     {
-        if processedAsChar
-        {
-            processedAsChar = false
-            return true
-        }
-
         cmd := getMappingCommand(key, mdf)
         if cmd == .None
             return true
