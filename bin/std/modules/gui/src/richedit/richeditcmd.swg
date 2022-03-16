@@ -17,6 +17,8 @@ public enum RichEditCommand
     SelectRuneDown
     DeleteLeft
     DeleteRight
+    Undo
+    Redo
 }
 
 impl RichEdit
@@ -43,20 +45,22 @@ impl RichEdit
 
     mtd setDefaultMapping()
     {
-        addMapping(Input.Key.Left,      Input.KeyModifiers.None,    RichEditCommand.CursorLeft)
-        addMapping(Input.Key.Left,      Input.KeyModifiers.Shift,   RichEditCommand.SelectRuneLeft)
-        addMapping(Input.Key.Right,     Input.KeyModifiers.None,    RichEditCommand.CursorRight)
-        addMapping(Input.Key.Right,     Input.KeyModifiers.Shift,   RichEditCommand.SelectRuneRight)
-        addMapping(Input.Key.Up,        Input.KeyModifiers.None,    RichEditCommand.CursorUp)
-        addMapping(Input.Key.Up,        Input.KeyModifiers.Shift,   RichEditCommand.SelectRuneUp)
-        addMapping(Input.Key.Down,      Input.KeyModifiers.None,    RichEditCommand.CursorDown)
-        addMapping(Input.Key.Down,      Input.KeyModifiers.Shift,   RichEditCommand.SelectRuneDown)
-        addMapping(Input.Key.Home,      Input.KeyModifiers.None,    RichEditCommand.CursorStartLine)
-        addMapping(Input.Key.Home,      Input.KeyModifiers.Control, RichEditCommand.CursorStartFile)
-        addMapping(Input.Key.End,       Input.KeyModifiers.None,    RichEditCommand.CursorEndLine)
-        addMapping(Input.Key.End,       Input.KeyModifiers.Control, RichEditCommand.CursorEndFile)
-        addMapping(Input.Key.Back,      Input.KeyModifiers.None,    RichEditCommand.DeleteLeft)
-        addMapping(Input.Key.Delete,    Input.KeyModifiers.None,    RichEditCommand.DeleteRight)
+        addMapping(Input.Key.Left,      Input.KeyModifiers.None,        RichEditCommand.CursorLeft)
+        addMapping(Input.Key.Left,      Input.KeyModifiers.Shift,       RichEditCommand.SelectRuneLeft)
+        addMapping(Input.Key.Right,     Input.KeyModifiers.None,        RichEditCommand.CursorRight)
+        addMapping(Input.Key.Right,     Input.KeyModifiers.Shift,       RichEditCommand.SelectRuneRight)
+        addMapping(Input.Key.Up,        Input.KeyModifiers.None,        RichEditCommand.CursorUp)
+        addMapping(Input.Key.Up,        Input.KeyModifiers.Shift,       RichEditCommand.SelectRuneUp)
+        addMapping(Input.Key.Down,      Input.KeyModifiers.None,        RichEditCommand.CursorDown)
+        addMapping(Input.Key.Down,      Input.KeyModifiers.Shift,       RichEditCommand.SelectRuneDown)
+        addMapping(Input.Key.Home,      Input.KeyModifiers.None,        RichEditCommand.CursorStartLine)
+        addMapping(Input.Key.Home,      Input.KeyModifiers.Control,     RichEditCommand.CursorStartFile)
+        addMapping(Input.Key.End,       Input.KeyModifiers.None,        RichEditCommand.CursorEndLine)
+        addMapping(Input.Key.End,       Input.KeyModifiers.Control,     RichEditCommand.CursorEndFile)
+        addMapping(Input.Key.Back,      Input.KeyModifiers.None,        RichEditCommand.DeleteLeft)
+        addMapping(Input.Key.Delete,    Input.KeyModifiers.None,        RichEditCommand.DeleteRight)
+        addMapping(Input.Key.Y,         Input.KeyModifiers.Control,     RichEditCommand.Redo)
+        addMapping(Input.Key.Z,         Input.KeyModifiers.Control,     RichEditCommand.Undo)
     }
 
     // Execute a command
@@ -154,6 +158,18 @@ impl RichEdit
             if isReadOnly()
                 return
             cmdEditDeleteRight()
+            resetVolatileFind()
+
+        case Undo:
+            if isReadOnly()
+                return
+            cmdUndo()
+            resetVolatileFind()
+
+        case Redo:
+            if isReadOnly()
+                return
+            cmdRedo()
             resetVolatileFind()
         }
     }
@@ -390,5 +406,100 @@ impl RichEdit
         }*/
 
         popUndo()
+    }
+
+    mtd cmdUndo()
+    {
+        if undoMgr.count == 0
+            return
+        if !currentUndo
+            return
+
+        currentUndo -= 1
+        undo   := undoMgr[currentUndo]
+        serial := undo.serial
+
+        loop
+        {
+            if undo.type == .Delete
+            {
+                selBeg = undo.selBeg
+                cmdSetCursorPos(undo.cursorPos)
+                cp := getBegSelection()
+                insertTextPrivate(&cp, undo.text, undo.hasSelRect)
+            }
+            elif undo.type == .Insert
+            {
+                selBeg = undo.selBeg
+                cmdSetCursorPos(undo.cursorPos)
+                cmdSetSelRect(undo.hasSelRect)
+                //ComputeRectangularSelection(m_CursorPos, pundo->m_BegSelectionAfter);
+                deleteTextPrivate(cursorPos, undo.begSelectionAfter, undo.hasSelRect)
+            }
+
+            selBeg = undo.begSelectionBefore
+            cmdSetCursorPos(undo.endSelectionBefore)
+            cmdSetSelRect(undo.hasSelRect)
+            if !currentUndo
+                break
+            undo = undoMgr[currentUndo - 1]
+            if undo.serial != serial
+                break
+            currentUndo -= 1
+        }
+
+        if getLastModificationUndo() == modifiedUndoMarker
+            setModified(false)
+        else
+            setModified(true)
+        //computeScrollY()
+    }
+
+    mtd cmdRedo()
+    {
+        if undoMgr.count == 0
+            return
+        if currentUndo == undoMgr.count
+            return
+
+        undo   := undoMgr[currentUndo]
+        serial := undo.serial
+        currentUndo += 1
+
+        loop
+        {
+            if undo.type == .Delete
+            {
+                selBeg = undo.selBeg
+                cmdSetCursorPos(undo.cursorPos)
+                cmdSetSelRect(undo.hasSelRect)
+                //ComputeRectangularSelection(GetBegSelection(), GetEndSelection());
+                deleteTextPrivate(getBegSelection(), getEndSelection(), undo.hasSelRect)
+            }
+            elif undo.type == .Insert
+            {
+                selBeg = undo.selBeg
+                cmdSetCursorPos(undo.cursorPos)
+                cp := getBegSelection()
+                insertTextPrivate(&cp, undo.text, undo.hasSelRect)
+            }
+
+            selBeg = undo.begSelectionAfter
+            cmdSetCursorPos(undo.endSelectionAfter)
+            cmdSetSelRect(undo.hasSelRect)
+
+            if currentUndo == undoMgr.count
+                break
+            undo = undoMgr[currentUndo]
+            if undo.serial != serial
+                break
+            currentUndo += 1
+        }
+
+        if getLastModificationUndo() == modifiedUndoMarker
+            setModified(false)
+        else
+            setModified(true)
+        //computeScrollY()
     }
 }

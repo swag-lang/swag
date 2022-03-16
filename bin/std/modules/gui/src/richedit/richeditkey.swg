@@ -7,6 +7,9 @@ impl RichEdit
         if isReadOnly()
             return true
 
+        if mdf & .Control
+            return true
+
         // Some special characters will be treated as commands
         if mdf == .None
         {

@@ -204,7 +204,7 @@ impl Array
 
     // Returns true if the array is empty
     #[Inline]
-    mtd isEmpty() => count == 0
+    mtdc isEmpty() => count == 0
 
     // Returns a slice
     #[Inline]

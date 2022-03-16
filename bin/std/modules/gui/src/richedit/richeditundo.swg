@@ -88,4 +88,18 @@ impl RichEdit
         // Do action
         deleteTextPrivate(posStart, posEnd, selRect);
     }
+
+    mtd getLastModificationUndo()->uint
+    {
+        count := currentUndo
+        while count
+        {
+            if (undoMgr[count - 1].type == .Delete) or
+               (undoMgr[count - 1].type == .Insert)
+                return count
+            count -= 1
+        }
+
+        return count
+    }
 }

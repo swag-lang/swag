@@ -245,6 +245,53 @@ private impl RichEdit
         return result
     }
 
+    mtd insertRunePrivate(cp: *RichEditCharPos, c: rune, selRect: bool)
+    {
+        if !selRect
+        {
+            if c == "\n"'rune or c == "\r"'rune
+            {
+                discard newLine(cp.lineIndex + 1)
+                linep := lines[cp.lineIndex]
+                line  := lines[cp.lineIndex + 1]
+                if cp.charPosInLine < linep.length()
+                    line.insertRunes(0, linep, cp.charPosInLine, linep.length() - cp.charPosInLine)
+                linep.setLength(cp.charPosInLine)
+                cp.lineIndex += 1
+                cp.charPosInLine = 0
+            }
+            else
+            {
+                line := lines[cp.lineIndex]
+                posIns := Math.min(cp.charPosInLine, line.length())
+                line.insertRune(posIns, c)
+                cp.charPosInLine += 1
+            }
+        }
+        else
+        {
+            Debug.assert(false) // todo
+        }
+    }
+
+    mtd insertTextPrivate(cp: *RichEditCharPos, text: Array'rune, selRect: bool)
+    {
+        if text.isEmpty()
+            return
+
+        if !selRect
+        {
+            visit c: text
+            {
+                insertRunePrivate(cp, c, selRect)
+            }
+        }
+        else
+        {
+            Debug.assert(false) // todo
+        }
+    }
+
     mtd insertTextPrivate(cp: *RichEditCharPos, text: string, selRect: bool)
     {
         if lines.isEmpty()
@@ -260,24 +307,7 @@ private impl RichEdit
                 if !eat
                     break
                 str = Tokenize.eatCount(str, cast(uint) eat)
-
-                if c == "\n"'rune or c == "\r"'rune
-                {
-                    discard newLine(cp.lineIndex + 1)
-                    linep := lines[cp.lineIndex]
-                    line  = lines[cp.lineIndex + 1]
-                    if cp.charPosInLine < linep.length()
-                        line.insertRunes(0, linep, cp.charPosInLine, linep.length() - cp.charPosInLine)
-                    linep.setLength(cp.charPosInLine)
-                    cp.lineIndex += 1
-                    cp.charPosInLine = 0
-                }
-                else
-                {
-                    posIns := Math.min(cp.charPosInLine, line.length())
-                    line.insertRune(posIns, c)
-                    cp.charPosInLine += 1
-                }
+                insertRunePrivate(cp, c, selRect)
             }
         }
         else
