@@ -58,6 +58,11 @@ public
         return isInTable(TableSymbolMath, c)
     }
 
+    func isWord(c: rune)->bool
+    {
+        return !isSymbol(c) and !isSpace(c)
+    }
+
     func isLetterOrDigit(c: rune)->bool
     {
         if isLatin1(c) return Latin1.isLetterOrDigit(cast(u8) c)

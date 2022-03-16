@@ -11,6 +11,8 @@ public enum RichEditCommand
     CursorEndFile
     CursorStartLine
     CursorEndLine
+    CursorWordLeft
+    CursorWordRight
     SelectRuneLeft
     SelectRuneRight
     SelectRuneUp
@@ -20,6 +22,8 @@ public enum RichEditCommand
     SelectStartFile
     SelectEndFile
     SelectAllFile
+    SelectWordLeft
+    SelectWordRight
     DeleteLeft
     DeleteRight
     Undo
@@ -52,8 +56,12 @@ impl RichEdit
     {
         addMapping(Input.Key.Left,      Input.KeyModifiers.None,        RichEditCommand.CursorLeft)
         addMapping(Input.Key.Left,      Input.KeyModifiers.Shift,       RichEditCommand.SelectRuneLeft)
+        addMapping(Input.Key.Left,      Input.KeyModifiers.Control,     RichEditCommand.CursorWordLeft)
+        addMapping(Input.Key.Left,      Input.KeyModifiers.CtrlShift,   RichEditCommand.SelectWordLeft)
         addMapping(Input.Key.Right,     Input.KeyModifiers.None,        RichEditCommand.CursorRight)
         addMapping(Input.Key.Right,     Input.KeyModifiers.Shift,       RichEditCommand.SelectRuneRight)
+        addMapping(Input.Key.Right,     Input.KeyModifiers.Control,     RichEditCommand.CursorWordRight)
+        addMapping(Input.Key.Right,     Input.KeyModifiers.CtrlShift,   RichEditCommand.SelectWordRight)
         addMapping(Input.Key.Up,        Input.KeyModifiers.None,        RichEditCommand.CursorUp)
         addMapping(Input.Key.Up,        Input.KeyModifiers.Shift,       RichEditCommand.SelectRuneUp)
         addMapping(Input.Key.Down,      Input.KeyModifiers.None,        RichEditCommand.CursorDown)
@@ -138,6 +146,16 @@ impl RichEdit
             cmdClearSelection()
             resetVolatileFind()
 
+        case CursorWordLeft:
+            cmdCursorWordLeft(&cursorPos)
+            cmdClearSelection()
+            resetVolatileFind()
+
+        case CursorWordRight:
+            cmdCursorWordRight(&cursorPos, true)
+            cmdClearSelection()
+            resetVolatileFind()
+
         case SelectRuneLeft:
             cmdCursorLeft(&cursorPos)
             resetVolatileFind()
@@ -181,6 +199,16 @@ impl RichEdit
         case SelectAllFile:
             cmdCursorStartFile(&selBeg)
             cmdCursorEndFile(&cursorPos)
+            resetVolatileFind()
+            cmdSetSelRect(false)
+
+        case SelectWordLeft:
+            cmdCursorWordLeft(&cursorPos)
+            resetVolatileFind()
+            cmdSetSelRect(false)
+
+        case SelectWordRight:
+            cmdCursorWordRight(&cursorPos, false)
             resetVolatileFind()
             cmdSetSelRect(false)
 
@@ -408,6 +436,111 @@ impl RichEdit
         cp.charPosInLine = lines[cp.lineIndex].length()
     }
 
+    mtd cmdCursorWordLeft(cp: *RichEditCharPos)
+    {
+        line := lines[cp.lineIndex]
+        if cp.charPosInLine == 0
+        {
+            cmdCursorLeft(cp)
+            return
+        }
+
+        if Unicode.isSpace(line.chars[cp.charPosInLine - 1])
+        {
+            if !cmdCursorLeft(cp)
+                return
+            line = lines[cp.lineIndex]
+            while cp.charPosInLine != 0 and Unicode.isSpace(line.chars[cp.charPosInLine - 1])
+            {
+                if !cmdCursorLeft(cp)
+                    return
+                line = lines[cp.lineIndex]
+            }
+
+            if !cp.charPosInLine
+                return
+        }
+
+        if Unicode.isWord(line.chars[cp.charPosInLine - 1])
+        {
+            while cp.charPosInLine != 0 and Unicode.isWord(line.chars[cp.charPosInLine - 1])
+            {
+                if !cmdCursorLeft(cp)
+                    return
+                line = lines[cp.lineIndex]
+            }
+        }
+        else if (zapWordChar(line.chars[cp.charPosInLine - 1]))
+        {
+            while cp.charPosInLine != 0 and zapWordChar(line.chars[cp.charPosInLine - 1])
+            {
+                if !cmdCursorLeft(cp)
+                    return
+                line = lines[cp.lineIndex]
+            }
+        }
+        else
+        {
+            cmdCursorLeft(cp)
+        }
+    }
+
+    mtd cmdCursorWordRight(cp: *RichEditCharPos, withSpace: bool)
+    {
+        line := lines[cp.lineIndex]
+        if cp.charPosInLine == line.length() or Unicode.isSpace(line.chars[cp.charPosInLine])
+        {
+            if !cmdCursorRight(cp)
+                return
+            line = lines[cp.lineIndex]
+            while cp.charPosInLine != line.length() and Unicode.isSpace(line.chars[cp.charPosInLine])
+            {
+                if !cmdCursorRight(cp)
+                    return
+                line = lines[cp.lineIndex]
+            }
+        }
+        else if (Unicode.isWord(line.chars[cp.charPosInLine]))
+        {
+            while cp.charPosInLine != line.length() and Unicode.isWord(line.chars[cp.charPosInLine])
+            {
+                if !cmdCursorRight(cp)
+                    return
+                line = lines[cp.lineIndex]
+            }
+
+            if withSpace
+            {
+                while cp.charPosInLine != line.length() and Unicode.isSpace(line.chars[cp.charPosInLine])
+                {
+                    if !cmdCursorRight(cp)
+                        return
+                    line = lines[cp.lineIndex]
+                }
+            }
+        }
+        else if zapWordChar(line.chars[cp.charPosInLine])
+        {
+            while cp.charPosInLine != line.length() and zapWordChar(line.chars[cp.charPosInLine])
+            {
+                if !cmdCursorRight(cp)
+                    return
+                line = lines[cp.lineIndex]
+            }
+
+            while cp.charPosInLine != line.length() and Unicode.isSpace(line.chars[cp.charPosInLine])
+            {
+                if !cmdCursorRight(cp)
+                    return
+                line = lines[cp.lineIndex]
+            }
+        }
+        else
+        {
+            cmdCursorRight(cp)
+        }
+    }
+
     mtd cmdEditDeleteLeft()
     {
         pushUndo()
@@ -538,4 +671,17 @@ impl RichEdit
             setModified(true)
         //computeScrollY()
     }
+}
+
+func zapWordChar(c: rune)->bool
+{
+    if Unicode.isLetterOrDigit(c)
+        return false
+    if Unicode.isSpace(c)
+        return false;
+    if Unicode.isWord(c)
+        return false
+    if c != "("'rune and c != ")"'rune and c != "["'rune and c != "]"'rune and c != "{"'rune and c != "}"'rune
+        return true
+    return false
 }

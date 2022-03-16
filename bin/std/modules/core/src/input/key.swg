@@ -10,6 +10,7 @@ public enum KeyModifiers
     Shift
     Control
     Alt
+    CtrlShift = Shift | Control
 }
 
 // Defines the keys on a keyboard
