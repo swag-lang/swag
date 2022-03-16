@@ -11,7 +11,10 @@ public enum RichEditCommand
     CursorEndFile
     CursorStartLine
     CursorEndLine
+    SelectRuneLeft
     SelectRuneRight
+    SelectRuneUp
+    SelectRuneDown
 }
 
 impl RichEdit
@@ -39,10 +42,13 @@ impl RichEdit
     mtd setDefaultMapping()
     {
         addMapping(Input.Key.Left,  Input.KeyModifiers.None,    RichEditCommand.CursorLeft)
+        addMapping(Input.Key.Left,  Input.KeyModifiers.Shift,   RichEditCommand.SelectRuneLeft)
         addMapping(Input.Key.Right, Input.KeyModifiers.None,    RichEditCommand.CursorRight)
         addMapping(Input.Key.Right, Input.KeyModifiers.Shift,   RichEditCommand.SelectRuneRight)
         addMapping(Input.Key.Up,    Input.KeyModifiers.None,    RichEditCommand.CursorUp)
+        addMapping(Input.Key.Up,    Input.KeyModifiers.Shift,   RichEditCommand.SelectRuneUp)
         addMapping(Input.Key.Down,  Input.KeyModifiers.None,    RichEditCommand.CursorDown)
+        addMapping(Input.Key.Down,  Input.KeyModifiers.Shift,   RichEditCommand.SelectRuneDown)
         addMapping(Input.Key.Home,  Input.KeyModifiers.None,    RichEditCommand.CursorStartLine)
         addMapping(Input.Key.Home,  Input.KeyModifiers.Control, RichEditCommand.CursorStartFile)
         addMapping(Input.Key.End,   Input.KeyModifiers.None,    RichEditCommand.CursorEndLine)
@@ -114,8 +120,23 @@ impl RichEdit
             cmdClearSelection()
             resetVolatileFind()
 
+        case SelectRuneLeft:
+            cmdCursorLeft(&cursorPos)
+            resetVolatileFind()
+            cmdSetSelRect(false)
+
         case SelectRuneRight:
             cmdCursorRight(&cursorPos)
+            resetVolatileFind()
+            cmdSetSelRect(false)
+
+        case SelectRuneUp:
+            cmdCursorUp(&cursorPos)
+            resetVolatileFind()
+            cmdSetSelRect(false)
+
+        case SelectRuneDown:
+            cmdCursorDown(&cursorPos)
             resetVolatileFind()
             cmdSetSelRect(false)
         }

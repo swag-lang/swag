@@ -170,7 +170,6 @@ impl RichEditView
                     newStyle.colFg = ed.styles[dref pStyle].colFg
             }
 
-
             // Paint accumulated string if we have a change of style
             styleChange := newStyle != oldStyle
             if styleChange
