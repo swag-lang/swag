@@ -56,26 +56,79 @@ impl IWnd for RichEditView
     {
         painter := evt.bc.painter
 
-        x    := ed.getMarginLeft()
-        y    := ed.padding.y
+        marginLeft := ed.getMarginLeft()
+        x    := 0'f32
+        y    := 0'f32
         size := ed.getXExtent()
 
-        visit l, i: ed.lines
+        // Start to the first visible line, if known
+        var i: uint
+        if ed.dirtyFirstLineView or ed.recomputeScroll
         {
-            x1 := paintLine(evt.bc, i, y, true)
+            i = 0
+            ed.firstVisibleLineView = Swag.UInt.Max
+        }
+        else
+        {
+            i = ed.firstVisibleLineView
+            y = ed.lines[i].drawingRect.y
+        }
 
-            l.drawingRect.x = x
+        if ed.recomputeScroll
+            ed.countVisibleLines = 0
+        ed.dirtyFirstLineView = false
+
+        pos := getClientRect()
+        firstHidden := true
+        dirtyFold := false
+        maxx := 0'f32
+
+        // All lines
+        while i < ed.lines.count
+        {
+            // Is the line visible ?
+            bvis := true
+            if y + size.y < scrollPos.y or y > pos.bottom()
+                bvis = false
+
+            // Store the first visible line index
+            if bvis and ed.firstVisibleLineView == Swag.UInt.Max and (ed.lines[i].isVisible() or firstHidden)
+                ed.firstVisibleLineView = i
+
+            if ed.recomputeScroll
+                ed.countVisibleLines += 1
+            ed.lastVisibleLineView = i
+
+            l := ed.lines[i]
+            if bvis or l.dirtyStyle or l.dirtyFold
+                x = paintLine(evt.bc, i, y - scrollPos.y, true)
+
+            l.drawingRect.x = marginLeft
             l.drawingRect.y = y
-            l.drawingRect.width = x1 - x
+            l.drawingRect.width = 1 - x
             l.drawingRect.height = size.y
 
-            y += l.drawingRect.height
+            maxx = Math.max(maxx, x)
+            y += size.y
+            i += 1
+            if !ed.recomputeScroll and y >= scrollPos.y + pos.bottom() and !dirtyFold
+                break
         }
 
         // Caret
         posCaret := ed.getCaretPos()
         if visibleCaret
+        {
+            posCaret.y -= scrollPos.y
             painter.fillRect(posCaret, getThemeColors().richEdit_Caret)
+        }
+
+        // Scroll size
+        y = cast(f32) (ed.countVisibleLines * size.y)
+        if !ed.recomputeScroll
+            maxx = ed.scrollWnd.scrollSize.x
+        ed.recomputeScroll = false
+        ed.scrollWnd.setScrollSize(maxx, y)
     }
 }
 

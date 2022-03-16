@@ -621,7 +621,7 @@ impl RichEdit
             setModified(false)
         else
             setModified(true)
-        //computeScrollY()
+        computeScrollY()
     }
 
     mtd cmdRedo()
@@ -669,7 +669,7 @@ impl RichEdit
             setModified(false)
         else
             setModified(true)
-        //computeScrollY()
+        computeScrollY()
     }
 }
 

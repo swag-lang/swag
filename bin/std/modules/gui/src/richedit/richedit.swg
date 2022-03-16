@@ -38,14 +38,18 @@ struct RichEdit
     modified:           bool
     recomputeScroll:    bool
     processedAsChar:    bool
+    dirtyFirstLineView: bool
 
     undoMgr:            ArrayPtr'RichEditUndo
     toUndo:             ArrayPtr'RichEditUndo
     mapping:            Array'RichEditMapping
-    currentUndo:        uint
-    undoCounter:        uint
-    modifiedUndoMarker: uint
-    serialUndo:         uint
+    currentUndo:            uint
+    undoCounter:            uint
+    modifiedUndoMarker:     uint
+    serialUndo:             uint
+    countVisibleLines:      uint
+    firstVisibleLineView:   uint
+    lastVisibleLineView:    uint
     cursorPosUndo:      RichEditCharPos
     selBegUndo:         RichEditCharPos
 }
@@ -67,6 +71,40 @@ private impl RichEdit
         stylesSelect[0].colBk = colors.richEdit_SelBk
         stylesSelect[1].colFg = colors.richEdit_SelTextNoFocus
         stylesSelect[1].colBk = colors.richEdit_SelBkNoFocus
+    }
+
+    mtd computeScrollY()
+    {
+        size := getXExtent()
+        if !recomputeScroll
+            return
+
+        y := 0'f32
+        firstHidden := true
+        countVisibleLines = 0
+        loop i: lines
+        {
+            lines[i].drawingRect.clear()
+
+            if lines[i].isVisible()
+            {
+                countVisibleLines += 1
+                lines[i].drawingRect.y = y
+                lines[i].drawingRect.height = size.y
+                y += size.y
+                firstHidden = true
+            }
+            elif firstHidden
+            {
+                countVisibleLines += 1
+                lines[i].drawingRect.y = y
+                lines[i].drawingRect.height = size.y
+                y += size.y
+                firstHidden = false
+            }
+        }
+
+        sy := countVisibleLines * size.y
     }
 
     mtd resetVolatileFind()
@@ -249,7 +287,9 @@ private impl RichEdit
     {
         if !selRect
         {
-            if c == "\n"'rune or c == "\r"'rune
+            if c == "\r"'rune
+                return
+            if c == "\n"'rune
             {
                 discard newLine(cp.lineIndex + 1)
                 linep := lines[cp.lineIndex]
