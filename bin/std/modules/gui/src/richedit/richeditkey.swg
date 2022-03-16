@@ -7,6 +7,15 @@ impl RichEdit
         if isReadOnly()
             return true
 
+        // Some special characters will be treated as commands
+        if mdf == .None
+        {
+            if char == "\t"'rune or char == "\b"'rune
+                return true
+        }
+
+        processedAsChar = true
+
         // A new undo action needs to be regenerate ?
         forceUndo := false
         pundo := currentUndo ? undoMgr[currentUndo - 1] : null
@@ -95,6 +104,12 @@ impl RichEdit
 
     mtd keyPressed(key: Input.Key, mdf: Input.KeyModifiers)->bool
     {
+        if processedAsChar
+        {
+            processedAsChar = false
+            return true
+        }
+
         cmd := getMappingCommand(key, mdf)
         if cmd == .None
             return true

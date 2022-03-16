@@ -7,7 +7,7 @@ struct RichEditLine
     styles:         Array'u8
     dirtyStyle:     bool
     dirtyFold:      bool
-    hidden:         bool
+    hidden:         uint
     drawingRect:    Math.Rectangle
 }
 
@@ -16,7 +16,16 @@ impl RichEditLine
     #[Swag.Inline]
     {
         mtd length()    => styles.count
-        mtd isVisible() => !hidden
+        mtd isVisible() => hidden == 0
+    }
+
+    mtd resetInternal()
+    {
+        dirtyStyle = true
+        dirtyFold = true
+        hidden = 0
+        chars.clear()
+        styles.clear()
     }
 
     mtd insertRune(insIndex: uint, src: rune)

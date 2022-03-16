@@ -37,6 +37,7 @@ struct RichEdit
     hasSelRect:         bool
     modified:           bool
     recomputeScroll:    bool
+    processedAsChar:    bool
 
     undoMgr:            ArrayPtr'RichEditUndo
     toUndo:             ArrayPtr'RichEditUndo
@@ -95,14 +96,16 @@ private impl RichEdit
     #[Swag.Discardable]
     mtd newLine(index: uint)->*RichEditLine
     {
-        if freeLines.count
-        {
-            p := freeLines.popBack()
-            return p
-        }
+        var p: *RichEditLine
 
-        p := Memory.new'RichEditLine()
+        if freeLines.count
+            p = freeLines.popBack()
+        else
+            p = Memory.new'RichEditLine()
+
+        p.resetInternal()
         lines.insertAt(index, p)
+        recomputeScroll = true
         return p
     }
 

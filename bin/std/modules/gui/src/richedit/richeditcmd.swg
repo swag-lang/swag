@@ -15,6 +15,8 @@ public enum RichEditCommand
     SelectRuneRight
     SelectRuneUp
     SelectRuneDown
+    DeleteLeft
+    DeleteRight
 }
 
 impl RichEdit
@@ -41,18 +43,20 @@ impl RichEdit
 
     mtd setDefaultMapping()
     {
-        addMapping(Input.Key.Left,  Input.KeyModifiers.None,    RichEditCommand.CursorLeft)
-        addMapping(Input.Key.Left,  Input.KeyModifiers.Shift,   RichEditCommand.SelectRuneLeft)
-        addMapping(Input.Key.Right, Input.KeyModifiers.None,    RichEditCommand.CursorRight)
-        addMapping(Input.Key.Right, Input.KeyModifiers.Shift,   RichEditCommand.SelectRuneRight)
-        addMapping(Input.Key.Up,    Input.KeyModifiers.None,    RichEditCommand.CursorUp)
-        addMapping(Input.Key.Up,    Input.KeyModifiers.Shift,   RichEditCommand.SelectRuneUp)
-        addMapping(Input.Key.Down,  Input.KeyModifiers.None,    RichEditCommand.CursorDown)
-        addMapping(Input.Key.Down,  Input.KeyModifiers.Shift,   RichEditCommand.SelectRuneDown)
-        addMapping(Input.Key.Home,  Input.KeyModifiers.None,    RichEditCommand.CursorStartLine)
-        addMapping(Input.Key.Home,  Input.KeyModifiers.Control, RichEditCommand.CursorStartFile)
-        addMapping(Input.Key.End,   Input.KeyModifiers.None,    RichEditCommand.CursorEndLine)
-        addMapping(Input.Key.End,   Input.KeyModifiers.Control, RichEditCommand.CursorEndFile)
+        addMapping(Input.Key.Left,      Input.KeyModifiers.None,    RichEditCommand.CursorLeft)
+        addMapping(Input.Key.Left,      Input.KeyModifiers.Shift,   RichEditCommand.SelectRuneLeft)
+        addMapping(Input.Key.Right,     Input.KeyModifiers.None,    RichEditCommand.CursorRight)
+        addMapping(Input.Key.Right,     Input.KeyModifiers.Shift,   RichEditCommand.SelectRuneRight)
+        addMapping(Input.Key.Up,        Input.KeyModifiers.None,    RichEditCommand.CursorUp)
+        addMapping(Input.Key.Up,        Input.KeyModifiers.Shift,   RichEditCommand.SelectRuneUp)
+        addMapping(Input.Key.Down,      Input.KeyModifiers.None,    RichEditCommand.CursorDown)
+        addMapping(Input.Key.Down,      Input.KeyModifiers.Shift,   RichEditCommand.SelectRuneDown)
+        addMapping(Input.Key.Home,      Input.KeyModifiers.None,    RichEditCommand.CursorStartLine)
+        addMapping(Input.Key.Home,      Input.KeyModifiers.Control, RichEditCommand.CursorStartFile)
+        addMapping(Input.Key.End,       Input.KeyModifiers.None,    RichEditCommand.CursorEndLine)
+        addMapping(Input.Key.End,       Input.KeyModifiers.Control, RichEditCommand.CursorEndFile)
+        addMapping(Input.Key.Back,      Input.KeyModifiers.None,    RichEditCommand.DeleteLeft)
+        addMapping(Input.Key.Delete,    Input.KeyModifiers.None,    RichEditCommand.DeleteRight)
     }
 
     // Execute a command
@@ -139,6 +143,18 @@ impl RichEdit
             cmdCursorDown(&cursorPos)
             resetVolatileFind()
             cmdSetSelRect(false)
+
+        case DeleteLeft:
+            if isReadOnly()
+                return
+            cmdEditDeleteLeft()
+            resetVolatileFind()
+
+        case DeleteRight:
+            if isReadOnly()
+                return
+            cmdEditDeleteRight()
+            resetVolatileFind()
         }
     }
 
@@ -338,5 +354,41 @@ impl RichEdit
     {
         cp.lineIndex     = getLastVisibleLine();
         cp.charPosInLine = lines[cp.lineIndex].length()
+    }
+
+    mtd cmdEditDeleteLeft()
+    {
+        pushUndo()
+        if isSelectionEmpty()
+            cmdCursorLeft(&cursorPos)
+        deleteSelectionPrivate()
+        popUndo()
+    }
+
+    mtd cmdEditDeleteRight()
+    {
+        pushUndo()
+        if isSelectionEmpty()
+            cmdCursorRight(&selBeg)
+
+        //str := GetSelectedText()
+        deleteSelectionPrivate()
+
+        // Trim line if we delete an EOL followed by an empty line
+/*        if (str == "\n")
+        {
+            CharPos end = GetBegSelection();
+            CmdCursorWordRight(end, true);
+            CmdCursorRight(end);
+            str = GetTextPrivate(GetBegSelection(), end, false);
+            str.Delete("\t");
+            if (str == "\n")
+            {
+                CmdCursorWordRight(m_SelBeg, true);
+                DeleteSelectionPrivate();
+            }
+        }*/
+
+        popUndo()
     }
 }
