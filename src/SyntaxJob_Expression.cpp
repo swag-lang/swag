@@ -543,6 +543,8 @@ bool SyntaxJob::doOperatorPrecedence(AstNode** result)
             //   *   C
             //  / \
             // A   B
+            auto atom = factor->flags & AST_IN_ATOMIC_EXPR;
+            factor->flags &= ~AST_IN_ATOMIC_EXPR;
 
             auto leftRight = right->childs[0];
             Ast::removeFromParent(right);
@@ -559,6 +561,9 @@ bool SyntaxJob::doOperatorPrecedence(AstNode** result)
             SWAG_CHECK(doOperatorPrecedence(&right));
 
             factor = right; // new root
+
+            if (atom)
+                factor->flags |= AST_IN_ATOMIC_EXPR;
         }
     }
 
