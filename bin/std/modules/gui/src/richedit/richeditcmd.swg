@@ -15,6 +15,11 @@ public enum RichEditCommand
     SelectRuneRight
     SelectRuneUp
     SelectRuneDown
+    SelectStartLine
+    SelectEndLine
+    SelectStartFile
+    SelectEndFile
+    SelectAllFile
     DeleteLeft
     DeleteRight
     Undo
@@ -55,10 +60,15 @@ impl RichEdit
         addMapping(Input.Key.Down,      Input.KeyModifiers.Shift,       RichEditCommand.SelectRuneDown)
         addMapping(Input.Key.Home,      Input.KeyModifiers.None,        RichEditCommand.CursorStartLine)
         addMapping(Input.Key.Home,      Input.KeyModifiers.Control,     RichEditCommand.CursorStartFile)
+        addMapping(Input.Key.Home,      Input.KeyModifiers.Shift,       RichEditCommand.SelectStartLine)
+        addMapping(Input.Key.Home,      Input.KeyModifiers.CtrlShift,   RichEditCommand.SelectStartFile)
         addMapping(Input.Key.End,       Input.KeyModifiers.None,        RichEditCommand.CursorEndLine)
         addMapping(Input.Key.End,       Input.KeyModifiers.Control,     RichEditCommand.CursorEndFile)
+        addMapping(Input.Key.End,       Input.KeyModifiers.Shift,       RichEditCommand.SelectEndLine)
+        addMapping(Input.Key.End,       Input.KeyModifiers.CtrlShift,   RichEditCommand.SelectEndFile)
         addMapping(Input.Key.Back,      Input.KeyModifiers.None,        RichEditCommand.DeleteLeft)
         addMapping(Input.Key.Delete,    Input.KeyModifiers.None,        RichEditCommand.DeleteRight)
+        addMapping(Input.Key.A,         Input.KeyModifiers.Control,     RichEditCommand.SelectAllFile)
         addMapping(Input.Key.Y,         Input.KeyModifiers.Control,     RichEditCommand.Redo)
         addMapping(Input.Key.Z,         Input.KeyModifiers.Control,     RichEditCommand.Undo)
     }
@@ -145,6 +155,32 @@ impl RichEdit
 
         case SelectRuneDown:
             cmdCursorDown(&cursorPos)
+            resetVolatileFind()
+            cmdSetSelRect(false)
+
+        case SelectStartLine:
+            cmdCursorStartLine(&cursorPos)
+            resetVolatileFind()
+            cmdSetSelRect(false)
+
+        case SelectEndLine:
+            cmdCursorEndLine(&cursorPos)
+            resetVolatileFind()
+            cmdSetSelRect(false)
+
+        case SelectStartFile:
+            cmdCursorStartFile(&cursorPos)
+            resetVolatileFind()
+            cmdSetSelRect(false)
+
+        case SelectEndFile:
+            cmdCursorEndFile(&cursorPos)
+            resetVolatileFind()
+            cmdSetSelRect(false)
+
+        case SelectAllFile:
+            cmdCursorStartFile(&selBeg)
+            cmdCursorEndFile(&cursorPos)
             resetVolatileFind()
             cmdSetSelRect(false)
 
