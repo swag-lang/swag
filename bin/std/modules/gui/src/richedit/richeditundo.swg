@@ -86,6 +86,6 @@ impl RichEdit
         toUndo.add(undo)
 
         // Do action
-        //deleteTextPrivate(_posstart, _posend, _selrect);
+        deleteTextPrivate(posStart, posEnd, selRect);
     }
 }

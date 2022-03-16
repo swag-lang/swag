@@ -390,6 +390,27 @@ impl Array
         }
     }
 
+    // Remove 'num' elements starting at 'index'
+    mtd remove(index, num: uint)
+    {
+        if !num return
+        Debug.assert(index + num <= count, "index out of range")
+
+        #if !Reflection.hasPostMove(T) and !Reflection.hasDrop(T)
+        {
+            Memory.copyOver(buffer + index, buffer + index + num, (count - num) * @sizeof(T))
+        }
+        #else
+        {
+            loop i: count - num
+            {
+                buffer[index + i] =,moveraw buffer[index + num + i]
+            }
+        }
+
+        count -= num
+    }
+
     // Remove an element at 'index' by replacing it with the last element.
     // Order is not preserved
     mtd removeAt(index: uint)
@@ -421,13 +442,6 @@ impl Array
         }
     }
 
-    // Returns true if the given 'value' is in the array
-    mtd contains(value: T)->bool
-    {
-        res := Slice.findLinear(@mkslice(buffer, count), value)
-        return res.success
-    }
-
     // Remove the given 'value'
     // If not found, does nothing
     mtd remove(value: T)
@@ -444,6 +458,13 @@ impl Array
         (idx, found) := Slice.findLinear(@mkslice(buffer, count), value)
         if !found return
         removeAtOrdered(idx)
+    }
+
+    // Returns true if the given 'value' is in the array
+    mtd contains(value: T)->bool
+    {
+        res := Slice.findLinear(@mkslice(buffer, count), value)
+        return res.success
     }
 
     // Sort array

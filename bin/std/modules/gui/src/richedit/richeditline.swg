@@ -41,6 +41,15 @@ impl RichEditLine
         }
     }
 
+    mtd removeRunes(srcIndex, count: uint)
+    {
+        dirtyStyle = true
+        dirtyFold = true
+
+        chars.remove(srcIndex, count)
+        styles.remove(srcIndex, count)
+    }
+
     mtd setLength(l: uint)
     {
         chars.resize(l)

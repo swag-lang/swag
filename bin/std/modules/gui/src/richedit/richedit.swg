@@ -33,8 +33,10 @@ struct RichEdit
     freeLines:      ArrayPtr'RichEditLine
     scrollWnd:      *ScrollWnd
     edView:         *RichEditView
-    hasSelRect:     bool
-    modified:       bool
+
+    hasSelRect:         bool
+    modified:           bool
+    recomputeScroll:    bool
 
     undoMgr:            ArrayPtr'RichEditUndo
     toUndo:             ArrayPtr'RichEditUndo
@@ -102,6 +104,13 @@ private impl RichEdit
         p := Memory.new'RichEditLine()
         lines.insertAt(index, p)
         return p
+    }
+
+    mtd deleteLine(lineIndex: uint)
+    {
+        freeLines.add(lines[lineIndex])
+        lines.removeAt(lineIndex)
+        recomputeScroll = true
     }
 
     mtd getFirstVisibleLine()->uint
@@ -284,6 +293,32 @@ private impl RichEdit
 
         if !selRect
         {
+            ps := posStart
+            pe := posEnd
+
+            // Remove inside lines
+            while pe.lineIndex > ps.lineIndex + 1
+            {
+                deleteLine(ps.lineIndex + 1)
+                pe.lineIndex -= 1
+            }
+
+            lineSrc := lines[ps.lineIndex]
+            lineEnd := lines[pe.lineIndex]
+
+            if ps.lineIndex == pe.lineIndex
+            {
+                lineSrc.removeRunes(ps.charPosInLine, pe.charPosInLine - ps.charPosInLine)
+            }
+            else
+            {
+                lineSrc.removeRunes(ps.charPosInLine, lineSrc.length() - ps.charPosInLine)
+                lineEnd.removeRunes(0, pe.charPosInLine)
+                if lineEnd.length()
+                    lineSrc.insertRunes(ps.charPosInLine, lineEnd, 0, lineEnd.length())
+                //MergeMarkers(ps.lineIndex, pe.lineIndex);
+                deleteLine(pe.lineIndex)
+            }
         }
         else
         {
