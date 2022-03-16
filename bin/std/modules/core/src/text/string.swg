@@ -295,7 +295,7 @@ impl String
         loop i: eat
             buffer[length + i] = tmp[i]
         length += eat
-        buffer[length + 1] = 0
+        buffer[length] = 0
     }
 
     // Append a string to the String

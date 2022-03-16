@@ -88,7 +88,7 @@ impl IWnd for RichEditView
         {
             // Is the line visible ?
             bvis := true
-            if y + size.y < scrollPos.y or y > pos.bottom()
+            if y + size.y < scrollPos.y or y - scrollPos.y > pos.bottom()
                 bvis = false
 
             // Store the first visible line index
@@ -119,6 +119,7 @@ impl IWnd for RichEditView
         posCaret := ed.getCaretPos()
         if visibleCaret
         {
+            posCaret.x -= scrollPos.x
             posCaret.y -= scrollPos.y
             painter.fillRect(posCaret, getThemeColors().richEdit_Caret)
         }
@@ -129,6 +130,13 @@ impl IWnd for RichEditView
             maxx = ed.scrollWnd.scrollSize.x
         ed.recomputeScroll = false
         ed.scrollWnd.setScrollSize(maxx, y)
+
+        // Force visible caret
+        if ed.forceCaretVisible
+        {
+            ed.forceCaretVisible = false
+            ed.ensureCaretIsVisibleInternal(ed.forceCaretVisibleCenter)
+        }
     }
 }
 
@@ -188,7 +196,7 @@ impl RichEditView
 
         var oldStyle, newStyle: RichEditCharStyle
         oldStyle = ed.styles[0]
-        x := ed.getMarginLeft()
+        x := ed.getMarginLeft() - scrollPos.x
 
         sel0 := ed.getBegSelection()
         sel1 := ed.getEndSelection()

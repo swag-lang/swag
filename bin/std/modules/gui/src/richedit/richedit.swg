@@ -34,11 +34,14 @@ struct RichEdit
     scrollWnd:      *ScrollWnd
     edView:         *RichEditView
 
-    hasSelRect:         bool
-    modified:           bool
-    recomputeScroll:    bool
-    processedAsChar:    bool
-    dirtyFirstLineView: bool
+    hasSelRect:                 bool
+    modified:                   bool
+    recomputeScroll:            bool
+    processedAsChar:            bool
+    dirtyFirstLineView:         bool
+    forceCaretVisible:          bool
+    forceCaretVisibleCenter:    bool
+
 
     undoMgr:            ArrayPtr'RichEditUndo
     toUndo:             ArrayPtr'RichEditUndo
@@ -59,6 +62,11 @@ private impl RichEdit
     mtd getMarginLeft()->f32
     {
         return padding.x
+    }
+
+    mtd getMarginRight()->f32
+    {
+        return padding.z
     }
 
     mtd setDefaultStyles()

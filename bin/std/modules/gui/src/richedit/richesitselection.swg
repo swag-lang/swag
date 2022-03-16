@@ -44,4 +44,30 @@ impl RichEdit
         selBeg = cp
         return true
     }
+
+    mtd checkSelection()
+    {
+        if selBeg.lineIndex >= lines.count
+            selBeg.lineIndex = lines.count - 1
+        if cursorPos.lineIndex >= lines.count
+            cursorPos.lineIndex = lines.count - 1
+
+        if firstVisibleLineView >= lines.count or lastVisibleLineView >= lines.count
+        {
+            firstVisibleLineView = 0
+            lastVisibleLineView = 0
+            dirtyFirstLineView = true
+            invalidate()
+        }
+
+        back := lines.back()
+        if selBeg.lineIndex == lines.count - 1 and selBeg.charPosInLine > back.length()
+            selBeg.charPosInLine = back.length()
+
+        if cursorPos.lineIndex == lines.count - 1 and cursorPos.charPosInLine > back.length()
+            cursorPos.charPosInLine = back.length()
+
+        // In case of a rectangular selection, recompute selection
+        //ComputeRectangularSelection(GetBegSelection(), GetEndSelection());
+    }
 }

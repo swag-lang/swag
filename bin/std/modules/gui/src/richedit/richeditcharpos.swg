@@ -65,7 +65,54 @@ impl RichEdit
         return result
     }
 
-    mtd ensureCaretIsVisible()
+    mtd ensureCaretIsVisibleInternal(center: bool)
     {
+        checkSelection()
+        ensureCharacterIsVisible(cursorPos, center)
+        invalidate()
+    }
+
+    mtd ensureCaretIsVisible(center = false)
+    {
+        forceCaretVisible       = true;
+        forceCaretVisibleCenter = center
+        ensureCaretIsVisibleInternal(center)
+    }
+
+    mtd ensureCharacterIsVisible(cp: RichEditCharPos, center: bool)
+    {
+        size   := getXExtent()
+        decalx := size.x * 10
+
+        clientRect := edView.getClientRect()
+
+        pos := getCharacterPos(cp)
+        sx  := edView.scrollPos.x
+        sy  := edView.scrollPos.y
+
+        // Need to change horz scroll
+        if pos.x < sx + getMarginLeft()
+            sx = pos.x - decalx
+        elif pos.x + size.x > sx + clientRect.width - getMarginRight()
+            sx = pos.x + decalx - clientRect.width - getMarginRight()
+
+        // Need to change vertical scroll
+        if pos.y - size.y < sy
+        {
+            sy = pos.y - size.y
+            if center
+                sy -= clientRect.height / 2
+        }
+        elif pos.y > sy + clientRect.height
+        {
+            sy = pos.y - clientRect.height
+            if center
+                sy += clientRect.height / 2
+        }
+
+        if sy != edView.scrollPos.y
+            dirtyFirstLineView = true
+
+        scrollWnd.setScrollPos(sx, sy)
     }
 }
