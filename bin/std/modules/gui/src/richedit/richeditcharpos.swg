@@ -115,4 +115,80 @@ impl RichEdit
 
         scrollWnd.setScrollPos(sx, sy)
     }
+
+    mtd getCharPosFromPoint(pt: Math.Point)->RichEditCharPos
+    {
+        var cp: retval
+
+        found := false
+
+        // Before the first visible line
+        if pt.y < lines[0].drawingRect.y
+        {
+            cp.lineIndex     = 0
+            cp.charPosInLine = 0
+            found            = true
+        }
+        else
+        {
+            i  := 0'uint
+            pi := Swag.UInt.Max
+            while i != pi and i != lines.count
+            {
+                line  := lines[i]
+                count := line.length()
+                rect  := line.drawingRect
+
+                if count
+                {
+                    loop j: count
+                    {
+                        size := getSizeChar(line, j, rect.x)
+                        rect.width = size.x
+                        if rect.contains(pt)
+                        {
+                            cp.lineIndex     = i
+                            cp.charPosInLine = j
+                            if pt.x >= rect.horzCenter()
+                                cp.charPosInLine += 1
+                            found = true
+                            break
+                        }
+
+                        rect.x = rect.right()
+                    }
+                }
+
+                if found
+                    break
+
+                // At the end of line
+                if (pt.y >= rect.y and pt.y < rect.bottom() and pt.x >= rect.right())
+                {
+                    cp.lineIndex     = i
+                    cp.charPosInLine = count
+                    found            = true
+                    break
+                }
+
+                pi = i
+                i += 1
+            }
+        }
+
+        // At the end of file
+        if !found
+        {
+            cp.lineIndex     = lines.count - 1
+            cp.charPosInLine = lines[cp.lineIndex].length()
+        }
+
+        // Check visibility
+        if !lines[cp.lineIndex].isVisible()
+            cmdCursorDown(&cp)
+        if !lines[cp.lineIndex].isVisible()
+            cmdCursorUp(&cp)
+
+        return cp
+    }
 }

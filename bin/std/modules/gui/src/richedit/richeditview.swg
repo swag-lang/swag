@@ -5,13 +5,35 @@ struct RichEditView
 {
     using wnd:  Wnd
 
-    ed:             *RichEdit
-    visibleCaret:   bool
-    timerCaret:     *Timer
+    ed:                 *RichEdit
+    visibleCaret:       bool
+    selMode:            bool
+    timerCaret:         *Timer
+    firstLineSelMode:   uint
 }
 
 impl IWnd for RichEditView
 {
+    mtd onMouseEvent(evt: *MouseEvent)
+    {
+        switch evt.kind
+        {
+        case .MousePressed:
+            if evt.button == .Left
+            {
+                pt := surfaceToLocal(evt.surfacePos)
+                pt += scrollPos
+                cp := ed.getCharPosFromPoint(pt)
+                firstLineSelMode = cp.lineIndex
+                ed.cmdSetCursorPos(cp)
+                ed.selBeg  = cp
+                selMode = true
+                ed.cmdSetSelRect(false)
+                ed.ensureCaretIsVisible()
+            }
+        }
+    }
+
     mtd onKeyEvent(evt: *KeyEvent)
     {
         if evt.kind == .KeyPressed
