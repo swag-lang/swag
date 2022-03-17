@@ -139,6 +139,15 @@ impl RichEdit
                 count := line.length()
                 rect  := line.drawingRect
 
+                // Before the first character
+                if pt.y >= rect.y and pt.y < rect.bottom() and (pt.x < rect.x or !count)
+                {
+                    found = true
+                    cp.lineIndex     = i
+                    cp.charPosInLine = 0
+                    break
+                }
+
                 if count
                 {
                     loop j: count

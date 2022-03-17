@@ -16,13 +16,15 @@ impl IWnd for RichEditView
 {
     mtd onMouseEvent(evt: *MouseEvent)
     {
+        evt.accepted = false
         switch evt.kind
         {
         case .MousePressed:
             if evt.button == .Left
             {
-                pt := surfaceToLocal(evt.surfacePos)
-                pt += scrollPos
+                evt.accepted = true
+                ed.resetVolatileFind()
+                pt := surfaceToLocal(evt.surfacePos) + scrollPos
                 cp := ed.getCharPosFromPoint(pt)
                 firstLineSelMode = cp.lineIndex
                 ed.cmdSetCursorPos(cp)
@@ -30,6 +32,35 @@ impl IWnd for RichEditView
                 selMode = true
                 ed.cmdSetSelRect(false)
                 ed.ensureCaretIsVisible()
+                captureMouse()
+            }
+
+        case .MouseReleased:
+            if selMode
+            {
+                evt.accepted = true
+                selMode = false
+                releaseMouse()
+            }
+
+        case .MouseMove:
+            if selMode
+            {
+                evt.accepted = true
+                ed.resetVolatileFind()
+                pt := surfaceToLocal(evt.surfacePos) + scrollPos
+                cp := ed.getCharPosFromPoint(pt)
+                if ed.cursorPos.lineIndex != cp.lineIndex or ed.cursorPos.charPosInLine != cp.charPosInLine
+                {
+                    ed.cmdSetCursorPos(cp)
+                    ed.ensureCaretIsVisible()
+                    ed.cmdSetSelRect(false)
+                    /*if (sKeyboardState::IsKeyPressed(sKey::CONTROL) && sKeyboardState::IsKeyPressed(sKey::ALT))
+                    {
+                        CmdSelSetRect(true);
+                        CheckSelection();
+                    }*/
+                }
             }
         }
     }
