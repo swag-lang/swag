@@ -19,6 +19,7 @@ struct ThemeColors
     const Gray5         = 0xFF404040
     const Gray6         = 0xFF353535
     const Gray7         = 0xFF303030
+    const Gray8         = 0xFF202020
 
     richColor1: Color = Argb.Red
     richColor2: Color = Argb.Green
@@ -260,6 +261,7 @@ struct ThemeColors
     colorPicker_BackAlpha:          Color = Gray4
     colorPicker_Mark:               Color = Gray1
 
+    richEdit_Bk:                    Color = Gray8
     richEdit_Text:                  Color = White
     richEdit_SelText:               Color = White
     richEdit_SelTextNoFocus:        Color = White

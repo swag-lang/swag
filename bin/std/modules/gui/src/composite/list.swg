@@ -685,8 +685,8 @@ impl List
             scrollWnd.focusStrategy = .None
             scrollWnd.backgroundStyle = .Transparent
             scrollWnd.setAllPaddings(getThemeMetrics().list_Padding)
-            scrollWnd.sigScrollPosChanged = @|header|(scrollWnd, sp) {
-                header.scrollPos.x = sp.x
+            scrollWnd.sigScrollPosChanged += @|header|(scrollWnd, op, np) {
+                header.scrollPos.x = np.x
                 header.invalidate()
             }
 

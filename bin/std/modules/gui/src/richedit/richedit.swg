@@ -415,6 +415,8 @@ impl RichEdit
     func create(parent: *Wnd, position: Math.Rectangle, id: string = null)->*RichEdit
     {
         ed := Wnd.create'RichEdit(parent, "", position, id)
+        ed.frameWnd.style.addStyleSheetColors("frameWnd_FocusBk $richEdit_Bk")
+        ed.frameWnd.style.addStyleSheetColors("frameWnd_Bk $richEdit_Bk")
 
         with ed
         {
@@ -423,6 +425,11 @@ impl RichEdit
             scrollWnd.focusStrategy = .None
             scrollWnd.backgroundStyle = .Transparent
             scrollWnd.setAllPaddings(getThemeMetrics().richEdit_Padding)
+            scrollWnd.sigScrollPosChanged += @|ed|(scrollWnd, op, np) {
+                if op.y != np.y
+                    ed.dirtyFirstLineView = true
+            }
+            scrollWnd.style.addStyleSheetColors("scrollBar_Bk $richEdit_Bk")
 
             edView = scrollWnd.createView'RichEditView()
             edView.backgroundStyle = .Transparent

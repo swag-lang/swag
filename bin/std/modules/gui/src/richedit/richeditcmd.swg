@@ -7,18 +7,41 @@ public enum RichEditCommand
     CursorRight
     CursorUp
     CursorDown
-    CursorStartFile
-    CursorEndFile
     CursorStartLine
     CursorEndLine
+    CursorStartFile
+    CursorEndFile
     CursorWordLeft
     CursorWordRight
     CursorPageUp
     CursorPageDown
+    //CMD_CURSOR_MATCH_PAIR
+    ScrollLineUp
+    ScrollLineDown
+    DeleteLeft
+    DeleteRight
+    //CMD_EDIT_CUT_LINE
+    //CMD_EDIT_DELETE_LINE
+    //CMD_EDIT_TABULATION
+    //CMD_EDIT_BACK_TABULATION
+    //CMD_EDIT_DELETE_WORD_LEFT,
+    //CMD_EDIT_DELETE_WORD_RIGHT
+    //CMD_EDIT_DELETE_LINE_LEFT
+    //CMD_EDIT_DELETE_LINE_RIGHT
+    //CMD_EDIT_OVERWRITE
+    //CMD_CLIPBOARD_COPY
+    //CMD_CLIPBOARD_PASTE
+    //CMD_CLIPBOARD_CUT
+    Undo
+    Redo
     SelectRuneLeft
     SelectRuneRight
     SelectRuneUp
     SelectRuneDown
+    //CMD_SEL_CHAR_LEFT_RECT
+    //CMD_SEL_CHAR_RIGHT_RECT
+    //CMD_SEL_CHAR_UP_RECT
+    //CMD_SEL_CHAR_DOWN_RECT
     SelectStartLine
     SelectEndLine
     SelectStartFile
@@ -28,10 +51,15 @@ public enum RichEditCommand
     SelectWordRight
     SelectPageUp
     SelectPageDown
-    DeleteLeft
-    DeleteRight
-    Undo
-    Redo
+    //CMD_SEL_HIDE_LINE
+    //CMD_MARKER_BOOKMARK_ADD
+    //CMD_MARKER_BOOKMARK_PREV
+    //CMD_MARKER_BOOKMARK_NEXT
+    //CMD_MARKER_BOOKMARK_FAST
+    //CMD_MAKE_UPPER
+    //CMD_MAKE_LOWER
+    //CMD_COMMENT_CPP
+    //CMD_UNCOMMENT_CPP
 }
 
 impl RichEdit
@@ -68,13 +96,15 @@ impl RichEdit
         addMapping(Input.Key.Right,     Input.KeyModifiers.CtrlShift,   RichEditCommand.SelectWordRight)
         addMapping(Input.Key.Up,        Input.KeyModifiers.None,        RichEditCommand.CursorUp)
         addMapping(Input.Key.Up,        Input.KeyModifiers.Shift,       RichEditCommand.SelectRuneUp)
+        addMapping(Input.Key.Up,        Input.KeyModifiers.Control,     RichEditCommand.ScrollLineUp)
         addMapping(Input.Key.PageUp,    Input.KeyModifiers.None,        RichEditCommand.CursorPageUp)
         addMapping(Input.Key.PageUp,    Input.KeyModifiers.Shift,       RichEditCommand.SelectPageUp)
         addMapping(Input.Key.PageDown,  Input.KeyModifiers.None,        RichEditCommand.CursorPageDown)
         addMapping(Input.Key.PageDown,  Input.KeyModifiers.Shift,       RichEditCommand.SelectPageDown)
         addMapping(Input.Key.Down,      Input.KeyModifiers.None,        RichEditCommand.CursorDown)
         addMapping(Input.Key.Down,      Input.KeyModifiers.Shift,       RichEditCommand.SelectRuneDown)
-        addMapping(Input.Key.Home,      Input.KeyModifiers.None,        RichEditCommand.CursorStartLine)
+        addMapping(Input.Key.Down,      Input.KeyModifiers.Shift,       RichEditCommand.SelectRuneDown)
+        addMapping(Input.Key.Down,      Input.KeyModifiers.Control,     RichEditCommand.ScrollLineDown)
         addMapping(Input.Key.Home,      Input.KeyModifiers.Control,     RichEditCommand.CursorStartFile)
         addMapping(Input.Key.Home,      Input.KeyModifiers.Shift,       RichEditCommand.SelectStartLine)
         addMapping(Input.Key.Home,      Input.KeyModifiers.CtrlShift,   RichEditCommand.SelectStartFile)
@@ -173,6 +203,12 @@ impl RichEdit
             cmdCursorPageDown(&cursorPos)
             cmdClearSelection()
             resetVolatileFind()
+
+        case ScrollLineUp:
+            cmdScrollLineUp()
+
+        case ScrollLineDown:
+            cmdScrollLineDown()
 
         case SelectRuneLeft:
             cmdCursorLeft(&cursorPos)
@@ -724,6 +760,49 @@ impl RichEdit
         else
             setModified(true)
         computeScrollY()
+    }
+
+    mtd cmdScrollLineUp()
+    {
+        pt := scrollWnd.getScrollPos()
+        size := getXExtent()
+
+        sy := (pt.y / size.y) * size.y
+        sy -= size.y
+
+        scrollWnd.setScrollPos(pt.x, sy)
+        sy = scrollWnd.getScrollPos().y
+
+        clientRect := edView.getClientRect()
+        pos := getCaretPos()
+        while pos.bottom() > sy + clientRect.height
+        {
+            if !cmdCursorUp(&cursorPos)
+                break
+            cmdClearSelection()
+            pos = getCaretPos()
+        }
+    }
+
+    mtd cmdScrollLineDown()
+    {
+        pt := scrollWnd.getScrollPos()
+        size := getXExtent()
+
+        sy := (pt.y / size.y) * size.y
+        sy += size.y
+
+        scrollWnd.setScrollPos(pt.x, sy)
+        sy = scrollWnd.getScrollPos().y
+
+        pos := getCaretPos()
+        while pos.y < sy
+        {
+            if !cmdCursorDown(&cursorPos)
+                break
+            cmdClearSelection()
+            pos = getCaretPos()
+        }
     }
 }
 

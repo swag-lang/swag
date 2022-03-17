@@ -17,7 +17,7 @@ public struct ScrollWnd
     scrollSize:     Math.Point
     scrollWndFlags  = ScrollWndFlags.None
 
-    sigScrollPosChanged:    closure(*Self, Math.Point)
+    sigScrollPosChanged:    SigArray'closure(*Self, Math.Point, Math.Point)
 
     oldMouseCapture:    *Wnd
 
@@ -358,9 +358,9 @@ public impl ScrollWnd
         if newSP == view.scrollPos
             return
 
+        oldPos := view.scrollPos
         view.scrollPos = newSP
-        if sigScrollPosChanged
-            sigScrollPosChanged(self, newSP)
+        sigScrollPosChanged.call(self, oldPos, newSP)
         computeLayout()
     }
 
