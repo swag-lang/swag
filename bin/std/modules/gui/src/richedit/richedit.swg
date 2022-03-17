@@ -21,6 +21,7 @@ struct RichEdit
     richEdFlags     = RichEditFlags.None
     lineSpacing:    f32
     overwriteMode:  bool
+    tabSize:        s32 = 4
     sigIsReadOnly:  SigArray'closure(*bool)
     sigChanged:     SigArray'closure(*Self)
     sigModified:    SigArray'closure(*Self)
@@ -406,6 +407,60 @@ private impl RichEdit
         }
 
         setModified(true)
+    }
+
+    mtd insertBegLine(txt: string, lastLine: bool)
+    {
+        first := true
+
+        beg := getBegSelection()
+        end := getEndSelection()
+
+        savepos0 := selBeg
+        savepos1 := cursorPos
+        beg.charPosInLine = 0
+
+        multiline := end.lineIndex > beg.lineIndex
+
+        while beg.lineIndex <= end.lineIndex
+        {
+            if beg.lineIndex == end.lineIndex and end.charPosInLine == 0 and multiline
+                break
+
+            pushUndo()
+            if !first
+                serialUndo -= 1
+
+            cmdSetCursorPos(beg)
+            selBeg = beg
+            undoInsertText(txt, false)
+
+            popUndo()
+
+            if beg.lineIndex == savepos0.lineIndex and savepos0.charPosInLine
+                savepos0.charPosInLine += 1
+            if beg.lineIndex == savepos1.lineIndex and savepos1.charPosInLine
+                savepos1.charPosInLine += 1
+
+            beg.lineIndex += 1
+            first = false
+        }
+
+        selBeg = savepos0
+        cmdSetCursorPos(savepos1)
+
+        // A dummy undo just to restore the selection
+        if !first
+        {
+            pushUndo()
+            serialUndo -= 1
+            undoRestoreSelection()
+            popUndo()
+        }
+    }
+
+    mtd deleteBegLine(txt: string, lastLine: bool)
+    {
     }
 }
 

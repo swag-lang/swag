@@ -73,6 +73,21 @@ impl RichEdit
         toUndo.clear()
     }
 
+    mtd undoInsertText(text: string, selRect: bool)
+    {
+        undo := Memory.new'RichEditUndo()
+        undo.type       = .Insert
+        undo.text       = Unicode.fromUtf8(text)
+        undo.selBeg     = selBeg
+        undo.cursorPos  = cursorPos
+        undo.hasSelRect = selRect
+        undo.serial     = 0
+        resetUndo()
+        toUndo.add(undo)
+        insertTextPrivate(&cursorPos, text, selRect)
+        cmdClearSelection()
+    }
+
     mtd undoDeleteText(posStart, posEnd: RichEditCharPos, selRect: bool)
     {
         undo := Memory.new'RichEditUndo()
@@ -84,8 +99,6 @@ impl RichEdit
         undo.serial     = 0
         resetUndo()
         toUndo.add(undo)
-
-        // Do action
         deleteTextPrivate(posStart, posEnd, selRect);
     }
 
@@ -101,5 +114,16 @@ impl RichEdit
         }
 
         return count
+    }
+
+    mtd undoRestoreSelection()
+    {
+        undo := Memory.new'RichEditUndo()
+        undo.type      = .Selection
+        undo.selBeg    = selBeg
+        undo.cursorPos = cursorPos
+        undo.serial    = 0
+        resetUndo()
+        toUndo.add(undo)
     }
 }

@@ -15,7 +15,7 @@ impl RichEdit
 
         if line.chars[i] == "\t"'rune
         {
-            Debug.assert(false) // todo
+            size.x = getTabOffset(cast(s32) x)
         }
         else
         {
@@ -44,6 +44,17 @@ impl RichEdit
         }
 
         return result
+    }
+
+    mtd getTabOffset(x: s32)->s32
+    {
+        of   := x - getMarginLeft()
+        font := getTheme().res.fontDefault.getFont(styles[0].fontMode)
+        size := Painter.measureRune(" "'rune, font)
+        tab  := (of / (tabSize * size.x)) * (tabSize * size.x)
+        tab  = of - tab
+        tab  = (tabSize * size.x) - tab
+        return cast(s32) tab
     }
 
     mtd getXExtent()->Math.Point

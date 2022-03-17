@@ -253,6 +253,7 @@ impl RichEditView
 
         sel0 := ed.getBegSelection()
         sel1 := ed.getEndSelection()
+        size := ed.getXExtent()
 
         i := 0
         while i < count
@@ -294,7 +295,20 @@ impl RichEditView
                 str.clear()
             }
 
-            str += dref pChar
+            cr := dref pChar
+            if cr == "\t"'rune
+            {
+                x1 := x
+                x += ed.getTabOffset(cast(s32) x)
+
+                // Background color for tabulations
+                if visible and oldStyle.colBk.a
+                    bc.painter.fillRect(@{x1, y, x - x1, size.y}, oldStyle.colBk)
+            }
+            else
+            {
+                str += cr
+            }
         }
 
         // Remaining string

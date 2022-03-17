@@ -22,8 +22,8 @@ public enum RichEditCommand
     DeleteRight
     //CMD_EDIT_CUT_LINE
     //CMD_EDIT_DELETE_LINE
-    //CMD_EDIT_TABULATION
-    //CMD_EDIT_BACK_TABULATION
+    EditTabulation
+    EditBackTabulation
     //CMD_EDIT_DELETE_WORD_LEFT,
     //CMD_EDIT_DELETE_WORD_RIGHT
     //CMD_EDIT_DELETE_LINE_LEFT
@@ -105,6 +105,7 @@ impl RichEdit
         addMapping(Input.Key.Down,      Input.KeyModifiers.Shift,       RichEditCommand.SelectRuneDown)
         addMapping(Input.Key.Down,      Input.KeyModifiers.Shift,       RichEditCommand.SelectRuneDown)
         addMapping(Input.Key.Down,      Input.KeyModifiers.Control,     RichEditCommand.ScrollLineDown)
+        addMapping(Input.Key.Home,      Input.KeyModifiers.None,        RichEditCommand.CursorStartLine)
         addMapping(Input.Key.Home,      Input.KeyModifiers.Control,     RichEditCommand.CursorStartFile)
         addMapping(Input.Key.Home,      Input.KeyModifiers.Shift,       RichEditCommand.SelectStartLine)
         addMapping(Input.Key.Home,      Input.KeyModifiers.CtrlShift,   RichEditCommand.SelectStartFile)
@@ -114,6 +115,8 @@ impl RichEdit
         addMapping(Input.Key.End,       Input.KeyModifiers.CtrlShift,   RichEditCommand.SelectEndFile)
         addMapping(Input.Key.Back,      Input.KeyModifiers.None,        RichEditCommand.DeleteLeft)
         addMapping(Input.Key.Delete,    Input.KeyModifiers.None,        RichEditCommand.DeleteRight)
+        addMapping(Input.Key.Tab,       Input.KeyModifiers.None,        RichEditCommand.EditTabulation)
+        addMapping(Input.Key.Tab,       Input.KeyModifiers.Shift,       RichEditCommand.EditBackTabulation)
         addMapping(Input.Key.A,         Input.KeyModifiers.Control,     RichEditCommand.SelectAllFile)
         addMapping(Input.Key.Y,         Input.KeyModifiers.Control,     RichEditCommand.Redo)
         addMapping(Input.Key.Z,         Input.KeyModifiers.Control,     RichEditCommand.Undo)
@@ -286,6 +289,18 @@ impl RichEdit
             if isReadOnly()
                 return
             cmdEditDeleteRight()
+            resetVolatileFind()
+
+        case EditTabulation:
+            if isReadOnly()
+                return
+            cmdEditTabulation()
+            resetVolatileFind()
+
+        case EditBackTabulation:
+            if isReadOnly()
+                return
+            cmdEditBackTabulation()
             resetVolatileFind()
 
         case Undo:
@@ -803,6 +818,24 @@ impl RichEdit
             cmdClearSelection()
             pos = getCaretPos()
         }
+    }
+
+    mtd cmdEditTabulation()
+    {
+        if getBegSelection().lineIndex == getEndSelection().lineIndex
+        {
+            pushUndo()
+            deleteSelectionPrivate()
+            undoInsertText("\t", false)
+            popUndo()
+        }
+        else
+            insertBegLine("\t", false)
+    }
+
+    mtd cmdEditBackTabulation()
+    {
+        deleteBegLine("\t", false)
     }
 }
 
