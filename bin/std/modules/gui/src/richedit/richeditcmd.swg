@@ -13,6 +13,8 @@ public enum RichEditCommand
     CursorEndLine
     CursorWordLeft
     CursorWordRight
+    CursorPageUp
+    CursorPageDown
     SelectRuneLeft
     SelectRuneRight
     SelectRuneUp
@@ -24,6 +26,8 @@ public enum RichEditCommand
     SelectAllFile
     SelectWordLeft
     SelectWordRight
+    SelectPageUp
+    SelectPageDown
     DeleteLeft
     DeleteRight
     Undo
@@ -64,6 +68,10 @@ impl RichEdit
         addMapping(Input.Key.Right,     Input.KeyModifiers.CtrlShift,   RichEditCommand.SelectWordRight)
         addMapping(Input.Key.Up,        Input.KeyModifiers.None,        RichEditCommand.CursorUp)
         addMapping(Input.Key.Up,        Input.KeyModifiers.Shift,       RichEditCommand.SelectRuneUp)
+        addMapping(Input.Key.PageUp,    Input.KeyModifiers.None,        RichEditCommand.CursorPageUp)
+        addMapping(Input.Key.PageUp,    Input.KeyModifiers.Shift,       RichEditCommand.SelectPageUp)
+        addMapping(Input.Key.PageDown,  Input.KeyModifiers.None,        RichEditCommand.CursorPageDown)
+        addMapping(Input.Key.PageDown,  Input.KeyModifiers.Shift,       RichEditCommand.SelectPageDown)
         addMapping(Input.Key.Down,      Input.KeyModifiers.None,        RichEditCommand.CursorDown)
         addMapping(Input.Key.Down,      Input.KeyModifiers.Shift,       RichEditCommand.SelectRuneDown)
         addMapping(Input.Key.Home,      Input.KeyModifiers.None,        RichEditCommand.CursorStartLine)
@@ -156,6 +164,16 @@ impl RichEdit
             cmdClearSelection()
             resetVolatileFind()
 
+        case CursorPageUp:
+            cmdCursorPageUp(&cursorPos)
+            cmdClearSelection()
+            resetVolatileFind()
+
+        case CursorPageDown:
+            cmdCursorPageDown(&cursorPos)
+            cmdClearSelection()
+            resetVolatileFind()
+
         case SelectRuneLeft:
             cmdCursorLeft(&cursorPos)
             resetVolatileFind()
@@ -209,6 +227,16 @@ impl RichEdit
 
         case SelectWordRight:
             cmdCursorWordRight(&cursorPos, false)
+            resetVolatileFind()
+            cmdSetSelRect(false)
+
+        case SelectPageUp:
+            cmdCursorPageUp(&cursorPos)
+            resetVolatileFind()
+            cmdSetSelRect(false)
+
+        case SelectPageDown:
+            cmdCursorPageDown(&cursorPos)
             resetVolatileFind()
             cmdSetSelRect(false)
 
@@ -432,8 +460,34 @@ impl RichEdit
 
     mtd cmdCursorEndFile(cp: *RichEditCharPos)
     {
-        cp.lineIndex     = getLastVisibleLine();
+        cp.lineIndex     = getLastVisibleLine()
         cp.charPosInLine = lines[cp.lineIndex].length()
+    }
+
+    mtd cmdCursorPageUp(cp: *RichEditCharPos)
+    {
+        client := edView.getClientRect()
+        count := cast(int) (client.height / getXExtent().y)
+        while count
+        {
+            if cp.lineIndex == 0
+                break
+            cmdCursorUp(cp)
+            count -= 1
+        }
+    }
+
+    mtd cmdCursorPageDown(cp: *RichEditCharPos)
+    {
+        client := edView.getClientRect()
+        count := cast(int) (client.height / getXExtent().y)
+        while count
+        {
+            if cp.lineIndex == lines.count - 1
+                break
+            cmdCursorDown(cp)
+            count -= 1
+        }
     }
 
     mtd cmdCursorWordLeft(cp: *RichEditCharPos)
@@ -602,7 +656,7 @@ impl RichEdit
                 selBeg = undo.selBeg
                 cmdSetCursorPos(undo.cursorPos)
                 cmdSetSelRect(undo.hasSelRect)
-                //ComputeRectangularSelection(m_CursorPos, pundo->m_BegSelectionAfter);
+                //ComputeRectangularSelection(m_CursorPos, pundo->m_BegSelectionAfter)
                 deleteTextPrivate(cursorPos, undo.begSelectionAfter, undo.hasSelRect)
             }
 
@@ -642,7 +696,7 @@ impl RichEdit
                 selBeg = undo.selBeg
                 cmdSetCursorPos(undo.cursorPos)
                 cmdSetSelRect(undo.hasSelRect)
-                //ComputeRectangularSelection(GetBegSelection(), GetEndSelection());
+                //ComputeRectangularSelection(GetBegSelection(), GetEndSelection())
                 deleteTextPrivate(getBegSelection(), getEndSelection(), undo.hasSelRect)
             }
             elif undo.type == .Insert
@@ -678,7 +732,7 @@ func zapWordChar(c: rune)->bool
     if Unicode.isLetterOrDigit(c)
         return false
     if Unicode.isSpace(c)
-        return false;
+        return false
     if Unicode.isWord(c)
         return false
     if c != "("'rune and c != ")"'rune and c != "["'rune and c != "]"'rune and c != "{"'rune and c != "}"'rune
