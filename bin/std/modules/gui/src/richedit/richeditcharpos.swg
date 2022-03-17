@@ -76,7 +76,7 @@ impl RichEdit
         return result
     }
 
-    mtd ensureCaretIsVisibleInternal(center: bool)
+    private mtd ensureCaretIsVisibleInternal(center: bool)
     {
         checkSelection()
         ensureCharacterIsVisible(cursorPos, center)

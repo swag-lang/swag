@@ -1,7 +1,7 @@
-#global public
 using Core, Pixel
 
-struct RichEditView
+#[Swag.Opaque]
+public struct RichEditView
 {
     using wnd:  Wnd
 

@@ -102,6 +102,17 @@ impl RichEdit
         deleteTextPrivate(posStart, posEnd, selRect);
     }
 
+    mtd undoRestoreSelection()
+    {
+        undo := Memory.new'RichEditUndo()
+        undo.type      = .Selection
+        undo.selBeg    = selBeg
+        undo.cursorPos = cursorPos
+        undo.serial    = 0
+        resetUndo()
+        toUndo.add(undo)
+    }
+
     mtd getLastModificationUndo()->uint
     {
         count := currentUndo
@@ -114,16 +125,5 @@ impl RichEdit
         }
 
         return count
-    }
-
-    mtd undoRestoreSelection()
-    {
-        undo := Memory.new'RichEditUndo()
-        undo.type      = .Selection
-        undo.selBeg    = selBeg
-        undo.cursorPos = cursorPos
-        undo.serial    = 0
-        resetUndo()
-        toUndo.add(undo)
     }
 }

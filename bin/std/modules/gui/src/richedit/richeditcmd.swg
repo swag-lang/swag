@@ -1,3 +1,4 @@
+#global public
 using Core
 
 public enum RichEditCommand
@@ -64,6 +65,11 @@ public enum RichEditCommand
 
 impl RichEdit
 {
+    mtd clearMapping()
+    {
+        mapping.clear()
+    }
+
     mtd addMapping(key: Input.Key, mdf: Input.KeyModifiers, cmd: RichEditCommand)
     {
         var m: RichEditMapping
@@ -123,7 +129,7 @@ impl RichEdit
     }
 
     // Execute a command
-    public mtd cmdExecute(cmd: RichEditCommand)
+    mtd cmdExecute(cmd: RichEditCommand)
     {
         switch cmd
         {

@@ -1,7 +1,7 @@
-#global public
 using Core
 
-struct RichEditLine
+#[Swag.Opaque]
+public struct RichEditLine
 {
     chars:          Array'rune
     styles:         Array'u8
