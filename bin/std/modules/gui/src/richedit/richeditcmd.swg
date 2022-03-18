@@ -844,16 +844,3 @@ impl RichEdit
         deleteBegLine("\t", false)
     }
 }
-
-func zapWordChar(c: rune)->bool
-{
-    if Unicode.isLetterOrDigit(c)
-        return false
-    if Unicode.isSpace(c)
-        return false
-    if Unicode.isWord(c)
-        return false
-    if c != "("'rune and c != ")"'rune and c != "["'rune and c != "]"'rune and c != "{"'rune and c != "}"'rune
-        return true
-    return false
-}

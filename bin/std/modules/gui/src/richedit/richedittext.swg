@@ -242,5 +242,116 @@ impl RichEdit
 
     mtd deleteBegLine(txt: string, lastLine: bool)
     {
+/*        first := true
+        lenTxt := @countof(txt)
+
+        beg := getBegSelection()
+        end := getEndSelection()
+        if !lastLine
+        {
+            if beg.charPosInLine == 0 and beg.lineIndex == end.lineIndex
+                return
+        }
+        else
+        {
+            beg.charPosInLine = 0
+        }
+
+        multiline := beg.lineIndex == end.lineIndex ? false : true
+        size      := getXExtent()
+        savepos0  := selBeg
+        savepos1  := cursorPos
+
+        while beg.lineIndex <= end.lineIndex
+        {
+            // Go to the first non white character
+            line = lines[beg.lineIndex]
+            if multiline
+            {
+                while beg.charPosInLine < line.length() and Unicode.isSpace(line.chars[beg.charPosInLine])
+                {
+                    if (!sString::Compare(line.chars.cstr() + beg.charPosInLine, txt, lenTxt))
+                        break;
+                    beg.charPosInLine += 1
+                }
+            }
+
+            beg1 = beg;
+            if beg.charPosInLine < line.length() and !sString::Compare(line.chars.cstr() + beg.charPosInLine, txt, lenTxt)
+            {
+                beg1.charPosInLine += lenTxt
+            }
+            else if line.length() and beg.charPosInLine
+            {
+                if Unicode.isSpace(line.chars[beg.charPosInLine - 1])
+                {
+                    // X is the request position
+                    charPt := getCharacterPos(beg)
+                    x = getTabOffset(charPt.x)
+                    x = (tabSize * size.x) - x
+                    if !x
+                        x = tabSize * size.x
+                    x = charPt.x - x
+
+                    while charPt.x > x and beg.charPosInLine and Unicode.isSpace(line.chars[beg.charPosInLine - 1])
+                    {
+                        beg.charPosInLine -= 1
+                        charPt = getCharacterPos(beg)
+                    }
+                }
+            }
+
+            // Delete
+            if beg1.charPosInLine != beg.charPosInLine
+            {
+                pushUndo()
+                if !first
+                    serialUndo -= 1
+                selBeg = beg
+                cmdSetCursorPos(beg1)
+                undoDeleteText(beg, beg1, false)
+                popUndo()
+
+                if beg.lineIndex == savepos0.lineIndex and savepos0.charPosInLine
+                    savepos0.charPosInLine -= beg1.charPosInLine - beg.charPosInLine
+                if beg.lineIndex == savepos1.lineIndex and savepos1.charPosInLine
+                    savepos1.charPosInLine -= beg1.charPosInLine - beg.charPosInLine
+            }
+
+            first = false
+
+            // Next line
+            if beg.lineIndex == end.lineIndex
+                break
+            beg.lineIndex += 1
+            beg.charPosInLine = 0
+            if beg.lineIndex == end.lineIndex and end.charPosInLine == 0
+                break
+        }
+
+        selBeg = savepos0
+        cmdSetCursorPos(savepos1)
+
+        // A dummy undo just to restore the selection
+        if !first
+        {
+            pushUndo()
+            serialUndo -= 1
+            undoRestoreSelection()
+            popUndo()
+        }*/
+    }
+
+    func zapWordChar(c: rune)->bool
+    {
+        if Unicode.isLetterOrDigit(c)
+            return false
+        if Unicode.isSpace(c)
+            return false
+        if Unicode.isWord(c)
+            return false
+        if c != "("'rune and c != ")"'rune and c != "["'rune and c != "]"'rune and c != "{"'rune and c != "}"'rune
+            return true
+        return false
     }
 }
