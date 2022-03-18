@@ -21,6 +21,7 @@ struct NativeSurface
 {
     hWnd:           HWND
     isMaximized:    bool
+    lastDeadChar:   WPARAM
 }
 
 #[Swag.Callback]
@@ -43,9 +44,25 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
             return 0
         case WM_KEYDOWN, WM_KEYUP:
             return 0
+
+        case WM_DEADCHAR:
+            if (wParam == 27) // Escape
+                return 1
+            if surface.lastDeadChar == wParam
+            {
+                surface.lastDeadChar = 0
+                surface.app.postRuneEvent(cast(rune) wParam)
+            }
+            else
+                surface.lastDeadChar = wParam
+
         case WM_CHAR:
-            surface.app.sendCharEvent(cast(rune) wParam)
+            if (wParam == 27) // Escape
+                return 1
+            surface.lastDeadChar = 0
+            surface.app.postRuneEvent(cast(rune) wParam)
             return 0
+
         case WM_MOUSEWHEEL:
             z := GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA
             surface.app.sendMouseWheelEvent(z)

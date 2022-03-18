@@ -242,11 +242,12 @@ impl RichEdit
 
     mtd deleteBegLine(txt: string, lastLine: bool)
     {
-/*        first := true
-        lenTxt := @countof(txt)
+        arrR   := Unicode.fromUtf8(txt)
+        first  := true
+        lenTxt := arrR.count
+        beg    := getBegSelection()
+        end    := getEndSelection()
 
-        beg := getBegSelection()
-        end := getEndSelection()
         if !lastLine
         {
             if beg.charPosInLine == 0 and beg.lineIndex == end.lineIndex
@@ -265,19 +266,19 @@ impl RichEdit
         while beg.lineIndex <= end.lineIndex
         {
             // Go to the first non white character
-            line = lines[beg.lineIndex]
+            line := lines[beg.lineIndex]
             if multiline
             {
                 while beg.charPosInLine < line.length() and Unicode.isSpace(line.chars[beg.charPosInLine])
                 {
-                    if (!sString::Compare(line.chars.cstr() + beg.charPosInLine, txt, lenTxt))
+                    if Slice.equals(@mkslice(line.chars.buffer + beg.charPosInLine, lenTxt), arrR.toSlice())
                         break;
                     beg.charPosInLine += 1
                 }
             }
 
-            beg1 = beg;
-            if beg.charPosInLine < line.length() and !sString::Compare(line.chars.cstr() + beg.charPosInLine, txt, lenTxt)
+            beg1 := beg
+            if beg.charPosInLine < line.length() and Slice.equals(@mkslice(line.chars.buffer + beg.charPosInLine, lenTxt), arrR.toSlice())
             {
                 beg1.charPosInLine += lenTxt
             }
@@ -287,9 +288,9 @@ impl RichEdit
                 {
                     // X is the request position
                     charPt := getCharacterPos(beg)
-                    x = getTabOffset(charPt.x)
+                    x := cast(f32) getTabOffset(cast(s32) charPt.x)
                     x = (tabSize * size.x) - x
-                    if !x
+                    if x == 0
                         x = tabSize * size.x
                     x = charPt.x - x
 
@@ -339,7 +340,7 @@ impl RichEdit
             serialUndo -= 1
             undoRestoreSelection()
             popUndo()
-        }*/
+        }
     }
 
     func zapWordChar(c: rune)->bool

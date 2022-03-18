@@ -183,7 +183,7 @@ impl RichEdit
                     break
 
                 // At the end of line
-                if (pt.y >= rect.y and pt.y < rect.bottom() and pt.x >= rect.right())
+                if (pt.y >= rect.y and pt.y < rect.bottom() and pt.x >= rect.x)
                 {
                     cp.lineIndex     = i
                     cp.charPosInLine = count

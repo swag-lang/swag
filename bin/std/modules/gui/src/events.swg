@@ -13,7 +13,7 @@ enum EventKind
     PostPaint
     KeyPressed
     KeyReleased
-    Char
+    Rune
     MouseAccept
     MousePressed
     MouseReleased

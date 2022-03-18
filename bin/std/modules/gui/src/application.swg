@@ -196,8 +196,6 @@ private impl Application
 
     mtd sendKeyboardEvents()
     {
-        keyb.update()
-
         targetWnd := keybFocusWnd
         targetWnd = skipDisabled(targetWnd)
 
@@ -226,18 +224,33 @@ private impl Application
                 sendEvent(&evt)
             }
         }
+
+        keyb.update()
     }
 
-    mtd sendCharEvent(r: rune)
+    mtd postRuneEvent(r: rune)
     {
         targetWnd := keybFocusWnd
         targetWnd = skipDisabled(targetWnd)
         if !targetWnd
             return
-        evt := KeyEvent{kind: EventKind.Char}
+        evt := Event.create'KeyEvent()
+        evt.kind = .Rune
         evt.char = r
         evt.modifiers = keyb.getPressedModifiers()
-        targetWnd.sendEvent(&evt)
+        targetWnd.postEvent(evt)
+    }
+
+    mtd eatPostedRuneEvent()
+    {
+        for i := 0; i < postedEvents.count; i += 1
+        {
+            if postedEvents[i].kind == .Rune
+            {
+                postedEvents.removeAt(acast i)
+                i -= 1
+            }
+        }
     }
 
     mtd sendPostedEvents()

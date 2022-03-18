@@ -7,13 +7,10 @@ impl RichEdit
         if isReadOnly()
             return true
 
-        if mdf & .Control
-            return true
         c := ch
 
-
         // Some special characters will be treated as commands
-        if mdf == .None and c < " "'rune
+        if c < " "'rune
         {
             if c == "\t"'rune or c == "\b"'rune
                 return true
@@ -112,7 +109,7 @@ impl RichEdit
         cmd := getMappingCommand(key, mdf)
         if cmd == .None
             return true
-
+        surface.app.eatPostedRuneEvent()
         cmdExecute(cmd)
         ensureCaretIsVisible()
         return true

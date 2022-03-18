@@ -72,7 +72,7 @@ impl IWnd for RichEditView
             evt.accepted = ed.keyPressed(evt.key, evt.modifiers)
             if evt.accepted forceVisibleCaret()
         }
-        elif evt.kind == .Char
+        elif evt.kind == .Rune
         {
             evt.accepted = ed.charPressed(evt.char, evt.modifiers)
             if evt.accepted forceVisibleCaret()
@@ -158,7 +158,7 @@ impl IWnd for RichEditView
 
             l.drawingRect.x = marginLeft
             l.drawingRect.y = y
-            l.drawingRect.width = 1 - x
+            l.drawingRect.width = x - marginLeft
             l.drawingRect.height = size.y
 
             maxx = Math.max(maxx, x)

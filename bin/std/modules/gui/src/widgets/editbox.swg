@@ -272,7 +272,7 @@ impl IWnd for EditBox
             if evt.accepted
                 forceVisibleCaret()
         }
-        elif evt.kind == .Char and !(editBoxFlags & .ReadOnly)
+        elif evt.kind == .Rune and !(editBoxFlags & .ReadOnly)
         {
             if evt.char < 32
                 evt.accepted = false

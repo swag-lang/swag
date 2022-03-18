@@ -112,7 +112,7 @@ impl IWnd for Wnd
             itf.onPostPaintEvent(cast(*PaintEvent) evt)
         case SysCommand:
             itf.onSysCommandEvent(cast(*SysCommandEvent) evt)
-        case KeyPressed, KeyReleased, Char:
+        case KeyPressed, KeyReleased, Rune:
             itf.onKeyEvent(cast(*KeyEvent) evt)
         case MousePressed, MouseReleased, MouseMove, MouseEnter, MouseLeave, MouseDoubleClick, MouseWheel:
             itf.onMouseEvent(cast(*MouseEvent) evt)

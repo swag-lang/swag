@@ -63,3 +63,18 @@ func(T) contains(values: const [..] T, value: T)->bool
 
     return false
 }
+
+// Returns true if two slices are equal
+#[Swag.ConstExpr]
+func(T) equals(dst, src: const [..] T)->bool
+{
+    if @countof(dst) != @countof(src)
+        return false
+    loop i: dst
+    {
+        if dst[i] != src[i]
+            return false
+    }
+
+    return true
+}
