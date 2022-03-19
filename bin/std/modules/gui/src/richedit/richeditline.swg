@@ -28,12 +28,12 @@ impl RichEditLine
         styles.clear()
     }
 
-    mtd insertRune(insIndex: uint, src: rune)
+    mtd insertRune(insIndex: uint, c: rune, txtStyle: u8)
     {
         dirtyStyle = true
         dirtyFold = true
-        chars.insertAt(insIndex, src)
-        styles.insertAt(insIndex, 0)
+        chars.insertAt(insIndex, c)
+        styles.insertAt(insIndex, txtStyle)
     }
 
     mtd insertRunes(insIndex: uint, src: RichEditLine, srcIndex, srcCount: uint)

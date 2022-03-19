@@ -89,34 +89,27 @@ impl RichEdit
         return result
     }
 
-    mtd insertRunePrivate(cp: *RichEditCursor, c: rune, selRect: bool)
+    mtd insertRunePrivate(cp: *RichEditCursor, c: rune, txtStyle: u8)
     {
-        if !selRect
+        if c == "\r"'rune
+            return
+        if c == "\n"'rune
         {
-            if c == "\r"'rune
-                return
-            if c == "\n"'rune
-            {
-                discard newLine(cp.lineIndex + 1)
-                linep := lines[cp.lineIndex]
-                line  := lines[cp.lineIndex + 1]
-                if cp.charPosInLine < linep.length()
-                    line.insertRunes(0, linep, cp.charPosInLine, linep.length() - cp.charPosInLine)
-                linep.setLength(cp.charPosInLine)
-                cp.lineIndex += 1
-                cp.charPosInLine = 0
-            }
-            else
-            {
-                line := lines[cp.lineIndex]
-                posIns := Math.min(cp.charPosInLine, line.length())
-                line.insertRune(posIns, c)
-                cp.charPosInLine += 1
-            }
+            discard newLine(cp.lineIndex + 1)
+            linep := lines[cp.lineIndex]
+            line  := lines[cp.lineIndex + 1]
+            if cp.charPosInLine < linep.length()
+                line.insertRunes(0, linep, cp.charPosInLine, linep.length() - cp.charPosInLine)
+            linep.setLength(cp.charPosInLine)
+            cp.lineIndex += 1
+            cp.charPosInLine = 0
         }
         else
         {
-            Debug.assert(false) // todo
+            line := lines[cp.lineIndex]
+            posIns := Math.min(cp.charPosInLine, line.length())
+            line.insertRune(posIns, c, txtStyle)
+            cp.charPosInLine += 1
         }
     }
 
@@ -128,9 +121,11 @@ impl RichEdit
 
         if !selRect
         {
-            visit c: #self.runes
+            loop i: #self.runes
             {
-                insertRunePrivate(cp, c, selRect)
+                c := #self.runes[i]
+                s := #self.styles[i]
+                insertRunePrivate(cp, c, s)
             }
         }
         else
@@ -175,33 +170,28 @@ impl RichEdit
         }
     }
 
-    mtd insertTextPrivate(cp: *RichEditCursor, text: string, selRect: bool)
+    mtd insertTextPrivate(cp: *RichEditCursor, text: string, txtStyle: u8, selRect: bool)
     {
         if lines.isEmpty()
             newLine(0)
+        elif cp.lineIndex == lines.count
+            newLine(cp.lineIndex)
 
-        if !selRect
+        str  := text
+        line := lines[cp.lineIndex]
+        loop
         {
-            str  := text
-            line := lines[cp.lineIndex]
-            loop
-            {
-                (c, eat) := Utf8.decodeRune(str)
-                if !eat
-                    break
-                str = Tokenize.eatCount(str, cast(uint) eat)
-                insertRunePrivate(cp, c, selRect)
-            }
-        }
-        else
-        {
-            Debug.assert(false) // todo
+            (c, eat) := Utf8.decodeRune(str)
+            if !eat
+                break
+            str = Tokenize.eatCount(str, cast(uint) eat)
+            insertRunePrivate(cp, c, txtStyle)
         }
 
         setModified(true)
     }
 
-    mtd insertTextPrivate(text: string, selRect: bool)
+    mtd insertTextPrivate(text: string, style: u8, selRect: bool)
     {
         undo := Memory.new'RichEditUndo()
         undo.type       = .Insert
@@ -213,7 +203,7 @@ impl RichEdit
         undo.serial     = 0
         resetUndo()
         toUndo.add(undo)
-        insertTextPrivate(&cursorPos, text, selRect)
+        insertTextPrivate(&cursorPos, text, 0, selRect)
         clearSelection()
     }
 
@@ -296,15 +286,26 @@ public impl RichEdit
     // Set the edit text
     mtd setText(text: string)
     {
-        if isReadOnly()
-            return
-
         clearPrivate()
 
         var cp: RichEditCursor
-        insertTextPrivate(&cp, text, false)
+        insertTextPrivate(&cp, text, 0, false)
 
         resetModified()
+        invalidate()
+    }
+
+    mtd addText(text: string, txtStyle: u8)
+    {
+        var cp: RichEditCursor
+        if lines.count
+        {
+            cp.lineIndex = lines.count - 1
+            cp.charPosInLine = lines[cp.lineIndex].length()
+        }
+
+        insertTextPrivate(&cp, text, txtStyle, false)
+        setModified(true)
         invalidate()
     }
 
@@ -424,7 +425,7 @@ public impl RichEdit
                 cp.lineIndex = caretI
                 if cp.charPosInLine > lines[cp.lineIndex].length()
                     continue
-                insertTextPrivate(&cp, @mkstring(&az[0], cpt), false)
+                insertTextPrivate(&cp, @mkstring(&az[0], cpt), 0, false)
             }
 
             moveCursorRight(&selBeg)
@@ -432,7 +433,7 @@ public impl RichEdit
         }
         else
         {
-            insertTextPrivate(&cursorPos, @mkstring(&az[0], cpt), false)
+            insertTextPrivate(&cursorPos, @mkstring(&az[0], cpt), 0, false)
             clearSelection()
         }
 
@@ -469,7 +470,7 @@ public impl RichEdit
 
             setCursorPos(beg)
             selBeg = beg
-            insertTextPrivate(txt, false)
+            insertTextPrivate(txt, 0, false)
 
             popUndo()
 
