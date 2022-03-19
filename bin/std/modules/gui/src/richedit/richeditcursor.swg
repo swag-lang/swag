@@ -63,9 +63,9 @@ impl RichEdit
         return Painter.measureRune("X"'rune, font)
     }
 
-    mtd getCaretPos()->Math.Rectangle
+    mtd getCaretPos(cp: RichEditCursor)->Math.Rectangle
     {
-        pt := getCursorDisplayPos(cursorPos)
+        pt := getCursorDisplayPos(cp)
         size := getXExtent()
 
         var result: retval

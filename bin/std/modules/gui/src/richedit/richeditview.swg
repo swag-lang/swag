@@ -104,9 +104,7 @@ impl IWnd for RichEditView
     mtd onTimerEvent(evt: *TimerEvent)
     {
         visibleCaret = !visibleCaret
-        pos := ed.getCaretPos()
-        pos.inflate(1)
-        invalidateRect(pos)
+        invalidate()
     }
 
     mtd onPaintEvent(evt: *PaintEvent)
@@ -184,12 +182,32 @@ impl IWnd for RichEditView
         }
 
         // Caret
-        posCaret := ed.getCaretPos()
         if visibleCaret
         {
-            posCaret.x -= scrollPos.x
-            posCaret.y -= scrollPos.y
-            painter.fillRect(posCaret, getThemeColors().richEdit_Caret)
+            colorCaret := getThemeColors().richEdit_Caret
+            if ed.hasSelRect
+            {
+                selBeg := ed.getBegSelection()
+                selEnd := ed.getEndSelection()
+                loop caretI: selBeg.lineIndex..selEnd.lineIndex
+                {
+                    cp := selEnd
+                    cp.lineIndex = caretI
+                    if cp.charPosInLine > ed.lines[cp.lineIndex].length()
+                        continue
+                    posCaret := ed.getCaretPos(cp)
+                    posCaret.x -= scrollPos.x
+                    posCaret.y -= scrollPos.y
+                    painter.fillRect(posCaret, colorCaret)
+                }
+            }
+            else
+            {
+                posCaret := ed.getCaretPos(ed.cursorPos)
+                posCaret.x -= scrollPos.x
+                posCaret.y -= scrollPos.y
+                painter.fillRect(posCaret, colorCaret)
+            }
         }
 
         // Scroll size

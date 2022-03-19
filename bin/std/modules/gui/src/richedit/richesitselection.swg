@@ -157,8 +157,17 @@ impl RichEdit
         cp := getBegSelection()
         deleteSelectionPrivate(cp, getEndSelection(), hasSelRect)
         computeScrollY()
-        setCursorPos(cp)
-        selBeg = cp
+
+        if hasSelRect
+        {
+            cursorPos.charPosInLine = selBeg.charPosInLine
+        }
+        else
+        {
+            setCursorPos(cp)
+            selBeg = cp
+        }
+
         popUndo()
     }
 
@@ -212,13 +221,13 @@ impl RichEdit
         sy = scrollWnd.getScrollPos().y
 
         clientRect := edView.getClientRect()
-        pos := getCaretPos()
+        pos := getCaretPos(cursorPos)
         while pos.bottom() > sy + clientRect.height
         {
             if !moveCursorUp(&cursorPos)
                 break
             clearSelection()
-            pos = getCaretPos()
+            pos = getCaretPos(cursorPos)
         }
     }
 
@@ -233,13 +242,13 @@ impl RichEdit
         scrollWnd.setScrollPos(pt.x, sy)
         sy = scrollWnd.getScrollPos().y
 
-        pos := getCaretPos()
+        pos := getCaretPos(cursorPos)
         while pos.y < sy
         {
             if !moveCursorDown(&cursorPos)
                 break
             clearSelection()
-            pos = getCaretPos()
+            pos = getCaretPos(cursorPos)
         }
     }
 }

@@ -73,7 +73,6 @@ impl RichEdit
     {
         Debug.assert(undoCounter != 0)
         undoCounter -= 1
-        setRectangularSelection(false)
 
         loop i: toUndo.count
         {
