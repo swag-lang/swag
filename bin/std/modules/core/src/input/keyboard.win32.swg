@@ -14,12 +14,12 @@ impl Keyboard
         mapVKeyToKey[vkey] = cast(u8) key
     }
 
-    func keyToVirtualKey(key: Key)->VirtualKey
+    public func keyToVirtualKey(key: Key)->VirtualKey
     {
         return cast(VirtualKey) mapKeyToVKey[key]
     }
 
-    func virtualKeyToKey(vkey: VirtualKey)->Key
+    public func virtualKeyToKey(vkey: VirtualKey)->Key
     {
         if vkey > 255
             return Key.None

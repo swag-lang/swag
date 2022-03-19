@@ -74,7 +74,7 @@ impl IWnd for RichEditView
         }
         elif evt.kind == .Rune
         {
-            evt.accepted = ed.charPressed(evt.char, evt.modifiers)
+            evt.accepted = ed.charPressed(evt.key, evt.char, evt.modifiers)
             if evt.accepted forceVisibleCaret()
 
         }

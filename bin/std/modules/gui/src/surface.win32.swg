@@ -48,19 +48,25 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
         case WM_DEADCHAR:
             if (wParam == 27) // Escape
                 return 1
-            if surface.lastDeadChar == wParam
+            if surface.lastDeadChar != wParam
             {
-                surface.lastDeadChar = 0
-                surface.app.postRuneEvent(cast(rune) wParam)
-            }
-            else
                 surface.lastDeadChar = wParam
+                break
+            }
+
+            fallthrough
 
         case WM_CHAR:
             if (wParam == 27) // Escape
                 return 1
+
             surface.lastDeadChar = 0
-            surface.app.postRuneEvent(cast(rune) wParam)
+
+            scanCode := cast(UINT) (lParam & 0xFF0000) >> 16
+            x := MapVirtualKeyW(scanCode, MAPVK_VSC_TO_VK_EX)
+            y := Input.Keyboard.virtualKeyToKey(x)
+
+            surface.app.sendRuneEvent(y, cast(rune) wParam)
             return 0
 
         case WM_MOUSEWHEEL:

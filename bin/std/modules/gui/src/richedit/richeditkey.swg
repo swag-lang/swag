@@ -2,9 +2,14 @@ using Core
 
 impl RichEdit
 {
-    mtd charPressed(ch: rune, mdf: Input.KeyModifiers)->bool
+    mtd charPressed(key: Input.Key, ch: rune, mdf: Input.KeyModifiers)->bool
     {
         if isReadOnly()
+            return true
+
+        // If this is a command, forget
+        cmd := getMappingCommand(key, mdf)
+        if cmd != .None
             return true
 
         c := ch
@@ -109,7 +114,6 @@ impl RichEdit
         cmd := getMappingCommand(key, mdf)
         if cmd == .None
             return true
-        surface.app.eatPostedRuneEvent()
         cmdExecute(cmd)
         ensureCaretIsVisible()
         return true
