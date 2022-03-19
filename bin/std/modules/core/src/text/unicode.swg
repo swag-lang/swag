@@ -60,7 +60,7 @@ public
 
     func isWord(c: rune)->bool
     {
-        return !isSymbol(c) and !isSpace(c)
+        return isLetterOrDigit(c) or c == "_"'rune
     }
 
     func isLetterOrDigit(c: rune)->bool

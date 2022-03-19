@@ -25,8 +25,8 @@ public enum RichEditCommand
     //CMD_EDIT_DELETE_LINE
     EditTabulation
     EditBackTabulation
-    //CMD_EDIT_DELETE_WORD_LEFT,
-    //CMD_EDIT_DELETE_WORD_RIGHT
+    DeleteWordLeft
+    DeleteWordRight
     //CMD_EDIT_DELETE_LINE_LEFT
     //CMD_EDIT_DELETE_LINE_RIGHT
     //CMD_EDIT_OVERWRITE
@@ -120,7 +120,9 @@ impl RichEdit
         addMapping(Input.Key.End,       Input.KeyModifiers.Shift,       RichEditCommand.SelectEndLine)
         addMapping(Input.Key.End,       Input.KeyModifiers.CtrlShift,   RichEditCommand.SelectEndFile)
         addMapping(Input.Key.Back,      Input.KeyModifiers.None,        RichEditCommand.DeleteLeft)
+        addMapping(Input.Key.Back,      Input.KeyModifiers.Control,     RichEditCommand.DeleteWordLeft)
         addMapping(Input.Key.Delete,    Input.KeyModifiers.None,        RichEditCommand.DeleteRight)
+        addMapping(Input.Key.Delete,    Input.KeyModifiers.Control,     RichEditCommand.DeleteWordRight)
         addMapping(Input.Key.Tab,       Input.KeyModifiers.None,        RichEditCommand.EditTabulation)
         addMapping(Input.Key.Tab,       Input.KeyModifiers.Shift,       RichEditCommand.EditBackTabulation)
         addMapping(Input.Key.A,         Input.KeyModifiers.Control,     RichEditCommand.SelectAllFile)
@@ -295,6 +297,18 @@ impl RichEdit
             if isReadOnly()
                 return
             cmdEditDeleteRight()
+            resetVolatileFind()
+
+        case DeleteWordLeft:
+            if isReadOnly()
+                return
+            cmdEditDeleteWordLeft()
+            resetVolatileFind()
+
+        case DeleteWordRight:
+            if isReadOnly()
+                return
+            cmdEditDeleteWordRight()
             resetVolatileFind()
 
         case EditTabulation:
@@ -581,7 +595,7 @@ impl RichEdit
                 line = lines[cp.lineIndex]
             }
         }
-        else if (zapWordChar(line.chars[cp.charPosInLine - 1]))
+        elif zapWordChar(line.chars[cp.charPosInLine - 1])
         {
             while cp.charPosInLine != 0 and zapWordChar(line.chars[cp.charPosInLine - 1])
             {
@@ -611,7 +625,7 @@ impl RichEdit
                 line = lines[cp.lineIndex]
             }
         }
-        else if (Unicode.isWord(line.chars[cp.charPosInLine]))
+        elif Unicode.isWord(line.chars[cp.charPosInLine])
         {
             while cp.charPosInLine != line.length() and Unicode.isWord(line.chars[cp.charPosInLine])
             {
@@ -630,7 +644,7 @@ impl RichEdit
                 }
             }
         }
-        else if zapWordChar(line.chars[cp.charPosInLine])
+        elif zapWordChar(line.chars[cp.charPosInLine])
         {
             while cp.charPosInLine != line.length() and zapWordChar(line.chars[cp.charPosInLine])
             {
@@ -685,6 +699,26 @@ impl RichEdit
             }
         }*/
 
+        popUndo()
+    }
+
+    mtd cmdEditDeleteWordLeft()
+    {
+        pushUndo()
+        deleteSelectionPrivate()
+        cmdCursorWordLeft(&cursorPos)
+        deleteSelectionPrivate()
+        cmdClearSelection()
+        popUndo()
+    }
+
+    mtd cmdEditDeleteWordRight()
+    {
+        pushUndo()
+        deleteSelectionPrivate()
+        cmdCursorWordRight(&cursorPos, true)
+        deleteSelectionPrivate()
+        cmdClearSelection()
         popUndo()
     }
 
