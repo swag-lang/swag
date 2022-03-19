@@ -265,18 +265,30 @@ impl RichEdit
         return ro or richEdFlags & .ReadOnly
     }
 
-    // Set the edit text
-    mtd setText(text: string)
+    // Simulate a keyboard character pressed
+    mtd charPressed(key: Input.Key, ch: rune, mdf: Input.KeyModifiers)->bool
     {
-        if isReadOnly()
-            return
+        cmd := getMappingCommand(key, mdf)
+        if cmd != .None
+            return true
 
-        clearPrivate()
+        c := ch
+        if c == "\r"'rune
+            c = "\n"'rune
 
-        var cp: RichEditCursor
-        insertTextPrivate(&cp, text, false)
+        insertRune(c)
+        ensureCaretIsVisible()
+        return true
+    }
 
-        resetModified()
-        invalidate()
+    // Simulate a keyboard pressed
+    mtd keyPressed(key: Input.Key, mdf: Input.KeyModifiers)->bool
+    {
+        cmd := getMappingCommand(key, mdf)
+        if cmd == .None
+            return true
+        executeCommand(cmd)
+        ensureCaretIsVisible()
+        return true
     }
 }

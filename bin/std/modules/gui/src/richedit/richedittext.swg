@@ -211,6 +211,21 @@ impl RichEdit
 
 public impl RichEdit
 {
+    // Set the edit text
+    mtd setText(text: string)
+    {
+        if isReadOnly()
+            return
+
+        clearPrivate()
+
+        var cp: RichEditCursor
+        insertTextPrivate(&cp, text, false)
+
+        resetModified()
+        invalidate()
+    }
+
     mtd getRune(cp: RichEditCursor)->rune
     {
         if cp.lineIndex >= lines.count

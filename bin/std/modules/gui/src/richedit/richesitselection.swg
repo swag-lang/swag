@@ -155,4 +155,47 @@ impl RichEdit
         clearSelection()
         popUndo()
     }
+
+    mtd scrollLineUp()
+    {
+        pt := scrollWnd.getScrollPos()
+        size := getXExtent()
+
+        sy := (pt.y / size.y) * size.y
+        sy -= size.y
+
+        scrollWnd.setScrollPos(pt.x, sy)
+        sy = scrollWnd.getScrollPos().y
+
+        clientRect := edView.getClientRect()
+        pos := getCaretPos()
+        while pos.bottom() > sy + clientRect.height
+        {
+            if !moveCursorUp(&cursorPos)
+                break
+            clearSelection()
+            pos = getCaretPos()
+        }
+    }
+
+    mtd scrollLineDown()
+    {
+        pt := scrollWnd.getScrollPos()
+        size := getXExtent()
+
+        sy := (pt.y / size.y) * size.y
+        sy += size.y
+
+        scrollWnd.setScrollPos(pt.x, sy)
+        sy = scrollWnd.getScrollPos().y
+
+        pos := getCaretPos()
+        while pos.y < sy
+        {
+            if !moveCursorDown(&cursorPos)
+                break
+            clearSelection()
+            pos = getCaretPos()
+        }
+    }
 }

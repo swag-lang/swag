@@ -29,7 +29,7 @@ public enum RichEditCommand
     DeleteWordRight
     //CMD_EDIT_DELETE_LINE_LEFT
     //CMD_EDIT_DELETE_LINE_RIGHT
-    //CMD_EDIT_OVERWRITE
+    ToggleOverwrite
     //CMD_CLIPBOARD_COPY
     //CMD_CLIPBOARD_PASTE
     //CMD_CLIPBOARD_CUT
@@ -125,13 +125,14 @@ impl RichEdit
         addMapping(Input.Key.Delete,    Input.KeyModifiers.Control,     RichEditCommand.DeleteWordRight)
         addMapping(Input.Key.Tab,       Input.KeyModifiers.None,        RichEditCommand.EditTabulation)
         addMapping(Input.Key.Tab,       Input.KeyModifiers.Shift,       RichEditCommand.EditBackTabulation)
+        addMapping(Input.Key.Insert,    Input.KeyModifiers.None,        RichEditCommand.ToggleOverwrite)
         addMapping(Input.Key.A,         Input.KeyModifiers.Control,     RichEditCommand.SelectAllFile)
         addMapping(Input.Key.Y,         Input.KeyModifiers.Control,     RichEditCommand.Redo)
         addMapping(Input.Key.Z,         Input.KeyModifiers.Control,     RichEditCommand.Undo)
     }
 
     // Execute a command
-    mtd cmdExecute(cmd: RichEditCommand)
+    mtd executeCommand(cmd: RichEditCommand)
     {
         switch cmd
         {
@@ -216,10 +217,10 @@ impl RichEdit
             resetVolatileFind()
 
         case ScrollLineUp:
-            cmdScrollLineUp()
+            scrollLineUp()
 
         case ScrollLineDown:
-            cmdScrollLineDown()
+            scrollLineDown()
 
         case SelectRuneLeft:
             moveCursorLeft(&cursorPos)
@@ -342,49 +343,10 @@ impl RichEdit
                 return
             redo()
             resetVolatileFind()
-        }
-    }
 
-    mtd cmdScrollLineUp()
-    {
-        pt := scrollWnd.getScrollPos()
-        size := getXExtent()
-
-        sy := (pt.y / size.y) * size.y
-        sy -= size.y
-
-        scrollWnd.setScrollPos(pt.x, sy)
-        sy = scrollWnd.getScrollPos().y
-
-        clientRect := edView.getClientRect()
-        pos := getCaretPos()
-        while pos.bottom() > sy + clientRect.height
-        {
-            if !moveCursorUp(&cursorPos)
-                break
-            clearSelection()
-            pos = getCaretPos()
-        }
-    }
-
-    mtd cmdScrollLineDown()
-    {
-        pt := scrollWnd.getScrollPos()
-        size := getXExtent()
-
-        sy := (pt.y / size.y) * size.y
-        sy += size.y
-
-        scrollWnd.setScrollPos(pt.x, sy)
-        sy = scrollWnd.getScrollPos().y
-
-        pos := getCaretPos()
-        while pos.y < sy
-        {
-            if !moveCursorDown(&cursorPos)
-                break
-            clearSelection()
-            pos = getCaretPos()
+        case ToggleOverwrite:
+            overwriteMode = !overwriteMode
+            invalidate()
         }
     }
 }
