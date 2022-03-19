@@ -25,7 +25,7 @@ impl IWnd for RichEditView
                 evt.accepted = true
                 ed.resetVolatileFind()
                 pt := surfaceToLocal(evt.surfacePos) + scrollPos
-                cp := ed.getCharPosFromPoint(pt)
+                cp := ed.getCursorPosFromPoint(pt)
                 firstLineSelMode = cp.lineIndex
                 ed.cmdSetCursorPos(cp)
                 ed.selBeg  = cp
@@ -49,7 +49,7 @@ impl IWnd for RichEditView
                 evt.accepted = true
                 ed.resetVolatileFind()
                 pt := surfaceToLocal(evt.surfacePos) + scrollPos
-                cp := ed.getCharPosFromPoint(pt)
+                cp := ed.getCursorPosFromPoint(pt)
                 if ed.cursorPos.lineIndex != cp.lineIndex or ed.cursorPos.charPosInLine != cp.charPosInLine
                 {
                     ed.cmdSetCursorPos(cp)

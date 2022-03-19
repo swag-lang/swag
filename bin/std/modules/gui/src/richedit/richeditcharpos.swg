@@ -1,7 +1,7 @@
 #global public
 using Core, Pixel
 
-struct RichEditCharPos
+struct RichEditCursorPos
 {
     lineIndex:      uint
     charPosInLine:  uint
@@ -9,7 +9,7 @@ struct RichEditCharPos
 
 impl RichEdit
 {
-    mtd getSizeChar(line: *RichEditLine, i: uint, x: f32)->Math.Point
+    mtd getRuneSize(line: *RichEditLine, i: uint, x: f32)->Math.Point
     {
         var size: retval
 
@@ -28,7 +28,7 @@ impl RichEdit
         return size
     }
 
-    mtd getCharacterPos(cp: RichEditCharPos)->Math.Point
+    mtd getRunePos(cp: RichEditCursorPos)->Math.Point
     {
         var result: retval
 
@@ -39,7 +39,7 @@ impl RichEdit
         result.x = getMarginLeft()
         loop i: cp.charPosInLine
         {
-            size := getSizeChar(pline, i, result.x)
+            size := getRuneSize(pline, i, result.x)
             result.x += size.x
         }
 
@@ -65,7 +65,7 @@ impl RichEdit
 
     mtd getCaretPos()->Math.Rectangle
     {
-        pt := getCharacterPos(cursorPos)
+        pt := getRunePos(cursorPos)
         size := getXExtent()
 
         var result: retval
@@ -79,7 +79,7 @@ impl RichEdit
     private mtd ensureCaretIsVisibleInternal(center: bool)
     {
         checkSelection()
-        ensureCharacterIsVisible(cursorPos, center)
+        ensureCursorIsVisible(cursorPos, center)
         invalidate()
     }
 
@@ -90,14 +90,14 @@ impl RichEdit
         ensureCaretIsVisibleInternal(center)
     }
 
-    mtd ensureCharacterIsVisible(cp: RichEditCharPos, center: bool)
+    mtd ensureCursorIsVisible(cp: RichEditCursorPos, center: bool)
     {
         size   := getXExtent()
         decalx := size.x * 10
 
         clientRect := edView.getClientRect()
 
-        pos := getCharacterPos(cp)
+        pos := getRunePos(cp)
         sx  := edView.scrollPos.x
         sy  := edView.scrollPos.y
 
@@ -127,7 +127,7 @@ impl RichEdit
         scrollWnd.setScrollPos(sx, sy)
     }
 
-    mtd getCharPosFromPoint(pt: Math.Point)->RichEditCharPos
+    mtd getCursorPosFromPoint(pt: Math.Point)->RichEditCursorPos
     {
         var cp: retval
 
@@ -163,7 +163,7 @@ impl RichEdit
                 {
                     loop j: count
                     {
-                        size := getSizeChar(line, j, rect.x)
+                        size := getRuneSize(line, j, rect.x)
                         rect.width = size.x
                         if rect.contains(pt)
                         {

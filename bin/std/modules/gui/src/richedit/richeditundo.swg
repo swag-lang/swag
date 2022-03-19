@@ -14,16 +14,16 @@ struct RichEditUndo
 {
     type:           RichEditUndoType = Selection
     concatChars:    bool
-    selBeg:         RichEditCharPos
-    cursorPos:      RichEditCharPos
+    selBeg:         RichEditCursorPos
+    cursorPos:      RichEditCursorPos
     text:           Array'rune
     serial:         uint
     hasSelRect:     bool
 
-    begSelectionBefore: RichEditCharPos
-    endSelectionBefore: RichEditCharPos
-    begSelectionAfter:  RichEditCharPos
-    endSelectionAfter:  RichEditCharPos
+    begSelectionBefore: RichEditCursorPos
+    endSelectionBefore: RichEditCursorPos
+    begSelectionAfter:  RichEditCursorPos
+    endSelectionAfter:  RichEditCursorPos
 }
 
 impl RichEdit
@@ -88,7 +88,7 @@ impl RichEdit
         cmdClearSelection()
     }
 
-    mtd undoDeleteText(posStart, posEnd: RichEditCharPos, selRect: bool)
+    mtd undoDeleteText(posStart, posEnd: RichEditCursorPos, selRect: bool)
     {
         undo := Memory.new'RichEditUndo()
         undo.type       = .Delete

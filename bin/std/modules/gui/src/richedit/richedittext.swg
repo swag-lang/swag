@@ -3,7 +3,7 @@ using Core, Pixel
 
 impl RichEdit
 {
-    mtd getRune(cp: RichEditCharPos)->rune
+    mtd getRune(cp: RichEditCursorPos)->rune
     {
         if cp.lineIndex >= lines.count
             return 0
@@ -15,7 +15,7 @@ impl RichEdit
         return lines[cp.lineIndex].chars[cp.charPosInLine]
     }
 
-    mtd getTextPrivate(start, end: RichEditCharPos, selRect: bool)->Array'rune
+    mtd getTextPrivate(start, end: RichEditCursorPos, selRect: bool)->Array'rune
     {
         var result: retval
         if !hasSelRect
@@ -72,7 +72,7 @@ impl RichEdit
         return result
     }
 
-    mtd insertRunePrivate(cp: *RichEditCharPos, c: rune, selRect: bool)
+    mtd insertRunePrivate(cp: *RichEditCursorPos, c: rune, selRect: bool)
     {
         if !selRect
         {
@@ -103,7 +103,7 @@ impl RichEdit
         }
     }
 
-    mtd insertTextPrivate(cp: *RichEditCharPos, text: Array'rune, selRect: bool)
+    mtd insertTextPrivate(cp: *RichEditCursorPos, text: Array'rune, selRect: bool)
     {
         if text.isEmpty()
             return
@@ -121,7 +121,7 @@ impl RichEdit
         }
     }
 
-    mtd insertTextPrivate(cp: *RichEditCharPos, text: string, selRect: bool)
+    mtd insertTextPrivate(cp: *RichEditCursorPos, text: string, selRect: bool)
     {
         if lines.isEmpty()
             newLine(0)
@@ -147,7 +147,7 @@ impl RichEdit
         setModified(true)
     }
 
-    mtd deleteTextPrivate(posStart, posEnd: RichEditCharPos, selRect: bool)
+    mtd deleteTextPrivate(posStart, posEnd: RichEditCursorPos, selRect: bool)
     {
         // Nothing to delete
         if posStart.lineIndex == posEnd.lineIndex and posStart.charPosInLine == posEnd.charPosInLine
@@ -287,7 +287,7 @@ impl RichEdit
                 if Unicode.isSpace(line.chars[beg.charPosInLine - 1])
                 {
                     // X is the request position
-                    charPt := getCharacterPos(beg)
+                    charPt := getRunePos(beg)
                     x := cast(f32) getTabOffset(cast(s32) charPt.x)
                     x = (tabSize * size.x) - x
                     if x == 0
@@ -297,7 +297,7 @@ impl RichEdit
                     while charPt.x > x and beg.charPosInLine and Unicode.isSpace(line.chars[beg.charPosInLine - 1])
                     {
                         beg.charPosInLine -= 1
-                        charPt = getCharacterPos(beg)
+                        charPt = getRunePos(beg)
                     }
                 }
             }

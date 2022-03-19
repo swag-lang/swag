@@ -154,7 +154,7 @@ impl RichEdit
         case CursorUp:
             if !isSelectionEmpty()
             {
-                pt := getCharacterPos(cursorPos)
+                pt := getRunePos(cursorPos)
                 cmdSetCursorPos(getBegSelection())
                 cmdCursorUp(&cursorPos, pt)
             }
@@ -166,7 +166,7 @@ impl RichEdit
         case CursorDown:
             if !isSelectionEmpty()
             {
-                pt := getCharacterPos(cursorPos)
+                pt := getRunePos(cursorPos)
                 cmdSetCursorPos(getEndSelection())
                 cmdCursorDown(&cursorPos, pt)
             }
@@ -337,7 +337,7 @@ impl RichEdit
         }
     }
 
-    mtd cmdSetCursorPos(cp: RichEditCharPos)
+    mtd cmdSetCursorPos(cp: RichEditCursorPos)
     {
         cursorPos = cp
     }
@@ -363,7 +363,7 @@ impl RichEdit
     }
 
     #[Swag.Discardable]
-    mtd cmdCursorLeft(cp: *RichEditCharPos)->bool
+    mtd cmdCursorLeft(cp: *RichEditCursorPos)->bool
     {
         if cp.charPosInLine == 0
         {
@@ -382,7 +382,7 @@ impl RichEdit
     }
 
     #[Swag.Discardable]
-    mtd cmdCursorRight(cp: *RichEditCharPos)->bool
+    mtd cmdCursorRight(cp: *RichEditCursorPos)->bool
     {
         if cp.charPosInLine == lines[cp.lineIndex].length()
         {
@@ -401,14 +401,14 @@ impl RichEdit
     }
 
     #[Swag.Discardable]
-    mtd cmdCursorUp(cp: *RichEditCharPos)->bool
+    mtd cmdCursorUp(cp: *RichEditCursorPos)->bool
     {
-        pt := getCharacterPos(cp)
+        pt := getRunePos(cp)
         return cmdCursorUp(cp, pt)
     }
 
     #[Swag.Discardable]
-    mtd cmdCursorUp(cp: *RichEditCharPos, posPrev: Math.Point)->bool
+    mtd cmdCursorUp(cp: *RichEditCursorPos, posPrev: Math.Point)->bool
     {
         prev := getPreviousVisibleLine(cp.lineIndex)
         if prev == cp.lineIndex
@@ -417,7 +417,7 @@ impl RichEdit
         cp.lineIndex = prev
         line := lines[cp.lineIndex]
         cp.charPosInLine = Math.min(line.length(), cp.charPosInLine)
-        posNew := getCharacterPos(cp)
+        posNew := getRunePos(cp)
 
         if posPrev.x == posNew.x
             return true
@@ -425,7 +425,7 @@ impl RichEdit
         {
             while posNew.x < posPrev.x and cp.charPosInLine < line.length()
             {
-                posNew.x += getSizeChar(line, cp.charPosInLine, posNew.x).x
+                posNew.x += getRuneSize(line, cp.charPosInLine, posNew.x).x
                 cp.charPosInLine += 1
             }
         }
@@ -435,7 +435,7 @@ impl RichEdit
             while posNew.x > posPrev.x and cp.charPosInLine
             {
                 cp.charPosInLine -= 1
-                posNew.x -= getSizeChar(line, cp.charPosInLine, posNew.x).x
+                posNew.x -= getRuneSize(line, cp.charPosInLine, posNew.x).x
             }
         }
 
@@ -443,14 +443,14 @@ impl RichEdit
     }
 
     #[Swag.Discardable]
-    mtd cmdCursorDown(cp: *RichEditCharPos)->bool
+    mtd cmdCursorDown(cp: *RichEditCursorPos)->bool
     {
-        pt := getCharacterPos(cp)
+        pt := getRunePos(cp)
         return cmdCursorDown(cp, pt)
     }
 
     #[Swag.Discardable]
-    mtd cmdCursorDown(cp: *RichEditCharPos, posPrev: Math.Point)->bool
+    mtd cmdCursorDown(cp: *RichEditCursorPos, posPrev: Math.Point)->bool
     {
         next := getNextVisibleLine(cp.lineIndex)
         if next == cp.lineIndex
@@ -459,7 +459,7 @@ impl RichEdit
         cp.lineIndex = next
         line := lines[cp.lineIndex]
         cp.charPosInLine = Math.min(line.length(), cp.charPosInLine)
-        posNew := getCharacterPos(cp)
+        posNew := getRunePos(cp)
 
         if posPrev.x == posNew.x
             return true
@@ -467,7 +467,7 @@ impl RichEdit
         {
             while posNew.x < posPrev.x and cp.charPosInLine < line.length()
             {
-                posNew.x += getSizeChar(line, cp.charPosInLine, posNew.x).x
+                posNew.x += getRuneSize(line, cp.charPosInLine, posNew.x).x
                 cp.charPosInLine += 1
             }
         }
@@ -477,14 +477,14 @@ impl RichEdit
             while posNew.x > posPrev.x and cp.charPosInLine
             {
                 cp.charPosInLine -= 1
-                posNew.x -= getSizeChar(line, cp.charPosInLine, posNew.x).x
+                posNew.x -= getRuneSize(line, cp.charPosInLine, posNew.x).x
             }
         }
 
         return true
     }
 
-    mtd cmdCursorStartLine(cp: *RichEditCharPos)
+    mtd cmdCursorStartLine(cp: *RichEditCursorPos)
     {
         line := lines[cp.lineIndex]
         i    := cast(s32) cp.charPosInLine
@@ -518,24 +518,24 @@ impl RichEdit
         }
     }
 
-    mtd cmdCursorEndLine(cp: *RichEditCharPos)
+    mtd cmdCursorEndLine(cp: *RichEditCursorPos)
     {
         cp.charPosInLine = lines[cp.lineIndex].length()
     }
 
-    mtd cmdCursorStartFile(cp: *RichEditCharPos)
+    mtd cmdCursorStartFile(cp: *RichEditCursorPos)
     {
         cp.lineIndex     = getFirstVisibleLine()
         cp.charPosInLine = 0
     }
 
-    mtd cmdCursorEndFile(cp: *RichEditCharPos)
+    mtd cmdCursorEndFile(cp: *RichEditCursorPos)
     {
         cp.lineIndex     = getLastVisibleLine()
         cp.charPosInLine = lines[cp.lineIndex].length()
     }
 
-    mtd cmdCursorPageUp(cp: *RichEditCharPos)
+    mtd cmdCursorPageUp(cp: *RichEditCursorPos)
     {
         client := edView.getClientRect()
         count := cast(int) (client.height / getXExtent().y)
@@ -548,7 +548,7 @@ impl RichEdit
         }
     }
 
-    mtd cmdCursorPageDown(cp: *RichEditCharPos)
+    mtd cmdCursorPageDown(cp: *RichEditCursorPos)
     {
         client := edView.getClientRect()
         count := cast(int) (client.height / getXExtent().y)
@@ -561,7 +561,7 @@ impl RichEdit
         }
     }
 
-    mtd cmdCursorWordLeft(cp: *RichEditCharPos)
+    mtd cmdCursorWordLeft(cp: *RichEditCursorPos)
     {
         line := lines[cp.lineIndex]
         if cp.charPosInLine == 0
@@ -610,7 +610,7 @@ impl RichEdit
         }
     }
 
-    mtd cmdCursorWordRight(cp: *RichEditCharPos, withSpace: bool)
+    mtd cmdCursorWordRight(cp: *RichEditCursorPos, withSpace: bool)
     {
         line := lines[cp.lineIndex]
         if cp.charPosInLine == line.length() or Unicode.isSpace(line.chars[cp.charPosInLine])

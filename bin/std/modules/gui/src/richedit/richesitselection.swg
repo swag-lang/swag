@@ -9,7 +9,7 @@ impl RichEdit
         return true
     }
 
-    mtd getBegSelection()->RichEditCharPos
+    mtd getBegSelection()->RichEditCursorPos
     {
         if selBeg.lineIndex < cursorPos.lineIndex
             return selBeg
@@ -20,7 +20,7 @@ impl RichEdit
         return cursorPos
     }
 
-    mtd getEndSelection()->RichEditCharPos
+    mtd getEndSelection()->RichEditCursorPos
     {
         if selBeg.lineIndex < cursorPos.lineIndex
             return cursorPos
