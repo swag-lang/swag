@@ -7,7 +7,12 @@ impl RichEdit
         cmd := getMappingCommand(key, mdf)
         if cmd != .None
             return true
-        insertRune(ch)
+
+        c := ch
+        if c == "\r"'rune
+            c = "\n"'rune
+
+        insertRune(c)
         return true
     }
 

@@ -398,7 +398,7 @@ impl Array
 
         #if !Reflection.hasPostMove(T) and !Reflection.hasDrop(T)
         {
-            Memory.copyOver(buffer + index, buffer + index + num, (count - num) * @sizeof(T))
+            Memory.copyOver(buffer + index, buffer + index + num, (count - (index + num)) * @sizeof(T))
         }
         #else
         {
