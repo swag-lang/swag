@@ -108,6 +108,7 @@ impl IWnd for RichEditView
     mtd onPaintEvent(evt: *PaintEvent)
     {
         painter := evt.bc.painter
+        colors  := getThemeColors()
 
         marginLeft := ed.getMarginLeft()
         x    := 0'f32
@@ -153,6 +154,7 @@ impl IWnd for RichEditView
             ed.lastVisibleLineView = i
 
             l := ed.lines[i]
+
             if bvis or l.dirtyStyle or l.dirtyFold
                 x = paintLine(evt.bc, i, y - scrollPos.y, true)
 
@@ -160,6 +162,15 @@ impl IWnd for RichEditView
             l.drawingRect.y = y
             l.drawingRect.width = x - marginLeft
             l.drawingRect.height = size.y
+
+            // Current line
+            if bvis and ed.isSelectionEmpty() and i == ed.cursorPos.lineIndex
+            {
+                fullRect := l.drawingRect
+                fullRect.y -= scrollPos.y
+                fullRect.setRight(pos.right())
+                painter.drawRect(fullRect, colors.richEdit_CurLineBorder, 1)
+            }
 
             maxx = Math.max(maxx, x)
             y += size.y
