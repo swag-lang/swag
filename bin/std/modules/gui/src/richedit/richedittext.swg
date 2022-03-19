@@ -134,6 +134,21 @@ impl RichEdit
         setModified(true)
     }
 
+    mtd insertTextPrivate(text: string, selRect: bool)
+    {
+        undo := Memory.new'RichEditUndo()
+        undo.type       = .Insert
+        undo.text       = Unicode.fromUtf8(text)
+        undo.selBeg     = selBeg
+        undo.cursorPos  = cursorPos
+        undo.hasSelRect = selRect
+        undo.serial     = 0
+        resetUndo()
+        toUndo.add(undo)
+        insertTextPrivate(&cursorPos, text, selRect)
+        clearSelection()
+    }
+
     mtd deleteTextPrivate(posStart, posEnd: RichEditCursor, selRect: bool)
     {
         // Nothing to delete
@@ -177,6 +192,37 @@ impl RichEdit
         setModified(true)
     }
 
+    func isWord(c: rune)->bool
+    {
+        return Unicode.isLetterOrDigit(c) or c == "_"'rune
+    }
+
+    func zapWordChar(c: rune)->bool
+    {
+        if isWord(c)
+            return false
+        if Unicode.isSpace(c)
+            return false
+        if c != "("'rune and c != ")"'rune and c != "["'rune and c != "]"'rune and c != "{"'rune and c != "}"'rune
+            return true
+        return false
+    }
+}
+
+public impl RichEdit
+{
+    mtd getRune(cp: RichEditCursor)->rune
+    {
+        if cp.lineIndex >= lines.count
+            return 0
+        len := lines[cp.lineIndex].chars.count
+        if cp.charPosInLine > len
+            return 0
+        if cp.charPosInLine == len
+            return "\n"'rune;
+        return lines[cp.lineIndex].chars[cp.charPosInLine]
+    }
+
     mtd insertBegLine(txt: string, lastLine: bool)
     {
         first := true
@@ -201,7 +247,7 @@ impl RichEdit
 
             setCursorPos(beg)
             selBeg = beg
-            undoInsertText(txt, false)
+            insertTextPrivate(txt, false)
 
             popUndo()
 
@@ -297,7 +343,7 @@ impl RichEdit
                     serialUndo -= 1
                 selBeg = beg
                 setCursorPos(beg1)
-                undoDeleteText(beg, beg1, false)
+                deleteSelectionPrivate(beg, beg1, false)
                 popUndo()
 
                 if beg.lineIndex == savepos0.lineIndex and savepos0.charPosInLine
@@ -330,34 +376,21 @@ impl RichEdit
         }
     }
 
-    func isWord(c: rune)->bool
+    mtd cmdEditTabulation()
     {
-        return Unicode.isLetterOrDigit(c) or c == "_"'rune
+        if getBegSelection().lineIndex == getEndSelection().lineIndex
+        {
+            pushUndo()
+            deleteSelection()
+            insertTextPrivate("\t", false)
+            popUndo()
+        }
+        else
+            insertBegLine("\t", false)
     }
 
-    func zapWordChar(c: rune)->bool
+    mtd cmdEditBackTabulation()
     {
-        if isWord(c)
-            return false
-        if Unicode.isSpace(c)
-            return false
-        if c != "("'rune and c != ")"'rune and c != "["'rune and c != "]"'rune and c != "{"'rune and c != "}"'rune
-            return true
-        return false
-    }
-}
-
-public impl RichEdit
-{
-    mtd getRune(cp: RichEditCursor)->rune
-    {
-        if cp.lineIndex >= lines.count
-            return 0
-        len := lines[cp.lineIndex].chars.count
-        if cp.charPosInLine > len
-            return 0
-        if cp.charPosInLine == len
-            return "\n"'rune;
-        return lines[cp.lineIndex].chars[cp.charPosInLine]
+        deleteBegLine("\t", false)
     }
 }

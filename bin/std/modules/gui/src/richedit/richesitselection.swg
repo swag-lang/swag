@@ -1,3 +1,34 @@
+#global public
+using Core
+
+private impl RichEdit
+{
+    mtd deleteSelectionPrivate(posStart, posEnd: RichEditCursor, selRect: bool)
+    {
+        undo := Memory.new'RichEditUndo()
+        undo.type       = .Delete
+        undo.text       = getTextPrivate(posStart, posEnd, selRect)
+        undo.selBeg     = selBeg
+        undo.cursorPos  = cursorPos
+        undo.hasSelRect = selRect
+        undo.serial     = 0
+        resetUndo()
+        toUndo.add(undo)
+        deleteTextPrivate(posStart, posEnd, selRect);
+    }
+
+    mtd undoRestoreSelection()
+    {
+        undo := Memory.new'RichEditUndo()
+        undo.type      = .Selection
+        undo.selBeg    = selBeg
+        undo.cursorPos = cursorPos
+        undo.serial    = 0
+        resetUndo()
+        toUndo.add(undo)
+    }
+}
+
 impl RichEdit
 {
     mtd setRectangularSelection(selRect: bool)
@@ -69,5 +100,59 @@ impl RichEdit
 
     mtd computeRectangularSelection(beg, end: RichEditCursor)
     {
+    }
+
+    mtd deleteSelection()
+    {
+        if isReadOnly()
+            return
+        if isSelectionEmpty()
+            return
+
+        pushUndo()
+        cp := getBegSelection()
+        deleteSelectionPrivate(cp, getEndSelection(), hasSelRect)
+        computeScrollY()
+        setCursorPos(cp)
+        selBeg = cp
+        popUndo()
+    }
+
+    mtd deleteLeft()
+    {
+        pushUndo()
+        if isSelectionEmpty()
+            moveCursorLeft(&cursorPos)
+        deleteSelection()
+        popUndo()
+    }
+
+    mtd deleteRight()
+    {
+        pushUndo()
+        if isSelectionEmpty()
+            moveCursorRight(&selBeg)
+        deleteSelection()
+        popUndo()
+    }
+
+    mtd deleteWordLeft()
+    {
+        pushUndo()
+        deleteSelection()
+        moveCursorWordLeft(&cursorPos)
+        deleteSelection()
+        clearSelection()
+        popUndo()
+    }
+
+    mtd deleteWordRight()
+    {
+        pushUndo()
+        deleteSelection()
+        moveCursorWordRight(&cursorPos, true)
+        deleteSelection()
+        clearSelection()
+        popUndo()
     }
 }

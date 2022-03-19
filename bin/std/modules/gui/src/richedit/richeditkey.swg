@@ -43,7 +43,7 @@ impl RichEdit
 
             // Delete actual selection
             if !isSelectionEmpty()
-                cmdDeleteSelection()
+                deleteSelection()
             else
                 serialUndo += 1
 

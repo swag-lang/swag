@@ -290,25 +290,25 @@ impl RichEdit
         case DeleteLeft:
             if isReadOnly()
                 return
-            cmdEditDeleteLeft()
+            deleteLeft()
             resetVolatileFind()
 
         case DeleteRight:
             if isReadOnly()
                 return
-            cmdEditDeleteRight()
+            deleteRight()
             resetVolatileFind()
 
         case DeleteWordLeft:
             if isReadOnly()
                 return
-            cmdEditDeleteWordLeft()
+            deleteWordLeft()
             resetVolatileFind()
 
         case DeleteWordRight:
             if isReadOnly()
                 return
-            cmdEditDeleteWordRight()
+            deleteWordRight()
             resetVolatileFind()
 
         case EditTabulation:
@@ -335,62 +335,6 @@ impl RichEdit
             redo()
             resetVolatileFind()
         }
-    }
-
-    mtd cmdEditDeleteLeft()
-    {
-        pushUndo()
-        if isSelectionEmpty()
-            moveCursorLeft(&cursorPos)
-        deleteSelectionPrivate()
-        popUndo()
-    }
-
-    mtd cmdEditDeleteRight()
-    {
-        pushUndo()
-        if isSelectionEmpty()
-            moveCursorRight(&selBeg)
-
-        //str := GetSelectedText()
-        deleteSelectionPrivate()
-
-        // Trim line if we delete an EOL followed by an empty line
-/*        if (str == "\n")
-        {
-            CharPos end = GetBegSelection();
-            moveCursorWordRight(end, true);
-            moveCursorRight(end);
-            str = GetTextPrivate(GetBegSelection(), end, false);
-            str.Delete("\t");
-            if (str == "\n")
-            {
-                moveCursorWordRight(m_SelBeg, true);
-                DeleteSelectionPrivate();
-            }
-        }*/
-
-        popUndo()
-    }
-
-    mtd cmdEditDeleteWordLeft()
-    {
-        pushUndo()
-        deleteSelectionPrivate()
-        moveCursorWordLeft(&cursorPos)
-        deleteSelectionPrivate()
-        clearSelection()
-        popUndo()
-    }
-
-    mtd cmdEditDeleteWordRight()
-    {
-        pushUndo()
-        deleteSelectionPrivate()
-        moveCursorWordRight(&cursorPos, true)
-        deleteSelectionPrivate()
-        clearSelection()
-        popUndo()
     }
 
     mtd cmdScrollLineUp()
@@ -434,44 +378,5 @@ impl RichEdit
             clearSelection()
             pos = getCaretPos()
         }
-    }
-
-    mtd cmdDeleteSelection()
-    {
-        if isSelectionEmpty()
-            return
-        pushUndo()
-        deleteSelectionPrivate()
-        popUndo()
-    }
-
-    mtd deleteSelectionPrivate()
-    {
-        if isSelectionEmpty()
-            return
-
-        cp := getBegSelection()
-        undoDeleteText(cp, getEndSelection(), hasSelRect)
-        computeScrollY()
-        setCursorPos(cp)
-        selBeg = cp
-    }
-
-    mtd cmdEditTabulation()
-    {
-        if getBegSelection().lineIndex == getEndSelection().lineIndex
-        {
-            pushUndo()
-            deleteSelectionPrivate()
-            undoInsertText("\t", false)
-            popUndo()
-        }
-        else
-            insertBegLine("\t", false)
-    }
-
-    mtd cmdEditBackTabulation()
-    {
-        deleteBegLine("\t", false)
     }
 }

@@ -26,6 +26,23 @@ struct RichEditUndo
     endSelectionAfter:  RichEditCursor
 }
 
+private impl RichEdit
+{
+    mtd getLastModificationUndo()->uint
+    {
+        count := currentUndo
+        while count
+        {
+            if (undoMgr[count - 1].type == .Delete) or
+               (undoMgr[count - 1].type == .Insert)
+                return count
+            count -= 1
+        }
+
+        return count
+    }
+}
+
 impl RichEdit
 {
     mtd resetUndo()
@@ -71,60 +88,6 @@ impl RichEdit
         }
 
         toUndo.clear()
-    }
-
-    mtd undoInsertText(text: string, selRect: bool)
-    {
-        undo := Memory.new'RichEditUndo()
-        undo.type       = .Insert
-        undo.text       = Unicode.fromUtf8(text)
-        undo.selBeg     = selBeg
-        undo.cursorPos  = cursorPos
-        undo.hasSelRect = selRect
-        undo.serial     = 0
-        resetUndo()
-        toUndo.add(undo)
-        insertTextPrivate(&cursorPos, text, selRect)
-        clearSelection()
-    }
-
-    mtd undoDeleteText(posStart, posEnd: RichEditCursor, selRect: bool)
-    {
-        undo := Memory.new'RichEditUndo()
-        undo.type       = .Delete
-        undo.text       = getTextPrivate(posStart, posEnd, selRect)
-        undo.selBeg     = selBeg
-        undo.cursorPos  = cursorPos
-        undo.hasSelRect = selRect
-        undo.serial     = 0
-        resetUndo()
-        toUndo.add(undo)
-        deleteTextPrivate(posStart, posEnd, selRect);
-    }
-
-    mtd undoRestoreSelection()
-    {
-        undo := Memory.new'RichEditUndo()
-        undo.type      = .Selection
-        undo.selBeg    = selBeg
-        undo.cursorPos = cursorPos
-        undo.serial    = 0
-        resetUndo()
-        toUndo.add(undo)
-    }
-
-    mtd getLastModificationUndo()->uint
-    {
-        count := currentUndo
-        while count
-        {
-            if (undoMgr[count - 1].type == .Delete) or
-               (undoMgr[count - 1].type == .Insert)
-                return count
-            count -= 1
-        }
-
-        return count
     }
 
     mtd canUndo()->bool
