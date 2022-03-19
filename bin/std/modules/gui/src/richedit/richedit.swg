@@ -18,6 +18,7 @@ struct RichEditMapping
 struct RichEdit
 {
     using frameWnd: FrameWnd
+    fontFamily:     FontFamily
     richEdFlags     = RichEditFlags.None
     lineSpacing:    f32
     overwriteMode:  bool
@@ -34,6 +35,7 @@ struct RichEdit
     freeLines:      ArrayPtr'RichEditLine
     scrollWnd:      *ScrollWnd
     edView:         *RichEditView
+    selRectangle:   Math.Rectangle
 
     hasSelRect:                 bool
     modified:                   bool
@@ -41,7 +43,6 @@ struct RichEdit
     dirtyFirstLineView:         bool
     forceCaretVisible:          bool
     forceCaretVisibleCenter:    bool
-
 
     undoMgr:            ArrayPtr'RichEditUndo
     toUndo:             ArrayPtr'RichEditUndo
@@ -231,6 +232,7 @@ impl RichEdit
         ed := Wnd.create'RichEdit(parent, "", position, id)
         ed.frameWnd.style.addStyleSheetColors("frameWnd_FocusBk $richEdit_Bk")
         ed.frameWnd.style.addStyleSheetColors("frameWnd_Bk $richEdit_Bk")
+        ed.fontFamily = parent.getTheme().res.fontDefaultFs
 
         with ed
         {

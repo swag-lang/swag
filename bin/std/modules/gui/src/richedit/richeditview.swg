@@ -55,11 +55,11 @@ impl IWnd for RichEditView
                     ed.setCursorPos(cp)
                     ed.ensureCaretIsVisible()
                     ed.setRectangularSelection(false)
-                    /*if (sKeyboardState::IsKeyPressed(sKey::CONTROL) && sKeyboardState::IsKeyPressed(sKey::ALT))
+                    if evt.modifiers & .Alt
                     {
-                        CmdSelSetRect(true);
-                        CheckSelection();
-                    }*/
+                        ed.setRectangularSelection(true)
+                        ed.checkSelection()
+                    }
                 }
             }
         }
@@ -220,7 +220,7 @@ impl RichEditView
     {
         painter := bc.painter
 
-        font := getTheme().res.fontDefault.getFont(strStyle.fontMode)
+        font := ed.fontFamily.getFont(strStyle.fontMode)
         me := Painter.measureString(str, font)
 
         // Background rectangle
@@ -275,8 +275,13 @@ impl RichEditView
             selected := false
             if ed.hasSelRect
             {
-                 // and m_SelRect.IsInRect(charpos))
-                selected = true
+                var cp1: RichEditCursor
+                cp1.charPosInLine = i
+                cp1.lineIndex = lineIndex
+                charPos := ed.getCursorDisplayPos(cp1)
+                charPos.y -= size.y * 0.5
+                if ed.selRectangle.contains(charPos)
+                    selected = true
             }
             else
             {

@@ -20,7 +20,7 @@ impl RichEdit
         else
         {
             styleIdx := line.styles[i]
-            font := getTheme().res.fontDefault.getFont(styles[styleIdx].fontMode)
+            font := fontFamily.getFont(styles[styleIdx].fontMode)
             size = Painter.measureRune(line.chars[i], font)
             size.y += lineSpacing
         }
@@ -49,7 +49,7 @@ impl RichEdit
     mtd getTabOffset(x: s32)->s32
     {
         of   := x - getMarginLeft()
-        font := getTheme().res.fontDefault.getFont(styles[0].fontMode)
+        font := fontFamily.getFont(styles[0].fontMode)
         size := Painter.measureRune(" "'rune, font)
         tab  := (of / (tabSize * size.x)) * (tabSize * size.x)
         tab  = of - tab
@@ -59,7 +59,7 @@ impl RichEdit
 
     mtd getXExtent()->Math.Point
     {
-        font := getTheme().res.fontDefault.getFont(styles[0].fontMode)
+        font := fontFamily.getFont(styles[0].fontMode)
         return Painter.measureRune("X"'rune, font)
     }
 

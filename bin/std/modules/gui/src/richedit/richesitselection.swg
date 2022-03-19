@@ -100,6 +100,18 @@ impl RichEdit
 
     mtd computeRectangularSelection(beg, end: RichEditCursor)
     {
+        if !hasSelRect
+            return
+
+        size := getXExtent()
+
+        ptBeg := getCursorDisplayPos(beg)
+        ptEnd := getCursorDisplayPos(end)
+
+        selRectangle.x = Math.min(ptBeg.x, ptEnd.x)
+        selRectangle.y = Math.min(ptBeg.y, ptEnd.y) - size.y
+        selRectangle.setRight(Math.max(ptBeg.x, ptEnd.x))
+        selRectangle.setBottom(Math.max(ptBeg.y, ptEnd.y))
     }
 
     mtd deleteSelection()
