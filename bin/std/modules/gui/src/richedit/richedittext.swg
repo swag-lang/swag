@@ -412,7 +412,15 @@ public impl RichEdit
         // Append the character to the last undo
         pundo = undoMgr[currentUndo - 1]
         pundo.runes.add(c)
-        pundo.styles.add(0)
+
+        // Get the style from the previous character
+        line := lines[cursorPos.lineIndex]
+        var st: u8
+        if !cursorPos.charPosInLine and line.length()
+            st = line.styles[0]
+        elif cursorPos.charPosInLine and cursorPos.charPosInLine - 1 < line.length()
+            st = line.styles[cursorPos.charPosInLine - 1]
+        pundo.styles.add(st)
 
         // Do action
         if hasSelRect
@@ -425,7 +433,7 @@ public impl RichEdit
                 cp.lineIndex = caretI
                 if cp.charPosInLine > lines[cp.lineIndex].length()
                     continue
-                insertTextPrivate(&cp, @mkstring(&az[0], cpt), 0, false)
+                insertTextPrivate(&cp, @mkstring(&az[0], cpt), st, false)
             }
 
             moveCursorRight(&selBeg)
@@ -433,14 +441,13 @@ public impl RichEdit
         }
         else
         {
-            insertTextPrivate(&cursorPos, @mkstring(&az[0], cpt), 0, false)
+            insertTextPrivate(&cursorPos, @mkstring(&az[0], cpt), st, false)
             clearSelection()
         }
 
-        invalidate()
-
         pundo.begSelectionAfter = selBeg
         pundo.endSelectionAfter = cursorPos
+        invalidate()
     }
 
     mtd insertBegLine(txt: string, lastLine: bool)
