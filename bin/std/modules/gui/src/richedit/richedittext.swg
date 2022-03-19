@@ -3,7 +3,7 @@ using Core, Pixel
 
 impl RichEdit
 {
-    mtd getRune(cp: RichEditCursorPos)->rune
+    mtd getRune(cp: RichEditCursor)->rune
     {
         if cp.lineIndex >= lines.count
             return 0
@@ -15,7 +15,7 @@ impl RichEdit
         return lines[cp.lineIndex].chars[cp.charPosInLine]
     }
 
-    mtd getTextPrivate(start, end: RichEditCursorPos, selRect: bool)->Array'rune
+    mtd getTextPrivate(start, end: RichEditCursor, selRect: bool)->Array'rune
     {
         var result: retval
         if !hasSelRect
@@ -72,7 +72,7 @@ impl RichEdit
         return result
     }
 
-    mtd insertRunePrivate(cp: *RichEditCursorPos, c: rune, selRect: bool)
+    mtd insertRunePrivate(cp: *RichEditCursor, c: rune, selRect: bool)
     {
         if !selRect
         {
@@ -103,7 +103,7 @@ impl RichEdit
         }
     }
 
-    mtd insertTextPrivate(cp: *RichEditCursorPos, text: Array'rune, selRect: bool)
+    mtd insertTextPrivate(cp: *RichEditCursor, text: Array'rune, selRect: bool)
     {
         if text.isEmpty()
             return
@@ -121,7 +121,7 @@ impl RichEdit
         }
     }
 
-    mtd insertTextPrivate(cp: *RichEditCursorPos, text: string, selRect: bool)
+    mtd insertTextPrivate(cp: *RichEditCursor, text: string, selRect: bool)
     {
         if lines.isEmpty()
             newLine(0)
@@ -147,7 +147,7 @@ impl RichEdit
         setModified(true)
     }
 
-    mtd deleteTextPrivate(posStart, posEnd: RichEditCursorPos, selRect: bool)
+    mtd deleteTextPrivate(posStart, posEnd: RichEditCursor, selRect: bool)
     {
         // Nothing to delete
         if posStart.lineIndex == posEnd.lineIndex and posStart.charPosInLine == posEnd.charPosInLine
@@ -212,7 +212,7 @@ impl RichEdit
             if !first
                 serialUndo -= 1
 
-            cmdSetCursorPos(beg)
+            setCursorPos(beg)
             selBeg = beg
             undoInsertText(txt, false)
 
@@ -228,7 +228,7 @@ impl RichEdit
         }
 
         selBeg = savepos0
-        cmdSetCursorPos(savepos1)
+        setCursorPos(savepos1)
 
         // A dummy undo just to restore the selection
         if !first
@@ -309,7 +309,7 @@ impl RichEdit
                 if !first
                     serialUndo -= 1
                 selBeg = beg
-                cmdSetCursorPos(beg1)
+                setCursorPos(beg1)
                 undoDeleteText(beg, beg1, false)
                 popUndo()
 
@@ -331,7 +331,7 @@ impl RichEdit
         }
 
         selBeg = savepos0
-        cmdSetCursorPos(savepos1)
+        setCursorPos(savepos1)
 
         // A dummy undo just to restore the selection
         if !first

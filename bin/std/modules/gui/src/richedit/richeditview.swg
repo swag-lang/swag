@@ -27,7 +27,7 @@ impl IWnd for RichEditView
                 pt := surfaceToLocal(evt.surfacePos) + scrollPos
                 cp := ed.getCursorPosFromPoint(pt)
                 firstLineSelMode = cp.lineIndex
-                ed.cmdSetCursorPos(cp)
+                ed.setCursorPos(cp)
                 ed.selBeg  = cp
                 selMode = true
                 ed.cmdSetSelRect(false)
@@ -52,7 +52,7 @@ impl IWnd for RichEditView
                 cp := ed.getCursorPosFromPoint(pt)
                 if ed.cursorPos.lineIndex != cp.lineIndex or ed.cursorPos.charPosInLine != cp.charPosInLine
                 {
-                    ed.cmdSetCursorPos(cp)
+                    ed.setCursorPos(cp)
                     ed.ensureCaretIsVisible()
                     ed.cmdSetSelRect(false)
                     /*if (sKeyboardState::IsKeyPressed(sKey::CONTROL) && sKeyboardState::IsKeyPressed(sKey::ALT))

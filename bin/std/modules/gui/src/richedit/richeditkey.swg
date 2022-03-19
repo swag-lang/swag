@@ -87,7 +87,7 @@ impl RichEdit
                 if cursorPos.charPosInLine != lines[cursorPos.lineIndex].length()
                 {
                     pundo.text.add(getRune(cursorPos))
-                    discard cmdCursorRight(&pundo.selBeg)
+                    discard moveCursorRight(&pundo.selBeg)
                     deleteTextPrivate(cursorPos, pundo.selBeg, false)
                     cmdClearSelection()
                 }

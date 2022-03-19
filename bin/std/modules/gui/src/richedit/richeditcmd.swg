@@ -137,17 +137,17 @@ impl RichEdit
         {
         case CursorLeft:
             if isSelectionEmpty()
-                cmdCursorLeft(&cursorPos)
+                moveCursorLeft(&cursorPos)
             else
-                cmdSetCursorPos(getBegSelection())
+                setCursorPos(getBegSelection())
             cmdClearSelection()
             resetVolatileFind()
 
         case CursorRight:
             if isSelectionEmpty()
-                cmdCursorRight(&cursorPos)
+                moveCursorRight(&cursorPos)
             else
-                cmdSetCursorPos(getEndSelection())
+                setCursorPos(getEndSelection())
             cmdClearSelection()
             resetVolatileFind()
 
@@ -155,11 +155,11 @@ impl RichEdit
             if !isSelectionEmpty()
             {
                 pt := getCursorDisplayPos(cursorPos)
-                cmdSetCursorPos(getBegSelection())
-                cmdCursorUp(&cursorPos, pt)
+                setCursorPos(getBegSelection())
+                moveCursorUp(&cursorPos, pt)
             }
             else
-                cmdCursorUp(&cursorPos)
+                moveCursorUp(&cursorPos)
             cmdClearSelection()
             resetVolatileFind()
 
@@ -167,51 +167,51 @@ impl RichEdit
             if !isSelectionEmpty()
             {
                 pt := getCursorDisplayPos(cursorPos)
-                cmdSetCursorPos(getEndSelection())
-                cmdCursorDown(&cursorPos, pt)
+                setCursorPos(getEndSelection())
+                moveCursorDown(&cursorPos, pt)
             }
             else
-                cmdCursorDown(&cursorPos)
+                moveCursorDown(&cursorPos)
             cmdClearSelection()
             resetVolatileFind()
 
         case CursorStartLine:
-            cmdCursorStartLine(&cursorPos)
+            moveCursorStartLine(&cursorPos)
             cmdClearSelection()
             resetVolatileFind()
 
         case CursorEndLine:
-            cmdCursorEndLine(&cursorPos)
+            moveCursorEndLine(&cursorPos)
             cmdClearSelection()
             resetVolatileFind()
 
         case CursorStartFile:
-            cmdCursorStartFile(&cursorPos)
+            moveCursorStartFile(&cursorPos)
             cmdClearSelection()
             resetVolatileFind()
 
         case CursorEndFile:
-            cmdCursorEndFile(&cursorPos)
+            moveCursorEndFile(&cursorPos)
             cmdClearSelection()
             resetVolatileFind()
 
         case CursorWordLeft:
-            cmdCursorWordLeft(&cursorPos)
+            moveCursorWordLeft(&cursorPos)
             cmdClearSelection()
             resetVolatileFind()
 
         case CursorWordRight:
-            cmdCursorWordRight(&cursorPos, true)
+            moveCursorWordRight(&cursorPos, true)
             cmdClearSelection()
             resetVolatileFind()
 
         case CursorPageUp:
-            cmdCursorPageUp(&cursorPos)
+            moveCursorPageUp(&cursorPos)
             cmdClearSelection()
             resetVolatileFind()
 
         case CursorPageDown:
-            cmdCursorPageDown(&cursorPos)
+            moveCursorPageDown(&cursorPos)
             cmdClearSelection()
             resetVolatileFind()
 
@@ -222,68 +222,68 @@ impl RichEdit
             cmdScrollLineDown()
 
         case SelectRuneLeft:
-            cmdCursorLeft(&cursorPos)
+            moveCursorLeft(&cursorPos)
             resetVolatileFind()
             cmdSetSelRect(false)
 
         case SelectRuneRight:
-            cmdCursorRight(&cursorPos)
+            moveCursorRight(&cursorPos)
             resetVolatileFind()
             cmdSetSelRect(false)
 
         case SelectRuneUp:
-            cmdCursorUp(&cursorPos)
+            moveCursorUp(&cursorPos)
             resetVolatileFind()
             cmdSetSelRect(false)
 
         case SelectRuneDown:
-            cmdCursorDown(&cursorPos)
+            moveCursorDown(&cursorPos)
             resetVolatileFind()
             cmdSetSelRect(false)
 
         case SelectStartLine:
-            cmdCursorStartLine(&cursorPos)
+            moveCursorStartLine(&cursorPos)
             resetVolatileFind()
             cmdSetSelRect(false)
 
         case SelectEndLine:
-            cmdCursorEndLine(&cursorPos)
+            moveCursorEndLine(&cursorPos)
             resetVolatileFind()
             cmdSetSelRect(false)
 
         case SelectStartFile:
-            cmdCursorStartFile(&cursorPos)
+            moveCursorStartFile(&cursorPos)
             resetVolatileFind()
             cmdSetSelRect(false)
 
         case SelectEndFile:
-            cmdCursorEndFile(&cursorPos)
+            moveCursorEndFile(&cursorPos)
             resetVolatileFind()
             cmdSetSelRect(false)
 
         case SelectAllFile:
-            cmdCursorStartFile(&selBeg)
-            cmdCursorEndFile(&cursorPos)
+            moveCursorStartFile(&selBeg)
+            moveCursorEndFile(&cursorPos)
             resetVolatileFind()
             cmdSetSelRect(false)
 
         case SelectWordLeft:
-            cmdCursorWordLeft(&cursorPos)
+            moveCursorWordLeft(&cursorPos)
             resetVolatileFind()
             cmdSetSelRect(false)
 
         case SelectWordRight:
-            cmdCursorWordRight(&cursorPos, false)
+            moveCursorWordRight(&cursorPos, false)
             resetVolatileFind()
             cmdSetSelRect(false)
 
         case SelectPageUp:
-            cmdCursorPageUp(&cursorPos)
+            moveCursorPageUp(&cursorPos)
             resetVolatileFind()
             cmdSetSelRect(false)
 
         case SelectPageDown:
-            cmdCursorPageDown(&cursorPos)
+            moveCursorPageDown(&cursorPos)
             resetVolatileFind()
             cmdSetSelRect(false)
 
@@ -337,11 +337,6 @@ impl RichEdit
         }
     }
 
-    mtd cmdSetCursorPos(cp: RichEditCursorPos)
-    {
-        cursorPos = cp
-    }
-
     mtd cmdSetSelRect(selRect: bool)
     {
         hasSelRect = selRect
@@ -362,315 +357,11 @@ impl RichEdit
         popUndo()
     }
 
-    #[Swag.Discardable]
-    mtd cmdCursorLeft(cp: *RichEditCursorPos)->bool
-    {
-        if cp.charPosInLine == 0
-        {
-            prev := getPreviousVisibleLine(cp.lineIndex)
-            if prev == cp.lineIndex
-                return false
-            cp.lineIndex     = prev
-            cp.charPosInLine = lines[prev].length()
-        }
-        else
-        {
-            cp.charPosInLine -= 1
-        }
-
-        return true
-    }
-
-    #[Swag.Discardable]
-    mtd cmdCursorRight(cp: *RichEditCursorPos)->bool
-    {
-        if cp.charPosInLine == lines[cp.lineIndex].length()
-        {
-            next := getNextVisibleLine(cp.lineIndex)
-            if next == cp.lineIndex
-                return false
-            cp.lineIndex     = next
-            cp.charPosInLine = 0
-        }
-        else
-        {
-            cp.charPosInLine += 1
-        }
-
-        return true
-    }
-
-    #[Swag.Discardable]
-    mtd cmdCursorUp(cp: *RichEditCursorPos)->bool
-    {
-        pt := getCursorDisplayPos(cp)
-        return cmdCursorUp(cp, pt)
-    }
-
-    #[Swag.Discardable]
-    mtd cmdCursorUp(cp: *RichEditCursorPos, posPrev: Math.Point)->bool
-    {
-        prev := getPreviousVisibleLine(cp.lineIndex)
-        if prev == cp.lineIndex
-            return false
-
-        cp.lineIndex = prev
-        line := lines[cp.lineIndex]
-        cp.charPosInLine = Math.min(line.length(), cp.charPosInLine)
-        posNew := getCursorDisplayPos(cp)
-
-        if posPrev.x == posNew.x
-            return true
-        if posNew.x < posPrev.x
-        {
-            while posNew.x < posPrev.x and cp.charPosInLine < line.length()
-            {
-                posNew.x += getRuneSize(line, cp.charPosInLine, posNew.x).x
-                cp.charPosInLine += 1
-            }
-        }
-        else
-        {
-            line = lines[cp.lineIndex]
-            while posNew.x > posPrev.x and cp.charPosInLine
-            {
-                cp.charPosInLine -= 1
-                posNew.x -= getRuneSize(line, cp.charPosInLine, posNew.x).x
-            }
-        }
-
-        return true
-    }
-
-    #[Swag.Discardable]
-    mtd cmdCursorDown(cp: *RichEditCursorPos)->bool
-    {
-        pt := getCursorDisplayPos(cp)
-        return cmdCursorDown(cp, pt)
-    }
-
-    #[Swag.Discardable]
-    mtd cmdCursorDown(cp: *RichEditCursorPos, posPrev: Math.Point)->bool
-    {
-        next := getNextVisibleLine(cp.lineIndex)
-        if next == cp.lineIndex
-            return false
-
-        cp.lineIndex = next
-        line := lines[cp.lineIndex]
-        cp.charPosInLine = Math.min(line.length(), cp.charPosInLine)
-        posNew := getCursorDisplayPos(cp)
-
-        if posPrev.x == posNew.x
-            return true
-        if posNew.x < posPrev.x
-        {
-            while posNew.x < posPrev.x and cp.charPosInLine < line.length()
-            {
-                posNew.x += getRuneSize(line, cp.charPosInLine, posNew.x).x
-                cp.charPosInLine += 1
-            }
-        }
-        else
-        {
-            line = lines[cp.lineIndex]
-            while posNew.x > posPrev.x and cp.charPosInLine
-            {
-                cp.charPosInLine -= 1
-                posNew.x -= getRuneSize(line, cp.charPosInLine, posNew.x).x
-            }
-        }
-
-        return true
-    }
-
-    mtd cmdCursorStartLine(cp: *RichEditCursorPos)
-    {
-        line := lines[cp.lineIndex]
-        i    := cast(s32) cp.charPosInLine
-
-        var firstBlank: bool
-        if !i
-        {
-            firstBlank = true
-        }
-        else
-        {
-            firstBlank = false
-            i -= 1
-            while i >= 0
-            {
-                if !Unicode.isSpace(line.chars[i])
-                {
-                    firstBlank = true
-                    break
-                }
-
-                i -= 1
-            }
-        }
-
-        cp.charPosInLine = 0
-        if firstBlank
-        {
-            while cp.charPosInLine < line.length() and Unicode.isSpace(line.chars[cp.charPosInLine])
-                cp.charPosInLine += 1
-        }
-    }
-
-    mtd cmdCursorEndLine(cp: *RichEditCursorPos)
-    {
-        cp.charPosInLine = lines[cp.lineIndex].length()
-    }
-
-    mtd cmdCursorStartFile(cp: *RichEditCursorPos)
-    {
-        cp.lineIndex     = getFirstVisibleLine()
-        cp.charPosInLine = 0
-    }
-
-    mtd cmdCursorEndFile(cp: *RichEditCursorPos)
-    {
-        cp.lineIndex     = getLastVisibleLine()
-        cp.charPosInLine = lines[cp.lineIndex].length()
-    }
-
-    mtd cmdCursorPageUp(cp: *RichEditCursorPos)
-    {
-        client := edView.getClientRect()
-        count := cast(int) (client.height / getXExtent().y)
-        while count
-        {
-            if cp.lineIndex == 0
-                break
-            cmdCursorUp(cp)
-            count -= 1
-        }
-    }
-
-    mtd cmdCursorPageDown(cp: *RichEditCursorPos)
-    {
-        client := edView.getClientRect()
-        count := cast(int) (client.height / getXExtent().y)
-        while count
-        {
-            if cp.lineIndex == lines.count - 1
-                break
-            cmdCursorDown(cp)
-            count -= 1
-        }
-    }
-
-    mtd cmdCursorWordLeft(cp: *RichEditCursorPos)
-    {
-        line := lines[cp.lineIndex]
-        if cp.charPosInLine == 0
-        {
-            cmdCursorLeft(cp)
-            return
-        }
-
-        if Unicode.isSpace(line.chars[cp.charPosInLine - 1])
-        {
-            if !cmdCursorLeft(cp)
-                return
-            line = lines[cp.lineIndex]
-            while cp.charPosInLine != 0 and Unicode.isSpace(line.chars[cp.charPosInLine - 1])
-            {
-                if !cmdCursorLeft(cp)
-                    return
-                line = lines[cp.lineIndex]
-            }
-
-            if !cp.charPosInLine
-                return
-        }
-
-        if isWord(line.chars[cp.charPosInLine - 1])
-        {
-            while cp.charPosInLine != 0 and isWord(line.chars[cp.charPosInLine - 1])
-            {
-                if !cmdCursorLeft(cp)
-                    return
-                line = lines[cp.lineIndex]
-            }
-        }
-        elif zapWordChar(line.chars[cp.charPosInLine - 1])
-        {
-            while cp.charPosInLine != 0 and zapWordChar(line.chars[cp.charPosInLine - 1])
-            {
-                if !cmdCursorLeft(cp)
-                    return
-                line = lines[cp.lineIndex]
-            }
-        }
-        else
-        {
-            cmdCursorLeft(cp)
-        }
-    }
-
-    mtd cmdCursorWordRight(cp: *RichEditCursorPos, withSpace: bool)
-    {
-        line := lines[cp.lineIndex]
-        if cp.charPosInLine == line.length() or Unicode.isSpace(line.chars[cp.charPosInLine])
-        {
-            if !cmdCursorRight(cp)
-                return
-            line = lines[cp.lineIndex]
-            while cp.charPosInLine != line.length() and Unicode.isSpace(line.chars[cp.charPosInLine])
-            {
-                if !cmdCursorRight(cp)
-                    return
-                line = lines[cp.lineIndex]
-            }
-        }
-        elif isWord(line.chars[cp.charPosInLine])
-        {
-            while cp.charPosInLine != line.length() and isWord(line.chars[cp.charPosInLine])
-            {
-                if !cmdCursorRight(cp)
-                    return
-                line = lines[cp.lineIndex]
-            }
-
-            if withSpace
-            {
-                while cp.charPosInLine != line.length() and Unicode.isSpace(line.chars[cp.charPosInLine])
-                {
-                    if !cmdCursorRight(cp)
-                        return
-                    line = lines[cp.lineIndex]
-                }
-            }
-        }
-        elif zapWordChar(line.chars[cp.charPosInLine])
-        {
-            while cp.charPosInLine != line.length() and zapWordChar(line.chars[cp.charPosInLine])
-            {
-                if !cmdCursorRight(cp)
-                    return
-                line = lines[cp.lineIndex]
-            }
-
-            while cp.charPosInLine != line.length() and Unicode.isSpace(line.chars[cp.charPosInLine])
-            {
-                if !cmdCursorRight(cp)
-                    return
-                line = lines[cp.lineIndex]
-            }
-        }
-        else
-        {
-            cmdCursorRight(cp)
-        }
-    }
-
     mtd cmdEditDeleteLeft()
     {
         pushUndo()
         if isSelectionEmpty()
-            cmdCursorLeft(&cursorPos)
+            moveCursorLeft(&cursorPos)
         deleteSelectionPrivate()
         popUndo()
     }
@@ -679,7 +370,7 @@ impl RichEdit
     {
         pushUndo()
         if isSelectionEmpty()
-            cmdCursorRight(&selBeg)
+            moveCursorRight(&selBeg)
 
         //str := GetSelectedText()
         deleteSelectionPrivate()
@@ -688,13 +379,13 @@ impl RichEdit
 /*        if (str == "\n")
         {
             CharPos end = GetBegSelection();
-            CmdCursorWordRight(end, true);
-            CmdCursorRight(end);
+            moveCursorWordRight(end, true);
+            moveCursorRight(end);
             str = GetTextPrivate(GetBegSelection(), end, false);
             str.Delete("\t");
             if (str == "\n")
             {
-                CmdCursorWordRight(m_SelBeg, true);
+                moveCursorWordRight(m_SelBeg, true);
                 DeleteSelectionPrivate();
             }
         }*/
@@ -706,7 +397,7 @@ impl RichEdit
     {
         pushUndo()
         deleteSelectionPrivate()
-        cmdCursorWordLeft(&cursorPos)
+        moveCursorWordLeft(&cursorPos)
         deleteSelectionPrivate()
         cmdClearSelection()
         popUndo()
@@ -716,105 +407,10 @@ impl RichEdit
     {
         pushUndo()
         deleteSelectionPrivate()
-        cmdCursorWordRight(&cursorPos, true)
+        moveCursorWordRight(&cursorPos, true)
         deleteSelectionPrivate()
         cmdClearSelection()
         popUndo()
-    }
-
-    mtd cmdUndo()
-    {
-        if undoMgr.count == 0
-            return
-        if !currentUndo
-            return
-
-        currentUndo -= 1
-        undo   := undoMgr[currentUndo]
-        serial := undo.serial
-
-        loop
-        {
-            if undo.type == .Delete
-            {
-                selBeg = undo.selBeg
-                cmdSetCursorPos(undo.cursorPos)
-                cp := getBegSelection()
-                insertTextPrivate(&cp, undo.text, undo.hasSelRect)
-            }
-            elif undo.type == .Insert
-            {
-                selBeg = undo.selBeg
-                cmdSetCursorPos(undo.cursorPos)
-                cmdSetSelRect(undo.hasSelRect)
-                //ComputeRectangularSelection(m_CursorPos, pundo->m_BegSelectionAfter)
-                deleteTextPrivate(cursorPos, undo.begSelectionAfter, undo.hasSelRect)
-            }
-
-            selBeg = undo.begSelectionBefore
-            cmdSetCursorPos(undo.endSelectionBefore)
-            cmdSetSelRect(undo.hasSelRect)
-            if !currentUndo
-                break
-            undo = undoMgr[currentUndo - 1]
-            if undo.serial != serial
-                break
-            currentUndo -= 1
-        }
-
-        if getLastModificationUndo() == modifiedUndoMarker
-            setModified(false)
-        else
-            setModified(true)
-        computeScrollY()
-    }
-
-    mtd cmdRedo()
-    {
-        if undoMgr.count == 0
-            return
-        if currentUndo == undoMgr.count
-            return
-
-        undo   := undoMgr[currentUndo]
-        serial := undo.serial
-        currentUndo += 1
-
-        loop
-        {
-            if undo.type == .Delete
-            {
-                selBeg = undo.selBeg
-                cmdSetCursorPos(undo.cursorPos)
-                cmdSetSelRect(undo.hasSelRect)
-                //ComputeRectangularSelection(GetBegSelection(), GetEndSelection())
-                deleteTextPrivate(getBegSelection(), getEndSelection(), undo.hasSelRect)
-            }
-            elif undo.type == .Insert
-            {
-                selBeg = undo.selBeg
-                cmdSetCursorPos(undo.cursorPos)
-                cp := getBegSelection()
-                insertTextPrivate(&cp, undo.text, undo.hasSelRect)
-            }
-
-            selBeg = undo.begSelectionAfter
-            cmdSetCursorPos(undo.endSelectionAfter)
-            cmdSetSelRect(undo.hasSelRect)
-
-            if currentUndo == undoMgr.count
-                break
-            undo = undoMgr[currentUndo]
-            if undo.serial != serial
-                break
-            currentUndo += 1
-        }
-
-        if getLastModificationUndo() == modifiedUndoMarker
-            setModified(false)
-        else
-            setModified(true)
-        computeScrollY()
     }
 
     mtd cmdScrollLineUp()
@@ -832,7 +428,7 @@ impl RichEdit
         pos := getCaretPos()
         while pos.bottom() > sy + clientRect.height
         {
-            if !cmdCursorUp(&cursorPos)
+            if !moveCursorUp(&cursorPos)
                 break
             cmdClearSelection()
             pos = getCaretPos()
@@ -853,7 +449,7 @@ impl RichEdit
         pos := getCaretPos()
         while pos.y < sy
         {
-            if !cmdCursorDown(&cursorPos)
+            if !moveCursorDown(&cursorPos)
                 break
             cmdClearSelection()
             pos = getCaretPos()

@@ -28,8 +28,8 @@ struct RichEdit
 
     styles:         [256] RichEditCharStyle
     stylesSelect:   [2] RichEditCharStyle
-    cursorPos:      RichEditCursorPos
-    selBeg:         RichEditCursorPos
+    cursorPos:      RichEditCursor
+    selBeg:         RichEditCursor
     lines:          ArrayPtr'RichEditLine
     freeLines:      ArrayPtr'RichEditLine
     scrollWnd:      *ScrollWnd
@@ -53,8 +53,8 @@ struct RichEdit
     countVisibleLines:      uint
     firstVisibleLineView:   uint
     lastVisibleLineView:    uint
-    cursorPosUndo:      RichEditCursorPos
-    selBegUndo:         RichEditCursorPos
+    cursorPosUndo:      RichEditCursor
+    selBegUndo:         RichEditCursor
 }
 
 private impl RichEdit
@@ -273,7 +273,7 @@ impl RichEdit
 
         clearPrivate()
 
-        var cp: RichEditCursorPos
+        var cp: RichEditCursor
         insertTextPrivate(&cp, text, false)
 
         resetModified()

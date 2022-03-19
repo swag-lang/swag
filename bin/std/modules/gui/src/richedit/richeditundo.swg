@@ -14,16 +14,16 @@ struct RichEditUndo
 {
     type:           RichEditUndoType = Selection
     concatChars:    bool
-    selBeg:         RichEditCursorPos
-    cursorPos:      RichEditCursorPos
+    selBeg:         RichEditCursor
+    cursorPos:      RichEditCursor
     text:           Array'rune
     serial:         uint
     hasSelRect:     bool
 
-    begSelectionBefore: RichEditCursorPos
-    endSelectionBefore: RichEditCursorPos
-    begSelectionAfter:  RichEditCursorPos
-    endSelectionAfter:  RichEditCursorPos
+    begSelectionBefore: RichEditCursor
+    endSelectionBefore: RichEditCursor
+    begSelectionAfter:  RichEditCursor
+    endSelectionAfter:  RichEditCursor
 }
 
 impl RichEdit
@@ -88,7 +88,7 @@ impl RichEdit
         cmdClearSelection()
     }
 
-    mtd undoDeleteText(posStart, posEnd: RichEditCursorPos, selRect: bool)
+    mtd undoDeleteText(posStart, posEnd: RichEditCursor, selRect: bool)
     {
         undo := Memory.new'RichEditUndo()
         undo.type       = .Delete
@@ -125,5 +125,100 @@ impl RichEdit
         }
 
         return count
+    }
+
+    mtd cmdUndo()
+    {
+        if undoMgr.count == 0
+            return
+        if !currentUndo
+            return
+
+        currentUndo -= 1
+        undo   := undoMgr[currentUndo]
+        serial := undo.serial
+
+        loop
+        {
+            if undo.type == .Delete
+            {
+                selBeg = undo.selBeg
+                setCursorPos(undo.cursorPos)
+                cp := getBegSelection()
+                insertTextPrivate(&cp, undo.text, undo.hasSelRect)
+            }
+            elif undo.type == .Insert
+            {
+                selBeg = undo.selBeg
+                setCursorPos(undo.cursorPos)
+                cmdSetSelRect(undo.hasSelRect)
+                //ComputeRectangularSelection(m_CursorPos, pundo->m_BegSelectionAfter)
+                deleteTextPrivate(cursorPos, undo.begSelectionAfter, undo.hasSelRect)
+            }
+
+            selBeg = undo.begSelectionBefore
+            setCursorPos(undo.endSelectionBefore)
+            cmdSetSelRect(undo.hasSelRect)
+            if !currentUndo
+                break
+            undo = undoMgr[currentUndo - 1]
+            if undo.serial != serial
+                break
+            currentUndo -= 1
+        }
+
+        if getLastModificationUndo() == modifiedUndoMarker
+            setModified(false)
+        else
+            setModified(true)
+        computeScrollY()
+    }
+
+    mtd cmdRedo()
+    {
+        if undoMgr.count == 0
+            return
+        if currentUndo == undoMgr.count
+            return
+
+        undo   := undoMgr[currentUndo]
+        serial := undo.serial
+        currentUndo += 1
+
+        loop
+        {
+            if undo.type == .Delete
+            {
+                selBeg = undo.selBeg
+                setCursorPos(undo.cursorPos)
+                cmdSetSelRect(undo.hasSelRect)
+                //ComputeRectangularSelection(GetBegSelection(), GetEndSelection())
+                deleteTextPrivate(getBegSelection(), getEndSelection(), undo.hasSelRect)
+            }
+            elif undo.type == .Insert
+            {
+                selBeg = undo.selBeg
+                setCursorPos(undo.cursorPos)
+                cp := getBegSelection()
+                insertTextPrivate(&cp, undo.text, undo.hasSelRect)
+            }
+
+            selBeg = undo.begSelectionAfter
+            setCursorPos(undo.endSelectionAfter)
+            cmdSetSelRect(undo.hasSelRect)
+
+            if currentUndo == undoMgr.count
+                break
+            undo = undoMgr[currentUndo]
+            if undo.serial != serial
+                break
+            currentUndo += 1
+        }
+
+        if getLastModificationUndo() == modifiedUndoMarker
+            setModified(false)
+        else
+            setModified(true)
+        computeScrollY()
     }
 }

@@ -9,7 +9,7 @@ impl RichEdit
         return true
     }
 
-    mtd getBegSelection()->RichEditCursorPos
+    mtd getBegSelection()->RichEditCursor
     {
         if selBeg.lineIndex < cursorPos.lineIndex
             return selBeg
@@ -20,7 +20,7 @@ impl RichEdit
         return cursorPos
     }
 
-    mtd getEndSelection()->RichEditCursorPos
+    mtd getEndSelection()->RichEditCursor
     {
         if selBeg.lineIndex < cursorPos.lineIndex
             return cursorPos
@@ -40,7 +40,7 @@ impl RichEdit
         cp := getBegSelection()
         undoDeleteText(cp, getEndSelection(), hasSelRect)
         computeScrollY()
-        cmdSetCursorPos(cp)
+        setCursorPos(cp)
         selBeg = cp
         return true
     }
