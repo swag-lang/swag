@@ -30,7 +30,7 @@ impl IWnd for RichEditView
                 ed.setCursorPos(cp)
                 ed.selBeg  = cp
                 selMode = true
-                ed.setRectangularSelection(false)
+                ed.setRectangularSelection(evt.modifiers & .Alt ? true : false)
                 ed.ensureCaretIsVisible()
                 captureMouse()
             }
@@ -52,14 +52,18 @@ impl IWnd for RichEditView
                 cp := ed.getCursorPosFromPoint(pt)
                 if ed.cursorPos.lineIndex != cp.lineIndex or ed.cursorPos.charPosInLine != cp.charPosInLine
                 {
-                    ed.setCursorPos(cp)
-                    ed.ensureCaretIsVisible()
-                    ed.setRectangularSelection(false)
-                    if evt.modifiers & .Alt
+                    if ed.hasSelRect
                     {
-                        ed.setRectangularSelection(true)
+                        if cp.charPosInLine >= ed.selBeg.charPosInLine
+                            ed.setCursorPos(cp)
                         ed.checkSelection()
                     }
+                    else
+                    {
+                        ed.setCursorPos(cp)
+                    }
+
+                    ed.ensureCaretIsVisible()
                 }
             }
         }

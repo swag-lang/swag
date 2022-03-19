@@ -44,8 +44,21 @@ impl RichEditLine
         srcI := srcIndex
         for i := insIndex; i < insIndex + srcCount; i += 1
         {
-            chars.insertAt(i, src.chars[srcI]);
+            chars.insertAt(i, src.chars[srcI])
             styles.insertAt(i, src.styles[srcI])
+            srcI += 1
+        }
+    }
+
+    mtd insertRunes(insIndex: uint, runes: const [..] rune)
+    {
+        dirtyStyle = true
+        dirtyFold = true
+
+        srcI := 0'uint
+        for i := insIndex; i < insIndex + @countof(runes); i += 1
+        {
+            chars.insertAt(i, runes[srcI])
             srcI += 1
         }
     }

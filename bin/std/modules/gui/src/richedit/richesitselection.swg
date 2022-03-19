@@ -3,6 +3,35 @@ using Core
 
 private impl RichEdit
 {
+    mtd getSelelectionRectRange(lineIndex: uint, rankBeg, rankEnd: *uint)->bool
+    {
+        line := lines[lineIndex]
+        len  := line.length()
+
+        x := getMarginLeft()
+        rb := 0'uint
+        while x < selRectangle.x and rb < len
+        {
+            x += getRuneSize(line, rb, x).x
+            rb += 1
+        }
+
+        // Line is not concerned
+        if x < selRectangle.x
+            return false
+
+        re := rb
+        while x < selRectangle.right() and re < len
+        {
+            x += getRuneSize(line, re, x).x
+            re += 1
+        }
+
+        dref rankBeg = rb
+        dref rankEnd = re
+        return true
+    }
+
     mtd deleteSelectionPrivate(posStart, posEnd: RichEditCursor, selRect: bool)
     {
         undo := Memory.new'RichEditUndo()
@@ -108,9 +137,12 @@ impl RichEdit
         ptBeg := getCursorDisplayPos(beg)
         ptEnd := getCursorDisplayPos(end)
 
-        selRectangle.x = Math.min(ptBeg.x, ptEnd.x)
+        if ptBeg.x > ptEnd.x
+            swap(&ptBeg, &ptEnd)
+
+        selRectangle.x = ptBeg.x
         selRectangle.y = Math.min(ptBeg.y, ptEnd.y) - size.y
-        selRectangle.setRight(Math.max(ptBeg.x, ptEnd.x))
+        selRectangle.setRight(ptEnd.x)
         selRectangle.setBottom(Math.max(ptBeg.y, ptEnd.y))
     }
 

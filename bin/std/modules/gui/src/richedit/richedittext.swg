@@ -53,7 +53,19 @@ impl RichEdit
         }
         else
         {
-            Debug.assert(false) // todo
+            li := start.lineIndex
+            while li <= end.lineIndex
+            {
+                var rankBeg, rankEnd: uint
+                if getSelelectionRectRange(li, &rankBeg, &rankEnd)
+                {
+                    loop i: rankEnd - rankBeg
+                        result.add(lines[li].chars[rankBeg + i])
+                }
+
+                result.add("\n"'rune)
+                li += 1
+            }
         }
 
         return result
@@ -104,7 +116,43 @@ impl RichEdit
         }
         else
         {
-            Debug.assert(false) // todo
+            lineIndex := cp.lineIndex
+            posInLine := cp.charPosInLine
+
+            var rankBeg, rankEnd: uint
+            loop
+            {
+                line := lines[lineIndex];
+                if rankEnd == text.count or text[rankEnd] == "\n"'rune
+                {
+                    posIns := posInLine
+                    if posIns > line.length()
+                        posIns = line.length()
+                    line.insertRunes(posIns, @mkslice(text.buffer + rankBeg, rankEnd - rankBeg))
+                    if rankEnd == text.count
+                        break
+                    if rankEnd >= text.count - 1
+                        break
+
+                    lineIndex += 1
+                    if lineIndex == lines.count
+                    {
+                        newLine(lineIndex)
+                        posInLine = 0
+                    }
+
+                    rankEnd += 1
+                    rankBeg = rankEnd
+                    continue
+                }
+
+                if rankEnd == text.count
+                    break
+                rankEnd += 1
+            }
+
+            cp.lineIndex = lineIndex
+            cp.charPosInLine = posInLine + (rankEnd - rankBeg)
         }
     }
 
@@ -186,7 +234,17 @@ impl RichEdit
         }
         else
         {
-            Debug.assert(false) // todo
+            li := posStart.lineIndex
+            while li <= posEnd.lineIndex
+            {
+                var rankBeg, rankEnd: uint
+                if getSelelectionRectRange(li, &rankBeg, &rankEnd)
+                {
+                    lines[li].removeRunes(rankBeg, rankEnd - rankBeg)
+                }
+
+                li += 1
+            }
         }
 
         setModified(true)
