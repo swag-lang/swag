@@ -39,10 +39,10 @@ public enum RichEditCommand
     SelectRuneRight
     SelectRuneUp
     SelectRuneDown
-    //CMD_SEL_CHAR_LEFT_RECT
-    //CMD_SEL_CHAR_RIGHT_RECT
-    //CMD_SEL_CHAR_UP_RECT
-    //CMD_SEL_CHAR_DOWN_RECT
+    SelectRectLeft
+    SelectRectRight
+    SelectRectUp
+    SelectRectDown
     SelectStartLine
     SelectEndLine
     SelectStartFile
@@ -96,21 +96,25 @@ impl RichEdit
         addMapping(Input.Key.Left,      Input.KeyModifiers.Shift,       RichEditCommand.SelectRuneLeft)
         addMapping(Input.Key.Left,      Input.KeyModifiers.Control,     RichEditCommand.CursorWordLeft)
         addMapping(Input.Key.Left,      Input.KeyModifiers.CtrlShift,   RichEditCommand.SelectWordLeft)
+        addMapping(Input.Key.Left,      Input.KeyModifiers.Alt,         RichEditCommand.SelectRectLeft)
         addMapping(Input.Key.Right,     Input.KeyModifiers.None,        RichEditCommand.CursorRight)
         addMapping(Input.Key.Right,     Input.KeyModifiers.Shift,       RichEditCommand.SelectRuneRight)
         addMapping(Input.Key.Right,     Input.KeyModifiers.Control,     RichEditCommand.CursorWordRight)
         addMapping(Input.Key.Right,     Input.KeyModifiers.CtrlShift,   RichEditCommand.SelectWordRight)
+        addMapping(Input.Key.Right,     Input.KeyModifiers.Alt,         RichEditCommand.SelectRectRight)
         addMapping(Input.Key.Up,        Input.KeyModifiers.None,        RichEditCommand.CursorUp)
         addMapping(Input.Key.Up,        Input.KeyModifiers.Shift,       RichEditCommand.SelectRuneUp)
         addMapping(Input.Key.Up,        Input.KeyModifiers.Control,     RichEditCommand.ScrollLineUp)
-        addMapping(Input.Key.PageUp,    Input.KeyModifiers.None,        RichEditCommand.CursorPageUp)
-        addMapping(Input.Key.PageUp,    Input.KeyModifiers.Shift,       RichEditCommand.SelectPageUp)
-        addMapping(Input.Key.PageDown,  Input.KeyModifiers.None,        RichEditCommand.CursorPageDown)
-        addMapping(Input.Key.PageDown,  Input.KeyModifiers.Shift,       RichEditCommand.SelectPageDown)
+        addMapping(Input.Key.Up,        Input.KeyModifiers.Alt,         RichEditCommand.SelectRectUp)
         addMapping(Input.Key.Down,      Input.KeyModifiers.None,        RichEditCommand.CursorDown)
         addMapping(Input.Key.Down,      Input.KeyModifiers.Shift,       RichEditCommand.SelectRuneDown)
         addMapping(Input.Key.Down,      Input.KeyModifiers.Shift,       RichEditCommand.SelectRuneDown)
         addMapping(Input.Key.Down,      Input.KeyModifiers.Control,     RichEditCommand.ScrollLineDown)
+        addMapping(Input.Key.Down,      Input.KeyModifiers.Alt,         RichEditCommand.SelectRectDown)
+        addMapping(Input.Key.PageUp,    Input.KeyModifiers.None,        RichEditCommand.CursorPageUp)
+        addMapping(Input.Key.PageUp,    Input.KeyModifiers.Shift,       RichEditCommand.SelectPageUp)
+        addMapping(Input.Key.PageDown,  Input.KeyModifiers.None,        RichEditCommand.CursorPageDown)
+        addMapping(Input.Key.PageDown,  Input.KeyModifiers.Shift,       RichEditCommand.SelectPageDown)
         addMapping(Input.Key.Home,      Input.KeyModifiers.None,        RichEditCommand.CursorStartLine)
         addMapping(Input.Key.Home,      Input.KeyModifiers.Control,     RichEditCommand.CursorStartFile)
         addMapping(Input.Key.Home,      Input.KeyModifiers.Shift,       RichEditCommand.SelectStartLine)
@@ -287,6 +291,26 @@ impl RichEdit
             moveCursorPageDown(&cursorPos)
             resetVolatileFind()
             setRectangularSelection(false)
+
+        case SelectRectLeft:
+            moveCursorLeft(&cursorPos)
+            resetVolatileFind()
+            setRectangularSelection(true)
+
+        case SelectRectRight:
+            moveCursorRight(&cursorPos)
+            resetVolatileFind()
+            setRectangularSelection(true)
+
+        case SelectRectUp:
+            moveCursorUp(&cursorPos)
+            resetVolatileFind()
+            setRectangularSelection(true)
+
+        case SelectRectDown:
+            moveCursorDown(&cursorPos)
+            resetVolatileFind()
+            setRectangularSelection(true)
 
         case DeleteLeft:
             if isReadOnly()
