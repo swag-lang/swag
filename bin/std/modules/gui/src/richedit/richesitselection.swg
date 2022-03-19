@@ -1,5 +1,16 @@
 impl RichEdit
 {
+    mtd setRectangularSelection(selRect: bool)
+    {
+        hasSelRect = selRect
+    }
+
+    mtd clearSelection()
+    {
+        selBeg = cursorPos
+        setRectangularSelection(false)
+    }
+
     mtd isSelectionEmpty()->bool
     {
         if selBeg.lineIndex != cursorPos.lineIndex
@@ -31,20 +42,6 @@ impl RichEdit
         return selBeg
     }
 
-    #[Swag.Discardable]
-    mtd deleteSelectionPrivate()->bool
-    {
-        if isSelectionEmpty()
-            return false
-
-        cp := getBegSelection()
-        undoDeleteText(cp, getEndSelection(), hasSelRect)
-        computeScrollY()
-        setCursorPos(cp)
-        selBeg = cp
-        return true
-    }
-
     mtd checkSelection()
     {
         if selBeg.lineIndex >= lines.count
@@ -67,7 +64,10 @@ impl RichEdit
         if cursorPos.lineIndex == lines.count - 1 and cursorPos.charPosInLine > back.length()
             cursorPos.charPosInLine = back.length()
 
-        // In case of a rectangular selection, recompute selection
-        //ComputeRectangularSelection(GetBegSelection(), GetEndSelection());
+        computeRectangularSelection(getBegSelection(), getEndSelection())
+    }
+
+    mtd computeRectangularSelection(beg, end: RichEditCursor)
+    {
     }
 }

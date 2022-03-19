@@ -140,7 +140,7 @@ impl RichEdit
                 moveCursorLeft(&cursorPos)
             else
                 setCursorPos(getBegSelection())
-            cmdClearSelection()
+            clearSelection()
             resetVolatileFind()
 
         case CursorRight:
@@ -148,7 +148,7 @@ impl RichEdit
                 moveCursorRight(&cursorPos)
             else
                 setCursorPos(getEndSelection())
-            cmdClearSelection()
+            clearSelection()
             resetVolatileFind()
 
         case CursorUp:
@@ -160,7 +160,7 @@ impl RichEdit
             }
             else
                 moveCursorUp(&cursorPos)
-            cmdClearSelection()
+            clearSelection()
             resetVolatileFind()
 
         case CursorDown:
@@ -172,47 +172,47 @@ impl RichEdit
             }
             else
                 moveCursorDown(&cursorPos)
-            cmdClearSelection()
+            clearSelection()
             resetVolatileFind()
 
         case CursorStartLine:
             moveCursorStartLine(&cursorPos)
-            cmdClearSelection()
+            clearSelection()
             resetVolatileFind()
 
         case CursorEndLine:
             moveCursorEndLine(&cursorPos)
-            cmdClearSelection()
+            clearSelection()
             resetVolatileFind()
 
         case CursorStartFile:
             moveCursorStartFile(&cursorPos)
-            cmdClearSelection()
+            clearSelection()
             resetVolatileFind()
 
         case CursorEndFile:
             moveCursorEndFile(&cursorPos)
-            cmdClearSelection()
+            clearSelection()
             resetVolatileFind()
 
         case CursorWordLeft:
             moveCursorWordLeft(&cursorPos)
-            cmdClearSelection()
+            clearSelection()
             resetVolatileFind()
 
         case CursorWordRight:
             moveCursorWordRight(&cursorPos, true)
-            cmdClearSelection()
+            clearSelection()
             resetVolatileFind()
 
         case CursorPageUp:
             moveCursorPageUp(&cursorPos)
-            cmdClearSelection()
+            clearSelection()
             resetVolatileFind()
 
         case CursorPageDown:
             moveCursorPageDown(&cursorPos)
-            cmdClearSelection()
+            clearSelection()
             resetVolatileFind()
 
         case ScrollLineUp:
@@ -224,68 +224,68 @@ impl RichEdit
         case SelectRuneLeft:
             moveCursorLeft(&cursorPos)
             resetVolatileFind()
-            cmdSetSelRect(false)
+            setRectangularSelection(false)
 
         case SelectRuneRight:
             moveCursorRight(&cursorPos)
             resetVolatileFind()
-            cmdSetSelRect(false)
+            setRectangularSelection(false)
 
         case SelectRuneUp:
             moveCursorUp(&cursorPos)
             resetVolatileFind()
-            cmdSetSelRect(false)
+            setRectangularSelection(false)
 
         case SelectRuneDown:
             moveCursorDown(&cursorPos)
             resetVolatileFind()
-            cmdSetSelRect(false)
+            setRectangularSelection(false)
 
         case SelectStartLine:
             moveCursorStartLine(&cursorPos)
             resetVolatileFind()
-            cmdSetSelRect(false)
+            setRectangularSelection(false)
 
         case SelectEndLine:
             moveCursorEndLine(&cursorPos)
             resetVolatileFind()
-            cmdSetSelRect(false)
+            setRectangularSelection(false)
 
         case SelectStartFile:
             moveCursorStartFile(&cursorPos)
             resetVolatileFind()
-            cmdSetSelRect(false)
+            setRectangularSelection(false)
 
         case SelectEndFile:
             moveCursorEndFile(&cursorPos)
             resetVolatileFind()
-            cmdSetSelRect(false)
+            setRectangularSelection(false)
 
         case SelectAllFile:
             moveCursorStartFile(&selBeg)
             moveCursorEndFile(&cursorPos)
             resetVolatileFind()
-            cmdSetSelRect(false)
+            setRectangularSelection(false)
 
         case SelectWordLeft:
             moveCursorWordLeft(&cursorPos)
             resetVolatileFind()
-            cmdSetSelRect(false)
+            setRectangularSelection(false)
 
         case SelectWordRight:
             moveCursorWordRight(&cursorPos, false)
             resetVolatileFind()
-            cmdSetSelRect(false)
+            setRectangularSelection(false)
 
         case SelectPageUp:
             moveCursorPageUp(&cursorPos)
             resetVolatileFind()
-            cmdSetSelRect(false)
+            setRectangularSelection(false)
 
         case SelectPageDown:
             moveCursorPageDown(&cursorPos)
             resetVolatileFind()
-            cmdSetSelRect(false)
+            setRectangularSelection(false)
 
         case DeleteLeft:
             if isReadOnly()
@@ -326,35 +326,15 @@ impl RichEdit
         case Undo:
             if isReadOnly()
                 return
-            cmdUndo()
+            undo()
             resetVolatileFind()
 
         case Redo:
             if isReadOnly()
                 return
-            cmdRedo()
+            redo()
             resetVolatileFind()
         }
-    }
-
-    mtd cmdSetSelRect(selRect: bool)
-    {
-        hasSelRect = selRect
-    }
-
-    mtd cmdClearSelection()
-    {
-        selBeg = cursorPos
-        cmdSetSelRect(false)
-    }
-
-    mtd cmdDeleteSelection()
-    {
-        if isSelectionEmpty()
-            return
-        pushUndo()
-        deleteSelectionPrivate()
-        popUndo()
     }
 
     mtd cmdEditDeleteLeft()
@@ -399,7 +379,7 @@ impl RichEdit
         deleteSelectionPrivate()
         moveCursorWordLeft(&cursorPos)
         deleteSelectionPrivate()
-        cmdClearSelection()
+        clearSelection()
         popUndo()
     }
 
@@ -409,7 +389,7 @@ impl RichEdit
         deleteSelectionPrivate()
         moveCursorWordRight(&cursorPos, true)
         deleteSelectionPrivate()
-        cmdClearSelection()
+        clearSelection()
         popUndo()
     }
 
@@ -430,7 +410,7 @@ impl RichEdit
         {
             if !moveCursorUp(&cursorPos)
                 break
-            cmdClearSelection()
+            clearSelection()
             pos = getCaretPos()
         }
     }
@@ -451,9 +431,30 @@ impl RichEdit
         {
             if !moveCursorDown(&cursorPos)
                 break
-            cmdClearSelection()
+            clearSelection()
             pos = getCaretPos()
         }
+    }
+
+    mtd cmdDeleteSelection()
+    {
+        if isSelectionEmpty()
+            return
+        pushUndo()
+        deleteSelectionPrivate()
+        popUndo()
+    }
+
+    mtd deleteSelectionPrivate()
+    {
+        if isSelectionEmpty()
+            return
+
+        cp := getBegSelection()
+        undoDeleteText(cp, getEndSelection(), hasSelRect)
+        computeScrollY()
+        setCursorPos(cp)
+        selBeg = cp
     }
 
     mtd cmdEditTabulation()

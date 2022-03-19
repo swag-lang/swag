@@ -89,7 +89,7 @@ impl RichEdit
                     pundo.text.add(getRune(cursorPos))
                     discard moveCursorRight(&pundo.selBeg)
                     deleteTextPrivate(cursorPos, pundo.selBeg, false)
-                    cmdClearSelection()
+                    clearSelection()
                 }
             }
         }
@@ -100,7 +100,7 @@ impl RichEdit
 
         // Do action
         insertTextPrivate(&cursorPos, @mkstring(&az[0], cpt), false)
-        cmdClearSelection()
+        clearSelection()
         ensureCaretIsVisible()
         invalidate()
 

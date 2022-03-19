@@ -30,7 +30,7 @@ impl IWnd for RichEditView
                 ed.setCursorPos(cp)
                 ed.selBeg  = cp
                 selMode = true
-                ed.cmdSetSelRect(false)
+                ed.setRectangularSelection(false)
                 ed.ensureCaretIsVisible()
                 captureMouse()
             }
@@ -54,7 +54,7 @@ impl IWnd for RichEditView
                 {
                     ed.setCursorPos(cp)
                     ed.ensureCaretIsVisible()
-                    ed.cmdSetSelRect(false)
+                    ed.setRectangularSelection(false)
                     /*if (sKeyboardState::IsKeyPressed(sKey::CONTROL) && sKeyboardState::IsKeyPressed(sKey::ALT))
                     {
                         CmdSelSetRect(true);

@@ -56,7 +56,7 @@ impl RichEdit
     {
         Debug.assert(undoCounter != 0)
         undoCounter -= 1
-        cmdSetSelRect(false)
+        setRectangularSelection(false)
 
         loop i: toUndo.count
         {
@@ -85,7 +85,7 @@ impl RichEdit
         resetUndo()
         toUndo.add(undo)
         insertTextPrivate(&cursorPos, text, selRect)
-        cmdClearSelection()
+        clearSelection()
     }
 
     mtd undoDeleteText(posStart, posEnd: RichEditCursor, selRect: bool)
@@ -127,11 +127,18 @@ impl RichEdit
         return count
     }
 
-    mtd cmdUndo()
+    mtd canUndo()->bool
     {
         if undoMgr.count == 0
-            return
+            return false
         if !currentUndo
+            return false
+        return true
+    }
+
+    mtd undo()
+    {
+        if !canUndo()
             return
 
         currentUndo -= 1
@@ -151,14 +158,14 @@ impl RichEdit
             {
                 selBeg = undo.selBeg
                 setCursorPos(undo.cursorPos)
-                cmdSetSelRect(undo.hasSelRect)
-                //ComputeRectangularSelection(m_CursorPos, pundo->m_BegSelectionAfter)
+                setRectangularSelection(undo.hasSelRect)
+                computeRectangularSelection(cursorPos, undo.begSelectionAfter)
                 deleteTextPrivate(cursorPos, undo.begSelectionAfter, undo.hasSelRect)
             }
 
             selBeg = undo.begSelectionBefore
             setCursorPos(undo.endSelectionBefore)
-            cmdSetSelRect(undo.hasSelRect)
+            setRectangularSelection(undo.hasSelRect)
             if !currentUndo
                 break
             undo = undoMgr[currentUndo - 1]
@@ -174,11 +181,18 @@ impl RichEdit
         computeScrollY()
     }
 
-    mtd cmdRedo()
+    mtd canRedo()->bool
     {
         if undoMgr.count == 0
-            return
+            return false
         if currentUndo == undoMgr.count
+            return false
+        return true
+    }
+
+    mtd redo()
+    {
+        if !canRedo()
             return
 
         undo   := undoMgr[currentUndo]
@@ -191,8 +205,8 @@ impl RichEdit
             {
                 selBeg = undo.selBeg
                 setCursorPos(undo.cursorPos)
-                cmdSetSelRect(undo.hasSelRect)
-                //ComputeRectangularSelection(GetBegSelection(), GetEndSelection())
+                setRectangularSelection(undo.hasSelRect)
+                computeRectangularSelection(getBegSelection(), getEndSelection())
                 deleteTextPrivate(getBegSelection(), getEndSelection(), undo.hasSelRect)
             }
             elif undo.type == .Insert
@@ -205,7 +219,7 @@ impl RichEdit
 
             selBeg = undo.begSelectionAfter
             setCursorPos(undo.endSelectionAfter)
-            cmdSetSelRect(undo.hasSelRect)
+            setRectangularSelection(undo.hasSelRect)
 
             if currentUndo == undoMgr.count
                 break

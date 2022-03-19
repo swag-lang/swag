@@ -1,20 +1,7 @@
-#global public
 using Core, Pixel
 
 impl RichEdit
 {
-    mtd getRune(cp: RichEditCursor)->rune
-    {
-        if cp.lineIndex >= lines.count
-            return 0
-        len := lines[cp.lineIndex].chars.count
-        if cp.charPosInLine > len
-            return 0
-        if cp.charPosInLine == len
-            return "\n"'rune;
-        return lines[cp.lineIndex].chars[cp.charPosInLine]
-    }
-
     mtd getTextPrivate(start, end: RichEditCursor, selRect: bool)->Array'rune
     {
         var result: retval
@@ -357,5 +344,20 @@ impl RichEdit
         if c != "("'rune and c != ")"'rune and c != "["'rune and c != "]"'rune and c != "{"'rune and c != "}"'rune
             return true
         return false
+    }
+}
+
+public impl RichEdit
+{
+    mtd getRune(cp: RichEditCursor)->rune
+    {
+        if cp.lineIndex >= lines.count
+            return 0
+        len := lines[cp.lineIndex].chars.count
+        if cp.charPosInLine > len
+            return 0
+        if cp.charPosInLine == len
+            return "\n"'rune;
+        return lines[cp.lineIndex].chars[cp.charPosInLine]
     }
 }
