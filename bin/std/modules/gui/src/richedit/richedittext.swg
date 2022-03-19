@@ -343,13 +343,16 @@ impl RichEdit
         }
     }
 
+    func isWord(c: rune)->bool
+    {
+        return Unicode.isLetterOrDigit(c) or c == "_"'rune
+    }
+
     func zapWordChar(c: rune)->bool
     {
-        if Unicode.isLetterOrDigit(c)
+        if isWord(c)
             return false
         if Unicode.isSpace(c)
-            return false
-        if Unicode.isWord(c)
             return false
         if c != "("'rune and c != ")"'rune and c != "["'rune and c != "]"'rune and c != "{"'rune and c != "}"'rune
             return true

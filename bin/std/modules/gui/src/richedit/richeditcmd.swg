@@ -586,9 +586,9 @@ impl RichEdit
                 return
         }
 
-        if Unicode.isWord(line.chars[cp.charPosInLine - 1])
+        if isWord(line.chars[cp.charPosInLine - 1])
         {
-            while cp.charPosInLine != 0 and Unicode.isWord(line.chars[cp.charPosInLine - 1])
+            while cp.charPosInLine != 0 and isWord(line.chars[cp.charPosInLine - 1])
             {
                 if !cmdCursorLeft(cp)
                     return
@@ -625,9 +625,9 @@ impl RichEdit
                 line = lines[cp.lineIndex]
             }
         }
-        elif Unicode.isWord(line.chars[cp.charPosInLine])
+        elif isWord(line.chars[cp.charPosInLine])
         {
-            while cp.charPosInLine != line.length() and Unicode.isWord(line.chars[cp.charPosInLine])
+            while cp.charPosInLine != line.length() and isWord(line.chars[cp.charPosInLine])
             {
                 if !cmdCursorRight(cp)
                     return
