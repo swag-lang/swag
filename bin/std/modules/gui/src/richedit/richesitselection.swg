@@ -36,7 +36,7 @@ private impl RichEdit
     {
         undo := Memory.new'RichEditUndo()
         undo.type       = .Delete
-        undo.text       = getTextPrivate(posStart, posEnd, selRect)
+        (undo.runes, undo.styles) = getTextPrivate(posStart, posEnd, selRect)
         undo.selBeg     = selBeg
         undo.cursorPos  = cursorPos
         undo.hasSelRect = selRect

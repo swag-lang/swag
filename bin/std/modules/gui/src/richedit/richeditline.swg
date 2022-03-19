@@ -50,7 +50,7 @@ impl RichEditLine
         }
     }
 
-    mtd insertRunes(insIndex: uint, runes: const [..] rune)
+    mtd insertRunes(insIndex: uint, runes: const [..] rune, styles: const [..] u8)
     {
         dirtyStyle = true
         dirtyFold = true
@@ -58,7 +58,8 @@ impl RichEditLine
         srcI := 0'uint
         for i := insIndex; i < insIndex + @countof(runes); i += 1
         {
-            chars.insertAt(i, runes[srcI])
+            self.chars.insertAt(i, #self.runes[srcI])
+            self.styles.insertAt(i, #self.styles[srcI])
             srcI += 1
         }
     }

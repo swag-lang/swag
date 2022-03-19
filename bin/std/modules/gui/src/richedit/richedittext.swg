@@ -2,7 +2,7 @@ using Core, Pixel
 
 impl RichEdit
 {
-    mtd getTextPrivate(start, end: RichEditCursor, selRect: bool)->Array'rune
+    mtd getTextPrivate(start, end: RichEditCursor, selRect: bool)->{text: Array'rune, styles: Array'u8}
     {
         var result: retval
         if !hasSelRect
@@ -13,14 +13,21 @@ impl RichEdit
             if count
             {
                 pchar := line.chars.buffer
+                pstyle := line.styles.buffer
                 if start.lineIndex == end.lineIndex
                     count = end.charPosInLine
                 for i := start.charPosInLine; i < count; i += 1
-                    result.add(pchar[i])
+                {
+                    result.text.add(pchar[i])
+                    result.styles.add(pstyle[i])
+                }
             }
 
             if start.lineIndex != end.lineIndex
-                result.add("\n"'rune)
+            {
+                result.text.add("\n"'rune)
+                result.styles.add(0)
+            }
 
             // Inside lines
             if end.lineIndex > start.lineIndex + 1
@@ -29,12 +36,15 @@ impl RichEdit
                 count = 0
                 for i := start.lineIndex + 1; i < end.lineIndex; i += 1
                     count += lines[i].length()
-                result.reserve(result.count + count)
+                result.text.reserve(result.text.count + count)
+                result.styles.reserve(result.styles.count + count)
 
                 for i := start.lineIndex + 1; i < end.lineIndex; i += 1
                 {
-                    result.add(lines[i].chars.toSlice())
-                    result.add("\n"'rune)
+                    result.text.add(lines[i].chars.toSlice())
+                    result.styles.add(lines[i].styles.toSlice())
+                    result.text.add("\n"'rune)
+                    result.styles.add(0)
                 }
             }
 
@@ -46,8 +56,12 @@ impl RichEdit
                 if count
                 {
                     pchar := line.chars.buffer
+                    pstyle := line.styles.buffer
                     for i := 0; i < end.charPosInLine; i += 1
-                        result.add(pchar[i])
+                    {
+                        result.text.add(pchar[i])
+                        result.styles.add(pstyle[i])
+                    }
                 }
             }
         }
@@ -60,10 +74,14 @@ impl RichEdit
                 if getSelelectionRectRange(li, &rankBeg, &rankEnd)
                 {
                     loop i: rankEnd - rankBeg
-                        result.add(lines[li].chars[rankBeg + i])
+                    {
+                        result.text.add(lines[li].chars[rankBeg + i])
+                        result.styles.add(lines[li].styles[rankBeg + i])
+                    }
                 }
 
-                result.add("\n"'rune)
+                result.text.add("\n"'rune)
+                result.styles.add(0)
                 li += 1
             }
         }
@@ -102,14 +120,15 @@ impl RichEdit
         }
     }
 
-    mtd insertTextPrivate(cp: *RichEditCursor, text: Array'rune, selRect: bool)
+    mtd insertTextPrivate(cp: *RichEditCursor, runes: Array'rune, styles: Array'u8, selRect: bool)
     {
-        if text.isEmpty()
+        if runes.isEmpty()
             return
+        Debug.assert(runes.count == #self.styles.count)
 
         if !selRect
         {
-            visit c: text
+            visit c: #self.runes
             {
                 insertRunePrivate(cp, c, selRect)
             }
@@ -123,15 +142,15 @@ impl RichEdit
             loop
             {
                 line := lines[lineIndex];
-                if rankEnd == text.count or text[rankEnd] == "\n"'rune
+                if rankEnd == runes.count or runes[rankEnd] == "\n"'rune
                 {
                     posIns := posInLine
                     if posIns > line.length()
                         posIns = line.length()
-                    line.insertRunes(posIns, @mkslice(text.buffer + rankBeg, rankEnd - rankBeg))
-                    if rankEnd == text.count
+                    line.insertRunes(posIns, @mkslice(#self.runes.buffer + rankBeg, rankEnd - rankBeg), @mkslice(#self.styles.buffer + rankBeg, rankEnd - rankBeg))
+                    if rankEnd == runes.count
                         break
-                    if rankEnd >= text.count - 1
+                    if rankEnd >= runes.count - 1
                         break
 
                     lineIndex += 1
@@ -146,7 +165,7 @@ impl RichEdit
                     continue
                 }
 
-                if rankEnd == text.count
+                if rankEnd == runes.count
                     break
                 rankEnd += 1
             }
@@ -186,7 +205,8 @@ impl RichEdit
     {
         undo := Memory.new'RichEditUndo()
         undo.type       = .Insert
-        undo.text       = Unicode.fromUtf8(text)
+        undo.runes      = Unicode.fromUtf8(text)
+        undo.styles.resize(undo.runes.count)
         undo.selBeg     = selBeg
         undo.cursorPos  = cursorPos
         undo.hasSelRect = selRect
@@ -288,16 +308,19 @@ public impl RichEdit
         invalidate()
     }
 
-    mtd getRune(cp: RichEditCursor)->rune
+    mtd getRune(cp: RichEditCursor)->{char: rune, style: u8}
     {
+        var result: retval
         if cp.lineIndex >= lines.count
-            return 0
+            return result
         len := lines[cp.lineIndex].chars.count
         if cp.charPosInLine > len
-            return 0
+            return result
         if cp.charPosInLine == len
-            return "\n"'rune;
-        return lines[cp.lineIndex].chars[cp.charPosInLine]
+            return @{"\n"'rune, 0};
+        result.char = lines[cp.lineIndex].chars[cp.charPosInLine]
+        result.style = lines[cp.lineIndex].styles[cp.charPosInLine]
+        return result
     }
 
     mtd insertRune(ch: rune)
@@ -320,7 +343,7 @@ public impl RichEdit
             forceUndo = true
         elif pundo and pundo.cursorPos.lineIndex != cursorPos.lineIndex
             forceUndo = true
-        elif pundo and cursorPos.charPosInLine != pundo.cursorPos.charPosInLine + pundo.text.count
+        elif pundo and cursorPos.charPosInLine != pundo.cursorPos.charPosInLine + pundo.runes.count
             forceUndo = true
 
         if forceUndo
@@ -375,7 +398,9 @@ public impl RichEdit
             {
                 if cursorPos.charPosInLine != lines[cursorPos.lineIndex].length()
                 {
-                    pundo.text.add(getRune(cursorPos))
+                    r := getRune(cursorPos)
+                    pundo.runes.add(r.char)
+                    pundo.styles.add(r.style)
                     discard moveCursorRight(&pundo.selBeg)
                     deleteTextPrivate(cursorPos, pundo.selBeg, false)
                     clearSelection()
@@ -385,7 +410,8 @@ public impl RichEdit
 
         // Append the character to the last undo
         pundo = undoMgr[currentUndo - 1]
-        pundo.text.add(c)
+        pundo.runes.add(c)
+        pundo.styles.add(0)
 
         // Do action
         if hasSelRect

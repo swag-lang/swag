@@ -16,7 +16,8 @@ struct RichEditUndo
     concatChars:    bool
     selBeg:         RichEditCursor
     cursorPos:      RichEditCursor
-    text:           Array'rune
+    runes:          Array'rune
+    styles:         Array'u8
     serial:         uint
     hasSelRect:     bool
 
@@ -114,7 +115,7 @@ impl RichEdit
                 selBeg = undo.selBeg
                 setCursorPos(undo.cursorPos)
                 cp := getBegSelection()
-                insertTextPrivate(&cp, undo.text, undo.hasSelRect)
+                insertTextPrivate(&cp, undo.runes, undo.styles, undo.hasSelRect)
             }
             elif undo.type == .Insert
             {
@@ -176,7 +177,7 @@ impl RichEdit
                 selBeg = undo.selBeg
                 setCursorPos(undo.cursorPos)
                 cp := getBegSelection()
-                insertTextPrivate(&cp, undo.text, undo.hasSelRect)
+                insertTextPrivate(&cp, undo.runes, undo.styles, undo.hasSelRect)
             }
 
             selBeg = undo.begSelectionAfter
