@@ -314,13 +314,21 @@ impl RichEdit
         case EditTabulation:
             if isReadOnly()
                 return
-            cmdEditTabulation()
+            if getBegSelection().lineIndex == getEndSelection().lineIndex
+            {
+                pushUndo()
+                deleteSelection()
+                insertTextPrivate("\t", false)
+                popUndo()
+            }
+            else
+                insertBegLine("\t", false)
             resetVolatileFind()
 
         case EditBackTabulation:
             if isReadOnly()
                 return
-            cmdEditBackTabulation()
+            deleteBegLine("\t", false)
             resetVolatileFind()
 
         case Undo:
