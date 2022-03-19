@@ -310,15 +310,17 @@ public impl RichEdit
         // A new undo action needs to be regenerate ?
         forceUndo := false
         pundo := currentUndo ? undoMgr[currentUndo - 1] : null
-        if !isSelectionEmpty()
+        if !hasSelRect and !isSelectionEmpty()
             forceUndo = true
-        if !currentUndo
+        elif hasSelRect and cursorPos.charPosInLine != selBeg.charPosInLine
             forceUndo = true
-        if pundo and !pundo.concatChars
+        elif !currentUndo
             forceUndo = true
-        if pundo and pundo.cursorPos.lineIndex != cursorPos.lineIndex
+        elif pundo and !pundo.concatChars
             forceUndo = true
-        if pundo and cursorPos.charPosInLine != pundo.cursorPos.charPosInLine + pundo.text.count
+        elif pundo and pundo.cursorPos.lineIndex != cursorPos.lineIndex
+            forceUndo = true
+        elif pundo and cursorPos.charPosInLine != pundo.cursorPos.charPosInLine + pundo.text.count
             forceUndo = true
 
         if forceUndo
@@ -326,7 +328,9 @@ public impl RichEdit
             resetUndo()
 
             // Delete actual selection
-            if !isSelectionEmpty()
+            if !hasSelRect and !isSelectionEmpty()
+                deleteSelection()
+            elif hasSelRect and cursorPos.charPosInLine != selBeg.charPosInLine
                 deleteSelection()
             else
                 serialUndo += 1

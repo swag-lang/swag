@@ -303,14 +303,24 @@ impl RichEdit
             setRectangularSelection(true)
 
         case SelectRectUp:
-            moveCursorUp(&cursorPos)
-            resetVolatileFind()
-            setRectangularSelection(true)
+            cp := cursorPos
+            moveCursorUp(&cp)
+            if cp.charPosInLine == cursorPos.charPosInLine
+            {
+                cursorPos = cp
+                resetVolatileFind()
+                setRectangularSelection(true)
+            }
 
         case SelectRectDown:
-            moveCursorDown(&cursorPos)
-            resetVolatileFind()
-            setRectangularSelection(true)
+            cp := cursorPos
+            moveCursorDown(&cp)
+            if cp.charPosInLine == cursorPos.charPosInLine
+            {
+                cursorPos = cp
+                resetVolatileFind()
+                setRectangularSelection(true)
+            }
 
         case DeleteLeft:
             if isReadOnly()
