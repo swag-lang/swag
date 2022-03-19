@@ -308,7 +308,6 @@ public impl RichEdit
         // Do action
         insertTextPrivate(&cursorPos, @mkstring(&az[0], cpt), false)
         clearSelection()
-        ensureCaretIsVisible()
         invalidate()
 
         pundo.begSelectionAfter = selBeg

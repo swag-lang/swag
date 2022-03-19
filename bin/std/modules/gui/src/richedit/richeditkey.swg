@@ -13,6 +13,7 @@ impl RichEdit
             c = "\n"'rune
 
         insertRune(c)
+        ensureCaretIsVisible()
         return true
     }
 
