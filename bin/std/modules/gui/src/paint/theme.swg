@@ -88,9 +88,9 @@ impl Theme
         res.fontDefault.italic = Font.create(res.defaultTypeFaceI, metrics.defaultFontSize)
         res.fontDefault.boldItalic = Font.create(res.defaultTypeFaceBI, metrics.defaultFontSize)
 
-        res.fontDefaultFs.regular = Font.create(res.defaultFsTypeFaceR, metrics.defaultFontSize)
-        res.fontDefaultFs.bold = Font.create(res.defaultFsTypeFaceB, metrics.defaultFontSize)
-        res.fontDefaultFs.italic = Font.create(res.defaultFsTypeFaceI, metrics.defaultFontSize)
-        res.fontDefaultFs.boldItalic = Font.create(res.defaultFsTypeFaceBI, metrics.defaultFontSize)
+        res.fontDefaultFs.regular = Font.create(res.defaultFsTypeFaceR, metrics.defaultFixedFontSize)
+        res.fontDefaultFs.bold = Font.create(res.defaultFsTypeFaceB, metrics.defaultFixedFontSize)
+        res.fontDefaultFs.italic = Font.create(res.defaultFsTypeFaceI, metrics.defaultFixedFontSize)
+        res.fontDefaultFs.boldItalic = Font.create(res.defaultFsTypeFaceBI, metrics.defaultFixedFontSize)
     }
 }

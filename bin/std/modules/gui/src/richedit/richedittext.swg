@@ -228,14 +228,18 @@ impl RichEdit
                 lineEnd.removeRunes(0, pe.charPosInLine)
                 if lineEnd.length()
                     lineSrc.insertRunes(ps.charPosInLine, lineEnd, 0, lineEnd.length())
-                //MergeMarkers(ps.lineIndex, pe.lineIndex);
                 deleteLine(pe.lineIndex)
             }
         }
         else
         {
-            li := posStart.lineIndex
-            while li <= posEnd.lineIndex
+            ps := posStart
+            pe := posEnd
+            if ps.lineIndex > pe.lineIndex
+                swap(&ps, &pe)
+
+            li := ps.lineIndex
+            while li <= pe.lineIndex
             {
                 var rankBeg, rankEnd: uint
                 if getSelelectionRectRange(li, &rankBeg, &rankEnd)
@@ -351,6 +355,7 @@ public impl RichEdit
             pundo.serial             = serialUndo
             pundo.begSelectionBefore = selBeg
             pundo.endSelectionBefore = cursorPos
+            pundo.hasSelRect         = hasSelRect
             undoMgr.add(pundo)
             currentUndo += 1
         }
@@ -379,8 +384,28 @@ public impl RichEdit
         pundo.text.add(c)
 
         // Do action
-        insertTextPrivate(&cursorPos, @mkstring(&az[0], cpt), false)
-        clearSelection()
+        if hasSelRect
+        {
+            sb := getBegSelection()
+            se := getEndSelection()
+            loop caretI: sb.lineIndex..se.lineIndex
+            {
+                cp := se
+                cp.lineIndex = caretI
+                if cp.charPosInLine > lines[cp.lineIndex].length()
+                    continue
+                insertTextPrivate(&cp, @mkstring(&az[0], cpt), false)
+            }
+
+            moveCursorRight(&selBeg)
+            moveCursorRight(&cursorPos)
+        }
+        else
+        {
+            insertTextPrivate(&cursorPos, @mkstring(&az[0], cpt), false)
+            clearSelection()
+        }
+
         invalidate()
 
         pundo.begSelectionAfter = selBeg
