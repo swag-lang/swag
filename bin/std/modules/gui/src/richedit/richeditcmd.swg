@@ -154,7 +154,7 @@ impl RichEdit
         case CursorUp:
             if !isSelectionEmpty()
             {
-                pt := getRunePos(cursorPos)
+                pt := getCursorDisplayPos(cursorPos)
                 cmdSetCursorPos(getBegSelection())
                 cmdCursorUp(&cursorPos, pt)
             }
@@ -166,7 +166,7 @@ impl RichEdit
         case CursorDown:
             if !isSelectionEmpty()
             {
-                pt := getRunePos(cursorPos)
+                pt := getCursorDisplayPos(cursorPos)
                 cmdSetCursorPos(getEndSelection())
                 cmdCursorDown(&cursorPos, pt)
             }
@@ -403,7 +403,7 @@ impl RichEdit
     #[Swag.Discardable]
     mtd cmdCursorUp(cp: *RichEditCursorPos)->bool
     {
-        pt := getRunePos(cp)
+        pt := getCursorDisplayPos(cp)
         return cmdCursorUp(cp, pt)
     }
 
@@ -417,7 +417,7 @@ impl RichEdit
         cp.lineIndex = prev
         line := lines[cp.lineIndex]
         cp.charPosInLine = Math.min(line.length(), cp.charPosInLine)
-        posNew := getRunePos(cp)
+        posNew := getCursorDisplayPos(cp)
 
         if posPrev.x == posNew.x
             return true
@@ -445,7 +445,7 @@ impl RichEdit
     #[Swag.Discardable]
     mtd cmdCursorDown(cp: *RichEditCursorPos)->bool
     {
-        pt := getRunePos(cp)
+        pt := getCursorDisplayPos(cp)
         return cmdCursorDown(cp, pt)
     }
 
@@ -459,7 +459,7 @@ impl RichEdit
         cp.lineIndex = next
         line := lines[cp.lineIndex]
         cp.charPosInLine = Math.min(line.length(), cp.charPosInLine)
-        posNew := getRunePos(cp)
+        posNew := getCursorDisplayPos(cp)
 
         if posPrev.x == posNew.x
             return true

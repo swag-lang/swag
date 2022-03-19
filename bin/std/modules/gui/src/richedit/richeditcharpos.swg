@@ -28,7 +28,7 @@ impl RichEdit
         return size
     }
 
-    mtd getRunePos(cp: RichEditCursorPos)->Math.Point
+    mtd getCursorDisplayPos(cp: RichEditCursorPos)->Math.Point
     {
         var result: retval
 
@@ -65,7 +65,7 @@ impl RichEdit
 
     mtd getCaretPos()->Math.Rectangle
     {
-        pt := getRunePos(cursorPos)
+        pt := getCursorDisplayPos(cursorPos)
         size := getXExtent()
 
         var result: retval
@@ -97,7 +97,7 @@ impl RichEdit
 
         clientRect := edView.getClientRect()
 
-        pos := getRunePos(cp)
+        pos := getCursorDisplayPos(cp)
         sx  := edView.scrollPos.x
         sy  := edView.scrollPos.y
 

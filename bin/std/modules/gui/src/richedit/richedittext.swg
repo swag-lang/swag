@@ -287,7 +287,7 @@ impl RichEdit
                 if Unicode.isSpace(line.chars[beg.charPosInLine - 1])
                 {
                     // X is the request position
-                    charPt := getRunePos(beg)
+                    charPt := getCursorDisplayPos(beg)
                     x := cast(f32) getTabOffset(cast(s32) charPt.x)
                     x = (tabSize * size.x) - x
                     if x == 0
@@ -297,7 +297,7 @@ impl RichEdit
                     while charPt.x > x and beg.charPosInLine and Unicode.isSpace(line.chars[beg.charPosInLine - 1])
                     {
                         beg.charPosInLine -= 1
-                        charPt = getRunePos(beg)
+                        charPt = getCursorDisplayPos(beg)
                     }
                 }
             }
