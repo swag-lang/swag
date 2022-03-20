@@ -346,9 +346,11 @@ void Diagnostic::report(bool verboseMode) const
         }
         else if (lines.size())
         {
+            // Empty line after code
             if (errorLevel != DiagnosticLevel::CallStack &&
                 errorLevel != DiagnosticLevel::CallStackInlined &&
-                errorLevel != DiagnosticLevel::TraceError)
+                errorLevel != DiagnosticLevel::TraceError &&
+                showMultipleCodeLines)
             {
                 printMargin(codeColor, true);
             }
@@ -375,12 +377,13 @@ void Diagnostic::report(bool verboseMode) const
             {
                 if (r.empty())
                     continue;
-                for (int i = 0; i < HEADER_SIZE; i++)
-                    g_Log.print(" ");
-                g_Log.print("note: ");
+                printMargin(codeColor);
+                g_Log.setColor(remarkColor);
                 g_Log.print(r);
                 g_Log.eol();
             }
+
+            printMargin(codeColor, true);
         }
     }
 

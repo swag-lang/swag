@@ -603,10 +603,6 @@ void TypeInfoFuncAttr::computeWhateverName(Utf8& resName, uint32_t nameType)
         resName += "->";
         resName += returnType->computeWhateverName(nameType);
     }
-    else
-    {
-        resName += "->void";
-    }
 
     if (flags & TYPEINFO_CAN_THROW)
         resName += " throw";
