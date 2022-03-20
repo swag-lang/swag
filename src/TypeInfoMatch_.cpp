@@ -745,6 +745,9 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
             }
         }
 
+        if (symbolParameter->typeInfo->name == "S32")
+            int a = 0;
+
         bool same = TypeManager::makeCompatibles(context.semContext, symbolParameter->typeInfo, typeInfo, nullptr, nullptr, CASTFLAG_NO_USING_ST | CASTFLAG_NO_ITF | CASTFLAG_NO_ERROR | CASTFLAG_ACCEPT_PENDING);
         if (context.semContext->result == ContextResult::Pending)
             return;
@@ -760,6 +763,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
         // for tuples
         else if ((myTypeInfo->flags & TYPEINFO_GENERIC) ||
                  symbolParameter->typeInfo->kind == TypeInfoKind::Struct ||
+                 callParameter->typeInfo->kind == TypeInfoKind::Alias ||
                  (SemanticJob::valueEqualsTo(symbolParameter->value, callParameter)))
         {
             auto it = context.genericReplaceTypes.find(symbolParameter->typeInfo->name);
