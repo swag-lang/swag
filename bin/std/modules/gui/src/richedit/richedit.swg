@@ -120,10 +120,6 @@ private impl RichEdit
     {
     }
 
-    mtd clearPrivate()
-    {
-    }
-
     mtd setModified(mdf: bool)
     {
         if mdf

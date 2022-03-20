@@ -42,10 +42,7 @@ private impl RichEdit
 
         return count
     }
-}
 
-impl RichEdit
-{
     mtd resetUndo()
     {
         // Its impossible to restore an unmodified state in that case
@@ -57,6 +54,22 @@ impl RichEdit
             back := undoMgr.popBack()
             Memory.delete(back)
         }
+    }
+}
+
+impl RichEdit
+{
+    mtd clearUndo()
+    {
+        loop i: undoMgr
+            Memory.delete(undoMgr[i])
+        loop i: toUndo
+            Memory.delete(toUndo[i])
+        undoMgr.clear()
+        toUndo.clear()
+        currentUndo = 0
+        serialUndo  = 0
+        modifiedUndoMarker = Swag.UInt.Max
     }
 
     mtd pushUndo()

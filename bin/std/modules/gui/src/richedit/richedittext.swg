@@ -283,10 +283,24 @@ impl RichEdit
 
 public impl RichEdit
 {
+    mtd clear()
+    {
+        clearUndo()
+        visit l: lines
+            freeLines.add(l)
+        lines.clear()
+        countVisibleLines = 0
+        cursorPos = @{}
+        selBeg = @{}
+        dirtyFirstLineView = true
+        firstVisibleLineView = 0
+        lastVisibleLineView = 0
+    }
+
     // Set the edit text
     mtd setText(text: string)
     {
-        clearPrivate()
+        clear()
 
         var cp: RichEditCursor
         insertTextPrivate(&cp, text, 0, false)
