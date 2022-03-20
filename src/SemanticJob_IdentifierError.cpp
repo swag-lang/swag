@@ -698,9 +698,21 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
         getDiagnosticForMatch(context, *one, errs0, errs1);
 
         SWAG_ASSERT(!errs0.empty());
-        auto note       = const_cast<Diagnostic*>(errs0[0]);
-        note->textMsg   = Fmt("[overload %d] %s", overIdx++, note->textMsg.c_str());
-        note->showRange = false;
+        auto note                   = const_cast<Diagnostic*>(errs0[0]);
+        note->noteHeader            = Fmt("overload %d", overIdx++);
+        note->showMultipleCodeLines = false;
+        note->showRange             = false;
+
+        // Get location from the note
+        if (one->symMatchContext.result == MatchResult::BadSignature || one->symMatchContext.result == MatchResult::BadGenericSignature)
+        {
+            if (errs1.size())
+            {
+                note->startLocation = errs1[0]->startLocation;
+                note->endLocation   = errs1[0]->endLocation;
+                note->showRange     = true;
+            }
+        }
 
         // Get the overload site
         if (!errs1.empty())

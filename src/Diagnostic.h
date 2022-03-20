@@ -114,6 +114,7 @@ struct Diagnostic
     Utf8            textMsg;
     vector<Utf8>    remarks;
     Utf8            hint;
+    Utf8            noteHeader;
     DiagnosticLevel errorLevel;
 
     SourceFile* sourceFile = nullptr;

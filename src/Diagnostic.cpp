@@ -85,7 +85,15 @@ void Diagnostic::report(bool verboseMode) const
         break;
     case DiagnosticLevel::Note:
         g_Log.setColor(noteColor);
-        g_Log.print("note: ");
+        if (noteHeader.empty())
+        {
+            g_Log.print("note: ");
+        }
+        else
+        {
+            g_Log.print(noteHeader);
+            g_Log.print(": ");
+        }
         break;
     case DiagnosticLevel::Help:
         g_Log.setColor(noteColor);
