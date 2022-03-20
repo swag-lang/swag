@@ -30,7 +30,6 @@ impl IWnd for RichEditView
             if evt.button == .Left
             {
                 evt.accepted = true
-                ed.resetVolatileFind()
                 pt := surfaceToLocal(evt.surfacePos) + scrollPos
                 cp := ed.getCursorPosFromPoint(pt)
                 firstLineSelMode = cp.lineIndex
@@ -54,7 +53,6 @@ impl IWnd for RichEditView
             if selMode
             {
                 evt.accepted = true
-                ed.resetVolatileFind()
                 pt := surfaceToLocal(evt.surfacePos) + scrollPos
                 cp := ed.getCursorPosFromPoint(pt)
                 if ed.cursorPos.lineIndex != cp.lineIndex or ed.cursorPos.charPosInLine != cp.charPosInLine

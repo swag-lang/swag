@@ -146,7 +146,6 @@ impl RichEdit
             else
                 setCursorPos(getBegSelection())
             clearSelection()
-            resetVolatileFind()
 
         case CursorRight:
             if isSelectionEmpty()
@@ -154,7 +153,6 @@ impl RichEdit
             else
                 setCursorPos(getEndSelection())
             clearSelection()
-            resetVolatileFind()
 
         case CursorUp:
             if !isSelectionEmpty()
@@ -166,7 +164,6 @@ impl RichEdit
             else
                 moveCursorUp(&cursorPos)
             clearSelection()
-            resetVolatileFind()
 
         case CursorDown:
             if !isSelectionEmpty()
@@ -178,47 +175,38 @@ impl RichEdit
             else
                 moveCursorDown(&cursorPos)
             clearSelection()
-            resetVolatileFind()
 
         case CursorStartLine:
             moveCursorStartLine(&cursorPos)
             clearSelection()
-            resetVolatileFind()
 
         case CursorEndLine:
             moveCursorEndLine(&cursorPos)
             clearSelection()
-            resetVolatileFind()
 
         case CursorStartFile:
             moveCursorStartFile(&cursorPos)
             clearSelection()
-            resetVolatileFind()
 
         case CursorEndFile:
             moveCursorEndFile(&cursorPos)
             clearSelection()
-            resetVolatileFind()
 
         case CursorWordLeft:
             moveCursorWordLeft(&cursorPos)
             clearSelection()
-            resetVolatileFind()
 
         case CursorWordRight:
             moveCursorWordRight(&cursorPos, true)
             clearSelection()
-            resetVolatileFind()
 
         case CursorPageUp:
             moveCursorPageUp(&cursorPos)
             clearSelection()
-            resetVolatileFind()
 
         case CursorPageDown:
             moveCursorPageDown(&cursorPos)
             clearSelection()
-            resetVolatileFind()
 
         case ScrollLineUp:
             scrollLineUp()
@@ -228,78 +216,63 @@ impl RichEdit
 
         case SelectRuneLeft:
             moveCursorLeft(&cursorPos)
-            resetVolatileFind()
             setRectangularSelection(false)
 
         case SelectRuneRight:
             moveCursorRight(&cursorPos)
-            resetVolatileFind()
             setRectangularSelection(false)
 
         case SelectRuneUp:
             moveCursorUp(&cursorPos)
-            resetVolatileFind()
             setRectangularSelection(false)
 
         case SelectRuneDown:
             moveCursorDown(&cursorPos)
-            resetVolatileFind()
             setRectangularSelection(false)
 
         case SelectStartLine:
             moveCursorStartLine(&cursorPos)
-            resetVolatileFind()
             setRectangularSelection(false)
 
         case SelectEndLine:
             moveCursorEndLine(&cursorPos)
-            resetVolatileFind()
             setRectangularSelection(false)
 
         case SelectStartFile:
             moveCursorStartFile(&cursorPos)
-            resetVolatileFind()
             setRectangularSelection(false)
 
         case SelectEndFile:
             moveCursorEndFile(&cursorPos)
-            resetVolatileFind()
             setRectangularSelection(false)
 
         case SelectAllFile:
             moveCursorStartFile(&selBeg)
             moveCursorEndFile(&cursorPos)
-            resetVolatileFind()
             setRectangularSelection(false)
 
         case SelectWordLeft:
             moveCursorWordLeft(&cursorPos)
-            resetVolatileFind()
             setRectangularSelection(false)
 
         case SelectWordRight:
             moveCursorWordRight(&cursorPos, false)
-            resetVolatileFind()
             setRectangularSelection(false)
 
         case SelectPageUp:
             moveCursorPageUp(&cursorPos)
-            resetVolatileFind()
             setRectangularSelection(false)
 
         case SelectPageDown:
             moveCursorPageDown(&cursorPos)
-            resetVolatileFind()
             setRectangularSelection(false)
 
         case SelectRectLeft:
             moveCursorLeft(&cursorPos)
-            resetVolatileFind()
             setRectangularSelection(true)
 
         case SelectRectRight:
             moveCursorRight(&cursorPos)
-            resetVolatileFind()
             setRectangularSelection(true)
 
         case SelectRectUp:
@@ -308,7 +281,6 @@ impl RichEdit
             if cp.charPosInLine == cursorPos.charPosInLine
             {
                 cursorPos = cp
-                resetVolatileFind()
                 setRectangularSelection(true)
             }
 
@@ -318,7 +290,6 @@ impl RichEdit
             if cp.charPosInLine == cursorPos.charPosInLine
             {
                 cursorPos = cp
-                resetVolatileFind()
                 setRectangularSelection(true)
             }
 
@@ -326,25 +297,21 @@ impl RichEdit
             if isReadOnly()
                 return
             deleteLeft()
-            resetVolatileFind()
 
         case DeleteRight:
             if isReadOnly()
                 return
             deleteRight()
-            resetVolatileFind()
 
         case DeleteWordLeft:
             if isReadOnly()
                 return
             deleteWordLeft()
-            resetVolatileFind()
 
         case DeleteWordRight:
             if isReadOnly()
                 return
             deleteWordRight()
-            resetVolatileFind()
 
         case EditTabulation:
             if isReadOnly()
@@ -358,25 +325,21 @@ impl RichEdit
             }
             else
                 insertBegLine("\t", false)
-            resetVolatileFind()
 
         case EditBackTabulation:
             if isReadOnly()
                 return
             deleteBegLine("\t", false)
-            resetVolatileFind()
 
         case Undo:
             if isReadOnly()
                 return
             undo()
-            resetVolatileFind()
 
         case Redo:
             if isReadOnly()
                 return
             redo()
-            resetVolatileFind()
 
         case ToggleOverwrite:
             overwriteMode = !overwriteMode

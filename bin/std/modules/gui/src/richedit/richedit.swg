@@ -116,10 +116,6 @@ private impl RichEdit
         sy := countVisibleLines * size.y
     }
 
-    mtd resetVolatileFind()
-    {
-    }
-
     mtd setModified(mdf: bool)
     {
         if mdf
