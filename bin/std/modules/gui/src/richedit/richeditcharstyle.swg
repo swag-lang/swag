@@ -1,7 +1,9 @@
 #global public
 using Core, Pixel
 
-struct RichEditCharStyle
+alias RichEditStyleRef = u8
+
+struct RichEditRuneStyle
 {
     colBk:      Color
     colFg:      Color
@@ -9,7 +11,7 @@ struct RichEditCharStyle
     underline   = UnderlineStyle.None
 }
 
-impl RichEditCharStyle
+impl RichEditRuneStyle
 {
     mtd opEquals(other: Self)->bool
     {

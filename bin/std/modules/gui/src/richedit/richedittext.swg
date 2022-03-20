@@ -89,7 +89,7 @@ impl RichEdit
         return result
     }
 
-    mtd insertRunePrivate(cp: *RichEditCursor, c: rune, txtStyle: u8)
+    mtd insertRunePrivate(cp: *RichEditCursor, c: rune, txtStyle: RichEditStyleRef)
     {
         if c == "\r"'rune
             return
@@ -170,7 +170,7 @@ impl RichEdit
         }
     }
 
-    mtd insertTextPrivate(cp: *RichEditCursor, text: string, txtStyle: u8, selRect: bool)
+    mtd insertTextPrivate(cp: *RichEditCursor, text: string, txtStyle: RichEditStyleRef, selRect: bool)
     {
         if lines.isEmpty()
             newLine(0)
@@ -191,7 +191,7 @@ impl RichEdit
         setModified(true)
     }
 
-    mtd insertTextPrivate(text: string, style: u8, selRect: bool)
+    mtd insertTextPrivate(text: string, style: RichEditStyleRef, selRect: bool)
     {
         undo := Memory.new'RichEditUndo()
         undo.type       = .Insert
@@ -308,7 +308,7 @@ public impl RichEdit
         invalidate()
     }
 
-    mtd addText(text: string, txtStyle: u8)
+    mtd addText(text: string, txtStyle: RichEditStyleRef = 0)
     {
         var cp: RichEditCursor
         if lines.count
@@ -322,7 +322,7 @@ public impl RichEdit
         invalidate()
     }
 
-    mtd getRune(cp: RichEditCursor)->{char: rune, style: u8}
+    mtd getRune(cp: RichEditCursor)->{char: rune, style: RichEditStyleRef}
     {
         var result: retval
         if cp.lineIndex >= lines.count

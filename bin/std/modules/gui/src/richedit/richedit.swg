@@ -27,8 +27,8 @@ struct RichEdit
     sigChanged:     SigArray'closure(*Self)
     sigModified:    SigArray'closure(*Self)
 
-    styles:         [256] RichEditCharStyle
-    stylesSelect:   [2] RichEditCharStyle
+    styles:         [256] RichEditRuneStyle
+    stylesSelect:   [2] RichEditRuneStyle
     cursorPos:      RichEditCursor
     selBeg:         RichEditCursor
     lines:          ArrayPtr'RichEditLine

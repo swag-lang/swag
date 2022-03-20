@@ -245,7 +245,7 @@ impl RichEditView
         }
     }
 
-    mtd paintString(bc: *PaintContext, x, y: f32, str: String, strStyle: RichEditCharStyle, visible: bool)->f32
+    mtd paintString(bc: *PaintContext, x, y: f32, str: String, strStyle: RichEditRuneStyle, visible: bool)->f32
     {
         painter := bc.painter
 
@@ -287,7 +287,7 @@ impl RichEditView
         var str: String{allocator: @getcontext().tempAllocator}
         str.reserve(line.length())
 
-        var oldStyle, newStyle: RichEditCharStyle
+        var oldStyle, newStyle: RichEditRuneStyle
         oldStyle = ed.styles[0]
         x := ed.getMarginLeft() - scrollPos.x
 

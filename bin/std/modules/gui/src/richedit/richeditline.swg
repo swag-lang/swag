@@ -4,7 +4,7 @@ using Core
 public struct RichEditLine
 {
     chars:          Array'rune
-    styles:         Array'u8
+    styles:         Array'RichEditStyleRef
     dirtyStyle:     bool
     dirtyFold:      bool
     hidden:         uint
