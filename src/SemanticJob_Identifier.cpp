@@ -1725,8 +1725,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                 couldBe += with;
             }
 
-            auto note = new Diagnostic{overload->node, couldBe, DiagnosticLevel::Note};
-
+            auto note                   = new Diagnostic{overload->node, couldBe, DiagnosticLevel::Note};
             note->showRange             = false;
             note->showMultipleCodeLines = false;
             notes.push_back(note);
@@ -1818,6 +1817,9 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                 auto overload = match->symbolOverload;
                 auto couldBe  = Fmt("could be %s of type `%s`", SymTable::getArticleKindName(match->symbolOverload->symbol->kind), overload->typeInfo->getDisplayNameC());
                 auto note     = new Diagnostic{overload->node, couldBe, DiagnosticLevel::Note};
+
+                note->showRange             = false;
+                note->showMultipleCodeLines = false;
 
                 if (overload->typeInfo->kind == TypeInfoKind::FuncAttr)
                 {
