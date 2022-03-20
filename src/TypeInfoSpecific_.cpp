@@ -440,6 +440,17 @@ bool TypeInfoGeneric::isSame(TypeInfo* to, uint32_t isSameFlags)
     return true;
 }
 
+bool TypeInfoEnum::contains(const Utf8& valueName)
+{
+    for (auto p : values)
+    {
+        if (p->namedParam == valueName)
+            return true;
+    }
+
+    return false;
+}
+
 TypeInfo* TypeInfoEnum::clone()
 {
     auto newType        = allocType<TypeInfoEnum>();

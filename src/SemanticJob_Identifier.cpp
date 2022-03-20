@@ -2069,22 +2069,15 @@ bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* 
     return true;
 }
 
-TypeInfo* SemanticJob::findTypeInContext(SemanticContext* context, TypeInfo* typeInfo)
+TypeInfoEnum* SemanticJob::findEnumTypeInContext(SemanticContext* context, TypeInfo* typeInfo)
 {
     typeInfo = TypeManager::concreteReferenceType(typeInfo, CONCRETE_FUNC);
-    if (!typeInfo)
+    if (!typeInfo || typeInfo->kind != TypeInfoKind::Enum)
         return nullptr;
-
-    switch (typeInfo->kind)
-    {
-    case TypeInfoKind::Enum:
-        return typeInfo;
-    }
-
-    return nullptr;
+    return CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
 }
 
-TypeInfo* SemanticJob::findTypeInContext(SemanticContext* context, AstNode* node)
+TypeInfoEnum* SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node)
 {
     bool done   = false;
     auto parent = node->parent;
@@ -2115,7 +2108,7 @@ TypeInfo* SemanticJob::findTypeInContext(SemanticContext* context, AstNode* node
                 return nullptr;
             }
 
-            VectorNative<TypeInfo*> result;
+            VectorNative<TypeInfoEnum*> result;
             for (auto& overload : symbol->overloads)
             {
                 if (overload->typeInfo->kind != TypeInfoKind::FuncAttr)
@@ -2125,12 +2118,12 @@ TypeInfo* SemanticJob::findTypeInContext(SemanticContext* context, AstNode* node
 
                 // If there's only one corresponding type in the function, then take it
                 // If it's not the correct parameter, the match will not be done, so we do not really care here
-                VectorNative<TypeInfo*> subResult;
-                for (auto p : typeFunc->parameters)
+                VectorNative<TypeInfoEnum*> subResult;
+                for (auto param : typeFunc->parameters)
                 {
-                    auto typeParam = findTypeInContext(context, p->typeInfo);
-                    if (typeParam)
-                        subResult.push_back_once(typeParam);
+                    auto typeEnum = findEnumTypeInContext(context, param->typeInfo);
+                    if (typeEnum && typeEnum->contains(node->token.text))
+                        subResult.push_back_once(typeEnum);
                 }
 
                 if (subResult.size() == 1)
@@ -2138,21 +2131,36 @@ TypeInfo* SemanticJob::findTypeInContext(SemanticContext* context, AstNode* node
                     result.push_back_once(subResult.front());
                 }
 
-                // More that one possible type (at least two enums in the function signature)
+                // More that one possible type (at least two different enums with the same identical requested name in the function signature)
+                // We are not lucky...
                 else
                 {
-                    auto childIdx = fctCallParam->childParentIdx;
-
-                    // Ufcs
-                    if (idref->previousResolvedNode && idref->previousResolvedNode->resolvedSymbolName && idref->previousResolvedNode->resolvedSymbolName->kind == SymbolKind::Variable)
-                        childIdx++;
-
-                    if (childIdx < (uint32_t) typeFunc->parameters.count)
+                    int enumIdx = 0;
+                    for (int i = 0; i < fctCallParam->parent->childs.size(); i++)
                     {
-                        auto typeParam = typeFunc->parameters[childIdx]->typeInfo;
-                        typeParam      = findTypeInContext(context, typeParam);
-                        if (typeParam)
-                            result.push_back_once(typeParam);
+                        auto child = fctCallParam->parent->childs[i];
+                        if (child == fctCallParam)
+                            break;
+                        if (child->typeInfo && child->typeInfo->kind == TypeInfoKind::Enum)
+                            enumIdx++;
+                        else if (child->kind == AstNodeKind::IdentifierRef && child->specFlags & AST_SPEC_IDENTIFIERREF_AUTO_SCOPE)
+                            enumIdx++;
+                    }
+
+                    for (auto p : typeFunc->parameters)
+                    {
+                        if (p->typeInfo->kind == TypeInfoKind::Enum)
+                        {
+                            if (!enumIdx)
+                            {
+                                auto typeEnum = findEnumTypeInContext(context, p->typeInfo);
+                                if (typeEnum && typeEnum->contains(node->token.text))
+                                    result.push_back_once(typeEnum);
+                                break;
+                            }
+
+                            enumIdx--;
+                        }
                     }
                 }
             }
@@ -2167,7 +2175,7 @@ TypeInfo* SemanticJob::findTypeInContext(SemanticContext* context, AstNode* node
     {
         for (auto c : parent->childs)
         {
-            auto cType = findTypeInContext(context, c->typeInfo);
+            auto cType = findEnumTypeInContext(context, c->typeInfo);
             if (cType)
                 return cType;
         }
@@ -2281,23 +2289,14 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, VectorNative<
             // We scan the parent hierarchy for an already defined type that can be used for scoping
             if (identifierRef->specFlags & AST_SPEC_IDENTIFIERREF_AUTO_SCOPE)
             {
-                auto typeContext = findTypeInContext(context, identifierRef);
+                auto typeEnum = findEnumTypeInContext(context, identifierRef);
                 if (context->result == ContextResult::Pending)
                     return true;
-                if (!typeContext)
+                if (!typeEnum)
                     return context->report(identifierRef, Fmt(Err(Err0881), node->token.text.c_str()));
-
-                switch (typeContext->kind)
-                {
-                case TypeInfoKind::Enum:
-                {
-                    auto typeEnum             = CastTypeInfo<TypeInfoEnum>(typeContext, TypeInfoKind::Enum);
-                    identifierRef->startScope = typeEnum->scope;
-                    scopeHierarchy.clear();
-                    addAlternativeScopeOnce(scopeHierarchy, typeEnum->scope);
-                    break;
-                }
-                }
+                identifierRef->startScope = typeEnum->scope;
+                scopeHierarchy.clear();
+                addAlternativeScopeOnce(scopeHierarchy, typeEnum->scope);
             }
             else
             {
@@ -2798,28 +2797,17 @@ bool SemanticJob::filterMatchesInContext(SemanticContext* context, VectorNative<
 
     for (int i = 0; i < matches.size(); i++)
     {
-        auto oneMatch    = matches[i];
-        auto over        = oneMatch->symbolOverload;
-        auto typeContext = findTypeInContext(context, over->node);
+        auto oneMatch = matches[i];
+        auto over     = oneMatch->symbolOverload;
+        auto typeEnum = findEnumTypeInContext(context, over->node);
         if (context->result != ContextResult::Done)
             return true;
 
-        if (typeContext)
+        if (typeEnum && typeEnum->scope == oneMatch->scope)
         {
-            switch (typeContext->kind)
-            {
-            case TypeInfoKind::Enum:
-            {
-                auto typeEnum = CastTypeInfo<TypeInfoEnum>(typeContext, TypeInfoKind::Enum);
-                if (typeEnum->scope == oneMatch->scope)
-                {
-                    matches.clear();
-                    matches.push_back(oneMatch);
-                    return true;
-                }
-                break;
-            }
-            }
+            matches.clear();
+            matches.push_back(oneMatch);
+            return true;
         }
 
         // We try to eliminate a function if it does not match a contextual generic match

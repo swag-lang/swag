@@ -327,6 +327,7 @@ struct TypeInfoEnum : public TypeInfo
 
     bool      isSame(TypeInfo* to, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
+    bool      contains(const Utf8& valueName);
 
     VectorNative<TypeInfoParam*> values;
     AttributeList                attributes;
