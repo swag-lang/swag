@@ -8,8 +8,9 @@ func createView4(tabView: *Tab, view: *Wnd)
     ed.setFrameForm(.Round)
     ed.dockStyle = .Center
 
-    //ed.setText(cast(string) Txt)
+    ed.setText(cast(string) Txt)
 
+    ed.clear()
     ed.styles[1].colFg = Argb.Red
     ed.styles[2].colBk = Argb.Blue
     ed.addText("coucou la foule\n", 0)

@@ -56,6 +56,25 @@ private impl RichEdit
         resetUndo()
         toUndo.add(undo)
     }
+
+    mtd computeRectangularSelection(beg, end: RichEditCursor)
+    {
+        if !hasSelRect
+            return
+
+        size := getXExtent()
+
+        ptBeg := getCursorDisplayPos(beg)
+        ptEnd := getCursorDisplayPos(end)
+
+        if ptBeg.x > ptEnd.x
+            swap(&ptBeg, &ptEnd)
+
+        selRectangle.x = ptBeg.x
+        selRectangle.y = Math.min(ptBeg.y, ptEnd.y) - size.y
+        selRectangle.setRight(ptEnd.x)
+        selRectangle.setBottom(Math.max(ptBeg.y, ptEnd.y))
+    }
 }
 
 impl RichEdit
@@ -69,6 +88,13 @@ impl RichEdit
     {
         selBeg = cursorPos
         setRectangularSelection(false)
+    }
+
+    mtd setSelection(start, end: RichEditCursor)
+    {
+        selBeg = start
+        cursorPos = end
+        checkSelection()
     }
 
     mtd isSelectionEmpty()->bool
@@ -125,25 +151,6 @@ impl RichEdit
             cursorPos.charPosInLine = back.length()
 
         computeRectangularSelection(getBegSelection(), getEndSelection())
-    }
-
-    mtd computeRectangularSelection(beg, end: RichEditCursor)
-    {
-        if !hasSelRect
-            return
-
-        size := getXExtent()
-
-        ptBeg := getCursorDisplayPos(beg)
-        ptEnd := getCursorDisplayPos(end)
-
-        if ptBeg.x > ptEnd.x
-            swap(&ptBeg, &ptEnd)
-
-        selRectangle.x = ptBeg.x
-        selRectangle.y = Math.min(ptBeg.y, ptEnd.y) - size.y
-        selRectangle.setRight(ptEnd.x)
-        selRectangle.setBottom(Math.max(ptBeg.y, ptEnd.y))
     }
 
     mtd deleteSelection()
@@ -207,6 +214,60 @@ impl RichEdit
         deleteSelection()
         clearSelection()
         popUndo()
+    }
+
+    mtd selectWord()
+    {
+        line := lines[cursorPos.lineIndex]
+        len  := line.length()
+        if !len
+            return
+
+        if cursorPos.charPosInLine == len
+            cursorPos.charPosInLine -= 1
+        cp := cursorPos.charPosInLine ? line.chars[selBeg.charPosInLine - 1] : 0'rune
+        c  := selBeg.charPosInLine == len ? 0'rune : line.chars[selBeg.charPosInLine]
+        cn := cursorPos.charPosInLine != len - 1 ? line.chars[selBeg.charPosInLine + 1] : 0'rune
+
+        if Unicode.isSpace(c) and !Unicode.isSpace(cp) and !Unicode.isSpace(cn) and cursorPos.charPosInLine
+            cursorPos.charPosInLine -= 1
+
+        selBeg = cursorPos
+
+        // Blanks
+        if (Unicode.isSpace(line.chars[selBeg.charPosInLine]))
+        {
+            while selBeg.charPosInLine and Unicode.isSpace(line.chars[selBeg.charPosInLine - 1])
+                selBeg.charPosInLine -= 1
+            while cursorPos.charPosInLine < len and Unicode.isSpace(line.chars[cursorPos.charPosInLine])
+                cursorPos.charPosInLine += 1
+            return
+        }
+
+        // A word
+        if isWord(line.chars[cursorPos.charPosInLine])
+        {
+            while selBeg.charPosInLine and isWord(line.chars[selBeg.charPosInLine - 1])
+                selBeg.charPosInLine -= 1
+            while (cursorPos.charPosInLine < len and isWord(line.chars[cursorPos.charPosInLine]))
+                cursorPos.charPosInLine += 1
+            return
+        }
+
+        // Nothing
+        if !zapWordChar(line.chars[selBeg.charPosInLine])
+        {
+            if selBeg.charPosInLine == len
+                selBeg.charPosInLine -= 1
+            else
+                cursorPos.charPosInLine += 1
+            return
+        }
+
+        while selBeg.charPosInLine and zapWordChar(line.chars[selBeg.charPosInLine - 1])
+            selBeg.charPosInLine -= 1
+        while cursorPos.charPosInLine < len and zapWordChar(line.chars[cursorPos.charPosInLine])
+            cursorPos.charPosInLine += 1
     }
 
     mtd scrollLineUp()

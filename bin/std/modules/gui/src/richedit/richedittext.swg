@@ -297,7 +297,6 @@ public impl RichEdit
         lastVisibleLineView = 0
     }
 
-    // Set the edit text
     mtd setText(text: string)
     {
         clear()

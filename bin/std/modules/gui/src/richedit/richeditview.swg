@@ -19,6 +19,13 @@ impl IWnd for RichEditView
         evt.accepted = false
         switch evt.kind
         {
+        case .MouseDoubleClick:
+            if evt.button == .Left
+            {
+                ed.selectWord()
+                evt.accepted = true
+            }
+
         case .MousePressed:
             if evt.button == .Left
             {
