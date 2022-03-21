@@ -30,8 +30,8 @@ public enum RichEditCommand
     //CMD_EDIT_DELETE_LINE_LEFT
     //CMD_EDIT_DELETE_LINE_RIGHT
     ToggleOverwrite
-    //CMD_CLIPBOARD_COPY
-    //CMD_CLIPBOARD_PASTE
+    ClipboardCopy
+    ClipboardPaste
     //CMD_CLIPBOARD_CUT
     Undo
     Redo
@@ -131,6 +131,8 @@ impl RichEdit
         addMapping(.Tab,       .Shift,       .EditBackTabulation)
         addMapping(.Insert,    .None,        .ToggleOverwrite)
         addMapping(.A,         .Control,     .SelectAllFile)
+        addMapping(.C,         .Control,     .ClipboardCopy)
+        addMapping(.V,         .Control,     .ClipboardPaste)
         addMapping(.Y,         .Control,     .Redo)
         addMapping(.Z,         .Control,     .Undo)
     }
@@ -344,6 +346,24 @@ impl RichEdit
         case ToggleOverwrite:
             overwriteMode = !overwriteMode
             invalidate()
+
+        case ClipboardCopy:
+            if isSelectionEmpty()
+                break
+            txt := getSelectedText()
+            Clipboard.addString(txt)
+
+        case ClipboardPaste:
+            if isReadOnly()
+                return
+            (txt, ok) := Clipboard.getString()
+            if ok
+            {
+                pushUndo()
+                deleteSelection()
+                insertTextPrivate(txt, 0, false)
+                popUndo()
+            }
         }
     }
 }

@@ -297,6 +297,13 @@ public impl RichEdit
         lastVisibleLineView = 0
     }
 
+    mtd getSelectedText()->String
+    {
+        res := getTextPrivate(getBegSelection(), getEndSelection(), hasSelRect)
+        txt := Utf8.fromUnicode(res.text.toSlice())
+        return txt
+    }
+
     mtd setText(text: string)
     {
         clear()

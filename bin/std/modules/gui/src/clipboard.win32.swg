@@ -13,7 +13,8 @@ public func addString(str: string)
     {
         hglob := GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, @countof(str) + 1)
         pz := cast(*u8) GlobalLock(hglob)
-        Memory.copy(pz, @dataof(str), @countof(str) + 1)
+        Memory.copy(pz, @dataof(str), @countof(str))
+        pz[@countof(str)] = 0
         discard GlobalUnlock(pz)
         discard SetClipboardData(CF_TEXT, hglob)
     }
@@ -21,9 +22,10 @@ public func addString(str: string)
     // Utf16
     {
         hglob := GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, @countof(str) * 2 + 2)
-        pz := cast(*u8) GlobalLock(hglob)
+        pz := cast(*u16) GlobalLock(hglob)
         u := Utf16.fromUtf8(str)
-        Memory.copy(pz, u.buffer, (u.count * 2) + 2)
+        Memory.copy(pz, u.buffer, u.count * 2)
+        pz[u.count] = 0
         discard GlobalUnlock(pz)
         discard SetClipboardData(CF_UNICODETEXT, hglob)
     }
