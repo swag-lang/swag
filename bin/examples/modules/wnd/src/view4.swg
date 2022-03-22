@@ -5,14 +5,14 @@ const Txt = #load("view0.swg")
 func createView4(tabView: *Tab, view: *Wnd)
 {
     {
-        ed := RichEdit.create(view, @{10, 10, 500, 500})
+        ed := RichEdit.create(view, @{10, 10, 600, 500})
         ed.setFrameForm(.Round)
         ed.richEdFlags |= .ShowFocusSel | .CurLineBorder
         ed.setText(cast(string) Txt)
     }
 
     {
-        ed := RichEdit.create(view, @{520, 10, 300, 300})
+        ed := RichEdit.create(view, @{620, 10, 400, 300})
         ed.setFrameForm(.Round)
         ed.setFrameFlags(.FocusBorder)
         ed.style.addStyleSheetColors("richEdit_Bk $edit_Bk")
@@ -28,7 +28,7 @@ func createView4(tabView: *Tab, view: *Wnd)
     }
 
     {
-        ed := RichEdit.create(view, @{520, 320, 300, 300})
+        ed := RichEdit.create(view, @{620, 320, 400, 300})
         ed.setFrameForm(.Round)
         ed.setFrameFlags(.FocusBorder)
         ed.richEdFlags |= .ReadOnly
