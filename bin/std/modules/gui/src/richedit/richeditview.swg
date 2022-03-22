@@ -323,7 +323,10 @@ impl RichEditView
 
             if selected
             {
-                newStyle = hasFocus() ? ed.stylesSelect[0] : ed.stylesSelect[1]
+                if hasFocus()
+                    newStyle = ed.stylesSelect[0]
+                else if ed.richEdFlags & .ShowFocusSel
+                    newStyle = ed.stylesSelect[1]
                 if !newStyle.colFg.a
                     newStyle.colFg = ed.styles[dref pStyle].colFg
             }

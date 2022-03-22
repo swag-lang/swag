@@ -6,6 +6,7 @@ enum RichEditFlags
 {
     None
     ReadOnly
+    ShowFocusSel
 }
 
 struct RichEditMapping
