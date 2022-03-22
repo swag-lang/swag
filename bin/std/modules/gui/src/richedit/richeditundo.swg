@@ -76,11 +76,13 @@ impl RichEdit
     {
         // Nested undo, do not increment serial
         if undoCounter == 0
+        {
             serialUndo += 1
-        undoCounter += 1
+            selBegUndo    = selBeg
+            cursorPosUndo = cursorPos
+        }
 
-        selBegUndo    = selBeg
-        cursorPosUndo = cursorPos
+        undoCounter += 1
     }
 
     mtd popUndo()

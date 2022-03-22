@@ -21,7 +21,7 @@ public enum RichEditCommand
     ScrollLineDown
     DeleteLeft
     DeleteRight
-    //CMD_EDIT_CUT_LINE
+    DeleteLine
     //CMD_EDIT_DELETE_LINE
     EditTabulation
     EditBackTabulation
@@ -132,6 +132,7 @@ impl RichEdit
         addMapping(.Insert,    .None,        .ToggleOverwrite)
         addMapping(.A,         .Control,     .SelectAllFile)
         addMapping(.C,         .Control,     .ClipboardCopy)
+        addMapping(.L,         .Control,     .DeleteLine)
         addMapping(.V,         .Control,     .ClipboardPaste)
         addMapping(.Y,         .Control,     .Redo)
         addMapping(.Z,         .Control,     .Undo)
@@ -315,6 +316,11 @@ impl RichEdit
                 return
             deleteWordRight()
 
+        case DeleteLine:
+            if isReadOnly()
+                return
+            deleteLine()
+
         case EditTabulation:
             if isReadOnly()
                 return
@@ -348,10 +354,7 @@ impl RichEdit
             invalidate()
 
         case ClipboardCopy:
-            if isSelectionEmpty()
-                break
-            txt := getSelectedText()
-            Clipboard.addString(txt)
+            copyToClipboard()
 
         case ClipboardPaste:
             if isReadOnly()

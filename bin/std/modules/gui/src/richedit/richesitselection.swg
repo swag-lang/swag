@@ -216,6 +216,31 @@ impl RichEdit
         popUndo()
     }
 
+    mtd copyToClipboard()
+    {
+        if isSelectionEmpty()
+            return
+        txt := getSelectedText()
+        Clipboard.addString(txt)
+    }
+
+    mtd deleteLine()
+    {
+        pushUndo()
+        beg := getBegSelection()
+        end := getEndSelection()
+        if end.charPosInLine == 0 and beg.lineIndex != end.lineIndex
+            moveCursorLeft(&end)
+        beg.charPosInLine = 0
+        end.charPosInLine = lines[end.lineIndex].length()
+        selBeg = beg
+        setCursorPos(end)
+        moveCursorRight(&cursorPos)
+        copyToClipboard()
+        deleteSelection()
+        popUndo()
+    }
+
     mtd selectWord()
     {
         line := lines[cursorPos.lineIndex]
