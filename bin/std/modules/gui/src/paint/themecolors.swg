@@ -268,5 +268,5 @@ struct ThemeColors
     richEdit_SelBk:                 Color = Blue
     richEdit_SelBkNoFocus:          Color = Gray3
     richEdit_Caret:                 Color = White
-    richEdit_CurLineBorder:         Color = Gray6
+    richEdit_CurLineBorder:         Color = Gray4
 }

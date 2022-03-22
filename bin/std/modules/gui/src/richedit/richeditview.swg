@@ -171,12 +171,15 @@ impl IWnd for RichEditView
             l.drawingRect.height = size.y
 
             // Current line
-            if bvis and ed.isSelectionEmpty() and i == ed.cursorPos.lineIndex
+            if ed.richEdFlags & .CurLineBorder
             {
-                fullRect := l.drawingRect
-                fullRect.y -= scrollPos.y
-                fullRect.setRight(pos.right())
-                painter.drawRect(fullRect, colors.richEdit_CurLineBorder, 1)
+                if bvis and ed.isSelectionEmpty() and i == ed.cursorPos.lineIndex
+                {
+                    fullRect := l.drawingRect
+                    fullRect.y -= scrollPos.y
+                    fullRect.setRight(pos.right())
+                    painter.drawRect(fullRect, colors.richEdit_CurLineBorder, 1)
+                }
             }
 
             maxx = Math.max(maxx, x)

@@ -124,11 +124,39 @@ impl TweakFile
         }
 
         // Do references in a second pass
-        visit ref: refs
+        while refs.count
         {
+            toDo := 0'uint
+            ref := refs[toDo]
+
+            loop
+            {
+                restart := false
+                for j := 0; j < refs.count; j += 1
+                {
+                    if j == toDo
+                        continue
+                    ref1 := refs[j]
+                    if ref.src.name == ref1.dst.name
+                    {
+                        if j == 0
+                            throw "tweakfile cycle between '$' references !"
+                        toDo = j
+                        ref = refs[toDo]
+                        restart = true
+                        break
+                    }
+                }
+
+                if !restart 
+                    break
+            }
+
             ptrDst := cast(*u8) ref.folder.data + ref.dst.offset
             ptrSrc := cast(*u8) ref.folder.data + ref.src.offset
             Reflection.copy(ptrDst, ptrSrc, ref.dst.pointedType)
+
+            refs.removeAt(toDo)
         }
     }
 }

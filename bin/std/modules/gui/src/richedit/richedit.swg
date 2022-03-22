@@ -7,6 +7,7 @@ enum RichEditFlags
     None
     ReadOnly
     ShowFocusSel
+    CurLineBorder
 }
 
 struct RichEditMapping
@@ -223,8 +224,6 @@ impl RichEdit
     func create(parent: *Wnd, position: Math.Rectangle, id: string = null)->*RichEdit
     {
         ed := Wnd.create'RichEdit(parent, "", position, id)
-        ed.frameWnd.style.addStyleSheetColors("frameWnd_FocusBk $richEdit_Bk")
-        ed.frameWnd.style.addStyleSheetColors("frameWnd_Bk $richEdit_Bk")
         ed.fontFamily = parent.getTheme().res.fontDefaultFs
 
         with ed
@@ -238,7 +237,6 @@ impl RichEdit
                 if op.y != np.y
                     ed.dirtyFirstLineView = true
             }
-            scrollWnd.style.addStyleSheetColors("scrollBar_Bk $richEdit_Bk")
 
             edView = scrollWnd.createView'RichEditView()
             edView.backgroundStyle = .Transparent
@@ -248,6 +246,10 @@ impl RichEdit
             setDefaultMapping()
             setDefaultStyles()
         }
+
+        ed.frameWnd.style.addStyleSheetColors("frameWnd_FocusBk $richEdit_Bk")
+        ed.frameWnd.style.addStyleSheetColors("frameWnd_Bk $richEdit_Bk")
+        ed.scrollWnd.style.addStyleSheetColors("scrollBar_Bk $richEdit_Bk")
 
         return ed
     }
