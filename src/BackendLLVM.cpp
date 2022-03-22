@@ -36,7 +36,6 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
             llvm::Type::getInt8PtrTy(context),                                                        // ScratchAllocator block
             llvm::Type::getInt64Ty(context),                                                          // ScratchAllocator capacity
             llvm::Type::getInt64Ty(context),                                                          // ScratchAllocator used
-            llvm::Type::getInt64Ty(context),                                                          // ScratchAllocator lastUsed
             llvm::Type::getInt64Ty(context),                                                          // ScratchAllocator maxUsed
             llvm::Type::getInt8PtrTy(context),                                                        // ScratchAllocator firstLeak
             llvm::Type::getInt64Ty(context),                                                          // ScratchAllocator totalLeak
@@ -51,7 +50,7 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
             llvm::Type::getInt8PtrTy(context),                                                        // panic
         };
 
-        static_assert(sizeof(SwagContext) == 568);
+        static_assert(sizeof(SwagContext) == 560);
         pp.contextTy = llvm::StructType::create(context, members, "swag_context_t");
         SWAG_ASSERT(pp.contextTy->isSized());
     }

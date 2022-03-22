@@ -7,7 +7,7 @@ func createView4(tabView: *Tab, view: *Wnd)
     {
         ed := RichEdit.create(view, @{10, 10, 600, 500})
         ed.setFrameForm(.Round)
-        ed.richEdFlags |= .ShowFocusSel | .CurLineBorder
+        ed.setRichEdFlags(.ShowFocusSel | .CurLineBorder)
         ed.setText(cast(string) Txt)
     }
 
@@ -31,7 +31,7 @@ func createView4(tabView: *Tab, view: *Wnd)
         ed := RichEdit.create(view, @{620, 320, 400, 300})
         ed.setFrameForm(.Round)
         ed.setFrameFlags(.FocusBorder)
-        ed.richEdFlags |= .ReadOnly
+        ed.setRichEdFlags(.ReadOnly)
         ed.style.addStyleSheetColors("richEdit_Bk $edit_Bk")
 
         ed.styles[1].colFg = Argb.Red

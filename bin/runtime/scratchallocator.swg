@@ -101,8 +101,7 @@ impl IAllocator for ScratchAllocator
             ptr := (block + used) - request.size
             if ptr == request.address
             {
-                used = lastUsed
-                lastUsed = 0
+                used -= request.size
                 break
             }
 
@@ -138,7 +137,6 @@ impl IAllocator for ScratchAllocator
             {
                 oldAddress := request.address
                 request.address = block + usedAlign
-                lastUsed = used
                 used = usedAlign + request.size
                 maxUsed = @max(maxUsed, used)
                 if oldAddress

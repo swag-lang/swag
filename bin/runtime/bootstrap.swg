@@ -230,7 +230,6 @@ namespace Swag
         block:        *u8
         capacity:     uint
         used:         uint
-        lastUsed:     uint
         maxUsed:      uint
         firstLeak:    *void
         totalLeak:    uint

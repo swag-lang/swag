@@ -254,6 +254,13 @@ impl RichEdit
         return ed
     }
 
+    // Set richedit flags
+    mtd setRichEdFlags(flags: RichEditFlags)
+    {
+        richEdFlags = flags
+        invalidate()
+    }
+
     // Returns true if the rich edit is read only
     mtd isReadOnly()->bool
     {

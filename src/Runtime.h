@@ -55,7 +55,6 @@ typedef struct SwagScratchAllocator
     void*         data      = nullptr;
     uint64_t      capacity  = 0;
     uint64_t      used      = 0;
-    uint64_t      lastUsed  = 0;
     uint64_t      maxUsed   = 0;
     void*         firstLeak = nullptr;
     uint64_t      totalLeak = 0;
