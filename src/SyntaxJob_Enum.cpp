@@ -26,11 +26,20 @@ bool SyntaxJob::doEnum(AstNode* parent, AstNode** result)
         newScope = Ast::newScope(enumNode, enumNode->token.text, ScopeKind::Enum, currentScope, true);
         if (newScope->kind != ScopeKind::Enum)
         {
-            auto        implNode = CastAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
-            PushErrHint errh(Fmt(Hnt(Hnt0019), implNode->token.ctext()));
-            Diagnostic  diag{implNode->identifier, Fmt(Err(Err0441), Scope::getNakedKindName(newScope->kind), implNode->token.ctext(), Scope::getNakedKindName(ScopeKind::Enum))};
-            Diagnostic  note{enumNode, Fmt(Nte(Nte0027), implNode->token.ctext()), DiagnosticLevel::Note};
-            return sourceFile->report(diag, &note);
+            if (newScope->owner->kind == AstNodeKind::Impl)
+            {
+                auto        implNode = CastAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
+                PushErrHint errh(Fmt(Hnt(Hnt0019), implNode->token.ctext()));
+                Diagnostic  diag{implNode->identifier, Fmt(Err(Err0441), Scope::getNakedKindName(newScope->kind), implNode->token.ctext(), Scope::getNakedKindName(ScopeKind::Enum))};
+                Diagnostic  note{enumNode, Fmt(Nte(Nte0027), implNode->token.ctext()), DiagnosticLevel::Note};
+                return sourceFile->report(diag, &note);
+            }
+            else
+            {
+                Diagnostic diag{enumNode, Fmt(Err(Err0885), enumNode->token.ctext(), Scope::getNakedKindName(newScope->kind))};
+                Diagnostic note{newScope->owner, Fmt(Nte(Nte0027), newScope->owner->token.ctext()), DiagnosticLevel::Note};
+                return sourceFile->report(diag, &note);
+            }
         }
 
         enumNode->scope = newScope;
