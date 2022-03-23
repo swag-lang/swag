@@ -247,10 +247,9 @@ impl RichEdit
         {
             st := Clipboard.getData(clipFormat)
             insertText(txt, st)
-            clearSelection()
         }
         else
-            insertTextPrivate(txt, 0, false)
+            insertText(txt, 0)
 
         popUndo()
         ensureCaretIsVisible()

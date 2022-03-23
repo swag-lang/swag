@@ -328,7 +328,7 @@ impl RichEdit
             {
                 pushUndo()
                 deleteSelection()
-                insertTextPrivate("\t", 0, false)
+                insertText("\t", 0)
                 popUndo()
             }
             else

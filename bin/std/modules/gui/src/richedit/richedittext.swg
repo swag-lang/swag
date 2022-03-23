@@ -111,6 +111,8 @@ impl RichEdit
             line.insertRune(posIns, c, txtStyle)
             cp.charPosInLine += 1
         }
+
+        recomputeScroll = true
     }
 
     mtd insertTextPrivate(cp: *RichEditCursor, runes: Array'rune, styles: Array'u8, selRect: bool)
@@ -168,6 +170,8 @@ impl RichEdit
             cp.lineIndex = lineIndex
             cp.charPosInLine = posInLine + (rankEnd - rankBeg)
         }
+
+        recomputeScroll = true
     }
 
     mtd insertTextPrivate(cp: *RichEditCursor, text: string, txtStyle: RichEditStyleRef, selRect: bool)
@@ -188,7 +192,7 @@ impl RichEdit
             insertRunePrivate(cp, c, txtStyle)
         }
 
-        setModified(true)
+        recomputeScroll = true
     }
 
     mtd deleteTextPrivate(posStart, posEnd: RichEditCursor, selRect: bool)
@@ -245,7 +249,7 @@ impl RichEdit
             }
         }
 
-        setModified(true)
+        recomputeScroll = true
     }
 
     func isWord(c: rune)->bool
@@ -310,10 +314,9 @@ public impl RichEdit
 
         insertTextPrivate(&cp, text, txtStyle, false)
         setModified(true)
-        invalidate()
     }
 
-    mtd insertTextPrivate(text: string, style: RichEditStyleRef, selRect: bool)
+    mtd insertText(text: string, style: RichEditStyleRef)
     {
         undo := Memory.new'RichEditUndo()
         undo.type       = .Insert
@@ -321,12 +324,13 @@ public impl RichEdit
         undo.styles.resize(undo.runes.count)
         undo.selBeg     = selBeg
         undo.cursorPos  = cursorPos
-        undo.hasSelRect = selRect
+        undo.hasSelRect = hasSelRect
         undo.serial     = 0
         resetUndo()
         toUndo.add(undo)
-        insertTextPrivate(&cursorPos, text, 0, selRect)
+        insertTextPrivate(&cursorPos, text, 0, hasSelRect)
         clearSelection()
+        setModified(true)
     }
 
     mtd insertText(text: string, txtStyles: Array'u8)
@@ -343,6 +347,7 @@ public impl RichEdit
         toUndo.add(undo)
         insertTextPrivate(&cursorPos, undo.runes, undo.styles, hasSelRect)
         clearSelection()
+        setModified(true)
     }
 
     mtd getRune(cp: RichEditCursor)->{char: rune, style: RichEditStyleRef}
@@ -362,9 +367,6 @@ public impl RichEdit
 
     mtd insertRune(ch: rune)
     {
-        if isReadOnly()
-            return
-
         c := ch
 
         // A new undo action needs to be regenerate ?
@@ -483,14 +485,11 @@ public impl RichEdit
 
         pundo.begSelectionAfter = selBeg
         pundo.endSelectionAfter = cursorPos
-        invalidate()
+        setModified(true)
     }
 
     mtd insertBegLine(txt: string, lastLine: bool)
     {
-        if isReadOnly()
-            return
-
         first := true
 
         beg := getBegSelection()
@@ -513,7 +512,7 @@ public impl RichEdit
 
             setCursorPos(beg)
             selBeg = beg
-            insertTextPrivate(txt, 0, false)
+            insertText(txt, 0)
 
             popUndo()
 
@@ -537,13 +536,12 @@ public impl RichEdit
             undoRestoreSelection()
             popUndo()
         }
+
+        setModified(true)
     }
 
     mtd deleteBegLine(txt: string, lastLine: bool)
     {
-        if isReadOnly()
-            return
-
         arrR   := Unicode.fromUtf8(txt)
         first  := true
         lenTxt := arrR.count
@@ -643,5 +641,7 @@ public impl RichEdit
             undoRestoreSelection()
             popUndo()
         }
+
+        setModified(true)
     }
 }
