@@ -332,6 +332,7 @@ impl RichEditView
                     newStyle = ed.stylesSelect[1]
                 if !newStyle.colFg.a
                     newStyle.colFg = ed.styles[dref pStyle].colFg
+                newStyle.underline = ed.styles[dref pStyle].underline
             }
 
             // Paint accumulated string if we have a change of style
