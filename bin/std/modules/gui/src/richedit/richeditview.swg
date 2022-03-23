@@ -222,6 +222,12 @@ impl IWnd for RichEditView
         y = cast(f32) (ed.countVisibleLines * size.y)
         if !ed.recomputeScroll
             maxx = ed.scrollWnd.scrollSize.x
+        else
+        {
+            posCaret := ed.getCaretPos(ed.cursorPos)
+            maxx += posCaret.width + 32
+        }
+
         ed.recomputeScroll = false
         ed.scrollWnd.setScrollSize(maxx, y)
 
