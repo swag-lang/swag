@@ -374,6 +374,6 @@ impl RichEditView
             x = x1
         }
 
-        return x
+        return x + scrollPos.x
     }
 }

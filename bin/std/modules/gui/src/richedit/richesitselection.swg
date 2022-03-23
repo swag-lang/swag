@@ -252,7 +252,7 @@ impl RichEdit
             insertText(txt, 0)
 
         popUndo()
-        ensureCaretIsVisible()
+        forceCaretVisible = true
     }
 
     mtd deleteLine()
