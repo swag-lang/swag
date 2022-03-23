@@ -3,6 +3,11 @@ using Pixel
 
 struct RichEditLexerSwag
 {
+    currentStyle:   RichEditStyleRef
+}
+
+impl IRichEditLexer for RichEditLexerSwag
+{
     #[Swag.Incomplete]
     enum SwagStyle: RichEditStyleRef
     {
@@ -10,11 +15,6 @@ struct RichEditLexerSwag
         LineComment
     }
 
-    currentStyle:   RichEditStyleRef
-}
-
-impl IRichEditLexer for RichEditLexerSwag
-{
     mtd setup(ed: *RichEdit)
     {
         ed.styles[1].colFg = Argb.Red

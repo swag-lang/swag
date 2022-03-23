@@ -2402,6 +2402,16 @@ bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identi
     if (overload->flags & OVERLOAD_VAR_GLOBAL)
         return true;
 
+    auto kind = overload->symbol->kind;
+    switch (kind)
+    {
+    case SymbolKind::Enum:
+    case SymbolKind::Struct:
+    case SymbolKind::TypeAlias:
+    case SymbolKind::Interface:
+        return true;
+    }
+
     auto                        job                = context->job;
     auto                        symbol             = overload->symbol;
     auto&                       scopeHierarchyVars = job->cacheScopeHierarchyVars;
