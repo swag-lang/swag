@@ -32,7 +32,7 @@ public enum RichEditCommand
     ToggleOverwrite
     ClipboardCopy
     ClipboardPaste
-    //CMD_CLIPBOARD_CUT
+    ClipboardCut
     Undo
     Redo
     SelectRuneLeft
@@ -130,10 +130,13 @@ impl RichEdit
         addMapping(.Tab,       .None,        .EditTabulation)
         addMapping(.Tab,       .Shift,       .EditBackTabulation)
         addMapping(.Insert,    .None,        .ToggleOverwrite)
+        addMapping(.Insert,    .Control,     .ClipboardCopy)
+        addMapping(.Insert,    .Shift,       .ClipboardPaste)
         addMapping(.A,         .Control,     .SelectAllFile)
         addMapping(.C,         .Control,     .ClipboardCopy)
         addMapping(.L,         .Control,     .DeleteLine)
         addMapping(.V,         .Control,     .ClipboardPaste)
+        addMapping(.X,         .Control,     .ClipboardCut)
         addMapping(.Y,         .Control,     .Redo)
         addMapping(.Z,         .Control,     .Undo)
     }
@@ -360,6 +363,12 @@ impl RichEdit
             if isReadOnly()
                 return
             pasteFromClipboard()
+
+        case ClipboardCut:
+            if isReadOnly()
+                return
+            copyToClipboard()
+            deleteSelection()
         }
     }
 }
