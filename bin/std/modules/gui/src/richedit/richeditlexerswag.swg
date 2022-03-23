@@ -13,11 +13,13 @@ impl IRichEditLexer for RichEditLexerSwag
     {
         Default
         LineComment
+        Comment
     }
 
     mtd setup(ed: *RichEdit)
     {
         ed.styles[1].colFg = Argb.Red
+        ed.styles[2].colFg = Argb.Red
     }
 
     mtd setStyleRef(style: RichEditStyleRef)
@@ -57,12 +59,30 @@ impl IRichEditLexer for RichEditLexerSwag
 
         loop
         {
-            c := getCur()
-            if !c break
+            c  := getCur()
             cn := getNext()
+            if !c break
 
-            if currentStyle == SwagStyle.Default
+            switch currentStyle
             {
+            case SwagStyle.Comment:
+                if c == "*"'rune and cn == "/"'rune
+                {
+                    seekNext()
+                    seekNext()
+                    currentStyle = SwagStyle.Default
+                    continue
+                }
+
+            case SwagStyle.Default:
+                if c == "/"'rune and cn == "*"'rune
+                {
+                    currentStyle = SwagStyle.Comment
+                    seekNext()
+                    seekNext()
+                    continue
+                }
+
                 if c == "/"'rune and cn == c
                 {
                     currentStyle = SwagStyle.LineComment
