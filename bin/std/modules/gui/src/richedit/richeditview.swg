@@ -78,14 +78,15 @@ impl IWnd for RichEditView
     {
         if evt.kind == .KeyPressed
         {
-            evt.accepted = ed.keyPressed(evt.key, evt.modifiers)
-            if evt.accepted forceVisibleCaret()
+            evt.accepted = true
+            ed.keyPressed(evt.key, evt.modifiers)
+            forceVisibleCaret()
         }
         elif evt.kind == .Rune
         {
-            evt.accepted = ed.charPressed(evt.key, evt.char, evt.modifiers)
-            if evt.accepted forceVisibleCaret()
-
+            evt.accepted = true
+            ed.charPressed(evt.key, evt.char, evt.modifiers)
+            forceVisibleCaret()
         }
     }
 

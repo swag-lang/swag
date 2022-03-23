@@ -271,11 +271,13 @@ impl RichEdit
     }
 
     // Simulate a keyboard character pressed
-    mtd charPressed(key: Input.Key, ch: rune, mdf: Input.KeyModifiers)->bool
+    mtd charPressed(key: Input.Key, ch: rune, mdf: Input.KeyModifiers)
     {
         cmd := getMappingCommand(key, mdf)
         if cmd != .None
-            return true
+            return
+        if isReadOnly()
+            return
 
         c := ch
         if c == "\r"'rune
@@ -283,17 +285,15 @@ impl RichEdit
 
         insertRune(c)
         ensureCaretIsVisible()
-        return true
     }
 
     // Simulate a keyboard pressed
-    mtd keyPressed(key: Input.Key, mdf: Input.KeyModifiers)->bool
+    mtd keyPressed(key: Input.Key, mdf: Input.KeyModifiers)
     {
         cmd := getMappingCommand(key, mdf)
         if cmd == .None
-            return true
+            return
         executeCommand(cmd)
         ensureCaretIsVisible()
-        return true
     }
 }
