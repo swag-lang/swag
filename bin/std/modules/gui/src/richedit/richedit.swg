@@ -56,6 +56,7 @@ struct RichEdit
     countVisibleLines:      uint
     firstVisibleLineView:   uint
     lastVisibleLineView:    uint
+    clipFormat:             Clipboard.Format
     cursorPosUndo:      RichEditCursor
     selBegUndo:         RichEditCursor
 }

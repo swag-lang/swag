@@ -909,6 +909,9 @@ namespace User32Priv
 
         func GetMonitorInfoA(hMonitor: HMONITOR, lpmi: *MONITORINFO)->BOOL;
         func GetMonitorInfoW(hMonitor: HMONITOR, lpmi: *MONITORINFO)->BOOL;
+
+        func RegisterClipboardFormatA(lpszFormat: LPCSTR)->UINT;
+        func RegisterClipboardFormatW(lpszFormat: LPCWSTR)->UINT;
     }
 }
 
@@ -986,5 +989,21 @@ namespace User32Priv
         lpmi.cbSize = @sizeof(MONITORINFO)
         if !User32Priv.GetMonitorInfoW(hMonitor, lpmi)
             try setError(GetLastError())
+    }
+
+    func RegisterClipboardFormatA(name: LPCSTR)->UINT throw
+    {
+        res := User32Priv.RegisterClipboardFormatA(name)
+        if !res
+            try setError(GetLastError())
+        return res
+    }
+
+    func RegisterClipboardFormatW(name: LPCWSTR)->UINT throw
+    {
+        res := User32Priv.RegisterClipboardFormatW(name)
+        if !res
+            try setError(GetLastError())
+        return res
     }
 }

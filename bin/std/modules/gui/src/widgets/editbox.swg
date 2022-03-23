@@ -310,9 +310,8 @@ private impl EditBox
             }
             elif shift and !ctrl
             {
-                (str, ok) := Clipboard.getString()
-                if ok
-                    insertString(str.toString())
+                str := Clipboard.getString()
+                insertString(str.toString())
                 return true
             }
 
@@ -334,9 +333,8 @@ private impl EditBox
         case V:
             if ctrl
             {
-                (str, ok) := Clipboard.getString()
-                if ok
-                    insertString(str.toString())
+                str := Clipboard.getString()
+                insertString(str.toString())
                 return true
             }
 

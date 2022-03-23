@@ -191,22 +191,6 @@ impl RichEdit
         setModified(true)
     }
 
-    mtd insertTextPrivate(text: string, style: RichEditStyleRef, selRect: bool)
-    {
-        undo := Memory.new'RichEditUndo()
-        undo.type       = .Insert
-        undo.runes      = Unicode.fromUtf8(text)
-        undo.styles.resize(undo.runes.count)
-        undo.selBeg     = selBeg
-        undo.cursorPos  = cursorPos
-        undo.hasSelRect = selRect
-        undo.serial     = 0
-        resetUndo()
-        toUndo.add(undo)
-        insertTextPrivate(&cursorPos, text, 0, selRect)
-        clearSelection()
-    }
-
     mtd deleteTextPrivate(posStart, posEnd: RichEditCursor, selRect: bool)
     {
         // Nothing to delete
@@ -327,6 +311,38 @@ public impl RichEdit
         insertTextPrivate(&cp, text, txtStyle, false)
         setModified(true)
         invalidate()
+    }
+
+    mtd insertTextPrivate(text: string, style: RichEditStyleRef, selRect: bool)
+    {
+        undo := Memory.new'RichEditUndo()
+        undo.type       = .Insert
+        undo.runes      = Unicode.fromUtf8(text)
+        undo.styles.resize(undo.runes.count)
+        undo.selBeg     = selBeg
+        undo.cursorPos  = cursorPos
+        undo.hasSelRect = selRect
+        undo.serial     = 0
+        resetUndo()
+        toUndo.add(undo)
+        insertTextPrivate(&cursorPos, text, 0, selRect)
+        clearSelection()
+    }
+
+    mtd insertText(text: string, txtStyles: Array'u8)
+    {
+        undo := Memory.new'RichEditUndo()
+        undo.type       = .Insert
+        undo.runes      = Unicode.fromUtf8(text)
+        undo.styles     = txtStyles
+        undo.selBeg     = selBeg
+        undo.cursorPos  = cursorPos
+        undo.hasSelRect = hasSelRect
+        undo.serial     = 0
+        resetUndo()
+        toUndo.add(undo)
+        insertTextPrivate(&cursorPos, undo.runes, undo.styles, hasSelRect)
+        clearSelection()
     }
 
     mtd getRune(cp: RichEditCursor)->{char: rune, style: RichEditStyleRef}

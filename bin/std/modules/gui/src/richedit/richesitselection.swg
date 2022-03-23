@@ -216,12 +216,44 @@ impl RichEdit
         popUndo()
     }
 
+    private mtd registerClipboardFormat()
+    {
+        clipFormat = catch Clipboard.registerFormat("std.richedit.style")
+        if @err return
+    }
+
     mtd copyToClipboard()
     {
         if isSelectionEmpty()
             return
-        txt := getSelectedText()
+        res := getTextPrivate(getBegSelection(), getEndSelection(), hasSelRect)
+
+        registerClipboardFormat()
+        if clipFormat Clipboard.addData(clipFormat, res.styles.toSlice())
+
+        txt := Utf8.fromUnicode(res.text.toSlice())
         Clipboard.addString(txt)
+    }
+
+    mtd pasteFromClipboard()
+    {
+        txt := Clipboard.getString()
+        registerClipboardFormat()
+
+        pushUndo()
+        deleteSelection()
+
+        if clipFormat and Clipboard.hasFormat(clipFormat)
+        {
+            st := Clipboard.getData(clipFormat)
+            insertText(txt, st)
+            clearSelection()
+        }
+        else
+            insertTextPrivate(txt, 0, false)
+
+        popUndo()
+        ensureCaretIsVisible()
     }
 
     mtd deleteLine()

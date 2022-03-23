@@ -359,14 +359,7 @@ impl RichEdit
         case ClipboardPaste:
             if isReadOnly()
                 return
-            (txt, ok) := Clipboard.getString()
-            if ok
-            {
-                pushUndo()
-                deleteSelection()
-                insertTextPrivate(txt, 0, false)
-                popUndo()
-            }
+            pasteFromClipboard()
         }
     }
 }

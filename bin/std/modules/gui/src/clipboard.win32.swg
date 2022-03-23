@@ -1,9 +1,45 @@
 #global if #os == Swag.TargetOs.Windows
 #global namespace Clipboard
+#global public
 using Core, Win32
 
+alias Format = uint
+
+// Register a new format
+func registerFormat(name: string)->Format throw
+{
+    return try RegisterClipboardFormatA(@dataof(name))
+}
+
+// Returns true if the clipboard contains the given format
+func hasFormat(fmt: Format)->bool
+{
+    if !OpenClipboard(GetDesktopWindow())
+        return false
+    defer discard CloseClipboard()
+
+    return IsClipboardFormatAvailable(cast(UINT) fmt) ? true : false
+}
+
+// Add data of a given format to the clipboard
+func addData(fmt: Format, data: const [..] u8)
+{
+    if !OpenClipboard(GetDesktopWindow())
+        return
+    defer discard CloseClipboard()
+
+    // Store the size in the first uint
+    hglob := GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, @countof(data) + @sizeof(uint))
+    pz := cast(*u8) GlobalLock(hglob)
+    pzu := cast(*uint) pz
+    dref pzu = @countof(data)
+    Memory.copy(pz + @sizeof(uint), @dataof(data), @countof(data))
+    discard GlobalUnlock(pz)
+    discard SetClipboardData(cast(UINT) fmt, hglob)
+}
+
 // Add string to clipboard
-public func addString(str: string)
+func addString(str: string)
 {
     if !OpenClipboard(GetDesktopWindow())
         return
@@ -31,8 +67,34 @@ public func addString(str: string)
     }
 }
 
+// Get data of the given format
+func getData(fmt: Format)->Array'u8
+{
+    var result: retval
+
+    if !OpenClipboard(GetDesktopWindow())
+        return result
+    defer discard CloseClipboard()
+
+    if IsClipboardFormatAvailable(cast(UINT) fmt)
+    {
+        hglob := GetClipboardData(cast(UINT) fmt)
+        if hglob
+        {
+            pz := cast(*u8) GlobalLock(hglob)
+            pzu := cast(*uint) pz
+            count := dref pzu
+            result.add(@mkslice(pz + @sizeof(uint), count))
+            discard GlobalUnlock(pz)
+            return result
+        }
+    }
+
+    return result
+}
+
 // Get utf8 string from clipboard
-public func getString()->{val: String, ok: bool}
+func getString()->String
 {
     var result: retval
 
@@ -47,8 +109,7 @@ public func getString()->{val: String, ok: bool}
         if hglob
         {
             pz := cast(*u16) GlobalLock(hglob)
-            result.val = Utf8.fromUtf16(@mkslice(pz, Utf16.lengthZeroTerminated(pz)))
-            result.ok = true
+            result = Utf8.fromUtf16(@mkslice(pz, Utf16.lengthZeroTerminated(pz)))
             discard GlobalUnlock(pz)
             return result
         }
@@ -61,8 +122,7 @@ public func getString()->{val: String, ok: bool}
         if hglob
         {
             pz := cast(*u8) GlobalLock(hglob)
-            result.val = @mkstring(pz, @strlen(pz))
-            result.ok = true
+            result = @mkstring(pz, @strlen(pz))
             discard GlobalUnlock(pz)
             return result
         }
