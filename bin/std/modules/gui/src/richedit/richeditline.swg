@@ -3,12 +3,13 @@ using Core
 #[Swag.Opaque]
 public struct RichEditLine
 {
-    chars:          Array'rune
-    styles:         Array'RichEditStyleRef
-    dirtyStyle:     bool
-    dirtyFold:      bool
-    hidden:         uint
-    drawingRect:    Math.Rectangle
+    chars:              Array'rune
+    styles:             Array'RichEditStyleRef
+    dirtyStyle:         bool
+    dirtyFold:          bool
+    hidden:             uint
+    drawingRect:        Math.Rectangle
+    endingLexerStyle:   RichEditStyleRef
 }
 
 impl RichEditLine

@@ -2,12 +2,15 @@ using Core, Gui, Pixel
 
 const Txt = #load("view0.swg")
 
+var g_LexerSwag: RichEditLexerSwag
+
 func createView4(tabView: *Tab, view: *Wnd)
 {
     {
         ed := RichEdit.create(view, @{10, 10, 600, 500})
         ed.setFrameForm(.Round)
         ed.setRichEdFlags(.ShowFocusSel | .CurLineBorder)
+        ed.setLexer(cast(IRichEditLexer) g_LexerSwag)
         ed.setText(cast(string) Txt)
     }
 

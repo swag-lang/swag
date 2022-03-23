@@ -25,6 +25,7 @@ struct RichEdit
     lineSpacing:    f32
     overwriteMode:  bool
     tabSize:        s32 = 4
+    lexer:          IRichEditLexer
     sigIsReadOnly:  SigArray'closure(*bool)
     sigChanged:     SigArray'closure(*Self)
     sigModified:    SigArray'closure(*Self)
@@ -295,5 +296,12 @@ impl RichEdit
             return
         executeCommand(cmd)
         ensureCaretIsVisible()
+    }
+
+    // Associate a lexer
+    mtd setLexer(lex: IRichEditLexer)
+    {
+        lexer = lex
+        lexer.setup(self)
     }
 }

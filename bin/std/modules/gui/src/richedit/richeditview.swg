@@ -162,9 +162,41 @@ impl IWnd for RichEditView
             ed.lastVisibleLineView = i
 
             l := ed.lines[i]
-
             if bvis or l.dirtyStyle or l.dirtyFold
+            {
+                // Lex the line
+                if l.dirtyStyle and ed.lexer
+                {
+                    // Initialize the current lexer state
+                    lexerStyle := 0'u8
+                    if i
+                        lexerStyle = ed.lines[i - 1].endingLexerStyle
+
+                    // Initialize the lexer state with the previous line state
+                    ed.lexer.setStyleRef(lexerStyle)
+
+                    // Lex
+                    if ed.lines[i].length()
+                        ed.lexer.compute(l)
+
+                    // If the ending state has changed, then we need to lex the following line too
+                    if ed.lines[i].endingLexerStyle != ed.lexer.getStyleRef()
+                    {
+                        // As the fold level depends of the style, force dirty on fold level
+                        l.dirtyFold = true
+                        if i != ed.lines.count - 1
+                        {
+                            ed.lines[i + 1].dirtyStyle = true
+                            ed.lines[i + 1].dirtyFold  = true
+                        }
+                    }
+
+                    // Set the line ending state
+                    ed.lines[i].endingLexerStyle = ed.lexer.getStyleRef()
+                }
+
                 x = paintLine(evt.bc, i, y - scrollPos.y, true)
+            }
 
             l.drawingRect.x = marginLeft
             l.drawingRect.y = y
