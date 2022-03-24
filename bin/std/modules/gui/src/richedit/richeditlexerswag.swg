@@ -23,7 +23,6 @@ struct RichEditLexerSwag
         Control
     }
 
-    currentState:   s32
     mapStyles:      [256] RichEditStyleRef
     mapWords:       HashTable'(string, s32)
 }
@@ -90,19 +89,11 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("orelse", State.Control)
     }
 
-    mtd setState(state: s32)
-    {
-        currentState = state
-    }
-
-    mtd getState()->s32
-    {
-        return currentState
-    }
-
-    mtd compute(line: *RichEditLine)
+    mtd compute(linePrev, line, lineNext: *RichEditLine)
     {
         seek := 0'uint
+        currentState  := linePrev ? linePrev.lexerEndingState : State.Default
+        currentCptCmt := linePrev ? linePrev.lexerCptCmt : 0
 
         #[Swag.Mixin]
         func getCur()->rune
@@ -114,6 +105,7 @@ impl IRichEditLexer for RichEditLexerSwag
         #[Swag.Mixin]
         func getNext()->rune
         {
+            if !line.chars.count return 0
             if seek >= line.chars.count - 1 return 0
             return line.chars[seek + 1]
         }
@@ -138,7 +130,18 @@ impl IRichEditLexer for RichEditLexerSwag
                 {
                     seekNext()
                     seekNext()
-                    currentState = State.Default
+                    if currentCptCmt
+                        currentCptCmt -= 1
+                    if !currentCptCmt
+                        currentState = State.Default
+                    continue
+                }
+
+                if c == "/"'rune and cn == "*"'rune
+                {
+                    currentCptCmt += 1
+                    seekNext()
+                    seekNext()
                     continue
                 }
 
@@ -170,6 +173,7 @@ impl IRichEditLexer for RichEditLexerSwag
 
                 if c == "/"'rune and cn == "*"'rune
                 {
+                    currentCptCmt += 1
                     currentState = State.Comment
                     seekNext()
                     seekNext()
@@ -190,5 +194,19 @@ impl IRichEditLexer for RichEditLexerSwag
 
         if currentState == State.LineComment
             currentState = State.Default
+
+        if line.lexerEndingState != currentState
+        {
+            line.lexerEndingState = currentState
+            if lineNext
+                lineNext.dirtyStyle = true
+        }
+
+        if line.lexerCptCmt != currentCptCmt
+        {
+            line.lexerCptCmt = currentCptCmt
+            if lineNext
+                lineNext.dirtyStyle = true
+        }
     }
 }
