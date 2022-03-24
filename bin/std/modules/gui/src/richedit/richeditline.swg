@@ -9,7 +9,7 @@ public struct RichEditLine
     dirtyFold:          bool
     hidden:             uint
     drawingRect:        Math.Rectangle
-    endingLexerStyle:   RichEditStyleRef
+    endingLexerState:   s32
 }
 
 impl RichEditLine
