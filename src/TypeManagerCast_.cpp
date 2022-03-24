@@ -3418,11 +3418,13 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
             toType = concreteReference(toType);
     }
 
+    // Transform typealias to related type
     if (toType->kind == TypeInfoKind::Alias)
         toType = TypeManager::concreteType(toType, CONCRETE_ALIAS | (castFlags & CASTFLAG_EXPLICIT ? CONCRETE_FORCEALIAS : 0));
     if (fromType->kind == TypeInfoKind::Alias)
         fromType = TypeManager::concreteType(fromType, CONCRETE_ALIAS | (castFlags & CASTFLAG_EXPLICIT ? CONCRETE_FORCEALIAS : 0));
 
+    // Transform enum to underlying type
     if ((castFlags & CASTFLAG_CONCRETE_ENUM) || (castFlags & CASTFLAG_EXPLICIT) || toType->flags & TYPEINFO_INCOMPLETE || fromType->flags & TYPEINFO_INCOMPLETE)
     {
         toType   = TypeManager::concreteType(toType, CONCRETE_ENUM);
@@ -3430,7 +3432,15 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     }
 
     if ((castFlags & CASTFLAG_INDEX) && (fromType->flags & TYPEINFO_ENUM_INDEX))
+    {
         fromType = TypeManager::concreteType(fromType, CONCRETE_ENUM);
+    }
+
+    // Transform typealias to related type again, because an enum can have a type alias as an underlying type
+    if (toType->kind == TypeInfoKind::Alias)
+        toType = TypeManager::concreteType(toType, CONCRETE_ALIAS | (castFlags & CASTFLAG_EXPLICIT ? CONCRETE_FORCEALIAS : 0));
+    if (fromType->kind == TypeInfoKind::Alias)
+        fromType = TypeManager::concreteType(fromType, CONCRETE_ALIAS | (castFlags & CASTFLAG_EXPLICIT ? CONCRETE_FORCEALIAS : 0));
 
     if (fromType == toType)
         return true;
