@@ -4,7 +4,16 @@ using Core, Pixel
 struct RichEditLexerSwag
 {
     #[Swag.Incomplete]
-    enum SwagState: s32
+    enum Style: u8
+    {
+        Default
+        Comment
+        Keyword
+        Control
+    }
+
+    #[Swag.Incomplete]
+    enum State: s32
     {
         Default
         LineComment
@@ -23,63 +32,62 @@ impl IRichEditLexer for RichEditLexerSwag
 {
     mtd setup(ed: *RichEdit)
     {
-        mapStyles[SwagState.LineComment] = 1
-        mapStyles[SwagState.Comment] = 1
-        mapStyles[SwagState.Keyword] = 2
-        mapStyles[SwagState.Control] = 3
-        mapStyles[SwagState.Declaration] = 4
+        mapStyles[State.LineComment] = RichEditLexerSwag.Style.Comment
+        mapStyles[State.Comment]     = RichEditLexerSwag.Style.Comment
+        mapStyles[State.Keyword]     = RichEditLexerSwag.Style.Keyword
+        mapStyles[State.Control]     = RichEditLexerSwag.Style.Control
+        mapStyles[State.Declaration] = RichEditLexerSwag.Style.Keyword
 
-        ed.styles[1].colFg = 0xFF6A9955
-        ed.styles[2].colFg = 0xFF569cd6
-        ed.styles[3].colFg = 0xFFD8A0DF
-        ed.styles[4].colFg = 0xFF569cd6
+        ed.styles[RichEditLexerSwag.Style.Comment].colFg = 0xFF6A9955
+        ed.styles[RichEditLexerSwag.Style.Keyword].colFg = 0xFF569cd6
+        ed.styles[RichEditLexerSwag.Style.Control].colFg = 0xFFD8A0DF
 
-        mapWords.add("using", SwagState.Keyword)
-        mapWords.add("with", SwagState.Keyword)
-        mapWords.add("cast", SwagState.Keyword)
-        mapWords.add("acast", SwagState.Keyword)
-        mapWords.add("bitcast", SwagState.Keyword)
-        mapWords.add("dref", SwagState.Keyword)
-        mapWords.add("retval", SwagState.Keyword)
-        mapWords.add("try", SwagState.Keyword)
-        mapWords.add("catch", SwagState.Keyword)
-        mapWords.add("assume", SwagState.Keyword)
-        mapWords.add("throw", SwagState.Keyword)
-        mapWords.add("discard", SwagState.Keyword)
+        mapWords.add("using", State.Keyword)
+        mapWords.add("with", State.Keyword)
+        mapWords.add("cast", State.Keyword)
+        mapWords.add("acast", State.Keyword)
+        mapWords.add("bitcast", State.Keyword)
+        mapWords.add("dref", State.Keyword)
+        mapWords.add("retval", State.Keyword)
+        mapWords.add("try", State.Keyword)
+        mapWords.add("catch", State.Keyword)
+        mapWords.add("assume", State.Keyword)
+        mapWords.add("throw", State.Keyword)
+        mapWords.add("discard", State.Keyword)
 
-        mapWords.add("enum", SwagState.Declaration)
-        mapWords.add("struct", SwagState.Declaration)
-        mapWords.add("union", SwagState.Declaration)
-        mapWords.add("impl", SwagState.Declaration)
-        mapWords.add("interface", SwagState.Declaration)
-        mapWords.add("func", SwagState.Declaration)
-        mapWords.add("closure", SwagState.Declaration)
-        mapWords.add("mtd", SwagState.Declaration)
-        mapWords.add("mtdc", SwagState.Declaration)
-        mapWords.add("namespace", SwagState.Declaration)
-        mapWords.add("alias", SwagState.Declaration)
-        mapWords.add("attr", SwagState.Declaration)
+        mapWords.add("enum", State.Declaration)
+        mapWords.add("struct", State.Declaration)
+        mapWords.add("union", State.Declaration)
+        mapWords.add("impl", State.Declaration)
+        mapWords.add("interface", State.Declaration)
+        mapWords.add("func", State.Declaration)
+        mapWords.add("closure", State.Declaration)
+        mapWords.add("mtd", State.Declaration)
+        mapWords.add("mtdc", State.Declaration)
+        mapWords.add("namespace", State.Declaration)
+        mapWords.add("alias", State.Declaration)
+        mapWords.add("attr", State.Declaration)
 
-        mapWords.add("if", SwagState.Control)
-        mapWords.add("else", SwagState.Control)
-        mapWords.add("elif", SwagState.Control)
-        mapWords.add("for", SwagState.Control)
-        mapWords.add("while", SwagState.Control)
-        mapWords.add("switch", SwagState.Control)
-        mapWords.add("defer", SwagState.Control)
-        mapWords.add("errdefer", SwagState.Control)
-        mapWords.add("loop", SwagState.Control)
-        mapWords.add("visit", SwagState.Control)
-        mapWords.add("break", SwagState.Control)
-        mapWords.add("fallthrough", SwagState.Control)
-        mapWords.add("return", SwagState.Control)
-        mapWords.add("case", SwagState.Control)
-        mapWords.add("continue", SwagState.Control)
-        mapWords.add("default", SwagState.Control)
-        mapWords.add("scope", SwagState.Control)
-        mapWords.add("and", SwagState.Control)
-        mapWords.add("or", SwagState.Control)
-        mapWords.add("orelse", SwagState.Control)
+        mapWords.add("if", State.Control)
+        mapWords.add("else", State.Control)
+        mapWords.add("elif", State.Control)
+        mapWords.add("for", State.Control)
+        mapWords.add("while", State.Control)
+        mapWords.add("switch", State.Control)
+        mapWords.add("defer", State.Control)
+        mapWords.add("errdefer", State.Control)
+        mapWords.add("loop", State.Control)
+        mapWords.add("visit", State.Control)
+        mapWords.add("break", State.Control)
+        mapWords.add("fallthrough", State.Control)
+        mapWords.add("return", State.Control)
+        mapWords.add("case", State.Control)
+        mapWords.add("continue", State.Control)
+        mapWords.add("default", State.Control)
+        mapWords.add("scope", State.Control)
+        mapWords.add("and", State.Control)
+        mapWords.add("or", State.Control)
+        mapWords.add("orelse", State.Control)
     }
 
     mtd setState(state: s32)
@@ -125,16 +133,16 @@ impl IRichEditLexer for RichEditLexerSwag
 
             switch currentState
             {
-            case SwagState.Comment:
+            case State.Comment:
                 if c == "*"'rune and cn == "/"'rune
                 {
                     seekNext()
                     seekNext()
-                    currentState = SwagState.Default
+                    currentState = State.Default
                     continue
                 }
 
-            case SwagState.Default:
+            case State.Default:
                 if Unicode.isLetter(c) or c == "_"'rune
                 {
                     var word: String
@@ -153,16 +161,16 @@ impl IRichEditLexer for RichEditLexerSwag
                     if res
                         currentState = res.value
                     else
-                        currentState = SwagState.Default
+                        currentState = State.Default
                     while seek != seekEnd
                         seekNext()
-                    currentState = SwagState.Default
+                    currentState = State.Default
                     continue
                 }
 
                 if c == "/"'rune and cn == "*"'rune
                 {
-                    currentState = SwagState.Comment
+                    currentState = State.Comment
                     seekNext()
                     seekNext()
                     continue
@@ -170,7 +178,7 @@ impl IRichEditLexer for RichEditLexerSwag
 
                 if c == "/"'rune and cn == c
                 {
-                    currentState = SwagState.LineComment
+                    currentState = State.LineComment
                     seekNext()
                     seekNext()
                     continue
@@ -180,7 +188,7 @@ impl IRichEditLexer for RichEditLexerSwag
             seekNext()
         }
 
-        if currentState == SwagState.LineComment
-            currentState = SwagState.Default
+        if currentState == State.LineComment
+            currentState = State.Default
     }
 }
