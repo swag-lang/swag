@@ -304,7 +304,7 @@ SWAG_ERROR(Err0306, "the `slice` type should be declared as immutable with `cons
 SWAG_ERROR(Err0307, "the initialization expression is `void`")
 SWAG_ERROR(Err0308, "cannot deduce the variable type because the expression is `null`")
 SWAG_ERROR(Err0309, "unable to deduce type of %s `%s`")
-SWAG_ERROR(Err0310, "an enum variable should be initialized with a valid value or with `?`")
+SWAG_ERROR(Err0310, nullptr)
 SWAG_ERROR(Err0311, "cannot create the constant because the type `%s` is generic")
 SWAG_ERROR(Err0312, "cannot create the variable because the type `%s` is generic")
 SWAG_ERROR(Err0313, "a global variable cannot be declared as `public`")

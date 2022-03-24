@@ -1002,21 +1002,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     }
 
     auto typeInfo = TypeManager::concreteType(node->typeInfo, CONCRETE_ALIAS);
-
-    // An enum must be initialized
-    if (!node->assignment &&
-        node->parent->kind != AstNodeKind::FuncDeclParams && // generic, better test ?
-        !(symbolFlags & OVERLOAD_VAR_FUNC_PARAM) &&
-        !(node->flags & AST_EXPLICITLY_NOT_INITIALIZED))
-    {
-        if (typeInfo->kind == TypeInfoKind::Enum ||
-            (typeInfo->kind == TypeInfoKind::Array && ((TypeInfoArray*) typeInfo)->pointedType->kind == TypeInfoKind::Enum))
-        {
-            return context->report(node, Err(Err0310));
-        }
-    }
-
-    typeInfo = TypeManager::concreteType(node->typeInfo, CONCRETE_ALL & ~CONCRETE_FORCEALIAS);
+    typeInfo      = TypeManager::concreteType(node->typeInfo, CONCRETE_ALL & ~CONCRETE_FORCEALIAS);
 
     // In case of a struct (or array of structs), be sure struct is now completed before
     // parsing variable.

@@ -199,6 +199,7 @@ struct TypeInfo
     bool            isCString();
     bool            isInitializerList();
     bool            isArrayOfStruct();
+    bool            isArrayOfEnum();
     bool            isMethod();
     bool            isClosure();
     bool            isLambda();
