@@ -10,6 +10,13 @@ struct RichEditLexerSwag
         Comment
         Keyword
         Control
+        Intrinsic
+        Buildin
+        Function
+        Preprocessor
+        CharEscape
+        Type
+        Class
     }
 
     #[Swag.Incomplete]
@@ -21,6 +28,17 @@ struct RichEditLexerSwag
         Keyword
         Declaration
         Control
+        Intrinsic
+        Buildin
+        Compiler
+        CompilerFunction
+        CompilerGlobal
+        CompilerStatement
+        FunctionCall
+        FunctionSpecOp
+        Type
+        StorageModifier
+        UserType
     }
 
     mapStyles:      [256] RichEditStyleRef
@@ -31,15 +49,33 @@ impl IRichEditLexer for RichEditLexerSwag
 {
     mtd setup(ed: *RichEdit)
     {
-        mapStyles[State.LineComment] = RichEditLexerSwag.Style.Comment
-        mapStyles[State.Comment]     = RichEditLexerSwag.Style.Comment
-        mapStyles[State.Keyword]     = RichEditLexerSwag.Style.Keyword
-        mapStyles[State.Control]     = RichEditLexerSwag.Style.Control
-        mapStyles[State.Declaration] = RichEditLexerSwag.Style.Keyword
+        mapStyles[State.LineComment]        = RichEditLexerSwag.Style.Comment
+        mapStyles[State.Comment]            = RichEditLexerSwag.Style.Comment
+        mapStyles[State.Keyword]            = RichEditLexerSwag.Style.Keyword
+        mapStyles[State.Control]            = RichEditLexerSwag.Style.Control
+        mapStyles[State.Declaration]        = RichEditLexerSwag.Style.Keyword
+        mapStyles[State.Intrinsic]          = RichEditLexerSwag.Style.Intrinsic
+        mapStyles[State.Buildin]            = RichEditLexerSwag.Style.Buildin
+        mapStyles[State.CompilerFunction]   = RichEditLexerSwag.Style.Function
+        mapStyles[State.CompilerGlobal]     = RichEditLexerSwag.Style.Preprocessor
+        mapStyles[State.CompilerStatement]  = RichEditLexerSwag.Style.Preprocessor
+        mapStyles[State.Compiler]           = RichEditLexerSwag.Style.CharEscape
+        mapStyles[State.FunctionSpecOp]     = RichEditLexerSwag.Style.Intrinsic
+        mapStyles[State.Type]               = RichEditLexerSwag.Style.Type
+        mapStyles[State.StorageModifier]    = RichEditLexerSwag.Style.Keyword
+        mapStyles[State.UserType]           = RichEditLexerSwag.Style.Class
+        mapStyles[State.FunctionCall]       = RichEditLexerSwag.Style.Function
 
         ed.styles[RichEditLexerSwag.Style.Comment].colFg = 0xFF6A9955
         ed.styles[RichEditLexerSwag.Style.Keyword].colFg = 0xFF569cd6
         ed.styles[RichEditLexerSwag.Style.Control].colFg = 0xFFD8A0DF
+        ed.styles[RichEditLexerSwag.Style.Intrinsic].colFg = 0xFFDCDCAA
+        ed.styles[RichEditLexerSwag.Style.Buildin].colFg = 0xFFF67F56
+        ed.styles[RichEditLexerSwag.Style.Function].colFg = 0xFFFF7411
+        ed.styles[RichEditLexerSwag.Style.Preprocessor].colFg = 0xFFAAAAAA
+        ed.styles[RichEditLexerSwag.Style.CharEscape].colFg = 0xFFD7BA7D
+        ed.styles[RichEditLexerSwag.Style.Type].colFg = 0xFFF6CC86
+        ed.styles[RichEditLexerSwag.Style.Class].colFg = 0xFF4EC9B0
 
         mapWords.add("using", State.Keyword)
         mapWords.add("with", State.Keyword)
@@ -54,6 +90,9 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("throw", State.Keyword)
         mapWords.add("discard", State.Keyword)
 
+        mapWords.add("public", State.StorageModifier)
+        mapWords.add("private", State.StorageModifier)
+
         mapWords.add("enum", State.Declaration)
         mapWords.add("struct", State.Declaration)
         mapWords.add("union", State.Declaration)
@@ -66,6 +105,8 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("namespace", State.Declaration)
         mapWords.add("alias", State.Declaration)
         mapWords.add("attr", State.Declaration)
+        mapWords.add("var", State.Declaration)
+        mapWords.add("const", State.Declaration)
 
         mapWords.add("if", State.Control)
         mapWords.add("else", State.Control)
@@ -87,6 +128,190 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("and", State.Control)
         mapWords.add("or", State.Control)
         mapWords.add("orelse", State.Control)
+
+        mapWords.add("@defined", State.Intrinsic)
+        mapWords.add("@stringcmp", State.Intrinsic)
+        mapWords.add("@typecmp", State.Intrinsic)
+        mapWords.add("@interfaceof", State.Intrinsic)
+        mapWords.add("@getcontext", State.Intrinsic)
+        mapWords.add("@setcontext", State.Intrinsic)
+        mapWords.add("@args", State.Intrinsic)
+        mapWords.add("@compiler", State.Intrinsic)
+        mapWords.add("@isbytecode", State.Intrinsic)
+        mapWords.add("@print", State.Intrinsic)
+        mapWords.add("@errormsg", State.Intrinsic)
+        mapWords.add("@bcdbg", State.Intrinsic)
+        mapWords.add("@assert", State.Intrinsic)
+        mapWords.add("@panic", State.Intrinsic)
+        mapWords.add("@seterr", State.Intrinsic)
+        mapWords.add("@hastag", State.Intrinsic)
+        mapWords.add("@gettag", State.Intrinsic)
+        mapWords.add("@init", State.Intrinsic)
+        mapWords.add("@drop", State.Intrinsic)
+        mapWords.add("@index", State.Intrinsic)
+        mapWords.add("@mkany", State.Intrinsic)
+        mapWords.add("@mkslice", State.Intrinsic)
+        mapWords.add("@mkstring", State.Intrinsic)
+        mapWords.add("@mkforeign", State.Intrinsic)
+        mapWords.add("@mkcallback", State.Intrinsic)
+        mapWords.add("@mkinterface", State.Intrinsic)
+        mapWords.add("@sizeof", State.Intrinsic)
+        mapWords.add("@alignof", State.Intrinsic)
+        mapWords.add("@offsetof", State.Intrinsic)
+        mapWords.add("@typeof", State.Intrinsic)
+        mapWords.add("@kindof", State.Intrinsic)
+        mapWords.add("@countof", State.Intrinsic)
+        mapWords.add("@dataof", State.Intrinsic)
+        mapWords.add("@stringof", State.Intrinsic)
+        mapWords.add("@nameof", State.Intrinsic)
+        mapWords.add("@runes", State.Intrinsic)
+        mapWords.add("@postcopy", State.Intrinsic)
+        mapWords.add("@postmove", State.Intrinsic)
+        mapWords.add("@spread", State.Intrinsic)
+        mapWords.add("@isconstexpr", State.Intrinsic)
+        mapWords.add("@err", State.Intrinsic)
+
+        mapWords.add("opSlice", State.FunctionSpecOp)
+        mapWords.add("opBinary", State.FunctionSpecOp)
+        mapWords.add("opUnary", State.FunctionSpecOp)
+        mapWords.add("opAssign", State.FunctionSpecOp)
+        mapWords.add("opIndexAssign", State.FunctionSpecOp)
+        mapWords.add("opIndexAffect", State.FunctionSpecOp)
+        mapWords.add("opCast", State.FunctionSpecOp)
+        mapWords.add("opCount", State.FunctionSpecOp)
+        mapWords.add("opData", State.FunctionSpecOp)
+        mapWords.add("opVisit", State.FunctionSpecOp)
+        mapWords.add("opInit", State.FunctionSpecOp)
+        mapWords.add("opReloc", State.FunctionSpecOp)
+        mapWords.add("opEquals", State.FunctionSpecOp)
+        mapWords.add("opCmp", State.FunctionSpecOp)
+        mapWords.add("opPostCopy", State.FunctionSpecOp)
+        mapWords.add("opPostMove", State.FunctionSpecOp)
+        mapWords.add("opDrop", State.FunctionSpecOp)
+        mapWords.add("opCount", State.FunctionSpecOp)
+        mapWords.add("opAffect", State.FunctionSpecOp)
+        mapWords.add("opAffectSuffix", State.FunctionSpecOp)
+        mapWords.add("opIndex", State.FunctionSpecOp)
+        mapWords.add("opIndexAssign", State.FunctionSpecOp)
+        mapWords.add("opVisit", State.FunctionSpecOp)
+
+        mapWords.add("code", State.Type)
+        mapWords.add("Self", State.Type)
+        mapWords.add("self", State.Type)
+        mapWords.add("any", State.Type)
+        mapWords.add("void", State.Type)
+        mapWords.add("rune", State.Type)
+        mapWords.add("f32", State.Type)
+        mapWords.add("f64", State.Type)
+        mapWords.add("s8", State.Type)
+        mapWords.add("s16", State.Type)
+        mapWords.add("s32", State.Type)
+        mapWords.add("s64", State.Type)
+        mapWords.add("u8", State.Type)
+        mapWords.add("u16", State.Type)
+        mapWords.add("u32", State.Type)
+        mapWords.add("u64", State.Type)
+        mapWords.add("bool", State.Type)
+        mapWords.add("string", State.Type)
+        mapWords.add("cstring", State.Type)
+        mapWords.add("cvarargs", State.Type)
+        mapWords.add("typeinfo", State.Type)
+        mapWords.add("uint", State.Type)
+        mapWords.add("int", State.Type)
+
+        mapWords.add("@byteswap", State.Buildin)
+        mapWords.add("@bitcountnz", State.Buildin)
+        mapWords.add("@bitcounttz", State.Buildin)
+        mapWords.add("@bitcountlz", State.Buildin)
+        mapWords.add("@min", State.Buildin)
+        mapWords.add("@max", State.Buildin)
+        mapWords.add("@sqrt", State.Buildin)
+        mapWords.add("@sin", State.Buildin)
+        mapWords.add("@cos", State.Buildin)
+        mapWords.add("@tan", State.Buildin)
+        mapWords.add("@sinh", State.Buildin)
+        mapWords.add("@cosh", State.Buildin)
+        mapWords.add("@tanh", State.Buildin)
+        mapWords.add("@asin", State.Buildin)
+        mapWords.add("@acos", State.Buildin)
+        mapWords.add("@atan", State.Buildin)
+        mapWords.add("@atan2", State.Buildin)
+        mapWords.add("@log", State.Buildin)
+        mapWords.add("@log2", State.Buildin)
+        mapWords.add("@log10", State.Buildin)
+        mapWords.add("@floor", State.Buildin)
+        mapWords.add("@ceil", State.Buildin)
+        mapWords.add("@trunc", State.Buildin)
+        mapWords.add("@round", State.Buildin)
+        mapWords.add("@abs", State.Buildin)
+        mapWords.add("@exp", State.Buildin)
+        mapWords.add("@exp2", State.Buildin)
+        mapWords.add("@pow", State.Buildin)
+        mapWords.add("@alloc", State.Buildin)
+        mapWords.add("@realloc", State.Buildin)
+        mapWords.add("@free", State.Buildin)
+        mapWords.add("@memcpy", State.Buildin)
+        mapWords.add("@memmove", State.Buildin)
+        mapWords.add("@memset", State.Buildin)
+        mapWords.add("@memcmp", State.Buildin)
+        mapWords.add("@strlen", State.Buildin)
+        mapWords.add("@strcmp", State.Buildin)
+        mapWords.add("@atomadd", State.Buildin)
+        mapWords.add("@atomand", State.Buildin)
+        mapWords.add("@atomor", State.Buildin)
+        mapWords.add("@atomxor", State.Buildin)
+        mapWords.add("@atomxchg", State.Buildin)
+        mapWords.add("@atomcmpxchg", State.Buildin)
+        mapWords.add("@cvastart", State.Buildin)
+        mapWords.add("@cvaend", State.Buildin)
+        mapWords.add("@cvaarg", State.Buildin)
+
+        mapWords.add("#run", State.CompilerFunction)
+        mapWords.add("#test", State.CompilerFunction)
+        mapWords.add("#init", State.CompilerFunction)
+        mapWords.add("#drop", State.CompilerFunction)
+        mapWords.add("#main", State.CompilerFunction)
+        mapWords.add("#message", State.CompilerFunction)
+        mapWords.add("#ast", State.CompilerFunction)
+        mapWords.add("#dependencies", State.CompilerFunction)
+
+        mapWords.add("#global", State.CompilerGlobal)
+
+        mapWords.add("#global", State.CompilerStatement)
+
+        mapWords.add("#load", State.CompilerStatement)
+        mapWords.add("#assert", State.CompilerStatement)
+        mapWords.add("#print", State.CompilerStatement)
+        mapWords.add("#import", State.CompilerStatement)
+        mapWords.add("#mixin", State.CompilerStatement)
+        mapWords.add("#macro", State.CompilerStatement)
+        mapWords.add("#inline", State.CompilerStatement)
+        mapWords.add("#placeholder", State.CompilerStatement)
+        mapWords.add("#foreignlib", State.CompilerStatement)
+        mapWords.add("#if", State.CompilerStatement)
+        mapWords.add("#else", State.CompilerStatement)
+        mapWords.add("#elif", State.CompilerStatement)
+        mapWords.add("#selectif", State.CompilerStatement)
+        mapWords.add("#checkif", State.CompilerStatement)
+
+        mapWords.add("#tokenpos", State.Compiler)
+        mapWords.add("#file", State.Compiler)
+        mapWords.add("#line", State.Compiler)
+        mapWords.add("#cfg", State.Compiler)
+        mapWords.add("#arch", State.Compiler)
+        mapWords.add("#os", State.Compiler)
+        mapWords.add("#module", State.Compiler)
+        mapWords.add("#backend", State.Compiler)
+        mapWords.add("#self", State.Compiler)
+        mapWords.add("#location", State.Compiler)
+        mapWords.add("#callerlocation", State.Compiler)
+        mapWords.add("#callerfunction", State.Compiler)
+        mapWords.add("#swagversion", State.Compiler)
+        mapWords.add("#swagrevision", State.Compiler)
+        mapWords.add("#swagbuildnum", State.Compiler)
+        mapWords.add("#swagos", State.Compiler)
+        mapWords.add("#code", State.Compiler)
+        mapWords.add("#semerror", State.Compiler)
     }
 
     mtd compute(linePrev, line, lineNext: *RichEditLine)
@@ -146,11 +371,11 @@ impl IRichEditLexer for RichEditLexerSwag
                 }
 
             case State.Default:
-                if Unicode.isLetter(c) or c == "_"'rune
+                if Unicode.isLetter(c) or c == "_"'rune or c == "@"'rune or c == "#"'rune
                 {
                     var word: String
                     saveSeek := seek
-                    while Unicode.isLetterOrDigit(c) or c == "_"'rune
+                    while Unicode.isLetterOrDigit(c) or c == "_"'rune or c == "@"'rune or c == "#"'rune
                     {
                         word += c
                         seek += 1
@@ -163,8 +388,13 @@ impl IRichEditLexer for RichEditLexerSwag
                     res := mapWords.find(word.toString())
                     if res
                         currentState = res.value
+                    else if Latin1.isUpper(word[0])
+                        currentState = State.UserType
+                    else if c == "("'u8 and (Latin1.isLetter(word[0]) or word[0] == "_"'u8)
+                        currentState = State.FunctionCall
                     else
                         currentState = State.Default
+
                     while seek != seekEnd
                         seekNext()
                     currentState = State.Default
