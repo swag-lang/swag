@@ -285,7 +285,7 @@ impl RichEdit
             c = "\n"'rune
 
         insertRune(c)
-        ensureCaretIsVisible()
+        forceCaretVisible = true
     }
 
     // Simulate a keyboard pressed
@@ -295,7 +295,7 @@ impl RichEdit
         if cmd == .None
             return
         executeCommand(cmd)
-        ensureCaretIsVisible()
+        forceCaretVisible = true
     }
 
     // Associate a lexer

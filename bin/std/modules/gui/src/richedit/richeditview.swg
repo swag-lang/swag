@@ -34,7 +34,8 @@ impl IWnd for RichEditView
                 cp := ed.getCursorPosFromPoint(pt)
                 firstLineSelMode = cp.lineIndex
                 ed.setCursorPos(cp)
-                ed.selBeg  = cp
+                if !(evt.modifiers & .Shift)
+                    ed.selBeg  = cp
                 selMode = true
                 ed.setRectangularSelection(evt.modifiers & .Alt ? true : false)
                 ed.ensureCaretIsVisible()
@@ -275,7 +276,7 @@ impl RichEditView
         {
             var rect: Math.Rectangle
             rect.x = x
-            rect.y = y
+            rect.y = y - 2
             rect.width = me.width
             rect.height = ed.getXExtent().y
             painter.fillRect(rect, strStyle.colBk)

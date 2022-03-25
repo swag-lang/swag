@@ -265,7 +265,7 @@ struct ThemeColors
     richEdit_Text:                  Color = White
     richEdit_SelText:               Color = Transparent
     richEdit_SelTextNoFocus:        Color = Transparent
-    richEdit_SelBk:                 Color = Blue
+    richEdit_SelBk:                 Color = Color.getDarker(Color.fromArgb(Blue), 0.5)
     richEdit_SelBkNoFocus:          Color = Gray6
     richEdit_Caret:                 Color = White
     richEdit_CurLineBorder:         Color = Gray4
