@@ -39,6 +39,7 @@ struct RichEditLexerSwag
         Type
         StorageModifier
         UserType
+        Constant
     }
 
     mapStyles:      [256] RichEditStyleRef
@@ -65,6 +66,7 @@ impl IRichEditLexer for RichEditLexerSwag
         mapStyles[State.StorageModifier]    = RichEditLexerSwag.Style.Keyword
         mapStyles[State.UserType]           = RichEditLexerSwag.Style.Class
         mapStyles[State.FunctionCall]       = RichEditLexerSwag.Style.Function
+        mapStyles[State.Constant]           = RichEditLexerSwag.Style.Keyword
 
         ed.styles[RichEditLexerSwag.Style.Comment].colFg = 0xFF6A9955
         ed.styles[RichEditLexerSwag.Style.Keyword].colFg = 0xFF569cd6
@@ -76,6 +78,10 @@ impl IRichEditLexer for RichEditLexerSwag
         ed.styles[RichEditLexerSwag.Style.CharEscape].colFg = 0xFFD7BA7D
         ed.styles[RichEditLexerSwag.Style.Type].colFg = 0xFFF6CC86
         ed.styles[RichEditLexerSwag.Style.Class].colFg = 0xFF4EC9B0
+
+        mapWords.add("true", State.Constant)
+        mapWords.add("false", State.Constant)
+        mapWords.add("null", State.Constant)
 
         mapWords.add("using", State.Keyword)
         mapWords.add("with", State.Keyword)
