@@ -274,9 +274,18 @@ impl RichEdit
     // Simulate a keyboard character pressed
     mtd charPressed(key: Input.Key, ch: rune, mdf: Input.KeyModifiers)
     {
-        cmd := getMappingCommand(key, mdf)
-        if cmd != .None
-            return
+        isChar := false
+        if mdf == .None and ch >= "0"'rune and ch <= "9"'rune
+            isChar = true
+
+        // If there is a corresponding command, do nothing
+        if !isChar
+        {
+            cmd := getMappingCommand(key, mdf)
+            if cmd != .None
+                return
+        }
+
         if isReadOnly()
             return
 
