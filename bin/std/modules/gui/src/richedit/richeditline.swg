@@ -61,6 +61,7 @@ impl RichEditLine
 
     mtd removeRunes(srcIndex, count: uint)
     {
+        if !count return
         dirtyStyle = true
         chars.remove(srcIndex, count)
         styles.remove(srcIndex, count)

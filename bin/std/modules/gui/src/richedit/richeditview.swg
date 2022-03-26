@@ -360,17 +360,17 @@ impl RichEditView
                 newStyle.underline = ed.styles[dref pStyle].underline
             }
 
+            cr := dref pChar
+
             // Paint accumulated string if we have a change of style
             styleChange := newStyle != oldStyle
-            if styleChange
+            if styleChange or cr == "\t"'rune
             {
-                x1 := paintString(bc, x, y, str, oldStyle, visible)
-                x = x1
+                x = paintString(bc, x, y, str, oldStyle, visible)
                 oldStyle = newStyle
                 str.clear()
             }
 
-            cr := dref pChar
             if cr == "\t"'rune
             {
                 x1 := x

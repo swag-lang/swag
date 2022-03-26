@@ -48,13 +48,16 @@ impl RichEdit
 
     mtd getTabOffset(x: s32)->s32
     {
-        of   := x - getMarginLeft()
+        of   := cast(s32) (x - getMarginLeft())
         font := fontFamily.getFont(styles[0].fontMode)
         size := Painter.measureRune(" "'rune, font)
-        tab  := (of / (tabSize * size.x)) * (tabSize * size.x)
+        size.x *= tabSize
+        sx := cast(s32) size.x
+
+        tab  := (of / sx) * sx
         tab  = of - tab
-        tab  = (tabSize * size.x) - tab
-        return cast(s32) tab
+        tab  = sx - tab
+        return tab
     }
 
     mtd getXExtent()->Math.Point
