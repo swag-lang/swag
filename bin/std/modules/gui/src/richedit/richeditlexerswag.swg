@@ -44,6 +44,7 @@ struct RichEditLexerSwag
         Constant
         String
         Numeric
+        NumericFrac
     }
 
     mapStyles:      [256] RichEditStyleRef
@@ -73,6 +74,7 @@ impl IRichEditLexer for RichEditLexerSwag
         mapStyles[State.Constant]           = RichEditLexerSwag.Style.Keyword
         mapStyles[State.String]             = RichEditLexerSwag.Style.String
         mapStyles[State.Numeric]            = RichEditLexerSwag.Style.Numeric
+        mapStyles[State.NumericFrac]        = RichEditLexerSwag.Style.Numeric
 
         ed.styles[RichEditLexerSwag.Style.Comment].colFg = 0xFF6A9955
         ed.styles[RichEditLexerSwag.Style.Keyword].colFg = 0xFF569cd6
@@ -364,7 +366,32 @@ impl IRichEditLexer for RichEditLexerSwag
 
             switch currentState
             {
+            case State.NumericFrac:
+                if Unicode.isNumber(c)
+                {
+                    seekNext()
+                    continue
+                }
+
+                if c == "e"'rune
+                {
+                    seekNext()
+                    if cn == "+"'rune or cn == "-"'rune
+                        seekNext()
+                    currentState = State.Numeric
+                    continue
+                }
+
+                currentState = State.Default
+
             case State.Numeric:
+                if c == "."'rune or c == "e"'rune or c == "E"'rune
+                {
+                    currentState = State.NumericFrac
+                    seekNext()
+                    continue
+                }
+
                 if !Unicode.isNumber(c) and c != "."'rune
                 {
                     currentState = State.Default
