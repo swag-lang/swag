@@ -108,6 +108,14 @@ impl RichEdit
 
     mtd getBegSelection()->RichEditCursor
     {
+        if hasSelRect
+        {
+            var result: retval
+            result.lineIndex = Math.min(selBeg.lineIndex, cursorPos.lineIndex)
+            result.charPosInLine =  Math.min(selBeg.charPosInLine, cursorPos.charPosInLine)
+            return result
+        }
+
         if selBeg.lineIndex < cursorPos.lineIndex
             return selBeg
         if selBeg.lineIndex > cursorPos.lineIndex
@@ -119,6 +127,14 @@ impl RichEdit
 
     mtd getEndSelection()->RichEditCursor
     {
+        if hasSelRect
+        {
+            var result: retval
+            result.lineIndex = Math.max(selBeg.lineIndex, cursorPos.lineIndex)
+            result.charPosInLine =  Math.max(selBeg.charPosInLine, cursorPos.charPosInLine)
+            return result
+        }
+
         if selBeg.lineIndex < cursorPos.lineIndex
             return cursorPos
         if selBeg.lineIndex > cursorPos.lineIndex
