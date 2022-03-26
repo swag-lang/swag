@@ -6,7 +6,6 @@ public struct RichEditLine
     chars:              Array'rune
     styles:             Array'RichEditStyleRef
     dirtyStyle:         bool
-    dirtyFold:          bool
     hidden:             uint
     drawingRect:        Math.Rectangle
     lexerEndingState:   s32
@@ -24,7 +23,6 @@ impl RichEditLine
     mtd resetInternal()
     {
         dirtyStyle = true
-        dirtyFold = true
         hidden = 0
         chars.clear()
         styles.clear()
@@ -33,7 +31,6 @@ impl RichEditLine
     mtd insertRune(insIndex: uint, c: rune, txtStyle: u8)
     {
         dirtyStyle = true
-        dirtyFold = true
         chars.insertAt(insIndex, c)
         styles.insertAt(insIndex, txtStyle)
     }
@@ -41,8 +38,6 @@ impl RichEditLine
     mtd insertRunes(insIndex: uint, src: RichEditLine, srcIndex, srcCount: uint)
     {
         dirtyStyle = true
-        dirtyFold = true
-
         srcI := srcIndex
         for i := insIndex; i < insIndex + srcCount; i += 1
         {
@@ -55,8 +50,6 @@ impl RichEditLine
     mtd insertRunes(insIndex: uint, runes: const [..] rune, styles: const [..] u8)
     {
         dirtyStyle = true
-        dirtyFold = true
-
         srcI := 0'uint
         for i := insIndex; i < insIndex + @countof(runes); i += 1
         {
@@ -69,8 +62,6 @@ impl RichEditLine
     mtd removeRunes(srcIndex, count: uint)
     {
         dirtyStyle = true
-        dirtyFold = true
-
         chars.remove(srcIndex, count)
         styles.remove(srcIndex, count)
     }

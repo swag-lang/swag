@@ -124,6 +124,10 @@ impl IWnd for RichEditView
         y    := 0'f32
         size := ed.getXExtent()
 
+        // Force visible caret
+        if ed.forceCaretVisible
+            ed.ensureCaretIsVisibleInternal(ed.forceCaretVisibleCenter)
+
         // Start to the first visible line, if known
         var i: uint
         if ed.dirtyFirstLineView or ed.recomputeScroll
@@ -163,19 +167,6 @@ impl IWnd for RichEditView
             ed.lastVisibleLineView = i
 
             l := ed.lines[i]
-            if bvis or l.dirtyStyle or l.dirtyFold
-            {
-                // Lex the line
-                if l.dirtyStyle and ed.lexer
-                {
-                    prevLine := i ? ed.lines[i - 1] : null
-                    nextLine := i != ed.lines.count - 1 ? ed.lines[i + 1] : null
-                    ed.lexer.compute(prevLine, l, nextLine)
-                    l.dirtyStyle = false
-                }
-
-                x = paintLine(evt.bc, i, y - scrollPos.y, true)
-            }
 
             l.drawingRect.x = marginLeft
             l.drawingRect.y = y
@@ -183,15 +174,31 @@ impl IWnd for RichEditView
             l.drawingRect.height = size.y
 
             // Current line
-            if ed.richEdFlags & .CurLineBorder
+            if bvis and ed.isSelectionEmpty() and i == ed.cursorPos.lineIndex and ed.richEdFlags & .CurLineBorder
             {
-                if bvis and ed.isSelectionEmpty() and i == ed.cursorPos.lineIndex
+                fullRect := l.drawingRect
+                fullRect.y -= scrollPos.y
+                fullRect.setRight(pos.right())
+                fullRect.inflate(-1)
+                painter.drawRect(fullRect, colors.richEdit_CurLineBorder, 1)
+            }
+
+            // Lex the line
+            if l.dirtyStyle
+            {
+                if ed.lexer
                 {
-                    fullRect := l.drawingRect
-                    fullRect.y -= scrollPos.y
-                    fullRect.setRight(pos.right())
-                    painter.drawRect(fullRect, colors.richEdit_CurLineBorder, 1)
+                    prevLine := i ? ed.lines[i - 1] : null
+                    nextLine := i != ed.lines.count - 1 ? ed.lines[i + 1] : null
+                    ed.lexer.compute(prevLine, l, nextLine)
                 }
+
+                l.dirtyStyle = false
+            }
+
+            if bvis or ed.recomputeScroll
+            {
+                x = paintLine(evt.bc, i, y - scrollPos.y, bvis)
             }
 
             maxx = Math.max(maxx, x)

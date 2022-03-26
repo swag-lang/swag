@@ -147,8 +147,17 @@ private impl RichEdit
             p = Memory.new'RichEditLine()
 
         p.resetInternal()
+
+        if lines.count
+        {
+            insLine := index == lines.count ? lines.back() : lines[index]
+            p.drawingRect = insLine.drawingRect
+            p.drawingRect.y += p.drawingRect.height
+        }
+
         lines.insertAt(index, p)
         recomputeScroll = true
+
         return p
     }
 
@@ -305,6 +314,7 @@ impl RichEdit
             return
         executeCommand(cmd)
         forceCaretVisible = true
+        invalidate()
     }
 
     // Associate a lexer
