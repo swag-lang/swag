@@ -17,6 +17,8 @@ struct RichEditLexerSwag
         CharEscape
         Type
         Class
+        String
+        Numeric
     }
 
     #[Swag.Incomplete]
@@ -40,6 +42,8 @@ struct RichEditLexerSwag
         StorageModifier
         UserType
         Constant
+        String
+        Numeric
     }
 
     mapStyles:      [256] RichEditStyleRef
@@ -67,6 +71,8 @@ impl IRichEditLexer for RichEditLexerSwag
         mapStyles[State.UserType]           = RichEditLexerSwag.Style.Class
         mapStyles[State.FunctionCall]       = RichEditLexerSwag.Style.Function
         mapStyles[State.Constant]           = RichEditLexerSwag.Style.Keyword
+        mapStyles[State.String]             = RichEditLexerSwag.Style.String
+        mapStyles[State.Numeric]            = RichEditLexerSwag.Style.Numeric
 
         ed.styles[RichEditLexerSwag.Style.Comment].colFg = 0xFF6A9955
         ed.styles[RichEditLexerSwag.Style.Keyword].colFg = 0xFF569cd6
@@ -78,6 +84,8 @@ impl IRichEditLexer for RichEditLexerSwag
         ed.styles[RichEditLexerSwag.Style.CharEscape].colFg = 0xFFD7BA7D
         ed.styles[RichEditLexerSwag.Style.Type].colFg = 0xFFF6CC86
         ed.styles[RichEditLexerSwag.Style.Class].colFg = 0xFF4EC9B0
+        ed.styles[RichEditLexerSwag.Style.String].colFg = 0xFFCE9178
+        ed.styles[RichEditLexerSwag.Style.Numeric].colFg = 0xFFB5CEA8
 
         mapWords.add("true", State.Constant)
         mapWords.add("false", State.Constant)
@@ -356,6 +364,29 @@ impl IRichEditLexer for RichEditLexerSwag
 
             switch currentState
             {
+            case State.Numeric:
+                if !Unicode.isNumber(c) and c != "."'rune
+                {
+                    currentState = State.Default
+                    seekNext()
+                    continue
+                }
+
+            case State.String:
+                if c == "\\"'rune
+                {
+                    seekNext()
+                    seekNext()
+                    continue
+                }
+
+                if c == "\""'rune
+                {
+                    seekNext()
+                    currentState = State.Default
+                    continue
+                }
+
             case State.Comment:
                 if c == "*"'rune and cn == "/"'rune
                 {
@@ -394,9 +425,11 @@ impl IRichEditLexer for RichEditLexerSwag
                     res := mapWords.find(word.toString())
                     if res
                         currentState = res.value
-                    else if Latin1.isUpper(word[0])
+                    elif word == "@"
+                        currentState = State.Keyword
+                    elif Latin1.isUpper(word[0])
                         currentState = State.UserType
-                    else if c == "("'u8 and (Latin1.isLetter(word[0]) or word[0] == "_"'u8)
+                    elif c == "("'u8 and (Latin1.isLetter(word[0]) or word[0] == "_"'u8)
                         currentState = State.FunctionCall
                     else
                         currentState = State.Default
@@ -404,6 +437,20 @@ impl IRichEditLexer for RichEditLexerSwag
                     while seek != seekEnd
                         seekNext()
                     currentState = State.Default
+                    continue
+                }
+
+                if c == "\""'rune
+                {
+                    currentState = State.String
+                    seekNext()
+                    continue
+                }
+
+                if Unicode.isNumber(c)
+                {
+                    currentState = State.Numeric
+                    seekNext()
                     continue
                 }
 
