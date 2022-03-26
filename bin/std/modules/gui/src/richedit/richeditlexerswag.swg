@@ -331,6 +331,38 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("#semerror", State.Compiler)
     }
 
+    mtd insertRune(ed: *RichEdit, ch: rune)->bool
+    {
+        // Smart return
+        if ch == "\n"'rune
+        {
+            cp   := ed.getBegSelection()
+            line := ed.lines[cp.lineIndex]
+            var str: String = "\n"
+
+            if cp.charPosInLine
+            {
+                cpt := 0
+                while cpt < line.chars.count and Unicode.isSpace(line.chars[cpt])
+                {
+                    str += line.chars[cpt]
+                    cpt += 1
+                }
+
+                if cpt < line.chars.count and line.chars[cpt] == "{"'rune
+                    str += "\t"'rune
+            }
+
+            ed.pushUndo()
+            ed.insertText(str, 0)
+            ed.popUndo()
+            ed.ensureCaretIsVisible()
+            return true
+        }
+
+        return false
+    }
+
     mtd compute(linePrev, line, lineNext: *RichEditLine)
     {
         seek := 0'uint

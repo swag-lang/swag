@@ -302,6 +302,9 @@ impl RichEdit
         if c == "\r"'rune
             c = "\n"'rune
 
+        if lexer and lexer.insertRune(self, c)
+            return
+
         insertRune(c)
         forceCaretVisible = true
     }
