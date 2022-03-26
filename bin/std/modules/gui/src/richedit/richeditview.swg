@@ -283,7 +283,7 @@ impl RichEditView
         {
             var rect: Math.Rectangle
             rect.x = x
-            rect.y = y - 2
+            rect.y = y
             rect.width = me.width
             rect.height = ed.getXExtent().y
             painter.fillRect(rect, strStyle.colBk)
