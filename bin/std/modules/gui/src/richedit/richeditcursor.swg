@@ -46,16 +46,18 @@ impl RichEdit
         return result
     }
 
-    mtd getTabOffset(x: s32)->s32
+    mtd getTabOffset(x: s32, numBlanks: *s32 = null)->s32
     {
         of   := cast(s32) (x - getMarginLeft())
         font := fontFamily.getFont(styles[0].fontMode)
-        size := Painter.measureRune(" "'rune, font)
-        size.x *= tabSize
-        sx := cast(s32) size.x
+        sizeBlank := Painter.measureRune(" "'rune, font)
+        sx := cast(s32) (sizeBlank.x * tabSize)
 
-        tab  := (of / sx) * sx
-        tab  = of - tab
+        tab := (of / sx) * sx
+        tab = of - tab
+        if numBlanks
+            dref numBlanks = cast(s32) (tab / sizeBlank.x)
+
         tab  = sx - tab
         return tab
     }

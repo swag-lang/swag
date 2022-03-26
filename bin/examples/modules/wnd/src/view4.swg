@@ -9,7 +9,7 @@ func createView4(tabView: *Tab, view: *Wnd)
     {
         ed := RichEdit.create(view, @{10, 10, 600, 500})
         ed.setFrameForm(.Round)
-        ed.setRichEdFlags(.ShowFocusSel | .CurLineBorder)
+        ed.setRichEdFlags(.ShowFocusSel | .CurLineBorder | .DrawBlanks | .TabToSpaces)
         ed.setLexer(cast(IRichEditLexer) g_LexerSwag)
         ed.setText(cast(string) Txt)
     }

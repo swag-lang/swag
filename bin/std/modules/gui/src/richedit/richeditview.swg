@@ -327,6 +327,8 @@ impl RichEditView
             defer { i += 1; pChar += 1; pStyle += 1; }
             newStyle = ed.styles[dref pStyle]
 
+            cr := dref pChar
+
             selected := false
             if ed.hasSelRect
             {
@@ -360,7 +362,18 @@ impl RichEditView
                 newStyle.underline = ed.styles[dref pStyle].underline
             }
 
-            cr := dref pChar
+            if ed.richEdFlags & .DrawBlanks
+            {
+                if cr == " "'rune
+                {
+                    newStyle.colFg = getThemeColors().richEdit_TextSpecial
+                    cr = "."'rune
+                }
+                elif cr == "\t"'rune
+                {
+                    newStyle.colFg = getThemeColors().richEdit_TextSpecial
+                }
+            }
 
             // Paint accumulated string if we have a change of style
             styleChange := newStyle != oldStyle

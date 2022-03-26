@@ -8,6 +8,8 @@ enum RichEditFlags
     ReadOnly
     ShowFocusSel
     CurLineBorder
+    DrawBlanks
+    TabToSpaces
 }
 
 struct RichEditMapping

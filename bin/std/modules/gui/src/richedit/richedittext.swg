@@ -93,6 +93,7 @@ impl RichEdit
     {
         if c == "\r"'rune
             return
+
         if c == "\n"'rune
         {
             discard newLine(cp.lineIndex + 1)
@@ -103,6 +104,21 @@ impl RichEdit
             linep.setLength(cp.charPosInLine)
             cp.lineIndex += 1
             cp.charPosInLine = 0
+        }
+        elif c == "\t"'rune and (richEdFlags & .TabToSpaces)
+        {
+            pt := getCursorDisplayPos(cp)
+            var numBlanks: s32
+            tx := getTabOffset(cast(s32) pt.x, &numBlanks)
+
+            line := lines[cp.lineIndex]
+            loop tabSize - numBlanks
+            {
+                posIns := Math.min(cp.charPosInLine, line.length())
+                line.insertRune(posIns, " "'rune, txtStyle)
+                cp.charPosInLine += 1
+            }
+
         }
         else
         {
