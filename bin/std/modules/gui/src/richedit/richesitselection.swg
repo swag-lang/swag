@@ -167,7 +167,8 @@ impl RichEdit
 
         if hasSelRect
         {
-            cursorPos.charPosInLine = selBeg.charPosInLine
+            cursorPos.charPosInLine = Math.min(cursorPos.charPosInLine, selBeg.charPosInLine)
+            selBeg.charPosInLine = cursorPos.charPosInLine
         }
         else
         {
