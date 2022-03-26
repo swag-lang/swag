@@ -62,7 +62,7 @@ struct Wnd
     itf:        IWnd
     type:       typeinfo
     surface:    *Surface
-    style:      Style
+    style:      ThemeStyle
     wndFlags    = WndFlags.ClipChildren
 
     position:       Math.Rectangle

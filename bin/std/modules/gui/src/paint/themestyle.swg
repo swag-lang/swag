@@ -1,21 +1,21 @@
 #global public
 using Core
 
-struct StyleRef
+struct ThemeStyleRef
 {
     theme:  *Theme
     count:  u32
 }
 
-struct Style
+struct ThemeStyle
 {
-    ref:                *StyleRef
+    ref:                *ThemeStyleRef
     dirty:              bool
     styleSheetMetrics:  String
     styleSheetColors:   String
 }
 
-impl Style
+impl ThemeStyle
 {
     private mtd opDrop()
     {
@@ -37,13 +37,13 @@ impl Style
 
     private mtd set(theme: *Theme)
     {
-        ref = Memory.new'StyleRef()
+        ref = Memory.new'ThemeStyleRef()
         ref.theme = theme
         ref.count = 1
     }
 
     // Create a specific style based on the parent
-    mtd create(parent: *Style)
+    mtd create(parent: *ThemeStyle)
     {
         release()
         theme := Memory.new'Theme()
@@ -51,7 +51,7 @@ impl Style
         set(theme)
     }
 
-    private mtd compute(owner: *Wnd, parent: *Style)
+    private mtd compute(owner: *Wnd, parent: *ThemeStyle)
     {
         // First time, initialize to parent
         if !ref

@@ -55,39 +55,40 @@ impl IRichEditLexer for RichEditLexerSwag
 {
     mtd setup(ed: *RichEdit)
     {
-        mapStyles[State.LineComment]        = RichEditLexerSwag.Style.Comment
-        mapStyles[State.Comment]            = RichEditLexerSwag.Style.Comment
-        mapStyles[State.Keyword]            = RichEditLexerSwag.Style.Keyword
-        mapStyles[State.Control]            = RichEditLexerSwag.Style.Control
-        mapStyles[State.Declaration]        = RichEditLexerSwag.Style.Keyword
-        mapStyles[State.Intrinsic]          = RichEditLexerSwag.Style.Intrinsic
-        mapStyles[State.Buildin]            = RichEditLexerSwag.Style.Buildin
-        mapStyles[State.CompilerFunction]   = RichEditLexerSwag.Style.Function
-        mapStyles[State.CompilerGlobal]     = RichEditLexerSwag.Style.Preprocessor
-        mapStyles[State.CompilerStatement]  = RichEditLexerSwag.Style.Preprocessor
-        mapStyles[State.Compiler]           = RichEditLexerSwag.Style.CharEscape
-        mapStyles[State.FunctionSpecOp]     = RichEditLexerSwag.Style.Intrinsic
-        mapStyles[State.Type]               = RichEditLexerSwag.Style.Type
-        mapStyles[State.StorageModifier]    = RichEditLexerSwag.Style.Keyword
-        mapStyles[State.UserType]           = RichEditLexerSwag.Style.Class
-        mapStyles[State.FunctionCall]       = RichEditLexerSwag.Style.Function
-        mapStyles[State.Constant]           = RichEditLexerSwag.Style.Keyword
-        mapStyles[State.String]             = RichEditLexerSwag.Style.String
-        mapStyles[State.Numeric]            = RichEditLexerSwag.Style.Numeric
-        mapStyles[State.NumericFrac]        = RichEditLexerSwag.Style.Numeric
+        using RichEditLexerSwag.Style
+        mapStyles[State.LineComment]        = Comment
+        mapStyles[State.Comment]            = Comment
+        mapStyles[State.Keyword]            = Keyword
+        mapStyles[State.Control]            = Control
+        mapStyles[State.Declaration]        = Keyword
+        mapStyles[State.Intrinsic]          = Intrinsic
+        mapStyles[State.Buildin]            = Buildin
+        mapStyles[State.CompilerFunction]   = Function
+        mapStyles[State.CompilerGlobal]     = Preprocessor
+        mapStyles[State.CompilerStatement]  = Preprocessor
+        mapStyles[State.Compiler]           = CharEscape
+        mapStyles[State.FunctionSpecOp]     = Intrinsic
+        mapStyles[State.Type]               = Type
+        mapStyles[State.StorageModifier]    = Keyword
+        mapStyles[State.UserType]           = Class
+        mapStyles[State.FunctionCall]       = Function
+        mapStyles[State.Constant]           = Keyword
+        mapStyles[State.String]             = String
+        mapStyles[State.Numeric]            = Numeric
+        mapStyles[State.NumericFrac]        = Numeric
 
-        ed.styles[RichEditLexerSwag.Style.Comment].colFg = 0xFF6A9955
-        ed.styles[RichEditLexerSwag.Style.Keyword].colFg = 0xFF569cd6
-        ed.styles[RichEditLexerSwag.Style.Control].colFg = 0xFFD8A0DF
-        ed.styles[RichEditLexerSwag.Style.Intrinsic].colFg = 0xFFDCDCAA
-        ed.styles[RichEditLexerSwag.Style.Buildin].colFg = 0xFFF67F56
-        ed.styles[RichEditLexerSwag.Style.Function].colFg = 0xFFFF7411
-        ed.styles[RichEditLexerSwag.Style.Preprocessor].colFg = 0xFFAAAAAA
-        ed.styles[RichEditLexerSwag.Style.CharEscape].colFg = 0xFFD7BA7D
-        ed.styles[RichEditLexerSwag.Style.Type].colFg = 0xFFF6CC86
-        ed.styles[RichEditLexerSwag.Style.Class].colFg = 0xFF4EC9B0
-        ed.styles[RichEditLexerSwag.Style.String].colFg = 0xFFCE9178
-        ed.styles[RichEditLexerSwag.Style.Numeric].colFg = 0xFFB5CEA8
+        ed.styles[Comment].colFg      = 0xFF6A9955
+        ed.styles[Keyword].colFg      = 0xFF569cd6
+        ed.styles[Control].colFg      = 0xFFD8A0DF
+        ed.styles[Intrinsic].colFg    = 0xFFDCDCAA
+        ed.styles[Buildin].colFg      = 0xFFF67F56
+        ed.styles[Function].colFg     = 0xFFFF7411
+        ed.styles[Preprocessor].colFg = 0xFFAAAAAA
+        ed.styles[CharEscape].colFg   = 0xFFD7BA7D
+        ed.styles[Type].colFg         = 0xFFF6CC86
+        ed.styles[Class].colFg        = 0xFF4EC9B0
+        ed.styles[String].colFg       = 0xFFCE9178
+        ed.styles[Numeric].colFg      = 0xFFB5CEA8
 
         mapWords.add("true", State.Constant)
         mapWords.add("false", State.Constant)

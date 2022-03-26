@@ -7,7 +7,7 @@ struct Application
 {
     renderer:       Pixel.RenderOgl
     theme:          *Theme
-    style:          Style
+    style:          ThemeStyle
     keyb:           Input.Keyboard
     mouse:          Input.Mouse
     mainSurface:    *Surface
