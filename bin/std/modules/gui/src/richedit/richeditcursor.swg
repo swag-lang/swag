@@ -33,13 +33,13 @@ impl RichEdit
         var result: retval
 
         lineIndex := Math.min(cp.lineIndex, lines.count - 1)
-        pline     := lines[lineIndex]
-        result.y  = pline.drawingRect.bottom()
+        line      := lines[lineIndex]
+        result.y  = line.drawingRect.bottom()
 
         result.x = getMarginLeft()
-        loop i: cp.charPosInLine
+        loop i: Math.min(cp.charPosInLine, line.length())
         {
-            size := getRuneSize(pline, i, result.x)
+            size := getRuneSize(line, i, result.x)
             result.x += size.x
         }
 

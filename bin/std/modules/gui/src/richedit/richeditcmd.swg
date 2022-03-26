@@ -274,12 +274,22 @@ impl RichEdit
             setRectangularSelection(false)
 
         case SelectRectLeft:
-            moveCursorLeft(&cursorPos)
-            setRectangularSelection(true)
+            cp := cursorPos
+            moveCursorLeft(&cp)
+            if cp.lineIndex == cursorPos.lineIndex
+            {
+                cursorPos = cp
+                setRectangularSelection(true)
+            }
 
         case SelectRectRight:
-            moveCursorRight(&cursorPos)
-            setRectangularSelection(true)
+            cp := cursorPos
+            moveCursorRight(&cp)
+            if cp.lineIndex == cursorPos.lineIndex
+            {
+                cursorPos = cp
+                setRectangularSelection(true)
+            }
 
         case SelectRectUp:
             cp := cursorPos

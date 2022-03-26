@@ -218,7 +218,7 @@ impl IWnd for RichEditView
                 selEnd := ed.getEndSelection()
                 loop caretI: selBeg.lineIndex..selEnd.lineIndex
                 {
-                    cp := selEnd
+                    cp := ed.cursorPos
                     cp.lineIndex = caretI
                     if cp.charPosInLine > ed.lines[cp.lineIndex].length()
                         continue
