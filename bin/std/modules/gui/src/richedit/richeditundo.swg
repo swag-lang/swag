@@ -127,22 +127,22 @@ impl RichEdit
         {
             if undo.type == .Delete
             {
-                selBeg = undo.selBeg
-                setCursorPos(undo.cursorPos)
+                selBeg    = undo.selBeg
+                cursorPos = undo.cursorPos
                 cp := getBegSelection()
                 insertTextPrivate(&cp, undo.runes, undo.styles, undo.hasSelRect)
             }
             elif undo.type == .Insert
             {
-                selBeg = undo.selBeg
-                setCursorPos(undo.cursorPos)
+                selBeg    = undo.selBeg
+                cursorPos = undo.cursorPos
                 setRectangularSelection(undo.hasSelRect)
                 computeRectangularSelection(cursorPos, undo.begSelectionAfter)
                 deleteTextPrivate(cursorPos, undo.begSelectionAfter, undo.hasSelRect)
             }
 
-            selBeg = undo.begSelectionBefore
-            setCursorPos(undo.endSelectionBefore)
+            selBeg    = undo.begSelectionBefore
+            cursorPos = undo.endSelectionBefore
             setRectangularSelection(undo.hasSelRect)
             if !currentUndo
                 break

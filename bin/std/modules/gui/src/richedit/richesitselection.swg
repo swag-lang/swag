@@ -3,7 +3,7 @@ using Core
 
 private impl RichEdit
 {
-    mtd getSelelectionRectRange(lineIndex: uint, rankBeg, rankEnd: *uint)->bool
+    mtd getSelectionRectRange(lineIndex: uint, rankBeg, rankEnd: *uint)->bool
     {
         line := lines[lineIndex]
         len  := line.length()
@@ -182,8 +182,22 @@ impl RichEdit
     mtd deleteLeft()
     {
         pushUndo()
+
         if isSelectionEmpty()
+        {
             moveCursorLeft(&cursorPos)
+        }
+        elif hasSelRect and selBeg.charPosInLine == cursorPos.charPosInLine
+        {
+            cp := cursorPos
+            moveCursorLeft(&cp)
+            if cp.lineIndex == cursorPos.lineIndex
+            {
+                cursorPos = cp
+                computeRectangularSelection(getBegSelection(), getEndSelection())
+            }
+        }
+
         deleteSelection()
         popUndo()
     }
@@ -191,8 +205,12 @@ impl RichEdit
     mtd deleteRight()
     {
         pushUndo()
-        if isSelectionEmpty()
+        if isSelectionEmpty() or (hasSelRect and selBeg.charPosInLine == cursorPos.charPosInLine)
+        {
             moveCursorRight(&selBeg)
+            computeRectangularSelection(getBegSelection(), getEndSelection())
+        }
+
         deleteSelection()
         popUndo()
     }

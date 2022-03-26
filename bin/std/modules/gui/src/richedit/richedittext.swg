@@ -71,7 +71,7 @@ impl RichEdit
             while li <= end.lineIndex
             {
                 var rankBeg, rankEnd: uint
-                if getSelelectionRectRange(li, &rankBeg, &rankEnd)
+                if getSelectionRectRange(li, &rankBeg, &rankEnd)
                 {
                     loop i: rankEnd - rankBeg
                     {
@@ -256,7 +256,7 @@ impl RichEdit
             while li <= pe.lineIndex
             {
                 var rankBeg, rankEnd: uint
-                if getSelelectionRectRange(li, &rankBeg, &rankEnd)
+                if getSelectionRectRange(li, &rankBeg, &rankEnd)
                 {
                     lines[li].removeRunes(rankBeg, rankEnd - rankBeg)
                 }
