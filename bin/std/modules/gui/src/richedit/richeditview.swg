@@ -328,6 +328,7 @@ impl RichEditView
             newStyle = ed.styles[dref pStyle]
 
             cr := dref pChar
+            isTabulation := cr == "\t"'rune
 
             selected := false
             if ed.hasSelRect
@@ -364,12 +365,12 @@ impl RichEditView
 
             if ed.richEdFlags & .DrawBlanks
             {
-                if cr == " "'rune
+                if cr == " "'rune and pChar != &dummyChar
                 {
                     newStyle.colFg = getThemeColors().richEdit_TextSpecial
                     cr = "."'rune
                 }
-                elif cr == "\t"'rune
+                elif isTabulation
                 {
                     newStyle.colFg = getThemeColors().richEdit_TextSpecial
                 }
@@ -377,14 +378,14 @@ impl RichEditView
 
             // Paint accumulated string if we have a change of style
             styleChange := newStyle != oldStyle
-            if styleChange or cr == "\t"'rune
+            if styleChange or isTabulation
             {
                 x = paintString(bc, x, y, str, oldStyle, visible)
                 oldStyle = newStyle
                 str.clear()
             }
 
-            if cr == "\t"'rune
+            if isTabulation
             {
                 x1 := x
                 x += ed.getTabOffset(cast(s32) x)
