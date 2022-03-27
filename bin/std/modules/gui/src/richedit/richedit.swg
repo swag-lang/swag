@@ -10,6 +10,7 @@ enum RichEditFlags
     CurLineBorder
     DrawBlanks
     TabToSpaces
+    WordWrap
 }
 
 struct RichEditMapping

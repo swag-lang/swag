@@ -198,7 +198,7 @@ impl IWnd for RichEditView
 
             if bvis or ed.recomputeScroll
             {
-                x = paintLine(evt.bc, i, y - scrollPos.y, bvis)
+                (x, y) = paintLine(evt.bc, i, y - scrollPos.y, bvis)
             }
 
             maxx = Math.max(maxx, x)
@@ -293,9 +293,10 @@ impl RichEditView
         return x + me.width
     }
 
-    mtd paintLine(bc: *PaintContext, lineIndex: uint, y: f32, visible: bool)->f32
+    mtd paintLine(bc: *PaintContext, lineIndex: uint, py: f32, visible: bool)->{x: f32, y: f32}
     {
         line := ed.lines[lineIndex]
+        y := py
 
         // Dummy character for empty lines, so that a selected line display something
         dummyChar  := " "'rune
@@ -320,6 +321,7 @@ impl RichEditView
         sel0 := ed.getBegSelection()
         sel1 := ed.getEndSelection()
         size := ed.getXExtent()
+        clientRect := getClientRect()
 
         i := 0
         while i < count
@@ -376,9 +378,27 @@ impl RichEditView
                 }
             }
 
+            // Word wrap
+            wrap := false
+            if ed.richEdFlags & .WordWrap
+            {
+                if !Unicode.isLetterOrDigit(cr)
+                    wrap = true
+                if (wrap or i == count - 1) and str.length
+                {
+                    font := ed.fontFamily.getFont(oldStyle.fontMode)
+                    me := Painter.measureString(str, font)
+                    if x + me.width > clientRect.right()
+                    {
+                        x = ed.getMarginLeft() - scrollPos.x
+                        y += ed.getXExtent().y
+                    }
+                }
+            }
+
             // Paint accumulated string if we have a change of style
             styleChange := newStyle != oldStyle
-            if styleChange or isTabulation
+            if styleChange or isTabulation or wrap
             {
                 x = paintString(bc, x, y, str, oldStyle, visible)
                 oldStyle = newStyle
@@ -407,6 +427,6 @@ impl RichEditView
             x = x1
         }
 
-        return x + scrollPos.x
+        return @{x + scrollPos.x, y + scrollPos.y}
     }
 }
