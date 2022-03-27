@@ -186,6 +186,8 @@ impl IWnd for RichEditView
             // Lex the line
             if l.dirtyStyle
             {
+                ed.unwrap(i)
+
                 if ed.lexer
                 {
                     prevLine := i ? ed.lines[i - 1] : null
@@ -193,6 +195,7 @@ impl IWnd for RichEditView
                     ed.lexer.compute(prevLine, l, nextLine)
                 }
 
+                ed.wrap(i)
                 l.dirtyStyle = false
             }
 

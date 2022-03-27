@@ -89,6 +89,90 @@ impl RichEdit
         return result
     }
 
+    mtd unwrap(lineIndex: uint)
+    {
+        if !(richEdFlags & .WordWrap)
+            return
+
+        // Make one single line with current wrapped lines
+        i := lineIndex + 1
+        while i < lines.count
+        {
+            if !lines[i].wordWrap
+                break
+            lines[lineIndex].chars.add(lines[i].chars.toSlice())
+            lines[lineIndex].styles.add(lines[i].styles.toSlice())
+            i += 1
+        }
+
+        // Remove current wrapped lines
+        while i != lineIndex + 1
+        {
+            deleteLine(lineIndex + 1)
+            i -= 1
+        }
+    }
+
+    mtd wrap(lineIndex: uint)
+    {
+        if !(richEdFlags & .WordWrap)
+            return
+
+        font := fontFamily.getFont(styles[0].fontMode)
+
+        // Do the wrap
+        curLine := lineIndex
+        i := 0'uint
+        size := getXExtent()
+        clientRect := edView.getClientRect()
+        x := getMarginLeft()
+
+        while i < lines[curLine].length()
+        {
+            ch := lines[curLine].chars[i]
+            if !Unicode.isLetterOrDigit(ch)
+            {
+                wrap := false
+                j := i + 1
+                x1 := x + Painter.measureRune(ch, font).x
+                while j < lines[curLine].chars.count
+                {
+                    ch1 := lines[curLine].chars[j]
+                    if Unicode.isLetterOrDigit(ch) == Unicode.isLetterOrDigit(ch1)
+                        break
+
+                    x1 += Painter.measureRune(ch1, font).x
+                    if x1 >= clientRect.right()
+                    {
+                        wrap = true
+                        break
+                    }
+
+                    j += 1
+                }
+
+                if wrap
+                {
+                    nl := newLine(curLine + 1)
+                    nl.wordWrap = true
+                    length := lines[curLine].chars.count
+                    lines[curLine + 1].chars.add(@mkslice(lines[curLine].chars.buffer + i, length - i))
+                    lines[curLine + 1].styles.add(@mkslice(lines[curLine].styles.buffer + i, length - i))
+                    lines[curLine + 1].dirtyStyle = false
+                    lines[curLine].chars.resize(i)
+                    lines[curLine].styles.resize(i)
+                    curLine += 1
+                    i = 0
+                    x = getMarginLeft()
+                    continue
+                }
+            }
+
+            i += 1
+            x += Painter.measureRune(ch, font).x
+        }
+    }
+
     mtd insertRunePrivate(cp: *RichEditCursor, c: rune, txtStyle: RichEditStyleRef)
     {
         if c == "\r"'rune
@@ -96,8 +180,8 @@ impl RichEdit
 
         if c == "\n"'rune
         {
-            discard newLine(cp.lineIndex + 1)
             linep := lines[cp.lineIndex]
+            discard newLine(cp.lineIndex + 1)
             line  := lines[cp.lineIndex + 1]
             if cp.charPosInLine < linep.length()
                 line.insertRunes(0, linep, cp.charPosInLine, linep.length() - cp.charPosInLine)

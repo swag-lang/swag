@@ -10,6 +10,7 @@ public struct RichEditLine
     drawingRect:        Math.Rectangle
     lexerEndingState:   s32
     lexerCptCmt:        s32
+    wordWrap:           bool
 }
 
 impl RichEditLine
