@@ -38,8 +38,12 @@ func createView4(tabView: *Tab, view: *Wnd)
         ed.styles[3].underline = .Underline
         ed.addText("coucou la foule ", 0)
         ed.addText("comment ça va ? ", 1)
-        ed.addText("ça va ! ", 2)
-        ed.addText("et même très bien", 3)
+        ed.addText("ça va !", 2)
+        ed.addText(" et même très bien ", 3)
+        ed.addText("coucou la foule ", 0)
+        ed.addText("comment ça va ? ", 1)
+        ed.addText("ça va !", 2)
+        ed.addText(" et même très bien ", 3)
     }
 
     {

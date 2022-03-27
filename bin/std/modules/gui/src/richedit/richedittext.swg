@@ -103,13 +103,13 @@ impl RichEdit
 
             if cursorPos.lineIndex == i
             {
-                cursorPos.lineIndex -= 1
+                cursorPos.lineIndex = lineIndex
                 cursorPos.charPosInLine += lines[lineIndex].chars.count
             }
 
             if selBeg.lineIndex == i
             {
-                selBeg.lineIndex -= 1
+                selBeg.lineIndex = lineIndex
                 selBeg.charPosInLine += lines[lineIndex].chars.count
             }
 
