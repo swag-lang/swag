@@ -198,7 +198,7 @@ impl IWnd for RichEditView
 
             if bvis or ed.recomputeScroll
             {
-                (x, y) = paintLine(evt.bc, i, y - scrollPos.y, bvis)
+                x = paintLine(evt.bc, i, y - scrollPos.y, bvis)
             }
 
             maxx = Math.max(maxx, x)
@@ -293,7 +293,7 @@ impl RichEditView
         return x + me.width
     }
 
-    mtd paintLine(bc: *PaintContext, lineIndex: uint, py: f32, visible: bool)->{x: f32, y: f32}
+    mtd paintLine(bc: *PaintContext, lineIndex: uint, py: f32, visible: bool)->f32
     {
         line := ed.lines[lineIndex]
         y := py
@@ -378,27 +378,9 @@ impl RichEditView
                 }
             }
 
-            // Word wrap
-            wrap := false
-            if ed.richEdFlags & .WordWrap
-            {
-                if !Unicode.isLetterOrDigit(cr)
-                    wrap = true
-                if (wrap or i == count - 1) and str.length
-                {
-                    font := ed.fontFamily.getFont(oldStyle.fontMode)
-                    me := Painter.measureString(str, font)
-                    if x + me.width > clientRect.right()
-                    {
-                        x = ed.getMarginLeft() - scrollPos.x
-                        y += ed.getXExtent().y
-                    }
-                }
-            }
-
             // Paint accumulated string if we have a change of style
             styleChange := newStyle != oldStyle
-            if styleChange or isTabulation or wrap
+            if styleChange or isTabulation
             {
                 x = paintString(bc, x, y, str, oldStyle, visible)
                 oldStyle = newStyle
@@ -427,6 +409,6 @@ impl RichEditView
             x = x1
         }
 
-        return @{x + scrollPos.x, y + scrollPos.y}
+        return x + scrollPos.x
     }
 }
