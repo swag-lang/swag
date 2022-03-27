@@ -20,6 +20,7 @@ func createView4(tabView: *Tab, view: *Wnd)
         ed.setRichEdFlags(.ShowFocusSel | .CurLineBorder | .DrawBlanks | .TabToSpaces | .WordWrap)
         ed.setLexer(cast(IRichEditLexer) g_LexerSwag)
         ed.setText(cast(string) Txt)
+        ed.dockStyle = .Bottom
     }
 
     {
@@ -39,7 +40,7 @@ func createView4(tabView: *Tab, view: *Wnd)
     }
 
     {
-        ed := RichEdit.create(view, @{620, 320, 400, 300})
+        ed := RichEdit.create(view, @{620, 320, 400, 150})
         ed.setFrameForm(.Round)
         ed.setFrameFlags(.FocusBorder)
         ed.setRichEdFlags(.ReadOnly)

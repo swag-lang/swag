@@ -15,6 +15,12 @@ public struct RichEditView
 
 impl IWnd for RichEditView
 {
+    mtd onResizeEvent(evt: *ResizeEvent)
+    {
+        if ed and ed.richEdFlags & .WordWrap
+            ed.recomputeScroll = true
+    }
+
     mtd onMouseEvent(evt: *MouseEvent)
     {
         evt.accepted = false
@@ -187,7 +193,7 @@ impl IWnd for RichEditView
             }
 
             // Lex the line
-            if !l.wordWrap and (l.dirtyStyle or sizeChanged)
+            if !l.wordWrap and (l.dirtyStyle or sizeChanged or ed.recomputeScroll)
             {
                 ed.unwrap(i)
 

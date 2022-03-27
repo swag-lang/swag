@@ -69,12 +69,12 @@ private impl RichEdit
 {
     mtd getMarginLeft()->f32
     {
-        return padding.x
+        return 0
     }
 
     mtd getMarginRight()->f32
     {
-        return padding.z
+        return 0
     }
 
     mtd setDefaultStyles()

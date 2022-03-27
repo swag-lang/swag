@@ -124,49 +124,38 @@ impl RichEdit
         curLine := lineIndex
         i := 0'uint
         clientRect := edView.getClientRect()
-        x := getMarginLeft()
 
         var str: String
 
+        cutAti := i
         while i < lines[curLine].length()
         {
-            ch := lines[curLine].chars[i]
+            l := lines[curLine]
+            ch := l.chars[i]
             str += ch
 
             if !Unicode.isLetterOrDigit(ch)
+                cutAti = i + 1
+
+            if cutAti
             {
-                wrap := false
-                j := i + 1
-                str1 := str
-                while j < lines[curLine].chars.count
+                x := getMarginLeft() + Painter.measureString(str, font).width
+                if x >= clientRect.right()
                 {
-                    ch1 := lines[curLine].chars[j]
-                    if Unicode.isLetterOrDigit(ch) == Unicode.isLetterOrDigit(ch1)
-                        break
-
-                    str1 += ch1
-                    x1 := getMarginLeft() + Painter.measureString(str1, font).width
-                    if x1 >= clientRect.right()
-                    {
-                        wrap = true
-                        break
-                    }
-
-                    j += 1
-                }
-
-                if wrap
-                {
+                    if cutAti and cutAti == i + 1
+                        cutAti -= 1
+                    i = cutAti
                     nl := newLine(curLine + 1)
                     nl.wordWrap = true
-                    length := lines[curLine].chars.count
-                    lines[curLine + 1].chars.add(@mkslice(lines[curLine].chars.buffer + i, length - i))
-                    lines[curLine + 1].styles.add(@mkslice(lines[curLine].styles.buffer + i, length - i))
-                    lines[curLine + 1].dirtyStyle = false
-                    lines[curLine].chars.resize(i)
-                    lines[curLine].styles.resize(i)
+
+                    nl.chars.add(@mkslice(l.chars.buffer + i, l.chars.count - i))
+                    nl.styles.add(@mkslice(l.styles.buffer + i, l.chars.count - i))
+                    nl.dirtyStyle = false
+                    l.chars.resize(i)
+                    l.styles.resize(i)
+
                     curLine += 1
-                    i = 0
+                    i, cutAti = 0
                     str.clear()
                     continue
                 }
