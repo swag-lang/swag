@@ -1,6 +1,7 @@
 using Core, Gui, Pixel
 
 const Txt = #load("view0.swg")
+const Txt1 = #load("view4.swg")
 
 var g_LexerSwag: RichEditLexerSwag
 
@@ -8,12 +9,15 @@ func createView4(tabView: *Tab, view: *Wnd)
 {
     {
         ed := RichEdit.create(view, @{10, 10, 600, 500})
-        ed.setFrameForm(.Round)
-        ed.setRichEdFlags(.ShowFocusSel | .CurLineBorder | .TabToSpaces | .WordWrap)
-        ed.setLexer(cast(IRichEditLexer) g_LexerSwag)
-        ed.setText(cast(string) Txt)
-        ed.marginLeft = 20
-        ed.marginRight = 40
+        with ed
+        {
+            setFrameForm(.Round)
+            setRichEdFlags(.ShowFocusSel | .CurLineBorder | .TabToSpaces | .WordWrap)
+            setLexer(cast(IRichEditLexer) g_LexerSwag)
+            setText(cast(string) Txt)
+            marginLeft = 20
+            marginRight = 40
+        }
     }
 
     {
@@ -21,29 +25,31 @@ func createView4(tabView: *Tab, view: *Wnd)
         ed.setFrameForm(.Round)
         ed.setRichEdFlags(.ShowFocusSel | .CurLineBorder | .DrawBlanks | .TabToSpaces)
         ed.setLexer(cast(IRichEditLexer) g_LexerSwag)
-        ed.setText(cast(string) Txt)
-        ed.dockStyle = .Bottom
+        ed.setText(cast(string) Txt1)
     }
 
     {
         ed := RichEdit.create(view, @{620, 10, 400, 300})
-        ed.setFrameForm(.Round)
-        ed.setFrameFlags(.FocusBorder)
-        ed.setRichEdFlags(.WordWrap)
-        ed.style.addStyleSheetColors("richEdit_Bk $edit_Bk")
+        with ed
+        {
+            setFrameForm(.Round)
+            setFrameFlags(.FocusBorder)
+            setRichEdFlags(.WordWrap)
+            style.addStyleSheetColors("richEdit_Bk $edit_Bk")
 
-        ed.styles[1].colFg = Argb.Red
-        ed.styles[2].colBk = Argb.Blue
-        ed.styles[3].fontMode = .Regular
-        ed.styles[3].underline = .Underline
-        ed.addText("coucou la foule ", 0)
-        ed.addText("comment ça va ? ", 1)
-        ed.addText("ça va !", 2)
-        ed.addText(" et même très bien ", 3)
-        ed.addText("coucou la foule ", 0)
-        ed.addText("comment ça va ? ", 1)
-        ed.addText("ça va !", 2)
-        ed.addText(" et même très bien ", 3)
+            styles[1].colFg = Argb.Red
+            styles[2].colBk = Argb.Blue
+            styles[3].fontMode = .Regular
+            styles[3].underline = .Underline
+            addText("coucou la foule ", 0)
+            addText("comment ça va ? ", 1)
+            addText("ça va !", 2)
+            addText(" et même très bien ", 3)
+            addText("coucou la foule ", 0)
+            addText("comment ça va ? ", 1)
+            addText("ça va !", 2)
+            addText(" et même très bien ", 3)
+        }
     }
 
     {
