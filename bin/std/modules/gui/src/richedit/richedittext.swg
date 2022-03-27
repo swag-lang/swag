@@ -137,6 +137,7 @@ impl RichEdit
         curLine := lineIndex
         i := 0'uint
         clientRect := edView.getClientRect()
+        clientRect.width -= getMarginRight()
 
         var str: String
 
@@ -177,6 +178,8 @@ impl RichEdit
                     nl.chars.add(@mkslice(l.chars.buffer + i, l.chars.count - i))
                     nl.styles.add(@mkslice(l.styles.buffer + i, l.chars.count - i))
                     nl.dirtyStyle = false
+                    nl.lexerEndingState = l.lexerEndingState
+                    nl.lexerCptCmt = l.lexerCptCmt
                     l.chars.resize(i)
                     l.styles.resize(i)
 
@@ -220,7 +223,6 @@ impl RichEdit
                 line.insertRune(posIns, " "'rune, txtStyle)
                 cp.charPosInLine += 1
             }
-
         }
         else
         {

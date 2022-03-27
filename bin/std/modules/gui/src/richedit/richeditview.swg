@@ -187,7 +187,7 @@ impl IWnd for RichEditView
             {
                 fullRect := l.drawingRect
                 fullRect.y -= scrollPos.y
-                fullRect.setRight(clientRect.right())
+                fullRect.setRight(clientRect.right() - ed.getMarginRight())
                 fullRect.inflate(-1)
                 painter.drawRect(fullRect, colors.richEdit_CurLineBorder, 1)
             }

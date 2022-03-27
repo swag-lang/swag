@@ -28,6 +28,8 @@ struct RichEdit
     lineSpacing:    f32
     overwriteMode:  bool
     tabSize:        s32 = 4
+    marginLeft:     f32
+    marginRight:    f32
     lexer:          IRichEditLexer
     sigIsReadOnly:  SigArray'closure(*bool)
     sigChanged:     SigArray'closure(*Self)
@@ -69,12 +71,12 @@ private impl RichEdit
 {
     mtd getMarginLeft()->f32
     {
-        return 0
+        return marginLeft
     }
 
     mtd getMarginRight()->f32
     {
-        return 0
+        return marginRight
     }
 
     mtd setDefaultStyles()

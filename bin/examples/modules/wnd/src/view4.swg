@@ -12,6 +12,8 @@ func createView4(tabView: *Tab, view: *Wnd)
         ed.setRichEdFlags(.ShowFocusSel | .CurLineBorder | .TabToSpaces | .WordWrap)
         ed.setLexer(cast(IRichEditLexer) g_LexerSwag)
         ed.setText(cast(string) Txt)
+        ed.marginLeft = 20
+        ed.marginRight = 40
     }
 
     {
