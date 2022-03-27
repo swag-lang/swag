@@ -9,7 +9,7 @@ func createView4(tabView: *Tab, view: *Wnd)
     {
         ed := RichEdit.create(view, @{10, 10, 600, 500})
         ed.setFrameForm(.Round)
-        ed.setRichEdFlags(.ShowFocusSel | .CurLineBorder | .TabToSpaces)
+        ed.setRichEdFlags(.ShowFocusSel | .CurLineBorder | .TabToSpaces | .WordWrap)
         ed.setLexer(cast(IRichEditLexer) g_LexerSwag)
         ed.setText(cast(string) Txt)
     }
@@ -17,7 +17,7 @@ func createView4(tabView: *Tab, view: *Wnd)
     {
         ed := RichEdit.create(view, @{10, 520, 600, 300})
         ed.setFrameForm(.Round)
-        ed.setRichEdFlags(.ShowFocusSel | .CurLineBorder | .DrawBlanks | .TabToSpaces | .WordWrap)
+        ed.setRichEdFlags(.ShowFocusSel | .CurLineBorder | .DrawBlanks | .TabToSpaces)
         ed.setLexer(cast(IRichEditLexer) g_LexerSwag)
         ed.setText(cast(string) Txt)
         ed.dockStyle = .Bottom
@@ -34,9 +34,9 @@ func createView4(tabView: *Tab, view: *Wnd)
         ed.styles[2].colBk = Argb.Blue
         ed.styles[3].fontMode = .Regular
         ed.styles[3].underline = .Underline
-        ed.addText("coucou la foule\n", 0)
+        ed.addText("coucou la foule ", 0)
         ed.addText("comment ça va ? ", 1)
-        ed.addText("ça va !\n", 2)
+        ed.addText("ça va ! ", 2)
         ed.addText("et même très bien", 3)
     }
 

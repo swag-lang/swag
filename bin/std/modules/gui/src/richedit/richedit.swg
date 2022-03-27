@@ -272,6 +272,7 @@ impl RichEdit
     mtd setRichEdFlags(flags: RichEditFlags)
     {
         richEdFlags = flags
+        recomputeScroll = true
         invalidate()
     }
 
