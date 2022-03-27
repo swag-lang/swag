@@ -24,6 +24,7 @@ impl RichEditLine
     mtd resetInternal()
     {
         dirtyStyle = true
+        wordWrap = false
         hidden = 0
         chars.clear()
         styles.clear()

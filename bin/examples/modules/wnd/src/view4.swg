@@ -27,6 +27,7 @@ func createView4(tabView: *Tab, view: *Wnd)
         ed := RichEdit.create(view, @{620, 10, 400, 300})
         ed.setFrameForm(.Round)
         ed.setFrameFlags(.FocusBorder)
+        ed.setRichEdFlags(.WordWrap)
         ed.style.addStyleSheetColors("richEdit_Bk $edit_Bk")
 
         ed.styles[1].colFg = Argb.Red

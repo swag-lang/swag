@@ -100,6 +100,19 @@ impl RichEdit
         {
             if !lines[i].wordWrap
                 break
+
+            if cursorPos.lineIndex == i
+            {
+                cursorPos.lineIndex -= 1
+                cursorPos.charPosInLine += lines[lineIndex].chars.count
+            }
+
+            if selBeg.lineIndex == i
+            {
+                selBeg.lineIndex -= 1
+                selBeg.charPosInLine += lines[lineIndex].chars.count
+            }
+
             lines[lineIndex].chars.add(lines[i].chars.toSlice())
             lines[lineIndex].styles.add(lines[i].styles.toSlice())
             i += 1
@@ -144,6 +157,19 @@ impl RichEdit
                 {
                     if cutAti and cutAti == i + 1
                         cutAti -= 1
+
+                    if cursorPos.lineIndex == curLine and cursorPos.charPosInLine >= cutAti
+                    {
+                        cursorPos.lineIndex += 1
+                        cursorPos.charPosInLine -= cutAti
+                    }
+
+                    if selBeg.lineIndex == curLine and selBeg.charPosInLine >= cutAti
+                    {
+                        selBeg.lineIndex += 1
+                        selBeg.charPosInLine -= cutAti
+                    }
+
                     i = cutAti
                     nl := newLine(curLine + 1)
                     nl.wordWrap = true
