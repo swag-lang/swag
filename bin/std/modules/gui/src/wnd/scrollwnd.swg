@@ -130,7 +130,6 @@ public impl IWnd for ScrollWnd
                 oldMouseCapture = getMouseCapture()
                 captureMouse()
                 invalidate()
-                //hitTest(evt.surfacePos)
             }
 
         case MouseReleased:

@@ -123,25 +123,29 @@ impl RichEdit
         // Do the wrap
         curLine := lineIndex
         i := 0'uint
-        size := getXExtent()
         clientRect := edView.getClientRect()
         x := getMarginLeft()
+
+        var str: String
 
         while i < lines[curLine].length()
         {
             ch := lines[curLine].chars[i]
+            str += ch
+
             if !Unicode.isLetterOrDigit(ch)
             {
                 wrap := false
                 j := i + 1
-                x1 := x + Painter.measureRune(ch, font).x
+                str1 := str
                 while j < lines[curLine].chars.count
                 {
                     ch1 := lines[curLine].chars[j]
                     if Unicode.isLetterOrDigit(ch) == Unicode.isLetterOrDigit(ch1)
                         break
 
-                    x1 += Painter.measureRune(ch1, font).x
+                    str1 += ch1
+                    x1 := getMarginLeft() + Painter.measureString(str1, font).width
                     if x1 >= clientRect.right()
                     {
                         wrap = true
@@ -163,13 +167,12 @@ impl RichEdit
                     lines[curLine].styles.resize(i)
                     curLine += 1
                     i = 0
-                    x = getMarginLeft()
+                    str.clear()
                     continue
                 }
             }
 
             i += 1
-            x += Painter.measureRune(ch, font).x
         }
     }
 

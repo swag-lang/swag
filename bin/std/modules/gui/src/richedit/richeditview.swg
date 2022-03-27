@@ -10,6 +10,7 @@ public struct RichEditView
     selMode:            bool
     timerCaret:         *Timer
     firstLineSelMode:   uint
+    lastClientRect:     Math.Rectangle
 }
 
 impl IWnd for RichEditView
@@ -145,17 +146,19 @@ impl IWnd for RichEditView
             ed.countVisibleLines = 0
         ed.dirtyFirstLineView = false
 
-        pos := getClientRect()
+        clientRect := getClientRect()
         firstHidden := true
-        dirtyFold := false
         maxx := 0'f32
+
+        sizeChanged := lastClientRect != clientRect
+        lastClientRect = clientRect
 
         // All lines
         while i < ed.lines.count
         {
             // Is the line visible ?
             bvis := true
-            if y + size.y < scrollPos.y or y - scrollPos.y > pos.bottom()
+            if y + size.y < scrollPos.y or y - scrollPos.y > clientRect.bottom()
                 bvis = false
 
             // Store the first visible line index
@@ -178,13 +181,13 @@ impl IWnd for RichEditView
             {
                 fullRect := l.drawingRect
                 fullRect.y -= scrollPos.y
-                fullRect.setRight(pos.right())
+                fullRect.setRight(clientRect.right())
                 fullRect.inflate(-1)
                 painter.drawRect(fullRect, colors.richEdit_CurLineBorder, 1)
             }
 
             // Lex the line
-            if l.dirtyStyle
+            if !l.wordWrap and (l.dirtyStyle or sizeChanged)
             {
                 ed.unwrap(i)
 
@@ -207,7 +210,7 @@ impl IWnd for RichEditView
             maxx = Math.max(maxx, x)
             y += size.y
             i += 1
-            if !ed.recomputeScroll and y >= scrollPos.y + pos.bottom() and !dirtyFold
+            if !ed.recomputeScroll and y >= scrollPos.y + clientRect.bottom()
                 break
         }
 
@@ -242,7 +245,9 @@ impl IWnd for RichEditView
 
         // Scroll size
         y = cast(f32) (ed.countVisibleLines * size.y)
-        if !ed.recomputeScroll
+        if ed.richEdFlags & .WordWrap
+            maxx = 0
+        elif !ed.recomputeScroll
             maxx = ed.scrollWnd.scrollSize.x
         else
         {
