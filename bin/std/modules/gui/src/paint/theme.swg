@@ -15,6 +15,7 @@ private const DefaultFontFsItalicName     = "theme/consolai.ttf"
 
 private const DefaultIcons24Name        = "theme/icons24.png"
 private const DefaultIcons64Name        = "theme/icons64.png"
+private const DefaultSpinName           = "theme/spin.png"
 
 private const DefaultImage              = #load(DefaultImageName)
 private const DefaultFontRegular        = #load(DefaultFontRegularName)
@@ -27,6 +28,7 @@ private const DefaultFontFsBoldItalic   = #load(DefaultFontFsBoldItalicName)
 private const DefaultFontFsItalic       = #load(DefaultFontFsItalicName)
 private const DefaultIcons24            = #load(DefaultIcons24Name)
 private const DefaultIcons64            = #load(DefaultIcons64Name)
+private const DefaultSpin               = #load(DefaultSpinName)
 
 
 struct ThemeResources
@@ -34,6 +36,7 @@ struct ThemeResources
     imgWidgets:             Texture
     icons24:                *ImageList
     icons64:                *ImageList
+    spin:                   *ImageList
     defaultTypeFaceR:       const *TypeFace
     defaultTypeFaceB:       const *TypeFace
     defaultTypeFaceI:       const *TypeFace
@@ -72,6 +75,12 @@ impl Theme
         res.icons64.texture = renderer.addImage(img)
         res.icons64.sizeX = 64
         res.icons64.sizeY = 64
+
+        img = assume Image.decode(DefaultSpinName, DefaultSpin)
+        res.spin = Memory.new'ImageList()
+        res.spin.texture = renderer.addImage(img)
+        res.spin.sizeX = 48
+        res.spin.sizeY = 48
 
         res.defaultTypeFaceR    = assume TypeFace.create(DefaultFontRegularName, DefaultFontRegular)
         res.defaultTypeFaceB    = assume TypeFace.create(DefaultFontBoldName, DefaultFontBold)

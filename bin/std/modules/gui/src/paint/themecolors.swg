@@ -25,6 +25,8 @@ struct ThemeColors
     richColor2: Color = Argb.Green
     richColor3: Color = Argb.Blue
 
+    hilight:                        Color = Blue
+
     wnd_Bk:                         Color = Gray5
     wnd_Caption:                    Color = Gray4
     wnd_CaptionNotActived:          Color = Gray4
@@ -270,4 +272,6 @@ struct ThemeColors
     richEdit_SelBkNoFocus:          Color = Gray6
     richEdit_Caret:                 Color = White
     richEdit_CurLineBorder:         Color = Gray4
+
+    imageRect_Fg:                   Color = White
 }

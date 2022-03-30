@@ -38,7 +38,7 @@ impl Icon
             return
 
         srcX := index % (imageList.texture.width / imageList.sizeX)
-        srcY := index / (imageList.texture.height / imageList.sizeY)
+        srcY := index / (imageList.texture.width / imageList.sizeY)
         srcX *= imageList.sizeX
         srcY *= imageList.sizeY
 

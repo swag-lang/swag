@@ -381,4 +381,11 @@ func createView0(tabView: *Tab, view: *Wnd)
         prg.setProgression(0.5)
         prg.disable()
     }
+
+    {
+        img := ImageRect.create(view, @{20, 620, 48, 48}, view.getTheme().res.spin)
+        img.style.addStyleSheetColors("imageRect_Fg $hilight")
+
+        img1 := ImageRect.create(view, @{20, 680, 48, 48}, view.getTheme().res.spin)
+    }
 }
