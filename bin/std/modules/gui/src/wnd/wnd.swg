@@ -2,6 +2,7 @@
 using Core, Pixel
 
 alias WndId = string
+alias HookEvent = func(*Wnd, *Event)->bool
 
 enum DockStyle
 {
@@ -161,18 +162,18 @@ impl Wnd
     }
 
     #[Swag.Inline]
-    func(T) create(parent: *Wnd = null, id: WndId = null)->*T
+    func(T) create(parent: *Wnd = null, id: WndId = null, hook: HookEvent = null)->*T
     {
-        return create(parent, "", @{})
+        return create(parent, "", @{}, hook: hook)
     }
 
     #[Swag.Inline]
-    func(T) create(parent: *Wnd, position: Math.Rectangle, id: WndId = null)->*T
+    func(T) create(parent: *Wnd, position: Math.Rectangle, id: WndId = null, hook: HookEvent = null)->*T
     {
-        return create(parent, "", position)
+        return create(parent, "", position, hook: hook)
     }
 
-    func(T) create(parent: *Wnd, name: string, position: Math.Rectangle, id: WndId = null)->*T
+    func(T) create(parent: *Wnd, name: string, position: Math.Rectangle, id: WndId = null, hook: HookEvent = null)->*T
     {
         res := Memory.new'T()
         res.isAllocated = true
@@ -182,12 +183,12 @@ impl Wnd
         res.id = id
         res.position = position
         res.isAllocated = true
+        res.hookOnEvent = hook
+
         if parent
         {
             res.setParent(parent)
-            evt := CreateEvent{}
-            res.sendEvent(&evt)
-            res.createEventDone = true
+            res.sendCreateEvent()
             res.sendResizeEvent()
         }
 
@@ -223,13 +224,7 @@ impl Wnd
         }
 
         computeStyle()
-
-        if !createEventDone
-        {
-            createEventDone = true
-            evt := CreateEvent{}
-            sendEvent(&evt)
-        }
+        sendCreateEvent()
     }
 
     //////////////////////////////////////////////
@@ -774,6 +769,15 @@ impl Wnd
         evt := ResizeEvent{}
         evt.oldSize.x = position.width
         evt.oldSize.y = position.height
+        sendEvent(&evt)
+    }
+
+    mtd sendCreateEvent()
+    {
+        if createEventDone
+            return
+        createEventDone = true
+        evt := CreateEvent{}
         sendEvent(&evt)
     }
 

@@ -414,7 +414,7 @@ impl Application
     mtd getKeyboard() => &keyb
 
     // Creates a new surface
-    mtd createSurface(x, y, width, height: s32, flags: SurfaceFlags = SurfaceFlags.Zero, view: *Wnd = null)->*Surface throw
+    mtd createSurface(x, y, width, height: s32, flags = SurfaceFlags.OverlappedWindow, view: *Wnd = null, hook: HookEvent = null)->*Surface throw
     {
         surface := Memory.new'Surface()
         surface.app = self
@@ -440,7 +440,7 @@ impl Application
 
         with surface
         {
-            wnd.create(view)
+            wnd.create(view, hook)
             wnd.surface = surface
             wnd.itf = cast(IWnd) surface.wnd
             wnd.computeStyle()
