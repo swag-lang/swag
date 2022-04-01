@@ -75,6 +75,16 @@ struct ByteCodeRunContext : public JobContext
     vector<uint32_t>                returnRegOnRet;
     vector<uint64_t>                returnRegOnRetRR;
 
+    bool      ffi_StructByCopyDone = false;
+    ffi_type  ffi_StructByCopy1;
+    ffi_type* ffi_StructByCopy1T[1];
+    ffi_type  ffi_StructByCopy2;
+    ffi_type* ffi_StructByCopy2T[1];
+    ffi_type  ffi_StructByCopy4;
+    ffi_type* ffi_StructByCopy4T[1];
+    ffi_type  ffi_StructByCopy8;
+    ffi_type* ffi_StructByCopy8T[1];
+
     SwagCompilerSourceLocation* errorLoc      = nullptr;
     JobContext*                 callerContext = nullptr;
     bool                        canCatchError = false;

@@ -247,7 +247,16 @@ void BackendX64::storeCDeclParamToRegister(X64PerThread& pp, TypeInfo* typeParam
         auto offset = calleeIndex * (int) sizeof(Register);
         offset += sizeStack;
         offset += 16;
-        BackendX64Inst::emit_Load64_Indirect(pp, offset, RAX, RDI);
+
+        // :StructByCopy
+        if (offsetStructCopy != UINT32_MAX && typeParam->kind == TypeInfoKind::Struct && typeParam->sizeOf <= sizeof(void*))
+        {
+            BackendX64Inst::emit_LoadAddress_Indirect(pp, offset, RAX, RDI);
+        }
+        else
+        {
+            BackendX64Inst::emit_Load64_Indirect(pp, offset, RAX, RDI);
+        }
 
         // Store it in the register
         BackendX64Inst::emit_Store64_Indirect(pp, stackOffset, RAX, RDI);
@@ -395,32 +404,67 @@ bool BackendX64::emitForeignFctCall(X64PerThread& pp, Module* moduleToGen, TypeI
             // This is for a normal parameter
             else
             {
-                // Struct by copy. Will be a pointer to the stack
-                // :StructByCopy
-                if (paramsTypes[i]->kind == TypeInfoKind::Struct)
-                    paramsTypes[i] = g_TypeMgr->typeInfoU64;
-
                 auto sizeOf = paramsTypes[i]->sizeOf;
-                switch (sizeOf)
+
+                // Struct by copy. Will be a pointer to the stack
+                if (paramsTypes[i]->kind == TypeInfoKind::Struct)
                 {
-                case 1:
-                    BackendX64Inst::emit_Load8_Indirect(pp, regOffset(paramsRegisters[i]), RAX, RDI);
-                    BackendX64Inst::emit_Store8_Indirect(pp, offsetStack, RAX, RSP);
-                    break;
-                case 2:
-                    BackendX64Inst::emit_Load16_Indirect(pp, regOffset(paramsRegisters[i]), RAX, RDI);
-                    BackendX64Inst::emit_Store16_Indirect(pp, offsetStack, RAX, RSP);
-                    break;
-                case 4:
-                    BackendX64Inst::emit_Load32_Indirect(pp, regOffset(paramsRegisters[i]), RAX, RDI);
-                    BackendX64Inst::emit_Store32_Indirect(pp, offsetStack, RAX, RSP);
-                    break;
-                case 8:
                     BackendX64Inst::emit_Load64_Indirect(pp, regOffset(paramsRegisters[i]), RAX, RDI);
-                    BackendX64Inst::emit_Store64_Indirect(pp, offsetStack, RAX, RSP);
-                    break;
-                default:
-                    return moduleToGen->internalError(typeFuncBC->declNode, typeFuncBC->declNode->token, "emitForeignCall, invalid parameter type");
+
+                    // :StructByCopy
+                    // Store the content of the struct in the stack
+                    if (sizeOf < sizeof(void*))
+                    {
+                        switch (sizeOf)
+                        {
+                        case 1:
+                            BackendX64Inst::emit_Load8_Indirect(pp, 0, RAX, RAX);
+                            BackendX64Inst::emit_Store8_Indirect(pp, offsetStack, RAX, RSP);
+                            break;
+                        case 2:
+                            BackendX64Inst::emit_Load16_Indirect(pp, 0, RAX, RAX);
+                            BackendX64Inst::emit_Store16_Indirect(pp, offsetStack, RAX, RSP);
+                            break;
+                        case 4:
+                            BackendX64Inst::emit_Load32_Indirect(pp, 0, RAX, RAX);
+                            BackendX64Inst::emit_Store32_Indirect(pp, offsetStack, RAX, RSP);
+                            break;
+                        case 8:
+                            BackendX64Inst::emit_Load64_Indirect(pp, 0, RAX, RAX);
+                            BackendX64Inst::emit_Store64_Indirect(pp, offsetStack, RAX, RSP);
+                            break;
+                        }
+                    }
+
+                    // Store the address of the struct in the stack
+                    else
+                    {
+                        BackendX64Inst::emit_Store64_Indirect(pp, offsetStack, RAX, RSP);
+                    }
+                }
+                else
+                {
+                    switch (sizeOf)
+                    {
+                    case 1:
+                        BackendX64Inst::emit_Load8_Indirect(pp, regOffset(paramsRegisters[i]), RAX, RDI);
+                        BackendX64Inst::emit_Store8_Indirect(pp, offsetStack, RAX, RSP);
+                        break;
+                    case 2:
+                        BackendX64Inst::emit_Load16_Indirect(pp, regOffset(paramsRegisters[i]), RAX, RDI);
+                        BackendX64Inst::emit_Store16_Indirect(pp, offsetStack, RAX, RSP);
+                        break;
+                    case 4:
+                        BackendX64Inst::emit_Load32_Indirect(pp, regOffset(paramsRegisters[i]), RAX, RDI);
+                        BackendX64Inst::emit_Store32_Indirect(pp, offsetStack, RAX, RSP);
+                        break;
+                    case 8:
+                        BackendX64Inst::emit_Load64_Indirect(pp, regOffset(paramsRegisters[i]), RAX, RDI);
+                        BackendX64Inst::emit_Store64_Indirect(pp, offsetStack, RAX, RSP);
+                        break;
+                    default:
+                        return moduleToGen->internalError(typeFuncBC->declNode, typeFuncBC->declNode->token, "emitForeignCall, invalid parameter type");
+                    }
                 }
             }
 

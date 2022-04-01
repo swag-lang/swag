@@ -189,21 +189,47 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
         // :StructByCopy
         else if (typeParam->kind == TypeInfoKind::Struct && typeParam->sizeOf <= sizeof(void*))
         {
+            if (!context->ffi_StructByCopyDone)
+            {
+                context->ffi_StructByCopyDone        = true;
+
+                context->ffi_StructByCopy1.alignment = 1;
+                context->ffi_StructByCopy1.size      = 1;
+                context->ffi_StructByCopy1.type      = FFI_TYPE_STRUCT;
+                context->ffi_StructByCopy1.elements  = &context->ffi_StructByCopy1T[0];
+
+                context->ffi_StructByCopy2.alignment = 2;
+                context->ffi_StructByCopy2.size      = 2;
+                context->ffi_StructByCopy2.type      = FFI_TYPE_STRUCT;
+                context->ffi_StructByCopy1.elements = &context->ffi_StructByCopy2T[0];
+
+                context->ffi_StructByCopy4.alignment = 4;
+                context->ffi_StructByCopy4.size      = 4;
+                context->ffi_StructByCopy4.type      = FFI_TYPE_STRUCT;
+                context->ffi_StructByCopy1.elements = &context->ffi_StructByCopy4T[0];
+
+                context->ffi_StructByCopy8.alignment = 8;
+                context->ffi_StructByCopy8.size      = 8;
+                context->ffi_StructByCopy8.type      = FFI_TYPE_STRUCT;
+                context->ffi_StructByCopy1.elements = &context->ffi_StructByCopy8T[0];
+            }
+
             switch (typeParam->sizeOf)
             {
             case 1:
-                context->ffiArgs.push_back(&ffi_type_uint8);
+                context->ffiArgs.push_back(&context->ffi_StructByCopy1);
                 break;
             case 2:
-                context->ffiArgs.push_back(&ffi_type_uint16);
+                context->ffiArgs.push_back(&context->ffi_StructByCopy2);
                 break;
             case 4:
-                context->ffiArgs.push_back(&ffi_type_uint32);
+                context->ffiArgs.push_back(&context->ffi_StructByCopy4);
                 break;
             case 8:
-                context->ffiArgs.push_back(&ffi_type_uint64);
+                context->ffiArgs.push_back(&context->ffi_StructByCopy8);
                 break;
             }
+
             context->ffiArgsValues.push_back(sp->pointer);
             sp++;
         }

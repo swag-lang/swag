@@ -23,7 +23,6 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         paintEvt := cast(*PaintEvent) evt
         painter := paintEvt.bc.painter
         painter.clear(Argb.Red)
-        painter.drawRect(0, 0, 48, 48, Argb.Black, 1)
 
         loop i: GridSize
         {
@@ -31,8 +30,8 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
             {
                 x := i * 48.0
                 y := j * 48.0
-                //if g_Grid[i, j]
-                //    painter.drawRect(x, y, 48, 48, Argb.Black, 1)
+                if g_Grid[i, j]
+                    painter.fillRect(x + 1, y + 1, 46, 46, Argb.Black)
             }
         }
 
