@@ -280,6 +280,12 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             emitGetFromSeg(context, resolved->computedValue.storageSegment, resolved->computedValue.storageOffset, node->resultRegisterRC);
         }
 
+        // :SilentCall
+        if (node->token.text.empty())
+        {
+            emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
+        }
+
         identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;
         node->parent->resultRegisterRC              = node->resultRegisterRC;
         return true;
