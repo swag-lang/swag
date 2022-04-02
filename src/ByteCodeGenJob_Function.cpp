@@ -1178,14 +1178,12 @@ bool ByteCodeGenJob::emitReturnByCopyAddress(ByteCodeGenContext* context, AstNod
         {
             if (node->ownerInline)
             {
-                auto retType = TypeManager::concreteReferenceType(node->ownerInline->func->typeInfo);
-                SWAG_ASSERT(retType->flags & TYPEINFO_RETURN_BY_COPY);
+                SWAG_ASSERT(TypeManager::concreteReferenceType(node->ownerInline->func->typeInfo)->flags & TYPEINFO_RETURN_BY_COPY);
                 emitInstruction(context, ByteCodeOp::CopyRCtoRT, node->ownerInline->resultRegisterRC);
             }
             else
             {
-                auto retType = TypeManager::concreteReferenceType(node->ownerFct->typeInfo);
-                SWAG_ASSERT(retType->flags & TYPEINFO_RETURN_BY_COPY);
+                SWAG_ASSERT(TypeManager::concreteReferenceType(node->ownerFct->typeInfo)->flags & TYPEINFO_RETURN_BY_COPY);
                 emitInstruction(context, ByteCodeOp::CopyRRtoRC, node->resultRegisterRC);
                 emitInstruction(context, ByteCodeOp::CopyRCtoRT, node->resultRegisterRC);
             }
