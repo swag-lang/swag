@@ -232,10 +232,16 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     if (resolved->flags & OVERLOAD_VAR_GLOBAL)
     {
         node->resultRegisterRC = reserveRegisterRC(context);
-        if (typeInfo->kind == TypeInfoKind::Array ||
-            typeInfo->kind == TypeInfoKind::TypeListTuple ||
-            typeInfo->kind == TypeInfoKind::TypeListArray ||
-            typeInfo->kind == TypeInfoKind::Struct)
+        // :SilentCall
+        if (node->token.text.empty())
+        {
+            emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->parent->resultRegisterRC);
+            freeRegisterRC(context, node->parent);
+        }
+        else if (typeInfo->kind == TypeInfoKind::Array ||
+                 typeInfo->kind == TypeInfoKind::TypeListTuple ||
+                 typeInfo->kind == TypeInfoKind::TypeListArray ||
+                 typeInfo->kind == TypeInfoKind::Struct)
         {
             ByteCodeInstruction* inst = emitMakeSegPointer(context, resolved->computedValue.storageSegment, resolved->computedValue.storageOffset, node->resultRegisterRC);
             if (node->forceTakeAddress())
@@ -280,12 +286,6 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             emitGetFromSeg(context, resolved->computedValue.storageSegment, resolved->computedValue.storageOffset, node->resultRegisterRC);
         }
 
-        // :SilentCall
-        if (node->token.text.empty())
-        {
-            emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
-        }
-
         identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;
         node->parent->resultRegisterRC              = node->resultRegisterRC;
         return true;
@@ -317,9 +317,15 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     if (resolved->flags & OVERLOAD_VAR_LOCAL)
     {
         SWAG_CHECK(sameStackFrame(context, resolved));
-
         node->resultRegisterRC = reserveRegisterRC(context);
-        if (resolved->typeInfo->kind == TypeInfoKind::Reference)
+
+        // :SilentCall
+        if (node->token.text.empty())
+        {
+            emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->parent->resultRegisterRC);
+            freeRegisterRC(context, node->parent);
+        }
+        else if (resolved->typeInfo->kind == TypeInfoKind::Reference)
         {
             if (node->forceTakeAddress())
                 emitInstruction(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC)->b.u64 = resolved->computedValue.storageOffset;
@@ -393,12 +399,6 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             }
 
             inst->b.u64 = resolved->computedValue.storageOffset;
-        }
-
-        // :SilentCall
-        if (node->token.text.empty())
-        {
-            emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
         }
 
         identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;

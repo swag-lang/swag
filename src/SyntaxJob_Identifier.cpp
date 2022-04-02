@@ -134,7 +134,6 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
 
             if (!token.lastTokenIsEOL && !(identifierFlags & IDENTIFIER_NO_FCT_PARAMS) && token.id == TokenId::SymLeftParen)
             {
-                identifier->flags |= AST_NO_BYTECODE;
                 SWAG_CHECK(eatToken(TokenId::SymLeftParen));
                 identifier = Ast::newNode<AstIdentifier>(this, AstNodeKind::Identifier, sourceFile, parent);
                 identifier->inheritTokenLocation(token);
