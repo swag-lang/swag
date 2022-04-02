@@ -5,7 +5,9 @@
 
 using Core, Gui, Pixel
 
-const GridSize = 32
+const GridSize = 28
+const CellSize = 32.0
+
 var g_Grid: [GridSize, GridSize] bool
 
 func onEvent(wnd: *Wnd, evt: *Event)->bool
@@ -22,16 +24,33 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
     case Paint:
         paintEvt := cast(*PaintEvent) evt
         painter := paintEvt.bc.painter
-        painter.clear(Argb.Red)
+        painter.clear(Argb.White)
 
-        loop i: GridSize
+        loop i: 1..GridSize-2
         {
-            loop j: GridSize
+            loop j: 1..GridSize-2
             {
-                x := i * 48.0
-                y := j * 48.0
+                cpt := 0
+                loop x: -1..1
+                {
+                    loop y: -1..1
+                    {
+                        if x == 0 and y == 0
+                            continue
+                        cpt += g_Grid[i+x,j+y] ? 1 : 0
+                    }
+                }
+            }
+        }
+
+        loop i: 1..GridSize-1
+        {
+            loop j: 1..GridSize-1
+            {
+                x := i * CellSize
+                y := j * CellSize
                 if g_Grid[i, j]
-                    painter.fillRect(x + 1, y + 1, 46, 46, Argb.Black)
+                    painter.fillRect(x + 1, y + 1, CellSize-2, CellSize-2, Argb.Black)
             }
         }
 

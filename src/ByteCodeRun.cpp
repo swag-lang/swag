@@ -2981,8 +2981,10 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
         }
 
         SourceFile* sourceFile;
-        if (g_ByteCodeStack.steps.size())
+        if (g_ByteCodeStack.steps.size() && g_ByteCodeStack.steps[0].bc)
             sourceFile = g_ByteCodeStack.steps[0].bc->sourceFile;
+        else if (g_ByteCodeStack.steps.size() > 1 && g_ByteCodeStack.steps[1].bc)
+            sourceFile = g_ByteCodeStack.steps[1].bc->sourceFile;
         else
             sourceFile = runContext->bc->sourceFile;
 
@@ -3035,6 +3037,9 @@ bool ByteCodeRun::run(ByteCodeRunContext* runContext)
                 runContext->debugEntry = true;
                 continue;
             }
+
+            if (g_CommandLine->scriptCommand)
+                OS::exit(-1);
 
             g_ByteCodeStack.clear();
             return false;
