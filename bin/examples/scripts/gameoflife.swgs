@@ -96,10 +96,12 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         {
             loop j: 1..GridSize-1
             {
-                x := i * cellSize
-                y := j * cellSize
                 if g_Grid[g_CurGen, i, j]
+                {
+                    x := i * cellSize
+                    y := j * cellSize
                     painter.fillRect(x + 1, y + 1, cellSize-2, cellSize-2, Argb.Black)
+                }
             }
         }
 

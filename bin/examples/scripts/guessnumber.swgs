@@ -21,6 +21,7 @@ func askGuessMulti(high: s32)->s32
     {
         res := catch askGuess(high)
         if !@err return res
+
         Console.print("I didn't understand\n")
         errCount += 1
     }

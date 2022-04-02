@@ -1173,17 +1173,27 @@ bool ByteCodeGenJob::emitReturnByCopyAddress(ByteCodeGenContext* context, AstNod
     AstNode* parentReturn = testReturn ? testReturn->inSimpleReturn() : nullptr;
     if (parentReturn)
     {
-        if (node->ownerInline)
-            emitInstruction(context, ByteCodeOp::CopyRCtoRT, node->ownerInline->resultRegisterRC);
-        else
+        // Must be the last expression in the return expression (no deref !)
+        if (node->parent->kind != AstNodeKind::IdentifierRef || node == node->parent->childs.back())
         {
-            emitInstruction(context, ByteCodeOp::CopyRRtoRC, node->resultRegisterRC);
-            emitInstruction(context, ByteCodeOp::CopyRCtoRT, node->resultRegisterRC);
-        }
+            if (node->ownerInline)
+            {
+                auto retType = TypeManager::concreteReferenceType(node->ownerInline->func->typeInfo);
+                SWAG_ASSERT(retType->flags & TYPEINFO_RETURN_BY_COPY);
+                emitInstruction(context, ByteCodeOp::CopyRCtoRT, node->ownerInline->resultRegisterRC);
+            }
+            else
+            {
+                auto retType = TypeManager::concreteReferenceType(node->ownerFct->typeInfo);
+                SWAG_ASSERT(retType->flags & TYPEINFO_RETURN_BY_COPY);
+                emitInstruction(context, ByteCodeOp::CopyRRtoRC, node->resultRegisterRC);
+                emitInstruction(context, ByteCodeOp::CopyRCtoRT, node->resultRegisterRC);
+            }
 
-        context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
-        parentReturn->doneFlags |= AST_DONE_RETVAL;
-        return true;
+            context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
+            parentReturn->doneFlags |= AST_DONE_RETVAL;
+            return true;
+        }
     }
 
     // A function call used to initialized the field of a struct
