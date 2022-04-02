@@ -413,6 +413,15 @@ impl Application
     mtd getRenderer() => &renderer
     mtd getKeyboard() => &keyb
 
+    // Create a main surface, and run
+    mtd runSurface(x, y, width, height: s32, title: string = null, flags = SurfaceFlags.OverlappedWindow, view: *Wnd = null, hook: HookEvent = null) throw
+    {
+        surface := try createSurface(x, y, width, height, flags, view, hook)
+        surface.setTitle(title)
+        surface.show()
+        run()
+    }
+
     // Creates a new surface
     mtd createSurface(x, y, width, height: s32, flags = SurfaceFlags.OverlappedWindow, view: *Wnd = null, hook: HookEvent = null)->*Surface throw
     {

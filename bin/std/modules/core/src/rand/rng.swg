@@ -124,6 +124,12 @@ impl Rng
         return min + (value * range)
     }
 
+    // Returns a random bool
+    mtd nextBool()->bool
+    {
+        return nextU32(0, 2) == 0 ? false : true
+    }
+
     // Change the order of a slice
     mtd(V) shuffle(slice: [..] V)
     {
