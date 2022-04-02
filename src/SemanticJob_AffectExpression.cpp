@@ -28,8 +28,9 @@ bool SemanticJob::resolveMove(SemanticContext* context)
 bool SemanticJob::resolveAfterAffectLeft(SemanticContext* context)
 {
     // :DeduceLambdaType
-    auto node = context->node;
-    if (node->typeInfo->kind == TypeInfoKind::Lambda || node->typeInfo->kind == TypeInfoKind::Struct)
+    auto node     = context->node;
+    auto typeInfo = TypeManager::concreteReferenceType(node->typeInfo);
+    if (typeInfo->kind == TypeInfoKind::Lambda || typeInfo->kind == TypeInfoKind::Struct)
     {
         auto op = CastAst<AstOp>(node->parent, AstNodeKind::AffectOp);
         if (op->dependentNode)

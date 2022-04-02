@@ -89,7 +89,7 @@ struct Wnd
     isPendingDestroy: bool
     createEventDone:  bool
 
-    hookOnEvent: func(*Wnd, *Event)->bool
+    hookOnEvent: HookEvent
 }
 
 impl IWnd for Wnd

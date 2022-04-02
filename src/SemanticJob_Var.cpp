@@ -568,7 +568,8 @@ bool SemanticJob::deduceLambdaTypeAffect(SemanticContext* context, AstVarDecl* n
     auto back  = op->childs.back();
     SWAG_ASSERT(front->typeInfo);
 
-    if (front->typeInfo->kind == TypeInfoKind::Struct)
+    auto frontType = TypeManager::concreteReferenceType(front->typeInfo);
+    if (frontType->kind == TypeInfoKind::Struct)
     {
         if (op->deducedLambdaType)
             typeLambda = op->deducedLambdaType;
@@ -622,8 +623,8 @@ bool SemanticJob::deduceLambdaTypeAffect(SemanticContext* context, AstVarDecl* n
     }
     else
     {
-        SWAG_ASSERT(front->typeInfo->kind == TypeInfoKind::Lambda);
-        typeLambda = CastTypeInfo<TypeInfoFuncAttr>(front->typeInfo, TypeInfoKind::Lambda);
+        SWAG_ASSERT(frontType->kind == TypeInfoKind::Lambda);
+        typeLambda = CastTypeInfo<TypeInfoFuncAttr>(frontType, TypeInfoKind::Lambda);
     }
 
     auto paramIdx = node->childParentIdx;
