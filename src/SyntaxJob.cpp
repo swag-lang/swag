@@ -174,8 +174,15 @@ bool SyntaxJob::eatSemiCol(const char* msg)
         if (!msg)
             msg = "";
 
-        PushErrHint errh(Hnt(Hnt0013));
-        SWAG_CHECK(error(token, Fmt(Err(Err0331), token.ctext(), msg)));
+        if (Tokenizer::isSymbol(token.id))
+        {
+            SWAG_CHECK(error(token, Fmt(Err(Err0837), token.ctext(), msg)));
+        }
+        else
+        {
+            PushErrHint errh(Hnt(Hnt0013));
+            SWAG_CHECK(error(token, Fmt(Err(Err0331), token.ctext(), msg)));
+        }
     }
 
     if (token.id == TokenId::SymSemiColon)
