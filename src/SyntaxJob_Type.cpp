@@ -236,8 +236,7 @@ bool SyntaxJob::convertExpressionListToTuple(AstNode* parent, AstNode** result, 
                {
                    n->inheritOwners(structNode);
                    n->ownerStructScope = newScope;
-                   n->ownerScope       = newScope;
-               });
+                   n->ownerScope       = newScope; });
 
     return true;
 }
@@ -465,6 +464,26 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
     else if (token.id == TokenId::SymLeftCurly)
     {
         SWAG_CHECK(convertExpressionListToTuple(node, &node->identifier, isConst, false, false));
+        return true;
+    }
+    else if (token.id == TokenId::KwdFunc || token.id == TokenId::KwdClosure)
+    {
+        // We generate a type alias, and make a reference to that type
+        auto alias = Ast::newNode<AstAlias>(this, AstNodeKind::Alias, sourceFile, parent);
+        alias->flags |= AST_PRIVATE | AST_GENERATED;
+        alias->semanticFct = SemanticJob::resolveUsing;
+        Utf8 name          = sourceFile->scopeFile->name + "_alias_";
+        name += Fmt("%d", g_UniqueID.fetch_add(1));
+        alias->token.text = move(name);
+        alias->allocateExtension();
+        alias->extension->semanticBeforeFct = SemanticJob::resolveTypeAliasBefore;
+        alias->semanticFct                  = SemanticJob::resolveTypeAlias;
+        alias->resolvedSymbolName           = currentScope->symTable.registerSymbolName(&context, alias, SymbolKind::TypeAlias);
+        node->identifier                    = Ast::newIdentifierRef(sourceFile, alias->token.text, node, this);
+        SWAG_CHECK(doTypeExpressionLambdaClosure(alias));
+
+        node->identifier->allocateExtension();
+        node->identifier->extension->exportNode = alias->childs.front();
         return true;
     }
 

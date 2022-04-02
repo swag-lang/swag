@@ -767,29 +767,34 @@ bool AstOutput::outputType(OutputContext& context, Concat& concat, AstTypeExpres
 
     if (node->typeInfo)
     {
-        SWAG_CHECK(outputType(context, concat, node, node->typeInfo));
-
-        if (node->identifier)
+        // Identifier can have an export node, so in that case we need to export by node, not by type, in
+        // order to export the real node (for example for an array of lambdas/closures)
+        if (!node->identifier || !node->identifier->extension || !node->identifier->extension->exportNode)
         {
-            auto id = CastAst<AstIdentifier>(node->identifier->childs.back(), AstNodeKind::Identifier);
-            if (id->callParameters)
+            SWAG_CHECK(outputType(context, concat, node, node->typeInfo));
+
+            if (node->identifier)
             {
-                if (id->flags & AST_GENERATED)
+                auto id = CastAst<AstIdentifier>(node->identifier->childs.back(), AstNodeKind::Identifier);
+                if (id->callParameters)
                 {
-                    CONCAT_FIXED_STR(concat, " = @{");
-                    SWAG_CHECK(outputNode(context, concat, id->callParameters));
-                    concat.addChar('}');
-                }
-                else
-                {
-                    concat.addChar('{');
-                    SWAG_CHECK(outputNode(context, concat, id->callParameters));
-                    concat.addChar('}');
+                    if (id->flags & AST_GENERATED)
+                    {
+                        CONCAT_FIXED_STR(concat, " = @{");
+                        SWAG_CHECK(outputNode(context, concat, id->callParameters));
+                        concat.addChar('}');
+                    }
+                    else
+                    {
+                        concat.addChar('{');
+                        SWAG_CHECK(outputNode(context, concat, id->callParameters));
+                        concat.addChar('}');
+                    }
                 }
             }
-        }
 
-        return true;
+            return true;
+        }
     }
 
     if (node->typeFlags & TYPEFLAG_ISCONST)
