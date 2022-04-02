@@ -1250,6 +1250,15 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     {
         typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
     }
+
+    // :SilentCall
+    else if (varNode->typeInfo->kind == TypeInfoKind::Array)
+    {
+        auto typeArr = CastTypeInfo<TypeInfoArray>(varNode->typeInfo, TypeInfoKind::Array);
+        auto typeVar = TypeManager::concreteType(typeArr->finalType, CONCRETE_ALIAS);
+        typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(typeVar, TypeInfoKind::Lambda);
+    }
+
     else
     {
         auto typeVar = TypeManager::concreteType(varNode->typeInfo, CONCRETE_ALIAS);

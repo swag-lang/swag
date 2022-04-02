@@ -131,6 +131,18 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
             Ast::removeFromParent(identifier);
             SWAG_CHECK(doArrayPointerIndex((AstNode**) &identifier));
             Ast::addChildBack(parent, identifier);
+
+            if (!token.lastTokenIsEOL && !(identifierFlags & IDENTIFIER_NO_FCT_PARAMS) && token.id == TokenId::SymLeftParen)
+            {
+                identifier->flags |= AST_NO_BYTECODE;
+                SWAG_CHECK(eatToken(TokenId::SymLeftParen));
+                identifier = Ast::newNode<AstIdentifier>(this, AstNodeKind::Identifier, sourceFile, parent);
+                identifier->inheritTokenLocation(token);
+                identifier->token.text    = ""; // :SilentCall
+                identifier->semanticFct   = SemanticJob::resolveIdentifier;
+                identifier->identifierRef = CastAst<AstIdentifierRef>(parent, AstNodeKind::IdentifierRef);
+                SWAG_CHECK(doFuncCallParameters(identifier, &identifier->callParameters, TokenId::SymRightParen));
+            }
         }
     }
 

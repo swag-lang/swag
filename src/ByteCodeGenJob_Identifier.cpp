@@ -311,8 +311,8 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     if (resolved->flags & OVERLOAD_VAR_LOCAL)
     {
         SWAG_CHECK(sameStackFrame(context, resolved));
-        node->resultRegisterRC = reserveRegisterRC(context);
 
+        node->resultRegisterRC = reserveRegisterRC(context);
         if (resolved->typeInfo->kind == TypeInfoKind::Reference)
         {
             if (node->forceTakeAddress())
@@ -387,6 +387,12 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             }
 
             inst->b.u64 = resolved->computedValue.storageOffset;
+        }
+
+        // :SilentCall
+        if (node->token.text.empty())
+        {
+            emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
         }
 
         identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;

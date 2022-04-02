@@ -616,6 +616,10 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
 
 static bool isStatementIdentifier(AstIdentifier* identifier)
 {
+    // :SilentCall
+    if (identifier->token.text.empty())
+        return false;
+
     auto checkParent = identifier->identifierRef->parent;
     if (checkParent->kind == AstNodeKind::Try || checkParent->kind == AstNodeKind::Catch || checkParent->kind == AstNodeKind::Assume)
         checkParent = checkParent->parent;
@@ -651,6 +655,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         overload->typeInfo->kind != TypeInfoKind::Lambda &&
         !parent->startScope &&
         parent->previousResolvedNode &&
+        !identifier->token.text.empty() && // :SilentCall
         parent->previousResolvedNode->typeInfo->kind != TypeInfoKind::Pointer &&
         parent->previousResolvedNode->typeInfo->kind != TypeInfoKind::Struct)
     {
@@ -1503,6 +1508,13 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         else if (rawTypeInfo->kind == TypeInfoKind::Generic)
         {
             oneOverload.symMatchContext.result = MatchResult::Ok;
+        }
+        else if (rawTypeInfo->kind == TypeInfoKind::Array)
+        {
+            auto typeArr   = CastTypeInfo<TypeInfoArray>(rawTypeInfo, TypeInfoKind::Array);
+            auto typeFinal = TypeManager::concreteReferenceType(typeArr->finalType);
+            auto typeInfo  = CastTypeInfo<TypeInfoFuncAttr>(typeFinal, TypeInfoKind::Lambda);
+            typeInfo->match(oneOverload.symMatchContext);
         }
         else
         {
@@ -2679,6 +2691,7 @@ bool SemanticJob::fillMatchContextCallParameters(SemanticContext* context, Symbo
             symbolKind != SymbolKind::Struct &&
             symbolKind != SymbolKind::Interface &&
             symbolKind != SymbolKind::TypeAlias &&
+            !node->token.text.empty() && // :SilentCall
             symbol->overloads[0]->typeInfo->kind != TypeInfoKind::Generic &&
             TypeManager::concreteType(symbol->overloads[0]->typeInfo, CONCRETE_ALIAS)->kind != TypeInfoKind::Lambda)
         {
@@ -3404,9 +3417,19 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
 
     if (dependentSymbols.empty())
     {
-        SWAG_CHECK(findIdentifierInScopes(context, identifierRef, node));
-        if (context->result == ContextResult::Pending)
-            return true;
+        // :SilentCall
+        if (node->token.text.empty())
+        {
+            OneSymbolMatch sm = {0};
+            sm.symbol         = identifierRef->resolvedSymbolName;
+            dependentSymbols.push_back(sm);
+        }
+        else
+        {
+            SWAG_CHECK(findIdentifierInScopes(context, identifierRef, node));
+            if (context->result == ContextResult::Pending)
+                return true;
+        }
 
         // Because of #self
         if (node->semFlags & AST_SEM_FORCE_SCOPE)
@@ -3615,7 +3638,12 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
         }
     }
 
-    node->typeInfo = match->symbolOverload->typeInfo;
+    // :SilentCall
+    if (node->token.text.empty())
+        node->typeInfo = identifierRef->typeInfo;
+    else
+        node->typeInfo = match->symbolOverload->typeInfo;
+
     SWAG_CHECK(setSymbolMatch(context, identifierRef, node, *match));
     return true;
 }
