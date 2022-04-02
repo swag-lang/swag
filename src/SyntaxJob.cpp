@@ -418,6 +418,8 @@ JobResult SyntaxJob::execute()
         return JobResult::KeepJobAlive;
     }
 
+    sourceFile->duringSyntax = true;
+
     Timer timer(&g_Stats.syntaxTime);
     bool  ok = eatToken();
     while (true)
@@ -440,5 +442,6 @@ JobResult SyntaxJob::execute()
             ok = doTopLevelInstruction(sourceFile->astRoot);
     }
 
+    sourceFile->duringSyntax = false;
     return JobResult::ReleaseJob;
 }

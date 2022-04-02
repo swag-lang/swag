@@ -68,8 +68,9 @@ struct SourceFile
     long bufferSize      = 0;
     long allocBufferSize = 0;
 
-    bool fromTests   = false;
-    bool isCfgFile   = false;
-    bool isGenerated = false;
-    bool forceExport = false;
+    bool fromTests    = false;
+    bool isCfgFile    = false;
+    bool isGenerated  = false;
+    bool forceExport  = false;
+    bool duringSyntax = false;
 };

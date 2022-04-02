@@ -67,7 +67,10 @@ void Diagnostic::report(bool verboseMode) const
         if (g_CommandLine->errorSourceOut)
             g_Log.eol();
         g_Log.setColor(errorColor);
-        g_Log.print("error: ");
+        if (sourceFile && sourceFile->duringSyntax)
+            g_Log.print("syntax error: ");
+        else
+            g_Log.print("error: ");
         break;
     case DiagnosticLevel::Warning:
         if (g_CommandLine->errorSourceOut)
