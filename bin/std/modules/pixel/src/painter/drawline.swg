@@ -9,7 +9,7 @@ impl Painter
         drawLine(start.x, start.y, end.x, end.y, pen)
     }
 
-    func drawLine(using self, startX, startY, endX, endY: f32, color: Color, penSize: f32)
+    func drawLine(using self, startX, startY, endX, endY: f32, color: Color, penSize: f32 = 1)
     {
         if (startX == endX and startY == endY) or color.a == 0 or penSize == 0
             return

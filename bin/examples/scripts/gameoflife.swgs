@@ -14,6 +14,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 {
     leftPressed  := wnd.getApp().mouse.isButtonPressed(.Left)
     rightPressed := wnd.getApp().mouse.isButtonPressed(.Right)
+    cellSize    := Math.min(wnd.position.width, wnd.position.height) / GridSize
 
     switch evt.kind
     {
@@ -22,7 +23,6 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         {
             mouseEvt := cast(*MouseEvent) evt
             pos      := wnd.surfaceToLocal(mouseEvt.surfacePos)
-            cellSize := wnd.position.height / GridSize
 
             x := cast(s32) (pos.x / cellSize)
             y := cast(s32) (pos.y / cellSize)
@@ -81,16 +81,14 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
             g_CurGen = nextGen
         }
 
-        cellSize := wnd.position.height / GridSize
-
         // Paint grid
         painter.clear(Argb.White)
         loop i: 1..GridSize-2
         {
             x := i * cellSize
-            w := wnd.position.height - (2 * cellSize)
-            painter.drawRect(cellSize, x, w, cellSize, Argb.Black, 1)
-            painter.drawRect(x, cellSize, cellSize, w, Argb.Black, 1)
+            w := Math.min(wnd.position.width, wnd.position.height) - (2 * cellSize)
+            painter.drawRect(cellSize, x, w, cellSize, Argb.Black)
+            painter.drawRect(x, cellSize, cellSize, w, Argb.Black)
         }
 
         // Paint generation

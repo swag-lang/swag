@@ -4,7 +4,7 @@ using Core, Core.Math
 impl Painter
 {
     // Draw an empty circle
-    func drawCircle(using self, centerX, centerY: f32, radius: f32, color: Color, penSize: f32)
+    func drawCircle(using self, centerX, centerY: f32, radius: f32, color: Color, penSize: f32 = 1)
     {
         if radius == 0 or color.a == 0
             return
@@ -42,7 +42,7 @@ impl Painter
     }
 
     // Draw an empty ellipse
-    func drawEllipse(using self, centerX, centerY: f32, radiusX, radiusY: f32, color: Color, penSize: f32)
+    func drawEllipse(using self, centerX, centerY: f32, radiusX, radiusY: f32, color: Color, penSize: f32 = 1)
     {
         if radiusX == 0 or radiusY == 0 or color.a == 0 or penSize == 0
             return

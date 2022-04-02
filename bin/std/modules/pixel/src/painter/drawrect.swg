@@ -4,7 +4,7 @@ using Core.Math
 impl Painter
 {
     // Draw an empty rectangle
-    func drawRect(using self, left, top, width, height: f32, color: Color, penSize: f32)
+    func drawRect(using self, left, top, width, height: f32, color: Color, penSize: f32 = 1)
     {
         if width == 0 or height == 0 or color.a == 0 or penSize == 0
             return
@@ -14,7 +14,7 @@ impl Painter
         drawRect(left, top, width, height, sharedSolidPen)
     }
 
-    func drawRect(using self, rect: Math.Rectangle, color: Color, penSize: f32)
+    func drawRect(using self, rect: Math.Rectangle, color: Color, penSize: f32 = 1)
     {
         drawRect(rect.x, rect.y, rect.width, rect.height, color, penSize)
     }
@@ -61,7 +61,7 @@ impl Painter
     }
 
     // Draw an empty round rectangle
-    func drawRoundRect(using self, left, top, width, height: f32, radiusX, radiusY: f32, color: Color, penSize: f32)
+    func drawRoundRect(using self, left, top, width, height: f32, radiusX, radiusY: f32, color: Color, penSize: f32 = 1)
     {
         if width == 0 or height == 0 or color.a == 0 or penSize == 0
             return
