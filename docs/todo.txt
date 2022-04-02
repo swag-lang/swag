@@ -60,6 +60,8 @@ TODO
 ****************************************
 
 -------------------------------------
+3552 random bug
+-------------------------------------
 erreur si opDrop est privé et la struct publique (on doit exporter)
 -------------------------------------
 on doit exporter les implementation d'interface pour un truc public ?
