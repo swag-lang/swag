@@ -336,9 +336,10 @@ impl ColorPickerView
     }
 
     // Returns the selected color
+    #[Swag.Inline]
     mtd getColor()->Color
     {
-        return self.color
+        return color
     }
 
     // Set the selected color
@@ -349,7 +350,7 @@ impl ColorPickerView
 
         if !oldColorDone
         {
-            self.oldColor = #self.color
+            oldColor = #self.color
             oldColorDone = true
         }
 
