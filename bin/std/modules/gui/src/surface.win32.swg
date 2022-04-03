@@ -148,6 +148,71 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
     return DefWindowProcW(hWnd, msg, wParam, lParam)
 }
 
+private impl Surface
+{
+    mtd setFocus()
+    {
+        SetFocus(hWnd)
+    }
+
+    // Creates a new (invisible) surface
+    func createNative(app: *Application, result: *Surface, x, y, width, height: s32, flags: SurfaceFlags, mainSurface: *Surface) throw
+    {
+        // Create class
+        #[Swag.Global]
+        var doneClass: bool
+        className := @dataof(Utf16.toZeroTerminated("Swag.Gui.Surface"))
+        if !doneClass
+        {
+            doneClass = true
+
+            var wc: WNDCLASSW
+            wc.hInstance     = GetModuleHandleW(null)
+            wc.cbWndExtra    = @sizeof(*void);
+            wc.style         = CS_OWNDC | CS_DBLCLKS | CS_HREDRAW | CS_VREDRAW
+            wc.lpfnWndProc   = acast @mkcallback(&winProc)
+            wc.hCursor       = LoadCursorA(null, MAKEINTRESOURCEA(IDC_ARROW))
+            wc.lpszClassName = className
+            try RegisterClassW(wc)
+        }
+
+        winFlags := 0'u32
+        winFlags |= WS_POPUP | WS_CLIPCHILDREN
+
+        winFlagsEx := 0'u32
+        if flags & .Secondary
+            winFlagsEx |= WS_EX_TOOLWINDOW
+
+        // Create window
+        result.hWnd = cast(const *void) CreateWindowExW(
+            winFlagsEx,
+            className,
+            null,
+            winFlags,
+            x,
+            y,
+            width,
+            height,
+            null,
+            null,
+            GetModuleHandleW(null),
+            result
+        )
+
+        // Extend frame inside client area. This will also activate composition.
+        var vm: s32 = cast(s32) app.theme.metrics.surfaceWnd_ShadowSize
+        var m:  MARGINS = @{vm,vm,vm,vm}
+        DwmExtendFrameIntoClientArea(result.hWnd, &m)
+
+        result.rc = try app.renderer.native.createContext(result.hWnd, width, height, mainSurface ? mainSurface.rc.hRC : null)
+    }
+
+    mtd destroyNative()
+    {
+        catch DestroyWindow(hWnd)
+    }
+}
+
 impl Surface
 {
     // Set the surface position
@@ -252,62 +317,5 @@ impl Surface
         ClientToScreen(hWnd, &wpt)
         pt.x = wpt.x
         pt.y = wpt.y
-    }
-
-    // Creates a new (invisible) surface
-    private func createNative(app: *Application, result: *Surface, x, y, width, height: s32, flags: SurfaceFlags, mainSurface: *Surface) throw
-    {
-        // Create class
-        #[Swag.Global]
-        var doneClass: bool
-        className := @dataof(Utf16.toZeroTerminated("Swag.Gui.Surface"))
-        if !doneClass
-        {
-            doneClass = true
-
-            var wc: WNDCLASSW
-            wc.hInstance     = GetModuleHandleW(null)
-            wc.cbWndExtra    = @sizeof(*void);
-            wc.style         = CS_OWNDC | CS_DBLCLKS | CS_HREDRAW | CS_VREDRAW
-            wc.lpfnWndProc   = acast @mkcallback(&winProc)
-            wc.hCursor       = LoadCursorA(null, MAKEINTRESOURCEA(IDC_ARROW))
-            wc.lpszClassName = className
-            try RegisterClassW(wc)
-        }
-
-        winFlags := 0'u32
-        winFlags |= WS_POPUP | WS_CLIPCHILDREN
-
-        winFlagsEx := 0'u32
-        if flags & .Secondary
-            winFlagsEx |= WS_EX_TOOLWINDOW
-
-        // Create window
-        result.hWnd = cast(const *void) CreateWindowExW(
-            winFlagsEx,
-            className,
-            null,
-            winFlags,
-            x,
-            y,
-            width,
-            height,
-            null,
-            null,
-            GetModuleHandleW(null),
-            result
-        )
-
-        // Extend frame inside client area. This will also activate composition.
-        var vm: s32 = cast(s32) app.theme.metrics.surfaceWnd_ShadowSize
-        var m:  MARGINS = @{vm,vm,vm,vm}
-        DwmExtendFrameIntoClientArea(result.hWnd, &m)
-
-        result.rc = try app.renderer.native.createContext(result.hWnd, width, height, mainSurface ? mainSurface.rc.hRC : null)
-    }
-
-    private mtd destroyNative()
-    {
-        catch DestroyWindow(hWnd)
     }
 }

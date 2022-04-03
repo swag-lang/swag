@@ -400,7 +400,11 @@ private impl Application
             s.enable()
 
         if modalSurfaces.count
-            modalSurfaces.back().enable()
+        {
+            back := modalSurfaces.back()
+            back.enable()
+            back.wnd.view.setFocus()
+        }
 
         endModal = false
         return endModalExit
@@ -569,7 +573,7 @@ impl Application
     }
 
     // End current modal loop
-    mtd exitModal(exitId: string)
+    mtd exitModal(exitId: string = "")
     {
         endModal = true
         endModalExit = exitId

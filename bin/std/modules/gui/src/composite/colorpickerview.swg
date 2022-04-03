@@ -149,11 +149,11 @@ impl ColorPickerView
                 app.pushCursor(Cursor.from(.Cross))
 
                 save := v.getColor()
-                discard cb.surface.app.doModalLoop(null, @|v,save|(app) {
+                discard app.doModalLoop(null, @|v,save|(app) {
                     if app.mouse.isButtonPressed(.Right)
                     {
                         v.setColor(save)
-                        app.exitModal("")
+                        app.exitModal()
                         return
                     }
 
@@ -161,7 +161,7 @@ impl ColorPickerView
                     v.setColor(col)
 
                     if app.mouse.isButtonPressed(.Left)
-                        app.exitModal("")
+                        app.exitModal()
                 })
 
                 app.popCursor()

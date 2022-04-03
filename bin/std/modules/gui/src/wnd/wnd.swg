@@ -728,6 +728,7 @@ impl Wnd
             surface.app.keybFocusWnd.invalidate()
         }
 
+        surface.setFocus()
         evt := FocusEvent{kind: EventKind.SetFocus}
         evt.other = surface.app.keybFocusWnd
         surface.app.keybFocusWnd = self
