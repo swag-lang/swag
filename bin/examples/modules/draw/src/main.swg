@@ -578,8 +578,8 @@ impl IWnd for MyView
     mtd onPaintEvent(event: *PaintEvent)
     {
         painter := event.bc.painter
-        painter.paintParams = g_ModeAA ? .Antialiased : .Default
-        painter.paintQuality = g_PaintQuality
+        painter.setParams(g_ModeAA ? .Antialiased : .Default)
+        painter.setQuality(g_PaintQuality)
 
         painter.clear(Color.fromArgb(0xFFEEEEEE))
 
@@ -639,7 +639,7 @@ impl IWnd for MyView
     var app: Gui.Application
 
     view := Wnd.create'MyView()
-    surface := try app.createSurface(100, 100, W, H, flags: .Zero, view: view)
+    surface := try app.createSurface(100, 100, W, H, view: view)
 
     assume
     {

@@ -299,7 +299,8 @@ impl Wnd
 
     mtd paint(bc: *PaintContext)
     {
-        if bc.painter.isEmptyClippingRect()
+        painter := bc.painter
+        if painter.isEmptyClippingRect()
             return
 
         // Recompute style if necessary
@@ -315,15 +316,15 @@ impl Wnd
         switch backgroundStyle
         {
         case Window:
-            bc.painter.fillRect(position, theme.colors.wnd_Bk)
+            painter.fillRect(position, theme.colors.wnd_Bk)
         case Dialog:
-            bc.painter.fillRect(position, theme.colors.dlg_Bk)
+            painter.fillRect(position, theme.colors.dlg_Bk)
         case DialogBar:
             theme.drawSubRect(bc.painter, position, &theme.rects.dlg_BtnBar, theme.colors.dlg_BtnBarBk)
         }
 
-        bc.painter.translateTransform(position.x, position.y)
-        curTrs := bc.painter.getTransform()
+        painter.translateTransform(position.x, position.y)
+        curTrs := painter.getTransform()
         evt := PaintEvent{}
         evt.bc = bc
 
@@ -331,46 +332,52 @@ impl Wnd
         if wndFlags & .PreChildsPaint
         {
             evt.kind = .PrePaint
+            painter.pushState()
             sendEvent(&evt)
+            painter.popState()
         }
 
         // Clipping
         if wndFlags & .ClipChildren
-            bc.painter.pushClippingRect(getClientRect())
+            painter.pushClippingRect(getClientRect())
 
         // Maint
         if !(wndFlags & .NoScroll)
-            bc.painter.translateTransform(-scrollPos.x, -scrollPos.y)
+            painter.translateTransform(-scrollPos.x, -scrollPos.y)
         evt.kind = .Paint
+        painter.pushState()
         sendEvent(&evt)
-        bc.painter.setTransform(curTrs)
+        painter.popState()
+        painter.setTransform(curTrs)
 
         // Childs
-        if !bc.painter.isEmptyClippingRect()
+        if !painter.isEmptyClippingRect()
         {
             visit c: childs
             {
                 if c.wndFlags & .Hidden
                     continue
 
-                curState := bc.painter.curState
+                painter.pushState()
                 if !(c.wndFlags & .NoScroll)
-                    bc.painter.translateTransform(-scrollPos.x, -scrollPos.y)
+                    painter.translateTransform(-scrollPos.x, -scrollPos.y)
                 c.paint(bc)
-                bc.painter.setState(curState)
+                painter.popState()
             }
         }
 
         // Restore clipping
         if wndFlags & .ClipChildren
-            bc.painter.popClippingRect()
+            painter.popClippingRect()
 
         // Post paint. Clipping is parent. No scroll
         if wndFlags & .PostChildsPaint
         {
-            bc.painter.setTransform(curTrs)
+            painter.setTransform(curTrs)
             evt.kind = .PostPaint
+            painter.pushState()
             sendEvent(&evt)
+            painter.popState()
         }
 
         bc.isDisabled = lastDisabled

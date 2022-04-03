@@ -36,9 +36,9 @@ enum CommandId
 #[Swag.EnumFlags]
 enum PaintParams
 {
-    Normal
+    Zero
     Antialiased
-    Default = Normal
+    Default = Zero
 }
 
 enum PaintQuality
@@ -62,6 +62,15 @@ enum BlendingMode
     SubDst
     Min
     Max
+}
+
+struct PaintState
+{
+    paintParams:        PaintParams = Default
+    paintQuality:       PaintQuality = Normal
+    transform:          Transform2
+    blendingMode:       BlendingMode = Alpha
+    interpolationMode:  InterpolationMode = Pixel
 }
 
 struct Command
@@ -92,13 +101,6 @@ struct Command
     }
 }
 
-struct PaintState
-{
-    transform:          Transform2
-    blendingMode:       BlendingMode = Alpha
-    interpolationMode:  InterpolationMode = Pixel
-}
-
 struct Painter
 {
     commandBuffer:      Array'Command
@@ -111,8 +113,7 @@ struct Painter
     sharedLinePath:     LinePath
 
     curState:           PaintState
-    paintParams:        PaintParams = Default
-    paintQuality:       PaintQuality = Normal
+    stackState:         Array'PaintState
     lastTexture0Type:   BrushType = SolidColor
 
     clippingRect:       Rectangle
@@ -376,6 +377,8 @@ impl Painter
     // Reset the current painting state
     mtd resetState()
     {
+        curState.paintParams = .Default
+        curState.paintQuality = .Normal
         curState.transform.setIdentity()
         curState.interpolationMode = .Pixel
         curState.blendingMode = .Alpha
@@ -389,6 +392,37 @@ impl Painter
         curState = state
         setTransform(curState.transform)
         setBlendingMode(curState.blendingMode)
+    }
+
+    // Save the current paint state
+    mtd pushState()
+    {
+        stackState.add(curState)
+    }
+
+    // Restore the last paint state
+    mtd popState()
+    {
+        state := stackState.popBack()
+        setState(state)
+    }
+
+    // Set the paint parameters
+    mtd setParams(add: PaintParams, remove: PaintParams = .Zero)
+    {
+        curState.paintParams |= add
+        curState.paintParams &= ~remove
+    }
+
+    #[Swag.Inline]
+    mtd getParams()  => curState.paintParams
+    #[Swag.Inline]
+    mtd getQuality() => curState.paintQuality
+
+    // Set the paint quality
+    mtd setQuality(quality: PaintQuality)
+    {
+        curState.paintQuality = quality
     }
 
     // Set the paint position

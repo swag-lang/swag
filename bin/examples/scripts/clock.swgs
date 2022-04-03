@@ -1,0 +1,30 @@
+#dependencies
+{
+    #import "gui" location="swag@std"
+}
+
+using Core, Gui, Pixel
+
+func onEvent(wnd: *Wnd, evt: *Event)->bool
+{
+    switch evt.kind
+    {
+    case Paint:
+        paintEvt := cast(*PaintEvent) evt
+        painter  := paintEvt.bc.painter
+
+        centerX := wnd.position.width * 0.5
+        centerY := wnd.position.width * 0.5
+
+        painter.setParams(.Antialiased)
+        painter.drawCircle(centerX, centerY, 150, Argb.Red, 8)
+    }
+
+    return false
+}
+
+#run
+{
+    var app: Application
+    try app.runSurface(100, 100, 512, 512, title: "Clock", hook: &onEvent)
+}

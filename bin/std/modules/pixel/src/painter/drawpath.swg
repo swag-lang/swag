@@ -45,7 +45,7 @@ impl Painter
         prim1 := pushTriangle(v0, v1, v3, pen.brush.color)
         prim2 := pushTriangle(v1, v3, v2, pen.brush.color)
 
-        if paintParams & .Antialiased
+        if curState.paintParams & .Antialiased
         {
             addEdgeAA(prim1, v0, v3)
             addEdgeAA(prim1, v1, v2)
@@ -63,7 +63,7 @@ impl Painter
         v2 := Vector2{p.x + n.x, p.y + n.y}
         prim1 := pushTriangle(v0, v1, v2, pen.brush.color)
 
-        if paintParams & .Antialiased
+        if curState.paintParams & .Antialiased
         {
             addEdgeAA(prim1, v1, v2)
             addEdgeAA(prim1, v0, v2)
@@ -91,7 +91,7 @@ impl Painter
         prim1 := pushTriangle(v0, v1, v3, pen.brush.color)
         prim2 := pushTriangle(v1, v3, v2, pen.brush.color)
 
-        if paintParams & .Antialiased
+        if curState.paintParams & .Antialiased
         {
             addEdgeAA(prim1, v0, v3)
             addEdgeAA(prim1, v1, v2)
@@ -122,7 +122,7 @@ impl Painter
         v2 := Vector2{p.x + n.x, p.y + n.y}
         prim1 := pushTriangle(v0, v1, v2, pen.brush.color)
 
-        if paintParams & .Antialiased
+        if curState.paintParams & .Antialiased
         {
             addEdgeAA(prim1, v1, v2)
             addEdgeAA(prim1, v0, v2)
@@ -195,7 +195,7 @@ impl Painter
         }
 
         prim1 := pushTriangle(v0, v1, v2, pen.brush.color)
-        if paintParams & .Antialiased
+        if curState.paintParams & .Antialiased
             addEdgeAA(prim1, v1, v2)
     }
 
@@ -207,7 +207,7 @@ impl Painter
         endPos.x = center.x + (Math.cos(angle1) * radius)
         endPos.y = center.y + (Math.sin(angle1) * radius)
 
-        minDist := LinePath.getFlattenDistance(paintQuality)
+        minDist := LinePath.getFlattenDistance(curState.paintQuality)
 
         // We divide a segment by half until the computed point on the curve is close to the corresponding segment
         var tmp: Array'{factor: f32, pos: Vector2}
@@ -234,7 +234,7 @@ impl Painter
         {
             v2 := tmp[i].pos
             prim1 := pushTriangle(center, v1, v2, pen.brush.color)
-            if paintParams & .Antialiased
+            if curState.paintParams & .Antialiased
                 addEdgeAA(prim1, v1, v2)
             v1 = v2
         }
@@ -312,7 +312,7 @@ impl Painter
 
         prim1 := pushTriangle(v0, v1, v3, pen.brush.color)
         prim2 := pushTriangle(v1, v3, v2, pen.brush.color)
-        if paintParams & .Antialiased
+        if curState.paintParams & .Antialiased
         {
             addEdgeAA(prim1, v3, v2)
             addEdgeAA(prim1, v1, v2)
@@ -344,7 +344,7 @@ impl Painter
             drawDashCap(cxt, pen.dashEndCapStyle, posCap, normalCap, -1.0)
 
         // AA end edge if no cap
-        elif paintParams & .Antialiased
+        elif curState.paintParams & .Antialiased
         {
             prim2p := vertexBuffer.buffer + prim2
             prim2t := prim2p + 2
@@ -409,7 +409,7 @@ impl Painter
         prim2 = pushTriangle(v1, v3, v2, pen.brush.color)
 
         // Generate AA edges
-        if paintParams & .Antialiased
+        if curState.paintParams & .Antialiased
         {
             addEdgeAA(prim1, v0, v1)
             addEdgeAA(prim1, v3, v2)
@@ -586,7 +586,7 @@ impl Painter
 
         // AA will reduce visually the size. Compensate
         penSize = pen.size
-        if paintParams & .Antialiased
+        if curState.paintParams & .Antialiased
             penSize += 0.5
 
         cxt.offsetPath = pen.plotOffset
@@ -612,7 +612,7 @@ impl Painter
         }
 
         // AA end edge if no end cap
-        if !lastLineInvalid and !path.isClosed and (paintParams & .Antialiased) and (pen.endCapStyle == .None)
+        if !lastLineInvalid and !path.isClosed and (curState.paintParams & .Antialiased) and (pen.endCapStyle == .None)
         {
             prim2p := vertexBuffer.buffer + prim2
             prim2t := prim2p + 2
@@ -741,7 +741,7 @@ impl Painter
             v2 := Vector2{cast(f32) tri.points[2].x, cast(f32) tri.points[2].y}
             prim := pushTriangle(v0, v1, v2, brush.color)
 
-            if paintParams & .Antialiased
+            if curState.paintParams & .Antialiased
             {
                 mtd addAA(prim: uint, tri: const *Poly2Tri.Triangle)
                 {
@@ -786,7 +786,7 @@ public impl Painter
     // Draw the line path with the given 'pen'
     mtd drawPath(path: *LinePath, pen: Pen)
     {
-        path.flatten(paintQuality)
+        path.flatten(curState.paintQuality)
         if Math.isZeroEpsilon(path.polygon.totalLen)
             return
 
@@ -818,7 +818,7 @@ public impl Painter
             return
         }
 
-        pathList.flatten(paintQuality)
+        pathList.flatten(curState.paintQuality)
 
         bvMin := pathList.bvMin
         bvMax := pathList.bvMax
@@ -862,12 +862,12 @@ public impl Painter
     // Fill the line path with the given 'brush'
     mtd fillPath(path: *LinePath, brush: Brush)
     {
-        path.flatten(paintQuality)
+        path.flatten(curState.paintQuality)
         if Math.isZeroEpsilon(path.polygon.totalLen)
             return
 
         // Add a little offset in case of AA
-        offsetPath := paintParams & .Antialiased ? 0.25 : 0
+        offsetPath := curState.paintParams & .Antialiased ? 0.25 : 0
 
         // Setup texture
         setTexture0(path.bvMin, path.bvMax, brush)
@@ -886,7 +886,7 @@ public impl Painter
                 v1 := polygon.getPoint((i + 1) % count, offsetPath)
                 prim := pushTriangle(center, v0, v1, brush.color)
 
-                if paintParams & .Antialiased
+                if curState.paintParams & .Antialiased
                 {
                     v2 := polygon.getPoint((i + 2) % count, offsetPath)
                     vp := polygon.getPoint((i + count - 1) % count, offsetPath)
@@ -915,7 +915,7 @@ public impl Painter
 
             // Generate all AA edges : for each vertex of the triangle, add the previous and
             // next edge (even if not in the triangle)
-            if paintParams & .Antialiased
+            if curState.paintParams & .Antialiased
             {
                 cpt := cast(s32) path.polygon.points.count - 1
                 psrc := result.buffer
@@ -968,10 +968,10 @@ public impl Painter
     mtd fillPath(pathList: *LinePathList, brush: Brush)
     {
         // Add a little offset in case of AA
-        offsetPath := paintParams & .Antialiased ? 0.25 : 0
+        offsetPath := curState.paintParams & .Antialiased ? 0.25 : 0
 
         // Flatten all paths
-        pathList.flatten(paintQuality)
+        pathList.flatten(curState.paintQuality)
 
         var t: Poly2Tri.Tesselate
         serial := 0
