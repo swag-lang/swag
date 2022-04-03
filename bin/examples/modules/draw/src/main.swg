@@ -19,7 +19,7 @@ namespace Res
 var g_ModeAA:       bool = true
 var g_PaintQuality: PaintQuality = Normal
 var g_Pattern:      bool = true
-var g_Page:         s32 = 5
+var g_Page:         s32 = 0
 var g_Angle:        f32 = 0
 const MaxPages = 7
 
@@ -45,9 +45,11 @@ func displayPage0(painter: *Pixel.Painter)
     if g_Pattern
         pen.dashStyle = .Dot
 
+    trs := painter.getTransform()
+
     //////////////////////////////////////
     {
-        painter.resetTransform()
+        painter.setTransform(trs)
         painter.translateTransform(50, 50)
         pen.brush.color = Argb.Black
         pen.beginCapStyle = .None
@@ -80,7 +82,7 @@ func displayPage0(painter: *Pixel.Painter)
 
     pen.dashBeginCapStyle = .Round
     pen.dashEndCapStyle = .Round
-    painter.resetTransform()
+    painter.setTransform(trs)
     painter.translateTransform(50, 250)
     pen.brush.color = Argb.Blue
     pen.joinStyle = .None
@@ -99,17 +101,17 @@ func displayPage0(painter: *Pixel.Painter)
     path.lineTo(200, 50)
     pen.joinStyle = .Miter
 
-    painter.resetTransform()
+    painter.setTransform(trs)
     painter.translateTransform(50, 400)
     painter.drawPath(&path, pen)
     pen.joinStyle = .Bevel
 
-    painter.resetTransform()
+    painter.setTransform(trs)
     painter.translateTransform(250, 400)
     painter.drawPath(&path, pen)
     pen.joinStyle = .Round
 
-    painter.resetTransform()
+    painter.setTransform(trs)
     painter.translateTransform(450, 400)
     painter.drawPath(&path, pen)
 
@@ -121,13 +123,13 @@ func displayPage0(painter: *Pixel.Painter)
     pen.beginCapStyle = .Round
     pen.endCapStyle = .Round
 
-    painter.resetTransform()
+    painter.setTransform(trs)
     painter.translateTransform(50, 500)
     painter.drawPath(&path, pen)
 
     path.start(0, 0)
     path.bezierTo(100, 0, 50, -50)
-    painter.resetTransform()
+    painter.setTransform(trs)
     painter.translateTransform(250, 500)
     painter.drawPath(&path, pen)
 
@@ -135,7 +137,7 @@ func displayPage0(painter: *Pixel.Painter)
     path.lineTo(50, 0)
     path.bezierTo(100, 50, 100, 0, 50, 50)
     path.lineTo(200, 50)
-    painter.resetTransform()
+    painter.setTransform(trs)
     painter.translateTransform(400, 500)
     painter.drawPath(&path, pen)
 
@@ -145,26 +147,26 @@ func displayPage0(painter: *Pixel.Painter)
     path.lineTo(100, 50)
     path.arcTo(150, 50, 50, 50, -90, 0)
 
-    painter.resetTransform()
+    painter.setTransform(trs)
     painter.translateTransform(50, 600)
     painter.drawPath(&path, pen)
 
-    painter.resetTransform()
+    painter.setTransform(trs)
     painter.translateTransform(250, 600)
     pen = Pen.createSolid(Argb.Blue, 10)
     painter.drawRoundRect(0, 0, 100, 100, 20, 20, pen)
 
-    painter.resetTransform()
+    painter.setTransform(trs)
     painter.translateTransform(400, 600)
     pen.size = 4
     painter.drawCircle(50, 50, 50, pen)
 
-    painter.resetTransform()
+    painter.setTransform(trs)
     painter.translateTransform(500, 600)
     painter.drawEllipse(50, 50, 25, 50, pen)
 
     brush := Brush.createSolid(Argb.Black)
-    painter.resetTransform()
+    painter.setTransform(trs)
     painter.translateTransform(600, 600)
     painter.fillCircle(50, 50, 50, brush)
 
@@ -179,7 +181,7 @@ func displayPage0(painter: *Pixel.Painter)
     path.lineTo(0, 100)
     path.close()
     brush.color = Argb.Red
-    painter.resetTransform()
+    painter.setTransform(trs)
     painter.translateTransform(10, 750)
     painter.fillPath(&path, brush)
     path.polygon.offset(-10)
@@ -187,7 +189,7 @@ func displayPage0(painter: *Pixel.Painter)
     painter.fillPath(&path, brush)
 
     //////////////////////////////////////
-    painter.resetTransform()
+    painter.setTransform(trs)
     brush = Brush.createTiled(Res.image0)
     painter.fillRect(750, 50, 100, 150, brush)
     brush = Brush.createTexture(Res.image1)
@@ -196,7 +198,7 @@ func displayPage0(painter: *Pixel.Painter)
 
     //////////////////////////////////////
     var lpl: LinePathList
-    painter.resetTransform()
+    painter.setTransform(trs)
     painter.translateTransform(750, 550)
     p0 := lpl.newPath()
     p0.setRect(0, 0, 100, 100)
@@ -210,6 +212,7 @@ func displayPage1(painter: *Pixel.Painter)
     var brush: Brush
     brush.color = Argb.Black
 
+    trs := painter.getTransform()
     painter.translateTransform(50, 50)
 
     cpt, cptLines := 0
@@ -228,7 +231,7 @@ func displayPage1(painter: *Pixel.Painter)
         {
             cptLines += 1
             cpt = 0
-            painter.resetTransform()
+            painter.setTransform(trs)
             painter.translateTransform(50, 50 + 150.0 * cptLines)
         }
     }
@@ -236,6 +239,8 @@ func displayPage1(painter: *Pixel.Painter)
 
 func displayPage2(painter: *Pixel.Painter)
 {
+    trs := painter.getTransform()
+
     painter.drawTexture(200, 0, Res.image1)
 
     painter.setInterpolationMode(.Pixel)
@@ -246,7 +251,7 @@ func displayPage2(painter: *Pixel.Painter)
     painter.rotateTransform(45.0'deg, 100, 300)
     painter.drawTexture(50, 250, 96, 96, Res.image0)
 
-    painter.resetTransform()
+    painter.setTransform(trs)
     pen := Pen.createHatch(.SolidDiamond, Argb.Black, 20)
     painter.drawRoundRect(400, 700, 200, 200, 10, 10, pen)
 
@@ -257,6 +262,8 @@ func displayPage2(painter: *Pixel.Painter)
 
 func displayPage3(painter: *Pixel.Painter)
 {
+    trs := painter.getTransform()
+
     brush := Brush.createHatch(.SolidDiamond, Argb.Black)
     painter.setClippingRect(0, 0, 100, 100)
     painter.fillCircle(100, 100, 100, brush)
@@ -303,7 +310,7 @@ func displayPage3(painter: *Pixel.Painter)
     }
 
     {
-        painter.resetTransform()
+        painter.setTransform(trs)
         painter.translateTransform(400, 200)
         painter.setBlendingMode(BlendingMode.Add)
         painter.fillRect(0, 0, 150, 150, Argb.Blue)
@@ -322,7 +329,7 @@ func displayPage3(painter: *Pixel.Painter)
         lp.lineTo(100, 50)
 
         pen := Pen.createSolid(Color.fromArgb(0x51, Argb.Green), 50)
-        painter.resetTransform()
+        painter.setTransform(trs)
         painter.translateTransform(700, 200)
         painter.drawPathList(&lp1, pen, DrawPathListMode.Separate)
 
@@ -341,6 +348,8 @@ func displayPage3(painter: *Pixel.Painter)
 
 func displayPage4(painter: *Pixel.Painter)
 {
+    trs := painter.getTransform()
+
     {
         var rect: Rectangle{350, 50, 100, 100}
         painter.fillRect(rect, Color.fromArgb(0x1F, Argb.Blue))
@@ -425,7 +434,7 @@ func displayPage4(painter: *Pixel.Painter)
         painter.drawPathList(&pathl, pen)
         painter.fillPath(&pathl, Argb.Black)
 
-        painter.resetTransform()
+        painter.setTransform(trs)
     }
 
     {
@@ -437,7 +446,7 @@ func displayPage4(painter: *Pixel.Painter)
         p.clean()
         painter.drawPathList(&p, Argb.Red, 2)
 
-        painter.resetTransform()
+        painter.setTransform(trs)
     }
 
     {
@@ -450,7 +459,7 @@ func displayPage4(painter: *Pixel.Painter)
         painter.fillPath(&p, Argb.Red)
         painter.drawPathList(&p, Argb.Black, 2)
 
-        painter.resetTransform()
+        painter.setTransform(trs)
     }
 
     {
@@ -470,7 +479,7 @@ func displayPage4(painter: *Pixel.Painter)
         p.polygon.offset(10, JoinStyle.Round)
         painter.drawPath(&p, Argb.Green, 4)
 
-        painter.resetTransform()
+        painter.setTransform(trs)
     }
 
     // Draw font page
@@ -479,8 +488,10 @@ func displayPage4(painter: *Pixel.Painter)
 
 func displayPage5(painter: *Pixel.Painter)
 {
+    trs := painter.getTransform()
+
     {
-        painter.resetTransform()
+        painter.setTransform(trs)
         painter.translateTransform(500, 300)
 
         var lp: LinePath
@@ -493,7 +504,7 @@ func displayPage5(painter: *Pixel.Painter)
     }
 
     {
-        painter.resetTransform()
+        painter.setTransform(trs)
         painter.translateTransform(500, 400)
 
         var lp: LinePath
@@ -506,7 +517,7 @@ func displayPage5(painter: *Pixel.Painter)
     }
 
     {
-        painter.resetTransform()
+        painter.setTransform(trs)
         painter.translateTransform(500, 500)
 
         var lp: LinePath
@@ -628,7 +639,7 @@ impl IWnd for MyView
     var app: Gui.Application
 
     view := Wnd.create'MyView()
-    surface := try app.createSurface(100, 100, W, H, view: view)
+    surface := try app.createSurface(100, 100, W, H, flags: .Zero, view: view)
 
     assume
     {
