@@ -432,8 +432,13 @@ bool SemanticJob::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTy
     // opAffectSuffix
     if (right->semFlags & AST_SEM_LITERAL_SUFFIX)
     {
-        SWAG_ASSERT(right->kind == AstNodeKind::Literal);
-        auto suffix = right->childs.front()->token.text;
+        Utf8 suffix;
+
+        SWAG_ASSERT(right->kind == AstNodeKind::Literal || right->kind == AstNodeKind::SingleOp);
+        if(right->kind == AstNodeKind::Literal)
+            suffix = right->childs.front()->token.text;
+        else if (right->kind == AstNodeKind::SingleOp)
+            suffix = right->childs.front()->childs.front()->token.text;
 
         SymbolName* symbol = nullptr;
         SWAG_CHECK(hasUserOp(context, g_LangSpec->name_opAffectSuffix, left, &symbol));

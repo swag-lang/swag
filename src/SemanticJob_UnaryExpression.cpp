@@ -31,6 +31,7 @@ bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* child)
 
     if (child->flags & AST_VALUE_COMPUTED && !(child->doneFlags & AST_DONE_NEG_EATEN))
     {
+        context->node->semFlags |= child->semFlags & AST_SEM_LITERAL_SUFFIX;
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::S8:
@@ -93,6 +94,7 @@ bool SemanticJob::resolveUnaryOpExclam(SemanticContext* context, AstNode* child)
 
     if (child->flags & AST_VALUE_COMPUTED)
     {
+        context->node->semFlags |= child->semFlags & AST_SEM_LITERAL_SUFFIX;
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::Bool:
@@ -146,6 +148,7 @@ bool SemanticJob::resolveUnaryOpInvert(SemanticContext* context, AstNode* child)
 
     if (child->flags & AST_VALUE_COMPUTED)
     {
+        context->node->semFlags |= child->semFlags & AST_SEM_LITERAL_SUFFIX;
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::S8:
