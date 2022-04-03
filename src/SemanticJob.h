@@ -320,7 +320,7 @@ struct SemanticJob : public Job
     static bool          needToWaitForSymbol(SemanticContext* context, AstIdentifier* node, SymbolName* symbol, bool& needToWait);
     static bool          resolveIdentifier(SemanticContext* context, AstIdentifier* node, bool forGhosting);
     static TypeInfoEnum* findEnumTypeInContext(SemanticContext* context, TypeInfo* typeInfo);
-    static TypeInfoEnum* findEnumTypeInContext(SemanticContext* context, AstNode* node);
+    static bool          findEnumTypeInContext(SemanticContext* context, AstNode* node, TypeInfoEnum** result, bool genError);
     static void          addDependentSymbol(VectorNative<OneSymbolMatch>& symbols, SymbolName* symName, Scope* scope, uint32_t asflags);
     static void          unknownIdentifier(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node);
     static bool          findIdentifierInScopes(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node);

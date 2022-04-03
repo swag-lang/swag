@@ -2089,7 +2089,7 @@ TypeInfoEnum* SemanticJob::findEnumTypeInContext(SemanticContext* context, TypeI
     return CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
 }
 
-TypeInfoEnum* SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node)
+bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node, TypeInfoEnum** res, bool genError)
 {
     bool done   = false;
     auto parent = node->parent;
@@ -2111,13 +2111,13 @@ TypeInfoEnum* SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNo
         {
             auto symbol = symbolMatch.front().symbol;
             if (symbol->kind != SymbolKind::Function)
-                return nullptr;
+                return true;
 
             LockSymbolOncePerContext ls(context, symbol);
             if (symbol->cptOverloads)
             {
                 context->job->waitSymbolNoLock(symbol);
-                return nullptr;
+                return true;
             }
 
             VectorNative<TypeInfoEnum*> result;
@@ -2178,7 +2178,21 @@ TypeInfoEnum* SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNo
             }
 
             if (result.size() == 1)
-                return result.front();
+            {
+                *res = result.front();
+                return true;
+            }
+        }
+        else
+        {
+            if (genError)
+            {
+                unknownIdentifier(context, idref, id);
+                return false;
+            }
+
+            *res = nullptr;
+            return true;
         }
     }
 
@@ -2189,13 +2203,17 @@ TypeInfoEnum* SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNo
         {
             auto cType = findEnumTypeInContext(context, c->typeInfo);
             if (cType)
-                return cType;
+            {
+                *res = cType;
+                return true;
+            }
         }
 
         parent = parent->parent;
     }
 
-    return nullptr;
+    *res = nullptr;
+    return true;
 }
 
 void SemanticJob::addDependentSymbol(VectorNative<OneSymbolMatch>& symbols, SymbolName* symName, Scope* scope, uint32_t asflags)
@@ -2301,7 +2319,8 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, VectorNative<
             // We scan the parent hierarchy for an already defined type that can be used for scoping
             if (identifierRef->specFlags & AST_SPEC_IDENTIFIERREF_AUTO_SCOPE)
             {
-                auto typeEnum = findEnumTypeInContext(context, identifierRef);
+                TypeInfoEnum* typeEnum = nullptr;
+                SWAG_CHECK(findEnumTypeInContext(context, identifierRef, &typeEnum, true));
                 if (context->result == ContextResult::Pending)
                     return true;
                 if (!typeEnum)
@@ -2820,9 +2839,10 @@ bool SemanticJob::filterMatchesInContext(SemanticContext* context, VectorNative<
 
     for (int i = 0; i < matches.size(); i++)
     {
-        auto oneMatch = matches[i];
-        auto over     = oneMatch->symbolOverload;
-        auto typeEnum = findEnumTypeInContext(context, over->node);
+        auto          oneMatch = matches[i];
+        auto          over     = oneMatch->symbolOverload;
+        TypeInfoEnum* typeEnum = nullptr;
+        SWAG_CHECK(findEnumTypeInContext(context, over->node, &typeEnum, false));
         if (context->result != ContextResult::Done)
             return true;
 
