@@ -8,6 +8,10 @@ impl Painter
     {
         if radius == 0 or color.a == 0
             return
+        if isZeroEpsilon(endAngle - startAngle)
+            return
+        Debug.assert(endAngle > startAngle)
+
         sharedSolidPen.brush.type = .SolidColor
         sharedSolidPen.brush.color = color
         sharedSolidPen.size = penSize
@@ -18,6 +22,10 @@ impl Painter
     {
         if radius == 0 or pen.brush.color.a == 0
             return
+        if isZeroEpsilon(endAngle - startAngle)
+            return
+        Debug.assert(endAngle > startAngle)
+
         sharedLinePath.setArc(centerX, centerY, radius, startAngle, endAngle)
         drawPath(&sharedLinePath, pen)
     }

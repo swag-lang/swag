@@ -17,12 +17,18 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         centerY := wnd.position.width * 0.5
 
         painter.setParams(.Antialiased)
-        painter.drawCircle(centerX, centerY, 150, Argb.Red, 8)
+        painter.drawCircle(centerX, centerY, 150, Argb.Purple, 8)
 
         now := Time.DateTime.now()
-        sec := Math.map(cast(f32) now.second, 0, 60, 0, 360)
 
-        painter.drawArc(centerX, centerY, 100, sec, 360, Argb.Blue, 8)
+        hour := Math.map(cast(f32) (now.hour % 12), 0, 12, 0, 360)
+        painter.drawArc(centerX, centerY, 60, 0, hour, Argb.Red, 8)
+
+        minute := Math.map(cast(f32) now.minute, 0, 60, 0, 360)
+        painter.drawArc(centerX, centerY, 80, 0, minute, Argb.Green, 8)
+
+        sec := Math.map(cast(f32) now.second, 0, 60, 0, 360)
+        painter.drawArc(centerX, centerY, 100, 0, sec, Argb.Blue, 8)
 
         wnd.invalidate()
     }
