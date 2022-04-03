@@ -56,9 +56,9 @@ struct ThemeImageRects
     btnToggle_Border:           ThemeImageRect = @{{29,141,27,27}, 13}
     btnToggle_Mark:             ThemeImageRect = @{{57,141,27,27}, 13}
 
-    slider_BkLeft:              ThemeImageRect = @{{1,169,27,27}, 13}
-    slider_BkMiddle:            ThemeImageRect = @{{29,169,27,27}, 13}
-    slider_BkRight:             ThemeImageRect = @{{57,169,27,27}, 13}
+    slider_BkLeft:              ThemeImageRect = @{{1,169,27,27}, 13, false}
+    slider_BkMiddle:            ThemeImageRect = @{{29,169,27,27}, 13, false}
+    slider_BkRight:             ThemeImageRect = @{{57,169,27,27}, 13, false}
     slider_Mark:                ThemeImageRect = @{{85,169,27,27}, 13}
     slider_Step:                ThemeImageRect = @{{113,169,27,27}, 13}
 

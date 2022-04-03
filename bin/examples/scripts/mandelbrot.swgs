@@ -5,10 +5,9 @@
 
 using Core, Gui, Pixel
 
-var g_Image:        Image
-var g_Texture:      Texture
-var g_SliderMin:    *Slider
-var g_SliderMax:    *Slider
+var g_Image:    Image
+var g_Texture:  Texture
+var g_Slider:   *Slider
 
 const ColorTable = @[
     0xf7df, 0xff5a, 0x07ff, 0x7ffa, 0xf7ff, 0xf7bb, 0xff38, 0xff59, 0x001f, 0x895c,
@@ -33,8 +32,8 @@ func compute()
     using Math
     g_Image.visitPixels()
     {
-        minS := g_SliderMin.getValue()
-        maxS := g_SliderMax.getValue()
+        minS := g_Slider.getValueLeft()
+        maxS := g_Slider.getValueRight()
 
         a := map(cast(f32) x, 0, cast(f32) g_Image.width, minS, maxS)
         b := map(cast(f32) y, 0, cast(f32) g_Image.height, minS, maxS)
@@ -77,27 +76,19 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
     switch evt.kind
     {
     case Create:
-        g_SliderMin = Slider.create(wnd, @{0, 0, 200})
-        g_SliderMin.setMinMax(-2.5, 0, 0.01)
-        g_SliderMin.setValue(-2.5)
-        g_SliderMin.sigChanged += @|wnd|(s)
+        g_Slider = Slider.create(wnd, @{0, 0, 200}, range: true)
+        g_Slider.setMinMax(-2.5, 2.5)
+        g_Slider.setRangeValues(-2.5, 2.5)
+        g_Slider.sigChanged += @|wnd|(s)
         {
             compute()
             wnd.invalidate()
         }
 
-        g_SliderMax = Slider.create(wnd, @{0, 20, 200})
-        g_SliderMax.setMinMax(0, 2.5, 0.01)
-        g_SliderMax.setValue(2.5)
-        g_SliderMax.sigChanged += @|wnd|(s)
-        {
-            compute()
-            wnd.invalidate()
-        }
-
-        g_Image   = Image.create(256, 256, .BGR8)
+        g_Image   = Image.create(200, 200, .BGR8)
         g_Texture = wnd.getApp().renderer.addImage(g_Image)
         compute()
+        return true
 
     case Paint:
         paintEvt := cast(*PaintEvent) evt
@@ -105,6 +96,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         renderer := paintEvt.bc.renderer
         renderer.updateTexture(g_Texture, g_Image.pixels)
         painter.drawTexture(0, 0, cast(f32) w, cast(f32) h, g_Texture)
+        return true
     }
 
     return false

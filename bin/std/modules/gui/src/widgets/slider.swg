@@ -59,7 +59,7 @@ impl IWnd for Slider
             if !(sliderFlags & .Range) and (sliderFlags & .HilightBar)
                 colorBkLeft = colors.slider_HilightBk
             else
-                colorBkLeft   = colors.slider_BkLeft
+                colorBkLeft = colors.slider_BkLeft
             if (sliderFlags & .Range) and (sliderFlags & .HilightBar)
                 colorBkMiddle = colors.slider_HilightBk
             else

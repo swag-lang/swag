@@ -196,7 +196,8 @@ func createView0(tabView: *Tab, view: *Wnd)
         slider.setValue(0)
 
         slider = Slider.create(view, @{10, 380}, range: true)
-        slider.setRangeValues(0.25, 0.75)
+        slider.setMinMax(-2.5, 2.5)
+        slider.setRangeValues(-2.5, 2.5)
 
         slider = Slider.create(view, @{10, 410})
         slider.setMinMax(0, 1, 0.1)
