@@ -1,0 +1,91 @@
+#dependencies
+{
+    #import "gui" location="swag@std"
+}
+
+using Core, Gui, Pixel
+
+var g_Image:        Image
+var g_Texture:      Texture
+var g_SliderMin:    *Slider
+var g_SliderMax:    *Slider
+
+func onEvent(wnd: *Wnd, evt: *Event)->bool
+{
+    w := cast(s32) wnd.position.width
+    h := cast(s32) wnd.position.height
+
+    switch evt.kind
+    {
+    case Create:
+        g_SliderMin = Slider.create(wnd, @{0, 0, 200})
+        g_SliderMin.setMinMax(-2.5, 0, 0.01)
+        g_SliderMin.setValue(-2.5)
+        g_SliderMax = Slider.create(wnd, @{0, 20, 200})
+        g_SliderMax.setMinMax(0, 2.5, 0.01)
+        g_SliderMax.setValue(2.5)
+
+    case Paint:
+        paintEvt := cast(*PaintEvent) evt
+        painter  := paintEvt.bc.painter
+        renderer := paintEvt.bc.renderer
+
+        if !g_Image.pixels
+        {
+            g_Image = Image.create(128, 128, .BGR8)
+            g_Texture = renderer.addImage(g_Image)
+        }
+
+        using Math
+        loop x: g_Image.width
+        {
+            loop y: g_Image.height
+            {
+                minS := g_SliderMin.getValue()
+                maxS := g_SliderMax.getValue()
+
+                a := map(cast(f32) x, 0, cast(f32) g_Image.width, minS, maxS)
+                b := map(cast(f32) y, 0, cast(f32) g_Image.height, minS, maxS)
+
+                ca := a
+                cb := b
+
+                const MaxIterations = 100
+                n := 0
+                while n < MaxIterations
+                {
+                    aa := a * a - b * b
+                    bb := 2 * a * b
+                    a = aa + ca
+                    b = bb + cb
+                    if a * a + b * b > 16
+                        break
+                    n += 1
+                }
+
+                bright := map(cast(f32) n, 0, cast(f32) MaxIterations, 0, 1)
+                bright = map(sqrt(bright), 0, 1, 0, 255)
+
+                if n == MaxIterations - 1
+                    bright = 0
+
+                pix := (x + y * g_Image.width) * 3
+                g_Image.pixels[pix + 0] = cast(u8) bright
+                g_Image.pixels[pix + 1] = cast(u8) bright
+                g_Image.pixels[pix + 2] = cast(u8) bright
+            }
+        }
+
+        renderer.updateTexture(g_Texture, g_Image.pixels)
+        painter.drawTexture(0, 0, cast(f32) w, cast(f32) h, g_Texture)
+        wnd.invalidate()
+    }
+
+    return false
+}
+
+#run
+{
+    var app: Application
+    try app.runSurface(100, 100, 512, 512, title: "Mandelbrot", hook: &onEvent)
+}
