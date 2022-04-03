@@ -3,6 +3,25 @@ using Core, Core.Math
 
 impl Painter
 {
+    // Draw an arc between two angles
+    mtd drawArc(centerX, centerY: f32, radius: f32, startAngle, endAngle: f32, color: Color, penSize: f32 = 1)
+    {
+        if radius == 0 or color.a == 0
+            return
+        sharedSolidPen.brush.type = .SolidColor
+        sharedSolidPen.brush.color = color
+        sharedSolidPen.size = penSize
+        drawArc(centerX, centerY, radius, startAngle, endAngle, sharedSolidPen)
+    }
+
+    mtd drawArc(centerX, centerY: f32, radius: f32, startAngle, endAngle: f32, pen: Pen)
+    {
+        if radius == 0 or pen.brush.color.a == 0
+            return
+        sharedLinePath.setArc(centerX, centerY, radius, startAngle, endAngle)
+        drawPath(&sharedLinePath, pen)
+    }
+
     // Draw an empty circle
     func drawCircle(using self, centerX, centerY: f32, radius: f32, color: Color, penSize: f32 = 1)
     {

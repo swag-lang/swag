@@ -18,6 +18,13 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
         painter.setParams(.Antialiased)
         painter.drawCircle(centerX, centerY, 150, Argb.Red, 8)
+
+        now := Time.DateTime.now()
+        sec := Math.map(cast(f32) now.second, 0, 60, 0, 360)
+
+        painter.drawArc(centerX, centerY, 100, sec, 360, Argb.Blue, 8)
+
+        wnd.invalidate()
     }
 
     return false

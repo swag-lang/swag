@@ -183,6 +183,46 @@ public impl LinePath
         close()
     }
 
+    // Initialize the path with an arc
+    mtd setArc(centerX, centerY: f32, radius: f32, startAngle, endAngle: f32)
+    {
+        if isZeroEpsilon(endAngle - startAngle)
+            return
+
+        Debug.assert(endAngle > startAngle)
+        startPos := Math.Vector2{0, -radius}
+        startPos.rotate(toRadians(startAngle))
+        start(centerX + startPos.x, centerY + startPos.y)
+
+        s := startAngle
+        m := 0'f32
+        if s < 90
+        {
+            m = Math.min(endAngle, 90)
+            arcTo(centerX, centerY, radius, radius, s, m)
+            s = m
+        }
+
+        if s < 180
+        {
+            m = Math.min(endAngle, 180)
+            arcTo(centerX, centerY, radius, radius, s, m)
+            s = m
+        }
+
+        if s < 270
+        {
+            m = Math.min(endAngle, 270)
+            arcTo(centerX, centerY, radius, radius, s, m)
+            s = m
+        }
+
+        if s < 360
+        {
+            arcTo(centerX, centerY, radius, radius, s, Math.min(endAngle, 360))
+        }
+    }
+
     // Convert the path to a list of points
     mtd flatten(quality: PaintQuality)
     {

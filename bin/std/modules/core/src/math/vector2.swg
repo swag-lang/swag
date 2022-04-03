@@ -218,4 +218,15 @@ impl Vector2
         result.y = Math.max(a.y, b.y)
         return result
     }
+
+    // Rotate the vector by a given angle
+    mtd rotate(angle: f32)
+    {
+        s := sin(angle)
+        c := cos(angle)
+        tx := x
+        ty := y
+        x = (c * tx) - (s * ty)
+        y = (s * tx) + (c * ty)
+    }
 }
