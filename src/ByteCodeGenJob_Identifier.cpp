@@ -218,13 +218,43 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             inst->flags |= BCI_IMM_B;
         }
 
-        if (!(node->forceTakeAddress()))
+        if (!node->forceTakeAddress())
+            emitStructDeRef(context);
+        else if (node->parent->flags & AST_ARRAY_POINTER_REF)
+            emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
+
+        // :SilentCall
+        if (node->token.text.empty())
+            freeRegisterRC(context, node->parent);
+
+        identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;
+        node->parent->resultRegisterRC              = node->resultRegisterRC;
+        return true;
+    }
+
+    // Reference inside a struct
+    if (resolved->flags & OVERLOAD_VAR_STRUCT)
+    {
+        SWAG_ASSERT(!(resolved->flags & OVERLOAD_VAR_INLINE));
+        node->resultRegisterRC = identifier->identifierRef->resultRegisterRC;
+        SWAG_VERIFY(node->resultRegisterRC.size() > 0, context->internalError(Fmt("emitIdentifier, cannot reference identifier `%s`", identifier->token.ctext()).c_str()));
+
+        if (node->resolvedSymbolOverload->computedValue.storageOffset > 0)
+        {
+            ensureCanBeChangedRC(context, node->resultRegisterRC);
+            auto inst = emitInstruction(context, ByteCodeOp::IncPointer64, node->resultRegisterRC, 0, node->resultRegisterRC);
+            SWAG_ASSERT(node->resolvedSymbolOverload->computedValue.storageOffset != UINT32_MAX);
+            inst->b.u64 = node->resolvedSymbolOverload->computedValue.storageOffset;
+            inst->flags |= BCI_IMM_B;
+        }
+
+        if (!node->forceTakeAddress())
             emitStructDeRef(context);
         else if (node->parent->flags & AST_ARRAY_POINTER_REF)
             emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
 
         identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;
-        node->parent->resultRegisterRC              = node->resultRegisterRC;
+        node->parent->resultRegisterRC = node->resultRegisterRC;
         return true;
     }
 
@@ -399,36 +429,6 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             }
 
             inst->b.u64 = resolved->computedValue.storageOffset;
-        }
-
-        identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;
-        node->parent->resultRegisterRC              = node->resultRegisterRC;
-        return true;
-    }
-
-    // Reference inside a struct
-    if (resolved->flags & OVERLOAD_VAR_STRUCT)
-    {
-        SWAG_ASSERT(!(resolved->flags & OVERLOAD_VAR_INLINE));
-        node->resultRegisterRC = identifier->identifierRef->resultRegisterRC;
-        SWAG_VERIFY(node->resultRegisterRC.size() > 0, context->internalError(Fmt("emitIdentifier, cannot reference identifier `%s`", identifier->token.ctext()).c_str()));
-
-        if (node->resolvedSymbolOverload->computedValue.storageOffset > 0)
-        {
-            ensureCanBeChangedRC(context, node->resultRegisterRC);
-            auto inst = emitInstruction(context, ByteCodeOp::IncPointer64, node->resultRegisterRC, 0, node->resultRegisterRC);
-            SWAG_ASSERT(node->resolvedSymbolOverload->computedValue.storageOffset != UINT32_MAX);
-            inst->b.u64 = node->resolvedSymbolOverload->computedValue.storageOffset;
-            inst->flags |= BCI_IMM_B;
-        }
-
-        if (!node->forceTakeAddress())
-        {
-            emitStructDeRef(context);
-        }
-        else if (node->parent->flags & AST_ARRAY_POINTER_REF)
-        {
-            emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
         }
 
         identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;
