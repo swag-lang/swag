@@ -14,20 +14,21 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         painter  := paintEvt.bc.painter
 
         centerX := wnd.position.width * 0.5
-        centerY := wnd.position.width * 0.5
+        centerY := wnd.position.height * 0.5
 
         painter.setParams(.Antialiased)
+        painter.clear(Argb.Black)
         painter.drawCircle(centerX, centerY, 150, Argb.Purple, 8)
 
         now := Time.DateTime.now()
 
-        hour := Math.map(cast(f32) (now.hour % 12), 0, 12, 0, Math.ConstF32.TwoPi)
+        using Math
+        hour   := map(cast(f32) (now.hour % 12), 0, 12, 0, ConstF32.TwoPi)
+        minute := map(cast(f32) now.minute, 0, 60, 0, ConstF32.TwoPi)
+        sec    := map(cast(f32) now.second, 0, 60, 0, ConstF32.TwoPi)
+
         painter.drawArc(centerX, centerY, 60, 0, hour, Argb.Red, 8)
-
-        minute := Math.map(cast(f32) now.minute, 0, 60, 0, Math.ConstF32.TwoPi)
         painter.drawArc(centerX, centerY, 80, 0, minute, Argb.Green, 8)
-
-        sec := Math.map(cast(f32) now.second, 0, 60, 0, Math.ConstF32.TwoPi)
         painter.drawArc(centerX, centerY, 100, 0, sec, Argb.Blue, 8)
 
         wnd.invalidate()

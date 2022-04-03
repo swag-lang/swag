@@ -196,7 +196,7 @@ public impl LinePath
 
         Debug.assert(endAngle.rad > startAngle.rad)
         startPos := Math.Vector2{0, -radius}
-        startPos.rotate(startAngle.rad)
+        startPos.rotate(startAngle)
         start(centerX + startPos.x, centerY + startPos.y)
 
         s := startAngle.rad
