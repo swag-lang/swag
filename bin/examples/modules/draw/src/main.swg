@@ -143,9 +143,9 @@ func displayPage0(painter: *Pixel.Painter)
 
     path.start(0, 0)
     pen.brush.color = Argb.Purple
-    path.arcTo(0, 50, 50, 50, 0, 90)
+    path.arcTo(0, 50, 50, 50, 0'deg, 90'deg)
     path.lineTo(100, 50)
-    path.arcTo(150, 50, 50, 50, -90, 0)
+    path.arcTo(150, 50, 50, 50, 270'deg, 0'deg)
 
     painter.setTransform(trs)
     painter.translateTransform(50, 600)

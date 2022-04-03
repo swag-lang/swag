@@ -94,23 +94,28 @@ public impl LinePath
     }
 
     // Add an arc from the previous point
-    mtd arcTo(centerX, centerY: f32, radiusX, radiusY: f32, initAngle, maxAngle: f32)
+    mtd arcTo(centerX, centerY: f32, radiusX, radiusY: f32, initAngle, maxAngle: Math.Angle)
     {
-        initAngleRad := Math.toRadians(initAngle)
-        maxAngleRad := Math.toRadians(maxAngle)
-
         var elem: Element = ?
         elem.type = .Arc
         elem.position.set(centerX, centerY)
-        elem.p1.x = initAngleRad
-        elem.p1.y = maxAngleRad
+
+        ia := initAngle.rad
+        while ia < 0 ia += Math.ConstF32.TwoPi
+        ma := maxAngle.rad
+        while ma < 0 ma += Math.ConstF32.TwoPi
+        while ma < ia ma += Math.ConstF32.TwoPi
+
+        elem.p1.x = ia
+        elem.p1.y = ma
+
         elem.p2.x = radiusX
         elem.p2.y = radiusY
         elements.add(elem)
         isDirty = true
 
-        endPoint.x = centerX + (Math.sin(maxAngleRad) * radiusX)
-        endPoint.y = centerY + (-Math.cos(maxAngleRad) * radiusY)
+        endPoint.x = centerX + (Math.sin(ma) * radiusX)
+        endPoint.y = centerY + (-Math.cos(ma) * radiusY)
     }
 
     // Close the figure
@@ -151,13 +156,13 @@ public impl LinePath
         right := left + width
         bottom := top + height
         start(left, top + radiusY)
-        arcTo(left + radiusX, top + radiusY, radiusX, radiusY, -90, 0)
+        arcTo(left + radiusX, top + radiusY, radiusX, radiusY, 270'deg, 360'deg)
         lineTo(right - radiusX, top)
-        arcTo(right - radiusX, top + radiusY, radiusX, radiusY, 0, 90)
+        arcTo(right - radiusX, top + radiusY, radiusX, radiusY, 0'deg, 90'deg)
         lineTo(right, bottom - radiusY)
-        arcTo(right - radiusX, bottom - radiusY, radiusX, radiusY, 90, 180)
+        arcTo(right - radiusX, bottom - radiusY, radiusX, radiusY, 90'deg, 180'deg)
         lineTo(left + radiusX, bottom)
-        arcTo(left + radiusX, bottom - radiusY, radiusX, radiusY, 180, 270)
+        arcTo(left + radiusX, bottom - radiusY, radiusX, radiusY, 180'deg, 270'deg)
         close()
     }
 
@@ -165,10 +170,10 @@ public impl LinePath
     mtd setEllipse(centerX, centerY: f32, radiusX, radiusY: f32)
     {
         start(centerX, centerY - radiusY)
-        arcTo(centerX, centerY, radiusX, radiusY, 0, 90)
-        arcTo(centerX, centerY, radiusX, radiusY, 90, 180)
-        arcTo(centerX, centerY, radiusX, radiusY, 180, 270)
-        arcTo(centerX, centerY, radiusX, radiusY, 270, 360)
+        arcTo(centerX, centerY, radiusX, radiusY, 0'deg, 90'deg)
+        arcTo(centerX, centerY, radiusX, radiusY, 90'deg, 180'deg)
+        arcTo(centerX, centerY, radiusX, radiusY, 180'deg, 270'deg)
+        arcTo(centerX, centerY, radiusX, radiusY, 270'deg, 360'deg)
         close()
     }
 
@@ -176,50 +181,51 @@ public impl LinePath
     mtd setCircle(centerX, centerY: f32, radius: f32)
     {
         start(centerX, centerY - radius)
-        arcTo(centerX, centerY, radius, radius, 0, 90)
-        arcTo(centerX, centerY, radius, radius, 90, 180)
-        arcTo(centerX, centerY, radius, radius, 180, 270)
-        arcTo(centerX, centerY, radius, radius, 270, 360)
+        arcTo(centerX, centerY, radius, radius, 0'deg, 90'deg)
+        arcTo(centerX, centerY, radius, radius, 90'deg, 180'deg)
+        arcTo(centerX, centerY, radius, radius, 180'deg, 270'deg)
+        arcTo(centerX, centerY, radius, radius, 270'deg, 360'deg)
         close()
     }
 
     // Initialize the path with an arc
-    mtd setArc(centerX, centerY: f32, radius: f32, startAngle, endAngle: f32)
+    mtd setArc(centerX, centerY: f32, radius: f32, startAngle, endAngle: Math.Angle)
     {
-        if isZeroEpsilon(endAngle - startAngle)
+        if isZeroEpsilon(endAngle.rad - startAngle.rad)
             return
 
-        Debug.assert(endAngle > startAngle)
+        Debug.assert(endAngle.rad > startAngle.rad)
         startPos := Math.Vector2{0, -radius}
-        startPos.rotate(toRadians(startAngle))
+        startPos.rotate(startAngle.rad)
         start(centerX + startPos.x, centerY + startPos.y)
 
-        s := startAngle
+        s := startAngle.rad
         m := 0'f32
-        if s < 90
+        if s < Math.ConstF32.PiBy2
         {
-            m = Math.min(endAngle, 90)
+            m = Math.min(endAngle.rad, Math.ConstF32.PiBy2)
             arcTo(centerX, centerY, radius, radius, s, m)
             s = m
         }
 
-        if s < 180
+        if s < Math.ConstF32.Pi
         {
-            m = Math.min(endAngle, 180)
+            m = Math.min(endAngle.rad, Math.ConstF32.Pi)
             arcTo(centerX, centerY, radius, radius, s, m)
             s = m
         }
 
-        if s < 270
+        if s < Math.ConstF32.Pi + Math.ConstF32.PiBy2
         {
-            m = Math.min(endAngle, 270)
+            m = Math.min(endAngle.rad, Math.ConstF32.Pi + Math.ConstF32.PiBy2)
             arcTo(centerX, centerY, radius, radius, s, m)
             s = m
         }
 
-        if s < 360
+        if s < Math.ConstF32.TwoPi
         {
-            arcTo(centerX, centerY, radius, radius, s, Math.min(endAngle, 360))
+            m = Math.min(endAngle.rad, Math.ConstF32.TwoPi)
+            arcTo(centerX, centerY, radius, radius, s, m)
         }
     }
 

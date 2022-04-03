@@ -220,10 +220,10 @@ impl Vector2
     }
 
     // Rotate the vector by a given angle
-    mtd rotate(angle: f32)
+    mtd rotate(angle: Math.Angle)
     {
-        s := sin(angle)
-        c := cos(angle)
+        s := sin(angle.rad)
+        c := cos(angle.rad)
         tx := x
         ty := y
         x = (c * tx) - (s * ty)
