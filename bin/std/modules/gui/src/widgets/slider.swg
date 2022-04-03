@@ -19,7 +19,7 @@ struct Slider
     max:            f32 = 1.0
     steps:          f32
     sliderFlags     = SliderFlags.HilightBar
-    sigChanged:     func(*Self)
+    sigChanged:     SigArray'closure(*Self)
 
     isMoving:       bool
     isPressed1:     bool
@@ -244,8 +244,7 @@ private impl Slider
         if fc == value1
             return
         value1 = fc
-        if sigChanged
-            sigChanged(self)
+        sigChanged.call(self)
         invalidate()
     }
 
@@ -257,8 +256,7 @@ private impl Slider
         if fc == value2
             return
         value2 = fc
-        if sigChanged
-            sigChanged(self)
+        sigChanged.call(self)
         invalidate()
     }
 

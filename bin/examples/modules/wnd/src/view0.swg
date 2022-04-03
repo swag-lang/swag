@@ -212,7 +212,7 @@ func createView0(tabView: *Tab, view: *Wnd)
         edit0.setForm(EditBoxForm.Transparent)
 
         slider0.setMinMax(0, 255)
-        slider0.sigChanged = @(wnd)
+        slider0.sigChanged += @(wnd)
         {
             val  := Format.toString("%", cast(s32) wnd.getValue())
             edit := cast(*EditBox) wnd.getTopView().getChildById("edit0")
