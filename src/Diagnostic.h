@@ -11,6 +11,7 @@ enum class DiagnosticLevel
     Warning,
     Verbose,
     Note,
+    NotePack,
     CallStack,
     CallStackInlined,
     TraceError,

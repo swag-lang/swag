@@ -120,7 +120,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
     if (typeInfo->kind != TypeInfoKind::Interface)
     {
         Diagnostic diag{node->identifier, Fmt(Err(Err0646), node->identifier->token.ctext(), TypeInfo::getArticleKindName(typeInfo))};
-        Diagnostic note{node->identifier->resolvedSymbolOverload->node, Fmt(Nte(Nte0029), node->identifier->token.ctext()), DiagnosticLevel::Note};
+        Diagnostic note{node->identifier->resolvedSymbolOverload->node, Fmt(Nte(Nte0029), node->identifier->token.ctext()), DiagnosticLevel::NotePack};
         return context->report(diag, &note);
     }
 
@@ -129,7 +129,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
     if (typeInfo->kind != TypeInfoKind::Struct)
     {
         Diagnostic diag{node->identifierFor, Fmt(Err(Err0648), node->identifierFor->token.ctext(), TypeInfo::getArticleKindName(typeInfo))};
-        Diagnostic note{node->identifierFor->resolvedSymbolOverload->node, Fmt(Nte(Nte0029), node->identifier->token.ctext()), DiagnosticLevel::Note};
+        Diagnostic note{node->identifierFor->resolvedSymbolOverload->node, Fmt(Nte(Nte0029), node->identifier->token.ctext()), DiagnosticLevel::NotePack};
         return context->report(diag, &note);
     }
 
@@ -551,7 +551,7 @@ bool SemanticJob::checkImplScopes(SemanticContext* context, AstImpl* node, Scope
     // impl scope and corresponding identifier scope must be the same !
     if (scopeImpl != scope)
     {
-        Diagnostic note{node->identifier->resolvedSymbolOverload->node, Fmt(Nte(Nte0029), node->identifier->token.ctext()), DiagnosticLevel::Note};
+        Diagnostic note{node->identifier->resolvedSymbolOverload->node, Fmt(Nte(Nte0029), node->identifier->token.ctext()), DiagnosticLevel::NotePack};
         if ((scopeImpl->flags & SCOPE_FILE) && !(scope->flags & SCOPE_FILE))
         {
             Diagnostic diag{node->identifier, Fmt(Err(Err0659), node->identifier->token.ctext())};
@@ -580,7 +580,7 @@ bool SemanticJob::resolveImpl(SemanticContext* context)
     if (typeInfo->kind != TypeInfoKind::Struct && typeInfo->kind != TypeInfoKind::Enum)
     {
         Diagnostic diag{node->identifier, Fmt(Err(Err0662), node->identifier->token.ctext(), TypeInfo::getArticleKindName(typeInfo))};
-        Diagnostic note{node->identifier->resolvedSymbolOverload->node, Fmt(Nte(Nte0029), node->identifier->token.ctext()), DiagnosticLevel::Note};
+        Diagnostic note{node->identifier->resolvedSymbolOverload->node, Fmt(Nte(Nte0029), node->identifier->token.ctext()), DiagnosticLevel::NotePack};
         return context->report(diag, &note);
     }
 

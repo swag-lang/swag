@@ -1147,13 +1147,13 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
                 if (!(fctAttributes & ATTRIBUTE_COMPILER) && (overload->node->attributeFlags & ATTRIBUTE_COMPILER) && !(identifier->flags & AST_RUN_BLOCK))
                 {
-                    Diagnostic note{overload->node, Fmt(Nte(Nte0029), overload->node->token.ctext()), DiagnosticLevel::Note};
+                    Diagnostic note{overload->node, Fmt(Nte(Nte0029), overload->node->token.ctext()), DiagnosticLevel::NotePack};
                     return context->report({identifier, Fmt(Err(Err0107), overload->node->token.ctext(), ownerFct->getDisplayNameC())}, &note);
                 }
 
                 if (!(fctAttributes & ATTRIBUTE_TEST_FUNC) && (overload->node->attributeFlags & ATTRIBUTE_TEST_FUNC))
                 {
-                    Diagnostic note{overload->node, Fmt(Nte(Nte0029), overload->node->token.ctext()), DiagnosticLevel::Note};
+                    Diagnostic note{overload->node, Fmt(Nte(Nte0029), overload->node->token.ctext()), DiagnosticLevel::NotePack};
                     return context->report({identifier, Fmt(Err(Err0108), overload->node->token.ctext(), ownerFct->getDisplayNameC())}, &note);
                 }
             }
@@ -2197,8 +2197,13 @@ bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node,
     }
 
     // We go up in the hierarchy until we find a statement, or a contextual type to return
-    while (parent && parent->kind != AstNodeKind::Statement && !done)
+    while (parent && !done)
     {
+        if (parent->kind == AstNodeKind::Statement)
+            break;
+        if (parent->kind == AstNodeKind::SwitchCaseBlock)
+            break;
+
         for (auto c : parent->childs)
         {
             auto cType = findEnumTypeInContext(context, c->typeInfo);
