@@ -1021,12 +1021,13 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         child->resolvedSymbolOverload->storageIndex                = storageIndexField;
         child->resolvedSymbolOverload->attributeFlags              = child->attributeFlags;
 
-        typeInfo->sizeOf = max(typeInfo->sizeOf, (int) realStorageOffset + child->typeInfo->sizeOf);
+        auto childType   = TypeManager::concreteType(child->typeInfo, CONCRETE_FUNC);
+        typeInfo->sizeOf = max(typeInfo->sizeOf, (int) realStorageOffset + childType->sizeOf);
 
         if (relocated)
-            storageOffset = max(storageOffset, realStorageOffset + child->typeInfo->sizeOf);
+            storageOffset = max(storageOffset, realStorageOffset + childType->sizeOf);
         else if (node->packing)
-            storageOffset += child->typeInfo->sizeOf;
+            storageOffset += childType->sizeOf;
 
         // Create a generic alias
         if (!(child->flags & AST_AUTO_NAME))

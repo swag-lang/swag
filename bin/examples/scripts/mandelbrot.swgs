@@ -30,10 +30,13 @@ const ColorTable = @[
 func compute()
 {
     using Math
-    g_Image.visitPixels()
+
+    data := @{minS: g_Slider.getValueLeft(), maxS: g_Slider.getValueRight()}
+    g_Image.visitPixels(&data)
     {
-        minS := g_Slider.getValueLeft()
-        maxS := g_Slider.getValueRight()
+        params := cast(*@typeof(data)) userData
+        minS := params.minS
+        maxS := params.maxS
 
         a := map(cast(f32) x, 0, cast(f32) g_Image.width, minS, maxS)
         b := map(cast(f32) y, 0, cast(f32) g_Image.height, minS, maxS)
@@ -87,7 +90,12 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
         g_Image   = Image.create(200, 200, .BGR8)
         g_Texture = wnd.getApp().renderer.addImage(g_Image)
+
+        var t: Time.Stopwatch
+        t.start()
         compute()
+        t.stop()
+        Console.print(t.elapsedMilliseconds())
         return true
 
     case Paint:
