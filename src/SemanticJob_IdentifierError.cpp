@@ -710,7 +710,6 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
             {
                 note->startLocation = errs1[0]->startLocation;
                 note->endLocation   = errs1[0]->endLocation;
-                note->showRange     = true;
             }
         }
 
