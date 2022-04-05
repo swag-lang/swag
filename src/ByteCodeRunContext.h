@@ -87,16 +87,18 @@ struct ByteCodeRunContext : public JobContext
 
     SwagCompilerSourceLocation* errorLoc      = nullptr;
     JobContext*                 callerContext = nullptr;
-    bool                        canCatchError = false;
 
-    AstNode*             node         = nullptr;
-    uint8_t*             stack        = nullptr;
-    uint8_t*             sp           = nullptr;
-    uint8_t*             bp           = nullptr;
-    ByteCode*            bc           = nullptr;
-    ByteCodeInstruction* ip           = nullptr;
-    static const int     MAX_ALLOC_RR = 2;
-    Register*            registersRR  = nullptr;
+    bool canCatchError = false;
+
+    AstNode*             node           = nullptr;
+    uint8_t*             stack          = nullptr;
+    uint8_t*             sp             = nullptr;
+    uint8_t*             bp             = nullptr;
+    ByteCode*            bc             = nullptr;
+    ByteCodeInstruction* ip             = nullptr;
+    static const int     MAX_ALLOC_RR   = 2;
+    Register*            registersRR    = nullptr;
+    Register*            curRegistersRC = nullptr;
 
     int  curRC    = -1;
     int  firstRC  = -1;

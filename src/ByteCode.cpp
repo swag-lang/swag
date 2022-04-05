@@ -110,6 +110,7 @@ void ByteCode::enterByteCode(ByteCodeRunContext* context, uint32_t popParamsOnRe
 
     context->registersRC[context->curRC]->reserve(maxReservedRegisterRC, false);
     context->registersRC[context->curRC]->count = maxReservedRegisterRC;
+    context->curRegistersRC                     = context->registersRC[context->curRC]->buffer;
 
     context->popParamsOnRet.push_back(popParamsOnRet);
     context->returnRegOnRet.push_back(returnReg);
@@ -122,6 +123,8 @@ void ByteCode::leaveByteCode(ByteCodeRunContext* context, bool popCallStack)
     if (popCallStack)
         g_ByteCodeStack.pop();
     context->curRC--;
+    if (context->curRC >= 0)
+        context->curRegistersRC = context->registersRC[context->curRC]->buffer;
 }
 
 void ByteCode::markLabels()

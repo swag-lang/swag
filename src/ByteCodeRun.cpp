@@ -109,7 +109,7 @@ void* ByteCodeRun::makeLambda(JobContext* context, AstFuncDecl* funcNode, ByteCo
 
 inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCodeInstruction* ip)
 {
-    auto registersRC = context->registersRC[context->curRC]->buffer;
+    auto registersRC = context->curRegistersRC;
 
     SWAG_ASSERT(ip->op <= ByteCodeOp::End);
     switch (ip->op)
