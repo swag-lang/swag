@@ -110,10 +110,13 @@ void* ByteCodeRun::makeLambda(JobContext* context, AstFuncDecl* funcNode, ByteCo
 inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCodeInstruction* ip)
 {
     auto registersRC = context->registersRC[context->curRC]->buffer;
-    auto registersRR = context->registersRR;
 
+    SWAG_ASSERT(ip->op <= ByteCodeOp::End);
     switch (ip->op)
     {
+    case ByteCodeOp::End:
+        return false;
+
     case ByteCodeOp::Nop:
     case ByteCodeOp::DebugNop:
         break;
@@ -807,47 +810,47 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
     case ByteCodeOp::PushRR:
     {
-        context->push(registersRR[0].u64);
-        context->push(registersRR[1].u64);
+        context->push(context->registersRR[0].u64);
+        context->push(context->registersRR[1].u64);
         break;
     }
     case ByteCodeOp::PopRR:
     {
-        registersRR[1].u64 = context->pop<uint64_t>();
-        registersRR[0].u64 = context->pop<uint64_t>();
+        context->registersRR[1].u64 = context->pop<uint64_t>();
+        context->registersRR[0].u64 = context->pop<uint64_t>();
         break;
     }
 
     case ByteCodeOp::CopyRCtoRT:
     {
-        registersRR[0] = registersRC[ip->a.u32];
+        context->registersRR[0] = registersRC[ip->a.u32];
         break;
     }
     case ByteCodeOp::CopyRCtoRR:
     {
-        registersRR[0].u64 = IMMA_U64(ip);
+        context->registersRR[0].u64 = IMMA_U64(ip);
         break;
     }
     case ByteCodeOp::CopyRCtoRR2:
     {
-        registersRR[0] = registersRC[ip->a.u32];
-        registersRR[1] = registersRC[ip->b.u32];
+        context->registersRR[0] = registersRC[ip->a.u32];
+        context->registersRR[1] = registersRC[ip->b.u32];
         break;
     }
     case ByteCodeOp::CopyRRtoRC:
     {
-        registersRC[ip->a.u32] = registersRR[0];
+        registersRC[ip->a.u32] = context->registersRR[0];
         break;
     }
     case ByteCodeOp::CopyRTtoRC:
     {
-        registersRC[ip->a.u32] = registersRR[0];
+        registersRC[ip->a.u32] = context->registersRR[0];
         break;
     }
     case ByteCodeOp::CopyRTtoRC2:
     {
-        registersRC[ip->a.u32] = registersRR[0];
-        registersRC[ip->b.u32] = registersRR[1];
+        registersRC[ip->a.u32] = context->registersRR[0];
+        registersRC[ip->b.u32] = context->registersRR[1];
         break;
     }
     case ByteCodeOp::PushBP:
@@ -914,7 +917,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->a.u32].pointer = context->bp + ip->b.u32;
         break;
     case ByteCodeOp::MakeStackPointerRT:
-        registersRR[0].pointer = context->bp + ip->a.u32;
+        context->registersRR[0].pointer = context->bp + ip->a.u32;
         break;
 
     case ByteCodeOp::SetZeroStack8:
@@ -2875,7 +2878,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
 bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
 {
-    while (context->ip)
+    while (true)
     {
         // Debug
         if (context->debugOn && !debugger(context))
@@ -2883,10 +2886,6 @@ bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
 
         // Get instruction
         auto ip = context->ip++;
-        SWAG_ASSERT(ip->op <= ByteCodeOp::End);
-        if (ip->op == ByteCodeOp::End)
-            break;
-
         if (!executeInstruction(context, ip))
             break;
 
