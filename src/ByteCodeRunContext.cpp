@@ -79,15 +79,15 @@ void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd, ByteCode* nodebc)
     returnRegOnRetRR.clear();
 }
 
-void ByteCodeRunContext::error(const Utf8& msg, SwagCompilerSourceLocation* loc)
+void ByteCodeRunContext::stackOverflow()
+{
+    raiseError(Fmt(Err(Err0015), Utf8::toNiceSize(g_CommandLine->stackSizeBC).c_str()));
+}
+
+void ByteCodeRunContext::raiseError(const char* msg, SwagCompilerSourceLocation* loc)
 {
     hasError = true;
     errorLoc = loc;
     errorMsg = msg;
-}
-
-void ByteCodeRunContext::stackOverflow()
-{
-    hasError = true;
-    errorMsg = Fmt(Err(Err0015), Utf8::toNiceSize(g_CommandLine->stackSizeBC).c_str());
+    throw "raise error";
 }

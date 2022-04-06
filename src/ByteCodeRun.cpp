@@ -1070,7 +1070,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
                 else if (module->bssCannotChange)
                 {
                     SymbolOverload* over = (SymbolOverload*) ip->c.pointer;
-                    context->error(Fmt(Err(Err0431), over->node->token.ctext()));
+                    context->raiseError(Fmt(Err(Err0431), over->node->token.ctext()));
                 }
             }
             registersRC[ip->a.u32].pointer = ptr;
@@ -1091,7 +1091,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
                     else if (module->bssCannotChange)
                     {
                         SymbolOverload* over = (SymbolOverload*) ip->c.pointer;
-                        context->error(Fmt(Err(Err0431), over->node->token.ctext()));
+                        context->raiseError(Fmt(Err(Err0431), over->node->token.ctext()));
                     }
                 }
             }
@@ -2863,8 +2863,9 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         registersRC[ip->d.u32].s64 = OS::atomicCmpXchg((int64_t*) registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].s64, registersRC[ip->c.u32].s64);
         break;
     case ByteCodeOp::IntrinsicBcDbg:
-        context->debugEntry = !context->debugOn;
-        context->debugOn    = true;
+        context->raiseDebugStart = true;
+        context->debugEntry      = !context->debugOn;
+        throw "start debug";
         break;
 
     default:
@@ -2878,51 +2879,22 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
 
 bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
 {
-    while (true)
+    if (context->debugOn)
     {
-        // Debug
-        if (context->debugOn && !debugger(context))
-            OS::exit(0);
-
-        // Get instruction
-        auto ip = context->ip++;
-        if (!executeInstruction(context, ip))
-            break;
-
-        // Error ?
-        if (context->hasError)
+        while (true)
         {
-            context->hasError = false;
-
-            JobContext* errorContext = context->callerContext ? context->callerContext : context;
-            if (context->errorLoc)
-            {
-                SourceLocation start = {context->errorLoc->lineStart, context->errorLoc->colStart};
-                SourceLocation end   = {context->errorLoc->lineEnd, context->errorLoc->colEnd};
-                Diagnostic     diag{ip->node->sourceFile, start, end, context->errorMsg};
-                errorContext->sourceFile = ip->node->sourceFile;
-                errorContext->report(diag);
-            }
-            else
-            {
-                SourceFile*     sourceFile;
-                SourceLocation* location;
-                ByteCode::getLocation(context->bc, ip, &sourceFile, &location);
-                if (location || !ip->node)
-                {
-                    Diagnostic diag{sourceFile, *location, "[compile time execution] " + context->errorMsg};
-                    errorContext->sourceFile = sourceFile;
-                    errorContext->report(diag);
-                }
-                else
-                {
-                    Diagnostic diag{ip->node, "[compile time execution] " + context->errorMsg};
-                    errorContext->sourceFile = ip->node->sourceFile;
-                    errorContext->report(diag);
-                }
-            }
-
-            return false;
+            if (!debugger(context))
+                OS::exit(0);
+            if (!executeInstruction(context, context->ip++))
+                break;
+        }
+    }
+    else
+    {
+        while (true)
+        {
+            if (!executeInstruction(context, context->ip++))
+                break;
         }
     }
 
@@ -2931,6 +2903,50 @@ bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
 
 static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS args)
 {
+    if (runContext->raiseDebugStart)
+        return EXCEPTION_EXECUTE_HANDLER;
+
+    // Error ?
+    if (runContext->hasError)
+    {
+        auto ip = runContext->ip;
+        if (ip != runContext->bc->out)
+            ip--;
+
+        runContext->hasError = false;
+
+        JobContext* errorContext = runContext->callerContext ? runContext->callerContext : runContext;
+        if (runContext->errorLoc)
+        {
+            SourceLocation start = {runContext->errorLoc->lineStart, runContext->errorLoc->colStart};
+            SourceLocation end   = {runContext->errorLoc->lineEnd, runContext->errorLoc->colEnd};
+            Diagnostic     diag{ip->node->sourceFile, start, end, runContext->errorMsg};
+            errorContext->sourceFile = ip->node->sourceFile;
+            errorContext->report(diag);
+        }
+        else
+        {
+            SourceFile*     sourceFile;
+            SourceLocation* location;
+            ByteCode::getLocation(runContext->bc, ip, &sourceFile, &location);
+            if (location || !ip->node)
+            {
+                SWAG_ASSERT(location);
+                Diagnostic diag{sourceFile, *location, "[compile time execution] " + runContext->errorMsg};
+                errorContext->sourceFile = sourceFile;
+                errorContext->report(diag);
+            }
+            else
+            {
+                Diagnostic diag{ip->node, "[compile time execution] " + runContext->errorMsg};
+                errorContext->sourceFile = ip->node->sourceFile;
+                errorContext->report(diag);
+            }
+        }
+
+        return EXCEPTION_EXECUTE_HANDLER;
+    }
+
     // Special exception raised by @error, to simply log an error message
     // This is called by panic too, in certain conditions (if we do not want dialog boxes, when running tests for example)
     if (args->ExceptionRecord->ExceptionCode == 666)
@@ -3029,6 +3045,13 @@ bool ByteCodeRun::run(ByteCodeRunContext* runContext)
         }
         __except (exceptionHandler(runContext, GetExceptionInformation()))
         {
+            if (runContext->raiseDebugStart)
+            {
+                runContext->raiseDebugStart = false;
+                runContext->debugOn         = true;
+                continue;
+            }
+
             if (g_CommandLine->dbgCatch && runContext->canCatchError)
             {
                 runContext->ip--;

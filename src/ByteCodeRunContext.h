@@ -26,9 +26,9 @@ struct ByteCodeRunContext : public JobContext
     ~ByteCodeRunContext();
 
     void setup(SourceFile* sf, AstNode* node, ByteCode* nodebc);
-    void error(const Utf8& msg, SwagCompilerSourceLocation* loc = nullptr);
     void releaseStack();
     void stackOverflow();
+    void raiseError(const char* msg, SwagCompilerSourceLocation* loc = nullptr);
 
     template<typename T>
     inline T pop()
@@ -115,6 +115,8 @@ struct ByteCodeRunContext : public JobContext
         NextLineStepOut,
         FinishedFunction,
     };
+
+    bool raiseDebugStart = false;
 
     bool                 debugEntry            = false;
     bool                 debugOn               = false;

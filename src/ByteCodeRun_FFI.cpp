@@ -163,8 +163,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
         auto fromTTi   = ffiFromTypeInfo(typeParam);
         if (!fromTTi)
         {
-            context->hasError = true;
-            context->errorMsg = Fmt("ffi failed to convert argument type `%s`", typeParam->name.c_str());
+            context->raiseError(Fmt("ffi failed to convert argument type `%s`", typeParam->name.c_str()));
             return;
         }
 
@@ -257,8 +256,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
                 context->ffiArgsValues.push_back(&sp->u64);
                 break;
             default:
-                context->hasError = true;
-                context->errorMsg = Fmt("ffi failed to convert argument type `%s`", typeParam->name.c_str());
+                context->raiseError(Fmt("ffi failed to convert argument type `%s`", typeParam->name.c_str()));
                 return;
             }
 
@@ -294,8 +292,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
             typeResult = ffiFromTypeInfo(returnType);
             if (!typeResult)
             {
-                context->hasError = true;
-                context->errorMsg = Fmt("ffi failed to convert return type `%s`", typeInfoFunc->returnType->getDisplayNameC());
+                context->raiseError(Fmt("ffi failed to convert return type `%s`", typeInfoFunc->returnType->getDisplayNameC()));
                 return;
             }
         }
@@ -323,8 +320,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
             resultPtr = &context->registersRR[0].u64;
             break;
         default:
-            context->hasError = true;
-            context->errorMsg = Fmt("ffi failed to get return result of type `%s`", typeInfoFunc->returnType->getDisplayNameC());
+            context->raiseError(Fmt("ffi failed to get return result of type `%s`", typeInfoFunc->returnType->getDisplayNameC()));
             return;
         }
     }

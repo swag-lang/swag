@@ -99,8 +99,7 @@ void ByteCode::enterByteCode(ByteCodeRunContext* context, uint32_t popParamsOnRe
 {
     if (g_CommandLine->maxRecurse && context->curRC == (int) g_CommandLine->maxRecurse)
     {
-        context->hasError = true;
-        context->errorMsg = Fmt(Err(Err0076), g_CommandLine->maxRecurse);
+        context->raiseError(Fmt(Err(Err0076), g_CommandLine->maxRecurse));
         return;
     }
 
