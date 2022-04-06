@@ -43,3 +43,8 @@ namespace fs = std::experimental::filesystem;
 #endif
 
 ////////////////////////////
+
+#ifdef _MSC_VER
+#define SWAG_FORCE_INLINE __forceinline
+#define SWAG_UNREACHABLE  __assume(false)
+#endif

@@ -107,7 +107,7 @@ void* ByteCodeRun::makeLambda(JobContext* context, AstFuncDecl* funcNode, ByteCo
     }
 }
 
-inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCodeInstruction* ip)
+SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCodeInstruction* ip)
 {
     auto registersRC = context->curRegistersRC;
 
@@ -2869,8 +2869,7 @@ inline bool ByteCodeRun::executeInstruction(ByteCodeRunContext* context, ByteCod
         break;
 
     default:
-        if (ip->op < ByteCodeOp::End)
-            context->internalError(Fmt("unknown bytecode instruction `%s`", g_ByteCodeOpDesc[(int) ip->op].name), ip->node);
+        SWAG_UNREACHABLE;
         break;
     }
 
