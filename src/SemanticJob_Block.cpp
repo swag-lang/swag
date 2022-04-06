@@ -777,6 +777,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     {
         Ast::removeFromParent(newVar);
         Ast::addChildFront(newExpression, newVar);
+        newVar->inheritOwners(newExpression);
     }
 
     // In case of error (like an already defined identifier), we need to set the correct location of declared
