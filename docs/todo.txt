@@ -92,8 +92,6 @@ OPTIMS
 ****************************************
 
 -------------------------------------
-DebugNop suivi de DebugNop
--------------------------------------
 x64 binaryop div, transformer en shift si log2
 -------------------------------------
 BinOpModuloS32/div immediate mode

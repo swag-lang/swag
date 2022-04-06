@@ -1021,6 +1021,14 @@ void ByteCodeOptimizer::reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruct
 {
     switch (ip->op)
     {
+    case ByteCodeOp::DebugNop:
+        if (ip[1].op == ByteCodeOp::DebugNop)
+        {
+            setNop(context, ip + 1);
+            break;
+        }
+        break;
+
         // Useless pop/push
     case ByteCodeOp::InternalPushErr:
         if (ip[1].op == ByteCodeOp::InternalPopErr)
@@ -1029,6 +1037,7 @@ void ByteCodeOptimizer::reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruct
             setNop(context, ip + 1);
             break;
         }
+        break;
 
         // Useless multi return
     case ByteCodeOp::Ret:
@@ -1070,7 +1079,6 @@ void ByteCodeOptimizer::reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruct
             setNop(context, ip + 1);
             break;
         }
-
         break;
 
     case ByteCodeOp::GetFromStack16:
@@ -1096,6 +1104,7 @@ void ByteCodeOptimizer::reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruct
             setNop(context, ip + 1);
             break;
         }
+        break;
     }
 
     // Remove operators which do nothing
