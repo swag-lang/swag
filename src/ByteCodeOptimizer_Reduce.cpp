@@ -301,62 +301,50 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
     switch (ip->op)
     {
     case ByteCodeOp::GetFromStack8:
-        if ((ip[1].op == ByteCodeOp::CopyRBtoRA8) &&
-            (ip[2].op == ByteCodeOp::SetAtStackPointer8) &&
-            (ip[1].b.u32 == ip[0].a.u32) &&
-            (ip[2].b.u32 == ip[0].a.u32) &&
+        if ((ip[1].op == ByteCodeOp::SetAtStackPointer8) &&
+            ip[1].b.u32 == ip[0].a.u32 &&
             !(ip[1].flags & BCI_START_STMT) &&
-            !(ip[2].flags & BCI_START_STMT))
+            !(ip[1].flags & BCI_IMM_B))
         {
-            ip[0].a.u32 = ip[1].a.u32;
-            swap(ip[1].a, ip[1].b);
-            ip[2].b.u32                   = ip[1].b.u32;
-            context->passHasDoneSomething = true;
+            SET_OP(ip + 1, ByteCodeOp::CopyStack8);
+            ip[1].b.u64 = ip[0].b.u64;
+            break;
         }
         break;
 
     case ByteCodeOp::GetFromStack16:
-        if ((ip[1].op == ByteCodeOp::CopyRBtoRA16) &&
-            (ip[2].op == ByteCodeOp::SetAtStackPointer16) &&
-            (ip[1].b.u32 == ip[0].a.u32) &&
-            (ip[2].b.u32 == ip[0].a.u32) &&
+        if ((ip[1].op == ByteCodeOp::SetAtStackPointer16) &&
+            ip[1].b.u32 == ip[0].a.u32 &&
             !(ip[1].flags & BCI_START_STMT) &&
-            !(ip[2].flags & BCI_START_STMT))
+            !(ip[1].flags & BCI_IMM_B))
         {
-            ip[0].a.u32 = ip[1].a.u32;
-            swap(ip[1].a, ip[1].b);
-            ip[2].b.u32                   = ip[1].b.u32;
-            context->passHasDoneSomething = true;
+            SET_OP(ip + 1, ByteCodeOp::CopyStack16);
+            ip[1].b.u64 = ip[0].b.u64;
+            break;
         }
         break;
 
     case ByteCodeOp::GetFromStack32:
-        if ((ip[1].op == ByteCodeOp::CopyRBtoRA32) &&
-            (ip[2].op == ByteCodeOp::SetAtStackPointer32) &&
-            (ip[1].b.u32 == ip[0].a.u32) &&
-            (ip[2].b.u32 == ip[0].a.u32) &&
+        if ((ip[1].op == ByteCodeOp::SetAtStackPointer32) &&
+            ip[1].b.u32 == ip[0].a.u32 &&
             !(ip[1].flags & BCI_START_STMT) &&
-            !(ip[2].flags & BCI_START_STMT))
+            !(ip[1].flags & BCI_IMM_B))
         {
-            ip[0].a.u32 = ip[1].a.u32;
-            swap(ip[1].a, ip[1].b);
-            ip[2].b.u32                   = ip[1].b.u32;
-            context->passHasDoneSomething = true;
+            SET_OP(ip + 1, ByteCodeOp::CopyStack32);
+            ip[1].b.u64 = ip[0].b.u64;
+            break;
         }
         break;
 
     case ByteCodeOp::GetFromStack64:
-        if ((ip[1].op == ByteCodeOp::CopyRBtoRA64) &&
-            (ip[2].op == ByteCodeOp::SetAtStackPointer64) &&
-            (ip[1].b.u32 == ip[0].a.u32) &&
-            (ip[2].b.u32 == ip[0].a.u32) &&
+        if ((ip[1].op == ByteCodeOp::SetAtStackPointer64) &&
+            ip[1].b.u32 == ip[0].a.u32 &&
             !(ip[1].flags & BCI_START_STMT) &&
-            !(ip[2].flags & BCI_START_STMT))
+            !(ip[1].flags & BCI_IMM_B))
         {
-            ip[0].a.u32 = ip[1].a.u32;
-            swap(ip[1].a, ip[1].b);
-            ip[2].b.u32                   = ip[1].b.u32;
-            context->passHasDoneSomething = true;
+            SET_OP(ip + 1, ByteCodeOp::CopyStack64);
+            ip[1].b.u64 = ip[0].b.u64;
+            break;
         }
         break;
 

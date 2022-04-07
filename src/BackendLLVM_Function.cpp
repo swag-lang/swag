@@ -348,7 +348,9 @@ void BackendLLVM::setFuncAttributes(const BuildParameters& buildParameters, Modu
     llvm::AttrBuilder attr;
 
     if (!moduleToGen->mustOptimizeBK(bc->node))
+    {
         attr.addAttribute(llvm::Attribute::OptimizeNone);
+    }
 
     func->addAttributes(llvm::AttributeList::FunctionIndex, attr);
 }
@@ -371,7 +373,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     // Function prototype
     llvm::FunctionType* funcType = createFunctionTypeLocal(buildParameters, typeFunc);
     llvm::Function*     func     = (llvm::Function*) modu.getOrInsertFunction(bc->getCallName().c_str(), funcType).getCallee();
-    setFuncAttributes(buildParameters, moduleToGen, bc, func);
+    //setFuncAttributes(buildParameters, moduleToGen, bc, func);
 
     // No pointer aliasing, on all pointers. Is this correct ??
     // Note that without the NoAlias flag, some optims will not trigger (like vectorisation)
@@ -927,10 +929,38 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(v0, r0);
             break;
         }
-
         case ByteCodeOp::GetFromStack64:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto r1 = TO_PTR_I64(builder.CreateInBoundsGEP(allocStack, CST_RB32));
+            builder.CreateStore(builder.CreateLoad(r1), r0);
+            break;
+        }
+
+        case ByteCodeOp::CopyStack8:
+        {
+            auto r0 = TO_PTR_I8(builder.CreateInBoundsGEP(allocStack, CST_RA32));
+            auto r1 = TO_PTR_I8(builder.CreateInBoundsGEP(allocStack, CST_RB32));
+            builder.CreateStore(builder.CreateLoad(r1), r0);
+            break;
+        }
+        case ByteCodeOp::CopyStack16:
+        {
+            auto r0 = TO_PTR_I16(builder.CreateInBoundsGEP(allocStack, CST_RA32));
+            auto r1 = TO_PTR_I16(builder.CreateInBoundsGEP(allocStack, CST_RB32));
+            builder.CreateStore(builder.CreateLoad(r1), r0);
+            break;
+        }
+        case ByteCodeOp::CopyStack32:
+        {
+            auto r0 = TO_PTR_I32(builder.CreateInBoundsGEP(allocStack, CST_RA32));
+            auto r1 = TO_PTR_I32(builder.CreateInBoundsGEP(allocStack, CST_RB32));
+            builder.CreateStore(builder.CreateLoad(r1), r0);
+            break;
+        }
+        case ByteCodeOp::CopyStack64:
+        {
+            auto r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocStack, CST_RA32));
             auto r1 = TO_PTR_I64(builder.CreateInBoundsGEP(allocStack, CST_RB32));
             builder.CreateStore(builder.CreateLoad(r1), r0);
             break;
@@ -3047,7 +3077,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::InternalInitStackTrace:
         {
-            localCall(buildParameters, allocR, allocT, g_LangSpec->name__initStackTrace, {ip->a.u32}, {});
+            localCall(buildParameters, allocR, allocT, g_LangSpec->name__initStackTrace, {}, {});
             break;
         }
         case ByteCodeOp::InternalStackTrace:

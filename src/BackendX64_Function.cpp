@@ -1950,6 +1950,24 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load64_Indirect(pp, offsetStack + ip->b.u32, RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
+
+        case ByteCodeOp::CopyStack8:
+            BackendX64Inst::emit_Load8_Indirect(pp, offsetStack + ip->b.u32, RAX, RDI);
+            BackendX64Inst::emit_Store8_Indirect(pp, offsetStack + ip->a.u32, RAX, RDI);
+            break;
+        case ByteCodeOp::CopyStack16:
+            BackendX64Inst::emit_Load16_Indirect(pp, offsetStack + ip->b.u32, RAX, RDI);
+            BackendX64Inst::emit_Store16_Indirect(pp, offsetStack + ip->a.u32, RAX, RDI);
+            break;
+        case ByteCodeOp::CopyStack32:
+            BackendX64Inst::emit_Load32_Indirect(pp, offsetStack + ip->b.u32, RAX, RDI);
+            BackendX64Inst::emit_Store32_Indirect(pp, offsetStack + ip->a.u32, RAX, RDI);
+            break;
+        case ByteCodeOp::CopyStack64:
+            BackendX64Inst::emit_Load64_Indirect(pp, offsetStack + ip->b.u32, RAX, RDI);
+            BackendX64Inst::emit_Store64_Indirect(pp, offsetStack + ip->a.u32, RAX, RDI);
+            break;
+
         case ByteCodeOp::GetFromStack64x2:
             BackendX64Inst::emit_Load64_Indirect(pp, offsetStack + ip->b.u32, RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
