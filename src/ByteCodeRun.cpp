@@ -2485,6 +2485,47 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         break;
     }
 
+    case ByteCodeOp::AffectOpMinusEqS8_Safe:
+    {
+        *(int8_t*)registersRC[ip->a.u32].pointer -= IMMB_S8(ip);
+        break;
+    }
+    case ByteCodeOp::AffectOpMinusEqU8_Safe:
+    {
+        *(int8_t*)registersRC[ip->a.u32].pointer -= IMMB_S8(ip);
+        break;
+    }
+    case ByteCodeOp::AffectOpMinusEqS16_Safe:
+    {
+        *(int16_t*)registersRC[ip->a.u32].pointer -= IMMB_S16(ip);
+        break;
+    }
+    case ByteCodeOp::AffectOpMinusEqU16_Safe:
+    {
+        *(int16_t*)registersRC[ip->a.u32].pointer -= IMMB_S16(ip);
+        break;
+    }
+    case ByteCodeOp::AffectOpMinusEqS32_Safe:
+    {
+        *(int32_t*)registersRC[ip->a.u32].pointer -= IMMB_S32(ip);
+        break;
+    }
+    case ByteCodeOp::AffectOpMinusEqU32_Safe:
+    {
+        *(int32_t*)registersRC[ip->a.u32].pointer -= IMMB_S32(ip);
+        break;
+    }
+    case ByteCodeOp::AffectOpMinusEqS64_Safe:
+    {
+        *(int64_t*)registersRC[ip->a.u32].pointer -= IMMB_S64(ip);
+        break;
+    }
+    case ByteCodeOp::AffectOpMinusEqU64_Safe:
+    {
+        *(int64_t*)registersRC[ip->a.u32].pointer -= IMMB_S64(ip);
+        break;
+    }
+
     case ByteCodeOp::AffectOpMulEqS8:
     {
         if (mulOverflow(ip->node, *(int8_t*) registersRC[ip->a.u32].pointer, IMMB_S8(ip)))

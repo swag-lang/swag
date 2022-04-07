@@ -1737,48 +1737,56 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
 
         case ByteCodeOp::AffectOpMinusEqS8:
+        case ByteCodeOp::AffectOpMinusEqS8_Safe:
         {
             MK_BINOPEQ8_CAB();
             OPEQ_OVERFLOW(ssub_with_overflow, CreateSub, getInt8Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinusEq, g_TypeMgr->typeInfoS8));
             break;
         }
         case ByteCodeOp::AffectOpMinusEqU8:
+        case ByteCodeOp::AffectOpMinusEqU8_Safe:
         {
             MK_BINOPEQ8_CAB();
             OPEQ_OVERFLOW(usub_with_overflow, CreateSub, getInt8Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinusEq, g_TypeMgr->typeInfoU8));
             break;
         }
         case ByteCodeOp::AffectOpMinusEqS16:
+        case ByteCodeOp::AffectOpMinusEqS16_Safe:
         {
             MK_BINOPEQ16_CAB();
             OPEQ_OVERFLOW(ssub_with_overflow, CreateSub, getInt16Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinusEq, g_TypeMgr->typeInfoS16));
             break;
         }
         case ByteCodeOp::AffectOpMinusEqU16:
+        case ByteCodeOp::AffectOpMinusEqU16_Safe:
         {
             MK_BINOPEQ16_CAB();
             OPEQ_OVERFLOW(usub_with_overflow, CreateSub, getInt16Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinusEq, g_TypeMgr->typeInfoU16));
             break;
         }
         case ByteCodeOp::AffectOpMinusEqS32:
+        case ByteCodeOp::AffectOpMinusEqS32_Safe:
         {
             MK_BINOPEQ32_CAB();
             OPEQ_OVERFLOW(ssub_with_overflow, CreateSub, getInt32Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinusEq, g_TypeMgr->typeInfoS32));
             break;
         }
         case ByteCodeOp::AffectOpMinusEqU32:
+        case ByteCodeOp::AffectOpMinusEqU32_Safe:
         {
             MK_BINOPEQ32_CAB();
             OPEQ_OVERFLOW(usub_with_overflow, CreateSub, getInt32Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinusEq, g_TypeMgr->typeInfoU32));
             break;
         }
         case ByteCodeOp::AffectOpMinusEqS64:
+        case ByteCodeOp::AffectOpMinusEqS64_Safe:
         {
             MK_BINOPEQ64_CAB();
             OPEQ_OVERFLOW(ssub_with_overflow, CreateSub, getInt64Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinusEq, g_TypeMgr->typeInfoS64));
             break;
         }
         case ByteCodeOp::AffectOpMinusEqU64:
+        case ByteCodeOp::AffectOpMinusEqU64_Safe:
         {
             MK_BINOPEQ64_CAB();
             OPEQ_OVERFLOW(usub_with_overflow, CreateSub, getInt64Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinusEq, g_TypeMgr->typeInfoU64));
