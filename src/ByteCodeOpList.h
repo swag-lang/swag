@@ -467,6 +467,15 @@ BYTECODE_OP(AffectOpMulEqU64, OPFLAG_READ_A | OPFLAG_READ_B, "[_ra_] *= _rbu64_"
 BYTECODE_OP(AffectOpMulEqF32, OPFLAG_READ_A | OPFLAG_READ_B, "[_ra_] *= _rbf32_", 0)
 BYTECODE_OP(AffectOpMulEqF64, OPFLAG_READ_A | OPFLAG_READ_B, "[_ra_] *= _rbf64_", 0)
 
+BYTECODE_OP(AffectOpMulEqS8_Safe, OPFLAG_READ_A | OPFLAG_READ_B, "[_ra_] *= _rbs8_", 0)
+BYTECODE_OP(AffectOpMulEqS16_Safe, OPFLAG_READ_A | OPFLAG_READ_B, "[_ra_] *= _rbs16_", 0)
+BYTECODE_OP(AffectOpMulEqS32_Safe, OPFLAG_READ_A | OPFLAG_READ_B, "[_ra_] *= _rbs32_", 0)
+BYTECODE_OP(AffectOpMulEqS64_Safe, OPFLAG_READ_A | OPFLAG_READ_B, "[_ra_] *= _rbs64_", 0)
+BYTECODE_OP(AffectOpMulEqU8_Safe, OPFLAG_READ_A | OPFLAG_READ_B, "[_ra_] *= _rbu8_", 0)
+BYTECODE_OP(AffectOpMulEqU16_Safe, OPFLAG_READ_A | OPFLAG_READ_B, "[_ra_] *= _rbu16_", 0)
+BYTECODE_OP(AffectOpMulEqU32_Safe, OPFLAG_READ_A | OPFLAG_READ_B, "[_ra_] *= _rbu32_", 0)
+BYTECODE_OP(AffectOpMulEqU64_Safe, OPFLAG_READ_A | OPFLAG_READ_B, "[_ra_] *= _rbu64_", 0)
+
 BYTECODE_OP(AffectOpDivEqS8, OPFLAG_READ_A | OPFLAG_READ_B, "[_ra_] /= _rbs8_", 0)
 BYTECODE_OP(AffectOpDivEqS16, OPFLAG_READ_A | OPFLAG_READ_B, "[_ra_] /= _rbs16_", 0)
 BYTECODE_OP(AffectOpDivEqS32, OPFLAG_READ_A | OPFLAG_READ_B, "[_ra_] /= _rbs32_", 0)

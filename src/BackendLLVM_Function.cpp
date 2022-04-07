@@ -1879,48 +1879,56 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
 
         case ByteCodeOp::AffectOpMulEqS8:
+        case ByteCodeOp::AffectOpMulEqS8_Safe:
         {
             MK_BINOPEQ8_CAB();
             OPEQ_OVERFLOW(smul_with_overflow, CreateMul, getInt8Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::IFMulEq, g_TypeMgr->typeInfoS8));
             break;
         }
         case ByteCodeOp::AffectOpMulEqU8:
+        case ByteCodeOp::AffectOpMulEqU8_Safe:
         {
             MK_BINOPEQ8_CAB();
             OPEQ_OVERFLOW(umul_with_overflow, CreateMul, getInt8Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::IFMulEq, g_TypeMgr->typeInfoU8));
             break;
         }
         case ByteCodeOp::AffectOpMulEqS16:
+        case ByteCodeOp::AffectOpMulEqS16_Safe:
         {
             MK_BINOPEQ16_CAB();
             OPEQ_OVERFLOW(smul_with_overflow, CreateMul, getInt16Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::IFMulEq, g_TypeMgr->typeInfoS16));
             break;
         }
         case ByteCodeOp::AffectOpMulEqU16:
+        case ByteCodeOp::AffectOpMulEqU16_Safe:
         {
             MK_BINOPEQ16_CAB();
             OPEQ_OVERFLOW(umul_with_overflow, CreateMul, getInt16Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::IFMulEq, g_TypeMgr->typeInfoU16));
             break;
         }
         case ByteCodeOp::AffectOpMulEqS32:
+        case ByteCodeOp::AffectOpMulEqS32_Safe:
         {
             MK_BINOPEQ32_CAB();
             OPEQ_OVERFLOW(smul_with_overflow, CreateMul, getInt32Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::IFMulEq, g_TypeMgr->typeInfoS32));
             break;
         }
         case ByteCodeOp::AffectOpMulEqU32:
+        case ByteCodeOp::AffectOpMulEqU32_Safe:
         {
             MK_BINOPEQ32_CAB();
             OPEQ_OVERFLOW(umul_with_overflow, CreateMul, getInt32Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::IFMulEq, g_TypeMgr->typeInfoU32));
             break;
         }
         case ByteCodeOp::AffectOpMulEqS64:
+        case ByteCodeOp::AffectOpMulEqS64_Safe:
         {
             MK_BINOPEQ64_CAB();
             OPEQ_OVERFLOW(smul_with_overflow, CreateMul, getInt64Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::IFMulEq, g_TypeMgr->typeInfoS64));
             break;
         }
         case ByteCodeOp::AffectOpMulEqU64:
+        case ByteCodeOp::AffectOpMulEqU64_Safe:
         {
             MK_BINOPEQ64_CAB();
             OPEQ_OVERFLOW(umul_with_overflow, CreateMul, getInt64Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::IFMulEq, g_TypeMgr->typeInfoU64));

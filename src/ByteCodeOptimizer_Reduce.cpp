@@ -2864,6 +2864,31 @@ void ByteCodeOptimizer::reduceForceSafe(ByteCodeOptContext* context, ByteCodeIns
         case ByteCodeOp::AffectOpMinusEqU64:
             SET_OP(ip, ByteCodeOp::AffectOpMinusEqU64_Safe);
             break;
+
+        case ByteCodeOp::AffectOpMulEqS8:
+            SET_OP(ip, ByteCodeOp::AffectOpMulEqS8_Safe);
+            break;
+        case ByteCodeOp::AffectOpMulEqU8:
+            SET_OP(ip, ByteCodeOp::AffectOpMulEqU8_Safe);
+            break;
+        case ByteCodeOp::AffectOpMulEqS16:
+            SET_OP(ip, ByteCodeOp::AffectOpMulEqS16_Safe);
+            break;
+        case ByteCodeOp::AffectOpMulEqU16:
+            SET_OP(ip, ByteCodeOp::AffectOpMulEqU16_Safe);
+            break;
+        case ByteCodeOp::AffectOpMulEqS32:
+            SET_OP(ip, ByteCodeOp::AffectOpMulEqS32_Safe);
+            break;
+        case ByteCodeOp::AffectOpMulEqU32:
+            SET_OP(ip, ByteCodeOp::AffectOpMulEqU32_Safe);
+            break;
+        case ByteCodeOp::AffectOpMulEqS64:
+            SET_OP(ip, ByteCodeOp::AffectOpMulEqS64_Safe);
+            break;
+        case ByteCodeOp::AffectOpMulEqU64:
+            SET_OP(ip, ByteCodeOp::AffectOpMulEqU64_Safe);
+            break;
         }
     }
 }

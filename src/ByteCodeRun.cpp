@@ -2487,42 +2487,42 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
 
     case ByteCodeOp::AffectOpMinusEqS8_Safe:
     {
-        *(int8_t*)registersRC[ip->a.u32].pointer -= IMMB_S8(ip);
+        *(int8_t*) registersRC[ip->a.u32].pointer -= IMMB_S8(ip);
         break;
     }
     case ByteCodeOp::AffectOpMinusEqU8_Safe:
     {
-        *(int8_t*)registersRC[ip->a.u32].pointer -= IMMB_S8(ip);
+        *(int8_t*) registersRC[ip->a.u32].pointer -= IMMB_S8(ip);
         break;
     }
     case ByteCodeOp::AffectOpMinusEqS16_Safe:
     {
-        *(int16_t*)registersRC[ip->a.u32].pointer -= IMMB_S16(ip);
+        *(int16_t*) registersRC[ip->a.u32].pointer -= IMMB_S16(ip);
         break;
     }
     case ByteCodeOp::AffectOpMinusEqU16_Safe:
     {
-        *(int16_t*)registersRC[ip->a.u32].pointer -= IMMB_S16(ip);
+        *(int16_t*) registersRC[ip->a.u32].pointer -= IMMB_S16(ip);
         break;
     }
     case ByteCodeOp::AffectOpMinusEqS32_Safe:
     {
-        *(int32_t*)registersRC[ip->a.u32].pointer -= IMMB_S32(ip);
+        *(int32_t*) registersRC[ip->a.u32].pointer -= IMMB_S32(ip);
         break;
     }
     case ByteCodeOp::AffectOpMinusEqU32_Safe:
     {
-        *(int32_t*)registersRC[ip->a.u32].pointer -= IMMB_S32(ip);
+        *(int32_t*) registersRC[ip->a.u32].pointer -= IMMB_S32(ip);
         break;
     }
     case ByteCodeOp::AffectOpMinusEqS64_Safe:
     {
-        *(int64_t*)registersRC[ip->a.u32].pointer -= IMMB_S64(ip);
+        *(int64_t*) registersRC[ip->a.u32].pointer -= IMMB_S64(ip);
         break;
     }
     case ByteCodeOp::AffectOpMinusEqU64_Safe:
     {
-        *(int64_t*)registersRC[ip->a.u32].pointer -= IMMB_S64(ip);
+        *(int64_t*) registersRC[ip->a.u32].pointer -= IMMB_S64(ip);
         break;
     }
 
@@ -2590,6 +2590,47 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     case ByteCodeOp::AffectOpMulEqF64:
     {
         *(double*) registersRC[ip->a.u32].pointer *= IMMB_F64(ip);
+        break;
+    }
+
+    case ByteCodeOp::AffectOpMulEqS8_Safe:
+    {
+        *(int8_t*) registersRC[ip->a.u32].pointer *= IMMB_S8(ip);
+        break;
+    }
+    case ByteCodeOp::AffectOpMulEqU8_Safe:
+    {
+        *(int8_t*) registersRC[ip->a.u32].pointer *= IMMB_S8(ip);
+        break;
+    }
+    case ByteCodeOp::AffectOpMulEqS16_Safe:
+    {
+        *(int16_t*) registersRC[ip->a.u32].pointer *= IMMB_S16(ip);
+        break;
+    }
+    case ByteCodeOp::AffectOpMulEqU16_Safe:
+    {
+        *(int16_t*) registersRC[ip->a.u32].pointer *= IMMB_S16(ip);
+        break;
+    }
+    case ByteCodeOp::AffectOpMulEqS32_Safe:
+    {
+        *(int32_t*) registersRC[ip->a.u32].pointer *= IMMB_S32(ip);
+        break;
+    }
+    case ByteCodeOp::AffectOpMulEqU32_Safe:
+    {
+        *(int32_t*) registersRC[ip->a.u32].pointer *= IMMB_S32(ip);
+        break;
+    }
+    case ByteCodeOp::AffectOpMulEqS64_Safe:
+    {
+        *(int64_t*) registersRC[ip->a.u32].pointer *= IMMB_S64(ip);
+        break;
+    }
+    case ByteCodeOp::AffectOpMulEqU64_Safe:
+    {
+        *(int64_t*) registersRC[ip->a.u32].pointer *= IMMB_S64(ip);
         break;
     }
 
