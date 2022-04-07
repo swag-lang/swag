@@ -2806,6 +2806,43 @@ void ByteCodeOptimizer::reduceNullPointer(ByteCodeOptContext* context, ByteCodeI
     }
 }
 
+void ByteCodeOptimizer::reduceForceSafe(ByteCodeOptContext* context, ByteCodeInstruction* ip)
+{
+    if (!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->module)
+        return;
+
+    if (!ip->node->sourceFile->module->mustEmitSafetyOF(ip->node))
+    {
+        switch (ip->op)
+        {
+        case ByteCodeOp::AffectOpPlusEqS8:
+            SET_OP(ip, ByteCodeOp::AffectOpPlusEqS8_Safe);
+            break;
+        case ByteCodeOp::AffectOpPlusEqS16:
+            SET_OP(ip, ByteCodeOp::AffectOpPlusEqS16_Safe);
+            break;
+        case ByteCodeOp::AffectOpPlusEqS32:
+            SET_OP(ip, ByteCodeOp::AffectOpPlusEqS32_Safe);
+            break;
+        case ByteCodeOp::AffectOpPlusEqS64:
+            SET_OP(ip, ByteCodeOp::AffectOpPlusEqS64_Safe);
+            break;
+        case ByteCodeOp::AffectOpPlusEqU8:
+            SET_OP(ip, ByteCodeOp::AffectOpPlusEqU8_Safe);
+            break;
+        case ByteCodeOp::AffectOpPlusEqU16:
+            SET_OP(ip, ByteCodeOp::AffectOpPlusEqU16_Safe);
+            break;
+        case ByteCodeOp::AffectOpPlusEqU32:
+            SET_OP(ip, ByteCodeOp::AffectOpPlusEqU32_Safe);
+            break;
+        case ByteCodeOp::AffectOpPlusEqU64:
+            SET_OP(ip, ByteCodeOp::AffectOpPlusEqU64_Safe);
+            break;
+        }
+    }
+}
+
 bool ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
 {
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
@@ -2822,6 +2859,7 @@ bool ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
         reduceNullPointer(context, ip);
         reduceAppend(context, ip);
         reduceX2(context, ip);
+        reduceForceSafe(context, ip);
     }
 
     return true;
