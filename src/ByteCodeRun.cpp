@@ -273,6 +273,13 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             context->ip += ip->b.s32;
         break;
     }
+    case ByteCodeOp::IncJumpIfEqual64:
+    {
+        registersRC[ip->a.u32].u64++;
+        if (IMMA_U64(ip) == IMMC_U64(ip))
+            context->ip += ip->b.s32;
+        break;
+    }
     case ByteCodeOp::JumpIfEqual64:
     {
         if (IMMA_U64(ip) == IMMC_U64(ip))

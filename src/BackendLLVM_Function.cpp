@@ -373,7 +373,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     // Function prototype
     llvm::FunctionType* funcType = createFunctionTypeLocal(buildParameters, typeFunc);
     llvm::Function*     func     = (llvm::Function*) modu.getOrInsertFunction(bc->getCallName().c_str(), funcType).getCallee();
-    //setFuncAttributes(buildParameters, moduleToGen, bc, func);
+    // setFuncAttributes(buildParameters, moduleToGen, bc, func);
 
     // No pointer aliasing, on all pointers. Is this correct ??
     // Note that without the NoAlias flag, some optims will not trigger (like vectorisation)
@@ -2755,6 +2755,26 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             blockIsClosed = true;
             break;
         }
+
+        case ByteCodeOp::IncJumpIfEqual64:
+        {
+            {
+                auto r0 = GEP_I32(allocR, ip->a.u32);
+                auto v0 = builder.CreateAdd(builder.CreateLoad(r0), pp.cst1_i64);
+                builder.CreateStore(v0, r0);
+            }
+            {
+                auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+                auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+                auto r0         = MK_IMMA_64();
+                auto r1         = MK_IMMC_64();
+                auto b0         = builder.CreateICmpEQ(r0, r1);
+                builder.CreateCondBr(b0, labelTrue, labelFalse);
+                blockIsClosed = true;
+            }
+            break;
+        }
+
         case ByteCodeOp::JumpIfEqual64:
         {
             auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);

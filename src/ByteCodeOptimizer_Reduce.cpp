@@ -1395,6 +1395,19 @@ void ByteCodeOptimizer::reduceCmpJump(ByteCodeOptContext* context, ByteCodeInstr
 {
     switch (ip->op)
     {
+    case ByteCodeOp::IncrementRA64:
+        if (ip[1].op == ByteCodeOp::JumpIfEqual64 &&
+            !(ip[0].flags & BCI_IMM_A) &&
+            !(ip[1].flags & BCI_IMM_A) &&
+            !(ip[1].flags & BCI_START_STMT) &&
+            ip[0].a.u32 == ip[1].a.u32)
+        {
+            setNop(context, ip);
+            SET_OP(ip + 1, ByteCodeOp::IncJumpIfEqual64);
+            break;
+        }
+        break;
+
     // NegBool followed by jump bool
     case ByteCodeOp::NegBool:
         if (ip[1].op == ByteCodeOp::JumpIfFalse &&
