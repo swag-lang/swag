@@ -367,7 +367,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
         if (nodeCall->typeInfo->kind == TypeInfoKind::Lambda && (nodeCall->typeInfo->declNode->semFlags & AST_SEM_PENDING_LAMBDA_TYPING))
             resolvePendingLambdaTyping(nodeCall, &oneMatch, i);
 
-        uint32_t castFlags = CASTFLAG_AUTO_OPCAST;
+        uint32_t castFlags = CASTFLAG_AUTO_OPCAST | CASTFLAG_ACCEPT_PENDING;
         if (i == 0 && oneMatch.ufcs)
             castFlags |= CASTFLAG_UFCS;
 
@@ -376,11 +376,15 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
         {
             toType = oneMatch.solvedParameters[i]->typeInfo;
             SWAG_CHECK(TypeManager::makeCompatibles(context, toType, nullptr, nodeCall, castFlags));
+            if (context->result != ContextResult::Done)
+                return true;
         }
         else if (oneMatch.solvedParameters.size() && oneMatch.solvedParameters.back() && oneMatch.solvedParameters.back()->typeInfo->kind == TypeInfoKind::TypedVariadic)
         {
             toType = oneMatch.solvedParameters.back()->typeInfo;
             SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch.solvedParameters.back()->typeInfo, nullptr, nodeCall));
+            if (context->result != ContextResult::Done)
+                return true;
         }
 
         // For a variadic parameter, we need to generate the concrete typeinfo for the corresponding 'any' type
