@@ -109,18 +109,22 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 break;
 
             case ByteCodeOp::BinOpPlusS32:
+            case ByteCodeOp::BinOpPlusS32_Safe:
                 SWAG_VERIFY(!addOverflow(node, ip->a.s32, ip->b.s32), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr->typeInfoS32)}));
                 BINOP_S32(+);
                 break;
             case ByteCodeOp::BinOpPlusU32:
+            case ByteCodeOp::BinOpPlusU32_Safe:
                 SWAG_VERIFY(!addOverflow(node, ip->a.u32, ip->b.u32), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr->typeInfoU32)}));
                 BINOP_S32(+);
                 break;
             case ByteCodeOp::BinOpPlusS64:
+            case ByteCodeOp::BinOpPlusS64_Safe:
                 SWAG_VERIFY(!addOverflow(node, ip->a.s64, ip->b.s64), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr->typeInfoS64)}));
                 BINOP_S64(+);
                 break;
             case ByteCodeOp::BinOpPlusU64:
+            case ByteCodeOp::BinOpPlusU64_Safe:
                 SWAG_VERIFY(!addOverflow(node, ip->a.u64, ip->b.u64), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr->typeInfoU64)}));
                 BINOP_S64(+);
                 break;
@@ -132,18 +136,22 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 break;
 
             case ByteCodeOp::BinOpMinusS32:
+            case ByteCodeOp::BinOpMinusS32_Safe:
                 SWAG_VERIFY(!subOverflow(node, ip->a.s32, ip->b.s32), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr->typeInfoS32)}));
                 BINOP_S32(-);
                 break;
             case ByteCodeOp::BinOpMinusU32:
+            case ByteCodeOp::BinOpMinusU32_Safe:
                 SWAG_VERIFY(!subOverflow(node, ip->a.u32, ip->b.u32), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr->typeInfoU32)}));
                 BINOP_S32(-);
                 break;
             case ByteCodeOp::BinOpMinusS64:
+            case ByteCodeOp::BinOpMinusS64_Safe:
                 SWAG_VERIFY(!subOverflow(node, ip->a.s64, ip->b.s64), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr->typeInfoS64)}));
                 BINOP_S64(-);
                 break;
             case ByteCodeOp::BinOpMinusU64:
+            case ByteCodeOp::BinOpMinusU64_Safe:
                 SWAG_VERIFY(!subOverflow(node, ip->a.u64, ip->b.u64), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr->typeInfoU64)}));
                 BINOP_S64(-);
                 break;
@@ -155,18 +163,22 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                 break;
 
             case ByteCodeOp::BinOpMulS32:
+            case ByteCodeOp::BinOpMulS32_Safe:
                 SWAG_VERIFY(!mulOverflow(node, ip->a.s32, ip->b.s32), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr->typeInfoS32)}));
                 BINOP_S32(*);
                 break;
             case ByteCodeOp::BinOpMulU32:
+            case ByteCodeOp::BinOpMulU32_Safe:
                 SWAG_VERIFY(!mulOverflow(node, ip->a.u32, ip->b.u32), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr->typeInfoU32)}));
                 BINOP_S32(*);
                 break;
             case ByteCodeOp::BinOpMulS64:
+            case ByteCodeOp::BinOpMulS64_Safe:
                 SWAG_VERIFY(!mulOverflow(node, ip->a.s64, ip->b.s64), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr->typeInfoS64)}));
                 BINOP_S64(*);
                 break;
             case ByteCodeOp::BinOpMulU64:
+            case ByteCodeOp::BinOpMulU64_Safe:
                 SWAG_VERIFY(!mulOverflow(node, ip->a.u64, ip->b.u64), context->report({node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr->typeInfoU64)}));
                 BINOP_S64(*);
                 break;

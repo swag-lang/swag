@@ -1107,6 +1107,10 @@ void ByteCodeOptimizer::reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruct
         case ByteCodeOp::BinOpMinusS32:
         case ByteCodeOp::BinOpPlusU32:
         case ByteCodeOp::BinOpMinusU32:
+        case ByteCodeOp::BinOpPlusS32_Safe:
+        case ByteCodeOp::BinOpMinusS32_Safe:
+        case ByteCodeOp::BinOpPlusU32_Safe:
+        case ByteCodeOp::BinOpMinusU32_Safe:
             if (ip->b.u32 == 0)
                 setNop(context, ip);
             break;
@@ -1115,6 +1119,10 @@ void ByteCodeOptimizer::reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruct
         case ByteCodeOp::BinOpPlusU64:
         case ByteCodeOp::BinOpMinusS64:
         case ByteCodeOp::BinOpMinusU64:
+        case ByteCodeOp::BinOpPlusS64_Safe:
+        case ByteCodeOp::BinOpPlusU64_Safe:
+        case ByteCodeOp::BinOpMinusS64_Safe:
+        case ByteCodeOp::BinOpMinusU64_Safe:
         case ByteCodeOp::IncPointer64:
         case ByteCodeOp::DecPointer64:
             if (ip->b.u64 == 0)
@@ -1133,6 +1141,10 @@ void ByteCodeOptimizer::reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruct
         case ByteCodeOp::BinOpMulU64:
         case ByteCodeOp::BinOpMulS32:
         case ByteCodeOp::BinOpMulS64:
+        case ByteCodeOp::BinOpMulU32_Safe:
+        case ByteCodeOp::BinOpMulU64_Safe:
+        case ByteCodeOp::BinOpMulS32_Safe:
+        case ByteCodeOp::BinOpMulS64_Safe:
             if (ip->b.u32 == 1)
             {
                 if (ip->a.u32 != ip->c.u32)
@@ -2888,6 +2900,45 @@ void ByteCodeOptimizer::reduceForceSafe(ByteCodeOptContext* context, ByteCodeIns
             break;
         case ByteCodeOp::AffectOpMulEqU64:
             SET_OP(ip, ByteCodeOp::AffectOpMulEqU64_Safe);
+            break;
+
+        case ByteCodeOp::BinOpPlusS32:
+            SET_OP(ip, ByteCodeOp::BinOpPlusS32_Safe);
+            break;
+        case ByteCodeOp::BinOpPlusU32:
+            SET_OP(ip, ByteCodeOp::BinOpPlusU32_Safe);
+            break;
+        case ByteCodeOp::BinOpPlusS64:
+            SET_OP(ip, ByteCodeOp::BinOpPlusS64_Safe);
+            break;
+        case ByteCodeOp::BinOpPlusU64:
+            SET_OP(ip, ByteCodeOp::BinOpPlusU64_Safe);
+            break;
+
+        case ByteCodeOp::BinOpMinusS32:
+            SET_OP(ip, ByteCodeOp::BinOpMinusS32_Safe);
+            break;
+        case ByteCodeOp::BinOpMinusU32:
+            SET_OP(ip, ByteCodeOp::BinOpMinusU32_Safe);
+            break;
+        case ByteCodeOp::BinOpMinusS64:
+            SET_OP(ip, ByteCodeOp::BinOpMinusS64_Safe);
+            break;
+        case ByteCodeOp::BinOpMinusU64:
+            SET_OP(ip, ByteCodeOp::BinOpMinusU64_Safe);
+            break;
+
+        case ByteCodeOp::BinOpMulS32:
+            SET_OP(ip, ByteCodeOp::BinOpMulS32_Safe);
+            break;
+        case ByteCodeOp::BinOpMulU32:
+            SET_OP(ip, ByteCodeOp::BinOpMulU32_Safe);
+            break;
+        case ByteCodeOp::BinOpMulS64:
+            SET_OP(ip, ByteCodeOp::BinOpMulS64_Safe);
+            break;
+        case ByteCodeOp::BinOpMulU64:
+            SET_OP(ip, ByteCodeOp::BinOpMulU64_Safe);
             break;
         }
     }

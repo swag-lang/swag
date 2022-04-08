@@ -838,18 +838,22 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::BinOpMulS32:
+        case ByteCodeOp::BinOpMulS32_Safe:
             BackendX64Inst::emit_BinOpInt32_At_Reg(pp, ip, X64Op::IMUL);
             emitOverflowSigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr->typeInfoS32));
             break;
         case ByteCodeOp::BinOpMulU32:
+        case ByteCodeOp::BinOpMulU32_Safe:
             BackendX64Inst::emit_BinOpInt32_At_Reg(pp, ip, X64Op::MUL);
             emitOverflowUnsigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr->typeInfoU32));
             break;
         case ByteCodeOp::BinOpMulS64:
+        case ByteCodeOp::BinOpMulS64_Safe:
             BackendX64Inst::emit_BinOpInt64_At_Reg(pp, ip, X64Op::IMUL);
             emitOverflowSigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr->typeInfoS64));
             break;
         case ByteCodeOp::BinOpMulU64:
+        case ByteCodeOp::BinOpMulU64_Safe:
             BackendX64Inst::emit_BinOpInt64_At_Reg(pp, ip, X64Op::MUL);
             emitOverflowUnsigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr->typeInfoU64));
             break;
@@ -893,18 +897,22 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::BinOpPlusS32:
+        case ByteCodeOp::BinOpPlusS32_Safe:
             BackendX64Inst::emit_BinOpInt32_At_Reg(pp, ip, X64Op::ADD);
             emitOverflowSigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr->typeInfoS32));
             break;
         case ByteCodeOp::BinOpPlusU32:
+        case ByteCodeOp::BinOpPlusU32_Safe:
             BackendX64Inst::emit_BinOpInt32_At_Reg(pp, ip, X64Op::ADD);
             emitOverflowUnsigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr->typeInfoU32));
             break;
         case ByteCodeOp::BinOpPlusS64:
+        case ByteCodeOp::BinOpPlusS64_Safe:
             BackendX64Inst::emit_BinOpInt64_At_Reg(pp, ip, X64Op::ADD);
             emitOverflowSigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr->typeInfoS64));
             break;
         case ByteCodeOp::BinOpPlusU64:
+        case ByteCodeOp::BinOpPlusU64_Safe:
             BackendX64Inst::emit_BinOpInt64_At_Reg(pp, ip, X64Op::ADD);
             emitOverflowUnsigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr->typeInfoU64));
             break;
@@ -916,18 +924,22 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::BinOpMinusS32:
+        case ByteCodeOp::BinOpMinusS32_Safe:
             BackendX64Inst::emit_BinOpInt32_At_Reg(pp, ip, X64Op::SUB);
             emitOverflowSigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr->typeInfoS32));
             break;
         case ByteCodeOp::BinOpMinusU32:
+        case ByteCodeOp::BinOpMinusU32_Safe:
             BackendX64Inst::emit_BinOpInt32_At_Reg(pp, ip, X64Op::SUB);
             emitOverflowUnsigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr->typeInfoU32));
             break;
         case ByteCodeOp::BinOpMinusS64:
+        case ByteCodeOp::BinOpMinusS64_Safe:
             BackendX64Inst::emit_BinOpInt64_At_Reg(pp, ip, X64Op::SUB);
             emitOverflowSigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr->typeInfoS64));
             break;
         case ByteCodeOp::BinOpMinusU64:
+        case ByteCodeOp::BinOpMinusU64_Safe:
             BackendX64Inst::emit_BinOpInt64_At_Reg(pp, ip, X64Op::SUB);
             emitOverflowUnsigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr->typeInfoU64));
             break;
