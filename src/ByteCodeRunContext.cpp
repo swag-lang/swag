@@ -68,6 +68,11 @@ void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd, ByteCode* nodebc)
     ip = bc->out;
     SWAG_ASSERT(ip);
 
+    registers.reserve(4096);
+    registersRC.reserve(1024);
+    registers.count   = 0;
+    registersRC.count = 0;
+
     curRC    = -1;
     firstRC  = -1;
     hasError = false;

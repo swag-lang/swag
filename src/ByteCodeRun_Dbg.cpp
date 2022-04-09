@@ -8,7 +8,7 @@
 
 static void printRegister(ByteCodeRunContext* context, uint32_t curRC, uint32_t reg, bool read)
 {
-    auto registersRC = context->registersRC[curRC]->buffer;
+    auto registersRC = context->getRegBuffer(curRC);
     Utf8 str;
     str += read ? Fmt("(%u)", reg) : Fmt("[%u]", reg);
     str += Fmt(" = %016llx\n", registersRC[reg].u64);
@@ -50,7 +50,7 @@ static void printMemory(ByteCodeRunContext* context, uint32_t curRC, const char*
     {
         addr += 1;
         auto reg         = atoi(addr);
-        auto registersRC = context->registersRC[curRC]->buffer;
+        auto registersRC = context->getRegBuffer(curRC);
         addrVal          = registersRC[reg].u64;
     }
     else
@@ -629,7 +629,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             if (cmd == "r" && cmds.size() == 1)
             {
                 g_Log.setColor(LogColor::White);
-                for (int i = 0; i < context->registersRC[context->debugCxtRc]->size(); i++)
+                for (int i = 0; i < context->getRegCount(context->debugCxtRc); i++)
                     printRegister(context, context->debugCxtRc, i, true);
                 continue;
             }
@@ -639,11 +639,11 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             {
                 g_Log.setColor(LogColor::Gray);
                 int regN = atoi(cmds[1].c_str());
-                if (regN >= context->registersRC[context->debugCxtRc]->size())
-                    g_Log.print(Fmt("invalid register number, maximum value is '%u'\n", (uint32_t) context->registersRC[context->debugCxtRc]->size()));
+                if (regN >= context->getRegCount(context->debugCxtRc))
+                    g_Log.print(Fmt("invalid register number, maximum value is '%u'\n", (uint32_t) context->getRegCount(context->debugCxtRc)));
                 else
                 {
-                    auto& regP = context->registersRC[context->debugCxtRc]->buffer[regN];
+                    auto& regP = context->getRegBuffer(context->debugCxtRc)[regN];
                     printFullRegister(regP);
                 }
 

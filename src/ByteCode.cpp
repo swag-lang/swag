@@ -104,12 +104,10 @@ void ByteCode::enterByteCode(ByteCodeRunContext* context, uint32_t popParamsOnRe
     }
 
     context->curRC++;
-    if (context->curRC >= context->registersRC.size())
-        context->registersRC.emplace_back(new VectorNative<Register>());
-
-    context->registersRC[context->curRC]->reserve(maxReservedRegisterRC, false);
-    context->registersRC[context->curRC]->count = maxReservedRegisterRC;
-    context->curRegistersRC                     = context->registersRC[context->curRC]->buffer;
+    context->registersRC.push_back(context->registers.count);
+    context->registers.reserve(context->registers.count + maxReservedRegisterRC);
+    context->curRegistersRC = context->registers.buffer + context->registers.count;
+    context->registers.count += maxReservedRegisterRC;
 
     context->popParamsOnRet.push_back(popParamsOnRet);
     context->returnRegOnRet.push_back(returnReg);
@@ -123,7 +121,12 @@ void ByteCode::leaveByteCode(ByteCodeRunContext* context, bool popCallStack)
         g_ByteCodeStack.pop();
     context->curRC--;
     if (context->curRC >= 0)
-        context->curRegistersRC = context->registersRC[context->curRC]->buffer;
+    {
+        auto newCount = context->registersRC.back();
+        context->registersRC.pop_back();
+        context->registers.count = newCount;
+        context->curRegistersRC = context->registers.buffer + context->registersRC.back();
+    }
 }
 
 void ByteCode::markLabels()

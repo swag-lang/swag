@@ -4,6 +4,7 @@
 #include "SourceFile.h"
 #include "Job.h"
 #include "ffi/ffi.h"
+#include "ByteCode.h"
 struct SemanticContext;
 struct AstNode;
 struct ByteCodeRunContext;
@@ -67,13 +68,26 @@ struct ByteCodeRunContext : public JobContext
         sp -= offset;
     }
 
-    VectorNative<ffi_type*>         ffiArgs;
-    VectorNative<void*>             ffiArgsValues;
-    Utf8                            errorMsg;
-    vector<VectorNative<Register>*> registersRC;
-    vector<uint32_t>                popParamsOnRet;
-    vector<uint32_t>                returnRegOnRet;
-    vector<uint64_t>                returnRegOnRetRR;
+    inline Register* getRegBuffer(int cur)
+    {
+        return registers.buffer + registersRC[cur];
+    }
+
+    inline int getRegCount(int cur)
+    {
+        if (cur >= registersRC.size() - 1)
+            return (int) bc->maxReservedRegisterRC;
+        return (int) (registersRC[cur + 1] - registersRC[cur]);
+    }
+
+    VectorNative<ffi_type*> ffiArgs;
+    VectorNative<void*>     ffiArgsValues;
+    Utf8                    errorMsg;
+    VectorNative<int>       registersRC;
+    VectorNative<Register>  registers;
+    vector<uint32_t>        popParamsOnRet;
+    vector<uint32_t>        returnRegOnRet;
+    vector<uint64_t>        returnRegOnRetRR;
 
     bool      ffi_StructByCopyDone = false;
     ffi_type  ffi_StructByCopy1;

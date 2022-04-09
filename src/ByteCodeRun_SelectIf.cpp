@@ -107,7 +107,7 @@ void ByteCodeRun::executeGetFromStackSI(ByteCodeRunContext* context, ByteCodeIns
 
     auto paramIdx    = ip->c.u32;
     auto callParams  = context->callerContext->selectIfParameters;
-    auto registersRC = context->registersRC[context->curRC]->buffer;
+    auto registersRC = context->curRegistersRC;
 
     if (!callParams || paramIdx >= callParams->childs.size())
     {

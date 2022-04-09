@@ -33,9 +33,9 @@ bool Module::computeExecuteResult(SourceFile* sourceFile, AstNode* node, JobCont
     node->typeInfo = TypeManager::concreteReferenceType(node->typeInfo, CONCRETE_FUNC);
     node->setFlagsValueIsComputed();
 
-    g_RunContext.registersRR[0].u64 = g_RunContext.registersRC[0]->buffer[node->resultRegisterRC[0]].u64;
+    g_RunContext.registersRR[0].u64 = g_RunContext.registers.buffer[node->resultRegisterRC[0]].u64;
     if (node->resultRegisterRC.size() > 1)
-        g_RunContext.registersRR[1].u64 = g_RunContext.registersRC[0]->buffer[node->resultRegisterRC[1]].u64;
+        g_RunContext.registersRR[1].u64 = g_RunContext.registers.buffer[node->resultRegisterRC[1]].u64;
 
     // String
     if (realType->isNative(NativeTypeKind::String))
