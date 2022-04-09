@@ -67,7 +67,9 @@ impl Surface
         try createNative(app, surface, x, y, width, height, flags, mainSurface)
 
         surface.minSize = @{256, 256}
-        surface.sendResizeEvent(cast(f32) width, cast(f32) height)
+        w := cast(f32) Math.max(surface.minSize.x, cast(f32) width)
+        h := cast(f32) Math.max(surface.minSize.y, cast(f32) height)
+        surface.sendResizeEvent(w, h)
     }
 
     // Destroy the surface
@@ -149,5 +151,9 @@ impl Surface
 
         sdw := app.theme.metrics.surfaceWnd_ShadowSize
         wnd.setPosition(@{sdw, sdw, width - 2 * sdw, height - 2 * sdw})
+    }
+
+    private mtd onResize()
+    {
     }
 }

@@ -4,6 +4,9 @@ using Core, Ogl, Math
 #[Swag.Strict]
 alias TextureHandle = uint
 const InvalidTextureHandle: TextureHandle = acast 0
+#[Swag.Strict]
+alias RenderTargetHandle = uint
+const InvalidRenderTargetHandle: RenderTargetHandle = acast 0
 
 struct RenderOgl
 {
@@ -215,6 +218,17 @@ impl RenderOgl
         hatchTextures[DiagonalBackward] = generateTexture(Hatch.DiagonalBackward, 8, 8)
         hatchTextures[DiagonalBackwardLight] = generateTexture(Hatch.DiagonalBackwardLight, 8, 8)
         hatchTextures[DiagonalCross] = generateTexture(Hatch.DiagonalCross, 8, 8)
+    }
+
+    mtd deleteRenderTarget(h: RenderTargetHandle)
+    {
+        if h == InvalidRenderTargetHandle
+            return
+    }
+
+    mtd createRenderTarget(w, y: u32)->RenderTargetHandle
+    {
+        return InvalidRenderTargetHandle
     }
 
     // Register an image for rendering

@@ -13,19 +13,20 @@ func findFirstLine(what: string)
     {
         idx := line.indexOf(what)
         if idx == Swag.UInt.Max continue
-        #if LOG Console.print("line: %\n", line)
+        #if LOG Console.printf("line: %\n", line)
         toProcess.add(dref line)
         idxFirst = @index + 1
         break
     }
 
-    if toProcess.isEmpty() Console.fatal("error: cannot find '%'\n", what)
+    if toProcess.isEmpty()
+        Console.fatal("error: cannot find '%'\n", what)
 
     #if !SINGLE
     {
         while !lines[idxFirst].isEmpty()
         {
-            //Console.print("line: %\n", lines[idxFirst])
+            //Console.printf("line: %\n", lines[idxFirst])
             toProcess.add(dref lines[idxFirst])
             idxFirst += 1
         }
@@ -38,7 +39,7 @@ func findLine(what: string)->*String
     {
         idx := line.indexOf(what)
         if idx == Swag.UInt.Max continue
-        #if LOG Console.print("line: %\n", line)
+        #if LOG Console.printf("line: %\n", line)
         return line
     }
 
@@ -69,12 +70,12 @@ func swapParams(what: string)->String
             arr = what[idxName..idxNext - 1]
             idxEnd = idxName
             idxName -= 1
-            #if LOG Console.print("arr: %\n", arr)
+            #if LOG Console.printf("arr: %\n", arr)
         }
 
         while Latin1.isLetter(what[idxName - 1]) idxName -= 1
         name := what[idxName..idxEnd-1]
-        #if LOG Console.print("name: %\n", name)
+        #if LOG Console.printf("name: %\n", name)
 
         // Isolate parameter type
         idxType := idxName - 1
@@ -83,16 +84,19 @@ func swapParams(what: string)->String
         type := String.from(what[idxType..idxName - 1])
         type.trim()
         type.insert(0, arr)
-        #if LOG Console.print("type: '%'\n", type)
+        #if LOG Console.printf("type: '%'\n", type)
 
         // Pointer
         if type.lastRune() == "*"'rune
         {
-            idxType = type.length - 2
-            while Latin1.isSpace(type[idxType]) idxType -= 1
-            while Latin1.isLetter(type[idxType]) idxType -= 1
-            type.insert(idxType + 1, "*")
-            type.length -= 2
+            idxType1 := cast(s32) (type.length - 2)
+            while idxType1 >= 0 and Latin1.isSpace(type[idxType1])
+                idxType1 -= 1
+            while idxType1 >= 0 and Latin1.isLetter(type[idxType1])
+                idxType1 -= 1
+
+            type.insert(cast(uint) (idxType1 + 1), "*")
+            type.length -= 1
             type.trim()
         }
 
@@ -110,11 +114,15 @@ func swapParams(what: string)->String
 {
     ///////////////////
     if @countof(@args()) <= 1
+    {
         Console.fatal("error: invalid number of arguments\n")
+        Console.fatal("you must specify a gl function (ex: glCompileShader)\n")
+    }
 
-    var fctExtension: String = @args()[1] //"glCompileShader "
+    var fctExtension: String = @args()[1] //"glCompileShader"
+    fctExtension.trim()
     fctExtension += " "
-    Console.print("arg: '%'\n", fctExtension)
+    Console.printf("arg: '%'\n", fctExtension)
 
     ///////////////////
     curPath := Path.getDirectoryName(#location.fileName)
@@ -123,22 +131,23 @@ func swapParams(what: string)->String
     if @err Console.fatal("error: cannot read '%' (%)\n", glewPath, @err)
 
     findFirstLine(fctExtension)
-    visit line1: toProcess
+    visit line11: toProcess
     {
+        line1 := cast(string) dref line11
         idxN := line1.indexOf(" ", 9)
         funcName := line1[8..idxN - 1]
 
         ///////////////////
         idx := line1.indexOf("(") + 1
         glewStr := String.from(cast(string) line1.getTo(")"'u8, idx, includeDelimiter: false))
-        #if LOG Console.print("glewStr: %\n", glewStr)
+        #if LOG Console.printf("glewStr: %\n", glewStr)
         glewStr += ";"'u8
 
         ///////////////////
         line2 := findLine(glewStr)
         idx = line2.indexOf(" ") + 1
         proc := cast(string) line2.getTo(" "'u8, idx, includeDelimiter: false)
-        #if LOG Console.print("proc: %\n", proc)
+        #if LOG Console.printf("proc: %\n", proc)
 
         line3 := findLine(proc)
         ///////////////////
@@ -146,7 +155,7 @@ func swapParams(what: string)->String
         idx += 1
         retType := String.from(cast(string) line3.getTo(" "'u8, idx, includeDelimiter: false))
         if retType == "void" retType.clear()
-        #if LOG Console.print("retType: %\n", retType)
+        #if LOG Console.printf("retType: %\n", retType)
 
         idx = line3.lastIndexOf("(")
         idx += 1
@@ -156,9 +165,9 @@ func swapParams(what: string)->String
         ///////////////////
         strProto := swapParams(proto)
         if !retType.isEmpty()
-            Console.print("func %(%)->%;\n", funcName, strProto, retType)
+            Console.printf("func %(%)->%;\n", funcName, strProto, retType)
         else
-            Console.print("func %(%);\n", funcName, strProto)
+            Console.printf("func %(%);\n", funcName, strProto)
 
         ///////////////////
     }

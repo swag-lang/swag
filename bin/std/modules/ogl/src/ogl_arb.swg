@@ -86,3 +86,127 @@ const GL_CONSTANT_BORDER = 0x8151
 const GL_WRAP_BORDER = 0x8152
 const GL_REPLICATE_BORDER = 0x8153
 const GL_CONVOLUTION_BORDER_COLOR = 0x8154
+
+/* ------------------- GL_ARB_framebuffer_no_attachments ------------------- */
+
+const GL_FRAMEBUFFER_DEFAULT_WIDTH = 0x9310
+const GL_FRAMEBUFFER_DEFAULT_HEIGHT = 0x9311
+const GL_FRAMEBUFFER_DEFAULT_LAYERS = 0x9312
+const GL_FRAMEBUFFER_DEFAULT_SAMPLES = 0x9313
+const GL_FRAMEBUFFER_DEFAULT_FIXED_SAMPLE_LOCATIONS = 0x9314
+const GL_MAX_FRAMEBUFFER_WIDTH = 0x9315
+const GL_MAX_FRAMEBUFFER_HEIGHT = 0x9316
+const GL_MAX_FRAMEBUFFER_LAYERS = 0x9317
+const GL_MAX_FRAMEBUFFER_SAMPLES = 0x9318
+
+#[Extension]
+{
+    func glFramebufferParameteri(target: GLenum, pname: GLenum, param: GLint);
+    func glGetFramebufferParameteriv(target: GLenum, pname: GLenum, params: *GLint);
+    func glGetNamedFramebufferParameterivEXT(framebuffer: GLuint, pname: GLenum, params: *GLint);
+    func glNamedFramebufferParameteriEXT(framebuffer: GLuint, pname: GLenum, param: GLint);
+}
+
+/* ----------------------- GL_ARB_framebuffer_object ----------------------- */
+
+const GL_INVALID_FRAMEBUFFER_OPERATION = 0x0506
+const GL_FRAMEBUFFER_ATTACHMENT_COLOR_ENCODING = 0x8210
+const GL_FRAMEBUFFER_ATTACHMENT_COMPONENT_TYPE = 0x8211
+const GL_FRAMEBUFFER_ATTACHMENT_RED_SIZE = 0x8212
+const GL_FRAMEBUFFER_ATTACHMENT_GREEN_SIZE = 0x8213
+const GL_FRAMEBUFFER_ATTACHMENT_BLUE_SIZE = 0x8214
+const GL_FRAMEBUFFER_ATTACHMENT_ALPHA_SIZE = 0x8215
+const GL_FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE = 0x8216
+const GL_FRAMEBUFFER_ATTACHMENT_STENCIL_SIZE = 0x8217
+const GL_FRAMEBUFFER_DEFAULT = 0x8218
+const GL_FRAMEBUFFER_UNDEFINED = 0x8219
+const GL_DEPTH_STENCIL_ATTACHMENT = 0x821A
+const GL_INDEX = 0x8222
+const GL_MAX_RENDERBUFFER_SIZE = 0x84E8
+const GL_DEPTH_STENCIL = 0x84F9
+const GL_UNSIGNED_INT_24_8 = 0x84FA
+const GL_DEPTH24_STENCIL8 = 0x88F0
+const GL_TEXTURE_STENCIL_SIZE = 0x88F1
+const GL_UNSIGNED_NORMALIZED = 0x8C17
+const GL_DRAW_FRAMEBUFFER_BINDING = 0x8CA6
+const GL_FRAMEBUFFER_BINDING = 0x8CA6
+const GL_RENDERBUFFER_BINDING = 0x8CA7
+const GL_READ_FRAMEBUFFER = 0x8CA8
+const GL_DRAW_FRAMEBUFFER = 0x8CA9
+const GL_READ_FRAMEBUFFER_BINDING = 0x8CAA
+const GL_RENDERBUFFER_SAMPLES = 0x8CAB
+const GL_FRAMEBUFFER_ATTACHMENT_OBJECT_TYPE = 0x8CD0
+const GL_FRAMEBUFFER_ATTACHMENT_OBJECT_NAME = 0x8CD1
+const GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_LEVEL = 0x8CD2
+const GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_CUBE_MAP_FACE = 0x8CD3
+const GL_FRAMEBUFFER_ATTACHMENT_TEXTURE_LAYER = 0x8CD4
+const GL_FRAMEBUFFER_COMPLETE = 0x8CD5
+const GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT = 0x8CD6
+const GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT = 0x8CD7
+const GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER = 0x8CDB
+const GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER = 0x8CDC
+const GL_FRAMEBUFFER_UNSUPPORTED = 0x8CDD
+const GL_MAX_COLOR_ATTACHMENTS = 0x8CDF
+const GL_COLOR_ATTACHMENT0 = 0x8CE0
+const GL_COLOR_ATTACHMENT1 = 0x8CE1
+const GL_COLOR_ATTACHMENT2 = 0x8CE2
+const GL_COLOR_ATTACHMENT3 = 0x8CE3
+const GL_COLOR_ATTACHMENT4 = 0x8CE4
+const GL_COLOR_ATTACHMENT5 = 0x8CE5
+const GL_COLOR_ATTACHMENT6 = 0x8CE6
+const GL_COLOR_ATTACHMENT7 = 0x8CE7
+const GL_COLOR_ATTACHMENT8 = 0x8CE8
+const GL_COLOR_ATTACHMENT9 = 0x8CE9
+const GL_COLOR_ATTACHMENT10 = 0x8CEA
+const GL_COLOR_ATTACHMENT11 = 0x8CEB
+const GL_COLOR_ATTACHMENT12 = 0x8CEC
+const GL_COLOR_ATTACHMENT13 = 0x8CED
+const GL_COLOR_ATTACHMENT14 = 0x8CEE
+const GL_COLOR_ATTACHMENT15 = 0x8CEF
+const GL_DEPTH_ATTACHMENT = 0x8D00
+const GL_STENCIL_ATTACHMENT = 0x8D20
+const GL_FRAMEBUFFER = 0x8D40
+const GL_RENDERBUFFER = 0x8D41
+const GL_RENDERBUFFER_WIDTH = 0x8D42
+const GL_RENDERBUFFER_HEIGHT = 0x8D43
+const GL_RENDERBUFFER_INTERNAL_FORMAT = 0x8D44
+const GL_STENCIL_INDEX1 = 0x8D46
+const GL_STENCIL_INDEX4 = 0x8D47
+const GL_STENCIL_INDEX8 = 0x8D48
+const GL_STENCIL_INDEX16 = 0x8D49
+const GL_RENDERBUFFER_RED_SIZE = 0x8D50
+const GL_RENDERBUFFER_GREEN_SIZE = 0x8D51
+const GL_RENDERBUFFER_BLUE_SIZE = 0x8D52
+const GL_RENDERBUFFER_ALPHA_SIZE = 0x8D53
+const GL_RENDERBUFFER_DEPTH_SIZE = 0x8D54
+const GL_RENDERBUFFER_STENCIL_SIZE = 0x8D55
+const GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE = 0x8D56
+const GL_MAX_SAMPLES = 0x8D57
+
+#[Extension]
+{
+    func glBindFramebuffer(target: GLenum, framebuffer: GLuint);
+    func glBindRenderbuffer(target: GLenum, renderbuffer: GLuint);
+    func glBlitFramebuffer(srcX0: GLint, srcY0: GLint, srcX1: GLint, srcY1: GLint, dstX0: GLint, dstY0: GLint, dstX1: GLint, dstY1: GLint, mask: GLbitfield, filter: GLenum);
+    func glCheckFramebufferStatus(target: GLenum)->GLenum;
+    func glDeleteFramebuffers(n: GLsizei, framebuffers: const *GLuint);
+    func glDeleteRenderbuffers(n: GLsizei, renderbuffers: const *GLuint);
+    func glFramebufferRenderbuffer(target: GLenum, attachment: GLenum, renderbuffertarget: GLenum, renderbuffer: GLuint);
+    func glFramebufferTexture1D(target: GLenum, attachment: GLenum, textarget: GLenum, texture: GLuint, level: GLint);
+    func glFramebufferTexture2D(target: GLenum, attachment: GLenum, textarget: GLenum, texture: GLuint, level: GLint);
+    func glFramebufferTexture3D(target: GLenum, attachment: GLenum, textarget: GLenum, texture: GLuint, level: GLint, layer: GLint);
+    func glFramebufferTextureLayer(target: GLenum, attachment: GLenum, texture: GLuint, level: GLint, layer: GLint);
+    func glGenFramebuffers(n: GLsizei, framebuffers: *GLuint);
+    func glGenRenderbuffers(n: GLsizei, renderbuffers: *GLuint);
+    func glGenerateMipmap(target: GLenum);
+    func glGetFramebufferAttachmentParameteriv(target: GLenum, attachment: GLenum, pname: GLenum, params: *GLint);
+    func glGetRenderbufferParameteriv(target: GLenum, pname: GLenum, params: *GLint);
+    func glIsFramebuffer(framebuffer: GLuint)->GLboolean;
+    func glIsRenderbuffer(renderbuffer: GLuint)->GLboolean;
+    func glRenderbufferStorage(target: GLenum, internalformat: GLenum, width: GLsizei, height: GLsizei);
+    func glRenderbufferStorageMultisample(target: GLenum, samples: GLsizei, internalformat: GLenum, width: GLsizei, height: GLsizei);
+}
+
+/* ------------------------ GL_ARB_framebuffer_sRGB ------------------------ */
+
+const GL_FRAMEBUFFER_SRGB = 0x8DB9

@@ -199,6 +199,7 @@ impl IWnd for SurfaceWnd
             pos.x -= pos.width
         }
 
+        base.surface.onResize()
         base.IWnd.onResizeEvent(evt)
     }
 
