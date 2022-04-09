@@ -7,6 +7,7 @@ struct Surface
     app:            *Application
     wnd:            *SurfaceWnd
     painter:        Painter
+    rt:             RenderTarget
 
     rc:             RenderingContext
     position:       Math.Rectangle
@@ -115,6 +116,15 @@ impl Surface
         setPosition(pos)
     }
 
+    private mtd createRT()
+    {
+        if !rt.colorBuffer.valid or rt.colorBuffer.width != rc.width or rt.colorBuffer.height != rc.height
+        {
+            app.renderer.deleteRenderTarget(&rt)
+            rt = app.renderer.createRenderTarget(rc.width, rc.height)
+        }
+    }
+
     // Main surface paint function
     mtd paint()
     {
@@ -122,10 +132,11 @@ impl Surface
             return
         isDirty = false
 
+        createRT()
+
         var cxt: PaintContext
         cxt.painter = &painter
         cxt.renderer = &app.renderer
-        cxt.renderer.begin(rc)
         cxt.painter.begin()
         cxt.clipRect = @{0, 0, rc.width, rc.height}
 
@@ -135,10 +146,22 @@ impl Surface
         painter.clear(Color.fromArgb(0, 0, 0, 0))
         app.theme.drawSubRect(&painter, @{0, 0, position.width, position.height}, subRect, app.theme.colors.wnd_Shadow, false)
 
+        // Hierarchy paint
         wnd.paint(&cxt)
         painter.end()
 
+        // Paint to surface render target
+        cxt.renderer.begin(rc, &rt)
         cxt.renderer.draw(&painter)
+        cxt.renderer.unbindRenderTarget()
+
+        // Paint render target to screen
+        cxt.painter.begin()
+        cxt.painter.setInterpolationMode(.Pixel)
+        cxt.painter.drawTexture(0, 0, cast(f32) rc.width, cast(f32) rc.height, rt.colorBuffer, Argb.White)
+        cxt.painter.end()
+        cxt.renderer.draw(&painter)
+
         cxt.renderer.end()
     }
 
@@ -151,9 +174,5 @@ impl Surface
 
         sdw := app.theme.metrics.surfaceWnd_ShadowSize
         wnd.setPosition(@{sdw, sdw, width - 2 * sdw, height - 2 * sdw})
-    }
-
-    private mtd onResize()
-    {
     }
 }

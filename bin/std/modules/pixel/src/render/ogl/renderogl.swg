@@ -4,9 +4,14 @@ using Core, Ogl, Math
 #[Swag.Strict]
 alias TextureHandle = uint
 const InvalidTextureHandle: TextureHandle = acast 0
+
 #[Swag.Strict]
 alias RenderTargetHandle = uint
 const InvalidRenderTargetHandle: RenderTargetHandle = acast 0
+
+#[Swag.Strict]
+alias RenderTargetSurfaceHandle = uint
+const InvalidRenderTargetSurfaceHandle: RenderTargetSurfaceHandle = acast 0
 
 struct RenderOgl
 {
@@ -124,11 +129,12 @@ private impl RenderOgl
 impl RenderOgl
 {
     // To be called before rendering
-    func begin(using self, rc: RenderingContext)
+    func begin(using self, rc: RenderingContext, rt: *RenderTarget = null)
     {
         curRC = rc
         native.setCurrentContext(curRC)
         resetTransform()
+        if rt bindRenderTarget(dref rt)
         glClearStencil(0)
         glClearColor(0, 0, 0, 0)
         glClear(GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT)
@@ -220,15 +226,68 @@ impl RenderOgl
         hatchTextures[DiagonalCross] = generateTexture(Hatch.DiagonalCross, 8, 8)
     }
 
-    mtd deleteRenderTarget(h: RenderTargetHandle)
+    mtd bindRenderTarget(rt: RenderTarget)
     {
-        if h == InvalidRenderTargetHandle
+        if !rt.colorBuffer.valid
             return
+        glBindFramebuffer(GL_FRAMEBUFFER, cast(GLuint) rt.handle)
     }
 
-    mtd createRenderTarget(w, y: u32)->RenderTargetHandle
+    mtd unbindRenderTarget()
     {
-        return InvalidRenderTargetHandle
+        glBindFramebuffer(GL_FRAMEBUFFER, 0)
+    }
+
+    // Create a render target
+    mtd createRenderTarget(w, h: s32)->RenderTarget
+    {
+        var fbo: GLuint
+        glGenFramebuffers(1, &fbo)
+        glBindFramebuffer(GL_FRAMEBUFFER, fbo)
+
+        var colorID: GLuint
+        glGenTextures(1, &colorID)
+        glBindTexture(GL_TEXTURE_2D, colorID)
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, w, h, 0, GL_RGB, GL_UNSIGNED_BYTE, null)
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, colorID, 0)
+
+        var rbo: GLuint
+        glGenRenderbuffers(1, &rbo)
+        glBindRenderbuffer(GL_RENDERBUFFER, rbo)
+        glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, w, h)
+        glBindRenderbuffer(GL_RENDERBUFFER, 0)
+        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo)
+
+        glBindFramebuffer(GL_FRAMEBUFFER, 0)
+
+        var result: retval
+        result.handle = cast(RenderTargetHandle) fbo
+        result.colorBuffer.handle = cast(TextureHandle) colorID
+        result.colorBuffer.width = w
+        result.colorBuffer.height = h
+        result.colorBuffer.valid = true
+        result.depthStencil = acast(rbo)
+        return result
+    }
+
+    // Delete a render target
+    mtd deleteRenderTarget(rt: *RenderTarget)
+    {
+        if rt.handle == InvalidRenderTargetHandle or !rt.colorBuffer.valid
+            return
+
+        var cb: GLuint = acast rt.colorBuffer.handle
+        glDeleteTextures(1, &cb)
+
+        var ds: GLuint = acast rt.depthStencil
+        glDeleteRenderbuffers(1, &ds)
+
+        var fb: GLuint = acast rt.handle
+        glDeleteFramebuffers(1, &fb)
+
+        rt.handle = InvalidRenderTargetHandle
+        rt.depthStencil = InvalidRenderTargetSurfaceHandle
+        rt.colorBuffer.valid = false
     }
 
     // Register an image for rendering
