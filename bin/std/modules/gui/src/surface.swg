@@ -135,6 +135,7 @@ impl Surface
     {
         if !isDirty
             return
+        clipRect := dirtyRect
         dirtyRect = @{Swag.F32.Max, Swag.F32.Max, 0, 0}
         isDirty   = false
 
@@ -144,16 +145,16 @@ impl Surface
         cxt.painter = &painter
         cxt.renderer = &app.renderer
         cxt.painter.begin()
-        cxt.clipRect = wnd.getSurfaceRect()
 
         // Draw shadow around surface
         subRect := &app.theme.rects.surfaceWnd_Shadow
+        //painter.pushClippingRect(clipRect)
         painter.colorMask(true, true, true, true)
         app.theme.drawSubRect(&painter, @{0, 0, position.width, position.height}, subRect, app.theme.colors.wnd_Shadow, false)
         painter.colorMask(true, true, true, false)
 
         // Hierarchy paint
-        painter.pushClippingRect(cxt.clipRect)
+        painter.pushClippingRect(wnd.getSurfaceRect())
         wnd.paint(&cxt)
         painter.colorMask(false, false, false, true)
         painter.clear(Color.fromArgb(255, 0, 0, 0))
