@@ -154,9 +154,22 @@ impl RenderOgl
     mtd clear()
     {
         glClearStencil(0)
-        glClearColor(0, 0, 0, 0)
         glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE)
+        glClearColor(0, 0, 0, 0)
         glClear(GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT)
+    }
+
+    // Force the scissor
+    mtd setScissorRect(rect: Math.Rectangle)
+    {
+        glEnable(GL_SCISSOR_TEST)
+        glScissor(cast(GLint) rect.x, cast(GLint) (curRC.height - rect.y - rect.height), cast(GLint) rect.width, cast(GLint) rect.height)
+    }
+
+    // Reset the scissor
+    mtd resetScissorRect()
+    {
+        glDisable(GL_SCISSOR_TEST)
     }
 
     // First init

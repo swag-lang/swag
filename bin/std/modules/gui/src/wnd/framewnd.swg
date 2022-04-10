@@ -140,7 +140,6 @@ impl IWnd for FrameWnd
         theme.drawSubRect(painter, clientRect, subRectBorder, colorBorder, false)
     }
 
-
     mtd onResizeEvent(evt: *ResizeEvent)
     {
         if !view
@@ -172,6 +171,11 @@ impl FrameWnd
             wndFlags |= .PreChildsPaint
         else
             wndFlags &= ~.PreChildsPaint
+
+        if frameFlags & .SmallShadow
+            invalidatePadding = getThemeMetrics().frameWnd_SmallShadowSize
+        else
+            invalidatePadding.clear()
     }
 
     // Set the frame wnd form

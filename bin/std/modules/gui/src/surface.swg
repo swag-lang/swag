@@ -148,7 +148,7 @@ impl Surface
 
         // Draw shadow around surface
         subRect := &app.theme.rects.surfaceWnd_Shadow
-        //painter.pushClippingRect(clipRect)
+        painter.pushClippingRect(clipRect)
         painter.colorMask(true, true, true, true)
         app.theme.drawSubRect(&painter, @{0, 0, position.width, position.height}, subRect, app.theme.colors.wnd_Shadow, false)
         painter.colorMask(true, true, true, false)
@@ -164,6 +164,7 @@ impl Surface
 
         // Paint to surface render target
         cxt.renderer.bindRenderTarget(rt)
+        cxt.renderer.setScissorRect(clipRect)
         cxt.renderer.clear()
         cxt.renderer.draw(&painter)
         cxt.renderer.unbindRenderTarget()
@@ -173,7 +174,7 @@ impl Surface
         painter.colorMask(true, true, true, true)
         painter.setInterpolationMode(.Pixel)
         painter.setBlendingMode(.Copy)
-        painter.drawTexture(0, 0, cast(f32) rc.width, cast(f32) rc.height, rt.colorBuffer, Argb.White)
+        painter.drawTexture(0, 0, cast(f32) rc.width, cast(f32) rc.height, rt.colorBuffer)
         painter.end()
         cxt.renderer.draw(&painter)
 

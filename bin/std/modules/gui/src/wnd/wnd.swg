@@ -71,6 +71,8 @@ struct Wnd
     maxSize:        Math.Point
     scrollPos:      Math.Point
 
+    invalidatePadding:  Math.Vector4
+
     parent:     *Wnd
     childs:     Array'(*Wnd)
 
@@ -387,7 +389,9 @@ impl Wnd
     // Force the window to be repainted
     mtd invalidate()
     {
-        surface.invalidateRect(getSurfaceRect())
+        rect := getSurfaceRect()
+        rect.applyPadding(invalidatePadding)
+        surface.invalidateRect(rect)
     }
 
     // Force o local position to be repainted
