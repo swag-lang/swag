@@ -69,11 +69,11 @@ impl IWnd for IconButton
         case isPressed:
             colorBk      = isChecked ? colors.btnIcon_CheckedPressedBk : colors.btnIcon_PressedBk
             colorIcon    = isChecked ? colors.btnIcon_CheckedPressedIcon : colors.btnIcon_PressedIcon
-            colorChecked = colors.btnIcon_CheckedMark
+            colorChecked = colors.btnIcon_CheckedPressedMark
         case isHot:
             colorBk      = isChecked ? colors.btnIcon_CheckedHotBk : colors.btnIcon_HotBk
             colorIcon    = isChecked ? colors.btnIcon_CheckedHotIcon : colors.btnIcon_HotIcon
-            colorChecked = colors.btnIcon_CheckedMark
+            colorChecked = colors.btnIcon_CheckedHotMark
         default:
             colorBk      = isChecked ? colors.btnIcon_CheckedBk : colors.btnIcon_Bk
             colorIcon    = isChecked ? colors.btnIcon_CheckedIcon : colors.btnIcon_Icon
