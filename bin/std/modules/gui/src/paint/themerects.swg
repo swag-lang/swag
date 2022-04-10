@@ -29,6 +29,7 @@ struct ThemeImageRects
 
     btnIcon_SquareBk:       ThemeImageRect = @{{1,29,27,27}, 9}
     btnIcon_RoundBk:        ThemeImageRect = @{{85,141,27,27}, 13}
+    btnIcon_RoundSquareBk:  ThemeImageRect = @{{141,225,27,27}, 7}
 
     btnCheck_Normal:            ThemeImageRect = @{{90,29,32,32}, 16}
     btnCheck_NormalBorder:      ThemeImageRect = @{{57,29,32,32}, 16}

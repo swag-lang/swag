@@ -84,7 +84,7 @@ struct ThemeColors
 
     btnIcon_Icon:                   Color = White
     btnIcon_Bk:                     Color = Transparent
-    btnIcon_DisabledIcon:           Color = White
+    btnIcon_DisabledIcon:           Color = Disabled
     btnIcon_DisabledBk:             Color = Transparent
     btnIcon_PressedIcon:            Color = White
     btnIcon_PressedBk:              Color = LighterBig

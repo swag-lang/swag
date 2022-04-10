@@ -5,6 +5,7 @@ enum IconButtonForm
 {
     Square
     Round
+    RoundSquare
 }
 
 struct IconButton
@@ -33,6 +34,8 @@ impl IWnd for IconButton
             subRectBk = &rects.btnIcon_SquareBk
         case Round:
             subRectBk = &rects.btnIcon_RoundBk
+        case RoundSquare:
+            subRectBk = &rects.btnIcon_RoundSquareBk
         }
 
         switch

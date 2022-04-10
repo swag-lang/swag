@@ -394,8 +394,11 @@ func createView0(tabView: *Tab, view: *Wnd)
     // IconButton
     {
         btn0 := IconButton.create(view, theme.getIcon24(ThemeIcons24.Search, 24), @{80, 620, 32, 32})
-        btn0.setForm(.Round)
+        btn0.setForm(.RoundSquare)
         btn1 := IconButton.create(view, theme.getIcon24(ThemeIcons24.Picker, 24), @{112, 620, 32, 32})
-        btn1.setForm(.Round)
+        btn1.setForm(.RoundSquare)
+        btn2 := IconButton.create(view, theme.getIcon24(ThemeIcons24.Picker, 24), @{144, 620, 32, 32})
+        btn2.disable()
+        btn2.setForm(.RoundSquare)
     }
 }
