@@ -343,18 +343,18 @@ impl Wnd
         if wndFlags & .ClipChildren
             painter.pushClippingRect(getClientRect())
 
-        // Maint
-        if !(wndFlags & .NoScroll)
-            painter.translateTransform(-scrollPos.x, -scrollPos.y)
-        evt.kind = .Paint
-        painter.pushState()
-        sendEvent(&evt)
-        painter.popState()
-        painter.setTransform(curTrs)
-
-        // Childs
         if !painter.isEmptyClippingRect()
         {
+            // Me
+            if !(wndFlags & .NoScroll)
+                painter.translateTransform(-scrollPos.x, -scrollPos.y)
+            evt.kind = .Paint
+            painter.pushState()
+            sendEvent(&evt)
+            painter.popState()
+            painter.setTransform(curTrs)
+
+            // Childs
             visit c: childs
             {
                 if c.wndFlags & .Hidden

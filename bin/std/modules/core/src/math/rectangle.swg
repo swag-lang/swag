@@ -100,13 +100,13 @@ impl Rectangle
         return x == 0 and y == 0 and width == 0 and height == 0
     }
 
-    // Returns true if this instance has a surface of zero (width and height are null)
+    // Returns true if this instance has a surface of zero (width or height are null)
     mtdc isEmpty()->bool
     {
-        return width == 0 and height == 0
+        return width == 0 or height == 0
     }
 
-    // Returns true if this instance has a positive surface (width and height greater than zero)
+    // Returns true if this instance has a positive or null surface (width and height greater or equal than zero)
     mtd isNormalized()->bool
     {
         return width >= 0 and height >= 0
