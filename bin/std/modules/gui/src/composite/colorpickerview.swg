@@ -94,6 +94,8 @@ private impl ColorPickerView
         editA.setText(t)
         t = Format.toString("%{X08}", color.argb)
         editH.setText(t)
+
+        staticRes.invalidate()
     }
 
     mtd updateAll()

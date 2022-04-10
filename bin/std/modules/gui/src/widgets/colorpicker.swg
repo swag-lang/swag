@@ -352,6 +352,7 @@ impl ColorPicker
         ret := Wnd.create'ColorPicker(parent, null, position, id)
         ret.wndFlags |= .PostChildsPaint
         ret.setColor(Argb.Red)
+        ret.invalidatePadding = @{-32, -32, -32, -32}
         return ret
     }
 

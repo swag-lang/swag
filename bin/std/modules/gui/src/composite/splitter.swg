@@ -140,19 +140,19 @@ impl IWnd for Splitter
             if isVertical()
             {
                 rectBar := isHot ? &rects.splitView_HorzBarHotBk : &rects.splitView_HorzBarBk
-                rect.x -= padding.x
+                /*rect.x -= padding.x
                 rect.width += padding.x + padding.z
                 rect.x += 1
-                rect.width -= 2
+                rect.width -= 2*/
                 theme.drawSubRect(painter, rect, rectBar, colorBar)
             }
             else
             {
                 rectBar := isHot ? &rects.splitView_VertBarHotBk : &rects.splitView_VertBarBk
-                rect.y -= padding.y
+                /*rect.y -= padding.y
                 rect.height += padding.y + padding.w
                 rect.y += 1
-                rect.height -= 2
+                rect.height -= 2*/
                 theme.drawSubRect(painter, rect, rectBar, colorBar)
             }
         }
