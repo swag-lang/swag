@@ -129,17 +129,11 @@ private impl RenderOgl
 impl RenderOgl
 {
     // To be called before rendering
-    func begin(using self, rc: RenderingContext, rt: *RenderTarget = null)
+    func begin(using self, rc: RenderingContext)
     {
         curRC = rc
         native.setCurrentContext(curRC)
         resetTransform()
-        if rt
-            bindRenderTarget(dref rt)
-
-        glClearStencil(0)
-        glClearColor(0, 0, 0, 0)
-        glClear(GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT)
     }
 
     // To be called after rendering
@@ -154,6 +148,15 @@ impl RenderOgl
     func setCurrentContext(using self, rc: RenderingContext)
     {
         native.setCurrentContext(rc)
+    }
+
+    // Clear current render buffers
+    mtd clear()
+    {
+        glClearStencil(0)
+        glClearColor(0, 0, 0, 0)
+        glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE)
+        glClear(GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT)
     }
 
     // First init
@@ -510,7 +513,7 @@ impl RenderOgl
                     // the second pixel will not be written.
                     glBlendFuncSeparate(GL_DST_ALPHA, GL_ONE_MINUS_DST_ALPHA, GL_ZERO, GL_ZERO)
                     glBlendEquation(GL_FUNC_ADD)
-                    glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_FALSE)
+                    glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE)
                     glDrawArrays(GL_TRIANGLES, cast(GLint) params.start, cast(GLsizei) params.count)
                     glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_FALSE)
                 }

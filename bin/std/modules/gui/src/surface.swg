@@ -15,6 +15,7 @@ struct Surface
     maxSize:        Math.Point
 
     flags:          SurfaceFlags = Zero
+    dirtyRect:      Math.Rectangle = @{Swag.F32.Max, Swag.F32.Max, 0, 0}
 
     isDirty:        bool
     isHidden:       bool = true
@@ -143,7 +144,7 @@ impl Surface
         // Draw shadow around surface
         subRect := &app.theme.rects.surfaceWnd_Shadow
         painter.colorMask(true, true, true, true)
-        painter.clear(Color.fromArgb(0, 0, 0, 0))
+        //painter.clear(Color.fromArgb(0, 0, 0, 0))
         app.theme.drawSubRect(&painter, @{0, 0, position.width, position.height}, subRect, app.theme.colors.wnd_Shadow, false)
         painter.colorMask(true, true, true, false)
 
@@ -154,8 +155,11 @@ impl Surface
         painter.clear(Color.fromArgb(255, 0, 0, 0))
         painter.end()
 
+        cxt.renderer.begin(rc)
+
         // Paint to surface render target
-        cxt.renderer.begin(rc, &rt)
+        cxt.renderer.bindRenderTarget(rt)
+        cxt.renderer.clear()
         cxt.renderer.draw(&painter)
         cxt.renderer.unbindRenderTarget()
 
@@ -166,8 +170,8 @@ impl Surface
         painter.setBlendingMode(.Copy)
         painter.drawTexture(0, 0, cast(f32) rc.width, cast(f32) rc.height, rt.colorBuffer, Argb.White)
         painter.end()
-
         cxt.renderer.draw(&painter)
+
         cxt.renderer.end()
     }
 
