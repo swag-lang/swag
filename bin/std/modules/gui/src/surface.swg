@@ -135,19 +135,20 @@ impl Surface
         {
             app.renderer.deleteRenderTarget(&rt)
             rt = app.renderer.createRenderTarget(rc.width, rc.height)
+            invalidate()
         }
     }
 
     // Main surface paint function
     mtd paint()
     {
+        createRT()
+
         if !isDirty
             return
         clipRect := dirtyRect
         dirtyRect = @{Swag.F32.Max, Swag.F32.Max, 0, 0}
         isDirty   = false
-
-        createRT()
 
         var cxt: PaintContext
         cxt.painter = &painter
