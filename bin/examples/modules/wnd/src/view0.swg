@@ -383,10 +383,19 @@ func createView0(tabView: *Tab, view: *Wnd)
         prg.disable()
     }
 
+    // ImageRect
     {
-        img := ImageRect.create(view, @{20, 620, 48, 48}, view.getTheme().res.spin)
+        img := ImageRect.create(view, @{20, 620, 48, 48}, theme.res.spin)
         img.style.addStyleSheetColors("imageRect_Fg $hilight")
 
-        img1 := ImageRect.create(view, @{20, 680, 48, 48}, view.getTheme().res.spin)
+        img1 := ImageRect.create(view, @{20, 680, 48, 48}, theme.res.spin)
+    }
+
+    // IconButton
+    {
+        btn0 := IconButton.create(view, theme.getIcon24(ThemeIcons24.Search, 24), @{80, 620, 32, 32})
+        btn0.setForm(.Round)
+        btn1 := IconButton.create(view, theme.getIcon24(ThemeIcons24.Picker, 24), @{112, 620, 32, 32})
+        btn1.setForm(.Round)
     }
 }

@@ -7,8 +7,8 @@ struct ThemeColors
     const LightBlue     = 0xFF2483f6
     const Disabled      = 0x5FFFFFFF
     const LighterSmall  = 0x1FFFFFFF
-    const LighterMedium = 0x3FFFFFFF
-    const LighterBig    = 0x7FFFFFFF
+    const LighterMedium = 0x1FFFFFFF
+    const LighterBig    = 0x2FFFFFFF
     const Transparent   = 0x00000000
 
     const White         = 0xFFF0F0F0
