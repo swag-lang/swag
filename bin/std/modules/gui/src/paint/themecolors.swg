@@ -26,6 +26,8 @@ struct ThemeColors
     richColor3: Color = Argb.Blue
 
     hilight:                        Color = Blue
+    disabled:                       Color = Disabled
+    transparent:                    Color = Transparent
 
     wnd_Bk:                         Color = Gray5
     wnd_Caption:                    Color = Gray4
@@ -90,6 +92,17 @@ struct ThemeColors
     btnIcon_PressedBk:              Color = LighterBig
     btnIcon_HotIcon:                Color = White
     btnIcon_HotBk:                  Color = LighterMedium
+
+    btnIcon_CheckedDisabledIcon:    Color = Disabled
+    btnIcon_CheckedPressedIcon:     Color = White
+    btnIcon_CheckedHotIcon:         Color = White
+    btnIcon_CheckedIcon:            Color = White
+    btnIcon_CheckedDisabledBk:      Color = Transparent
+    btnIcon_CheckedPressedBk:       Color = LighterBig
+    btnIcon_CheckedHotBk:           Color = Transparent
+    btnIcon_CheckedBk:              Color = Transparent
+    btnIcon_CheckedMark:            Color = Blue
+    btnIcon_CheckedDisabledMark:    Color = Disabled
 
     label_Text:                     Color = Gray1
     label_TextLight:                Color = Gray2

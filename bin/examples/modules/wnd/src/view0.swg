@@ -401,4 +401,42 @@ func createView0(tabView: *Tab, view: *Wnd)
         btn2.disable()
         btn2.setForm(.RoundSquare)
     }
+
+    {
+        func setStyle(btn: *IconButton)
+        {
+            btn.setForm(.RoundSquare)
+            btn.style.addStyleSheetColors("btnIcon_Icon             $disabled")
+            btn.style.addStyleSheetColors("btnIcon_HotBk            $transparent")
+            btn.style.addStyleSheetColors("btnIcon_PressedBk        $transparent")
+            btn.iconBtnFlags = .CheckableToggle
+        }
+
+        btn0 := IconButton.create(view, theme.getIcon24(ThemeIcons24.Search, 24), @{80, 660, 48, 48})
+        setStyle(btn0)
+        btn0.checkedForm = .Bottom
+
+        btn1 := IconButton.create(view, theme.getIcon24(ThemeIcons24.Picker, 24), @{130, 660, 48, 48})
+        setStyle(btn1)
+        btn1.checkedForm = .Top
+
+        btn2 := IconButton.create(view, theme.getIcon24(ThemeIcons24.WndMinimize, 24), @{180, 660, 48, 48})
+        setStyle(btn2)
+        btn2.checkedForm = .None
+        btn2.style.addStyleSheetColors("btnIcon_CheckedIcon      $hilight")
+        btn2.style.addStyleSheetColors("btnIcon_CheckedHotIcon   $hilight")
+
+        btn3 := IconButton.create(view, theme.getIcon24(ThemeIcons24.WndMaximize, 24), @{230, 660, 48, 48})
+        setStyle(btn3)
+        btn3.checkedForm = .None
+        btn3.style.addStyleSheetColors("btnIcon_CheckedIcon      $hilight")
+        btn3.style.addStyleSheetColors("btnIcon_CheckedHotIcon   $hilight")
+    }
+
+    {
+        btn0 := IconButton.create(view, theme.getIcon24(ThemeIcons24.Search, 24), @{80, 720, 48, 48})
+        btn0.setForm(.RoundSquare)
+        btn0.checkedForm = .Full
+        btn0.iconBtnFlags = .CheckableToggle
+    }
 }

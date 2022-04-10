@@ -8,11 +8,32 @@ enum IconButtonForm
     RoundSquare
 }
 
+#[Swag.EnumFlags]
+enum IconButtonFlags
+{
+    None
+    Checkable
+    CheckableToggle
+}
+
+enum IconButtonCheckedForm
+{
+    None
+    Bottom
+    Top
+    Left
+    Right
+    Full
+}
+
 struct IconButton
 {
     using button: Button
 
-    form = IconButtonForm.Square
+    form            = IconButtonForm.Square
+    iconBtnFlags    = IconButtonFlags.None
+    checkedForm     = IconButtonCheckedForm.Full
+    isChecked:      bool
 }
 
 impl IWnd for IconButton
@@ -24,9 +45,10 @@ impl IWnd for IconButton
         colors := getThemeColors()
         rects  := getThemeRects()
 
-        var subRectBk:  *ThemeImageRect
-        var colorBk:    Color = ?
-        var colorIcon:  Color = ?
+        var subRectBk:      *ThemeImageRect
+        var colorBk:        Color = ?
+        var colorIcon:      Color = ?
+        var colorChecked:   Color = ?
 
         switch form
         {
@@ -41,22 +63,45 @@ impl IWnd for IconButton
         switch
         {
         case bc.isDisabled:
-            colorBk    = colors.btnIcon_DisabledBk
-            colorIcon  = colors.btnIcon_DisabledIcon
+            colorBk      = isChecked ? colors.btnIcon_CheckedDisabledBk : colors.btnIcon_DisabledBk
+            colorIcon    = isChecked ? colors.btnIcon_CheckedDisabledIcon : colors.btnIcon_DisabledIcon
+            colorChecked = colors.btnIcon_CheckedDisabledMark
         case isPressed:
-            colorBk   = colors.btnIcon_PressedBk
-            colorIcon = colors.btnIcon_PressedIcon
+            colorBk      = isChecked ? colors.btnIcon_CheckedPressedBk : colors.btnIcon_PressedBk
+            colorIcon    = isChecked ? colors.btnIcon_CheckedPressedIcon : colors.btnIcon_PressedIcon
+            colorChecked = colors.btnIcon_CheckedMark
         case isHot:
-            colorBk   = colors.btnIcon_HotBk
-            colorIcon = colors.btnIcon_HotIcon
+            colorBk      = isChecked ? colors.btnIcon_CheckedHotBk : colors.btnIcon_HotBk
+            colorIcon    = isChecked ? colors.btnIcon_CheckedHotIcon : colors.btnIcon_HotIcon
+            colorChecked = colors.btnIcon_CheckedMark
         default:
-            colorBk   = colors.btnIcon_Bk
-            colorIcon = colors.btnIcon_Icon
+            colorBk      = isChecked ? colors.btnIcon_CheckedBk : colors.btnIcon_Bk
+            colorIcon    = isChecked ? colors.btnIcon_CheckedIcon : colors.btnIcon_Icon
+            colorChecked = colors.btnIcon_CheckedMark
         }
 
         // Background
         clientRect := getClientRect()
         theme.drawSubRect(bc.painter, clientRect, subRectBk, colorBk)
+
+        if isChecked and checkedForm != .None
+        {
+            switch checkedForm
+            {
+            case Bottom:
+                subRectBk = &rects.btnIcon_CheckedBottom
+            case Top:
+                subRectBk = &rects.btnIcon_CheckedTop
+            case Left:
+                subRectBk = &rects.btnIcon_CheckedLeft
+            case Right:
+                subRectBk = &rects.btnIcon_CheckedRight
+            case Full:
+                subRectBk = &rects.btnIcon_CheckedFull
+            }
+
+            theme.drawSubRect(bc.painter, clientRect, subRectBk, colorChecked)
+        }
 
         // Icon
         pos := clientRect
@@ -67,7 +112,25 @@ impl IWnd for IconButton
     mtd onMouseEvent(evt: *MouseEvent)
     {
         if processMouseEvent(evt)
-            postCommandEvent(id)
+        {
+            if iconBtnFlags & .CheckableToggle
+            {
+                isChecked = !isChecked
+                postCommandEvent(id)
+            }
+            elif iconBtnFlags & .Checkable
+            {
+                if !isChecked
+                {
+                    isChecked = true
+                    postCommandEvent(id)
+                }
+            }
+            else
+            {
+                postCommandEvent(id)
+            }
+        }
     }
 }
 
@@ -80,6 +143,18 @@ impl IconButton
         res := Wnd.create'IconButton(parent, null, position, id)
         res.icon = icon
         return res
+    }
+
+    // Set the check state of the button (if the button is checkable)
+    mtd setCheck(checked: bool)
+    {
+        if !(iconBtnFlags & .Checkable)
+            return
+        if isChecked == checked
+            return
+        isChecked = checked
+        postCommandEvent(id)
+        invalidate()
     }
 
     // Set the button form
