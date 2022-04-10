@@ -14,7 +14,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 {
     leftPressed  := wnd.getApp().mouse.isButtonPressed(.Left)
     rightPressed := wnd.getApp().mouse.isButtonPressed(.Right)
-    cellSize    := Math.min(wnd.position.width, wnd.position.height) / GridSize
+    cellSize     := Math.min(wnd.position.width, wnd.position.height) / GridSize
 
     switch evt.kind
     {
@@ -106,6 +106,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         }
 
         wnd.invalidate()
+        Threading.sleep(1'ms)
     }
 
     return false
