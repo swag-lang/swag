@@ -103,11 +103,19 @@ impl Surface
     // Invalidate one part of the surface to be painted
     mtd invalidateRect(rect: Math.Rectangle)
     {
+        if !isDirty
+        {
+            dirtyRect = rect
+            isDirty = true
+            return
+        }
+
+        r := dirtyRect.right()
+        b := dirtyRect.bottom()
         dirtyRect.x = Math.min(dirtyRect.x, rect.x)
         dirtyRect.y = Math.min(dirtyRect.y, rect.y)
-        dirtyRect.setRight(Math.max(dirtyRect.right(), rect.right()))
-        dirtyRect.setBottom(Math.max(dirtyRect.bottom(), rect.bottom()))
-        isDirty = true
+        dirtyRect.setRight(Math.max(r, rect.right()))
+        dirtyRect.setBottom(Math.max(b, rect.bottom()))
     }
 
     // Center this surface relative to 'from'
