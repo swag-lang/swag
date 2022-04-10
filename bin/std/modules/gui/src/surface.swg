@@ -138,16 +138,20 @@ impl Surface
         cxt.painter = &painter
         cxt.renderer = &app.renderer
         cxt.painter.begin()
-        cxt.clipRect = @{0, 0, rc.width, rc.height}
+        cxt.clipRect = wnd.getSurfaceRect()
 
         // Draw shadow around surface
         subRect := &app.theme.rects.surfaceWnd_Shadow
         painter.colorMask(true, true, true, true)
         painter.clear(Color.fromArgb(0, 0, 0, 0))
         app.theme.drawSubRect(&painter, @{0, 0, position.width, position.height}, subRect, app.theme.colors.wnd_Shadow, false)
+        painter.colorMask(true, true, true, false)
 
         // Hierarchy paint
+        painter.pushClippingRect(cxt.clipRect)
         wnd.paint(&cxt)
+        painter.colorMask(false, false, false, true)
+        painter.clear(Color.fromArgb(255, 0, 0, 0))
         painter.end()
 
         // Paint to surface render target
@@ -156,12 +160,14 @@ impl Surface
         cxt.renderer.unbindRenderTarget()
 
         // Paint render target to screen
-        cxt.painter.begin()
-        cxt.painter.setInterpolationMode(.Pixel)
-        cxt.painter.drawTexture(0, 0, cast(f32) rc.width, cast(f32) rc.height, rt.colorBuffer, Argb.White)
-        cxt.painter.end()
-        cxt.renderer.draw(&painter)
+        painter.begin()
+        painter.colorMask(true, true, true, true)
+        painter.setInterpolationMode(.Pixel)
+        painter.setBlendingMode(.Copy)
+        painter.drawTexture(0, 0, cast(f32) rc.width, cast(f32) rc.height, rt.colorBuffer, Argb.White)
+        painter.end()
 
+        cxt.renderer.draw(&painter)
         cxt.renderer.end()
     }
 

@@ -19,7 +19,7 @@ namespace Res
 var g_ModeAA:       bool = true
 var g_PaintQuality: PaintQuality = Normal
 var g_Pattern:      bool = true
-var g_Page:         s32 = 0
+var g_Page:         s32 = 3
 var g_Angle:        f32 = 0
 const MaxPages = 7
 
@@ -581,7 +581,8 @@ impl IWnd for MyView
         painter.setParams(g_ModeAA ? .Antialiased : .Default)
         painter.setQuality(g_PaintQuality)
 
-        painter.clear(Color.fromArgb(0xFFEEEEEE))
+        //painter.clear(Color.fromArgb(0xFFEEEEEE))
+        painter.fillRect(getClientRect(), Color.fromArgb(0xFFEEEEEE))
 
         switch g_Page
         {

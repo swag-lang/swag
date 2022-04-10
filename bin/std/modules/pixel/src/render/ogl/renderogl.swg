@@ -134,7 +134,9 @@ impl RenderOgl
         curRC = rc
         native.setCurrentContext(curRC)
         resetTransform()
-        if rt bindRenderTarget(dref rt)
+        if rt
+            bindRenderTarget(dref rt)
+
         glClearStencil(0)
         glClearColor(0, 0, 0, 0)
         glClear(GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT)
@@ -248,7 +250,7 @@ impl RenderOgl
         var colorID: GLuint
         glGenTextures(1, &colorID)
         glBindTexture(GL_TEXTURE_2D, colorID)
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, w, h, 0, GL_RGB, GL_UNSIGNED_BYTE, null)
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, null)
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, colorID, 0)
 
         var rbo: GLuint
@@ -438,7 +440,7 @@ impl RenderOgl
             case Clear:
                 params := &cmd.clear
                 (a, r, g, b) := params.color.toArgbf()
-                glClearColor(r, g, b, 0)
+                glClearColor(r, g, b, a)
                 glClear(GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT)
 
             case ColorMask:
@@ -508,7 +510,7 @@ impl RenderOgl
                     // the second pixel will not be written.
                     glBlendFuncSeparate(GL_DST_ALPHA, GL_ONE_MINUS_DST_ALPHA, GL_ZERO, GL_ZERO)
                     glBlendEquation(GL_FUNC_ADD)
-                    glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE)
+                    glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_FALSE)
                     glDrawArrays(GL_TRIANGLES, cast(GLint) params.start, cast(GLsizei) params.count)
                     glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_FALSE)
                 }
