@@ -346,6 +346,7 @@ impl Painter
         drawingBegin   = true
         canSetTexture0 = true
         overlapMode    = false
+        clippingRectOn = false
 
         resetState()
     }

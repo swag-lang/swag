@@ -103,6 +103,10 @@ impl Surface
     // Invalidate one part of the surface to be painted
     mtd invalidateRect(rect: Math.Rectangle)
     {
+        dirtyRect.x = Math.min(dirtyRect.x, rect.x)
+        dirtyRect.y = Math.min(dirtyRect.y, rect.y)
+        dirtyRect.setRight(Math.max(dirtyRect.right(), rect.right()))
+        dirtyRect.setBottom(Math.max(dirtyRect.bottom(), rect.bottom()))
         isDirty = true
     }
 
@@ -131,7 +135,8 @@ impl Surface
     {
         if !isDirty
             return
-        isDirty = false
+        dirtyRect = @{Swag.F32.Max, Swag.F32.Max, 0, 0}
+        isDirty   = false
 
         createRT()
 
@@ -144,7 +149,6 @@ impl Surface
         // Draw shadow around surface
         subRect := &app.theme.rects.surfaceWnd_Shadow
         painter.colorMask(true, true, true, true)
-        //painter.clear(Color.fromArgb(0, 0, 0, 0))
         app.theme.drawSubRect(&painter, @{0, 0, position.width, position.height}, subRect, app.theme.colors.wnd_Shadow, false)
         painter.colorMask(true, true, true, false)
 
