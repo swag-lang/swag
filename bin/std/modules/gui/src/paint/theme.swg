@@ -102,4 +102,34 @@ impl Theme
         res.fontDefaultFs.italic = Font.create(res.defaultFsTypeFaceI, metrics.defaultFixedFontSize)
         res.fontDefaultFs.boldItalic = Font.create(res.defaultFsTypeFaceBI, metrics.defaultFixedFontSize)
     }
+
+    // Create a default font with the given size
+    mtd createDefaultFont(size: u32, style = FontFamilyStyle.Regular)->*Font
+    {
+        switch style
+        {
+        case Regular:       return Font.create(res.defaultTypeFaceR, size)
+        case Bold:          return Font.create(res.defaultTypeFaceB, size)
+        case Italic:        return Font.create(res.defaultTypeFaceI, size)
+        case BoldItalic:    return Font.create(res.defaultTypeFaceBI, size)
+        }
+
+        Debug.assert(false, "invalid font style")
+        return null
+    }
+
+    // Create a default font (fixed size) with the given size
+    mtd createDefaultFontFS(size: u32, style = FontFamilyStyle.Regular)->*Font
+    {
+        switch style
+        {
+        case Regular:       return Font.create(res.defaultFsTypeFaceR, size)
+        case Bold:          return Font.create(res.defaultFsTypeFaceB, size)
+        case Italic:        return Font.create(res.defaultFsTypeFaceI, size)
+        case BoldItalic:    return Font.create(res.defaultFsTypeFaceBI, size)
+        }
+
+        Debug.assert(false, "invalid font style")
+        return null
+    }
 }

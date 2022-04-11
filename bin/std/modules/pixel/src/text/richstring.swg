@@ -70,7 +70,14 @@ impl RichString
         layoutRect.clear()
     }
 
-    // Associate a string
+    // Associate a string (can have multiple lines)
+    // Accepted markers are :
+    // <u>  ... <u>  => underline
+    // <b>  ... <b>  => bold
+    // <i>  ... <i>  => italic
+    // <p1> ... <p1> => color palette 1
+    // <p2> ... <p2> => color palette 2
+    // <p3> ... <p3> => color palette 3
     mtd set(text: string)
     {
         if raw == text and chunks.count

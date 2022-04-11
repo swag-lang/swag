@@ -102,7 +102,7 @@ impl Painter
         return result
     }
 
-    // Draw a string
+    // Draw a simple string
     mtd drawString(left, top: f32, text: string, font: *Font, color: Color, under = UnderlineStyle.None)
     {
         if @countof(text) == 0 or color.a == 0
@@ -112,7 +112,7 @@ impl Painter
         drawString(left, top, text, font, sharedSolidBrush, under)
     }
 
-    // Draw a string
+    // Draw a simple string
     mtd drawString(left, top: f32, text: string, font: *Font, brush: Brush, under = UnderlineStyle.None)
     {
         if @countof(text) == 0 or brush.color.a == 0
@@ -358,9 +358,10 @@ impl Painter
         }
     }
 
-    // Draw the string. The layout will be computed at the first call, and each
-    // time 'pos' has changed
-    public mtd drawRichString(pos: Rectangle, text: *RichString, format: RichStringFormat, forceCompute = false)
+    // Draw a rich string.
+    // A rich string can be multiline, and accepts
+    // The layout will be computed at the first call, and each time 'pos' has changed
+    mtd drawRichString(pos: Rectangle, text: *RichString, format: RichStringFormat, forceCompute = false)
     {
         if text.chunks.count == 0
             return

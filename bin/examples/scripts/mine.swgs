@@ -1,0 +1,116 @@
+#dependencies
+{
+    #import "gui" location="swag@std"
+}
+
+using Core, Gui, Pixel
+const GridSize = 24
+const CellSize = 30'f32
+
+struct Cell
+{
+    mine:   bool
+    score:  s32
+}
+
+var g_Grid: [GridSize, GridSize] Cell
+var g_FontCell: *Font
+
+func fillGrid()
+{
+    var rng: Random.DefaultRng
+    visit &g: g_Grid
+    {
+        if rng.nextU32(0, 100) < 10
+            g[0].mine = true
+    }
+
+    loop i: GridSize
+    {
+        loop j: GridSize
+        {
+            cpt := 0
+            loop ii: -1..1
+            {
+                loop jj: -1..1
+                {
+                    ti := i + ii
+                    tj := j + jj
+                    if ti < 0 or ti >= GridSize or tj < 0 or tj >= GridSize
+                        continue
+                    if g_Grid[ti, tj].mine
+                        cpt += 1
+                }
+            }
+            g_Grid[i, j].score = cpt
+        }
+    }
+}
+
+func onEvent(wnd: *Wnd, evt: *Event)->bool
+{
+    switch evt.kind
+    {
+    case MousePressed:
+        mouseEvt := cast(*MouseEvent) evt
+        pos := wnd.surfaceToLocal(mouseEvt.surfacePos)
+        x := cast(s32) (pos.x / CellSize)
+        y := cast(s32) (pos.y / CellSize)
+        x, y -= 1
+        if x < 0 or x >= GridSize or y < 0 or y >= GridSize
+            break
+        g_Grid[x, y].mine = true
+        wnd.invalidate()
+        return true
+
+    case Create:
+        fillGrid()
+        g_FontCell = wnd.getTheme().createDefaultFont(20)
+
+    case Paint:
+        paintEvt := cast(*PaintEvent) evt
+        painter  := paintEvt.bc.painter
+        painter.clear(Argb.White)
+
+        // Paint grid
+        loop i: GridSize
+        {
+            x := CellSize + (i * CellSize)
+            w := CellSize * GridSize
+            painter.drawRect(CellSize, x, w, CellSize, Argb.Black)
+            painter.drawRect(x, CellSize, CellSize, w, Argb.Black)
+        }
+
+        // Paint content
+        painter.setParams(.Antialiased)
+        font := wnd.getTheme().res.fontDefault.regular
+        loop i: GridSize
+        {
+            loop j: GridSize
+            {
+                x := CellSize + (i * CellSize)
+                y := CellSize + (j * CellSize)
+
+                if g_Grid[i, j].mine
+                {
+                    painter.fillCircle(x + CellSize * 0.5, y + CellSize * 0.5, CellSize * 0.4, Argb.Black)
+                }
+                else
+                {
+                    rect := Math.Rectangle{x, y, CellSize, CellSize}
+                    str  := Format.toString("%", g_Grid[i, j].score)
+
+                    painter.drawString(x, y, str, g_FontCell, Argb.Black)
+                }
+            }
+        }
+    }
+
+    return false
+}
+
+#run
+{
+    var app: Application
+    try app.runSurface(100, 100, 1024, 1024, title: "Minesweeper", hook: &onEvent)
+}
