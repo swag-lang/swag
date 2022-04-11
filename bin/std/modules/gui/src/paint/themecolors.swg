@@ -152,6 +152,16 @@ struct ThemeColors
     edit_SelectedBk:                Color = Blue
     edit_ErrorBorder:               Color = 0xFFFF0000
 
+    richEdit_Bk:                    Color = Gray8
+    richEdit_TextSpecial:           Color = Gray7
+    richEdit_Text:                  Color = White
+    richEdit_SelText:               Color = Transparent
+    richEdit_SelTextNoFocus:        Color = Transparent
+    richEdit_SelBk:                 Color = Color.getDarker(Color.fromArgb(Blue), 0.5)
+    richEdit_SelBkNoFocus:          Color = Gray6
+    richEdit_Caret:                 Color = White
+    richEdit_CurLineBorder:         Color = Gray4
+
     btnToggle_DisabledBorder:       Color = Disabled
     btnToggle_DisabledMark:         Color = Disabled
     btnToggle_DisabledBk:           Color = Transparent
@@ -277,16 +287,6 @@ struct ThemeColors
     colorPicker_Border:             Color = 0x3F000000
     colorPicker_BackAlpha:          Color = Gray4
     colorPicker_Mark:               Color = Gray1
-
-    richEdit_Bk:                    Color = Gray8
-    richEdit_TextSpecial:           Color = Gray7
-    richEdit_Text:                  Color = White
-    richEdit_SelText:               Color = Transparent
-    richEdit_SelTextNoFocus:        Color = Transparent
-    richEdit_SelBk:                 Color = Color.getDarker(Color.fromArgb(Blue), 0.5)
-    richEdit_SelBkNoFocus:          Color = Gray6
-    richEdit_Caret:                 Color = White
-    richEdit_CurLineBorder:         Color = Gray4
 
     imageRect_Fg:                   Color = White
 }

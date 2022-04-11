@@ -91,11 +91,7 @@ private impl RichEdit
         colors := getThemeColors()
         loop i: @countof(styles)
             styles[i].colFg = colors.richEdit_Text
-
-        stylesSelect[0].colFg = colors.richEdit_SelText
-        stylesSelect[0].colBk = colors.richEdit_SelBk
-        stylesSelect[1].colFg = colors.richEdit_SelTextNoFocus
-        stylesSelect[1].colBk = colors.richEdit_SelBkNoFocus
+        setForm(.RichEdit)
     }
 
     mtd computeScrollY()
@@ -267,7 +263,6 @@ impl RichEdit
 
             setDefaultMapping()
             setDefaultStyles()
-            setForm(.RichEdit)
         }
 
         return ed
@@ -285,23 +280,39 @@ impl RichEdit
     mtd setForm(form: RichEditForm)
     {
         self.form = #self.form
+        colors := getThemeColors()
+
         switch self.form
         {
         case RichEdit:
             fontFamily = parent.getTheme().res.fontDefaultFs
+
             frameWnd.style.clearStyleSheetColors()
             frameWnd.style.addStyleSheetColors("frameWnd_FocusBk $richEdit_Bk")
             frameWnd.style.addStyleSheetColors("frameWnd_Bk $richEdit_Bk")
+
             scrollWnd.style.clearStyleSheetColors()
             scrollWnd.style.addStyleSheetColors("scrollBar_Bk $richEdit_Bk")
 
+            stylesSelect[0].colFg = colors.richEdit_SelText
+            stylesSelect[0].colBk = colors.richEdit_SelBk
+            stylesSelect[1].colFg = colors.richEdit_SelTextNoFocus
+            stylesSelect[1].colBk = colors.richEdit_SelBkNoFocus
+
         case Edit:
             fontFamily = parent.getTheme().res.fontDefault
+
             frameWnd.style.clearStyleSheetColors()
             frameWnd.style.addStyleSheetColors("frameWnd_FocusBk $edit_Bk")
             frameWnd.style.addStyleSheetColors("frameWnd_Bk $edit_Bk")
+
             scrollWnd.style.clearStyleSheetColors()
             scrollWnd.style.addStyleSheetColors("scrollBar_Bk $edit_Bk")
+
+            stylesSelect[0].colFg = colors.edit_SelectedText
+            stylesSelect[0].colBk = colors.edit_SelectedBk
+            stylesSelect[1].colFg = 0
+            stylesSelect[1].colBk = 0
         }
 
         invalidate()
