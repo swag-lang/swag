@@ -20,12 +20,15 @@ func createView2(tabView: *Tab, view: *Wnd)
         split.frameFlags |= .FocusBorder
         split.setFrameForm(FrameWndForm.Square)
 
-        list0 := createListSimple(split)
-        list0.setFrameForm(FrameWndForm.Transparent)
+        ed := RichEdit.create(split, @{})
+        ed.setRichEdFlags(.WordWrap)
+        ed.setForm(.Edit)
+        ed.addText("coucou la foule comment ça va ? ça va ! et même très bien ")
+
         list1 := createListMulti(split)
         list1.setFrameForm(FrameWndForm.Transparent)
 
-        split.addPane(list0)
+        split.addPane(ed)
         split.addPane(list1)
     }
 

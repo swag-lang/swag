@@ -103,6 +103,12 @@ impl ThemeStyle
         }
     }
 
+    mtd clearStyleSheetColors()
+    {
+        styleSheetColors.clear()
+        dirty = true
+    }
+
     mtd setStyleSheetColors(str: string)
     {
         styleSheetColors = str

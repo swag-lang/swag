@@ -151,7 +151,7 @@ impl RichEdit
             if !Unicode.isLetterOrDigit(ch)
                 cutAti = i + 1
 
-            if cutAti
+            if cutAti > 1
             {
                 x := getMarginLeft() + Painter.measureString(str, font).width
                 if x >= clientRect.right()

@@ -35,13 +35,13 @@ func createView4(tabView: *Tab, view: *Wnd)
             setFrameForm(.Round)
             setFrameFlags(.FocusBorder)
             setRichEdFlags(.WordWrap)
-            style.addStyleSheetColors("richEdit_Bk $edit_Bk")
+            setForm(.Edit)
 
             styles[1].colFg = Argb.Red
             styles[2].colBk = Argb.Blue
             styles[3].fontMode = .Regular
             styles[3].underline = .Underline
-            addText("coucou la foule ", 0)
+            addText("RichEdit coucou la foule ", 0)
             addText("comment ça va ? ", 1)
             addText("ça va !", 2)
             addText(" et même très bien ", 3)
@@ -54,10 +54,10 @@ func createView4(tabView: *Tab, view: *Wnd)
 
     {
         ed := RichEdit.create(view, @{620, 320, 400, 150})
+        ed.setForm(.Edit)
         ed.setFrameForm(.Round)
         ed.setFrameFlags(.FocusBorder)
         ed.setRichEdFlags(.ReadOnly)
-        ed.style.addStyleSheetColors("richEdit_Bk $edit_Bk")
         ed.setText("read only\n")
     }
 }

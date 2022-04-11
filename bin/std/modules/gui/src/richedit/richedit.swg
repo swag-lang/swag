@@ -13,6 +13,12 @@ enum RichEditFlags
     WordWrap
 }
 
+enum RichEditForm
+{
+    RichEdit
+    Edit
+}
+
 struct RichEditMapping
 {
     key:        Input.Key = ?
@@ -31,6 +37,7 @@ struct RichEdit
     marginLeft:     f32
     marginRight:    f32
     lexer:          IRichEditLexer
+    form            = RichEditForm.RichEdit
     sigIsReadOnly:  SigArray'closure(*bool)
     sigChanged:     SigArray'closure(*Self)
     sigModified:    SigArray'closure(*Self)
@@ -240,7 +247,6 @@ impl RichEdit
     func create(parent: *Wnd, position: Math.Rectangle, id: string = null)->*RichEdit
     {
         ed := Wnd.create'RichEdit(parent, "", position, id)
-        ed.fontFamily = parent.getTheme().res.fontDefaultFs
 
         with ed
         {
@@ -261,11 +267,8 @@ impl RichEdit
 
             setDefaultMapping()
             setDefaultStyles()
+            setForm(.RichEdit)
         }
-
-        ed.frameWnd.style.addStyleSheetColors("frameWnd_FocusBk $richEdit_Bk")
-        ed.frameWnd.style.addStyleSheetColors("frameWnd_Bk $richEdit_Bk")
-        ed.scrollWnd.style.addStyleSheetColors("scrollBar_Bk $richEdit_Bk")
 
         return ed
     }
@@ -275,6 +278,32 @@ impl RichEdit
     {
         richEdFlags = flags
         recomputeScroll = true
+        invalidate()
+    }
+
+    // Set form
+    mtd setForm(form: RichEditForm)
+    {
+        self.form = #self.form
+        switch self.form
+        {
+        case RichEdit:
+            fontFamily = parent.getTheme().res.fontDefaultFs
+            frameWnd.style.clearStyleSheetColors()
+            frameWnd.style.addStyleSheetColors("frameWnd_FocusBk $richEdit_Bk")
+            frameWnd.style.addStyleSheetColors("frameWnd_Bk $richEdit_Bk")
+            scrollWnd.style.clearStyleSheetColors()
+            scrollWnd.style.addStyleSheetColors("scrollBar_Bk $richEdit_Bk")
+
+        case Edit:
+            fontFamily = parent.getTheme().res.fontDefault
+            frameWnd.style.clearStyleSheetColors()
+            frameWnd.style.addStyleSheetColors("frameWnd_FocusBk $edit_Bk")
+            frameWnd.style.addStyleSheetColors("frameWnd_Bk $edit_Bk")
+            scrollWnd.style.clearStyleSheetColors()
+            scrollWnd.style.addStyleSheetColors("scrollBar_Bk $edit_Bk")
+        }
+
         invalidate()
     }
 
