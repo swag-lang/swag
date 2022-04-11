@@ -49,62 +49,82 @@ public impl LinePath
     // Add a line from the previous point to 'pt'
     mtd lineTo(x, y: f32)
     {
+        newEndPoint := Vector2{x, y}
+        if newEndPoint.isEqualEpsilon(endPoint)
+            return
+
         var elem: Element = ?
         elem.type = .Line
         elem.position.set(x, y)
         elements.add(elem)
-        endPoint.set(x, y)
+        endPoint = newEndPoint
         isDirty = true
     }
 
     // Add a curve from the previous point to 'pt'
     mtd curveTo(x, y: f32)
     {
+        newEndPoint := Vector2{x, y}
+        if newEndPoint.isEqualEpsilon(endPoint)
+            return
+
         var elem: Element = ?
         elem.type = .Curve
         elem.position.set(x, y)
         elements.add(elem)
-        endPoint.set(x, y)
+        endPoint = newEndPoint
         isDirty = true
     }
 
     // Add a curve from the previous point to 'pt'
     mtd bezierTo(x, y: f32, ctx, cty: f32)
     {
+        newEndPoint := Vector2{x, y}
+        if newEndPoint.isEqualEpsilon(endPoint)
+            return
+
         var elem: Element = ?
         elem.type = .Bezier1
         elem.position.set(x, y)
         elem.p1.set(ctx, cty)
         elements.add(elem)
-        endPoint.set(x, y)
+        endPoint = newEndPoint
         isDirty = true
     }
 
     // Add a curve from the previous point to 'pt'
     mtd bezierTo(x, y: f32, ct1x, ct1y: f32, ct2x, ct2y: f32)
     {
+        newEndPoint := Vector2{x, y}
+        if newEndPoint.isEqualEpsilon(endPoint)
+            return
+
         var elem: Element = ?
         elem.type = .Bezier2
         elem.position.set(x, y)
         elem.p1.set(ct1x, ct1y)
         elem.p2.set(ct2x, ct2y)
         elements.add(elem)
-        endPoint.set(x, y)
+        endPoint = newEndPoint
         isDirty = true
     }
 
     // Add an arc from the previous point
     mtd arcTo(centerX, centerY: f32, radiusX, radiusY: f32, initAngle, maxAngle: Math.Angle)
     {
-        var elem: Element = ?
-        elem.type = .Arc
-        elem.position.set(centerX, centerY)
-
         ia := initAngle.rad
         while ia < 0 ia += Math.ConstF32.TwoPi
         ma := maxAngle.rad
         while ma < 0 ma += Math.ConstF32.TwoPi
         while ma < ia ma += Math.ConstF32.TwoPi
+
+        newEndPoint := Vector2{centerX + (Math.sin(ma) * radiusX), centerY + (-Math.cos(ma) * radiusY)}
+        if newEndPoint.isEqualEpsilon(endPoint)
+            return
+
+        var elem: Element = ?
+        elem.type = .Arc
+        elem.position.set(centerX, centerY)
 
         elem.p1.x = ia
         elem.p1.y = ma
@@ -114,8 +134,7 @@ public impl LinePath
         elements.add(elem)
         isDirty = true
 
-        endPoint.x = centerX + (Math.sin(ma) * radiusX)
-        endPoint.y = centerY + (-Math.cos(ma) * radiusY)
+        endPoint = newEndPoint
     }
 
     // Close the figure

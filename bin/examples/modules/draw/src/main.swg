@@ -344,6 +344,11 @@ func displayPage3(painter: *Pixel.Painter)
         pen.dashStyle = .Dash
         painter.drawPathList(&lp1, pen, DrawPathListMode.Merge)
     }
+
+    {
+        painter.setTransform(trs)
+        painter.drawArc(250, 600, 80, 0, 1.5, Argb.Green, 18)
+    }
 }
 
 func displayPage4(painter: *Pixel.Painter)
