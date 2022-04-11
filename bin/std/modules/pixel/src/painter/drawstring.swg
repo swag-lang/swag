@@ -42,6 +42,7 @@ struct RichStringFormat
     font:           FontFamily
     fontStyle:      FontFamilyStyle = Regular
     palette:        [4] Color
+    brush:          Brush
     horzAlignment:  StringHorzAlignment = Left
     vertAlignment:  StringVertAlignment = Top
     lineGap:        s32
@@ -382,9 +383,11 @@ impl Painter
         }
 
         // Draw
+        brush := format.brush
         visit &c: text.chunks
         {
-            drawString(c.pos.x, c.pos.y, c.slice, c.font, format.palette[c.colorIdx], c.under)
+            brush.color = format.palette[c.colorIdx]
+            drawString(c.pos.x, c.pos.y, c.slice, c.font, brush, c.under)
         }
 
         // Restore clipping to its previous value

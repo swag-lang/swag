@@ -6,30 +6,35 @@
 using Core, Gui, Pixel
 const GridSize = 24
 const CellSize = 30'f32
+const FillRate = 10
 
 struct Cell
 {
     mine:   bool
+    show:   bool
     score:  s32
 }
 
-var g_Grid: [GridSize, GridSize] Cell
+var g_Grid:     [GridSize, GridSize] Cell
 var g_FontCell: *Font
 
 func fillGrid()
 {
     var rng: Random.DefaultRng
+    rng.seedNow()
+
+    // Put a mine at random
     visit &g: g_Grid
     {
-        if rng.nextU32(0, 100) < 10
+        if rng.nextU32(0, 100) < FillRate
             g[0].mine = true
     }
 
+    // Count neighbours for each cell
     loop i: GridSize
     {
         loop j: GridSize
         {
-            cpt := 0
             loop ii: -1..1
             {
                 loop jj: -1..1
@@ -39,10 +44,9 @@ func fillGrid()
                     if ti < 0 or ti >= GridSize or tj < 0 or tj >= GridSize
                         continue
                     if g_Grid[ti, tj].mine
-                        cpt += 1
+                        g_Grid[i, j].score += 1
                 }
             }
-            g_Grid[i, j].score = cpt
         }
     }
 }
@@ -51,6 +55,10 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 {
     switch evt.kind
     {
+    case Create:
+        fillGrid()
+        g_FontCell = wnd.getTheme().createDefaultFont(20)
+
     case MousePressed:
         mouseEvt := cast(*MouseEvent) evt
         pos := wnd.surfaceToLocal(mouseEvt.surfacePos)
@@ -59,13 +67,9 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         x, y -= 1
         if x < 0 or x >= GridSize or y < 0 or y >= GridSize
             break
-        g_Grid[x, y].mine = true
+        g_Grid[x, y].show = true
         wnd.invalidate()
         return true
-
-    case Create:
-        fillGrid()
-        g_FontCell = wnd.getTheme().createDefaultFont(20)
 
     case Paint:
         paintEvt := cast(*PaintEvent) evt
@@ -88,19 +92,31 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         {
             loop j: GridSize
             {
-                x := CellSize + (i * CellSize)
-                y := CellSize + (j * CellSize)
+                x    := CellSize + (i * CellSize)
+                y    := CellSize + (j * CellSize)
+                rect := Math.Rectangle{x, y, CellSize, CellSize}
 
-                if g_Grid[i, j].mine
+                if !g_Grid[i, j].show
                 {
-                    painter.fillCircle(x + CellSize * 0.5, y + CellSize * 0.5, CellSize * 0.4, Argb.Black)
+                    rect.inflate(-2)
+                    painter.fillRect(rect, Argb.DarkGray)
                 }
-                else
+                elif g_Grid[i, j].mine
                 {
-                    rect := Math.Rectangle{x, y, CellSize, CellSize}
+                    painter.fillCircle(x + CellSize * 0.5, y + CellSize * 0.5, CellSize * 0.4, Argb.Red)
+                }
+                elif g_Grid[i, j].score
+                {
                     str  := Format.toString("%", g_Grid[i, j].score)
 
-                    painter.drawString(x, y, str, g_FontCell, Argb.Black)
+                    var rs:  RichString
+                    var rsf: RichStringFormat
+                    rs.set(str)
+                    rsf.font.regular = g_FontCell
+                    rsf.horzAlignment = .Center
+                    rsf.vertAlignment = .Center
+                    rsf.palette[0] = Argb.Black
+                    painter.drawRichString(rect, &rs, rsf)
                 }
             }
         }
