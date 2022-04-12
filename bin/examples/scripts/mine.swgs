@@ -62,15 +62,13 @@ func fillGrid()
 
 func floodFill(x, y: s32)
 {
-    var arr:    Array'{x: s32, y: s32}
-    var done:   Array's32
+    var arr: Array'{x: s32, y: s32}
     arr.add(@{x, y})
 
     while arr.count
     {
         pt  := arr.popBack()
         idx := pt.x + (pt.y * GridSize)
-        done.add(idx)
 
         g_Grid[pt.x, pt.y].show = true
         if g_Grid[pt.x, pt.y].score
@@ -86,9 +84,9 @@ func floodFill(x, y: s32)
                     continue
                 if ii and jj
                     continue
-                idx = ti + (tj * GridSize)
-                if done.contains(idx)
+                if g_Grid[ti, tj].show
                     continue
+                idx = ti + (tj * GridSize)
                 arr.add(@{ti, tj})
             }
         }
@@ -120,6 +118,8 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         x, y -= 1
         if x < 0 or x >= GridSize or y < 0 or y >= GridSize
             break
+        if g_Win or g_Lost or g_Grid[x, y].show
+            break
 
         if mouseEvt.button == .Left
         {
@@ -128,14 +128,10 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
             else
                 floodFill(x, y)
         }
-        elif mouseEvt.button == .Right and !g_Grid[x, y].show
+        elif mouseEvt.button == .Right
         {
-            var inc: s32
-            if g_Grid[x, y].mine
-                inc = 1
-
             g_Grid[x, y].mark = !g_Grid[x, y].mark
-            g_NumMarks += g_Grid[x, y].mark ? inc : 0
+            g_NumMarks += g_Grid[x, y].mark ? 1 : -1
             g_Win = g_NumMarks == g_NumMines
         }
 
