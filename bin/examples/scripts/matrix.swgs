@@ -1,0 +1,98 @@
+#dependencies
+{
+    #import "gui" location="swag@std"
+}
+
+using Core, Gui, Pixel
+
+struct C
+{
+    y:      f32
+    length: s32
+    speed:  f32
+    c:      [50] string
+    lastYI: s32
+}
+
+var g_RD:   [80] C
+var g_Font: *Font
+var g_Rng:  Random.DefaultRng
+
+const Char = @["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N"]
+
+const FontSize = 15'u32
+
+func initC(i: uint)
+{
+    g_RD[i].length = g_Rng.nextU32(10, cast(u32) @countof(g_RD[i].c))
+    loop j: g_RD[i].length
+        g_RD[i].c[j] = Char[g_Rng.nextU32(0, cast(u32) @countof(Char))]
+    g_RD[i].speed = g_Rng.nextF32(400, 800)
+    g_RD[i].y = 0
+}
+
+func onEvent(wnd: *Wnd, evt: *Event)->bool
+{
+    switch evt.kind
+    {
+    case Create:
+        g_Font = wnd.getTheme().createDefaultFont(FontSize)
+        loop i: g_RD
+            initC(i)
+
+    case Paint:
+        paintEvt := cast(*PaintEvent) evt
+        painter  := paintEvt.bc.painter
+        rect     := wnd.getClientRect()
+
+        painter.fillRect(rect, Argb.Black)
+
+        loop i: @countof(g_RD)
+        {
+            loop j: g_RD[i].length - 1
+            {
+                if g_Rng.nextU32(0, 300) < 2
+                    g_RD[i].c[j] = Char[g_Rng.nextU32(0, cast(u32) @countof(Char))]
+                c := g_RD[i].c[j]
+
+                x := cast(f32) i * FontSize
+                y := g_RD[i].y
+                y -= j * FontSize
+
+                if y > rect.bottom()
+                    continue
+
+                y /= FontSize
+                yi := cast(s32) y
+                if j == 0 and yi != g_RD[i].lastYI
+                {
+                    g_RD[i].lastYI = yi
+                    Memory.copyOver(&g_RD[i].c[1], &g_RD[i].c[0], (cast(uint) g_RD[i].length - 2) * @sizeof(string))
+                    g_RD[i].c[0] = Char[g_Rng.nextU32(0, cast(u32) @countof(Char))]
+                }
+
+                y = yi * FontSize
+
+                var color: Color
+                if j == 0
+                    color = Color.getBlend(Argb.Green, Argb.White, 0.5)
+                else
+                    color = Color.getBlend(Argb.Green, Argb.Black, j / cast(f32) g_RD[i].length)
+                painter.drawString(x, y, c, g_Font, color)
+            }
+
+            g_RD[i].y += g_RD[i].speed * wnd.getApp().timing.dt
+            if g_RD[i].y - (g_RD[i].length * FontSize) > rect.bottom() + FontSize
+                initC(i)
+        }
+
+        wnd.invalidate()
+    }
+
+    return false
+}
+
+#run
+{
+    Application.runSurface(100, 100, 1024, 800, title: "Matrix", hook: &onEvent)
+}
