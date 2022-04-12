@@ -6,17 +6,22 @@
 using Core, Gui, Pixel
 const GridSize = 24
 const CellSize = 30'f32
-const FillRate = 10
+const FillRate = 1
 
 struct Cell
 {
     mine:   bool
     show:   bool
+    mark:   bool
     score:  s32
 }
 
 var g_Grid:     [GridSize, GridSize] Cell
 var g_FontCell: *Font
+var g_Lost:     bool
+var g_Win:      bool
+var g_NumMines: s32
+var g_NumMarks: s32
 
 func fillGrid()
 {
@@ -26,8 +31,12 @@ func fillGrid()
     // Put a mine at random
     visit &g: g_Grid
     {
+        @init(g)
         if rng.nextU32(0, 100) < FillRate
+        {
+            g_NumMines += 1
             g[0].mine = true
+        }
     }
 
     // Count neighbours for each cell
@@ -51,6 +60,48 @@ func fillGrid()
     }
 }
 
+func floodFill(x, y: s32)
+{
+    var arr:    Array'{x: s32, y: s32}
+    var done:   Array's32
+    arr.add(@{x, y})
+
+    while arr.count
+    {
+        pt  := arr.popBack()
+        idx := pt.x + (pt.y * GridSize)
+        done.add(idx)
+
+        g_Grid[pt.x, pt.y].show = true
+        if g_Grid[pt.x, pt.y].score
+            continue
+
+        loop ii: -1..1
+        {
+            loop jj: -1..1
+            {
+                ti := pt.x + ii
+                tj := pt.y + jj
+                if ti < 0 or ti >= GridSize or tj < 0 or tj >= GridSize
+                    continue
+                if ii and jj
+                    continue
+                idx = ti + (tj * GridSize)
+                if done.contains(idx)
+                    continue
+                arr.add(@{ti, tj})
+            }
+        }
+    }
+}
+
+func setup()
+{
+    g_Lost, g_Win = false
+    g_NumMines, g_NumMarks = 0
+    fillGrid()
+}
+
 func onEvent(wnd: *Wnd, evt: *Event)->bool
 {
     switch evt.kind
@@ -58,6 +109,8 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
     case Create:
         fillGrid()
         g_FontCell = wnd.getTheme().createDefaultFont(20)
+        btn := PushButton.create(wnd, "Again!", @{20, 10 + (GridSize + 2) * CellSize})
+        btn.sigPressed += @|wnd|(btn) { setup(); wnd.invalidate(); }
 
     case MousePressed:
         mouseEvt := cast(*MouseEvent) evt
@@ -67,14 +120,34 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         x, y -= 1
         if x < 0 or x >= GridSize or y < 0 or y >= GridSize
             break
-        g_Grid[x, y].show = true
+
+        if mouseEvt.button == .Left
+        {
+            if g_Grid[x, y].mine
+                g_Lost = true
+            else
+                floodFill(x, y)
+        }
+        elif mouseEvt.button == .Right and !g_Grid[x, y].show
+        {
+            var inc: s32
+            if g_Grid[x, y].mine
+                inc = 1
+
+            g_Grid[x, y].mark = !g_Grid[x, y].mark
+            g_NumMarks += g_Grid[x, y].mark ? inc : 0
+            g_Win = g_NumMarks == g_NumMines
+        }
+
         wnd.invalidate()
         return true
 
     case Paint:
         paintEvt := cast(*PaintEvent) evt
         painter  := paintEvt.bc.painter
-        painter.clear(Argb.White)
+
+        bk := Math.Rectangle{0, 0, (GridSize + 2) * CellSize, (GridSize + 2) * CellSize}
+        painter.fillRect(bk, Argb.White)
 
         // Paint grid
         loop i: GridSize
@@ -96,14 +169,15 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
                 y    := CellSize + (j * CellSize)
                 rect := Math.Rectangle{x, y, CellSize, CellSize}
 
-                if !g_Grid[i, j].show
+                if !g_Grid[i, j].show and !g_Lost and !g_Win
                 {
                     rect.inflate(-2)
-                    painter.fillRect(rect, Argb.DarkGray)
+                    painter.fillRect(rect, g_Grid[i, j].mark ? Argb.DarkBlue : Argb.DarkGray)
                 }
                 elif g_Grid[i, j].mine
                 {
-                    painter.fillCircle(x + CellSize * 0.5, y + CellSize * 0.5, CellSize * 0.4, Argb.Red)
+                    color := g_Win ? Argb.Green : Argb.Red
+                    painter.fillCircle(x + CellSize * 0.5, y + CellSize * 0.5, CellSize * 0.4, color)
                 }
                 elif g_Grid[i, j].score
                 {
