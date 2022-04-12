@@ -235,6 +235,14 @@ func createView0(tabView: *Tab, view: *Wnd)
         slider0.setValue(100)
     }
 
+    // SliderCtrl
+    {
+        sliderctrl := SliderCtrl.create(view, @{380, 660, 300, 30}, "toto")
+        sliderctrl.slider.setMinMax(0, 255)
+        sliderctrl.edit.setInputU64(0, 255)
+        sliderctrl.slider.setValue(0)
+    }
+
     // Labels
     {
         label := Label.create(view, "Left", @{125, 140, 140, 30})
