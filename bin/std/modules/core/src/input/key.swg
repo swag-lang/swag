@@ -122,7 +122,7 @@ public enum Key
     MediaPlayPause
     MediaPreviousTrack
     MediaStop
-    Menu
+    MenuCtrl
     Multiply
     N
     Next

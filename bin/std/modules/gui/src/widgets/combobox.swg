@@ -12,7 +12,7 @@ struct ComboBox
     editBox:        *EditBox
     isHot:          bool
     hasIcons:       bool
-    popup:          *PopupList
+    popup:          *PopupListCtrl
     items:          ArrayPtr'Item
     selectedIdx     = Swag.U32.Max
 }
@@ -135,7 +135,7 @@ private impl ComboBox
 {
     mtd showPopup()
     {
-        popup = PopupList.create(self)
+        popup = PopupListCtrl.create(self)
         popup.minWidthPopup = minWidthPopup
         popup.maxHeightPopup = maxHeightPopup
 

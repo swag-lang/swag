@@ -72,7 +72,7 @@ enum ListFlags
     VertLines
 }
 
-struct List
+struct ListCtrl
 {
     using frameWnd: FrameWnd
 
@@ -104,7 +104,7 @@ struct List
 struct ListView
 {
     using wnd:              Wnd
-    list:                   *List
+    list:                   *ListCtrl
     discardMouseRelease:    bool
 }
 
@@ -605,12 +605,12 @@ private impl ListView
     }
 }
 
-impl List
+impl ListCtrl
 {
     #[Swag.Discardable]
-    func createSimple(parent: *Wnd, position: Math.Rectangle, id: string = null)->*List
+    func createSimple(parent: *Wnd, position: Math.Rectangle, id: string = null)->*ListCtrl
     {
-        list := Wnd.create'List(parent, "", position, id)
+        list := Wnd.create'ListCtrl(parent, "", position, id)
 
         with list
         {
@@ -630,9 +630,9 @@ impl List
     }
 
     #[Swag.Discardable]
-    func createMultiColumns(parent: *Wnd, position: Math.Rectangle, id: string = null)->*List
+    func createMultiColumns(parent: *Wnd, position: Math.Rectangle, id: string = null)->*ListCtrl
     {
-        list := Wnd.create'List(parent, "", position, id)
+        list := Wnd.create'ListCtrl(parent, "", position, id)
 
         fwnd := list.createView'Wnd()
         fwnd.dockStyle = .Center
@@ -645,7 +645,7 @@ impl List
             if evt.kind != .Resize
                 return false
 
-            list   := cast(*List) wnd
+            list   := cast(*ListCtrl) wnd
             header := list.header
             switch list.frameForm
             {
@@ -690,7 +690,7 @@ impl List
                 header.invalidate()
             }
 
-            // List view
+            // ListCtrl view
             listView = scrollWnd.createView'ListView()
             listView.backgroundStyle = .Transparent
             listView.list = list

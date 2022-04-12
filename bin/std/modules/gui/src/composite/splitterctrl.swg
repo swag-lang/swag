@@ -15,7 +15,7 @@ struct SplitterItem
     minSize:    f32 = 5
 }
 
-struct Splitter
+struct SplitterCtrl
 {
     using frameWnd: FrameWnd
     splitViewFlags  = SplitterFlags.None
@@ -26,7 +26,7 @@ struct Splitter
     moving:         bool
 }
 
-impl IWnd for Splitter
+impl IWnd for SplitterCtrl
 {
     mtd onMouseEvent(evt: *MouseEvent)
     {
@@ -161,7 +161,7 @@ impl IWnd for Splitter
     }
 }
 
-private impl Splitter
+private impl SplitterCtrl
 {
     mtd computeLayout()
     {
@@ -284,15 +284,15 @@ private impl Splitter
     }
 }
 
-impl Splitter
+impl SplitterCtrl
 {
     #[Swag.Discardable]
-    func create(parent: *Wnd, position: Math.Rectangle, vertical = false, id: string = null)->*Splitter
+    func create(parent: *Wnd, position: Math.Rectangle, vertical = false, id: string = null)->*SplitterCtrl
     {
         Debug.assert(parent != null)
 
         pos := position
-        res := Wnd.create'Splitter(parent, null, pos, id)
+        res := Wnd.create'SplitterCtrl(parent, null, pos, id)
         res.focusStrategy = .None
         res.wndFlags |= .PostChildsPaint
         if vertical

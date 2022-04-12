@@ -29,22 +29,22 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         pevt := cast(*MouseEvent) evt
         if pevt.button == .Right
         {
-            menu := Menu.createPopup(wnd)
+            menu := MenuCtrl.createPopup(wnd)
             menu.addItem("Coucou", "0", rightName: "Ctrl+A")
             menu.addItem("Salut", "1", app.theme.getIcon24(ThemeIcons24.Search, 18), disabled: true)
             menu.addItem("La", "2", app.theme.getIcon24(ThemeIcons24.WndClose, 18))
             menu.addSeparator()
 
-            popup := Menu.createPopup(wnd)
+            popup := MenuCtrl.createPopup(wnd)
             popup.addItem("Coucou0", "0")
             popup.addItem("Coucou1", "1")
             menu.addPopup("Popup1", popup)
 
-            popup1 := Menu.createPopup(wnd)
+            popup1 := MenuCtrl.createPopup(wnd)
             popup1.addItem("Coucou0", "0")
             popup1.addItem("Coucou1", "1")
 
-            popup = Menu.createPopup(wnd)
+            popup = MenuCtrl.createPopup(wnd)
             popup.addItem("Coucou0", "0")
             popup.addPopup("Coucou1", popup1)
             menu.addPopup("Popup2", popup)
@@ -305,18 +305,18 @@ func createView0(tabView: *Tab, view: *Wnd)
         }
     }
 
-    // Menu
+    // MenuCtrl
     {
-        menu := Menu.createBar(view, @{600, 280, 400})
+        menu := MenuCtrl.createBar(view, @{600, 280, 400})
         menu.addItem("Coucou", "0")
         menu.addItem("Salut", "0")
         menu.addItem("La", "0")
 
-        popup1 := Menu.createPopup(view)
+        popup1 := MenuCtrl.createPopup(view)
         popup1.addItem("Coucou0", "0")
         popup1.addItem("Coucou1", "1")
 
-        popup := Menu.createPopup(view)
+        popup := MenuCtrl.createPopup(view)
         popup.addItem("Coucou0", "0")
         popup.addItem("Coucou1", "1")
         popup.addPopup("Popup1", popup1)

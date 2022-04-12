@@ -134,7 +134,7 @@ impl Keyboard
     setupArray(MediaPlayPause,      cast(u8) VK_MEDIA_PLAY_PAUSE)
     setupArray(MediaPreviousTrack,  cast(u8) VK_MEDIA_PREV_TRACK)
     setupArray(MediaStop,           cast(u8) VK_MEDIA_STOP)
-    setupArray(Menu,                cast(u8) VK_MENU)
+    setupArray(MenuCtrl,                cast(u8) VK_MENU)
     setupArray(Multiply,            cast(u8) VK_MULTIPLY)
     setupArray(N,                   cast(u8) "N"'rune)
     setupArray(Next,                cast(u8) VK_NEXT)

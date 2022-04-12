@@ -1,7 +1,7 @@
 #global public
 using Core, Pixel
 
-struct PopupList
+struct PopupListCtrl
 {
     using frameWnd: FrameWnd
     heightItem:     f32 = 30
@@ -19,7 +19,7 @@ struct PopupList
 struct PopupListView
 {
     using wnd:  Wnd
-    list:       *PopupList
+    list:       *PopupListCtrl
     hotIdx:     u32 = Swag.U32.Max
 }
 
@@ -162,14 +162,14 @@ impl IWnd for PopupListView
     }
 }
 
-impl PopupList
+impl PopupListCtrl
 {
     // Create the popup list, but do not display it
-    func create(owner: *Wnd)->*PopupList
+    func create(owner: *Wnd)->*PopupListCtrl
     {
         metrics := owner.getThemeMetrics()
 
-        popup := Wnd.create'PopupList(owner.parent.surface.wnd, owner.position, owner.id)
+        popup := Wnd.create'PopupListCtrl(owner.parent.surface.wnd, owner.position, owner.id)
 
         with popup
         {

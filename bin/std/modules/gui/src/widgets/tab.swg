@@ -57,7 +57,7 @@ struct Tab
 
     buttonPopup:        *IconButton
     views:              ArrayPtr'TabItem
-    popup:              *PopupList
+    popup:              *PopupListCtrl
     selectedIdx:        u32
     firstVisibleIdx:    u32 = 0
     hotIdx:             u32 = Swag.U32.Max
@@ -249,7 +249,7 @@ private impl Tab
 {
     mtd showPopup(x, y: f32)
     {
-        popup = PopupList.create(self)
+        popup = PopupListCtrl.create(self)
         visit item: views
             popup.addItem(item.name.raw, item.id, item.icon, item.userData)
 

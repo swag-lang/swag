@@ -11,7 +11,7 @@ enum ColorPickerViewMode
     RedGreen
 }
 
-struct ColorPickerView
+struct ColorPickerCtrl
 {
     using frameWnd: FrameWnd
     oldColor:       Color
@@ -35,7 +35,7 @@ struct ColorPickerView
     radioB:         *RadioButton
 }
 
-impl IWnd for ColorPickerView
+impl IWnd for ColorPickerCtrl
 {
     mtd onPaintEvent(evt: *PaintEvent)
     {
@@ -55,7 +55,7 @@ impl IWnd for ColorPickerView
     }
 }
 
-private impl ColorPickerView
+private impl ColorPickerCtrl
 {
     mtd updateMode()
     {
@@ -106,12 +106,12 @@ private impl ColorPickerView
     }
 }
 
-impl ColorPickerView
+impl ColorPickerCtrl
 {
     #[Swag.Discardable]
-    func create(parent: *Wnd, position: Math.Rectangle, id: string = null)->*ColorPickerView
+    func create(parent: *Wnd, position: Math.Rectangle, id: string = null)->*ColorPickerCtrl
     {
-        v := Wnd.create'ColorPickerView(parent, "", position, id)
+        v := Wnd.create'ColorPickerCtrl(parent, "", position, id)
 
         with v
         {

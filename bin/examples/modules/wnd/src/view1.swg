@@ -1,8 +1,8 @@
 using Core, Gui, Pixel
 
-func createListSimple(view: *Wnd, maxItems = 50)->*List
+func createListSimple(view: *Wnd, maxItems = 50)->*ListCtrl
 {
-    list := List.createSimple(view, @{5, 5, 250, 300})
+    list := ListCtrl.createSimple(view, @{5, 5, 250, 300})
     list.setFrameForm(FrameWndForm.Round)
     list.selectionMode = .Multi
     list.iconSize = 16
@@ -19,9 +19,9 @@ func createListSimple(view: *Wnd, maxItems = 50)->*List
     return list
 }
 
-func createListMulti(view: *Wnd)->*List
+func createListMulti(view: *Wnd)->*ListCtrl
 {
-    list := List.createMultiColumns(view, @{5, 5, 250, 300})
+    list := ListCtrl.createMultiColumns(view, @{5, 5, 250, 300})
     list.addColumn("column 0")
     list.addColumn("column 1")
     list.addColumn("column 2")
@@ -66,7 +66,7 @@ func createView1(tabView: *Tab, view: *Wnd)
     }
 
     {
-        list := List.createSimple(view, @{830, 5, 250, 300})
+        list := ListCtrl.createSimple(view, @{830, 5, 250, 300})
         list.setFrameForm(FrameWndForm.Round)
         list.frameFlags ^= .Borders
         list.selectionMode = .Multi

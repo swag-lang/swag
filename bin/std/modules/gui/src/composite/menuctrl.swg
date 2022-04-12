@@ -4,14 +4,14 @@ public struct PopupMenuItem
 {
     using item: Item
     rightName:  RichString
-    popup:      *Menu
+    popup:      *MenuCtrl
     pos:        f32
     size:       f32
     separator:  bool
     disabled:   bool
 }
 
-public struct Menu
+public struct MenuCtrl
 {
     using wnd:          Wnd
     onValidateResult:   func(self, WndId)
@@ -23,13 +23,13 @@ public struct Menu
     bar:            bool
     endModal:       bool
     endModalResult: WndId
-    owner:          *Menu
-    subVisible:     *Menu
+    owner:          *MenuCtrl
+    subVisible:     *MenuCtrl
     timer:          *Timer
     dirtyLayout:    bool
 }
 
-impl IWnd for Menu
+impl IWnd for MenuCtrl
 {
     mtd paintBar(painter: *Painter)
     {
@@ -274,7 +274,7 @@ impl IWnd for Menu
     }
 }
 
-impl Menu
+impl MenuCtrl
 {
     mtd setEndModal(result: WndId)
     {
@@ -531,12 +531,12 @@ impl Menu
     }
 }
 
-public impl Menu
+public impl MenuCtrl
 {
     #[Swag.Discardable]
-    func createPopup(parent: *Wnd, id: string = null)->*Menu
+    func createPopup(parent: *Wnd, id: string = null)->*MenuCtrl
     {
-        res := Wnd.create'Menu(parent.surface.wnd, null, @{}, id)
+        res := Wnd.create'MenuCtrl(parent.surface.wnd, null, @{}, id)
         with res
         {
             setAllPaddings(getThemeMetrics().menuPopup_Padding)
@@ -547,9 +547,9 @@ public impl Menu
     }
 
     #[Swag.Discardable]
-    func createBar(parent: *Wnd, pos: Math.Rectangle, id: string = null)->*Menu
+    func createBar(parent: *Wnd, pos: Math.Rectangle, id: string = null)->*MenuCtrl
     {
-        res := Wnd.create'Menu(parent, null, pos, id)
+        res := Wnd.create'MenuCtrl(parent, null, pos, id)
         with res
         {
             metrics := getThemeMetrics()
@@ -580,7 +580,7 @@ public impl Menu
     }
 
     // Add a new item
-    mtd addPopup(name: string, popup: *Menu, icon: Icon = @{})
+    mtd addPopup(name: string, popup: *MenuCtrl, icon: Icon = @{})
     {
         mitem := items.newPtr()
         with mitem
