@@ -6,7 +6,6 @@
 using Core, Gui, Pixel
 const GridSize = 24
 const CellSize = 30'f32
-const FillRate = 1
 
 struct Cell
 {
@@ -22,6 +21,7 @@ var g_Lost:     bool
 var g_Win:      bool
 var g_NumMines: s32
 var g_NumMarks: s32
+var g_Density:  s32 = 10
 
 func fillGrid()
 {
@@ -32,7 +32,7 @@ func fillGrid()
     visit &g: g_Grid
     {
         @init(g)
-        if rng.nextU32(0, 100) < FillRate
+        if rng.nextU32(0, 100) < g_Density
         {
             g_NumMines += 1
             g[0].mine = true
@@ -105,10 +105,17 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
     switch evt.kind
     {
     case Create:
-        fillGrid()
         g_FontCell = wnd.getTheme().createDefaultFont(20)
-        btn := PushButton.create(wnd, "Again!", @{20, 10 + (GridSize + 2) * CellSize})
+
+        btn := PushButton.create(wnd, "Again!", @{CellSize, (CellSize * 2) + GridSize * CellSize})
         btn.sigPressed += @|wnd|(btn) { setup(); wnd.invalidate(); }
+
+        sli := Slider.create(wnd, @{CellSize + 120, (CellSize * 2) + GridSize * CellSize})
+        sli.setMinMax(1, 10)
+        sli.setValue(acast g_Density)
+        sli.sigChanged += @(sli) { g_Density = cast(s32) sli.getValue(); }
+
+        setup()
 
     case MousePressed:
         mouseEvt := cast(*MouseEvent) evt
@@ -142,7 +149,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         paintEvt := cast(*PaintEvent) evt
         painter  := paintEvt.bc.painter
 
-        bk := Math.Rectangle{0, 0, (GridSize + 2) * CellSize, (GridSize + 2) * CellSize}
+        bk := Math.Rectangle{CellSize, CellSize, GridSize * CellSize, GridSize * CellSize}
         painter.fillRect(bk, Argb.White)
 
         // Paint grid
