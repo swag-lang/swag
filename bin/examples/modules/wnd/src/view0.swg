@@ -206,6 +206,9 @@ func createView0(tabView: *Tab, view: *Wnd)
         slider = Slider.create(view, @{10, 440})
         slider.disable()
 
+        slider = Slider.create(view, @{340, 600}, vertical: true)
+        slider.setMinMax(0, 1, 0.1)
+        slider.setValue(0.55)
 
         slider0 := Slider.create(view, @{10, 470}, id: "slider0")
         slider0.sliderFlags &= ~.HilightBar

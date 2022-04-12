@@ -7,6 +7,7 @@ enum SliderFlags
     None
     Range
     HilightBar
+    Vertical
 }
 
 struct Slider
@@ -86,28 +87,64 @@ impl IWnd for Slider
         posBox2 := getPosBox2()
 
         clientRect := getClientRect()
-        clientRect.x += (posBox1.width * 0.5)
-        clientRect.width -= posBox1.width
+
+        isVertical := sliderFlags & .Vertical
+        if isVertical
+        {
+            clientRect.y += (posBox1.height * 0.5)
+            clientRect.height -= posBox1.height
+        }
+        else
+        {
+            clientRect.x += (posBox1.width * 0.5)
+            clientRect.width -= posBox1.width
+        }
 
         // Bar left
         left := clientRect
-        left.width = (clientRect.width * value1)
-        theme.drawSubRect(bc.painter, left, &rects.slider_BkLeft, colorBkLeft)
+        if isVertical
+        {
+            left.height = (clientRect.height * value1)
+            theme.drawSubRect(bc.painter, left, &rects.slider_BkLeftVert, colorBkLeft)
+        }
+        else
+        {
+            left.width = (clientRect.width * value1)
+            theme.drawSubRect(bc.painter, left, &rects.slider_BkLeft, colorBkLeft)
+        }
 
         // Bar right
         valueRight := sliderFlags & .Range ? value2 : value1
         right := clientRect
-        right.x += (clientRect.width * valueRight)
-        right.width -= (clientRect.width * valueRight)
-        theme.drawSubRect(bc.painter, right, &rects.slider_BkRight, colorBkRight)
+        if isVertical
+        {
+            right.y += (clientRect.height * valueRight)
+            right.height -= (clientRect.height * valueRight)
+            theme.drawSubRect(bc.painter, right, &rects.slider_BkRightVert, colorBkRight)
+        }
+        else
+        {
+            right.x += (clientRect.width * valueRight)
+            right.width -= (clientRect.width * valueRight)
+            theme.drawSubRect(bc.painter, right, &rects.slider_BkRight, colorBkRight)
+        }
 
         // Bar middle
         if sliderFlags & .Range
         {
             middle := clientRect
-            middle.x = left.right()
-            middle.setRight(right.x)
-            theme.drawSubRect(bc.painter, middle, &rects.slider_BkMiddle, colorBkMiddle)
+            if isVertical
+            {
+                middle.y = left.bottom()
+                middle.setBottom(right.y)
+                theme.drawSubRect(bc.painter, middle, &rects.slider_BkMiddleVert, colorBkMiddle)
+            }
+            else
+            {
+                middle.x = left.right()
+                middle.setRight(right.x)
+                theme.drawSubRect(bc.painter, middle, &rects.slider_BkMiddle, colorBkMiddle)
+            }
         }
 
         // Display steps
@@ -116,8 +153,16 @@ impl IWnd for Slider
             for x := 0'f32; x < 1 + steps; x += steps
             {
                 posStep := clientRect
-                posStep.x = clientRect.x + (clientRect.width * x) - clientRect.height * 0.5
-                posStep.width = posStep.height
+                if isVertical
+                {
+                    posStep.y = clientRect.y + (clientRect.height * x) - clientRect.width * 0.5
+                    posStep.height = posStep.width
+                }
+                else
+                {
+                    posStep.x = clientRect.x + (clientRect.width * x) - clientRect.height * 0.5
+                    posStep.width = posStep.height
+                 }
 
                 var colorStep: Color = ?
                 if isHot1 or isHot2 or isMoving
@@ -135,13 +180,15 @@ impl IWnd for Slider
 
         // Box value1
         theme.drawSubRect(bc.painter, posBox1, &rects.slider_Mark, colorMark1)
-        if (sliderFlags & .Range)
+        if sliderFlags & .Range
             theme.drawSubRect(bc.painter, posBox2, &rects.slider_Mark, colorMark2)
     }
 
     mtd onMouseEvent(evt: *MouseEvent)
     {
         pos := surfaceToLocal(evt.surfacePos)
+        isVertical := sliderFlags & .Vertical
+
         switch evt.kind
         {
         case MouseLeave:
@@ -156,8 +203,17 @@ impl IWnd for Slider
             }
 
             clientRect := getOffsetedClientRect()
-            diff := (pos.x - correcMoving) - clientRect.x
-            f    := diff / clientRect.width
+            var f: f32
+            if isVertical
+            {
+                diff := (pos.y - correcMoving) - clientRect.y
+                f    = diff / clientRect.height
+            }
+            else
+            {
+                diff := (pos.x - correcMoving) - clientRect.x
+                f    = diff / clientRect.width
+            }
             if isPressed1
                 setValue1(f)
             elif isPressed2
@@ -172,28 +228,52 @@ impl IWnd for Slider
                 {
                     isPressed1 = true
                     posBox := getPosBox1()
-                    correcMoving = pos.x - posBox.horzCenter()
+                    if isVertical
+                        correcMoving = pos.y - posBox.vertCenter()
+                    else
+                        correcMoving = pos.x - posBox.horzCenter()
                 }
                 elif isHot2
                 {
                     isPressed2 = true
                     posBox := getPosBox2()
-                    correcMoving = pos.x - posBox.horzCenter()
+                    if isVertical
+                        correcMoving = pos.y - posBox.vertCenter()
+                    else
+                        correcMoving = pos.x - posBox.horzCenter()
                 }
                 elif !(sliderFlags & .Range)
                 {
                     correcMoving = 0
                     isPressed1 = true
                     clientRect := getOffsetedClientRect()
-                    diff := pos.x - clientRect.x
-                    setValue1(diff / clientRect.width)
+                    if isVertical
+                    {
+                        diff := pos.y - clientRect.y
+                        setValue1(diff / clientRect.height)
+                    }
+                    else
+                    {
+                        diff := pos.x - clientRect.x
+                        setValue1(diff / clientRect.width)
+                    }
                 }
                 else
                 {
                     correcMoving = 0
                     clientRect := getOffsetedClientRect()
-                    diff := pos.x - clientRect.x
-                    f := diff / clientRect.width
+                    var f: f32
+                    if isVertical
+                    {
+                        diff := pos.y - clientRect.y
+                        f = diff / clientRect.height
+                    }
+                    else
+                    {
+                        diff := pos.x - clientRect.x
+                        f = diff / clientRect.width
+                    }
+
                     m := (value1 + value2) * 0.5
                     if f <= m
                     {
@@ -291,30 +371,62 @@ private impl Slider
     mtd getOffsetedClientRect()->Math.Rectangle
     {
         var result: retval = getClientRect()
-        result.x += (result.height * 0.5)
-        result.width -= result.height
+
+        if sliderFlags & .Vertical
+        {
+            result.y += (result.width * 0.5)
+            result.height -= result.width
+        }
+        else
+        {
+            result.x += (result.height * 0.5)
+            result.width -= result.height
+        }
+
         return result
     }
 
     mtd getPosBox1()->Math.Rectangle
     {
         var result: retval = getOffsetedClientRect()
-        result.x += result.width * value1
-        result.x -= (result.height * 0.5)
 
-        result.y = result.vertCenter() - (result.height * 0.5)
-        result.width = result.height
+        if sliderFlags & .Vertical
+        {
+            result.y += result.height * value1
+            result.y -= (result.width * 0.5)
+            result.x = result.horzCenter() - (result.width * 0.5)
+            result.height = result.width
+        }
+        else
+        {
+            result.x += result.width * value1
+            result.x -= (result.height * 0.5)
+            result.y = result.vertCenter() - (result.height * 0.5)
+            result.width = result.height
+        }
+
         return result
     }
 
     mtd getPosBox2()->Math.Rectangle
     {
         var result: retval = getOffsetedClientRect()
-        result.x += result.width * value2
-        result.x -= (result.height * 0.5)
 
-        result.y = result.vertCenter() - (result.height * 0.5)
-        result.width = result.height
+        if sliderFlags & .Vertical
+        {
+            result.y += result.height * value2
+            result.y -= (result.width * 0.5)
+            result.x = result.horzCenter() - (result.width * 0.5)
+            result.height = result.width
+        }
+        else
+        {
+            result.x += result.width * value2
+            result.x -= (result.height * 0.5)
+            result.y = result.vertCenter() - (result.height * 0.5)
+            result.width = result.height
+        }
+
         return result
     }
 }
@@ -350,17 +462,32 @@ impl Slider
     }
 
     #[Swag.Discardable]
-    func create(parent: *Wnd, position: Math.Rectangle, id: string = null, range: bool = false)->*Slider
+    func create(parent: *Wnd, position: Math.Rectangle, id: string = null, range = false, vertical = false)->*Slider
     {
         Debug.assert(parent != null)
         pos := position
+
         if pos.height == 0
-            pos.height = parent.getThemeMetrics().slider_Height
+        {
+            if vertical
+                pos.height = parent.getThemeMetrics().slider_Width
+            else
+                pos.height = parent.getThemeMetrics().slider_Height
+        }
+
         if pos.width == 0
-            pos.width  = parent.getThemeMetrics().slider_Width
+        {
+            if vertical
+                pos.width = parent.getThemeMetrics().slider_Height
+            else
+                pos.width = parent.getThemeMetrics().slider_Width
+        }
+
         res := Wnd.create'Slider(parent, null, pos, id)
         if range
             res.sliderFlags |= .Range
+        if vertical
+            res.sliderFlags |= .Vertical
         return res
     }
 }

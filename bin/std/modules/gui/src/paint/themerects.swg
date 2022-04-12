@@ -65,6 +65,9 @@ struct ThemeImageRects
     slider_BkLeft:              ThemeImageRect = @{{1,169,27,27}, 13, false}
     slider_BkMiddle:            ThemeImageRect = @{{29,169,27,27}, 13, false}
     slider_BkRight:             ThemeImageRect = @{{57,169,27,27}, 13, false}
+    slider_BkLeftVert:          ThemeImageRect = @{{1,309,27,27}, 13, false}
+    slider_BkMiddleVert:        ThemeImageRect = @{{29,309,27,27}, 13, false}
+    slider_BkRightVert:         ThemeImageRect = @{{57,309,27,27}, 13, false}
     slider_Mark:                ThemeImageRect = @{{85,169,27,27}, 13}
     slider_Step:                ThemeImageRect = @{{113,169,27,27}, 13}
 
