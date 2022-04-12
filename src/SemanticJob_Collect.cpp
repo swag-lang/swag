@@ -282,9 +282,9 @@ bool SemanticJob::collectAssignment(SemanticContext* context, DataSegment* stora
         value = node->computedValue;
     }
 
-    // Already computed in the constant storageSegment for an array
     if (typeInfo->kind == TypeInfoKind::Array)
     {
+        // Already computed in the constant storageSegment for an array
         if (node->assignment && node->assignment->flags & AST_VALUE_COMPUTED)
         {
             SWAG_ASSERT(value->storageOffset != UINT32_MAX);
@@ -301,6 +301,25 @@ bool SemanticJob::collectAssignment(SemanticContext* context, DataSegment* stora
             }
 
             return true;
+        }
+
+        // Array of struct
+        if (!node->assignment)
+        {
+            auto typeArr = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+            if (typeArr->finalType->kind == TypeInfoKind::Struct && typeArr->finalType->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)
+            {
+                storageOffset = storageSegment->reserve(typeInfo->sizeOf, nullptr);
+
+                auto offset = storageOffset;
+                for (uint32_t i = 0; i < typeArr->totalCount; i++)
+                {
+                    SWAG_CHECK(storeToSegment(context, storageSegment, offset, value, typeArr->finalType, nullptr));
+                    offset += typeArr->finalType->sizeOf;
+                }
+
+                return true;
+            }
         }
     }
 

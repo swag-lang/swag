@@ -539,6 +539,14 @@ DataSegment* SemanticJob::getSegmentForVar(SemanticContext* context, AstVarDecl*
     if (node->attributeFlags & AST_EXPLICITLY_NOT_INITIALIZED)
         return &module->mutableSegment;
 
+    // An array of struct with default values should go to the mutable segment
+    if (node->typeInfo->isArrayOfStruct())
+    {
+        auto typeArr = CastTypeInfo<TypeInfoArray>(node->typeInfo, TypeInfoKind::Array);
+        if(typeArr->finalType->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)
+            return &module->mutableSegment;
+    }
+
     if (!node->assignment && (typeInfo->kind == TypeInfoKind::Native || typeInfo->kind == TypeInfoKind::Array))
         return &module->bssSegment;
     if (node->assignment && typeInfo->kind == TypeInfoKind::Native && typeInfo->sizeOf <= 8 && node->assignment->isConstant0())
