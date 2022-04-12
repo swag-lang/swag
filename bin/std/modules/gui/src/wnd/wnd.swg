@@ -14,6 +14,16 @@ enum DockStyle
     Center
 }
 
+#[Swag.EnumFlags]
+enum AnchorStyle
+{
+    None
+    X
+    Y
+    Width
+    Height
+}
+
 enum BackgroundStyle
 {
     Transparent
@@ -80,9 +90,10 @@ struct Wnd
     id:         WndId
     cursor:     Cursor
 
-    margin:     Math.Vector4
-    padding:    Math.Vector4
-    dockStyle:  DockStyle = None
+    margin:         Math.Vector4
+    padding:        Math.Vector4
+    dockStyle:      DockStyle = None
+    anchorStyle:    AnchorStyle = None
 
     focusStrategy: FocusStategy = MousePressed
 
@@ -563,18 +574,51 @@ impl Wnd
         clampSize(&position)
 
         sendEvent(&evt)
-        applyLayout()
+        applyLayout(evt.oldSize)
     }
 
     // Apply the current layout (childs constraints)
-    mtd applyLayout()
+    mtd applyLayout(oldSize: Math.Point)
     {
         clientRect := getClientRectPadding()
 
-        //centerLayout := Array.createTemp'(*Wnd)()
-        var centerLayout: Array'(*Wnd){allocator: @getcontext().tempAllocator}
+        centerLayout := Array.createTemp'(*Wnd)()
+        oldSizes     := Array.createTemp'Math.Point()
+
         visit c: childs
         {
+            if c.anchorStyle == .None
+                continue
+
+            pos := c.position
+            if c.anchorStyle & .X and oldSize.x > 0
+            {
+                oldM := oldSize.x - c.position.x
+                pos.x = position.width - oldM
+            }
+
+            if c.anchorStyle & .Y and oldSize.y > 0
+            {
+                oldM := oldSize.y - c.position.y
+                pos.y = position.height - oldM
+            }
+
+            if c.anchorStyle & .Width and oldSize.x > 0
+            {
+                pos.width += position.width - oldSize.x
+            }
+
+            if c.anchorStyle & .Height and oldSize.y > 0
+            {
+                pos.height += position.height - oldSize.y
+            }
+
+            c.setPosition(pos)
+        }
+
+        visit c: childs
+        {
+            oldSizes.add(@{c.position.width, c.position.height})
             switch c.dockStyle
             {
             case Left:
@@ -627,8 +671,10 @@ impl Wnd
             c.setPosition(pos)
         }
 
-        visit c: childs
-            c.applyLayout()
+        visit c, i: childs
+        {
+            c.applyLayout(oldSizes[i])
+        }
     }
 
     // Get the child window at the given coordinate

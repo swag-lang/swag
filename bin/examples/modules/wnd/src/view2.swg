@@ -3,6 +3,26 @@ using Core, Gui, Pixel
 func createView2(tabView: *Tab, view: *Wnd)
 {
     {
+        btn := PushButton.create(view, "AnchorR", @{600, 400})
+        btn.anchorStyle = .X
+    }
+
+    {
+        btn := PushButton.create(view, "AnchorRB", @{600, 440})
+        btn.anchorStyle = .X | .Y
+    }
+
+    {
+        btn := PushButton.create(view, "AnchorW", @{600, 480})
+        btn.anchorStyle = .Width
+    }
+
+    {
+        btn := PushButton.create(view, "AnchorH", @{600, 520})
+        btn.anchorStyle = .Height
+    }
+
+    {
         split := Splitter.create(view, @{10, 10, 300, 300}, vertical: true)
         split.setFrameForm(FrameWndForm.Round)
 

@@ -263,7 +263,7 @@ impl Surface
             return
         isHidden = false
         invalidate()
-        wnd.applyLayout()
+        wnd.applyLayout(@{position.width, position.height})
         ShowWindow(hWnd, SW_SHOW)
         wnd.view.setFocus()
     }
