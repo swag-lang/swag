@@ -39,6 +39,5 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
 #run
 {
-    var app: Application
-    try app.runSurface(100, 100, 512, 512, title: "Clock", hook: &onEvent)
+    Application.runSurface(100, 100, 512, 512, title: "Clock", hook: &onEvent)
 }

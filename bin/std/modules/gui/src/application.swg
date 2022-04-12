@@ -418,12 +418,13 @@ impl Application
     mtd getKeyboard() => &keyb
 
     // Create a main surface, and run
-    mtd runSurface(x, y, width, height: s32, title: string = null, flags = SurfaceFlags.OverlappedWindow, view: *Wnd = null, hook: HookEvent = null) throw
+    func runSurface(x, y, width, height: s32, title: string = null, flags = SurfaceFlags.OverlappedWindow, view: *Wnd = null, hook: HookEvent = null)
     {
-        surface := try createSurface(x, y, width, height, flags, view, hook)
+        var app: Application
+        surface := assume app.createSurface(x, y, width, height, flags, view, hook)
         surface.setTitle(title)
         surface.show()
-        run()
+        app.run()
     }
 
     // Creates a new surface
