@@ -52,8 +52,7 @@ func fillGrid()
                     tj := j + jj
                     if ti < 0 or ti >= GridSize or tj < 0 or tj >= GridSize
                         continue
-                    if g_Grid[ti, tj].mine
-                        g_Grid[i, j].score += 1
+                    g_Grid[i, j].score += g_Grid[ti, tj].mine ? 1 : 0
                 }
             }
         }
@@ -67,9 +66,7 @@ func floodFill(x, y: s32)
 
     while arr.count
     {
-        pt  := arr.popBack()
-        idx := pt.x + (pt.y * GridSize)
-
+        pt := arr.popBack()
         g_Grid[pt.x, pt.y].show = true
         if g_Grid[pt.x, pt.y].score
             continue
@@ -86,7 +83,6 @@ func floodFill(x, y: s32)
                     continue
                 if g_Grid[ti, tj].show
                     continue
-                idx = ti + (tj * GridSize)
                 arr.add(@{ti, tj})
             }
         }
@@ -157,8 +153,8 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         {
             x := CellSize + (i * CellSize)
             w := CellSize * GridSize
-            painter.drawRect(CellSize, x, w, CellSize, Argb.Black)
-            painter.drawRect(x, CellSize, CellSize, w, Argb.Black)
+            painter.drawRect(CellSize, x, w, CellSize, Argb.DarkGray)
+            painter.drawRect(x, CellSize, CellSize, w, Argb.DarkGray)
         }
 
         // Paint content
