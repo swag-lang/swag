@@ -181,7 +181,7 @@ SWAG_ERROR(Err0183, "value `%s` (`%I64u` in decimal) does not fit in the type `%
 SWAG_ERROR(Err0184, "`\\x` escape code needs 2 of them")
 SWAG_ERROR(Err0185, "cannot affect a closure to a lambda type")
 SWAG_ERROR(Err0186, "cannot find special function `%s` in `%s` when solving operator `%s`")
-SWAG_ERROR(Err0187, nullptr)
+SWAG_ERROR(Err0187, "missing index when dereferencing array `%s`")
 SWAG_ERROR(Err0188, nullptr)
 SWAG_ERROR(Err0189, nullptr)
 SWAG_ERROR(Err0190, "unexpected `throw` in attribute declaration")

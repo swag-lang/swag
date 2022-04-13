@@ -680,6 +680,17 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         return context->report(parent->previousResolvedNode, Fmt(Err(Err0086), parent->previousResolvedNode->token.ctext(), symbol->name.c_str(), parent->startScope->name.c_str()));
     }
 
+    // A.X and A is an array : missing index
+    if (symbol &&
+        symbol->kind == SymbolKind::Variable &&
+        identifier->typeInfo->kind == TypeInfoKind::Array &&
+        identifier->parent->kind != AstNodeKind::ArrayPointerIndex &&
+        identifier->parent == parent &&
+        parent->childs.back() != identifier)
+    {
+        return context->report(Hint::isType(identifier->typeInfo), {identifier, Fmt(Err(Err0187), symbol->name.c_str())});
+    }
+
     // Reapply back the values of the match to the call parameter node
     for (auto& pp : oneMatch.paramParameters)
     {
