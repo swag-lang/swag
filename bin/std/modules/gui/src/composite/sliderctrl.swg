@@ -26,7 +26,7 @@ impl IWnd for SliderCtrl
         w := rect.width - labelSize - editSize - 4
         slider.setPosition(label.position.right() + 4, rect.vertCenter() - metrics.slider_Height / 2, w, metrics.slider_Height)
 
-        edit.setPosition(slider.position.right(), rect.vertCenter() - rect.height / 2, editSize, rect.height)
+        edit.setPosition(slider.position.right(), rect.vertCenter() - metrics.editBox_Height / 2, editSize, metrics.editBox_Height)
     }
 }
 
@@ -35,7 +35,7 @@ impl SliderCtrl
     // Create the popup list, but do not display it
     func create(parent: *Wnd, position: Math.Rectangle, name: string, id: string = null)->*SliderCtrl
     {
-        ctrl := Wnd.create'SliderCtrl(parent.surface.wnd, position, id)
+        ctrl := Wnd.create'SliderCtrl(parent, position, id)
 
         with ctrl
         {

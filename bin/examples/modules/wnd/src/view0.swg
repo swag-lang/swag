@@ -237,7 +237,7 @@ func createView0(tabView: *Tab, view: *Wnd)
 
     // SliderCtrl
     {
-        sliderctrl := SliderCtrl.create(view, @{380, 660, 300, 30}, "toto")
+        sliderctrl := SliderCtrl.create(view, @{380, 660, 300, 30}, "Center")
         sliderctrl.slider.setMinMax(0, 255)
         sliderctrl.edit.setInputU64(0, 255)
         sliderctrl.slider.setValue(0)

@@ -27,6 +27,8 @@ struct Slider
     isPressed2:     bool
     isHot1:         bool
     isHot2:         bool
+    hasValue1:      bool
+    hasValue2:      bool
     correcMoving:   f32
 }
 
@@ -321,8 +323,9 @@ private impl Slider
         fc := clamp(Math.clamp(f, 0, 1))
         if sliderFlags & .Range
             fc = Math.min(fc, value2)
-        if fc == value1
+        if fc == value1 and hasValue1
             return
+        hasValue1 = true
         value1 = fc
         sigChanged.call(self)
         invalidate()
@@ -333,8 +336,9 @@ private impl Slider
         fc := clamp(Math.clamp(f, 0, 1))
         if sliderFlags & .Range
             fc = Math.max(fc, value1)
-        if fc == value2
+        if fc == value2 and hasValue2
             return
+        hasValue2 = true
         value2 = fc
         sigChanged.call(self)
         invalidate()

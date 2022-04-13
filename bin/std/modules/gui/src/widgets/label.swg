@@ -75,6 +75,7 @@ impl IWnd for Label
             sf.font = theme.res.fontDefault
             sf.horzAlignment = horzAlignmentText
             sf.vertAlignment = vertAlignmentText
+            sf.flags |= .VertCenterBaseLine
 
             if bc.isDisabled
             {

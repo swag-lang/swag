@@ -29,6 +29,7 @@ enum StringFormatFlags
     Default
     WordWrap
     Clip
+    VertCenterBaseLine
 }
 
 struct StringMetrics
@@ -308,7 +309,6 @@ impl Painter
             lines.add(line)
         }
 
-
         x := text.layoutRect.x
         y := text.layoutRect.y
 
@@ -321,6 +321,10 @@ impl Painter
         case Bottom:    y = pos.bottom() - totalHeight
         case Center:    y = pos.vertCenter() - (totalHeight * 0.5)
         }
+
+        // Little vertical ajustement
+        if format.vertAlignment == .Center and lines.count == 1 and format.flags & .VertCenterBaseLine
+            y -= lines[0].minTop * 0.5
 
         text.boundRect.x = Swag.F32.Max
         text.boundRect.y = y
