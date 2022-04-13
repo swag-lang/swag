@@ -719,7 +719,8 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
     case TokenId::IntrinsicCountOf:
     {
         auto expr = node->childs.front();
-        if (expr->typeInfo->kind != TypeInfoKind::Enum)
+        if (expr->typeInfo->kind != TypeInfoKind::Enum && 
+            expr->typeInfo->kind != TypeInfoKind::Array)
             SWAG_CHECK(checkIsConcrete(context, expr));
         node->inheritComputedValue(expr);
         SWAG_CHECK(resolveIntrinsicCountOf(context, node, expr));
