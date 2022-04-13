@@ -414,8 +414,13 @@ private impl Application
 impl Application
 {
     // Get application variables
-    mtd getRenderer() => &renderer
-    mtd getKeyboard() => &keyb
+    #[Swag.Inline]
+    {
+        mtd getRenderer() => &renderer
+        mtd getKeyboard() => &keyb
+        mtd getMouse()    => &mouse
+        mtd getDt()       => timing.dt
+    }
 
     // Create a main surface, and run
     func runSurface(x, y, width, height: s32, title: string = null, view: *Wnd = null, canSize = true, hook: HookEvent = null)

@@ -5,26 +5,31 @@
 
 using Core, Gui, Pixel
 
+const FirstRune     = 33
+const LastRune      = 600
+const FontSize      = 15'u32
+const MinTrailSize  = 10
+const MaxTrailSize  = 50
+const MaxColumns    = 80
+
 struct C
 {
     y:      f32
     length: s32
     speed:  f32
-    c:      [50] rune
+    c:      [MaxTrailSize] rune
     lastYI: s32
 }
 
-var g_RD:   [80] C
+var g_RD:   [MaxColumns] C
 var g_Font: *Font
 var g_Rng:  Random.DefaultRng
 
-const FontSize = 15'u32
-
-func initC(i: uint)
+func initC(i: s32)
 {
-    g_RD[i].length = g_Rng.nextU32(10, cast(u32) @countof(g_RD[i].c) - 2)
+    g_RD[i].length = g_Rng.nextS32(MinTrailSize, MaxTrailSize - 1)
     loop j: g_RD[i].length
-        g_RD[i].c[j] = cast(rune) g_Rng.nextU32(33, 600)
+        g_RD[i].c[j] = cast(rune) g_Rng.nextS32(FirstRune, LastRune)
     g_RD[i].speed = g_Rng.nextF32(400, 800)
     g_RD[i].y = 0
 }
@@ -35,7 +40,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
     {
     case Create:
         g_Font = wnd.getTheme().createDefaultFont(FontSize)
-        loop i: g_RD
+        loop i: MaxColumns
             initC(i)
 
     case Paint:
@@ -46,44 +51,53 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         painter.fillRect(rect, Argb.Black)
 
         var str: String
-        loop i: @countof(g_RD)
+        loop i: MaxColumns
         {
-            loop j: g_RD[i].length - 1
+            x := cast(f32) i * FontSize
+            loop j: g_RD[i].length
             {
+                // Once in a while, change the rune in the trail
                 if g_Rng.nextU32(0, 300) < 2
-                    g_RD[i].c[j] = cast(rune) g_Rng.nextU32(33, 600)
+                    g_RD[i].c[j] = cast(rune) g_Rng.nextS32(FirstRune, LastRune)
                 c := g_RD[i].c[j]
 
-                x := cast(f32) i * FontSize
                 y := g_RD[i].y
                 y -= j * FontSize
 
+                // No need to paint if rune is outside window
                 if y > rect.bottom()
                     continue
+                if y < rect.y - FontSize
+                    break
 
+                // If the move is equivalent to one fontsize, then insert a new rune
+                // at the start of the trail
                 y /= FontSize
                 yi := cast(s32) y
                 if j == 0 and yi != g_RD[i].lastYI
                 {
                     g_RD[i].lastYI = yi
                     Memory.copyOver(&g_RD[i].c[1], &g_RD[i].c[0], (cast(uint) g_RD[i].length - 1) * @sizeof(rune))
-                    g_RD[i].c[0] = cast(rune) g_Rng.nextU32(33, 600)
+                    g_RD[i].c[0] = cast(rune) g_Rng.nextS32(FirstRune, LastRune)
                 }
 
-                y = yi * FontSize
-
-                var color: Color
+                // First rune is white, the rest blends to black
+                var color: Color = ?
                 if j == 0
                     color = Color.getBlend(Argb.Green, Argb.White, 0.5)
                 else
                     color = Color.getBlend(Argb.Green, Argb.Black, j / cast(f32) g_RD[i].length)
+
+                y = yi * FontSize
 
                 str.clear()
                 str += c
                 painter.drawString(x, y, str, g_Font, color)
             }
 
-            g_RD[i].y += g_RD[i].speed * wnd.getApp().timing.dt
+            g_RD[i].y += g_RD[i].speed * wnd.getApp().getDt()
+
+            // If the full trail is outside the window, randomize a new one
             if g_RD[i].y - (g_RD[i].length * FontSize) > rect.bottom() + FontSize
                 initC(i)
         }
