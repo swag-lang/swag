@@ -38,6 +38,7 @@ struct A
     sb.appendString("}\n")
 
     itf.compileString(sb.moveToString())
+    //@print("EXIT\n")
 }
 
 //#[PrintBc]

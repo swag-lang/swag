@@ -75,6 +75,7 @@ bool Module::flushCompilerMessages(JobContext* context, uint32_t pass)
         if (msg.concrete.kind == CompilerMsgKind::AttributeGen)
         {
             SWAG_ASSERT(msg.node->resolvedSymbolName);
+            ScopedLock lk(msg.node->resolvedSymbolName->mutex);
             msg.node->resolvedSymbolName->flags &= ~SYMBOL_ATTRIBUTE_GEN;
             msg.node->resolvedSymbolName->dependentJobs.setRunning();
         }
