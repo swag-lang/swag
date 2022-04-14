@@ -35,7 +35,14 @@ impl SliderCtrl
     // Create the popup list, but do not display it
     func create(parent: *Wnd, position: Math.Rectangle, name: string, id: string = null)->*SliderCtrl
     {
-        ctrl := Wnd.create'SliderCtrl(parent, position, id)
+        metrics := parent.getThemeMetrics()
+        pos := position
+        if pos.width == 0
+            pos.width = metrics.slider_Width + metrics.editBox_Width * 2
+        if pos.height == 0
+            pos.height = Math.max(metrics.slider_Height, metrics.editBox_Height)
+
+        ctrl := Wnd.create'SliderCtrl(parent, pos, id)
 
         with ctrl
         {
