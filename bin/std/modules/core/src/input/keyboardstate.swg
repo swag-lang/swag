@@ -16,7 +16,7 @@ impl KeyboardState
         updateNative()
         loop i: @countof(Key)
         {
-            pressed[i] = native.isKeyPressed(cast(Key) i)
+            pressed[i] = Keyboard.isKeyPressed(cast(Key) i)
         }
     }
 
