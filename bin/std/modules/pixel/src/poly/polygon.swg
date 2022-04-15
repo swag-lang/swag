@@ -17,6 +17,7 @@ struct Polygon
 impl Polygon
 {
     // Get the given point, with an optional offset
+    #[Swag.Inline]
     mtd getPoint(i: uint)->Vector2
     {
         return points.buffer[i]
@@ -57,6 +58,33 @@ impl Polygon
         }
 
         return result
+    }
+
+    mtd normalizeDist(dist: f32, closed: bool = true)
+    {
+        i := 0'uint
+        //while i < closed ? points.count : points.count - 1
+        loop
+        {
+            if closed  and i >= points.count break
+            if !closed and i >= points.count - 1 break
+
+            defer i += 1
+            v := dref points[(i + 1) % points.count] - dref points[i]
+            d := v.length()
+            divide := cast(s32) (d / dist)
+            if divide > 0
+            {
+                v /= cast(f32) (divide + 1)
+                while divide > 0
+                {
+                    np := dref points[i] + v
+                    points.insertAt(i + 1, np)
+                    divide -= 1
+                    i += 1
+                }
+            }
+        }
     }
 
     // Clear all points

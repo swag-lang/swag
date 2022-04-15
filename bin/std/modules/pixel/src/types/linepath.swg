@@ -249,7 +249,7 @@ public impl LinePath
     }
 
     // Convert the path to a list of points
-    mtd flatten(quality: PaintQuality)
+    mtd flatten(quality = PaintQuality.Normal)
     {
         // Already done ?
         if !isDirty and flattenQuality == quality and isFlatten

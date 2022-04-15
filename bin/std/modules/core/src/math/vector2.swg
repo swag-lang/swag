@@ -34,6 +34,7 @@ impl Vector2
         #if   op == "+="    { x += other.x; y += other.y; }
         #elif op == "-="    { x -= other.x; y -= other.y; }
         #elif op == "*="    { x *= other.x; y *= other.y; }
+        #elif op == "/="    { x /= other.x; y /= other.y; }
         #else               #assert(false, "unsupported assign operation '" ++ op ++ "'")
     }
 
@@ -42,6 +43,7 @@ impl Vector2
         #if   op == "+="    { x += value; y += value; }
         #elif op == "-="    { x -= value; y -= value; }
         #elif op == "*="    { x *= value; y *= value; }
+        #elif op == "/="    { x /= value; y /= value; }
         #else               #assert(false, "unsupported assign operation '" ++ op ++ "'")
     }
 
