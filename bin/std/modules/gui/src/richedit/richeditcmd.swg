@@ -63,7 +63,7 @@ public enum RichEditCommand
     //CMD_UNCOMMENT_CPP
 }
 
-impl RichEdit
+impl RichEditCtrl
 {
     mtd clearMapping()
     {

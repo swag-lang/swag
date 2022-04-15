@@ -5,7 +5,7 @@ public struct RichEditView
 {
     using wnd:  Wnd
 
-    ed:                 *RichEdit
+    ed:                 *RichEditCtrl
     visibleCaret:       bool
     selMode:            bool
     timerCaret:         *Timer

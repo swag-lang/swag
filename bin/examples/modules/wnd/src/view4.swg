@@ -8,7 +8,7 @@ var g_LexerSwag: RichEditLexerSwag
 func createView4(tabView: *Tab, view: *Wnd)
 {
     {
-        ed := RichEdit.create(view, @{10, 10, 600, 500})
+        ed := RichEditCtrl.create(view, @{10, 10, 600, 500})
         with ed
         {
             setFrameForm(.Round)
@@ -21,7 +21,7 @@ func createView4(tabView: *Tab, view: *Wnd)
     }
 
     {
-        ed := RichEdit.create(view, @{10, 520, 600, 300})
+        ed := RichEditCtrl.create(view, @{10, 520, 600, 300})
         ed.setFrameForm(.Round)
         ed.setRichEdFlags(.ShowFocusSel | .CurLineBorder | .DrawBlanks | .TabToSpaces)
         ed.setLexer(cast(IRichEditLexer) g_LexerSwag)
@@ -29,7 +29,7 @@ func createView4(tabView: *Tab, view: *Wnd)
     }
 
     {
-        ed := RichEdit.create(view, @{620, 10, 400, 300})
+        ed := RichEditCtrl.create(view, @{620, 10, 400, 300})
         with ed
         {
             setFrameForm(.Round)
@@ -41,7 +41,7 @@ func createView4(tabView: *Tab, view: *Wnd)
             styles[2].colBk = Argb.Blue
             styles[3].fontMode = .Regular
             styles[3].underline = .Underline
-            addText("RichEdit coucou la foule ", 0)
+            addText("RichEditCtrl coucou la foule ", 0)
             addText("comment ça va ? ", 1)
             addText("ça va !", 2)
             addText(" et même très bien ", 3)
@@ -53,7 +53,7 @@ func createView4(tabView: *Tab, view: *Wnd)
     }
 
     {
-        ed := RichEdit.create(view, @{620, 320, 400, 150})
+        ed := RichEditCtrl.create(view, @{620, 320, 400, 150})
         ed.setForm(.Edit)
         ed.setFrameForm(.Round)
         ed.setFrameFlags(.FocusBorder)

@@ -7,7 +7,7 @@ struct RichEditCursor
     charPosInLine:  uint
 }
 
-impl RichEdit
+impl RichEditCtrl
 {
     mtd getRuneSize(line: *RichEditLine, i: uint, x: f32)->Math.Point
     {

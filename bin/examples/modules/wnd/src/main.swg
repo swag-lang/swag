@@ -28,7 +28,7 @@ var app: Application
     view3 := Wnd.create'Wnd(tab, "bigview3")
     tab.addItem("Color", @{}, view3)
     view4 := Wnd.create'Wnd(tab, "bigview4")
-    tab.addItem("RichEdit", @{}, view4)
+    tab.addItem("RichEditCtrl", @{}, view4)
 
     createView0(tab, view0)
     createView1(tab, view1)

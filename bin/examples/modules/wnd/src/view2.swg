@@ -40,7 +40,7 @@ func createView2(tabView: *Tab, view: *Wnd)
         split.frameFlags |= .FocusBorder
         split.setFrameForm(FrameWndForm.Square)
 
-        ed := RichEdit.create(split, @{})
+        ed := RichEditCtrl.create(split, @{})
         ed.setRichEdFlags(.WordWrap)
         ed.setForm(.Edit)
         ed.addText("coucou la foule comment ça va ? ça va ! et même très bien ")

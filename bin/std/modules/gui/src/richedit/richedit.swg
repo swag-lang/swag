@@ -15,7 +15,7 @@ enum RichEditFlags
 
 enum RichEditForm
 {
-    RichEdit
+    RichEditCtrl
     Edit
 }
 
@@ -26,7 +26,7 @@ struct RichEditMapping
     command:    RichEditCommand = ?
 }
 
-struct RichEdit
+struct RichEditCtrl
 {
     using frameWnd: FrameWnd
     fontFamily:     FontFamily
@@ -37,7 +37,7 @@ struct RichEdit
     marginLeft:     f32
     marginRight:    f32
     lexer:          IRichEditLexer
-    form            = RichEditForm.RichEdit
+    form            = RichEditForm.RichEditCtrl
     sigIsReadOnly:  SigArray'closure(*bool)
     sigChanged:     SigArray'closure(*Self)
     sigModified:    SigArray'closure(*Self)
@@ -74,7 +74,7 @@ struct RichEdit
     selBegUndo:         RichEditCursor
 }
 
-private impl RichEdit
+private impl RichEditCtrl
 {
     mtd getMarginLeft()->f32
     {
@@ -91,7 +91,7 @@ private impl RichEdit
         colors := getThemeColors()
         loop i: @countof(styles)
             styles[i].colFg = colors.richEdit_Text
-        setForm(.RichEdit)
+        setForm(.RichEditCtrl)
     }
 
     mtd computeScrollY()
@@ -237,12 +237,12 @@ private impl RichEdit
     }
 }
 
-impl RichEdit
+impl RichEditCtrl
 {
     #[Swag.Discardable]
-    func create(parent: *Wnd, position: Math.Rectangle, id: string = null)->*RichEdit
+    func create(parent: *Wnd, position: Math.Rectangle, id: string = null)->*RichEditCtrl
     {
-        ed := Wnd.create'RichEdit(parent, "", position, id)
+        ed := Wnd.create'RichEditCtrl(parent, "", position, id)
 
         with ed
         {
@@ -284,7 +284,7 @@ impl RichEdit
 
         switch self.form
         {
-        case RichEdit:
+        case RichEditCtrl:
             fontFamily = parent.getTheme().res.fontDefaultFs
 
             frameWnd.style.clearStyleSheetColors()

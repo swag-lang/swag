@@ -1,6 +1,6 @@
 using Core, Pixel
 
-impl RichEdit
+impl RichEditCtrl
 {
     mtd getTextPrivate(start, end: RichEditCursor, selRect: bool)->{text: Array'rune, styles: Array'u8}
     {
@@ -389,7 +389,7 @@ impl RichEdit
     }
 }
 
-public impl RichEdit
+public impl RichEditCtrl
 {
     mtd clear()
     {

@@ -1,7 +1,7 @@
 #global public
 using Core
 
-private impl RichEdit
+private impl RichEditCtrl
 {
     mtd getSelectionRectRange(lineIndex: uint, rankBeg, rankEnd: *uint)->bool
     {
@@ -77,7 +77,7 @@ private impl RichEdit
     }
 }
 
-impl RichEdit
+impl RichEditCtrl
 {
     mtd setRectangularSelection(selRect: bool)
     {
