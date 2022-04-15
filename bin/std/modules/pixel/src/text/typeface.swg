@@ -74,7 +74,20 @@ public impl TypeFace
 
         tf := Memory.new'TypeFace()
         tf.fullname = fullname
-        tf.buffer = try File.readAllBytes(fullname)
+
+        // If file does not exist, try the system folder
+        if !File.exists(fullname)
+        {
+            p := Env.getFontDirectory()
+            p += "/"
+            p += fullname
+            tf.buffer = try File.readAllBytes(p)
+        }
+        else
+        {
+            tf.buffer = try File.readAllBytes(fullname)
+        }
+
         try FT_New_Memory_Face(g_FT, tf.buffer.buffer, cast(FT_Long) tf.buffer.count, 0, &tf.face)
 
         hashTypeFace.add(str, tf)
