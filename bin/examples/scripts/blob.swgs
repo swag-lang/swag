@@ -28,8 +28,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
     {
         xoff := map(cos(a), -1, 1, 0, NoiseMax)
         yoff := map(sin(a), -1, 1, 0, NoiseMax)
-        perl := map(Noise.perlin(xoff, yoff, zoff), -1, 1, 0, 1)
-        r    := map(perl, 0, 1, 100, 200)
+        r    := map(Noise.perlin(xoff, yoff, zoff), -1, 1, 100, 200)
 
         x := r * cos(a)
         y := r * sin(a)
