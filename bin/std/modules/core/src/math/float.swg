@@ -33,8 +33,8 @@ alias ConstF64 = Const'f64
 
     func saturate(x: f32) => clamp(x, 0, 1)
     func saturate(x: f64) => clamp(x, 0, 1)
-    func lerp(x, y, factor: f32) => ((1 - factor) * x) + (factor * y)
-    func lerp(x, y, factor: f64) => ((1 - factor) * x) + (factor * y)
+    func lerp(x, y, factor: f32) => x + factor * (y - x)
+    func lerp(x, y, factor: f64) => x + factor * (y - x)
 
     func toDegrees(x: f32) => x * 57.295779513082320876798154814105'f32
     func toRadians(x: f32) => x * 0.017453292519943295769236907684886'f32
