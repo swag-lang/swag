@@ -60,6 +60,7 @@ impl Polygon
         return result
     }
 
+    // Divide by adding points if two points are too far away
     mtd normalizeDist(dist: f32, closed: bool = true)
     {
         i := 0'uint

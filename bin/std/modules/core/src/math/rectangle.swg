@@ -154,12 +154,12 @@ impl Rectangle
     }
 
     // Inflates the rectangle by the given amount
-    func inflate(self, value: f32)
+    mtd inflate(value: f32)
     {
-        self.x -= value
-        self.y -= value
-        self.width += value * 2
-        self.height += value * 2
+        x -= value
+        y -= value
+        width += value * 2
+        height += value * 2
     }
 
     func inflate(self, x, y: f32)

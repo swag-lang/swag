@@ -98,5 +98,5 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
 #run
 {
-    Application.runSurface(100, 100, 800, 512, title: "Train", hook: &onEvent)
+    Application.runSurface(100, 100, 800, 512, title: "Swag (move mouse on me!)", hook: &onEvent)
 }

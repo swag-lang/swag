@@ -65,6 +65,12 @@ impl Vector2
         #else           #assert(false, "unsupported binary operation '" ++ op ++ "'")
     }
 
+    mtd(op: string) opUnary()->Self
+    {
+        #if   op == "-" return Vector2{-x, -y}
+        #else #assert(false, "unsupported unary operation '" ++ op ++ "'")
+    }
+
     // Set content
     #[Swag.Inline]
     mtd set(x, y: f32)

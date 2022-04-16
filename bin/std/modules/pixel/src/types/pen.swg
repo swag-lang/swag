@@ -71,6 +71,17 @@ impl Pen
         return result
     }
 
+    // Returns a dash pen
+    func createDash(style: DashStyle, color: Color, size: f32 = 1)->Pen
+    {
+        var result: retval
+        result.brush.color = color
+        result.brush.type = .SolidColor
+        result.dashStyle = style
+        result.size = size
+        return result
+    }
+
     // Return a predefined hatch pen
     func createHatch(type: HatchStyle, color: Color, size: f32 = 1)->Pen
     {
