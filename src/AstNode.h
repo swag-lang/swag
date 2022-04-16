@@ -393,6 +393,7 @@ struct AstFuncDecl : public AstNode
     AstNode*        content               = nullptr;
     AstNode*        selectIf              = nullptr;
     AstNode*        returnTypeDeducedNode = nullptr;
+    AstNode*        originalGeneric       = nullptr;
     Scope*          scope                 = nullptr;
     TypeInfoParam*  methodParam           = nullptr;
     Job*            pendingLambdaJob      = nullptr;

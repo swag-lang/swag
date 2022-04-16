@@ -1848,31 +1848,34 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                 {
                     if (overload->typeInfo->flags & TYPEINFO_FROM_GENERIC)
                     {
-                        auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::Lambda);
-                        auto couldBe  = Fmt("could be a generic instance of function `%s%s` ", overload->symbol->name.c_str(), overload->typeInfo->declNode->typeInfo->getDisplayNameC());
+                        auto         typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::Lambda);
+                        AstFuncDecl* funcNode = CastAst<AstFuncDecl>(typeFunc->declNode, AstNodeKind::FuncDecl);
+                        auto         orgNode  = funcNode->originalGeneric ? funcNode->originalGeneric : overload->typeInfo->declNode;
+                        auto         couldBe  = Fmt(Nte(Nte0045), overload->symbol->name.c_str(), orgNode->typeInfo->getDisplayNameC());
                         couldBe += Ast::computeGenericParametersReplacement(typeFunc->genericParameters);
-                        note = new Diagnostic{overload->node, couldBe, DiagnosticLevel::Note};
-                        note->remarks.push_back(Fmt("resulting type is `%s%s`", overload->symbol->name.c_str(), overload->typeInfo->getDisplayNameC()));
+                        note = new Diagnostic{overload->node, couldBe, DiagnosticLevel::NotePack};
+                        note->remarks.push_back(Fmt(Nte(Nte0047), overload->symbol->name.c_str(), overload->typeInfo->getDisplayNameC()));
                     }
                     else
                     {
-                        auto couldBe = Fmt("could be function `%s%s`", overload->symbol->name.c_str(), overload->typeInfo->getDisplayNameC());
-                        note         = new Diagnostic{overload->node, couldBe, DiagnosticLevel::Note};
+                        auto couldBe = Fmt(Nte(Nte0048), overload->symbol->name.c_str(), overload->typeInfo->getDisplayNameC());
+                        note         = new Diagnostic{overload->node, couldBe, DiagnosticLevel::NotePack};
                     }
                 }
                 else if (overload->typeInfo->kind == TypeInfoKind::Struct)
                 {
-                    auto couldBe    = Fmt("could be struct `%s%s`", overload->symbol->name.c_str(), overload->typeInfo->getDisplayNameC());
-                    note            = new Diagnostic{overload->node, couldBe, DiagnosticLevel::Note};
+                    auto couldBe    = Fmt(Nte(Nte0049), overload->symbol->name.c_str(), overload->typeInfo->getDisplayNameC());
+                    note            = new Diagnostic{overload->node, couldBe, DiagnosticLevel::NotePack};
                     auto typeStruct = CastTypeInfo<TypeInfoStruct>(overload->typeInfo, TypeInfoKind::Struct);
                     note->remarks.push_back(Ast::computeGenericParametersReplacement(typeStruct->genericParameters));
                 }
                 else
                 {
-                    auto couldBe = Fmt("could be %s of type `%s`", SymTable::getArticleKindName(match->symbolOverload->symbol->kind), overload->typeInfo->getDisplayNameC());
-                    note         = new Diagnostic{overload->node, couldBe, DiagnosticLevel::Note};
+                    auto couldBe = Fmt(Nte(Nte0050), SymTable::getArticleKindName(match->symbolOverload->symbol->kind), overload->typeInfo->getDisplayNameC());
+                    note         = new Diagnostic{overload->node, couldBe, DiagnosticLevel::NotePack};
                 }
 
+                note->noteHeader            = "could be";
                 note->showRange             = false;
                 note->showMultipleCodeLines = false;
                 notes.push_back(note);

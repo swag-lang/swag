@@ -549,6 +549,7 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     auto         funcNode = overload->node;
     AstFuncDecl* newFunc  = CastAst<AstFuncDecl>(funcNode->clone(cloneContext), AstNodeKind::FuncDecl);
     newFunc->flags |= AST_FROM_GENERIC;
+    newFunc->originalGeneric = funcNode;
 
     // If this is for testing a #selectif match, we must not evaluate the function content until the
     // #selectif has passed

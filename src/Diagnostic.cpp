@@ -27,6 +27,7 @@ void Diagnostic::printSourceLine() const
         checkFile = checkFile->fileForSourceLocation;
 
     fs::path path = checkFile->path;
+    g_Log.print("--> ");
     g_Log.print(Utf8::normalizePath(path).c_str());
     if (hasRangeLocation)
         g_Log.print(Fmt(":%d:%d:%d:%d: ", startLocation.line + 1, startLocation.column + 1, endLocation.line + 1, endLocation.column + 1));
@@ -51,12 +52,12 @@ void Diagnostic::report(bool verboseMode) const
     auto verboseColor     = LogColor::DarkCyan;
     auto errorColor       = verboseMode ? verboseColor : LogColor::Red;
     auto remarkColor      = verboseMode ? verboseColor : LogColor::White;
-    auto sourceFileColor  = verboseMode ? verboseColor : LogColor::Cyan;
+    auto sourceFileColor  = verboseMode ? verboseColor : LogColor::Gray;
     auto codeColor        = verboseMode ? verboseColor : LogColor::Gray;
     auto hilightCodeColor = verboseMode ? verboseColor : LogColor::White;
     auto rangeNoteColor   = verboseMode ? verboseColor : LogColor::Cyan;
     auto warningColor     = verboseMode ? verboseColor : LogColor::Magenta;
-    auto noteColor        = verboseMode ? verboseColor : LogColor::White;
+    auto noteColor        = verboseMode ? verboseColor : LogColor::Cyan;
     auto stackColor       = verboseMode ? verboseColor : LogColor::DarkYellow;
     g_Log.setColor(verboseMode ? verboseColor : LogColor::White);
 
