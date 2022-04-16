@@ -39,28 +39,34 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         cy = 50
         start()
 
+        panel := LayoutCtrl.create(wnd, @{0, 0, 360}, .VerticalStack)
+        panel.dockStyle = .Right
+
         {
-            slider := SliderCtrl.create(wnd, "r1", @{rect.right() - 340, 10, 300})
+            slider := SliderCtrl.create(panel, "r1", @{})
             slider.setMinMaxU64(50, 200)
             slider.setValue(r1)
             slider.slider.sigChanged += @(slider) { r1 = slider.getValue(); }
         }
         {
-            slider := SliderCtrl.create(wnd, "r2", @{rect.right() - 340, 50, 300})
+            slider := SliderCtrl.create(panel, "r2", @{})
             slider.setMinMaxU64(50, 200)
             slider.setValue(r2)
             slider.slider.sigChanged += @(slider) { r2 = slider.getValue(); }
         }
         {
-            slider := SliderCtrl.create(wnd, "friction", @{rect.right() - 340, 90, 300})
+            slider := SliderCtrl.create(panel, "friction", @{})
             slider.setMinMaxU64(0, 100)
             slider.setValue(0)
             slider.slider.sigChanged += @(slider) { friction = 1 - (slider.getValue() * 0.0001); }
         }
         {
-            btn := PushButton.create(wnd, "restart", @{rect.right() - 220, 140})
+            btn := PushButton.create(panel, "restart", @{})
+            btn.maxSize = 100
             btn.sigPressed += @(btn) { start(); }
         }
+
+        panel.computeLayout()
 
     case Paint:
         paintEvt := cast(*PaintEvent) evt
@@ -129,5 +135,5 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
 #run
 {
-    Application.runSurface(100, 100, 1024, 600, title: "Pendulum", hook: &onEvent, canSize: false)
+    Application.runSurface(100, 100, 1024, 600, title: "Pendulum", hook: &onEvent)
 }
