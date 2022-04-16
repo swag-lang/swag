@@ -66,7 +66,8 @@ impl ConvertFormatFloat
         {
             (userWidth, eatCount, ?) := assume parseU64(@mkstring(buffer + cpt, cast(uint) (countof - cpt)))
             Debug.assert(userWidth <= 255, "precision overflow")
-            if eatCount precision = cast(s8) userWidth
+            if eatCount
+                precision = cast(s8) userWidth
         }
     }
 }

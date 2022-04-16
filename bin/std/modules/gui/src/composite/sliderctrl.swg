@@ -17,8 +17,7 @@ impl IWnd for SliderCtrl
     mtd onResizeEvent(evt: *ResizeEvent)
     {
         if !label return
-
-        rect    := getClientRectPadding()
+        rect    := getClientRect()
         metrics := getThemeMetrics()
 
         label.setPosition(0, 0, labelSize, rect.height)
@@ -26,7 +25,7 @@ impl IWnd for SliderCtrl
         w := rect.width - labelSize - editSize - 4
         slider.setPosition(label.position.right() + 4, rect.vertCenter() - metrics.slider_Height / 2, w, metrics.slider_Height)
 
-        edit.setPosition(slider.position.right(), rect.vertCenter() - metrics.editBox_Height / 2, editSize, metrics.editBox_Height)
+        edit.setPosition(slider.position.right() - 4, rect.vertCenter() - metrics.editBox_Height / 2, editSize, metrics.editBox_Height)
     }
 }
 
@@ -55,29 +54,33 @@ impl SliderCtrl
                 var val: String
                 switch ctrl.edit.inputMode
                 {
-                case .U64: val = Format.toString("%", cast(u64) wnd.getValue())
-                case .S64: val = Format.toString("%", cast(s64) wnd.getValue())
-                case .F64: val = Format.toString("%", cast(f64) wnd.getValue())
+                case .U64:
+                    val = Format.toString("%", cast(u64) wnd.getValue())
+                case .S64:
+                    val = Format.toString("%", cast(s64) wnd.getValue())
+                case .F64:
+                    val = Format.toString("%{f2}", wnd.getValue())
                 }
 
                 ctrl.edit.setText(val)
             }
 
             edit = EditBox.create(ctrl, "", @{})
-            edit.sigLoseFocus += @|ctrl|(wnd)
+            edit.setForm(.Transparent)
+            edit.sigLoseFocus += @|ctrl|(edit)
             {
-                switch ctrl.edit.inputMode
+                switch edit.inputMode
                 {
                 case .U64:
-                    (val, ?, ?) := catch StrConv.parseU64(wnd.text)
+                    (val, ?, ?) := catch StrConv.parseU64(edit.text)
                     ctrl.slider.setValue(cast(f32) val)
 
                 case .S64:
-                    (val, ?, ?) := catch StrConv.parseS64(wnd.text)
+                    (val, ?, ?) := catch StrConv.parseS64(edit.text)
                     ctrl.slider.setValue(cast(f32) val)
 
                 case .F64:
-                    (val, ?, ?) := catch StrConv.parseF64(wnd.text)
+                    (val, ?, ?) := catch StrConv.parseF64(edit.text)
                     ctrl.slider.setValue(cast(f32) val)
                 }
             }
@@ -86,5 +89,32 @@ impl SliderCtrl
         }
 
         return ctrl
+    }
+
+    // Set a f32 range
+    mtd setMinMaxF32(min, max: f32)
+    {
+        slider.setMinMax(min, max)
+        edit.setInputF64(acast min, acast max)
+    }
+
+    // Set a u64 range
+    mtd setMinMaxU64(min, max: u64)
+    {
+        slider.setMinMax(acast min, acast max)
+        edit.setInputU64(min, max)
+    }
+
+    // Set a f64 range
+    mtd setMinMaxS64(min, max: s64)
+    {
+        slider.setMinMax(acast min, acast max)
+        edit.setInputS64(min, max)
+    }
+
+    // Set the slider current value
+    mtd setValue(value: f32)
+    {
+        slider.setValue(value)
     }
 }

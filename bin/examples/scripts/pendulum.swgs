@@ -34,23 +34,20 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
         {
             slider := SliderCtrl.create(wnd, "r1", @{rect.right() - 340, 10, 300})
-            slider.slider.setMinMax(50, 200)
-            slider.edit.setInputU64(50, 200)
-            slider.slider.setValue(r1)
+            slider.setMinMaxU64(50, 200)
+            slider.setValue(r1)
             slider.slider.sigChanged += @(slider) { r1 = slider.getValue(); }
         }
         {
             slider := SliderCtrl.create(wnd, "r2", @{rect.right() - 340, 50, 300})
-            slider.slider.setMinMax(50, 200)
-            slider.edit.setInputU64(50, 200)
-            slider.slider.setValue(r2)
+            slider.setMinMaxU64(50, 200)
+            slider.setValue(r2)
             slider.slider.sigChanged += @(slider) { r2 = slider.getValue(); }
         }
         {
             slider := SliderCtrl.create(wnd, "friction", @{rect.right() - 340, 90, 300})
-            slider.slider.setMinMax(0, 100)
-            slider.edit.setInputU64(0, 100)
-            slider.slider.setValue(0)
+            slider.setMinMaxF32(0, 100)
+            slider.setValue(0)
             slider.slider.sigChanged += @(slider) { friction = 1 - (slider.getValue() * 0.0001); }
         }
         {
