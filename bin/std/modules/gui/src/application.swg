@@ -423,12 +423,13 @@ impl Application
     }
 
     // Create a main surface, and run
-    func runSurface(x, y, width, height: s32, title: string = null, view: *Wnd = null, canSize = true, hook: HookEvent = null)
+    func runSurface(x, y, width, height: s32, title: string = null, view: *Wnd = null, borders = true, canSize = true, hook: HookEvent = null)
     {
         var app: Application
 
         flags := SurfaceFlags.OverlappedWindow
         if !canSize flags &= ~.Sizeable
+        if !borders flags &= ~.Border
         surface := assume app.createSurface(x, y, width, height, flags, view, hook)
         surface.setTitle(title)
         surface.show()
