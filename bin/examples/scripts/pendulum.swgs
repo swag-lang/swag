@@ -16,8 +16,6 @@ var a2 = 0.0
 var a1_v = 0.0
 var a2_v = 0.0
 var g = 0.98
-var px2 = -1.0
-var py2 = -1.0
 var cx, cy: f32
 var friction = 1.0
 var linePath: Array'Vector2
@@ -123,9 +121,6 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
         a1_v *= friction
         a2_v *= friction
-
-        px2 = x2
-        py2 = y2
 
         wnd.invalidate()
     }
