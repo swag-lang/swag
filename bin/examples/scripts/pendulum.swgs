@@ -20,17 +20,24 @@ var px2 = -1.0
 var py2 = -1.0
 var cx, cy: f32
 var friction = 1.0
+var linePath: Array'Vector2
 
 func onEvent(wnd: *Wnd, evt: *Event)->bool
 {
+    func start()
+    {
+        a1 = ConstF32.Pi / 2
+        a2 = ConstF32.Pi / 2
+        linePath.clear()
+    }
+
     switch evt.kind
     {
     case Create:
         rect := wnd.getClientRect()
-        a1 = ConstF32.Pi / 2
-        a2 = ConstF32.Pi / 2
         cx = rect.width / 3
         cy = 50
+        start()
 
         {
             slider := SliderCtrl.create(wnd, "r1", @{rect.right() - 340, 10, 300})
@@ -46,13 +53,13 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         }
         {
             slider := SliderCtrl.create(wnd, "friction", @{rect.right() - 340, 90, 300})
-            slider.setMinMaxF32(0, 100)
+            slider.setMinMaxU64(0, 100)
             slider.setValue(0)
             slider.slider.sigChanged += @(slider) { friction = 1 - (slider.getValue() * 0.0001); }
         }
         {
             btn := PushButton.create(wnd, "restart", @{rect.right() - 220, 140})
-            btn.sigPressed += @(btn) { a1 = ConstF32.Pi / 2; a2 = ConstF32.Pi / 2; }
+            btn.sigPressed += @(btn) { start(); }
         }
 
     case Paint:
@@ -81,6 +88,21 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         painter.setParams(.Antialiased)
         painter.clear(Argb.Black)
         painter.translateTransform(cx, cy)
+
+        // Draw trail
+        linePath.add(@{x2, y2})
+        if linePath.count > 500
+            linePath.removeAtOrdered(0)
+        if linePath.count > 1
+        {
+            var lp: LinePath
+            lp.start(linePath[0].x, linePath[0].y)
+            visit &v: linePath
+                lp.lineTo(v.x, v.y)
+            painter.drawPath(&lp, Argb.Red, 2)
+        }
+
+        // Pendulum
         painter.drawLine(0, 0, x1, y1, Argb.White, 2)
         painter.fillCircle(x1, y1, m1, Argb.White)
         painter.drawLine(x1, y1, x2, y2, Argb.White, 2)
@@ -107,5 +129,5 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
 #run
 {
-    Application.runSurface(100, 100, 1024, 512, title: "Pendulum", hook: &onEvent, canSize: false)
+    Application.runSurface(100, 100, 1024, 600, title: "Pendulum", hook: &onEvent, canSize: false)
 }
