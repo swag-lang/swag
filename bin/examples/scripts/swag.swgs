@@ -1,0 +1,102 @@
+// https://youtu.be/4hA7G3gup-4
+
+#dependencies
+{
+    #import "gui" location="swag@std"
+}
+
+using Core, Gui, Pixel, Math
+
+var g_Rng:    Random.DefaultRng
+var g_Points: Array'C
+
+struct C
+{
+    pos:    Vector2
+    target: Vector2
+    speed:  Vector2
+    acc:    Vector2
+}
+
+impl C
+{
+    mtd update(wnd: *Wnd)
+    {
+        app := wnd.getApp()
+
+        speed += acc
+        pos += speed * app.getDt()
+        acc.clear()
+
+        v := target - pos
+        d := v.length()
+        if d < 100
+            d = map(d, 0, 100, 0, 120)
+        v.setLength(d)
+        steer := v - speed
+        d = min(steer.length(), 80)
+        steer.setLengthSafe(d)
+        acc += steer
+
+        pm := app.getMouse().getPosition()
+        pm = wnd.screenToSurface(pm)
+        pm = wnd.surfaceToLocal(pm)
+        v = pos - Vector2{pm.x, pm.y}
+        d = v.length()
+        if d < 50
+        {
+            d = 50 - d
+            d *= d
+            v.setLength(d)
+            acc += v
+        }
+    }
+}
+
+func onEvent(wnd: *Wnd, evt: *Event)->bool
+{
+    switch evt.kind
+    {
+    case Create:
+        var pl: LinePathList
+        assume wnd.getTheme().res.defaultTypeFaceR.getStringOutline(&pl, "Swag", 200)
+        visit path: pl.paths
+        {
+            path.flatten()
+            path.polygon.normalizeDist(10)
+            visit &el: path.polygon.points
+            {
+                var c: C
+                c.pos, c.target = @{el.x + 160, el.y + 260}
+                c.pos.x += g_Rng.nextF32(-100, 100)
+                c.pos.y += g_Rng.nextF32(-100, 100)
+                g_Points.add(c)
+            }
+        }
+
+    case Paint:
+        paintEvt := cast(*PaintEvent) evt
+        painter  := paintEvt.bc.painter
+        rect     := wnd.getClientRect()
+
+        painter.fillRect(rect, Argb.Black)
+
+        visit &p: g_Points
+        {
+            p.update(wnd)
+            v := p.target - p.pos
+            d := map(Math.min(v.length(), 100), 0, 100, 0, 1)
+            c := Color.getBlend(Argb.White, Argb.Black, d)
+            painter.fillCircle(p.pos.x, p.pos.y, 4, c)
+        }
+
+        wnd.invalidate()
+    }
+
+    return false
+}
+
+#run
+{
+    Application.runSurface(100, 100, 800, 512, title: "Train", hook: &onEvent)
+}

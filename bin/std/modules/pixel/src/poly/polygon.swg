@@ -63,12 +63,8 @@ impl Polygon
     mtd normalizeDist(dist: f32, closed: bool = true)
     {
         i := 0'uint
-        //while i < closed ? points.count : points.count - 1
-        loop
+        while i < (closed ? points.count : points.count - 1)
         {
-            if closed  and i >= points.count break
-            if !closed and i >= points.count - 1 break
-
             defer i += 1
             v := dref points[(i + 1) % points.count] - dref points[i]
             d := v.length()
