@@ -33,21 +33,21 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         cy = 50
 
         {
-            slider := SliderCtrl.create(wnd, @{rect.right() - 340, 10, 300}, "r1")
+            slider := SliderCtrl.create(wnd, "r1", @{rect.right() - 340, 10, 300})
             slider.slider.setMinMax(50, 200)
             slider.edit.setInputU64(50, 200)
             slider.slider.setValue(r1)
             slider.slider.sigChanged += @(slider) { r1 = slider.getValue(); }
         }
         {
-            slider := SliderCtrl.create(wnd, @{rect.right() - 340, 50, 300}, "r2")
+            slider := SliderCtrl.create(wnd, "r2", @{rect.right() - 340, 50, 300})
             slider.slider.setMinMax(50, 200)
             slider.edit.setInputU64(50, 200)
             slider.slider.setValue(r2)
             slider.slider.sigChanged += @(slider) { r2 = slider.getValue(); }
         }
         {
-            slider := SliderCtrl.create(wnd, @{rect.right() - 340, 90, 300}, "friction")
+            slider := SliderCtrl.create(wnd, "friction", @{rect.right() - 340, 90, 300})
             slider.slider.setMinMax(0, 100)
             slider.edit.setInputU64(0, 100)
             slider.slider.setValue(0)
@@ -84,9 +84,9 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         painter.setParams(.Antialiased)
         painter.clear(Argb.Black)
         painter.translateTransform(cx, cy)
-        painter.drawLine(0, 0, x1, y1, Argb.White)
+        painter.drawLine(0, 0, x1, y1, Argb.White, 2)
         painter.fillCircle(x1, y1, m1, Argb.White)
-        painter.drawLine(x1, y1, x2, y2, Argb.White)
+        painter.drawLine(x1, y1, x2, y2, Argb.White, 2)
         painter.fillCircle(x2, y2, m2, Argb.White)
 
         dt := wnd.getApp().getDt() * 50

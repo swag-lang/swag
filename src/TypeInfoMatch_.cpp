@@ -494,6 +494,8 @@ static void matchNamedParameter(SymbolMatchContext& context, AstFuncCallParam* c
             if (callParameter->resolvedParameter)
                 return;
         }
+
+        callParameter->resolvedParameter = nullptr;
     }
 }
 

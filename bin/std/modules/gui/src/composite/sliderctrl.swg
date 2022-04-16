@@ -33,7 +33,7 @@ impl IWnd for SliderCtrl
 impl SliderCtrl
 {
     // Create the popup list, but do not display it
-    func create(parent: *Wnd, position: Math.Rectangle, name: string, id: WndId = null)->*SliderCtrl
+    func create(parent: *Wnd, name: string, position: Math.Rectangle, id: WndId = null)->*SliderCtrl
     {
         metrics := parent.getThemeMetrics()
         pos := position
