@@ -723,7 +723,7 @@ private impl EditBox
 impl EditBox
 {
     #[Swag.Discardable]
-    func create(parent: *Wnd, content: string, position: Math.Rectangle, id: WndId = null)->*EditBox
+    func create(parent: *Wnd, content: string, position: Math.Rectangle = @{}, id: WndId = null)->*EditBox
     {
         Debug.assert(parent != null)
         pos := position

@@ -40,28 +40,30 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         start()
 
         panel := LayoutCtrl.create(wnd, @{0, 0, 360}, .VerticalStack)
+        panel.padding = 10
+        panel.inter   = 5
         panel.dockStyle = .Right
 
         {
-            slider := SliderCtrl.create(panel, "r1", @{})
+            slider := SliderCtrl.create(panel, "r1")
             slider.setMinMaxU64(50, 200)
             slider.setValue(r1)
             slider.slider.sigChanged += @(slider) { r1 = slider.getValue(); }
         }
         {
-            slider := SliderCtrl.create(panel, "r2", @{})
+            slider := SliderCtrl.create(panel, "r2")
             slider.setMinMaxU64(50, 200)
             slider.setValue(r2)
             slider.slider.sigChanged += @(slider) { r2 = slider.getValue(); }
         }
         {
-            slider := SliderCtrl.create(panel, "friction", @{})
+            slider := SliderCtrl.create(panel, "friction")
             slider.setMinMaxU64(0, 100)
             slider.setValue(0)
             slider.slider.sigChanged += @(slider) { friction = 1 - (slider.getValue() * 0.0001); }
         }
         {
-            btn := PushButton.create(panel, "restart", @{})
+            btn := PushButton.create(panel, "restart")
             btn.maxSize = 100
             btn.sigPressed += @(btn) { start(); }
         }

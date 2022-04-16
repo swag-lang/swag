@@ -103,7 +103,7 @@ impl IWnd for Label
 impl Label
 {
     #[Swag.Discardable]
-    func create(parent: *Wnd, name: string, position: Math.Rectangle, id: WndId = null)->*Label
+    func create(parent: *Wnd, name: string, position: Math.Rectangle = @{}, id: WndId = null)->*Label
     {
         Debug.assert(parent != null)
         pos := position

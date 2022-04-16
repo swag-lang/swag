@@ -38,7 +38,7 @@ impl IWnd for ImageRect
 impl ImageRect
 {
     #[Swag.Discardable]
-    func create(parent: *Wnd, position: Math.Rectangle, image: *ImageList, id: WndId = null)->*ImageRect
+    func create(parent: *Wnd, image: *ImageList, position: Math.Rectangle = @{}, id: WndId = null)->*ImageRect
     {
         Debug.assert(parent != null)
         res := Wnd.create'ImageRect(parent, null, position, id)

@@ -383,7 +383,7 @@ private impl Tab
 impl Tab
 {
     #[Swag.Discardable]
-    func create(parent: *Wnd, position: Math.Rectangle, id: WndId = null)->*Tab
+    func create(parent: *Wnd, position: Math.Rectangle = @{}, id: WndId = null)->*Tab
     {
         Debug.assert(parent != null)
         res := Wnd.create'Tab(parent, null, position, id)

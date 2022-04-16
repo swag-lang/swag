@@ -10,19 +10,22 @@ struct LayoutCtrl
 {
     using frameWnd: FrameWnd
     kind:           LayoutKind = VerticalStack
+    inter:          f32 = 20
 }
 
 impl IWnd for LayoutCtrl
 {
     mtd onResizeEvent(evt: *ResizeEvent)
     {
-        visit c: childs
+        visit c, i: childs
         {
+            c.margin.clear()
             switch kind
             {
             case VerticalStack:
                 c.dockStyle = .Top
-                c.margin.y = 10
+                if i > 0
+                    c.margin.y = inter
             }
         }
 

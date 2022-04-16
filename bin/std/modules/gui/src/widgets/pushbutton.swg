@@ -167,7 +167,7 @@ impl IWnd for PushButton
 impl PushButton
 {
     #[Swag.Discardable]
-    func create(parent: *Wnd, name: string, position: Math.Rectangle, id: WndId = null)->*PushButton
+    func create(parent: *Wnd, name: string, position: Math.Rectangle = @{}, id: WndId = null)->*PushButton
     {
         Debug.assert(parent != null)
         pos := position

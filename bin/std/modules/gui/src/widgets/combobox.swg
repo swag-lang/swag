@@ -163,7 +163,7 @@ private impl ComboBox
 impl ComboBox
 {
     #[Swag.Discardable]
-    func create(parent: *Wnd, position: Math.Rectangle, id: WndId = null, editBox = false)->*ComboBox
+    func create(parent: *Wnd, position: Math.Rectangle = @{}, id: WndId = null, editBox = false)->*ComboBox
     {
         Debug.assert(parent != null)
         pos := position

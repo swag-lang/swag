@@ -626,6 +626,8 @@ impl Wnd
                 pos.x = clientRect.x + c.margin.x
                 pos.y = clientRect.y + c.margin.y
                 pos.setBottom(clientRect.bottom() - c.margin.w)
+                if c.maxSize.y > 0 and c.maxSize.y < pos.height
+                    pos.y = pos.vertCenter() - c.maxSize.y * 0.5
                 c.setPosition(pos)
                 diff := c.margin.x + pos.width + c.margin.z
                 clientRect.width -= diff
@@ -636,6 +638,8 @@ impl Wnd
                 pos.x = clientRect.right() - pos.width - c.margin.z
                 pos.y = clientRect.y + c.margin.y
                 pos.setBottom(clientRect.bottom() - c.margin.w)
+                if c.maxSize.y > 0 and c.maxSize.y < pos.height
+                    pos.y = pos.vertCenter() - c.maxSize.y * 0.5
                 c.setPosition(pos)
                 diff := c.margin.x + pos.width + c.margin.z
                 clientRect.width -= diff
@@ -645,6 +649,8 @@ impl Wnd
                 pos.x = clientRect.x + c.margin.x
                 pos.y = clientRect.y + c.margin.y
                 pos.setRight(clientRect.right() - c.margin.z)
+                if c.maxSize.x > 0 and c.maxSize.x < pos.width
+                    pos.x = pos.horzCenter() - c.maxSize.x * 0.5
                 c.setPosition(pos)
                 diff := c.margin.y + pos.height + c.margin.w
                 clientRect.y += diff
@@ -655,6 +661,8 @@ impl Wnd
                 pos.x = clientRect.x + c.margin.x
                 pos.y = clientRect.bottom() - c.margin.w - pos.height
                 pos.setRight(clientRect.right() - c.margin.z)
+                if c.maxSize.x > 0 and c.maxSize.x < pos.width
+                    pos.x = pos.horzCenter() - c.maxSize.x * 0.5
                 c.setPosition(pos)
                 diff := c.margin.w + pos.height + c.margin.y
                 clientRect.height -= diff
