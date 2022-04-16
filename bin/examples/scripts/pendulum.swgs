@@ -1,0 +1,114 @@
+// https://youtu.be/uWzPe_S-RVE?list=PLRqwX-V7Uu6ZiZxtDDRCi6uhfTH4FilpH
+
+#dependencies
+{
+    #import "gui" location="swag@std"
+}
+
+using Core, Gui, Pixel, Math
+
+var r1 = 125.0
+var r2 = 125.0
+var m1 = 10.0
+var m2 = 10.0
+var a1 = 0.0
+var a2 = 0.0
+var a1_v = 0.0
+var a2_v = 0.0
+var g = 0.98
+var px2 = -1.0
+var py2 = -1.0
+var cx, cy: f32
+var friction = 1.0
+
+func onEvent(wnd: *Wnd, evt: *Event)->bool
+{
+    switch evt.kind
+    {
+    case Create:
+        rect := wnd.getClientRect()
+        a1 = ConstF32.Pi / 2
+        a2 = ConstF32.Pi / 2
+        cx = rect.width / 3
+        cy = 50
+
+        {
+            slider := SliderCtrl.create(wnd, @{rect.right() - 340, 10, 300}, "r1")
+            slider.slider.setMinMax(50, 200)
+            slider.edit.setInputU64(50, 200)
+            slider.slider.setValue(r1)
+            slider.slider.sigChanged += @(slider) { r1 = slider.getValue(); }
+        }
+        {
+            slider := SliderCtrl.create(wnd, @{rect.right() - 340, 50, 300}, "r2")
+            slider.slider.setMinMax(50, 200)
+            slider.edit.setInputU64(50, 200)
+            slider.slider.setValue(r2)
+            slider.slider.sigChanged += @(slider) { r2 = slider.getValue(); }
+        }
+        {
+            slider := SliderCtrl.create(wnd, @{rect.right() - 340, 90, 300}, "friction")
+            slider.slider.setMinMax(0, 100)
+            slider.edit.setInputU64(0, 100)
+            slider.slider.setValue(0)
+            slider.slider.sigChanged += @(slider) { friction = 1 - (slider.getValue() * 0.0001); }
+        }
+        {
+            btn := PushButton.create(wnd, "restart", @{rect.right() - 220, 140})
+            btn.sigPressed += @(btn) { a1 = ConstF32.Pi / 2; a2 = ConstF32.Pi / 2; }
+        }
+
+    case Paint:
+        paintEvt := cast(*PaintEvent) evt
+        painter  := paintEvt.bc.painter
+
+        num1 := -g * (2 * m1 + m2) * sin(a1)
+        num2 := -m2 * g * sin(a1 - 2 * a2)
+        num3 := -2 * sin(a1 - a2) * m2
+        num4 := a2_v * a2_v * r2 + a1_v * a1_v * r1 * cos(a1 - a2)
+        den  := r1 * (2 * m1 + m2 - m2 * cos(2 * a1 - 2 * a2))
+        a1_a := (num1 + num2 + num3 * num4) / den
+
+        num1 = 2 * sin(a1 - a2)
+        num2 = a1_v * a1_v * r1 * (m1 + m2)
+        num3 = g * (m1 + m2) * cos(a1)
+        num4 = a2_v * a2_v * r2 * m2 * cos(a1 - a2)
+        den = r2 * (2 * m1 + m2 - m2 * cos(2 * a1 - 2 * a2))
+        a2_a := (num1 * (num2 + num3 + num4)) / den
+
+        x1 := r1 * sin(a1)
+        y1 := r1 * cos(a1)
+        x2 := x1 + r2 * sin(a2)
+        y2 := y1 + r2 * cos(a2)
+
+        painter.setParams(.Antialiased)
+        painter.clear(Argb.Black)
+        painter.translateTransform(cx, cy)
+        painter.drawLine(0, 0, x1, y1, Argb.White)
+        painter.fillCircle(x1, y1, m1, Argb.White)
+        painter.drawLine(x1, y1, x2, y2, Argb.White)
+        painter.fillCircle(x2, y2, m2, Argb.White)
+
+        dt := wnd.getApp().getDt() * 50
+
+        a1_v += a1_a * dt
+        a2_v += a2_a * dt
+        a1 += a1_v * dt
+        a2 += a2_v * dt
+
+        a1_v *= friction
+        a2_v *= friction
+
+        px2 = x2
+        py2 = y2
+
+        wnd.invalidate()
+    }
+
+    return false
+}
+
+#run
+{
+    Application.runSurface(100, 100, 1024, 512, title: "Pendulum", hook: &onEvent, canSize: false)
+}

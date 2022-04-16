@@ -1,11 +1,11 @@
 ****************************************
-LANGUAGE
+LANGUAGE ?
 ****************************************
 
 -------------------------------------
-#premain ?
+#premain
 -------------------------------------
-var lazy evaluation ?
+var lazy evaluation
 -------------------------------------
 callable
 https://github.com/apple/swift-evolution/blob/master/proposals/0216-dynamic-callable.md
@@ -18,19 +18,20 @@ impl AA
 var x: AA
 x(10) => x.opCall(10)
 -------------------------------------
-loop increment ? loop reverse ?
+loop increment
+loop reverse
 -------------------------------------
-is ?
+is
 if a is < 2 and > 3
 if a is s32
 if a is "toto"
 if a is in 2..6
 -------------------------------------
-not au lieu de ! ?
+not au lieu de !
 -------------------------------------
-`return au lieu de swag.noreturn ?
+`return au lieu de swag.noreturn
 -------------------------------------
-code en tant que vrai type ?
+code en tant que vrai type
 x := #code a := 6
 #mixin x
 var v: Array'code
@@ -59,8 +60,6 @@ STRANGE
 TODO
 ****************************************
 
--------------------------------------
-3552 random bug
 -------------------------------------
 erreur si opDrop est privé et la struct publique (on doit exporter)
 -------------------------------------

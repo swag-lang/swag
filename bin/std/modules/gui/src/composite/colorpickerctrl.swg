@@ -109,7 +109,7 @@ private impl ColorPickerCtrl
 impl ColorPickerCtrl
 {
     #[Swag.Discardable]
-    func create(parent: *Wnd, position: Math.Rectangle, id: string = null)->*ColorPickerCtrl
+    func create(parent: *Wnd, position: Math.Rectangle, id: WndId = null)->*ColorPickerCtrl
     {
         v := Wnd.create'ColorPickerCtrl(parent, "", position, id)
 

@@ -89,7 +89,7 @@ impl IWnd for ProgressBar
 impl ProgressBar
 {
     #[Swag.Discardable]
-    func create(parent: *Wnd, position: Math.Rectangle, id: string = null)->*ProgressBar
+    func create(parent: *Wnd, position: Math.Rectangle, id: WndId = null)->*ProgressBar
     {
         Debug.assert(parent != null)
         pos := position

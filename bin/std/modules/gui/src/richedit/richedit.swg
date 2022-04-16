@@ -240,7 +240,7 @@ private impl RichEditCtrl
 impl RichEditCtrl
 {
     #[Swag.Discardable]
-    func create(parent: *Wnd, position: Math.Rectangle, id: string = null)->*RichEditCtrl
+    func create(parent: *Wnd, position: Math.Rectangle, id: WndId = null)->*RichEditCtrl
     {
         ed := Wnd.create'RichEditCtrl(parent, "", position, id)
 

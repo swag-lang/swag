@@ -286,7 +286,7 @@ impl Header
     }
 
     #[Swag.Discardable]
-    func create(parent: *Wnd, position: Math.Rectangle, id: string = null)->*Header
+    func create(parent: *Wnd, position: Math.Rectangle, id: WndId = null)->*Header
     {
         Debug.assert(parent != null)
 

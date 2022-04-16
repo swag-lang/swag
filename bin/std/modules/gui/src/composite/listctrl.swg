@@ -608,7 +608,7 @@ private impl ListView
 impl ListCtrl
 {
     #[Swag.Discardable]
-    func createSimple(parent: *Wnd, position: Math.Rectangle, id: string = null)->*ListCtrl
+    func createSimple(parent: *Wnd, position: Math.Rectangle, id: WndId = null)->*ListCtrl
     {
         list := Wnd.create'ListCtrl(parent, "", position, id)
 
@@ -630,7 +630,7 @@ impl ListCtrl
     }
 
     #[Swag.Discardable]
-    func createMultiColumns(parent: *Wnd, position: Math.Rectangle, id: string = null)->*ListCtrl
+    func createMultiColumns(parent: *Wnd, position: Math.Rectangle, id: WndId = null)->*ListCtrl
     {
         list := Wnd.create'ListCtrl(parent, "", position, id)
 

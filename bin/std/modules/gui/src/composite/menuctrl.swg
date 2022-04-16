@@ -534,7 +534,7 @@ impl MenuCtrl
 public impl MenuCtrl
 {
     #[Swag.Discardable]
-    func createPopup(parent: *Wnd, id: string = null)->*MenuCtrl
+    func createPopup(parent: *Wnd, id: WndId = null)->*MenuCtrl
     {
         res := Wnd.create'MenuCtrl(parent.surface.wnd, null, @{}, id)
         with res
@@ -547,7 +547,7 @@ public impl MenuCtrl
     }
 
     #[Swag.Discardable]
-    func createBar(parent: *Wnd, pos: Math.Rectangle, id: string = null)->*MenuCtrl
+    func createBar(parent: *Wnd, pos: Math.Rectangle, id: WndId = null)->*MenuCtrl
     {
         res := Wnd.create'MenuCtrl(parent, null, pos, id)
         with res
