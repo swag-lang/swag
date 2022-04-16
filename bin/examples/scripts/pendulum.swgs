@@ -66,8 +66,6 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
             btn.sigPressed += @(btn) { start(); }
         }
 
-        panel.computeLayout()
-
     case Paint:
         paintEvt := cast(*PaintEvent) evt
         painter  := paintEvt.bc.painter
