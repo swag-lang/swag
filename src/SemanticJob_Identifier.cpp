@@ -1139,7 +1139,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         if (overload->node->flags & AST_EMPTY_FCT && !(overload->node->attributeFlags & ATTRIBUTE_FOREIGN) && identifier->token.text[0] != '@')
         {
             Diagnostic diag{identifier, Fmt(Err(Err0105), identifier->token.ctext())};
-            Diagnostic note{overload->node, Nte(Nte0033), DiagnosticLevel::Note};
+            Diagnostic note{overload->node, Nte(Nte0033), DiagnosticLevel::NotePack};
             return context->report(diag, &note);
         }
 
@@ -1203,7 +1203,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 {
                     PushErrHint errh(Hnt(Hnt0023));
                     Diagnostic  diag(identifier, Fmt(Err(Err0109), overload->node->token.ctext()));
-                    Diagnostic  note(overload->node, Nte(Nte0033), DiagnosticLevel::Note);
+                    Diagnostic  note(overload->node, Nte(Nte0033), DiagnosticLevel::NotePack);
                     return context->report(diag, &note);
                 }
                 else
@@ -1215,7 +1215,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         else if (returnType->isNative(NativeTypeKind::Void) && (identifier->flags & AST_DISCARD))
         {
             Diagnostic diag{identifier, Err(Err0094)};
-            Diagnostic note{overload->node, Nte(Nte0033), DiagnosticLevel::Note};
+            Diagnostic note{overload->node, Nte(Nte0033), DiagnosticLevel::NotePack};
             return context->report(Hint::isType(identifier->typeInfo), diag, &note);
         }
 
@@ -3998,7 +3998,7 @@ bool SemanticJob::checkCanThrow(SemanticContext* context)
     auto parentFct = (node->semFlags & AST_SEM_EMBEDDED_RETURN) ? node->ownerInline->func : node->ownerFct;
 
     if (parentFct->isSpecialFunctionName())
-        return context->report(node, Fmt(Err(Err0137), node->token.ctext()));
+        return context->report(node, Fmt(Err(Err0137), node->token.ctext(), parentFct->token.ctext()));
 
     if (!(parentFct->typeInfo->flags & TYPEINFO_CAN_THROW) && !(parentFct->flags & AST_SPECIAL_COMPILER_FUNC))
         return context->report(node, Fmt(Err(Err0138), node->token.ctext(), parentFct->token.ctext()));

@@ -141,6 +141,7 @@ void Diagnostic::report(bool verboseMode) const
     g_Log.eol();
 
     // Source code
+    vector<Utf8> lines;
     g_Log.setColor(codeColor);
     if (mustPrintCode())
     {
@@ -150,11 +151,11 @@ void Diagnostic::report(bool verboseMode) const
         location1.line -= sourceFile->getLineOffset;
 
         // Get all lines of code
-        vector<Utf8> lines;
         if (showMultipleCodeLines &&
             errorLevel != DiagnosticLevel::CallStack &&
             errorLevel != DiagnosticLevel::CallStackInlined &&
             errorLevel != DiagnosticLevel::Note &&
+            errorLevel != DiagnosticLevel::NotePack &&
             errorLevel != DiagnosticLevel::Help &&
             errorLevel != DiagnosticLevel::TraceError)
         {
@@ -372,6 +373,7 @@ void Diagnostic::report(bool verboseMode) const
             if (errorLevel != DiagnosticLevel::CallStack &&
                 errorLevel != DiagnosticLevel::CallStackInlined &&
                 errorLevel != DiagnosticLevel::TraceError &&
+                errorLevel != DiagnosticLevel::NotePack &&
                 showMultipleCodeLines)
             {
                 printMargin(codeColor, true);
