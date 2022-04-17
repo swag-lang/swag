@@ -244,6 +244,14 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
             switch (exp.type)
             {
             case JobContext::ErrorContextType::Generic:
+
+                // Can happen with automatic call of opIndexSuffix
+                if (exp.node && exp.node->kind == AstNodeKind::VarDecl)
+                {
+                    exp.hide = true;
+                    continue;
+                }
+
                 exp.hide    = doneGeneric;
                 doneGeneric = true;
                 break;
