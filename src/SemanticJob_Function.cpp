@@ -1190,7 +1190,10 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     if (!concreteType->isNative(NativeTypeKind::Void))
     {
         if (funcNode->attributeFlags & (ATTRIBUTE_RUN_FUNC | ATTRIBUTE_RUN_GENERATED_FUNC | ATTRIBUTE_MAIN_FUNC | ATTRIBUTE_INIT_FUNC | ATTRIBUTE_DROP_FUNC | ATTRIBUTE_TEST_FUNC))
-            return context->report(Hnt(Hnt0026), {child, Fmt(Err(Err0052), funcNode->getDisplayNameC())});
+        {
+            if (funcNode->attributeFlags & ATTRIBUTE_SHARP_FUNC)
+                return context->report(Hnt(Hnt0026), {child, Fmt(Err(Err0052), funcNode->getDisplayNameC())});
+        }
     }
 
     // Be sure we do not specify a return value, and the function does not have a return type
