@@ -115,7 +115,6 @@ void Module::computePublicPath()
 
     publicPath = path + "/";
     publicPath += SWAG_PUBLIC_FOLDER;
-    publicPath += "/";
     publicPath = Utf8::normalizePath(fs::path(publicPath.c_str()));
 
     if (!isScriptFile && kind != ModuleKind::Script && !isErrorModule)
@@ -131,8 +130,8 @@ void Module::computePublicPath()
         }
     }
 
-    publicPath += g_Workspace->getTargetFullName(g_CommandLine->buildCfg, g_CommandLine->target).c_str();
     publicPath += "/";
+    publicPath.append(g_Workspace->getTargetFullName(g_CommandLine->buildCfg, g_CommandLine->target).c_str());
 
     if (!isScriptFile && kind != ModuleKind::Script && !isErrorModule)
     {
@@ -146,6 +145,8 @@ void Module::computePublicPath()
             }
         }
     }
+
+    publicPath += "/";
 }
 
 bool Module::isValidName(const Utf8& name, Utf8& errorStr)

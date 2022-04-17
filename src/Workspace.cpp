@@ -158,22 +158,24 @@ void Workspace::setup()
 void Workspace::setupPaths()
 {
     workspacePath = fs::absolute(g_CommandLine->workspacePath);
+    if (workspacePath.empty())
+        workspacePath = fs::current_path();
 
     testsPath = workspacePath;
     testsPath.append(SWAG_TESTS_FOLDER);
-    testsPath.append("/");
+    testsPath += "/";
 
     examplesPath = workspacePath;
     examplesPath.append(SWAG_EXAMPLES_FOLDER);
-    examplesPath.append("/");
+    examplesPath += "/";
 
     modulesPath = workspacePath;
     modulesPath.append(SWAG_MODULES_FOLDER);
-    modulesPath.append("/");
+    modulesPath += "/";
 
     dependenciesPath = workspacePath;
     dependenciesPath.append(SWAG_DEPENDENCIES_FOLDER);
-    dependenciesPath.append("/");
+    dependenciesPath += "/";
 }
 
 void Workspace::setupCachePath()
@@ -187,7 +189,6 @@ void Workspace::setupCachePath()
         {
             cachePath = workspacePath;
             cachePath += SWAG_OUTPUT_FOLDER;
-            cachePath += "/";
         }
     }
 }

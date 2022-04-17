@@ -208,10 +208,9 @@ fs::path Workspace::getTargetPath(const string& buildCfg, const BackendTarget& t
     fs::path p;
     p = workspacePath;
     p.append(SWAG_OUTPUT_FOLDER);
-    p.append("/");
+    p += "/";
     auto targetFullName = getTargetFullName(g_CommandLine->buildCfg, g_CommandLine->target);
     p.append(targetFullName.c_str());
-    p += "/";
     return p;
 }
 
@@ -229,6 +228,8 @@ void Workspace::setupTarget()
         OS::exit(-1);
     }
 
+    targetPath += "/";
+
     // Cache directory
     setupCachePath();
     if (!fs::exists(cachePath))
@@ -237,6 +238,7 @@ void Workspace::setupTarget()
         OS::exit(-1);
     }
 
+    cachePath += "/";
     cachePath.append(SWAG_CACHE_FOLDER);
     if (!fs::exists(cachePath) && !fs::create_directories(cachePath, errorCode))
     {

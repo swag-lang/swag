@@ -20,7 +20,7 @@ void Workspace::setScriptWorkspace(const Utf8& name)
         OS::exit(-1);
     }
 
-    cacheWorkspace.append("/");
+    cacheWorkspace += "/";
     cacheWorkspace.append(name.c_str());
     if (!fs::exists(cacheWorkspace) && !fs::create_directories(cacheWorkspace, errorCode))
     {
