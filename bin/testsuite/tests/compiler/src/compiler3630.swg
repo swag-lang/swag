@@ -1,4 +1,5 @@
-#global skip
+#global testerror
+
 struct Wnd
 {
     x: s32

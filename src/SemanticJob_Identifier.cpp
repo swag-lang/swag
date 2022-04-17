@@ -660,7 +660,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         !parent->startScope &&
         parent->previousResolvedNode &&
         !identifier->token.text.empty() && // :SilentCall
-        parent->previousResolvedNode->typeInfo->kind != TypeInfoKind::Pointer &&
+        !parent->previousResolvedNode->typeInfo->isPointerTo(TypeInfoKind::Struct) &&
         parent->previousResolvedNode->typeInfo->kind != TypeInfoKind::Struct)
     {
         return context->report(parent->previousResolvedNode, Fmt(Err(Err0085), parent->previousResolvedNode->token.ctext(), parent->previousResolvedNode->typeInfo->getDisplayNameC()));
