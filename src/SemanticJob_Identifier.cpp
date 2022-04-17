@@ -1873,12 +1873,10 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                 else
                 {
                     auto couldBe = Fmt(Nte(Nte0050), SymTable::getArticleKindName(match->symbolOverload->symbol->kind), overload->typeInfo->getDisplayNameC());
-                    note         = new Diagnostic{overload->node, couldBe, DiagnosticLevel::NotePack};
+                    note         = new Diagnostic{overload->node, couldBe, DiagnosticLevel::Note};
                 }
 
-                note->noteHeader            = "could be";
-                note->showRange             = false;
-                note->showMultipleCodeLines = false;
+                note->noteHeader = "could be";
                 notes.push_back(note);
             }
 

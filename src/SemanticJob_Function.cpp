@@ -164,7 +164,8 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
         }
         else if (nodeParam->typeInfo->kind != TypeInfoKind::Code)
         {
-            SWAG_VERIFY(!defaultValueDone, context->report(nodeParam, Fmt(Err(Err0738), index)));
+            auto name = SemanticJob::getTheNiceArgumentRank(index);
+            SWAG_VERIFY(!defaultValueDone, context->report(nodeParam, Fmt(Err(Err0738), name.c_str())));
         }
 
         if (forGenerics)

@@ -65,7 +65,7 @@ void SemanticJob::checkDeprecated(SemanticContext* context, AstNode* identifier)
     }
 }
 
-Utf8 SemanticJob::getNiceParameterRank(int idx)
+Utf8 SemanticJob::getNiceArgumentRank(int idx)
 {
     switch (idx)
     {
@@ -77,6 +77,32 @@ Utf8 SemanticJob::getNiceParameterRank(int idx)
         return "third argument";
     }
     return Fmt("argument `%d`", idx);
+}
+
+Utf8 SemanticJob::getTheNiceArgumentRank(int idx)
+{
+    switch (idx)
+    {
+    case 1:
+    case 2:
+    case 3:
+        return "the " + getNiceArgumentRank(idx);
+    }
+    return Fmt("parameter `%d`", idx);
+}
+
+Utf8 SemanticJob::getNiceParameterRank(int idx)
+{
+    switch (idx)
+    {
+    case 1:
+        return "first parameter";
+    case 2:
+        return "second parameter";
+    case 3:
+        return "third parameter";
+    }
+    return Fmt("parameter `%d`", idx);
 }
 
 Utf8 SemanticJob::getTheNiceParameterRank(int idx)
@@ -441,21 +467,21 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         {
             diag = new Diagnostic{match.genericParameters[bi.badSignatureParameterIdx],
                                   Fmt(Err(Err0054),
-                                      getNiceParameterRank(badParamIdx).c_str(),
+                                      getNiceArgumentRank(badParamIdx).c_str(),
                                       refNiceName.c_str())};
         }
         else if (match.flags & SymbolMatchContext::MATCH_ERROR_TYPE_VALUE)
         {
             diag = new Diagnostic{match.genericParameters[bi.badSignatureParameterIdx],
                                   Fmt(Err(Err0057),
-                                      getNiceParameterRank(badParamIdx).c_str(),
+                                      getNiceArgumentRank(badParamIdx).c_str(),
                                       refNiceName.c_str())};
         }
         else
         {
             diag = new Diagnostic{match.genericParameters[bi.badSignatureParameterIdx],
                                   Fmt(Err(Err0070),
-                                      getNiceParameterRank(badParamIdx).c_str(),
+                                      getNiceArgumentRank(badParamIdx).c_str(),
                                       refNiceName.c_str(),
                                       bi.badSignatureRequestedType->getDisplayNameC(),
                                       bi.badSignatureGivenType->getDisplayNameC())};
