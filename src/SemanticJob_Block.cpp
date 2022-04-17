@@ -625,7 +625,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         Ast::clone(node->expression, varDecl->assignment, 0, AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS);
         newVar = varDecl;
 
-        firstAliasVar = 1;
+        firstAliasVar = 2;
         content += "{ ";
         content += Fmt("var __addr%u = cast(%s *%s) __tmp%u; ", id, typeArray->isConst() ? "const" : "", typeArray->finalType->name.c_str(), id);
         content += Fmt("loop %u { ", typeArray->totalCount);

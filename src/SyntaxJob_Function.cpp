@@ -305,7 +305,9 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result, bool acc
     SWAG_CHECK(verifyError(token, token.id != TokenId::SymLeftCurly, Err(Err0883)));
 
     // To avoid calling 'format' in case we know this is fine, otherwise it will be called each time, even when ok
-    if (token.id != TokenId::SymLeftParen)
+    if (token.id != TokenId::SymLeftParen && parent->kind == AstNodeKind::AttrDecl)
+        SWAG_CHECK(eatToken(TokenId::SymLeftParen, Fmt("to declare the attribute parameters of `%s`", parent->token.ctext())));
+    else if (token.id != TokenId::SymLeftParen)
         SWAG_CHECK(eatToken(TokenId::SymLeftParen, Fmt("to declare the function parameters of `%s`", parent->token.ctext())));
     else
         SWAG_CHECK(eatToken());
