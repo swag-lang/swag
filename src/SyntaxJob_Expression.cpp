@@ -1207,7 +1207,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatToken());
         SWAG_CHECK(doInitializationExpression(saveToken, parent, &assign));
         Ast::removeFromParent(assign);
-        SWAG_CHECK(doVarDeclExpression(parent, leftNode, nullptr, assign, AstNodeKind::VarDecl, result));
+        SWAG_CHECK(doVarDeclExpression(parent, leftNode, nullptr, assign, saveToken, AstNodeKind::VarDecl, result));
     }
 
     // Affect operator

@@ -478,6 +478,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                 nodeCall->castedTypeInfo                          = nullptr;
 
                 auto varNode = Ast::newVarDecl(sourceFile, Fmt("__2tmp_%d", g_UniqueID.fetch_add(1)), identifier);
+                varNode->inheritTokenLocation(nodeCall);
 
                 // Put child front, because emitCall wants the parameters to be the last
                 Ast::removeFromParent(varNode);
@@ -2947,14 +2948,13 @@ bool SemanticJob::solveSelectIf(SemanticContext* context, OneMatch* oneMatch, As
         auto node                   = context->node;
         context->selectIfParameters = oneMatch->oneOverload->callParameters;
 
-        JobContext::ErrorContext expNode;
-        expNode.node = node;
+        JobContext::ErrorContextType type;
         if (funcDecl->selectIf->kind == AstNodeKind::CompilerCheckIf)
-            expNode.type = JobContext::ErrorContextType::CheckIf;
+            type = JobContext::ErrorContextType::CheckIf;
         else
-            expNode.type = JobContext::ErrorContextType::SelectIf;
+            type = JobContext::ErrorContextType::SelectIf;
 
-        PushErrContext ec(context, expNode);
+        PushErrContext ec(context, node, type);
         auto           result       = executeCompilerNode(context, expr, false);
         context->selectIfParameters = nullptr;
         if (!result)

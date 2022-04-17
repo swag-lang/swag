@@ -29,7 +29,7 @@ struct Diagnostic
         , hasFile{true}
         , hasLocation{true}
         , hasRangeLocation{true}
-        , printSource{true}
+        , showSource{true}
     {
     }
 
@@ -41,7 +41,7 @@ struct Diagnostic
         , hasFile{true}
         , hasLocation{true}
         , hasRangeLocation{false}
-        , printSource{true}
+        , showSource{true}
     {
     }
 
@@ -54,7 +54,7 @@ struct Diagnostic
         , hasFile{true}
         , hasLocation{true}
         , hasRangeLocation{true}
-        , printSource{true}
+        , showSource{true}
     {
     }
 
@@ -68,7 +68,7 @@ struct Diagnostic
         , hasFile{true}
         , hasLocation{true}
         , hasRangeLocation{true}
-        , printSource{true}
+        , showSource{true}
     {
     }
 
@@ -80,7 +80,7 @@ struct Diagnostic
         , hasFile{true}
         , hasLocation{true}
         , hasRangeLocation{true}
-        , printSource{true}
+        , showSource{true}
     {
         node->computeEndLocation();
         startLocation = node->token.startLocation;
@@ -127,10 +127,11 @@ struct Diagnostic
     bool hasFile               = false;
     bool hasLocation           = false;
     bool hasRangeLocation      = false;
-    bool printSource           = false;
+    bool exceptionError        = false;
+    bool showSource            = false;
     bool showRange             = true;
     bool showMultipleCodeLines = true;
-    bool exceptionError        = false;
+    bool showFileName          = true;
 };
 
 extern thread_local Utf8 g_ErrorHint;
@@ -159,7 +160,7 @@ struct PushErrContext
         context->errorContextStack.push_back(expNode);
     }
 
-    PushErrContext(JobContext* context, AstNode* node, const Utf8& msg, DiagnosticLevel level = DiagnosticLevel::Note)
+    PushErrContext(JobContext* context, AstNode* node, const Utf8& msg, const Utf8& hint, DiagnosticLevel level = DiagnosticLevel::Note)
         : cxt{context}
     {
         JobContext::ErrorContext expNode;
@@ -167,12 +168,7 @@ struct PushErrContext
         expNode.type  = JobContext::ErrorContextType::Message;
         expNode.level = level;
         expNode.msg   = msg;
-        context->errorContextStack.push_back(expNode);
-    }
-
-    PushErrContext(JobContext* context, const JobContext::ErrorContext& expNode)
-        : cxt{context}
-    {
+        expNode.hint  = hint;
         context->errorContextStack.push_back(expNode);
     }
 

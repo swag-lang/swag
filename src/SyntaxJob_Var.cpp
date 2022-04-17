@@ -54,7 +54,7 @@ bool SyntaxJob::checkIsValidVarName(AstNode* node)
     return error(node->token, Fmt(Err(Err0278), node->token.ctext()));
 }
 
-bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, AstNodeKind kind, AstNode** result)
+bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const Token& assignToken, AstNodeKind kind, AstNode** result)
 {
     bool acceptDeref = true;
     if (currentScope->kind == ScopeKind::Struct || currentScope->kind == ScopeKind::File)
@@ -87,6 +87,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
             AstVarDecl*    varNode = Ast::newVarDecl(sourceFile, identifier->token.text, parentNode, this);
             varNode->kind          = kind;
             varNode->token         = identifier->token;
+            varNode->assignToken   = assignToken;
             varNode->flags |= AST_R_VALUE;
 
             if (!firstDone)
@@ -133,6 +134,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
         auto           tmpVarName = Fmt("__5tmp_%d", g_UniqueID.fetch_add(1));
         AstVarDecl*    orgVarNode = Ast::newVarDecl(sourceFile, tmpVarName, parentNode, this);
         orgVarNode->kind          = kind;
+        orgVarNode->assignToken   = assignToken;
 
         // This will avoid to initialize the tuple before the affectation
         orgVarNode->flags |= AST_HAS_FULL_STRUCT_PARAMETERS;
@@ -187,6 +189,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
             auto           varNode = Ast::newVarDecl(sourceFile, identifier->token.text, parentNode, this);
             varNode->kind          = kind;
             varNode->token         = identifier->token;
+            varNode->assignToken   = assignToken;
             varNode->flags |= AST_R_VALUE | AST_GENERATED | AST_HAS_FULL_STRUCT_PARAMETERS;
             if (currentScope->isGlobalOrImpl())
                 SWAG_CHECK(currentScope->symTable.registerSymbolName(&context, varNode, SymbolKind::Variable));
@@ -208,6 +211,7 @@ bool SyntaxJob::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode*
         AstVarDecl* varNode = Ast::newVarDecl(sourceFile, identifier->token.text, parent, this);
         varNode->kind       = kind;
         varNode->inheritTokenLocation(leftNode);
+        varNode->assignToken = assignToken;
 
         if (result)
             *result = varNode;
@@ -269,11 +273,11 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
 
         AstNode* assign = nullptr;
         SWAG_VERIFY(token.id != TokenId::SymEqualEqual, error(token, Err(Err0454)));
+        auto assignToken = token;
         if (token.id == TokenId::SymEqual)
         {
-            auto saveToken = token;
             SWAG_CHECK(eatToken());
-            SWAG_CHECK(doInitializationExpression(saveToken, parent, &assign));
+            SWAG_CHECK(doInitializationExpression(assignToken, parent, &assign));
             Ast::removeFromParent(assign);
         }
 
@@ -281,7 +285,7 @@ bool SyntaxJob::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind)
         if (!type && !assign)
             return error(leftNode->token, Err(Err0457));
 
-        SWAG_CHECK(doVarDeclExpression(parent, leftNode, type, assign, kind, result));
+        SWAG_CHECK(doVarDeclExpression(parent, leftNode, type, assign, assignToken, kind, result));
 
         // If we have a type, and that type has parameters (struct construction), then we need to evaluate and push the parameters
         if (type && type->kind == AstNodeKind::TypeExpression)

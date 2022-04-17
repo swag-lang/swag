@@ -125,7 +125,7 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
         return context->report(diag, &note);
     }
 
-    PushErrContext ec(context, nullptr, getSpecialOpSignature(node), DiagnosticLevel::Help);
+    PushErrContext ec(context, nullptr, getSpecialOpSignature(node), nullptr, DiagnosticLevel::Help);
 
     auto      parameters = node->parameters;
     TypeInfo* typeStruct = nullptr;
@@ -429,13 +429,24 @@ bool SemanticJob::waitUserOp(SemanticContext* context, const Utf8& name, AstNode
 
 bool SemanticJob::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTypeInfo, TypeInfo* rightTypeInfo, AstNode* left, AstNode* right)
 {
+    // For a var, trick error system, because we want to point on '='
+    AstVarDecl* varDecl = nullptr;
+    Token       savedToken;
+    if (context->node->kind == AstNodeKind::VarDecl)
+    {
+        varDecl    = CastAst<AstVarDecl>(context->node, AstNodeKind::VarDecl);
+        savedToken = varDecl->token;
+        if (varDecl->assignToken.id != TokenId::Invalid)
+            varDecl->token = varDecl->assignToken;
+    }
+
     // opAffectSuffix
     if (right->semFlags & AST_SEM_LITERAL_SUFFIX)
     {
         Utf8 suffix;
 
         SWAG_ASSERT(right->kind == AstNodeKind::Literal || right->kind == AstNodeKind::SingleOp);
-        if(right->kind == AstNodeKind::Literal)
+        if (right->kind == AstNodeKind::Literal)
             suffix = right->childs.front()->token.text;
         else if (right->kind == AstNodeKind::SingleOp)
             suffix = right->childs.front()->childs.front()->token.text;
@@ -453,8 +464,13 @@ bool SemanticJob::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTy
             return context->report(Fmt(Hnt(Hnt0047), g_LangSpec->name_opAffectSuffix.c_str()), diag, note0, note1);
         }
 
-        PushErrContext ec(context, right, Fmt(Nte(Nte0058), rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC(), g_LangSpec->name_opAffectSuffix.c_str()));
+        PushErrContext ec(context,
+                          context->node,
+                          Fmt(Nte(Nte0058), rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC(), g_LangSpec->name_opAffectSuffix.c_str()),
+                          Fmt(Hnt(Hnt0047), g_LangSpec->name_opAffectSuffix.c_str()));
         SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAffectSuffix, suffix, nullptr, left, right));
+        if (varDecl)
+            varDecl->token = savedToken;
         if (context->result != ContextResult::Done)
             return true;
         right->semFlags &= ~AST_SEM_LITERAL_SUFFIX;
@@ -475,8 +491,13 @@ bool SemanticJob::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTy
             return context->report(Fmt(Hnt(Hnt0047), g_LangSpec->name_opAffect.c_str()), diag, note);
         }
 
-        PushErrContext ec(context, right, Fmt(Nte(Nte0058), rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC(), g_LangSpec->name_opAffect.c_str()));
+        PushErrContext ec(context,
+                          context->node,
+                          Fmt(Nte(Nte0058), rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC(), g_LangSpec->name_opAffect.c_str()),
+                          Fmt(Hnt(Hnt0047), g_LangSpec->name_opAffect.c_str()));
         SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAffect, nullptr, nullptr, left, right));
+        if (varDecl)
+            varDecl->token = savedToken;
     }
 
     return true;
@@ -579,7 +600,6 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
             }
         }
 
-        PushErrHint eh(Fmt(Hnt(Hnt0047), name.c_str()));
         SWAG_CHECK(matchIdentifierParameters(context, listTryMatch, nullptr, justCheck ? MIP_JUST_CHECK : 0));
         if (context->result == ContextResult::Pending)
             return true;

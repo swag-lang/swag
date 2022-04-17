@@ -72,6 +72,7 @@ struct JobContext
         ErrorContextType type = ErrorContextType::Node;
         DiagnosticLevel  level;
         Utf8             msg  = "";
+        Utf8             hint = "";
         bool             hide = false;
     };
 

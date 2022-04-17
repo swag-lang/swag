@@ -52,6 +52,11 @@ struct SourceLocation
 {
     uint32_t line   = 0;
     uint32_t column = 0;
+
+    bool operator==(const SourceLocation& other)
+    {
+        return line == other.line && column == other.column;
+    }
 };
 
 struct Token

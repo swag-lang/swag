@@ -336,6 +336,7 @@ struct AstVarDecl : public AstNode
 
     AttributeList attributes;
     Utf8          publicName;
+    Token         assignToken;
 
     AstNode* type       = nullptr;
     AstNode* assignment = nullptr;

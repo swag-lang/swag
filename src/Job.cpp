@@ -264,7 +264,7 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
             const char* kindName    = nullptr;
             const char* kindArticle = "";
             bool        showContext = true;
-            Utf8        hint;
+            Utf8        hint        = exp.hint;
             switch (exp.type)
             {
             case JobContext::ErrorContextType::Message:
@@ -274,12 +274,14 @@ void JobContext::setErrorContext(const Diagnostic& diag, vector<const Diagnostic
                     break;
                 if (first)
                 {
-                    auto note = new Diagnostic{first, exp.msg, exp.level};
+                    auto note  = new Diagnostic{first, exp.msg, exp.level};
+                    note->hint = exp.hint;
                     notes.push_back(note);
                 }
                 else
                 {
-                    auto note = new Diagnostic{exp.msg, exp.level};
+                    auto note  = new Diagnostic{exp.msg, exp.level};
+                    note->hint = exp.hint;
                     notes.push_back(note);
                 }
                 break;

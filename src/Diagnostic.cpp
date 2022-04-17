@@ -16,7 +16,7 @@ Utf8 Hint::isType(TypeInfo* typeInfo)
 
 bool Diagnostic::mustPrintCode() const
 {
-    return hasFile && !sourceFile->path.empty() && hasLocation && printSource && g_CommandLine->errorSourceOut;
+    return hasFile && !sourceFile->path.empty() && hasLocation && showSource && g_CommandLine->errorSourceOut;
 }
 
 void Diagnostic::printSourceLine() const
@@ -30,7 +30,7 @@ void Diagnostic::printSourceLine() const
 
     // Make it relatif to current path (should be shorter) if possible
     error_code errorCode;
-    auto path1 = fs::relative(path, fs::current_path(), errorCode);
+    auto       path1 = fs::relative(path, fs::current_path(), errorCode);
     if (!path1.empty())
         path = path1;
 
@@ -131,7 +131,7 @@ void Diagnostic::report(bool verboseMode) const
     }
 
     // Source line right after the header
-    if (!g_CommandLine->errorSourceOut && hasFile && !sourceFile->path.empty())
+    if (!g_CommandLine->errorSourceOut && hasFile && !sourceFile->path.empty() && showFileName)
     {
         printSourceLine();
     }
@@ -335,6 +335,7 @@ void Diagnostic::report(bool verboseMode) const
                         g_Log.setColor(errorColor);
                         break;
                     case DiagnosticLevel::Note:
+                    case DiagnosticLevel::NotePack:
                     case DiagnosticLevel::Help:
                         g_Log.setColor(rangeNoteColor);
                         break;

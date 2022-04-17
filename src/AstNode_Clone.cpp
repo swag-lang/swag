@@ -270,8 +270,9 @@ AstNode* AstVarDecl::clone(CloneContext& context)
 {
     auto newNode = Ast::newNode<AstVarDecl>();
     newNode->copyFrom(context, this);
-    newNode->publicName = publicName;
-    newNode->attributes = attributes;
+    newNode->publicName  = publicName;
+    newNode->attributes  = attributes;
+    newNode->assignToken = assignToken;
 
     newNode->type       = (AstTypeExpression*) findChildRef(type, newNode);
     newNode->assignment = findChildRef(assignment, newNode);
