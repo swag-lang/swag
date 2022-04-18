@@ -33,8 +33,8 @@ impl Icon
     {
         self.imageList = #self.imageList
         self.index     = #self.index
-        self.sizeX     = #self.sizeX orelse cast(f32) self.imageList.sizeX
-        self.sizeY     = #self.sizeY orelse cast(f32) self.imageList.sizeY
+        self.sizeX     = #self.sizeX
+        self.sizeY     = #self.sizeY
     }
 
     // Paint icon at the given position
@@ -46,13 +46,13 @@ impl Icon
         srcX := index % imageList.countX()
         srcY := index / imageList.countX()
 
-        srcX *= imageList.sizeX
-        srcY *= imageList.sizeY
+        srcX *= imageList.frameSizeX
+        srcY *= imageList.frameSizeY
 
-        if sizeX == imageList.sizeX and sizeY == imageList.sizeY
+        if sizeX == imageList.frameSizeX and sizeY == imageList.frameSizeY
             painter.setInterpolationMode(InterpolationMode.Pixel)
         else
             painter.setInterpolationMode(InterpolationMode.Linear)
-        painter.drawTexture(@{x, y, sizeX, sizeY}, @{srcX, srcY, imageList.sizeX, imageList.sizeY}, imageList.texture, color)
+        painter.drawTexture(@{x, y, sizeX, sizeY}, @{srcX, srcY, imageList.frameSizeX, imageList.frameSizeY}, imageList.texture, color)
     }
 }

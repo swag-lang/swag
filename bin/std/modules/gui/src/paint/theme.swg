@@ -67,20 +67,20 @@ impl Theme
         img = assume Image.decode(DefaultIcons24Name, DefaultIcons24)
         res.icons24 = Memory.new'ImageList()
         res.icons24.texture = renderer.addImage(img)
-        res.icons24.sizeX = 24
-        res.icons24.sizeY = 24
+        res.icons24.frameSizeX = 24
+        res.icons24.frameSizeY = 24
 
         img = assume Image.decode(DefaultIcons64Name, DefaultIcons64)
         res.icons64 = Memory.new'ImageList()
         res.icons64.texture = renderer.addImage(img)
-        res.icons64.sizeX = 64
-        res.icons64.sizeY = 64
+        res.icons64.frameSizeX = 64
+        res.icons64.frameSizeY = 64
 
         img = assume Image.decode(DefaultSpinName, DefaultSpin)
         res.spin = Memory.new'ImageList()
         res.spin.texture = renderer.addImage(img)
-        res.spin.sizeX = 48
-        res.spin.sizeY = 48
+        res.spin.frameSizeX = 48
+        res.spin.frameSizeY = 48
 
         res.defaultTypeFaceR    = assume TypeFace.create(DefaultFontRegularName, DefaultFontRegular)
         res.defaultTypeFaceB    = assume TypeFace.create(DefaultFontBoldName, DefaultFontBold)

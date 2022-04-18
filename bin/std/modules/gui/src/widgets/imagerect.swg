@@ -27,8 +27,7 @@ impl IWnd for ImageRect
         curTime += getApp().timing.dt
         if curTime > freq
         {
-            numX := imgList.texture.width / imgList.sizeX
-            curFrame = (curFrame + 1) % numX
+            curFrame = (curFrame + 1) % imgList.countX()
             curTime = 0
         }
 
@@ -55,8 +54,8 @@ impl ImageRect
 
         img := assume Image.load(imagePath)
         res.imgList.texture = res.getApp().renderer.addImage(img)
-        res.imgList.sizeX = img.width
-        res.imgList.sizeY = img.height
+        res.imgList.frameSizeX = img.width
+        res.imgList.frameSizeY = img.height
 
         return res
     }
