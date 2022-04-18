@@ -579,7 +579,10 @@ private impl ListView
                 if !icon.isValid()
                     labelPos.moveLeft(list.iconSize + metrics.iconText_Margin)
                 else
-                    icon.size = list.iconSize
+                {
+                    icon.sizeX = list.iconSize
+                    icon.sizeY = list.iconSize
+                }
             }
 
             Theme.drawIconText(painter, labelPos, icon, &item.name, format, metrics.iconText_Margin)

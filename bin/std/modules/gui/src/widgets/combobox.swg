@@ -85,8 +85,9 @@ impl IWnd for ComboBox
 
             if item.icon.isValid()
             {
-                item.icon.size = fntHeight
-                item.icon.paint(painter, itemRect.x, itemRect.vertCenter() - item.icon.size * 0.5, colorText)
+                item.icon.sizeX = fntHeight
+                item.icon.sizeY = fntHeight
+                item.icon.paint(painter, itemRect.x, itemRect.vertCenter() - item.icon.sizeY * 0.5, colorText)
             }
 
             if hasIcons
@@ -104,7 +105,7 @@ impl IWnd for ComboBox
         }
 
         icon := theme.getIcon24(ThemeIcons24.BottomPopupArrow)
-        icon.paint(painter, clientRect.right() - metrics.comboBox_RightMargin, clientRect.vertCenter() - icon.size * 0.5, colorText)
+        icon.paint(painter, clientRect.right() - metrics.comboBox_RightMargin, clientRect.vertCenter() - icon.sizeY * 0.5, colorText)
     }
 
     mtd onMouseEvent(evt: *MouseEvent)

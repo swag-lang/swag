@@ -162,7 +162,7 @@ public impl MessageDlg
             return
         if !labelIcon
         {
-            h := icon.size + icon.size * 0.5
+            h := icon.sizeX + icon.sizeX * 0.5
             labelIcon = Label.create(surface.wnd.view, "", @{0,0,0,h})
             labelIcon.dockStyle = .Top
             labelIcon.setAllPaddings(getThemeMetrics().msgDlg_Padding)

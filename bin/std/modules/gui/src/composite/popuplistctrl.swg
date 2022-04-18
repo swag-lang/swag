@@ -121,8 +121,9 @@ impl IWnd for PopupListView
             fntHeight := theme.res.fontDefault.regular.height
             if i.icon.isValid()
             {
-                i.icon.size = fntHeight
-                i.icon.paint(painter, labelPos.x, labelPos.vertCenter() - i.icon.size * 0.5, colorText)
+                i.icon.sizeX = fntHeight
+                i.icon.sizeY = fntHeight
+                i.icon.paint(painter, labelPos.x, labelPos.vertCenter() - i.icon.sizeY * 0.5, colorText)
             }
 
             if list.hasIcons

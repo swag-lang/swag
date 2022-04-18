@@ -237,7 +237,7 @@ func createView0(tabView: *Tab, view: *Wnd)
 
     // SliderCtrl
     {
-        sliderctrl := SliderCtrl.create(view, "Center", @{380, 660, 300, 30})
+        sliderctrl := SliderCtrl.create(view, "Center", @{380, 600, 300, 30})
         sliderctrl.slider.setMinMax(0, 255)
         sliderctrl.edit.setInputU64(0, 255)
         sliderctrl.slider.setValue(0)
@@ -403,6 +403,12 @@ func createView0(tabView: *Tab, view: *Wnd)
         img.style.addStyleSheetColors("imageRect_Fg $hilight")
 
         img1 := ImageRect.create(view, theme.res.spin, @{20, 680, 48, 48})
+
+        path2 := Path.combine(Path.getDirectoryName(#file), "test.gif")
+        img2  := ImageRect.create(view, path2, @{400, 640, 128, 128})
+
+        path3 := Path.combine(Path.getDirectoryName(#file), "testa.gif")
+        img3  := ImageRect.create(view, path3, @{540, 640, 128, 128})
     }
 
     // IconButton

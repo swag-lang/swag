@@ -250,8 +250,8 @@ impl IWnd for SurfaceWnd
 
             if icon.isValid()
             {
-                icon.paint(bc.painter, posCaption.x, posCaption.vertCenter() - icon.size * 0.5)
-                posCaption.x += icon.size + theme.metrics.iconText_Margin
+                icon.paint(bc.painter, posCaption.x, posCaption.vertCenter() - icon.sizeY * 0.5)
+                posCaption.x += icon.sizeX + theme.metrics.iconText_Margin
             }
 
             var sf: Pixel.RichStringFormat

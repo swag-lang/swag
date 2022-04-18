@@ -99,7 +99,7 @@ public impl Decoder
         return res
     }
 
-    mtd init(buffer: const [..] u8, options: DecodeOptions) throw
+    mtd init(buffer: const [..] u8, decodePixels: bool) throw
     {
         streamStart, stream = @dataof(buffer)
         streamLen = @countof(buffer)
@@ -139,7 +139,7 @@ public impl Decoder
         try read(gct.colors, 3'uint * gct.size)
         palette = &gct
 
-        if options.decodePixels
+        if decodePixels
         {
             frame.resize(4'uint * width * height)
             Memory.set(frame.buffer, bgIndex, cast(uint) (width * height))
@@ -479,6 +479,25 @@ public impl Decoder
     }
 }
 
+public impl Decoder
+{
+    mtd decode(buffer: const [..] u8)->Array'Image throw
+    {
+        var result: retval
+
+        try init(buffer, true)
+        while try getFrame(true)
+        {
+            pf := gce.transparency ? PixelFormat.RGBA8 : PixelFormat.RGB8
+            img := Image.create(acast width, acast height, pf)
+            renderFrame(img.pixels, img.pf)
+            result.emplace(&img)
+        }
+
+        return result
+    }
+}
+
 public impl IImageDecoder for Decoder
 {
     mtd canDecode(fileName: string)->bool
@@ -489,7 +508,7 @@ public impl IImageDecoder for Decoder
 
     mtd decode(buffer: const [..] u8, options: DecodeOptions)->Image throw
     {
-        try init(buffer, options)
+        try init(buffer, options.decodePixels)
         discard try getFrame(options.decodePixels)
 
         var result: retval

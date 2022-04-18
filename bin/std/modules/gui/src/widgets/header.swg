@@ -92,13 +92,13 @@ impl IWnd for Header
                 icon = theme.getIcon24(ThemeIcons24.SortArrowDown)
             else
                 icon = theme.getIcon24(ThemeIcons24.SortArrowUp)
-            if labelPos.width > icon.size
+            if labelPos.width > icon.sizeX
             {
                 sortPos := labelPos
-                sortPos.x = Math.max(sortPos.x, sortPos.right() - icon.size)
-                sortPos.y = sortPos.vertCenter() - (icon.size * 0.5)
+                sortPos.x = Math.max(sortPos.x, sortPos.right() - icon.sizeX)
+                sortPos.y = sortPos.vertCenter() - (icon.sizeY * 0.5)
                 icon.paint(painter, sortPos.x, sortPos.y, colorText)
-                labelPos.width -= icon.size
+                labelPos.width -= icon.sizeX
             }
         }
 

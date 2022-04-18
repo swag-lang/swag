@@ -84,8 +84,9 @@ impl IWnd for MenuCtrl
             // Icon
             if i.icon.isValid()
             {
-                i.icon.size = i.size
-                i.icon.paint(painter, labelPos.x, labelPos.vertCenter() - i.icon.size * 0.5, colorText)
+                i.icon.sizeX = i.size
+                i.icon.sizeY = i.size
+                i.icon.paint(painter, labelPos.x, labelPos.vertCenter() - i.icon.sizeY * 0.5, colorText)
             }
 
             // Text
@@ -153,8 +154,9 @@ impl IWnd for MenuCtrl
             // Icon
             if i.icon.isValid()
             {
-                i.icon.size = i.size
-                i.icon.paint(painter, labelPos.x, labelPos.vertCenter() - i.icon.size * 0.5, colorText)
+                i.icon.sizeX = i.size
+                i.icon.sizeY = i.size
+                i.icon.paint(painter, labelPos.x, labelPos.vertCenter() - i.icon.sizeY * 0.5, colorText)
             }
 
             labelPos.moveLeft(i.size + metrics.menuPopup_IconTextMargin)
@@ -182,7 +184,7 @@ impl IWnd for MenuCtrl
             if i.popup
             {
                 icon := theme.getIcon24(ThemeIcons24.RightPopupArrow)
-                icon.paint(painter, labelPos.right() - icon.size, labelPos.vertCenter() - icon.size * 0.5, colors.popupItem_Text)
+                icon.paint(painter, labelPos.right() - icon.sizeX, labelPos.vertCenter() - icon.sizeY * 0.5, colors.popupItem_Text)
             }
         }
 

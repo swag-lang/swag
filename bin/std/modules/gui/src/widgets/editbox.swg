@@ -152,9 +152,9 @@ impl IWnd for EditBox
         // Icon
         if icon.isValid()
         {
-            icon.paint(bc.painter, clientRect.x, clientRect.vertCenter() - icon.size * 0.5, colors.edit_Text)
-            clientRect.x += icon.size + metrics.iconText_Margin
-            clientRect.width -= icon.size + metrics.iconText_Margin
+            icon.paint(bc.painter, clientRect.x, clientRect.vertCenter() - icon.sizeY * 0.5, colors.edit_Text)
+            clientRect.x += icon.sizeX + metrics.iconText_Margin
+            clientRect.width -= icon.sizeX + metrics.iconText_Margin
         }
 
         // name
@@ -550,7 +550,7 @@ private impl EditBox
     {
         rect := getEditRect()
         if icon.isValid()
-            rect.x += icon.size + getThemeMetrics().iconText_Margin
+            rect.x += icon.sizeX + getThemeMetrics().iconText_Margin
         return rect.x
     }
 
@@ -587,7 +587,7 @@ private impl EditBox
 
         clientRect := getEditRect()
         if icon.isValid()
-            clientRect.x += icon.size + 4
+            clientRect.x += icon.sizeX + 4
 
         result = clientRect
         if !text.isEmpty()

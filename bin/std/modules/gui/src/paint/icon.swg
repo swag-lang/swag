@@ -5,7 +5,8 @@ struct Icon
 {
     imageList:  *ImageList
     index:      s32
-    size:       f32 = 24
+    sizeX:      f32 = 24
+    sizeY:      f32 = 24
 }
 
 impl Icon
@@ -13,39 +14,45 @@ impl Icon
     #[Swag.Inline]
     mtdc isValid() => imageList != null
 
+    // Set icon to invalid
     mtd clear()
     {
         imageList = null
     }
 
-    func from(imageList: *ImageList, index: s32, size: f32 = 24)->Icon
+    // Initialize the icon from an image list
+    func from(imageList: *ImageList, index: s32, sizeX, sizeY: f32 = 24)->Icon
     {
         var result: retval
-        result.set(imageList, index, size)
+        result.set(imageList, index, sizeX, sizeY)
         return result
     }
 
-    mtd set(imageList: *ImageList, index: s32, size: f32 = 24)
+    // Initialize the icon from an image list
+    mtd set(imageList: *ImageList, index: s32, sizeX, sizeY: f32 = 24)
     {
         self.imageList = #self.imageList
         self.index     = #self.index
-        self.size      = #self.size orelse cast(f32) self.imageList.sizeX
+        self.sizeX     = #self.sizeX orelse cast(f32) self.imageList.sizeX
+        self.sizeY     = #self.sizeY orelse cast(f32) self.imageList.sizeY
     }
 
+    // Paint icon at the given position
     mtdc paint(painter: *Painter, x, y: f32, color: Color = Argb.White)
     {
         if !imageList
             return
 
-        srcX := index % (imageList.texture.width / imageList.sizeX)
-        srcY := index / (imageList.texture.width / imageList.sizeY)
+        srcX := index % imageList.countX()
+        srcY := index / imageList.countX()
+
         srcX *= imageList.sizeX
         srcY *= imageList.sizeY
 
-        if size == imageList.sizeX and size == imageList.sizeY
+        if sizeX == imageList.sizeX and sizeY == imageList.sizeY
             painter.setInterpolationMode(InterpolationMode.Pixel)
         else
             painter.setInterpolationMode(InterpolationMode.Linear)
-        painter.drawTexture(@{x, y, size, size}, @{srcX, srcY, imageList.sizeX, imageList.sizeY}, imageList.texture, color)
+        painter.drawTexture(@{x, y, sizeX, sizeY}, @{srcX, srcY, imageList.sizeX, imageList.sizeY}, imageList.texture, color)
     }
 }

@@ -100,8 +100,8 @@ impl Theme
         // Icon alone
         if count == 0
         {
-            pos.x = pos.horzCenter() - icon.size * 0.5
-            icon.paint(painter, pos.x, pos.vertCenter() - (icon.size * 0.5), stringFormat.palette[0])
+            pos.x = pos.horzCenter() - icon.sizeX * 0.5
+            icon.paint(painter, pos.x, pos.vertCenter() - (icon.sizeY * 0.5), stringFormat.palette[0])
             return
         }
 
@@ -111,9 +111,9 @@ impl Theme
             switch stringFormat.horzAlignment
             {
             case Left:
-                pos.moveLeft(icon.size + iconMargin)
+                pos.moveLeft(icon.sizeX + iconMargin)
             case Center:
-                pos.moveLeft((icon.size + iconMargin) * 0.5)
+                pos.moveLeft((icon.sizeX + iconMargin) * 0.5)
             }
         }
 
@@ -121,7 +121,7 @@ impl Theme
 
         if icon.isValid()
         {
-            icon.paint(painter, name.boundRect.x - icon.size - iconMargin, name.boundRect.vertCenter() - (icon.size * 0.5), stringFormat.palette[0])
+            icon.paint(painter, name.boundRect.x - icon.sizeX - iconMargin, name.boundRect.vertCenter() - (icon.sizeY * 0.5), stringFormat.palette[0])
         }
     }
 

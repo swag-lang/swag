@@ -105,8 +105,8 @@ impl IWnd for IconButton
 
         // Icon
         pos := clientRect
-        pos.x = pos.horzCenter() - icon.size * 0.5
-        icon.paint(bc.painter, pos.x, pos.vertCenter() - (icon.size * 0.5), colorIcon)
+        pos.x = pos.horzCenter() - icon.sizeX * 0.5
+        icon.paint(bc.painter, pos.x, pos.vertCenter() - (icon.sizeY * 0.5), colorIcon)
     }
 
     mtd onMouseEvent(evt: *MouseEvent)
