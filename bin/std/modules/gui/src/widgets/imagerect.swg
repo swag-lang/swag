@@ -3,7 +3,7 @@ using Core, Pixel
 
 struct ImageRect
 {
-    using frameWnd: Wnd
+    using wnd:      Wnd
     movie:          Movie
     textureFrame:   Texture
 }
@@ -28,16 +28,18 @@ impl IWnd for ImageRect
         theme   := getTheme()
         rect    := getClientRectPadding()
 
+        color := getThemeColors().imageRect_Fg
         switch movie.source
         {
         case SpriteSheet:
             icon := Icon.from(&movie.imgList, movie.frameIndex, rect.width, rect.height)
-            icon.paint(painter, rect.x, rect.y, getThemeColors().imageRect_Fg)
-            invalidate()
+            icon.paint(painter, rect.x, rect.y, color)
         case Gif:
-            painter.drawTexture(rect, textureFrame, getThemeColors().imageRect_Fg)
-            invalidate()
+            painter.drawTexture(rect, textureFrame, color)
         }
+
+        if !movie.numFrames or movie.numFrames > 1
+            invalidate()
     }
 }
 
@@ -51,18 +53,59 @@ impl ImageRect
         return res
     }
 
+    mtd clear()
+    {
+        getApp().renderer.removeTexture(&textureFrame)
+    }
+
     // Set movie as an image list
     mtd setMovie(image: ImageList)
     {
+        clear()
         movie.set(image)
         invalidate()
     }
 
-    // Load and set movie
-    mtd setMovie(fileName: string) throw
+    // Associate image
+    mtd setImage(image: ImageList)
     {
+        clear()
+        tmp := image
+        tmp.totalFrames = 1
+        tmp.frameSizeX = tmp.texture.width
+        tmp.frameSizeY = tmp.texture.height
+        movie.set(tmp)
+    }
+
+    // Associate image
+    mtd setImage(image: Texture)
+    {
+        clear()
+        var tmp: ImageList
+        tmp.texture = image
+        tmp.totalFrames = 1
+        tmp.frameSizeX = tmp.texture.width
+        tmp.frameSizeY = tmp.texture.height
+        movie.set(tmp)
+    }
+
+    // Associate image
+    mtd setImage(image: Image)
+    {
+        clear()
+        var tmp: ImageList
+        tmp.texture = getApp().renderer.addImage(image)
+        tmp.totalFrames = 1
+        tmp.frameSizeX = tmp.texture.width
+        tmp.frameSizeY = tmp.texture.height
+        movie.set(tmp)
+    }
+
+    // Load and set movie
+    mtd setFile(fileName: string) throw
+    {
+        clear()
         try movie.set(fileName)
-        getApp().renderer.removeTexture(&textureFrame)
         textureFrame = getApp().renderer.addImage(movie.frame)
         invalidate()
     }

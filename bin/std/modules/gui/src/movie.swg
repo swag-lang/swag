@@ -13,6 +13,7 @@ struct Movie
     mustLoop:       bool = true
     playFreq:       f32 = 0.05
 
+    numFrames:      s32
     imgList:        ImageList
     source:         MovieSource = None
     frameIndex:     s32
@@ -30,11 +31,12 @@ private impl Movie
         switch source
         {
         case SpriteSheet:
-            if frameIndex >= imgList.countX() * imgList.countY()
+            if frameIndex >= imgList.totalFrames
                 frameIndex = 0
         case Gif:
             if assume gif.nextFrame(&frame) == false
             {
+                numFrames = frameIndex
                 if mustLoop
                 {
                     gif.rewind()
@@ -52,13 +54,16 @@ impl Movie
     {
         source = .SpriteSheet
         frame.release()
-        imgList = imageList
+        imgList   = imageList
+        numFrames = imgList.totalFrames
         rewind()
     }
 
     mtd set(fileName: string) throw
     {
         frame.release()
+        numFrames = 0
+
         if gif.IImageDecoder.canDecode(fileName)
         {
             source = .Gif

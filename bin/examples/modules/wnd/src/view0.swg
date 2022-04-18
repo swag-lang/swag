@@ -408,11 +408,14 @@ func createView0(tabView: *Tab, view: *Wnd)
 
         img2  := ImageRect.create(view, @{400, 640, 128, 128})
         path2 := Path.combine(Path.getDirectoryName(#file), "test.gif")
-        assume img2.setMovie(path2)
+        assume img2.setFile(path2)
 
         img3  := ImageRect.create(view, @{540, 640, 128, 128})
         path3 := Path.combine(Path.getDirectoryName(#file), "testa.gif")
-        assume img3.setMovie(path3)
+        assume img3.setFile(path3)
+
+        img4 := ImageRect.create(view, @{680, 640, 128, 128})
+        img4.setImage(theme.res.icons64)
     }
 
     // IconButton
