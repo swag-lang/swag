@@ -291,6 +291,26 @@ public impl Decoder
         return 0
     }
 
+    func interlacedLineIndex(h0, y0: s32)->s32
+    {
+        h := h0
+        y := y0
+        p := (h - 1) / 8 + 1
+        if (y < p) /* pass 1 */
+            return y * 8
+        y -= p
+        p = (h - 5) / 8 + 1
+        if (y < p) /* pass 2 */
+            return y * 8 + 4
+        y -= p
+        p = (h - 3) / 4 + 1
+        if (y < p) /* pass 3 */
+            return y * 4 + 2
+        y -= p
+        /* pass 4 */
+        return y * 2 + 1
+    }
+
     mtd readImageData(interlace: u8) throw
     {
         byte := try readU8()
@@ -349,8 +369,8 @@ public impl Decoder
                 p := frm_off + entry.length - 1
                 x := p % fw
                 y := p / fw
-                //if (interlace)
-                //    y = interlaced_line_index((int) gif->fh, y);
+                if interlace
+                    y = interlacedLineIndex(cast(s32) fh, y)
                 frame[(fy + y) * width + fx + x] = entry.suffix
                 if entry.prefix == 0xFFF
                     break
