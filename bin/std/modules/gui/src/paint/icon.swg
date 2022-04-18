@@ -40,11 +40,12 @@ impl Icon
     // Paint icon at the given position
     mtdc paint(painter: *Painter, x, y: f32, color: Color = Argb.White)
     {
-        if !imageList
+        if !imageList or !imageList.totalFrames
             return
 
-        srcX := index % imageList.countX()
-        srcY := index / imageList.countX()
+        idx  := index % imageList.totalFrames
+        srcX := idx % imageList.countX()
+        srcY := idx / imageList.countX()
 
         srcX *= imageList.frameSizeX
         srcY *= imageList.frameSizeY

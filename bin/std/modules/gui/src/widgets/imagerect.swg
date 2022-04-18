@@ -51,15 +51,18 @@ impl ImageRect
         return res
     }
 
+    // Set movie as an image list
     mtd setMovie(image: ImageList)
     {
         movie.set(image)
         invalidate()
     }
 
+    // Load and set movie
     mtd setMovie(fileName: string) throw
     {
         try movie.set(fileName)
+        getApp().renderer.removeTexture(&textureFrame)
         textureFrame = getApp().renderer.addImage(movie.frame)
         invalidate()
     }

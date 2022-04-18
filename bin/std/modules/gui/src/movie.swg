@@ -11,11 +11,12 @@ enum MovieSource
 struct Movie
 {
     mustLoop:       bool = true
+    playFreq:       f32 = 0.05
+
     imgList:        ImageList
     source:         MovieSource = None
     frameIndex:     s32
     currentTime:    f32
-    playFreq:       f32 = 0.05
     gif:            Gif.Decoder
     bytes:          Array'u8
     frame:          Image

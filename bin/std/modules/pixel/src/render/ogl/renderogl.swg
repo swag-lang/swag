@@ -360,6 +360,8 @@ impl RenderOgl
     // Unregister a texture created with 'addImage'
     mtd removeTexture(texture: *Texture)
     {
+        if !texture.valid
+            return
         glDeleteTextures(1, cast (*GLuint) &texture.handle)
         texture.valid = false
     }
