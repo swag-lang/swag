@@ -1,3 +1,7 @@
+// :LICENCE
+// This code is based on "gifdec" (https://github.com/lecram/gifdec)
+// The original code has been modified for Swag
+
 #global namespace Gif
 using Swag, Core
 
@@ -15,13 +19,13 @@ struct Table
     entries:    Array'Entry
 }
 
-struct gd_Palette
+struct Palette
 {
     size:   s32
     colors: [0x100 * 3] u8
 }
 
-struct gd_GCE
+struct Gce
 {
     delay:          u16
     tindex:         u8
@@ -37,15 +41,16 @@ public struct Decoder
     width:      u16
     height:     u16
     depth:      u16
-    loop_count: u16
-    gce:        gd_GCE
-    palette:    *gd_Palette
-    lct, gct:   gd_Palette
+    loopCount:  u16
+    gce:        Gce
+    palette:    *Palette
+    lct:        Palette
+    gct:        Palette
     fx:         u16
     fy:         u16
     fw:         u16
     fh:         u16
-    bgindex:    u8
+    bgIndex:    u8
     canvas:     *u8
     frame:      Array'u8
     table:      Table
@@ -120,14 +125,14 @@ public impl Decoder
         if !(fdsz & 0x80) // Presence of GCT
             throw "no global color table"
 
-        /* Color Space's Depth */
+        /* Color space's depth */
         depth = acast (((fdsz >>,safe 4) & 7) + 1)
-        /* Ignore Sort Flag. */
+        /* Ignore sort flag */
         /* GCT Size */
         gct.size = 1 << ((fdsz & 0x07) + 1)
-        /* Background Color Index */
-        try read(&bgindex, 1)
-        /* Aspect Ratio */
+        /* Background color index */
+        try read(&bgIndex, 1)
+        /* Aspect ratio */
         var aspect: u8
         try read(&aspect, 1)
 
@@ -137,10 +142,10 @@ public impl Decoder
         if options.decodePixels
         {
             frame.resize(4'uint * width * height)
-            Memory.set(frame.buffer, bgindex, cast(uint) (width * height))
+            Memory.set(frame.buffer, bgIndex, cast(uint) (width * height))
             canvas  = &frame.buffer[width * height]
 
-            bgcolor := &palette.colors[bgindex*3]
+            bgcolor := &palette.colors[bgIndex*3]
             if bgcolor[0] or bgcolor[1] or bgcolor [2]
             {
                 loop i: width * height
@@ -149,7 +154,7 @@ public impl Decoder
         }
     }
 
-    mtd discard_sub_blocks() throw
+    mtd discardSubBlocks() throw
     {
         loop
         {
@@ -160,17 +165,17 @@ public impl Decoder
         }
     }
 
-    mtd read_plain_text_ext() throw
+    mtd readPlainTextExt() throw
     {
         /* Discard plain text metadata. */
         try seek(13)
         /* Discard plain text sub-blocks. */
-        try discard_sub_blocks()
+        try discardSubBlocks()
     }
 
-    mtd read_graphic_control_ext() throw
+    mtd readGraphicControlExt() throw
     {
-        /* Discard block size (always 0x04). */
+        /* Discard block size (always 0x04) */
         try seek(1)
         rdit := try readU8()
         gce.disposal = (rdit >>,safe 2) & 3
@@ -178,16 +183,16 @@ public impl Decoder
         gce.transparency = rdit & 1
         gce.delay = try readU16()
         gce.tindex = try readU8()
-        /* Skip block terminator. */
+        /* Skip block terminator */
         try seek(1)
     }
 
-    mtd read_comment_ext() throw
+    mtd readCommentExt() throw
     {
-        try discard_sub_blocks()
+        try discardSubBlocks()
     }
 
-    mtd read_application_ext() throw
+    mtd readApplicationExt() throw
     {
         var app_id: [8] u8
         var app_auth_code: [3] u8
@@ -203,13 +208,13 @@ public impl Decoder
         {
             /* Discard block size (0x03) and constant byte (0x01). */
             try seek(2)
-            loop_count = try readU16()
+            loopCount = try readU16()
             /* Skip block terminator. */
             try seek(1)
         }
         else
         {
-            try discard_sub_blocks()
+            try discardSubBlocks()
         }
     }
 
@@ -219,19 +224,19 @@ public impl Decoder
         switch label
         {
         case 0x01:
-            try read_plain_text_ext()
+            try readPlainTextExt()
         case 0xF9:
-            try read_graphic_control_ext()
+            try readGraphicControlExt()
         case 0xFE:
-            try read_comment_ext()
+            try readCommentExt()
         case 0xFF:
-            try read_application_ext()
+            try readApplicationExt()
         default:
             throw Format.toString("unknown extension: %", label)
         }
     }
 
-    mtd new_table(key_size: s32)
+    mtd initTable(key_size: s32)
     {
         table.bulk = Math.max(1 << (key_size + 1), 0x100)
         table.nentries = (1 << key_size) + 2
@@ -240,7 +245,7 @@ public impl Decoder
             table.entries[key] = @{1, 0xFFF, cast(u8) key}
     }
 
-    mtd get_key(key_size: s32, sub_len, shift, byte: *u8)->u16 throw
+    mtd getKey(key_size: s32, sub_len, shift, byte: *u8)->u16 throw
     {
         key := 0'u16
         frag_size := 0
@@ -271,7 +276,7 @@ public impl Decoder
         return key
     }
 
-    mtd add_entry(length: u16, prefix: u16, suffix: u8)->s32 throw
+    mtd addEntry(length: u16, prefix: u16, suffix: u8)->s32 throw
     {
         if table.nentries == table.bulk
         {
@@ -286,7 +291,7 @@ public impl Decoder
         return 0
     }
 
-    mtd read_image_data(interlace: u8) throw
+    mtd readImageData(interlace: u8) throw
     {
         byte := try readU8()
         key_size := cast(s32) byte
@@ -295,7 +300,7 @@ public impl Decoder
 
         start := cast(uint) (stream - streamStart)
         remainStart := streamLen
-        try discard_sub_blocks()
+        try discardSubBlocks()
         end := cast(uint) (stream - streamStart)
         remainEnd := streamLen
         stream = streamStart + start
@@ -303,11 +308,11 @@ public impl Decoder
 
         clear := 1 << key_size
         stop  := clear + 1
-        new_table(key_size)
+        initTable(key_size)
         key_size += 1
         init_key_size := key_size
         sub_len, shift := 0'u8
-        key := try get_key(key_size, &sub_len, &shift, &byte) /* clear code */
+        key := try getKey(key_size, &sub_len, &shift, &byte) /* clear code */
         frm_off := 0
         ret := 0
         frm_size := fw*fh
@@ -325,7 +330,7 @@ public impl Decoder
             }
             elif !table_is_full
             {
-                ret = try add_entry(cast(u16) (str_len + 1), key, entry.suffix)
+                ret = try addEntry(cast(u16) (str_len + 1), key, entry.suffix)
                 if table.nentries == 0x1000
                 {
                     ret = 0
@@ -333,7 +338,7 @@ public impl Decoder
                 }
             }
 
-            key = try get_key(key_size, &sub_len, &shift, &byte)
+            key = try getKey(key_size, &sub_len, &shift, &byte)
             if key == clear continue
             if key == stop or key == 0x1000 break
             if ret == 1 key_size += 1
@@ -365,7 +370,7 @@ public impl Decoder
 
     mtd readImage() throw
     {
-        /* Image Descriptor. */
+        /* Image descriptor */
         fx = try readU16()
         fy = try readU16()
         if fx >= width or fy >= height
@@ -391,10 +396,51 @@ public impl Decoder
         else
             palette = &gct
 
-        try read_image_data(interlace)
+        try readImageData(interlace)
     }
 
-    mtd getFrame()->s32 throw
+    mtd renderFrame(buffer: *u8, pf: PixelFormat)
+    {
+        i := fy * width + fx
+
+        if pf.hasAlpha()
+        {
+            loop j: fh-1..0
+            {
+                loop k: fw
+                {
+                    index := frame[(fy + j) * width + (fx + k)]
+                    color := &palette.colors[index*3]
+                    b     := buffer + (i+k)*4
+                    b[0] = color[0]
+                    b[1] = color[1]
+                    b[2] = color[2]
+                    b[3] = index == gce.tindex ? 0'u8 : 0xFF'u8
+                }
+
+                i += width
+            }
+        }
+        else
+        {
+            loop j: fh-1..0
+            {
+                loop k: fw
+                {
+                    index := frame[(fy + j) * width + (fx + k)]
+                    color := &palette.colors[index*3]
+                    b     := buffer + (i+k)*4
+                    b[0] = color[0]
+                    b[1] = color[1]
+                    b[2] = color[2]
+                }
+
+                i += width
+            }
+        }
+    }
+
+    mtd getFrame(decodePixels: bool)->s32 throw
     {
         sep := try readU8()
         while sep != ","'u8
@@ -407,25 +453,9 @@ public impl Decoder
             sep = try readU8()
         }
 
-        try readImage()
+        if decodePixels
+            try readImage()
         return 1
-    }
-
-    mtd render_frame_rect(buffer: *u8)
-    {
-        i := fy * width + fx
-        loop j: fh-1..0
-        {
-            loop k: fw
-            {
-                index := frame[(fy + j) * width + (fx + k)]
-                color := &palette.colors[index*3]
-                if !gce.transparency or index != gce.tindex
-                    Memory.copy(buffer + (i+k)*3, color, 3)
-            }
-
-            i += width
-        }
     }
 }
 
@@ -439,17 +469,16 @@ public impl IImageDecoder for Decoder
 
     mtd decode(buffer: const [..] u8, options: DecodeOptions)->Image throw
     {
-        var result: retval
-
         try init(buffer, options)
-        result.init(acast width, acast height, PixelFormat.RGB8)
+        discard try getFrame(options.decodePixels)
+
+        var result: retval
+        result.init(acast width, acast height, gce.transparency ? PixelFormat.RGBA8 : PixelFormat.RGB8)
         if !options.decodePixels
             return result
         result.allocPixels()
 
-        discard try getFrame()
-        render_frame_rect(result.pixels)
-
+        renderFrame(result.pixels, result.pf)
         return result
     }
 }

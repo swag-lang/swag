@@ -9,7 +9,7 @@ using Core, Win32, Ogl, Gdi32, Pixel
 
 var g_TestMode:  bool
 var g_HDC:       HDC
-var g_ImageIdx:  u32 = 11
+var g_ImageIdx:  u32 = 27
 var g_EffectIdx: u32 = 0
 var g_MyImage:   Pixel.Image
 var g_TextureID: GLuint
@@ -89,6 +89,8 @@ func loadImg()
     case 24:    imgName = "basi0g08.png"  // grayscale interlaced 8 bits
     case 25:    imgName = "basi4a08.png"  // grayscale interlaced alpha
     case 26:    imgName = "basi6a08.png"  // color interlaced alpha
+    case 27:    imgName = "testa.gif"
+    case 28:    imgName = "test.gif"
     default:    g_ImageIdx = 0
     }
 
