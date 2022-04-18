@@ -10,6 +10,7 @@ enum MovieSource
 
 struct Movie
 {
+    enableCache:    bool = true
     mustLoop:       bool = true
     playFreq:       f32 = 0.05
 
@@ -21,6 +22,7 @@ struct Movie
     gif:            Gif.Decoder
     bytes:          Array'u8
     frame:          Image
+    cacheFrames:    Array'Image
 }
 
 private impl Movie
@@ -32,17 +34,42 @@ private impl Movie
         {
         case SpriteSheet:
             if frameIndex >= imgList.totalFrames
-                frameIndex = 0
+            {
+                if mustLoop
+                    frameIndex = 0
+                else
+                    frameIndex = imgList.totalFrames - 1
+            }
+
         case Gif:
-            if assume gif.nextFrame(&frame) == false
+            if numFrames and enableCache
+            {
+                if frameIndex >= numFrames
+                {
+                    if mustLoop
+                        frameIndex = 0
+                    else
+                        frameIndex = imgList.totalFrames - 1
+                }
+
+                frame = dref cacheFrames[frameIndex]
+            }
+            elif assume gif.nextFrame(&frame) == false
             {
                 numFrames = frameIndex
                 if mustLoop
                 {
                     gif.rewind()
                     frameIndex = 0
-                    discard assume gif.nextFrame(&frame)
+                    if enableCache
+                        frame = dref cacheFrames[0]
+                    else
+                        discard assume gif.nextFrame(&frame)
                 }
+            }
+            elif enableCache
+            {
+                cacheFrames.add(frame)
             }
         }
     }
@@ -50,32 +77,47 @@ private impl Movie
 
 impl Movie
 {
-    mtd set(imageList: ImageList)
+    mtd clear()
     {
-        source = .SpriteSheet
-        frame.release()
-        imgList   = imageList
-        numFrames = imgList.totalFrames
-        rewind()
-    }
-
-    mtd set(fileName: string) throw
-    {
+        cacheFrames.clear()
+        bytes.clear()
+        source = .None
         frame.release()
         numFrames = 0
+        frameIndex = 0
+        currentTime = 0
+    }
 
+    // Associate an image list
+    mtd set(imageList: ImageList)
+    {
+        clear()
+        source = .SpriteSheet
+        imgList   = imageList
+        numFrames = imgList.totalFrames
+    }
+
+    // Associate a filename
+    mtd set(fileName: string) throw
+    {
+        clear()
         if gif.IImageDecoder.canDecode(fileName)
         {
             source = .Gif
-            bytes.clear()
             bytes = try File.readAllBytes(fileName)
             try gif.init(bytes.toSlice(), true)
             gif.createFrame(&frame)
             discard try gif.nextFrame(&frame)
-            frameIndex = 0
+            if enableCache
+                cacheFrames.add(frame)
+        }
+        else
+        {
+            throw "unsupported format"
         }
     }
 
+    // Returns true if the movie has valid content
     mtd isValid()->bool
     {
         switch source
@@ -89,18 +131,7 @@ impl Movie
         return false
     }
 
-    mtd load(file: string) throw
-    {
-        rewind()
-    }
-
-    mtd rewind()
-    {
-        frameIndex = -1
-        currentTime = 0
-        nextFrame()
-    }
-
+    // Update timing and change frames
     mtd update(dt: f32)->bool
     {
         hasChanged := false
