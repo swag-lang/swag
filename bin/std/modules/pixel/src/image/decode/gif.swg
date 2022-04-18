@@ -54,6 +54,9 @@ public struct Decoder
     canvas:     *u8
     frame:      Array'u8
     table:      Table
+    animStart:  uint
+    animRemain: uint
+    reachEnd:   bool
 
     streamStart:    const *u8
     stream:         const *u8
@@ -97,61 +100,6 @@ public impl Decoder
         stream += 2
         streamLen -= 2
         return res
-    }
-
-    mtd init(buffer: const [..] u8, decodePixels: bool) throw
-    {
-        streamStart, stream = @dataof(buffer)
-        streamLen = @countof(buffer)
-
-        /* Header */
-        var sigver: [3] u8
-        try read(sigver, 3)
-        if Memory.compare(sigver, @dataof("GIF"), 3) != 0
-            throw "invalid signature"
-
-        /* Version */
-        try read(sigver, 3)
-        if Memory.compare(sigver, @dataof("89a"), 3) != 0
-            throw "invalid version"
-
-        /* Width x Height */
-        width  = try readU16()
-        height = try readU16()
-
-        /* FDSZ */
-        var fdsz: u8
-        try read(&fdsz, 1)
-        if !(fdsz & 0x80) // Presence of GCT
-            throw "no global color table"
-
-        /* Color space's depth */
-        depth = acast (((fdsz >>,safe 4) & 7) + 1)
-        /* Ignore sort flag */
-        /* GCT Size */
-        gct.size = 1 << ((fdsz & 0x07) + 1)
-        /* Background color index */
-        try read(&bgIndex, 1)
-        /* Aspect ratio */
-        var aspect: u8
-        try read(&aspect, 1)
-
-        try read(gct.colors, 3'uint * gct.size)
-        palette = &gct
-
-        if decodePixels
-        {
-            frame.resize(4'uint * width * height)
-            Memory.set(frame.buffer, bgIndex, cast(uint) (width * height))
-            canvas  = &frame.buffer[width * height]
-
-            bgcolor := &palette.colors[bgIndex*3]
-            if bgcolor[0] or bgcolor[1] or bgcolor [2]
-            {
-                loop i: width * height
-                    Memory.copy(&canvas[i*3], bgcolor, 3)
-            }
-        }
     }
 
     mtd discardSubBlocks() throw
@@ -481,20 +429,94 @@ public impl Decoder
 
 public impl Decoder
 {
-    mtd decode(buffer: const [..] u8)->Array'Image throw
+    mtd init(buffer: const [..] u8, decodePixels: bool) throw
     {
-        var result: retval
+        streamStart, stream = @dataof(buffer)
+        streamLen = @countof(buffer)
 
-        try init(buffer, true)
-        while try getFrame(true)
+        /* Header */
+        var sigver: [3] u8
+        try read(sigver, 3)
+        if Memory.compare(sigver, @dataof("GIF"), 3) != 0
+            throw "invalid signature"
+
+        /* Version */
+        try read(sigver, 3)
+        if Memory.compare(sigver, @dataof("89a"), 3) != 0
+            throw "invalid version"
+
+        /* Width x Height */
+        width  = try readU16()
+        height = try readU16()
+
+        /* FDSZ */
+        var fdsz: u8
+        try read(&fdsz, 1)
+        if !(fdsz & 0x80) // Presence of GCT
+            throw "no global color table"
+
+        /* Color space's depth */
+        depth = acast (((fdsz >>,safe 4) & 7) + 1)
+        /* Ignore sort flag */
+        /* GCT Size */
+        gct.size = 1 << ((fdsz & 0x07) + 1)
+        /* Background color index */
+        try read(&bgIndex, 1)
+        /* Aspect ratio */
+        var aspect: u8
+        try read(&aspect, 1)
+
+        try read(gct.colors, 3'uint * gct.size)
+        palette = &gct
+
+        if decodePixels
         {
-            pf := gce.transparency ? PixelFormat.RGBA8 : PixelFormat.RGB8
-            img := Image.create(acast width, acast height, pf)
-            renderFrame(img.pixels, img.pf)
-            result.emplace(&img)
+            frame.resize(4'uint * width * height)
+            Memory.set(frame.buffer, bgIndex, cast(uint) (width * height))
+            canvas  = &frame.buffer[width * height]
+
+            bgcolor := &palette.colors[bgIndex*3]
+            if bgcolor[0] or bgcolor[1] or bgcolor [2]
+            {
+                loop i: width * height
+                    Memory.copy(&canvas[i*3], bgcolor, 3)
+            }
         }
 
-        return result
+        animStart = cast(uint) (stream - streamStart)
+        animRemain = streamLen
+
+        discard try getFrame(decodePixels)
+    }
+
+    mtd createFrame(image: *Image, decodePixels = true)
+    {
+        image.init(acast width, acast height, gce.transparency ? PixelFormat.RGBA8 : PixelFormat.RGB8)
+        if !decodePixels
+            return
+        image.allocPixels()
+    }
+
+    mtd nextFrame(img: *Image)->bool throw
+    {
+        if reachEnd
+            return false
+
+        if !try getFrame(true)
+        {
+            reachEnd = true
+            return false
+        }
+
+        renderFrame(img.pixels, img.pf)
+        return true
+    }
+
+    mtd rewind()
+    {
+        reachEnd = false
+        stream = streamStart + animStart
+        streamLen = animRemain
     }
 }
 
@@ -509,13 +531,11 @@ public impl IImageDecoder for Decoder
     mtd decode(buffer: const [..] u8, options: DecodeOptions)->Image throw
     {
         try init(buffer, options.decodePixels)
-        discard try getFrame(options.decodePixels)
 
         var result: retval
-        result.init(acast width, acast height, gce.transparency ? PixelFormat.RGBA8 : PixelFormat.RGB8)
+        createFrame(&result, options.decodePixels)
         if !options.decodePixels
             return result
-        result.allocPixels()
 
         renderFrame(result.pixels, result.pf)
         return result

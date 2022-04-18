@@ -399,16 +399,20 @@ func createView0(tabView: *Tab, view: *Wnd)
 
     // ImageRect
     {
-        img := ImageRect.create(view, theme.res.spin, @{20, 620, 48, 48})
+        img := ImageRect.create(view, @{20, 620, 48, 48})
+        img.setMovie(theme.res.spin)
         img.style.addStyleSheetColors("imageRect_Fg $hilight")
 
-        img1 := ImageRect.create(view, theme.res.spin, @{20, 680, 48, 48})
+        img1 := ImageRect.create(view, @{20, 680, 48, 48})
+        img1.setMovie(theme.res.spin)
 
+        img2  := ImageRect.create(view, @{400, 640, 128, 128})
         path2 := Path.combine(Path.getDirectoryName(#file), "test.gif")
-        img2  := ImageRect.create(view, path2, @{400, 640, 128, 128})
+        assume img2.setMovie(path2)
 
+        img3  := ImageRect.create(view, @{540, 640, 128, 128})
         path3 := Path.combine(Path.getDirectoryName(#file), "testa.gif")
-        img3  := ImageRect.create(view, path3, @{540, 640, 128, 128})
+        assume img3.setMovie(path3)
     }
 
     // IconButton
