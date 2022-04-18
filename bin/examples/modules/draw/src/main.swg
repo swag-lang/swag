@@ -19,7 +19,7 @@ namespace Res
 var g_ModeAA:       bool = true
 var g_PaintQuality: PaintQuality = Normal
 var g_Pattern:      bool = true
-var g_Page:         s32 = 3
+var g_Page:         s32 = 0
 var g_Angle:        f32 = 0
 const MaxPages = 7
 
@@ -651,7 +651,7 @@ impl IWnd for MyView
     {
         rdr := surface.app.getRenderer()
         img0 := Image.load(imagePath("basn0g01.png"))
-        img1 := Image.load(imagePath("rgba.bmp"))
+        img1 := Image.load(imagePath("test.gif"))
         Res.image0 = rdr.addImage(img0)
         Res.image1 = rdr.addImage(img1)
         Res.image2 = rdr.addImage(img1)
