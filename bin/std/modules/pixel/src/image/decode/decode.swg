@@ -91,7 +91,7 @@ public impl Image
         found := getDecoder(fileName)
         if !found
             throw "no matching image decoder"
-        return try decode(found, bytes, options)
+        return decode(found, bytes, options)
     }
 
     // Load the given image file
@@ -100,8 +100,8 @@ public impl Image
         found := getDecoder(fileName)
         if !found
             throw "no matching image decoder"
-        bytes := try File.readAllBytes(fileName)
-        return try decode(found, bytes.toSlice(), options)
+        bytes := File.readAllBytes(fileName)
+        return decode(found, bytes.toSlice(), options)
     }
 }
 

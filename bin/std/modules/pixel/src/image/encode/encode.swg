@@ -76,8 +76,8 @@ public impl Image
         // Encode
         itf := @mkinterface(ptrEncoder, found.type, IImageEncoder)
         var result: ConcatBuffer
-        try itf.encode(&result, dref self, options)
-        try File.writeAllBytes(fileName, result)
+        itf.encode(&result, dref self, options)
+        File.writeAllBytes(fileName, result)
     }
 }
 

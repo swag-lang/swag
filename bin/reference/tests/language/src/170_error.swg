@@ -45,7 +45,8 @@ func myFunc2()
 }
 
 // When a function is marked with "throw", the "try" for a subfunction call is automatic
-// if not specified
+// if not specified.
+// That means that most of the time it's not necessary to specify it.
 #test
 {
     func mySubFunc2() throw

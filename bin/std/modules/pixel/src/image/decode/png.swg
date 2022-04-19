@@ -129,7 +129,7 @@ impl Decoder
 
     func readHeader(using self, ch: ChunkHeader) throw
     {
-        chunk := try readChunk(ch)
+        chunk := readChunk(ch)
         header = dref cast(const *Header) @dataof(chunk.datas)
         header.width = Math.bigEndianToNative(header.width)
         header.height = Math.bigEndianToNative(header.height)
@@ -457,7 +457,7 @@ impl Decoder
             {
             case IHDR:
                 if !firstChunk throw "invalid first chunk"
-                try readHeader(ch)
+                readHeader(ch)
                 if decOptions.decodePixels
                 {
                     dstPixelsSize = header.width * header.height * inChannels
@@ -467,21 +467,21 @@ impl Decoder
             case TRNS:
                 seenTRSN = true
                 outChannels += 1 // transparency mask, add an alpha channel
-                chunkTRNS = try readChunk(ch)
+                chunkTRNS = readChunk(ch)
 
             case BKGD:
                 seenBKGD = true
-                chunk := try readChunk(ch)
+                chunk := readChunk(ch)
 
             case IEND:
                 seenIEND = true
-                chunk := try readChunk(ch)
+                chunk := readChunk(ch)
 
             case IDAT:
                 if seenIDAT throw "invalid IDAT chunk"
                 while ch.type == IDAT
                 {
-                    chunk := try readChunk(ch)
+                    chunk := readChunk(ch)
                     iDataBuf.add(chunk.datas)
                     stream.peek32Be(cast(*u8) &ch.length)
                     stream.peek32(cast(*u8) &ch.type)
@@ -492,7 +492,7 @@ impl Decoder
                 seenIDAT = true
 
             default:
-                chunk := try readChunk(ch)
+                chunk := readChunk(ch)
             }
 
             firstChunk = false
@@ -512,7 +512,7 @@ impl Decoder
 
         // deflate content
         var dec: Compress.ZLibDecoder
-        dcmpBuf = try dec.decompress(iDataBuf.toSlice())
+        dcmpBuf = dec.decompress(iDataBuf.toSlice())
 
         // defilter content
         defilter()
@@ -616,6 +616,6 @@ public impl IImageDecoder for Decoder
     func decode(using self, buffer: const [..] u8, options: DecodeOptions)->Image throw
     {
         decOptions = options
-        return try doIt(buffer)
+        return doIt(buffer)
     }
 }

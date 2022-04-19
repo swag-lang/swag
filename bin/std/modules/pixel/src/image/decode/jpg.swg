@@ -233,19 +233,16 @@ impl Decoder
         getBits1(16)
         loop i: MaxBlocksPerRow blockMaxZagSet[i] = 64
 
-        try locateSofMarker()
+        locateSofMarker()
     }
 
     mtd start() throw
     {
-        try
-        {
-            initFrame()
-            if progressiveFlag
-                initProgressive()
-            else
-                initSequential()
-        }
+        initFrame()
+        if progressiveFlag
+            initProgressive()
+        else
+            initSequential()
     }
 
     mtd doit(buf: *u8) throw
@@ -260,7 +257,7 @@ impl Decoder
             pdest += (imageSizeY - 1) * imageSizeX * 3
             loop
             {
-                if try decode(&scanLineOfs, &scanLineLen)
+                if decode(&scanLineOfs, &scanLineLen)
                     break
 
                 pdest1 := pdest
@@ -285,7 +282,7 @@ impl Decoder
             pdest += (imageSizeY - 1) * imageSizeX * 3
             loop
             {
-                if try decode(&scanLineOfs, &scanLineLen)
+                if decode(&scanLineOfs, &scanLineLen)
                     break
                 Memory.copy(pdest, scanLineOfs, cast(uint) imageSizeX * 3)
                 pdest -= imageSizeX * 3
@@ -431,7 +428,7 @@ impl Decoder
         loop mcusPerRow
         {
             if restartInterval and (restartsLeft == 0)
-                try restartProcess()
+                restartProcess()
 
             loop mcuBlock: blocksPerMcu
             {
@@ -726,7 +723,7 @@ impl Decoder
             bitsLeft = 16
             getBits1(16)
             getBits1(16)
-            try processMarkers()
+            processMarkers()
         }
 
         totalBytesRead -= inBufLeft
@@ -740,11 +737,11 @@ impl Decoder
         if mcuLinesLeft == 0
         {
             if progressiveFlag
-                try loadNextRow()
+                loadNextRow()
             else
-                try decodeNextRow()
+                decodeNextRow()
             if totalLinesLeft <= maxMcuSizeY
-                try findEoi()
+                findEoi()
             transformRow()
             mcuLinesLeft = maxMcuSizeY
         }
@@ -1078,12 +1075,12 @@ impl Decoder
 
     mtd initScan()->bool throw
     {
-        res := try locateSosMarker()
+        res := locateSosMarker()
         if !res return false
 
         calcMcuBlockOrder()
-        try checkHuffTables()
-        try checkQuantTables()
+        checkHuffTables()
+        checkQuantTables()
 
         Memory.clear(lastDcVal, cast(uint) compsInFrame * @sizeof(u32))
 
@@ -1500,12 +1497,12 @@ impl Decoder
                 blockMcuOfsY := 0
 
                 if restartInterval and (restartsLeft == 0)
-                    try restartProcess()
+                    restartProcess()
 
                 loop mcuBlock: blocksPerMcu
                 {
                     componentId := mcuOrg[mcuBlock]
-                    try fn(self, componentId, blockMcutX[componentId] + blockMcuOfsX, blockMcutY[componentId] + blockMcuOfsY)
+                    fn(self, componentId, blockMcutX[componentId] + blockMcuOfsX, blockMcutY[componentId] + blockMcuOfsY)
 
                     if compsInScan == 1
                         blockMcutX[componentId] += 1
@@ -1553,7 +1550,7 @@ impl Decoder
 
         loop
         {
-            res := try initScan()
+            res := initScan()
             if !res break
 
             dcOnlyScan     := (spectralStart == 0)
@@ -1591,7 +1588,7 @@ impl Decoder
                     decodeBlockFunc = &decodeBlockAcFirst
             }
 
-            try decodeScan(decodeBlockFunc)
+            decodeScan(decodeBlockFunc)
 
             bitsLeft = 16
 
@@ -1607,7 +1604,7 @@ impl Decoder
 
     mtd initSequential() throw
     {
-        res := try initScan()
+        res := initScan()
         if !res throw "unexpected marker"
     }
 
@@ -1762,13 +1759,13 @@ impl Decoder
             case M_DAC:
                 throw "no arithmetic support"
             case M_DHT:
-                try readDhtMarker()
+                readDhtMarker()
             case M_DQT:
-                try readDqtMarker()
+                readDqtMarker()
             case M_DRI:
-                try readDriMarker()
+                readDriMarker()
             default:
-                try readVariableMarker(c)
+                readVariableMarker(c)
             }
         }
 
@@ -1943,12 +1940,12 @@ impl Decoder
 
     mtd locateSosMarker()->bool throw
     {
-        c := try processMarkers()
+        c := processMarkers()
         if c == .M_EOI
             return false
         elif c != .M_SOS
             throw "unexpected marker"
-        try readSosMarker()
+        readSosMarker()
         return true
     }
 
@@ -1975,15 +1972,15 @@ impl Decoder
 
     mtd locateSofMarker() throw
     {
-        try locateSoiMarker()
-        c := try processMarkers()
+        locateSoiMarker()
+        c := processMarkers()
         switch c
         {
         case M_SOF2:
             progressiveFlag = true
             try readSofMarker()
         case M_SOF0, M_SOF1:
-            try readSofMarker()
+            readSofMarker()
         case M_SOF9:
             throw "no arithmetic support"
         default:
@@ -2039,21 +2036,17 @@ public impl IImageDecoder for Decoder
 
     mtd decode(buffer: const [..] u8, options: DecodeOptions)->Image throw
     {
-        try
-        {
-            init(buffer)
-            start()
+        init(buffer)
+        start()
 
-            // Creates image
-            var result: retval
-            result.init(imageSizeX, imageSizeY, PixelFormat.BGR8)
-            if !options.decodePixels
-                return result
-            result.allocPixels()
+        // Creates image
+        var result: retval
+        result.init(imageSizeX, imageSizeY, PixelFormat.BGR8)
+        if !options.decodePixels
+            return result
+        result.allocPixels()
 
-            doit(result.pixels)
-        }
-
+        doit(result.pixels)
         return result
     }
 }
