@@ -11,20 +11,21 @@ enum MovieSource
 struct Movie
 {
     enableCache:        bool = true
-    inPause:            bool
     mustLoop:           bool = true
+    inPause:            bool
     playFreq:           f32 = 0.05
     sigFrameChanged:    SigArray'closure(*Self)
 
     numFrames:      s32
-    imgList:        ImageList
-    source:         MovieSource = None
     frameIndex:     s32
-    currentTime:    f32
+    frame:          Image
+
+    source:         MovieSource = None
+    imgList:        ImageList
     gif:            Gif.Decoder
     bytes:          Array'u8
-    frame:          Image
     cacheFrames:    Array'Image
+    currentTime:    f32
     dirtyFrame:     bool
 }
 
@@ -32,7 +33,15 @@ private impl Movie
 {
     mtd nextFrame()
     {
-        frameIndex += 1
+        if frameIndex == numFrames - 1
+        {
+            if mustLoop
+                frameIndex = 0
+            else
+                return
+        }
+        else
+            frameIndex += 1
 
         #[Swag.Complete]
         switch source
@@ -40,38 +49,20 @@ private impl Movie
         case None:
             break
         case SpriteSheet:
-            if frameIndex >= imgList.totalFrames
-            {
-                if mustLoop
-                    frameIndex = 0
-                else
-                    frameIndex = imgList.totalFrames - 1
-            }
+            break
 
         case Gif:
-            if numFrames and enableCache
+            if frameIndex < cacheFrames.count
             {
-                if frameIndex >= numFrames
-                {
-                    if mustLoop
-                        frameIndex = 0
-                    else
-                        frameIndex = imgList.totalFrames - 1
-                }
-
                 frame = dref cacheFrames[frameIndex]
             }
             elif assume gif.nextFrame(&frame) == false
             {
-                numFrames = frameIndex
                 if mustLoop
                 {
                     gif.rewind()
                     frameIndex = 0
-                    if enableCache
-                        frame = dref cacheFrames[0]
-                    else
-                        discard assume gif.nextFrame(&frame)
+                    discard assume gif.nextFrame(&frame)
                 }
             }
             elif enableCache
@@ -113,10 +104,11 @@ impl Movie
         if gif.IImageDecoder.canDecode(fileName)
         {
             source = .Gif
-            bytes = try File.readAllBytes(fileName)
-            try gif.init(bytes.toSlice(), true)
-            gif.createFrame(&frame)
-            discard try gif.nextFrame(&frame)
+            bytes = File.readAllBytes(fileName)
+            gif.init(bytes.toSlice(), true)
+            numFrames = gif.getNumFrames()
+            gif.getFrame(&frame)
+            discard gif.nextFrame(&frame)
             if enableCache
                 cacheFrames.add(frame)
         }

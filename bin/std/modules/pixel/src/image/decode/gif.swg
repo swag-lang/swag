@@ -42,6 +42,7 @@ public struct Decoder
     height:     u16
     depth:      u16
     loopCount:  u16
+    numFrames:  s32
     gce:        Gce
     palette:    *Palette
     lct:        Palette
@@ -57,6 +58,7 @@ public struct Decoder
     animStart:  uint
     animRemain: uint
     reachEnd:   bool
+    initDone:   bool
 
     streamStart:    const *u8
     stream:         const *u8
@@ -429,8 +431,10 @@ public impl Decoder
 
 public impl Decoder
 {
+    // Initialize the decoder
     mtd init(buffer: const [..] u8, decodePixels: bool) throw
     {
+        initDone = true
         streamStart, stream = @dataof(buffer)
         streamLen = @countof(buffer)
 
@@ -488,16 +492,20 @@ public impl Decoder
         discard getFrame(decodePixels)
     }
 
-    mtd createFrame(image: *Image, decodePixels = true)
+    // Create an image for the current frame
+    mtd getFrame(image: *Image, decodePixels = true)
     {
+        Debug.assert(initDone)
         image.init(acast width, acast height, gce.transparency ? PixelFormat.RGBA8 : PixelFormat.RGB8)
         if !decodePixels
             return
         image.allocPixels()
     }
 
+    // Get the next frame. Returns false if we have reached the end
     mtd nextFrame(img: *Image)->bool throw
     {
+        Debug.assert(initDone)
         if reachEnd
             return false
 
@@ -511,8 +519,26 @@ public impl Decoder
         return true
     }
 
+    // Returns the number of frames
+    // As Gif does not store it, we need to go threw all images (!)
+    mtd getNumFrames()->s32 throw
+    {
+        Debug.assert(initDone)
+        if numFrames
+            return numFrames
+
+        numFrames = 1
+        while getFrame(true)
+            numFrames += 1
+
+        rewind()
+        return numFrames
+    }
+
+    // Restart at frame 0
     mtd rewind()
     {
+        Debug.assert(initDone)
         reachEnd = false
         stream = streamStart + animStart
         streamLen = animRemain
@@ -532,7 +558,7 @@ public impl IImageDecoder for Decoder
         init(buffer, options.decodePixels)
 
         var result: retval
-        createFrame(&result, options.decodePixels)
+        getFrame(&result, options.decodePixels)
         if !options.decodePixels
             return result
 
