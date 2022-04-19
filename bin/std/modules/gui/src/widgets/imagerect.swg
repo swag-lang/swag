@@ -29,8 +29,12 @@ impl IWnd for ImageRect
         rect    := getClientRectPadding()
 
         color := getThemeColors().imageRect_Fg
+
+        #[Swag.Complete]
         switch movie.source
         {
+        case None:
+            break
         case SpriteSheet:
             icon := Icon.from(&movie.imgList, movie.frameIndex, rect.width, rect.height)
             icon.paint(painter, rect.x, rect.y, color)

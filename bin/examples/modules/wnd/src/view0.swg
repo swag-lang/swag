@@ -410,6 +410,29 @@ func createView0(tabView: *Tab, view: *Wnd)
         path2 := Path.combine(Path.getDirectoryName(#file), "test.gif")
         assume img2.setFile(path2)
 
+        btn    := IconButton.create(view, app.theme.getIcon24(ThemeIcons24.WndClose), @{400, 780, 24, 24})
+        slider := Slider.create(view,  @{425, 780, 120})
+        slider.disable()
+
+        btn.sigPressed += @|img2, slider|(btn) {
+            img2.movie.pause(!img2.movie.inPause)
+            slider.enable(img2.movie.inPause)
+        }
+        img2.movie.sigFrameChanged += @|slider|(movie) {
+            if movie.numFrames
+            {
+                slider.setMinMax(0, acast movie.numFrames)
+                slider.setValue(acast movie.frameIndex)
+            }
+        }
+        slider.sigChanged += @|img2|(slider) {
+            if !img2.movie.inPause return
+            img2.movie.sigFrameChanged.disable()
+            img2.movie.setFrameIndex(cast(s32) slider.getValue())
+            img2.movie.sigFrameChanged.enable()
+            img2.invalidate()
+        }
+
         img3  := ImageRect.create(view, @{540, 640, 128, 128})
         path3 := Path.combine(Path.getDirectoryName(#file), "testa.gif")
         assume img3.setFile(path3)
@@ -420,11 +443,11 @@ func createView0(tabView: *Tab, view: *Wnd)
 
     // IconButton
     {
-        btn0 := IconButton.create(view, theme.getIcon24(ThemeIcons24.Search, 24), @{80, 620, 32, 32})
+        btn0 := IconButton.create(view, theme.getIcon24(ThemeIcons24.Search), @{80, 620, 32, 32})
         btn0.setForm(.RoundSquare)
-        btn1 := IconButton.create(view, theme.getIcon24(ThemeIcons24.Picker, 24), @{112, 620, 32, 32})
+        btn1 := IconButton.create(view, theme.getIcon24(ThemeIcons24.Picker), @{112, 620, 32, 32})
         btn1.setForm(.RoundSquare)
-        btn2 := IconButton.create(view, theme.getIcon24(ThemeIcons24.Picker, 24), @{144, 620, 32, 32})
+        btn2 := IconButton.create(view, theme.getIcon24(ThemeIcons24.Picker), @{144, 620, 32, 32})
         btn2.disable()
         btn2.setForm(.RoundSquare)
     }
@@ -440,21 +463,21 @@ func createView0(tabView: *Tab, view: *Wnd)
             btn.iconBtnFlags = .CheckableToggle
         }
 
-        btn0 := IconButton.create(view, theme.getIcon24(ThemeIcons24.Search, 24), @{80, 660, 48, 48})
+        btn0 := IconButton.create(view, theme.getIcon24(ThemeIcons24.Search), @{80, 660, 48, 48})
         setStyle(btn0)
         btn0.checkedForm = .Bottom
 
-        btn1 := IconButton.create(view, theme.getIcon24(ThemeIcons24.Picker, 24), @{130, 660, 48, 48})
+        btn1 := IconButton.create(view, theme.getIcon24(ThemeIcons24.Picker), @{130, 660, 48, 48})
         setStyle(btn1)
         btn1.checkedForm = .Top
 
-        btn2 := IconButton.create(view, theme.getIcon24(ThemeIcons24.Search, 24), @{180, 660, 48, 48})
+        btn2 := IconButton.create(view, theme.getIcon24(ThemeIcons24.Search), @{180, 660, 48, 48})
         setStyle(btn2)
         btn2.checkedForm = .None
         btn2.style.addStyleSheetColors("btnIcon_CheckedIcon      $hilight")
         btn2.style.addStyleSheetColors("btnIcon_CheckedHotIcon   $hilight")
 
-        btn3 := IconButton.create(view, theme.getIcon24(ThemeIcons24.Picker, 24), @{230, 660, 48, 48})
+        btn3 := IconButton.create(view, theme.getIcon24(ThemeIcons24.Picker), @{230, 660, 48, 48})
         setStyle(btn3)
         btn3.checkedForm = .None
         btn3.style.addStyleSheetColors("btnIcon_CheckedIcon      $hilight")
@@ -462,7 +485,7 @@ func createView0(tabView: *Tab, view: *Wnd)
     }
 
     {
-        btn0 := IconButton.create(view, theme.getIcon24(ThemeIcons24.Search, 24), @{80, 720, 48, 48})
+        btn0 := IconButton.create(view, theme.getIcon24(ThemeIcons24.Search), @{80, 720, 48, 48})
         btn0.setForm(.RoundSquare)
         btn0.checkedForm = .Full
         btn0.iconBtnFlags = .CheckableToggle

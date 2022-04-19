@@ -263,27 +263,33 @@ impl Wnd
         invalidate()
     }
 
-    // Enable the window
-    mtd enable()
+    // Enable/Disable the window
+    mtd enable(state = true)
     {
-        if !(wndFlags & .Disabled)
-            return
-        wndFlags &= ~.Disabled
+        if state
+        {
+            if !(wndFlags & .Disabled)
+                return
+            wndFlags &= ~.Disabled
+        }
+        else
+        {
+            if wndFlags & .Disabled
+                return
+            wndFlags |= .Disabled
+
+            // Check global state
+            if getApp().keybFocusWnd == self
+                getTopView().setFocus()
+        }
+
         invalidate()
     }
 
     // Disable the window
     mtd disable()
     {
-        if wndFlags & .Disabled
-            return
-        wndFlags |= .Disabled
-
-        // Check global state
-        if getApp().keybFocusWnd == self
-            getTopView().setFocus()
-
-        invalidate()
+        enable(false)
     }
 
     // Returns true if window, and all its parents, are enabled

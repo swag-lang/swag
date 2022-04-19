@@ -10,9 +10,11 @@ enum MovieSource
 
 struct Movie
 {
-    enableCache:    bool = true
-    mustLoop:       bool = true
-    playFreq:       f32 = 0.05
+    enableCache:        bool = true
+    inPause:            bool
+    mustLoop:           bool = true
+    playFreq:           f32 = 0.05
+    sigFrameChanged:    SigArray'closure(*Self)
 
     numFrames:      s32
     imgList:        ImageList
@@ -23,6 +25,7 @@ struct Movie
     bytes:          Array'u8
     frame:          Image
     cacheFrames:    Array'Image
+    dirtyFrame:     bool
 }
 
 private impl Movie
@@ -30,8 +33,12 @@ private impl Movie
     mtd nextFrame()
     {
         frameIndex += 1
+
+        #[Swag.Complete]
         switch source
         {
+        case None:
+            break
         case SpriteSheet:
             if frameIndex >= imgList.totalFrames
             {
@@ -72,6 +79,8 @@ private impl Movie
                 cacheFrames.add(frame)
             }
         }
+
+        sigFrameChanged.call(self)
     }
 }
 
@@ -120,8 +129,11 @@ impl Movie
     // Returns true if the movie has valid content
     mtd isValid()->bool
     {
+        #[Swag.Complete]
         switch source
         {
+        case None:
+            return false
         case SpriteSheet:
             return imgList.texture.valid
         case Gif:
@@ -131,9 +143,48 @@ impl Movie
         return false
     }
 
+    // Set the current video frame
+    mtd setFrameIndex(idx: s32)
+    {
+        if idx == frameIndex
+            return
+        frameIndex = Math.min(idx, numFrames)
+
+        #[Swag.Complete]
+        switch source
+        {
+        case None:
+            break
+        case Gif:
+            frameIndex = Math.min(idx, numFrames)
+            if frameIndex < cacheFrames.count
+            {
+                frame = dref cacheFrames[frameIndex]
+                dirtyFrame = true
+            }
+
+        case SpriteSheet:
+            break
+        }
+
+        sigFrameChanged.call(self)
+    }
+
+    // Set/Reset pause state
+    mtd pause(state: bool)
+    {
+        inPause = state
+    }
+
     // Update timing and change frames
     mtd update(dt: f32)->bool
     {
+        wasDirty := dirtyFrame
+        dirtyFrame = false
+
+        if inPause
+            return wasDirty
+
         hasChanged := false
         currentTime += dt
         while currentTime > playFreq
@@ -143,6 +194,6 @@ impl Movie
             nextFrame()
         }
 
-        return hasChanged
+        return hasChanged or wasDirty
     }
 }
