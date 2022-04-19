@@ -271,6 +271,7 @@ bool SyntaxJob::doTryAssume(AstNode* parent, AstNode** result, bool afterDiscard
 
     if (token.id == TokenId::SymLeftCurly)
     {
+        node->specFlags |= AST_SPEC_TCA_BLOCK;
         SWAG_VERIFY(!afterDiscard, error(token, Err(Err0847)));
         SWAG_CHECK(doCurlyStatement(node));
         if (node->semanticFct == SemanticJob::resolveTry)

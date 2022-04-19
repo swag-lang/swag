@@ -43,3 +43,25 @@ func myFunc2()
     // Here the program will stop with a panic message if 'count()' throws an error
     cpt := assume count("filename")
 }
+
+// When a function is marked with "throw", the "try" for a subfunction call is automatic
+// if not specified
+#test
+{
+    func mySubFunc2() throw
+    {
+        throw "error"
+    }
+
+    func mySubFunc1() throw
+    {
+        // No need to add a "try" before the call because mySubFunction1 is
+        // marked with "throw"
+        // Less verbose when you do not want to to something special in case
+        // of errors (with "assume" or "catch")
+        mySubFunc2()
+    }
+
+    catch mySubFunc1()
+    @assert(@err == "error")
+}

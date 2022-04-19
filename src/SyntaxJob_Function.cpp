@@ -655,6 +655,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         newScope = Ast::newScope(funcNode, funcNode->token.text, ScopeKind::FunctionBody, newScope);
         Scoped    scoped(this, newScope);
         ScopedFct scopedFct(this, funcNode);
+        AstNode*  resStmt = nullptr;
 
         // One single return expression
         if (token.id == TokenId::SymEqualGreater)
@@ -667,6 +668,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
             funcNode->flags |= AST_SHORT_LAMBDA;
             SWAG_CHECK(doExpression(returnNode, EXPR_FLAG_NONE));
             funcNode->content->token.endLocation = token.startLocation;
+            resStmt                              = funcNode->content;
         }
 
         // One single statement
@@ -677,17 +679,31 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
             funcNode->content = stmt;
             SWAG_CHECK(doEmbeddedInstruction(stmt));
             funcNode->content->token.endLocation = token.startLocation;
+            resStmt                              = funcNode->content;
         }
 
         // Normal curly statement
         else
         {
-            SWAG_CHECK(doCurlyStatement(funcNode, &funcNode->content));
+            if (funcNode->specFlags & AST_SPEC_FUNCDECL_THROW)
+            {
+                auto node = Ast::newNode<AstTryCatchAssume>(this, AstNodeKind::Try, sourceFile, funcNode);
+                node->specFlags |= AST_SPEC_TCA_GENERATED | AST_SPEC_TCA_BLOCK;
+                funcNode->content = node;
+                node->semanticFct = SemanticJob::resolveTryBlock;
+                ScopedTryCatchAssume sc(this, (AstTryCatchAssume*) node);
+                SWAG_CHECK(doCurlyStatement(node, &resStmt));
+            }
+            else
+            {
+                SWAG_CHECK(doCurlyStatement(funcNode, &funcNode->content));
+                resStmt = funcNode->content;
+            }
         }
 
-        newScope->owner = funcNode->content;
-        funcNode->content->allocateExtension();
-        funcNode->content->extension->byteCodeAfterFct = &ByteCodeGenJob::emitLeaveScope;
+        newScope->owner = resStmt;
+        resStmt->allocateExtension();
+        resStmt->extension->byteCodeAfterFct = &ByteCodeGenJob::emitLeaveScope;
     }
 
     return true;

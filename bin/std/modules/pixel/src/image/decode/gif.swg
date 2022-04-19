@@ -106,38 +106,38 @@ public impl Decoder
     {
         loop
         {
-            size := try readU8()
+            size := readU8()
             if !size
                 break
-            try seek(acast size)
+            seek(acast size)
         }
     }
 
     mtd readPlainTextExt() throw
     {
         /* Discard plain text metadata. */
-        try seek(13)
+        seek(13)
         /* Discard plain text sub-blocks. */
-        try discardSubBlocks()
+        discardSubBlocks()
     }
 
     mtd readGraphicControlExt() throw
     {
         /* Discard block size (always 0x04) */
-        try seek(1)
-        rdit := try readU8()
+        seek(1)
+        rdit := readU8()
         gce.disposal = (rdit >>,safe 2) & 3
         gce.input = rdit & 2
         gce.transparency = rdit & 1
-        gce.delay = try readU16()
-        gce.tindex = try readU8()
+        gce.delay = readU16()
+        gce.tindex = readU8()
         /* Skip block terminator */
-        try seek(1)
+        seek(1)
     }
 
     mtd readCommentExt() throw
     {
-        try discardSubBlocks()
+        discardSubBlocks()
     }
 
     mtd readApplicationExt() throw
@@ -146,39 +146,39 @@ public impl Decoder
         var app_auth_code: [3] u8
 
         /* Discard block size (always 0x0B) */
-        discard try readU8()
+        seek(1)
         /* Application Identifier */
-        try read(app_id, 8);
+        read(app_id, 8);
         /* Application Authentication Code */
-        try read(app_auth_code, 3)
+        read(app_auth_code, 3)
 
         if !Memory.compare(app_id, @dataof("NETSCAPE"), @countof(app_id))
         {
             /* Discard block size (0x03) and constant byte (0x01). */
-            try seek(2)
-            loopCount = try readU16()
+            seek(2)
+            loopCount = readU16()
             /* Skip block terminator. */
-            try seek(1)
+            seek(1)
         }
         else
         {
-            try discardSubBlocks()
+            discardSubBlocks()
         }
     }
 
     mtd readExt() throw
     {
-        label := try readU8()
+        label := readU8()
         switch label
         {
         case 0x01:
-            try readPlainTextExt()
+            readPlainTextExt()
         case 0xF9:
-            try readGraphicControlExt()
+            readGraphicControlExt()
         case 0xFE:
-            try readCommentExt()
+            readCommentExt()
         case 0xFF:
-            try readApplicationExt()
+            readApplicationExt()
         default:
             throw Format.toString("unknown extension: %", label)
         }
@@ -205,12 +205,12 @@ public impl Decoder
                 /* Update byte. */
                 if dref sub_len == 0
                 {
-                    dref sub_len = try readU8() /* Must be nonzero! */
+                    dref sub_len = readU8() /* Must be nonzero! */
                     if dref sub_len == 0
                         return 0x1000
                 }
 
-                dref byte = try readU8()
+                dref byte = readU8()
                 sub_len[0] -= 1
             }
 
@@ -224,7 +224,7 @@ public impl Decoder
         return key
     }
 
-    mtd addEntry(length: u16, prefix: u16, suffix: u8)->s32 throw
+    mtd addEntry(length: u16, prefix: u16, suffix: u8)->s32
     {
         if table.nentries == table.bulk
         {
@@ -261,14 +261,14 @@ public impl Decoder
 
     mtd readImageData(interlace: u8) throw
     {
-        byte := try readU8()
+        byte := readU8()
         key_size := cast(s32) byte
         if key_size < 2 or key_size > 8
             throw "invalid frame"
 
         start := cast(uint) (stream - streamStart)
         remainStart := streamLen
-        try discardSubBlocks()
+        discardSubBlocks()
         end := cast(uint) (stream - streamStart)
         remainEnd := streamLen
         stream = streamStart + start
@@ -280,7 +280,7 @@ public impl Decoder
         key_size += 1
         init_key_size := key_size
         sub_len, shift := 0'u8
-        key := try getKey(key_size, &sub_len, &shift, &byte) /* clear code */
+        key := getKey(key_size, &sub_len, &shift, &byte) /* clear code */
         frm_off := 0
         ret := 0
         frm_size := fw*fh
@@ -298,7 +298,7 @@ public impl Decoder
             }
             elif !table_is_full
             {
-                ret = try addEntry(cast(u16) (str_len + 1), key, entry.suffix)
+                ret = addEntry(cast(u16) (str_len + 1), key, entry.suffix)
                 if table.nentries == 0x1000
                 {
                     ret = 0
@@ -306,7 +306,7 @@ public impl Decoder
                 }
             }
 
-            key = try getKey(key_size, &sub_len, &shift, &byte)
+            key = getKey(key_size, &sub_len, &shift, &byte)
             if key == clear continue
             if key == stop or key == 0x1000 break
             if ret == 1 key_size += 1
@@ -331,7 +331,7 @@ public impl Decoder
         }
 
         if key == stop
-            sub_len = try readU8() /* Must be zero! */
+            sub_len = readU8() /* Must be zero! */
         stream = streamStart + end
         streamLen = remainEnd
     }
@@ -339,17 +339,17 @@ public impl Decoder
     mtd readImage() throw
     {
         /* Image descriptor */
-        fx = try readU16()
-        fy = try readU16()
+        fx = readU16()
+        fy = readU16()
         if fx >= width or fy >= height
             throw "invalid frame size"
 
-        fw = try readU16()
-        fh = try readU16()
+        fw = readU16()
+        fh = readU16()
         fw = Math.min(fw, cast(u16) (width - fx))
         fh = Math.min(fh, cast(u16) (height - fy))
 
-        fisrz := try readU8()
+        fisrz := readU8()
         interlace := fisrz & 0x40
 
         /* Ignore Sort Flag. */
@@ -358,13 +358,13 @@ public impl Decoder
         {
             /* Read LCT */
             lct.size = 1 << ((fisrz & 0x07) + 1)
-            try read(lct.colors, 3'uint * lct.size)
+            read(lct.colors, 3'uint * lct.size)
             palette = &lct
         }
         else
             palette = &gct
 
-        try readImageData(interlace)
+        readImageData(interlace)
     }
 
     mtd renderFrame(buffer: *u8, pf: PixelFormat)
@@ -410,19 +410,19 @@ public impl Decoder
 
     mtd getFrame(decodePixels: bool)->s32 throw
     {
-        sep := try readU8()
+        sep := readU8()
         while sep != ","'u8
         {
             if sep == ";"'u8
                 return 0
             if sep != "!"'u8
                 throw "invalid format"
-            try readExt()
-            sep = try readU8()
+            readExt()
+            sep = readU8()
         }
 
         if decodePixels
-            try readImage()
+            readImage()
         return 1
     }
 }
@@ -436,22 +436,22 @@ public impl Decoder
 
         /* Header */
         var sigver: [3] u8
-        try read(sigver, 3)
+        read(sigver, 3)
         if Memory.compare(sigver, @dataof("GIF"), 3) != 0
             throw "invalid signature"
 
         /* Version */
-        try read(sigver, 3)
+        read(sigver, 3)
         if Memory.compare(sigver, @dataof("89a"), 3) != 0
             throw "invalid version"
 
         /* Width x Height */
-        width  = try readU16()
-        height = try readU16()
+        width  = readU16()
+        height = readU16()
 
         /* FDSZ */
         var fdsz: u8
-        try read(&fdsz, 1)
+        read(&fdsz, 1)
         if !(fdsz & 0x80) // Presence of GCT
             throw "no global color table"
 
@@ -461,12 +461,11 @@ public impl Decoder
         /* GCT Size */
         gct.size = 1 << ((fdsz & 0x07) + 1)
         /* Background color index */
-        try read(&bgIndex, 1)
+        bgIndex = readU8()
         /* Aspect ratio */
-        var aspect: u8
-        try read(&aspect, 1)
+        aspect := readU8()
 
-        try read(gct.colors, 3'uint * gct.size)
+        read(gct.colors, 3'uint * gct.size)
         palette = &gct
 
         if decodePixels
@@ -486,7 +485,7 @@ public impl Decoder
         animStart = cast(uint) (stream - streamStart)
         animRemain = streamLen
 
-        discard try getFrame(decodePixels)
+        discard getFrame(decodePixels)
     }
 
     mtd createFrame(image: *Image, decodePixels = true)
@@ -502,7 +501,7 @@ public impl Decoder
         if reachEnd
             return false
 
-        if !try getFrame(true)
+        if !getFrame(true)
         {
             reachEnd = true
             return false
@@ -530,7 +529,7 @@ public impl IImageDecoder for Decoder
 
     mtd decode(buffer: const [..] u8, options: DecodeOptions)->Image throw
     {
-        try init(buffer, options.decodePixels)
+        init(buffer, options.decodePixels)
 
         var result: retval
         createFrame(&result, options.decodePixels)

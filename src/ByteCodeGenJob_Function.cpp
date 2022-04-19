@@ -1271,7 +1271,10 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         return true;
 
     // Error, check validity.
-    SWAG_CHECK(checkCatchError(context, node, node, node->parent->parent, typeInfoFunc));
+    if (node->parent->kind == AstNodeKind::IdentifierRef)
+        SWAG_CHECK(checkCatchError(context, node, node, node->parent->parent, typeInfoFunc));
+    else
+        SWAG_CHECK(checkCatchError(context, node, node, node->parent, typeInfoFunc));
 
     int precallStack  = 0;
     int numCallParams = allParams ? (int) allParams->childs.size() : 0;

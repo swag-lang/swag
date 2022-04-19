@@ -905,9 +905,32 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         SWAG_CHECK(outputNode(context, concat, node->childs.front()));
         break;
 
-    case AstNodeKind::Catch:
     case AstNodeKind::Try:
     case AstNodeKind::Assume:
+    {
+        auto tca = CastAst<AstTryCatchAssume>(node, AstNodeKind::Try, AstNodeKind::Assume);
+        if (node->specFlags & AST_SPEC_TCA_GENERATED && node->specFlags & AST_SPEC_TCA_BLOCK)
+        {
+            concat.addEol();
+            for (auto c : node->childs.front()->childs)
+            {
+                concat.addIndent(context.indent + 1);
+                SWAG_CHECK(outputNode(context, concat, c));
+                concat.addEol();
+            }
+        }
+        else
+        {
+            if (node->flags & AST_DISCARD)
+                CONCAT_FIXED_STR(concat, "discard ");
+            concat.addString(node->token.text);
+            concat.addChar(' ');
+            SWAG_CHECK(outputNode(context, concat, node->childs.front()));
+        }
+        break;
+    }
+
+    case AstNodeKind::Catch:
         if (node->flags & AST_DISCARD)
             CONCAT_FIXED_STR(concat, "discard ");
         concat.addString(node->token.text);
