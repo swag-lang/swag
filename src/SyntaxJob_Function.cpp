@@ -274,6 +274,13 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, boo
             hasAssignment = true;
             SWAG_CHECK(eatToken());
             SWAG_CHECK(doAssignmentExpression(paramNode, &paramNode->assignment));
+
+            // Used to automatically solve enums
+            if (paramNode->assignment && paramNode->type)
+            {
+                paramNode->type->allocateExtension();
+                paramNode->type->extension->semanticAfterFct = SemanticJob::resolveVarDeclAfterType;
+            }
         }
 
         if (!hasType && !hasAssignment)

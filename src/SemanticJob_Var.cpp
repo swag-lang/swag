@@ -259,7 +259,7 @@ void SemanticJob::setVarDeclResolve(AstVarDecl* varNode)
 bool SemanticJob::resolveVarDeclAfterType(SemanticContext* context)
 {
     auto parent = context->node->parent;
-    while (parent && parent->kind != AstNodeKind::VarDecl && parent->kind != AstNodeKind::ConstDecl)
+    while (parent && parent->kind != AstNodeKind::VarDecl && parent->kind != AstNodeKind::ConstDecl && parent->kind != AstNodeKind::FuncDeclParam)
         parent = parent->parent;
     SWAG_ASSERT(parent);
     auto varDecl = (AstVarDecl*) parent;
