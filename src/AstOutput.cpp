@@ -908,7 +908,6 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     case AstNodeKind::Try:
     case AstNodeKind::Assume:
     {
-        auto tca = CastAst<AstTryCatchAssume>(node, AstNodeKind::Try, AstNodeKind::Assume);
         if (node->specFlags & AST_SPEC_TCA_GENERATED && node->specFlags & AST_SPEC_TCA_BLOCK)
         {
             concat.addEol();

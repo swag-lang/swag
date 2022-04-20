@@ -25,7 +25,9 @@ struct RaceCondition
 };
 
 #define SWAG_RACE_CONDITION_WRITE(__x) RaceCondition rc(&__x, false);
+#define SWAG_RACE_CONDITION_WRITE1(__x) RaceCondition rc1(&__x, false);
 #define SWAG_RACE_CONDITION_READ(__x) RaceCondition rc(&__x, true);
+#define SWAG_RACE_CONDITION_READ1(__x) RaceCondition rc1(&__x, true);
 #define SWAG_RACE_CONDITION_INSTANCE(__x) RaceCondition::Instance __x;
 
 #else
