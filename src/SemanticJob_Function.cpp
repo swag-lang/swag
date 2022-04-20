@@ -1299,6 +1299,8 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
 
     if (funcDecl->extension)
     {
+        ScopedLock lk(inlineNode->extension->mutexAltScopes);
+        SharedLock lk1(funcDecl->extension->mutexAltScopes);
         inlineNode->extension->alternativeScopes     = funcDecl->extension->alternativeScopes;
         inlineNode->extension->alternativeScopesVars = funcDecl->extension->alternativeScopesVars;
     }

@@ -385,6 +385,7 @@ void AstNode::addAlternativeScope(Scope* scope, uint32_t altFlags)
     sv.flags = altFlags;
 
     allocateExtension();
+    ScopedLock(extension->mutexAltScopes);
     extension->alternativeScopes.push_back(sv);
 }
 
@@ -397,12 +398,14 @@ void AstNode::addAlternativeScopeVar(Scope* scope, AstNode* varNode, uint32_t al
     sv.flags    = altFlags;
 
     allocateExtension();
+    ScopedLock(extension->mutexAltScopes);
     extension->alternativeScopesVars.push_back(sv);
 }
 
 void AstNode::addAlternativeScopes(const VectorNative<AlternativeScope>& scopes)
 {
     allocateExtension();
+    ScopedLock(extension->mutexAltScopes);
     extension->alternativeScopes.append(scopes);
 }
 

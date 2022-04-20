@@ -265,6 +265,7 @@ struct AstNode
 
     struct Extension
     {
+        SharedMutex                       mutexAltScopes;
         VectorNative<AlternativeScope>    alternativeScopes;
         VectorNative<AlternativeScopeVar> alternativeScopesVars;
         VectorNative<uint32_t>            registersToRelease;

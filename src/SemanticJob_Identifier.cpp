@@ -3718,12 +3718,17 @@ void SemanticJob::collectAlternativeScopes(AstNode* startNode, VectorNative<Alte
 }
 
 void SemanticJob::collectAlternativeScopeVars(AstNode* startNode, VectorNative<AlternativeScope>& scopes, VectorNative<AlternativeScopeVar>& scopesVars)
-{
+{    
     // Need to go deep for using vars, because we can have a using on a struct, which has also
     // a using itself, and so on...
     VectorNative<AlternativeScopeVar> toAdd;
     VectorNative<Scope*>              done;
-    toAdd.append(startNode->extension->alternativeScopesVars);
+
+    {
+        SharedLock lk(startNode->extension->mutexAltScopes);
+        toAdd.append(startNode->extension->alternativeScopesVars);
+    }
+
     while (!toAdd.empty())
     {
         auto it0 = toAdd.back();
@@ -3739,8 +3744,11 @@ void SemanticJob::collectAlternativeScopeVars(AstNode* startNode, VectorNative<A
             {
                 // We register the sub scope with the original "node" (top level), because the original node will in the end
                 // become the dependentVar node, and will be converted by cast to the correct type.
-                for (auto& it1 : it0.scope->owner->extension->alternativeScopesVars)
-                    toAdd.push_back({it0.node, it1.node, it1.scope, it1.flags | it0.flags & ALTSCOPE_WITH});
+                {
+                    SharedLock lk(it0.scope->owner->extension->mutexAltScopes);
+                    for (auto& it1 : it0.scope->owner->extension->alternativeScopesVars)
+                        toAdd.push_back({ it0.node, it1.node, it1.scope, it1.flags | it0.flags & ALTSCOPE_WITH });
+                }
 
                 // If this is a struct that comes from a generic, we need to also register the generic scope in order
                 // to be able to find generic functions to instantiate
