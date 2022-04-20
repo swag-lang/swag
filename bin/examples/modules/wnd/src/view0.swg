@@ -420,11 +420,8 @@ func createView0(tabView: *Tab, view: *Wnd)
             btn.icon = img2.movie.inPause ? btn.getTheme().getIcon24(ThemeIcons24.Play) : btn.getTheme().getIcon24(ThemeIcons24.Pause)
         }
         img2.movie.sigFrameChanged += @|slider|(movie) {
-            if movie.numFrames
-            {
-                slider.setMinMax(0, acast movie.numFrames)
-                slider.setValue(acast movie.frameIndex)
-            }
+            slider.setMinMax(0, acast movie.numFrames)
+            slider.setValue(acast movie.frameIndex)
         }
         slider.sigChanged += @|img2|(slider) {
             if !img2.movie.inPause return

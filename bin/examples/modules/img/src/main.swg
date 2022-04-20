@@ -9,8 +9,8 @@ using Core, Win32, Ogl, Gdi32, Pixel
 
 var g_TestMode:  bool
 var g_HDC:       HDC
-var g_ImageIdx:  u32 = 27
-var g_EffectIdx: u32 = 0
+var g_ImageIdx:  u32 = 28
+var g_EffectIdx: u32 = 49
 var g_MyImage:   Pixel.Image
 var g_TextureID: GLuint
 
@@ -156,7 +156,13 @@ func loadImg()
     case 46: g_MyImage.setPixelFormat(.RGBA8)
     case 47: g_MyImage.setPixelFormat(.BGR8)
     case 48: g_MyImage.setPixelFormat(.BGRA8)
-    default: g_EffectIdx = 0
+
+    case 49:
+        img1 := assume Image.load(imagePath("testa.gif"))
+        g_MyImage.mix(img1, 0, 0, .Copy)
+
+    default:
+        g_EffectIdx = 0
     }
 
     te.stop()

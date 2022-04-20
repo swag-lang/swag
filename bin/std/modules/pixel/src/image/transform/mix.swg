@@ -1,0 +1,81 @@
+using Core
+
+impl Image
+{
+    public enum MixMode
+    {
+        Copy
+    }
+
+    mtd doMix(dstImage: *Image, srcImage: Image, x, y: s32, mode: MixMode)
+    {
+        f := @{dstImage, srcImage: &srcImage, x, y, mode}
+
+        #[Swag.Mixin]
+        func(BPP: u8) doIt()
+        {
+            visitPixels(&f)
+            {
+                params   := cast(*@typeof(f)) userData
+                dstImage := cast(*Image) params.dstImage
+                srcImage := cast(const *Image) params.srcImage
+
+                pixDst := dstImage.pixels + x * image.bpp8
+                pixDst += cast(uint) (y * (image.width * image.bpp8))
+
+                y = image.height - y
+
+                if  x < params.x or
+                    y < params.y or
+                    x >= params.x + srcImage.width or
+                    y >= params.y + srcImage.height
+                {
+                    copyPixel'BPP(pixDst, pix)
+                }
+                else
+                {
+                    x1 := x - params.x
+                    y1 := srcImage.height - (y - params.y)
+                    pixSrc := srcImage.pixels + x1 * srcImage.bpp8
+                    pixSrc += cast(uint) (y1 * (srcImage.width * srcImage.bpp8))
+
+                    if params.mode != .Copy
+                        copyPixel'BPP(pixDst, pix)
+
+                    switch params.mode
+                    {
+                    case Copy:
+                        copyPixel'BPP(pixDst, pixSrc)
+                    }
+                }
+            }
+        }
+
+        switch bpp
+        {
+        case 24: doIt'24()
+        case 32: doIt'32()
+        default: Debug.assert(false)
+        }
+    }
+
+    // Mix with another image
+    public mtd mix(srcImage: Image, x, y: s32, mode: MixMode)
+    {
+        Debug.assert(pf == srcImage.pf, "mismatched pixel format")
+        Debug.assert(pixels != null)
+        allocWorkingBuffer()
+        doMix(workingBuffer, srcImage, x, y, mode)
+        applyWorkingBuffer()
+    }
+
+    // Mix with another image
+    public mtd toMix(srcImage: Image, x, y: s32, mode: MixMode)->Image
+    {
+        Debug.assert(pixels != null)
+        Debug.assert(pf == srcImage.pf, "mismatched pixel format")
+        var result: retval = create(width, height, pf)
+        doMix(&result, srcImage, x, y, mode)
+        return result
+    }
+}
