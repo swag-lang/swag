@@ -5,9 +5,10 @@ impl Image
     public enum MixMode
     {
         Copy
+        AlphaBlend
     }
 
-    mtd doMix(dstImage: *Image, srcImage: Image, x, y: s32, mode: MixMode)
+    mtd doMix(dstImage: *Image, srcImage: Image, x, y: s32, mode = MixMode.Copy)
     {
         f := @{dstImage, srcImage: &srcImage, x, y, mode}
 
@@ -39,13 +40,18 @@ impl Image
                     pixSrc := srcImage.pixels + x1 * srcImage.bpp8
                     pixSrc += cast(uint) (y1 * (srcImage.width * srcImage.bpp8))
 
-                    if params.mode != .Copy
-                        copyPixel'BPP(pixDst, pix)
-
+                    #[Swag.Complete]
                     switch params.mode
                     {
                     case Copy:
                         copyPixel'BPP(pixDst, pixSrc)
+
+                    case AlphaBlend:
+                        bf := pixSrc[3] / 255.0
+                        pixDst[0] = cast(u8) (Math.lerp(cast(f32) pix[0], cast(f32) pixSrc[0], bf))
+                        pixDst[1] = cast(u8) (Math.lerp(cast(f32) pix[1], cast(f32) pixSrc[1], bf))
+                        pixDst[2] = cast(u8) (Math.lerp(cast(f32) pix[2], cast(f32) pixSrc[2], bf))
+                        pixDst[3] = pix[3]
                     }
                 }
             }
@@ -60,7 +66,7 @@ impl Image
     }
 
     // Mix with another image
-    public mtd mix(srcImage: Image, x, y: s32, mode: MixMode)
+    public mtd mix(srcImage: Image, x, y: s32, mode = MixMode.Copy)
     {
         Debug.assert(pf == srcImage.pf, "mismatched pixel format")
         Debug.assert(pixels != null)
@@ -70,7 +76,7 @@ impl Image
     }
 
     // Mix with another image
-    public mtd toMix(srcImage: Image, x, y: s32, mode: MixMode)->Image
+    public mtd toMix(srcImage: Image, x, y: s32, mode = MixMode.Copy)->Image
     {
         Debug.assert(pixels != null)
         Debug.assert(pf == srcImage.pf, "mismatched pixel format")

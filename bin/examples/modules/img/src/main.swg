@@ -159,7 +159,7 @@ func loadImg()
 
     case 49:
         img1 := assume Image.load(imagePath("testa.gif"))
-        g_MyImage.mix(img1, 0, 0, .Copy)
+        g_MyImage.mix(img1, 0, 0, .AlphaBlend)
 
     default:
         g_EffectIdx = 0
