@@ -410,13 +410,14 @@ func createView0(tabView: *Tab, view: *Wnd)
         path2 := Path.combine(Path.getDirectoryName(#file), "test.gif")
         assume img2.setFile(path2)
 
-        btn    := IconButton.create(view, app.theme.getIcon24(ThemeIcons24.WndClose), @{400, 780, 24, 24})
+        btn    := IconButton.create(view, app.theme.getIcon24(ThemeIcons24.Pause), @{400, 780, 24, 24})
         slider := Slider.create(view,  @{425, 780, 120})
         slider.disable()
 
         btn.sigPressed += @|img2, slider|(btn) {
             img2.movie.pause(!img2.movie.inPause)
             slider.enable(img2.movie.inPause)
+            btn.icon = img2.movie.inPause ? btn.getTheme().getIcon24(ThemeIcons24.Play) : btn.getTheme().getIcon24(ThemeIcons24.Pause)
         }
         img2.movie.sigFrameChanged += @|slider|(movie) {
             if movie.numFrames

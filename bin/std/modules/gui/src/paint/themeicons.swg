@@ -12,6 +12,9 @@ enum ThemeIcons24
     SortArrowUp
     TabArrowDown
     Picker
+    Play
+    Pause
+    Stop
 }
 
 enum ThemeIcons64
