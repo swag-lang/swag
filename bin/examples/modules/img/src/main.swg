@@ -159,6 +159,8 @@ func loadImg()
 
     case 49:
         img1 := assume Image.load(imagePath("testa.gif"))
+        img1.setPixelFormat(.RGBA8)
+        g_MyImage.setPixelFormat(.RGBA8)
         g_MyImage.mix(img1, 0, 0, .AlphaBlend)
 
     default:

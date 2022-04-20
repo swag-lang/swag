@@ -10,6 +10,8 @@ impl Image
 
     mtd doMix(dstImage: *Image, srcImage: Image, x, y: s32, mode = MixMode.Copy)
     {
+        Debug.assert(srcImage.pf.hasAlpha() or mode != .AlphaBlend)
+
         f := @{dstImage, srcImage: &srcImage, x, y, mode}
 
         #[Swag.Mixin]
@@ -48,9 +50,9 @@ impl Image
 
                     case AlphaBlend:
                         bf := pixSrc[3] / 255.0
-                        pixDst[0] = cast(u8) (Math.lerp(cast(f32) pix[0], cast(f32) pixSrc[0], bf))
-                        pixDst[1] = cast(u8) (Math.lerp(cast(f32) pix[1], cast(f32) pixSrc[1], bf))
-                        pixDst[2] = cast(u8) (Math.lerp(cast(f32) pix[2], cast(f32) pixSrc[2], bf))
+                        pixDst[0] = cast(u8) Math.lerp(cast(f32) pix[0], cast(f32) pixSrc[0], bf)
+                        pixDst[1] = cast(u8) Math.lerp(cast(f32) pix[1], cast(f32) pixSrc[1], bf)
+                        pixDst[2] = cast(u8) Math.lerp(cast(f32) pix[2], cast(f32) pixSrc[2], bf)
                         pixDst[3] = pix[3]
                     }
                 }
