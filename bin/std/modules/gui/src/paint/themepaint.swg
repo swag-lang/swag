@@ -107,22 +107,14 @@ impl Theme
 
         // Text + icon
         if icon.isValid()
-        {
-            switch stringFormat.horzAlignment
-            {
-            case Left:
-                pos.moveLeft(icon.sizeX + iconMargin)
-            case Center:
-                pos.moveLeft((icon.sizeX + iconMargin) * 0.5)
-            }
-        }
+            pos.moveLeft(icon.sizeX + iconMargin)
 
+        // Text
         painter.drawRichString(pos, name, stringFormat)
 
+        // Icon
         if icon.isValid()
-        {
             icon.paint(painter, name.boundRect.x - icon.sizeX - iconMargin, name.boundRect.vertCenter() - (icon.sizeY * 0.5), stringFormat.palette[0])
-        }
     }
 
     mtd setTextColors(fmt: *RichStringFormat, mainColor: Color)

@@ -303,11 +303,12 @@ func createView0(tabView: *Tab, view: *Wnd)
     {
         tab := Tab.create(view, @{600, 150, 400, 100}, id: "tab0")
         tab.setForm(TabForm.Round)
+        tab.barLayout = .Fixed
 
         loop 5
         {
             view0 := Wnd.create'Wnd(tab)
-            n := Format.toString("Tab%", @index)
+            n := Format.toString("Tab%", @index == 0 ? 1568 : @index)
             tab.addItem(n, app.theme.getIcon24(ThemeIcons24.Search, 16), view0)
             Label.create(view0, n, @{10, 10, 50, 30})
         }

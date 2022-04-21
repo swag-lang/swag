@@ -32,6 +32,7 @@ enum TabBarLayout
 {
     Divide
     Fixed
+    Auto
 }
 
 struct TabItem
@@ -51,6 +52,7 @@ struct Tab
     viewForm                = TabViewForm.Flat
     barLayout               = TabBarLayout.Divide
     itemFixedLayoutWidth:   f32 = 100
+    itemAutoLayoutMargin:   f32 = 25
     itemMinWidth:           f32 = 25
 
     sigSelChanged:      closure(self)
@@ -317,6 +319,24 @@ private impl Tab
             {
                 v.width = w
                 mostRightPos += w
+            }
+
+        case Auto:
+            visit v: views
+            {
+                mes := Painter.measureString(v.item.name.raw, getTheme().res.fontDefault.regular)
+
+                // Text
+                v.width = mes.width
+
+                // Icon
+                if v.item.icon.isValid()
+                    v.width += v.item.icon.sizeX + getThemeMetrics().iconText_Margin
+
+                // Margin
+                v.width += itemAutoLayoutMargin
+
+                mostRightPos += v.width
             }
         }
 
