@@ -392,7 +392,7 @@ func createView0(tabView: *Tab, view: *Wnd)
     {
         prg := ProgressBar.create(view, @{20, 550, 200})
         g_Prg = prg
-        tabView.sigSelChanged = @|prg|(tab) {
+        tabView.sigSelChanged += @|prg|(tab) {
             prg.setProgression(0)
         }
     }

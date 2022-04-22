@@ -59,7 +59,7 @@ struct Tab
     itemAutoLayoutMargin:   f32 = 25
     itemMinWidth:           f32 = 25
 
-    sigSelChanged:      closure(self)
+    sigSelChanged:      SigArray'closure(self)
 
     buttonPopup:        *IconButton
     views:              ArrayPtr'TabItem
@@ -499,8 +499,7 @@ impl Tab
         if views[selectedIdx].view
             views[selectedIdx].view.wndFlags &= ~.Hidden
 
-        if sigSelChanged
-            sigSelChanged(self)
+        sigSelChanged.call(self)
 
         sendResizeEvent()
         invalidate()
