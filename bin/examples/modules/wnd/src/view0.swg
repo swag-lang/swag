@@ -237,7 +237,7 @@ func createView0(tabView: *Tab, view: *Wnd)
 
     // SliderCtrl
     {
-        sliderctrl := SliderCtrl.create(view, "Center", @{380, 580, 300, 30})
+        sliderctrl := SliderCtrl.create(view, "Center", @{370, 580, 250, 30})
         sliderctrl.slider.setMinMax(0, 255)
         sliderctrl.edit.setInputU64(0, 255)
         sliderctrl.slider.setValue(0)
@@ -312,6 +312,14 @@ func createView0(tabView: *Tab, view: *Wnd)
             tab.addItem(n, app.theme.getIcon24(ThemeIcons24.Search, 16), view0)
             Label.create(view0, n, @{10, 10, 50, 30})
         }
+    }
+
+    {
+        tab := Tab.create(view, @{600, 570, 400, 100})
+        tab.setForm(.Button)
+        tab.addItem("toto", app.theme.getIcon24(ThemeIcons24.Search, 16))
+        tab.addItem("tata", app.theme.getIcon24(ThemeIcons24.Search, 16))
+        tab.addItem("titilafoule", app.theme.getIcon24(ThemeIcons24.Search, 16))
     }
 
     // MenuCtrl

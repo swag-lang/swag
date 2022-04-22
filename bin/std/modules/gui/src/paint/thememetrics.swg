@@ -12,6 +12,10 @@ struct ThemeMetrics
     wnd_SmallCaptionCY:         f32 = 24
     wnd_CaptionMarginTitle:     f32 = 5
 
+    tabBar_FlatHeight:          f32 = 40
+    tabBar_RoundHeight:         f32 = 28
+    tabBar_ButtonHeight:        f32 = 32
+
     btnPush_Padding:            f32 = 5
     btnPush_Width:              f32 = 100
     btnPush_Height:             f32 = 30

@@ -204,7 +204,10 @@ struct ThemeColors
     tabItem_FlatHot:                Color = White
     tabItem_RoundSelected:          Color = Gray6
     tabItem_RoundHot:               Color = Gray4
+    tabItem_ButtonSelected:         Color = Gray4
+    tabItem_ButtonHot:              Color = Gray5
     tabBar_FlatBk:                  Color = Gray4
+    tabBar_RoundBk:                 Color = Gray6
     tabView_FlatBk:                 Color = Gray6
     tabView_RoundBk:                Color = Gray6
 

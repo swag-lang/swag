@@ -5,6 +5,7 @@ enum TabForm
 {
     Flat
     Round
+    Button
 }
 
 enum TabBarForm
@@ -12,6 +13,7 @@ enum TabBarForm
     Transparent
     Flat
     FlatRound
+    Round
 }
 
 
@@ -20,10 +22,12 @@ enum TabItemForm
     Transparent
     Flat
     Round
+    Button
 }
 
 enum TabViewForm
 {
+    None
     Flat
     Round
 }
@@ -123,6 +127,23 @@ impl IWnd for Tab
             {
                 colorText = colors.tabItem_UnSelectedText
             }
+        case Button:
+            if idx == selectedIdx
+            {
+                subRect = &rects.tabItem_ButtonSelected
+                colorImg = colors.tabItem_ButtonSelected
+                colorText = colors.tabItem_SelectedText
+            }
+            elif idx == hotIdx
+            {
+                subRect = &rects.tabItem_ButtonHot
+                colorImg = colors.tabItem_ButtonHot
+                colorText = colors.tabItem_SelectedText
+            }
+            else
+            {
+                colorText = colors.tabItem_UnSelectedText
+            }
         }
 
         if subRect
@@ -156,6 +177,8 @@ impl IWnd for Tab
                 painter.fillRect(clientRect, colors.tabBar_FlatBk)
             case FlatRound:
                 theme.drawSubRect(painter, clientRect, &rects.tabBar_FlatRoundBk, colors.tabBar_FlatBk)
+            case Round:
+                theme.drawSubRect(painter, clientRect, &rects.tabBar_RoundBk, colors.tabBar_RoundBk)
             }
         }
 
@@ -205,10 +228,13 @@ impl IWnd for Tab
         ensureVisible(selectedIdx)
 
         curView := views[selectedIdx].view
-        clientRect := getClientRect()
-        clientRect.moveTop(barHeight)
-        clientRect.applyPadding(padding)
-        curView.setPosition(clientRect)
+        if curView
+        {
+            clientRect := getClientRect()
+            clientRect.moveTop(barHeight)
+            clientRect.applyPadding(padding)
+            curView.setPosition(clientRect)
+        }
     }
 
     mtd onMouseEvent(evt: *MouseEvent)
@@ -418,29 +444,39 @@ impl Tab
         switch tabForm
         {
         case Flat:
-            barForm = .Flat
-            itemForm = .Flat
-            viewForm = .Flat
-            barHeight = 40
+            barForm   = .Flat
+            itemForm  = .Flat
+            viewForm  = .Flat
             barLayout = .Divide
+            barHeight = getThemeMetrics().tabBar_FlatHeight
 
         case Round:
-            barForm = .Transparent
-            itemForm = .Round
-            viewForm = .Round
-            barHeight = 28
+            barForm   = .Transparent
+            itemForm  = .Round
+            viewForm  = .Round
             barLayout = .Fixed
+            barHeight = getThemeMetrics().tabBar_RoundHeight
+
+        case Button:
+            viewForm  = .None
+            barForm   = .Round
+            itemForm  = .Button
+            barLayout = .Auto
+            barHeight = getThemeMetrics().tabBar_ButtonHeight
         }
     }
 
     // Add a new view
-    mtd addItem(tabName: string, icon: Icon, view: *Wnd)
+    mtd addItem(tabName: string, icon: Icon, view: *Wnd = null)
     {
-        if views.isEmpty()
-            view.wndFlags &= ~.Hidden
-        else
-            view.wndFlags |= .Hidden
-        view.setParent(self)
+        if view
+        {
+            if views.isEmpty()
+                view.wndFlags &= ~.Hidden
+            else
+                view.wndFlags |= .Hidden
+            view.setParent(self)
+        }
 
         item := views.newPtr()
         item.view = view
@@ -457,9 +493,11 @@ impl Tab
         if selectedIdx == idx or selectedIdx >= views.count
             return
 
-        views[selectedIdx].view.wndFlags |= .Hidden
+        if views[selectedIdx].view
+            views[selectedIdx].view.wndFlags |= .Hidden
         selectedIdx = idx
-        views[selectedIdx].view.wndFlags &= ~.Hidden
+        if views[selectedIdx].view
+            views[selectedIdx].view.wndFlags &= ~.Hidden
 
         if sigSelChanged
             sigSelChanged(self)
