@@ -92,10 +92,10 @@ struct TreeCtrl
     iconSize:           f32
     treeFlags           = TreeFlags.None
     selectionMode       = TreeSelectionMode.Single
-    sigSelChanged:      func(*Self)
-    sigCheckChanged:    func(*Self)
-    sigRightClick:      func(*Self, Math.Point)
-    sigLeftDoubleClick: func(*Self, Math.Point)
+    sigSelChanged:      SigArray'closure(*Self)
+    sigCheckChanged:    SigArray'closure(*Self)
+    sigRightClick:      SigArray'closure(*Self, Math.Point)
+    sigLeftDoubleClick: SigArray'closure(*Self, Math.Point)
     sigSort:            func(*TreeLine, *TreeLine, u32, bool)->s32
 
     lines:              ArrayPtr'TreeLine
@@ -152,8 +152,7 @@ impl IWnd for TreeView
                 tree.checkModel.select(l, checked)
             }
 
-            if tree.sigCheckChanged
-                tree.sigCheckChanged(tree)
+            tree.sigCheckChanged.call(tree)
             invalidate()
 
         case Enter:
@@ -161,8 +160,7 @@ impl IWnd for TreeView
                 break
             visit l: tree.selModel
                 tree.checkModel.select(l, true)
-            if tree.sigCheckChanged
-                tree.sigCheckChanged(tree)
+            tree.sigCheckChanged.call(tree)
             invalidate()
 
         case A:
@@ -267,11 +265,8 @@ impl IWnd for TreeView
                 }
                 elif evt.kind == .MouseReleased
                 {
-                    if tree.sigRightClick
-                    {
-                        pt := surfaceToLocal(evt.surfacePos)
-                        tree.sigRightClick(tree, pt)
-                    }
+                    pt := surfaceToLocal(evt.surfacePos)
+                    tree.sigRightClick.call(tree, pt)
                 }
             }
 
@@ -311,8 +306,7 @@ impl IWnd for TreeView
                 }
                 else
                     tree.checkModel.select(idxLine, checked)
-                if tree.sigCheckChanged
-                    tree.sigCheckChanged(tree)
+                tree.sigCheckChanged.call(tree)
                 invalidate()
                 return
             }
@@ -323,12 +317,8 @@ impl IWnd for TreeView
 
         if evt.kind == .MouseDoubleClick
         {
-            if tree.sigLeftDoubleClick
-            {
-                pt := surfaceToLocal(evt.surfacePos)
-                tree.sigLeftDoubleClick(tree, pt)
-            }
-
+            pt := surfaceToLocal(evt.surfacePos)
+            tree.sigLeftDoubleClick.call(tree, pt)
             return
         }
 
@@ -379,8 +369,7 @@ impl IWnd for TreeView
 
         tree.focusIndex = idx
         invalidate()
-        if tree.sigSelChanged
-            tree.sigSelChanged()
+        tree.sigSelChanged.call()
     }
 
     mtd onPaintEvent(evt: *PaintEvent)
@@ -742,8 +731,7 @@ impl TreeCtrl
             return
         selModel.unselectAll()
         invalidate()
-        if sigSelChanged
-            sigSelChanged(self)
+        sigSelChanged.call(self)
     }
 
     // Returns
@@ -768,8 +756,7 @@ impl TreeCtrl
         selModel.select(idxLine, select)
         invalidate()
 
-        if sigSelChanged
-            sigSelChanged(self)
+        sigSelChanged.call(self)
     }
 
     // Select a range of lines
@@ -789,9 +776,7 @@ impl TreeCtrl
         }
 
         invalidate()
-
-        if sigSelChanged
-            sigSelChanged(self)
+        sigSelChanged.call(self)
     }
 
     // Compute global layout, once all lines have been added
