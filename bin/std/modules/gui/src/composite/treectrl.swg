@@ -81,7 +81,6 @@ struct TreeCtrl
     iconSize:           f32
     treeFlags           = TreeFlags.None
     selectionMode       = TreeSelectionMode.Single
-    sigVirtualFill:     func(*Self, *TreeLine, u32)
     sigSelChanged:      func(*Self)
     sigCheckChanged:    func(*Self)
     sigRightClick:      func(*Self, Math.Point)
@@ -94,17 +93,15 @@ struct TreeCtrl
     checkModel:     SelModel
     focusIndex:     u32 = Swag.U32.Max
     scrollWnd:      *ScrollWnd
-    listView:       *TreeView
+    treeView:       *TreeView
     header:         *Header
-    virtualCount:   u32
-    isVirtual:      bool
     nextTreeIndex:  u32
 }
 
 struct TreeView
 {
     using wnd:              Wnd
-    list:                   *TreeCtrl
+    tree:                   *TreeCtrl
     discardMouseRelease:    bool
 }
 
@@ -116,10 +113,10 @@ impl IWnd for TreeView
         if evt.kind != .KeyPressed
             return
 
-        lineCount := list.getLineCount()
+        lineCount := tree.getLineCount()
         if !lineCount
             return
-        if list.focusIndex == Swag.U32.Max
+        if tree.focusIndex == Swag.U32.Max
             return
 
         shift := cast(bool) (evt.modifiers & .Shift)
@@ -131,94 +128,94 @@ impl IWnd for TreeView
         switch evt.key
         {
         case Space:
-            if !(list.treeFlags & .Checkable)
+            if !(tree.treeFlags & .Checkable)
                 break
 
-            visit l: list.selModel
+            visit l: tree.selModel
             {
-                checked := !list.checkModel.isSelected(l)
-                list.checkModel.select(l, checked)
+                checked := !tree.checkModel.isSelected(l)
+                tree.checkModel.select(l, checked)
             }
 
-            if list.sigCheckChanged
-                list.sigCheckChanged(list)
+            if tree.sigCheckChanged
+                tree.sigCheckChanged(tree)
             invalidate()
 
         case Enter:
-            if !(list.treeFlags & .Checkable)
+            if !(tree.treeFlags & .Checkable)
                 break
-            visit l: list.selModel
-                list.checkModel.select(l, true)
-            if list.sigCheckChanged
-                list.sigCheckChanged(list)
+            visit l: tree.selModel
+                tree.checkModel.select(l, true)
+            if tree.sigCheckChanged
+                tree.sigCheckChanged(tree)
             invalidate()
 
         case A:
-            if !ctrl or list.selectionMode == .Single
+            if !ctrl or tree.selectionMode == .Single
                 break
             shift = true
-            list.selModel.unselectAll()
+            tree.selModel.unselectAll()
             endSelIdx = 0
-            startSelIdx = list.getLineCount() - 1
+            startSelIdx = tree.getLineCount() - 1
             selChanged = true
 
         case Home:
-            startSelIdx = list.focusIndex
+            startSelIdx = tree.focusIndex
             endSelIdx = 0
             selChanged = true
 
         case End:
-            startSelIdx = list.focusIndex
+            startSelIdx = tree.focusIndex
             endSelIdx = lineCount - 1
             selChanged = true
 
         case Up:
-            if list.focusIndex == 0
+            if tree.focusIndex == 0
                 startSelIdx, endSelIdx = 0
             else
-                startSelIdx, endSelIdx = list.focusIndex - 1
+                startSelIdx, endSelIdx = tree.focusIndex - 1
             selChanged = true
 
         case Down:
-            if list.focusIndex == lineCount - 1
+            if tree.focusIndex == lineCount - 1
                 startSelIdx, endSelIdx = lineCount - 1
             else
-                startSelIdx, endSelIdx = list.focusIndex + 1
+                startSelIdx, endSelIdx = tree.focusIndex + 1
             selChanged = true
 
         case PageDown:
-            first := list.getFirstVisibleLineIndex()
-            last  := list.getLastVisibleLineIndex()
-            startSelIdx, endSelIdx = list.focusIndex + (last - first)
+            first := tree.getFirstVisibleLineIndex()
+            last  := tree.getLastVisibleLineIndex()
+            startSelIdx, endSelIdx = tree.focusIndex + (last - first)
             startSelIdx = Math.min(startSelIdx, lineCount - 1)
             endSelIdx = Math.min(endSelIdx, lineCount - 1)
             selChanged = true
             break
 
         case PageUp:
-            first := list.getFirstVisibleLineIndex()
-            last  := list.getLastVisibleLineIndex()
+            first := tree.getFirstVisibleLineIndex()
+            last  := tree.getLastVisibleLineIndex()
             offset := last - first
-            if offset > list.focusIndex
+            if offset > tree.focusIndex
                 startSelIdx, endSelIdx = 0
             else
-                startSelIdx, endSelIdx = list.focusIndex - offset
+                startSelIdx, endSelIdx = tree.focusIndex - offset
             selChanged = true
             break
         }
 
         if selChanged
         {
-            if !shift or list.selectionMode == .Single
+            if !shift or tree.selectionMode == .Single
             {
-                list.selModel.unselectAll()
+                tree.selModel.unselectAll()
                 startSelIdx = endSelIdx
             }
 
             loop i: startSelIdx..endSelIdx
-                list.selectLine(i, true)
-            list.focusIndex = endSelIdx
-            list.ensureVisibleLine(list.focusIndex)
+                tree.selectLine(i, true)
+            tree.focusIndex = endSelIdx
+            tree.ensureVisibleLine(tree.focusIndex)
         }
     }
 
@@ -244,21 +241,21 @@ impl IWnd for TreeView
             {
                 if evt.kind == .MousePressed
                 {
-                    idxLine := list.isVirtual ? idx : list.lines[idx].index
-                    if !list.selModel.isSelected(idxLine)
+                    idxLine := tree.lines[idx].index
+                    if !tree.selModel.isSelected(idxLine)
                     {
-                        list.selModel.unselectAll()
-                        list.selModel.select(idxLine, true)
-                        list.focusIndex = idx
+                        tree.selModel.unselectAll()
+                        tree.selModel.select(idxLine, true)
+                        tree.focusIndex = idx
                         invalidate()
                     }
                 }
                 elif evt.kind == .MouseReleased
                 {
-                    if list.sigRightClick
+                    if tree.sigRightClick
                     {
                         pt := surfaceToLocal(evt.surfacePos)
-                        list.sigRightClick(list, pt)
+                        tree.sigRightClick(tree, pt)
                     }
                 }
             }
@@ -273,7 +270,7 @@ impl IWnd for TreeView
             return
 
         // On checkbox
-        if list.treeFlags & .Checkable and idx != Swag.U32.Max
+        if tree.treeFlags & .Checkable and idx != Swag.U32.Max
         {
             eatCheck := false
             if evt.kind == .MouseDoubleClick
@@ -282,7 +279,7 @@ impl IWnd for TreeView
             {
                 localPos := surfaceToLocal(evt.surfacePos)
                 localPos.x += scrollPos.x
-                if localPos.x < Math.min(getThemeMetrics().btnCheck_Size, list.lineHeight)
+                if localPos.x < Math.min(getThemeMetrics().btnCheck_Size, tree.lineHeight)
                     eatCheck = true
             }
 
@@ -290,17 +287,17 @@ impl IWnd for TreeView
             {
                 if evt.kind == .MouseReleased
                     return
-                idxLine := list.isVirtual ? idx : list.lines[idx].index
-                checked := !list.checkModel.isSelected(idxLine)
-                if list.selModel.isSelected(idxLine)
+                idxLine := tree.lines[idx].index
+                checked := !tree.checkModel.isSelected(idxLine)
+                if tree.selModel.isSelected(idxLine)
                 {
-                    visit l: list.selModel
-                        list.checkModel.select(l, checked)
+                    visit l: tree.selModel
+                        tree.checkModel.select(l, checked)
                 }
                 else
-                    list.checkModel.select(idxLine, checked)
-                if list.sigCheckChanged
-                    list.sigCheckChanged(list)
+                    tree.checkModel.select(idxLine, checked)
+                if tree.sigCheckChanged
+                    tree.sigCheckChanged(tree)
                 invalidate()
                 return
             }
@@ -311,10 +308,10 @@ impl IWnd for TreeView
 
         if evt.kind == .MouseDoubleClick
         {
-            if list.sigLeftDoubleClick
+            if tree.sigLeftDoubleClick
             {
                 pt := surfaceToLocal(evt.surfacePos)
-                list.sigLeftDoubleClick(list, pt)
+                tree.sigLeftDoubleClick(tree, pt)
             }
 
             return
@@ -323,11 +320,11 @@ impl IWnd for TreeView
         // Selection by left button
         // ============================
 
-        if list.selectionMode == .None
+        if tree.selectionMode == .None
             return
 
         // We select by mouse release when the hittest line is selected
-        if evt.kind == .MousePressed and idx != Swag.U32.Max and list.isLineSelected(idx)
+        if evt.kind == .MousePressed and idx != Swag.U32.Max and tree.isLineSelected(idx)
         {
             discardMouseRelease = false
             return
@@ -340,40 +337,40 @@ impl IWnd for TreeView
 
         discardMouseRelease = evt.kind == .MousePressed
 
-        if list.selectionMode == .Single or (!ctrl and !shift)
-            list.selModel.unselectAll()
+        if tree.selectionMode == .Single or (!ctrl and !shift)
+            tree.selModel.unselectAll()
 
         if idx != Swag.U32.Max
         {
             // Range selection
-            if shift and list.selectionMode == .Multi
+            if shift and tree.selectionMode == .Multi
             {
-                startIdx := list.focusIndex == Swag.U32.Max ? 0 : list.focusIndex
+                startIdx := tree.focusIndex == Swag.U32.Max ? 0 : tree.focusIndex
                 loop i: startIdx..idx
                 {
-                    idxLine := list.isVirtual ? i : list.lines[i].index
-                    list.selModel.select(idxLine, true)
+                    idxLine := tree.lines[i].index
+                    tree.selModel.select(idxLine, true)
                 }
             }
 
             // Invert selection
             else
             {
-                idxLine := list.isVirtual ? idx : list.lines[idx].index
-                toSel   := !list.selModel.isSelected(idxLine)
-                list.selModel.select(idxLine, toSel)
+                idxLine := tree.lines[idx].index
+                toSel   := !tree.selModel.isSelected(idxLine)
+                tree.selModel.select(idxLine, toSel)
             }
         }
 
-        list.focusIndex = idx
+        tree.focusIndex = idx
         invalidate()
-        if list.sigSelChanged
-            list.sigSelChanged()
+        if tree.sigSelChanged
+            tree.sigSelChanged()
     }
 
     mtd onPaintEvent(evt: *PaintEvent)
     {
-        if list.getLineCount() == 0
+        if tree.getLineCount() == 0
             return
 
         bc      := evt.bc
@@ -383,60 +380,43 @@ impl IWnd for TreeView
 
         var rect: Math.Rectangle
         rect.width = getDisplayWidth()
-        rect.height = list.lineHeight
+        rect.height = tree.lineHeight
 
         // Clipping, take care of padding
         clipRect := getSurfaceRect()
         clipRect.applyPadding(padding)
 
-        firstIdx := list.getFirstVisibleLineIndex()
-        lastIdx  := list.getLastVisibleLineIndex()
+        firstIdx := tree.getFirstVisibleLineIndex()
+        lastIdx  := tree.getLastVisibleLineIndex()
 
         // Do not display with bigs coordinates to avoid precision issues
         // So we do the scroll by hand, and draw will small coordinates
-        y := cast(f64) firstIdx * list.lineHeight
+        y := cast(f64) firstIdx * tree.lineHeight
         y -= scrollPos.y
         rect.y = cast(f32) y
 
-        if list.isVirtual
+        loop i: firstIdx..lastIdx
         {
-            Debug.assert(list.sigVirtualFill != null)
-            loop i: firstIdx..lastIdx
-            {
-                var line: TreeLine
-                list.sigVirtualFill(&line, i)
-                paintLine(bc, i, &line, rect)
-                rect.y = rect.bottom()
+            line := tree.lines[i]
+            paintLine(bc, i, line, rect)
+            rect.y = rect.bottom()
 
-                if list.treeFlags & .HorzLines
-                    painter.drawLine(rect.x, rect.y, rect.right(), rect.y, colors.listItem_Line, 1)
-            }
-        }
-        else
-        {
-            loop i: firstIdx..lastIdx
-            {
-                line := list.lines[i]
-                paintLine(bc, i, line, rect)
-                rect.y = rect.bottom()
-
-                if list.treeFlags & .HorzLines
-                    painter.drawLine(rect.x, rect.y, rect.right(), rect.y, colors.listItem_Line, 1)
-            }
+            if tree.treeFlags & .HorzLines
+                painter.drawLine(rect.x, rect.y, rect.right(), rect.y, colors.listItem_Line, 1)
         }
 
-        if list.header and list.treeFlags & .VertLines
+        if tree.header and tree.treeFlags & .VertLines
         {
             rect = getClientRectPadding()
-            loop idx: 1..list.header.items.count-1
+            loop idx: 1..tree.header.items.count-1
             {
-                x := getXPos(list.header.items[idx].column)
+                x := getXPos(tree.header.items[idx].column)
                 x -= scrollPos.x
                 x -= metrics.header_Separator * 0.5
                 painter.drawLine(x, rect.y, x, rect.bottom(), colors.listItem_Line, 1)
             }
 
-            last := list.header.items.back()
+            last := tree.header.items.back()
             x := getXPos(last.column)
             x -= scrollPos.x
             x += last.width
@@ -450,8 +430,8 @@ private impl TreeView
 {
     mtd getXPos(column: u32)->f32
     {
-        x := list.header.getItemPositionByCol(column)
-        x += list.header.getSurfaceRect().x
+        x := tree.header.getItemPositionByCol(column)
+        x += tree.header.getSurfaceRect().x
         x -= getSurfaceRect().x
         return x
     }
@@ -466,8 +446,8 @@ private impl TreeView
         font    := theme.res.fontDefault.regular
 
         // Selection box
-        isSelected := list.isLineSelected(idx)
-        hideSel := cast(bool) (list.treeFlags & .HideSelection)
+        isSelected := tree.isLineSelected(idx)
+        hideSel := cast(bool) (tree.treeFlags & .HideSelection)
         if isSelected and (!hideSel or hasFocus()) and !bc.isDisabled
         {
             colorSel := hasFocus() ? colors.listItem_FocusSelectedBk : colors.listItem_SelectedBk
@@ -481,7 +461,7 @@ private impl TreeView
         }
 
         // Alternate lines
-        elif (list.treeFlags & .AlternateLines) and idx % 2 == 1
+        elif (tree.treeFlags & .AlternateLines) and idx % 2 == 1
         {
             painter.fillRect(rect, colors.listItem_AlternateBk)
         }
@@ -516,10 +496,10 @@ private impl TreeView
             labelPos := rect
 
             // Right
-            if list.header
+            if tree.header
             {
                 labelPos.x = getXPos(item.column)
-                labelPos.width = list.header.getItemWidthByCol(item.column)
+                labelPos.width = tree.header.getItemWidthByCol(item.column)
             }
 
             labelPos.x -= scrollPos.x
@@ -536,13 +516,13 @@ private impl TreeView
             defer painter.popClippingRect()
 
             // Checkbox
-            if idxItem == 0 and list.treeFlags & .Checkable
+            if idxItem == 0 and tree.treeFlags & .Checkable
             {
                 var subRectBorder:  *ThemeImageRect
                 var subRectMark:    *ThemeImageRect
 
-                idxLine := list.isVirtual ? idx : list.lines[idx].index
-                checked := list.checkModel.isSelected(idxLine)
+                idxLine := tree.lines[idx].index
+                checked := tree.checkModel.isSelected(idxLine)
 
                 colorBorder := colorFg
                 colorMark   := colorFg
@@ -557,7 +537,7 @@ private impl TreeView
                     subRectBorder = &rects.btnCheck_NormalBorder
                 }
 
-                widthCheck := Math.min(metrics.btnCheck_Size, list.lineHeight)
+                widthCheck := Math.min(metrics.btnCheck_Size, tree.lineHeight)
                 posBox := labelPos
                 posBox.height = widthCheck
                 posBox.y = labelPos.vertCenter() - (posBox.height * 0.5)
@@ -569,19 +549,19 @@ private impl TreeView
             }
 
             // Take care of header item margin
-            if list.header
-                labelPos.moveLeft(list.header.marginItems)
+            if tree.header
+                labelPos.moveLeft(tree.header.marginItems)
 
             // Left margin, or icon
             icon := item.icon
-            if list.iconSize > 0
+            if tree.iconSize > 0
             {
                 if !icon.isValid()
-                    labelPos.moveLeft(list.iconSize + metrics.iconText_Margin)
+                    labelPos.moveLeft(tree.iconSize + metrics.iconText_Margin)
                 else
                 {
-                    icon.sizeX = list.iconSize
-                    icon.sizeY = list.iconSize
+                    icon.sizeX = tree.iconSize
+                    icon.sizeY = tree.iconSize
                 }
             }
 
@@ -591,10 +571,10 @@ private impl TreeView
 
     mtd hitTest(surfacePos: Math.Point)->u32
     {
-        lc := list.getLineCount()
+        lc := tree.getLineCount()
         res := surfaceToLocal(surfacePos)
         res.y += scrollPos.y
-        idx := cast(u32) (res.y / list.lineHeight)
+        idx := cast(u32) (res.y / tree.lineHeight)
         if idx >= lc
             return Swag.U32.Max
         return idx
@@ -602,8 +582,8 @@ private impl TreeView
 
     mtd getDisplayWidth()->f32
     {
-        if list.horizontalExtent > 0
-            return list.horizontalExtent
+        if tree.horizontalExtent > 0
+            return tree.horizontalExtent
         return position.width
     }
 }
@@ -613,9 +593,9 @@ impl TreeCtrl
     #[Swag.Discardable]
     func createSimple(parent: *Wnd, position: Math.Rectangle, id: WndId = null)->*TreeCtrl
     {
-        list := Wnd.create'TreeCtrl(parent, "", position, id)
+        tree := Wnd.create'TreeCtrl(parent, "", position, id)
 
-        with list
+        with tree
         {
             scrollWnd = createView'ScrollWnd()
             scrollWnd.dockStyle = .Center
@@ -623,34 +603,34 @@ impl TreeCtrl
             scrollWnd.backgroundStyle = .Transparent
             scrollWnd.setAllPaddings(getThemeMetrics().list_Padding)
 
-            listView = scrollWnd.createView'TreeView()
-            listView.backgroundStyle = .Transparent
-            listView.list = list
-            listView.wndFlags |= .NoScroll
+            treeView = scrollWnd.createView'TreeView()
+            treeView.backgroundStyle = .Transparent
+            treeView.tree = tree
+            treeView.wndFlags |= .NoScroll
         }
 
-        return list
+        return tree
     }
 
     #[Swag.Discardable]
     func createMultiColumns(parent: *Wnd, position: Math.Rectangle, id: WndId = null)->*TreeCtrl
     {
-        list := Wnd.create'TreeCtrl(parent, "", position, id)
+        tree := Wnd.create'TreeCtrl(parent, "", position, id)
 
-        fwnd := list.createView'Wnd()
+        fwnd := tree.createView'Wnd()
         fwnd.dockStyle = .Center
         fwnd.backgroundStyle = .Transparent
         fwnd.wndFlags ^= .ClipChildren
 
         // Adapt header to the frame container
-        list.hookOnEvent = @(wnd, evt)
+        tree.hookOnEvent = @(wnd, evt)
         {
             if evt.kind != .Resize
                 return false
 
-            list   := cast(*TreeCtrl) wnd
-            header := list.header
-            switch list.frameForm
+            tree   := cast(*TreeCtrl) wnd
+            header := tree.header
+            switch tree.frameForm
             {
             case Round:
                 header.form = .Round
@@ -667,22 +647,22 @@ impl TreeCtrl
             return false
         }
 
-        with list
+        with tree
         {
             // Header
             // Need to recompute layout when header size has changed
             header = Header.create(fwnd, @{})
             header.dockStyle = .Top
             header.form = .Round
-            header.sigLayoutChanged = @|list|(header) {
-                list.computeLayout()
+            header.sigLayoutChanged = @|tree|(header) {
+                tree.computeLayout()
             }
 
-            header.sigClicked = @|list|(header, col) {
-                list.sort(col, header.sortMark <= 0 ? false : true, true)
+            header.sigClicked = @|tree|(header, col) {
+                tree.sort(col, header.sortMark <= 0 ? false : true, true)
             }
 
-            // Scroll that contains the list view
+            // Scroll that contains the tree view
             scrollWnd = Wnd.create'ScrollWnd(fwnd, @{})
             scrollWnd.dockStyle = .Center
             scrollWnd.focusStrategy = .None
@@ -694,13 +674,13 @@ impl TreeCtrl
             }
 
             // TreeCtrl view
-            listView = scrollWnd.createView'TreeView()
-            listView.backgroundStyle = .Transparent
-            listView.list = list
-            listView.wndFlags |= .NoScroll
+            treeView = scrollWnd.createView'TreeView()
+            treeView.backgroundStyle = .Transparent
+            treeView.tree = tree
+            treeView.wndFlags |= .NoScroll
         }
 
-        return list
+        return tree
     }
 
     // Unselect all lines
@@ -720,8 +700,6 @@ impl TreeCtrl
         Debug.assert(idx < getLineCount())
         if selectionMode == .None
             return false
-        if isVirtual
-            return selModel.isSelected(idx)
         return selModel.isSelected(lines[idx].index)
     }
 
@@ -734,7 +712,7 @@ impl TreeCtrl
         if selectionMode == .None or lineCount == 0
             return
 
-        idxLine := isVirtual ? idx : lines[idx].index
+        idxLine := lines[idx].index
         selModel.select(idxLine, select)
         invalidate()
 
@@ -754,7 +732,7 @@ impl TreeCtrl
 
         loop i: start..end
         {
-            idxLine := isVirtual ? i : lines[i].index
+            idxLine := lines[i].index
             selModel.select(idxLine, select)
         }
 
@@ -787,19 +765,15 @@ impl TreeCtrl
         return lines[idx]
     }
 
-    // Returns the number of lines in the list
+    // Returns the number of lines in the tree
     mtd getLineCount()->u32
     {
-        if isVirtual
-            return virtualCount
         return cast(u32) lines.count
     }
 
     // Add one new line
     mtd createLine()->*TreeLine
     {
-        Debug.assert(!isVirtual, "createLine cannot be called on a virtual list")
-
         line := lines.newPtr()
         line.index = nextTreeIndex
         idxLineToIdx.add(line.index, line.index)
@@ -820,11 +794,10 @@ impl TreeCtrl
     mtd clear()
     {
         lines.clear()
-        virtualCount = 0
         idxLineToIdx.clear()
     }
 
-    // Add one column in a multi columns list
+    // Add one column in a multi columns tree
     mtd addColumn(name: string, width: f32 = 100, icon: Icon = @{})
     {
         Debug.assert(header != null)
@@ -838,20 +811,11 @@ impl TreeCtrl
         header.setItemWidth(idx, width)
     }
 
-    // Set the number of lines in a virtual list
-    mtd setVirtualCount(count: u32)
-    {
-        clear()
-        isVirtual = true
-        virtualCount = count
-        computeLayout()
-    }
-
     // Returns the first visible line index
     mtd getFirstVisibleLineIndex()->u32
     {
         lc := getLineCount()
-        idx := cast(u32) (listView.scrollPos.y / lineHeight)
+        idx := cast(u32) (treeView.scrollPos.y / lineHeight)
         if idx >= lc
             return Swag.U32.Max
         return idx
@@ -864,11 +828,11 @@ impl TreeCtrl
         if lc == 0
             return Swag.U32.Max
 
-        y := listView.scrollPos.y + scrollWnd.view.position.height
+        y := treeView.scrollPos.y + scrollWnd.view.position.height
         y -= scrollWnd.view.padding.y
         y -= scrollWnd.view.padding.w
         if y < 0
-            return cast(u32) (listView.scrollPos.y / lineHeight)
+            return cast(u32) (treeView.scrollPos.y / lineHeight)
         idx := cast(u32) (y / lineHeight)
         if idx >= lc
             return cast(u32) lc - 1
@@ -889,7 +853,7 @@ impl TreeCtrl
     // Returns true if the line at the given index is selected
     mtdc isSelectedLine(idx: u32)->bool
     {
-        idxLine := isVirtual ? idx : lines[idx].index
+        idxLine := lines[idx].index
         return selModel.isSelected(idxLine)
     }
 
@@ -897,7 +861,7 @@ impl TreeCtrl
     mtdc getSelectedLines()->Array'(*TreeLine)
     {
         var result: retval
-        if isVirtual or selModel.isEmpty()
+        if selModel.isEmpty()
             return result
 
         visit i: selModel
@@ -913,7 +877,7 @@ impl TreeCtrl
     mtdc getCheckedLines()->Array'(*TreeLine)
     {
         var result: retval
-        if isVirtual or checkModel.isEmpty()
+        if checkModel.isEmpty()
             return result
 
         visit i: checkModel
@@ -929,7 +893,7 @@ impl TreeCtrl
     // Mostly for singlesel mode
     mtdc getSelectedLine()->*TreeLine
     {
-        if isVirtual or selModel.isEmpty()
+        if selModel.isEmpty()
             return null
         range := selModel.selection.front()
         idx   := idxLineToIdx.find(range.start).value
@@ -943,14 +907,11 @@ impl TreeCtrl
             idxLineToIdx.add(l.index, cast(u32) idx)
     }
 
-    // Sort the list by a given column
+    // Sort the tree by a given column
     // If 'persistent' is true, then the sorted column will be displayed in the
     // header (if it exists)
     mtd sort(column: u32, descentOrder, persistent = false)
     {
-        if isVirtual
-            return
-
         cb := @|self, column, descentOrder|(a, b: *TreeLine)->s32
         {
             if self.sigSort
