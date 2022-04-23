@@ -26,6 +26,7 @@ func createListMulti(view: *Wnd)->*ListCtrl
     list.addColumn("column 1")
     list.addColumn("column 2")
     list.setFrameForm(FrameWndForm.Round)
+    list.header.getItem(2).iconMargin = true
     list.selectionMode = .Multi
     list.iconSize = 16
 
@@ -35,7 +36,7 @@ func createListMulti(view: *Wnd)->*ListCtrl
         icon := app.theme.getIcon24(ThemeIcons24.Search, 16)
         if i % 2 == 0 icon.clear()
         line := list.createLine(str, icon)
-        line.setItem(1, str, icon)
+        line.setItem(1, str)
         line.setItem(2, str, icon)
     }
 
@@ -124,10 +125,10 @@ func createView1(tabView: *Tab, view: *Wnd)
         list.setPosition(@{420, 400, 400, 300})
 
         line0 := list.getLine(0)
-        line0.colorBk = Argb.Red
-        line0.colorFg = Argb.Blue
-        line0.getItem(0).colorFg = Argb.Green
-        line0.getItem(0).colorBk = Argb.Blue
+        line0.colorBk = Color.getDarker(Argb.Red, 0.5)
+        line0.colorFg = Color.getLighter(Argb.Yellow, 0.5)
+        line0.getItem(0).colorFg = Argb.Yellow
+        line0.getItem(0).colorBk = Color.getDarker(Argb.Blue, 0.5)
 
         list.header.getItem(0).sizeable = false
         list.header.getItem(0).clickable = false

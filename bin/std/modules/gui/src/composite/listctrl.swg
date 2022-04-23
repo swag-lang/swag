@@ -565,12 +565,12 @@ private impl ListView
             icon := item.icon
             if list.iconSize > 0
             {
-                if !icon.isValid()
-                    labelPos.moveLeft(list.iconSize + metrics.iconText_Margin)
-                else
+                if !idxItem or (list.header and list.header.getItem(cast(u32) idxItem).iconMargin)
                 {
-                    icon.sizeX = list.iconSize
-                    icon.sizeY = list.iconSize
+                    if !icon.isValid()
+                        labelPos.moveLeft(list.iconSize + metrics.iconText_Margin)
+                    else
+                        icon.sizeX, icon.sizeY = list.iconSize
                 }
             }
 

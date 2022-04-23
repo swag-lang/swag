@@ -42,6 +42,7 @@ func createTreeMulti(view: *Wnd)->*TreeCtrl
     tree.setFrameForm(FrameWndForm.Round)
     tree.selectionMode = .Multi
     tree.iconSize = 16
+    tree.header.getItem(2).iconMargin = true
 
     loop i: 50
     {
@@ -51,7 +52,7 @@ func createTreeMulti(view: *Wnd)->*TreeCtrl
         line := tree.createLine(null, str, icon)
         str = Format.toString("sub item %", i)
         line.setItem(1, str)
-        line.setItem(2, str)
+        line.setItem(2, str, icon)
 
         loop j: 25
         {
@@ -59,7 +60,7 @@ func createTreeMulti(view: *Wnd)->*TreeCtrl
             line1 := tree.createLine(line, str1)
             str = Format.toString("sub item %", j)
             line1.setItem(1, str)
-            line1.setItem(2, str)
+            line1.setItem(2, str, icon)
         }
     }
 
@@ -88,10 +89,10 @@ func createView5(tabView: *Tab, view: *Wnd)
         tree.setPosition(@{420, 400, 400, 300})
 
         line0 := tree.getLine(0)
-        line0.colorBk = Argb.Red
-        line0.colorFg = Argb.Blue
-        line0.getItem(0).colorFg = Argb.Green
-        line0.getItem(0).colorBk = Argb.Blue
+        line0.colorBk = Color.getDarker(Argb.Red, 0.5)
+        line0.colorFg = Color.getLighter(Argb.Yellow, 0.5)
+        line0.getItem(0).colorFg = Argb.Yellow
+        line0.getItem(0).colorBk = Color.getDarker(Argb.Blue, 0.5)
 
         /*tree.sigSelChanged += @(tree) {
             sel := tree.getSelectedLines()

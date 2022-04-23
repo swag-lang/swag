@@ -17,6 +17,7 @@ struct HeaderItem
     maxWidth:   f32
     sizeable    = true
     clickable   = true
+    iconMargin  = false
     column:     u32
 }
 

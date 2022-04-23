@@ -544,17 +544,18 @@ private impl TreeView
             painter.fillRect(rect, colors.treeItem_AlternateBk)
         }
 
-        var colorText: Color = ?
+        var colorText, colorExpand: Color = ?
         switch
         {
             case bc.isDisabled:
-                colorText = colors.treeItem_DisabledText
+                colorText, colorExpand = colors.treeItem_DisabledText
             case isSelected:
-                colorText = colors.treeItem_SelectedText
+                colorText, colorExpand = colors.treeItem_SelectedText
             case line.colorFg.a:
                 colorText = line.colorFg
+                colorExpand = colors.treeItem_Text
             default:
-                colorText = colors.treeItem_Text
+                colorText, colorExpand = colors.treeItem_Text
         }
 
         var format: RichStringFormat
@@ -591,7 +592,7 @@ private impl TreeView
                 if line.lines.count or line.forceExpandMark
                 {
                     expand := theme.getIcon24(line.expanded ? .SortArrowDown : .SortArrowRight, rect.height)
-                    expand.paint(painter, labelPos.x, labelPos.vertCenter() - rect.height * 0.5, colorFg)
+                    expand.paint(painter, labelPos.x, labelPos.vertCenter() - rect.height * 0.5, colorExpand)
                     labelPos.moveLeft(rect.height)
                 }
             }
@@ -648,10 +649,13 @@ private impl TreeView
             icon := item.icon
             if tree.iconSize > 0
             {
-                if !icon.isValid()
-                    labelPos.moveLeft(tree.iconSize + metrics.iconText_Margin)
-                else
-                    icon.sizeX, icon.sizeY = tree.iconSize
+                if !idxItem or (tree.header and tree.header.getItem(cast(u32) idxItem).iconMargin)
+                {
+                    if !icon.isValid()
+                        labelPos.moveLeft(tree.iconSize + metrics.iconText_Margin)
+                    else
+                        icon.sizeX, icon.sizeY = tree.iconSize
+                }
             }
 
             Theme.drawIconText(painter, labelPos, icon, &item.name, format, metrics.iconText_Margin)
