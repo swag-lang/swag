@@ -10,7 +10,7 @@ enum ThemeIcons24
     BottomPopupArrow
     SortArrowDown
     SortArrowUp
-    TabArrowDown
+    SortArrowRight
     Picker
     Play
     Pause
