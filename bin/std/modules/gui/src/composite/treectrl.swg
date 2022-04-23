@@ -22,6 +22,7 @@ struct TreeLine
     level:      u32
     expanded:   bool
     visible:    bool
+    forceExpandMark: bool
 }
 
 impl TreeLine
@@ -108,7 +109,9 @@ struct TreeCtrl
     header:             *Header
     nextTreeIndex:      u32
 
+    recomputeIndexes:               bool = true
     visibleLineCount:       u32
+    firstVisibleIndex:      u32
     firstVisibleLineIndex:  u32
     lastVisibleLineIndex:   u32
 }
@@ -197,8 +200,8 @@ impl IWnd for TreeView
             selChanged = true
 
         case PageDown:
-            first := tree.getFirstVisibleLineIndex()
-            last  := tree.getLastVisibleLineIndex()
+            first := tree.firstVisibleLineIndex
+            last  := tree.lastVisibleLineIndex
             startSelIdx, endSelIdx = tree.focusIndex + (last - first)
             startSelIdx = Math.min(startSelIdx, lineCount - 1)
             endSelIdx = Math.min(endSelIdx, lineCount - 1)
@@ -206,8 +209,8 @@ impl IWnd for TreeView
             break
 
         case PageUp:
-            first := tree.getFirstVisibleLineIndex()
-            last  := tree.getLastVisibleLineIndex()
+            first := tree.firstVisibleLineIndex
+            last  := tree.lastVisibleLineIndex
             offset := last - first
             if offset > tree.focusIndex
                 startSelIdx, endSelIdx = 0
@@ -317,6 +320,14 @@ impl IWnd for TreeView
 
         if evt.kind == .MouseDoubleClick
         {
+            if idx != Swag.U32.Max
+            {
+                if tree.lines[idx].expanded
+                    tree.collapse(tree.lines[idx])
+                else
+                    tree.expand(tree.lines[idx])
+            }
+
             pt := surfaceToLocal(evt.surfacePos)
             tree.sigLeftDoubleClick.call(tree, pt)
             return
@@ -391,35 +402,45 @@ impl IWnd for TreeView
         clipRect.applyPadding(padding)
         clientRect := getClientRectPadding()
 
-        firstIdx := tree.getFirstVisibleLineIndex()
-        lastIdx  := tree.getLastVisibleLineIndex()
+        firstIdx := tree.firstVisibleLineIndex
+        lastIdx  := tree.lastVisibleLineIndex
 
         // Do not display with bigs coordinates to avoid precision issues
         // So we do the scroll by hand, and draw will small coordinates
-        y := cast(f64) firstIdx * tree.lineHeight
+        y := cast(f64) tree.firstVisibleIndex * tree.lineHeight
         y -= scrollPos.y
         rect.y = cast(f32) y
 
         firstVisible := true
+        cptVis       := 0
         loop i: firstIdx..lastIdx
         {
             line := tree.lines[i]
             if !line.visible
                 continue
-            if rect.bottom() < 0
-                continue
             if rect.y > clientRect.bottom()
                 break
 
-            // Update visible indexes
-            if firstVisible
+            if rect.bottom() < 0
             {
-                firstVisible = false
-                tree.firstVisibleLineIndex, tree.lastVisibleLineIndex = i
+                cptVis += 1
+                rect.y = rect.bottom()
+                continue
             }
-            else
+
+            // Update visible indexes
+            if tree.recomputeIndexes
             {
-                tree.lastVisibleLineIndex = i
+                if firstVisible
+                {
+                    firstVisible = false
+                    tree.firstVisibleIndex = cptVis
+                    tree.firstVisibleLineIndex, tree.lastVisibleLineIndex = i
+                }
+                else
+                {
+                    tree.lastVisibleLineIndex = i
+                }
             }
 
             paintLine(bc, i, line, rect)
@@ -447,6 +468,8 @@ impl IWnd for TreeView
             x += metrics.header_Separator * 0.5
             painter.drawLine(x, rect.y, x, rect.bottom(), colors.listItem_Line, 1)
         }
+
+        tree.recomputeIndexes = false
     }
 }
 
@@ -527,9 +550,10 @@ private impl TreeView
             }
 
             labelPos.x -= scrollPos.x
+            labelPos.x += line.level * rect.height
 
             // Expand/collapse
-            if idxItem == 0 and line.lines.count
+            if idxItem == 0 and (line.lines.count or line.forceExpandMark)
             {
                 expand := theme.getIcon24(line.expanded ? .SortArrowDown : .SortArrowRight, rect.height)
                 expand.paint(painter, labelPos.x, labelPos.vertCenter() - rect.height * 0.5, colorFg)
@@ -602,7 +626,6 @@ private impl TreeView
     {
         lc := tree.getLineCount()
         res := surfaceToLocal(surfacePos)
-        res.y += scrollPos.y
         idx := cast(u32) (res.y / tree.lineHeight)
         if idx >= lc
             return Swag.U32.Max
@@ -643,6 +666,9 @@ impl TreeCtrl
             scrollWnd.focusStrategy = .None
             scrollWnd.backgroundStyle = .Transparent
             scrollWnd.setAllPaddings(getThemeMetrics().list_Padding)
+            scrollWnd.sigScrollPosChanged += @|tree|(scrollWnd, op, np) {
+                tree.computeLayout()
+            }
 
             treeView = scrollWnd.createView'TreeView()
             treeView.backgroundStyle = .Transparent
@@ -791,11 +817,12 @@ impl TreeCtrl
             scrollWidth = header.getTotalItemsWidth()
         else
             scrollWidth = clientRect.width
-        scrollHeight := visibleLineCount * lineHeight
-        scrollWnd.setScrollSize(scrollWidth, scrollHeight)
+        scrollWnd.setScrollSize(scrollWidth, visibleLineCount * lineHeight)
 
+        firstVisibleIndex     = 0
         firstVisibleLineIndex = 0
-        lastVisibleLineIndex = visibleLineCount ? getLineCount() - 1 : 0
+        lastVisibleLineIndex  = visibleLineCount ? getLineCount() - 1 : 0
+        recomputeIndexes = true
 
         invalidate()
     }
@@ -864,23 +891,11 @@ impl TreeCtrl
         header.setItemWidth(idx, width)
     }
 
-    // Returns the first visible line index
-    mtd getFirstVisibleLineIndex()->u32
-    {
-        return firstVisibleLineIndex
-    }
-
-    // Returns the last visible line index
-    mtd getLastVisibleLineIndex()->u32
-    {
-        return lastVisibleLineIndex
-    }
-
     // Set the corresponding line visible
     mtd ensureVisibleLine(idx: u32)
     {
-        first := getFirstVisibleLineIndex()
-        last  := getLastVisibleLineIndex()
+        first := firstVisibleLineIndex
+        last  := lastVisibleLineIndex
         if idx > first and idx < last
             return
         sc := scrollWnd.getScrollPos()
@@ -972,6 +987,57 @@ impl TreeCtrl
             header.invalidate()
         }
 
+        invalidate()
+    }
+
+    // Expand the given line
+    mtd expand(line: *TreeLine)
+    {
+        if line.expanded
+            return
+        line.expanded = true
+
+        var tmp: Array'(*TreeLine)
+        tmp.add(line)
+
+        while tmp.count
+        {
+            to := tmp.popBack()
+            visit l: to.lines
+            {
+                l.visible = true
+                visibleLineCount += 1
+                if l.expanded and l.lines.count
+                    tmp.add(l)
+            }
+        }
+
+        computeLayout()
+        invalidate()
+    }
+
+    // Collapse the given line
+    mtd collapse(line: *TreeLine)
+    {
+        if !line.expanded
+            return
+        line.expanded = false
+
+        var tmp: Array'(*TreeLine)
+        tmp.add(line)
+        while tmp.count
+        {
+            to := tmp.popBack()
+            visit l: to.lines
+            {
+                l.visible = false
+                visibleLineCount -= 1
+                if l.expanded and l.lines.count
+                    tmp.add(l)
+            }
+        }
+
+        computeLayout()
         invalidate()
     }
 }
