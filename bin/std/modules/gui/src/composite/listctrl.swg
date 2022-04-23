@@ -81,11 +81,11 @@ struct ListCtrl
     iconSize:           f32
     listFlags           = ListFlags.None
     selectionMode       = ListSelectionMode.Single
+    sigSelChanged:      SigArray'closure(*Self)
+    sigCheckChanged:    SigArray'closure(*Self)
+    sigRightClick:      SigArray'closure(*Self, Math.Point)
+    sigLeftDoubleClick: SigArray'closure(*Self, Math.Point)
     sigVirtualFill:     func(*Self, *ListLine, u32)
-    sigSelChanged:      func(*Self)
-    sigCheckChanged:    func(*Self)
-    sigRightClick:      func(*Self, Math.Point)
-    sigLeftDoubleClick: func(*Self, Math.Point)
     sigSort:            func(*ListLine, *ListLine, u32, bool)->s32
 
     lines:          ArrayPtr'ListLine
@@ -140,8 +140,7 @@ impl IWnd for ListView
                 list.checkModel.select(l, checked)
             }
 
-            if list.sigCheckChanged
-                list.sigCheckChanged(list)
+            list.sigCheckChanged.call(list)
             invalidate()
 
         case Enter:
@@ -149,8 +148,7 @@ impl IWnd for ListView
                 break
             visit l: list.selModel
                 list.checkModel.select(l, true)
-            if list.sigCheckChanged
-                list.sigCheckChanged(list)
+            list.sigCheckChanged.call(list)
             invalidate()
 
         case A:
@@ -255,11 +253,8 @@ impl IWnd for ListView
                 }
                 elif evt.kind == .MouseReleased
                 {
-                    if list.sigRightClick
-                    {
-                        pt := surfaceToLocal(evt.surfacePos)
-                        list.sigRightClick(list, pt)
-                    }
+                    pt := surfaceToLocal(evt.surfacePos)
+                    list.sigRightClick.call(list, pt)
                 }
             }
 
@@ -299,8 +294,7 @@ impl IWnd for ListView
                 }
                 else
                     list.checkModel.select(idxLine, checked)
-                if list.sigCheckChanged
-                    list.sigCheckChanged(list)
+                list.sigCheckChanged.call(list)
                 invalidate()
                 return
             }
@@ -311,12 +305,8 @@ impl IWnd for ListView
 
         if evt.kind == .MouseDoubleClick
         {
-            if list.sigLeftDoubleClick
-            {
-                pt := surfaceToLocal(evt.surfacePos)
-                list.sigLeftDoubleClick(list, pt)
-            }
-
+            pt := surfaceToLocal(evt.surfacePos)
+            list.sigLeftDoubleClick.call(list, pt)
             return
         }
 
@@ -367,8 +357,7 @@ impl IWnd for ListView
 
         list.focusIndex = idx
         invalidate()
-        if list.sigSelChanged
-            list.sigSelChanged()
+        list.sigSelChanged.call(list)
     }
 
     mtd onPaintEvent(evt: *PaintEvent)
@@ -710,8 +699,7 @@ impl ListCtrl
             return
         selModel.unselectAll()
         invalidate()
-        if sigSelChanged
-            sigSelChanged(self)
+        sigSelChanged.call(self)
     }
 
     // Returns
@@ -738,8 +726,7 @@ impl ListCtrl
         selModel.select(idxLine, select)
         invalidate()
 
-        if sigSelChanged
-            sigSelChanged(self)
+        sigSelChanged.call(self)
     }
 
     // Select a range of lines
@@ -760,8 +747,7 @@ impl ListCtrl
 
         invalidate()
 
-        if sigSelChanged
-            sigSelChanged(self)
+        sigSelChanged.call(self)
     }
 
     // Compute global layout, once all lines have been added

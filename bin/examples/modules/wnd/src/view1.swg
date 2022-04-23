@@ -99,17 +99,17 @@ func createView1(tabView: *Tab, view: *Wnd)
         list.ensureVisibleLine(list.getLineCount() - 1)
         list.setColumnWidth(0, 150)
 
-        list.sigSelChanged = @(list) {
+        list.sigSelChanged += @(list) {
             sl := list.getSelectedLine()
             if sl
                 Console.printf("selected: %\n", sl.getItem(0).name.raw)
         }
-        list.sigCheckChanged = @(list) {
+        list.sigCheckChanged += @(list) {
             sl := list.getCheckedLines()
             visit l: sl
                 Console.printf("checked: %\n", l.getItem(0).name.raw)
         }
-        list.sigRightClick = @(list, pt) {
+        list.sigRightClick += @(list, pt) {
             sel := list.getSelectedLines()
             visit l: sel
                 Console.printf("%\n", l.getItem(0).name.raw)
@@ -132,7 +132,7 @@ func createView1(tabView: *Tab, view: *Wnd)
         list.header.getItem(0).sizeable = false
         list.header.getItem(0).clickable = false
 
-        list.sigSelChanged = @(list) {
+        list.sigSelChanged += @(list) {
             sel := list.getSelectedLines()
             visit l: sel
                 Console.printf("%\n", l.getItem(0).name.raw)
