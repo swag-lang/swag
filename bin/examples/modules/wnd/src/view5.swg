@@ -20,6 +20,14 @@ func createTreeSimple(view: *Wnd, maxItems = 50)->*TreeCtrl
             icon1 := app.theme.getIcon24(ThemeIcons24.Search, 16)
             if j % 2 == 0 icon1.clear()
             line1 := tree.createLine(line, str1, icon1)
+
+            loop k: maxItems / 3
+            {
+                str2  := Format.toString("sub sub item %", k)
+                icon2 := app.theme.getIcon24(ThemeIcons24.Search, 16)
+                if k % 2 == 0 icon2.clear()
+                line2 := tree.createLine(line1, str2, icon2)
+            }
         }
     }
 
@@ -34,5 +42,9 @@ func createView5(tabView: *Tab, view: *Wnd)
         tree.frameFlags |= .FocusBorder
         tree.selectionMode = .Single
         tree.setPosition(@{5, 5, 250, 300})
+        btn := PushButton.create(view, "collapse", @{5, 310})
+        btn.sigPressed += @|tree|(btn) {
+            tree.collapseAll()
+        }
     }
 }

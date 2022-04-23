@@ -90,6 +90,7 @@ struct TreeCtrl
 
     horizontalExtent:   f32
     lineHeight:         f32 = 22
+    indentWidth:        f32 = 10
     iconSize:           f32
     treeFlags           = TreeFlags.None
     selectionMode       = TreeSelectionMode.Single
@@ -136,6 +137,7 @@ impl IWnd for TreeView
             return
         if tree.focusIndex == Swag.U32.Max
             return
+        focusLine := tree.lines[tree.focusIndex]
 
         shift := cast(bool) (evt.modifiers & .Shift)
         ctrl  := cast(bool) (evt.modifiers & .Control)
@@ -146,25 +148,34 @@ impl IWnd for TreeView
         switch evt.key
         {
         case Space:
-            if !(tree.treeFlags & .Checkable)
-                break
-
-            visit l: tree.selModel
+            if tree.treeFlags & .Checkable
             {
-                checked := !tree.checkModel.isSelected(l)
-                tree.checkModel.select(l, checked)
+                visit l: tree.selModel
+                {
+                    checked := !tree.checkModel.isSelected(l)
+                    tree.checkModel.select(l, checked)
+                }
+
+                tree.sigCheckChanged.call(tree)
+                invalidate()
+            }
+            else
+            {
+                tree.toggleExpand(focusLine)
             }
 
-            tree.sigCheckChanged.call(tree)
-            invalidate()
-
         case Enter:
-            if !(tree.treeFlags & .Checkable)
-                break
-            visit l: tree.selModel
-                tree.checkModel.select(l, true)
-            tree.sigCheckChanged.call(tree)
-            invalidate()
+            if tree.treeFlags & .Checkable
+            {
+                visit l: tree.selModel
+                    tree.checkModel.select(l, true)
+                tree.sigCheckChanged.call(tree)
+                invalidate()
+            }
+            else
+            {
+                tree.toggleExpand(focusLine)
+            }
 
         case A:
             if !ctrl or tree.selectionMode == .Single
@@ -187,17 +198,41 @@ impl IWnd for TreeView
 
         case Up:
             if tree.focusIndex == 0
+            {
                 startSelIdx, endSelIdx = 0
+                selChanged = true
+            }
             else
-                startSelIdx, endSelIdx = tree.focusIndex - 1
-            selChanged = true
+            {
+                prev := tree.getPrevVisibleLineIndex(tree.focusIndex)
+                if prev != Swag.U32.Max
+                {
+                    startSelIdx, endSelIdx = prev
+                    selChanged = true
+                }
+            }
 
         case Down:
             if tree.focusIndex == lineCount - 1
+            {
                 startSelIdx, endSelIdx = lineCount - 1
+                selChanged = true
+            }
             else
-                startSelIdx, endSelIdx = tree.focusIndex + 1
-            selChanged = true
+            {
+                next := tree.getNextVisibleLineIndex(tree.focusIndex)
+                if next != Swag.U32.Max
+                {
+                    startSelIdx, endSelIdx = next
+                    selChanged = true
+                }
+            }
+
+        case Left:
+            tree.collapse(focusLine)
+        case Right:
+            tree.expand(focusLine)
+
 
         case PageDown:
             first := tree.firstVisibleLineIndex
@@ -321,13 +356,7 @@ impl IWnd for TreeView
         if evt.kind == .MouseDoubleClick
         {
             if idx != Swag.U32.Max
-            {
-                if tree.lines[idx].expanded
-                    tree.collapse(tree.lines[idx])
-                else
-                    tree.expand(tree.lines[idx])
-            }
-
+                tree.toggleExpand(tree.lines[idx])
             pt := surfaceToLocal(evt.surfacePos)
             tree.sigLeftDoubleClick.call(tree, pt)
             return
@@ -550,7 +579,7 @@ private impl TreeView
             }
 
             labelPos.x -= scrollPos.x
-            labelPos.x += line.level * rect.height
+            labelPos.x += line.level * tree.indentWidth
 
             // Expand/collapse
             if idxItem == 0 and (line.lines.count or line.forceExpandMark)
@@ -1013,7 +1042,20 @@ impl TreeCtrl
         }
 
         computeLayout()
-        invalidate()
+    }
+
+    // Collapse all lines
+    mtd collapseAll()
+    {
+        visibleLineCount = 0
+        visit l: lines
+        {
+            l.visible  = l.parent ? false : true
+            l.expanded = false
+            visibleLineCount += l.visible ? 1 : 0
+        }
+
+        computeLayout()
     }
 
     // Collapse the given line
@@ -1038,6 +1080,41 @@ impl TreeCtrl
         }
 
         computeLayout()
-        invalidate()
+    }
+
+    // Collapse the given line
+    mtd toggleExpand(line: *TreeLine)
+    {
+        if line.expanded
+            collapse(line)
+        else
+            expand(line)
+    }
+
+    // Return the next visible line index, or Swag.U32.Max
+    mtd getPrevVisibleLineIndex(idx: u32)->u32
+    {
+        if !idx
+            return Swag.U32.Max
+        i := idx - 1
+        while !lines[i].visible
+        {
+            if i == 0
+                return Swag.U32.Max
+            i -= 1
+        }
+
+        return i
+    }
+
+    // Return the next visible line index, or Swag.U32.Max
+    mtd getNextVisibleLineIndex(idx: u32)->u32
+    {
+        i := idx + 1
+        while i < lines.count and !lines[i].visible
+            i += 1
+        if i >= lines.count
+            return Swag.U32.Max
+        return i
     }
 }
