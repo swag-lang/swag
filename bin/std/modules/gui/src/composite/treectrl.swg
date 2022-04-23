@@ -193,8 +193,14 @@ impl IWnd for TreeView
 
         case End:
             startSelIdx = tree.focusIndex
-            endSelIdx = lineCount - 1
-            selChanged = true
+            newEndSelIdx := lineCount - 1
+            if !tree.lines[newEndSelIdx].visible
+                newEndSelIdx = tree.getPrevVisibleLineIndex(newEndSelIdx)
+            if endSelIdx != newEndSelIdx and newEndSelIdx != Swag.U32.Max
+            {
+                endSelIdx = newEndSelIdx
+                selChanged = true
+            }
 
         case Up:
             if tree.focusIndex == 0
