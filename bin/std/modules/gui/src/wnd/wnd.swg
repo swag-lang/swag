@@ -804,6 +804,7 @@ impl Wnd
         evt.other = surface.app.keybFocusWnd
         surface.app.keybFocusWnd = self
         sendEvent(&evt)
+        invalidate()
     }
 
     // Get the window with the keyboard focus

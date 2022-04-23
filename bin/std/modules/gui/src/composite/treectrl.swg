@@ -441,7 +441,7 @@ impl IWnd for TreeView
         rect.y = cast(f32) y
 
         firstVisible := true
-        cptVis       := 0
+        cptVis       := 0'u32
         loop i: firstIdx..lastIdx
         {
             line := tree.lines[i]
@@ -472,11 +472,13 @@ impl IWnd for TreeView
                 }
             }
 
-            paintLine(bc, i, line, rect)
+            paintLine(bc, i, cptVis, line, rect)
             rect.y = rect.bottom()
 
             if tree.treeFlags & .HorzLines
-                painter.drawLine(rect.x, rect.y, rect.right(), rect.y, colors.listItem_Line, 1)
+                painter.drawLine(rect.x, rect.y, rect.right(), rect.y, colors.treeItem_Line, 1)
+
+            cptVis += 1
         }
 
         if tree.header and tree.treeFlags & .VertLines
@@ -487,7 +489,7 @@ impl IWnd for TreeView
                 x := getXPos(tree.header.items[idx].column)
                 x -= scrollPos.x
                 x -= metrics.header_Separator * 0.5
-                painter.drawLine(x, rect.y, x, rect.bottom(), colors.listItem_Line, 1)
+                painter.drawLine(x, rect.y, x, rect.bottom(), colors.treeItem_Line, 1)
             }
 
             last := tree.header.items.back()
@@ -495,7 +497,7 @@ impl IWnd for TreeView
             x -= scrollPos.x
             x += last.width
             x += metrics.header_Separator * 0.5
-            painter.drawLine(x, rect.y, x, rect.bottom(), colors.listItem_Line, 1)
+            painter.drawLine(x, rect.y, x, rect.bottom(), colors.treeItem_Line, 1)
         }
 
         tree.recomputeIndexes = false
@@ -512,7 +514,7 @@ private impl TreeView
         return x
     }
 
-    mtd paintLine(bc: PaintContext, idx: u32, line: *TreeLine, rect: Math.Rectangle)
+    mtd paintLine(bc: PaintContext, idx, idxVis: u32, line: *TreeLine, rect: Math.Rectangle)
     {
         painter := bc.painter
         theme   := getTheme()
@@ -526,7 +528,7 @@ private impl TreeView
         hideSel := cast(bool) (tree.treeFlags & .HideSelection)
         if isSelected and (!hideSel or hasFocus()) and !bc.isDisabled
         {
-            colorSel := hasFocus() ? colors.listItem_FocusSelectedBk : colors.listItem_SelectedBk
+            colorSel := hasFocus() ? colors.treeItem_FocusSelectedBk : colors.treeItem_SelectedBk
             painter.fillRect(rect, colorSel)
         }
 
@@ -537,22 +539,22 @@ private impl TreeView
         }
 
         // Alternate lines
-        elif (tree.treeFlags & .AlternateLines) and idx % 2 == 1
+        elif (tree.treeFlags & .AlternateLines) and idxVis % 2 == 1
         {
-            painter.fillRect(rect, colors.listItem_AlternateBk)
+            painter.fillRect(rect, colors.treeItem_AlternateBk)
         }
 
         var colorText: Color = ?
         switch
         {
             case bc.isDisabled:
-                colorText = colors.listItem_DisabledText
+                colorText = colors.treeItem_DisabledText
             case isSelected:
-                colorText = colors.listItem_SelectedText
+                colorText = colors.treeItem_SelectedText
             case line.colorFg.a:
                 colorText = line.colorFg
             default:
-                colorText = colors.listItem_Text
+                colorText = colors.treeItem_Text
         }
 
         var format: RichStringFormat
@@ -579,14 +581,19 @@ private impl TreeView
             }
 
             labelPos.x -= scrollPos.x
-            labelPos.x += line.level * tree.indentWidth
 
-            // Expand/collapse
-            if idxItem == 0 and (line.lines.count or line.forceExpandMark)
+            if idxItem == 0
             {
-                expand := theme.getIcon24(line.expanded ? .SortArrowDown : .SortArrowRight, rect.height)
-                expand.paint(painter, labelPos.x, labelPos.vertCenter() - rect.height * 0.5, colorFg)
-                labelPos.moveLeft(rect.height)
+                // Ident level
+                labelPos.moveLeft(line.level * tree.indentWidth)
+
+                // Expand/collapse mark
+                if line.lines.count or line.forceExpandMark
+                {
+                    expand := theme.getIcon24(line.expanded ? .SortArrowDown : .SortArrowRight, rect.height)
+                    expand.paint(painter, labelPos.x, labelPos.vertCenter() - rect.height * 0.5, colorFg)
+                    labelPos.moveLeft(rect.height)
+                }
             }
 
             // Background color ?
@@ -764,9 +771,10 @@ impl TreeCtrl
             scrollWnd.focusStrategy = .None
             scrollWnd.backgroundStyle = .Transparent
             scrollWnd.setAllPaddings(getThemeMetrics().list_Padding)
-            scrollWnd.sigScrollPosChanged += @|header|(scrollWnd, op, np) {
+            scrollWnd.sigScrollPosChanged += @|tree,header|(scrollWnd, op, np) {
                 header.scrollPos.x = np.x
                 header.invalidate()
+                tree.computeLayout()
             }
 
             // TreeCtrl view
