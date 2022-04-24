@@ -1,10 +1,10 @@
 using Core, Gui, Pixel
 
-func createTreeSimple(view: *Wnd, maxItems = 50)->*TreeCtrl
+func createTreeSimple(view: *Wnd, maxItems = 50)->*ListCtrl
 {
     var rng: Random.DefaultRng
 
-    tree := TreeCtrl.createSimple(view, @{5, 5, 250, 300})
+    tree := ListCtrl.createSimple(view, @{5, 5, 250, 300})
     tree.setFrameForm(FrameWndForm.Round)
     tree.selectionMode = .Multi
     tree.iconSize = 16
@@ -13,18 +13,18 @@ func createTreeSimple(view: *Wnd, maxItems = 50)->*TreeCtrl
     {
         str  := Format.toString("item %", i)
         icon := app.theme.getIcon24(cast(ThemeIcons24) rng.nextU32(0, cast(u32) @countof(ThemeIcons24)))
-        line := tree.createLine(null, str, icon)
+        line := tree.createLine(str, icon)
 
         loop j: maxItems / 2
         {
             str1  := Format.toString("sub item %", j)
             icon1 := app.theme.getIcon24(cast(ThemeIcons24) rng.nextU32(0, cast(u32) @countof(ThemeIcons24)))
-            line1 := tree.createLine(line, str1, icon1)
+            line1 := tree.createLine(str1, icon1, parentLine: line)
 
             loop k: maxItems / 3
             {
                 str2  := Format.toString("sub sub item %", k)
-                line2 := tree.createLine(line1, str2)
+                line2 := tree.createLine(str2, parentLine: line1)
             }
         }
     }
@@ -33,9 +33,9 @@ func createTreeSimple(view: *Wnd, maxItems = 50)->*TreeCtrl
     return tree
 }
 
-func createTreeMulti(view: *Wnd)->*TreeCtrl
+func createTreeMulti(view: *Wnd)->*ListCtrl
 {
-    tree := TreeCtrl.createMultiColumns(view, @{5, 5, 250, 300})
+    tree := ListCtrl.createMultiColumns(view, @{5, 5, 250, 300})
     tree.addColumn("column 0")
     tree.addColumn("column 1")
     tree.addColumn("column 2")
@@ -49,7 +49,7 @@ func createTreeMulti(view: *Wnd)->*TreeCtrl
         str := Format.toString("item %", i)
         icon := app.theme.getIcon24(ThemeIcons24.Search, 16)
         if i % 2 == 0 icon.clear()
-        line := tree.createLine(null, str, icon)
+        line := tree.createLine(str, icon)
         str = Format.toString("sub item %", i)
         line.setItem(1, str)
         line.setItem(2, str, icon)
@@ -57,7 +57,7 @@ func createTreeMulti(view: *Wnd)->*TreeCtrl
         loop j: 25
         {
             str1 := Format.toString("sub line %", j)
-            line1 := tree.createLine(line, str1)
+            line1 := tree.createLine(str1, parentLine: line)
             str = Format.toString("sub item %", j)
             line1.setItem(1, str)
             line1.setItem(2, str, icon)
@@ -84,9 +84,9 @@ func createView5(tabView: *Tab, view: *Wnd)
     {
         tree := createTreeMulti(view)
         tree.frameFlags |= .FocusBorder
-        tree.treeFlags |= .AlternateLines | .HorzLines | .VertLines
+        tree.listFlags |= .AlternateLines | .HorzLines | .VertLines
         tree.setFrameForm(FrameWndForm.Square)
-        tree.setPosition(@{420, 400, 400, 300})
+        tree.setPosition(@{420, 5, 400, 300})
 
         line0 := tree.getLine(0)
         line0.colorBk = Color.getDarker(Argb.Red, 0.5)
@@ -94,10 +94,10 @@ func createView5(tabView: *Tab, view: *Wnd)
         line0.getItem(0).colorFg = Argb.Yellow
         line0.getItem(0).colorBk = Color.getDarker(Argb.Blue, 0.5)
 
-        /*tree.sigSelChanged += @(tree) {
+        tree.sigSelChanged += @(tree) {
             sel := tree.getSelectedLines()
             visit l: sel
                 Console.printf("%\n", l.getItem(0).name.raw)
-        }*/
+        }
     }
 }

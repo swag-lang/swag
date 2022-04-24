@@ -12,11 +12,17 @@ struct ListItem
 
 struct ListLine
 {
+    lines:      Array'(*ListLine)
+    parent:     *ListLine
     items:      ArrayPtr'ListItem
     colorBk:    Color
     colorFg:    Color
     userData:   *void
     index:      u32
+
+    level:           u32
+    expanded:        bool
+    forceExpandMark: bool
 }
 
 impl ListLine
@@ -78,6 +84,7 @@ struct ListCtrl
 
     horizontalExtent:   f32
     lineHeight:         f32 = 22
+    indentWidth:        f32 = 10
     iconSize:           f32
     listFlags           = ListFlags.None
     selectionMode       = ListSelectionMode.Single
@@ -98,7 +105,6 @@ struct ListCtrl
     header:         *Header
     virtualCount:   u32
     isVirtual:      bool
-    nextListIndex:  u32
 }
 
 struct ListView
@@ -121,6 +127,7 @@ impl IWnd for ListView
             return
         if list.focusIndex == Swag.U32.Max
             return
+        focusLine := list.lines[list.focusIndex]
 
         shift := cast(bool) (evt.modifiers & .Shift)
         ctrl  := cast(bool) (evt.modifiers & .Control)
@@ -131,25 +138,34 @@ impl IWnd for ListView
         switch evt.key
         {
         case Space:
-            if !(list.listFlags & .Checkable)
-                break
-
-            visit l: list.selModel
+            if list.listFlags & .Checkable
             {
-                checked := !list.checkModel.isSelected(l)
-                list.checkModel.select(l, checked)
+                visit l: list.selModel
+                {
+                    checked := !list.checkModel.isSelected(l)
+                    list.checkModel.select(l, checked)
+                }
+
+                list.sigCheckChanged.call(list)
+                invalidate()
+            }
+            else
+            {
+                list.toggleExpand(focusLine)
             }
 
-            list.sigCheckChanged.call(list)
-            invalidate()
-
         case Enter:
-            if !(list.listFlags & .Checkable)
-                break
-            visit l: list.selModel
-                list.checkModel.select(l, true)
-            list.sigCheckChanged.call(list)
-            invalidate()
+            if list.listFlags & .Checkable
+            {
+                visit l: list.selModel
+                    list.checkModel.select(l, true)
+                list.sigCheckChanged.call(list)
+                invalidate()
+            }
+            else
+            {
+                list.toggleExpand(focusLine)
+            }
 
         case A:
             if !ctrl or list.selectionMode == .Single
@@ -183,6 +199,11 @@ impl IWnd for ListView
             else
                 startSelIdx, endSelIdx = list.focusIndex + 1
             selChanged = true
+
+        case Left:
+            list.collapse(focusLine)
+        case Right:
+            list.expand(focusLine)
 
         case PageDown:
             first := list.getFirstVisibleLineIndex()
@@ -305,6 +326,8 @@ impl IWnd for ListView
 
         if evt.kind == .MouseDoubleClick
         {
+            if idx != Swag.U32.Max
+                list.toggleExpand(list.lines[idx])
             pt := surfaceToLocal(evt.surfacePos)
             list.sigLeftDoubleClick.call(list, pt)
             return
@@ -475,17 +498,18 @@ private impl ListView
             painter.fillRect(rect, colors.listItem_AlternateBk)
         }
 
-        var colorText: Color = ?
+        var colorText, colorExpand: Color = ?
         switch
         {
             case bc.isDisabled:
-                colorText = colors.listItem_DisabledText
+                colorText, colorExpand = colors.listItem_DisabledText
             case isSelected:
-                colorText = colors.listItem_SelectedText
+                colorText, colorExpand = colors.listItem_SelectedText
             case line.colorFg.a:
-                colorText = line.colorFg
+                colorText   = line.colorFg
+                colorExpand = colors.listItem_Text
             default:
-                colorText = colors.listItem_Text
+                colorText, colorExpand = colors.listItem_Text
         }
 
         var format: RichStringFormat
@@ -512,6 +536,20 @@ private impl ListView
             }
 
             labelPos.x -= scrollPos.x
+
+            if idxItem == 0
+            {
+                // Ident level
+                labelPos.moveLeft(line.level * list.indentWidth)
+
+                // Expand/collapse mark
+                if line.lines.count or line.forceExpandMark
+                {
+                    expand := theme.getIcon24(line.expanded ? .SortArrowDown : .SortArrowRight, rect.height)
+                    expand.paint(painter, labelPos.x, labelPos.vertCenter() - rect.height * 0.5, colorExpand)
+                    labelPos.moveLeft(rect.height)
+                }
+            }
 
             // Background color ?
             if item.colorBk.a and !isSelected
@@ -782,22 +820,32 @@ impl ListCtrl
     }
 
     // Add one new line
-    mtd createLine()->*ListLine
+    mtd createLine(parentLine: *ListLine)->*ListLine
     {
         Debug.assert(!isVirtual, "createLine cannot be called on a virtual list")
 
         line := lines.newPtr()
-        line.index = nextListIndex
+        line.parent = parentLine
+        line.index  = cast(u32) lines.count
         idxLineToIdx.add(line.index, line.index)
-        nextListIndex += 1
-        lines.add(line)
+
+        if parentLine
+        {
+            line.level = parentLine.level + 1
+            parentLine.lines.add(line)
+        }
+        else
+        {
+            lines.add(line)
+        }
+
         return line
     }
 
     // Add one line, and set first column
-    mtd createLine(name: string, icon: Icon = @{})->*ListLine
+    mtd createLine(name: string, icon: Icon = @{}, parentLine: *ListLine = null)->*ListLine
     {
-        line := createLine()
+        line := createLine(parentLine)
         line.setItem(0, #self.name, #self.icon)
         return line
     }
@@ -961,5 +1009,91 @@ impl ListCtrl
         }
 
         invalidate()
+    }
+
+    // Expand the given line
+    mtd expand(line: *ListLine)
+    {
+        if line.expanded
+            return
+        line.expanded = true
+
+        var tmp:   Array'(*ListLine)
+        var toAdd: Array'(*ListLine)
+        tmp.add(line)
+
+        while tmp.count
+        {
+            to := tmp.popBack()
+            visit l: to.lines
+            {
+                toAdd.add(l)
+                l.index = line.index + cast(u32) toAdd.count
+                if l.expanded and l.lines.count
+                    tmp.add(l)
+            }
+        }
+
+        // Update indexes after the insertion
+        for idx := line.index+1; idx <= cast(u32) (lines.count-1); idx += 1
+            lines[idx].index += cast(u32) toAdd.count
+        // Insert at the right position
+        lines.insertAt(cast(uint) (line.index + 1), toAdd.toSlice())
+
+        computeLayout()
+    }
+
+    // Collapse the given line
+    mtd collapse(line: *ListLine)
+    {
+        if !line.expanded
+            return
+        line.expanded = false
+
+        var tmp: Array'(*ListLine)
+        tmp.add(line)
+
+        removeCount := 0'u32
+        while tmp.count
+        {
+            to := tmp.popBack()
+            visit l: to.lines
+            {
+                removeCount += 1
+                if l.expanded and l.lines.count
+                    tmp.add(l)
+            }
+        }
+
+        // Insert at the right position
+        lines.removeAtOrdered(cast(uint) (line.index + 1), cast(uint) removeCount)
+        // Update indexes after the insertion
+        loop idx: lines.count - line.index - 1
+            lines[line.index + idx + 1].index -= removeCount
+
+        computeLayout()
+    }
+
+    // Collapse all lines
+    mtd collapseAll()
+    {
+        /*visibleLineCount = 0
+        visit l: lines
+        {
+            l.visible  = l.parent ? false : true
+            l.expanded = false
+            visibleLineCount += l.visible ? 1 : 0
+        }
+
+        computeLayout()*/
+    }
+
+    // Collapse the given line
+    mtd toggleExpand(line: *ListLine)
+    {
+        if line.expanded
+            collapse(line)
+        else
+            expand(line)
     }
 }
