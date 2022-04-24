@@ -1111,6 +1111,10 @@ impl ListCtrl
         var tmp: Array'(*ListLine)
         tmp.add(line)
 
+        // Auto sort
+        if header and header.sortMark
+            sort(header.sortColumn, header.sortMark == -1 ? true : false, &line.lines)
+
         cptIdxLine := cast(u32) lines.count
         cptIdx     := 0'u32
         while tmp.count
