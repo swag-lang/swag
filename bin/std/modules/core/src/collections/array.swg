@@ -343,7 +343,7 @@ impl Array
         }
         #else
         {
-            Memory.copyOver(buffer + index + 1, buffer + index, @sizeof(T) * (count - 2))
+            Memory.copyOver(buffer + index + 1, buffer + index, @sizeof(T) * (count - 1 - index))
         }
 
         buffer[index] =,nodrop value
@@ -355,30 +355,34 @@ impl Array
     mtd insertAt(index: uint, values: const [..] T)
         #selectif Reflection.canCopy(T)
     {
+        sliceCount := @countof(values)
+        if !sliceCount
+            return
+
         Debug.assert(index <= count, "index out of range")
         if index == count
             return add(values)
-        grow(count + @countof(values))
-        count += @countof(values)
+        grow(count + sliceCount)
+        count += sliceCount
 
         #if Reflection.hasPostMove(T)
         {
-            for idx := count - 1; idx >= index + @countof(values); idx -= 1
-                buffer[idx] =,nodrop,moveraw buffer[idx - @countof(values)]
+            for idx := count - 1; idx >= index + sliceCount; idx -= 1
+                buffer[idx] =,nodrop,moveraw buffer[idx - sliceCount]
         }
         #else
         {
-            Memory.copyOver(buffer + index + @countof(values), buffer + index, @sizeof(T) * (count - @countof(values) - 1))
+            Memory.copyOver(buffer + index + sliceCount, buffer + index, @sizeof(T) * (count - sliceCount - index))
         }
 
         #if Reflection.hasPostCopy(T)
         {
-            for idx := 0; idx < @countof(values); idx += 1
+            for idx := 0; idx < sliceCount; idx += 1
                 buffer[index + idx] =,nodrop values[idx]
         }
         #else
         {
-            Memory.copy(buffer + index, @dataof(values), @sizeof(T) * @countof(values))
+            Memory.copy(buffer + index, @dataof(values), @sizeof(T) * sliceCount)
         }
     }
 
@@ -400,7 +404,7 @@ impl Array
         }
         #else
         {
-            Memory.copyOver(buffer + index + 1, buffer + index, @sizeof(T) * (count - 2))
+            Memory.copyOver(buffer + index + 1, buffer + index, @sizeof(T) * (count - 1 - index))
         }
 
         buffer[index] =,nodrop,move dref value
@@ -412,30 +416,34 @@ impl Array
     mtd emplaceAt(index: uint, values: [..] T)
         #selectif Reflection.canCopy(T)
     {
+        sliceCount := @countof(values)
+        if !sliceCount
+            return
+
         Debug.assert(index <= count, "index out of range")
         if index == count
             return add(values)
-        grow(count + @countof(values))
-        count += @countof(values)
+        grow(count + sliceCount)
+        count += sliceCount
 
         #if Reflection.hasPostMove(T)
         {
-            for idx := count - 1; idx >= index + @countof(values); idx -= 1
-                buffer[idx] =,nodrop,moveraw buffer[idx - @countof(values)]
+            for idx := count - 1; idx >= index + sliceCount; idx -= 1
+                buffer[idx] =,nodrop,moveraw buffer[idx - sliceCount]
         }
         #else
         {
-            Memory.copyOver(buffer + index + @countof(values), buffer + index, @sizeof(T) * (count - @countof(values) - 1))
+            Memory.copyOver(buffer + index + @countof(values), buffer + index, @sizeof(T) * (count - sliceCount - index))
         }
 
         #if Reflection.hasPostMove(T)
         {
-            for idx := 0; idx < @countof(values); idx += 1
+            for idx := 0; idx < sliceCount; idx += 1
                 buffer[index + idx] =,nodrop,move values[idx]
         }
         #else
         {
-            Memory.copy(buffer + index, @dataof(values), @sizeof(T) * @countof(values))
+            Memory.copy(buffer + index, @dataof(values), @sizeof(T) * sliceCount)
         }
     }
 
@@ -503,22 +511,36 @@ impl Array
             buffer[index] =,moveraw buffer[count]
     }
 
-    // Remove an element at 'index' by shifting all others.
+    // Remove 'numValues' elements at 'index' by shifting all others.
     // Order is preserved
-    mtd removeAtOrdered(index: uint)
+    mtd removeAtOrdered(index: uint, numValues: uint = 1)
     {
-        Debug.assert(index < count, "index out of range")
-        count -= 1
-        @drop(buffer + index)
+        if !numValues
+            return
+        Debug.assert(index + numValues <= count, "index out of range")
+        count -= numValues
 
-        if index == count
+        #if Reflection.hasDrop(T)
+        {
+            loop idx: numValues
+                @drop(buffer + index + idx)
+        }
+
+        if index >= count
             return
 
-        idx := index
-        loop count - index
+        #if Reflection.hasPostMove(T)
         {
-            buffer[idx] =,nodrop,moveraw buffer[idx + 1]
-            idx += 1
+            idx := index
+            loop count - index
+            {
+                buffer[idx] =,nodrop,moveraw buffer[idx + numValues]
+                idx += 1
+            }
+        }
+        #else
+        {
+            Memory.copyOver(buffer + index, buffer + index + numValues, @sizeof(T) * (count - index))
         }
     }
 
