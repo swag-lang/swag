@@ -336,10 +336,50 @@ impl Array
         grow(count + 1)
         count += 1
 
-        for idx := count - 1; idx > index; idx -= 1
-            buffer[idx] =,nodrop,moveraw buffer[idx - 1]
+        #if Reflection.hasPostMove(T)
+        {
+            for idx := count - 1; idx > index; idx -= 1
+                buffer[idx] =,nodrop,moveraw buffer[idx - 1]
+        }
+        #else
+        {
+            Memory.copyOver(buffer + index + 1, buffer + index, @sizeof(T) * (count - 2))
+        }
 
         buffer[index] =,nodrop value
+    }
+
+    // Insert somes values at the given index. If 'index' is equal to 'count', then
+    // the values are added at the end of the array.
+    // Order is preserved.
+    mtd insertAt(index: uint, values: const [..] T)
+        #selectif Reflection.canCopy(T)
+    {
+        Debug.assert(index <= count, "index out of range")
+        if index == count
+            return add(values)
+        grow(count + @countof(values))
+        count += @countof(values)
+
+        #if Reflection.hasPostMove(T)
+        {
+            for idx := count - 1; idx >= index + @countof(values); idx -= 1
+                buffer[idx] =,nodrop,moveraw buffer[idx - @countof(values)]
+        }
+        #else
+        {
+            Memory.copyOver(buffer + index + @countof(values), buffer + index, @sizeof(T) * (count - @countof(values) - 1))
+        }
+
+        #if Reflection.hasPostCopy(T)
+        {
+            for idx := 0; idx < @countof(values); idx += 1
+                buffer[index + idx] =,nodrop values[idx]
+        }
+        #else
+        {
+            Memory.copy(buffer + index, @dataof(values), @sizeof(T) * @countof(values))
+        }
     }
 
     // Move a value at the given index. If 'index' is equal to 'count', then
@@ -353,8 +393,15 @@ impl Array
         grow(count + 1)
         count += 1
 
-        for idx := count - 1; idx > index; idx -= 1
-            buffer[idx] =,nodrop,moveraw buffer[idx - 1]
+        #if Reflection.hasPostMove(T)
+        {
+            for idx := count - 1; idx > index; idx -= 1
+                buffer[idx] =,nodrop,moveraw buffer[idx - 1]
+        }
+        #else
+        {
+            Memory.copyOver(buffer + index + 1, buffer + index, @sizeof(T) * (count - 2))
+        }
 
         buffer[index] =,nodrop,move dref value
     }
