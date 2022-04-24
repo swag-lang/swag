@@ -27,6 +27,12 @@ struct ListLine
 
 impl ListLine
 {
+    #[Swag.Inline]
+    mtd canExpand()->bool
+    {
+        return forceExpandMark or lines.count > 0
+    }
+
     // Get an item by index
     mtd getItem(column: u32)->*ListItem
     {
@@ -92,6 +98,8 @@ struct ListCtrl
     sigCheckChanged:    SigArray'closure(*Self)
     sigRightClick:      SigArray'closure(*Self, Math.Point)
     sigLeftDoubleClick: SigArray'closure(*Self, Math.Point)
+    sigExpand:          SigArray'closure(*Self, *ListLine)
+    sigCollapse:        SigArray'closure(*Self, *ListLine)
     sigVirtualFill:     func(*Self, *ListLine, u32)
     sigSort:            func(*ListLine, *ListLine, u32, bool)->s32
 
@@ -543,7 +551,7 @@ private impl ListView
                 labelPos.moveLeft(line.level * list.indentWidth)
 
                 // Expand/collapse mark
-                if line.lines.count or line.forceExpandMark
+                if line.canExpand()
                 {
                     expand := theme.getIcon24(line.expanded ? .SortArrowDown : .SortArrowRight, rect.height)
                     expand.paint(painter, labelPos.x, labelPos.vertCenter() - rect.height * 0.5, colorExpand)
@@ -825,17 +833,16 @@ impl ListCtrl
         Debug.assert(!isVirtual, "createLine cannot be called on a virtual list")
 
         line := lines.newPtr()
-        line.parent = parentLine
-        line.index  = cast(u32) lines.count
-        idxLineToIdx.add(line.index, line.index)
-
         if parentLine
         {
+            line.parent = parentLine
             line.level = parentLine.level + 1
             parentLine.lines.add(line)
         }
         else
         {
+            line.index  = cast(u32) lines.count
+            idxLineToIdx.add(line.index, line.index)
             lines.add(line)
         }
 
@@ -1014,31 +1021,30 @@ impl ListCtrl
     // Expand the given line
     mtd expand(line: *ListLine)
     {
-        if line.expanded
+        if !line.canExpand() or line.expanded
             return
         line.expanded = true
+        sigExpand.call(line)
 
-        var tmp:   Array'(*ListLine)
-        var toAdd: Array'(*ListLine)
+        var tmp: Array'(*ListLine)
         tmp.add(line)
 
         while tmp.count
         {
             to := tmp.popBack()
-            visit l: to.lines
+            visit l, i: to.lines
             {
-                toAdd.add(l)
-                l.index = line.index + cast(u32) toAdd.count
-                if l.expanded and l.lines.count
+                l.index = to.index + cast(u32) i + 1
+                if l.expanded
                     tmp.add(l)
             }
-        }
 
-        // Update indexes after the insertion
-        for idx := line.index+1; idx <= cast(u32) (lines.count-1); idx += 1
-            lines[idx].index += cast(u32) toAdd.count
-        // Insert at the right position
-        lines.insertAt(cast(uint) (line.index + 1), toAdd.toSlice())
+            // Update indexes after the insertion
+            for idx := to.index+1; idx <= cast(u32) (lines.count-1); idx += 1
+                lines[idx].index += cast(u32) to.lines.count
+            // Insert at the right position
+            lines.insertAt(cast(uint) (to.index + 1), to.lines.toSlice())
+        }
 
         computeLayout()
     }
@@ -1046,9 +1052,10 @@ impl ListCtrl
     // Collapse the given line
     mtd collapse(line: *ListLine)
     {
-        if !line.expanded
+        if !line.canExpand() or !line.expanded
             return
         line.expanded = false
+        sigCollapse.call(line)
 
         var tmp: Array'(*ListLine)
         tmp.add(line)
@@ -1060,7 +1067,7 @@ impl ListCtrl
             visit l: to.lines
             {
                 removeCount += 1
-                if l.expanded and l.lines.count
+                if l.expanded
                     tmp.add(l)
             }
         }
@@ -1077,15 +1084,23 @@ impl ListCtrl
     // Collapse all lines
     mtd collapseAll()
     {
-        /*visibleLineCount = 0
-        visit l: lines
+        func collapseRec(sl: [..] *ListLine)
         {
-            l.visible  = l.parent ? false : true
-            l.expanded = false
-            visibleLineCount += l.visible ? 1 : 0
+            visit l: sl
+            {
+                l.expanded = false
+                collapseRec(l.lines.toSlice())
+            }
         }
 
-        computeLayout()*/
+        visit l: lines
+        {
+            if l.expanded
+                collapse(l)
+        }
+
+        collapseRec(lines.toSlice())
+        computeLayout()
     }
 
     // Collapse the given line
