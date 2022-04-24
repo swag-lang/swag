@@ -42,6 +42,7 @@ func createTreeMulti(view: *Wnd)->*ListCtrl
     tree.setFrameForm(FrameWndForm.Round)
     tree.selectionMode = .Multi
     tree.iconSize = 16
+    tree.iconMarginFirstCol = false
     tree.header.getItem(2).iconMargin = true
 
     loop i: 50

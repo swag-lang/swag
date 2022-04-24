@@ -1,6 +1,23 @@
 #global public
 using Core, Pixel
 
+enum ListSelectionMode
+{
+    None
+    Single
+    Multi
+}
+
+#[Swag.EnumFlags]
+enum ListFlags
+{
+    None
+    HideSelection
+    AlternateLines
+    HorzLines
+    VertLines
+}
+
 struct ListItem
 {
     using item: Item
@@ -25,6 +42,46 @@ struct ListLine
     index:      u32
     level:      u32
     expanded:   bool
+    iconMargin: bool
+}
+
+struct ListCtrl
+{
+    using frameWnd: FrameWnd
+
+    horizontalExtent:   f32
+    lineHeight:         f32 = 22
+    indentWidth:        f32 = 10
+    iconSize:           f32
+    iconMarginFirstCol: bool = true
+    listFlags           = ListFlags.None
+    selectionMode       = ListSelectionMode.Single
+    sigSelChanged:      SigArray'closure(*Self)
+    sigCheckChanged:    SigArray'closure(*Self)
+    sigRightClick:      SigArray'closure(*Self, Math.Point)
+    sigLeftDoubleClick: SigArray'closure(*Self, Math.Point)
+    sigExpand:          SigArray'closure(*Self, *ListLine)
+    sigCollapse:        SigArray'closure(*Self, *ListLine)
+    sigVirtualFill:     func(*Self, *ListLine, u32)
+    sigSort:            func(*ListLine, *ListLine, u32, bool)->s32
+
+    lines:              ArrayPtr'ListLine
+    idxLineToIdxList:   HashTable'(u32, u32)
+    selModel:           SelModel
+    checkModel:         SelModel
+    focusIndex          = Swag.U32.Max
+    scrollWnd:          *ScrollWnd
+    listView:           *ListView
+    header:             *Header
+    virtualCount:       u32
+    isVirtual:          bool
+}
+
+struct ListView
+{
+    using wnd:              Wnd
+    list:                   *ListCtrl
+    discardMouseRelease:    bool
 }
 
 impl ListLine
@@ -74,61 +131,6 @@ impl ListLine
         item.icon = icon
         items.add(item)
     }
-}
-
-enum ListSelectionMode
-{
-    None
-    Single
-    Multi
-}
-
-#[Swag.EnumFlags]
-enum ListFlags
-{
-    None
-    HideSelection
-    AlternateLines
-    HorzLines
-    VertLines
-}
-
-struct ListCtrl
-{
-    using frameWnd: FrameWnd
-
-    horizontalExtent:   f32
-    lineHeight:         f32 = 22
-    indentWidth:        f32 = 10
-    iconSize:           f32
-    listFlags           = ListFlags.None
-    selectionMode       = ListSelectionMode.Single
-    sigSelChanged:      SigArray'closure(*Self)
-    sigCheckChanged:    SigArray'closure(*Self)
-    sigRightClick:      SigArray'closure(*Self, Math.Point)
-    sigLeftDoubleClick: SigArray'closure(*Self, Math.Point)
-    sigExpand:          SigArray'closure(*Self, *ListLine)
-    sigCollapse:        SigArray'closure(*Self, *ListLine)
-    sigVirtualFill:     func(*Self, *ListLine, u32)
-    sigSort:            func(*ListLine, *ListLine, u32, bool)->s32
-
-    lines:              ArrayPtr'ListLine
-    idxLineToIdxList:   HashTable'(u32, u32)
-    selModel:           SelModel
-    checkModel:         SelModel
-    focusIndex          = Swag.U32.Max
-    scrollWnd:          *ScrollWnd
-    listView:           *ListView
-    header:             *Header
-    virtualCount:       u32
-    isVirtual:          bool
-}
-
-struct ListView
-{
-    using wnd:              Wnd
-    list:                   *ListCtrl
-    discardMouseRelease:    bool
 }
 
 impl IWnd for ListView
@@ -657,12 +659,17 @@ private impl ListView
             icon := item.icon
             if list.iconSize > 0
             {
-                if !idxItem or (list.header and list.header.getItem(cast(u32) idxItem).iconMargin)
+                if icon.isValid()
+                    icon.sizeX, icon.sizeY = list.iconSize
+                else
                 {
-                    if !icon.isValid()
+                    iconMargin := list.iconMarginFirstCol
+                    if !idxItem and line.parent
+                        iconMargin = line.parent.iconMargin
+                    else if idxItem
+                        iconMargin = list.header.getItem(cast(u32) idxItem).iconMargin
+                    if iconMargin
                         labelPos.moveLeft(list.iconSize + metrics.iconText_Margin)
-                    else
-                        icon.sizeX, icon.sizeY = list.iconSize
                 }
             }
 
