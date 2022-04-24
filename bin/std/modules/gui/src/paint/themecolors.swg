@@ -266,14 +266,6 @@ struct ThemeColors
     listItem_AlternateBk:           Color = 0x08FFFFFF
     listItem_Line:                  Color = Gray4
 
-    treeItem_FocusSelectedBk:       Color = Blue
-    treeItem_SelectedBk:            Color = Gray5
-    treeItem_DisabledText:          Color = Gray3
-    treeItem_SelectedText:          Color = White
-    treeItem_Text:                  Color = White
-    treeItem_AlternateBk:           Color = 0x08FFFFFF
-    treeItem_Line:                  Color = Gray4
-
     headerItem_DisabledText:        Color = Gray4
     headerItem_HotText:             Color = White
     headerItem_HotBk:               Color = 0x10FFFFFF

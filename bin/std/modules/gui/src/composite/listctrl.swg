@@ -27,6 +27,14 @@ struct ListLine
 
 impl ListLine
 {
+    mtd isParentOf(other: *ListLine)->bool
+    {
+        l := other.parent
+        while l and l != self
+            l = l.parent
+        return l ? true : false
+    }
+
     #[Swag.Inline]
     mtd canExpand()->bool
     {
@@ -258,6 +266,7 @@ impl IWnd for ListView
         }
 
         idx := hitTest(evt.surfacePos)
+        metrics := getThemeMetrics()
 
         ctrl  := cast(bool) (evt.modifiers & .Control)
         shift := cast(bool) (evt.modifiers & .Shift)
@@ -290,42 +299,67 @@ impl IWnd for ListView
             return
         }
 
-        // Check boxes
-        // ============================
-
         if evt.button != .Left
             return
 
-        // On checkbox
-        if list.listFlags & .Checkable and idx != Swag.U32.Max
+        if idx != Swag.U32.Max
         {
-            eatCheck := false
-            if evt.kind == .MouseDoubleClick
-                eatCheck = true
-            else
+            hitLine := list.lines[idx]
+            idxLine := list.isVirtual ? idx : hitLine.index
+            localPos := surfaceToLocal(evt.surfacePos)
+            localPos.x += scrollPos.x
+            widthLeft := hitLine.level * list.indentWidth
+            if localPos.x >= widthLeft
             {
-                localPos := surfaceToLocal(evt.surfacePos)
-                localPos.x += scrollPos.x
-                if localPos.x < Math.min(getThemeMetrics().btnCheck_Size, list.lineHeight)
-                    eatCheck = true
-            }
+                // Expand
+                // ============================
 
-            if eatCheck
-            {
-                if evt.kind == .MouseReleased
-                    return
-                idxLine := list.isVirtual ? idx : list.lines[idx].index
-                checked := !list.checkModel.isSelected(idxLine)
-                if list.selModel.isSelected(idxLine)
+                widthLeft += Math.min(metrics.btnCheck_Size, list.lineHeight)
+                if list.lines[idx].canExpand()
                 {
-                    visit l: list.selModel
-                        list.checkModel.select(l, checked)
+                    eatCheck := false
+                    if localPos.x < widthLeft
+                        eatCheck = true
+                    widthLeft += Math.min(metrics.btnCheck_Size, list.lineHeight)
+
+                    if eatCheck
+                    {
+                        if evt.kind == .MouseReleased
+                            return
+                        list.toggleExpand(list.lines[idx])
+                        return
+                    }
                 }
-                else
-                    list.checkModel.select(idxLine, checked)
-                list.sigCheckChanged.call(list)
-                invalidate()
-                return
+
+                // Check boxes
+                // ============================
+
+                // On checkbox
+                if list.listFlags & .Checkable
+                {
+                    eatCheck := false
+                    if evt.kind == .MouseDoubleClick
+                        eatCheck = true
+                    elif localPos.x < widthLeft
+                        eatCheck = true
+
+                    if eatCheck
+                    {
+                        if evt.kind == .MouseReleased
+                            return
+                        checked := !list.checkModel.isSelected(idxLine)
+                        if list.selModel.isSelected(idxLine)
+                        {
+                            visit l: list.selModel
+                                list.checkModel.select(l, checked)
+                        }
+                        else
+                            list.checkModel.select(idxLine, checked)
+                        list.sigCheckChanged.call(list)
+                        invalidate()
+                        return
+                    }
+                }
             }
         }
 
@@ -553,9 +587,10 @@ private impl ListView
                 // Expand/collapse mark
                 if line.canExpand()
                 {
-                    expand := theme.getIcon24(line.expanded ? .SortArrowDown : .SortArrowRight, rect.height)
+                    widthExpand := Math.min(metrics.btnCheck_Size, list.lineHeight)
+                    expand := theme.getIcon24(line.expanded ? .SortArrowDown : .SortArrowRight, widthExpand)
                     expand.paint(painter, labelPos.x, labelPos.vertCenter() - rect.height * 0.5, colorExpand)
-                    labelPos.moveLeft(rect.height)
+                    labelPos.moveLeft(widthExpand)
                 }
             }
 
@@ -984,18 +1019,10 @@ impl ListCtrl
             idxLineToIdxList.add(l.index, cast(u32) idx)
     }
 
-    // Sort the list by a given column
-    // If 'persistent' is true, then the sorted column will be displayed in the
-    // header (if it exists)
-    mtd sort(column: u32, descentOrder, persistent = false)
+    private mtd sort(column: u32, descentOrder: bool, toSort: *Array'*ListLine)
     {
-        if isVirtual
-            return
-
-        cb := @|self, column, descentOrder|(a, b: *ListLine)->s32
+        func sortFunc(column: u32, descentOrder: bool, a, b: *ListLine)->s32
         {
-            if self.sigSort
-                return self.sigSort(a, b, column, descentOrder)
             it0 := a.getItem(column)
             it1 := b.getItem(column)
             sort0 := it0.sortKey.isEmpty() ? &it0.name.raw : &it0.sortKey
@@ -1005,7 +1032,44 @@ impl ListCtrl
             return res
         }
 
-        lines.sort(cb)
+        cb := @|self, column, descentOrder|(a, b: *ListLine)->s32
+        {
+            if self.sigSort
+                return self.sigSort(a, b, column, descentOrder)
+
+            if a.parent != b.parent
+            {
+                if a.isParentOf(b) return -1
+                if b.isParentOf(a) return 1
+
+                a1 := a
+                b1 := b
+                while a1.level > b1.level a1 = a1.parent
+                while b1.level > a1.level b1 = b1.parent
+                while a1.parent != b1.parent
+                {
+                    a1 = a1.parent
+                    b1 = b1.parent
+                }
+
+                return sortFunc(column, descentOrder, a1, b1)
+            }
+
+            return sortFunc(column, descentOrder, a, b)
+        }
+
+        toSort.sort(cb)
+    }
+
+    // Sort the list by a given column
+    // If 'persistent' is true, then the sorted column will be displayed in the
+    // header (if it exists)
+    mtd sort(column: u32, descentOrder, persistent = false)
+    {
+        if isVirtual
+            return
+
+        sort(column, descentOrder, &lines)
         mapIndexes()
 
         if header and persistent

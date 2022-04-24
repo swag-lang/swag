@@ -61,6 +61,15 @@ func createTreeMulti(view: *Wnd)->*ListCtrl
             str = Format.toString("sub item %", j)
             line1.setItem(1, str)
             line1.setItem(2, str, icon)
+
+            loop k: 10
+            {
+                str2  := Format.toString("XX %", k)
+                line2 := tree.createLine(str2, parentLine: line1)
+                str = Format.toString("sub item %", k)
+                line2.setItem(1, str)
+                line2.setItem(2, str, icon)
+            }
         }
     }
 
@@ -84,15 +93,10 @@ func createView2(tabView: *Tab, view: *Wnd)
     {
         tree := createTreeMulti(view)
         tree.frameFlags |= .FocusBorder
-        tree.listFlags |= .AlternateLines | .HorzLines | .VertLines
+        tree.listFlags |= .AlternateLines | .HorzLines | .VertLines | .Checkable
         tree.setFrameForm(FrameWndForm.Square)
-        tree.setPosition(@{420, 5, 400, 300})
-
-        line0 := tree.getLine(0)
-        line0.colorBk = Color.getDarker(Argb.Red, 0.5)
-        line0.colorFg = Color.getLighter(Argb.Yellow, 0.5)
-        line0.getItem(0).colorFg = Argb.Yellow
-        line0.getItem(0).colorBk = Color.getDarker(Argb.Blue, 0.5)
+        tree.setPosition(@{420, 5, 600, 300})
+        tree.setColumnWidth(0, 200)
 
         tree.sigSelChanged += @(tree) {
             sel := tree.getSelectedLines()
