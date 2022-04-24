@@ -103,16 +103,16 @@ struct ListCtrl
     sigVirtualFill:     func(*Self, *ListLine, u32)
     sigSort:            func(*ListLine, *ListLine, u32, bool)->s32
 
-    lines:          ArrayPtr'ListLine
-    idxLineToIdx:   HashTable'(u32, u32)
-    selModel:       SelModel
-    checkModel:     SelModel
-    focusIndex:     u32 = Swag.U32.Max
-    scrollWnd:      *ScrollWnd
-    listView:       *ListView
-    header:         *Header
-    virtualCount:   u32
-    isVirtual:      bool
+    lines:              ArrayPtr'ListLine
+    idxLineToIdxList:   HashTable'(u32, u32)
+    selModel:           SelModel
+    checkModel:         SelModel
+    focusIndex          = Swag.U32.Max
+    scrollWnd:          *ScrollWnd
+    listView:           *ListView
+    header:             *Header
+    virtualCount:       u32
+    isVirtual:          bool
 }
 
 struct ListView
@@ -842,7 +842,7 @@ impl ListCtrl
         else
         {
             line.index  = cast(u32) lines.count
-            idxLineToIdx.add(line.index, line.index)
+            idxLineToIdxList.add(line.index, line.index)
             lines.add(line)
         }
 
@@ -862,7 +862,7 @@ impl ListCtrl
     {
         lines.clear()
         virtualCount = 0
-        idxLineToIdx.clear()
+        idxLineToIdxList.clear()
     }
 
     // Add one column in a multi columns list
@@ -943,7 +943,7 @@ impl ListCtrl
 
         visit i: selModel
         {
-            idx := idxLineToIdx.find(i).value
+            idx := idxLineToIdxList.find(i).value
             result.add(lines[idx])
         }
 
@@ -959,7 +959,7 @@ impl ListCtrl
 
         visit i: checkModel
         {
-            idx := idxLineToIdx.find(i).value
+            idx := idxLineToIdxList.find(i).value
             result.add(lines[idx])
         }
 
@@ -973,15 +973,15 @@ impl ListCtrl
         if isVirtual or selModel.isEmpty()
             return null
         range := selModel.selection.front()
-        idx   := idxLineToIdx.find(range.start).value
+        idx   := idxLineToIdxList.find(range.start).value
         return lines[idx]
     }
 
     private mtd mapIndexes()
     {
-        idxLineToIdx.clear()
+        idxLineToIdxList.clear()
         visit l, idx: lines
-            idxLineToIdx.add(l.index, cast(u32) idx)
+            idxLineToIdxList.add(l.index, cast(u32) idx)
     }
 
     // Sort the list by a given column
@@ -1029,21 +1029,27 @@ impl ListCtrl
         var tmp: Array'(*ListLine)
         tmp.add(line)
 
+        cptIdxLine := cast(u32) lines.count
+        cptIdx     := 0'u32
         while tmp.count
         {
             to := tmp.popBack()
+            idxInsert := idxLineToIdxList.find(to.index).value
             visit l, i: to.lines
             {
-                l.index = to.index + cast(u32) i + 1
+                l.index = cptIdxLine
+                cptIdxLine += 1
+                idxLineToIdxList.add(l.index, idxInsert + cptIdx + 1)
+                cptIdx += 1
                 if l.expanded
                     tmp.add(l)
             }
 
             // Update indexes after the insertion
-            for idx := to.index+1; idx <= cast(u32) (lines.count-1); idx += 1
-                lines[idx].index += cast(u32) to.lines.count
+            for idx := idxInsert + 1; idx <= cast(u32) (lines.count-1); idx += 1
+                idxLineToIdxList.add(lines[idx].index, cast(u32) (idx + to.lines.count))
             // Insert at the right position
-            lines.insertAt(cast(uint) (to.index + 1), to.lines.toSlice())
+            lines.insertAt(cast(uint) (idxInsert + 1), to.lines.toSlice())
         }
 
         computeLayout()
