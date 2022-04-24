@@ -67,6 +67,7 @@ func createTreeMulti(view: *Wnd)->*ListCtrl
                 str2  := Format.toString("XX %", k)
                 line2 := tree.createLine(str2, parentLine: line1)
                 str = Format.toString("sub item %", k)
+                line2.checkable = true
                 line2.setItem(1, str)
                 line2.setItem(2, str, icon)
             }
@@ -93,7 +94,7 @@ func createView2(tabView: *Tab, view: *Wnd)
     {
         tree := createTreeMulti(view)
         tree.frameFlags |= .FocusBorder
-        tree.listFlags |= .AlternateLines | .HorzLines | .VertLines | .Checkable
+        tree.listFlags |= .AlternateLines | .HorzLines | .VertLines
         tree.setFrameForm(FrameWndForm.Square)
         tree.setPosition(@{420, 5, 600, 300})
         tree.setColumnWidth(0, 200)

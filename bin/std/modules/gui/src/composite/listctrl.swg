@@ -12,17 +12,19 @@ struct ListItem
 
 struct ListLine
 {
-    lines:      Array'(*ListLine)
-    parent:     *ListLine
-    items:      ArrayPtr'ListItem
     colorBk:    Color
     colorFg:    Color
     userData:   *void
-    index:      u32
 
-    level:           u32
-    expanded:        bool
-    forceExpandMark: bool
+    forceExpandMark:    bool
+    checkable:          bool
+
+    lines:      Array'(*ListLine)
+    parent:     *ListLine
+    items:      ArrayPtr'ListItem
+    index:      u32
+    level:      u32
+    expanded:   bool
 }
 
 impl ListLine
@@ -87,7 +89,6 @@ enum ListFlags
     None
     HideSelection
     AlternateLines
-    Checkable
     HorzLines
     VertLines
 }
@@ -154,10 +155,13 @@ impl IWnd for ListView
         switch evt.key
         {
         case Space:
-            if list.listFlags & .Checkable
+            if focusLine.checkable
             {
                 visit l: list.selModel
                 {
+                    idx := list.idxLineToIdxList.find(l).value
+                    if !list.lines[idx].checkable
+                        continue
                     checked := !list.checkModel.isSelected(l)
                     list.checkModel.select(l, checked)
                 }
@@ -171,10 +175,16 @@ impl IWnd for ListView
             }
 
         case Enter:
-            if list.listFlags & .Checkable
+            if focusLine.checkable
             {
                 visit l: list.selModel
+                {
+                    idx := list.idxLineToIdxList.find(l).value
+                    if !list.lines[idx].checkable
+                        continue
                     list.checkModel.select(l, true)
+                }
+
                 list.sigCheckChanged.call(list)
                 invalidate()
             }
@@ -335,7 +345,7 @@ impl IWnd for ListView
                 // ============================
 
                 // On checkbox
-                if list.listFlags & .Checkable
+                if hitLine.checkable
                 {
                     eatCheck := false
                     if evt.kind == .MouseDoubleClick
@@ -347,6 +357,7 @@ impl IWnd for ListView
                     {
                         if evt.kind == .MouseReleased
                             return
+
                         checked := !list.checkModel.isSelected(idxLine)
                         if list.selModel.isSelected(idxLine)
                         {
@@ -606,12 +617,12 @@ private impl ListView
             defer painter.popClippingRect()
 
             // Checkbox
-            if idxItem == 0 and list.listFlags & .Checkable
+            if idxItem == 0 and line.checkable
             {
                 var subRectBorder:  *ThemeImageRect
                 var subRectMark:    *ThemeImageRect
 
-                idxLine := list.isVirtual ? idx : list.lines[idx].index
+                idxLine := list.isVirtual ? idx : line.index
                 checked := list.checkModel.isSelected(idxLine)
 
                 colorBorder := colorFg

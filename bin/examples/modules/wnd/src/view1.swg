@@ -19,7 +19,7 @@ func createListSimple(view: *Wnd, maxItems = 50)->*ListCtrl
     return list
 }
 
-func createListMulti(view: *Wnd)->*ListCtrl
+func createListMulti(view: *Wnd, checkable: bool = false)->*ListCtrl
 {
     list := ListCtrl.createMultiColumns(view, @{5, 5, 250, 300})
     list.addColumn("column 0")
@@ -36,6 +36,7 @@ func createListMulti(view: *Wnd)->*ListCtrl
         icon := app.theme.getIcon24(ThemeIcons24.Search, 16)
         if i % 2 == 0 icon.clear()
         line := list.createLine(str, icon)
+        line.checkable = checkable
         line.setItem(1, str)
         line.setItem(2, str, icon)
     }
@@ -92,9 +93,8 @@ func createView1(tabView: *Tab, view: *Wnd)
     }
 
     {
-        list := createListMulti(view)
+        list := createListMulti(view, checkable: true)
         list.frameFlags |= .FocusBorder
-        list.listFlags |= .Checkable
         list.header.headerFlags ^= .Clickable
         list.setPosition(@{5, 400, 400, 300})
         list.ensureVisibleLine(list.getLineCount() - 1)
