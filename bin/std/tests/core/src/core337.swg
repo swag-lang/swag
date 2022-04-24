@@ -12,7 +12,7 @@ using Core
     arr1.add(String.from("4"))
     arr1.add(String.from("5"))
 
-    arr.insertAt(1, arr1.toSlice())
+    arr.emplaceAt(1, arr1.toSlice())
     @assert(dref arr[0] == "0")
     @assert(dref arr[1] == "3")
     @assert(dref arr[2] == "4")
@@ -20,7 +20,7 @@ using Core
     @assert(dref arr[4] == "1")
     @assert(dref arr[5] == "2")
 
-    @assert(dref arr1[0] == "3")
-    @assert(dref arr1[1] == "4")
-    @assert(dref arr1[2] == "5")
+    @assert(arr1[0].isNull())
+    @assert(arr1[1].isNull())
+    @assert(arr1[2].isNull())
 }

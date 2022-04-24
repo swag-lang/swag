@@ -349,7 +349,7 @@ impl Array
         buffer[index] =,nodrop value
     }
 
-    // Insert somes values at the given index. If 'index' is equal to 'count', then
+    // Insert some values at the given index. If 'index' is equal to 'count', then
     // the values are added at the end of the array.
     // Order is preserved.
     mtd insertAt(index: uint, values: const [..] T)
@@ -404,6 +404,39 @@ impl Array
         }
 
         buffer[index] =,nodrop,move dref value
+    }
+
+    // Move some values at the given index. If 'index' is equal to 'count', then
+    // the values are moved at the end of the array.
+    // Order is preserved.
+    mtd emplaceAt(index: uint, values: [..] T)
+        #selectif Reflection.canCopy(T)
+    {
+        Debug.assert(index <= count, "index out of range")
+        if index == count
+            return add(values)
+        grow(count + @countof(values))
+        count += @countof(values)
+
+        #if Reflection.hasPostMove(T)
+        {
+            for idx := count - 1; idx >= index + @countof(values); idx -= 1
+                buffer[idx] =,nodrop,moveraw buffer[idx - @countof(values)]
+        }
+        #else
+        {
+            Memory.copyOver(buffer + index + @countof(values), buffer + index, @sizeof(T) * (count - @countof(values) - 1))
+        }
+
+        #if Reflection.hasPostMove(T)
+        {
+            for idx := 0; idx < @countof(values); idx += 1
+                buffer[index + idx] =,nodrop,move values[idx]
+        }
+        #else
+        {
+            Memory.copy(buffer + index, @dataof(values), @sizeof(T) * @countof(values))
+        }
     }
 
     // Append a slice to the end of this instance
