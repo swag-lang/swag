@@ -715,6 +715,14 @@ bool ByteCodeGenJob::emitCastToSlice(ByteCodeGenContext* context, AstNode* exprN
         inst->b.u64            = diff;
         node->resultRegisterRC = exprNode->resultRegisterRC;
     }
+    else if (fromTypeInfo->kind == TypeInfoKind::TypeListArray)
+    {
+        auto fromTypeList = CastTypeInfo<TypeInfoList>(fromTypeInfo, TypeInfoKind::TypeListArray);
+        transformResultToLinear2(context, exprNode);
+        node->resultRegisterRC = exprNode->resultRegisterRC;
+        auto inst = emitInstruction(context, ByteCodeOp::SetImmediate64, node->resultRegisterRC[1]);
+        inst->b.u64 = fromTypeList->subTypes.count;
+    }
     else if (fromTypeInfo->kind == TypeInfoKind::Array)
     {
         auto fromTypeArray = CastTypeInfo<TypeInfoArray>(fromTypeInfo, TypeInfoKind::Array);
