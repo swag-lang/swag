@@ -1,89 +1,103 @@
 using Core, Gui, Pixel
 
+func createTreeSimple(view: *Wnd, maxItems = 50)->*ListCtrl
+{
+    var rng: Random.DefaultRng
+
+    tree := ListCtrl.createSimple(view, @{5, 5, 250, 300})
+    tree.setFrameForm(FrameWndForm.Round)
+    tree.selectionMode = .Multi
+    tree.iconSize = 16
+
+    loop i: maxItems
+    {
+        str  := Format.toString("item %", i)
+        icon := app.theme.getIcon24(cast(ThemeIcons24) rng.nextU32(0, cast(u32) @countof(ThemeIcons24)))
+        line := tree.createLine(str, icon)
+
+        loop j: maxItems / 2
+        {
+            str1  := Format.toString("sub item %", j)
+            icon1 := app.theme.getIcon24(cast(ThemeIcons24) rng.nextU32(0, cast(u32) @countof(ThemeIcons24)))
+            line1 := tree.createLine(str1, icon1, parentLine: line)
+
+            loop k: maxItems / 3
+            {
+                str2  := Format.toString("sub sub item %", k)
+                line2 := tree.createLine(str2, parentLine: line1)
+            }
+        }
+    }
+
+    tree.computeLayout()
+    return tree
+}
+
+func createTreeMulti(view: *Wnd)->*ListCtrl
+{
+    tree := ListCtrl.createMultiColumns(view, @{5, 5, 250, 300})
+    tree.addColumn("column 0")
+    tree.addColumn("column 1")
+    tree.addColumn("column 2")
+    tree.setFrameForm(FrameWndForm.Round)
+    tree.selectionMode = .Multi
+    tree.iconSize = 16
+    tree.header.getItem(2).iconMargin = true
+
+    loop i: 50
+    {
+        str := Format.toString("item %", i)
+        icon := app.theme.getIcon24(ThemeIcons24.Search, 16)
+        if i % 2 == 0 icon.clear()
+        line := tree.createLine(str, icon)
+        str = Format.toString("sub item %", i)
+        line.setItem(1, str)
+        line.setItem(2, str, icon)
+
+        loop j: 25
+        {
+            str1 := Format.toString("sub line %", j)
+            line1 := tree.createLine(str1, parentLine: line)
+            str = Format.toString("sub item %", j)
+            line1.setItem(1, str)
+            line1.setItem(2, str, icon)
+        }
+    }
+
+    tree.computeLayout()
+    return tree
+}
+
 func createView2(tabView: *Tab, view: *Wnd)
 {
     {
-        btn := PushButton.create(view, "AnchorR", @{600, 400})
-        btn.anchorStyle = .X
+        tree := createTreeSimple(view, 10)
+        tree.frameFlags |= .FocusBorder
+        tree.selectionMode = .Single
+        tree.setPosition(@{5, 5, 250, 300})
+        btn := PushButton.create(view, "collapse", @{5, 310})
+        btn.sigPressed += @|tree|(btn) {
+            tree.collapseAll()
+        }
     }
 
     {
-        btn := PushButton.create(view, "AnchorRB", @{600, 440})
-        btn.anchorStyle = .X | .Y
-    }
+        tree := createTreeMulti(view)
+        tree.frameFlags |= .FocusBorder
+        tree.listFlags |= .AlternateLines | .HorzLines | .VertLines
+        tree.setFrameForm(FrameWndForm.Square)
+        tree.setPosition(@{420, 5, 400, 300})
 
-    {
-        btn := PushButton.create(view, "AnchorW", @{600, 480})
-        btn.anchorStyle = .Width
-    }
+        line0 := tree.getLine(0)
+        line0.colorBk = Color.getDarker(Argb.Red, 0.5)
+        line0.colorFg = Color.getLighter(Argb.Yellow, 0.5)
+        line0.getItem(0).colorFg = Argb.Yellow
+        line0.getItem(0).colorBk = Color.getDarker(Argb.Blue, 0.5)
 
-    {
-        btn := PushButton.create(view, "AnchorH", @{600, 520})
-        btn.anchorStyle = .Height
-    }
-
-    {
-        split := SplitterCtrl.create(view, @{10, 10, 300, 300}, vertical: true)
-        split.setFrameForm(FrameWndForm.Round)
-
-        list0 := createListSimple(split)
-        list0.setFrameForm(FrameWndForm.Transparent)
-        list1 := createListSimple(split)
-        list1.setFrameForm(FrameWndForm.Transparent)
-
-        split.addPane(list0)
-        split.addPane(list1)
-    }
-
-    {
-        split := SplitterCtrl.create(view, @{320, 10, 400, 300}, vertical: false)
-        split.frameFlags |= .FocusBorder
-        split.setFrameForm(FrameWndForm.Square)
-
-        ed := RichEditCtrl.create(split, @{})
-        ed.setRichEdFlags(.WordWrap)
-        ed.setForm(.Edit)
-        ed.addText("coucou la foule comment ça va ? ça va ! et même très bien ")
-
-        list1 := createListMulti(split)
-        list1.setFrameForm(FrameWndForm.Transparent)
-
-        split.addPane(ed)
-        split.addPane(list1)
-    }
-
-    {
-        split := SplitterCtrl.create(view, @{10, 320, 600, 300}, vertical: false)
-        split.dockStyle = .Bottom
-        split.setFrameForm(FrameWndForm.Square)
-
-        list0 := createListSimple(split)
-        list1 := createListMulti(split)
-        list2 := createListSimple(split)
-        list0.setFrameForm(FrameWndForm.Transparent)
-        list1.setFrameForm(FrameWndForm.Transparent)
-        list2.setFrameForm(FrameWndForm.Transparent)
-
-        split.addPane(list0)
-        split.addPane(list1)
-        split.addPane(list2)
-    }
-
-    {
-        split := SplitterCtrl.create(view, @{0, 0, 300, 0}, vertical: true)
-        split.dockStyle = .Right
-        split.setFrameForm(FrameWndForm.Square)
-        split.setMargin(bottom: 10)
-
-        list0 := createListSimple(split)
-        list1 := createListMulti(split)
-        list2 := createListSimple(split)
-        list0.setFrameForm(FrameWndForm.Transparent)
-        list1.setFrameForm(FrameWndForm.Transparent)
-        list2.setFrameForm(FrameWndForm.Transparent)
-
-        split.addPane(list0)
-        split.addPane(list1)
-        split.addPane(list2)
+        tree.sigSelChanged += @(tree) {
+            sel := tree.getSelectedLines()
+            visit l: sel
+                Console.printf("%\n", l.getItem(0).name.raw)
+        }
     }
 }

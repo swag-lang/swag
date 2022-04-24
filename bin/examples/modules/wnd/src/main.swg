@@ -24,13 +24,13 @@ var app: Application
     view1 := Wnd.create'Wnd(tab)
     tab.addItem("ListCtrl", @{}, view1)
     view2 := Wnd.create'Wnd(tab)
-    tab.addItem("SplitterCtrl", @{}, view2)
+    tab.addItem("TreeCtrl", @{}, view2)
     view3 := Wnd.create'Wnd(tab)
     tab.addItem("Color", @{}, view3)
     view4 := Wnd.create'Wnd(tab)
     tab.addItem("RichEditCtrl", @{}, view4)
     view5 := Wnd.create'Wnd(tab)
-    tab.addItem("TreeCtrl", @{}, view5)
+    tab.addItem("SplitterCtrl", @{}, view5)
 
     createView0(tab, view0)
     createView1(tab, view1)
@@ -39,7 +39,7 @@ var app: Application
     createView4(tab, view4)
     createView5(tab, view5)
 
-    tab.select(5)
+    tab.select(2)
     surface0.show()
 
     //surface1 := try app.createSurface(100+W+10, 100, W, H, SurfaceFlags.Secondary | SurfaceFlags.SmallCaption | SurfaceFlags.CloseBtn)
