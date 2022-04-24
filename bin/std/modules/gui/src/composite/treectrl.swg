@@ -100,18 +100,16 @@ struct TreeCtrl
     sigLeftDoubleClick: SigArray'closure(*Self, Math.Point)
     sigSort:            func(*TreeLine, *TreeLine, u32, bool)->s32
 
-    lines:              ArrayPtr'TreeLine
-    idxLineToIdx:       HashTable'(u32, u32)
-    selModel:           SelModel
-    checkModel:         SelModel
-    focusIndex:         u32 = Swag.U32.Max
-    scrollWnd:          *ScrollWnd
-    treeView:           *TreeView
-    header:             *Header
-    nextTreeIndex:      u32
+    lines:          ArrayPtr'TreeLine
+    idxLineToIdx:   HashTable'(u32, u32)
+    selModel:       SelModel
+    checkModel:     SelModel
+    focusIndex:     u32 = Swag.U32.Max
+    scrollWnd:      *ScrollWnd
+    treeView:       *TreeView
+    header:         *Header
 
-    recomputeIndexes:               bool = true
-    visibleLineCount:       u32
+    recomputeIndexes:       bool = true
     firstVisibleIndex:      u32
     firstVisibleLineIndex:  u32
     lastVisibleLineIndex:   u32
@@ -664,7 +662,8 @@ private impl TreeView
                 }
             }
 
-            Theme.drawIconText(painter, labelPos, icon, &item.name, format, metrics.iconText_Margin)
+            painter.drawString(labelPos.x, labelPos.y, Format.toString("%", line.index), theme.res.fontDefault.regular, Argb.Red)
+            //Theme.drawIconText(painter, labelPos, icon, &item.name, format, metrics.iconText_Margin)
         }
     }
 
@@ -864,11 +863,11 @@ impl TreeCtrl
             scrollWidth = header.getTotalItemsWidth()
         else
             scrollWidth = clientRect.width
-        scrollWnd.setScrollSize(scrollWidth, visibleLineCount * lineHeight)
+        scrollWnd.setScrollSize(scrollWidth, cast(f32) (lines.count * lineHeight))
 
         firstVisibleIndex     = 0
         firstVisibleLineIndex = 0
-        lastVisibleLineIndex  = visibleLineCount ? getLineCount() - 1 : 0
+        lastVisibleLineIndex  = lines.count ? cast(u32) (lines.count - 1) : 0
         recomputeIndexes = true
 
         invalidate()
@@ -891,20 +890,20 @@ impl TreeCtrl
     {
         line := lines.newPtr()
         line.parent = parentLine
-        line.index = nextTreeIndex
+        line.index =  cast(u32) lines.count
         idxLineToIdx.add(line.index, line.index)
-        nextTreeIndex += 1
-
         line.visible = line.isVisible()
-        if line.visible visibleLineCount += 1
 
         if parentLine
         {
             line.level = parentLine.level + 1
             parentLine.lines.add(line)
         }
+        else
+        {
+            lines.add(line)
+        }
 
-        lines.add(line)
         return line
     }
 
@@ -921,7 +920,6 @@ impl TreeCtrl
     {
         lines.clear()
         idxLineToIdx.clear()
-        visibleLineCount = 0
     }
 
     // Add one column in a multi columns tree
@@ -1044,7 +1042,8 @@ impl TreeCtrl
             return
         line.expanded = true
 
-        var tmp: Array'(*TreeLine)
+        var tmp:   Array'(*TreeLine)
+        var toAdd: Array'(*TreeLine)
         tmp.add(line)
 
         while tmp.count
@@ -1052,26 +1051,19 @@ impl TreeCtrl
             to := tmp.popBack()
             visit l: to.lines
             {
+                toAdd.add(l)
+                l.index = line.index + cast(u32) toAdd.count
                 l.visible = true
-                visibleLineCount += 1
                 if l.expanded and l.lines.count
                     tmp.add(l)
             }
         }
 
-        computeLayout()
-    }
-
-    // Collapse all lines
-    mtd collapseAll()
-    {
-        visibleLineCount = 0
-        visit l: lines
-        {
-            l.visible  = l.parent ? false : true
-            l.expanded = false
-            visibleLineCount += l.visible ? 1 : 0
-        }
+        // Update indexes after the insertion
+        for idx := line.index+1; idx <= cast(u32) (lines.count-1); idx += 1
+            lines[idx].index += cast(u32) toAdd.count
+        // Insert at the right position
+        lines.insertAt(cast(uint) (line.index + 1), toAdd.toSlice())
 
         computeLayout()
     }
@@ -1085,19 +1077,41 @@ impl TreeCtrl
 
         var tmp: Array'(*TreeLine)
         tmp.add(line)
+
+        removeCount := 0'u32
         while tmp.count
         {
             to := tmp.popBack()
             visit l: to.lines
             {
+                removeCount += 1
                 l.visible = false
-                visibleLineCount -= 1
                 if l.expanded and l.lines.count
                     tmp.add(l)
             }
         }
 
+        // Insert at the right position
+        lines.removeAtOrdered(cast(uint) (line.index + 1), cast(uint) removeCount)
+        // Update indexes after the insertion
+        loop idx: lines.count - line.index - 1
+            lines[line.index + idx + 1].index -= removeCount
+
         computeLayout()
+    }
+
+    // Collapse all lines
+    mtd collapseAll()
+    {
+        /*visibleLineCount = 0
+        visit l: lines
+        {
+            l.visible  = l.parent ? false : true
+            l.expanded = false
+            visibleLineCount += l.visible ? 1 : 0
+        }
+
+        computeLayout()*/
     }
 
     // Collapse the given line
