@@ -29,20 +29,19 @@ struct ListItem
 
 struct ListLine
 {
-    colorBk:    Color
-    colorFg:    Color
-    userData:   *void
-
+    colorBk:            Color
+    colorFg:            Color
+    userData:           *void
     forceExpandMark:    bool
     checkable:          bool
+    iconMargin:         bool
 
-    lines:      Array'(*ListLine)
-    parent:     *ListLine
+    lines:      ArrayPtr'ListLine
     items:      ArrayPtr'ListItem
+    parent:     *ListLine
     index:      u32
     level:      u32
     expanded:   bool
-    iconMargin: bool
 }
 
 struct ListCtrl
