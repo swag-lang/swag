@@ -43,14 +43,14 @@ struct PendingJob
 struct Workspace
 
 {
-    void    errorPendingJobsMsg(Job* prevJob, Job* depJob, vector<const Diagnostic*>& notes);
-    void    errorPendingJobs(vector<PendingJob>& pendingJobs);
-    void    computeWaitingJobs();
-    void    checkPendingJobs();
-    bool    buildRTModule(Module* module);
-    bool    buildTarget();
-    bool    build();
-    Module* createOrUseModule(const Utf8& moduleName, const Utf8& modulePath, ModuleKind kind, bool errorModule = false);
+    Diagnostic* errorPendingJob(Job* prevJob, Job* depJob);
+    void        errorPendingJobs(vector<PendingJob>& pendingJobs);
+    void        computeWaitingJobs();
+    void        checkPendingJobs();
+    bool        buildRTModule(Module* module);
+    bool        buildTarget();
+    bool        build();
+    Module*     createOrUseModule(const Utf8& moduleName, const Utf8& modulePath, ModuleKind kind, bool errorModule = false);
 
     void        addBootstrap();
     void        addRuntime();
@@ -93,6 +93,7 @@ struct Workspace
 
     map<Utf8, Module*> mapFirstPassModulesNames;
     map<Utf8, Module*> mapModulesNames;
+    set<void*>         doneErrSymbols;
     Module*            filteredModule = nullptr;
     Module*            bootstrapModule;
     Module*            runtimeModule;

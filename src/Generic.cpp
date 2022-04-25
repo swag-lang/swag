@@ -319,6 +319,10 @@ void Generic::waitForGenericParameters(SemanticContext* context, OneGenericMatch
             auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
             if (typeStruct->fromGeneric)
                 continue;
+
+            // If a field in a struct has generic parameters with the struct itself, we authorize to wait
+            if (context->node->flags & AST_STRUCT_MEMBER && typeInfo == context->node->ownerStructScope->owner->typeInfo)
+                continue;
         }
 
         context->job->waitOverloadCompleted(declNode->resolvedSymbolOverload);

@@ -260,36 +260,6 @@ void Workspace::setupTarget()
     cachePath += "/";
 }
 
-void Workspace::errorPendingJobsMsg(Job* prevJob, Job* depJob, vector<const Diagnostic*>& notes)
-{
-    auto prevNode = prevJob->nodes.empty() ? prevJob->originalNode : prevJob->nodes.back();
-    auto depNode  = depJob->nodes.empty() ? depJob->originalNode : depJob->nodes.back();
-    SWAG_ASSERT(prevNode);
-    SWAG_ASSERT(depNode);
-
-    Utf8 msg = Fmt(Nte(Nte0046),
-                   AstNode::getKindName(prevNode).c_str(),
-                   prevNode->token.ctext(),
-                   AstNode::getKindName(depNode).c_str(),
-                   depNode->token.ctext());
-
-    if (prevJob->waitingHintNode)
-    {
-        switch (prevJob->waitingHintNode->kind)
-        {
-        case AstNodeKind::VarDecl:
-            msg += " ";
-            msg += Fmt("because of %s `%s`", AstNode::getKindName(prevJob->waitingHintNode).c_str(), prevJob->waitingHintNode->token.ctext());
-            break;
-        }
-
-        prevNode = prevJob->waitingHintNode;
-    }
-
-    auto note = new Diagnostic{prevNode, msg, DiagnosticLevel::Note};
-    notes.push_back(note);
-}
-
 static Utf8 errorPendingJobsType(Job* pendingJob)
 {
     Utf8 sym;
@@ -311,10 +281,83 @@ static Utf8 errorPendingJobsType(Job* pendingJob)
     return "";
 }
 
+Diagnostic* Workspace::errorPendingJob(Job* prevJob, Job* depJob)
+{
+    AstNode* prevNodeLocal = prevJob->nodes.empty() ? prevJob->originalNode : prevJob->nodes.back();
+    AstNode* prevNode      = nullptr;
+    if (prevJob->originalNode->kind == AstNodeKind::VarDecl ||
+        prevJob->originalNode->kind == AstNodeKind::ConstDecl ||
+        prevJob->originalNode->kind == AstNodeKind::Alias ||
+        prevJob->originalNode->kind == AstNodeKind::StructDecl ||
+        prevJob->originalNode->kind == AstNodeKind::EnumDecl)
+        prevNode = prevJob->originalNode;
+    else
+        prevNode = prevNodeLocal;
+
+    AstNode* depNode = nullptr;
+    if (depJob)
+        depNode = depJob->originalNode;
+
+    SWAG_ASSERT(prevNode);
+
+    bool addRemarks = false;
+    Utf8 msg;
+    if (depNode)
+    {
+        msg = Fmt(Nte(Nte0046),
+                  AstNode::getKindName(prevNode).c_str(),
+                  prevNode->token.ctext(),
+                  AstNode::getKindName(depNode).c_str(),
+                  depNode->token.ctext());
+    }
+    else if (prevJob->waitingIdType)
+    {
+        if (dynamic_cast<TypeTableJob*>(prevJob))
+        {
+            msg      = Fmt(Err(Err0550), prevJob->waitingIdType->getDisplayNameC());
+            prevNode = prevJob->waitingIdType->declNode;
+        }
+        else
+        {
+            if (doneErrSymbols.find(prevJob->waitingIdType) != doneErrSymbols.end())
+                return nullptr;
+            doneErrSymbols.insert(prevJob->waitingIdType);
+            msg = Fmt(Err(Err0550), prevJob->waitingIdType->getDisplayNameC());
+        }
+
+        addRemarks = true;
+    }
+    else
+    {
+        msg        = Fmt(Err(Err0549), AstNode::getKindName(prevNode).c_str(), prevNode->token.ctext());
+        addRemarks = true;
+    }
+
+    if (prevJob->waitingHintNode)
+    {
+        prevNodeLocal = prevJob->waitingHintNode;
+        switch (prevJob->waitingHintNode->kind)
+        {
+        case AstNodeKind::ConstDecl:
+        case AstNodeKind::VarDecl:
+        case AstNodeKind::EnumValue:
+            msg += " ";
+            msg += Fmt("because of %s `%s`", AstNode::getKindName(prevJob->waitingHintNode).c_str(), prevJob->waitingHintNode->token.ctext());
+            break;
+        }
+    }
+
+    prevNode  = prevNodeLocal;
+    auto note = new Diagnostic{prevNode, msg, DiagnosticLevel::Note};
+    if (addRemarks)
+        note->remarks.push_back(errorPendingJobsType(prevJob));
+    return note;
+}
+
 void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
 {
-    set<void*> doneSymbols;
-    bool       doneOne = false;
+    doneErrSymbols.clear();
+    bool doneOne = false;
     for (auto& it : pendingJobs)
     {
         auto pendingJob = it.pendingJob;
@@ -346,22 +389,39 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
             depJob = depJob->waitingJob;
         }
 
+        // Job waiting on itself
+        if (pendingJob->waitingSymbolSolved &&
+            pendingJob->originalNode &&
+            pendingJob->waitingSymbolSolved == pendingJob->originalNode->resolvedSymbolName)
+            isCycle = true;
+
         // This is a resolution cycle
         if (isCycle)
         {
             vector<const Diagnostic*> notes;
-            depJob = pendingJob->waitingJob;
-
+            depJob       = pendingJob->waitingJob;
             auto prevJob = pendingJob;
-            while (depJob != pendingJob)
+
+            while (depJob && depJob != pendingJob)
             {
-                errorPendingJobsMsg(prevJob, depJob, notes);
+                auto note = errorPendingJob(prevJob, depJob);
+                if (note)
+                {
+                    note->errorLevel = DiagnosticLevel::Note;
+                    notes.push_back(note);
+                }
+
                 prevJob = depJob;
                 depJob->flags |= JOB_NO_PENDING_REPORT;
                 depJob = depJob->waitingJob;
             }
 
-            errorPendingJobsMsg(prevJob, pendingJob, notes);
+            auto note = errorPendingJob(prevJob, pendingJob);
+            if (note)
+            {
+                note->errorLevel = DiagnosticLevel::Note;
+                notes.push_back(note);
+            }
 
             Diagnostic diag{pendingJob->originalNode, Fmt(Err(Err0419), AstNode::getKindName(pendingJob->originalNode).c_str(), pendingJob->originalNode->token.ctext())};
             sourceFile->report(diag, notes);
@@ -381,36 +441,18 @@ void Workspace::errorPendingJobs(vector<PendingJob>& pendingJobs)
         // No need to raise multiple times an error for the same symbol
         if (pendingJob->waitingSymbolSolved)
         {
-            if (doneSymbols.find(pendingJob->waitingSymbolSolved) != doneSymbols.end())
+            if (doneErrSymbols.find(pendingJob->waitingSymbolSolved) != doneErrSymbols.end())
                 continue;
-            doneSymbols.insert(pendingJob->waitingSymbolSolved);
+            doneErrSymbols.insert(pendingJob->waitingSymbolSolved);
         }
 
         // Job is not done, and we do not wait for a specific identifier
-        Diagnostic* diag = nullptr;
-        if (dynamic_cast<TypeTableJob*>(pendingJob))
-        {
-            diag = new Diagnostic{pendingJob->waitingIdType->declNode, Fmt(Err(Err0550), pendingJob->module->name.c_str(), pendingJob->waitingIdType->getDisplayNameC())};
-        }
-        else if (pendingJob->waitingIdType)
-        {
-            if (pendingJob->waitingIdType)
-            {
-                if (doneSymbols.find(pendingJob->waitingIdType) != doneSymbols.end())
-                    continue;
-                doneSymbols.insert(pendingJob->waitingIdType);
-            }
-
-            diag = new Diagnostic{node, Fmt(Err(Err0550), pendingJob->module->name.c_str(), pendingJob->waitingIdType->getDisplayNameC())};
-        }
-        else
-        {
-            diag = new Diagnostic{node, Fmt(Err(Err0549), pendingJob->module->name.c_str(), AstNode::getKindName(node).c_str(), node->token.ctext())};
-        }
-
-        diag->remarks.push_back(errorPendingJobsType(pendingJob));
-        sourceFile->report(*diag);
-
+        vector<const Diagnostic*> notes;
+        auto                      note = errorPendingJob(pendingJob, nullptr);
+        if (!note)
+            continue;
+        note->errorLevel = DiagnosticLevel::Error;
+        sourceFile->report(*note);
         doneOne = true;
     }
 
