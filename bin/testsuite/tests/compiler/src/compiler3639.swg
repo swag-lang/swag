@@ -1,4 +1,3 @@
-#global skip
 var G = 0
 
 func(T) toto(x: const [..] T)

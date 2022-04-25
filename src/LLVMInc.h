@@ -1,6 +1,7 @@
 #pragma once
 
 #pragma warning(push, 0)
+#pragma warning(disable : 4267)
 #pragma warning(disable : 4244)
 #include "llvm/ADT/APFloat.h"
 #include "llvm/ADT/STLExtras.h"

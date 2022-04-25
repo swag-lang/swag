@@ -2,7 +2,6 @@
 
 #ifdef _MSC_VER
 #define _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS
-#define _SILENCE_EXPERIMENTAL_FILESYSTEM_DEPRECATION_WARNING
 #endif
 
 ////////////////////////////
@@ -14,7 +13,6 @@
 #include <deque>
 #include <map>
 #include <assert.h>
-#include <experimental/filesystem>
 #include <mutex>
 #include <iostream>
 #include <atomic>

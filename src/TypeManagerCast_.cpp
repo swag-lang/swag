@@ -2788,7 +2788,8 @@ bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeIn
     else if (fromType->kind == TypeInfoKind::Array)
     {
         TypeInfoArray* fromTypeArray = CastTypeInfo<TypeInfoArray>(fromType, TypeInfoKind::Array);
-        if (toTypeSlice->pointedType->isSame(fromTypeArray->pointedType, ISSAME_CAST))
+        if ((!(castFlags & CASTFLAG_NO_IMPLICIT) && toTypeSlice->pointedType->isSame(fromTypeArray->pointedType, ISSAME_CAST)) ||
+            (castFlags & CASTFLAG_EXPLICIT))
         {
             if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
             {

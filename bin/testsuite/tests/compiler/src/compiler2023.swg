@@ -9,7 +9,7 @@ func(T) map(values: [..] T, cb: func(T)->T)
 #test
 {
     arr := @[1,2,3,4]
-    map(arr, &inc)
+    map(acast arr, &inc)
     @assert(arr[0] == 1)
     @assert(arr[1] == 4)
     @assert(arr[2] == 9)

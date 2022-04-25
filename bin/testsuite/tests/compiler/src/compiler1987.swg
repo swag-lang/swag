@@ -21,7 +21,7 @@ func(T) sort(values: [..] T, cb: func(T, T)->s32)
 #test
 {
     var x: [] s32 = @[10, 5, 2, 8]
-    sort(x, @(x, y) => x - y)
+    sort(acast x, @(x, y) => x - y)
     @assert(x[0] == 2)
     @assert(x[1] == 5)
     @assert(x[2] == 8)

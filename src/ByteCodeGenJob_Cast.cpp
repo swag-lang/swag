@@ -720,8 +720,8 @@ bool ByteCodeGenJob::emitCastToSlice(ByteCodeGenContext* context, AstNode* exprN
         auto fromTypeList = CastTypeInfo<TypeInfoList>(fromTypeInfo, TypeInfoKind::TypeListArray);
         transformResultToLinear2(context, exprNode);
         node->resultRegisterRC = exprNode->resultRegisterRC;
-        auto inst = emitInstruction(context, ByteCodeOp::SetImmediate64, node->resultRegisterRC[1]);
-        inst->b.u64 = fromTypeList->subTypes.count;
+        auto inst              = emitInstruction(context, ByteCodeOp::SetImmediate64, node->resultRegisterRC[1]);
+        inst->b.u64            = fromTypeList->subTypes.count;
     }
     else if (fromTypeInfo->kind == TypeInfoKind::Array)
     {
@@ -874,6 +874,14 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
     if (typeInfo->kind == TypeInfoKind::Array)
     {
         if (fromTypeInfo->kind == TypeInfoKind::Pointer)
+        {
+            truncRegisterRC(context, exprNode->resultRegisterRC, 1);
+            node->resultRegisterRC   = exprNode->resultRegisterRC;
+            exprNode->castedTypeInfo = nullptr;
+            return true;
+        }
+
+        if (fromTypeInfo->kind == TypeInfoKind::Array)
         {
             truncRegisterRC(context, exprNode->resultRegisterRC, 1);
             node->resultRegisterRC   = exprNode->resultRegisterRC;
