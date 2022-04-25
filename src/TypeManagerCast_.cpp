@@ -2482,7 +2482,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
     // Lambda to *void
     if (fromType->kind == TypeInfoKind::Lambda)
     {
-        if (castFlags & CASTFLAG_EXPLICIT && toType->isPointerVoid())
+        if ((castFlags & CASTFLAG_EXPLICIT) && toType->isPointerVoid())
         {
             if (!(castFlags & CASTFLAG_JUST_CHECK))
                 fromNode->typeInfo = g_TypeMgr->typeInfoConstPointers[(int) NativeTypeKind::Void];
@@ -2497,7 +2497,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
             return true;
 
         // Fine to compare pointers of TypeInfos, even if not of the same type
-        if (castFlags & CASTFLAG_COMPARE && fromType->isPointerToTypeInfo() && toType->isPointerToTypeInfo())
+        if ((castFlags & CASTFLAG_COMPARE) && fromType->isPointerToTypeInfo() && toType->isPointerToTypeInfo())
             return true;
 
         // Pointer to *void or *void to pointer
@@ -2505,9 +2505,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
         {
             if (castFlags & CASTFLAG_PARAMS)
             {
-                if (toType->flags & TYPEINFO_GENERIC)
-                    return castError(context, toType, fromType, fromNode, castFlags);
-                if (toType->flags & TYPEINFO_FROM_GENERIC)
+                if (toType->flags & (TYPEINFO_GENERIC | TYPEINFO_FROM_GENERIC))
                     return castError(context, toType, fromType, fromNode, castFlags);
             }
 
@@ -2519,8 +2517,8 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
     if (fromType->kind == TypeInfoKind::Array)
     {
         auto fromTypeArray = CastTypeInfo<TypeInfoArray>(fromType, TypeInfoKind::Array);
-        if (toTypePointer->pointedType->isNative(NativeTypeKind::Void) ||
-            toTypePointer->pointedType->isSame(fromTypeArray->pointedType, ISSAME_CAST) ||
+        if ((!(castFlags & CASTFLAG_NO_IMPLICIT) && toTypePointer->pointedType->isNative(NativeTypeKind::Void)) ||
+            (!(castFlags & CASTFLAG_NO_IMPLICIT) && toTypePointer->pointedType->isSame(fromTypeArray->pointedType, ISSAME_CAST)) ||
             (castFlags & CASTFLAG_EXPLICIT))
         {
             if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
@@ -2537,8 +2535,8 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
     if (fromType->kind == TypeInfoKind::Slice)
     {
         auto fromTypeSlice = CastTypeInfo<TypeInfoArray>(fromType, TypeInfoKind::Slice);
-        if (toTypePointer->pointedType->isNative(NativeTypeKind::Void) ||
-            toTypePointer->pointedType->isSame(fromTypeSlice->pointedType, ISSAME_CAST) ||
+        if ((!(castFlags & CASTFLAG_NO_IMPLICIT) && toTypePointer->pointedType->isNative(NativeTypeKind::Void)) ||
+            (!(castFlags & CASTFLAG_NO_IMPLICIT) && toTypePointer->pointedType->isSame(fromTypeSlice->pointedType, ISSAME_CAST)) ||
             (castFlags & CASTFLAG_EXPLICIT))
         {
             if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
@@ -3399,8 +3397,13 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     }
 
     SWAG_ASSERT(toType && fromType);
+
     if (fromType->flags & TYPEINFO_AUTO_CAST)
         castFlags |= CASTFLAG_EXPLICIT;
+    if (toType->flags & TYPEINFO_GENERIC)
+        castFlags |= CASTFLAG_NO_IMPLICIT;
+    if (toType->flags & TYPEINFO_FROM_GENERIC)
+        castFlags |= CASTFLAG_NO_IMPLICIT;
 
     if (toType->kind == TypeInfoKind::FuncAttr)
         toType = TypeManager::concreteType(toType, CONCRETE_FUNC);
