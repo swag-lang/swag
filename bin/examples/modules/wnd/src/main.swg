@@ -31,6 +31,8 @@ var app: Application
     tab.addItem("RichEditCtrl", @{}, view4)
     view5 := Wnd.create'Wnd(tab)
     tab.addItem("SplitterCtrl", @{}, view5)
+    view6 := Wnd.create'Wnd(tab)
+    tab.addItem("LayoutCtrl", @{}, view6)
 
     createView0(tab, view0)
     createView1(tab, view1)
@@ -38,8 +40,9 @@ var app: Application
     createView3(tab, view3)
     createView4(tab, view4)
     createView5(tab, view5)
+    createView6(tab, view6)
 
-    tab.select(2)
+    tab.select(6)
     surface0.show()
 
     //surface1 := try app.createSurface(100+W+10, 100, W, H, SurfaceFlags.Secondary | SurfaceFlags.SmallCaption | SurfaceFlags.CloseBtn)

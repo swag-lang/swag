@@ -10,7 +10,7 @@ struct LayoutCtrl
 {
     using frameWnd: FrameWnd
     kind:           LayoutKind = VerticalStack
-    inter:          f32 = 20
+    inter:          f32 = 5
 }
 
 impl IWnd for LayoutCtrl
@@ -36,7 +36,7 @@ impl IWnd for LayoutCtrl
 impl LayoutCtrl
 {
     // Create a layout control
-    func create(parent: *Wnd, position: Math.Rectangle, kind: LayoutKind)->*LayoutCtrl
+    func create(parent: *Wnd, kind: LayoutKind, position: Math.Rectangle = @{})->*LayoutCtrl
     {
         res := Wnd.create'LayoutCtrl(parent, position)
         return res
