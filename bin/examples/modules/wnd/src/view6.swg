@@ -67,4 +67,15 @@ func createView6(tabView: *Tab, view: *Wnd)
 
         lt.computeLayout()
     }
+
+    {
+        lt := GridLayoutCtrl.create(view, 5, 3, @{220, 240, 400, 300})
+        lt.backgroundStyle = .Dialog
+        lt.padding = 5
+        btn0 := PushButton.create(lt, "toto10")
+        btn1 := PushButton.create(lt, "toto20")
+        lt.setColRowChild(btn0, 0, 0, 1, 3)
+        lt.setColRowChild(btn1, 1, 0, 4, 3)
+        lt.computeLayout()
+    }
 }
