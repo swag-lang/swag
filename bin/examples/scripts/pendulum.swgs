@@ -38,7 +38,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
         panel := LayoutCtrl.create(wnd, .TopStack, @{0, 0, 360})
         panel.padding = 10
-        panel.inter   = 5
+        panel.spacing = 5
         panel.dockStyle = .Right
 
         {

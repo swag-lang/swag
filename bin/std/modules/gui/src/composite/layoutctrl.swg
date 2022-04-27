@@ -15,7 +15,7 @@ struct LayoutCtrl
 {
     using frameWnd: FrameWnd
     layoutKind:     LayoutKind = TopStack
-    inter:          f32 = 5
+    spacing:        f32 = 5
 }
 
 impl IWnd for LayoutCtrl
@@ -36,22 +36,22 @@ impl IWnd for LayoutCtrl
             case TopStack, TopStackAutoSize:
                 c.dockStyle = .Top
                 if i > 0
-                    c.margin.y = inter
+                    c.margin.y = spacing
 
             case BottomStack:
                 c.dockStyle = .Bottom
                 if i > 0
-                    c.margin.w = inter
+                    c.margin.w = spacing
 
             case LeftStack, LeftStackAutoSize:
                 c.dockStyle = .Left
                 if i > 0
-                    c.margin.x = inter
+                    c.margin.x = spacing
 
             case RightStack:
                 c.dockStyle = .Right
                 if i > 0
-                    c.margin.z = inter
+                    c.margin.z = spacing
             }
         }
 

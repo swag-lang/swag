@@ -45,6 +45,7 @@ func createView6(tabView: *Tab, view: *Wnd)
     {
         lt := LayoutCtrl.create(view, .TopStackAutoSize, @{5, 240, 200, 200})
         lt.padding = 15
+        lt.spacing = 15
         lt.backgroundStyle = .Window
         lt.style.addStyleSheetColors("wnd_Bk Green")
 
