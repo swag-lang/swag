@@ -1,24 +1,24 @@
 #global public
 using Core
 
-enum LayoutKind
+enum StackLayoutKind
 {
-    TopStack
-    TopStackAutoSize
-    BottomStack
-    LeftStack
-    LeftStackAutoSize
-    RightStack
+    Top
+    TopAutoSize
+    Bottom
+    Left
+    LeftAutoSize
+    Right
 }
 
-struct LayoutCtrl
+struct StackLayoutCtrl
 {
     using frameWnd: FrameWnd
-    layoutKind:     LayoutKind = TopStack
+    layoutKind:     StackLayoutKind = Top
     spacing:        f32 = 5
 }
 
-impl IWnd for LayoutCtrl
+impl IWnd for StackLayoutCtrl
 {
     mtd onResizeEvent(evt: *ResizeEvent)
     {
@@ -33,22 +33,22 @@ impl IWnd for LayoutCtrl
             c.margin.clear()
             switch layoutKind
             {
-            case TopStack, TopStackAutoSize:
+            case Top, TopAutoSize:
                 c.dockStyle = .Top
                 if i > 0
                     c.margin.y = spacing
 
-            case BottomStack:
+            case Bottom:
                 c.dockStyle = .Bottom
                 if i > 0
                     c.margin.w = spacing
 
-            case LeftStack, LeftStackAutoSize:
+            case Left, LeftAutoSize:
                 c.dockStyle = .Left
                 if i > 0
                     c.margin.x = spacing
 
-            case RightStack:
+            case Right:
                 c.dockStyle = .Right
                 if i > 0
                     c.margin.z = spacing
@@ -60,12 +60,12 @@ impl IWnd for LayoutCtrl
 
         switch layoutKind
         {
-        case TopStackAutoSize:
+        case TopAutoSize:
             b := childs.back()
             y := b.position.bottom() + padding.w
             position.height = y
 
-        case LeftStackAutoSize:
+        case LeftAutoSize:
             b := childs.back()
             x := b.position.right() + padding.z
             position.width = x
@@ -73,12 +73,12 @@ impl IWnd for LayoutCtrl
     }
 }
 
-impl LayoutCtrl
+impl StackLayoutCtrl
 {
     // Create a layout control
-    func create(parent: *Wnd, kind: LayoutKind, position: Math.Rectangle = @{})->*LayoutCtrl
+    func create(parent: *Wnd, kind: StackLayoutKind, position: Math.Rectangle = @{})->*StackLayoutCtrl
     {
-        res := Wnd.create'LayoutCtrl(parent, position)
+        res := Wnd.create'StackLayoutCtrl(parent, position)
         res.layoutKind = kind
         return res
     }

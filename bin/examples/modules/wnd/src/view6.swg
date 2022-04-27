@@ -3,7 +3,7 @@ using Core, Gui, Pixel
 func createView6(tabView: *Tab, view: *Wnd)
 {
     {
-        lt := LayoutCtrl.create(view, .TopStack, @{5, 5, 200, 200})
+        lt := StackLayoutCtrl.create(view, .Top, @{5, 5, 200, 200})
         lt.backgroundStyle = .Dialog
         lt.padding = 5
         PushButton.create(lt, "toto1")
@@ -13,7 +13,7 @@ func createView6(tabView: *Tab, view: *Wnd)
     }
 
     {
-        lt := LayoutCtrl.create(view, .BottomStack, @{210, 5, 200, 200})
+        lt := StackLayoutCtrl.create(view, .Bottom, @{210, 5, 200, 200})
         lt.backgroundStyle = .Dialog
         lt.padding = 5
         PushButton.create(lt, "toto10")
@@ -23,7 +23,7 @@ func createView6(tabView: *Tab, view: *Wnd)
     }
 
     {
-        lt := LayoutCtrl.create(view, .LeftStack, @{420, 5, 400, 40})
+        lt := StackLayoutCtrl.create(view, .Left, @{420, 5, 400, 40})
         lt.backgroundStyle = .Dialog
         lt.padding = 5
         PushButton.create(lt, "toto10")
@@ -33,7 +33,7 @@ func createView6(tabView: *Tab, view: *Wnd)
     }
 
     {
-        lt := LayoutCtrl.create(view, .RightStack, @{420, 50, 400, 40})
+        lt := StackLayoutCtrl.create(view, .Right, @{420, 50, 400, 40})
         lt.backgroundStyle = .Dialog
         lt.padding = 5
         PushButton.create(lt, "toto10")
@@ -43,13 +43,13 @@ func createView6(tabView: *Tab, view: *Wnd)
     }
 
     {
-        lt := LayoutCtrl.create(view, .TopStackAutoSize, @{5, 240, 200, 200})
+        lt := StackLayoutCtrl.create(view, .TopAutoSize, @{5, 240, 200, 200})
         lt.padding = 15
         lt.spacing = 15
         lt.backgroundStyle = .Window
         lt.style.addStyleSheetColors("wnd_Bk Green")
 
-        lt1 := LayoutCtrl.create(lt, .TopStackAutoSize)
+        lt1 := StackLayoutCtrl.create(lt, .TopAutoSize)
         lt1.backgroundStyle = .Window
         lt1.style.addStyleSheetColors("wnd_Bk Red")
         PushButton.create(lt1, "toto1")
@@ -57,7 +57,7 @@ func createView6(tabView: *Tab, view: *Wnd)
         PushButton.create(lt1, "toto3")
         lt1.computeLayout()
 
-        lt2 := LayoutCtrl.create(lt, .TopStackAutoSize)
+        lt2 := StackLayoutCtrl.create(lt, .TopAutoSize)
         lt2.backgroundStyle = .Window
         lt2.style.addStyleSheetColors("wnd_Bk Blue")
         PushButton.create(lt2, "tata1")
