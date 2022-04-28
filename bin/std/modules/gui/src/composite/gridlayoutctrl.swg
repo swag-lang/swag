@@ -6,10 +6,11 @@ struct GridLayoutCtrl
     using frameWnd: FrameWnd
     numColumns:     s32
     numRows:        s32
-    spacing:        f32 = 5
+    spacingHorz:    f32 = 5
+    spacingVert:    f32 = 5
     layout:         Array'*Wnd
-    colSizes:       Array's32
-    rowSizes:       Array's32
+    colSizes:       Array'f32
+    rowSizes:       Array'f32
 }
 
 impl IWnd for GridLayoutCtrl
@@ -29,7 +30,7 @@ impl IWnd for GridLayoutCtrl
             x := padding.x
             loop i: numColumns
             {
-                defer x += colSizes[i]
+                defer x += colSizes[i] + spacingHorz
 
                 idx := i + (j * numColumns)
                 curWnd := layout[idx]
@@ -38,25 +39,31 @@ impl IWnd for GridLayoutCtrl
 
                 done.add(curWnd)
 
-                w := 0
-                h := 0
+                w := 0'f32
+                h := 0'f32
 
                 idxC := i
                 idxW := idx
+                idxN := 0
                 while idxC < numColumns and layout[idxW] == curWnd
                 {
                     w += colSizes[idxC]
-                    idxW, idxC += 1
+                    idxW, idxC, idxN += 1
                 }
 
-                idxC  = j
+                w += (idxN - 1) * spacingHorz
+
+                idxC = j
                 idxH := idx
+                idxN = 0
                 while idxC < numRows and layout[idxH] == curWnd
                 {
                     h += rowSizes[idxC]
                     idxH += numColumns
-                    idxC += 1
+                    idxC, idxN += 1
                 }
+
+                h += (idxN - 1) * spacingVert
 
                 var rect: Math.Rectangle
                 rect.x = x
@@ -66,7 +73,7 @@ impl IWnd for GridLayoutCtrl
                 curWnd.setPosition(rect)
             }
 
-            y += rowSizes[j]
+            y += rowSizes[j] + spacingVert
         }
 
         frameWnd.IWnd.onResizeEvent(evt)
@@ -95,6 +102,18 @@ impl GridLayoutCtrl
     mtd computeLayout()
     {
         sendResizeEvent()
+    }
+
+    // Set size, in pixel, of a given column
+    mtd setColSize(col: s32, size: f32)
+    {
+        colSizes[col] = size
+    }
+
+    // Set size, in pixel, of a given row
+    mtd setRowSize(row: s32, size: f32)
+    {
+        rowSizes[row] = size
     }
 
     mtd setColRowChild(child: *Wnd, col, row: s32, spanH, spanV: s32 = 1)

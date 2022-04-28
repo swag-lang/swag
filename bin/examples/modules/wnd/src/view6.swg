@@ -74,8 +74,10 @@ func createView6(tabView: *Tab, view: *Wnd)
         lt.padding = 5
         btn0 := PushButton.create(lt, "toto10")
         btn1 := PushButton.create(lt, "toto20")
+        btn2 := PushButton.create(lt, "toto30")
         lt.setColRowChild(btn0, 0, 0, 1, 3)
-        lt.setColRowChild(btn1, 1, 0, 4, 3)
+        lt.setColRowChild(btn1, 1, 0, 4, 1)
+        lt.setColRowChild(btn2, 1, 1, 4, 2)
         lt.computeLayout()
     }
 }
