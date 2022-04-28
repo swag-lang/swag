@@ -54,23 +54,18 @@ impl IWnd for GridLayoutCtrl
                 w += (idxN - 1) * spacingHorz
 
                 idxC = j
-                idxH := idx
+                idxW = idx
                 idxN = 0
-                while idxC < numRows and layout[idxH] == curWnd
+                while idxC < numRows and layout[idxW] == curWnd
                 {
                     h += rowSizes[idxC]
-                    idxH += numColumns
+                    idxW += numColumns
                     idxC, idxN += 1
                 }
 
                 h += (idxN - 1) * spacingVert
 
-                var rect: Math.Rectangle
-                rect.x = x
-                rect.y = y
-                rect.width = w
-                rect.height = h
-                curWnd.setPosition(rect)
+                curWnd.setPosition(Math.Rectangle{x, y, w, h})
             }
 
             y += rowSizes[j] + spacingVert
@@ -92,8 +87,8 @@ impl GridLayoutCtrl
         res.numRows = numRows
 
         res.layout.resize(cast(uint) (numColumns * numRows))
-        loop numColumns res.colSizes.add(50)
-        loop numRows    res.rowSizes.add(50)
+        loop numColumns res.colSizes.add(100)
+        loop numRows    res.rowSizes.add(30)
 
         return res
     }

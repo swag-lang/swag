@@ -32,7 +32,7 @@ var app: Application
     view5 := Wnd.create'Wnd(tab)
     tab.addItem("SplitterCtrl", @{}, view5)
     view6 := Wnd.create'Wnd(tab)
-    tab.addItem("StackLayoutCtrl", @{}, view6)
+    tab.addItem("LayoutCtrl", @{}, view6)
 
     createView0(tab, view0)
     createView1(tab, view1)

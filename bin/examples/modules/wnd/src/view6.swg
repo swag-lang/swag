@@ -69,15 +69,15 @@ func createView6(tabView: *Tab, view: *Wnd)
     }
 
     {
-        lt := GridLayoutCtrl.create(view, 5, 3, @{220, 240, 400, 300})
+        lt := GridLayoutCtrl.create(view, 3, 3, @{220, 240, 400, 300})
         lt.backgroundStyle = .Dialog
         lt.padding = 5
-        btn0 := PushButton.create(lt, "toto10")
-        btn1 := PushButton.create(lt, "toto20")
-        btn2 := PushButton.create(lt, "toto30")
-        lt.setColRowChild(btn0, 0, 0, 1, 3)
-        lt.setColRowChild(btn1, 1, 0, 4, 1)
-        lt.setColRowChild(btn2, 1, 1, 4, 2)
+        lt.setColRowChild(Label.create(lt, "toto10"), 0, 0)
+        lt.setColRowChild(Label.create(lt, "toto20"), 1, 0)
+        lt.setColRowChild(Label.create(lt, "toto30"), 2, 0)
+        lt.setColRowChild(EditBox.create(lt, "toto10"), 0, 1)
+        lt.setColRowChild(EditBox.create(lt, "toto20"), 1, 1)
+        lt.setColRowChild(EditBox.create(lt, "toto30"), 2, 1, 1, 2)
         lt.computeLayout()
     }
 }
