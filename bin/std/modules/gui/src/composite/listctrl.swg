@@ -134,6 +134,12 @@ impl ListLine
 
 impl IWnd for ListView
 {
+    mtd onResizeEvent(evt: *ResizeEvent)
+    {
+        if list
+            list.computeLayout()
+    }
+
     mtd onKeyEvent(evt: *KeyEvent)
     {
         evt.accepted = true

@@ -72,12 +72,20 @@ func createView6(tabView: *Tab, view: *Wnd)
         lt := GridLayoutCtrl.create(view, 3, 3, @{220, 240, 400, 300})
         lt.backgroundStyle = .Dialog
         lt.padding = 5
-        lt.setColRowChild(Label.create(lt, "toto10"), 0, 0)
-        lt.setColRowChild(Label.create(lt, "toto20"), 1, 0)
-        lt.setColRowChild(Label.create(lt, "toto30"), 2, 0)
-        lt.setColRowChild(EditBox.create(lt, "toto10"), 0, 1)
-        lt.setColRowChild(EditBox.create(lt, "toto20"), 1, 1)
-        lt.setColRowChild(EditBox.create(lt, "toto30"), 2, 1, 1, 2)
+        lt.autoSize = true
+        lt.setColRowChild(Label.create(lt, "Label 0"), 0, 0)
+        lt.setColRowChild(Label.create(lt, "Label 1"), 1, 0)
+        lt.setColRowChild(Label.create(lt, "Label 2"), 2, 0)
+        lt.setColRowChild(EditBox.create(lt, "Edit 0"), 0, 1)
+        lt.setColRowChild(EditBox.create(lt, "Edit 1"), 1, 1)
+        lt.setColRowChild(EditBox.create(lt, "Edit 2"), 2, 1)
+        lt.setColRowChild(createListSimple(lt), 0, 2)
+        lt.setColRowChild(createTreeSimple(lt), 1, 2)
+        lt.setColRowChild(createTreeSimple(lt), 2, 2)
+        lt.setColSize(0, 200)
+        lt.setColSize(1, 200)
+        lt.setColSize(2, 200)
+        lt.setRowSize(2, 100)
         lt.computeLayout()
     }
 }

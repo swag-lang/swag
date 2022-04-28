@@ -11,6 +11,7 @@ struct GridLayoutCtrl
     layout:         Array'*Wnd
     colSizes:       Array'f32
     rowSizes:       Array'f32
+    autoSize:       bool
 }
 
 impl IWnd for GridLayoutCtrl
@@ -24,6 +25,7 @@ impl IWnd for GridLayoutCtrl
         }
 
         var done: Array'(*Wnd)
+        maxW, maxH := 0'f32
         y := padding.y
         loop j: numRows
         {
@@ -66,11 +68,15 @@ impl IWnd for GridLayoutCtrl
                 h += (idxN - 1) * spacingVert
 
                 curWnd.setPosition(Math.Rectangle{x, y, w, h})
+                maxW = Math.max(maxW, x + w + padding.z)
+                maxH = Math.max(maxH, y + h + padding.w)
             }
 
             y += rowSizes[j] + spacingVert
         }
 
+        if autoSize
+            resize(maxW, maxH)
         frameWnd.IWnd.onResizeEvent(evt)
     }
 }
