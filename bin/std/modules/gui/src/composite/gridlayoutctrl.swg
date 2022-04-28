@@ -29,13 +29,12 @@ impl IWnd for GridLayoutCtrl
             x := padding.x
             loop i: numColumns
             {
+                defer x += colSizes[i]
+
                 idx := i + (j * numColumns)
                 curWnd := layout[idx]
                 if !curWnd or done.contains(curWnd)
-                {
-                    x += colSizes[i]
                     continue
-                }
 
                 done.add(curWnd)
 
@@ -65,8 +64,6 @@ impl IWnd for GridLayoutCtrl
                 rect.width = w
                 rect.height = h
                 curWnd.setPosition(rect)
-
-                x += colSizes[i]
             }
 
             y += rowSizes[j]

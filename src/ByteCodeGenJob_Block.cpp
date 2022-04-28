@@ -928,9 +928,17 @@ bool ByteCodeGenJob::emitDeferredStatements(ByteCodeGenContext* context, Scope* 
             if (!errDefer && node->kind == AstNodeKind::ErrDefer)
                 continue;
 
-            auto child           = node->childs.front();
-            child->bytecodeState = AstNodeResolveState::Enter;
+            // We duplicate because when we emit a node, some stuff will be reseted (like the cast).
+            // Se wo want to be sure to emit the same node multiple times without side effects from the previous defer usage.
+            // We also do not want to change the number of childs of "node", that's why we fill "parent" of the
+            // clone without registering the node in the list of childs.
+            CloneContext cloneContext;
+            cloneContext.rawClone = true;
+            auto child            = node->childs.front()->clone(cloneContext);
+            child->parent         = node;
+            child->bytecodeState  = AstNodeResolveState::Enter;
             child->flags &= ~AST_NO_BYTECODE;
+            scope->doneDefer.push_back(child);
             job->nodes.push_back(child);
         }
     }
