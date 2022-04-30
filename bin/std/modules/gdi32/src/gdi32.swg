@@ -3,6 +3,9 @@
 #foreignlib "gdi32"
 using Swag, Win32
 
+alias HBITMAP = const *void
+alias HGDIOBJ = const *void
+
 struct PIXELFORMATDESCRIPTOR
 {
     nSize:          WORD
@@ -59,12 +62,46 @@ const PFD_DEPTH_DONTCARE          = 0x20000000
 const PFD_DOUBLEBUFFER_DONTCARE   = 0x40000000
 const PFD_STEREO_DONTCARE         = 0x80000000
 
+const SRCCOPY             = cast(DWORD)0x00CC0020 /* dest = source                   */
+const SRCPAINT            = cast(DWORD)0x00EE0086 /* dest = source OR dest           */
+const SRCAND              = cast(DWORD)0x008800C6 /* dest = source AND dest          */
+const SRCINVERT           = cast(DWORD)0x00660046 /* dest = source XOR dest          */
+const SRCERASE            = cast(DWORD)0x00440328 /* dest = source AND (NOT dest )   */
+const NOTSRCCOPY          = cast(DWORD)0x00330008 /* dest = (NOT source)             */
+const NOTSRCERASE         = cast(DWORD)0x001100A6 /* dest = (NOT src) AND (NOT dest) */
+const MERGECOPY           = cast(DWORD)0x00C000CA /* dest = (source AND pattern)     */
+const MERGEPAINT          = cast(DWORD)0x00BB0226 /* dest = (NOT source) OR dest     */
+const PATCOPY             = cast(DWORD)0x00F00021 /* dest = pattern                  */
+const PATPAINT            = cast(DWORD)0x00FB0A09 /* dest = DPSnoo                   */
+const PATINVERT           = cast(DWORD)0x005A0049 /* dest = pattern XOR dest         */
+const DSTINVERT           = cast(DWORD)0x00550009 /* dest = (NOT dest)               */
+const BLACKNESS           = cast(DWORD)0x00000042 /* dest = BLACK                    */
+const WHITENESS           = cast(DWORD)0x00FF0062 /* dest = WHITE                    */
+const NOMIRRORBITMAP      = cast(DWORD)0x80000000 /* Do not Mirror the bitmap in this call */
+const CAPTUREBLT          = cast(DWORD)0x40000000 /* Include layered windows */
+
+struct BITMAP
+{
+    bmType:         LONG
+    bmWidth:        LONG
+    bmHeight:       LONG
+    bmWidthBytes:   LONG
+    bmPlanes:       WORD
+    bmBitsPixel:    WORD
+    bmBits:         LPVOID
+}
+
 #[Foreign("Gdi32")]
 {
     func GetPixel(hdc: HDC, x, y: s32)->COLORREF;
 }
 
-namespace gdi32priv
+#[Foreign("Gdi32"), Swag.Discardable]
+{
+    func SelectObject(hdc: HDC, h: HGDIOBJ)->HGDIOBJ;
+}
+
+namespace Gdi32Priv
 {
     #[Foreign("Gdi32")]
     {
@@ -72,6 +109,14 @@ namespace gdi32priv
         func SetPixelFormat(hdc: HDC, fmt: s32, ppfd: const *PIXELFORMATDESCRIPTOR)->BOOL;
         func SwapBuffers(arg1: HDC)->BOOL;
         func DescribePixelFormat(hdc: HDC, iPixelFormat: s32, nBytes: UINT, ppfd: *PIXELFORMATDESCRIPTOR)->s32;
+        func CreateCompatibleDC(hdc: HDC)->HDC;
+        func CreateCompatibleBitmap(hdc: HDC, cx, cy: s32)->HBITMAP;
+        func DeleteDC(hdc: HDC)->BOOL;
+        func DeleteObject(ho: HGDIOBJ)->BOOL;
+        func BitBlt(hdc: HDC, x, y, cx, cy: s32, hdcSrc: HDC, x1, y1: s32, rop: DWORD)->BOOL;
+        func GetObjectA(h: HANDLE, c: s32, pv: LPVOID)->s32;
+        func GetObjectW(h: HANDLE, c: s32, pv: LPVOID)->s32;
+        func GetBitmapBits(hbit: HBITMAP, cb: LONG, lpvBits: LPVOID)->LONG;
     }
 }
 
@@ -79,7 +124,7 @@ namespace gdi32priv
 {
     func ChoosePixelFormat(hdc: HDC, ppfd: const *PIXELFORMATDESCRIPTOR)->s32 throw
     {
-        res := gdi32priv.ChoosePixelFormat(hdc, ppfd)
+        res := Gdi32Priv.ChoosePixelFormat(hdc, ppfd)
         if !res
             try setError(GetLastError())
         return res
@@ -87,22 +132,80 @@ namespace gdi32priv
 
     func SetPixelFormat(hdc: HDC, fmt: s32, ppfd: const *PIXELFORMATDESCRIPTOR) throw
     {
-        if !gdi32priv.SetPixelFormat(hdc, fmt, ppfd)
+        if !Gdi32Priv.SetPixelFormat(hdc, fmt, ppfd)
             try setError(GetLastError())
     }
 
     func SwapBuffers(arg1: HDC) throw
     {
-        if !gdi32priv.SwapBuffers(arg1)
+        if !Gdi32Priv.SwapBuffers(arg1)
             try setError(GetLastError())
     }
 
     #[Discardable]
     func DescribePixelFormat(hdc: HDC, iPixelFormat: s32, nBytes: UINT, ppfd: *PIXELFORMATDESCRIPTOR)->s32 throw
     {
-        res := gdi32priv.DescribePixelFormat(hdc, iPixelFormat, nBytes, ppfd)
+        res := Gdi32Priv.DescribePixelFormat(hdc, iPixelFormat, nBytes, ppfd)
         if !res
             try setError(GetLastError())
         return res
+    }
+
+    func CreateCompatibleDC(hdc: HDC)->HDC throw
+    {
+        res := Gdi32Priv.CreateCompatibleDC(hdc)
+        if res == null
+            try setError(GetLastError())
+        return res
+    }
+
+    func CreateCompatibleBitmap(hdc: HDC, cx, cy: s32)->HBITMAP throw
+    {
+        res := Gdi32Priv.CreateCompatibleBitmap(hdc, cx, cy)
+        if res == null
+            try setError(GetLastError())
+        return res
+    }
+
+    func DeleteDC(hdc: HDC) throw
+    {
+        res := Gdi32Priv.DeleteDC(hdc)
+        if !res
+            try setError(GetLastError())
+    }
+
+    func DeleteObject(ho: HGDIOBJ) throw
+    {
+        res := Gdi32Priv.DeleteObject(ho)
+        if !res
+            try setError(GetLastError())
+    }
+
+    func BitBlt(hdc: HDC, x, y, cx, cy: s32, hdcSrc: HDC, x1, y1: s32, rop: DWORD) throw
+    {
+        res := Gdi32Priv.BitBlt(hdc, x, y, cx, cy, hdcSrc, x1, y1, rop)
+        if !res
+            try setError(GetLastError())
+    }
+
+    func GetObjectA(h: HANDLE, c: s32, pv: LPVOID) throw
+    {
+        res := Gdi32Priv.GetObjectA(h, c, pv)
+        if !res
+            try setError(GetLastError())
+    }
+
+    func GetObjectW(h: HANDLE, c: s32, pv: LPVOID) throw
+    {
+        res := Gdi32Priv.GetObjectW(h, c, pv)
+        if !res
+            try setError(GetLastError())
+    }
+
+    func GetBitmapBits(hbit: HBITMAP, cb: LONG, lpvBits: LPVOID) throw
+    {
+        res := Gdi32Priv.GetBitmapBits(hbit, cb, lpvBits)
+        if !res
+            try setError(GetLastError())
     }
 }

@@ -819,6 +819,108 @@ struct MONITORINFO
     dwFlags:      DWORD
 }
 
+const SM_CXSCREEN             = 0
+const SM_CYSCREEN             = 1
+const SM_CXVSCROLL            = 2
+const SM_CYHSCROLL            = 3
+const SM_CYCAPTION            = 4
+const SM_CXBORDER             = 5
+const SM_CYBORDER             = 6
+const SM_CXDLGFRAME           = 7
+const SM_CYDLGFRAME           = 8
+const SM_CYVTHUMB             = 9
+const SM_CXHTHUMB             = 10
+const SM_CXICON               = 11
+const SM_CYICON               = 12
+const SM_CXCURSOR             = 13
+const SM_CYCURSOR             = 14
+const SM_CYMENU               = 15
+const SM_CXFULLSCREEN         = 16
+const SM_CYFULLSCREEN         = 17
+const SM_CYKANJIWINDOW        = 18
+const SM_MOUSEPRESENT         = 19
+const SM_CYVSCROLL            = 20
+const SM_CXHSCROLL            = 21
+const SM_DEBUG                = 22
+const SM_SWAPBUTTON           = 23
+const SM_RESERVED1            = 24
+const SM_RESERVED2            = 25
+const SM_RESERVED3            = 26
+const SM_RESERVED4            = 27
+const SM_CXMIN                = 28
+const SM_CYMIN                = 29
+const SM_CXSIZE               = 30
+const SM_CYSIZE               = 31
+const SM_CXFRAME              = 32
+const SM_CYFRAME              = 33
+const SM_CXMINTRACK           = 34
+const SM_CYMINTRACK           = 35
+const SM_CXDOUBLECLK          = 36
+const SM_CYDOUBLECLK          = 37
+const SM_CXICONSPACING        = 38
+const SM_CYICONSPACING        = 39
+const SM_MENUDROPALIGNMENT    = 40
+const SM_PENWINDOWS           = 41
+const SM_DBCSENABLED          = 42
+const SM_CMOUSEBUTTONS        = 43
+const SM_CXFIXEDFRAME         = SM_CXDLGFRAME
+const SM_CYFIXEDFRAME         = SM_CYDLGFRAME
+const SM_CXSIZEFRAME          = SM_CXFRAME
+const SM_CYSIZEFRAME          = SM_CYFRAME
+const SM_SECURE               = 44
+const SM_CXEDGE               = 45
+const SM_CYEDGE               = 46
+const SM_CXMINSPACING         = 47
+const SM_CYMINSPACING         = 48
+const SM_CXSMICON             = 49
+const SM_CYSMICON             = 50
+const SM_CYSMCAPTION          = 51
+const SM_CXSMSIZE             = 52
+const SM_CYSMSIZE             = 53
+const SM_CXMENUSIZE           = 54
+const SM_CYMENUSIZE           = 55
+const SM_ARRANGE              = 56
+const SM_CXMINIMIZED          = 57
+const SM_CYMINIMIZED          = 58
+const SM_CXMAXTRACK           = 59
+const SM_CYMAXTRACK           = 60
+const SM_CXMAXIMIZED          = 61
+const SM_CYMAXIMIZED          = 62
+const SM_NETWORK              = 63
+const SM_CLEANBOOT            = 67
+const SM_CXDRAG               = 68
+const SM_CYDRAG               = 69
+const SM_SHOWSOUNDS           = 70
+const SM_CXMENUCHECK          = 71
+const SM_CYMENUCHECK          = 72
+const SM_SLOWMACHINE          = 73
+const SM_MIDEASTENABLED       = 74
+const SM_MOUSEWHEELPRESENT    = 75
+const SM_XVIRTUALSCREEN       = 76
+const SM_YVIRTUALSCREEN       = 77
+const SM_CXVIRTUALSCREEN      = 78
+const SM_CYVIRTUALSCREEN      = 79
+const SM_CMONITORS            = 80
+const SM_SAMEDISPLAYFORMAT    = 81
+const SM_IMMENABLED           = 82
+const SM_CXFOCUSBORDER        = 83
+const SM_CYFOCUSBORDER        = 84
+const SM_TABLETPC             = 86
+const SM_MEDIACENTER          = 87
+const SM_STARTER              = 88
+const SM_SERVERR2             = 89
+const SM_MOUSEHORIZONTALWHEELPRESENT    = 91
+const SM_CXPADDEDBORDER       = 92
+const SM_DIGITIZER            = 94
+const SM_MAXIMUMTOUCHES       = 95
+const SM_CMETRICS             = 97
+const SM_REMOTESESSION          = 0x1000
+const SM_SHUTTINGDOWN           = 0x2000
+const SM_REMOTECONTROL          = 0x2001
+const SM_CARETBLINKINGENABLED   = 0x2002
+const SM_CONVERTIBLESLATEMODE   = 0x2003
+const SM_SYSTEMDOCKED           = 0x2004
+
 #[Foreign("user32")]
 {
     func GetAsyncKeyState(vKey: s32)->SHORT;
@@ -861,6 +963,8 @@ struct MONITORINFO
 
     func MonitorFromPoint(pt: POINT, dwFlags: DWORD)->HMONITOR;
     func MonitorFromWindow(hwnd: HWND, dwFlags: DWORD)->HMONITOR;
+
+    func GetSystemMetrics(nIndex: s32)->s32;
 }
 
 #[Foreign("user32"), Discardable]
