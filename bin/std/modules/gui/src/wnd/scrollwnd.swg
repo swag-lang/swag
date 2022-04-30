@@ -373,4 +373,12 @@ public impl ScrollWnd
         setScrollPos(view.scrollPos.x, view.scrollPos.y)
         sendResizeEvent()
     }
+
+    mtd getClientScrollRect()->Math.Rectangle
+    {
+        var result: retval
+        result.width  = Math.max(scrollSize.x, view.position.width)
+        result.height = Math.max(scrollSize.y, view.position.height)
+        return result
+    }
 }

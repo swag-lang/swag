@@ -43,7 +43,7 @@ enum SurfaceFlags
 impl Surface
 {
     // Creates the surface
-    func create(surface: *Surface, view: *Wnd, x, y, width, height: s32, flags: SurfaceFlags, mainSurface: *Surface) throw
+    func create(surface: *Surface, x, y, width, height: s32, flags: SurfaceFlags, mainSurface: *Surface) throw
     {
         surface.flags = flags
         surface.wnd = Memory.new'SurfaceWnd()
@@ -199,5 +199,13 @@ impl Surface
 
         sdw := app.theme.metrics.surfaceWnd_ShadowSize
         wnd.setPosition(@{sdw, sdw, width - 2 * sdw, height - 2 * sdw})
+    }
+
+    mtd setView(view: *Wnd)
+    {
+        if wnd.view
+            wnd.view.destroy()
+        wnd.view = view
+        wnd.sendResizeEvent()
     }
 }

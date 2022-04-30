@@ -408,7 +408,8 @@ impl Wnd
     {
         rect := getSurfaceRect()
         rect.applyPadding(invalidatePadding)
-        surface.invalidateRect(rect)
+        if surface
+            surface.invalidateRect(rect)
     }
 
     // Force o local position to be repainted

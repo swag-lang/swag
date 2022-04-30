@@ -449,7 +449,7 @@ impl Application
             style.set(theme)
         }
 
-        try Surface.create(surface, view, x, y, width, height, flags, mainSurface)
+        try Surface.create(surface, x, y, width, height, flags, mainSurface)
 
         if !mainSurface
         {

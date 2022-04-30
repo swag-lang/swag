@@ -51,7 +51,7 @@ impl Brush
         return result
     }
 
-    // Returns a tiled texture brush
+    // Returns a hatch brush
     func createHatch(style: HatchStyle, color: Color)->Brush
     {
         var result: retval
