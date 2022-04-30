@@ -172,6 +172,10 @@ func displayPage0(painter: *Pixel.Painter)
 
     //////////////////////////////////////
     painter.resetState()
+    painter.setParams(g_ModeAA ? .Antialiased : .Default)
+    painter.setQuality(g_PaintQuality)
+
+    //////////////////////////////////////
     path.start(0, 50)
     path.lineTo(50, 50)
     path.lineTo(50, 20)
@@ -201,9 +205,9 @@ func displayPage0(painter: *Pixel.Painter)
     painter.setTransform(trs)
     painter.translateTransform(750, 550)
     p0 := lpl.newPath()
-    p0.setRect(0, 0, 100, 100)
+    p0.setCircle(50, 160, 50)
     p1 := lpl.newPath()
-    p1.setCircle(50, 160, 50)
+    p1.setRect(0, 0, 100, 100)
     painter.fillPath(&lpl, Argb.Red)
 }
 

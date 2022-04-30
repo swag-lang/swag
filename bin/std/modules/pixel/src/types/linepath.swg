@@ -159,51 +159,75 @@ public impl LinePath
     // Initialize the path with a rectangle
     mtd setRect(left, top, width, height: f32)
     {
-        right := left + width
-        bottom := top + height
-        start(left, top)
-        lineTo(right, top)
-        lineTo(right, bottom)
-        lineTo(left, bottom)
-        lineTo(left, top)
+        l := Math.round(left)
+        t := Math.round(top)
+        w := Math.round(width)
+        h := Math.round(height)
+
+        r := l + w
+        b := t + h
+
+        start(l, t)
+        lineTo(r, t)
+        lineTo(r, b)
+        lineTo(l, b)
+        lineTo(l, t)
         close()
     }
 
     // Initialize the path with a round rectangle
     mtd setRoundRect(left, top, width, height: f32, radiusX, radiusY: f32)
     {
-        right := left + width
-        bottom := top + height
-        start(left, top + radiusY)
-        arcTo(left + radiusX, top + radiusY, radiusX, radiusY, 270'deg, 360'deg)
-        lineTo(right - radiusX, top)
-        arcTo(right - radiusX, top + radiusY, radiusX, radiusY, 0'deg, 90'deg)
-        lineTo(right, bottom - radiusY)
-        arcTo(right - radiusX, bottom - radiusY, radiusX, radiusY, 90'deg, 180'deg)
-        lineTo(left + radiusX, bottom)
-        arcTo(left + radiusX, bottom - radiusY, radiusX, radiusY, 180'deg, 270'deg)
+        l := Math.round(left)
+        t := Math.round(top)
+        w := Math.round(width)
+        h := Math.round(height)
+
+        r := l + w
+        b := t + h
+
+        rX := Math.round(radiusX)
+        rY := Math.round(radiusY)
+
+        start(l, t + rY)
+        arcTo(l + rX, t + radiusY, rX, rY, 270'deg, 360'deg)
+        lineTo(r - rX, t)
+        arcTo(r - rX, t + rY, rX, rY, 0'deg, 90'deg)
+        lineTo(r, b - rY)
+        arcTo(r - rX, b - rY, rX, rY, 90'deg, 180'deg)
+        lineTo(l + rX, b)
+        arcTo(l + rX, b - rY, rX, rY, 180'deg, 270'deg)
         close()
     }
 
     // Initialize the path with an ellipse
     mtd setEllipse(centerX, centerY: f32, radiusX, radiusY: f32)
     {
-        start(centerX, centerY - radiusY)
-        arcTo(centerX, centerY, radiusX, radiusY, 0'deg, 90'deg)
-        arcTo(centerX, centerY, radiusX, radiusY, 90'deg, 180'deg)
-        arcTo(centerX, centerY, radiusX, radiusY, 180'deg, 270'deg)
-        arcTo(centerX, centerY, radiusX, radiusY, 270'deg, 360'deg)
+        cX := Math.round(centerX)
+        cY := Math.round(centerY)
+        rX := Math.round(radiusX)
+        rY := Math.round(radiusY)
+
+        start(cX, cY - rY)
+        arcTo(cX, cY, rX, rY, 0'deg, 90'deg)
+        arcTo(cX, cY, rX, rY, 90'deg, 180'deg)
+        arcTo(cX, cY, rX, rY, 180'deg, 270'deg)
+        arcTo(cX, cY, rX, rY, 270'deg, 360'deg)
         close()
     }
 
     // Initialize the path with a circle
     mtd setCircle(centerX, centerY: f32, radius: f32)
     {
-        start(centerX, centerY - radius)
-        arcTo(centerX, centerY, radius, radius, 0'deg, 90'deg)
-        arcTo(centerX, centerY, radius, radius, 90'deg, 180'deg)
-        arcTo(centerX, centerY, radius, radius, 180'deg, 270'deg)
-        arcTo(centerX, centerY, radius, radius, 270'deg, 360'deg)
+        cX := Math.round(centerX)
+        cY := Math.round(centerY)
+        r  := Math.round(radius)
+
+        start(cX, cY - r)
+        arcTo(cX, cY, r, r, 0'deg, 90'deg)
+        arcTo(cX, cY, r, r, 90'deg, 180'deg)
+        arcTo(cX, cY, r, r, 180'deg, 270'deg)
+        arcTo(cX, cY, r, r, 270'deg, 360'deg)
         close()
     }
 
@@ -213,38 +237,42 @@ public impl LinePath
         if isZeroEpsilon(endAngle.rad - startAngle.rad)
             return
 
+        cX := Math.round(centerX)
+        cY := Math.round(centerY)
+        r  := Math.round(radius)
+
         Debug.assert(endAngle.rad > startAngle.rad)
-        startPos := Math.Vector2{0, -radius}
+        startPos := Math.Vector2{0, -r}
         startPos.rotate(startAngle)
-        start(centerX + startPos.x, centerY + startPos.y)
+        start(cX + startPos.x, cY + startPos.y)
 
         s := startAngle.rad
         m := 0'f32
         if s < Math.ConstF32.PiBy2
         {
             m = Math.min(endAngle.rad, Math.ConstF32.PiBy2)
-            arcTo(centerX, centerY, radius, radius, s, m)
+            arcTo(cX, cY, r, r, s, m)
             s = m
         }
 
         if s < Math.ConstF32.Pi
         {
             m = Math.min(endAngle.rad, Math.ConstF32.Pi)
-            arcTo(centerX, centerY, radius, radius, s, m)
+            arcTo(cX, cY, r, r, s, m)
             s = m
         }
 
         if s < Math.ConstF32.Pi + Math.ConstF32.PiBy2
         {
             m = Math.min(endAngle.rad, Math.ConstF32.Pi + Math.ConstF32.PiBy2)
-            arcTo(centerX, centerY, radius, radius, s, m)
+            arcTo(cX, cY, r, r, s, m)
             s = m
         }
 
         if s < Math.ConstF32.TwoPi
         {
             m = Math.min(endAngle.rad, Math.ConstF32.TwoPi)
-            arcTo(centerX, centerY, radius, radius, s, m)
+            arcTo(cX, cY, r, r, s, m)
         }
     }
 

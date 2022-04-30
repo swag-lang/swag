@@ -200,7 +200,10 @@ impl Painter
         params.hatch   = brush.hatch
         params.texture = brush.texture
         params.uvMode  = brush.uvMode
-        params.interpolationMode = curState.interpolationMode
+        if brush.type == .Hatch
+            params.interpolationMode = .Pixel
+        else
+            params.interpolationMode = curState.interpolationMode
 
         lastTexture0Handle = brush.texture.handle
         lastTexture0Type   = brush.type
