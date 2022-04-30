@@ -127,8 +127,7 @@ void ModuleCfgManager::enumerateCfgFiles(const fs::path& path)
 
                          // Each module must have a SWAG_CFG_FILE at its root, otherwise this is not a valid module
                          if (fs::exists(cfgName))
-                             newCfgFile(allFiles, cfgPath.string(), SWAG_CFG_FILE);
-                     });
+                             newCfgFile(allFiles, cfgPath.string(), SWAG_CFG_FILE); });
 
     // Sort files, and register them in a constant order
     if (!allFiles.empty())
@@ -199,7 +198,10 @@ bool ModuleCfgManager::fetchModuleCfgSwag(ModuleDependency* dep, Utf8& cfgFilePa
     remotePath += "/";
     remotePath += dep->name;
     remotePath = fs::absolute(remotePath.c_str()).string();
-    remotePath = fs::canonical(remotePath).string();
+    error_code errorCode;
+    auto       remotePath1 = fs::canonical(remotePath, errorCode).string();
+    if (!errorCode)
+        remotePath = remotePath1;
     remotePath = Utf8::normalizePath(fs::path(remotePath.c_str()));
     if (!fs::exists(remotePath))
         return dep->node->sourceFile->report({dep->node, dep->tokenLocation, Fmt(Err(Err0511), remotePath.c_str())});
@@ -216,7 +218,10 @@ bool ModuleCfgManager::fetchModuleCfgDisk(ModuleDependency* dep, Utf8& cfgFilePa
     remotePath += "/";
     remotePath += dep->name;
     remotePath = fs::absolute(remotePath.c_str()).string();
-    remotePath = fs::canonical(remotePath).string();
+    error_code errorCode;
+    auto       remotePath1 = fs::canonical(remotePath, errorCode).string();
+    if (!errorCode)
+        remotePath = remotePath1;
     remotePath = Utf8::normalizePath(fs::path(remotePath.c_str()));
     if (!fs::exists(remotePath))
         return dep->node->sourceFile->report({dep->node, dep->tokenLocation, Fmt(Err(Err0511), remotePath.c_str())});

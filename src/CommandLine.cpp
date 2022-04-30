@@ -55,13 +55,19 @@ bool CommandLine::check()
     if (!workspacePath.empty())
     {
         workspacePath = fs::absolute(workspacePath).string();
-        workspacePath = fs::canonical(workspacePath).string();
+        error_code errorCode;
+        auto       workspacePath1 = fs::canonical(workspacePath, errorCode).string();
+        if (!errorCode)
+            workspacePath = workspacePath1;
     }
 
     if (!cachePath.empty())
     {
         cachePath = fs::absolute(cachePath).string();
-        cachePath = fs::canonical(cachePath).string();
+        error_code errorCode;
+        auto       cachePath1 = fs::canonical(cachePath).string();
+        if (!errorCode)
+            cachePath = cachePath1;
     }
 
     // Add/check script file extension
