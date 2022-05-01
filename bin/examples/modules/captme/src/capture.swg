@@ -12,6 +12,9 @@ struct Capture
     nextUndo:   uint
     hotForm:    uint = Swag.UInt.Max
     selection:  Array'uint
+
+    moving:             bool
+    movingCursorSet:    bool
 }
 
 impl Capture
@@ -45,6 +48,84 @@ impl Capture
     //////////////////////////////
     // CONTENT
     //////////////////////////////
+
+    mtd mouse(view: *EditView, evt: *MouseEvent)->bool
+    {
+        localPos := view.surfaceToLocal(evt.surfacePos)
+        localPos += view.scrollPos
+
+        if !moving
+        {
+            ht := hitTest(localPos)
+            if ht != hotForm
+            {
+                view.invalidate()
+                hotForm = ht
+            }
+
+            // Specific moves only if one single selection
+            if selection.count == 1
+            {
+                selForm := forms[selection[0]]
+                if selForm.mouse(view, localPos, evt)
+                    return true
+            }
+
+            if hotForm != Swag.UInt.Max
+            {
+                if !movingCursorSet
+                {
+                    movingCursorSet = true
+                    view.getApp().pushCursor(Cursor.from(.SizeAll))
+                }
+            }
+            elif movingCursorSet
+            {
+                movingCursorSet = false
+                view.getApp().popCursor()
+            }
+        }
+
+        // Selection
+        if evt.kind == .MousePressed and evt.button == .Left
+        {
+            selection.clear()
+            if hotForm != Swag.UInt.Max
+            {
+                selection.add(hotForm)
+                moving = true
+                view.captureMouse()
+                view.invalidate()
+            }
+        }
+
+        if evt.kind == .MouseReleased and evt.button == .Left
+        {
+            if moving
+            {
+                view.getApp().popCursor()
+                view.releaseMouse()
+                view.invalidate()
+                moving = false
+                movingCursorSet = false
+            }
+        }
+
+        // Move selection
+        if moving
+        {
+            return true
+        }
+
+        if gizmo.mouse(view, localPos, evt)
+        {
+            view.invalidate()
+            evt.accepted = true
+            return true
+        }
+
+        return false
+    }
 
     mtd hitTest(localPos: Math.Point)->uint
     {

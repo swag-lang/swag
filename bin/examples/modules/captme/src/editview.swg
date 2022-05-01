@@ -75,10 +75,7 @@ impl IWnd for EditView
         evt.accepted = false
         if !capture return
 
-        localPos := surfaceToLocal(evt.surfacePos)
-        localPos += scrollPos
-
-        if capture.gizmo.mouse(self, evt)
+        if capture.mouse(self, evt)
         {
             invalidate()
             evt.accepted = true
@@ -94,13 +91,6 @@ impl IWnd for EditView
                 setZoom(zoom)
                 evt.accepted = true
             }
-        }
-
-        ht := capture.hitTest(localPos)
-        if ht != capture.hotForm
-        {
-            capture.hotForm = ht
-            invalidate()
         }
     }
 

@@ -16,11 +16,8 @@ struct GizmoRect
 
 impl GizmoRect
 {
-    mtd mouse(view: *EditView, evt: *MouseEvent)->bool
+    mtd mouse(view: *EditView, pos: Math.Point, evt: *MouseEvent)->bool
     {
-        pos := view.surfaceToLocal(evt.surfacePos)
-        pos += view.scrollPos
-
         switch evt.kind
         {
         case MousePressed:

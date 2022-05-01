@@ -1,9 +1,10 @@
-using Pixel, Core
+using Pixel, Core, Gui
 
 interface IForm
 {
     paint:  func(self, *Painter, f32, f32, f32, FormFlags)
     offset: func(self, s32, s32)
+    mouse:  func(self, *EditView, Math.Point, *MouseEvent)->bool
 }
 
 enum FormKind
@@ -40,6 +41,11 @@ struct RectShapeForm
 
 impl IForm for RectShapeForm
 {
+    mtd mouse(view: *EditView, pos: Math.Point, evt: *MouseEvent)->bool
+    {
+        return false
+    }
+
     mtd offset(offX, offY: s32)
     {
         x += offX
@@ -58,7 +64,7 @@ impl IForm for RectShapeForm
         if flags & (.Hot | .Selected)
         {
             gizmo.rect = paintPos
-            gizmo.paintBorder = false
+            gizmo.paintBorder = flags & .Selected ? true : false
             gizmo.roundShape = true
             gizmo.anchorSize = 10
             gizmo.paint(painter, flags & .Selected ? 1.0 : 0.8)
