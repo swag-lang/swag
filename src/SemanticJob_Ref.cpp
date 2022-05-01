@@ -311,9 +311,9 @@ bool SemanticJob::resolveArrayPointerIndex(SemanticContext* context)
             }
 
             // And this is is a struct, we fill the startScope
-            if (typeReturn->kind == TypeInfoKind::Struct)
+            if (typeReturn->kind == TypeInfoKind::Struct || typeReturn->kind == TypeInfoKind::Interface)
             {
-                auto typeStruct    = CastTypeInfo<TypeInfoStruct>(typeReturn, TypeInfoKind::Struct);
+                auto typeStruct    = CastTypeInfo<TypeInfoStruct>(typeReturn, TypeInfoKind::Struct, TypeInfoKind::Interface);
                 parent->startScope = typeStruct->scope;
             }
         }
