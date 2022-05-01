@@ -219,10 +219,19 @@ bool SemanticJob::resolveConditionalOp(SemanticContext* context)
         return true;
     }
 
-    if (ifTrue->typeInfo->isConst())
-        SWAG_CHECK(TypeManager::makeCompatibles(context, ifTrue, ifFalse, CASTFLAG_COMMUTATIVE | CASTFLAG_STRICT));
-    else
-        SWAG_CHECK(TypeManager::makeCompatibles(context, ifFalse, ifTrue, CASTFLAG_COMMUTATIVE | CASTFLAG_STRICT));
+    auto rightT = ifFalse;
+    auto leftT  = ifTrue;
+
+    // We cast the false expression to the true expression.
+    // But some times, it's better to do the other way
+    if (leftT->typeInfo->isConst() ||
+        leftT->typeInfo->flags & TYPEINFO_UNTYPED_INTEGER)
+        swap(leftT, rightT);
+
+    {
+        PushErrContext ec(context, leftT, Nte(Nte0055), Fmt(Hnt(Hnt0011), leftT->typeInfo->getDisplayNameC()));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, rightT, leftT, CASTFLAG_COMMUTATIVE | CASTFLAG_STRICT));
+    }
 
     // Determin if we should take the type from the "false" expression, or from the "true"
     if (ifTrue->typeInfo == g_TypeMgr->typeInfoNull)
