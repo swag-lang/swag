@@ -227,7 +227,6 @@ bool SemanticJob::resolveConditionalOp(SemanticContext* context)
     if (leftT->typeInfo->isConst() ||
         leftT->typeInfo->flags & TYPEINFO_UNTYPED_INTEGER)
         swap(leftT, rightT);
-
     {
         PushErrContext ec(context, leftT, Nte(Nte0055), Fmt(Hnt(Hnt0011), leftT->typeInfo->getDisplayNameC()));
         SWAG_CHECK(TypeManager::makeCompatibles(context, rightT, leftT, CASTFLAG_COMMUTATIVE | CASTFLAG_STRICT));

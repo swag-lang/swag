@@ -2127,7 +2127,7 @@ bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node,
         if (found && symbolMatch.size() == 1)
         {
             auto symbol = symbolMatch.front().symbol;
-            if (symbol->kind != SymbolKind::Function)
+            if (symbol->kind != SymbolKind::Function && symbol->kind != SymbolKind::Variable)
                 return true;
 
             LockSymbolOncePerContext ls(context, symbol);
@@ -2140,10 +2140,10 @@ bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node,
             VectorNative<TypeInfoEnum*> result;
             for (auto& overload : symbol->overloads)
             {
-                if (overload->typeInfo->kind != TypeInfoKind::FuncAttr)
+                if (overload->typeInfo->kind != TypeInfoKind::FuncAttr && overload->typeInfo->kind != TypeInfoKind::Lambda)
                     continue;
 
-                auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
+                auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::Lambda);
 
                 // If there's only one corresponding type in the function, then take it
                 // If it's not the correct parameter, the match will not be done, so we do not really care here
@@ -3718,7 +3718,7 @@ void SemanticJob::collectAlternativeScopes(AstNode* startNode, VectorNative<Alte
 }
 
 void SemanticJob::collectAlternativeScopeVars(AstNode* startNode, VectorNative<AlternativeScope>& scopes, VectorNative<AlternativeScopeVar>& scopesVars)
-{    
+{
     // Need to go deep for using vars, because we can have a using on a struct, which has also
     // a using itself, and so on...
     VectorNative<AlternativeScopeVar> toAdd;
@@ -3747,7 +3747,7 @@ void SemanticJob::collectAlternativeScopeVars(AstNode* startNode, VectorNative<A
                 {
                     SharedLock lk(it0.scope->owner->extension->mutexAltScopes);
                     for (auto& it1 : it0.scope->owner->extension->alternativeScopesVars)
-                        toAdd.push_back({ it0.node, it1.node, it1.scope, it1.flags | it0.flags & ALTSCOPE_WITH });
+                        toAdd.push_back({it0.node, it1.node, it1.scope, it1.flags | it0.flags & ALTSCOPE_WITH});
                 }
 
                 // If this is a struct that comes from a generic, we need to also register the generic scope in order
