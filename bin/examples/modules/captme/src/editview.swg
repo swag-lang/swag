@@ -98,10 +98,11 @@ impl IWnd for EditView
         if !capture
             return
 
-        // Capture
+        // Capture content
         rect = getCaptureRect()
         capture.paint(painter, rect)
 
+        // Capture gizmo
         capture.gizmo.rect = rect
         capture.gizmo.paint(painter)
     }
@@ -118,11 +119,17 @@ impl EditView
             undo := Memory.new'Undo()
             undo.capture = self.capture
 
-            if g.movingRect.width != g.rect.width or g.movingRect.height != g.rect.height
+            if g.movingRect.x != g.rect.x or g.movingRect.y != g.rect.y
+            {
+                undo.kind = .MoveCapture
+                undo.newSizeX = cast(s32) ((g.rect.x - g.movingRect.x) / self.zoom)
+                undo.newSizeY = cast(s32) ((g.rect.y - g.movingRect.y) / self.zoom)
+            }
+            else
             {
                 undo.kind = .ResizeCapture
-                undo.newSize.x = g.movingRect.width / self.zoom
-                undo.newSize.y = g.movingRect.height / self.zoom
+                undo.newSizeX = cast(s32) ((g.movingRect.width - g.rect.width) / self.zoom)
+                undo.newSizeY = cast(s32) ((g.movingRect.height - g.rect.height) / self.zoom)
             }
 
             self.capture.pushUndo(undo)

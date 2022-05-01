@@ -3,6 +3,7 @@ using Pixel, Core
 interface IForm
 {
     paint:  func(self, *Painter, f32, f32, f32)
+    offset: func(self, s32, s32)
 }
 
 enum FormKind
@@ -13,8 +14,8 @@ enum FormKind
 struct ShapeForm
 {
     kind:           FormKind = Ellipse
-    x, y:           f32 = 0
-    w, h:           f32 = 32
+    x, y:           s32 = 0
+    w, h:           s32 = 32
     borderSize:     f32 = 5
     borderColor:    Color = Argb.White
     backColor:      Color = Argb.Red
@@ -24,6 +25,12 @@ struct ShapeForm
 
 impl IForm for ShapeForm
 {
+    mtd offset(offX, offY: s32)
+    {
+        x += offX
+        y += offY
+    }
+
     mtd paint(painter: *Painter, refX, refY, z: f32)
     {
         paintPos.x      = refX + (x * z)

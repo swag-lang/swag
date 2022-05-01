@@ -2,6 +2,7 @@ using Core
 
 enum UndoKind
 {
+    MoveCapture
     ResizeCapture
 }
 
@@ -9,31 +10,39 @@ struct Undo
 {
     kind:       UndoKind
     capture:    *Capture
-    newSize:    Math.Point
-    oldSize:    Math.Point
+
+    newSizeX, newSizeY: s32
 }
 
 impl Undo
 {
     mtd do()
     {
+        #[Swag.Complete]
         switch kind
         {
+        case MoveCapture:
+            visit f: capture.forms
+                f.offset(newSizeX, newSizeY)
+            fallthrough
         case ResizeCapture:
-            oldSize.x = cast(s32) capture.width
-            oldSize.y = cast(s32) capture.height
-            capture.width = cast(s32) newSize.x
-            capture.height = cast(s32) newSize.y
+            capture.width  += newSizeX
+            capture.height += newSizeY
         }
     }
 
     mtd undo()
     {
+        #[Swag.Complete]
         switch kind
         {
+        case MoveCapture:
+            visit f: capture.forms
+                f.offset(-newSizeX, -newSizeY)
+            fallthrough
         case ResizeCapture:
-            capture.width = cast(s32) oldSize.x
-            capture.height = cast(s32) oldSize.y
+            capture.width  -= newSizeX
+            capture.height -= newSizeY
         }
     }
 }
