@@ -14,7 +14,9 @@ struct Capture
     selection:  Array'uint
 
     moving:             bool
+    firstMoving:        bool
     movingCursorSet:    bool
+    movingStart:        Math.Point
 }
 
 impl Capture
@@ -51,6 +53,8 @@ impl Capture
 
     mtd mouse(view: *EditView, evt: *MouseEvent)->bool
     {
+        app := view.getApp()
+
         localPos := view.surfaceToLocal(evt.surfacePos)
         localPos += view.scrollPos
 
@@ -76,24 +80,28 @@ impl Capture
                 if !movingCursorSet
                 {
                     movingCursorSet = true
-                    view.getApp().pushCursor(Cursor.from(.SizeAll))
+                    app.pushCursor(Cursor.from(.SizeAll))
                 }
             }
             elif movingCursorSet
             {
                 movingCursorSet = false
-                view.getApp().popCursor()
+                app.popCursor()
             }
         }
 
         // Selection
         if evt.kind == .MousePressed and evt.button == .Left
         {
-            selection.clear()
+            here := selection.contains(hotForm)
+            if !(evt.modifiers & .Control) and !here
+                selection.clear()
             if hotForm != Swag.UInt.Max
             {
-                selection.add(hotForm)
-                moving = true
+                if !here
+                    selection.add(hotForm)
+                moving, firstMoving = true
+                movingStart = localPos
                 view.captureMouse()
                 view.invalidate()
             }
@@ -103,20 +111,41 @@ impl Capture
         {
             if moving
             {
-                view.getApp().popCursor()
+                app.popCursor()
                 view.releaseMouse()
                 view.invalidate()
-                moving = false
-                movingCursorSet = false
+                moving, movingCursorSet = false
             }
         }
 
         // Move selection
         if moving
         {
+            newSizeX := cast(s32) (localPos.x - movingStart.x)
+            newSizeY := cast(s32) (localPos.y - movingStart.y)
+
+            if firstMoving
+            {
+                if Math.abs(newSizeX) <= 3 and Math.abs(newSizeY) <= 3
+                    return true
+                firstMoving = false
+            }
+            else
+                undo()
+
+            u := Memory.new'Undo()
+            u.kind = .OffsetSelection
+            u.selection = selection
+            u.capture = self
+            u.newSizeX = newSizeX
+            u.newSizeY = newSizeY
+            pushUndo(u)
+            view.invalidate()
+
             return true
         }
 
+        // Resize capture
         if gizmo.mouse(view, localPos, evt)
         {
             view.invalidate()

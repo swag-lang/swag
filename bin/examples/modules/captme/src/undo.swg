@@ -4,6 +4,7 @@ enum UndoKind
 {
     MoveCapture
     ResizeCapture
+    OffsetSelection
 }
 
 struct Undo
@@ -12,6 +13,7 @@ struct Undo
     capture:    *Capture
 
     newSizeX, newSizeY: s32
+    selection:  Array'uint
 }
 
 impl Undo
@@ -28,6 +30,12 @@ impl Undo
         case ResizeCapture:
             capture.width  += newSizeX
             capture.height += newSizeY
+        case OffsetSelection:
+            visit s: selection
+            {
+                f := capture.forms[s]
+                f.offset(newSizeX, newSizeY)
+            }
         }
     }
 
@@ -43,6 +51,12 @@ impl Undo
         case ResizeCapture:
             capture.width  -= newSizeX
             capture.height -= newSizeY
+        case OffsetSelection:
+            visit s: selection
+            {
+                f := capture.forms[s]
+                f.offset(-newSizeX, -newSizeY)
+            }
         }
     }
 }
