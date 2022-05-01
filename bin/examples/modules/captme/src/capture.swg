@@ -4,6 +4,8 @@ struct Capture
 {
     width, height: s32
     forms:  Array'IForm
+
+    gizmo:  GizmoRect
 }
 
 impl Capture

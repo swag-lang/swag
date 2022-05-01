@@ -24,15 +24,16 @@ impl EditWnd
         scroll.editView = view
         scroll.view = view
 
-        view.capture = Memory.new'Capture()
-        view.capture.width = 400
-        view.capture.height = 400
-
+        // TEMP
+        capture := Memory.new'Capture()
+        capture.width = 400
+        capture.height = 400
         form := Memory.new'ShapeForm()
         form.x, form.y = 50
-        view.capture.forms.add(cast(IForm) form)
+        capture.forms.add(cast(IForm) form)
+        view.setCapture(capture)
+        // END TEMP
 
-        scroll.setScrollSize(500, 500)
         return scroll
     }
 }
@@ -42,6 +43,15 @@ impl IWnd for EditView
     mtd onMouseEvent(evt: *MouseEvent)
     {
         evt.accepted = false
+        if !capture return
+
+        if capture.gizmo.mouse(self, evt)
+        {
+            invalidate()
+            evt.accepted = true
+            return
+        }
+
         switch evt.kind
         {
         case MouseWheel:
@@ -66,12 +76,28 @@ impl IWnd for EditView
             return
 
         // Capture
-        capture.paint(painter, getCaptureRect())
+        rect = getCaptureRect()
+        capture.paint(painter, rect)
+
+        capture.gizmo.rect = rect
+        capture.gizmo.paint(painter)
     }
 }
 
 impl EditView
 {
+    mtd setCapture(c: *Capture)
+    {
+        capture = c
+        setZoom(1)
+
+        capture.gizmo.sigChanged = @|self|(g) {
+            /*if old.width != new.width
+                self.capture.width = cast(s32) new.width
+                self.invalidate()*/
+        }
+    }
+
     mtd getCaptureRect()->Math.Rectangle
     {
         var captureRect: retval
