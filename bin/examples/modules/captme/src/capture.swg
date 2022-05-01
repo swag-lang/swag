@@ -107,15 +107,13 @@ impl Capture
             }
         }
 
-        if evt.kind == .MouseReleased and evt.button == .Left
+        // End of selection move
+        if moving and evt.kind == .MouseReleased and evt.button == .Left
         {
-            if moving
-            {
-                app.popCursor()
-                view.releaseMouse()
-                view.invalidate()
-                moving, movingCursorSet = false
-            }
+            app.popCursor()
+            view.releaseMouse()
+            view.invalidate()
+            moving, movingCursorSet = false
         }
 
         // Move selection
