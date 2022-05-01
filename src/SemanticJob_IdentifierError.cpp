@@ -541,6 +541,15 @@ void SemanticJob::symbolErrorNotes(SemanticContext* context, VectorNative<OneTry
             auto prev = identifier->identifierRef->childs[identifier->childParentIdx - 1];
             if (prev->resolvedSymbolName)
             {
+                if (prev->extension && prev->extension->resolvedUserOpSymbolOverload)
+                {
+                    auto typeInfo = TypeManager::concreteType(prev->extension->resolvedUserOpSymbolOverload->typeInfo);
+                    auto note     = new Diagnostic{prev, Fmt(Nte(Nte0018), prev->extension->resolvedUserOpSymbolOverload->symbol->name.c_str(), typeInfo->getDisplayNameC()), DiagnosticLevel::Note};
+                    note->hint    = Hint::isType(typeInfo);
+                    notes.push_back(note);
+                    return;
+                }
+
                 if (prev->kind == AstNodeKind::ArrayPointerIndex)
                 {
                     auto api = CastAst<AstArrayPointerIndex>(prev, AstNodeKind::ArrayPointerIndex);
