@@ -16,6 +16,7 @@ enum FormFlags
 {
     Zero
     Hot
+    Selected
 }
 
 struct BaseForm
@@ -54,13 +55,13 @@ impl IForm for RectShapeForm
 
         bSize := borderSize * z
 
-        if flags & .Hot
+        if flags & (.Hot | .Selected)
         {
             gizmo.rect = paintPos
             gizmo.paintBorder = false
             gizmo.roundShape = true
             gizmo.anchorSize = 10
-            gizmo.paint(painter, 0.8)
+            gizmo.paint(painter, flags & .Selected ? 1.0 : 0.8)
         }
 
         #[Swag.Complete]

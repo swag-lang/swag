@@ -11,6 +11,7 @@ struct Capture
     undos:      Array'(*Undo)
     nextUndo:   uint
     hotForm:    uint = Swag.UInt.Max
+    selection:  Array'uint
 }
 
 impl Capture
@@ -33,6 +34,8 @@ impl Capture
             flags := FormFlags.Zero
             if i == hotForm
                 flags |= .Hot
+            if selection.contains(i)
+                flags |= .Selected
             f.paint(painter, rect.x, rect.y, zoom, flags)
         }
 
