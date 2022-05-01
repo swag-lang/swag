@@ -542,8 +542,9 @@ bool TypeTable::makeConcreteAttributes(JobContext* context, AttributeList& attri
     return true;
 }
 
-Utf8& TypeTable::getTypeName(TypeInfo* typeInfo, bool forceNoScope)
+Utf8 TypeTable::getTypeName(TypeInfo* typeInfo, bool forceNoScope)
 {
+    SWAG_RACE_CONDITION_READ(typeInfo->raceName);
     if (forceNoScope)
         return typeInfo->name;
     if (!typeInfo->declNode)

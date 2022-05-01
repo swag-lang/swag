@@ -3,10 +3,12 @@
 #include "AstNode.h"
 #include "TypeManager.h"
 #include "Mutex.h"
+#include "RaceCondition.h"
 
 void TypeInfo::clearName()
 {
     ScopedLock lk(mutex);
+    SWAG_RACE_CONDITION_WRITE(raceName);
     name.clear();
     displayName.clear();
 }
@@ -63,6 +65,7 @@ const Utf8& TypeInfo::computeWhateverNameNoLock(uint32_t nameType)
         if (name.empty())
         {
             computeWhateverName(str, nameType);
+            SWAG_RACE_CONDITION_WRITE(raceName);
             name = move(str);
         }
 
@@ -72,6 +75,7 @@ const Utf8& TypeInfo::computeWhateverNameNoLock(uint32_t nameType)
         if (displayName.empty())
         {
             computeWhateverName(str, nameType);
+            SWAG_RACE_CONDITION_WRITE(raceName);
             displayName = move(str);
         }
 
@@ -81,6 +85,7 @@ const Utf8& TypeInfo::computeWhateverNameNoLock(uint32_t nameType)
         if (scopedName.empty())
         {
             computeWhateverName(str, nameType);
+            SWAG_RACE_CONDITION_WRITE(raceName);
             scopedName = move(str);
         }
 
@@ -90,6 +95,7 @@ const Utf8& TypeInfo::computeWhateverNameNoLock(uint32_t nameType)
         if (scopedNameExport.empty())
         {
             computeWhateverName(str, nameType);
+            SWAG_RACE_CONDITION_WRITE(raceName);
             scopedNameExport = move(str);
         }
 

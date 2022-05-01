@@ -7,6 +7,7 @@
 #include "Runtime.h"
 #include "CommandLine.h"
 #include "Mutex.h"
+#include "RaceCondition.h"
 
 struct Scope;
 struct TypeInfo;
@@ -257,6 +258,8 @@ struct TypeInfo
     TypeInfoKind   kind       = TypeInfoKind::Invalid;
     NativeTypeKind nativeType = NativeTypeKind::Void;
     uint8_t        padding[2];
+
+    SWAG_RACE_CONDITION_INSTANCE(raceName);
 };
 
 struct TypeInfoParam
