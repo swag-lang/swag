@@ -289,6 +289,8 @@ public impl LinePath
 
         bvMin, bvMax = startPoint
         polygon.clear()
+        if !elements.count
+            return
 
         endPosBuffer = startPoint
         polygon.points.add(endPosBuffer)
