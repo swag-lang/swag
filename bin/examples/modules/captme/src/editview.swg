@@ -125,20 +125,11 @@ impl EditView
         capture.gizmo.sigChanged = @|self|(g) {
             undo := Memory.new'Undo()
             undo.capture = self.capture
-
-            if g.movingRect.x != g.rect.x or g.movingRect.y != g.rect.y
-            {
-                undo.kind = .MoveCapture
-                undo.newSizeX = cast(s32) ((g.rect.x - g.movingRect.x) / self.zoom)
-                undo.newSizeY = cast(s32) ((g.rect.y - g.movingRect.y) / self.zoom)
-            }
-            else
-            {
-                undo.kind = .ResizeCapture
-                undo.newSizeX = cast(s32) ((g.movingRect.width - g.rect.width) / self.zoom)
-                undo.newSizeY = cast(s32) ((g.movingRect.height - g.rect.height) / self.zoom)
-            }
-
+            undo.kind = .MoveCapture
+            undo.newPosX  = cast(s32) ((g.rect.x - g.movingRect.x) / self.zoom)
+            undo.newPosY  = cast(s32) ((g.rect.y - g.movingRect.y) / self.zoom)
+            undo.newSizeX = cast(s32) ((g.movingRect.width - g.rect.width) / self.zoom)
+            undo.newSizeY = cast(s32) ((g.movingRect.height - g.rect.height) / self.zoom)
             self.capture.pushUndo(undo)
             self.invalidate()
         }

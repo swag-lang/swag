@@ -90,6 +90,20 @@ impl Capture
             }
         }
 
+        // End of selection move
+        if moving and evt.kind == .MouseReleased and evt.button == .Left
+        {
+            if hotForm == Swag.UInt.Max
+            {
+                app.popCursor()
+                movingCursorSet = false
+            }
+
+            view.releaseMouse()
+            view.invalidate()
+            moving = false
+        }
+
         // Selection
         if evt.kind == .MousePressed and evt.button == .Left
         {
@@ -105,15 +119,6 @@ impl Capture
                 view.captureMouse()
                 view.invalidate()
             }
-        }
-
-        // End of selection move
-        if moving and evt.kind == .MouseReleased and evt.button == .Left
-        {
-            app.popCursor()
-            view.releaseMouse()
-            view.invalidate()
-            moving, movingCursorSet = false
         }
 
         // Move selection

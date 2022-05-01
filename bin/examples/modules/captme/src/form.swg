@@ -43,7 +43,7 @@ impl IForm for RectShapeForm
 {
     mtd mouse(view: *EditView, pos: Math.Point, evt: *MouseEvent)->bool
     {
-        return false
+        return gizmo.mouse(view, pos, evt)
     }
 
     mtd offset(offX, offY: s32)

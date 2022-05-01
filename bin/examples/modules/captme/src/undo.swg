@@ -3,7 +3,6 @@ using Core
 enum UndoKind
 {
     MoveCapture
-    ResizeCapture
     OffsetSelection
 }
 
@@ -13,6 +12,7 @@ struct Undo
     capture:    *Capture
 
     newSizeX, newSizeY: s32
+    newPosX,  newPosY: s32
     selection:  Array'uint
 }
 
@@ -25,9 +25,7 @@ impl Undo
         {
         case MoveCapture:
             visit f: capture.forms
-                f.offset(newSizeX, newSizeY)
-            fallthrough
-        case ResizeCapture:
+                f.offset(newPosX, newPosY)
             capture.width  += newSizeX
             capture.height += newSizeY
         case OffsetSelection:
@@ -46,9 +44,7 @@ impl Undo
         {
         case MoveCapture:
             visit f: capture.forms
-                f.offset(-newSizeX, -newSizeY)
-            fallthrough
-        case ResizeCapture:
+                f.offset(-newPosX, -newPosY)
             capture.width  -= newSizeX
             capture.height -= newSizeY
         case OffsetSelection:

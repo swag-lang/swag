@@ -11,6 +11,7 @@ struct GizmoRect
     hotAnchor:      u32 = Swag.U32.Max
     moving:         bool
     movingRect:     Math.Rectangle
+    movingStart:    Math.Point
     sigChanged:     closure(self)
 }
 
@@ -25,6 +26,7 @@ impl GizmoRect
                 break
             moving = true
             movingRect = rect
+            movingStart = pos
             view.captureMouse()
             return true
 
@@ -43,34 +45,67 @@ impl GizmoRect
         case MouseMove:
             if moving
             {
+                diff := pos - movingStart
+                movingStart = pos
+
                 switch hotAnchor
                 {
                 case 0:
-                    movingRect.x = pos.x
-                    movingRect.y = pos.y
-                    movingRect.width = rect.right() - pos.x
-                    movingRect.height = rect.bottom() - pos.y
+                    if evt.modifiers & .Shift
+                    {
+                        if Math.abs(diff.x) > Math.abs(diff.y)
+                            diff.y = diff.x
+                        else
+                            diff.x = diff.y
+                    }
+                    movingRect.x += diff.x
+                    movingRect.y += diff.y
+                    movingRect.width -= diff.x
+                    movingRect.height -= diff.y
                 case 1:
-                    movingRect.y = pos.y
-                    movingRect.height = rect.bottom() - pos.y
+                    movingRect.y += diff.y
+                    movingRect.height -= diff.y
                 case 2:
-                    movingRect.y = pos.y
-                    movingRect.width = pos.x - rect.x
-                    movingRect.height = rect.bottom() - pos.y
+                    if evt.modifiers & .Shift
+                    {
+                        if Math.abs(diff.x) > Math.abs(diff.y)
+                            diff.y = -diff.x
+                        else
+                            diff.x = -diff.y
+                    }
+                    movingRect.y += diff.y
+                    movingRect.width += diff.x
+                    movingRect.height -= diff.y
+
                 case 3:
                     movingRect.x = pos.x
                     movingRect.width = rect.right() - pos.x
                 case 4:
                     movingRect.width = pos.x - rect.x
+
                 case 5:
-                    movingRect.x = pos.x
-                    movingRect.width = rect.right() - pos.x
-                    movingRect.height = pos.y - rect.y
+                    if evt.modifiers & .Shift
+                    {
+                        if Math.abs(diff.x) > Math.abs(diff.y)
+                            diff.y = -diff.x
+                        else
+                            diff.x = -diff.y
+                    }
+                    movingRect.x += diff.x
+                    movingRect.width -= diff.x
+                    movingRect.height += diff.y
                 case 6:
                     movingRect.height = pos.y - rect.y
                 case 7:
-                    movingRect.width = pos.x - rect.x
-                    movingRect.height = pos.y - rect.y
+                    if evt.modifiers & .Shift
+                    {
+                        if Math.abs(diff.x) > Math.abs(diff.y)
+                            diff.y = diff.x
+                        else
+                            diff.x = diff.y
+                    }
+                    movingRect.width += diff.x
+                    movingRect.height += diff.y
                 }
 
                 return true
