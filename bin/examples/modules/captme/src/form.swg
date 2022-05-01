@@ -2,7 +2,7 @@ using Pixel, Core
 
 interface IForm
 {
-    paint:  func(self, *Painter, f32, f32, f32)
+    paint:  func(self, *Painter, f32, f32, f32, FormFlags)
     offset: func(self, s32, s32)
 }
 
@@ -11,19 +11,33 @@ enum FormKind
     Ellipse
 }
 
-struct ShapeForm
+#[Swag.EnumFlags]
+enum FormFlags
 {
+    Zero
+    Hot
+}
+
+struct BaseForm
+{
+    x, y: s32 = 0
+    w, h: s32 = 32
+
+    paintPos: Math.Rectangle
+}
+
+struct RectShapeForm
+{
+    using base:     BaseForm
     kind:           FormKind = Ellipse
-    x, y:           s32 = 0
-    w, h:           s32 = 32
     borderSize:     f32 = 5
     borderColor:    Color = Argb.White
     backColor:      Color = Argb.Red
 
-    paintPos:       Math.Rectangle
+    gizmo:          GizmoRect
 }
 
-impl IForm for ShapeForm
+impl IForm for RectShapeForm
 {
     mtd offset(offX, offY: s32)
     {
@@ -31,7 +45,7 @@ impl IForm for ShapeForm
         y += offY
     }
 
-    mtd paint(painter: *Painter, refX, refY, z: f32)
+    mtd paint(painter: *Painter, refX, refY, z: f32, flags: FormFlags)
     {
         paintPos.x      = refX + (x * z)
         paintPos.y      = refY + (y * z)
@@ -39,6 +53,15 @@ impl IForm for ShapeForm
         paintPos.height = h * z
 
         bSize := borderSize * z
+
+        if flags & .Hot
+        {
+            gizmo.rect = paintPos
+            gizmo.paintBorder = false
+            gizmo.roundShape = true
+            gizmo.anchorSize = 10
+            gizmo.paint(painter, 0.8)
+        }
 
         #[Swag.Complete]
         switch kind

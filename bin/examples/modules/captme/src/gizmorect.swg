@@ -2,6 +2,10 @@ using Core, Pixel, Gui
 
 struct GizmoRect
 {
+    paintBorder:    bool = true
+    roundShape:     bool = false
+    anchorSize:     f32 = 8
+
     rect:           Math.Rectangle
     anchors:        [8] Math.Rectangle
     hotAnchor:      u32 = Swag.U32.Max
@@ -101,28 +105,32 @@ impl GizmoRect
         return false
     }
 
-    mtd paint(painter: *Painter)
+    mtd paint(painter: *Painter, alpha: f32 = 1)
     {
-        const AchorSize = 8'f32
-        const AchorSize2 = AchorSize * 0.5
+        anchorSize2 := anchorSize * 0.5
+        color := Color.getBlend(Argb.Black, Argb.White, alpha)
 
         if moving
-            painter.drawRect(movingRect, Pen.createDash(.Dot, Argb.White, 2))
-        painter.drawRect(rect, Argb.White, 2)
+            painter.drawRect(movingRect, Pen.createDash(.Dot, color, 2))
 
-        anchors[0] = @{rect.x - AchorSize, rect.y - AchorSize, AchorSize, AchorSize}
-        anchors[1] = @{rect.horzCenter() - AchorSize, rect.y - AchorSize, AchorSize, AchorSize}
-        anchors[2] = @{rect.right(), rect.y - AchorSize, AchorSize, AchorSize}
-        anchors[3] = @{rect.x - AchorSize, rect.vertCenter() - AchorSize2, AchorSize, AchorSize}
-        anchors[4] = @{rect.right(), rect.vertCenter() - AchorSize2, AchorSize, AchorSize}
-        anchors[5] = @{rect.x - AchorSize, rect.bottom(), AchorSize, AchorSize}
-        anchors[6] = @{rect.horzCenter() - AchorSize, rect.bottom(), AchorSize, AchorSize}
-        anchors[7] = @{rect.right(), rect.bottom(), AchorSize, AchorSize}
+        if paintBorder
+            painter.drawRect(rect, color, 2)
+
+        anchors[0] = @{rect.x - anchorSize, rect.y - anchorSize, anchorSize, anchorSize}
+        anchors[1] = @{rect.horzCenter() - anchorSize2, rect.y - anchorSize, anchorSize, anchorSize}
+        anchors[2] = @{rect.right(), rect.y - anchorSize, anchorSize, anchorSize}
+        anchors[3] = @{rect.x - anchorSize, rect.vertCenter() - anchorSize2, anchorSize, anchorSize}
+        anchors[4] = @{rect.right(), rect.vertCenter() - anchorSize2, anchorSize, anchorSize}
+        anchors[5] = @{rect.x - anchorSize, rect.bottom(), anchorSize, anchorSize}
+        anchors[6] = @{rect.horzCenter() - anchorSize2, rect.bottom(), anchorSize, anchorSize}
+        anchors[7] = @{rect.right(), rect.bottom(), anchorSize, anchorSize}
 
         visit c, i: anchors
         {
-            painter.fillRect(c, Argb.White)
-            painter.drawRect(c, Argb.Black)
+            if roundShape
+                painter.fillCircle(c.horzCenter(), c.vertCenter(), anchorSize2, color)
+            else
+                painter.fillRect(c, color)
         }
     }
 }

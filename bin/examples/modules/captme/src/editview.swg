@@ -28,9 +28,16 @@ impl EditWnd
         capture := Memory.new'Capture()
         capture.width = 400
         capture.height = 400
-        form := Memory.new'ShapeForm()
-        form.x, form.y = 50
-        capture.forms.add(cast(IForm) form)
+
+        form0 := Memory.new'RectShapeForm()
+        form0.x, form0.y = 50
+        capture.forms.add(cast(IForm) form0)
+
+        form1 := Memory.new'RectShapeForm()
+        form1.x, form1.y = 150
+        form1.w = 100
+        capture.forms.add(cast(IForm) form1)
+
         view.setCapture(capture)
         // END TEMP
 
@@ -68,6 +75,9 @@ impl IWnd for EditView
         evt.accepted = false
         if !capture return
 
+        localPos := surfaceToLocal(evt.surfacePos)
+        localPos += scrollPos
+
         if capture.gizmo.mouse(self, evt)
         {
             invalidate()
@@ -84,6 +94,13 @@ impl IWnd for EditView
                 setZoom(zoom)
                 evt.accepted = true
             }
+        }
+
+        ht := capture.hitTest(localPos)
+        if ht != capture.hotForm
+        {
+            capture.hotForm = ht
+            invalidate()
         }
     }
 

@@ -10,10 +10,15 @@ struct Capture
     gizmo:      GizmoRect
     undos:      Array'(*Undo)
     nextUndo:   uint
+    hotForm:    uint = Swag.UInt.Max
 }
 
 impl Capture
 {
+    //////////////////////////////
+    // PAINT
+    //////////////////////////////
+
     mtd paint(painter: *Painter, rect: Math.Rectangle)
     {
         painter.fillRect(rect, Argb.Gray)
@@ -23,11 +28,36 @@ impl Capture
         zoom := rect.width / width
 
         painter.setParams(.Antialiased)
-        visit i: forms
-            i.paint(painter, rect.x, rect.y, zoom)
+        visit f, i: forms
+        {
+            flags := FormFlags.Zero
+            if i == hotForm
+                flags |= .Hot
+            f.paint(painter, rect.x, rect.y, zoom, flags)
+        }
 
         painter.popClippingRect()
     }
+
+    //////////////////////////////
+    // CONTENT
+    //////////////////////////////
+
+    mtd hitTest(localPos: Math.Point)->uint
+    {
+        visit f, i: forms
+        {
+            b := cast(*BaseForm) @dataof(f)
+            if b.paintPos.contains(localPos)
+                return i
+        }
+
+        return Swag.UInt.Max
+    }
+
+    //////////////////////////////
+    // UNDO
+    //////////////////////////////
 
     mtd canUndo()->bool
     {
