@@ -40,6 +40,29 @@ impl EditWnd
 
 impl IWnd for EditView
 {
+    mtd onKeyEvent(evt: *KeyEvent)
+    {
+        if evt.kind != .KeyPressed
+            return
+        ctrl := evt.modifiers & .Control
+
+        switch evt.key
+        {
+        case Z:
+            if ctrl and capture.canUndo()
+            {
+                capture.undo()
+                invalidate()
+            }
+        case Y:
+            if ctrl and capture.canRedo()
+            {
+                capture.redo()
+                invalidate()
+            }
+        }
+    }
+
     mtd onMouseEvent(evt: *MouseEvent)
     {
         evt.accepted = false
@@ -92,9 +115,18 @@ impl EditView
         setZoom(1)
 
         capture.gizmo.sigChanged = @|self|(g) {
-            /*if old.width != new.width
-                self.capture.width = cast(s32) new.width
-                self.invalidate()*/
+            undo := Memory.new'Undo()
+            undo.capture = self.capture
+
+            if g.movingRect.width != g.rect.width or g.movingRect.height != g.rect.height
+            {
+                undo.kind = .ResizeCapture
+                undo.newSize.x = g.movingRect.width / self.zoom
+                undo.newSize.y = g.movingRect.height / self.zoom
+            }
+
+            self.capture.pushUndo(undo)
+            self.invalidate()
         }
     }
 
