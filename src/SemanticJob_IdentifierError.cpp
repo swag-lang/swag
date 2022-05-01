@@ -541,6 +541,12 @@ void SemanticJob::symbolErrorNotes(SemanticContext* context, VectorNative<OneTry
             auto prev = identifier->identifierRef->childs[identifier->childParentIdx - 1];
             if (prev->resolvedSymbolName)
             {
+                if (prev->kind == AstNodeKind::ArrayPointerIndex)
+                {
+                    auto api = CastAst<AstArrayPointerIndex>(prev, AstNodeKind::ArrayPointerIndex);
+                    prev     = api->array;
+                }
+
                 if (prev->typeInfo)
                 {
                     auto note = new Diagnostic{prev, Fmt(Nte(Nte0001), prev->token.ctext(), SymTable::getArticleKindName(prev->resolvedSymbolName->kind), prev->typeInfo->getDisplayNameC()), DiagnosticLevel::Note};
