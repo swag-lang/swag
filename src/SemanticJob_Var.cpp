@@ -321,7 +321,7 @@ bool SemanticJob::resolveVarDeclAfter(SemanticContext* context)
     // :opAffectConstExpr
     if (node->resolvedSymbolOverload &&
         node->resolvedSymbolOverload->flags & OVERLOAD_STRUCT_AFFECT &&
-        node->resolvedSymbolOverload->flags & (OVERLOAD_VAR_GLOBAL | OVERLOAD_VAR_STRUCT))
+        node->resolvedSymbolOverload->flags & (OVERLOAD_VAR_GLOBAL | OVERLOAD_VAR_STRUCT | OVERLOAD_CONSTANT))
     {
         auto overload = node->resolvedSymbolOverload;
         SWAG_ASSERT(overload->flags & OVERLOAD_INCOMPLETE);
@@ -543,7 +543,7 @@ DataSegment* SemanticJob::getSegmentForVar(SemanticContext* context, AstVarDecl*
     if (node->typeInfo->isArrayOfStruct())
     {
         auto typeArr = CastTypeInfo<TypeInfoArray>(node->typeInfo, TypeInfoKind::Array);
-        if(typeArr->finalType->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)
+        if (typeArr->finalType->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)
             return &module->mutableSegment;
     }
 
@@ -685,6 +685,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     }
 
     uint32_t symbolFlags = 0;
+    if (isCompilerConstant)
+        symbolFlags |= OVERLOAD_CONSTANT;
     if (node->kind == AstNodeKind::FuncDeclParam)
         symbolFlags |= OVERLOAD_VAR_FUNC_PARAM | OVERLOAD_CONST_ASSIGN;
     else if (node->ownerScope->isGlobal() || (node->attributeFlags & ATTRIBUTE_GLOBAL))
@@ -858,7 +860,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                     return true;
 
                 // :opAffectConstExpr
-                if (symbolFlags & (OVERLOAD_VAR_STRUCT | OVERLOAD_VAR_GLOBAL))
+                if (symbolFlags & (OVERLOAD_VAR_STRUCT | OVERLOAD_VAR_GLOBAL | OVERLOAD_CONSTANT))
                 {
                     symbolFlags |= OVERLOAD_INCOMPLETE | OVERLOAD_STRUCT_AFFECT;
                     SWAG_ASSERT(node->extension && node->extension->resolvedUserOpSymbolOverload);
@@ -871,7 +873,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             }
 
             // :opAffectConstExp
-            else if (symbolFlags & (OVERLOAD_VAR_STRUCT | OVERLOAD_VAR_GLOBAL))
+            else if (symbolFlags & (OVERLOAD_VAR_STRUCT | OVERLOAD_VAR_GLOBAL | OVERLOAD_CONSTANT))
                 symbolFlags |= OVERLOAD_INCOMPLETE | OVERLOAD_STRUCT_AFFECT;
         }
 

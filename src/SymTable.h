@@ -35,11 +35,11 @@ static const uint32_t OVERLOAD_EMITTED            = 0x00004000;
 static const uint32_t OVERLOAD_TUPLE_UNPACK       = 0x00008000;
 static const uint32_t OVERLOAD_STORE_SYMBOLS      = 0x00010000;
 static const uint32_t OVERLOAD_VAR_COMPILER       = 0x00020000;
-// static const uint32_t OVERLOAD_REGISTER           = 0x00040000;
-static const uint32_t OVERLOAD_CAN_CHANGE    = 0x00080000;
-static const uint32_t OVERLOAD_USED          = 0x00100000;
-static const uint32_t OVERLOAD_STRUCT_AFFECT = 0x00200000;
-static const uint32_t OVERLOAD_VAR_CAPTURE   = 0x00400000;
+static const uint32_t OVERLOAD_CONSTANT           = 0x00040000;
+static const uint32_t OVERLOAD_CAN_CHANGE         = 0x00080000;
+static const uint32_t OVERLOAD_USED               = 0x00100000;
+static const uint32_t OVERLOAD_STRUCT_AFFECT      = 0x00200000;
+static const uint32_t OVERLOAD_VAR_CAPTURE        = 0x00400000;
 
 enum class SymbolKind : uint8_t
 {
