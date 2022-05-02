@@ -16,7 +16,6 @@ uniform mat4    mdl;
 uniform float   uvMode;
 uniform vec4    boundRect;
 uniform vec4    textureRect;
-uniform bool    copyMode;
 
 out vec4        vcolor;
 out vec2        vuv0;
@@ -28,7 +27,6 @@ out vec4        vaa3;
 out vec4        vaa4;
 out vec4        vaa5;
 out float       vaanum;
-out float       bcopymode;
 
 vec2 computeUVs(vec2 pixelPos)
 {
@@ -94,9 +92,6 @@ void main()
 
     // source is rgba, and we need bgra
     vcolor = vertexColor.zyxw;
-
-    // Parameters, as float...
-    bcopymode = copyMode ? 1 : 0;
 
     // uv
     vuv0 = computeUVs(vertexPosition.xy);
