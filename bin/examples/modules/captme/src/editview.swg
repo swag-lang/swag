@@ -113,7 +113,7 @@ impl IWnd for EditView
 
         // Capture gizmo
         capture.gizmo.rect = rect
-        capture.gizmo.paint(painter)
+        capture.gizmo.paint(painter, false)
     }
 }
 
@@ -124,6 +124,7 @@ impl EditView
         capture = c
         capture.setup(self)
         setZoom(1)
+        invalidate()
     }
 
     mtd getCaptureRect()->Math.Rectangle

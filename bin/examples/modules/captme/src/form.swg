@@ -2,9 +2,10 @@ using Pixel, Core, Gui
 
 interface IForm
 {
-    paint:  func(self, *Painter, f32, f32, f32, FormFlags)
-    offset: func(self, s32, s32)
-    mouse:  func(self, *EditView, Math.Point, *MouseEvent)->bool
+    paintGizmo: func(self, *Painter, f32, f32, f32, FormFlags)
+    paint:      func(self, *Painter, f32, f32, f32)
+    offset:     func(self, s32, s32)
+    mouse:      func(self, *EditView, Math.Point, *MouseEvent)->bool
 }
 
 enum FormKind
@@ -53,7 +54,16 @@ impl IForm for RectShapeForm
         y += offY
     }
 
-    mtd paint(painter: *Painter, refX, refY, z: f32, flags: FormFlags)
+    mtd paintGizmo(painter: *Painter, refX, refY, z: f32, flags: FormFlags)
+    {
+        if flags & (.Hot | .Selected)
+        {
+            gizmo.rect = paintPos
+            gizmo.paint(painter, flags & .Selected ? false : true)
+        }
+    }
+
+    mtd paint(painter: *Painter, refX, refY, z: f32)
     {
         paintPos.x      = refX + (x * z)
         paintPos.y      = refY + (y * z)
@@ -61,15 +71,6 @@ impl IForm for RectShapeForm
         paintPos.height = h * z
 
         bSize := borderSize * z
-
-        if flags & (.Hot | .Selected)
-        {
-            gizmo.rect = paintPos
-            gizmo.paintBorder = flags & .Selected ? true : false
-            gizmo.roundShape = true
-            gizmo.anchorSize = 10
-            gizmo.paint(painter, flags & .Selected ? 1.0 : 0.8)
-        }
 
         #[Swag.Complete]
         switch kind
@@ -89,6 +90,13 @@ impl RectShapeForm
     mtd setup(capt: *Capture)
     {
         capture = capt
+
+        gizmo.roundShape = true
+        gizmo.anchorSize = 10
+        gizmo.trackChange = true
+        gizmo.paintSimpleBorder = false
+        gizmo.paintBigBorder = true
+
         gizmo.sigChanged = @|self|(g) {
             undo := Memory.new'Undo()
             undo.kind = .MoveBaseForm

@@ -46,11 +46,21 @@ impl Capture
     {
         painter.fillRect(rect, Argb.Gray)
         painter.fillRect(rect, Brush.createHatch(.CheckBoardLarge, Argb.DarkGray))
-        painter.pushClippingRect(rect)
+        painter.setParams(.Antialiased)
 
         zoom := rect.width / width
 
-        painter.setParams(.Antialiased)
+        // Shapes
+        painter.pushClippingRect(rect)
+
+        visit f, i: forms
+        {
+            f.paint(painter, rect.x, rect.y, zoom)
+        }
+
+        painter.popClippingRect()
+
+        // Gizmos
         visit f, i: forms
         {
             flags := FormFlags.Zero
@@ -58,10 +68,8 @@ impl Capture
                 flags |= .Hot
             if selection.contains(i)
                 flags |= .Selected
-            f.paint(painter, rect.x, rect.y, zoom, flags)
+            f.paintGizmo(painter, rect.x, rect.y, zoom, flags)
         }
-
-        painter.popClippingRect()
     }
 
     //////////////////////////////

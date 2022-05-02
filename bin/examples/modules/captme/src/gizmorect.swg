@@ -2,9 +2,11 @@ using Core, Pixel, Gui
 
 struct GizmoRect
 {
-    paintBorder:    bool = true
-    roundShape:     bool = false
-    anchorSize:     f32 = 8
+    paintSimpleBorder:  bool = true
+    paintBigBorder:     bool = true
+    roundShape:         bool = false
+    anchorSize:         f32 = 8
+    trackChange:        bool = false
 
     rect:           Math.Rectangle
     anchors:        [8] Math.Rectangle
@@ -108,6 +110,8 @@ impl GizmoRect
                     movingRect.height += diff.y
                 }
 
+                if trackChange and sigChanged
+                    sigChanged(self)
                 return true
             }
             else
@@ -137,32 +141,54 @@ impl GizmoRect
         return false
     }
 
-    mtd paint(painter: *Painter, alpha: f32 = 1)
+    mtd paint(painter: *Painter, hot: bool)
     {
         anchorSize2 := anchorSize * 0.5
-        color := Color.getBlend(Argb.Black, Argb.White, alpha)
 
-        if moving
+        color := Color.getBlend(Argb.Black, Argb.White, hot ? 0.8 : 1)
+
+        if moving and !trackChange
             painter.drawRect(movingRect, Pen.createDash(.Dot, color, 2))
 
-        if paintBorder
-            painter.drawRect(rect, color, 2)
+        if !hot
+        {
+            if paintSimpleBorder
+                painter.drawRect(rect, color, 2)
+            elif paintBigBorder
+            {
+                painter.drawRect(rect, Argb.DarkGray, 4)
+                rect1 := rect
+                rect1.inflate(2)
+                painter.drawRect(rect1, Argb.White, 1)
+                rect2 := rect
+                rect2.inflate(-2)
+                painter.drawRect(rect2, Argb.White, 1)
+            }
+        }
 
-        anchors[0] = @{rect.x - anchorSize, rect.y - anchorSize, anchorSize, anchorSize}
-        anchors[1] = @{rect.horzCenter() - anchorSize2, rect.y - anchorSize, anchorSize, anchorSize}
-        anchors[2] = @{rect.right(), rect.y - anchorSize, anchorSize, anchorSize}
-        anchors[3] = @{rect.x - anchorSize, rect.vertCenter() - anchorSize2, anchorSize, anchorSize}
-        anchors[4] = @{rect.right(), rect.vertCenter() - anchorSize2, anchorSize, anchorSize}
-        anchors[5] = @{rect.x - anchorSize, rect.bottom(), anchorSize, anchorSize}
-        anchors[6] = @{rect.horzCenter() - anchorSize2, rect.bottom(), anchorSize, anchorSize}
-        anchors[7] = @{rect.right(), rect.bottom(), anchorSize, anchorSize}
+        anchors[0] = @{rect.x - anchorSize2, rect.y - anchorSize2, anchorSize, anchorSize}
+        anchors[1] = @{rect.horzCenter() - anchorSize2, rect.y - anchorSize2, anchorSize, anchorSize}
+        anchors[2] = @{rect.right() - anchorSize2, rect.y - anchorSize2, anchorSize, anchorSize}
+        anchors[3] = @{rect.x - anchorSize2, rect.vertCenter() - anchorSize2, anchorSize, anchorSize}
+        anchors[4] = @{rect.right() - anchorSize2, rect.vertCenter() - anchorSize2, anchorSize, anchorSize}
+        anchors[5] = @{rect.x - anchorSize2, rect.bottom() - anchorSize2, anchorSize, anchorSize}
+        anchors[6] = @{rect.horzCenter() - anchorSize2, rect.bottom() - anchorSize2, anchorSize, anchorSize}
+        anchors[7] = @{rect.right() - anchorSize2, rect.bottom() - anchorSize2, anchorSize, anchorSize}
 
         visit c, i: anchors
         {
             if roundShape
+            {
                 painter.fillCircle(c.horzCenter(), c.vertCenter(), anchorSize2, color)
+                if !hot
+                    painter.drawCircle(c.horzCenter(), c.vertCenter(), anchorSize2, Argb.Black, 1)
+            }
             else
+            {
                 painter.fillRect(c, color)
+                if !hot
+                    painter.drawRect(c, Argb.Black, 1)
+            }
         }
     }
 }
