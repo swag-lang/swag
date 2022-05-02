@@ -13,8 +13,10 @@ struct Undo
     capture:    *Capture
     baseForm:   *BaseForm
 
-    newSizeX, newSizeY: s32
-    newPosX,  newPosY: s32
+    newSizeX:   s32
+    newSizeY:   s32
+    newPosX:    s32
+    newPosY:    s32
     selection:  Array'uint
 }
 
@@ -30,6 +32,7 @@ impl Undo
             baseForm.y += newPosY
             baseForm.w += newSizeX
             baseForm.h += newSizeY
+
         case MoveCapture:
             if newPosX or newPosY
             {
@@ -38,6 +41,7 @@ impl Undo
             }
             capture.width  += newSizeX
             capture.height += newSizeY
+
         case OffsetSelection:
             visit s: selection
             {
@@ -57,6 +61,7 @@ impl Undo
             baseForm.y -= newPosY
             baseForm.w -= newSizeX
             baseForm.h -= newSizeY
+
         case MoveCapture:
             if newPosX or newPosY
             {
@@ -65,6 +70,7 @@ impl Undo
             }
             capture.width  -= newSizeX
             capture.height -= newSizeY
+
         case OffsetSelection:
             visit s: selection
             {

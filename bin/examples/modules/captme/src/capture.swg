@@ -85,6 +85,14 @@ impl Capture
 
         if !moving
         {
+            // Resize capture
+            if gizmo.mouse(view, localPos, evt)
+            {
+                view.invalidate()
+                evt.accepted = true
+                return true
+            }
+
             ht := hitTest(localPos)
             if ht != hotForm
             {
@@ -170,14 +178,6 @@ impl Capture
             pushUndo(u)
             view.invalidate()
 
-            return true
-        }
-
-        // Resize capture
-        if gizmo.mouse(view, localPos, evt)
-        {
-            view.invalidate()
-            evt.accepted = true
             return true
         }
 
