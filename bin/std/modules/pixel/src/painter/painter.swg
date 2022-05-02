@@ -31,6 +31,7 @@ enum CommandId
     StartNoOverlap
     StopNoOverlap
     SetBlendingMode
+    ReleaseRenderTarget
 }
 
 #[Swag.EnumFlags]
@@ -87,6 +88,7 @@ struct Command
         blendingMode:   struct{mode: BlendingMode = ?; }
         textureFont:    struct{font: *Font; atlasIndex: s32; }
         colorMask:      struct{r, g, b, a: bool; }
+        renderTgt:      struct{tgt: *RenderTarget; }
 
         texture0: struct
                 {
@@ -606,5 +608,12 @@ impl Painter
         cmd := newCommand(CommandId.SetBlendingMode, true)
         cmd.blendingMode.mode = mode
         curState.blendingMode = mode
+    }
+
+    // Release the render target
+    mtd releaseRenderTarget(tgt: *RenderTarget)
+    {
+        cmd := newCommand(CommandId.ReleaseRenderTarget)
+        cmd.renderTgt.tgt = tgt
     }
 }

@@ -2,8 +2,8 @@ using Pixel, Core, Gui
 
 interface IForm
 {
-    paintGizmo: func(self, *Painter, f32, f32, f32, FormFlags)
-    paint:      func(self, *Painter, f32, f32, f32)
+    paintGizmo: func(self, *Painter, f32, FormFlags)
+    paint:      func(self, *Painter, f32)
     offset:     func(self, s32, s32)
     mouse:      func(self, *EditView, Math.Point, *MouseEvent)->bool
 }
@@ -54,7 +54,7 @@ impl IForm for RectShapeForm
         y += offY
     }
 
-    mtd paintGizmo(painter: *Painter, refX, refY, z: f32, flags: FormFlags)
+    mtd paintGizmo(painter: *Painter, z: f32, flags: FormFlags)
     {
         if flags & (.Hot | .Selected)
         {
@@ -63,13 +63,8 @@ impl IForm for RectShapeForm
         }
     }
 
-    mtd paint(painter: *Painter, refX, refY, z: f32)
+    mtd paint(painter: *Painter, z: f32)
     {
-        paintPos.x      = refX + (x * z)
-        paintPos.y      = refY + (y * z)
-        paintPos.width  = w * z
-        paintPos.height = h * z
-
         bSize := borderSize * z
 
         #[Swag.Complete]

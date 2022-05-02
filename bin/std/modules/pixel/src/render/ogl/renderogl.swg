@@ -24,6 +24,9 @@ struct RenderOgl
     hatchTextures:      [@countof(HatchStyle)] GLuint
     blendingMode:       BlendingMode = .Alpha
     curRC:              RenderingContext
+
+    stackRT:            Array'*RenderTarget
+    curRT:              *RenderTarget
 }
 
 private impl RenderOgl
@@ -159,11 +162,20 @@ impl RenderOgl
         glClear(GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT)
     }
 
+    // Get the actual render target size
+    mtd getTargetSize()->{s32, s32}
+    {
+        if curRT
+            return @{curRT.colorBuffer.width, curRT.colorBuffer.height}
+        return @{curRC.width, curRC.height}
+    }
+
     // Force the scissor
     mtd setScissorRect(rect: Math.Rectangle)
     {
         glEnable(GL_SCISSOR_TEST)
-        glScissor(cast(GLint) rect.x, cast(GLint) (curRC.height - rect.y - rect.height), cast(GLint) rect.width, cast(GLint) rect.height)
+        (?, h) := getTargetSize()
+        glScissor(cast(GLint) rect.x, cast(GLint) (h - rect.y - rect.height), cast(GLint) rect.width, cast(GLint) rect.height)
     }
 
     // Reset the scissor
@@ -244,29 +256,34 @@ impl RenderOgl
         hatchTextures[DiagonalCross] = generateTexture(Hatch.DiagonalCross, 8, 8)
     }
 
-    mtd bindRenderTarget(rt: RenderTarget)
+    // Set the current render target
+    mtd bindRenderTarget(rt: *RenderTarget)
     {
         if !rt.colorBuffer.valid
             return
+        curRT = rt
         glBindFramebuffer(GL_FRAMEBUFFER, cast(GLuint) rt.handle)
+        glViewport(0, 0, rt.colorBuffer.width, rt.colorBuffer.height)
     }
 
+    // Go back to the frame buffer
     mtd unbindRenderTarget()
     {
+        curRT = null
         glBindFramebuffer(GL_FRAMEBUFFER, 0)
     }
 
     // Create a render target
     mtd createRenderTarget(w, h: s32)->RenderTarget
     {
-        var fbo: GLuint
-        glGenFramebuffers(1, &fbo)
-        glBindFramebuffer(GL_FRAMEBUFFER, fbo)
-
         var colorID: GLuint
         glGenTextures(1, &colorID)
         glBindTexture(GL_TEXTURE_2D, colorID)
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, null)
+
+        var fbo: GLuint
+        glGenFramebuffers(1, &fbo)
+        glBindFramebuffer(GL_FRAMEBUFFER, fbo)
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, colorID, 0)
 
         var rbo: GLuint
@@ -284,6 +301,7 @@ impl RenderOgl
         result.colorBuffer.width = w
         result.colorBuffer.height = h
         result.colorBuffer.valid = true
+        result.colorBuffer.pf = .RGBA8
         result.depthStencil = acast(rbo)
         return result
     }
@@ -404,7 +422,8 @@ impl RenderOgl
     // Draw the given painter
     mtd draw(dc: *Painter)
     {
-        if curRC.height == 0 or curRC.width == 0
+        (width, height) := getTargetSize()
+        if width <= 0 or height <= 0
             return
 
         glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer)
@@ -415,9 +434,9 @@ impl RenderOgl
         // View, ortho projection
         mvp := glGetUniformLocation(shaderImage, @dataof("mvp"))
         var orthoMatrix: Matrix4x4
-        ortho(cast(f32) curRC.height, 0, 0, cast(f32) curRC.width, 0, 1.0, orthoMatrix.m)
+        ortho(cast(f32) height, 0, 0, cast(f32) width, 0, 1.0, orthoMatrix.m)
         glUniformMatrix4fv(mvp, 1, GL_FALSE, &orthoMatrix.m[0, 0])
-	    glViewport(0, 0, curRC.width, curRC.height)
+	    glViewport(0, 0, width, height)
 
         // Draw matrix
         mdl := glGetUniformLocation(shaderImage, @dataof("mdl"))
@@ -496,7 +515,7 @@ impl RenderOgl
             case SetClippingRect:
                 params := &cmd.clippingRect
                 glEnable(GL_SCISSOR_TEST)
-                glScissor(cast(GLint) params.rect.x, cast(GLint) (curRC.height - params.rect.y - params.rect.height), cast(GLint) params.rect.width, cast(GLint) params.rect.height)
+                glScissor(cast(GLint) params.rect.x, cast(GLint) (height - params.rect.y - params.rect.height), cast(GLint) params.rect.width, cast(GLint) params.rect.height)
 
             case ResetClippingRect:
                 glDisable(GL_SCISSOR_TEST)
@@ -611,9 +630,39 @@ impl RenderOgl
             case ResetTextureFont:
                 glActiveTexture(GL_TEXTURE1)
                 glBindTexture(GL_TEXTURE_2D, whiteTexture)
+
+            case ReleaseRenderTarget:
+                releaseRenderTarget(cmd.renderTgt.tgt)
             }
         }
 
         loop i: 10 glDisableVertexAttribArray(cast(GLuint) i)
+    }
+
+    // Get a render target of the given size
+    // releaseRenderTarget must be called to release it
+    mtd getRenderTarget(w, h: s32)->*RenderTarget
+    {
+        w2 := Math.roundUpToPowerOf2(cast(u32) w)
+        h2 := Math.roundUpToPowerOf2(cast(u32) h)
+
+        visit rt, i: stackRT
+        {
+            if rt.colorBuffer.width >= w2 and rt.colorBuffer.height >= h2
+            {
+                stackRT.removeAt(i)
+                return rt
+            }
+        }
+
+        rt := Memory.new'RenderTarget()
+        dref rt = createRenderTarget(cast(s32) w2, cast(s32) h2)
+        return rt
+    }
+
+    // Release the given render target
+    mtd releaseRenderTarget(tgt: *RenderTarget)
+    {
+        stackRT.add(tgt)
     }
 }

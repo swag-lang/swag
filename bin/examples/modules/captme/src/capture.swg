@@ -51,13 +51,41 @@ impl Capture
         zoom := rect.width / width
 
         // Shapes
+        app := editView.getApp()
+        render := &app.renderer
         painter.pushClippingRect(rect)
+
+        var pt: Painter
 
         visit f, i: forms
         {
-            f.paint(painter, rect.x, rect.y, zoom)
+            base := cast(*BaseForm) @dataof(f)
+            base.paintPos.x      = 0
+            base.paintPos.y      = 0
+            base.paintPos.width  = base.w * zoom
+            base.paintPos.height = base.h * zoom
+
+            pt.begin()
+            pt.setParams(.Antialiased)
+            pt.colorMask(true, true, true, true)
+            f.paint(&pt, zoom)
+            pt.end()
+
+            base.paintPos.x = rect.x + (base.x * zoom)
+            base.paintPos.y = rect.y + (base.y * zoom)
+
+            rt := render.getRenderTarget(cast(s32) base.paintPos.width, cast(s32) base.paintPos.height)
+            render.bindRenderTarget(rt)
+            render.clear()
+            render.draw(&pt)
+            render.unbindRenderTarget()
+
+            srcRect := Math.Rectangle{0, 0, base.paintPos.width, base.paintPos.height}
+            painter.drawTexture(base.paintPos, srcRect, rt.colorBuffer)
+            painter.releaseRenderTarget(rt)
         }
 
+        painter.setBlendingMode(.Alpha)
         painter.popClippingRect()
 
         // Gizmos
@@ -68,7 +96,7 @@ impl Capture
                 flags |= .Hot
             if selection.contains(i)
                 flags |= .Selected
-            f.paintGizmo(painter, rect.x, rect.y, zoom, flags)
+            f.paintGizmo(painter, zoom, flags)
         }
     }
 

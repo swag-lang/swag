@@ -153,6 +153,7 @@ impl Surface
         var cxt: PaintContext
         cxt.painter = &painter
         cxt.renderer = &app.renderer
+        cxt.renderer.begin(rc)
         cxt.painter.begin()
 
         // Draw shadow around surface
@@ -169,10 +170,8 @@ impl Surface
         painter.clear(Color.fromArgb(255, 0, 0, 0))
         painter.end()
 
-        cxt.renderer.begin(rc)
-
         // Paint to surface render target
-        cxt.renderer.bindRenderTarget(rt)
+        cxt.renderer.bindRenderTarget(&rt)
         cxt.renderer.setScissorRect(clipRect)
         cxt.renderer.clear()
         cxt.renderer.draw(&painter)

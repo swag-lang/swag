@@ -16,7 +16,7 @@ layout(origin_upper_left) in vec4 gl_FragCoord;
 uniform sampler2D inTexture0;
 uniform sampler2D inTexture1;
 
-out vec4    color;
+out vec4 color;
 
 // Compute the distance from the pixel to the segment
 float computeAlphaAA(vec4 segment)
