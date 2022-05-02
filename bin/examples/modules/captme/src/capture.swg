@@ -124,8 +124,8 @@ impl Capture
         // Move selection
         if moving
         {
-            newSizeX := cast(s32) (localPos.x - movingStart.x)
-            newSizeY := cast(s32) (localPos.y - movingStart.y)
+            newSizeX := cast(s32) ((localPos.x - movingStart.x) / view.zoom)
+            newSizeY := cast(s32) ((localPos.y - movingStart.y) / view.zoom)
 
             if firstMoving
             {
