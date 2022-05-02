@@ -13,9 +13,10 @@ layout(location = 9) in float aanum;
 
 uniform mat4    mvp;
 uniform mat4    mdl;
-uniform float   uvmode;
+uniform float   uvMode;
 uniform vec4    boundRect;
 uniform vec4    textureRect;
+uniform bool    copyMode;
 
 out vec4        vcolor;
 out vec2        vuv0;
@@ -27,13 +28,14 @@ out vec4        vaa3;
 out vec4        vaa4;
 out vec4        vaa5;
 out float       vaanum;
+out float       bcopymode;
 
 vec2 computeUVs(vec2 pixelPos)
 {
     vec2 uv;
 
     // Fill
-    if(uvmode < 0.5)
+    if(uvMode < 0.5)
     {
         float w = boundRect.z - boundRect.x;
         float h = boundRect.w - boundRect.y;
@@ -42,7 +44,7 @@ vec2 computeUVs(vec2 pixelPos)
     }
 
     // FillSubRect
-    else if(uvmode < 1.5)
+    else if(uvMode < 1.5)
     {
         float w = boundRect.z - boundRect.x;
         float h = boundRect.w - boundRect.y;
@@ -53,7 +55,7 @@ vec2 computeUVs(vec2 pixelPos)
     }
 
     // Tile
-    else if(uvmode < 2.5)
+    else if(uvMode < 2.5)
     {
         uv.x = (pixelPos.x - boundRect.x) / textureRect.z;
         uv.y = 1 - (pixelPos.y - boundRect.y) / textureRect.w;
@@ -92,6 +94,9 @@ void main()
 
     // source is rgba, and we need bgra
     vcolor = vertexColor.zyxw;
+
+    // Parameters, as float...
+    bcopymode = copyMode ? 1 : 0;
 
     // uv
     vuv0 = computeUVs(vertexPosition.xy);

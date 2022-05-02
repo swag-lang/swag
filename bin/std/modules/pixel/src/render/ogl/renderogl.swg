@@ -425,9 +425,10 @@ impl RenderOgl
         glUniformMatrix4fv(mdl, 1, GL_FALSE, &modelMatrix.m[0, 0])
 
         // UV parameters
-        uvmode      := glGetUniformLocation(shaderImage, @dataof("uvmode"))
+        uvMode      := glGetUniformLocation(shaderImage, @dataof("uvMode"))
         boundRect   := glGetUniformLocation(shaderImage, @dataof("boundRect"))
         textureRect := glGetUniformLocation(shaderImage, @dataof("textureRect"))
+        copyMode    := glGetUniformLocation(shaderImage, @dataof("copyMode"))
 
         // Default state
         glDisable(GL_SCISSOR_TEST)
@@ -560,7 +561,8 @@ impl RenderOgl
                 params := &cmd.texture0
                 glUniform4fv(boundRect, 1, &params.boundRect.x)
                 glUniform4fv(textureRect, 1, &params.textureRect.x)
-                glUniform1f(uvmode, cast(GLfloat) params.uvMode)
+                glUniform1f(uvMode, cast(GLfloat) params.uvMode)
+                glUniform1i(copyMode, cast(GLint) (blendingMode == .Copy))
                 glActiveTexture(GL_TEXTURE0)
 
                 #[Swag.Complete]

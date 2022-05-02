@@ -9,6 +9,7 @@ in vec4     vaa3;
 in vec4     vaa4;
 in vec4     vaa5;
 in float    vaanum;
+in float    bcopymode;
 
 layout(origin_upper_left) in vec4 gl_FragCoord;
 
@@ -68,6 +69,6 @@ void main()
     color = vcolor * texture(inTexture0, vuv0);
     color.w *= computeAlphaEdgesAA();
     color.w *= texture(inTexture1, vuv1).r;
-    if(color.w == 0)
+    if(color.w == 0 && bcopymode < 0.5)
         discard;
 }
