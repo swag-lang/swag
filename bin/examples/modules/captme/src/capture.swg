@@ -7,6 +7,7 @@ struct Capture
     forms:  Array'IForm
 
     // Dyn
+    editView:   *EditView
     gizmo:      GizmoRect
     undos:      Array'(*Undo)
     nextUndo:   uint
@@ -21,6 +22,22 @@ struct Capture
 
 impl Capture
 {
+    mtd setup(view: *EditView)
+    {
+        editView = view
+        gizmo.sigChanged = @|self|(g) {
+            undo := Memory.new'Undo()
+            undo.capture = self
+            undo.kind = .MoveCapture
+            undo.newPosX  = cast(s32) ((g.movingRect.x - g.rect.x) / self.editView.zoom)
+            undo.newPosY  = cast(s32) ((g.movingRect.y - g.rect.y) / self.editView.zoom)
+            undo.newSizeX = cast(s32) ((g.movingRect.width - g.rect.width) / self.editView.zoom)
+            undo.newSizeY = cast(s32) ((g.movingRect.height - g.rect.height) / self.editView.zoom)
+            self.pushUndo(undo)
+            self.editView.invalidate()
+        }
+    }
+
     //////////////////////////////
     // PAINT
     //////////////////////////////

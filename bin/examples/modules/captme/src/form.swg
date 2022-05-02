@@ -25,7 +25,8 @@ struct BaseForm
     x, y: s32 = 0
     w, h: s32 = 32
 
-    paintPos: Math.Rectangle
+    capture:    *Capture
+    paintPos:   Math.Rectangle
 }
 
 struct RectShapeForm
@@ -79,6 +80,27 @@ impl IForm for RectShapeForm
             painter.fillEllipse(paintPos.x + sizeX, paintPos.y + sizeY, sizeX, sizeY, backColor)
             if bSize >= 1
                 painter.drawEllipse(paintPos.x + sizeX, paintPos.y + sizeY, sizeX - bSize * 0.5, sizeY - bSize * 0.5, borderColor, bSize)
+        }
+    }
+}
+
+impl RectShapeForm
+{
+    mtd setup(capt: *Capture)
+    {
+        capture = capt
+        gizmo.sigChanged = @|self|(g) {
+            undo := Memory.new'Undo()
+            undo.kind = .MoveBaseForm
+            undo.capture = self.capture
+            undo.baseForm = self
+            zoom := self.capture.editView.zoom
+            undo.newPosX  = cast(s32) ((g.movingRect.x - g.rect.x) / zoom)
+            undo.newPosY  = cast(s32) ((g.movingRect.y - g.rect.y) / zoom)
+            undo.newSizeX = cast(s32) ((g.movingRect.width - g.rect.width) / zoom)
+            undo.newSizeY = cast(s32) ((g.movingRect.height - g.rect.height) / zoom)
+            self.capture.pushUndo(undo)
+            self.capture.editView.invalidate()
         }
     }
 }

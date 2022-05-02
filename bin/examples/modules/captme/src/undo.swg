@@ -2,6 +2,7 @@ using Core
 
 enum UndoKind
 {
+    MoveBaseForm
     MoveCapture
     OffsetSelection
 }
@@ -10,6 +11,7 @@ struct Undo
 {
     kind:       UndoKind
     capture:    *Capture
+    baseForm:   *BaseForm
 
     newSizeX, newSizeY: s32
     newPosX,  newPosY: s32
@@ -23,6 +25,11 @@ impl Undo
         #[Swag.Complete]
         switch kind
         {
+        case MoveBaseForm:
+            baseForm.x += newPosX
+            baseForm.y += newPosY
+            baseForm.w += newSizeX
+            baseForm.h += newSizeY
         case MoveCapture:
             visit f: capture.forms
                 f.offset(newPosX, newPosY)
@@ -42,6 +49,11 @@ impl Undo
         #[Swag.Complete]
         switch kind
         {
+        case MoveBaseForm:
+            baseForm.x -= newPosX
+            baseForm.y -= newPosY
+            baseForm.w -= newSizeX
+            baseForm.h -= newSizeY
         case MoveCapture:
             visit f: capture.forms
                 f.offset(-newPosX, -newPosY)

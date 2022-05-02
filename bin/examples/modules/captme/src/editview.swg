@@ -31,11 +31,13 @@ impl EditWnd
 
         form0 := Memory.new'RectShapeForm()
         form0.x, form0.y = 50
+        form0.setup(capture)
         capture.forms.add(cast(IForm) form0)
 
         form1 := Memory.new'RectShapeForm()
         form1.x, form1.y = 150
         form1.w = 100
+        form1.setup(capture)
         capture.forms.add(cast(IForm) form1)
 
         view.setCapture(capture)
@@ -120,19 +122,8 @@ impl EditView
     mtd setCapture(c: *Capture)
     {
         capture = c
+        capture.setup(self)
         setZoom(1)
-
-        capture.gizmo.sigChanged = @|self|(g) {
-            undo := Memory.new'Undo()
-            undo.capture = self.capture
-            undo.kind = .MoveCapture
-            undo.newPosX  = cast(s32) ((g.rect.x - g.movingRect.x) / self.zoom)
-            undo.newPosY  = cast(s32) ((g.rect.y - g.movingRect.y) / self.zoom)
-            undo.newSizeX = cast(s32) ((g.movingRect.width - g.rect.width) / self.zoom)
-            undo.newSizeY = cast(s32) ((g.movingRect.height - g.rect.height) / self.zoom)
-            self.capture.pushUndo(undo)
-            self.invalidate()
-        }
     }
 
     mtd getCaptureRect()->Math.Rectangle
