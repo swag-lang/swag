@@ -31,8 +31,11 @@ impl Undo
             baseForm.w += newSizeX
             baseForm.h += newSizeY
         case MoveCapture:
-            visit f: capture.forms
-                f.offset(newPosX, newPosY)
+            if newPosX or newPosY
+            {
+                visit f: capture.forms
+                    f.offset(newPosX, newPosY)
+            }
             capture.width  += newSizeX
             capture.height += newSizeY
         case OffsetSelection:
@@ -55,8 +58,11 @@ impl Undo
             baseForm.w -= newSizeX
             baseForm.h -= newSizeY
         case MoveCapture:
-            visit f: capture.forms
-                f.offset(-newPosX, -newPosY)
+            if newPosX or newPosY
+            {
+                visit f: capture.forms
+                    f.offset(-newPosX, -newPosY)
+            }
             capture.width  -= newSizeX
             capture.height -= newSizeY
         case OffsetSelection:

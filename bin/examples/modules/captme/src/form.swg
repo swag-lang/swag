@@ -97,16 +97,18 @@ impl RectShapeForm
         gizmo.paintSimpleBorder = false
         gizmo.paintBigBorder = true
 
-        gizmo.sigChanged = @|self|(g) {
+        gizmo.sigChanged = @|self|(g, first) {
+            if !first
+                self.capture.undo()
             undo := Memory.new'Undo()
             undo.kind = .MoveBaseForm
             undo.capture = self.capture
             undo.baseForm = self
             zoom := self.capture.editView.zoom
-            undo.newPosX  = cast(s32) ((g.movingRect.x - g.rect.x) / zoom)
-            undo.newPosY  = cast(s32) ((g.movingRect.y - g.rect.y) / zoom)
-            undo.newSizeX = cast(s32) ((g.movingRect.width - g.rect.width) / zoom)
-            undo.newSizeY = cast(s32) ((g.movingRect.height - g.rect.height) / zoom)
+            undo.newPosX  = cast(s32) ((g.movingRect.x - g.startRect.x) / zoom)
+            undo.newPosY  = cast(s32) ((g.movingRect.y - g.startRect.y) / zoom)
+            undo.newSizeX = cast(s32) ((g.movingRect.width - g.startRect.width) / zoom)
+            undo.newSizeY = cast(s32) ((g.movingRect.height - g.startRect.height) / zoom)
             self.capture.pushUndo(undo)
             self.capture.editView.invalidate()
         }

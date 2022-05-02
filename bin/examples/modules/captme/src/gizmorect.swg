@@ -9,12 +9,14 @@ struct GizmoRect
     trackChange:        bool = false
 
     rect:           Math.Rectangle
+    startRect:      Math.Rectangle
     anchors:        [8] Math.Rectangle
     hotAnchor:      u32 = Swag.U32.Max
     moving:         bool
+    firstMoving:    bool
     movingRect:     Math.Rectangle
     movingStart:    Math.Point
-    sigChanged:     closure(self)
+    sigChanged:     closure(self, bool)
 }
 
 impl GizmoRect
@@ -26,8 +28,9 @@ impl GizmoRect
         case MousePressed:
             if evt.button != .Left or hotAnchor == Swag.U32.Max
                 break
-            moving = true
-            movingRect = rect
+            moving, firstMoving = true
+            startRect   = rect
+            movingRect  = rect
             movingStart = pos
             view.captureMouse()
             return true
@@ -35,18 +38,22 @@ impl GizmoRect
         case MouseReleased:
             if moving
             {
-                moving = false
+                moving, firstMoving = false
                 hotAnchor = Swag.U32.Max
                 view.getApp().popCursor()
                 view.releaseMouse()
-                if sigChanged
-                    sigChanged(self)
+                if !trackChange and sigChanged
+                    sigChanged(self, false)
                 return true
             }
 
         case MouseMove:
             if moving
             {
+                if firstMoving and sigChanged and trackChange
+                    sigChanged(self, true)
+                firstMoving = false
+
                 diff := pos - movingStart
                 movingStart = pos
 
@@ -81,9 +88,9 @@ impl GizmoRect
 
                 case 3:
                     movingRect.x = pos.x
-                    movingRect.width = rect.right() - pos.x
+                    movingRect.width = startRect.right() - pos.x
                 case 4:
-                    movingRect.width = pos.x - rect.x
+                    movingRect.width = pos.x - startRect.x
 
                 case 5:
                     if evt.modifiers & .Shift
@@ -97,7 +104,7 @@ impl GizmoRect
                     movingRect.width -= diff.x
                     movingRect.height += diff.y
                 case 6:
-                    movingRect.height = pos.y - rect.y
+                    movingRect.height = pos.y - startRect.y
                 case 7:
                     if evt.modifiers & .Shift
                     {
@@ -111,7 +118,7 @@ impl GizmoRect
                 }
 
                 if trackChange and sigChanged
-                    sigChanged(self)
+                    sigChanged(self, false)
                 return true
             }
             else
