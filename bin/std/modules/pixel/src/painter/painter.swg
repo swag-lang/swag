@@ -74,6 +74,9 @@ struct PaintState
     transform:          Transform2
     blendingMode:       BlendingMode = Alpha
     interpolationMode:  InterpolationMode = Pixel
+    clippingRect:       Rectangle
+    stackClipRect:      Array'Rectangle
+    clippingRectOn:     bool
 }
 
 struct Command
@@ -120,13 +123,10 @@ struct Painter
     stackState:         Array'PaintState
     lastTexture0Type:   BrushType = SolidColor
 
-    clippingRect:       Rectangle
-    stackClipRect:      Array'Rectangle
     lastTexture0Handle: TextureHandle
     hasTextureFont:     bool
 
     drawingBegin:       bool
-    clippingRectOn:     bool
     overlapMode:        bool
     canSetTexture0:     bool = true
 }
@@ -348,12 +348,10 @@ impl Painter
 
         commandBuffer.clear()
         vertexBuffer.clear()
-        stackClipRect.clear()
 
         drawingBegin   = true
         canSetTexture0 = true
         overlapMode    = false
-        clippingRectOn = false
 
         resetState()
     }
@@ -390,8 +388,10 @@ impl Painter
         curState.transform.setIdentity()
         curState.interpolationMode = .Pixel
         curState.blendingMode = .Alpha
+        resetClippingRect()
         resetTexture0()
         resetTextureFont()
+        setState(curState)
     }
 
     // Set the current painting state
@@ -509,18 +509,18 @@ impl Painter
 
     mtd setClippingRect(rect: Rectangle)
     {
-        if clippingRect == rect and clippingRectOn
+        if curState.clippingRect == rect and curState.clippingRectOn
             return
-        clippingRect = rect
-        clippingRectOn = true
+        curState.clippingRect = rect
+        curState.clippingRectOn = true
         cmd := newCommand(CommandId.SetClippingRect, true)
-        cmd.clippingRect.rect = clippingRect
+        cmd.clippingRect.rect = curState.clippingRect
     }
 
     // Reset the current clipping rectangle
     mtd resetClippingRect()
     {
-        clippingRectOn = false
+        curState.clippingRectOn = false
         discard newCommand(CommandId.ResetClippingRect, true)
     }
 
@@ -537,10 +537,10 @@ impl Painter
         if !isSurfacePos
             rrect.offset(curState.transform.tx, curState.transform.ty)
 
-        if clippingRectOn
+        if curState.clippingRectOn
         {
-            stackClipRect.add(clippingRect)
-            newRect := clippingRect
+            curState.stackClipRect.add(curState.clippingRect)
+            newRect := curState.clippingRect
             newRect.intersect(rrect)
             setClippingRect(newRect)
         }
@@ -553,13 +553,13 @@ impl Painter
     // Restore the original clipping rectangle
     mtd popClippingRect()
     {
-        if stackClipRect.isEmpty()
+        if curState.stackClipRect.isEmpty()
         {
             resetClippingRect()
         }
         else
         {
-            clipRect := stackClipRect.popBack()
+            clipRect := curState.stackClipRect.popBack()
             setClippingRect(clipRect)
         }
     }
@@ -567,15 +567,15 @@ impl Painter
     // Get the current clipping rectangle
     mtd getClippingRect()->Rectangle
     {
-        if clippingRectOn
-            return clippingRect
+        if curState.clippingRectOn
+            return curState.clippingRect
         return @{0, 0, Swag.F32.Max, Swag.F32.Max}
     }
 
     // Returns true if the current clipping rectangle is empty (no drawing !)
     mtd isEmptyClippingRect()->bool
     {
-        return clippingRectOn and clippingRect.isEmpty()
+        return curState.clippingRectOn and curState.clippingRect.isEmpty()
     }
 
     // Start painting in the clipping buffer
@@ -615,14 +615,17 @@ impl Painter
     // Bind a render target
     mtd bindRenderTarget(tgt: *RenderTarget)
     {
+        pushState()
         cmd := newCommand(CommandId.BindRenderTarget, true)
         cmd.renderTgt.tgt = tgt
+        resetState()
     }
 
     // Bind a render target
-    mtd unbindRenderTarget(tgt: *RenderTarget)
+    mtd unbindRenderTarget()
     {
         discard newCommand(CommandId.UnBindRenderTarget, true)
+        popState()
     }
 
     // Release the render target

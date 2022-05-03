@@ -379,7 +379,7 @@ impl Painter
         if format.flags & .Clip
         {
             pushClippingRect(pos)
-            if clippingRect.isEmpty()
+            if curState.clippingRect.isEmpty()
             {
                 popClippingRect()
                 return

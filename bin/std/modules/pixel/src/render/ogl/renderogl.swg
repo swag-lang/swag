@@ -27,6 +27,7 @@ struct RenderOgl
     curRC:              RenderingContext
 
     stackRT:            Array'*RenderTarget
+    stackReleasedRT:    Array'*RenderTarget
     curRT:              *RenderTarget
 }
 
@@ -260,18 +261,31 @@ impl RenderOgl
     // Set the current render target
     mtd bindRenderTarget(rt: *RenderTarget)
     {
+        Debug.assert(rt != null)
         if !rt.colorBuffer.valid
             return
+        if curRT
+            stackRT.add(curRT)
         curRT = rt
-        glBindFramebuffer(GL_FRAMEBUFFER, cast(GLuint) rt.handle)
-        glViewport(0, 0, rt.colorBuffer.width, rt.colorBuffer.height)
+        glBindFramebuffer(GL_FRAMEBUFFER, cast(GLuint) curRT.handle)
+        glViewport(0, 0, curRT.colorBuffer.width, curRT.colorBuffer.height)
     }
 
     // Go back to the frame buffer
     mtd unbindRenderTarget()
     {
-        curRT = null
-        glBindFramebuffer(GL_FRAMEBUFFER, 0)
+        if stackRT.count
+        {
+            curRT = stackRT.popBack()
+            glBindFramebuffer(GL_FRAMEBUFFER, cast(GLuint) curRT.handle)
+            glViewport(0, 0, curRT.colorBuffer.width, curRT.colorBuffer.height)
+        }
+        else
+        {
+            curRT = null
+            glBindFramebuffer(GL_FRAMEBUFFER, 0)
+            glViewport(0, 0, curRC.width, curRC.height)
+        }
     }
 
     // Create a render target
@@ -446,17 +460,15 @@ impl RenderOgl
         glBufferData(GL_ARRAY_BUFFER, dc.vertexBuffer.count * @sizeof(VertexLayout), dc.vertexBuffer.buffer, GL_STATIC_DRAW);
 
         glUseProgram(shaderAA)
-        mvp := glGetUniformLocation(shaderAA, @dataof("mvp"))
-        mdl := glGetUniformLocation(shaderAA, @dataof("mdl"))
-
-        // Matrices
-        computeMatrices(mvp, mdl)
-
-        // UV parameters
+        mvp         := glGetUniformLocation(shaderAA, @dataof("mvp"))
+        mdl         := glGetUniformLocation(shaderAA, @dataof("mdl"))
         uvMode      := glGetUniformLocation(shaderAA, @dataof("uvMode"))
         boundRect   := glGetUniformLocation(shaderAA, @dataof("boundRect"))
         textureRect := glGetUniformLocation(shaderAA, @dataof("textureRect"))
         copyMode    := glGetUniformLocation(shaderAA, @dataof("copyMode"))
+
+        // Matrices
+        computeMatrices(mvp, mdl)
 
         // Default state
         glDisable(GL_SCISSOR_TEST)
@@ -663,11 +675,11 @@ impl RenderOgl
         w2 := Math.roundUpToPowerOf2(cast(u32) w)
         h2 := Math.roundUpToPowerOf2(cast(u32) h)
 
-        visit rt, i: stackRT
+        visit rt, i: stackReleasedRT
         {
             if rt.colorBuffer.width >= w2 and rt.colorBuffer.height >= h2
             {
-                stackRT.removeAt(i)
+                stackReleasedRT.removeAt(i)
                 return rt
             }
         }
@@ -680,7 +692,7 @@ impl RenderOgl
     // Release the given render target
     mtd releaseRenderTarget(tgt: *RenderTarget)
     {
-        stackRT.add(tgt)
+        stackReleasedRT.add(tgt)
     }
 
     mtd blurTarget(tgt: *RenderTarget)
