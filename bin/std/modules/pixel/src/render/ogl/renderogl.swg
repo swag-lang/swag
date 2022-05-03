@@ -420,6 +420,21 @@ impl RenderOgl
         modelMatrix.setIdentity()
     }
 
+    mtd computeMatrices(mvp, mdl: GLint)
+    {
+        var orthoMatrix: Matrix4x4
+        (width, height) := getTargetSize()
+
+        // View, ortho projection
+        ortho(cast(f32) height, 0, 0, cast(f32) width, 0, 1.0, orthoMatrix.m)
+        glUniformMatrix4fv(mvp, 1, GL_FALSE, &orthoMatrix.m[0, 0])
+	    glViewport(0, 0, width, height)
+
+        // Draw matrix
+        buidModelMatrix(Transform2.Identity)
+        glUniformMatrix4fv(mdl, 1, GL_FALSE, &modelMatrix.m[0, 0])
+    }
+
     // Draw the given painter
     mtd draw(dc: *Painter)
     {
@@ -431,18 +446,11 @@ impl RenderOgl
         glBufferData(GL_ARRAY_BUFFER, dc.vertexBuffer.count * @sizeof(VertexLayout), dc.vertexBuffer.buffer, GL_STATIC_DRAW);
 
         glUseProgram(shaderAA)
-
-        // View, ortho projection
         mvp := glGetUniformLocation(shaderAA, @dataof("mvp"))
-        var orthoMatrix: Matrix4x4
-        ortho(cast(f32) height, 0, 0, cast(f32) width, 0, 1.0, orthoMatrix.m)
-        glUniformMatrix4fv(mvp, 1, GL_FALSE, &orthoMatrix.m[0, 0])
-	    glViewport(0, 0, width, height)
-
-        // Draw matrix
         mdl := glGetUniformLocation(shaderAA, @dataof("mdl"))
-        buidModelMatrix(Transform2.Identity)
-        glUniformMatrix4fv(mdl, 1, GL_FALSE, &modelMatrix.m[0, 0])
+
+        // Matrices
+        computeMatrices(mvp, mdl)
 
         // UV parameters
         uvMode      := glGetUniformLocation(shaderAA, @dataof("uvMode"))
@@ -631,6 +639,14 @@ impl RenderOgl
             case ResetTextureFont:
                 glActiveTexture(GL_TEXTURE1)
                 glBindTexture(GL_TEXTURE_2D, whiteTexture)
+
+            case BindRenderTarget:
+                bindRenderTarget(cmd.renderTgt.tgt)
+                computeMatrices(mvp, mdl)
+
+            case UnBindRenderTarget:
+                unbindRenderTarget()
+                computeMatrices(mvp, mdl)
 
             case ReleaseRenderTarget:
                 releaseRenderTarget(cmd.renderTgt.tgt)

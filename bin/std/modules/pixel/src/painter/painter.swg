@@ -31,6 +31,8 @@ enum CommandId
     StartNoOverlap
     StopNoOverlap
     SetBlendingMode
+    BindRenderTarget
+    UnBindRenderTarget
     ReleaseRenderTarget
 }
 
@@ -608,6 +610,19 @@ impl Painter
         cmd := newCommand(CommandId.SetBlendingMode, true)
         cmd.blendingMode.mode = mode
         curState.blendingMode = mode
+    }
+
+    // Bind a render target
+    mtd bindRenderTarget(tgt: *RenderTarget)
+    {
+        cmd := newCommand(CommandId.BindRenderTarget, true)
+        cmd.renderTgt.tgt = tgt
+    }
+
+    // Bind a render target
+    mtd unbindRenderTarget(tgt: *RenderTarget)
+    {
+        discard newCommand(CommandId.UnBindRenderTarget, true)
     }
 
     // Release the render target
