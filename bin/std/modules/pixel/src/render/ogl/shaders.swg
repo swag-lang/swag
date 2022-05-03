@@ -1,7 +1,9 @@
 using Core, Ogl, Core.Math
 
-const VertexShaderAA = #load("shader_aa_vertex.glsl")
-const PixelShaderAA  = #load("shader_aa_pixel.glsl")
+const VertexShaderAA   = #load("shader_aa_vertex.glsl")
+const PixelShaderAA    = #load("shader_aa_pixel.glsl")
+const VertexShaderBlur = #load("shader_blur_vertex.glsl")
+const PixelShaderBlur  = #load("shader_blur_pixel.glsl")
 
 impl RenderOgl
 {
@@ -60,11 +62,20 @@ impl RenderOgl
 
     func createShaders(using self)
     {
-        shaderImage = createProgram(VertexShaderAA, PixelShaderAA)
-        glUseProgram(shaderImage)
-        text0 := glGetUniformLocation(shaderImage, @dataof("inTexture0"));
-        text1 := glGetUniformLocation(shaderImage, @dataof("inTexture1"));
-        glUniform1i(text0, 0);
-        glUniform1i(text1, 1);
+        {
+            shaderAA = createProgram(VertexShaderAA, PixelShaderAA)
+            text0 := glGetUniformLocation(shaderAA, @dataof("inTexture0"));
+            text1 := glGetUniformLocation(shaderAA, @dataof("inTexture1"));
+            glUseProgram(shaderAA)
+            glUniform1i(text0, 0);
+            glUniform1i(text1, 1);
+        }
+
+        {
+            shaderBlur = createProgram(VertexShaderBlur, PixelShaderBlur)
+            text0 := glGetUniformLocation(shaderBlur, @dataof("inTexture0"));
+            glUseProgram(shaderBlur)
+            glUniform1i(text0, 0);
+        }
     }
 }

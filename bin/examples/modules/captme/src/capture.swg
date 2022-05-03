@@ -82,6 +82,7 @@ impl Capture
 
             srcRect := Math.Rectangle{0, 0, base.paintPos.width, base.paintPos.height}
             painter.drawTexture(base.paintPos, srcRect, rt.colorBuffer)
+
             painter.releaseRenderTarget(rt)
         }
 
