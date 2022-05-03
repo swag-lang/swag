@@ -77,6 +77,12 @@ struct PaintState
     clippingRect:       Rectangle
     stackClipRect:      Array'Rectangle
     clippingRectOn:     bool
+    colorMask:          ColorMask
+}
+
+struct ColorMask
+{
+    r, g, b, a: bool
 }
 
 struct Command
@@ -92,7 +98,7 @@ struct Command
         font:           struct{fontRef: *Font; }
         blendingMode:   struct{mode: BlendingMode = ?; }
         textureFont:    struct{font: *Font; atlasIndex: s32; }
-        colorMask:      struct{r, g, b, a: bool; }
+        colorMask:      ColorMask
         renderTgt:      struct{tgt: *RenderTarget; }
 
         texture0: struct
@@ -370,16 +376,6 @@ impl Painter
         cmd.clear.color = color
     }
 
-    // Set color mask
-    mtd colorMask(r, g, b, a: bool)
-    {
-        cmd := newCommand(CommandId.ColorMask)
-        cmd.colorMask.r = r
-        cmd.colorMask.g = g
-        cmd.colorMask.b = b
-        cmd.colorMask.a = a
-    }
-
     // Reset the current painting state
     mtd resetState()
     {
@@ -388,6 +384,8 @@ impl Painter
         curState.transform.setIdentity()
         curState.interpolationMode = .Pixel
         curState.blendingMode = .Alpha
+        curState.colorMask.r, curState.colorMask.g, curState.colorMask.g = true;
+        curState.colorMask.a = false;
         resetClippingRect()
         resetTexture0()
         resetTextureFont()
@@ -400,6 +398,7 @@ impl Painter
         curState = state
         setTransform(curState.transform)
         setBlendingMode(curState.blendingMode)
+        setColorMask(curState.colorMask)
     }
 
     // Save the current paint state
@@ -507,6 +506,7 @@ impl Painter
         setClippingRect(@{x, y, width, height})
     }
 
+    // Set the current clipping rectangle
     mtd setClippingRect(rect: Rectangle)
     {
         if curState.clippingRect == rect and curState.clippingRectOn
@@ -610,6 +610,25 @@ impl Painter
         cmd := newCommand(CommandId.SetBlendingMode, true)
         cmd.blendingMode.mode = mode
         curState.blendingMode = mode
+    }
+
+    // Set color mask
+    mtd setColorMask(cm: ColorMask)
+    {
+        cmd := newCommand(CommandId.ColorMask, true)
+        cmd.colorMask = cm
+        curState.colorMask = cm
+    }
+
+    // Set color mask
+    mtd setColorMask(r, g, b, a: bool)
+    {
+        cmd := newCommand(CommandId.ColorMask, true)
+        cmd.colorMask.r = r
+        cmd.colorMask.g = g
+        cmd.colorMask.b = b
+        cmd.colorMask.a = a
+        curState.colorMask = cmd.colorMask;
     }
 
     // Bind a render target

@@ -34,7 +34,7 @@ struct RectShapeForm
 {
     using base:     BaseForm
     kind:           FormKind = Ellipse
-    borderSize:     f32 = 5
+    borderSize:     f32 = 15
     borderColor:    Color = Argb.White
     backColor:      Color = Argb.Red
 
