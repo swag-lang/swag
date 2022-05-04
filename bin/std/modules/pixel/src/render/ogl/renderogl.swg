@@ -3,6 +3,7 @@ using Core, Ogl, Math
 
 private
 {
+    const BaseVertexShader = #load("shaders/base.vert")
     const VertexShaderAA   = #load("shaders/aa.vert")
     const PixelShaderAA    = #load("shaders/aa.frag")
     const VertexShaderBlur = #load("shaders/blur.vert")
@@ -42,6 +43,23 @@ struct RenderOgl
 
 private impl RenderOgl
 {
+    func setShaderCompileError(shaderID: GLuint) throw
+    {
+        var result: GLint
+	    var infoLogLength: s32
+        var infoLog: String
+
+        glGetShaderiv(shaderID, GL_COMPILE_STATUS, &result)
+        glGetShaderiv(shaderID, GL_INFO_LOG_LENGTH, &infoLogLength)
+        infoLog.reserve(cast(uint) infoLogLength + 1)
+        glGetShaderInfoLog(shaderID, infoLogLength, null, @dataof(infoLog))
+        if infoLogLength
+        {
+            infoLog.length = infoLogLength
+            throw infoLog
+        }
+    }
+
     func createShaders(using self)
     {
         {
@@ -729,45 +747,21 @@ impl RenderOgl
     }
 
     // Create the given shader
-    func createShader(base: *ShaderBase, vertex, pixel: const [..] u8) throw
+    mtd createShader(base: *ShaderBase, vertex, pixel: const [..] u8) throw
     {
-        var result: GLint
-	    var infoLogLength: s32
-        var infoLog: String
-
         vertexShaderID := glCreateShader(GL_VERTEX_SHADER)
         vertexSourcePointer := @dataof(vertex)
         vertexSourceLength := cast(GLint) @countof(vertex)
         glShaderSource(vertexShaderID, 1, &vertexSourcePointer, &vertexSourceLength)
         glCompileShader(vertexShaderID)
-
-        // Get err
-        glGetShaderiv(vertexShaderID, GL_COMPILE_STATUS, &result)
-        glGetShaderiv(vertexShaderID, GL_INFO_LOG_LENGTH, &infoLogLength)
-        infoLog.reserve(cast(uint) infoLogLength + 1)
-        glGetShaderInfoLog(vertexShaderID, infoLogLength, null, @dataof(infoLog))
-        if infoLogLength
-        {
-            infoLog.length = infoLogLength
-            throw infoLog
-        }
+        try setShaderCompileError(vertexShaderID)
 
         fragmentShaderID := glCreateShader(GL_FRAGMENT_SHADER)
         pixelSourcePointer := @dataof(pixel)
         pixelSourceLength := cast(GLint) @countof(pixel)
         glShaderSource(fragmentShaderID, 1, &pixelSourcePointer, &pixelSourceLength)
         glCompileShader(fragmentShaderID)
-
-        // Get err
-        glGetShaderiv(fragmentShaderID, GL_COMPILE_STATUS, &result)
-        glGetShaderiv(fragmentShaderID, GL_INFO_LOG_LENGTH, &infoLogLength)
-        infoLog.reserve(cast(uint) infoLogLength + 1)
-        glGetShaderInfoLog(fragmentShaderID, infoLogLength, null, @dataof(infoLog))
-        if infoLogLength
-        {
-            infoLog.length = infoLogLength
-            throw infoLog
-        }
+        try setShaderCompileError(fragmentShaderID)
 
         progID := glCreateProgram()
         glAttachShader(progID, vertexShaderID)

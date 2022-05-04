@@ -209,4 +209,20 @@ const GL_MAX_SAMPLES = 0x8D57
 
 /* ------------------------ GL_ARB_framebuffer_sRGB ------------------------ */
 
+/* -------------------- GL_ARB_shading_language_include -------------------- */
+
+const GL_SHADER_INCLUDE_ARB = 0x8DAE
+const GL_NAMED_STRING_LENGTH_ARB = 0x8DE9
+const GL_NAMED_STRING_TYPE_ARB = 0x8DEA
+
+#[Extension]
+{
+    func glCompileShaderIncludeARB(shader: GLuint, count: GLsizei, path: const **GLchar, length: const *GLint);
+    func glDeleteNamedStringARB(namelen: GLint, name: const *GLchar);
+    func glGetNamedStringARB(namelen: GLint, name: const *GLchar, bufSize: GLsizei, stringlen: *GLint, str: *GLchar);
+    func glGetNamedStringivARB(namelen: GLint, name: const *GLchar, pname: GLenum, params: *GLint);
+    func glIsNamedStringARB(namelen: GLint, name: const *GLchar)->GLboolean;
+    func glNamedStringARB(type: GLenum, namelen: GLint, name: const *GLchar, stringlen: GLint, str: const *GLchar);
+}
+
 const GL_FRAMEBUFFER_SRGB = 0x8DB9
