@@ -1,6 +1,14 @@
 #global public
 using Core, Ogl, Math
 
+private
+{
+    const VertexShaderAA   = #load("shaders/shader_aa_vertex.glsl")
+    const PixelShaderAA    = #load("shaders/shader_aa_pixel.glsl")
+    const VertexShaderBlur = #load("shaders/shader_blur_vertex.glsl")
+    const PixelShaderBlur  = #load("shaders/shader_blur_pixel.glsl")
+}
+
 #[Swag.Strict]
 alias TextureHandle = uint
 const InvalidTextureHandle: TextureHandle = acast 0
@@ -13,16 +21,12 @@ const InvalidRenderTargetHandle: RenderTargetHandle = acast 0
 alias RenderTargetSurfaceHandle = uint
 const InvalidRenderTargetSurfaceHandle: RenderTargetSurfaceHandle = acast 0
 
-#[Swag.Strict]
-alias ShaderHandle = uint
-const InvalidShaderHandle: ShaderHandle = acast 0
-
 struct RenderOgl
 {
     using native:       NativeRenderOgl
     vertexbuffer:       GLuint
-    shaderAA:           GLuint
-    shaderBlur:         GLuint
+    shaderAA:           ShaderHandle
+    shaderBlur:         ShaderHandle
     worldTransform:     Transform2
     orthoMatrix:        Matrix4x4
     modelMatrix:        Matrix4x4
@@ -38,6 +42,25 @@ struct RenderOgl
 
 private impl RenderOgl
 {
+    func createShaders(using self)
+    {
+        {
+            shaderAA = createShader(VertexShaderAA, PixelShaderAA)
+            text0 := glGetUniformLocation(cast(GLuint) shaderAA, @dataof("inTexture0"));
+            text1 := glGetUniformLocation(cast(GLuint) shaderAA, @dataof("inTexture1"));
+            glUseProgram(cast(GLuint) shaderAA)
+            glUniform1i(text0, 0);
+            glUniform1i(text1, 1);
+        }
+
+        {
+            shaderBlur = createShader(VertexShaderBlur, PixelShaderBlur)
+            text0 := glGetUniformLocation(cast(GLuint) shaderBlur, @dataof("inTexture0"));
+            glUseProgram(cast(GLuint) shaderBlur)
+            glUniform1i(text0, 0);
+        }
+    }
+
     func generateTexture(datas: const [..] u8, w, h: s32)->GLuint
     {
         Debug.assert(@countof(datas) <= 8*8)
@@ -463,13 +486,13 @@ impl RenderOgl
         glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer)
         glBufferData(GL_ARRAY_BUFFER, dc.vertexBuffer.count * @sizeof(VertexLayout), dc.vertexBuffer.buffer, GL_STATIC_DRAW);
 
-        glUseProgram(shaderAA)
-        mvp         := glGetUniformLocation(shaderAA, @dataof("mvp"))
-        mdl         := glGetUniformLocation(shaderAA, @dataof("mdl"))
-        boundRect   := glGetUniformLocation(shaderAA, @dataof("boundRect"))
-        textureRect := glGetUniformLocation(shaderAA, @dataof("textureRect"))
-        uvMode      := glGetUniformLocation(shaderAA, @dataof("uvMode"))
-        copyMode    := glGetUniformLocation(shaderAA, @dataof("copyMode"))
+        glUseProgram(cast(GLuint) shaderAA)
+        mvp         := glGetUniformLocation(cast(GLuint) shaderAA, @dataof("mvp"))
+        mdl         := glGetUniformLocation(cast(GLuint) shaderAA, @dataof("mdl"))
+        boundRect   := glGetUniformLocation(cast(GLuint) shaderAA, @dataof("boundRect"))
+        textureRect := glGetUniformLocation(cast(GLuint) shaderAA, @dataof("textureRect"))
+        uvMode      := glGetUniformLocation(cast(GLuint) shaderAA, @dataof("uvMode"))
+        copyMode    := glGetUniformLocation(cast(GLuint) shaderAA, @dataof("copyMode"))
 
         // Matrices
         computeMatrices(mvp, mdl)
@@ -722,5 +745,59 @@ impl RenderOgl
         }
 
         return InvalidShaderHandle
+    }
+
+    // Create the given shader
+    func createShader(using self, vertex, pixel: const [..] u8)->ShaderHandle
+    {
+        var result: GLint
+	    var infoLogLength: s32
+        var infoLog: String
+
+        vertexShaderID := glCreateShader(GL_VERTEX_SHADER)
+        vertexSourcePointer := @dataof(vertex)
+        vertexSourceLength := cast(GLint) @countof(vertex)
+        glShaderSource(vertexShaderID, 1, &vertexSourcePointer, &vertexSourceLength)
+        glCompileShader(vertexShaderID)
+
+        // Get err
+        glGetShaderiv(vertexShaderID, GL_COMPILE_STATUS, &result)
+        glGetShaderiv(vertexShaderID, GL_INFO_LOG_LENGTH, &infoLogLength)
+        infoLog.reserve(cast(uint) infoLogLength + 1)
+        glGetShaderInfoLog(vertexShaderID, infoLogLength, null, @dataof(infoLog))
+        if infoLogLength
+        {
+            infoLog.length = infoLogLength
+            Console.print(infoLog)
+        }
+
+        fragmentShaderID := glCreateShader(GL_FRAGMENT_SHADER)
+        pixelSourcePointer := @dataof(pixel)
+        pixelSourceLength := cast(GLint) @countof(pixel)
+        glShaderSource(fragmentShaderID, 1, &pixelSourcePointer, &pixelSourceLength)
+        glCompileShader(fragmentShaderID)
+
+        // Get err
+        glGetShaderiv(fragmentShaderID, GL_COMPILE_STATUS, &result)
+        glGetShaderiv(fragmentShaderID, GL_INFO_LOG_LENGTH, &infoLogLength)
+        infoLog.reserve(cast(uint) infoLogLength + 1)
+        glGetShaderInfoLog(fragmentShaderID, infoLogLength, null, @dataof(infoLog))
+        if infoLogLength
+        {
+            infoLog.length = infoLogLength
+            Console.print(infoLog)
+        }
+
+        progID := glCreateProgram()
+        glAttachShader(progID, vertexShaderID)
+        glAttachShader(progID, fragmentShaderID)
+        glLinkProgram(progID)
+
+        glDetachShader(progID, vertexShaderID)
+        glDetachShader(progID, fragmentShaderID)
+        glDeleteShader(vertexShaderID)
+        glDeleteShader(fragmentShaderID)
+
+        return cast(ShaderHandle) progID
     }
 }
