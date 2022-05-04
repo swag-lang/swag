@@ -39,7 +39,7 @@ void main()
                 col += texture(inTexture0, p) * w;
             }
         }
-        else if (axis == 1)
+        else if (axis == 2)
         {
             for (d=1.0/textureH,y=-r,p.y+=y*d;y<=r;y++,p.y+=d)
             {

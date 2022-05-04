@@ -645,8 +645,6 @@ impl RenderOgl
                 glUniform4fv(cast(GLint) curShader.textureRect, 1, &params.textureRect.x)
                 glUniform1f(cast(GLint) curShader.uvMode, cast(GLfloat) params.uvMode)
                 glUniform1i(cast(GLint) curShader.copyMode, cast(GLint) (blendingMode == .Copy))
-                glUniform1f(cast(GLint) curShader.textureW, cast(GLfloat) params.boundRect.z)
-                glUniform1f(cast(GLint) curShader.textureH, cast(GLfloat) params.boundRect.w)
                 glActiveTexture(GL_TEXTURE0)
 
                 #[Swag.Complete]
@@ -656,6 +654,8 @@ impl RenderOgl
                     glBindTexture(GL_TEXTURE_2D, whiteTexture)
                 case Texture:
                     glBindTexture(GL_TEXTURE_2D, cast(GLuint) params.texture.handle)
+                    glUniform1f(cast(GLint) curShader.textureW, cast(GLfloat) params.texture.width)
+                    glUniform1f(cast(GLint) curShader.textureH, cast(GLfloat) params.texture.height)
                 case Hatch:
                     glBindTexture(GL_TEXTURE_2D, hatchTextures[params.hatch])
                 }
@@ -717,6 +717,8 @@ impl RenderOgl
                 {
                 case s32:
                     glUniform1i(cast(GLint) params.param, params._s32)
+                default:
+                    Debug.assert(false)
                 }
             }
         }

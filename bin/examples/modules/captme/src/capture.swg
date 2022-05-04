@@ -73,7 +73,7 @@ impl Capture
             painter.unbindRenderTarget()
             srcRect := Math.Rectangle{0, 0, base.paintPos.width, base.paintPos.height}
 
-
+            downScale := 2
             wt := cast(s32) base.paintPos.width  + 64
             ht := cast(s32) base.paintPos.height + 64
             rt1 := render.getRenderTarget(wt, ht)
@@ -112,7 +112,7 @@ impl Capture
             paintShadowRect := Math.Rectangle{base.paintPos.x, base.paintPos.y, dstRect.width, dstRect.height}
             paintShadowRect.offset(-32, -32)
             paintShadowRect.inflate(16)
-            painter.drawTexture(paintShadowRect, dstRect, rt1.colorBuffer, Color.fromArgb(20, 0, 0, 0))
+            painter.drawTexture(paintShadowRect, dstRect, rt1.colorBuffer, Color.fromArgb(255, 0, 0, 0))
             painter.releaseRenderTarget(rt1)
             painter.releaseRenderTarget(rt2)
 
