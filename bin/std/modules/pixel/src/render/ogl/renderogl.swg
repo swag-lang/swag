@@ -78,6 +78,8 @@ private impl RenderOgl
             text0 := glGetUniformLocation(cast(GLuint) shaderBlur.handle, @dataof("inTexture0"));
             glUseProgram(cast(GLuint) shaderBlur.handle)
             glUniform1i(text0, 0);
+            shaderBlur.axis   = acast glGetUniformLocation(cast(GLuint) shaderBlur.handle, @dataof("axis"));
+            shaderBlur.radius = acast glGetUniformLocation(cast(GLuint) shaderBlur.handle, @dataof("radius"));
         }
     }
 
@@ -708,6 +710,14 @@ impl RenderOgl
             case SetShader:
                 params := &cmd.shader
                 setShader(params.shader)
+
+            case SetShaderParam:
+                params := &cmd.shaderParam
+                switch params.type
+                {
+                case s32:
+                    glUniform1i(cast(GLint) params.param, params._s32)
+                }
             }
         }
 

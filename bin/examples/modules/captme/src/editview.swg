@@ -37,6 +37,7 @@ impl EditWnd
         form1 := Memory.new'RectShapeForm()
         form1.x, form1.y = 150
         form1.w = 100
+        form1.backColor = 0
         form1.setup(capture)
         capture.forms.add(cast(IForm) form1)
 

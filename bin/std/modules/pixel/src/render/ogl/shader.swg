@@ -30,4 +30,6 @@ struct ShaderAA
 struct ShaderBlur
 {
     using base: ShaderBase
+    radius:     ShaderParamHandle
+    axis:       ShaderParamHandle
 }

@@ -41,6 +41,7 @@ enum CommandId
     UnBindRenderTarget
     ReleaseRenderTarget
     SetShader
+    SetShaderParam
 }
 
 #[Swag.EnumFlags]
@@ -108,6 +109,13 @@ struct Command
         colorMask:      ColorMask
         renderTgt:      struct{tgt: *RenderTarget; }
         shader:         struct{shader: *ShaderBase; }
+
+        shaderParam: struct
+            {
+                param:  ShaderParamHandle
+                type:   typeinfo
+                _s32:   s32
+            }
 
         texture0: struct
                 {
@@ -667,5 +675,14 @@ impl Painter
     {
         cmd := newCommand(CommandId.SetShader, true)
         cmd.shader.shader = shader;
+    }
+
+    // Set a shader parameter
+    mtd setShaderParam(param: ShaderParamHandle, val: s32)
+    {
+        cmd := newCommand(CommandId.SetShaderParam)
+        cmd.shaderParam.param = param;
+        cmd.shaderParam.type = s32;
+        cmd.shaderParam._s32 = val;
     }
 }
