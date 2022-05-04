@@ -3,7 +3,8 @@ using Core, Ogl, Math
 
 private
 {
-    const BaseVertexShader = #load("shaders/base.vert")
+    const BaseUniformVertexShader  = #load("shaders/baseuni.vert")
+    const BaseFunctionVertexShader = #load("shaders/basefunc.vert")
     const VertexShaderAA   = #load("shaders/aa.vert")
     const PixelShaderAA    = #load("shaders/aa.frag")
     const VertexShaderBlur = #load("shaders/blur.vert")
@@ -56,7 +57,8 @@ private impl RenderOgl
         if infoLogLength
         {
             infoLog.length = infoLogLength
-            throw infoLog
+            Console.print(infoLog)
+            throw "shader error"
         }
     }
 
@@ -747,11 +749,15 @@ impl RenderOgl
     }
 
     // Create the given shader
-    mtd createShader(base: *ShaderBase, vertex, pixel: const [..] u8) throw
+    mtd createShader(base: *ShaderBase, vertex, pixel: const [..] u8, version: string = "330 core") throw
     {
+        var buf: String = @mkstring(@dataof(vertex), @countof(vertex))
+        buf.replace("#include baseUniform",  @mkstring(@dataof(BaseUniformVertexShader), @countof(BaseUniformVertexShader)))
+        buf.replace("#include baseFunction", @mkstring(@dataof(BaseFunctionVertexShader), @countof(BaseFunctionVertexShader)))
+
         vertexShaderID := glCreateShader(GL_VERTEX_SHADER)
-        vertexSourcePointer := @dataof(vertex)
-        vertexSourceLength := cast(GLint) @countof(vertex)
+        vertexSourcePointer := buf.buffer
+        vertexSourceLength  := cast(GLint) buf.length
         glShaderSource(vertexShaderID, 1, &vertexSourcePointer, &vertexSourceLength)
         glCompileShader(vertexShaderID)
         try setShaderCompileError(vertexShaderID)

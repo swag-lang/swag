@@ -223,12 +223,11 @@ impl String
         if !whatLength or whatLength > length
             return
         byLength := @countof(by)
-        growSize := byLength > whatLength ? (byLength - whatLength) + 1 : 0
 
         idx := Utf8.indexOf(toString(), what, 0, comparisonType)
         while idx != Swag.UInt.Max
         {
-            grow(length + growSize)
+            reserve(length + byLength + 1)
             Memory.copyOver(buffer + idx + byLength, buffer + idx + whatLength, length - idx + 1)
             Memory.copy(buffer + idx, @dataof(by), byLength)
             length -= whatLength
@@ -238,6 +237,8 @@ impl String
                 break
             idx = Utf8.indexOf(toString(), what, idx, comparisonType)
         }
+
+        buffer[length] = 0;
     }
 
     // Remove some bytes
