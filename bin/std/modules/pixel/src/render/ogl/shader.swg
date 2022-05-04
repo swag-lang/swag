@@ -18,6 +18,8 @@ struct ShaderBase
     textureRect:    ShaderParamHandle
     uvMode:         ShaderParamHandle
     copyMode:       ShaderParamHandle
+    textureW:       ShaderParamHandle
+    textureH:       ShaderParamHandle
 }
 
 struct ShaderAA

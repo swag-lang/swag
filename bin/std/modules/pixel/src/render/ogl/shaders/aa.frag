@@ -1,4 +1,6 @@
 #version 330 core
+#include base
+
 in vec4     vcolor;
 in vec2     vuv0;
 in vec2     vuv1;

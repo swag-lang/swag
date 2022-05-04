@@ -75,25 +75,32 @@ impl Capture
 
 
             rt1 := render.getRenderTarget(cast(s32) rt.colorBuffer.width, cast(s32) rt.colorBuffer.height)
+            rt2 := render.getRenderTarget(cast(s32) rt.colorBuffer.width, cast(s32) rt.colorBuffer.height)
             painter.bindRenderTarget(rt1)
             painter.setShader(&render.shaderBlur)
             painter.setBlendingMode(.Copy)
-            dstRect := Math.Rectangle{0, 0, cast(s32) rt.colorBuffer.width, cast(s32) rt.colorBuffer.height}
+            painter.setColorMask(true, true, true, true);
             painter.drawTexture(srcRect, srcRect, rt.colorBuffer)
             painter.unbindRenderTarget()
-            painter.bindRenderTarget(rt)
+            painter.bindRenderTarget(rt2)
             painter.setBlendingMode(.Copy)
+            painter.setColorMask(true, true, true, true);
             painter.drawTexture(srcRect, srcRect, rt1.colorBuffer)
             painter.setShader()
             painter.unbindRenderTarget()
-            painter.releaseRenderTarget(rt1)
-
 
             painter.pushClippingRect(rect)
-            painter.drawTexture(base.paintPos, srcRect, rt.colorBuffer)
-            painter.popClippingRect()
 
+            destRect := base.paintPos
+            destRect.offset(10, 10);
+            painter.drawTexture(destRect, srcRect, rt1.colorBuffer, Argb.Black)
+            painter.releaseRenderTarget(rt1)
+            painter.releaseRenderTarget(rt2)
+
+            //painter.drawTexture(base.paintPos, srcRect, rt.colorBuffer)
             painter.releaseRenderTarget(rt)
+
+            painter.popClippingRect()
         }
 
         // Gizmos

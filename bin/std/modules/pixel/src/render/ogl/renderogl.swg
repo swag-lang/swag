@@ -3,7 +3,8 @@ using Core, Ogl, Math
 
 private
 {
-    const BaseVertexShader  = #load("shaders/base.vert")
+    const BaseVertexShader = #load("shaders/base.vert")
+    const BasePixelShader  = #load("shaders/base.frag")
     const VertexShaderAA   = #load("shaders/aa.vert")
     const PixelShaderAA    = #load("shaders/aa.frag")
     const VertexShaderBlur = #load("shaders/blur.vert")
@@ -642,6 +643,8 @@ impl RenderOgl
                 glUniform4fv(cast(GLint) curShader.textureRect, 1, &params.textureRect.x)
                 glUniform1f(cast(GLint) curShader.uvMode, cast(GLfloat) params.uvMode)
                 glUniform1i(cast(GLint) curShader.copyMode, cast(GLint) (blendingMode == .Copy))
+                glUniform1f(cast(GLint) curShader.textureW, cast(GLfloat) params.boundRect.z)
+                glUniform1f(cast(GLint) curShader.textureH, cast(GLfloat) params.boundRect.w)
                 glActiveTexture(GL_TEXTURE0)
 
                 #[Swag.Complete]
@@ -760,9 +763,12 @@ impl RenderOgl
         glCompileShader(vertexShaderID)
         try setShaderCompileError(vertexShaderID)
 
+        buf = @mkstring(@dataof(pixel), @countof(pixel))
+        buf.replace("#include base",  @mkstring(@dataof(BasePixelShader), @countof(BasePixelShader)))
+
         fragmentShaderID := glCreateShader(GL_FRAGMENT_SHADER)
-        pixelSourcePointer := @dataof(pixel)
-        pixelSourceLength := cast(GLint) @countof(pixel)
+        pixelSourcePointer := buf.buffer
+        pixelSourceLength  := cast(GLint) buf.length
         glShaderSource(fragmentShaderID, 1, &pixelSourcePointer, &pixelSourceLength)
         glCompileShader(fragmentShaderID)
         try setShaderCompileError(fragmentShaderID)
@@ -785,5 +791,7 @@ impl RenderOgl
         base.textureRect = acast glGetUniformLocation(progID, @dataof("textureRect"))
         base.uvMode      = acast glGetUniformLocation(progID, @dataof("uvMode"))
         base.copyMode    = acast glGetUniformLocation(progID, @dataof("copyMode"))
+        base.textureW    = acast glGetUniformLocation(progID, @dataof("textureW"))
+        base.textureH    = acast glGetUniformLocation(progID, @dataof("textureH"))
     }
 }
