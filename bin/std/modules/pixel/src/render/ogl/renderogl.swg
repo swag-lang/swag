@@ -3,10 +3,10 @@ using Core, Ogl, Math
 
 private
 {
-    const VertexShaderAA   = #load("shaders/shader_aa_vertex.glsl")
-    const PixelShaderAA    = #load("shaders/shader_aa_pixel.glsl")
-    const VertexShaderBlur = #load("shaders/shader_blur_vertex.glsl")
-    const PixelShaderBlur  = #load("shaders/shader_blur_pixel.glsl")
+    const VertexShaderAA   = #load("shaders/aa.vert")
+    const PixelShaderAA    = #load("shaders/aa.frag")
+    const VertexShaderBlur = #load("shaders/blur.vert")
+    const PixelShaderBlur  = #load("shaders/blur.frag")
 }
 
 #[Swag.Strict]
