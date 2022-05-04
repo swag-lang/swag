@@ -8,5 +8,5 @@ out vec4 color;
 void main()
 {
     color = texture(inTexture0, vuv0);
-    color.xyz *= 0.7;
+    //color.xyz *= 0.7;
 }

@@ -1,10 +1,7 @@
 #version 330 core
-#include baseUniform
+#include base
 
 out vec2 vuv0;
-
-#include baseFunction
-
 
 void main()
 {

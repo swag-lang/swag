@@ -1,5 +1,5 @@
 #version 330 core
-#include baseUniform
+#include base
 
 out vec4        vcolor;
 out vec2        vuv0;
@@ -11,8 +11,6 @@ out vec4        vaa3;
 out vec4        vaa4;
 out vec4        vaa5;
 out float       vaanum;
-
-#include baseFunction
 
 vec4 computeTransformAA(vec4 aa)
 {

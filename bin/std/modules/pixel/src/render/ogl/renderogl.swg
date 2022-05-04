@@ -3,8 +3,7 @@ using Core, Ogl, Math
 
 private
 {
-    const BaseUniformVertexShader  = #load("shaders/baseuni.vert")
-    const BaseFunctionVertexShader = #load("shaders/basefunc.vert")
+    const BaseVertexShader  = #load("shaders/base.vert")
     const VertexShaderAA   = #load("shaders/aa.vert")
     const PixelShaderAA    = #load("shaders/aa.frag")
     const VertexShaderBlur = #load("shaders/blur.vert")
@@ -752,8 +751,7 @@ impl RenderOgl
     mtd createShader(base: *ShaderBase, vertex, pixel: const [..] u8, version: string = "330 core") throw
     {
         var buf: String = @mkstring(@dataof(vertex), @countof(vertex))
-        buf.replace("#include baseUniform",  @mkstring(@dataof(BaseUniformVertexShader), @countof(BaseUniformVertexShader)))
-        buf.replace("#include baseFunction", @mkstring(@dataof(BaseFunctionVertexShader), @countof(BaseFunctionVertexShader)))
+        buf.replace("#include base",  @mkstring(@dataof(BaseVertexShader), @countof(BaseVertexShader)))
 
         vertexShaderID := glCreateShader(GL_VERTEX_SHADER)
         vertexSourcePointer := buf.buffer
