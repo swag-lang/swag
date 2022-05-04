@@ -25,8 +25,8 @@ struct RenderOgl
 {
     using native:       NativeRenderOgl
     vertexbuffer:       GLuint
-    shaderAA:           ShaderHandle
-    shaderBlur:         ShaderHandle
+    shaderAA:           ShaderAA
+    shaderBlur:         ShaderBlur
     worldTransform:     Transform2
     orthoMatrix:        Matrix4x4
     modelMatrix:        Matrix4x4
@@ -34,10 +34,10 @@ struct RenderOgl
     hatchTextures:      [@countof(HatchStyle)] GLuint
     blendingMode:       BlendingMode = .Alpha
     curRC:              RenderingContext
-
     stackRT:            Array'*RenderTarget
     stackReleasedRT:    Array'*RenderTarget
     curRT:              *RenderTarget
+    curShader:          *ShaderBase
 }
 
 private impl RenderOgl
@@ -45,18 +45,18 @@ private impl RenderOgl
     func createShaders(using self)
     {
         {
-            shaderAA = createShader(VertexShaderAA, PixelShaderAA)
-            text0 := glGetUniformLocation(cast(GLuint) shaderAA, @dataof("inTexture0"));
-            text1 := glGetUniformLocation(cast(GLuint) shaderAA, @dataof("inTexture1"));
-            glUseProgram(cast(GLuint) shaderAA)
+            createShader(&shaderAA, VertexShaderAA, PixelShaderAA)
+            text0 := glGetUniformLocation(cast(GLuint) shaderAA.handle, @dataof("inTexture0"));
+            text1 := glGetUniformLocation(cast(GLuint) shaderAA.handle, @dataof("inTexture1"));
+            glUseProgram(cast(GLuint) shaderAA.handle)
             glUniform1i(text0, 0);
             glUniform1i(text1, 1);
         }
 
         {
-            shaderBlur = createShader(VertexShaderBlur, PixelShaderBlur)
-            text0 := glGetUniformLocation(cast(GLuint) shaderBlur, @dataof("inTexture0"));
-            glUseProgram(cast(GLuint) shaderBlur)
+            createShader(&shaderBlur, VertexShaderBlur, PixelShaderBlur)
+            text0 := glGetUniformLocation(cast(GLuint) shaderBlur.handle, @dataof("inTexture0"));
+            glUseProgram(cast(GLuint) shaderBlur.handle)
             glUniform1i(text0, 0);
         }
     }
@@ -462,18 +462,18 @@ impl RenderOgl
         modelMatrix.setIdentity()
     }
 
-    mtd computeMatrices(mvp, mdl: GLint)
+    mtd computeMatrices(mvp, mdl: ShaderParamHandle)
     {
         (width, height) := getTargetSize()
 
         // View, ortho projection
         ortho(cast(f32) height, 0, 0, cast(f32) width, 0, 1.0, orthoMatrix.m)
-        glUniformMatrix4fv(mvp, 1, GL_FALSE, &orthoMatrix.m[0, 0])
+        glUniformMatrix4fv(cast(GLint) mvp, 1, GL_FALSE, &orthoMatrix.m[0, 0])
 	    glViewport(0, 0, width, height)
 
         // Draw matrix
         buidModelMatrix(Transform2.Identity)
-        glUniformMatrix4fv(mdl, 1, GL_FALSE, &modelMatrix.m[0, 0])
+        glUniformMatrix4fv(cast(GLint) mdl, 1, GL_FALSE, &modelMatrix.m[0, 0])
     }
 
     // Draw the given painter
@@ -486,16 +486,10 @@ impl RenderOgl
         glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer)
         glBufferData(GL_ARRAY_BUFFER, dc.vertexBuffer.count * @sizeof(VertexLayout), dc.vertexBuffer.buffer, GL_STATIC_DRAW);
 
-        glUseProgram(cast(GLuint) shaderAA)
-        mvp         := glGetUniformLocation(cast(GLuint) shaderAA, @dataof("mvp"))
-        mdl         := glGetUniformLocation(cast(GLuint) shaderAA, @dataof("mdl"))
-        boundRect   := glGetUniformLocation(cast(GLuint) shaderAA, @dataof("boundRect"))
-        textureRect := glGetUniformLocation(cast(GLuint) shaderAA, @dataof("textureRect"))
-        uvMode      := glGetUniformLocation(cast(GLuint) shaderAA, @dataof("uvMode"))
-        copyMode    := glGetUniformLocation(cast(GLuint) shaderAA, @dataof("copyMode"))
+        setShader(&shaderAA)
 
         // Matrices
-        computeMatrices(mvp, mdl)
+        computeMatrices(curShader.mvp, curShader.mdl)
 
         // Default state
         glDisable(GL_SCISSOR_TEST)
@@ -539,7 +533,7 @@ impl RenderOgl
             case Transform:
                 params := &cmd.transform
                 buidModelMatrix(params.tr)
-                glUniformMatrix4fv(mdl, 1, GL_FALSE, &modelMatrix.m[0, 0])
+                glUniformMatrix4fv(cast(GLint) curShader.mdl, 1, GL_FALSE, &modelMatrix.m[0, 0])
 
             case StartClippingRegion:
                 glEnable(GL_STENCIL_TEST)
@@ -626,10 +620,10 @@ impl RenderOgl
 
             case BindTexture0:
                 params := &cmd.texture0
-                glUniform4fv(boundRect, 1, &params.boundRect.x)
-                glUniform4fv(textureRect, 1, &params.textureRect.x)
-                glUniform1f(uvMode, cast(GLfloat) params.uvMode)
-                glUniform1i(copyMode, cast(GLint) (blendingMode == .Copy))
+                glUniform4fv(cast(GLint) curShader.boundRect, 1, &params.boundRect.x)
+                glUniform4fv(cast(GLint) curShader.textureRect, 1, &params.textureRect.x)
+                glUniform1f(cast(GLint) curShader.uvMode, cast(GLfloat) params.uvMode)
+                glUniform1i(cast(GLint) curShader.copyMode, cast(GLint) (blendingMode == .Copy))
                 glActiveTexture(GL_TEXTURE0)
 
                 #[Swag.Complete]
@@ -681,31 +675,31 @@ impl RenderOgl
 
             case BindRenderTarget:
                 bindRenderTarget(cmd.renderTgt.tgt)
-                computeMatrices(mvp, mdl)
+                computeMatrices(curShader.mvp, curShader.mdl)
 
             case UnBindRenderTarget:
                 unbindRenderTarget()
-                computeMatrices(mvp, mdl)
+                computeMatrices(curShader.mvp, curShader.mdl)
 
             case ReleaseRenderTarget:
                 releaseRenderTarget(cmd.renderTgt.tgt)
 
             case SetShader:
                 params := &cmd.shader
-                shader := cast(GLuint) params.handle
-                glUseProgram(shader)
-                mvp         = glGetUniformLocation(shader, @dataof("mvp"))
-                mdl         = glGetUniformLocation(shader, @dataof("mdl"))
-                boundRect   = glGetUniformLocation(shader, @dataof("boundRect"))
-                textureRect = glGetUniformLocation(shader, @dataof("textureRect"))
-                uvMode      = glGetUniformLocation(shader, @dataof("uvMode"))
-                copyMode    = glGetUniformLocation(shader, @dataof("copyMode"))
-                glUniformMatrix4fv(mvp, 1, GL_FALSE, &orthoMatrix.m[0, 0])
-                glUniformMatrix4fv(mdl, 1, GL_FALSE, &modelMatrix.m[0, 0])
+                setShader(params.shader)
             }
         }
 
         loop i: 10 glDisableVertexAttribArray(cast(GLuint) i)
+    }
+
+    // Set the current shader
+    mtd setShader(shader: *ShaderBase)
+    {
+        curShader = shader
+        glUseProgram(cast(GLuint) curShader.handle)
+        glUniformMatrix4fv(cast(GLint) curShader.mvp, 1, GL_FALSE, &orthoMatrix.m[0, 0])
+        glUniformMatrix4fv(cast(GLint) curShader.mdl, 1, GL_FALSE, &modelMatrix.m[0, 0])
     }
 
     // Get a render target of the given size
@@ -736,19 +730,19 @@ impl RenderOgl
     }
 
     // Returns a predefined shader handle
-    mtd getShader(id: DefaultShaderId)->ShaderHandle
+    mtd getShader(id: DefaultShaderId)->*ShaderBase
     {
         switch id
         {
-        case Default: return cast(ShaderHandle) shaderAA;
-        case Blur:    return cast(ShaderHandle) shaderBlur;
+        case Default: return &shaderAA;
+        case Blur:    return &shaderBlur;
         }
 
-        return InvalidShaderHandle
+        return null
     }
 
     // Create the given shader
-    func createShader(using self, vertex, pixel: const [..] u8)->ShaderHandle
+    func createShader(base: *ShaderBase, vertex, pixel: const [..] u8)
     {
         var result: GLint
 	    var infoLogLength: s32
@@ -798,6 +792,13 @@ impl RenderOgl
         glDeleteShader(vertexShaderID)
         glDeleteShader(fragmentShaderID)
 
-        return cast(ShaderHandle) progID
+        base.handle = cast(ShaderHandle) progID
+
+        base.mvp         = acast glGetUniformLocation(progID, @dataof("mvp"))
+        base.mdl         = acast glGetUniformLocation(progID, @dataof("mdl"))
+        base.boundRect   = acast glGetUniformLocation(progID, @dataof("boundRect"))
+        base.textureRect = acast glGetUniformLocation(progID, @dataof("textureRect"))
+        base.uvMode      = acast glGetUniformLocation(progID, @dataof("uvMode"))
+        base.copyMode    = acast glGetUniformLocation(progID, @dataof("copyMode"))
     }
 }

@@ -107,7 +107,7 @@ struct Command
         textureFont:    struct{font: *Font; atlasIndex: s32; }
         colorMask:      ColorMask
         renderTgt:      struct{tgt: *RenderTarget; }
-        shader:         struct{handle: ShaderHandle; }
+        shader:         struct{shader: *ShaderBase; }
 
         texture0: struct
                 {
@@ -662,9 +662,9 @@ impl Painter
         cmd.renderTgt.tgt = tgt
     }
 
-    mtd setShader(shader: ShaderHandle)
+    mtd setShader(shader: *ShaderBase)
     {
         cmd := newCommand(CommandId.SetShader, true)
-        cmd.shader.handle = shader;
+        cmd.shader.shader = shader;
     }
 }
