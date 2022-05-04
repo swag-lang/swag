@@ -662,7 +662,8 @@ impl Painter
         cmd.renderTgt.tgt = tgt
     }
 
-    mtd setShader(shader: *ShaderBase)
+    // Set the current shader
+    mtd setShader(shader: *ShaderBase = null)
     {
         cmd := newCommand(CommandId.SetShader, true)
         cmd.shader.shader = shader;

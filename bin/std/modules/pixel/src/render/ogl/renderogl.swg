@@ -45,7 +45,7 @@ private impl RenderOgl
     func createShaders(using self)
     {
         {
-            createShader(&shaderAA, VertexShaderAA, PixelShaderAA)
+            assume createShader(&shaderAA, VertexShaderAA, PixelShaderAA)
             text0 := glGetUniformLocation(cast(GLuint) shaderAA.handle, @dataof("inTexture0"));
             text1 := glGetUniformLocation(cast(GLuint) shaderAA.handle, @dataof("inTexture1"));
             glUseProgram(cast(GLuint) shaderAA.handle)
@@ -54,7 +54,7 @@ private impl RenderOgl
         }
 
         {
-            createShader(&shaderBlur, VertexShaderBlur, PixelShaderBlur)
+            assume createShader(&shaderBlur, VertexShaderBlur, PixelShaderBlur)
             text0 := glGetUniformLocation(cast(GLuint) shaderBlur.handle, @dataof("inTexture0"));
             glUseProgram(cast(GLuint) shaderBlur.handle)
             glUniform1i(text0, 0);
@@ -486,9 +486,8 @@ impl RenderOgl
         glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer)
         glBufferData(GL_ARRAY_BUFFER, dc.vertexBuffer.count * @sizeof(VertexLayout), dc.vertexBuffer.buffer, GL_STATIC_DRAW);
 
+        // Default shader
         setShader(&shaderAA)
-
-        // Matrices
         computeMatrices(curShader.mvp, curShader.mdl)
 
         // Default state
@@ -694,9 +693,9 @@ impl RenderOgl
     }
 
     // Set the current shader
-    mtd setShader(shader: *ShaderBase)
+    mtd setShader(shader: *ShaderBase = null)
     {
-        curShader = shader
+        curShader = shader orelse &shaderAA
         glUseProgram(cast(GLuint) curShader.handle)
         glUniformMatrix4fv(cast(GLint) curShader.mvp, 1, GL_FALSE, &orthoMatrix.m[0, 0])
         glUniformMatrix4fv(cast(GLint) curShader.mdl, 1, GL_FALSE, &modelMatrix.m[0, 0])
@@ -729,20 +728,8 @@ impl RenderOgl
         stackReleasedRT.add(tgt)
     }
 
-    // Returns a predefined shader handle
-    mtd getShader(id: DefaultShaderId)->*ShaderBase
-    {
-        switch id
-        {
-        case Default: return &shaderAA;
-        case Blur:    return &shaderBlur;
-        }
-
-        return null
-    }
-
     // Create the given shader
-    func createShader(base: *ShaderBase, vertex, pixel: const [..] u8)
+    func createShader(base: *ShaderBase, vertex, pixel: const [..] u8) throw
     {
         var result: GLint
 	    var infoLogLength: s32
@@ -762,7 +749,7 @@ impl RenderOgl
         if infoLogLength
         {
             infoLog.length = infoLogLength
-            Console.print(infoLog)
+            throw infoLog
         }
 
         fragmentShaderID := glCreateShader(GL_FRAGMENT_SHADER)
@@ -779,7 +766,7 @@ impl RenderOgl
         if infoLogLength
         {
             infoLog.length = infoLogLength
-            Console.print(infoLog)
+            throw infoLog
         }
 
         progID := glCreateProgram()

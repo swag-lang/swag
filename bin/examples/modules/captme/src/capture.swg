@@ -76,7 +76,7 @@ impl Capture
 
             rt1 := render.getRenderTarget(cast(s32) rt.colorBuffer.width, cast(s32) rt.colorBuffer.height)
             painter.bindRenderTarget(rt1)
-            painter.setShader(render.getShader(.Blur))
+            painter.setShader(&render.shaderBlur)
             painter.setBlendingMode(.Copy)
             dstRect := Math.Rectangle{0, 0, cast(s32) rt.colorBuffer.width, cast(s32) rt.colorBuffer.height}
             painter.drawTexture(srcRect, srcRect, rt.colorBuffer)
@@ -84,7 +84,7 @@ impl Capture
             painter.bindRenderTarget(rt)
             painter.setBlendingMode(.Copy)
             painter.drawTexture(srcRect, srcRect, rt1.colorBuffer)
-            painter.setShader(render.getShader(.Default))
+            painter.setShader()
             painter.unbindRenderTarget()
             painter.releaseRenderTarget(rt1)
 
