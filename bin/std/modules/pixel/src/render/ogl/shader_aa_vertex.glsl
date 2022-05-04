@@ -13,9 +13,9 @@ layout(location = 9) in float aanum;
 
 uniform mat4    mvp;
 uniform mat4    mdl;
-uniform float   uvMode;
 uniform vec4    boundRect;
 uniform vec4    textureRect;
+uniform float   uvMode;
 
 out vec4        vcolor;
 out vec2        vuv0;

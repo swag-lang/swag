@@ -1,6 +1,12 @@
 #global public
 using Core, Ogl, Core.Math
 
+enum DefaultShaderId
+{
+    Default
+    Blur
+}
+
 #[Swag.Pack(1)]
 struct VertexLayout
 {
@@ -34,6 +40,7 @@ enum CommandId
     BindRenderTarget
     UnBindRenderTarget
     ReleaseRenderTarget
+    SetShader
 }
 
 #[Swag.EnumFlags]
@@ -100,6 +107,7 @@ struct Command
         textureFont:    struct{font: *Font; atlasIndex: s32; }
         colorMask:      ColorMask
         renderTgt:      struct{tgt: *RenderTarget; }
+        shader:         struct{handle: ShaderHandle; }
 
         texture0: struct
                 {
@@ -652,5 +660,11 @@ impl Painter
     {
         cmd := newCommand(CommandId.ReleaseRenderTarget)
         cmd.renderTgt.tgt = tgt
+    }
+
+    mtd setShader(shader: ShaderHandle)
+    {
+        cmd := newCommand(CommandId.SetShader, true)
+        cmd.shader.handle = shader;
     }
 }

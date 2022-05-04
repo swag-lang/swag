@@ -13,6 +13,10 @@ const InvalidRenderTargetHandle: RenderTargetHandle = acast 0
 alias RenderTargetSurfaceHandle = uint
 const InvalidRenderTargetSurfaceHandle: RenderTargetSurfaceHandle = acast 0
 
+#[Swag.Strict]
+alias ShaderHandle = uint
+const InvalidShaderHandle: ShaderHandle = acast 0
+
 struct RenderOgl
 {
     using native:       NativeRenderOgl
@@ -20,6 +24,7 @@ struct RenderOgl
     shaderAA:           GLuint
     shaderBlur:         GLuint
     worldTransform:     Transform2
+    orthoMatrix:        Matrix4x4
     modelMatrix:        Matrix4x4
     whiteTexture:       GLuint
     hatchTextures:      [@countof(HatchStyle)] GLuint
@@ -436,7 +441,6 @@ impl RenderOgl
 
     mtd computeMatrices(mvp, mdl: GLint)
     {
-        var orthoMatrix: Matrix4x4
         (width, height) := getTargetSize()
 
         // View, ortho projection
@@ -462,9 +466,9 @@ impl RenderOgl
         glUseProgram(shaderAA)
         mvp         := glGetUniformLocation(shaderAA, @dataof("mvp"))
         mdl         := glGetUniformLocation(shaderAA, @dataof("mdl"))
-        uvMode      := glGetUniformLocation(shaderAA, @dataof("uvMode"))
         boundRect   := glGetUniformLocation(shaderAA, @dataof("boundRect"))
         textureRect := glGetUniformLocation(shaderAA, @dataof("textureRect"))
+        uvMode      := glGetUniformLocation(shaderAA, @dataof("uvMode"))
         copyMode    := glGetUniformLocation(shaderAA, @dataof("copyMode"))
 
         // Matrices
@@ -662,6 +666,19 @@ impl RenderOgl
 
             case ReleaseRenderTarget:
                 releaseRenderTarget(cmd.renderTgt.tgt)
+
+            case SetShader:
+                params := &cmd.shader
+                shader := cast(GLuint) params.handle
+                glUseProgram(shader)
+                mvp         = glGetUniformLocation(shader, @dataof("mvp"))
+                mdl         = glGetUniformLocation(shader, @dataof("mdl"))
+                boundRect   = glGetUniformLocation(shader, @dataof("boundRect"))
+                textureRect = glGetUniformLocation(shader, @dataof("textureRect"))
+                uvMode      = glGetUniformLocation(shader, @dataof("uvMode"))
+                copyMode    = glGetUniformLocation(shader, @dataof("copyMode"))
+                glUniformMatrix4fv(mvp, 1, GL_FALSE, &orthoMatrix.m[0, 0])
+                glUniformMatrix4fv(mdl, 1, GL_FALSE, &modelMatrix.m[0, 0])
             }
         }
 
@@ -695,63 +712,15 @@ impl RenderOgl
         stackReleasedRT.add(tgt)
     }
 
-    mtd blurTarget(tgt: *RenderTarget)
+    // Returns a predefined shader handle
+    mtd getShader(id: DefaultShaderId)->ShaderHandle
     {
-        tmp := getRenderTarget(tgt.colorBuffer.width, tgt.colorBuffer.height)
-        glUseProgram(shaderBlur)
+        switch id
+        {
+        case Default: return cast(ShaderHandle) shaderAA;
+        case Blur:    return cast(ShaderHandle) shaderBlur;
+        }
 
-        width  := tgt.colorBuffer.width
-        height := tgt.colorBuffer.height
-
-        var orthoMatrix: Matrix4x4
-        mvp := glGetUniformLocation(shaderBlur, @dataof("mvp"))
-        ortho(cast(f32) height, 0, 0, cast(f32) width, 0, 1.0, orthoMatrix.m)
-        glUniformMatrix4fv(mvp, 1, GL_FALSE, &orthoMatrix.m[0, 0])
-	    glViewport(0, 0, width, height)
-        mdl := glGetUniformLocation(shaderBlur, @dataof("mdl"))
-        buidModelMatrix(Transform2.Identity)
-        glUniformMatrix4fv(mdl, 1, GL_FALSE, &modelMatrix.m[0, 0])
-
-        bindRenderTarget(tmp)
-        clear()
-
-        glActiveTexture(GL_TEXTURE0)
-        glBindTexture(GL_TEXTURE_2D, cast(GLuint) tgt.colorBuffer.handle)
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE)
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE)
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
-
-        glBegin(GL_QUADS);
-        glTexCoord2f(0, 0);
-        glVertex2f(0, 0);
-        glTexCoord2f(1, 0);
-        glVertex2f(cast(f32) tgt.colorBuffer.width, 0);
-        glTexCoord2f(1, 1);
-        glVertex2f(cast(f32) tgt.colorBuffer.width, cast(f32) tgt.colorBuffer.height);
-        glTexCoord2f(0, 1);
-        glVertex2f(0, cast(f32) tgt.colorBuffer.height);
-        glEnd();
-
-        unbindRenderTarget()
-        bindRenderTarget(tgt)
-        clear()
-
-        glActiveTexture(GL_TEXTURE0)
-        glBindTexture(GL_TEXTURE_2D, cast(GLuint) tmp.colorBuffer.handle)
-
-        glBegin(GL_QUADS);
-        glTexCoord2f(0, 0);
-        glVertex2f(0, 0);
-        glTexCoord2f(1, 0);
-        glVertex2f(cast(f32) tgt.colorBuffer.width, 0);
-        glTexCoord2f(1, 1);
-        glVertex2f(cast(f32) tgt.colorBuffer.width, cast(f32) tgt.colorBuffer.height);
-        glTexCoord2f(0, 1);
-        glVertex2f(0, cast(f32) tgt.colorBuffer.height);
-        glEnd();
-
-        unbindRenderTarget()
-        releaseRenderTarget(tmp)
+        return InvalidShaderHandle
     }
 }

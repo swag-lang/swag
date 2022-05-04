@@ -71,9 +71,25 @@ impl Capture
             base.paintPos.x = rect.x + (base.x * zoom)
             base.paintPos.y = rect.y + (base.y * zoom)
             painter.unbindRenderTarget()
+            srcRect := Math.Rectangle{0, 0, base.paintPos.width, base.paintPos.height}
+
+
+            rt1 := render.getRenderTarget(cast(s32) rt.colorBuffer.width, cast(s32) rt.colorBuffer.height)
+            painter.bindRenderTarget(rt1)
+            painter.setShader(render.getShader(.Blur))
+            painter.setBlendingMode(.Copy)
+            dstRect := Math.Rectangle{0, 0, cast(s32) rt.colorBuffer.width, cast(s32) rt.colorBuffer.height}
+            painter.drawTexture(srcRect, srcRect, rt.colorBuffer)
+            painter.unbindRenderTarget()
+            painter.bindRenderTarget(rt)
+            painter.setBlendingMode(.Copy)
+            painter.drawTexture(srcRect, srcRect, rt1.colorBuffer)
+            painter.setShader(render.getShader(.Default))
+            painter.unbindRenderTarget()
+            painter.releaseRenderTarget(rt1)
+
 
             painter.pushClippingRect(rect)
-            srcRect := Math.Rectangle{0, 0, base.paintPos.width, base.paintPos.height}
             painter.drawTexture(base.paintPos, srcRect, rt.colorBuffer)
             painter.popClippingRect()
 
