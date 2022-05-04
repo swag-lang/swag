@@ -73,25 +73,29 @@ impl Capture
             painter.unbindRenderTarget()
             srcRect := Math.Rectangle{0, 0, base.paintPos.width, base.paintPos.height}
 
-            downScale := 2
-            wt := cast(s32) base.paintPos.width  + 64
-            ht := cast(s32) base.paintPos.height + 64
+            const Margin = 8
+            wt2 := cast(s32) base.paintPos.width
+            ht2 := cast(s32) base.paintPos.height
+            wt  := wt2 + 2*Margin
+            ht  := ht2 + 2*Margin
             rt1 := render.getRenderTarget(wt, ht)
             rt2 := render.getRenderTarget(wt, ht)
 
             painter.bindRenderTarget(rt1)
             painter.setShader(&render.shaderBlur)
             painter.setBlendingMode(.Copy)
-            painter.setShaderParam(render.shaderBlur.axis, 0)
+            painter.setShaderParam(render.shaderBlur.axis, 0's32)
             painter.setColorMask(true, true, true, true);
             painter.clear(Color.fromArgb(0,0,0,0))
-            dstRect := Math.Rectangle{32, 32, base.paintPos.width, base.paintPos.height}
+            dstRect := Math.Rectangle{Margin, Margin, wt2, ht2}
             painter.drawTexture(dstRect, srcRect, rt.colorBuffer)
             painter.unbindRenderTarget()
 
             painter.bindRenderTarget(rt2)
+            painter.setShader(&render.shaderBlur)
+            painter.setShaderParam(render.shaderBlur.axis, 1's32)
+            painter.setShaderParam(render.shaderBlur.radius, 4.0)
             painter.setBlendingMode(.Copy)
-            painter.setShaderParam(render.shaderBlur.axis, 1)
             painter.setColorMask(true, true, true, true);
             dstRect = Math.Rectangle{0, 0, wt, ht}
             painter.drawTexture(dstRect, dstRect, rt1.colorBuffer)
@@ -99,19 +103,21 @@ impl Capture
             painter.unbindRenderTarget()
 
             painter.bindRenderTarget(rt1)
+            painter.setShader(&render.shaderBlur)
+            painter.setShaderParam(render.shaderBlur.axis, 2's32)
+            painter.setShaderParam(render.shaderBlur.radius, 4.0)
             painter.setBlendingMode(.Copy)
-            painter.setShaderParam(render.shaderBlur.axis, 2)
             painter.setColorMask(true, true, true, true);
             dstRect = Math.Rectangle{0, 0, wt, ht}
             painter.drawTexture(dstRect, dstRect, rt2.colorBuffer)
-            painter.setShader()
             painter.unbindRenderTarget()
 
             painter.pushClippingRect(rect)
 
-            paintShadowRect := Math.Rectangle{base.paintPos.x, base.paintPos.y, dstRect.width, dstRect.height}
-            paintShadowRect.offset(-32, -32)
-            paintShadowRect.inflate(16)
+            painter.setShader()
+            paintShadowRect := base.paintPos
+            paintShadowRect.inflate(cast(f32) Margin)
+            paintShadowRect.offset(0, 2)
             painter.drawTexture(paintShadowRect, dstRect, rt1.colorBuffer, Color.fromArgb(255, 0, 0, 0))
             painter.releaseRenderTarget(rt1)
             painter.releaseRenderTarget(rt2)

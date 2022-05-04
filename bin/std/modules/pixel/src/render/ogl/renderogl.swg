@@ -717,6 +717,8 @@ impl RenderOgl
                 {
                 case s32:
                     glUniform1i(cast(GLint) params.param, params._s32)
+                case f32:
+                    glUniform1f(cast(GLint) params.param, params._f32)
                 default:
                     Debug.assert(false)
                 }

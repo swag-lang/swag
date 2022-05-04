@@ -11,6 +11,7 @@ interface IForm
 enum FormKind
 {
     Ellipse
+    Rectangle
 }
 
 #[Swag.EnumFlags]
@@ -76,6 +77,15 @@ impl IForm for RectShapeForm
             painter.fillEllipse(paintPos.x + sizeX, paintPos.y + sizeY, sizeX, sizeY, backColor)
             if bSize >= 1
                 painter.drawEllipse(paintPos.x + sizeX, paintPos.y + sizeY, sizeX - bSize * 0.5, sizeY - bSize * 0.5, borderColor, bSize)
+
+        case Rectangle:
+            painter.fillRect(paintPos, backColor)
+            if bSize >= 1
+            {
+                rect := paintPos
+                rect.inflate(-bSize * 0.5)
+                painter.drawRect(rect, borderColor, bSize)
+            }
         }
     }
 }

@@ -114,6 +114,7 @@ struct Command
             {
                 param:  ShaderParamHandle
                 type:   typeinfo
+                _f32:   f32
                 _s32:   s32
             }
 
@@ -684,5 +685,14 @@ impl Painter
         cmd.shaderParam.param = param;
         cmd.shaderParam.type = s32;
         cmd.shaderParam._s32 = val;
+    }
+
+    // Set a shader parameter
+    mtd setShaderParam(param: ShaderParamHandle, val: f32)
+    {
+        cmd := newCommand(CommandId.SetShaderParam)
+        cmd.shaderParam.param = param;
+        cmd.shaderParam.type = f32;
+        cmd.shaderParam._f32 = val;
     }
 }
