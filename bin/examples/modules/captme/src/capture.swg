@@ -97,6 +97,7 @@ impl Capture
             painter.setShaderParam(render.shaderBlur.radius, 4.0)
             painter.setBlendingMode(.Copy)
             painter.setColorMask(true, true, true, true);
+            painter.clear(Color.fromArgb(0,0,0,0))
             dstRect = Math.Rectangle{0, 0, wt, ht}
             painter.drawTexture(dstRect, dstRect, rt1.colorBuffer)
             painter.setShader()

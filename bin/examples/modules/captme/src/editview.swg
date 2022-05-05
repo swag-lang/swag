@@ -134,7 +134,7 @@ impl EditView
     {
         capture = c
         capture.setup(self)
-        setZoom(1)
+        setZoom(2)
         invalidate()
     }
 

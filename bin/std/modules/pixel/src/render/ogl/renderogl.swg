@@ -746,6 +746,15 @@ impl RenderOgl
 
         visit rt, i: stackReleasedRT
         {
+            if rt.colorBuffer.width == w2 and rt.colorBuffer.height == h2
+            {
+                stackReleasedRT.removeAt(i)
+                return rt
+            }
+        }
+
+        visit rt, i: stackReleasedRT
+        {
             if rt.colorBuffer.width >= w2 and rt.colorBuffer.height >= h2
             {
                 stackReleasedRT.removeAt(i)
