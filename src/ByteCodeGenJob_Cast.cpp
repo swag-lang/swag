@@ -753,7 +753,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
 
     auto job     = context->job;
     typeInfo     = TypeManager::concreteType(typeInfo, CONCRETE_ENUM | CONCRETE_FORCEALIAS);
-    fromTypeInfo = TypeManager::concreteReferenceType(fromTypeInfo, CONCRETE_FUNC);
+    fromTypeInfo = TypeManager::concreteReferenceType(fromTypeInfo, CONCRETE_FUNC | CONCRETE_FORCEALIAS);
 
     // opCast
     if (exprNode->semFlags & AST_SEM_USER_CAST)
