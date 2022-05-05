@@ -11,15 +11,15 @@ namespace Res
     var image2:         Texture
     var typeface:       const *TypeFace
     var fontDefault:    *Font
+    var font20:         *Font
     var font40:         *Font
-    var font80:         *Font
     var fontFam:        FontFamily
 }
 
 var g_ModeAA:       bool = true
 var g_PaintQuality: PaintQuality = Normal
 var g_Pattern:      bool = true
-var g_Page:         s32 = 0
+var g_Page:         s32 = 7
 var g_Angle:        f32 = 0
 const MaxPages = 7
 
@@ -490,9 +490,6 @@ func displayPage4(painter: *Pixel.Painter)
 
         painter.setTransform(trs)
     }
-
-    // Draw font page
-    //painter.drawTexture(100, 400, font80.atlases[0].texture)
 }
 
 func displayPage5(painter: *Pixel.Painter)
@@ -577,6 +574,10 @@ func displayPage6(painter: *Pixel.Painter)
     painter.drawRichString(@{220, 200, 200, 100}, &str, format, true)
 }
 
+func displayPage7(painter: *Pixel.Painter)
+{
+}
+
 struct MyView
 {
     using wnd: Wnd
@@ -602,14 +603,12 @@ impl IWnd for MyView
         case 4: displayPage4(painter)
         case 5: displayPage5(painter)
         case 6: displayPage6(painter)
+        case 7: displayPage7(painter)
         }
 
         painter.resetState()
-        painter.translateTransform(680, 780)
-        painter.drawString(0, 00, "F1: AA on/off", Res.font40, Argb.Black)
-        painter.drawString(0, 40, "F2: Quality", Res.font40, Argb.Black)
-        painter.drawString(0, 80, "F3: Pattern", Res.font40, Argb.Black)
-        painter.drawString(0, 120, "F4: Change page", Res.font40, Argb.Black)
+        painter.translateTransform(40, 960)
+        painter.drawString(0, 00, "F1: AA on/off F2: Quality F3: Pattern F4: Change page", Res.font20, Argb.Black)
     }
 
     mtd onKeyEvent(evt: *KeyEvent)
@@ -665,8 +664,8 @@ impl IWnd for MyView
 
         Res.typeface = TypeFace.load(imagePath("arial.ttf"))
         Res.fontDefault = Font.create(Res.typeface, cast(u32) ((12 * 96) / 72))
+        Res.font20 = Font.create(Res.typeface, 20)
         Res.font40 = Font.create(Res.typeface, 40)
-        Res.font80 = Font.create(Res.typeface, 80)
 
         Res.fontFam.regular = Font.create(imagePath("arial.ttf"), 20)
         Res.fontFam.bold = Font.create(imagePath("arialbd.ttf"), 20)
