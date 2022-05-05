@@ -84,6 +84,14 @@ impl Painter
         drawRoundRect(rect.x, rect.y, rect.width, rect.height, radiusX, radiusY, pen)
     }
 
+    func drawRoundRect(using self, rect: Rectangle, radiusX, radiusY: f32, color: Color, penSize: f32 = 1)
+    {
+        sharedSolidPen.brush.type = .SolidColor
+        sharedSolidPen.brush.color = color
+        sharedSolidPen.size = penSize
+        drawRoundRect(rect.x, rect.y, rect.width, rect.height, radiusX, radiusY, sharedSolidPen)
+    }
+
     // Draw a filled round rectangle
     func fillRoundRect(using self, left, top, width, height: f32, radiusX, radiusY: f32, brush: Brush)
     {
