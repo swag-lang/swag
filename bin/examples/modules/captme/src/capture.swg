@@ -162,19 +162,19 @@ impl Capture
                 return true
             }
 
-            ht := hitTest(localPos)
-            if ht != hotForm
-            {
-                view.invalidate()
-                hotForm = ht
-            }
-
             // Specific moves only if one single selection
             if selection.count == 1
             {
                 selForm := forms[selection[0]]
                 if selForm.mouse(view, localPos, evt)
                     return true
+            }
+
+            ht := hitTest(localPos)
+            if ht != hotForm
+            {
+                view.invalidate()
+                hotForm = ht
             }
 
             if hotForm != Swag.UInt.Max
