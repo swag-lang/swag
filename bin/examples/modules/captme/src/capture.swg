@@ -163,6 +163,43 @@ impl Capture
 
         if !moving
         {
+            if evt.kind == .MouseLeave
+                return true
+
+            if evt.kind == .MousePressed and evt.button == .Right
+            {
+                if movingCursorSet
+                {
+                    movingCursorSet = false
+                    app.popCursor()
+                }
+
+                menu := MenuCtrl.createPopup(view)
+                menu.addItem("Coucou", "0", rightName: "Ctrl+A")
+                menu.addItem("Salut", "1", disabled: true)
+                menu.addItem("La", "2")
+                menu.addSeparator()
+
+                popup := MenuCtrl.createPopup(view)
+                popup.addItem("Coucou0", "0")
+                popup.addItem("Coucou1", "1")
+                menu.addPopup("Popup1", popup)
+
+                popup1 := MenuCtrl.createPopup(view)
+                popup1.addItem("Coucou0", "0")
+                popup1.addItem("Coucou1", "1")
+
+                popup = MenuCtrl.createPopup(view)
+                popup.addItem("Coucou0", "0")
+                popup.addPopup("Coucou1", popup1)
+                menu.addPopup("Popup2", popup)
+
+                menu.addSeparator()
+                menu.addItem("Foule", "3")
+                discard menu.doModal(evt.surfacePos)
+                return true
+            }
+
             // Resize capture
             if gizmo.mouse(view, localPos, evt)
             {
