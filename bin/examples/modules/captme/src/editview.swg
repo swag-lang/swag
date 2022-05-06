@@ -38,7 +38,7 @@ impl EditWnd
         form1 := Memory.new'RectShapeForm()
         form1.x, form1.y = 150
         form1.w = 100
-        form1.backColor = 0
+        form1.backColor = Argb.Zero
         form1.setup(capture)
         capture.forms.add(cast(IForm) form1)
 
@@ -51,6 +51,17 @@ impl EditWnd
         form2.borderSize = 10
         form2.setup(capture)
         capture.forms.add(cast(IForm) form2)
+
+        form3 := Memory.new'RectShapeForm()
+        form3.kind = .Rectangle
+        form3.x = 100
+        form3.y = 200
+        form3.w, form3.h = 100
+        form3.alpha = 50
+        form3.backColor = Argb.Zero
+        form3.borderSize = 10
+        form3.setup(capture)
+        capture.forms.add(cast(IForm) form3)
 
         view.setCapture(capture)
         // END TEMP

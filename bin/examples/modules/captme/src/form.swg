@@ -71,10 +71,19 @@ impl IForm for RectShapeForm
     {
         switch kind
         {
-            case Ellipse:
-                pos := Math.Vector2{pt.x, pt.y}
-                cen := Math.Vector2{paintPos.horzCenter(), paintPos.vertCenter()}
-                return pos.isInEllipse(cen, paintPos.width * 0.5, paintPos.height * 0.5)
+        case Ellipse:
+            pos := Math.Vector2{pt.x, pt.y}
+            cen := Math.Vector2{paintPos.horzCenter(), paintPos.vertCenter()}
+            if !pos.isInEllipse(cen, paintPos.width * 0.5, paintPos.height * 0.5)
+                return false
+            if backColor.a == 0 and pos.isInEllipse(cen, (paintPos.width * 0.5) - (2*borderSize), (paintPos.height * 0.5) - (2*borderSize))
+                return false
+
+        case Rectangle:
+            rect := paintPos
+            rect.inflate(-2*borderSize)
+            if backColor.a == 0 and rect.contains(pt)
+                return false
         }
 
         return true
