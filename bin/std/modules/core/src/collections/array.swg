@@ -163,6 +163,14 @@ impl Array
         if allocator == null
             allocator = @getcontext().allocator
 
+        if newCapacity == 0
+        {
+            Memory.free(buffer, capacity * @sizeof(T), allocator)
+            buffer = null
+            capacity = 0
+            return
+        }
+
         newBuffer := cast(*T) Memory.realloc(buffer, newCapacity * @sizeof(T), capacity * @sizeof(T), allocator)
 
         // Need to call opPostMove/opPostCopy on every existing element if the buffer has not been reallocated

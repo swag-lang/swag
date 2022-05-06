@@ -110,6 +110,34 @@ impl IWnd for EditView
 
         switch evt.kind
         {
+        case MousePressed:
+            if evt.button == .Right
+            {
+                menu := MenuCtrl.createPopup(self)
+                menu.addItem("Coucou", "0", rightName: "Ctrl+A")
+                menu.addItem("Salut", "1", disabled: true)
+                menu.addItem("La", "2")
+                menu.addSeparator()
+
+                popup := MenuCtrl.createPopup(self)
+                popup.addItem("Coucou0", "0")
+                popup.addItem("Coucou1", "1")
+                menu.addPopup("Popup1", popup)
+
+                popup1 := MenuCtrl.createPopup(self)
+                popup1.addItem("Coucou0", "0")
+                popup1.addItem("Coucou1", "1")
+
+                popup = MenuCtrl.createPopup(self)
+                popup.addItem("Coucou0", "0")
+                popup.addPopup("Coucou1", popup1)
+                menu.addPopup("Popup2", popup)
+
+                menu.addSeparator()
+                menu.addItem("Foule", "3")
+                discard menu.doModal(evt.surfacePos)
+            }
+
         case MouseWheel:
             if evt.modifiers & .Control
             {

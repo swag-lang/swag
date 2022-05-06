@@ -423,6 +423,12 @@ impl Painter
         setTransform(curState.transform)
         setBlendingMode(curState.blendingMode)
         setColorMask(curState.colorMask)
+
+        if curState.clippingRectOn
+        {
+            curState.clippingRectOn = false
+            setClippingRect(curState.clippingRect)
+        }
     }
 
     // Save the current paint state
@@ -544,8 +550,12 @@ impl Painter
     // Reset the current clipping rectangle
     mtd resetClippingRect()
     {
-        curState.clippingRectOn = false
-        discard newCommand(CommandId.ResetClippingRect, true)
+        if curState.clippingRectOn
+        {
+            curState.clippingRectOn = false
+            curState.stackClipRect.clear()
+            discard newCommand(CommandId.ResetClippingRect, true)
+        }
     }
 
     // Interface the given rectangle with the current clipping rectangle
