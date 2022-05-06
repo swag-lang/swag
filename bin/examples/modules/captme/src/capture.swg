@@ -65,7 +65,6 @@ impl Capture
             rt := render.getRenderTarget(cast(s32) base.paintPos.width, cast(s32) base.paintPos.height)
             painter.bindRenderTarget(rt, true)
             painter.setParams(.Antialiased)
-            //painter.setColorMask(true, true, true, true)
             painter.clear(Color.fromArgb(0, 0, 0, 0))
             f.paint(painter, zoom)
             base.paintPos.x = rect.x + (base.x * zoom)
@@ -110,22 +109,28 @@ impl Capture
             painter.setBlendingMode(.Copy)
             painter.setColorMask(true, true, true, true);
             dstRect = Math.Rectangle{0, 0, wt, ht}
-            painter.drawTexture(dstRect, dstRect, rt2.colorBuffer)
+            painter.drawTexture(dstRect, dstRect, rt2.colorBuffer, Argb.Black)
+            imgRect := dstRect
+            imgRect.offset(cast(f32) Margin)
+            imgRect.width = base.paintPos.width
+            imgRect.height = base.paintPos.height
+            imgRect.offset(-base.shadowOffset.x, -base.shadowOffset.y)
+            painter.setShaderParam(render.shaderBlur.axis, 0's32)
+            painter.setBlendingMode(.Alpha)
+            painter.drawTexture(imgRect, srcRect, rt.colorBuffer)
             painter.unbindRenderTarget()
 
+            // Paint resulting image
             painter.pushClippingRect(rect)
-
             painter.setShader()
-            paintShadowRect := base.paintPos
-            paintShadowRect.inflate(cast(f32) Margin)
-            paintShadowRect.offset(0, 2)
-            painter.drawTexture(paintShadowRect, dstRect, rt1.colorBuffer, Color.fromArgb(255, 0, 0, 0))
+            paintShadowRect := dstRect
+            paintShadowRect.x = base.paintPos.x - Margin
+            paintShadowRect.y = base.paintPos.y - Margin
+            paintShadowRect.offset(base.shadowOffset.x, base.shadowOffset.y)
+            colForm := Color.fromArgb(cast(u8) (base.alpha * 255), Argb.White)
+            painter.drawTexture(paintShadowRect, dstRect, rt1.colorBuffer, colForm)
             painter.releaseRenderTarget(rt1)
             painter.releaseRenderTarget(rt2)
-
-            painter.drawTexture(base.paintPos, srcRect, rt.colorBuffer)
-            painter.releaseRenderTarget(rt)
-
             painter.popClippingRect()
         }
 

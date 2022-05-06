@@ -27,9 +27,10 @@ struct BaseForm
     x, y: s32 = 0
     w, h: s32 = 32
 
-    capture:    *Capture
-    paintPos:   Math.Rectangle
-    alpha:      f32 = 1
+    capture:        *Capture
+    paintPos:       Math.Rectangle
+    alpha:          f32 = 1
+    shadowOffset:   Math.Vector2 = @{2, 2}
 }
 
 struct RectShapeForm

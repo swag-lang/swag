@@ -3,6 +3,7 @@
 
 uniform sampler2D inTexture0;
 
+in vec4 vcolor;
 in vec2 vuv0;
 
 out vec4 color;
@@ -14,7 +15,7 @@ void main()
 {
     if (axis == 0)
     {
-        color = texture(inTexture0, vuv0);
+        color = vcolor * texture(inTexture0, vuv0);
     }
     else
     {
@@ -47,5 +48,7 @@ void main()
                 color += texture(inTexture0, p) * w;
             }
         }
+
+        color *= vcolor;
     }
 }
