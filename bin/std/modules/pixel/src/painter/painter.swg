@@ -38,7 +38,7 @@ enum CommandId
     StopNoOverlap
     SetBlendingMode
     BindRenderTarget
-    UnBindRenderTarget
+    UnbindRenderTarget
     ReleaseRenderTarget
     SetShader
     SetShaderParam
@@ -107,7 +107,7 @@ struct Command
         blendingMode:   struct{mode: BlendingMode = ?; }
         textureFont:    struct{font: *Font; atlasIndex: s32; }
         colorMask:      ColorMask
-        renderTgt:      struct{tgt: *RenderTarget; }
+        renderTgt:      struct{tgt: *RenderTarget; paintAlpha: bool; }
         shader:         struct{shader: *ShaderBase; }
 
         shaderParam: struct
@@ -145,6 +145,9 @@ struct Painter
     curState:           PaintState
     stackState:         Array'PaintState
     lastTexture0Type:   BrushType = SolidColor
+
+    stackRT:            Array'*RenderTarget
+    curRT:              *RenderTarget
 
     lastTexture0Handle: TextureHandle
     hasTextureFont:     bool
@@ -348,6 +351,8 @@ impl Painter
             alpha = true
         if pen.brush.type == .Texture and pen.brush.texture.pf.hasAlpha()
             alpha = true
+        if curRT and curRT.paintAlpha and curState.paintParams & .Antialiased
+            alpha = true
         if alpha and curState.blendingMode == .Alpha
         {
             overlapMode = true
@@ -375,6 +380,8 @@ impl Painter
         drawingBegin   = true
         canSetTexture0 = true
         overlapMode    = false
+        curRT          = null
+        stackRT.clear()
 
         resetState()
     }
@@ -649,19 +656,32 @@ impl Painter
     }
 
     // Bind a render target
-    mtd bindRenderTarget(tgt: *RenderTarget)
+    mtd bindRenderTarget(tgt: *RenderTarget, paintAlpha = false)
     {
         pushState()
         cmd := newCommand(CommandId.BindRenderTarget, true)
         cmd.renderTgt.tgt = tgt
+        cmd.renderTgt.paintAlpha = paintAlpha
         resetState()
+
+        if curRT
+            stackRT.add(curRT)
+        curRT = tgt
     }
 
     // Bind a render target
     mtd unbindRenderTarget()
     {
-        discard newCommand(CommandId.UnBindRenderTarget, true)
+        cmd := newCommand(CommandId.UnbindRenderTarget, true)
         popState()
+
+        if stackRT.count
+            curRT = stackRT.popBack()
+        else
+        {
+            Debug.assert(curRT != null)
+            curRT = null
+        }
     }
 
     // Release the render target

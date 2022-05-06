@@ -21,7 +21,7 @@ var g_PaintQuality: PaintQuality = Normal
 var g_Pattern:      bool = true
 var g_Page:         s32 = 7
 var g_Angle:        f32 = 0
-const MaxPages = 7
+const MaxPages = 8
 
 func dataPath()->String
 {
@@ -574,8 +574,18 @@ func displayPage6(painter: *Pixel.Painter)
     painter.drawRichString(@{220, 200, 200, 100}, &str, format, true)
 }
 
-func displayPage7(painter: *Pixel.Painter)
+func displayPage7(renderer: *Pixel.RenderOgl, painter: *Pixel.Painter)
 {
+    tgt := renderer.getRenderTarget(256, 256)
+    painter.drawRoundRect(200, 20, 100, 100, 10, 10, Color.fromArgb(80, Argb.Red), 15)
+    painter.drawRoundRect(230, 50, 100, 100, 10, 10, Color.fromArgb(80, Argb.Green), 15)
+    painter.bindRenderTarget(tgt, true)
+    painter.clear(Argb.White)
+    //painter.setBlendingMode(.Copy)
+    painter.drawRoundRect(20, 20, 100, 100, 10, 10, Color.fromArgb(80, Argb.Red), 15)
+    painter.drawRoundRect(50, 50, 100, 100, 10, 10, Color.fromArgb(80, Argb.Green), 15)
+    painter.unbindRenderTarget()
+    painter.drawTexture(0, 0, tgt.colorBuffer)
 }
 
 struct MyView
@@ -603,7 +613,7 @@ impl IWnd for MyView
         case 4: displayPage4(painter)
         case 5: displayPage5(painter)
         case 6: displayPage6(painter)
-        case 7: displayPage7(painter)
+        case 7: displayPage7(event.bc.renderer, painter)
         }
 
         painter.resetState()

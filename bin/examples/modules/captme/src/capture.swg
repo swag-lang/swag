@@ -63,9 +63,9 @@ impl Capture
             base.paintPos.height = base.h * zoom
 
             rt := render.getRenderTarget(cast(s32) base.paintPos.width, cast(s32) base.paintPos.height)
-            painter.bindRenderTarget(rt)
+            painter.bindRenderTarget(rt, true)
             painter.setParams(.Antialiased)
-            painter.setColorMask(true, true, true, true)
+            //painter.setColorMask(true, true, true, true)
             painter.clear(Color.fromArgb(0, 0, 0, 0))
             f.paint(painter, zoom)
             base.paintPos.x = rect.x + (base.x * zoom)

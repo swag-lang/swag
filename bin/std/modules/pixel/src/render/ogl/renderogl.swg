@@ -36,8 +36,8 @@ struct RenderOgl
     hatchTextures:      [@countof(HatchStyle)] GLuint
     blendingMode:       BlendingMode = .Alpha
     curRC:              RenderingContext
-    stackRT:            Array'*RenderTarget
     stackReleasedRT:    Array'*RenderTarget
+    stackRT:            Array'*RenderTarget
     curRT:              *RenderTarget
     curShader:          *ShaderBase
 }
@@ -309,7 +309,7 @@ impl RenderOgl
     }
 
     // Set the current render target
-    mtd bindRenderTarget(rt: *RenderTarget)
+    mtd bindRenderTarget(rt: *RenderTarget, paintAlpha = false)
     {
         Debug.assert(rt != null)
         if !rt.colorBuffer.valid
@@ -317,6 +317,8 @@ impl RenderOgl
         if curRT
             stackRT.add(curRT)
         curRT = rt
+        curRT.paintAlpha = paintAlpha
+        curRT.tris.clear()
         glBindFramebuffer(GL_FRAMEBUFFER, cast(GLuint) curRT.handle)
         glViewport(0, 0, curRT.colorBuffer.width, curRT.colorBuffer.height)
     }
@@ -592,6 +594,11 @@ impl RenderOgl
 
             case DrawTriangles:
                 params := &cmd.drawTriangles
+
+                // Remember triangles in case we want a second full pass for the alpha channel
+                if curRT and curRT.paintAlpha
+                    curRT.tris.add(@{params.start, params.count})
+
                 if !overlapMode
                 {
                     glDrawArrays(GL_TRIANGLES, cast(GLint) params.start, cast(GLsizei) params.count)
@@ -602,6 +609,8 @@ impl RenderOgl
                     // If a pixel is drawn twice because of overlapping, we will have the 'most opaque'
                     glEnable(GL_BLEND)
                     glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_TRUE)
+                    glClearColor(0, 0, 0, 0)
+                    glClear(GL_COLOR_BUFFER_BIT)
                     glBlendFunc(GL_SRC_ALPHA, GL_ZERO)
                     glBlendEquation(GL_MAX)
                     glDrawArrays(GL_TRIANGLES, cast(GLint) params.start, cast(GLsizei) params.count)
@@ -697,10 +706,23 @@ impl RenderOgl
                 glBindTexture(GL_TEXTURE_2D, whiteTexture)
 
             case BindRenderTarget:
-                bindRenderTarget(cmd.renderTgt.tgt)
+                bindRenderTarget(cmd.renderTgt.tgt, cmd.renderTgt.paintAlpha)
                 computeMatrices(curShader.mvp, curShader.mdl)
 
-            case UnBindRenderTarget:
+            case UnbindRenderTarget:
+                Debug.assert(curRT != null)
+                if curRT.tris.count
+                {
+                    glEnable(GL_BLEND)
+                    glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_TRUE)
+                    glClearColor(0, 0, 0, 0)
+                    glClear(GL_COLOR_BUFFER_BIT)
+                    glBlendFunc(GL_SRC_ALPHA, GL_ZERO)
+                    glBlendEquation(GL_MAX)
+                    visit &c: curRT.tris
+                        glDrawArrays(GL_TRIANGLES, cast(GLint) c.item0, cast(GLsizei) c.item1)
+                }
+
                 unbindRenderTarget()
                 computeMatrices(curShader.mvp, curShader.mdl)
 

@@ -29,7 +29,7 @@ struct BaseForm
 
     capture:    *Capture
     paintPos:   Math.Rectangle
-    backColor:      Color = Argb.Red
+    alpha:      f32 = 1
 }
 
 struct RectShapeForm
@@ -38,6 +38,7 @@ struct RectShapeForm
     kind:           FormKind = Ellipse
     borderSize:     f32 = 5
     borderColor:    Color = Argb.White
+    backColor:      Color = Argb.Red
 
     gizmo:          GizmoRect
 }
