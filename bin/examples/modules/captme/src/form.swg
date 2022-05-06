@@ -29,7 +29,7 @@ struct BaseForm
 
     capture:        *Capture
     paintPos:       Math.Rectangle
-    alpha:          f32 = 1
+    alpha:          u8 = 100
     shadowOffset:   Math.Vector2 = @{2, 2}
 }
 

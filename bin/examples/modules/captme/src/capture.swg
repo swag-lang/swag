@@ -65,12 +65,11 @@ impl Capture
             rt := render.getRenderTarget(cast(s32) base.paintPos.width, cast(s32) base.paintPos.height)
             painter.bindRenderTarget(rt, true)
             painter.setParams(.Antialiased)
-            painter.clear(Color.fromArgb(0, 0, 0, 0))
+            painter.clear(Argb.Zero)
             f.paint(painter, zoom)
             base.paintPos.x = rect.x + (base.x * zoom)
             base.paintPos.y = rect.y + (base.y * zoom)
             painter.unbindRenderTarget()
-            srcRect := Math.Rectangle{0, 0, base.paintPos.width, base.paintPos.height}
 
             const Margin = 8
             wt2 := cast(s32) base.paintPos.width
@@ -80,6 +79,8 @@ impl Capture
             rt1 := render.getRenderTarget(wt, ht)
             rt2 := render.getRenderTarget(wt, ht)
 
+            // Draw the image with a margin around
+            srcRect := Math.Rectangle{0, 0, base.paintPos.width, base.paintPos.height}
             painter.bindRenderTarget(rt1)
             painter.setShader(&render.shaderSimple)
             painter.setBlendingMode(.Copy)
@@ -89,6 +90,7 @@ impl Capture
             painter.drawTexture(dstRect, srcRect, rt.colorBuffer)
             painter.unbindRenderTarget()
 
+            // Blur first pass
             painter.bindRenderTarget(rt2)
             painter.setShader(&render.shaderBlur)
             painter.setShaderParam(render.shaderBlur.axis, 0's32)
@@ -101,6 +103,7 @@ impl Capture
             painter.setShader()
             painter.unbindRenderTarget()
 
+            // Blur second pass, and add the real image at the right place just after
             painter.bindRenderTarget(rt1)
             painter.setShader(&render.shaderBlur)
             painter.setShaderParam(render.shaderBlur.axis, 1's32)
@@ -109,6 +112,7 @@ impl Capture
             painter.setColorMask(true, true, true, true);
             dstRect = Math.Rectangle{0, 0, wt, ht}
             painter.drawTexture(dstRect, dstRect, rt2.colorBuffer, Argb.Black)
+
             imgRect := dstRect
             imgRect.offset(cast(f32) Margin)
             imgRect.width = base.paintPos.width
@@ -126,7 +130,7 @@ impl Capture
             paintShadowRect.x = base.paintPos.x - Margin
             paintShadowRect.y = base.paintPos.y - Margin
             paintShadowRect.offset(base.shadowOffset.x, base.shadowOffset.y)
-            colForm := Color.fromArgb(cast(u8) (base.alpha * 255), Argb.White)
+            colForm := Color.fromArgb(cast(u8) Math.map(cast(f32) base.alpha, 0, 100, 0, 255), Argb.White)
             painter.drawTexture(paintShadowRect, dstRect, rt1.colorBuffer, colForm)
             painter.releaseRenderTarget(rt1)
             painter.releaseRenderTarget(rt2)

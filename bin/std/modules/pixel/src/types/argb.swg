@@ -140,6 +140,7 @@ public enum Argb : u32
     WhiteSmoke           = 0xFFF5F5F5
     Yellow               = 0xFFFFFF00
     YellowGreen          = 0xFF9ACD32
+    Zero                 = 0x00000000
 }
 
 public impl enum Argb

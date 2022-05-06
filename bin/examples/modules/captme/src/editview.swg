@@ -46,7 +46,7 @@ impl EditWnd
         form2.kind = .Rectangle
         form2.x, form2.y = 200
         form2.w, form2.h = 100
-        form2.alpha = 0.5
+        form2.alpha = 50
         form2.backColor = Argb.Blue
         form2.borderSize = 10
         form2.setup(capture)
