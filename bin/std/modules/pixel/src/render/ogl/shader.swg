@@ -22,6 +22,11 @@ struct ShaderBase
     textureH:       ShaderParamHandle
 }
 
+struct ShaderSimple
+{
+    using base: ShaderBase
+}
+
 struct ShaderAA
 {
     using base: ShaderBase

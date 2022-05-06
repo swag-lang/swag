@@ -3,12 +3,15 @@ using Core, Ogl, Math
 
 private
 {
-    const BaseVertexShader = #load("shaders/base.vert")
-    const BasePixelShader  = #load("shaders/base.frag")
-    const VertexShaderAA   = #load("shaders/aa.vert")
-    const PixelShaderAA    = #load("shaders/aa.frag")
-    const VertexShaderBlur = #load("shaders/blur.vert")
-    const PixelShaderBlur  = #load("shaders/blur.frag")
+    const BaseVertexShader   = #load("shaders/base.vert")
+    const BasePixelShader    = #load("shaders/base.frag")
+
+    const VertexShaderSimple = #load("shaders/simple.vert")
+    const PixelShaderSimple  = #load("shaders/simple.frag")
+
+    const VertexShaderAA     = #load("shaders/aa.vert")
+    const PixelShaderAA      = #load("shaders/aa.frag")
+    const PixelShaderBlur    = #load("shaders/blur.frag")
 }
 
 #[Swag.Strict]
@@ -27,6 +30,7 @@ struct RenderOgl
 {
     using native:       NativeRenderOgl
     vertexbuffer:       GLuint
+    shaderSimple:       ShaderSimple
     shaderAA:           ShaderAA
     shaderBlur:         ShaderBlur
     worldTransform:     Transform2
@@ -65,6 +69,13 @@ private impl RenderOgl
     func createShaders(using self)
     {
         {
+            assume createShader(&shaderSimple, VertexShaderSimple, PixelShaderSimple)
+            text0 := glGetUniformLocation(cast(GLuint) shaderBlur.handle, @dataof("inTexture0"));
+            glUseProgram(cast(GLuint) shaderSimple.handle)
+            glUniform1i(text0, 0);
+        }
+
+        {
             assume createShader(&shaderAA, VertexShaderAA, PixelShaderAA)
             text0 := glGetUniformLocation(cast(GLuint) shaderAA.handle, @dataof("inTexture0"));
             text1 := glGetUniformLocation(cast(GLuint) shaderAA.handle, @dataof("inTexture1"));
@@ -74,13 +85,14 @@ private impl RenderOgl
         }
 
         {
-            assume createShader(&shaderBlur, VertexShaderBlur, PixelShaderBlur)
+            assume createShader(&shaderBlur, VertexShaderSimple, PixelShaderBlur)
             text0 := glGetUniformLocation(cast(GLuint) shaderBlur.handle, @dataof("inTexture0"));
             glUseProgram(cast(GLuint) shaderBlur.handle)
             glUniform1i(text0, 0);
             shaderBlur.axis   = acast glGetUniformLocation(cast(GLuint) shaderBlur.handle, @dataof("axis"));
             shaderBlur.radius = acast glGetUniformLocation(cast(GLuint) shaderBlur.handle, @dataof("radius"));
         }
+
     }
 
     func generateTexture(datas: const [..] u8, w, h: s32)->GLuint

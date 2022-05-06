@@ -81,9 +81,8 @@ impl Capture
             rt2 := render.getRenderTarget(wt, ht)
 
             painter.bindRenderTarget(rt1)
-            painter.setShader(&render.shaderBlur)
+            painter.setShader(&render.shaderSimple)
             painter.setBlendingMode(.Copy)
-            painter.setShaderParam(render.shaderBlur.axis, 0's32)
             painter.setColorMask(true, true, true, true);
             painter.clear(Color.fromArgb(0,0,0,0))
             dstRect := Math.Rectangle{Margin, Margin, wt2, ht2}
@@ -92,7 +91,7 @@ impl Capture
 
             painter.bindRenderTarget(rt2)
             painter.setShader(&render.shaderBlur)
-            painter.setShaderParam(render.shaderBlur.axis, 1's32)
+            painter.setShaderParam(render.shaderBlur.axis, 0's32)
             painter.setShaderParam(render.shaderBlur.radius, 4.0)
             painter.setBlendingMode(.Copy)
             painter.setColorMask(true, true, true, true);
@@ -104,7 +103,7 @@ impl Capture
 
             painter.bindRenderTarget(rt1)
             painter.setShader(&render.shaderBlur)
-            painter.setShaderParam(render.shaderBlur.axis, 2's32)
+            painter.setShaderParam(render.shaderBlur.axis, 1's32)
             painter.setShaderParam(render.shaderBlur.radius, 4.0)
             painter.setBlendingMode(.Copy)
             painter.setColorMask(true, true, true, true);
@@ -115,7 +114,7 @@ impl Capture
             imgRect.width = base.paintPos.width
             imgRect.height = base.paintPos.height
             imgRect.offset(-base.shadowOffset.x, -base.shadowOffset.y)
-            painter.setShaderParam(render.shaderBlur.axis, 0's32)
+            painter.setShader(&render.shaderSimple)
             painter.setBlendingMode(.Alpha)
             painter.drawTexture(imgRect, srcRect, rt.colorBuffer)
             painter.unbindRenderTarget()
