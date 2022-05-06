@@ -263,11 +263,15 @@ impl Capture
 
     mtd hitTest(localPos: Math.Point)->uint
     {
-        visit f, i: forms
+        for i := cast(s32) forms.count - 1; i >= 0; i -= 1
         {
+            f := forms[i]
             b := cast(*BaseForm) @dataof(f)
-            if b.paintPos.contains(localPos)
-                return i
+            if !b.paintPos.contains(localPos)
+                continue
+            if !f.hitTest(localPos)
+                continue
+            return i
         }
 
         return Swag.UInt.Max

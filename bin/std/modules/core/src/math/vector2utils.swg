@@ -3,6 +3,12 @@
 
 impl Vector2
 {
+    // Returns true if the point 'pt' is inside an ellipse
+    mtdc isInEllipse(center: Vector2, radiusX, radiusY: f32)->bool
+    {
+        return (pow((x - center.x), 2) / pow(radiusX, 2)) + (pow((y - center.y), 2) / pow(radiusY, 2)) <= 1;
+    }
+
     // Returns true if the point 'pt' is inside the triangle defined with 'a, b, c'
     mtdc isInTriangle(a, b, c: Vector2)->bool
     {

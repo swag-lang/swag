@@ -6,6 +6,7 @@ interface IForm
     paint:      func(self, *Painter, f32)
     offset:     func(self, s32, s32)
     mouse:      func(self, *EditView, Math.Point, *MouseEvent)->bool
+    hitTest:    func(self, Math.Point)->bool
 }
 
 enum FormKind
@@ -64,6 +65,19 @@ impl IForm for RectShapeForm
             gizmo.rect = paintPos
             gizmo.paint(painter, flags & .Selected ? false : true)
         }
+    }
+
+    mtd hitTest(pt: Math.Point)->bool
+    {
+        switch kind
+        {
+            case Ellipse:
+                pos := Math.Vector2{pt.x, pt.y}
+                cen := Math.Vector2{paintPos.horzCenter(), paintPos.vertCenter()}
+                return pos.isInEllipse(cen, paintPos.width * 0.5, paintPos.height * 0.5)
+        }
+
+        return true
     }
 
     mtd paint(painter: *Painter, z: f32)
