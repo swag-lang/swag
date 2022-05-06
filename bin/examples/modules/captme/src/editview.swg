@@ -53,13 +53,14 @@ impl EditWnd
         capture.forms.add(cast(IForm) form2)
 
         form3 := Memory.new'RectShapeForm()
-        form3.kind = .Rectangle
+        form3.kind = .RoundRectangle
         form3.x = 100
         form3.y = 200
         form3.w, form3.h = 100
-        form3.alpha = 50
+        form3.alpha = 75
+        form3.borderColor = Argb.Red
         form3.backColor = Argb.Zero
-        form3.borderSize = 10
+        form3.borderSize = 5
         form3.setup(capture)
         capture.forms.add(cast(IForm) form3)
 

@@ -94,7 +94,7 @@ impl Capture
             painter.bindRenderTarget(rt2)
             painter.setShader(&render.shaderBlur)
             painter.setShaderParam(render.shaderBlur.axis, 0's32)
-            painter.setShaderParam(render.shaderBlur.radius, 4.0)
+            painter.setShaderParam(render.shaderBlur.radius, 8.0)
             painter.setBlendingMode(.Copy)
             painter.setColorMask(true, true, true, true);
             painter.clear(Color.fromArgb(0,0,0,0))
@@ -103,16 +103,17 @@ impl Capture
             painter.setShader()
             painter.unbindRenderTarget()
 
-            // Blur second pass, and add the real image at the right place just after
+            // Blur second pass
             painter.bindRenderTarget(rt1)
             painter.setShader(&render.shaderBlur)
             painter.setShaderParam(render.shaderBlur.axis, 1's32)
-            painter.setShaderParam(render.shaderBlur.radius, 4.0)
+            painter.setShaderParam(render.shaderBlur.radius, 8.0)
             painter.setBlendingMode(.Copy)
             painter.setColorMask(true, true, true, true);
             dstRect = Math.Rectangle{0, 0, wt, ht}
-            painter.drawTexture(dstRect, dstRect, rt2.colorBuffer, Argb.Black)
+            painter.drawTexture(dstRect, dstRect, rt2.colorBuffer, Color.fromArgb(150, Argb.Black))
 
+            // Add the real image at the right place just after
             imgRect := dstRect
             imgRect.offset(cast(f32) Margin)
             imgRect.width = base.paintPos.width

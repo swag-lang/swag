@@ -13,6 +13,7 @@ enum FormKind
 {
     Ellipse
     Rectangle
+    RoundRectangle
 }
 
 #[Swag.EnumFlags]
@@ -79,7 +80,7 @@ impl IForm for RectShapeForm
             if backColor.a == 0 and pos.isInEllipse(cen, (paintPos.width * 0.5) - (2*borderSize), (paintPos.height * 0.5) - (2*borderSize))
                 return false
 
-        case Rectangle:
+        case Rectangle, RoundRectangle:
             rect := paintPos
             rect.inflate(-2*borderSize)
             if backColor.a == 0 and rect.contains(pt)
@@ -110,6 +111,15 @@ impl IForm for RectShapeForm
                 rect := paintPos
                 rect.inflate(-bSize * 0.5)
                 painter.drawRect(rect, borderColor, bSize)
+            }
+
+        case RoundRectangle:
+            painter.fillRoundRect(paintPos, 10, 10, backColor)
+            if bSize >= 1
+            {
+                rect := paintPos
+                rect.inflate(-bSize * 0.5)
+                painter.drawRoundRect(rect, 10, 10, borderColor, bSize)
             }
         }
     }
