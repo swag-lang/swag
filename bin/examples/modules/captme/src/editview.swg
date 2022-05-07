@@ -1,8 +1,10 @@
 using Core, Gui, Pixel
 
-const CmdIdBringToFront  = "CmdIdBringToFront"
+const CmdIdUndo         = "CmdIdUndo"
+const CmdIdRedo         = "CmdIdRedo"
+const CmdIdBringToFront = "CmdIdBringToFront"
 const CmdIdSendToBack   = "CmdIdSendToBack"
-const CmdIdBringForward  = "CmdIdBringForward"
+const CmdIdBringForward = "CmdIdBringForward"
 const CmdIdSendBackward = "CmdIdSendBackward"
 
 struct EditWnd
@@ -28,6 +30,9 @@ impl EditWnd
         view.scroll = scroll
         scroll.editView = view
         scroll.view = view
+
+        view.registerKeyShortcut(Input.KeyModifiers.Control, Input.Key.Z, CmdIdUndo)
+        view.registerKeyShortcut(Input.KeyModifiers.Control, Input.Key.Y, CmdIdRedo)
 
         // TEMP
         capture := Memory.new'Capture()
@@ -78,29 +83,6 @@ impl EditWnd
 
 impl IWnd for EditView
 {
-    mtd onKeyEvent(evt: *KeyEvent)
-    {
-        if evt.kind != .KeyPressed
-            return
-        ctrl := evt.modifiers & .Control
-
-        switch evt.key
-        {
-        case Z:
-            if ctrl and capture.canUndo()
-            {
-                capture.undo()
-                invalidate()
-            }
-        case Y:
-            if ctrl and capture.canRedo()
-            {
-                capture.redo()
-                invalidate()
-            }
-        }
-    }
-
     mtd onCommandUIEvent(evt: *CommandUIEvent)
     {
         hasSel := capture and capture.selection.count
@@ -126,6 +108,13 @@ impl IWnd for EditView
             evt.setFlags |= .Disabled | .Icon
             evt.disabled = !hasSel or capture.selection.contains(0)
             evt.icon = evt.target.getTheme().getIcon24(.SendBackward)
+
+        case CmdIdUndo:
+            evt.setFlags |= .Disabled
+            evt.disabled = !capture or !capture.canUndo()
+        case CmdIdRedo:
+            evt.setFlags |= .Disabled
+            evt.disabled = !capture or !capture.canRedo()
         }
     }
 
@@ -142,6 +131,12 @@ impl IWnd for EditView
             undo = capture.newUndo(.MoveForward)
         case CmdIdSendBackward:
             undo = capture.newUndo(.MoveBackward)
+        case CmdIdUndo:
+            capture.undo()
+            invalidate()
+        case CmdIdRedo:
+            capture.redo()
+            invalidate()
         }
 
         if undo

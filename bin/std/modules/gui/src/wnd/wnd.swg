@@ -38,6 +38,13 @@ enum FocusStategy
     MousePressed
 }
 
+struct KeyShortcut
+{
+    mdf: Input.KeyModifiers = None
+    key: Input.Key = None
+    id:  WndId
+}
+
 interface IWnd
 {
     onEvent:            func(self, *Event)
@@ -91,6 +98,8 @@ struct Wnd
     name:       RichString
     id:         WndId
     cursor:     Cursor
+
+    keyShortcuts:   Array'KeyShortcut
 
     margin:         Math.Vector4
     padding:        Math.Vector4
@@ -771,7 +780,7 @@ impl Wnd
     }
 
     //////////////////////////////////////////////
-    // Helpers
+    // Mouse
     //////////////////////////////////////////////
 
     mtd captureMouse()
@@ -788,6 +797,10 @@ impl Wnd
     {
         return surface.app.getMouseCapture()
     }
+
+    //////////////////////////////////////////////
+    // Keyboard
+    //////////////////////////////////////////////
 
     // Set the keyboard focus
     mtd setFocus()
@@ -821,6 +834,37 @@ impl Wnd
 
     // Returns true if the window has the keyboard focus
     mtd hasFocus() => surface.app.keybFocusWnd == self
+
+    // Register a keyboard shortcut
+    mtd registerKeyShortcut(mdf: Input.KeyModifiers, key: Input.Key, wndId: WndId)
+    {
+        visit &c: keyShortcuts
+        {
+            if c.mdf == mdf and c.key == key
+            {
+                c.id = wndId
+                return
+            }
+        }
+
+        keyShortcuts.add(@{mdf, key, wndId})
+    }
+
+    // Get the id associated with a shortcut. null if none
+    mtd getKeyShortcut(mdf: Input.KeyModifiers, key: Input.Key)->WndId
+    {
+        visit c: keyShortcuts
+        {
+            if c.mdf == mdf and c.key == key
+                return c.id
+        }
+
+        if parent
+            return parent.getKeyShortcut(mdf, key)
+        if owner
+            return owner.getKeyShortcut(mdf, key)
+        return null
+    }
 
     //////////////////////////////////////////////
     // Events
