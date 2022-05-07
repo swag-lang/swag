@@ -154,6 +154,22 @@ impl Capture
     // CONTENT
     //////////////////////////////
 
+    mtd popupMenu(view: *EditView, pos: Math.Point)
+    {
+        hasSel := selection.count > 0
+
+        menu := MenuCtrl.createPopup(view)
+
+        popup := MenuCtrl.createPopup(view)
+        popup.addItem("Move To Front", "MoveToFront", disabled: !hasSel)
+        popup.addItem("Move To Back", "MoveToBack", disabled: !hasSel)
+        popup.addItem("Move Forward", "MoveForward", disabled: !hasSel)
+        popup.addItem("Move Backward", "MoveBackward", disabled: !hasSel)
+        menu.addPopup("Arrange", popup)
+
+        discard menu.doModal(pos)
+    }
+
     mtd mouse(view: *EditView, evt: *MouseEvent)->bool
     {
         app := view.getApp()
@@ -174,29 +190,7 @@ impl Capture
                     app.popCursor()
                 }
 
-                menu := MenuCtrl.createPopup(view)
-                menu.addItem("Coucou", "0", rightName: "Ctrl+A")
-                menu.addItem("Salut", "1", disabled: true)
-                menu.addItem("La", "2")
-                menu.addSeparator()
-
-                popup := MenuCtrl.createPopup(view)
-                popup.addItem("Coucou0", "0")
-                popup.addItem("Coucou1", "1")
-                menu.addPopup("Popup1", popup)
-
-                popup1 := MenuCtrl.createPopup(view)
-                popup1.addItem("Coucou0", "0")
-                popup1.addItem("Coucou1", "1")
-
-                popup = MenuCtrl.createPopup(view)
-                popup.addItem("Coucou0", "0")
-                popup.addPopup("Coucou1", popup1)
-                menu.addPopup("Popup2", popup)
-
-                menu.addSeparator()
-                menu.addItem("Foule", "3")
-                discard menu.doModal(evt.surfacePos)
+                popupMenu(view, evt.surfacePos)
                 return true
             }
 

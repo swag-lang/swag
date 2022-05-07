@@ -53,7 +53,7 @@ private impl Application
         event.target.processEvent(event)
         while !event.accepted
         {
-            event.target = event.target.parent
+            event.target = event.target.owner orelse event.target.parent
             if !event.target or event.target == stopAt
                 break
             event.accepted = true

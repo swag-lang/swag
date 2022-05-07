@@ -23,7 +23,7 @@ public struct MenuCtrl
     bar:            bool
     endModal:       bool
     endModalResult: WndId
-    owner:          *MenuCtrl
+    ownerMenu:      *MenuCtrl
     subVisible:     *MenuCtrl
     timer:          *Timer
     dirtyLayout:    bool
@@ -227,19 +227,19 @@ impl IWnd for MenuCtrl
 
             if hit != Swag.U32.Max
             {
-                p := owner
+                p := ownerMenu
                 while p
                 {
                     p.deleteTimer()
-                    p = p.owner
+                    p = p.ownerMenu
                 }
             }
         }
 
         evt.accepted = true
-        if hotIdx == Swag.U32.Max and owner
+        if hotIdx == Swag.U32.Max and ownerMenu
         {
-            owner.onMouseEvent(evt)
+            ownerMenu.onMouseEvent(evt)
             return
         }
 
@@ -281,10 +281,10 @@ impl MenuCtrl
     mtd setEndModal(result: WndId)
     {
         p := self
-        while p.owner
+        while p.ownerMenu
         {
             p.hide()
-            p = p.owner
+            p = p.ownerMenu
         }
 
         p.endModal = true
@@ -541,6 +541,7 @@ public impl MenuCtrl
         res := Wnd.create'MenuCtrl(parent.surface.wnd, null, @{}, id)
         with res
         {
+            owner = #self.parent
             setAllPaddings(getThemeMetrics().menuPopup_Padding)
             wndFlags |= .Hidden
         }
@@ -592,7 +593,7 @@ public impl MenuCtrl
             popup = #self.popup
         }
 
-        popup.owner = self
+        popup.ownerMenu = self
         items.add(mitem)
         dirtyLayout = true
     }
@@ -638,6 +639,8 @@ public impl MenuCtrl
         hideSubVisible()
         hide()
 
+        if endModalResult != InvalidWndId
+            postCommandEvent(endModalResult)
         return endModalResult
     }
 }

@@ -96,6 +96,11 @@ impl IWnd for EditView
         }
     }
 
+    mtd onCommandEvent(evt: *CommandEvent)
+    {
+        Console.print(dref evt)
+    }
+
     mtd onMouseEvent(evt: *MouseEvent)
     {
         evt.accepted = false

@@ -2,6 +2,7 @@
 using Core, Pixel
 
 alias WndId = string
+const InvalidWndId = ""
 alias HookEvent = func(*Wnd, *Event)->bool
 
 enum DockStyle
@@ -84,6 +85,7 @@ struct Wnd
     invalidatePadding:  Math.Vector4
 
     parent:     *Wnd
+    owner:      *Wnd
     childs:     Array'(*Wnd)
 
     name:       RichString
