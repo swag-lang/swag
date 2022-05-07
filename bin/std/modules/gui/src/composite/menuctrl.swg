@@ -146,6 +146,7 @@ impl IWnd for MenuCtrl
                 backPos.y -= metrics.menuPopup_SpaceLines * 0.5
                 backPos.width = position.width - 2 * metrics.menuPopup_ShadowSize
                 backPos.height += metrics.menuPopup_SpaceLines
+                backPos.inflate(-4, 0)
                 theme.drawSubRect(painter, backPos, &rects.menuPopup_HotBk, colors.popupItem_HotBk)
                 colorText = colors.popupItem_HotText
                 colorRightText = colors.popupItem_HotRightText
@@ -334,6 +335,8 @@ impl MenuCtrl
             sendCommandUIEvent(i.id, &evt)
             if evt.setFlags & .Disabled
                 i.disabled = evt.disabled
+            if evt.setFlags & .Icon
+                i.icon = evt.icon
         }
     }
 

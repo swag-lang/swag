@@ -73,6 +73,7 @@ struct CommandUIEvent
     {
         Zero
         Disabled
+        Icon
     }
 
     using base: Event{kind: EventKind.CommandUI}
@@ -80,6 +81,7 @@ struct CommandUIEvent
     source:     *Wnd
 
     disabled:   bool
+    icon:       Icon
     setFlags:   SetFlags = Zero
 }
 

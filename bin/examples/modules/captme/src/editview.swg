@@ -1,9 +1,9 @@
 using Core, Gui, Pixel
 
-const CmdIdMoveToFront  = "CmdIdMoveToFront"
-const CmdIdMoveToBack   = "CmdIdMoveToBack"
-const CmdIdMoveForward  = "CmdIdMoveForward"
-const CmdIdMoveBackward = "CmdIdMoveBackward"
+const CmdIdBringToFront  = "CmdIdBringToFront"
+const CmdIdSendToBack   = "CmdIdSendToBack"
+const CmdIdBringForward  = "CmdIdBringForward"
+const CmdIdSendBackward = "CmdIdSendBackward"
 
 struct EditWnd
 {
@@ -107,21 +107,25 @@ impl IWnd for EditView
 
         switch evt.id
         {
-        case CmdIdMoveToFront:
-            evt.setFlags |= .Disabled
+        case CmdIdBringToFront:
+            evt.setFlags |= .Disabled | .Icon
             evt.disabled = !hasSel or capture.selection.contains(capture.forms.count - 1)
+            evt.icon = evt.target.getTheme().getIcon24(.BringToFront)
 
-        case CmdIdMoveToBack:
-            evt.setFlags |= .Disabled
+        case CmdIdSendToBack:
+            evt.setFlags |= .Disabled | .Icon
             evt.disabled = !hasSel or capture.selection.contains(0)
+            evt.icon = evt.target.getTheme().getIcon24(.SendToBack)
 
-        case CmdIdMoveForward:
-            evt.setFlags |= .Disabled
+        case CmdIdBringForward:
+            evt.setFlags |= .Disabled | .Icon
             evt.disabled = !hasSel or capture.selection.contains(capture.forms.count - 1)
+            evt.icon = evt.target.getTheme().getIcon24(.BringForward)
 
-        case CmdIdMoveBackward:
-            evt.setFlags |= .Disabled
+        case CmdIdSendBackward:
+            evt.setFlags |= .Disabled | .Icon
             evt.disabled = !hasSel or capture.selection.contains(0)
+            evt.icon = evt.target.getTheme().getIcon24(.SendBackward)
         }
     }
 
@@ -130,13 +134,13 @@ impl IWnd for EditView
         var undo: *Undo
         switch evt.id
         {
-        case CmdIdMoveToFront:
+        case CmdIdBringToFront:
             undo = capture.newUndo(.MoveToFront)
-        case CmdIdMoveToBack:
+        case CmdIdSendToBack:
             undo = capture.newUndo(.MoveToBack)
-        case CmdIdMoveForward:
+        case CmdIdBringForward:
             undo = capture.newUndo(.MoveForward)
-        case CmdIdMoveBackward:
+        case CmdIdSendBackward:
             undo = capture.newUndo(.MoveBackward)
         }
 

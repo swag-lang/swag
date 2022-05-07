@@ -167,7 +167,7 @@ impl Rectangle
         self.x -= x
         self.y -= y
         self.width += x * 2
-        self.height += x * 2
+        self.height += y * 2
     }
 
     // Returns true if this instance is null with an epsilon

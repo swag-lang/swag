@@ -159,10 +159,10 @@ impl Capture
         menu := MenuCtrl.createPopup(view)
 
         popup := MenuCtrl.createPopup(view)
-        popup.addItem("Move To Front", CmdIdMoveToFront)
-        popup.addItem("Move To Back", CmdIdMoveToBack)
-        popup.addItem("Move Forward", CmdIdMoveForward)
-        popup.addItem("Move Backward", CmdIdMoveBackward)
+        popup.addItem("Bring To Front", CmdIdBringToFront)
+        popup.addItem("Send To Back", CmdIdSendToBack)
+        popup.addItem("Bring Forward", CmdIdBringForward)
+        popup.addItem("Send Backward", CmdIdSendBackward)
         menu.addPopup("Arrange", popup)
 
         discard menu.doModal(pos)

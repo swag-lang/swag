@@ -15,6 +15,10 @@ enum ThemeIcons24
     Play
     Pause
     Stop
+    SendToBack
+    SendBackward
+    BringForward
+    BringToFront
 }
 
 enum ThemeIcons64
