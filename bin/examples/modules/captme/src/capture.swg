@@ -9,7 +9,7 @@ struct Capture
     // Dyn
     editView:   *EditView
     gizmo:      GizmoRect
-    undos:      Array'(*Undo)
+    undos:      ArrayPtr'Undo
     nextUndo:   uint
     hotForm:    uint = Swag.UInt.Max
     selection:  Array'uint
@@ -26,9 +26,7 @@ impl Capture
     {
         editView = view
         gizmo.sigChanged = @|self|(g, first) {
-            undo := Memory.new'Undo()
-            undo.capture = self
-            undo.kind = .MoveCapture
+            undo := self.newUndo(.MoveCapture)
             undo.newPosX  = cast(s32) ((g.rect.x - g.movingRect.x) / self.editView.zoom)
             undo.newPosY  = cast(s32) ((g.rect.y - g.movingRect.y) / self.editView.zoom)
             undo.newSizeX = cast(s32) ((g.movingRect.width - g.rect.width) / self.editView.zoom)
@@ -133,9 +131,11 @@ impl Capture
             paintShadowRect.offset(base.shadowOffset.x, base.shadowOffset.y)
             colForm := Color.fromArgb(cast(u8) Math.map(cast(f32) base.alpha, 0, 100, 0, 255), Argb.White)
             painter.drawTexture(paintShadowRect, dstRect, rt1.colorBuffer, colForm)
+            painter.popClippingRect()
+
+            painter.releaseRenderTarget(rt)
             painter.releaseRenderTarget(rt1)
             painter.releaseRenderTarget(rt2)
-            painter.popClippingRect()
         }
 
         // Gizmos
@@ -277,10 +277,7 @@ impl Capture
             else
                 undo()
 
-            u := Memory.new'Undo()
-            u.kind = .OffsetSelection
-            u.selection = selection
-            u.capture = self
+            u := newUndo(.OffsetSelection)
             u.newSizeX = newSizeX
             u.newSizeY = newSizeY
             pushUndo(u)
@@ -312,6 +309,13 @@ impl Capture
     // UNDO
     //////////////////////////////
 
+    mtd newUndo(kind: UndoKind)->*Undo
+    {
+        ptr := undos.newPtr()
+        ptr.kind = kind
+        return ptr
+    }
+
     mtd canUndo()->bool
     {
         return nextUndo != 0
@@ -338,6 +342,8 @@ impl Capture
 
     mtd pushUndo(u: *Undo)
     {
+        u.capture = self
+
         // Remove no more relevant undos
         countUndo := nextUndo
         while nextUndo != undos.count
@@ -352,6 +358,7 @@ impl Capture
         nextUndo = undos.count
 
         // Do it
+        u.init()
         u.do()
     }
 }

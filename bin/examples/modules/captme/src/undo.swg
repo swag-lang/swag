@@ -7,7 +7,7 @@ enum UndoKind
     OffsetSelection
     MoveToFront
     MoveToBack
-    MoveFrontward
+    MoveForward
     MoveBackward
 }
 
@@ -28,6 +28,19 @@ struct Undo
 
 impl Undo
 {
+    mtd init()
+    {
+        switch kind
+        {
+        case OffsetSelection:
+            selection = capture.selection
+        case MoveToFront, MoveToBack, MoveBackward, MoveForward:
+            selection = capture.selection
+            oldForms = capture.forms
+            selection.sort()
+        }
+    }
+
     mtd do()
     {
         #[Swag.Complete]
@@ -56,8 +69,7 @@ impl Undo
             }
 
         case MoveToFront:
-            selection.sort()
-            oldForms = capture.forms
+            capture.hotForm = Swag.UInt.Max
             dstIdx := cast(s32) (capture.forms.count - 1)
             for i := cast(s32) (selection.count - 1); i >= 0; i -= 1
             {
@@ -65,21 +77,62 @@ impl Undo
                 if srcIdx != dstIdx
                 {
                     form := capture.forms[srcIdx]
-                    capture.forms.removeAtOrdered(acast srcIdx)
+                    capture.forms.removeAtOrdered(srcIdx)
                     capture.forms.insertAt(acast dstIdx, form)
                     capture.selection.remove(srcIdx)
-                    capture.selection.add(cast(uint) dstIdx)
+                    capture.selection.add(acast dstIdx)
                 }
 
                 dstIdx -= 1
             }
 
         case MoveToBack:
-            break
-        case MoveFrontward:
-            break
+            capture.hotForm = Swag.UInt.Max
+            dstIdx := 0
+            for i := 0; i < selection.count; i += 1
+            {
+                srcIdx := selection[i]
+                if srcIdx != dstIdx
+                {
+                    form := capture.forms[srcIdx]
+                    capture.forms.removeAtOrdered(srcIdx)
+                    capture.forms.insertAt(acast dstIdx, form)
+                    capture.selection.remove(srcIdx)
+                    capture.selection.add(acast dstIdx)
+                }
+
+                dstIdx += 1
+            }
+
+        case MoveForward:
+            capture.hotForm = Swag.UInt.Max
+            for i := cast(s32) (selection.count - 1); i >= 0; i -= 1
+            {
+                srcIdx := selection[i]
+                if srcIdx != capture.forms.count - 1
+                {
+                    form := capture.forms[srcIdx]
+                    capture.forms.removeAtOrdered(srcIdx)
+                    capture.forms.insertAt(srcIdx + 1, form)
+                    capture.selection.remove(srcIdx)
+                    capture.selection.add(srcIdx + 1)
+                }
+            }
+
         case MoveBackward:
-            break
+            capture.hotForm = Swag.UInt.Max
+            for i := 0; i < selection.count; i += 1
+            {
+                srcIdx := selection[i]
+                if srcIdx != 0
+                {
+                    form := capture.forms[srcIdx]
+                    capture.forms.removeAtOrdered(srcIdx)
+                    capture.forms.insertAt(srcIdx - 1, form)
+                    capture.selection.remove(srcIdx)
+                    capture.selection.add(srcIdx - 1)
+                }
+            }
         }
     }
 
@@ -110,7 +163,7 @@ impl Undo
                 f.offset(-newSizeX, -newSizeY)
             }
 
-        case MoveToFront, MoveToBack, MoveBackward, MoveFrontward:
+        case MoveToFront, MoveToBack, MoveForward, MoveBackward:
             capture.selection = selection
             capture.forms     = oldForms
         }

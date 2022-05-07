@@ -109,33 +109,39 @@ impl IWnd for EditView
         {
         case CmdIdMoveToFront:
             evt.setFlags |= .Disabled
-            evt.disabled = !hasSel
+            evt.disabled = !hasSel or capture.selection.contains(capture.forms.count - 1)
 
         case CmdIdMoveToBack:
             evt.setFlags |= .Disabled
-            evt.disabled = !hasSel
+            evt.disabled = !hasSel or capture.selection.contains(0)
 
         case CmdIdMoveForward:
             evt.setFlags |= .Disabled
-            evt.disabled = !hasSel
+            evt.disabled = !hasSel or capture.selection.contains(capture.forms.count - 1)
 
         case CmdIdMoveBackward:
             evt.setFlags |= .Disabled
-            evt.disabled = !hasSel
+            evt.disabled = !hasSel or capture.selection.contains(0)
         }
     }
 
     mtd onCommandEvent(evt: *CommandEvent)
     {
+        var undo: *Undo
         switch evt.id
         {
         case CmdIdMoveToFront:
-            undo := Memory.new'Undo()
-            undo.kind = .MoveToFront
-            undo.capture = capture
-            undo.selection = capture.selection
-            capture.pushUndo(undo)
+            undo = capture.newUndo(.MoveToFront)
+        case CmdIdMoveToBack:
+            undo = capture.newUndo(.MoveToBack)
+        case CmdIdMoveForward:
+            undo = capture.newUndo(.MoveForward)
+        case CmdIdMoveBackward:
+            undo = capture.newUndo(.MoveBackward)
         }
+
+        if undo
+            capture.pushUndo(undo)
     }
 
     mtd onMouseEvent(evt: *MouseEvent)
