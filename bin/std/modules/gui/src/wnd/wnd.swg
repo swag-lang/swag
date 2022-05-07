@@ -2,7 +2,6 @@
 using Core, Pixel
 
 alias WndId = string
-const InvalidWndId = ""
 alias HookEvent = func(*Wnd, *Event)->bool
 
 enum DockStyle
@@ -55,6 +54,7 @@ interface IWnd
     onTimerEvent:       func(self, *TimerEvent)
     onFocusEvent:       func(self, *FocusEvent)
     onCommandEvent:     func(self, *CommandEvent)
+    onCommandUIEvent:   func(self, *CommandUIEvent)
 }
 
 #[Swag.EnumFlags]
@@ -140,6 +140,8 @@ impl IWnd for Wnd
             itf.onFocusEvent(cast(*FocusEvent) evt)
         case Command:
             itf.onCommandEvent(cast(*CommandEvent) evt)
+        case CommandUI:
+            itf.onCommandUIEvent(cast(*CommandUIEvent) evt)
         }
     }
 
@@ -153,10 +155,11 @@ impl IWnd for Wnd
     mtd onSetThemeEvent(evt: *SetThemeEvent)        {}
     mtd onTimerEvent(evt: *TimerEvent)              {}
 
-    mtd onFocusEvent(evt: *FocusEvent)      { evt.accepted = false; }
-    mtd onKeyEvent(evt: *KeyEvent)          { evt.accepted = false; }
-    mtd onMouseEvent(evt: *MouseEvent)      { evt.accepted = false; }
-    mtd onCommandEvent(evt: *CommandEvent)  { evt.accepted = false; }
+    mtd onFocusEvent(evt: *FocusEvent)         { evt.accepted = false; }
+    mtd onKeyEvent(evt: *KeyEvent)             { evt.accepted = false; }
+    mtd onMouseEvent(evt: *MouseEvent)         { evt.accepted = false; }
+    mtd onCommandEvent(evt: *CommandEvent)     { evt.accepted = false; }
+    mtd onCommandUIEvent(evt: *CommandUIEvent) { evt.accepted = false; }
 }
 
 impl Wnd
@@ -865,6 +868,15 @@ impl Wnd
         evt.id = cmdId
         evt.source = self
         postEvent(evt)
+    }
+
+    mtd sendCommandUIEvent(cmdId: WndId, evt: *CommandUIEvent)
+    {
+        if cmdId == null
+            return
+        evt.id = cmdId
+        evt.source = self
+        sendEvent(evt)
     }
 
     mtd processEvent(evt: *Event)

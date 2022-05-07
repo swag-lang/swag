@@ -1,5 +1,10 @@
 using Core, Gui, Pixel
 
+const CmdIdMoveToFront  = "CmdIdMoveToFront"
+const CmdIdMoveToBack   = "CmdIdMoveToBack"
+const CmdIdMoveForward  = "CmdIdMoveForward"
+const CmdIdMoveBackward = "CmdIdMoveBackward"
+
 struct EditWnd
 {
     using scrollWnd: ScrollWnd
@@ -96,9 +101,41 @@ impl IWnd for EditView
         }
     }
 
+    mtd onCommandUIEvent(evt: *CommandUIEvent)
+    {
+        hasSel := capture and capture.selection.count
+
+        switch evt.id
+        {
+        case CmdIdMoveToFront:
+            evt.setFlags |= .Disabled
+            evt.disabled = !hasSel
+
+        case CmdIdMoveToBack:
+            evt.setFlags |= .Disabled
+            evt.disabled = !hasSel
+
+        case CmdIdMoveForward:
+            evt.setFlags |= .Disabled
+            evt.disabled = !hasSel
+
+        case CmdIdMoveBackward:
+            evt.setFlags |= .Disabled
+            evt.disabled = !hasSel
+        }
+    }
+
     mtd onCommandEvent(evt: *CommandEvent)
     {
-        Console.print(dref evt)
+        switch evt.id
+        {
+        case CmdIdMoveToFront:
+            undo := Memory.new'Undo()
+            undo.kind = .MoveToFront
+            undo.capture = capture
+            undo.selection = capture.selection
+            capture.pushUndo(undo)
+        }
     }
 
     mtd onMouseEvent(evt: *MouseEvent)

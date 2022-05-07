@@ -5,6 +5,10 @@ enum UndoKind
     MoveBaseForm
     MoveCapture
     OffsetSelection
+    MoveToFront
+    MoveToBack
+    MoveFrontward
+    MoveBackward
 }
 
 struct Undo
@@ -17,7 +21,9 @@ struct Undo
     newSizeY:   s32
     newPosX:    s32
     newPosY:    s32
+
     selection:  Array'uint
+    oldForms:   Array'IForm
 }
 
 impl Undo
@@ -48,6 +54,32 @@ impl Undo
                 f := capture.forms[s]
                 f.offset(newSizeX, newSizeY)
             }
+
+        case MoveToFront:
+            selection.sort()
+            oldForms = capture.forms
+            dstIdx := cast(s32) (capture.forms.count - 1)
+            for i := cast(s32) (selection.count - 1); i >= 0; i -= 1
+            {
+                srcIdx := selection[i]
+                if srcIdx != dstIdx
+                {
+                    form := capture.forms[srcIdx]
+                    capture.forms.removeAtOrdered(acast srcIdx)
+                    capture.forms.insertAt(acast dstIdx, form)
+                    capture.selection.remove(srcIdx)
+                    capture.selection.add(cast(uint) dstIdx)
+                }
+
+                dstIdx -= 1
+            }
+
+        case MoveToBack:
+            break
+        case MoveFrontward:
+            break
+        case MoveBackward:
+            break
         }
     }
 
@@ -77,6 +109,10 @@ impl Undo
                 f := capture.forms[s]
                 f.offset(-newSizeX, -newSizeY)
             }
+
+        case MoveToFront, MoveToBack, MoveBackward, MoveFrontward:
+            capture.selection = selection
+            capture.forms     = oldForms
         }
     }
 }

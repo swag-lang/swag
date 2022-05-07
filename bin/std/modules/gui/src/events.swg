@@ -29,6 +29,7 @@ enum EventKind
     SetFocus
     KillFocus
     Command
+    CommandUI
     Frame
 }
 
@@ -63,6 +64,23 @@ struct CommandEvent
     using base: Event{kind: EventKind.Command}
     id:         WndId
     source:     *Wnd
+}
+
+struct CommandUIEvent
+{
+    #[Swag.EnumFlags]
+    enum SetFlags
+    {
+        Zero
+        Disabled
+    }
+
+    using base: Event{kind: EventKind.CommandUI}
+    id:         WndId
+    source:     *Wnd
+
+    disabled:   bool
+    setFlags:   SetFlags = Zero
 }
 
 struct TimerEvent

@@ -156,18 +156,17 @@ impl Capture
 
     mtd popupMenu(view: *EditView, pos: Math.Point)
     {
-        hasSel := selection.count > 0
-
         menu := MenuCtrl.createPopup(view)
 
         popup := MenuCtrl.createPopup(view)
-        popup.addItem("Move To Front", "MoveToFront", disabled: !hasSel)
-        popup.addItem("Move To Back", "MoveToBack", disabled: !hasSel)
-        popup.addItem("Move Forward", "MoveForward", disabled: !hasSel)
-        popup.addItem("Move Backward", "MoveBackward", disabled: !hasSel)
+        popup.addItem("Move To Front", CmdIdMoveToFront)
+        popup.addItem("Move To Back", CmdIdMoveToBack)
+        popup.addItem("Move Forward", CmdIdMoveForward)
+        popup.addItem("Move Backward", CmdIdMoveBackward)
         menu.addPopup("Arrange", popup)
 
         discard menu.doModal(pos)
+        view.setFocus()
     }
 
     mtd mouse(view: *EditView, evt: *MouseEvent)->bool

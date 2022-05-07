@@ -326,6 +326,17 @@ impl MenuCtrl
         timer = null
     }
 
+    mtd updateUI()
+    {
+        visit i: items
+        {
+            var evt: CommandUIEvent
+            sendCommandUIEvent(i.id, &evt)
+            if evt.setFlags & .Disabled
+                i.disabled = evt.disabled
+        }
+    }
+
     mtd showSubVisible(ptSurface: Math.Point)
     {
         with subVisible
@@ -333,6 +344,7 @@ impl MenuCtrl
             pt := parent.surfaceToLocal(ptSurface)
             setPosition(@{pt.x, pt.y, position.width, position.height})
             bringToTop()
+            updateUI()
             show()
             captureMouse()
             hotIdx = Swag.U32.Max
@@ -628,6 +640,7 @@ public impl MenuCtrl
 
         setPosition(@{pt.x, pt.y, position.width, position.height})
         bringToTop()
+        updateUI()
         show()
         captureMouse()
 
@@ -639,7 +652,7 @@ public impl MenuCtrl
         hideSubVisible()
         hide()
 
-        if endModalResult != InvalidWndId
+        if endModalResult
             postCommandEvent(endModalResult)
         return endModalResult
     }
