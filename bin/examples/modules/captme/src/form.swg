@@ -105,9 +105,11 @@ impl IForm for RectShapeForm
                 painter.drawEllipse(paintPos.x + sizeX, paintPos.y + sizeY, sizeX - bSize * 0.5, sizeY - bSize * 0.5, borderColor, bSize)
 
         case Rectangle:
-            painter.fillRect(paintPos, backColor)
-            if bSize >= 1
+            if borderColor.a and (paintPos.width <= 2*bSize or paintPos.height < 2*bSize)
+                painter.fillRect(paintPos, borderColor)
+            else
             {
+                painter.fillRect(paintPos, backColor)
                 rect := paintPos
                 rect.inflate(-bSize * 0.5)
                 painter.drawRect(rect, borderColor, bSize)

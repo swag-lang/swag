@@ -17,6 +17,9 @@ struct GizmoRect
     movingRect:     Math.Rectangle
     movingStart:    Math.Point
     sigChanged:     closure(self, bool)
+
+    minSizeX:       f32 = 2
+    minSizeY:       f32 = 2
 }
 
 impl GizmoRect
@@ -67,13 +70,16 @@ impl GizmoRect
                         else
                             diff.x = diff.y
                     }
-                    movingRect.x += diff.x
-                    movingRect.y += diff.y
-                    movingRect.width -= diff.x
-                    movingRect.height -= diff.y
+
+                    movingRect.x      = Math.min(startRect.right() - minSizeX, movingRect.x + diff.x)
+                    movingRect.y      = Math.min(startRect.bottom() - minSizeY, movingRect.y + diff.y)
+                    movingRect.width  = startRect.right() - movingRect.x
+                    movingRect.height = startRect.bottom() - movingRect.y
+
                 case 1:
-                    movingRect.y += diff.y
-                    movingRect.height -= diff.y
+                    movingRect.y      = Math.min(movingRect.y + diff.y, startRect.bottom() - minSizeY)
+                    movingRect.height = startRect.bottom() - movingRect.y
+
                 case 2:
                     if evt.modifiers & .Shift
                     {
@@ -82,15 +88,17 @@ impl GizmoRect
                         else
                             diff.x = -diff.y
                     }
-                    movingRect.y += diff.y
-                    movingRect.width += diff.x
-                    movingRect.height -= diff.y
+
+                    movingRect.y      = Math.min(startRect.bottom() - minSizeY, movingRect.y + diff.y)
+                    movingRect.width  = Math.max(movingRect.width + diff.x, minSizeX)
+                    movingRect.height = startRect.bottom() - movingRect.y
 
                 case 3:
-                    movingRect.x = pos.x
-                    movingRect.width = startRect.right() - pos.x
+                    movingRect.x     = Math.min(startRect.right() - minSizeX, movingRect.x + diff.x)
+                    movingRect.width = startRect.right() - movingRect.x
+
                 case 4:
-                    movingRect.width = pos.x - startRect.x
+                    movingRect.width = Math.max(movingRect.width + diff.x, minSizeX)
 
                 case 5:
                     if evt.modifiers & .Shift
@@ -100,11 +108,14 @@ impl GizmoRect
                         else
                             diff.x = -diff.y
                     }
-                    movingRect.x += diff.x
-                    movingRect.width -= diff.x
-                    movingRect.height += diff.y
+
+                    movingRect.x      = Math.min(startRect.right() - minSizeX, movingRect.x + diff.x)
+                    movingRect.width  = startRect.right() - movingRect.x
+                    movingRect.height = Math.max(movingRect.height + diff.y, minSizeY)
+
                 case 6:
-                    movingRect.height = pos.y - startRect.y
+                    movingRect.height = Math.max(movingRect.height + diff.y, minSizeY)
+
                 case 7:
                     if evt.modifiers & .Shift
                     {
@@ -113,8 +124,9 @@ impl GizmoRect
                         else
                             diff.x = diff.y
                     }
-                    movingRect.width += diff.x
-                    movingRect.height += diff.y
+
+                    movingRect.width  = Math.max(movingRect.width + diff.x, minSizeX)
+                    movingRect.height = Math.max(movingRect.height + diff.y, minSizeY)
                 }
 
                 if trackChange and sigChanged
