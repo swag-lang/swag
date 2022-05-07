@@ -211,7 +211,6 @@ private impl Application
             curP  := keyb.currentState.pressed[i]
             if !lastP and curP
             {
-                //if cast(Input.Key) i == Input.Key.Z
                 id := targetWnd.getKeyShortcut(modifiers, cast(Input.Key) i)
                 if id != null
                 {
