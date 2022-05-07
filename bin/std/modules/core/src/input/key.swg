@@ -207,3 +207,29 @@ public enum Key
     Z
     Zoom
 }
+
+// Returns a "shortcut" display name
+public func getKeyName(mdf: KeyModifiers, key: Key)->String
+{
+    var result: retval
+
+    if mdf & .Alt
+        result += "Alt"
+
+    if mdf & .Control
+    {
+        if result.length result += "+"
+        result += "Ctrl"
+    }
+
+    if mdf & .Shift
+    {
+        if result.length result += "+"
+        result += "Shift"
+    }
+
+    if result.length result += "+"
+    k := key
+    result += Reflection.getEnumName(Input.Key, &k, fullname: false)
+    return result
+}

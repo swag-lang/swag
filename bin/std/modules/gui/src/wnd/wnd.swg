@@ -859,11 +859,31 @@ impl Wnd
                 return c.id
         }
 
-        if parent
-            return parent.getKeyShortcut(mdf, key)
         if owner
             return owner.getKeyShortcut(mdf, key)
+        if parent
+            return parent.getKeyShortcut(mdf, key)
         return null
+    }
+
+    // Get the name associated with a given id shortcut
+    mtd getKeyShortcutNameFor(wndId: WndId)->String
+    {
+        var result: retval
+        visit c: keyShortcuts
+        {
+            if c.id == wndId
+            {
+                result = Input.getKeyName(c.mdf, c.key)
+                return result
+            }
+        }
+
+        if owner
+            return owner.getKeyShortcutNameFor(wndId)
+        if parent
+            return parent.getKeyShortcutNameFor(wndId)
+        return result
     }
 
     //////////////////////////////////////////////
@@ -918,9 +938,18 @@ impl Wnd
     {
         if cmdId == null
             return
+
         evt.id = cmdId
         evt.source = self
         sendEvent(evt)
+
+        // Is there a keyboard shortcut ?
+        sk := getKeyShortcutNameFor(cmdId)
+        if sk.length
+        {
+            evt.setFlags |= .Shortcut
+            evt.shortcut = sk
+        }
     }
 
     mtd processEvent(evt: *Event)

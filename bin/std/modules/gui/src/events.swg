@@ -74,6 +74,7 @@ struct CommandUIEvent
         Zero
         Disabled
         Icon
+        Shortcut
     }
 
     using base: Event{kind: EventKind.CommandUI}
@@ -82,6 +83,7 @@ struct CommandUIEvent
 
     disabled:   bool
     icon:       Icon
+    shortcut:   String
     setFlags:   SetFlags = Zero
 }
 

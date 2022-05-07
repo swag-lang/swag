@@ -33,6 +33,8 @@ impl EditWnd
 
         view.registerKeyShortcut(Input.KeyModifiers.Control, Input.Key.Z, CmdIdUndo)
         view.registerKeyShortcut(Input.KeyModifiers.Control, Input.Key.Y, CmdIdRedo)
+        view.registerKeyShortcut(Input.KeyModifiers.CtrlShift, Input.Key.F, CmdIdBringForward)
+        view.registerKeyShortcut(Input.KeyModifiers.CtrlShift, Input.Key.B, CmdIdSendBackward)
 
         // TEMP
         capture := Memory.new'Capture()
@@ -93,28 +95,35 @@ impl IWnd for EditView
             evt.setFlags |= .Disabled | .Icon
             evt.disabled = !hasSel or capture.selection.contains(capture.forms.count - 1)
             evt.icon = evt.target.getTheme().getIcon24(.BringToFront)
+            evt.accepted = true
 
         case CmdIdSendToBack:
             evt.setFlags |= .Disabled | .Icon
             evt.disabled = !hasSel or capture.selection.contains(0)
             evt.icon = evt.target.getTheme().getIcon24(.SendToBack)
+            evt.accepted = true
 
         case CmdIdBringForward:
-            evt.setFlags |= .Disabled | .Icon
+            evt.setFlags |= .Disabled | .Icon | .Shortcut
             evt.disabled = !hasSel or capture.selection.contains(capture.forms.count - 1)
             evt.icon = evt.target.getTheme().getIcon24(.BringForward)
+            evt.accepted = true
 
         case CmdIdSendBackward:
             evt.setFlags |= .Disabled | .Icon
             evt.disabled = !hasSel or capture.selection.contains(0)
             evt.icon = evt.target.getTheme().getIcon24(.SendBackward)
+            evt.accepted = true
 
         case CmdIdUndo:
             evt.setFlags |= .Disabled
             evt.disabled = !capture or !capture.canUndo()
+            evt.accepted = true
+
         case CmdIdRedo:
             evt.setFlags |= .Disabled
             evt.disabled = !capture or !capture.canRedo()
+            evt.accepted = true
         }
     }
 
@@ -125,22 +134,28 @@ impl IWnd for EditView
         {
         case CmdIdBringToFront:
             undo = capture.newUndo(.MoveToFront)
+            evt.accepted = true
         case CmdIdSendToBack:
             undo = capture.newUndo(.MoveToBack)
+            evt.accepted = true
         case CmdIdBringForward:
             undo = capture.newUndo(.MoveForward)
+            evt.accepted = true
         case CmdIdSendBackward:
             undo = capture.newUndo(.MoveBackward)
+            evt.accepted = true
         case CmdIdUndo:
             capture.undo()
-            invalidate()
+            evt.accepted = true
         case CmdIdRedo:
             capture.redo()
-            invalidate()
+            evt.accepted = true
         }
 
         if undo
             capture.pushUndo(undo)
+        if evt.accepted
+            invalidate()
     }
 
     mtd onMouseEvent(evt: *MouseEvent)

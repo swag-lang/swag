@@ -200,6 +200,8 @@ private impl Application
 
         targetWnd := keybFocusWnd
         targetWnd = skipDisabled(targetWnd)
+        if !targetWnd
+            return
 
         // Modifiers
         modifiers := keyb.getPressedModifiers()
@@ -248,6 +250,7 @@ private impl Application
         targetWnd = skipDisabled(targetWnd)
         if !targetWnd
             return
+
         evt := KeyEvent{kind: EventKind.Rune}
         evt.char = r
         evt.key = key

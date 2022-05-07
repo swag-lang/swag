@@ -337,6 +337,8 @@ impl MenuCtrl
                 i.disabled = evt.disabled
             if evt.setFlags & .Icon
                 i.icon = evt.icon
+            if evt.setFlags & .Shortcut
+                i.rightName.set(evt.shortcut)
         }
     }
 
@@ -347,7 +349,6 @@ impl MenuCtrl
             pt := parent.surfaceToLocal(ptSurface)
             setPosition(@{pt.x, pt.y, position.width, position.height})
             bringToTop()
-            updateUI()
             show()
             captureMouse()
             hotIdx = Swag.U32.Max
@@ -373,6 +374,7 @@ impl MenuCtrl
         subVisible = hotItem.popup
 
         // Be sure popup menu is in the client area of the top view
+        subVisible.updateUI()
         subVisible.computeLayoutPopup()
         topView := getTopView()
         pt := topView.surfaceToLocal(@{pos.x, pos.y})
@@ -400,6 +402,7 @@ impl MenuCtrl
         subVisible = hotItem.popup
 
         // Be sure popup menu is in the client area of the top view
+        subVisible.updateUI()
         subVisible.computeLayoutPopup()
         topView := getTopView()
         pt := topView.surfaceToLocal(@{pos.x, pos.y})
@@ -530,7 +533,7 @@ impl MenuCtrl
             if !i.rightName.isEmpty()
             {
                 fake.drawRichString(@{0, 0, 512, 0}, &i.rightName, rsf)
-                w += i.name.boundRect.width
+                w += i.rightName.boundRect.width
             }
 
             position.width = Math.max(position.width, w)
@@ -628,6 +631,7 @@ public impl MenuCtrl
     {
         Debug.assert(!bar)
 
+        updateUI()
         computeLayoutPopup()
 
         // Be sure popup menu is in the client area of the top view
@@ -643,7 +647,6 @@ public impl MenuCtrl
 
         setPosition(@{pt.x, pt.y, position.width, position.height})
         bringToTop()
-        updateUI()
         show()
         captureMouse()
 

@@ -205,7 +205,7 @@ using Swag
 
     // Returns the enum value name corresponding to the value pointed by 'valueAddr'
     // Can have multiple names if the enum is tagged with #[Swag.EnumFlags]
-    func getEnumName(type: typeinfo, valueAddr: const* void)->String
+    func getEnumName(type: typeinfo, valueAddr: const* void, fullname = true)->String
     {
         var result: String
         if type.kind != TypeInfoKind.Enum
@@ -245,8 +245,12 @@ using Swag
             // For a normal enum, stop if this is a match
             if !isFlags and val1 == val2 and val1s == val2s
             {
-                result += simpleName
-                result += "."
+                if fullname
+                {
+                    result += simpleName
+                    result += "."
+                }
+
                 result += it.name
                 return result
             }
@@ -255,8 +259,13 @@ using Swag
             if isFlags and (val1 & val2)
             {
                 if !result.isEmpty() result += " | "
-                result += simpleName
-                result += "."
+
+                if fullname
+                {
+                    result += simpleName
+                    result += "."
+                }
+
                 result += it.name
             }
         }
