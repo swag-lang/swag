@@ -117,7 +117,38 @@ Utf8 SemanticJob::getTheNiceParameterRank(int idx)
     return Fmt("parameter `%d`", idx);
 }
 
-void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& oneTry, vector<const Diagnostic*>& result0, vector<const Diagnostic*>& result1)
+// Remove '$$' in the message if forOverload is false
+// Remove all between '$$' if forOverload is true
+static void cleanMessage(Utf8& msg, bool forOverloads)
+{
+    if (forOverloads == false)
+    {
+        msg.replace("$$", "");
+    }
+    else
+    {
+        msg.makeLocal();
+        auto pos = msg.find("$$", 0);
+        while (pos != -1)
+        {
+            auto end = pos + 2;
+            while (msg.buffer[end] && (msg.buffer[end] != '$' || msg.buffer[end + 1] != '$'))
+                end += 1;
+            if (!msg.buffer[end])
+                break;
+            if (pos && SWAG_IS_BLANK(msg[end + 2]) && SWAG_IS_BLANK(msg[pos - 1]))
+                end += 1;
+            else if (pos && msg[end + 2] == 0 && SWAG_IS_BLANK(msg[pos - 1]))
+                end += 1;
+            else if (pos && msg[end + 2] == ',' && SWAG_IS_BLANK(msg[pos - 1]))
+                end += 1;
+            msg.remove(pos, (end - pos) + 2);
+            pos = msg.find("$$", pos);
+        }
+    }
+}
+
+void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& oneTry, vector<const Diagnostic*>& result0, vector<const Diagnostic*>& result1, bool forOverloads)
 {
     auto              node              = context->node;
     BadSignatureInfos bi                = oneTry.symMatchContext.badSignatureInfos;
@@ -218,6 +249,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         result0.push_back(diag);
         note = new Diagnostic{destFuncDecl->selectIf, Fmt(Nte(Nte0007), destFuncDecl->selectIf->token.ctext()), DiagnosticLevel::Note};
         result1.push_back(note);
+        cleanMessage(diag->textMsg, forOverloads);
         return;
     }
 
@@ -226,6 +258,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         SWAG_ASSERT(failedParam);
         diag = new Diagnostic{failedParam, Fmt(Err(Err0006), getTheNiceParameterRank(badParamIdx).c_str())};
         result0.push_back(diag);
+        cleanMessage(diag->textMsg, forOverloads);
         return;
     }
 
@@ -239,6 +272,8 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
             note = new Diagnostic{overload->node, Fmt(Nte(Nte0008), refNiceName.c_str()), DiagnosticLevel::Note};
             result1.push_back(note);
         }
+
+        cleanMessage(diag->textMsg, forOverloads);
         return;
     }
 
@@ -247,6 +282,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         SWAG_ASSERT(failedParam);
         diag = new Diagnostic{failedParam->namedParamNode ? failedParam->namedParamNode : failedParam, Fmt(Err(Err0011), failedParam->namedParam.c_str())};
         result0.push_back(diag);
+        cleanMessage(diag->textMsg, forOverloads);
         return;
     }
 
@@ -257,6 +293,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         note       = new Diagnostic{overload->node, Fmt(Nte(Nte0008), refNiceName.c_str()), DiagnosticLevel::Note};
         result0.push_back(diag);
         result1.push_back(note);
+        cleanMessage(diag->textMsg, forOverloads);
         return;
     }
 
@@ -282,6 +319,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
             note = new Diagnostic{overload->node, Fmt(Nte(Nte0008), refNiceName.c_str()), DiagnosticLevel::Note};
         result0.push_back(diag);
         result1.push_back(note);
+        cleanMessage(diag->textMsg, forOverloads);
         return;
     }
 
@@ -297,6 +335,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         note = new Diagnostic{overload->node, Fmt(Nte(Nte0008), refNiceName.c_str()), DiagnosticLevel::Note};
         result0.push_back(diag);
         result1.push_back(note);
+        cleanMessage(diag->textMsg, forOverloads);
         return;
     }
 
@@ -316,6 +355,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         note = new Diagnostic{overload->node, Fmt(Nte(Nte0008), refNiceName.c_str()), DiagnosticLevel::Note};
         result0.push_back(diag);
         result1.push_back(note);
+        cleanMessage(diag->textMsg, forOverloads);
         return;
     }
 
@@ -333,6 +373,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         note = new Diagnostic{overload->node, Fmt(Nte(Nte0008), refNiceName.c_str()), DiagnosticLevel::Note};
         result0.push_back(diag);
         result1.push_back(note);
+        cleanMessage(diag->textMsg, forOverloads);
         return;
     }
 
@@ -362,6 +403,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         note = new Diagnostic{overload->node, Fmt(Nte(Nte0008), refNiceName.c_str()), DiagnosticLevel::Note};
         result0.push_back(diag);
         result1.push_back(note);
+        cleanMessage(diag->textMsg, forOverloads);
         return;
     }
 
@@ -373,6 +415,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
                                   Ast::literalToString(bi.badSignatureGivenType, *bi.badGenValue1).c_str(),
                                   Ast::literalToString(bi.badSignatureGivenType, *bi.badGenValue2).c_str())};
         result0.push_back(diag);
+        cleanMessage(diag->textMsg, forOverloads);
         return;
     }
 
@@ -457,6 +500,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         }
 
         result1.push_back(note);
+        cleanMessage(diag->textMsg, forOverloads);
         return;
     }
 
@@ -482,6 +526,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
 
         result0.push_back(diag);
         result1.push_back(note);
+        cleanMessage(diag->textMsg, forOverloads);
         return;
     }
 
@@ -523,6 +568,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
             note = new Diagnostic{overload->node, Fmt(Nte(Nte0008), refNiceName.c_str()), DiagnosticLevel::Note};
         result0.push_back(diag);
         result1.push_back(note);
+        cleanMessage(diag->textMsg, forOverloads);
         return;
     }
     }
@@ -764,7 +810,7 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
             SWAG_CHECK(checkFuncPrototype(context, CastAst<AstFuncDecl>(overloads[0]->overload->node, AstNodeKind::FuncDecl)));
 
         vector<const Diagnostic*> errs0, errs1;
-        getDiagnosticForMatch(context, *overloads[0], errs0, errs1);
+        getDiagnosticForMatch(context, *overloads[0], errs0, errs1, false);
         SWAG_ASSERT(!errs0.empty());
         symbolErrorRemarks(context, overloads, node, const_cast<Diagnostic*>(errs0[0]));
         symbolErrorNotes(context, overloads, node, const_cast<Diagnostic*>(errs0[0]), errs1);
@@ -780,7 +826,7 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
     for (auto& one : overloads)
     {
         vector<const Diagnostic*> errs0, errs1;
-        getDiagnosticForMatch(context, *one, errs0, errs1);
+        getDiagnosticForMatch(context, *one, errs0, errs1, true);
 
         SWAG_ASSERT(!errs0.empty());
         auto note                   = const_cast<Diagnostic*>(errs0[0]);

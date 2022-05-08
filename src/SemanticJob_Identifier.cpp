@@ -2646,7 +2646,7 @@ bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifier
                     return true;
                 if (canTry)
                     *ufcsFirstParam = identifierRef->previousResolvedNode;
-                SWAG_VERIFY(node->callParameters, context->report(Hnt(Hnt0044), {node, Fmt(Err(Err0020), typeFunc->getDisplayNameC())}));
+                SWAG_VERIFY(node->callParameters, context->report(Hnt(Hnt0044), {node, Fmt(Err(Err0189), typeFunc->getDisplayNameC())}));
             }
         }
     }

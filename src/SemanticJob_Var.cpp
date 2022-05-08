@@ -644,7 +644,7 @@ bool SemanticJob::deduceLambdaTypeAffect(SemanticContext* context, AstVarDecl* n
     if (paramIdx >= (uint32_t) typeLambda->parameters.count)
     {
         PushErrContext ec(context, node->ownerFct->makePointerLambda->parent, JobContext::ErrorContextType::Node);
-        Diagnostic     diag{node, Fmt(Err(Err0026), "lambda", (uint32_t) typeLambda->parameters.count, (uint32_t) node->parent->childs.count)};
+        Diagnostic     diag{node, Fmt(Err(Err0191), "lambda", (uint32_t) typeLambda->parameters.count, (uint32_t) node->parent->childs.count)};
         return context->report(diag);
     }
 
