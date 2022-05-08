@@ -440,6 +440,7 @@ void AstNode::computeEndLocation()
 
     case AstNodeKind::IdentifierRef:
     case AstNodeKind::ArrayPointerSlicing:
+    case AstNodeKind::FuncCallParams:
         if (childs.empty())
             break;
         token.startLocation = childs.front()->token.startLocation;

@@ -850,13 +850,19 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
         auto back = parameters.back()->typeInfo;
         if (back->kind != TypeInfoKind::Variadic && back->kind != TypeInfoKind::TypedVariadic && back->kind != TypeInfoKind::CVariadic)
         {
-            context.result = MatchResult::NotEnoughParameters;
+            if (context.result == MatchResult::Ok)
+                context.result = MatchResult::MissingSomeParameters;
+            else
+                context.result = MatchResult::NotEnoughParameters;
             return;
         }
 
         if (parameters.size() > 1 && context.cptResolved < min(parameters.size() - 1, firstDefault))
         {
-            context.result = MatchResult::NotEnoughParameters;
+            if (context.result == MatchResult::Ok)
+                context.result = MatchResult::MissingSomeParameters;
+            else
+                context.result = MatchResult::NotEnoughParameters;
             return;
         }
     }

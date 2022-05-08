@@ -1565,7 +1565,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         }
 
         // Function type without call parameters
-        if (emptyParams && oneOverload.symMatchContext.result == MatchResult::NotEnoughParameters)
+        if (emptyParams && (oneOverload.symMatchContext.result == MatchResult::NotEnoughParameters || oneOverload.symMatchContext.result == MatchResult::MissingSomeParameters))
         {
             if (symbol->kind == SymbolKind::Variable)
                 oneOverload.symMatchContext.result = MatchResult::Ok;

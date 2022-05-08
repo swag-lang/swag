@@ -82,6 +82,7 @@ enum class MatchResult
     TooManyGenericParameters,
     NotEnoughParameters,
     MissingParameters,
+    MissingSomeParameters,
     NotEnoughGenericParameters,
     BadSignature,
     BadGenericMatch,

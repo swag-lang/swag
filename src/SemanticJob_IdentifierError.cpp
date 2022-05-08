@@ -260,6 +260,31 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         return;
     }
 
+    case MatchResult::MissingSomeParameters:
+    {
+        if (!callParameters)
+        {
+            diag       = new Diagnostic{node, Fmt(Err(Err0020), refNiceName.c_str())};
+            diag->hint = Hnt(Hnt0044);
+        }
+        else if (destFuncDecl)
+        {
+            diag = new Diagnostic{callParameters, Fmt(Err(Err0188), refNiceName.c_str(), destFuncDecl->parameters->childs[match.cptResolved]->token.ctext())};
+        }
+        else
+        {
+            diag = new Diagnostic{callParameters, Fmt(Err(Err0016), refNiceName.c_str())};
+        }
+
+        if (destFuncDecl)
+            note = new Diagnostic{destFuncDecl->parameters->childs[match.cptResolved], Fmt(Nte(Nte0008), refNiceName.c_str()), DiagnosticLevel::Note};
+        else
+            note = new Diagnostic{overload->node, Fmt(Nte(Nte0008), refNiceName.c_str()), DiagnosticLevel::Note};
+        result0.push_back(diag);
+        result1.push_back(note);
+        return;
+    }
+
     case MatchResult::NotEnoughParameters:
     {
         if (!callParameters)
@@ -647,9 +672,28 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
             case MatchResult::MissingNamedParameter:
             case MatchResult::MissingParameters:
             case MatchResult::NotEnoughParameters:
+            case MatchResult::MissingSomeParameters:
             case MatchResult::TooManyParameters:
             case MatchResult::SelectIfFailed:
             case MatchResult::NotEnoughGenericParameters:
+                n.push_back(oneMatch);
+                break;
+            }
+        }
+        if (!n.empty())
+            overloads = n;
+    }
+
+    // MatchResult::MissingSomeParameters is a correct match, but not enough parameters
+    // We take it in priority
+    {
+        vector<OneTryMatch*> n;
+        for (auto oneMatch : overloads)
+        {
+            auto& one = *oneMatch;
+            switch (one.symMatchContext.result)
+            {
+            case MatchResult::MissingSomeParameters:
                 n.push_back(oneMatch);
                 break;
             }
