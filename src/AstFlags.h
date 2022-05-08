@@ -123,6 +123,7 @@ static const uint64_t AST_SEM_PENDING_LAMBDA_TYPING   = 0x01000000;
 static const uint64_t AST_SEM_IS_CONST_ASSIGN         = 0x02000000;
 static const uint64_t AST_SEM_NO_WITH_PRIO            = 0x04000000;
 static const uint64_t AST_SEM_TYPE_SOLVED             = 0x08000000;
+static const uint64_t AST_SEM_SPEC_STACKSIZE          = 0x10000000;
 
 static const uint8_t AST_SPEC_IDENTIFIERREF_AUTO_SCOPE = 0x01;
 static const uint8_t AST_SPEC_IDENTIFIER_BACKTICK      = 0x01;

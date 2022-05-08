@@ -85,7 +85,7 @@ bool SemanticJob::resolveExpressionListTuple(SemanticContext* context)
         node->allocateComputedValue();
         node->computedValue->storageOffset = node->ownerScope->startStackSize;
         node->ownerScope->startStackSize += node->typeInfo->sizeOf;
-        node->ownerFct->stackSize = max(node->ownerFct->stackSize, node->ownerScope->startStackSize);
+        SemanticJob::setOwnerMaxStackSize(node, node->ownerScope->startStackSize);
     }
 
     return true;
@@ -134,7 +134,7 @@ bool SemanticJob::resolveExpressionListArray(SemanticContext* context)
         node->allocateComputedValue();
         node->computedValue->storageOffset = node->ownerScope->startStackSize;
         node->ownerScope->startStackSize += node->typeInfo->sizeOf;
-        node->ownerFct->stackSize = max(node->ownerFct->stackSize, node->ownerScope->startStackSize);
+        SemanticJob::setOwnerMaxStackSize(node, node->ownerScope->startStackSize);
     }
 
     return true;

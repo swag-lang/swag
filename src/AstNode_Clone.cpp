@@ -22,6 +22,8 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     doneFlags |= from->doneFlags & AST_DONE_CLOSURE_FIRST_PARAM;
 
     semFlags |= from->semFlags & AST_SEM_STRUCT_REGISTERED;
+    semFlags |= from->semFlags & AST_SEM_SPEC_STACKSIZE;
+    semFlags |= context.forceSemFlags;
 
     ownerStructScope     = context.ownerStructScope ? context.ownerStructScope : from->ownerStructScope;
     ownerScope           = context.parentScope ? context.parentScope : from->ownerScope;

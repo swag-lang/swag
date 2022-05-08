@@ -1270,6 +1270,32 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     return true;
 }
 
+uint32_t SemanticJob::getMaxStackSize(AstNode* node)
+{
+    auto decSP = node->ownerScope->startStackSize;
+
+    if (node->semFlags & AST_SEM_SPEC_STACKSIZE)
+    {
+    }
+
+    if (node->ownerFct)
+        decSP = max(decSP, node->ownerFct->stackSize);
+    return decSP;
+}
+
+void SemanticJob::setOwnerMaxStackSize(AstNode* node, uint32_t size)
+{
+    if (node->semFlags & AST_SEM_SPEC_STACKSIZE)
+    {
+    }
+
+    if (!node->ownerFct)
+        return;
+
+    node->ownerFct->stackSize = max(node->ownerFct->stackSize, size);
+    node->ownerFct->stackSize = max(node->ownerFct->stackSize, 1);
+}
+
 bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* identifier)
 {
     CloneContext cloneContext;
@@ -1380,6 +1406,15 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     cloneContext.parentScope    = newScope;
     cloneContext.forceFlags |= identifier->flags & AST_NO_BACKEND;
     cloneContext.forceFlags |= identifier->flags & AST_RUN_BLOCK;
+
+    // Here we inline a call in a global declaration, like a variable/constant initialization
+    // We do not want the function to be the original one, in case of local variables, because we
+    // do not want to change the stackSize of the original function because of local variables.
+    if (!cloneContext.ownerFct)
+    {
+        identifier->semFlags |= AST_SEM_SPEC_STACKSIZE;
+        cloneContext.forceSemFlags = AST_SEM_SPEC_STACKSIZE;
+    }
 
     // Register all aliases
     if (identifier->kind == AstNodeKind::Identifier)

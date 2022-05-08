@@ -246,7 +246,8 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
     // generated for expression (just for functions)
     if (node->ownerScope)
     {
-        g_RunContext.decSP(node->ownerScope->startStackSize);
+        auto decSP = SemanticJob::getMaxStackSize(node);
+        g_RunContext.decSP(decSP);
 
         // :opAffectConstExpr
         // Reserve room on the stack to store the result

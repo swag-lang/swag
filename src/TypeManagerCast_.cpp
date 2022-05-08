@@ -1958,7 +1958,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
             SWAG_ASSERT(fromNode->computedValue);
             fromNode->ownerScope->startStackSize -= oldSizeof;
             fromNode->ownerScope->startStackSize += newSizeof;
-            fromNode->ownerFct->stackSize = max(fromNode->ownerFct->stackSize, fromNode->ownerScope->startStackSize);
+            SemanticJob::setOwnerMaxStackSize(fromNode, fromNode->ownerScope->startStackSize);
         }
     }
 
@@ -2034,7 +2034,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
                     toNode->allocateExtension();
                     toNode->extension->stackOffset = toNode->ownerScope->startStackSize;
                     toNode->ownerScope->startStackSize += toType->numRegisters() * sizeof(Register);
-                    toNode->ownerFct->stackSize = max(toNode->ownerFct->stackSize, toNode->ownerScope->startStackSize);
+                    SemanticJob::setOwnerMaxStackSize(toNode, toNode->ownerScope->startStackSize);
                 }
 
                 toNode->castedTypeInfo = toType;
@@ -2061,7 +2061,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
                 fromNode->allocateExtension();
                 fromNode->extension->stackOffset = fromNode->ownerScope->startStackSize;
                 fromNode->ownerScope->startStackSize += fromType->numRegisters() * sizeof(Register);
-                fromNode->ownerFct->stackSize = max(fromNode->ownerFct->stackSize, fromNode->ownerScope->startStackSize);
+                SemanticJob::setOwnerMaxStackSize(fromNode, fromNode->ownerScope->startStackSize);
             }
 
             fromNode->castedTypeInfo = fromType;
@@ -2087,7 +2087,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
                 fromNode->allocateExtension();
                 fromNode->extension->stackOffset = fromNode->ownerScope->startStackSize;
                 fromNode->ownerScope->startStackSize += fromType->numRegisters() * sizeof(Register);
-                fromNode->ownerFct->stackSize = max(fromNode->ownerFct->stackSize, fromNode->ownerScope->startStackSize);
+                SemanticJob::setOwnerMaxStackSize(fromNode, fromNode->ownerScope->startStackSize);
             }
 
             fromNode->castedTypeInfo = fromType;
@@ -2311,7 +2311,7 @@ bool TypeManager::castToInterface(SemanticContext* context, TypeInfo* toType, Ty
                 fromNode->allocateExtension();
                 fromNode->extension->stackOffset = fromNode->ownerScope->startStackSize;
                 fromNode->ownerScope->startStackSize += 2 * sizeof(Register);
-                fromNode->ownerFct->stackSize = max(fromNode->ownerFct->stackSize, fromNode->ownerScope->startStackSize);
+                SemanticJob::setOwnerMaxStackSize(fromNode, fromNode->ownerScope->startStackSize);
             }
 
             fromNode->castedTypeInfo = fromNode->typeInfo;
@@ -2643,7 +2643,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
             {
                 fromNode->extension->stackOffset = fromNode->ownerScope->startStackSize;
                 fromNode->ownerScope->startStackSize += 2 * sizeof(Register);
-                fromNode->ownerFct->stackSize = max(fromNode->ownerFct->stackSize, fromNode->ownerScope->startStackSize);
+                SemanticJob::setOwnerMaxStackSize(fromNode, fromNode->ownerScope->startStackSize);
             }
 
             fromNode->castedTypeInfo        = fromType;

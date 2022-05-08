@@ -1184,9 +1184,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             node->ownerScope->startStackSize = (uint32_t) TypeManager::align(node->ownerScope->startStackSize, alignOf);
             storageOffset                    = node->ownerScope->startStackSize;
             node->ownerScope->startStackSize += typeInfo->sizeOf;
-            node->ownerFct->stackSize = max(node->ownerFct->stackSize, node->ownerScope->startStackSize);
-            // Be sure we have a stack if a variable is declared, even if sizeof is null (for an empty struct for example)
-            node->ownerFct->stackSize = max(node->ownerFct->stackSize, 1);
+            SemanticJob::setOwnerMaxStackSize(node, node->ownerScope->startStackSize);
         }
 
         node->allocateExtension();

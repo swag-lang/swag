@@ -1075,7 +1075,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 identifier->allocateComputedValue();
                 identifier->computedValue->storageOffset = identifier->ownerScope->startStackSize;
                 identifier->ownerScope->startStackSize += returnType->sizeOf;
-                identifier->ownerFct->stackSize = max(identifier->ownerFct->stackSize, identifier->ownerScope->startStackSize);
+                SemanticJob::setOwnerMaxStackSize(identifier, identifier->ownerScope->startStackSize);
             }
         }
         else
@@ -1305,8 +1305,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             identifier->allocateComputedValue();
             identifier->computedValue->storageOffset = identifier->ownerScope->startStackSize;
             identifier->ownerScope->startStackSize += returnType->sizeOf;
-            if (identifier->ownerFct)
-                identifier->ownerFct->stackSize = max(identifier->ownerFct->stackSize, identifier->ownerScope->startStackSize);
+            SemanticJob::setOwnerMaxStackSize(identifier, identifier->ownerScope->startStackSize);
         }
 
         break;
