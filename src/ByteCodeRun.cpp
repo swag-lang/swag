@@ -11,6 +11,7 @@
 #include "Math.h"
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
+#include "SemanticJob.h"
 
 #define IMMA_B(ip) ((ip->flags & BCI_IMM_A) ? ip->a.b : registersRC[ip->a.u32].b)
 #define IMMB_B(ip) ((ip->flags & BCI_IMM_B) ? ip->b.b : registersRC[ip->b.u32].b)
@@ -889,69 +890,96 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         break;
 
     case ByteCodeOp::GetFromStack8:
+        SWAG_ASSERT(context->bp + ip->b.u32 <= context->stack + g_CommandLine->stackSizeBC - 1);
         registersRC[ip->a.u32].u64 = *(uint8_t*) (context->bp + ip->b.u32);
         break;
     case ByteCodeOp::GetFromStack16:
+        SWAG_ASSERT(context->bp + ip->b.u32 <= context->stack + g_CommandLine->stackSizeBC - 2);
         registersRC[ip->a.u32].u64 = *(uint16_t*) (context->bp + ip->b.u32);
         break;
     case ByteCodeOp::GetFromStack32:
+        SWAG_ASSERT(context->bp + ip->b.u32 <= context->stack + g_CommandLine->stackSizeBC - 4);
         registersRC[ip->a.u32].u64 = *(uint32_t*) (context->bp + ip->b.u32);
         break;
     case ByteCodeOp::GetFromStack64:
+        SWAG_ASSERT(context->bp + ip->b.u32 <= context->stack + g_CommandLine->stackSizeBC - 8);
         registersRC[ip->a.u32].u64 = *(uint64_t*) (context->bp + ip->b.u32);
         break;
 
     case ByteCodeOp::CopyStack8:
+        SWAG_ASSERT(context->bp + ip->a.u32 <= context->stack + g_CommandLine->stackSizeBC - 1);
+        SWAG_ASSERT(context->bp + ip->b.u32 <= context->stack + g_CommandLine->stackSizeBC - 1);
         *(uint8_t*) (context->bp + ip->a.u32) = *(uint8_t*) (context->bp + ip->b.u32);
         break;
     case ByteCodeOp::CopyStack16:
+        SWAG_ASSERT(context->bp + ip->a.u32 <= context->stack + g_CommandLine->stackSizeBC - 2);
+        SWAG_ASSERT(context->bp + ip->b.u32 <= context->stack + g_CommandLine->stackSizeBC - 2);
         *(uint16_t*) (context->bp + ip->a.u32) = *(uint16_t*) (context->bp + ip->b.u32);
         break;
     case ByteCodeOp::CopyStack32:
+        SWAG_ASSERT(context->bp + ip->a.u32 <= context->stack + g_CommandLine->stackSizeBC - 4);
+        SWAG_ASSERT(context->bp + ip->b.u32 <= context->stack + g_CommandLine->stackSizeBC - 4);
         *(uint32_t*) (context->bp + ip->a.u32) = *(uint32_t*) (context->bp + ip->b.u32);
         break;
     case ByteCodeOp::CopyStack64:
+        SWAG_ASSERT(context->bp + ip->a.u32 <= context->stack + g_CommandLine->stackSizeBC - 8);
+        SWAG_ASSERT(context->bp + ip->b.u32 <= context->stack + g_CommandLine->stackSizeBC - 8);
         *(uint64_t*) (context->bp + ip->a.u32) = *(uint64_t*) (context->bp + ip->b.u32);
         break;
 
     case ByteCodeOp::GetFromStack64x2:
+        SWAG_ASSERT(context->bp + ip->a.u32 <= context->stack + g_CommandLine->stackSizeBC - 8);
+        SWAG_ASSERT(context->bp + ip->b.u32 <= context->stack + g_CommandLine->stackSizeBC - 8);
+        SWAG_ASSERT(context->bp + ip->c.u32 <= context->stack + g_CommandLine->stackSizeBC - 8);
+        SWAG_ASSERT(context->bp + ip->d.u32 <= context->stack + g_CommandLine->stackSizeBC - 8);
         registersRC[ip->a.u32].u64 = *(uint64_t*) (context->bp + ip->b.u32);
         registersRC[ip->c.u32].u64 = *(uint64_t*) (context->bp + ip->d.u32);
         break;
 
     case ByteCodeOp::GetFromStackParam8:
+        SWAG_ASSERT(context->bp + ip->b.u32 <= context->stack + g_CommandLine->stackSizeBC - 1);
         registersRC[ip->a.u32].u64 = *(uint64_t*) (context->bp + ip->b.u32) & 0xFF;
         break;
     case ByteCodeOp::GetFromStackParam16:
+        SWAG_ASSERT(context->bp + ip->b.u32 <= context->stack + g_CommandLine->stackSizeBC - 2);
         registersRC[ip->a.u32].u64 = *(uint64_t*) (context->bp + ip->b.u32) & 0xFFFF;
         break;
     case ByteCodeOp::GetFromStackParam32:
+        SWAG_ASSERT(context->bp + ip->b.u32 <= context->stack + g_CommandLine->stackSizeBC - 4);
         registersRC[ip->a.u32].u64 = *(uint64_t*) (context->bp + ip->b.u32) & 0xFFFFFFFF;
         break;
     case ByteCodeOp::GetFromStackParam64:
+        SWAG_ASSERT(context->bp + ip->b.u32 <= context->stack + g_CommandLine->stackSizeBC - 8);
         registersRC[ip->a.u32].u64 = *(uint64_t*) (context->bp + ip->b.u32);
         break;
 
     case ByteCodeOp::MakeStackPointer:
+        SWAG_ASSERT(context->bp + ip->b.u32 < context->stack + g_CommandLine->stackSizeBC);
         registersRC[ip->a.u32].pointer = context->bp + ip->b.u32;
         break;
     case ByteCodeOp::MakeStackPointerRT:
+        SWAG_ASSERT(context->bp + ip->a.u32 < context->stack + g_CommandLine->stackSizeBC);
         context->registersRR[0].pointer = context->bp + ip->a.u32;
         break;
 
     case ByteCodeOp::SetZeroStack8:
+        SWAG_ASSERT(context->bp + ip->a.u32 <= context->stack + g_CommandLine->stackSizeBC - 1);
         *(uint8_t*) (context->bp + ip->a.u32) = 0;
         break;
     case ByteCodeOp::SetZeroStack16:
+        SWAG_ASSERT(context->bp + ip->a.u32 <= context->stack + g_CommandLine->stackSizeBC - 2);
         *(uint16_t*) (context->bp + ip->a.u32) = 0;
         break;
     case ByteCodeOp::SetZeroStack32:
+        SWAG_ASSERT(context->bp + ip->a.u32 <= context->stack + g_CommandLine->stackSizeBC - 4);
         *(uint32_t*) (context->bp + ip->a.u32) = 0;
         break;
     case ByteCodeOp::SetZeroStack64:
+        SWAG_ASSERT(context->bp + ip->a.u32 <= context->stack + g_CommandLine->stackSizeBC - 8);
         *(uint64_t*) (context->bp + ip->a.u32) = 0;
         break;
     case ByteCodeOp::SetZeroStackX:
+        SWAG_ASSERT(context->bp + ip->a.u32 <= context->stack + g_CommandLine->stackSizeBC - ip->b.u32);
         memset(context->bp + ip->a.u32, 0, ip->b.u32);
         break;
 
@@ -1246,29 +1274,29 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
 
     case ByteCodeOp::BinOpPlusS32_Safe:
     {
-        auto val1 = IMMA_S32(ip);
-        auto val2 = IMMB_S32(ip);
+        auto val1                  = IMMA_S32(ip);
+        auto val2                  = IMMB_S32(ip);
         registersRC[ip->c.u32].s32 = val1 + val2;
         break;
     }
     case ByteCodeOp::BinOpPlusU32_Safe:
     {
-        auto val1 = (uint32_t)IMMA_S32(ip);
-        auto val2 = (uint32_t)IMMB_S32(ip);
+        auto val1                  = (uint32_t) IMMA_S32(ip);
+        auto val2                  = (uint32_t) IMMB_S32(ip);
         registersRC[ip->c.u32].s32 = val1 + val2;
         break;
     }
     case ByteCodeOp::BinOpPlusS64_Safe:
     {
-        auto val1 = IMMA_S64(ip);
-        auto val2 = IMMB_S64(ip);
+        auto val1                  = IMMA_S64(ip);
+        auto val2                  = IMMB_S64(ip);
         registersRC[ip->c.u32].s64 = val1 + val2;
         break;
     }
     case ByteCodeOp::BinOpPlusU64_Safe:
     {
-        auto val1 = (uint64_t)IMMA_S64(ip);
-        auto val2 = (uint64_t)IMMB_S64(ip);
+        auto val1                  = (uint64_t) IMMA_S64(ip);
+        auto val2                  = (uint64_t) IMMB_S64(ip);
         registersRC[ip->c.u32].s64 = val1 + val2;
         break;
     }
@@ -1326,29 +1354,29 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
 
     case ByteCodeOp::BinOpMinusS32_Safe:
     {
-        auto val1 = IMMA_S32(ip);
-        auto val2 = IMMB_S32(ip);
+        auto val1                  = IMMA_S32(ip);
+        auto val2                  = IMMB_S32(ip);
         registersRC[ip->c.u32].s32 = val1 - val2;
         break;
     }
     case ByteCodeOp::BinOpMinusU32_Safe:
     {
-        auto val1 = (uint32_t)IMMA_S32(ip);
-        auto val2 = (uint32_t)IMMB_S32(ip);
+        auto val1                  = (uint32_t) IMMA_S32(ip);
+        auto val2                  = (uint32_t) IMMB_S32(ip);
         registersRC[ip->c.u32].s32 = val1 - val2;
         break;
     }
     case ByteCodeOp::BinOpMinusS64_Safe:
     {
-        auto val1 = IMMA_S64(ip);
-        auto val2 = IMMB_S64(ip);
+        auto val1                  = IMMA_S64(ip);
+        auto val2                  = IMMB_S64(ip);
         registersRC[ip->c.u32].s64 = val1 - val2;
         break;
     }
     case ByteCodeOp::BinOpMinusU64_Safe:
     {
-        auto val1 = (uint64_t)IMMA_S64(ip);
-        auto val2 = (uint64_t)IMMB_S64(ip);
+        auto val1                  = (uint64_t) IMMA_S64(ip);
+        auto val2                  = (uint64_t) IMMB_S64(ip);
         registersRC[ip->c.u32].s64 = val1 - val2;
         break;
     }
@@ -1406,29 +1434,29 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
 
     case ByteCodeOp::BinOpMulS32_Safe:
     {
-        auto val1 = IMMA_S32(ip);
-        auto val2 = IMMB_S32(ip);
+        auto val1                  = IMMA_S32(ip);
+        auto val2                  = IMMB_S32(ip);
         registersRC[ip->c.u32].s32 = val1 * val2;
         break;
     }
     case ByteCodeOp::BinOpMulU32_Safe:
     {
-        auto val1 = (uint32_t)IMMA_S32(ip);
-        auto val2 = (uint32_t)IMMB_S32(ip);
+        auto val1                  = (uint32_t) IMMA_S32(ip);
+        auto val2                  = (uint32_t) IMMB_S32(ip);
         registersRC[ip->c.u32].s32 = val1 * val2;
         break;
     }
     case ByteCodeOp::BinOpMulS64_Safe:
     {
-        auto val1 = IMMA_S64(ip);
-        auto val2 = IMMB_S64(ip);
+        auto val1                  = IMMA_S64(ip);
+        auto val2                  = IMMB_S64(ip);
         registersRC[ip->c.u32].s64 = val1 * val2;
         break;
     }
     case ByteCodeOp::BinOpMulU64_Safe:
     {
-        auto val1 = (uint64_t)IMMA_S64(ip);
-        auto val2 = (uint64_t)IMMB_S64(ip);
+        auto val1                  = (uint64_t) IMMA_S64(ip);
+        auto val2                  = (uint64_t) IMMB_S64(ip);
         registersRC[ip->c.u32].s64 = val1 * val2;
         break;
     }

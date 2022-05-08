@@ -137,7 +137,7 @@ bool SemanticJob::convertLiteralTupleToStructDecl(SemanticContext* context, AstN
     for (int idx = 0; idx < numChilds; idx++)
     {
         auto typeParam = typeList->subTypes[idx];
-        auto childType = typeParam->typeInfo;
+        auto childType = TypeManager::concreteType(typeParam->typeInfo, CONCRETE_FUNC);
         auto subAffect = assignment->childs[idx];
 
         bool autoName = false;
