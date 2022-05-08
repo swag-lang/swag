@@ -241,8 +241,7 @@ namespace Swag
     {
         None     = 0x00000000_00000000
         Test     = 0x00000000_00000001
-        DevMode  = 0x00000000_00000002
-        ByteCode = 0x00000000_00000004
+        ByteCode = 0x00000000_00000002
     }
 
     const MaxLenErrorMsg = 128

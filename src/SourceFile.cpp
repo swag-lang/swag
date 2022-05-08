@@ -330,18 +330,16 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
         }
     }
 
+#if SWAG_DEV_MODE
     if (errorLevel == DiagnosticLevel::Error)
     {
-        SwagContext* context = (SwagContext*) OS::tlsGetValue(g_TlsContextId);
-        if (context && (context->flags & (uint64_t) ContextFlags::DevMode))
+        if (!OS::isDebuggerAttached())
         {
-            if (!OS::isDebuggerAttached())
-            {
-                OS::errorBox("[Developer Mode]", "Error raised !");
-                return false;
-            }
+            OS::errorBox("[Developer Mode]", "Error raised !");
+            return false;
         }
     }
+#endif
 
     g_Log.eol();
     return errorLevel == DiagnosticLevel::Error ? false : true;
