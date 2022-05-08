@@ -306,7 +306,11 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         }
         else if (destFuncDecl)
         {
-            diag = new Diagnostic{callParameters, Fmt(Err(Err0188), refNiceName.c_str(), destFuncDecl->parameters->childs[match.cptResolved]->token.ctext())};
+            diag = new Diagnostic{callParameters,
+                                  Fmt(Err(Err0188),
+                                      refNiceName.c_str(),
+                                      destFuncDecl->parameters->childs[match.cptResolved]->token.ctext(),
+                                      destFuncDecl->parameters->childs[match.cptResolved]->typeInfo->getDisplayNameC())};
         }
         else
         {
@@ -832,16 +836,23 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
         auto note                   = const_cast<Diagnostic*>(errs0[0]);
         note->noteHeader            = Fmt("overload %d", overIdx++);
         note->showMultipleCodeLines = false;
-        note->showRange             = false;
 
-        // Get location from the note
-        if (one->symMatchContext.result == MatchResult::BadSignature || one->symMatchContext.result == MatchResult::BadGenericSignature)
+        switch (one->symMatchContext.result)
         {
+        case MatchResult::MissingSomeParameters:
+        case MatchResult::BadSignature:
+        case MatchResult::BadGenericSignature:
+            // Get location from the note
             if (errs1.size())
             {
                 note->startLocation = errs1[0]->startLocation;
                 note->endLocation   = errs1[0]->endLocation;
             }
+            break;
+
+        default:
+            note->showRange = false;
+            break;
         }
 
         // Get the overload site
