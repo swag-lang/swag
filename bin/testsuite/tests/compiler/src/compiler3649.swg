@@ -1,3 +1,4 @@
+#global testerror
 struct A
 {
     x: string

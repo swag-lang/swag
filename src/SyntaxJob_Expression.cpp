@@ -855,9 +855,7 @@ bool SyntaxJob::doExpression(AstNode* parent, uint32_t exprFlags, AstNode** resu
         node->semanticFct = SemanticJob::resolveCompilerRun;
         SWAG_CHECK(eatToken());
 
-        // SWAG_VERIFY(token.id != TokenId::SymLeftCurly, error(token, Err(Err0198)));
-        //
-        //  :RunGeneratedExp
+        // :RunGeneratedExp
         if (token.id == TokenId::SymLeftCurly)
         {
             if (result)

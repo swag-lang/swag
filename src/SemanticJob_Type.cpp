@@ -231,6 +231,12 @@ bool SemanticJob::resolveType(SemanticContext* context)
         return true;
     }
 
+    if ((typeNode->semFlags & AST_SEM_TYPE_SOLVED) && typeNode->typeInfo && !typeNode->typeInfo->isNative(NativeTypeKind::Undefined))
+    {
+        forceConstType(context, typeNode);
+        return true;
+    }
+
     // Code
     if (typeNode->typeFlags & TYPEFLAG_ISCODE)
     {

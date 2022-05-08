@@ -473,14 +473,13 @@ bool SemanticJob::resolveVarDeclAfterAssign(SemanticContext* context)
     for (int i = 0; i < numParams; i++)
     {
         auto child = assign->childs[0];
-
-        // This happens if the structure has been generated from the assignment expression
-        if (child->kind == AstNodeKind::TypeExpression)
-            continue;
-
         auto param = Ast::newFuncCallParam(sourceFile, identifier->callParameters);
         Ast::removeFromParent(child);
         Ast::addChildBack(param, child);
+
+        // Already solved
+        child->semFlags |= AST_SEM_TYPE_SOLVED;
+
         param->inheritTokenLocation(child);
     }
 
