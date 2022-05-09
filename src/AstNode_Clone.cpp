@@ -433,6 +433,8 @@ bool AstFuncDecl::cloneSubDecls(JobContext* context, CloneContext& cloneContext,
 AstNode* AstFuncDecl::clone(CloneContext& context)
 {
     auto newNode = Ast::newNode<AstFuncDecl>();
+    auto cloneContext = context;
+    cloneContext.forceSemFlags &= ~AST_SEM_SPEC_STACKSIZE;
 
     newNode->copyFrom(context, this, false);
     newNode->aliasMask   = aliasMask;
@@ -440,7 +442,6 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
     newNode->methodParam = methodParam;
     newNode->tokenName   = tokenName;
 
-    auto cloneContext     = context;
     cloneContext.ownerFct = newNode;
     cloneContext.parent   = newNode;
     auto functionScope    = Ast::newScope(newNode, newNode->token.text, ScopeKind::Function, context.parentScope ? context.parentScope : ownerScope);
@@ -1015,11 +1016,14 @@ AstNode* AstCompilerIfBlock::clone(CloneContext& context)
 AstNode* AstCompilerSpecFunc::clone(CloneContext& context)
 {
     auto newNode = Ast::newNode<AstCompilerSpecFunc>();
-    newNode->copyFrom(context, this, false);
+
+    auto cloneContext = context;
+    cloneContext.forceSemFlags &= ~AST_SEM_SPEC_STACKSIZE;
+
+    newNode->copyFrom(cloneContext, this, false);
 
     // Clone childs by hand, because a compiler block can contain a sub function, and this sub
     // function shouldn't have the ownerInline set (if the #ast is in an inline block)
-    auto cloneContext   = context;
     cloneContext.parent = newNode;
     for (auto p : childs)
     {

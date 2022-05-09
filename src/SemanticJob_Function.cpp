@@ -1276,6 +1276,14 @@ uint32_t SemanticJob::getMaxStackSize(AstNode* node)
 
     if (node->semFlags & AST_SEM_SPEC_STACKSIZE)
     {
+        auto p = node;
+        while (p->parent && p->parent->kind != AstNodeKind::File)
+            p = p->parent;
+        SWAG_ASSERT(p);
+        ScopedLock mk(p->mutex);
+        p->allocateExtension();
+        decSP = max(decSP, p->extension->stackSize);
+        return decSP;
     }
 
     if (node->ownerFct)
@@ -1287,13 +1295,22 @@ void SemanticJob::setOwnerMaxStackSize(AstNode* node, uint32_t size)
 {
     if (node->semFlags & AST_SEM_SPEC_STACKSIZE)
     {
+        auto p = node;
+        while (p->parent && p->parent->kind != AstNodeKind::File)
+            p = p->parent;
+        SWAG_ASSERT(p);
+        ScopedLock mk(p->mutex);
+        p->allocateExtension();
+        p->extension->stackSize = max(p->extension->stackSize, size);
+        p->extension->stackSize = max(p->extension->stackSize, 1);
+        return;
     }
 
-    if (!node->ownerFct)
-        return;
-
-    node->ownerFct->stackSize = max(node->ownerFct->stackSize, size);
-    node->ownerFct->stackSize = max(node->ownerFct->stackSize, 1);
+    if (node->ownerFct)
+    {
+        node->ownerFct->stackSize = max(node->ownerFct->stackSize, size);
+        node->ownerFct->stackSize = max(node->ownerFct->stackSize, 1);
+    }
 }
 
 bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* identifier)
@@ -1413,6 +1430,8 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     if (!cloneContext.ownerFct)
     {
         identifier->semFlags |= AST_SEM_SPEC_STACKSIZE;
+        if (identifier->kind == AstNodeKind::Identifier)
+            identifier->parent->semFlags |= AST_SEM_SPEC_STACKSIZE;
         cloneContext.forceSemFlags = AST_SEM_SPEC_STACKSIZE;
     }
 
