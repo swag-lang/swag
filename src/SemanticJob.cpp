@@ -8,6 +8,7 @@
 #include "Module.h"
 #include "ErrorIds.h"
 #include "Timer.h"
+#include "Allocator.h"
 
 bool SemanticJob::valueEqualsTo(const ComputedValue* value, AstNode* node)
 {
@@ -225,6 +226,8 @@ JobResult SemanticJob::execute()
     while (!nodes.empty())
     {
         auto node     = nodes.back();
+        SWAG_CHECK_BLOCK(node);
+
         context.node  = node;
         bool canDoSem = !(node->flags & AST_NO_SEMANTIC);
 

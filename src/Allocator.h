@@ -53,8 +53,12 @@ struct Allocator
     }
 
     static size_t alignSize(size_t size);
-    void          free(void*, size_t size);
-    void*         alloc(size_t size);
+#ifdef SWAG_CHECK_MEMORY
+    static void checkBlock(void* ptr);
+#endif
+
+    void  free(void*, size_t size);
+    void* alloc(size_t size);
 
     AllocatorImpl* impl = nullptr;
     AllocatorImpl  _impl;
@@ -63,3 +67,9 @@ struct Allocator
 
 extern atomic<int>            g_CompilerAllocTh;
 extern thread_local Allocator g_Allocator;
+
+#ifdef SWAG_CHECK_MEMORY
+#define SWAG_CHECK_BLOCK(__addr) Allocator::checkBlock(__addr);
+#else
+#define SWAG_CHECK_BLOCK(__addr)
+#endif

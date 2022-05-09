@@ -346,7 +346,7 @@ void* Allocator::alloc(size_t size)
 
 #ifdef SWAG_CHECK_MEMORY
     auto userSize = size;
-    size += 2 * sizeof(uint64_t);
+    size += 3 * sizeof(uint64_t);
 #endif
 
     if (!impl)
@@ -356,6 +356,8 @@ void* Allocator::alloc(size_t size)
 #ifdef SWAG_CHECK_MEMORY
     *(uint64_t*) result = MAGIC_ALLOC;
     result += sizeof(uint64_t);
+    *(uint64_t*) result = size;
+    result += sizeof(uint64_t);
     auto end         = result + userSize;
     *(uint64_t*) end = MAGIC_ALLOC;
 #endif
@@ -364,6 +366,21 @@ void* Allocator::alloc(size_t size)
         g_AllocatorMutex.unlock();
     return result;
 }
+
+#ifdef SWAG_CHECK_MEMORY
+void Allocator::checkBlock(void* ptr)
+{
+    uint8_t* addr  = (uint8_t*) ptr;
+    auto     start = addr;
+    addr -= sizeof(uint64_t);
+    auto size = *(uint64_t*) addr;
+    size -= 3 * sizeof(uint64_t);
+    addr -= sizeof(uint64_t);
+    SWAG_ASSERT(*(uint64_t*) addr == MAGIC_ALLOC);
+    start += size;
+    SWAG_ASSERT(*(uint64_t*) start == MAGIC_ALLOC);
+}
+#endif
 
 void Allocator::free(void* ptr, size_t size)
 {
@@ -376,12 +393,17 @@ void Allocator::free(void* ptr, size_t size)
         g_AllocatorMutex.lock();
 
     uint8_t* addr = (uint8_t*) ptr;
+
 #ifdef SWAG_CHECK_MEMORY
     auto end = addr + size;
+    size += 3 * sizeof(uint64_t);
     SWAG_ASSERT(*(uint64_t*) end == MAGIC_ALLOC);
+    *(uint64_t*) end = MAGIC_FREE;
+    addr -= sizeof(uint64_t);
+    SWAG_ASSERT(*(uint64_t*) addr == size);
     addr -= sizeof(uint64_t);
     SWAG_ASSERT(*(uint64_t*) addr == MAGIC_ALLOC);
-    size += 2 * sizeof(uint64_t);
+    *(uint64_t*) addr = MAGIC_FREE;
 #endif
 
     if (!impl)
