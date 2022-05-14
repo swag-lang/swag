@@ -6,6 +6,12 @@ const CmdIdBringToFront = "CmdIdBringToFront"
 const CmdIdSendToBack   = "CmdIdSendToBack"
 const CmdIdBringForward = "CmdIdBringForward"
 const CmdIdSendBackward = "CmdIdSendBackward"
+const CmdIdAlignLeft    = "CmdIdAlignLeft"
+const CmdIdAlignCenter  = "CmdIdAlignCenter"
+const CmdIdAlignRight   = "CmdIdAlignRight"
+const CmdIdAlignTop     = "CmdIdAlignTop"
+const CmdIdAlignMiddle  = "CmdIdAlignMiddle"
+const CmdIdAlignBottom  = "CmdIdAlignBottom"
 
 struct EditWnd
 {
@@ -88,9 +94,40 @@ impl IWnd for EditView
     mtd onCommandUIEvent(evt: *CommandUIEvent)
     {
         hasSel := capture and capture.selection.count
+        hasSingleSel := capture and capture.selection.count == 1
 
         switch evt.id
         {
+        case CmdIdAlignLeft:
+            evt.setFlags |= .Disabled
+            evt.disabled = !hasSel or hasSingleSel
+            evt.accepted = true
+
+        case CmdIdAlignCenter:
+            evt.setFlags |= .Disabled
+            evt.disabled = !hasSel or hasSingleSel
+            evt.accepted = true
+
+        case CmdIdAlignRight:
+            evt.setFlags |= .Disabled
+            evt.disabled = !hasSel or hasSingleSel
+            evt.accepted = true
+
+        case CmdIdAlignTop:
+            evt.setFlags |= .Disabled
+            evt.disabled = !hasSel or hasSingleSel
+            evt.accepted = true
+
+        case CmdIdAlignMiddle:
+            evt.setFlags |= .Disabled
+            evt.disabled = !hasSel or hasSingleSel
+            evt.accepted = true
+
+        case CmdIdAlignBottom:
+            evt.setFlags |= .Disabled
+            evt.disabled = !hasSel or hasSingleSel
+            evt.accepted = true
+
         case CmdIdBringToFront:
             evt.setFlags |= .Disabled | .Icon
             evt.disabled = !hasSel or capture.selection.contains(capture.forms.count - 1)
@@ -132,6 +169,24 @@ impl IWnd for EditView
         var undo: *Undo
         switch evt.id
         {
+        case CmdIdAlignLeft:
+            undo = capture.newUndo(.AlignLeft)
+            evt.accepted = true
+        case CmdIdAlignCenter:
+            undo = capture.newUndo(.AlignCenter)
+            evt.accepted = true
+        case CmdIdAlignRight:
+            undo = capture.newUndo(.AlignRight)
+            evt.accepted = true
+        case CmdIdAlignTop:
+            undo = capture.newUndo(.AlignTop)
+            evt.accepted = true
+        case CmdIdAlignMiddle:
+            undo = capture.newUndo(.AlignMiddle)
+            evt.accepted = true
+        case CmdIdAlignBottom:
+            undo = capture.newUndo(.AlignBottom)
+            evt.accepted = true
         case CmdIdBringToFront:
             undo = capture.newUndo(.MoveToFront)
             evt.accepted = true

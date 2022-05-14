@@ -9,6 +9,12 @@ enum UndoKind
     MoveToBack
     MoveForward
     MoveBackward
+    AlignLeft
+    AlignCenter
+    AlignRight
+    AlignTop
+    AlignMiddle
+    AlignBottom
 }
 
 struct Undo
@@ -24,6 +30,9 @@ struct Undo
 
     selection:  Array'uint
     oldForms:   Array'IForm
+    oldPos:     Array's32
+    minX:       s32
+    maxX:       s32
 }
 
 impl Undo
@@ -32,8 +41,35 @@ impl Undo
     {
         switch kind
         {
+        case AlignLeft, AlignCenter, AlignRight:
+            selection = capture.selection
+            minX = Swag.S32.Max
+            maxX = Swag.S32.Min
+            oldPos.reserve(selection.count)
+            visit s: selection
+            {
+                b := cast(*BaseForm) @dataof(capture.forms[s])
+                oldPos.add(b.x)
+                minX = Math.min(minX, b.x)
+                maxX = Math.max(maxX, b.x + b.w)
+            }
+
+        case AlignTop, AlignMiddle, AlignBottom:
+            selection = capture.selection
+            minX = Swag.S32.Max
+            maxX = Swag.S32.Min
+            oldPos.reserve(selection.count)
+            visit s: selection
+            {
+                b := cast(*BaseForm) @dataof(capture.forms[s])
+                oldPos.add(b.x)
+                minX = Math.min(minX, b.y)
+                maxX = Math.max(maxX, b.y + b.h)
+            }
+
         case OffsetSelection:
             selection = capture.selection
+
         case MoveToFront, MoveToBack, MoveBackward, MoveForward:
             selection = capture.selection
             oldForms = capture.forms
@@ -46,6 +82,48 @@ impl Undo
         #[Swag.Complete]
         switch kind
         {
+        case AlignLeft:
+            visit s: selection
+            {
+                b := cast(*BaseForm) @dataof(capture.forms[s])
+                b.x = minX
+            }
+
+        case AlignRight:
+            visit s: selection
+            {
+                b := cast(*BaseForm) @dataof(capture.forms[s])
+                b.x = maxX - b.w
+            }
+
+        case AlignCenter:
+            visit s: selection
+            {
+                b := cast(*BaseForm) @dataof(capture.forms[s])
+                b.x = (maxX + minX) / 2 - (b.w / 2)
+            }
+
+        case AlignTop:
+            visit s: selection
+            {
+                b := cast(*BaseForm) @dataof(capture.forms[s])
+                b.y = minX
+            }
+
+        case AlignBottom:
+            visit s: selection
+            {
+                b := cast(*BaseForm) @dataof(capture.forms[s])
+                b.y = maxX - b.h
+            }
+
+        case AlignMiddle:
+            visit s: selection
+            {
+                b := cast(*BaseForm) @dataof(capture.forms[s])
+                b.y = (maxX + minX) / 2 - (b.h / 2)
+            }
+
         case MoveBaseForm:
             baseForm.x += newPosX
             baseForm.y += newPosY
@@ -141,6 +219,13 @@ impl Undo
         #[Swag.Complete]
         switch kind
         {
+        case AlignLeft, AlignRight, AlignCenter, AlignTop, AlignBottom, AlignMiddle:
+            visit s, i: selection
+            {
+                b := cast(*BaseForm) @dataof(capture.forms[s])
+                b.x = oldPos[i]
+            }
+
         case MoveBaseForm:
             baseForm.x -= newPosX
             baseForm.y -= newPosY
