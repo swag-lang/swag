@@ -134,7 +134,9 @@ impl Undo
             if newPosX or newPosY
             {
                 visit f: capture.forms
+                {
                     f.offset(newPosX, newPosY)
+                }
             }
             capture.width  += newSizeX
             capture.height += newSizeY

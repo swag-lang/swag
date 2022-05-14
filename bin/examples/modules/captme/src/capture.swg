@@ -312,7 +312,7 @@ impl Capture
             b := cast(*BaseForm) @dataof(f)
             if !b.paintPos.contains(localPos)
                 continue
-            if !f.hitTest(localPos)
+            if !f.hitTest(localPos, self.editView.zoom)
                 continue
             return i
         }
