@@ -65,7 +65,27 @@ impl FormLine
         gizmo.anchors.add(@{0, 0})
         gizmo.anchors.add(@{0, 0})
 
-        gizmo.sigChanged = @|self|(g, first) {
+        gizmo.sigChanged = @|self|(g, diff, pt, first) {
+            if !first
+                self.capture.undo()
+            undo := self.capture.newUndo(.MoveBaseForm)
+            undo.baseForm = self
+            zoom := self.capture.editView.zoom
+            if pt == 0
+            {
+                undo.newPosX = cast(s32) (diff.x / zoom)
+                undo.newPosY = cast(s32) (diff.y / zoom)
+                undo.newSizeX = -cast(s32) (diff.x / zoom)
+                undo.newSizeY = -cast(s32) (diff.y / zoom)
+            }
+            else
+            {
+                undo.newSizeX = cast(s32) (diff.x / zoom)
+                undo.newSizeY = cast(s32) (diff.y / zoom)
+            }
+
+            self.capture.pushUndo(undo)
+            self.capture.editView.invalidate()
         }
     }
 }

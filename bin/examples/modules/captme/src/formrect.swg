@@ -110,9 +110,7 @@ impl FormRect
         gizmo.sigChanged = @|self|(g, first) {
             if !first
                 self.capture.undo()
-            undo := Memory.new'Undo()
-            undo.kind = .MoveBaseForm
-            undo.capture = self.capture
+            undo := self.capture.newUndo(.MoveBaseForm)
             undo.baseForm = self
             zoom := self.capture.editView.zoom
             undo.newPosX  = cast(s32) ((g.movingRect.x - g.startRect.x) / zoom)
