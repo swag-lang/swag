@@ -4,7 +4,6 @@ interface IForm
 {
     paintGizmo: func(self, *Painter, f32, FormFlags)
     paint:      func(self, *Painter, f32)
-    offset:     func(self, s32, s32)
     mouse:      func(self, *EditView, Math.Point, *MouseEvent)->bool
     hitTest:    func(self, Math.Point, f32)->bool
 }

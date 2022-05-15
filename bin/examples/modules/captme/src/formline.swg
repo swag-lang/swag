@@ -23,12 +23,6 @@ impl IForm for FormLine
         return gizmo.mouse(view, pos, evt)
     }
 
-    mtd offset(offX, offY: s32)
-    {
-        x += offX
-        y += offY
-    }
-
     mtd paintGizmo(painter: *Painter, z: f32, flags: FormFlags)
     {
         if flags & (.Hot | .Selected)

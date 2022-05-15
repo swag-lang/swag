@@ -135,7 +135,9 @@ impl Undo
             {
                 visit f: capture.forms
                 {
-                    f.offset(newPosX, newPosY)
+                    b := cast(*BaseForm) @dataof(f)
+                    b.x += newPosX
+                    b.y += newPosY
                 }
             }
             capture.width  += newSizeX
@@ -144,8 +146,9 @@ impl Undo
         case OffsetSelection:
             visit s: selection
             {
-                f := capture.forms[s]
-                f.offset(newSizeX, newSizeY)
+                b := cast(*BaseForm) @dataof(capture.forms[s])
+                b.x += newSizeX
+                b.y += newSizeY
             }
 
         case MoveToFront:
@@ -238,7 +241,11 @@ impl Undo
             if newPosX or newPosY
             {
                 visit f: capture.forms
-                    f.offset(-newPosX, -newPosY)
+                {
+                    b := cast(*BaseForm) @dataof(f)
+                    b.x -= newPosX
+                    b.y -= newPosY
+                }
             }
             capture.width  -= newSizeX
             capture.height -= newSizeY
@@ -246,8 +253,9 @@ impl Undo
         case OffsetSelection:
             visit s: selection
             {
-                f := capture.forms[s]
-                f.offset(-newSizeX, -newSizeY)
+                b := cast(*BaseForm) @dataof(capture.forms[s])
+                b.x -= newSizeX
+                b.y -= newSizeY
             }
 
         case MoveToFront, MoveToBack, MoveForward, MoveBackward:
