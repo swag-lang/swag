@@ -32,8 +32,8 @@ struct Undo
     selection:  Array'uint
     oldForms:   Array'IForm
     oldPos:     Array's32
-    minX:       s32
-    maxX:       s32
+    minP:       s32
+    maxP:       s32
     pointIdx:   u32
 }
 
@@ -45,28 +45,30 @@ impl Undo
         {
         case AlignLeft, AlignCenter, AlignRight:
             selection = capture.selection
-            minX = Swag.S32.Max
-            maxX = Swag.S32.Min
+            minP = Swag.S32.Max
+            maxP = Swag.S32.Min
             oldPos.reserve(selection.count)
             visit s: selection
             {
-                b := cast(*BaseForm) @dataof(capture.forms[s])
-                oldPos.add(b.x)
-                minX = Math.min(minX, b.x)
-                maxX = Math.max(maxX, b.x + b.w)
+                f := capture.forms[s]
+                r := f.boundRect()
+                oldPos.add(cast(s32) r.x)
+                minP = Math.min(minP, cast(s32) r.x)
+                maxP = Math.max(maxP, cast(s32) (r.x + r.width))
             }
 
         case AlignTop, AlignMiddle, AlignBottom:
             selection = capture.selection
-            minX = Swag.S32.Max
-            maxX = Swag.S32.Min
+            minP = Swag.S32.Max
+            maxP = Swag.S32.Min
             oldPos.reserve(selection.count)
             visit s: selection
             {
-                b := cast(*BaseForm) @dataof(capture.forms[s])
-                oldPos.add(b.x)
-                minX = Math.min(minX, b.y)
-                maxX = Math.max(maxX, b.y + b.h)
+                f := capture.forms[s]
+                r := f.boundRect()
+                oldPos.add(cast(s32) r.x)
+                minP = Math.min(minP, cast(s32) r.y)
+                maxP = Math.max(maxP, cast(s32) (r.y + r.height))
             }
 
         case OffsetSelection:
@@ -88,48 +90,48 @@ impl Undo
             visit s: selection
             {
                 f := capture.forms[s]
-                b := cast(*BaseForm) @dataof(f)
-                f.moveBaseForm(minX - b.x, 0, 0, 0)
+                r := f.boundRect()
+                f.moveBaseForm(minP - cast(s32) r.x, 0, 0, 0)
             }
 
         case AlignRight:
             visit s: selection
             {
                 f := capture.forms[s]
-                b := cast(*BaseForm) @dataof(f)
-                f.moveBaseForm((maxX - b.w) - b.x, 0, 0, 0)
+                r := f.boundRect()
+                f.moveBaseForm((maxP - cast(s32) r.width) - cast(s32) r.x, 0, 0, 0)
             }
 
         case AlignCenter:
             visit s: selection
             {
                 f := capture.forms[s]
-                b := cast(*BaseForm) @dataof(f)
-                f.moveBaseForm(((maxX + minX) / 2 - (b.w / 2)) - b.x, 0, 0, 0)
+                r := f.boundRect()
+                f.moveBaseForm(((maxP + minP) / 2 - (cast(s32) r.width / 2)) - cast(s32) r.x, 0, 0, 0)
             }
 
         case AlignTop:
             visit s: selection
             {
                 f := capture.forms[s]
-                b := cast(*BaseForm) @dataof(f)
-                f.moveBaseForm(0, minX - b.y, 0, 0)
+                r := f.boundRect()
+                f.moveBaseForm(0, minP - cast(s32) r.y, 0, 0)
             }
 
         case AlignBottom:
             visit s: selection
             {
                 f := capture.forms[s]
-                b := cast(*BaseForm) @dataof(f)
-                f.moveBaseForm(0, (maxX - b.h) - b.y, 0, 0)
+                r := f.boundRect()
+                f.moveBaseForm(0, (maxP - cast(s32) r.height) - cast(s32) r.y, 0, 0)
             }
 
         case AlignMiddle:
             visit s: selection
             {
                 f := capture.forms[s]
-                b := cast(*BaseForm) @dataof(f)
-                f.moveBaseForm(0, ((maxX + minX) / 2 - (b.h / 2)) - b.y, 0, 0)
+                r := f.boundRect()
+                f.moveBaseForm(0, ((maxP + minP) / 2 - (cast(s32) r.height / 2)) - cast(s32) r.y, 0, 0)
             }
 
         case MovePoint:
