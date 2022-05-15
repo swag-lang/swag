@@ -10,6 +10,10 @@ struct FormLine
 
 impl IForm for FormLine
 {
+    mtd moveBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
+    {
+    }
+
     mtd moveForm(diff: Math.Point)
     {
         xa, xb += cast(s32) diff.x

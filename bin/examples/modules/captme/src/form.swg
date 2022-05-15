@@ -2,13 +2,14 @@ using Pixel, Core, Gui
 
 interface IForm
 {
-    paintGizmo: func(self, *Painter, f32, FormFlags)
-    paint:      func(self, *Painter, f32)
-    mouse:      func(self, *EditView, Math.Point, *MouseEvent)->bool
-    hitTest:    func(self, Math.Point, f32)->bool
-    boundRect:  func(self)->Math.Rectangle
-    moveForm:   func(self, Math.Point)
-    movePoint:  func(self, u32, Math.Point)
+    paintGizmo:     func(self, *Painter, f32, FormFlags)
+    paint:          func(self, *Painter, f32)
+    mouse:          func(self, *EditView, Math.Point, *MouseEvent)->bool
+    hitTest:        func(self, Math.Point, f32)->bool
+    boundRect:      func(self)->Math.Rectangle
+    moveForm:       func(self, Math.Point)
+    moveBaseForm:   func(self, s32, s32, s32, s32)
+    movePoint:      func(self, u32, Math.Point)
 }
 
 #[Swag.EnumFlags]

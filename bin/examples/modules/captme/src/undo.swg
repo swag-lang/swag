@@ -87,54 +87,56 @@ impl Undo
         case AlignLeft:
             visit s: selection
             {
-                b := cast(*BaseForm) @dataof(capture.forms[s])
-                b.x = minX
+                f := capture.forms[s]
+                b := cast(*BaseForm) @dataof(f)
+                f.moveBaseForm(minX - b.x, 0, 0, 0)
             }
 
         case AlignRight:
             visit s: selection
             {
-                b := cast(*BaseForm) @dataof(capture.forms[s])
-                b.x = maxX - b.w
+                f := capture.forms[s]
+                b := cast(*BaseForm) @dataof(f)
+                f.moveBaseForm((maxX - b.w) - b.x, 0, 0, 0)
             }
 
         case AlignCenter:
             visit s: selection
             {
-                b := cast(*BaseForm) @dataof(capture.forms[s])
-                b.x = (maxX + minX) / 2 - (b.w / 2)
+                f := capture.forms[s]
+                b := cast(*BaseForm) @dataof(f)
+                f.moveBaseForm(((maxX + minX) / 2 - (b.w / 2)) - b.x, 0, 0, 0)
             }
 
         case AlignTop:
             visit s: selection
             {
-                b := cast(*BaseForm) @dataof(capture.forms[s])
-                b.y = minX
+                f := capture.forms[s]
+                b := cast(*BaseForm) @dataof(f)
+                f.moveBaseForm(0, minX - b.y, 0, 0)
             }
 
         case AlignBottom:
             visit s: selection
             {
-                b := cast(*BaseForm) @dataof(capture.forms[s])
-                b.y = maxX - b.h
+                f := capture.forms[s]
+                b := cast(*BaseForm) @dataof(f)
+                f.moveBaseForm(0, (maxX - b.h) - b.y, 0, 0)
             }
 
         case AlignMiddle:
             visit s: selection
             {
-                b := cast(*BaseForm) @dataof(capture.forms[s])
-                b.y = (maxX + minX) / 2 - (b.h / 2)
+                f := capture.forms[s]
+                b := cast(*BaseForm) @dataof(f)
+                f.moveBaseForm(0, ((maxX + minX) / 2 - (b.h / 2)) - b.y, 0, 0)
             }
 
         case MovePoint:
             baseForm.movePoint(pointIdx, @{newPosX, newPosY})
 
         case MoveBaseForm:
-            b := cast(*BaseForm) @dataof(baseForm)
-            b.x += newPosX
-            b.y += newPosY
-            b.w += newSizeX
-            b.h += newSizeY
+            baseForm.moveBaseForm(newPosX, newPosY, newSizeX, newSizeY)
 
         case MoveCapture:
             visit f: capture.forms
