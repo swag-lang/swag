@@ -54,19 +54,18 @@ impl Capture
 
         visit f, i: forms
         {
+            boundRect := f.boundRect()
             base := cast(*BaseForm) @dataof(f)
-            base.paintPos.x      = 0
-            base.paintPos.y      = 0
-            base.paintPos.width  = base.w * zoom
-            base.paintPos.height = base.h * zoom
+            base.paintPos.x      = rect.x + (boundRect.x * zoom)
+            base.paintPos.y      = rect.y + (boundRect.y * zoom)
+            base.paintPos.width  = boundRect.width * zoom
+            base.paintPos.height = boundRect.height * zoom
 
             rt := render.getRenderTarget(cast(s32) base.paintPos.width, cast(s32) base.paintPos.height)
             painter.bindRenderTarget(rt, true)
             painter.setParams(.Antialiased)
             painter.clear(Argb.Zero)
             f.paint(painter, zoom)
-            base.paintPos.x = rect.x + (base.x * zoom)
-            base.paintPos.y = rect.y + (base.y * zoom)
             painter.unbindRenderTarget()
 
             const Margin = 8
@@ -280,12 +279,12 @@ impl Capture
         // Move selection
         if moving
         {
-            newSizeX := cast(s32) ((localPos.x - movingStart.x) / view.zoom)
-            newSizeY := cast(s32) ((localPos.y - movingStart.y) / view.zoom)
+            newPosX := cast(s32) ((localPos.x - movingStart.x) / view.zoom)
+            newPosY := cast(s32) ((localPos.y - movingStart.y) / view.zoom)
 
             if firstMoving
             {
-                if Math.abs(newSizeX) <= 3 and Math.abs(newSizeY) <= 3
+                if Math.abs(newPosX) <= 3 and Math.abs(newPosY) <= 3
                     return true
                 firstMoving = false
             }
@@ -293,8 +292,8 @@ impl Capture
                 undo()
 
             u := newUndo(.OffsetSelection)
-            u.newSizeX = newSizeX
-            u.newSizeY = newSizeY
+            u.newPosX = newPosX
+            u.newPosY = newPosY
             pushUndo(u)
             view.invalidate()
 

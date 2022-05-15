@@ -16,6 +16,15 @@ struct FormRect
 
 impl IForm for FormRect
 {
+    mtd movePoint(pt: u32, diff: Math.Point)
+    {
+    }
+
+    mtd boundRect()->Math.Rectangle
+    {
+        return Math.Rectangle{x, y, w, h}
+    }
+
     mtd mouse(view: *EditView, pos: Math.Point, evt: *MouseEvent)->bool
     {
         return gizmo.mouse(view, pos, evt)
@@ -55,33 +64,34 @@ impl IForm for FormRect
     mtd paint(painter: *Painter, z: f32)
     {
         bSize := borderSize * z
+        pp := Math.Rectangle{0, 0, paintPos.width, paintPos.height}
 
         #[Swag.Complete]
         switch kind
         {
         case Ellipse:
-            sizeX := paintPos.width * 0.5
-            sizeY := paintPos.height * 0.5
-            painter.fillEllipse(paintPos.x + sizeX, paintPos.y + sizeY, sizeX, sizeY, backColor)
+            sizeX := pp.width * 0.5
+            sizeY := pp.height * 0.5
+            painter.fillEllipse(pp.x + sizeX, pp.y + sizeY, sizeX, sizeY, backColor)
             if bSize >= 1
-                painter.drawEllipse(paintPos.x + sizeX, paintPos.y + sizeY, sizeX - bSize * 0.5, sizeY - bSize * 0.5, borderColor, bSize)
+                painter.drawEllipse(pp.x + sizeX, pp.y + sizeY, sizeX - bSize * 0.5, sizeY - bSize * 0.5, borderColor, bSize)
 
         case Rectangle:
-            if borderColor.a and (paintPos.width <= 2*bSize or paintPos.height < 2*bSize)
-                painter.fillRect(paintPos, borderColor)
+            if borderColor.a and (pp.width <= 2*bSize or pp.height < 2*bSize)
+                painter.fillRect(pp, borderColor)
             else
             {
-                painter.fillRect(paintPos, backColor)
-                rect := paintPos
+                painter.fillRect(pp, backColor)
+                rect := pp
                 rect.inflate(-bSize * 0.5)
                 painter.drawRect(rect, borderColor, bSize)
             }
 
         case RoundRectangle:
-            painter.fillRoundRect(paintPos, 10, 10, backColor)
+            painter.fillRoundRect(pp, 10, 10, backColor)
             if bSize >= 1
             {
-                rect := paintPos
+                rect := pp
                 rect.inflate(-bSize * 0.5)
                 painter.drawRoundRect(rect, 10, 10, borderColor, bSize)
             }

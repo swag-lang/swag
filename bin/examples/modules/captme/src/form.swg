@@ -6,6 +6,8 @@ interface IForm
     paint:      func(self, *Painter, f32)
     mouse:      func(self, *EditView, Math.Point, *MouseEvent)->bool
     hitTest:    func(self, Math.Point, f32)->bool
+    boundRect:  func(self)->Math.Rectangle
+    movePoint:  func(self, u32, Math.Point)
 }
 
 #[Swag.EnumFlags]

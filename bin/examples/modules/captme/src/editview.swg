@@ -48,10 +48,10 @@ impl EditWnd
         capture.height = 400
 
         forma := Memory.new'FormLine()
-        forma.x = 100
-        forma.y = 40
-        forma.w = 80
-        forma.h = 100
+        forma.xa = 100
+        forma.ya = 40
+        forma.xb = 180
+        forma.yb = 140
         forma.borderColor = Argb.Red
         forma.borderSize = 20
         forma.setup(capture)

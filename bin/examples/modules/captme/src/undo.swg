@@ -15,13 +15,14 @@ enum UndoKind
     AlignTop
     AlignMiddle
     AlignBottom
+    MovePoint
 }
 
 struct Undo
 {
     kind:       UndoKind
     capture:    *Capture
-    baseForm:   *BaseForm
+    baseForm:   IForm
 
     newSizeX:   s32
     newSizeY:   s32
@@ -33,6 +34,7 @@ struct Undo
     oldPos:     Array's32
     minX:       s32
     maxX:       s32
+    pointIdx:   u32
 }
 
 impl Undo
@@ -124,11 +126,15 @@ impl Undo
                 b.y = (maxX + minX) / 2 - (b.h / 2)
             }
 
+        case MovePoint:
+            baseForm.movePoint(pointIdx, @{newPosX, newPosY})
+
         case MoveBaseForm:
-            baseForm.x += newPosX
-            baseForm.y += newPosY
-            baseForm.w += newSizeX
-            baseForm.h += newSizeY
+            b := cast(*BaseForm) @dataof(baseForm)
+            b.x += newPosX
+            b.y += newPosY
+            b.w += newSizeX
+            b.h += newSizeY
 
         case MoveCapture:
             if newPosX or newPosY
@@ -147,8 +153,8 @@ impl Undo
             visit s: selection
             {
                 b := cast(*BaseForm) @dataof(capture.forms[s])
-                b.x += newSizeX
-                b.y += newSizeY
+                b.x += newPosX
+                b.y += newPosY
             }
 
         case MoveToFront:
@@ -231,11 +237,15 @@ impl Undo
                 b.x = oldPos[i]
             }
 
+        case MovePoint:
+            baseForm.movePoint(pointIdx, @{-newPosX, -newPosY})
+
         case MoveBaseForm:
-            baseForm.x -= newPosX
-            baseForm.y -= newPosY
-            baseForm.w -= newSizeX
-            baseForm.h -= newSizeY
+            b := cast(*BaseForm) @dataof(baseForm)
+            b.x -= newPosX
+            b.y -= newPosY
+            b.w -= newSizeX
+            b.h -= newSizeY
 
         case MoveCapture:
             if newPosX or newPosY
@@ -254,8 +264,8 @@ impl Undo
             visit s: selection
             {
                 b := cast(*BaseForm) @dataof(capture.forms[s])
-                b.x -= newSizeX
-                b.y -= newSizeY
+                b.x -= newPosX
+                b.y -= newPosY
             }
 
         case MoveToFront, MoveToBack, MoveForward, MoveBackward:
