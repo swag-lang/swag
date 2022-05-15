@@ -137,11 +137,8 @@ impl Undo
             b.h += newSizeY
 
         case MoveCapture:
-            if newPosX or newPosY
-            {
-                visit f: capture.forms
-                    f.moveForm(@{newPosX, newPosY})
-            }
+            visit f: capture.forms
+                f.moveForm(@{newPosX, newPosY})
             capture.width  += newSizeX
             capture.height += newSizeY
 
@@ -243,11 +240,8 @@ impl Undo
             b.h -= newSizeY
 
         case MoveCapture:
-            if newPosX or newPosY
-            {
-                visit f: capture.forms
-                    f.moveForm(@{-newPosX, -newPosY})
-            }
+            visit f: capture.forms
+                f.moveForm(@{-newPosX, -newPosY})
             capture.width  -= newSizeX
             capture.height -= newSizeY
 
