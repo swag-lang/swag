@@ -16,6 +16,12 @@ struct FormRect
 
 impl IForm for FormRect
 {
+    mtd moveForm(diff: Math.Point)
+    {
+        x += cast(s32) diff.x
+        y += cast(s32) diff.y
+    }
+
     mtd movePoint(pt: u32, diff: Math.Point)
     {
     }

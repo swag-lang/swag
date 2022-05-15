@@ -7,6 +7,7 @@ interface IForm
     mouse:      func(self, *EditView, Math.Point, *MouseEvent)->bool
     hitTest:    func(self, Math.Point, f32)->bool
     boundRect:  func(self)->Math.Rectangle
+    moveForm:   func(self, Math.Point)
     movePoint:  func(self, u32, Math.Point)
 }
 
