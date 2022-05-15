@@ -34,6 +34,8 @@ struct IconButton
     iconBtnFlags    = IconButtonFlags.None
     checkedForm     = IconButtonCheckedForm.Full
     isChecked:      bool
+    marginBottomText = 4.0
+    marginBottomIcon = 8.0
 }
 
 impl IWnd for IconButton
@@ -103,10 +105,27 @@ impl IWnd for IconButton
             theme.drawSubRect(bc.painter, clientRect, subRectBk, colorChecked)
         }
 
-        // Icon
         pos := clientRect
+
+        // Name
+        if !name.isEmpty()
+        {
+            var sf: RichStringFormat
+            theme.setTextColors(&sf, colorIcon)
+            sf.horzAlignment = .Center
+            sf.vertAlignment = .Bottom
+            sf.font = theme.res.fontDefault
+            pos1 := clientRect
+            pos1.y -= marginBottomText
+            bc.painter.drawRichString(pos1, &name, sf)
+            pos.y -= marginBottomIcon
+        }
+
+        // Icon
         pos.x = pos.horzCenter() - icon.sizeX * 0.5
-        icon.paint(bc.painter, pos.x, pos.vertCenter() - (icon.sizeY * 0.5), colorIcon)
+        pos.y = pos.vertCenter() - icon.sizeY * 0.5
+        icon.paint(bc.painter, pos.x, pos.y, colorIcon)
+
     }
 
     mtd onMouseEvent(evt: *MouseEvent)

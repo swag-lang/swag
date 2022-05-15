@@ -21,20 +21,24 @@ impl Icon
     }
 
     // Initialize the icon from an image list
-    func from(imageList: *ImageList, index: s32, sizeX, sizeY: f32 = 24)->Icon
+    func from(imageList: *ImageList, index: s32, sizeX, sizeY: f32 = 0)->Icon
     {
         var result: retval
-        result.set(imageList, index, sizeX, sizeY)
+        sx := sizeX orelse cast(f32) imageList.frameSizeX
+        sy := sizeY orelse cast(f32) imageList.frameSizeY
+        result.set(imageList, index, sx, sy)
         return result
     }
 
     // Initialize the icon from an image list
-    mtd set(imageList: *ImageList, index: s32, sizeX, sizeY: f32 = 24)
+    mtd set(imageList: *ImageList, index: s32, sizeX, sizeY: f32 = 0)
     {
         self.imageList = #self.imageList
         self.index     = #self.index
-        self.sizeX     = #self.sizeX
-        self.sizeY     = #self.sizeY
+        sx := #self.sizeX orelse cast(f32) #self.imageList.frameSizeX
+        sy := #self.sizeY orelse cast(f32) #self.imageList.frameSizeY
+        self.sizeX = sx
+        self.sizeY = sy
     }
 
     // Paint icon at the given position
