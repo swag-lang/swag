@@ -286,7 +286,29 @@ impl Capture
             if hotForm != Swag.UInt.Max
             {
                 if !here
+                {
                     selection.add(hotForm)
+                    if selection.count == 1
+                    {
+                        f := forms[hotForm]
+                        t := @kindof(f)
+                        switch t
+                        {
+                        case FormRect:
+                            b := cast(*FormRect) @dataof(f)
+                            editView.main.mdlFormRect = dref b
+                            editView.main.editMode = .Shape
+                            editView.main.toolbar.updateCommandState()
+
+                        case FormLine:
+                            b := cast(*FormLine) @dataof(f)
+                            editView.main.mdlFormLine = dref b
+                            editView.main.editMode = .Line
+                            editView.main.toolbar.updateCommandState()
+                        }
+                    }
+                }
+
                 mouseMode = .Moving
                 firstMouseMove = true
                 movingStart = localPos
@@ -338,9 +360,19 @@ impl Capture
                     return true
                 firstMouseMove = false
 
-                form := Memory.new'FormRect()
-                //form := Memory.new'FormLine()
-                itf := cast(IForm) form
+                var itf: IForm
+                switch editView.main.editMode
+                {
+                case Shape:
+                    form := Memory.new'FormRect()
+                    dref form = editView.main.mdlFormRect
+                    itf = cast(IForm) form
+                case Line:
+                    form := Memory.new'FormLine()
+                    dref form = editView.main.mdlFormLine
+                    itf = cast(IForm) form
+                }
+
                 itf.setup(self)
                 forms.add(itf)
             }

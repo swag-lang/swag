@@ -12,7 +12,10 @@ struct MainWnd
     icons48:    ImageList
     toolbar:    *Wnd
     editWnd:    *EditWnd
-    editMode:   EditMode = .Shape
+
+    editMode:       EditMode = .Shape
+    mdlFormRect:    FormRect
+    mdlFormLine:    FormLine
 }
 
 const Icons48 = #load("ressources/icons48.png")
