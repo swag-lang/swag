@@ -1,18 +1,5 @@
 using Core, Gui, Pixel
 
-const CmdIdUndo         = "CmdIdUndo"
-const CmdIdRedo         = "CmdIdRedo"
-const CmdIdBringToFront = "CmdIdBringToFront"
-const CmdIdSendToBack   = "CmdIdSendToBack"
-const CmdIdBringForward = "CmdIdBringForward"
-const CmdIdSendBackward = "CmdIdSendBackward"
-const CmdIdAlignLeft    = "CmdIdAlignLeft"
-const CmdIdAlignCenter  = "CmdIdAlignCenter"
-const CmdIdAlignRight   = "CmdIdAlignRight"
-const CmdIdAlignTop     = "CmdIdAlignTop"
-const CmdIdAlignMiddle  = "CmdIdAlignMiddle"
-const CmdIdAlignBottom  = "CmdIdAlignBottom"
-
 struct EditWnd
 {
     using scrollWnd: ScrollWnd

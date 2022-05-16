@@ -30,6 +30,7 @@ enum EventKind
     KillFocus
     Command
     CommandUI
+    CommandState
     Frame
 }
 
@@ -75,16 +76,20 @@ struct CommandUIEvent
         Disabled
         Icon
         Shortcut
+        Checked
+        Name
     }
 
     using base: Event{kind: EventKind.CommandUI}
     id:         WndId
     source:     *Wnd
 
-    disabled:   bool
     icon:       Icon
+    name:       String
     shortcut:   String
     setFlags:   SetFlags = Zero
+    disabled:   bool
+    checked:    bool
 }
 
 struct TimerEvent

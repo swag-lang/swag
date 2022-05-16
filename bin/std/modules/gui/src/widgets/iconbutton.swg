@@ -40,6 +40,31 @@ struct IconButton
 
 impl IWnd for IconButton
 {
+    mtd onCommandStateEvent(evt: *CommandUIEvent)
+    {
+        if evt.id != id
+            return
+
+        evt.accepted = true
+        if evt.setFlags & .Checked
+        {
+            isChecked = evt.checked
+            invalidate()
+        }
+
+        if evt.setFlags & .Icon
+        {
+            icon = evt.icon
+            invalidate()
+        }
+
+        if evt.setFlags & .Name
+        {
+            name = evt.name
+            invalidate()
+        }
+    }
+
     mtd onPaintEvent(evt: *PaintEvent)
     {
         bc     := evt.bc

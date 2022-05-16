@@ -47,21 +47,22 @@ struct KeyShortcut
 
 interface IWnd
 {
-    onEvent:            func(self, *Event)
-    onCreateEvent:      func(self, *CreateEvent)
-    onDestroyEvent:     func(self, *DestroyEvent)
-    onResizeEvent:      func(self, *ResizeEvent)
-    onPrePaintEvent:    func(self, *PaintEvent)
-    onPaintEvent:       func(self, *PaintEvent)
-    onPostPaintEvent:   func(self, *PaintEvent)
-    onKeyEvent:         func(self, *KeyEvent)
-    onMouseEvent:       func(self, *MouseEvent)
-    onSysCommandEvent:  func(self, *SysCommandEvent)
-    onSetThemeEvent:    func(self, *SetThemeEvent)
-    onTimerEvent:       func(self, *TimerEvent)
-    onFocusEvent:       func(self, *FocusEvent)
-    onCommandEvent:     func(self, *CommandEvent)
-    onCommandUIEvent:   func(self, *CommandUIEvent)
+    onEvent:             func(self, *Event)
+    onCreateEvent:       func(self, *CreateEvent)
+    onDestroyEvent:      func(self, *DestroyEvent)
+    onResizeEvent:       func(self, *ResizeEvent)
+    onPrePaintEvent:     func(self, *PaintEvent)
+    onPaintEvent:        func(self, *PaintEvent)
+    onPostPaintEvent:    func(self, *PaintEvent)
+    onKeyEvent:          func(self, *KeyEvent)
+    onMouseEvent:        func(self, *MouseEvent)
+    onSysCommandEvent:   func(self, *SysCommandEvent)
+    onSetThemeEvent:     func(self, *SetThemeEvent)
+    onTimerEvent:        func(self, *TimerEvent)
+    onFocusEvent:        func(self, *FocusEvent)
+    onCommandEvent:      func(self, *CommandEvent)
+    onCommandUIEvent:    func(self, *CommandUIEvent)
+    onCommandStateEvent: func(self, *CommandUIEvent)
 }
 
 #[Swag.EnumFlags]
@@ -151,6 +152,8 @@ impl IWnd for Wnd
             itf.onCommandEvent(cast(*CommandEvent) evt)
         case CommandUI:
             itf.onCommandUIEvent(cast(*CommandUIEvent) evt)
+        case CommandState:
+            itf.onCommandStateEvent(cast(*CommandUIEvent) evt)
         }
     }
 
@@ -164,11 +167,12 @@ impl IWnd for Wnd
     mtd onSetThemeEvent(evt: *SetThemeEvent)        {}
     mtd onTimerEvent(evt: *TimerEvent)              {}
 
-    mtd onFocusEvent(evt: *FocusEvent)         { evt.accepted = false; }
-    mtd onKeyEvent(evt: *KeyEvent)             { evt.accepted = false; }
-    mtd onMouseEvent(evt: *MouseEvent)         { evt.accepted = false; }
-    mtd onCommandEvent(evt: *CommandEvent)     { evt.accepted = false; }
-    mtd onCommandUIEvent(evt: *CommandUIEvent) { evt.accepted = false; }
+    mtd onFocusEvent(evt: *FocusEvent)              { evt.accepted = false; }
+    mtd onKeyEvent(evt: *KeyEvent)                  { evt.accepted = false; }
+    mtd onMouseEvent(evt: *MouseEvent)              { evt.accepted = false; }
+    mtd onCommandEvent(evt: *CommandEvent)          { evt.accepted = false; }
+    mtd onCommandUIEvent(evt: *CommandUIEvent)      { evt.accepted = false; }
+    mtd onCommandStateEvent(evt: *CommandUIEvent)   { evt.accepted = false; }
 }
 
 impl Wnd
@@ -934,14 +938,29 @@ impl Wnd
         postEvent(evt)
     }
 
-    mtd sendCommandUIEvent(cmdId: WndId, evt: *CommandUIEvent)
+    mtd updateCommandState()
     {
+        visit c: childs
+        {
+            if c.id == null continue
+            evt := sendCommandUIEvent(c.id)
+            if evt.accepted
+            {
+                evt.kind = .CommandState
+                c.sendEvent(&evt)
+            }
+        }
+    }
+
+    mtd sendCommandUIEvent(cmdId: WndId)->CommandUIEvent
+    {
+        var evt: retval
         if cmdId == null
-            return
+            return evt
 
         evt.id = cmdId
         evt.source = self
-        sendEvent(evt)
+        sendEvent(&evt)
 
         // Is there a keyboard shortcut ?
         sk := getKeyShortcutNameFor(cmdId)
@@ -950,6 +969,8 @@ impl Wnd
             evt.setFlags |= .Shortcut
             evt.shortcut = sk
         }
+
+        return evt
     }
 
     mtd processEvent(evt: *Event)

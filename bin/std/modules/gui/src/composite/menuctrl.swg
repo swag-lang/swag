@@ -331,8 +331,7 @@ impl MenuCtrl
     {
         visit i: items
         {
-            var evt: CommandUIEvent
-            sendCommandUIEvent(i.id, &evt)
+            evt := sendCommandUIEvent(i.id)
             if evt.setFlags & .Disabled
                 i.disabled = evt.disabled
             if evt.setFlags & .Icon

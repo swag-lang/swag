@@ -2,7 +2,7 @@ using Gui, Pixel, Core
 
 enum EditMode
 {
-    Shapes
+    Shape
     Line
 }
 
@@ -10,8 +10,9 @@ struct MainWnd
 {
     using wnd: Wnd
     icons48:    ImageList
+    toolbar:    *Wnd
     editWnd:    *EditWnd
-    editMode:   EditMode = .Shapes
+    editMode:   EditMode = .Shape
 }
 
 const Icons48 = #load("ressources/icons48.png")
@@ -20,14 +21,26 @@ impl IWnd for MainWnd
 {
     mtd onCommandUIEvent(evt: *CommandUIEvent)
     {
-        editView := cast(*EditView) editWnd.view
-        capture  := editView.capture
+        editView := editWnd  ? cast(*EditView) editWnd.view : null
+        capture  := editView ? editView.capture : null
 
         hasSel       := capture and capture.selection.count
         hasSingleSel := capture and capture.selection.count == 1
 
         switch evt.id
         {
+        case CmdIdModeShape:
+            evt.setFlags |= .Icon | .Checked
+            evt.icon = Icon.from(&icons48, 0)
+            evt.checked = editMode == .Shape
+            evt.accepted = true
+
+        case CmdIdModeLine:
+            evt.setFlags |= .Icon | .Checked
+            evt.icon = Icon.from(&icons48, 1)
+            evt.checked = editMode == .Line
+            evt.accepted = true
+
         case CmdIdAlignLeft:
             evt.setFlags |= .Disabled
             evt.disabled = !hasSel or hasSingleSel
@@ -102,39 +115,60 @@ impl IWnd for MainWnd
         var undo: *Undo
         switch evt.id
         {
+        case CmdIdModeShape:
+            editMode = .Shape
+            evt.accepted = true
+            toolbar.updateCommandState()
+
+        case CmdIdModeLine:
+            editMode = .Line
+            evt.accepted = true
+            toolbar.updateCommandState()
+
         case CmdIdAlignLeft:
             undo = capture.newUndo(.AlignLeft)
             evt.accepted = true
+
         case CmdIdAlignCenter:
             undo = capture.newUndo(.AlignCenter)
             evt.accepted = true
+
         case CmdIdAlignRight:
             undo = capture.newUndo(.AlignRight)
             evt.accepted = true
+
         case CmdIdAlignTop:
             undo = capture.newUndo(.AlignTop)
             evt.accepted = true
+
         case CmdIdAlignMiddle:
             undo = capture.newUndo(.AlignMiddle)
             evt.accepted = true
+
         case CmdIdAlignBottom:
             undo = capture.newUndo(.AlignBottom)
             evt.accepted = true
+
         case CmdIdBringToFront:
             undo = capture.newUndo(.MoveToFront)
             evt.accepted = true
+
         case CmdIdSendToBack:
             undo = capture.newUndo(.MoveToBack)
             evt.accepted = true
+
         case CmdIdBringForward:
             undo = capture.newUndo(.MoveForward)
             evt.accepted = true
+
         case CmdIdSendBackward:
             undo = capture.newUndo(.MoveBackward)
             evt.accepted = true
+
         case CmdIdUndo:
             capture.undo()
             evt.accepted = true
+
         case CmdIdRedo:
             capture.redo()
             evt.accepted = true
@@ -151,23 +185,25 @@ impl MainWnd
 {
     mtd createToolbar()
     {
-        mtd createBtn(toolbar: *Wnd, n: string, iconIdx: s32)
+        mtd createBtn(n: string, iconIdx: s32, id: WndId)
         {
             b := IconButton.create(toolbar, Icon.from(&icons48, iconIdx), @{0, 0, 56, 64})
             b.name = n
+            b.id = #self.id
             b.style.addStyleSheetColors("btnIcon_CheckedBk    $btnIcon_HotBk")
             b.style.addStyleSheetColors("btnIcon_CheckedHotBk $btnIcon_HotBk")
-            b.iconBtnFlags |= .CheckableToggle
+            b.iconBtnFlags |= .Checkable
             b.checkedForm = .Bottom
             b.dockStyle = .Left
         }
 
-        toolbar := Wnd.create'Wnd(self, @{0, 0, 0, 64})
+        toolbar = Wnd.create'Wnd(self, @{0, 0, 0, 64})
         toolbar.dockStyle = .Top
         toolbar.backgroundStyle = .Window
         toolbar.style.addStyleSheetColors("wnd_Bk $wnd_Caption")
-        self.createBtn(toolbar, "shape", 0)
-        self.createBtn(toolbar, "line", 1)
+        self.createBtn("shape", 0, CmdIdModeShape)
+        self.createBtn("line", 1, CmdIdModeLine)
+        toolbar.updateCommandState()
     }
 
     func create(parent: *Wnd)->*MainWnd
