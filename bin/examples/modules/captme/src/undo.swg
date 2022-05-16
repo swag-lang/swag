@@ -135,14 +135,14 @@ impl Undo
             }
 
         case MovePoint:
-            baseForm.movePoint(pointIdx, @{newPosX, newPosY})
+            baseForm.movePoint(pointIdx, newPosX, newPosY)
 
         case MoveBaseForm:
             baseForm.moveBaseForm(newPosX, newPosY, newSizeX, newSizeY)
 
         case MoveCapture:
             visit f: capture.forms
-                f.moveForm(@{newPosX, newPosY})
+                f.moveForm(newPosX, newPosY)
             capture.width  += newSizeX
             capture.height += newSizeY
 
@@ -150,7 +150,7 @@ impl Undo
             visit s: selection
             {
                 f := capture.forms[s]
-                f.moveForm(@{newPosX, newPosY})
+                f.moveForm(newPosX, newPosY)
             }
 
         case MoveToFront:
@@ -234,7 +234,7 @@ impl Undo
             }
 
         case MovePoint:
-            baseForm.movePoint(pointIdx, @{-newPosX, -newPosY})
+            baseForm.movePoint(pointIdx, -newPosX, -newPosY)
 
         case MoveBaseForm:
             b := cast(*BaseForm) @dataof(baseForm)
@@ -245,7 +245,7 @@ impl Undo
 
         case MoveCapture:
             visit f: capture.forms
-                f.moveForm(@{-newPosX, -newPosY})
+                f.moveForm(-newPosX, -newPosY)
             capture.width  -= newSizeX
             capture.height -= newSizeY
 
@@ -253,7 +253,7 @@ impl Undo
             visit s: selection
             {
                 f := capture.forms[s]
-                f.moveForm(@{-newPosX, -newPosY})
+                f.moveForm(-newPosX, -newPosY)
             }
 
         case MoveToFront, MoveToBack, MoveForward, MoveBackward:

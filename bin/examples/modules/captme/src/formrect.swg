@@ -49,13 +49,13 @@ impl IForm for FormRect
         }
     }
 
-    mtd moveForm(diff: Math.Point)
+    mtd moveForm(newPosX, newPosY: s32)
     {
-        x += cast(s32) diff.x
-        y += cast(s32) diff.y
+        x += newPosX
+        y += newPosY
     }
 
-    mtd movePoint(pt: u32, diff: Math.Point)
+    mtd movePoint(pt: u32, newPosX, newPosY: s32)
     {
     }
 

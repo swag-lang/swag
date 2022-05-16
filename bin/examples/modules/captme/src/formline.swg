@@ -24,23 +24,23 @@ impl IForm for FormLine
         yb = ya + newSizeY
     }
 
-    mtd moveForm(diff: Math.Point)
+    mtd moveForm(newPosX, newPosY: s32)
     {
-        xa, xb += cast(s32) diff.x
-        ya, yb += cast(s32) diff.y
+        xa, xb += newPosX
+        ya, yb += newPosY
     }
 
-    mtd movePoint(pt: u32, diff: Math.Point)
+    mtd movePoint(pt: u32, newPosX, newPosY: s32)
     {
         if pt == 0
         {
-            xa += diff.x
-            ya += diff.y
+            xa += newPosX
+            ya += newPosY
         }
         else
         {
-            xb += diff.x
-            yb += diff.y
+            xb += newPosX
+            yb += newPosY
         }
     }
 
