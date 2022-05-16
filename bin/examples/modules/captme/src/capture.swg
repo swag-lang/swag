@@ -335,8 +335,9 @@ impl Capture
 
                 form := Memory.new'FormRect()
                 //form := Memory.new'FormLine()
-                form.setup(self)
-                forms.add(cast(IForm) form)
+                itf := cast(IForm) form
+                itf.setup(self)
+                forms.add(itf)
             }
 
             f := forms.back()

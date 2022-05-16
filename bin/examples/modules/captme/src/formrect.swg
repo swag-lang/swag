@@ -136,10 +136,7 @@ impl IForm for FormRect
             }
         }
     }
-}
 
-impl FormRect
-{
     mtd setup(capt: *Capture)
     {
         capture = capt

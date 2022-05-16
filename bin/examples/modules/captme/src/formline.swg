@@ -94,10 +94,7 @@ impl IForm for FormLine
         computePaintCoords(z)
         painter.drawLine(x0 - paintPos.x, y0 - paintPos.y, x1 - paintPos.x, y1 - paintPos.y, borderColor, bSize)
     }
-}
 
-impl FormLine
-{
     mtd setup(capt: *Capture)
     {
         capture = capt

@@ -27,6 +27,7 @@ impl EditWnd
         scroll.view = view
 
         // TEMP
+        var itf: IForm
         capture := Memory.new'Capture()
         capture.width = 400
         capture.height = 400
@@ -38,21 +39,24 @@ impl EditWnd
         forma.yb = 140
         forma.borderColor = Argb.Red
         forma.borderSize = 20
-        forma.setup(capture)
-        capture.forms.add(cast(IForm) forma)
+        itf = cast(IForm) forma
+        itf.setup(capture)
+        capture.forms.add(itf)
 
         form0 := Memory.new'FormRect()
         form0.x, form0.y = 50
         form0.backColor = Argb.Green
-        form0.setup(capture)
-        capture.forms.add(cast(IForm) form0)
+        itf = cast(IForm) form0
+        itf.setup(capture)
+        capture.forms.add(itf)
 
         form1 := Memory.new'FormRect()
         form1.x, form1.y = 150
         form1.w = 100
         form1.backColor = Argb.Zero
-        form1.setup(capture)
-        capture.forms.add(cast(IForm) form1)
+        itf = cast(IForm) form1
+        itf.setup(capture)
+        capture.forms.add(itf)
 
         form2 := Memory.new'FormRect()
         form2.kind = .Rectangle
@@ -61,8 +65,9 @@ impl EditWnd
         form2.alpha = 50
         form2.backColor = Argb.Blue
         form2.borderSize = 10
-        form2.setup(capture)
-        capture.forms.add(cast(IForm) form2)
+        itf = cast(IForm) form2
+        itf.setup(capture)
+        capture.forms.add(itf)
 
         form3 := Memory.new'FormRect()
         form3.kind = .RoundRectangle
@@ -73,8 +78,9 @@ impl EditWnd
         form3.borderColor = Argb.Red
         form3.backColor = Argb.Zero
         form3.borderSize = 5
-        form3.setup(capture)
-        capture.forms.add(cast(IForm) form3)
+        itf = cast(IForm) form3
+        itf.setup(capture)
+        capture.forms.add(itf)
 
         view.setCapture(capture)
         // END TEMP

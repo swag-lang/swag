@@ -11,6 +11,7 @@ interface IForm
     moveBaseForm:   func(self, s32, s32, s32, s32)
     setBaseForm:    func(self, s32, s32, s32, s32)
     movePoint:      func(self, u32, s32, s32)
+    setup:          func(self, *Capture)
 }
 
 #[Swag.EnumFlags]
