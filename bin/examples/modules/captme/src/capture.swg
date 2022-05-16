@@ -1,5 +1,12 @@
 using Core, Gui, Pixel
 
+enum MouseMode
+{
+    None
+    Moving
+    Creating
+}
+
 struct Capture
 {
     // To save
@@ -7,6 +14,7 @@ struct Capture
     forms:  Array'IForm
 
     // Dyn
+    mouseMode:  MouseMode = None
     editView:   *EditView
     gizmo:      GizmoRect
     undos:      ArrayPtr'Undo
@@ -15,9 +23,7 @@ struct Capture
     selection:  Array'uint
     paintRect:  Math.Rectangle
 
-    moving:             bool
-    creating:           bool
-    firstMouseMove:        bool
+    firstMouseMove:     bool
     movingCursorSet:    bool
     movingStart:        Math.Point
 }
@@ -192,7 +198,7 @@ impl Capture
         localPos := view.surfaceToLocal(evt.surfacePos)
         localPos += view.scrollPos
 
-        if !moving and !creating
+        if mouseMode == .None
         {
             if evt.kind == .MouseLeave
                 return true
@@ -247,32 +253,30 @@ impl Capture
             }
         }
 
+        // End of mode
+        ///////////////////////
         if evt.kind == .MouseReleased and evt.button == .Left
         {
-            // End of selection move
-            if moving
+            switch mouseMode
             {
+            case Moving:
                 if hotForm == Swag.UInt.Max
                 {
                     app.popCursor()
                     movingCursorSet = false
                 }
-
-                view.releaseMouse()
-                view.invalidate()
-                moving = false
             }
 
-            // End of tool creation
-            elif creating
+            if mouseMode != .None
             {
                 view.releaseMouse()
                 view.invalidate()
-                creating = false
+                mouseMode = .None
             }
         }
 
-        // Selection
+        // Start of mode
+        ///////////////////////
         if evt.kind == .MousePressed and evt.button == .Left
         {
             here := selection.contains(hotForm)
@@ -283,23 +287,27 @@ impl Capture
             {
                 if !here
                     selection.add(hotForm)
-                moving, firstMouseMove = true
+                mouseMode = .Moving
+                firstMouseMove = true
                 movingStart = localPos
                 view.captureMouse()
                 view.invalidate()
             }
             else
             {
-                creating, firstMouseMove = true
+                mouseMode = .Creating
+                firstMouseMove = true
                 movingStart = localPos
                 view.captureMouse()
                 view.invalidate()
             }
         }
 
-        // Move selection
-        if moving
+        // Mode
+        ///////////////////////
+        switch mouseMode
         {
+        case Moving:
             newPosX := cast(s32) ((localPos.x - movingStart.x) / view.zoom)
             newPosY := cast(s32) ((localPos.y - movingStart.y) / view.zoom)
 
@@ -319,11 +327,8 @@ impl Capture
             view.invalidate()
 
             return true
-        }
 
-        // Create
-        if creating
-        {
+        case Creating:
             newPosX := cast(s32) ((localPos.x - movingStart.x) / view.zoom)
             newPosY := cast(s32) ((localPos.y - movingStart.y) / view.zoom)
 
