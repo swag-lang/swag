@@ -940,9 +940,24 @@ impl Wnd
 
     mtd updateCommandState()
     {
+        var arr: Array'*Wnd
+
+        p := self
+        while p
+        {
+            if p.id != null
+                arr.add(p)
+            p = p.owner orelse p.parent
+        }
+
         visit c: childs
         {
-            if c.id == null continue
+            if c.id != null
+                arr.add(c)
+        }
+
+        visit c: arr
+        {
             evt := sendCommandUIEvent(c.id)
             if evt.accepted
             {
