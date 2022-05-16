@@ -13,9 +13,11 @@ struct Capture
     nextUndo:   uint
     hotForm:    uint = Swag.UInt.Max
     selection:  Array'uint
+    paintRect:  Math.Rectangle
 
     moving:             bool
-    firstMoving:        bool
+    creating:           bool
+    firstMouseMove:        bool
     movingCursorSet:    bool
     movingStart:        Math.Point
 }
@@ -46,13 +48,14 @@ impl Capture
         painter.fillRect(rect, Brush.createHatch(.CheckBoardLarge, Argb.DarkGray))
         painter.setParams(.Antialiased)
 
+        paintRect = rect
         zoom := rect.width / width
 
         // Shapes
         app := editView.getApp()
         render := &app.renderer
 
-        visit f, i: forms
+        visit f: forms
         {
             boundRect := f.boundRect()
             base := cast(*BaseForm) @dataof(f)
@@ -189,7 +192,7 @@ impl Capture
         localPos := view.surfaceToLocal(evt.surfacePos)
         localPos += view.scrollPos
 
-        if !moving
+        if !moving and !creating
         {
             if evt.kind == .MouseLeave
                 return true
@@ -244,18 +247,29 @@ impl Capture
             }
         }
 
-        // End of selection move
-        if moving and evt.kind == .MouseReleased and evt.button == .Left
+        if evt.kind == .MouseReleased and evt.button == .Left
         {
-            if hotForm == Swag.UInt.Max
+            // End of selection move
+            if moving
             {
-                app.popCursor()
-                movingCursorSet = false
+                if hotForm == Swag.UInt.Max
+                {
+                    app.popCursor()
+                    movingCursorSet = false
+                }
+
+                view.releaseMouse()
+                view.invalidate()
+                moving = false
             }
 
-            view.releaseMouse()
-            view.invalidate()
-            moving = false
+            // End of tool creation
+            elif creating
+            {
+                view.releaseMouse()
+                view.invalidate()
+                creating = false
+            }
         }
 
         // Selection
@@ -264,11 +278,19 @@ impl Capture
             here := selection.contains(hotForm)
             if !(evt.modifiers & .Control) and !here
                 selection.clear()
+
             if hotForm != Swag.UInt.Max
             {
                 if !here
                     selection.add(hotForm)
-                moving, firstMoving = true
+                moving, firstMouseMove = true
+                movingStart = localPos
+                view.captureMouse()
+                view.invalidate()
+            }
+            else
+            {
+                creating, firstMouseMove = true
                 movingStart = localPos
                 view.captureMouse()
                 view.invalidate()
@@ -281,11 +303,11 @@ impl Capture
             newPosX := cast(s32) ((localPos.x - movingStart.x) / view.zoom)
             newPosY := cast(s32) ((localPos.y - movingStart.y) / view.zoom)
 
-            if firstMoving
+            if firstMouseMove
             {
                 if Math.abs(newPosX) <= 3 and Math.abs(newPosY) <= 3
                     return true
-                firstMoving = false
+                firstMouseMove = false
             }
             else
                 undo()
@@ -296,6 +318,34 @@ impl Capture
             pushUndo(u)
             view.invalidate()
 
+            return true
+        }
+
+        // Create
+        if creating
+        {
+            newPosX := cast(s32) ((localPos.x - movingStart.x) / view.zoom)
+            newPosY := cast(s32) ((localPos.y - movingStart.y) / view.zoom)
+
+            if firstMouseMove
+            {
+                if Math.abs(newPosX) <= 3 and Math.abs(newPosY) <= 3
+                    return true
+                firstMouseMove = false
+
+                forma := Memory.new'FormRect()
+                forma.x = acast ((movingStart.x - paintRect.x) / view.zoom)
+                forma.y = acast ((movingStart.y - paintRect.y) / view.zoom)
+                forma.w = 0
+                forma.h = 0
+                forma.setup(self)
+                forms.add(cast(IForm) forma)
+            }
+
+            f := forms.back()
+            b := cast(*BaseForm) @dataof(f)
+            b.w, b.h = 0
+            f.moveBaseForm(0, 0, Math.max(newPosX, 2), Math.max(newPosY, 2))
             return true
         }
 
