@@ -30,14 +30,16 @@ impl IWnd for MainWnd
         switch evt.id
         {
         case CmdIdModeShape:
-            evt.setFlags |= .Icon | .Checked
+            evt.setFlags |= .Icon | .Checked | .Name
             evt.icon = Icon.from(&icons48, 0)
+            evt.name = "shape"
             evt.checked = editMode == .Shape
             evt.accepted = true
 
         case CmdIdModeLine:
-            evt.setFlags |= .Icon | .Checked
+            evt.setFlags |= .Icon | .Checked | .Name
             evt.icon = Icon.from(&icons48, 1)
+            evt.name = "line"
             evt.checked = editMode == .Line
             evt.accepted = true
 
@@ -185,10 +187,9 @@ impl MainWnd
 {
     mtd createToolbar()
     {
-        mtd createBtn(n: string, iconIdx: s32, id: WndId)
+        mtd createBtn(id: WndId)
         {
-            b := IconButton.create(toolbar, Icon.from(&icons48, iconIdx), @{0, 0, 56, 64})
-            b.name = n
+            b := IconButton.create(toolbar, position: @{0, 0, 56, 64})
             b.id = #self.id
             b.style.addStyleSheetColors("btnIcon_CheckedBk    $btnIcon_HotBk")
             b.style.addStyleSheetColors("btnIcon_CheckedHotBk $btnIcon_HotBk")
@@ -201,8 +202,8 @@ impl MainWnd
         toolbar.dockStyle = .Top
         toolbar.backgroundStyle = .Window
         toolbar.style.addStyleSheetColors("wnd_Bk $wnd_Caption")
-        self.createBtn("shape", 0, CmdIdModeShape)
-        self.createBtn("line", 1, CmdIdModeLine)
+        self.createBtn(CmdIdModeShape)
+        self.createBtn(CmdIdModeLine)
         toolbar.updateCommandState()
     }
 
