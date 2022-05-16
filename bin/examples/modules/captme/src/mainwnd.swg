@@ -80,36 +80,42 @@ impl IWnd for MainWnd
             evt.accepted = true
 
         case CmdIdBringToFront:
-            evt.setFlags |= .Disabled | .Icon
+            evt.setFlags |= .Disabled | .Icon | .Name
+            evt.name = "Bring To Front"
             evt.disabled = !hasSel or capture.selection.contains(capture.forms.count - 1)
             evt.icon = evt.target.getTheme().getIcon24(.BringToFront)
             evt.accepted = true
 
         case CmdIdSendToBack:
-            evt.setFlags |= .Disabled | .Icon
+            evt.setFlags |= .Disabled | .Icon | .Name
+            evt.name = "Send To Back"
             evt.disabled = !hasSel or capture.selection.contains(0)
             evt.icon = evt.target.getTheme().getIcon24(.SendToBack)
             evt.accepted = true
 
         case CmdIdBringForward:
-            evt.setFlags |= .Disabled | .Icon | .Shortcut
+            evt.setFlags |= .Disabled | .Icon | .Shortcut | .Name
+            evt.name = "Bring Forward"
             evt.disabled = !hasSel or capture.selection.contains(capture.forms.count - 1)
             evt.icon = evt.target.getTheme().getIcon24(.BringForward)
             evt.accepted = true
 
         case CmdIdSendBackward:
-            evt.setFlags |= .Disabled | .Icon
+            evt.setFlags |= .Disabled | .Icon | .Name
+            evt.name = "Send Backward"
             evt.disabled = !hasSel or capture.selection.contains(0)
             evt.icon = evt.target.getTheme().getIcon24(.SendBackward)
             evt.accepted = true
 
         case CmdIdUndo:
-            evt.setFlags |= .Disabled
+            evt.setFlags |= .Disabled | .Name
+            evt.name = "Undo"
             evt.disabled = !capture or !capture.canUndo()
             evt.accepted = true
 
         case CmdIdRedo:
-            evt.setFlags |= .Disabled
+            evt.setFlags |= .Disabled | .Name
+            evt.name = "Redo"
             evt.disabled = !capture or !capture.canRedo()
             evt.accepted = true
         }
@@ -222,7 +228,7 @@ impl MainWnd
         res.icons48.set(renderer.addImage(img), 48, 48)
 
         res.createToolbar()
-        res.editWnd = EditWnd.create(res)
+        res.editWnd = EditWnd.create(res, res)
         res.editWnd.dockStyle = .Center
 
         res.registerKeyShortcut(Input.KeyModifiers.Control, Input.Key.Z, CmdIdUndo)

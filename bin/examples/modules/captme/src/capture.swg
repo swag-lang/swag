@@ -159,23 +159,22 @@ impl Capture
 
         {
             popup := MenuCtrl.createPopup(view)
-            popup.addItem("Left", CmdIdAlignLeft)
-            popup.addItem("Center", CmdIdAlignCenter)
-            popup.addItem("Right", CmdIdAlignRight)
+            popup.addItem(CmdIdAlignLeft)
+            popup.addItem(CmdIdAlignCenter)
+            popup.addItem(CmdIdAlignRight)
             popup.addSeparator()
-            popup.addItem("Top", CmdIdAlignTop)
-            popup.addItem("Middle", CmdIdAlignMiddle)
-            popup.addItem("Bottom", CmdIdAlignBottom)
-
+            popup.addItem(CmdIdAlignTop)
+            popup.addItem(CmdIdAlignMiddle)
+            popup.addItem(CmdIdAlignBottom)
             menu.addPopup("Align", popup)
         }
 
         {
             popup := MenuCtrl.createPopup(view)
-            popup.addItem("Bring To Front", CmdIdBringToFront)
-            popup.addItem("Send To Back", CmdIdSendToBack)
-            popup.addItem("Bring Forward", CmdIdBringForward)
-            popup.addItem("Send Backward", CmdIdSendBackward)
+            popup.addItem(CmdIdBringToFront)
+            popup.addItem(CmdIdSendToBack)
+            popup.addItem(CmdIdBringForward)
+            popup.addItem(CmdIdSendBackward)
             menu.addPopup("Arrange", popup)
         }
 

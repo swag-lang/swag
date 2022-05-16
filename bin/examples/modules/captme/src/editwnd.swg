@@ -9,6 +9,7 @@ struct EditWnd
 struct EditView
 {
     using wnd:  Wnd
+    main:       *MainWnd
     scroll:     *ScrollWnd
     capture:    *Capture
     zoom:       f32 = 1
@@ -16,11 +17,12 @@ struct EditView
 
 impl EditWnd
 {
-    func create(parent: *Wnd)->*EditWnd
+    func create(main: *MainWnd, parent: *Wnd)->*EditWnd
     {
         scroll := Wnd.create'EditWnd(parent)
         view   := Wnd.create'EditView(scroll)
         view.scroll = scroll
+        view.main = main
         scroll.editView = view
         scroll.view = view
 

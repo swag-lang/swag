@@ -585,6 +585,12 @@ public impl MenuCtrl
     }
 
     // Add a new item
+    mtd addItem(id: WndId)
+    {
+        self.addItem(null, #self.id)
+    }
+
+    // Add a new item
     mtd addItem(name: string, id: WndId, icon: Icon = @{}, rightName: string = null, disabled = false)
     {
         mitem := items.newPtr()
