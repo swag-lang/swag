@@ -10,6 +10,29 @@ public struct Button
     isIn:           bool
 }
 
+impl IWnd for Button
+{
+    mtd onCommandStateEvent(evt: *CommandUIEvent)
+    {
+        if evt.id != id
+            return
+
+        if evt.setFlags & .Icon and icon != evt.icon
+        {
+            evt.accepted = true
+            icon = evt.icon
+            invalidate()
+        }
+
+        if evt.setFlags & .Name and name != evt.name
+        {
+            evt.accepted = true
+            name = evt.name
+            invalidate()
+        }
+    }
+}
+
 impl Button
 {
     mtd processMouseEvent(evt: *MouseEvent)->bool

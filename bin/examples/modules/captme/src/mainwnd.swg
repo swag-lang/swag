@@ -44,32 +44,38 @@ impl IWnd for MainWnd
             evt.accepted = true
 
         case CmdIdAlignLeft:
-            evt.setFlags |= .Disabled
+            evt.setFlags |= .Disabled | .Name
+            evt.name = "Left"
             evt.disabled = !hasSel or hasSingleSel
             evt.accepted = true
 
         case CmdIdAlignCenter:
-            evt.setFlags |= .Disabled
+            evt.setFlags |= .Disabled | .Name
+            evt.name = "Center"
             evt.disabled = !hasSel or hasSingleSel
             evt.accepted = true
 
         case CmdIdAlignRight:
-            evt.setFlags |= .Disabled
+            evt.setFlags |= .Disabled | .Name
+            evt.name = "Right"
             evt.disabled = !hasSel or hasSingleSel
             evt.accepted = true
 
         case CmdIdAlignTop:
-            evt.setFlags |= .Disabled
+            evt.setFlags |= .Disabled | .Name
+            evt.name = "Top"
             evt.disabled = !hasSel or hasSingleSel
             evt.accepted = true
 
         case CmdIdAlignMiddle:
-            evt.setFlags |= .Disabled
+            evt.setFlags |= .Disabled | .Name
+            evt.name = "Middle"
             evt.disabled = !hasSel or hasSingleSel
             evt.accepted = true
 
         case CmdIdAlignBottom:
-            evt.setFlags |= .Disabled
+            evt.setFlags |= .Disabled | .Name
+            evt.name = "Bottom"
             evt.disabled = !hasSel or hasSingleSel
             evt.accepted = true
 

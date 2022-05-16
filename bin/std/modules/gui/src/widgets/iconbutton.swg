@@ -45,24 +45,14 @@ impl IWnd for IconButton
         if evt.id != id
             return
 
-        evt.accepted = true
-        if evt.setFlags & .Checked
+        if evt.setFlags & .Checked and isChecked != evt.checked
         {
+            evt.accepted = true
             isChecked = evt.checked
             invalidate()
         }
 
-        if evt.setFlags & .Icon
-        {
-            icon = evt.icon
-            invalidate()
-        }
-
-        if evt.setFlags & .Name
-        {
-            name = evt.name
-            invalidate()
-        }
+        button.IWnd.onCommandStateEvent(evt)
     }
 
     mtd onPaintEvent(evt: *PaintEvent)

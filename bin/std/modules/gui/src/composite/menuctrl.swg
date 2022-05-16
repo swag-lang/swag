@@ -327,7 +327,7 @@ impl MenuCtrl
         timer = null
     }
 
-    mtd updateUI()
+    mtd updateState()
     {
         visit i: items
         {
@@ -336,6 +336,8 @@ impl MenuCtrl
                 i.disabled = evt.disabled
             if evt.setFlags & .Icon
                 i.icon = evt.icon
+            if evt.setFlags & .Name
+                i.name = evt.name
             if evt.setFlags & .Shortcut
                 i.rightName.set(evt.shortcut)
         }
@@ -373,7 +375,7 @@ impl MenuCtrl
         subVisible = hotItem.popup
 
         // Be sure popup menu is in the client area of the top view
-        subVisible.updateUI()
+        subVisible.updateState()
         subVisible.computeLayoutPopup()
         topView := getTopView()
         pt := topView.surfaceToLocal(@{pos.x, pos.y})
@@ -401,7 +403,7 @@ impl MenuCtrl
         subVisible = hotItem.popup
 
         // Be sure popup menu is in the client area of the top view
-        subVisible.updateUI()
+        subVisible.updateState()
         subVisible.computeLayoutPopup()
         topView := getTopView()
         pt := topView.surfaceToLocal(@{pos.x, pos.y})
@@ -630,7 +632,7 @@ public impl MenuCtrl
     {
         Debug.assert(!bar)
 
-        updateUI()
+        updateState()
         computeLayoutPopup()
 
         // Be sure popup menu is in the client area of the top view

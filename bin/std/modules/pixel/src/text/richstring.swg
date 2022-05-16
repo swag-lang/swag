@@ -27,6 +27,11 @@ struct RichString
 
 impl RichString
 {
+    mtd opEquals(other: string)->bool
+    {
+        return raw == other
+    }
+
     // We need to recompute chunks, as they contains slices
     mtd opPostCopy()
     {
