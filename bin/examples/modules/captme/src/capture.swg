@@ -333,19 +333,21 @@ impl Capture
                     return true
                 firstMouseMove = false
 
-                forma := Memory.new'FormRect()
-                forma.x = acast ((movingStart.x - paintRect.x) / view.zoom)
-                forma.y = acast ((movingStart.y - paintRect.y) / view.zoom)
-                forma.w = 0
-                forma.h = 0
-                forma.setup(self)
-                forms.add(cast(IForm) forma)
+                form := Memory.new'FormRect()
+                //form := Memory.new'FormLine()
+                form.setup(self)
+                forms.add(cast(IForm) form)
             }
 
             f := forms.back()
             b := cast(*BaseForm) @dataof(f)
-            b.w, b.h = 0
-            f.moveBaseForm(0, 0, Math.max(newPosX, 2), Math.max(newPosY, 2))
+
+            xa := cast(s32) ((movingStart.x - paintRect.x) / view.zoom)
+            ya := cast(s32) ((movingStart.y - paintRect.y) / view.zoom)
+            xb := cast(s32) ((localPos.x - paintRect.x) / view.zoom)
+            yb := cast(s32) ((localPos.y - paintRect.y) / view.zoom)
+
+            f.setBaseForm(xa, ya, xb - xa, yb - ya)
             return true
         }
 

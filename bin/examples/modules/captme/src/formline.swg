@@ -16,6 +16,14 @@ impl IForm for FormLine
         ya, yb += newPosY
     }
 
+    mtd setBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
+    {
+        xa = newPosX
+        ya = newPosY
+        xb = xa + newSizeX
+        yb = ya + newSizeY
+    }
+
     mtd moveForm(diff: Math.Point)
     {
         xa, xb += cast(s32) diff.x

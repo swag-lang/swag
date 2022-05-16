@@ -24,6 +24,31 @@ impl IForm for FormRect
         h += newSizeY
     }
 
+    mtd setBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
+    {
+        if newSizeX < 0
+        {
+            x = newPosX + newSizeX
+            w = -newSizeX
+        }
+        else
+        {
+            x = newPosX
+            w = newSizeX
+        }
+
+        if newSizeY < 0
+        {
+            y = newPosY + newSizeY
+            h = -newSizeY
+        }
+        else
+        {
+            y = newPosY
+            h = newSizeY
+        }
+    }
+
     mtd moveForm(diff: Math.Point)
     {
         x += cast(s32) diff.x

@@ -9,6 +9,7 @@ interface IForm
     boundRect:      func(self)->Math.Rectangle
     moveForm:       func(self, Math.Point)
     moveBaseForm:   func(self, s32, s32, s32, s32)
+    setBaseForm:    func(self, s32, s32, s32, s32)
     movePoint:      func(self, u32, Math.Point)
 }
 
