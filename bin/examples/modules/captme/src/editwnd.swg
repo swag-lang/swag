@@ -48,6 +48,8 @@ impl EditWnd
         formb.points.add(@{125, 25})
         formb.points.add(@{75, 50})
         formb.borderColor = Argb.Purple
+        formb.alpha = 75
+        formb.borderSize = 2
         itf = cast(IForm) formb
         itf.setup(capture)
         capture.forms.add(itf)

@@ -79,9 +79,20 @@ impl Vector2
         return result
     }
 
-    func isLineLineIntersect(start0, end0, start1, end1: Vector2, epsilon: f32 = ConstF32.Epsilon)->bool
+    // Compute the intersection point of two segments
+    func segSegIntersect(start0, end0, start1, end1: Vector2, epsilon: f32 = ConstF32.Epsilon)->{yes: bool, pos: Vector2}
     {
+        var result: retval
+
         (yes, d0, d1) := getLineLineIntersectCoefs(start0, end0, start1, end1, epsilon)
-        return yes
+        if !yes return result
+
+        if d0 < -epsilon or d0 > 1 + epsilon or d1 < -epsilon or d1 > 1 + epsilon
+            return result
+
+        result.yes = true
+        result.pos.x = start0.x + d0 * (end0.x - start0.x)
+        result.pos.y = start0.y + d0 * (end0.y - start0.y)
+        return result
     }
 }

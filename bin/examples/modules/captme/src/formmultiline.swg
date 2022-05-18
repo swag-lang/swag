@@ -49,7 +49,7 @@ impl IForm for FormMultiLine
     {
         var result: retval
 
-        bSize := borderSize * 0.5
+        bSize := borderSize
         x0 := Swag.F32.Max
         y0 := Swag.F32.Max
         x1 := 0'f32
@@ -105,15 +105,22 @@ impl IForm for FormMultiLine
         computePaintCoords(z)
         v := Math.Vector2{pt.x, pt.y}
 
-        /*loop i: paintPoints
+        // Just the outline
+        if backColor.a == 0
         {
-            p0 := Math.Vector2{paintPoints[i].x, paintPoints[i].y}
-            ni := (i + 1) % paintPoints.count
-            p1 := Math.Vector2{paintPoints[ni].x, paintPoints[ni].y}
-            if v.distanceToLine(p0, p1) < bSize
-                return true
-        }*/
+            loop i: paintPoints
+            {
+                p0 := Math.Vector2{paintPoints[i].x, paintPoints[i].y}
+                ni := (i + 1) % paintPoints.count
+                p1 := Math.Vector2{paintPoints[ni].x, paintPoints[ni].y}
+                if v.distanceToLine(p0, p1) < bSize
+                    return true
+            }
 
+            return false
+        }
+
+        // Content
         count := 0
         loop i: paintPoints
         {
@@ -121,7 +128,8 @@ impl IForm for FormMultiLine
             ni := (i + 1) % paintPoints.count
             p1 := Math.Vector2{paintPoints[ni].x, paintPoints[ni].y}
 
-            if Math.Vector2.isLineLineIntersect(@{0, 0}, v, p0, p1)
+            res := Math.Vector2.segSegIntersect(@{0, 0}, v, p0, p1)
+            if res.yes
                 count += 1
         }
 
@@ -138,6 +146,8 @@ impl IForm for FormMultiLine
         loop i: 1..paintPoints.count-1
             pl.lineTo(paintPoints[i].x - paintPos.x, paintPoints[i].y - paintPos.y)
         pl.close()
+
+        painter.fillPath(&pl, backColor)
         painter.drawPath(&pl, borderColor, bSize)
     }
 
