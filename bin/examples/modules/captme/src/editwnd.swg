@@ -43,6 +43,15 @@ impl EditWnd
         itf.setup(capture)
         capture.forms.add(itf)
 
+        formb := Memory.new'FormMultiLine()
+        formb.points.add(@{25, 25})
+        formb.points.add(@{125, 25})
+        formb.points.add(@{75, 50})
+        formb.borderColor = Argb.Purple
+        itf = cast(IForm) formb
+        itf.setup(capture)
+        capture.forms.add(itf)
+
         form0 := Memory.new'FormRect()
         form0.x, form0.y = 50
         form0.backColor = Argb.Green
