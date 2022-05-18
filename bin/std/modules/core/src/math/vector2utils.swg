@@ -78,4 +78,10 @@ impl Vector2
         result.pos.y = start0.y + d0 * (end0.y - start0.y)
         return result
     }
+
+    func isLineLineIntersect(start0, end0, start1, end1: Vector2, epsilon: f32 = ConstF32.Epsilon)->bool
+    {
+        (yes, d0, d1) := getLineLineIntersectCoefs(start0, end0, start1, end1, epsilon)
+        return yes
+    }
 }

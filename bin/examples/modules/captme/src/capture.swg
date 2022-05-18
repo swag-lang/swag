@@ -305,17 +305,20 @@ impl Capture
 
         // End of mode
         ///////////////////////
-        if evt.kind == .MouseReleased and evt.button == .Left and mouseMode == .Moving
+        if evt.kind == .MouseReleased and evt.button == .Left
         {
-            if hotForm == Swag.UInt.Max
+            if hotForm == Swag.UInt.Max and mouseMode == .Moving
             {
                 app.popCursor()
                 movingCursorSet = false
             }
 
-            view.releaseMouse()
-            view.invalidate()
-            mouseMode = .None
+            if mouseMode == .Moving or firstMouseMove
+            {
+                view.releaseMouse()
+                view.invalidate()
+                mouseMode = .None
+            }
         }
 
         // Mode

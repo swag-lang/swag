@@ -105,16 +105,27 @@ impl IForm for FormMultiLine
         computePaintCoords(z)
         v := Math.Vector2{pt.x, pt.y}
 
-        loop i: paintPoints
+        /*loop i: paintPoints
         {
             p0 := Math.Vector2{paintPoints[i].x, paintPoints[i].y}
             ni := (i + 1) % paintPoints.count
             p1 := Math.Vector2{paintPoints[ni].x, paintPoints[ni].y}
             if v.distanceToLine(p0, p1) < bSize
                 return true
+        }*/
+
+        count := 0
+        loop i: paintPoints
+        {
+            p0 := Math.Vector2{paintPoints[i].x, paintPoints[i].y}
+            ni := (i + 1) % paintPoints.count
+            p1 := Math.Vector2{paintPoints[ni].x, paintPoints[ni].y}
+
+            if Math.Vector2.isLineLineIntersect(@{0, 0}, v, p0, p1)
+                count += 1
         }
 
-        return false
+        return count & 1 ? true : false
     }
 
     mtd paint(painter: *Painter, z: f32)
