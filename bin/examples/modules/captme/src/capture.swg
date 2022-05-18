@@ -283,6 +283,13 @@ impl Capture
                             editView.main.mdlFormLine = dref b
                             editView.main.editMode = .Line
                             editView.main.toolbar.updateCommandState()
+
+                        case FormPolygon:
+                            b := cast(*FormPolygon) @dataof(f)
+                            editView.main.mdlFormPolygon = dref b
+                            editView.main.editMode = .Polygon
+                            editView.main.toolbar.updateCommandState()
+
                         }
                     }
                 }
@@ -366,6 +373,10 @@ impl Capture
                 case Line:
                     form := Memory.new'FormLine()
                     dref form = editView.main.mdlFormLine
+                    itf = cast(IForm) form
+                case Polygon:
+                    form := Memory.new'FormPolygon()
+                    dref form = editView.main.mdlFormPolygon
                     itf = cast(IForm) form
                 }
 

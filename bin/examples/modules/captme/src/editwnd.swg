@@ -43,7 +43,7 @@ impl EditWnd
         itf.setup(capture)
         capture.forms.add(itf)
 
-        formb := Memory.new'FormMultiLine()
+        formb := Memory.new'FormPolygon()
         formb.points.add(@{25, 25})
         formb.points.add(@{125, 25})
         formb.points.add(@{75, 50})

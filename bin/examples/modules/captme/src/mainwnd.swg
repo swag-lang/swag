@@ -4,6 +4,7 @@ enum EditMode
 {
     Shape
     Line
+    Polygon
 }
 
 struct MainWnd
@@ -16,6 +17,7 @@ struct MainWnd
     editMode:       EditMode = .Shape
     mdlFormRect:    FormRect
     mdlFormLine:    FormLine
+    mdlFormPolygon: FormPolygon
 }
 
 const Icons48 = #load("ressources/icons48.png")
@@ -44,6 +46,13 @@ impl IWnd for MainWnd
             evt.icon = Icon.from(&icons48, 1)
             evt.name = "line"
             evt.checked = editMode == .Line
+            evt.accepted = true
+
+        case CmdIdModePolygon:
+            evt.setFlags |= .Icon | .Checked | .Name
+            evt.icon = Icon.from(&icons48, 2)
+            evt.name = "polygon"
+            evt.checked = editMode == .Polygon
             evt.accepted = true
 
         case CmdIdAlignLeft:
@@ -142,6 +151,11 @@ impl IWnd for MainWnd
             evt.accepted = true
             toolbar.updateCommandState()
 
+        case CmdIdModePolygon:
+            editMode = .Polygon
+            evt.accepted = true
+            toolbar.updateCommandState()
+
         case CmdIdAlignLeft:
             undo = capture.newUndo(.AlignLeft)
             evt.accepted = true
@@ -219,6 +233,7 @@ impl MainWnd
         toolbar.style.addStyleSheetColors("wnd_Bk $wnd_Caption")
         self.createBtn(CmdIdModeShape)
         self.createBtn(CmdIdModeLine)
+        self.createBtn(CmdIdModePolygon)
         toolbar.updateCommandState()
     }
 

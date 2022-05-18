@@ -1,6 +1,6 @@
 using Pixel, Core, Gui
 
-struct FormMultiLine
+struct FormPolygon
 {
     using base:     BaseForm
     gizmo:          GizmoPoints
@@ -8,7 +8,7 @@ struct FormMultiLine
     paintPoints:    Array'Math.Point
 }
 
-impl IForm for FormMultiLine
+impl IForm for FormPolygon
 {
     mtd edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
     {
