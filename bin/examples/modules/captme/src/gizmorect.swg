@@ -199,14 +199,12 @@ impl GizmoRect
             if roundShape
             {
                 painter.fillCircle(c.horzCenter(), c.vertCenter(), anchorSize2, color)
-                if !hot
-                    painter.drawCircle(c.horzCenter(), c.vertCenter(), anchorSize2, Argb.Black, 1)
+                painter.drawCircle(c.horzCenter(), c.vertCenter(), anchorSize2, Argb.Black, 1)
             }
             else
             {
                 painter.fillRect(c, color)
-                if !hot
-                    painter.drawRect(c, Argb.Black, 1)
+                painter.drawRect(c, Argb.Black, 1)
             }
         }
     }

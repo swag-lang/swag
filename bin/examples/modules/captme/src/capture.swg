@@ -255,7 +255,7 @@ impl Capture
 
         // Start of mode
         ///////////////////////
-        if evt.kind == .MousePressed and evt.button == .Left
+        if evt.kind == .MousePressed and evt.button == .Left and mouseMode == .None
         {
             here := selection.contains(hotForm)
             if !(evt.modifiers & .Control) and !here
@@ -314,7 +314,7 @@ impl Capture
         ///////////////////////
         if evt.kind == .MouseReleased and evt.button == .Left
         {
-            if hotForm == Swag.UInt.Max and mouseMode == .Moving
+            if mouseMode == .Moving and hotForm == Swag.UInt.Max
             {
                 app.popCursor()
                 movingCursorSet = false

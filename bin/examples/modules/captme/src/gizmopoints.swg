@@ -84,6 +84,7 @@ impl GizmoPoints
         visit c: anchors
         {
             painter.fillCircle(c.x, c.y, anchorSize2, color)
+            painter.drawCircle(c.x, c.y, anchorSize2, Argb.Black, 1)
         }
     }
 }

@@ -12,8 +12,31 @@ impl IForm for FormPolygon
 {
     mtd edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
     {
-        if evt.kind == .MouseReleased and evt.button == .Left
+        if evt.kind == .MouseDoubleClick and evt.button == .Left
+        {
             return false
+        }
+
+        x0 := cast(s32) ((localPos.x - paintRect.x) / zoom)
+        y0 := cast(s32) ((localPos.y - paintRect.y) / zoom)
+
+        if points.count < 2
+        {
+            xs := cast(s32) ((movingStart.x - paintRect.x) / zoom)
+            ys := cast(s32) ((movingStart.y - paintRect.y) / zoom)
+            points.add(@{xs, ys})
+            points.add(@{x0, y0})
+        }
+        elif evt.kind == .MouseReleased and evt.button == .Left
+        {
+            points.add(@{x0, y0})
+        }
+        else
+        {
+            points[points.count - 1].x = x0
+            points[points.count - 1].y = y0
+        }
+
         return true
     }
 
@@ -154,6 +177,7 @@ impl IForm for FormPolygon
     mtd setup(capt: *Capture)
     {
         capture = capt
+        points.clear()
 
         gizmo.sigChanged = @|self|(g, diff, pt, first) {
             if !first

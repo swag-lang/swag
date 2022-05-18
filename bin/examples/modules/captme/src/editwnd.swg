@@ -44,14 +44,14 @@ impl EditWnd
         capture.forms.add(itf)
 
         formb := Memory.new'FormPolygon()
-        formb.points.add(@{25, 25})
-        formb.points.add(@{125, 25})
-        formb.points.add(@{75, 50})
         formb.borderColor = Argb.Purple
         formb.alpha = 75
         formb.borderSize = 2
         itf = cast(IForm) formb
         itf.setup(capture)
+        formb.points.add(@{25, 25})
+        formb.points.add(@{125, 25})
+        formb.points.add(@{75, 50})
         capture.forms.add(itf)
 
         form0 := Memory.new'FormRect()
