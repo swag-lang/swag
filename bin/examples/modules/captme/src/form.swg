@@ -11,6 +11,7 @@ interface IForm
     moveBaseForm:   func(self, s32, s32, s32, s32)
     setBaseForm:    func(self, s32, s32, s32, s32)
     movePoint:      func(self, u32, s32, s32)
+    edit:           func(self, *MouseEvent, Math.Rectangle, Math.Point, Math.Point, f32)->bool
     setup:          func(self, *Capture)
 }
 

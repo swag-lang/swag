@@ -253,28 +253,6 @@ impl Capture
             }
         }
 
-        // End of mode
-        ///////////////////////
-        if evt.kind == .MouseReleased and evt.button == .Left
-        {
-            switch mouseMode
-            {
-            case Moving:
-                if hotForm == Swag.UInt.Max
-                {
-                    app.popCursor()
-                    movingCursorSet = false
-                }
-            }
-
-            if mouseMode != .None
-            {
-                view.releaseMouse()
-                view.invalidate()
-                mouseMode = .None
-            }
-        }
-
         // Start of mode
         ///////////////////////
         if evt.kind == .MousePressed and evt.button == .Left
@@ -323,6 +301,21 @@ impl Capture
                 view.captureMouse()
                 view.invalidate()
             }
+        }
+
+        // End of mode
+        ///////////////////////
+        if evt.kind == .MouseReleased and evt.button == .Left and mouseMode == .Moving
+        {
+            if hotForm == Swag.UInt.Max
+            {
+                app.popCursor()
+                movingCursorSet = false
+            }
+
+            view.releaseMouse()
+            view.invalidate()
+            mouseMode = .None
         }
 
         // Mode
@@ -378,14 +371,13 @@ impl Capture
             }
 
             f := forms.back()
-            b := cast(*BaseForm) @dataof(f)
+            if !f.edit(evt, paintRect, movingStart, localPos, view.zoom)
+            {
+                view.releaseMouse()
+                view.invalidate()
+                mouseMode = .None
+            }
 
-            xa := cast(s32) ((movingStart.x - paintRect.x) / view.zoom)
-            ya := cast(s32) ((movingStart.y - paintRect.y) / view.zoom)
-            xb := cast(s32) ((localPos.x - paintRect.x) / view.zoom)
-            yb := cast(s32) ((localPos.y - paintRect.y) / view.zoom)
-
-            f.setBaseForm(xa, ya, xb - xa, yb - ya)
             return true
         }
 

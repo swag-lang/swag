@@ -10,6 +10,17 @@ struct FormLine
 
 impl IForm for FormLine
 {
+    mtd edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
+    {
+        xa = cast(s32) ((movingStart.x - paintRect.x) / zoom)
+        ya = cast(s32) ((movingStart.y - paintRect.y) / zoom)
+        xb = cast(s32) ((localPos.x - paintRect.x) / zoom)
+        yb = cast(s32) ((localPos.y - paintRect.y) / zoom)
+        if evt.kind == .MouseReleased and evt.button == .Left
+            return false
+        return true
+    }
+
     mtd moveBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
     {
         xa, xb += newPosX
