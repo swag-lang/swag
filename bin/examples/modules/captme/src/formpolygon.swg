@@ -14,6 +14,8 @@ impl IForm for FormPolygon
     {
         if evt.kind == .MouseDoubleClick and evt.button == .Left
         {
+            if points.count > 3
+                points.removeBack()
             return false
         }
 
