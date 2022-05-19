@@ -1,0 +1,133 @@
+// https://youtu.be/4hA7G3gup-4
+
+#dependencies
+{
+    #import "gui" location="swag@std"
+}
+
+using Core, Gui, Pixel, Math
+
+struct Verlet
+{
+    positionCurrent:    Vector2
+    positionOld:        Vector2
+    acceleration:       Vector2
+    radius:             f32 = 20
+    color:              Color
+}
+
+impl Verlet
+{
+    mtd updatePosition(dt: f32)
+    {
+        velocity := positionCurrent - positionOld
+        positionOld = positionCurrent
+        positionCurrent = positionCurrent + velocity + (acceleration * dt * dt)
+        acceleration.clear()
+    }
+
+    mtd accelerate(acc: Vector2)
+    {
+        acceleration += acc
+    }
+
+    mtd applyConstraint()
+    {
+        toObj := positionCurrent - PositionC
+        dist  := toObj.length()
+        if dist > RadC - radius
+        {
+            n := toObj / dist
+            positionCurrent = PositionC + (n * (RadC - radius))
+        }
+    }
+}
+
+func solveCollisions()
+{
+    for i := 0; i < g_Objs.count; i += 1
+    {
+        v1 := g_Objs[i]
+        for j := i + 1; j < g_Objs.count; j += 1
+        {
+            v2 := g_Objs[j]
+            n  := v1.positionCurrent - v2.positionCurrent
+            d  := n.length()
+            if d < v1.radius + v2.radius
+            {
+                n /= d
+                delta := (v1.radius + v2.radius) - d
+                v1.positionCurrent += 0.5 * delta * n
+                v2.positionCurrent -= 0.5 * delta * n
+            }
+        }
+    }
+}
+
+func simulate(dt: f32)
+{
+    const Steps = 8
+    loop Steps
+    {
+        visit &v: g_Objs
+        {
+            v.accelerate(@{0, 4000})
+            v.applyConstraint()
+        }
+
+        solveCollisions()
+
+        visit &v: g_Objs
+        {
+            v.updatePosition(dt / Steps)
+        }
+    }
+}
+
+const PositionC = Math.Vector2{400, 300}
+const RadC      = 200.0
+var g_Rng:      Random.DefaultRng
+var g_Objs:     Array'Verlet
+var g_Time:     f32
+
+func onEvent(wnd: *Wnd, evt: *Event)->bool
+{
+    switch evt.kind
+    {
+    case Paint:
+        paintEvt := cast(*PaintEvent) evt
+        painter  := paintEvt.bc.painter
+        painter.clear(Argb.Gray)
+        painter.setParams(.Antialiased)
+        painter.fillCircle(PositionC.x, PositionC.y, RadC, Argb.Black)
+
+        dt := wnd.getApp().getDt()
+        g_Time += dt
+
+        if g_Time > 0.2 and g_Objs.count < 50
+        {
+            g_Time = 0
+            v := Verlet{}
+            v.radius = g_Rng.nextF32(10, 20)
+            v.positionCurrent.x = wnd.position.horzCenter()
+            v.positionCurrent.y = PositionC.y - RadC + (v.radius * 2)
+            v.positionOld = v.positionCurrent
+            v.color = Argb.Red
+            g_Objs.add(v)
+        }
+
+        simulate(dt)
+
+        visit v: g_Objs
+            painter.fillCircle(v.positionCurrent.x, v.positionCurrent.y, v.radius, v.color)
+
+        wnd.invalidate()
+    }
+
+    return false
+}
+
+#run
+{
+    Application.runSurface(100, 100, 800, 600, title: "Verlet", hook: &onEvent)
+}
