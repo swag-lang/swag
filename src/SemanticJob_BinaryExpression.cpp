@@ -1205,7 +1205,10 @@ bool SemanticJob::resolveShiftExpression(SemanticContext* context)
         return true;
     }
 
-    SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
+    if (leftTypeInfo->kind == TypeInfoKind::Struct)
+        SWAG_CHECK(checkTypeIsNative(context, right, rightTypeInfo));
+    else
+        SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
 
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU32, nullptr, right, CASTFLAG_TRY_COERCE));
 
@@ -1226,6 +1229,14 @@ bool SemanticJob::resolveShiftExpression(SemanticContext* context)
     default:
         return context->internalError("resolveShiftExpression, token not supported");
     }
+
+    // :SpecFuncConstExpr
+    if (node->hasSpecialFuncCall() && (node->flags & AST_CONST_EXPR))
+    {
+        if (leftTypeInfo->kind == TypeInfoKind::Struct && !(leftTypeInfo->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR))
+            node->flags &= ~AST_CONST_EXPR;
+    }
+
 
     return true;
 }

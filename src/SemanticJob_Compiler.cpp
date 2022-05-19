@@ -90,7 +90,11 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
                     return true;
 
                 if (node->hasSpecialFuncCall())
-                    return context->report(node, Fmt(Err(Err0281), realType->getDisplayNameC()));
+                {
+                    Diagnostic diag{node, Fmt(Err(Err0281), realType->getDisplayNameC())};
+                    auto       hint = Fmt(Hnt(Hnt0047), node->extension->resolvedUserOpSymbolOverload->symbol->name.c_str());
+                    return context->report(hint, diag);
+                }
 
                 SymbolName* symCount   = nullptr;
                 SymbolName* symSlice   = nullptr;
