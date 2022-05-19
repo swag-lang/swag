@@ -903,6 +903,13 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
         return context->internalError("resolveFactorExpression, token not supported");
     }
 
+    // :SpecFuncConstExpr
+    if (node->hasSpecialFuncCall() && (node->flags & AST_CONST_EXPR))
+    {
+        if (leftTypeInfo->kind == TypeInfoKind::Struct && !(leftTypeInfo->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR))
+            node->flags &= ~AST_CONST_EXPR;
+    }
+
     return true;
 }
 

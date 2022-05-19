@@ -220,6 +220,14 @@ bool SemanticJob::resolveUnaryOp(SemanticContext* context)
 
         op->typeInfo = typeInfo;
         op->flags |= AST_TRANSIENT;
+
+        // :SpecFuncConstExpr
+        if (op->hasSpecialFuncCall() && (op->flags & AST_CONST_EXPR))
+        {
+            if (!(typeInfo->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR))
+                op->flags &= ~AST_CONST_EXPR;
+        }
+
         return true;
     }
 

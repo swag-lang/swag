@@ -73,6 +73,13 @@ bool SemanticJob::checkIsConstExpr(JobContext* context, bool test, AstNode* expr
     if (test)
         return true;
 
+    if (expression->hasSpecialFuncCall())
+    {
+        Diagnostic diag{expression, Fmt(Err(Err0281), expression->typeInfo->getDisplayNameC())};
+        diag.hint = Fmt(Hnt(Hnt0047), expression->extension->resolvedUserOpSymbolOverload->symbol->name.c_str());
+        return context->report(diag, computeNonConstExprNote(expression));
+    }
+
     Diagnostic diag{expression, errMsg ? errMsg : Err(Err0798)};
     return context->report(diag, computeNonConstExprNote(expression));
 }
@@ -225,7 +232,7 @@ JobResult SemanticJob::execute()
 
     while (!nodes.empty())
     {
-        auto node     = nodes.back();
+        auto node = nodes.back();
         SWAG_CHECK_BLOCK(node);
 
         context.node  = node;
