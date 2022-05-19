@@ -915,10 +915,8 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
 
 bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstNode* right)
 {
-    auto node          = CastAst<AstOp>(context->node, AstNodeKind::FactorOp);
-    auto leftTypeInfo  = TypeManager::concreteReferenceType(left->typeInfo);
-    auto rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
-    auto module        = node->sourceFile->module;
+    auto node         = CastAst<AstOp>(context->node, AstNodeKind::FactorOp);
+    auto leftTypeInfo = TypeManager::concreteReferenceType(left->typeInfo);
 
     if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
@@ -926,6 +924,10 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
         node->typeInfo = leftTypeInfo;
         return true;
     }
+
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU32, nullptr, right, CASTFLAG_TRY_COERCE));
+    auto rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
+    auto module        = node->sourceFile->module;
 
     if (!leftTypeInfo->isNativeIntegerOrRune())
         return context->report(left, Fmt(Err(Err0170), leftTypeInfo->getDisplayNameC()));
@@ -1051,10 +1053,8 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
 
 bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, AstNode* right)
 {
-    auto node          = CastAst<AstOp>(context->node, AstNodeKind::FactorOp);
-    auto leftTypeInfo  = TypeManager::concreteReferenceType(left->typeInfo);
-    auto rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
-    auto module        = node->sourceFile->module;
+    auto node         = CastAst<AstOp>(context->node, AstNodeKind::FactorOp);
+    auto leftTypeInfo = TypeManager::concreteReferenceType(left->typeInfo);
 
     if (leftTypeInfo->kind == TypeInfoKind::Struct)
     {
@@ -1062,6 +1062,10 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
         node->typeInfo = leftTypeInfo;
         return true;
     }
+
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU32, nullptr, right, CASTFLAG_TRY_COERCE));
+    auto rightTypeInfo = TypeManager::concreteReferenceType(right->typeInfo);
+    auto module        = node->sourceFile->module;
 
     if (!leftTypeInfo->isNativeIntegerOrRune())
         return context->report(left, Fmt(Err(Err0172), leftTypeInfo->getDisplayNameC()));
@@ -1210,10 +1214,7 @@ bool SemanticJob::resolveShiftExpression(SemanticContext* context)
     else
         SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo));
 
-    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU32, nullptr, right, CASTFLAG_TRY_COERCE));
-
-    node->typeInfo = g_TypeMgr->promoteUntyped(left->typeInfo);
-
+    node->typeInfo    = g_TypeMgr->promoteUntyped(left->typeInfo);
     node->byteCodeFct = ByteCodeGenJob::emitBinaryOp;
     node->inheritAndFlag2(AST_CONST_EXPR, AST_R_VALUE);
     node->inheritOrFlag(AST_SIDE_EFFECTS);
@@ -1236,7 +1237,6 @@ bool SemanticJob::resolveShiftExpression(SemanticContext* context)
         if (leftTypeInfo->kind == TypeInfoKind::Struct && !(leftTypeInfo->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR))
             node->flags &= ~AST_CONST_EXPR;
     }
-
 
     return true;
 }
