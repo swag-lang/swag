@@ -89,10 +89,11 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
                 if (context->result != ContextResult::Done)
                     return true;
 
-                SymbolName* symCount = nullptr;
-                SymbolName* symSlice = nullptr;
-                SWAG_CHECK(hasUserOp(context, g_LangSpec->name_opCount, (TypeInfoStruct*) realType, &symCount));
-                SWAG_CHECK(hasUserOp(context, g_LangSpec->name_opSlice, (TypeInfoStruct*) realType, &symSlice));
+                SymbolName* symCount   = nullptr;
+                SymbolName* symSlice   = nullptr;
+                auto        typeStruct = CastTypeInfo<TypeInfoStruct>(realType, TypeInfoKind::Struct);
+                SWAG_CHECK(hasUserOp(context, g_LangSpec->name_opCount, typeStruct, &symCount));
+                SWAG_CHECK(hasUserOp(context, g_LangSpec->name_opSlice, typeStruct, &symSlice));
 
                 if (!symCount || !symSlice)
                     return context->report(node, Fmt(Err(Err0281), realType->getDisplayNameC()));
