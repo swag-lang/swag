@@ -89,6 +89,9 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
                 if (context->result != ContextResult::Done)
                     return true;
 
+                if (node->hasSpecialFuncCall())
+                    return context->report(node, Fmt(Err(Err0281), realType->getDisplayNameC()));
+
                 SymbolName* symCount   = nullptr;
                 SymbolName* symSlice   = nullptr;
                 auto        typeStruct = CastTypeInfo<TypeInfoStruct>(realType, TypeInfoKind::Struct);
