@@ -900,58 +900,77 @@ public impl Painter
         // Non convex shape: triangulate
         else
         {
-            result := triangulate(path)
-            if result.isEmpty() return
-            pidx := result.buffer
-            firstPrim := vertexBuffer.count
-            loop result.count / 3
+            mtd storeResult(polygon: *Polygon, result: Array's32, brush: Brush, offsetPath: f32)
             {
-                v0 := polygon.getPoint(cast(uint) pidx[0] + 1, offsetPath)
-                v1 := polygon.getPoint(cast(uint) pidx[1] + 1, offsetPath)
-                v2 := polygon.getPoint(cast(uint) pidx[2] + 1, offsetPath)
-                prim := pushTriangle(v0, v1, v2, brush.color)
-                pidx += 3
-            }
-
-            // Generate all AA edges : for each vertex of the triangle, add the previous and
-            // next edge (even if not in the triangle)
-            if curState.paintParams & .Antialiased
-            {
-                cpt := cast(s32) path.polygon.points.count - 1
-                psrc := result.buffer
-                for i := 0; i < result.count; i += 3
+                pidx := result.buffer
+                firstPrim := vertexBuffer.count
+                loop result.count / 3
                 {
-                    index  := psrc[0]
-                    indexn := (index + 1) % cpt
-                    indexp := index ? index - 1 : cpt - 1
-                    v  := polygon.getPoint(cast(uint) index + 1, offsetPath)
-                    vp := polygon.getPoint(cast(uint) indexp + 1, offsetPath)
-                    vn := polygon.getPoint(cast(uint) indexn + 1, offsetPath)
-                    addEdgeAA(firstPrim, v, vp)
-                    addEdgeAA(firstPrim, v, vn)
+                    v0 := polygon.getPoint(cast(uint) pidx[0] + 1, offsetPath)
+                    v1 := polygon.getPoint(cast(uint) pidx[1] + 1, offsetPath)
+                    v2 := polygon.getPoint(cast(uint) pidx[2] + 1, offsetPath)
+                    prim := pushTriangle(v0, v1, v2, brush.color)
+                    pidx += 3
+                }
 
-                    index  = psrc[1]
-                    indexn = (index + 1) % cpt
-                    indexp = index ? index - 1 : cpt - 1
-                    v  = polygon.getPoint(cast(uint) index + 1, offsetPath)
-                    vp = polygon.getPoint(cast(uint) indexp + 1, offsetPath)
-                    vn = polygon.getPoint(cast(uint) indexn + 1, offsetPath)
-                    addEdgeAA(firstPrim, v, vp)
-                    addEdgeAA(firstPrim, v, vn)
+                // Generate all AA edges : for each vertex of the triangle, add the previous and
+                // next edge (even if not in the triangle)
+                if curState.paintParams & .Antialiased
+                {
+                    cpt := cast(s32) polygon.points.count - 1
+                    psrc := result.buffer
+                    for i := 0; i < result.count; i += 3
+                    {
+                        index  := psrc[0]
+                        indexn := (index + 1) % cpt
+                        indexp := index ? index - 1 : cpt - 1
+                        v  := polygon.getPoint(cast(uint) index + 1, offsetPath)
+                        vp := polygon.getPoint(cast(uint) indexp + 1, offsetPath)
+                        vn := polygon.getPoint(cast(uint) indexn + 1, offsetPath)
+                        addEdgeAA(firstPrim, v, vp)
+                        addEdgeAA(firstPrim, v, vn)
 
-                    index  = psrc[2]
-                    indexn = (index + 1) % cpt
-                    indexp = index ? index - 1 : cpt - 1
-                    v  = polygon.getPoint(cast(uint) index + 1, offsetPath)
-                    vp = polygon.getPoint(cast(uint) indexp + 1, offsetPath)
-                    vn = polygon.getPoint(cast(uint) indexn + 1, offsetPath)
-                    addEdgeAA(firstPrim, v, vp)
-                    addEdgeAA(firstPrim, v, vn)
+                        index  = psrc[1]
+                        indexn = (index + 1) % cpt
+                        indexp = index ? index - 1 : cpt - 1
+                        v  = polygon.getPoint(cast(uint) index + 1, offsetPath)
+                        vp = polygon.getPoint(cast(uint) indexp + 1, offsetPath)
+                        vn = polygon.getPoint(cast(uint) indexn + 1, offsetPath)
+                        addEdgeAA(firstPrim, v, vp)
+                        addEdgeAA(firstPrim, v, vn)
 
-                    psrc += 3
-                    firstPrim += 3
+                        index  = psrc[2]
+                        indexn = (index + 1) % cpt
+                        indexp = index ? index - 1 : cpt - 1
+                        v  = polygon.getPoint(cast(uint) index + 1, offsetPath)
+                        vp = polygon.getPoint(cast(uint) indexp + 1, offsetPath)
+                        vn = polygon.getPoint(cast(uint) indexn + 1, offsetPath)
+                        addEdgeAA(firstPrim, v, vp)
+                        addEdgeAA(firstPrim, v, vn)
+
+                        psrc += 3
+                        firstPrim += 3
+                    }
                 }
             }
+
+            result := triangulate(path)
+            if result.isEmpty()
+            {
+                res := path.polygon.getCleanedPaths()
+                if !res.count
+                    return
+                savePoly := path.polygon
+                visit &r: res
+                {
+                    path.polygon.storeClipperResult(dref r)
+                    result = triangulate(path)
+                    self.storeResult(&path.polygon, result, brush, offsetPath)
+                }
+                path.polygon = savePoly
+            }
+            else
+                self.storeResult(&path.polygon, result, brush, offsetPath)
         }
     }
 

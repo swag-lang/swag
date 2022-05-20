@@ -94,6 +94,7 @@ impl EditWnd
         capture.forms.add(itf)
 
         view.setCapture(capture)
+
         // END TEMP
 
         return scroll

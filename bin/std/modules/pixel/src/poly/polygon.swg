@@ -115,12 +115,13 @@ impl Polygon
         points =,move copy
     }
 
-    private mtd storeClipperResult(res: Clipper.ClipperPaths)
+    mtd storeClipperResult(res: Clipper.ClipperPath)
     {
         clear()
-        if !res.count return
+        if !res.count
+            return
 
-        visit &pt: dref res[0]
+        visit pt: res
         {
             vec := Math.Vector2{cast(f32) (pt.x / ClipperScaleCoords), cast(f32) (pt.y / ClipperScaleCoords)}
             add(vec)
@@ -164,15 +165,15 @@ impl Polygon
         }
 
         // Get result
-        storeClipperResult(res)
+        if res.count
+            storeClipperResult(res[0])
     }
 
-    // Clean polygon by removing bad/unecessary points
-    mtd clean()
+    mtd getCleanedPaths()->Clipper.ClipperPaths
     {
-        if !points.count return
-
-        var res: Clipper.ClipperPaths
+        var result: retval
+        if !points.count
+            return result
         Memory.pushTempAllocator()
         {
             var trf: Clipper.Transform
@@ -185,11 +186,18 @@ impl Polygon
             trf.addPath(&path, Clipper.PolyType.Subject)
 
             // Compute
-            trf.execute(Clipper.ClipType.Union, &res, Clipper.PolyFillType.NonZero, Clipper.PolyFillType.NonZero)
+            trf.execute(Clipper.ClipType.Union, &result, Clipper.PolyFillType.NonZero, Clipper.PolyFillType.NonZero)
         }
 
-        // Get result
-        storeClipperResult(res)
+        return result
+    }
+
+    // Clean polygon by removing bad/unecessary points
+    mtd clean()
+    {
+        res := getCleanedPaths()
+        if res.count
+            storeClipperResult(res[0])
     }
 
     // Compute internal values, like convex/clockwise
@@ -204,13 +212,13 @@ impl Polygon
         if !points.count
             return
 
-        n := points.count
+        n := points.count - 1
+        isClosed := points[0].isEqualEpsilon(points.back())
+        if isClosed
+            points.count -= 1
+
         q := 0
         p := n - 1
-
-        isClosed := points[0].isEqualEpsilon(points.back())
-        if !isClosed
-            n -= 1
 
         first := true
         lastC := 0'f32
@@ -237,6 +245,8 @@ impl Polygon
             q += 1
         }
 
+        if isClosed
+            points.count += 1
         isClockwise = area >= 0
     }
 }

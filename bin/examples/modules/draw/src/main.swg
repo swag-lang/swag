@@ -586,6 +586,28 @@ func displayPage7(renderer: *Pixel.RenderOgl, painter: *Pixel.Painter)
     painter.drawRoundRect(50, 50, 100, 100, 10, 10, Color.fromArgb(80, Argb.Green), 15)
     painter.unbindRenderTarget()
     painter.drawTexture(0, 0, tgt.colorBuffer)
+
+    {
+        var p: LinePath
+        p.start(200, 200)
+        p.lineTo(300, 200)
+        p.lineTo(250, 250)
+        p.lineTo(250, 150)
+        p.close()
+        painter.fillPath(&p, Argb.Red)
+        painter.drawPath(&p, Argb.Blue, 2)
+    }
+
+    {
+        var p: LinePath
+        p.start(400, 300)
+        p.lineTo(600, 100)
+        p.lineTo(600, 400)
+        p.lineTo(100, 400)
+        p.close()
+        painter.fillPath(&p, Argb.Red)
+        painter.drawPath(&p, Argb.Blue, 2)
+    }
 }
 
 struct MyView

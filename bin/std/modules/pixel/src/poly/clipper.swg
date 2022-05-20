@@ -1,6 +1,6 @@
 /*
     :LICENCE
-    This code is based on the Clipper library (http://www.angusj.com)
+    This code is based on the Clipper library (http://www.angusj.com/delphi/clipper.php)
     The original code has been modified for Swag
     See LICENCE.md for the corresponding licence.
 */
@@ -14,7 +14,7 @@ const Unassigned = -1
 const Skip = -2
 const HorizontalVal = -1.0E+40
 
-alias CInt         = s64
+public alias CInt  = s64
 alias ClipperPath  = Array'IntPoint
 alias ClipperPaths = Array'ClipperPath
 
@@ -27,7 +27,7 @@ public enum JoinType        { Square; Round; Miter; }
 enum EdgeSide  { Left = 1; Right = 2; }
 enum Direction { RightToLeft; LeftToRight; }
 
-struct IntPoint
+public struct IntPoint
 {
     x, y: CInt
 }
