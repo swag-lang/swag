@@ -384,7 +384,10 @@ impl Capture
                 }
 
                 itf.setup(self)
-                forms.add(itf)
+
+                undo := newUndo(.CreateForm)
+                undo.oldForms.add(itf)
+                pushUndo(undo)
             }
 
             f := forms.back()

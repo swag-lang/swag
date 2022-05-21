@@ -16,6 +16,7 @@ enum UndoKind
     AlignMiddle
     AlignBottom
     MovePoint
+    CreateForm
     DeleteSelection
 }
 
@@ -232,6 +233,9 @@ impl Undo
             }
 
             capture.selection.clear()
+
+        case CreateForm:
+            capture.forms.add(oldForms[0])
         }
     }
 
@@ -273,6 +277,10 @@ impl Undo
         case MoveToFront, MoveToBack, MoveForward, MoveBackward, DeleteSelection:
             capture.selection = selection
             capture.forms     = oldForms
+
+        case CreateForm:
+            capture.selection.remove(capture.forms.count - 1)
+            capture.forms.removeBack()
         }
     }
 }
