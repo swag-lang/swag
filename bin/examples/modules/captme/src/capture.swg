@@ -166,6 +166,9 @@ impl Capture
     {
         menu := MenuCtrl.createPopup(view)
 
+        menu.addItem(CmdIdDeleteSelection)
+        menu.addSeparator()
+
         {
             popup := MenuCtrl.createPopup(view)
             popup.addItem(CmdIdAlignLeft)
