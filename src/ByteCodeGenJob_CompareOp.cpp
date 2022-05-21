@@ -263,8 +263,15 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* le
     }
     else if (leftTypeInfo->kind == TypeInfoKind::Interface)
     {
-        // Just compare pointers. This is enough for now, as we can only compare an interface to 'null'
-        emitInstruction(context, ByteCodeOp::CompareOpEqual64, r0[1], r1[1], r2);
+        if (rightTypeInfo == g_TypeMgr->typeInfoNull || right->semFlags & AST_SEM_FROM_NULL)
+            emitInstruction(context, ByteCodeOp::CompareOpEqual64, r0[1], r1[1], r2);
+        else
+        {
+            SWAG_ASSERT(rightTypeInfo->kind == TypeInfoKind::Interface);
+            emitInstruction(context, ByteCodeOp::CompareOpEqual64, r0[0], r1[0], r2);
+            emitInstruction(context, ByteCodeOp::JumpIfFalse, r2)->b.u64 = 1;
+            emitInstruction(context, ByteCodeOp::CompareOpEqual64, r0[1], r1[1], r2);
+        }
     }
     else if (leftTypeInfo->kind == TypeInfoKind::Slice)
     {
@@ -360,8 +367,15 @@ bool ByteCodeGenJob::emitCompareOpNotEqual(ByteCodeGenContext* context, AstNode*
     }
     else if (leftTypeInfo->kind == TypeInfoKind::Interface)
     {
-        // Just compare pointers. This is enough for now, as we can only compare an interface to 'null'
-        emitInstruction(context, ByteCodeOp::CompareOpNotEqual64, r0[1], r1[1], r2);
+        if (rightTypeInfo == g_TypeMgr->typeInfoNull || right->semFlags & AST_SEM_FROM_NULL)
+            emitInstruction(context, ByteCodeOp::CompareOpNotEqual64, r0[1], r1[1], r2);
+        else
+        {
+            SWAG_ASSERT(rightTypeInfo->kind == TypeInfoKind::Interface);
+            emitInstruction(context, ByteCodeOp::CompareOpNotEqual64, r0[0], r1[0], r2);
+            emitInstruction(context, ByteCodeOp::JumpIfTrue, r2)->b.u64 = 1;
+            emitInstruction(context, ByteCodeOp::CompareOpNotEqual64, r0[1], r1[1], r2);
+        }
     }
     else if (leftTypeInfo->kind == TypeInfoKind::Slice)
     {

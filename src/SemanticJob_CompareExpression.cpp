@@ -319,7 +319,8 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     }
     else if (rightTypeInfo->kind != TypeInfoKind::Native &&
              rightTypeInfo->kind != TypeInfoKind::Pointer &&
-             rightTypeInfo->kind != TypeInfoKind::Struct)
+             rightTypeInfo->kind != TypeInfoKind::Struct &&
+             rightTypeInfo->kind != TypeInfoKind::Interface)
     {
         return context->report(right, Fmt(Err(Err0005), node->token.ctext(), TypeInfo::getNakedKindName(rightTypeInfo), rightTypeInfo->getDisplayNameC()));
     }
@@ -334,8 +335,8 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     if (leftTypeInfo->kind == TypeInfoKind::Slice && rightTypeInfo != g_TypeMgr->typeInfoNull)
         return context->report(left, Err(Err0009));
 
-    // Interface can only be compared to null
-    if (leftTypeInfo->kind == TypeInfoKind::Interface && rightTypeInfo != g_TypeMgr->typeInfoNull)
+    // Interface can only be compared to null ar to another interface
+    if (leftTypeInfo->kind == TypeInfoKind::Interface && rightTypeInfo != g_TypeMgr->typeInfoNull && rightTypeInfo->kind != TypeInfoKind::Interface)
         return context->report(left, Err(Err0010));
 
     // Some types can only be compared for equality
@@ -402,7 +403,7 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
             node->computedValue->reg.b = !node->computedValue->reg.b;
         break;
     default:
-        return context->internalError( "resolveCompareExpression, token not supported");
+        return context->internalError("resolveCompareExpression, token not supported");
     }
 
     return true;

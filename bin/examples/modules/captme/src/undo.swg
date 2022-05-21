@@ -16,6 +16,7 @@ enum UndoKind
     AlignMiddle
     AlignBottom
     MovePoint
+    DeleteSelection
 }
 
 struct Undo
@@ -78,6 +79,10 @@ impl Undo
             selection = capture.selection
             oldForms = capture.forms
             selection.sort()
+
+        case DeleteSelection:
+            selection = capture.selection
+            oldForms = capture.forms
         }
     }
 
@@ -218,6 +223,15 @@ impl Undo
                     capture.selection.add(srcIdx - 1)
                 }
             }
+
+        case DeleteSelection:
+            visit s: selection
+            {
+                f := capture.forms[s]
+                capture.forms.remove(f)
+            }
+
+            capture.selection.clear()
         }
     }
 
@@ -256,7 +270,7 @@ impl Undo
                 f.moveForm(-newPosX, -newPosY)
             }
 
-        case MoveToFront, MoveToBack, MoveForward, MoveBackward:
+        case MoveToFront, MoveToBack, MoveForward, MoveBackward, DeleteSelection:
             capture.selection = selection
             capture.forms     = oldForms
         }

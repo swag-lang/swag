@@ -69,6 +69,7 @@ bool ByteCodeGenJob::emitCastToInterface(ByteCodeGenContext* context, AstNode* e
     auto node = context->node;
     if (fromTypeInfo == g_TypeMgr->typeInfoNull)
     {
+        node->semFlags |= AST_SEM_FROM_NULL;
         node->resultRegisterRC = exprNode->resultRegisterRC;
         return true;
     }

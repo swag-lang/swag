@@ -11,6 +11,9 @@ enum CursorShape
     SizeAll
     Cross
     Help
+    Hand
+    IBeam
+    No
 }
 
 struct Cursor

@@ -22,6 +22,9 @@ impl NativeCursor
     defaultCursors[SizeAll].cursor  = LoadCursorA(null, MAKEINTRESOURCEA(IDC_SIZEALL))
     defaultCursors[Cross].cursor    = LoadCursorA(null, MAKEINTRESOURCEA(IDC_CROSS))
     defaultCursors[Help].cursor     = LoadCursorA(null, MAKEINTRESOURCEA(IDC_HELP))
+    defaultCursors[Hand].cursor     = LoadCursorA(null, MAKEINTRESOURCEA(IDC_HAND))
+    defaultCursors[IBeam].cursor    = LoadCursorA(null, MAKEINTRESOURCEA(IDC_IBEAM))
+    defaultCursors[No].cursor       = LoadCursorA(null, MAKEINTRESOURCEA(IDC_NO))
 }
 
 impl Cursor
