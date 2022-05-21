@@ -34,6 +34,12 @@ impl IWnd for MainWnd
 
         switch evt.id
         {
+        case CmdIdDeleteSelection:
+            evt.setFlags |= .Disabled | .Name
+            evt.disabled = !hasSel
+            evt.name = "Delete"
+            evt.accepted = true
+
         case CmdIdModeShape:
             evt.setFlags |= .Icon | .Checked | .Name
             evt.icon = Icon.from(&icons48, 0)
@@ -141,6 +147,10 @@ impl IWnd for MainWnd
         var undo: *Undo
         switch evt.id
         {
+        case CmdIdDeleteSelection:
+            undo = capture.newUndo(.DeleteSelection)
+            evt.accepted = true
+
         case CmdIdModeShape:
             editMode = .Shape
             evt.accepted = true
@@ -253,6 +263,7 @@ impl MainWnd
         res.registerKeyShortcut(Input.KeyModifiers.Control, Input.Key.Y, CmdIdRedo)
         res.registerKeyShortcut(Input.KeyModifiers.CtrlShift, Input.Key.F, CmdIdBringForward)
         res.registerKeyShortcut(Input.KeyModifiers.CtrlShift, Input.Key.B, CmdIdSendBackward)
+        res.registerKeyShortcut(Input.KeyModifiers.None, Input.Key.Delete, CmdIdDeleteSelection)
 
         return res
     }
