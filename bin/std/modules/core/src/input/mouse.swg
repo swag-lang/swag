@@ -29,7 +29,8 @@ impl Mouse
             {
                 if currentState.pressedTime[v] - previousState.pressedTime[v] < dblClkTimeMs
                 {
-                    dblClk[v] = true
+                    if currentState.pressedPos[v] == previousState.pressedPos[v]
+                        dblClk[v] = true
                 }
             }
         }

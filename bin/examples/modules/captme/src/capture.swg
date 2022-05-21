@@ -255,58 +255,61 @@ impl Capture
 
         // Start of mode
         ///////////////////////
-        if evt.kind == .MousePressed and evt.button == .Left and mouseMode == .None
+        if mouseMode == .None and evt.button == .Left
         {
-            here := selection.contains(hotForm)
-            if !(evt.modifiers & .Control) and !here
-                selection.clear()
-
-            if hotForm != Swag.UInt.Max
+            if evt.kind == .MousePressed or evt.kind == .MouseDoubleClick
             {
-                if !here
+                here := selection.contains(hotForm)
+                if !(evt.modifiers & .Control) and !here
+                    selection.clear()
+
+                if hotForm != Swag.UInt.Max
                 {
-                    selection.add(hotForm)
-                    if selection.count == 1
+                    if !here
                     {
-                        f := forms[hotForm]
-                        t := @kindof(f)
-                        switch t
+                        selection.add(hotForm)
+                        if selection.count == 1
                         {
-                        case FormRect:
-                            b := cast(*FormRect) @dataof(f)
-                            editView.main.mdlFormRect = dref b
-                            editView.main.editMode = .Shape
-                            editView.main.toolbar.updateCommandState()
+                            f := forms[hotForm]
+                            t := @kindof(f)
+                            switch t
+                            {
+                            case FormRect:
+                                b := cast(*FormRect) @dataof(f)
+                                editView.main.mdlFormRect = dref b
+                                editView.main.editMode = .Shape
+                                editView.main.toolbar.updateCommandState()
 
-                        case FormLine:
-                            b := cast(*FormLine) @dataof(f)
-                            editView.main.mdlFormLine = dref b
-                            editView.main.editMode = .Line
-                            editView.main.toolbar.updateCommandState()
+                            case FormLine:
+                                b := cast(*FormLine) @dataof(f)
+                                editView.main.mdlFormLine = dref b
+                                editView.main.editMode = .Line
+                                editView.main.toolbar.updateCommandState()
 
-                        case FormPolygon:
-                            b := cast(*FormPolygon) @dataof(f)
-                            editView.main.mdlFormPolygon = dref b
-                            editView.main.editMode = .Polygon
-                            editView.main.toolbar.updateCommandState()
+                            case FormPolygon:
+                                b := cast(*FormPolygon) @dataof(f)
+                                editView.main.mdlFormPolygon = dref b
+                                editView.main.editMode = .Polygon
+                                editView.main.toolbar.updateCommandState()
 
+                            }
                         }
                     }
-                }
 
-                mouseMode = .Moving
-                firstMouseMove = true
-                movingStart = localPos
-                view.captureMouse()
-                view.invalidate()
-            }
-            else
-            {
-                mouseMode = .Creating
-                firstMouseMove = true
-                movingStart = localPos
-                view.captureMouse()
-                view.invalidate()
+                    mouseMode = .Moving
+                    firstMouseMove = true
+                    movingStart = localPos
+                    view.captureMouse()
+                    view.invalidate()
+                }
+                else
+                {
+                    mouseMode = .Creating
+                    firstMouseMove = true
+                    movingStart = localPos
+                    view.captureMouse()
+                    view.invalidate()
+                }
             }
         }
 

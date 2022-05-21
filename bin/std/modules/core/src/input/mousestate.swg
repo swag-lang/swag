@@ -7,6 +7,7 @@ struct MouseState
 {
     pressed:        [@countof(MouseButton)] bool
     pressedTime:    [@countof(MouseButton)] u32
+    pressedPos:     [@countof(MouseButton)] Point
     position:       Point
 }
 
@@ -16,15 +17,18 @@ impl MouseState
     // Compute the actual state of the mouse
     mtd update()
     {
+        position = getMousePos()
+
         visit v: MouseButton
         {
             b := pressed[v]
             pressed[v] = Mouse.isButtonPressed(v)
             if !b and pressed[v]
+            {
                 pressedTime[v] = Time.nowMilliseconds()
+                pressedPos[v]  = position
+            }
         }
-
-        position = getMousePos()
     }
 
     // Reset the state to its default value
