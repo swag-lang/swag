@@ -227,6 +227,13 @@ impl Wnd
     }
 
     // Destroy the window
+    mtd destroyNow()
+    {
+        Debug.assert(!isPendingDestroy)
+        surface.app.destroyWnd(self)
+    }
+
+    // Destroy the window
     mtd destroy()
     {
         if isPendingDestroy

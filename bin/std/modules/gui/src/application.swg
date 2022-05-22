@@ -329,24 +329,6 @@ private impl Application
         }
     }
 
-    // Destroy a window
-    // To cleanly close a window, you should call wnd.destroy()
-    mtd destroyWnd(wnd: *Wnd)
-    {
-        unregisterWnd(wnd)
-
-        // Remove from parent
-        if wnd.parent and !wnd.parent.isPendingDestroy
-        {
-            (idx, ok) := Slice.findLinear(wnd.parent.childs.toSlice(), wnd)
-            Debug.assert(ok)
-            wnd.parent.childs.removeAt(idx)
-        }
-
-        if wnd.isAllocated
-            Memory.delete(wnd, wnd.type)
-    }
-
     mtd sendTimerEvents()
     {
         visit t: timers
@@ -496,6 +478,24 @@ impl Application
     mtd getMouseCapture()->*Wnd
     {
         return mouseCaptureWnd
+    }
+
+    // Destroy a window
+    // To cleanly close a window, you should call wnd.destroy()
+    mtd destroyWnd(wnd: *Wnd)
+    {
+        unregisterWnd(wnd)
+
+        // Remove from parent
+        if wnd.parent and !wnd.parent.isPendingDestroy
+        {
+            (idx, ok) := Slice.findLinear(wnd.parent.childs.toSlice(), wnd)
+            Debug.assert(ok)
+            wnd.parent.childs.removeAt(idx)
+        }
+
+        if wnd.isAllocated
+            Memory.delete(wnd, wnd.type)
     }
 
     // Returns the window under the given point

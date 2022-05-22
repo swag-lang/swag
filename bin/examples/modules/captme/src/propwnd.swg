@@ -2,8 +2,8 @@ using Gui
 
 struct PropWnd
 {
-    using wnd:  Wnd
-    main:       *MainWnd
+    using layoutWnd:    StackLayoutCtrl
+    main:               *MainWnd
 }
 
 impl PropWnd
@@ -13,23 +13,43 @@ impl PropWnd
         return main.editWnd.editView.capture
     }
 
+    mtd createBorderSize(capture: *Capture)
+    {
+        curSel := capture.getSelectedBaseForm()
+
+        ctrl := SliderCtrl.create(self, "Tickness")
+        ctrl.edit.setForm(.Square)
+        ctrl.setMinMaxS64(1, 50)
+        ctrl.setValue(acast curSel.borderSize)
+        ctrl.dockStyle = .Top
+        ctrl.slider.sigStartChange += @|capture|(slider) {
+            undo := capture.newUndo(.SetBorderSize)
+            undo.valS32 = cast(s32) slider.getValue()
+            capture.pushUndo(undo)
+        }
+        ctrl.slider.sigChanged += @|capture|(slider) {
+            capture.undo()
+            undo := capture.newUndo(.SetBorderSize)
+            undo.valS32 = cast(s32) slider.getValue()
+            capture.pushUndo(undo)
+        }
+    }
+
     mtd createOpactiy(capture: *Capture)
     {
-        x := 8
-        w := parent.position.width - 16
-
         curSel := capture.getSelectedBaseForm()
-        opacity := SliderCtrl.create(self, "Opacity", @{x, 0, w})
-        opacity.edit.setForm(.Square)
-        opacity.setMinMaxS64(1, 100)
-        opacity.setValue(acast curSel.alpha)
-        opacity.dockStyle = .Top
-        opacity.slider.sigStartChange += @|capture|(slider) {
+
+        ctrl := SliderCtrl.create(self, "Opacity")
+        ctrl.edit.setForm(.Square)
+        ctrl.setMinMaxS64(1, 100)
+        ctrl.setValue(acast curSel.alpha)
+        ctrl.dockStyle = .Top
+        ctrl.slider.sigStartChange += @|capture|(slider) {
             undo := capture.newUndo(.SetAlpha)
             undo.valS32 = cast(s32) slider.getValue()
             capture.pushUndo(undo)
         }
-        opacity.slider.sigChanged += @|capture|(slider) {
+        ctrl.slider.sigChanged += @|capture|(slider) {
             capture.undo()
             undo := capture.newUndo(.SetAlpha)
             undo.valS32 = cast(s32) slider.getValue()
@@ -39,15 +59,18 @@ impl PropWnd
 
     mtd selectionHasChanged()
     {
-        visit c: childs
-            c.destroy()
+        while childs.count
+            childs[0].destroyNow()
 
         capture := getCapture()
         if !capture or !capture.selection.count
             return
 
+        createBorderSize(capture)
         createOpactiy(capture)
 
         capture.editView.setFocus()
+        layoutWnd.padding = 8
+        layoutWnd.computeLayout()
     }
 }

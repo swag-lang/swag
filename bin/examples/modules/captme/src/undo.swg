@@ -19,6 +19,7 @@ enum UndoKind
     CreateForm
     DeleteSelection
     SetAlpha
+    SetBorderSize
 }
 
 struct Undo
@@ -86,6 +87,14 @@ impl Undo
                 oldS32.add(cast(s32) b.alpha)
             }
 
+        case SetBorderSize:
+            selection = capture.selection
+            visit s: selection
+            {
+                b := cast(*BaseForm) @dataof(capture.forms[s])
+                oldS32.add(cast(s32) b.borderSize)
+            }
+
         case MoveToFront, MoveToBack, MoveBackward, MoveForward:
             selection = capture.selection
             oldForms = capture.forms
@@ -107,6 +116,13 @@ impl Undo
             {
                 b := cast(*BaseForm) @dataof(capture.forms[s])
                 b.alpha = cast(u8) valS32
+            }
+
+        case SetBorderSize:
+            visit s: selection
+            {
+                b := cast(*BaseForm) @dataof(capture.forms[s])
+                b.borderSize = valS32
             }
 
         case AlignLeft:
@@ -267,6 +283,13 @@ impl Undo
             {
                 b := cast(*BaseForm) @dataof(capture.forms[s])
                 b.alpha = cast(u8) oldS32[i]
+            }
+
+        case SetBorderSize:
+            visit s, i: selection
+            {
+                b := cast(*BaseForm) @dataof(capture.forms[s])
+                b.borderSize = cast(f32) oldS32[i]
             }
 
         case AlignLeft, AlignRight, AlignCenter, AlignTop, AlignBottom, AlignMiddle:
