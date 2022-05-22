@@ -54,6 +54,17 @@ impl EditWnd
         formb.points.add(@{75, 50})
         capture.forms.add(itf)
 
+        formc := Memory.new'FormArrow()
+        formc.xa = 200
+        formc.ya = 40
+        formc.xb = 300
+        formc.yb = 40
+        formc.borderSize = 20
+        formc.endSize = 20
+        itf = cast(IForm) formc
+        itf.setup(capture)
+        capture.forms.add(itf)
+
         form0 := Memory.new'FormRect()
         form0.x, form0.y = 50
         form0.backColor = Argb.Green

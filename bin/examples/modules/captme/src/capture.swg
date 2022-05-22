@@ -283,6 +283,12 @@ impl Capture
                                 editView.main.editMode = .Shape
                                 editView.main.toolbar.updateCommandState()
 
+                            case FormArrow:
+                                b := cast(*FormArrow) @dataof(f)
+                                editView.main.mdlFormArrow = dref b
+                                editView.main.editMode = .Arrow
+                                editView.main.toolbar.updateCommandState()
+
                             case FormLine:
                                 b := cast(*FormLine) @dataof(f)
                                 editView.main.mdlFormLine = dref b
@@ -375,6 +381,10 @@ impl Capture
                 case Shape:
                     form := Memory.new'FormRect()
                     dref form = editView.main.mdlFormRect
+                    itf = cast(IForm) form
+                case Arrow:
+                    form := Memory.new'FormArrow()
+                    dref form = editView.main.mdlFormArrow
                     itf = cast(IForm) form
                 case Line:
                     form := Memory.new'FormLine()

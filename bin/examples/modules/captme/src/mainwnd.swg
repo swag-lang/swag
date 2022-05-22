@@ -3,6 +3,7 @@ using Gui, Pixel, Core
 enum EditMode
 {
     Shape
+    Arrow
     Line
     Polygon
 }
@@ -16,6 +17,7 @@ struct MainWnd
 
     editMode:       EditMode = .Shape
     mdlFormRect:    FormRect
+    mdlFormArrow:   FormArrow
     mdlFormLine:    FormLine
     mdlFormPolygon: FormPolygon
 }
@@ -45,6 +47,13 @@ impl IWnd for MainWnd
             evt.icon = Icon.from(&icons48, 0)
             evt.name = "shape"
             evt.checked = editMode == .Shape
+            evt.accepted = true
+
+        case CmdIdModeArrow:
+            evt.setFlags |= .Icon | .Checked | .Name
+            evt.icon = Icon.from(&icons48, 3)
+            evt.name = "arrow"
+            evt.checked = editMode == .Arrow
             evt.accepted = true
 
         case CmdIdModeLine:
@@ -156,6 +165,11 @@ impl IWnd for MainWnd
             evt.accepted = true
             toolbar.updateCommandState()
 
+        case CmdIdModeArrow:
+            editMode = .Arrow
+            evt.accepted = true
+            toolbar.updateCommandState()
+
         case CmdIdModeLine:
             editMode = .Line
             evt.accepted = true
@@ -242,6 +256,7 @@ impl MainWnd
         toolbar.backgroundStyle = .Window
         toolbar.style.addStyleSheetColors("wnd_Bk $wnd_Caption")
         self.createBtn(CmdIdModeShape)
+        self.createBtn(CmdIdModeArrow)
         self.createBtn(CmdIdModeLine)
         self.createBtn(CmdIdModePolygon)
         toolbar.updateCommandState()
