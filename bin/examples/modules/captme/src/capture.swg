@@ -491,6 +491,7 @@ impl Capture
         if !canUndo() return
         nextUndo -= 1
         undos[nextUndo].undo()
+        editView.invalidate()
     }
 
     mtd redo()
@@ -498,6 +499,7 @@ impl Capture
         if !canRedo() return
         undos[nextUndo].do()
         nextUndo += 1
+        editView.invalidate()
     }
 
     mtd pushUndo(u: *Undo)

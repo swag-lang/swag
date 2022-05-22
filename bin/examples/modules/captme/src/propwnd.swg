@@ -13,17 +13,13 @@ impl PropWnd
         return main.editWnd.editView.capture
     }
 
-    mtd selectionHasChanged()
+    mtd createOpactiy(capture: *Capture)
     {
-        visit c: childs
-            c.destroy()
+        x := 8
+        w := parent.position.width - 16
 
-        capture := getCapture()
-        if !capture or !capture.selection.count
-            return
         curSel := capture.getSelectedBaseForm()
-
-        opacity := SliderCtrl.create(self, "Opacity", @{0, 0, 300})
+        opacity := SliderCtrl.create(self, "Opacity", @{x, 0, w})
         opacity.edit.setForm(.Square)
         opacity.setMinMaxS64(1, 100)
         opacity.setValue(acast curSel.alpha)
@@ -32,15 +28,25 @@ impl PropWnd
             undo := capture.newUndo(.SetAlpha)
             undo.valS32 = cast(s32) slider.getValue()
             capture.pushUndo(undo)
-            capture.editView.invalidate()
         }
         opacity.slider.sigChanged += @|capture|(slider) {
             capture.undo()
             undo := capture.newUndo(.SetAlpha)
             undo.valS32 = cast(s32) slider.getValue()
             capture.pushUndo(undo)
-            capture.editView.invalidate()
         }
+    }
+
+    mtd selectionHasChanged()
+    {
+        visit c: childs
+            c.destroy()
+
+        capture := getCapture()
+        if !capture or !capture.selection.count
+            return
+
+        createOpactiy(capture)
 
         capture.editView.setFocus()
     }

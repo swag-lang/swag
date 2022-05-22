@@ -14,6 +14,7 @@ struct MainWnd
     icons48:    ImageList
     toolbar:    *Wnd
     editWnd:    *EditWnd
+    quickWnd:   *QuickWnd
     propWnd:    *PropWnd
 
     editMode:       EditMode = .Shape
@@ -265,6 +266,15 @@ impl MainWnd
         toolbar.updateCommandState()
     }
 
+    mtd registerShortcuts()
+    {
+        registerKeyShortcut(Input.KeyModifiers.Control, Input.Key.Z, CmdIdUndo)
+        registerKeyShortcut(Input.KeyModifiers.Control, Input.Key.Y, CmdIdRedo)
+        registerKeyShortcut(Input.KeyModifiers.CtrlShift, Input.Key.F, CmdIdBringForward)
+        registerKeyShortcut(Input.KeyModifiers.CtrlShift, Input.Key.B, CmdIdSendBackward)
+        registerKeyShortcut(Input.KeyModifiers.None, Input.Key.Delete, CmdIdDeleteSelection)
+    }
+
     func create(parent: *Wnd)->*MainWnd
     {
         res := Wnd.create'MainWnd(parent)
@@ -274,22 +284,33 @@ impl MainWnd
         res.icons48.set(renderer.addImage(img), 48, 48)
 
         res.createToolbar()
+        res.registerShortcuts()
+
+        // Main edit area
         res.editWnd = EditWnd.create(res, res)
         res.editWnd.dockStyle = .Center
+        res.backgroundStyle = .Window
 
-        rightWnd := Wnd.create'Wnd(res, @{0, 0, 300, 0})
+        // Right bar
+        rightWnd := StackLayoutCtrl.create(res, .Top, @{0, 0, 300, 0})
         rightWnd.dockStyle = .Right
+        rightWnd.backgroundStyle = .Window
+
+        label0 := Label.create(rightWnd, "Quick Styles", @{0, 0, 0, 30})
+        label0.backgroundStyle = .Window
+        label0.style.addStyleSheetColors("wnd_Bk $dlg_BtnBarBk")
+
+        res.quickWnd = Wnd.create'QuickWnd(rightWnd, @{0, 0, 0, 300})
+        res.quickWnd.main = res
+        res.quickWnd.backgroundStyle = .Window
+
+        label1 := Label.create(rightWnd, "Tool Properties", @{0, 0, 0, 30})
+        label1.backgroundStyle = .Window
+        label1.style.addStyleSheetColors("wnd_Bk $dlg_BtnBarBk")
 
         res.propWnd = Wnd.create'PropWnd(rightWnd, @{0, 0, 0, 300})
         res.propWnd.main = res
-        res.propWnd.dockStyle = .Top
         res.propWnd.backgroundStyle = .Window
-
-        res.registerKeyShortcut(Input.KeyModifiers.Control, Input.Key.Z, CmdIdUndo)
-        res.registerKeyShortcut(Input.KeyModifiers.Control, Input.Key.Y, CmdIdRedo)
-        res.registerKeyShortcut(Input.KeyModifiers.CtrlShift, Input.Key.F, CmdIdBringForward)
-        res.registerKeyShortcut(Input.KeyModifiers.CtrlShift, Input.Key.B, CmdIdSendBackward)
-        res.registerKeyShortcut(Input.KeyModifiers.None, Input.Key.Delete, CmdIdDeleteSelection)
 
         return res
     }

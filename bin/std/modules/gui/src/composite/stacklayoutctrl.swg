@@ -76,7 +76,7 @@ impl IWnd for StackLayoutCtrl
 impl StackLayoutCtrl
 {
     // Create a layout control
-    func create(parent: *Wnd, kind: StackLayoutKind, position: Math.Rectangle = @{})->*StackLayoutCtrl
+    func create(parent: *Wnd, kind: StackLayoutKind = .Top, position: Math.Rectangle = @{})->*StackLayoutCtrl
     {
         res := Wnd.create'StackLayoutCtrl(parent, position)
         res.layoutKind = kind
