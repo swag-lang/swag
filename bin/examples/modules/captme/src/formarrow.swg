@@ -1,10 +1,20 @@
 using Pixel, Core, Gui
 
+enum FormArrowShape
+{
+    Flat
+    Arrow
+}
+
 struct FormArrow
 {
     using base:     BaseForm
     gizmo:          GizmoPoints
+    startShape      = FormArrowShape.Flat
+    endShape        = FormArrowShape.Arrow
+    startSize:      f32 = 5
     endSize:        f32 = 5
+
     xa, ya, xb, yb: f32
     x0, y0, x1, y1: f32
     points:         Array'Math.Vector2
@@ -92,19 +102,49 @@ impl IForm for FormArrow
         length := n.length()
         n.normalizeSafe()
 
-        end  := n * (borderSize + endSize + endSize * 0.5)
+        start := n * (borderSize + startSize + startSize * 0.5)
+        end   := n * (borderSize + endSize + endSize * 0.5)
         side := n.cross(1)
+        leftSide  := side * (borderSize + startSize) * 0.5
         rightSide := side * (borderSize + endSize) * 0.5
         side *= borderSize * 0.5
 
         points.clear()
-        points.add(v0 - side)
-        points.add(v1 - end - side)
-        points.add(v1 - end - side - rightSide)
-        points.add(v1)
-        points.add(v1 - end + side + rightSide)
-        points.add(v1 - end + side)
-        points.add(v0 + side)
+
+        switch startShape
+        {
+        case Flat:
+            points.add(v0 - side)
+
+        case Arrow:
+            points.add(v0)
+            points.add(v0 + start - side - leftSide)
+            points.add(v0 + start - side)
+        }
+
+        switch endShape
+        {
+        case Flat:
+            points.add(v1 - side)
+            points.add(v1 + side)
+
+        case Arrow:
+            points.add(v1 - end - side)
+            points.add(v1 - end - side - rightSide)
+            points.add(v1)
+            points.add(v1 - end + side + rightSide)
+            points.add(v1 - end + side)
+        }
+
+        switch startShape
+        {
+        case Flat:
+            points.add(v0 + side)
+
+        case Arrow:
+            points.add(v0 + start + side)
+            points.add(v0 + start + side + leftSide)
+        }
     }
 
     mtd computePaintCoords(z: f32)
