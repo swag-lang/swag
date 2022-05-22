@@ -264,13 +264,21 @@ impl Capture
             {
                 here := selection.contains(hotForm)
                 if !(evt.modifiers & .Control) and !here
-                    selection.clear()
+                {
+                    if selection.count
+                    {
+                        selection.clear()
+                        selectionHasChanged()
+                    }
+                }
 
                 if hotForm != Swag.UInt.Max
                 {
                     if !here
                     {
                         selection.add(hotForm)
+                        selectionHasChanged()
+
                         if selection.count == 1
                         {
                             f := forms[hotForm]
@@ -431,6 +439,30 @@ impl Capture
         }
 
         return Swag.UInt.Max
+    }
+
+    //////////////////////////////
+    // SELECTION
+    //////////////////////////////
+
+    mtd getSelectedBaseForm()->*BaseForm
+    {
+        if selection.count == 0
+            return null
+        return cast(*BaseForm) @dataof(forms[selection.back()])
+    }
+
+    mtd getSelectedFormType()->typeinfo
+    {
+        if selection.count == 0
+            return null
+        i := forms[selection.back()]
+        return @kindof(i)
+    }
+
+    mtd selectionHasChanged()
+    {
+        editView.main.propWnd.selectionHasChanged()
     }
 
     //////////////////////////////

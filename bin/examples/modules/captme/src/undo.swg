@@ -18,6 +18,7 @@ enum UndoKind
     MovePoint
     CreateForm
     DeleteSelection
+    SetAlpha
 }
 
 struct Undo
@@ -33,7 +34,8 @@ struct Undo
 
     selection:  Array'uint
     oldForms:   Array'IForm
-    oldPos:     Array's32
+    oldS32:     Array's32
+    valS32:     s32
     minP:       s32
     maxP:       s32
     pointIdx:   u32
@@ -49,12 +51,12 @@ impl Undo
             selection = capture.selection
             minP = Swag.S32.Max
             maxP = Swag.S32.Min
-            oldPos.reserve(selection.count)
+            oldS32.reserve(selection.count)
             visit s: selection
             {
                 f := capture.forms[s]
                 r := f.boundRect()
-                oldPos.add(cast(s32) r.x)
+                oldS32.add(cast(s32) r.x)
                 minP = Math.min(minP, cast(s32) r.x)
                 maxP = Math.max(maxP, cast(s32) (r.x + r.width))
             }
@@ -63,18 +65,26 @@ impl Undo
             selection = capture.selection
             minP = Swag.S32.Max
             maxP = Swag.S32.Min
-            oldPos.reserve(selection.count)
+            oldS32.reserve(selection.count)
             visit s: selection
             {
                 f := capture.forms[s]
                 r := f.boundRect()
-                oldPos.add(cast(s32) r.x)
+                oldS32.add(cast(s32) r.x)
                 minP = Math.min(minP, cast(s32) r.y)
                 maxP = Math.max(maxP, cast(s32) (r.y + r.height))
             }
 
         case OffsetSelection:
             selection = capture.selection
+
+        case SetAlpha:
+            selection = capture.selection
+            visit s: selection
+            {
+                b := cast(*BaseForm) @dataof(capture.forms[s])
+                oldS32.add(cast(s32) b.alpha)
+            }
 
         case MoveToFront, MoveToBack, MoveBackward, MoveForward:
             selection = capture.selection
@@ -92,6 +102,13 @@ impl Undo
         #[Swag.Complete]
         switch kind
         {
+        case SetAlpha:
+            visit s: selection
+            {
+                b := cast(*BaseForm) @dataof(capture.forms[s])
+                b.alpha = cast(u8) valS32
+            }
+
         case AlignLeft:
             visit s: selection
             {
@@ -233,6 +250,7 @@ impl Undo
             }
 
             capture.selection.clear()
+            capture.selectionHasChanged()
 
         case CreateForm:
             capture.forms.add(oldForms[0])
@@ -244,11 +262,18 @@ impl Undo
         #[Swag.Complete]
         switch kind
         {
+        case SetAlpha:
+            visit s, i: selection
+            {
+                b := cast(*BaseForm) @dataof(capture.forms[s])
+                b.alpha = cast(u8) oldS32[i]
+            }
+
         case AlignLeft, AlignRight, AlignCenter, AlignTop, AlignBottom, AlignMiddle:
             visit s, i: selection
             {
                 b := cast(*BaseForm) @dataof(capture.forms[s])
-                b.x = oldPos[i]
+                b.x = oldS32[i]
             }
 
         case MovePoint:
@@ -277,10 +302,12 @@ impl Undo
         case MoveToFront, MoveToBack, MoveForward, MoveBackward, DeleteSelection:
             capture.selection = selection
             capture.forms     = oldForms
+            capture.selectionHasChanged()
 
         case CreateForm:
             capture.selection.remove(capture.forms.count - 1)
             capture.forms.removeBack()
+            capture.selectionHasChanged()
         }
     }
 }

@@ -14,6 +14,7 @@ struct MainWnd
     icons48:    ImageList
     toolbar:    *Wnd
     editWnd:    *EditWnd
+    propWnd:    *PropWnd
 
     editMode:       EditMode = .Shape
     mdlFormRect:    FormRect
@@ -273,6 +274,14 @@ impl MainWnd
         res.createToolbar()
         res.editWnd = EditWnd.create(res, res)
         res.editWnd.dockStyle = .Center
+
+        rightWnd := Wnd.create'Wnd(res, @{0, 0, 300, 0})
+        rightWnd.dockStyle = .Right
+
+        res.propWnd = Wnd.create'PropWnd(rightWnd, @{0, 0, 0, 300})
+        res.propWnd.main = res
+        res.propWnd.dockStyle = .Top
+        res.propWnd.backgroundStyle = .Window
 
         res.registerKeyShortcut(Input.KeyModifiers.Control, Input.Key.Z, CmdIdUndo)
         res.registerKeyShortcut(Input.KeyModifiers.Control, Input.Key.Y, CmdIdRedo)
