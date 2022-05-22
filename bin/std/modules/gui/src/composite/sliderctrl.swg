@@ -6,8 +6,6 @@ struct SliderCtrl
     using frameWnd: FrameWnd
     labelSize:      f32 = 60
     editSize:       f32 = 60
-    marginLabel:    f32 = 4
-    marginEdit:     f32 = 4
 
     label:  *Label
     slider: *Slider
@@ -24,10 +22,10 @@ impl IWnd for SliderCtrl
 
         label.setPosition(0, 0, labelSize, metrics.editBox_Height)
 
-        w := rect.width - labelSize - editSize - marginLabel - marginEdit
-        slider.setPosition(label.position.right() + marginLabel, rect.vertCenter() - metrics.slider_Height / 2, w, metrics.slider_Height)
+        w := rect.width - labelSize - editSize
+        slider.setPosition(label.position.right(), rect.vertCenter() - metrics.slider_Height / 2, w, metrics.slider_Height)
 
-        edit.setPosition(slider.position.right() + marginEdit, rect.vertCenter() - metrics.editBox_Height / 2, editSize, metrics.editBox_Height)
+        edit.setPosition(slider.position.right(), rect.vertCenter() - metrics.editBox_Height / 2, editSize, metrics.editBox_Height)
     }
 }
 

@@ -156,17 +156,7 @@ impl IWnd for Slider
         {
             for x := 0'f32; x < 1 + steps; x += steps
             {
-                posStep := clientRect
-                if isVertical
-                {
-                    posStep.y = clientRect.y + (clientRect.height * x) - clientRect.width * 0.5
-                    posStep.height = posStep.width
-                }
-                else
-                {
-                    posStep.x = clientRect.x + (clientRect.width * x) - clientRect.height * 0.5
-                    posStep.width = posStep.height
-                 }
+                posStep := getPosBoxAt(x, metrics.slider_StepSize)
 
                 var colorStep: Color = ?
                 if isHot1 or isHot2 or isMoving
@@ -394,48 +384,35 @@ private impl Slider
         return result
     }
 
-    mtd getPosBox1()->Math.Rectangle
+    mtd getPosBoxAt(val, size: f32)->Math.Rectangle
     {
         var result: retval = getOffsetedClientRect()
 
         if sliderFlags & .Vertical
         {
-            result.y += result.height * value1
-            result.y -= (result.width * 0.5)
-            result.x = result.horzCenter() - (result.width * 0.5)
-            result.height = result.width
+            result.y += result.height * val
+            result.y -= (size * 0.5)
+            result.x = result.horzCenter() - (size * 0.5)
         }
         else
         {
-            result.x += result.width * value1
-            result.x -= (result.height * 0.5)
-            result.y = result.vertCenter() - (result.height * 0.5)
-            result.width = result.height
+            result.x += result.width * val
+            result.x -= (size * 0.5)
+            result.y = result.vertCenter() - (size * 0.5)
         }
 
+        result.width, result.height = size
         return result
+    }
+
+    mtd getPosBox1()->Math.Rectangle
+    {
+        return getPosBoxAt(value1, getThemeMetrics().slider_BoxSize)
     }
 
     mtd getPosBox2()->Math.Rectangle
     {
-        var result: retval = getOffsetedClientRect()
-
-        if sliderFlags & .Vertical
-        {
-            result.y += result.height * value2
-            result.y -= (result.width * 0.5)
-            result.x = result.horzCenter() - (result.width * 0.5)
-            result.height = result.width
-        }
-        else
-        {
-            result.x += result.width * value2
-            result.x -= (result.height * 0.5)
-            result.y = result.vertCenter() - (result.height * 0.5)
-            result.width = result.height
-        }
-
-        return result
+        return getPosBoxAt(value2, getThemeMetrics().slider_BoxSize)
     }
 
     mtd startChange()
