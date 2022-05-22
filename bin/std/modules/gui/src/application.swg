@@ -213,25 +213,26 @@ private impl Application
             curP  := keyb.currentState.pressed[i]
             if !lastP and curP
             {
-                id := targetWnd.getKeyShortcut(modifiers, cast(Input.Key) i)
-                if id != null
+                evt := KeyEvent{kind: EventKind.KeyPressed}
+                evt.key = cast(Input.Key) i
+                evt.modifiers = modifiers
+                targetWnd.sendEvent(&evt)
+
+                if !evt.accepted
                 {
-                    evtui := CommandUIEvent{}
-                    evtui.id = id
-                    targetWnd.sendEvent(&evtui)
-                    if !evtui.disabled
+                    id := targetWnd.getKeyShortcut(modifiers, cast(Input.Key) i)
+                    if id != null
                     {
-                        evt := CommandEvent{}
-                        evt.id = id
-                        targetWnd.sendEvent(&evt)
+                        evtui := CommandUIEvent{}
+                        evtui.id = id
+                        targetWnd.sendEvent(&evtui)
+                        if !evtui.disabled
+                        {
+                            evtc := CommandEvent{}
+                            evtc.id = id
+                            targetWnd.sendEvent(&evtc)
+                        }
                     }
-                }
-                else
-                {
-                    evt := KeyEvent{kind: EventKind.KeyPressed}
-                    evt.key = cast(Input.Key) i
-                    evt.modifiers = modifiers
-                    targetWnd.sendEvent(&evt)
                 }
             }
             elif lastP and !curP
