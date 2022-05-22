@@ -821,7 +821,7 @@ impl EditBox
         case Flat:
             setAllPaddings(getThemeMetrics().editBox_FlatPadding)
         case Transparent:
-            break
+            setAllPaddings(0)
         }
 
         invalidate()

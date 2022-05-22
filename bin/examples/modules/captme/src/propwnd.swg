@@ -24,6 +24,7 @@ impl PropWnd
         curSel := capture.getSelectedBaseForm()
 
         opacity := SliderCtrl.create(self, "Opacity", @{0, 0, 300})
+        opacity.edit.setForm(.Square)
         opacity.setMinMaxS64(1, 100)
         opacity.setValue(acast curSel.alpha)
         opacity.dockStyle = .Top
