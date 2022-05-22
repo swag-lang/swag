@@ -69,8 +69,9 @@ impl PropWnd
         createBorderSize(capture)
         createOpactiy(capture)
 
-        capture.editView.setFocus()
         layoutWnd.padding = 8
         layoutWnd.computeLayout()
+
+        capture.editView.setFocus()
     }
 }

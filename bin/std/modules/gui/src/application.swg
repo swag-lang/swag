@@ -492,6 +492,7 @@ impl Application
             (idx, ok) := Slice.findLinear(wnd.parent.childs.toSlice(), wnd)
             Debug.assert(ok)
             wnd.parent.childs.removeAt(idx)
+            wnd.parent.invalidate()
         }
 
         if wnd.isAllocated
