@@ -224,10 +224,12 @@ impl IWnd for MainWnd
         case CmdIdUndo:
             capture.undo()
             evt.accepted = true
+            capture.selectionHasChanged()
 
         case CmdIdRedo:
             capture.redo()
             evt.accepted = true
+            capture.selectionHasChanged()
         }
 
         if undo

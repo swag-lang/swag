@@ -20,7 +20,9 @@ struct Slider
     max:            f32 = 1.0
     steps:          f32
     sliderFlags     = SliderFlags.HilightBar
+    sigStartChange: SigArray'closure(*Self)
     sigChanged:     SigArray'closure(*Self)
+    sigEndChange:   SigArray'closure(*Self)
 
     isMoving:       bool
     isPressed1:     bool
@@ -226,6 +228,7 @@ impl IWnd for Slider
             if evt.button == .Left
             {
                 isMoving = true
+                startChange()
                 if isHot1
                 {
                     isPressed1 = true
@@ -300,6 +303,7 @@ impl IWnd for Slider
                 isPressed1, isPressed2, isMoving = false
                 hitTest(evt.surfacePos)
                 invalidate()
+                endChange()
             }
         }
     }
@@ -433,6 +437,16 @@ private impl Slider
 
         return result
     }
+
+    mtd startChange()
+    {
+        sigStartChange.call(self)
+    }
+
+    mtd endChange()
+    {
+        sigEndChange.call(self)
+    }
 }
 
 impl Slider
@@ -441,8 +455,20 @@ impl Slider
     mtdc getValueLeft()->f32    => min + (max - min) * value1
     mtdc getValueRight()->f32   => min + (max - min) * value2
     mtd  setValue(f: f32)       { setValueLeft(f); }
-    mtd  setValueLeft(f: f32)   { setValue1((f - min) / (max - min)); }
-    mtd  setValueRight(f: f32)  { setValue2((f - min) / (max - min)); }
+
+    mtd setValueLeft(f: f32)
+    {
+        startChange()
+        setValue1((f - min) / (max - min))
+        endChange()
+    }
+
+    mtd setValueRight(f: f32)
+    {
+        startChange()
+        setValue2((f - min) / (max - min))
+        endChange()
+    }
 
     func setMinMax(self, min, max: f32, steps: f32 = 0)
     {

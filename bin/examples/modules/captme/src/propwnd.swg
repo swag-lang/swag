@@ -27,10 +27,20 @@ impl PropWnd
         opacity.setMinMaxS64(1, 100)
         opacity.setValue(acast curSel.alpha)
         opacity.dockStyle = .Top
-        opacity.slider.sigChanged += @|capture|(slider) {
+        opacity.slider.sigStartChange += @|capture|(slider) {
             undo := capture.newUndo(.SetAlpha)
             undo.valS32 = cast(s32) slider.getValue()
             capture.pushUndo(undo)
+            capture.editView.invalidate()
         }
+        opacity.slider.sigChanged += @|capture|(slider) {
+            capture.undo()
+            undo := capture.newUndo(.SetAlpha)
+            undo.valS32 = cast(s32) slider.getValue()
+            capture.pushUndo(undo)
+            capture.editView.invalidate()
+        }
+
+        capture.editView.setFocus()
     }
 }
