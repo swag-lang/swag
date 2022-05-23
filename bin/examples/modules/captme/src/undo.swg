@@ -18,8 +18,7 @@ enum UndoKind
     MovePoint
     CreateForm
     DeleteSelection
-    SetAlpha
-    SetBorderSize
+    SetTypedValue
 }
 
 struct Undo
@@ -36,10 +35,12 @@ struct Undo
     selection:  Array'uint
     oldForms:   Array'IForm
     oldS32:     Array's32
-    valS32:     s32
     minP:       s32
     maxP:       s32
     pointIdx:   u32
+    valU32:     u32
+    oldU32:     Array'u32
+    valRef:     const *Swag.TypeValue
 }
 
 impl Undo
@@ -79,20 +80,13 @@ impl Undo
         case OffsetSelection:
             selection = capture.selection
 
-        case SetAlpha:
+        case SetTypedValue:
             selection = capture.selection
             visit s: selection
             {
-                b := cast(*BaseForm) @dataof(capture.forms[s])
-                oldS32.add(cast(s32) b.alpha)
-            }
-
-        case SetBorderSize:
-            selection = capture.selection
-            visit s: selection
-            {
-                b := cast(*BaseForm) @dataof(capture.forms[s])
-                oldS32.add(cast(s32) b.borderSize)
+                var val: u32
+                Reflection.getFieldValue(&val, valRef, @dataof(capture.forms[s]))
+                oldU32.add(val)
             }
 
         case MoveToFront, MoveToBack, MoveBackward, MoveForward:
@@ -111,19 +105,9 @@ impl Undo
         #[Swag.Complete]
         switch kind
         {
-        case SetAlpha:
+        case SetTypedValue:
             visit s: selection
-            {
-                b := cast(*BaseForm) @dataof(capture.forms[s])
-                b.alpha = cast(u8) valS32
-            }
-
-        case SetBorderSize:
-            visit s: selection
-            {
-                b := cast(*BaseForm) @dataof(capture.forms[s])
-                b.borderSize = valS32
-            }
+                Reflection.setFieldValue(@dataof(capture.forms[s]), valRef, &valU32)
 
         case AlignLeft:
             visit s: selection
@@ -278,18 +262,11 @@ impl Undo
         #[Swag.Complete]
         switch kind
         {
-        case SetAlpha:
+        case SetTypedValue:
             visit s, i: selection
             {
-                b := cast(*BaseForm) @dataof(capture.forms[s])
-                b.alpha = cast(u8) oldS32[i]
-            }
-
-        case SetBorderSize:
-            visit s, i: selection
-            {
-                b := cast(*BaseForm) @dataof(capture.forms[s])
-                b.borderSize = cast(f32) oldS32[i]
+                val := oldU32[i]
+                Reflection.setFieldValue(@dataof(capture.forms[s]), valRef, &val)
             }
 
         case AlignLeft, AlignRight, AlignCenter, AlignTop, AlignBottom, AlignMiddle:

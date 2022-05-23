@@ -1,4 +1,4 @@
-using Gui
+using Gui, Core
 
 struct PropWnd
 {
@@ -23,14 +23,16 @@ impl PropWnd
         ctrl.setValue(acast curSel.borderSize)
         ctrl.dockStyle = .Top
         ctrl.slider.sigStartChange += @|capture|(slider) {
-            undo := capture.newUndo(.SetBorderSize)
-            undo.valS32 = cast(s32) slider.getValue()
+            undo := capture.newUndo(.SetTypedValue)
+            undo.valU32 = bitcast(u32) slider.getValue()
+            undo.valRef = Reflection.getField(@typeof(BaseForm), @nameof(BaseForm.borderSize))
             capture.pushUndo(undo)
         }
         ctrl.slider.sigChanged += @|capture|(slider) {
             capture.undo()
-            undo := capture.newUndo(.SetBorderSize)
-            undo.valS32 = cast(s32) slider.getValue()
+            undo := capture.newUndo(.SetTypedValue)
+            undo.valU32 = bitcast(u32) slider.getValue()
+            undo.valRef = Reflection.getField(@typeof(BaseForm), @nameof(BaseForm.borderSize))
             capture.pushUndo(undo)
         }
     }
@@ -45,14 +47,16 @@ impl PropWnd
         ctrl.setValue(acast curSel.alpha)
         ctrl.dockStyle = .Top
         ctrl.slider.sigStartChange += @|capture|(slider) {
-            undo := capture.newUndo(.SetAlpha)
-            undo.valS32 = cast(s32) slider.getValue()
+            undo := capture.newUndo(.SetTypedValue)
+            undo.valU32 = cast(u32) slider.getValue()
+            undo.valRef = Reflection.getField(@typeof(BaseForm), @nameof(BaseForm.alpha))
             capture.pushUndo(undo)
         }
         ctrl.slider.sigChanged += @|capture|(slider) {
             capture.undo()
-            undo := capture.newUndo(.SetAlpha)
-            undo.valS32 = cast(s32) slider.getValue()
+            undo := capture.newUndo(.SetTypedValue)
+            undo.valU32 = cast(u32) slider.getValue()
+            undo.valRef = Reflection.getField(@typeof(BaseForm), @nameof(BaseForm.alpha))
             capture.pushUndo(undo)
         }
     }
