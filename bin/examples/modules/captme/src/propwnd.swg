@@ -41,7 +41,7 @@ impl PropWnd
 
         ctrl := SliderCtrl.create(self, "Opacity")
         ctrl.edit.setForm(.Square)
-        ctrl.setMinMaxS64(1, 100)
+        ctrl.setMinMaxS64(0, 100)
         ctrl.setValue(acast curSel.alpha)
         ctrl.dockStyle = .Top
         ctrl.slider.sigStartChange += @|capture|(slider) {

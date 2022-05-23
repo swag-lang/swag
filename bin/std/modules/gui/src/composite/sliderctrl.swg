@@ -67,6 +67,7 @@ impl SliderCtrl
 
             edit = EditBox.create(ctrl, "", @{})
             edit.setForm(.Transparent)
+            edit.editBoxFlags |= .RightAlign
             edit.sigLoseFocus += @|ctrl|(edit)
             {
                 switch edit.inputMode
