@@ -10,6 +10,7 @@
 
 bool Module::computeExecuteResult(SourceFile* sourceFile, AstNode* node, JobContext* callerContext, ExecuteNodeParams* params)
 {
+    // :CheckConstExprFuncReturnType
     // :opAffectConstExpr
     // Result is on the stack. Store it in the compiler segment.
     if (node->semFlags & AST_SEM_EXEC_RET_STACK)

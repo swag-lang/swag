@@ -1190,6 +1190,26 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 identifier->inheritAndFlag1(identifier->callParameters, AST_CONST_EXPR);
             else
                 identifier->flags |= AST_CONST_EXPR;
+
+            // Be sure that the return type is compatible with a compile time execution.
+            // Otherwise, we do not want the AST_CONST_EXPR_FLAG
+            if (identifier->flags & AST_CONST_EXPR)
+            {
+                auto typeFunc   = CastTypeInfo<TypeInfoFuncAttr>(identifier->typeInfo, TypeInfoKind::FuncAttr);
+                auto returnType = TypeManager::concreteReferenceType(typeFunc->returnType);
+
+                // :CheckConstExprFuncReturnType
+                if (returnType &&
+                    !returnType->isNative(NativeTypeKind::String) &&
+                    !returnType->isNativeIntegerOrRune() &&
+                    !returnType->isNativeFloat() &&
+                    !returnType->isNative(NativeTypeKind::Bool) &&
+                    !(returnType->flags & TYPEINFO_RETURN_BY_COPY) && // Treated later (as errors)
+                    !(identifier->semFlags & AST_SEM_EXEC_RET_STACK))
+                {
+                    identifier->flags &= ~AST_CONST_EXPR;
+                }
+            }
         }
 
         auto returnType = TypeManager::concreteType(identifier->typeInfo, CONCRETE_ALL & ~CONCRETE_FORCEALIAS);

@@ -66,6 +66,7 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
             return true;
     }
 
+    // :CheckConstExprFuncReturnType
     // Be sure we can deal with the type at compile time
     ExecuteNodeParams execParams;
     if (!(node->semFlags & AST_SEM_EXEC_RET_STACK))
