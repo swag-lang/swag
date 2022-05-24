@@ -13,27 +13,35 @@ impl PropWnd
         return main.editWnd.editView.capture
     }
 
+    mtd createSlider(name: string, minv, maxv: s64, val: f32)->*SliderCtrl
+    {
+        ctrl := SliderCtrl.create(self, #self.name)
+        ctrl.edit.setForm(.Square)
+        ctrl.setMinMaxS64(minv, maxv)
+        ctrl.dockStyle = .Top
+        ctrl.setValue(val)
+        return ctrl
+    }
+
+    func pushTypedValue(capture: *Capture, val: u32, name: string)
+    {
+        undo := capture.newUndo(.SetTypedValue)
+        undo.valU32 = val
+        undo.valRef = Reflection.getField(@typeof(BaseForm), name)
+        capture.pushUndo(undo)
+    }
+
     mtd createBorderSize(capture: *Capture)
     {
         curSel := capture.getSelectedBaseForm()
 
-        ctrl := SliderCtrl.create(self, "Tickness")
-        ctrl.edit.setForm(.Square)
-        ctrl.setMinMaxS64(1, 50)
-        ctrl.setValue(acast curSel.borderSize)
-        ctrl.dockStyle = .Top
+        ctrl := createSlider("Tickness", 1, 50, curSel.borderSize)
         ctrl.slider.sigStartChange += @|capture|(slider) {
-            undo := capture.newUndo(.SetTypedValue)
-            undo.valU32 = bitcast(u32) slider.getValue()
-            undo.valRef = Reflection.getField(@typeof(BaseForm), @nameof(BaseForm.borderSize))
-            capture.pushUndo(undo)
+            pushTypedValue(capture, bitcast(u32) slider.getValue(), @nameof(BaseForm.borderSize))
         }
         ctrl.slider.sigChanged += @|capture|(slider) {
             capture.undo()
-            undo := capture.newUndo(.SetTypedValue)
-            undo.valU32 = bitcast(u32) slider.getValue()
-            undo.valRef = Reflection.getField(@typeof(BaseForm), @nameof(BaseForm.borderSize))
-            capture.pushUndo(undo)
+            pushTypedValue(capture, bitcast(u32) slider.getValue(), @nameof(BaseForm.borderSize))
         }
     }
 
@@ -41,23 +49,13 @@ impl PropWnd
     {
         curSel := capture.getSelectedBaseForm()
 
-        ctrl := SliderCtrl.create(self, "Opacity")
-        ctrl.edit.setForm(.Square)
-        ctrl.setMinMaxS64(0, 100)
-        ctrl.setValue(acast curSel.alpha)
-        ctrl.dockStyle = .Top
+        ctrl := createSlider("Opacity", 0, 100, acast curSel.alpha)
         ctrl.slider.sigStartChange += @|capture|(slider) {
-            undo := capture.newUndo(.SetTypedValue)
-            undo.valU32 = cast(u32) slider.getValue()
-            undo.valRef = Reflection.getField(@typeof(BaseForm), @nameof(BaseForm.alpha))
-            capture.pushUndo(undo)
+            pushTypedValue(capture, cast(u32) slider.getValue(), @nameof(BaseForm.alpha))
         }
         ctrl.slider.sigChanged += @|capture|(slider) {
             capture.undo()
-            undo := capture.newUndo(.SetTypedValue)
-            undo.valU32 = cast(u32) slider.getValue()
-            undo.valRef = Reflection.getField(@typeof(BaseForm), @nameof(BaseForm.alpha))
-            capture.pushUndo(undo)
+            pushTypedValue(capture, cast(u32) slider.getValue(), @nameof(BaseForm.alpha))
         }
     }
 
