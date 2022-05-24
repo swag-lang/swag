@@ -23,8 +23,10 @@ impl IWnd for ComboBox
     {
         if editBox
         {
+            metrics := getThemeMetrics()
             clientRect := getClientRect()
-            clientRect.width -= getThemeMetrics().comboBox_RightMargin
+            clientRect.width -= metrics.comboBox_RightMargin
+            clientRect.moveLeft(metrics.comboBox_Padding)
             editBox.setPosition(clientRect)
         }
     }
@@ -180,6 +182,7 @@ impl ComboBox
             res.editBox.setForm(EditBoxForm.Transparent)
         }
 
+        res.sendResizeEvent()
         return res
     }
 
