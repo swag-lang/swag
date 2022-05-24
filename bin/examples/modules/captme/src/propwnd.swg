@@ -23,39 +23,77 @@ impl PropWnd
         return ctrl
     }
 
-    func pushTypedValue(capture: *Capture, val: u32, name: string)
+    func pushTypedValue(capture: *Capture, val: u32, type: typeinfo, name: string)
     {
         undo := capture.newUndo(.SetTypedValue)
         undo.valU32 = val
-        undo.valRef = Reflection.getField(@typeof(BaseForm), name)
+        undo.valRef = Reflection.getField(type, name)
         capture.pushUndo(undo)
+    }
+
+    mtd createStartSize(capture: *Capture)
+    {
+        curSelType := capture.getSelectedFormType()
+        if curSelType != FormArrow
+            return
+        curSel := cast(*FormArrow) capture.getSelectedBaseForm()
+
+        ctrl := createSlider("Start Size", 1, 50, curSel.startSize)
+        ctrl.slider.sigStartChange += @|capture|(slider) {
+            pushTypedValue(capture, bitcast(u32) slider.getValue(), @typeof(FormArrow), @nameof(FormArrow.startSize))
+        }
+        ctrl.slider.sigChanged += @|capture|(slider) {
+            capture.undo()
+            pushTypedValue(capture, bitcast(u32) slider.getValue(), @typeof(FormArrow), @nameof(FormArrow.startSize))
+        }
+
+        if curSel.startShape == .Flat
+            ctrl.disable()
+    }
+
+    mtd createEndSize(capture: *Capture)
+    {
+        curSelType := capture.getSelectedFormType()
+        if curSelType != FormArrow
+            return
+
+        curSel := cast(*FormArrow) capture.getSelectedBaseForm()
+        ctrl := createSlider("End Size", 1, 50, curSel.endSize)
+        ctrl.slider.sigStartChange += @|capture|(slider) {
+            pushTypedValue(capture, bitcast(u32) slider.getValue(), @typeof(FormArrow), @nameof(FormArrow.endSize))
+        }
+        ctrl.slider.sigChanged += @|capture|(slider) {
+            capture.undo()
+            pushTypedValue(capture, bitcast(u32) slider.getValue(), @typeof(FormArrow), @nameof(FormArrow.endSize))
+        }
+
+        if curSel.endShape == .Flat
+            ctrl.disable()
     }
 
     mtd createBorderSize(capture: *Capture)
     {
         curSel := capture.getSelectedBaseForm()
-
         ctrl := createSlider("Tickness", 1, 50, curSel.borderSize)
         ctrl.slider.sigStartChange += @|capture|(slider) {
-            pushTypedValue(capture, bitcast(u32) slider.getValue(), @nameof(BaseForm.borderSize))
+            pushTypedValue(capture, bitcast(u32) slider.getValue(), @typeof(BaseForm), @nameof(BaseForm.borderSize))
         }
         ctrl.slider.sigChanged += @|capture|(slider) {
             capture.undo()
-            pushTypedValue(capture, bitcast(u32) slider.getValue(), @nameof(BaseForm.borderSize))
+            pushTypedValue(capture, bitcast(u32) slider.getValue(), @typeof(BaseForm), @nameof(BaseForm.borderSize))
         }
     }
 
     mtd createOpactiy(capture: *Capture)
     {
         curSel := capture.getSelectedBaseForm()
-
         ctrl := createSlider("Opacity", 0, 100, acast curSel.alpha)
         ctrl.slider.sigStartChange += @|capture|(slider) {
-            pushTypedValue(capture, cast(u32) slider.getValue(), @nameof(BaseForm.alpha))
+            pushTypedValue(capture, cast(u32) slider.getValue(), @typeof(BaseForm), @nameof(BaseForm.alpha))
         }
         ctrl.slider.sigChanged += @|capture|(slider) {
             capture.undo()
-            pushTypedValue(capture, cast(u32) slider.getValue(), @nameof(BaseForm.alpha))
+            pushTypedValue(capture, cast(u32) slider.getValue(), @typeof(BaseForm), @nameof(BaseForm.alpha))
         }
     }
 
@@ -69,6 +107,8 @@ impl PropWnd
             return
 
         createBorderSize(capture)
+        createStartSize(capture)
+        createEndSize(capture)
         createOpactiy(capture)
 
         layoutWnd.padding = 8
