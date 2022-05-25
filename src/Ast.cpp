@@ -526,9 +526,11 @@ namespace Ast
 
     AstIdentifierRef* newIdentifierRef(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob)
     {
-        auto node         = Ast::newNode<AstIdentifierRef>(syntaxJob, AstNodeKind::IdentifierRef, sourceFile, parent);
-        node->semanticFct = SemanticJob::resolveIdentifierRef;
-        node->byteCodeFct = ByteCodeGenJob::emitIdentifierRef;
+        auto node = Ast::newNode<AstIdentifierRef>(syntaxJob, AstNodeKind::IdentifierRef, sourceFile, parent);
+        node->allocateExtension();
+        node->extension->semanticBeforeFct = SemanticJob::preResolveIdentifierRef;
+        node->semanticFct                  = SemanticJob::resolveIdentifierRef;
+        node->byteCodeFct                  = ByteCodeGenJob::emitIdentifierRef;
         return node;
     }
 

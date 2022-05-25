@@ -150,8 +150,7 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
 
 bool SyntaxJob::doIdentifierRef(AstNode* parent, AstNode** result, uint32_t identifierFlags)
 {
-    auto identifierRef         = Ast::newNode<AstIdentifierRef>(this, AstNodeKind::IdentifierRef, sourceFile, parent);
-    identifierRef->semanticFct = SemanticJob::resolveIdentifierRef;
+    auto identifierRef = Ast::newIdentifierRef(sourceFile, parent, this);
     if (result)
         *result = identifierRef;
 

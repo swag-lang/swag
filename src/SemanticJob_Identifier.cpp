@@ -10,6 +10,18 @@
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
 
+bool SemanticJob::preResolveIdentifierRef(SemanticContext* context)
+{
+    auto node = CastAst<AstIdentifierRef>(context->node, AstNodeKind::IdentifierRef);
+
+    // When duplicating an identifier ref, and solve it again, we need to be sure that all that
+    // stuff is reset
+    node->typeInfo             = nullptr;
+    node->previousResolvedNode = nullptr;
+    node->startScope           = nullptr;
+    return true;
+}
+
 bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
 {
     auto node                    = static_cast<AstIdentifierRef*>(context->node);

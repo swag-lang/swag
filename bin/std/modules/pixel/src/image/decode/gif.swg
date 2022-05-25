@@ -65,7 +65,7 @@ public struct Decoder
     streamLen:      uint
 }
 
-public impl Decoder
+impl Decoder
 {
     mtd seek(len: uint) throw
     {
@@ -84,6 +84,7 @@ public impl Decoder
         streamLen -= len
     }
 
+    #[Swag.Inline]
     mtd readU8()->u8 throw
     {
         if streamLen < 1

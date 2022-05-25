@@ -18,8 +18,7 @@ bool SyntaxJob::doLiteral(AstNode* parent, AstNode** result)
     {
         SWAG_CHECK(eatToken());
 
-        auto identifierRef         = Ast::newNode<AstIdentifierRef>(this, AstNodeKind::IdentifierRef, sourceFile, node);
-        identifierRef->semanticFct = SemanticJob::resolveIdentifierRef;
+        auto identifierRef = Ast::newIdentifierRef(sourceFile, node, this);
         SWAG_CHECK(doIdentifier(identifierRef, IDENTIFIER_NO_PARAMS | IDENTIFIER_TYPE_DECL));
         identifierRef->childs.back()->semanticFct = SemanticJob::resolveLiteralSuffix;
     }
