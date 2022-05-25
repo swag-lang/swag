@@ -187,43 +187,43 @@ impl Decoder
         }
     }
 
-    mtd initTable(key_size: s32)
+    mtd initTable(keySize: s32)
     {
-        table.bulk = Math.max(1 << (key_size + 1), 0x100)
-        table.nentries = (1 << key_size) + 2
+        table.bulk = Math.max(1 << (keySize + 1), 0x100)
+        table.nentries = (1 << keySize) + 2
         table.entries.resize(acast table.bulk)
-        loop key: 1 << key_size
+        loop key: 1 << keySize
             table.entries[key] = @{1, 0xFFF, cast(u8) key}
     }
 
-    mtd getKey(key_size: s32, sub_len, shift, byte: *u8)->u16 throw
+    mtd getKey(keySize: s32, subLen, shift, byte: *u8)->u16 throw
     {
         key := 0'u16
         frag_size := 0
-        for bits_read := 0; bits_read < key_size; bits_read += frag_size
+        for bits_read := 0; bits_read < keySize; bits_read += frag_size
         {
             rpad := (dref shift + bits_read) % 8
             if rpad == 0
             {
                 /* Update byte. */
-                if dref sub_len == 0
+                if dref subLen == 0
                 {
-                    dref sub_len = readU8() /* Must be nonzero! */
-                    if dref sub_len == 0
+                    dref subLen = readU8() /* Must be nonzero! */
+                    if dref subLen == 0
                         return 0x1000
                 }
 
                 dref byte = readU8()
-                sub_len[0] -= 1
+                subLen[0] -= 1
             }
 
-            frag_size = Math.min(cast(s32) (key_size - bits_read), cast(s32) (8 - rpad))
+            frag_size = Math.min(cast(s32) (keySize - bits_read), cast(s32) (8 - rpad))
             key |= (cast(u16) ((dref byte) >>,safe rpad)) <<,safe bits_read
         }
 
         /* Clear extra bits to the left. */
-        key &= cast(u16) ((1 << key_size) - 1)
-        dref shift = cast(u8) ((dref shift + key_size) % 8)
+        key &= cast(u16) ((1 << keySize) - 1)
+        dref shift = cast(u8) ((dref shift + keySize) % 8)
         return key
     }
 
@@ -265,8 +265,8 @@ impl Decoder
     mtd readImageData(interlace: u8) throw
     {
         byte := readU8()
-        key_size := cast(s32) byte
-        if key_size < 2 or key_size > 8
+        keySize := cast(s32) byte
+        if keySize < 2 or keySize > 8
             throw "invalid frame"
 
         start := cast(uint) (stream - streamStart)
@@ -277,47 +277,47 @@ impl Decoder
         stream = streamStart + start
         streamLen = remainStart
 
-        clear := 1 << key_size
+        clear := 1 << keySize
         stop  := clear + 1
-        initTable(key_size)
-        key_size += 1
-        init_key_size := key_size
-        sub_len, shift := 0'u8
-        key := getKey(key_size, &sub_len, &shift, &byte) /* clear code */
-        frm_off := 0
+        initTable(keySize)
+        keySize += 1
+        initKeySize := keySize
+        subLen, shift := 0'u8
+        key := getKey(keySize, &subLen, &shift, &byte) /* clear code */
+        frmOff := 0
         ret := 0
-        frm_size := fw*fh
-        table_is_full := 0
-        str_len := 0'u16
+        frmSize := fw * fh
+        tableIsFull := 0
+        strLen := 0'u16
 
         var entry: Entry
-        while frm_off < frm_size
+        while frmOff < frmSize
         {
             if key == clear
             {
-                key_size = init_key_size
-                table.nentries = (1 << (key_size - 1)) + 2
-                table_is_full = 0
+                keySize = initKeySize
+                table.nentries = (1 << (keySize - 1)) + 2
+                tableIsFull = 0
             }
-            elif !table_is_full
+            elif !tableIsFull
             {
-                ret = addEntry(cast(u16) (str_len + 1), key, entry.suffix)
+                ret = addEntry(cast(u16) (strLen + 1), key, entry.suffix)
                 if table.nentries == 0x1000
                 {
                     ret = 0
-                    table_is_full = 1
+                    tableIsFull = 1
                 }
             }
 
-            key = getKey(key_size, &sub_len, &shift, &byte)
+            key = getKey(keySize, &subLen, &shift, &byte)
             if key == clear continue
             if key == stop or key == 0x1000 break
-            if ret == 1 key_size += 1
+            if ret == 1 keySize += 1
             entry = table.entries.buffer[key]
-            str_len = entry.length
-            loop i: str_len
+            strLen = entry.length
+            loop i: strLen
             {
-                p := frm_off + entry.length - 1
+                p := frmOff + entry.length - 1
                 x := p % fw
                 y := p / fw
                 if interlace
@@ -328,13 +328,13 @@ impl Decoder
                 entry = table.entries.buffer[entry.prefix]
             }
 
-            frm_off += str_len
-            if key < table.nentries - 1 and !table_is_full
+            frmOff += strLen
+            if key < table.nentries - 1 and !tableIsFull
                 table.entries[table.nentries - 1].suffix = entry.suffix
         }
 
         if key == stop
-            sub_len = readU8() /* Must be zero! */
+            subLen = readU8() /* Must be zero! */
         stream = streamStart + end
         streamLen = remainEnd
     }
