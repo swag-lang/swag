@@ -80,7 +80,6 @@ foreign a cvarargs
 cast interface vers struct (avec safety)
 -------------------------------------
 llvm debug, pas à jour
-- string as func parameters pété
 - variables local en #[Swag.global]
 - mettre les constants
 - mettre les enums (void CodeViewDebug::emitStaticConstMemberList())
