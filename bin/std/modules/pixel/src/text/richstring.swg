@@ -110,6 +110,8 @@ impl RichString
             sl := @mkslice(scan, count)
             switch
             {
+            case sl[0] != "<"'u8:
+                break
             case Utf8.startsWith(sl, "<u>"):
                 addChunk(byteIdx)
                 under = under == .None ? .Underline : .None
