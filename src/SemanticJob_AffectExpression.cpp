@@ -258,7 +258,9 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                 }
                 else if (rightTypeInfo->isInitializerList())
                 {
-                    SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_UNCONST));
+                    SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_UNCONST | CASTFLAG_ACCEPT_PENDING));
+                    if (context->result == ContextResult::Pending)
+                        return true;
                 }
                 else
                 {
@@ -273,7 +275,9 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             break;
         }
 
-        SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, nullptr, right, CASTFLAG_AUTO_BOOL | CASTFLAG_TRY_COERCE | CASTFLAG_FOR_AFFECT));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, nullptr, right, CASTFLAG_AUTO_BOOL | CASTFLAG_TRY_COERCE | CASTFLAG_FOR_AFFECT | CASTFLAG_ACCEPT_PENDING));
+        if (context->result == ContextResult::Pending)
+            return true;
         break;
 
     case TokenId::SymLowerLowerEqual:
