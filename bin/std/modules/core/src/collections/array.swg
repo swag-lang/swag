@@ -48,16 +48,19 @@ impl Array
         }
     }
 
+    #[Inline]
     mtd opCast()->[..] T
     {
         return @mkslice(buffer, count)
     }
 
+    #[Inline]
     mtd opCast()->const [..] T
     {
         return @mkslice(buffer, count)
     }
 
+    #[Inline]
     mtd opSlice(lower, upper: uint)->[..] T
     {
         Debug.assert(lower <= upper and lower < count and upper < count)
@@ -80,6 +83,7 @@ impl Array
         return buffer[index]
     }
 
+    #[Inline]
     mtd opIndexAffect(index: uint, value: T)
         #selectif Reflection.canCopy(T)
     {

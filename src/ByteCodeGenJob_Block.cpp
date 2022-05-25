@@ -64,7 +64,8 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
         allParams     = node->parent;
         numCallParams = 1;
     }
-    else if (parent->kind == AstNodeKind::AffectOp && parent->hasSpecialFuncCall(g_LangSpec->name_opIndexAffect))
+    else if (parent->kind == AstNodeKind::AffectOp &&
+             (parent->hasSpecialFuncCall(g_LangSpec->name_opIndexAffect) || parent->hasSpecialFuncCall(g_LangSpec->name_opIndexAssign)))
     {
         parameters.flags      = 0;
         parameters.sourceFile = parent->sourceFile;
@@ -72,25 +73,26 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
         parameters.inheritOwners(parent);
         SWAG_ASSERT(parent->childs.front()->kind == AstNodeKind::IdentifierRef);
         auto ptIdx = CastAst<AstArrayPointerIndex>(parent->childs.front()->childs.back(), AstNodeKind::ArrayPointerIndex);
-        parameters.childs.push_back(ptIdx->array);
+        auto arr   = ptIdx->array;
+
+        auto ptIdx1 = ptIdx;
+        while (ptIdx1->array->kind == AstNodeKind::ArrayPointerIndex)
+        {
+            ptIdx1 = CastAst<AstArrayPointerIndex>(ptIdx1->array, AstNodeKind::ArrayPointerIndex);
+            arr    = ptIdx1->array;
+        }
+
+        parameters.childs.push_back(arr);
+        while (ptIdx1 != ptIdx)
+        {
+            parameters.childs.push_back(ptIdx1->access);
+            ptIdx1 = CastAst<AstArrayPointerIndex>(ptIdx1->parent, AstNodeKind::ArrayPointerIndex);
+        }
+
         parameters.childs.push_back(ptIdx->access);
         parameters.childs.push_back(parent->childs[1]);
         allParams     = &parameters;
-        numCallParams = 3;
-    }
-    else if (parent->kind == AstNodeKind::AffectOp && parent->hasSpecialFuncCall(g_LangSpec->name_opIndexAssign))
-    {
-        parameters.flags      = 0;
-        parameters.sourceFile = parent->sourceFile;
-        parameters.inheritTokenLocation(parent);
-        parameters.inheritOwners(parent);
-        SWAG_ASSERT(parent->childs.front()->kind == AstNodeKind::IdentifierRef);
-        auto ptIdx = CastAst<AstArrayPointerIndex>(parent->childs.front()->childs.back(), AstNodeKind::ArrayPointerIndex);
-        parameters.childs.push_back(ptIdx->array);
-        parameters.childs.push_back(ptIdx->access);
-        parameters.childs.push_back(parent->childs[1]);
-        allParams     = &parameters;
-        numCallParams = 3;
+        numCallParams = (uint32_t) parameters.childs.size();
     }
     else
     {
