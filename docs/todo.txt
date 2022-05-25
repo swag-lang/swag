@@ -61,6 +61,8 @@ TODO
 ****************************************
 
 -------------------------------------
+moveToString pas cool, c'est 1024 octets à chaque fois
+-------------------------------------
 erreur si opDrop est privé et la struct publique (on doit exporter)
 -------------------------------------
 on doit exporter les implementation d'interface pour un truc public ?
@@ -78,6 +80,7 @@ foreign a cvarargs
 cast interface vers struct (avec safety)
 -------------------------------------
 llvm debug, pas à jour
+- string as func parameters pété
 - variables local en #[Swag.global]
 - mettre les constants
 - mettre les enums (void CodeViewDebug::emitStaticConstMemberList())

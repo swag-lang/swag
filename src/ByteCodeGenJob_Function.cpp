@@ -1604,6 +1604,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
 
         auto inst   = emitInstruction(context, ByteCodeOp::CopySPVaargs, r0[0]);
         inst->b.u32 = (uint32_t) offset * sizeof(Register);
+        context->bc->maxSPVaargs = max(context->bc->maxSPVaargs, maxCallParams + 2);
 
         // If this is a closure, the first parameter is optionnal, depending on node->additionalRegisterRC[1] content
         // So we remove the first parameter by default, and will add it below is necessary
@@ -1644,6 +1645,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
 
         auto inst   = emitInstruction(context, ByteCodeOp::CopySPVaargs, r0[0]);
         inst->b.u32 = (uint32_t) offset * sizeof(Register);
+        context->bc->maxSPVaargs = max(context->bc->maxSPVaargs, maxCallParams + 2);
 
         // If this is a closure, the first parameter is optionnal, depending on node->additionalRegisterRC[1] content
         // So we remove the first parameter by default, and will add it below is necessary

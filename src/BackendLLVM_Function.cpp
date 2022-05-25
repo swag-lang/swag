@@ -400,6 +400,11 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     if (bc->maxCallResults)
         allocRR = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt32(bc->maxCallResults));
 
+    // To store variadics
+    llvm::AllocaInst* allocVA = nullptr;
+    if (bc->maxSPVaargs)
+        allocVA = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(bc->maxSPVaargs));
+
     // Stack
     llvm::AllocaInst* allocStack = nullptr;
     if (typeFunc->stackSize)
@@ -3733,6 +3738,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::CopySPVaargs:
         {
+            SWAG_ASSERT(allocVA);
+
             // We need to make all variadic parameters contiguous in stack, and point to that address
             // Two cases here :
             // pushRVParams has something: then we have a typed param, of 1/2/4 bytes each
@@ -3740,67 +3747,68 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
             if (!pushRVParams.empty())
             {
-                llvm::AllocaInst* allocVA = nullptr;
-                auto              sizeOf  = pushRVParams[0].second;
+                auto sizeOf = pushRVParams[0].second;
                 switch (sizeOf)
                 {
                 case 1:
                 {
-                    allocVA = builder.CreateAlloca(builder.getInt8Ty(), builder.getInt64(pushRVParams.size()));
                     auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
-                    auto r1 = builder.CreateInBoundsGEP(allocVA, pp.cst0_i32);
+                    auto r1 = builder.CreateInBoundsGEP(TO_PTR_I8(allocVA), pp.cst0_i32);
                     builder.CreateStore(r1, r0);
                     break;
                 }
                 case 2:
                 {
-                    allocVA = builder.CreateAlloca(builder.getInt16Ty(), builder.getInt64(pushRVParams.size()));
                     auto r0 = TO_PTR_PTR_I16(GEP_I32(allocR, ip->a.u32));
-                    auto r1 = builder.CreateInBoundsGEP(allocVA, pp.cst0_i32);
+                    auto r1 = builder.CreateInBoundsGEP(TO_PTR_I16(allocVA), pp.cst0_i32);
                     builder.CreateStore(r1, r0);
                     break;
                 }
                 case 4:
                 {
-                    allocVA = builder.CreateAlloca(builder.getInt32Ty(), builder.getInt64(pushRVParams.size()));
                     auto r0 = TO_PTR_PTR_I32(GEP_I32(allocR, ip->a.u32));
-                    auto r1 = builder.CreateInBoundsGEP(allocVA, pp.cst0_i32);
+                    auto r1 = builder.CreateInBoundsGEP(TO_PTR_I32(allocVA), pp.cst0_i32);
                     builder.CreateStore(r1, r0);
                     break;
                 }
                 }
 
-                SWAG_ASSERT(allocVA);
                 int idx      = 0;
                 int idxParam = (int) pushRVParams.size() - 1;
                 while (idxParam >= 0)
                 {
-                    auto         reg = pushRVParams[idxParam].first;
-                    auto         r0  = GEP_I32(allocVA, idx);
-                    llvm::Value* r1  = nullptr;
+                    auto reg = pushRVParams[idxParam].first;
                     switch (sizeOf)
                     {
                     case 1:
-                        r1 = TO_PTR_I8(GEP_I32(allocR, reg));
-                        break;
-                    case 2:
-                        r1 = TO_PTR_I16(GEP_I32(allocR, reg));
-                        break;
-                    case 4:
-                        r1 = TO_PTR_I32(GEP_I32(allocR, reg));
+                    {
+                        auto r0 = GEP_I32(TO_PTR_I8(allocVA), idx);
+                        auto r1 = TO_PTR_I8(GEP_I32(allocR, reg));
+                        builder.CreateStore(builder.CreateLoad(r1), r0);
                         break;
                     }
+                    case 2:
+                    {
+                        auto r0 = GEP_I32(TO_PTR_I16(allocVA), idx);
+                        auto r1 = TO_PTR_I16(GEP_I32(allocR, reg));
+                        builder.CreateStore(builder.CreateLoad(r1), r0);
+                        break;
+                    }
+                    case 4:
+                    {
+                        auto r0 = GEP_I32(TO_PTR_I32(allocVA), idx);
+                        auto r1 = TO_PTR_I32(GEP_I32(allocR, reg));
+                        builder.CreateStore(builder.CreateLoad(r1), r0);
+                        break;
+                    }
+                    }
 
-                    SWAG_ASSERT(r1);
-                    builder.CreateStore(builder.CreateLoad(r1), r0);
                     idx++;
                     idxParam--;
                 }
             }
             else
             {
-                auto allocVA = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(pushRAParams.size()));
-
                 // All of this is complicated. But ip->b.u32 has been reduced by one register in case of closure, and
                 // we have a dynamic test for bytecode execution. But for runtime, be put it back.
                 auto typeFuncCall = CastTypeInfo<TypeInfoFuncAttr>((TypeInfo*) ip->d.pointer, TypeInfoKind::FuncAttr, TypeInfoKind::Lambda);
@@ -3818,6 +3826,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 int idxParam = (int) pushRAParams.size() - (sizeB / sizeof(Register)) - 1;
                 while (idxParam >= 0)
                 {
+                    SWAG_ASSERT(idx < bc->maxSPVaargs);
                     auto r0 = GEP_I32(allocVA, idx);
                     auto r1 = GEP_I32(allocR, pushRAParams[idxParam]);
                     builder.CreateStore(builder.CreateLoad(r1), r0);
