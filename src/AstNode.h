@@ -256,6 +256,7 @@ struct AstNode
     void        allocateExtension();
     void        swap2Childs();
     bool        hasSpecialFuncCall();
+    bool        hasSpecialFuncCall(const Utf8& name);
     bool        mustInline();
     AstNode*    inSimpleReturn();
     bool        forceTakeAddress();

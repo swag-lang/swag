@@ -42,6 +42,7 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
     int      numCallParams = 0;
     parent                 = node->parent;
 
+    AstNode parameters;
     if (parent->kind == AstNodeKind::ArrayPointerIndex || parent->kind == AstNodeKind::ArrayPointerSlicing)
     {
         allParams     = parent;
@@ -59,10 +60,23 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
     }
     else if (parent->kind == AstNodeKind::Loop)
     {
-        // This should be opCount
-        SWAG_ASSERT(node->parent->extension && node->parent->extension->resolvedUserOpSymbolOverload);
+        SWAG_ASSERT(parent->hasSpecialFuncCall(g_LangSpec->name_opCount));
         allParams     = node->parent;
         numCallParams = 1;
+    }
+    else if (parent->kind == AstNodeKind::AffectOp && parent->hasSpecialFuncCall(g_LangSpec->name_opIndexAffect))
+    {
+        parameters.flags      = 0;
+        parameters.sourceFile = parent->sourceFile;
+        parameters.inheritTokenLocation(parent);
+        parameters.inheritOwners(parent);
+        SWAG_ASSERT(parent->childs.front()->kind == AstNodeKind::IdentifierRef);
+        auto ptIdx = CastAst<AstArrayPointerIndex>(parent->childs.front()->childs.back(), AstNodeKind::ArrayPointerIndex);
+        parameters.childs.push_back(ptIdx->array);
+        parameters.childs.push_back(ptIdx->access);
+        parameters.childs.push_back(parent->childs[1]);
+        allParams     = &parameters;
+        numCallParams = 3;
     }
     else
     {
@@ -93,6 +107,7 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
                     if (overload->flags & OVERLOAD_VAR_INLINE)
                     {
                         overload->registers = callParam->resultRegisterRC;
+                        SWAG_ASSERT(overload->registers.countResults > 0);
                         if (!overload->registers.cannotFree)
                         {
                             overload->registers.cannotFree = true;

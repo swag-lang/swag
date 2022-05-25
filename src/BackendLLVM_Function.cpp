@@ -3826,7 +3826,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 int idxParam = (int) pushRAParams.size() - (sizeB / sizeof(Register)) - 1;
                 while (idxParam >= 0)
                 {
-                    SWAG_ASSERT(idx < bc->maxSPVaargs);
+                    SWAG_ASSERT((uint32_t) idx < bc->maxSPVaargs);
                     auto r0 = GEP_I32(allocVA, idx);
                     auto r1 = GEP_I32(allocR, pushRAParams[idxParam]);
                     builder.CreateStore(builder.CreateLoad(r1), r0);

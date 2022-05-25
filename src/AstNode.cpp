@@ -206,6 +206,14 @@ bool AstNode::hasSpecialFuncCall()
            extension->resolvedUserOpSymbolOverload->symbol->kind == SymbolKind::Function;
 }
 
+bool AstNode::hasSpecialFuncCall(const Utf8& name)
+{
+    return extension &&
+        extension->resolvedUserOpSymbolOverload &&
+        extension->resolvedUserOpSymbolOverload->symbol->kind == SymbolKind::Function &&
+        extension->resolvedUserOpSymbolOverload->symbol->name == name;
+}
+
 AstNode* AstNode::inSimpleReturn()
 {
     auto test = parent;
