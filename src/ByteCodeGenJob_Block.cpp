@@ -78,6 +78,20 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
         allParams     = &parameters;
         numCallParams = 3;
     }
+    else if (parent->kind == AstNodeKind::AffectOp && parent->hasSpecialFuncCall(g_LangSpec->name_opIndexAssign))
+    {
+        parameters.flags      = 0;
+        parameters.sourceFile = parent->sourceFile;
+        parameters.inheritTokenLocation(parent);
+        parameters.inheritOwners(parent);
+        SWAG_ASSERT(parent->childs.front()->kind == AstNodeKind::IdentifierRef);
+        auto ptIdx = CastAst<AstArrayPointerIndex>(parent->childs.front()->childs.back(), AstNodeKind::ArrayPointerIndex);
+        parameters.childs.push_back(ptIdx->array);
+        parameters.childs.push_back(ptIdx->access);
+        parameters.childs.push_back(parent->childs[1]);
+        allParams     = &parameters;
+        numCallParams = 3;
+    }
     else
     {
         allParams     = parent;
