@@ -4,6 +4,7 @@ using Core, Pixel
 {
     var str: RichString
     str.set("this is   a string")
+    str.compute()
     @assert(str.chunks.count == 7)
     @assert(str.chunks[0].slice == "this")
     @assert(str.chunks[1].isSpace)
