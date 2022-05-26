@@ -40,7 +40,7 @@ impl IWnd for StackLayoutCtrl
             visit c, i: childs
             {
                 pos := c.position
-                pos.x = x
+                pos.x = Math.round(x)
                 c.setPosition(pos)
                 x += c.position.width + spacing
             }

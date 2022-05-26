@@ -31,6 +31,56 @@ impl PropWnd
         capture.pushUndo(undo)
     }
 
+    mtd createBorderColor(capture: *Capture, stack: *Wnd)
+    {
+        curSel := capture.getSelectedBaseForm()
+        icon := getTheme().getIcon64(.Question, 48)
+        btn := IconButton.create(stack, icon, @{0, 0, 64, 88})
+        btn.name = "Outline"
+        btn.setForm(.RoundSquare)
+        btn.style.addStyleSheetColors("btnIcon_Bk $btnIcon_HotBk")
+        btn.iconBtnFlags = .Popup | .CheckableToggle
+        btn.checkedForm = .None
+        btn.marginTopIcon = 16
+        btn.marginBottomText = 56
+        btn.sigPaintIcon = @|capture|(btn, bc, pos)
+        {
+            bc.painter.setParams(.Antialiased)
+            curSel := capture.getSelectedBaseForm()
+            rect := pos
+            rect.inflate(-16, -16)
+            rect.height = rect.width
+            if !curSel.borderColor.isOpaque()
+                bc.painter.drawRoundRect(rect, 5, 5, Pen.createHatch(.CheckBoardLarge, Argb.DarkGray, 5))
+            bc.painter.drawRoundRect(rect, 5, 5, curSel.borderColor, 5)
+        }
+
+        btn.sigShowPopup += @|capture|(btn) {
+            pos     := btn.getSurfaceRect()
+            topView := btn.getTopView()
+            pt      := topView.surfaceToLocal(@{pos.x, pos.bottom()})
+            picker  := ColorPickerCtrl.create(topView, @{pt.x, pt.y})
+            picker.setFrameForm(.Round)
+            picker.setFrameFlags(FrameWndFlags.SmallShadow)
+
+            curSel := capture.getSelectedBaseForm()
+            picker.setColor(curSel.borderColor)
+
+            sdw := btn.getThemeMetrics().frameWnd_SmallShadowSize
+            picker.fitPosInParent(sdw.z, sdw.w)
+
+            btn.popup = picker
+
+            pushTypedValue(capture, curSel.borderColor.argb, @typeof(BaseForm), @nameof(FormArrow.borderColor))
+            picker.sigChanged += @|capture, btn|(pk) {
+                capture.undo()
+                curSel := capture.getSelectedBaseForm()
+                pushTypedValue(capture, pk.getColor().argb, @typeof(BaseForm), @nameof(FormArrow.borderColor))
+                btn.invalidate()
+            }
+        }
+    }
+
     mtd createBackColor(capture: *Capture, stack: *Wnd)
     {
         curSel := capture.getSelectedBaseForm()
@@ -45,13 +95,14 @@ impl PropWnd
         btn.marginBottomText = 56
         btn.sigPaintIcon = @|capture|(btn, bc, pos)
         {
+            bc.painter.setParams(.Antialiased)
             curSel := capture.getSelectedBaseForm()
             rect := pos
             rect.inflate(-12, -12)
             rect.height = rect.width
             if !curSel.backColor.isOpaque()
-                bc.painter.fillRoundRect(rect, 5, 5, Brush.createHatch(.CheckBoardLarge, Argb.DarkGray))
-            bc.painter.fillRoundRect(rect, 5, 5, curSel.backColor)
+                bc.painter.fillRoundRect(rect, 10, 10, Brush.createHatch(.CheckBoardLarge, Argb.DarkGray))
+            bc.painter.fillRoundRect(rect, 10, 10, curSel.backColor)
         }
 
         btn.sigShowPopup += @|capture|(btn) {
@@ -158,6 +209,7 @@ impl PropWnd
         {
             stack := StackLayoutCtrl.create(self, .HorzCenter, @{0, 0, 0, 100})
             createBackColor(capture, stack)
+            createBorderColor(capture, stack)
         }
 
         createBorderSize(capture)

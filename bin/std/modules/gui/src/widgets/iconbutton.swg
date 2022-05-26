@@ -67,7 +67,7 @@ impl IWnd for IconButton
 
         if evt.kind == .MousePressed
         {
-            if evt.target == self
+            if evt.target == self or evt.target == popup
                 return
             if evt.target and popup.isParentOf(evt.target)
                 return
