@@ -31,6 +31,26 @@ impl PropWnd
         capture.pushUndo(undo)
     }
 
+    mtd createBackColor(capture: *Capture)
+    {
+        curSel := capture.getSelectedBaseForm()
+        btn := IconButton.create(self, @{}, @{0, 0, 48, 64})
+        btn.name = "Fill"
+        btn.sigPressed += @|capture|(btn) {
+            pos     := btn.getSurfaceRect()
+            topView := btn.getTopView()
+            pt      := topView.surfaceToLocal(@{pos.x, pos.bottom()})
+            picker  := ColorPickerCtrl.create(topView, @{pt.x, pt.y, 400, 400})
+            curSel  := capture.getSelectedBaseForm()
+
+            picker.setColor(curSel.backColor)
+            picker.setFrameForm(.Round)
+            picker.setFrameFlags(FrameWndFlags.SmallShadow)
+            sdw := btn.getThemeMetrics().frameWnd_SmallShadowSize
+            picker.fitPosInParent(sdw.z, sdw.w)
+        }
+    }
+
     mtd createStartSize(capture: *Capture)
     {
         curSelType := capture.getSelectedFormType()
@@ -106,6 +126,7 @@ impl PropWnd
         if !capture or !capture.selection.count
             return
 
+        createBackColor(capture)
         createBorderSize(capture)
         createStartSize(capture)
         createEndSize(capture)

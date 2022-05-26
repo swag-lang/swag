@@ -40,7 +40,7 @@ impl IWnd for FrameWnd
             metrics := getThemeMetrics()
 
             clientRect := getClientRect()
-            clientRect.applyPadding(metrics.frameWnd_SmallShadowSize)
+            clientRect.applyPadding(-metrics.frameWnd_SmallShadowSize)
             subRect := &theme.rects.frameWnd_SmallShadow
             theme.drawSubRect(painter, clientRect, subRect, colors.frameWnd_SmallShadow)
         }

@@ -185,6 +185,7 @@ impl Wnd
     {
         mtd getApp()            => surface.app
         mtd getTopView()        => surface.wnd.view
+        mtd getTopWnd()         => surface.wnd
         mtd getTheme()          => style.ref.theme
         mtd getThemeMetrics()   => &style.ref.theme.metrics
         mtd getThemeColors()    => &style.ref.theme.colors
@@ -446,6 +447,18 @@ impl Wnd
     //////////////////////////////////////////////
     // Coordinates
     //////////////////////////////////////////////
+
+    // Be sure rect is fully inside the parent rectangle (if possible)
+    mtd fitPosInParent(marginW, marginH: f32 = 0)
+    {
+        pos := position
+        if pos.x + pos.width > parent.position.width - marginW
+            pos.x = parent.position.width - pos.width - marginW
+        if pos.y + pos.height > parent.position.height - marginH
+            pos.y = parent.position.height - pos.height - marginH
+        if pos != position
+            setPosition(pos)
+    }
 
     // Convert a screen coordinate to a surface coordinate (relative to my surface)
     mtd screenToSurface(pos: Math.Point)->Math.Point

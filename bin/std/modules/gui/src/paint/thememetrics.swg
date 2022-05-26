@@ -65,7 +65,7 @@ struct ThemeMetrics
     frameWnd_SquarePadding:     f32 = 5
     frameWnd_RoundPadding:      f32 = 5
     frameWnd_FlatPadding:       f32 = 2
-    frameWnd_SmallShadowSize:   Math.Vector4{-5, -5, -15, -15}
+    frameWnd_SmallShadowSize:   Math.Vector4{5, 5, 15, 15}
 
     list_Padding:               f32 = 5
 

@@ -557,7 +557,7 @@ public impl MenuCtrl
     #[Swag.Discardable]
     func createPopup(parent: *Wnd, id: WndId = null)->*MenuCtrl
     {
-        res := Wnd.create'MenuCtrl(parent.surface.wnd, null, @{}, id)
+        res := Wnd.create'MenuCtrl(parent.getTopView(), null, @{}, id)
         with res
         {
             owner = #self.parent
@@ -642,17 +642,11 @@ public impl MenuCtrl
         computeLayoutPopup()
 
         // Be sure popup menu is in the client area of the top view
-        topView := getTopView()
-        pt := topView.surfaceToLocal(surfacePos)
+        pt := parent.surfaceToLocal(surfacePos)
         pt -= getThemeMetrics().menuPopup_ShadowSize
-        if pt.x + position.width > topView.position.width
-            pt.x = topView.position.width - position.width
-        if pt.y + position.height > topView.position.height
-            pt.y = topView.position.height - position.height
-        pt = topView.localToSurface(pt)
-        pt = parent.surfaceToLocal(pt)
-
         setPosition(@{pt.x, pt.y, position.width, position.height})
+        fitPosInParent()
+
         bringToTop()
         show()
         captureMouse()

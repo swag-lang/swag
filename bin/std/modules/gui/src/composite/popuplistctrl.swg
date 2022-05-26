@@ -170,7 +170,7 @@ impl PopupListCtrl
     {
         metrics := owner.getThemeMetrics()
 
-        popup := Wnd.create'PopupListCtrl(owner.parent.surface.wnd, owner.position, owner.id)
+        popup := Wnd.create'PopupListCtrl(owner.getTopView(), owner.position, owner.id)
 
         with popup
         {
@@ -199,17 +199,9 @@ impl PopupListCtrl
         pos.width = Math.max(width, minWidthPopup)
         pos.height = Math.min(scrollWnd.scrollSize.y, maxHeightPopup)
         pos.height += padding.y + padding.w
-
-        // Be sure popup is in the client area of the top view
-        topView := getTopView()
-        if pos.x + pos.width > topView.position.width
-            pos.x = topView.position.width - pos.width
-        if pos.y + pos.height > topView.position.height
-            pos.y = topView.position.height - pos.height
-
         setPosition(pos)
-
-        //scrollWnd.view.setFocus()
+        sdw := getThemeMetrics().frameWnd_SmallShadowSize
+        fitPosInParent(sdw.z, sdw.w)
         scrollWnd.view.captureMouse()
     }
 
