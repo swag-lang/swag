@@ -65,6 +65,8 @@ impl IWnd for IconButton
 
         if evt.kind == .MousePressed
         {
+            if evt.target == self
+                return
             if evt.target and popup.isParentOf(evt.target)
                 return
             hidePopup()
@@ -183,21 +185,6 @@ impl IWnd for IconButton
     {
         if processMouseEvent(evt)
         {
-            // Display/Hide popup
-            if iconBtnFlags & .Popup
-            {
-                if popup
-                {
-                    hidePopup()
-                }
-                else
-                {
-                    sigShowPopup.call(self)
-                    if popup
-                        getApp().registerHookEvents(self)
-                }
-            }
-
             if iconBtnFlags & .CheckableToggle
             {
                 isChecked = !isChecked
@@ -214,6 +201,21 @@ impl IWnd for IconButton
             else
             {
                 postCommandEvent(id)
+            }
+
+            // Display/Hide popup
+            if iconBtnFlags & .Popup
+            {
+                if popup
+                {
+                    hidePopup()
+                }
+                else
+                {
+                    sigShowPopup.call(self)
+                    if popup
+                        getApp().registerHookEvents(self)
+                }
             }
         }
     }
