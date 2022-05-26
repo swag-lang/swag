@@ -252,11 +252,10 @@ impl MainWnd
             b.style.addStyleSheetColors("btnIcon_CheckedHotBk $btnIcon_HotBk")
             b.iconBtnFlags |= .Checkable
             b.checkedForm = .Bottom
-            b.dockStyle = .Left
             b.marginBottomIcon = 18
         }
 
-        toolbar = Wnd.create'Wnd(self, @{0, 0, 0, 64})
+        toolbar = StackLayoutCtrl.create(self, .HorzCenter, @{0, 0, 0, 64})
         toolbar.dockStyle = .Top
         toolbar.backgroundStyle = .Window
         toolbar.style.addStyleSheetColors("wnd_Bk $wnd_Caption")
