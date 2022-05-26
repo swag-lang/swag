@@ -1,4 +1,4 @@
-using Gui, Core
+using Gui, Core, Pixel
 
 struct PropWnd
 {
@@ -31,16 +31,28 @@ impl PropWnd
         capture.pushUndo(undo)
     }
 
-    mtd createBackColor(capture: *Capture)
+    mtd createBackColor(capture: *Capture, stack: *Wnd)
     {
         curSel := capture.getSelectedBaseForm()
         icon := getTheme().getIcon64(.Question, 48)
-        btn := IconButton.create(self, icon, @{0, 0, 48, 88})
+        btn := IconButton.create(stack, icon, @{0, 0, 64, 88})
         btn.name = "Fill"
+        btn.setForm(.RoundSquare)
+        btn.style.addStyleSheetColors("btnIcon_Bk $btnIcon_HotBk")
         btn.iconBtnFlags = .Popup | .CheckableToggle
         btn.checkedForm = .None
         btn.marginTopIcon = 16
         btn.marginBottomText = 56
+        btn.sigPaintIcon = @|capture|(btn, bc, pos)
+        {
+            curSel := capture.getSelectedBaseForm()
+            rect := pos
+            rect.inflate(-12, -12)
+            rect.height = rect.width
+            if !curSel.backColor.isOpaque()
+                bc.painter.fillRoundRect(rect, 5, 5, Brush.createHatch(.CheckBoardLarge, Argb.DarkGray))
+            bc.painter.fillRoundRect(rect, 5, 5, curSel.backColor)
+        }
 
         btn.sigShowPopup += @|capture|(btn) {
             pos     := btn.getSurfaceRect()
@@ -59,10 +71,11 @@ impl PropWnd
             btn.popup = picker
 
             pushTypedValue(capture, curSel.backColor.argb, @typeof(BaseForm), @nameof(FormArrow.backColor))
-            picker.sigChanged += @|capture|(pk) {
+            picker.sigChanged += @|capture, btn|(pk) {
                 capture.undo()
                 curSel := capture.getSelectedBaseForm()
                 pushTypedValue(capture, pk.getColor().argb, @typeof(BaseForm), @nameof(FormArrow.backColor))
+                btn.invalidate()
             }
         }
     }
@@ -142,7 +155,11 @@ impl PropWnd
         if !capture or !capture.selection.count
             return
 
-        createBackColor(capture)
+        {
+            stack := StackLayoutCtrl.create(self, .HorzCenter, @{0, 0, 0, 100})
+            createBackColor(capture, stack)
+        }
+
         createBorderSize(capture)
         createStartSize(capture)
         createEndSize(capture)

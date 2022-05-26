@@ -9,6 +9,7 @@ enum StackLayoutKind
     Left
     LeftAutoSize
     Right
+    HorzCenter
 }
 
 struct StackLayoutCtrl
@@ -28,34 +29,54 @@ impl IWnd for StackLayoutCtrl
             return
         }
 
-        visit c, i: childs
+        if layoutKind == .HorzCenter
         {
-            c.margin.clear()
-            switch layoutKind
+            totalW := 0'f32
+            visit c, i: childs
+                totalW += c.position.width
+            totalW += cast(f32) ((childs.count - 1) * spacing)
+
+            x := position.horzCenter() - totalW * 0.5
+            visit c, i: childs
             {
-            case Top, TopAutoSize:
-                c.dockStyle = .Top
-                if i > 0
-                    c.margin.y = spacing
-
-            case Bottom:
-                c.dockStyle = .Bottom
-                if i > 0
-                    c.margin.w = spacing
-
-            case Left, LeftAutoSize:
-                c.dockStyle = .Left
-                if i > 0
-                    c.margin.x = spacing
-
-            case Right:
-                c.dockStyle = .Right
-                if i > 0
-                    c.margin.z = spacing
+                pos := c.position
+                pos.x = x
+                c.setPosition(pos)
+                x += c.position.width + spacing
             }
         }
+        else
+        {
+            visit c, i: childs
+            {
+                c.margin.clear()
+                switch layoutKind
+                {
+                case Top, TopAutoSize:
+                    c.dockStyle = .Top
+                    if i > 0
+                        c.margin.y = spacing
 
-        applyLayout(evt.oldSize)
+                case Bottom:
+                    c.dockStyle = .Bottom
+                    if i > 0
+                        c.margin.w = spacing
+
+                case Left, LeftAutoSize:
+                    c.dockStyle = .Left
+                    if i > 0
+                        c.margin.x = spacing
+
+                case Right:
+                    c.dockStyle = .Right
+                    if i > 0
+                        c.margin.z = spacing
+                }
+            }
+
+            applyLayout(evt.oldSize)
+        }
+
         frameWnd.IWnd.onResizeEvent(evt)
 
         switch layoutKind

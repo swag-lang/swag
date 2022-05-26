@@ -36,6 +36,7 @@ struct IconButton
     checkedForm     = IconButtonCheckedForm.Full
     sigHidePopup:   SigArray'closure(*Self)
     sigShowPopup:   SigArray'closure(*Self)
+    sigPaintIcon:   closure(*Self, *PaintContext, Math.Rectangle)
 
     isChecked:          bool
     marginBottomText:   f32 = 4.0
@@ -191,10 +192,16 @@ impl IWnd for IconButton
         // Icon
         pos.moveTop(marginTopIcon)
         pos.height -= marginBottomIcon
-        pos.x = pos.horzCenter() - icon.sizeX * 0.5
-        pos.y = pos.vertCenter() - icon.sizeY * 0.5
-        icon.paint(bc.painter, pos.x, pos.y, colorIcon)
-
+        if sigPaintIcon
+        {
+            sigPaintIcon(self, bc, pos)
+        }
+        else
+        {
+            pos.x = pos.horzCenter() - icon.sizeX * 0.5
+            pos.y = pos.vertCenter() - icon.sizeY * 0.5
+            icon.paint(bc.painter, pos.x, pos.y, colorIcon)
+        }
     }
 
     mtd onMouseEvent(evt: *MouseEvent)
