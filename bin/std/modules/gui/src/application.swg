@@ -14,6 +14,7 @@ struct Application
     postedEvents:   Array'(*Event)
     surfaces:       Array'(*Surface)
     postDestroy:    Array'(*Wnd)
+    hookEvents:     Array'(*Wnd)
     cursorStack:    Array'(Cursor)
     mustQuit:       bool
     endModal:       bool
@@ -35,6 +36,9 @@ private impl Application
     // Send and process an event
     mtd sendEventPrivate(event: *Event, stopAt: *Wnd)
     {
+        visit hook: hookEvents
+            hook.itf.onHookEvent(event)
+
         if event.kind == .Quit
         {
             evt := cast(*QuitEvent) event
@@ -312,8 +316,9 @@ private impl Application
             }
         }
 
-        // Be sure there's no frame event
+        // Remove from various lists
         frameEvents.remove(wnd)
+        hookEvents.remove(wnd)
 
         // Be sure there's no posted event for that window
         visit e: postedEvents
@@ -565,6 +570,7 @@ impl Application
     // Register a window to receive a FrameEvent each running loop
     mtd registerFrameEvent(target: *Wnd)
     {
+        Debug.assert(!frameEvents.contains(target))
         frameEvents.add(target)
     }
 
@@ -572,6 +578,19 @@ impl Application
     mtd unregisterFrameEvent(target: *Wnd)
     {
         frameEvents.remove(target)
+    }
+
+    // Register a window to receive hook events
+    mtd registerHookEvents(target: *Wnd)
+    {
+        Debug.assert(!hookEvents.contains(target))
+        hookEvents.add(target)
+    }
+
+    // Unregister a window to receive hook events
+    mtd unregisterHookEvents(target: *Wnd)
+    {
+        hookEvents.remove(target)
     }
 
     // Push a new mouse cursor

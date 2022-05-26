@@ -48,6 +48,7 @@ struct KeyShortcut
 interface IWnd
 {
     onEvent:             func(self, *Event)
+    onHookEvent:         func(self, *Event)
     onCreateEvent:       func(self, *CreateEvent)
     onDestroyEvent:      func(self, *DestroyEvent)
     onResizeEvent:       func(self, *ResizeEvent)
@@ -166,6 +167,7 @@ impl IWnd for Wnd
     mtd onSysCommandEvent(evt: *SysCommandEvent)    {}
     mtd onSetThemeEvent(evt: *SetThemeEvent)        {}
     mtd onTimerEvent(evt: *TimerEvent)              {}
+    mtd onHookEvent(evt: *Event)                    {}
 
     mtd onFocusEvent(evt: *FocusEvent)              { evt.accepted = false; }
     mtd onKeyEvent(evt: *KeyEvent)                  { evt.accepted = false; }

@@ -34,7 +34,8 @@ struct IconButton
     form            = IconButtonForm.Square
     iconBtnFlags    = IconButtonFlags.None
     checkedForm     = IconButtonCheckedForm.Full
-    sigShowPopup:     SigArray'closure(*Self)
+    sigHidePopup:   SigArray'closure(*Self)
+    sigShowPopup:   SigArray'closure(*Self)
 
     isChecked:      bool
     marginBottomText = 4.0
@@ -48,8 +49,26 @@ impl IWnd for IconButton
     {
         if !popup
             return
+
+        getApp().unregisterHookEvents(self)
+        sigHidePopup.call(self)
         popup.destroy()
         popup = null
+        isChecked = false
+        invalidate()
+    }
+
+    mtd onHookEvent(evt: *Event)
+    {
+        if !popup
+            return
+
+        if evt.kind == .MousePressed
+        {
+            if evt.target and popup.isParentOf(evt.target)
+                return
+            hidePopup()
+        }
     }
 
     mtd onDestroyEvent(evt: *DestroyEvent)
@@ -164,6 +183,7 @@ impl IWnd for IconButton
     {
         if processMouseEvent(evt)
         {
+            // Display/Hide popup
             if iconBtnFlags & .Popup
             {
                 if popup
@@ -173,6 +193,8 @@ impl IWnd for IconButton
                 else
                 {
                     sigShowPopup.call(self)
+                    if popup
+                        getApp().registerHookEvents(self)
                 }
             }
 
