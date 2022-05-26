@@ -273,14 +273,8 @@ private impl Application
 
     mtd sendDestroyEvents()
     {
-        for i := 0; i < postDestroy.count; i += 1
-        {
-            evt := DestroyEvent{}
-            wnd := postDestroy[i]
-            wnd.sendEvent(&evt)
+        visit wnd: postDestroy
             destroyWnd(wnd)
-        }
-
         postDestroy.clear()
     }
 
@@ -484,6 +478,9 @@ impl Application
     // To cleanly close a window, you should call wnd.destroy()
     mtd destroyWnd(wnd: *Wnd)
     {
+        evt := DestroyEvent{}
+        wnd.sendEvent(&evt)
+
         unregisterWnd(wnd)
 
         // Remove from parent

@@ -14,6 +14,7 @@ enum IconButtonFlags
     None
     Checkable
     CheckableToggle
+    Popup
 }
 
 enum IconButtonCheckedForm
@@ -33,13 +34,29 @@ struct IconButton
     form            = IconButtonForm.Square
     iconBtnFlags    = IconButtonFlags.None
     checkedForm     = IconButtonCheckedForm.Full
+    sigShowPopup:     SigArray'closure(*Self)
+
     isChecked:      bool
     marginBottomText = 4.0
     marginBottomIcon = 8.0
+    popup:          *Wnd
 }
 
 impl IWnd for IconButton
 {
+    mtd hidePopup()
+    {
+        if !popup
+            return
+        popup.destroy()
+        popup = null
+    }
+
+    mtd onDestroyEvent(evt: *DestroyEvent)
+    {
+        hidePopup()
+    }
+
     mtd onCommandStateEvent(evt: *CommandUIEvent)
     {
         if evt.id != id
@@ -83,7 +100,7 @@ impl IWnd for IconButton
             colorBk      = isChecked ? colors.btnIcon_CheckedDisabledBk : colors.btnIcon_DisabledBk
             colorIcon    = isChecked ? colors.btnIcon_CheckedDisabledIcon : colors.btnIcon_DisabledIcon
             colorChecked = colors.btnIcon_CheckedDisabledMark
-        case isPressed:
+        case isPressed or (isChecked and checkedForm == .None):
             colorBk      = isChecked ? colors.btnIcon_CheckedPressedBk : colors.btnIcon_PressedBk
             colorIcon    = isChecked ? colors.btnIcon_CheckedPressedIcon : colors.btnIcon_PressedIcon
             colorChecked = colors.btnIcon_CheckedPressedMark
@@ -147,6 +164,18 @@ impl IWnd for IconButton
     {
         if processMouseEvent(evt)
         {
+            if iconBtnFlags & .Popup
+            {
+                if popup
+                {
+                    hidePopup()
+                }
+                else
+                {
+                    sigShowPopup.call(self)
+                }
+            }
+
             if iconBtnFlags & .CheckableToggle
             {
                 isChecked = !isChecked

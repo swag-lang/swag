@@ -36,7 +36,10 @@ impl PropWnd
         curSel := capture.getSelectedBaseForm()
         btn := IconButton.create(self, @{}, @{0, 0, 48, 64})
         btn.name = "Fill"
-        btn.sigPressed += @|capture|(btn) {
+        btn.iconBtnFlags = .Popup | .CheckableToggle
+        btn.checkedForm = .None
+
+        btn.sigShowPopup += @|capture|(btn) {
             pos     := btn.getSurfaceRect()
             topView := btn.getTopView()
             pt      := topView.surfaceToLocal(@{pos.x, pos.bottom()})
@@ -48,6 +51,8 @@ impl PropWnd
             picker.setFrameFlags(FrameWndFlags.SmallShadow)
             sdw := btn.getThemeMetrics().frameWnd_SmallShadowSize
             picker.fitPosInParent(sdw.z, sdw.w)
+
+            btn.popup = picker
         }
     }
 
