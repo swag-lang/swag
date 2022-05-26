@@ -91,6 +91,7 @@ impl Array
         buffer[index] = value
     }
 
+    #[Inline]
     mtd(op: string) opIndexAssign(index: uint, value: T)
     {
         Debug.assert(index < count, "index out of range")

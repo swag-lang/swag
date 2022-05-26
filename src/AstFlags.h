@@ -94,6 +94,7 @@ static const uint32_t AST_DONE_CHECK_ATTR                = 0x02000000;
 static const uint32_t AST_DONE_CLOSURE_FIRST_PARAM       = 0x04000000;
 static const uint32_t AST_DONE_FORCE_CAST_PTR_STRUCT     = 0x08000000;
 static const uint32_t AST_DONE_FIELD_STRUCT              = 0x10000000;
+static const uint32_t AST_DONE_AST_BLOCK                 = 0x20000000;
 
 static const uint32_t AST_SEM_FORCE_TAKE_ADDRESS      = 0x00000001;
 static const uint32_t AST_SEM_FORCE_NO_TAKE_ADDRESS   = 0x00000002;
