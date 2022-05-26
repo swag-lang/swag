@@ -36,7 +36,7 @@ impl IWnd for StackLayoutCtrl
                 totalW += c.position.width
             totalW += cast(f32) ((childs.count - 1) * spacing)
 
-            x := position.horzCenter() - totalW * 0.5
+            x := position.width * 0.5 - totalW * 0.5
             visit c, i: childs
             {
                 pos := c.position

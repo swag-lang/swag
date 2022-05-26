@@ -31,18 +31,46 @@ impl PropWnd
         capture.pushUndo(undo)
     }
 
-    mtd createBorderColor(capture: *Capture, stack: *Wnd)
+    func createColorPickerButton(stack: *Wnd)->*IconButton
     {
-        curSel := capture.getSelectedBaseForm()
-        icon := getTheme().getIcon64(.Question, 48)
-        btn := IconButton.create(stack, icon, @{0, 0, 64, 88})
-        btn.name = "Outline"
+        btn := IconButton.create(stack, @{}, @{0, 0, 64, 88})
         btn.setForm(.RoundSquare)
         btn.style.addStyleSheetColors("btnIcon_Bk $btnIcon_HotBk")
         btn.iconBtnFlags = .Popup | .CheckableToggle
         btn.checkedForm = .None
         btn.marginTopIcon = 16
         btn.marginBottomText = 56
+        return btn
+    }
+
+    func createColorPicker(btn: *IconButton, color: Color)->*ColorPickerCtrl
+    {
+        pos     := btn.getSurfaceRect()
+        topView := btn.getTopView()
+        pt      := topView.surfaceToLocal(@{pos.x, pos.bottom()})
+        picker  := ColorPickerCtrl.create(topView, @{pt.x, pt.y})
+        picker.setFrameForm(.Round)
+        picker.setFrameFlags(FrameWndFlags.SmallShadow)
+        sdw := btn.getThemeMetrics().frameWnd_SmallShadowSize
+        picker.setColor(color)
+        picker.fitPosInParent(sdw.z, sdw.w)
+        btn.popup = picker
+        return picker
+    }
+
+    mtd propBorderColor(capture: *Capture, stack: *Wnd)
+    {
+        btn := createColorPickerButton(stack)
+
+        curSelType := capture.getSelectedFormType()
+        switch curSelType
+        {
+        case FormLine, FormArrow:
+            btn.name = "Color"
+        default:
+            btn.name = "Outline"
+        }
+
         btn.sigPaintIcon = @|capture|(btn, bc, pos)
         {
             bc.painter.setParams(.Antialiased)
@@ -56,43 +84,25 @@ impl PropWnd
         }
 
         btn.sigShowPopup += @|capture|(btn) {
-            pos     := btn.getSurfaceRect()
-            topView := btn.getTopView()
-            pt      := topView.surfaceToLocal(@{pos.x, pos.bottom()})
-            picker  := ColorPickerCtrl.create(topView, @{pt.x, pt.y})
-            picker.setFrameForm(.Round)
-            picker.setFrameFlags(FrameWndFlags.SmallShadow)
-
             curSel := capture.getSelectedBaseForm()
-            picker.setColor(curSel.borderColor)
-
-            sdw := btn.getThemeMetrics().frameWnd_SmallShadowSize
-            picker.fitPosInParent(sdw.z, sdw.w)
-
-            btn.popup = picker
-
+            picker := createColorPicker(btn, curSel.borderColor)
             pushTypedValue(capture, curSel.borderColor.argb, @typeof(BaseForm), @nameof(FormArrow.borderColor))
             picker.sigChanged += @|capture, btn|(pk) {
                 capture.undo()
-                curSel := capture.getSelectedBaseForm()
                 pushTypedValue(capture, pk.getColor().argb, @typeof(BaseForm), @nameof(FormArrow.borderColor))
                 btn.invalidate()
             }
         }
     }
 
-    mtd createBackColor(capture: *Capture, stack: *Wnd)
+    mtd propBackColor(capture: *Capture, stack: *Wnd)
     {
-        curSel := capture.getSelectedBaseForm()
-        icon := getTheme().getIcon64(.Question, 48)
-        btn := IconButton.create(stack, icon, @{0, 0, 64, 88})
+        curSelType := capture.getSelectedFormType()
+        if curSelType == FormLine or curSelType == FormArrow
+            return
+
+        btn := createColorPickerButton(stack)
         btn.name = "Fill"
-        btn.setForm(.RoundSquare)
-        btn.style.addStyleSheetColors("btnIcon_Bk $btnIcon_HotBk")
-        btn.iconBtnFlags = .Popup | .CheckableToggle
-        btn.checkedForm = .None
-        btn.marginTopIcon = 16
-        btn.marginBottomText = 56
         btn.sigPaintIcon = @|capture|(btn, bc, pos)
         {
             bc.painter.setParams(.Antialiased)
@@ -106,32 +116,18 @@ impl PropWnd
         }
 
         btn.sigShowPopup += @|capture|(btn) {
-            pos     := btn.getSurfaceRect()
-            topView := btn.getTopView()
-            pt      := topView.surfaceToLocal(@{pos.x, pos.bottom()})
-            picker  := ColorPickerCtrl.create(topView, @{pt.x, pt.y})
-            picker.setFrameForm(.Round)
-            picker.setFrameFlags(FrameWndFlags.SmallShadow)
-
             curSel := capture.getSelectedBaseForm()
-            picker.setColor(curSel.backColor)
-
-            sdw := btn.getThemeMetrics().frameWnd_SmallShadowSize
-            picker.fitPosInParent(sdw.z, sdw.w)
-
-            btn.popup = picker
-
+            picker := createColorPicker(btn, curSel.backColor)
             pushTypedValue(capture, curSel.backColor.argb, @typeof(BaseForm), @nameof(FormArrow.backColor))
             picker.sigChanged += @|capture, btn|(pk) {
                 capture.undo()
-                curSel := capture.getSelectedBaseForm()
                 pushTypedValue(capture, pk.getColor().argb, @typeof(BaseForm), @nameof(FormArrow.backColor))
                 btn.invalidate()
             }
         }
     }
 
-    mtd createStartSize(capture: *Capture)
+    mtd propStartSize(capture: *Capture)
     {
         curSelType := capture.getSelectedFormType()
         if curSelType != FormArrow
@@ -151,7 +147,7 @@ impl PropWnd
             ctrl.disable()
     }
 
-    mtd createEndSize(capture: *Capture)
+    mtd propEndSize(capture: *Capture)
     {
         curSelType := capture.getSelectedFormType()
         if curSelType != FormArrow
@@ -171,7 +167,7 @@ impl PropWnd
             ctrl.disable()
     }
 
-    mtd createBorderSize(capture: *Capture)
+    mtd propBorderSize(capture: *Capture)
     {
         curSel := capture.getSelectedBaseForm()
         ctrl := createSlider("Tickness", 1, 50, curSel.borderSize)
@@ -184,7 +180,7 @@ impl PropWnd
         }
     }
 
-    mtd createOpactiy(capture: *Capture)
+    mtd propOpactiy(capture: *Capture)
     {
         curSel := capture.getSelectedBaseForm()
         ctrl := createSlider("Opacity", 0, 100, acast curSel.alpha)
@@ -208,14 +204,14 @@ impl PropWnd
 
         {
             stack := StackLayoutCtrl.create(self, .HorzCenter, @{0, 0, 0, 100})
-            createBackColor(capture, stack)
-            createBorderColor(capture, stack)
+            propBackColor(capture, stack)
+            propBorderColor(capture, stack)
         }
 
-        createBorderSize(capture)
-        createStartSize(capture)
-        createEndSize(capture)
-        createOpactiy(capture)
+        propBorderSize(capture)
+        propStartSize(capture)
+        propEndSize(capture)
+        propOpactiy(capture)
 
         layoutWnd.padding = 8
         layoutWnd.computeLayout()
