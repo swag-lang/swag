@@ -23,6 +23,7 @@ struct RichString
     chunks:     Array'RichChunk
     layoutRect: Math.Rectangle
     boundRect:  Math.Rectangle
+    dirty:      bool
 }
 
 impl RichString
@@ -88,7 +89,15 @@ impl RichString
         if raw == text and chunks.count
             return
         raw = text
+        dirty = true
+    }
 
+    // Compute layout
+    mtd compute()
+    {
+        if !dirty
+            return
+        dirty = false
         chunks.clear()
         layoutRect.clear()
 

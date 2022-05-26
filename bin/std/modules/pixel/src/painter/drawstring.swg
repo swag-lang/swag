@@ -368,6 +368,7 @@ impl Painter
     // The layout will be computed at the first call, and each time 'pos' has changed
     mtd drawRichString(pos: Rectangle, text: *RichString, format: RichStringFormat, forceCompute = false)
     {
+        text.compute()
         if text.chunks.count == 0
             return
 
