@@ -8,7 +8,7 @@ struct(T) SoaTest
         var sb: StringBuilder
         visit p: @typeof(T).fields
             sb.appendFormat("%: Array'%\n", p.name, p.pointedType.flatName)
-        return sb.moveToString()
+        return sb.toString()
     }
 }
 
@@ -21,7 +21,7 @@ impl SoaTest
             var sb: StringBuilder
             visit p: @typeof(T).fields
                 sb.appendFormat("%.reserve(size)\n", p.name)
-            return sb.moveToString()
+            return sb.toString()
         }
     }
 }

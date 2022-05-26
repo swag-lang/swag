@@ -44,9 +44,11 @@ func toString(fmt: string, values: ...)->String
     }
 {
     var buf: ConcatBuffer
+
     #[SelectIf(false)]
     append(&buf, fmt, values)
-    return buf.moveToString()
+
+    return buf.toString()
 }
 
 // Format a string and put the result in a ConcatBuffer

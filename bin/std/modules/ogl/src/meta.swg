@@ -61,10 +61,10 @@ var g_Functions: Array'OneFunc
     }
 
     itf := @compiler()
-    str := builderVars.moveToString()
+    str := builderVars.toString()
     itf.compileString(str.toString())
 
     builderInit.appendString("}\n");
-    str = builderInit.moveToString()
+    str = builderInit.toString()
     itf.compileString(str.toString())
 }

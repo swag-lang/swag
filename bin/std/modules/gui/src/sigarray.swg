@@ -45,7 +45,7 @@ impl SigArray
                 }
 
                 sb.appendString(")\n")
-                return sb.moveToString()
+                return sb.toString()
             }
         }
     }

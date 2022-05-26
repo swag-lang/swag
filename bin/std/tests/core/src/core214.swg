@@ -49,11 +49,11 @@ var g: Array'OneFunc
 
     itf := @compiler()
 
-    strVars := builderVars.moveToString()
+    strVars := builderVars.toString()
     //Console.print("%\n", strVars)
     itf.compileString(strVars.toString())
 
-    strFunc := builderFct.moveToString()
+    strFunc := builderFct.toString()
     //Console.print("%\n", strFunc)
     itf.compileString(strFunc.toString())
 }

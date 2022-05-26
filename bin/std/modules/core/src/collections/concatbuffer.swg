@@ -196,37 +196,4 @@ impl ConcatBuffer
 
         return result
     }
-
-    // Convert buffer to a String by moving the content if possible
-    // After the call, the buffer will be empty if the,move can be done
-    // (otherwise, the result will contain a copy)
-    mtd moveToString()->String
-    {
-        if !firstBucket
-        {
-            var result: retval
-            return result
-        }
-
-        if firstBucket == lastBucket
-        {
-            var result: retval
-
-            // Move buffer
-            result.allocator = allocator
-            result.buffer    = firstBucket.datas
-            result.capacity  = firstBucket.size
-            result.length    = cast(uint) (currentSP - lastBucket.datas)
-
-            // And clear me
-            Memory.free(firstBucket, @sizeof(ConcatBufferBucket), allocator)
-            firstBucket, lastBucket = null
-            currentSP = null
-            totalCount = 0
-
-            return result
-        }
-
-        return toString()
-    }
 }

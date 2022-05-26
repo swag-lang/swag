@@ -7,7 +7,7 @@ struct(T) SoaTest
         var sb: StringBuilder
         visit p: @typeof(T).fields
             sb.appendFormat("%: Array'%\n", p.name, p.pointedType.flatName)
-        return sb.moveToString()
+        return sb.toString()
     }
 }
 
@@ -17,7 +17,7 @@ impl SoaTest
     {
         itf := @compiler()
         var sb: StringBuilder
-        itf.compileString(sb.moveToString())
+        itf.compileString(sb.toString())
     }
 }
 

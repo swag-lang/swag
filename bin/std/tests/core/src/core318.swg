@@ -5,7 +5,7 @@ func GEN()->String
 {
     var sb: StrConv.StringBuilder
     sb.appendString("const X = 555")
-    return sb.moveToString()
+    return sb.toString()
 }
 
 #ast cast(string) GEN()

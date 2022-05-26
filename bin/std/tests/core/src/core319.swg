@@ -7,7 +7,7 @@ func GEN()->String
 {
     var sb: StrConv.StringBuilder
     sb.appendFormat("const X = %")
-    return sb.moveToString()
+    return sb.toString()
 }
 
 /*

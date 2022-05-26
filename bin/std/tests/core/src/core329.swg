@@ -30,7 +30,7 @@ impl AA
                 }
 
                 sb.appendString(")\n")
-                return sb.moveToString()
+                return sb.toString()
             }
         }
     }

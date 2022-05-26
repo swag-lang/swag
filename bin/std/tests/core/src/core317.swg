@@ -10,7 +10,7 @@ func(T) GEN()->String
 {
     var sb: StrConv.StringBuilder
     sb.appendFormat("X", @nameof(T))
-    return sb.moveToString()
+    return sb.toString()
 }
 
 #assert cast(string) GEN'X() == "X"

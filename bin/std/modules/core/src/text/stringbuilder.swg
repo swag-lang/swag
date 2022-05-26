@@ -67,10 +67,4 @@ impl StringBuilder
     {
         return buffer.toString()
     }
-
-    // Move the content as a string
-    mtd moveToString()->String
-    {
-        return buffer.moveToString()
-    }
 }

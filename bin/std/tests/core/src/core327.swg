@@ -37,7 +37,7 @@ struct A
     sb.appendString("\n}\n")
     sb.appendString("}\n")
 
-    itf.compileString(sb.moveToString())
+    itf.compileString(sb.toString())
     //@print("EXIT\n")
 }
 
