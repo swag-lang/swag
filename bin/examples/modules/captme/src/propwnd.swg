@@ -40,7 +40,7 @@ impl PropWnd
             pos     := btn.getSurfaceRect()
             topView := btn.getTopView()
             pt      := topView.surfaceToLocal(@{pos.x, pos.bottom()})
-            picker  := ColorPickerCtrl.create(topView, @{pt.x, pt.y, 400, 400})
+            picker  := ColorPickerCtrl.create(topView, @{pt.x, pt.y})
             curSel  := capture.getSelectedBaseForm()
 
             picker.setColor(curSel.backColor)

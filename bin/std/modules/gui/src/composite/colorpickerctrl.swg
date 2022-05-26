@@ -111,7 +111,12 @@ impl ColorPickerCtrl
     #[Swag.Discardable]
     func create(parent: *Wnd, position: Math.Rectangle, id: WndId = null)->*ColorPickerCtrl
     {
-        v := Wnd.create'ColorPickerCtrl(parent, "", position, id)
+        pos := position
+        if pos.width == 0
+            pos.width = 340
+        if pos.height == 0
+            pos.height = 330
+        v := Wnd.create'ColorPickerCtrl(parent, "", pos, id)
 
         with v
         {
