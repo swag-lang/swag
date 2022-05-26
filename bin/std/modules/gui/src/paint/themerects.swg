@@ -35,6 +35,7 @@ struct ThemeImageRects
     btnIcon_CheckedLeft:    ThemeImageRect = @{{57,281,27,27}, 7}
     btnIcon_CheckedRight:   ThemeImageRect = @{{85,281,27,27}, 7}
     btnIcon_CheckedFull:    ThemeImageRect = @{{113,281,27,27}, 7}
+    btnIcon_ArrowDown:      ThemeImageRect = @{{1,337,27,27}, 0}
 
     btnCheck_Normal:            ThemeImageRect = @{{90,29,32,32}, 16}
     btnCheck_NormalBorder:      ThemeImageRect = @{{57,29,32,32}, 16}

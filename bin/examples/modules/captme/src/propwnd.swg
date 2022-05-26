@@ -34,21 +34,25 @@ impl PropWnd
     mtd createBackColor(capture: *Capture)
     {
         curSel := capture.getSelectedBaseForm()
-        btn := IconButton.create(self, @{}, @{0, 0, 48, 64})
+        icon := getTheme().getIcon64(.Question, 48)
+        btn := IconButton.create(self, icon, @{0, 0, 48, 88})
         btn.name = "Fill"
         btn.iconBtnFlags = .Popup | .CheckableToggle
         btn.checkedForm = .None
+        btn.marginTopIcon = 16
+        btn.marginBottomText = 56
 
         btn.sigShowPopup += @|capture|(btn) {
             pos     := btn.getSurfaceRect()
             topView := btn.getTopView()
             pt      := topView.surfaceToLocal(@{pos.x, pos.bottom()})
             picker  := ColorPickerCtrl.create(topView, @{pt.x, pt.y})
-            curSel  := capture.getSelectedBaseForm()
-
-            picker.setColor(curSel.backColor)
             picker.setFrameForm(.Round)
             picker.setFrameFlags(FrameWndFlags.SmallShadow)
+
+            curSel  := capture.getSelectedBaseForm()
+            picker.setColor(curSel.backColor)
+
             sdw := btn.getThemeMetrics().frameWnd_SmallShadowSize
             picker.fitPosInParent(sdw.z, sdw.w)
 

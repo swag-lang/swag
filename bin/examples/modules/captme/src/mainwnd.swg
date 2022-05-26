@@ -253,6 +253,7 @@ impl MainWnd
             b.iconBtnFlags |= .Checkable
             b.checkedForm = .Bottom
             b.dockStyle = .Left
+            b.marginBottomIcon = 18
         }
 
         toolbar = Wnd.create'Wnd(self, @{0, 0, 0, 64})

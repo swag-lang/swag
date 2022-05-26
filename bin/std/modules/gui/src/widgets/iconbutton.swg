@@ -37,10 +37,11 @@ struct IconButton
     sigHidePopup:   SigArray'closure(*Self)
     sigShowPopup:   SigArray'closure(*Self)
 
-    isChecked:      bool
-    marginBottomText = 4.0
-    marginBottomIcon = 8.0
-    popup:          *Wnd
+    isChecked:          bool
+    marginBottomText:   f32 = 4.0
+    marginTopIcon:      f32
+    marginBottomIcon:   f32
+    popup:              *Wnd
 }
 
 impl IWnd for IconButton
@@ -95,10 +96,11 @@ impl IWnd for IconButton
 
     mtd onPaintEvent(evt: *PaintEvent)
     {
-        bc     := evt.bc
-        theme  := getTheme()
-        colors := getThemeColors()
-        rects  := getThemeRects()
+        bc      := evt.bc
+        theme   := getTheme()
+        colors  := getThemeColors()
+        rects   := getThemeRects()
+        metrics := getThemeMetrics()
 
         var subRectBk:      *ThemeImageRect
         var colorBk:        Color = ?
@@ -160,6 +162,19 @@ impl IWnd for IconButton
 
         pos := clientRect
 
+        // Arrow
+        if iconBtnFlags & .Popup
+        {
+            subRectBk = &rects.btnIcon_ArrowDown
+            posArrow := pos
+            posArrow.x = clientRect.horzCenter() - metrics.btnIcon_WidthArrow * 0.5
+            posArrow.width = metrics.btnIcon_WidthArrow
+            posArrow.height = metrics.btnIcon_HeightArrow
+            posArrow.y = clientRect.bottom() - metrics.btnIcon_HeightArrow - metrics.btnIcon_MarginArrow
+            theme.drawSubRect(bc.painter, posArrow, subRectBk, colorIcon)
+            pos.setBottom(posArrow.y)
+        }
+
         // Name
         if !name.isEmpty()
         {
@@ -168,13 +183,14 @@ impl IWnd for IconButton
             sf.horzAlignment = .Center
             sf.vertAlignment = .Bottom
             sf.font = theme.res.fontDefault
-            pos1 := clientRect
-            pos1.y -= marginBottomText
+            pos1 := pos
+            pos1.height -= marginBottomText
             bc.painter.drawRichString(pos1, &name, sf)
-            pos.y -= marginBottomIcon
         }
 
         // Icon
+        pos.moveTop(marginTopIcon)
+        pos.height -= marginBottomIcon
         pos.x = pos.horzCenter() - icon.sizeX * 0.5
         pos.y = pos.vertCenter() - icon.sizeY * 0.5
         icon.paint(bc.painter, pos.x, pos.y, colorIcon)
