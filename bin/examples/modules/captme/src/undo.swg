@@ -85,7 +85,7 @@ impl Undo
             visit s: selection
             {
                 var val: u32
-                Reflection.getFieldValue(&val, valRef, @dataof(capture.forms[s]))
+                Reflection.getFieldValue(&val, valRef, @dataof(capture.forms[s]), true)
                 oldU32.add(val)
             }
 
@@ -107,7 +107,7 @@ impl Undo
         {
         case SetTypedValue:
             visit s: selection
-                Reflection.setFieldValue(@dataof(capture.forms[s]), valRef, &valU32)
+                Reflection.setFieldValue(@dataof(capture.forms[s]), valRef, &valU32, true)
 
         case AlignLeft:
             visit s: selection
@@ -266,7 +266,7 @@ impl Undo
             visit s, i: selection
             {
                 val := oldU32[i]
-                Reflection.setFieldValue(@dataof(capture.forms[s]), valRef, &val)
+                Reflection.setFieldValue(@dataof(capture.forms[s]), valRef, &val, true)
             }
 
         case AlignLeft, AlignRight, AlignCenter, AlignTop, AlignBottom, AlignMiddle:

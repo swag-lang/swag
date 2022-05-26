@@ -14,6 +14,7 @@ enum ColorPickerViewMode
 struct ColorPickerCtrl
 {
     using frameWnd: FrameWnd
+    sigChanged:     SigArray'closure(*Self)
     oldColor:       Color
     color:          Color
     oldColorDone:   bool
@@ -96,6 +97,7 @@ private impl ColorPickerCtrl
         editH.setText(t)
 
         staticRes.invalidate()
+        sigChanged.call(self)
     }
 
     mtd updateAll()
@@ -362,6 +364,7 @@ impl ColorPickerCtrl
         }
 
         self.color = #self.color
+        sigChanged.call(self)
 
         updateAll()
     }

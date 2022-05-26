@@ -50,13 +50,20 @@ impl PropWnd
             picker.setFrameForm(.Round)
             picker.setFrameFlags(FrameWndFlags.SmallShadow)
 
-            curSel  := capture.getSelectedBaseForm()
+            curSel := capture.getSelectedBaseForm()
             picker.setColor(curSel.backColor)
 
             sdw := btn.getThemeMetrics().frameWnd_SmallShadowSize
             picker.fitPosInParent(sdw.z, sdw.w)
 
             btn.popup = picker
+
+            pushTypedValue(capture, curSel.backColor.argb, @typeof(BaseForm), @nameof(FormArrow.backColor))
+            picker.sigChanged += @|capture|(pk) {
+                capture.undo()
+                curSel := capture.getSelectedBaseForm()
+                pushTypedValue(capture, pk.getColor().argb, @typeof(BaseForm), @nameof(FormArrow.backColor))
+            }
         }
     }
 
