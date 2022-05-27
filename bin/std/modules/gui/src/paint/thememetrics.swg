@@ -74,6 +74,8 @@ struct ThemeMetrics
     frameWnd_AnchorWidth:       f32 = 24
     frameWnd_AnchorHeight:      f32 = 10
     frameWnd_AnchorOverlap:     f32 = 2
+    frameWnd_AnchorRoundBorderMargin:    f32 = 16
+    frameWnd_AnchorSquareBorderMargin:   f32 = 8
 
     list_Padding:               f32 = 5
 

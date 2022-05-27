@@ -152,36 +152,57 @@ impl IWnd for FrameWnd
         clientRect := getClientRect()
         theme.drawSubRect(painter, clientRect, subRectBorder, colorBorder, false)
 
-        switch anchor
+        // Anchor
+        if anchor != .None
         {
-        case Top:
-            clientRect.x = clientRect.x + anchorPos - metrics.frameWnd_AnchorWidth * 0.5
-            clientRect.y -= metrics.frameWnd_AnchorHeight
-            clientRect.width = metrics.frameWnd_AnchorWidth
-            clientRect.height = metrics.frameWnd_AnchorHeight + metrics.frameWnd_AnchorOverlap
-            theme.drawSubRect(painter, clientRect, &rects.frameWnd_AnchorTopBk, usedColorBk)
-            theme.drawSubRect(painter, clientRect, &rects.frameWnd_AnchorTop, colorBorder, false)
-        case Bottom:
-            clientRect.x = clientRect.x + anchorPos - metrics.frameWnd_AnchorWidth * 0.5
-            clientRect.y = clientRect.bottom() - metrics.frameWnd_AnchorOverlap
-            clientRect.width = metrics.frameWnd_AnchorWidth
-            clientRect.height = metrics.frameWnd_AnchorHeight + metrics.frameWnd_AnchorOverlap
-            theme.drawSubRect(painter, clientRect, &rects.frameWnd_AnchorBottomBk, usedColorBk)
-            theme.drawSubRect(painter, clientRect, &rects.frameWnd_AnchorBottom, colorBorder, false)
-        case Left:
-            clientRect.x -= metrics.frameWnd_AnchorHeight
-            clientRect.y = clientRect.y + anchorPos - metrics.frameWnd_AnchorHeight * 0.5
-            clientRect.width = metrics.frameWnd_AnchorHeight + metrics.frameWnd_AnchorOverlap
-            clientRect.height = metrics.frameWnd_AnchorWidth
-            theme.drawSubRect(painter, clientRect, &rects.frameWnd_AnchorLeftBk, usedColorBk)
-            theme.drawSubRect(painter, clientRect, &rects.frameWnd_AnchorLeft, colorBorder, false)
-        case Right:
-            clientRect.x = clientRect.right() - metrics.frameWnd_AnchorOverlap
-            clientRect.y = clientRect.y + anchorPos - metrics.frameWnd_AnchorHeight * 0.5
-            clientRect.width = metrics.frameWnd_AnchorHeight + metrics.frameWnd_AnchorOverlap
-            clientRect.height = metrics.frameWnd_AnchorWidth
-            theme.drawSubRect(painter, clientRect, &rects.frameWnd_AnchorRightBk, usedColorBk)
-            theme.drawSubRect(painter, clientRect, &rects.frameWnd_AnchorRight, colorBorder, false)
+            posA := anchorPos
+            var marginA: f32
+            switch frameForm
+            {
+            case Square:
+                marginA = metrics.frameWnd_AnchorSquareBorderMargin
+            case Round:
+                marginA = metrics.frameWnd_AnchorRoundBorderMargin
+            }
+
+            switch anchor
+            {
+            case Top:
+                posA = Math.clamp(posA, marginA, clientRect.width - marginA)
+                clientRect.x = clientRect.x + posA - metrics.frameWnd_AnchorWidth * 0.5
+                clientRect.y -= metrics.frameWnd_AnchorHeight
+                clientRect.width = metrics.frameWnd_AnchorWidth
+                clientRect.height = metrics.frameWnd_AnchorHeight + metrics.frameWnd_AnchorOverlap
+                theme.drawSubRect(painter, clientRect, &rects.frameWnd_AnchorTopBk, usedColorBk)
+                theme.drawSubRect(painter, clientRect, &rects.frameWnd_AnchorTop, colorBorder, false)
+
+            case Bottom:
+                posA = Math.clamp(posA, marginA, clientRect.width - marginA)
+                clientRect.x = clientRect.x + posA - metrics.frameWnd_AnchorWidth * 0.5
+                clientRect.y = clientRect.bottom() - metrics.frameWnd_AnchorOverlap
+                clientRect.width = metrics.frameWnd_AnchorWidth
+                clientRect.height = metrics.frameWnd_AnchorHeight + metrics.frameWnd_AnchorOverlap
+                theme.drawSubRect(painter, clientRect, &rects.frameWnd_AnchorBottomBk, usedColorBk)
+                theme.drawSubRect(painter, clientRect, &rects.frameWnd_AnchorBottom, colorBorder, false)
+
+            case Left:
+                posA = Math.clamp(posA, marginA, clientRect.height - marginA)
+                clientRect.x -= metrics.frameWnd_AnchorHeight
+                clientRect.y = clientRect.y + posA - metrics.frameWnd_AnchorHeight * 0.5
+                clientRect.width = metrics.frameWnd_AnchorHeight + metrics.frameWnd_AnchorOverlap
+                clientRect.height = metrics.frameWnd_AnchorWidth
+                theme.drawSubRect(painter, clientRect, &rects.frameWnd_AnchorLeftBk, usedColorBk)
+                theme.drawSubRect(painter, clientRect, &rects.frameWnd_AnchorLeft, colorBorder, false)
+
+            case Right:
+                posA = Math.clamp(posA, marginA, clientRect.height - marginA)
+                clientRect.x = clientRect.right() - metrics.frameWnd_AnchorOverlap
+                clientRect.y = clientRect.y + posA - metrics.frameWnd_AnchorHeight * 0.5
+                clientRect.width = metrics.frameWnd_AnchorHeight + metrics.frameWnd_AnchorOverlap
+                clientRect.height = metrics.frameWnd_AnchorWidth
+                theme.drawSubRect(painter, clientRect, &rects.frameWnd_AnchorRightBk, usedColorBk)
+                theme.drawSubRect(painter, clientRect, &rects.frameWnd_AnchorRight, colorBorder, false)
+            }
         }
     }
 
