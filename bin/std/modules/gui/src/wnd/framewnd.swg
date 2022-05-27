@@ -17,13 +17,25 @@ enum FrameWndFlags
     SmallShadow
 }
 
+enum FrameWndAnchor
+{
+    None
+    Left
+    Top
+    Right
+    Bottom
+}
+
 struct FrameWnd
 {
     using wnd: Wnd
 
-    view:       *Wnd
-    frameForm   = FrameWndForm.Transparent
-    frameFlags  = FrameWndFlags.Borders
+    view:           *Wnd
+    frameForm       = FrameWndForm.Transparent
+    frameFlags      = FrameWndFlags.Borders
+    anchor          = FrameWndAnchor.None
+    anchorPos:      f32
+    usedColorBk:    Color
 }
 
 impl IWnd for FrameWnd
@@ -59,7 +71,7 @@ impl IWnd for FrameWnd
         metrics := getThemeMetrics()
 
         var subRectBk:  *ThemeImageRect
-        var colorBk:    Color = ?
+        var colorBk:    Color
 
         switch frameForm
         {
@@ -90,6 +102,7 @@ impl IWnd for FrameWnd
 
         clientRect := getClientRect()
         theme.drawSubRect(painter, clientRect, subRectBk, colorBk)
+        usedColorBk = colorBk
     }
 
     mtd onPostPaintEvent(evt: *PaintEvent)
@@ -138,6 +151,38 @@ impl IWnd for FrameWnd
 
         clientRect := getClientRect()
         theme.drawSubRect(painter, clientRect, subRectBorder, colorBorder, false)
+
+        switch anchor
+        {
+        case Top:
+            clientRect.x = clientRect.x + anchorPos - metrics.frameWnd_AnchorWidth * 0.5
+            clientRect.y -= metrics.frameWnd_AnchorHeight
+            clientRect.width = metrics.frameWnd_AnchorWidth
+            clientRect.height = metrics.frameWnd_AnchorHeight + metrics.frameWnd_AnchorOverlap
+            theme.drawSubRect(painter, clientRect, &rects.frameWnd_AnchorTopBk, usedColorBk)
+            theme.drawSubRect(painter, clientRect, &rects.frameWnd_AnchorTop, colorBorder, false)
+        case Bottom:
+            clientRect.x = clientRect.x + anchorPos - metrics.frameWnd_AnchorWidth * 0.5
+            clientRect.y = clientRect.bottom() - metrics.frameWnd_AnchorOverlap
+            clientRect.width = metrics.frameWnd_AnchorWidth
+            clientRect.height = metrics.frameWnd_AnchorHeight + metrics.frameWnd_AnchorOverlap
+            theme.drawSubRect(painter, clientRect, &rects.frameWnd_AnchorBottomBk, usedColorBk)
+            theme.drawSubRect(painter, clientRect, &rects.frameWnd_AnchorBottom, colorBorder, false)
+        case Left:
+            clientRect.x -= metrics.frameWnd_AnchorHeight
+            clientRect.y = clientRect.y + anchorPos - metrics.frameWnd_AnchorHeight * 0.5
+            clientRect.width = metrics.frameWnd_AnchorHeight + metrics.frameWnd_AnchorOverlap
+            clientRect.height = metrics.frameWnd_AnchorWidth
+            theme.drawSubRect(painter, clientRect, &rects.frameWnd_AnchorLeftBk, usedColorBk)
+            theme.drawSubRect(painter, clientRect, &rects.frameWnd_AnchorLeft, colorBorder, false)
+        case Right:
+            clientRect.x = clientRect.right() - metrics.frameWnd_AnchorOverlap
+            clientRect.y = clientRect.y + anchorPos - metrics.frameWnd_AnchorHeight * 0.5
+            clientRect.width = metrics.frameWnd_AnchorHeight + metrics.frameWnd_AnchorOverlap
+            clientRect.height = metrics.frameWnd_AnchorWidth
+            theme.drawSubRect(painter, clientRect, &rects.frameWnd_AnchorRightBk, usedColorBk)
+            theme.drawSubRect(painter, clientRect, &rects.frameWnd_AnchorRight, colorBorder, false)
+        }
     }
 
     mtd onResizeEvent(evt: *ResizeEvent)

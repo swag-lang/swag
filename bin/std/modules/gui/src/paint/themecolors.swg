@@ -252,6 +252,7 @@ struct ThemeColors
 
     frameWnd_SmallShadow:           Color = 0x50000000
     frameWnd_Border:                Color = Gray3
+    frameWnd_PopupBorder:           Color = Gray2
     frameWnd_FocusBorder:           Color = Blue
     frameWnd_DisabledBorder:        Color = Gray3
     frameWnd_Bk:                    Color = Gray6

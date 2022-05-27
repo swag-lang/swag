@@ -105,6 +105,14 @@ struct ThemeImageRects
     frameWnd_SquareBorder:      ThemeImageRect = @{{29,57,27,27}, 5}
     frameWnd_RoundBk:           ThemeImageRect = @{{1,85,27,27}, 13}
     frameWnd_RoundBorder:       ThemeImageRect = @{{29,85,27,27}, 13}
+    frameWnd_AnchorTop:         ThemeImageRect = @{{141,253,27,27}, 0}
+    frameWnd_AnchorTopBk:       ThemeImageRect = @{{141,281,27,27}, 0}
+    frameWnd_AnchorBottom:      ThemeImageRect = @{{169,253,27,27}, 0}
+    frameWnd_AnchorBottomBk:    ThemeImageRect = @{{169,281,27,27}, 0}
+    frameWnd_AnchorRight:       ThemeImageRect = @{{197,253,27,27}, 0}
+    frameWnd_AnchorRightBk:     ThemeImageRect = @{{197,281,27,27}, 0}
+    frameWnd_AnchorLeft:        ThemeImageRect = @{{225,253,27,27}, 0}
+    frameWnd_AnchorLeftBk:      ThemeImageRect = @{{225,281,27,27}, 0}
 
     header_FlatBk:              ThemeImageRect = @{{57,225,27,27}, 13}
     header_RoundBk:             ThemeImageRect = @{{57,253,27,27}, 13}

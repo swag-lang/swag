@@ -48,12 +48,19 @@ impl PropWnd
         pos     := btn.getSurfaceRect()
         topView := btn.getTopView()
         pt      := topView.surfaceToLocal(@{pos.x, pos.bottom()})
+        pt.y += btn.getThemeMetrics().frameWnd_AnchorHeight
+
         picker  := ColorPickerCtrl.create(topView, @{pt.x, pt.y})
         picker.setFrameForm(.Round)
         picker.setFrameFlags(FrameWndFlags.SmallShadow)
+        picker.style.addStyleSheetColors("frameWnd_Border $frameWnd_PopupBorder")
         sdw := btn.getThemeMetrics().frameWnd_SmallShadowSize
         picker.setColor(color)
         picker.fitPosInParent(sdw.z, sdw.w)
+
+        picker.anchor = .Top
+        picker.anchorPos = pos.horzCenter() - picker.getSurfaceRect().x
+
         btn.popup = picker
         return picker
     }
