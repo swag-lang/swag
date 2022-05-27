@@ -228,7 +228,7 @@ impl IForm for FormArrow
             pl.lineTo(paintPoints[i].x - paintPos.x, paintPoints[i].y - paintPos.y)
         pl.close()
 
-        painter.fillPath(&pl, backColor)
+        painter.fillPath(&pl, borderColor)
     }
 
     mtd setup(capt: *Capture)
