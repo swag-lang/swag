@@ -27,6 +27,14 @@ enum IconButtonArrowPos
     Bottom
 }
 
+enum IconButtonTextPos
+{
+    Left
+    Top
+    Right
+    Bottom
+}
+
 enum IconButtonCheckedForm
 {
     None
@@ -45,6 +53,7 @@ struct IconButton
     iconBtnFlags    = IconButtonFlags.None
     checkedForm     = IconButtonCheckedForm.Full
     arrowPos        = IconButtonArrowPos.None
+    textPos         = IconButtonTextPos.Bottom
     sigHidePopup:   SigArray'closure(*Self)
     sigShowPopup:   SigArray'closure(*Self)
     sigPaintIcon:   closure(*Self, *PaintContext, Math.Rectangle)
@@ -236,11 +245,33 @@ impl IWnd for IconButton
         {
             var sf: RichStringFormat
             theme.setTextColors(&sf, colorIcon)
-            sf.horzAlignment = .Center
-            sf.vertAlignment = .Bottom
             sf.font = theme.res.fontDefault
-            bc.painter.drawRichString(pos, &name, sf)
-            pos.height -= sf.font.regular.height
+            switch textPos
+            {
+            case Left:
+                sf.horzAlignment = .Left
+                sf.vertAlignment = .Center
+                bc.painter.drawRichString(pos, &name, sf)
+                pos.moveLeft(name.boundRect.width)
+
+            case Top:
+                sf.horzAlignment = .Center
+                sf.vertAlignment = .Top
+                bc.painter.drawRichString(pos, &name, sf)
+                pos.moveTop(sf.font.regular.height)
+
+            case Right:
+                sf.horzAlignment = .Right
+                sf.vertAlignment = .Center
+                bc.painter.drawRichString(pos, &name, sf)
+                pos.width -= name.boundRect.width
+
+            case Bottom:
+                sf.horzAlignment = .Center
+                sf.vertAlignment = .Bottom
+                bc.painter.drawRichString(pos, &name, sf)
+                pos.height -= sf.font.regular.height
+            }
         }
 
         // Icon

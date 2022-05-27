@@ -38,6 +38,7 @@ impl PropWnd
         btn.style.addStyleSheetColors("btnIcon_Bk $btnIcon_HotBk")
         btn.iconBtnFlags = .Popup | .CheckableToggle
         btn.arrowPos = .Bottom
+        btn.textPos = .Top
         btn.checkedForm = .None
         return btn
     }
@@ -75,8 +76,9 @@ impl PropWnd
             bc.painter.setParams(.Antialiased)
             curSel := capture.getSelectedBaseForm()
             rect := pos
-            rect.inflate(-16, -16)
-            rect.height = rect.width
+            rect.x = rect.horzCenter() - 16
+            rect.y = rect.vertCenter() - 16
+            rect.width, rect.height = 32
             if !curSel.borderColor.isOpaque()
                 bc.painter.drawRoundRect(rect, 5, 5, Pen.createHatch(.CheckBoardLarge, Argb.DarkGray, 5))
             bc.painter.drawRoundRect(rect, 5, 5, curSel.borderColor, 5)
@@ -107,8 +109,9 @@ impl PropWnd
             bc.painter.setParams(.Antialiased)
             curSel := capture.getSelectedBaseForm()
             rect := pos
-            //rect.inflate(-12, -12)
-            //rect.height = rect.width
+            rect.x = rect.horzCenter() - 21
+            rect.y = rect.vertCenter() - 21
+            rect.width, rect.height = 42
             if !curSel.backColor.isOpaque()
                 bc.painter.fillRoundRect(rect, 10, 10, Brush.createHatch(.CheckBoardLarge, Argb.DarkGray))
             bc.painter.fillRoundRect(rect, 10, 10, curSel.backColor)
