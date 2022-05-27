@@ -254,7 +254,7 @@ impl MainWnd
             b.checkedForm = .Bottom
         }
 
-        toolbar = StackLayoutCtrl.create(self, .HorzCenter, @{0, 0, 0, 64})
+        toolbar = StackLayoutCtrl.create(self, .HorzCenter, @{0, 0, 64, 64})
         toolbar.dockStyle = .Top
         toolbar.backgroundStyle = .Window
         toolbar.style.addStyleSheetColors("wnd_Bk $wnd_Caption")

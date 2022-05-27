@@ -10,6 +10,7 @@ enum StackLayoutKind
     LeftAutoSize
     Right
     HorzCenter
+    VertCenter
 }
 
 struct StackLayoutCtrl
@@ -37,12 +38,30 @@ impl IWnd for StackLayoutCtrl
             totalW += cast(f32) ((childs.count - 1) * spacing)
 
             x := position.width * 0.5 - totalW * 0.5
-            visit c, i: childs
+            x = Math.max(x, padding.x)
+            visit c: childs
             {
                 pos := c.position
                 pos.x = Math.round(x)
                 c.setPosition(pos)
                 x += c.position.width + spacing
+            }
+        }
+        elif layoutKind == .VertCenter
+        {
+            totalH := 0'f32
+            visit c, i: childs
+                totalH += c.position.height
+            totalH += cast(f32) ((childs.count - 1) * spacing)
+
+            y := position.height * 0.5 - totalH * 0.5
+            y = Math.max(y, padding.y)
+            visit c: childs
+            {
+                pos := c.position
+                pos.y = Math.round(y)
+                c.setPosition(pos)
+                y += c.position.height + spacing
             }
         }
         else
