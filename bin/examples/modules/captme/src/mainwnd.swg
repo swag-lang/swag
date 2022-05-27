@@ -252,7 +252,6 @@ impl MainWnd
             b.style.addStyleSheetColors("btnIcon_CheckedHotBk $btnIcon_HotBk")
             b.iconBtnFlags |= .Checkable
             b.checkedForm = .Bottom
-            b.marginBottomIcon = 18
         }
 
         toolbar = StackLayoutCtrl.create(self, .HorzCenter, @{0, 0, 0, 64})
