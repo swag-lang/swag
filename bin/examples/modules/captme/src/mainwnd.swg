@@ -165,22 +165,22 @@ impl IWnd for MainWnd
         case CmdIdModeShape:
             editMode = .Shape
             evt.accepted = true
-            toolbar.updateCommandState()
+            updateState()
 
         case CmdIdModeArrow:
             editMode = .Arrow
             evt.accepted = true
-            toolbar.updateCommandState()
+            updateState()
 
         case CmdIdModeLine:
             editMode = .Line
             evt.accepted = true
-            toolbar.updateCommandState()
+            updateState()
 
         case CmdIdModePolygon:
             editMode = .Polygon
             evt.accepted = true
-            toolbar.updateCommandState()
+            updateState()
 
         case CmdIdAlignLeft:
             undo = capture.newUndo(.AlignLeft)
@@ -274,6 +274,12 @@ impl MainWnd
         registerKeyShortcut(Input.KeyModifiers.None, Input.Key.Delete, CmdIdDeleteSelection)
     }
 
+    mtd updateState()
+    {
+        toolbar.updateCommandState()
+        quickWnd.updateQuickStyles()
+    }
+
     func create(parent: *Wnd)->*MainWnd
     {
         res := Wnd.create'MainWnd(parent)
@@ -302,6 +308,7 @@ impl MainWnd
         res.quickWnd = Wnd.create'QuickWnd(rightWnd, @{0, 0, 0, 300})
         res.quickWnd.main = res
         res.quickWnd.backgroundStyle = .Window
+        res.quickWnd.loadQuickStyles()
 
         label1 := Label.create(rightWnd, "Tool Properties", @{0, 0, 0, 30})
         label1.backgroundStyle = .Window
@@ -311,6 +318,7 @@ impl MainWnd
         res.propWnd.main = res
         res.propWnd.backgroundStyle = .Window
 
+        res.updateState()
         return res
     }
 }

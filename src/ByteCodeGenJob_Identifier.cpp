@@ -70,18 +70,35 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             emitInstruction(context, ByteCodeOp::Add64byVB64, node->resultRegisterRC[0])->b.u64 = resolved->computedValue.storageOffset;
             return true;
         }
-        else if (node->forceTakeAddress() && (!typeInfo->isNative(NativeTypeKind::String) || node->parent->kind != AstNodeKind::ArrayPointerIndex))
+
+        if (node->forceTakeAddress() && (!typeInfo->isNative(NativeTypeKind::String) || node->parent->kind != AstNodeKind::ArrayPointerIndex))
         {
             emitInstruction(context, ByteCodeOp::Add64byVB64, node->resultRegisterRC[0])->b.u64 = resolved->computedValue.storageOffset;
             if (node->parent->flags & AST_ARRAY_POINTER_REF)
                 emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
             return true;
         }
-        else if (typeInfo->numRegisters() == 2)
+
+        if (typeInfo->kind == TypeInfoKind::Interface && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)) && !(node->flags & AST_UFCS_FCT))
+        {
+            // Get the ITable pointer
+            if (node->flags & AST_FROM_UFCS)
+                emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC)->c.u64 = resolved->computedValue.storageOffset + 8;
+            // Get the structure pointer
+            else
+                emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC)->c.u64 = resolved->computedValue.storageOffset;
+
+            return true;
+        }
+ 
+        if (typeInfo->numRegisters() == 2)
         {
             transformResultToLinear2(context, node->resultRegisterRC);
             emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC[1], node->resultRegisterRC[0])->c.u64 = resolved->computedValue.storageOffset + 8;
             emitInstruction(context, ByteCodeOp::DeRef64, node->resultRegisterRC[0], node->resultRegisterRC[0])->c.u64 = resolved->computedValue.storageOffset;
+
+            identifier->identifierRef->resultRegisterRC = node->resultRegisterRC;
+            node->parent->resultRegisterRC              = node->resultRegisterRC;
             return true;
         }
 

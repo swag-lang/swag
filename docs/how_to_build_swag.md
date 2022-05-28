@@ -8,6 +8,8 @@
 * Launch `swag/build/vs_build_llvm.bat` (this will take some time !).
 * Launch `swag/build/vs_build_swag.bat`.
 
+In order to build LLVM, you will have to install CMAKE and PYTHON 3 first.
+
 If LLVM has been compiled once, you can also use the `Swag.sln` workspace in the `build` subfolder.
 
 ## LLVM
