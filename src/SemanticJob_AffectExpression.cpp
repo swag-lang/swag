@@ -161,8 +161,11 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         {
             if (!(node->doneFlags & AST_DONE_FLAT_PARAMS))
             {
+                auto leftNode = arrayNode;
+                while (leftNode->array->kind == AstNodeKind::ArrayPointerIndex)
+                    leftNode = CastAst<AstArrayPointerIndex>(leftNode->array, AstNodeKind::ArrayPointerIndex);
                 arrayNode->structFlatParams.push_back(right);
-                arrayNode->structFlatParams.push_front(left);
+                arrayNode->structFlatParams.push_front(leftNode->array);
                 node->doneFlags |= AST_DONE_FLAT_PARAMS;
             }
         }
