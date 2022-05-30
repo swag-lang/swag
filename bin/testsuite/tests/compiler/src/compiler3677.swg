@@ -1,0 +1,17 @@
+#[Swag.Macro]
+func toto(stmt: code)
+{
+    #mixin stmt
+}
+
+//#[Swag.PrintBc]
+#test
+{
+    toto()
+    {
+        struct A {}
+        var x: A
+        //x := @(){}
+        //x()
+    }
+}

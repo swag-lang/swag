@@ -259,6 +259,8 @@ AstNode* AstNode::clone(CloneContext& context)
         {
             auto cloneContext        = context;
             cloneContext.parentScope = Ast::newScope(newNode, newNode->token.text, ScopeKind::Statement, context.parentScope ? context.parentScope : ownerScope);
+            if (cloneContext.forceFlags & AST_IN_MIXIN)
+                cloneContext.parentScope->symTable.mapNames = ownerScope->symTable.mapNames;
             newNode->copyFrom(cloneContext, this);
             context.propageResult(cloneContext);
         }
