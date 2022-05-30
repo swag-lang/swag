@@ -22,17 +22,17 @@ impl QuickWnd
         styles = qs
 
         formc := Memory.new'FormArrow()
-        formc.xa = 0
+        formc.xa = 8
         formc.ya = 40
         formc.xb = 40
-        formc.yb = 0
+        formc.yb = 8
         formc.borderSize = 5
         formc.endSize = 10
         formc.endShape = .Arrow
+        formc.borderColor = Argb.Red
         it := cast(IForm) formc
         it.setup(null)
         styles.forms.add(it)
-        //it.paint(evt.bc.painter, 1)
     }
 
     mtd updateQuickStyles()
@@ -44,8 +44,11 @@ impl QuickWnd
 
         loop i: styles.forms
         {
-            btn := IconButton.create(self, @{}, @{0, 0, 64, 64})
-            btn.sigPaintIcon = @|i|(btn, bc, pos) {
+            btn := IconButton.create(self, @{}, @{0, 0, 48, 48})
+            f := styles.forms[i]
+            btn.sigPaintIcon = @|f|(btn, bc, pos) {
+                bc.painter.setParams(.Antialiased)
+                f.paint(bc.painter, 1)
             }
         }
     }
