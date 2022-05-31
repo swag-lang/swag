@@ -227,6 +227,14 @@ impl FrameWnd
         return cast(*T) view
     }
 
+    mtd setView(what: *Wnd)
+    {
+        if view
+            view.destroy()
+        what.setParent(self)
+        view = what
+    }
+
     // Set the frame wnd flags
     mtd setFrameFlags(add, remove = FrameWndFlags.None)
     {

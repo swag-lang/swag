@@ -277,6 +277,7 @@ impl MainWnd
     mtd updateState()
     {
         toolbar.updateCommandState()
+        propWnd.selectionHasChanged()
         quickWnd.updateQuickStyles()
     }
 
@@ -305,10 +306,8 @@ impl MainWnd
         label0.backgroundStyle = .Window
         label0.style.addStyleSheetColors("wnd_Bk $dlg_BtnBarBk")
 
-        res.quickWnd = Wnd.create'QuickWnd(rightWnd, @{0, 0, 0, 300})
+        res.quickWnd = QuickWnd.create(rightWnd)
         res.quickWnd.main = res
-        res.quickWnd.backgroundStyle = .Window
-        res.quickWnd.loadQuickStyles()
 
         label1 := Label.create(rightWnd, "Tool Properties", @{0, 0, 0, 30})
         label1.backgroundStyle = .Window

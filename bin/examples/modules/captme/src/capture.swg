@@ -278,39 +278,6 @@ impl Capture
                     {
                         selection.add(hotForm)
                         selectionHasChanged()
-
-                        if selection.count == 1
-                        {
-                            f := forms[hotForm]
-                            t := @kindof(f)
-                            switch t
-                            {
-                            case FormRect:
-                                b := cast(*FormRect) @dataof(f)
-                                editView.main.mdlFormRect = dref b
-                                editView.main.editMode = .Shape
-                                editView.main.toolbar.updateCommandState()
-
-                            case FormArrow:
-                                b := cast(*FormArrow) @dataof(f)
-                                editView.main.mdlFormArrow = dref b
-                                editView.main.editMode = .Arrow
-                                editView.main.toolbar.updateCommandState()
-
-                            case FormLine:
-                                b := cast(*FormLine) @dataof(f)
-                                editView.main.mdlFormLine = dref b
-                                editView.main.editMode = .Line
-                                editView.main.toolbar.updateCommandState()
-
-                            case FormPolygon:
-                                b := cast(*FormPolygon) @dataof(f)
-                                editView.main.mdlFormPolygon = dref b
-                                editView.main.editMode = .Polygon
-                                editView.main.toolbar.updateCommandState()
-
-                            }
-                        }
                     }
 
                     mouseMode = .Moving
@@ -462,7 +429,35 @@ impl Capture
 
     mtd selectionHasChanged()
     {
-        editView.main.propWnd.selectionHasChanged()
+        if selection.count == 1
+        {
+            f := forms[hotForm]
+            t := @kindof(f)
+            switch t
+            {
+            case FormRect:
+                b := cast(*FormRect) @dataof(f)
+                editView.main.mdlFormRect = dref b
+                editView.main.editMode = .Shape
+
+            case FormArrow:
+                b := cast(*FormArrow) @dataof(f)
+                editView.main.mdlFormArrow = dref b
+                editView.main.editMode = .Arrow
+
+            case FormLine:
+                b := cast(*FormLine) @dataof(f)
+                editView.main.mdlFormLine = dref b
+                editView.main.editMode = .Line
+
+            case FormPolygon:
+                b := cast(*FormPolygon) @dataof(f)
+                editView.main.mdlFormPolygon = dref b
+                editView.main.editMode = .Polygon
+            }
+        }
+
+        editView.main.updateState()
     }
 
     //////////////////////////////

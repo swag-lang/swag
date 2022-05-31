@@ -54,8 +54,9 @@ struct IconButton
     checkedForm     = IconButtonCheckedForm.Full
     arrowPos        = IconButtonArrowPos.None
     textPos         = IconButtonTextPos.Bottom
-    sigHidePopup:   SigArray'closure(*Self)
-    sigShowPopup:   SigArray'closure(*Self)
+    sigHidePopup:       SigArray'closure(*Self)
+    sigShowPopup:       SigArray'closure(*Self)
+    sigCheckChanged:    SigArray'closure(*Self)
     sigPaintIcon:   closure(*Self, *PaintContext, Math.Rectangle)
 
     isChecked: bool
@@ -295,6 +296,7 @@ impl IWnd for IconButton
             {
                 isChecked = !isChecked
                 postCommandEvent(id)
+                sigCheckChanged.call(self)
             }
             elif iconBtnFlags & .Checkable
             {
@@ -302,6 +304,7 @@ impl IWnd for IconButton
                 {
                     isChecked = true
                     postCommandEvent(id)
+                    sigCheckChanged.call(self)
                 }
             }
             else

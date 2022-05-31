@@ -21,6 +21,20 @@ struct FormArrow
     paintPoints:    Array'Math.Vector2
 }
 
+impl FormArrow
+{
+    mtd isSameMdl(other: FormArrow)->bool
+    {
+        return  startShape == other.startShape and
+                endShape   == other.endShape and
+                startSize  == other.startSize and
+                endSize    == other.endSize and
+                borderColor == other.borderColor and
+                borderSize  == other.borderSize
+
+    }
+}
+
 impl IForm for FormArrow
 {
     mtd edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool

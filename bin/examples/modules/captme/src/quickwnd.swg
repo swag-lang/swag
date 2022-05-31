@@ -2,9 +2,12 @@ using Core, Gui, Pixel
 
 struct QuickWnd
 {
-    using wnd:  Wnd
-    main:       *MainWnd
-    styles:     *QuickStyle
+    using scrollWnd: ScrollWnd
+
+    layout:         *StackLayoutCtrl
+    main:           *MainWnd
+    qsArrow:        *QuickStyle
+    currentStyle:   *QuickStyle
 }
 
 impl IWnd for QuickWnd
@@ -16,40 +19,107 @@ impl IWnd for QuickWnd
 
 impl QuickWnd
 {
+    func create(parent: *Wnd)->*QuickWnd
+    {
+        quick := Wnd.create'QuickWnd(parent, @{0, 0, 0, 300})
+        quick.backgroundStyle = .Window
+
+        quick.layout = StackLayoutCtrl.create(quick, .Top)
+        quick.setView(quick.layout)
+        quick.loadQuickStyles()
+        return quick
+    }
+
+    mtd loadQuickStyleArrow()
+    {        
+        qsArrow = Memory.new'QuickStyle()
+
+        {
+            form := Memory.new'FormArrow()
+            form.borderSize = 5
+            form.endSize = 10
+            form.endShape = .Arrow
+            form.borderColor = Argb.Red
+            it := cast(IForm) form
+            it.setup(null)
+            qsArrow.forms.add(it)
+        }
+        {
+            form := Memory.new'FormArrow()
+            form.borderSize = 5
+            form.endSize, form.startSize = 10
+            form.startShape = .Arrow
+            form.endShape = .Arrow
+            form.borderColor = Argb.Green
+            it := cast(IForm) form
+            it.setup(null)
+            qsArrow.forms.add(it)
+        }
+    }
+
     mtd loadQuickStyles()
     {
-        qs := Memory.new'QuickStyle()
-        styles = qs
+        loadQuickStyleArrow()
+    }
 
-        formc := Memory.new'FormArrow()
-        formc.xa = 8
-        formc.ya = 40
-        formc.xb = 40
-        formc.yb = 8
-        formc.borderSize = 5
-        formc.endSize = 10
-        formc.endShape = .Arrow
-        formc.borderColor = Argb.Red
-        it := cast(IForm) formc
-        it.setup(null)
-        styles.forms.add(it)
+    mtd updateSelection()
+    {
+        visit it, i: currentStyle.forms
+        {
+            type := @kindof(it)
+            btn  := cast(*IconButton) layout.childs[i]
+            switch type
+            {
+            case FormArrow:
+                form := cast(*FormArrow) @dataof(it)
+                btn.isChecked = form.isSameMdl(main.mdlFormArrow)   
+                btn.invalidate()            
+            }
+        }
     }
 
     mtd updateQuickStyles()
     {
-        while childs.count
-            childs[0].destroyNow()
-        if !styles
+        switch main.editMode
+        {
+        case Arrow:
+            currentStyle = qsArrow
+        default:
+            currentStyle = null
+        }
+
+        while layout.childs.count
+            layout.childs[0].destroyNow()
+        if !currentStyle
             return
 
-        loop i: styles.forms
+        visit it: currentStyle.forms
         {
-            btn := IconButton.create(self, @{}, @{0, 0, 48, 48})
-            f := styles.forms[i]
-            btn.sigPaintIcon = @|f|(btn, bc, pos) {
+            btn := IconButton.create(layout, @{}, @{0, 0, 64, 64})
+            btn.iconBtnFlags |= .Checkable
+
+            btn.sigPaintIcon = @|it|(btn, bc, pos) {
                 bc.painter.setParams(.Antialiased)
-                f.paint(bc.painter, 1)
+                it.setBaseForm(8, 8, 48, 48)
+                it.paint(bc.painter, 1)
+            }
+
+            btn.sigCheckChanged += @|self, it|(btn) {
+                if !btn.isChecked 
+                    return
+                type := @kindof(it)
+                switch type
+                {
+                case FormArrow: 
+                    b := cast(*FormArrow) @dataof(it)
+                    self.main.mdlFormArrow = dref b
+                }
+
+                self.updateSelection()
             }
         }
+
+        updateSelection()
+        layout.computeLayout()
     }
 }
