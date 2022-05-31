@@ -23,11 +23,24 @@ impl PropWnd
         return ctrl
     }
 
-    func pushTypedValue(capture: *Capture, val: u32, type: typeinfo, name: string)
+    mtd getSelectedBaseForm()->*BaseForm
     {
+        return getCapture().getSelectedBaseForm()
+    }
+
+    mtd getSelectedFormType()->typeinfo
+    {
+        return getCapture().getSelectedFormType()
+    }
+
+    mtd pushTypedValue(val: u32, type: typeinfo, name: string, first: bool)
+    {
+        capture := getCapture()
+        if !first
+            capture.undo()
         undo := capture.newUndo(.SetTypedValue)
         undo.valU32 = val
-        undo.valRef = Reflection.getField(type, name)
+        undo.valRef = Reflection.getField(#self.type, #self.name)
         capture.pushUndo(undo)
     }
 
@@ -65,11 +78,11 @@ impl PropWnd
         return picker
     }
 
-    mtd propBorderColor(capture: *Capture, stack: *Wnd)
+    mtd propBorderColor(stack: *Wnd)
     {
         btn := createColorPickerButton(stack)
 
-        curSelType := capture.getSelectedFormType()
+        curSelType := getSelectedFormType()
         switch curSelType
         {
         case FormLine, FormArrow:
@@ -78,10 +91,11 @@ impl PropWnd
             btn.name = "Outline"
         }
 
-        btn.sigPaintIcon = @|capture|(btn, bc, pos)
+        me := self
+        btn.sigPaintIcon = @|me|(btn, bc, pos)
         {
             bc.painter.setParams(.Antialiased)
-            curSel := capture.getSelectedBaseForm()
+            curSel := me.getSelectedBaseForm()
             rect := pos
             rect.x = rect.horzCenter() - 16
             rect.y = rect.vertCenter() - 16
@@ -91,30 +105,30 @@ impl PropWnd
             bc.painter.drawRoundRect(rect, 5, 5, curSel.borderColor, 5)
         }
 
-        btn.sigShowPopup += @|capture|(btn) {
-            curSel := capture.getSelectedBaseForm()
+        btn.sigShowPopup += @|me|(btn) {
+            curSel := me.getSelectedBaseForm()
             picker := createColorPicker(btn, curSel.borderColor)
-            pushTypedValue(capture, curSel.borderColor.argb, @typeof(BaseForm), @nameof(FormArrow.borderColor))
-            picker.sigChanged += @|capture, btn|(pk) {
-                capture.undo()
-                pushTypedValue(capture, pk.getColor().argb, @typeof(BaseForm), @nameof(FormArrow.borderColor))
+            me.pushTypedValue(curSel.borderColor.argb, @typeof(BaseForm), @nameof(FormArrow.borderColor), true)
+            picker.sigChanged += @|me, btn|(pk) {
+                me.pushTypedValue(pk.getColor().argb, @typeof(BaseForm), @nameof(FormArrow.borderColor), false)
                 btn.invalidate()
             }
         }
     }
 
-    mtd propBackColor(capture: *Capture, stack: *Wnd)
+    mtd propBackColor(stack: *Wnd)
     {
-        curSelType := capture.getSelectedFormType()
+        curSelType := getSelectedFormType()
         if curSelType == FormLine or curSelType == FormArrow
             return
 
         btn := createColorPickerButton(stack)
         btn.name = "Fill"
-        btn.sigPaintIcon = @|capture|(btn, bc, pos)
+        me := self
+        btn.sigPaintIcon = @|me|(btn, bc, pos)
         {
             bc.painter.setParams(.Antialiased)
-            curSel := capture.getSelectedBaseForm()
+            curSel := me.getSelectedBaseForm()
             rect := pos
             rect.x = rect.horzCenter() - 21
             rect.y = rect.vertCenter() - 21
@@ -124,81 +138,76 @@ impl PropWnd
             bc.painter.fillRoundRect(rect, 10, 10, curSel.backColor)
         }
 
-        btn.sigShowPopup += @|capture|(btn) {
-            curSel := capture.getSelectedBaseForm()
+        btn.sigShowPopup += @|me|(btn) {
+            curSel := me.getSelectedBaseForm()
             picker := createColorPicker(btn, curSel.backColor)
-            pushTypedValue(capture, curSel.backColor.argb, @typeof(BaseForm), @nameof(FormArrow.backColor))
-            picker.sigChanged += @|capture, btn|(pk) {
-                capture.undo()
-                pushTypedValue(capture, pk.getColor().argb, @typeof(BaseForm), @nameof(FormArrow.backColor))
+            me.pushTypedValue(curSel.backColor.argb, @typeof(BaseForm), @nameof(FormArrow.backColor), true)
+            picker.sigChanged += @|me, btn|(pk) {
+                me.pushTypedValue(pk.getColor().argb, @typeof(BaseForm), @nameof(FormArrow.backColor), false)
                 btn.invalidate()
             }
         }
     }
 
-    mtd propStartSize(capture: *Capture)
+    mtd propStartSize()
     {
-        curSelType := capture.getSelectedFormType()
+        curSelType := getSelectedFormType()
         if curSelType != FormArrow
             return
-        curSel := cast(*FormArrow) capture.getSelectedBaseForm()
+        curSel := cast(*FormArrow) getSelectedBaseForm()
 
         ctrl := createSlider("Start Size", 1, 50, curSel.startSize)
-        ctrl.slider.sigStartChange += @|capture|(slider) {
-            pushTypedValue(capture, bitcast(u32) slider.getValue(), @typeof(FormArrow), @nameof(FormArrow.startSize))
+        ctrl.slider.sigStartChange += @|self|(slider) {
+            self.pushTypedValue(bitcast(u32) slider.getValue(), @typeof(FormArrow), @nameof(FormArrow.startSize), true)
         }
-        ctrl.slider.sigChanged += @|capture|(slider) {
-            capture.undo()
-            pushTypedValue(capture, bitcast(u32) slider.getValue(), @typeof(FormArrow), @nameof(FormArrow.startSize))
+        ctrl.slider.sigChanged += @|self|(slider) {
+            self.pushTypedValue(bitcast(u32) slider.getValue(), @typeof(FormArrow), @nameof(FormArrow.startSize), false)
         }
 
         if curSel.startShape == .Flat
             ctrl.disable()
     }
 
-    mtd propEndSize(capture: *Capture)
+    mtd propEndSize()
     {
-        curSelType := capture.getSelectedFormType()
+        curSelType := getSelectedFormType()
         if curSelType != FormArrow
             return
 
-        curSel := cast(*FormArrow) capture.getSelectedBaseForm()
+        curSel := cast(*FormArrow) getSelectedBaseForm()
         ctrl := createSlider("End Size", 1, 50, curSel.endSize)
-        ctrl.slider.sigStartChange += @|capture|(slider) {
-            pushTypedValue(capture, bitcast(u32) slider.getValue(), @typeof(FormArrow), @nameof(FormArrow.endSize))
+        ctrl.slider.sigStartChange += @|self|(slider) {
+            self.pushTypedValue(bitcast(u32) slider.getValue(), @typeof(FormArrow), @nameof(FormArrow.endSize), true)
         }
-        ctrl.slider.sigChanged += @|capture|(slider) {
-            capture.undo()
-            pushTypedValue(capture, bitcast(u32) slider.getValue(), @typeof(FormArrow), @nameof(FormArrow.endSize))
+        ctrl.slider.sigChanged += @|self|(slider) {
+            self.pushTypedValue(bitcast(u32) slider.getValue(), @typeof(FormArrow), @nameof(FormArrow.endSize), false)
         }
 
         if curSel.endShape == .Flat
             ctrl.disable()
     }
 
-    mtd propBorderSize(capture: *Capture)
+    mtd propBorderSize()
     {
-        curSel := capture.getSelectedBaseForm()
+        curSel := getSelectedBaseForm()
         ctrl := createSlider("Tickness", 1, 50, curSel.borderSize)
-        ctrl.slider.sigStartChange += @|capture|(slider) {
-            pushTypedValue(capture, bitcast(u32) slider.getValue(), @typeof(BaseForm), @nameof(BaseForm.borderSize))
+        ctrl.slider.sigStartChange += @|self|(slider) {
+            self.pushTypedValue(bitcast(u32) slider.getValue(), @typeof(BaseForm), @nameof(BaseForm.borderSize), true)
         }
-        ctrl.slider.sigChanged += @|capture|(slider) {
-            capture.undo()
-            pushTypedValue(capture, bitcast(u32) slider.getValue(), @typeof(BaseForm), @nameof(BaseForm.borderSize))
+        ctrl.slider.sigChanged += @|self|(slider) {
+            self.pushTypedValue(bitcast(u32) slider.getValue(), @typeof(BaseForm), @nameof(BaseForm.borderSize), false)
         }
     }
 
-    mtd propOpactiy(capture: *Capture)
+    mtd propOpactiy()
     {
-        curSel := capture.getSelectedBaseForm()
+        curSel := getSelectedBaseForm()
         ctrl := createSlider("Opacity", 0, 100, acast curSel.alpha)
-        ctrl.slider.sigStartChange += @|capture|(slider) {
-            pushTypedValue(capture, cast(u32) slider.getValue(), @typeof(BaseForm), @nameof(BaseForm.alpha))
+        ctrl.slider.sigStartChange += @|self|(slider) {
+            self.pushTypedValue(cast(u32) slider.getValue(), @typeof(BaseForm), @nameof(BaseForm.alpha), true)
         }
-        ctrl.slider.sigChanged += @|capture|(slider) {
-            capture.undo()
-            pushTypedValue(capture, cast(u32) slider.getValue(), @typeof(BaseForm), @nameof(BaseForm.alpha))
+        ctrl.slider.sigChanged += @|self|(slider) {
+            self.pushTypedValue(cast(u32) slider.getValue(), @typeof(BaseForm), @nameof(BaseForm.alpha), false)
         }
     }
 
@@ -213,14 +222,14 @@ impl PropWnd
 
         {
             stack := StackLayoutCtrl.create(self, .HorzCenter, @{0, 0, 0, 100})
-            propBackColor(capture, stack)
-            propBorderColor(capture, stack)
+            propBackColor(stack)
+            propBorderColor(stack)
         }
 
-        propBorderSize(capture)
-        propStartSize(capture)
-        propEndSize(capture)
-        propOpactiy(capture)
+        propBorderSize()
+        propStartSize()
+        propEndSize()
+        propOpactiy()
 
         layoutWnd.padding = 8
         layoutWnd.computeLayout()
