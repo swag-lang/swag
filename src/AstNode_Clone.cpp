@@ -1144,6 +1144,15 @@ AstNode* AstMakePointer::clone(CloneContext& context)
 
     if (lambda)
     {
+        if (context.forceFlags & AST_IN_MIXIN)
+        {
+            if (lambda->captureParameters && childs.front() == lambda->captureParameters)
+            {
+                lambda->captureParameters = newNode->childs[0];
+                lambda->makePointerLambda = newNode;
+            }
+        }
+
         newNode->lambda = lambda;
         context.nodeRefsToUpdate.push_back((AstNode**) &newNode->lambda);
     }
