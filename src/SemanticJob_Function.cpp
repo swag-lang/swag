@@ -1185,6 +1185,8 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     // Check types
     auto child = node->childs[0];
     SWAG_CHECK(checkIsConcreteOrType(context, child));
+    if (context->result != ContextResult::Done)
+        return true;
 
     auto concreteType = TypeManager::concreteType(child->typeInfo);
 
