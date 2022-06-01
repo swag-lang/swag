@@ -48,7 +48,7 @@ impl Capture
     // PAINT
     //////////////////////////////
 
-    func paintForm(app: *Application, painter: *Painter, rect: Math.Rectangle, f: IForm, zoom: f32)
+    func paintForm(app: *Application, painter: *Painter, rect: Math.Rectangle, f: IForm, zoom: f32, blurRadius: f32 = 8.0)
     {
         render := &app.renderer
 
@@ -89,7 +89,7 @@ impl Capture
         painter.bindRenderTarget(rt2)
         painter.setShader(&render.shaderBlur)
         painter.setShaderParam(render.shaderBlur.axis, 0's32)
-        painter.setShaderParam(render.shaderBlur.radius, 8.0)
+        painter.setShaderParam(render.shaderBlur.radius, blurRadius)
         painter.setBlendingMode(.Copy)
         painter.setColorMask(true, true, true, true);
         painter.clear(Color.fromArgb(0,0,0,0))
@@ -102,7 +102,7 @@ impl Capture
         painter.bindRenderTarget(rt1)
         painter.setShader(&render.shaderBlur)
         painter.setShaderParam(render.shaderBlur.axis, 1's32)
-        painter.setShaderParam(render.shaderBlur.radius, 8.0)
+        painter.setShaderParam(render.shaderBlur.radius, blurRadius)
         painter.setBlendingMode(.Copy)
         painter.setColorMask(true, true, true, true);
         dstRect = Math.Rectangle{0, 0, wt, ht}

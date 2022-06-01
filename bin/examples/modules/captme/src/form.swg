@@ -13,6 +13,8 @@ interface IForm
     movePoint:      func(self, u32, s32, s32)
     edit:           func(self, *MouseEvent, Math.Rectangle, Math.Point, Math.Point, f32)->bool
     setup:          func(self, *Capture)
+    isSame:         func(self, *BaseForm)->bool
+    copy:           func(self, *BaseForm, *BaseForm)
 }
 
 #[Swag.EnumFlags]

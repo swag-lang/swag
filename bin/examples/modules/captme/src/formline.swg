@@ -10,6 +10,15 @@ struct FormLine
 
 impl IForm for FormLine
 {
+    mtd isSame(ptr: *BaseForm)->bool
+    {
+        return false
+    }
+
+    mtd copy(dst, src: *BaseForm)
+    {
+    }
+
     mtd edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
     {
         xa = cast(s32) ((movingStart.x - paintRect.x) / zoom)

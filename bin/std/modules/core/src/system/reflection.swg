@@ -118,25 +118,25 @@ using Swag
     }
 
     // Set a field value with a given runtime type
-    func setFieldValue(dest: *void, type: const *TypeValue, src: *void, hardCast: bool = false)
+    func setFieldValue(dest: *void, type: const *TypeValue, src: const *void, hardCast: bool = false)
     {
         patch := cast(*u8) dest + type.offset
         switch type.pointedType
         {
-        case s8, u8, bool:          dref cast(*u8)  patch = dref cast(*u8)  src
-        case s16, u16:              dref cast(*u16) patch = dref cast(*u16) src
-        case s32, u32, f32, rune:   dref cast(*u32) patch = dref cast(*u32) src
-        case s64, u64, f64:         dref cast(*u64) patch = dref cast(*u64) src
-        case string:                dref cast(*string) patch = dref cast(*string) src
+        case s8, u8, bool:          dref cast(*u8)  patch = dref cast(const *u8)  src
+        case s16, u16:              dref cast(*u16) patch = dref cast(const *u16) src
+        case s32, u32, f32, rune:   dref cast(*u32) patch = dref cast(const *u32) src
+        case s64, u64, f64:         dref cast(*u64) patch = dref cast(const *u64) src
+        case string:                dref cast(*string) patch = dref cast(const *string) src
         default:
             if !hardCast
                 Debug.assert(false, "unsupported setFieldValue type")
             switch type.pointedType.sizeof
             {
-            case 1:     dref cast(*u8)  patch = dref cast(*u8)  src
-            case 2:     dref cast(*u16) patch = dref cast(*u16) src
-            case 4:     dref cast(*u32) patch = dref cast(*u32) src
-            case 8:     dref cast(*u64) patch = dref cast(*u64) src
+            case 1:     dref cast(*u8)  patch = dref cast(const *u8)  src
+            case 2:     dref cast(*u16) patch = dref cast(const *u16) src
+            case 4:     dref cast(*u32) patch = dref cast(const *u32) src
+            case 8:     dref cast(*u64) patch = dref cast(const *u64) src
             default:    Debug.assert(false, "unsupported setFieldValue type")
             }
         }

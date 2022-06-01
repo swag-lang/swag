@@ -108,23 +108,43 @@ impl QuickWnd
             btn.sigPaintIcon = @|it|(btn, bc, pos) {
                 bc.painter.setParams(.Antialiased)
                 it.setBaseForm(8, 8, 48, 48)
-                Capture.paintForm(btn.getApp(), bc.painter, @{0, 0, 64, 64}, it, 1)
+                Capture.paintForm(btn.getApp(), bc.painter, @{0, 0, 64, 64}, it, zoom: 1, blurRadius: 4.0)
             }
 
             btn.sigCheckChanged += @|self, it|(btn) {
                 if !btn.isChecked
                     return
                 type := @kindof(it)
+                var mdlValue: *BaseForm
                 switch type
                 {
+                case FormShape:
+                    b := cast(*FormShape) @dataof(it)
+                    self.main.mdlFormShape = dref b
+                    mdlValue = &self.main.mdlFormShape
+                case FormLine:
+                    b := cast(*FormLine) @dataof(it)
+                    self.main.mdlFormLine = dref b
+                    mdlValue = &self.main.mdlFormLine
+                case FormPolygon:
+                    b := cast(*FormPolygon) @dataof(it)
+                    self.main.mdlFormPolygon = dref b
+                    mdlValue = &self.main.mdlFormPolygon
                 case FormArrow:
                     b := cast(*FormArrow) @dataof(it)
                     self.main.mdlFormArrow = dref b
+                    mdlValue = &self.main.mdlFormArrow
                 }
 
                 capture := self.main.getCapture()
-                if capture
-                    capture.selection.clear()
+                if capture.selection.count
+                {
+                    undo := capture.newUndo(.SetFormFromModel)
+                    undo.mdlType = type
+                    undo.mdlValue = mdlValue
+                    capture.pushUndo(undo)
+                }
+
                 self.updateSelection()
                 self.main.updateState()
             }

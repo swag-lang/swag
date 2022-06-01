@@ -8,11 +8,6 @@ struct PropWnd
 
 impl PropWnd
 {
-    mtd getCapture()->*Capture
-    {
-        return main.editWnd.editView.capture
-    }
-
     mtd createSlider(name: string, minv, maxv: s64, val: f32)->*SliderCtrl
     {
         ctrl := SliderCtrl.create(self, #self.name)
@@ -25,7 +20,7 @@ impl PropWnd
 
     mtd getSelectedBaseForm()->*BaseForm
     {
-        capture := getCapture()
+        capture := main.getCapture()
         if !capture or capture.selection.count == 0
         {
             #[Swag.Complete]
@@ -47,7 +42,7 @@ impl PropWnd
 
     mtd getSelectedFormType()->typeinfo
     {
-        capture := getCapture()
+        capture := main.getCapture()
         if !capture or capture.selection.count == 0
         {
             #[Swag.Complete]
@@ -69,12 +64,19 @@ impl PropWnd
 
     mtd pushTypedValue(val: u32, type: typeinfo, name: string, first: bool)
     {
-        capture := getCapture()
+        capture := main.getCapture()
+
+        // Change model
         if !capture or !capture.selection.count
         {
+            form   := getSelectedBaseForm()
+            field  := Reflection.getField(#self.type, #self.name)
+            valU32 := val
+            Reflection.setFieldValue(form, field, &valU32, true)
             return
         }
 
+        // Change selection
         if !first
             capture.undo()
         undo := capture.newUndo(.SetTypedValue)
@@ -269,7 +271,7 @@ impl PropWnd
         layoutWnd.padding = 8
         layoutWnd.computeLayout()
 
-        capture := getCapture()
+        capture := main.getCapture()
         if capture
             capture.editView.setFocus()
     }

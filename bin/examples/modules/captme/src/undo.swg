@@ -19,6 +19,7 @@ enum UndoKind
     CreateForm
     DeleteSelection
     SetTypedValue
+    SetFormFromModel
 }
 
 struct Undo
@@ -41,6 +42,9 @@ struct Undo
     valU32:     u32
     oldU32:     Array'u32
     valRef:     const *Swag.TypeValue
+    mdlType:    typeinfo
+    mdlValue:   *BaseForm
+    oldForm:    Array'*BaseForm
 }
 
 impl Undo
@@ -49,6 +53,18 @@ impl Undo
     {
         switch kind
         {
+        case SetFormFromModel:
+            selection = capture.selection
+            visit s: selection
+            {
+                f := capture.forms[s]
+                if @kindof(f) != mdlType
+                    continue
+                save := cast(*BaseForm) Memory.new(mdlType)
+                f.copy(save, cast(*BaseForm) @dataof(f))
+                oldForm.add(save)
+            }
+
         case AlignLeft, AlignCenter, AlignRight:
             selection = capture.selection
             minP = Swag.S32.Max
@@ -105,6 +121,15 @@ impl Undo
         #[Swag.Complete]
         switch kind
         {
+        case SetFormFromModel:
+            visit s: selection
+            {
+                f := capture.forms[s]
+                if @kindof(f) != mdlType
+                    continue
+                f.copy(cast(*BaseForm) @dataof(f), mdlValue)
+            }
+
         case SetTypedValue:
             visit s: selection
                 Reflection.setFieldValue(@dataof(capture.forms[s]), valRef, &valU32, true)
@@ -262,6 +287,15 @@ impl Undo
         #[Swag.Complete]
         switch kind
         {
+        case SetFormFromModel:
+            visit s, i: selection
+            {
+                f := capture.forms[s]
+                if @kindof(f) != mdlType
+                    continue
+                f.copy(cast(*BaseForm) @dataof(f), oldForm[i])
+            }
+
         case SetTypedValue:
             visit s, i: selection
             {

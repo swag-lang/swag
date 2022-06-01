@@ -31,12 +31,34 @@ impl FormArrow
                 endSize    == other.endSize and
                 borderColor == other.borderColor and
                 borderSize  == other.borderSize
-
     }
 }
 
 impl IForm for FormArrow
 {
+    mtd isSame(ptr: *BaseForm)->bool
+    {
+        other := cast(*FormArrow) ptr
+        return  startShape == other.startShape and
+                endShape   == other.endShape and
+                startSize  == other.startSize and
+                endSize    == other.endSize and
+                borderColor == other.borderColor and
+                borderSize  == other.borderSize
+    }
+
+    mtd copy(dst, src: *BaseForm)
+    {
+        dstf := cast(*FormArrow) dst
+        srcf := cast(*FormArrow) src
+        dstf.startShape  = srcf.startShape
+        dstf.endShape    = srcf.endShape
+        dstf.startSize   = srcf.startSize
+        dstf.endSize     = srcf.endSize
+        dstf.borderColor = srcf.borderColor
+        dstf.borderSize  = srcf.borderSize
+    }
+
     mtd edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
     {
         xa = cast(s32) ((movingStart.x - paintRect.x) / zoom)
