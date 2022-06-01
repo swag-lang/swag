@@ -77,10 +77,16 @@ impl QuickWnd
             switch type
             {
             case FormArrow:
-                form := cast(*FormArrow) @dataof(it)
-                btn.isChecked = form.isSameMdl(main.mdlFormArrow)
-                btn.invalidate()
+                btn.isChecked = it.isSame(&main.mdlFormArrow)
+            case FormShape:
+                btn.isChecked = it.isSame(&main.mdlFormShape)
+            case FormLine:
+                btn.isChecked = it.isSame(&main.mdlFormLine)
+            case FormPolygon:
+                btn.isChecked = it.isSame(&main.mdlFormPolygon)
             }
+
+            btn.invalidate()
         }
     }
 

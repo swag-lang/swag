@@ -73,16 +73,20 @@ impl PropWnd
             field  := Reflection.getField(#self.type, #self.name)
             valU32 := val
             Reflection.setFieldValue(form, field, &valU32, true)
-            return
         }
 
         // Change selection
-        if !first
-            capture.undo()
-        undo := capture.newUndo(.SetTypedValue)
-        undo.valU32 = val
-        undo.valRef = Reflection.getField(#self.type, #self.name)
-        capture.pushUndo(undo)
+        else
+        {
+            if !first
+                capture.undo()
+            undo := capture.newUndo(.SetTypedValue)
+            undo.valU32 = val
+            undo.valRef = Reflection.getField(#self.type, #self.name)
+            capture.pushUndo(undo)
+        }
+
+        main.quickWnd.updateSelection()
     }
 
     func createColorPickerButton(stack: *Wnd)->*IconButton

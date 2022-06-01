@@ -21,19 +21,6 @@ struct FormArrow
     paintPoints:    Array'Math.Vector2
 }
 
-impl FormArrow
-{
-    mtd isSameMdl(other: FormArrow)->bool
-    {
-        return  startShape == other.startShape and
-                endShape   == other.endShape and
-                startSize  == other.startSize and
-                endSize    == other.endSize and
-                borderColor == other.borderColor and
-                borderSize  == other.borderSize
-    }
-}
-
 impl IForm for FormArrow
 {
     mtd isSame(ptr: *BaseForm)->bool
