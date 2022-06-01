@@ -3,7 +3,7 @@ using Core, Gui, Pixel
 struct QuickButton
 {
     using iconBtn: IconButton
-    form: IForm
+    formItf: IForm
 }
 
 struct QuickWnd
@@ -109,12 +109,14 @@ impl QuickWnd
         {
             btn := Wnd.create'QuickButton(layout, null, @{0, 0, 64, 64})
             btn.iconBtnFlags |= .Checkable
-            btn.form = it
+            btn.setForm(.RoundSquare)
+            btn.formItf = it
 
-            btn.sigPaintIcon = @|it|(btn, bc, pos) {
+            btn.sigPaintIcon = @||(btn, bc, pos) {
                 bc.painter.setParams(.Antialiased)
-                it.setBaseForm(8, 8, 48, 48)
-                Capture.paintForm(btn.getApp(), bc.painter, @{0, 0, 64, 64}, it, zoom: 1, blurRadius: 4.0)
+                btnp := cast(*QuickButton) btn
+                btnp.formItf.setBaseForm(8, 8, 48, 48)
+                Capture.paintForm(btn.getApp(), bc.painter, @{0, 0, 64, 64}, btnp.formItf, zoom: 1, blurRadius: 4.0)
             }
 
             btn.sigCheckChanged += @|self, it|(btn) {
@@ -127,19 +129,22 @@ impl QuickWnd
                 case FormShape:
                     b := cast(*FormShape) @dataof(it)
                     self.main.mdlFormShape = dref b
-                    mdlValue = &self.main.mdlFormShape
+                    mdlValue = Memory.new'FormShape()
+                    it.copy(mdlValue, &self.main.mdlFormShape)
                 case FormLine:
                     b := cast(*FormLine) @dataof(it)
                     self.main.mdlFormLine = dref b
-                    mdlValue = &self.main.mdlFormLine
+                    mdlValue = Memory.new'FormLine()
+                    it.copy(mdlValue, &self.main.mdlFormLine)
                 case FormPolygon:
                     b := cast(*FormPolygon) @dataof(it)
-                    self.main.mdlFormPolygon = dref b
-                    mdlValue = &self.main.mdlFormPolygon
+                    mdlValue = Memory.new'FormPolygon()
+                    it.copy(mdlValue, &self.main.mdlFormPolygon)
                 case FormArrow:
                     b := cast(*FormArrow) @dataof(it)
                     self.main.mdlFormArrow = dref b
-                    mdlValue = &self.main.mdlFormArrow
+                    mdlValue = Memory.new'FormArrow()
+                    it.copy(mdlValue, &self.main.mdlFormArrow)
                 }
 
                 capture := self.main.getCapture()
@@ -154,6 +159,24 @@ impl QuickWnd
                 self.updateSelection()
                 self.main.updateState()
             }
+        }
+
+        btn := cast(*QuickButton) Wnd.create'QuickButton(layout, null, @{0, 0, 64, 64})
+        btn.iconBtnFlags |= .Checkable
+        btn.setForm(.RoundSquare)
+
+        btn.formItf = cast(IForm) main.mdlFormArrow
+
+        btn.sigPaintIcon = @(btn, bc, pos) {
+            bc.painter.setParams(.Antialiased)
+            btnp := cast(*QuickButton) btn
+            btnp.formItf.setBaseForm(8, 8, 48, 48)
+            Capture.paintForm(btn.getApp(), bc.painter, @{0, 0, 64, 64}, btnp.formItf, zoom: 1, blurRadius: 4.0)
+
+            rect := btn.getClientRect()
+            rect.inflate(-2, -2)
+            bc.painter.setParams(.Antialiased)
+            bc.painter.drawRoundRect(rect, 5, 5, Pen.createDash(.Dash, Argb.White, 3))
         }
 
         updateSelection()
