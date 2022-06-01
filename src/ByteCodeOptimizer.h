@@ -57,7 +57,6 @@ struct ByteCodeOptimizer
     static void reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void reduceSetAt(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void reduceX2(ByteCodeOptContext* context, ByteCodeInstruction* ip);
-    static void reduceNullPointer(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void reduceCmpJump(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void reduceForceSafe(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static bool optimizePassReduce(ByteCodeOptContext* context);
