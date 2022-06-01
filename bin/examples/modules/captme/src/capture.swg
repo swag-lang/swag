@@ -354,8 +354,8 @@ impl Capture
                 switch editView.main.editMode
                 {
                 case Shape:
-                    form := Memory.new'FormRect()
-                    dref form = editView.main.mdlFormRect
+                    form := Memory.new'FormShape()
+                    dref form = editView.main.mdlFormShape
                     itf = cast(IForm) form
                 case Arrow:
                     form := Memory.new'FormArrow()
@@ -431,13 +431,13 @@ impl Capture
     {
         if selection.count == 1
         {
-            f := forms[hotForm]
+            f := forms.front()
             t := @kindof(f)
             switch t
             {
-            case FormRect:
-                b := cast(*FormRect) @dataof(f)
-                editView.main.mdlFormRect = dref b
+            case FormShape:
+                b := cast(*FormShape) @dataof(f)
+                editView.main.mdlFormShape = dref b
                 editView.main.editMode = .Shape
 
             case FormArrow:

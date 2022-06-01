@@ -18,7 +18,7 @@ struct MainWnd
     propWnd:    *PropWnd
 
     editMode:       EditMode = .Shape
-    mdlFormRect:    FormRect
+    mdlFormShape:    FormShape
     mdlFormArrow:   FormArrow
     mdlFormLine:    FormLine
     mdlFormPolygon: FormPolygon
@@ -279,6 +279,11 @@ impl MainWnd
         toolbar.updateCommandState()
         propWnd.selectionHasChanged()
         quickWnd.updateQuickStyles()
+    }
+
+    mtd getCapture()->*Capture
+    {
+        return editWnd.editView.capture
     }
 
     func create(parent: *Wnd)->*MainWnd

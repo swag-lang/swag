@@ -122,7 +122,11 @@ impl QuickWnd
                     self.main.mdlFormArrow = dref b
                 }
 
+                capture := self.main.getCapture()
+                if capture
+                    capture.selection.clear()
                 self.updateSelection()
+                self.main.updateState()
             }
         }
 

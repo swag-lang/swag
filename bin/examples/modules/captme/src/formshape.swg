@@ -1,20 +1,20 @@
 using Pixel, Core, Gui
 
-enum FormRectKind
+enum FormShapeKind
 {
     Ellipse
     Rectangle
     RoundRectangle
 }
 
-struct FormRect
+struct FormShape
 {
     using base:     BaseForm
-    kind:           FormRectKind = Ellipse
+    kind:           FormShapeKind = Ellipse
     gizmo:          GizmoRect
 }
 
-impl IForm for FormRect
+impl IForm for FormShape
 {
     mtd edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
     {

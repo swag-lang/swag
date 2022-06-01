@@ -77,14 +77,14 @@ impl EditWnd
         itf.setup(capture)
         capture.forms.add(itf)
 
-        form0 := Memory.new'FormRect()
+        form0 := Memory.new'FormShape()
         form0.x, form0.y = 50
         form0.backColor = Argb.Green
         itf = cast(IForm) form0
         itf.setup(capture)
         capture.forms.add(itf)
 
-        form1 := Memory.new'FormRect()
+        form1 := Memory.new'FormShape()
         form1.x, form1.y = 150
         form1.w = 100
         form1.backColor = Argb.Zero
@@ -92,7 +92,7 @@ impl EditWnd
         itf.setup(capture)
         capture.forms.add(itf)
 
-        form2 := Memory.new'FormRect()
+        form2 := Memory.new'FormShape()
         form2.kind = .Rectangle
         form2.x, form2.y = 200
         form2.w, form2.h = 100
@@ -103,7 +103,7 @@ impl EditWnd
         itf.setup(capture)
         capture.forms.add(itf)
 
-        form3 := Memory.new'FormRect()
+        form3 := Memory.new'FormShape()
         form3.kind = .RoundRectangle
         form3.x = 100
         form3.y = 200

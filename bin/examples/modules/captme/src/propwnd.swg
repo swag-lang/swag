@@ -28,12 +28,17 @@ impl PropWnd
         capture := getCapture()
         if !capture or capture.selection.count == 0
         {
+            #[Swag.Complete]
             switch main.editMode
             {
             case Arrow:
                 return cast(*BaseForm) &main.mdlFormArrow
-            default:
-                return null
+            case Line:
+                return cast(*BaseForm) &main.mdlFormLine
+            case Shape:
+                return cast(*BaseForm) &main.mdlFormShape
+            case Polygon:
+                return cast(*BaseForm) &main.mdlFormPolygon
             }
         }
 
@@ -45,12 +50,17 @@ impl PropWnd
         capture := getCapture()
         if !capture or capture.selection.count == 0
         {
+            #[Swag.Complete]
             switch main.editMode
             {
             case Arrow:
-                return BaseForm
-            default:
-                return null
+                return FormArrow
+            case Line:
+                return FormLine
+            case Shape:
+                return FormShape
+            case Polygon:
+                return FormPolygon
             }
         }
 
@@ -60,6 +70,11 @@ impl PropWnd
     mtd pushTypedValue(val: u32, type: typeinfo, name: string, first: bool)
     {
         capture := getCapture()
+        if !capture or !capture.selection.count
+        {
+            return
+        }
+
         if !first
             capture.undo()
         undo := capture.newUndo(.SetTypedValue)
@@ -238,11 +253,8 @@ impl PropWnd
     mtd selectionHasChanged()
     {
         while childs.count
-        {
             childs[0].destroyNow()
-        }
-
-        if getSelectedBaseForm() == null
+        if !getSelectedBaseForm()
             return
 
         stack := StackLayoutCtrl.create(self, .HorzCenter, @{0, 0, 0, 100})
