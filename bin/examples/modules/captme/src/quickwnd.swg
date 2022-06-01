@@ -10,7 +10,7 @@ struct QuickWnd
 {
     using scrollWnd: ScrollWnd
 
-    layout:         *StackLayoutCtrl
+    layout:         *WrapLayoutCtrl
     main:           *MainWnd
     qsArrow:        *QuickStyle
     currentStyle:   *QuickStyle
@@ -30,7 +30,7 @@ impl QuickWnd
         quick := Wnd.create'QuickWnd(parent, @{0, 0, 0, 300})
         quick.backgroundStyle = .Window
 
-        quick.layout = StackLayoutCtrl.create(quick, .Top)
+        quick.layout = WrapLayoutCtrl.create(quick)
         quick.setView(quick.layout)
         quick.loadQuickStyles()
         return quick
@@ -108,7 +108,7 @@ impl QuickWnd
             btn.sigPaintIcon = @|it|(btn, bc, pos) {
                 bc.painter.setParams(.Antialiased)
                 it.setBaseForm(8, 8, 48, 48)
-                it.paint(bc.painter, 1)
+                Capture.paintForm(btn.getApp(), bc.painter, @{0, 0, 64, 64}, it, 1)
             }
 
             btn.sigCheckChanged += @|self, it|(btn) {

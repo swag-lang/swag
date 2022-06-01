@@ -48,6 +48,93 @@ impl Capture
     // PAINT
     //////////////////////////////
 
+    func paintForm(app: *Application, painter: *Painter, rect: Math.Rectangle, f: IForm, zoom: f32)
+    {
+        render := &app.renderer
+
+        boundRect := f.boundRect()
+        base := cast(*BaseForm) @dataof(f)
+        base.paintPos.x      = rect.x + (boundRect.x * zoom)
+        base.paintPos.y      = rect.y + (boundRect.y * zoom)
+        base.paintPos.width  = boundRect.width * zoom
+        base.paintPos.height = boundRect.height * zoom
+
+        rt := render.getRenderTarget(cast(s32) base.paintPos.width, cast(s32) base.paintPos.height)
+        painter.bindRenderTarget(rt, true)
+        painter.setParams(.Antialiased)
+        painter.clear(Argb.Zero)
+        f.paint(painter, zoom)
+        painter.unbindRenderTarget()
+
+        const Margin = 8
+        wt2 := cast(s32) base.paintPos.width
+        ht2 := cast(s32) base.paintPos.height
+        wt  := wt2 + 2*Margin
+        ht  := ht2 + 2*Margin
+        rt1 := render.getRenderTarget(wt, ht)
+        rt2 := render.getRenderTarget(wt, ht)
+
+        // Draw the image with a margin around
+        srcRect := Math.Rectangle{0, 0, base.paintPos.width, base.paintPos.height}
+        painter.bindRenderTarget(rt1)
+        painter.setShader(&render.shaderSimple)
+        painter.setBlendingMode(.Copy)
+        painter.setColorMask(true, true, true, true);
+        painter.clear(Color.fromArgb(0,0,0,0))
+        dstRect := Math.Rectangle{Margin, Margin, wt2, ht2}
+        painter.drawTexture(dstRect, srcRect, rt.colorBuffer)
+        painter.unbindRenderTarget()
+
+        // Blur first pass
+        painter.bindRenderTarget(rt2)
+        painter.setShader(&render.shaderBlur)
+        painter.setShaderParam(render.shaderBlur.axis, 0's32)
+        painter.setShaderParam(render.shaderBlur.radius, 8.0)
+        painter.setBlendingMode(.Copy)
+        painter.setColorMask(true, true, true, true);
+        painter.clear(Color.fromArgb(0,0,0,0))
+        dstRect = Math.Rectangle{0, 0, wt, ht}
+        painter.drawTexture(dstRect, dstRect, rt1.colorBuffer)
+        painter.setShader()
+        painter.unbindRenderTarget()
+
+        // Blur second pass
+        painter.bindRenderTarget(rt1)
+        painter.setShader(&render.shaderBlur)
+        painter.setShaderParam(render.shaderBlur.axis, 1's32)
+        painter.setShaderParam(render.shaderBlur.radius, 8.0)
+        painter.setBlendingMode(.Copy)
+        painter.setColorMask(true, true, true, true);
+        dstRect = Math.Rectangle{0, 0, wt, ht}
+        painter.drawTexture(dstRect, dstRect, rt2.colorBuffer, Color.fromArgb(150, Argb.Black))
+
+        // Add the real image at the right place just after
+        imgRect := dstRect
+        imgRect.offset(cast(f32) Margin)
+        imgRect.width = base.paintPos.width
+        imgRect.height = base.paintPos.height
+        imgRect.offset(-base.shadowOffset.x, -base.shadowOffset.y)
+        painter.setShader(&render.shaderSimple)
+        painter.setBlendingMode(.Alpha)
+        painter.drawTexture(imgRect, srcRect, rt.colorBuffer)
+        painter.unbindRenderTarget()
+
+        // Paint resulting image
+        painter.pushClippingRect(rect)
+        painter.setShader()
+        paintShadowRect := dstRect
+        paintShadowRect.x = base.paintPos.x - Margin
+        paintShadowRect.y = base.paintPos.y - Margin
+        paintShadowRect.offset(base.shadowOffset.x, base.shadowOffset.y)
+        colForm := Color.fromArgb(cast(u8) Math.map(cast(f32) base.alpha, 0, 100, 0, 255), Argb.White)
+        painter.drawTexture(paintShadowRect, dstRect, rt1.colorBuffer, colForm)
+        painter.popClippingRect()
+
+        painter.releaseRenderTarget(rt)
+        painter.releaseRenderTarget(rt1)
+        painter.releaseRenderTarget(rt2)
+    }
+
     mtd paint(painter: *Painter, rect: Math.Rectangle)
     {
         painter.fillRect(rect, Argb.Gray)
@@ -59,92 +146,8 @@ impl Capture
 
         // Shapes
         app := editView.getApp()
-        render := &app.renderer
-
         visit f: forms
-        {
-            boundRect := f.boundRect()
-            base := cast(*BaseForm) @dataof(f)
-            base.paintPos.x      = rect.x + (boundRect.x * zoom)
-            base.paintPos.y      = rect.y + (boundRect.y * zoom)
-            base.paintPos.width  = boundRect.width * zoom
-            base.paintPos.height = boundRect.height * zoom
-
-            rt := render.getRenderTarget(cast(s32) base.paintPos.width, cast(s32) base.paintPos.height)
-            painter.bindRenderTarget(rt, true)
-            painter.setParams(.Antialiased)
-            painter.clear(Argb.Zero)
-            f.paint(painter, zoom)
-            painter.unbindRenderTarget()
-
-            const Margin = 8
-            wt2 := cast(s32) base.paintPos.width
-            ht2 := cast(s32) base.paintPos.height
-            wt  := wt2 + 2*Margin
-            ht  := ht2 + 2*Margin
-            rt1 := render.getRenderTarget(wt, ht)
-            rt2 := render.getRenderTarget(wt, ht)
-
-            // Draw the image with a margin around
-            srcRect := Math.Rectangle{0, 0, base.paintPos.width, base.paintPos.height}
-            painter.bindRenderTarget(rt1)
-            painter.setShader(&render.shaderSimple)
-            painter.setBlendingMode(.Copy)
-            painter.setColorMask(true, true, true, true);
-            painter.clear(Color.fromArgb(0,0,0,0))
-            dstRect := Math.Rectangle{Margin, Margin, wt2, ht2}
-            painter.drawTexture(dstRect, srcRect, rt.colorBuffer)
-            painter.unbindRenderTarget()
-
-            // Blur first pass
-            painter.bindRenderTarget(rt2)
-            painter.setShader(&render.shaderBlur)
-            painter.setShaderParam(render.shaderBlur.axis, 0's32)
-            painter.setShaderParam(render.shaderBlur.radius, 8.0)
-            painter.setBlendingMode(.Copy)
-            painter.setColorMask(true, true, true, true);
-            painter.clear(Color.fromArgb(0,0,0,0))
-            dstRect = Math.Rectangle{0, 0, wt, ht}
-            painter.drawTexture(dstRect, dstRect, rt1.colorBuffer)
-            painter.setShader()
-            painter.unbindRenderTarget()
-
-            // Blur second pass
-            painter.bindRenderTarget(rt1)
-            painter.setShader(&render.shaderBlur)
-            painter.setShaderParam(render.shaderBlur.axis, 1's32)
-            painter.setShaderParam(render.shaderBlur.radius, 8.0)
-            painter.setBlendingMode(.Copy)
-            painter.setColorMask(true, true, true, true);
-            dstRect = Math.Rectangle{0, 0, wt, ht}
-            painter.drawTexture(dstRect, dstRect, rt2.colorBuffer, Color.fromArgb(150, Argb.Black))
-
-            // Add the real image at the right place just after
-            imgRect := dstRect
-            imgRect.offset(cast(f32) Margin)
-            imgRect.width = base.paintPos.width
-            imgRect.height = base.paintPos.height
-            imgRect.offset(-base.shadowOffset.x, -base.shadowOffset.y)
-            painter.setShader(&render.shaderSimple)
-            painter.setBlendingMode(.Alpha)
-            painter.drawTexture(imgRect, srcRect, rt.colorBuffer)
-            painter.unbindRenderTarget()
-
-            // Paint resulting image
-            painter.pushClippingRect(rect)
-            painter.setShader()
-            paintShadowRect := dstRect
-            paintShadowRect.x = base.paintPos.x - Margin
-            paintShadowRect.y = base.paintPos.y - Margin
-            paintShadowRect.offset(base.shadowOffset.x, base.shadowOffset.y)
-            colForm := Color.fromArgb(cast(u8) Math.map(cast(f32) base.alpha, 0, 100, 0, 255), Argb.White)
-            painter.drawTexture(paintShadowRect, dstRect, rt1.colorBuffer, colForm)
-            painter.popClippingRect()
-
-            painter.releaseRenderTarget(rt)
-            painter.releaseRenderTarget(rt1)
-            painter.releaseRenderTarget(rt2)
-        }
+            paintForm(app, painter, rect, f, zoom)
 
         // Gizmos
         visit f, i: forms
@@ -431,7 +434,7 @@ impl Capture
     {
         if selection.count == 1
         {
-            f := forms.front()
+            f := forms[selection.front()]
             t := @kindof(f)
             switch t
             {

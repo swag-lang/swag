@@ -101,7 +101,7 @@ struct ThemeColors
     btnIcon_CheckedPressedBk:       Color = LighterBig
     btnIcon_CheckedHotBk:           Color = Transparent
     btnIcon_CheckedBk:              Color = Transparent
-    btnIcon_CheckedMark:            Color = Blue
+    btnIcon_CheckedMark:            Color = Color.getLighter(Color.fromArgb(Blue), 0.2)
     btnIcon_CheckedPressedMark:     Color = Blue
     btnIcon_CheckedHotMark:         Color = Color.getLighter(Color.fromArgb(Blue), 0.1)
     btnIcon_CheckedDisabledMark:    Color = Disabled
