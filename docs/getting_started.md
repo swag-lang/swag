@@ -1,7 +1,7 @@
 # Your first install
 Download the latest release from github, and unzip it in a folder. Of course SSD is better.
 
-#### Under windows 10
+#### Under windows 10/11
 You should register the location of the swag compiler (`swag.exe`) in the PATH environment variable to be able to call it from everywhere.
 
 You can open a Powershell window, and run the following code :
@@ -99,6 +99,8 @@ It's a good starting point to familiarize yourself with the language.
 
 And as this is a normal Swag workspace, you could also build and test it with `swag test -w:swag/reference`.
 
+You will also find some small examples (mostly written for tests) in `swag/bin/examples/modules`. To build and run one of them from the console, go to the workspace folder (`/examples`) and type for example `swag run -m:wnd`
+
 # Script file
 Instead of a workspace, Swag can also be used to build and run a simple script file.
 No executable will be generated, the compiler will do all the job.
@@ -137,3 +139,6 @@ You can also just specify the script file as a command, with the extension.
 $ swag myScript.swgs
 Hello world !
 ```
+
+You will find a bunch of small scripts in `swag/bin/examples/scripts`.
+To run one of them from the console, go to the folder and type for example `swag pendulum.swgs`
