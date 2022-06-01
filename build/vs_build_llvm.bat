@@ -13,3 +13,4 @@ cmake -G "Visual Studio 17 2022" -DCMAKE_ASM_COMPILER=%MSCL% -DLLVM_ENABLE_PROJE
 %MSBUILD% llvm.sln /p:Configuration="Release" -m -verbosity:m
 
 cd "../../build"
+pause
