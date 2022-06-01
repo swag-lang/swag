@@ -25,12 +25,36 @@ impl PropWnd
 
     mtd getSelectedBaseForm()->*BaseForm
     {
-        return getCapture().getSelectedBaseForm()
+        capture := getCapture()
+        if !capture or capture.selection.count == 0
+        {
+            switch main.editMode
+            {
+            case Arrow:
+                return cast(*BaseForm) &main.mdlFormArrow
+            default:
+                return null
+            }
+        }
+
+        return capture.getSelectedBaseForm()
     }
 
     mtd getSelectedFormType()->typeinfo
     {
-        return getCapture().getSelectedFormType()
+        capture := getCapture()
+        if !capture or capture.selection.count == 0
+        {
+            switch main.editMode
+            {
+            case Arrow:
+                return BaseForm
+            default:
+                return null
+            }
+        }
+
+        return capture.getSelectedFormType()
     }
 
     mtd pushTypedValue(val: u32, type: typeinfo, name: string, first: bool)
@@ -214,17 +238,16 @@ impl PropWnd
     mtd selectionHasChanged()
     {
         while childs.count
+        {
             childs[0].destroyNow()
+        }
 
-        capture := getCapture()
-        if !capture or !capture.selection.count
+        if getSelectedBaseForm() == null
             return
 
-        {
-            stack := StackLayoutCtrl.create(self, .HorzCenter, @{0, 0, 0, 100})
-            propBackColor(stack)
-            propBorderColor(stack)
-        }
+        stack := StackLayoutCtrl.create(self, .HorzCenter, @{0, 0, 0, 100})
+        propBackColor(stack)
+        propBorderColor(stack)
 
         propBorderSize()
         propStartSize()
@@ -234,6 +257,8 @@ impl PropWnd
         layoutWnd.padding = 8
         layoutWnd.computeLayout()
 
-        capture.editView.setFocus()
+        capture := getCapture()
+        if capture
+            capture.editView.setFocus()
     }
 }

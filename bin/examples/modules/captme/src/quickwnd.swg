@@ -1,5 +1,11 @@
 using Core, Gui, Pixel
 
+struct QuickButton
+{
+    using iconBtn: IconButton
+    form: IForm
+}
+
 struct QuickWnd
 {
     using scrollWnd: ScrollWnd
@@ -31,7 +37,7 @@ impl QuickWnd
     }
 
     mtd loadQuickStyleArrow()
-    {        
+    {
         qsArrow = Memory.new'QuickStyle()
 
         {
@@ -72,8 +78,8 @@ impl QuickWnd
             {
             case FormArrow:
                 form := cast(*FormArrow) @dataof(it)
-                btn.isChecked = form.isSameMdl(main.mdlFormArrow)   
-                btn.invalidate()            
+                btn.isChecked = form.isSameMdl(main.mdlFormArrow)
+                btn.invalidate()
             }
         }
     }
@@ -95,8 +101,9 @@ impl QuickWnd
 
         visit it: currentStyle.forms
         {
-            btn := IconButton.create(layout, @{}, @{0, 0, 64, 64})
+            btn := Wnd.create'QuickButton(layout, null, @{0, 0, 64, 64})
             btn.iconBtnFlags |= .Checkable
+            btn.form = it
 
             btn.sigPaintIcon = @|it|(btn, bc, pos) {
                 bc.painter.setParams(.Antialiased)
@@ -105,12 +112,12 @@ impl QuickWnd
             }
 
             btn.sigCheckChanged += @|self, it|(btn) {
-                if !btn.isChecked 
+                if !btn.isChecked
                     return
                 type := @kindof(it)
                 switch type
                 {
-                case FormArrow: 
+                case FormArrow:
                     b := cast(*FormArrow) @dataof(it)
                     self.main.mdlFormArrow = dref b
                 }
