@@ -13,7 +13,7 @@ var G: s32
     toto()
     {
         fn := @|a|(){
-            G = a
+            G += a
         }
         fn()
     }
