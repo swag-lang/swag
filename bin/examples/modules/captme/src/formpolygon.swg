@@ -82,6 +82,21 @@ impl IForm for FormPolygon
 
     mtd setBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
     {
+        rect := boundRect()
+        bSize := borderSize * 0.5
+        rect.inflate(-bSize)
+        fx := newSizeX / rect.width
+        fy := newSizeY / rect.height
+
+        visit &pt: points
+        {
+            pt.x -= rect.x
+            pt.y -= rect.y
+            pt.x *= fx
+            pt.y *= fy
+            pt.x += newPosX
+            pt.y += newPosY
+        }
     }
 
     mtd moveForm(newPosX, newPosY: s32)
@@ -103,15 +118,15 @@ impl IForm for FormPolygon
     {
         var result: retval
 
-        bSize := borderSize
+        bSize := borderSize * 0.5
         x0 := Swag.F32.Max
         y0 := Swag.F32.Max
         x1 := 0'f32
         y1 := 0'f32
         visit &pt: points
         {
-            x0 = Math.min(result.x, pt.x - bSize)
-            y0 = Math.min(result.y, pt.y - bSize)
+            x0 = Math.min(x0, pt.x - bSize)
+            y0 = Math.min(y0, pt.y - bSize)
             x1 = Math.max(x1, pt.x + bSize)
             y1 = Math.max(y1, pt.y + bSize)
         }
