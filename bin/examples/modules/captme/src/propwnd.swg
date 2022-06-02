@@ -93,7 +93,7 @@ impl PropWnd
         return ctrl
     }
 
-    func createColorPickerButton(stack: *Wnd)->*IconButton
+    func createPaintButton(stack: *Wnd)->*IconButton
     {
         btn := IconButton.create(stack, @{}, @{0, 0, 64, 88})
         btn.setForm(.RoundSquare)
@@ -148,7 +148,7 @@ impl PropWnd
 
     mtd propBorderColor(stack: *Wnd)
     {
-        btn := createColorPickerButton(stack)
+        btn := createPaintButton(stack)
 
         curSelType := getSelectedFormType()
         switch curSelType
@@ -190,7 +190,7 @@ impl PropWnd
         if curSelType == FormLine or curSelType == FormArrow
             return
 
-        btn := createColorPickerButton(stack)
+        btn := createPaintButton(stack)
         btn.name = "Fill"
         me := self
         btn.sigPaintIcon = @|me|(btn, bc, pos)
@@ -213,6 +213,38 @@ impl PropWnd
             picker.sigChanged += @|me, btn|(pk) {
                 me.pushTypedValue(pk.getColor().argb, @typeof(BaseForm), @nameof(FormArrow.backColor), false)
                 btn.invalidate()
+            }
+        }
+    }
+
+    mtd propShape(stack: *Wnd)
+    {
+        curSelType := getSelectedFormType()
+        if curSelType != FormShape
+            return
+
+        btn := createPaintButton(stack)
+        btn.name = "Shape"
+        me := self
+        btn.sigPaintIcon = @|me|(btn, bc, pos)
+        {
+            bc.painter.setParams(.Antialiased)
+            curSel := cast(*FormShape) me.getSelectedBaseForm()
+            rect := pos
+            rect.inflate(-9, -9)
+            rect.x = rect.horzCenter() - rect.height * 0.5
+            rect.width = rect.height
+
+            #[Swag.Complete]
+            switch curSel.kind
+            {
+            case Ellipse:
+                radius := 16.0
+                bc.painter.drawEllipse(pos.horzCenter(), pos.vertCenter(), radius, radius, Argb.White, 5)
+            case Rectangle:
+                bc.painter.drawRect(rect, Argb.White, 5)
+            case RoundRectangle:
+                bc.painter.drawRoundRect(rect, 5, 5, Argb.White, 5)
             }
         }
     }
@@ -289,6 +321,7 @@ impl PropWnd
         stack := StackLayoutCtrl.create(self, .HorzCenter, @{0, 0, 0, 100})
         propBackColor(stack)
         propBorderColor(stack)
+        propShape(stack)
 
         propBorderSize()
         propStartSize()
