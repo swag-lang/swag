@@ -28,7 +28,7 @@ impl IWnd for WrapLayoutCtrl
             rect := Math.Rectangle{x, y, wrapWidth, wrapHeight}
             c.setPosition(rect)
             x += wrapWidth + spacing
-            if x > client.right()
+            if x + wrapWidth > client.right()
             {
                 x = padding.x
                 y += wrapHeight + spacing

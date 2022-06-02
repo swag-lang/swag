@@ -306,6 +306,7 @@ impl MainWnd
         rightWnd := StackLayoutCtrl.create(res, .Top, @{0, 0, 300, 0})
         rightWnd.dockStyle = .Right
         rightWnd.backgroundStyle = .Window
+        rightWnd.spacing = 0
 
         label0 := Label.create(rightWnd, "Quick Styles", @{0, 0, 0, 30})
         label0.backgroundStyle = .Window

@@ -273,8 +273,14 @@ impl Wnd
     //////////////////////////////////////////////
 
     // Show the window
-    mtd show()
+    mtd show(b = true)
     {
+        if !b
+        {
+            hide()
+            return
+        }
+
         if !(wndFlags & .Hidden)
             return
         wndFlags &= ~.Hidden

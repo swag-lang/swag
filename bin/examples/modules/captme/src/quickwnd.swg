@@ -34,6 +34,7 @@ impl QuickWnd
         quick.backgroundStyle = .Window
 
         quick.layout = WrapLayoutCtrl.create(quick)
+        quick.layout.padding = 4
         quick.setView(quick.layout)
         quick.loadQuickStyles()
         return quick
@@ -91,6 +92,7 @@ impl QuickWnd
 
     mtd updateSelection()
     {
+        done := false
         visit it, i: currentStyle.forms
         {
             type := @kindof(it)
@@ -106,7 +108,15 @@ impl QuickWnd
             case FormPolygon:
                 btn.isChecked = it.isSame(&main.mdlFormPolygon)
             }
+
+            if btn.isChecked
+                done = true
         }
+
+        curMdl := cast(*IconButton) layout.childs.back()
+        curMdl.show(!done)
+        if !done
+            curMdl.isChecked = true
 
         invalidate()
     }
@@ -220,12 +230,36 @@ impl QuickWnd
             bc.painter.drawRoundRect(rect, 5, 5, Pen.createDash(.Dash, Argb.White, 2))
         }
 
+        // Button to add a new style
         ico  := getTheme().getIcon24(ThemeIcons24.Plus)
         btn1 := IconButton.create(btn, ico, @{64 - 26, 2, 24, 24})
         btn1.style.addStyleSheetColors("btnIcon_Bk          $hilight")
-        btn1.style.addStyleSheetColors("btnIcon_HotBk       $hilight")
-        btn1.style.addStyleSheetColors("btnIcon_PressedBk   $hilight")
+        btn1.style.addStyleSheetColors("btnIcon_HotBk       $hilightLight")
+        btn1.style.addStyleSheetColors("btnIcon_PressedBk   $hilightDark")
         btn1.setForm(.Round)
+        btn1.sigPressed += @|self, main|(btn) {
+            #[Swag.Complete]
+            switch main.editMode
+            {
+            case Arrow:
+                mdl := Memory.new'FormArrow()
+                mdl.IForm.copy(mdl, &main.mdlFormArrow)
+                self.currentStyle.forms.add(mdl)
+            case Shape:
+                mdl := Memory.new'FormShape()
+                mdl.IForm.copy(mdl, &main.mdlFormShape)
+                self.currentStyle.forms.add(mdl)
+            case Line:
+                mdl := Memory.new'FormLine()
+                mdl.IForm.copy(mdl, &main.mdlFormLine)
+                self.currentStyle.forms.add(mdl)
+            case Polygon:
+                mdl := Memory.new'FormPolygon()
+                mdl.IForm.copy(mdl, &main.mdlFormPolygon)
+                self.currentStyle.forms.add(mdl)
+            }
+            self.updateQuickStyles()
+        }
 
         updateSelection()
         layout.computeLayout()
