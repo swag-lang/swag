@@ -18,11 +18,23 @@ impl IForm for FormShape
 {
     mtd isSame(ptr: *BaseForm)->bool
     {
-        return false
+        other := cast(*FormShape) ptr
+        return  borderColor == other.borderColor and
+                borderSize  == other.borderSize and
+                backColor   == other.backColor and
+                alpha       == other.alpha and
+                kind        == other.kind
     }
 
     mtd copy(dst, src: *BaseForm)
     {
+        dstf := cast(*FormShape) dst
+        srcf := cast(*FormShape) src
+        dstf.borderColor = srcf.borderColor
+        dstf.borderSize  = srcf.borderSize
+        dstf.backColor   = srcf.backColor
+        dstf.alpha       = srcf.alpha
+        dstf.kind        = srcf.kind
     }
 
     mtd edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool

@@ -13,6 +13,9 @@ struct QuickWnd
     layout:         *WrapLayoutCtrl
     main:           *MainWnd
     qsArrow:        *QuickStyle
+    qsShape:        *QuickStyle
+    qsLine:         *QuickStyle
+    qsPolygon:      *QuickStyle
     currentStyle:   *QuickStyle
 }
 
@@ -63,9 +66,27 @@ impl QuickWnd
         }
     }
 
+    mtd loadQuickStyleShape()
+    {
+        qsShape = Memory.new'QuickStyle()
+    }
+
+    mtd loadQuickStyleLine()
+    {
+        qsLine = Memory.new'QuickStyle()
+    }
+
+    mtd loadQuickStylePolygon()
+    {
+        qsPolygon = Memory.new'QuickStyle()
+    }
+
     mtd loadQuickStyles()
     {
         loadQuickStyleArrow()
+        loadQuickStyleShape()
+        loadQuickStyleLine()
+        loadQuickStylePolygon()
     }
 
     mtd updateSelection()
@@ -96,6 +117,12 @@ impl QuickWnd
         {
         case Arrow:
             currentStyle = qsArrow
+        case Shape:
+            currentStyle = qsShape
+        case Line:
+            currentStyle = qsLine
+        case Polygon:
+            currentStyle = qsPolygon
         default:
             currentStyle = null
         }
@@ -161,11 +188,23 @@ impl QuickWnd
             }
         }
 
+        // The button with the current model
         btn := cast(*QuickButton) Wnd.create'QuickButton(layout, null, @{0, 0, 64, 64})
         btn.iconBtnFlags |= .Checkable
         btn.setForm(.RoundSquare)
 
-        btn.formItf = cast(IForm) main.mdlFormArrow
+        #[Swag.Complete]
+        switch main.editMode
+        {
+        case Arrow:
+            btn.formItf = cast(IForm) main.mdlFormArrow
+        case Shape:
+            btn.formItf = cast(IForm) main.mdlFormShape
+        case Line:
+            btn.formItf = cast(IForm) main.mdlFormLine
+        case Polygon:
+            btn.formItf = cast(IForm) main.mdlFormPolygon
+        }
 
         btn.sigPaintIcon = @(btn, bc, pos) {
             bc.painter.setParams(.Antialiased)
@@ -176,7 +215,7 @@ impl QuickWnd
             rect := btn.getClientRect()
             rect.inflate(-2, -2)
             bc.painter.setParams(.Antialiased)
-            bc.painter.drawRoundRect(rect, 5, 5, Pen.createDash(.Dash, Argb.White, 3))
+            bc.painter.drawRoundRect(rect, 5, 5, Pen.createDash(.Dash, Argb.White, 2))
         }
 
         updateSelection()

@@ -31,7 +31,8 @@ impl IForm for FormArrow
                 startSize  == other.startSize and
                 endSize    == other.endSize and
                 borderColor == other.borderColor and
-                borderSize  == other.borderSize
+                borderSize  == other.borderSize and
+                alpha       == other.alpha
     }
 
     mtd copy(dst, src: *BaseForm)
@@ -44,6 +45,7 @@ impl IForm for FormArrow
         dstf.endSize     = srcf.endSize
         dstf.borderColor = srcf.borderColor
         dstf.borderSize  = srcf.borderSize
+        dstf.alpha       = srcf.alpha
     }
 
     mtd edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool

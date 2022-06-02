@@ -12,11 +12,19 @@ impl IForm for FormLine
 {
     mtd isSame(ptr: *BaseForm)->bool
     {
-        return false
+        other := cast(*FormLine) ptr
+        return  borderColor == other.borderColor and
+                borderSize  == other.borderSize and
+                alpha       == other.alpha
     }
 
     mtd copy(dst, src: *BaseForm)
     {
+        dstf := cast(*FormLine) dst
+        srcf := cast(*FormLine) src
+        dstf.borderColor = srcf.borderColor
+        dstf.borderSize  = srcf.borderSize
+        dstf.alpha       = srcf.alpha
     }
 
     mtd edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool

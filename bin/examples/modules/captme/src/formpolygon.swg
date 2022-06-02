@@ -12,11 +12,31 @@ impl IForm for FormPolygon
 {
     mtd isSame(ptr: *BaseForm)->bool
     {
-        return false
+        other := cast(*FormPolygon) ptr
+
+        if points.count != other.points.count
+            return false
+        loop i: points.count
+        {
+            if points[i] != other.points[i]
+                return false
+        }
+
+        return  borderColor == other.borderColor and
+                borderSize  == other.borderSize and
+                backColor   == other.backColor and
+                alpha       == other.alpha
     }
 
     mtd copy(dst, src: *BaseForm)
     {
+        dstf := cast(*FormPolygon) dst
+        srcf := cast(*FormPolygon) src
+        dstf.borderColor = srcf.borderColor
+        dstf.borderSize  = srcf.borderSize
+        dstf.backColor   = srcf.backColor
+        dstf.alpha       = srcf.alpha
+        dstf.points      = srcf.points
     }
 
     mtd edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
