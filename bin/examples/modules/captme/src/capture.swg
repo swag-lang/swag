@@ -122,6 +122,7 @@ impl Capture
         // Paint resulting image
         painter.pushClippingRect(rect)
         painter.setShader()
+
         paintShadowRect := dstRect
         paintShadowRect.x = base.paintPos.x - Margin
         paintShadowRect.y = base.paintPos.y - Margin

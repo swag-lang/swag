@@ -46,10 +46,10 @@ impl IForm for FormLine
 
     mtd setBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
     {
-        xa = newPosX
-        ya = newPosY
-        xb = xa + newSizeX
-        yb = ya + newSizeY
+        xa = newPosX + borderSize * 0.5
+        ya = newPosY + borderSize * 0.5
+        xb = xa + newSizeX - borderSize
+        yb = ya + newSizeY - borderSize
     }
 
     mtd moveForm(newPosX, newPosY: s32)
