@@ -572,7 +572,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
             for (int j = 0; j < maxParams; j++)
             {
                 auto nodeCall = CastAst<AstFuncCallParam>(identifier->callParameters->childs[j], AstNodeKind::FuncCallParam);
-                if (nodeCall->resolvedParameter->index == i)
+                if (nodeCall->resolvedParameter && nodeCall->resolvedParameter->index == i)
                 {
                     covered = true;
                     break;
