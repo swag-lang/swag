@@ -3,13 +3,15 @@ using Pixel
 
 struct ThemeColors
 {
+    const Transparent   = 0x00000000
     const Blue          = 0xFF1473e6
     const LightBlue     = 0xFF2483f6
     const Disabled      = 0x5FFFFFFF
-    const LighterSmall  = 0x1FFFFFFF
-    const LighterMedium = 0x1FFFFFFF
-    const LighterBig    = 0x2FFFFFFF
-    const Transparent   = 0x00000000
+
+    const LighterSmall      = 0x0FFFFFFF
+    const LighterMedium     = 0x1FFFFFFF
+    const LighterBig        = 0x2FFFFFFF
+    const LighterVeryBig    = 0x3FFFFFFF
 
     const White         = 0xFFF0F0F0
     const Gray1         = 0xFFE0E0E0
@@ -30,6 +32,10 @@ struct ThemeColors
     hilightDark:                    Color = Color.getDarker(Color.fromArgb(Blue), 0.2)
     disabled:                       Color = Disabled
     transparent:                    Color = Transparent
+    lighterSmall:                   Color = LighterSmall
+    lighterMedium:                  Color = LighterMedium
+    lighterBig:                     Color = LighterBig
+    lighterVeryBig:                 Color = LighterVeryBig
 
     wnd_Bk:                         Color = Gray5
     wnd_Caption:                    Color = Gray4

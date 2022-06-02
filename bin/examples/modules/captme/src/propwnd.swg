@@ -97,7 +97,9 @@ impl PropWnd
     {
         btn := IconButton.create(stack, @{}, @{0, 0, 64, 88})
         btn.setForm(.RoundSquare)
-        btn.style.addStyleSheetColors("btnIcon_Bk $btnIcon_HotBk")
+        btn.style.addStyleSheetColors("btnIcon_Bk        $lighterMedium")
+        btn.style.addStyleSheetColors("btnIcon_HotBk     $lighterBig")
+        btn.style.addStyleSheetColors("btnIcon_PressedBk $lighterVeryBig")
         btn.iconBtnFlags = .Popup | .CheckableToggle
         btn.arrowPos = .Bottom
         btn.textPos = .Top
