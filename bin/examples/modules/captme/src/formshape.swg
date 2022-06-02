@@ -133,9 +133,9 @@ impl IForm for FormShape
         return true
     }
 
-    mtd paint(painter: *Painter, z: f32)
+    mtd paint(painter: *Painter, z: f32, quickMode: bool)
     {
-        bSize := borderSize * z
+        bSize := adaptSize(borderSize, MaxBorderSize, z, quickMode)
         pp := Math.Rectangle{0, 0, paintPos.width, paintPos.height}
 
         #[Swag.Complete]

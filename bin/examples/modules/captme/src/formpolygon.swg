@@ -205,9 +205,9 @@ impl IForm for FormPolygon
         return count & 1 ? true : false
     }
 
-    mtd paint(painter: *Painter, z: f32)
+    mtd paint(painter: *Painter, z: f32, quickMode: bool)
     {
-        bSize := borderSize * z
+        bSize := adaptSize(borderSize, MaxBorderSize, z, quickMode)
         computePaintCoords(z)
 
         var pl: LinePath

@@ -3,7 +3,7 @@ using Pixel, Core, Gui
 interface IForm
 {
     paintGizmo:     func(self, *Painter, f32, FormFlags)
-    paint:          func(self, *Painter, f32)
+    paint:          func(self, *Painter, f32, bool)
     mouse:          func(self, *EditView, Math.Point, *MouseEvent)->bool
     hitTest:        func(self, Math.Point, f32)->bool
     boundRect:      func(self)->Math.Rectangle
@@ -37,4 +37,14 @@ struct BaseForm
     borderSize:     f32 = 5
     borderColor:    Color = Argb.White
     backColor:      Color = Argb.Red
+}
+
+impl BaseForm
+{
+    func adaptSize(size: f32, maxSize: f32, z: f32, quickMode: bool)->f32
+    {
+        if !quickMode
+            return size * z
+        return Math.map(size * z, 1, maxSize, 4, 16)
+    }
 }

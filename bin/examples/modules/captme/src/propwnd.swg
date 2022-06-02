@@ -1,5 +1,9 @@
 using Gui, Core, Pixel
 
+const MaxBorderSize     = 50.0
+const MaxArrowStartSize = 50.0
+const MaxArrowEndSize   = 50.0
+
 struct PropWnd
 {
     using layoutWnd:    StackLayoutCtrl
@@ -201,7 +205,7 @@ impl PropWnd
             return
         curSel := cast(*FormArrow) getSelectedBaseForm()
 
-        ctrl := createSlider("Start Size", 1, 50, curSel.startSize)
+        ctrl := createSlider("Start Size", 1, acast MaxArrowStartSize, curSel.startSize)
         ctrl.slider.sigStartChange += @|self|(slider) {
             self.pushTypedValue(bitcast(u32) slider.getValue(), @typeof(FormArrow), @nameof(FormArrow.startSize), true)
         }
@@ -220,7 +224,7 @@ impl PropWnd
             return
 
         curSel := cast(*FormArrow) getSelectedBaseForm()
-        ctrl := createSlider("End Size", 1, 50, curSel.endSize)
+        ctrl := createSlider("End Size", 1, acast MaxArrowEndSize, curSel.endSize)
         ctrl.slider.sigStartChange += @|self|(slider) {
             self.pushTypedValue(bitcast(u32) slider.getValue(), @typeof(FormArrow), @nameof(FormArrow.endSize), true)
         }
@@ -235,7 +239,7 @@ impl PropWnd
     mtd propBorderSize()
     {
         curSel := getSelectedBaseForm()
-        ctrl := createSlider("Tickness", 1, 50, curSel.borderSize)
+        ctrl := createSlider("Tickness", 1, acast MaxBorderSize, curSel.borderSize)
         ctrl.slider.sigStartChange += @|self|(slider) {
             self.pushTypedValue(bitcast(u32) slider.getValue(), @typeof(BaseForm), @nameof(BaseForm.borderSize), true)
         }

@@ -116,9 +116,9 @@ impl IForm for FormLine
         return v.distanceToLine(@{x0, y0}, @{x1, y1}) < bSize
     }
 
-    mtd paint(painter: *Painter, z: f32)
+    mtd paint(painter: *Painter, z: f32, quickMode: bool)
     {
-        bSize := borderSize * z
+        bSize := adaptSize(borderSize, MaxBorderSize, z, quickMode)
         computePaintCoords(z)
         painter.drawLine(x0 - paintPos.x, y0 - paintPos.y, x1 - paintPos.x, y1 - paintPos.y, borderColor, bSize)
     }

@@ -48,7 +48,7 @@ impl Capture
     // PAINT
     //////////////////////////////
 
-    func paintForm(app: *Application, painter: *Painter, rect: Math.Rectangle, f: IForm, zoom: f32, blurRadius: f32 = 8.0)
+    func paintForm(app: *Application, painter: *Painter, rect: Math.Rectangle, f: IForm, zoom: f32, quickMode = false)
     {
         render := &app.renderer
 
@@ -63,7 +63,7 @@ impl Capture
         painter.bindRenderTarget(rt, true)
         painter.setParams(.Antialiased)
         painter.clear(Argb.Zero)
-        f.paint(painter, zoom)
+        f.paint(painter, zoom, quickMode)
         painter.unbindRenderTarget()
 
         const Margin = 8
@@ -84,6 +84,8 @@ impl Capture
         dstRect := Math.Rectangle{Margin, Margin, wt2, ht2}
         painter.drawTexture(dstRect, srcRect, rt.colorBuffer)
         painter.unbindRenderTarget()
+
+        blurRadius := quickMode ? 4.0 : 8.0
 
         // Blur first pass
         painter.bindRenderTarget(rt2)

@@ -106,9 +106,9 @@ impl QuickWnd
             case FormPolygon:
                 btn.isChecked = it.isSame(&main.mdlFormPolygon)
             }
-
-            btn.invalidate()
         }
+
+        invalidate()
     }
 
     mtd updateQuickStyles()
@@ -143,7 +143,7 @@ impl QuickWnd
                 bc.painter.setParams(.Antialiased)
                 btnp := cast(*QuickButton) btn
                 btnp.formItf.setBaseForm(8, 8, 48, 48)
-                Capture.paintForm(btn.getApp(), bc.painter, @{0, 0, 64, 64}, btnp.formItf, zoom: 1, blurRadius: 4.0)
+                Capture.paintForm(btn.getApp(), bc.painter, @{0, 0, 64, 64}, btnp.formItf, zoom: 1, quickMode: true)
             }
 
             btn.sigCheckChanged += @|self, it|(btn) {
@@ -210,7 +210,7 @@ impl QuickWnd
             bc.painter.setParams(.Antialiased)
             btnp := cast(*QuickButton) btn
             btnp.formItf.setBaseForm(8, 8, 48, 48)
-            Capture.paintForm(btn.getApp(), bc.painter, @{0, 0, 64, 64}, btnp.formItf, zoom: 1, blurRadius: 4.0)
+            Capture.paintForm(btn.getApp(), bc.painter, @{0, 0, 64, 64}, btnp.formItf, zoom: 1, quickMode: true)
 
             rect := btn.getClientRect()
             rect.inflate(-2, -2)

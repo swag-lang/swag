@@ -18,6 +18,7 @@ struct FormArrow
     xa, ya, xb, yb: f32
     x0, y0, x1, y1: f32
     points:         Array'Math.Vector2
+    qmPoints:       Array'Math.Vector2
     paintPoints:    Array'Math.Vector2
 }
 
@@ -120,6 +121,16 @@ impl IForm for FormArrow
 
     mtd computePoints()
     {
+        computePoints(&points, borderSize, startSize, endSize)
+
+        bSize := adaptSize(borderSize, MaxBorderSize, 1, true)
+        sSize := adaptSize(startSize, MaxArrowStartSize, 1, true)
+        eSize := adaptSize(endSize, MaxArrowEndSize, 1, true)
+        computePoints(&qmPoints, bSize, sSize, eSize)
+    }
+
+    mtd computePoints(pts: *Array'Math.Vector2, bSize, sSize, eSize: f32)
+    {
         v0 := Math.Vector2{xa, ya}
         v1 := Math.Vector2{xb, yb}
 
@@ -127,52 +138,52 @@ impl IForm for FormArrow
         length := n.length()
         n.normalizeSafe()
 
-        start := n * (borderSize + startSize + startSize * 0.5)
-        end   := n * (borderSize + endSize + endSize * 0.5)
+        start := n * (bSize + sSize + sSize * 0.5)
+        end   := n * (bSize + eSize + eSize * 0.5)
         side := n.cross(1)
-        leftSide  := side * (borderSize + startSize) * 0.5
-        rightSide := side * (borderSize + endSize) * 0.5
-        side *= borderSize * 0.5
+        leftSide  := side * (bSize + sSize) * 0.5
+        rightSide := side * (bSize + eSize) * 0.5
+        side *= bSize * 0.5
 
-        points.clear()
+        pts.clear()
 
         switch startShape
         {
         case Flat:
-            points.add(v0 - side)
+            pts.add(v0 - side)
 
         case Arrow:
-            points.add(v0)
-            points.add(v0 + start - side - leftSide)
-            points.add(v0 + start - side)
+            pts.add(v0)
+            pts.add(v0 + start - side - leftSide)
+            pts.add(v0 + start - side)
         }
 
         switch endShape
         {
         case Flat:
-            points.add(v1 - side)
-            points.add(v1 + side)
+            pts.add(v1 - side)
+            pts.add(v1 + side)
 
         case Arrow:
-            points.add(v1 - end - side)
-            points.add(v1 - end - side - rightSide)
-            points.add(v1)
-            points.add(v1 - end + side + rightSide)
-            points.add(v1 - end + side)
+            pts.add(v1 - end - side)
+            pts.add(v1 - end - side - rightSide)
+            pts.add(v1)
+            pts.add(v1 - end + side + rightSide)
+            pts.add(v1 - end + side)
         }
 
         switch startShape
         {
         case Flat:
-            points.add(v0 + side)
+            pts.add(v0 + side)
 
         case Arrow:
-            points.add(v0 + start + side)
-            points.add(v0 + start + side + leftSide)
+            pts.add(v0 + start + side)
+            pts.add(v0 + start + side + leftSide)
         }
     }
 
-    mtd computePaintCoords(z: f32)
+    mtd computePaintCoords(z: f32, quickMode: bool)
     {
         rect := boundRect()
         x0 = (xa * z) - (rect.x * z) + paintPos.x
@@ -181,11 +192,24 @@ impl IForm for FormArrow
         y1 = (yb * z) - (rect.y * z) + paintPos.y
 
         paintPoints.clear()
-        visit pt: points
+
+        if quickMode
         {
-            x0 := (pt.x * z) - (rect.x * z) + paintPos.x
-            x1 := (pt.y * z) - (rect.y * z) + paintPos.y
-            paintPoints.add(@{x0, x1})
+            visit pt: qmPoints
+            {
+                x0 := (pt.x * z) - (rect.x * z) + paintPos.x
+                x1 := (pt.y * z) - (rect.y * z) + paintPos.y
+                paintPoints.add(@{x0, x1})
+            }
+        }
+        else
+        {
+            visit pt: points
+            {
+                x0 := (pt.x * z) - (rect.x * z) + paintPos.x
+                x1 := (pt.y * z) - (rect.y * z) + paintPos.y
+                paintPoints.add(@{x0, x1})
+            }
         }
     }
 
@@ -198,7 +222,7 @@ impl IForm for FormArrow
     {
         if flags & (.Hot | .Selected)
         {
-            computePaintCoords(z)
+            computePaintCoords(z, false)
             gizmo.anchors[0] = @{x0, y0}
             gizmo.anchors[1] = @{x1, y1}
             gizmo.paint(painter, flags & .Selected ? false : true)
@@ -208,7 +232,7 @@ impl IForm for FormArrow
     mtd hitTest(pt: Math.Point, z: f32)->bool
     {
         bSize := borderSize * z * 0.5
-        computePaintCoords(z)
+        computePaintCoords(z, false)
         v := Math.Vector2{pt.x, pt.y}
 
         // Just the outline
@@ -242,10 +266,11 @@ impl IForm for FormArrow
         return count & 1 ? true : false
     }
 
-    mtd paint(painter: *Painter, z: f32)
+    mtd paint(painter: *Painter, z: f32, quickMode: bool)
     {
-        bSize := borderSize * z
-        computePaintCoords(z)
+        computePaintCoords(z, quickMode)
+        if !paintPoints.count
+            return
 
         var pl: LinePath
         pl.start(paintPoints[0].x - paintPos.x, paintPoints[0].y - paintPos.y)
