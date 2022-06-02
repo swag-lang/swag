@@ -112,7 +112,7 @@ impl QuickWnd
             btn.setForm(.RoundSquare)
             btn.formItf = it
 
-            btn.sigPaintIcon = @||(btn, bc, pos) {
+            btn.sigPaintIcon = @(btn, bc, pos) {
                 bc.painter.setParams(.Antialiased)
                 btnp := cast(*QuickButton) btn
                 btnp.formItf.setBaseForm(8, 8, 48, 48)

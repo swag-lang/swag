@@ -1144,13 +1144,15 @@ AstNode* AstMakePointer::clone(CloneContext& context)
 
     if (lambda)
     {
+        // This is super hacky
+        // The problem is that the relation between a lambda and the makepointer lambda is tight,
+        // and with #mixin the lambda is not duplicated, but the makepointer lambda is...
+        // So this is a mess
         if (context.forceFlags & AST_IN_MIXIN)
         {
             if (lambda->captureParameters && childs.front() == lambda->captureParameters)
-            {
                 lambda->captureParameters = newNode->childs[0];
-                lambda->makePointerLambda = newNode;
-            }
+            lambda->makePointerLambda = newNode;
         }
 
         newNode->lambda = lambda;
