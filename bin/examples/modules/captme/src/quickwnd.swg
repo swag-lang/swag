@@ -190,8 +190,10 @@ impl QuickWnd
 
         // The button with the current model
         btn := cast(*QuickButton) Wnd.create'QuickButton(layout, null, @{0, 0, 64, 64})
-        btn.iconBtnFlags |= .Checkable
         btn.setForm(.RoundSquare)
+        btn.style.addStyleSheetColors("btnIcon_Bk          0x0")
+        btn.style.addStyleSheetColors("btnIcon_HotBk       0x0")
+        btn.style.addStyleSheetColors("btnIcon_PressedBk   0x0")
 
         #[Swag.Complete]
         switch main.editMode
@@ -217,6 +219,13 @@ impl QuickWnd
             bc.painter.setParams(.Antialiased)
             bc.painter.drawRoundRect(rect, 5, 5, Pen.createDash(.Dash, Argb.White, 2))
         }
+
+        ico  := getTheme().getIcon24(ThemeIcons24.Plus)
+        btn1 := IconButton.create(btn, ico, @{64 - 26, 2, 24, 24})
+        btn1.style.addStyleSheetColors("btnIcon_Bk          $hilight")
+        btn1.style.addStyleSheetColors("btnIcon_HotBk       $hilight")
+        btn1.style.addStyleSheetColors("btnIcon_PressedBk   $hilight")
+        btn1.setForm(.Round)
 
         updateSelection()
         layout.computeLayout()

@@ -133,6 +133,7 @@ impl Undo
         case SetTypedValue:
             visit s: selection
                 Reflection.setFieldValue(@dataof(capture.forms[s]), valRef, &valU32, true)
+            capture.updateModelFromSelection()
 
         case AlignLeft:
             visit s: selection
@@ -302,6 +303,7 @@ impl Undo
                 val := oldU32[i]
                 Reflection.setFieldValue(@dataof(capture.forms[s]), valRef, &val, true)
             }
+            capture.updateModelFromSelection()
 
         case AlignLeft, AlignRight, AlignCenter, AlignTop, AlignBottom, AlignMiddle:
             visit s, i: selection
