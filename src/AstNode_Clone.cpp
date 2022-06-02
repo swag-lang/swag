@@ -259,8 +259,12 @@ AstNode* AstNode::clone(CloneContext& context)
         {
             auto cloneContext        = context;
             cloneContext.parentScope = Ast::newScope(newNode, newNode->token.text, ScopeKind::Statement, context.parentScope ? context.parentScope : ownerScope);
+
+            // We need to register subdecls
+            // All of this is a hack, not cool
             if (cloneContext.forceFlags & AST_IN_MIXIN)
-                cloneContext.parentScope->symTable.mapNames = ownerScope->symTable.mapNames;
+                cloneContext.parentScope->symTable.mapNames.clone(&ownerScope->symTable.mapNames);
+
             newNode->copyFrom(cloneContext, this);
             context.propageResult(cloneContext);
         }
@@ -435,7 +439,7 @@ bool AstFuncDecl::cloneSubDecls(JobContext* context, CloneContext& cloneContext,
 
 AstNode* AstFuncDecl::clone(CloneContext& context)
 {
-    auto newNode = Ast::newNode<AstFuncDecl>();
+    auto newNode      = Ast::newNode<AstFuncDecl>();
     auto cloneContext = context;
     cloneContext.forceSemFlags &= ~AST_SEM_SPEC_STACKSIZE;
 
@@ -1151,7 +1155,11 @@ AstNode* AstMakePointer::clone(CloneContext& context)
         if (context.forceFlags & AST_IN_MIXIN)
         {
             if (lambda->captureParameters && childs.front() == lambda->captureParameters)
+            {
+                SWAG_ASSERT(newNode->childs[0]->kind == AstNodeKind::FuncCallParams);
                 lambda->captureParameters = newNode->childs[0];
+            }
+
             lambda->makePointerLambda = newNode;
         }
 

@@ -7,6 +7,16 @@
 #include "ErrorIds.h"
 #include "Mutex.h"
 
+void SymTableHash::clone(SymTableHash* from)
+{
+    if (!from->allocated)
+        return;
+    allocated = from->allocated;
+    count     = from->count;
+    buffer    = (Entry*) g_Allocator.alloc(from->allocated * sizeof(Entry));
+    memcpy(buffer, from->buffer, from->allocated * sizeof(Entry));
+}
+
 SymbolName* SymTable::find(const Utf8& name, uint32_t crc)
 {
     SharedLock lk(mutex);

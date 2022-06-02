@@ -858,8 +858,11 @@ bool SemanticJob::resolveCaptureFuncCallParams(SemanticContext* context)
     SWAG_ASSERT(mpl->lambda);
 
     ScopedLock lk(mpl->lambda->mutex);
-    mpl->lambda->flags &= ~AST_SPEC_SEMANTIC1;
-    launchResolveSubDecl(context, mpl->lambda);
+    if (mpl->lambda->flags & AST_SPEC_SEMANTIC1)
+    {
+        mpl->lambda->flags &= ~AST_SPEC_SEMANTIC1;
+        launchResolveSubDecl(context, mpl->lambda);
+    }
 
     return true;
 }
