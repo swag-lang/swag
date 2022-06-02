@@ -80,7 +80,7 @@ impl QuickWnd
         qsShape = Memory.new'QuickStyle()
 
         #[Swag.Macro]
-        func add(borderSize: f32, kind: FormShapeKind, color: Color, backColor: Color = 0)
+        func add(borderSize: f32, kind: FormShapeKind, color: Color, backColor: Color)
         {
             form := Memory.new'FormShape()
             form.borderSize = borderSize
