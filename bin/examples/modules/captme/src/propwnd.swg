@@ -118,7 +118,6 @@ impl PropWnd
         frame.style.addStyleSheetColors("frameWnd_Border $frameWnd_PopupBorder")
 
         picker := ColorPickerCtrl.create(frame, @{8, 42})
-        sdw := btn.getThemeMetrics().frameWnd_SmallShadowSize
         picker.setColor(color)
 
         palette := PalettePicker.create(frame, @{16, 8, 340, 48})
@@ -136,6 +135,7 @@ impl PropWnd
             picker.setColor(pal.selectedColor)
         }
 
+        sdw := btn.getThemeMetrics().frameWnd_SmallShadowSize
         frame.fitPosInParent(sdw.z, sdw.w)
         frame.anchor = .Top
         frame.anchorPos = pos.horzCenter() - frame.getSurfaceRect().x

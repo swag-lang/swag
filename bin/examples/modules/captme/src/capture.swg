@@ -209,9 +209,6 @@ impl Capture
 
         if mouseMode == .None
         {
-            if evt.kind == .MouseLeave
-                return true
-
             if evt.kind == .MousePressed and evt.button == .Right
             {
                 if movingCursorSet
@@ -231,6 +228,9 @@ impl Capture
                 evt.accepted = true
                 return true
             }
+
+            if evt.kind == .MouseLeave
+                return true
 
             // Specific moves only if one single selection
             if selection.count == 1
