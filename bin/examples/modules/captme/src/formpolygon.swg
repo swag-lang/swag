@@ -13,15 +13,6 @@ impl IForm for FormPolygon
     mtd isSame(ptr: *BaseForm)->bool
     {
         other := cast(*FormPolygon) ptr
-
-        if points.count != other.points.count
-            return false
-        loop i: points.count
-        {
-            if points[i] != other.points[i]
-                return false
-        }
-
         return  borderColor == other.borderColor and
                 borderSize  == other.borderSize and
                 backColor   == other.backColor and
@@ -36,7 +27,6 @@ impl IForm for FormPolygon
         dstf.borderSize  = srcf.borderSize
         dstf.backColor   = srcf.backColor
         dstf.alpha       = srcf.alpha
-        dstf.points      = srcf.points
     }
 
     mtd edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
@@ -116,6 +106,13 @@ impl IForm for FormPolygon
 
     mtd boundRect()->Math.Rectangle
     {
+        if !points.count
+        {
+            points.add(@{0, 0})
+            points.add(@{48, 0})
+            points.add(@{24, 48})
+        }
+
         var result: retval
 
         bSize := borderSize * 0.5

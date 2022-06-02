@@ -91,6 +91,12 @@ impl Point
         return isZeroEpsilon(x, eps) and isZeroEpsilon(y, eps)
     }
 
+    // Check if two points are equal with an epsilon
+    mtdc isEqualEpsilon(other: Point, eps = ConstF32.Epsilon)->bool
+    {
+        return Math.isEqualEpsilon(x, other.x, eps) and Math.isEqualEpsilon(y, other.y, eps)
+    }
+
     // Offset this Point by a given value
     mtd offset(value: f32)
     {
