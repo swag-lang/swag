@@ -8,7 +8,7 @@ struct PalettePicker
     pal:            Array'Color
     palPos:         Array'Math.Rectangle
     boxSize:        s32 = 24
-    boxMargin:      s32 = 4
+    boxMargin:      s32 = 3
     sigChanged:     SigArray'closure(*Self)
     hotIdx:         s32 = Swag.S32.Max
 }
@@ -41,8 +41,14 @@ impl IWnd for PalettePicker
             posBox := Math.Rectangle{x, y, boxSize, boxSize}
             palPos[i] = posBox
 
-            theme.drawSubRect(painter, posBox, &rects.palPicker_Box, c)
-            theme.drawSubRect(painter, posBox, &rects.palPicker_Border, colorBorder)
+            painter.setParams(.Antialiased)
+            posBox.inflate(-2)
+            if c.a != 255
+                painter.fillRoundRect(posBox, 5, 5, Brush.createHatch(.CheckBoardLarge, colors.colorPicker_BackAlpha))
+            painter.fillRoundRect(posBox, 5, 5, c)
+            posBox.inflate(1)
+            painter.drawRoundRect(posBox, 5, 5, colorBorder, 2)
+
             x += boxSize + boxMargin
             if x + boxSize > clientRect.right()
             {

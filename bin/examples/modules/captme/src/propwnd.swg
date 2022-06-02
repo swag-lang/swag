@@ -12,16 +12,6 @@ struct PropWnd
 
 impl PropWnd
 {
-    mtd createSlider(name: string, minv, maxv: s64, val: f32)->*SliderCtrl
-    {
-        ctrl := SliderCtrl.create(self, #self.name)
-        ctrl.edit.setForm(.Square)
-        ctrl.setMinMaxS64(minv, maxv)
-        ctrl.dockStyle = .Top
-        ctrl.setValue(val)
-        return ctrl
-    }
-
     mtd getSelectedBaseForm()->*BaseForm
     {
         capture := main.getCapture()
@@ -93,6 +83,16 @@ impl PropWnd
         main.quickWnd.updateSelection()
     }
 
+    mtd createSlider(name: string, minv, maxv: s64, val: f32)->*SliderCtrl
+    {
+        ctrl := SliderCtrl.create(self, #self.name)
+        ctrl.edit.setForm(.Square)
+        ctrl.setMinMaxS64(minv, maxv)
+        ctrl.dockStyle = .Top
+        ctrl.setValue(val)
+        return ctrl
+    }
+
     func createColorPickerButton(stack: *Wnd)->*IconButton
     {
         btn := IconButton.create(stack, @{}, @{0, 0, 64, 88})
@@ -112,18 +112,35 @@ impl PropWnd
         pt      := topView.surfaceToLocal(@{pos.x, pos.bottom()})
         pt.y += btn.getThemeMetrics().frameWnd_AnchorHeight
 
-        picker  := ColorPickerCtrl.create(topView, @{pt.x, pt.y})
-        picker.setFrameForm(.Round)
-        picker.setFrameFlags(FrameWndFlags.SmallShadow)
-        picker.style.addStyleSheetColors("frameWnd_Border $frameWnd_PopupBorder")
+        frame := Wnd.create'FrameWnd(topView, @{pt.x, pt.y, 356, 330 + 40})
+        frame.setFrameForm(.Round)
+        frame.setFrameFlags(FrameWndFlags.SmallShadow)
+        frame.style.addStyleSheetColors("frameWnd_Border $frameWnd_PopupBorder")
+
+        picker := ColorPickerCtrl.create(frame, @{8, 42})
         sdw := btn.getThemeMetrics().frameWnd_SmallShadowSize
         picker.setColor(color)
-        picker.fitPosInParent(sdw.z, sdw.w)
 
-        picker.anchor = .Top
-        picker.anchorPos = pos.horzCenter() - picker.getSurfaceRect().x
+        palette := PalettePicker.create(frame, @{16, 8, 340, 48})
+        palette.addColor(Argb.White)
+        palette.addColor(Argb.Gray)
+        palette.addColor(Argb.Black)
+        palette.addColor(Argb.Red)
+        palette.addColor(Argb.Green)
+        palette.addColor(Argb.Blue)
+        palette.addColor(Argb.Yellow)
+        palette.addColor(Argb.Purple)
+        palette.addColor(Color.fromArgb(0))
+        palette.boxSize = 32
+        palette.sigChanged += @|picker|(pal) {
+            picker.setColor(pal.selectedColor)
+        }
 
-        btn.popup = picker
+        frame.fitPosInParent(sdw.z, sdw.w)
+        frame.anchor = .Top
+        frame.anchorPos = pos.horzCenter() - frame.getSurfaceRect().x
+
+        btn.popup = frame
         return picker
     }
 

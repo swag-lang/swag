@@ -132,7 +132,4 @@ struct ThemeImageRects
     colorPicker_SquarePick:     ThemeImageRect = @{{169,169,27,27}, 13}
     colorPicker_Bk:             ThemeImageRect = @{{141,197,27,27}, 13}
     colorPicker_Border:         ThemeImageRect = @{{169,197,27,27}, 13}
-
-    palPicker_Box:              ThemeImageRect = @{{85,253,27,27}, 8}
-    palPicker_Border:           ThemeImageRect = @{{113,253,27,27}, 8}
 }
