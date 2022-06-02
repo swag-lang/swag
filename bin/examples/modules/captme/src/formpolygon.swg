@@ -8,6 +8,17 @@ struct FormPolygon
     paintPoints:    Array'Math.Point
 }
 
+impl FormPolygon
+{
+    mtd setDefaultShape()
+    {
+        points.clear()
+        points.add(@{0, 0})
+        points.add(@{48, 0})
+        points.add(@{24, 48})
+    }
+}
+
 impl IForm for FormPolygon
 {
     mtd isSame(ptr: *BaseForm)->bool
