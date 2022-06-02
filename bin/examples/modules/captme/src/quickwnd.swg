@@ -44,42 +44,118 @@ impl QuickWnd
     {
         qsArrow = Memory.new'QuickStyle()
 
+        #[Swag.Macro]
+        func add(startSize, borderSize, endSize: f32, color: Color)
         {
             form := Memory.new'FormArrow()
-            form.borderSize = 5
-            form.endSize = 10
-            form.endShape = .Arrow
-            form.borderColor = Argb.Red
+            form.borderSize = borderSize
+            form.startSize = startSize
+            form.endSize = endSize
+            if startSize != 0
+                form.startShape = .Arrow
+            if endSize != 0
+                form.endShape = .Arrow
+            form.borderColor = color
             it := cast(IForm) form
             it.setup(null)
-            qsArrow.forms.add(it)
+            `qsArrow.forms.add(it)
         }
-        {
-            form := Memory.new'FormArrow()
-            form.borderSize = 5
-            form.endSize, form.startSize = 10
-            form.startShape = .Arrow
-            form.endShape = .Arrow
-            form.borderColor = Argb.Green
-            it := cast(IForm) form
-            it.setup(null)
-            qsArrow.forms.add(it)
-        }
+
+        const BorderSize = 10.0
+        const ArrowSize  = 15.0
+
+        add(0, BorderSize, ArrowSize, Argb.Red)
+        add(0, BorderSize, ArrowSize, Argb.Green)
+        add(0, BorderSize, ArrowSize, Argb.Blue)
+        add(0, BorderSize, ArrowSize, Argb.Yellow)
+
+        add(ArrowSize, BorderSize, ArrowSize, Argb.Red)
+        add(ArrowSize, BorderSize, ArrowSize, Argb.Green)
+        add(ArrowSize, BorderSize, ArrowSize, Argb.Blue)
+        add(ArrowSize, BorderSize, ArrowSize, Argb.Yellow)
     }
 
     mtd loadQuickStyleShape()
     {
         qsShape = Memory.new'QuickStyle()
+
+        #[Swag.Macro]
+        func add(borderSize: f32, kind: FormShapeKind, color: Color, backColor: Color = 0)
+        {
+            form := Memory.new'FormShape()
+            form.borderSize = borderSize
+            form.borderColor = color
+            form.backColor = backColor
+            form.kind = kind
+            it := cast(IForm) form
+            it.setup(null)
+            `qsShape.forms.add(it)
+        }
+
+        const BorderSize = 10.0
+        add(BorderSize, .Ellipse, Argb.Red, Argb.Zero)
+        add(BorderSize, .Ellipse, Argb.Purple, Argb.Zero)
+        add(BorderSize, .Ellipse, Argb.Yellow, Argb.Zero)
+        add(BorderSize, .RoundRectangle, Argb.Red, Argb.Zero)
+        add(BorderSize, .RoundRectangle, Argb.Purple, Argb.Zero)
+        add(BorderSize, .Rectangle, Argb.Red, Argb.Zero)
+        add(BorderSize, .Rectangle, Argb.Purple, Argb.Zero)
+        add(0, .Rectangle, Argb.Zero, Argb.White)
+        add(0, .Rectangle, Argb.Zero, Argb.Black)
+        add(BorderSize, .Rectangle, Argb.White, Argb.Zero)
+        add(BorderSize, .Rectangle, Argb.Black, Argb.Zero)
     }
 
     mtd loadQuickStyleLine()
     {
         qsLine = Memory.new'QuickStyle()
+
+        #[Swag.Macro]
+        func add(borderSize: f32, color: Color)
+        {
+            form := Memory.new'FormLine()
+            form.borderSize = borderSize
+            form.borderColor = color
+            it := cast(IForm) form
+            it.setup(null)
+            `qsLine.forms.add(it)
+        }
+
+        const BorderSize = 10.0
+        add(BorderSize, Argb.White)
+        add(BorderSize, Argb.Gray)
+        add(BorderSize, Argb.Black)
+        add(BorderSize, Argb.Red)
+        add(BorderSize, Argb.Green)
+        add(BorderSize, Argb.Blue)
+        add(BorderSize, Argb.Yellow)
+        add(BorderSize, Argb.Purple)
     }
 
     mtd loadQuickStylePolygon()
     {
         qsPolygon = Memory.new'QuickStyle()
+
+        #[Swag.Macro]
+        func add(borderSize: f32, color: Color)
+        {
+            form := Memory.new'FormPolygon()
+            form.borderSize = borderSize
+            form.borderColor = color
+            form.backColor = 0
+            it := cast(IForm) form
+            it.setup(null)
+            `qsPolygon.forms.add(it)
+        }
+
+        const BorderSize = 5.0
+        add(BorderSize, Argb.Red)
+        add(BorderSize, Argb.Green)
+        add(BorderSize, Argb.Blue)
+        add(BorderSize, Argb.Yellow)
+        add(BorderSize, Argb.Purple)
+        add(BorderSize, Argb.White)
+        add(BorderSize, Argb.Black)
     }
 
     mtd loadQuickStyles()
