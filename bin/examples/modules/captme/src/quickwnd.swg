@@ -152,6 +152,13 @@ impl QuickWnd
             btn.sigPaintIcon = @(btn, bc, pos) {
                 bc.painter.setParams(.Antialiased)
                 btnp := cast(*QuickButton) btn
+
+                if @kindof(btnp.formItf) == FormPolygon
+                {
+                    poly := cast(*FormPolygon) @dataof(btnp.formItf)
+                    poly.setDefaultShape()
+                }
+
                 btnp.formItf.setBaseForm(8, 8, 48, 48)
                 Capture.paintForm(btn.getApp(), bc.painter, @{0, 0, 64, 64}, btnp.formItf, zoom: 1, quickMode: true)
             }
@@ -167,21 +174,22 @@ impl QuickWnd
                     b := cast(*FormShape) @dataof(it)
                     self.main.mdlFormShape = dref b
                     mdlValue = Memory.new'FormShape()
-                    it.copy(mdlValue, &self.main.mdlFormShape)
+                    it.copy(mdlValue, b)
                 case FormLine:
                     b := cast(*FormLine) @dataof(it)
                     self.main.mdlFormLine = dref b
                     mdlValue = Memory.new'FormLine()
-                    it.copy(mdlValue, &self.main.mdlFormLine)
+                    it.copy(mdlValue, b)
                 case FormPolygon:
                     b := cast(*FormPolygon) @dataof(it)
+                    self.main.mdlFormPolygon = dref b
                     mdlValue = Memory.new'FormPolygon()
-                    it.copy(mdlValue, &self.main.mdlFormPolygon)
+                    it.copy(mdlValue, b)
                 case FormArrow:
                     b := cast(*FormArrow) @dataof(it)
                     self.main.mdlFormArrow = dref b
                     mdlValue = Memory.new'FormArrow()
-                    it.copy(mdlValue, &self.main.mdlFormArrow)
+                    it.copy(mdlValue, b)
                 }
 
                 capture := self.main.getCapture()
@@ -221,6 +229,13 @@ impl QuickWnd
         btn.sigPaintIcon = @(btn, bc, pos) {
             bc.painter.setParams(.Antialiased)
             btnp := cast(*QuickButton) btn
+
+            if @kindof(btnp.formItf) == FormPolygon
+            {
+                poly := cast(*FormPolygon) @dataof(btnp.formItf)
+                poly.setDefaultShape()
+            }
+
             btnp.formItf.setBaseForm(8, 8, 48, 48)
             Capture.paintForm(btn.getApp(), bc.painter, @{0, 0, 64, 64}, btnp.formItf, zoom: 1, quickMode: true)
 

@@ -8,9 +8,7 @@ struct Mouse
     previousState:	MouseState
     currentState:	MouseState
     dblClk:         [@countof(MouseButton)] bool
-
-    // Delay, in milliseconds, before a repeated key stroke starts
-    dblClkTimeMs: u32 = 250
+    dblClkTimeMs:   u32 = 300
 }
 
 impl Mouse
