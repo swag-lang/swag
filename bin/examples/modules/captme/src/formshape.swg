@@ -9,9 +9,9 @@ enum FormShapeKind
 
 struct FormShape
 {
-    using base:     BaseForm
-    kind:           FormShapeKind = Ellipse
-    gizmo:          GizmoRect
+    using base: BaseForm
+    kind:   FormShapeKind = Ellipse
+    gizmo:  GizmoRect
 }
 
 impl IForm for FormShape
@@ -137,6 +137,7 @@ impl IForm for FormShape
     {
         bSize := adaptSize(borderSize, MaxBorderSize, z, quickMode)
         pp := Math.Rectangle{0, 0, paintPos.width, paintPos.height}
+        pen := Pen.createDash(dashStyle, borderColor, bSize)
 
         #[Swag.Complete]
         switch kind
@@ -146,7 +147,7 @@ impl IForm for FormShape
             sizeY := pp.height * 0.5
             painter.fillEllipse(pp.x + sizeX, pp.y + sizeY, sizeX, sizeY, backColor)
             if bSize >= 1
-                painter.drawEllipse(pp.x + sizeX, pp.y + sizeY, sizeX - bSize * 0.5, sizeY - bSize * 0.5, borderColor, bSize)
+                painter.drawEllipse(pp.x + sizeX, pp.y + sizeY, sizeX - bSize * 0.5, sizeY - bSize * 0.5, pen)
 
         case Rectangle:
             if borderColor.a and (pp.width <= 2*bSize or pp.height < 2*bSize)
@@ -156,7 +157,7 @@ impl IForm for FormShape
                 painter.fillRect(pp, backColor)
                 rect := pp
                 rect.inflate(-bSize * 0.5)
-                painter.drawRect(rect, borderColor, bSize)
+                painter.drawRect(rect, pen)
             }
 
         case RoundRectangle:
@@ -164,7 +165,7 @@ impl IForm for FormShape
             round := Math.max(bSize, 10)
             painter.fillRoundRect(pp, round, round, backColor)
             if bSize >= 1
-                painter.drawRoundRect(pp, round, round, borderColor, bSize)
+                painter.drawRoundRect(pp, round, round, pen)
         }
     }
 

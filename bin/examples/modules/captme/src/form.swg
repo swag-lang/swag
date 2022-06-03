@@ -37,6 +37,7 @@ struct BaseForm
     borderSize:     f32 = 5
     borderColor:    Color = Argb.White
     backColor:      Color = Argb.Red
+    dashStyle:      DashStyle = None
 }
 
 impl BaseForm

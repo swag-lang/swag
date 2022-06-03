@@ -81,6 +81,7 @@ impl PropWnd
         }
 
         main.quickWnd.updateSelection()
+        main.editWnd.invalidate()
     }
 
     mtd createSlider(name: string, minv, maxv: s64, val: f32)->*SliderCtrl
@@ -191,7 +192,56 @@ impl PropWnd
             btn0.sigPressed += @|me|(btn) {
                 kind := cast(u32) cast(FormShapeKind) cast(uint) btn.userData
                 me.pushTypedValue(kind, @typeof(FormShape), @nameof(FormShape.kind), true)
-                me.pushTypedValue(kind, @typeof(FormShape), @nameof(FormShape.kind), false)
+            }
+        }
+
+        layout.computeLayout()
+    }
+
+    mtd createPopupDashStyle(btn: *IconButton)
+    {
+        frame := createPopup(btn, 180, 170)
+        layout := StackLayoutCtrl.create(frame, .Top)
+        frame.setView(layout)
+
+        mtd updateBtnState(layout: *Wnd)
+        {
+            curSel := getSelectedBaseForm()
+            visit c: layout.childs
+            {
+                btn := cast(*IconButton) c
+                dash := cast(DashStyle) cast(uint) btn.userData
+                btn.isChecked = curSel.dashStyle == dash
+                btn.invalidate()
+            }
+        }
+
+        curSel := getSelectedBaseForm()
+        visit i: DashStyle
+        {
+            if i == .Pattern continue
+
+            btn0 := IconButton.create(layout, @{}, @{0, 0, 0, 32})
+            btn0.userData = cast(*void) cast(uint) i
+            btn0.setForm(.RoundSquare)
+            btn0.isChecked = curSel.dashStyle == i
+
+            me := self
+            btn0.sigPaintIcon = @|me|(btn, bc, pos)
+            {
+                bc.painter.setParams(.Antialiased)
+                curSel := cast(*FormShape) me.getSelectedBaseForm()
+                rect := pos
+                rect.inflate(-9, -9)
+                dash := cast(DashStyle) cast(uint) btn.userData
+                pen := Pen.createDash(dash, Argb.White, 5)
+                bc.painter.drawLine(rect.x, rect.vertCenter(), rect.right(), rect.vertCenter(), pen)
+            }
+
+            btn0.sigPressed += @|me, layout|(btn) {
+                kind := cast(u32) cast(DashStyle) cast(uint) btn.userData
+                me.pushTypedValue(kind, @typeof(BaseForm), @nameof(BaseForm.dashStyle), true)
+                me.updateBtnState(layout)
             }
         }
 
@@ -306,6 +356,31 @@ impl PropWnd
         }
     }
 
+    mtd propLineStyle(stack: *Wnd)
+    {
+        curSelType := getSelectedFormType()
+        if curSelType != FormShape and curSelType != FormLine
+            return
+
+        btn := createPaintButton(stack)
+        btn.name = "Dash"
+        me := self
+        btn.sigPaintIcon = @|me|(btn, bc, pos)
+        {
+            bc.painter.setParams(.Antialiased)
+            curSel := me.getSelectedBaseForm()
+            rect := pos
+            rect.inflate(-9, -9)
+            pen := Pen.createDash(curSel.dashStyle, Argb.White, 5)
+            bc.painter.drawLine(rect.x, rect.vertCenter(), rect.right(), rect.vertCenter(), pen)
+        }
+
+        btn.sigShowPopup += @|me|(btn) {
+            curSel := cast(*FormShape) me.getSelectedBaseForm()
+            me.createPopupDashStyle(btn)
+        }
+    }
+
     mtd propStartSize()
     {
         curSelType := getSelectedFormType()
@@ -379,6 +454,7 @@ impl PropWnd
         propBackColor(stack)
         propBorderColor(stack)
         propShape(stack)
+        propLineStyle(stack)
 
         propBorderSize()
         propStartSize()

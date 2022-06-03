@@ -233,6 +233,7 @@ impl FrameWnd
             view.destroy()
         what.setParent(self)
         view = what
+        sendResizeEvent()
     }
 
     // Set the frame wnd flags

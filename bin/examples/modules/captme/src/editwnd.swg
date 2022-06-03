@@ -87,6 +87,7 @@ impl EditWnd
         form1 := Memory.new'FormShape()
         form1.x, form1.y = 150
         form1.w = 100
+        form1.dashStyle = .Dot
         form1.backColor = Argb.Zero
         itf = cast(IForm) form1
         itf.setup(capture)
