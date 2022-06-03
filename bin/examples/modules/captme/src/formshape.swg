@@ -23,7 +23,8 @@ impl IForm for FormShape
                 borderSize  == other.borderSize and
                 backColor   == other.backColor and
                 alpha       == other.alpha and
-                kind        == other.kind
+                kind        == other.kind and
+                dashStyle   == other.dashStyle
     }
 
     mtd copy(dst, src: *BaseForm)
@@ -35,6 +36,7 @@ impl IForm for FormShape
         dstf.backColor   = srcf.backColor
         dstf.alpha       = srcf.alpha
         dstf.kind        = srcf.kind
+        dstf.dashStyle   = srcf.dashStyle
     }
 
     mtd edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool

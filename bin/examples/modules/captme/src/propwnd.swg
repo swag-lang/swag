@@ -177,23 +177,75 @@ impl PropWnd
                 rect.inflate(-9, -9)
                 rect.x = rect.horzCenter() - rect.height * 0.5
                 rect.width = rect.height
+                color := btn.getThemeColors().btnIcon_Icon
 
                 #[Swag.Complete]
                 switch cast(FormShapeKind) cast(uint) btn.userData
                 {
                 case Ellipse:
                     radius := rect.width * 0.5
-                    bc.painter.drawEllipse(pos.horzCenter(), pos.vertCenter(), radius, radius, Argb.White, 5)
+                    bc.painter.drawEllipse(pos.horzCenter(), pos.vertCenter(), radius, radius, color, 5)
                 case Rectangle:
-                    bc.painter.drawRect(rect, Argb.White, 5)
+                    bc.painter.drawRect(rect, color, 5)
                 case RoundRectangle:
-                    bc.painter.drawRoundRect(rect, 5, 5, Argb.White, 5)
+                    bc.painter.drawRoundRect(rect, 5, 5, color, 5)
                 }
             }
 
             btn0.sigPressed += @|me|(btn) {
                 kind := cast(u32) cast(FormShapeKind) cast(uint) btn.userData
                 me.pushTypedValue(kind, @typeof(FormShape), @nameof(FormShape.kind), true)
+            }
+        }
+
+        layout.computeLayout()
+    }
+
+    mtd createPopupStartCapStyle(btn: *IconButton)
+    {
+        frame := createPopup(btn, 100, 300)
+        layout := StackLayoutCtrl.create(frame, .Top)
+        frame.setView(layout)
+
+        mtd updateBtnState(layout: *Wnd)
+        {
+            curSel := cast(*FormLine) getSelectedBaseForm()
+            visit c: layout.childs
+            {
+                btn := cast(*IconButton) c
+                cap := cast(LineCapStyle) cast(uint) btn.userData
+                btn.isChecked = curSel.beginCap == cap
+                btn.invalidate()
+            }
+        }
+
+        curSel := cast(*FormLine) getSelectedBaseForm()
+        visit i: LineCapStyle
+        {
+            btn0 := IconButton.create(layout, @{}, @{0, 0, 0, 32})
+            btn0.userData = cast(*void) cast(uint) i
+            btn0.setForm(.RoundSquare)
+            btn0.isChecked = curSel.beginCap == i
+
+            me := self
+            btn0.sigPaintIcon = @|me|(btn, bc, pos)
+            {
+                bc.painter.setParams(.Antialiased)
+                curSel := cast(*FormShape) me.getSelectedBaseForm()
+                rect := pos
+                rect.inflate(-9, -9)
+                rect.x += 4
+                cap := cast(LineCapStyle) cast(uint) btn.userData
+                pen := Pen.createSolid(btn.getThemeColors().btnIcon_Icon, 15)
+                pen.beginCapStyle = cap
+                pen.endCapStyle = .None
+                bc.painter.drawLine(rect.x, rect.vertCenter(), rect.right(), rect.vertCenter(), pen)
+            }
+
+            btn0.sigPressed += @|me, layout|(btn) {
+                kind := cast(u32) cast(LineCapStyle) cast(uint) btn.userData
+                me.pushTypedValue(kind, @typeof(FormLine), @nameof(FormLine.beginCap), true)
+                me.updateBtnState(layout)
             }
         }
 
@@ -236,7 +288,7 @@ impl PropWnd
                 rect := pos
                 rect.inflate(-9, -9)
                 dash := cast(DashStyle) cast(uint) btn.userData
-                pen := Pen.createDash(dash, Argb.White, 5)
+                pen := Pen.createDash(dash, btn.getThemeColors().btnIcon_Icon, 5)
                 bc.painter.drawLine(rect.x, rect.vertCenter(), rect.right(), rect.vertCenter(), pen)
             }
 
@@ -338,17 +390,18 @@ impl PropWnd
             rect.inflate(-9, -9)
             rect.x = rect.horzCenter() - rect.height * 0.5
             rect.width = rect.height
+            color := btn.getThemeColors().btnIcon_Icon
 
             #[Swag.Complete]
             switch curSel.kind
             {
             case Ellipse:
                 radius := 16.0
-                bc.painter.drawEllipse(pos.horzCenter(), pos.vertCenter(), radius, radius, Argb.White, 5)
+                bc.painter.drawEllipse(pos.horzCenter(), pos.vertCenter(), radius, radius, color, 5)
             case Rectangle:
-                bc.painter.drawRect(rect, Argb.White, 5)
+                bc.painter.drawRect(rect, color, 5)
             case RoundRectangle:
-                bc.painter.drawRoundRect(rect, 5, 5, Argb.White, 5)
+                bc.painter.drawRoundRect(rect, 5, 5, color, 5)
             }
         }
 
@@ -357,6 +410,35 @@ impl PropWnd
             me.createPopupShapeKind(btn)
         }
     }
+
+    mtd propStartCapStyle(stack: *Wnd)
+    {
+        curSelType := getSelectedFormType()
+        if curSelType != FormLine
+            return
+
+        btn := createPaintButton(stack)
+        btn.name = "Start"
+        me := self
+        btn.sigPaintIcon = @|me|(btn, bc, pos)
+        {
+            bc.painter.setParams(.Antialiased)
+            curSel := cast(*FormLine) me.getSelectedBaseForm()
+            rect := pos
+            rect.inflate(-9, -9)
+            rect.x += 4
+            pen := Pen.createSolid(btn.getThemeColors().btnIcon_Icon, 15)
+            pen.beginCapStyle = curSel.beginCap
+            pen.endCapStyle = .None
+            bc.painter.drawLine(rect.x, rect.vertCenter(), rect.right(), rect.vertCenter(), pen)
+        }
+
+        btn.sigShowPopup += @|me|(btn) {
+            curSel := cast(*FormShape) me.getSelectedBaseForm()
+            me.createPopupStartCapStyle(btn)
+        }
+    }
+
 
     mtd propLineStyle(stack: *Wnd)
     {
@@ -373,7 +455,7 @@ impl PropWnd
             curSel := me.getSelectedBaseForm()
             rect := pos
             rect.inflate(-9, -9)
-            pen := Pen.createDash(curSel.dashStyle, Argb.White, 5)
+            pen := Pen.createDash(curSel.dashStyle, btn.getThemeColors().btnIcon_Icon, 5)
             bc.painter.drawLine(rect.x, rect.vertCenter(), rect.right(), rect.vertCenter(), pen)
         }
 
@@ -456,6 +538,7 @@ impl PropWnd
         propBackColor(stack)
         propBorderColor(stack)
         propShape(stack)
+        propStartCapStyle(stack)
         propLineStyle(stack)
 
         propBorderSize()
