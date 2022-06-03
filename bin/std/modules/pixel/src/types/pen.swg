@@ -61,6 +61,22 @@ struct Pen
 
 impl Pen
 {
+    func getCapStyleExtent(cap: LineCapStyle, borderSize: f32)->f32
+    {
+        #[Swag.Complete]
+        switch cap
+        {
+        case None:
+            return 0
+        case Triangle, Round, Square:
+            return borderSize * 0.5
+        case ArrowAnchor, SquareAnchor:
+            return borderSize
+        }
+
+        return 0
+    }
+
     // Returns a solid color pen
     func createSolid(color: Color, size: f32 = 1)->Pen
     {

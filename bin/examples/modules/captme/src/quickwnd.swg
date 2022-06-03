@@ -236,7 +236,9 @@ impl QuickWnd
                     poly.setDefaultShape()
                 }
 
-                btnp.formItf.setBaseForm(8, 8, 48, 48)
+                sel := cast(*BaseForm) @dataof(btnp.formItf)
+                s := cast(s32) BaseForm.adaptSize(sel.borderSize / 2, MaxBorderSize, 1, true)
+                btnp.formItf.setBaseForm(8 + s, 8 + s, 48 - 2*s, 48 - 2*s)
                 Capture.paintForm(btn.getApp(), bc.painter, @{0, 0, 64, 64}, btnp.formItf, zoom: 1, quickMode: true)
             }
 
@@ -313,7 +315,9 @@ impl QuickWnd
                 poly.setDefaultShape()
             }
 
-            btnp.formItf.setBaseForm(8, 8, 48, 48)
+            sel := cast(*BaseForm) @dataof(btnp.formItf)
+            s := cast(s32) BaseForm.adaptSize(sel.borderSize / 2, MaxBorderSize, 1, true)
+            btnp.formItf.setBaseForm(8 + s, 8 + s, 48 - 2*s, 48 - 2*s)
             Capture.paintForm(btn.getApp(), bc.painter, @{0, 0, 64, 64}, btnp.formItf, zoom: 1, quickMode: true)
 
             rect := btn.getClientRect()

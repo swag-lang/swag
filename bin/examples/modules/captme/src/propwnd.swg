@@ -203,7 +203,7 @@ impl PropWnd
 
     mtd createPopupStartCapStyle(btn: *IconButton)
     {
-        frame := createPopup(btn, 100, 300)
+        frame := createPopup(btn, 100, 280)
         layout := StackLayoutCtrl.create(frame, .Top)
         frame.setView(layout)
 
@@ -222,7 +222,7 @@ impl PropWnd
         curSel := cast(*FormLine) getSelectedBaseForm()
         visit i: LineCapStyle
         {
-            btn0 := IconButton.create(layout, @{}, @{0, 0, 0, 32})
+            btn0 := IconButton.create(layout, @{}, @{0, 0, 0, 40})
             btn0.userData = cast(*void) cast(uint) i
             btn0.setForm(.RoundSquare)
             btn0.isChecked = curSel.beginCap == i
@@ -236,6 +236,7 @@ impl PropWnd
                 rect.inflate(-9, -9)
                 rect.x += 4
                 cap := cast(LineCapStyle) cast(uint) btn.userData
+                rect.moveLeft(Pen.getCapStyleExtent(cap, curSel.borderSize))
                 pen := Pen.createSolid(btn.getThemeColors().btnIcon_Icon, 15)
                 pen.beginCapStyle = cap
                 pen.endCapStyle = .None
@@ -427,6 +428,7 @@ impl PropWnd
             rect := pos
             rect.inflate(-9, -9)
             rect.x += 4
+            rect.moveLeft(Pen.getCapStyleExtent(curSel.beginCap, curSel.borderSize))
             pen := Pen.createSolid(btn.getThemeColors().btnIcon_Icon, 15)
             pen.beginCapStyle = curSel.beginCap
             pen.endCapStyle = .None

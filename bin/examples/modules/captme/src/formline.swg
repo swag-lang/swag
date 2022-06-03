@@ -83,7 +83,7 @@ impl IForm for FormLine
     mtd boundRect()->Math.Rectangle
     {
         var result: retval
-        bSize := borderSize * 0.5
+        bSize := borderSize * 2
         result.x = Math.min(xa, xb) - bSize
         result.y = Math.min(ya, yb) - bSize
         result.width = Math.abs(xb - xa) + bSize * 2
