@@ -34,7 +34,8 @@ impl QuickWnd
         quick.backgroundStyle = .Window
 
         quick.layout = WrapLayoutCtrl.create(quick)
-        quick.layout.padding = 4
+        quick.layout.padding = 6
+        quick.layout.spacing = 10
         quick.setView(quick.layout)
         quick.loadQuickStyles()
         return quick

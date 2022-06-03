@@ -160,13 +160,11 @@ impl IForm for FormShape
             }
 
         case RoundRectangle:
-            painter.fillRoundRect(pp, 10, 10, backColor)
+            pp.inflate(-bSize * 0.5)
+            round := Math.max(bSize, 10)
+            painter.fillRoundRect(pp, round, round, backColor)
             if bSize >= 1
-            {
-                rect := pp
-                rect.inflate(-bSize * 0.5)
-                painter.drawRoundRect(rect, 10, 10, borderColor, bSize)
-            }
+                painter.drawRoundRect(pp, round, round, borderColor, bSize)
         }
     }
 

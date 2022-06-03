@@ -713,11 +713,9 @@ impl ListCtrl
             scrollWnd = createView'ScrollWnd()
             scrollWnd.dockStyle = .Center
             scrollWnd.focusStrategy = .None
-            scrollWnd.backgroundStyle = .Transparent
             scrollWnd.setAllPaddings(getThemeMetrics().list_Padding)
 
             listView = scrollWnd.createView'ListView()
-            listView.backgroundStyle = .Transparent
             listView.list = list
             listView.wndFlags |= .NoScroll
         }
@@ -732,7 +730,6 @@ impl ListCtrl
 
         fwnd := list.createView'Wnd()
         fwnd.dockStyle = .Center
-        fwnd.backgroundStyle = .Transparent
         fwnd.wndFlags ^= .ClipChildren
 
         // Adapt header to the frame container
@@ -788,7 +785,6 @@ impl ListCtrl
 
             // ListCtrl view
             listView = scrollWnd.createView'ListView()
-            listView.backgroundStyle = .Transparent
             listView.list = list
             listView.wndFlags |= .NoScroll
         }

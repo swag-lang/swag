@@ -249,7 +249,6 @@ impl RichEditCtrl
             scrollWnd = createView'ScrollWnd()
             scrollWnd.dockStyle = .Center
             scrollWnd.focusStrategy = .None
-            scrollWnd.backgroundStyle = .Transparent
             scrollWnd.setAllPaddings(getThemeMetrics().richEdit_Padding)
             scrollWnd.sigScrollPosChanged += @|ed|(scrollWnd, op, np) {
                 if op.y != np.y
@@ -257,7 +256,6 @@ impl RichEditCtrl
             }
 
             edView = scrollWnd.createView'RichEditView()
-            edView.backgroundStyle = .Transparent
             edView.ed = ed
             edView.wndFlags |= .NoScroll
 

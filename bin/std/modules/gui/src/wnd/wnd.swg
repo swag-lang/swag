@@ -85,6 +85,7 @@ struct Wnd
     surface:    *Surface
     style:      ThemeStyle
     wndFlags    = WndFlags.ClipChildren
+    userData:   *void
 
     position:       Math.Rectangle
     minSize:        Math.Point

@@ -107,22 +107,35 @@ impl PropWnd
         return btn
     }
 
-    func createColorPicker(btn: *IconButton, color: Color)->*ColorPickerCtrl
+    func createPopup(btn: *IconButton, w, h: f32)->*FrameWnd
     {
         pos     := btn.getSurfaceRect()
         topView := btn.getTopView()
         pt      := topView.surfaceToLocal(@{pos.x, pos.bottom()})
         pt.y += btn.getThemeMetrics().frameWnd_AnchorHeight
 
-        frame := Wnd.create'FrameWnd(topView, @{pt.x, pt.y, 356, 330 + 40})
+        frame := Wnd.create'FrameWnd(topView, @{pt.x, pt.y, w, h})
         frame.setFrameForm(.Round)
         frame.setFrameFlags(FrameWndFlags.SmallShadow)
         frame.style.addStyleSheetColors("frameWnd_Border $frameWnd_PopupBorder")
 
-        picker := ColorPickerCtrl.create(frame, @{8, 42})
+        sdw := btn.getThemeMetrics().frameWnd_SmallShadowSize
+        frame.fitPosInParent(sdw.z, sdw.w)
+        frame.anchor = .Top
+        frame.anchorPos = pos.horzCenter() - frame.getSurfaceRect().x
+
+        btn.popup = frame
+        return frame
+    }
+
+    func createColorPicker(btn: *IconButton, color: Color)->*ColorPickerCtrl
+    {
+        frame := createPopup(btn, 356, 382)
+
+        picker := ColorPickerCtrl.create(frame, @{8, 54})
         picker.setColor(color)
 
-        palette := PalettePicker.create(frame, @{16, 8, 340, 48})
+        palette := PalettePicker.create(frame, @{16, 16, 340, 48})
         palette.addColor(Argb.White)
         palette.addColor(Argb.Gray)
         palette.addColor(Argb.Black)
@@ -137,13 +150,52 @@ impl PropWnd
             picker.setColor(pal.selectedColor)
         }
 
-        sdw := btn.getThemeMetrics().frameWnd_SmallShadowSize
-        frame.fitPosInParent(sdw.z, sdw.w)
-        frame.anchor = .Top
-        frame.anchorPos = pos.horzCenter() - frame.getSurfaceRect().x
-
-        btn.popup = frame
         return picker
+    }
+
+    mtd createPopupShapeKind(btn: *IconButton)
+    {
+        frame := createPopup(btn, 180, 66)
+        layout := frame.createView'WrapLayoutCtrl()
+        layout.wrapWidth, layout.wrapHeight = 48
+        layout.padding = 4
+
+        loop i: @countof(FormShapeKind)
+        {
+            btn0 := IconButton.create(frame.view)
+            btn0.userData = cast(*void) i
+            btn0.setForm(.RoundSquare)
+            me := self
+            btn0.sigPaintIcon = @|me|(btn, bc, pos)
+            {
+                bc.painter.setParams(.Antialiased)
+                curSel := cast(*FormShape) me.getSelectedBaseForm()
+                rect := pos
+                rect.inflate(-9, -9)
+                rect.x = rect.horzCenter() - rect.height * 0.5
+                rect.width = rect.height
+
+                #[Swag.Complete]
+                switch cast(FormShapeKind) cast(uint) btn.userData
+                {
+                case Ellipse:
+                    radius := rect.width * 0.5
+                    bc.painter.drawEllipse(pos.horzCenter(), pos.vertCenter(), radius, radius, Argb.White, 5)
+                case Rectangle:
+                    bc.painter.drawRect(rect, Argb.White, 5)
+                case RoundRectangle:
+                    bc.painter.drawRoundRect(rect, 5, 5, Argb.White, 5)
+                }
+            }
+
+            btn0.sigPressed += @|me|(btn) {
+                kind := cast(u32) cast(FormShapeKind) cast(uint) btn.userData
+                me.pushTypedValue(kind, @typeof(FormShape), @nameof(FormShape.kind), true)
+                me.pushTypedValue(kind, @typeof(FormShape), @nameof(FormShape.kind), false)
+            }
+        }
+
+        layout.computeLayout()
     }
 
     mtd propBorderColor(stack: *Wnd)
@@ -176,9 +228,9 @@ impl PropWnd
         btn.sigShowPopup += @|me|(btn) {
             curSel := me.getSelectedBaseForm()
             picker := createColorPicker(btn, curSel.borderColor)
-            me.pushTypedValue(curSel.borderColor.argb, @typeof(BaseForm), @nameof(FormArrow.borderColor), true)
+            me.pushTypedValue(curSel.borderColor.argb, @typeof(BaseForm), @nameof(BaseForm.borderColor), true)
             picker.sigChanged += @|me, btn|(pk) {
-                me.pushTypedValue(pk.getColor().argb, @typeof(BaseForm), @nameof(FormArrow.borderColor), false)
+                me.pushTypedValue(pk.getColor().argb, @typeof(BaseForm), @nameof(BaseForm.borderColor), false)
                 btn.invalidate()
             }
         }
@@ -209,9 +261,9 @@ impl PropWnd
         btn.sigShowPopup += @|me|(btn) {
             curSel := me.getSelectedBaseForm()
             picker := createColorPicker(btn, curSel.backColor)
-            me.pushTypedValue(curSel.backColor.argb, @typeof(BaseForm), @nameof(FormArrow.backColor), true)
+            me.pushTypedValue(curSel.backColor.argb, @typeof(BaseForm), @nameof(BaseForm.backColor), true)
             picker.sigChanged += @|me, btn|(pk) {
-                me.pushTypedValue(pk.getColor().argb, @typeof(BaseForm), @nameof(FormArrow.backColor), false)
+                me.pushTypedValue(pk.getColor().argb, @typeof(BaseForm), @nameof(BaseForm.backColor), false)
                 btn.invalidate()
             }
         }
@@ -246,6 +298,11 @@ impl PropWnd
             case RoundRectangle:
                 bc.painter.drawRoundRect(rect, 5, 5, Argb.White, 5)
             }
+        }
+
+        btn.sigShowPopup += @|me|(btn) {
+            curSel := cast(*FormShape) me.getSelectedBaseForm()
+            me.createPopupShapeKind(btn)
         }
     }
 

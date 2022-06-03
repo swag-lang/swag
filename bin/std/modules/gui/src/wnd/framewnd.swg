@@ -222,7 +222,7 @@ impl FrameWnd
     mtd(T) createView(hook: HookEvent = null)->*T
     {
         view = Wnd.create'T(self, "", position, hook: hook)
-        view.backgroundStyle = .Window
+        view.backgroundStyle = .Transparent
         sendResizeEvent()
         return cast(*T) view
     }
