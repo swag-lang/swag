@@ -186,11 +186,13 @@ public impl LinePath
         r := l + w
         b := t + h
 
-        rX := Math.round(radiusX)
-        rY := Math.round(radiusY)
+        rX := Math.min(radiusX, (w * 0.5) - 2)
+        rY := Math.min(radiusY, (h * 0.5) - 2)
+        rX = Math.round(rX)
+        rY = Math.round(rY)
 
         start(l, t + rY)
-        arcTo(l + rX, t + radiusY, rX, rY, 270'deg, 360'deg)
+        arcTo(l + rX, t + rY, rX, rY, 270'deg, 360'deg)
         lineTo(r - rX, t)
         arcTo(r - rX, t + rY, rX, rY, 0'deg, 90'deg)
         lineTo(r, b - rY)
