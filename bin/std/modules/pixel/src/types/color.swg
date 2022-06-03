@@ -68,6 +68,16 @@ impl Color
         self.b = b
     }
 
+    // Just set r, g and b components.
+    // Alpha will be Opaque
+    #[Inline]
+    mtd setRgb(rgb: Color)
+    {
+        self.r = rgb.r
+        self.g = rgb.g
+        self.b = rgb.b
+    }
+
     // Set r,g,b with floats in the range [0 1]
     // Alpha will be Opaque
     #[Inline]

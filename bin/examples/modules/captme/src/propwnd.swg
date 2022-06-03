@@ -148,7 +148,9 @@ impl PropWnd
         palette.addColor(Color.fromArgb(0))
         palette.boxSize = 32
         palette.sigChanged += @|picker|(pal) {
-            picker.setColor(pal.selectedColor)
+            color := picker.color
+            color.setRgb(pal.selectedColor)
+            picker.setColor(color)
         }
 
         return picker
