@@ -66,6 +66,8 @@ struct ThemeMetrics
     btnIcon_HeightArrow:        f32 = 6
     btnIcon_Padding:            f32 = 4
     btnIcon_MarginArrow:        f32 = 4
+    btnIcon_SpacingArrow:       f32 = 4
+    btnIcon_SpacingText:        f32 = 0
 
     frameWnd_SquarePadding:     f32 = 5
     frameWnd_RoundPadding:      f32 = 5

@@ -194,50 +194,46 @@ impl IWnd for IconButton
                 subRectBk = &rects.btnIcon_ArrowLeft
                 posArrow.width = h
                 posArrow.height = w
-                posArrow.x = pos.x
+                posArrow.x = pos.x + metrics.btnIcon_MarginArrow
                 posArrow.y = pos.vertCenter() - w * 0.5
-                pos.x = posArrow.right()
                 theme.drawSubRect(bc.painter, posArrow, subRectBk, colorIcon)
-                pos.moveLeft(metrics.btnIcon_MarginArrow)
+                pos.moveLeft(metrics.btnIcon_MarginArrow + w + metrics.btnIcon_SpacingArrow)
 
             case Top:
                 subRectBk = &rects.btnIcon_ArrowUp
                 posArrow.width = w
                 posArrow.height = h
                 posArrow.x = pos.horzCenter() - w * 0.5
-                pos.moveTop(posArrow.bottom())
+                posArrow.y = pos.y + metrics.btnIcon_MarginArrow
                 theme.drawSubRect(bc.painter, posArrow, subRectBk, colorIcon)
-                pos.moveTop(metrics.btnIcon_MarginArrow)
+                pos.moveTop(metrics.btnIcon_MarginArrow + h + metrics.btnIcon_SpacingArrow)
 
             case Right:
                 subRectBk = &rects.btnIcon_ArrowRight
                 posArrow.width = h
                 posArrow.height = w
-                posArrow.x = pos.right() - h
+                posArrow.x = pos.right() - h - metrics.btnIcon_MarginArrow
                 posArrow.y = pos.vertCenter() - w * 0.5
-                pos.setRight(posArrow.x)
                 theme.drawSubRect(bc.painter, posArrow, subRectBk, colorIcon)
-                pos.width -= metrics.btnIcon_MarginArrow
+                pos.setRight(posArrow.x - metrics.btnIcon_SpacingArrow)
 
             case RightDown:
                 subRectBk = &rects.btnIcon_ArrowDown
                 posArrow.width = w
                 posArrow.height = h
-                posArrow.x = pos.right() - w
+                posArrow.x = pos.right() - w - metrics.btnIcon_MarginArrow
                 posArrow.y = pos.vertCenter() - h * 0.5
-                pos.setRight(posArrow.x)
                 theme.drawSubRect(bc.painter, posArrow, subRectBk, colorIcon)
-                pos.width -= metrics.btnIcon_MarginArrow
+                pos.setRight(posArrow.x - metrics.btnIcon_SpacingArrow)
 
             case Bottom:
                 subRectBk = &rects.btnIcon_ArrowDown
                 posArrow.width = w
                 posArrow.height = h
                 posArrow.x = pos.horzCenter() - w * 0.5
-                posArrow.y = pos.bottom() - h
-                pos.setBottom(posArrow.y)
+                posArrow.y = pos.bottom() - h - metrics.btnIcon_MarginArrow
                 theme.drawSubRect(bc.painter, posArrow, subRectBk, colorIcon)
-                pos.height -= metrics.btnIcon_MarginArrow
+                pos.setBottom(posArrow.y - metrics.btnIcon_SpacingArrow)
             }
         }
 
@@ -253,25 +249,25 @@ impl IWnd for IconButton
                 sf.horzAlignment = .Left
                 sf.vertAlignment = .Center
                 bc.painter.drawRichString(pos, &name, sf)
-                pos.moveLeft(name.boundRect.width)
+                pos.moveLeft(name.boundRect.width + metrics.btnIcon_SpacingText)
 
             case Top:
                 sf.horzAlignment = .Center
                 sf.vertAlignment = .Top
                 bc.painter.drawRichString(pos, &name, sf)
-                pos.moveTop(sf.font.regular.height)
+                pos.moveTop(sf.font.regular.height + metrics.btnIcon_SpacingText)
 
             case Right:
                 sf.horzAlignment = .Right
                 sf.vertAlignment = .Center
                 bc.painter.drawRichString(pos, &name, sf)
-                pos.width -= name.boundRect.width
+                pos.width -= (name.boundRect.width + metrics.btnIcon_SpacingText)
 
             case Bottom:
                 sf.horzAlignment = .Center
                 sf.vertAlignment = .Bottom
                 bc.painter.drawRichString(pos, &name, sf)
-                pos.height -= sf.font.regular.height
+                pos.height -= (sf.font.regular.height + metrics.btnIcon_SpacingText)
             }
         }
 

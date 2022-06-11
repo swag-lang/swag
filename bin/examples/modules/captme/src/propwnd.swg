@@ -5,6 +5,8 @@ const MinCapSize    = 1.0
 const MaxCapSize    = 8.0
 const CapSize       = 8.0
 const DashSize      = 8.0
+const BtnColorSize  = 88.0
+const BtnStyleSize  = 68.0
 
 struct PropWnd
 {
@@ -96,9 +98,9 @@ impl PropWnd
         return ctrl
     }
 
-    func createPaintButton(stack: *Wnd)->*IconButton
+    func createPaintButton(stack: *Wnd, size: f32)->*IconButton
     {
-        btn := IconButton.create(stack, @{}, @{0, 0, 64, 88})
+        btn := IconButton.create(stack, @{}, @{0, 0, 64, size})
         btn.setForm(.RoundSquare)
         btn.style.addStyleSheetColors("btnIcon_Bk        $lighterMedium")
         btn.style.addStyleSheetColors("btnIcon_HotBk     $lighterBig")
@@ -150,9 +152,7 @@ impl PropWnd
         palette.addColor(Color.fromArgb(0))
         palette.boxSize = 32
         palette.sigChanged += @|picker|(pal) {
-            color := picker.color
-            color.setRgb(pal.selectedColor)
-            picker.setColor(color)
+            picker.setColor(pal.selectedColor)
         }
 
         return picker
@@ -355,7 +355,7 @@ impl PropWnd
 
     mtd propBorderColor(stack: *Wnd)
     {
-        btn := createPaintButton(stack)
+        btn := createPaintButton(stack, BtnColorSize)
 
         curSelType := getSelectedFormType()
         switch curSelType
@@ -397,7 +397,7 @@ impl PropWnd
         if curSelType == FormLine or curSelType == FormArrow
             return
 
-        btn := createPaintButton(stack)
+        btn := createPaintButton(stack, BtnColorSize)
         btn.name = "Fill"
         me := self
         btn.sigPaintIcon = @|me|(btn, bc, pos)
@@ -430,7 +430,7 @@ impl PropWnd
         if curSelType != FormShape
             return
 
-        btn := createPaintButton(stack)
+        btn := createPaintButton(stack, 88)
         btn.name = "Shape"
         me := self
         btn.sigPaintIcon = @|me|(btn, bc, pos)
@@ -468,7 +468,7 @@ impl PropWnd
         if curSelType != FormLine and curSelType != FormArrow
             return
 
-        btn := createPaintButton(stack)
+        btn := createPaintButton(stack, BtnStyleSize)
         btn.name = "Start"
         me := self
         btn.sigPaintIcon = @|me|(btn, bc, pos)
@@ -495,7 +495,7 @@ impl PropWnd
         if curSelType != FormLine and curSelType != FormArrow
             return
 
-        btn := createPaintButton(stack)
+        btn := createPaintButton(stack, BtnStyleSize)
         btn.name = "End"
         me := self
         btn.sigPaintIcon = @|me|(btn, bc, pos)
@@ -516,13 +516,13 @@ impl PropWnd
         }
     }
 
-    mtd propLineStyle(stack: *Wnd)
+    mtd propDashStyle(stack: *Wnd)
     {
         curSelType := getSelectedFormType()
         if curSelType != FormShape and curSelType != FormLine and curSelType != FormArrow
             return
 
-        btn := createPaintButton(stack)
+        btn := createPaintButton(stack, BtnStyleSize)
         btn.name = "Dash"
         me := self
         btn.sigPaintIcon = @|me|(btn, bc, pos)
@@ -555,14 +555,6 @@ impl PropWnd
         ctrl.slider.sigChanged += @|self|(slider) {
             self.pushTypedValue(bitcast(u32) slider.getValue(), @typeof(FormLine), @nameof(FormLine.startSize), false)
         }
-
-        switch curSel.beginCap
-        {
-        case ArrowAnchor, SquareAnchor:
-            break
-        default:
-            ctrl.slider.disable()
-        }
     }
 
     mtd propEndSize()
@@ -578,14 +570,6 @@ impl PropWnd
         }
         ctrl.slider.sigChanged += @|self|(slider) {
             self.pushTypedValue(bitcast(u32) slider.getValue(), @typeof(FormLine), @nameof(FormLine.endSize), false)
-        }
-
-        switch curSel.endCap
-        {
-        case ArrowAnchor, SquareAnchor:
-            break
-        default:
-            ctrl.slider.disable()
         }
     }
 
@@ -620,14 +604,14 @@ impl PropWnd
         if !getSelectedBaseForm()
             return
 
-        stack0 := StackLayoutCtrl.create(self, .HorzCenter, @{0, 0, 0, 100})
+        stack0 := StackLayoutCtrl.create(self, .HorzCenter, @{0, 0, 0, BtnColorSize + 12})
         propBackColor(stack0)
         propBorderColor(stack0)
         propShape(stack0)
 
-        stack1 := StackLayoutCtrl.create(self, .HorzCenter, @{0, 0, 0, 100})
+        stack1 := StackLayoutCtrl.create(self, .HorzCenter, @{0, 0, 0, BtnStyleSize + 12})
         propStartCapStyle(stack1)
-        propLineStyle(stack1)
+        propDashStyle(stack1)
         propEndCapStyle(stack1)
 
         propBorderSize()
@@ -635,7 +619,8 @@ impl PropWnd
         propEndSize()
         propOpactiy()
 
-        layoutWnd.padding = 8
+        layoutWnd.padding = 4
+        layoutWnd.padding.y = 16
         layoutWnd.computeLayout()
 
         capture := main.getCapture()
