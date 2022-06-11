@@ -1,5 +1,3 @@
-using Gui, Core, Pixel
-
 const MinBorderSize   = 1.0
 const MaxBorderSize   = 50.0
 const MinCapSize      = 1.0

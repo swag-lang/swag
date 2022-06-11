@@ -1,5 +1,3 @@
-using Pixel, Core, Gui
-
 enum FormShapeKind
 {
     Ellipse

@@ -1,5 +1,3 @@
-using Core, Pixel, Gui
-
 var g_App: Application
 
 #main

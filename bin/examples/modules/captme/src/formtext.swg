@@ -1,5 +1,3 @@
-using Pixel, Core, Gui
-
 struct FormText
 {
     using base: BaseForm

@@ -1,5 +1,3 @@
-using Core, Pixel, Gui
-
 struct GizmoRect
 {
     paintSimpleBorder:  bool = true

@@ -1,5 +1,3 @@
-using Pixel, Core, Gui
-
 struct FormPolygon
 {
     using base:     BaseForm

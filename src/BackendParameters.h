@@ -63,9 +63,10 @@ inline bool isArchArm(SwagTargetArch arch)
 
 struct BuildParameters
 {
-    set<Utf8>          foreignLibs;
-    Utf8               outputFileName;
-    BuildCfg*          buildCfg        = nullptr;
-    int                precompileIndex = 0;
-    BackendCompileType compileType     = BackendCompileType::Normal;
+    set<Utf8>              foreignLibs;
+    VectorNative<AstNode*> globalUsing;
+    Utf8                   outputFileName;
+    BuildCfg*              buildCfg        = nullptr;
+    int                    precompileIndex = 0;
+    BackendCompileType     compileType     = BackendCompileType::Normal;
 };

@@ -1,5 +1,3 @@
-using Core
-
 enum UndoKind
 {
     MoveBaseForm

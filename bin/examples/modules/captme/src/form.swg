@@ -1,5 +1,3 @@
-using Pixel, Core, Gui
-
 interface IForm
 {
     paintGizmo:     func(self, *Painter, f32, FormFlags)

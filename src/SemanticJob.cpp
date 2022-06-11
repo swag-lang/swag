@@ -217,7 +217,7 @@ JobResult SemanticJob::execute()
             {
                 if (c->kind != AstNodeKind::CompilerDependencies)
                 {
-                    c->flags |= AST_NO_SEMANTIC;
+                    c->flags |= AST_NO_SEMANTIC; // :FirstPassCfgNoSem
                     c->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
                 }
             }

@@ -1,5 +1,3 @@
-using Core, Gui, Pixel
-
 struct EditWnd
 {
     using scrollWnd: ScrollWnd

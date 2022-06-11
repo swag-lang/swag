@@ -555,7 +555,6 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
     else if (token.id == TokenId::SymAttrStart)
     {
         AstNode* resultNode;
-
         SWAG_CHECK(doAttrUse(nullptr, &resultNode, true));
 
         // We need to be sure that our parent is in the sourceFile->astAttrUse hierarchy.
@@ -582,6 +581,20 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
         attrUse->flags |= AST_GLOBAL_NODE;
         sourceFile->astAttrUse = attrUse;
         SWAG_CHECK(eatSemiCol("`#global attribute`"));
+    }
+
+    /////////////////////////////////
+    else if (token.id == TokenId::KwdUsing)
+    {
+        SWAG_VERIFY(sourceFile->isCfgFile, sourceFile->report({sourceFile, token, Err(Err0372)}));
+
+        int prevCount = parent->childs.count;
+        SWAG_CHECK(doUsing(parent));
+        while (prevCount != parent->childs.count)
+        {
+            sourceFile->module->buildParameters.globalUsing.push_back(parent->childs[prevCount]);
+            prevCount++;
+        }
     }
 
     /////////////////////////////////

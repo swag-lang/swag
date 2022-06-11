@@ -1,5 +1,3 @@
-using Core, Gui, Pixel
-
 struct QuickButton
 {
     using iconBtn: IconButton

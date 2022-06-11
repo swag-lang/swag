@@ -1,5 +1,3 @@
-using Core, Pixel, Gui
-
 struct GizmoPoints
 {
     anchorSize:     f32 = 8

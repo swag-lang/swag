@@ -1,3 +1,5 @@
+#global using Core, Pixel, Gui
+
 #dependencies
 {
     #import "gui" location="swag@std"

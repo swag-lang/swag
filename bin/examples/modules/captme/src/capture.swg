@@ -1,5 +1,3 @@
-using Core, Gui, Pixel
-
 enum MouseMode
 {
     None

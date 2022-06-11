@@ -1,5 +1,3 @@
-using Gui, Pixel, Core
-
 enum EditMode
 {
     Shape

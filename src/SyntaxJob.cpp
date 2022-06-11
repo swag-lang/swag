@@ -402,6 +402,20 @@ JobResult SyntaxJob::execute()
         else
             currentScope = parentScope;
         sourceFile->astRoot->ownerScope = currentScope;
+
+        // Make a copy of all #global using of the config file
+        if (!sourceFile->isCfgFile && !sourceFile->imported)
+        {
+            for (auto s : module->buildParameters.globalUsing)
+            {
+                CloneContext cxt;
+                cxt.parent       = sourceFile->astRoot;
+                cxt.parentScope  = currentScope;
+                cxt.removeFlags  = AST_NO_SEMANTIC; // because of :FirstPassCfgNoSem
+                auto node        = s->clone(cxt);
+                node->sourceFile = sourceFile;
+            }
+        }
     }
 
     // Error reading file ?

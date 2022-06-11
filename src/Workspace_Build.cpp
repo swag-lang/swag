@@ -107,6 +107,7 @@ Module* Workspace::createOrUseModule(const Utf8& moduleName, const Utf8& moduleP
     {
         module->buildCfg                    = cfgModule->buildCfg;
         module->buildParameters.foreignLibs = cfgModule->buildParameters.foreignLibs;
+        module->buildParameters.globalUsing = cfgModule->buildParameters.globalUsing;
         module->moduleDependencies          = cfgModule->moduleDependencies;
     }
 
