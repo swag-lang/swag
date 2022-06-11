@@ -60,8 +60,7 @@ impl EditWnd
         formc.xb = 300
         formc.yb = 40
         formc.borderSize = 10
-        formc.endSize = 20
-        formc.startShape = .Arrow
+        formc.beginCap = .ArrowAnchor
         itf = cast(IForm) formc
         itf.setup(capture)
         capture.forms.add(itf)
@@ -71,8 +70,9 @@ impl EditWnd
         formd.ya = 100
         formd.xb = 300
         formd.yb = 100
+        formd.beginCap = .ArrowAnchor
+        formd.endCap = .ArrowAnchor
         formd.borderSize = 10
-        formd.endSize = 20
         itf = cast(IForm) formd
         itf.setup(capture)
         capture.forms.add(itf)

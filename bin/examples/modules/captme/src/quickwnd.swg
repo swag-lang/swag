@@ -53,9 +53,9 @@ impl QuickWnd
             form.startSize = startSize
             form.endSize = endSize
             if startSize != 0
-                form.startShape = .Arrow
+                form.beginCap = .ArrowAnchor
             if endSize != 0
-                form.endShape = .Arrow
+                form.endCap = .ArrowAnchor
             form.borderColor = color
             it := cast(IForm) form
             it.setup(null)
@@ -63,7 +63,7 @@ impl QuickWnd
         }
 
         const BorderSize = 10.0
-        const ArrowSize  = 15.0
+        const ArrowSize  = 2.0
 
         add(0, BorderSize, ArrowSize, Argb.Red)
         add(0, BorderSize, ArrowSize, Argb.Green)

@@ -46,12 +46,13 @@ struct Pen
     dashBeginCapStyle:  DashCapStyle = None
     dashEndCapStyle:    DashCapStyle = None
 
-    arrowAnchorScaleX:  f32 = 2
-    arrowAnchorScaleY:  f32 = 2
-    squareAnchorScaleX: f32 = 1.5
-    squareAnchorScaleY: f32 = 2
-    joinMiterLimit:     f32 = 3
-    plotOffset:         f32
+    capStartScaleX: f32 = 2
+    capStartScaleY: f32 = 2
+    capEndScaleX:   f32 = 2
+    capEndScaleY:   f32 = 2
+
+    joinMiterLimit: f32 = 3
+    plotOffset:     f32
 
     dashStyle:      DashStyle    = None
     beginCapStyle:  LineCapStyle = Round

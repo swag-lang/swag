@@ -1,10 +1,10 @@
 using Gui, Core, Pixel
 
-const MaxBorderSize     = 50.0
-const MaxArrowStartSize = 50.0
-const MaxArrowEndSize   = 50.0
-const CapSize           = 8.0
-const DashSize          = 8.0
+const MaxBorderSize = 50.0
+const MaxStartSize  = 3.0
+const MaxEndSize    = 3.0
+const CapSize       = 8.0
+const DashSize      = 8.0
 
 struct PropWnd
 {
@@ -236,7 +236,6 @@ impl PropWnd
                 curSel := cast(*FormShape) me.getSelectedBaseForm()
                 rect := pos
                 rect.inflate(-9, -9)
-                rect.moveLeft(4)
                 cap := cast(LineCapStyle) cast(uint) btn.userData
                 pen := Pen.createSolid(btn.getThemeColors().btnIcon_Icon, CapSize)
                 pen.beginCapStyle = cap
@@ -287,7 +286,6 @@ impl PropWnd
                 curSel := cast(*FormShape) me.getSelectedBaseForm()
                 rect := pos
                 rect.inflate(-9, -9)
-                rect.moveRight(-4)
                 cap := cast(LineCapStyle) cast(uint) btn.userData
                 pen := Pen.createSolid(btn.getThemeColors().btnIcon_Icon, CapSize)
                 pen.beginCapStyle = .None
@@ -467,7 +465,7 @@ impl PropWnd
     mtd propStartCapStyle(stack: *Wnd)
     {
         curSelType := getSelectedFormType()
-        if curSelType != FormLine
+        if curSelType != FormLine and curSelType != FormArrow
             return
 
         btn := createPaintButton(stack)
@@ -479,7 +477,6 @@ impl PropWnd
             curSel := cast(*FormLine) me.getSelectedBaseForm()
             rect := pos
             rect.inflate(-9, -9)
-            rect.moveLeft(4)
             pen := Pen.createSolid(btn.getThemeColors().btnIcon_Icon, CapSize)
             pen.beginCapStyle = curSel.beginCap
             pen.endCapStyle = .None
@@ -495,7 +492,7 @@ impl PropWnd
     mtd propEndCapStyle(stack: *Wnd)
     {
         curSelType := getSelectedFormType()
-        if curSelType != FormLine
+        if curSelType != FormLine and curSelType != FormArrow
             return
 
         btn := createPaintButton(stack)
@@ -507,7 +504,6 @@ impl PropWnd
             curSel := cast(*FormLine) me.getSelectedBaseForm()
             rect := pos
             rect.inflate(-9, -9)
-            rect.moveRight(-4)
             pen := Pen.createSolid(btn.getThemeColors().btnIcon_Icon, CapSize)
             pen.beginCapStyle = .None
             pen.endCapStyle = curSel.endCap
@@ -523,7 +519,7 @@ impl PropWnd
     mtd propLineStyle(stack: *Wnd)
     {
         curSelType := getSelectedFormType()
-        if curSelType != FormShape and curSelType != FormLine
+        if curSelType != FormShape and curSelType != FormLine and curSelType != FormArrow
             return
 
         btn := createPaintButton(stack)
@@ -548,39 +544,33 @@ impl PropWnd
     mtd propStartSize()
     {
         curSelType := getSelectedFormType()
-        if curSelType != FormArrow
+        if curSelType != FormLine and curSelType != FormArrow
             return
-        curSel := cast(*FormArrow) getSelectedBaseForm()
+        curSel := cast(*FormLine) getSelectedBaseForm()
 
-        ctrl := createSlider("Start Size", 1, acast MaxArrowStartSize, curSel.startSize)
+        ctrl := createSlider("Start Size", 2, acast MaxStartSize, curSel.startSize)
         ctrl.slider.sigStartChange += @|self|(slider) {
-            self.pushTypedValue(bitcast(u32) slider.getValue(), @typeof(FormArrow), @nameof(FormArrow.startSize), true)
+            self.pushTypedValue(bitcast(u32) slider.getValue(), @typeof(FormLine), @nameof(FormLine.startSize), true)
         }
         ctrl.slider.sigChanged += @|self|(slider) {
-            self.pushTypedValue(bitcast(u32) slider.getValue(), @typeof(FormArrow), @nameof(FormArrow.startSize), false)
+            self.pushTypedValue(bitcast(u32) slider.getValue(), @typeof(FormLine), @nameof(FormLine.startSize), false)
         }
-
-        if curSel.startShape == .Flat
-            ctrl.disable()
     }
 
     mtd propEndSize()
     {
         curSelType := getSelectedFormType()
-        if curSelType != FormArrow
+        if curSelType != FormLine and curSelType != FormArrow
             return
 
-        curSel := cast(*FormArrow) getSelectedBaseForm()
-        ctrl := createSlider("End Size", 1, acast MaxArrowEndSize, curSel.endSize)
+        curSel := cast(*FormLine) getSelectedBaseForm()
+        ctrl := createSlider("End Size", 2, acast MaxEndSize, curSel.endSize)
         ctrl.slider.sigStartChange += @|self|(slider) {
-            self.pushTypedValue(bitcast(u32) slider.getValue(), @typeof(FormArrow), @nameof(FormArrow.endSize), true)
+            self.pushTypedValue(bitcast(u32) slider.getValue(), @typeof(FormLine), @nameof(FormLine.endSize), true)
         }
         ctrl.slider.sigChanged += @|self|(slider) {
-            self.pushTypedValue(bitcast(u32) slider.getValue(), @typeof(FormArrow), @nameof(FormArrow.endSize), false)
+            self.pushTypedValue(bitcast(u32) slider.getValue(), @typeof(FormLine), @nameof(FormLine.endSize), false)
         }
-
-        if curSel.endShape == .Flat
-            ctrl.disable()
     }
 
     mtd propBorderSize()
@@ -614,13 +604,15 @@ impl PropWnd
         if !getSelectedBaseForm()
             return
 
-        stack := StackLayoutCtrl.create(self, .HorzCenter, @{0, 0, 0, 100})
-        propBackColor(stack)
-        propBorderColor(stack)
-        propShape(stack)
-        propStartCapStyle(stack)
-        propLineStyle(stack)
-        propEndCapStyle(stack)
+        stack0 := StackLayoutCtrl.create(self, .HorzCenter, @{0, 0, 0, 100})
+        propBackColor(stack0)
+        propBorderColor(stack0)
+        propShape(stack0)
+
+        stack1 := StackLayoutCtrl.create(self, .HorzCenter, @{0, 0, 0, 100})
+        propStartCapStyle(stack1)
+        propLineStyle(stack1)
+        propEndCapStyle(stack1)
 
         propBorderSize()
         propStartSize()

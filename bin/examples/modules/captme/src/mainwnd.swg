@@ -322,6 +322,7 @@ impl MainWnd
         res.propWnd = Wnd.create'PropWnd(rightWnd, @{0, 0, 0, 300})
         res.propWnd.main = res
         res.propWnd.backgroundStyle = .Window
+        res.propWnd.layoutKind = .TopAutoSize
 
         res.updateState()
         return res

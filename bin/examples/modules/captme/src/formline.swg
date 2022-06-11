@@ -6,6 +6,8 @@ struct FormLine
     gizmo:      GizmoPoints
     beginCap:   LineCapStyle = .Round
     endCap:     LineCapStyle = .Round
+    startSize:  f32 = 2
+    endSize:    f32 = 2
     xa, ya, xb, yb: f32
     x0, y0, x1, y1: f32
 }
@@ -20,7 +22,9 @@ impl IForm for FormLine
                 alpha       == other.alpha and
                 beginCap    == other.beginCap and
                 endCap      == other.endCap and
-                dashStyle   == other.dashStyle
+                dashStyle   == other.dashStyle and
+                startSize   == other.startSize and
+                endSize     == other.endSize
     }
 
     mtd copy(dst, src: *BaseForm)
@@ -33,6 +37,8 @@ impl IForm for FormLine
         dstf.beginCap    = srcf.beginCap
         dstf.endCap      = srcf.endCap
         dstf.dashStyle   = srcf.dashStyle
+        dstf.startSize   = srcf.startSize
+        dstf.endSize     = srcf.endSize
     }
 
     mtd edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
@@ -131,6 +137,10 @@ impl IForm for FormLine
         pen := Pen.createDash(dashStyle, borderColor, bSize)
         pen.beginCapStyle = beginCap
         pen.endCapStyle = endCap
+        pen.capStartScaleX = startSize
+        pen.capStartScaleY = startSize
+        pen.capEndScaleX   = endSize
+        pen.capEndScaleY   = endSize
         //pen.dashBeginCapStyle = .Round
         //pen.dashEndCapStyle = .Round
         painter.drawLine(x0 - paintPos.x, y0 - paintPos.y, x1 - paintPos.x, y1 - paintPos.y, pen)

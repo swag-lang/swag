@@ -70,12 +70,15 @@ impl Painter
         }
     }
 
-    mtd drawCapSquareAnchor(p1, d1: Vector2, sens: f32, pen: Pen)
+    mtd drawCapSquareAnchor(p1, d1: Vector2, sens: f32, pen: Pen, start: bool)->Vector2
     {
+        sx := start ? pen.capStartScaleX : pen.capEndScaleX
+        sy := start ? pen.capStartScaleY : pen.capEndScaleY
+
         p := p1
-        d := d1 * pen.squareAnchorScaleX
+        d := d1 * sx
         n := Vector2{d.y * sens, -d.x * sens}
-        n.setLengthSafe(d.length() * pen.squareAnchorScaleY)
+        n.setLengthSafe(d.length() * sy)
         p -= n * 0.5
 
         v0 := Vector2{p.x + d.x, p.y + d.y}
@@ -98,13 +101,18 @@ impl Painter
             addEdgeAA(prim2, v3, v2)
             addEdgeAA(prim2, v0, v1)
         }
+
+        return Vector2.Zero
     }
 
-    mtd drawCapArrowAnchor(p1, d1: Vector2, sens: f32, pen: Pen)->Vector2
+    mtd drawCapArrowAnchor(p1, d1: Vector2, sens: f32, pen: Pen, start: bool)->Vector2
     {
+        sx := start ? pen.capStartScaleX : pen.capEndScaleX
+        sy := start ? pen.capStartScaleY : pen.capEndScaleY
+
         p := p1
-        d := d1 * pen.arrowAnchorScaleX
-        n := Vector2{d.y * sens * pen.arrowAnchorScaleY, -d.x * sens * pen.arrowAnchorScaleY}
+        d := d1 * sx
+        n := Vector2{d.y * sens * sy, -d.x * sens * sy}
         p -= n
 
         v0 := Vector2{p.x + d.x, p.y + d.y}
@@ -137,7 +145,7 @@ impl Painter
         drawRound(p, radius, angle0, angle1, pen)
     }
 
-    mtd drawLineCap(capStyle: LineCapStyle, p, d: Vector2, sens: f32, pen: Pen)->Vector2
+    mtd drawLineCap(capStyle: LineCapStyle, p, d: Vector2, sens: f32, pen: Pen, start: bool)->Vector2
     {
         #[Swag.Complete]
         switch capStyle
@@ -158,11 +166,10 @@ impl Painter
             return Vector2.Zero
 
         case SquareAnchor:
-            drawCapSquareAnchor(p, d, sens, pen)
-            return Vector2.Zero
+            return drawCapSquareAnchor(p, d, sens, pen, start)
 
         case ArrowAnchor:
-            return drawCapArrowAnchor(p, d, sens, pen)
+            return drawCapArrowAnchor(p, d, sens, pen, start)
         }
 
         return Vector2.Zero
@@ -571,7 +578,7 @@ impl Painter
         n.normalizeSafe()
         c := n.cross(1)
         c *= penSize2
-        return drawLineCap(pen.beginCapStyle, v1, c, 1.0, dref pen)
+        return drawLineCap(pen.beginCapStyle, v1, c, 1.0, dref pen, true)
     }
 
     mtd drawLineEndCap(using cxt: *Context)->Vector2
@@ -585,7 +592,7 @@ impl Painter
         n.normalizeSafe()
         c := n.cross(1)
         c *= penSize2
-        return drawLineCap(pen.endCapStyle, v1, c, -1.0, dref pen)
+        return drawLineCap(pen.endCapStyle, v1, c, -1.0, dref pen, false)
     }
 
     mtd drawPath(using cxt: *Context)
