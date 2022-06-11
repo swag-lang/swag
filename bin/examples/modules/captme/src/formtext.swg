@@ -6,6 +6,7 @@ struct FormText
 
     gizmo:      GizmoRect
     fontSize:   f32 = 48
+    boldSize:   f32 = 0
     text:       String
 }
 
@@ -18,7 +19,8 @@ impl IForm for FormText
                 borderSize  == other.borderSize and
                 backColor   == other.backColor and
                 alpha       == other.alpha and
-                fontSize    == other.fontSize
+                fontSize    == other.fontSize and
+                boldSize    == other.boldSize
     }
 
     mtd copy(dst, src: *BaseForm)
@@ -30,6 +32,7 @@ impl IForm for FormText
         dstf.backColor   = srcf.backColor
         dstf.alpha       = srcf.alpha
         dstf.fontSize    = srcf.fontSize
+        dstf.boldSize    = srcf.boldSize
     }
 
     mtd edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
@@ -117,22 +120,28 @@ impl IForm for FormText
 
     mtd paint(painter: *Painter, z: f32, quickMode: bool)
     {
-        bSize := adaptSize(borderSize, MaxBorderSize, z, quickMode)
+        bSize := adaptSize(borderSize, MinBorderSize, MaxBorderSize, z, quickMode)
+        fSize := adaptSize(fontSize, MinFontSize, MaxFontSize, z, quickMode, 24, 48)
+        sSize := adaptSize(boldSize, MinBoldSize, MaxBoldSize, z, quickMode, 0, 2)
+
         pp := Math.Rectangle{0, 0, paintPos.width, paintPos.height}
         pp.inflate(-bSize * 0.5)
         round := Math.max(bSize, 10)
 
         var pathl: LinePathList
-        text = "TOTO"
+
+        txt := text
+        if txt.isEmpty()
+            txt = "A"
 
         face := g_App.theme.res.defaultTypeFaceR
-        assume face.getStringOutline(&pathl, text, acast fontSize)
+        assume face.getStringOutline(&pathl, txt, acast fSize)
+        pathl.flatten(painter.curState.paintQuality)
+        pathl.offset(sSize, JoinStyle.Round)
 
-        pen := Pen.createSolid(borderColor, borderSize)
+        pen := Pen.createSolid(borderColor, bSize)
         pen.joinStyle = .Round
         pen.plotOffset = 2
-
-        pathl.flatten(painter.curState.paintQuality)
 
         x0 := pp.horzCenter() - (0.5 * (pathl.bvMin.x + pathl.bvMax.x))
         y0 := pp.vertCenter() - (0.5 * (pathl.bvMin.y + pathl.bvMax.y))

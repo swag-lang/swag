@@ -137,7 +137,7 @@ impl IForm for FormShape
 
     mtd paint(painter: *Painter, z: f32, quickMode: bool)
     {
-        bSize := adaptSize(borderSize, MaxBorderSize, z, quickMode)
+        bSize := adaptSize(borderSize, MinBorderSize, MaxBorderSize, z, quickMode)
         pp := Math.Rectangle{0, 0, paintPos.width, paintPos.height}
         pen := Pen.createDash(dashStyle, borderColor, bSize)
 

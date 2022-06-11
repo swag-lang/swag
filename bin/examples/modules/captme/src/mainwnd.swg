@@ -18,8 +18,9 @@ struct MainWnd
     quickWnd:   *QuickWnd
     propWnd:    *PropWnd
 
-    editMode:       EditMode = .Shape
-    mdlFormShape:    FormShape
+    editMode: EditMode = .Shape
+
+    mdlFormShape:   FormShape
     mdlFormArrow:   FormArrow
     mdlFormLine:    FormLine
     mdlFormPolygon: FormPolygon

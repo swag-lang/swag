@@ -62,6 +62,9 @@ impl LinePathList
     // They must before be flattened
     mtd offset(value: f32)
     {
+        if Math.isZeroEpsilon(value) 
+            return
+
         visit p: paths
             p.polygon.offset(value)
     }
@@ -70,6 +73,9 @@ impl LinePathList
     // They must before be flattened
     mtd offset(value: f32, joinStyle: JoinStyle)
     {
+        if Math.isZeroEpsilon(value) 
+            return
+
         visit p: paths
         {
             v := p.polygon.isClockwise ? value : -value

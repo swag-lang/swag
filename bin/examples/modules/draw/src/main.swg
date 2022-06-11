@@ -19,7 +19,7 @@ namespace Res
 var g_ModeAA:       bool = true
 var g_PaintQuality: PaintQuality = Normal
 var g_Pattern:      bool = true
-var g_Page:         s32 = 7
+var g_Page:         s32 = 4
 var g_Angle:        f32 = 0
 const MaxPages = 8
 
@@ -449,10 +449,11 @@ func displayPage4(painter: *Pixel.Painter)
     {
         var p: LinePathList
         painter.translateTransform(50, 570)
-        assume Res.typeface.getStringOutline(&p, "A B C D", 70)
+        assume Res.typeface.getStringOutline(&p, "D", 80)
         p.flatten(g_PaintQuality)
         p.offset(4)
-        p.clean()
+        //p.clean()
+        painter.fillPath(&p, Argb.Blue)
         painter.drawPathList(&p, Argb.Red, 2)
 
         painter.setTransform(trs)
@@ -461,7 +462,7 @@ func displayPage4(painter: *Pixel.Painter)
     {
         var p: LinePathList
         painter.translateTransform(50, 670)
-        assume Res.typeface.getStringOutline(&p, "E F G H", 70)
+        assume Res.typeface.getStringOutline(&p, "D F G H", 70)
         p.flatten(g_PaintQuality)
         p.offset(4, JoinStyle.Round)
         p.clean()

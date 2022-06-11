@@ -103,8 +103,10 @@ impl Polygon
     // Fast expand polygon by a given amount
     mtd offset(value: f32)
     {
-        if Math.isZeroEpsilon(value) return
-        if !points.count return
+        if Math.isZeroEpsilon(value)
+            return
+        if !points.count
+            return
 
         var copy: Array'Vector2
         copy.reserve(points.count)
@@ -137,8 +139,10 @@ impl Polygon
     // Slow but quality offset with a joinStyle
     mtd offset(value: f32, joinStyle: JoinStyle)
     {
-        if Math.isZeroEpsilon(value) return
-        if !points.count return
+        if Math.isZeroEpsilon(value)
+            return
+        if !points.count
+            return
 
         var joinType:   Clipper.JoinType = JoinType.Square
 

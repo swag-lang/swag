@@ -1,9 +1,13 @@
 using Gui, Core, Pixel
 
+const MinBorderSize   = 1.0
 const MaxBorderSize   = 50.0
 const MinCapSize      = 1.0
 const MaxCapSize      = 8.0
+const MinFontSize     = 10.0
 const MaxFontSize     = 150.0
+const MinBoldSize     = 0.0
+const MaxBoldSize     = 4.0
 const CapSize         = 8.0
 const DashSize        = 8.0
 const BtnColorWidth   = 68.0
@@ -587,7 +591,7 @@ impl PropWnd
     mtd propBorderSize()
     {
         curSel := getSelectedBaseForm()
-        ctrl := createSlider("Tickness", 1, acast MaxBorderSize, curSel.borderSize)
+        ctrl := createSlider("Tickness", acast MinBorderSize, acast MaxBorderSize, curSel.borderSize)
         ctrl.slider.sigStartChange += @|self|(slider) {
             self.pushTypedValue(bitcast(u32) slider.getValue(), @typeof(BaseForm), @nameof(BaseForm.borderSize), true)
         }
@@ -603,12 +607,28 @@ impl PropWnd
             return
 
         curSel := cast(*FormText) getSelectedBaseForm()
-        ctrl := createSlider("Size", 1, acast MaxFontSize, acast curSel.fontSize)
+        ctrl := createSlider("Size", acast MinFontSize, acast MaxFontSize, acast curSel.fontSize)
         ctrl.slider.sigStartChange += @|self|(slider) {
             self.pushTypedValue(bitcast(u32) slider.getValue(), @typeof(FormText), @nameof(FormText.fontSize), true)
         }
         ctrl.slider.sigChanged += @|self|(slider) {
             self.pushTypedValue(bitcast(u32) slider.getValue(), @typeof(FormText), @nameof(FormText.fontSize), false)
+        }
+    }
+
+    mtd propBoldSize()
+    {
+        curSelType := getSelectedFormType()
+        if curSelType != FormText
+            return
+
+        curSel := cast(*FormText) getSelectedBaseForm()
+        ctrl := createSlider("Strengh", acast MinBoldSize, acast MaxBoldSize, acast curSel.boldSize)
+        ctrl.slider.sigStartChange += @|self|(slider) {
+            self.pushTypedValue(bitcast(u32) slider.getValue(), @typeof(FormText), @nameof(FormText.boldSize), true)
+        }
+        ctrl.slider.sigChanged += @|self|(slider) {
+            self.pushTypedValue(bitcast(u32) slider.getValue(), @typeof(FormText), @nameof(FormText.boldSize), false)
         }
     }
 
@@ -650,6 +670,7 @@ impl PropWnd
         propEndSize()
         propOpactiy()
         propFontSize()
+        propBoldSize()
 
         layoutWnd.padding = 4
         layoutWnd.padding.y = 16

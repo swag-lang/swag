@@ -1015,6 +1015,7 @@ public impl Painter
     {
         // Add a little offset in case of AA
         offsetPath := curState.paintParams & .Antialiased ? 0.25 : 0
+        offsetPath = 0
 
         // Flatten all paths
         pathList.flatten(curState.paintQuality)

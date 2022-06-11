@@ -160,12 +160,34 @@ impl QuickWnd
         add(BorderSize, Argb.Black)
     }
 
+    mtd loadQuickStyleText()
+    {
+        qsText = Memory.new'QuickStyle()
+
+        #[Swag.Macro]
+        func add(borderSize, fontSize: f32, bdColor, bkColor: Color)
+        {
+            form := Memory.new'FormText()
+            form.borderSize = borderSize
+            form.borderColor = bdColor
+            form.backColor = bkColor
+            form.fontSize = fontSize
+            form.text = "A"
+            it := cast(IForm) form
+            it.setup(null)
+            `qsText.forms.add(it)
+        }
+
+        add(4, 48, Argb.White, Argb.Red)
+    }
+
     mtd loadQuickStyles()
     {
         loadQuickStyleArrow()
         loadQuickStyleShape()
         loadQuickStyleLine()
         loadQuickStylePolygon()
+        loadQuickStyleText()
     }
 
     mtd updateSelection()
@@ -209,7 +231,7 @@ impl QuickWnd
         {
             painter.setParams(.Antialiased)
             sel  := cast(*BaseForm) @dataof(btnp.formItf)
-            s    := cast(s32) BaseForm.adaptSize(sel.borderSize / 2, MaxBorderSize, 1, true)
+            s    := cast(s32) BaseForm.adaptSize(sel.borderSize / 2, MinBorderSize, MaxBorderSize, 1, true)
             rect := Math.Rectangle{8 + s, 8 + s, 48 - 2*s, 48 - 2*s}
 
             switch @kindof(btnp.formItf)
@@ -289,6 +311,11 @@ impl QuickWnd
                     b := cast(*FormArrow) @dataof(it)
                     self.main.mdlFormArrow = dref b
                     mdlValue = Memory.new'FormArrow()
+                    it.copy(mdlValue, b)
+                case FormText:
+                    b := cast(*FormText) @dataof(it)
+                    self.main.mdlFormText = dref b
+                    mdlValue = Memory.new'FormText()
                     it.copy(mdlValue, b)
                 }
 

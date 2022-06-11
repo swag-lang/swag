@@ -117,6 +117,18 @@ impl EditWnd
         itf.setup(capture)
         capture.forms.add(itf)
 
+        form4 := Memory.new'FormText()
+        form4.x = 300
+        form4.y = 100
+        form4.w, form4.h = 100
+        form4.borderColor = Argb.White
+        form4.backColor = Argb.Blue
+        form4.borderSize = 5
+        form4.fontSize = 100
+        itf = cast(IForm) form4
+        itf.setup(capture)
+        capture.forms.add(itf)
+
         view.setCapture(capture)
 
         // END TEMP
