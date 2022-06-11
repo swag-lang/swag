@@ -3,6 +3,8 @@ using Gui, Core, Pixel
 const MaxBorderSize     = 50.0
 const MaxArrowStartSize = 50.0
 const MaxArrowEndSize   = 50.0
+const CapSize           = 8.0
+const DashSize          = 8.0
 
 struct PropWnd
 {
@@ -234,10 +236,9 @@ impl PropWnd
                 curSel := cast(*FormShape) me.getSelectedBaseForm()
                 rect := pos
                 rect.inflate(-9, -9)
-                rect.x += 4
+                rect.moveLeft(4)
                 cap := cast(LineCapStyle) cast(uint) btn.userData
-                rect.moveLeft(Pen.getCapStyleExtent(cap, curSel.borderSize))
-                pen := Pen.createSolid(btn.getThemeColors().btnIcon_Icon, 15)
+                pen := Pen.createSolid(btn.getThemeColors().btnIcon_Icon, CapSize)
                 pen.beginCapStyle = cap
                 pen.endCapStyle = .None
                 bc.painter.drawLine(rect.x, rect.vertCenter(), rect.right(), rect.vertCenter(), pen)
@@ -246,6 +247,57 @@ impl PropWnd
             btn0.sigPressed += @|me, layout|(btn) {
                 kind := cast(u32) cast(LineCapStyle) cast(uint) btn.userData
                 me.pushTypedValue(kind, @typeof(FormLine), @nameof(FormLine.beginCap), true)
+                me.updateBtnState(layout)
+            }
+        }
+
+        layout.computeLayout()
+    }
+
+    mtd createPopupEndCapStyle(btn: *IconButton)
+    {
+        frame := createPopup(btn, 100, 280)
+        layout := StackLayoutCtrl.create(frame, .Top)
+        frame.setView(layout)
+
+        mtd updateBtnState(layout: *Wnd)
+        {
+            curSel := cast(*FormLine) getSelectedBaseForm()
+            visit c: layout.childs
+            {
+                btn := cast(*IconButton) c
+                cap := cast(LineCapStyle) cast(uint) btn.userData
+                btn.isChecked = curSel.endCap == cap
+                btn.invalidate()
+            }
+        }
+
+        curSel := cast(*FormLine) getSelectedBaseForm()
+        visit i: LineCapStyle
+        {
+            btn0 := IconButton.create(layout, @{}, @{0, 0, 0, 40})
+            btn0.userData = cast(*void) cast(uint) i
+            btn0.setForm(.RoundSquare)
+            btn0.isChecked = curSel.endCap == i
+
+            me := self
+            btn0.sigPaintIcon = @|me|(btn, bc, pos)
+            {
+                bc.painter.setParams(.Antialiased)
+                curSel := cast(*FormShape) me.getSelectedBaseForm()
+                rect := pos
+                rect.inflate(-9, -9)
+                rect.moveRight(-4)
+                cap := cast(LineCapStyle) cast(uint) btn.userData
+                pen := Pen.createSolid(btn.getThemeColors().btnIcon_Icon, CapSize)
+                pen.beginCapStyle = .None
+                pen.endCapStyle = cap
+                bc.painter.drawLine(rect.x, rect.vertCenter(), rect.right(), rect.vertCenter(), pen)
+            }
+
+            btn0.sigPressed += @|me, layout|(btn) {
+                kind := cast(u32) cast(LineCapStyle) cast(uint) btn.userData
+                me.pushTypedValue(kind, @typeof(FormLine), @nameof(FormLine.endCap), true)
                 me.updateBtnState(layout)
             }
         }
@@ -289,7 +341,7 @@ impl PropWnd
                 rect := pos
                 rect.inflate(-9, -9)
                 dash := cast(DashStyle) cast(uint) btn.userData
-                pen := Pen.createDash(dash, btn.getThemeColors().btnIcon_Icon, 5)
+                pen := Pen.createDash(dash, btn.getThemeColors().btnIcon_Icon, DashSize)
                 bc.painter.drawLine(rect.x, rect.vertCenter(), rect.right(), rect.vertCenter(), pen)
             }
 
@@ -427,9 +479,8 @@ impl PropWnd
             curSel := cast(*FormLine) me.getSelectedBaseForm()
             rect := pos
             rect.inflate(-9, -9)
-            rect.x += 4
-            rect.moveLeft(Pen.getCapStyleExtent(curSel.beginCap, curSel.borderSize))
-            pen := Pen.createSolid(btn.getThemeColors().btnIcon_Icon, 15)
+            rect.moveLeft(4)
+            pen := Pen.createSolid(btn.getThemeColors().btnIcon_Icon, CapSize)
             pen.beginCapStyle = curSel.beginCap
             pen.endCapStyle = .None
             bc.painter.drawLine(rect.x, rect.vertCenter(), rect.right(), rect.vertCenter(), pen)
@@ -441,6 +492,33 @@ impl PropWnd
         }
     }
 
+    mtd propEndCapStyle(stack: *Wnd)
+    {
+        curSelType := getSelectedFormType()
+        if curSelType != FormLine
+            return
+
+        btn := createPaintButton(stack)
+        btn.name = "End"
+        me := self
+        btn.sigPaintIcon = @|me|(btn, bc, pos)
+        {
+            bc.painter.setParams(.Antialiased)
+            curSel := cast(*FormLine) me.getSelectedBaseForm()
+            rect := pos
+            rect.inflate(-9, -9)
+            rect.moveRight(-4)
+            pen := Pen.createSolid(btn.getThemeColors().btnIcon_Icon, CapSize)
+            pen.beginCapStyle = .None
+            pen.endCapStyle = curSel.endCap
+            bc.painter.drawLine(rect.x, rect.vertCenter(), rect.right(), rect.vertCenter(), pen)
+        }
+
+        btn.sigShowPopup += @|me|(btn) {
+            curSel := cast(*FormShape) me.getSelectedBaseForm()
+            me.createPopupEndCapStyle(btn)
+        }
+    }
 
     mtd propLineStyle(stack: *Wnd)
     {
@@ -457,7 +535,7 @@ impl PropWnd
             curSel := me.getSelectedBaseForm()
             rect := pos
             rect.inflate(-9, -9)
-            pen := Pen.createDash(curSel.dashStyle, btn.getThemeColors().btnIcon_Icon, 5)
+            pen := Pen.createDash(curSel.dashStyle, btn.getThemeColors().btnIcon_Icon, DashSize)
             bc.painter.drawLine(rect.x, rect.vertCenter(), rect.right(), rect.vertCenter(), pen)
         }
 
@@ -542,6 +620,7 @@ impl PropWnd
         propShape(stack)
         propStartCapStyle(stack)
         propLineStyle(stack)
+        propEndCapStyle(stack)
 
         propBorderSize()
         propStartSize()
