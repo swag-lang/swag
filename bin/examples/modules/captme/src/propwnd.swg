@@ -34,6 +34,8 @@ impl PropWnd
                 return cast(*BaseForm) &main.mdlFormShape
             case Polygon:
                 return cast(*BaseForm) &main.mdlFormPolygon
+            case Text:
+                return cast(*BaseForm) &main.mdlFormText
             }
         }
 
@@ -56,6 +58,8 @@ impl PropWnd
                 return FormShape
             case Polygon:
                 return FormPolygon
+            case Text:
+                return FormText
             }
         }
 
@@ -614,11 +618,15 @@ impl PropWnd
         propBackColor(stack0)
         propBorderColor(stack0)
         propShape(stack0)
+        if stack0.childs.count == 0
+            stack0.destroyNow()
 
         stack1 := StackLayoutCtrl.create(self, .HorzCenter, @{0, 0, 0, BtnStyleHeight + 12})
         propStartCapStyle(stack1)
         propDashStyle(stack1)
         propEndCapStyle(stack1)
+        if stack1.childs.count == 0
+            stack1.destroyNow()
 
         propBorderSize()
         propStartSize()

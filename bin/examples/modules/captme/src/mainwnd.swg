@@ -6,6 +6,7 @@ enum EditMode
     Arrow
     Line
     Polygon
+    Text
 }
 
 struct MainWnd
@@ -22,6 +23,7 @@ struct MainWnd
     mdlFormArrow:   FormArrow
     mdlFormLine:    FormLine
     mdlFormPolygon: FormPolygon
+    mdlFormText:    FormText
 }
 
 const Icons48 = #load("ressources/icons48.png")
@@ -70,6 +72,13 @@ impl IWnd for MainWnd
             evt.icon = Icon.from(&icons48, 2)
             evt.name = "polygon"
             evt.checked = editMode == .Polygon
+            evt.accepted = true
+
+        case CmdIdModeText:
+            evt.setFlags |= .Icon | .Checked | .Name
+            evt.icon = Icon.from(&icons48, 4)
+            evt.name = "text"
+            evt.checked = editMode == .Text
             evt.accepted = true
 
         case CmdIdAlignLeft:
@@ -182,6 +191,11 @@ impl IWnd for MainWnd
             evt.accepted = true
             updateState()
 
+        case CmdIdModeText:
+            editMode = .Text
+            evt.accepted = true
+            updateState()
+
         case CmdIdAlignLeft:
             undo = capture.newUndo(.AlignLeft)
             evt.accepted = true
@@ -262,6 +276,7 @@ impl MainWnd
         self.createBtn(CmdIdModeArrow)
         self.createBtn(CmdIdModeLine)
         self.createBtn(CmdIdModePolygon)
+        self.createBtn(CmdIdModeText)
         toolbar.updateCommandState()
     }
 

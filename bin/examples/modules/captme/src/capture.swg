@@ -377,6 +377,10 @@ impl Capture
                     form := Memory.new'FormPolygon()
                     dref form = editView.main.mdlFormPolygon
                     itf = cast(IForm) form
+                case Text:
+                    form := Memory.new'FormText()
+                    dref form = editView.main.mdlFormText
+                    itf = cast(IForm) form
                 }
 
                 itf.setup(self)
@@ -452,6 +456,8 @@ impl Capture
             editView.main.editMode = .Line
         case FormPolygon:
             editView.main.editMode = .Polygon
+        case FormText:
+            editView.main.editMode = .Text
         }
     }
 
@@ -479,6 +485,10 @@ impl Capture
         case FormPolygon:
             b := cast(*FormPolygon) @dataof(f)
             editView.main.mdlFormPolygon = dref b
+
+        case FormText:
+            b := cast(*FormText) @dataof(f)
+            editView.main.mdlFormText = dref b
         }
     }
 

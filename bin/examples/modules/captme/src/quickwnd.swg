@@ -16,6 +16,7 @@ struct QuickWnd
     qsShape:        *QuickStyle
     qsLine:         *QuickStyle
     qsPolygon:      *QuickStyle
+    qsText:         *QuickStyle
     currentStyle:   *QuickStyle
 }
 
@@ -169,6 +170,8 @@ impl QuickWnd
 
     mtd updateSelection()
     {
+        if !currentStyle
+            return
         done := false
         visit it, i: currentStyle.forms
         {
@@ -184,6 +187,8 @@ impl QuickWnd
                 btn.isChecked = it.isSame(&main.mdlFormLine)
             case FormPolygon:
                 btn.isChecked = it.isSame(&main.mdlFormPolygon)
+            case FormText:
+                btn.isChecked = it.isSame(&main.mdlFormText)
             }
 
             if btn.isChecked
@@ -236,6 +241,8 @@ impl QuickWnd
             currentStyle = qsLine
         case Polygon:
             currentStyle = qsPolygon
+        case Text:
+            currentStyle = qsText
         default:
             currentStyle = null
         }
@@ -317,6 +324,8 @@ impl QuickWnd
             btn.formItf = cast(IForm) main.mdlFormLine
         case Polygon:
             btn.formItf = cast(IForm) main.mdlFormPolygon
+        case Text:
+            btn.formItf = cast(IForm) main.mdlFormText
         }
 
         btn.sigPaintIcon = @(btn, bc, pos) {
@@ -353,6 +362,10 @@ impl QuickWnd
             case Polygon:
                 mdl := Memory.new'FormPolygon()
                 mdl.IForm.copy(mdl, &main.mdlFormPolygon)
+                self.currentStyle.forms.add(mdl)
+            case Text:
+                mdl := Memory.new'FormText()
+                mdl.IForm.copy(mdl, &main.mdlFormText)
                 self.currentStyle.forms.add(mdl)
             }
             self.updateQuickStyles()
