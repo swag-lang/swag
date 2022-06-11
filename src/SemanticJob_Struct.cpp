@@ -289,7 +289,9 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         for (int i = 1; i < typeFunc->parameters.size(); i++)
         {
             content += ", ";
-            content += Fmt("p%d: %s", i, typeFunc->parameters[i]->typeInfo->name.c_str());
+            auto type = typeFunc->parameters[i]->typeInfo;
+            type->computeScopedNameExport();
+            content += Fmt("p%d: %s", i, type->scopedNameExport.c_str());
         }
         content += ")";
 
