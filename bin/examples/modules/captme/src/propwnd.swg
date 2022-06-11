@@ -1,12 +1,14 @@
 using Gui, Core, Pixel
 
-const MaxBorderSize = 50.0
-const MinCapSize    = 1.0
-const MaxCapSize    = 8.0
-const CapSize       = 8.0
-const DashSize      = 8.0
-const BtnColorSize  = 88.0
-const BtnStyleSize  = 68.0
+const MaxBorderSize   = 50.0
+const MinCapSize      = 1.0
+const MaxCapSize      = 8.0
+const CapSize         = 8.0
+const DashSize        = 8.0
+const BtnColorWidth   = 68.0
+const BtnColorHeight  = 88.0
+const BtnStyleWidth   = 88.0
+const BtnStyleHeight  = 68.0
 
 struct PropWnd
 {
@@ -98,9 +100,9 @@ impl PropWnd
         return ctrl
     }
 
-    func createPaintButton(stack: *Wnd, size: f32)->*IconButton
+    func createArrowButton(stack: *Wnd, w, h: f32)->*IconButton
     {
-        btn := IconButton.create(stack, @{}, @{0, 0, 64, size})
+        btn := IconButton.create(stack, @{}, @{0, 0, w, h})
         btn.setForm(.RoundSquare)
         btn.style.addStyleSheetColors("btnIcon_Bk        $lighterMedium")
         btn.style.addStyleSheetColors("btnIcon_HotBk     $lighterBig")
@@ -357,7 +359,7 @@ impl PropWnd
 
     mtd propBorderColor(stack: *Wnd)
     {
-        btn := createPaintButton(stack, BtnColorSize)
+        btn := createArrowButton(stack, BtnColorWidth, BtnColorHeight)
 
         curSelType := getSelectedFormType()
         switch curSelType
@@ -399,7 +401,7 @@ impl PropWnd
         if curSelType == FormLine or curSelType == FormArrow
             return
 
-        btn := createPaintButton(stack, BtnColorSize)
+        btn := createArrowButton(stack, BtnColorWidth, BtnColorHeight)
         btn.name = "Fill"
         me := self
         btn.sigPaintIcon = @|me|(btn, bc, pos)
@@ -432,7 +434,7 @@ impl PropWnd
         if curSelType != FormShape
             return
 
-        btn := createPaintButton(stack, 88)
+        btn := createArrowButton(stack, BtnColorWidth, BtnColorHeight)
         btn.name = "Shape"
         me := self
         btn.sigPaintIcon = @|me|(btn, bc, pos)
@@ -470,7 +472,7 @@ impl PropWnd
         if curSelType != FormLine and curSelType != FormArrow
             return
 
-        btn := createPaintButton(stack, BtnStyleSize)
+        btn := createArrowButton(stack, BtnStyleWidth, BtnStyleHeight)
         btn.name = "Start"
         me := self
         btn.sigPaintIcon = @|me|(btn, bc, pos)
@@ -498,7 +500,7 @@ impl PropWnd
         if curSelType != FormLine and curSelType != FormArrow
             return
 
-        btn := createPaintButton(stack, BtnStyleSize)
+        btn := createArrowButton(stack, BtnStyleWidth, BtnStyleHeight)
         btn.name = "End"
         me := self
         btn.sigPaintIcon = @|me|(btn, bc, pos)
@@ -526,7 +528,7 @@ impl PropWnd
         if curSelType != FormShape and curSelType != FormLine and curSelType != FormArrow
             return
 
-        btn := createPaintButton(stack, BtnStyleSize)
+        btn := createArrowButton(stack, BtnStyleWidth, BtnStyleHeight)
         btn.name = "Dash"
         me := self
         btn.sigPaintIcon = @|me|(btn, bc, pos)
@@ -608,12 +610,12 @@ impl PropWnd
         if !getSelectedBaseForm()
             return
 
-        stack0 := StackLayoutCtrl.create(self, .HorzCenter, @{0, 0, 0, BtnColorSize + 12})
+        stack0 := StackLayoutCtrl.create(self, .HorzCenter, @{0, 0, 0, BtnColorHeight + 12})
         propBackColor(stack0)
         propBorderColor(stack0)
         propShape(stack0)
 
-        stack1 := StackLayoutCtrl.create(self, .HorzCenter, @{0, 0, 0, BtnStyleSize + 12})
+        stack1 := StackLayoutCtrl.create(self, .HorzCenter, @{0, 0, 0, BtnStyleHeight + 12})
         propStartCapStyle(stack1)
         propDashStyle(stack1)
         propEndCapStyle(stack1)
