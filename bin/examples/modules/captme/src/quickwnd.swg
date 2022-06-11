@@ -200,6 +200,32 @@ impl QuickWnd
 
     mtd updateQuickStyles()
     {
+        func paintForm(painter: *Painter, btnp: *QuickButton)
+        {
+            painter.setParams(.Antialiased)
+            sel  := cast(*BaseForm) @dataof(btnp.formItf)
+            s    := cast(s32) BaseForm.adaptSize(sel.borderSize / 2, MaxBorderSize, 1, true)
+            rect := Math.Rectangle{8 + s, 8 + s, 48 - 2*s, 48 - 2*s}
+
+            switch @kindof(btnp.formItf)
+            {
+            case FormPolygon:
+                poly := cast(*FormPolygon) @dataof(btnp.formItf)
+                poly.setDefaultShape()
+            case FormLine, FormArrow:
+                line := cast(*FormLine) @dataof(btnp.formItf)
+                xo   := FormLine.drawCapOffset(line.beginCap, line.borderSize, line.startSize * 0.5)
+                yo   := FormLine.drawCapOffset(line.endCap, line.borderSize, line.endSize * 0.5)
+                rect.moveLeft(xo)
+                rect.moveTop(xo)
+                rect.moveRight(-yo)
+                rect.moveBottom(-yo)
+            }
+
+            btnp.formItf.setBaseForm(acast rect.x, acast rect.y, acast rect.width, acast rect.height)
+            Capture.paintForm(btnp.getApp(), painter, @{0, 0, 64, 64}, btnp.formItf, zoom: 1, quickMode: true)
+        }
+
         switch main.editMode
         {
         case Arrow:
@@ -227,19 +253,7 @@ impl QuickWnd
             btn.formItf = it
 
             btn.sigPaintIcon = @(btn, bc, pos) {
-                bc.painter.setParams(.Antialiased)
-                btnp := cast(*QuickButton) btn
-
-                if @kindof(btnp.formItf) == FormPolygon
-                {
-                    poly := cast(*FormPolygon) @dataof(btnp.formItf)
-                    poly.setDefaultShape()
-                }
-
-                sel := cast(*BaseForm) @dataof(btnp.formItf)
-                s := cast(s32) BaseForm.adaptSize(sel.borderSize / 2, MaxBorderSize, 1, true)
-                btnp.formItf.setBaseForm(8 + s, 8 + s, 48 - 2*s, 48 - 2*s)
-                Capture.paintForm(btn.getApp(), bc.painter, @{0, 0, 64, 64}, btnp.formItf, zoom: 1, quickMode: true)
+                paintForm(bc.painter, cast(*QuickButton) btn)
             }
 
             btn.sigCheckChanged += @|self, it|(btn) {
@@ -306,20 +320,7 @@ impl QuickWnd
         }
 
         btn.sigPaintIcon = @(btn, bc, pos) {
-            bc.painter.setParams(.Antialiased)
-            btnp := cast(*QuickButton) btn
-
-            if @kindof(btnp.formItf) == FormPolygon
-            {
-                poly := cast(*FormPolygon) @dataof(btnp.formItf)
-                poly.setDefaultShape()
-            }
-
-            sel := cast(*BaseForm) @dataof(btnp.formItf)
-            s := cast(s32) BaseForm.adaptSize(sel.borderSize / 2, MaxBorderSize, 1, true)
-            btnp.formItf.setBaseForm(8 + s, 8 + s, 48 - 2*s, 48 - 2*s)
-            Capture.paintForm(btn.getApp(), bc.painter, @{0, 0, 64, 64}, btnp.formItf, zoom: 1, quickMode: true)
-
+            paintForm(bc.painter, cast(*QuickButton) btn)
             rect := btn.getClientRect()
             rect.inflate(-2, -2)
             bc.painter.setParams(.Antialiased)

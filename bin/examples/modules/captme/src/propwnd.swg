@@ -240,6 +240,7 @@ impl PropWnd
                 pen := Pen.createSolid(btn.getThemeColors().btnIcon_Icon, CapSize)
                 pen.beginCapStyle = cap
                 pen.endCapStyle = .None
+                rect.moveLeft(FormLine.drawCapOffset(cap, CapSize, pen.capStartScaleX))
                 bc.painter.drawLine(rect.x, rect.vertCenter(), rect.right(), rect.vertCenter(), pen)
             }
 
@@ -290,6 +291,7 @@ impl PropWnd
                 pen := Pen.createSolid(btn.getThemeColors().btnIcon_Icon, CapSize)
                 pen.beginCapStyle = .None
                 pen.endCapStyle = cap
+                rect.moveRight(-FormLine.drawCapOffset(cap, CapSize, pen.capStartScaleX))
                 bc.painter.drawLine(rect.x, rect.vertCenter(), rect.right(), rect.vertCenter(), pen)
             }
 
@@ -480,6 +482,7 @@ impl PropWnd
             pen := Pen.createSolid(btn.getThemeColors().btnIcon_Icon, CapSize)
             pen.beginCapStyle = curSel.beginCap
             pen.endCapStyle = .None
+            rect.moveLeft(FormLine.drawCapOffset(curSel.beginCap, CapSize, pen.capStartScaleX))
             bc.painter.drawLine(rect.x, rect.vertCenter(), rect.right(), rect.vertCenter(), pen)
         }
 
@@ -507,6 +510,7 @@ impl PropWnd
             pen := Pen.createSolid(btn.getThemeColors().btnIcon_Icon, CapSize)
             pen.beginCapStyle = .None
             pen.endCapStyle = curSel.endCap
+            rect.moveRight(-FormLine.drawCapOffset(curSel.endCap, CapSize, pen.capStartScaleX))
             bc.painter.drawLine(rect.x, rect.vertCenter(), rect.right(), rect.vertCenter(), pen)
         }
 

@@ -6,6 +6,7 @@ struct FormLine
     gizmo:      GizmoPoints
     beginCap:   LineCapStyle = .Round
     endCap:     LineCapStyle = .Round
+    dashCap:    DashCapStyle = .None
     startSize:  f32 = 4
     endSize:    f32 = 4
     xa, ya, xb, yb: f32
@@ -24,7 +25,8 @@ impl IForm for FormLine
                 endCap      == other.endCap and
                 dashStyle   == other.dashStyle and
                 startSize   == other.startSize and
-                endSize     == other.endSize
+                endSize     == other.endSize and
+                dashCap     == other.dashCap
     }
 
     mtd copy(dst, src: *BaseForm)
@@ -39,6 +41,7 @@ impl IForm for FormLine
         dstf.dashStyle   = srcf.dashStyle
         dstf.startSize   = srcf.startSize
         dstf.endSize     = srcf.endSize
+        dstf.dashCap     = srcf.dashCap
     }
 
     mtd edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
@@ -135,14 +138,25 @@ impl IForm for FormLine
         bSize := adaptSize(borderSize, MaxBorderSize, z, quickMode)
         computePaintCoords(z)
         pen := Pen.createDash(dashStyle, borderColor, bSize)
-        pen.beginCapStyle = beginCap
-        pen.endCapStyle = endCap
-        pen.capStartScaleX = startSize * (quickMode ? 0.75 : 1)
+        pen.beginCapStyle  = beginCap
+        pen.endCapStyle    = endCap
+        pen.capStartScaleX = startSize
+        pen.capEndScaleX   = endSize
         pen.capStartScaleY = 2
-        pen.capEndScaleX   = endSize * (quickMode ? 0.75 : 1)
         pen.capEndScaleY   = 2
-        //pen.dashBeginCapStyle = .Round
-        //pen.dashEndCapStyle = .Round
+
+        if quickMode
+        {
+            while pen.capStartScaleX > 4 or pen.capEndScaleX > 4
+            {
+                pen.capStartScaleX *= 0.9
+                pen.capEndScaleX *= 0.9
+            }
+        }
+
+        pen.dashBeginCapStyle = dashCap
+        pen.dashEndCapStyle   = dashCap
+
         painter.drawLine(x0 - paintPos.x, y0 - paintPos.y, x1 - paintPos.x, y1 - paintPos.y, pen)
     }
 
@@ -165,5 +179,19 @@ impl IForm for FormLine
             self.capture.pushUndo(undo)
             self.capture.editView.invalidate()
         }
+    }
+}
+
+impl FormLine
+{
+    func drawCapOffset(cap: LineCapStyle, size, scale: f32)->f32
+    {
+        switch cap
+        {
+        case ArrowAnchor:   return -size * 0.5
+        case SquareAnchor:  return size * 0.5 * scale
+        }
+
+        return 0
     }
 }
