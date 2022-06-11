@@ -72,16 +72,11 @@ impl Painter
 
     mtd drawCapSquareAnchor(p1, d1: Vector2, sens: f32, pen: Pen)
     {
-        // Shift a little bit "inside" the line, so that the line will
-        // overwrite the bad AA edges
         p := p1
-        v := d1.cross(-sens)
-        v.normalizeSafe()
-        p += v
-
         d := d1 * pen.squareAnchorScaleX
         n := Vector2{d.y * sens, -d.x * sens}
         n.setLengthSafe(d.length() * pen.squareAnchorScaleY)
+        p -= n * 0.5
 
         v0 := Vector2{p.x + d.x, p.y + d.y}
         v1 := Vector2{p.x - d.x, p.y - d.y}
@@ -105,17 +100,12 @@ impl Painter
         }
     }
 
-    mtd drawCapArrowAnchor(p1, d1: Vector2, sens: f32, pen: Pen)
+    mtd drawCapArrowAnchor(p1, d1: Vector2, sens: f32, pen: Pen)->Vector2
     {
-        // Shift a little bit "inside" the line, so that the line will
-        // overwrite the bad AA edges
         p := p1
-        v := d1.cross(-sens)
-        v.normalizeSafe()
-        p += v
-
         d := d1 * pen.arrowAnchorScaleX
-        n  := Vector2{d.y * sens * pen.arrowAnchorScaleY, -d.x * sens * pen.arrowAnchorScaleY}
+        n := Vector2{d.y * sens * pen.arrowAnchorScaleY, -d.x * sens * pen.arrowAnchorScaleY}
+        p -= n
 
         v0 := Vector2{p.x + d.x, p.y + d.y}
         v1 := Vector2{p.x - d.x, p.y - d.y}
@@ -128,6 +118,8 @@ impl Painter
             addEdgeAA(prim1, v0, v2)
             addEdgeAA(prim1, v0, v1)
         }
+
+        return n - n.toNormalizeSafe()
     }
 
     mtd drawCapRound(p, d: Vector2, sens: f32, pen: Pen)
@@ -145,18 +137,35 @@ impl Painter
         drawRound(p, radius, angle0, angle1, pen)
     }
 
-    mtd drawLineCap(capStyle: LineCapStyle, p, d: Vector2, sens: f32, pen: Pen)
+    mtd drawLineCap(capStyle: LineCapStyle, p, d: Vector2, sens: f32, pen: Pen)->Vector2
     {
         #[Swag.Complete]
         switch capStyle
         {
-        case None:          break
-        case Triangle:      drawCapTriangle(p, d, sens, pen)
-        case Round:         drawCapRound(p, d, sens, pen)
-        case Square:        drawCapSquare(p, d, sens, pen)
-        case ArrowAnchor:   drawCapArrowAnchor(p, d, sens, pen)
-        case SquareAnchor:  drawCapSquareAnchor(p, d, sens, pen)
+        case None:
+            return Vector2.Zero
+
+        case Triangle:
+            drawCapTriangle(p, d, sens, pen)
+            return Vector2.Zero
+
+        case Round:
+            drawCapRound(p, d, sens, pen)
+            return Vector2.Zero
+
+        case Square:
+            drawCapSquare(p, d, sens, pen)
+            return Vector2.Zero
+
+        case SquareAnchor:
+            drawCapSquareAnchor(p, d, sens, pen)
+            return Vector2.Zero
+
+        case ArrowAnchor:
+            return drawCapArrowAnchor(p, d, sens, pen)
         }
+
+        return Vector2.Zero
     }
 
     mtd drawDashCap(using cxt: *Context, capStyle: DashCapStyle, p, d: Vector2, sens: f32)
@@ -551,10 +560,10 @@ impl Painter
         }
     }
 
-    mtd drawLineBeginCap(using cxt: *Context)
+    mtd drawLineBeginCap(using cxt: *Context)->Vector2
     {
         if pen.beginCapStyle == .None or penSize < 3
-            return
+            return Vector2.Zero
 
         v1 := path.polygon.getPoint(0, cxt.offsetPath)
         v2 := path.polygon.getPoint(1, cxt.offsetPath)
@@ -562,13 +571,13 @@ impl Painter
         n.normalizeSafe()
         c := n.cross(1)
         c *= penSize2
-        drawLineCap(pen.beginCapStyle, v1, c, 1.0, dref pen)
+        return drawLineCap(pen.beginCapStyle, v1, c, 1.0, dref pen)
     }
 
-    mtd drawLineEndCap(using cxt: *Context)
+    mtd drawLineEndCap(using cxt: *Context)->Vector2
     {
         if pen.endCapStyle == .None or penSize < 3
-            return
+            return Vector2.Zero
 
         v1 := path.polygon.getPoint(path.polygon.points.count - 1, cxt.offsetPath)
         v2 := path.polygon.getPoint(path.polygon.points.count - 2, cxt.offsetPath)
@@ -576,7 +585,7 @@ impl Painter
         n.normalizeSafe()
         c := n.cross(1)
         c *= penSize2
-        drawLineCap(pen.endCapStyle, v1, c, -1.0, dref pen)
+        return drawLineCap(pen.endCapStyle, v1, c, -1.0, dref pen)
     }
 
     mtd drawPath(using cxt: *Context)
@@ -596,20 +605,31 @@ impl Painter
         beginLine   = true
         firstLine   = true
 
+        var offset0, offsetn: Vector2 = ?
+
         // Line caps. Draw them before the line, so that the line will overwrite them a
         // little if necessary
         if !path.isClosed
         {
-            drawLineBeginCap(cxt)
-            drawLineEndCap(cxt)
+            offset0 = drawLineBeginCap(cxt)
+            offsetn = drawLineEndCap(cxt)
+            prev -= offset0
         }
 
-        // Draw all
-        loop i: 1..path.polygon.points.count-1
+        // Draw all except last point, because of potential offset
+        if path.polygon.points.count > 2
         {
-            p := path.polygon.getPoint(i, cxt.offsetPath)
-            drawLine(cxt, p)
+            loop i: 1..path.polygon.points.count-2
+            {
+                p := path.polygon.getPoint(i, cxt.offsetPath)
+                drawLine(cxt, p)
+            }
         }
+
+        // Last point
+        p := path.polygon.getPoint(path.polygon.points.count-1, cxt.offsetPath)
+        p -= offsetn
+        drawLine(cxt, p)
 
         // AA end edge if no end cap
         if !lastLineInvalid and !path.isClosed and (curState.paintParams & .Antialiased) and (pen.endCapStyle == .None)
