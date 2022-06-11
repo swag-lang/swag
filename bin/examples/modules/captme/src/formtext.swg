@@ -5,7 +5,7 @@ struct FormText
     using base: BaseForm
 
     gizmo:      GizmoRect
-    fontSize:   u32 = 48
+    fontSize:   f32 = 48
     text:       String
 }
 
@@ -126,7 +126,7 @@ impl IForm for FormText
         text = "TOTO"
 
         face := g_App.theme.res.defaultTypeFaceR
-        assume face.getStringOutline(&pathl, text, fontSize)
+        assume face.getStringOutline(&pathl, text, acast fontSize)
 
         pen := Pen.createSolid(borderColor, borderSize)
         pen.joinStyle = .Round

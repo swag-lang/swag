@@ -3,6 +3,7 @@ using Gui, Core, Pixel
 const MaxBorderSize   = 50.0
 const MinCapSize      = 1.0
 const MaxCapSize      = 8.0
+const MaxFontSize     = 150.0
 const CapSize         = 8.0
 const DashSize        = 8.0
 const BtnColorWidth   = 68.0
@@ -595,6 +596,22 @@ impl PropWnd
         }
     }
 
+    mtd propFontSize()
+    {
+        curSelType := getSelectedFormType()
+        if curSelType != FormText
+            return
+
+        curSel := cast(*FormText) getSelectedBaseForm()
+        ctrl := createSlider("Size", 1, acast MaxFontSize, acast curSel.fontSize)
+        ctrl.slider.sigStartChange += @|self|(slider) {
+            self.pushTypedValue(bitcast(u32) slider.getValue(), @typeof(FormText), @nameof(FormText.fontSize), true)
+        }
+        ctrl.slider.sigChanged += @|self|(slider) {
+            self.pushTypedValue(bitcast(u32) slider.getValue(), @typeof(FormText), @nameof(FormText.fontSize), false)
+        }
+    }
+
     mtd propOpactiy()
     {
         curSel := getSelectedBaseForm()
@@ -632,6 +649,7 @@ impl PropWnd
         propStartSize()
         propEndSize()
         propOpactiy()
+        propFontSize()
 
         layoutWnd.padding = 4
         layoutWnd.padding.y = 16
