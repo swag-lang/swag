@@ -1,8 +1,8 @@
 using Gui, Core, Pixel
 
 const MaxBorderSize = 50.0
-const MaxStartSize  = 3.0
-const MaxEndSize    = 3.0
+const MinCapSize    = 1.0
+const MaxCapSize    = 8.0
 const CapSize       = 8.0
 const DashSize      = 8.0
 
@@ -548,12 +548,20 @@ impl PropWnd
             return
         curSel := cast(*FormLine) getSelectedBaseForm()
 
-        ctrl := createSlider("Start Size", 2, acast MaxStartSize, curSel.startSize)
+        ctrl := createSlider("Start Size", acast MinCapSize, acast MaxCapSize, curSel.startSize)
         ctrl.slider.sigStartChange += @|self|(slider) {
             self.pushTypedValue(bitcast(u32) slider.getValue(), @typeof(FormLine), @nameof(FormLine.startSize), true)
         }
         ctrl.slider.sigChanged += @|self|(slider) {
             self.pushTypedValue(bitcast(u32) slider.getValue(), @typeof(FormLine), @nameof(FormLine.startSize), false)
+        }
+
+        switch curSel.beginCap
+        {
+        case ArrowAnchor, SquareAnchor:
+            break
+        default:
+            ctrl.slider.disable()
         }
     }
 
@@ -564,12 +572,20 @@ impl PropWnd
             return
 
         curSel := cast(*FormLine) getSelectedBaseForm()
-        ctrl := createSlider("End Size", 2, acast MaxEndSize, curSel.endSize)
+        ctrl := createSlider("End Size", acast MinCapSize, acast MaxCapSize, curSel.endSize)
         ctrl.slider.sigStartChange += @|self|(slider) {
             self.pushTypedValue(bitcast(u32) slider.getValue(), @typeof(FormLine), @nameof(FormLine.endSize), true)
         }
         ctrl.slider.sigChanged += @|self|(slider) {
             self.pushTypedValue(bitcast(u32) slider.getValue(), @typeof(FormLine), @nameof(FormLine.endSize), false)
+        }
+
+        switch curSel.endCap
+        {
+        case ArrowAnchor, SquareAnchor:
+            break
+        default:
+            ctrl.slider.disable()
         }
     }
 

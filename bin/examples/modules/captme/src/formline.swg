@@ -6,8 +6,8 @@ struct FormLine
     gizmo:      GizmoPoints
     beginCap:   LineCapStyle = .Round
     endCap:     LineCapStyle = .Round
-    startSize:  f32 = 2
-    endSize:    f32 = 2
+    startSize:  f32 = 4
+    endSize:    f32 = 4
     xa, ya, xb, yb: f32
     x0, y0, x1, y1: f32
 }
@@ -89,7 +89,7 @@ impl IForm for FormLine
     mtd boundRect()->Math.Rectangle
     {
         var result: retval
-        bSize := borderSize * 2
+        bSize := borderSize * 4
         result.x = Math.min(xa, xb) - bSize
         result.y = Math.min(ya, yb) - bSize
         result.width = Math.abs(xb - xa) + bSize * 2
@@ -137,10 +137,10 @@ impl IForm for FormLine
         pen := Pen.createDash(dashStyle, borderColor, bSize)
         pen.beginCapStyle = beginCap
         pen.endCapStyle = endCap
-        pen.capStartScaleX = startSize
-        pen.capStartScaleY = startSize
-        pen.capEndScaleX   = endSize
-        pen.capEndScaleY   = endSize
+        pen.capStartScaleX = startSize * (quickMode ? 0.75 : 1)
+        pen.capStartScaleY = 2
+        pen.capEndScaleX   = endSize * (quickMode ? 0.75 : 1)
+        pen.capEndScaleY   = 2
         //pen.dashBeginCapStyle = .Round
         //pen.dashEndCapStyle = .Round
         painter.drawLine(x0 - paintPos.x, y0 - paintPos.y, x1 - paintPos.x, y1 - paintPos.y, pen)
