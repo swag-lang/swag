@@ -103,6 +103,7 @@ impl SliderCtrl
     mtd setMinMaxU64(min, max: u64)
     {
         slider.setMinMax(acast min, acast max)
+        slider.sliderFlags |= .Integer
         edit.setInputU64(min, max)
     }
 
@@ -110,6 +111,7 @@ impl SliderCtrl
     mtd setMinMaxS64(min, max: s64)
     {
         slider.setMinMax(acast min, acast max)
+        slider.sliderFlags |= .Integer
         edit.setInputS64(min, max)
     }
 

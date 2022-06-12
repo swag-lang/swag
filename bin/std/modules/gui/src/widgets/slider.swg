@@ -8,6 +8,7 @@ enum SliderFlags
     Range
     HilightBar
     Vertical
+    Integer
 }
 
 struct Slider
@@ -307,6 +308,12 @@ private impl Slider
         {
             r := cast(s32) ((f / steps) + 0.5)
             return r * steps
+        }
+
+        if sliderFlags & .Integer
+        {
+            val := Math.round(min + (max - min) * f)
+            return val / (max - min)
         }
 
         return f
