@@ -313,7 +313,7 @@ private impl Slider
         if sliderFlags & .Integer
         {
             val := Math.round((min + (max - min) * f))
-            return val / (max - min)
+            return (val - min) / (max - min)
         }
 
         return f

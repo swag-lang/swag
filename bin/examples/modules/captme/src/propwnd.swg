@@ -1,11 +1,14 @@
-const MinBorderSize   = 1.0
-const MaxBorderSize   = 50.0
-const MinCapSize      = 1.0
-const MaxCapSize      = 8.0
-const MinFontSize     = 10.0
-const MaxFontSize     = 150.0
-const MinBoldSize     = 0.0
-const MaxBoldSize     = 4.0
+const MinBorderSize     = 1.0
+const MaxBorderSize     = 50.0
+const MinTextBorderSize = 1.0
+const MaxTextBorderSize = 10.0
+const MinCapSize        = 1.0
+const MaxCapSize        = 8.0
+const MinFontSize       = 10.0
+const MaxFontSize       = 150.0
+const MinBoldSize       = 0.0
+const MaxBoldSize       = 4.0
+
 const CapSize         = 8.0
 const DashSize        = 8.0
 const BtnColorWidth   = 68.0
@@ -589,7 +592,18 @@ impl PropWnd
     mtd propBorderSize()
     {
         curSel := getSelectedBaseForm()
-        ctrl := createSlider("Tickness", acast MinBorderSize, acast MaxBorderSize, curSel.borderSize)
+
+        minS := MinBorderSize
+        maxS := MaxBorderSize
+        labl := "Tickness"
+        if getSelectedFormType() == FormText
+        {
+            minS = MinTextBorderSize
+            maxS = MaxTextBorderSize
+            labl = "Outline"
+        }
+
+        ctrl := createSlider(labl, acast minS, acast maxS, curSel.borderSize)
         ctrl.slider.sigStartChange += @|self|(slider) {
             self.pushTypedValue(bitcast(u32) slider.getValue(), @typeof(BaseForm), @nameof(BaseForm.borderSize), true)
         }
