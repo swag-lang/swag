@@ -365,8 +365,10 @@ impl Capture
 
                 var itf: IForm
 
+                mode := editView.main.getEditMode()
+
                 #[Swag.Complete]
-                switch editView.main.editMode
+                switch mode
                 {
                 case Shape:
                     form := Memory.new'FormShape()
@@ -388,6 +390,8 @@ impl Capture
                     form := Memory.new'FormText()
                     dref form = editView.main.mdlFormText
                     itf = cast(IForm) form
+                case Favorites:
+                    break
                 }
 
                 itf.setup(self)
@@ -453,18 +457,39 @@ impl Capture
 
         f := forms[selection.back()]
         t := @kindof(f)
-        switch t
+        main := editView.main
+
+        if main.editMode == .Favorites
         {
-        case FormShape:
-            editView.main.editMode = .Shape
-        case FormArrow:
-            editView.main.editMode = .Arrow
-        case FormLine:
-            editView.main.editMode = .Line
-        case FormPolygon:
-            editView.main.editMode = .Polygon
-        case FormText:
-            editView.main.editMode = .Text
+            switch t
+            {
+            case FormShape:
+                main.favoriteMdl = main.mdlFormShape
+            case FormArrow:
+                main.favoriteMdl = main.mdlFormArrow
+            case FormLine:
+                main.favoriteMdl = main.mdlFormLine
+            case FormPolygon:
+                main.favoriteMdl = main.mdlFormPolygon
+            case FormText:
+                main.favoriteMdl = main.mdlFormText
+            }
+        }
+        else
+        {
+            switch t
+            {
+            case FormShape:
+                main.editMode = .Shape
+            case FormArrow:
+                main.editMode = .Arrow
+            case FormLine:
+                main.editMode = .Line
+            case FormPolygon:
+                main.editMode = .Polygon
+            case FormText:
+                main.editMode = .Text
+            }
         }
     }
 

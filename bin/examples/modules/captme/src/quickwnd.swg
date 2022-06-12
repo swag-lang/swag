@@ -15,6 +15,7 @@ struct QuickWnd
     qsLine:         *QuickStyle
     qsPolygon:      *QuickStyle
     qsText:         *QuickStyle
+    qsFavorites:    *QuickStyle
     currentStyle:   *QuickStyle
 }
 
@@ -158,6 +159,11 @@ impl QuickWnd
         add(BorderSize, Argb.Black)
     }
 
+    mtd loadQuickStyleFavorites()
+    {
+        qsFavorites = Memory.new'QuickStyle()
+    }
+
     mtd loadQuickStyleText()
     {
         qsText = Memory.new'QuickStyle()
@@ -196,6 +202,7 @@ impl QuickWnd
         loadQuickStyleLine()
         loadQuickStylePolygon()
         loadQuickStyleText()
+        loadQuickStyleFavorites()
     }
 
     mtd updateSelection()
@@ -203,6 +210,7 @@ impl QuickWnd
         if !currentStyle
             return
         done := false
+        mode := main.getEditMode()
         visit it, i: currentStyle.forms
         {
             type := @kindof(it)
@@ -210,15 +218,15 @@ impl QuickWnd
             switch type
             {
             case FormArrow:
-                btn.isChecked = it.isSame(&main.mdlFormArrow)
+                btn.isChecked = mode == .Arrow and it.isSame(&main.mdlFormArrow)
             case FormShape:
-                btn.isChecked = it.isSame(&main.mdlFormShape)
+                btn.isChecked = mode == .Shape and it.isSame(&main.mdlFormShape)
             case FormLine:
-                btn.isChecked = it.isSame(&main.mdlFormLine)
+                btn.isChecked = mode == .Line and it.isSame(&main.mdlFormLine)
             case FormPolygon:
-                btn.isChecked = it.isSame(&main.mdlFormPolygon)
+                btn.isChecked = mode == .Polygon and it.isSame(&main.mdlFormPolygon)
             case FormText:
-                btn.isChecked = it.isSame(&main.mdlFormText)
+                btn.isChecked = mode == .Text and it.isSame(&main.mdlFormText)
             }
 
             if btn.isChecked
@@ -273,6 +281,8 @@ impl QuickWnd
             currentStyle = qsPolygon
         case Text:
             currentStyle = qsText
+        case Favorites:
+            currentStyle = qsFavorites
         default:
             currentStyle = null
         }
@@ -296,44 +306,56 @@ impl QuickWnd
             btn.sigCheckChanged += @|self, it|(btn) {
                 if !btn.isChecked
                     return
-                type := @kindof(it)
-                var mdlValue: *BaseForm
-                switch type
-                {
-                case FormShape:
-                    b := cast(*FormShape) @dataof(it)
-                    self.main.mdlFormShape = dref b
-                    mdlValue = Memory.new'FormShape()
-                    it.copy(mdlValue, b)
-                case FormLine:
-                    b := cast(*FormLine) @dataof(it)
-                    self.main.mdlFormLine = dref b
-                    mdlValue = Memory.new'FormLine()
-                    it.copy(mdlValue, b)
-                case FormPolygon:
-                    b := cast(*FormPolygon) @dataof(it)
-                    self.main.mdlFormPolygon = dref b
-                    mdlValue = Memory.new'FormPolygon()
-                    it.copy(mdlValue, b)
-                case FormArrow:
-                    b := cast(*FormArrow) @dataof(it)
-                    self.main.mdlFormArrow = dref b
-                    mdlValue = Memory.new'FormArrow()
-                    it.copy(mdlValue, b)
-                case FormText:
-                    b := cast(*FormText) @dataof(it)
-                    self.main.mdlFormText = dref b
-                    mdlValue = Memory.new'FormText()
-                    it.copy(mdlValue, b)
-                }
 
-                capture := self.main.getCapture()
-                if capture.selection.count
+                self.main.favoriteMdl = it
+
+                type := @kindof(it)
+
+                if self.main.editMode != .Favorites
                 {
-                    undo := capture.newUndo(.SetFormFromModel)
-                    undo.mdlType = type
-                    undo.mdlValue = mdlValue
-                    capture.pushUndo(undo)
+                    var mdlValue: *BaseForm
+                    switch type
+                    {
+                    case FormShape:
+                        b := cast(*FormShape) @dataof(it)
+                        self.main.mdlFormShape = dref b
+                        mdlValue = Memory.new'FormShape()
+                        it.copy(mdlValue, b)
+                    case FormLine:
+                        b := cast(*FormLine) @dataof(it)
+                        self.main.mdlFormLine = dref b
+                        mdlValue = Memory.new'FormLine()
+                        it.copy(mdlValue, b)
+                    case FormPolygon:
+                        b := cast(*FormPolygon) @dataof(it)
+                        self.main.mdlFormPolygon = dref b
+                        mdlValue = Memory.new'FormPolygon()
+                        it.copy(mdlValue, b)
+                    case FormArrow:
+                        b := cast(*FormArrow) @dataof(it)
+                        self.main.mdlFormArrow = dref b
+                        mdlValue = Memory.new'FormArrow()
+                        it.copy(mdlValue, b)
+                    case FormText:
+                        b := cast(*FormText) @dataof(it)
+                        self.main.mdlFormText = dref b
+                        mdlValue = Memory.new'FormText()
+                        it.copy(mdlValue, b)
+                    }
+
+                    capture := self.main.getCapture()
+                    if capture.selection.count
+                    {
+                        undo := capture.newUndo(.SetFormFromModel)
+                        undo.mdlType = type
+                        undo.mdlValue = mdlValue
+                        capture.pushUndo(undo)
+                    }
+                }
+                else
+                {
+                    capture := self.main.getCapture()
+                    capture.selection.clear()
                 }
 
                 self.updateSelection()
@@ -348,8 +370,10 @@ impl QuickWnd
         btn.style.addStyleSheetColors("btnIcon_HotBk       0x0")
         btn.style.addStyleSheetColors("btnIcon_PressedBk   0x0")
 
+        mode := main.getEditMode()
+
         #[Swag.Complete]
-        switch main.editMode
+        switch mode
         {
         case Arrow:
             btn.formItf = cast(IForm) main.mdlFormArrow
@@ -361,6 +385,8 @@ impl QuickWnd
             btn.formItf = cast(IForm) main.mdlFormPolygon
         case Text:
             btn.formItf = cast(IForm) main.mdlFormText
+        case Favorites:
+            btn.formItf = main.favoriteMdl
         }
 
         btn.sigPaintIcon = @(btn, bc, pos) {
@@ -379,8 +405,9 @@ impl QuickWnd
         btn1.style.addStyleSheetColors("btnIcon_PressedBk   $hilightDark")
         btn1.setForm(.Round)
         btn1.sigPressed += @|self, main|(btn) {
+            mode := main.getEditMode()
             #[Swag.Complete]
-            switch main.editMode
+            switch mode
             {
             case Arrow:
                 mdl := Memory.new'FormArrow()
@@ -402,7 +429,10 @@ impl QuickWnd
                 mdl := Memory.new'FormText()
                 mdl.IForm.copy(mdl, &main.mdlFormText)
                 self.currentStyle.forms.add(mdl)
+            case Favorites:
+                break
             }
+
             self.updateQuickStyles()
         }
 

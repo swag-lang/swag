@@ -42,6 +42,8 @@ impl PropWnd
                 return cast(*BaseForm) &main.mdlFormPolygon
             case Text:
                 return cast(*BaseForm) &main.mdlFormText
+            case Favorites:
+                return @dataof(main.favoriteMdl)
             }
         }
 
@@ -66,6 +68,8 @@ impl PropWnd
                 return FormPolygon
             case Text:
                 return FormText
+            case Favorites:
+                return @kindof(main.favoriteMdl)
             }
         }
 

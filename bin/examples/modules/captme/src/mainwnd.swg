@@ -5,6 +5,7 @@ enum EditMode
     Line
     Polygon
     Text
+    Favorites
 }
 
 struct MainWnd
@@ -23,6 +24,7 @@ struct MainWnd
     mdlFormLine:    FormLine
     mdlFormPolygon: FormPolygon
     mdlFormText:    FormText
+    favoriteMdl:    IForm
 }
 
 const Icons48 = #load("ressources/icons48.png")
@@ -48,36 +50,43 @@ impl IWnd for MainWnd
         case CmdIdModeShape:
             evt.setFlags |= .Icon | .Checked | .Name
             evt.icon = Icon.from(&icons48, 0)
-            evt.name = "shape"
+            evt.name = "Shape"
             evt.checked = editMode == .Shape
             evt.accepted = true
 
         case CmdIdModeArrow:
             evt.setFlags |= .Icon | .Checked | .Name
             evt.icon = Icon.from(&icons48, 3)
-            evt.name = "arrow"
+            evt.name = "Arrow"
             evt.checked = editMode == .Arrow
             evt.accepted = true
 
         case CmdIdModeLine:
             evt.setFlags |= .Icon | .Checked | .Name
             evt.icon = Icon.from(&icons48, 1)
-            evt.name = "line"
+            evt.name = "Line"
             evt.checked = editMode == .Line
             evt.accepted = true
 
         case CmdIdModePolygon:
             evt.setFlags |= .Icon | .Checked | .Name
             evt.icon = Icon.from(&icons48, 2)
-            evt.name = "polygon"
+            evt.name = "Polygon"
             evt.checked = editMode == .Polygon
             evt.accepted = true
 
         case CmdIdModeText:
             evt.setFlags |= .Icon | .Checked | .Name
             evt.icon = Icon.from(&icons48, 4)
-            evt.name = "text"
+            evt.name = "Text"
             evt.checked = editMode == .Text
+            evt.accepted = true
+
+        case CmdIdModeFavorites:
+            evt.setFlags |= .Icon | .Checked | .Name
+            evt.icon = Icon.from(&icons48, 5)
+            evt.name = "Favorites"
+            evt.checked = editMode == .Favorites
             evt.accepted = true
 
         case CmdIdAlignLeft:
@@ -195,6 +204,11 @@ impl IWnd for MainWnd
             evt.accepted = true
             updateState()
 
+        case CmdIdModeFavorites:
+            editMode = .Favorites
+            evt.accepted = true
+            updateState()
+
         case CmdIdAlignLeft:
             undo = capture.newUndo(.AlignLeft)
             evt.accepted = true
@@ -255,11 +269,28 @@ impl IWnd for MainWnd
 
 impl MainWnd
 {
+    mtd getEditMode()->EditMode
+    {
+        if editMode == .Favorites
+        {
+            switch @kindof(favoriteMdl)
+            {
+            case FormShape:     return EditMode.Shape
+            case FormArrow:     return EditMode.Arrow
+            case FormLine:      return EditMode.Line
+            case FormPolygon:   return EditMode.Polygon
+            case FormText:      return EditMode.Text
+            }
+        }
+
+        return editMode
+    }
+
     mtd createToolbar()
     {
         mtd createBtn(id: WndId)
         {
-            b := IconButton.create(toolbar, position: @{0, 0, 56, 64})
+            b := IconButton.create(toolbar, position: @{0, 0, 60, 64})
             b.id = #self.id
             b.style.addStyleSheetColors("btnIcon_CheckedBk    $btnIcon_HotBk")
             b.style.addStyleSheetColors("btnIcon_CheckedHotBk $btnIcon_HotBk")
@@ -271,6 +302,7 @@ impl MainWnd
         toolbar.dockStyle = .Top
         toolbar.backgroundStyle = .Window
         toolbar.style.addStyleSheetColors("wnd_Bk $wnd_Caption")
+        self.createBtn(CmdIdModeFavorites)
         self.createBtn(CmdIdModeShape)
         self.createBtn(CmdIdModeArrow)
         self.createBtn(CmdIdModeLine)
@@ -310,6 +342,7 @@ impl MainWnd
 
         res.createToolbar()
         res.registerShortcuts()
+        res.favoriteMdl = &res.mdlFormShape
 
         // Main edit area
         res.editWnd = EditWnd.create(res, res)
