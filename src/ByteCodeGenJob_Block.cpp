@@ -794,6 +794,7 @@ bool ByteCodeGenJob::emitFallThrough(ByteCodeGenContext* context)
             return true;
     }
 
+    emitDebugLine(context);
     fallNode->jumpInstruction = context->bc->numInstructions;
     emitInstruction(context, ByteCodeOp::Jump);
     return true;
@@ -812,6 +813,7 @@ bool ByteCodeGenJob::emitBreak(ByteCodeGenContext* context)
             return true;
     }
 
+    emitDebugLine(context);
     breakNode->jumpInstruction = context->bc->numInstructions;
     emitInstruction(context, ByteCodeOp::Jump);
     return true;
@@ -830,6 +832,7 @@ bool ByteCodeGenJob::emitContinue(ByteCodeGenContext* context)
             return true;
     }
 
+    emitDebugLine(context);
     continueNode->jumpInstruction = context->bc->numInstructions;
     emitInstruction(context, ByteCodeOp::Jump);
     return true;
