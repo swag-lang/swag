@@ -355,6 +355,7 @@ struct SemanticJob : public Job
     static Utf8          getSpecialOpSignature(AstFuncDecl* node);
     static bool          deduceLambdaTypeAffect(SemanticContext* context, AstVarDecl* node, bool& lambdaExpr, bool& genericType);
     static bool          preResolveIdentifierRef(SemanticContext* context);
+    static AstFuncDecl*  getFunctionForReturn(AstNode* node);
 
     static bool resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveBinaryOpMinus(SemanticContext* context, AstNode* left, AstNode* right);

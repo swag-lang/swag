@@ -1076,11 +1076,9 @@ void SemanticJob::propagateReturn(AstNode* node)
     }
 }
 
-bool SemanticJob::resolveReturn(SemanticContext* context)
+AstFuncDecl* SemanticJob::getFunctionForReturn(AstNode* node)
 {
-    SWAG_CHECK(checkUnreachableCode(context));
-
-    auto node = CastAst<AstReturn>(context->node, AstNodeKind::Return);
+    SWAG_ASSERT(node->kind == AstNodeKind::Return);
 
     // For a return inside an inline block, take the original function, except if it is flagged with 'Swag.noreturn'
     auto funcNode = node->ownerFct;
@@ -1092,6 +1090,16 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
             funcNode = node->ownerInline->func;
         }
     }
+
+    return funcNode;
+}
+
+bool SemanticJob::resolveReturn(SemanticContext* context)
+{
+    SWAG_CHECK(checkUnreachableCode(context));
+
+    auto node     = CastAst<AstReturn>(context->node, AstNodeKind::Return);
+    auto funcNode = getFunctionForReturn(node);
 
     node->byteCodeFct      = ByteCodeGenJob::emitReturn;
     node->resolvedFuncDecl = funcNode;

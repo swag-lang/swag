@@ -2243,6 +2243,23 @@ bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node,
             return true;
         }
     }
+    else
+    {
+        auto fctReturn = node->findParent(AstNodeKind::Return);
+        if (fctReturn)
+        {
+            auto funcNode = getFunctionForReturn(fctReturn);
+            if (funcNode->returnType)
+            {
+                auto typeInfo = TypeManager::concreteReferenceType(funcNode->returnType->typeInfo, CONCRETE_FUNC);
+                if (typeInfo->kind == TypeInfoKind::Enum)
+                {
+                    *res = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
+                    return true;
+                }
+            }
+        }
+    }
 
     // We go up in the hierarchy until we find a statement, or a contextual type to return
     while (parent && !done)
