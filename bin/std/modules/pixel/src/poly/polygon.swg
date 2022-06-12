@@ -117,16 +117,27 @@ impl Polygon
         points =,move copy
     }
 
-    mtd storeClipperResult(res: Clipper.ClipperPath)
+    mtd storeClipperResult(res: Clipper.ClipperPath, revert: bool)
     {
         clear()
         if !res.count
             return
 
-        visit pt: res
+        if revert
         {
-            vec := Math.Vector2{cast(f32) (pt.x / ClipperScaleCoords), cast(f32) (pt.y / ClipperScaleCoords)}
-            add(vec)
+            visit(Back) pt: res
+            {
+                vec := Math.Vector2{cast(f32) (pt.x / ClipperScaleCoords), cast(f32) (pt.y / ClipperScaleCoords)}
+                add(vec)
+            }
+        }
+        else
+        {
+            visit pt: res
+            {
+                vec := Math.Vector2{cast(f32) (pt.x / ClipperScaleCoords), cast(f32) (pt.y / ClipperScaleCoords)}
+                add(vec)
+            }
         }
 
         // Closed path needs last point to be the same as the first one
@@ -144,13 +155,13 @@ impl Polygon
         if !points.count
             return
 
-        var joinType:   Clipper.JoinType = JoinType.Square
+        joinType := Clipper.JoinType.Square
 
         switch joinStyle
         {
-        case Round: joinType = Clipper.JoinType.Round
-        case Bevel: joinType = Clipper.JoinType.Square
-        case Miter: joinType = Clipper.JoinType.Miter
+        case Round: joinType = .Round
+        case Bevel: joinType = .Square
+        case Miter: joinType = .Miter
         }
 
         var res: Clipper.ClipperPaths
@@ -170,7 +181,9 @@ impl Polygon
 
         // Get result
         if res.count
-            storeClipperResult(res[0])
+            storeClipperResult(res[0], false)
+        else
+            clear()
     }
 
     mtd getCleanedPaths()->Clipper.ClipperPaths
@@ -201,7 +214,9 @@ impl Polygon
     {
         res := getCleanedPaths()
         if res.count
-            storeClipperResult(res[0])
+            storeClipperResult(res[0], !isClockwise)
+        else
+            clear()
     }
 
     // Compute internal values, like convex/clockwise

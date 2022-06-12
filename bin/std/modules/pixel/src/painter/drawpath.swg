@@ -612,7 +612,7 @@ impl Painter
         beginLine   = true
         firstLine   = true
 
-        var offset0, offsetn: Vector2 = ?
+        var offset0, offsetn: Vector2
 
         // Line caps. Draw them before the line, so that the line will overwrite them a
         // little if necessary
@@ -623,7 +623,8 @@ impl Painter
             prev -= offset0
         }
 
-        // Draw all except last point, because of potential offset
+        // Draw all except last point, because of potential offset for the last point
+        // (because of cap styles)
         if path.polygon.points.count > 2
         {
             loop i: 1..path.polygon.points.count-2
@@ -893,9 +894,6 @@ public impl Painter
         if Math.isZeroEpsilon(path.polygon.totalLen)
             return
 
-        // Add a little offset in case of AA
-        offsetPath := curState.paintParams & .Antialiased ? 0.25 : 0
-
         // Setup texture
         setTexture0(path.bvMin, path.bvMax, brush)
         resetTextureFont()
@@ -909,14 +907,14 @@ public impl Painter
             center := Vector2{path.bvMin.x + (path.bvMax.x - path.bvMin.x) * 0.5, path.bvMin.y + (path.bvMax.y - path.bvMin.y) * 0.5}
             loop i: count
             {
-                v0 := polygon.getPoint(i, offsetPath)
-                v1 := polygon.getPoint((i + 1) % count, offsetPath)
+                v0 := polygon.getPoint(i)
+                v1 := polygon.getPoint((i + 1) % count)
                 prim := pushTriangle(center, v0, v1, brush.color)
 
                 if curState.paintParams & .Antialiased
                 {
-                    v2 := polygon.getPoint((i + 2) % count, offsetPath)
-                    vp := polygon.getPoint((i + count - 1) % count, offsetPath)
+                    v2 := polygon.getPoint((i + 2) % count)
+                    vp := polygon.getPoint((i + count - 1) % count)
                     addEdgeAA(prim, v0, v1)
                     addEdgeAA(prim, v1, v2)
                     addEdgeAA(prim, vp, v0)
@@ -927,15 +925,15 @@ public impl Painter
         // Non convex shape: triangulate
         else
         {
-            mtd storeResult(polygon: *Polygon, result: Array's32, brush: Brush, offsetPath: f32)
+            mtd storeResult(polygon: *Polygon, result: Array's32, brush: Brush)
             {
                 pidx := result.buffer
                 firstPrim := vertexBuffer.count
                 loop result.count / 3
                 {
-                    v0 := polygon.getPoint(cast(uint) pidx[0] + 1, offsetPath)
-                    v1 := polygon.getPoint(cast(uint) pidx[1] + 1, offsetPath)
-                    v2 := polygon.getPoint(cast(uint) pidx[2] + 1, offsetPath)
+                    v0 := polygon.getPoint(cast(uint) pidx[0] + 1)
+                    v1 := polygon.getPoint(cast(uint) pidx[1] + 1)
+                    v2 := polygon.getPoint(cast(uint) pidx[2] + 1)
                     prim := pushTriangle(v0, v1, v2, brush.color)
                     pidx += 3
                 }
@@ -951,27 +949,27 @@ public impl Painter
                         index  := psrc[0]
                         indexn := (index + 1) % cpt
                         indexp := index ? index - 1 : cpt - 1
-                        v  := polygon.getPoint(cast(uint) index + 1, offsetPath)
-                        vp := polygon.getPoint(cast(uint) indexp + 1, offsetPath)
-                        vn := polygon.getPoint(cast(uint) indexn + 1, offsetPath)
+                        v  := polygon.getPoint(cast(uint) index + 1)
+                        vp := polygon.getPoint(cast(uint) indexp + 1)
+                        vn := polygon.getPoint(cast(uint) indexn + 1)
                         addEdgeAA(firstPrim, v, vp)
                         addEdgeAA(firstPrim, v, vn)
 
                         index  = psrc[1]
                         indexn = (index + 1) % cpt
                         indexp = index ? index - 1 : cpt - 1
-                        v  = polygon.getPoint(cast(uint) index + 1, offsetPath)
-                        vp = polygon.getPoint(cast(uint) indexp + 1, offsetPath)
-                        vn = polygon.getPoint(cast(uint) indexn + 1, offsetPath)
+                        v  = polygon.getPoint(cast(uint) index + 1)
+                        vp = polygon.getPoint(cast(uint) indexp + 1)
+                        vn = polygon.getPoint(cast(uint) indexn + 1)
                         addEdgeAA(firstPrim, v, vp)
                         addEdgeAA(firstPrim, v, vn)
 
                         index  = psrc[2]
                         indexn = (index + 1) % cpt
                         indexp = index ? index - 1 : cpt - 1
-                        v  = polygon.getPoint(cast(uint) index + 1, offsetPath)
-                        vp = polygon.getPoint(cast(uint) indexp + 1, offsetPath)
-                        vn = polygon.getPoint(cast(uint) indexn + 1, offsetPath)
+                        v  = polygon.getPoint(cast(uint) index + 1)
+                        vp = polygon.getPoint(cast(uint) indexp + 1)
+                        vn = polygon.getPoint(cast(uint) indexn + 1)
                         addEdgeAA(firstPrim, v, vp)
                         addEdgeAA(firstPrim, v, vn)
 
@@ -990,14 +988,14 @@ public impl Painter
                 savePoly := path.polygon
                 visit &r: res
                 {
-                    path.polygon.storeClipperResult(dref r)
+                    path.polygon.storeClipperResult(dref r, false)
                     result = triangulate(path)
-                    self.storeResult(&path.polygon, result, brush, offsetPath)
+                    self.storeResult(&path.polygon, result, brush)
                 }
                 path.polygon = savePoly
             }
             else
-                self.storeResult(&path.polygon, result, brush, offsetPath)
+                self.storeResult(&path.polygon, result, brush)
         }
     }
 
@@ -1013,10 +1011,6 @@ public impl Painter
     // clockwise = fill, anti-clockwise = hole
     mtd fillPath(pathList: *LinePathList, brush: Brush)
     {
-        // Add a little offset in case of AA
-        offsetPath := curState.paintParams & .Antialiased ? 0.25 : 0
-        offsetPath = 0
-
         // Flatten all paths
         pathList.flatten(curState.paintQuality)
 
@@ -1038,7 +1032,7 @@ public impl Painter
                 t.startPolyLine()
                 loop i: 0..p.polygon.points.count-2
                 {
-                    pt := p.polygon.getPoint(i, offsetPath)
+                    pt := p.polygon.getPoint(i)
                     t.addPoint(cast(f64) pt.x, cast(f64) pt.y)
                 }
 
