@@ -126,8 +126,8 @@ impl IForm for FormText
     mtd paint(painter: *Painter, z: f32, quickMode: bool)
     {
         bSize := adaptSize(borderSize, MinBorderSize, MaxBorderSize, z, quickMode)
-        fSize := adaptSize(fontSize, MinFontSize, MaxFontSize, z, quickMode, 24, 48)
-        sSize := adaptSize(boldSize, MinBoldSize, MaxBoldSize, z, quickMode, 0, 2)
+        fSize := adaptSize(fontSize, MinFontSize, MaxFontSize, z, quickMode, 24, 64)
+        sSize := adaptSize(boldSize, MinBoldSize, MaxBoldSize, z, quickMode, 1, 2)
 
         pp := Math.Rectangle{0, 0, paintPos.width, paintPos.height}
         pp.inflate(-bSize * 0.5)

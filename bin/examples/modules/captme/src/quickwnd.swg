@@ -176,7 +176,17 @@ impl QuickWnd
             `qsText.forms.add(it)
         }
 
-        add(4, 48, Argb.White, Argb.Red)
+        add(2, 24, Argb.White, Argb.Red)
+        add(2, 24, Argb.White, Argb.Green)
+        add(2, 24, Argb.White, Argb.Blue)
+        add(2, 24, Argb.Zero, Argb.White)
+        add(2, 24, Argb.Zero, Argb.Black)
+
+        add(2, 48, Argb.White, Argb.Red)
+        add(2, 48, Argb.White, Argb.Green)
+        add(2, 48, Argb.White, Argb.Blue)
+        add(2, 48, Argb.Zero, Argb.White)
+        add(2, 48, Argb.Zero, Argb.Black)
     }
 
     mtd loadQuickStyles()

@@ -50,9 +50,11 @@ impl GizmoRect
 
         case MouseLeave:
             if hotAnchor != Swag.U32.Max
+            {
                 view.getApp().popCursor()
-            hotAnchor = Swag.U32.Max
-            return true
+                hotAnchor = Swag.U32.Max
+                return true
+            }
 
         case MouseMove:
             if moving

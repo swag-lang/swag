@@ -224,25 +224,34 @@ impl Capture
             {
                 view.invalidate()
                 evt.accepted = true
-                return true
+                if evt.kind != .MouseLeave
+                    return true
             }
-
-            if evt.kind == .MouseLeave
-                return true
 
             // Specific moves only if one single selection
             if selection.count == 1
             {
                 selForm := forms[selection[0]]
                 if selForm.mouse(view, localPos, evt)
-                    return true
+                {
+                    evt.accepted = true
+                    if evt.kind != .MouseLeave
+                        return true
+                }
             }
 
-            ht := hitTest(localPos)
-            if ht != hotForm
+            if evt.kind == .MouseLeave
             {
-                view.invalidate()
-                hotForm = ht
+                hotForm = Swag.UInt.Max
+            }
+            else
+            {
+                ht := hitTest(localPos)
+                if ht != hotForm
+                {
+                    view.invalidate()
+                    hotForm = ht
+                }
             }
 
             if hotForm != Swag.UInt.Max
