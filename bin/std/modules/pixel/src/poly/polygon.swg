@@ -16,7 +16,7 @@ struct Polygon
 
 impl Polygon
 {
-    // Get the given point, with an optional offset
+    // Get the given point
     #[Swag.Inline]
     mtd getPoint(i: uint)->Vector2
     {
@@ -117,7 +117,7 @@ impl Polygon
         points =,move copy
     }
 
-    mtd storeClipperResult(res: Clipper.ClipperPath, revert: bool)
+    private mtd storeClipperResult(res: Clipper.ClipperPath, revert: bool)
     {
         clear()
         if !res.count
@@ -148,7 +148,7 @@ impl Polygon
     }
 
     // Slow but quality offset with a joinStyle
-    mtd offset(value: f32, joinStyle: JoinStyle)
+    mtd offset(value: f32, joinStyle: JoinStyle, toler: f32 = 0.5)
     {
         if Math.isZeroEpsilon(value)
             return
@@ -168,6 +168,7 @@ impl Polygon
         Memory.pushTempAllocator()
         {
             var off: Clipper.Offset
+            off.arcTolerance = toler * ClipperScaleCoords
 
             // Register path
             var path: Clipper.ClipperPath

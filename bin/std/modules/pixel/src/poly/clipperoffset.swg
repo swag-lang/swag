@@ -8,6 +8,8 @@
 #global namespace Clipper
 using Core
 
+const DefaultArcTolerance = 0.25'f64
+
 struct DoublePoint
 {
     x, y: f64
@@ -16,7 +18,7 @@ struct DoublePoint
 struct Offset
 {
     miterLimit:     f64 = 2
-    arcTolerance:   f64 = 0.25
+    arcTolerance:   f64 = DefaultArcTolerance
     destPolys:      ClipperPaths
     srcPoly:        ClipperPath
     destPoly:       ClipperPath
@@ -193,7 +195,6 @@ impl Offset
         else
             miterLim = 0.5
 
-        const DefaultArcTolerance = 0.25'f64
         var y: f64 = ?
         if arcTolerance <= 0.0
             y = DefaultArcTolerance

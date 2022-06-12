@@ -773,13 +773,15 @@ impl Painter
             {
                 mtd addAA(prim: uint, tri: const *Poly2Tri.Triangle)
                 {
-                    if !tri return
+                    if !tri 
+                        return
                     v0 := Vector2{cast(f32) tri.points[0].x, cast(f32) tri.points[0].y}
                     v1 := Vector2{cast(f32) tri.points[1].x, cast(f32) tri.points[1].y}
                     v2 := Vector2{cast(f32) tri.points[2].x, cast(f32) tri.points[2].y}
                     loop e: 3
                     {
-                        if !tri.constrainedEdge[e] continue
+                        if !tri.constrainedEdge[e] 
+                            continue
                         switch e
                         {
                         case 0: addEdgeAA(prim, v1, v2)

@@ -159,13 +159,19 @@ impl IForm for FormText
 
             assume face.getStringOutline(&pathl, text, acast fSize)
             pathl.flatten(painter.curState.paintQuality)
-            pathl.offset(sSize, JoinStyle.Round)
-            pathl.clean()
+            if !Math.isZeroEpsilon(sSize)
+            {
+                pathl.offset(sSize, JoinStyle.Bevel, 0.5)
+                pathl.clean()
+            }
 
             assume face.getStringOutline(&pathl1, text, acast fSize)
             pathl1.flatten(painter.curState.paintQuality)
-            pathl1.offset(bSize + sSize, JoinStyle.Round)
-            pathl1.clean()
+            if !Math.isZeroEpsilon(bSize + sSize)
+            {
+                pathl1.offset(bSize + sSize, JoinStyle.Bevel, 0.5)
+                pathl1.clean()
+            }
         }
 
         x0 := pp.horzCenter() - (0.5 * (pathl.bvMin.x + pathl.bvMax.x))

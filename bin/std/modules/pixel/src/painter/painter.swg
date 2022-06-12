@@ -312,13 +312,28 @@ impl Painter
         {
             ptr := vertexBuffer.buffer + tri + i
             idx := cast(s32) ptr.aanum
-            if idx != 6
+
+            scope here
             {
-                ptr.aa[idx].x = start.x
-                ptr.aa[idx].y = start.y
-                ptr.aa[idx].z = end.x
-                ptr.aa[idx].w = end.y
-                ptr.aanum += 1
+                loop j: cast(s32) ptr.aanum
+                {
+                    if  Math.isEqualEpsilon(ptr.aa[j].x, start.x) and
+                        Math.isEqualEpsilon(ptr.aa[j].y, start.y) and
+                        Math.isEqualEpsilon(ptr.aa[j].z, end.x) and
+                        Math.isEqualEpsilon(ptr.aa[j].w, end.y)
+                    {
+                        break here
+                    }
+                }
+
+                if idx != 6
+                {
+                    ptr.aa[idx].x = start.x
+                    ptr.aa[idx].y = start.y
+                    ptr.aa[idx].z = end.x
+                    ptr.aa[idx].w = end.y
+                    ptr.aanum += 1
+                }
             }
         }
     }
