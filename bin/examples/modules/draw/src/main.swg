@@ -449,10 +449,10 @@ func displayPage4(painter: *Pixel.Painter)
     {
         var p: LinePathList
         painter.translateTransform(50, 570)
-        assume Res.typeface.getStringOutline(&p, "D", 80)
+        assume Res.typeface.getStringOutline(&p, "A B C D", 80)
         p.flatten(g_PaintQuality)
-        p.offset(4)
-        //p.clean()
+        p.offset(4, JoinStyle.Round)
+        p.clean()
         painter.fillPath(&p, Argb.Blue)
         painter.drawPathList(&p, Argb.Red, 2)
 

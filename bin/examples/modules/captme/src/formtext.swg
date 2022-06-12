@@ -126,25 +126,28 @@ impl IForm for FormText
         pp.inflate(-bSize * 0.5)
         round := Math.max(bSize, 10)
 
-        var pathl: LinePathList
+        var pathl, pathl1: LinePathList
 
         txt := text
         if txt.isEmpty()
             txt = "A"
 
         face := g_App.theme.res.defaultTypeFaceR
+
         assume face.getStringOutline(&pathl, txt, acast fSize)
         pathl.flatten(painter.curState.paintQuality)
         pathl.offset(sSize, JoinStyle.Round)
+        pathl.clean()
 
-        pen := Pen.createSolid(borderColor, bSize)
-        pen.joinStyle = .Round
-        pen.plotOffset = 2
+        assume face.getStringOutline(&pathl1, txt, acast fSize)
+        pathl1.flatten(painter.curState.paintQuality)
+        pathl1.offset(bSize + sSize, JoinStyle.Round)
+        pathl1.clean()
 
         x0 := pp.horzCenter() - (0.5 * (pathl.bvMin.x + pathl.bvMax.x))
         y0 := pp.vertCenter() - (0.5 * (pathl.bvMin.y + pathl.bvMax.y))
         painter.translateTransform(x0, y0)
-        painter.drawPathList(&pathl, pen)
+        painter.fillPath(&pathl1, borderColor)
         painter.fillPath(&pathl, backColor)
     }
 
