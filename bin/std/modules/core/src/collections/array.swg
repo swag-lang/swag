@@ -148,6 +148,33 @@ impl Array
         }
     }
 
+    // Vist every elements of the array from end to start
+    #[Macro]
+    func(ptr: bool) opVisitBack(using const self, stmt: code)
+    {
+        if !count return
+
+        // Little trick to avoid labels. That way a 'continue' in the user code will work
+        // correctly, that's why we decrement 'scan' before the use code.
+        scan := buffer + count
+
+        loop count
+        {
+            scan -= 1
+            #macro
+            {
+                #if `ptr
+                    var @alias0 = `scan
+                #elif Reflection.isStruct(T)
+                    var @alias0 = cast(const *T) `scan
+                #else
+                    var @alias0 = `scan[0]
+                var @alias1 = @index
+                #mixin `stmt
+            }
+        }
+    }
+
     mtd free()
     {
         if !buffer
