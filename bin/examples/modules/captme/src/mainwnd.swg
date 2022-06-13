@@ -302,12 +302,12 @@ impl MainWnd
         toolbar.dockStyle = .Top
         toolbar.backgroundStyle = .Window
         toolbar.style.addStyleSheetColors("wnd_Bk $wnd_Caption")
-        self.createBtn(CmdIdModeFavorites)
-        self.createBtn(CmdIdModeShape)
-        self.createBtn(CmdIdModeArrow)
-        self.createBtn(CmdIdModeLine)
-        self.createBtn(CmdIdModePolygon)
-        self.createBtn(CmdIdModeText)
+        createBtn(CmdIdModeFavorites)
+        createBtn(CmdIdModeShape)
+        createBtn(CmdIdModeArrow)
+        createBtn(CmdIdModeLine)
+        createBtn(CmdIdModePolygon)
+        createBtn(CmdIdModeText)
         toolbar.updateCommandState()
     }
 
