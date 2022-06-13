@@ -566,15 +566,22 @@ impl PropWnd
         curSelType := getSelectedFormType()
         if curSelType != FormText
             return
-
         curSel := cast(*FormText) getSelectedBaseForm()
 
-        edt := EditBox.create(self, curSel.text)
+        stack := StackLayoutCtrl.create(self, .Top, @{0, 0, 0, 80})
+
+        combm := ComboBox.create(stack)
+
+        edt := EditBox.create(stack, curSel.text)
         edt.sigLoseFocus += @|self|(edit) {
-            capture := self.main.getCapture()
-            undo := capture.newUndo(.SetText)
-            undo.text = edit.text
-            capture.pushUndo(undo)
+            curSel := cast(*FormText) self.getSelectedBaseForm()
+            if curSel.text != edit.text
+            {
+                capture := self.main.getCapture()
+                undo := capture.newUndo(.SetText)
+                undo.text = edit.text
+                capture.pushUndo(undo)
+            }
         }
     }
 
@@ -700,11 +707,11 @@ impl PropWnd
 
         propText()
         propBorderSize()
+        propFontSize()
+        propBoldSize()
         propStartSize()
         propEndSize()
         propOpactiy()
-        propFontSize()
-        propBoldSize()
 
         layoutWnd.padding = 4
         layoutWnd.padding.y = 16
