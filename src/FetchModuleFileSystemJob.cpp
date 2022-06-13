@@ -16,7 +16,7 @@ JobResult FetchModuleFileSystemJob::execute()
     if (collectSourceFiles)
         g_Log.messageHeaderCentered("Copying", depName.c_str());
     else
-        g_Log.messageHeaderCentered("Linking", depName.c_str());
+        g_Log.messageHeaderCentered("Sharing", depName.c_str());
 
     // Collect list of source files
     set<string> srcFiles;
