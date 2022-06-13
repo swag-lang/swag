@@ -18,6 +18,7 @@ enum UndoKind
     DeleteSelection
     SetTypedValue
     SetFormFromModel
+    SetText
 }
 
 struct Undo
@@ -41,8 +42,10 @@ struct Undo
     oldU32:     Array'u32
     valRef:     const *Swag.TypeValue
     mdlType:    typeinfo
+    text:       String
     mdlValue:   *BaseForm
     oldForm:    Array'*BaseForm
+    oldText:    Array'String
 }
 
 impl Undo
@@ -51,6 +54,17 @@ impl Undo
     {
         switch kind
         {
+        case SetText:
+            selection = capture.selection
+            visit s: selection
+            {
+                f := capture.forms[s]
+                if @kindof(f) != FormText
+                    continue
+                b := cast(*FormText) @dataof(f)
+                oldText.add(b.text)
+            }
+
         case SetFormFromModel:
             selection = capture.selection
             visit s: selection
@@ -119,6 +133,17 @@ impl Undo
         #[Swag.Complete]
         switch kind
         {
+        case SetText:
+            visit s, i: selection
+            {
+                f := capture.forms[s]
+                if @kindof(f) != FormText
+                    continue
+                b := cast(*FormText) @dataof(f)
+                b.text = text
+                b.isDirty = true
+            }
+
         case SetFormFromModel:
             visit s: selection
             {
@@ -286,6 +311,17 @@ impl Undo
         #[Swag.Complete]
         switch kind
         {
+        case SetText:
+            visit s, i: selection
+            {
+                f := capture.forms[s]
+                if @kindof(f) != FormText
+                    continue
+                b := cast(*FormText) @dataof(f)
+                b.text = dref oldText[i]
+                b.isDirty = true
+            }
+
         case SetFormFromModel:
             visit s, i: selection
             {

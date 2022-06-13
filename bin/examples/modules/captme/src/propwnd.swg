@@ -561,6 +561,23 @@ impl PropWnd
         }
     }
 
+    mtd propText()
+    {
+        curSelType := getSelectedFormType()
+        if curSelType != FormText
+            return
+
+        curSel := cast(*FormText) getSelectedBaseForm()
+
+        edt := EditBox.create(self, curSel.text)
+        edt.sigLoseFocus += @|self|(edit) {
+            capture := self.main.getCapture()
+            undo := capture.newUndo(.SetText)
+            undo.text = edit.text
+            capture.pushUndo(undo)
+        }
+    }
+
     mtd propStartSize()
     {
         curSelType := getSelectedFormType()
@@ -681,6 +698,7 @@ impl PropWnd
         if stack1.childs.count == 0
             stack1.destroyNow()
 
+        propText()
         propBorderSize()
         propStartSize()
         propEndSize()

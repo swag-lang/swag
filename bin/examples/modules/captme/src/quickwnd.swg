@@ -255,6 +255,9 @@ impl QuickWnd
             case FormPolygon:
                 poly := cast(*FormPolygon) @dataof(btnp.formItf)
                 poly.setDefaultShape()
+            case FormText:
+                txt := cast(*FormText) @dataof(btnp.formItf)
+                txt.text = "A"
             case FormLine, FormArrow:
                 line := cast(*FormLine) @dataof(btnp.formItf)
                 xo   := FormLine.drawCapOffset(line.beginCap, line.borderSize, line.startSize * 0.5)
