@@ -92,6 +92,9 @@ struct BITMAP
 }
 
 const LF_FACESIZE = 32
+const RASTER_FONTTYPE   = 0x0001
+const DEVICE_FONTTYPE   = 0x0002
+const TRUETYPE_FONTTYPE = 0x0004
 
 struct LOGFONTA
 {
@@ -177,8 +180,8 @@ struct TEXTMETRICW
     tmCharSet:          BYTE
 };
 
-alias FONTENUMPROCA = func(const *LOGFONTA, const *TEXTMETRICA, DWORD, LPARAM);
-alias FONTENUMPROCW = func(const *LOGFONTW, const *TEXTMETRICW, DWORD, LPARAM);
+alias FONTENUMPROCA = func(const *LOGFONTA, const *TEXTMETRICA, DWORD, LPARAM)->BOOL;
+alias FONTENUMPROCW = func(const *LOGFONTW, const *TEXTMETRICW, DWORD, LPARAM)->BOOL;
 
 #[Foreign("Gdi32")]
 {

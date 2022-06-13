@@ -8,18 +8,24 @@ public struct FontFamilyEnumerate
 impl FontFamily
 {
     #[Swag.Callback]
-    func enumFamily(fa: const *LOGFONTW, tm: const *TEXTMETRICW, a: DWORD, lParam: LPARAM)
+    func enumFamily(fa: const *LOGFONTW, tm: const *TEXTMETRICW, fontType: DWORD, lParam: LPARAM)->BOOL
     {
-        len := Utf16.lengthZeroTerminated(&fa.lfFaceName[0])
-        if !len
-            return
-        x := Utf8.fromUtf16(@mkslice(&fa.lfFaceName[0], len))
-        ret := cast(*Array'String) cast(uint) lParam
-        if ret.count < 17
+        if fontType & TRUETYPE_FONTTYPE
         {
-            Console.print(x, "\n")
+            len := Utf16.lengthZeroTerminated(&fa.lfFaceName[0])
+            if !len
+                return TRUE
+            x := Utf8.fromUtf16(@mkslice(&fa.lfFaceName[0], len))
+
+            // ???
+            if x[0] == "@"'u8
+                return TRUE
+
+            ret := cast(*Array'String) cast(uint) lParam
             ret.add(x)
         }
+
+        return TRUE
     }
 
     // Enumerate the font families available in the os
@@ -31,6 +37,7 @@ impl FontFamily
         EnumFontFamiliesW(hdc, null, @mkcallback(&enumFamily), cast(LPARAM) cast(uint) &result)
         ReleaseDC(null, hdc)
 
+        result.sort()
         return result
     }
 }
