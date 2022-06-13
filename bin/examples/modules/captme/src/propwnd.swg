@@ -568,9 +568,14 @@ impl PropWnd
             return
         curSel := cast(*FormText) getSelectedBaseForm()
 
-        stack := StackLayoutCtrl.create(self, .Top, @{0, 0, 0, 80})
+        stack := StackLayoutCtrl.create(self, .Top, @{0, 0, 0, 90})
+        stack.padding = 8
 
         combm := ComboBox.create(stack)
+
+        tt := FontFamily.enumerateFromOs()
+        visit fnt: tt
+            combm.addItem(cast(string) dref fnt)
 
         edt := EditBox.create(stack, curSel.text)
         edt.sigLoseFocus += @|self|(edit) {
@@ -713,7 +718,7 @@ impl PropWnd
         propEndSize()
         propOpactiy()
 
-        layoutWnd.padding = 4
+        layoutWnd.padding = 8
         layoutWnd.padding.y = 16
         layoutWnd.computeLayout()
 

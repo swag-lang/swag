@@ -193,7 +193,7 @@ impl ComboBox
     }
 
     // Add a new item
-    mtd addItem(name: string, id: WndId, icon: Icon = @{}, userData: *void = null)
+    mtd addItem(name: string, id: WndId = null, icon: Icon = @{}, userData: *void = null)
     {
         item := items.newPtr()
         with item

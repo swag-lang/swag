@@ -91,6 +91,95 @@ struct BITMAP
     bmBits:         LPVOID
 }
 
+const LF_FACESIZE = 32
+
+struct LOGFONTA
+{
+    lfHeight:           LONG
+    lfWidth:            LONG
+    lfEscapement:       LONG
+    lfOrientation:      LONG
+    lfWeight:           LONG
+    lfItalic:           BYTE
+    lfUnderline:        BYTE
+    lfStrikeOut:        BYTE
+    lfCharSet:          BYTE
+    lfOutPrecision:     BYTE
+    lfClipPrecision:    BYTE
+    lfQuality:          BYTE
+    lfPitchAndFamily:   BYTE
+    lfFaceName:         [LF_FACESIZE] CHAR
+}
+
+struct LOGFONTW
+{
+    lfHeight:           LONG
+    lfWidth:            LONG
+    lfEscapement:       LONG
+    lfOrientation:      LONG
+    lfWeight:           LONG
+    lfItalic:           BYTE
+    lfUnderline:        BYTE
+    lfStrikeOut:        BYTE
+    lfCharSet:          BYTE
+    lfOutPrecision:     BYTE
+    lfClipPrecision:    BYTE
+    lfQuality:          BYTE
+    lfPitchAndFamily:   BYTE
+    lfFaceName:         [LF_FACESIZE] WCHAR
+}
+
+struct TEXTMETRICA
+{
+    tmHeight:           LONG
+    tmAscent:           LONG
+    tmDescent:          LONG
+    tmInternalLeading:  LONG
+    tmExternalLeading:  LONG
+    tmAveCharWidth:     LONG
+    tmMaxCharWidth:     LONG
+    tmWeight:           LONG
+    tmOverhang:         LONG
+    tmDigitizedAspectX: LONG
+    tmDigitizedAspectY: LONG
+    tmFirstChar:        BYTE
+    tmLastChar:         BYTE
+    tmDefaultChar:      BYTE
+    tmBreakChar:        BYTE
+    tmItalic:           BYTE
+    tmUnderlined:       BYTE
+    tmStruckOut:        BYTE
+    tmPitchAndFamily:   BYTE
+    tmCharSet:          BYTE
+};
+
+struct TEXTMETRICW
+{
+    tmHeight:           LONG
+    tmAscent:           LONG
+    tmDescent:          LONG
+    tmInternalLeading:  LONG
+    tmExternalLeading:  LONG
+    tmAveCharWidth:     LONG
+    tmMaxCharWidth:     LONG
+    tmWeight:           LONG
+    tmOverhang:         LONG
+    tmDigitizedAspectX: LONG
+    tmDigitizedAspectY: LONG
+    tmFirstChar:        WCHAR
+    tmLastChar:         WCHAR
+    tmDefaultChar:      WCHAR
+    tmBreakChar:        WCHAR
+    tmItalic:           BYTE
+    tmUnderlined:       BYTE
+    tmStruckOut:        BYTE
+    tmPitchAndFamily:   BYTE
+    tmCharSet:          BYTE
+};
+
+alias FONTENUMPROCA = func(const *LOGFONTA, const *TEXTMETRICA, DWORD, LPARAM);
+alias FONTENUMPROCW = func(const *LOGFONTW, const *TEXTMETRICW, DWORD, LPARAM);
+
 #[Foreign("Gdi32")]
 {
     func GetPixel(hdc: HDC, x, y: s32)->COLORREF;
@@ -99,6 +188,10 @@ struct BITMAP
 #[Foreign("Gdi32"), Swag.Discardable]
 {
     func SelectObject(hdc: HDC, h: HGDIOBJ)->HGDIOBJ;
+    func EnumFontFamiliesA(hdc: HDC, lpLogfont: LPCSTR, lpProc: *void /*FONTENUMPROCA*/, lParam: LPARAM)->s32;
+    func EnumFontFamiliesW(hdc: HDC, lpLogfont: LPCWSTR, lpProc: *void /*FONTENUMPROCW*/, lParam: LPARAM)->s32;
+    func EnumFontFamiliesExA(hdc: HDC, lpLogfont: const *LOGFONTA, lpProc: *void /*FONTENUMPROCA*/, lParam: LPARAM, dwFlags: DWORD)->s32;
+    func EnumFontFamiliesExW(hdc: HDC, lpLogfont: const *LOGFONTW, lpProc: *void /*FONTENUMPROCW*/, lParam: LPARAM, dwFlags: DWORD)->s32;
 }
 
 namespace Gdi32Priv
