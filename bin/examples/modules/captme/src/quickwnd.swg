@@ -307,9 +307,30 @@ impl QuickWnd
                 if !btn.isChecked
                     return
 
-                self.main.favoriteMdl = it
-
                 type := @kindof(it)
+                switch type
+                {
+                case FormShape:
+                    b := cast(*FormShape) @dataof(it)
+                    self.main.mdlFormShape = dref b
+                    self.main.favoriteMdl = &self.main.mdlFormShape
+                case FormLine:
+                    b := cast(*FormLine) @dataof(it)
+                    self.main.mdlFormLine = dref b
+                    self.main.favoriteMdl = &self.main.mdlFormLine
+                case FormPolygon:
+                    b := cast(*FormPolygon) @dataof(it)
+                    self.main.mdlFormPolygon = dref b
+                    self.main.favoriteMdl = &self.main.mdlFormPolygon
+                case FormArrow:
+                    b := cast(*FormArrow) @dataof(it)
+                    self.main.mdlFormArrow = dref b
+                    self.main.favoriteMdl = &self.main.mdlFormArrow
+                case FormText:
+                    b := cast(*FormText) @dataof(it)
+                    self.main.mdlFormText = dref b
+                    self.main.favoriteMdl = &self.main.mdlFormText
+                }
 
                 if self.main.editMode != .Favorites
                 {
@@ -318,27 +339,22 @@ impl QuickWnd
                     {
                     case FormShape:
                         b := cast(*FormShape) @dataof(it)
-                        self.main.mdlFormShape = dref b
                         mdlValue = Memory.new'FormShape()
                         it.copy(mdlValue, b)
                     case FormLine:
                         b := cast(*FormLine) @dataof(it)
-                        self.main.mdlFormLine = dref b
                         mdlValue = Memory.new'FormLine()
                         it.copy(mdlValue, b)
                     case FormPolygon:
                         b := cast(*FormPolygon) @dataof(it)
-                        self.main.mdlFormPolygon = dref b
                         mdlValue = Memory.new'FormPolygon()
                         it.copy(mdlValue, b)
                     case FormArrow:
                         b := cast(*FormArrow) @dataof(it)
-                        self.main.mdlFormArrow = dref b
                         mdlValue = Memory.new'FormArrow()
                         it.copy(mdlValue, b)
                     case FormText:
                         b := cast(*FormText) @dataof(it)
-                        self.main.mdlFormText = dref b
                         mdlValue = Memory.new'FormText()
                         it.copy(mdlValue, b)
                     }
