@@ -1,8 +1,10 @@
 #global if #os == Swag.TargetOs.Windows
 
+alias ThreadProc = func(*void)->u32;
+
 #[Swag.Foreign("kernel32")]
 {
-    func CreateThread(lpThreadAttributes: *void, dwStackSize: u64, lpStartAddress: *void, lpParameter: *void, dwCreationFlags: u32, lpThreadId : *u32)->*void;
+    func CreateThread(lpThreadAttributes: *void, dwStackSize: u64, lpStartAddress: ThreadProc, lpParameter: *void, dwCreationFlags: u32, lpThreadId : *u32)->*void;
     func WaitForSingleObject(hHandle: *void, dwMilliseconds : u32)->u32;
     func GetLastError()->u32;
 }
@@ -12,13 +14,14 @@ const INFINITE = 0xFFFFFFFF
 var G: u64
 
 #[Swag.Callback]
-func entry(param: *void)
+func entry(param: *void)->u32
 {
     ptr := cast(*u64) param
     G = ptr[1]
+    return 0
 }
 
-func create(lambda: func(*void), userParam: uint)
+func create(lambda: ThreadProc, userParam: uint)
 {
     var paramBC: [2] *void
     paramBC[0] = acast lambda

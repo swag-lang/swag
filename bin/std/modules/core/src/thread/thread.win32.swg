@@ -16,12 +16,13 @@ func yield()
 }
 
 #[Swag.Callback]
-private func threadEntry(param: *void)
+private func threadEntry(param: *void)->DWORD
 {
     th := cast(*Thread) param
     @setcontext(th.context)
     th.userLambda(dref th)
     th.context.tempAllocator.release()
+    return 0
 }
 
 // Wait multiple threads

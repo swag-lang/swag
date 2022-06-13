@@ -310,20 +310,23 @@ public func tcf_alloc(size: u32)
     all(vv.x)
 }
 
+public alias ThreadProc = func(*void)->u32;
+
 #[Swag.Foreign("kernel32")]
 {
-    func CreateThread(lpThreadAttributes: *void, dwStackSize: u64, lpStartAddress: *void, lpParameter: *void, dwCreationFlags: u32, lpThreadId : *u32)->*void;
+    func CreateThread(lpThreadAttributes: *void, dwStackSize: u64, lpStartAddress: ThreadProc, lpParameter: *void, dwCreationFlags: u32, lpThreadId : *u32)->*void;
     func WaitForSingleObject(hHandle: *void, dwMilliseconds : u32)->u32;
 }
 
 #[Swag.Callback]
-public func tcf_entry(param: *void)
+public func tcf_entry(param: *void)->u32
 {
     ptr := cast(*u64) param
     @assert(ptr[1] == 666)
+    return 0
 }
 
-public func tcf_createThread(lambda: func(*void), userParam: uint)
+public func tcf_createThread(lambda: ThreadProc, userParam: uint)
 {
     var paramBC: [2] *void
     paramBC[0] = acast lambda

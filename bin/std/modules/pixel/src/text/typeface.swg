@@ -100,10 +100,10 @@ public impl TypeFace
         var itf: FT_Outline_Funcs
 
         pathList.clear()
-        itf.move_to  = @mkcallback(&moveTo)
-        itf.line_to  = @mkcallback(&lineTo)
-        itf.conic_to = @mkcallback(&conicTo)
-        itf.cubic_to = @mkcallback(&bezierTo)
+        itf.move_to  = cast(*void) @mkcallback(&moveTo)
+        itf.line_to  = cast(*void) @mkcallback(&lineTo)
+        itf.conic_to = cast(*void) @mkcallback(&conicTo)
+        itf.cubic_to = cast(*void) @mkcallback(&bezierTo)
 
         try FT_Set_Pixel_Sizes(face, 0, size)
 

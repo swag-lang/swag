@@ -377,7 +377,7 @@ struct SemanticJob : public Job
     static bool resolveTypeAliasBefore(SemanticContext* context);
     static bool resolveTypeAlias(SemanticContext* context);
     static bool resolveIntrinsicMakeAny(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
-    static bool resolveIntrinsicMakeCallback(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
+    static bool resolveIntrinsicMakeCallback(SemanticContext* context, AstNode* node);
     static bool resolveIntrinsicTag(SemanticContext* context);
     static bool resolveIntrinsicMakeForeign(SemanticContext* context);
     static bool resolveIntrinsicMakeSlice(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, const char* name);

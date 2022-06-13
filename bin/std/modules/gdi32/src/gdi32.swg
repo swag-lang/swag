@@ -191,10 +191,10 @@ alias FONTENUMPROCW = func(const *LOGFONTW, const *TEXTMETRICW, DWORD, LPARAM)->
 #[Foreign("Gdi32"), Swag.Discardable]
 {
     func SelectObject(hdc: HDC, h: HGDIOBJ)->HGDIOBJ;
-    func EnumFontFamiliesA(hdc: HDC, lpLogfont: LPCSTR, lpProc: *void /*FONTENUMPROCA*/, lParam: LPARAM)->s32;
-    func EnumFontFamiliesW(hdc: HDC, lpLogfont: LPCWSTR, lpProc: *void /*FONTENUMPROCW*/, lParam: LPARAM)->s32;
-    func EnumFontFamiliesExA(hdc: HDC, lpLogfont: const *LOGFONTA, lpProc: *void /*FONTENUMPROCA*/, lParam: LPARAM, dwFlags: DWORD)->s32;
-    func EnumFontFamiliesExW(hdc: HDC, lpLogfont: const *LOGFONTW, lpProc: *void /*FONTENUMPROCW*/, lParam: LPARAM, dwFlags: DWORD)->s32;
+    func EnumFontFamiliesA(hdc: HDC, lpLogfont: LPCSTR, lpProc: FONTENUMPROCA, lParam: LPARAM)->s32;
+    func EnumFontFamiliesW(hdc: HDC, lpLogfont: LPCWSTR, lpProc: FONTENUMPROCW, lParam: LPARAM)->s32;
+    func EnumFontFamiliesExA(hdc: HDC, lpLogfont: const *LOGFONTA, lpProc: FONTENUMPROCA, lParam: LPARAM, dwFlags: DWORD)->s32;
+    func EnumFontFamiliesExW(hdc: HDC, lpLogfont: const *LOGFONTW, lpProc: FONTENUMPROCW, lParam: LPARAM, dwFlags: DWORD)->s32;
 }
 
 namespace Gdi32Priv

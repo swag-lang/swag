@@ -57,7 +57,7 @@ bool SemanticJob::resolveIntrinsicTag(SemanticContext* context)
             {
                 Diagnostic diag{typeNode, Fmt(Err(Err0252), typeNode->typeInfo->getDisplayNameC(), tag->type->getDisplayNameC(), tag->name.c_str())};
                 Diagnostic note{typeNode, Fmt(Nte(Nte0038), tag->cmdLine.c_str()), DiagnosticLevel::Note};
-                note.hasFile     = false;
+                note.hasFile    = false;
                 note.showSource = false;
                 return context->report(diag, &note);
             }
@@ -97,21 +97,22 @@ bool SemanticJob::resolveIntrinsicMakeForeign(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveIntrinsicMakeCallback(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
+bool SemanticJob::resolveIntrinsicMakeCallback(SemanticContext* context, AstNode* node)
 {
-    auto first = node->childs.front();
+    auto first     = node->childs.front();
+    auto typeFirst = TypeManager::concreteReferenceType(first->typeInfo);
 
     // Check first parameter
-    if (first->typeInfo->kind != TypeInfoKind::Lambda)
+    if (typeFirst->kind != TypeInfoKind::Lambda)
         return context->report(node, Err(Err0784));
 
-    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(first->typeInfo, TypeInfoKind::Lambda);
+    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(typeFirst, TypeInfoKind::Lambda);
     if (typeFunc->parameters.size() > SWAG_LIMIT_CB_MAX_PARAMS)
         return context->report(Hint::isType(typeFunc), {first, Fmt(Err(Err0785), SWAG_LIMIT_CB_MAX_PARAMS, typeFunc->parameters.size())});
     if (typeFunc->numReturnRegisters() > 1)
         return context->report(Hint::isType(typeFunc), {first, Fmt(Err(Err0786), typeFunc->returnType->getDisplayNameC())});
 
-    node->typeInfo    = g_TypeMgr->typeInfoPointers[(int) NativeTypeKind::Void];
+    node->typeInfo    = first->typeInfo;
     node->byteCodeFct = ByteCodeGenJob::emitIntrinsicMakeCallback;
     return true;
 }
@@ -719,7 +720,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
     case TokenId::IntrinsicCountOf:
     {
         auto expr = node->childs.front();
-        if (expr->typeInfo->kind != TypeInfoKind::Enum && 
+        if (expr->typeInfo->kind != TypeInfoKind::Enum &&
             expr->typeInfo->kind != TypeInfoKind::Array)
             SWAG_CHECK(checkIsConcrete(context, expr));
         node->inheritComputedValue(expr);
@@ -764,7 +765,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
     {
         auto expr = node->childs.front();
         SWAG_CHECK(checkIsConcrete(context, expr));
-        SWAG_CHECK(resolveIntrinsicMakeCallback(context, node, expr->typeInfo));
+        SWAG_CHECK(resolveIntrinsicMakeCallback(context, node));
         break;
     }
 
