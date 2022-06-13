@@ -2499,6 +2499,12 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, VectorNative<
 
 bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node, SymbolOverload* overload, AstNode** result, AstNode** resultLeaf)
 {
+    auto  job                = context->job;
+    auto& scopeHierarchyVars = job->cacheScopeHierarchyVars;
+
+    if (scopeHierarchyVars.empty())
+        return true;
+
     // Not for a global symbol
     if (overload->flags & OVERLOAD_VAR_GLOBAL)
         return true;
@@ -2513,10 +2519,8 @@ bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identi
         return true;
     }
 
-    auto                        job                = context->job;
-    auto                        symbol             = overload->symbol;
-    auto&                       scopeHierarchyVars = job->cacheScopeHierarchyVars;
-    auto                        symScope           = symbol->ownerTable->scope;
+    auto                        symbol   = overload->symbol;
+    auto                        symScope = symbol->ownerTable->scope;
     vector<AlternativeScopeVar> toCheck;
 
     // Collect all matches
@@ -2528,9 +2532,22 @@ bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identi
         // Exact same scope
         if (dep.scope == symScope || dep.scope->getFullName() == symScope->getFullName())
             getIt = true;
+
         // The symbol scope is an 'impl' inside a struct (impl for)
         else if (symScope->kind == ScopeKind::Impl && symScope->parentScope == dep.scope)
             getIt = true;
+
+        // For mtd sub functions and ufcs
+        else if (symbol->kind == SymbolKind::Function)
+        {
+            auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
+            if (typeInfo->parameters.size())
+            {
+                auto firstParam = typeInfo->parameters.front()->typeInfo;
+                if (firstParam->isSame(dep.node->typeInfo, ISSAME_EXACT))
+                    getIt = true;
+            }
+        }
 
         if (getIt)
         {
@@ -2558,6 +2575,8 @@ bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identi
     for (auto& dep : toCheck)
     {
         if (!dep.node)
+            continue;
+        if (dep.node == dependentVar)
             continue;
 
         if (dependentVar)
