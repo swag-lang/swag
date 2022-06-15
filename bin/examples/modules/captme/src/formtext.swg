@@ -7,6 +7,7 @@ struct FormText
     boldSize:   f32 = 0
     text:       String
     isDirty:    bool
+    typeFace:   const *TypeFace
     cacheFace:  const *TypeFace
     cachebSize: f32
     cachesSize: f32
@@ -139,7 +140,7 @@ impl IForm for FormText
             isDirty = true
         }
 
-        face := g_App.theme.res.defaultTypeFaceR
+        face := typeFace orelse g_App.theme.res.defaultTypeFaceR
 
         if  face  != cacheFace or
             bSize != cachebSize or

@@ -20,6 +20,7 @@ struct PropWnd
 {
     using layoutWnd:    StackLayoutCtrl
     main:               *MainWnd
+    sysFonts:           Array'FontFamilyEnumerate
 }
 
 impl PropWnd
@@ -573,18 +574,25 @@ impl PropWnd
 
         // Font
         combo := ComboBox.create(stack)
-        tt := FontFamily.enumerateFromOs()
-        visit fnt: tt
+        sysFonts = FontFamily.enumerateFromOs()
+        visit fnt: sysFonts
         {
             combo.addItem(fnt.name, userData: fnt.faces[0])
         }
 
-        combo.sigChanged += @(combo, id, data)
+        combo.sigChanged += @|curSel|(combo, id, data)
         {
             p := cast(*Gdi32.LOGFONTW) data
+
+            p.lfItalic = 255
+
             hf := catch Gdi32.CreateFontIndirectW(p)
+            defer catch Gdi32.DeleteObject(hf)
+
             tf := catch TypeFace.createFromHFONT("toto", hf)
-            Console.print(tf)
+            curSel.typeFace = tf
+            curSel.isDirty = true
+            
         }
 
         // Text
