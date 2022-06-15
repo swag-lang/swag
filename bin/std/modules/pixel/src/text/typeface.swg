@@ -70,7 +70,8 @@ public impl TypeFace
 
         str := String.from(fullname)
         here := hashTypeFace.find(str)
-        if here return here.value
+        if here
+            return here.value
 
         tf := Memory.new'TypeFace()
         tf.fullname = fullname

@@ -5,6 +5,9 @@ using Swag, Win32
 
 alias HBITMAP = const *void
 alias HGDIOBJ = const *void
+alias HFONT   = const *void
+
+const GDI_ERROR = 0xFFFFFFFF
 
 struct PIXELFORMATDESCRIPTOR
 {
@@ -213,6 +216,7 @@ namespace Gdi32Priv
         func GetObjectA(h: HANDLE, c: s32, pv: LPVOID)->s32;
         func GetObjectW(h: HANDLE, c: s32, pv: LPVOID)->s32;
         func GetBitmapBits(hbit: HBITMAP, cb: LONG, lpvBits: LPVOID)->LONG;
+        func GetFontData(hdc: HDC, dwTable: DWORD, dwOffset: DWORD, pvBuffer: LPVOID, cjBuffer: DWORD)->DWORD;
     }
 }
 
@@ -303,5 +307,13 @@ namespace Gdi32Priv
         res := Gdi32Priv.GetBitmapBits(hbit, cb, lpvBits)
         if !res
             try setError(GetLastError())
+    }
+
+    func GetFontData(hdc: HDC, dwTable: DWORD, dwOffset: DWORD, pvBuffer: LPVOID, cjBuffer: DWORD)->DWORD throw
+    {
+        res := Gdi32Priv.GetFontData(hdc, dwTable, dwOffset, pvBuffer, cjBuffer)
+        if res == GDI_ERROR
+            try setError(GetLastError())
+        return res
     }
 }
