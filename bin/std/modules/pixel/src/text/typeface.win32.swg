@@ -3,15 +3,15 @@ using Core, Win32, Gdi32, FreeType
 
 impl TypeFace
 {
-    private func getDataFromHFONT(hf: HFONT)->Array'u8 throw
+    func getDataFromHFONT(hf: HFONT)->Array'u8 throw
     {
         var result: retval
 
         hdc := GetDC(null)
-        defer ReleaseDC(null, hdc)
+        //defer ReleaseDC(null, hdc)
 
         SelectObject(hdc, hf)
-        defer DeleteObject(hf)
+        //defer DeleteObject(hf)
 
         outFontBufferLen := GetFontData(hdc, 0, 0, null, 0)
         result.resize(acast outFontBufferLen)
@@ -21,7 +21,7 @@ impl TypeFace
     }
 
     // Create a new typeface from a HFONT
-    func create(fullname: string, hf: HFONT)->*TypeFace throw
+    public func createFromHFONT(fullname: string, hf: HFONT)->*TypeFace throw
     {
         Sync.scopedLock(&lock)
 

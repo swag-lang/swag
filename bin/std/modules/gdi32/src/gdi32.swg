@@ -217,6 +217,8 @@ namespace Gdi32Priv
         func GetObjectW(h: HANDLE, c: s32, pv: LPVOID)->s32;
         func GetBitmapBits(hbit: HBITMAP, cb: LONG, lpvBits: LPVOID)->LONG;
         func GetFontData(hdc: HDC, dwTable: DWORD, dwOffset: DWORD, pvBuffer: LPVOID, cjBuffer: DWORD)->DWORD;
+        func CreateFontIndirectA(lplf: const *LOGFONTA)->HFONT;
+        func CreateFontIndirectW(lplf: const *LOGFONTW)->HFONT;
     }
 }
 
@@ -226,20 +228,20 @@ namespace Gdi32Priv
     {
         res := Gdi32Priv.ChoosePixelFormat(hdc, ppfd)
         if !res
-            try setError(GetLastError())
+            throw "GDI_ERROR"
         return res
     }
 
     func SetPixelFormat(hdc: HDC, fmt: s32, ppfd: const *PIXELFORMATDESCRIPTOR) throw
     {
         if !Gdi32Priv.SetPixelFormat(hdc, fmt, ppfd)
-            try setError(GetLastError())
+            throw "GDI_ERROR"
     }
 
     func SwapBuffers(arg1: HDC) throw
     {
         if !Gdi32Priv.SwapBuffers(arg1)
-            try setError(GetLastError())
+            throw "GDI_ERROR"
     }
 
     #[Discardable]
@@ -247,7 +249,7 @@ namespace Gdi32Priv
     {
         res := Gdi32Priv.DescribePixelFormat(hdc, iPixelFormat, nBytes, ppfd)
         if !res
-            try setError(GetLastError())
+            throw "GDI_ERROR"
         return res
     }
 
@@ -255,7 +257,7 @@ namespace Gdi32Priv
     {
         res := Gdi32Priv.CreateCompatibleDC(hdc)
         if res == null
-            try setError(GetLastError())
+            throw "GDI_ERROR"
         return res
     }
 
@@ -263,7 +265,7 @@ namespace Gdi32Priv
     {
         res := Gdi32Priv.CreateCompatibleBitmap(hdc, cx, cy)
         if res == null
-            try setError(GetLastError())
+            throw "GDI_ERROR"
         return res
     }
 
@@ -271,49 +273,65 @@ namespace Gdi32Priv
     {
         res := Gdi32Priv.DeleteDC(hdc)
         if !res
-            try setError(GetLastError())
+            throw "GDI_ERROR"
     }
 
     func DeleteObject(ho: HGDIOBJ) throw
     {
         res := Gdi32Priv.DeleteObject(ho)
         if !res
-            try setError(GetLastError())
+            throw "GDI_ERROR"
     }
 
     func BitBlt(hdc: HDC, x, y, cx, cy: s32, hdcSrc: HDC, x1, y1: s32, rop: DWORD) throw
     {
         res := Gdi32Priv.BitBlt(hdc, x, y, cx, cy, hdcSrc, x1, y1, rop)
         if !res
-            try setError(GetLastError())
+            throw "GDI_ERROR"
     }
 
     func GetObjectA(h: HANDLE, c: s32, pv: LPVOID) throw
     {
         res := Gdi32Priv.GetObjectA(h, c, pv)
         if !res
-            try setError(GetLastError())
+            throw "GDI_ERROR"
     }
 
     func GetObjectW(h: HANDLE, c: s32, pv: LPVOID) throw
     {
         res := Gdi32Priv.GetObjectW(h, c, pv)
         if !res
-            try setError(GetLastError())
+            throw "GDI_ERROR"
     }
 
     func GetBitmapBits(hbit: HBITMAP, cb: LONG, lpvBits: LPVOID) throw
     {
         res := Gdi32Priv.GetBitmapBits(hbit, cb, lpvBits)
         if !res
-            try setError(GetLastError())
+            throw "GDI_ERROR"
     }
 
     func GetFontData(hdc: HDC, dwTable: DWORD, dwOffset: DWORD, pvBuffer: LPVOID, cjBuffer: DWORD)->DWORD throw
     {
         res := Gdi32Priv.GetFontData(hdc, dwTable, dwOffset, pvBuffer, cjBuffer)
         if res == GDI_ERROR
-            try setError(GetLastError())
+            throw "GDI_ERROR"
+        return res
+    }
+
+    func CreateFontIndirectA(lplf: const *LOGFONTA)->HFONT throw
+    {
+        res := Gdi32Priv.CreateFontIndirectA(lplf)
+        if !res
+            throw "GDI_ERROR"
+        return res
+    }
+
+    func CreateFontIndirectW(lplf: const *LOGFONTW)->HFONT throw
+    {
+        res := Gdi32Priv.CreateFontIndirectW(lplf)
+        if !res
+            throw "GDI_ERROR"
         return res
     }
 }

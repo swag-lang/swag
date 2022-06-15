@@ -3,10 +3,20 @@ using Core, Win32, Gdi32
 
 public struct FontFamilyEnumerate
 {
+    name:   String
+    faces:  Array'LOGFONTW
 }
 
 impl FontFamily
 {
+    #[Swag.Callback]
+    func enumSubFamily(fa: const *LOGFONTW, tm: const *TEXTMETRICW, fontType: DWORD, lParam: LPARAM)->BOOL
+    {
+        ret := cast(*FontFamilyEnumerate) cast(uint) lParam
+        ret.faces.add(dref fa)
+        return TRUE
+    }
+
     #[Swag.Callback]
     func enumFamily(fa: const *LOGFONTW, tm: const *TEXTMETRICW, fontType: DWORD, lParam: LPARAM)->BOOL
     {
@@ -21,23 +31,32 @@ impl FontFamily
             if x[0] == "@"'u8
                 return TRUE
 
-            ret := cast(*Array'String) cast(uint) lParam
-            ret.add(x)
+            ret := cast(*Array'FontFamilyEnumerate) cast(uint) lParam
+            var v: FontFamilyEnumerate
+            v.name = x
+
+            hdc := GetDC(null)
+            defer ReleaseDC(null, hdc)
+            EnumFontFamiliesExW(hdc, fa, @mkcallback(&enumSubFamily), cast(LPARAM) cast(uint) &v, 0)
+
+            ret.add(v)
         }
 
         return TRUE
     }
 
     // Enumerate the font families available in the os
-    public func enumerateFromOs()->Array'String
+    public func enumerateFromOs()->Array'FontFamilyEnumerate
     {
         var result: retval
 
         hdc := GetDC(null)
+        defer ReleaseDC(null, hdc)
         EnumFontFamiliesW(hdc, null, @mkcallback(&enumFamily), cast(LPARAM) cast(uint) &result)
-        ReleaseDC(null, hdc)
 
-        result.sort()
+        result.sort(@(a, b) {
+            return a.name <=> b.name
+        })
         return result
     }
 }

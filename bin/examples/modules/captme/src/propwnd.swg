@@ -571,12 +571,23 @@ impl PropWnd
         stack := StackLayoutCtrl.create(self, .Top, @{0, 0, 0, 90})
         stack.padding = 8
 
-        combm := ComboBox.create(stack)
-
+        // Font
+        combo := ComboBox.create(stack)
         tt := FontFamily.enumerateFromOs()
         visit fnt: tt
-            combm.addItem(cast(string) dref fnt)
+        {
+            combo.addItem(fnt.name, userData: fnt.faces[0])
+        }
 
+        combo.sigChanged += @(combo, id, data)
+        {
+            p := cast(*Gdi32.LOGFONTW) data
+            hf := catch Gdi32.CreateFontIndirectW(p)
+            tf := catch TypeFace.createFromHFONT("toto", hf)
+            Console.print(tf)
+        }
+
+        // Text
         edt := EditBox.create(stack, curSel.text)
         edt.sigLoseFocus += @|self|(edit) {
             curSel := cast(*FormText) self.getSelectedBaseForm()
