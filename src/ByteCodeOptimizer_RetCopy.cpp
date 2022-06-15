@@ -30,20 +30,7 @@ static void optimRetCopy(ByteCodeOptContext* context, ByteCodeInstruction* ipOrg
     }
 
     // Is there a corresponding drop in the scope ?
-    bool hasDrop = false;
-    if (!sameStackOffset)
-    {
-        for (auto& toDrop : ipOrg->node->ownerScope->symTable.structVarsToDrop)
-        {
-            if (!toDrop.typeStruct)
-                continue;
-            if (toDrop.storageOffset == orgOffset && (toDrop.typeStruct->opDrop || toDrop.typeStruct->opUserDropFct))
-            {
-                hasDrop = true;
-                break;
-            }
-        }
-    }
+    bool hasDrop = !sameStackOffset && ipOrg->node->ownerScope->symTable.structVarsToDrop.count > 0;
 
     // Remove opDrop to the old variable that is no more affected.
     // Make a nop, and detect all drops of that variable to remove them also.
