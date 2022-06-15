@@ -1,10 +1,16 @@
 #global if #os == Swag.TargetOs.Windows
 using Core, Win32, Gdi32
 
+public struct FontFamilyStyleEnumerate
+{
+    name:   String
+    face:   LOGFONTW
+}
+
 public struct FontFamilyEnumerate
 {
     name:   String
-    faces:  Array'LOGFONTW
+    faces: [@countof(FontFamilyStyle)] FontFamilyStyleEnumerate
 }
 
 impl FontFamily
@@ -12,8 +18,15 @@ impl FontFamily
     #[Swag.Callback]
     func enumSubFamily(fa: const *LOGFONTW, tm: const *TEXTMETRICW, fontType: DWORD, lParam: LPARAM)->BOOL
     {
+        len := Utf16.lengthZeroTerminated(&fa.lfFaceName[0])
+        if !len
+            return TRUE
+        x := Utf8.fromUtf16(@mkslice(&fa.lfFaceName[0], len))
+
         ret := cast(*FontFamilyEnumerate) cast(uint) lParam
-        ret.faces.add(dref fa)
+        idx := cast(uint) FontFamilyStyle.Regular
+        ret.faces[idx].name = x
+        ret.faces[idx].face = dref fa
         return TRUE
     }
 

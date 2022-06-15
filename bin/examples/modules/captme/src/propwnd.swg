@@ -575,24 +575,23 @@ impl PropWnd
         // Font
         combo := ComboBox.create(stack)
         sysFonts = FontFamily.enumerateFromOs()
-        visit fnt: sysFonts
+        visit &fnt: sysFonts
         {
-            combo.addItem(fnt.name, userData: fnt.faces[0])
+            combo.addItem(fnt.name, userData: fnt)
         }
 
         combo.sigChanged += @|curSel|(combo, id, data)
         {
-            p := cast(*Gdi32.LOGFONTW) data
+            p := cast(*FontFamilyEnumerate) data
 
-            p.lfItalic = 255
-
-            hf := catch Gdi32.CreateFontIndirectW(p)
+            ptr := &p.faces[1].face
+            hf := catch Gdi32.CreateFontIndirectW(ptr)
             defer catch Gdi32.DeleteObject(hf)
 
-            tf := catch TypeFace.createFromHFONT("toto", hf)
+            tf := catch TypeFace.createFromHFONT(p.name, hf)
             curSel.typeFace = tf
             curSel.isDirty = true
-            
+
         }
 
         // Text
