@@ -967,12 +967,12 @@ bool ByteCodeGenJob::emitDeferredStatements(ByteCodeGenContext* context, Scope* 
             // We also do not want to change the number of childs of "node", that's why we fill "parent" of the
             // clone without registering the node in the list of childs.
             CloneContext cloneContext;
-            cloneContext.rawClone = true;
-            auto child            = node->childs.front()->clone(cloneContext);
-            child->parent         = node;
-            child->bytecodeState  = AstNodeResolveState::Enter;
+            cloneContext.rawClone        = true;
+            cloneContext.ownerDeferScope = scope;
+            auto child                   = node->childs.front()->clone(cloneContext);
+            child->parent                = node;
+            child->bytecodeState         = AstNodeResolveState::Enter;
             child->flags &= ~AST_NO_BYTECODE;
-            scope->doneDefer.push_back(child);
             job->nodes.push_back(child);
         }
     }

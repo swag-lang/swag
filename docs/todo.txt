@@ -61,7 +61,8 @@ TODO
 ****************************************
 
 -------------------------------------
-moveToString pas cool, c'est 1024 octets à chaque fois
+@mkcallback ne vérifie pas qu'il y a #[Swag.Callback] sur la fonction, mais
+le pb c'est que ça peut être une variable, un paramètre etc...
 -------------------------------------
 erreur si opDrop est privé et la struct publique (on doit exporter)
 -------------------------------------

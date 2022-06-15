@@ -179,6 +179,7 @@ struct CloneContext
     Scope*              parentScope            = nullptr;
     Scope*              ownerStructScope       = nullptr;
     Scope*              alternativeScope       = nullptr;
+    Scope*              ownerDeferScope        = nullptr;
     AstCompilerIfBlock* ownerCompilerIfBlock   = nullptr;
     Token*              forceLocation          = nullptr;
     uint64_t            forceFlags             = 0;
