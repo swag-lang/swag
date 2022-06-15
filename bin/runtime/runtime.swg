@@ -449,7 +449,6 @@ func __geterr()->string
 func __pusherr()
 {
     cxt := @getcontext()
-    @assert(cxt.errorMsgLen != 0)
     @assert(MaxLenErrorMsg - cxt.errorMsgStart >= 8)
     ptr := cast(*u32) (&cxt.errorMsg[cxt.errorMsgStart] + cxt.errorMsgLen)
     ptr[0] = cxt.errorMsgLen
