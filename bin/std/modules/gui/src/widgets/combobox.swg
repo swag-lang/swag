@@ -7,7 +7,7 @@ struct ComboBox
 
     minWidthPopup:  f32 = 100
     maxHeightPopup: f32 = 300
-    sigChanged:     SigArray'closure(*Self, WndId, *void)
+    sigChanged:     SigArray'closure(*Self, u32)
 
     editBox:        *EditBox
     isHot:          bool
@@ -225,12 +225,12 @@ impl ComboBox
         // Notify
         if selectedIdx < items.count
         {
-            sigChanged.call(self, items[selectedIdx].id, items[selectedIdx].userData)
+            sigChanged.call(self, selectedIdx)
             postCommandEvent(items[selectedIdx].id)
         }
         else
         {
-            sigChanged.call(self, null, null)
+            sigChanged.call(self, Swag.U32.Max)
         }
 
         if editBox

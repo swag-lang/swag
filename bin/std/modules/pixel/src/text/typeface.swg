@@ -53,6 +53,13 @@ impl TypeFace
 
 public impl TypeFace
 {
+    // Returns the underlying font name
+    mtdc getFaceName()->string
+    {
+        defname := @mkstring(face.family_name, @strlen(face.family_name))
+        return defname
+    }
+
     // Create a new typeface
     func create(fullname: string, bytes: const [..] u8)->*TypeFace throw
     {

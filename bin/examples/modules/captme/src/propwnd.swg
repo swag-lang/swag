@@ -574,15 +574,33 @@ impl PropWnd
 
         // Font
         combo := ComboBox.create(stack)
+
+        combo.addItem(g_App.theme.res.defaultTypeFaceR.getFaceName())
+        if !curSel.typeFace
+            combo.selectedIdx = 0
+
         sysFonts = FontFamily.enumerateFromOs()
         visit &fnt: sysFonts
         {
             combo.addItem(fnt.name, userData: fnt)
+            if curSel.typeFace and curSel.typeFace.getFaceName() == fnt.name
+                combo.selectedIdx = cast(u32) combo.items.count - 1
         }
 
-        combo.sigChanged += @|curSel|(combo, id, data)
+        combo.sigChanged += @|curSel|(combo, idx)
         {
-            p  := cast(*FontFamilyEnumerate) data
+            if idx == Swag.U32.Max
+                return
+
+            sel := combo.items[idx]
+            if !sel.userData
+            {
+                curSel.typeFace = null
+                curSel.isDirty = true
+                return
+            }
+
+            p  := cast(*FontFamilyEnumerate) sel.userData
             tf := catch FontFamily.createTypeFace(p, .Regular)
             if tf
             {
