@@ -582,16 +582,13 @@ impl PropWnd
 
         combo.sigChanged += @|curSel|(combo, id, data)
         {
-            p := cast(*FontFamilyEnumerate) data
-
-            ptr := &p.faces[1].face
-            hf := catch Gdi32.CreateFontIndirectW(ptr)
-            defer catch Gdi32.DeleteObject(hf)
-
-            tf := catch TypeFace.createFromHFONT(p.name, hf)
-            curSel.typeFace = tf
-            curSel.isDirty = true
-
+            p  := cast(*FontFamilyEnumerate) data
+            tf := catch FontFamily.createTypeFace(p, .Regular)
+            if tf
+            {
+                curSel.typeFace = tf
+                curSel.isDirty = true
+            }
         }
 
         // Text

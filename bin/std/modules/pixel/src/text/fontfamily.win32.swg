@@ -25,6 +25,17 @@ impl FontFamily
 
         ret := cast(*FontFamilyEnumerate) cast(uint) lParam
         idx := cast(uint) FontFamilyStyle.Regular
+
+        if fa.lfWeight > FW_REGULAR
+        {
+            if fa.lfItalic == 255
+                idx = cast(uint) FontFamilyStyle.BoldItalic
+            else
+                idx = cast(uint) FontFamilyStyle.Bold
+        }
+        elif fa.lfItalic == 255
+            idx = cast(uint) FontFamilyStyle.Italic
+
         ret.faces[idx].name = x
         ret.faces[idx].face = dref fa
         return TRUE
@@ -71,5 +82,23 @@ impl FontFamily
             return a.name <=> b.name
         })
         return result
+    }
+
+    public func createTypeFace(enumerate: FontFamilyEnumerate, style: FontFamilyStyle)->*TypeFace throw
+    {
+        face := &enumerate.faces[cast(uint) style]
+
+        st := style
+        if st == .BoldItalic and face.face.lfWidth == 0
+            st = .Italic
+        if face.face.lfWidth == 0
+            st = .Regular
+        if face.face.lfWidth == 0
+            return null
+
+        hf := try CreateFontIndirectW(face.face)
+        defer catch DeleteObject(hf)
+
+        return try TypeFace.createFromHFONT(face.name, hf)
     }
 }

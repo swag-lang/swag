@@ -99,6 +99,22 @@ const RASTER_FONTTYPE   = 0x0001
 const DEVICE_FONTTYPE   = 0x0002
 const TRUETYPE_FONTTYPE = 0x0004
 
+const FW_DONTCARE         = 0
+const FW_THIN             = 100
+const FW_EXTRALIGHT       = 200
+const FW_LIGHT            = 300
+const FW_NORMAL           = 400
+const FW_MEDIUM           = 500
+const FW_SEMIBOLD         = 600
+const FW_BOLD             = 700
+const FW_EXTRABOLD        = 800
+const FW_HEAVY            = 900
+const FW_ULTRALIGHT       = FW_EXTRALIGHT
+const FW_REGULAR          = FW_NORMAL
+const FW_DEMIBOLD         = FW_SEMIBOLD
+const FW_ULTRABOLD        = FW_EXTRABOLD
+const FW_BLACK            = FW_HEAVY
+
 struct LOGFONTA
 {
     lfHeight:           LONG
