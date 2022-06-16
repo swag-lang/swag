@@ -258,6 +258,14 @@ struct ThemeColors
     comboBoxItem_CheckMark:         Color = Blue
     comboBoxItem_HotCheckMark:      Color = White
 
+    popupList_Separator:            Color = Gray4
+    popupList_HotBk:                Color = Blue
+    popupList_SelectedBk:           Color = Gray6
+    popupList_Text:                 Color = Gray1
+    popupList_HotText:              Color = White
+    popupList_CheckMark:            Color = Blue
+    popupList_HotCheckMark:         Color = White
+
     frameWnd_SmallShadow:           Color = 0x50000000
     frameWnd_Border:                Color = Gray3
     frameWnd_PopupBorder:           Color = Gray2

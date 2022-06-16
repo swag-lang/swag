@@ -62,6 +62,10 @@ struct ThemeMetrics
     comboBox_Padding:           f32 = 6
     comboBox_IconTextMargin:    f32 = 6
 
+    popupList_Padding:          f32 = 6
+    popupList_IconTextMargin:   f32 = 6
+    popupList_SeparatorPadding: f32 = 4
+
     btnIcon_WidthArrow:         f32 = 10
     btnIcon_HeightArrow:        f32 = 6
     btnIcon_Padding:            f32 = 4

@@ -1,6 +1,12 @@
 #global public
 using Core, Pixel
 
+struct ComboBoxItem
+{
+    using base: Item
+    isSeparator: bool
+}
+
 struct ComboBox
 {
     using wnd: Wnd
@@ -13,7 +19,7 @@ struct ComboBox
     isHot:          bool
     hasIcons:       bool
     popup:          *PopupListCtrl
-    items:          ArrayPtr'Item
+    items:          ArrayPtr'ComboBoxItem
     selectedIdx     = Swag.U32.Max
 }
 
@@ -143,7 +149,12 @@ private impl ComboBox
         popup.maxHeightPopup = maxHeightPopup
 
         visit item: items
-            popup.addItem(item.name.raw, item.id, item.icon, item.userData)
+        {
+            if item.isSeparator
+                popup.addSeparator()
+            else
+                popup.addItem(item.name.raw, item.id, item.icon, item.userData)
+        }
 
         popup.sigSelected = @|self|(list, idx) {
             if idx != Swag.U32.Max
@@ -206,6 +217,14 @@ impl ComboBox
 
         if item.icon.isValid()
             hasIcons = true
+        items.add(item)
+    }
+
+    // Add a separator
+    mtd addSeparator()
+    {
+        item := items.newPtr()
+        item.isSeparator = true
         items.add(item)
     }
 

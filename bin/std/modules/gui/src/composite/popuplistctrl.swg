@@ -1,6 +1,12 @@
 #global public
 using Core, Pixel
 
+struct PopupListCtrlItem
+{
+    using base: Item
+    isSeparator: bool
+}
+
 struct PopupListCtrl
 {
     using frameWnd: FrameWnd
@@ -10,7 +16,7 @@ struct PopupListCtrl
 
     sigSelected:    closure(*Self, u32)
 
-    items:          ArrayPtr'Item
+    items:          ArrayPtr'PopupListCtrlItem
     selectedIdx     = Swag.U32.Max
     scrollWnd:      *ScrollWnd
     hasIcons:       bool
@@ -47,7 +53,12 @@ impl IWnd for PopupListView
         if evt.kind == .MouseLeave or !mouseInRect
             hit = Swag.U32.Max
         else
+        {
             hit = cast(u32) ((pos.y + scrollPos.y) / list.heightItem)
+            if hit >= list.items.count or list.items[hit].isSeparator
+                hit = Swag.U32.Max
+        }
+
         if hit != hotIdx
         {
             hotIdx = hit
@@ -92,7 +103,7 @@ impl IWnd for PopupListView
 
         clientRect := getClientRect()
         clientRect.offset(scrollPos)
-        painter.fillRect(clientRect, colors.comboBox_SelectedBk)
+        painter.fillRect(clientRect, colors.popupList_SelectedBk)
 
         var labelPos: Math.Rectangle = ?
         var colorText: Color
@@ -106,16 +117,24 @@ impl IWnd for PopupListView
             labelPos.height = list.heightItem
 
             var format: RichStringFormat
-            colorText = colors.comboBoxItem_Text
+            colorText = colors.popupList_Text
+
+            // Separator
+            if i.isSeparator
+            {
+                painter.drawLine(labelPos.x + metrics.popupList_SeparatorPadding, labelPos.vertCenter(), labelPos.right() - metrics.popupList_SeparatorPadding, labelPos.vertCenter(), colors.popupList_Separator)
+                y += list.heightItem
+                continue
+            }
 
             // Back selection
             if hotIdx == idx
             {
-                theme.drawSubRect(painter, labelPos, &rects.selectionBox_Bk, colors.comboBoxItem_HotBk)
-                colorText = colors.comboBoxItem_HotText
+                theme.drawSubRect(painter, labelPos, &rects.selectionBox_Bk, colors.popupList_HotBk)
+                colorText = colors.popupList_HotText
             }
 
-            labelPos.moveLeft(metrics.comboBox_Padding)
+            labelPos.moveLeft(metrics.popupList_Padding)
 
             // Icon
             fntHeight := theme.res.fontDefault.regular.height
@@ -128,12 +147,12 @@ impl IWnd for PopupListView
 
             if list.hasIcons
             {
-                labelPos.moveLeft(fntHeight + metrics.comboBox_IconTextMargin)
+                labelPos.moveLeft(fntHeight + metrics.popupList_IconTextMargin)
             }
 
             if idx == list.selectedIdx
             {
-                labelPos.setRight(labelPos.right() - fntHeight - metrics.comboBox_IconTextMargin)
+                labelPos.setRight(labelPos.right() - fntHeight - metrics.popupList_IconTextMargin)
             }
 
             // Text
@@ -152,9 +171,9 @@ impl IWnd for PopupListView
                 labelPos.width = fntHeight
                 labelPos.height = fntHeight
                 if hotIdx == idx
-                    colorText = colors.comboBoxItem_HotCheckMark
+                    colorText = colors.popupList_HotCheckMark
                 else
-                    colorText = colors.comboBoxItem_CheckMark
+                    colorText = colors.popupList_CheckMark
                 theme.drawSubRect(painter, labelPos, &rects.btnCheck_CheckedMark, colorText)
             }
 
@@ -206,7 +225,7 @@ impl PopupListCtrl
     }
 
     // Add a new item in the list
-    mtd addItem(name: string, id: WndId, icon: Icon = @{}, userData: *void = null)
+    mtd addItem(name: string, id: WndId = null, icon: Icon = @{}, userData: *void = null)
     {
         item := items.newPtr()
         with item
@@ -219,6 +238,14 @@ impl PopupListCtrl
 
         if item.icon.isValid()
             hasIcons = true
+        items.add(item)
+    }
+
+    // Add a separator
+    mtd addSeparator()
+    {
+        item := items.newPtr()
+        item.isSeparator = true
         items.add(item)
     }
 }

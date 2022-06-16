@@ -578,6 +578,7 @@ impl PropWnd
         combo.addItem(g_App.theme.res.defaultTypeFaceR.getFaceName())
         if !curSel.typeFace
             combo.selectedIdx = 0
+        combo.addSeparator()
 
         sysFonts = FontFamily.enumerateFromOs()
         visit &fnt: sysFonts
@@ -611,6 +612,7 @@ impl PropWnd
 
         // Text
         edt := EditBox.create(stack, curSel.text)
+        edt.name = "Enter text"
         edt.sigLoseFocus += @|self|(edit) {
             curSel := cast(*FormText) self.getSelectedBaseForm()
             if curSel.text != edit.text
