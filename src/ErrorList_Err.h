@@ -472,7 +472,7 @@ SWAG_ERROR(Err0476, "the lower bound `%I64u` of the slicing arguments is greater
 SWAG_ERROR(Err0477, "the upper bound `%I64u` of the slicing arguments is out of range (maximum value is `%I64u`)")
 SWAG_ERROR(Err0478, "the special function `%s` cannot have generic parameters")
 SWAG_ERROR(Err0479, nullptr)
-SWAG_ERROR(Err0480, nullptr)
+SWAG_ERROR(Err0480, "cannot take the address by index of a struct")
 SWAG_ERROR(Err0481, "cannot dereference type `%s`")
 SWAG_ERROR(Err0482, "cannot dereference a tuple type like a pointer or an array")
 SWAG_ERROR(Err0483, nullptr)

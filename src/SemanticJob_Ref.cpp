@@ -425,8 +425,11 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
 
     case TypeInfoKind::Struct:
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
+
         if (arrayType->flags & TYPEINFO_STRUCT_IS_TUPLE)
             return context->report(arrayNode->access, Err(Err0482));
+        if (arrayNode->parent->parent->kind == AstNodeKind::MakePointer)
+            return context->report(arrayNode->parent->parent, Err(Err0480));
 
         // Only the top level ArrayPointerIndex node will deal with the call
         if (arrayNode->parent->kind == AstNodeKind::ArrayPointerIndex)

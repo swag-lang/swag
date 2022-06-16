@@ -1,0 +1,12 @@
+#global testerror
+struct A
+{
+    x: s32
+}
+
+func toto()
+{
+    var a: A
+    c := &a[1]
+    @print(c.x)
+}
