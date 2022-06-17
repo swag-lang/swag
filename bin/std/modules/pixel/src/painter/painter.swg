@@ -423,8 +423,8 @@ impl Painter
         curState.transform.setIdentity()
         curState.interpolationMode = .Pixel
         curState.blendingMode = .Alpha
-        curState.colorMask.r, curState.colorMask.g, curState.colorMask.g = true;
-        curState.colorMask.a = false;
+        curState.colorMask.r, curState.colorMask.g, curState.colorMask.b = true
+        curState.colorMask.a = false
         resetClippingRect()
         resetTexture0()
         resetTextureFont()

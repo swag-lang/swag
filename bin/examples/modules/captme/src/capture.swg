@@ -55,11 +55,11 @@ impl Capture
         render := app.getRenderer()
 
         painter.begin()
-        painter.clear(Argb.Red)
+        painter.clear(Argb.Blue)
 
-        /*painter.setParams(.Antialiased)
+        painter.setParams(.Antialiased)
         visit f: forms
-            paintForm(app, &painter, rect, f, 1)*/
+            paintForm(app, &painter, rect, f, 1)
 
         painter.end()
 
@@ -75,8 +75,8 @@ impl Capture
 
         render.end()
 
-        buffer := render.getTexturePixels(rt.colorBuffer, .BGRA8)
-        img := Image.create(rt.colorBuffer.width, rt.colorBuffer.height, .BGRA8, buffer.toSlice())
+        buffer := render.getTexturePixels(rt.colorBuffer, .RGBA8)
+        img := Image.create(rt.colorBuffer.width, rt.colorBuffer.height, .RGBA8, buffer.toSlice())
         catch img.save("f:/toto.bmp")
     }
 
