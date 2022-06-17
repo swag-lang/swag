@@ -9,7 +9,7 @@ Swag is a programming language made for fun because, let's be honest, **C++** is
 * **Low level** (i'm a C++ guy for 20+ years so i had no choice). No garbage collection like in C#, Go or D, no automatic pointer management like in Swift, no ownership like in Rust.
 * **Statically typed** (what else), but lots of automatic type detection if you want.
 * **Inspired** by a lot of things around there, like **Swift** for the syntax, **Jai** (Jonathan Blow) for the great ideas, **Go** for it's simplicity, **C#** for .NET, **Zig** (Andrew Kelley) for the error system, **Rust** for the *impl* thing, and so on.
-* Only for **Windows 10** and **x86_64** so far, because this is already a lot of work.
+* Only for **Windows 10/11** and **x86_64** so far, because this is already a lot of work.
 
 ### Swag is not...
 * **Object oriented**, because you know what, this was not a good idea, after all... But with *interfaces*, a powerful *using* and with *UFCS* (uniform function call syntax), you can have a feeling of object oriented programming without inheritance or encapsulation.
