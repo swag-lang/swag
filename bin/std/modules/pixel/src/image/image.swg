@@ -17,13 +17,15 @@ struct Image
 impl Image
 {
     // Creates a new image
-    func create(width, height: s32, pf: PixelFormat)->Image
+    func create(width, height: s32, pf: PixelFormat, buffer: const [..] u8 = null)->Image
     {
         Debug.assert(width > 0 and height > 0, "invalid dimensions")
 
         var result: retval
         result.init(width, height, pf)
         result.allocPixels()
+        if buffer
+            Memory.copy(result.pixels, @dataof(buffer), @countof(buffer))
         return result
     }
 

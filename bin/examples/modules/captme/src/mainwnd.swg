@@ -41,6 +41,12 @@ impl IWnd for MainWnd
 
         switch evt.id
         {
+        case CmdIdCopyAll:
+            evt.setFlags |= .Disabled | .Name
+            evt.disabled = capture == null
+            evt.name = "Copy All"
+            evt.accepted = true
+
         case CmdIdDeleteSelection:
             evt.setFlags |= .Disabled | .Name
             evt.disabled = !hasSel
@@ -175,6 +181,9 @@ impl IWnd for MainWnd
         var undo: *Undo
         switch evt.id
         {
+        case CmdIdCopyAll:
+            capture.copyAll()
+
         case CmdIdDeleteSelection:
             undo = capture.newUndo(.DeleteSelection)
             evt.accepted = true
@@ -313,11 +322,12 @@ impl MainWnd
 
     mtd registerShortcuts()
     {
-        registerKeyShortcut(Input.KeyModifiers.Control, Input.Key.Z, CmdIdUndo)
-        registerKeyShortcut(Input.KeyModifiers.Control, Input.Key.Y, CmdIdRedo)
-        registerKeyShortcut(Input.KeyModifiers.CtrlShift, Input.Key.F, CmdIdBringForward)
-        registerKeyShortcut(Input.KeyModifiers.CtrlShift, Input.Key.B, CmdIdSendBackward)
-        registerKeyShortcut(Input.KeyModifiers.None, Input.Key.Delete, CmdIdDeleteSelection)
+        registerKeyShortcut(Input.KeyModifiers.Control,   Input.Key.Z,      CmdIdUndo)
+        registerKeyShortcut(Input.KeyModifiers.Control,   Input.Key.Y,      CmdIdRedo)
+        registerKeyShortcut(Input.KeyModifiers.CtrlShift, Input.Key.F,      CmdIdBringForward)
+        registerKeyShortcut(Input.KeyModifiers.CtrlShift, Input.Key.B,      CmdIdSendBackward)
+        registerKeyShortcut(Input.KeyModifiers.None,      Input.Key.Delete, CmdIdDeleteSelection)
+        registerKeyShortcut(Input.KeyModifiers.CtrlShift, Input.Key.A,      CmdIdCopyAll)
     }
 
     mtd updateState()

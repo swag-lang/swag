@@ -43,6 +43,44 @@ impl Capture
     }
 
     //////////////////////////////
+    // CLIPBOARD
+    //////////////////////////////
+
+    mtd copyAll()
+    {
+        rect := Math.Rectangle{width: width, height: height}
+        var painter: Pixel.Painter
+
+        app := editView.getApp()
+        render := app.getRenderer()
+
+        painter.begin()
+        painter.clear(Argb.Red)
+
+        /*painter.setParams(.Antialiased)
+        visit f: forms
+            paintForm(app, &painter, rect, f, 1)*/
+
+        painter.end()
+
+        render.begin(editView.surface.rc)
+
+        rt := render.getRenderTarget(cast(s32) rect.width, cast(s32) rect.height)
+        render.bindRenderTarget(rt)
+        render.setScissorRect(rect)
+        render.clear()
+        render.draw(&painter)
+        render.unbindRenderTarget()
+        render.releaseRenderTarget(rt)
+
+        render.end()
+
+        buffer := render.getTexturePixels(rt.colorBuffer, .BGRA8)
+        img := Image.create(rt.colorBuffer.width, rt.colorBuffer.height, .BGRA8, buffer.toSlice())
+        catch img.save("f:/toto.bmp")
+    }
+
+    //////////////////////////////
     // PAINT
     //////////////////////////////
 
@@ -193,6 +231,9 @@ impl Capture
             popup.addItem(CmdIdSendBackward)
             menu.addPopup("Arrange", popup)
         }
+
+        menu.addSeparator()
+        menu.addItem(CmdIdCopyAll)
 
         discard menu.doModal(pos)
         view.setFocus()

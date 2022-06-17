@@ -54,7 +54,7 @@ public impl NativeRenderOgl
         catch wglMakeCurrent(rc.hDC, rc.hRC)
     }
 
-    func swagBuffers(using self, rc: RenderingContext)
+    func swapBuffers(using self, rc: RenderingContext)
     {
         assume SwapBuffers(rc.hDC)
     }

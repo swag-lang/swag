@@ -167,7 +167,7 @@ impl Surface
         painter.pushClippingRect(wnd.getSurfaceRect())
         wnd.paint(&cxt)
         painter.setColorMask(false, false, false, true)
-        painter.clear(Color.fromArgb(255, 0, 0, 0))
+        painter.clear(Argb.Black)
         painter.end()
 
         // Paint to surface render target

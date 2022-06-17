@@ -1,4 +1,5 @@
 #global public
+using Ogl, Core
 
 struct Texture
 {
@@ -19,4 +20,9 @@ enum UVMode
     Fill
     FillSubRect
     Tile
+}
+
+impl Texture
+{
+    mtdc getByteSize() => width * height * pf.bpp() / 8
 }

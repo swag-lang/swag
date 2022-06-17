@@ -208,7 +208,7 @@ impl RenderOgl
     {
         glFlush()
         glFinish()
-        native.swagBuffers(curRC)
+        native.swapBuffers(curRC)
     }
 
     // Set the current rendering context
@@ -435,23 +435,40 @@ impl RenderOgl
         return result
     }
 
+    func pixelFormatToNative(pf: PixelFormat)->GLenum
+    {
+        #[Swag.Complete]
+        switch pf
+        {
+        case BGR8:  return GL_BGR
+        case BGRA8: return GL_BGRA
+        case RGB8:  return GL_RGB
+        case RGBA8: return GL_RGBA
+        }
+
+        return GL_RGBA
+    }
+
     // Update content of texture
     mtd updateTexture(texture: Texture, pixels: const*u8)
     {
-        var fmt: GLenum = 0
-
-        #[Swag.Complete]
-        switch texture.pf
-        {
-        case BGR8:  fmt = GL_BGR
-        case BGRA8: fmt = GL_BGRA
-        case RGB8:  fmt = GL_RGB
-        case RGBA8: fmt = GL_RGBA
-        }
-
+        fmt := pixelFormatToNative(texture.pf)
         textureID := cast(GLuint) texture.handle
         glBindTexture(GL_TEXTURE_2D, textureID)
         glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, cast(s32) texture.width, cast(s32) texture.height, fmt, GL_UNSIGNED_BYTE, pixels)
+    }
+
+    // Returns the pixels associated to a texture
+    mtd getTexturePixels(texture: Texture, pf: PixelFormat)->Array'u8
+    {
+        var result: retval
+        glEnable(GL_TEXTURE_2D)
+        glBindTexture(GL_TEXTURE_2D, acast texture.handle)
+        result.resize(cast(uint) texture.getByteSize())
+        fmt := pixelFormatToNative(pf)
+        glGetTexImage(GL_TEXTURE_2D, 0, fmt, GL_UNSIGNED_BYTE, result.buffer)
+        glDisable(GL_TEXTURE_2D)
+        return result
     }
 
     // Unregister a texture created with 'addImage'
