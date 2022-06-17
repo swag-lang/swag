@@ -10,9 +10,10 @@ struct PopupListCtrlItem
 struct PopupListCtrl
 {
     using frameWnd: FrameWnd
-    heightItem:     f32 = 30
-    minWidthPopup:  f32 = 100
-    maxHeightPopup: f32 = 300
+    heightItem:         f32 = 30
+    heightSeparator:    f32 = 15
+    minWidthPopup:      f32 = 100
+    maxHeightPopup:     f32 = 300
 
     sigSelected:    closure(*Self, u32)
 
@@ -54,7 +55,29 @@ impl IWnd for PopupListView
             hit = Swag.U32.Max
         else
         {
-            hit = cast(u32) ((pos.y + scrollPos.y) / list.heightItem)
+            y := pos.y + scrollPos.y
+            visit v, i: list.items
+            {
+                if v.isSeparator
+                {
+                    if y <= list.heightSeparator
+                    {
+                        hit = cast(u32) i
+                        break
+                    }
+                    y -= list.heightSeparator
+                }
+                else
+                {
+                    if y <= list.heightItem
+                    {
+                        hit = cast(u32) i
+                        break
+                    }
+                    y -= list.heightItem
+                }
+            }
+
             if hit >= list.items.count or list.items[hit].isSeparator
                 hit = Swag.U32.Max
         }
@@ -122,8 +145,9 @@ impl IWnd for PopupListView
             // Separator
             if i.isSeparator
             {
+                labelPos.height = list.heightSeparator
                 painter.drawLine(labelPos.x + metrics.popupList_SeparatorPadding, labelPos.vertCenter(), labelPos.right() - metrics.popupList_SeparatorPadding, labelPos.vertCenter(), colors.popupList_Separator)
-                y += list.heightItem
+                y += list.heightSeparator
                 continue
             }
 
