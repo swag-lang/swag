@@ -438,7 +438,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
     /////////////////////////////////
     else if (token.id == TokenId::KwdNamespace)
     {
-        SWAG_CHECK(doNamespace(parent, result, true));
+        SWAG_CHECK(doNamespace(parent, result, true, false));
     }
 
     /////////////////////////////////

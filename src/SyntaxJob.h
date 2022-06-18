@@ -132,7 +132,7 @@ struct SyntaxJob : public Job
     bool doThrow(AstNode* parent, AstNode** result = nullptr);
     bool doGlobalAttributeExpose(AstNode* parent, AstNode** result, bool forGlobal);
     bool doNamespace(AstNode* parent, AstNode** result = nullptr);
-    bool doNamespace(AstNode* parent, AstNode** result, bool forGlobal);
+    bool doNamespace(AstNode* parent, AstNode** result, bool forGlobal, bool forUsing);
     bool doEnumContent(AstNode* parent, AstNode** result = nullptr);
     bool doEnumValue(AstNode* parent, AstNode** result = nullptr);
     bool doEnum(AstNode* parent, AstNode** result = nullptr);

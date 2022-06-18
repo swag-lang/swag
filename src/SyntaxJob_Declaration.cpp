@@ -29,6 +29,13 @@ bool SyntaxJob::doWith(AstNode* parent, AstNode** result)
 bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
 {
     SWAG_CHECK(eatToken());
+
+    if (token.id == TokenId::KwdNamespace)
+    {
+        SWAG_CHECK(doNamespace(parent, result, false, true));
+        return true;
+    }
+
     while (true)
     {
         auto node         = Ast::newNode<AstNode>(this, AstNodeKind::Using, sourceFile, parent);
@@ -82,11 +89,11 @@ bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
 bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result)
 {
     SWAG_VERIFY(currentScope->isGlobal(), error(token, Err(Err0388)));
-    SWAG_CHECK(doNamespace(parent, result, false));
+    SWAG_CHECK(doNamespace(parent, result, false, false));
     return true;
 }
 
-bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result, bool forGlobal)
+bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result, bool forGlobal, bool forUsing)
 {
     SWAG_CHECK(eatToken());
 
@@ -152,7 +159,18 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result, bool forGlobal)
 
         SWAG_CHECK(eatToken());
         if (token.id != TokenId::SymDot)
+        {
+            if (forUsing)
+            {
+                while (parent->kind != AstNodeKind::File)
+                    parent = parent->parent;
+                parent->allocateExtension();
+                parent->addAlternativeScope(newScope);
+            }
+
             break;
+        }
+
         SWAG_CHECK(eatToken(TokenId::SymDot));
         parent       = namespaceNode;
         currentScope = newScope;

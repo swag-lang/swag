@@ -61,6 +61,8 @@ TODO
 ****************************************
 
 -------------------------------------
+debug lambda capture parameters not visible
+-------------------------------------
 @mkcallback ne vérifie pas qu'il y a #[Swag.Callback] sur la fonction, mais
 le pb c'est que ça peut être une variable, un paramètre etc...
 -------------------------------------
