@@ -87,7 +87,7 @@ struct Header
 public struct Decoder
 {
     decOptions:     const *DecodeOptions
-    stream:         Compress.CompressStream
+    stream:         Compress.BitStream
     header:         Header
     inChannels:     s32
     outChannels:    s32

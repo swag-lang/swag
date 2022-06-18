@@ -137,14 +137,14 @@ impl HuffmanTable
 }
 
 #[Swag.Opaque]
-public struct DeflateDecoder
+public struct Inflate
 {
-    stream:     CompressStream
+    stream:     BitStream
     windowSize: uint
     adler:      Hash.Adler32
 }
 
-impl DeflateDecoder
+impl Inflate
 {
     mtd decode(ht: *HuffmanTable)->u16 throw
     {

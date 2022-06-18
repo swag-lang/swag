@@ -1,6 +1,6 @@
 #global namespace Compress
 
-public struct CompressStream
+public struct BitStream
 {
     stream:         const [..] u8
     curByte:        uint
@@ -9,7 +9,7 @@ public struct CompressStream
     eof:            bool
 }
 
-public impl CompressStream
+public impl BitStream
 {
     mtd init(buf: const [..] u8)
     {

@@ -4,7 +4,7 @@
 #[Swag.Opaque]
 struct ZLibDecoder
 {
-    decoder: DeflateDecoder
+    decoder: Inflate
 }
 
 impl ZLibDecoder
@@ -12,26 +12,31 @@ impl ZLibDecoder
     private mtd init(buffer: const [..] u8) throw
     {
         bs := ByteStream.create(buffer)
-        if bs.length() < 6 throw "invalid format"
+        if bs.length() < 6
+            throw "invalid format"
 
         // Compression mtd (8 is "deflate")
         cmf := bs.readU8()
-        if cmf & 0xF != 8 throw "invalid compression mtd"
+        if cmf & 0xF != 8
+            throw "invalid compression mtd"
 
         // Window size
         cinfo := (cmf >>,safe 4) & 0xF
-        if cinfo > 7 throw "unsupported window size"
+        if cinfo > 7
+            throw "unsupported window size"
         winSize := 1'uint << (cinfo + 8)
 
         // Check
         flg := bs.readU8()
         fcheck := flg & 0x1f
 		fcheck_computed := ((cast(u32) cmf << 8) | flg) & 0x1f
-		if fcheck != fcheck_computed throw "checksum failed"
+		if fcheck != fcheck_computed
+            throw "checksum failed"
 
         // Dict
         fdict := (flg >>,safe 5) & 1
-        if fdict throw "unsupported dictionnary"
+        if fdict
+            throw "unsupported dictionnary"
 
         // Compression level
         flevel := (flg >>,safe 6) & 3
@@ -53,7 +58,8 @@ impl ZLibDecoder
                    decoder.stream.readBits(8) << 16 |
                    decoder.stream.readBits(8) << 8  |
                    decoder.stream.readBits(8)
-        if adler32 != decoder.adler.adler throw "invalid checksum"
+        if adler32 != decoder.adler.adler
+            throw "invalid checksum"
         return result
     }
 }
