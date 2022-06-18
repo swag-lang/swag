@@ -26,7 +26,7 @@ public impl IImageEncoder for Encoder
         header.biHeight      = image.height
         header.biPlanes      = 1
         header.biBitCount    = image.bpp
-        header.biCompression = FILL_BI_RGB
+        header.biCompression = BI_RGB
         result.addStruct(header)
 
         align := (header.biWidth * 3) & 3

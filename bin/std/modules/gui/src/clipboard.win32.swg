@@ -67,6 +67,32 @@ func addString(str: string)
     }
 }
 
+// Add an image
+func addImage(image: Pixel.Image)
+{
+    if !OpenClipboard(GetDesktopWindow())
+        return
+    defer discard CloseClipboard()
+
+    size := @sizeof(Pixel.Bmp.Header) + image.size
+    hglob := GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, size)
+    buf := cast(*u8) GlobalLock(hglob)
+
+    header := cast(*Pixel.Bmp.Header) buf
+    header.biSize        = @sizeof(Pixel.Bmp.Header)
+    header.biWidth       = image.width
+    header.biHeight      = image.height
+    header.biPlanes      = 1
+    header.biBitCount    = image.bpp
+    header.biCompression = Pixel.Bmp.BI_RGB
+
+    datas := buf + @sizeof(Pixel.Bmp.Header)
+    Memory.copy(datas, image.pixels, image.size)
+
+    discard GlobalUnlock(buf)
+    discard SetClipboardData(CF_DIB, hglob)
+}
+
 // Get data of the given format
 func getData(fmt: Format)->Array'u8
 {

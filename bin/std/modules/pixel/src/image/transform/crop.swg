@@ -14,7 +14,7 @@ impl Image
         }
     }
 
-    // Divide image size by 2 with a bilinear 2x2 filter
+    // Crop image
     public mtd crop(x, y, w, h: s32)
     {
         cx := Math.clamp(x, 0, width - 1)
@@ -28,7 +28,7 @@ impl Image
         applyWorkingBuffer()
     }
 
-    // Divide image size by 2 with a bilinear 2x2 filter
+    // Crop image
     public mtd toCrop(x, y, w, h: s32)->Image
     {
         cx := Math.clamp(x, 0, width - 1)

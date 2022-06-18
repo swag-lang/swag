@@ -5,13 +5,14 @@ const FILL_RLE_COMMAND     = 0
 const FILL_RLE_ENDOFLINE   = 0
 const FILL_RLE_ENDOFBITMAP = 1
 const FILL_RLE_DELTA       = 2
-const FILL_BI_RGB          = 0
-const FILL_BI_RLE8         = 1
-const FILL_BI_RLE4         = 2
-const FILL_BI_BITFIELDS    = 3
+
+public const BI_RGB       = 0
+public const BI_RLE8      = 1
+public const BI_RLE4      = 2
+public const BI_BITFIELDS = 3
 
 #[Swag.Pack(1)]
-struct Header
+public struct Header
 {
     biSize:             u32
     biWidth:            s32
@@ -89,7 +90,7 @@ public impl IImageDecoder for Decoder
             bh.biHeight      = cast(s32) ch.bcHeight
             bh.biPlanes      = ch.bcPlanes
             bh.biBitCount    = ch.bcBitCount
-            bh.biCompression = FILL_BI_RGB
+            bh.biCompression = BI_RGB
         }
         else
         {
@@ -113,7 +114,7 @@ public impl IImageDecoder for Decoder
         }
 
         // Palette
-        if bh.biCompression != FILL_BI_RGB and bh.biCompression != FILL_BI_BITFIELDS
+        if bh.biCompression != BI_RGB and bh.biCompression != BI_BITFIELDS
             throw "unsupported compression"
 
         if !options.decodePixels

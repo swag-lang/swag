@@ -46,8 +46,10 @@ impl Capture
     // CLIPBOARD
     //////////////////////////////
 
-    mtd copyAll()
+    mtd toImage()->Image
     {
+        var result: retval
+
         rect := Math.Rectangle{width: width, height: height}
         var painter: Pixel.Painter
 
@@ -55,12 +57,12 @@ impl Capture
         render := app.getRenderer()
 
         painter.begin()
-        painter.clear(Argb.Blue)
-
         painter.setParams(.Antialiased)
+        painter.setColorMask(false, false, false, true)
+        painter.clear(Argb.Zero)
+        painter.setColorMask(true, true, true, true)
         visit f: forms
             paintForm(app, &painter, rect, f, 1)
-
         painter.end()
 
         render.begin(editView.surface.rc)
@@ -75,9 +77,17 @@ impl Capture
 
         render.end()
 
-        buffer := render.getTexturePixels(rt.colorBuffer, .RGBA8)
-        img := Image.create(rt.colorBuffer.width, rt.colorBuffer.height, .RGBA8, buffer.toSlice())
-        catch img.save("f:/toto.bmp")
+        buffer := render.getTexturePixels(rt.colorBuffer, .BGRA8)
+        result = Image.create(rt.colorBuffer.width, rt.colorBuffer.height, .BGRA8, buffer.toSlice())
+        result.crop(0, 0, cast(s32) rect.width, cast(s32) rect.height)
+
+        return result
+    }
+
+    mtd copyAll()
+    {
+        img := toImage()
+        Clipboard.addImage(img)
     }
 
     //////////////////////////////
