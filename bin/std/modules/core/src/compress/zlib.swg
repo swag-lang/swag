@@ -9,7 +9,8 @@ struct ZLibDecoder
 
 impl ZLibDecoder
 {
-    private mtd init(buffer: const [..] u8) throw
+    // Decompress stream
+    mtd decompress(buffer: const [..] u8)->Array'u8 throw
     {
         bs := ByteStream.create(buffer)
         if bs.length() < 6
@@ -41,16 +42,8 @@ impl ZLibDecoder
         // Compression level
         flevel := (flg >>,safe 6) & 3
 
-        decoder.init(bs.toSlice(), winSize)
-    }
-
-    // Decompress stream
-    mtd decompress(buffer: const [..] u8)->Array'u8 throw
-    {
-        try init(buffer)
-
         var result: retval
-        result = try decoder.decompress()
+        result = try decoder.decompress(bs.toSlice(), winSize)
 
         // Now we should have the checksum
         decoder.stream.discardToNextByte()
@@ -60,6 +53,7 @@ impl ZLibDecoder
                    decoder.stream.readBits(8)
         if adler32 != decoder.adler.adler
             throw "invalid checksum"
+
         return result
     }
 }

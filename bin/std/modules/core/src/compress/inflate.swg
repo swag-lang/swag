@@ -238,17 +238,13 @@ impl Inflate
         }
     }
 
-    // Initialize the stream
-    public mtd init(buf: const [..] u8, winSize: uint)
+    // Decompress the associated stream
+    public mtd decompress(buf: const [..] u8, winSize: uint)->Array'u8 throw
     {
         stream.init(buf)
         adler.init()
         windowSize = Math.min(winSize, InflateMaxDistance)
-    }
 
-    // Decompress the associated stream
-    public mtd decompress()->Array'u8 throw
-    {
         var result:        retval
         var repeatHt:      HuffmanTable
         var repeatZ:       HuffmanTable
