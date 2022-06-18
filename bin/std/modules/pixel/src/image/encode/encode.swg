@@ -87,4 +87,5 @@ public impl Image
     Image.addEncoder'(Bmp.Encoder)()
     Image.addEncoder'(Tga.Encoder)()
     Image.addEncoder'(Jpg.Encoder)()
+    Image.addEncoder'(Png.Encoder)()
 }
