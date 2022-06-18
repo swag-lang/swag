@@ -1,6 +1,8 @@
 #global namespace Jpg
 using Core
 
+using namespace EncoderPrivate {
+
 struct APP0InfoType
 {
     marker:         u16
@@ -148,6 +150,7 @@ var TabCbB:  [256] s32 = ?
 var TabCrR:  [256] s32 = ?
 var TabCrG:  [256] s32 = ?
 var TabCrB:  [256] s32 = ?
+}
 
 // Precalculate YCbCr tables
 #run

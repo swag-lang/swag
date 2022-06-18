@@ -17,3 +17,13 @@ namespace A.B.C
     @assert(A.a() == 1)
     @assert(A.B.C.a() == 2)
 }
+
+// You can also put using in front of the namespace to be able to access
+// the content without scoping
+using namespace Private
+{
+    const FileSymbol = 0
+}
+
+const B = Private.FileSymbol
+const C = FileSymbol // No need to specify 'Private' because of the 'using'

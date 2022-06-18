@@ -5,6 +5,8 @@
 #global namespace Gif
 using Swag, Core
 
+using namespace DecoderPrivate {
+
 struct Entry
 {
     length: u16
@@ -32,6 +34,7 @@ struct Gce
     disposal:       u8
     input:          s32
     transparency:   s32
+}
 }
 
 #[Swag.Opaque]

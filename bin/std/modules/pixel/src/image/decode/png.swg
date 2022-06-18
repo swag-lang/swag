@@ -8,6 +8,8 @@
 #global namespace Png
 using Swag, Core
 
+using namespace DecoderPrivate {
+
 enum ChunkType: u32
 {
     IHDR = @byteswap("I"'u32 << 24 | "H"'u32 << 16 | "D"'u32 << 8 | "R"'u32)
@@ -83,6 +85,14 @@ struct Header
 	interlaceMethod:    InterlaceMethod = ?
 }
 
+struct Chunk
+{
+    header: ChunkHeader
+    datas:  const [..] u8
+    crc:    u32
+}
+}
+
 #[Opaque]
 public struct Decoder
 {
@@ -98,13 +108,6 @@ public struct Decoder
     seenTRSN:       bool
     seenBKGD:       bool
     orderDefilter:  bool
-}
-
-struct Chunk
-{
-    header: ChunkHeader
-    datas:  const [..] u8
-    crc:    u32
 }
 
 impl Decoder

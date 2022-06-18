@@ -8,6 +8,17 @@
 #global namespace Png
 using Core
 
+using namespace EncoderPrivate {
+
+#[Swag.EnumFlags]
+enum ColorType: u8
+{
+    Paletted    = 1
+    Color       = 2
+    Alpha       = 4
+    AlphaColor  = Alpha | Color
+}
+
 const spng_signature: [8] u8 = @[ 137, 80, 78, 71, 13, 10, 26, 10 ]
 const type_ihdr:      [4] u8 = @[ 73, 72, 68, 82 ]
 
@@ -73,7 +84,8 @@ struct spng_chunk
     length:     u32
     type:       [4] u8
     crc:        u32
-};
+}
+}
 
 #[Swag.Opaque]
 public struct Encoder

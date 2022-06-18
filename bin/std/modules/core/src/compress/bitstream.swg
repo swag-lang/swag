@@ -1,15 +1,16 @@
+#global public
 #global namespace Compress
 
-public struct BitStream
+struct BitStream
 {
-    stream:         const [..] u8
-    curByte:        uint
-    codeBuffer:     u32
-    numBits:        u8
-    eof:            bool
+    stream:     const [..] u8
+    curByte:    uint
+    codeBuffer: u32
+    numBits:    u8
+    eof:        bool
 }
 
-public impl BitStream
+impl BitStream
 {
     mtd init(buf: const [..] u8)
     {

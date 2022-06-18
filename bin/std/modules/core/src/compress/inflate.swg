@@ -7,6 +7,8 @@
 
 #global namespace Compress
 
+using namespace InflatePrivate {
+
 const FastBits           = 9
 const FastMask           = (1 << FastBits) - 1
 const HuffmanMaxBits     = 16
@@ -134,6 +136,7 @@ impl HuffmanTable
             nextCode[v] += 1
         }
     }
+}
 }
 
 #[Swag.Opaque]
