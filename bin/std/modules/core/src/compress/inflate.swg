@@ -11,7 +11,7 @@ const FastBits           = 9
 const FastMask           = (1 << FastBits) - 1
 const HuffmanMaxBits     = 16
 const HuffmanFastBits    = 9
-const DeflateMaxDistance = 32768'uint
+const InflateMaxDistance = 32768'uint
 
 const LengthBase: [31] u16 = @[
 	3, 4, 5, 6, 7, 8, 9, 10,
@@ -243,7 +243,7 @@ impl Inflate
     {
         stream.init(buf)
         adler.init()
-        windowSize = Math.min(winSize, DeflateMaxDistance)
+        windowSize = Math.min(winSize, InflateMaxDistance)
     }
 
     // Decompress the associated stream
