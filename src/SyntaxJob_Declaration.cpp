@@ -35,6 +35,7 @@ bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
         node->semanticFct = SemanticJob::resolveUsing;
         if (result)
             *result = node;
+
         SWAG_CHECK(doIdentifierRef(node, nullptr, IDENTIFIER_NO_PARAMS));
 
         // We must ensure that no job can be run before the using

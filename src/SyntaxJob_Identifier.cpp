@@ -68,6 +68,19 @@ bool SyntaxJob::doIdentifier(AstNode* parent, uint32_t identifierFlags)
         return error(token, Fmt(Err(Err0285), token.ctext()));
     else if (token.id == TokenId::EndOfFile)
         return error(token, Err(Err0849));
+    else
+    {
+        relaxIdentifier(token);
+        if (token.id != TokenId::Identifier &&
+            token.id != TokenId::NativeType &&
+            token.id != TokenId::SymQuestion &&
+            token.id != TokenId::CompilerSelf &&
+            !Tokenizer::isIntrinsicReturn(token.id) &&
+            !Tokenizer::isIntrinsicNoReturn(token.id))
+        {
+            return error(token, Fmt(Err(Err0850), token.ctext()));
+        }
+    }
 
     auto identifier = Ast::newNode<AstIdentifier>(this, AstNodeKind::Identifier, sourceFile, parent);
     identifier->inheritTokenLocation(token);
