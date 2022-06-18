@@ -519,8 +519,10 @@ public impl Crc32
     mtd update(data: const [..] u8)
     {
         cur := ~crc
-        current := cast(const *u32) @dataof(data)
         length := @countof(data)
+        if !length
+            return
+        current := cast(const *u32) @dataof(data)
 
         const unroll = 4
         const bytesAtOnce = 16 * unroll

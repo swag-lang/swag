@@ -11,6 +11,14 @@ using Core
 const spng_signature: [8] u8 = @[ 137, 80, 78, 71, 13, 10, 26, 10 ]
 const type_ihdr:      [4] u8 = @[ 73, 72, 68, 82 ]
 
+struct spng_subimage
+{
+    width:              u32
+    height:             u32
+    out_width:          uint
+    scanline_width:     uint
+};
+
 enum spng_state
 {
     SPNG_STATE_INVALID = 0
@@ -32,7 +40,7 @@ struct spng_ihdr
     width:              u32
     height:             u32
     bit_depth:          u8
-    color_type:         u8
+    color_type:         ColorType
     compression_method: u8
     filter_method:      u8
     interlace_method:   u8
@@ -81,13 +89,20 @@ public struct Encoder
     bytes_encoded:      uint
     current_chunk:      spng_chunk
     tmpBuf:             [256] u8
+    write_ptr:          *u8
+    crc:                Hash.Crc32
+    subimage:           [7] spng_subimage
+    widest_pass:        s32
+    last_pass:          s32
+    bytes_per_pixel:    u32
 }
 
 impl Encoder
 {
     mtd write_u32(dst: *u8, val: u32)
     {
-        dref cast(*u32) dst = val
+        v := Math.nativeToBigEndian(val)
+        dref cast(*u32) dst = v
     }
 
     mtd write_data(buf: const *u8, bytes: u32)
@@ -98,7 +113,7 @@ impl Encoder
 
     mtd write_u32(val: u32)
     {
-        v := val
+        v := Math.nativeToBigEndian(val)
         stream.addBytes(@mkslice(cast(const *u8) &v, 4))
         bytes_encoded += 4
     }
@@ -114,26 +129,29 @@ impl Encoder
         Memory.copy(&current_chunk.type, chunk_type, 4)
         write_data(current_chunk.type, 4)
 
-        current_chunk.crc = Hash.Crc32.compute(chunk_type)
+        crc.update(null)
+        crc.update(chunk_type)
+        current_chunk.crc = crc.crc
         bytes_encoded += current_chunk.length;
 
-        return stream.currentSP
+        dataPtr := stream.currentSP
+        stream.seek(chunk_length)
+
+        return dataPtr
     }
 
     mtd finish_chunk()
     {
-        var v: Hash.Crc32
-        v.crc = current_chunk.crc
-        v.update(@mkslice(stream.currentSP, current_chunk.length))
-        current_chunk.crc = v.crc
+        crc.update(@mkslice(write_ptr, current_chunk.length))
+        current_chunk.crc = crc.crc
         write_u32(current_chunk.crc)
     }
 
     mtd write_chunk(chunk_type: const [4] u8, buf: const *u8, length: uint)
     {
-        write_ptr := write_header(chunk_type, length)
+        write_ptr = write_header(chunk_type, length)
         if length
-            Memory.copy(write_ptr, data, length)
+            Memory.copy(write_ptr, buf, length)
         finish_chunk()
     }
 
@@ -145,7 +163,7 @@ impl Encoder
         write_u32(dst, ihdr.width)
         write_u32(dst + 4, ihdr.height)
         dst[8]  = ihdr.bit_depth
-        dst[9]  = ihdr.color_type
+        dst[9]  = cast(u8) ihdr.color_type
         dst[10] = ihdr.compression_method
         dst[11] = ihdr.filter_method
         dst[12] = ihdr.interlace_method
@@ -175,6 +193,74 @@ impl Encoder
         else
             throw "SPNG_EOPSTATE"
     }
+
+    mtd calculate_scanline_width(width: u32)->uint throw
+    {
+        if !width
+            throw "SPNG_EINTERNAL"
+
+        res := cast(uint) (num_channels() * ihdr.bit_depth)
+        if res > Swag.UInt.Max / width
+            throw "SPNG_EOVERFLOW"
+        res = res * width
+
+        res += 15
+        if res < 15
+            throw "SPNG_EOVERFLOW"
+        res /= 8
+        if res > Swag.U32.Max
+            throw "SPNG_EOVERFLOW"
+
+        return res
+    }
+
+    mtd num_channels()->s32
+    {
+        switch ihdr.color_type
+        {
+        case Color:         return 3
+        case AlphaColor:    return 4
+        }
+
+        return 0
+    }
+
+    mtd calculate_subimages() throw
+    {
+        if ihdr.interlace_method == 1
+        {
+            subimage[0].width = (ihdr.width + 7) >> 3
+            subimage[0].height = (ihdr.height + 7) >> 3
+            subimage[1].width = (ihdr.width + 3) >> 3
+            subimage[1].height = (ihdr.height + 7) >> 3
+            subimage[2].width = (ihdr.width + 3) >> 2
+            subimage[2].height = (ihdr.height + 3) >> 3
+            subimage[3].width = (ihdr.width + 1) >> 2
+            subimage[3].height = (ihdr.height + 3) >> 2
+            subimage[4].width = (ihdr.width + 1) >> 1
+            subimage[4].height = (ihdr.height + 1) >> 2
+            subimage[5].width = ihdr.width >> 1
+            subimage[5].height = (ihdr.height + 1) >> 1
+            subimage[6].width = ihdr.width
+            subimage[6].height = ihdr.height >> 1
+        }
+        else
+        {
+            subimage[0].width = ihdr.width
+            subimage[0].height = ihdr.height
+        }
+
+        loop i: 6
+        {
+            if subimage[i].width == 0 or subimage[i].height == 0
+                continue
+
+            subimage[i].scanline_width = calculate_scanline_width(subimage[i].width)
+            if subimage[widest_pass].scanline_width < subimage[i].scanline_width
+                widest_pass = i
+            last_pass = i
+        }
+    }
 }
 
 public impl IImageEncoder for Encoder
@@ -194,12 +280,18 @@ public impl IImageEncoder for Encoder
 
         stream = result
         bytes_encoded = 0
+        crc.init()
 
         stored.ihdr = true
         ihdr.width = image.width
         ihdr.height = image.height
-        ihdr.bit_depth = image.bpp
+        ihdr.bit_depth = 8
+        ihdr.color_type = .Color
+        if image.bpp == 32
+            ihdr.color_type |= .Alpha
 
-        try encode_chunks()
+        encode_chunks()
+        calculate_subimages()
+        bytes_per_pixel = num_channels() * (ihdr.bit_depth / 8)
     }
 }

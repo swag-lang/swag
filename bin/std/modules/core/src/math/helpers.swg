@@ -18,6 +18,16 @@ func(T) bigEndianToNative(x: T)->T
     return @byteswap(x)
 }
 
+// Convert a native arch integer to a big endian
+#[Swag.ConstExpr, Swag.Inline]
+func(T) nativeToBigEndian(x: T)->T
+{
+#if BIG_ENDIAN
+    return x
+#else
+    return @byteswap(x)
+}
+
 // Convert a little endian integer to current arch native format
 #[Swag.ConstExpr, Swag.Inline]
 func(T) littleEndianToNative(x: T)->T

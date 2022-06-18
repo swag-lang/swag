@@ -66,9 +66,10 @@ enum InterlaceMethod : u8
 #[EnumFlags]
 enum ColorType: u8
 {
-    Paletted = 1
-    Color    = 2
-    Alpha    = 4
+    Paletted    = 1
+    Color       = 2
+    Alpha       = 4
+    AlphaColor  = Alpha | Color
 }
 
 struct Header
@@ -113,6 +114,8 @@ impl Decoder
         var result: retval
 
         result.header = ch
+        if stream.curPtr() + ch.length > stream.startPtr() + stream.size()
+            throw "invalid chunk"
         result.datas = @mkslice(stream.curPtr(), ch.length)
         stream.curByte += ch.length
 
@@ -122,7 +125,8 @@ impl Decoder
 
         var vcrc: u32
         stream.peek32Be(cast(*u8) &vcrc)
-        if vcrc != crc.crc throw "invalid checksum"
+        if vcrc != crc.crc
+            throw "invalid checksum"
 
         return result
     }
@@ -134,30 +138,36 @@ impl Decoder
         header.width = Math.bigEndianToNative(header.width)
         header.height = Math.bigEndianToNative(header.height)
 
-        if header.width == 0 or header.height == 0
-            throw "invalid dimensions"
-        if header.compressionMethod != 0
-            throw "invalid compression mtd"
-        if header.filterMethod != 0
-            throw "invalid filter mtd"
-        if header.interlaceMethod != .None and header.interlaceMethod != .Adam7
-            throw "invalid interlace mtd"
-
-        using header
-        if colorType & .Paletted throw "unsupported paletted image"
-        if colorType > 7 throw "invalid color type"
-        if bitDepth > 8 throw "unsupported bit depth"
-        if bitDepth != 1 and bitDepth != 2 and bitDepth != 4 and bitDepth != 8 throw "invalid bit depth"
-
-        outChannels = 3
-        if header.colorType & .Color
-            inChannels = 3
-        else
-            inChannels = 1
-        if header.colorType & .Alpha
+        with header
         {
-            inChannels += 1
-            outChannels += 1
+            if width == 0 or height == 0
+                throw "invalid dimensions"
+            if compressionMethod != 0
+                throw "invalid compression mtd"
+            if filterMethod != 0
+                throw "invalid filter mtd"
+            if interlaceMethod != .None and interlaceMethod != .Adam7
+                throw "invalid interlace mtd"
+
+            if colorType & .Paletted
+                throw "unsupported paletted image"
+            if colorType > 7
+                throw "invalid color type"
+            if bitDepth > 8
+                throw "unsupported bit depth"
+            if bitDepth != 1 and bitDepth != 2 and bitDepth != 4 and bitDepth != 8
+                throw "invalid bit depth"
+
+            outChannels = 3
+            if header.colorType & .Color
+                inChannels = 3
+            else
+                inChannels = 1
+            if header.colorType & .Alpha
+            {
+                inChannels += 1
+                outChannels += 1
+            }
         }
     }
 
@@ -451,12 +461,14 @@ impl Decoder
             }
 
             chIsHere = false
-            if stream.eof throw "invalid chunk"
+            if stream.eof
+                throw "invalid chunk"
 
             switch ch.type
             {
             case IHDR:
-                if !firstChunk throw "invalid first chunk"
+                if !firstChunk
+                    throw "invalid first chunk"
                 readHeader(ch)
                 if decOptions.decodePixels
                 {
@@ -478,14 +490,16 @@ impl Decoder
                 chunk := readChunk(ch)
 
             case IDAT:
-                if seenIDAT throw "invalid IDAT chunk"
+                if seenIDAT
+                    throw "invalid IDAT chunk"
                 while ch.type == IDAT
                 {
                     chunk := readChunk(ch)
                     iDataBuf.add(chunk.datas)
                     stream.peek32Be(cast(*u8) &ch.length)
                     stream.peek32(cast(*u8) &ch.type)
-                    if stream.eof throw "invalid chunk"
+                    if stream.eof
+                        throw "invalid chunk"
                 }
 
                 chIsHere = true
@@ -498,7 +512,8 @@ impl Decoder
             firstChunk = false
         }
 
-        if !seenIDAT throw "missing IDAT chunk"
+        if !seenIDAT
+            throw "missing IDAT chunk"
 
         // Initialize image depending on number of wanted channels
         if outChannels == 4

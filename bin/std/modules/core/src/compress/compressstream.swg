@@ -17,7 +17,9 @@ public impl CompressStream
         stream = buf
     }
 
-    mtd curPtr() => @dataof(stream) + curByte
+    mtd startPtr() => @dataof(stream)
+    mtd curPtr()   => @dataof(stream) + curByte
+    mtd size()     => @countof(stream)
 
     mtd refill(width = 24'u8)
     {
@@ -78,7 +80,7 @@ public impl CompressStream
     mtd consumeBits(width: u8)
     {
 	    codeBuffer >>=,safe width
-	    numBits -= width
+	    numBits -=,safe width
     }
 
     #[Swag.Inline]

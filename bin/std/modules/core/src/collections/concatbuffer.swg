@@ -129,6 +129,13 @@ impl ConcatBuffer
         currentSP += 1
     }
 
+    // Offset the current write pointer
+    mtd seek(num: uint)
+    {
+        Debug.assert(currentSP + num <= lastBucket.datas + lastBucket.size)
+        currentSP += num
+    }
+
     // Append a slice of bytes to the buffer
     // If 'contiguous' is false, the slice will be divided in chunks if necessary
     mtd addBytes(bytes: const [..] u8, contiguous = true)
