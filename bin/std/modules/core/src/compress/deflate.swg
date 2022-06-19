@@ -416,6 +416,72 @@ impl Deflate
 
     mtd tdefl_calculate_minimum_redundancy(A: *tdefl_sym_freq, n: u32)
     {
+        if n == 0
+            return
+        elif n == 1
+        {
+            A[0].m_key = 1
+            return
+        }
+
+        A[0].m_key += A[1].m_key
+        root := 0
+        leaf := 2
+        for next := 1; next < n - 1; next += 1
+        {
+            if leaf >= n or A[root].m_key < A[leaf].m_key
+            {
+                A[next].m_key = A[root].m_key
+                A[root].m_key = cast(u16) next
+                root += 1
+            }
+            else
+            {
+                A[next].m_key = A[leaf].m_key
+                leaf += 1
+            }
+
+            if leaf >= n or (root < next and A[root].m_key < A[leaf].m_key)
+            {
+                A[next].m_key = cast(u16) (A[next].m_key + A[root].m_key)
+                A[root].m_key = cast(u16) next
+                root += 1
+            }
+            else
+            {
+                A[next].m_key = cast(u16) (A[next].m_key + A[leaf].m_key)
+                leaf += 1
+            }
+        }
+
+        A[n - 2].m_key = 0
+        for next := n - 3; next >= 0; next -= 1
+            A[next].m_key = cast(u16) (A[A[next].m_key].m_key + 1)
+
+        avbl := 1
+        used := 0
+        dpth := 0
+        root = n - 2
+        next := n - 1
+        while avbl > 0
+        {
+            while root >= 0 and cast(s32) A[root].m_key == dpth
+            {
+                used += 1
+                root -= 1
+            }
+
+            while avbl > used
+            {
+                A[next].m_key = cast(u16) dpth
+                next -= 1
+                avbl -= 1
+            }
+
+            avbl = 2 * used
+            dpth += 1
+            used = 0
+        }
     }
 
     mtd tdefl_huffman_enforce_max_code_size(pNum_codes: *s32, code_list_len, max_code_size: u32)
