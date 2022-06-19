@@ -352,9 +352,186 @@ impl Deflate
         }
     }
 
-    mtd tdefl_flush_block(flush: s32)->s32
+    mtd TDEFL_PUT_BITS(b, l: u32)
     {
-        return 0
+    }
+
+    mtd tdefl_start_static_block()
+    {
+    }
+
+    mtd tdefl_start_dynamic_block()
+    {
+    }
+
+    mtd tdefl_compress_lz_codes()->bool
+    {
+        return true
+    }
+
+    mtd tdefl_compress_block(static_block: bool)->bool
+    {
+        if static_block
+            tdefl_start_static_block()
+        else
+            tdefl_start_dynamic_block()
+        return tdefl_compress_lz_codes()
+    }
+
+    mtd tdefl_flush_block(flush: tdefl_flush)->s32
+    {
+        d := &state
+
+        comp_block_succeeded := false
+        use_raw_block := ((d.m_flags & TDEFL_FORCE_ALL_RAW_BLOCKS) != 0) and (d.m_lookahead_pos - d.m_lz_code_buf_dict_pos) <= d.m_dict_size
+        pOutput_buf_start := (((dref d.m_pOut_buf_size - d.m_out_buf_ofs) >= TDEFL_OUT_BUF_SIZE)) ? (cast(*u8) d.m_pOut_buf + d.m_out_buf_ofs) : &d.m_output_buf[0]
+
+        d.m_pOutput_buf = pOutput_buf_start
+        d.m_pOutput_buf_end = d.m_pOutput_buf + TDEFL_OUT_BUF_SIZE - 16
+
+        d.m_output_flush_ofs = 0
+        d.m_output_flush_remaining = 0
+
+        dref d.m_pLZ_flags = cast(u8) (dref d.m_pLZ_flags >> d.m_num_flags_left)
+        d.m_pLZ_code_buf -= (d.m_num_flags_left == 8) ? 1 : 0
+
+        if (d.m_flags & TDEFL_WRITE_ZLIB_HEADER) and !d.m_block_index
+        {
+            flevel := 3'u8
+            n := cast(u32) @sizeof(s_tdefl_num_probes) / @sizeof(u32)
+
+            i := 0
+            while i < n
+            {
+                if s_tdefl_num_probes[i] == (d.m_flags & 0xFFF)
+                    break
+                i += 1
+            }
+
+            if i < 2
+                flevel = 0
+            elif i < 6
+                flevel = 1
+            elif i == 6
+                flevel = 2
+
+            const cmf = 0x78'u32
+            header := (cmf << 8) | (flevel << 6)
+            header += 31 - (header % 31)
+            flg := header & 0xFF
+
+            TDEFL_PUT_BITS(cmf, 8)
+            TDEFL_PUT_BITS(flg, 8)
+        }
+
+        TDEFL_PUT_BITS(flush == .TDEFL_FINISH ? 1 : 0, 1)
+
+        pSaved_output_buf := d.m_pOutput_buf
+        saved_bit_buf := d.m_bit_buffer
+        saved_bits_in := d.m_bits_in
+
+        if !use_raw_block
+            comp_block_succeeded = tdefl_compress_block((d.m_flags & TDEFL_FORCE_ALL_STATIC_BLOCKS) or (d.m_total_lz_bytes < 48))
+
+        /* If the block gets expanded, forget the current contents of the output buffer and send a raw block instead. */
+        if (((use_raw_block) or ((d.m_total_lz_bytes) and ((d.m_pOutput_buf - pSaved_output_buf + 1) >= d.m_total_lz_bytes))) and
+            ((d.m_lookahead_pos - d.m_lz_code_buf_dict_pos) <= d.m_dict_size))
+        {
+            d.m_pOutput_buf = pSaved_output_buf
+            d.m_bit_buffer = saved_bit_buf
+            d.m_bits_in = saved_bits_in
+            TDEFL_PUT_BITS(0, 2)
+            if d.m_bits_in
+            {
+                TDEFL_PUT_BITS(0, 8 - d.m_bits_in)
+            }
+
+            for i := 2; i != 0; i -= 1
+            {
+                TDEFL_PUT_BITS(d.m_total_lz_bytes & 0xFFFF, 16)
+                d.m_total_lz_bytes ^= 0xFFFF
+            }
+
+            for i := 0; i < d.m_total_lz_bytes; i += 1
+            {
+                TDEFL_PUT_BITS(cast(u32) d.m_dict[(d.m_lz_code_buf_dict_pos + i) & TDEFL_LZ_DICT_SIZE_MASK], 8)
+            }
+        }
+        elif !comp_block_succeeded
+        {
+            d.m_pOutput_buf = pSaved_output_buf
+            d.m_bit_buffer = saved_bit_buf
+            d.m_bits_in = saved_bits_in
+            discard tdefl_compress_block(true)
+        }
+
+        if flush
+        {
+            if flush == .TDEFL_FINISH
+            {
+                if d.m_bits_in
+                {
+                    TDEFL_PUT_BITS(0, 8 - d.m_bits_in)
+                }
+                if d.m_flags & TDEFL_WRITE_ZLIB_HEADER
+                {
+                    a := d.m_adler32
+                    for i := 0; i < 4; i += 1
+                    {
+                        TDEFL_PUT_BITS((a >> 24) & 0xFF, 8)
+                        a <<= 8
+                    }
+                }
+            }
+            else
+            {
+                z := 0'u32
+                TDEFL_PUT_BITS(0, 3)
+                if d.m_bits_in
+                {
+                    TDEFL_PUT_BITS(0, 8 - d.m_bits_in)
+                }
+
+                for i := 2; i != 0; i -= 1
+                {
+                    TDEFL_PUT_BITS(z & 0xFFFF, 16)
+                    z ^= 0xFFFF
+                }
+            }
+        }
+
+        Memory.clear(&d.m_huff_count[0, 0], cast(uint) @sizeof(d.m_huff_count[0, 0]) * TDEFL_MAX_HUFF_SYMBOLS_0)
+        Memory.clear(&d.m_huff_count[1, 0], cast(uint) @sizeof(d.m_huff_count[1, 0]) * TDEFL_MAX_HUFF_SYMBOLS_1)
+
+        d.m_pLZ_code_buf = &d.m_lz_code_buf[0] + 1
+        d.m_pLZ_flags = &d.m_lz_code_buf[0]
+        d.m_num_flags_left = 8
+        d.m_lz_code_buf_dict_pos += d.m_total_lz_bytes
+        d.m_total_lz_bytes = 0
+        d.m_block_index += 1
+
+        n := cast(s32) (d.m_pOutput_buf - pOutput_buf_start)
+        if n != 0
+        {
+            if pOutput_buf_start == &d.m_output_buf[0]
+            {
+                bytes_to_copy := cast(s32) Math.min(cast(uint) n, cast(uint) (dref d.m_pOut_buf_size - d.m_out_buf_ofs))
+                Memory.copy(cast(*u8) d.m_pOut_buf + d.m_out_buf_ofs, d.m_output_buf, cast(uint) bytes_to_copy)
+                d.m_out_buf_ofs += bytes_to_copy
+                n -= bytes_to_copy
+                if n != 0
+                {
+                    d.m_output_flush_ofs = bytes_to_copy
+                    d.m_output_flush_remaining = n
+                }
+            }
+            else
+            {
+                d.m_out_buf_ofs += n
+            }
+        }
+
+        return d.m_output_flush_remaining
     }
 
     mtd tdefl_compress_normal()->bool throw
@@ -503,7 +680,7 @@ impl Deflate
             {
                 d.m_pSrc = pSrc
                 d.m_src_buf_left = src_buf_left
-                n := tdefl_flush_block(0)
+                n := tdefl_flush_block(.TDEFL_NO_FLUSH)
                 if n
                     return (n < 0) ? false : true
             }
