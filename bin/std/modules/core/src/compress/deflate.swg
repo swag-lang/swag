@@ -116,7 +116,6 @@ const TDEFL_LEVEL1_HASH_SIZE_MASK = 4095
 const TDEFL_LZ_HASH_SHIFT = (TDEFL_LZ_HASH_BITS + 2) / 3
 const TDEFL_LZ_HASH_SIZE = 1 << TDEFL_LZ_HASH_BITS
 
-const TDEFL_WRITE_ZLIB_HEADER = 0x01000
 const TDEFL_COMPUTE_ADLER32 = 0x02000
 const TDEFL_GREEDY_PARSING_FLAG = 0x04000
 const TDEFL_NONDETERMINISTIC_PARSING_FLAG = 0x08000
@@ -137,7 +136,6 @@ struct Stream
     next_out:   *u8
     avail_out:  uint
     total_out:  uint
-    adler:      u32
 }
 
 struct tdefl_sym_freq
@@ -198,6 +196,7 @@ public struct Deflate
 {
     stream: Stream
     state:  tdefl_compressor
+    adler:  Hash.Adler32
 }
 
 impl Deflate
@@ -208,9 +207,6 @@ impl Deflate
         comp_flags = s_tdefl_num_probes[Math.min(10'u32, level)]
         if level <= 3
             comp_flags |= TDEFL_GREEDY_PARSING_FLAG
-
-        //if window_bits > 0
-        //    comp_flags |= TDEFL_WRITE_ZLIB_HEADER
 
         if level == .NoCompression
             comp_flags |= TDEFL_FORCE_ALL_RAW_BLOCKS
@@ -224,12 +220,6 @@ impl Deflate
             comp_flags |= TDEFL_RLE_MATCHES
 
         return comp_flags
-    }
-
-    mtd mz_deflateInit2(level: u32, window_bits: s32, strategy: CompressionStrategy) throw
-    {
-        comp_flags := TDEFL_COMPUTE_ADLER32 | tdefl_create_comp_flags_from_zip_params(level, window_bits, strategy)
-        tdefl_init(comp_flags)
     }
 
     mtd tdefl_init(flags: u32)
@@ -374,7 +364,7 @@ impl Deflate
     }
 
     //#[Swag.Macro]
-    mtd TDEFL_PUT_BITS(b, l: u32)
+    mtd putBits(b, l: u32)
     {
         d := &state
         bits := b
@@ -657,7 +647,7 @@ impl Deflate
         tdefl_optimize_huffman_table(0, 288, 15, true)
         tdefl_optimize_huffman_table(1, 32, 15, true)
 
-        TDEFL_PUT_BITS(1, 2)
+        putBits(1, 2)
     }
 
     #[Swag.Mixin]
@@ -809,9 +799,9 @@ impl Deflate
 
         tdefl_optimize_huffman_table(2, TDEFL_MAX_HUFF_SYMBOLS_2, 7, false)
 
-        TDEFL_PUT_BITS(2, 2)
-        TDEFL_PUT_BITS(num_lit_codes - 257, 5)
-        TDEFL_PUT_BITS(num_dist_codes - 1, 5)
+        putBits(2, 2)
+        putBits(num_lit_codes - 257, 5)
+        putBits(num_dist_codes - 1, 5)
 
         num_bit_lengths := 18'u32
         while num_bit_lengths >= 0
@@ -822,10 +812,10 @@ impl Deflate
         }
 
         num_bit_lengths = Math.max(4, num_bit_lengths + 1)
-        TDEFL_PUT_BITS(num_bit_lengths - 4, 4)
+        putBits(num_bit_lengths - 4, 4)
         for i := 0; i < num_bit_lengths; i += 1
         {
-            TDEFL_PUT_BITS(cast(u32) d.m_huff_code_sizes[2, s_tdefl_packed_code_size_syms_swizzle[i]], 3)
+            putBits(cast(u32) d.m_huff_code_sizes[2, s_tdefl_packed_code_size_syms_swizzle[i]], 3)
         }
 
         packed_code_sizes_index := 0
@@ -833,11 +823,11 @@ impl Deflate
         {
             cde := packed_code_sizes[packed_code_sizes_index]
             packed_code_sizes_index += 1
-            TDEFL_PUT_BITS(cast(u32) d.m_huff_codes[2, cde], cast(u32) d.m_huff_code_sizes[2, cde])
+            putBits(cast(u32) d.m_huff_codes[2, cde], cast(u32) d.m_huff_code_sizes[2, cde])
             if cde >= 16
             {
                 const p = @[2, 3, 7]
-                TDEFL_PUT_BITS(cast(u32) packed_code_sizes[packed_code_sizes_index], cast(u32) p[cde - 16])
+                putBits(cast(u32) packed_code_sizes[packed_code_sizes_index], cast(u32) p[cde - 16])
                 packed_code_sizes_index += 1
             }
         }
@@ -861,8 +851,8 @@ impl Deflate
                 match_dist := cast(u32) (pLZ_codes[1] | (pLZ_codes[2] << 8))
                 pLZ_codes += 3
 
-                TDEFL_PUT_BITS(cast(u32) d.m_huff_codes[0, s_tdefl_len_sym[match_len]], cast(u32) d.m_huff_code_sizes[0, s_tdefl_len_sym[match_len]])
-                TDEFL_PUT_BITS(match_len & mz_bitmasks[s_tdefl_len_extra[match_len]], cast(u32) s_tdefl_len_extra[match_len])
+                putBits(cast(u32) d.m_huff_codes[0, s_tdefl_len_sym[match_len]], cast(u32) d.m_huff_code_sizes[0, s_tdefl_len_sym[match_len]])
+                putBits(match_len & mz_bitmasks[s_tdefl_len_extra[match_len]], cast(u32) s_tdefl_len_extra[match_len])
 
                 var sym, num_extra_bits: u32
                 if match_dist < 512
@@ -876,18 +866,18 @@ impl Deflate
                     num_extra_bits = s_tdefl_large_dist_extra[match_dist >> 8]
                 }
 
-                TDEFL_PUT_BITS(cast(u32) d.m_huff_codes[1, sym], cast(u32) d.m_huff_code_sizes[1, sym])
-                TDEFL_PUT_BITS(match_dist & mz_bitmasks[num_extra_bits], num_extra_bits)
+                putBits(cast(u32) d.m_huff_codes[1, sym], cast(u32) d.m_huff_code_sizes[1, sym])
+                putBits(match_dist & mz_bitmasks[num_extra_bits], num_extra_bits)
             }
             else
             {
                 lit := dref pLZ_codes
                 pLZ_codes += 1
-                TDEFL_PUT_BITS(cast(u32) d.m_huff_codes[0, lit], cast(u32) d.m_huff_code_sizes[0, lit])
+                putBits(cast(u32) d.m_huff_codes[0, lit], cast(u32) d.m_huff_code_sizes[0, lit])
             }
         }
 
-        TDEFL_PUT_BITS(cast(u32) d.m_huff_codes[0, 256], cast(u32) d.m_huff_code_sizes[0, 256])
+        putBits(cast(u32) d.m_huff_codes[0, 256], cast(u32) d.m_huff_code_sizes[0, 256])
         return d.m_pOutput_buf < d.m_pOutput_buf_end
     }
 
@@ -937,36 +927,7 @@ impl Deflate
         dref d.m_pLZ_flags = cast(u8) (dref d.m_pLZ_flags >> d.m_num_flags_left)
         d.m_pLZ_code_buf -= (d.m_num_flags_left == 8) ? 1 : 0
 
-        if (d.m_flags & TDEFL_WRITE_ZLIB_HEADER) and !d.m_block_index
-        {
-            flevel := 3'u8
-            n := cast(u32) @sizeof(s_tdefl_num_probes) / @sizeof(u32)
-
-            i := 0
-            while i < n
-            {
-                if s_tdefl_num_probes[i] == (d.m_flags & 0xFFF)
-                    break
-                i += 1
-            }
-
-            if i < 2
-                flevel = 0
-            elif i < 6
-                flevel = 1
-            elif i == 6
-                flevel = 2
-
-            const cmf = 0x78'u32
-            header := (cmf << 8) | (flevel << 6)
-            header += 31 - (header % 31)
-            flg := header & 0xFF
-
-            TDEFL_PUT_BITS(cmf, 8)
-            TDEFL_PUT_BITS(flg, 8)
-        }
-
-        TDEFL_PUT_BITS(flush == .TDEFL_FINISH ? 1 : 0, 1)
+        putBits(flush == .TDEFL_FINISH ? 1 : 0, 1)
 
         pSaved_output_buf := d.m_pOutput_buf
         saved_bit_buf := d.m_bit_buffer
@@ -981,21 +942,21 @@ impl Deflate
             d.m_pOutput_buf = pSaved_output_buf
             d.m_bit_buffer = saved_bit_buf
             d.m_bits_in = saved_bits_in
-            TDEFL_PUT_BITS(0, 2)
+            putBits(0, 2)
             if d.m_bits_in
             {
-                TDEFL_PUT_BITS(0, 8 - d.m_bits_in)
+                putBits(0, 8 - d.m_bits_in)
             }
 
             for i := 2; i != 0; i -= 1
             {
-                TDEFL_PUT_BITS(d.m_total_lz_bytes & 0xFFFF, 16)
+                putBits(d.m_total_lz_bytes & 0xFFFF, 16)
                 d.m_total_lz_bytes ^= 0xFFFF
             }
 
             for i := 0; i < d.m_total_lz_bytes; i += 1
             {
-                TDEFL_PUT_BITS(cast(u32) d.m_dict[(d.m_lz_code_buf_dict_pos + i) & TDEFL_LZ_DICT_SIZE_MASK], 8)
+                putBits(cast(u32) d.m_dict[(d.m_lz_code_buf_dict_pos + i) & TDEFL_LZ_DICT_SIZE_MASK], 8)
             }
         }
         elif !comp_block_succeeded
@@ -1012,30 +973,21 @@ impl Deflate
             {
                 if d.m_bits_in
                 {
-                    TDEFL_PUT_BITS(0, 8 - d.m_bits_in)
-                }
-                if d.m_flags & TDEFL_WRITE_ZLIB_HEADER
-                {
-                    a := d.m_adler32
-                    for i := 0; i < 4; i += 1
-                    {
-                        TDEFL_PUT_BITS((a >> 24) & 0xFF, 8)
-                        a <<= 8
-                    }
+                    putBits(0, 8 - d.m_bits_in)
                 }
             }
             else
             {
                 z := 0'u32
-                TDEFL_PUT_BITS(0, 3)
+                putBits(0, 3)
                 if d.m_bits_in
                 {
-                    TDEFL_PUT_BITS(0, 8 - d.m_bits_in)
+                    putBits(0, 8 - d.m_bits_in)
                 }
 
                 for i := 2; i != 0; i -= 1
                 {
-                    TDEFL_PUT_BITS(z & 0xFFFF, 16)
+                    putBits(z & 0xFFFF, 16)
                     z ^= 0xFFFF
                 }
             }
@@ -1257,7 +1209,7 @@ impl Deflate
         discard tdefl_compress_normal()
 
         //if ((d.m_flags & (TDEFL_WRITE_ZLIB_HEADER | TDEFL_COMPUTE_ADLER32)) && (pIn_buf))
-        //    d.m_adler32 = (mz_uint32)mz_adler32(d.m_adler32, (const mz_uint8 *)pIn_buf, d.m_pSrc - (const mz_uint8 *)pIn_buf);
+        adler.update(@mkslice(pIn_buf, cast(uint) (d.m_pSrc - pIn_buf)))
 
         if flush and !d.m_lookahead_size and !d.m_src_buf_left and !d.m_output_flush_remaining
         {
@@ -1297,7 +1249,6 @@ impl Deflate
             stream.next_in  += in_bytes
             stream.avail_in -= in_bytes
             stream.total_in += in_bytes
-            stream.adler = state.m_adler32
 
             stream.next_out  += out_bytes
             stream.avail_out -= out_bytes
@@ -1344,7 +1295,7 @@ public impl Deflate
     }
 
     // Compress the associated stream
-    mtd compress(src: const [..] u8, winSize: u32 = DeflateMaxDistance, level = CompressionLevel.Default)->Array'u8 throw
+    mtd compress(src: const [..] u8, winSize: u32 = DeflateMaxDistance, level = CompressionLevel.Default, strategy = CompressionStrategy.Default)->Array'u8 throw
     {
         if @countof(src) > Swag.U32.Max
             throw "overflow"
@@ -1354,7 +1305,9 @@ public impl Deflate
         winBits := cast(s32) Math.log2(cast(f32) Math.min(winSize, DeflateMaxDistance))
         Debug.assert(winSize > 0)
 
-        mz_deflateInit2(level, winBits, .Default)
+        adler.init()
+        comp_flags := TDEFL_COMPUTE_ADLER32 | tdefl_create_comp_flags_from_zip_params(level, winBits, strategy)
+        tdefl_init(comp_flags)
 
         var result: retval
         state.result = &result
