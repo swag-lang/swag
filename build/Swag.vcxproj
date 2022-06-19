@@ -274,6 +274,15 @@
     <ClCompile Include="../src/AstOutput.cpp" />
     <ClCompile Include="../src/Attribute.cpp" />
     <ClCompile Include="../src/Backend.cpp" />
+    <ClCompile Include="..\..\..\miniz-master\miniz.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\..\miniz-master\miniz_tdef.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\..\miniz-master\miniz_tinfl.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="..\src\AstNode_Clone.cpp" />
     <ClCompile Include="..\src\BackendLLVM_CCForeign.cpp" />
     <ClCompile Include="..\src\BackendLLVM_CCLocal.cpp" />

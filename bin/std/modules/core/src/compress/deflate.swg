@@ -8,30 +8,7 @@
 #global namespace Compress
 #global #[Swag.Safety("overflow", false)]
 
-#[Swag.Opaque]
-public struct Deflate
-{
-    stream: Stream
-    state:  tdefl_compressor
-}
-
-struct Stream
-{
-    next_in:    const *u8
-    avail_in:   uint
-    total_in:   uint
-    next_out:   *u8
-    avail_out:  uint
-    total_out:  uint
-    adler:      u32
-}
-
-struct tdefl_sym_freq
-{
-    m_key, m_sym_index: u16
-}
-
-const TDEFL_MAX_SUPPORTED_HUFF_CODESIZE = 32
+using namespace DeflatePrivate {
 
 const s_tdefl_packed_code_size_syms_swizzle: [] u8 = @[
     16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15
@@ -120,6 +97,8 @@ const MZ_FULL_FLUSH = 3
 const MZ_FINISH = 4
 const MZ_BLOCK = 5
 
+const TDEFL_MAX_SUPPORTED_HUFF_CODESIZE = 32
+
 const TDEFL_MAX_HUFF_TABLES = 3
 const TDEFL_MAX_HUFF_SYMBOLS_0 = 288'u32
 const TDEFL_MAX_HUFF_SYMBOLS_1 = 32'u32
@@ -136,6 +115,35 @@ const TDEFL_LZ_HASH_BITS = 15
 const TDEFL_LEVEL1_HASH_SIZE_MASK = 4095
 const TDEFL_LZ_HASH_SHIFT = (TDEFL_LZ_HASH_BITS + 2) / 3
 const TDEFL_LZ_HASH_SIZE = 1 << TDEFL_LZ_HASH_BITS
+
+const TDEFL_WRITE_ZLIB_HEADER = 0x01000
+const TDEFL_COMPUTE_ADLER32 = 0x02000
+const TDEFL_GREEDY_PARSING_FLAG = 0x04000
+const TDEFL_NONDETERMINISTIC_PARSING_FLAG = 0x08000
+const TDEFL_RLE_MATCHES = 0x10000
+const TDEFL_FILTER_MATCHES = 0x20000
+const TDEFL_FORCE_ALL_STATIC_BLOCKS = 0x40000
+const TDEFL_FORCE_ALL_RAW_BLOCKS = 0x80000
+
+const TDEFL_HUFFMAN_ONLY = 0
+const TDEFL_DEFAULT_MAX_PROBES = 128
+const TDEFL_MAX_PROBES_MASK = 0xFFF
+
+struct Stream
+{
+    next_in:    const *u8
+    avail_in:   uint
+    total_in:   uint
+    next_out:   *u8
+    avail_out:  uint
+    total_out:  uint
+    adler:      u32
+}
+
+struct tdefl_sym_freq
+{
+    m_key, m_sym_index: u16
+}
 
 struct tdefl_compressor
 {
@@ -182,60 +190,45 @@ struct tdefl_compressor
     result:             *Array'u8
 }
 
-const TDEFL_WRITE_ZLIB_HEADER = 0x01000
-const TDEFL_COMPUTE_ADLER32 = 0x02000
-const TDEFL_GREEDY_PARSING_FLAG = 0x04000
-const TDEFL_NONDETERMINISTIC_PARSING_FLAG = 0x08000
-const TDEFL_RLE_MATCHES = 0x10000
-const TDEFL_FILTER_MATCHES = 0x20000
-const TDEFL_FORCE_ALL_STATIC_BLOCKS = 0x40000
-const TDEFL_FORCE_ALL_RAW_BLOCKS = 0x80000
-
-const TDEFL_HUFFMAN_ONLY = 0
-const TDEFL_DEFAULT_MAX_PROBES = 128
-const TDEFL_MAX_PROBES_MASK = 0xFFF
-
 const s_tdefl_num_probes: [11] u32 = @[ 0, 1, 6, 32, 16, 32, 128, 256, 512, 768, 1500 ]
+}
+
+#[Swag.Opaque]
+public struct Deflate
+{
+    stream: Stream
+    state:  tdefl_compressor
+}
 
 impl Deflate
 {
-    func tdefl_create_comp_flags_from_zip_params(level: u32, window_bits: s32, strategy: CompressionStrategy)->u32
+    func tdefl_create_comp_flags_from_zip_params(level: CompressionLevel, window_bits: s32, strategy: CompressionStrategy)->u32
     {
         comp_flags := 0'u32
-        if level != MZ_DEFAULT_COMPRESSION
-        {
-            comp_flags = s_tdefl_num_probes[Math.min(10, cast(s32) level)]
-            if level <= 3
-                comp_flags |= TDEFL_GREEDY_PARSING_FLAG
-        }
-        else
-        {
-            comp_flags = s_tdefl_num_probes[MZ_DEFAULT_LEVEL]
+        comp_flags = s_tdefl_num_probes[Math.min(10'u32, level)]
+        if level <= 3
             comp_flags |= TDEFL_GREEDY_PARSING_FLAG
-        }
 
         //if window_bits > 0
         //    comp_flags |= TDEFL_WRITE_ZLIB_HEADER
 
-        if level == MZ_NO_COMPRESSION
+        if level == .NoCompression
             comp_flags |= TDEFL_FORCE_ALL_RAW_BLOCKS
-        else if strategy == .MZ_FILTERED
+        else if strategy == .Filtered
             comp_flags |= TDEFL_FILTER_MATCHES
-        else if strategy ==. MZ_HUFFMAN_ONLY
+        else if strategy ==. HuffmanOnly
             comp_flags &= ~TDEFL_MAX_PROBES_MASK
-        else if strategy == .MZ_FIXED
+        else if strategy == .Fixed
             comp_flags |= TDEFL_FORCE_ALL_STATIC_BLOCKS
-        else if strategy == .MZ_RLE
+        else if strategy == .Rle
             comp_flags |= TDEFL_RLE_MATCHES
 
         return comp_flags
     }
 
-    mtd mz_deflateInit2(level: u32, method: s32, window_bits: s32, mem_level: s32, strategy: CompressionStrategy) throw
+    mtd mz_deflateInit2(level: u32, window_bits: s32, strategy: CompressionStrategy) throw
     {
         comp_flags := TDEFL_COMPUTE_ADLER32 | tdefl_create_comp_flags_from_zip_params(level, window_bits, strategy)
-        if method != MZ_DEFLATED or mem_level < 1 or mem_level > 9 or (window_bits != MZ_DEFAULT_WINDOW_BITS and -window_bits != MZ_DEFAULT_WINDOW_BITS)
-            throw "MZ_PARAM_ERROR"
         tdefl_init(comp_flags)
     }
 
@@ -287,10 +280,10 @@ impl Deflate
 
         match_dist -= 1
         d.m_pLZ_code_buf[1] = cast(u8) (match_dist & 0xFF)
-        d.m_pLZ_code_buf[2] = cast(u8) (match_dist >>,safe 8)
+        d.m_pLZ_code_buf[2] = cast(u8) (match_dist >> 8)
         d.m_pLZ_code_buf += 3
 
-        dref d.m_pLZ_flags = cast(u8) ((dref d.m_pLZ_flags >>,safe 1) | 0x80)
+        dref d.m_pLZ_flags = cast(u8) ((dref d.m_pLZ_flags >> 1) | 0x80)
         d.m_num_flags_left -= 1
         if d.m_num_flags_left == 0
         {
@@ -300,7 +293,7 @@ impl Deflate
         }
 
         s0 := s_tdefl_small_dist_sym[match_dist & 511]
-        s1 := s_tdefl_large_dist_sym[(match_dist >>,safe 8) & 127]
+        s1 := s_tdefl_large_dist_sym[(match_dist >> 8) & 127]
         d.m_huff_count[1, (match_dist < 512) ? s0 : s1] += 1
         d.m_huff_count[0, s_tdefl_len_sym[match_len - TDEFL_MIN_MATCH_LEN]] += 1
     }
@@ -1331,27 +1324,27 @@ public impl Deflate
 {
     public const DeflateMaxDistance = 32768'u32
 
-    const MZ_NO_COMPRESSION = 0
-    const MZ_BEST_SPEED = 1
-    const MZ_BEST_COMPRESSION = 9
-    const MZ_UBER_COMPRESSION = 10
-    const MZ_DEFAULT_LEVEL = 6
-    const MZ_DEFAULT_COMPRESSION = Swag.U32.Max
+    #[Swag.Incomplete]
+    enum CompressionLevel : u32
+    {
+        NoCompression   = 0
+        BestSpeed       = 1
+        Default         = 6
+        BestCompression = 9
+        UberCompression = 10
+    }
 
     enum CompressionStrategy
     {
-        MZ_DEFAULT_STRATEGY = 0
-        MZ_FILTERED = 1
-        MZ_HUFFMAN_ONLY = 2
-        MZ_RLE = 3
-        MZ_FIXED = 4
+        Default
+        Filtered
+        HuffmanOnly
+        Rle
+        Fixed
     }
 
-    const MZ_DEFLATED = 8
-    const MZ_DEFAULT_WINDOW_BITS = 15
-
     // Compress the associated stream
-    mtd compress(src: const [..] u8, winSize: u32 = DeflateMaxDistance, level: u32 = MZ_DEFAULT_COMPRESSION)->Array'u8 throw
+    mtd compress(src: const [..] u8, winSize: u32 = DeflateMaxDistance, level = CompressionLevel.Default)->Array'u8 throw
     {
         if @countof(src) > Swag.U32.Max
             throw "overflow"
@@ -1361,7 +1354,7 @@ public impl Deflate
         winBits := cast(s32) Math.log2(cast(f32) Math.min(winSize, DeflateMaxDistance))
         Debug.assert(winSize > 0)
 
-        mz_deflateInit2(level, MZ_DEFLATED, winBits, 9, .MZ_DEFAULT_STRATEGY)
+        mz_deflateInit2(level, winBits, .Default)
 
         var result: retval
         state.result = &result

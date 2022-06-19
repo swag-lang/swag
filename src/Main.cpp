@@ -5,6 +5,7 @@
 #include "Os.h"
 #include "ErrorIds.h"
 #include "Diagnostic.h"
+#include "F:\miniz-master\miniz.h"
 
 bool g_Exiting = false;
 
@@ -13,6 +14,20 @@ extern void help(CommandLineParser& cmdParser);
 
 int main(int argc, const char* argv[])
 {
+    unsigned char bytes[100];
+    for (int i = 0; i < sizeof(bytes); i++) 
+            bytes[i] = 6;
+    unsigned char next_out[1024];
+
+    mz_stream stream;
+    memset(&stream, 0, sizeof(stream));
+    stream.next_in = bytes;
+    stream.avail_in = sizeof(bytes);
+    stream.next_out = next_out;
+    stream.avail_out = 128;
+    mz_deflateInit2(&stream, MZ_DEFAULT_COMPRESSION, MZ_DEFLATED, 15, 9, MZ_DEFAULT_STRATEGY);
+    mz_deflate(&stream, MZ_FINISH);
+
     g_CommandLine = g_Allocator.alloc<CommandLine>();
     g_Workspace   = g_Allocator.alloc<Workspace>();
 
