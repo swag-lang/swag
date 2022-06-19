@@ -1060,13 +1060,13 @@ void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* 
     switch (searchFor)
     {
     case IdentifierSearchFor::Function:
-        diag = new Diagnostic{node, Fmt(Err(Err0228), node->token.ctext())};
+        diag = new Diagnostic{node->sourceFile, node->token, Fmt(Err(Err0228), node->token.ctext())};
         break;
     case IdentifierSearchFor::Type:
-        diag = new Diagnostic{node, Fmt(Err(Err0165), node->token.ctext())};
+        diag = new Diagnostic{node->sourceFile, node->token, Fmt(Err(Err0165), node->token.ctext())};
         break;
     default:
-        diag = new Diagnostic{node, Fmt(Err(Err0122), node->token.ctext())};
+        diag = new Diagnostic{node->sourceFile, node->token, Fmt(Err(Err0122), node->token.ctext())};
         break;
     }
 
