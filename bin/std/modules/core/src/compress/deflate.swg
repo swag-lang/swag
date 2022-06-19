@@ -411,7 +411,46 @@ impl Deflate
 
     mtd tdefl_radix_sort_syms(num_syms: u32, pSyms0, pSyms1: *tdefl_sym_freq)->*tdefl_sym_freq
     {
-        return null
+        total_passes := 2
+        var hist: [256 * 2] u32
+
+        pCur_syms := pSyms0
+        pNew_syms := pSyms1
+        for i := 0; i < num_syms; i += 1
+        {
+            freq := pSyms0[i].m_key
+            hist[freq & 0xFF] += 1
+            hist[256 + ((freq >> 8) & 0xFF)] += 1
+        }
+
+        while (total_passes > 1) and (num_syms == hist[(total_passes - 1) * 256])
+            total_passes -= 1
+
+        pass_shift := 0
+        for pass := 0; pass < total_passes; pass += 1
+        {
+            pHist := &hist[pass << 8]
+            var offsets: [256] u32
+            cur_ofs := 0
+
+            for i := 0; i < 256; i += 1
+            {
+                offsets[i] = cur_ofs
+                cur_ofs += pHist[i]
+            }
+
+            for i := 0; i < num_syms; i += 1
+            {
+                ptr := &offsets[(pCur_syms[i].m_key >> pass_shift) & 0xFF]
+                pNew_syms[dref ptr] = pCur_syms[i]
+                dref ptr += 1
+            }
+
+            swap(&pCur_syms, &pNew_syms)
+            pass_shift += 8
+        }
+
+        return pCur_syms;
     }
 
     mtd tdefl_calculate_minimum_redundancy(A: *tdefl_sym_freq, n: u32)
