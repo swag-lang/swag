@@ -10,22 +10,22 @@
 
 using namespace DeflatePrivate {
 
-const s_tdefl_packed_code_size_syms_swizzle: [] u8 = @[
+const PackedCodeSizeSymsSwizzle: [] u8 = @[
     16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15
 ]
 
-const mz_bitmasks: [17] u32 = @[
+const Bitmasks: [17] u32 = @[
     0x0000, 0x0001, 0x0003, 0x0007, 0x000F, 0x001F, 0x003F, 0x007F, 0x00FF, 0x01FF, 0x03FF, 0x07FF, 0x0FFF, 0x1FFF, 0x3FFF, 0x7FFF, 0xFFFF
 ]
 
-const s_tdefl_len_extra: [256] u8 = @[
+const LenExtra: [256] u8 = @[
     0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
     4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
     5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
     5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0
 ]
 
-const s_tdefl_len_sym: [256] u16 = @[
+const LenSym: [256] u16 = @[
     257, 258, 259, 260, 261, 262, 263, 264, 265, 265, 266, 266, 267, 267, 268, 268, 269, 269, 269, 269, 270, 270, 270, 270, 271, 271, 271, 271, 272, 272, 272, 272,
     273, 273, 273, 273, 273, 273, 273, 273, 274, 274, 274, 274, 274, 274, 274, 274, 275, 275, 275, 275, 275, 275, 275, 275, 276, 276, 276, 276, 276, 276, 276, 276,
     277, 277, 277, 277, 277, 277, 277, 277, 277, 277, 277, 277, 277, 277, 277, 277, 278, 278, 278, 278, 278, 278, 278, 278, 278, 278, 278, 278, 278, 278, 278, 278,
@@ -36,7 +36,7 @@ const s_tdefl_len_sym: [256] u16 = @[
     284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 284, 285
 ]
 
-const s_tdefl_small_dist_sym: [512] u8 = @[
+const SmallDistSym: [512] u8 = @[
     0, 1, 2, 3, 4, 4, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9, 9, 9, 9, 9, 9, 9, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 11, 11, 11, 11, 11, 11,
     11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 13,
     13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14, 14,
@@ -51,7 +51,7 @@ const s_tdefl_small_dist_sym: [512] u8 = @[
     17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17
 ]
 
-const s_tdefl_small_dist_extra: [512] u8 = @[
+const SmallDistExtra: [512] u8 = @[
     0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5,
     5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
     6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
@@ -62,16 +62,20 @@ const s_tdefl_small_dist_extra: [512] u8 = @[
     7, 7, 7, 7, 7, 7, 7, 7
 ]
 
-const s_tdefl_large_dist_extra: [128] u8 = @[
+const LargeDistExtra: [128] u8 = @[
     0, 0, 8, 8, 9, 9, 9, 9, 10, 10, 10, 10, 10, 10, 10, 10, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12,
     12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13,
     13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13, 13
 ]
 
-const s_tdefl_large_dist_sym: [128] u8 = @[
+const LargeDistSym: [128] u8 = @[
     0, 0, 18, 19, 20, 20, 21, 21, 22, 22, 22, 22, 23, 23, 23, 23, 24, 24, 24, 24, 24, 24, 24, 24, 25, 25, 25, 25, 25, 25, 25, 25, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26,
     26, 26, 26, 26, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 27, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28, 28,
     28, 28, 28, 28, 28, 28, 28, 28, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29, 29
+]
+
+const NumProbes: [11] u32 = @[
+    0, 1, 6, 32, 16, 32, 128, 256, 512, 768, 1500
 ]
 
 enum tdefl_status
@@ -138,12 +142,13 @@ struct Stream
     total_out:  uint
 }
 
-struct tdefl_sym_freq
+struct SymFreq
 {
-    m_key, m_sym_index: u16
+    m_key:       u16
+    m_sym_index: u16
 }
 
-struct tdefl_compressor
+struct Compressor
 {
     m_flags:            u32
     m_max_probes:       [2] u32
@@ -161,22 +166,22 @@ struct tdefl_compressor
     m_lz_code_buf_dict_pos:   u32
     m_bits_in:          u32
     m_bit_buffer:       u32
-    m_saved_match_dist:   u32
-    m_saved_match_len:   u32
-    m_saved_lit:   u32
-    m_output_flush_ofs:   u32
+    m_saved_match_dist: u32
+    m_saved_match_len:  u32
+    m_saved_lit:        u32
+    m_output_flush_ofs: u32
     m_output_flush_remaining:   u32
-    m_finished:   u32
-    m_block_index:   u32
-    m_wants_to_finish:   u32
-    m_pIn_buf:      const *u8
-    m_pOut_buf:   *u8
-    m_pIn_buf_size: *uint
-    m_pOut_buf_size: *uint
-    m_flush:    tdefl_flush
-    m_pSrc: const *u8
-    m_src_buf_left: uint
-    m_out_buf_ofs: uint
+    m_finished:         u32
+    m_block_index:      u32
+    m_wants_to_finish:  u32
+    m_pIn_buf:          const *u8
+    m_pOut_buf:         *u8
+    m_pIn_buf_size:     *uint
+    m_pOut_buf_size:    *uint
+    m_flush:            tdefl_flush
+    m_pSrc:             const *u8
+    m_src_buf_left:     uint
+    m_out_buf_ofs:      uint
     m_dict:             [TDEFL_LZ_DICT_SIZE + TDEFL_MAX_MATCH_LEN - 1] u8
     m_huff_count:       [TDEFL_MAX_HUFF_TABLES, TDEFL_MAX_HUFF_SYMBOLS] u16
     m_huff_codes:       [TDEFL_MAX_HUFF_TABLES, TDEFL_MAX_HUFF_SYMBOLS] u16
@@ -187,39 +192,37 @@ struct tdefl_compressor
     m_output_buf:       [TDEFL_OUT_BUF_SIZE] u8
     result:             *Array'u8
 }
-
-const s_tdefl_num_probes: [11] u32 = @[ 0, 1, 6, 32, 16, 32, 128, 256, 512, 768, 1500 ]
 }
 
 #[Swag.Opaque]
 public struct Deflate
 {
     stream: Stream
-    state:  tdefl_compressor
+    state:  Compressor
     adler:  Hash.Adler32
 }
 
 impl Deflate
 {
-    func tdefl_create_comp_flags_from_zip_params(level: CompressionLevel, window_bits: s32, strategy: CompressionStrategy)->u32
+    func createCompFlagsFromZipParams(level: CompressionLevel, window_bits: s32, strategy: CompressionStrategy)->u32
     {
-        comp_flags := 0'u32
-        comp_flags = s_tdefl_num_probes[Math.min(10'u32, level)]
+        compFlags := 0'u32
+        compFlags = NumProbes[Math.min(10'u32, level)]
         if level <= 3
-            comp_flags |= TDEFL_GREEDY_PARSING_FLAG
+            compFlags |= TDEFL_GREEDY_PARSING_FLAG
 
         if level == .NoCompression
-            comp_flags |= TDEFL_FORCE_ALL_RAW_BLOCKS
-        else if strategy == .Filtered
-            comp_flags |= TDEFL_FILTER_MATCHES
-        else if strategy ==. HuffmanOnly
-            comp_flags &= ~TDEFL_MAX_PROBES_MASK
-        else if strategy == .Fixed
-            comp_flags |= TDEFL_FORCE_ALL_STATIC_BLOCKS
-        else if strategy == .Rle
-            comp_flags |= TDEFL_RLE_MATCHES
+            compFlags |= TDEFL_FORCE_ALL_RAW_BLOCKS
+        elif strategy == .Filtered
+            compFlags |= TDEFL_FILTER_MATCHES
+        elif strategy ==. HuffmanOnly
+            compFlags &= ~TDEFL_MAX_PROBES_MASK
+        elif strategy == .Fixed
+            compFlags |= TDEFL_FORCE_ALL_STATIC_BLOCKS
+        elif strategy == .Rle
+            compFlags |= TDEFL_RLE_MATCHES
 
-        return comp_flags
+        return compFlags
     }
 
     mtd tdefl_init(flags: u32)
@@ -282,10 +285,10 @@ impl Deflate
             d.m_pLZ_code_buf += 1
         }
 
-        s0 := s_tdefl_small_dist_sym[match_dist & 511]
-        s1 := s_tdefl_large_dist_sym[(match_dist >> 8) & 127]
+        s0 := SmallDistSym[match_dist & 511]
+        s1 := LargeDistSym[(match_dist >> 8) & 127]
         d.m_huff_count[1, (match_dist < 512) ? s0 : s1] += 1
-        d.m_huff_count[0, s_tdefl_len_sym[match_len - TDEFL_MIN_MATCH_LEN]] += 1
+        d.m_huff_count[0, LenSym[match_len - TDEFL_MIN_MATCH_LEN]] += 1
     }
 
     mtd tdefl_find_match(lookahead_pos, max_dist, max_match_len: u32, pMatch_dist, pMatch_len: *u32)
@@ -385,7 +388,7 @@ impl Deflate
         }
     }
 
-    mtd tdefl_radix_sort_syms(num_syms: u32, pSyms0, pSyms1: *tdefl_sym_freq)->*tdefl_sym_freq
+    mtd tdefl_radix_sort_syms(num_syms: u32, pSyms0, pSyms1: *SymFreq)->*SymFreq
     {
         total_passes := 2
         var hist: [256 * 2] u32
@@ -429,7 +432,7 @@ impl Deflate
         return pCur_syms;
     }
 
-    mtd tdefl_calculate_minimum_redundancy(A: *tdefl_sym_freq, n: u32)
+    mtd tdefl_calculate_minimum_redundancy(A: *SymFreq, n: u32)
     {
         if n == 0
             return
@@ -543,8 +546,8 @@ impl Deflate
         }
         else
         {
-            var syms0: [TDEFL_MAX_HUFF_SYMBOLS] tdefl_sym_freq
-            var syms1: [TDEFL_MAX_HUFF_SYMBOLS] tdefl_sym_freq
+            var syms0: [TDEFL_MAX_HUFF_SYMBOLS] SymFreq
+            var syms1: [TDEFL_MAX_HUFF_SYMBOLS] SymFreq
 
             num_used_syms := 0'u32
             pSym_count := &d.m_huff_count[table_num, 0]
@@ -806,7 +809,7 @@ impl Deflate
         num_bit_lengths := 18'u32
         while num_bit_lengths >= 0
         {
-            if d.m_huff_code_sizes[2, s_tdefl_packed_code_size_syms_swizzle[num_bit_lengths]]
+            if d.m_huff_code_sizes[2, PackedCodeSizeSymsSwizzle[num_bit_lengths]]
                 break
             num_bit_lengths -= 1
         }
@@ -815,7 +818,7 @@ impl Deflate
         putBits(num_bit_lengths - 4, 4)
         for i := 0; i < num_bit_lengths; i += 1
         {
-            putBits(cast(u32) d.m_huff_code_sizes[2, s_tdefl_packed_code_size_syms_swizzle[i]], 3)
+            putBits(cast(u32) d.m_huff_code_sizes[2, PackedCodeSizeSymsSwizzle[i]], 3)
         }
 
         packed_code_sizes_index := 0
@@ -851,23 +854,23 @@ impl Deflate
                 match_dist := cast(u32) (pLZ_codes[1] | (pLZ_codes[2] << 8))
                 pLZ_codes += 3
 
-                putBits(cast(u32) d.m_huff_codes[0, s_tdefl_len_sym[match_len]], cast(u32) d.m_huff_code_sizes[0, s_tdefl_len_sym[match_len]])
-                putBits(match_len & mz_bitmasks[s_tdefl_len_extra[match_len]], cast(u32) s_tdefl_len_extra[match_len])
+                putBits(cast(u32) d.m_huff_codes[0, LenSym[match_len]], cast(u32) d.m_huff_code_sizes[0, LenSym[match_len]])
+                putBits(match_len & Bitmasks[LenExtra[match_len]], cast(u32) LenExtra[match_len])
 
                 var sym, num_extra_bits: u32
                 if match_dist < 512
                 {
-                    sym = s_tdefl_small_dist_sym[match_dist]
-                    num_extra_bits = s_tdefl_small_dist_extra[match_dist]
+                    sym = SmallDistSym[match_dist]
+                    num_extra_bits = SmallDistExtra[match_dist]
                 }
                 else
                 {
-                    sym = s_tdefl_large_dist_sym[match_dist >> 8]
-                    num_extra_bits = s_tdefl_large_dist_extra[match_dist >> 8]
+                    sym = LargeDistSym[match_dist >> 8]
+                    num_extra_bits = LargeDistExtra[match_dist >> 8]
                 }
 
                 putBits(cast(u32) d.m_huff_codes[1, sym], cast(u32) d.m_huff_code_sizes[1, sym])
-                putBits(match_dist & mz_bitmasks[num_extra_bits], num_extra_bits)
+                putBits(match_dist & Bitmasks[num_extra_bits], num_extra_bits)
             }
             else
             {
@@ -1235,7 +1238,7 @@ impl Deflate
         if flush == MZ_PARTIAL_FLUSH
             flush = MZ_SYNC_FLUSH
 
-        //if (((tdefl_compressor *)stream.state)->m_prev_return_status == TDEFL_STATUS_DONE)
+        //if (((Compressor *)stream.state)->m_prev_return_status == TDEFL_STATUS_DONE)
         //    return (flush == MZ_FINISH) ? MZ_STREAM_END : MZ_BUF_ERROR;
 
         orig_total_in  := stream.total_in
@@ -1295,7 +1298,7 @@ public impl Deflate
     }
 
     // Compress the associated stream
-    mtd compress(src: const [..] u8, winSize: u32 = DeflateMaxDistance, level = CompressionLevel.Default, strategy = CompressionStrategy.Default)->Array'u8 throw
+    mtd compress(src: const [..] u8, level = CompressionLevel.Default, strategy = CompressionStrategy.Default, winSize: u32 = DeflateMaxDistance)->Array'u8 throw
     {
         if @countof(src) > Swag.U32.Max
             throw "overflow"
@@ -1306,8 +1309,8 @@ public impl Deflate
         Debug.assert(winSize > 0)
 
         adler.init()
-        comp_flags := TDEFL_COMPUTE_ADLER32 | tdefl_create_comp_flags_from_zip_params(level, winBits, strategy)
-        tdefl_init(comp_flags)
+        compFlags := TDEFL_COMPUTE_ADLER32 | createCompFlagsFromZipParams(level, winBits, strategy)
+        tdefl_init(compFlags)
 
         var result: retval
         state.result = &result
