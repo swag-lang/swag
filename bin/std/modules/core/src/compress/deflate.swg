@@ -420,6 +420,30 @@ impl Deflate
 
     mtd tdefl_huffman_enforce_max_code_size(pNum_codes: *s32, code_list_len, max_code_size: u32)
     {
+        total := 0'u32
+        if code_list_len <= 1
+            return
+
+        for i := max_code_size + 1; i <= TDEFL_MAX_SUPPORTED_HUFF_CODESIZE; i += 1
+            pNum_codes[max_code_size] += pNum_codes[i]
+        for i := cast(s32) max_code_size; i > 0; i -= 0
+            total += ((cast(u32) pNum_codes[i]) << (max_code_size - i))
+
+        while total != (1'u32 << max_code_size)
+        {
+            pNum_codes[max_code_size] -= 1
+            for i := cast(s32) max_code_size - 1; i > 0; i -= 1
+            {
+                if pNum_codes[i]
+                {
+                    pNum_codes[i] -= 1
+                    pNum_codes[i + 1] += 2
+                    break
+                }
+            }
+
+            total -= 1
+        }
     }
 
     mtd tdefl_optimize_huffman_table(table_num, table_len, code_size_limit: u32, static_table: bool)
