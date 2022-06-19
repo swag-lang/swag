@@ -31,7 +31,7 @@ impl BitStream
 
             if codeBuffer >= 1'u32 << numBits
             {
-                numBits = bitcast(u8) -100
+                numBits = 255
                 return
             }
 

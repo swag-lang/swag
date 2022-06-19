@@ -154,10 +154,8 @@ impl Inflate
     {
         if stream.numBits < 16
         {
-            if stream.numBits == bitcast(u8) -100
-                throw "malformed"
             stream.refill()
-            if stream.numBits == bitcast(u8) -100
+            if stream.numBits == 255
                 throw "malformed"
         }
 
