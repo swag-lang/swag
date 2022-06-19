@@ -24,6 +24,13 @@ struct Stream
     total_out:  uint
 }
 
+struct tdefl_sym_freq
+{
+    m_key, m_sym_index: u16
+}
+
+const TDEFL_MAX_SUPPORTED_HUFF_CODESIZE = 32
+
 const mz_bitmasks: [17] u32 = @[
     0x0000, 0x0001, 0x0003, 0x0007, 0x000F, 0x001F, 0x003F, 0x007F, 0x00FF, 0x01FF, 0x03FF, 0x07FF, 0x0FFF, 0x1FFF, 0x3FFF, 0x7FFF, 0xFFFF
 ]
@@ -402,8 +409,99 @@ impl Deflate
         }
     }
 
-    mtd tdefl_optimize_huffman_table(table_num, table_len, code_size_limit: s32, static_table: bool)
+    mtd tdefl_radix_sort_syms(num_syms: u32, pSyms0, pSyms1: *tdefl_sym_freq)->*tdefl_sym_freq
     {
+        return null
+    }
+
+    mtd tdefl_calculate_minimum_redundancy(A: *tdefl_sym_freq, n: u32)
+    {
+    }
+
+    mtd tdefl_huffman_enforce_max_code_size(pNum_codes: *s32, code_list_len, max_code_size: u32)
+    {
+    }
+
+    mtd tdefl_optimize_huffman_table(table_num, table_len, code_size_limit: u32, static_table: bool)
+    {
+        d := &state
+
+        var num_codes: [1 + TDEFL_MAX_SUPPORTED_HUFF_CODESIZE] s32
+        var next_code: [TDEFL_MAX_SUPPORTED_HUFF_CODESIZE + 1] u32
+
+        if static_table
+        {
+            for i := 0; i < table_len; i += 1
+            {
+                num_codes[d.m_huff_code_sizes[table_num, i]] += 1
+            }
+        }
+        else
+        {
+            var syms0: [TDEFL_MAX_HUFF_SYMBOLS] tdefl_sym_freq
+            var syms1: [TDEFL_MAX_HUFF_SYMBOLS] tdefl_sym_freq
+
+            num_used_syms := 0'u32
+            pSym_count := &d.m_huff_count[table_num, 0]
+
+            for i := 0; i < table_len; i += 1
+            {
+                if pSym_count[i]
+                {
+                    syms0[num_used_syms].m_key = cast(u16) pSym_count[i]
+                    syms0[num_used_syms].m_sym_index = cast(u16) i
+                    num_used_syms += 1
+                }
+            }
+
+            pSyms := tdefl_radix_sort_syms(num_used_syms, syms0, syms1)
+            tdefl_calculate_minimum_redundancy(pSyms, num_used_syms)
+
+            for i := 0; i < num_used_syms; i += 1
+            {
+                num_codes[pSyms[i].m_key] += 1
+            }
+
+            tdefl_huffman_enforce_max_code_size(num_codes, num_used_syms, code_size_limit)
+
+            Memory.clear(&d.m_huff_code_sizes[table_num], @sizeof(d.m_huff_code_sizes[table_num]))
+            Memory.clear(&d.m_huff_codes[table_num], @sizeof(d.m_huff_codes[table_num]))
+
+            j := num_used_syms
+            for i := 1; i <= code_size_limit; i += 1
+            {
+                for l := num_codes[i]; l > 0; l -= 1
+                {
+                    j -= 1
+                    d.m_huff_code_sizes[table_num, pSyms[j].m_sym_index] = cast(u8) i
+                }
+            }
+        }
+
+        next_code[1] = 0
+        j := 0
+        for i := 2; i <= code_size_limit; i += 1
+        {
+            j = (j + num_codes[i - 1]) << 1
+            next_code[i] = j
+        }
+
+        for i := 0; i < table_len; i += 1
+        {
+            rev_code := 0'u32
+            code_size := d.m_huff_code_sizes[table_num, i]
+            if code_size == 0
+                continue
+            cde := next_code[code_size]
+            next_code[code_size] += 1
+            for l := code_size; l > 0; l -= 1
+            {
+                rev_code = (rev_code << 1) | (cde & 1)
+                cde >>= 1
+            }
+
+            d.m_huff_codes[table_num, i] = cast(u16) rev_code
+        }
     }
 
     mtd tdefl_start_static_block()
@@ -838,13 +936,13 @@ impl Deflate
 
         discard tdefl_compress_normal()
 
-        //if ((d->m_flags & (TDEFL_WRITE_ZLIB_HEADER | TDEFL_COMPUTE_ADLER32)) && (pIn_buf))
-        //    d->m_adler32 = (mz_uint32)mz_adler32(d->m_adler32, (const mz_uint8 *)pIn_buf, d->m_pSrc - (const mz_uint8 *)pIn_buf);
+        //if ((d.m_flags & (TDEFL_WRITE_ZLIB_HEADER | TDEFL_COMPUTE_ADLER32)) && (pIn_buf))
+        //    d.m_adler32 = (mz_uint32)mz_adler32(d.m_adler32, (const mz_uint8 *)pIn_buf, d.m_pSrc - (const mz_uint8 *)pIn_buf);
 
         if flush and !d.m_lookahead_size and !d.m_src_buf_left and !d.m_output_flush_remaining
         {
             //if (tdefl_flush_block(d, flush) < 0)
-           //     return d->m_prev_return_status;
+           //     return d.m_prev_return_status;
             d.m_finished = flush == .TDEFL_FINISH ? 1 : 0
             if flush == .TDEFL_FULL_FLUSH
             {
