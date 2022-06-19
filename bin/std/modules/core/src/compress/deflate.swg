@@ -6,6 +6,7 @@
 */
 
 #global namespace Compress
+#global #[Swag.Safety("overflow", false)]
 
 #[Swag.Opaque]
 public struct Deflate
@@ -22,6 +23,7 @@ struct Stream
     next_out:   *u8
     avail_out:  uint
     total_out:  uint
+    adler:      u32
 }
 
 struct tdefl_sym_freq
@@ -177,6 +179,7 @@ struct tdefl_compressor
     m_next:             [TDEFL_LZ_DICT_SIZE] u16
     m_hash:             [TDEFL_LZ_HASH_SIZE] u16
     m_output_buf:       [TDEFL_OUT_BUF_SIZE] u8
+    result:             *Array'u8
 }
 
 const TDEFL_WRITE_ZLIB_HEADER = 0x01000
@@ -256,6 +259,10 @@ impl Deflate
         if d.m_pOut_buf_size
         {
             n := Math.min(cast(u32) (dref d.m_pOut_buf_size - d.m_out_buf_ofs), cast(u32) d.m_output_flush_remaining)
+
+            d.result.resize(d.result.count + n)
+            d.m_pOut_buf = d.result.buffer
+
             Memory.copy(d.m_pOut_buf + d.m_out_buf_ofs, &d.m_output_buf[0] + d.m_output_flush_ofs, cast(uint) n)
             d.m_output_flush_ofs += n
             d.m_output_flush_remaining -= n
@@ -498,7 +505,7 @@ impl Deflate
         }
 
         A[n - 2].m_key = 0
-        for next := n - 3; next >= 0; next -= 1
+        for next := n - 3; cast(s32) next >= 0; next -= 1
             A[next].m_key = cast(u16) (A[A[next].m_key].m_key + 1)
 
         avbl := 1
@@ -535,7 +542,7 @@ impl Deflate
 
         for i := max_code_size + 1; i <= TDEFL_MAX_SUPPORTED_HUFF_CODESIZE; i += 1
             pNum_codes[max_code_size] += pNum_codes[i]
-        for i := cast(s32) max_code_size; i > 0; i -= 0
+        for i := cast(s32) max_code_size; i > 0; i -= 1
             total += ((cast(u32) pNum_codes[i]) << (max_code_size - i))
 
         while total != (1'u32 << max_code_size)
@@ -1222,7 +1229,9 @@ impl Deflate
                 d.m_src_buf_left = src_buf_left
                 n := tdefl_flush_block(.TDEFL_NO_FLUSH)
                 if n
+                {
                     return (n < 0) ? false : true
+                }
             }
         }
 
@@ -1253,8 +1262,7 @@ impl Deflate
 
         if flush and !d.m_lookahead_size and !d.m_src_buf_left and !d.m_output_flush_remaining
         {
-            //if (tdefl_flush_block(d, flush) < 0)
-           //     return d.m_prev_return_status;
+            discard tdefl_flush_block(flush)
             d.m_finished = flush == .TDEFL_FINISH ? 1 : 0
             if flush == .TDEFL_FULL_FLUSH
             {
@@ -1290,7 +1298,7 @@ impl Deflate
             stream.next_in  += in_bytes
             stream.avail_in -= in_bytes
             stream.total_in += in_bytes
-            //stream.adler = tdefl_get_adler32()
+            stream.adler = state.m_adler32
 
             stream.next_out  += out_bytes
             stream.avail_out -= out_bytes
@@ -1351,7 +1359,8 @@ public impl Deflate
     {
         var result: retval
 
-        result.resize(1024)
+        state.result = &result
+        result.reserve(1024)
         stream.next_out  = result.buffer
         stream.avail_out = cast(u32) result.capacity
         mz_deflate(MZ_FINISH)

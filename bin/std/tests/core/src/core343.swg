@@ -8,5 +8,5 @@ using Core
 
     var comp: Compress.Deflate
     try comp.init(arr.toSlice())
-    //res := try comp.compress()
+    res := try comp.compress()
 }
