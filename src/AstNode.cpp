@@ -209,9 +209,9 @@ bool AstNode::hasSpecialFuncCall()
 bool AstNode::hasSpecialFuncCall(const Utf8& name)
 {
     return extension &&
-        extension->resolvedUserOpSymbolOverload &&
-        extension->resolvedUserOpSymbolOverload->symbol->kind == SymbolKind::Function &&
-        extension->resolvedUserOpSymbolOverload->symbol->name == name;
+           extension->resolvedUserOpSymbolOverload &&
+           extension->resolvedUserOpSymbolOverload->symbol->kind == SymbolKind::Function &&
+           extension->resolvedUserOpSymbolOverload->symbol->name == name;
 }
 
 AstNode* AstNode::inSimpleReturn()
@@ -424,36 +424,13 @@ void AstNode::computeEndLocation()
         if (p->kind == AstNodeKind::Statement)
             break;
         p->computeEndLocation();
-    }
 
-    switch (kind)
-    {
-    case AstNodeKind::MakePointer:
-    case AstNodeKind::MakePointerLambda:
-        token.endLocation = childs.back()->token.endLocation;
-        break;
-
-    case AstNodeKind::ArrayPointerIndex:
-        if (childs.size() < 2)
-            break;
-        if (specFlags & AST_SPEC_ARRAYPTRIDX_ISDEREF)
-        {
-            token.endLocation = childs.front()->token.endLocation;
-            break;
-        }
-
-        token.endLocation   = childs.back()->token.endLocation;
-        token.startLocation = childs.front()->token.startLocation;
-        break;
-
-    case AstNodeKind::IdentifierRef:
-    case AstNodeKind::ArrayPointerSlicing:
-    case AstNodeKind::FuncCallParams:
-        if (childs.empty())
-            break;
-        token.startLocation = childs.front()->token.startLocation;
-        token.endLocation   = childs.back()->token.endLocation;
-        break;
+        if (p->token.startLocation.line < token.startLocation.line ||
+            (p->token.startLocation.line == token.startLocation.line && p->token.startLocation.column < token.startLocation.column))
+            token.startLocation = p->token.startLocation;
+        if (p->token.endLocation.line > token.endLocation.line ||
+            (p->token.endLocation.line == token.endLocation.line && p->token.endLocation.column > token.endLocation.column))
+            token.endLocation = p->token.endLocation;
     }
 }
 
