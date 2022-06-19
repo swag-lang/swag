@@ -278,9 +278,240 @@ impl Deflate
         d.m_huff_count[0, s_tdefl_len_sym[match_len - TDEFL_MIN_MATCH_LEN]] += 1
     }
 
-    mtd tdefl_compress_normal() throw
+    mtd tdefl_find_match(lookahead_pos, max_dist, max_match_len: u32, pMatch_dist, pMatch_len: *u32)
     {
         d := &state
+
+        pos := lookahead_pos & TDEFL_LZ_DICT_SIZE_MASK
+        match_len := dref pMatch_len
+        probe_pos := pos
+
+        num_probes_left := d.m_max_probes[match_len >= 32 ? 1 : 0]
+        s  := &d.m_dict[0] + pos
+        c0 := d.m_dict[pos + match_len]
+        c1 := d.m_dict[pos + match_len - 1]
+
+        if max_match_len <= match_len
+            return
+
+        loop
+        {
+            var next_probe_pos: u32
+            var dist: u16
+
+            loop
+            {
+                num_probes_left -= 1
+                if num_probes_left == 0
+                    return
+
+                #[Swag.Mixin]
+                func TDEFL_PROBE()
+                {
+                    next_probe_pos = d.m_next[probe_pos]
+                    if !next_probe_pos
+                        return
+                    dist = cast(u16) (lookahead_pos - next_probe_pos)
+                    if dist > max_dist
+                        return
+                    probe_pos = next_probe_pos & TDEFL_LZ_DICT_SIZE_MASK
+                    if (d.m_dict[probe_pos + match_len] == c0) and (d.m_dict[probe_pos + match_len - 1] == c1)
+                        break
+                }
+
+                TDEFL_PROBE()
+                TDEFL_PROBE()
+                TDEFL_PROBE()
+            }
+
+            if !dist
+                break
+
+            p := s
+            q := &d.m_dict[0] + probe_pos
+            var probe_len: u32
+            while probe_len < max_match_len
+            {
+                pp := dref p
+                qq := dref q
+                p, q += 1
+                if pp != qq
+                    break
+            }
+
+            if probe_len > match_len
+            {
+                dref pMatch_dist = dist
+                dref pMatch_len = probe_len
+                match_len = probe_len
+                if match_len == max_match_len
+                    return
+                c0 = d.m_dict[pos + match_len]
+                c1 = d.m_dict[pos + match_len - 1]
+            }
+        }
+    }
+
+    mtd tdefl_flush_block(flush: s32)->s32
+    {
+        return 0
+    }
+
+    mtd tdefl_compress_normal()->bool throw
+    {
+        d := &state
+        pSrc := d.m_pSrc
+        src_buf_left := d.m_src_buf_left
+        flush := d.m_flush
+
+        while src_buf_left or (flush and d.m_lookahead_size)
+        {
+            if (d.m_lookahead_size + d.m_dict_size) >= (TDEFL_MIN_MATCH_LEN - 1)
+            {
+                var dst_pos: u32 = (d.m_lookahead_pos + d.m_lookahead_size) & TDEFL_LZ_DICT_SIZE_MASK
+                var ins_pos: u32 = d.m_lookahead_pos + d.m_lookahead_size - 2
+                var hash: u32 = (d.m_dict[ins_pos & TDEFL_LZ_DICT_SIZE_MASK] << TDEFL_LZ_HASH_SHIFT) ^ d.m_dict[(ins_pos + 1) & TDEFL_LZ_DICT_SIZE_MASK]
+                num_bytes_to_process := cast(u32) Math.min(cast(u32) src_buf_left, cast(u32) (TDEFL_MAX_MATCH_LEN - d.m_lookahead_size))
+
+                pSrc_end := pSrc ? pSrc + num_bytes_to_process : null
+                src_buf_left -= num_bytes_to_process
+                d.m_lookahead_size += num_bytes_to_process
+
+                while pSrc != pSrc_end
+                {
+                    c := dref pSrc
+                    pSrc += 1
+                    d.m_dict[dst_pos] = c;
+                    if dst_pos < (TDEFL_MAX_MATCH_LEN - 1)
+                        d.m_dict[TDEFL_LZ_DICT_SIZE + dst_pos] = c
+                    hash = ((hash << TDEFL_LZ_HASH_SHIFT) ^ c) & (TDEFL_LZ_HASH_SIZE - 1)
+                    d.m_next[ins_pos & TDEFL_LZ_DICT_SIZE_MASK] = d.m_hash[hash]
+                    d.m_hash[hash] = cast(u16) ins_pos
+                    dst_pos = (dst_pos + 1) & TDEFL_LZ_DICT_SIZE_MASK
+                    ins_pos += 1
+                }
+            }
+            else
+            {
+                while src_buf_left and d.m_lookahead_size < TDEFL_MAX_MATCH_LEN
+                {
+                    c := dref pSrc
+                    pSrc += 1
+                    dst_pos := (d.m_lookahead_pos + d.m_lookahead_size) & TDEFL_LZ_DICT_SIZE_MASK
+                    src_buf_left -= 1
+                    d.m_dict[dst_pos] = c
+                    if dst_pos < (TDEFL_MAX_MATCH_LEN - 1)
+                        d.m_dict[TDEFL_LZ_DICT_SIZE + dst_pos] = c
+                    d.m_lookahead_size += 1
+                    if (d.m_lookahead_size + d.m_dict_size) >= TDEFL_MIN_MATCH_LEN
+                    {
+                        var ins_pos: u32 = d.m_lookahead_pos + (d.m_lookahead_size - 1) - 2
+                        var hash: u32 = ((cast(u32) d.m_dict[ins_pos & TDEFL_LZ_DICT_SIZE_MASK] << (TDEFL_LZ_HASH_SHIFT * 2)) ^
+                                         (cast(u32) d.m_dict[(ins_pos + 1) & TDEFL_LZ_DICT_SIZE_MASK] << TDEFL_LZ_HASH_SHIFT) ^ c) & (TDEFL_LZ_HASH_SIZE - 1)
+                        d.m_next[ins_pos & TDEFL_LZ_DICT_SIZE_MASK] = d.m_hash[hash]
+                        d.m_hash[hash] = cast(u16) ins_pos
+                    }
+                }
+            }
+
+            d.m_dict_size = Math.min(cast(u32) (TDEFL_LZ_DICT_SIZE - d.m_lookahead_size), d.m_dict_size)
+            if flush == 0 and (d.m_lookahead_size < TDEFL_MAX_MATCH_LEN)
+                break
+
+            len_to_move := 1'u32
+            cur_match_dist := 0'u32
+            cur_match_len := d.m_saved_match_len ? d.m_saved_match_len : cast(u32) (TDEFL_MIN_MATCH_LEN - 1)
+            var cur_pos: u32 = d.m_lookahead_pos & TDEFL_LZ_DICT_SIZE_MASK
+            if d.m_flags & (TDEFL_RLE_MATCHES | TDEFL_FORCE_ALL_RAW_BLOCKS)
+            {
+                if (d.m_dict_size) and !(d.m_flags & TDEFL_FORCE_ALL_RAW_BLOCKS)
+                {
+                    c := d.m_dict[(cur_pos - 1) & TDEFL_LZ_DICT_SIZE_MASK]
+                    cur_match_len = 0
+                    while cur_match_len < d.m_lookahead_size
+                    {
+                        if d.m_dict[cur_pos + cur_match_len] != c
+                            break
+                        cur_match_len += 1
+                    }
+                    if cur_match_len < TDEFL_MIN_MATCH_LEN
+                        cur_match_len = 0
+                    else
+                        cur_match_dist = 1
+                }
+            }
+            else
+            {
+                tdefl_find_match(d.m_lookahead_pos, d.m_dict_size, d.m_lookahead_size, &cur_match_dist, &cur_match_len)
+            }
+
+            if  ((cur_match_len == TDEFL_MIN_MATCH_LEN) and (cur_match_dist >= 8 * 1024)) or
+                (cur_pos == cur_match_dist) or
+                ((d.m_flags & TDEFL_FILTER_MATCHES) and (cur_match_len <= 5))
+            {
+                cur_match_dist, cur_match_len = 0
+            }
+
+            if d.m_saved_match_len
+            {
+                if cur_match_len > d.m_saved_match_len
+                {
+                    tdefl_record_literal(cast(u8) d.m_saved_lit)
+                    if cur_match_len >= 128
+                    {
+                        tdefl_record_match(cur_match_len, cur_match_dist)
+                        d.m_saved_match_len = 0
+                        len_to_move = cur_match_len
+                    }
+                    else
+                    {
+                        d.m_saved_lit = d.m_dict[cur_pos]
+                        d.m_saved_match_dist = cur_match_dist
+                        d.m_saved_match_len = cur_match_len
+                    }
+                }
+                else
+                {
+                    tdefl_record_match(d.m_saved_match_len, d.m_saved_match_dist)
+                    len_to_move = d.m_saved_match_len - 1;
+                    d.m_saved_match_len = 0;
+                }
+            }
+            elif !cur_match_dist
+            {
+                tdefl_record_literal(d.m_dict[Math.min(cur_pos, cast(u32) @sizeof(d.m_dict) - 1)])
+            }
+            elif d.m_greedy_parsing or (d.m_flags & TDEFL_RLE_MATCHES) or (cur_match_len >= 128)
+            {
+                tdefl_record_match(cur_match_len, cur_match_dist)
+                len_to_move = cur_match_len
+            }
+            else
+            {
+                d.m_saved_lit = d.m_dict[Math.min(cur_pos, cast(u32) @sizeof(d.m_dict) - 1)]
+                d.m_saved_match_dist = cur_match_dist
+                d.m_saved_match_len = cur_match_len
+            }
+
+            d.m_lookahead_pos += len_to_move
+            Debug.assert(d.m_lookahead_size >= len_to_move)
+            d.m_lookahead_size -= len_to_move
+            d.m_dict_size = Math.min(d.m_dict_size + len_to_move, cast(u32) TDEFL_LZ_DICT_SIZE)
+
+            if (d.m_pLZ_code_buf > &d.m_lz_code_buf[TDEFL_LZ_CODE_BUF_SIZE - 8]) or
+                ((d.m_total_lz_bytes > 31 * 1024) and ((((cast(u32) (d.m_pLZ_code_buf - &d.m_lz_code_buf[0]) * 115) >> 7) >= d.m_total_lz_bytes) or (d.m_flags & TDEFL_FORCE_ALL_RAW_BLOCKS)))
+            {
+                d.m_pSrc = pSrc
+                d.m_src_buf_left = src_buf_left
+                n := tdefl_flush_block(0)
+                if n
+                    return (n < 0) ? false : true
+            }
+        }
+
+        d.m_pSrc = pSrc
+        d.m_src_buf_left = src_buf_left
+        return true
     }
 
     mtd tdefl_compress(pIn_buf: const *u8, pIn_buf_size: *uint, pOut_buf: *u8, pOut_buf_size: *uint, flush: tdefl_flush)->tdefl_status throw
@@ -298,7 +529,7 @@ impl Deflate
         if d.m_output_flush_remaining or d.m_finished
             return tdefl_flush_output_buffer()
 
-        tdefl_compress_normal()
+        discard tdefl_compress_normal()
 
         //if ((d->m_flags & (TDEFL_WRITE_ZLIB_HEADER | TDEFL_COMPUTE_ADLER32)) && (pIn_buf))
         //    d->m_adler32 = (mz_uint32)mz_adler32(d->m_adler32, (const mz_uint8 *)pIn_buf, d->m_pSrc - (const mz_uint8 *)pIn_buf);
