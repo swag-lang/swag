@@ -222,14 +222,14 @@ bool SemanticJob::resolveConditionalOp(SemanticContext* context)
     auto rightT = ifFalse;
     auto leftT  = ifTrue;
 
-    // We cast the false expression to the true expression.
+    // We cast the true expression to the false expression.
     // But some times, it's better to do the other way
     if (leftT->typeInfo->isConst() ||
         leftT->typeInfo->flags & TYPEINFO_UNTYPED_INTEGER)
         swap(leftT, rightT);
 
     {
-        PushErrContext ec(context, leftT, Nte(Nte0055), Fmt(Hnt(Hnt0011), leftT->typeInfo->getDisplayNameC()));
+        PushErrContext ec(context, rightT, Nte(Nte0055), Fmt(Hnt(Hnt0011), rightT->typeInfo->getDisplayNameC()));
         SWAG_CHECK(TypeManager::makeCompatibles(context, rightT, leftT, CASTFLAG_COMMUTATIVE | CASTFLAG_STRICT));
     }
 
