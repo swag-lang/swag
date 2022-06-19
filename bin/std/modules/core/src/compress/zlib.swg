@@ -25,7 +25,7 @@ impl ZLibDecoder
         cinfo := (cmf >>,safe 4) & 0xF
         if cinfo > 7
             throw "unsupported window size"
-        winSize := 1'uint << (cinfo + 8)
+        winSize := 1'u32 << (cinfo + 8)
 
         // Check
         flg := bs.readU8()

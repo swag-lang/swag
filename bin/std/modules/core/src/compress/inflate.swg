@@ -13,7 +13,6 @@ const FastBits           = 9
 const FastMask           = (1 << FastBits) - 1
 const HuffmanMaxBits     = 16
 const HuffmanFastBits    = 9
-const InflateMaxDistance = 32768'uint
 
 const LengthBase: [31] u16 = @[
 	3, 4, 5, 6, 7, 8, 9, 10,
@@ -143,12 +142,14 @@ impl HuffmanTable
 public struct Inflate
 {
     stream:     BitStream
-    windowSize: uint
+    windowSize: u32
     adler:      Hash.Adler32
 }
 
 impl Inflate
 {
+    public const InflateMaxDistance = 32768'u32
+
     mtd decode(ht: *HuffmanTable)->u16 throw
     {
         if stream.numBits < 16
@@ -242,7 +243,7 @@ impl Inflate
     }
 
     // Decompress the associated stream
-    public mtd decompress(buf: const [..] u8, winSize: uint)->Array'u8 throw
+    public mtd decompress(buf: const [..] u8, winSize: u32 = InflateMaxDistance)->Array'u8 throw
     {
         stream.init(buf)
         adler.init()

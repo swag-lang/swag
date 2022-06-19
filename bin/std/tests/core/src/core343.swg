@@ -7,6 +7,11 @@ using Core
         arr.add(cast(u8) i)
 
     var comp: Compress.Deflate
-    try comp.init(arr.toSlice())
-    res := try comp.compress()
+    res := try comp.compress(arr.toSlice())
+
+    var decomp: Compress.Inflate
+    res1 := try decomp.decompress(res.toSlice())
+
+    visit v, i: res1
+        @assert(v == i)
 }

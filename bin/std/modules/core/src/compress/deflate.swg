@@ -208,8 +208,8 @@ impl Deflate
             comp_flags = s_tdefl_num_probes[MZ_DEFAULT_LEVEL]
         if level <= 3
             comp_flags |= TDEFL_GREEDY_PARSING_FLAG
-        if window_bits > 0
-            comp_flags |= TDEFL_WRITE_ZLIB_HEADER
+        //if window_bits > 0
+        //    comp_flags |= TDEFL_WRITE_ZLIB_HEADER
 
         if level == MZ_NO_COMPRESSION
             comp_flags |= TDEFL_FORCE_ALL_RAW_BLOCKS
@@ -228,7 +228,7 @@ impl Deflate
     mtd mz_deflateInit2(level: u32, method: s32, window_bits: s32, mem_level: s32, strategy: CompressionStrategy) throw
     {
         comp_flags := TDEFL_COMPUTE_ADLER32 | tdefl_create_comp_flags_from_zip_params(level, window_bits, strategy)
-        if (method != MZ_DEFLATED or mem_level < 1 or mem_level > 9 or (window_bits != MZ_DEFAULT_WINDOW_BITS and -window_bits != MZ_DEFAULT_WINDOW_BITS))
+        if method != MZ_DEFLATED or mem_level < 1 or mem_level > 9 or (window_bits != MZ_DEFAULT_WINDOW_BITS and -window_bits != MZ_DEFAULT_WINDOW_BITS)
             throw "MZ_PARAM_ERROR"
         tdefl_init(comp_flags)
     }
@@ -248,30 +248,6 @@ impl Deflate
         d.m_pOutput_buf_end = d.m_output_buf
         d.m_adler32 = 1
         d.m_flush = .TDEFL_NO_FLUSH
-    }
-
-    mtd tdefl_flush_output_buffer()->tdefl_status
-    {
-        d := &state
-        if d.m_pIn_buf_size
-            dref d.m_pIn_buf_size = cast(uint) (d.m_pSrc - cast(const *u8) d.m_pIn_buf)
-
-        if d.m_pOut_buf_size
-        {
-            n := Math.min(cast(u32) (dref d.m_pOut_buf_size - d.m_out_buf_ofs), cast(u32) d.m_output_flush_remaining)
-
-            d.result.resize(d.result.count + n)
-            d.m_pOut_buf = d.result.buffer
-
-            Memory.copy(d.m_pOut_buf + d.m_out_buf_ofs, &d.m_output_buf[0] + d.m_output_flush_ofs, cast(uint) n)
-            d.m_output_flush_ofs += n
-            d.m_output_flush_remaining -= n
-            d.m_out_buf_ofs += n
-
-            dref d.m_pOut_buf_size = d.m_out_buf_ofs
-        }
-
-        return d.m_finished and !d.m_output_flush_remaining ? .TDEFL_STATUS_DONE : .TDEFL_STATUS_OKAY
     }
 
     mtd tdefl_record_literal(lit: u8)
@@ -926,6 +902,26 @@ impl Deflate
         return tdefl_compress_lz_codes()
     }
 
+    mtd tdefl_flush_output_buffer()->tdefl_status
+    {
+        d := &state
+        if d.m_pIn_buf_size
+            dref d.m_pIn_buf_size = cast(uint) (d.m_pSrc - cast(const *u8) d.m_pIn_buf)
+
+        if d.m_pOut_buf_size
+        {
+            n := Math.min(cast(u32) (dref d.m_pOut_buf_size - d.m_out_buf_ofs), cast(u32) d.m_output_flush_remaining)
+            Memory.copy(d.m_pOut_buf + d.m_out_buf_ofs, &d.m_output_buf[0] + d.m_output_flush_ofs, cast(uint) n)
+            d.m_output_flush_ofs += n
+            d.m_output_flush_remaining -= n
+            d.m_out_buf_ofs += n
+
+            dref d.m_pOut_buf_size = d.m_out_buf_ofs
+        }
+
+        return d.m_finished and !d.m_output_flush_remaining ? .TDEFL_STATUS_DONE : .TDEFL_STATUS_OKAY
+    }
+
     mtd tdefl_flush_block(flush: tdefl_flush)->s32
     {
         d := &state
@@ -1063,7 +1059,11 @@ impl Deflate
             if pOutput_buf_start == &d.m_output_buf[0]
             {
                 bytes_to_copy := cast(s32) Math.min(cast(uint) n, cast(uint) (dref d.m_pOut_buf_size - d.m_out_buf_ofs))
-                Memory.copy(cast(*u8) d.m_pOut_buf + d.m_out_buf_ofs, d.m_output_buf, cast(uint) bytes_to_copy)
+                //Memory.copy(cast(*u8) d.m_pOut_buf + d.m_out_buf_ofs, d.m_output_buf, cast(uint) bytes_to_copy)
+
+                d.result.resize(d.result.count + n)
+                Memory.copy(d.result.buffer + d.m_out_buf_ofs, d.m_output_buf, cast(uint) bytes_to_copy)
+
                 d.m_out_buf_ofs += bytes_to_copy
                 n -= bytes_to_copy
                 if n != 0
@@ -1323,6 +1323,8 @@ impl Deflate
 
 public impl Deflate
 {
+    public const DeflateMaxDistance = 32768'u32
+
     const MZ_NO_COMPRESSION = 0
     const MZ_BEST_SPEED = 1
     const MZ_BEST_COMPRESSION = 9
@@ -1342,29 +1344,25 @@ public impl Deflate
     const MZ_DEFLATED = 8
     const MZ_DEFAULT_WINDOW_BITS = 15
 
-    // Initialize the stream
-    mtd init(src: const [..] u8, level: u32 = MZ_DEFAULT_COMPRESSION) throw
+    // Compress the associated stream
+    mtd compress(src: const [..] u8, winSize: u32 = DeflateMaxDistance, level: u32 = MZ_DEFAULT_COMPRESSION)->Array'u8 throw
     {
         if @countof(src) > Swag.U32.Max
             throw "overflow"
 
         stream.next_in  = @dataof(src)
         stream.avail_in = cast(u32) @countof(src)
+        winBits := cast(s32) Math.log2(cast(f32) Math.min(winSize, DeflateMaxDistance))
+        Debug.assert(winSize > 0)
 
-        mz_deflateInit2(level, MZ_DEFLATED, MZ_DEFAULT_WINDOW_BITS, 9, .MZ_DEFAULT_STRATEGY)
-    }
+        mz_deflateInit2(level, MZ_DEFLATED, winBits, 9, .MZ_DEFAULT_STRATEGY)
 
-    // Compress the associated stream
-    mtd compress()->Array'u8 throw
-    {
         var result: retval
-
         state.result = &result
         result.reserve(1024)
         stream.next_out  = result.buffer
         stream.avail_out = cast(u32) result.capacity
         mz_deflate(MZ_FINISH)
-
         return result
     }
 }
