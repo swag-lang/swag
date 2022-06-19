@@ -31,6 +31,10 @@ struct tdefl_sym_freq
 
 const TDEFL_MAX_SUPPORTED_HUFF_CODESIZE = 32
 
+const s_tdefl_packed_code_size_syms_swizzle: [] u8 = @[
+    16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15
+]
+
 const mz_bitmasks: [17] u32 = @[
     0x0000, 0x0001, 0x0003, 0x0007, 0x000F, 0x001F, 0x003F, 0x007F, 0x00FF, 0x01FF, 0x03FF, 0x07FF, 0x0FFF, 0x1FFF, 0x3FFF, 0x7FFF, 0xFFFF
 ]
@@ -115,9 +119,9 @@ const MZ_FINISH = 4
 const MZ_BLOCK = 5
 
 const TDEFL_MAX_HUFF_TABLES = 3
-const TDEFL_MAX_HUFF_SYMBOLS_0 = 288
-const TDEFL_MAX_HUFF_SYMBOLS_1 = 32
-const TDEFL_MAX_HUFF_SYMBOLS_2 = 19
+const TDEFL_MAX_HUFF_SYMBOLS_0 = 288'u32
+const TDEFL_MAX_HUFF_SYMBOLS_1 = 32'u32
+const TDEFL_MAX_HUFF_SYMBOLS_2 = 19'u32
 const TDEFL_LZ_DICT_SIZE = 32768
 const TDEFL_LZ_DICT_SIZE_MASK = TDEFL_LZ_DICT_SIZE - 1
 const TDEFL_MIN_MATCH_LEN = 3
@@ -675,8 +679,129 @@ impl Deflate
         TDEFL_PUT_BITS(1, 2)
     }
 
+    mtd TDEFL_RLE_PREV_CODE_SIZE()
+    {
+    }
+
+    mtd TDEFL_RLE_ZERO_CODE_SIZE()
+    {
+    }
+
     mtd tdefl_start_dynamic_block()
     {
+        d := &state
+
+        var code_sizes_to_pack: [TDEFL_MAX_HUFF_SYMBOLS_0 + TDEFL_MAX_HUFF_SYMBOLS_1] u8
+        var packed_code_sizes:  [TDEFL_MAX_HUFF_SYMBOLS_0 + TDEFL_MAX_HUFF_SYMBOLS_1] u8
+        prev_code_size := 0xFF'u8
+
+        d.m_huff_count[0, 256] = 1;
+
+        tdefl_optimize_huffman_table(0, TDEFL_MAX_HUFF_SYMBOLS_0, 15, false)
+        tdefl_optimize_huffman_table(1, TDEFL_MAX_HUFF_SYMBOLS_1, 15, false)
+
+        num_lit_codes := 286'u32
+        while num_lit_codes > 257
+        {
+            if d.m_huff_code_sizes[0, num_lit_codes - 1]
+                break
+            num_lit_codes -= 1
+        }
+
+        num_dist_codes := 30'u32
+        while num_dist_codes > 1
+        {
+            if d.m_huff_code_sizes[1, num_dist_codes - 1]
+                break
+            num_dist_codes -= 1
+        }
+
+        Memory.copy(&code_sizes_to_pack[0], &d.m_huff_code_sizes[0, 0], cast(uint) num_lit_codes)
+        Memory.copy(&code_sizes_to_pack[0] + num_lit_codes, &d.m_huff_code_sizes[1, 0], cast(uint) num_dist_codes)
+        total_code_sizes_to_pack := num_lit_codes + num_dist_codes
+        num_packed_code_sizes := 0
+        rle_z_count := 0
+        rle_repeat_count := 0
+
+        Memory.clear(&d.m_huff_count[2, 0], cast(uint) @sizeof(d.m_huff_count[2, 0]) * TDEFL_MAX_HUFF_SYMBOLS_2)
+        for i := 0; i < total_code_sizes_to_pack; i += 1
+        {
+            code_size := code_sizes_to_pack[i]
+            if !code_size
+            {
+                TDEFL_RLE_PREV_CODE_SIZE()
+                rle_z_count += 1
+                if rle_z_count == 138
+                {
+                    TDEFL_RLE_ZERO_CODE_SIZE()
+                }
+            }
+            else
+            {
+                TDEFL_RLE_ZERO_CODE_SIZE()
+                if code_size != prev_code_size
+                {
+                    TDEFL_RLE_PREV_CODE_SIZE()
+                    d.m_huff_count[2, code_size] = cast(u16) (d.m_huff_count[2, code_size] + 1)
+                    packed_code_sizes[num_packed_code_sizes] = code_size
+                    num_packed_code_sizes += 1
+                }
+                else
+                {
+                    rle_repeat_count += 1
+                    if rle_repeat_count == 6
+                    {
+                        TDEFL_RLE_PREV_CODE_SIZE()
+                    }
+                }
+            }
+
+            prev_code_size = code_size
+        }
+
+        if rle_repeat_count
+        {
+            TDEFL_RLE_PREV_CODE_SIZE()
+        }
+        else
+        {
+            TDEFL_RLE_ZERO_CODE_SIZE()
+        }
+
+        tdefl_optimize_huffman_table(2, TDEFL_MAX_HUFF_SYMBOLS_2, 7, false)
+
+        TDEFL_PUT_BITS(2, 2)
+        TDEFL_PUT_BITS(num_lit_codes - 257, 5)
+        TDEFL_PUT_BITS(num_dist_codes - 1, 5)
+
+        num_bit_lengths := 18'u32
+        while num_bit_lengths >= 0
+        {
+            if d.m_huff_code_sizes[2, s_tdefl_packed_code_size_syms_swizzle[num_bit_lengths]]
+                break
+            num_bit_lengths -= 1
+        }
+
+        num_bit_lengths = Math.max(4, num_bit_lengths + 1)
+        TDEFL_PUT_BITS(num_bit_lengths - 4, 4)
+        for i := 0; i < num_bit_lengths; i += 1
+        {
+            TDEFL_PUT_BITS(cast(u32) d.m_huff_code_sizes[2, s_tdefl_packed_code_size_syms_swizzle[i]], 3)
+        }
+
+        packed_code_sizes_index := 0
+        while packed_code_sizes_index < num_packed_code_sizes
+        {
+            cde := packed_code_sizes[packed_code_sizes_index]
+            packed_code_sizes_index += 1
+            TDEFL_PUT_BITS(cast(u32) d.m_huff_codes[2, cde], cast(u32) d.m_huff_code_sizes[2, cde])
+            if cde >= 16
+            {
+                const p = @[2, 3, 7]
+                TDEFL_PUT_BITS(cast(u32) packed_code_sizes[packed_code_sizes_index], cast(u32) p[cde - 16])
+                packed_code_sizes_index += 1
+            }
+        }
     }
 
     mtd tdefl_compress_lz_codes()->bool
