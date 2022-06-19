@@ -679,12 +679,70 @@ impl Deflate
         TDEFL_PUT_BITS(1, 2)
     }
 
-    mtd TDEFL_RLE_PREV_CODE_SIZE()
+    #[Swag.Mixin]
+    func TDEFL_RLE_PREV_CODE_SIZE()
     {
+        if rle_repeat_count
+        {
+            d := &state
+            if rle_repeat_count < 3
+            {
+                d.m_huff_count[2, prev_code_size] = cast(u16) (d.m_huff_count[2, prev_code_size] + rle_repeat_count)
+                while rle_repeat_count
+                {
+                    packed_code_sizes[num_packed_code_sizes] = prev_code_size
+                    num_packed_code_sizes += 1
+                    rle_repeat_count -= 1
+                }
+            }
+            else
+            {
+                d.m_huff_count[2, 16] = cast(u16) (d.m_huff_count[2, 16] + 1)
+                packed_code_sizes[num_packed_code_sizes] = 16
+                num_packed_code_sizes += 1
+                packed_code_sizes[num_packed_code_sizes] = cast(u8) (rle_repeat_count - 3)
+                num_packed_code_sizes += 1
+            }
+
+            rle_repeat_count = 0
+        }
     }
 
+    #[Swag.Mixin]
     mtd TDEFL_RLE_ZERO_CODE_SIZE()
     {
+        if rle_z_count
+        {
+            if rle_z_count < 3
+            {
+                d.m_huff_count[2, 0] = cast(u16) (d.m_huff_count[2, 0] + rle_z_count)
+                while rle_z_count
+                {
+                    packed_code_sizes[num_packed_code_sizes] = 0
+                    num_packed_code_sizes += 1
+                    rle_z_count -= 1
+                }
+            }
+            elif rle_z_count <= 10
+            {
+                d.m_huff_count[2, 17] = cast(u16) (d.m_huff_count[2, 17] + 1)
+                packed_code_sizes[num_packed_code_sizes] = 17
+                num_packed_code_sizes += 1
+                packed_code_sizes[num_packed_code_sizes] = cast(u8) (rle_z_count - 3)
+                num_packed_code_sizes += 1
+            }
+            else
+            {
+                d.m_huff_count[2, 18] = cast(u16) (d.m_huff_count[2, 18] + 1)
+                packed_code_sizes[num_packed_code_sizes] = 18
+                num_packed_code_sizes += 1
+                packed_code_sizes[num_packed_code_sizes] = cast(u8) (rle_z_count - 11)
+                num_packed_code_sizes += 1
+
+            }
+
+            rle_z_count = 0
+        }
     }
 
     mtd tdefl_start_dynamic_block()
