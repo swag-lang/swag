@@ -380,8 +380,26 @@ impl Deflate
         }
     }
 
+    //#[Swag.Macro]
     mtd TDEFL_PUT_BITS(b, l: u32)
     {
+        d := &state
+        bits := b
+        len  := l
+
+        d.m_bit_buffer |= (bits << d.m_bits_in)
+        d.m_bits_in += len
+        while d.m_bits_in >= 8
+        {
+            if d.m_pOutput_buf < d.m_pOutput_buf_end
+            {
+                dref d.m_pOutput_buf = cast(u8) d.m_bit_buffer
+                d.m_pOutput_buf += 1
+            }
+
+            d.m_bit_buffer >>= 8
+            d.m_bits_in -= 8
+        }
     }
 
     mtd tdefl_optimize_huffman_table(table_num, table_len, code_size_limit: s32, static_table: bool)
