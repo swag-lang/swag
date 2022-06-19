@@ -830,6 +830,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::BinOpXorU8:
             BackendX64Inst::emit_BinOpInt8_At_Reg(pp, ip, X64Op::XOR);
             break;
+        case ByteCodeOp::BinOpXorU16:
+            BackendX64Inst::emit_BinOpInt16_At_Reg(pp, ip, X64Op::XOR);
+            break;
         case ByteCodeOp::BinOpXorU32:
             BackendX64Inst::emit_BinOpInt32_At_Reg(pp, ip, X64Op::XOR);
             break;

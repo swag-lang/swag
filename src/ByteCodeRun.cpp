@@ -1668,6 +1668,13 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         registersRC[ip->c.u32].u8 = val1 ^ val2;
         break;
     }
+    case ByteCodeOp::BinOpXorU16:
+    {
+        auto val1                  = IMMA_U16(ip);
+        auto val2                  = IMMB_U16(ip);
+        registersRC[ip->c.u32].u16 = val1 ^ val2;
+        break;
+    }
     case ByteCodeOp::BinOpXorU32:
     {
         auto val1                  = IMMA_U32(ip);
