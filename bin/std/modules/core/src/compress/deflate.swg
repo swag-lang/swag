@@ -203,11 +203,17 @@ impl Deflate
     {
         comp_flags := 0'u32
         if level != MZ_DEFAULT_COMPRESSION
+        {
             comp_flags = s_tdefl_num_probes[Math.min(10, cast(s32) level)]
+            if level <= 3
+                comp_flags |= TDEFL_GREEDY_PARSING_FLAG
+        }
         else
+        {
             comp_flags = s_tdefl_num_probes[MZ_DEFAULT_LEVEL]
-        if level <= 3
             comp_flags |= TDEFL_GREEDY_PARSING_FLAG
+        }
+
         //if window_bits > 0
         //    comp_flags |= TDEFL_WRITE_ZLIB_HEADER
 
@@ -257,11 +263,10 @@ impl Deflate
         d.m_total_lz_bytes += 1
         dref d.m_pLZ_code_buf = lit
         d.m_pLZ_code_buf += 1
+        dref d.m_pLZ_flags = cast(u8) (dref d.m_pLZ_flags >> 1)
 
-        dref d.m_pLZ_flags = cast(u8) (dref d.m_pLZ_flags >>,safe 1)
         d.m_num_flags_left -= 1
-
-        if d.m_num_flags_left
+        if d.m_num_flags_left == 0
         {
             d.m_num_flags_left = 8
             d.m_pLZ_flags = d.m_pLZ_code_buf
@@ -359,6 +364,7 @@ impl Deflate
                 p, q += 1
                 if pp != qq
                     break
+                probe_len += 1
             }
 
             if probe_len > match_len
@@ -583,8 +589,7 @@ impl Deflate
             Memory.clear(&d.m_huff_code_sizes[table_num], @sizeof(d.m_huff_code_sizes[table_num]))
             Memory.clear(&d.m_huff_codes[table_num], @sizeof(d.m_huff_codes[table_num]))
 
-            j := num_used_syms
-            for i := 1; i <= code_size_limit; i += 1
+            for { i := 1; j := num_used_syms; } i <= code_size_limit; i += 1
             {
                 for l := num_codes[i]; l > 0; l -= 1
                 {
@@ -911,12 +916,12 @@ impl Deflate
         if d.m_pOut_buf_size
         {
             n := Math.min(cast(u32) (dref d.m_pOut_buf_size - d.m_out_buf_ofs), cast(u32) d.m_output_flush_remaining)
-            Memory.copy(d.m_pOut_buf + d.m_out_buf_ofs, &d.m_output_buf[0] + d.m_output_flush_ofs, cast(uint) n)
+            Debug.assert(n == 0)
+            /*Memory.copy(d.m_pOut_buf + d.m_out_buf_ofs, &d.m_output_buf[0] + d.m_output_flush_ofs, cast(uint) n)
             d.m_output_flush_ofs += n
             d.m_output_flush_remaining -= n
             d.m_out_buf_ofs += n
-
-            dref d.m_pOut_buf_size = d.m_out_buf_ofs
+            dref d.m_pOut_buf_size = d.m_out_buf_ofs*/
         }
 
         return d.m_finished and !d.m_output_flush_remaining ? .TDEFL_STATUS_DONE : .TDEFL_STATUS_OKAY
@@ -1130,8 +1135,9 @@ impl Deflate
                     if (d.m_lookahead_size + d.m_dict_size) >= TDEFL_MIN_MATCH_LEN
                     {
                         var ins_pos: u32 = d.m_lookahead_pos + (d.m_lookahead_size - 1) - 2
-                        var hash: u32 = ((cast(u32) d.m_dict[ins_pos & TDEFL_LZ_DICT_SIZE_MASK] << (TDEFL_LZ_HASH_SHIFT * 2)) ^
-                                         (cast(u32) d.m_dict[(ins_pos + 1) & TDEFL_LZ_DICT_SIZE_MASK] << TDEFL_LZ_HASH_SHIFT) ^ c) & (TDEFL_LZ_HASH_SIZE - 1)
+                        var hash: u32 = (cast(u32) d.m_dict[ins_pos & TDEFL_LZ_DICT_SIZE_MASK] << (TDEFL_LZ_HASH_SHIFT * 2))
+                        hash = (hash ^ (cast(u32) d.m_dict[(ins_pos + 1) & TDEFL_LZ_DICT_SIZE_MASK] << TDEFL_LZ_HASH_SHIFT) ^ c)
+                        hash &= (TDEFL_LZ_HASH_SIZE - 1)
                         d.m_next[ins_pos & TDEFL_LZ_DICT_SIZE_MASK] = d.m_hash[hash]
                         d.m_hash[hash] = cast(u16) ins_pos
                     }

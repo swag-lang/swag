@@ -4,7 +4,7 @@ using Core
 {
     var arr: Array'u8
     loop i: 100
-        arr.add(cast(u8) i)
+        arr.add(6)
 
     var comp: Compress.Deflate
     res := try comp.compress(arr.toSlice())
@@ -14,5 +14,5 @@ using Core
 
     @assert(res1.count == 100)
     visit v, i: res1
-        @assert(v == i)
+        @assert(v == 6)
 }

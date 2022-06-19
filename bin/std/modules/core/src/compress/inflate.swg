@@ -154,9 +154,11 @@ impl Inflate
     {
         if stream.numBits < 16
         {
-            if stream.numBits == bitcast(u8) -100 throw "malformed"
+            if stream.numBits == bitcast(u8) -100
+                throw "malformed"
             stream.refill()
-            if stream.eof throw "malformed"
+            if stream.numBits == bitcast(u8) -100
+                throw "malformed"
         }
 
         b := ht.fast[stream.codeBuffer & FastMask]
@@ -173,10 +175,13 @@ impl Inflate
         s := HuffmanFastBits + 1
         while k >= ht.maxCode[s] s += 1
 
-        if s >= 16 throw "bad huffman code"
+        if s >= 16
+            throw "bad huffman code"
         b1 := (k >>,safe (16 - s)) - ht.firstCode[s] + ht.firstSymbol[s]
-        if b1 >= @countof(ht.size) throw "bad huffman code"
-        if ht.size[b1] != s throw "bad huffman code"
+        if b1 >= @countof(ht.size)
+            throw "bad huffman code"
+        if ht.size[b1] != s
+            throw "bad huffman code"
 
         stream.consumeBits(cast(u8) s)
         return ht.value[b1]
@@ -212,7 +217,8 @@ impl Inflate
             if DistExtra[value] > 0
                 distance += cast(u16) stream.readBits(DistExtra[value])
 
-            if dest.count < distance throw "bad distance"
+            if dest.count < distance
+                throw "bad distance"
             if length <= 0 continue
 
             dest.grow(dest.count + length)
@@ -268,7 +274,8 @@ impl Inflate
                 stream.discardToNextByte()
                 uncompressedLen := cast(u16) stream.readBits(16)
                 lengthCheck     := cast(u16) stream.readBits(16)
-                if ~uncompressedLen != lengthCheck throw "invalid buffer, length mismatch"
+                if ~uncompressedLen != lengthCheck
+                    throw "invalid buffer, length mismatch"
 
                 stream.revert()
                 newSlice := @mkslice(stream.curPtr(), uncompressedLen)
@@ -305,7 +312,8 @@ impl Inflate
                 while n < ntot
                 {
                     c := try decode(&codeLengthHt)
-                    if c < 0 or c >= 19 throw "bad code lengths"
+                    if c < 0 or c >= 19
+                        throw "bad code lengths"
 
                     if c < 16
                     {
@@ -320,7 +328,8 @@ impl Inflate
                         {
                         case 16:
                             c = cast(u16) (stream.readBitsNoRefill(2) + 3)
-                            if n == 0 throw "bad code lengths"
+                            if n == 0
+                                throw "bad code lengths"
                             fill = lenCodes[n - 1]
                         case 17:
                             c = cast(u16) (stream.readBitsNoRefill(3) + 3)
@@ -331,7 +340,8 @@ impl Inflate
                             break
                         }
 
-                        if ntot - n < c throw "bad code lengths"
+                        if ntot - n < c
+                            throw "bad code lengths"
                         nc := n + c
                         while n < nc
                         {
@@ -341,13 +351,15 @@ impl Inflate
                     }
                 }
 
-                if n != ntot throw "bad code lengths"
+                if n != ntot
+                    throw "bad code lengths"
                 try repeatHt.init(lenCodes[0..hlit-1])
                 try repeatZ.init(lenCodes[hlit..ntot-1])
                 try parseBlock(&repeatHt, &repeatZ, &result)
             }
 
-            if final == 1 break
+            if final == 1
+                break
         }
 
         return result
