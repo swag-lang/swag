@@ -70,6 +70,7 @@ struct CommandLine
     bool      errorSourceOut        = true;
     bool      errorNoteOut          = true;
     bool      errorMarkdown         = false;
+    bool      errorAbsolute         = false;
 
     // Output
     string buildCfg           = "fast-debug";

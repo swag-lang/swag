@@ -15,9 +15,11 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("bu sc", "--verbose-link", nullptr, CommandLineType::Bool, &cmdLine->verboseLink, nullptr, "log linker command line");
     addArg("bu sc", "--verbose-ctypes", nullptr, CommandLineType::Bool, &cmdLine->verboseConcreteTypes, nullptr, "log generated concrete types");
     addArg("te", "--verbose-testerrors", nullptr, CommandLineType::Bool, &cmdLine->verboseTestErrors, nullptr, "log errors during test");
-    addArg("bu sc", "--error-code", nullptr, CommandLineType::Bool, &cmdLine->errorSourceOut, nullptr, "display source code when an error is raised");
-    addArg("bu sc", "--error-note", nullptr, CommandLineType::Bool, &cmdLine->errorNoteOut, nullptr, "display notes when an error is raised");
-    addArg("bu sc", "--error-markdown", nullptr, CommandLineType::Bool, &cmdLine->errorMarkdown, nullptr, "hilight markdown format");
+
+    addArg("bu sc", "--error-code", "-ec", CommandLineType::Bool, &cmdLine->errorSourceOut, nullptr, "display source code when an error is raised");
+    addArg("bu sc", "--error-note", "-en", CommandLineType::Bool, &cmdLine->errorNoteOut, nullptr, "display notes when an error is raised");
+    addArg("bu sc", "--error-abs", "-ea", CommandLineType::Bool, &cmdLine->errorAbsolute, nullptr, "display absolute paths when an error is raised");
+    addArg("bu sc", "--error-markdown", "-em", CommandLineType::Bool, &cmdLine->errorMarkdown, nullptr, "hilight markdown format");
 
     addArg("bu ne cl li ge", "--workspace", "-w", CommandLineType::String, &cmdLine->workspacePath, nullptr, "the path to the workspace to work with");
     addArg("bu ne", "--module", "-m", CommandLineType::String, &cmdLine->moduleName, nullptr, "module name");

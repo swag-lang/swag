@@ -29,10 +29,13 @@ void Diagnostic::printSourceLine() const
     fs::path path = checkFile->path;
 
     // Make it relatif to current path (should be shorter) if possible
-    error_code errorCode;
-    auto       path1 = fs::relative(path, fs::current_path(), errorCode);
-    if (!path1.empty())
-        path = path1;
+    if (!g_CommandLine->errorAbsolute)
+    {
+        error_code errorCode;
+        auto       path1 = fs::relative(path, fs::current_path(), errorCode);
+        if (!path1.empty())
+            path = path1;
+    }
 
     g_Log.print("--> ");
     g_Log.print(Utf8::normalizePath(path).c_str());
