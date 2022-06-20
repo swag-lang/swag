@@ -160,7 +160,6 @@ struct Compressor
     m_saved_match_len:  u32
     m_saved_lit:        u32
     m_output_flush_ofs: u32
-    m_finished:         u32
     m_block_index:      u32
     m_pIn_buf:          const *u8
     m_pIn_buf_size:     *uint
@@ -878,7 +877,7 @@ impl Deflate
         return compressLzCodes()
     }
 
-    mtd flushBlock(flush: tdefl_flush)
+    mtd flushBlock(finish: bool)
     {
         d := state
 
@@ -894,7 +893,7 @@ impl Deflate
         dref d.m_pLZ_flags = cast(u8) (dref d.m_pLZ_flags >> d.m_num_flags_left)
         d.m_pLZ_code_buf -= (d.m_num_flags_left == 8) ? 1 : 0
 
-        putBits(flush == .TDEFL_FINISH ? 1 : 0, 1)
+        putBits(finish ? 1 : 0, 1)
 
         pSaved_output_buf := d.m_pOutput_buf
         saved_bit_buf := d.m_bit_buffer
@@ -934,31 +933,8 @@ impl Deflate
             discard compressBlock(true)
         }
 
-        if flush
-        {
-            if flush == .TDEFL_FINISH
-            {
-                if d.m_bits_in
-                {
-                    putBits(0, 8 - d.m_bits_in)
-                }
-            }
-            else
-            {
-                z := 0'u32
-                putBits(0, 3)
-                if d.m_bits_in
-                {
-                    putBits(0, 8 - d.m_bits_in)
-                }
-
-                for i := 2; i != 0; i -= 1
-                {
-                    putBits(z & 0xFFFF, 16)
-                    z ^= 0xFFFF
-                }
-            }
-        }
+        if finish and d.m_bits_in
+            putBits(0, 8 - d.m_bits_in)
 
         Memory.clear(&d.m_huff_count[0, 0], cast(uint) @sizeof(d.m_huff_count[0, 0]) * TDEFL_MAX_HUFF_SYMBOLS_0)
         Memory.clear(&d.m_huff_count[1, 0], cast(uint) @sizeof(d.m_huff_count[1, 0]) * TDEFL_MAX_HUFF_SYMBOLS_1)
@@ -985,9 +961,8 @@ impl Deflate
         d := state
         pSrc := d.m_pSrc
         src_buf_left := d.m_src_buf_left
-        flush := d.m_flush
 
-        while src_buf_left or (flush and d.m_lookahead_size)
+        while src_buf_left or d.m_lookahead_size
         {
             if (d.m_lookahead_size + d.m_dict_size) >= (TDEFL_MIN_MATCH_LEN - 1)
             {
@@ -1041,8 +1016,6 @@ impl Deflate
             }
 
             d.m_dict_size = Math.min(cast(u32) (TDEFL_LZ_DICT_SIZE - d.m_lookahead_size), d.m_dict_size)
-            if flush == 0 and (d.m_lookahead_size < TDEFL_MAX_MATCH_LEN)
-                break
 
             len_to_move := 1'u32
             cur_match_dist := 0'u32
@@ -1129,7 +1102,7 @@ impl Deflate
             {
                 d.m_pSrc = pSrc
                 d.m_src_buf_left = src_buf_left
-                flushBlock(.TDEFL_NO_FLUSH)
+                flushBlock(false)
             }
         }
 
@@ -1137,23 +1110,19 @@ impl Deflate
         d.m_src_buf_left = src_buf_left
     }
 
-    mtd mainCompress(pIn_buf: const *u8, pIn_buf_size: *uint, flush: tdefl_flush) throw
+    mtd mainCompress(pIn_buf: const *u8, pIn_buf_size: *uint) throw
     {
         d := state
         d.m_pIn_buf = pIn_buf
         d.m_pIn_buf_size = pIn_buf_size
         d.m_pSrc = cast(const *u8) pIn_buf
         d.m_src_buf_left = pIn_buf_size ? dref pIn_buf_size : 0
-        d.m_flush = flush
 
         compress()
         adler.update(@mkslice(pIn_buf, cast(uint) (d.m_pSrc - pIn_buf)))
 
-        if flush and !d.m_lookahead_size and !d.m_src_buf_left
-        {
-            flushBlock(flush)
-            d.m_finished = flush == .TDEFL_FINISH ? 1 : 0
-        }
+        Debug.assert(!d.m_lookahead_size and !d.m_src_buf_left)
+        flushBlock(true)
     }
 }
 
@@ -1195,7 +1164,7 @@ public impl Deflate
         state.result = &result
 
         inBytes := @countof(src)
-        mainCompress(@dataof(src), &inBytes, .TDEFL_FINISH)
+        mainCompress(@dataof(src), &inBytes)
 
         return result
     }
