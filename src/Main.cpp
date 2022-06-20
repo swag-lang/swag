@@ -5,62 +5,14 @@
 #include "Os.h"
 #include "ErrorIds.h"
 #include "Diagnostic.h"
-#include "F:\miniz-master\miniz.h"
 
 bool g_Exiting = false;
 
 extern void help(CommandLineParser& cmdParser, const string& cmd);
 extern void help(CommandLineParser& cmdParser);
 
-static const char *zz = "\r\n\
-using Core\r\n\
-const C = #load(#file)\r\n\
-\r\n\
-//#[Swag.PrintBc]\r\n\
-#[Swag.Optim(\"\", false)]\r\n\
-#test\r\n\
-{\r\n\
-    arr.add(@mkslice(&C[0], @countof(C)))\r\n\
-    @assert(@countof(C) == arr.count)\r\n\
-\r\n\
-    var comp: Compress.Deflate\r\n\
-    res := try comp.compress(arr.toSlice())\r\n\
-\r\n\
-    var decomp: Compress.Inflate\r\n\
-    res1 := try decomp.decompress(res.toSlice())\r\n\
-\r\n\
-    @assert(arr.count == res1.count)\r\n\
-    @print(@mkstring(res1.buffer, res1.count))\r\n\
-}";
-
 int main(int argc, const char* argv[])
 {
-    ///////////////////////////
-    unsigned char bytes[100];
-    for (int i = 0; i < sizeof(bytes); i++) 
-            bytes[i] = 6;
-    unsigned char next_out[1024];
-
-    FILE* f = fopen("F:/swag-lang/swag/bin/std/tests/core/datas/0.zlib", "rb");
-    auto pp = malloc(100 * 1024);
-    auto pp1 = malloc(100 * 1024);
-    auto len = fread(pp, 1, 100 * 1024, f);
-    fclose(f);
-
-    mz_stream stream;
-    memset(&stream, 0, sizeof(stream));
-    stream.next_in = (const unsigned char *) pp;
-    stream.avail_in = len;
-    stream.next_out = (unsigned char* ) pp1;
-    stream.avail_out = 100 * 1024;
-    mz_deflateInit2(&stream, MZ_DEFAULT_COMPRESSION, MZ_DEFLATED, 15, 9, MZ_DEFAULT_STRATEGY);
-    mz_deflate(&stream, MZ_FINISH);
-
-    f = fopen("F:/b.bin", "wb");
-    fwrite(pp1, 1, stream.total_out, f);
-    fclose(f);
-    ///////////////////////////
-
     g_CommandLine = g_Allocator.alloc<CommandLine>();
     g_Workspace   = g_Allocator.alloc<Workspace>();
 

@@ -494,9 +494,6 @@
     <ClCompile Include="..\src\JobGroup.cpp">
       <Filter>Main\Threading</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\miniz-master\miniz.c" />
-    <ClCompile Include="..\..\..\miniz-master\miniz_tdef.c" />
-    <ClCompile Include="..\..\..\miniz-master\miniz_tinfl.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/JobThread.h">

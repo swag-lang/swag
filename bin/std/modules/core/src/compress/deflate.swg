@@ -94,13 +94,6 @@ enum tdefl_flush
     TDEFL_FINISH = 4
 }
 
-const MZ_NO_FLUSH = 0
-const MZ_PARTIAL_FLUSH = 1
-const MZ_SYNC_FLUSH = 2
-const MZ_FULL_FLUSH = 3
-const MZ_FINISH = 4
-const MZ_BLOCK = 5
-
 const TDEFL_MAX_SUPPORTED_HUFF_CODESIZE = 32
 
 const TDEFL_MAX_HUFF_TABLES = 3
@@ -177,14 +170,10 @@ struct Compressor
     m_saved_match_len:  u32
     m_saved_lit:        u32
     m_output_flush_ofs: u32
-    m_output_flush_remaining:   u32
     m_finished:         u32
     m_block_index:      u32
-    m_wants_to_finish:  u32
     m_pIn_buf:          const *u8
-    m_pOut_buf:         *u8
     m_pIn_buf_size:     *uint
-    m_pOut_buf_size:    *uint
     m_flush:            tdefl_flush
     m_pSrc:             const *u8
     m_src_buf_left:     uint
@@ -204,14 +193,13 @@ struct Compressor
 #[Swag.Opaque]
 public struct Deflate
 {
-    stream: Stream
     state:  *Compressor
     adler:  Hash.Adler32
 }
 
 impl Deflate
 {
-    func createCompFlagsFromZipParams(level: CompressionLevel, window_bits: s32, strategy: CompressionStrategy)->u32
+    func createCompFlagsFromZipParams(level: CompressionLevel, strategy: CompressionStrategy)->u32
     {
         compFlags := 0'u32
         compFlags = NumProbes[Math.min(10'u32, level)]
@@ -900,27 +888,7 @@ impl Deflate
         return compressLzCodes()
     }
 
-    mtd flushOutputBuffer()->tdefl_status
-    {
-        d := state
-        if d.m_pIn_buf_size
-            dref d.m_pIn_buf_size = cast(uint) (d.m_pSrc - cast(const *u8) d.m_pIn_buf)
-
-        if d.m_pOut_buf_size
-        {
-            n := Math.min(cast(u32) (dref d.m_pOut_buf_size - d.m_out_buf_ofs), cast(u32) d.m_output_flush_remaining)
-            Debug.assert(n == 0)
-            /*Memory.copy(d.m_pOut_buf + d.m_out_buf_ofs, &d.m_output_buf[0] + d.m_output_flush_ofs, cast(uint) n)
-            d.m_output_flush_ofs += n
-            d.m_output_flush_remaining -= n
-            d.m_out_buf_ofs += n
-            dref d.m_pOut_buf_size = d.m_out_buf_ofs*/
-        }
-
-        return d.m_finished and !d.m_output_flush_remaining ? .TDEFL_STATUS_DONE : .TDEFL_STATUS_OKAY
-    }
-
-    mtd flushBlock(flush: tdefl_flush)->s32
+    mtd flushBlock(flush: tdefl_flush)
     {
         d := state
 
@@ -932,7 +900,6 @@ impl Deflate
         d.m_pOutput_buf_end = d.m_pOutput_buf + TDEFL_OUT_BUF_SIZE - 16
 
         d.m_output_flush_ofs = 0
-        d.m_output_flush_remaining = 0
 
         dref d.m_pLZ_flags = cast(u8) (dref d.m_pLZ_flags >> d.m_num_flags_left)
         d.m_pLZ_code_buf -= (d.m_num_flags_left == 8) ? 1 : 0
@@ -1016,30 +983,14 @@ impl Deflate
         n := cast(s32) (d.m_pOutput_buf - pOutput_buf_start)
         if n != 0
         {
-            if pOutput_buf_start == &d.m_output_buf[0]
-            {
-                bytes_to_copy := n
-                d.result.resize(d.result.count + n)
-                Memory.copy(d.result.buffer + d.m_out_buf_ofs, d.m_output_buf, cast(uint) bytes_to_copy)
-
-                d.m_out_buf_ofs += bytes_to_copy
-                n -= bytes_to_copy
-                if n != 0
-                {
-                    d.m_output_flush_ofs = bytes_to_copy
-                    d.m_output_flush_remaining = n
-                }
-            }
-            else
-            {
-                d.m_out_buf_ofs += n
-            }
+            bytes_to_copy := n
+            d.result.resize(d.result.count + n)
+            Memory.copy(d.result.buffer + d.m_out_buf_ofs, d.m_output_buf, cast(uint) bytes_to_copy)
+            d.m_out_buf_ofs += bytes_to_copy
         }
-
-        return d.m_output_flush_remaining
     }
 
-    mtd compress()->bool throw
+    mtd compress() throw
     {
         d := state
         pSrc := d.m_pSrc
@@ -1188,40 +1139,29 @@ impl Deflate
             {
                 d.m_pSrc = pSrc
                 d.m_src_buf_left = src_buf_left
-                n := flushBlock(.TDEFL_NO_FLUSH)
-                if n
-                {
-                    return (n < 0) ? false : true
-                }
+                flushBlock(.TDEFL_NO_FLUSH)
             }
         }
 
         d.m_pSrc = pSrc
         d.m_src_buf_left = src_buf_left
-        return true
     }
 
-    mtd mainCompress(pIn_buf: const *u8, pIn_buf_size: *uint, pOut_buf: *u8, pOut_buf_size: *uint, flush: tdefl_flush)->tdefl_status throw
+    mtd mainCompress(pIn_buf: const *u8, pIn_buf_size: *uint, flush: tdefl_flush)->tdefl_status throw
     {
         d := state
         d.m_pIn_buf = pIn_buf
         d.m_pIn_buf_size = pIn_buf_size
-        d.m_pOut_buf = pOut_buf
-        d.m_pOut_buf_size = pOut_buf_size
         d.m_pSrc = cast(const *u8) pIn_buf
         d.m_src_buf_left = pIn_buf_size ? dref pIn_buf_size : 0
         d.m_flush = flush
 
-        d.m_wants_to_finish |= (flush == .TDEFL_FINISH) ? 1 : 0
-        if d.m_output_flush_remaining or d.m_finished
-            return flushOutputBuffer()
-
-        discard compress()
+        compress()
         adler.update(@mkslice(pIn_buf, cast(uint) (d.m_pSrc - pIn_buf)))
 
-        if flush and !d.m_lookahead_size and !d.m_src_buf_left and !d.m_output_flush_remaining
+        if flush and !d.m_lookahead_size and !d.m_src_buf_left
         {
-            discard flushBlock(flush)
+            flushBlock(flush)
             d.m_finished = flush == .TDEFL_FINISH ? 1 : 0
             if flush == .TDEFL_FULL_FLUSH
             {
@@ -1231,54 +1171,12 @@ impl Deflate
             }
         }
 
-        return flushOutputBuffer()
-    }
-
-    mtd deflate(fl: s32) throw
-    {
-        flush := fl
-        if flush == MZ_PARTIAL_FLUSH
-            flush = MZ_SYNC_FLUSH
-
-        //if (((Compressor *)stream.state)->m_prev_return_status == TDEFL_STATUS_DONE)
-        //    return (flush == MZ_FINISH) ? MZ_STREAM_END : MZ_BUF_ERROR;
-
-        orig_total_in  := stream.total_in
-        orig_total_out := stream.total_out
-        loop
-        {
-            in_bytes  := stream.avail_in
-            out_bytes := stream.avail_out
-            defl_status := mainCompress(stream.next_in, &in_bytes, stream.next_out, &out_bytes, cast(tdefl_flush) flush)
-            stream.next_in  += in_bytes
-            stream.avail_in -= in_bytes
-            stream.total_in += in_bytes
-
-            stream.next_out  += out_bytes
-            stream.avail_out -= out_bytes
-            stream.total_out += out_bytes
-
-            if defl_status < 0
-                throw "MZ_STREAM_ERROR"
-
-            if defl_status == .TDEFL_STATUS_DONE
-                break
-            if !stream.avail_out
-                break
-            if !stream.avail_in and flush != MZ_FINISH
-            {
-                if flush or (stream.total_in != orig_total_in) or (stream.total_out != orig_total_out)
-                    break
-                throw "MZ_BUF_ERROR"
-            }
-        }
+        return .TDEFL_STATUS_DONE
     }
 }
 
 public impl Deflate
 {
-    public const DeflateMaxDistance = 32768'u32
-
     #[Swag.Incomplete]
     enum CompressionLevel : u32
     {
@@ -1298,8 +1196,8 @@ public impl Deflate
         Fixed
     }
 
-    // Compress the associated stream
-    mtd compress(src: const [..] u8, level = CompressionLevel.Default, strategy = CompressionStrategy.Default, winSize: u32 = DeflateMaxDistance)->Array'u8 throw
+    // Compress the source buffer
+    mtd compress(src: const [..] u8, level = CompressionLevel.Default, strategy = CompressionStrategy.Default)->Array'u8 throw
     {
         if @countof(src) > Swag.U32.Max
             throw "overflow"
@@ -1307,21 +1205,18 @@ public impl Deflate
         state = Memory.new'Compressor()
         defer Memory.delete(state)
 
-        stream.next_in  = @dataof(src)
-        stream.avail_in = cast(u32) @countof(src)
-        winBits := cast(s32) Math.log2(cast(f32) Math.min(winSize, DeflateMaxDistance))
-        Debug.assert(winSize > 0)
-
         adler.init()
-        compFlags := createCompFlagsFromZipParams(level, winBits, strategy)
+        compFlags := createCompFlagsFromZipParams(level, strategy)
         init(compFlags)
 
         var result: retval
         state.result = &result
-        result.reserve(1024)
-        stream.next_out  = result.buffer
-        stream.avail_out = cast(u32) result.capacity
-        deflate(MZ_FINISH)
+
+        inBytes := @countof(src)
+        defl_status := mainCompress(@dataof(src), &inBytes, .TDEFL_FINISH)
+        if defl_status < 0
+            throw "MZ_STREAM_ERROR"
+
         return result
     }
 }
