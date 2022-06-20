@@ -112,13 +112,21 @@ const TDEFL_LZ_DICT_SIZE_MASK = TDEFL_LZ_DICT_SIZE - 1
 const TDEFL_MIN_MATCH_LEN = 3
 const TDEFL_MAX_MATCH_LEN = 258
 
-const TDEFL_LZ_CODE_BUF_SIZE = 64 * 1024
+const TDEFL_LZ_CODE_BUF_SIZE = 24 * 1024
+const TDEFL_OUT_BUF_SIZE = (TDEFL_LZ_CODE_BUF_SIZE * 13) / 10
+const TDEFL_MAX_HUFF_SYMBOLS = 288
+const TDEFL_LZ_HASH_BITS = 12
+const TDEFL_LEVEL1_HASH_SIZE_MASK = 4095
+const TDEFL_LZ_HASH_SHIFT = (TDEFL_LZ_HASH_BITS + 2) / 3
+const TDEFL_LZ_HASH_SIZE = 1 << TDEFL_LZ_HASH_BITS
+
+/*const TDEFL_LZ_CODE_BUF_SIZE = 64 * 1024
 const TDEFL_OUT_BUF_SIZE = (TDEFL_LZ_CODE_BUF_SIZE * 13) / 10
 const TDEFL_MAX_HUFF_SYMBOLS = 288
 const TDEFL_LZ_HASH_BITS = 15
 const TDEFL_LEVEL1_HASH_SIZE_MASK = 4095
 const TDEFL_LZ_HASH_SHIFT = (TDEFL_LZ_HASH_BITS + 2) / 3
-const TDEFL_LZ_HASH_SIZE = 1 << TDEFL_LZ_HASH_BITS
+const TDEFL_LZ_HASH_SIZE = 1 << TDEFL_LZ_HASH_BITS*/
 
 const TDEFL_GREEDY_PARSING_FLAG = 0x04000
 const TDEFL_NONDETERMINISTIC_PARSING_FLAG = 0x08000
@@ -224,7 +232,7 @@ impl Deflate
         return compFlags
     }
 
-    mtd tdefl_init(flags: u32)
+    mtd init(flags: u32)
     {
         d := state
         @init(d)
@@ -241,7 +249,7 @@ impl Deflate
         d.m_flush = .TDEFL_NO_FLUSH
     }
 
-    mtd tdefl_record_literal(lit: u8)
+    mtd recordLiteral(lit: u8)
     {
         d := state
 
@@ -261,7 +269,7 @@ impl Deflate
         d.m_huff_count[0, lit] += 1
     }
 
-    mtd tdefl_record_match(match_len: u32, md: u32)
+    mtd recordMatch(match_len: u32, md: u32)
     {
         match_dist := md
         d := state
@@ -290,7 +298,7 @@ impl Deflate
         d.m_huff_count[0, LenSym[match_len - TDEFL_MIN_MATCH_LEN]] += 1
     }
 
-    mtd tdefl_find_match(lookahead_pos, max_dist, max_match_len: u32, pMatch_dist, pMatch_len: *u32)
+    mtd findMatch(lookahead_pos, max_dist, max_match_len: u32, pMatch_dist, pMatch_len: *u32)
     {
         d := state
 
@@ -318,7 +326,7 @@ impl Deflate
                     return
 
                 #[Swag.Mixin]
-                func TDEFL_PROBE()
+                func probe()
                 {
                     next_probe_pos = d.m_next[probe_pos]
                     if !next_probe_pos
@@ -331,9 +339,9 @@ impl Deflate
                         break
                 }
 
-                TDEFL_PROBE()
-                TDEFL_PROBE()
-                TDEFL_PROBE()
+                probe()
+                probe()
+                probe()
             }
 
             if !dist
@@ -387,7 +395,7 @@ impl Deflate
         }
     }
 
-    mtd tdefl_radix_sort_syms(num_syms: u32, pSyms0, pSyms1: *SymFreq)->*SymFreq
+    mtd radixSortSyms(num_syms: u32, pSyms0, pSyms1: *SymFreq)->*SymFreq
     {
         total_passes := 2
         var hist: [256 * 2] u32
@@ -431,7 +439,7 @@ impl Deflate
         return pCur_syms;
     }
 
-    mtd tdefl_calculate_minimum_redundancy(A: *SymFreq, n: u32)
+    mtd calculateMinimumRedundancy(A: *SymFreq, n: u32)
     {
         if n == 0
             return
@@ -501,7 +509,7 @@ impl Deflate
         }
     }
 
-    mtd tdefl_huffman_enforce_max_code_size(pNum_codes: *s32, code_list_len, max_code_size: u32)
+    mtd huffmanEnforceMaxCodeSize(pNum_codes: *s32, code_list_len, max_code_size: u32)
     {
         total := 0'u32
         if code_list_len <= 1
@@ -529,7 +537,7 @@ impl Deflate
         }
     }
 
-    mtd tdefl_optimize_huffman_table(table_num, table_len, code_size_limit: u32, static_table: bool)
+    mtd optimizeHuffmanTable(table_num, table_len, code_size_limit: u32, static_table: bool)
     {
         d := state
 
@@ -561,15 +569,15 @@ impl Deflate
                 }
             }
 
-            pSyms := tdefl_radix_sort_syms(num_used_syms, syms0, syms1)
-            tdefl_calculate_minimum_redundancy(pSyms, num_used_syms)
+            pSyms := radixSortSyms(num_used_syms, syms0, syms1)
+            calculateMinimumRedundancy(pSyms, num_used_syms)
 
             for i := 0; i < num_used_syms; i += 1
             {
                 num_codes[pSyms[i].m_key] += 1
             }
 
-            tdefl_huffman_enforce_max_code_size(num_codes, num_used_syms, code_size_limit)
+            huffmanEnforceMaxCodeSize(num_codes, num_used_syms, code_size_limit)
 
             Memory.clear(&d.m_huff_code_sizes[table_num], @sizeof(d.m_huff_code_sizes[table_num]))
             Memory.clear(&d.m_huff_codes[table_num], @sizeof(d.m_huff_codes[table_num]))
@@ -610,7 +618,7 @@ impl Deflate
         }
     }
 
-    mtd tdefl_start_static_block()
+    mtd startStaticBlock()
     {
         d := state
         p := &d.m_huff_code_sizes[0, 0]
@@ -646,14 +654,14 @@ impl Deflate
 
         Memory.set(d.m_huff_code_sizes[1], 5, 32)
 
-        tdefl_optimize_huffman_table(0, 288, 15, true)
-        tdefl_optimize_huffman_table(1, 32, 15, true)
+        optimizeHuffmanTable(0, 288, 15, true)
+        optimizeHuffmanTable(1, 32, 15, true)
 
         putBits(1, 2)
     }
 
     #[Swag.Mixin]
-    func TDEFL_RLE_PREV_CODE_SIZE()
+    func rlePrevCodeSize()
     {
         if rle_repeat_count
         {
@@ -682,7 +690,7 @@ impl Deflate
     }
 
     #[Swag.Mixin]
-    mtd TDEFL_RLE_ZERO_CODE_SIZE()
+    mtd rleZeroCodeSize()
     {
         if rle_z_count
         {
@@ -718,7 +726,7 @@ impl Deflate
         }
     }
 
-    mtd tdefl_start_dynamic_block()
+    mtd startDynamicBlock()
     {
         d := state
 
@@ -728,8 +736,8 @@ impl Deflate
 
         d.m_huff_count[0, 256] = 1;
 
-        tdefl_optimize_huffman_table(0, TDEFL_MAX_HUFF_SYMBOLS_0, 15, false)
-        tdefl_optimize_huffman_table(1, TDEFL_MAX_HUFF_SYMBOLS_1, 15, false)
+        optimizeHuffmanTable(0, TDEFL_MAX_HUFF_SYMBOLS_0, 15, false)
+        optimizeHuffmanTable(1, TDEFL_MAX_HUFF_SYMBOLS_1, 15, false)
 
         num_lit_codes := 286'u32
         while num_lit_codes > 257
@@ -760,19 +768,19 @@ impl Deflate
             code_size := code_sizes_to_pack[i]
             if !code_size
             {
-                TDEFL_RLE_PREV_CODE_SIZE()
+                rlePrevCodeSize()
                 rle_z_count += 1
                 if rle_z_count == 138
                 {
-                    TDEFL_RLE_ZERO_CODE_SIZE()
+                    rleZeroCodeSize()
                 }
             }
             else
             {
-                TDEFL_RLE_ZERO_CODE_SIZE()
+                rleZeroCodeSize()
                 if code_size != prev_code_size
                 {
-                    TDEFL_RLE_PREV_CODE_SIZE()
+                    rlePrevCodeSize()
                     d.m_huff_count[2, code_size] = cast(u16) (d.m_huff_count[2, code_size] + 1)
                     packed_code_sizes[num_packed_code_sizes] = code_size
                     num_packed_code_sizes += 1
@@ -782,7 +790,7 @@ impl Deflate
                     rle_repeat_count += 1
                     if rle_repeat_count == 6
                     {
-                        TDEFL_RLE_PREV_CODE_SIZE()
+                        rlePrevCodeSize()
                     }
                 }
             }
@@ -792,14 +800,14 @@ impl Deflate
 
         if rle_repeat_count
         {
-            TDEFL_RLE_PREV_CODE_SIZE()
+            rlePrevCodeSize()
         }
         else
         {
-            TDEFL_RLE_ZERO_CODE_SIZE()
+            rleZeroCodeSize()
         }
 
-        tdefl_optimize_huffman_table(2, TDEFL_MAX_HUFF_SYMBOLS_2, 7, false)
+        optimizeHuffmanTable(2, TDEFL_MAX_HUFF_SYMBOLS_2, 7, false)
 
         putBits(2, 2)
         putBits(num_lit_codes - 257, 5)
@@ -835,7 +843,7 @@ impl Deflate
         }
     }
 
-    mtd tdefl_compress_lz_codes()->bool
+    mtd compressLzCodes()->bool
     {
         d := state
         flags := 1'u32
@@ -883,16 +891,16 @@ impl Deflate
         return d.m_pOutput_buf < d.m_pOutput_buf_end
     }
 
-    mtd tdefl_compress_block(static_block: bool)->bool
+    mtd compressBlock(static_block: bool)->bool
     {
         if static_block
-            tdefl_start_static_block()
+            startStaticBlock()
         else
-            tdefl_start_dynamic_block()
-        return tdefl_compress_lz_codes()
+            startDynamicBlock()
+        return compressLzCodes()
     }
 
-    mtd tdefl_flush_output_buffer()->tdefl_status
+    mtd flushOutputBuffer()->tdefl_status
     {
         d := state
         if d.m_pIn_buf_size
@@ -912,7 +920,7 @@ impl Deflate
         return d.m_finished and !d.m_output_flush_remaining ? .TDEFL_STATUS_DONE : .TDEFL_STATUS_OKAY
     }
 
-    mtd tdefl_flush_block(flush: tdefl_flush)->s32
+    mtd flushBlock(flush: tdefl_flush)->s32
     {
         d := state
 
@@ -936,7 +944,7 @@ impl Deflate
         saved_bits_in := d.m_bits_in
 
         if !use_raw_block
-            comp_block_succeeded = tdefl_compress_block((d.m_flags & TDEFL_FORCE_ALL_STATIC_BLOCKS) or (d.m_total_lz_bytes < 48))
+            comp_block_succeeded = compressBlock((d.m_flags & TDEFL_FORCE_ALL_STATIC_BLOCKS) or (d.m_total_lz_bytes < 48))
 
         if ((use_raw_block or (d.m_total_lz_bytes and ((d.m_pOutput_buf - pSaved_output_buf + 1) >= d.m_total_lz_bytes))) and
             ((d.m_lookahead_pos - d.m_lz_code_buf_dict_pos) <= d.m_dict_size))
@@ -966,7 +974,7 @@ impl Deflate
             d.m_pOutput_buf = pSaved_output_buf
             d.m_bit_buffer = saved_bit_buf
             d.m_bits_in = saved_bits_in
-            discard tdefl_compress_block(true)
+            discard compressBlock(true)
         }
 
         if flush
@@ -1031,7 +1039,7 @@ impl Deflate
         return d.m_output_flush_remaining
     }
 
-    mtd tdefl_compress_normal()->bool throw
+    mtd compress()->bool throw
     {
         d := state
         pSrc := d.m_pSrc
@@ -1119,7 +1127,7 @@ impl Deflate
             }
             else
             {
-                tdefl_find_match(d.m_lookahead_pos, d.m_dict_size, d.m_lookahead_size, &cur_match_dist, &cur_match_len)
+                findMatch(d.m_lookahead_pos, d.m_dict_size, d.m_lookahead_size, &cur_match_dist, &cur_match_len)
             }
 
             if  ((cur_match_len == TDEFL_MIN_MATCH_LEN) and (cur_match_dist >= 8 * 1024)) or
@@ -1133,10 +1141,10 @@ impl Deflate
             {
                 if cur_match_len > d.m_saved_match_len
                 {
-                    tdefl_record_literal(cast(u8) d.m_saved_lit)
+                    recordLiteral(cast(u8) d.m_saved_lit)
                     if cur_match_len >= 128
                     {
-                        tdefl_record_match(cur_match_len, cur_match_dist)
+                        recordMatch(cur_match_len, cur_match_dist)
                         d.m_saved_match_len = 0
                         len_to_move = cur_match_len
                     }
@@ -1149,18 +1157,18 @@ impl Deflate
                 }
                 else
                 {
-                    tdefl_record_match(d.m_saved_match_len, d.m_saved_match_dist)
+                    recordMatch(d.m_saved_match_len, d.m_saved_match_dist)
                     len_to_move = d.m_saved_match_len - 1;
                     d.m_saved_match_len = 0;
                 }
             }
             elif !cur_match_dist
             {
-                tdefl_record_literal(d.m_dict[Math.min(cur_pos, cast(u32) @sizeof(d.m_dict) - 1)])
+                recordLiteral(d.m_dict[Math.min(cur_pos, cast(u32) @sizeof(d.m_dict) - 1)])
             }
             elif d.m_greedy_parsing or (d.m_flags & TDEFL_RLE_MATCHES) or (cur_match_len >= 128)
             {
-                tdefl_record_match(cur_match_len, cur_match_dist)
+                recordMatch(cur_match_len, cur_match_dist)
                 len_to_move = cur_match_len
             }
             else
@@ -1180,7 +1188,7 @@ impl Deflate
             {
                 d.m_pSrc = pSrc
                 d.m_src_buf_left = src_buf_left
-                n := tdefl_flush_block(.TDEFL_NO_FLUSH)
+                n := flushBlock(.TDEFL_NO_FLUSH)
                 if n
                 {
                     return (n < 0) ? false : true
@@ -1193,7 +1201,7 @@ impl Deflate
         return true
     }
 
-    mtd tdefl_compress(pIn_buf: const *u8, pIn_buf_size: *uint, pOut_buf: *u8, pOut_buf_size: *uint, flush: tdefl_flush)->tdefl_status throw
+    mtd mainCompress(pIn_buf: const *u8, pIn_buf_size: *uint, pOut_buf: *u8, pOut_buf_size: *uint, flush: tdefl_flush)->tdefl_status throw
     {
         d := state
         d.m_pIn_buf = pIn_buf
@@ -1206,14 +1214,14 @@ impl Deflate
 
         d.m_wants_to_finish |= (flush == .TDEFL_FINISH) ? 1 : 0
         if d.m_output_flush_remaining or d.m_finished
-            return tdefl_flush_output_buffer()
+            return flushOutputBuffer()
 
-        discard tdefl_compress_normal()
+        discard compress()
         adler.update(@mkslice(pIn_buf, cast(uint) (d.m_pSrc - pIn_buf)))
 
         if flush and !d.m_lookahead_size and !d.m_src_buf_left and !d.m_output_flush_remaining
         {
-            discard tdefl_flush_block(flush)
+            discard flushBlock(flush)
             d.m_finished = flush == .TDEFL_FINISH ? 1 : 0
             if flush == .TDEFL_FULL_FLUSH
             {
@@ -1223,10 +1231,10 @@ impl Deflate
             }
         }
 
-        return tdefl_flush_output_buffer()
+        return flushOutputBuffer()
     }
 
-    mtd mz_deflate(fl: s32) throw
+    mtd deflate(fl: s32) throw
     {
         flush := fl
         if flush == MZ_PARTIAL_FLUSH
@@ -1241,7 +1249,7 @@ impl Deflate
         {
             in_bytes  := stream.avail_in
             out_bytes := stream.avail_out
-            defl_status := tdefl_compress(stream.next_in, &in_bytes, stream.next_out, &out_bytes, cast(tdefl_flush) flush)
+            defl_status := mainCompress(stream.next_in, &in_bytes, stream.next_out, &out_bytes, cast(tdefl_flush) flush)
             stream.next_in  += in_bytes
             stream.avail_in -= in_bytes
             stream.total_in += in_bytes
@@ -1306,14 +1314,14 @@ public impl Deflate
 
         adler.init()
         compFlags := createCompFlagsFromZipParams(level, winBits, strategy)
-        tdefl_init(compFlags)
+        init(compFlags)
 
         var result: retval
         state.result = &result
         result.reserve(1024)
         stream.next_out  = result.buffer
         stream.avail_out = cast(u32) result.capacity
-        mz_deflate(MZ_FINISH)
+        deflate(MZ_FINISH)
         return result
     }
 }
