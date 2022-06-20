@@ -918,7 +918,7 @@ impl Deflate
 
         comp_block_succeeded := false
         use_raw_block := ((d.m_flags & TDEFL_FORCE_ALL_RAW_BLOCKS) != 0) and (d.m_lookahead_pos - d.m_lz_code_buf_dict_pos) <= d.m_dict_size
-        pOutput_buf_start := (((dref d.m_pOut_buf_size - d.m_out_buf_ofs) >= TDEFL_OUT_BUF_SIZE)) ? (cast(*u8) d.m_pOut_buf + d.m_out_buf_ofs) : &d.m_output_buf[0]
+        pOutput_buf_start := &d.m_output_buf[0]
 
         d.m_pOutput_buf = pOutput_buf_start
         d.m_pOutput_buf_end = d.m_pOutput_buf + TDEFL_OUT_BUF_SIZE - 16
@@ -1010,9 +1010,7 @@ impl Deflate
         {
             if pOutput_buf_start == &d.m_output_buf[0]
             {
-                bytes_to_copy := cast(s32) Math.min(cast(uint) n, cast(uint) (dref d.m_pOut_buf_size - d.m_out_buf_ofs))
-                //Memory.copy(cast(*u8) d.m_pOut_buf + d.m_out_buf_ofs, d.m_output_buf, cast(uint) bytes_to_copy)
-
+                bytes_to_copy := n
                 d.result.resize(d.result.count + n)
                 Memory.copy(d.result.buffer + d.m_out_buf_ofs, d.m_output_buf, cast(uint) bytes_to_copy)
 
