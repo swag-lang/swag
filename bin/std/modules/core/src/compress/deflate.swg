@@ -120,7 +120,6 @@ const TDEFL_LEVEL1_HASH_SIZE_MASK = 4095
 const TDEFL_LZ_HASH_SHIFT = (TDEFL_LZ_HASH_BITS + 2) / 3
 const TDEFL_LZ_HASH_SIZE = 1 << TDEFL_LZ_HASH_BITS
 
-const TDEFL_COMPUTE_ADLER32 = 0x02000
 const TDEFL_GREEDY_PARSING_FLAG = 0x04000
 const TDEFL_NONDETERMINISTIC_PARSING_FLAG = 0x08000
 const TDEFL_RLE_MATCHES = 0x10000
@@ -851,7 +850,7 @@ impl Deflate
             if flags & 1
             {
                 match_len  := cast(u32) pLZ_codes[0]
-                match_dist := cast(u32) (pLZ_codes[1] | (pLZ_codes[2] << 8))
+                match_dist := cast(u32) pLZ_codes[1] | (cast(u32) pLZ_codes[2] << 8)
                 pLZ_codes += 3
 
                 putBits(cast(u32) d.m_huff_codes[0, LenSym[match_len]], cast(u32) d.m_huff_code_sizes[0, LenSym[match_len]])
@@ -1047,7 +1046,9 @@ impl Deflate
             {
                 var dst_pos: u32 = (d.m_lookahead_pos + d.m_lookahead_size) & TDEFL_LZ_DICT_SIZE_MASK
                 var ins_pos: u32 = d.m_lookahead_pos + d.m_lookahead_size - 2
-                var hash: u32 = (d.m_dict[ins_pos & TDEFL_LZ_DICT_SIZE_MASK] << TDEFL_LZ_HASH_SHIFT) ^ d.m_dict[(ins_pos + 1) & TDEFL_LZ_DICT_SIZE_MASK]
+                var hash:    u32 = (cast(u32) d.m_dict[ins_pos & TDEFL_LZ_DICT_SIZE_MASK] << TDEFL_LZ_HASH_SHIFT)
+                hash ^= d.m_dict[(ins_pos + 1) & TDEFL_LZ_DICT_SIZE_MASK]
+
                 num_bytes_to_process := cast(u32) Math.min(cast(u32) src_buf_left, cast(u32) (TDEFL_MAX_MATCH_LEN - d.m_lookahead_size))
 
                 pSrc_end := pSrc ? pSrc + num_bytes_to_process : null
@@ -1210,8 +1211,6 @@ impl Deflate
             return tdefl_flush_output_buffer()
 
         discard tdefl_compress_normal()
-
-        //if ((d.m_flags & (TDEFL_WRITE_ZLIB_HEADER | TDEFL_COMPUTE_ADLER32)) && (pIn_buf))
         adler.update(@mkslice(pIn_buf, cast(uint) (d.m_pSrc - pIn_buf)))
 
         if flush and !d.m_lookahead_size and !d.m_src_buf_left and !d.m_output_flush_remaining
@@ -1309,7 +1308,7 @@ public impl Deflate
         Debug.assert(winSize > 0)
 
         adler.init()
-        compFlags := TDEFL_COMPUTE_ADLER32 | createCompFlagsFromZipParams(level, winBits, strategy)
+        compFlags := createCompFlagsFromZipParams(level, winBits, strategy)
         tdefl_init(compFlags)
 
         var result: retval

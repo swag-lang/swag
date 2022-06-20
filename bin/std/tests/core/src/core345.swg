@@ -1,10 +1,14 @@
 using Core
+const C = @"
+using Core
 const C = #load(#file)
 
+//#[Swag.PrintBc]
+#[Swag.Optim("", false)]
 #test
 {
-    var arr: Array'u8
     arr.add(@mkslice(&C[0], @countof(C)))
+    @assert(@countof(C) == arr.count)
 
     var comp: Compress.Deflate
     res := try comp.compress(arr.toSlice())
@@ -12,7 +16,29 @@ const C = #load(#file)
     var decomp: Compress.Inflate
     res1 := try decomp.decompress(res.toSlice())
 
-    @assert(@countof(C) == res1.count)
-    visit v, i: C
+    @assert(arr.count == res1.count)
+    @print(@mkstring(res1.buffer, res1.count))
+}"@
+
+//#[Swag.PrintBc]
+#[Swag.Optim("", false)]
+#test
+{
+    var arr: Array'u8
+    arr.add(@mkslice(@dataof(C), @countof(C)))
+    @assert(@countof(C) == arr.count)
+
+    var comp: Compress.Deflate
+    res := try comp.compress(arr.toSlice())
+
+    var decomp: Compress.Inflate
+    res1 := try decomp.decompress(res.toSlice())
+
+    @assert(arr.count == res1.count)
+    visit v, i: arr
+    {
         @assert(v == res1[i])
+    }
+
+    //@print(@mkstring(res1.buffer, res1.count))
 }
