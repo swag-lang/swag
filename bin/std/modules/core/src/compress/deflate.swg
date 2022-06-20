@@ -95,7 +95,7 @@ const TDEFL_LZ_DICT_SIZE_MASK = TDEFL_LZ_DICT_SIZE - 1
 const TDEFL_MIN_MATCH_LEN = 3
 const TDEFL_MAX_MATCH_LEN = 258
 
-const TDEFL_LZ_CODE_BUF_SIZE = 24 * 1024
+const TDEFL_LZ_CODE_BUF_SIZE = 2 * 1024
 const TDEFL_OUT_BUF_SIZE = (TDEFL_LZ_CODE_BUF_SIZE * 13) / 10
 const TDEFL_MAX_HUFF_SYMBOLS = 288
 const TDEFL_LZ_HASH_BITS = 12
@@ -883,7 +883,12 @@ impl Deflate
 
         comp_block_succeeded := false
         use_raw_block := ((d.m_flags & TDEFL_FORCE_ALL_RAW_BLOCKS) != 0) and (d.m_lookahead_pos - d.m_lz_code_buf_dict_pos) <= d.m_dict_size
-        pOutput_buf_start := &d.m_output_buf[0]
+
+        var pOutput_buf_start: *u8
+        if d.result.capacity - d.result.count >= TDEFL_OUT_BUF_SIZE
+            pOutput_buf_start = d.result.buffer + d.m_out_buf_ofs
+        else
+            pOutput_buf_start = &d.m_output_buf[0]
 
         d.m_pOutput_buf = pOutput_buf_start
         d.m_pOutput_buf_end = d.m_pOutput_buf + TDEFL_OUT_BUF_SIZE - 16
@@ -946,13 +951,20 @@ impl Deflate
         d.m_total_lz_bytes = 0
         d.m_block_index += 1
 
-        n := cast(s32) (d.m_pOutput_buf - pOutput_buf_start)
+        n := cast(uint) (d.m_pOutput_buf - pOutput_buf_start)
         if n != 0
         {
-            bytes_to_copy := n
-            d.result.resize(d.result.count + n)
-            Memory.copy(d.result.buffer + d.m_out_buf_ofs, d.m_output_buf, cast(uint) bytes_to_copy)
-            d.m_out_buf_ofs += bytes_to_copy
+            if (pOutput_buf_start == &d.m_output_buf[0])
+            {
+                d.result.resize(d.result.count + n)
+                Memory.copy(d.result.buffer + d.m_out_buf_ofs, d.m_output_buf, cast(uint) n)
+                d.m_out_buf_ofs += n
+            }
+            else
+            {
+                d.m_out_buf_ofs += n
+                d.result.count += n
+            }
         }
     }
 
