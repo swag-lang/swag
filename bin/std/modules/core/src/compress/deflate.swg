@@ -78,19 +78,9 @@ const NumProbes: [11] u32 = @[
     0, 1, 6, 32, 16, 32, 128, 256, 512, 768, 1500
 ]
 
-enum tdefl_status
-{
-    TDEFL_STATUS_BAD_PARAM = -2
-    TDEFL_STATUS_PUT_BUF_FAILED = -1
-    TDEFL_STATUS_OKAY = 0
-    TDEFL_STATUS_DONE = 1
-}
-
 enum tdefl_flush
 {
     TDEFL_NO_FLUSH = 0
-    TDEFL_SYNC_FLUSH = 2
-    TDEFL_FULL_FLUSH = 3
     TDEFL_FINISH = 4
 }
 
@@ -718,8 +708,8 @@ impl Deflate
     {
         d := state
 
-        var code_sizes_to_pack: [TDEFL_MAX_HUFF_SYMBOLS_0 + TDEFL_MAX_HUFF_SYMBOLS_1] u8
-        var packed_code_sizes:  [TDEFL_MAX_HUFF_SYMBOLS_0 + TDEFL_MAX_HUFF_SYMBOLS_1] u8
+        var code_sizes_to_pack: [TDEFL_MAX_HUFF_SYMBOLS_0 + TDEFL_MAX_HUFF_SYMBOLS_1] u8 = ?
+        var packed_code_sizes:  [TDEFL_MAX_HUFF_SYMBOLS_0 + TDEFL_MAX_HUFF_SYMBOLS_1] u8 = ?
         prev_code_size := 0xFF'u8
 
         d.m_huff_count[0, 256] = 1;
@@ -1147,7 +1137,7 @@ impl Deflate
         d.m_src_buf_left = src_buf_left
     }
 
-    mtd mainCompress(pIn_buf: const *u8, pIn_buf_size: *uint, flush: tdefl_flush)->tdefl_status throw
+    mtd mainCompress(pIn_buf: const *u8, pIn_buf_size: *uint, flush: tdefl_flush) throw
     {
         d := state
         d.m_pIn_buf = pIn_buf
@@ -1163,15 +1153,7 @@ impl Deflate
         {
             flushBlock(flush)
             d.m_finished = flush == .TDEFL_FINISH ? 1 : 0
-            if flush == .TDEFL_FULL_FLUSH
-            {
-                Memory.clear(&d.m_hash, @sizeof(d.m_hash))
-                Memory.clear(&d.m_next, @sizeof(d.m_next))
-                d.m_dict_size = 0
-            }
         }
-
-        return .TDEFL_STATUS_DONE
     }
 }
 
@@ -1213,9 +1195,7 @@ public impl Deflate
         state.result = &result
 
         inBytes := @countof(src)
-        defl_status := mainCompress(@dataof(src), &inBytes, .TDEFL_FINISH)
-        if defl_status < 0
-            throw "MZ_STREAM_ERROR"
+        mainCompress(@dataof(src), &inBytes, .TDEFL_FINISH)
 
         return result
     }
