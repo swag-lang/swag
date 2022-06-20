@@ -140,7 +140,6 @@ struct Compressor
     m_output_flush_ofs: u32
     m_block_index:      u32
     m_pIn_buf:          const *u8
-    m_pIn_buf_size:     *uint
     m_pSrc:             const *u8
     m_src_buf_left:     uint
     m_out_buf_ofs:      uint
@@ -1096,21 +1095,6 @@ impl Deflate
         d.m_pSrc = pSrc
         d.m_src_buf_left = src_buf_left
     }
-
-    mtd mainCompress(pIn_buf: const *u8, pIn_buf_size: *uint) throw
-    {
-        d := state
-        d.m_pIn_buf = pIn_buf
-        d.m_pIn_buf_size = pIn_buf_size
-        d.m_pSrc = cast(const *u8) pIn_buf
-        d.m_src_buf_left = pIn_buf_size ? dref pIn_buf_size : 0
-
-        compress()
-        adler.update(@mkslice(pIn_buf, cast(uint) (d.m_pSrc - pIn_buf)))
-
-        Debug.assert(!d.m_lookahead_size and !d.m_src_buf_left)
-        flushBlock(true)
-    }
 }
 
 public impl Deflate
@@ -1138,20 +1122,26 @@ public impl Deflate
     mtd compress(src: const [..] u8, level = CompressionLevel.Default, strategy = CompressionStrategy.Default)->Array'u8 throw
     {
         if @countof(src) > Swag.U32.Max
-            throw "overflow"
+            throw "source buffer too big"
 
         state = Memory.new'Compressor()
         defer Memory.delete(state)
 
         adler.init()
-        compFlags := createCompFlagsFromZipParams(level, strategy)
-        init(compFlags)
+        init(createCompFlagsFromZipParams(level, strategy))
 
         var result: retval
-        state.result = &result
 
-        inBytes := @countof(src)
-        mainCompress(@dataof(src), &inBytes)
+        state.result         = &result
+        state.m_pIn_buf      = @dataof(src)
+        state.m_pSrc         = @dataof(src)
+        state.m_src_buf_left = @countof(src)
+
+        compress()
+        flushBlock(true)
+
+        Debug.assert(!state.m_lookahead_size and !state.m_src_buf_left)
+        adler.update(result.toSlice())
 
         return result
     }
