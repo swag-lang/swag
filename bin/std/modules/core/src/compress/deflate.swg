@@ -197,7 +197,7 @@ struct Compressor
 public struct Deflate
 {
     stream: Stream
-    state:  Compressor
+    state:  *Compressor
     adler:  Hash.Adler32
 }
 
@@ -226,7 +226,7 @@ impl Deflate
 
     mtd tdefl_init(flags: u32)
     {
-        d := &state
+        d := state
         @init(d)
         d.m_flags = flags
         d.m_max_probes[0] = 1 + ((flags & 0xFFF) + 2) / 3
@@ -243,7 +243,7 @@ impl Deflate
 
     mtd tdefl_record_literal(lit: u8)
     {
-        d := &state
+        d := state
 
         d.m_total_lz_bytes += 1
         dref d.m_pLZ_code_buf = lit
@@ -264,7 +264,7 @@ impl Deflate
     mtd tdefl_record_match(match_len: u32, md: u32)
     {
         match_dist := md
-        d := &state
+        d := state
 
         d.m_total_lz_bytes += match_len
 
@@ -292,7 +292,7 @@ impl Deflate
 
     mtd tdefl_find_match(lookahead_pos, max_dist, max_match_len: u32, pMatch_dist, pMatch_len: *u32)
     {
-        d := &state
+        d := state
 
         pos := lookahead_pos & TDEFL_LZ_DICT_SIZE_MASK
         match_len := dref pMatch_len
@@ -368,7 +368,7 @@ impl Deflate
     //#[Swag.Macro]
     mtd putBits(b, l: u32)
     {
-        d := &state
+        d := state
         bits := b
         len  := l
 
@@ -531,7 +531,7 @@ impl Deflate
 
     mtd tdefl_optimize_huffman_table(table_num, table_len, code_size_limit: u32, static_table: bool)
     {
-        d := &state
+        d := state
 
         var num_codes: [1 + TDEFL_MAX_SUPPORTED_HUFF_CODESIZE] s32
         var next_code: [TDEFL_MAX_SUPPORTED_HUFF_CODESIZE + 1] u32
@@ -612,7 +612,7 @@ impl Deflate
 
     mtd tdefl_start_static_block()
     {
-        d := &state
+        d := state
         p := &d.m_huff_code_sizes[0, 0]
 
         i := 0
@@ -657,7 +657,7 @@ impl Deflate
     {
         if rle_repeat_count
         {
-            d := &state
+            d := state
             if rle_repeat_count < 3
             {
                 d.m_huff_count[2, prev_code_size] = cast(u16) (d.m_huff_count[2, prev_code_size] + rle_repeat_count)
@@ -720,7 +720,7 @@ impl Deflate
 
     mtd tdefl_start_dynamic_block()
     {
-        d := &state
+        d := state
 
         var code_sizes_to_pack: [TDEFL_MAX_HUFF_SYMBOLS_0 + TDEFL_MAX_HUFF_SYMBOLS_1] u8
         var packed_code_sizes:  [TDEFL_MAX_HUFF_SYMBOLS_0 + TDEFL_MAX_HUFF_SYMBOLS_1] u8
@@ -837,7 +837,7 @@ impl Deflate
 
     mtd tdefl_compress_lz_codes()->bool
     {
-        d := &state
+        d := state
         flags := 1'u32
         for pLZ_codes := &d.m_lz_code_buf[0]; pLZ_codes < d.m_pLZ_code_buf; flags >>= 1
         {
@@ -894,7 +894,7 @@ impl Deflate
 
     mtd tdefl_flush_output_buffer()->tdefl_status
     {
-        d := &state
+        d := state
         if d.m_pIn_buf_size
             dref d.m_pIn_buf_size = cast(uint) (d.m_pSrc - cast(const *u8) d.m_pIn_buf)
 
@@ -914,7 +914,7 @@ impl Deflate
 
     mtd tdefl_flush_block(flush: tdefl_flush)->s32
     {
-        d := &state
+        d := state
 
         comp_block_succeeded := false
         use_raw_block := ((d.m_flags & TDEFL_FORCE_ALL_RAW_BLOCKS) != 0) and (d.m_lookahead_pos - d.m_lz_code_buf_dict_pos) <= d.m_dict_size
@@ -1033,7 +1033,7 @@ impl Deflate
 
     mtd tdefl_compress_normal()->bool throw
     {
-        d := &state
+        d := state
         pSrc := d.m_pSrc
         src_buf_left := d.m_src_buf_left
         flush := d.m_flush
@@ -1195,7 +1195,7 @@ impl Deflate
 
     mtd tdefl_compress(pIn_buf: const *u8, pIn_buf_size: *uint, pOut_buf: *u8, pOut_buf_size: *uint, flush: tdefl_flush)->tdefl_status throw
     {
-        d := &state
+        d := state
         d.m_pIn_buf = pIn_buf
         d.m_pIn_buf_size = pIn_buf_size
         d.m_pOut_buf = pOut_buf
@@ -1228,9 +1228,6 @@ impl Deflate
 
     mtd mz_deflate(fl: s32) throw
     {
-        if !stream.avail_out
-            throw "MZ_BUF_ERROR"
-
         flush := fl
         if flush == MZ_PARTIAL_FLUSH
             flush = MZ_SYNC_FLUSH
@@ -1244,7 +1241,6 @@ impl Deflate
         {
             in_bytes  := stream.avail_in
             out_bytes := stream.avail_out
-
             defl_status := tdefl_compress(stream.next_in, &in_bytes, stream.next_out, &out_bytes, cast(tdefl_flush) flush)
             stream.next_in  += in_bytes
             stream.avail_in -= in_bytes
@@ -1299,6 +1295,9 @@ public impl Deflate
     {
         if @countof(src) > Swag.U32.Max
             throw "overflow"
+
+        state = Memory.new'Compressor()
+        defer Memory.delete(state)
 
         stream.next_in  = @dataof(src)
         stream.avail_in = cast(u32) @countof(src)
