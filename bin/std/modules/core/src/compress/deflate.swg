@@ -346,93 +346,93 @@ impl Deflate
         }
     }
 
-    mtd radixSortSyms(num_syms: u32, pSyms0, pSyms1: *SymFreq)->*SymFreq
+    mtd radixSortSyms(numSyms: u32, pSyms0, pSyms1: *SymFreq)->*SymFreq
     {
-        total_passes := 2
         var hist: [256 * 2] u32
-
-        pCur_syms := pSyms0
-        pNew_syms := pSyms1
-        for i := 0; i < num_syms; i += 1
+        loop i: numSyms
         {
             freq := pSyms0[i].m_key
             hist[freq & 0xFF] += 1
             hist[256 + ((freq >> 8) & 0xFF)] += 1
         }
 
-        while (total_passes > 1) and (num_syms == hist[(total_passes - 1) * 256])
-            total_passes -= 1
+        totalPasses := 2
+        while (totalPasses > 1) and (numSyms == hist[(totalPasses - 1) * 256])
+            totalPasses -= 1
 
-        pass_shift := 0
-        for pass := 0; pass < total_passes; pass += 1
+        curSym    := pSyms0
+        newSym    := pSyms1
+        passShift := 0
+        loop pass: totalPasses
         {
-            pHist := &hist[pass << 8]
-            var offsets: [256] u32
-            cur_ofs := 0
+            pHist  := &hist[pass << 8]
+            curOfs := 0
 
-            for i := 0; i < 256; i += 1
+            var offsets: [256] u32 = ?
+            loop i: 256
             {
-                offsets[i] = cur_ofs
-                cur_ofs += pHist[i]
+                offsets[i] = curOfs
+                curOfs += pHist[i]
             }
 
-            for i := 0; i < num_syms; i += 1
+            loop i: numSyms
             {
-                ptr := &offsets[(pCur_syms[i].m_key >> pass_shift) & 0xFF]
-                pNew_syms[dref ptr] = pCur_syms[i]
+                ptr := &offsets[(curSym[i].m_key >> passShift) & 0xFF]
+                newSym[dref ptr] = curSym[i]
                 dref ptr += 1
             }
 
-            swap(&pCur_syms, &pNew_syms)
-            pass_shift += 8
+            swap(&curSym, &newSym)
+            passShift += 8
         }
 
-        return pCur_syms;
+        return curSym
     }
 
-    mtd calculateMinimumRedundancy(A: *SymFreq, n: u32)
+    mtd calculateMinimumRedundancy(symFreq: *SymFreq, n: u32)
     {
         if n == 0
             return
-        elif n == 1
+
+        if n == 1
         {
-            A[0].m_key = 1
+            symFreq[0].m_key = 1
             return
         }
 
-        A[0].m_key += A[1].m_key
+        symFreq[0].m_key += symFreq[1].m_key
         root := 0
         leaf := 2
         for next := 1; next < n - 1; next += 1
         {
-            if leaf >= n or A[root].m_key < A[leaf].m_key
+            if leaf >= n or symFreq[root].m_key < symFreq[leaf].m_key
             {
-                A[next].m_key = A[root].m_key
-                A[root].m_key = cast(u16) next
+                symFreq[next].m_key = symFreq[root].m_key
+                symFreq[root].m_key = cast(u16) next
                 root += 1
             }
             else
             {
-                A[next].m_key = A[leaf].m_key
+                symFreq[next].m_key = symFreq[leaf].m_key
                 leaf += 1
             }
 
-            if leaf >= n or (root < next and A[root].m_key < A[leaf].m_key)
+            if leaf >= n or (root < next and symFreq[root].m_key < symFreq[leaf].m_key)
             {
-                A[next].m_key = cast(u16) (A[next].m_key + A[root].m_key)
-                A[root].m_key = cast(u16) next
+                symFreq[next].m_key = cast(u16) (symFreq[next].m_key + symFreq[root].m_key)
+                symFreq[root].m_key = cast(u16) next
                 root += 1
             }
             else
             {
-                A[next].m_key = cast(u16) (A[next].m_key + A[leaf].m_key)
+                symFreq[next].m_key = cast(u16) (symFreq[next].m_key + symFreq[leaf].m_key)
                 leaf += 1
             }
         }
 
-        A[n - 2].m_key = 0
+        symFreq[n - 2].m_key = 0
         for next := n - 3; cast(s32) next >= 0; next -= 1
-            A[next].m_key = cast(u16) (A[A[next].m_key].m_key + 1)
+            symFreq[next].m_key = cast(u16) (symFreq[symFreq[next].m_key].m_key + 1)
 
         avbl := 1
         used := 0
@@ -441,7 +441,7 @@ impl Deflate
         next := n - 1
         while avbl > 0
         {
-            while root >= 0 and cast(s32) A[root].m_key == dpth
+            while root >= 0 and cast(s32) symFreq[root].m_key == dpth
             {
                 used += 1
                 root -= 1
@@ -449,7 +449,7 @@ impl Deflate
 
             while avbl > used
             {
-                A[next].m_key = cast(u16) dpth
+                symFreq[next].m_key = cast(u16) dpth
                 next -= 1
                 avbl -= 1
             }
@@ -462,12 +462,13 @@ impl Deflate
 
     mtd huffmanEnforceMaxCodeSize(pNum_codes: *s32, code_list_len, max_code_size: u32)
     {
-        total := 0'u32
         if code_list_len <= 1
             return
 
         for i := max_code_size + 1; i <= MaxSupportedHuffCodeSize; i += 1
             pNum_codes[max_code_size] += pNum_codes[i]
+
+        total := 0'u32
         for i := cast(s32) max_code_size; i > 0; i -= 1
             total += ((cast(u32) pNum_codes[i]) << (max_code_size - i))
 
