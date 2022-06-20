@@ -78,59 +78,43 @@ const NumProbes: [11] u32 = @[
     0, 1, 6, 32, 16, 32, 128, 256, 512, 768, 1500
 ]
 
-enum tdefl_flush
-{
-    TDEFL_NO_FLUSH = 0
-    TDEFL_FINISH = 4
-}
+const MAX_SUPPORTED_HUFF_CODESIZE = 32
 
-const TDEFL_MAX_SUPPORTED_HUFF_CODESIZE = 32
+const MAX_HUFF_TABLES = 3
+const MAX_HUFF_SYMBOLS_0 = 288'u32
+const MAX_HUFF_SYMBOLS_1 = 32'u32
+const MAX_HUFF_SYMBOLS_2 = 19'u32
+const LZ_DICT_SIZE = 32768
+const LZ_DICT_SIZE_MASK = LZ_DICT_SIZE - 1
+const MIN_MATCH_LEN = 3
+const MAX_MATCH_LEN = 258
 
-const TDEFL_MAX_HUFF_TABLES = 3
-const TDEFL_MAX_HUFF_SYMBOLS_0 = 288'u32
-const TDEFL_MAX_HUFF_SYMBOLS_1 = 32'u32
-const TDEFL_MAX_HUFF_SYMBOLS_2 = 19'u32
-const TDEFL_LZ_DICT_SIZE = 32768
-const TDEFL_LZ_DICT_SIZE_MASK = TDEFL_LZ_DICT_SIZE - 1
-const TDEFL_MIN_MATCH_LEN = 3
-const TDEFL_MAX_MATCH_LEN = 258
+const LZ_CODE_BUF_SIZE = 2 * 1024
+const OUT_BUF_SIZE = (LZ_CODE_BUF_SIZE * 13) / 10
+const MAX_HUFF_SYMBOLS = 288
+const LZ_HASH_BITS = 12
+const LEVEL1_HASH_SIZE_MASK = 4095
+const LZ_HASH_SHIFT = (LZ_HASH_BITS + 2) / 3
+const LZ_HASH_SIZE = 1 << LZ_HASH_BITS
 
-const TDEFL_LZ_CODE_BUF_SIZE = 2 * 1024
-const TDEFL_OUT_BUF_SIZE = (TDEFL_LZ_CODE_BUF_SIZE * 13) / 10
-const TDEFL_MAX_HUFF_SYMBOLS = 288
-const TDEFL_LZ_HASH_BITS = 12
-const TDEFL_LEVEL1_HASH_SIZE_MASK = 4095
-const TDEFL_LZ_HASH_SHIFT = (TDEFL_LZ_HASH_BITS + 2) / 3
-const TDEFL_LZ_HASH_SIZE = 1 << TDEFL_LZ_HASH_BITS
+/*const LZ_CODE_BUF_SIZE = 64 * 1024
+const OUT_BUF_SIZE = (LZ_CODE_BUF_SIZE * 13) / 10
+const MAX_HUFF_SYMBOLS = 288
+const LZ_HASH_BITS = 15
+const LEVEL1_HASH_SIZE_MASK = 4095
+const LZ_HASH_SHIFT = (LZ_HASH_BITS + 2) / 3
+const LZ_HASH_SIZE = 1 << LZ_HASH_BITS*/
 
-/*const TDEFL_LZ_CODE_BUF_SIZE = 64 * 1024
-const TDEFL_OUT_BUF_SIZE = (TDEFL_LZ_CODE_BUF_SIZE * 13) / 10
-const TDEFL_MAX_HUFF_SYMBOLS = 288
-const TDEFL_LZ_HASH_BITS = 15
-const TDEFL_LEVEL1_HASH_SIZE_MASK = 4095
-const TDEFL_LZ_HASH_SHIFT = (TDEFL_LZ_HASH_BITS + 2) / 3
-const TDEFL_LZ_HASH_SIZE = 1 << TDEFL_LZ_HASH_BITS*/
+const GREEDY_PARSING_FLAG = 0x04000
+const NONDETERMINISTIC_PARSING_FLAG = 0x08000
+const RLE_MATCHES = 0x10000
+const FILTER_MATCHES = 0x20000
+const FORCE_ALL_STATIC_BLOCKS = 0x40000
+const FORCE_ALL_RAW_BLOCKS = 0x80000
 
-const TDEFL_GREEDY_PARSING_FLAG = 0x04000
-const TDEFL_NONDETERMINISTIC_PARSING_FLAG = 0x08000
-const TDEFL_RLE_MATCHES = 0x10000
-const TDEFL_FILTER_MATCHES = 0x20000
-const TDEFL_FORCE_ALL_STATIC_BLOCKS = 0x40000
-const TDEFL_FORCE_ALL_RAW_BLOCKS = 0x80000
-
-const TDEFL_HUFFMAN_ONLY = 0
-const TDEFL_DEFAULT_MAX_PROBES = 128
-const TDEFL_MAX_PROBES_MASK = 0xFFF
-
-struct Stream
-{
-    next_in:    const *u8
-    avail_in:   uint
-    total_in:   uint
-    next_out:   *u8
-    avail_out:  uint
-    total_out:  uint
-}
+const HUFFMAN_ONLY = 0
+const DEFAULT_MAX_PROBES = 128
+const MAX_PROBES_MASK = 0xFFF
 
 struct SymFreq
 {
@@ -163,18 +147,17 @@ struct Compressor
     m_block_index:      u32
     m_pIn_buf:          const *u8
     m_pIn_buf_size:     *uint
-    m_flush:            tdefl_flush
     m_pSrc:             const *u8
     m_src_buf_left:     uint
     m_out_buf_ofs:      uint
-    m_dict:             [TDEFL_LZ_DICT_SIZE + TDEFL_MAX_MATCH_LEN - 1] u8
-    m_huff_count:       [TDEFL_MAX_HUFF_TABLES, TDEFL_MAX_HUFF_SYMBOLS] u16
-    m_huff_codes:       [TDEFL_MAX_HUFF_TABLES, TDEFL_MAX_HUFF_SYMBOLS] u16
-    m_huff_code_sizes:  [TDEFL_MAX_HUFF_TABLES, TDEFL_MAX_HUFF_SYMBOLS] u8
-    m_lz_code_buf:      [TDEFL_LZ_CODE_BUF_SIZE] u8
-    m_next:             [TDEFL_LZ_DICT_SIZE] u16
-    m_hash:             [TDEFL_LZ_HASH_SIZE] u16
-    m_output_buf:       [TDEFL_OUT_BUF_SIZE] u8
+    m_dict:             [LZ_DICT_SIZE + MAX_MATCH_LEN - 1] u8
+    m_huff_count:       [MAX_HUFF_TABLES, MAX_HUFF_SYMBOLS] u16
+    m_huff_codes:       [MAX_HUFF_TABLES, MAX_HUFF_SYMBOLS] u16
+    m_huff_code_sizes:  [MAX_HUFF_TABLES, MAX_HUFF_SYMBOLS] u8
+    m_lz_code_buf:      [LZ_CODE_BUF_SIZE] u8
+    m_next:             [LZ_DICT_SIZE] u16
+    m_hash:             [LZ_HASH_SIZE] u16
+    m_output_buf:       [OUT_BUF_SIZE] u8
     result:             *Array'u8
 }
 }
@@ -193,18 +176,18 @@ impl Deflate
         compFlags := 0'u32
         compFlags = NumProbes[Math.min(10'u32, level)]
         if level <= 3
-            compFlags |= TDEFL_GREEDY_PARSING_FLAG
+            compFlags |= GREEDY_PARSING_FLAG
 
         if level == .NoCompression
-            compFlags |= TDEFL_FORCE_ALL_RAW_BLOCKS
+            compFlags |= FORCE_ALL_RAW_BLOCKS
         elif strategy == .Filtered
-            compFlags |= TDEFL_FILTER_MATCHES
+            compFlags |= FILTER_MATCHES
         elif strategy ==. HuffmanOnly
-            compFlags &= ~TDEFL_MAX_PROBES_MASK
+            compFlags &= ~MAX_PROBES_MASK
         elif strategy == .Fixed
-            compFlags |= TDEFL_FORCE_ALL_STATIC_BLOCKS
+            compFlags |= FORCE_ALL_STATIC_BLOCKS
         elif strategy == .Rle
-            compFlags |= TDEFL_RLE_MATCHES
+            compFlags |= RLE_MATCHES
 
         return compFlags
     }
@@ -215,15 +198,13 @@ impl Deflate
         @init(d)
         d.m_flags = flags
         d.m_max_probes[0] = 1 + ((flags & 0xFFF) + 2) / 3
-        d.m_greedy_parsing = (flags & TDEFL_GREEDY_PARSING_FLAG) != 0
+        d.m_greedy_parsing = (flags & GREEDY_PARSING_FLAG) != 0
         d.m_max_probes[1] = 1 + (((flags & 0xFFF) >> 2) + 2) / 3
         d.m_pLZ_code_buf = &d.m_lz_code_buf[1]
         d.m_pLZ_flags = &d.m_lz_code_buf[0]
         d.m_num_flags_left = 8
         d.m_pOutput_buf = d.m_output_buf
         d.m_pOutput_buf_end = d.m_output_buf
-        d.m_adler32 = 1
-        d.m_flush = .TDEFL_NO_FLUSH
     }
 
     mtd recordLiteral(lit: u8)
@@ -253,7 +234,7 @@ impl Deflate
 
         d.m_total_lz_bytes += match_len
 
-        d.m_pLZ_code_buf[0] = cast(u8) (match_len - TDEFL_MIN_MATCH_LEN)
+        d.m_pLZ_code_buf[0] = cast(u8) (match_len - MIN_MATCH_LEN)
 
         match_dist -= 1
         d.m_pLZ_code_buf[1] = cast(u8) (match_dist & 0xFF)
@@ -272,14 +253,14 @@ impl Deflate
         s0 := SmallDistSym[match_dist & 511]
         s1 := LargeDistSym[(match_dist >> 8) & 127]
         d.m_huff_count[1, (match_dist < 512) ? s0 : s1] += 1
-        d.m_huff_count[0, LenSym[match_len - TDEFL_MIN_MATCH_LEN]] += 1
+        d.m_huff_count[0, LenSym[match_len - MIN_MATCH_LEN]] += 1
     }
 
     mtd findMatch(lookahead_pos, max_dist, max_match_len: u32, pMatch_dist, pMatch_len: *u32)
     {
         d := state
 
-        pos := lookahead_pos & TDEFL_LZ_DICT_SIZE_MASK
+        pos := lookahead_pos & LZ_DICT_SIZE_MASK
         match_len := dref pMatch_len
         probe_pos := pos
 
@@ -311,7 +292,7 @@ impl Deflate
                     dist = cast(u16) (lookahead_pos - next_probe_pos)
                     if dist > max_dist
                         return
-                    probe_pos = next_probe_pos & TDEFL_LZ_DICT_SIZE_MASK
+                    probe_pos = next_probe_pos & LZ_DICT_SIZE_MASK
                     if (d.m_dict[probe_pos + match_len] == c0) and (d.m_dict[probe_pos + match_len - 1] == c1)
                         break
                 }
@@ -492,7 +473,7 @@ impl Deflate
         if code_list_len <= 1
             return
 
-        for i := max_code_size + 1; i <= TDEFL_MAX_SUPPORTED_HUFF_CODESIZE; i += 1
+        for i := max_code_size + 1; i <= MAX_SUPPORTED_HUFF_CODESIZE; i += 1
             pNum_codes[max_code_size] += pNum_codes[i]
         for i := cast(s32) max_code_size; i > 0; i -= 1
             total += ((cast(u32) pNum_codes[i]) << (max_code_size - i))
@@ -518,8 +499,8 @@ impl Deflate
     {
         d := state
 
-        var num_codes: [1 + TDEFL_MAX_SUPPORTED_HUFF_CODESIZE] s32
-        var next_code: [TDEFL_MAX_SUPPORTED_HUFF_CODESIZE + 1] u32
+        var num_codes: [1 + MAX_SUPPORTED_HUFF_CODESIZE] s32
+        var next_code: [MAX_SUPPORTED_HUFF_CODESIZE + 1] u32
 
         if static_table
         {
@@ -530,8 +511,8 @@ impl Deflate
         }
         else
         {
-            var syms0: [TDEFL_MAX_HUFF_SYMBOLS] SymFreq
-            var syms1: [TDEFL_MAX_HUFF_SYMBOLS] SymFreq
+            var syms0: [MAX_HUFF_SYMBOLS] SymFreq
+            var syms1: [MAX_HUFF_SYMBOLS] SymFreq
 
             num_used_syms := 0'u32
             pSym_count := &d.m_huff_count[table_num, 0]
@@ -707,14 +688,14 @@ impl Deflate
     {
         d := state
 
-        var code_sizes_to_pack: [TDEFL_MAX_HUFF_SYMBOLS_0 + TDEFL_MAX_HUFF_SYMBOLS_1] u8 = ?
-        var packed_code_sizes:  [TDEFL_MAX_HUFF_SYMBOLS_0 + TDEFL_MAX_HUFF_SYMBOLS_1] u8 = ?
+        var code_sizes_to_pack: [MAX_HUFF_SYMBOLS_0 + MAX_HUFF_SYMBOLS_1] u8 = ?
+        var packed_code_sizes:  [MAX_HUFF_SYMBOLS_0 + MAX_HUFF_SYMBOLS_1] u8 = ?
         prev_code_size := 0xFF'u8
 
         d.m_huff_count[0, 256] = 1;
 
-        optimizeHuffmanTable(0, TDEFL_MAX_HUFF_SYMBOLS_0, 15, false)
-        optimizeHuffmanTable(1, TDEFL_MAX_HUFF_SYMBOLS_1, 15, false)
+        optimizeHuffmanTable(0, MAX_HUFF_SYMBOLS_0, 15, false)
+        optimizeHuffmanTable(1, MAX_HUFF_SYMBOLS_1, 15, false)
 
         num_lit_codes := 286'u32
         while num_lit_codes > 257
@@ -739,7 +720,7 @@ impl Deflate
         rle_z_count := 0
         rle_repeat_count := 0
 
-        Memory.clear(&d.m_huff_count[2, 0], cast(uint) @sizeof(d.m_huff_count[2, 0]) * TDEFL_MAX_HUFF_SYMBOLS_2)
+        Memory.clear(&d.m_huff_count[2, 0], cast(uint) @sizeof(d.m_huff_count[2, 0]) * MAX_HUFF_SYMBOLS_2)
         for i := 0; i < total_code_sizes_to_pack; i += 1
         {
             code_size := code_sizes_to_pack[i]
@@ -784,7 +765,7 @@ impl Deflate
             rleZeroCodeSize()
         }
 
-        optimizeHuffmanTable(2, TDEFL_MAX_HUFF_SYMBOLS_2, 7, false)
+        optimizeHuffmanTable(2, MAX_HUFF_SYMBOLS_2, 7, false)
 
         putBits(2, 2)
         putBits(num_lit_codes - 257, 5)
@@ -882,16 +863,16 @@ impl Deflate
         d := state
 
         comp_block_succeeded := false
-        use_raw_block := ((d.m_flags & TDEFL_FORCE_ALL_RAW_BLOCKS) != 0) and (d.m_lookahead_pos - d.m_lz_code_buf_dict_pos) <= d.m_dict_size
+        use_raw_block := ((d.m_flags & FORCE_ALL_RAW_BLOCKS) != 0) and (d.m_lookahead_pos - d.m_lz_code_buf_dict_pos) <= d.m_dict_size
 
         var pOutput_buf_start: *u8
-        if d.result.capacity - d.result.count >= TDEFL_OUT_BUF_SIZE
+        if d.result.capacity - d.result.count >= OUT_BUF_SIZE
             pOutput_buf_start = d.result.buffer + d.m_out_buf_ofs
         else
             pOutput_buf_start = &d.m_output_buf[0]
 
         d.m_pOutput_buf = pOutput_buf_start
-        d.m_pOutput_buf_end = d.m_pOutput_buf + TDEFL_OUT_BUF_SIZE - 16
+        d.m_pOutput_buf_end = d.m_pOutput_buf + OUT_BUF_SIZE - 16
 
         d.m_output_flush_ofs = 0
 
@@ -905,7 +886,7 @@ impl Deflate
         saved_bits_in := d.m_bits_in
 
         if !use_raw_block
-            comp_block_succeeded = compressBlock((d.m_flags & TDEFL_FORCE_ALL_STATIC_BLOCKS) or (d.m_total_lz_bytes < 48))
+            comp_block_succeeded = compressBlock((d.m_flags & FORCE_ALL_STATIC_BLOCKS) or (d.m_total_lz_bytes < 48))
 
         if ((use_raw_block or (d.m_total_lz_bytes and ((d.m_pOutput_buf - pSaved_output_buf + 1) >= d.m_total_lz_bytes))) and
             ((d.m_lookahead_pos - d.m_lz_code_buf_dict_pos) <= d.m_dict_size))
@@ -927,7 +908,7 @@ impl Deflate
 
             for i := 0; i < d.m_total_lz_bytes; i += 1
             {
-                putBits(cast(u32) d.m_dict[(d.m_lz_code_buf_dict_pos + i) & TDEFL_LZ_DICT_SIZE_MASK], 8)
+                putBits(cast(u32) d.m_dict[(d.m_lz_code_buf_dict_pos + i) & LZ_DICT_SIZE_MASK], 8)
             }
         }
         elif !comp_block_succeeded
@@ -941,8 +922,8 @@ impl Deflate
         if finish and d.m_bits_in
             putBits(0, 8 - d.m_bits_in)
 
-        Memory.clear(&d.m_huff_count[0, 0], cast(uint) @sizeof(d.m_huff_count[0, 0]) * TDEFL_MAX_HUFF_SYMBOLS_0)
-        Memory.clear(&d.m_huff_count[1, 0], cast(uint) @sizeof(d.m_huff_count[1, 0]) * TDEFL_MAX_HUFF_SYMBOLS_1)
+        Memory.clear(&d.m_huff_count[0, 0], cast(uint) @sizeof(d.m_huff_count[0, 0]) * MAX_HUFF_SYMBOLS_0)
+        Memory.clear(&d.m_huff_count[1, 0], cast(uint) @sizeof(d.m_huff_count[1, 0]) * MAX_HUFF_SYMBOLS_1)
 
         d.m_pLZ_code_buf = &d.m_lz_code_buf[0] + 1
         d.m_pLZ_flags = &d.m_lz_code_buf[0]
@@ -976,14 +957,14 @@ impl Deflate
 
         while src_buf_left or d.m_lookahead_size
         {
-            if (d.m_lookahead_size + d.m_dict_size) >= (TDEFL_MIN_MATCH_LEN - 1)
+            if (d.m_lookahead_size + d.m_dict_size) >= (MIN_MATCH_LEN - 1)
             {
-                var dst_pos: u32 = (d.m_lookahead_pos + d.m_lookahead_size) & TDEFL_LZ_DICT_SIZE_MASK
+                var dst_pos: u32 = (d.m_lookahead_pos + d.m_lookahead_size) & LZ_DICT_SIZE_MASK
                 var ins_pos: u32 = d.m_lookahead_pos + d.m_lookahead_size - 2
-                var hash:    u32 = (cast(u32) d.m_dict[ins_pos & TDEFL_LZ_DICT_SIZE_MASK] << TDEFL_LZ_HASH_SHIFT)
-                hash ^= d.m_dict[(ins_pos + 1) & TDEFL_LZ_DICT_SIZE_MASK]
+                var hash:    u32 = (cast(u32) d.m_dict[ins_pos & LZ_DICT_SIZE_MASK] << LZ_HASH_SHIFT)
+                hash ^= d.m_dict[(ins_pos + 1) & LZ_DICT_SIZE_MASK]
 
-                num_bytes_to_process := cast(u32) Math.min(cast(u32) src_buf_left, cast(u32) (TDEFL_MAX_MATCH_LEN - d.m_lookahead_size))
+                num_bytes_to_process := cast(u32) Math.min(cast(u32) src_buf_left, cast(u32) (MAX_MATCH_LEN - d.m_lookahead_size))
 
                 pSrc_end := pSrc ? pSrc + num_bytes_to_process : null
                 src_buf_left -= num_bytes_to_process
@@ -994,50 +975,50 @@ impl Deflate
                     c := dref pSrc
                     pSrc += 1
                     d.m_dict[dst_pos] = c;
-                    if dst_pos < (TDEFL_MAX_MATCH_LEN - 1)
-                        d.m_dict[TDEFL_LZ_DICT_SIZE + dst_pos] = c
-                    hash = ((hash << TDEFL_LZ_HASH_SHIFT) ^ c) & (TDEFL_LZ_HASH_SIZE - 1)
-                    d.m_next[ins_pos & TDEFL_LZ_DICT_SIZE_MASK] = d.m_hash[hash]
+                    if dst_pos < (MAX_MATCH_LEN - 1)
+                        d.m_dict[LZ_DICT_SIZE + dst_pos] = c
+                    hash = ((hash << LZ_HASH_SHIFT) ^ c) & (LZ_HASH_SIZE - 1)
+                    d.m_next[ins_pos & LZ_DICT_SIZE_MASK] = d.m_hash[hash]
                     d.m_hash[hash] = cast(u16) ins_pos
-                    dst_pos = (dst_pos + 1) & TDEFL_LZ_DICT_SIZE_MASK
+                    dst_pos = (dst_pos + 1) & LZ_DICT_SIZE_MASK
                     ins_pos += 1
                 }
             }
             else
             {
-                while src_buf_left and d.m_lookahead_size < TDEFL_MAX_MATCH_LEN
+                while src_buf_left and d.m_lookahead_size < MAX_MATCH_LEN
                 {
                     c := dref pSrc
                     pSrc += 1
-                    dst_pos := (d.m_lookahead_pos + d.m_lookahead_size) & TDEFL_LZ_DICT_SIZE_MASK
+                    dst_pos := (d.m_lookahead_pos + d.m_lookahead_size) & LZ_DICT_SIZE_MASK
                     src_buf_left -= 1
                     d.m_dict[dst_pos] = c
-                    if dst_pos < (TDEFL_MAX_MATCH_LEN - 1)
-                        d.m_dict[TDEFL_LZ_DICT_SIZE + dst_pos] = c
+                    if dst_pos < (MAX_MATCH_LEN - 1)
+                        d.m_dict[LZ_DICT_SIZE + dst_pos] = c
                     d.m_lookahead_size += 1
-                    if (d.m_lookahead_size + d.m_dict_size) >= TDEFL_MIN_MATCH_LEN
+                    if (d.m_lookahead_size + d.m_dict_size) >= MIN_MATCH_LEN
                     {
                         var ins_pos: u32 = d.m_lookahead_pos + (d.m_lookahead_size - 1) - 2
-                        var hash: u32 = (cast(u32) d.m_dict[ins_pos & TDEFL_LZ_DICT_SIZE_MASK] << (TDEFL_LZ_HASH_SHIFT * 2))
-                        hash = (hash ^ (cast(u32) d.m_dict[(ins_pos + 1) & TDEFL_LZ_DICT_SIZE_MASK] << TDEFL_LZ_HASH_SHIFT) ^ c)
-                        hash &= (TDEFL_LZ_HASH_SIZE - 1)
-                        d.m_next[ins_pos & TDEFL_LZ_DICT_SIZE_MASK] = d.m_hash[hash]
+                        var hash: u32 = (cast(u32) d.m_dict[ins_pos & LZ_DICT_SIZE_MASK] << (LZ_HASH_SHIFT * 2))
+                        hash = (hash ^ (cast(u32) d.m_dict[(ins_pos + 1) & LZ_DICT_SIZE_MASK] << LZ_HASH_SHIFT) ^ c)
+                        hash &= (LZ_HASH_SIZE - 1)
+                        d.m_next[ins_pos & LZ_DICT_SIZE_MASK] = d.m_hash[hash]
                         d.m_hash[hash] = cast(u16) ins_pos
                     }
                 }
             }
 
-            d.m_dict_size = Math.min(cast(u32) (TDEFL_LZ_DICT_SIZE - d.m_lookahead_size), d.m_dict_size)
+            d.m_dict_size = Math.min(cast(u32) (LZ_DICT_SIZE - d.m_lookahead_size), d.m_dict_size)
 
             len_to_move := 1'u32
             cur_match_dist := 0'u32
-            cur_match_len := d.m_saved_match_len ? d.m_saved_match_len : cast(u32) (TDEFL_MIN_MATCH_LEN - 1)
-            var cur_pos: u32 = d.m_lookahead_pos & TDEFL_LZ_DICT_SIZE_MASK
-            if d.m_flags & (TDEFL_RLE_MATCHES | TDEFL_FORCE_ALL_RAW_BLOCKS)
+            cur_match_len := d.m_saved_match_len ? d.m_saved_match_len : cast(u32) (MIN_MATCH_LEN - 1)
+            var cur_pos: u32 = d.m_lookahead_pos & LZ_DICT_SIZE_MASK
+            if d.m_flags & (RLE_MATCHES | FORCE_ALL_RAW_BLOCKS)
             {
-                if (d.m_dict_size) and !(d.m_flags & TDEFL_FORCE_ALL_RAW_BLOCKS)
+                if (d.m_dict_size) and !(d.m_flags & FORCE_ALL_RAW_BLOCKS)
                 {
-                    c := d.m_dict[(cur_pos - 1) & TDEFL_LZ_DICT_SIZE_MASK]
+                    c := d.m_dict[(cur_pos - 1) & LZ_DICT_SIZE_MASK]
                     cur_match_len = 0
                     while cur_match_len < d.m_lookahead_size
                     {
@@ -1045,7 +1026,7 @@ impl Deflate
                             break
                         cur_match_len += 1
                     }
-                    if cur_match_len < TDEFL_MIN_MATCH_LEN
+                    if cur_match_len < MIN_MATCH_LEN
                         cur_match_len = 0
                     else
                         cur_match_dist = 1
@@ -1056,9 +1037,9 @@ impl Deflate
                 findMatch(d.m_lookahead_pos, d.m_dict_size, d.m_lookahead_size, &cur_match_dist, &cur_match_len)
             }
 
-            if  ((cur_match_len == TDEFL_MIN_MATCH_LEN) and (cur_match_dist >= 8 * 1024)) or
+            if  ((cur_match_len == MIN_MATCH_LEN) and (cur_match_dist >= 8 * 1024)) or
                 (cur_pos == cur_match_dist) or
-                ((d.m_flags & TDEFL_FILTER_MATCHES) and (cur_match_len <= 5))
+                ((d.m_flags & FILTER_MATCHES) and (cur_match_len <= 5))
             {
                 cur_match_dist, cur_match_len = 0
             }
@@ -1092,7 +1073,7 @@ impl Deflate
             {
                 recordLiteral(d.m_dict[Math.min(cur_pos, cast(u32) @sizeof(d.m_dict) - 1)])
             }
-            elif d.m_greedy_parsing or (d.m_flags & TDEFL_RLE_MATCHES) or (cur_match_len >= 128)
+            elif d.m_greedy_parsing or (d.m_flags & RLE_MATCHES) or (cur_match_len >= 128)
             {
                 recordMatch(cur_match_len, cur_match_dist)
                 len_to_move = cur_match_len
@@ -1107,10 +1088,10 @@ impl Deflate
             d.m_lookahead_pos += len_to_move
             Debug.assert(d.m_lookahead_size >= len_to_move)
             d.m_lookahead_size -= len_to_move
-            d.m_dict_size = Math.min(d.m_dict_size + len_to_move, cast(u32) TDEFL_LZ_DICT_SIZE)
+            d.m_dict_size = Math.min(d.m_dict_size + len_to_move, cast(u32) LZ_DICT_SIZE)
 
-            if (d.m_pLZ_code_buf > &d.m_lz_code_buf[TDEFL_LZ_CODE_BUF_SIZE - 8]) or
-                ((d.m_total_lz_bytes > 31 * 1024) and ((((cast(u32) (d.m_pLZ_code_buf - &d.m_lz_code_buf[0]) * 115) >> 7) >= d.m_total_lz_bytes) or (d.m_flags & TDEFL_FORCE_ALL_RAW_BLOCKS)))
+            if (d.m_pLZ_code_buf > &d.m_lz_code_buf[LZ_CODE_BUF_SIZE - 8]) or
+                ((d.m_total_lz_bytes > 31 * 1024) and ((((cast(u32) (d.m_pLZ_code_buf - &d.m_lz_code_buf[0]) * 115) >> 7) >= d.m_total_lz_bytes) or (d.m_flags & FORCE_ALL_RAW_BLOCKS)))
             {
                 d.m_pSrc = pSrc
                 d.m_src_buf_left = src_buf_left
