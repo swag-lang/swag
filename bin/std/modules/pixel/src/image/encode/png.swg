@@ -69,22 +69,6 @@ struct SubImage
     scanline_width:     u32
 }
 
-enum State
-{
-    SPNG_STATE_INVALID = 0
-    SPNG_STATE_INIT = 1
-    SPNG_STATE_INPUT
-    SPNG_STATE_OUTPUT = SPNG_STATE_INPUT
-    SPNG_STATE_IHDR
-    SPNG_STATE_FIRST_IDAT
-    SPNG_STATE_DECODE_INIT
-    SPNG_STATE_ENCODE_INIT = SPNG_STATE_DECODE_INIT
-    SPNG_STATE_EOI
-    SPNG_STATE_LAST_IDAT
-    SPNG_STATE_AFTER_IDAT
-    SPNG_STATE_IEND
-}
-
 struct Ihdr
 {
     width:              u32
@@ -134,7 +118,6 @@ public struct Encoder
     png_base:               *u8
     data_size:              u64
     bytes_left:             u64
-    state:                  State
     stored:                 ChunkBitfield
     ihdr:                   Ihdr
     bytes_encoded:          uint
@@ -234,30 +217,6 @@ impl Encoder
         write_chunk(TypeIHdr, dst, 13)
     }
 
-    mtd write_chunks_after_idat() throw
-    {
-    }
-
-    mtd encode_chunks() throw
-    {
-        if state < .SPNG_STATE_FIRST_IDAT
-        {
-            write_chunks_before_idat()
-            state = .SPNG_STATE_FIRST_IDAT
-        }
-        elif state == .SPNG_STATE_FIRST_IDAT
-        {
-            return
-        }
-        elif state == .SPNG_STATE_EOI
-        {
-            write_chunks_after_idat()
-            state = .SPNG_STATE_IEND
-        }
-        else
-            throw "SPNG_EOPSTATE"
-    }
-
     mtd calculate_scanline_width(width: u32)->u32 throw
     {
         if !width
@@ -326,7 +285,7 @@ impl Encoder
         }
     }
 
-    mtd encode_row(row: *u8, len: u32)->s32 throw
+    mtd encode_row(row: *u8, len: u32)->bool throw
     {
         pass := row_info.pass
 
@@ -377,7 +336,7 @@ impl Encoder
         return encode_scanline(scanline, len)
     }
 
-    mtd encode_scanline(sl: *u8, len: u32)->s32 throw
+    mtd encode_scanline(sl: *u8, len: u32)->bool throw
     {
         pass := row_info.pass
 
@@ -417,11 +376,13 @@ impl Encoder
         write_idat_bytes(filtered_sl - 1, scanline_width)
 
         swap(&prev_scanline, &scanline)
-        ret := update_row_info()
-        if ret == SPNG_EOI
+        if update_row_info()
+        {
             finish_idat()
+            return true
+        }
 
-        return ret
+        return false
     }
 
     mtd finish_idat() throw
@@ -444,7 +405,7 @@ impl Encoder
         bufferToCompress.add(@mkslice(sl, len))
     }
 
-    mtd update_row_info()->s32
+    mtd update_row_info()->bool
     {
         interlacing := ihdr.interlace_method
         ri  := &row_info
@@ -453,10 +414,7 @@ impl Encoder
         if ri.scanline_idx == sub[ri.pass].height - 1
         {
             if ri.pass == last_pass
-            {
-                state = .SPNG_STATE_EOI
-                return SPNG_EOI
-            }
+                return true
 
             ri.scanline_idx = 0
             ri.pass += 1
@@ -473,7 +431,7 @@ impl Encoder
         if interlacing
             ri.row_num = adam7_y_start[ri.pass] + ri.scanline_idx * adam7_y_delta[ri.pass]
 
-        return 0
+        return false
     }
 }
 
@@ -494,7 +452,6 @@ public impl IImageEncoder for Encoder
         png_base = image.pixels
         data_size = image.size
         bytes_left = image.size
-        state = .SPNG_STATE_OUTPUT
 
         swapRB = image.pf == .BGR8 or image.pf == .BGRA8
 
@@ -510,7 +467,7 @@ public impl IImageEncoder for Encoder
         if image.bpp == 32
             ihdr.color_type |= .Alpha
 
-        encode_chunks()
+        write_chunks_before_idat()
         calculate_subimages()
         bytes_per_pixel = num_channels() * (ihdr.bit_depth / 8)
 
