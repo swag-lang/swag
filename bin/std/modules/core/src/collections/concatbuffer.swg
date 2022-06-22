@@ -48,6 +48,22 @@ impl ConcatBuffer
         release()
     }
 
+    #[Swag.Macro]
+    mtd(ptr: bool) opVisit(stmt: code)
+    {
+        b := firstBucket
+        while b
+        {
+            #macro
+            {
+                var @alias0 = `b
+                #mixin stmt
+            }
+
+            b = b.next
+        }
+    }
+
     // Returns the number of bytes
     mtd count()->uint
     {

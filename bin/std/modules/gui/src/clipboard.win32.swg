@@ -1,7 +1,7 @@
 #global if #os == Swag.TargetOs.Windows
 #global namespace Clipboard
 #global public
-using Core, Win32
+using Core, Win32, Pixel
 
 alias Format = uint
 
@@ -68,29 +68,54 @@ func addString(str: string)
 }
 
 // Add an image
-func addImage(image: Pixel.Image)
+func addImage(image: Image)
 {
     if !OpenClipboard(GetDesktopWindow())
         return
     defer discard CloseClipboard()
 
-    size := @sizeof(Pixel.Bmp.Header) + image.size
-    hglob := GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, size)
-    buf := cast(*u8) GlobalLock(hglob)
+    // BITMAP
+    {
+        size := @sizeof(Bmp.Header) + image.size
+        hglob := GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, size)
+        buf := cast(*u8) GlobalLock(hglob)
 
-    header := cast(*Pixel.Bmp.Header) buf
-    header.biSize        = @sizeof(Pixel.Bmp.Header)
-    header.biWidth       = image.width
-    header.biHeight      = image.height
-    header.biPlanes      = 1
-    header.biBitCount    = image.bpp
-    header.biCompression = Pixel.Bmp.BI_RGB
+        header := cast(*Bmp.Header) buf
+        header.biSize        = @sizeof(Bmp.Header)
+        header.biWidth       = image.width
+        header.biHeight      = image.height
+        header.biPlanes      = 1
+        header.biBitCount    = image.bpp
+        header.biCompression = Bmp.BI_RGB
 
-    datas := buf + @sizeof(Pixel.Bmp.Header)
-    Memory.copy(datas, image.pixels, image.size)
+        datas := buf + @sizeof(Bmp.Header)
+        Memory.copy(datas, image.pixels, image.size)
 
-    discard GlobalUnlock(buf)
-    discard SetClipboardData(CF_DIB, hglob)
+        discard GlobalUnlock(buf)
+        discard SetClipboardData(CF_DIB, hglob)
+    }
+
+    // PNG
+    {
+        var png: Png.Encoder
+        var buffer: ConcatBuffer
+        catch png.IImageEncoder.encode(&buffer, image, @{})
+        clipData := catch RegisterClipboardFormatA(@dataof("PNG"))
+        if @err return
+
+        hglob := GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, buffer.count())
+        buf := cast(*u8) GlobalLock(hglob)
+
+        bufCur := buf
+        visit b: buffer
+        {
+            Memory.copy(bufCur, b.datas, b.count)
+            bufCur += b.count
+        }
+
+        discard GlobalUnlock(buf)
+        discard SetClipboardData(clipData, hglob)
+    }
 }
 
 // Get data of the given format
