@@ -10,9 +10,6 @@ using Core
 
 using namespace EncoderPrivate {
 
-const SPNG_WRITE_SIZE = 8192'uint
-const SPNG_EOI = 75
-
 const adam7_x_start: [7] u32 = @[ 0, 4, 0, 2, 0, 1, 0 ]
 const adam7_y_start: [7] u32 = @[ 0, 0, 4, 0, 2, 0, 1 ]
 const adam7_x_delta: [7] u32 = @[ 8, 8, 4, 4, 2, 2, 1 ]
@@ -20,10 +17,10 @@ const adam7_y_delta: [7] u32 = @[ 8, 8, 8, 4, 4, 2, 2 ]
 
 struct RowInfo
 {
-    scanline_idx:   u32
-    row_num:        u32
-    pass:           s32
-    filter:         u8
+    scanlineIdx:   u32
+    rowNum:        u32
+    pass:          s32
+    filter:        u8
 }
 
 #[Swag.EnumFlags]
@@ -37,12 +34,12 @@ enum ColorType: u8
 
 struct EncodeFlags
 {
-    filter_choice:  FilterChoice
-    interlace:      bool
-    same_layout:    bool
-    to_bigendian:   bool
-    progressive:    bool
-    finalize:       bool
+    filterChoice:  FilterChoice
+    interlace:     bool
+    sameLayout:    bool
+    toBigEndian:   bool
+    progressive:   bool
+    finalize:      bool
 }
 
 enum FilterChoice
@@ -63,21 +60,21 @@ const TypeIEnd:       [4] u8 = @[ 73, 69, 78, 68 ]
 
 struct SubImage
 {
-    width:              u32
-    height:             u32
-    out_width:          u32
-    scanline_width:     u32
+    width:             u32
+    height:            u32
+    outWidth:          u32
+    scanlineWidth:     u32
 }
 
 struct Ihdr
 {
-    width:              u32
-    height:             u32
-    bit_depth:          u8
-    color_type:         ColorType
-    compression_method: u8
-    filter_method:      u8
-    interlace_method:   u8
+    width:             u32
+    height:            u32
+    bitDepth:          u8
+    colorType:         ColorType
+    compressionMethod: u8
+    filterMethod:      u8
+    interlaceMethod:   u8
 };
 
 struct ChunkBitfield
@@ -145,35 +142,35 @@ public struct Encoder
 
 impl Encoder
 {
-    mtd write_u32(dst: *u8, val: u32)
+    mtd writeU32(dst: *u8, val: u32)
     {
         v := Math.nativeToBigEndian(val)
         dref cast(*u32) dst = v
     }
 
-    mtd write_data(buf: const *u8, bytes: u32)
+    mtd writeData(buf: const *u8, bytes: u32)
     {
         stream.addBytes(@mkslice(buf, bytes))
         bytes_encoded += bytes
     }
 
-    mtd write_u32(val: u32)
+    mtd writeU32(val: u32)
     {
         v := Math.nativeToBigEndian(val)
         stream.addBytes(@mkslice(cast(const *u8) &v, 4))
         bytes_encoded += 4
     }
 
-    mtd write_header(chunk_type: const [4] u8, chunk_length: uint)->*u8
+    mtd writeHeader(chunk_type: const [4] u8, chunk_length: uint)->*u8
     {
         total := chunk_length + 8 + 4
         stream.grow(total)
 
         current_chunk.length = cast(u32) chunk_length
-        write_u32(current_chunk.length)
+        writeU32(current_chunk.length)
 
         Memory.copy(&current_chunk.type, chunk_type, 4)
-        write_data(current_chunk.type, 4)
+        writeData(current_chunk.type, 4)
 
         crc.init()
         crc.update(null)
@@ -187,42 +184,42 @@ impl Encoder
         return dataPtr
     }
 
-    mtd finish_chunk()
+    mtd finishChunk()
     {
         crc.update(@mkslice(write_ptr, current_chunk.length))
         current_chunk.crc = crc.crc
-        write_u32(current_chunk.crc)
+        writeU32(current_chunk.crc)
     }
 
-    mtd write_chunk(chunk_type: const [4] u8, buf: const *u8, length: uint)
+    mtd writeChunk(chunk_type: const [4] u8, buf: const *u8, length: uint)
     {
-        write_ptr = write_header(chunk_type, length)
+        write_ptr = writeHeader(chunk_type, length)
         if length
             Memory.copy(write_ptr, buf, length)
-        finish_chunk()
+        finishChunk()
     }
 
-    mtd write_chunks_before_idat() throw
+    mtd writeChunksBeforeIDat() throw
     {
-        write_data(PngSignature, 8)
+        writeData(PngSignature, 8)
 
         dst := &tmpBuf[0]
-        write_u32(dst, ihdr.width)
-        write_u32(dst + 4, ihdr.height)
-        dst[8]  = ihdr.bit_depth
-        dst[9]  = cast(u8) ihdr.color_type
-        dst[10] = ihdr.compression_method
-        dst[11] = ihdr.filter_method
-        dst[12] = ihdr.interlace_method
-        write_chunk(TypeIHdr, dst, 13)
+        writeU32(dst, ihdr.width)
+        writeU32(dst + 4, ihdr.height)
+        dst[8]  = ihdr.bitDepth
+        dst[9]  = cast(u8) ihdr.colorType
+        dst[10] = ihdr.compressionMethod
+        dst[11] = ihdr.filterMethod
+        dst[12] = ihdr.interlaceMethod
+        writeChunk(TypeIHdr, dst, 13)
     }
 
-    mtd calculate_scanline_width(width: u32)->u32 throw
+    mtd calculateScanlineWidth(width: u32)->u32 throw
     {
         if !width
             throw "SPNG_EINTERNAL"
 
-        res := cast(uint) num_channels() * ihdr.bit_depth
+        res := cast(uint) numChannels() * ihdr.bitDepth
         if res > Swag.UInt.Max / width
             throw "SPNG_EOVERFLOW"
         res = res * width
@@ -237,9 +234,9 @@ impl Encoder
         return cast(u32) res
     }
 
-    mtd num_channels()->s32
+    mtd numChannels()->s32
     {
-        switch ihdr.color_type
+        switch ihdr.colorType
         {
         case Color:         return 3
         case AlphaColor:    return 4
@@ -248,9 +245,9 @@ impl Encoder
         return 0
     }
 
-    mtd calculate_subimages() throw
+    mtd calculateSubImages() throw
     {
-        if ihdr.interlace_method == 1
+        if ihdr.interlaceMethod == 1
         {
             subimage[0].width = (ihdr.width + 7) >> 3
             subimage[0].height = (ihdr.height + 7) >> 3
@@ -278,44 +275,44 @@ impl Encoder
             if subimage[i].width == 0 or subimage[i].height == 0
                 continue
 
-            subimage[i].scanline_width = calculate_scanline_width(subimage[i].width)
-            if subimage[widest_pass].scanline_width < subimage[i].scanline_width
+            subimage[i].scanlineWidth = calculateScanlineWidth(subimage[i].width)
+            if subimage[widest_pass].scanlineWidth < subimage[i].scanlineWidth
                 widest_pass = i
             last_pass = i
         }
     }
 
-    mtd encode_row(row: *u8, len: u32)->bool throw
+    mtd encodeRow(row: *u8, len: u32)->bool throw
     {
         pass := row_info.pass
 
-        if !ihdr.interlace_method or pass == 6
-            return encode_scanline(row, len)
+        if !ihdr.interlaceMethod or pass == 6
+            return encodeScanLine(row, len)
 
-        bit_depth := ihdr.bit_depth
+        bitDepth := ihdr.bitDepth
 
-        if bit_depth < 8
+        if bitDepth < 8
         {
-            samples_per_byte := 8 / bit_depth
-            mask             := cast(u8) ((1 << bit_depth) - 1)
-            initial_shift    := 8 - bit_depth
+            samples_per_byte := 8 / bitDepth
+            mask             := cast(u8) ((1 << bitDepth) - 1)
+            initial_shift    := 8 - bitDepth
             shift_amount     := initial_shift
 
             row_uc := row
-            Memory.clear(scanline, cast(uint) subimage[pass].scanline_width)
+            Memory.clear(scanline, cast(uint) subimage[pass].scanlineWidth)
 
             loop k: subimage[pass].width
             {
                 ioffset := adam7_x_start[pass] + k * adam7_x_delta[pass]
 
                 sample := row_uc[ioffset / samples_per_byte]
-                sample = sample >> (initial_shift - ioffset * bit_depth % 8)
+                sample = sample >> (initial_shift - ioffset * bitDepth % 8)
                 sample = sample & mask
                 sample = sample << shift_amount
 
                 scanline[0] |= sample
 
-                shift_amount -= bit_depth
+                shift_amount -= bitDepth
 
                 if shift_amount > 7
                 {
@@ -324,7 +321,7 @@ impl Encoder
                 }
             }
 
-            return encode_scanline(scanline, len)
+            return encodeScanLine(scanline, len)
         }
 
         loop k: subimage[pass].width
@@ -333,19 +330,19 @@ impl Encoder
             Memory.copy(scanline + k * pixel_size, row + ioffset, acast pixel_size)
         }
 
-        return encode_scanline(scanline, len)
+        return encodeScanLine(scanline, len)
     }
 
-    mtd encode_scanline(sl: *u8, len: u32)->bool throw
+    mtd encodeScanLine(sl: *u8, len: u32)->bool throw
     {
         pass := row_info.pass
 
-        scanline_width := subimage[pass].scanline_width
+        scanlineWidth := subimage[pass].scanlineWidth
         if sl != scanline
         {
             if swapRB and bytes_per_pixel == 3
             {
-                for i := 0; i < scanline_width - 1; i += 3
+                for i := 0; i < scanlineWidth - 1; i += 3
                 {
                     scanline[i]     = sl[i + 2]
                     scanline[i + 1] = sl[i + 1]
@@ -354,7 +351,7 @@ impl Encoder
             }
             elif swapRB and bytes_per_pixel == 4
             {
-                for i := 0; i < scanline_width - 1; i += 4
+                for i := 0; i < scanlineWidth - 1; i += 4
                 {
                     scanline[i]     = sl[i + 2]
                     scanline[i + 1] = sl[i + 1]
@@ -364,7 +361,7 @@ impl Encoder
             }
             else
             {
-                Memory.copy(scanline, sl, cast(uint) scanline_width - 1)
+                Memory.copy(scanline, sl, cast(uint) scanlineWidth - 1)
             }
         }
 
@@ -373,50 +370,50 @@ impl Encoder
         if !filter
             filtered_sl = scanline
 
-        write_idat_bytes(filtered_sl - 1, scanline_width)
+        writeIDatBytes(filtered_sl - 1, scanlineWidth)
 
         swap(&prev_scanline, &scanline)
-        if update_row_info()
+        if updateRowInfo()
         {
-            finish_idat()
+            finishIDat()
             return true
         }
 
         return false
     }
 
-    mtd finish_idat() throw
+    mtd finishIDat() throw
     {
         if bufferToCompress.count == 0
             return
 
         var zlib: Compress.ZLib
         cmp := zlib.compress(bufferToCompress.toSlice())
-        write_ptr = write_header(TypeIDat, cmp.count)
+        write_ptr = writeHeader(TypeIDat, cmp.count)
 
         Memory.copy(write_ptr, cmp.buffer, cmp.count)
 
         bufferToCompress.count = 0
-        finish_chunk()
+        finishChunk()
     }
 
-    mtd write_idat_bytes(sl: *u8, len: u32) throw
+    mtd writeIDatBytes(sl: *u8, len: u32) throw
     {
         bufferToCompress.add(@mkslice(sl, len))
     }
 
-    mtd update_row_info()->bool
+    mtd updateRowInfo()->bool
     {
-        interlacing := ihdr.interlace_method
+        interlacing := ihdr.interlaceMethod
         ri  := &row_info
         sub := subimage
 
-        if ri.scanline_idx == sub[ri.pass].height - 1
+        if ri.scanlineIdx == sub[ri.pass].height - 1
         {
             if ri.pass == last_pass
                 return true
 
-            ri.scanline_idx = 0
+            ri.scanlineIdx = 0
             ri.pass += 1
 
             while (!sub[ri.pass].width or !sub[ri.pass].height) and (ri.pass < last_pass)
@@ -424,12 +421,12 @@ impl Encoder
         }
         else
         {
-            ri.row_num += 1
-            ri.scanline_idx += 1
+            ri.rowNum += 1
+            ri.scanlineIdx += 1
         }
 
         if interlacing
-            ri.row_num = adam7_y_start[ri.pass] + ri.scanline_idx * adam7_y_delta[ri.pass]
+            ri.rowNum = adam7_y_start[ri.pass] + ri.scanlineIdx * adam7_y_delta[ri.pass]
 
         return false
     }
@@ -462,16 +459,16 @@ public impl IImageEncoder for Encoder
         stored.ihdr = true
         ihdr.width = image.width
         ihdr.height = image.height
-        ihdr.bit_depth = 8
-        ihdr.color_type = .Color
+        ihdr.bitDepth = 8
+        ihdr.colorType = .Color
         if image.bpp == 32
-            ihdr.color_type |= .Alpha
+            ihdr.colorType |= .Alpha
 
-        write_chunks_before_idat()
-        calculate_subimages()
-        bytes_per_pixel = num_channels() * (ihdr.bit_depth / 8)
+        writeChunksBeforeIDat()
+        calculateSubImages()
+        bytes_per_pixel = numChannels() * (ihdr.bitDepth / 8)
 
-        scanline_buf_size := subimage[widest_pass].scanline_width
+        scanline_buf_size := subimage[widest_pass].scanlineWidth
         scanline_buf_size += 32
         if scanline_buf_size < 32
             throw "SPNG_EOVERFLOW"
@@ -482,7 +479,7 @@ public impl IImageEncoder for Encoder
         scanline = scanline_buf + 16
         prev_scanline = prev_scanline_buf + 16
 
-        if encode_flags.filter_choice
+        if encode_flags.filterChoice
         {
             filtered_scanline_buf = Memory.alloc(cast(uint) scanline_buf_size)
             filtered_scanline = filtered_scanline_buf + 16
@@ -495,12 +492,12 @@ public impl IImageEncoder for Encoder
 
         loop
         {
-            ioffset := (image.height - row_info.row_num - 1) * image.width * image.bpp8
-            if encode_row(image.pixels + ioffset, acast (image.width * image.bpp8))
+            ioffset := (image.height - row_info.rowNum - 1) * image.width * image.bpp8
+            if encodeRow(image.pixels + ioffset, acast (image.width * image.bpp8))
                 break
         }
 
-        discard write_header(TypeIEnd, 0)
-        finish_chunk()
+        discard writeHeader(TypeIEnd, 0)
+        finishChunk()
     }
 }
