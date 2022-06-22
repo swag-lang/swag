@@ -18,7 +18,7 @@ const adam7_y_start: [7] u32 = @[ 0, 0, 4, 0, 2, 0, 1 ]
 const adam7_x_delta: [7] u32 = @[ 8, 8, 4, 4, 2, 2, 1 ]
 const adam7_y_delta: [7] u32 = @[ 8, 8, 8, 4, 4, 2, 2 ]
 
-struct spng_row_info
+struct RowInfo
 {
     scanline_idx:   u32
     row_num:        u32
@@ -37,7 +37,7 @@ enum ColorType: u8
 
 struct EncodeFlags
 {
-    filter_choice:  spng_filter_choice
+    filter_choice:  FilterChoice
     interlace:      bool
     same_layout:    bool
     to_bigendian:   bool
@@ -45,7 +45,7 @@ struct EncodeFlags
     finalize:       bool
 }
 
-enum spng_filter_choice
+enum FilterChoice
 {
     SPNG_DISABLE_FILTERING = 0
     SPNG_FILTER_CHOICE_NONE = 8
@@ -56,20 +56,20 @@ enum spng_filter_choice
     SPNG_FILTER_CHOICE_ALL = (8|16|32|64|128)
 }
 
-const spng_signature:   [8] u8 = @[ 137, 80, 78, 71, 13, 10, 26, 10 ]
-const type_ihdr:        [4] u8 = @[ 73, 72, 68, 82 ]
-const type_idat:        [4] u8 = @[ 73, 68, 65, 84 ]
-const type_iend:        [4] u8 = @[ 73, 69, 78, 68 ]
+const PngSignature:   [8] u8 = @[ 137, 80, 78, 71, 13, 10, 26, 10 ]
+const TypeIHdr:       [4] u8 = @[ 73, 72, 68, 82 ]
+const TypeIDat:       [4] u8 = @[ 73, 68, 65, 84 ]
+const TypeIEnd:       [4] u8 = @[ 73, 69, 78, 68 ]
 
-struct spng_subimage
+struct SubImage
 {
     width:              u32
     height:             u32
     out_width:          u32
     scanline_width:     u32
-};
+}
 
-enum spng_state
+enum State
 {
     SPNG_STATE_INVALID = 0
     SPNG_STATE_INIT = 1
@@ -85,7 +85,7 @@ enum spng_state
     SPNG_STATE_IEND
 }
 
-struct spng_ihdr
+struct Ihdr
 {
     width:              u32
     height:             u32
@@ -96,7 +96,7 @@ struct spng_ihdr
     interlace_method:   u8
 };
 
-struct spng_chunk_bitfield
+struct ChunkBitfield
 {
     ihdr: bool
     plte: bool
@@ -117,7 +117,7 @@ struct spng_chunk_bitfield
     unknown: bool
 };
 
-struct spng_chunk
+struct Chunk
 {
     offset:     uint
     length:     u32
@@ -134,15 +134,15 @@ public struct Encoder
     png_base:               *u8
     data_size:              u64
     bytes_left:             u64
-    state:                  spng_state
-    stored:                 spng_chunk_bitfield
-    ihdr:                   spng_ihdr
+    state:                  State
+    stored:                 ChunkBitfield
+    ihdr:                   Ihdr
     bytes_encoded:          uint
-    current_chunk:          spng_chunk
+    current_chunk:          Chunk
     tmpBuf:                 [256] u8
     write_ptr:              *u8
     crc:                    Hash.Crc32
-    subimage:               [7] spng_subimage
+    subimage:               [7] SubImage
     widest_pass:            s32
     last_pass:              s32
     bytes_per_pixel:        u32
@@ -154,9 +154,8 @@ public struct Encoder
     scanline:               *u8
     prev_scanline:          *u8
     encode_flags:           EncodeFlags
-    row_info:               spng_row_info
+    row_info:               RowInfo
     pixel_size:             u32
-    compressor:             Compress.Deflate
     bufferToCompress:       Array'u8
     swapRB:                 bool
 }
@@ -222,7 +221,7 @@ impl Encoder
 
     mtd write_chunks_before_idat() throw
     {
-        write_data(spng_signature, 8)
+        write_data(PngSignature, 8)
 
         dst := &tmpBuf[0]
         write_u32(dst, ihdr.width)
@@ -232,7 +231,7 @@ impl Encoder
         dst[10] = ihdr.compression_method
         dst[11] = ihdr.filter_method
         dst[12] = ihdr.interlace_method
-        write_chunk(type_ihdr, dst, 13)
+        write_chunk(TypeIHdr, dst, 13)
     }
 
     mtd write_chunks_after_idat() throw
@@ -432,7 +431,7 @@ impl Encoder
 
         var zlib: Compress.ZLib
         cmp := zlib.compress(bufferToCompress.toSlice())
-        write_ptr = write_header(type_idat, cmp.count)
+        write_ptr = write_header(TypeIDat, cmp.count)
 
         Memory.copy(write_ptr, cmp.buffer, cmp.count)
 
@@ -544,7 +543,7 @@ public impl IImageEncoder for Encoder
                 break
         }
 
-        discard write_header(type_iend, 0)
+        discard write_header(TypeIEnd, 0)
         finish_chunk()
     }
 }

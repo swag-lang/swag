@@ -18,6 +18,7 @@ impl ZLib
         result.add(0x78)
         result.add(0x9C)
 
+        encoder.init()
         try encoder.compress(&result, buffer)
 
         result.add(cast(u8) ((encoder.adler.adler >>,safe 24) & 0xFF))
@@ -47,11 +48,7 @@ impl ZLib
         winSize := 1'u32 << (cinfo + 8)
 
         // Check
-        flg    := bs.readU8()
-        //fcheck := flg & 0x1F
-		//fcheck_computed := ((cast(u32) cmf << 8) | flg) & 0x1f
-		//if fcheck != fcheck_computed
-        //    throw "checksum failed"
+        flg := bs.readU8()
 
         // Dict
         fdict := (flg >>,safe 5) & 1

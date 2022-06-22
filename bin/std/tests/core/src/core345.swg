@@ -30,6 +30,8 @@ const C = #load(#file)
 
     var comp: Compress.Deflate
     var res: Array'u8
+
+    comp.init()
     try comp.compress(&res, arr.toSlice())
 
     var decomp: Compress.Inflate

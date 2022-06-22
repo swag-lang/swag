@@ -158,8 +158,9 @@ struct Compressor
 #[Swag.Opaque]
 public struct Deflate
 {
-    state:  *Compressor
-    adler:  Hash.Adler32
+    state:      *Compressor
+    adler:      Hash.Adler32
+    initFlags:  CompressionFlags = Default
 }
 
 impl Deflate
@@ -185,10 +186,9 @@ impl Deflate
         return compFlags
     }
 
-    mtd init(flags: u32)
+    mtd setup(flags: u32)
     {
         d := state
-        @init(d)
         d.m_flags = flags
         d.m_max_probes[0] = 1 + ((flags & 0xFFF) + 2) / 3
         d.m_greedy_parsing = (flags & GreedyParsing) != 0
@@ -1100,6 +1100,14 @@ impl Deflate
 
 public impl Deflate
 {
+    #[Swag.EnumFlags]
+    enum CompressionFlags
+    {
+        Zero = 0
+        ComputeAdler32
+        Default = ComputeAdler32
+    }
+
     #[Swag.Incomplete]
     enum CompressionLevel : u32
     {
@@ -1119,30 +1127,45 @@ public impl Deflate
         Fixed
     }
 
+    mtd opDrop()
+    {
+        Memory.delete(state)
+    }
+
+    // Initialize the compressor
+    // Can be called multiple times
+    mtd init(level = CompressionLevel.Default, strategy = CompressionStrategy.Default, flags = CompressionFlags.Default)
+    {
+        if !state
+            state = Memory.new'Compressor()
+        else
+            @init(state)
+        setup(createCompFlagsFromZipParams(level, strategy))
+        initFlags = flags
+    }
+
     // Compress the source buffer
-    mtd compress(result: *Array'u8, src: const [..] u8, level = CompressionLevel.Default, strategy = CompressionStrategy.Default) throw
+    mtd compress(result: *Array'u8, src: const [..] u8) throw
     {
         if @countof(src) > Swag.U32.Max
             throw "source buffer too big"
 
-        state = Memory.new'Compressor()
-        defer Memory.delete(state)
-
-        init(createCompFlagsFromZipParams(level, strategy))
+        Debug.assert(state  != null, "'init' not called")
 
         state.result         = result
         state.m_pIn_buf      = @dataof(src)
         state.m_pSrc         = @dataof(src)
         state.m_src_buf_left = @countof(src)
-        initCount := result.count
-        state.m_out_buf_ofs  = initCount
+        state.m_out_buf_ofs  = result.count
 
         compress()
         flushBlock(true)
-
         Debug.assert(!state.m_lookahead_size and !state.m_src_buf_left)
 
-        adler.init()
-        adler.update(src)
+        if initFlags & .ComputeAdler32
+        {
+            adler.init()
+            adler.update(src)
+        }
     }
 }
