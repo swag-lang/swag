@@ -1,5 +1,29 @@
-#global skip
+//#global skip
 using Core, Pixel
+
+/*private func dataPath()->String
+{
+    dataPath := Path.getDirectoryName(#location.fileName)
+    dataPath = Path.getDirectoryName(dataPath)
+    return Path.combine(dataPath, "datas")
+}
+
+private func tmpPath()->String
+{
+    dataPath := Path.getDirectoryName(#location.fileName)
+    dataPath = Path.getDirectoryName(dataPath)
+    return Path.combine(dataPath, "tmp")
+}
+
+private func imagePath(name: string)->String
+{
+    return Path.combine(dataPath(), name)
+}
+
+private func tmpPath(name: string)->String
+{
+    return Path.combine(tmpPath(), name)
+}*/
 
 #test
 {

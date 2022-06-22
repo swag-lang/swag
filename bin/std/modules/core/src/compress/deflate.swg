@@ -1120,7 +1120,7 @@ public impl Deflate
     }
 
     // Compress the source buffer
-    mtd compress(src: const [..] u8, level = CompressionLevel.Default, strategy = CompressionStrategy.Default)->Array'u8 throw
+    mtd compress(result: *Array'u8, src: const [..] u8, level = CompressionLevel.Default, strategy = CompressionStrategy.Default) throw
     {
         if @countof(src) > Swag.U32.Max
             throw "source buffer too big"
@@ -1128,22 +1128,21 @@ public impl Deflate
         state = Memory.new'Compressor()
         defer Memory.delete(state)
 
-        adler.init()
         init(createCompFlagsFromZipParams(level, strategy))
 
-        var result: retval
-
-        state.result         = &result
+        state.result         = result
         state.m_pIn_buf      = @dataof(src)
         state.m_pSrc         = @dataof(src)
         state.m_src_buf_left = @countof(src)
+        initCount := result.count
+        state.m_out_buf_ofs  = initCount
 
         compress()
         flushBlock(true)
 
         Debug.assert(!state.m_lookahead_size and !state.m_src_buf_left)
-        adler.update(result.toSlice())
 
-        return result
+        adler.init()
+        adler.update(src)
     }
 }

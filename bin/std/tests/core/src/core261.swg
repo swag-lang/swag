@@ -2,7 +2,7 @@ using Core
 
 #test
 {
-    var dec: Compress.ZLibDecoder
+    var dec: Compress.ZLib
 
     {
         f   := try File.readAllBytes(filePath("0.zlib"))

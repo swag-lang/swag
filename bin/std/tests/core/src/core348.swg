@@ -1,15 +1,10 @@
+//#global skip
 using Core
 
+//#[Swag.PrintBc]
 #test
 {
-    var arr: Array'u8
-
-    var rng: Random.DefaultRng
-    loop 1000
-    {
-        v := cast(u8) (rng.nextU32() % 256)
-        arr.add(v)
-    }
+    arr := try File.readAllBytes(filePath("h1v1.jpg"))
 
     var comp: Compress.Deflate
     var res: Array'u8
@@ -23,4 +18,6 @@ using Core
     {
         @assert(v == res1[i])
     }
+
+    //@print(@mkstring(res1.buffer, res1.count))
 }

@@ -7,7 +7,8 @@ using Core
     arr := try File.readAllBytes(filePath("0.zlib"))
 
     var comp: Compress.Deflate
-    res := try comp.compress(arr.toSlice())
+    var res: Array'u8
+    try comp.compress(&res, arr.toSlice())
 
     var decomp: Compress.Inflate
     res1 := try decomp.decompress(res.toSlice())

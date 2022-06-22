@@ -529,7 +529,7 @@ impl Decoder
             return result
 
         // deflate content
-        var dec: Compress.ZLibDecoder
+        var dec: Compress.ZLib
         dcmpBuf = dec.decompress(iDataBuf.toSlice())
 
         // defilter content

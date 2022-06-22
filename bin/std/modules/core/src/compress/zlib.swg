@@ -2,13 +2,32 @@
 #global namespace Compress
 
 #[Swag.Opaque]
-struct ZLibDecoder
+struct ZLib
 {
     decoder: Inflate
+    encoder: Deflate
 }
 
-impl ZLibDecoder
+impl ZLib
 {
+    // Decompress stream
+    mtd compress(buffer: const [..] u8)->Array'u8 throw
+    {
+        var result: retval
+
+        result.add(0x78)
+        result.add(0x9C)
+
+        try encoder.compress(&result, buffer)
+
+        result.add(cast(u8) ((encoder.adler.adler >>,safe 24) & 0xFF))
+        result.add(cast(u8) ((encoder.adler.adler >>,safe 16) & 0xFF))
+        result.add(cast(u8) ((encoder.adler.adler >>,safe 8) & 0xFF))
+        result.add(cast(u8) (encoder.adler.adler & 0xFF))
+
+        return result
+    }
+
     // Decompress stream
     mtd decompress(buffer: const [..] u8)->Array'u8 throw
     {
@@ -28,11 +47,11 @@ impl ZLibDecoder
         winSize := 1'u32 << (cinfo + 8)
 
         // Check
-        flg := bs.readU8()
-        fcheck := flg & 0x1f
-		fcheck_computed := ((cast(u32) cmf << 8) | flg) & 0x1f
-		if fcheck != fcheck_computed
-            throw "checksum failed"
+        flg    := bs.readU8()
+        //fcheck := flg & 0x1F
+		//fcheck_computed := ((cast(u32) cmf << 8) | flg) & 0x1f
+		//if fcheck != fcheck_computed
+        //    throw "checksum failed"
 
         // Dict
         fdict := (flg >>,safe 5) & 1
