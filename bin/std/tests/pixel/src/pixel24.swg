@@ -30,7 +30,8 @@ private func tmpPath(name: string)->String
     try
     {
         img := Image.load(imagePath("h1v1.jpg"))
-        img.save(tmpPath("__h1v1.png"))
+        var opt: Png.EncodeOptions
+        img.save(tmpPath("__h1v1.png"), opt)
         img1 := Image.load(tmpPath("__h1v1.png"))
         File.delete(tmpPath("__h1v1.png"))
     }

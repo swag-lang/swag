@@ -578,6 +578,10 @@ impl Encoder
     }
 }
 
+public struct EncodeOptions
+{
+}
+
 public impl IImageEncoder for Encoder
 {
     mtd canEncode(fileName: string)->bool
@@ -585,8 +589,15 @@ public impl IImageEncoder for Encoder
         return Path.getExtensionLowerCase(fileName) == ".png"
     }
 
-    mtd encode(result: *ConcatBuffer, image: Image, options: EncodeOptions) throw
+    mtd encode(result: *ConcatBuffer, image: Image, options: any) throw
     {
+        var opt: *EncodeOptions
+        if @dataof(options) != null
+        {
+            Debug.assert(@kindof(options) == EncodeOptions)
+            opt = cast(*EncodeOptions) @dataof(options)
+        }
+
         // unsupported pixel format
         if image.pf.channels() < 3 or image.pf.bitDepth() != 8
             throw "unsupported image pixel format"

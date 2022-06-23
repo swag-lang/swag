@@ -12,7 +12,7 @@ public impl IImageEncoder for Encoder
         return Path.getExtensionLowerCase(fileName) == ".tga"
     }
 
-    mtd encode(result: *ConcatBuffer, image: Image, options: EncodeOptions) throw
+    mtd encode(result: *ConcatBuffer, image: Image, options: any) throw
     {
         if image.width > Swag.U16.Max  throw "image width is too big"
         if image.height > Swag.U16.Max throw "image height is too big"

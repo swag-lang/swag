@@ -6,16 +6,11 @@ struct ImageEncoder
     itf:    IImageEncoder
 }
 
-public struct EncodeOptions
-{
-    quality: u8 = 10    // Encoding quality between 1 and 100
-}
-
 // Interface to decode a buffer
 public interface IImageEncoder
 {
     canEncode:  func(self, string)->bool
-    encode:     func(self, *ConcatBuffer, Image, EncodeOptions) throw
+    encode:     func(self, *ConcatBuffer, Image, any) throw
 }
 
 public impl Image
@@ -46,7 +41,7 @@ public impl Image
     }
 
     // Save the image to a file
-    mtd save(fileName: string, options: EncodeOptions = @{}) throw
+    mtd save(fileName: string, options: any = null) throw
     {
         Debug.assert(pixels != null, "image is invalid")
 

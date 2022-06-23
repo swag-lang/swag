@@ -171,6 +171,11 @@ var TabCrB:  [256] s32 = ?
     }
 }
 
+public struct EncodeOptions
+{
+    quality: u8 = 10    // Encoding quality between 1 and 100
+}
+
 #[Swag.Opaque]
 public struct Encoder
 {
@@ -729,11 +734,18 @@ public impl IImageEncoder for Encoder
         return ext == ".jpg" or ext == ".jpeg"
     }
 
-    mtd encode(result: *ConcatBuffer, image: Image, options: EncodeOptions) throw
+    mtd encode(result: *ConcatBuffer, image: Image, options: any) throw
     {
+        var opt: *EncodeOptions
+        if @dataof(options) != null
+        {
+            Debug.assert(@kindof(options) == EncodeOptions)
+            opt = cast(*EncodeOptions) @dataof(options)
+        }
+
         stream = result
         srcImage = &image
-        scaleFactor = cast(u8) (100 - Math.clamp(options.quality, 1, 100))
+        scaleFactor = cast(u8) (100 - Math.clamp(opt.quality, 1, 100))
 
         loadBitmap(image)
 
