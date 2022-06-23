@@ -75,6 +75,7 @@ func addImage(image: Image)
     defer discard CloseClipboard()
 
     // BITMAP
+    scope
     {
         size := @sizeof(Bmp.Header) + image.size
         hglob := GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, size)
@@ -96,12 +97,17 @@ func addImage(image: Image)
     }
 
     // PNG
+    scope
     {
         var png: Png.Encoder
         var buffer: ConcatBuffer
+
         catch png.IImageEncoder.encode(&buffer, image, @{})
+        if @err
+            break
         clipData := catch RegisterClipboardFormatA(@dataof("PNG"))
-        if @err return
+        if @err
+            break
 
         hglob := GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, buffer.count())
         buf := cast(*u8) GlobalLock(hglob)
