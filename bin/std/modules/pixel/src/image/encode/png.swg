@@ -42,6 +42,16 @@ struct EncodeFlags
     finalize:      bool
 }
 
+enum Filter
+{
+    SPNG_FILTER_NONE
+    SPNG_FILTER_SUB
+    SPNG_FILTER_UP
+    SPNG_FILTER_AVERAGE
+    SPNG_FILTER_PAETH
+}
+
+#[Swag.EnumFlags]
 enum FilterChoice
 {
     SPNG_DISABLE_FILTERING = 0
@@ -124,11 +134,11 @@ public struct Encoder
     scanlineBuf:            *u8
     prevScanlineBuf:        *u8
     row_buf:                *u8
-    filtered_scanline_buf:  *u8
-    filtered_scanline:      *u8
+    filteredScanlineBuf:  *u8
+    filteredScanline:      *u8
     scanline:               *u8
     prevScanline:          *u8
-    encode_flags:           EncodeFlags
+    encodeFlags:           EncodeFlags
     rowInfo:               RowInfo
     pixel_size:             u32
     bufferToCompress:       Array'u8
@@ -274,6 +284,23 @@ impl Encoder
         }
     }
 
+    mtd finishIDat() throw
+    {
+        var zlib: Compress.ZLib
+        cmp := zlib.compress(bufferToCompress.toSlice())
+
+        writePtr = writeHeader(TypeIDat, cmp.count)
+        Memory.copy(writePtr, cmp.buffer, cmp.count)
+        bufferToCompress.count = 0
+
+        finishChunk()
+    }
+
+    mtd writeIDatBytes(sl: *u8, len: u32) throw
+    {
+        bufferToCompress.add(@mkslice(sl, len))
+    }
+
     mtd encodeRow(row: *u8, len: u32)->bool throw
     {
         pass := rowInfo.pass
@@ -282,7 +309,6 @@ impl Encoder
             return encodeScanLine(row, len)
 
         bitDepth := ihdr.bitDepth
-
         if bitDepth < 8
         {
             samples_per_byte := 8 / bitDepth
@@ -325,6 +351,144 @@ impl Encoder
         return encodeScanLine(scanline, len)
     }
 
+    mtd getBestFilter(size: u32)->Filter
+    {
+        if encodeFlags.filterChoice == .SPNG_DISABLE_FILTERING
+            return .SPNG_FILTER_NONE
+
+        chl := cast(s32) encodeFlags.filterChoice
+        if !(chl & (chl - 1))
+        {
+            loop i: 5
+            {
+                if chl == 1 << (i + 3)
+                    return acast i
+            }
+        }
+
+        bestFilter   := 0
+        bestScore    := Swag.S32.Max
+        filterScores := @[ Swag.S32.Max, Swag.S32.Max, Swag.S32.Max, Swag.S32.Max, Swag.S32.Max ]
+
+        var sum: s32
+        loop i: 5
+        {
+            flag := 1 << (i + 3)
+            if !(chl & flag)
+                continue
+
+            sum = filterSum(size, cast(Filter) i)
+            filterScores[i] = Math.abs(sum)
+            if filterScores[i] < bestScore
+            {
+                bestScore = filterScores[i]
+                bestFilter = i
+            }
+        }
+
+        return acast bestFilter
+    }
+
+    #[Swag.Safety("", false)]
+    func paeth(a, b, c: u8)->u32
+    {
+        p  := cast(s16) (a + b - c)
+        pa := Math.abs(p - cast(s16) a)
+        pb := Math.abs(p - cast(s16) b)
+        pc := Math.abs(p - cast(s16) c)
+
+        if pa <= pb and pa <= pc
+            return a
+        elif pb <= pc
+            return b
+        return c
+    }
+
+    #[Swag.Safety("", false)]
+    mtd filterSum(size: u32, filter: Filter)->s32
+    {
+        if size > Swag.S32.Max / 128
+            return Swag.S32.Max
+
+        var sum: s32
+        var a, b, c: u8
+
+        loop i: size
+        {
+            if i >= bytesPerPixel
+            {
+                a = scanline[i - bytesPerPixel]
+                b = prevScanline[i]
+                c = prevScanline[i - bytesPerPixel]
+            }
+            else
+            {
+                a = 0
+                b = prevScanline[i]
+                c = 0
+            }
+
+            x := cast(s32) scanline[i]
+
+            switch filter
+            {
+            case SPNG_FILTER_NONE:
+                break
+            case SPNG_FILTER_SUB:
+                x = x - a
+            case SPNG_FILTER_UP:
+                x = x - b
+            case SPNG_FILTER_AVERAGE:
+                avg := (a + b) / 2
+                x = x - avg
+            case SPNG_FILTER_PAETH:
+                x = x - paeth(a, b, c)
+            }
+
+            sum += 128 - Math.abs(x - 128)
+        }
+
+        return sum
+    }
+
+    #[Swag.Safety("", false)]
+    mtd filterScanline(filtered: *u8, size: u32, filter: Filter)
+    {
+        loop i: size
+        {
+            var a, b, c: u8
+            if i >= bytesPerPixel
+            {
+                a = scanline[i - bytesPerPixel]
+                b = prevScanline[i]
+                c = prevScanline[i - bytesPerPixel]
+            }
+            else
+            {
+                a = 0
+                b = prevScanline[i]
+                c = 0
+            }
+
+            x := cast(s32) scanline[i]
+
+            switch filter
+            {
+            case SPNG_FILTER_SUB:
+                x = x - a
+            case SPNG_FILTER_UP:
+                x = x - b
+            case SPNG_FILTER_AVERAGE:
+                avg := (a + b) / 2
+                x = x - avg
+            case SPNG_FILTER_PAETH:
+                x = x - paeth(a, b, c)
+            }
+
+            filtered[i] = bitcast(u8) x
+        }
+    }
+
     mtd encodeScanLine(sl: *u8, len: u32)->bool throw
     {
         pass := rowInfo.pass
@@ -357,10 +521,20 @@ impl Encoder
             }
         }
 
-        var filtered_sl: *u8
-        filter := 0
-        if !filter
+        requiresPrevious := encodeFlags.filterChoice & (.SPNG_FILTER_CHOICE_UP | .SPNG_FILTER_CHOICE_AVG | .SPNG_FILTER_CHOICE_PAETH)
+        if !rowInfo.scanlineIdx and requiresPrevious
+            Memory.clear(prevScanline, cast(uint) scanlineWidth)
+
+        filtered_sl := filteredScanline
+        filter := getBestFilter(scanlineWidth - 1)
+        if filter == .SPNG_FILTER_NONE
             filtered_sl = scanline
+        filtered_sl -= 1
+        filtered_sl[0] = cast(u8) filter
+        filtered_sl += 1
+
+        if filter
+            filterScanline(filtered_sl, scanlineWidth - 1, filter)
 
         writeIDatBytes(filtered_sl - 1, scanlineWidth)
 
@@ -372,23 +546,6 @@ impl Encoder
         }
 
         return false
-    }
-
-    mtd finishIDat() throw
-    {
-        var zlib: Compress.ZLib
-        cmp := zlib.compress(bufferToCompress.toSlice())
-
-        writePtr = writeHeader(TypeIDat, cmp.count)
-        Memory.copy(writePtr, cmp.buffer, cmp.count)
-        bufferToCompress.count = 0
-
-        finishChunk()
-    }
-
-    mtd writeIDatBytes(sl: *u8, len: u32) throw
-    {
-        bufferToCompress.add(@mkslice(sl, len))
     }
 
     mtd updateRowInfo()->bool
@@ -432,7 +589,9 @@ public impl IImageEncoder for Encoder
     {
         // unsupported pixel format
         if image.pf.channels() < 3 or image.pf.bitDepth() != 8
-            throw "unsupported pixel format"
+            throw "unsupported image pixel format"
+        if image.width == 0 or image.height == 0
+            throw "unsupported image size"
 
         swapRB = image.pf == .BGR8 or image.pf == .BGRA8
 
@@ -448,31 +607,27 @@ public impl IImageEncoder for Encoder
 
         writeChunksBeforeIDat()
         calculateSubImages()
-        bytesPerPixel = numChannels() * (ihdr.bitDepth / 8)
 
+        bytesPerPixel   = numChannels() * (ihdr.bitDepth / 8)
         scanlineBufSize := subimage[widest_pass].scanlineWidth
         scanlineBufSize += 32
-        if scanlineBufSize < 32
-            throw "SPNG_EOVERFLOW"
 
-        scanlineBuf = Memory.alloc(cast(uint) scanlineBufSize)
+        scanlineBuf         = Memory.alloc(cast(uint) scanlineBufSize)
+        prevScanlineBuf     = Memory.alloc(cast(uint) scanlineBufSize)
+        filteredScanlineBuf = Memory.alloc(cast(uint) scanlineBufSize)
         defer Memory.free(scanlineBuf, cast(uint) scanlineBufSize)
-        prevScanlineBuf = Memory.alloc(cast(uint) scanlineBufSize)
         defer Memory.free(prevScanlineBuf, cast(uint) scanlineBufSize)
+        defer Memory.free(filteredScanlineBuf, cast(uint) scanlineBufSize)
 
-        scanline     = scanlineBuf + 16
-        prevScanline = prevScanlineBuf + 16
-
-        if encode_flags.filterChoice
-        {
-            filtered_scanline_buf = Memory.alloc(cast(uint) scanlineBufSize)
-            filtered_scanline = filtered_scanline_buf + 16
-        }
-
-        sub := subimage
-        ri  := &rowInfo
+        scanline         = scanlineBuf + 16
+        prevScanline     = prevScanlineBuf + 16
+        filteredScanline = filteredScanlineBuf + 16
 
         pixel_size = image.bpp
+
+        ////
+        encodeFlags.filterChoice = .SPNG_FILTER_CHOICE_ALL
+        ////
 
         loop
         {
