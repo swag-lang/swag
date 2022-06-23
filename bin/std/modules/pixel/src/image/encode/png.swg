@@ -115,7 +115,7 @@ public struct Encoder
     ihdr:                   Ihdr
     current_chunk:          Chunk
     tmpBuf:                 [256] u8
-    write_ptr:              *u8
+    writePtr:              *u8
     crc:                    Hash.Crc32
     subimage:               [7] SubImage
     widest_pass:            s32
@@ -178,16 +178,16 @@ impl Encoder
 
     mtd finishChunk()
     {
-        crc.update(@mkslice(write_ptr, current_chunk.length))
+        crc.update(@mkslice(writePtr, current_chunk.length))
         current_chunk.crc = crc.crc
         writeU32(current_chunk.crc)
     }
 
     mtd writeChunk(chunk_type: const [4] u8, buf: const *u8, length: uint)
     {
-        write_ptr = writeHeader(chunk_type, length)
+        writePtr = writeHeader(chunk_type, length)
         if length
-            Memory.copy(write_ptr, buf, length)
+            Memory.copy(writePtr, buf, length)
         finishChunk()
     }
 
@@ -376,16 +376,13 @@ impl Encoder
 
     mtd finishIDat() throw
     {
-        if bufferToCompress.count == 0
-            return
-
         var zlib: Compress.ZLib
         cmp := zlib.compress(bufferToCompress.toSlice())
-        write_ptr = writeHeader(TypeIDat, cmp.count)
 
-        Memory.copy(write_ptr, cmp.buffer, cmp.count)
-
+        writePtr = writeHeader(TypeIDat, cmp.count)
+        Memory.copy(writePtr, cmp.buffer, cmp.count)
         bufferToCompress.count = 0
+
         finishChunk()
     }
 
