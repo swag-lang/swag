@@ -10,10 +10,10 @@ using Core
 
 using namespace EncoderPrivate {
 
-const adam7_x_start: [7] u32 = @[ 0, 4, 0, 2, 0, 1, 0 ]
-const adam7_y_start: [7] u32 = @[ 0, 0, 4, 0, 2, 0, 1 ]
-const adam7_x_delta: [7] u32 = @[ 8, 8, 4, 4, 2, 2, 1 ]
-const adam7_y_delta: [7] u32 = @[ 8, 8, 8, 4, 4, 2, 2 ]
+const Adam7StartX: [7] u32 = @[ 0, 4, 0, 2, 0, 1, 0 ]
+const Adam7StartY: [7] u32 = @[ 0, 0, 4, 0, 2, 0, 1 ]
+const Adam7DeltaX: [7] u32 = @[ 8, 8, 4, 4, 2, 2, 1 ]
+const Adam7DeltaY: [7] u32 = @[ 8, 8, 8, 4, 4, 2, 2 ]
 
 struct RowInfo
 {
@@ -44,23 +44,23 @@ struct EncodeFlags
 
 enum Filter
 {
-    SPNG_FILTER_NONE
-    SPNG_FILTER_SUB
-    SPNG_FILTER_UP
-    SPNG_FILTER_AVERAGE
-    SPNG_FILTER_PAETH
+    None
+    Sub
+    Up
+    Average
+    Paeth
 }
 
 #[Swag.EnumFlags]
 enum FilterChoice
 {
-    SPNG_DISABLE_FILTERING = 0
-    SPNG_FILTER_CHOICE_NONE = 8
-    SPNG_FILTER_CHOICE_SUB = 16
-    SPNG_FILTER_CHOICE_UP = 32
-    SPNG_FILTER_CHOICE_AVG = 64
-    SPNG_FILTER_CHOICE_PAETH = 128
-    SPNG_FILTER_CHOICE_ALL = (8|16|32|64|128)
+    Disabled = 0
+    None     = 8
+    Sub      = 16
+    Up       = 32
+    Average  = 64
+    Paeth    = 128
+    All      = (8|16|32|64|128)
 }
 
 const PngSignature:   [8] u8 = @[ 137, 80, 78, 71, 13, 10, 26, 10 ]
@@ -123,13 +123,13 @@ public struct Encoder
     stream:                 *ConcatBuffer
     stored:                 ChunkBitfield
     ihdr:                   Ihdr
-    current_chunk:          Chunk
+    currentChunk:           Chunk
     tmpBuf:                 [256] u8
     writePtr:               *u8
     crc:                    Hash.Crc32
     subimage:               [7] SubImage
-    widest_pass:            s32
-    last_pass:              s32
+    widestPass:             s32
+    lastPass:               s32
     bytesPerPixel:          u32
     scanlineBuf:            *u8
     prevScanlineBuf:        *u8
@@ -140,7 +140,7 @@ public struct Encoder
     prevScanline:           *u8
     encodeFlags:            EncodeFlags
     rowInfo:                RowInfo
-    pixel_size:             u32
+    pixelSize:              u32
     bufferToCompress:       Array'u8
     swapRB:                 bool
     userOptions:            EncodeOptions
@@ -165,38 +165,38 @@ impl Encoder
         stream.addBytes(@mkslice(cast(const *u8) &v, 4))
     }
 
-    mtd writeHeader(chunk_type: const [4] u8, chunk_length: uint)->*u8
+    mtd writeHeader(chunkType: const [4] u8, chunkLength: uint)->*u8
     {
-        total := chunk_length + 8 + 4
+        total := chunkLength + 8 + 4
         stream.grow(total)
 
-        current_chunk.length = cast(u32) chunk_length
-        writeU32(current_chunk.length)
+        currentChunk.length = cast(u32) chunkLength
+        writeU32(currentChunk.length)
 
-        Memory.copy(&current_chunk.type, chunk_type, 4)
-        writeData(current_chunk.type, 4)
+        Memory.copy(&currentChunk.type, chunkType, 4)
+        writeData(currentChunk.type, 4)
 
         crc.init()
         crc.update(null)
-        crc.update(chunk_type)
-        current_chunk.crc = crc.crc
+        crc.update(chunkType)
+        currentChunk.crc = crc.crc
 
         dataPtr := stream.currentSP
-        stream.seek(chunk_length)
+        stream.seek(chunkLength)
 
         return dataPtr
     }
 
     mtd finishChunk()
     {
-        crc.update(@mkslice(writePtr, current_chunk.length))
-        current_chunk.crc = crc.crc
-        writeU32(current_chunk.crc)
+        crc.update(@mkslice(writePtr, currentChunk.length))
+        currentChunk.crc = crc.crc
+        writeU32(currentChunk.crc)
     }
 
-    mtd writeChunk(chunk_type: const [4] u8, buf: const *u8, length: uint)
+    mtd writeChunk(chunkType: const [4] u8, buf: const *u8, length: uint)
     {
-        writePtr = writeHeader(chunk_type, length)
+        writePtr = writeHeader(chunkType, length)
         if length
             Memory.copy(writePtr, buf, length)
         finishChunk()
@@ -279,9 +279,9 @@ impl Encoder
                 continue
 
             subimage[i].scanlineWidth = calculateScanlineWidth(subimage[i].width)
-            if subimage[widest_pass].scanlineWidth < subimage[i].scanlineWidth
-                widest_pass = i
-            last_pass = i
+            if subimage[widestPass].scanlineWidth < subimage[i].scanlineWidth
+                widestPass = i
+            lastPass = i
         }
     }
 
@@ -312,30 +312,30 @@ impl Encoder
         bitDepth := ihdr.bitDepth
         if bitDepth < 8
         {
-            samples_per_byte := 8 / bitDepth
-            mask             := cast(u8) ((1 << bitDepth) - 1)
-            initial_shift    := 8 - bitDepth
-            shift_amount     := initial_shift
+            samplesPerByte := 8 / bitDepth
+            mask           := cast(u8) ((1 << bitDepth) - 1)
+            initialShift   := 8 - bitDepth
+            shiftAmount    := initialShift
 
             row_uc := row
             Memory.clear(scanline, cast(uint) subimage[pass].scanlineWidth)
 
             loop k: subimage[pass].width
             {
-                ioffset := adam7_x_start[pass] + k * adam7_x_delta[pass]
+                ioffset := Adam7StartX[pass] + k * Adam7DeltaX[pass]
 
-                sample := row_uc[ioffset / samples_per_byte]
-                sample = sample >> (initial_shift - ioffset * bitDepth % 8)
+                sample := row_uc[ioffset / samplesPerByte]
+                sample = sample >> (initialShift - ioffset * bitDepth % 8)
                 sample = sample & mask
-                sample = sample << shift_amount
+                sample = sample << shiftAmount
 
                 scanline[0] |= sample
 
-                shift_amount -= bitDepth
+                shiftAmount -= bitDepth
 
-                if shift_amount > 7
+                if shiftAmount > 7
                 {
-                    shift_amount = initial_shift
+                    shiftAmount = initialShift
                     scanline += 1
                 }
             }
@@ -345,8 +345,8 @@ impl Encoder
 
         loop k: subimage[pass].width
         {
-            ioffset := (adam7_x_start[pass] + k * adam7_x_delta[pass]) * pixel_size
-            Memory.copy(scanline + k * pixel_size, row + ioffset, acast pixel_size)
+            ioffset := (Adam7StartX[pass] + k * Adam7DeltaX[pass]) * pixelSize
+            Memory.copy(scanline + k * pixelSize, row + ioffset, acast pixelSize)
         }
 
         return encodeScanLine(scanline, len)
@@ -354,8 +354,8 @@ impl Encoder
 
     mtd getBestFilter(size: u32)->Filter
     {
-        if encodeFlags.filterChoice == .SPNG_DISABLE_FILTERING
-            return .SPNG_FILTER_NONE
+        if encodeFlags.filterChoice == .Disabled
+            return .None
 
         chl := cast(s32) encodeFlags.filterChoice
         if !(chl & (chl - 1))
@@ -433,16 +433,16 @@ impl Encoder
 
             switch filter
             {
-            case SPNG_FILTER_NONE:
+            case None:
                 break
-            case SPNG_FILTER_SUB:
+            case Sub:
                 x = x - a
-            case SPNG_FILTER_UP:
+            case Up:
                 x = x - b
-            case SPNG_FILTER_AVERAGE:
+            case Average:
                 avg := (a + b) / 2
                 x = x - avg
-            case SPNG_FILTER_PAETH:
+            case Paeth:
                 x = x - paeth(a, b, c)
             }
 
@@ -475,14 +475,14 @@ impl Encoder
 
             switch filter
             {
-            case SPNG_FILTER_SUB:
+            case Sub:
                 x = x - a
-            case SPNG_FILTER_UP:
+            case Up:
                 x = x - b
-            case SPNG_FILTER_AVERAGE:
+            case Average:
                 avg := (a + b) / 2
                 x = x - avg
-            case SPNG_FILTER_PAETH:
+            case Paeth:
                 x = x - paeth(a, b, c)
             }
 
@@ -522,13 +522,13 @@ impl Encoder
             }
         }
 
-        requiresPrevious := encodeFlags.filterChoice & (.SPNG_FILTER_CHOICE_UP | .SPNG_FILTER_CHOICE_AVG | .SPNG_FILTER_CHOICE_PAETH)
+        requiresPrevious := encodeFlags.filterChoice & (.Up | .Average | .Paeth)
         if !rowInfo.scanlineIdx and requiresPrevious
             Memory.clear(prevScanline, cast(uint) scanlineWidth)
 
         filtered_sl := filteredScanline
         filter := getBestFilter(scanlineWidth - 1)
-        if filter == .SPNG_FILTER_NONE
+        if filter == .None
             filtered_sl = scanline
         filtered_sl -= 1
         filtered_sl[0] = cast(u8) filter
@@ -557,13 +557,13 @@ impl Encoder
 
         if ri.scanlineIdx == sub[ri.pass].height - 1
         {
-            if ri.pass == last_pass
+            if ri.pass == lastPass
                 return true
 
             ri.scanlineIdx = 0
             ri.pass += 1
 
-            while (!sub[ri.pass].width or !sub[ri.pass].height) and (ri.pass < last_pass)
+            while (!sub[ri.pass].width or !sub[ri.pass].height) and (ri.pass < lastPass)
                 ri.pass += 1
         }
         else
@@ -573,7 +573,7 @@ impl Encoder
         }
 
         if interlacing
-            ri.rowNum = adam7_y_start[ri.pass] + ri.scanlineIdx * adam7_y_delta[ri.pass]
+            ri.rowNum = Adam7StartY[ri.pass] + ri.scanlineIdx * Adam7DeltaY[ri.pass]
 
         return false
     }
@@ -622,7 +622,7 @@ public impl IImageEncoder for Encoder
         calculateSubImages()
 
         bytesPerPixel   = numChannels() * (ihdr.bitDepth / 8)
-        scanlineBufSize := subimage[widest_pass].scanlineWidth
+        scanlineBufSize := subimage[widestPass].scanlineWidth
         scanlineBufSize += 32
 
         scanlineBuf         = Memory.alloc(cast(uint) scanlineBufSize)
@@ -636,9 +636,9 @@ public impl IImageEncoder for Encoder
         prevScanline     = prevScanlineBuf + 16
         filteredScanline = filteredScanlineBuf + 16
 
-        pixel_size = image.bpp
+        pixelSize = image.bpp
         if userOptions.filtering and userOptions.compressionLevel != .NoCompression
-            encodeFlags.filterChoice = .SPNG_FILTER_CHOICE_ALL
+            encodeFlags.filterChoice = .All
 
         loop
         {
