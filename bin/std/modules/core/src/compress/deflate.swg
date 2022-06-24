@@ -858,13 +858,13 @@ impl Deflate
         compBlockSucceeded := false
         useRawBlock := ((d.m_flags & ForceAllRawBlocks) != 0) and (d.lookaheadPos - d.lzCodeBufDictPos) <= d.dictSize
 
-        var pOutput_buf_start: *u8
+        var outputBufStart: *u8
         if d.result.capacity - d.result.count >= OutBufSize
-            pOutput_buf_start = d.result.buffer + d.outBufOfs
+            outputBufStart = d.result.buffer + d.outBufOfs
         else
-            pOutput_buf_start = &d.outputBuf[0]
+            outputBufStart = &d.outputBuf[0]
 
-        d.outputBufAddr = pOutput_buf_start
+        d.outputBufAddr = outputBufStart
         d.outputBufEndAddr = d.outputBufAddr + OutBufSize - 16
 
         d.outputFlushOfs = 0
@@ -874,19 +874,19 @@ impl Deflate
 
         putBits(finish ? 1 : 0, 1)
 
-        pSaved_output_buf := d.outputBufAddr
-        saved_bit_buf := d.bitBuffer
-        saved_bits_in := d.bitsIn
+        savedOutputBuf := d.outputBufAddr
+        savedBitBuf := d.bitBuffer
+        savedBitsIn := d.bitsIn
 
         if !useRawBlock
             compBlockSucceeded = compressBlock((d.m_flags & ForceAllStaticBlocks) or (d.totalLzBytes < 48))
 
-        if ((useRawBlock or (d.totalLzBytes and ((d.outputBufAddr - pSaved_output_buf + 1) >= d.totalLzBytes))) and
+        if ((useRawBlock or (d.totalLzBytes and ((d.outputBufAddr - savedOutputBuf + 1) >= d.totalLzBytes))) and
             ((d.lookaheadPos - d.lzCodeBufDictPos) <= d.dictSize))
         {
-            d.outputBufAddr = pSaved_output_buf
-            d.bitBuffer = saved_bit_buf
-            d.bitsIn = saved_bits_in
+            d.outputBufAddr = savedOutputBuf
+            d.bitBuffer = savedBitBuf
+            d.bitsIn = savedBitsIn
             putBits(0, 2)
             if d.bitsIn
             {
@@ -899,16 +899,16 @@ impl Deflate
                 d.totalLzBytes ^= 0xFFFF
             }
 
-            for i := 0; i < d.totalLzBytes; i += 1
+            loop i: d.totalLzBytes
             {
                 putBits(cast(u32) d.dict[(d.lzCodeBufDictPos + i) & LzDictSizeMask], 8)
             }
         }
         elif !compBlockSucceeded
         {
-            d.outputBufAddr = pSaved_output_buf
-            d.bitBuffer = saved_bit_buf
-            d.bitsIn = saved_bits_in
+            d.outputBufAddr = savedOutputBuf
+            d.bitBuffer = savedBitBuf
+            d.bitsIn = savedBitsIn
             discard compressBlock(true)
         }
 
@@ -925,10 +925,10 @@ impl Deflate
         d.totalLzBytes = 0
         d.blockIndex += 1
 
-        n := cast(uint) (d.outputBufAddr - pOutput_buf_start)
+        n := cast(uint) (d.outputBufAddr - outputBufStart)
         if n != 0
         {
-            if (pOutput_buf_start == &d.outputBuf[0])
+            if (outputBufStart == &d.outputBuf[0])
             {
                 d.result.resize(d.result.count + n)
                 Memory.copy(d.result.buffer + d.outBufOfs, d.outputBuf, cast(uint) n)
@@ -946,154 +946,155 @@ impl Deflate
     {
         d := state
         pSrc := d.inSrc
-        src_buf_left := d.srcBufLeft
+        srcBufLeft := d.srcBufLeft
 
-        while src_buf_left or d.lookaheadSize
+        while srcBufLeft or d.lookaheadSize
         {
             if (d.lookaheadSize + d.dictSize) >= (MinMatchLen - 1)
             {
-                var dst_pos: u32 = (d.lookaheadPos + d.lookaheadSize) & LzDictSizeMask
-                var ins_pos: u32 = d.lookaheadPos + d.lookaheadSize - 2
-                var hash:    u32 = (cast(u32) d.dict[ins_pos & LzDictSizeMask] << LzHashShift)
-                hash ^= d.dict[(ins_pos + 1) & LzDictSizeMask]
+                var dstPos: u32 = (d.lookaheadPos + d.lookaheadSize) & LzDictSizeMask
+                var insPos: u32 = d.lookaheadPos + d.lookaheadSize - 2
+                var hash:   u32 = (cast(u32) d.dict[insPos & LzDictSizeMask] << LzHashShift)
+                hash ^= d.dict[(insPos + 1) & LzDictSizeMask]
 
-                num_bytes_to_process := cast(u32) Math.min(cast(u32) src_buf_left, cast(u32) (MaxMatchLen - d.lookaheadSize))
+                numBytesToProcess := cast(u32) Math.min(cast(u32) srcBufLeft, cast(u32) (MaxMatchLen - d.lookaheadSize))
 
-                pSrc_end := pSrc ? pSrc + num_bytes_to_process : null
-                src_buf_left -= num_bytes_to_process
-                d.lookaheadSize += num_bytes_to_process
+                pSrc_end := pSrc ? pSrc + numBytesToProcess : null
+                srcBufLeft -= numBytesToProcess
+                d.lookaheadSize += numBytesToProcess
 
                 while pSrc != pSrc_end
                 {
                     c := dref pSrc
                     pSrc += 1
-                    d.dict[dst_pos] = c;
-                    if dst_pos < (MaxMatchLen - 1)
-                        d.dict[LzDictSize + dst_pos] = c
+                    d.dict[dstPos] = c;
+                    if dstPos < (MaxMatchLen - 1)
+                        d.dict[LzDictSize + dstPos] = c
                     hash = ((hash << LzHashShift) ^ c) & (LzHashSize - 1)
-                    d.next[ins_pos & LzDictSizeMask] = d.hash[hash]
-                    d.hash[hash] = cast(u16) ins_pos
-                    dst_pos = (dst_pos + 1) & LzDictSizeMask
-                    ins_pos += 1
+                    d.next[insPos & LzDictSizeMask] = d.hash[hash]
+                    d.hash[hash] = cast(u16) insPos
+                    dstPos = (dstPos + 1) & LzDictSizeMask
+                    insPos += 1
                 }
             }
             else
             {
-                while src_buf_left and d.lookaheadSize < MaxMatchLen
+                while srcBufLeft and d.lookaheadSize < MaxMatchLen
                 {
                     c := dref pSrc
                     pSrc += 1
-                    dst_pos := (d.lookaheadPos + d.lookaheadSize) & LzDictSizeMask
-                    src_buf_left -= 1
-                    d.dict[dst_pos] = c
-                    if dst_pos < (MaxMatchLen - 1)
-                        d.dict[LzDictSize + dst_pos] = c
+                    dstPos := (d.lookaheadPos + d.lookaheadSize) & LzDictSizeMask
+                    srcBufLeft -= 1
+                    d.dict[dstPos] = c
+                    if dstPos < (MaxMatchLen - 1)
+                        d.dict[LzDictSize + dstPos] = c
                     d.lookaheadSize += 1
                     if (d.lookaheadSize + d.dictSize) >= MinMatchLen
                     {
-                        var ins_pos: u32 = d.lookaheadPos + (d.lookaheadSize - 1) - 2
-                        var hash: u32 = (cast(u32) d.dict[ins_pos & LzDictSizeMask] << (LzHashShift * 2))
-                        hash = (hash ^ (cast(u32) d.dict[(ins_pos + 1) & LzDictSizeMask] << LzHashShift) ^ c)
+                        var insPos: u32 = d.lookaheadPos + (d.lookaheadSize - 1) - 2
+                        var hash: u32 = (cast(u32) d.dict[insPos & LzDictSizeMask] << (LzHashShift * 2))
+                        hash = (hash ^ (cast(u32) d.dict[(insPos + 1) & LzDictSizeMask] << LzHashShift) ^ c)
                         hash &= (LzHashSize - 1)
-                        d.next[ins_pos & LzDictSizeMask] = d.hash[hash]
-                        d.hash[hash] = cast(u16) ins_pos
+                        d.next[insPos & LzDictSizeMask] = d.hash[hash]
+                        d.hash[hash] = cast(u16) insPos
                     }
                 }
             }
 
             d.dictSize = Math.min(cast(u32) (LzDictSize - d.lookaheadSize), d.dictSize)
 
-            len_to_move := 1'u32
-            cur_match_dist := 0'u32
-            cur_match_len := d.savedMatchLen ? d.savedMatchLen : cast(u32) (MinMatchLen - 1)
-            var cur_pos: u32 = d.lookaheadPos & LzDictSizeMask
+            lenToMove    := 1'u32
+            curMatchDist := 0'u32
+            curMatchLen  := d.savedMatchLen ? d.savedMatchLen : cast(u32) (MinMatchLen - 1)
+
+            var curPos: u32 = d.lookaheadPos & LzDictSizeMask
             if d.m_flags & (RleMatches | ForceAllRawBlocks)
             {
                 if (d.dictSize) and !(d.m_flags & ForceAllRawBlocks)
                 {
-                    c := d.dict[(cur_pos - 1) & LzDictSizeMask]
-                    cur_match_len = 0
-                    while cur_match_len < d.lookaheadSize
+                    c := d.dict[(curPos - 1) & LzDictSizeMask]
+                    curMatchLen = 0
+                    while curMatchLen < d.lookaheadSize
                     {
-                        if d.dict[cur_pos + cur_match_len] != c
+                        if d.dict[curPos + curMatchLen] != c
                             break
-                        cur_match_len += 1
+                        curMatchLen += 1
                     }
-                    if cur_match_len < MinMatchLen
-                        cur_match_len = 0
+                    if curMatchLen < MinMatchLen
+                        curMatchLen = 0
                     else
-                        cur_match_dist = 1
+                        curMatchDist = 1
                 }
             }
             else
             {
-                findMatch(d.lookaheadPos, d.dictSize, d.lookaheadSize, &cur_match_dist, &cur_match_len)
+                findMatch(d.lookaheadPos, d.dictSize, d.lookaheadSize, &curMatchDist, &curMatchLen)
             }
 
-            if  ((cur_match_len == MinMatchLen) and (cur_match_dist >= 8 * 1024)) or
-                (cur_pos == cur_match_dist) or
-                ((d.m_flags & FilterMatches) and (cur_match_len <= 5))
+            if  ((curMatchLen == MinMatchLen) and (curMatchDist >= 8 * 1024)) or
+                (curPos == curMatchDist) or
+                ((d.m_flags & FilterMatches) and (curMatchLen <= 5))
             {
-                cur_match_dist, cur_match_len = 0
+                curMatchDist, curMatchLen = 0
             }
 
             if d.savedMatchLen
             {
-                if cur_match_len > d.savedMatchLen
+                if curMatchLen > d.savedMatchLen
                 {
                     recordLiteral(cast(u8) d.savedLit)
-                    if cur_match_len >= 128
+                    if curMatchLen >= 128
                     {
-                        recordMatch(cur_match_len, cur_match_dist)
+                        recordMatch(curMatchLen, curMatchDist)
                         d.savedMatchLen = 0
-                        len_to_move = cur_match_len
+                        lenToMove = curMatchLen
                     }
                     else
                     {
-                        d.savedLit = d.dict[cur_pos]
-                        d.savedMatchDist = cur_match_dist
-                        d.savedMatchLen = cur_match_len
+                        d.savedLit = d.dict[curPos]
+                        d.savedMatchDist = curMatchDist
+                        d.savedMatchLen = curMatchLen
                     }
                 }
                 else
                 {
                     recordMatch(d.savedMatchLen, d.savedMatchDist)
-                    len_to_move = d.savedMatchLen - 1;
+                    lenToMove = d.savedMatchLen - 1;
                     d.savedMatchLen = 0;
                 }
             }
-            elif !cur_match_dist
+            elif !curMatchDist
             {
-                recordLiteral(d.dict[Math.min(cur_pos, cast(u32) @sizeof(d.dict) - 1)])
+                recordLiteral(d.dict[Math.min(curPos, cast(u32) @sizeof(d.dict) - 1)])
             }
-            elif d.greedyParsing or (d.m_flags & RleMatches) or (cur_match_len >= 128)
+            elif d.greedyParsing or (d.m_flags & RleMatches) or (curMatchLen >= 128)
             {
-                recordMatch(cur_match_len, cur_match_dist)
-                len_to_move = cur_match_len
+                recordMatch(curMatchLen, curMatchDist)
+                lenToMove = curMatchLen
             }
             else
             {
-                d.savedLit = d.dict[Math.min(cur_pos, cast(u32) @sizeof(d.dict) - 1)]
-                d.savedMatchDist = cur_match_dist
-                d.savedMatchLen = cur_match_len
+                d.savedLit = d.dict[Math.min(curPos, cast(u32) @sizeof(d.dict) - 1)]
+                d.savedMatchDist = curMatchDist
+                d.savedMatchLen = curMatchLen
             }
 
-            d.lookaheadPos += len_to_move
-            Debug.assert(d.lookaheadSize >= len_to_move)
-            d.lookaheadSize -= len_to_move
-            d.dictSize = Math.min(d.dictSize + len_to_move, cast(u32) LzDictSize)
+            d.lookaheadPos += lenToMove
+            Debug.assert(d.lookaheadSize >= lenToMove)
+            d.lookaheadSize -= lenToMove
+            d.dictSize = Math.min(d.dictSize + lenToMove, cast(u32) LzDictSize)
 
             if (d.lzCodeBufAddr > &d.lzCodeBuf[LzCodeBufSize - 8]) or
                 ((d.totalLzBytes > 31 * 1024) and ((((cast(u32) (d.lzCodeBufAddr - &d.lzCodeBuf[0]) * 115) >> 7) >= d.totalLzBytes) or (d.m_flags & ForceAllRawBlocks)))
             {
                 d.inSrc = pSrc
-                d.srcBufLeft = src_buf_left
+                d.srcBufLeft = srcBufLeft
                 flushBlock(false)
             }
         }
 
         d.inSrc = pSrc
-        d.srcBufLeft = src_buf_left
+        d.srcBufLeft = srcBufLeft
     }
 }
 
