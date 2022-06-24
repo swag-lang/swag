@@ -61,8 +61,6 @@ TODO
 ****************************************
 
 -------------------------------------
-function prend any en param, et on met @{} ou @[] directement au call
--------------------------------------
 debug lambda capture parameters not visible
 -------------------------------------
 @mkcallback ne vérifie pas qu'il y a #[Swag.Callback] sur la fonction, mais
