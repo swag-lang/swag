@@ -90,7 +90,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
 
             return true;
         }
- 
+
         if (typeInfo->numRegisters() == 2)
         {
             transformResultToLinear2(context, node->resultRegisterRC);
@@ -406,9 +406,10 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         else if (typeInfo->numRegisters() == 2)
         {
             reserveLinearRegisterRC2(context, node->resultRegisterRC);
-            auto inst   = emitInstruction(context, ByteCodeOp::GetFromStack64x2, node->resultRegisterRC[0], 0, node->resultRegisterRC[1], 0);
-            inst->b.u64 = resolved->computedValue.storageOffset;
-            inst->d.u64 = resolved->computedValue.storageOffset + 8;
+            auto inst0   = emitInstruction(context, ByteCodeOp::GetFromStack64, node->resultRegisterRC[0]);
+            inst0->b.u64 = resolved->computedValue.storageOffset;
+            auto inst1   = emitInstruction(context, ByteCodeOp::GetFromStack64, node->resultRegisterRC[1]);
+            inst1->b.u64 = resolved->computedValue.storageOffset + 8;
         }
         else
         {

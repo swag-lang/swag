@@ -649,6 +649,24 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
         }
         break;
 
+    case ByteCodeOp::SetImmediate32:
+        if (ip[0].b.u32 == 0)
+        {
+            SET_OP(ip, ByteCodeOp::ClearRA);
+            break;
+        }
+
+        break;
+
+    case ByteCodeOp::SetImmediate64:
+        if (ip[0].b.u64 == 0)
+        {
+            SET_OP(ip, ByteCodeOp::ClearRA);
+            break;
+        }
+
+        break;
+
         // Indirect assign to register. Make it direct
     case ByteCodeOp::ClearRA:
         if (ip[1].op == ByteCodeOp::CopyRBAddrToRA &&
@@ -748,6 +766,12 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
         break;
 
     case ByteCodeOp::SetAtStackPointer8:
+        if (ip[0].flags & BCI_IMM_B && ip[0].b.u8 == 0)
+        {
+            SET_OP(ip, ByteCodeOp::SetZeroStack8);
+            break;
+        }
+
         if (ip[1].op == ByteCodeOp::GetFromStack8 &&
             ip[0].a.u32 == ip[1].b.u32 &&
             ip[0].flags & BCI_IMM_B &&
@@ -773,6 +797,12 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
         break;
 
     case ByteCodeOp::SetAtStackPointer16:
+        if (ip[0].flags & BCI_IMM_B && ip[0].b.u16 == 0)
+        {
+            SET_OP(ip, ByteCodeOp::SetZeroStack16);
+            break;
+        }
+
         if (ip[1].op == ByteCodeOp::GetFromStack16 &&
             ip[0].a.u32 == ip[1].b.u32 &&
             ip[0].flags & BCI_IMM_B &&
@@ -798,6 +828,12 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
         break;
 
     case ByteCodeOp::SetAtStackPointer32:
+        if (ip[0].flags & BCI_IMM_B && ip[0].b.u32 == 0)
+        {
+            SET_OP(ip, ByteCodeOp::SetZeroStack32);
+            break;
+        }
+
         if (ip[1].op == ByteCodeOp::GetFromStack32 &&
             ip[0].a.u32 == ip[1].b.u32 &&
             ip[0].flags & BCI_IMM_B &&
@@ -823,6 +859,12 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
         break;
 
     case ByteCodeOp::SetAtStackPointer64:
+        if (ip[0].flags & BCI_IMM_B && ip[0].b.u64 == 0)
+        {
+            SET_OP(ip, ByteCodeOp::SetZeroStack64);
+            break;
+        }
+
         if (ip[1].op == ByteCodeOp::GetFromStack64 &&
             ip[0].a.u32 == ip[1].b.u32 &&
             ip[0].flags & BCI_IMM_B &&
@@ -2905,6 +2947,16 @@ void ByteCodeOptimizer::reduceForceSafe(ByteCodeOptContext* context, ByteCodeIns
     }
 }
 
+bool ByteCodeOptimizer::optimizePassReduceX2(ByteCodeOptContext* context)
+{
+    for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
+    {
+        reduceX2(context, ip);
+    }
+
+    return true;
+}
+
 bool ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
 {
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
@@ -2919,7 +2971,6 @@ bool ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
         reduceCmpJump(context, ip);
         reduceSwap(context, ip);
         reduceAppend(context, ip);
-        reduceX2(context, ip);
         reduceForceSafe(context, ip);
     }
 

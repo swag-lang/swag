@@ -60,6 +60,7 @@ struct ByteCodeOptimizer
     static void reduceCmpJump(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void reduceForceSafe(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static bool optimizePassReduce(ByteCodeOptContext* context);
+    static bool optimizePassReduceX2(ByteCodeOptContext* context);
     
     static bool optimize(Job* job, Module* module, bool& done);
 };
