@@ -99,10 +99,11 @@ func addImage(image: Image)
     // PNG
     scope
     {
-        var png: Png.Encoder
+        var png:    Png.Encoder
         var buffer: ConcatBuffer
-        var opt: Png.EncodeOptions
+        var opt:    Png.EncodeOptions
 
+        opt.compressionLevel = .NoCompression // We want best speed
         catch png.IImageEncoder.encode(&buffer, image, opt)
         if @err
             break
