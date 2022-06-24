@@ -61,6 +61,8 @@ TODO
 ****************************************
 
 -------------------------------------
+function prend any en param, et on met @{} ou @[] directement au call
+-------------------------------------
 debug lambda capture parameters not visible
 -------------------------------------
 @mkcallback ne vérifie pas qu'il y a #[Swag.Callback] sur la fonction, mais
@@ -96,7 +98,7 @@ OPTIMS
 ****************************************
 
 -------------------------------------
-clear stack follow by getfromstack
+clear stack followed by getfromstack
 -------------------------------------
 x64 binaryop div, transformer en shift si log2
 -------------------------------------

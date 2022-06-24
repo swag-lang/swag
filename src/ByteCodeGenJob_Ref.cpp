@@ -265,12 +265,12 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     auto typeInfo = TypeManager::concreteReferenceType(node->array->typeInfo);
     auto castInfo = node->array->castedTypeInfo ? node->array->castedTypeInfo : nullptr;
 
-    if (!(node->access->doneFlags & AST_DONE_CAST1))
+    if (!(node->access->doneFlags & AST_DONE_CAST3))
     {
         SWAG_CHECK(emitCast(context, node->access, node->access->typeInfo, node->access->castedTypeInfo));
         if (context->result == ContextResult::Pending)
             return true;
-        node->access->doneFlags |= AST_DONE_CAST1;
+        node->access->doneFlags |= AST_DONE_CAST3;
     }
 
     // Dereference of a string constant

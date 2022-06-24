@@ -257,8 +257,7 @@ impl Deflate
         match_len := dref pMatch_len
         probe_pos := pos
 
-        idx := match_len >= 32 ? 1 : 0
-        num_probes_left := d.m_max_probes[idx]
+        num_probes_left := d.m_max_probes[match_len >= 32 ? 1 : 0]
         s  := &d.m_dict[0] + pos
         c0 := d.m_dict[pos + match_len]
         c1 := d.m_dict[pos + match_len - 1]
