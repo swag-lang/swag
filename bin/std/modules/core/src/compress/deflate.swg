@@ -126,8 +126,8 @@ struct Compressor
     dictSize:           u32
     lzCodeBufAddr:      *u8
     lzFlags:            *u8
-    outputBuf:          *u8
-    outputBufEnd:       *u8
+    outputBufAddr:      *u8
+    outputBufEndAddr:   *u8
     numFlagsLeft:       u32
     totalLzBytes:       u32
     lzCodeBufDictPos:   u32
@@ -142,14 +142,14 @@ struct Compressor
     inSrc:              const *u8
     srcBufLeft:         uint
     outBufOfs:          uint
-    m_dict:             [LzDictSize + MaxMatchLen - 1] u8
+    dict:               [LzDictSize + MaxMatchLen - 1] u8
     huffCount:          [MaxHuffTables, MaxHuffSymbols] u16
     huffCodes:          [MaxHuffTables, MaxHuffSymbols] u16
     huffCodeSizes:      [MaxHuffTables, MaxHuffSymbols] u8
-    m_lz_code_buf:      [LzCodeBufSize] u8
-    m_next:             [LzDictSize] u16
-    m_hash:             [LzHashSize] u16
-    m_output_buf:       [OutBufSize] u8
+    lzCodeBuf:          [LzCodeBufSize] u8
+    next:               [LzDictSize] u16
+    hash:               [LzHashSize] u16
+    outputBuf:          [OutBufSize] u8
     result:             *Array'u8
 }
 }
@@ -192,11 +192,11 @@ impl Deflate
         d.maxProbes[0] = 1 + ((flags & 0xFFF) + 2) / 3
         d.greedyParsing = (flags & GreedyParsing) != 0
         d.maxProbes[1] = 1 + (((flags & 0xFFF) >> 2) + 2) / 3
-        d.lzCodeBufAddr = &d.m_lz_code_buf[1]
-        d.lzFlags = &d.m_lz_code_buf[0]
+        d.lzCodeBufAddr = &d.lzCodeBuf[1]
+        d.lzFlags = &d.lzCodeBuf[0]
         d.numFlagsLeft = 8
-        d.outputBuf = d.m_output_buf
-        d.outputBufEnd = d.m_output_buf
+        d.outputBufAddr = d.outputBuf
+        d.outputBufEndAddr = d.outputBuf
     }
 
     mtd recordLiteral(lit: u8)
@@ -219,14 +219,14 @@ impl Deflate
         d.huffCount[0, lit] += 1
     }
 
-    mtd recordMatch(match_len: u32, md: u32)
+    mtd recordMatch(matchLen: u32, md: u32)
     {
         match_dist := md
         d := state
 
-        d.totalLzBytes += match_len
+        d.totalLzBytes += matchLen
 
-        d.lzCodeBufAddr[0] = cast(u8) (match_len - MinMatchLen)
+        d.lzCodeBufAddr[0] = cast(u8) (matchLen - MinMatchLen)
 
         match_dist -= 1
         d.lzCodeBufAddr[1] = cast(u8) (match_dist & 0xFF)
@@ -245,7 +245,7 @@ impl Deflate
         s0 := SmallDistSym[match_dist & 511]
         s1 := LargeDistSym[(match_dist >> 8) & 127]
         d.huffCount[1, (match_dist < 512) ? s0 : s1] += 1
-        d.huffCount[0, LenSym[match_len - MinMatchLen]] += 1
+        d.huffCount[0, LenSym[matchLen - MinMatchLen]] += 1
     }
 
     mtd findMatch(lookahead_pos, max_dist, max_match_len: u32, pMatch_dist, pMatch_len: *u32)
@@ -253,15 +253,15 @@ impl Deflate
         d := state
 
         pos := lookahead_pos & LzDictSizeMask
-        match_len := dref pMatch_len
+        matchLen := dref pMatch_len
         probe_pos := pos
 
-        num_probes_left := d.maxProbes[match_len >= 32 ? 1 : 0]
-        s  := &d.m_dict[0] + pos
-        c0 := d.m_dict[pos + match_len]
-        c1 := d.m_dict[pos + match_len - 1]
+        num_probes_left := d.maxProbes[matchLen >= 32 ? 1 : 0]
+        s  := &d.dict[0] + pos
+        c0 := d.dict[pos + matchLen]
+        c1 := d.dict[pos + matchLen - 1]
 
-        if max_match_len <= match_len
+        if max_match_len <= matchLen
             return
 
         loop
@@ -278,14 +278,14 @@ impl Deflate
                 #[Swag.Mixin]
                 func probe()
                 {
-                    next_probe_pos = d.m_next[probe_pos]
+                    next_probe_pos = d.next[probe_pos]
                     if !next_probe_pos
                         return
                     dist = cast(u16) (lookahead_pos - next_probe_pos)
                     if dist > max_dist
                         return
                     probe_pos = next_probe_pos & LzDictSizeMask
-                    if (d.m_dict[probe_pos + match_len] == c0) and (d.m_dict[probe_pos + match_len - 1] == c1)
+                    if (d.dict[probe_pos + matchLen] == c0) and (d.dict[probe_pos + matchLen - 1] == c1)
                         break
                 }
 
@@ -298,7 +298,7 @@ impl Deflate
                 break
 
             p := s
-            q := &d.m_dict[0] + probe_pos
+            q := &d.dict[0] + probe_pos
             var probe_len: u32
             while probe_len < max_match_len
             {
@@ -310,15 +310,15 @@ impl Deflate
                 probe_len += 1
             }
 
-            if probe_len > match_len
+            if probe_len > matchLen
             {
                 dref pMatch_dist = dist
                 dref pMatch_len = probe_len
-                match_len = probe_len
-                if match_len == max_match_len
+                matchLen = probe_len
+                if matchLen == max_match_len
                     return
-                c0 = d.m_dict[pos + match_len]
-                c1 = d.m_dict[pos + match_len - 1]
+                c0 = d.dict[pos + matchLen]
+                c1 = d.dict[pos + matchLen - 1]
             }
         }
     }
@@ -334,10 +334,10 @@ impl Deflate
         d.bitsIn += len
         while d.bitsIn >= 8
         {
-            if d.outputBuf < d.outputBufEnd
+            if d.outputBufAddr < d.outputBufEndAddr
             {
-                dref d.outputBuf = cast(u8) d.bitBuffer
-                d.outputBuf += 1
+                dref d.outputBufAddr = cast(u8) d.bitBuffer
+                d.outputBufAddr += 1
             }
 
             d.bitBuffer >>= 8
@@ -798,7 +798,7 @@ impl Deflate
     {
         d := state
         flags := 1'u32
-        for pLZ_codes := &d.m_lz_code_buf[0]; pLZ_codes < d.lzCodeBufAddr; flags >>= 1
+        for pLZ_codes := &d.lzCodeBuf[0]; pLZ_codes < d.lzCodeBufAddr; flags >>= 1
         {
             if flags == 1
             {
@@ -808,12 +808,12 @@ impl Deflate
 
             if flags & 1
             {
-                match_len  := cast(u32) pLZ_codes[0]
+                matchLen  := cast(u32) pLZ_codes[0]
                 match_dist := cast(u32) pLZ_codes[1] | (cast(u32) pLZ_codes[2] << 8)
                 pLZ_codes += 3
 
-                putBits(cast(u32) d.huffCodes[0, LenSym[match_len]], cast(u32) d.huffCodeSizes[0, LenSym[match_len]])
-                putBits(match_len & Bitmasks[LenExtra[match_len]], cast(u32) LenExtra[match_len])
+                putBits(cast(u32) d.huffCodes[0, LenSym[matchLen]], cast(u32) d.huffCodeSizes[0, LenSym[matchLen]])
+                putBits(matchLen & Bitmasks[LenExtra[matchLen]], cast(u32) LenExtra[matchLen])
 
                 var sym, num_extra_bits: u32
                 if match_dist < 512
@@ -839,7 +839,7 @@ impl Deflate
         }
 
         putBits(cast(u32) d.huffCodes[0, 256], cast(u32) d.huffCodeSizes[0, 256])
-        return d.outputBuf < d.outputBufEnd
+        return d.outputBufAddr < d.outputBufEndAddr
     }
 
     mtd compressBlock(static_block: bool)->bool
@@ -862,10 +862,10 @@ impl Deflate
         if d.result.capacity - d.result.count >= OutBufSize
             pOutput_buf_start = d.result.buffer + d.outBufOfs
         else
-            pOutput_buf_start = &d.m_output_buf[0]
+            pOutput_buf_start = &d.outputBuf[0]
 
-        d.outputBuf = pOutput_buf_start
-        d.outputBufEnd = d.outputBuf + OutBufSize - 16
+        d.outputBufAddr = pOutput_buf_start
+        d.outputBufEndAddr = d.outputBufAddr + OutBufSize - 16
 
         d.outputFlushOfs = 0
 
@@ -874,17 +874,17 @@ impl Deflate
 
         putBits(finish ? 1 : 0, 1)
 
-        pSaved_output_buf := d.outputBuf
+        pSaved_output_buf := d.outputBufAddr
         saved_bit_buf := d.bitBuffer
         saved_bits_in := d.bitsIn
 
         if !use_raw_block
             comp_block_succeeded = compressBlock((d.m_flags & ForceAllStaticBlocks) or (d.totalLzBytes < 48))
 
-        if ((use_raw_block or (d.totalLzBytes and ((d.outputBuf - pSaved_output_buf + 1) >= d.totalLzBytes))) and
+        if ((use_raw_block or (d.totalLzBytes and ((d.outputBufAddr - pSaved_output_buf + 1) >= d.totalLzBytes))) and
             ((d.lookaheadPos - d.lzCodeBufDictPos) <= d.dictSize))
         {
-            d.outputBuf = pSaved_output_buf
+            d.outputBufAddr = pSaved_output_buf
             d.bitBuffer = saved_bit_buf
             d.bitsIn = saved_bits_in
             putBits(0, 2)
@@ -901,12 +901,12 @@ impl Deflate
 
             for i := 0; i < d.totalLzBytes; i += 1
             {
-                putBits(cast(u32) d.m_dict[(d.lzCodeBufDictPos + i) & LzDictSizeMask], 8)
+                putBits(cast(u32) d.dict[(d.lzCodeBufDictPos + i) & LzDictSizeMask], 8)
             }
         }
         elif !comp_block_succeeded
         {
-            d.outputBuf = pSaved_output_buf
+            d.outputBufAddr = pSaved_output_buf
             d.bitBuffer = saved_bit_buf
             d.bitsIn = saved_bits_in
             discard compressBlock(true)
@@ -918,20 +918,20 @@ impl Deflate
         Memory.clear(&d.huffCount[0, 0], cast(uint) @sizeof(d.huffCount[0, 0]) * MaxHuffSymbols0)
         Memory.clear(&d.huffCount[1, 0], cast(uint) @sizeof(d.huffCount[1, 0]) * MaxHuffSymbols1)
 
-        d.lzCodeBufAddr = &d.m_lz_code_buf[0] + 1
-        d.lzFlags = &d.m_lz_code_buf[0]
+        d.lzCodeBufAddr = &d.lzCodeBuf[0] + 1
+        d.lzFlags = &d.lzCodeBuf[0]
         d.numFlagsLeft = 8
         d.lzCodeBufDictPos += d.totalLzBytes
         d.totalLzBytes = 0
         d.blockIndex += 1
 
-        n := cast(uint) (d.outputBuf - pOutput_buf_start)
+        n := cast(uint) (d.outputBufAddr - pOutput_buf_start)
         if n != 0
         {
-            if (pOutput_buf_start == &d.m_output_buf[0])
+            if (pOutput_buf_start == &d.outputBuf[0])
             {
                 d.result.resize(d.result.count + n)
-                Memory.copy(d.result.buffer + d.outBufOfs, d.m_output_buf, cast(uint) n)
+                Memory.copy(d.result.buffer + d.outBufOfs, d.outputBuf, cast(uint) n)
                 d.outBufOfs += n
             }
             else
@@ -954,8 +954,8 @@ impl Deflate
             {
                 var dst_pos: u32 = (d.lookaheadPos + d.lookaheadSize) & LzDictSizeMask
                 var ins_pos: u32 = d.lookaheadPos + d.lookaheadSize - 2
-                var hash:    u32 = (cast(u32) d.m_dict[ins_pos & LzDictSizeMask] << LzHashShift)
-                hash ^= d.m_dict[(ins_pos + 1) & LzDictSizeMask]
+                var hash:    u32 = (cast(u32) d.dict[ins_pos & LzDictSizeMask] << LzHashShift)
+                hash ^= d.dict[(ins_pos + 1) & LzDictSizeMask]
 
                 num_bytes_to_process := cast(u32) Math.min(cast(u32) src_buf_left, cast(u32) (MaxMatchLen - d.lookaheadSize))
 
@@ -967,12 +967,12 @@ impl Deflate
                 {
                     c := dref pSrc
                     pSrc += 1
-                    d.m_dict[dst_pos] = c;
+                    d.dict[dst_pos] = c;
                     if dst_pos < (MaxMatchLen - 1)
-                        d.m_dict[LzDictSize + dst_pos] = c
+                        d.dict[LzDictSize + dst_pos] = c
                     hash = ((hash << LzHashShift) ^ c) & (LzHashSize - 1)
-                    d.m_next[ins_pos & LzDictSizeMask] = d.m_hash[hash]
-                    d.m_hash[hash] = cast(u16) ins_pos
+                    d.next[ins_pos & LzDictSizeMask] = d.hash[hash]
+                    d.hash[hash] = cast(u16) ins_pos
                     dst_pos = (dst_pos + 1) & LzDictSizeMask
                     ins_pos += 1
                 }
@@ -985,18 +985,18 @@ impl Deflate
                     pSrc += 1
                     dst_pos := (d.lookaheadPos + d.lookaheadSize) & LzDictSizeMask
                     src_buf_left -= 1
-                    d.m_dict[dst_pos] = c
+                    d.dict[dst_pos] = c
                     if dst_pos < (MaxMatchLen - 1)
-                        d.m_dict[LzDictSize + dst_pos] = c
+                        d.dict[LzDictSize + dst_pos] = c
                     d.lookaheadSize += 1
                     if (d.lookaheadSize + d.dictSize) >= MinMatchLen
                     {
                         var ins_pos: u32 = d.lookaheadPos + (d.lookaheadSize - 1) - 2
-                        var hash: u32 = (cast(u32) d.m_dict[ins_pos & LzDictSizeMask] << (LzHashShift * 2))
-                        hash = (hash ^ (cast(u32) d.m_dict[(ins_pos + 1) & LzDictSizeMask] << LzHashShift) ^ c)
+                        var hash: u32 = (cast(u32) d.dict[ins_pos & LzDictSizeMask] << (LzHashShift * 2))
+                        hash = (hash ^ (cast(u32) d.dict[(ins_pos + 1) & LzDictSizeMask] << LzHashShift) ^ c)
                         hash &= (LzHashSize - 1)
-                        d.m_next[ins_pos & LzDictSizeMask] = d.m_hash[hash]
-                        d.m_hash[hash] = cast(u16) ins_pos
+                        d.next[ins_pos & LzDictSizeMask] = d.hash[hash]
+                        d.hash[hash] = cast(u16) ins_pos
                     }
                 }
             }
@@ -1011,11 +1011,11 @@ impl Deflate
             {
                 if (d.dictSize) and !(d.m_flags & ForceAllRawBlocks)
                 {
-                    c := d.m_dict[(cur_pos - 1) & LzDictSizeMask]
+                    c := d.dict[(cur_pos - 1) & LzDictSizeMask]
                     cur_match_len = 0
                     while cur_match_len < d.lookaheadSize
                     {
-                        if d.m_dict[cur_pos + cur_match_len] != c
+                        if d.dict[cur_pos + cur_match_len] != c
                             break
                         cur_match_len += 1
                     }
@@ -1050,7 +1050,7 @@ impl Deflate
                     }
                     else
                     {
-                        d.savedLit = d.m_dict[cur_pos]
+                        d.savedLit = d.dict[cur_pos]
                         d.savedMatchDist = cur_match_dist
                         d.savedMatchLen = cur_match_len
                     }
@@ -1064,7 +1064,7 @@ impl Deflate
             }
             elif !cur_match_dist
             {
-                recordLiteral(d.m_dict[Math.min(cur_pos, cast(u32) @sizeof(d.m_dict) - 1)])
+                recordLiteral(d.dict[Math.min(cur_pos, cast(u32) @sizeof(d.dict) - 1)])
             }
             elif d.greedyParsing or (d.m_flags & RleMatches) or (cur_match_len >= 128)
             {
@@ -1073,7 +1073,7 @@ impl Deflate
             }
             else
             {
-                d.savedLit = d.m_dict[Math.min(cur_pos, cast(u32) @sizeof(d.m_dict) - 1)]
+                d.savedLit = d.dict[Math.min(cur_pos, cast(u32) @sizeof(d.dict) - 1)]
                 d.savedMatchDist = cur_match_dist
                 d.savedMatchLen = cur_match_len
             }
@@ -1083,8 +1083,8 @@ impl Deflate
             d.lookaheadSize -= len_to_move
             d.dictSize = Math.min(d.dictSize + len_to_move, cast(u32) LzDictSize)
 
-            if (d.lzCodeBufAddr > &d.m_lz_code_buf[LzCodeBufSize - 8]) or
-                ((d.totalLzBytes > 31 * 1024) and ((((cast(u32) (d.lzCodeBufAddr - &d.m_lz_code_buf[0]) * 115) >> 7) >= d.totalLzBytes) or (d.m_flags & ForceAllRawBlocks)))
+            if (d.lzCodeBufAddr > &d.lzCodeBuf[LzCodeBufSize - 8]) or
+                ((d.totalLzBytes > 31 * 1024) and ((((cast(u32) (d.lzCodeBufAddr - &d.lzCodeBuf[0]) * 115) >> 7) >= d.totalLzBytes) or (d.m_flags & ForceAllRawBlocks)))
             {
                 d.inSrc = pSrc
                 d.srcBufLeft = src_buf_left
