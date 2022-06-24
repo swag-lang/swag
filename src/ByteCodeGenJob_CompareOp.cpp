@@ -337,6 +337,12 @@ bool ByteCodeGenJob::emitCompareOpNotEqual(ByteCodeGenContext* context, AstNode*
                 freeRegisterRC(context, rt);
             }
             return true;
+        case NativeTypeKind::Any:
+            if (right->semFlags & AST_SEM_TYPE_IS_NULL)
+            {
+                emitInstruction(context, ByteCodeOp::CompareOpNotEqual64, r0[0], r1[0], r2);
+                return true;
+            }
         default:
             return context->internalError("emitCompareOpNotEqual, type not supported");
         }

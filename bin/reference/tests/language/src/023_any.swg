@@ -49,4 +49,18 @@
         @assert(array[2] == 3.0)
         @assert(array[3] == "4")
     }
+
+    // An any can be set to null, and tested against null
+    {
+        var x: any
+        @assert(x == null)
+        x = 6
+        @assert(x != null)
+        @assert(x == 6)
+        x = "string"
+        @assert(x != null)
+        @assert(x == "string")
+        x = null
+        @assert(x == null)
+    }
 }
