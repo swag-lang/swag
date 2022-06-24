@@ -488,18 +488,18 @@ impl Deflate
         }
     }
 
-    mtd optimizeHuffmanTable(table_num, table_len, code_size_limit: u32, static_table: bool)
+    mtd optimizeHuffmanTable(tableNum, tableLen, codeSizeLimit: u32, staticTable: bool)
     {
         d := state
 
-        var num_codes: [1 + MaxSupportedHuffCodeSize] s32
-        var next_code: [MaxSupportedHuffCodeSize + 1] u32
+        var numCodes: [1 + MaxSupportedHuffCodeSize] s32
+        var nextCode: [MaxSupportedHuffCodeSize + 1] u32
 
-        if static_table
+        if staticTable
         {
-            for i := 0; i < table_len; i += 1
+            for i := 0; i < tableLen; i += 1
             {
-                num_codes[d.huffCodeSizes[table_num, i]] += 1
+                numCodes[d.huffCodeSizes[tableNum, i]] += 1
             }
         }
         else
@@ -507,65 +507,65 @@ impl Deflate
             var syms0: [MaxHuffSymbols] SymFreq
             var syms1: [MaxHuffSymbols] SymFreq
 
-            num_used_syms := 0'u32
-            pSym_count := &d.huffCount[table_num, 0]
+            numUsedSyms := 0'u32
+            symCount := &d.huffCount[tableNum, 0]
 
-            for i := 0; i < table_len; i += 1
+            loop i: tableLen
             {
-                if pSym_count[i]
+                if symCount[i]
                 {
-                    syms0[num_used_syms].key = cast(u16) pSym_count[i]
-                    syms0[num_used_syms].symIndex = cast(u16) i
-                    num_used_syms += 1
+                    syms0[numUsedSyms].key = cast(u16) symCount[i]
+                    syms0[numUsedSyms].symIndex = cast(u16) i
+                    numUsedSyms += 1
                 }
             }
 
-            pSyms := radixSortSyms(num_used_syms, syms0, syms1)
-            calculateMinimumRedundancy(pSyms, num_used_syms)
+            syms := radixSortSyms(numUsedSyms, syms0, syms1)
+            calculateMinimumRedundancy(syms, numUsedSyms)
 
-            for i := 0; i < num_used_syms; i += 1
+            loop i: numUsedSyms
             {
-                num_codes[pSyms[i].key] += 1
+                numCodes[syms[i].key] += 1
             }
 
-            huffmanEnforceMaxCodeSize(num_codes, num_used_syms, code_size_limit)
+            huffmanEnforceMaxCodeSize(numCodes, numUsedSyms, codeSizeLimit)
 
-            Memory.clear(&d.huffCodeSizes[table_num], @sizeof(d.huffCodeSizes[table_num]))
-            Memory.clear(&d.huffCodes[table_num], @sizeof(d.huffCodes[table_num]))
+            Memory.clear(&d.huffCodeSizes[tableNum], @sizeof(d.huffCodeSizes[tableNum]))
+            Memory.clear(&d.huffCodes[tableNum], @sizeof(d.huffCodes[tableNum]))
 
-            for { i := 1; j := num_used_syms; } i <= code_size_limit; i += 1
+            for { i := 1; j := numUsedSyms; } i <= codeSizeLimit; i += 1
             {
-                for l := num_codes[i]; l > 0; l -= 1
+                for l := numCodes[i]; l > 0; l -= 1
                 {
                     j -= 1
-                    d.huffCodeSizes[table_num, pSyms[j].symIndex] = cast(u8) i
+                    d.huffCodeSizes[tableNum, syms[j].symIndex] = cast(u8) i
                 }
             }
         }
 
-        next_code[1] = 0
+        nextCode[1] = 0
         j := 0
-        for i := 2; i <= code_size_limit; i += 1
+        for i := 2; i <= codeSizeLimit; i += 1
         {
-            j = (j + num_codes[i - 1]) << 1
-            next_code[i] = j
+            j = (j + numCodes[i - 1]) << 1
+            nextCode[i] = j
         }
 
-        for i := 0; i < table_len; i += 1
+        for i := 0; i < tableLen; i += 1
         {
             rev_code := 0'u32
-            code_size := d.huffCodeSizes[table_num, i]
+            code_size := d.huffCodeSizes[tableNum, i]
             if code_size == 0
                 continue
-            cde := next_code[code_size]
-            next_code[code_size] += 1
+            cde := nextCode[code_size]
+            nextCode[code_size] += 1
             for l := code_size; l > 0; l -= 1
             {
                 rev_code = (rev_code << 1) | (cde & 1)
                 cde >>= 1
             }
 
-            d.huffCodes[table_num, i] = cast(u16) rev_code
+            d.huffCodes[tableNum, i] = cast(u16) rev_code
         }
     }
 
@@ -614,66 +614,66 @@ impl Deflate
     #[Swag.Mixin]
     func rlePrevCodeSize()
     {
-        if rle_repeat_count
+        if rleRepeatCount
         {
             d := state
-            if rle_repeat_count < 3
+            if rleRepeatCount < 3
             {
-                d.huffCount[2, prev_code_size] = cast(u16) (d.huffCount[2, prev_code_size] + rle_repeat_count)
-                while rle_repeat_count
+                d.huffCount[2, prevCodeSize] = cast(u16) (d.huffCount[2, prevCodeSize] + rleRepeatCount)
+                while rleRepeatCount
                 {
-                    packed_code_sizes[num_packed_code_sizes] = prev_code_size
-                    num_packed_code_sizes += 1
-                    rle_repeat_count -= 1
+                    packedCodeSizes[numPackedCodeSizes] = prevCodeSize
+                    numPackedCodeSizes += 1
+                    rleRepeatCount -= 1
                 }
             }
             else
             {
                 d.huffCount[2, 16] = cast(u16) (d.huffCount[2, 16] + 1)
-                packed_code_sizes[num_packed_code_sizes] = 16
-                num_packed_code_sizes += 1
-                packed_code_sizes[num_packed_code_sizes] = cast(u8) (rle_repeat_count - 3)
-                num_packed_code_sizes += 1
+                packedCodeSizes[numPackedCodeSizes] = 16
+                numPackedCodeSizes += 1
+                packedCodeSizes[numPackedCodeSizes] = cast(u8) (rleRepeatCount - 3)
+                numPackedCodeSizes += 1
             }
 
-            rle_repeat_count = 0
+            rleRepeatCount = 0
         }
     }
 
     #[Swag.Mixin]
     mtd rleZeroCodeSize()
     {
-        if rle_z_count
+        if rleZCount
         {
-            if rle_z_count < 3
+            if rleZCount < 3
             {
-                d.huffCount[2, 0] = cast(u16) (d.huffCount[2, 0] + rle_z_count)
-                while rle_z_count
+                d.huffCount[2, 0] = cast(u16) (d.huffCount[2, 0] + rleZCount)
+                while rleZCount
                 {
-                    packed_code_sizes[num_packed_code_sizes] = 0
-                    num_packed_code_sizes += 1
-                    rle_z_count -= 1
+                    packedCodeSizes[numPackedCodeSizes] = 0
+                    numPackedCodeSizes += 1
+                    rleZCount -= 1
                 }
             }
-            elif rle_z_count <= 10
+            elif rleZCount <= 10
             {
                 d.huffCount[2, 17] = cast(u16) (d.huffCount[2, 17] + 1)
-                packed_code_sizes[num_packed_code_sizes] = 17
-                num_packed_code_sizes += 1
-                packed_code_sizes[num_packed_code_sizes] = cast(u8) (rle_z_count - 3)
-                num_packed_code_sizes += 1
+                packedCodeSizes[numPackedCodeSizes] = 17
+                numPackedCodeSizes += 1
+                packedCodeSizes[numPackedCodeSizes] = cast(u8) (rleZCount - 3)
+                numPackedCodeSizes += 1
             }
             else
             {
                 d.huffCount[2, 18] = cast(u16) (d.huffCount[2, 18] + 1)
-                packed_code_sizes[num_packed_code_sizes] = 18
-                num_packed_code_sizes += 1
-                packed_code_sizes[num_packed_code_sizes] = cast(u8) (rle_z_count - 11)
-                num_packed_code_sizes += 1
+                packedCodeSizes[numPackedCodeSizes] = 18
+                numPackedCodeSizes += 1
+                packedCodeSizes[numPackedCodeSizes] = cast(u8) (rleZCount - 11)
+                numPackedCodeSizes += 1
 
             }
 
-            rle_z_count = 0
+            rleZCount = 0
         }
     }
 
@@ -682,8 +682,8 @@ impl Deflate
         d := state
 
         var code_sizes_to_pack: [MaxHuffSymbols0 + MaxHuffSymbols1] u8 = ?
-        var packed_code_sizes:  [MaxHuffSymbols0 + MaxHuffSymbols1] u8 = ?
-        prev_code_size := 0xFF'u8
+        var packedCodeSizes:  [MaxHuffSymbols0 + MaxHuffSymbols1] u8 = ?
+        prevCodeSize := 0xFF'u8
 
         d.huffCount[0, 256] = 1;
 
@@ -709,9 +709,9 @@ impl Deflate
         Memory.copy(&code_sizes_to_pack[0], &d.huffCodeSizes[0, 0], cast(uint) num_lit_codes)
         Memory.copy(&code_sizes_to_pack[0] + num_lit_codes, &d.huffCodeSizes[1, 0], cast(uint) num_dist_codes)
         total_code_sizes_to_pack := num_lit_codes + num_dist_codes
-        num_packed_code_sizes := 0
-        rle_z_count := 0
-        rle_repeat_count := 0
+        numPackedCodeSizes := 0
+        rleZCount := 0
+        rleRepeatCount := 0
 
         Memory.clear(&d.huffCount[2, 0], cast(uint) @sizeof(d.huffCount[2, 0]) * MaxHuffSymbols2)
         for i := 0; i < total_code_sizes_to_pack; i += 1
@@ -720,8 +720,8 @@ impl Deflate
             if !code_size
             {
                 rlePrevCodeSize()
-                rle_z_count += 1
-                if rle_z_count == 138
+                rleZCount += 1
+                if rleZCount == 138
                 {
                     rleZeroCodeSize()
                 }
@@ -729,27 +729,27 @@ impl Deflate
             else
             {
                 rleZeroCodeSize()
-                if code_size != prev_code_size
+                if code_size != prevCodeSize
                 {
                     rlePrevCodeSize()
                     d.huffCount[2, code_size] = cast(u16) (d.huffCount[2, code_size] + 1)
-                    packed_code_sizes[num_packed_code_sizes] = code_size
-                    num_packed_code_sizes += 1
+                    packedCodeSizes[numPackedCodeSizes] = code_size
+                    numPackedCodeSizes += 1
                 }
                 else
                 {
-                    rle_repeat_count += 1
-                    if rle_repeat_count == 6
+                    rleRepeatCount += 1
+                    if rleRepeatCount == 6
                     {
                         rlePrevCodeSize()
                     }
                 }
             }
 
-            prev_code_size = code_size
+            prevCodeSize = code_size
         }
 
-        if rle_repeat_count
+        if rleRepeatCount
         {
             rlePrevCodeSize()
         }
@@ -780,15 +780,15 @@ impl Deflate
         }
 
         packed_code_sizes_index := 0
-        while packed_code_sizes_index < num_packed_code_sizes
+        while packed_code_sizes_index < numPackedCodeSizes
         {
-            cde := packed_code_sizes[packed_code_sizes_index]
+            cde := packedCodeSizes[packed_code_sizes_index]
             packed_code_sizes_index += 1
             putBits(cast(u32) d.huffCodes[2, cde], cast(u32) d.huffCodeSizes[2, cde])
             if cde >= 16
             {
                 const p = @[2, 3, 7]
-                putBits(cast(u32) packed_code_sizes[packed_code_sizes_index], cast(u32) p[cde - 16])
+                putBits(cast(u32) packedCodeSizes[packed_code_sizes_index], cast(u32) p[cde - 16])
                 packed_code_sizes_index += 1
             }
         }
