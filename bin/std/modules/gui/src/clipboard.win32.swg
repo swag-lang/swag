@@ -101,8 +101,9 @@ func addImage(image: Image)
     {
         var png: Png.Encoder
         var buffer: ConcatBuffer
+        var opt: Png.EncodeOptions
 
-        catch png.IImageEncoder.encode(&buffer, image, @{})
+        catch png.IImageEncoder.encode(&buffer, image, opt)
         if @err
             break
         clipData := catch RegisterClipboardFormatA(@dataof("PNG"))

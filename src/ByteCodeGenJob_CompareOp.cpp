@@ -221,6 +221,12 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* le
                 emitInstruction(context, ByteCodeOp::IntrinsicStringCmp, r0[0], r0[1], r1[0], r2);
             }
             return true;
+        case NativeTypeKind::Any:
+            if (right->semFlags & AST_SEM_TYPE_IS_NULL)
+            {
+                emitInstruction(context, ByteCodeOp::CompareOpEqual64, r0[0], r1[0], r2);
+                return true;
+            }
         default:
             return context->internalError("emitCompareOpEqual, type not supported");
         }

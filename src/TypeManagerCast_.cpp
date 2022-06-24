@@ -2022,6 +2022,17 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
 {
     if (toType->isNative(NativeTypeKind::Any))
     {
+        if (fromType == g_TypeMgr->typeInfoNull)
+        {
+            if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+            {
+                fromNode->typeInfo       = toType;
+                fromNode->castedTypeInfo = g_TypeMgr->typeInfoNull;
+            }
+
+            return true;
+        }
+
         if (castFlags & CASTFLAG_COMMUTATIVE)
         {
             if (toNode && !(castFlags & CASTFLAG_JUST_CHECK))

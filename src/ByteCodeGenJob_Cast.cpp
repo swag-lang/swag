@@ -11,6 +11,17 @@
 
 bool ByteCodeGenJob::emitCastToNativeAny(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* fromTypeInfo)
 {
+    auto node = context->node;
+
+    if (fromTypeInfo == g_TypeMgr->typeInfoNull)
+    {
+        transformResultToLinear2(context, exprNode);
+        node->resultRegisterRC = exprNode->resultRegisterRC;
+        emitInstruction(context, ByteCodeOp::ClearRA, exprNode->resultRegisterRC[1]);
+        exprNode->semFlags |= AST_SEM_TYPE_IS_NULL;
+        return true;
+    }
+
     // Two registers. One for the pointer to the value, and one for the typeinfo.
     RegisterList r0;
     reserveLinearRegisterRC2(context, r0);

@@ -239,10 +239,17 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
         return true;
     case NativeTypeKind::Any:
     {
-        auto r2 = reserveRegisterRC(context);
-        emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[0]);
-        emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[1])->c.u32 = 8;
-        freeRegisterRC(context, r2);
+        if (fromTypeInfo == g_TypeMgr->typeInfoNull)
+        {
+            emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0);
+            emitInstruction(context, ByteCodeOp::SetZeroAtPointer64, r0)->b.u32 = 8;
+        }
+        else
+        {
+            emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[0]);
+            emitInstruction(context, ByteCodeOp::SetAtPointer64, r0, r1[1])->c.u32 = 8;
+        }
+
         return true;
     }
     default:
