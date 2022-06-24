@@ -124,7 +124,7 @@ struct Compressor
     lookaheadPos:       u32
     lookaheadSize:      u32
     dictSize:           u32
-    lzCodeBuf:          *u8
+    lzCodeBufAddr:      *u8
     lzFlags:            *u8
     outputBuf:          *u8
     outputBufEnd:       *u8
@@ -143,9 +143,9 @@ struct Compressor
     srcBufLeft:         uint
     outBufOfs:          uint
     m_dict:             [LzDictSize + MaxMatchLen - 1] u8
-    m_huff_count:       [MaxHuffTables, MaxHuffSymbols] u16
-    m_huff_codes:       [MaxHuffTables, MaxHuffSymbols] u16
-    m_huff_code_sizes:  [MaxHuffTables, MaxHuffSymbols] u8
+    huffCount:          [MaxHuffTables, MaxHuffSymbols] u16
+    huffCodes:          [MaxHuffTables, MaxHuffSymbols] u16
+    huffCodeSizes:      [MaxHuffTables, MaxHuffSymbols] u8
     m_lz_code_buf:      [LzCodeBufSize] u8
     m_next:             [LzDictSize] u16
     m_hash:             [LzHashSize] u16
@@ -192,7 +192,7 @@ impl Deflate
         d.maxProbes[0] = 1 + ((flags & 0xFFF) + 2) / 3
         d.greedyParsing = (flags & GreedyParsing) != 0
         d.maxProbes[1] = 1 + (((flags & 0xFFF) >> 2) + 2) / 3
-        d.lzCodeBuf = &d.m_lz_code_buf[1]
+        d.lzCodeBufAddr = &d.m_lz_code_buf[1]
         d.lzFlags = &d.m_lz_code_buf[0]
         d.numFlagsLeft = 8
         d.outputBuf = d.m_output_buf
@@ -204,19 +204,19 @@ impl Deflate
         d := state
 
         d.totalLzBytes += 1
-        dref d.lzCodeBuf = lit
-        d.lzCodeBuf += 1
+        dref d.lzCodeBufAddr = lit
+        d.lzCodeBufAddr += 1
         dref d.lzFlags = cast(u8) (dref d.lzFlags >> 1)
 
         d.numFlagsLeft -= 1
         if d.numFlagsLeft == 0
         {
             d.numFlagsLeft = 8
-            d.lzFlags = d.lzCodeBuf
-            d.lzCodeBuf += 1
+            d.lzFlags = d.lzCodeBufAddr
+            d.lzCodeBufAddr += 1
         }
 
-        d.m_huff_count[0, lit] += 1
+        d.huffCount[0, lit] += 1
     }
 
     mtd recordMatch(match_len: u32, md: u32)
@@ -226,26 +226,26 @@ impl Deflate
 
         d.totalLzBytes += match_len
 
-        d.lzCodeBuf[0] = cast(u8) (match_len - MinMatchLen)
+        d.lzCodeBufAddr[0] = cast(u8) (match_len - MinMatchLen)
 
         match_dist -= 1
-        d.lzCodeBuf[1] = cast(u8) (match_dist & 0xFF)
-        d.lzCodeBuf[2] = cast(u8) (match_dist >> 8)
-        d.lzCodeBuf += 3
+        d.lzCodeBufAddr[1] = cast(u8) (match_dist & 0xFF)
+        d.lzCodeBufAddr[2] = cast(u8) (match_dist >> 8)
+        d.lzCodeBufAddr += 3
 
         dref d.lzFlags = cast(u8) ((dref d.lzFlags >> 1) | 0x80)
         d.numFlagsLeft -= 1
         if d.numFlagsLeft == 0
         {
             d.numFlagsLeft = 8
-            d.lzFlags = d.lzCodeBuf
-            d.lzCodeBuf += 1
+            d.lzFlags = d.lzCodeBufAddr
+            d.lzCodeBufAddr += 1
         }
 
         s0 := SmallDistSym[match_dist & 511]
         s1 := LargeDistSym[(match_dist >> 8) & 127]
-        d.m_huff_count[1, (match_dist < 512) ? s0 : s1] += 1
-        d.m_huff_count[0, LenSym[match_len - MinMatchLen]] += 1
+        d.huffCount[1, (match_dist < 512) ? s0 : s1] += 1
+        d.huffCount[0, LenSym[match_len - MinMatchLen]] += 1
     }
 
     mtd findMatch(lookahead_pos, max_dist, max_match_len: u32, pMatch_dist, pMatch_len: *u32)
@@ -499,7 +499,7 @@ impl Deflate
         {
             for i := 0; i < table_len; i += 1
             {
-                num_codes[d.m_huff_code_sizes[table_num, i]] += 1
+                num_codes[d.huffCodeSizes[table_num, i]] += 1
             }
         }
         else
@@ -508,7 +508,7 @@ impl Deflate
             var syms1: [MaxHuffSymbols] SymFreq
 
             num_used_syms := 0'u32
-            pSym_count := &d.m_huff_count[table_num, 0]
+            pSym_count := &d.huffCount[table_num, 0]
 
             for i := 0; i < table_len; i += 1
             {
@@ -530,15 +530,15 @@ impl Deflate
 
             huffmanEnforceMaxCodeSize(num_codes, num_used_syms, code_size_limit)
 
-            Memory.clear(&d.m_huff_code_sizes[table_num], @sizeof(d.m_huff_code_sizes[table_num]))
-            Memory.clear(&d.m_huff_codes[table_num], @sizeof(d.m_huff_codes[table_num]))
+            Memory.clear(&d.huffCodeSizes[table_num], @sizeof(d.huffCodeSizes[table_num]))
+            Memory.clear(&d.huffCodes[table_num], @sizeof(d.huffCodes[table_num]))
 
             for { i := 1; j := num_used_syms; } i <= code_size_limit; i += 1
             {
                 for l := num_codes[i]; l > 0; l -= 1
                 {
                     j -= 1
-                    d.m_huff_code_sizes[table_num, pSyms[j].symIndex] = cast(u8) i
+                    d.huffCodeSizes[table_num, pSyms[j].symIndex] = cast(u8) i
                 }
             }
         }
@@ -554,7 +554,7 @@ impl Deflate
         for i := 0; i < table_len; i += 1
         {
             rev_code := 0'u32
-            code_size := d.m_huff_code_sizes[table_num, i]
+            code_size := d.huffCodeSizes[table_num, i]
             if code_size == 0
                 continue
             cde := next_code[code_size]
@@ -565,14 +565,14 @@ impl Deflate
                 cde >>= 1
             }
 
-            d.m_huff_codes[table_num, i] = cast(u16) rev_code
+            d.huffCodes[table_num, i] = cast(u16) rev_code
         }
     }
 
     mtd startStaticBlock()
     {
         d := state
-        p := &d.m_huff_code_sizes[0, 0]
+        p := &d.huffCodeSizes[0, 0]
 
         i := 0
         while i <= 143
@@ -603,7 +603,7 @@ impl Deflate
             i += 1
         }
 
-        Memory.set(d.m_huff_code_sizes[1], 5, 32)
+        Memory.set(d.huffCodeSizes[1], 5, 32)
 
         optimizeHuffmanTable(0, 288, 15, true)
         optimizeHuffmanTable(1, 32, 15, true)
@@ -619,7 +619,7 @@ impl Deflate
             d := state
             if rle_repeat_count < 3
             {
-                d.m_huff_count[2, prev_code_size] = cast(u16) (d.m_huff_count[2, prev_code_size] + rle_repeat_count)
+                d.huffCount[2, prev_code_size] = cast(u16) (d.huffCount[2, prev_code_size] + rle_repeat_count)
                 while rle_repeat_count
                 {
                     packed_code_sizes[num_packed_code_sizes] = prev_code_size
@@ -629,7 +629,7 @@ impl Deflate
             }
             else
             {
-                d.m_huff_count[2, 16] = cast(u16) (d.m_huff_count[2, 16] + 1)
+                d.huffCount[2, 16] = cast(u16) (d.huffCount[2, 16] + 1)
                 packed_code_sizes[num_packed_code_sizes] = 16
                 num_packed_code_sizes += 1
                 packed_code_sizes[num_packed_code_sizes] = cast(u8) (rle_repeat_count - 3)
@@ -647,7 +647,7 @@ impl Deflate
         {
             if rle_z_count < 3
             {
-                d.m_huff_count[2, 0] = cast(u16) (d.m_huff_count[2, 0] + rle_z_count)
+                d.huffCount[2, 0] = cast(u16) (d.huffCount[2, 0] + rle_z_count)
                 while rle_z_count
                 {
                     packed_code_sizes[num_packed_code_sizes] = 0
@@ -657,7 +657,7 @@ impl Deflate
             }
             elif rle_z_count <= 10
             {
-                d.m_huff_count[2, 17] = cast(u16) (d.m_huff_count[2, 17] + 1)
+                d.huffCount[2, 17] = cast(u16) (d.huffCount[2, 17] + 1)
                 packed_code_sizes[num_packed_code_sizes] = 17
                 num_packed_code_sizes += 1
                 packed_code_sizes[num_packed_code_sizes] = cast(u8) (rle_z_count - 3)
@@ -665,7 +665,7 @@ impl Deflate
             }
             else
             {
-                d.m_huff_count[2, 18] = cast(u16) (d.m_huff_count[2, 18] + 1)
+                d.huffCount[2, 18] = cast(u16) (d.huffCount[2, 18] + 1)
                 packed_code_sizes[num_packed_code_sizes] = 18
                 num_packed_code_sizes += 1
                 packed_code_sizes[num_packed_code_sizes] = cast(u8) (rle_z_count - 11)
@@ -685,7 +685,7 @@ impl Deflate
         var packed_code_sizes:  [MaxHuffSymbols0 + MaxHuffSymbols1] u8 = ?
         prev_code_size := 0xFF'u8
 
-        d.m_huff_count[0, 256] = 1;
+        d.huffCount[0, 256] = 1;
 
         optimizeHuffmanTable(0, MaxHuffSymbols0, 15, false)
         optimizeHuffmanTable(1, MaxHuffSymbols1, 15, false)
@@ -693,7 +693,7 @@ impl Deflate
         num_lit_codes := 286'u32
         while num_lit_codes > 257
         {
-            if d.m_huff_code_sizes[0, num_lit_codes - 1]
+            if d.huffCodeSizes[0, num_lit_codes - 1]
                 break
             num_lit_codes -= 1
         }
@@ -701,19 +701,19 @@ impl Deflate
         num_dist_codes := 30'u32
         while num_dist_codes > 1
         {
-            if d.m_huff_code_sizes[1, num_dist_codes - 1]
+            if d.huffCodeSizes[1, num_dist_codes - 1]
                 break
             num_dist_codes -= 1
         }
 
-        Memory.copy(&code_sizes_to_pack[0], &d.m_huff_code_sizes[0, 0], cast(uint) num_lit_codes)
-        Memory.copy(&code_sizes_to_pack[0] + num_lit_codes, &d.m_huff_code_sizes[1, 0], cast(uint) num_dist_codes)
+        Memory.copy(&code_sizes_to_pack[0], &d.huffCodeSizes[0, 0], cast(uint) num_lit_codes)
+        Memory.copy(&code_sizes_to_pack[0] + num_lit_codes, &d.huffCodeSizes[1, 0], cast(uint) num_dist_codes)
         total_code_sizes_to_pack := num_lit_codes + num_dist_codes
         num_packed_code_sizes := 0
         rle_z_count := 0
         rle_repeat_count := 0
 
-        Memory.clear(&d.m_huff_count[2, 0], cast(uint) @sizeof(d.m_huff_count[2, 0]) * MaxHuffSymbols2)
+        Memory.clear(&d.huffCount[2, 0], cast(uint) @sizeof(d.huffCount[2, 0]) * MaxHuffSymbols2)
         for i := 0; i < total_code_sizes_to_pack; i += 1
         {
             code_size := code_sizes_to_pack[i]
@@ -732,7 +732,7 @@ impl Deflate
                 if code_size != prev_code_size
                 {
                     rlePrevCodeSize()
-                    d.m_huff_count[2, code_size] = cast(u16) (d.m_huff_count[2, code_size] + 1)
+                    d.huffCount[2, code_size] = cast(u16) (d.huffCount[2, code_size] + 1)
                     packed_code_sizes[num_packed_code_sizes] = code_size
                     num_packed_code_sizes += 1
                 }
@@ -767,7 +767,7 @@ impl Deflate
         num_bit_lengths := 18'u32
         while num_bit_lengths >= 0
         {
-            if d.m_huff_code_sizes[2, PackedCodeSizeSymsSwizzle[num_bit_lengths]]
+            if d.huffCodeSizes[2, PackedCodeSizeSymsSwizzle[num_bit_lengths]]
                 break
             num_bit_lengths -= 1
         }
@@ -776,7 +776,7 @@ impl Deflate
         putBits(num_bit_lengths - 4, 4)
         for i := 0; i < num_bit_lengths; i += 1
         {
-            putBits(cast(u32) d.m_huff_code_sizes[2, PackedCodeSizeSymsSwizzle[i]], 3)
+            putBits(cast(u32) d.huffCodeSizes[2, PackedCodeSizeSymsSwizzle[i]], 3)
         }
 
         packed_code_sizes_index := 0
@@ -784,7 +784,7 @@ impl Deflate
         {
             cde := packed_code_sizes[packed_code_sizes_index]
             packed_code_sizes_index += 1
-            putBits(cast(u32) d.m_huff_codes[2, cde], cast(u32) d.m_huff_code_sizes[2, cde])
+            putBits(cast(u32) d.huffCodes[2, cde], cast(u32) d.huffCodeSizes[2, cde])
             if cde >= 16
             {
                 const p = @[2, 3, 7]
@@ -798,7 +798,7 @@ impl Deflate
     {
         d := state
         flags := 1'u32
-        for pLZ_codes := &d.m_lz_code_buf[0]; pLZ_codes < d.lzCodeBuf; flags >>= 1
+        for pLZ_codes := &d.m_lz_code_buf[0]; pLZ_codes < d.lzCodeBufAddr; flags >>= 1
         {
             if flags == 1
             {
@@ -812,7 +812,7 @@ impl Deflate
                 match_dist := cast(u32) pLZ_codes[1] | (cast(u32) pLZ_codes[2] << 8)
                 pLZ_codes += 3
 
-                putBits(cast(u32) d.m_huff_codes[0, LenSym[match_len]], cast(u32) d.m_huff_code_sizes[0, LenSym[match_len]])
+                putBits(cast(u32) d.huffCodes[0, LenSym[match_len]], cast(u32) d.huffCodeSizes[0, LenSym[match_len]])
                 putBits(match_len & Bitmasks[LenExtra[match_len]], cast(u32) LenExtra[match_len])
 
                 var sym, num_extra_bits: u32
@@ -827,18 +827,18 @@ impl Deflate
                     num_extra_bits = LargeDistExtra[match_dist >> 8]
                 }
 
-                putBits(cast(u32) d.m_huff_codes[1, sym], cast(u32) d.m_huff_code_sizes[1, sym])
+                putBits(cast(u32) d.huffCodes[1, sym], cast(u32) d.huffCodeSizes[1, sym])
                 putBits(match_dist & Bitmasks[num_extra_bits], num_extra_bits)
             }
             else
             {
                 lit := dref pLZ_codes
                 pLZ_codes += 1
-                putBits(cast(u32) d.m_huff_codes[0, lit], cast(u32) d.m_huff_code_sizes[0, lit])
+                putBits(cast(u32) d.huffCodes[0, lit], cast(u32) d.huffCodeSizes[0, lit])
             }
         }
 
-        putBits(cast(u32) d.m_huff_codes[0, 256], cast(u32) d.m_huff_code_sizes[0, 256])
+        putBits(cast(u32) d.huffCodes[0, 256], cast(u32) d.huffCodeSizes[0, 256])
         return d.outputBuf < d.outputBufEnd
     }
 
@@ -870,7 +870,7 @@ impl Deflate
         d.outputFlushOfs = 0
 
         dref d.lzFlags = cast(u8) (dref d.lzFlags >> d.numFlagsLeft)
-        d.lzCodeBuf -= (d.numFlagsLeft == 8) ? 1 : 0
+        d.lzCodeBufAddr -= (d.numFlagsLeft == 8) ? 1 : 0
 
         putBits(finish ? 1 : 0, 1)
 
@@ -915,10 +915,10 @@ impl Deflate
         if finish and d.bitsIn
             putBits(0, 8 - d.bitsIn)
 
-        Memory.clear(&d.m_huff_count[0, 0], cast(uint) @sizeof(d.m_huff_count[0, 0]) * MaxHuffSymbols0)
-        Memory.clear(&d.m_huff_count[1, 0], cast(uint) @sizeof(d.m_huff_count[1, 0]) * MaxHuffSymbols1)
+        Memory.clear(&d.huffCount[0, 0], cast(uint) @sizeof(d.huffCount[0, 0]) * MaxHuffSymbols0)
+        Memory.clear(&d.huffCount[1, 0], cast(uint) @sizeof(d.huffCount[1, 0]) * MaxHuffSymbols1)
 
-        d.lzCodeBuf = &d.m_lz_code_buf[0] + 1
+        d.lzCodeBufAddr = &d.m_lz_code_buf[0] + 1
         d.lzFlags = &d.m_lz_code_buf[0]
         d.numFlagsLeft = 8
         d.lzCodeBufDictPos += d.totalLzBytes
@@ -1083,8 +1083,8 @@ impl Deflate
             d.lookaheadSize -= len_to_move
             d.dictSize = Math.min(d.dictSize + len_to_move, cast(u32) LzDictSize)
 
-            if (d.lzCodeBuf > &d.m_lz_code_buf[LzCodeBufSize - 8]) or
-                ((d.totalLzBytes > 31 * 1024) and ((((cast(u32) (d.lzCodeBuf - &d.m_lz_code_buf[0]) * 115) >> 7) >= d.totalLzBytes) or (d.m_flags & ForceAllRawBlocks)))
+            if (d.lzCodeBufAddr > &d.m_lz_code_buf[LzCodeBufSize - 8]) or
+                ((d.totalLzBytes > 31 * 1024) and ((((cast(u32) (d.lzCodeBufAddr - &d.m_lz_code_buf[0]) * 115) >> 7) >= d.totalLzBytes) or (d.m_flags & ForceAllRawBlocks)))
             {
                 d.inSrc = pSrc
                 d.srcBufLeft = src_buf_left
