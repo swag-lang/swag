@@ -8,21 +8,21 @@
 enum Reg
 {
     RAX = 0b0000,
-    //RBX  = 0b0011,
+    // RBX  = 0b0011,
     RCX = 0b0001,
     RDX = 0b0010,
     RSP = 0b0100,
-    //RBP  = 0b0101,
-    //RSI  = 0b0110,
+    // RBP  = 0b0101,
+    // RSI  = 0b0110,
     RDI = 0b0111,
     R8  = 0b1000,
     R9  = 0b1001,
     R10 = 0b1010,
     R11 = 0b1011,
-    //R12  = 0b1100,
-    //R13  = 0b1101,
-    //R14  = 0b1110,
-    //R15  = 0b1111,
+    // R12  = 0b1100,
+    // R13  = 0b1101,
+    // R14  = 0b1110,
+    // R15  = 0b1111,
     XMM0 = 0b0000,
     XMM1 = 0b0001,
     XMM2 = 0b0010,
@@ -1185,7 +1185,7 @@ namespace BackendX64Inst
 
     inline void emit_BinOpInt16(X64PerThread& pp, ByteCodeInstruction* ip, X64Op op)
     {
-        SWAG_ASSERT(op == X64Op::AND || op == X64Op::OR);
+        SWAG_ASSERT(op == X64Op::AND || op == X64Op::OR || op == X64Op::XOR);
         if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B))
         {
             emit_Load16_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
