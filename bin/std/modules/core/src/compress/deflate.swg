@@ -118,7 +118,7 @@ struct SymFreq
 
 struct Compressor
 {
-    m_flags:            u32
+    compressFlags:      u32
     maxProbes:          [2] u32
     greedyParsing:      bool
     lookaheadPos:       u32
@@ -188,7 +188,7 @@ impl Deflate
     mtd setup(flags: u32)
     {
         d := state
-        d.m_flags = flags
+        d.compressFlags = flags
         d.maxProbes[0] = 1 + ((flags & 0xFFF) + 2) / 3
         d.greedyParsing = (flags & GreedyParsing) != 0
         d.maxProbes[1] = 1 + (((flags & 0xFFF) >> 2) + 2) / 3
@@ -856,7 +856,7 @@ impl Deflate
         d := state
 
         compBlockSucceeded := false
-        useRawBlock := ((d.m_flags & ForceAllRawBlocks) != 0) and (d.lookaheadPos - d.lzCodeBufDictPos) <= d.dictSize
+        useRawBlock := ((d.compressFlags & ForceAllRawBlocks) != 0) and (d.lookaheadPos - d.lzCodeBufDictPos) <= d.dictSize
 
         var outputBufStart: *u8
         if d.result.capacity - d.result.count >= OutBufSize
@@ -879,7 +879,7 @@ impl Deflate
         savedBitsIn := d.bitsIn
 
         if !useRawBlock
-            compBlockSucceeded = compressBlock((d.m_flags & ForceAllStaticBlocks) or (d.totalLzBytes < 48))
+            compBlockSucceeded = compressBlock((d.compressFlags & ForceAllStaticBlocks) or (d.totalLzBytes < 48))
 
         if ((useRawBlock or (d.totalLzBytes and ((d.outputBufAddr - savedOutputBuf + 1) >= d.totalLzBytes))) and
             ((d.lookaheadPos - d.lzCodeBufDictPos) <= d.dictSize))
@@ -1008,9 +1008,9 @@ impl Deflate
             curMatchLen  := d.savedMatchLen ? d.savedMatchLen : cast(u32) (MinMatchLen - 1)
 
             var curPos: u32 = d.lookaheadPos & LzDictSizeMask
-            if d.m_flags & (RleMatches | ForceAllRawBlocks)
+            if d.compressFlags & (RleMatches | ForceAllRawBlocks)
             {
-                if (d.dictSize) and !(d.m_flags & ForceAllRawBlocks)
+                if (d.dictSize) and !(d.compressFlags & ForceAllRawBlocks)
                 {
                     c := d.dict[(curPos - 1) & LzDictSizeMask]
                     curMatchLen = 0
@@ -1033,7 +1033,7 @@ impl Deflate
 
             if  ((curMatchLen == MinMatchLen) and (curMatchDist >= 8 * 1024)) or
                 (curPos == curMatchDist) or
-                ((d.m_flags & FilterMatches) and (curMatchLen <= 5))
+                ((d.compressFlags & FilterMatches) and (curMatchLen <= 5))
             {
                 curMatchDist, curMatchLen = 0
             }
@@ -1067,7 +1067,7 @@ impl Deflate
             {
                 recordLiteral(d.dict[Math.min(curPos, cast(u32) @sizeof(d.dict) - 1)])
             }
-            elif d.greedyParsing or (d.m_flags & RleMatches) or (curMatchLen >= 128)
+            elif d.greedyParsing or (d.compressFlags & RleMatches) or (curMatchLen >= 128)
             {
                 recordMatch(curMatchLen, curMatchDist)
                 lenToMove = curMatchLen
@@ -1085,7 +1085,7 @@ impl Deflate
             d.dictSize = Math.min(d.dictSize + lenToMove, cast(u32) LzDictSize)
 
             if (d.lzCodeBufAddr > &d.lzCodeBuf[LzCodeBufSize - 8]) or
-                ((d.totalLzBytes > 31 * 1024) and ((((cast(u32) (d.lzCodeBufAddr - &d.lzCodeBuf[0]) * 115) >> 7) >= d.totalLzBytes) or (d.m_flags & ForceAllRawBlocks)))
+                ((d.totalLzBytes > 31 * 1024) and ((((cast(u32) (d.lzCodeBufAddr - &d.lzCodeBuf[0]) * 115) >> 7) >= d.totalLzBytes) or (d.compressFlags & ForceAllRawBlocks)))
             {
                 d.inSrc = pSrc
                 d.srcBufLeft = srcBufLeft
