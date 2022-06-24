@@ -248,25 +248,25 @@ impl Deflate
         d.huffCount[0, LenSym[matchLen - MinMatchLen]] += 1
     }
 
-    mtd findMatch(lookahead_pos, max_dist, max_match_len: u32, pMatch_dist, pMatch_len: *u32)
+    mtd findMatch(laPos, maxDist, maxMatchLen: u32, matchDistAddr, matchLenAddr: *u32)
     {
         d := state
 
-        pos := lookahead_pos & LzDictSizeMask
-        matchLen := dref pMatch_len
-        probe_pos := pos
+        pos := laPos & LzDictSizeMask
+        matchLen := dref matchLenAddr
+        probePos := pos
 
         num_probes_left := d.maxProbes[matchLen >= 32 ? 1 : 0]
         s  := &d.dict[0] + pos
         c0 := d.dict[pos + matchLen]
         c1 := d.dict[pos + matchLen - 1]
 
-        if max_match_len <= matchLen
+        if maxMatchLen <= matchLen
             return
 
         loop
         {
-            var next_probe_pos: u32
+            var nextProbePos: u32
             var dist: u16
 
             loop
@@ -278,14 +278,14 @@ impl Deflate
                 #[Swag.Mixin]
                 func probe()
                 {
-                    next_probe_pos = d.next[probe_pos]
-                    if !next_probe_pos
+                    nextProbePos = d.next[probePos]
+                    if !nextProbePos
                         return
-                    dist = cast(u16) (lookahead_pos - next_probe_pos)
-                    if dist > max_dist
+                    dist = cast(u16) (laPos - nextProbePos)
+                    if dist > maxDist
                         return
-                    probe_pos = next_probe_pos & LzDictSizeMask
-                    if (d.dict[probe_pos + matchLen] == c0) and (d.dict[probe_pos + matchLen - 1] == c1)
+                    probePos = nextProbePos & LzDictSizeMask
+                    if (d.dict[probePos + matchLen] == c0) and (d.dict[probePos + matchLen - 1] == c1)
                         break
                 }
 
@@ -298,24 +298,24 @@ impl Deflate
                 break
 
             p := s
-            q := &d.dict[0] + probe_pos
-            var probe_len: u32
-            while probe_len < max_match_len
+            q := &d.dict[0] + probePos
+            var probeLen: u32
+            while probeLen < maxMatchLen
             {
                 pp := dref p
                 qq := dref q
                 p, q += 1
                 if pp != qq
                     break
-                probe_len += 1
+                probeLen += 1
             }
 
-            if probe_len > matchLen
+            if probeLen > matchLen
             {
-                dref pMatch_dist = dist
-                dref pMatch_len = probe_len
-                matchLen = probe_len
-                if matchLen == max_match_len
+                dref matchDistAddr = dist
+                dref matchLenAddr = probeLen
+                matchLen = probeLen
+                if matchLen == maxMatchLen
                     return
                 c0 = d.dict[pos + matchLen]
                 c1 = d.dict[pos + matchLen - 1]
@@ -345,12 +345,12 @@ impl Deflate
         }
     }
 
-    mtd radixSortSyms(numSyms: u32, pSyms0, pSyms1: *SymFreq)->*SymFreq
+    mtd radixSortSyms(numSyms: u32, sym0, sym1: *SymFreq)->*SymFreq
     {
         var hist: [256 * 2] u32
         loop i: numSyms
         {
-            freq := pSyms0[i].key
+            freq := sym0[i].key
             hist[freq & 0xFF] += 1
             hist[256 + ((freq >> 8) & 0xFF)] += 1
         }
@@ -359,8 +359,8 @@ impl Deflate
         while (totalPasses > 1) and (numSyms == hist[(totalPasses - 1) * 256])
             totalPasses -= 1
 
-        curSym    := pSyms0
-        newSym    := pSyms1
+        curSym    := sym0
+        newSym    := sym1
         passShift := 0
         loop pass: totalPasses
         {
@@ -459,27 +459,27 @@ impl Deflate
         }
     }
 
-    mtd huffmanEnforceMaxCodeSize(pNum_codes: *s32, code_list_len, max_code_size: u32)
+    mtd huffmanEnforceMaxCodeSize(numCodes: *s32, codeListLen, maxCodeSize: u32)
     {
-        if code_list_len <= 1
+        if codeListLen <= 1
             return
 
-        for i := max_code_size + 1; i <= MaxSupportedHuffCodeSize; i += 1
-            pNum_codes[max_code_size] += pNum_codes[i]
+        for i := maxCodeSize + 1; i <= MaxSupportedHuffCodeSize; i += 1
+            numCodes[maxCodeSize] += numCodes[i]
 
         total := 0'u32
-        for i := cast(s32) max_code_size; i > 0; i -= 1
-            total += ((cast(u32) pNum_codes[i]) << (max_code_size - i))
+        for i := cast(s32) maxCodeSize; i > 0; i -= 1
+            total += ((cast(u32) numCodes[i]) << (maxCodeSize - i))
 
-        while total != (1'u32 << max_code_size)
+        while total != (1'u32 << maxCodeSize)
         {
-            pNum_codes[max_code_size] -= 1
-            for i := cast(s32) max_code_size - 1; i > 0; i -= 1
+            numCodes[maxCodeSize] -= 1
+            for i := cast(s32) maxCodeSize - 1; i > 0; i -= 1
             {
-                if pNum_codes[i]
+                if numCodes[i]
                 {
-                    pNum_codes[i] -= 1
-                    pNum_codes[i + 1] += 2
+                    numCodes[i] -= 1
+                    numCodes[i + 1] += 2
                     break
                 }
             }
