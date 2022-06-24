@@ -64,8 +64,11 @@ const uint16_t LF_REAL128   = 0x8008;
 const uint16_t LF_QUADWORD  = 0x8009;
 const uint16_t LF_UQUADWORD = 0x800a;
 
+// https://github.com/microsoft/checkedc-llvm/blob/master/include/llvm/DebugInfo/CodeView/CodeViewRegisters.def
+const uint16_t R_RCX = 330;
 const uint16_t R_RDX = 331;
 const uint16_t R_RDI = 333;
+const uint16_t R_RBP = 334;
 const uint16_t R_RSP = 335;
 
 enum SimpleTypeKind : DbgTypeIndex
@@ -1076,11 +1079,54 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
             concat.addU32(0);           // Flags (defines frame register)
             dbgEndRecord(pp, concat);
 
+            // Capture parameters
+            /////////////////////////////////
+            if (decl->captureParameters && !(decl->attributeFlags & ATTRIBUTE_COMPILER_FUNC) && !f.wrapper)
+            {
+                auto countParams = decl->captureParameters->childs.size();
+                for (int i = 0; i < countParams; i++)
+                {
+                    auto child     = decl->captureParameters->childs[i];
+                    auto typeParam = child->typeInfo;
+                    if (child->kind == AstNodeKind::MakePointer)
+                        child = child->childs.front();
+                    auto overload = child->resolvedSymbolOverload;
+                    if (!typeParam || !overload)
+                        continue;
+
+                    DbgTypeIndex typeIdx;
+                    switch (typeParam->kind)
+                    {
+                    case TypeInfoKind::Array:
+                        typeIdx = dbgGetOrCreatePointerToType(pp, typeParam);
+                        break;
+                    default:
+                        typeIdx = dbgGetOrCreateType(pp, typeParam);
+                        break;
+                    }
+
+                    //////////
+                    dbgStartRecord(pp, concat, S_LOCAL);
+                    concat.addU32(typeIdx); // Type
+                    concat.addU16(0);       // CV_LVARFLAGS (do not set IsParameter, because we do not want a dereference, don't know what's going on here)
+                    dbgEmitTruncatedString(concat, child->token.text);
+                    dbgEndRecord(pp, concat);
+
+                    //////////
+                    dbgStartRecord(pp, concat, S_DEFRANGE_REGISTER_REL);
+                    concat.addU16(R_RBP); // Register
+                    concat.addU16(0);     // Flags
+                    concat.addU32(overload->computedValue.storageOffset);
+                    dbgEmitSecRel(pp, concat, f.symbolIndex, pp.symCOIndex);
+                    concat.addU16((uint16_t) (f.endAddress - f.startAddress)); // Range
+                    dbgEndRecord(pp, concat);
+                }
+            }
+
             // Parameters
             /////////////////////////////////
             if (decl->parameters && !(decl->attributeFlags & ATTRIBUTE_COMPILER_FUNC) && !f.wrapper)
             {
-                auto idxParam    = typeFunc->numReturnRegisters();
                 auto countParams = decl->parameters->childs.size();
                 for (int i = 0; i < countParams; i++)
                 {
@@ -1135,8 +1181,6 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
                         concat.addU16((uint16_t) (f.endAddress - f.startAddress)); // Range
                         dbgEndRecord(pp, concat);
                     }
-
-                    idxParam += typeParam->numRegisters();
                 }
             }
 

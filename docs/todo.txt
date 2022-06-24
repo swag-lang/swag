@@ -61,8 +61,6 @@ TODO
 ****************************************
 
 -------------------------------------
-debug lambda capture parameters not visible
--------------------------------------
 @mkcallback ne vérifie pas qu'il y a #[Swag.Callback] sur la fonction, mais
 le pb c'est que ça peut être une variable, un paramètre etc...
 -------------------------------------
@@ -83,6 +81,7 @@ foreign a cvarargs
 cast interface vers struct (avec safety)
 -------------------------------------
 llvm debug, pas à jour
+- debug lambda capture parameters not visible
 - variables local en #[Swag.global]
 - mettre les constants
 - mettre les enums (void CodeViewDebug::emitStaticConstMemberList())
