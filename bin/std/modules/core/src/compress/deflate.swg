@@ -221,16 +221,16 @@ impl Deflate
 
     mtd recordMatch(matchLen: u32, md: u32)
     {
-        match_dist := md
+        matchDist := md
         d := state
 
         d.totalLzBytes += matchLen
 
         d.lzCodeBufAddr[0] = cast(u8) (matchLen - MinMatchLen)
 
-        match_dist -= 1
-        d.lzCodeBufAddr[1] = cast(u8) (match_dist & 0xFF)
-        d.lzCodeBufAddr[2] = cast(u8) (match_dist >> 8)
+        matchDist -= 1
+        d.lzCodeBufAddr[1] = cast(u8) (matchDist & 0xFF)
+        d.lzCodeBufAddr[2] = cast(u8) (matchDist >> 8)
         d.lzCodeBufAddr += 3
 
         dref d.lzFlags = cast(u8) ((dref d.lzFlags >> 1) | 0x80)
@@ -242,9 +242,9 @@ impl Deflate
             d.lzCodeBufAddr += 1
         }
 
-        s0 := SmallDistSym[match_dist & 511]
-        s1 := LargeDistSym[(match_dist >> 8) & 127]
-        d.huffCount[1, (match_dist < 512) ? s0 : s1] += 1
+        s0 := SmallDistSym[matchDist & 511]
+        s1 := LargeDistSym[(matchDist >> 8) & 127]
+        d.huffCount[1, (matchDist < 512) ? s0 : s1] += 1
         d.huffCount[0, LenSym[matchLen - MinMatchLen]] += 1
     }
 
@@ -774,22 +774,22 @@ impl Deflate
 
         numBitLengths = Math.max(4, numBitLengths + 1)
         putBits(numBitLengths - 4, 4)
-        for i := 0; i < numBitLengths; i += 1
+        loop i: numBitLengths
         {
             putBits(cast(u32) d.huffCodeSizes[2, PackedCodeSizeSymsSwizzle[i]], 3)
         }
 
-        packed_code_sizes_index := 0
-        while packed_code_sizes_index < numPackedCodeSizes
+        packedCodeSizesIndex := 0
+        while packedCodeSizesIndex < numPackedCodeSizes
         {
-            cde := packedCodeSizes[packed_code_sizes_index]
-            packed_code_sizes_index += 1
+            cde := packedCodeSizes[packedCodeSizesIndex]
+            packedCodeSizesIndex += 1
             putBits(cast(u32) d.huffCodes[2, cde], cast(u32) d.huffCodeSizes[2, cde])
             if cde >= 16
             {
                 const p = @[2, 3, 7]
-                putBits(cast(u32) packedCodeSizes[packed_code_sizes_index], cast(u32) p[cde - 16])
-                packed_code_sizes_index += 1
+                putBits(cast(u32) packedCodeSizes[packedCodeSizesIndex], cast(u32) p[cde - 16])
+                packedCodeSizesIndex += 1
             }
         }
     }
@@ -798,42 +798,42 @@ impl Deflate
     {
         d := state
         flags := 1'u32
-        for pLZ_codes := &d.lzCodeBuf[0]; pLZ_codes < d.lzCodeBufAddr; flags >>= 1
+        for lzCodes := &d.lzCodeBuf[0]; lzCodes < d.lzCodeBufAddr; flags >>= 1
         {
             if flags == 1
             {
-                flags = cast(u32) (dref pLZ_codes) | 0x100
-                pLZ_codes += 1
+                flags = cast(u32) (dref lzCodes) | 0x100
+                lzCodes += 1
             }
 
             if flags & 1
             {
-                matchLen  := cast(u32) pLZ_codes[0]
-                match_dist := cast(u32) pLZ_codes[1] | (cast(u32) pLZ_codes[2] << 8)
-                pLZ_codes += 3
+                matchLen  := cast(u32) lzCodes[0]
+                matchDist := cast(u32) lzCodes[1] | (cast(u32) lzCodes[2] << 8)
+                lzCodes += 3
 
                 putBits(cast(u32) d.huffCodes[0, LenSym[matchLen]], cast(u32) d.huffCodeSizes[0, LenSym[matchLen]])
                 putBits(matchLen & Bitmasks[LenExtra[matchLen]], cast(u32) LenExtra[matchLen])
 
-                var sym, num_extra_bits: u32
-                if match_dist < 512
+                var sym, numExtraBits: u32
+                if matchDist < 512
                 {
-                    sym = SmallDistSym[match_dist]
-                    num_extra_bits = SmallDistExtra[match_dist]
+                    sym = SmallDistSym[matchDist]
+                    numExtraBits = SmallDistExtra[matchDist]
                 }
                 else
                 {
-                    sym = LargeDistSym[match_dist >> 8]
-                    num_extra_bits = LargeDistExtra[match_dist >> 8]
+                    sym = LargeDistSym[matchDist >> 8]
+                    numExtraBits = LargeDistExtra[matchDist >> 8]
                 }
 
                 putBits(cast(u32) d.huffCodes[1, sym], cast(u32) d.huffCodeSizes[1, sym])
-                putBits(match_dist & Bitmasks[num_extra_bits], num_extra_bits)
+                putBits(matchDist & Bitmasks[numExtraBits], numExtraBits)
             }
             else
             {
-                lit := dref pLZ_codes
-                pLZ_codes += 1
+                lit := dref lzCodes
+                lzCodes += 1
                 putBits(cast(u32) d.huffCodes[0, lit], cast(u32) d.huffCodeSizes[0, lit])
             }
         }
@@ -855,8 +855,8 @@ impl Deflate
     {
         d := state
 
-        comp_block_succeeded := false
-        use_raw_block := ((d.m_flags & ForceAllRawBlocks) != 0) and (d.lookaheadPos - d.lzCodeBufDictPos) <= d.dictSize
+        compBlockSucceeded := false
+        useRawBlock := ((d.m_flags & ForceAllRawBlocks) != 0) and (d.lookaheadPos - d.lzCodeBufDictPos) <= d.dictSize
 
         var pOutput_buf_start: *u8
         if d.result.capacity - d.result.count >= OutBufSize
@@ -878,10 +878,10 @@ impl Deflate
         saved_bit_buf := d.bitBuffer
         saved_bits_in := d.bitsIn
 
-        if !use_raw_block
-            comp_block_succeeded = compressBlock((d.m_flags & ForceAllStaticBlocks) or (d.totalLzBytes < 48))
+        if !useRawBlock
+            compBlockSucceeded = compressBlock((d.m_flags & ForceAllStaticBlocks) or (d.totalLzBytes < 48))
 
-        if ((use_raw_block or (d.totalLzBytes and ((d.outputBufAddr - pSaved_output_buf + 1) >= d.totalLzBytes))) and
+        if ((useRawBlock or (d.totalLzBytes and ((d.outputBufAddr - pSaved_output_buf + 1) >= d.totalLzBytes))) and
             ((d.lookaheadPos - d.lzCodeBufDictPos) <= d.dictSize))
         {
             d.outputBufAddr = pSaved_output_buf
@@ -904,7 +904,7 @@ impl Deflate
                 putBits(cast(u32) d.dict[(d.lzCodeBufDictPos + i) & LzDictSizeMask], 8)
             }
         }
-        elif !comp_block_succeeded
+        elif !compBlockSucceeded
         {
             d.outputBufAddr = pSaved_output_buf
             d.bitBuffer = saved_bit_buf
