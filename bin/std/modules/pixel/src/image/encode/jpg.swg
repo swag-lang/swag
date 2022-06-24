@@ -736,11 +736,11 @@ public impl IImageEncoder for Encoder
 
     mtd encode(result: *ConcatBuffer, image: Image, options: any) throw
     {
-        var opt: *EncodeOptions
+        var opt: EncodeOptions
         if @dataof(options) != null
         {
             Debug.assert(@kindof(options) == EncodeOptions)
-            opt = cast(*EncodeOptions) @dataof(options)
+            opt = dref cast(*EncodeOptions) @dataof(options)
         }
 
         stream = result

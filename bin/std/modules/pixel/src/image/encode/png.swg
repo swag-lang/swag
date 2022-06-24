@@ -125,24 +125,25 @@ public struct Encoder
     ihdr:                   Ihdr
     current_chunk:          Chunk
     tmpBuf:                 [256] u8
-    writePtr:              *u8
+    writePtr:               *u8
     crc:                    Hash.Crc32
     subimage:               [7] SubImage
     widest_pass:            s32
     last_pass:              s32
-    bytesPerPixel:        u32
+    bytesPerPixel:          u32
     scanlineBuf:            *u8
     prevScanlineBuf:        *u8
     row_buf:                *u8
-    filteredScanlineBuf:  *u8
-    filteredScanline:      *u8
+    filteredScanlineBuf:    *u8
+    filteredScanline:       *u8
     scanline:               *u8
-    prevScanline:          *u8
-    encodeFlags:           EncodeFlags
-    rowInfo:               RowInfo
+    prevScanline:           *u8
+    encodeFlags:            EncodeFlags
+    rowInfo:                RowInfo
     pixel_size:             u32
     bufferToCompress:       Array'u8
     swapRB:                 bool
+    userOptions:            EncodeOptions
 }
 
 impl Encoder
@@ -287,7 +288,7 @@ impl Encoder
     mtd finishIDat() throw
     {
         var zlib: Compress.ZLib
-        cmp := zlib.compress(bufferToCompress.toSlice())
+        cmp := zlib.compress(bufferToCompress.toSlice(), userOptions.compressionLevel)
 
         writePtr = writeHeader(TypeIDat, cmp.count)
         Memory.copy(writePtr, cmp.buffer, cmp.count)
@@ -580,6 +581,8 @@ impl Encoder
 
 public struct EncodeOptions
 {
+    compressionLevel = Compress.Deflate.CompressionLevel.Default
+    filtering        = true
 }
 
 public impl IImageEncoder for Encoder
@@ -591,11 +594,10 @@ public impl IImageEncoder for Encoder
 
     mtd encode(result: *ConcatBuffer, image: Image, options: any) throw
     {
-        var opt: *EncodeOptions
         if @dataof(options) != null
         {
             Debug.assert(@kindof(options) == EncodeOptions)
-            opt = cast(*EncodeOptions) @dataof(options)
+            userOptions = dref cast(*EncodeOptions) @dataof(options)
         }
 
         // unsupported pixel format
@@ -635,10 +637,8 @@ public impl IImageEncoder for Encoder
         filteredScanline = filteredScanlineBuf + 16
 
         pixel_size = image.bpp
-
-        ////
-        encodeFlags.filterChoice = .SPNG_FILTER_CHOICE_ALL
-        ////
+        if userOptions.filtering and userOptions.compressionLevel != .NoCompression
+            encodeFlags.filterChoice = .SPNG_FILTER_CHOICE_ALL
 
         loop
         {

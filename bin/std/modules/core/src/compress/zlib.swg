@@ -11,14 +11,14 @@ struct ZLib
 impl ZLib
 {
     // Decompress stream
-    mtd compress(buffer: const [..] u8)->Array'u8 throw
+    mtd compress(buffer: const [..] u8, level = Deflate.CompressionLevel.Default)->Array'u8 throw
     {
         var result: retval
 
         result.add(0x78)
         result.add(0x9C)
 
-        encoder.init()
+        encoder.init(level)
         try encoder.compress(&result, buffer)
 
         result.add(cast(u8) ((encoder.adler.adler >>,safe 24) & 0xFF))
