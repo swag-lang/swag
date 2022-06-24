@@ -554,12 +554,12 @@ impl Deflate
         for i := 0; i < tableLen; i += 1
         {
             rev_code := 0'u32
-            code_size := d.huffCodeSizes[tableNum, i]
-            if code_size == 0
+            codeSize := d.huffCodeSizes[tableNum, i]
+            if codeSize == 0
                 continue
-            cde := nextCode[code_size]
-            nextCode[code_size] += 1
-            for l := code_size; l > 0; l -= 1
+            cde := nextCode[codeSize]
+            nextCode[codeSize] += 1
+            for l := codeSize; l > 0; l -= 1
             {
                 rev_code = (rev_code << 1) | (cde & 1)
                 cde >>= 1
@@ -681,7 +681,7 @@ impl Deflate
     {
         d := state
 
-        var code_sizes_to_pack: [MaxHuffSymbols0 + MaxHuffSymbols1] u8 = ?
+        var codeSizesToPack:  [MaxHuffSymbols0 + MaxHuffSymbols1] u8 = ?
         var packedCodeSizes:  [MaxHuffSymbols0 + MaxHuffSymbols1] u8 = ?
         prevCodeSize := 0xFF'u8
 
@@ -690,34 +690,34 @@ impl Deflate
         optimizeHuffmanTable(0, MaxHuffSymbols0, 15, false)
         optimizeHuffmanTable(1, MaxHuffSymbols1, 15, false)
 
-        num_lit_codes := 286'u32
-        while num_lit_codes > 257
+        numLitCodes := 286'u32
+        while numLitCodes > 257
         {
-            if d.huffCodeSizes[0, num_lit_codes - 1]
+            if d.huffCodeSizes[0, numLitCodes - 1]
                 break
-            num_lit_codes -= 1
+            numLitCodes -= 1
         }
 
-        num_dist_codes := 30'u32
-        while num_dist_codes > 1
+        numDistCodes := 30'u32
+        while numDistCodes > 1
         {
-            if d.huffCodeSizes[1, num_dist_codes - 1]
+            if d.huffCodeSizes[1, numDistCodes - 1]
                 break
-            num_dist_codes -= 1
+            numDistCodes -= 1
         }
 
-        Memory.copy(&code_sizes_to_pack[0], &d.huffCodeSizes[0, 0], cast(uint) num_lit_codes)
-        Memory.copy(&code_sizes_to_pack[0] + num_lit_codes, &d.huffCodeSizes[1, 0], cast(uint) num_dist_codes)
-        total_code_sizes_to_pack := num_lit_codes + num_dist_codes
+        Memory.copy(&codeSizesToPack[0], &d.huffCodeSizes[0, 0], cast(uint) numLitCodes)
+        Memory.copy(&codeSizesToPack[0] + numLitCodes, &d.huffCodeSizes[1, 0], cast(uint) numDistCodes)
+        totalCodeSizesToPack := numLitCodes + numDistCodes
         numPackedCodeSizes := 0
         rleZCount := 0
         rleRepeatCount := 0
 
         Memory.clear(&d.huffCount[2, 0], cast(uint) @sizeof(d.huffCount[2, 0]) * MaxHuffSymbols2)
-        for i := 0; i < total_code_sizes_to_pack; i += 1
+        loop i: totalCodeSizesToPack
         {
-            code_size := code_sizes_to_pack[i]
-            if !code_size
+            codeSize := codeSizesToPack[i]
+            if !codeSize
             {
                 rlePrevCodeSize()
                 rleZCount += 1
@@ -729,11 +729,11 @@ impl Deflate
             else
             {
                 rleZeroCodeSize()
-                if code_size != prevCodeSize
+                if codeSize != prevCodeSize
                 {
                     rlePrevCodeSize()
-                    d.huffCount[2, code_size] = cast(u16) (d.huffCount[2, code_size] + 1)
-                    packedCodeSizes[numPackedCodeSizes] = code_size
+                    d.huffCount[2, codeSize] = cast(u16) (d.huffCount[2, codeSize] + 1)
+                    packedCodeSizes[numPackedCodeSizes] = codeSize
                     numPackedCodeSizes += 1
                 }
                 else
@@ -746,7 +746,7 @@ impl Deflate
                 }
             }
 
-            prevCodeSize = code_size
+            prevCodeSize = codeSize
         }
 
         if rleRepeatCount
@@ -761,20 +761,20 @@ impl Deflate
         optimizeHuffmanTable(2, MaxHuffSymbols2, 7, false)
 
         putBits(2, 2)
-        putBits(num_lit_codes - 257, 5)
-        putBits(num_dist_codes - 1, 5)
+        putBits(numLitCodes - 257, 5)
+        putBits(numDistCodes - 1, 5)
 
-        num_bit_lengths := 18'u32
-        while num_bit_lengths >= 0
+        numBitLengths := 18'u32
+        while numBitLengths >= 0
         {
-            if d.huffCodeSizes[2, PackedCodeSizeSymsSwizzle[num_bit_lengths]]
+            if d.huffCodeSizes[2, PackedCodeSizeSymsSwizzle[numBitLengths]]
                 break
-            num_bit_lengths -= 1
+            numBitLengths -= 1
         }
 
-        num_bit_lengths = Math.max(4, num_bit_lengths + 1)
-        putBits(num_bit_lengths - 4, 4)
-        for i := 0; i < num_bit_lengths; i += 1
+        numBitLengths = Math.max(4, numBitLengths + 1)
+        putBits(numBitLengths - 4, 4)
+        for i := 0; i < numBitLengths; i += 1
         {
             putBits(cast(u32) d.huffCodeSizes[2, PackedCodeSizeSymsSwizzle[i]], 3)
         }
