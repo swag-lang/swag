@@ -96,8 +96,6 @@ OPTIMS
 ****************************************
 
 -------------------------------------
-clear stack followed by getfromstack
--------------------------------------
 x64 binaryop div, transformer en shift si log2
 -------------------------------------
 BinOpModuloS32/div immediate mode

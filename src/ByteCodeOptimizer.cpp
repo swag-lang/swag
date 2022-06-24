@@ -140,7 +140,10 @@ void ByteCodeOptimizer::parseTree(ByteCodeOptContext* context, uint32_t startNod
 
 void ByteCodeOptimizer::setNop(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
-    if (ip->op == ByteCodeOp::Nop || (ip->flags & BCI_UNPURE))
+    if (ip->op == ByteCodeOp::Nop)
+        return;
+    if (ip->flags & BCI_UNPURE &&
+        ip->op != ByteCodeOp::ClearRA)
         return;
     auto flags = g_ByteCodeOpDesc[(int) ip->op].flags;
     if (flags & OPFLAG_UNPURE)

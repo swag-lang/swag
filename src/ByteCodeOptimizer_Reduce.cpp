@@ -511,6 +511,33 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
             setNop(context, ip);
             break;
         }
+
+        if ((ip[1].op == ByteCodeOp::GetFromStack8) &&
+            ip[1].b.u32 >= ip[0].a.u32 &&
+            ip[1].b.u32 < ip[0].a.u32 + 4 - 1 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::ClearRA);
+            break;
+        }
+
+        if ((ip[1].op == ByteCodeOp::GetFromStack16) &&
+            ip[1].b.u32 >= ip[0].a.u32 &&
+            ip[1].b.u32 < ip[0].a.u32 + 4 - 2 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::ClearRA);
+            break;
+        }
+
+        if ((ip[1].op == ByteCodeOp::GetFromStack32) &&
+            ip[1].b.u32 == ip[0].a.u32 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::ClearRA);
+            break;
+        }
+
         break;
 
     case ByteCodeOp::SetZeroStack64:
@@ -521,6 +548,81 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
             setNop(context, ip);
             break;
         }
+
+        if ((ip[1].op == ByteCodeOp::GetFromStack8) &&
+            ip[1].b.u32 >= ip[0].a.u32 &&
+            ip[1].b.u32 < ip[0].a.u32 + 8 - 1 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::ClearRA);
+            break;
+        }
+
+        if ((ip[1].op == ByteCodeOp::GetFromStack16) &&
+            ip[1].b.u32 >= ip[0].a.u32 &&
+            ip[1].b.u32 < ip[0].a.u32 + 8 - 2 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::ClearRA);
+            break;
+        }
+
+        if ((ip[1].op == ByteCodeOp::GetFromStack32) &&
+            ip[1].b.u32 >= ip[0].a.u32 &&
+            ip[1].b.u32 < ip[0].a.u32 + 8 - 4 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::ClearRA);
+            break;
+        }
+
+        if ((ip[1].op == ByteCodeOp::GetFromStack64) &&
+            ip[1].b.u32 == ip[0].a.u32 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::ClearRA);
+            break;
+        }
+
+        break;
+
+    case ByteCodeOp::SetZeroStackX:
+        if ((ip[1].op == ByteCodeOp::GetFromStack8) &&
+            ip[1].b.u32 >= ip[0].a.u32 &&
+            ip[1].b.u32 < ip[0].a.u32 + ip[0].b.u32 - 1 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::ClearRA);
+            break;
+        }
+
+        if ((ip[1].op == ByteCodeOp::GetFromStack16) &&
+            ip[1].b.u32 >= ip[0].a.u32 &&
+            ip[1].b.u32 < ip[0].a.u32 + ip[0].b.u32 - 2 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::ClearRA);
+            break;
+        }
+
+        if ((ip[1].op == ByteCodeOp::GetFromStack32) &&
+            ip[1].b.u32 >= ip[0].a.u32 &&
+            ip[1].b.u32 < ip[0].a.u32 + ip[0].b.u32 - 4 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::ClearRA);
+            break;
+        }
+
+        if ((ip[1].op == ByteCodeOp::GetFromStack64) &&
+            ip[1].b.u32 >= ip[0].a.u32 &&
+            ip[1].b.u32 < ip[0].a.u32 + ip[0].b.u32 - 8 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::ClearRA);
+            break;
+        }
+
         break;
 
     case ByteCodeOp::CopyRBtoRA8:
