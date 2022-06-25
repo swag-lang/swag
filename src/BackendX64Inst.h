@@ -928,6 +928,32 @@ namespace BackendX64Inst
         }
     }
 
+    inline void emit_Sub64_Immediate(X64PerThread& pp, uint64_t value, uint8_t reg)
+    {
+        if (!value)
+            return;
+        SWAG_ASSERT(reg == RAX || reg == RCX);
+        SWAG_ASSERT(value <= 0x7FFFFFFF);
+        pp.concat.addU8(0x48);
+        if (value <= 0x7F)
+        {
+            pp.concat.addU8(0x83);
+            pp.concat.addU8(0xE8 | reg);
+            pp.concat.addU8((uint8_t)value);
+        }
+        else if (reg == RAX)
+        {
+            pp.concat.addU8(0x2D);
+            pp.concat.addU32((uint32_t)value);
+        }
+        else if (reg == RCX)
+        {
+            pp.concat.addU8(0x81);
+            pp.concat.addU8(0xE9);
+            pp.concat.addU32((uint32_t)value);
+        }
+    }
+
     /////////////////////////////////////////////////////////////////////
 
     inline void emit_Symbol_RelocationAddr(X64PerThread& pp, uint8_t reg, uint32_t symbolIndex, uint32_t offset)
