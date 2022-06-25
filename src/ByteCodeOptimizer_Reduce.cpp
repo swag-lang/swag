@@ -1551,6 +1551,72 @@ void ByteCodeOptimizer::reduceCmpJump(ByteCodeOptContext* context, ByteCodeInstr
 {
     switch (ip->op)
     {
+    case ByteCodeOp::ClearMaskU32:
+        if (ip[1].op == ByteCodeOp::ClearMaskU32 &&
+            ip[2].op == ByteCodeOp::JumpIfNotEqual32 &&
+            ip[0].b.u32 == 0xFF &&
+            ip[1].b.u32 == 0xFF &&
+            ip[2].a.u32 == ip[0].a.u32 &&
+            ip[2].c.u32 == ip[1].a.u32 &&
+            !(ip[0].flags & BCI_START_STMT) &&
+            !(ip[1].flags & BCI_START_STMT) &&
+            !(ip[2].flags & BCI_START_STMT))
+        {
+            setNop(context, ip);
+            setNop(context, ip + 1);
+            SET_OP(ip + 2, ByteCodeOp::JumpIfNotEqual8);
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::ClearMaskU32 &&
+            ip[2].op == ByteCodeOp::JumpIfNotEqual32 &&
+            ip[0].b.u32 == 0xFFFF &&
+            ip[1].b.u32 == 0xFFFF &&
+            ip[2].a.u32 == ip[0].a.u32 &&
+            ip[2].c.u32 == ip[1].a.u32 &&
+            !(ip[0].flags & BCI_START_STMT) &&
+            !(ip[1].flags & BCI_START_STMT) &&
+            !(ip[2].flags & BCI_START_STMT))
+        {
+            setNop(context, ip);
+            setNop(context, ip + 1);
+            SET_OP(ip + 2, ByteCodeOp::JumpIfNotEqual16);
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::ClearMaskU32 &&
+            ip[2].op == ByteCodeOp::JumpIfEqual32 &&
+            ip[0].b.u32 == 0xFF &&
+            ip[1].b.u32 == 0xFF &&
+            ip[2].a.u32 == ip[0].a.u32 &&
+            ip[2].c.u32 == ip[1].a.u32 &&
+            !(ip[0].flags & BCI_START_STMT) &&
+            !(ip[1].flags & BCI_START_STMT) &&
+            !(ip[2].flags & BCI_START_STMT))
+        {
+            setNop(context, ip);
+            setNop(context, ip + 1);
+            SET_OP(ip + 2, ByteCodeOp::JumpIfEqual8);
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::ClearMaskU32 &&
+            ip[2].op == ByteCodeOp::JumpIfEqual32 &&
+            ip[0].b.u32 == 0xFFFF &&
+            ip[1].b.u32 == 0xFFFF &&
+            ip[2].a.u32 == ip[0].a.u32 &&
+            ip[2].c.u32 == ip[1].a.u32 &&
+            !(ip[0].flags & BCI_START_STMT) &&
+            !(ip[1].flags & BCI_START_STMT) &&
+            !(ip[2].flags & BCI_START_STMT))
+        {
+            setNop(context, ip);
+            setNop(context, ip + 1);
+            SET_OP(ip + 2, ByteCodeOp::JumpIfEqual16);
+            break;
+        }
+        break;
+
     case ByteCodeOp::IncrementRA64:
         if (ip[1].op == ByteCodeOp::JumpIfEqual64 &&
             !(ip[0].flags & BCI_IMM_A) &&
