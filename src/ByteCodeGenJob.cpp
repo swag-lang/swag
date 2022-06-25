@@ -203,7 +203,9 @@ void ByteCodeGenJob::emitDebugLine(ByteCodeGenContext* context, AstNode* node)
 
 void ByteCodeGenJob::emitDebugLine(ByteCodeGenContext* context)
 {
-    if (context->sourceFile->module->buildCfg.backendDebugInformations && !context->sourceFile->isScriptFile)
+    if (context->sourceFile->module->buildCfg.backendDebugInformations &&
+        !context->sourceFile->module->buildCfg.byteCodeOptimize &&
+        !context->sourceFile->isScriptFile)
     {
         emitInstruction(context, ByteCodeOp::DebugNop);
     }

@@ -25,6 +25,480 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         if (ip->b.s32 == 0)
             setNop(context, ip);
 
+        // Jump conditional followed by unconditional jump
+        // Revert the condition to remove the unconditional jump
+        switch (ip->op)
+        {
+            //
+        case ByteCodeOp::JumpIfGreaterF32:
+            if (ip[1].op == ByteCodeOp::Jump &&
+                ip[0].b.s32 == 1 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip, ByteCodeOp::JumpIfLowerEqF32);
+                ip->b.s32 = ip[1].b.s32 + 1;
+                setNop(context, ip + 1);
+            }
+            break;
+
+        case ByteCodeOp::JumpIfGreaterEqF32:
+            if (ip[1].op == ByteCodeOp::Jump &&
+                ip[0].b.s32 == 1 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip, ByteCodeOp::JumpIfLowerF32);
+                ip->b.s32 = ip[1].b.s32 + 1;
+                setNop(context, ip + 1);
+            }
+            break;
+
+        case ByteCodeOp::JumpIfLowerF32:
+            if (ip[1].op == ByteCodeOp::Jump &&
+                ip[0].b.s32 == 1 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip, ByteCodeOp::JumpIfGreaterEqF32);
+                ip->b.s32 = ip[1].b.s32 + 1;
+                setNop(context, ip + 1);
+            }
+            break;
+
+        case ByteCodeOp::JumpIfLowerEqF32:
+            if (ip[1].op == ByteCodeOp::Jump &&
+                ip[0].b.s32 == 1 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip, ByteCodeOp::JumpIfGreaterF32);
+                ip->b.s32 = ip[1].b.s32 + 1;
+                setNop(context, ip + 1);
+            }
+            break;
+
+            //
+        case ByteCodeOp::JumpIfGreaterF64:
+            if (ip[1].op == ByteCodeOp::Jump &&
+                ip[0].b.s32 == 1 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip, ByteCodeOp::JumpIfLowerEqF64);
+                ip->b.s32 = ip[1].b.s32 + 1;
+                setNop(context, ip + 1);
+            }
+            break;
+
+        case ByteCodeOp::JumpIfGreaterEqF64:
+            if (ip[1].op == ByteCodeOp::Jump &&
+                ip[0].b.s32 == 1 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip, ByteCodeOp::JumpIfLowerF64);
+                ip->b.s32 = ip[1].b.s32 + 1;
+                setNop(context, ip + 1);
+            }
+            break;
+
+        case ByteCodeOp::JumpIfLowerF64:
+            if (ip[1].op == ByteCodeOp::Jump &&
+                ip[0].b.s32 == 1 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip, ByteCodeOp::JumpIfGreaterEqF64);
+                ip->b.s32 = ip[1].b.s32 + 1;
+                setNop(context, ip + 1);
+            }
+            break;
+
+        case ByteCodeOp::JumpIfLowerEqF64:
+            if (ip[1].op == ByteCodeOp::Jump &&
+                ip[0].b.s32 == 1 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip, ByteCodeOp::JumpIfGreaterF64);
+                ip->b.s32 = ip[1].b.s32 + 1;
+                setNop(context, ip + 1);
+            }
+            break;
+
+            //
+        case ByteCodeOp::JumpIfGreaterS32:
+            if (ip[1].op == ByteCodeOp::Jump &&
+                ip[0].b.s32 == 1 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip, ByteCodeOp::JumpIfLowerEqS32);
+                ip->b.s32 = ip[1].b.s32 + 1;
+                setNop(context, ip + 1);
+            }
+            break;
+
+        case ByteCodeOp::JumpIfGreaterEqS32:
+            if (ip[1].op == ByteCodeOp::Jump &&
+                ip[0].b.s32 == 1 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip, ByteCodeOp::JumpIfLowerS32);
+                ip->b.s32 = ip[1].b.s32 + 1;
+                setNop(context, ip + 1);
+            }
+            break;
+
+        case ByteCodeOp::JumpIfLowerS32:
+            if (ip[1].op == ByteCodeOp::Jump &&
+                ip[0].b.s32 == 1 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip, ByteCodeOp::JumpIfGreaterEqS32);
+                ip->b.s32 = ip[1].b.s32 + 1;
+                setNop(context, ip + 1);
+            }
+            break;
+
+        case ByteCodeOp::JumpIfLowerEqS32:
+            if (ip[1].op == ByteCodeOp::Jump &&
+                ip[0].b.s32 == 1 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip, ByteCodeOp::JumpIfGreaterS32);
+                ip->b.s32 = ip[1].b.s32 + 1;
+                setNop(context, ip + 1);
+            }
+            break;
+
+            //
+        case ByteCodeOp::JumpIfGreaterS64:
+            if (ip[1].op == ByteCodeOp::Jump &&
+                ip[0].b.s32 == 1 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip, ByteCodeOp::JumpIfLowerEqS64);
+                ip->b.s32 = ip[1].b.s32 + 1;
+                setNop(context, ip + 1);
+            }
+            break;
+
+        case ByteCodeOp::JumpIfGreaterEqS64:
+            if (ip[1].op == ByteCodeOp::Jump &&
+                ip[0].b.s32 == 1 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip, ByteCodeOp::JumpIfLowerS64);
+                ip->b.s32 = ip[1].b.s32 + 1;
+                setNop(context, ip + 1);
+            }
+            break;
+
+        case ByteCodeOp::JumpIfLowerS64:
+            if (ip[1].op == ByteCodeOp::Jump &&
+                ip[0].b.s32 == 1 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip, ByteCodeOp::JumpIfGreaterEqS64);
+                ip->b.s32 = ip[1].b.s32 + 1;
+                setNop(context, ip + 1);
+            }
+            break;
+
+        case ByteCodeOp::JumpIfLowerEqS64:
+            if (ip[1].op == ByteCodeOp::Jump &&
+                ip[0].b.s32 == 1 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip, ByteCodeOp::JumpIfGreaterS64);
+                ip->b.s32 = ip[1].b.s32 + 1;
+                setNop(context, ip + 1);
+            }
+            break;
+
+            //
+        case ByteCodeOp::JumpIfGreaterU32:
+            if (ip[1].op == ByteCodeOp::Jump &&
+                ip[0].b.s32 == 1 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip, ByteCodeOp::JumpIfLowerEqU32);
+                ip->b.s32 = ip[1].b.s32 + 1;
+                setNop(context, ip + 1);
+            }
+            break;
+
+        case ByteCodeOp::JumpIfGreaterEqU32:
+            if (ip[1].op == ByteCodeOp::Jump &&
+                ip[0].b.s32 == 1 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip, ByteCodeOp::JumpIfLowerU32);
+                ip->b.s32 = ip[1].b.s32 + 1;
+                setNop(context, ip + 1);
+            }
+            break;
+
+        case ByteCodeOp::JumpIfLowerU32:
+            if (ip[1].op == ByteCodeOp::Jump &&
+                ip[0].b.s32 == 1 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip, ByteCodeOp::JumpIfGreaterEqU32);
+                ip->b.s32 = ip[1].b.s32 + 1;
+                setNop(context, ip + 1);
+            }
+            break;
+
+        case ByteCodeOp::JumpIfLowerEqU32:
+            if (ip[1].op == ByteCodeOp::Jump &&
+                ip[0].b.s32 == 1 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip, ByteCodeOp::JumpIfGreaterU32);
+                ip->b.s32 = ip[1].b.s32 + 1;
+                setNop(context, ip + 1);
+            }
+            break;
+
+            //
+        case ByteCodeOp::JumpIfGreaterU64:
+            if (ip[1].op == ByteCodeOp::Jump &&
+                ip[0].b.s32 == 1 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip, ByteCodeOp::JumpIfLowerEqU64);
+                ip->b.s32 = ip[1].b.s32 + 1;
+                setNop(context, ip + 1);
+            }
+            break;
+
+        case ByteCodeOp::JumpIfGreaterEqU64:
+            if (ip[1].op == ByteCodeOp::Jump &&
+                ip[0].b.s32 == 1 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip, ByteCodeOp::JumpIfLowerU64);
+                ip->b.s32 = ip[1].b.s32 + 1;
+                setNop(context, ip + 1);
+            }
+            break;
+
+        case ByteCodeOp::JumpIfLowerU64:
+            if (ip[1].op == ByteCodeOp::Jump &&
+                ip[0].b.s32 == 1 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip, ByteCodeOp::JumpIfGreaterEqU64);
+                ip->b.s32 = ip[1].b.s32 + 1;
+                setNop(context, ip + 1);
+            }
+            break;
+
+        case ByteCodeOp::JumpIfLowerEqU64:
+            if (ip[1].op == ByteCodeOp::Jump &&
+                ip[0].b.s32 == 1 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip, ByteCodeOp::JumpIfGreaterU64);
+                ip->b.s32 = ip[1].b.s32 + 1;
+                setNop(context, ip + 1);
+            }
+            break;
+
+            //
+        case ByteCodeOp::JumpIfFalse:
+            if (ip[1].op == ByteCodeOp::Jump &&
+                ip[0].b.s32 == 1 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip, ByteCodeOp::JumpIfTrue);
+                ip->b.s32 = ip[1].b.s32 + 1;
+                setNop(context, ip + 1);
+            }
+            break;
+
+        case ByteCodeOp::JumpIfTrue:
+            if (ip[1].op == ByteCodeOp::Jump &&
+                ip[0].b.s32 == 1 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip, ByteCodeOp::JumpIfFalse);
+                ip->b.s32 = ip[1].b.s32 + 1;
+                setNop(context, ip + 1);
+            }
+            break;
+
+        case ByteCodeOp::JumpIfNotZero8:
+            if (ip[1].op == ByteCodeOp::Jump &&
+                ip[0].b.s32 == 1 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip, ByteCodeOp::JumpIfZero8);
+                ip->b.s32 = ip[1].b.s32 + 1;
+                setNop(context, ip + 1);
+            }
+            break;
+
+        case ByteCodeOp::JumpIfNotZero16:
+            if (ip[1].op == ByteCodeOp::Jump &&
+                ip[0].b.s32 == 1 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip, ByteCodeOp::JumpIfZero16);
+                ip->b.s32 = ip[1].b.s32 + 1;
+                setNop(context, ip + 1);
+            }
+            break;
+
+        case ByteCodeOp::JumpIfNotZero32:
+            if (ip[1].op == ByteCodeOp::Jump &&
+                ip[0].b.s32 == 1 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip, ByteCodeOp::JumpIfZero32);
+                ip->b.s32 = ip[1].b.s32 + 1;
+                setNop(context, ip + 1);
+            }
+            break;
+
+        case ByteCodeOp::JumpIfNotZero64:
+            if (ip[1].op == ByteCodeOp::Jump &&
+                ip[0].b.s32 == 1 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip, ByteCodeOp::JumpIfZero64);
+                ip->b.s32 = ip[1].b.s32 + 1;
+                setNop(context, ip + 1);
+            }
+            break;
+
+        case ByteCodeOp::JumpIfZero8:
+            if (ip[1].op == ByteCodeOp::Jump &&
+                ip[0].b.s32 == 1 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip, ByteCodeOp::JumpIfNotZero8);
+                ip->b.s32 = ip[1].b.s32 + 1;
+                setNop(context, ip + 1);
+            }
+            break;
+
+        case ByteCodeOp::JumpIfZero16:
+            if (ip[1].op == ByteCodeOp::Jump &&
+                ip[0].b.s32 == 1 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip, ByteCodeOp::JumpIfNotZero16);
+                ip->b.s32 = ip[1].b.s32 + 1;
+                setNop(context, ip + 1);
+            }
+            break;
+
+        case ByteCodeOp::JumpIfZero32:
+            if (ip[1].op == ByteCodeOp::Jump &&
+                ip[0].b.s32 == 1 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip, ByteCodeOp::JumpIfNotZero32);
+                ip->b.s32 = ip[1].b.s32 + 1;
+                setNop(context, ip + 1);
+            }
+            break;
+
+        case ByteCodeOp::JumpIfZero64:
+            if (ip[1].op == ByteCodeOp::Jump &&
+                ip[0].b.s32 == 1 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip, ByteCodeOp::JumpIfNotZero64);
+                ip->b.s32 = ip[1].b.s32 + 1;
+                setNop(context, ip + 1);
+            }
+            break;
+
+        case ByteCodeOp::JumpIfEqual8:
+            if (ip[1].op == ByteCodeOp::Jump &&
+                ip[0].b.s32 == 1 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip, ByteCodeOp::JumpIfNotEqual8);
+                ip->b.s32 = ip[1].b.s32 + 1;
+                setNop(context, ip + 1);
+            }
+            break;
+
+        case ByteCodeOp::JumpIfEqual16:
+            if (ip[1].op == ByteCodeOp::Jump &&
+                ip[0].b.s32 == 1 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip, ByteCodeOp::JumpIfNotEqual16);
+                ip->b.s32 = ip[1].b.s32 + 1;
+                setNop(context, ip + 1);
+            }
+            break;
+
+        case ByteCodeOp::JumpIfEqual32:
+            if (ip[1].op == ByteCodeOp::Jump &&
+                ip[0].b.s32 == 1 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip, ByteCodeOp::JumpIfNotEqual32);
+                ip->b.s32 = ip[1].b.s32 + 1;
+                setNop(context, ip + 1);
+            }
+            break;
+
+        case ByteCodeOp::JumpIfEqual64:
+            if (ip[1].op == ByteCodeOp::Jump &&
+                ip[0].b.s32 == 1 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip, ByteCodeOp::JumpIfNotEqual64);
+                ip->b.s32 = ip[1].b.s32 + 1;
+                setNop(context, ip + 1);
+            }
+            break;
+
+        case ByteCodeOp::JumpIfNotEqual8:
+            if (ip[1].op == ByteCodeOp::Jump &&
+                ip[0].b.s32 == 1 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip, ByteCodeOp::JumpIfEqual8);
+                ip->b.s32 = ip[1].b.s32 + 1;
+                setNop(context, ip + 1);
+            }
+            break;
+
+        case ByteCodeOp::JumpIfNotEqual16:
+            if (ip[1].op == ByteCodeOp::Jump &&
+                ip[0].b.s32 == 1 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip, ByteCodeOp::JumpIfEqual16);
+                ip->b.s32 = ip[1].b.s32 + 1;
+                setNop(context, ip + 1);
+            }
+            break;
+
+        case ByteCodeOp::JumpIfNotEqual32:
+            if (ip[1].op == ByteCodeOp::Jump &&
+                ip[0].b.s32 == 1 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip, ByteCodeOp::JumpIfEqual32);
+                ip->b.s32 = ip[1].b.s32 + 1;
+                setNop(context, ip + 1);
+            }
+            break;
+
+        case ByteCodeOp::JumpIfNotEqual64:
+            if (ip[1].op == ByteCodeOp::Jump &&
+                ip[0].b.s32 == 1 &&
+                !(ip[1].flags & BCI_START_STMT))
+            {
+                SET_OP(ip, ByteCodeOp::JumpIfEqual64);
+                ip->b.s32 = ip[1].b.s32 + 1;
+                setNop(context, ip + 1);
+            }
+            break;
+        }
+
         switch (ip->op)
         {
         case ByteCodeOp::Jump:
