@@ -939,18 +939,18 @@ namespace BackendX64Inst
         {
             pp.concat.addU8(0x83);
             pp.concat.addU8(0xE8 | reg);
-            pp.concat.addU8((uint8_t)value);
+            pp.concat.addU8((uint8_t) value);
         }
         else if (reg == RAX)
         {
             pp.concat.addU8(0x2D);
-            pp.concat.addU32((uint32_t)value);
+            pp.concat.addU32((uint32_t) value);
         }
         else if (reg == RCX)
         {
             pp.concat.addU8(0x81);
             pp.concat.addU8(0xE9);
-            pp.concat.addU32((uint32_t)value);
+            pp.concat.addU32((uint32_t) value);
         }
     }
 
@@ -1393,7 +1393,16 @@ namespace BackendX64Inst
     /////////////////////////////////////////////////////////////////////
     inline void emit_imul64_RAX(X64PerThread& pp, uint64_t value)
     {
-        if (value <= 0x7F)
+        if (value == 2)
+        {
+            pp.concat.addString3("\x48\xD1\xE0"); // shl rax, 1
+        }
+        else if (isPowerOfTwo(value))
+        {
+            pp.concat.addString3("\x48\xC1\xE0"); // shl rax, ??
+            pp.concat.addU8((uint8_t) log2(value));
+        }
+        else if (value <= 0x7F)
         {
             pp.concat.addString3("\x48\x6B\xC0"); // imul rax, ??
             pp.concat.addU8((uint8_t) value);
@@ -1407,7 +1416,6 @@ namespace BackendX64Inst
         {
             emit_Load64_Immediate(pp, value, RCX);
             pp.concat.addString4("\x48\x0F\xAF\xC1"); // imul rax, rcx
-            pp.concat.addU64(value);
         }
     }
 
