@@ -9,4 +9,4 @@ Visual Studio Code syntax highlighting and dark theme for the Swag programming l
 # Features
 
  - Syntax highlighting
- - New theme 'Swag Dark'
+ - Theme 'Swag Dark'
