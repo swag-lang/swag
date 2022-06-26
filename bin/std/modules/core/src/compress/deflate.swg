@@ -248,6 +248,7 @@ impl Deflate
         d.huffCount[0, LenSym[matchLen - MinMatchLen]] += 1
     }
 
+    #[Swag.Safety("", false)]
     mtd findMatch(laPos, maxDist, maxMatchLen: u32, matchDistAddr, matchLenAddr: *u32)
     {
         d := state
@@ -256,7 +257,7 @@ impl Deflate
         matchLen := dref matchLenAddr
         probePos := pos
 
-        num_probes_left := d.maxProbes[matchLen >= 32 ? 1 : 0]
+        numProbesLeft := d.maxProbes[matchLen >= 32 ? 1 : 0]
         s  := &d.dict[0] + pos
         c0 := d.dict[pos + matchLen]
         c1 := d.dict[pos + matchLen - 1]
@@ -271,11 +272,11 @@ impl Deflate
 
             loop
             {
-                num_probes_left -= 1
-                if num_probes_left == 0
+                numProbesLeft -= 1
+                if numProbesLeft == 0
                     return
 
-                #[Swag.Mixin]
+                #[Swag.Mixin, Swag.NoReturn]
                 func probe()
                 {
                     nextProbePos = d.next[probePos]
@@ -1152,9 +1153,9 @@ public impl Deflate
 
         Debug.assert(state  != null, "'init' not called")
 
-        state.result         = result
+        state.result     = result
         state.inBuf      = @dataof(src)
-        state.inSrc         = @dataof(src)
+        state.inSrc      = @dataof(src)
         state.srcBufLeft = @countof(src)
         state.outBufOfs  = result.count
 

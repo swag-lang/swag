@@ -16,6 +16,7 @@ struct MainWnd
     editWnd:    *EditWnd
     quickWnd:   *QuickWnd
     propWnd:    *PropWnd
+    clipFmt:    Clipboard.Format
 
     editMode: EditMode = .Shape
 
@@ -41,6 +42,18 @@ impl IWnd for MainWnd
 
         switch evt.id
         {
+        case CmdIdCopy:
+            evt.setFlags |= .Disabled | .Name
+            evt.disabled = !hasSel
+            evt.name = "Copy"
+            evt.accepted = true
+
+        case CmdIdPaste:
+            evt.setFlags |= .Disabled | .Name
+            evt.disabled = !capture or !Clipboard.hasFormat(clipFmt)
+            evt.name = "Paste"
+            evt.accepted = true
+
         case CmdIdCopyAll:
             evt.setFlags |= .Disabled | .Name
             evt.disabled = capture == null
@@ -181,6 +194,11 @@ impl IWnd for MainWnd
         var undo: *Undo
         switch evt.id
         {
+        case CmdIdCopy:
+            capture.copy()
+        case CmdIdPaste:
+            capture.paste()
+
         case CmdIdCopyAll:
             capture.copyAll()
 
@@ -322,6 +340,10 @@ impl MainWnd
 
     mtd registerShortcuts()
     {
+        registerKeyShortcut(Input.KeyModifiers.Control,   Input.Key.C,      CmdIdCopy)
+        registerKeyShortcut(Input.KeyModifiers.Control,   Input.Key.V,      CmdIdPaste)
+        registerKeyShortcut(Input.KeyModifiers.Control,   Input.Key.Insert, CmdIdCopy)
+        registerKeyShortcut(Input.KeyModifiers.Shift,     Input.Key.Insert, CmdIdPaste)
         registerKeyShortcut(Input.KeyModifiers.Control,   Input.Key.Z,      CmdIdUndo)
         registerKeyShortcut(Input.KeyModifiers.Control,   Input.Key.Y,      CmdIdRedo)
         registerKeyShortcut(Input.KeyModifiers.CtrlShift, Input.Key.F,      CmdIdBringForward)
@@ -349,6 +371,7 @@ impl MainWnd
 
         img := assume Image.decode(".png", Icons48)
         res.icons48.set(renderer.addImage(img), 48, 48)
+        res.clipFmt = catch Clipboard.registerFormat(ClipboardFormat)
 
         res.createToolbar()
         res.registerShortcuts()

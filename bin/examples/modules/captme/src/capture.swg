@@ -90,6 +90,14 @@ impl Capture
         Clipboard.addImage(img)
     }
 
+    mtd copy()
+    {
+    }
+
+    mtd paste()
+    {
+    }
+
     //////////////////////////////
     // PAINT
     //////////////////////////////
@@ -218,6 +226,9 @@ impl Capture
     {
         menu := MenuCtrl.createPopup(view)
 
+        menu.addItem(CmdIdCopy)
+        menu.addItem(CmdIdPaste)
+        menu.addSeparator()
         menu.addItem(CmdIdDeleteSelection)
         menu.addSeparator()
 

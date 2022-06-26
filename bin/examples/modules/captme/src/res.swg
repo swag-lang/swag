@@ -18,3 +18,7 @@ const CmdIdModeText         = "CmdIdModeText"
 const CmdIdModeFavorites    = "CmdIdModeFavorites"
 const CmdIdDeleteSelection  = "CmdIdDeleteSelection"
 const CmdIdCopyAll          = "CmdIdCopyAll"
+const CmdIdCopy             = "CmdIdCopy"
+const CmdIdPaste            = "CmdIdPaste"
+
+const ClipboardFormat = "Swag.CaptMe"
