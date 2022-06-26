@@ -1,0 +1,427 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "swag",
+  "patterns": [
+    { "include": "#one-line-comment" },
+    { "include": "#multi-line-comment" },
+    { "include": "#attributes" },
+    { "include": "#keywords" },
+    { "include": "#keywords-decl" },
+    { "include": "#operator-modifier" },
+    { "include": "#op" },
+    { "include": "#op-invalid" },
+    { "include": "#keywords-defer" },
+    { "include": "#function-call" },
+    { "include": "#function-call1" },
+    { "include": "#keywords-control" },
+    { "include": "#raw-strings" },
+    { "include": "#multi-strings" },
+    { "include": "#intrinsics" },
+    { "include": "#intrinsics-buildin" },
+    { "include": "#intrinsics-alias" },
+    { "include": "#intrinsics-invalid" },
+    { "include": "#intrinsics-literal" },
+    { "include": "#compiler-function" },
+    { "include": "#compiler-global" },
+    { "include": "#compiler-statement" },
+    { "include": "#compiler" },
+    { "include": "#compiler-invalid" },
+    { "include": "#types" },
+    { "include": "#strings" },
+    { "include": "#var-decl" },
+    { "include": "#storage-modifier" },
+    { "include": "#constant" },
+    { "include": "#struct-name" },
+    { "include": "#function-call2" },
+    { "include": "#literal-binary" },
+    { "include": "#literal-hexa" },
+    { "include": "#literal-float" },
+    { "include": "#literal-integer" },
+    { "include": "#literal-suffix" },
+    { "include": "#characters" },
+    { "include": "#operator-character" },
+    { "include": "#code" }
+  ],
+  "repository": {
+    "one-line-comment": {
+      "patterns": [
+        {
+          "name": "comment.line",
+          "match": "///?(.*)"
+        }
+      ]
+    },
+    "multi-line-comment": {
+      "name": "comment.line",
+      "begin": "/\\*",
+      "end": "\\*/",
+      "patterns": [
+        {
+          "name": "comment.line",
+          "begin": "/\\*",
+          "end": "\\*/"
+        }
+      ]
+    },
+    "attributes": {
+      "patterns": [
+        {
+          "name": "entity.name.function.preprocessor",
+          "match": "(#\\[)(\\w+)(.*)(\\])"
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword",
+          "match": "\\b(using|with|cast|acast|bitcast|dref|retval|try|catch|assume|throw|discard)\\b"
+        }
+      ]
+    },
+    "keywords-defer": {
+      "patterns": [
+        {
+          "match": "\\b(defer)\\b\\((err|noerr)\\)",
+          "captures": {
+            "1": {
+              "name": "keyword.control"
+            },
+            "2": {
+              "name": "constant.character.escape"
+            }
+          }
+        }
+      ]
+    },
+    "keywords-control": {
+      "patterns": [
+        {
+          "name": "keyword.control",
+          "match": "\\b(if|else|elif|for|while|switch|defer|loop|visit|break|fallthrough|return|case|continue|default|scope|and|or|orelse)\\b"
+        }
+      ]
+    },
+    "keywords-decl": {
+      "patterns": [
+        {
+          "name": "keyword.declaration",
+          "match": "\\b(enum|struct|union|impl|interface|func|closure|mtd|mtdc|namespace|alias|attr)\\b"
+        }
+      ]
+    },
+    "var-decl": {
+      "patterns": [
+        {
+          "name": "keyword.declaration",
+          "match": "\\b(var|const)\\b"
+        }
+      ]
+    },
+    "intrinsics": {
+      "patterns": [
+        {
+          "name": "entity.name.function.intrinsic",
+          "match": "(@)\\b(defined|stringcmp|typecmp|interfaceof|getcontext|setcontext|args|compiler|isbytecode|print|errormsg|bcdbg|assert|panic|seterr|hastag|gettag|init|drop|index|mkany|mkslice|mkstring|mkforeign|mkcallback|mkinterface|sizeof|alignof|offsetof|typeof|kindof|countof|dataof|stringof|nameof|runes|postcopy|postmove|spread|isconstexpr|err)\\b"
+        }
+      ]
+    },
+    "intrinsics-buildin": {
+      "patterns": [
+        {
+          "name": "entity.name.tag",
+          "match": "(@)\\b(byteswap|bitcountnz|bitcounttz|bitcountlz|min|max|sqrt|sin|cos|tan|sinh|cosh|tanh|asin|acos|atan|atan2|log|log2|log10|floor|ceil|trunc|round|abs|exp|exp2|pow|alloc|realloc|free|memcpy|memmove|memset|memcmp|strlen|strcmp|atomadd|atomand|atomor|atomxor|atomxchg|atomcmpxchg|cvastart|cvaend|cvaarg)\\b"
+        }
+      ]
+    },
+    "intrinsics-alias": {
+      "patterns": [
+        {
+          "name": "entity.name.function.intrinsic",
+          "match": "(@)(alias)([0-9]+)|(.)(item)([0-9]+)"
+        }
+      ]
+    },
+    "intrinsics-literal": {
+      "patterns": [
+        {
+          "name": "keyword.declaration",
+          "match": "@"
+        }
+      ]
+    },
+    "intrinsics-invalid": {
+      "patterns": [
+        {
+          "name": "invalid",
+          "match": "@\\w+"
+        }
+      ]
+    },
+    "compiler-function": {
+      "patterns": [
+        {
+          "name": "entity.name.function",
+          "match": "(#)\\b(run|test|init|drop|main|message|ast|dependencies)\\b"
+        }
+      ]
+    },
+    "compiler-global": {
+      "patterns": [
+        {
+          "name": "meta.preprocessor",
+          "match": "(#)(global)\\s+(using|export|generated|if|namespace|public|private|skip|testpass|testerror|testerrors|testwarning|testwarnings)\\b",
+          "captures": {
+            "3": {
+              "name": "constant.character.escape"
+            }
+          }
+        }
+      ]
+    },
+    "compiler-statement": {
+      "patterns": [
+        {
+          "name": "meta.preprocessor",
+          "match": "(#)(global|load|assert|print|import|mixin|macro|inline|placeholder|foreignlib|if|else|elif|selectif|checkif)\\b"
+        }
+      ]
+    },
+    "compiler": {
+      "patterns": [
+        {
+          "name": "constant.character.escape",
+          "match": "(#)\\b(tokenpos|file|line|cfg|arch|os|module|backend|self|location|callerlocation|callerfunction|swagversion|swagrevision|swagbuildnum|swagos|code|semerror)"
+        }
+      ]
+    },
+    "compiler-invalid": {
+      "patterns": [
+        {
+          "name": "invalid",
+          "match": "(#)\\w+"
+        }
+      ]
+    },
+    "types": {
+      "patterns": [
+        {
+          "name": "storage.type",
+          "match": "\\b(code|Self|self|any|void|rune|f32|f64|s8|s16|s32|s64|u8|u16|u32|u64|bool|string|cstring|cvarargs|typeinfo|uint|int)\\b"
+        }
+      ]
+    },
+    "storage-modifier": {
+      "patterns": [
+        {
+          "name": "storage.modifier",
+          "match": "\\b(public|private|protected)\\b"
+        }
+      ]
+    },
+    "op": {
+      "patterns": [
+        {
+          "name": "entity.name.function.intrinsic",
+          "match": "\\b(opSlice|opBinary|opUnary|opAssign|opIndexAssign|opIndexAffect|opCast|opCount|opData|opVisit|opInit|opReloc|opEquals|opCmp|opPostCopy|opPostMove|opDrop|opCount|opAffect|opAffectSuffix|opIndex|opIndexAssign)\\b"
+        },
+        {
+          "name": "entity.name.function.intrinsic",
+          "match": "\\b(opVisit)(\\w+)\\b",
+          "captures": {
+            "1": {
+              "name": "entity.name.function.intrinsic"
+            },
+            "2": {
+              "name": "constant.character.escape"
+            }
+          }
+        }
+      ]
+    },
+    "op-invalid": {
+      "patterns": [
+        {
+          "name": "invalid",
+          "match": "\\b(op)[A-Z]\\w*\\b"
+        }
+      ]
+    },
+    "constant": {
+      "patterns": [
+        {
+          "name": "constant.language",
+          "match": "\\b(true|false|null)\\b"
+        }
+      ]
+    },
+    "function-call": {
+      "patterns": [
+        {
+          "match": "\\b(visit)\\b\\((\\w*)\\)",
+          "captures": {
+            "1": {
+              "name": "keyword.control"
+            },
+            "2": {
+              "name": "constant.character.escape"
+            }
+          }
+        },
+        {
+          "match": "([A-Za-z_][A-Za-z_0-9]*)\\(",
+          "captures": {
+            "1": {
+              "name": "entity.name.function"
+            }
+          }
+        }
+      ]
+    },
+    "function-call1": {
+      "patterns": [
+        {
+          "match": "([A-Za-z_][A-Za-z_0-9]*)\\s*\\b(')\\s*([A-Za-z_][A-Za-z_0-9]*)\\(",
+          "captures": {
+            "1": {
+              "name": "entity.name.function"
+            },
+            "3": {
+              "name": "entity.name.class"
+            }
+          }
+        }
+      ]
+    },
+    "function-call2": {
+      "patterns": [
+        {
+          "match": "([A-Za-z_][A-Za-z_0-9]*)\\'",
+          "captures": {
+            "1": {
+              "name": "entity.name.function"
+            }
+          }
+        }
+      ]
+    },
+    "struct-name": {
+      "patterns": [
+        {
+          "name": "entity.name.class",
+          "match": "(\\b[A-Z]\\w*)"
+        }
+      ]
+    },
+    "code": {
+      "patterns": [
+        {
+          "name": "source.code",
+          "match": "\\b\\w+"
+        }
+      ]
+    },
+    "literal-binary": {
+      "patterns": [
+        {
+          "name": "constant.numeric.binary",
+          "match": "0b[01][01_]*"
+        }
+      ]
+    },
+    "literal-hexa": {
+      "patterns": [
+        {
+          "name": "constant.numeric.hex",
+          "match": "0x([[:xdigit:]][[:xdigit:]_]*)((\\.\\g<1>)?[pP][-+]?\\d[\\d_]*)?"
+        }
+      ]
+    },
+    "literal-float": {
+      "patterns": [
+        {
+          "name": "constant.numeric.float",
+          "match": "(\\d[\\d_]*)(\\.\\g<1>)([eE][-+]?\\g<1>)?"
+        },
+        {
+          "name": "constant.numeric.float",
+          "match": "(\\d[\\d_]*)([eE][-+]?\\g<1>)"
+        }
+      ]
+    },
+    "literal-integer": {
+      "patterns": [
+        {
+          "name": "constant.numeric.integer",
+          "match": "(\\d[\\d_]*)"
+        }
+      ]
+    },
+    "literal-suffix": {
+      "patterns": [
+        {
+          "name": "constant.character.escape",
+          "match": "(\\'\\w[\\w_]*)"
+        }
+      ]
+    },
+    "raw-strings": {
+      "name": "string.quoted.double",
+      "begin": "@\"",
+      "end": "\"@",
+      "patterns": [
+        {
+          "name": "constant.character.escape",
+          "match": ""
+        }
+      ]
+    },
+    "multi-strings": {
+      "name": "string.quoted.double",
+      "begin": "\"\"\"",
+      "end": "\"\"\"",
+      "patterns": [
+        {
+          "name": "constant.character.escape",
+          "match": "\\\\."
+        }
+      ]
+    },
+    "strings": {
+      "name": "string.quoted.double",
+      "begin": "\"",
+      "end": "\"",
+      "patterns": [
+        {
+          "name": "constant.character.escape",
+          "match": "\\\\."
+        }
+      ]
+    },
+    "characters": {
+      "patterns": [
+        {
+          "name": "string.quoted.single",
+          "match": "\\'\\w+\\'"
+        }
+      ]
+    },
+    "operator-character": {
+      "patterns": [
+        {
+          "name": "keyword.operator",
+          "match": "[\\/=\\-+!*%<>&|^~.`'!:]"
+        }
+      ]
+    },
+    "operator-modifier": {
+      "patterns": [
+        {
+          "name": "constant.character.escape",
+          "match": "\\,(safe|small|nodrop|move|moveraw)\\b"
+        }
+      ]
+    }
+  },
+  "scopeName": "source"
+}
