@@ -16,9 +16,35 @@ impl Encoder
         serializer.startValue(type)
         defer serializer.endValue(type)
 
-        if Reflection.isBool(type)
+        if type.kind == .Native
         {
-            serializer.writeBool(dref cast(const *bool) data)
+            typeNative := cast(const *TypeInfoNative) type
+            switch typeNative.nativeKind
+            {
+            case Bool:
+                serializer.writeBool(dref cast(const *bool) data)
+            case U8:
+                serializer.writeU8(dref cast(const *u8) data)
+            case U16:
+                serializer.writeU16(dref cast(const *u16) data)
+            case U32, Rune:
+                serializer.writeU32(dref cast(const *u32) data)
+            case U64:
+                serializer.writeU64(dref cast(const *u64) data)
+            case S8:
+                serializer.writeS8(dref cast(const *s8) data)
+            case S16:
+                serializer.writeS16(dref cast(const *s16) data)
+            case S32:
+                serializer.writeS32(dref cast(const *s32) data)
+            case S64:
+                serializer.writeS64(dref cast(const *s64) data)
+            case F32:
+                serializer.writeF32(dref cast(const *f32) data)
+            case F64:
+                serializer.writeF64(dref cast(const *f64) data)
+            }
+
             return
         }
 

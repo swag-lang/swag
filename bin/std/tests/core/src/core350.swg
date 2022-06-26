@@ -3,7 +3,8 @@ using Core
 struct Toto
 {
     x, y:   bool
-    arr:    [10] bool
+    z:      f32 = 3.14
+    arr:    [10] s32
 }
 
 var toto: Toto

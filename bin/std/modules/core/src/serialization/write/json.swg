@@ -5,6 +5,8 @@ public struct JSon
 {
     using base: Serializer
     indent:     u32
+    fmtInt:     StrConv.ConvertFormatInt
+    fmtFloat:   StrConv.ConvertFormatFloat{fmt: "g"'u8}
 }
 
 public impl ISerializer for JSon
@@ -59,5 +61,65 @@ public impl ISerializer for JSon
     mtd writeBool(value: bool)
     {
         output.addBytes(value ? "true" : "false")
+    }
+
+    mtd writeF32(value: f32)
+    {
+        fmtFloat.value = value
+        StrConv.convertFloat(output, fmtFloat)
+    }
+
+    mtd writeF64(value: f64)
+    {
+        fmtFloat.value = value
+        StrConv.convertFloat(output, fmtFloat)
+    }
+
+    mtd writeU8(value: u8)
+    {
+        fmtInt.value = value
+        StrConv.convertInt(output, fmtInt)
+    }
+
+    mtd writeU16(value: u16)
+    {
+        fmtInt.value = value
+        StrConv.convertInt(output, fmtInt)
+    }
+
+    mtd writeU32(value: u32)
+    {
+        fmtInt.value = value
+        StrConv.convertInt(output, fmtInt)
+    }
+
+    mtd writeU64(value: u64)
+    {
+        fmtInt.value = value
+        StrConv.convertInt(output, fmtInt)
+    }
+
+    mtd writeS8(value: s8)
+    {
+        fmtInt.value = value
+        StrConv.convertInt(output, fmtInt)
+    }
+
+    mtd writeS16(value: s16)
+    {
+        fmtInt.value = value
+        StrConv.convertInt(output, fmtInt)
+    }
+
+    mtd writeS32(value: s32)
+    {
+        fmtInt.value = value
+        StrConv.convertInt(output, fmtInt)
+    }
+
+    mtd writeS64(value: s64)
+    {
+        fmtInt.value = value
+        StrConv.convertInt(output, fmtInt)
     }
 }
