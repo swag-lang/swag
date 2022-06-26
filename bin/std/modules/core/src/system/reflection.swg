@@ -58,6 +58,19 @@ using Swag
         return typeStruct.structName == name
     }
 
+    // In case this is a type alias, need to go deep inside it to find the right type
+    func makeConcreteAlias(type: typeinfo)->typeinfo
+    {
+        result := type
+        while Reflection.isTypeAlias(result)
+        {
+            typeAlias := cast(const *TypeInfoAlias) result
+            result = typeAlias.rawType
+        }
+
+        return result
+    }
+
     // Get information about a specific mtd in a given struct
     // Returns null if the mtd does not exist
     func getMethod(type: typeinfo, name: string)->const* TypeValue

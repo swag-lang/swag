@@ -141,16 +141,8 @@ impl ConvertFormatInt
 // Convert a value to an utf8 string, and append the result in a ConcatBuffer
 func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
 {
-    valueData := @dataof(value)
-    type      := cast(const *TypeInfo) @kindof(value)
-
-    // In case this is a type alias, need to go deep inside it to find the right type
-    while Reflection.isTypeAlias(type)
-    {
-        typeAlias := cast(const *TypeInfoAlias) type
-        type = typeAlias.rawType
-    }
-
+    valueData     := @dataof(value)
+    type          := Reflection.makeConcreteAlias(@kindof(value))
     concreteValue := @mkany(valueData, type)
 
     // This is a type
