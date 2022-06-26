@@ -132,7 +132,6 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("while", State.Control)
         mapWords.add("switch", State.Control)
         mapWords.add("defer", State.Control)
-        mapWords.add("errdefer", State.Control)
         mapWords.add("loop", State.Control)
         mapWords.add("visit", State.Control)
         mapWords.add("break", State.Control)

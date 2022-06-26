@@ -1184,3 +1184,11 @@ AstNode* AstOp::clone(CloneContext& context)
     newNode->dependentNode = dependentNode;
     return newNode;
 }
+
+AstNode* AstDefer::clone(CloneContext& context)
+{
+    auto newNode = Ast::newNode<AstDefer>();
+    newNode->copyFrom(context, this);
+    newNode->deferKind = deferKind;
+    return newNode;
+}

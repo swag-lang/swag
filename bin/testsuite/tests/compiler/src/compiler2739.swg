@@ -3,7 +3,7 @@ func toto() throw
 {
     try
     {
-        errdefer throw "toto"
+        defer(err) throw "toto"
         throw "titi"
     }
 }

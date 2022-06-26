@@ -9,6 +9,7 @@ struct SyntaxJob;
 struct Scope;
 struct SourceFile;
 struct AstNode;
+struct AstDefer;
 
 enum class ScopeKind
 {
@@ -65,15 +66,15 @@ struct Scope
     bool               isTopLevel();
     bool               isGlobalOrImpl();
 
-    SymTable               symTable;
-    Utf8                   name;
-    Utf8                   fullname;
-    VectorNative<Scope*>   childScopes;
-    VectorNative<AstNode*> deferredNodes;
-    DependentJobs          dependentJobs;
-    SharedMutex            mutex;
-    VectorNative<AstNode*> doneDefer;
-    VectorNative<AstNode*> doneDrop;
+    SymTable                symTable;
+    Utf8                    name;
+    Utf8                    fullname;
+    VectorNative<Scope*>    childScopes;
+    VectorNative<AstDefer*> deferredNodes;
+    DependentJobs           dependentJobs;
+    SharedMutex             mutex;
+    VectorNative<AstNode*>  doneDefer;
+    VectorNative<AstNode*>  doneDrop;
 
     ScopePublicSet* publicSet   = nullptr;
     AstNode*        owner       = nullptr;

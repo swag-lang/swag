@@ -1083,13 +1083,28 @@ void SyntaxJob::forceTakeAddress(AstNode* node)
 
 bool SyntaxJob::doDefer(AstNode* parent, AstNode** result)
 {
-    auto nodeKind = token.id == TokenId::KwdDefer ? AstNodeKind::Defer : AstNodeKind::ErrDefer;
-    auto node     = Ast::newNode<AstNode>(this, nodeKind, sourceFile, parent);
+    auto node = Ast::newNode<AstDefer>(this, AstNodeKind::Defer, sourceFile, parent);
     if (result)
         *result = node;
     node->semanticFct = SemanticJob::resolveDefer;
 
     SWAG_CHECK(eatToken());
+
+    // Defer kind
+    if (token.id == TokenId::SymLeftParen)
+    {
+        SWAG_CHECK(eatToken());
+        if (token.text == "err")
+            node->deferKind = DeferKind::Error;
+        else if (token.text == "noerr")
+            node->deferKind = DeferKind::NoError;
+        else
+            return error(token, Fmt(Err(Err0256), token.ctext()));
+
+        SWAG_CHECK(eatToken());
+        SWAG_CHECK(eatToken(TokenId::SymRightParen));
+    }
+
     if (token.id == TokenId::SymLeftCurly)
         SWAG_CHECK(doScopedCurlyStatement(node));
     else

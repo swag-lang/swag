@@ -944,7 +944,7 @@ bool ByteCodeGenJob::emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scop
     return true;
 }
 
-bool ByteCodeGenJob::emitDeferredStatements(ByteCodeGenContext* context, Scope* scope, bool errDefer)
+bool ByteCodeGenJob::emitDeferredStatements(ByteCodeGenContext* context, Scope* scope, bool forError)
 {
     if (!scope)
         return true;
@@ -958,8 +958,9 @@ bool ByteCodeGenJob::emitDeferredStatements(ByteCodeGenContext* context, Scope* 
         {
             auto node = scope->deferredNodes[i];
 
-            // ErrDefer node are emitted only in 'errDefer' mode
-            if (!errDefer && node->kind == AstNodeKind::ErrDefer)
+            if (!forError && node->deferKind == DeferKind::Error)
+                continue;
+            if (forError && node->deferKind == DeferKind::NoError)
                 continue;
 
             // We duplicate because when we emit a node, some stuff will be reseted (like the cast).
@@ -980,7 +981,7 @@ bool ByteCodeGenJob::emitDeferredStatements(ByteCodeGenContext* context, Scope* 
     return true;
 }
 
-bool ByteCodeGenJob::emitLeaveScopeReturn(ByteCodeGenContext* context, VectorNative<SymbolOverload*>* forceNoDrop, bool errDefer)
+bool ByteCodeGenJob::emitLeaveScopeReturn(ByteCodeGenContext* context, VectorNative<SymbolOverload*>* forceNoDrop, bool forError)
 {
     auto node     = context->node;
     auto funcNode = node->ownerFct;
@@ -995,7 +996,7 @@ bool ByteCodeGenJob::emitLeaveScopeReturn(ByteCodeGenContext* context, VectorNat
     Scope::collectScopeFromToExcluded(node->ownerScope, topScope->parentScope, context->job->collectScopes);
     for (auto scope : context->job->collectScopes)
     {
-        SWAG_CHECK(computeLeaveScope(context, scope, forceNoDrop, errDefer));
+        SWAG_CHECK(computeLeaveScope(context, scope, forceNoDrop, forError));
         if (context->result != ContextResult::Done)
             return true;
     }
@@ -1003,14 +1004,14 @@ bool ByteCodeGenJob::emitLeaveScopeReturn(ByteCodeGenContext* context, VectorNat
     return true;
 }
 
-bool ByteCodeGenJob::computeLeaveScope(ByteCodeGenContext* context, Scope* scope, VectorNative<SymbolOverload*>* forceNoDrop, bool errDefer)
+bool ByteCodeGenJob::computeLeaveScope(ByteCodeGenContext* context, Scope* scope, VectorNative<SymbolOverload*>* forceNoDrop, bool forError)
 {
     PushLocation pl(context, &context->node->token.endLocation);
 
     // Emit all 'defer' statements
     if (!scope->doneDefer.contains(context->node))
     {
-        SWAG_CHECK(emitDeferredStatements(context, scope, errDefer));
+        SWAG_CHECK(emitDeferredStatements(context, scope, forError));
         SWAG_ASSERT(context->result != ContextResult::Pending);
         scope->doneDefer.push_back(context->node);
         if (context->result == ContextResult::NewChilds)

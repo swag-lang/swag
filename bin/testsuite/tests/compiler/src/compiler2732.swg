@@ -1,7 +1,7 @@
 var G = 0
 func toto() throw
 {
-    errdefer G = 1
+    defer(err) G = 1
     throw "toto"
 }
 

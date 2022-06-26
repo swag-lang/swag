@@ -187,7 +187,6 @@ default
 defer
 elif
 else
-errdefer
 fallthrough
 for
 if

@@ -290,7 +290,6 @@ void LanguageSpec::setupKeywords()
     keywords.add("default", TokenId::KwdDefault);
     keywords.add("for", TokenId::KwdFor);
     keywords.add("defer", TokenId::KwdDefer);
-    keywords.add("errdefer", TokenId::KwdErrDefer);
     keywords.add("code", TokenId::KwdCode);
     keywords.add("scope", TokenId::KwdScope);
     keywords.add("try", TokenId::KwdTry);

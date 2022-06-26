@@ -453,7 +453,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
 
 bool ByteCodeGenJob::emitDefer(ByteCodeGenContext* context)
 {
-    auto node = context->node;
+    auto node = CastAst<AstDefer>(context->node, AstNodeKind::Defer);
     SWAG_ASSERT(node->childs.size() == 1);
     node->ownerScope->deferredNodes.push_back(node);
     return true;

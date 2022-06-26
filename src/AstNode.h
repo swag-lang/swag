@@ -151,7 +151,6 @@ enum class AstNodeKind : uint8_t
     ConditionalExpression,
     NullConditionalExpression,
     Defer,
-    ErrDefer,
     Init,
     Drop,
     PostCopy,
@@ -870,4 +869,17 @@ struct AstSubstBreakContinue : public AstNode
     AstNode*      defaultSubst      = nullptr;
     AstNode*      altSubst          = nullptr;
     AstBreakable* altSubstBreakable = nullptr;
+};
+
+enum class DeferKind
+{
+    Normal,
+    Error,
+    NoError,
+};
+
+struct AstDefer : public AstNode
+{
+    AstNode*  clone(CloneContext& context);
+    DeferKind deferKind = DeferKind::Normal;
 };

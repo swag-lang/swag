@@ -250,7 +250,7 @@ SWAG_ERROR(Err0252, "type `%s` and type `%s` defined in the command line for `%s
 SWAG_ERROR(Err0253, "`\\U` escape code needs 8 of them")
 SWAG_ERROR(Err0254, "`#callerlocation` should only be used in a function parameter declaration")
 SWAG_ERROR(Err0255, "`#callerfunction` should only be used in a function parameter declaration")
-SWAG_ERROR(Err0256, nullptr)
+SWAG_ERROR(Err0256, "unknown `defer` mode `%s`")
 SWAG_ERROR(Err0257, "failed to load the module `%s` while resolving the foreign function `%s`: %s")
 SWAG_ERROR(Err0258, "cannot resolve the foreign function call to `%s`")
 SWAG_ERROR(Err0259, "unrecognized character escape sequence `%c`")
