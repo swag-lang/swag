@@ -61,3 +61,29 @@
         @assert(!resource.isResourceCreated())
     }
 }
+
+// defer can also have parameters like defer(err) or defer(noerr)
+
+var g_Defer = 0
+
+func raiseError() throw
+{
+    throw "error"
+}
+
+func testDefer(err: bool) throw
+{
+    defer(err)      g_Defer += 1    // This will be called in case an error is raised, before exiting
+    defer(noerr)    g_Defer += 2    // This will only be called in case an error is not raised
+    defer           g_Defer += 3    // This will be called in both cases
+    if err
+        raiseError()
+}
+
+#test
+{
+    catch testDefer(true)
+    @assert(g_Defer == 4)
+    catch testDefer(false)
+    @assert(g_Defer == 9)
+}
