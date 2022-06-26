@@ -40,12 +40,11 @@ public impl JSon
             throw "malformed property name (missing opening '\"')"
 
         propName.clear()
-        c = stream.peekU8()
+        c = stream.readU8()
         while c and c != "\""'u8
         {
             propName += c
-            stream.seekNext()
-            c = stream.peekU8()
+            c = stream.readU8()
         }
 
         if c != "\""'u8
@@ -94,20 +93,30 @@ public impl JSon
 
     mtd endValue(type: typeinfo)
     {
+        zapBlanks()
+        c := stream.peekU8()
+        if c == ","'u8
+            stream.seekNext()
     }
 
     /////////////////////////////////
     // VALUES
     /////////////////////////////////
 
-    mtd readBool()->bool
+    mtd readBool()->bool throw
     {
-        return false
+        zapBlanks()
+        val := StrConv.parseBool(stream.toString())
+        stream.seekNext(acast val.eat)
+        return val.value
     }
 
     mtd readF32()->f32
     {
-        return 0
+        zapBlanks()
+        val := catch StrConv.parseF32(stream.toString())
+        stream.seekNext(acast val.eat)
+        return val.value
     }
 
     mtd readF64()->f64

@@ -9,7 +9,7 @@ struct(T) Decoder
 
 impl Decoder
 {
-    mtd read(dataType: typeinfo, data: const *u8) throw
+    mtd read(dataType: typeinfo, data: *u8) throw
     {
         type := Reflection.makeConcreteAlias(dataType)
 
@@ -22,29 +22,29 @@ impl Decoder
             switch typeNative.nativeKind
             {
             case Bool:
-                dref cast(const *bool) data = serializer.readBool()
+                dref cast(*bool) data = serializer.readBool()
             case U8:
-                dref cast(const *u8) data = serializer.readU8()
+                dref cast(*u8) data = serializer.readU8()
             case U16:
-                dref cast(const *u16) data = serializer.readU16()
+                dref cast(*u16) data = serializer.readU16()
             case U32, Rune:
-                dref cast(const *u32) data = serializer.readU32()
+                dref cast(*u32) data = serializer.readU32()
             case U64:
-                dref cast(const *u64) data = serializer.readU64()
+                dref cast(*u64) data = serializer.readU64()
             case S8:
-                dref cast(const *s8) data = serializer.readS8()
+                dref cast(*s8) data = serializer.readS8()
             case S16:
-                dref cast(const *s16) data = serializer.readS16()
+                dref cast(*s16) data = serializer.readS16()
             case S32:
-                dref cast(const *s32) data = serializer.readS32()
+                dref cast(*s32) data = serializer.readS32()
             case S64:
-                dref cast(const *s64) data = serializer.readS64()
+                dref cast(*s64) data = serializer.readS64()
             case F32:
-                dref cast(const *f32) data = serializer.readF32()
+                dref cast(*f32) data = serializer.readF32()
             case F64:
-                dref cast(const *f64) data = serializer.readF64()
+                dref cast(*f64) data = serializer.readF64()
             case String:
-                dref cast(const *string) data = serializer.readString()
+                dref cast(*string) data = serializer.readString()
             }
 
             return
@@ -54,7 +54,6 @@ impl Decoder
         {
             typeStruct := cast(const *TypeInfoStruct) type
             treated := serializer.startStruct(type, data)
-            defer serializer.endStruct()
 
             if !treated
             {
@@ -65,6 +64,8 @@ impl Decoder
                     serializer.endElement(field)
                 }
             }
+
+            serializer.endStruct()
         }
     }
 

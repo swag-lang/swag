@@ -337,7 +337,7 @@ func parseBool(str: string) -> {value: bool, eat: u32} throw
     var result: retval
 
     countof := @countof(str)
-    sub := try Tokenize.getToSpace(str)
+    sub := Tokenize.getWhileAlnum(str)
     switch sub
     {
     case "1", "true", "TRUE", "True":

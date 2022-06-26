@@ -23,9 +23,15 @@ public impl ByteStream
     }
 
     // Returns a slice of the remaing bytes to read
-    mtd toSlice() -> const [..] u8
+    mtd toSlice()->const [..] u8
     {
         return @mkslice(@dataof(buffer) + seek, @countof(buffer) - seek)
+    }
+
+    // Returns a string of the remaing bytes to read
+    mtd toString()->string
+    {
+        return @mkstring(@dataof(buffer) + seek, @countof(buffer) - seek)
     }
 
     // Returns length of associated slice
@@ -51,9 +57,9 @@ public impl ByteStream
     }
 
     // Seek to the next byte
-    mtd seekNext()
+    mtd seekNext(offset: uint = 1)
     {
-        seek += 1
+        seek += offset
         if seek >= @countof(buffer)
         {
             seek = @countof(buffer)

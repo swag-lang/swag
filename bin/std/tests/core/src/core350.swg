@@ -4,8 +4,8 @@ struct Toto
 {
     x, y:   bool
     z:      f32
-    a:      string
-    arr:    [10] s32
+    /*a:      string
+    arr:    [10] s32*/
 }
 
 #test
@@ -17,8 +17,9 @@ struct Toto
     var toto: Toto
     toto.x = true
     toto.z = 3.14
-    toto.a = "my string"
-    toto.arr[5] = 666
+
+    //toto.a = "my string"
+    //toto.arr[5] = 666
     wri.write(toto)
 
     str := buf.toString()

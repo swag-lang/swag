@@ -137,13 +137,21 @@ func split(src: string, separators: const [..] rune, maxSplit: u32 = 0)->Array's
 }
 
 // Returns the first substring of 'str', stopping at the first blank character
-func getToSpace(str: string)->string throw
+func getToSpace(str: string)->string
 {
     countof := @countof(str)
-    if !countof throw "invalid"
-
     cpt := 0'uint
     while cpt < countof and !Latin1.isSpace(str[cpt])
+        cpt += 1
+    return @mkstring(@dataof(str), cpt)
+}
+
+// Returns the first substring of 'str' containing only digits and letters
+func getWhileAlnum(str: string)->string
+{
+    countof := @countof(str)
+    cpt := 0'uint
+    while cpt < countof and (Latin1.isDigit(str[cpt]) or Latin1.isLetter(str[cpt]))
         cpt += 1
     return @mkstring(@dataof(str), cpt)
 }
