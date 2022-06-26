@@ -3,13 +3,13 @@ using Swag
 
 public struct JSon
 {
-    using base: Serializer
+    output:     *ConcatBuffer
     indent:     u32
     fmtInt:     StrConv.ConvertFormatInt
     fmtFloat:   StrConv.ConvertFormatFloat{fmt: "g"'u8}
 }
 
-public impl ISerializer for JSon
+public impl JSon
 {
     private mtd writeIndent()
     {
@@ -17,11 +17,20 @@ public impl ISerializer for JSon
             output.addByte(" "'u8)
     }
 
+    mtd startWrite(buf: *ConcatBuffer)
+    {
+        output = buf
+    }
+
     mtd startElement(elem: const *Swag.TypeValue)
     {
         output.addByte("\""'u8)
         output.addBytes(elem.name)
         output.addBytes("\": ")
+    }
+
+    mtd endElement(elem: const *Swag.TypeValue)
+    {
     }
 
     mtd startSequence(typeElem: typeinfo, countElem: uint, data: const *u8)->bool
@@ -50,6 +59,10 @@ public impl ISerializer for JSon
     {
         output.addBytes("}")
         indent -= 1
+    }
+
+    mtd startValue(type: typeinfo)
+    {
     }
 
     mtd endValue(type: typeinfo)

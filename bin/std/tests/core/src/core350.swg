@@ -1,24 +1,31 @@
-using Core
+using Core, Serialization
 
 struct Toto
 {
     x, y:   bool
-    z:      f32 = 3.14
-    a:      string = "my string"
+    z:      f32
+    a:      string
     arr:    [10] s32
 }
-
-var toto: Toto
 
 #test
 {
     var buf: ConcatBuffer
-    var ser: Serialization.Write.JSon
-    var wri: Serialization.Encoder
+    var wri: Encoder'Write.JSon
 
-    wri.init(&buf, ser)
+    wri.init(&buf)
+    var toto: Toto
+    toto.x = true
+    toto.z = 3.14
+    toto.a = "my string"
+    toto.arr[5] = 666
     wri.write(toto)
 
     str := buf.toString()
     Console.print(str)
+
+    var rea: Decoder'Read.JSon
+    v := cast(*Toto) try rea.read(str.toSlice(), Toto)
+    Console.print(dref v)
+    Memory.delete(v)
 }

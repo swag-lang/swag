@@ -1,10 +1,11 @@
+#global export
 #global namespace Serialization
 using Swag
 
-public struct Encoder
+struct(T) Encoder
 {
     result:     *ConcatBuffer
-    serializer: Write.ISerializer
+    serializer: T
 }
 
 impl Encoder
@@ -87,15 +88,17 @@ impl Encoder
         }
     }
 
-    public mtd init(result: *ConcatBuffer, serializer: Write.ISerializer)
+    mtd init(result: *ConcatBuffer)
     {
         self.result = #self.result
-        self.serializer = #self.serializer
-        self.serializer.startWrite(#self.result)
     }
 
-    public mtd write(value: any)
+    mtd write(value: any)
     {
+        Debug.assert(result != null)
+        Debug.assert(Reflection.isStruct(@kindof(value)))
+
+        serializer.startWrite(result)
         write(@kindof(value), @dataof(value))
     }
 }
