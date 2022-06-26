@@ -4,6 +4,7 @@ struct Toto
 {
     x, y:   bool
     z:      f32 = 3.14
+    a:      string = "my string"
     arr:    [10] s32
 }
 

@@ -25,6 +25,7 @@ interface ISerializer
     writeS16:           func(self, s16)
     writeS32:           func(self, s32)
     writeS64:           func(self, s64)
+    writeString:        func(self, string)
 }
 
 struct Serializer
@@ -39,26 +40,30 @@ impl ISerializer for Serializer
         output = buf
     }
 
-    mtd startElement(elem: const *Swag.TypeValue)       {}
-    mtd endElement(elem: const *Swag.TypeValue)         {}
-    mtd startSequence(typeElem: typeinfo, countElem: uint, data: const *u8) => false
-    mtd endSequence()                                   {}
-    mtd startStruct(type: typeinfo, data: const *u8)    => false
-    mtd endStruct()                                     {}
-    mtd startValue(type: typeinfo)                      {}
-    mtd endValue(type: typeinfo)                        {}
+    mtd startElement(elem: const *Swag.TypeValue) {}
+    mtd endElement(elem: const *Swag.TypeValue) {}
 
-    mtd writeBool(value: bool)  {}
-    mtd writeF32(value: f32)    {}
-    mtd writeF64(value: f64)    {}
-    mtd writeU8(value: u8)      {}
-    mtd writeU16(value: u16)    {}
-    mtd writeU32(value: u32)    {}
-    mtd writeU64(value: u64)    {}
-    mtd writeS8(value: s8)      {}
-    mtd writeS16(value: s16)    {}
-    mtd writeS32(value: s32)    {}
-    mtd writeS64(value: s64)    {}
+    mtd startSequence(typeElem: typeinfo, countElem: uint, data: const *u8) => false
+    mtd endSequence() {}
+
+    mtd startStruct(type: typeinfo, data: const *u8) => false
+    mtd endStruct() {}
+
+    mtd startValue(type: typeinfo) {}
+    mtd endValue(type: typeinfo) {}
+
+    mtd writeBool(value: bool)      {}
+    mtd writeF32(value: f32)        {}
+    mtd writeF64(value: f64)        {}
+    mtd writeU8(value: u8)          {}
+    mtd writeU16(value: u16)        {}
+    mtd writeU32(value: u32)        {}
+    mtd writeU64(value: u64)        {}
+    mtd writeS8(value: s8)          {}
+    mtd writeS16(value: s16)        {}
+    mtd writeS32(value: s32)        {}
+    mtd writeS64(value: s64)        {}
+    mtd writeString(value: string)  {}
 }
 
 impl Serializer
