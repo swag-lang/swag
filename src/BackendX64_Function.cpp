@@ -2327,7 +2327,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             return ip->node->sourceFile->report({ip->node, Err(Err0060)});
 
         case ByteCodeOp::IncPointer64:
-            if (ip->flags & BCI_IMM_B)
+            if (ip->flags & BCI_IMM_B && ip->b.u64 <= 0x7FFFFFFF)
             {
                 BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
                 BackendX64Inst::emit_Add64_Immediate(pp, ip->b.u64, RAX);
@@ -2335,7 +2335,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             }
             else
             {
-                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
+                if (ip->flags & BCI_IMM_B)
+                    BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u64, RAX);
+                else
+                    BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
                 if (ip->a.u32 == ip->c.u32)
                     BackendX64Inst::emit_Op64_IndirectDst(pp, regOffset(ip->a.u32), RAX, RDI, X64Op::ADD);
                 else
@@ -2346,7 +2349,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             }
             break;
         case ByteCodeOp::DecPointer64:
-            if (ip->flags & BCI_IMM_B)
+            if (ip->flags & BCI_IMM_B && ip->b.u64 <= 0x7FFFFFFF)
             {
                 BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
                 BackendX64Inst::emit_Sub64_Immediate(pp, ip->b.u64, RAX);
@@ -2354,7 +2357,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             }
             else
             {
-                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+                if (ip->flags & BCI_IMM_B)
+                    BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u64, RCX);
+                else
+                    BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
                 if (ip->a.u32 == ip->c.u32)
                     BackendX64Inst::emit_Op64_IndirectDst(pp, regOffset(ip->a.u32), RCX, RDI, X64Op::SUB);
                 else

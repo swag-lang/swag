@@ -326,7 +326,6 @@
     <ClCompile Include="../src/ModuleManager.cpp" />
     <ClCompile Include="../src/ByteCodeRun.cpp" />
     <ClCompile Include="../src/ByteCodeRunContext.cpp" />
-    <ClCompile Include="..\src\ByteCodeOptimizer_Return.cpp" />
     <ClCompile Include="..\src\ByteCodeRun_FFI.cpp" />
     <ClCompile Include="../src/DependentJobs.cpp" />
     <ClCompile Include="../src/ffi/closures.c">

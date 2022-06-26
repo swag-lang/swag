@@ -105,8 +105,6 @@ Mul64byVB64 a deux registres ! (binOpPlus/Minus inc pointer)
 -------------------------------------
 passer/retourner des structs par value si <= 64 bits
 -------------------------------------
-detecter les exit (ret) de fonctions dupliquées et faire des jumps (reduction code size)
--------------------------------------
 x64: et si les premiers registres étaient des vrais registres x64 volatiles plutot que des accès indirects à la mémoire ?
 rc[0] = r12 etc... chiant
 -------------------------------------

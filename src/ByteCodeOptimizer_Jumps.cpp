@@ -9,6 +9,8 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
     for (int idx = 0; idx < context->jumps.size(); idx++)
     {
         auto ip = context->jumps[idx];
+        if (!ByteCode::isJump(ip))
+            continue;
 
         // Jump to an unconditional jump
         auto destIp = ip + ip->b.s32 + 1;
