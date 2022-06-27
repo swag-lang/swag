@@ -60,7 +60,7 @@ public impl JSon
     {
     }
 
-    mtd startSequence(typeElem: typeinfo, countElem: uint, data: const *u8)->bool throw
+    mtd startSequence(data: *u8, countElem: uint, typeElem: typeinfo)->bool throw
     {
         zapBlanks()
         c := stream.readU8()
@@ -78,7 +78,7 @@ public impl JSon
             throw "malformed array (missing closing ']')"
     }
 
-    mtd startStruct(type: typeinfo, data: const *u8)->bool throw
+    mtd startStruct(data: *u8, type: typeinfo)->bool throw
     {
         zapBlanks()
         c := stream.readU8()

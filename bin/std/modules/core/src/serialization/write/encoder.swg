@@ -4,7 +4,6 @@ using Swag
 
 struct(T) Encoder
 {
-    result:     *ConcatBuffer
     serializer: T
 }
 
@@ -86,14 +85,8 @@ impl Encoder
         }
     }
 
-    mtd init(result: *ConcatBuffer)
+    mtd write(result: *ConcatBuffer, value: any)
     {
-        self.result = #self.result
-    }
-
-    mtd write(value: any)
-    {
-        Debug.assert(result != null)
         Debug.assert(Reflection.isStruct(@kindof(value)))
 
         serializer.startWrite(result)

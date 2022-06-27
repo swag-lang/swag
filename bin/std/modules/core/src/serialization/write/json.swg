@@ -1,7 +1,8 @@
 #global namespace Serialization.Write
+#global public
 using Swag
 
-public struct JSon
+struct JSon
 {
     output:     *ConcatBuffer
     indent:     u32
@@ -9,9 +10,9 @@ public struct JSon
     fmtFloat:   StrConv.ConvertFormatFloat{fmt: "g"'u8}
 }
 
-public impl JSon
+impl JSon
 {
-    private mtd writeIndent()
+    mtd writeIndent()
     {
         loop indent
             output.addByte(" "'u8)

@@ -118,9 +118,17 @@ impl ConvertFormatInt
         // Base
         switch buffer[cpt]
         {
-            case "B"'u8: base = 2; cpt += 1
-            case "D"'u8: base = 10; cpt += 1
-            case "X"'u8: base = 16; cpt += 1
+        case "B"'u8:
+            base = 2
+            cpt += 1
+
+        case "D"'u8:
+            base = 10
+            cpt += 1
+
+        case "X"'u8:
+            base = 16
+            cpt += 1
         }
 
         // Next comes the padding characters
@@ -267,14 +275,14 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
 
     switch type
     {
-        case bool:
-            convertBool(buf, cast(bool) concreteValue, strFormat)
-        case rune:
-            convertRune(buf, cast(rune) concreteValue, strFormat)
-        case string:
-            buf.addBytes(cast(string) concreteValue)
-        default:
-            buf.addBytes("?")
+    case bool:
+        convertBool(buf, cast(bool) concreteValue, strFormat)
+    case rune:
+        convertRune(buf, cast(rune) concreteValue, strFormat)
+    case string:
+        buf.addBytes(cast(string) concreteValue)
+    default:
+        buf.addBytes("?")
     }
 }
 
@@ -353,8 +361,10 @@ func convertFloat(buf: *ConcatBuffer, fmt: ConvertFormatFloat)
     var value: f64
     switch kindof
     {
-        case f32: value = cast(f64) dref cast(*f32) dataof
-        case f64: value = dref cast(*f64) dataof
+    case f32:
+        value = cast(f64) dref cast(*f32) dataof
+    case f64:
+        value = dref cast(*f64) dataof
     }
 
     Dtoa.parse(buf, value, fmt.fmt, cast(s64) fmt.precision, fmt.forceSign)
@@ -377,34 +387,34 @@ func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
     overflowS64 := false
     switch kindof
     {
-        case s8:
-            signedValue = cast(s64) dref cast(*s8) dataof
+    case s8:
+        signedValue = cast(s64) dref cast(*s8) dataof
+        value = cast(u64) Math.abs(signedValue)
+    case s16:
+        signedValue = cast(s64) dref cast(*s16) dataof
+        value = cast(u64) Math.abs(signedValue)
+    case s32:
+        signedValue = cast(s64) dref cast(*s32) dataof
+        value = cast(u64) Math.abs(signedValue)
+    case s64, int:
+        signedValue = dref cast(*s64) dataof
+        // Cannot take the absolute value of Swag.S64.Min
+        if signedValue == Swag.S64.Min
+            overflowS64 = true
+        else
             value = cast(u64) Math.abs(signedValue)
-        case s16:
-            signedValue = cast(s64) dref cast(*s16) dataof
-            value = cast(u64) Math.abs(signedValue)
-        case s32:
-            signedValue = cast(s64) dref cast(*s32) dataof
-            value = cast(u64) Math.abs(signedValue)
-        case s64, int:
-            signedValue = dref cast(*s64) dataof
-            // Cannot take the absolute value of Swag.S64.Min
-            if signedValue == Swag.S64.Min
-                overflowS64 = true
-            else
-                value = cast(u64) Math.abs(signedValue)
-        case u8:
-            value = cast(u64) dref cast(*u8) dataof
-        case u16:
-            value = cast(u64) dref cast(*u16) dataof
-        case u32:
-            value = cast(u64) dref cast(*u32) dataof
-        case u64, uint:
-            value = dref cast(*u64) dataof
+    case u8:
+        value = cast(u64) dref cast(*u8) dataof
+    case u16:
+        value = cast(u64) dref cast(*u16) dataof
+    case u32:
+        value = cast(u64) dref cast(*u32) dataof
+    case u64, uint:
+        value = dref cast(*u64) dataof
     }
 
     const tbl = "0123456789ABCDEF"
-    var tmp: [64] u8
+    var tmp: [64] u8 = ?
     cpt := 63'u32
 
     // Special case for the lower digit of Swag.S64.Min

@@ -9,7 +9,7 @@ struct(T) Decoder
 
 impl Decoder
 {
-    mtd read(dataType: typeinfo, data: *u8) throw
+    mtd read(data: *u8, dataType: typeinfo) throw
     {
         type := Reflection.makeConcreteAlias(dataType)
 
@@ -51,7 +51,7 @@ impl Decoder
         if Reflection.isArray(type)
         {
             typeArr := cast(const *TypeInfoArray) type
-            treated := serializer.startSequence(typeArr.pointedType, typeArr.count, data)
+            treated := serializer.startSequence(data, typeArr.count, typeArr.pointedType)
             defer(noerr) serializer.endSequence()
 
             if !treated
@@ -59,7 +59,7 @@ impl Decoder
                 bufArr := cast(*u8) data
                 loop typeArr.count
                 {
-                    read(typeArr.pointedType, bufArr)
+                    read(bufArr, typeArr.pointedType)
                     bufArr += typeArr.pointedType.sizeof
                 }
             }
@@ -70,7 +70,7 @@ impl Decoder
         if Reflection.isStruct(type)
         {
             typeStruct := cast(const *TypeInfoStruct) type
-            treated := serializer.startStruct(type, data)
+            treated := serializer.startStruct(data, type)
             defer(noerr) serializer.endStruct()
 
             if !treated
@@ -78,23 +78,20 @@ impl Decoder
                 visit field: typeStruct.fields
                 {
                     serializer.startElement(field)
-                    read(field.pointedType, data + field.offset)
+                    read(data + field.offset, field.pointedType)
                     serializer.endElement(field)
                 }
             }
-
-            //serializer.endStruct()
         }
     }
 
-    mtd read(input: const [..] u8, type: typeinfo)->*u8 throw
+    mtd(TR) read(input: const [..] u8)->*TR throw
     {
-        Debug.assert(Reflection.isStruct(type))
+        Debug.assert(Reflection.isStruct(TR))
 
         serializer.startRead(input)
-
-        val := Memory.new(type)
-        read(type, val)
+        val := Memory.new'TR()
+        read(cast(*u8) val, TR)
         return val
     }
 }
