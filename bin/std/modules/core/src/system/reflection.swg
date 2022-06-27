@@ -15,6 +15,7 @@ using Swag
         func isArray(t: typeinfo)       => t.kind == .Array
         func isSlice(t: typeinfo)       => t.kind == .Slice
         func isTypeAlias(t: typeinfo)   => t.kind == .Alias
+        func isGeneric(t: typeinfo)     => t.flags & .Generic
 
         func isRune(t: typeinfo)->bool
         {

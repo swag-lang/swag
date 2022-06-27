@@ -1,4 +1,3 @@
-#global skip
 using Core, Serialization
 
 struct Toto
@@ -31,5 +30,5 @@ struct Toto
     v := try rea.read'Toto(str.toSlice())
     defer Memory.delete(v)
 
-    //Console.print(dref v, "\n")
+    Console.print(dref v, "\n")
 }

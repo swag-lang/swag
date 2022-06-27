@@ -61,31 +61,31 @@ impl Encoder
             return
         }
 
-    // Dynamic Core.Array
-    if Reflection.isStruct(type)
-    {
-        structType := cast(const *TypeInfoStruct) type
-        if structType.fromGeneric == @typeof(Core.Array)
+        // Dynamic Core.Array
+        if Reflection.isStruct(type)
         {
-            valueType := structType.generics[0].pointedType
-            ptrArr    := cast(const *Array) data
-
-            treated := serializer.startSequence(valueType, ptrArr.count, cast(const *u8) ptrArr.buffer)
-            defer serializer.endSequence()
-
-            if !treated
+            structType := cast(const *TypeInfoStruct) type
+            if structType.fromGeneric == @typeof(Core.Array)
             {
-                bufArr := cast(const *u8) ptrArr.buffer
-                loop ptrArr.count
-                {
-                    write(valueType, bufArr)
-                    bufArr += valueType.sizeof
-                }
-            }
+                valueType := structType.generics[0].pointedType
+                ptrArr    := cast(const *Array) data
 
-            return
+                treated := serializer.startSequence(valueType, ptrArr.count, cast(const *u8) ptrArr.buffer)
+                defer serializer.endSequence()
+
+                if !treated
+                {
+                    bufArr := cast(const *u8) ptrArr.buffer
+                    loop ptrArr.count
+                    {
+                        write(valueType, bufArr)
+                        bufArr += valueType.sizeof
+                    }
+                }
+
+                return
+            }
         }
-    }
 
         if Reflection.isArray(type)
         {

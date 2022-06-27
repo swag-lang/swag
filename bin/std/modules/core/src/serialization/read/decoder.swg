@@ -61,6 +61,30 @@ impl Decoder
             return
         }
 
+        // Dynamic Core.Array
+        if Reflection.isStruct(type)
+        {
+            structType := cast(const *TypeInfoStruct) type
+            if structType.fromGeneric == @typeof(Core.Array)
+            {
+                valueType := structType.generics[0].pointedType
+
+                treated := serializer.startSequence(data, 0, type)
+                defer serializer.endSequence()
+
+                if !treated
+                {
+                    while serializer.toNextSequenceElement()
+                    {
+                        bufArr := Reflection.roomInArray(data, structType, valueType)
+                        read(bufArr, valueType)
+                    }
+                }
+
+                return
+            }
+        }
+
         if Reflection.isArray(type)
         {
             typeArr := cast(const *TypeInfoArray) type

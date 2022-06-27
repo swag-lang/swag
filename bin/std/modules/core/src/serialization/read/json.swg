@@ -78,6 +78,13 @@ public impl JSon
             throw "malformed array (missing closing ']')"
     }
 
+    mtd toNextSequenceElement()->bool
+    {
+        zapBlanks()
+        c := stream.peekU8()
+        return c != "]"'u8
+    }
+
     mtd startRoot() throw
     {
         zapBlanks()
