@@ -1,3 +1,4 @@
+#global skip
 using Core, Serialization
 
 struct Toto
@@ -6,6 +7,7 @@ struct Toto
     z:      f32
     arr:    [10] s32
     str:    String
+    arr2:   Array's32
 }
 
 #test
@@ -18,11 +20,12 @@ struct Toto
     toto.z = 3.14
     toto.arr[5] = 666
     toto.str = "my string"
+    toto.arr2.add(@[1, 2, 3])
 
     wri.write(&buf, toto)
 
     str := buf.toString()
-    //Console.print(str, "\n")
+    Console.print(str, "\n")
 
     var rea: Decoder'Read.JSon
     v := try rea.read'Toto(str.toSlice())

@@ -18,18 +18,21 @@ public func pokeValue(addr: *void, type: typeinfo, buf: string)->string throw
     one := Tokenize.eatSpaces(buf)
 
     // Dynamic Core.Array
-    if Utf8.startsWith(type.name, "Core.Array")
+    if Reflection.isStruct(type)
     {
         structType := cast(const *TypeInfoStruct) type
-        valueType := structType.generics[0].pointedType
-        while @countof(one) and one[0] != "#"'u8
+        if structType.fromGeneric == @typeof(Array)
         {
-            addrVal := Reflection.roomInArray(addr, structType, valueType)
-            one = try pokeValue(addrVal, valueType, one)
-            one = Tokenize.eatSpaces(one)
-        }
+            valueType := structType.generics[0].pointedType
+            while @countof(one) and one[0] != "#"'u8
+            {
+                addrVal := Reflection.roomInArray(addr, structType, valueType)
+                one = try pokeValue(addrVal, valueType, one)
+                one = Tokenize.eatSpaces(one)
+            }
 
-        return one
+            return one
+        }
     }
 
     // Static array

@@ -335,6 +335,7 @@ namespace Swag
         CanCopy     = 0x0100
         Tuple       = 0x0200
         CString     = 0x0400
+        Generic     = 0x0800
     }
 
     struct AttributeParam

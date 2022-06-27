@@ -556,7 +556,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
     // It's valid to not specify generic parameters. They will be deduced
     // A reference to a generic without specifying the generic parameters is a match
     // (we deduce the type)
-    if (!userGenericParams && wantedNumGenericParams)
+    if (!userGenericParams && wantedNumGenericParams && !(context.flags & SymbolMatchContext::MATCH_DO_NOT_ACCEPT_NO_GENERIC))
     {
         if ((myTypeInfo->flags & TYPEINFO_GENERIC) ||
             (context.flags & SymbolMatchContext::MATCH_ACCEPT_NO_GENERIC) ||
@@ -612,6 +612,13 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
 
     if (myTypeInfo->kind == TypeInfoKind::Struct && userGenericParams < wantedNumGenericParams)
     {
+        // In that case, we want to match the generic version of the type
+        if (!userGenericParams && wantedNumGenericParams && (context.flags & SymbolMatchContext::MATCH_DO_NOT_ACCEPT_NO_GENERIC))
+        {
+            if(myTypeInfo->flags & TYPEINFO_GENERIC)
+                return;
+        }
+
         context.result = MatchResult::NotEnoughGenericParameters;
         return;
     }
@@ -620,25 +627,28 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
     {
         if (!userGenericParams && wantedNumGenericParams)
         {
-            for (int i = 0; i < wantedNumGenericParams; i++)
+            if (!(context.flags & SymbolMatchContext::MATCH_DO_NOT_ACCEPT_NO_GENERIC))
             {
-                auto symbolParameter = genericParameters[i];
-                if (!symbolParameter->typeInfo->isNative(NativeTypeKind::Undefined))
+                for (int i = 0; i < wantedNumGenericParams; i++)
                 {
-                    auto it = context.genericReplaceTypes.find(symbolParameter->typeInfo->name);
-                    if (it == context.genericReplaceTypes.end())
+                    auto symbolParameter = genericParameters[i];
+                    if (!symbolParameter->typeInfo->isNative(NativeTypeKind::Undefined))
                     {
-                        // When we try to match an untyped generic lambda with a typed instance, we must fail.
-                        // This will force a new instance with deduced types if necessary
-                        if (context.genericReplaceTypes.empty() && context.flags & SymbolMatchContext::MATCH_FOR_LAMBDA)
+                        auto it = context.genericReplaceTypes.find(symbolParameter->typeInfo->name);
+                        if (it == context.genericReplaceTypes.end())
                         {
-                            context.result = MatchResult::NotEnoughGenericParameters;
-                            return;
-                        }
-                        else if (myTypeInfo->flags & TYPEINFO_GENERIC)
-                        {
-                            context.result = MatchResult::NotEnoughGenericParameters;
-                            return;
+                            // When we try to match an untyped generic lambda with a typed instance, we must fail.
+                            // This will force a new instance with deduced types if necessary
+                            if (context.genericReplaceTypes.empty() && context.flags & SymbolMatchContext::MATCH_FOR_LAMBDA)
+                            {
+                                context.result = MatchResult::NotEnoughGenericParameters;
+                                return;
+                            }
+                            else if (myTypeInfo->flags & TYPEINFO_GENERIC)
+                            {
+                                context.result = MatchResult::NotEnoughGenericParameters;
+                                return;
+                            }
                         }
                     }
                 }

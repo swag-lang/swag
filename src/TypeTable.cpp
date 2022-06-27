@@ -154,6 +154,8 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo
         concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::Unsigned;
     if (typeInfo->isStrict())
         concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::Strict;
+    if (typeInfo->isGeneric())
+        concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::Generic;
 
     // True by default, will be removed by struct if necessary
     concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::CanCopy;

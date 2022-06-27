@@ -1524,6 +1524,13 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         if (oneOverload.ufcs)
             oneOverload.symMatchContext.flags |= SymbolMatchContext::MATCH_UFCS;
 
+        // When in a @typeof or @kindof, if we specify a type without generic parameters, then 
+        // we want to match the generic version, and not an instantiated one
+        if (context->node->parent->parent->kind == AstNodeKind::IntrinsicProp && context->node->parent->parent->token.id == TokenId::IntrinsicTypeOf)
+            oneOverload.symMatchContext.flags |= SymbolMatchContext::MATCH_DO_NOT_ACCEPT_NO_GENERIC;
+        if (context->node->parent->parent->kind == AstNodeKind::IntrinsicProp && context->node->parent->parent->token.id == TokenId::IntrinsicKindOf)
+            oneOverload.symMatchContext.flags |= SymbolMatchContext::MATCH_DO_NOT_ACCEPT_NO_GENERIC;
+
         // We collect type replacements depending on where the identifier is
         setupContextualGenericTypeReplacement(context, oneOverload, overload, flags);
 
