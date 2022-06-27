@@ -326,7 +326,7 @@ bool SemanticJob::resolveNullConditionalOp(SemanticContext* context)
 
 bool SemanticJob::resolveDefer(SemanticContext* context)
 {
-    auto node         = context->node;
+    auto node         = CastAst<AstDefer>(context->node, AstNodeKind::Defer);
     node->byteCodeFct = ByteCodeGenJob::emitDefer;
 
     SWAG_ASSERT(node->childs.size() == 1);

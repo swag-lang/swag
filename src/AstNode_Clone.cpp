@@ -258,6 +258,8 @@ AstNode* AstNode::clone(CloneContext& context)
         return ((AstMakePointer*) this)->clone(context);
     case AstNodeKind::AffectOp:
         return ((AstOp*) this)->clone(context);
+    case AstNodeKind::Defer:
+        return ((AstDefer*) this)->clone(context);
 
     default:
     {
