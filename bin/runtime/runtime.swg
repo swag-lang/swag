@@ -531,10 +531,6 @@ func @panic(message: string, loc: CompilerSourceLocation)
     if contextFlags & ContextFlags.ByteCode
         return
 
-    // During tests just raise an error without a dialog box
-    if contextFlags & ContextFlags.Test
-        return
-
     // Stack trace if available
     for i := cast(s32) cxt.traceIndex - 1; i >= 0; i -= 1
     {
@@ -546,6 +542,10 @@ func @panic(message: string, loc: CompilerSourceLocation)
         @print(cast(s64) cxt.trace[i].colStart + 1);
         @print(":\n");
     }
+
+    // During tests just raise an error without a dialog box
+    if contextFlags & ContextFlags.Test
+        __exitError()
 
     // Build message
     var str: [1024] u8

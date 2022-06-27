@@ -110,6 +110,11 @@ func __tlsGetPtr(id: u64, size: u64, init: const *void)->*void
 }
 
 ////////////////////////////////////////////////////////////
+func __exitError()
+{
+    __Win32RT.ExitProcess(bitcast(u32) -666)
+}
+
 func __panicBox(msg, title: string)
 {
     using __Win32RT
@@ -117,7 +122,7 @@ func __panicBox(msg, title: string)
     switch result
     {
     case IDCANCEL:
-        ExitProcess(bitcast(u32) -666)
+        __exitError()
     case IDTRYAGAIN:
         DebugBreak();
     case IDCONTINUE:
