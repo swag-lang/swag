@@ -2,8 +2,14 @@
 #global public
 using Swag
 
+struct JSonOptions
+{
+    indentLevel: u32 = 4
+}
+
 struct JSon
 {
+    options:    JSonOptions
     output:     *ConcatBuffer
     indent:     u32
     fmtInt:     StrConv.ConvertFormatInt
@@ -14,7 +20,7 @@ impl JSon
 {
     mtd writeIndent()
     {
-        loop indent
+        loop indent * options.indentLevel
             output.addByte(" "'u8)
     }
 
@@ -44,8 +50,23 @@ impl JSon
 
     mtd endSequence()
     {
-        indent -= 1
+        output.cancelBytes(cast(uint) options.indentLevel)
         output.addBytes("]")
+        indent -= 1
+    }
+
+    mtd startRoot()
+    {
+        output.addBytes("{\n")
+        indent += 1
+        writeIndent()
+    }
+
+    mtd endRoot()
+    {
+        output.cancelBytes(cast(uint) options.indentLevel)
+        output.addBytes("}")
+        indent -= 1
     }
 
     mtd startStruct(type: typeinfo, data: const *u8)->bool
@@ -58,6 +79,7 @@ impl JSon
 
     mtd endStruct()
     {
+        output.cancelBytes(cast(uint) options.indentLevel)
         output.addBytes("}")
         indent -= 1
     }

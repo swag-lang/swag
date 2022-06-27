@@ -152,6 +152,39 @@ impl ConcatBuffer
         currentSP += num
     }
 
+    // Offset back the current write pointer
+    mtd cancelBytes(num: uint)
+    {
+        lastCount := cast(uint) (currentSP - lastBucket.datas)
+        if lastCount >= num
+        {
+            currentSP -= num
+            return
+        }
+
+        remain := num - lastCount
+        while remain
+        {
+            Debug.assert(lastBucket != firstBucket)
+
+            // Need to find the previous bucket
+            buck := firstBucket
+            while buck.next != lastBucket
+                buck = buck.next
+
+            lastBucket.count = 0
+            lastBucket = buck
+            if lastBucket.count >= remain
+            {
+                lastBucket.count = 0 // No need as count is evaluated depending on currentSP
+                currentSP = lastBucket.datas + lastBucket.count
+                return
+            }
+
+            remain -= lastBucket.count
+        }
+    }
+
     // Append a slice of bytes to the buffer
     // If 'contiguous' is false, the slice will be divided in chunks if necessary
     mtd addBytes(bytes: const [..] u8, contiguous = true)

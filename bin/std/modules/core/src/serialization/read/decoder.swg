@@ -2,8 +2,14 @@
 #global namespace Serialization
 using Swag
 
+struct DecoderOptions
+{
+    specialRoot: bool = true
+}
+
 struct(T) Decoder
 {
+    options:    DecoderOptions
     serializer: T
 }
 
@@ -90,8 +96,24 @@ impl Decoder
         Debug.assert(Reflection.isStruct(TR))
 
         serializer.startRead(input)
+
+        var rootValue: Swag.TypeValue
+        if options.specialRoot
+        {
+            serializer.startRoot()
+            rootValue.name = "root"
+            serializer.startElement(&rootValue)
+        }
+
         val := Memory.new'TR()
         read(cast(*u8) val, TR)
+
+        if options.specialRoot
+        {
+            serializer.endElement(&rootValue)
+            serializer.endRoot()
+        }
+
         return val
     }
 }

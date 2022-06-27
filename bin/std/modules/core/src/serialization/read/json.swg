@@ -78,6 +78,22 @@ public impl JSon
             throw "malformed array (missing closing ']')"
     }
 
+    mtd startRoot() throw
+    {
+        zapBlanks()
+        c := stream.readU8()
+        if c != "{"'u8
+            throw "malformed root (missing opening '{')"
+    }
+
+    mtd endRoot() throw
+    {
+        zapBlanks()
+        c := stream.readU8()
+        if c != "}"'u8
+            throw "malformed root (missing closing '}')"
+    }
+
     mtd startStruct(data: *u8, type: typeinfo)->bool throw
     {
         zapBlanks()
@@ -120,81 +136,84 @@ public impl JSon
         return val.value
     }
 
-    mtd readF32()->f32
+    mtd readF32()->f32 throw
     {
         zapBlanks()
-        val := catch StrConv.parseF32(stream.toString())
+        val := StrConv.parseF32(stream.toString())
         stream.seekNext(acast val.eat)
         return val.value
     }
 
-    mtd readF64()->f64
-    {
-        return 0
-    }
-
-    mtd readS8()->s8
+    mtd readF64()->f64 throw
     {
         zapBlanks()
-        val := catch StrConv.parseS8(stream.toString())
+        val := StrConv.parseF64(stream.toString())
         stream.seekNext(acast val.eat)
         return val.value
     }
 
-    mtd readS16()->s16
+    mtd readS8()->s8 throw
     {
         zapBlanks()
-        val := catch StrConv.parseS16(stream.toString())
+        val := StrConv.parseS8(stream.toString())
         stream.seekNext(acast val.eat)
         return val.value
     }
 
-
-    mtd readS32()->s32
+    mtd readS16()->s16 throw
     {
         zapBlanks()
-        val := catch StrConv.parseS32(stream.toString())
-        stream.seekNext(acast val.eat)
-        return val.value
-    }
-
-    mtd readS64()->s64
-    {
-        zapBlanks()
-        val := catch StrConv.parseS64(stream.toString())
-        stream.seekNext(acast val.eat)
-        return val.value
-    }
-
-    mtd readU8()->u8
-    {
-        zapBlanks()
-        val := catch StrConv.parseU8(stream.toString())
-        stream.seekNext(acast val.eat)
-        return val.value
-    }
-
-    mtd readU16()->u16
-    {
-        zapBlanks()
-        val := catch StrConv.parseU16(stream.toString())
+        val := StrConv.parseS16(stream.toString())
         stream.seekNext(acast val.eat)
         return val.value
     }
 
 
-    mtd readU32()->u32
+    mtd readS32()->s32 throw
     {
         zapBlanks()
-        val := catch StrConv.parseU32(stream.toString())
+        val := StrConv.parseS32(stream.toString())
         stream.seekNext(acast val.eat)
         return val.value
     }
 
-    mtd readU64()->u64
+    mtd readS64()->s64 throw
     {
         zapBlanks()
-        val := catch StrConv.parseU64(stream.toString())
+        val := StrConv.parseS64(stream.toString())
+        stream.seekNext(acast val.eat)
+        return val.value
+    }
+
+    mtd readU8()->u8 throw
+    {
+        zapBlanks()
+        val := StrConv.parseU8(stream.toString())
+        stream.seekNext(acast val.eat)
+        return val.value
+    }
+
+    mtd readU16()->u16 throw
+    {
+        zapBlanks()
+        val := StrConv.parseU16(stream.toString())
+        stream.seekNext(acast val.eat)
+        return val.value
+    }
+
+
+    mtd readU32()->u32 throw
+    {
+        zapBlanks()
+        val := StrConv.parseU32(stream.toString())
+        stream.seekNext(acast val.eat)
+        return val.value
+    }
+
+    mtd readU64()->u64 throw
+    {
+        zapBlanks()
+        val := StrConv.parseU64(stream.toString())
         stream.seekNext(acast val.eat)
         return val.value
     }

@@ -2,8 +2,14 @@
 #global namespace Serialization
 using Swag
 
+struct EncoderOptions
+{
+    specialRoot: bool = true
+}
+
 struct(T) Encoder
 {
+    options:    EncoderOptions
     serializer: T
 }
 
@@ -90,6 +96,21 @@ impl Encoder
         Debug.assert(Reflection.isStruct(@kindof(value)))
 
         serializer.startWrite(result)
+
+        var rootValue: Swag.TypeValue
+        if options.specialRoot
+        {
+            serializer.startRoot()
+            rootValue.name = "root"
+            serializer.startElement(&rootValue)
+        }
+
         write(@kindof(value), @dataof(value))
+
+        if options.specialRoot
+        {
+            serializer.endElement(&rootValue)
+            serializer.endRoot()
+        }
     }
 }
