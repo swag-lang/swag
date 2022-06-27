@@ -14,7 +14,7 @@ impl Decoder
         type := Reflection.makeConcreteAlias(dataType)
 
         serializer.startValue(type)
-        defer serializer.endValue(type)
+        defer(noerr) serializer.endValue(type)
 
         if type.kind == .Native
         {
@@ -43,10 +43,27 @@ impl Decoder
                 dref cast(*f32) data = serializer.readF32()
             case F64:
                 dref cast(*f64) data = serializer.readF64()
-            case String:
-                dref cast(*string) data = serializer.readString()
             }
 
+            return
+        }
+
+        if Reflection.isArray(type)
+        {
+            typeArr := cast(const *TypeInfoArray) type
+            treated := serializer.startSequence(typeArr.pointedType, typeArr.count, data)
+
+            if !treated
+            {
+                bufArr := cast(*u8) data
+                loop typeArr.count
+                {
+                    read(typeArr.pointedType, bufArr)
+                    bufArr += typeArr.pointedType.sizeof
+                }
+            }
+
+            serializer.endSequence()
             return
         }
 
@@ -54,6 +71,7 @@ impl Decoder
         {
             typeStruct := cast(const *TypeInfoStruct) type
             treated := serializer.startStruct(type, data)
+            //defer(noerr) serializer.endStruct()
 
             if !treated
             {
