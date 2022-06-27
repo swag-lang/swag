@@ -124,6 +124,13 @@ bool TypeTableJob::computeStruct()
         }
     }
 
+    // Parent generic type
+    concreteType->fromGeneric = nullptr;
+    if (realType->fromGeneric)
+    {
+        SWAG_CHECK(typeTable->makeConcreteSubTypeInfo(baseContext, &concreteType->fromGeneric, concreteType, storageSegment, storageOffset, realType->fromGeneric, cflags));
+    }
+
     // Generic types
     concreteType->generics.buffer = 0;
     concreteType->generics.count  = realType->genericParameters.size();

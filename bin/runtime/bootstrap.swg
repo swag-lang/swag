@@ -400,6 +400,7 @@ namespace Swag
         opPostCopy:     func(*void)
         opPostMove:     func(*void)
         structName:	    string
+        fromGeneric:    const *TypeInfo
         generics:		const [..] TypeValue
         fields:		    const [..] TypeValue
         methods:	    const [..] TypeValue

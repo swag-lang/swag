@@ -316,17 +316,18 @@ struct ConcreteTypeInfoParam
 
 struct ConcreteTypeInfoStruct
 {
-    ConcreteTypeInfo base;
-    void*            opInit;
-    void*            opDrop;
-    void*            opPostCopy;
-    void*            opPostMove;
-    SwagSlice        structName;
-    SwagSlice        generics;
-    SwagSlice        fields;
-    SwagSlice        methods;
-    SwagSlice        interfaces;
-    SwagSlice        attributes;
+    ConcreteTypeInfo  base;
+    void*             opInit;
+    void*             opDrop;
+    void*             opPostCopy;
+    void*             opPostMove;
+    SwagSlice         structName;
+    ConcreteTypeInfo* fromGeneric;
+    SwagSlice         generics;
+    SwagSlice         fields;
+    SwagSlice         methods;
+    SwagSlice         interfaces;
+    SwagSlice         attributes;
 };
 
 struct ConcreteTypeInfoFunc
