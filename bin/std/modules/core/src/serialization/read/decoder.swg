@@ -52,6 +52,7 @@ impl Decoder
         {
             typeArr := cast(const *TypeInfoArray) type
             treated := serializer.startSequence(typeArr.pointedType, typeArr.count, data)
+            defer(noerr) serializer.endSequence()
 
             if !treated
             {
@@ -63,7 +64,6 @@ impl Decoder
                 }
             }
 
-            serializer.endSequence()
             return
         }
 
@@ -71,7 +71,7 @@ impl Decoder
         {
             typeStruct := cast(const *TypeInfoStruct) type
             treated := serializer.startStruct(type, data)
-            //defer(noerr) serializer.endStruct()
+            defer(noerr) serializer.endStruct()
 
             if !treated
             {
@@ -83,7 +83,7 @@ impl Decoder
                 }
             }
 
-            serializer.endStruct()
+            //serializer.endStruct()
         }
     }
 

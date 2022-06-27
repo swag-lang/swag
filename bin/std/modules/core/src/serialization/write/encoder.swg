@@ -44,8 +44,6 @@ impl Encoder
                 serializer.writeF32(dref cast(const *f32) data)
             case F64:
                 serializer.writeF64(dref cast(const *f64) data)
-            case String:
-                serializer.writeString(dref cast(const *string) data)
             }
 
             return
