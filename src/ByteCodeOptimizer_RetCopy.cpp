@@ -4,6 +4,32 @@
 #include "AstNode.h"
 #include "TypeInfo.h"
 
+static void removeOpDrop(ByteCodeOptContext* context, ByteCodeInstruction* ipOrg, ByteCodeInstruction* ip, uint32_t orgOffset)
+{
+    // We start before the function call, because we can have opDrop in try/catch blocks
+    auto ipe = ipOrg + 1;
+    while (ipe->op != ByteCodeOp::End)
+    {
+        if (ipe[0].op == ByteCodeOp::MakeStackPointer && ipe[0].b.u32 == orgOffset)
+        {
+            if (ipe[1].op == ByteCodeOp::PushRAParam &&
+                (ipe[2].op == ByteCodeOp::LocalCall || ipe[2].op == ByteCodeOp::ForeignCall) &&
+                ipe[3].op == ByteCodeOp::IncSPPostCall)
+            {
+                if (ip->node->ownerScope->isSameOrParentOf(ipe->node->ownerScope))
+                {
+                    ByteCodeOptimizer::setNop(context, ipe);
+                    ByteCodeOptimizer::setNop(context, ipe + 1);
+                    ByteCodeOptimizer::setNop(context, ipe + 2);
+                    ByteCodeOptimizer::setNop(context, ipe + 3);
+                }
+            }
+        }
+
+        ipe++;
+    }
+}
+
 static void optimRetCopy(ByteCodeOptContext* context, ByteCodeInstruction* ipOrg, ByteCodeInstruction* ip)
 {
     bool sameStackOffset = false;
@@ -36,30 +62,7 @@ static void optimRetCopy(ByteCodeOptContext* context, ByteCodeInstruction* ipOrg
     // Make a nop, and detect all drops of that variable to remove them also.
     // Not sure this will work in all situations
     if (hasDrop)
-    {
-        // We start before the function call, because we can have opDrop in try/catch blocks
-        auto ipe = ipOrg + 1;
-        while (ipe->op != ByteCodeOp::End)
-        {
-            if (ipe[0].op == ByteCodeOp::MakeStackPointer && ipe[0].b.u32 == orgOffset)
-            {
-                if (ipe[1].op == ByteCodeOp::PushRAParam &&
-                    (ipe[2].op == ByteCodeOp::LocalCall || ipe[2].op == ByteCodeOp::ForeignCall) &&
-                    ipe[3].op == ByteCodeOp::IncSPPostCall)
-                {
-                    if (ip->node->ownerScope->isSameOrParentOf(ipe->node->ownerScope))
-                    {
-                        ByteCodeOptimizer::setNop(context, ipe);
-                        ByteCodeOptimizer::setNop(context, ipe + 1);
-                        ByteCodeOptimizer::setNop(context, ipe + 2);
-                        ByteCodeOptimizer::setNop(context, ipe + 3);
-                    }
-                }
-            }
-
-            ipe++;
-        }
-    }
+        removeOpDrop(context, ipOrg, ip, orgOffset);
 
     // Remove the MakeStackPointer
     // NO ! The register can be necessary for some code after, especially if this is a CopyRRtoRC
@@ -193,7 +196,8 @@ bool ByteCodeOptimizer::optimizePassRetCopyGlobal(ByteCodeOptContext* context)
         // Detect pushing pointer to the stack for a return value
         if (startOk)
         {
-            auto ipOrg = ip;
+            auto ipOrg     = ip;
+            auto orgOffset = ipOrg->b.u32;
 
             // Find the following call
             context->vecReg.clear();
@@ -249,6 +253,15 @@ bool ByteCodeOptimizer::optimizePassRetCopyGlobal(ByteCodeOptContext* context)
                         SWAG_ASSERT(ipOrg[2].op == ByteCodeOp::CopyRCtoRT);
                         ipOrg[2].a.u32 = ip->a.u32;
                     }
+
+                    // Is there a corresponding drop in the scope ?
+                    bool hasDrop = ipOrg->node->ownerScope->symTable.structVarsToDrop.count > 0;
+
+                    // Remove opDrop to the old variable that is no more affected.
+                    // Make a nop, and detect all drops of that variable to remove them also.
+                    // Not sure this will work in all situations
+                    if (hasDrop)
+                        removeOpDrop(context, ipOrg, ip, orgOffset);
 
                     // Remove the original MakeStackPointer
                     setNop(context, ipOrg);

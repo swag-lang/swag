@@ -57,7 +57,7 @@ impl Decoder
         if type == String
         {
             strBuf := cast(*String) data
-            dref strBuf = serializer.readString()
+            dref strBuf =,nodrop serializer.readString()
             return
         }
 
