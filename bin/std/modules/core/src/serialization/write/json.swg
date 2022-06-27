@@ -162,4 +162,11 @@ impl JSon
         fmtInt.value = value
         StrConv.convertInt(output, fmtInt)
     }
+
+    mtd writeString(value: string)
+    {
+        output.addByte("\""'u8)
+        output.addBytes(value)
+        output.addByte("\""'u8)
+    }
 }

@@ -217,4 +217,28 @@ public impl JSon
         stream.seekNext(acast val.eat)
         return val.value
     }
+
+    mtd readString()->String throw
+    {
+        var result: retval
+
+        zapBlanks()
+        c := stream.readU8()
+        if c != "\""'u8
+            throw "malformed string (missing opening '\"')"
+
+        c = stream.peekU8()
+        while c and c != "\""'u8
+        {
+            c = stream.readU8()
+            result += c
+            c = stream.peekU8()
+        }
+
+        c = stream.readU8()
+        if c != "\""'u8
+            throw "malformed string (missing closing '\"')"
+
+        return result
+    }
 }

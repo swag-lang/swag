@@ -54,6 +54,13 @@ impl Decoder
             return
         }
 
+        if type == String
+        {
+            strBuf := cast(*String) data
+            dref strBuf = serializer.readString()
+            return
+        }
+
         if Reflection.isArray(type)
         {
             typeArr := cast(const *TypeInfoArray) type

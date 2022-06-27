@@ -54,6 +54,13 @@ impl Encoder
             return
         }
 
+        if type == String
+        {
+            strBuf := cast(const *String) data
+            serializer.writeString(strBuf.toString())
+            return
+        }
+
         if Reflection.isArray(type)
         {
             typeArr := cast(const *TypeInfoArray) type
