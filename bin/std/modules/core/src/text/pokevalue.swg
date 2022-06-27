@@ -1,51 +1,6 @@
 #global namespace StrConv
 using Swag
 
-// Used to add an element in a 'Core.Array' without knowing the type of the element at compile time
-// but knowing it at runtime (valueType)
-func roomInArray(addr: *void, type: const *TypeInfoStruct, valueType: typeinfo)->*void
-{
-    // We will treat the array as a buffer of bytes, just to be able to access the fields
-    arr := cast(*Array'u8) addr
-    sizeValue := valueType.sizeof
-
-    var valueTypeStruct: const *TypeInfoStruct
-    if Reflection.isStruct(valueType)
-        valueTypeStruct = acast valueType
-
-    // If we need to reallocate the buffer, we will also have to deal with
-    // structures specials functions
-    if arr.count >= arr.capacity
-    {
-        newCapacity := Math.max(arr.count + 1, arr.capacity * 2)
-        newBuffer := Memory.alloc(newCapacity * sizeValue, arr.allocator)
-        Memory.clear(newBuffer, newCapacity * sizeValue)
-        arr.capacity = newCapacity
-
-        // Move old values to the new buffer
-        Memory.copy(newBuffer, arr.buffer, arr.count * sizeValue)
-        if Reflection.hasPostMove(valueType)
-        {
-            buf := newBuffer
-            loop arr.count
-            {
-                valueTypeStruct.opPostMove(buf)
-                buf += sizeValue
-            }
-        }
-
-        Memory.free(arr.buffer, arr.count * sizeValue)
-        arr.buffer = newBuffer
-    }
-
-    result := arr.buffer + (arr.count * valueType.sizeof)
-    arr.count += 1
-    if valueTypeStruct
-        valueTypeStruct.opInit(result)
-
-    return result
-}
-
 // This function will parse 'buf' and poke the corresponding value to 'addr'
 // 'addr' must point to an initialized memory location that can hold type 'type'
 //
@@ -69,7 +24,7 @@ public func pokeValue(addr: *void, type: typeinfo, buf: string)->string throw
         valueType := structType.generics[0].pointedType
         while @countof(one) and one[0] != "#"'u8
         {
-            addrVal := roomInArray(addr, structType, valueType)
+            addrVal := Reflection.roomInArray(addr, structType, valueType)
             one = try pokeValue(addrVal, valueType, one)
             one = Tokenize.eatSpaces(one)
         }
