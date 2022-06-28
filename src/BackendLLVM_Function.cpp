@@ -3224,11 +3224,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::InternalHasErr:
-        {
-            localCall(buildParameters, allocR, allocT, g_LangSpec->name__haserr, {ip->a.u32}, {});
-            break;
-        }
         case ByteCodeOp::IntrinsicGetErr:
         {
             localCall(buildParameters, allocR, allocT, g_LangSpec->name__geterr, {ip->a.u32, ip->b.u32}, {});
@@ -3244,9 +3239,17 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             localCall(buildParameters, allocR, allocT, g_LangSpec->name__checkAny, {ip->a.u32, ip->b.u32, ip->c.u32}, {});
             break;
         }
+
+        case ByteCodeOp::InternalHasErr:
+        {
+            localCall(buildParameters, allocR, allocT, g_LangSpec->name__haserr, { ip->a.u32 }, {});
+            break;
+        }
         case ByteCodeOp::InternalClearErr:
         {
-            localCall(buildParameters, allocR, allocT, g_LangSpec->name__clearerr, {ip->a.u32}, {});
+            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
+            auto v0 = builder.CreateInBoundsGEP(builder.CreateLoad(r0), builder.getInt32(offsetof(SwagContext, errorMsgLen)));
+            builder.CreateStore(pp.cst0_i32, TO_PTR_I32(v0));
             break;
         }
         case ByteCodeOp::InternalPushErr:

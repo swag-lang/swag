@@ -431,11 +431,6 @@ func @seterr(value: string)
     }
 }
 
-func __clearerr(cxt: *Swag.Context)
-{
-    cxt.errorMsgLen = 0
-}
-
 func __haserr()->bool
 {
     cxt := @getcontext()

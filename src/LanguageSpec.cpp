@@ -8,7 +8,6 @@ void LanguageSpec::setupNames()
 {
     name__setupRuntime   = "__setupRuntime";
     name__panic          = "__panic";
-    name__clearerr       = "__clearerr";
     name__pusherr        = "__pusherr";
     name__poperr         = "__poperr";
     name__haserr         = "__haserr";

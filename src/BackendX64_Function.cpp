@@ -3651,13 +3651,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         }
 
-        case ByteCodeOp::InternalHasErr:
-        {
-            BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
-            emitCall(pp, g_LangSpec->name__haserr);
-            break;
-        }
-
         case ByteCodeOp::IntrinsicGetErr:
         {
             BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
@@ -3683,9 +3676,13 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         }
 
+        case ByteCodeOp::InternalHasErr:
+            BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
+            emitCall(pp, g_LangSpec->name__haserr);
+            break;
         case ByteCodeOp::InternalClearErr:
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
-            emitCall(pp, g_LangSpec->name__clearerr);
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            BackendX64Inst::emit_Store32_Immediate(pp, offsetof(SwagContext, errorMsgLen), 0, RAX);
             break;
         case ByteCodeOp::InternalPushErr:
             emitCall(pp, g_LangSpec->name__pusherr);
