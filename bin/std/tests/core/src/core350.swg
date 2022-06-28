@@ -28,6 +28,15 @@ struct Toto
 
     var rea: Decoder'Read.JSon
     v := try rea.read'Toto(str.toSlice())
+    @assert(v.x == true)
+    @assert(v.y == false)
+    @assert(Math.isEqualEpsilon(v.z, 3.14))
+    @assert(v.arr[5] == 666)
+    @assert(v.str == "my string")
+    @assert(v.arr2.count == 3)
+    @assert(v.arr2[0] == 1)
+    @assert(v.arr2[1] == 2)
+    @assert(v.arr2[2] == 3)
     defer Memory.delete(v)
 
     //Console.print(dref v, "\n")
