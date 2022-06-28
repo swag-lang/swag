@@ -72,6 +72,15 @@ using Swag
         return result
     }
 
+    // Transform an enum type to its underling real native type
+    func makeConcreteEnum(type: typeinfo)->typeinfo
+    {
+        if !Reflection.isEnum(type)
+            return type
+        enumType := cast(const *TypeInfoEnum) type
+        return enumType.rawType
+    }
+
     // Get information about a specific mtd in a given struct
     // Returns null if the mtd does not exist
     func getMethod(type: typeinfo, name: string)->const* TypeValue

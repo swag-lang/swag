@@ -18,6 +18,7 @@ impl Decoder
     mtd read(data: *u8, dataType: typeinfo) throw
     {
         type := Reflection.makeConcreteAlias(dataType)
+        type = Reflection.makeConcreteEnum(type)
 
         serializer.startValue(type)
         defer(noerr) serializer.endValue(type)

@@ -18,6 +18,7 @@ impl Encoder
     mtd write(dataType: typeinfo, data: const *u8)
     {
         type := Reflection.makeConcreteAlias(dataType)
+        type = Reflection.makeConcreteEnum(type)
 
         serializer.startValue(type)
         defer serializer.endValue(type)
