@@ -34,10 +34,10 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     ownerCompilerIfBlock = context.ownerCompilerIfBlock ? context.ownerCompilerIfBlock : from->ownerCompilerIfBlock;
 
     // We do not want a defer statement to have some defers in the same scope, otherwise it's infinite
-    if (ownerScope && ownerScope == context.ownerDeferScope)
+    if (context.ownerDeferScope)
     {
-        ownerScope->doneDefer.push_back(this);
-        ownerScope->doneDrop.push_back(this);
+        context.ownerDeferScope->doneDefer.push_back(this);
+        context.ownerDeferScope->doneDrop.push_back(this);
     }
 
     // Update direct node references
