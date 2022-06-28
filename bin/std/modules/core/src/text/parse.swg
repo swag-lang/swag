@@ -311,7 +311,7 @@ func parseS64(str: string) -> {value: s64, eat: u32, ovf: bool} throw
 func parseF32(str: string) -> {value: f32, eat: u32, ovf: bool} throw
 {
     (res, eat, ovf) := try parseF64(str)
-    if res < Swag.F32.Min
+    if res != 0 and res < Swag.F32.Min
     {
         res = Swag.F32.Min
         ovf = true

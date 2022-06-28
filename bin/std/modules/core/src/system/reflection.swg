@@ -208,10 +208,10 @@ using Swag
         return null
     }
 
-    // Returns true if the given 'type' has the associated 'attribute'
-    func getAttribute(type: const *Swag.TypeValue, attribute: string)->const *Swag.Attribute
+    // Returns the given associated 'attribute' to 'value' or null
+    func getAttribute(value: const *Swag.TypeValue, attribute: string)->const *Swag.Attribute
     {
-        visit it: type.attributes
+        visit it: value.attributes
         {
             if attribute == it.name
                 return it
@@ -220,7 +220,13 @@ using Swag
         return null
     }
 
-    // Returns true if the given 'type' has the associated 'attribute'
+    // Returns true if the given 'value' has the associated 'attribute'
+    func hasAttribute(value: const *Swag.TypeValue, attribute: string)->bool
+    {
+        return getAttribute(value, attribute) != null
+    }
+
+    // Returns the given associated 'attribute' to 'type' or null
     func getAttribute(type: typeinfo, attribute: string)->const *Swag.Attribute
     {
         switch type.kind

@@ -2,6 +2,9 @@
 #global namespace Serialization
 using Swag
 
+#[AttrUsage(AttributeUsage.Struct|AttributeUsage.StructVariable)]
+attr NoSerialize()  // Do not serialize a struct or a field
+
 struct EncoderOptions
 {
     specialRoot: bool = true
@@ -21,7 +24,7 @@ impl Encoder
         type = Reflection.makeConcreteEnum(type)
 
         serializer.startValue(type)
-        defer serializer.endValue(type)
+        defer(noerr) serializer.endValue(type)
 
         // Native
         if type.kind == .Native
@@ -56,7 +59,6 @@ impl Encoder
             return
         }
 
-        // Dynamic Core.Array
         if Reflection.isStruct(type)
         {
             // Core.String
@@ -69,7 +71,7 @@ impl Encoder
 
             // Core.Array
             structType := cast(const *TypeInfoStruct) type
-            if structType.fromGeneric == @typeof(Core.Array)
+            if structType.fromGeneric == @typeof(Array)
             {
                 valueType := structType.generics[0].pointedType
                 ptrArr    := cast(const *Array) data
@@ -92,16 +94,20 @@ impl Encoder
 
             // Generic structure save
             treated := serializer.startStruct(structType, data)
-            defer serializer.endStruct()
+            defer(noerr) serializer.endStruct()
+            if treated
+                return
 
-            if !treated
+            visit field: structType.fields
             {
-                visit field: structType.fields
-                {
-                    serializer.startElement(field)
-                    write(field.pointedType, data + field.offset)
-                    serializer.endElement(field)
-                }
+                if Reflection.hasAttribute(field, @stringof(NoSerialize))
+                    continue
+                if Reflection.hasAttribute(field.pointedType, @stringof(NoSerialize))
+                    return
+
+                serializer.startElement(field)
+                write(field.pointedType, data + field.offset)
+                serializer.endElement(field)
             }
 
             return
@@ -113,15 +119,14 @@ impl Encoder
             typeArr := cast(const *TypeInfoArray) type
             treated := serializer.startSequence(typeArr.pointedType, typeArr.count, data)
             defer serializer.endSequence()
+            if treated
+                return
 
-            if !treated
+            bufArr := cast(const *u8) data
+            loop typeArr.count
             {
-                bufArr := cast(const *u8) data
-                loop typeArr.count
-                {
-                    write(typeArr.pointedType, bufArr)
-                    bufArr += typeArr.pointedType.sizeof
-                }
+                write(typeArr.pointedType, bufArr)
+                bufArr += typeArr.pointedType.sizeof
             }
 
             return

@@ -23,6 +23,7 @@ impl Decoder
         serializer.startValue(type)
         defer(noerr) serializer.endValue(type)
 
+        // Native
         if type.kind == .Native
         {
             typeNative := cast(const *TypeInfoNative) type
@@ -72,7 +73,7 @@ impl Decoder
                 valueType := structType.generics[0].pointedType
 
                 treated := serializer.startSequence(data, 0, type)
-                defer serializer.endSequence()
+                defer(noerr) serializer.endSequence()
 
                 if !treated
                 {
@@ -89,15 +90,19 @@ impl Decoder
             // Generic struct load
             treated := serializer.startStruct(data, structType)
             defer(noerr) serializer.endStruct()
+            if treated
+                return
 
-            if !treated
+            visit field: structType.fields
             {
-                visit field: structType.fields
-                {
-                    serializer.startElement(field)
-                    read(data + field.offset, field.pointedType)
-                    serializer.endElement(field)
-                }
+                if Reflection.hasAttribute(field, @stringof(NoSerialize))
+                    continue
+                if Reflection.hasAttribute(field.pointedType, @stringof(NoSerialize))
+                    return
+
+                serializer.startElement(field)
+                read(data + field.offset, field.pointedType)
+                serializer.endElement(field)
             }
 
             return
@@ -109,15 +114,14 @@ impl Decoder
             typeArr := cast(const *TypeInfoArray) type
             treated := serializer.startSequence(data, typeArr.count, typeArr.pointedType)
             defer(noerr) serializer.endSequence()
+            if treated
+                return
 
-            if !treated
+            bufArr := cast(*u8) data
+            loop typeArr.count
             {
-                bufArr := cast(*u8) data
-                loop typeArr.count
-                {
-                    read(bufArr, typeArr.pointedType)
-                    bufArr += typeArr.pointedType.sizeof
-                }
+                read(bufArr, typeArr.pointedType)
+                bufArr += typeArr.pointedType.sizeof
             }
 
             return
