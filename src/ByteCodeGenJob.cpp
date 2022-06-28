@@ -758,21 +758,31 @@ JobResult ByteCodeGenJob::execute()
 
     if (context.bc &&
         context.bc->node &&
-        context.bc->node->kind == AstNodeKind::FuncDecl &&
-        !context.bc->node->sourceFile->numTestErrors)
+        context.bc->node->kind == AstNodeKind::FuncDecl)
     {
-        // Be sure that every used registers have been released
-        if (context.bc->maxReservedRegisterRC > context.bc->availableRegistersRC.size())
+        // Retrieve the persistent register used to store the current context
+        auto funcNode = CastAst<AstFuncDecl>(context.bc->node, AstNodeKind::FuncDecl);
+        if (funcNode->registerGetContext != UINT32_MAX)
         {
-            context.sourceFile->internalError(context.bc->node, Fmt("function `%s` does not release all registers !", context.bc->node->token.ctext()));
-            if (originalNode->attributeFlags & ATTRIBUTE_PRINT_BC)
-                context.bc->print();
+            context.bc->registerGetContext = funcNode->registerGetContext;
+            freeRegisterRC(&context, context.bc->registerGetContext);
         }
-        else if (context.bc->maxReservedRegisterRC < context.bc->availableRegistersRC.size())
+
+        if (!funcNode->sourceFile->numTestErrors)
         {
-            context.sourceFile->internalError(context.bc->node, Fmt("function `%s` releases too many registers !", context.bc->node->token.ctext()));
-            if (originalNode->attributeFlags & ATTRIBUTE_PRINT_BC)
-                context.bc->print();
+            // Be sure that every used registers have been released
+            if (context.bc->maxReservedRegisterRC > context.bc->availableRegistersRC.size())
+            {
+                context.sourceFile->internalError(funcNode, Fmt("function `%s` does not release all registers !", funcNode->token.ctext()));
+                if (originalNode->attributeFlags & ATTRIBUTE_PRINT_BC)
+                    context.bc->print();
+            }
+            else if (context.bc->maxReservedRegisterRC < context.bc->availableRegistersRC.size())
+            {
+                context.sourceFile->internalError(funcNode, Fmt("function `%s` releases too many registers !", funcNode->token.ctext()));
+                if (originalNode->attributeFlags & ATTRIBUTE_PRINT_BC)
+                    context.bc->print();
+            }
         }
     }
 

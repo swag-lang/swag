@@ -1859,8 +1859,10 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     }
     case ByteCodeOp::InternalClearErr:
     {
-        auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name__clearerr);
-        localCall(context, bc, 0);
+        SWAG_ASSERT(context->bc->registerGetContext != UINT32_MAX);
+        auto cxt = (SwagContext*) registersRC[ip->a.u32].pointer;
+        SWAG_ASSERT(cxt != nullptr);
+        cxt->errorMsgLen = 0;
         break;
     }
     case ByteCodeOp::InternalPushErr:

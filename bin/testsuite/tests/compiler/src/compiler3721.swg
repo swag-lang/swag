@@ -13,6 +13,7 @@ func read() throw
     throw "read"
 }
 
+//#[Swag.PrintBc]
 func titi() throw
 {
     defer

@@ -150,6 +150,7 @@ struct ByteCode
     uint32_t maxSPVaargs           = 0;
     uint32_t maxReservedRegisterRC = 0;
     uint32_t numJumps              = 0;
+    uint32_t registerGetContext    = UINT32_MAX;
 
     bool isCompilerGenerated = false;
     bool isAddedToList       = false;

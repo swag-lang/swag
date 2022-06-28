@@ -404,11 +404,13 @@ struct AstFuncDecl : public AstNode
     Job*            pendingLambdaJob      = nullptr;
     AstMakePointer* makePointerLambda     = nullptr;
 
-    uint32_t aliasMask         = 0;
-    uint32_t stackSize         = 0;
-    uint32_t nodeCounts        = 0;
-    uint32_t funcFlags         = 0;
-    int      exportForeignLine = 0;
+    uint32_t aliasMask              = 0;
+    uint32_t stackSize              = 0;
+    uint32_t nodeCounts             = 0;
+    uint32_t funcFlags              = 0;
+    uint32_t registerGetContext     = UINT32_MAX;
+    bool     needRegisterGetContext = false;
+    int      exportForeignLine      = 0;
 };
 
 struct AstAttrDecl : public AstNode

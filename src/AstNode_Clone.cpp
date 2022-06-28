@@ -470,11 +470,12 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
     if (newNode->captureParameters)
         newNode->childs.pop_back();
 
-    newNode->genericParameters = genericParameters ? genericParameters->clone(cloneContext) : nullptr;
-    newNode->parameters        = parameters ? parameters->clone(cloneContext) : nullptr;
-    newNode->selectIf          = selectIf ? selectIf->clone(cloneContext) : nullptr;
-    newNode->nodeCounts        = nodeCounts;
-    newNode->makePointerLambda = newNode->makePointerLambda;
+    newNode->genericParameters      = genericParameters ? genericParameters->clone(cloneContext) : nullptr;
+    newNode->parameters             = parameters ? parameters->clone(cloneContext) : nullptr;
+    newNode->selectIf               = selectIf ? selectIf->clone(cloneContext) : nullptr;
+    newNode->nodeCounts             = nodeCounts;
+    newNode->makePointerLambda      = newNode->makePointerLambda;
+    newNode->needRegisterGetContext = needRegisterGetContext;
 
     newNode->returnType = returnType ? returnType->clone(cloneContext) : nullptr;
     if (newNode->returnType)

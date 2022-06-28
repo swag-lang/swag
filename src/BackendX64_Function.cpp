@@ -3684,6 +3684,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         }
 
         case ByteCodeOp::InternalClearErr:
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             emitCall(pp, g_LangSpec->name__clearerr);
             break;
         case ByteCodeOp::InternalPushErr:

@@ -1833,7 +1833,18 @@ bool ByteCodeGenJob::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
 
     // Clear error when entering a #<function> or a function than can raise en error
     if ((funcNode->attributeFlags & ATTRIBUTE_SHARP_FUNC) || (funcNode->typeInfo->flags & TYPEINFO_CAN_THROW))
-        emitInstruction(context, ByteCodeOp::InternalClearErr);
+    {
+        SWAG_ASSERT(funcNode->registerGetContext == UINT32_MAX);
+        funcNode->registerGetContext = reserveRegisterRC(context);
+        emitInstruction(context, ByteCodeOp::IntrinsicGetContext, funcNode->registerGetContext);
+        emitInstruction(context, ByteCodeOp::InternalClearErr, funcNode->registerGetContext);
+    }
+    else if (funcNode->needRegisterGetContext)
+    {   
+        SWAG_ASSERT(funcNode->registerGetContext == UINT32_MAX);
+        funcNode->registerGetContext = reserveRegisterRC(context);
+        emitInstruction(context, ByteCodeOp::IntrinsicGetContext, funcNode->registerGetContext);
+    }
 
     if (funcNode->stackSize)
     {

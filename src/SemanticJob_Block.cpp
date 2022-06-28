@@ -103,6 +103,10 @@ bool SemanticJob::resolveInlineBefore(SemanticContext* context)
 
     node->scope->startStackSize = node->ownerScope->startStackSize;
 
+    // If we inline a throwable function, be sure the top level function is informed
+    if (func->typeInfo->flags & TYPEINFO_CAN_THROW)
+        node->ownerFct->needRegisterGetContext = true;
+
     // Register all function parameters as inline symbols
     if (func->parameters)
     {

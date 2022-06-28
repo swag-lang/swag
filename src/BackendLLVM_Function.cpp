@@ -3226,7 +3226,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::InternalHasErr:
         {
-            localCall(buildParameters, allocR, allocT, g_LangSpec->name__haserr, { ip->a.u32 }, {});
+            localCall(buildParameters, allocR, allocT, g_LangSpec->name__haserr, {ip->a.u32}, {});
             break;
         }
         case ByteCodeOp::IntrinsicGetErr:
@@ -3246,7 +3246,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::InternalClearErr:
         {
-            localCall(buildParameters, allocR, allocT, g_LangSpec->name__clearerr, {}, {});
+            localCall(buildParameters, allocR, allocT, g_LangSpec->name__clearerr, {ip->a.u32}, {});
             break;
         }
         case ByteCodeOp::InternalPushErr:

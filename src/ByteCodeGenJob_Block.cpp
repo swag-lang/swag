@@ -22,7 +22,10 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
 
     // Clear current error
     if (node->func->typeInfo->flags & TYPEINFO_CAN_THROW)
-        emitInstruction(context, ByteCodeOp::InternalClearErr);
+    {
+        SWAG_ASSERT(node->ownerFct->registerGetContext != UINT32_MAX);
+        emitInstruction(context, ByteCodeOp::InternalClearErr, node->ownerFct->registerGetContext);
+    }
 
     // Reserve registers for return value
     reserveRegisterRC(context, node->resultRegisterRC, node->func->returnType->typeInfo->numRegisters());

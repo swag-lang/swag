@@ -431,9 +431,8 @@ func @seterr(value: string)
     }
 }
 
-func __clearerr()
+func __clearerr(cxt: *Swag.Context)
 {
-    cxt := @getcontext()
     cxt.errorMsgLen = 0
 }
 
