@@ -54,18 +54,19 @@ impl Decoder
             return
         }
 
-        if type == String
-        {
-            strBuf := cast(*String) data
-            dref strBuf =,nodrop serializer.readString()
-            return
-        }
-
-        // Dynamic Core.Array
         if Reflection.isStruct(type)
         {
+            // Core.String
+            if type == String
+            {
+                strBuf := cast(*String) data
+                dref strBuf =,nodrop serializer.readString()
+                return
+            }
+
+            // Core.Array
             structType := cast(const *TypeInfoStruct) type
-            if structType.fromGeneric == @typeof(Core.Array)
+            if structType.fromGeneric == @typeof(Array)
             {
                 valueType := structType.generics[0].pointedType
 
@@ -83,8 +84,25 @@ impl Decoder
 
                 return
             }
+
+            // Generic struct load
+            treated := serializer.startStruct(data, structType)
+            defer(noerr) serializer.endStruct()
+
+            if !treated
+            {
+                visit field: structType.fields
+                {
+                    serializer.startElement(field)
+                    read(data + field.offset, field.pointedType)
+                    serializer.endElement(field)
+                }
+            }
+
+            return
         }
 
+        // Static array
         if Reflection.isArray(type)
         {
             typeArr := cast(const *TypeInfoArray) type
@@ -102,23 +120,6 @@ impl Decoder
             }
 
             return
-        }
-
-        if Reflection.isStruct(type)
-        {
-            typeStruct := cast(const *TypeInfoStruct) type
-            treated := serializer.startStruct(data, type)
-            defer(noerr) serializer.endStruct()
-
-            if !treated
-            {
-                visit field: typeStruct.fields
-                {
-                    serializer.startElement(field)
-                    read(data + field.offset, field.pointedType)
-                    serializer.endElement(field)
-                }
-            }
         }
     }
 

@@ -22,6 +22,7 @@ impl Encoder
         serializer.startValue(type)
         defer serializer.endValue(type)
 
+        // Native
         if type.kind == .Native
         {
             typeNative := cast(const *TypeInfoNative) type
@@ -54,16 +55,18 @@ impl Encoder
             return
         }
 
-        if type == String
-        {
-            strBuf := cast(const *String) data
-            serializer.writeString(strBuf.toString())
-            return
-        }
-
         // Dynamic Core.Array
         if Reflection.isStruct(type)
         {
+            // Core.String
+            if type == String
+            {
+                strBuf := cast(const *String) data
+                serializer.writeString(strBuf.toString())
+                return
+            }
+
+            // Core.Array
             structType := cast(const *TypeInfoStruct) type
             if structType.fromGeneric == @typeof(Core.Array)
             {
@@ -85,8 +88,25 @@ impl Encoder
 
                 return
             }
+
+            // Generic structure save
+            treated := serializer.startStruct(structType, data)
+            defer serializer.endStruct()
+
+            if !treated
+            {
+                visit field: structType.fields
+                {
+                    serializer.startElement(field)
+                    write(field.pointedType, data + field.offset)
+                    serializer.endElement(field)
+                }
+            }
+
+            return
         }
 
+        // A static array
         if Reflection.isArray(type)
         {
             typeArr := cast(const *TypeInfoArray) type
@@ -104,23 +124,6 @@ impl Encoder
             }
 
             return
-        }
-
-        if Reflection.isStruct(type)
-        {
-            typeStruct := cast(const *TypeInfoStruct) type
-            treated := serializer.startStruct(typeStruct, data)
-            defer serializer.endStruct()
-
-            if !treated
-            {
-                visit field: typeStruct.fields
-                {
-                    serializer.startElement(field)
-                    write(field.pointedType, data + field.offset)
-                    serializer.endElement(field)
-                }
-            }
         }
     }
 
