@@ -1019,9 +1019,9 @@ AstNode* AstCompilerIfBlock::clone(CloneContext& context)
     newNode->cloneChilds(cloneContext, this);
     context.propageResult(cloneContext);
 
-    SWAG_ASSERT(symbols.empty());
+    /*SWAG_ASSERT(symbols.empty());
     SWAG_ASSERT(interfacesCount.empty());
-    SWAG_ASSERT(methodsCount.empty());
+    SWAG_ASSERT(methodsCount.empty());*/
 
     if (newNode->ownerCompilerIfBlock)
         newNode->ownerCompilerIfBlock->blocks.push_back(newNode);

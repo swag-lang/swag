@@ -245,10 +245,11 @@ bool ByteCodeGenJob::emitTry(ByteCodeGenContext* context)
 
     if (!(node->doneFlags & AST_DONE_TRY_1))
     {
+        SWAG_ASSERT(node->ownerFct->registerGetContext != UINT32_MAX);
         auto r0 = reserveRegisterRC(context);
-        emitInstruction(context, ByteCodeOp::InternalHasErr, r0);
+        emitInstruction(context, ByteCodeOp::InternalHasErr, r0, node->ownerFct->registerGetContext);
         tryNode->seekInsideJump = context->bc->numInstructions;
-        emitInstruction(context, ByteCodeOp::JumpIfZero8, r0);
+        emitInstruction(context, ByteCodeOp::JumpIfZero32, r0);
         freeRegisterRC(context, r0);
         node->doneFlags |= AST_DONE_TRY_1;
     }

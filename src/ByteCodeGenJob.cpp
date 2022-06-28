@@ -661,15 +661,25 @@ JobResult ByteCodeGenJob::execute()
             // Make one optimization
             if (context.bc &&
                 context.bc->node &&
-                context.bc->node->kind == AstNodeKind::FuncDecl &&
-                !context.bc->node->sourceFile->numTestErrors)
+                context.bc->node->kind == AstNodeKind::FuncDecl)
             {
-                if (sourceFile->module->kind != ModuleKind::BootStrap && sourceFile->module->kind != ModuleKind::Runtime)
+                // Retrieve the persistent register used to store the current context
+                auto funcNode = CastAst<AstFuncDecl>(context.bc->node, AstNodeKind::FuncDecl);
+                if (funcNode->registerGetContext != UINT32_MAX)
                 {
-                    ByteCodeOptimizerJob opt;
-                    bool                 restart;
-                    opt.module = module;
-                    opt.optimize(context.bc, restart);
+                    context.bc->registerGetContext = funcNode->registerGetContext;
+                    freeRegisterRC(&context, context.bc->registerGetContext);
+                }
+
+                if (!funcNode->sourceFile->numTestErrors)
+                {
+                    if (sourceFile->module->kind != ModuleKind::BootStrap && sourceFile->module->kind != ModuleKind::Runtime)
+                    {
+                        ByteCodeOptimizerJob opt;
+                        bool                 restart;
+                        opt.module = module;
+                        opt.optimize(context.bc, restart);
+                    }
                 }
             }
 
@@ -760,14 +770,7 @@ JobResult ByteCodeGenJob::execute()
         context.bc->node &&
         context.bc->node->kind == AstNodeKind::FuncDecl)
     {
-        // Retrieve the persistent register used to store the current context
         auto funcNode = CastAst<AstFuncDecl>(context.bc->node, AstNodeKind::FuncDecl);
-        if (funcNode->registerGetContext != UINT32_MAX)
-        {
-            context.bc->registerGetContext = funcNode->registerGetContext;
-            freeRegisterRC(&context, context.bc->registerGetContext);
-        }
-
         if (!funcNode->sourceFile->numTestErrors)
         {
             // Be sure that every used registers have been released

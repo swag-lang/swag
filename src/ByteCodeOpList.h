@@ -56,7 +56,7 @@ BYTECODE_OP(InternalCheckAny, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_READ_C, "in
 BYTECODE_OP(InternalClearErr, OPFLAG_READ_A, "internal clearError(_ra_)", 0)
 BYTECODE_OP(InternalPushErr, 0, "internal pushError()", 0)
 BYTECODE_OP(InternalPopErr, 0, "internal popError()", 0)
-BYTECODE_OP(InternalHasErr, OPFLAG_WRITE_A, "_ra_ = internal hasError()", 0)
+BYTECODE_OP(InternalHasErr, OPFLAG_WRITE_A | OPFLAG_READ_B, "_ra_ = internal hasError(_rb_)", 0)
 BYTECODE_OP(InternalGetTlsPtr, OPFLAG_WRITE_A, "_ra_ = internal getTls()", 4)
 
 BYTECODE_OP(IntrinsicAtomicAddS8, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_WRITE_C | OPFLAG_UNPURE, "", 0)

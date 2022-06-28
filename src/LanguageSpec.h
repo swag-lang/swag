@@ -24,7 +24,6 @@ struct LanguageSpec
     Utf8 name__panic;
     Utf8 name__pusherr;
     Utf8 name__poperr;
-    Utf8 name__haserr;
     Utf8 name__geterr;
     Utf8 name__tlsAlloc;
     Utf8 name__tlsGetValue;

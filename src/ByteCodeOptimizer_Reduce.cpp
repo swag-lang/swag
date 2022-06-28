@@ -24,7 +24,7 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
 
     // GetErr/Jump just after
     if (ip[0].op == ByteCodeOp::InternalHasErr &&
-        ip[1].op == ByteCodeOp::JumpIfZero8 &&
+        ip[1].op == ByteCodeOp::JumpIfZero32 &&
         ip[1].a.u32 == ip[0].a.u32 &&
         ip[0].flags & BCI_TRYCATCH &&
         ip[1].flags & BCI_TRYCATCH &&
@@ -36,10 +36,10 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
 
 
     // GetErr/Jump on another GetErr/Jump, make a shortcut
-    if (ip[0].op == ByteCodeOp::InternalHasErr && ip[1].op == ByteCodeOp::JumpIfZero8)
+    if (ip[0].op == ByteCodeOp::InternalHasErr && ip[1].op == ByteCodeOp::JumpIfZero32)
     {
         auto ipNext = &ip[1] + ip[1].b.s32 + 1;
-        if (ipNext[0].op == ByteCodeOp::InternalHasErr && ipNext[1].op == ByteCodeOp::JumpIfZero8)
+        if (ipNext[0].op == ByteCodeOp::InternalHasErr && ipNext[1].op == ByteCodeOp::JumpIfZero32)
         {
             ip[1].b.s32 += ipNext[1].b.s32 + 2;
             context->passHasDoneSomething = true;

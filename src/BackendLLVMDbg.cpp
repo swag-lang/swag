@@ -431,9 +431,9 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
             llvm::DILocalVariable* var0   = dbgBuilder->createAutoVariable(scope, child->token.text.c_str(), file, loc.line + 1, type, !isOptimized);
             auto                   allocA = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(2));
             auto                   v0     = builder.CreateInBoundsGEP(allocA, builder.getInt64(0));
-            builder.CreateStore(func->getArg(0), v0);
+            builder.CreateStore(func->getArg(bc->typeInfoFunc->numReturnRegisters()), v0);
             auto v1 = builder.CreateInBoundsGEP(allocA, builder.getInt64(1));
-            builder.CreateStore(func->getArg(1), v1);
+            builder.CreateStore(func->getArg(bc->typeInfoFunc->numReturnRegisters() + 1), v1);
             dbgBuilder->insertDeclare(allocA, var0, dbgBuilder->createExpression(), debugLocGet(loc.line + 1, loc.column, scope), pp.builder->GetInsertBlock());
 
             idxParam += 2;

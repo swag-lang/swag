@@ -3242,7 +3242,10 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::InternalHasErr:
         {
-            localCall(buildParameters, allocR, allocT, g_LangSpec->name__haserr, { ip->a.u32 }, {});
+            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->b.u32));
+            auto v0 = builder.CreateInBoundsGEP(builder.CreateLoad(r0), builder.getInt32(offsetof(SwagContext, errorMsgLen)));
+            auto r1 = TO_PTR_I32(GEP_I32(allocR, ip->a.u32));
+            builder.CreateStore(builder.CreateLoad(TO_PTR_I32(v0)), r1);
             break;
         }
         case ByteCodeOp::InternalClearErr:
