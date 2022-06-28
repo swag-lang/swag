@@ -11,6 +11,7 @@ void LanguageSpec::setupNames()
     name__clearerr       = "__clearerr";
     name__pusherr        = "__pusherr";
     name__poperr         = "__poperr";
+    name__haserr         = "__haserr";
     name__geterr         = "__geterr";
     name__tlsAlloc       = "__tlsAlloc";
     name__tlsGetValue    = "__tlsGetValue";

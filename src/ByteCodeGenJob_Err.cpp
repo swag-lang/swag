@@ -245,11 +245,10 @@ bool ByteCodeGenJob::emitTry(ByteCodeGenContext* context)
 
     if (!(node->doneFlags & AST_DONE_TRY_1))
     {
-        RegisterList r0;
-        reserveRegisterRC(context, r0, 2);
-        emitInstruction(context, ByteCodeOp::IntrinsicGetErr, r0[0], r0[1]);
+        auto r0 = reserveRegisterRC(context);
+        emitInstruction(context, ByteCodeOp::InternalHasErr, r0);
         tryNode->seekInsideJump = context->bc->numInstructions;
-        emitInstruction(context, ByteCodeOp::JumpIfZero64, r0[1]);
+        emitInstruction(context, ByteCodeOp::JumpIfZero8, r0);
         freeRegisterRC(context, r0);
         node->doneFlags |= AST_DONE_TRY_1;
     }
@@ -281,8 +280,8 @@ bool ByteCodeGenJob::emitAssume(ByteCodeGenContext* context)
     uint32_t     storageOffset;
     DataSegment* storageSegment;
     computeSourceLocation(context, context->node, &storageOffset, &storageSegment);
-    auto r1 = reserveRegisterRC(context);
 
+    auto r1 = reserveRegisterRC(context);
     emitMakeSegPointer(context, storageSegment, storageOffset, r1);
     emitInstruction(context, ByteCodeOp::IntrinsicPanic, r0[0], r0[1], r1);
     freeRegisterRC(context, r0);

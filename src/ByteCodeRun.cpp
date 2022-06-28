@@ -1835,6 +1835,12 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         localCall(context, bc, 2);
         break;
     }
+    case ByteCodeOp::InternalHasErr:
+    {
+        auto cxt                   = (SwagContext*) OS::tlsGetValue(g_TlsContextId);
+        registersRC[ip->a.u32].u64 = cxt->errorMsgLen != 0;
+        break;
+    }
     case ByteCodeOp::IntrinsicGetErr:
     {
         auto cxt = (SwagContext*) OS::tlsGetValue(g_TlsContextId);

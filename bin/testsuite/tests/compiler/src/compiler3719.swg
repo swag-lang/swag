@@ -10,7 +10,7 @@ func read() throw
     throw "read"
 }
 
-#[Swag.PrintBc]
+//#[Swag.PrintBc]
 func titi() throw
 {
     defer toto()

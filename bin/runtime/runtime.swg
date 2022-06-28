@@ -437,6 +437,12 @@ func __clearerr()
     cxt.errorMsgLen = 0
 }
 
+func __haserr()->bool
+{
+    cxt := @getcontext()
+    return cxt.errorMsgLen != 0
+}
+
 func __geterr()->string
 {
     cxt := @getcontext()
