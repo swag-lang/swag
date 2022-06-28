@@ -1,0 +1,23 @@
+var READ, TOTO: s32
+
+func toto() throw
+{
+    throw "toto"
+}
+
+func read() throw
+{
+    throw "read"
+}
+
+func titi() throw
+{
+    defer toto()
+    read()
+}
+
+#test
+{
+    catch titi()
+    @assert(@err == "toto")
+}

@@ -970,9 +970,18 @@ bool ByteCodeGenJob::emitDeferredStatements(ByteCodeGenContext* context, Scope* 
             CloneContext cloneContext;
             cloneContext.rawClone        = true;
             cloneContext.ownerDeferScope = scope;
-            auto child                   = node->childs.front()->clone(cloneContext);
-            child->parent                = node;
-            child->bytecodeState         = AstNodeResolveState::Enter;
+
+            // If we emit a defer block during a try block, we need to be sure that the defer has its
+            // one try block in case a throw is raised
+            if (forError)
+            {
+                auto newTry = context->node->extension->ownerTryCatchAssume->clone(cloneContext);
+                cloneContext.ownerTryCatchAssume = CastAst<AstTryCatchAssume>(newTry, newTry->kind);
+            }
+
+            auto child           = node->childs.front()->clone(cloneContext);
+            child->parent        = node;
+            child->bytecodeState = AstNodeResolveState::Enter;
             child->flags &= ~AST_NO_BYTECODE;
             job->nodes.push_back(child);
         }

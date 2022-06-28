@@ -259,6 +259,7 @@ bool ByteCodeGenJob::emitTry(ByteCodeGenContext* context)
         return true;
 
     context->bc->out[tryNode->seekInsideJump].b.s32 = context->bc->numInstructions - tryNode->seekInsideJump - 1;
+    SWAG_ASSERT(context->bc->out[tryNode->seekInsideJump].b.s32);
     return true;
 }
 
