@@ -98,8 +98,14 @@
 // Intrinsics
 // ----------
 
-@alignof
 @args
+@index
+@err
+@alias0
+@alias1
+@alias2 ...
+
+@alignof
 @assert
 @bcdbg
 @compiler
@@ -107,12 +113,10 @@
 @dataof
 @defined
 @drop
-@err
 @errormsg
 @getcontext
 @gettag
 @hastag
-@index
 @init
 @interfaceof
 @isbytecode

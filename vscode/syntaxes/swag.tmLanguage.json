@@ -18,6 +18,7 @@
     { "include": "#multi-strings" },
     { "include": "#intrinsics" },
     { "include": "#intrinsics-buildin" },
+    { "include": "#intrinsics-control" },
     { "include": "#intrinsics-alias" },
     { "include": "#intrinsics-invalid" },
     { "include": "#intrinsics-literal" },
@@ -122,7 +123,7 @@
       "patterns": [
         {
           "name": "entity.name.function.intrinsic",
-          "match": "(@)\\b(defined|stringcmp|typecmp|interfaceof|getcontext|setcontext|args|compiler|isbytecode|print|errormsg|bcdbg|assert|panic|seterr|hastag|gettag|init|drop|index|mkany|mkslice|mkstring|mkforeign|mkcallback|mkinterface|sizeof|alignof|offsetof|typeof|kindof|countof|dataof|stringof|nameof|runes|postcopy|postmove|spread|isconstexpr|err)\\b"
+          "match": "(@)\\b(defined|stringcmp|typecmp|interfaceof|getcontext|setcontext|compiler|isbytecode|print|errormsg|bcdbg|assert|panic|seterr|hastag|gettag|init|drop|mkany|mkslice|mkstring|mkforeign|mkcallback|mkinterface|sizeof|alignof|offsetof|typeof|kindof|countof|dataof|stringof|nameof|runes|postcopy|postmove|spread|isconstexpr)\\b"
         }
       ]
     },
@@ -134,10 +135,18 @@
         }
       ]
     },
+    "intrinsics-control": {
+      "patterns": [
+        {
+          "name": "constant.character.escape",
+          "match": "(@)\\b(args|index|err)\\b"
+        }
+      ]
+    },
     "intrinsics-alias": {
       "patterns": [
         {
-          "name": "entity.name.function.intrinsic",
+          "name": "constant.character.escape",
           "match": "(@)(alias)([0-9]+)|(.)(item)([0-9]+)"
         }
       ]
