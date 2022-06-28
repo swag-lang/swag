@@ -98,7 +98,6 @@
 // Intrinsics
 // ----------
 
-@args
 @index
 @err
 @alias0
@@ -106,6 +105,7 @@
 @alias2 ...
 
 @alignof
+@args
 @assert
 @bcdbg
 @compiler

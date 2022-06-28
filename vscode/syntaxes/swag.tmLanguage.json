@@ -123,7 +123,7 @@
       "patterns": [
         {
           "name": "entity.name.function.intrinsic",
-          "match": "(@)\\b(defined|stringcmp|typecmp|interfaceof|getcontext|setcontext|compiler|isbytecode|print|errormsg|bcdbg|assert|panic|seterr|hastag|gettag|init|drop|mkany|mkslice|mkstring|mkforeign|mkcallback|mkinterface|sizeof|alignof|offsetof|typeof|kindof|countof|dataof|stringof|nameof|runes|postcopy|postmove|spread|isconstexpr)\\b"
+          "match": "(@)\\b(args|defined|stringcmp|typecmp|interfaceof|getcontext|setcontext|compiler|isbytecode|print|errormsg|bcdbg|assert|panic|seterr|hastag|gettag|init|drop|mkany|mkslice|mkstring|mkforeign|mkcallback|mkinterface|sizeof|alignof|offsetof|typeof|kindof|countof|dataof|stringof|nameof|runes|postcopy|postmove|spread|isconstexpr)\\b"
         }
       ]
     },
@@ -139,7 +139,7 @@
       "patterns": [
         {
           "name": "constant.character.escape",
-          "match": "(@)\\b(args|index|err)\\b"
+          "match": "(@)\\b(index|err)\\b"
         }
       ]
     },
