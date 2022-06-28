@@ -294,7 +294,7 @@ func convertStruct(buf: *ConcatBuffer, value: any, strFormat: string)
     ptr := @dataof(value)
 
     // Core.String
-    if kindof.name == "Core.String"
+    if kindof == String
     {
         ptrStr := cast(const *String) ptr
         buf.addBytes(@mkslice(ptrStr.buffer, ptrStr.length))
@@ -302,7 +302,7 @@ func convertStruct(buf: *ConcatBuffer, value: any, strFormat: string)
     }
 
     // Core.Array
-    if Utf8.startsWith(kindof.name, "Core.Array'")
+    if kindof.fromGeneric == Array
     {
         typeContent := kindof.generics[0].pointedType
 
