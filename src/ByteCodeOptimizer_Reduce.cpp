@@ -15,6 +15,13 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
         setNop(context, ip + 1);
     }
 
+    // Get err followed by ret
+    if (ip[0].op == ByteCodeOp::IntrinsicGetErr &&
+        ip[1].op == ByteCodeOp::Ret)
+    {
+        setNop(context, ip);
+    }
+
     // GetErr/Jump just after
     if (ip[0].op == ByteCodeOp::IntrinsicGetErr &&
         ip[1].op == ByteCodeOp::JumpIfZero64 &&
