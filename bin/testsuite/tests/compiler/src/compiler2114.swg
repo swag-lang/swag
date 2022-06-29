@@ -26,7 +26,7 @@ var toTreatCpt: u32
     typeF := cast(const *TypeInfoFunc) msg.type
     visit i: typeF.attributes
     {
-        if(i.name == "myAttr")
+        if i.type == @typeof(myAttr)
         {
             @assert(toTreatCpt != @countof(toTreat))
             toTreat[toTreatCpt] = typeF.name

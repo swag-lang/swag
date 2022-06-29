@@ -1,3 +1,4 @@
+//#global skip
 using Swag
 
 #[AttrUsage(AttributeUsage.Struct|AttributeUsage.Gen)]
@@ -25,8 +26,11 @@ var G = 0
     if msg.type.kind != .Struct return
 
     typeS := cast(const *TypeInfoStruct) msg.type
-    if @countof(typeS.attributes) != 1 return
-    if typeS.attributes[0].name != "__compiler3556.GenStuff" return
+    if @countof(typeS.attributes) != 1
+        return
+    if typeS.attributes[0].type != @typeof(GenStuff)
+        return
+
     itf.compileString("impl I for A {\n mtd toto() {\nG += 1\n}\n}")
 }
 

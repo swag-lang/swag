@@ -617,7 +617,7 @@ bool SemanticJob::resolveIntrinsicTypeOf(SemanticContext* context)
     // get the real function type with @typeof
     // i.e.
     // x := @typeof(func) is equivalent to x := @typeof(&func)
-    if (expr->typeInfo->kind == TypeInfoKind::FuncAttr)
+    if (expr->typeInfo->kind == TypeInfoKind::FuncAttr && !(expr->typeInfo->flags & TYPEINFO_FUNC_IS_ATTR))
     {
         expr->typeInfo         = expr->typeInfo->clone();
         expr->typeInfo->kind   = TypeInfoKind::Lambda;

@@ -7,7 +7,7 @@ func testInline(type: const* TypeInfoFunc)
 {
     visit i: type.attributes
     {
-        if(i.name == "Swag.Inline")
+        if i.type == Swag.Inline
         {
             cpt += 1
             //@print(type.name)

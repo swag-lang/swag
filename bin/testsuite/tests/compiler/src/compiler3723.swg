@@ -6,6 +6,6 @@ func titi() {}
 #[Swag.Optim("", false)]
 #test
 {
-    x := @typeof(titi).attributes[0].name
+    x := @typeof(titi).attributes[0].type
     //@print(x)
 }

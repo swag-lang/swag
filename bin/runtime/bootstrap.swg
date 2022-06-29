@@ -297,7 +297,7 @@ namespace Swag
         Alias
         Code
         Interface
-        TypeSet
+        Attribute
     }
 
     enum TypeInfoNativeKind : u8
@@ -346,9 +346,8 @@ namespace Swag
 
     struct Attribute
     {
-        name:		string
-        type:       const *TypeInfo
-        params:		const [..] AttributeParam
+        type:   const *TypeInfo
+        params:	const [..] AttributeParam
     }
 
     struct TypeValue

@@ -205,6 +205,7 @@ enum class TypeInfoKind : uint8_t
     Alias,
     Code,
     Interface,
+    Attribute, // Only for export
     Count,
 };
 
@@ -278,7 +279,6 @@ struct ConcreteAttributeParameter
 
 struct ConcreteAttribute
 {
-    SwagSlice         name;
     ConcreteTypeInfo* type;
     SwagSlice         params;
 };

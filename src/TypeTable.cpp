@@ -138,7 +138,12 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo
     SWAG_ASSERT(!typeName.empty());
     SWAG_CHECK(makeConcreteString(context, &concreteTypeInfoValue->name, nonPartialTypeName, storageSegment, OFFSETOF(concreteTypeInfoValue->name)));
     SWAG_CHECK(makeConcreteString(context, &concreteTypeInfoValue->flatName, typeInfo->getName(), storageSegment, OFFSETOF(concreteTypeInfoValue->flatName)));
-    concreteTypeInfoValue->kind   = typeInfo->kind;
+
+    if (typeInfo->flags & TYPEINFO_FUNC_IS_ATTR)
+        concreteTypeInfoValue->kind = TypeInfoKind::Attribute;
+    else
+        concreteTypeInfoValue->kind = typeInfo->kind;
+
     concreteTypeInfoValue->sizeOf = typeInfo->sizeOf;
 
     // Setup useful flags
@@ -480,12 +485,6 @@ bool TypeTable::makeConcreteAttributes(JobContext* context, AttributeList& attri
         auto attrAddr        = (ConcreteAttribute*) ptrStorageAttributes;
         auto offsetStartAttr = curOffsetAttributes;
 
-        // Name of the attribute
-        auto ptrString = (SwagSlice*) ptrStorageAttributes;
-        SWAG_CHECK(makeConcreteString(context, ptrString, one.name, storageSegment, curOffsetAttributes));
-        curOffsetAttributes += sizeof(SwagSlice);
-        ptrStorageAttributes += sizeof(SwagSlice);
-
         // Type of the attribute
         SWAG_CHECK(makeConcreteSubTypeInfo(context, (ConcreteTypeInfo**) ptrStorageAttributes, attrAddr, storageSegment, offsetStartAttr, one.typeFunc, cflags));
         curOffsetAttributes += sizeof(ConcreteTypeInfo*);
@@ -508,7 +507,7 @@ bool TypeTable::makeConcreteAttributes(JobContext* context, AttributeList& attri
             for (auto& oneParam : one.parameters)
             {
                 // Name of the parameter
-                ptrString = (SwagSlice*) ptrStorageAllParams;
+                auto ptrString = (SwagSlice*) ptrStorageAllParams;
                 SWAG_CHECK(makeConcreteString(context, ptrString, oneParam.token.text, storageSegment, curOffsetParams));
                 curOffsetParams += sizeof(SwagSlice);
                 ptrStorageAllParams += sizeof(SwagSlice);
