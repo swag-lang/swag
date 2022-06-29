@@ -278,8 +278,9 @@ struct ConcreteAttributeParameter
 
 struct ConcreteAttribute
 {
-    SwagSlice name;
-    SwagSlice params;
+    SwagSlice         name;
+    ConcreteTypeInfo* type;
+    SwagSlice         params;
 };
 
 struct ConcreteTypeInfoPointer

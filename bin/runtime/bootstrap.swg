@@ -347,6 +347,7 @@ namespace Swag
     struct Attribute
     {
         name:		string
+        type:       const *TypeInfo
         params:		const [..] AttributeParam
     }
 

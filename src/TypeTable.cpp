@@ -476,11 +476,19 @@ bool TypeTable::makeConcreteAttributes(JobContext* context, AttributeList& attri
     uint32_t curOffsetAttributes = storageOffsetAttributes;
     for (auto& one : attributes.allAttributes)
     {
+        auto attrAddr        = (ConcreteAttribute*) ptrStorageAttributes;
+        auto offsetStartAttr = curOffsetAttributes;
+
         // Name of the attribute
         auto ptrString = (SwagSlice*) ptrStorageAttributes;
         SWAG_CHECK(makeConcreteString(context, ptrString, one.name, storageSegment, curOffsetAttributes));
         curOffsetAttributes += sizeof(SwagSlice);
         ptrStorageAttributes += sizeof(SwagSlice);
+
+        // Type of the attribute
+        SWAG_CHECK(makeConcreteSubTypeInfo(context, (ConcreteTypeInfo**) ptrStorageAttributes, attrAddr, storageSegment, offsetStartAttr, one.typeFunc, cflags));
+        curOffsetAttributes += sizeof(ConcreteTypeInfo*);
+        ptrStorageAttributes += sizeof(ConcreteTypeInfo*);
 
         // Slice to all parameters
         auto ptrParamsAttribute    = (SwagSlice*) ptrStorageAttributes;
