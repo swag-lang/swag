@@ -101,9 +101,9 @@ impl Encoder
             if treated
                 return
 
+            // Write version number
             if options.storeVersion
             {
-                // Write version number
                 var version: u32
                 val := Reflection.getAttributeValue(structType, Version, "v")
                 if val != null

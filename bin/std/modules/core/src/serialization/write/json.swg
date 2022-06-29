@@ -55,20 +55,6 @@ impl JSon
         indent -= 1
     }
 
-    mtd startRoot()
-    {
-        output.addBytes("{\n")
-        indent += 1
-        writeIndent()
-    }
-
-    mtd endRoot()
-    {
-        output.cancelBytes(cast(uint) options.indentLevel)
-        output.addBytes("}")
-        indent -= 1
-    }
-
     mtd startStruct(type: typeinfo, data: const *u8)->bool
     {
         output.addBytes("{\n")
