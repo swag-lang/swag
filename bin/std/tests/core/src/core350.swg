@@ -1,5 +1,6 @@
 using Core, Serialization
 
+#[Version(4)]
 struct Toto
 {
     x, y:   bool
@@ -13,6 +14,7 @@ struct Toto
 {
     var buf: ConcatBuffer
     var wri: Encoder'Write.JSon
+    wri.options.storeVersion = true
 
     var toto: Toto
     toto.x = true
@@ -27,6 +29,8 @@ struct Toto
     //Console.print(str, "\n")
 
     var rea: Decoder'Read.JSon
+    rea.options.hasVersion = true
+
     v := try rea.read'Toto(str.toSlice())
     defer Memory.delete(v)
 

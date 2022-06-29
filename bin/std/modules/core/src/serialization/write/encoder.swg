@@ -2,12 +2,15 @@
 #global namespace Serialization
 using Swag
 
+#[AttrUsage(AttributeUsage.Struct)]
+attr Version(v: u32)    // Do not serialize a struct or a field
+
 #[AttrUsage(AttributeUsage.Struct|AttributeUsage.StructVariable)]
-attr NoSerialize()  // Do not serialize a struct or a field
+attr NoSerialize()      // Do not serialize a struct or a field
 
 struct EncoderOptions
 {
-    specialRoot: bool = true
+    storeVersion: bool
 }
 
 struct(T) Encoder
@@ -98,6 +101,23 @@ impl Encoder
             if treated
                 return
 
+            if options.storeVersion
+            {
+                // Write version number
+                var version: u32
+                val := Reflection.getAttributeValue(structType, Version, "v")
+                if val != null
+                    version = cast(u32) val
+
+                var fv: TypeValue
+                fv.name = "__version"
+                serializer.startElement(fv)
+                serializer.startValue(u32)
+                serializer.writeU32(version)
+                serializer.endValue(u32)
+                serializer.endElement(fv)
+            }
+
             visit field: structType.fields
             {
                 if Reflection.hasAttribute(field, NoSerialize)
@@ -136,23 +156,7 @@ impl Encoder
     mtd write(result: *ConcatBuffer, value: any)
     {
         Debug.assert(Reflection.isStruct(@kindof(value)))
-
         serializer.startWrite(result)
-
-        var rootValue: Swag.TypeValue
-        if options.specialRoot
-        {
-            serializer.startRoot()
-            rootValue.name = "root"
-            serializer.startElement(&rootValue)
-        }
-
         write(@kindof(value), @dataof(value))
-
-        if options.specialRoot
-        {
-            serializer.endElement(&rootValue)
-            serializer.endRoot()
-        }
     }
 }

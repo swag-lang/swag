@@ -192,8 +192,24 @@ using Swag
         return false
     }
 
-    // Returns the given attribute value
+    // Returns the given attribute value, or null
     func getAttributeValue(type: const *Swag.TypeValue, attribute: typeinfo, value: string)->any
+    {
+        attrib := getAttribute(type, attribute)
+        if !attrib
+            return null
+
+        visit p: attrib.params
+        {
+            if p.name == value
+                return p.value
+        }
+
+        return null
+    }
+
+    // Returns the given attribute value, or null
+    func getAttributeValue(type: typeinfo, attribute: typeinfo, value: string)->any
     {
         attrib := getAttribute(type, attribute)
         if !attrib

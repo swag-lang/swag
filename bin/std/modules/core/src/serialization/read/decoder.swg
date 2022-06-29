@@ -4,7 +4,7 @@ using Swag
 
 struct DecoderOptions
 {
-    specialRoot: bool = true
+    hasVersion: bool
 }
 
 struct(T) Decoder
@@ -15,6 +15,20 @@ struct(T) Decoder
 
 impl Decoder
 {
+    mtd readVersion()->u32 throw
+    {
+        if !options.hasVersion
+            return 0
+        var fv: TypeValue
+        fv.name = "__version"
+        serializer.startElement(fv)
+        serializer.startValue(u32)
+        version := serializer.readU32()
+        serializer.endValue(u32)
+        serializer.endElement(fv)
+        return version
+    }
+
     mtd read(data: *u8, dataType: typeinfo) throw
     {
         type := Reflection.makeConcreteAlias(dataType)
@@ -93,6 +107,7 @@ impl Decoder
             if treated
                 return
 
+            version := readVersion()
             visit field: structType.fields
             {
                 if Reflection.hasAttribute(field, NoSerialize)
@@ -133,23 +148,8 @@ impl Decoder
         Debug.assert(Reflection.isStruct(TR))
 
         serializer.startRead(input)
-
-        var rootValue: Swag.TypeValue
-        if options.specialRoot
-        {
-            serializer.startRoot()
-            rootValue.name = "root"
-            serializer.startElement(&rootValue)
-        }
-
         val := Memory.new'TR()
         read(cast(*u8) val, TR)
-
-        if options.specialRoot
-        {
-            serializer.endElement(&rootValue)
-            serializer.endRoot()
-        }
 
         return val
     }
