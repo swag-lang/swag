@@ -1,13 +1,12 @@
 attr TOTO(x: s32 = 666)
-attr TOTO1()
 
-#[TOTO, TOTO1]
-func titi()
-{}
+#[TOTO]
+func titi() {}
 
+#[Swag.Optim("", false)]
 #test
 {
-    tt := @typeof(titi)
-    @print(tt.attributes[0].type.name)
-    @print(tt.attributes[1].type.name)
+    x := @typeof(titi).attributes[0]//.name
+    @assert(@sizeof(x) == @sizeof(Swag.Attribute))
+    //@print(x.name)
 }

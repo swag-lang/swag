@@ -310,7 +310,7 @@ bool SemanticJob::resolveArrayPointerIndex(SemanticContext* context)
                 typeReturn       = typePointer->pointedType;
             }
 
-            // And this is is a struct, we fill the startScope
+            // And if this is a struct or an interface, we fill the startScope
             if (typeReturn->kind == TypeInfoKind::Struct || typeReturn->kind == TypeInfoKind::Interface)
             {
                 auto typeStruct    = CastTypeInfo<TypeInfoStruct>(typeReturn, TypeInfoKind::Struct, TypeInfoKind::Interface);
@@ -591,6 +591,18 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
             auto ptr = storageSegment->address(storageOffset);
             if (derefConstantValue(context, arrayNode, typePtr->finalType, storageSegment, ptr))
                 arrayNode->setFlagsValueIsComputed();
+            else if (typePtr->finalType->kind == TypeInfoKind::Struct)
+            {
+                arrayNode->setFlagsValueIsComputed();
+                arrayNode->computedValue->storageSegment = storageSegment;
+                arrayNode->computedValue->storageOffset = storageOffset;
+                arrayNode->typeInfo = typePtr->finalType;
+                if (arrayNode->resolvedSymbolOverload)
+                {
+                    SWAG_ASSERT(arrayNode->resolvedSymbolOverload->computedValue.storageSegment == storageSegment);
+                    arrayNode->resolvedSymbolOverload->computedValue.storageOffset = storageOffset;
+                }
+            }
         }
 
         break;
