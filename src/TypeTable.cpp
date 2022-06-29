@@ -33,7 +33,8 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo
         SWAG_ASSERT(!typeInfo->scopedName.empty());
     }
 
-    auto typeName = getTypeName(typeInfo, cflags & MAKE_CONCRETE_FORCE_NO_SCOPE);
+    auto typeName           = getTypeName(typeInfo, cflags & MAKE_CONCRETE_FORCE_NO_SCOPE);
+    auto nonPartialTypeName = typeName;
     if (cflags & MAKE_CONCRETE_PARTIAL)
         typeName += "__partial";
     SWAG_ASSERT(!typeName.empty());
@@ -135,7 +136,7 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo
     uint32_t          storageOffset = storageSegment->reserve(typeStruct->sizeOf, (uint8_t**) &concreteTypeInfoValue);
 
     SWAG_ASSERT(!typeName.empty());
-    SWAG_CHECK(makeConcreteString(context, &concreteTypeInfoValue->name, typeName, storageSegment, OFFSETOF(concreteTypeInfoValue->name)));
+    SWAG_CHECK(makeConcreteString(context, &concreteTypeInfoValue->name, nonPartialTypeName, storageSegment, OFFSETOF(concreteTypeInfoValue->name)));
     SWAG_CHECK(makeConcreteString(context, &concreteTypeInfoValue->flatName, typeInfo->getName(), storageSegment, OFFSETOF(concreteTypeInfoValue->flatName)));
     concreteTypeInfoValue->kind   = typeInfo->kind;
     concreteTypeInfoValue->sizeOf = typeInfo->sizeOf;

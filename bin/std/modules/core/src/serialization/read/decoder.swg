@@ -95,9 +95,9 @@ impl Decoder
 
             visit field: structType.fields
             {
-                if Reflection.hasAttribute(field, @stringof(NoSerialize))
+                if Reflection.hasAttribute(field, NoSerialize)
                     continue
-                if Reflection.hasAttribute(field.pointedType, @stringof(NoSerialize))
+                if Reflection.hasAttribute(field.pointedType, NoSerialize)
                     return
 
                 serializer.startElement(field)

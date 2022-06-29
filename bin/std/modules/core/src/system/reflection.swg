@@ -193,7 +193,7 @@ using Swag
     }
 
     // Returns the given attribute value
-    func getAttributeValue(type: const *Swag.TypeValue, attribute, value: string)->any
+    func getAttributeValue(type: const *Swag.TypeValue, attribute: typeinfo, value: string)->any
     {
         attrib := getAttribute(type, attribute)
         if !attrib
@@ -209,11 +209,11 @@ using Swag
     }
 
     // Returns the given associated 'attribute' to 'value' or null
-    func getAttribute(value: const *Swag.TypeValue, attribute: string)->const *Swag.Attribute
+    func getAttribute(value: const *Swag.TypeValue, attribute: typeinfo)->const *Swag.Attribute
     {
         visit it: value.attributes
         {
-            if attribute == it.name
+            if attribute == it.type
                 return it
         }
 
@@ -221,13 +221,13 @@ using Swag
     }
 
     // Returns true if the given 'value' has the associated 'attribute'
-    func hasAttribute(value: const *Swag.TypeValue, attribute: string)->bool
+    func hasAttribute(value: const *Swag.TypeValue, attribute: typeinfo)->bool
     {
         return getAttribute(value, attribute) != null
     }
 
     // Returns the given associated 'attribute' to 'type' or null
-    func getAttribute(type: typeinfo, attribute: string)->const *Swag.Attribute
+    func getAttribute(type: typeinfo, attribute: typeinfo)->const *Swag.Attribute
     {
         switch type.kind
         {
@@ -235,7 +235,7 @@ using Swag
             typeFunc := cast(const *TypeInfoFunc) type
             visit it: typeFunc.attributes
             {
-                if attribute == it.name
+                if attribute == it.type
                     return it
             }
 
@@ -243,7 +243,7 @@ using Swag
             typeStruct := cast(const *TypeInfoStruct) type
             visit it: typeStruct.attributes
             {
-                if attribute == it.name
+                if attribute == it.type
                     return it
             }
 
@@ -251,7 +251,7 @@ using Swag
             typeEnum := cast(const *TypeInfoEnum) type
             visit it: typeEnum.attributes
             {
-                if attribute == it.name
+                if attribute == it.type
                     return it
             }
         }
@@ -260,7 +260,7 @@ using Swag
     }
 
     // Returns true if the given 'type' has the associated 'attribute'
-    func hasAttribute(type: typeinfo, attribute: string)->bool
+    func hasAttribute(type: typeinfo, attribute: typeinfo)->bool
     {
         return getAttribute(type, attribute) != null
     }
@@ -290,7 +290,7 @@ using Swag
         if type.kind != TypeInfoKind.Enum
             return result
         typeEnum := cast(const *TypeInfoEnum) type
-        isFlags := hasAttribute(type, "Swag.EnumFlags")
+        isFlags := hasAttribute(type, EnumFlags)
 
         // Get the user value, as an 'u64' or a string
         var val1: u64

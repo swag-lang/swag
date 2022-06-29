@@ -16,7 +16,7 @@ var g_Functions: Array'OneFunc
 {
     itf := @compiler()
     msg := itf.getMessage()
-    if !Reflection.hasAttribute(msg.type, @stringof(Extension))
+    if !Reflection.hasAttribute(msg.type, Extension)
         return
     g_Functions.add(@{msg.type, msg.name})
 }

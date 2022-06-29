@@ -17,7 +17,7 @@ struct A
 
     if msg.type.kind != .Struct
         return
-    if !Reflection.hasAttribute(msg.type, @stringof(GenOpEquals))
+    if !Reflection.hasAttribute(msg.type, GenOpEquals)
         return
 
     types := cast(const *TypeInfoStruct) msg.type
