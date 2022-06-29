@@ -1424,14 +1424,21 @@ bool SemanticJob::isFunctionButNotACall(SemanticContext* context, AstNode* node,
 {
     if (node && node->parent && node->parent->parent)
     {
-        if (symbol->kind == SymbolKind::Function || symbol->kind == SymbolKind::Attribute)
+        auto grandParent = node->parent->parent;
+        if (symbol->kind == SymbolKind::Attribute)
         {
-            auto grandParent = node->parent->parent;
-
-            if (grandParent->kind == AstNodeKind::MakePointer && node == node->parent->childs.back())
+            if (grandParent->kind != AstNodeKind::AttrUse)
                 return true;
-            if (grandParent->kind == AstNodeKind::MakePointerLambda && node == node->parent->childs.back())
-                return true;
+        }
+        else if (symbol->kind == SymbolKind::Function)
+        {
+            if (symbol->kind == SymbolKind::Function)
+            {
+                if (grandParent->kind == AstNodeKind::MakePointer && node == node->parent->childs.back())
+                    return true;
+                if (grandParent->kind == AstNodeKind::MakePointerLambda && node == node->parent->childs.back())
+                    return true;
+            }
 
             if (grandParent->kind == AstNodeKind::Alias ||
                 (grandParent->kind == AstNodeKind::CompilerSpecialFunction && grandParent->token.id == TokenId::CompilerLocation) ||
