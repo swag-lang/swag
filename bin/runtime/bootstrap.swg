@@ -197,6 +197,15 @@ namespace Swag
     }
 
     // #########################################################
+    // Modules
+    // #########################################################
+
+    struct Module
+    {
+        name: string
+    }
+
+    // #########################################################
     // Context & allocators
     // #########################################################
 
@@ -605,6 +614,7 @@ func @getcontext()->*Swag.Context;
 func @setcontext(context: const *Swag.Context);
 func @isbytecode()->bool;
 func @compiler()->Swag.ICompiler;
+func @modules()->const [..] Swag.Module;
 
 func @alloc(size: uint)->*void;
 func @realloc(ptr: *void, size: uint)->*void;

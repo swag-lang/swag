@@ -396,7 +396,7 @@ func __convertArgcArgv()
     }
 }
 
-func @args()->[..] string
+func @args()->const [..] string
 {
     if __argc == 0
         __convertArgcArgv()

@@ -256,6 +256,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, A
     case TokenId::IntrinsicRealloc:
     case TokenId::IntrinsicGetContext:
     case TokenId::IntrinsicArguments:
+    case TokenId::IntrinsicModules:
     case TokenId::IntrinsicCompiler:
     case TokenId::IntrinsicIsByteCode:
     case TokenId::IntrinsicMemCmp:

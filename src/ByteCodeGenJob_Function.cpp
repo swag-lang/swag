@@ -503,6 +503,13 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         emitInstruction(context, ByteCodeOp::IntrinsicArguments, node->resultRegisterRC[0], node->resultRegisterRC[1]);
         break;
     }
+    case TokenId::IntrinsicModules:
+    {
+        reserveLinearRegisterRC2(context, node->resultRegisterRC);
+        node->parent->resultRegisterRC = node->resultRegisterRC;
+        emitInstruction(context, ByteCodeOp::IntrinsicModules, node->resultRegisterRC[0], node->resultRegisterRC[1]);
+        break;
+    }
     case TokenId::IntrinsicCompiler:
     {
         reserveLinearRegisterRC2(context, node->resultRegisterRC);
@@ -1840,7 +1847,7 @@ bool ByteCodeGenJob::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
         emitInstruction(context, ByteCodeOp::InternalClearErr, funcNode->registerGetContext);
     }
     else if (funcNode->needRegisterGetContext)
-    {   
+    {
         SWAG_ASSERT(funcNode->registerGetContext == UINT32_MAX);
         funcNode->registerGetContext = reserveRegisterRC(context);
         emitInstruction(context, ByteCodeOp::IntrinsicGetContext, funcNode->registerGetContext);

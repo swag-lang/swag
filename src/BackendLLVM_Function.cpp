@@ -3280,6 +3280,14 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(pp.cst0_i64, r1);
             break;
         }
+        case ByteCodeOp::IntrinsicModules:
+        {
+            auto r0 = TO_PTR_I64(GEP_I32(allocR, ip->a.u32));
+            builder.CreateStore(pp.cst0_i64, r0);
+            auto r1 = TO_PTR_I64(GEP_I32(allocR, ip->b.u32));
+            builder.CreateStore(pp.cst0_i64, r1);
+            break;
+        }
 
         case ByteCodeOp::NegBool:
         {

@@ -2561,6 +2561,12 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->b.u32), RDX, RDI);
             emitCall(pp, g_LangSpec->name_atargs);
             break;
+        case ByteCodeOp::IntrinsicModules:
+            BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            BackendX64Inst::emit_Store64_Immediate(pp, 0, 0, RAX);
+            BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
+            BackendX64Inst::emit_Store64_Immediate(pp, 0, 0, RAX);
+            break;
 
         case ByteCodeOp::IntrinsicCompiler:
             BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);

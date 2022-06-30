@@ -1696,6 +1696,12 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         registersRC[ip->b.u32].u64     = (uint64_t) g_CommandLine->userArgumentsSlice.second;
         break;
     }
+    case ByteCodeOp::IntrinsicModules:
+    {
+        registersRC[ip->a.u32].pointer = nullptr;
+        registersRC[ip->b.u32].u64     = 0;
+        break;
+    }
     case ByteCodeOp::IntrinsicCompiler:
     {
         auto itf                       = (uint8_t**) getCompilerItf(context->sourceFile->module);
