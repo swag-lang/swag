@@ -2088,6 +2088,10 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
     }
     else if (fromType->isNative(NativeTypeKind::Any))
     {
+        // Ambigous. Do we check for a bool, or do we check for null
+        if (toType->isNative(NativeTypeKind::Bool) && !(castFlags & CASTFLAG_EXPLICIT))
+            return castError(context, toType, fromType, fromNode, castFlags);
+
         if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
         {
             // When casting something complexe to any, we will copy the value to the stack to be sure

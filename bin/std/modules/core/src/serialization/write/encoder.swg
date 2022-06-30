@@ -3,7 +3,7 @@
 using Swag
 
 #[AttrUsage(AttributeUsage.Struct)]
-attr Version(v: u32)    // Do not serialize a struct or a field
+attr Version(v: u32)    // Set the struct version number
 
 #[AttrUsage(AttributeUsage.Struct|AttributeUsage.StructVariable)]
 attr NoSerialize()      // Do not serialize a struct or a field
