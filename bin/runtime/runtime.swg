@@ -471,14 +471,27 @@ func __checkAny(typeA, typeB: typeinfo, loc: CompilerSourceLocation)
         str := &cxt.errorMsg[0]
         cxt.errorMsg[0] = 0
 
-        __strcat(str, Swag.MaxLenErrorMsg, "[safety] invalid dynamic cast from type `any`")
-        if typeA and typeB
+        if !typeB
         {
-            __strcat(str, Swag.MaxLenErrorMsg, " (`")
-            __strcat(str, Swag.MaxLenErrorMsg, typeA.flatName)
-            __strcat(str, Swag.MaxLenErrorMsg, "` expected, `")
-            __strcat(str, Swag.MaxLenErrorMsg, typeB.flatName)
-            __strcat(str, Swag.MaxLenErrorMsg, "` provided)")
+            __strcat(str, Swag.MaxLenErrorMsg, "[safety] `any` value is null and cannot be casted")
+            if typeA
+            {
+                __strcat(str, Swag.MaxLenErrorMsg, " (`")
+                __strcat(str, Swag.MaxLenErrorMsg, typeA.flatName)
+                __strcat(str, Swag.MaxLenErrorMsg, "` expected)")
+            }
+        }
+        else
+        {
+            __strcat(str, Swag.MaxLenErrorMsg, "[safety] invalid dynamic cast from type `any`")
+            if typeA and typeB
+            {
+                __strcat(str, Swag.MaxLenErrorMsg, " (`")
+                __strcat(str, Swag.MaxLenErrorMsg, typeA.flatName)
+                __strcat(str, Swag.MaxLenErrorMsg, "` expected, `")
+                __strcat(str, Swag.MaxLenErrorMsg, typeB.flatName)
+                __strcat(str, Swag.MaxLenErrorMsg, "` provided)")
+            }
         }
 
         cxt.errorMsgLen = 0
