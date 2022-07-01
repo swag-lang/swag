@@ -214,6 +214,9 @@ void Module::initFrom(Module* other)
 
 void Module::buildModulesSlice()
 {
+    if (kind == ModuleKind::Config || kind == ModuleKind::BootStrap || kind == ModuleKind::Runtime)
+        return;
+
     uint8_t* resultPtr;
     modulesSliceOffset = constantSegment.reserve((moduleDependencies.count + 1) * sizeof(SwagModule), &resultPtr);
     modulesSlice       = (SwagModule*) resultPtr;

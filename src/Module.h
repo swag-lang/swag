@@ -225,7 +225,8 @@ struct Module
     ModuleKind  kind;
     BuildPass   buildPass            = BuildPass::Full;
     uint32_t    hasBeenBuilt         = BUILDRES_NONE;
-    uint32_t    modulesSliceOffset   = 0;
+    uint32_t    modulesSliceOffset   = UINT32_MAX;
+    int         optimPass            = 0;
     atomic<int> numTestErrors        = 0;
     atomic<int> numTestWarnings      = 0;
     atomic<int> optimNeedRestart     = 0;
@@ -233,7 +234,6 @@ struct Module
     atomic<int> numErrors            = 0;
     atomic<int> numWarnings          = 0;
     atomic<int> criticalErrors       = 0;
-    int         optimPass            = 0;
 
     bool addedToBuild         = false;
     bool saveBssValues        = false;

@@ -340,8 +340,7 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::SemanticModule)
     {
-        if (module->kind != ModuleKind::Config && module->buildCfg.backendKind == BuildCfgBackendKind::Executable)
-            module->buildModulesSlice();
+        module->buildModulesSlice();
 
         pass = ModuleBuildPass::BeforeCompilerMessagesPass0;
         if (module->numErrors)

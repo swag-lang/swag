@@ -2562,11 +2562,20 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             emitCall(pp, g_LangSpec->name_atargs);
             break;
         case ByteCodeOp::IntrinsicModules:
-
-            BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symCSIndex, moduleToGen->modulesSliceOffset);
-            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
-            BackendX64Inst::emit_Store64_Immediate(pp, 0, moduleToGen->moduleDependencies.count + 1, RAX);
+            if (moduleToGen->modulesSliceOffset == UINT32_MAX)
+            {
+                BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+                BackendX64Inst::emit_Store64_Immediate(pp, 0, 0, RAX);
+                BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
+                BackendX64Inst::emit_Store64_Immediate(pp, 0, 0, RAX);
+            }
+            else
+            {
+                BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symCSIndex, moduleToGen->modulesSliceOffset);
+                BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+                BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
+                BackendX64Inst::emit_Store64_Immediate(pp, 0, moduleToGen->moduleDependencies.count + 1, RAX);
+            }
             break;
 
         case ByteCodeOp::IntrinsicCompiler:

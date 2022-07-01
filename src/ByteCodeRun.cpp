@@ -1698,8 +1698,17 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     }
     case ByteCodeOp::IntrinsicModules:
     {
-        registersRC[ip->a.u32].pointer = (uint8_t*) context->sourceFile->module->modulesSlice;
-        registersRC[ip->b.u32].u64     = context->sourceFile->module->moduleDependencies.count + 1;
+        auto module = context->sourceFile->module;
+        if (module->modulesSliceOffset == UINT32_MAX)
+        {
+            registersRC[ip->a.u32].pointer = nullptr;
+            registersRC[ip->b.u32].u64     = 0;
+        }
+        else
+        {
+            registersRC[ip->a.u32].pointer = (uint8_t*) module->modulesSlice;
+            registersRC[ip->b.u32].u64     = module->moduleDependencies.count + 1;
+        }
         break;
     }
     case ByteCodeOp::IntrinsicCompiler:
