@@ -81,6 +81,7 @@ struct SwagCVaList
 struct SwagModule
 {
     SwagSlice name;
+    SwagSlice types;
 };
 
 static const auto MAX_LEN_ERROR_MSG = 128;

@@ -202,7 +202,8 @@ namespace Swag
 
     struct Module
     {
-        name: string
+        name:   string
+        types:  const [..] const *TypeInfo
     }
 
     // #########################################################

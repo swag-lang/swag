@@ -230,6 +230,14 @@ void Module::buildModulesSlice()
     resultPtr += sizeof(void*);
     offset += sizeof(void*);
 
+    // Slice of types
+    *(uint8_t**) resultPtr = nullptr;
+    resultPtr += sizeof(void*);
+    offset += sizeof(void*);
+    *(uint64_t*) resultPtr = 0;
+    resultPtr += sizeof(void*);
+    offset += sizeof(void*);
+
     for (auto& dep : moduleDependencies)
     {
         // Module name
@@ -241,7 +249,17 @@ void Module::buildModulesSlice()
         *(uint64_t*) resultPtr = dep->module->name.length();
         resultPtr += sizeof(void*);
         offset += sizeof(void*);
+
+        // Slice of types
+        *(uint8_t**) resultPtr = nullptr;
+        resultPtr += sizeof(void*);
+        offset += sizeof(void*);
+        *(uint64_t*) resultPtr = 0;
+        resultPtr += sizeof(void*);
+        offset += sizeof(void*);
     }
+
+    SWAG_ASSERT((offset - modulesSliceOffset) == (moduleDependencies.count + 1) * sizeof(SwagModule));
 }
 
 bool Module::canGenerateLegit()

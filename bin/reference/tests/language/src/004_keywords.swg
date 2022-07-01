@@ -128,6 +128,7 @@
 @mkinterface
 @mkslice
 @mkstring
+@modules
 @nameof
 @offsetof
 @panic
