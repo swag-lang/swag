@@ -95,6 +95,7 @@ struct Module
     void        allocateBackend();
     void        initFrom(Module* other);
     void        computePublicPath();
+    void        buildModulesSlice();
 
     void        addExportSourceFile(SourceFile* file);
     void        addFile(SourceFile* file);
@@ -215,13 +216,16 @@ struct Module
     ByteCode*         byteCodeMainFunc = nullptr;
     AstNode*          mainIsDefined    = nullptr;
     ModuleDependency* fetchDep         = nullptr;
-    void*             compilerItf[2];
+    SwagModule*       modulesSlice     = nullptr;
+
+    void* compilerItf[2];
 
     uint64_t moreRecentSourceFile = 0;
 
     ModuleKind  kind;
     BuildPass   buildPass            = BuildPass::Full;
     uint32_t    hasBeenBuilt         = BUILDRES_NONE;
+    uint32_t    modulesSliceOffset   = 0;
     atomic<int> numTestErrors        = 0;
     atomic<int> numTestWarnings      = 0;
     atomic<int> optimNeedRestart     = 0;

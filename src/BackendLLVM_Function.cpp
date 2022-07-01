@@ -3282,10 +3282,11 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::IntrinsicModules:
         {
-            auto r0 = TO_PTR_I64(GEP_I32(allocR, ip->a.u32));
-            builder.CreateStore(pp.cst0_i64, r0);
-            auto r1 = TO_PTR_I64(GEP_I32(allocR, ip->b.u32));
-            builder.CreateStore(pp.cst0_i64, r1);
+            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
+            auto r1 = builder.CreateInBoundsGEP(TO_PTR_I8(pp.constantSeg), builder.getInt32(moduleToGen->modulesSliceOffset));
+            builder.CreateStore(r1, r0);
+            auto r2 = GEP_I32(allocR, ip->b.u32);
+            builder.CreateStore(builder.getInt64(moduleToGen->moduleDependencies.count + 1), r2);
             break;
         }
 

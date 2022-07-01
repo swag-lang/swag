@@ -212,6 +212,38 @@ void Module::initFrom(Module* other)
     typeTable.initFrom(this, &other->typeTable);
 }
 
+void Module::buildModulesSlice()
+{
+    uint8_t* resultPtr;
+    modulesSliceOffset = constantSegment.reserve((moduleDependencies.count + 1) * sizeof(SwagModule), &resultPtr);
+    modulesSlice       = (SwagModule*) resultPtr;
+    auto offset        = modulesSliceOffset;
+
+    // Module name
+    uint8_t* str;
+    auto     offsetStr = constantSegment.addString(name, &str);
+    constantSegment.addInitPtr(offset, offsetStr);
+    *(uint8_t**) resultPtr = str;
+    resultPtr += sizeof(void*);
+    offset += sizeof(void*);
+    *(uint64_t*) resultPtr = name.length();
+    resultPtr += sizeof(void*);
+    offset += sizeof(void*);
+
+    for (auto& dep : moduleDependencies)
+    {
+        // Module name
+        offsetStr = constantSegment.addString(dep->module->name, &str);
+        constantSegment.addInitPtr(offset, offsetStr);
+        *(uint8_t**) resultPtr = str;
+        resultPtr += sizeof(void*);
+        offset += sizeof(void*);
+        *(uint64_t*) resultPtr = dep->module->name.length();
+        resultPtr += sizeof(void*);
+        offset += sizeof(void*);
+    }
+}
+
 bool Module::canGenerateLegit()
 {
     // Normal module
