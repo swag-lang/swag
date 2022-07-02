@@ -278,14 +278,14 @@ void Module::buildTypesSlice()
     auto offset       = typesSliceOffset;
 
     // First store the number of types in the table
-    *(uint32_t*) resultPtr = numTypes;
-    resultPtr += sizeof(uint32_t);
-    offset += sizeof(uint32_t);
+    *(uint64_t*) resultPtr = numTypes;
+    resultPtr += sizeof(uint64_t);
+    offset += sizeof(uint64_t);
 
     auto moduleSlice          = (SwagModule*) constantSegment.address(modulesSliceOffset);
     moduleSlice->types.buffer = resultPtr;
     moduleSlice->types.count  = numTypes;
-    constantSegment.addInitPtr(modulesSliceOffset + offsetof(SwagModule, types), typesSliceOffset + sizeof(uint32_t));
+    constantSegment.addInitPtr(modulesSliceOffset + offsetof(SwagModule, types), typesSliceOffset + sizeof(uint64_t));
 
     for (auto& t : map)
     {

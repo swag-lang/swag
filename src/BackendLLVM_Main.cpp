@@ -291,6 +291,25 @@ bool BackendLLVM::emitGlobalInit(const BuildParameters& buildParameters)
     builder.CreateCall(modu.getFunction("initConstantSeg"));
     builder.CreateCall(modu.getFunction("initTlsSeg"));
 
+    // Init type table slice for each dependency (by call getTypeTable)
+    auto r1 = builder.CreateInBoundsGEP(TO_PTR_I8(pp.constantSeg), builder.getInt32(module->modulesSliceOffset + sizeof(SwagModule) + offsetof(SwagModule, types)));
+    for (auto& dep : module->moduleDependencies)
+    {
+        auto callTable = Fmt("%s_getTypeTable", dep->module->nameNormalized.c_str());
+        auto callType  = llvm::FunctionType::get(llvm::Type::getInt8PtrTy(context), {}, false);
+        auto func      = modu.getOrInsertFunction(callTable.c_str(), callType);
+        auto r0        = builder.CreateCall(func);
+
+        auto numTypes = builder.CreateLoad(TO_PTR_I64(r0));
+        auto ptrTypes = builder.CreateInBoundsGEP(r0, builder.getInt64(sizeof(uint64_t)));
+
+        builder.CreateStore(ptrTypes, TO_PTR_PTR_I8(r1));
+        auto r2 = builder.CreateInBoundsGEP(r1, builder.getInt64(sizeof(void*)));
+        builder.CreateStore(numTypes, TO_PTR_I64(r2));
+
+        r1 = builder.CreateInBoundsGEP(r1, builder.getInt64(sizeof(SwagModule)));
+    }
+
     // Call to #init functions
     for (auto bc : module->byteCodeInitFunc)
     {
