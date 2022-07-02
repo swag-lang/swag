@@ -477,6 +477,9 @@ JobResult ModuleBuildJob::execute()
         module->tlsSegment.doPatchMethods(&context);
         module->constantSegment.doPatchMethods(&context);
 
+        // We can also build the type table for the current module
+        module->buildTypesSlice();
+
         if (!module->hasBytecodeToRun())
             pass = ModuleBuildPass::Output;
         else
@@ -503,7 +506,6 @@ JobResult ModuleBuildJob::execute()
 
         // This is too late for meta programming...
         module->acceptsCompileString = false;
-        module->buildTypesSlice();
 
         // #init functions are only executed in script mode, if the module has a #main
         bool callInitDrop = !module->byteCodeInitFunc.empty() && g_CommandLine->scriptMode && module->byteCodeMainFunc;
