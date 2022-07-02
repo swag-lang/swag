@@ -265,6 +265,38 @@ void Module::buildModulesSlice()
     SWAG_ASSERT((offset - modulesSliceOffset) == (moduleDependencies.count + 1) * sizeof(SwagModule));
 }
 
+void Module::buildTypesSlice()
+{
+    if (modulesSliceOffset == UINT32_MAX)
+        return;
+
+    auto& map = typeTable.getMapPerSeg(&constantSegment).concreteTypes;
+
+    uint8_t* resultPtr;
+    uint32_t numTypes = (uint32_t) map.size();
+    typesSliceOffset  = constantSegment.reserve(sizeof(uint32_t) + (numTypes * sizeof(ConcreteTypeInfo*)), &resultPtr);
+    auto offset       = typesSliceOffset;
+
+    // First store the number of types in the table
+    *(uint32_t*) resultPtr = numTypes;
+    resultPtr += sizeof(uint32_t);
+    offset += sizeof(uint32_t);
+
+    auto moduleSlice          = (SwagModule*) constantSegment.address(modulesSliceOffset);
+    moduleSlice->types.buffer = resultPtr;
+    moduleSlice->types.count  = numTypes;
+    constantSegment.addInitPtr(modulesSliceOffset + offsetof(SwagModule, types), typesSliceOffset + sizeof(uint32_t));
+
+    for (auto& t : map)
+    {
+        *(ConcreteTypeInfo**) resultPtr = t.second.concreteType;
+        constantSegment.addInitPtr(offset, t.second.storageOffset);
+
+        resultPtr += sizeof(ConcreteTypeInfo*);
+        offset += sizeof(ConcreteTypeInfo*);
+    }
+}
+
 bool Module::canGenerateLegit()
 {
     // Normal module

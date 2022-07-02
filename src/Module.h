@@ -96,6 +96,7 @@ struct Module
     void        initFrom(Module* other);
     void        computePublicPath();
     void        buildModulesSlice();
+    void        buildTypesSlice();
 
     void        addExportSourceFile(SourceFile* file);
     void        addFile(SourceFile* file);
@@ -226,6 +227,7 @@ struct Module
     BuildPass   buildPass            = BuildPass::Full;
     uint32_t    hasBeenBuilt         = BUILDRES_NONE;
     uint32_t    modulesSliceOffset   = UINT32_MAX;
+    uint32_t    typesSliceOffset     = UINT32_MAX;
     int         optimPass            = 0;
     atomic<int> numTestErrors        = 0;
     atomic<int> numTestWarnings      = 0;
