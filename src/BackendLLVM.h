@@ -154,6 +154,7 @@ struct BackendLLVM : public Backend
     bool emitDataSegment(const BuildParameters& buildParameters, DataSegment* dataSegment);
     bool emitInitSeg(const BuildParameters& buildParameters, DataSegment* dataSegment, SegmentKind me);
 
+    bool emitGetTypeTable(const BuildParameters& buildParameters);
     bool emitGlobalInit(const BuildParameters& buildParameters);
     bool emitGlobalDrop(const BuildParameters& buildParameters);
     bool emitOS(const BuildParameters& buildParameters);

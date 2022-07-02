@@ -356,6 +356,7 @@ JobResult BackendX64::prepareOutput(const BuildParameters& buildParameters, Job*
             buildRelocSegment(buildParameters, &module->mutableSegment, pp.relocTableMSSection, SegmentKind::Data);
             buildRelocSegment(buildParameters, &module->tlsSegment, pp.relocTableTLSSection, SegmentKind::Tls);
             module->constantSegment.applyPatchPtr();
+            emitGetTypeTable(buildParameters);
             emitGlobalInit(buildParameters);
             emitGlobalDrop(buildParameters);
             emitOS(buildParameters);

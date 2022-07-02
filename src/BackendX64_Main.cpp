@@ -216,6 +216,42 @@ void BackendX64::emitPatchForeignPointers(const BuildParameters& buildParameters
     }
 }
 
+bool BackendX64::emitGetTypeTable(const BuildParameters& buildParameters)
+{
+    if (buildParameters.buildCfg->backendKind != BuildCfgBackendKind::DynamicLib)
+        return true;
+
+    int   ct              = buildParameters.compileType;
+    int   precompileIndex = buildParameters.precompileIndex;
+    auto& pp              = *perThread[ct][precompileIndex];
+    auto& concat          = pp.concat;
+
+    concat.align(16);
+    auto startAddress = concat.totalCount();
+
+    auto thisInit        = Fmt("%s_getTypeTable", module->nameNormalized.c_str());
+    auto symbolFuncIndex = getOrAddSymbol(pp, thisInit, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
+    auto coffFct         = registerFunction(pp, nullptr, symbolFuncIndex);
+
+    if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
+        pp.directives += Fmt("/EXPORT:%s ", thisInit.c_str());
+
+    auto beforeProlog = concat.totalCount();
+    BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, 40);
+    auto                   sizeProlog = concat.totalCount() - beforeProlog;
+    VectorNative<uint16_t> unwind;
+    computeUnwindStack(40, sizeProlog, unwind);
+
+    BackendX64Inst::emit_Add_Cst32_To_RSP(pp, 40);
+    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symCSIndex, module->typesSliceOffset);
+    BackendX64Inst::emit_Ret(pp);
+
+    uint32_t endAddress = concat.totalCount();
+    registerFunction(coffFct, startAddress, endAddress, sizeProlog, unwind);
+
+    return true;
+}
+
 bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
 {
     int   ct              = buildParameters.compileType;

@@ -228,6 +228,7 @@ JobResult BackendLLVM::prepareOutput(const BuildParameters& buildParameters, Job
             emitInitSeg(buildParameters, &module->mutableSegment, SegmentKind::Data);
             emitInitSeg(buildParameters, &module->constantSegment, SegmentKind::Constant);
             emitInitSeg(buildParameters, &module->tlsSegment, SegmentKind::Tls);
+            emitGetTypeTable(buildParameters);
             emitGlobalInit(buildParameters);
             emitGlobalDrop(buildParameters);
             emitMain(buildParameters);

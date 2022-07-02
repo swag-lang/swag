@@ -231,6 +231,30 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
     return true;
 }
 
+bool BackendLLVM::emitGetTypeTable(const BuildParameters& buildParameters)
+{
+    int ct              = buildParameters.compileType;
+    int precompileIndex = buildParameters.precompileIndex;
+
+    auto& pp      = *perThread[ct][precompileIndex];
+    auto& context = *pp.context;
+    auto& builder = *pp.builder;
+    auto& modu    = *pp.module;
+
+    auto            fctType = llvm::FunctionType::get(llvm::Type::getInt8PtrTy(context), {}, false);
+    llvm::Function* fct     = llvm::Function::Create(fctType, llvm::Function::ExternalLinkage, Fmt("%s_getTypeTable", module->nameNormalized.c_str()).c_str(), modu);
+    if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
+        fct->setDLLStorageClass(llvm::GlobalValue::DLLExportStorageClass);
+
+    llvm::BasicBlock* BB = llvm::BasicBlock::Create(context, "entry", fct);
+    builder.SetInsertPoint(BB);
+
+    auto r1 = builder.CreateInBoundsGEP(TO_PTR_I8(pp.constantSeg), builder.getInt32(module->typesSliceOffset));
+    builder.CreateRet(TO_PTR_I8(r1));
+
+    return true;
+}
+
 bool BackendLLVM::emitGlobalInit(const BuildParameters& buildParameters)
 {
     int ct              = buildParameters.compileType;
