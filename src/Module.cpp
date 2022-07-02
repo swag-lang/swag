@@ -274,7 +274,7 @@ void Module::buildTypesSlice()
 
     uint8_t* resultPtr;
     uint32_t numTypes = (uint32_t) map.size();
-    typesSliceOffset  = constantSegment.reserve(sizeof(uint32_t) + (numTypes * sizeof(ConcreteTypeInfo*)), &resultPtr);
+    typesSliceOffset  = constantSegment.reserve(sizeof(uint64_t) + (numTypes * sizeof(ConcreteTypeInfo*)), &resultPtr);
     auto offset       = typesSliceOffset;
 
     // First store the number of types in the table
@@ -282,6 +282,7 @@ void Module::buildTypesSlice()
     resultPtr += sizeof(uint64_t);
     offset += sizeof(uint64_t);
 
+    // Initialize the "current module" slice of types
     auto moduleSlice          = (SwagModule*) constantSegment.address(modulesSliceOffset);
     moduleSlice->types.buffer = resultPtr;
     moduleSlice->types.count  = numTypes;
@@ -294,6 +295,22 @@ void Module::buildTypesSlice()
 
         resultPtr += sizeof(ConcreteTypeInfo*);
         offset += sizeof(ConcreteTypeInfo*);
+    }
+
+    // Patch module list
+    int i = 1;
+    for (auto& dep : moduleDependencies)
+    {
+        auto callTable = Fmt("%s_getTypeTable", dep->module->nameNormalized.c_str());
+        auto ptr       = g_ModuleMgr->getFnPointer(dep->module->name, callTable);
+        if (!ptr)
+            continue;
+        typedef uint8_t* (*funcCall)();
+        auto valPtr = ((funcCall) ptr)();
+
+        moduleSlice[i].types.buffer = valPtr + sizeof(uint64_t);
+        moduleSlice[i].types.count  = *(uint64_t*) valPtr;
+        i += 1;
     }
 }
 

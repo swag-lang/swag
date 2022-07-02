@@ -293,6 +293,9 @@ bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
     BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symCSIndex, module->modulesSliceOffset + sizeof(SwagModule) + offsetof(SwagModule, types));
     for (auto& dep : module->moduleDependencies)
     {
+        if (!dep->module->isSwag)
+            continue;
+
         auto callTable = Fmt("%s_getTypeTable", dep->module->nameNormalized.c_str());
         emitCall(pp, callTable);
 
