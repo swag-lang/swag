@@ -589,6 +589,14 @@ bool SemanticJob::makeIntrinsicTypeOf(SemanticContext* context)
                 typeInfo = newTypeInfo;
         }
 
+        // Should be a lambda
+        if (typeInfo->kind == TypeInfoKind::FuncAttr && !(typeInfo->flags & TYPEINFO_FUNC_IS_ATTR))
+        {
+            typeInfo         = typeInfo->clone();
+            typeInfo->kind   = TypeInfoKind::Lambda;
+            typeInfo->sizeOf = sizeof(void*);
+        }
+
         node->typeInfo = typeInfo;
     }
 
@@ -612,17 +620,6 @@ bool SemanticJob::resolveIntrinsicTypeOf(SemanticContext* context)
 
     SWAG_CHECK(checkIsConstExpr(context, expr->typeInfo, expr));
     SWAG_VERIFY(expr->typeInfo->kind != TypeInfoKind::Generic, context->report(expr, Err(Err0810)));
-
-    // If we have a function, then we transform it to a lambda type, as this makes no sens to
-    // get the real function type with @typeof
-    // i.e.
-    // x := @typeof(func) is equivalent to x := @typeof(&func)
-    if (expr->typeInfo->kind == TypeInfoKind::FuncAttr && !(expr->typeInfo->flags & TYPEINFO_FUNC_IS_ATTR))
-    {
-        expr->typeInfo         = expr->typeInfo->clone();
-        expr->typeInfo->kind   = TypeInfoKind::Lambda;
-        expr->typeInfo->sizeOf = sizeof(void*);
-    }
 
     expr->flags |= AST_NO_BYTECODE;
     SWAG_CHECK(makeIntrinsicTypeOf(context));

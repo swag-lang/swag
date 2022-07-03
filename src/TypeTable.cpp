@@ -557,10 +557,6 @@ Utf8 TypeTable::getTypeName(TypeInfo* typeInfo, bool forceNoScope)
     SWAG_RACE_CONDITION_READ(typeInfo->raceName);
     if (forceNoScope)
         return typeInfo->name;
-    if (!typeInfo->declNode)
-        return typeInfo->scopedName;
-    if (typeInfo->declNode->kind == AstNodeKind::TypeExpression || typeInfo->declNode->kind == AstNodeKind::TypeLambda)
-        return typeInfo->name;
     return typeInfo->scopedName;
 }
 

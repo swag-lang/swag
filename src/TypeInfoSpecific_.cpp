@@ -562,33 +562,28 @@ static void computeNameGenericParameters(VectorNative<TypeInfoParam*>& genericPa
 
 void TypeInfoFuncAttr::computeWhateverName(Utf8& resName, uint32_t nameType)
 {
-    if (nameType != COMPUTE_NAME && nameType != COMPUTE_DISPLAY_NAME)
+    bool addedName = false;
+    if (kind != TypeInfoKind::Lambda)
     {
-        if (kind != TypeInfoKind::Lambda || nameType != COMPUTE_SCOPED_NAME_EXPORT)
+        if (nameType == COMPUTE_SCOPED_NAME || nameType == COMPUTE_SCOPED_NAME_EXPORT)
         {
             getScopedName(resName);
             SWAG_ASSERT(declNode);
             resName += declNode->token.text;
+            addedName = true;
         }
     }
 
     computeNameGenericParameters(genericParameters, resName, nameType);
 
-    // Closure
-    if (kind == TypeInfoKind::Lambda)
+    if (!addedName)
     {
-        if (nameType == COMPUTE_SCOPED_NAME_EXPORT)
-        {
-            if (isClosure())
-                resName += "closure";
-            else
-                resName += "func";
-        }
-        else if (nameType == COMPUTE_DISPLAY_NAME)
-        {
-            if (isClosure())
-                resName += "||";
-        }
+        if (flags & TYPEINFO_FUNC_IS_ATTR)
+            resName += "attr";
+        else if (isClosure())
+            resName += "closure";
+        else
+            resName += "func";
     }
 
     // Parameters
