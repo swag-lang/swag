@@ -7,7 +7,7 @@ impl A
 {
     mtd opIndex(i: uint)->s32
     {
-        #assert @typeof(T).name == "s32"
+        #assert @typeof(T).fullname == "s32"
         return 0
     }
 }

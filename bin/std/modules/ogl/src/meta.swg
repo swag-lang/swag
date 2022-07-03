@@ -33,20 +33,20 @@ var g_Functions: Array'OneFunc
         typeFunc := cast(const *TypeInfoFunc) e.type
 
         // Declare a lambda variable for that extension
-        builderVars.appendFormat("var ext_%: %\n", e.name, typeFunc.flatName)
+        builderVars.appendFormat("var ext_%: %\n", e.name, typeFunc.name)
 
         // Make a wrapper function
         builderVars.appendFormat("public func %(", e.name)
         visit p, i: typeFunc.parameters
         {
             if i != 0 builderVars.appendString(", ")
-            builderVars.appendFormat("p%: %", i, p.pointedType.flatName)
+            builderVars.appendFormat("p%: %", i, p.pointedType.name)
         }
 
         if typeFunc.returnType == void
             builderVars.appendFormat(")\n{\n")
         else
-            builderVars.appendFormat(")->%\n{\n", typeFunc.returnType.flatName)
+            builderVars.appendFormat(")->%\n{\n", typeFunc.returnType.name)
         builderVars.appendFormat("\treturn ext_%(", e.name)
         visit p, i: typeFunc.parameters
         {
@@ -57,7 +57,7 @@ var g_Functions: Array'OneFunc
         builderVars.appendString(");\n}\n\n")
 
         // Initialize the variable with the getExtensionAddress
-        builderInit.appendFormat("\text_% = @mkforeign(%, getExtensionAddress(@dataof(\"%\")))\n", e.name, typeFunc.flatName, e.name);
+        builderInit.appendFormat("\text_% = @mkforeign(%, getExtensionAddress(@dataof(\"%\")))\n", e.name, typeFunc.name, e.name);
     }
 
     itf := @compiler()

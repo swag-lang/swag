@@ -58,7 +58,7 @@ public func pokeValue(addr: *void, type: typeinfo, buf: string)->string throw
     {
         enumType := cast(const *TypeInfoEnum) type
         if enumType.rawType != string and enumType.sizeof > 8
-            throw Format.toString("unsupported enum type '%'", enumType.rawType.flatName)
+            throw Format.toString("unsupported enum type '%'", enumType.rawType.name)
 
         enumFlags := Reflection.hasAttribute(enumType, EnumFlags)
 
@@ -199,7 +199,7 @@ public func pokeValue(addr: *void, type: typeinfo, buf: string)->string throw
         dref cast(*String) patch = val
 
     default:
-        throw Format.toString("unsupported type '%'", type.flatName)
+        throw Format.toString("unsupported type '%'", type.name)
     }
 
     return Tokenize.eatCount(one, cast(uint) eat)

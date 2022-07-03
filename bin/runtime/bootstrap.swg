@@ -372,8 +372,8 @@ namespace Swag
 
     struct TypeInfo
     {
-        name:	    string
-        flatName:   string
+        fullname:   string
+        name:       string
         sizeof:     uint
         flags:      TypeInfoFlags = ?
         kind: 	    TypeInfoKind = ?

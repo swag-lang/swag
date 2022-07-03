@@ -3,6 +3,6 @@
     md := @modules()
     visit t: md[0].types
     {
-        x := t.name
+        x := t.fullname
     }
 }

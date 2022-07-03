@@ -17,7 +17,7 @@ const str = toto(10)
 #assert str == 111111111*/
 
 #[Swag.Inline]
-func toto(t: typeinfo) => t.name
+func toto(t: typeinfo) => t.fullname
 
 //#[Swag.PrintBc]
 #test

@@ -4,7 +4,7 @@
 //#[Swag.PrintBc]
 func toto(x: ...)
 {
-    @assert(@kindof(x[0]).name == "s32")
+    @assert(@kindof(x[0]).fullname == "s32")
 }
 
 #run

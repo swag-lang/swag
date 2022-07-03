@@ -4,5 +4,5 @@ func toto() {}
 #test
 {
     ptr := @typeof(toto)
-    @assert(ptr.name == "__compiler2078.toto()")
+    @assert(ptr.fullname == "__compiler2078.toto()")
 }

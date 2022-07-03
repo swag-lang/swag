@@ -5,7 +5,7 @@ func toString() -> [..] u8
 	return @[0, 1, 2, 3]
 }
 
-//#[Swag.PrintBc]
+#[Swag.Safety("boundcheck", true)]
 #test
 {
 	var x = toString()

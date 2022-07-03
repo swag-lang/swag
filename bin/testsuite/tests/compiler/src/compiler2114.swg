@@ -29,7 +29,7 @@ var toTreatCpt: u32
         if i.type == @typeof(myAttr)
         {
             @assert(toTreatCpt != @countof(toTreat))
-            toTreat[toTreatCpt] = typeF.name
+            toTreat[toTreatCpt] = typeF.fullname
             toTreatCpt += 1
         }
     }

@@ -185,7 +185,7 @@ using Swag
 
         visit it: typeStruct.interfaces
         {
-            if it.name == itf.name
+            if it.name == itf.fullname
                 return true
         }
 
@@ -321,7 +321,7 @@ using Swag
         default: return result
         }
 
-        simpleName := type.flatName
+        simpleName := type.name
 
         visit it: typeEnum.values
         {

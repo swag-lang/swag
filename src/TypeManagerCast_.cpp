@@ -3591,7 +3591,7 @@ bool TypeManager::compareConcreteType(const ConcreteTypeInfo* type1, const Concr
 
     if ((type1->kind != type2->kind) || (type1->sizeOf != type2->sizeOf) || (type1->flags != type2->flags))
         return false;
-    if (type1->name.count != type2->name.count)
+    if (type1->fullName.count != type2->fullName.count)
         return false;
-    return !memcmp(type1->name.buffer, type2->name.buffer, type1->name.count);
+    return !memcmp(type1->fullName.buffer, type2->fullName.buffer, type1->fullName.count);
 }

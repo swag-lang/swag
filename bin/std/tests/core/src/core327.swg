@@ -23,7 +23,7 @@ struct A
     types := cast(const *TypeInfoStruct) msg.type
 
     var sb: StringBuilder
-    sb.appendFormat("impl % {\n", msg.type.flatName)
+    sb.appendFormat("impl % {\n", msg.type.name)
     sb.appendString("mtd opEquals(other: Self)->bool {\n")
     sb.appendString("\treturn ")
 

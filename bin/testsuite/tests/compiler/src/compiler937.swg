@@ -6,7 +6,7 @@ var x: any = "666"
 #test
 {
 	t := @kindof(x)
-	@assert(t.name == "string")
+	@assert(t.fullname == "string")
 	ptr := cast(*string) @dataof(x)
 	@assert(ptr[0] == "666")
 }

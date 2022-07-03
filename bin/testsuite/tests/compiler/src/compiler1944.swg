@@ -10,7 +10,7 @@ func foozle(x: any)
     @assert(isUnsigned ? false : true)
 
     @assert(ptr.sizeof == 4)
-    @assert(ptr.name == "s32")
+    @assert(ptr.fullname == "s32")
 }
 
 #test

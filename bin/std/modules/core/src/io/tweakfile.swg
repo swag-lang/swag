@@ -67,7 +67,7 @@ impl TweakFile
 
                 visit &folder: folders
                 {
-                    if folder.type.flatName == folderName
+                    if folder.type.name == folderName
                     {
                         currentFolder = folder
                         break
@@ -91,7 +91,7 @@ impl TweakFile
             // Search value into folder
             field := Reflection.getField(currentFolder.type, id)
             if !field
-                throw Format.toString("line %: value '%' not found in folder '%'", idx + 1, id, currentFolder.type.flatName)
+                throw Format.toString("line %: value '%' not found in folder '%'", idx + 1, id, currentFolder.type.name)
             one = Tokenize.eatCount(one, @countof(id))
             one = Tokenize.eatSpaces(one)
             if !@countof(one)
@@ -102,7 +102,7 @@ impl TweakFile
                 one = Tokenize.eatCount(one, 1)
                 otherField := Reflection.getField(currentFolder.type, one)
                 if !otherField
-                    throw Format.toString("line %: reference '%' not found in folder '%'", idx + 1, one, currentFolder.type.flatName)
+                    throw Format.toString("line %: reference '%' not found in folder '%'", idx + 1, one, currentFolder.type.name)
                 if field.pointedType != otherField.pointedType
                     throw Format.toString("line %: reference '%' type mismatch", idx + 1, one)
                 var ref: Ref{currentFolder, otherField, field}
@@ -148,7 +148,7 @@ impl TweakFile
                     }
                 }
 
-                if !restart 
+                if !restart
                     break
             }
 

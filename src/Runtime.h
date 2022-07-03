@@ -258,8 +258,8 @@ enum class TypeInfoFlags : uint16_t
 
 struct ConcreteTypeInfo
 {
+    SwagSlice    fullName;
     SwagSlice    name;
-    SwagSlice    flatName;
     uint64_t     sizeOf;
     uint16_t     flags;
     TypeInfoKind kind;

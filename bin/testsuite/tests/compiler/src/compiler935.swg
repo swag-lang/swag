@@ -4,7 +4,7 @@ var x: any = 666
 #test
 {
 	t := @kindof(x)
-	@assert(t.name == "s32")
+	@assert(t.fullname == "s32")
 	ptr := cast(*s32) @dataof(x)
 	@assert(ptr[0] == 666)
 }

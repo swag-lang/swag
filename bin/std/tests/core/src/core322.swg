@@ -7,7 +7,7 @@ struct(T) SoaTest
     {
         var sb: StringBuilder
         visit p: @typeof(T).fields
-            sb.appendFormat("%: Array'%\n", p.name, p.pointedType.flatName)
+            sb.appendFormat("%: Array'%\n", p.name, p.pointedType.name)
         return sb.toString()
     }
 }

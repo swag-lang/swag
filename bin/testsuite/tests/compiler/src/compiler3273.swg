@@ -13,8 +13,8 @@ var G: s32
     itf := @compiler()
     msg := itf.getMessage()
     @assert(msg.type != null)
-    if msg.type.flatName == "S_AA3273" G += 1
-    if msg.type.flatName == "E_AA3273" G += 1
+    if msg.type.name == "S_AA3273" G += 1
+    if msg.type.name == "E_AA3273" G += 1
 }
 
 #message(Swag.CompilerMsgMask.PassAfterSemantic)

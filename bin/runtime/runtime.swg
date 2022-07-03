@@ -178,7 +178,7 @@ func @print(params: ...)
         {
             #[Safety("castany", false)]
             ptr := cast(const *TypeInfo) v
-            __printString(ptr.flatName)
+            __printString(ptr.name)
             continue
         }
 
@@ -342,7 +342,7 @@ func @typecmp(typeA, typeB: typeinfo, cmpFlags: TypeCmpFlags)->bool
         return true
     }
 
-    return @stringcmp(type1.name, type2.name)
+    return @stringcmp(type1.fullname, type2.fullname)
 }
 
 ////////////////////////////////////////////////////////////
@@ -351,7 +351,7 @@ func @interfaceof(structType, itfType: const *TypeInfoStruct)->const *void
 {
     loop i: structType.interfaces
     {
-        if @stringcmp(structType.interfaces[i].name, itfType.name)
+        if @stringcmp(structType.interfaces[i].name, itfType.fullname)
             return structType.interfaces[i].value
     }
 
@@ -477,7 +477,7 @@ func __checkAny(typeA, typeB: typeinfo, loc: CompilerSourceLocation)
             if typeA
             {
                 __strcat(str, Swag.MaxLenErrorMsg, " (`")
-                __strcat(str, Swag.MaxLenErrorMsg, typeA.flatName)
+                __strcat(str, Swag.MaxLenErrorMsg, typeA.name)
                 __strcat(str, Swag.MaxLenErrorMsg, "` expected)")
             }
         }
@@ -487,9 +487,9 @@ func __checkAny(typeA, typeB: typeinfo, loc: CompilerSourceLocation)
             if typeA and typeB
             {
                 __strcat(str, Swag.MaxLenErrorMsg, " (`")
-                __strcat(str, Swag.MaxLenErrorMsg, typeA.flatName)
+                __strcat(str, Swag.MaxLenErrorMsg, typeA.name)
                 __strcat(str, Swag.MaxLenErrorMsg, "` expected, `")
-                __strcat(str, Swag.MaxLenErrorMsg, typeB.flatName)
+                __strcat(str, Swag.MaxLenErrorMsg, typeB.name)
                 __strcat(str, Swag.MaxLenErrorMsg, "` provided)")
             }
         }

@@ -7,5 +7,5 @@ struct(T) AA
     var v: AA's32
     ptr := @typeof(v)
     @assert(ptr.structName == "AA")
-    @assert(ptr.generics[0].pointedType.name == "s32")
+    @assert(ptr.generics[0].pointedType.fullname == "s32")
 }

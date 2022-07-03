@@ -30,7 +30,7 @@ struct Point
     //@print(cast(s64) ptr.sizeof)
     //@print(ptr.name)
     //@print("\n")
-	@assert(ptr.name == "s32")
+	@assert(ptr.fullname == "s32")
 	ptr1 := cast(*s32) @dataof(p.attributes[1].params[0].value)
 	@assert(ptr1[0] == 666)
 }

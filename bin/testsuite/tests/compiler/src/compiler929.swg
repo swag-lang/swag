@@ -4,7 +4,7 @@
 func average(x: any)
 {
 	tt := @kindof(x)
-	@assert(tt.name == "s32")
+	@assert(tt.fullname == "s32")
 
 	using Swag.TypeInfoKind
 	@assert(tt.kind == Native)

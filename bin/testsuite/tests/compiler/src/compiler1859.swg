@@ -531,7 +531,7 @@ func aaa(ptr: *s64)
 
         {
             ptr := @typeof(s32)
-            @print(ptr.name)
+            @print(ptr.fullname)
         }
         {
             ptr := @typeof(s32)

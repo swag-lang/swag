@@ -145,7 +145,7 @@ func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOption
         }
 
         // Dynamic array of values
-        elif Utf8.startsWith(typeField.name, "Core.Array")
+        elif Utf8.startsWith(typeField.fullname, "Core.Array")
         {
             try checkNext()
 
@@ -183,7 +183,7 @@ func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOption
 
         else
         {
-            throw Format.toString("unsupported type '%' for option '%'", typeField.flatName, oneArg)
+            throw Format.toString("unsupported type '%' for option '%'", typeField.name, oneArg)
         }
 
         // Set the associated 'isSet' boolean to true

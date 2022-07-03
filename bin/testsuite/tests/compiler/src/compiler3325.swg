@@ -15,7 +15,7 @@
             case 2: T = bool
             }
 
-            sum += @countof(T.flatName)
+            sum += @countof(T.name)
         }
 
         return sum

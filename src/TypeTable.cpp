@@ -136,8 +136,8 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo
     uint32_t          storageOffset = storageSegment->reserve(typeStruct->sizeOf, (uint8_t**) &concreteTypeInfoValue);
 
     SWAG_ASSERT(!typeName.empty());
-    SWAG_CHECK(makeConcreteString(context, &concreteTypeInfoValue->name, nonPartialTypeName, storageSegment, OFFSETOF(concreteTypeInfoValue->name)));
-    SWAG_CHECK(makeConcreteString(context, &concreteTypeInfoValue->flatName, typeInfo->getName(), storageSegment, OFFSETOF(concreteTypeInfoValue->flatName)));
+    SWAG_CHECK(makeConcreteString(context, &concreteTypeInfoValue->fullName, nonPartialTypeName, storageSegment, OFFSETOF(concreteTypeInfoValue->fullName)));
+    SWAG_CHECK(makeConcreteString(context, &concreteTypeInfoValue->name, typeInfo->getName(), storageSegment, OFFSETOF(concreteTypeInfoValue->name)));
 
     if (typeInfo->flags & TYPEINFO_FUNC_IS_ATTR)
         concreteTypeInfoValue->kind = TypeInfoKind::Attribute;

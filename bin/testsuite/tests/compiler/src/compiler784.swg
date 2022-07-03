@@ -12,7 +12,7 @@ struct Point
 	using Swag
 
 	t := @typeof(Point)
-	@assert(t.name == "__compiler784.Point")
+	@assert(t.fullname == "__compiler784.Point")
 	@assert(t.kind == TypeInfoKind.Struct)
 
 	ptr := cast(const *TypeInfoStruct) t;

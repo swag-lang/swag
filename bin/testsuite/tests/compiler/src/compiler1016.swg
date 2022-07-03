@@ -5,5 +5,5 @@ using Swag
 {
 	ptr := @typeof(const *TypeInfo)
     //@print(ptr.name)
-	@assert(ptr.name == "const *Swag.TypeInfo")
+	@assert(ptr.fullname == "const *Swag.TypeInfo")
 }

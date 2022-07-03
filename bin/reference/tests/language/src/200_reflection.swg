@@ -34,7 +34,7 @@
     // The TypeInfo structure contains a different enum value for each type
     {
         ptr := f64
-        @assert(@typeof(ptr.kind).name == "Swag.TypeInfoKind")
+        @assert(@typeof(ptr.kind).fullname == "Swag.TypeInfoKind")
         @assert(ptr.sizeof == @sizeof(f64))
     }
 }

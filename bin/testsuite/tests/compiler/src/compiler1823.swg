@@ -4,7 +4,7 @@ func titi()->s32 => 0
 //#[Swag.PrintBc]
 #test
 {
-    @assert(@typeof(s32).name == "s32");
+    @assert(@typeof(s32).fullname == "s32");
     @assert(@typeof(s32) == s32);
     @assert([2] s32 != *s32);
     @assert(@typeof(toto) != @typeof(titi))

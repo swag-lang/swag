@@ -22,7 +22,7 @@ func callAny(value: any)
     ptr := cast(A) value
     itf := cast(Print) ptr
     @assert(itf.toto() == 667)
-    @assert(@typeof(itf).name == "__compiler1701.Print")
+    @assert(@typeof(itf).fullname == "__compiler1701.Print")
 }
 
 #test
