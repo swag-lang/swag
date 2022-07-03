@@ -806,14 +806,18 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
                    } });
 
     // First child is the let in the statement, and first child of this is the loop node
-    auto loopNode = CastAst<AstLoop>(node->childs.back()->childs.back(), AstNodeKind::Loop);
+    auto loopNode            = CastAst<AstLoop>(node->childs.back()->childs.back(), AstNodeKind::Loop);
+    loopNode->ownerBreakable = node->ownerBreakable;
     Ast::removeFromParent(node->block);
     Ast::addChildBack(loopNode->block, node->block);
     SWAG_ASSERT(node->block);
-    Ast::visit(node->block, [&](AstNode* x)
+    Ast::visit(context, node->block, [&](JobContext* context, AstNode* x)
                {
-                   if (!x->ownerBreakable)
-                       x->ownerBreakable = loopNode; });
+            if (!x->ownerBreakable)
+                x->ownerBreakable = loopNode;
+            if (x->kind == AstNodeKind::Visit)
+                return false;
+            return true; });
     node->block->flags &= ~AST_NO_SEMANTIC;
     loopNode->block->token.endLocation = node->block->token.endLocation;
 
