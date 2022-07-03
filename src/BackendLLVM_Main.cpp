@@ -296,7 +296,10 @@ bool BackendLLVM::emitGlobalInit(const BuildParameters& buildParameters)
     for (auto& dep : module->moduleDependencies)
     {
         if (!dep->module->isSwag)
+        {
+            r1 = builder.CreateInBoundsGEP(r1, builder.getInt64(sizeof(SwagModule)));
             continue;
+        }
 
         auto callTable = Fmt("%s_getTypeTable", dep->module->nameNormalized.c_str());
         auto callType  = llvm::FunctionType::get(llvm::Type::getInt8PtrTy(context), {}, false);

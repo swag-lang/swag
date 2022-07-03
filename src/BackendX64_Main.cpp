@@ -294,7 +294,10 @@ bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
     for (auto& dep : module->moduleDependencies)
     {
         if (!dep->module->isSwag)
+        {
+            BackendX64Inst::emit_Add64_Immediate(pp, sizeof(SwagModule), RCX);
             continue;
+        }
 
         auto callTable = Fmt("%s_getTypeTable", dep->module->nameNormalized.c_str());
         emitCall(pp, callTable);
