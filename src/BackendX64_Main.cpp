@@ -289,7 +289,7 @@ bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
     emitPatchForeignPointers(buildParameters, &module->constantSegment, pp.symCSIndex);
     emitPatchForeignPointers(buildParameters, &module->tlsSegment, pp.symTLSIndex);
 
-    // Init type table slice for each dependency (by call getTypeTable)
+    // Init type table slice for each dependency (by calling ???_getTypeTable)
     BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symCSIndex, module->modulesSliceOffset + sizeof(SwagModule) + offsetof(SwagModule, types));
     for (auto& dep : module->moduleDependencies)
     {
@@ -299,7 +299,7 @@ bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
         auto callTable = Fmt("%s_getTypeTable", dep->module->nameNormalized.c_str());
         emitCall(pp, callTable);
 
-        // Count types is stored as a uint32_t at the start of the address
+        // Count types is stored as a uint64_t at the start of the address
         BackendX64Inst::emit_Load64_Indirect(pp, 0, R8, RAX);
         BackendX64Inst::emit_Store64_Indirect(pp, sizeof(uint64_t), R8, RCX);
         BackendX64Inst::emit_Add64_Immediate(pp, sizeof(uint64_t), RAX);

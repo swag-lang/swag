@@ -53,6 +53,7 @@ struct TypeTable
     TypeInfo*  getRealType(DataSegment* segment, ConcreteTypeInfo* concreteType);
     void       initFrom(Module* module, TypeTable* other);
 
+    Utf8      name;
     MapPerSeg mapPerSegment[2];
 };
 

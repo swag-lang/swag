@@ -26,6 +26,7 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
     countLinesGeneratedFile.set_size_clear(g_CommandLine->numCores);
 
     name           = moduleName;
+    typeTable.name = moduleName;
     nameNormalized = name;
     nameNormalized.replaceAll('.', '_');
     path = modulePath.c_str();
@@ -270,8 +271,7 @@ void Module::buildTypesSlice()
     if (modulesSliceOffset == UINT32_MAX)
         return;
 
-    auto& map = typeTable.getMapPerSeg(&constantSegment).concreteTypes;
-
+    auto&    map = typeTable.getMapPerSeg(&constantSegment).concreteTypes;
     uint8_t* resultPtr;
     uint32_t numTypes = (uint32_t) map.size();
     typesSliceOffset  = constantSegment.reserve(sizeof(uint64_t) + (numTypes * sizeof(ConcreteTypeInfo*)), &resultPtr);
@@ -304,12 +304,19 @@ void Module::buildTypesSlice()
         auto callTable = Fmt("%s_getTypeTable", dep->module->nameNormalized.c_str());
         auto ptr       = g_ModuleMgr->getFnPointer(dep->module->name, callTable);
         if (!ptr)
-            continue;
-        typedef uint8_t* (*funcCall)();
-        auto valPtr = ((funcCall) ptr)();
+        {
+            moduleSlice[i].types.buffer = nullptr;
+            moduleSlice[i].types.count  = 0;
+        }
+        else
+        {
+            typedef uint8_t* (*funcCall)();
+            auto valPtr = ((funcCall) ptr)();
 
-        moduleSlice[i].types.buffer = valPtr + sizeof(uint64_t);
-        moduleSlice[i].types.count  = *(uint64_t*) valPtr;
+            moduleSlice[i].types.buffer = valPtr + sizeof(uint64_t);
+            moduleSlice[i].types.count  = *(uint64_t*) valPtr;
+        }
+
         i += 1;
     }
 }

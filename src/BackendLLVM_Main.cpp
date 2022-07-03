@@ -291,7 +291,7 @@ bool BackendLLVM::emitGlobalInit(const BuildParameters& buildParameters)
     builder.CreateCall(modu.getFunction("initConstantSeg"));
     builder.CreateCall(modu.getFunction("initTlsSeg"));
 
-    // Init type table slice for each dependency (by call getTypeTable)
+    // Init type table slice for each dependency (by calling ???_getTypeTable)
     auto r1 = builder.CreateInBoundsGEP(TO_PTR_I8(pp.constantSeg), builder.getInt32(module->modulesSliceOffset + sizeof(SwagModule) + offsetof(SwagModule, types)));
     for (auto& dep : module->moduleDependencies)
     {
@@ -303,6 +303,7 @@ bool BackendLLVM::emitGlobalInit(const BuildParameters& buildParameters)
         auto func      = modu.getOrInsertFunction(callTable.c_str(), callType);
         auto r0        = builder.CreateCall(func);
 
+        // Count types is stored as a uint64_t at the start of the address
         auto numTypes = builder.CreateLoad(TO_PTR_I64(r0));
         auto ptrTypes = builder.CreateInBoundsGEP(r0, builder.getInt64(sizeof(uint64_t)));
 
