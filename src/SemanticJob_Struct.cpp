@@ -401,6 +401,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
     typeITable->name       = node->token.text;
     typeITable->structName = node->token.text;
     typeITable->scope      = Ast::newScope(node, node->token.text, ScopeKind::Struct, nullptr);
+    typeITable->flags |= TYPEINFO_STRUCT_IS_ITABLE;
 
     for (int i = 0; i < childs.size(); i++)
     {

@@ -148,16 +148,20 @@ bool TypeTableJob::computeStruct()
 
     // Fields
     concreteType->fields.buffer = 0;
-    concreteType->fields.count  = realType->fields.size();
-    if (concreteType->fields.count)
+    concreteType->fields.count  = 0;
+    if ((attributes & ATTRIBUTE_EXPORT_TYPE_METHODS) || !(realType->flags & TYPEINFO_STRUCT_IS_ITABLE))
     {
-        uint32_t count = (uint32_t) concreteType->fields.count;
-        uint32_t storageArray;
-        auto     addrArray = (ConcreteTypeInfoParam*) typeTable->makeConcreteSlice(baseContext, count * sizeof(ConcreteTypeInfoParam), concreteTypeInfoValue, storageSegment, storageOffset, &concreteType->fields.buffer, storageArray);
-        for (int param = 0; param < concreteType->fields.count; param++)
+        concreteType->fields.count = realType->fields.size();
+        if (concreteType->fields.count)
         {
-            SWAG_CHECK(typeTable->makeConcreteParam(baseContext, addrArray + param, storageSegment, storageArray, realType->fields[param], cflags));
-            storageArray += sizeof(ConcreteTypeInfoParam);
+            uint32_t count = (uint32_t) concreteType->fields.count;
+            uint32_t storageArray;
+            auto     addrArray = (ConcreteTypeInfoParam*) typeTable->makeConcreteSlice(baseContext, count * sizeof(ConcreteTypeInfoParam), concreteTypeInfoValue, storageSegment, storageOffset, &concreteType->fields.buffer, storageArray);
+            for (int param = 0; param < concreteType->fields.count; param++)
+            {
+                SWAG_CHECK(typeTable->makeConcreteParam(baseContext, addrArray + param, storageSegment, storageArray, realType->fields[param], cflags));
+                storageArray += sizeof(ConcreteTypeInfoParam);
+            }
         }
     }
 
