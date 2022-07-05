@@ -261,6 +261,7 @@ struct ConcreteTypeInfo
     SwagSlice    fullName;
     SwagSlice    name;
     uint64_t     sizeOf;
+    uint32_t     crc32;
     uint16_t     flags;
     TypeInfoKind kind;
 };

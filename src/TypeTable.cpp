@@ -7,6 +7,7 @@
 #include "TypeManager.h"
 #include "Module.h"
 #include "ErrorIds.h"
+#include "Crc32.h"
 
 bool TypeTable::makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t* storage, uint32_t cflags, TypeInfo** ptrTypeInfo)
 {
@@ -138,6 +139,7 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo
     SWAG_ASSERT(!typeName.empty());
     SWAG_CHECK(makeConcreteString(context, &concreteTypeInfoValue->fullName, nonPartialTypeName, storageSegment, OFFSETOF(concreteTypeInfoValue->fullName)));
     SWAG_CHECK(makeConcreteString(context, &concreteTypeInfoValue->name, typeInfo->getName(), storageSegment, OFFSETOF(concreteTypeInfoValue->name)));
+    concreteTypeInfoValue->crc32 = Crc32::compute((const char *) concreteTypeInfoValue->fullName.buffer, (uint32_t) concreteTypeInfoValue->fullName.count);
 
     if (typeInfo->flags & TYPEINFO_FUNC_IS_ATTR)
         concreteTypeInfoValue->kind = TypeInfoKind::Attribute;

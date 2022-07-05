@@ -375,6 +375,7 @@ namespace Swag
         fullname:   string
         name:       string
         sizeof:     uint
+        crc32:      u32
         flags:      TypeInfoFlags = ?
         kind: 	    TypeInfoKind = ?
     }
