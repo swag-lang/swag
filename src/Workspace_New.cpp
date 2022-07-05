@@ -159,25 +159,25 @@ void Workspace::newCommand()
             OS::exit(-1);
         }
 
-        if (!fs::create_directories(examplesPath, errorCode))
+        if (!fs::create_directories(examplesPath.parent_path(), errorCode))
         {
             g_Log.errorOS(Fmt(Err(Err0818), examplesPath.string().c_str()));
             OS::exit(-1);
         }
 
-        if (!fs::create_directories(testsPath, errorCode))
+        if (!fs::create_directories(testsPath.parent_path(), errorCode))
         {
             g_Log.errorOS(Fmt(Err(Err0818), testsPath.string().c_str()));
             OS::exit(-1);
         }
 
-        if (!fs::create_directories(modulesPath, errorCode))
+        if (!fs::create_directories(modulesPath.parent_path(), errorCode))
         {
             g_Log.errorOS(Fmt(Err(Err0818), modulesPath.string().c_str()));
             OS::exit(-1);
         }
 
-        if (!fs::create_directories(dependenciesPath, errorCode))
+        if (!fs::create_directories(dependenciesPath.parent_path(), errorCode))
         {
             g_Log.errorOS(Fmt(Err(Err0818), dependenciesPath.string().c_str()));
             OS::exit(-1);
