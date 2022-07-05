@@ -28,7 +28,7 @@ struct MainWnd
     favoriteMdl:    IForm
 }
 
-const Icons48 = #load("ressources/icons48.png")
+const Icons48 = #load("datas/icons48.png")
 
 impl IWnd for MainWnd
 {

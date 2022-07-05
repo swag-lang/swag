@@ -416,7 +416,7 @@ func createView0(tabView: *Tab, view: *Wnd)
         img1.setMovie(theme.res.spin)
 
         img2  := ImageRect.create(view, @{400, 640, 128, 128})
-        path2 := Path.combine(Path.getDirectoryName(#file), "test.gif")
+        path2 := Path.combine(Path.getDirectoryName(#file), "/datas/test.gif")
         assume img2.setFile(path2)
 
         btn    := IconButton.create(view, app.theme.getIcon24(ThemeIcons24.Pause), @{400, 780, 24, 24})
@@ -441,7 +441,7 @@ func createView0(tabView: *Tab, view: *Wnd)
         }
 
         img3  := ImageRect.create(view, @{540, 640, 128, 128})
-        path3 := Path.combine(Path.getDirectoryName(#file), "testa.gif")
+        path3 := Path.combine(Path.getDirectoryName(#file), "/datas/testa.gif")
         assume img3.setFile(path3)
 
         img4 := ImageRect.create(view, @{680, 640, 128, 128})
