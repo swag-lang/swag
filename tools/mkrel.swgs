@@ -17,6 +17,8 @@ func filter(file: File.FileInfo)->bool
         return false
     if Utf8.contains(file.fullname, "/datas/")
         return true
+    if Utf8.contains(file.fullname, "/paint/theme/")
+        return true
 
     ext := Path.getExtensionLowerCase(file.fullname)
     switch ext
