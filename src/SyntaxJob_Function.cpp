@@ -475,6 +475,10 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
             funcNode->token.text = "__drop" + to_string(id);
             funcNode->attributeFlags |= ATTRIBUTE_DROP_FUNC | ATTRIBUTE_SHARP_FUNC;
             break;
+        case TokenId::CompilerFuncPreMain:
+            funcNode->token.text = "__premain" + to_string(id);
+            funcNode->attributeFlags |= ATTRIBUTE_PREMAIN_FUNC | ATTRIBUTE_SHARP_FUNC;
+            break;
         case TokenId::CompilerRun:
             funcNode->token.text = "__run" + to_string(id);
             funcNode->attributeFlags |= ATTRIBUTE_RUN_FUNC | ATTRIBUTE_COMPILER | ATTRIBUTE_SHARP_FUNC;

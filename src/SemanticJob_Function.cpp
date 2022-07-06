@@ -1204,7 +1204,13 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     // No return value in a #run block
     if (!concreteType->isNative(NativeTypeKind::Void))
     {
-        if (funcNode->attributeFlags & (ATTRIBUTE_RUN_FUNC | ATTRIBUTE_RUN_GENERATED_FUNC | ATTRIBUTE_MAIN_FUNC | ATTRIBUTE_INIT_FUNC | ATTRIBUTE_DROP_FUNC | ATTRIBUTE_TEST_FUNC))
+        if (funcNode->attributeFlags & (ATTRIBUTE_RUN_FUNC |
+                                        ATTRIBUTE_RUN_GENERATED_FUNC |
+                                        ATTRIBUTE_MAIN_FUNC |
+                                        ATTRIBUTE_INIT_FUNC |
+                                        ATTRIBUTE_DROP_FUNC |
+                                        ATTRIBUTE_PREMAIN_FUNC |
+                                        ATTRIBUTE_TEST_FUNC))
         {
             if (funcNode->attributeFlags & ATTRIBUTE_SHARP_FUNC)
                 return context->report(Hnt(Hnt0026), {child, Fmt(Err(Err0052), funcNode->getDisplayNameC())});

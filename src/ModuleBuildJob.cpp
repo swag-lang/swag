@@ -519,6 +519,13 @@ JobResult ModuleBuildJob::execute()
                 if (module->criticalErrors)
                     return JobResult::ReleaseJob;
             }
+
+            for (auto func : module->byteCodePreMainFunc)
+            {
+                module->executeNode(func->node->sourceFile, func->node, baseContext);
+                if (module->criticalErrors)
+                    return JobResult::ReleaseJob;
+            }
         }
 
         if (module->numErrors)

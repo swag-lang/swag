@@ -231,6 +231,7 @@ JobResult BackendLLVM::prepareOutput(const BuildParameters& buildParameters, Job
             emitGetTypeTable(buildParameters);
             emitGlobalInit(buildParameters);
             emitGlobalDrop(buildParameters);
+            emitGlobalPreMain(buildParameters);
             emitMain(buildParameters);
         }
 

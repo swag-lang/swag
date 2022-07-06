@@ -128,14 +128,28 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
         auto nameDown = dep->name;
         Ast::normalizeIdentifierName(nameDown);
         BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_processInfos, 0);
-        auto initFunc = nameDown;
-        initFunc += "_globalInit";
-        emitCall(pp, initFunc);
+        emitCall(pp, nameDown + "_globalInit");
     }
 
     // Call to global init of this module
     BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_processInfos, 0);
     auto thisInit = Fmt("%s_globalInit", module->nameNormalized.c_str());
+    emitCall(pp, thisInit);
+
+    // Call to global premain of all dependencies
+    for (int i = 0; i < moduleDependencies.size(); i++)
+    {
+        auto dep = moduleDependencies[i];
+        SWAG_ASSERT(dep->module);
+        if (!dep->module->isSwag)
+            continue;
+        auto nameDown = dep->name;
+        Ast::normalizeIdentifierName(nameDown);
+        emitCall(pp, nameDown + "_globalPreMain");
+    }
+
+    // Call to global premain of this module
+    thisInit = Fmt("%s_globalPreMain", module->nameNormalized.c_str());
     emitCall(pp, thisInit);
 
     // Call to test functions
@@ -249,6 +263,46 @@ bool BackendX64::emitGetTypeTable(const BuildParameters& buildParameters)
     uint32_t endAddress = concat.totalCount();
     registerFunction(coffFct, startAddress, endAddress, sizeProlog, unwind);
 
+    return true;
+}
+
+bool BackendX64::emitGlobalPreMain(const BuildParameters& buildParameters)
+{
+    int   ct              = buildParameters.compileType;
+    int   precompileIndex = buildParameters.precompileIndex;
+    auto& pp              = *perThread[ct][precompileIndex];
+    auto& concat          = pp.concat;
+
+    concat.align(16);
+    auto startAddress = concat.totalCount();
+
+    auto thisInit        = Fmt("%s_globalPreMain", module->nameNormalized.c_str());
+    auto symbolFuncIndex = getOrAddSymbol(pp, thisInit, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
+    auto coffFct         = registerFunction(pp, nullptr, symbolFuncIndex);
+
+    if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
+        pp.directives += Fmt("/EXPORT:%s ", thisInit.c_str());
+
+    auto beforeProlog = concat.totalCount();
+    BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, 40);
+    auto                   sizeProlog = concat.totalCount() - beforeProlog;
+    VectorNative<uint16_t> unwind;
+    computeUnwindStack(40, sizeProlog, unwind);
+
+    // Call to #premain functions
+    for (auto bc : module->byteCodePreMainFunc)
+    {
+        auto node = bc->node;
+        if (node && node->attributeFlags & ATTRIBUTE_COMPILER)
+            continue;
+        emitCall(pp, bc->getCallName());
+    }
+
+    BackendX64Inst::emit_Add_Cst32_To_RSP(pp, 40);
+    BackendX64Inst::emit_Ret(pp);
+
+    uint32_t endAddress = concat.totalCount();
+    registerFunction(coffFct, startAddress, endAddress, sizeProlog, unwind);
     return true;
 }
 

@@ -193,6 +193,7 @@ struct Module
     VectorNative<ByteCode*>         byteCodeTestFunc;
     VectorNative<ByteCode*>         byteCodeInitFunc;
     VectorNative<ByteCode*>         byteCodeDropFunc;
+    VectorNative<ByteCode*>         byteCodePreMainFunc;
     VectorNative<ByteCode*>         byteCodeRunFunc;
     VectorNative<ByteCode*>         byteCodePrintBC;
     VectorNative<ModuleDependency*> moduleDependencies;

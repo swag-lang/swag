@@ -913,6 +913,7 @@ bool SyntaxJob::doExpression(AstNode* parent, uint32_t exprFlags, AstNode** resu
     case TokenId::CompilerAst:
     case TokenId::CompilerFuncInit:
     case TokenId::CompilerFuncDrop:
+    case TokenId::CompilerFuncPreMain:
     case TokenId::CompilerFuncMain:
     case TokenId::CompilerFuncTest:
         return error(token, Fmt(Err(Err0055), token.ctext()));

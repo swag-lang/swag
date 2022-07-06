@@ -539,6 +539,7 @@ void Module::addByteCodeFunc(ByteCode* bc)
             !(attributeFlags & ATTRIBUTE_COMPILER) &&
             !(attributeFlags & ATTRIBUTE_INIT_FUNC) &&
             !(attributeFlags & ATTRIBUTE_DROP_FUNC) &&
+            !(attributeFlags & ATTRIBUTE_PREMAIN_FUNC) &&
             !(attributeFlags & ATTRIBUTE_TEST_FUNC) &&
             !(flags & AST_FROM_GENERIC))
             bc->node->ownerScope->addPublicFunc(bc->node);
@@ -551,6 +552,10 @@ void Module::addByteCodeFunc(ByteCode* bc)
         else if (attributeFlags & ATTRIBUTE_INIT_FUNC)
         {
             byteCodeInitFunc.push_back(bc);
+        }
+        else if (attributeFlags & ATTRIBUTE_PREMAIN_FUNC)
+        {
+            byteCodePreMainFunc.push_back(bc);
         }
         else if (attributeFlags & ATTRIBUTE_DROP_FUNC)
         {

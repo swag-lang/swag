@@ -30,7 +30,7 @@
     </ClCompile>
     <ClCompile Include="../src/pch.cpp" />
     <ClCompile Include="../src/ByteCode.cpp">
-      <Filter>ByteCode</Filter>
+      <Filter>Backend\ByteCode</Filter>
     </ClCompile>
     <ClCompile Include="../src/CommandLineParser.cpp">
       <Filter>Main</Filter>
@@ -165,16 +165,16 @@
       <Filter>Main\Os</Filter>
     </ClCompile>
     <ClCompile Include="../src/ffi/closures.c">
-      <Filter>ByteCode\FFI</Filter>
+      <Filter>Backend\ByteCode\FFI</Filter>
     </ClCompile>
     <ClCompile Include="../src/ffi/ffi.c">
-      <Filter>ByteCode\FFI</Filter>
+      <Filter>Backend\ByteCode\FFI</Filter>
     </ClCompile>
     <ClCompile Include="../src/ffi/prep_cif.c">
-      <Filter>ByteCode\FFI</Filter>
+      <Filter>Backend\ByteCode\FFI</Filter>
     </ClCompile>
     <ClCompile Include="../src/ffi/types.c">
-      <Filter>ByteCode\FFI</Filter>
+      <Filter>Backend\ByteCode\FFI</Filter>
     </ClCompile>
     <ClCompile Include="../src/TypeInfo.cpp">
       <Filter>Semantic\Type</Filter>
@@ -219,37 +219,37 @@
       <Filter>Backend\X64</Filter>
     </ClCompile>
     <ClCompile Include="../src/ByteCodeOptimizer.cpp">
-      <Filter>ByteCode\Optimize</Filter>
+      <Filter>Backend\ByteCode\Optimize</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ByteCodeOptimizer_Const.cpp">
-      <Filter>ByteCode\Optimize</Filter>
+      <Filter>Backend\ByteCode\Optimize</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ByteCodeOptimizer_DeadCode.cpp">
-      <Filter>ByteCode\Optimize</Filter>
+      <Filter>Backend\ByteCode\Optimize</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ByteCodeOptimizer_DeadStore.cpp">
-      <Filter>ByteCode\Optimize</Filter>
+      <Filter>Backend\ByteCode\Optimize</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ByteCodeOptimizer_Dup.cpp">
-      <Filter>ByteCode\Optimize</Filter>
+      <Filter>Backend\ByteCode\Optimize</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ByteCodeOptimizer_Imm.cpp">
-      <Filter>ByteCode\Optimize</Filter>
+      <Filter>Backend\ByteCode\Optimize</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ByteCodeOptimizer_Jumps.cpp">
-      <Filter>ByteCode\Optimize</Filter>
+      <Filter>Backend\ByteCode\Optimize</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SemanticJob_Collect.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ByteCodeOptimizer_RetCopy.cpp">
-      <Filter>ByteCode\Optimize</Filter>
+      <Filter>Backend\ByteCode\Optimize</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ByteCodeOptimizer_Reduce.cpp">
-      <Filter>ByteCode\Optimize</Filter>
+      <Filter>Backend\ByteCode\Optimize</Filter>
     </ClCompile>
     <ClCompile Include="../src/ByteCodeOptimizerJob.cpp">
-      <Filter>ByteCode\Optimize</Filter>
+      <Filter>Backend\ByteCode\Optimize</Filter>
     </ClCompile>
     <ClCompile Include="..\src\BackendX64_Dbg.cpp">
       <Filter>Backend\X64</Filter>
@@ -264,7 +264,7 @@
       <Filter>Main\CfgManager</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ByteCodeOptimizer_Loop.cpp">
-      <Filter>ByteCode\Optimize</Filter>
+      <Filter>Backend\ByteCode\Optimize</Filter>
     </ClCompile>
     <ClCompile Include="..\src\RaceCondition.cpp">
       <Filter>Main\Threading</Filter>
@@ -357,67 +357,67 @@
       <Filter>Main\Wmf</Filter>
     </ClCompile>
     <ClCompile Include="../src/ByteCodeStack.cpp">
-      <Filter>ByteCode\Run</Filter>
+      <Filter>Backend\ByteCode\Run</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ByteCodeRun_FFI.cpp">
-      <Filter>ByteCode\Run</Filter>
+      <Filter>Backend\ByteCode\Run</Filter>
     </ClCompile>
     <ClCompile Include="../src/ByteCodeRunContext.cpp">
-      <Filter>ByteCode\Run</Filter>
+      <Filter>Backend\ByteCode\Run</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ByteCodeRun_Dbg.cpp">
-      <Filter>ByteCode\Run</Filter>
+      <Filter>Backend\ByteCode\Run</Filter>
     </ClCompile>
     <ClCompile Include="../src/ByteCodeRun.cpp">
-      <Filter>ByteCode\Run</Filter>
+      <Filter>Backend\ByteCode\Run</Filter>
     </ClCompile>
     <ClCompile Include="../src/ByteCodeGenJob.cpp">
-      <Filter>ByteCode\Gen</Filter>
+      <Filter>Backend\ByteCode\Gen</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ByteCodeGenJob_AffectOp.cpp">
-      <Filter>ByteCode\Gen</Filter>
+      <Filter>Backend\ByteCode\Gen</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ByteCodeGenJob_BinaryOp.cpp">
-      <Filter>ByteCode\Gen</Filter>
+      <Filter>Backend\ByteCode\Gen</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ByteCodeGenJob_Block.cpp">
-      <Filter>ByteCode\Gen</Filter>
+      <Filter>Backend\ByteCode\Gen</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ByteCodeGenJob_Cast.cpp">
-      <Filter>ByteCode\Gen</Filter>
+      <Filter>Backend\ByteCode\Gen</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ByteCodeGenJob_CompareOp.cpp">
-      <Filter>ByteCode\Gen</Filter>
+      <Filter>Backend\ByteCode\Gen</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ByteCodeGenJob_Expression.cpp">
-      <Filter>ByteCode\Gen</Filter>
+      <Filter>Backend\ByteCode\Gen</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ByteCodeGenJob_Function.cpp">
-      <Filter>ByteCode\Gen</Filter>
+      <Filter>Backend\ByteCode\Gen</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ByteCodeGenJob_Identifier.cpp">
-      <Filter>ByteCode\Gen</Filter>
+      <Filter>Backend\ByteCode\Gen</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ByteCodeGenJob_Property.cpp">
-      <Filter>ByteCode\Gen</Filter>
+      <Filter>Backend\ByteCode\Gen</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ByteCodeGenJob_Ref.cpp">
-      <Filter>ByteCode\Gen</Filter>
+      <Filter>Backend\ByteCode\Gen</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ByteCodeGenJob_Safety.cpp">
-      <Filter>ByteCode\Gen</Filter>
+      <Filter>Backend\ByteCode\Gen</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ByteCodeGenJob_Struct.cpp">
-      <Filter>ByteCode\Gen</Filter>
+      <Filter>Backend\ByteCode\Gen</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ByteCodeGenJob_UnaryOp.cpp">
-      <Filter>ByteCode\Gen</Filter>
+      <Filter>Backend\ByteCode\Gen</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ByteCodeGenJob_Var.cpp">
-      <Filter>ByteCode\Gen</Filter>
+      <Filter>Backend\ByteCode\Gen</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ByteCode_Print_.cpp">
-      <Filter>ByteCode</Filter>
+      <Filter>Backend\ByteCode</Filter>
     </ClCompile>
     <ClCompile Include="../src/ModuleExportJob.cpp">
       <Filter>Backend\Jobs</Filter>
@@ -441,10 +441,10 @@
       <Filter>Main\Os</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ByteCodeRun_Math.cpp">
-      <Filter>ByteCode\Run</Filter>
+      <Filter>Backend\ByteCode\Run</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ByteCodeRun_SelectIf.cpp">
-      <Filter>ByteCode\Run</Filter>
+      <Filter>Backend\ByteCode\Run</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Workspace_Build.cpp">
       <Filter>Main\Wmf</Filter>
@@ -468,7 +468,7 @@
       <Filter>Main\Global</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ByteCodeGenJob_Err.cpp">
-      <Filter>ByteCode\Gen</Filter>
+      <Filter>Backend\ByteCode\Gen</Filter>
     </ClCompile>
     <ClCompile Include="..\src\BackendX64_CCForeign.cpp">
       <Filter>Backend\X64</Filter>
@@ -531,16 +531,16 @@
       <Filter>Semantic</Filter>
     </ClInclude>
     <ClInclude Include="../src/ByteCode.h">
-      <Filter>ByteCode</Filter>
+      <Filter>Backend\ByteCode</Filter>
     </ClInclude>
     <ClInclude Include="../src/CommandLineParser.h">
       <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="../src/ByteCodeOp.h">
-      <Filter>ByteCode</Filter>
+      <Filter>Backend\ByteCode</Filter>
     </ClInclude>
     <ClInclude Include="../src/ByteCodeOpList.h">
-      <Filter>ByteCode</Filter>
+      <Filter>Backend\ByteCode</Filter>
     </ClInclude>
     <ClInclude Include="../src/Version.h">
       <Filter>Main</Filter>
@@ -573,16 +573,16 @@
       <Filter>Backend\LLVM</Filter>
     </ClInclude>
     <ClInclude Include="../src/ffi/ffi.h">
-      <Filter>ByteCode\FFI</Filter>
+      <Filter>Backend\ByteCode\FFI</Filter>
     </ClInclude>
     <ClInclude Include="../src/ffi/ffi_common.h">
-      <Filter>ByteCode\FFI</Filter>
+      <Filter>Backend\ByteCode\FFI</Filter>
     </ClInclude>
     <ClInclude Include="../src/ffi/fficonfig.h">
-      <Filter>ByteCode\FFI</Filter>
+      <Filter>Backend\ByteCode\FFI</Filter>
     </ClInclude>
     <ClInclude Include="../src/ffi/ffitarget.h">
-      <Filter>ByteCode\FFI</Filter>
+      <Filter>Backend\ByteCode\FFI</Filter>
     </ClInclude>
     <ClInclude Include="../src/TypeTableJob.h">
       <Filter>Semantic\Type</Filter>
@@ -615,13 +615,13 @@
       <Filter>Backend\X64</Filter>
     </ClInclude>
     <ClInclude Include="../src/ByteCodeOptimizer.h">
-      <Filter>ByteCode\Optimize</Filter>
+      <Filter>Backend\ByteCode\Optimize</Filter>
     </ClInclude>
     <ClInclude Include="../src/ByteCodeOptimizerJob.h">
-      <Filter>ByteCode\Optimize</Filter>
+      <Filter>Backend\ByteCode\Optimize</Filter>
     </ClInclude>
     <ClInclude Include="../src/ByteCodeOptContext.h">
-      <Filter>ByteCode\Optimize</Filter>
+      <Filter>Backend\ByteCode\Optimize</Filter>
     </ClInclude>
     <ClInclude Include="../src/BackendLinker.h">
       <Filter>Backend</Filter>
@@ -738,16 +738,16 @@
       <Filter>Main\Wmf</Filter>
     </ClInclude>
     <ClInclude Include="../src/ByteCodeStack.h">
-      <Filter>ByteCode\Run</Filter>
+      <Filter>Backend\ByteCode\Run</Filter>
     </ClInclude>
     <ClInclude Include="../src/ByteCodeRunContext.h">
-      <Filter>ByteCode\Run</Filter>
+      <Filter>Backend\ByteCode\Run</Filter>
     </ClInclude>
     <ClInclude Include="../src/ByteCodeRun.h">
-      <Filter>ByteCode\Run</Filter>
+      <Filter>Backend\ByteCode\Run</Filter>
     </ClInclude>
     <ClInclude Include="../src/ByteCodeGenJob.h">
-      <Filter>ByteCode\Gen</Filter>
+      <Filter>Backend\ByteCode\Gen</Filter>
     </ClInclude>
     <ClInclude Include="..\src\BackendFunctionBodyJobBase.h">
       <Filter>Backend\Jobs</Filter>
@@ -807,7 +807,7 @@
       <Filter>Main\Core</Filter>
     </ClInclude>
     <ClInclude Include="..\src\MapRegTo.h">
-      <Filter>ByteCode\Optimize</Filter>
+      <Filter>Backend\ByteCode\Optimize</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Crc32.h">
       <Filter>Main\Core</Filter>
@@ -832,12 +832,6 @@
     <Filter Include="Backend\X64">
       <UniqueIdentifier>{8a2a36d9-44c6-423d-8d02-ff5e04508f18}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ByteCode">
-      <UniqueIdentifier>{5facb5bb-a2a0-45dd-aa6c-20852346b20a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ByteCode\Optimize">
-      <UniqueIdentifier>{78754e10-947b-4b7b-bdfa-8eb19470f27d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Semantic\Type">
       <UniqueIdentifier>{5d3754c6-5cd6-4c17-beb5-5141ff0d58e8}</UniqueIdentifier>
     </Filter>
@@ -846,9 +840,6 @@
     </Filter>
     <Filter Include="Main\CfgManager">
       <UniqueIdentifier>{0953cd61-89b7-4c72-bc1f-72bf1d4c1458}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ByteCode\FFI">
-      <UniqueIdentifier>{4e25712b-01db-43ce-b213-34d28464abfd}</UniqueIdentifier>
     </Filter>
     <Filter Include="Tokenizer">
       <UniqueIdentifier>{6e271899-858e-4671-8537-9246b9a196ab}</UniqueIdentifier>
@@ -871,19 +862,28 @@
     <Filter Include="Main\Os">
       <UniqueIdentifier>{31fa90c8-f664-40b5-8bc5-d3606d6e2ffa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ByteCode\Run">
-      <UniqueIdentifier>{6addfd73-dbad-40f7-b7cb-5bbaa1cde9cd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ByteCode\Gen">
-      <UniqueIdentifier>{6af8e653-2a30-49e1-a10c-e6fd51ae7787}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Backend\Jobs">
       <UniqueIdentifier>{13554295-d672-43d2-958d-d5133618d28a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Backend\ByteCode">
+      <UniqueIdentifier>{5facb5bb-a2a0-45dd-aa6c-20852346b20a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Backend\ByteCode\Optimize">
+      <UniqueIdentifier>{78754e10-947b-4b7b-bdfa-8eb19470f27d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Backend\ByteCode\FFI">
+      <UniqueIdentifier>{4e25712b-01db-43ce-b213-34d28464abfd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Backend\ByteCode\Run">
+      <UniqueIdentifier>{6addfd73-dbad-40f7-b7cb-5bbaa1cde9cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Backend\ByteCode\Gen">
+      <UniqueIdentifier>{6af8e653-2a30-49e1-a10c-e6fd51ae7787}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="../src/ffi/win64.S">
-      <Filter>ByteCode\FFI</Filter>
+      <Filter>Backend\ByteCode\FFI</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>

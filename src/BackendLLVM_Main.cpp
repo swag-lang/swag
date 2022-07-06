@@ -184,6 +184,26 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
         builder.CreateCall(funcInit, pp.processInfos);
     }
 
+    // Call to global premain of all dependencies
+    for (int i = 0; i < moduleDependencies.size(); i++)
+    {
+        auto dep = moduleDependencies[i];
+        if (!dep->module->isSwag)
+            continue;
+        auto nameDown = dep->name;
+        Ast::normalizeIdentifierName(nameDown);
+        auto funcType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), {}, false);
+        auto funcInit = modu.getOrInsertFunction(Fmt("%s_globalPreMain", nameDown.c_str()).c_str(), funcType);
+        builder.CreateCall(funcInit);
+    }
+
+    // Call to global premain of this module
+    {
+        auto funcType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), {}, false);
+        auto funcInit = modu.getOrInsertFunction(Fmt("%s_globalPreMain", module->nameNormalized.c_str()).c_str(), funcType);
+        builder.CreateCall(funcInit);
+    }
+
     auto funcTypeVoid = llvm::FunctionType::get(llvm::Type::getVoidTy(context), false);
 
     // Call to test functions
@@ -255,6 +275,38 @@ bool BackendLLVM::emitGetTypeTable(const BuildParameters& buildParameters)
     return true;
 }
 
+bool BackendLLVM::emitGlobalPreMain(const BuildParameters& buildParameters)
+{
+    int ct              = buildParameters.compileType;
+    int precompileIndex = buildParameters.precompileIndex;
+
+    auto& pp      = *perThread[ct][precompileIndex];
+    auto& context = *pp.context;
+    auto& builder = *pp.builder;
+    auto& modu    = *pp.module;
+
+    auto            fctType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), false);
+    llvm::Function* fct     = llvm::Function::Create(fctType, llvm::Function::ExternalLinkage, Fmt("%s_globalPreMain", module->nameNormalized.c_str()).c_str(), modu);
+    if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
+        fct->setDLLStorageClass(llvm::GlobalValue::DLLExportStorageClass);
+
+    llvm::BasicBlock* BB = llvm::BasicBlock::Create(context, "entry", fct);
+    builder.SetInsertPoint(BB);
+
+    // Call to #premain functions
+    for (auto bc : module->byteCodePreMainFunc)
+    {
+        auto node = bc->node;
+        if (node && node->attributeFlags & ATTRIBUTE_COMPILER)
+            continue;
+        auto func = modu.getOrInsertFunction(bc->getCallName().c_str(), fctType);
+        builder.CreateCall(func);
+    }
+
+    builder.CreateRetVoid();
+    return true;
+}
+
 bool BackendLLVM::emitGlobalInit(const BuildParameters& buildParameters)
 {
     int ct              = buildParameters.compileType;
@@ -318,13 +370,14 @@ bool BackendLLVM::emitGlobalInit(const BuildParameters& buildParameters)
     }
 
     // Call to #init functions
+    auto initFctType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), false);
     for (auto bc : module->byteCodeInitFunc)
     {
         auto node = bc->node;
         if (node && node->attributeFlags & ATTRIBUTE_COMPILER)
             continue;
-        auto func = modu.getOrInsertFunction(bc->getCallName().c_str(), fctType);
-        builder.CreateCall(func, {fct->getArg(0)});
+        auto func = modu.getOrInsertFunction(bc->getCallName().c_str(), initFctType);
+        builder.CreateCall(func);
     }
 
     builder.CreateRetVoid();

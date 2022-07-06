@@ -321,7 +321,7 @@ bool Backend::canEmitFunction(ByteCode* bc)
 
     if (node->sourceFile->isBootstrapFile || node->sourceFile->isRuntimeFile)
         return true;
-    if (node->attributeFlags & (ATTRIBUTE_PUBLIC | ATTRIBUTE_MAIN_FUNC | ATTRIBUTE_INIT_FUNC | ATTRIBUTE_DROP_FUNC | ATTRIBUTE_TEST_FUNC))
+    if (node->attributeFlags & (ATTRIBUTE_PUBLIC | ATTRIBUTE_MAIN_FUNC | ATTRIBUTE_INIT_FUNC | ATTRIBUTE_DROP_FUNC | ATTRIBUTE_PREMAIN_FUNC | ATTRIBUTE_TEST_FUNC))
         return true;
     if (node->specFlags & AST_SPEC_FUNCDECL_PATCH)
         return true;

@@ -368,6 +368,7 @@ struct BackendX64 : public Backend
 
     void emitPatchForeignPointers(const BuildParameters& buildParameters, DataSegment* segment, uint32_t segIndex);
     bool emitGetTypeTable(const BuildParameters& buildParameters);
+    bool emitGlobalPreMain(const BuildParameters& buildParameters);
     bool emitGlobalInit(const BuildParameters& buildParameters);
     bool emitGlobalDrop(const BuildParameters& buildParameters);
     bool emitOS(const BuildParameters& buildParameters);

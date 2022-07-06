@@ -627,6 +627,8 @@ Utf8 AstFuncDecl::getDisplayName()
         return "`#init` block";
     if (attributeFlags & ATTRIBUTE_DROP_FUNC)
         return "`#drop` block";
+    if (attributeFlags & ATTRIBUTE_PREMAIN_FUNC)
+        return "`#premain` block";
 
     if (flags & AST_IS_LAMBDA_EXPRESSION)
         return "lambda";

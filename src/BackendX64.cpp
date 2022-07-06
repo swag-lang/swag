@@ -359,6 +359,7 @@ JobResult BackendX64::prepareOutput(const BuildParameters& buildParameters, Job*
             emitGetTypeTable(buildParameters);
             emitGlobalInit(buildParameters);
             emitGlobalDrop(buildParameters);
+            emitGlobalPreMain(buildParameters);
             emitOS(buildParameters);
             emitMain(buildParameters);
         }
