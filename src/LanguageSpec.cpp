@@ -349,6 +349,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("@typecmp", TokenId::IntrinsicTypeCmp);
     keywords.add("@getcontext", TokenId::IntrinsicGetContext);
     keywords.add("@setcontext", TokenId::IntrinsicSetContext);
+    keywords.add("@getpinfos", TokenId::IntrinsicGetProcessInfos);
     keywords.add("@args", TokenId::IntrinsicArguments);
     keywords.add("@modules", TokenId::IntrinsicModules);
     keywords.add("@isbytecode", TokenId::IntrinsicIsByteCode);

@@ -1020,3 +1020,10 @@ void Module::decImplForToSolve(TypeInfoStruct* typeStruct)
     if (it->second.count == 0)
         it->second.dependentJobs.setRunning();
 }
+
+void Module::initProcessInfos()
+{
+    memcpy(&processInfos, &g_ProcessInfos, sizeof(SwagProcessInfos));
+    processInfos.modules.buffer = modulesSlice;
+    processInfos.modules.count  = moduleDependencies.count + 1;
+}

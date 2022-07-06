@@ -224,13 +224,13 @@ void initDefaultContext()
     g_TlsThreadLocalId = OS::tlsAlloc();
     OS::tlsSetValue(g_TlsContextId, &g_DefaultContext);
 
-    g_ProcessInfos.arguments.buffer = g_CommandLine->userArgumentsSlice.first;
-    g_ProcessInfos.arguments.count  = (uint64_t) g_CommandLine->userArgumentsSlice.second;
-    g_ProcessInfos.contextTlsId     = g_TlsContextId;
-    g_ProcessInfos.defaultContext   = &g_DefaultContext;
-    g_ProcessInfos.byteCodeRun      = byteCodeRun;
-    g_ProcessInfos.makeCallback     = makeCallback;
-    g_ProcessInfos.backendKind      = SwagBackendGenType::ByteCode;
+    g_ProcessInfos.modules.buffer = nullptr;
+    g_ProcessInfos.modules.count  = 0;
+    g_ProcessInfos.contextTlsId   = g_TlsContextId;
+    g_ProcessInfos.defaultContext = &g_DefaultContext;
+    g_ProcessInfos.byteCodeRun    = byteCodeRun;
+    g_ProcessInfos.makeCallback   = makeCallback;
+    g_ProcessInfos.backendKind    = SwagBackendGenType::ByteCode;
 }
 
 uint64_t getDefaultContextFlags(Module* module)

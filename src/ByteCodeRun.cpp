@@ -1810,6 +1810,12 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         OS::tlsSetValue(g_TlsContextId, (void*) registersRC[ip->a.u32].pointer);
         break;
     }
+    case ByteCodeOp::IntrinsicGetProcessInfos:
+    {
+        auto module                    = context->sourceFile->module;
+        registersRC[ip->a.u32].pointer = (uint8_t*) &module->processInfos;
+        break;
+    }
 
     case ByteCodeOp::IntrinsicCVaStart:
     {

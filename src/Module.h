@@ -97,6 +97,7 @@ struct Module
     void        computePublicPath();
     void        buildModulesSlice();
     void        buildTypesSlice();
+    void        initProcessInfos();
 
     void        addExportSourceFile(SourceFile* file);
     void        addFile(SourceFile* file);
@@ -180,9 +181,10 @@ struct Module
     DataSegment compilerSegment;
     DataSegment tlsSegment;
 
-    TypeTable     typeTable;
-    ByteCodeRun   runner;
-    DependentJobs dependentJobs;
+    TypeTable        typeTable;
+    ByteCodeRun      runner;
+    DependentJobs    dependentJobs;
+    SwagProcessInfos processInfos = {{0}};
 
     VectorNative<SourceFile*>       files;
     VectorNative<Module*>           errorModules;

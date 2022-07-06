@@ -86,6 +86,13 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_contextTlsId, 0);
     emitCall(pp, g_LangSpec->name__tlsAlloc);
 
+    //__process_infos.modules
+    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_modulesAddr, 0);
+    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symCSIndex, module->modulesSliceOffset);
+    BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RCX);
+    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symPI_modulesCount, 0);
+    BackendX64Inst::emit_Store64_Immediate(pp, 0, module->moduleDependencies.count + 1, RAX);
+
     // Set main context
     BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symMC_mainContext, 0);
     BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_defaultContext, 0);

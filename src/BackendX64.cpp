@@ -28,7 +28,7 @@ bool BackendX64::emitHeader(const BuildParameters& buildParameters)
 
     time_t now;
     time(&now);
-    //concat.addU32((uint32_t)(now & 0xFFFFFFFF)); // .TimeDateStamp
+    // concat.addU32((uint32_t)(now & 0xFFFFFFFF)); // .TimeDateStamp
     concat.addU32(0);
 
     pp.patchSymbolTableOffset = concat.addU32Addr(0); // .PointerToSymbolTable
@@ -250,9 +250,9 @@ bool BackendX64::createRuntime(const BuildParameters& buildParameters)
         // This should match the structure SwagProcessInfo declared in Runtime.h
         offset                  = pp.globalSegment.reserve(8, nullptr, sizeof(uint64_t));
         pp.symPI_processInfos   = getOrAddSymbol(pp, "swag_process_infos", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
-        pp.symPI_argsAddr       = getOrAddSymbol(pp, "swag_process_infos_argsAddr", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
+        pp.symPI_modulesAddr    = getOrAddSymbol(pp, "swag_process_infos_modulesAddr", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
         offset                  = pp.globalSegment.reserve(8, nullptr, sizeof(uint64_t));
-        pp.symPI_argsCount      = getOrAddSymbol(pp, "swag_process_infos_argsCount", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
+        pp.symPI_modulesCount   = getOrAddSymbol(pp, "swag_process_infos_modulesCount", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
         offset                  = pp.globalSegment.reserve(8, nullptr, sizeof(uint64_t));
         pp.symPI_contextTlsId   = getOrAddSymbol(pp, "swag_process_infos_contextTlsId", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
         offset                  = pp.globalSegment.reserve(8, nullptr, sizeof(uint64_t));
@@ -284,8 +284,9 @@ bool BackendX64::createRuntime(const BuildParameters& buildParameters)
         pp.symCOIndex  = getOrAddSymbol(pp, Fmt("__co%d", precompileIndex), CoffSymbolKind::Custom, 0, pp.sectionIndexText)->index;
         pp.symXDIndex  = getOrAddSymbol(pp, Fmt("__xd%d", precompileIndex), CoffSymbolKind::Custom, 0, pp.sectionIndexXD)->index;
 
-        pp.symPI_argsAddr       = getOrAddSymbol(pp, "swag_process_infos_argsAddr", CoffSymbolKind::Extern)->index;
-        pp.symPI_argsCount      = getOrAddSymbol(pp, "swag_process_infos_argsCount", CoffSymbolKind::Extern)->index;
+        pp.symPI_processInfos   = getOrAddSymbol(pp, "swag_process_infos", CoffSymbolKind::Extern)->index;
+        pp.symPI_modulesAddr    = getOrAddSymbol(pp, "swag_process_infos_modulesAddr", CoffSymbolKind::Extern)->index;
+        pp.symPI_modulesCount   = getOrAddSymbol(pp, "swag_process_infos_modulesCount", CoffSymbolKind::Extern)->index;
         pp.symPI_contextTlsId   = getOrAddSymbol(pp, "swag_process_infos_contextTlsId", CoffSymbolKind::Extern)->index;
         pp.symPI_defaultContext = getOrAddSymbol(pp, "swag_process_infos_defaultContext", CoffSymbolKind::Extern)->index;
         pp.symPI_byteCodeRun    = getOrAddSymbol(pp, "swag_process_infos_byteCodeRun", CoffSymbolKind::Extern)->index;

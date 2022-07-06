@@ -206,6 +206,11 @@ namespace Swag
         types:  const [..] const *TypeInfo
     }
 
+    struct ProcessInfos
+    {
+        modules: const [..] Module
+    }
+
     // #########################################################
     // Context & allocators
     // #########################################################
@@ -614,6 +619,7 @@ func @assert(value: bool);
 func @bcdbg();
 func @getcontext()->*Swag.Context;
 func @setcontext(context: const *Swag.Context);
+func @getpinfos()->*Swag.ProcessInfos;
 func @isbytecode()->bool;
 func @compiler()->Swag.ICompiler;
 func @modules()->const [..] Swag.Module;

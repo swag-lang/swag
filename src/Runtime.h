@@ -126,7 +126,7 @@ enum class SwagTargetOs : uint32_t
 
 typedef struct SwagProcessInfos
 {
-    SwagSlice          arguments;
+    SwagSlice          modules;
     uint64_t           contextTlsId;
     SwagContext*       defaultContext;
     SwagBytecodeRun    byteCodeRun;

@@ -2517,6 +2517,11 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             emitCall(pp, g_LangSpec->name__tlsSetValue);
             break;
 
+        case ByteCodeOp::IntrinsicGetProcessInfos:
+            BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_processInfos, 0);
+            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
+            break;
+
         case ByteCodeOp::IntrinsicCVaStart:
         {
             // We need to add 8 because the call has pushed one register on the stack

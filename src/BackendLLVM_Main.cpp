@@ -128,6 +128,16 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
         localCall(buildParameters, nullptr, allocT, g_LangSpec->name__tlsAlloc, {UINT32_MAX}, {toTlsId});
     }
 
+    // __process_infos.modules
+    {
+        auto v0 = builder.CreateInBoundsGEP(TO_PTR_I8(pp.constantSeg), builder.getInt32(module->modulesSliceOffset));
+        auto r0 = TO_PTR_PTR_I8(builder.CreateInBoundsGEP(pp.processInfos, pp.cst0_i64));
+        builder.CreateStore(v0, r0);
+
+        r0 = TO_PTR_I64(builder.CreateInBoundsGEP(TO_PTR_I8(pp.processInfos), builder.getInt32(sizeof(void*))));
+        builder.CreateStore(builder.getInt64(module->moduleDependencies.count + 1), r0);
+    }
+
     // Set main context
     {
         auto toContext = builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst2_i32});

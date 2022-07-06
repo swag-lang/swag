@@ -3180,6 +3180,13 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             localCall(buildParameters, allocR, allocT, g_LangSpec->name__tlsSetValue, {UINT32_MAX, ip->a.u32}, {v0, 0});
             break;
         }
+        case ByteCodeOp::IntrinsicGetProcessInfos:
+        {
+            auto v0 = TO_PTR_I8(builder.CreateInBoundsGEP(pp.processInfos, pp.cst0_i64));
+            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
+            builder.CreateStore(v0, r0);
+            break;
+        }
 
         case ByteCodeOp::IntrinsicCVaStart:
         {

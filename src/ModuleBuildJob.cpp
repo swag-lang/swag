@@ -492,6 +492,7 @@ JobResult ModuleBuildJob::execute()
         if (module->numErrors)
             return JobResult::ReleaseJob;
 
+        module->initProcessInfos();
         module->sendCompilerMessage(CompilerMsgKind::PassBeforeRunByteCode, this);
 
         // Push a copy of the default context, in case the user code changes it (or push a new one)
