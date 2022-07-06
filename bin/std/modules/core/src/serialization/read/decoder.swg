@@ -20,7 +20,7 @@ impl Decoder
         if !options.hasVersion
             return 0
         var fv: TypeValue
-        fv.name = "__version"
+        fv.name = "$version"
         serializer.startElement(fv)
         serializer.startValue(u32)
         version := serializer.readU32()

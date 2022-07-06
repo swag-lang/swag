@@ -15,7 +15,7 @@ private func filePath(name: string)->String
     return Path.combine(dataPath(), name)
 }
 
-#init
+#premain
 {
     try Jobs.setNumWorkers(4)
 

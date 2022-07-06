@@ -441,3 +441,36 @@ func roomInArray(addr: *void, type: const *TypeInfoStruct, valueType: typeinfo)-
 
     return result
 }
+
+private var g_HashCrcToType: HashTable'(u32, typeinfo)
+private var g_HashNameToType: HashTable'(string, typeinfo)
+
+#premain
+{
+    visit m: @getpinfos().modules
+    {
+        visit t: m.types
+        {
+            g_HashCrcToType.add(t.crc32, t)
+            g_HashNameToType.add(t.fullname, t)
+        }
+    }
+}
+
+// Convert a crc to a registered typeinfo
+func crcToType(crc: u32)->typeinfo
+{
+    e := g_HashCrcToType.find(crc)
+    if !e
+        return null
+    return e.value
+}
+
+// Convert a crc to a registered typeinfo
+func nameToType(name: string)->typeinfo
+{
+    e := g_HashNameToType.find(name)
+    if !e
+        return null
+    return e.value
+}

@@ -5,6 +5,7 @@ using Swag
 struct JSonOptions
 {
     indentLevel: u32 = 4
+    saveBlanks:  bool
 }
 
 struct JSon
@@ -20,6 +21,8 @@ impl JSon
 {
     mtd writeIndent()
     {
+        if !options.saveBlanks
+            return
         loop indent * options.indentLevel
             output.addByte(" "'u8)
     }
@@ -42,7 +45,9 @@ impl JSon
 
     mtd startSequence(typeElem: typeinfo, countElem: uint, data: const *u8)->bool
     {
-        output.addBytes("[\n")
+        output.addBytes("[")
+        if options.saveBlanks
+            output.addBytes("\n")
         indent += 1
         writeIndent()
         return false
@@ -50,14 +55,17 @@ impl JSon
 
     mtd endSequence()
     {
-        output.cancelBytes(cast(uint) options.indentLevel)
+        if options.saveBlanks
+            output.cancelBytes(cast(uint) options.indentLevel)
         output.addBytes("]")
         indent -= 1
     }
 
     mtd startStruct(type: typeinfo, data: const *u8)->bool
     {
-        output.addBytes("{\n")
+        output.addBytes("{")
+        if options.saveBlanks
+            output.addBytes("\n")
         indent += 1
         writeIndent()
         return false
@@ -65,7 +73,8 @@ impl JSon
 
     mtd endStruct()
     {
-        output.cancelBytes(cast(uint) options.indentLevel)
+        if options.saveBlanks
+            output.cancelBytes(cast(uint) options.indentLevel)
         output.addBytes("}")
         indent -= 1
     }
@@ -74,9 +83,12 @@ impl JSon
     {
     }
 
-    mtd endValue(type: typeinfo)
+    mtd endValue(type: typeinfo, isLast: bool)
     {
-        output.addBytes(",\n")
+        if !isLast
+            output.addBytes(",")
+        if options.saveBlanks
+            output.addBytes("\n")
         writeIndent()
     }
 

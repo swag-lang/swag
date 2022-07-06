@@ -21,13 +21,13 @@ struct(T) Encoder
 
 impl Encoder
 {
-    mtd write(dataType: typeinfo, data: const *u8)
+    mtd write(dataType: typeinfo, data: const *u8, isLastValue: bool)
     {
         type := Reflection.makeConcreteAlias(dataType)
         type = Reflection.makeConcreteEnum(type)
 
         serializer.startValue(type)
-        defer(noerr) serializer.endValue(type)
+        defer(noerr) serializer.endValue(type, isLastValue)
 
         // Native
         if type.kind == .Native
@@ -85,9 +85,9 @@ impl Encoder
                 if !treated
                 {
                     bufArr := cast(const *u8) ptrArr.buffer
-                    loop ptrArr.count
+                    loop i: ptrArr.count
                     {
-                        write(valueType, bufArr)
+                        write(valueType, bufArr, i == ptrArr.count - 1)
                         bufArr += valueType.sizeof
                     }
                 }
@@ -110,23 +110,30 @@ impl Encoder
                     version = cast(u32) val
 
                 var fv: TypeValue
-                fv.name = "__version"
+                fv.name = "$version"
                 serializer.startElement(fv)
                 serializer.startValue(u32)
                 serializer.writeU32(version)
-                serializer.endValue(u32)
+                serializer.endValue(u32, false)
                 serializer.endElement(fv)
             }
 
-            visit field: structType.fields
+            // Get all fields to serialize
+            var arr: Array'(const *TypeValue)
+            visit field, i: structType.fields
             {
                 if Reflection.hasAttribute(field, NoSerialize)
                     continue
                 if Reflection.hasAttribute(field.pointedType, NoSerialize)
                     return
+                arr.add(field)
+            }
 
+            // Serialize them
+            visit field, i: arr
+            {
                 serializer.startElement(field)
-                write(field.pointedType, data + field.offset)
+                write(field.pointedType, data + field.offset, i == arr.count - 1)
                 serializer.endElement(field)
             }
 
@@ -143,9 +150,9 @@ impl Encoder
                 return
 
             bufArr := cast(const *u8) data
-            loop typeArr.count
+            loop i: typeArr.count
             {
-                write(typeArr.pointedType, bufArr)
+                write(typeArr.pointedType, bufArr, i == typeArr.count - 1)
                 bufArr += typeArr.pointedType.sizeof
             }
 
@@ -157,6 +164,6 @@ impl Encoder
     {
         Debug.assert(Reflection.isStruct(@kindof(value)))
         serializer.startWrite(result)
-        write(@kindof(value), @dataof(value))
+        write(@kindof(value), @dataof(value), true)
     }
 }
