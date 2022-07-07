@@ -510,8 +510,10 @@ JobResult ModuleBuildJob::execute()
 
         // #init functions are only executed in script mode, if the module has a #main
         bool callInitDrop = !module->byteCodeInitFunc.empty() && g_CommandLine->scriptMode && module->byteCodeMainFunc;
+
         // OR in a test module, during testing
-        callInitDrop |= g_CommandLine->test && g_CommandLine->runByteCodeTests;
+        callInitDrop |= g_CommandLine->test && g_CommandLine->runByteCodeTests && module->kind == ModuleKind::Test;
+
         if (callInitDrop)
         {
             for (auto func : module->byteCodeInitFunc)
@@ -520,6 +522,8 @@ JobResult ModuleBuildJob::execute()
                 if (module->criticalErrors)
                     return JobResult::ReleaseJob;
             }
+
+            module->callPreMain();
 
             for (auto func : module->byteCodePreMainFunc)
             {

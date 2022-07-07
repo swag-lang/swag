@@ -152,10 +152,12 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
             continue;
         auto nameDown = dep->name;
         Ast::normalizeIdentifierName(nameDown);
+        BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_processInfos, 0);
         emitCall(pp, nameDown + "_globalPreMain");
     }
 
     // Call to global premain of this module
+    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_processInfos, 0);
     thisInit = Fmt("%s_globalPreMain", module->nameNormalized.c_str());
     emitCall(pp, thisInit);
 
@@ -295,6 +297,12 @@ bool BackendX64::emitGlobalPreMain(const BuildParameters& buildParameters)
     auto                   sizeProlog = concat.totalCount() - beforeProlog;
     VectorNative<uint16_t> unwind;
     computeUnwindStack(40, sizeProlog, unwind);
+
+    // Copy process infos
+    BackendX64Inst::emit_Copy64(pp, RCX, RDX);
+    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_processInfos, 0);
+    BackendX64Inst::emit_Load64_Immediate(pp, sizeof(SwagProcessInfos), R8);
+    emitCall(pp, g_LangSpec->name_memcpy);
 
     // Call to #premain functions
     for (auto bc : module->byteCodePreMainFunc)

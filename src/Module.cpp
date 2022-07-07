@@ -1009,3 +1009,19 @@ void Module::initProcessInfos()
     processInfos.modules.buffer = modulesSlice;
     processInfos.modules.count  = moduleDependencies.count + 1;
 }
+
+void Module::callPreMain()
+{
+    for (auto& dep : moduleDependencies)
+    {
+        auto nameDown = dep->name;
+        Ast::normalizeIdentifierName(nameDown);
+        nameDown += "_globalPreMain";
+
+        auto ptr = g_ModuleMgr->getFnPointer(dep->name, nameDown);
+        if (!ptr)
+            continue;
+        typedef void (*funcCall)(SwagProcessInfos*);
+        ((funcCall) ptr)(&processInfos);
+    }
+}

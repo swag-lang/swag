@@ -98,6 +98,7 @@ struct Module
     void        buildModulesSlice();
     void        buildTypesSlice();
     void        initProcessInfos();
+    void        callPreMain();
 
     void        addExportSourceFile(SourceFile* file);
     void        addFile(SourceFile* file);
