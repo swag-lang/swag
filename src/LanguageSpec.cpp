@@ -6,10 +6,10 @@ LanguageSpec* g_LangSpec = nullptr;
 
 void LanguageSpec::setupNames()
 {
-    name_globalInit    = "%s_globalInit";
-    name_globalDrop    = "%s_globalDrop";
-    name_globalPreMain = "%s_globalPreMain";
-    name_getTypeTable  = "%s_getTypeTable";
+    name_globalInit    = "__%s_globalInit";
+    name_globalDrop    = "__%s_globalDrop";
+    name_globalPreMain = "__%s_globalPreMain";
+    name_getTypeTable  = "__%s_getTypeTable";
 
     name__setupRuntime   = "__setupRuntime";
     name__panic          = "__panic";

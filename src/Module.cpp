@@ -303,7 +303,7 @@ void Module::buildTypesSlice()
     int i = 1;
     for (auto& dep : moduleDependencies)
     {
-        auto callTable = Fmt("%s_getTypeTable", dep->module->nameNormalized.c_str());
+        auto callTable = dep->module->getGlobalPrivFct(g_LangSpec->name_getTypeTable);
         auto ptr       = g_ModuleMgr->getFnPointer(dep->module->name, callTable);
         if (!ptr)
         {

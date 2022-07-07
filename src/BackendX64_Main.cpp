@@ -247,7 +247,7 @@ bool BackendX64::emitGetTypeTable(const BuildParameters& buildParameters)
     concat.align(16);
     auto startAddress = concat.totalCount();
 
-    auto thisInit        = Fmt("%s_getTypeTable", module->nameNormalized.c_str());
+    auto thisInit        = module->getGlobalPrivFct(g_LangSpec->name_getTypeTable);
     auto symbolFuncIndex = getOrAddSymbol(pp, thisInit, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
     auto coffFct         = registerFunction(pp, nullptr, symbolFuncIndex);
 

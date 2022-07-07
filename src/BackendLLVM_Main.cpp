@@ -268,8 +268,9 @@ bool BackendLLVM::emitGetTypeTable(const BuildParameters& buildParameters)
     auto& builder = *pp.builder;
     auto& modu    = *pp.module;
 
-    auto            fctType = llvm::FunctionType::get(llvm::Type::getInt8PtrTy(context), {}, false);
-    llvm::Function* fct     = llvm::Function::Create(fctType, llvm::Function::ExternalLinkage, Fmt("%s_getTypeTable", module->nameNormalized.c_str()).c_str(), modu);
+    auto            fctType  = llvm::FunctionType::get(llvm::Type::getInt8PtrTy(context), {}, false);
+    auto            funcName = module->getGlobalPrivFct(g_LangSpec->name_getTypeTable);
+    llvm::Function* fct      = llvm::Function::Create(fctType, llvm::Function::ExternalLinkage, funcName.c_str(), modu);
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
         fct->setDLLStorageClass(llvm::GlobalValue::DLLExportStorageClass);
 
@@ -293,7 +294,8 @@ bool BackendLLVM::emitGlobalPreMain(const BuildParameters& buildParameters)
     auto& modu    = *pp.module;
 
     auto            fctType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), {pp.processInfosTy->getPointerTo()}, false);
-    llvm::Function* fct     = llvm::Function::Create(fctType, llvm::Function::ExternalLinkage, Fmt("%s_globalPreMain", module->nameNormalized.c_str()).c_str(), modu);
+    auto            nameFct = module->getGlobalPrivFct(g_LangSpec->name_globalPreMain);
+    llvm::Function* fct     = llvm::Function::Create(fctType, llvm::Function::ExternalLinkage, nameFct.c_str(), modu);
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
         fct->setDLLStorageClass(llvm::GlobalValue::DLLExportStorageClass);
 
