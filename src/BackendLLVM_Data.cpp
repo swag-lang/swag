@@ -105,15 +105,15 @@ bool BackendLLVM::emitInitSeg(const BuildParameters& buildParameters, DataSegmen
     switch (me)
     {
     case SegmentKind::Data:
-        name = "initMutableSeg";
+        name = "__initMutableSeg";
         gVar = pp.mutableSeg;
         break;
     case SegmentKind::Constant:
-        name = "initConstantSeg";
+        name = "__initConstantSeg";
         gVar = pp.constantSeg;
         break;
     case SegmentKind::Tls:
-        name = "initTlsSeg";
+        name = "__initTlsSeg";
         gVar = pp.tlsSeg;
         break;
     default:

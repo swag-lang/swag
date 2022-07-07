@@ -356,9 +356,9 @@ bool BackendLLVM::emitGlobalInit(const BuildParameters& buildParameters)
     }
 
     // Initialize data segments
-    builder.CreateCall(modu.getFunction("initMutableSeg"));
-    builder.CreateCall(modu.getFunction("initConstantSeg"));
-    builder.CreateCall(modu.getFunction("initTlsSeg"));
+    builder.CreateCall(modu.getFunction("__initMutableSeg"));
+    builder.CreateCall(modu.getFunction("__initConstantSeg"));
+    builder.CreateCall(modu.getFunction("__initTlsSeg"));
 
     // Init type table slice for each dependency (by calling ???_getTypeTable)
     auto r1 = builder.CreateInBoundsGEP(TO_PTR_I8(pp.constantSeg), builder.getInt32(module->modulesSliceOffset + sizeof(SwagModule) + offsetof(SwagModule, types)));
