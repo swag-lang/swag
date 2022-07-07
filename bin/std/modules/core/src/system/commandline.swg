@@ -145,42 +145,48 @@ func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOption
         }
 
         // Dynamic array of values
-        elif Utf8.startsWith(typeField.fullname, "Core.Array")
+        elif Reflection.isStruct(typeField)
         {
-            try checkNext()
-
-            // If it's an array of strings, we will need to add string delimiters
-            // to each value
             typeStruct := cast(const *Swag.TypeInfoStruct) typeField
-            isString := false
-            if typeStruct.generics[0].pointedType == Core.String
-                isString = true
-
-            // Make one single string with all values, for pokeValue
-            var collect: String
-            while itp + 1 != maxItp and !isOption(allArgs[itp + 1], options)
+            if typeStruct.fromGeneric == @typeof(Core.Array)
             {
-                other := allArgs[itp + 1]
-                if isString
+                try checkNext()
+
+                // If it's an array of strings, we will need to add string delimiters
+                // to each value
+                isString := false
+                if typeStruct.generics[0].pointedType == Core.String
+                    isString = true
+
+                // Make one single string with all values, for pokeValue
+                var collect: String
+                while itp + 1 != maxItp and !isOption(allArgs[itp + 1], options)
                 {
-                    other = Tokenize.eatQuotes(other)
-                    collect.append("\"")
+                    other := allArgs[itp + 1]
+                    if isString
+                    {
+                        other = Tokenize.eatQuotes(other)
+                        collect.append("\"")
+                    }
+
+                    collect.append(other)
+
+                    if isString
+                        collect.append("\"")
+
+                    collect.append(" ")
+                    itp += 1
                 }
 
-                collect.append(other)
-
-                if isString
-                    collect.append("\"")
-
-                collect.append(" ")
-                itp += 1
+                discard catch StrConv.pokeValue(addr, typeField, collect.toString())
+                if @err
+                    throw Format.toString("invalid value for option '%' (%)", oneArg, @err)
             }
-
-            discard catch StrConv.pokeValue(addr, typeField, collect.toString())
-            if @err
-                throw Format.toString("invalid value for option '%' (%)", oneArg, @err)
+            else
+            {
+                throw Format.toString("unsupported type '%' for option '%'", typeField.name, oneArg)
+            }
         }
-
         else
         {
             throw Format.toString("unsupported type '%' for option '%'", typeField.name, oneArg)
