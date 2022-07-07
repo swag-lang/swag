@@ -132,15 +132,14 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
         SWAG_ASSERT(dep->module);
         if (!dep->module->isSwag)
             continue;
-        auto nameDown = dep->name;
-        Ast::normalizeIdentifierName(nameDown);
         BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_processInfos, 0);
-        emitCall(pp, nameDown + "_globalInit");
+        auto nameFct = dep->module->getGlobalPrivFct(g_LangSpec->name_globalInit);
+        emitCall(pp, nameFct);
     }
 
     // Call to global init of this module
     BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_processInfos, 0);
-    auto thisInit = Fmt("%s_globalInit", module->nameNormalized.c_str());
+    auto thisInit = module->getGlobalPrivFct(g_LangSpec->name_globalInit);
     emitCall(pp, thisInit);
 
     // Call to global premain of all dependencies
@@ -150,15 +149,14 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
         SWAG_ASSERT(dep->module);
         if (!dep->module->isSwag)
             continue;
-        auto nameDown = dep->name;
-        Ast::normalizeIdentifierName(nameDown);
         BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_processInfos, 0);
-        emitCall(pp, nameDown + "_globalPreMain");
+        auto nameFct = dep->module->getGlobalPrivFct(g_LangSpec->name_globalPreMain);
+        emitCall(pp, nameFct);
     }
 
     // Call to global premain of this module
     BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_processInfos, 0);
-    thisInit = Fmt("%s_globalPreMain", module->nameNormalized.c_str());
+    thisInit = module->getGlobalPrivFct(g_LangSpec->name_globalPreMain);
     emitCall(pp, thisInit);
 
     // Call to test functions
@@ -180,7 +178,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     }
 
     // Call to global drop of this module
-    auto thisDrop = Fmt("%s_globalDrop", module->nameNormalized.c_str());
+    auto thisDrop = module->getGlobalPrivFct(g_LangSpec->name_globalDrop);
     emitCall(pp, thisDrop);
 
     // Call to global drop of all dependencies
@@ -189,11 +187,8 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
         auto dep = moduleDependencies[i];
         if (!dep->module->isSwag)
             continue;
-        auto nameDown = dep->name;
-        Ast::normalizeIdentifierName(nameDown);
-        auto funcDrop = nameDown;
-        funcDrop += "_globalDrop";
-        emitCall(pp, funcDrop);
+        auto nameFct = dep->module->getGlobalPrivFct(g_LangSpec->name_globalDrop);
+        emitCall(pp, nameFct);
     }
 
     emitCall(pp, g_LangSpec->name__exit);
@@ -285,7 +280,7 @@ bool BackendX64::emitGlobalPreMain(const BuildParameters& buildParameters)
     concat.align(16);
     auto startAddress = concat.totalCount();
 
-    auto thisInit        = Fmt("%s_globalPreMain", module->nameNormalized.c_str());
+    auto thisInit        = module->getGlobalPrivFct(g_LangSpec->name_globalPreMain);
     auto symbolFuncIndex = getOrAddSymbol(pp, thisInit, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
     auto coffFct         = registerFunction(pp, nullptr, symbolFuncIndex);
 
@@ -331,7 +326,7 @@ bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
     concat.align(16);
     auto startAddress = concat.totalCount();
 
-    auto thisInit        = Fmt("%s_globalInit", module->nameNormalized.c_str());
+    auto thisInit        = module->getGlobalPrivFct(g_LangSpec->name_globalInit);
     auto symbolFuncIndex = getOrAddSymbol(pp, thisInit, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
     auto coffFct         = registerFunction(pp, nullptr, symbolFuncIndex);
 
@@ -368,7 +363,7 @@ bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
             continue;
         }
 
-        auto callTable = Fmt("%s_getTypeTable", dep->module->nameNormalized.c_str());
+        auto callTable = dep->module->getGlobalPrivFct(g_LangSpec->name_getTypeTable);
         emitCall(pp, callTable);
 
         // Count types is stored as a uint64_t at the start of the address
@@ -408,7 +403,7 @@ bool BackendX64::emitGlobalDrop(const BuildParameters& buildParameters)
     concat.align(16);
     auto startAddress = concat.totalCount();
 
-    auto thisDrop        = Fmt("%s_globalDrop", module->nameNormalized.c_str());
+    auto thisDrop        = module->getGlobalPrivFct(g_LangSpec->name_globalDrop);
     auto symbolFuncIndex = getOrAddSymbol(pp, thisDrop, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
     auto coffFct         = registerFunction(pp, nullptr, symbolFuncIndex);
 

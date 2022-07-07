@@ -99,6 +99,7 @@ struct Module
     void        buildTypesSlice();
     void        initProcessInfos();
     void        callPreMain();
+    Utf8        getGlobalPrivFct(const Utf8& name);
 
     void        addExportSourceFile(SourceFile* file);
     void        addFile(SourceFile* file);

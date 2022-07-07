@@ -181,15 +181,15 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
         auto dep = moduleDependencies[i];
         if (!dep->module->isSwag)
             continue;
-        auto nameDown = dep->name;
-        Ast::normalizeIdentifierName(nameDown);
-        auto funcInit = modu.getOrInsertFunction(Fmt("%s_globalInit", nameDown.c_str()).c_str(), funcType);
+        auto nameFct  = dep->module->getGlobalPrivFct(g_LangSpec->name_globalInit);
+        auto funcInit = modu.getOrInsertFunction(nameFct.c_str(), funcType);
         builder.CreateCall(funcInit, pp.processInfos);
     }
 
     // Call to global init of this module
     {
-        auto funcInit = modu.getOrInsertFunction(Fmt("%s_globalInit", module->nameNormalized.c_str()).c_str(), funcType);
+        auto nameFct  = module->getGlobalPrivFct(g_LangSpec->name_globalInit);
+        auto funcInit = modu.getOrInsertFunction(nameFct.c_str(), funcType);
         builder.CreateCall(funcInit, pp.processInfos);
     }
 
@@ -199,15 +199,15 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
         auto dep = moduleDependencies[i];
         if (!dep->module->isSwag)
             continue;
-        auto nameDown = dep->name;
-        Ast::normalizeIdentifierName(nameDown);
-        auto funcInit = modu.getOrInsertFunction(Fmt("%s_globalPreMain", nameDown.c_str()).c_str(), funcType);
+        auto nameFct  = dep->module->getGlobalPrivFct(g_LangSpec->name_globalPreMain);
+        auto funcInit = modu.getOrInsertFunction(nameFct.c_str(), funcType);
         builder.CreateCall(funcInit, pp.processInfos);
     }
 
     // Call to global premain of this module
     {
-        auto funcInit = modu.getOrInsertFunction(Fmt("%s_globalPreMain", module->nameNormalized.c_str()).c_str(), funcType);
+        auto nameFct  = module->getGlobalPrivFct(g_LangSpec->name_globalPreMain);
+        auto funcInit = modu.getOrInsertFunction(nameFct.c_str(), funcType);
         builder.CreateCall(funcInit, pp.processInfos);
     }
 
@@ -235,7 +235,8 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
     }
 
     // Call to global drop of this module
-    auto funcDrop = modu.getOrInsertFunction(Fmt("%s_globalDrop", module->nameNormalized.c_str()).c_str(), funcTypeVoid);
+    auto nameFct  = module->getGlobalPrivFct(g_LangSpec->name_globalDrop);
+    auto funcDrop = modu.getOrInsertFunction(nameFct.c_str(), funcTypeVoid);
     builder.CreateCall(funcDrop);
 
     // Call to global drop of all dependencies
@@ -244,9 +245,8 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
         auto dep = moduleDependencies[i];
         if (!dep->module->isSwag)
             continue;
-        auto nameDown = dep->name;
-        Ast::normalizeIdentifierName(nameDown);
-        funcDrop = modu.getOrInsertFunction(Fmt("%s_globalDrop", nameDown.c_str()).c_str(), funcTypeVoid);
+        nameFct  = dep->module->getGlobalPrivFct(g_LangSpec->name_globalDrop);
+        funcDrop = modu.getOrInsertFunction(nameFct.c_str(), funcTypeVoid);
         builder.CreateCall(funcDrop);
     }
 
@@ -332,7 +332,8 @@ bool BackendLLVM::emitGlobalInit(const BuildParameters& buildParameters)
     auto& modu    = *pp.module;
 
     auto            fctType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), {pp.processInfosTy->getPointerTo()}, false);
-    llvm::Function* fct     = llvm::Function::Create(fctType, llvm::Function::ExternalLinkage, Fmt("%s_globalInit", module->nameNormalized.c_str()).c_str(), modu);
+    auto            nameFct = module->getGlobalPrivFct(g_LangSpec->name_globalInit);
+    llvm::Function* fct     = llvm::Function::Create(fctType, llvm::Function::ExternalLinkage, nameFct.c_str(), modu);
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
         fct->setDLLStorageClass(llvm::GlobalValue::DLLExportStorageClass);
 
@@ -367,7 +368,7 @@ bool BackendLLVM::emitGlobalInit(const BuildParameters& buildParameters)
             continue;
         }
 
-        auto callTable = Fmt("%s_getTypeTable", dep->module->nameNormalized.c_str());
+        auto callTable = dep->module->getGlobalPrivFct(g_LangSpec->name_getTypeTable);
         auto callType  = llvm::FunctionType::get(llvm::Type::getInt8PtrTy(context), {}, false);
         auto func      = modu.getOrInsertFunction(callTable.c_str(), callType);
         auto r0        = builder.CreateCall(func);
@@ -409,7 +410,8 @@ bool BackendLLVM::emitGlobalDrop(const BuildParameters& buildParameters)
     auto  modu    = pp.module;
 
     auto            fctType = llvm::FunctionType::get(llvm::Type::getVoidTy(context), false);
-    llvm::Function* fct     = llvm::Function::Create(fctType, llvm::Function::ExternalLinkage, Fmt("%s_globalDrop", module->nameNormalized.c_str()).c_str(), modu);
+    auto            nameFct = module->getGlobalPrivFct(g_LangSpec->name_globalDrop);
+    llvm::Function* fct     = llvm::Function::Create(fctType, llvm::Function::ExternalLinkage, nameFct.c_str(), modu);
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
         fct->setDLLStorageClass(llvm::GlobalValue::DLLExportStorageClass);
 

@@ -20,6 +20,11 @@ struct LanguageSpec
     LangHashTable<LiteralType, 64> nativeTypes;
     LangHashTable<uint64_t, 256>   attributesFlags;
 
+    Utf8 name_globalInit;
+    Utf8 name_globalDrop;
+    Utf8 name_globalPreMain;
+    Utf8 name_getTypeTable;
+
     Utf8 name__setupRuntime;
     Utf8 name__panic;
     Utf8 name__pusherr;

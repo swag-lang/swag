@@ -10,6 +10,7 @@
 #include "ModuleManager.h"
 #include "ErrorIds.h"
 #include "CommandLine.h"
+#include "LanguageSpec.h"
 
 void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
 {
@@ -1014,14 +1015,18 @@ void Module::callPreMain()
 {
     for (auto& dep : moduleDependencies)
     {
-        auto nameDown = dep->name;
-        Ast::normalizeIdentifierName(nameDown);
-        nameDown += "_globalPreMain";
-
-        auto ptr = g_ModuleMgr->getFnPointer(dep->name, nameDown);
+        if (!dep->module->isSwag)
+            continue;
+        auto nameFct = dep->module->getGlobalPrivFct(g_LangSpec->name_globalPreMain);
+        auto ptr     = g_ModuleMgr->getFnPointer(dep->name, nameFct);
         if (!ptr)
             continue;
         typedef void (*funcCall)(SwagProcessInfos*);
         ((funcCall) ptr)(&processInfos);
     }
+}
+
+Utf8 Module::getGlobalPrivFct(const Utf8& nameFct)
+{
+    return Fmt(nameFct.c_str(), nameNormalized.c_str());
 }
