@@ -62,6 +62,13 @@ impl Encoder
             return
         }
 
+        if Reflection.isType(type)
+        {
+            typeType := dref cast(const **TypeInfo) data
+            serializer.writeU32(typeType ? typeType.crc32 : 0)
+            return
+        }
+
         if Reflection.isStruct(type)
         {
             // Core.String

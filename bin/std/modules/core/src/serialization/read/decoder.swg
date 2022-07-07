@@ -70,6 +70,14 @@ impl Decoder
             return
         }
 
+        if Reflection.isType(type)
+        {
+            crc := serializer.readU32()
+            typeType := Reflection.crcToType(crc)
+            dref cast(*typeinfo) data = typeType
+            return
+        }
+
         if Reflection.isStruct(type)
         {
             // Core.String

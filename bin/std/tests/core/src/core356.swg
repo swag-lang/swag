@@ -2,6 +2,7 @@ using Core, Serialization
 
 struct Toto
 {
+    a: typeinfo
 }
 
 #test
@@ -10,15 +11,16 @@ struct Toto
     var wri: Encoder'Write.JSon
 
     var toto: Toto
+    toto.a = u32
 
     wri.write(&buf, toto)
 
     str := buf.toString()
-    //Console.print(str, "\n")
+    Console.print(str, "\n")
 
     var rea: Decoder'Read.JSon
     v := try rea.read'Toto(str.toSlice())
     defer Memory.delete(v)
 
-    //Console.print(dref v, "\n")
+    Console.print(dref v, "\n")
 }

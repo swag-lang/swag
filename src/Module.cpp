@@ -273,25 +273,7 @@ void Module::buildTypesSlice()
 
     auto&    map = typeTable.getMapPerSeg(&constantSegment).concreteTypes;
     uint8_t* resultPtr;
-    uint32_t numTypes = 0;
-
-    VectorNative<TypeTable::MapType*> mm;
-    for (auto& t : map)
-    {
-        if (t.second.realType->kind != TypeInfoKind::Struct)
-            continue;
-        if (t.second.realType->flags & TYPEINFO_GENERIC)
-            continue;
-        if (t.second.realType->flags & TYPEINFO_FROM_GENERIC)
-            continue;
-        if (t.second.realType->flags & TYPEINFO_STRUCT_IS_TUPLE)
-            continue;
-        if (t.second.realType->flags & TYPEINFO_STRUCT_IS_ITABLE)
-            continue;
-        mm.push_back(&t.second);
-
-        numTypes += 1;
-    }
+    uint32_t numTypes = (uint32_t) map.size();
 
     typesSliceOffset = constantSegment.reserve(sizeof(uint64_t) + (numTypes * sizeof(ConcreteTypeInfo*)), &resultPtr);
     auto offset      = typesSliceOffset;
@@ -307,10 +289,10 @@ void Module::buildTypesSlice()
     moduleSlice->types.count  = numTypes;
     constantSegment.addInitPtr(modulesSliceOffset + offsetof(SwagModule, types), typesSliceOffset + sizeof(uint64_t));
 
-    for (auto t : mm)
+    for (auto t : map)
     {
-        *(ConcreteTypeInfo**) resultPtr = t->concreteType;
-        constantSegment.addInitPtr(offset, t->storageOffset);
+        *(ConcreteTypeInfo**) resultPtr = t.second.concreteType;
+        constantSegment.addInitPtr(offset, t.second.storageOffset);
 
         resultPtr += sizeof(ConcreteTypeInfo*);
         offset += sizeof(ConcreteTypeInfo*);
