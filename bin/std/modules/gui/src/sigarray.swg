@@ -41,7 +41,7 @@ impl SigArray
                 loop i: ts.parameters
                 {
                     if i sb.appendString(",")
-                    sb.appendFormat("params[%]", i)
+                    sb.appendFormat("cast(%) params[%]", ts.parameters[i].pointedType.fullname, i)
                 }
 
                 sb.appendString(")\n")

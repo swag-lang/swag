@@ -2088,9 +2088,18 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
     }
     else if (fromType->isNative(NativeTypeKind::Any))
     {
-        // Ambigous. Do we check for a bool, or do we check for null
-        if (toType->isNative(NativeTypeKind::Bool) && !(castFlags & CASTFLAG_EXPLICIT))
-            return castError(context, toType, fromType, fromNode, castFlags);
+        if (!(castFlags & CASTFLAG_EXPLICIT))
+        {
+            // Ambigous. Do we check for a bool, or do we check for null
+            if (toType->isNative(NativeTypeKind::Bool))
+                return castError(context, toType, fromType, fromNode, castFlags);
+
+            // To convert a simple any to something more complexe, need an explicit cast
+            if (toType->kind == TypeInfoKind::Slice ||
+                toType->kind == TypeInfoKind::Array ||
+                toType->kind == TypeInfoKind::Pointer)
+                return castError(context, toType, fromType, fromNode, castFlags);
+        }
 
         if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
         {

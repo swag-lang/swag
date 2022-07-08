@@ -615,7 +615,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
         // In that case, we want to match the generic version of the type
         if (!userGenericParams && wantedNumGenericParams && (context.flags & SymbolMatchContext::MATCH_DO_NOT_ACCEPT_NO_GENERIC))
         {
-            if(myTypeInfo->flags & TYPEINFO_GENERIC)
+            if (myTypeInfo->flags & TYPEINFO_GENERIC)
                 return;
         }
 
@@ -757,7 +757,14 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
             }
         }
 
-        bool same = TypeManager::makeCompatibles(context.semContext, symbolParameter->typeInfo, typeInfo, nullptr, nullptr, CASTFLAG_NO_USING_ST | CASTFLAG_NO_ITF | CASTFLAG_NO_ERROR | CASTFLAG_ACCEPT_PENDING);
+        bool same = false;
+
+        // Any can only match to any or to a generic
+        if (typeInfo->isNative(NativeTypeKind::Any) && !symbolParameter->typeInfo->isGeneric() && !symbolParameter->typeInfo->isNative(NativeTypeKind::Any))
+            same = false;
+        else
+            same = TypeManager::makeCompatibles(context.semContext, symbolParameter->typeInfo, typeInfo, nullptr, nullptr, CASTFLAG_NO_USING_ST | CASTFLAG_NO_ITF | CASTFLAG_NO_ERROR | CASTFLAG_ACCEPT_PENDING);
+
         if (context.semContext->result == ContextResult::Pending)
             return;
         if (!same)

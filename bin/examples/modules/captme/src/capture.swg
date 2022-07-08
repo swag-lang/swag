@@ -92,6 +92,15 @@ impl Capture
 
     mtd copy()
     {
+        var arr: Array'any
+        visit s: selection
+        {
+            f := forms[s]
+            mdlType := @kindof(f)
+            save := cast(*BaseForm) Memory.new(mdlType)
+            f.copy(save, cast(*BaseForm) @dataof(f))
+            arr.add(@mkany(save, mdlType))
+        }
     }
 
     mtd paste()
