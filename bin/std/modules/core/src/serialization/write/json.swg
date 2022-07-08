@@ -5,16 +5,17 @@ using Swag
 struct JSonOptions
 {
     indentLevel: u32 = 4
-    saveBlanks:  bool
+    saveBlanks:  bool = true
 }
 
 struct JSon
 {
-    options:    JSonOptions
-    output:     *ConcatBuffer
-    indent:     u32
-    fmtInt:     StrConv.ConvertFormatInt
-    fmtFloat:   StrConv.ConvertFormatFloat{fmt: "g"'u8}
+    options:        JSonOptions
+    output:         *ConcatBuffer
+    indent:         u32
+    fmtInt:         StrConv.ConvertFormatInt
+    fmtFloat:       StrConv.ConvertFormatFloat{fmt: "g"'u8}
+    lastSeekValue:  ConcatBufferSeek
 }
 
 impl JSon
@@ -32,47 +33,77 @@ impl JSon
         output = buf
     }
 
+    mtd startRoot()
+    {
+    }
+
+    mtd endRoot()
+    {
+        // Remove last ','
+        output.setSeek(lastSeekValue)
+    }
+
     mtd beginSequence(typeElem: typeinfo, countElem: uint, data: const *u8)->bool
     {
         output.addBytes("[")
+        lastSeekValue = output.getSeek()
         if options.saveBlanks
+        {
             output.addBytes("\n")
-        indent += 1
-        writeIndent()
+            indent += 1
+            writeIndent()
+        }
+
         return false
     }
 
     mtd endSequence()
     {
+        output.setSeek(lastSeekValue)
         if options.saveBlanks
-            output.cancelBytes(cast(uint) options.indentLevel)
+        {
+            output.addBytes("\n")
+            indent -= 1
+            writeIndent()
+        }
+
         output.addBytes("]")
-        indent -= 1
     }
 
     mtd beginStruct(type: typeinfo, data: const *u8)->bool
     {
         output.addBytes("{")
+        lastSeekValue = output.getSeek()
         if options.saveBlanks
+        {
             output.addBytes("\n")
-        indent += 1
-        writeIndent()
+            indent += 1
+            writeIndent()
+        }
+
         return false
     }
 
     mtd endStruct()
     {
+        output.setSeek(lastSeekValue)
         if options.saveBlanks
-            output.cancelBytes(cast(uint) options.indentLevel)
+        {
+            output.addBytes("\n")
+            indent -= 1
+            writeIndent()
+        }
+
         output.addBytes("}")
-        indent -= 1
     }
 
     mtd beginElement(name: string, type: typeinfo)
     {
         output.addByte("\""'u8)
         output.addBytes(name)
-        output.addBytes("\": ")
+        output.addBytes("\":")
+        if options.saveBlanks
+            output.addBytes(" ")
     }
 
     mtd endElement()
@@ -83,10 +114,10 @@ impl JSon
     {
     }
 
-    mtd endValue(isLast: bool)
+    mtd endValue()
     {
-        if !isLast
-            output.addBytes(",")
+        lastSeekValue = output.getSeek()
+        output.addBytes(",")
         if options.saveBlanks
             output.addBytes("\n")
         writeIndent()
