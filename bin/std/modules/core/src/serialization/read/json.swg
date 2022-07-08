@@ -32,7 +32,50 @@ public impl JSon
         stream.init(input)
     }
 
-    mtd startElement(elem: const *Swag.TypeValue) throw
+    mtd beginSequence(data: *u8, countElem: uint, typeElem: typeinfo)->bool throw
+    {
+        zapBlanks()
+        c := stream.readU8()
+        if c != "["'u8
+            throw "malformed array (missing opening '[')"
+
+        return false
+    }
+
+    mtd endSequence() throw
+    {
+        zapBlanks()
+        c := stream.readU8()
+        if c != "]"'u8
+            throw "malformed array (missing closing ']')"
+    }
+
+    mtd toNextSequenceElement()->bool
+    {
+        zapBlanks()
+        c := stream.peekU8()
+        return c != "]"'u8
+    }
+
+    mtd beginStruct(data: *u8, type: typeinfo)->bool throw
+    {
+        zapBlanks()
+        c := stream.readU8()
+        if c != "{"'u8
+            throw "malformed struct (missing opening '{')"
+
+        return false
+    }
+
+    mtd endStruct() throw
+    {
+        zapBlanks()
+        c := stream.readU8()
+        if c != "}"'u8
+            throw "malformed struct (missing closing '}')"
+    }
+
+    mtd beginElement(elem: const *Swag.TypeValue) throw
     {
         zapBlanks()
         c := stream.readU8()
@@ -60,66 +103,7 @@ public impl JSon
     {
     }
 
-    mtd startSequence(data: *u8, countElem: uint, typeElem: typeinfo)->bool throw
-    {
-        zapBlanks()
-        c := stream.readU8()
-        if c != "["'u8
-            throw "malformed array (missing opening '[')"
-
-        return false
-    }
-
-    mtd endSequence() throw
-    {
-        zapBlanks()
-        c := stream.readU8()
-        if c != "]"'u8
-            throw "malformed array (missing closing ']')"
-    }
-
-    mtd toNextSequenceElement()->bool
-    {
-        zapBlanks()
-        c := stream.peekU8()
-        return c != "]"'u8
-    }
-
-    mtd startRoot() throw
-    {
-        zapBlanks()
-        c := stream.readU8()
-        if c != "{"'u8
-            throw "malformed root (missing opening '{')"
-    }
-
-    mtd endRoot() throw
-    {
-        zapBlanks()
-        c := stream.readU8()
-        if c != "}"'u8
-            throw "malformed root (missing closing '}')"
-    }
-
-    mtd startStruct(data: *u8, type: typeinfo)->bool throw
-    {
-        zapBlanks()
-        c := stream.readU8()
-        if c != "{"'u8
-            throw "malformed struct (missing opening '{')"
-
-        return false
-    }
-
-    mtd endStruct() throw
-    {
-        zapBlanks()
-        c := stream.readU8()
-        if c != "}"'u8
-            throw "malformed struct (missing closing '}')"
-    }
-
-    mtd startValue(type: typeinfo)
+    mtd beginValue(type: typeinfo)
     {
     }
 

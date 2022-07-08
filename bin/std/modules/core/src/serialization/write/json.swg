@@ -32,18 +32,7 @@ impl JSon
         output = buf
     }
 
-    mtd startElement(elem: const *Swag.TypeValue)
-    {
-        output.addByte("\""'u8)
-        output.addBytes(elem.name)
-        output.addBytes("\": ")
-    }
-
-    mtd endElement(elem: const *Swag.TypeValue)
-    {
-    }
-
-    mtd startSequence(typeElem: typeinfo, countElem: uint, data: const *u8)->bool
+    mtd beginSequence(typeElem: typeinfo, countElem: uint, data: const *u8)->bool
     {
         output.addBytes("[")
         if options.saveBlanks
@@ -61,7 +50,7 @@ impl JSon
         indent -= 1
     }
 
-    mtd startStruct(type: typeinfo, data: const *u8)->bool
+    mtd beginStruct(type: typeinfo, data: const *u8)->bool
     {
         output.addBytes("{")
         if options.saveBlanks
@@ -79,7 +68,18 @@ impl JSon
         indent -= 1
     }
 
-    mtd startValue(type: typeinfo)
+    mtd beginElement(elem: const *Swag.TypeValue)
+    {
+        output.addByte("\""'u8)
+        output.addBytes(elem.name)
+        output.addBytes("\": ")
+    }
+
+    mtd endElement(elem: const *Swag.TypeValue)
+    {
+    }
+
+    mtd beginValue(type: typeinfo)
     {
     }
 

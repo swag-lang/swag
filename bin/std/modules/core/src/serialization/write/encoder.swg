@@ -26,7 +26,7 @@ impl Encoder
         type := Reflection.makeConcreteAlias(dataType)
         type = Reflection.makeConcreteEnum(type)
 
-        serializer.startValue(type)
+        serializer.beginValue(type)
         defer(noerr) serializer.endValue(type, isLastValue)
 
         // Native
@@ -86,7 +86,7 @@ impl Encoder
                 valueType := structType.generics[0].pointedType
                 ptrArr    := cast(const *Array) data
 
-                treated := serializer.startSequence(valueType, ptrArr.count, cast(const *u8) ptrArr.buffer)
+                treated := serializer.beginSequence(valueType, ptrArr.count, cast(const *u8) ptrArr.buffer)
                 defer serializer.endSequence()
 
                 if !treated
@@ -103,7 +103,7 @@ impl Encoder
             }
 
             // Generic structure save
-            treated := serializer.startStruct(structType, data)
+            treated := serializer.beginStruct(structType, data)
             defer(noerr) serializer.endStruct()
             if treated
                 return
@@ -118,8 +118,8 @@ impl Encoder
 
                 var fv: TypeValue
                 fv.name = "$version"
-                serializer.startElement(fv)
-                serializer.startValue(u32)
+                serializer.beginElement(fv)
+                serializer.beginValue(u32)
                 serializer.writeU32(version)
                 serializer.endValue(u32, false)
                 serializer.endElement(fv)
@@ -139,7 +139,7 @@ impl Encoder
             // Serialize them
             visit field, i: arr
             {
-                serializer.startElement(field)
+                serializer.beginElement(field)
                 write(field.pointedType, data + field.offset, i == arr.count - 1)
                 serializer.endElement(field)
             }
@@ -151,7 +151,7 @@ impl Encoder
         if Reflection.isArray(type)
         {
             typeArr := cast(const *TypeInfoArray) type
-            treated := serializer.startSequence(typeArr.pointedType, typeArr.count, data)
+            treated := serializer.beginSequence(typeArr.pointedType, typeArr.count, data)
             defer serializer.endSequence()
             if treated
                 return

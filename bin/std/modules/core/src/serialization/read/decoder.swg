@@ -21,8 +21,8 @@ impl Decoder
             return 0
         var fv: TypeValue
         fv.name = "$version"
-        serializer.startElement(fv)
-        serializer.startValue(u32)
+        serializer.beginElement(fv)
+        serializer.beginValue(u32)
         version := serializer.readU32()
         serializer.endValue(u32)
         serializer.endElement(fv)
@@ -34,7 +34,7 @@ impl Decoder
         type := Reflection.makeConcreteAlias(dataType)
         type = Reflection.makeConcreteEnum(type)
 
-        serializer.startValue(type)
+        serializer.beginValue(type)
         defer(noerr) serializer.endValue(type)
 
         // Native
@@ -94,7 +94,7 @@ impl Decoder
             {
                 valueType := structType.generics[0].pointedType
 
-                treated := serializer.startSequence(data, 0, type)
+                treated := serializer.beginSequence(data, 0, type)
                 defer(noerr) serializer.endSequence()
 
                 if !treated
@@ -110,7 +110,7 @@ impl Decoder
             }
 
             // Generic struct load
-            treated := serializer.startStruct(data, structType)
+            treated := serializer.beginStruct(data, structType)
             defer(noerr) serializer.endStruct()
             if treated
                 return
@@ -123,7 +123,7 @@ impl Decoder
                 if Reflection.hasAttribute(field.pointedType, NoSerialize)
                     return
 
-                serializer.startElement(field)
+                serializer.beginElement(field)
                 read(data + field.offset, field.pointedType)
                 serializer.endElement(field)
             }
@@ -135,7 +135,7 @@ impl Decoder
         if Reflection.isArray(type)
         {
             typeArr := cast(const *TypeInfoArray) type
-            treated := serializer.startSequence(data, typeArr.count, typeArr.pointedType)
+            treated := serializer.beginSequence(data, typeArr.count, typeArr.pointedType)
             defer(noerr) serializer.endSequence()
             if treated
                 return
