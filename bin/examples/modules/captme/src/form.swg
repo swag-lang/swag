@@ -28,14 +28,18 @@ struct BaseForm
     x, y: s32 = 0
     w, h: s32 = 32
 
-    capture:        *Capture
-    paintPos:       Math.Rectangle
     alpha:          u8 = 100
     shadowOffset:   Math.Vector2 = @{2, 2}
     borderSize:     f32 = 5
     borderColor:    Color = Argb.White
     backColor:      Color = Argb.Red
     dashStyle:      DashStyle = None
+
+    #[Serialization.NoSerialize]
+    {
+        capture:    *Capture
+        paintPos:   Math.Rectangle
+    }
 }
 
 impl BaseForm

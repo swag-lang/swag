@@ -1,14 +1,18 @@
 struct FormLine
 {
     using base: BaseForm
-    gizmo:      GizmoPoints
     beginCap:   LineCapStyle = .Round
     endCap:     LineCapStyle = .Round
     dashCap:    DashCapStyle = .None
     startSize:  f32 = 4
     endSize:    f32 = 4
-    xa, ya, xb, yb: f32
-    x0, y0, x1, y1: f32
+
+    #[Serialization.NoSerialize]
+    {
+        gizmo:          GizmoPoints
+        xa, ya, xb, yb: f32
+        x0, y0, x1, y1: f32
+    }
 }
 
 impl IForm for FormLine

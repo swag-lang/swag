@@ -9,7 +9,11 @@ struct FormShape
 {
     using base: BaseForm
     kind:   FormShapeKind = Ellipse
-    gizmo:  GizmoRect
+
+    #[Serialization.NoSerialize]
+    {
+        gizmo: GizmoRect
+    }
 }
 
 impl IForm for FormShape

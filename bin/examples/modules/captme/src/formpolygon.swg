@@ -1,9 +1,13 @@
 struct FormPolygon
 {
     using base:     BaseForm
-    gizmo:          GizmoPoints
     points:         Array'Math.Point
-    paintPoints:    Array'Math.Point
+
+    #[Serialization.NoSerialize]
+    {
+        gizmo:          GizmoPoints
+        paintPoints:    Array'Math.Point
+    }
 }
 
 impl FormPolygon

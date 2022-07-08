@@ -113,6 +113,25 @@ impl Decoder
             if treated
                 return
 
+            // Core.Object
+            if structType.fromGeneric == @typeof(Object)
+            {
+                dataObj := cast(*Object'String) data // 'String' is fake
+                serializer.beginElement("type", structType.fields[0].pointedType)
+                read(cast(*u8) &dataObj.type, structType.fields[0].pointedType)
+                serializer.endElement()
+
+                if dataObj.type
+                {
+                    dataObj.value = acast Memory.new(dataObj.type)
+                    serializer.beginElement("value", dataObj.type)
+                    read(cast(*u8) dataObj.value, dataObj.type)
+                    serializer.endElement()
+                }
+
+                return
+            }
+
             version := readVersion()
             visit field: structType.fields
             {

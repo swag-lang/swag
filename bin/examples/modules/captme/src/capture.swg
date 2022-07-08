@@ -92,19 +92,42 @@ impl Capture
 
     mtd copy()
     {
-        var arr: Array'any
+        var arr: Array'(Object'BaseForm)
+
         visit s: selection
         {
             f := forms[s]
             mdlType := @kindof(f)
             save := cast(*BaseForm) Memory.new(mdlType)
             f.copy(save, cast(*BaseForm) @dataof(f))
-            arr.add(@mkany(save, mdlType))
+
+            var o: Object'BaseForm
+            o.type = mdlType
+            o.value = save
+            arr.emplace(&o)
         }
+
+        using Serialization
+        var buf: ConcatBuffer
+        var wri: Encoder'Write.JSon
+        wri.serializer.startWrite(&buf)
+        wri.write(@typeof(arr), acast &arr)
+        buf.makeLinear()
+
+        Clipboard.addData(editView.main.clipFmt, buf.toSlice())
     }
 
     mtd paste()
     {
+        arr := Clipboard.getData(editView.main.clipFmt)
+        if !arr.count return
+
+        using Serialization
+        var rea: Decoder'Read.JSon
+        var res: Array'(Object'BaseForm)
+        rea.serializer.startRead(arr.toSlice())
+        catch rea.read(cast(*u8) &res, Array'(Object'BaseForm))
+        if @err return
     }
 
     //////////////////////////////

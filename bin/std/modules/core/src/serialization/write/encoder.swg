@@ -79,8 +79,9 @@ impl Encoder
                 return
             }
 
-            // Core.Array
             structType := cast(const *TypeInfoStruct) type
+
+            // Core.Array
             if structType.fromGeneric == @typeof(Array)
             {
                 valueType := structType.generics[0].pointedType
@@ -107,6 +108,24 @@ impl Encoder
             defer(noerr) serializer.endStruct()
             if treated
                 return
+
+            // Core.Object
+            if structType.fromGeneric == @typeof(Object)
+            {
+                dataObj := cast(const *Object'String) data // 'String' is fake
+                serializer.beginElement("type", structType.fields[0].pointedType)
+                write(structType.fields[0].pointedType, cast(const *u8) &dataObj.type)
+                serializer.endElement()
+
+                if dataObj.value
+                {
+                    serializer.beginElement("value", structType.fields[0].pointedType)
+                    write(dataObj.type, cast(const *u8) dataObj.value)
+                    serializer.endElement()
+                }
+
+                return
+            }
 
             // Write version number
             if options.storeVersion

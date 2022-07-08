@@ -1,19 +1,22 @@
 struct FormText
 {
     using base: BaseForm
-
-    gizmo:      GizmoRect
     fontSize:   f32 = 48
     boldSize:   f32 = 0
     text:       String
-    isDirty:    bool
-    typeFace:   const *TypeFace
-    cacheFace:  const *TypeFace
-    cachebSize: f32
-    cachesSize: f32
-    cachefSize: f32
 
-    pathl, pathl1: LinePathList
+    #[Serialization.NoSerialize]
+    {
+        gizmo:      GizmoRect
+        isDirty:    bool
+        typeFace:   const *TypeFace
+        cacheFace:  const *TypeFace
+        cachebSize: f32
+        cachesSize: f32
+        cachefSize: f32
+
+        pathl, pathl1: LinePathList
+    }
 }
 
 impl IForm for FormText

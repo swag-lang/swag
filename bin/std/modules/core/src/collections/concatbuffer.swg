@@ -244,4 +244,38 @@ impl ConcatBuffer
         currentSP  = seek.sp
         totalCount = seek.totalCount
     }
+
+    // Convert to a slice *only* if the buffer is linear (see 'makeLinear')
+    mtd toSlice()->[..] u8
+    {
+        if lastBucket == firstBucket and !lastBucket.next
+            return @mkslice(firstBucket.datas, bucketCount(firstBucket))
+        return null
+    }
+
+    // Make all buckets one single bucket
+    mtd makeLinear()
+    {
+        // Already linear (and only one single bucket)
+        if lastBucket == firstBucket and !lastBucket.next
+            return
+
+        total := count()
+        newDatas := Memory.alloc(total, allocator)
+
+        curPtr := newDatas
+        visit b: dref self
+        {
+            count := bucketCount(b)
+            Memory.copy(curPtr, b.datas, count)
+            curPtr += count
+        }
+
+        release()
+
+        firstBucket = cast(*ConcatBufferBucket) Memory.alloc(cast(uint) @sizeof(ConcatBufferBucket), allocator)
+        firstBucket.datas = newDatas
+        firstBucket.size  = total
+        currentSP = firstBucket.datas + firstBucket.size
+    }
 }
