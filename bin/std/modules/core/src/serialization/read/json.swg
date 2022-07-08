@@ -75,7 +75,7 @@ public impl JSon
             throw "malformed struct (missing closing '}')"
     }
 
-    mtd beginElement(elem: const *Swag.TypeValue) throw
+    mtd beginElement(name: string, type: typeinfo) throw
     {
         zapBlanks()
         c := stream.readU8()
@@ -99,7 +99,7 @@ public impl JSon
             throw "malformed property (missing ':' after name)"
     }
 
-    mtd endElement(elem: const *Swag.TypeValue)
+    mtd endElement()
     {
     }
 
@@ -107,7 +107,7 @@ public impl JSon
     {
     }
 
-    mtd endValue(type: typeinfo)
+    mtd endValue()
     {
         zapBlanks()
         c := stream.peekU8()

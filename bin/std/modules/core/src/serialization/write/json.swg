@@ -68,14 +68,14 @@ impl JSon
         indent -= 1
     }
 
-    mtd beginElement(elem: const *Swag.TypeValue)
+    mtd beginElement(name: string, type: typeinfo)
     {
         output.addByte("\""'u8)
-        output.addBytes(elem.name)
+        output.addBytes(name)
         output.addBytes("\": ")
     }
 
-    mtd endElement(elem: const *Swag.TypeValue)
+    mtd endElement()
     {
     }
 
@@ -83,7 +83,7 @@ impl JSon
     {
     }
 
-    mtd endValue(type: typeinfo, isLast: bool)
+    mtd endValue(isLast: bool)
     {
         if !isLast
             output.addBytes(",")

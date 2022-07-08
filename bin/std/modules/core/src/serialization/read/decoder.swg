@@ -19,13 +19,11 @@ impl Decoder
     {
         if !options.hasVersion
             return 0
-        var fv: TypeValue
-        fv.name = "$version"
-        serializer.beginElement(fv)
+        serializer.beginElement("$version", u32)
         serializer.beginValue(u32)
         version := serializer.readU32()
-        serializer.endValue(u32)
-        serializer.endElement(fv)
+        serializer.endValue()
+        serializer.endElement()
         return version
     }
 
@@ -35,7 +33,7 @@ impl Decoder
         type = Reflection.makeConcreteEnum(type)
 
         serializer.beginValue(type)
-        defer(noerr) serializer.endValue(type)
+        defer(noerr) serializer.endValue()
 
         // Native
         if type.kind == .Native
@@ -123,9 +121,9 @@ impl Decoder
                 if Reflection.hasAttribute(field.pointedType, NoSerialize)
                     return
 
-                serializer.beginElement(field)
+                serializer.beginElement(field.name, field.pointedType)
                 read(data + field.offset, field.pointedType)
-                serializer.endElement(field)
+                serializer.endElement()
             }
 
             return

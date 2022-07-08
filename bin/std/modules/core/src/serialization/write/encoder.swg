@@ -27,7 +27,7 @@ impl Encoder
         type = Reflection.makeConcreteEnum(type)
 
         serializer.beginValue(type)
-        defer(noerr) serializer.endValue(type, isLastValue)
+        defer(noerr) serializer.endValue(isLastValue)
 
         // Native
         if type.kind == .Native
@@ -116,13 +116,11 @@ impl Encoder
                 if val != null
                     version = cast(u32) val
 
-                var fv: TypeValue
-                fv.name = "$version"
-                serializer.beginElement(fv)
+                serializer.beginElement("$version", u32)
                 serializer.beginValue(u32)
                 serializer.writeU32(version)
-                serializer.endValue(u32, false)
-                serializer.endElement(fv)
+                serializer.endValue(false)
+                serializer.endElement()
             }
 
             // Get all fields to serialize
@@ -139,9 +137,9 @@ impl Encoder
             // Serialize them
             visit field, i: arr
             {
-                serializer.beginElement(field)
+                serializer.beginElement(field.name, field.pointedType)
                 write(field.pointedType, data + field.offset, i == arr.count - 1)
-                serializer.endElement(field)
+                serializer.endElement()
             }
 
             return
