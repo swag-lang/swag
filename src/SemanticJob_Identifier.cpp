@@ -1913,7 +1913,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                 }
                 else if (overload->typeInfo->kind == TypeInfoKind::Struct)
                 {
-                    auto couldBe    = Fmt(Nte(Nte0049), overload->symbol->name.c_str(), overload->typeInfo->getDisplayNameC());
+                    auto couldBe    = Fmt(Nte(Nte0049), overload->typeInfo->getDisplayNameC());
                     note            = new Diagnostic{overload->node, couldBe, DiagnosticLevel::NotePack};
                     auto typeStruct = CastTypeInfo<TypeInfoStruct>(overload->typeInfo, TypeInfoKind::Struct);
                     note->remarks.push_back(Ast::computeGenericParametersReplacement(typeStruct->genericParameters));
