@@ -139,7 +139,7 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo
     SWAG_ASSERT(!typeName.empty());
     SWAG_CHECK(makeConcreteString(context, &concreteTypeInfoValue->fullName, nonPartialTypeName, storageSegment, OFFSETOF(concreteTypeInfoValue->fullName)));
     SWAG_CHECK(makeConcreteString(context, &concreteTypeInfoValue->name, typeInfo->getName(), storageSegment, OFFSETOF(concreteTypeInfoValue->name)));
-    concreteTypeInfoValue->crc32 = Crc32::compute((const char *) concreteTypeInfoValue->fullName.buffer, (uint32_t) concreteTypeInfoValue->fullName.count);
+    concreteTypeInfoValue->crc32 = Crc32::compute((const char*) concreteTypeInfoValue->fullName.buffer, (uint32_t) concreteTypeInfoValue->fullName.count);
 
     if (typeInfo->flags & TYPEINFO_FUNC_IS_ATTR)
         concreteTypeInfoValue->kind = TypeInfoKind::Attribute;
@@ -275,7 +275,7 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo
             auto     addrArray = (ConcreteTypeInfoParam*) makeConcreteSlice(context, count * sizeof(ConcreteTypeInfoParam), concreteTypeInfoValue, storageSegment, storageOffset, &concreteType->parameters.buffer, storageArray);
             for (int param = firstParam; param < realType->parameters.size(); param++)
             {
-                SWAG_CHECK(makeConcreteParam(context, addrArray + param, storageSegment, storageArray, realType->parameters[param], cflags));
+                SWAG_CHECK(makeConcreteParam(context, addrArray + param - firstParam, storageSegment, storageArray, realType->parameters[param], cflags));
                 storageArray += sizeof(ConcreteTypeInfoParam);
             }
         }
