@@ -383,7 +383,7 @@ impl QuickWnd
         }
 
         // The button with the current model
-        btn := cast(*QuickButton) Wnd.create'QuickButton(layout, null, @{0, 0, 64, 64})
+        btn := Wnd.create'QuickButton(layout, null, @{0, 0, 64, 64})
         btn.setForm(.RoundSquare)
         btn.style.addStyleSheetColors("btnIcon_Bk          0x0")
         btn.style.addStyleSheetColors("btnIcon_HotBk       0x0")
