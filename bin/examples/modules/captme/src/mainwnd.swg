@@ -300,6 +300,7 @@ impl MainWnd
     {
         if editMode == .Favorites
         {
+            #[Swag.Complete]
             switch @kindof(favoriteMdl)
             {
             case FormShape:     return EditMode.Shape

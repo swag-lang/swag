@@ -142,6 +142,8 @@ impl Capture
         visit &o, idx: res
         {
             var itf: IForm
+
+            #[Swag.Complete]
             switch o.type
             {
             case FormShape:
@@ -612,6 +614,7 @@ impl Capture
 
         if main.editMode == .Favorites
         {
+            #[Swag.Complete]
             switch t
             {
             case FormShape:
@@ -628,6 +631,7 @@ impl Capture
         }
         else
         {
+            #[Swag.Complete]
             switch t
             {
             case FormShape:
@@ -651,6 +655,8 @@ impl Capture
 
         f := forms[selection.back()]
         t := @kindof(f)
+
+        #[Swag.Complete]
         switch t
         {
         case FormShape:

@@ -215,6 +215,8 @@ impl QuickWnd
         {
             type := @kindof(it)
             btn  := cast(*IconButton) layout.childs[i]
+
+            #[Swag.Complete]
             switch type
             {
             case FormArrow:
@@ -311,6 +313,8 @@ impl QuickWnd
                     return
 
                 type := @kindof(it)
+
+                #[Swag.Complete]
                 switch type
                 {
                 case FormShape:
@@ -338,6 +342,8 @@ impl QuickWnd
                 if self.main.editMode != .Favorites
                 {
                     var mdlValue: *BaseForm
+
+                    #[Swag.Complete]
                     switch type
                     {
                     case FormShape:
