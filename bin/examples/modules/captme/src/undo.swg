@@ -292,10 +292,13 @@ impl Undo
             }
 
         case DeleteSelection:
+            selection.sort()
+            offset := 0
             visit s: selection
             {
-                f := capture.forms[s]
-                capture.forms.remove(f)
+                f := capture.forms[s - offset]
+                offset += 1
+                capture.forms.removeOrdered(f)
             }
 
             capture.selection.clear()

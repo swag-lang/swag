@@ -345,7 +345,8 @@ impl Capture
         }
 
         menu.addSeparator()
-        menu.addItem(CmdIdCopyAll)
+        menu.addItem(CmdIdCopyAsImage)
+        menu.addItem(CmdIdSelectAll)
 
         discard menu.doModal(pos)
         view.setFocus()
