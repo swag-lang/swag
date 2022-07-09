@@ -921,6 +921,12 @@ const SM_CARETBLINKINGENABLED   = 0x2002
 const SM_CONVERTIBLESLATEMODE   = 0x2003
 const SM_SYSTEMDOCKED           = 0x2004
 
+const LWA_COLORKEY = 0x00000001
+const LWA_ALPHA    = 0x00000002
+
+func GET_X_LPARAM(lp: LPARAM) => cast(s32) LOWORD(lp)
+func GET_Y_LPARAM(lp: LPARAM) => cast(s32) HIWORD(lp)
+
 #[Foreign("user32")]
 {
     func GetAsyncKeyState(vKey: s32)->SHORT;
@@ -969,6 +975,9 @@ const SM_SYSTEMDOCKED           = 0x2004
 
 #[Foreign("user32"), Discardable]
 {
+    func FillRect(hDC: HDC, lprc: const *RECT, hbr: HBRUSH)->s32;
+    func GetClientRect(hWnd: HWND, lpRect: *RECT)->BOOL;
+
     func ShowWindow(hWnd: HWND, nCmdShow: s32)->BOOL;
     func EnableWindow(hWnd: HWND, bEnable: BOOL)->BOOL;
     func MessageBoxA(hWnd: HWND, lpText: LPCSTR, lpCaption: LPCSTR, uType: u32)->s32;

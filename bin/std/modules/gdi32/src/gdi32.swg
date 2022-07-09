@@ -115,6 +115,24 @@ const FW_DEMIBOLD         = FW_SEMIBOLD
 const FW_ULTRABOLD        = FW_EXTRABOLD
 const FW_BLACK            = FW_HEAVY
 
+const WHITE_BRUSH         = 0
+const LTGRAY_BRUSH        = 1
+const GRAY_BRUSH          = 2
+const DKGRAY_BRUSH        = 3
+const BLACK_BRUSH         = 4
+const NULL_BRUSH          = 5
+const HOLLOW_BRUSH        = NULL_BRUSH
+const WHITE_PEN           = 6
+const BLACK_PEN           = 7
+const NULL_PEN            = 8
+const OEM_FIXED_FONT      = 10
+const ANSI_FIXED_FONT     = 11
+const ANSI_VAR_FONT       = 12
+const SYSTEM_FONT         = 13
+const DEVICE_DEFAULT_FONT = 14
+const DEFAULT_PALETTE     = 15
+const SYSTEM_FIXED_FONT   = 16
+
 struct LOGFONTA
 {
     lfHeight:           LONG
@@ -205,6 +223,7 @@ alias FONTENUMPROCW = func(const *LOGFONTW, const *TEXTMETRICW, DWORD, LPARAM)->
 #[Foreign("Gdi32")]
 {
     func GetPixel(hdc: HDC, x, y: s32)->COLORREF;
+    func GetStockObject(i: s32)->HGDIOBJ;
 }
 
 #[Foreign("Gdi32"), Swag.Discardable]
