@@ -302,7 +302,8 @@ impl Undo
             capture.selectionHasChanged()
 
         case CreateForm:
-            capture.forms.add(oldForms[0])
+            visit f: oldForms
+                capture.forms.add(f)
         }
     }
 
@@ -375,8 +376,12 @@ impl Undo
             capture.selectionHasChanged()
 
         case CreateForm:
-            capture.selection.remove(capture.forms.count - 1)
-            capture.forms.removeBack()
+            loop oldForms
+            {
+                capture.selection.remove(capture.forms.count - 1)
+                capture.forms.removeBack()
+            }
+
             capture.selectionHasChanged()
         }
     }

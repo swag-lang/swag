@@ -99,9 +99,13 @@ impl Capture
         {
             f       := forms[s]
             mdlType := @kindof(f)
+            base    := cast(*BaseForm) @dataof(f)
 
             save := o.alloc(mdlType)
-            f.copy(save, cast(*BaseForm) @dataof(f))
+            Memory.copy(save, base, mdlType.sizeof)
+            if mdlType.opPostCopy
+                mdlType.opPostCopy(save)
+
             o.type = mdlType
             o.value = save
             arr.emplace(&o)
@@ -113,33 +117,74 @@ impl Capture
         wri.serializer.startWrite(&buf)
         wri.write(@typeof(arr), acast &arr)
         buf.makeLinear()
-
         Clipboard.addData(editView.main.clipFmt, buf.toSlice())
     }
 
     mtd paste()
     {
         arr := Clipboard.getData(editView.main.clipFmt)
-        if !arr.count return
+        if !arr.count
+            return
 
         using Serialization
         var rea: Decoder'Read.JSon
         var res: Array'(Object'BaseForm)
         rea.serializer.startRead(arr.toSlice())
         catch rea.read(cast(*u8) &res, Array'(Object'BaseForm))
-        if @err return
+        if @err or !res.count
+            return
 
-        pt := editView.getApp().mouse.getPosition()
+        undo := newUndo(.CreateForm)
+        selection.clear()
 
-        visit o: res
+        var boundRect: Math.Rectangle
+
+        visit &o, idx: res
         {
+            var itf: IForm
             switch o.type
             {
+            case FormShape:
+                itf = cast(IForm) cast(*FormShape) o.value
             case FormLine:
-                itf := cast(IForm) cast(*FormLine) o.value
-                forms.add(itf)
+                itf = cast(IForm) cast(*FormLine) o.value
+            case FormArrow:
+                itf = cast(IForm) cast(*FormArrow) o.value
+            case FormText:
+                itf = cast(IForm) cast(*FormText) o.value
+            case FormPolygon:
+                itf = cast(IForm) cast(*FormPolygon) o.value
             }
+
+            itf.setup(self)
+            if idx == 0
+                boundRect = itf.boundRect()
+            else
+                boundRect.setUnion(itf.boundRect())
+            undo.oldForms.add(itf)
+            o.value = null
         }
+
+        // Move around mouse
+        pt := editView.getApp().mouse.getPosition()
+        pt = editView.screenToSurface(pt)
+        pt = editView.surfaceToLocal(pt)
+        pt += editView.scrollPos
+        pt.x -= paintRect.x
+        pt.y -= paintRect.y
+        zoom := paintRect.width / width
+        pt.x /= zoom
+        pt.y /= zoom
+
+        visit itf: undo.oldForms
+        {
+            bound := itf.boundRect()
+            dx := -boundRect.x + pt.x - (boundRect.width * 0.5)
+            dy := -boundRect.y + pt.y - (boundRect.height * 0.5)
+            itf.moveForm(acast dx, acast dy)
+        }
+
+        pushUndo(undo)
     }
 
     //////////////////////////////

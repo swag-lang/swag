@@ -104,8 +104,7 @@ impl ConcatBuffer
         // Need to allocate a new bucket
         if allocator == null
             allocator = @getcontext().allocator
-        newBucket := cast(*ConcatBufferBucket) Memory.alloc(cast(uint) @sizeof(ConcatBufferBucket), allocator)
-        @init(newBucket)
+        newBucket := Memory.new'ConcatBufferBucket(allocator)
         if lastBucket
             lastBucket.next = newBucket
         else
@@ -271,11 +270,14 @@ impl ConcatBuffer
             curPtr += count
         }
 
-        release()
+        Debug.assert(curPtr == newDatas + total)
+        clear()
 
-        firstBucket = cast(*ConcatBufferBucket) Memory.alloc(cast(uint) @sizeof(ConcatBufferBucket), allocator)
+        // Make one single bucket
+        firstBucket = Memory.new'ConcatBufferBucket(allocator)
         firstBucket.datas = newDatas
         firstBucket.size  = total
+        lastBucket = firstBucket
         currentSP = firstBucket.datas + firstBucket.size
     }
 }
