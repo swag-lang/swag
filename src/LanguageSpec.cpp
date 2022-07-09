@@ -135,6 +135,7 @@ void LanguageSpec::setupNames()
     name_function   = "function";
     name_boundcheck = "boundcheck";
     name_overflow   = "overflow";
+    name_switch     = "switch";
     name_math       = "math";
     name_castany    = "castany";
     name_bytecode   = "bytecode";

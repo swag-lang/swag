@@ -365,12 +365,7 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
         auto back = node->cases.back();
         SWAG_VERIFY(!back->expressions.empty(), context->report(back, Err(Err0616)));
 
-        if (node->typeInfo->kind != TypeInfoKind::Enum && !node->beforeAutoCastType)
-            return context->report(node, Fmt(Err(Err0617), node->typeInfo->getDisplayNameC()));
-        if (node->beforeAutoCastType)
-            return context->report(node, Fmt(Err(Err0617), node->beforeAutoCastType->getDisplayNameC()));
-
-        if (node->typeInfo->kind == TypeInfoKind::Enum)
+        if (node->typeInfo->kind == TypeInfoKind::Enum && !node->beforeAutoCastType)
         {
             auto typeEnum = CastTypeInfo<TypeInfoEnum>(node->typeInfo, TypeInfoKind::Enum);
             if (typeSwitch->isNative(NativeTypeKind::String))
@@ -406,7 +401,12 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
         }
         else
         {
-            SWAG_ASSERT(false);
+            auto caseNode = Ast::newNode<AstSwitchCase>(nullptr, AstNodeKind::SwitchCase, context->sourceFile, node);
+            caseNode->flags |= AST_GENERATED;
+            caseNode->specFlags   = AST_SPEC_SWITCHCASE_ISDEFAULT;
+            caseNode->ownerSwitch = node;
+            node->cases.push_back(caseNode);
+            caseNode->byteCodeFct = ByteCodeGenJob::emitSafetySwitchDefault;
         }
     }
 

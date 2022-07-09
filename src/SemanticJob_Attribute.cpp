@@ -225,9 +225,13 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
         INHERIT(forNode, ATTRIBUTE_SAFETY_CASTANY_ON | ATTRIBUTE_SAFETY_CASTANY_OFF);
         INHERIT(forNode, ATTRIBUTE_SAFETY_MATH_ON | ATTRIBUTE_SAFETY_MATH_OFF);
         INHERIT(forNode, ATTRIBUTE_SAFETY_OVERFLOW_ON | ATTRIBUTE_SAFETY_OVERFLOW_OFF);
+        INHERIT(forNode, ATTRIBUTE_SAFETY_SWITCH_ON | ATTRIBUTE_SAFETY_SWITCH_OFF);
+
         INHERIT(forNode, ATTRIBUTE_OPTIM_BACKEND_ON | ATTRIBUTE_OPTIM_BACKEND_OFF);
         INHERIT(forNode, ATTRIBUTE_OPTIM_BYTECODE_ON | ATTRIBUTE_OPTIM_BYTECODE_OFF);
+
         INHERIT(forNode, ATTRIBUTE_SELECTIF_MASK);
+
         if (!(forNode->flags & AST_PRIVATE))
             INHERIT(forNode, ATTRIBUTE_EXPOSE_MASK);
 
@@ -377,6 +381,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                     flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_OVERFLOW_ON : ATTRIBUTE_SAFETY_OVERFLOW_OFF;
                     flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_MATH_ON : ATTRIBUTE_SAFETY_MATH_OFF;
                     flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_CASTANY_ON : ATTRIBUTE_SAFETY_CASTANY_OFF;
+                    flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_SWITCH_ON : ATTRIBUTE_SAFETY_SWITCH_OFF;
                 }
 
                 for (auto& w : what)
@@ -391,6 +396,11 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                     {
                         flags &= ~(ATTRIBUTE_SAFETY_OVERFLOW_ON | ATTRIBUTE_SAFETY_OVERFLOW_OFF);
                         flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_OVERFLOW_ON : ATTRIBUTE_SAFETY_OVERFLOW_OFF;
+                    }
+                    else if (w == g_LangSpec->name_switch)
+                    {
+                        flags &= ~(ATTRIBUTE_SAFETY_SWITCH_ON | ATTRIBUTE_SAFETY_SWITCH_OFF);
+                        flags |= attrValue->reg.b ? ATTRIBUTE_SAFETY_SWITCH_ON : ATTRIBUTE_SAFETY_SWITCH_OFF;
                     }
                     else if (w == g_LangSpec->name_math)
                     {

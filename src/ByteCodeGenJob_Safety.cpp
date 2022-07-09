@@ -113,6 +113,16 @@ void ByteCodeGenJob::emitSafetyNotZero(ByteCodeGenContext* context, uint32_t r, 
     emitInstruction(context, ByteCodeOp::InternalPanic)->d.pointer = (uint8_t*) message;
 }
 
+bool ByteCodeGenJob::emitSafetySwitchDefault(ByteCodeGenContext* context)
+{
+    if (context->contextFlags & BCC_FLAG_NOSAFETY)
+        return true;
+    if (!context->sourceFile->module->mustEmitSafety(context->node->parent, ATTRIBUTE_SAFETY_SWITCH_ON, ATTRIBUTE_SAFETY_SWITCH_OFF))
+        return true;
+    emitInstruction(context, ByteCodeOp::InternalPanic)->d.pointer = (uint8_t*) Err(Err0246);
+    return true;
+}
+
 void ByteCodeGenJob::emitSafetyLeftShift(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, TypeInfo* typeInfo)
 {
     if (!mustEmitSafety(context, ATTRIBUTE_SAFETY_OVERFLOW_ON, ATTRIBUTE_SAFETY_OVERFLOW_OFF))
