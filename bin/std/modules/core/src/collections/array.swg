@@ -205,18 +205,13 @@ impl Array
 
         newBuffer := cast(*T) Memory.realloc(buffer, newCapacity * @sizeof(T), capacity * @sizeof(T), allocator)
 
-        // Need to call opPostMove/opPostCopy on every existing element if the buffer has not been reallocated
+        // Need to call opPostMove on every existing element if the buffer has not been reallocated
         // in place
-        if buffer and newBuffer != buffer
+        #if Reflection.hasPostMove(T)
         {
-            #if Reflection.hasPostMove(T)
+            if buffer and newBuffer != buffer
             {
                 @postmove(newBuffer, count)
-            }
-            #elif Reflection.canCopy(T)
-            {
-                @postcopy(newBuffer, count)
-                @drop(buffer, count)
             }
         }
 

@@ -2380,7 +2380,7 @@ bool TypeManager::castToInterface(SemanticContext* context, TypeInfo* toType, Ty
                 fromNode->allocateExtension();
                 fromNode->extension->castOffset = itfRef.fieldOffset;
                 fromNode->extension->castItf    = itfRef.itf;
-                fromNode->castedTypeInfo        = typeStruct;
+                fromNode->castedTypeInfo        = fromType;
                 fromNode->typeInfo              = toTypeItf;
             }
 
@@ -2639,45 +2639,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
 
     // Struct pointer to interface pointer
     if (fromType->isPointerTo(TypeInfoKind::Struct) && toType->isPointerTo(TypeInfoKind::Interface))
-    {
-        auto fromTypePointer = CastTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer);
-        auto toTypeItf       = CastTypeInfo<TypeInfoStruct>(toTypePointer->pointedType, TypeInfoKind::Interface);
-        auto fromTypeStruct  = CastTypeInfo<TypeInfoStruct>(fromTypePointer->pointedType, TypeInfoKind::Struct);
-
-        InterfaceRef itfRef;
-        SWAG_CHECK(collectInterface(context, fromTypeStruct, toTypeItf, itfRef));
-        if (context->result != ContextResult::Done)
-        {
-            SWAG_ASSERT(castFlags & CASTFLAG_ACCEPT_PENDING);
-            return true;
-        }
-
-        if (!itfRef.itf)
-            return castError(context, toType, fromType, fromNode, castFlags);
-
-        if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
-        {
-            fromNode->allocateExtension();
-
-            // We will copy the value to the stack to be sure that the memory layout is correct, without relying on
-            // registers being contiguous, and not being reallocated (by an optimize pass).
-            // This is the same problem when casting to 'any'.
-            // See ByteCodeGenJob::emitCastToInterface
-            if (fromNode->ownerFct)
-            {
-                fromNode->extension->stackOffset = fromNode->ownerScope->startStackSize;
-                fromNode->ownerScope->startStackSize += 2 * sizeof(Register);
-                SemanticJob::setOwnerMaxStackSize(fromNode, fromNode->ownerScope->startStackSize);
-            }
-
-            fromNode->castedTypeInfo        = fromType;
-            fromNode->typeInfo              = toTypeItf;
-            fromNode->extension->castOffset = itfRef.fieldOffset;
-            fromNode->extension->castItf    = itfRef.itf;
-        }
-
-        return true;
-    }
+        return castError(context, toType, fromType, fromNode, castFlags);
 
     // String to const *u8
     if (fromType->isNative(NativeTypeKind::String))

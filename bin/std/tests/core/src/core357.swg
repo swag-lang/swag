@@ -30,7 +30,7 @@ struct Toto
     wri.write(&buf, toto)
 
     str := buf.toString()
-    Console.print(str, "\n")
+    //Console.print(str, "\n")
 
     var rea: Decoder'Read.JSon
     v := try rea.read'Toto(str.toSlice())
@@ -40,5 +40,5 @@ struct Toto
     @assert(v.a.value.y == 2)
     @assert(v.a.value.z == 3)
 
-    Console.print(dref v, "\n")
+    //Console.print(dref v, "\n")
 }

@@ -16,11 +16,13 @@ impl Object
             Memory.delete(value, type)
     }
 
-    mtd alloc(type: typeinfo)
+    #[Swag.Discardable]
+    mtd alloc(type: typeinfo)->*T
     {
         @drop(self)
         self.type = #self.type
         self.value = acast Memory.new(#self.type)
+        return self.value
     }
 
     mtd free()

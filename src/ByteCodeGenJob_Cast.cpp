@@ -119,32 +119,7 @@ bool ByteCodeGenJob::emitCastToInterface(ByteCodeGenContext* context, AstNode* e
 
     // :ItfIsConstantSeg
     emitMakeSegPointer(context, &node->sourceFile->module->constantSegment, exprNode->extension->castItf->offset, exprNode->resultRegisterRC[1]);
-
-    // We need to emit a pointer, so we emit a pointer to the interface that is stored in the 2 contiguous registers
-    if (fromPointer)
-    {
-        auto r0                    = reserveRegisterRC(context);
-        node->additionalRegisterRC = exprNode->resultRegisterRC;
-        node->resultRegisterRC     = r0;
-
-        // Like 'any', we go to the stack inside a function, to not rely on register order.
-        // That way, we can reallocate registers.
-        // See ByteCodeGenJob::emitCastToNativeAny
-        if (node->ownerFct)
-        {
-            emitInstruction(context, ByteCodeOp::SetAtStackPointer64, node->extension->stackOffset, node->additionalRegisterRC[0]);
-            emitInstruction(context, ByteCodeOp::SetAtStackPointer64, node->extension->stackOffset + 8, node->additionalRegisterRC[1]);
-            emitInstruction(context, ByteCodeOp::MakeStackPointer, r0, node->extension->stackOffset);
-        }
-        else
-        {
-            emitInstruction(context, ByteCodeOp::CopyRBAddrToRA2, r0, node->additionalRegisterRC[0], node->additionalRegisterRC[1]);
-        }
-    }
-
-    // Otherwise we emit the interface in 2 separate registers
-    else
-        node->resultRegisterRC = exprNode->resultRegisterRC;
+    node->resultRegisterRC = exprNode->resultRegisterRC;
 
     return true;
 }

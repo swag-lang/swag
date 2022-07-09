@@ -19,6 +19,7 @@ impl BB for AA
     }
 }
 
+//#[Swag.PrintBc]
 #test
 {
     var x: AA

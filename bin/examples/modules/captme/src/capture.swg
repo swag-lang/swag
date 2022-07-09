@@ -93,15 +93,15 @@ impl Capture
     mtd copy()
     {
         var arr: Array'(Object'BaseForm)
+        var o:   Object'BaseForm
 
         visit s: selection
         {
-            f := forms[s]
+            f       := forms[s]
             mdlType := @kindof(f)
-            save := cast(*BaseForm) Memory.new(mdlType)
-            f.copy(save, cast(*BaseForm) @dataof(f))
 
-            var o: Object'BaseForm
+            save := o.alloc(mdlType)
+            f.copy(save, cast(*BaseForm) @dataof(f))
             o.type = mdlType
             o.value = save
             arr.emplace(&o)
@@ -128,6 +128,18 @@ impl Capture
         rea.serializer.startRead(arr.toSlice())
         catch rea.read(cast(*u8) &res, Array'(Object'BaseForm))
         if @err return
+
+        pt := editView.getApp().mouse.getPosition()
+
+        visit o: res
+        {
+            switch o.type
+            {
+            case FormLine:
+                itf := cast(IForm) cast(*FormLine) o.value
+                forms.add(itf)
+            }
+        }
     }
 
     //////////////////////////////

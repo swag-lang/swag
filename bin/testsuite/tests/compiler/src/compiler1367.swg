@@ -33,7 +33,7 @@ impl IIncrementable for TITI
 impl TITI
 {
     //#[Swag.PrintBc]
-    func Loop(x: *IIncrementable)
+    func Loop(x: IIncrementable)
     {
         while !x.done()
             x.decr()
