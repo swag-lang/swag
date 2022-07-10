@@ -213,6 +213,8 @@ impl Undo
             baseForm.moveBaseForm(newPosX, newPosY, newSizeX, newSizeY)
 
         case MoveCapture:
+            capture.backImagePos.x += newPosX
+            capture.backImagePos.y += newPosY
             visit f: capture.forms
                 f.moveForm(newPosX, newPosY)
             capture.width  += newSizeX
@@ -361,6 +363,8 @@ impl Undo
             b.h -= newSizeY
 
         case MoveCapture:
+            capture.backImagePos.x += -newPosX
+            capture.backImagePos.y += -newPosY
             visit f: capture.forms
                 f.moveForm(-newPosX, -newPosY)
             capture.width  -= newSizeX

@@ -184,14 +184,6 @@ impl IWnd for EditView
 
 impl EditView
 {
-    mtd setCapture(c: *Capture)
-    {
-        capture = c
-        capture.setup(self)
-        setZoom(2)
-        invalidate()
-    }
-
     mtd getCaptureRect()->Math.Rectangle
     {
         var captureRect: retval
@@ -208,6 +200,17 @@ impl EditView
         zoom = Math.clamp(z, 0.1, 2.0)
         captureRect := getCaptureRect()
         scroll.setScrollSize(captureRect.width + 64, captureRect.height + 64)
+        invalidate()
+    }
+
+    mtd setCapture(c: *Capture)
+    {
+        if capture
+            Memory.delete(capture)
+        capture = c
+        if capture
+            capture.setup(self)
+        setZoom(1)
         invalidate()
     }
 }

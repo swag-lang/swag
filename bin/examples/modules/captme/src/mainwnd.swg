@@ -42,6 +42,11 @@ impl IWnd for MainWnd
 
         switch evt.id
         {
+        case CmdIdCapture:
+            evt.setFlags |= .Name
+            evt.name = "Capture"
+            evt.accepted = true
+
         case CmdIdSelectAll:
             evt.setFlags |= .Disabled | .Name
             evt.disabled = !capture
@@ -200,6 +205,9 @@ impl IWnd for MainWnd
         var undo: *Undo
         switch evt.id
         {
+        case CmdIdCapture:
+            captureScreen()
+
         case CmdIdSelectAll:
             capture.selection.clear()
             loop capture.forms
@@ -353,17 +361,18 @@ impl MainWnd
 
     mtd registerShortcuts()
     {
-        registerKeyShortcut(Input.KeyModifiers.Control,   Input.Key.C,      CmdIdCopy)
-        registerKeyShortcut(Input.KeyModifiers.Control,   Input.Key.V,      CmdIdPaste)
-        registerKeyShortcut(Input.KeyModifiers.Control,   Input.Key.Insert, CmdIdCopy)
-        registerKeyShortcut(Input.KeyModifiers.Shift,     Input.Key.Insert, CmdIdPaste)
-        registerKeyShortcut(Input.KeyModifiers.Control,   Input.Key.Z,      CmdIdUndo)
-        registerKeyShortcut(Input.KeyModifiers.Control,   Input.Key.Y,      CmdIdRedo)
-        registerKeyShortcut(Input.KeyModifiers.CtrlShift, Input.Key.F,      CmdIdBringForward)
-        registerKeyShortcut(Input.KeyModifiers.CtrlShift, Input.Key.B,      CmdIdSendBackward)
-        registerKeyShortcut(Input.KeyModifiers.None,      Input.Key.Delete, CmdIdDeleteSelection)
-        registerKeyShortcut(Input.KeyModifiers.CtrlShift, Input.Key.A,      CmdIdCopyAsImage)
-        registerKeyShortcut(Input.KeyModifiers.Control,   Input.Key.A,      CmdIdSelectAll)
+        registerKeyShortcut(Input.KeyModifiers.Control,   Input.Key.PrintScreen,    CmdIdCapture)
+        registerKeyShortcut(Input.KeyModifiers.Control,   Input.Key.C,              CmdIdCopy)
+        registerKeyShortcut(Input.KeyModifiers.Control,   Input.Key.V,              CmdIdPaste)
+        registerKeyShortcut(Input.KeyModifiers.Control,   Input.Key.Insert,         CmdIdCopy)
+        registerKeyShortcut(Input.KeyModifiers.Shift,     Input.Key.Insert,         CmdIdPaste)
+        registerKeyShortcut(Input.KeyModifiers.Control,   Input.Key.Z,              CmdIdUndo)
+        registerKeyShortcut(Input.KeyModifiers.Control,   Input.Key.Y,              CmdIdRedo)
+        registerKeyShortcut(Input.KeyModifiers.CtrlShift, Input.Key.F,              CmdIdBringForward)
+        registerKeyShortcut(Input.KeyModifiers.CtrlShift, Input.Key.B,              CmdIdSendBackward)
+        registerKeyShortcut(Input.KeyModifiers.None,      Input.Key.Delete,         CmdIdDeleteSelection)
+        registerKeyShortcut(Input.KeyModifiers.CtrlShift, Input.Key.A,              CmdIdCopyAsImage)
+        registerKeyShortcut(Input.KeyModifiers.Control,   Input.Key.A,              CmdIdSelectAll)
     }
 
     mtd updateState()
@@ -376,6 +385,19 @@ impl MainWnd
     mtd getCapture()->*Capture
     {
         return editWnd.editView.capture
+    }
+
+    mtd captureScreen()
+    {
+        img := catch screenShot()
+        if @err
+            return
+
+        capture := Memory.new'Capture()
+        capture.width = img.width
+        capture.height = img.height
+        capture.backImg = img
+        editWnd.editView.setCapture(capture)
     }
 
     func create(parent: *Wnd)->*MainWnd

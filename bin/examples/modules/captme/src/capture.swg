@@ -8,8 +8,9 @@ enum MouseMode
 struct Capture
 {
     // To save
-    width, height: s32
-    forms:  Array'IForm
+    width, height:  s32
+    forms:          Array'IForm
+    backImg:        Image
 
     // Dyn
     mouseMode:  MouseMode = None
@@ -20,6 +21,9 @@ struct Capture
     hotForm:    uint = Swag.UInt.Max
     selection:  Array'uint
     paintRect:  Math.Rectangle
+
+    backTexture:    Texture
+    backImagePos:   Math.Point
 
     firstMouseMove:     bool
     movingCursorSet:    bool
@@ -291,6 +295,19 @@ impl Capture
 
         paintRect = rect
         zoom := rect.width / width
+
+        // Background image
+        if !backTexture.isValid() and backImg.width > 0
+            backTexture = editView.getApp().renderer.addImage(backImg)
+        if backTexture.isValid()
+        {
+            var backRect: Math.Rectangle
+            backRect.x = backImagePos.x + rect.x
+            backRect.y = backImagePos.y + rect.y
+            backRect.width = backImg.width
+            backRect.height = backImg.height
+            painter.drawTexture(backRect, backTexture)
+        }
 
         // Shapes
         app := editView.getApp()
