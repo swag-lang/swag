@@ -165,9 +165,7 @@ impl IForm for FormLine
     mtd setup(capt: *Capture)
     {
         capture = capt
-
-        gizmo.anchors.add(@{0, 0})
-        gizmo.anchors.add(@{0, 0})
+        gizmo.anchors.resize(2)
 
         gizmo.sigChanged = @|self|(g, diff, pt, first) {
             if !first

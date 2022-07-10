@@ -93,7 +93,7 @@ impl QuickWnd
             `qsShape.forms.add(it)
         }
 
-        const BorderSize = 10.0
+        const BorderSize = 5.0
         add(BorderSize, .Ellipse, Argb.Red, Argb.Zero)
         add(BorderSize, .Ellipse, Argb.Purple, Argb.Zero)
         add(BorderSize, .Ellipse, Argb.Yellow, Argb.Zero)
