@@ -15,6 +15,16 @@ var g_BlackBrush:   HBRUSH
 var g_RedBrush:     HBRUSH
 var g_PenRect:      HPEN
 
+func getGrabRect()->{x1: s32, y1: s32, x2: s32, y2: s32}
+{
+    var result: retval
+    result.x1 = Math.min(g_StartGrabX, g_EndGrabX)
+    result.y1 = Math.min(g_StartGrabY, g_EndGrabY)
+    result.x2 = Math.max(g_StartGrabX, g_EndGrabX)
+    result.y2 = Math.max(g_StartGrabY, g_EndGrabY)
+    return result
+}
+
 #[Swag.Callback]
 func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
 {
@@ -58,48 +68,35 @@ func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
         var rc, rc1: RECT
         GetClientRect(hWnd, &rc1)
 
-        // Mouse cross
-        rc = RECT{g_EndGrabX - 1, 0, g_EndGrabX + 1, rc1.bottom}
-        FillRect(hDC, rc, cast(HBRUSH) GetStockObject(WHITE_BRUSH))
-        rc = RECT{0, g_EndGrabY - 1, rc1.right, g_EndGrabY + 1}
-        FillRect(hDC, rc, cast(HBRUSH) GetStockObject(WHITE_BRUSH))
+        (x1, y1, x2, y2) := getGrabRect()
 
         // Around grab pos, back transparency
         if g_StartGrab
         {
-            rc = RECT{0, 0, g_EndGrabX-1, g_StartGrabY}
+            rc = RECT{0, 0, rc1.right, y1}
             FillRect(hDC, rc, g_BlackBrush)
-            rc = RECT{g_EndGrabX+1, 0, rc1.right, g_EndGrabY-1}
+            rc = RECT{0, y2, rc1.right, rc1.bottom}
             FillRect(hDC, rc, g_BlackBrush)
-            rc = RECT{0, g_StartGrabY, g_StartGrabX, g_EndGrabY-1}
+            rc = RECT{0, y1, x1, y2}
             FillRect(hDC, rc, g_BlackBrush)
-            rc = RECT{0, g_EndGrabY+1, g_EndGrabX-1, rc1.bottom}
-            FillRect(hDC, rc, g_BlackBrush)
-            rc = RECT{g_EndGrabX+1, g_EndGrabY+1, rc1.right, rc1.bottom}
+            rc = RECT{x2, y1, rc1.right, y2}
             FillRect(hDC, rc, g_BlackBrush)
         }
         else
         {
-            rc = RECT{0, 0, g_StartGrabX-1, g_StartGrabY-1}
-            FillRect(hDC, rc, g_BlackBrush)
-            rc = RECT{g_EndGrabX+1, 0, rc1.right, g_StartGrabY-1}
-            FillRect(hDC, rc, g_BlackBrush)
-            rc = RECT{0, g_StartGrabY+1, g_StartGrabX-1, rc1.bottom}
-            FillRect(hDC, rc, g_BlackBrush)
-            rc = RECT{g_EndGrabX+1, g_EndGrabY+1, rc1.right, rc1.bottom}
-            FillRect(hDC, rc, g_BlackBrush)
+            FillRect(hDC, rc1, g_BlackBrush)
         }
 
         if g_StartGrab
         {
-            rc = RECT{g_StartGrabX+1, g_StartGrabY+1, g_EndGrabX-2, g_EndGrabY-2}
+            rc = RECT{x1, y1, x2, y2}
             FillRect(hDC, rc, g_RedBrush)
 
             SetBkMode(hDC, OPAQUE)
             SetBkColor(hDC, RGB(0, 0, 0))
             SelectObject(hDC, acast g_PenRect)
             SelectObject(hDC, GetStockObject(NULL_BRUSH))
-            Rectangle(hDC, g_StartGrabX, g_StartGrabY, g_EndGrabX-1, g_EndGrabY-1)
+            Rectangle(hDC, x1, y1, x2-2, y2-2)
         }
 
         EndPaint( hWnd, &ps )
@@ -180,13 +177,14 @@ func screenShot()->Image throw
     hDesktopWnd := GetDesktopWindow()
     hDesktopDC  := GetDC(hDesktopWnd)
 
-    wGrab := Math.max(g_EndGrabX - g_StartGrabX, 8)
-    hGrab := Math.max(g_EndGrabY - g_StartGrabY, 8)
+    (x1, y1, x2, y2) := getGrabRect()
+    wGrab := Math.max(x2 - x1, 8)
+    hGrab := Math.max(y2 - y1, 8)
 
     hCaptureDC     := CreateCompatibleDC(hDesktopDC)
     hCaptureBitmap := CreateCompatibleBitmap(hDesktopDC, wGrab, hGrab)
     SelectObject(hCaptureDC, acast hCaptureBitmap)
-    BitBlt(hCaptureDC, 0, 0, wGrab, hGrab, hDesktopDC, g_StartGrabX, g_StartGrabY, SRCCOPY | CAPTUREBLT)
+    BitBlt(hCaptureDC, 0, 0, wGrab, hGrab, hDesktopDC, x1, y1, SRCCOPY | CAPTUREBLT)
 
     var bmp: BITMAP
     GetObjectA(acast hCaptureBitmap, cast(s32) @sizeof(BITMAP), &bmp)
