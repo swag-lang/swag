@@ -10,8 +10,8 @@ impl TypeFace
         hdc := GetDC(null)
         defer ReleaseDC(null, hdc)
 
-        SelectObject(hdc, hf)
-        defer DeleteObject(hf)
+        SelectObject(hdc, acast hf)
+        defer DeleteObject(acast hf)
 
         outFontBufferLen := GetFontData(hdc, 0, 0, null, 0)
         result.resize(acast outFontBufferLen)

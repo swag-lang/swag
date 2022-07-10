@@ -3,9 +3,13 @@
 #foreignlib "gdi32"
 using Swag, Win32
 
-alias HBITMAP = const *void
-alias HGDIOBJ = const *void
-alias HFONT   = const *void
+#[Swag.Strict]
+{
+    alias HBITMAP = const *void
+    alias HGDIOBJ = const *void
+    alias HFONT   = const *void
+    alias HPEN    = const *void
+}
 
 const GDI_ERROR = 0xFFFFFFFF
 
@@ -133,6 +137,21 @@ const DEVICE_DEFAULT_FONT = 14
 const DEFAULT_PALETTE     = 15
 const SYSTEM_FIXED_FONT   = 16
 
+const PS_SOLID            = 0
+const PS_DASH             = 1 /* -------  */
+const PS_DOT              = 2 /* .......  */
+const PS_DASHDOT          = 3 /* _._._._  */
+const PS_DASHDOTDOT       = 4 /* _.._.._  */
+const PS_NULL             = 5
+const PS_INSIDEFRAME      = 6
+const PS_USERSTYLE        = 7
+const PS_ALTERNATE        = 8
+const PS_STYLE_MASK       = 0x0000000F
+
+const TRANSPARENT         = 1
+const OPAQUE              = 2
+const BKMODE_LAST         = 2
+
 struct LOGFONTA
 {
     lfHeight:           LONG
@@ -220,6 +239,12 @@ struct TEXTMETRICW
 alias FONTENUMPROCA = func(const *LOGFONTA, const *TEXTMETRICA, DWORD, LPARAM)->BOOL;
 alias FONTENUMPROCW = func(const *LOGFONTW, const *TEXTMETRICW, DWORD, LPARAM)->BOOL;
 
+#[Swag.Inline]
+func RGB(r,g,b: s32)->COLORREF
+{
+    return r | g <<,safe 8 | b <<,safe 16
+}
+
 #[Foreign("Gdi32")]
 {
     func GetPixel(hdc: HDC, x, y: s32)->COLORREF;
@@ -233,6 +258,9 @@ alias FONTENUMPROCW = func(const *LOGFONTW, const *TEXTMETRICW, DWORD, LPARAM)->
     func EnumFontFamiliesW(hdc: HDC, lpLogfont: LPCWSTR, lpProc: FONTENUMPROCW, lParam: LPARAM)->s32;
     func EnumFontFamiliesExA(hdc: HDC, lpLogfont: const *LOGFONTA, lpProc: FONTENUMPROCA, lParam: LPARAM, dwFlags: DWORD)->s32;
     func EnumFontFamiliesExW(hdc: HDC, lpLogfont: const *LOGFONTW, lpProc: FONTENUMPROCW, lParam: LPARAM, dwFlags: DWORD)->s32;
+    func Rectangle(hdc: HDC, left, top, right, bottom: s32)->BOOL;
+    func SetBkMode(hdc: HDC, mode: s32)->s32;
+    func SetBkColor(hdc: HDC, color: COLORREF)->COLORREF;
 }
 
 namespace Gdi32Priv
@@ -254,6 +282,8 @@ namespace Gdi32Priv
         func GetFontData(hdc: HDC, dwTable: DWORD, dwOffset: DWORD, pvBuffer: LPVOID, cjBuffer: DWORD)->DWORD;
         func CreateFontIndirectA(lplf: const *LOGFONTA)->HFONT;
         func CreateFontIndirectW(lplf: const *LOGFONTW)->HFONT;
+        func CreateSolidBrush(color: COLORREF)->HBRUSH;
+        func CreatePen(iStyle: s32, cWidth: s32, color: COLORREF)->HPEN;
     }
 }
 
@@ -357,7 +387,7 @@ namespace Gdi32Priv
     func CreateFontIndirectA(lplf: const *LOGFONTA)->HFONT throw
     {
         res := Gdi32Priv.CreateFontIndirectA(lplf)
-        if !res
+        if res == null
             throw "GDI_ERROR"
         return res
     }
@@ -365,7 +395,23 @@ namespace Gdi32Priv
     func CreateFontIndirectW(lplf: const *LOGFONTW)->HFONT throw
     {
         res := Gdi32Priv.CreateFontIndirectW(lplf)
-        if !res
+        if res == null
+            throw "GDI_ERROR"
+        return res
+    }
+
+    func CreateSolidBrush(color: COLORREF)->HBRUSH throw
+    {
+        res := Gdi32Priv.CreateSolidBrush(color)
+        if res == null
+            throw "GDI_ERROR"
+        return res
+    }
+
+    func CreatePen(iStyle: s32, cWidth: s32, color: COLORREF)->HPEN throw
+    {
+        res := Gdi32Priv.CreatePen(iStyle, cWidth, color)
+        if res == null
             throw "GDI_ERROR"
         return res
     }

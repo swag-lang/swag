@@ -390,7 +390,7 @@ impl MainWnd
     mtd captureScreen()
     {
         img := catch screenShot()
-        if @err
+        if @err or img.width == 0 or img.height == 0
             return
 
         capture := Memory.new'Capture()

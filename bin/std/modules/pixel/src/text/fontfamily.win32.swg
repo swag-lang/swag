@@ -97,7 +97,7 @@ impl FontFamily
             return null
 
         hf := try CreateFontIndirectW(face.face)
-        defer catch DeleteObject(hf)
+        defer catch DeleteObject(acast hf)
 
         return try TypeFace.createFromHFONT(face.name, hf)
     }
