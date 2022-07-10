@@ -154,7 +154,7 @@ impl RichEditCtrl
             if cutAti > 1
             {
                 x := getMarginLeft() + Painter.measureString(str, font).width
-                if x >= clientRect.right()
+                if x > clientRect.right()
                 {
                     if cutAti and cutAti == i + 1
                         cutAti -= 1
@@ -391,6 +391,7 @@ impl RichEditCtrl
 
 public impl RichEditCtrl
 {
+    // Clear content
     mtd clear()
     {
         clearUndo()
@@ -405,6 +406,7 @@ public impl RichEditCtrl
         lastVisibleLineView = 0
     }
 
+    // Get the selected text
     mtd getSelectedText()->String
     {
         res := getTextPrivate(getBegSelection(), getEndSelection(), hasSelRect)
@@ -412,6 +414,7 @@ public impl RichEditCtrl
         return txt
     }
 
+    // Set the text content
     mtd setText(text: string)
     {
         clear()
@@ -423,6 +426,7 @@ public impl RichEditCtrl
         invalidate()
     }
 
+    // Append a text with a given style
     mtd addText(text: string, txtStyle: RichEditStyleRef = 0)
     {
         var cp: RichEditCursor
@@ -436,6 +440,7 @@ public impl RichEditCtrl
         setModified(true)
     }
 
+    // Insert a text with a given style
     mtd insertText(text: string, style: RichEditStyleRef)
     {
         undo := Memory.new'RichEditUndo()
@@ -453,6 +458,7 @@ public impl RichEditCtrl
         setModified(true)
     }
 
+    // Insert a text with a style per character
     mtd insertText(text: string, txtStyles: Array'u8)
     {
         undo := Memory.new'RichEditUndo()
@@ -470,6 +476,7 @@ public impl RichEditCtrl
         setModified(true)
     }
 
+    // Get the rune at the given cursor pos
     mtd getRune(cp: RichEditCursor)->{char: rune, style: RichEditStyleRef}
     {
         var result: retval
@@ -485,6 +492,7 @@ public impl RichEditCtrl
         return result
     }
 
+    // Insert a rune
     mtd insertRune(ch: rune)
     {
         c := ch
@@ -608,6 +616,7 @@ public impl RichEditCtrl
         setModified(true)
     }
 
+    // Insert text at the start of each selected line
     mtd insertBegLine(txt: string, lastLine: bool)
     {
         first := true
@@ -660,6 +669,7 @@ public impl RichEditCtrl
         setModified(true)
     }
 
+    // Delete a given text at the start of each selected line
     mtd deleteBegLine(txt: string, lastLine: bool)
     {
         arrR   := Unicode.fromUtf8(txt)
@@ -763,5 +773,29 @@ public impl RichEditCtrl
         }
 
         setModified(true)
+    }
+
+    // Evaluate the rendering size
+    mtd evaluateSize()->{w: f32, h: f32}
+    {
+        var result: retval
+
+        x := getXExtent()
+
+        result.h = cast(f32) (lines.count * x.y)
+        result.h += cast(f32) ((lines.count - 1) * lineSpacing)
+
+        font := fontFamily.getFont(styles[0].fontMode)
+        visit l: lines
+        {
+            arr     := Painter.getGlyphs(l.chars, font)
+            measure := Painter.measureString(0, 0, arr, font)
+            result.w = Math.max(result.h, measure.width)
+        }
+
+        result.w += getMarginLeft() + getMarginRight()
+        result.h += getThemeMetrics().richEdit_Padding * 2
+        result.w += getThemeMetrics().richEdit_Padding * 2
+        return result
     }
 }

@@ -52,12 +52,27 @@ struct RichStringFormat
 
 impl Painter
 {
-    private func getTempGlyphs(text: string, font: *Font)->Array'(const *GlyphDesc)
+    // Returns all the glyphs for a given string and font
+    func getGlyphs(text: string, font: *Font)->Array'(const *GlyphDesc)
     {
         var result: retval
         result.allocator = @getcontext().tempAllocator
         result.reserve(@countof(text))
         Utf8.visitRunes(|c| text)
+        {
+            result.add(font.getGlyphDesc(c))
+        }
+
+        return result
+    }
+
+    // Returns all the glyphs for a given string and font
+    func getGlyphs(text: Array'rune, font: *Font)->Array'(const *GlyphDesc)
+    {
+        var result: retval
+        result.allocator = @getcontext().tempAllocator
+        result.reserve(@countof(text))
+        visit c: text
         {
             result.add(font.getGlyphDesc(c))
         }
@@ -84,6 +99,13 @@ impl Painter
     // Returns the bounding rectangle if a given text, at a given position
     func measureString(left, top: f32, text: string, font: *Font)->StringMetrics
     {
+        arr := getGlyphs(text, font)
+        return measureString(left, top, arr, font)
+    }
+
+    // Returns the bounding rectangle if a given text, at a given position
+    func measureString(left, top: f32, text: Array'(const *GlyphDesc), font: *Font)->StringMetrics
+    {
         var result: retval
 
         y := top + font.ascent
@@ -91,8 +113,7 @@ impl Painter
         result.y = y
         bottom := top
 
-        arr := getTempGlyphs(text, font)
-        visit ref: arr
+        visit ref: text
         {
             result.y = Math.min(result.y, y - ref.shiftY)
             bottom = Math.max(bottom, y - ref.shiftY + ref.height)
@@ -120,7 +141,7 @@ impl Painter
         if @countof(text) == 0 or brush.color.a == 0
             return
 
-        arr := getTempGlyphs(text, font)
+        arr := getGlyphs(text, font)
         if arr.isEmpty() return
 
         x := Math.round(left)

@@ -101,4 +101,5 @@ struct ThemeMetrics
     label_Height:               f32 = 24
 
     richEdit_Padding:           f32 = 5
+    toolTip_Padding:            f32 = 2
 }

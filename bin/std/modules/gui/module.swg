@@ -1,3 +1,5 @@
+#global using Core
+
 #dependencies
 {
     #import "pixel"

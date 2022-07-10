@@ -152,6 +152,9 @@ struct ThemeColors
     btnCheck_CheckedBorder:         Color = White
     btnCheck_CheckedMark:           Color = White
 
+    toolTip_Bk:                     Color = 0xFFCCCC88
+    toolTip_Text:                   Color = 0xFF222222
+
     edit_Border:                    Color = Gray3
     edit_FocusBorder:               Color = Blue
     edit_HotBorder:                 Color = Gray3

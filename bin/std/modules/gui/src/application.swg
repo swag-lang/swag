@@ -359,6 +359,7 @@ private impl Application
         timing.update()
         Memory.freeTemp()
 
+        ToolTip.update(getDt())
         sendFrameEvents()
         sendTimerEvents()
         sendSystemEvents()
@@ -493,7 +494,7 @@ impl Application
         {
             (idx, ok) := Slice.findLinear(wnd.parent.childs.toSlice(), wnd)
             Debug.assert(ok)
-            wnd.parent.childs.removeAt(idx)
+            wnd.parent.childs.removeAtOrdered(idx)
             wnd.parent.invalidate()
         }
 

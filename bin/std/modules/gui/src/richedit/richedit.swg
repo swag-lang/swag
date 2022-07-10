@@ -59,9 +59,9 @@ struct RichEditCtrl
     forceCaretVisible:          bool
     forceCaretVisibleCenter:    bool
 
-    undoMgr:            ArrayPtr'RichEditUndo
-    toUndo:             ArrayPtr'RichEditUndo
-    mapping:            Array'RichEditMapping
+    undoMgr:                ArrayPtr'RichEditUndo
+    toUndo:                 ArrayPtr'RichEditUndo
+    mapping:                Array'RichEditMapping
     currentUndo:            uint
     undoCounter:            uint
     modifiedUndoMarker:     uint
@@ -70,8 +70,8 @@ struct RichEditCtrl
     firstVisibleLineView:   uint
     lastVisibleLineView:    uint
     clipFormat:             Clipboard.Format
-    cursorPosUndo:      RichEditCursor
-    selBegUndo:         RichEditCursor
+    cursorPosUndo:          RichEditCursor
+    selBegUndo:             RichEditCursor
 }
 
 private impl RichEditCtrl
@@ -240,7 +240,7 @@ private impl RichEditCtrl
 impl RichEditCtrl
 {
     #[Swag.Discardable]
-    func create(parent: *Wnd, position: Math.Rectangle, id: WndId = null)->*RichEditCtrl
+    func create(parent: *Wnd, position: Math.Rectangle = @{}, id: WndId = null)->*RichEditCtrl
     {
         ed := Wnd.create'RichEditCtrl(parent, "", position, id)
 

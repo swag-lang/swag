@@ -76,6 +76,7 @@ enum WndFlags
     Hidden
     PreChildsPaint
     PostChildsPaint
+    TopMost
 }
 
 struct Wnd
@@ -230,6 +231,13 @@ impl Wnd
         return res
     }
 
+    // Set wnd flags
+    mtd setWndFlags(add, remove = WndFlags.None)
+    {
+        wndFlags |= add
+        wndFlags &= ~remove
+    }
+
     // Destroy the window
     mtd destroyNow()
     {
@@ -249,6 +257,17 @@ impl Wnd
         invalidate()
     }
 
+    private mtd firstTopMostIndex()->uint
+    {
+        visit c, i: childs
+        {
+            if c.wndFlags & .TopMost
+                return i
+        }
+
+        return Swag.UInt.Max
+    }
+
     // Set window parent
     mtd setParent(who: *Wnd)
     {
@@ -261,7 +280,23 @@ impl Wnd
         if who
         {
             surface = who.surface
-            who.childs.add(self)
+
+            // Add the window at the back, or before the first topmost window
+            if !who.childs.count
+                who.childs.add(self)
+            else
+            {
+                idxToInsert := who.childs.count
+                if !(wndFlags & .TopMost)
+                {
+                    idxToInsert = who.firstTopMostIndex()
+                    if idxToInsert == Swag.UInt.Max
+                        idxToInsert = who.childs.count
+                }
+
+                who.childs.insertAt(idxToInsert, self)
+            }
+
             who.invalidate()
         }
 
@@ -571,10 +606,21 @@ impl Wnd
         Debug.assert(parent != null)
         if parent.childs.back() == self
             return
+
         (idx, found) := Slice.findLinear(parent.childs.toSlice(), self)
         Debug.assert(found)
-        parent.childs[idx] = parent.childs.back()
-        parent.childs[parent.childs.count - 1] = self
+
+        // Put the window at the back, or before the first topmost window
+        idxToReplace := parent.childs.count - 1
+        if !(wndFlags & .TopMost)
+        {
+            idxToReplace = parent.firstTopMostIndex()
+            if idxToReplace == Swag.UInt.Max
+                return
+            idxToReplace -= 1
+        }
+
+        swap(childs.buffer + idx, childs.buffer + idxToReplace)
     }
 
     // Move and size the wnd
