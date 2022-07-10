@@ -65,6 +65,8 @@ impl Capture
         painter.setColorMask(false, false, false, true)
         painter.clear(Argb.Zero)
         painter.setColorMask(true, true, true, true)
+        paintBackImage(&painter, rect.x, rect.y, 1)
+        painter.setColorMask(true, true, true, false)
         visit f: forms
             paintForm(app, &painter, rect, f, 1)
         painter.end()
@@ -287,6 +289,23 @@ impl Capture
         painter.releaseRenderTarget(rt2)
     }
 
+    mtd paintBackImage(painter: *Painter, x, y: f32, z: f32)
+    {
+        // Background image
+        if !backTexture.isValid() and backImg.width > 0
+            backTexture = editView.getApp().renderer.addImage(backImg)
+        if backTexture.isValid()
+        {
+            var backRect: Math.Rectangle
+            backRect.x = backImagePos.x + x
+            backRect.y = backImagePos.y + y
+            backRect.width = backImg.width * z
+            backRect.height = backImg.height * z
+            painter.drawTexture(backRect, backTexture)
+        }
+
+    }
+
     mtd paint(painter: *Painter, rect: Math.Rectangle)
     {
         painter.fillRect(rect, Argb.Gray)
@@ -297,17 +316,7 @@ impl Capture
         zoom := rect.width / width
 
         // Background image
-        if !backTexture.isValid() and backImg.width > 0
-            backTexture = editView.getApp().renderer.addImage(backImg)
-        if backTexture.isValid()
-        {
-            var backRect: Math.Rectangle
-            backRect.x = backImagePos.x + rect.x
-            backRect.y = backImagePos.y + rect.y
-            backRect.width = backImg.width
-            backRect.height = backImg.height
-            painter.drawTexture(backRect, backTexture)
-        }
+        paintBackImage(painter, rect.x, rect.y, zoom)
 
         // Shapes
         app := editView.getApp()
