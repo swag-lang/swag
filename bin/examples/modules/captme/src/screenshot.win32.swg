@@ -30,6 +30,8 @@ func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
         InvalidateRect(hWnd, null, FALSE)
 
     case WM_LBUTTONUP:
+        if !g_StartGrab
+            break
         g_StartGrab = false
         g_GrabDone = true
         InvalidateRect(hWnd, null, FALSE)

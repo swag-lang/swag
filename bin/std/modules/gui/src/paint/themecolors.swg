@@ -93,18 +93,26 @@ struct ThemeColors
     btnPushDefault_HotBk:           Color = LightBlue
 
     btnIcon_Icon:                   Color = White
+    btnIcon_Text:                   Color = White
     btnIcon_Bk:                     Color = Transparent
     btnIcon_DisabledIcon:           Color = Disabled
+    btnIcon_DisabledText:           Color = Disabled
     btnIcon_DisabledBk:             Color = Transparent
     btnIcon_PressedIcon:            Color = White
+    btnIcon_PressedText:            Color = White
     btnIcon_PressedBk:              Color = LighterBig
     btnIcon_HotIcon:                Color = White
+    btnIcon_HotText:                Color = White
     btnIcon_HotBk:                  Color = LighterMedium
 
     btnIcon_CheckedDisabledIcon:    Color = Disabled
+    btnIcon_CheckedDisabledText:    Color = Disabled
     btnIcon_CheckedPressedIcon:     Color = White
+    btnIcon_CheckedPressedText:     Color = White
     btnIcon_CheckedHotIcon:         Color = White
+    btnIcon_CheckedHotText:         Color = White
     btnIcon_CheckedIcon:            Color = White
+    btnIcon_CheckedText:            Color = White
     btnIcon_CheckedDisabledBk:      Color = Transparent
     btnIcon_CheckedPressedBk:       Color = LighterBig
     btnIcon_CheckedHotBk:           Color = Transparent

@@ -124,6 +124,7 @@ impl IWnd for IconButton
         var subRectBk:      *ThemeImageRect
         var colorBk:        Color = ?
         var colorIcon:      Color = ?
+        var colorText:      Color = ?
         var colorChecked:   Color = ?
 
         switch form
@@ -141,18 +142,22 @@ impl IWnd for IconButton
         case bc.isDisabled:
             colorBk      = isChecked ? colors.btnIcon_CheckedDisabledBk : colors.btnIcon_DisabledBk
             colorIcon    = isChecked ? colors.btnIcon_CheckedDisabledIcon : colors.btnIcon_DisabledIcon
+            colorText    = isChecked ? colors.btnIcon_CheckedDisabledText : colors.btnIcon_DisabledText
             colorChecked = colors.btnIcon_CheckedDisabledMark
         case isPressed or (isChecked and checkedForm == .None):
             colorBk      = isChecked ? colors.btnIcon_CheckedPressedBk : colors.btnIcon_PressedBk
             colorIcon    = isChecked ? colors.btnIcon_CheckedPressedIcon : colors.btnIcon_PressedIcon
+            colorText    = isChecked ? colors.btnIcon_CheckedPressedText : colors.btnIcon_PressedText
             colorChecked = colors.btnIcon_CheckedPressedMark
         case isHot:
             colorBk      = isChecked ? colors.btnIcon_CheckedHotBk : colors.btnIcon_HotBk
             colorIcon    = isChecked ? colors.btnIcon_CheckedHotIcon : colors.btnIcon_HotIcon
+            colorText    = isChecked ? colors.btnIcon_CheckedHotText : colors.btnIcon_HotText
             colorChecked = colors.btnIcon_CheckedHotMark
         default:
             colorBk      = isChecked ? colors.btnIcon_CheckedBk : colors.btnIcon_Bk
             colorIcon    = isChecked ? colors.btnIcon_CheckedIcon : colors.btnIcon_Icon
+            colorText    = isChecked ? colors.btnIcon_CheckedText : colors.btnIcon_Text
             colorChecked = colors.btnIcon_CheckedMark
         }
 
@@ -241,7 +246,7 @@ impl IWnd for IconButton
         if !name.isEmpty()
         {
             var sf: RichStringFormat
-            theme.setTextColors(&sf, colorIcon)
+            theme.setTextColors(&sf, colorText)
             sf.font = theme.res.fontDefault
             switch textPos
             {

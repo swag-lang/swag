@@ -17,6 +17,7 @@ struct MainWnd
     quickWnd:   *QuickWnd
     propWnd:    *PropWnd
     clipFmt:    Clipboard.Format
+    captureBtn: *IconButton
 
     editMode: EditMode = .Shape
 
@@ -334,7 +335,7 @@ impl MainWnd
         return editMode
     }
 
-    mtd createToolbar()
+    mtd createToolbar(topBar: *Wnd)
     {
         mtd createBtn(id: WndId)
         {
@@ -346,7 +347,7 @@ impl MainWnd
             b.checkedForm = .Bottom
         }
 
-        toolbar = StackLayoutCtrl.create(self, .HorzCenter, @{0, 0, 64, 64})
+        toolbar = StackLayoutCtrl.create(topBar, .HorzCenter, @{0, 0, 64, 64})
         toolbar.dockStyle = .Top
         toolbar.backgroundStyle = .Window
         toolbar.style.addStyleSheetColors("wnd_Bk $wnd_Caption")
@@ -409,9 +410,21 @@ impl MainWnd
         res.icons48.set(renderer.addImage(img), 48, 48)
         res.clipFmt = catch Clipboard.registerFormat(ClipboardFormat)
 
-        res.createToolbar()
+        topBar := Wnd.create'Wnd(res, @{0, 0, 64, 64})
+        topBar.dockStyle = .Top
+        topBar.backgroundStyle = .Window
+        topBar.style.addStyleSheetColors("wnd_Bk $wnd_Caption")
+
+        res.createToolbar(topBar)
         res.registerShortcuts()
         res.favoriteMdl = &res.mdlFormShape
+
+        res.captureBtn = IconButton.create(topBar, Icon.from(&res.icons48, 6), @{0, 0, 64, 64})
+        res.captureBtn.name = "Capture"
+        res.captureBtn.style.addStyleSheetColors("btnIcon_Icon 0xFFFF0000")
+        res.captureBtn.sigPressed += @|res|(btn) {
+            res.captureScreen()
+        }
 
         // Main edit area
         res.editWnd = EditWnd.create(res, res)
