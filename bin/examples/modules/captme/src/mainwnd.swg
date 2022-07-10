@@ -390,7 +390,9 @@ impl MainWnd
 
     mtd captureScreen()
     {
+        surface.hide()
         img := catch screenShot()
+        surface.show()
         if @err or img.width == 0 or img.height == 0
             return
 
@@ -456,7 +458,7 @@ impl MainWnd
 
         res.updateState()
 
-        ToolTip.show(res.surface, @{0, 0}, "toto la foule toto la foule toto la foule toto la foule")
+        //ToolTip.show(res.surface, @{0, 0}, "toto la foule toto la foule toto la foule toto la foule")
 
         return res
     }
