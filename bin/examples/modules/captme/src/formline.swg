@@ -91,10 +91,10 @@ impl IForm for FormLine
         }
     }
 
-    mtd boundRect()->Math.Rectangle
+    mtd boundRect(raw: bool)->Math.Rectangle
     {
         var result: retval
-        bSize := borderSize * 4
+        bSize := raw ? 0 : borderSize * 4
         result.x = Math.min(xa, xb) - bSize
         result.y = Math.min(ya, yb) - bSize
         result.width = Math.abs(xb - xa) + bSize * 2
@@ -104,7 +104,7 @@ impl IForm for FormLine
 
     mtd computePaintCoords(z: f32)
     {
-        rect := boundRect()
+        rect := boundRect(false)
         x0 = (xa * z) - (rect.x * z) + paintPos.x
         y0 = (ya * z) - (rect.y * z) + paintPos.y
         x1 = (xb * z) - (rect.x * z) + paintPos.x

@@ -4,7 +4,7 @@ interface IForm
     paint:          func(self, *Painter, f32, bool)
     mouse:          func(self, *EditView, Math.Point, *MouseEvent)->bool
     hitTest:        func(self, Math.Point, f32)->bool
-    boundRect:      func(self)->Math.Rectangle
+    boundRect:      func(self, bool)->Math.Rectangle
     moveForm:       func(self, s32, s32)
     moveBaseForm:   func(self, s32, s32, s32, s32)
     setBaseForm:    func(self, s32, s32, s32, s32)

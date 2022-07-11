@@ -168,9 +168,9 @@ impl Capture
 
             itf.setup(self)
             if idx == 0
-                boundRect = itf.boundRect()
+                boundRect = itf.boundRect(false)
             else
-                boundRect.setUnion(itf.boundRect())
+                boundRect.setUnion(itf.boundRect(false))
             undo.oldForms.add(itf)
             o.value = null
         }
@@ -188,7 +188,7 @@ impl Capture
 
         visit itf: undo.oldForms
         {
-            bound := itf.boundRect()
+            bound := itf.boundRect(false)
             dx := -boundRect.x + pt.x - (boundRect.width * 0.5)
             dy := -boundRect.y + pt.y - (boundRect.height * 0.5)
             itf.moveForm(acast dx, acast dy)
@@ -205,7 +205,7 @@ impl Capture
     {
         render := &app.renderer
 
-        boundRect := f.boundRect()
+        boundRect := f.boundRect(false)
         base := cast(*BaseForm) @dataof(f)
         base.paintPos.x      = rect.x + (boundRect.x * zoom)
         base.paintPos.y      = rect.y + (boundRect.y * zoom)
@@ -352,7 +352,7 @@ impl Capture
         visit s: selection
         {
             f := forms[s]
-            r := f.boundRect()
+            r := f.boundRect(true)
             bound.setRight(Math.max(bound.right(), r.right()))
             bound.setBottom(Math.max(bound.bottom(), r.bottom()))
             bound.x = Math.min(bound.x, r.x)
@@ -364,6 +364,8 @@ impl Capture
 
     mtd snap(x, y: *s32)
     {
+        const SnapToler = 10
+
         snapX = -1
         snapY = -1
 
@@ -379,6 +381,8 @@ impl Capture
 
         bestX := Swag.F32.Max
         bestY := Swag.F32.Max
+        bestSideXLeft := false
+        bestSideYTop  := false
         bestCoordX := 0.0
         bestCoordY := 0.0
         visit f, i: forms
@@ -387,52 +391,86 @@ impl Capture
                 continue
 
             form := cast(*BaseForm) @dataof(f)
+            var arrX: Array's32
+            var arrY: Array's32
 
-            nbX  := cast(f32) Math.abs(bound.x - form.x)
-            if nbX < bestX
+            switch @kindof(f)
             {
-                bestX = nbX
-                bestCoordX = form.x
+            case FormLine, FormArrow:
+                form2 := cast(*FormLine) form
+                arrX.add(cast(s32) form2.xa)
+                arrX.add(cast(s32) form2.xb)
+                arrY.add(cast(s32) form2.ya)
+                arrY.add(cast(s32) form2.yb)
+
+            default:
+                arrX.add(cast(s32) form.x)
+                arrX.add(cast(s32) (form.x + form.w))
+                arrY.add(cast(s32) form.y)
+                arrY.add(cast(s32) (form.y + form.h))
             }
 
-            nbY  := cast(f32) Math.abs(bound.y - form.y)
-            if nbY < bestY
+            visit ax: arrX
             {
-                bestY = nbY
-                bestCoordY = form.y
+                nbX := cast(f32) Math.abs(bound.x - ax)
+                if nbX < bestX
+                {
+                    bestX = nbX
+                    bestCoordX = ax
+                    bestSideXLeft = true
+                }
+            }
+
+            visit ay: arrY
+            {
+                nbY := cast(f32) Math.abs(bound.y - ay)
+                if nbY < bestY
+                {
+                    bestY = nbY
+                    bestCoordY = ay
+                    bestSideYTop = true
+                }
             }
         }
 
-        if bestX < 10
+        if bestX < SnapToler
         {
             bestX = Swag.F32.Max
             snapX = bestCoordX
             visit s: selection
             {
                 f := forms[s]
-                r := f.boundRect()
-                nrx := Math.abs(bestCoordX - r.x)
-                if nrx < bestX
+                r := f.boundRect(true)
+
+                if bestSideXLeft
                 {
-                    bestX = nrx
-                    nx = cast(s32) (bestCoordX - r.x)
+                    nrx := Math.abs(bestCoordX - r.x)
+                    if nrx < bestX
+                    {
+                        bestX = nrx
+                        nx = cast(s32) (bestCoordX - r.x)
+                    }
                 }
             }
         }
 
-        if bestY < 10
+        if bestY < SnapToler
         {
             bestY = Swag.F32.Max
             snapY = bestCoordY
             visit s: selection
             {
                 f := forms[s]
-                r := f.boundRect()
-                nry := Math.abs(bestCoordY - r.y)
-                if nry < bestY
+                r := f.boundRect(true)
+
+                if bestSideYTop
                 {
-                    bestY = nry
-                    ny = cast(s32) (bestCoordY - r.y)
+                    nry := Math.abs(bestCoordY - r.y)
+                    if nry < bestY
+                    {
+                        bestY = nry
+                        ny = cast(s32) (bestCoordY - r.y)
+                    }
                 }
             }
         }

@@ -85,7 +85,7 @@ impl Undo
             visit s: selection
             {
                 f := capture.forms[s]
-                r := f.boundRect()
+                r := f.boundRect(false)
                 oldS32.add(cast(s32) r.x)
                 minP = Math.min(minP, cast(s32) r.x)
                 maxP = Math.max(maxP, cast(s32) (r.x + r.width))
@@ -99,7 +99,7 @@ impl Undo
             visit s: selection
             {
                 f := capture.forms[s]
-                r := f.boundRect()
+                r := f.boundRect(false)
                 oldS32.add(cast(s32) r.x)
                 minP = Math.min(minP, cast(s32) r.y)
                 maxP = Math.max(maxP, cast(s32) (r.y + r.height))
@@ -162,7 +162,7 @@ impl Undo
             visit s: selection
             {
                 f := capture.forms[s]
-                r := f.boundRect()
+                r := f.boundRect(false)
                 f.moveBaseForm(minP - cast(s32) r.x, 0, 0, 0)
             }
 
@@ -170,7 +170,7 @@ impl Undo
             visit s: selection
             {
                 f := capture.forms[s]
-                r := f.boundRect()
+                r := f.boundRect(false)
                 f.moveBaseForm((maxP - cast(s32) r.width) - cast(s32) r.x, 0, 0, 0)
             }
 
@@ -178,7 +178,7 @@ impl Undo
             visit s: selection
             {
                 f := capture.forms[s]
-                r := f.boundRect()
+                r := f.boundRect(false)
                 f.moveBaseForm(((maxP + minP) / 2 - (cast(s32) r.width / 2)) - cast(s32) r.x, 0, 0, 0)
             }
 
@@ -186,7 +186,7 @@ impl Undo
             visit s: selection
             {
                 f := capture.forms[s]
-                r := f.boundRect()
+                r := f.boundRect(false)
                 f.moveBaseForm(0, minP - cast(s32) r.y, 0, 0)
             }
 
@@ -194,7 +194,7 @@ impl Undo
             visit s: selection
             {
                 f := capture.forms[s]
-                r := f.boundRect()
+                r := f.boundRect(false)
                 f.moveBaseForm(0, (maxP - cast(s32) r.height) - cast(s32) r.y, 0, 0)
             }
 
@@ -202,7 +202,7 @@ impl Undo
             visit s: selection
             {
                 f := capture.forms[s]
-                r := f.boundRect()
+                r := f.boundRect(false)
                 f.moveBaseForm(0, ((maxP + minP) / 2 - (cast(s32) r.height / 2)) - cast(s32) r.y, 0, 0)
             }
 

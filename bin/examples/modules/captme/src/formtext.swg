@@ -99,7 +99,7 @@ impl IForm for FormText
     {
     }
 
-    mtd boundRect()->Math.Rectangle
+    mtd boundRect(raw: bool)->Math.Rectangle
     {
         return Math.Rectangle{x, y, w, h}
     }
