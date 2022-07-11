@@ -24,6 +24,8 @@ struct Capture
 
     backTexture:    Texture
     backImagePos:   Math.Point
+    snapX:          f32 = -1
+    snapY:          f32 = -1
 
     firstMouseMove:     bool
     movingCursorSet:    bool
@@ -303,7 +305,6 @@ impl Capture
             backRect.height = backImg.height * z
             painter.drawTexture(backRect, backTexture)
         }
-
     }
 
     mtd paint(painter: *Painter, rect: Math.Rectangle)
@@ -323,6 +324,12 @@ impl Capture
         visit f: forms
             paintForm(app, painter, rect, f, zoom)
 
+        // Snap
+        if snapX != -1
+            painter.drawLine(rect.x + snapX * zoom, rect.y, rect.x + snapX * zoom, rect.bottom(), Argb.Purple, 2)
+        if snapY != -1
+            painter.drawLine(rect.x, rect.y + snapY * zoom, rect.right(), rect.y + snapY * zoom, Argb.Purple, 2)
+
         // Gizmos
         visit f, i: forms
         {
@@ -339,13 +346,96 @@ impl Capture
     // CONTENT
     //////////////////////////////
 
+    mtd getSelectionBoundRect()->Math.Rectangle
+    {
+        bound := Math.Rectangle{Swag.F32.Max, Swag.F32.Max, 0, 0}
+        visit s: selection
+        {
+            f := forms[s]
+            r := f.boundRect()
+            bound.setRight(Math.max(bound.right(), r.right()))
+            bound.setBottom(Math.max(bound.bottom(), r.bottom()))
+            bound.x = Math.min(bound.x, r.x)
+            bound.y = Math.min(bound.y, r.y)
+        }
+
+        return bound
+    }
+
     mtd snap(x, y: *s32)
     {
+        snapX = -1
+        snapY = -1
+
         if !editView.main.snap
             return
 
         nx := dref x
         ny := dref y
+
+        bound := getSelectionBoundRect()
+        bound.x += nx
+        bound.y += ny
+
+        bestX := Swag.F32.Max
+        bestY := Swag.F32.Max
+        bestCoordX := 0.0
+        bestCoordY := 0.0
+        visit f, i: forms
+        {
+            if selection.contains(i)
+                continue
+
+            form := cast(*BaseForm) @dataof(f)
+
+            nbX  := cast(f32) Math.abs(bound.x - form.x)
+            if nbX < bestX
+            {
+                bestX = nbX
+                bestCoordX = form.x
+            }
+
+            nbY  := cast(f32) Math.abs(bound.y - form.y)
+            if nbY < bestY
+            {
+                bestY = nbY
+                bestCoordY = form.y
+            }
+        }
+
+        if bestX < 10
+        {
+            bestX = Swag.F32.Max
+            snapX = bestCoordX
+            visit s: selection
+            {
+                f := forms[s]
+                r := f.boundRect()
+                nrx := Math.abs(bestCoordX - r.x)
+                if nrx < bestX
+                {
+                    bestX = nrx
+                    nx = cast(s32) (bestCoordX - r.x)
+                }
+            }
+        }
+
+        if bestY < 10
+        {
+            bestY = Swag.F32.Max
+            snapY = bestCoordY
+            visit s: selection
+            {
+                f := forms[s]
+                r := f.boundRect()
+                nry := Math.abs(bestCoordY - r.y)
+                if nry < bestY
+                {
+                    bestY = nry
+                    ny = cast(s32) (bestCoordY - r.y)
+                }
+            }
+        }
 
         dref x = nx
         dref y = ny
@@ -508,6 +598,8 @@ impl Capture
         ///////////////////////
         if evt.kind == .MouseReleased and evt.button == .Left
         {
+            snapX, snapY = -1
+
             if mouseMode == .Moving and hotForm == Swag.UInt.Max
             {
                 app.popCursor()
