@@ -125,6 +125,9 @@ private impl Application
                 evt.surfacePos = targetWnd.screenToSurface(mousePos)
                 evt.target = targetWnd
                 sendEventPrivate(&evt, mouseEnterWnd)
+
+                if targetWnd.toolTip.length
+                    ToolTip.show(targetWnd, evt.surfacePos, targetWnd.toolTip)
             }
 
             // Leave

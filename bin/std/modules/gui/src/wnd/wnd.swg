@@ -102,6 +102,7 @@ struct Wnd
     name:       RichString
     id:         WndId
     cursor:     Cursor
+    toolTip:    String
 
     keyShortcuts:   Array'KeyShortcut
 

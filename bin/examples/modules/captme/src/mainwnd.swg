@@ -423,6 +423,7 @@ impl MainWnd
 
         res.captureBtn = IconButton.create(topBar, Icon.from(&res.icons48, 6), @{0, 0, 64, 64})
         res.captureBtn.name = "Capture"
+        res.captureBtn.toolTip = "This is a tooltip"
         res.captureBtn.style.addStyleSheetColors("btnIcon_Icon    0xFFFF0000")
         res.captureBtn.style.addStyleSheetColors("btnIcon_HotIcon 0xFFFF4444")
         res.captureBtn.sigPressed += @|res|(btn) {
@@ -457,9 +458,6 @@ impl MainWnd
         res.propWnd.layoutKind = .TopAutoSize
 
         res.updateState()
-
-        //ToolTip.show(res.surface, @{0, 0}, "toto la foule toto la foule toto la foule toto la foule")
-
         return res
     }
 }
