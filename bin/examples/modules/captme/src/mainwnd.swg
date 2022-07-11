@@ -433,9 +433,6 @@ impl MainWnd
         res.captureBtn = IconButton.create(topBar, Icon.from(&res.icons48, 6), @{0, 0, 64, 64}, id: CmdIdCapture)
         res.captureBtn.style.addStyleSheetColors("btnIcon_Icon    0xFFFF0000")
         res.captureBtn.style.addStyleSheetColors("btnIcon_HotIcon 0xFFFF4444")
-        res.captureBtn.sigPressed += @|res|(btn) {
-            res.captureScreen()
-        }
 
         // Main edit area
         res.editWnd = EditWnd.create(res, res)
