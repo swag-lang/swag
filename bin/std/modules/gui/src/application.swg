@@ -137,6 +137,8 @@ private impl Application
                 evt.surfacePos = mouseEnterWnd.screenToSurface(mousePos)
                 evt.target = mouseEnterWnd
                 sendEventPrivate(&evt, mouseCaptureWnd)
+
+                ToolTip.hide(mouseEnterWnd)
             }
 
             mouseEnterWnd = targetWnd
@@ -176,6 +178,7 @@ private impl Application
 
                 evt.button = cast(Input.MouseButton) i
                 targetWnd.sendEvent(&evt)
+                ToolTip.hide(targetWnd)
             }
             elif lastP and !curP
             {

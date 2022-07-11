@@ -78,6 +78,7 @@ struct CommandUIEvent
         Shortcut
         Checked
         Name
+        ToolTip
     }
 
     using base: Event{kind: EventKind.CommandUI}
@@ -87,6 +88,7 @@ struct CommandUIEvent
     icon:       Icon
     name:       String
     shortcut:   String
+    toolTip:    String
     setFlags:   SetFlags = Zero
     disabled:   bool
     checked:    bool

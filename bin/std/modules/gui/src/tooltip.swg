@@ -10,8 +10,9 @@ struct ToolTip
     delay:      f32
 }
 
-var g_Pending:  *ToolTip
-var g_Current:  *FrameWnd
+var g_Pending:      *ToolTip
+var g_Current:      *FrameWnd
+var g_CurrentOwner: *Wnd
 
 }
 
@@ -33,13 +34,23 @@ public func hide()
     if g_Current
         g_Current.destroy()
     g_Current = null
+    g_CurrentOwner = null
 
     Memory.delete(g_Pending)
     g_Pending = null
 }
 
+// Hide the current tooltip, if visible
+public func hide(owner: *Wnd)
+{
+    if g_Pending and g_Pending.owner == owner
+        hide()
+    elif owner == g_CurrentOwner
+        hide()
+}
+
 // Show a tooltip
-public func show(owner: *Wnd, surfacePos: Math.Point, str: string, delay: Time.Duration = 1's)
+public func show(owner: *Wnd, surfacePos: Math.Point, str: string, delay: Time.Duration = 500'ms)
 {
     if !g_Current and delay.timeInSeconds > 0
     {
@@ -65,6 +76,7 @@ public func show(owner: *Wnd, surfacePos: Math.Point, str: string, delay: Time.D
     g_Current.style.addStyleSheetColors("frameWnd_Bk     $toolTip_Bk")
     g_Current.style.addStyleSheetColors("frameWnd_Border 0xFF000000")
     g_Current.padding = 0
+    g_CurrentOwner = owner
 
     // View
     view := g_Current.createView'Wnd()

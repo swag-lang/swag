@@ -11,6 +11,7 @@ enum EditMode
 struct MainWnd
 {
     using wnd: Wnd
+
     icons48:    ImageList
     toolbar:    *Wnd
     editWnd:    *EditWnd
@@ -44,8 +45,9 @@ impl IWnd for MainWnd
         switch evt.id
         {
         case CmdIdCapture:
-            evt.setFlags |= .Name
+            evt.setFlags |= .Name | .ToolTip
             evt.name = "Capture"
+            evt.toolTip = "Start a new capture"
             evt.accepted = true
 
         case CmdIdSelectAll:
@@ -79,44 +81,50 @@ impl IWnd for MainWnd
             evt.accepted = true
 
         case CmdIdModeShape:
-            evt.setFlags |= .Icon | .Checked | .Name
+            evt.setFlags |= .Icon | .Checked | .Name | .ToolTip
             evt.icon = Icon.from(&icons48, 0)
             evt.name = "Shape"
+            evt.toolTip = "Add circles and rectangle to the capture"
             evt.checked = editMode == .Shape
             evt.accepted = true
 
         case CmdIdModeArrow:
-            evt.setFlags |= .Icon | .Checked | .Name
+            evt.setFlags |= .Icon | .Checked | .Name | .ToolTip
             evt.icon = Icon.from(&icons48, 3)
             evt.name = "Arrow"
+            evt.toolTip = "Add arrows to the capture"
             evt.checked = editMode == .Arrow
             evt.accepted = true
 
         case CmdIdModeLine:
-            evt.setFlags |= .Icon | .Checked | .Name
+            evt.setFlags |= .Icon | .Checked | .Name | .ToolTip
             evt.icon = Icon.from(&icons48, 1)
             evt.name = "Line"
+            evt.toolTip = "Add lines to the capture"
             evt.checked = editMode == .Line
             evt.accepted = true
 
         case CmdIdModePolygon:
-            evt.setFlags |= .Icon | .Checked | .Name
+            evt.setFlags |= .Icon | .Checked | .Name | .ToolTip
             evt.icon = Icon.from(&icons48, 2)
             evt.name = "Polygon"
+            evt.toolTip = "Add polygons to the capture"
             evt.checked = editMode == .Polygon
             evt.accepted = true
 
         case CmdIdModeText:
-            evt.setFlags |= .Icon | .Checked | .Name
+            evt.setFlags |= .Icon | .Checked | .Name | .ToolTip
             evt.icon = Icon.from(&icons48, 4)
             evt.name = "Text"
+            evt.toolTip = "Add some text to the capture"
             evt.checked = editMode == .Text
             evt.accepted = true
 
         case CmdIdModeFavorites:
-            evt.setFlags |= .Icon | .Checked | .Name
+            evt.setFlags |= .Icon | .Checked | .Name | .ToolTip
             evt.icon = Icon.from(&icons48, 5)
             evt.name = "Favorites"
+            evt.toolTip = "Save multiple quick styles in one single location"
             evt.checked = editMode == .Favorites
             evt.accepted = true
 
@@ -378,6 +386,7 @@ impl MainWnd
 
     mtd updateState()
     {
+        captureBtn.updateCommandState()
         toolbar.updateCommandState()
         propWnd.selectionHasChanged()
         quickWnd.updateQuickStyles()
@@ -421,9 +430,7 @@ impl MainWnd
         res.registerShortcuts()
         res.favoriteMdl = &res.mdlFormShape
 
-        res.captureBtn = IconButton.create(topBar, Icon.from(&res.icons48, 6), @{0, 0, 64, 64})
-        res.captureBtn.name = "Capture"
-        res.captureBtn.toolTip = "This is a tooltip"
+        res.captureBtn = IconButton.create(topBar, Icon.from(&res.icons48, 6), @{0, 0, 64, 64}, id: CmdIdCapture)
         res.captureBtn.style.addStyleSheetColors("btnIcon_Icon    0xFFFF0000")
         res.captureBtn.style.addStyleSheetColors("btnIcon_HotIcon 0xFFFF4444")
         res.captureBtn.sigPressed += @|res|(btn) {
