@@ -21,6 +21,7 @@ struct MainWnd
     captureBtn: *IconButton
 
     editMode: EditMode = .Shape
+    snap:     bool
 
     mdlFormShape:   FormShape
     mdlFormArrow:   FormArrow
@@ -44,6 +45,12 @@ impl IWnd for MainWnd
 
         switch evt.id
         {
+        case CmdIdSnap:
+            evt.setFlags |= .Name | .Checked
+            evt.name = "Snap"
+            evt.checked = snap
+            evt.accepted = true
+
         case CmdIdCapture:
             evt.setFlags |= .Name | .ToolTip
             evt.name = "Capture"
@@ -214,6 +221,9 @@ impl IWnd for MainWnd
         var undo: *Undo
         switch evt.id
         {
+        case CmdIdSnap:
+            snap = !snap
+
         case CmdIdCapture:
             captureScreen()
 

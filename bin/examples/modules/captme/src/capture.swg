@@ -339,6 +339,18 @@ impl Capture
     // CONTENT
     //////////////////////////////
 
+    mtd snap(x, y: *s32)
+    {
+        if !editView.main.snap
+            return
+
+        nx := dref x
+        ny := dref y
+
+        dref x = nx
+        dref y = ny
+    }
+
     mtd popupMenu(view: *EditView, pos: Math.Point)
     {
         menu := MenuCtrl.createPopup(view)
@@ -373,6 +385,8 @@ impl Capture
         menu.addSeparator()
         menu.addItem(CmdIdCopyAsImage)
         menu.addItem(CmdIdSelectAll)
+        menu.addSeparator()
+        menu.addItem(CmdIdSnap)
 
         discard menu.doModal(pos)
         view.setFocus()
@@ -526,6 +540,7 @@ impl Capture
                 undo()
 
             u := newUndo(.OffsetSelection)
+            snap(&newPosX, &newPosY)
             u.newPosX = newPosX
             u.newPosY = newPosY
             pushUndo(u)

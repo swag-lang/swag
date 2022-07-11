@@ -9,6 +9,7 @@ public struct PopupMenuItem
     size:       f32
     separator:  bool
     disabled:   bool
+    checked:    bool
 }
 
 public struct MenuCtrl
@@ -153,7 +154,14 @@ impl IWnd for MenuCtrl
             }
 
             // Icon
-            if i.icon.isValid()
+            if i.checked
+            {
+                checkPos := labelPos
+                checkPos.y = labelPos.vertCenter() - i.size * 0.5
+                checkPos.width, checkPos.height = i.size
+                theme.drawSubRect(painter, checkPos, &rects.btnCheck_CheckedMark, colorText)
+            }
+            elif i.icon.isValid()
             {
                 i.icon.sizeX = i.size
                 i.icon.sizeY = i.size
@@ -340,6 +348,8 @@ impl MenuCtrl
                 i.name = evt.name
             if evt.setFlags & .Shortcut
                 i.rightName.set(evt.shortcut)
+            if evt.setFlags & .Checked
+                i.checked = evt.checked
         }
     }
 
@@ -591,7 +601,7 @@ public impl MenuCtrl
     }
 
     // Add a new item
-    mtd addItem(name: string, id: WndId, icon: Icon = @{}, rightName: string = null, disabled = false)
+    mtd addItem(name: string, id: WndId, icon: Icon = @{}, rightName: string = null, disabled = false, checked = false)
     {
         mitem := items.newPtr()
         with mitem
@@ -601,6 +611,7 @@ public impl MenuCtrl
             id        = #self.id
             rightName = #self.rightName
             disabled  = #self.disabled
+            checked   = #self.checked
         }
 
         items.add(mitem)

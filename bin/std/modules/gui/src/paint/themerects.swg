@@ -93,6 +93,7 @@ struct ThemeImageRects
     menuBar_Bk:                 ThemeImageRect = @{{1,225,27,27}, 12}
     menuBar_Border:             ThemeImageRect = @{{29,225,27,27}, 5}
     menuBar_SelectedBk:         ThemeImageRect = @{{57,197,27,27}, 12}
+    menuItem_CheckedMark:       ThemeImageRect = @{{156,62,32,32}, 0}
 
     scrollBar_BkV:              ThemeImageRect = @{{1,253,27,27}, 0}
     scrollBar_BkH:              ThemeImageRect = @{{1,253,27,27}, 0}
