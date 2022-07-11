@@ -444,10 +444,9 @@ impl Capture
 
                 if bestSideXLeft
                 {
-                    nrx := Math.abs(bestCoordX - r.x)
-                    if nrx < bestX
+                    if r.x < bestX
                     {
-                        bestX = nrx
+                        bestX = r.x
                         nx = cast(s32) (bestCoordX - r.x)
                     }
                 }
@@ -465,10 +464,9 @@ impl Capture
 
                 if bestSideYTop
                 {
-                    nry := Math.abs(bestCoordY - r.y)
-                    if nry < bestY
+                    if r.y < bestY
                     {
-                        bestY = nry
+                        bestY = r.y
                         ny = cast(s32) (bestCoordY - r.y)
                     }
                 }
