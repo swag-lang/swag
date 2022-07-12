@@ -194,7 +194,15 @@ impl Capture
             itf.moveForm(acast dx, acast dy)
         }
 
+        countBefore := forms.count
         pushUndo(undo)
+
+        // Select added forms
+        selection.clear()
+        loop i: undo.oldForms
+            selection.add(countBefore + i)
+
+        selectionHasChanged()
     }
 
     //////////////////////////////
