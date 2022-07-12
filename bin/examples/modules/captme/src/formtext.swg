@@ -196,17 +196,7 @@ impl IForm for FormText
         gizmo.paintBigBorder = true
 
         gizmo.sigChanged = @|self|(g, first, hitMove) {
-            if !first
-                self.capture.undo()
-            undo := self.capture.newUndo(.MoveBaseForm)
-            undo.baseForm = self
-            zoom := self.capture.editView.zoom
-            undo.newPosX  = cast(s32) ((g.movingRect.x - g.startRect.x) / zoom)
-            undo.newPosY  = cast(s32) ((g.movingRect.y - g.startRect.y) / zoom)
-            undo.newSizeX = cast(s32) ((g.movingRect.width - g.startRect.width) / zoom)
-            undo.newSizeY = cast(s32) ((g.movingRect.height - g.startRect.height) / zoom)
-            self.capture.pushUndo(undo)
-            self.capture.editView.invalidate()
+            g.apply(self, first, hitMove)
         }
     }
 }

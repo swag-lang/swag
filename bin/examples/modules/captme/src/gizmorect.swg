@@ -224,4 +224,41 @@ impl GizmoRect
             }
         }
     }
+
+    mtd apply(iform: IForm, first: bool, hitMove: u32)
+    {
+        form := cast(*BaseForm) @dataof(iform)
+        capture := form.capture
+        if !first
+            capture.undo()
+        undo := capture.newUndo(.MoveBaseForm)
+        undo.baseForm = iform
+        zoom := capture.editView.zoom
+
+        dx := cast(s32) ((movingRect.x - startRect.x) / zoom)
+        dy := cast(s32) ((movingRect.y - startRect.y) / zoom)
+        undo.newPosX = dx
+        undo.newPosY = dy
+        if hitMove & 1
+            capture.snap(&undo.newPosX, null, false, false)
+        if hitMove & 2
+            capture.snap(null, &undo.newPosY, false, false)
+
+        dsx := cast(s32) ((movingRect.width - startRect.width) / zoom)
+        dsy := cast(s32) ((movingRect.height - startRect.height) / zoom)
+        undo.newSizeX = dsx
+        undo.newSizeY = dsy
+        if hitMove & 4
+            capture.snap(&undo.newSizeX, null, true, true)
+        if hitMove & 8
+            capture.snap(null, &undo.newSizeY, true, true)
+
+        if hitMove & 1
+            undo.newSizeX -= (undo.newPosX - dx)
+        if hitMove & 2
+            undo.newSizeY -= (undo.newPosY - dy)
+
+        capture.pushUndo(undo)
+        capture.editView.invalidate()
+    }
 }

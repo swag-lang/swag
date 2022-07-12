@@ -184,38 +184,7 @@ impl IForm for FormShape
         gizmo.paintBigBorder = true
 
         gizmo.sigChanged = @|self|(g, first, hitMove) {
-            capture := self.capture
-            if !first
-                capture.undo()
-            undo := capture.newUndo(.MoveBaseForm)
-            undo.baseForm = self
-            zoom := capture.editView.zoom
-
-            dx := cast(s32) ((g.movingRect.x - g.startRect.x) / zoom)
-            dy := cast(s32) ((g.movingRect.y - g.startRect.y) / zoom)
-            undo.newPosX = dx
-            undo.newPosY = dy
-            if hitMove & 1
-                capture.snap(&undo.newPosX, null, false, false)
-            if hitMove & 2
-                capture.snap(null, &undo.newPosY, false, false)
-
-            dsx := cast(s32) ((g.movingRect.width - g.startRect.width) / zoom)
-            dsy := cast(s32) ((g.movingRect.height - g.startRect.height) / zoom)
-            undo.newSizeX = dsx
-            undo.newSizeY = dsy
-            if hitMove & 4
-                capture.snap(&undo.newSizeX, null, true, true)
-            if hitMove & 8
-                capture.snap(null, &undo.newSizeY, true, true)
-
-            if hitMove & 1
-                undo.newSizeX -= (undo.newPosX - dx)
-            if hitMove & 2
-                undo.newSizeY -= (undo.newPosY - dy)
-
-            capture.pushUndo(undo)
-            capture.editView.invalidate()
+            g.apply(self, first, hitMove)
         }
     }
 }
