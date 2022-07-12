@@ -37,7 +37,7 @@ impl Capture
     mtd setup(view: *EditView)
     {
         editView = view
-        gizmo.sigChanged = @|self|(g, first) {
+        gizmo.sigChanged = @|self|(g, first, hitMove) {
             undo := self.newUndo(.MoveCapture)
             undo.newPosX  = cast(s32) ((g.rect.x - g.movingRect.x) / self.editView.zoom)
             undo.newPosY  = cast(s32) ((g.rect.y - g.movingRect.y) / self.editView.zoom)
@@ -353,36 +353,43 @@ impl Capture
         {
             f := forms[s]
             r := f.boundRect(true)
-            bound.setRight(Math.max(bound.right(), r.right()))
-            bound.setBottom(Math.max(bound.bottom(), r.bottom()))
             bound.x = Math.min(bound.x, r.x)
             bound.y = Math.min(bound.y, r.y)
+            bound.setRight(Math.max(bound.right(), r.right()))
+            bound.setBottom(Math.max(bound.bottom(), r.bottom()))
         }
 
         return bound
     }
 
-    mtd snap(x, y: *s32)
+    mtd snap(x, y: *s32, right, bottom: bool)
     {
         const SnapToler = 10
 
-        snapX = -1
-        snapY = -1
+        if x
+            snapX = -1
+        if y
+            snapY = -1
 
         if !editView.main.snap
             return
 
-        nx := dref x
-        ny := dref y
+        nx := x ? dref x : 0
+        ny := y ? dref y : 0
 
         bound := getSelectionBoundRect()
-        bound.x += nx
-        bound.y += ny
+        if right
+            bound.width += nx
+        else
+            bound.x += nx
+
+        if bottom
+            bound.height += ny
+        else
+            bound.y += ny
 
         bestX := Swag.F32.Max
         bestY := Swag.F32.Max
-        bestSideXLeft := false
-        bestSideYTop  := false
         bestCoordX := 0.0
         bestCoordY := 0.0
         visit f, i: forms
@@ -410,71 +417,79 @@ impl Capture
                 arrY.add(cast(s32) (form.y + form.h))
             }
 
-            visit ax: arrX
+            if x
             {
-                nbX := cast(f32) Math.abs(bound.x - ax)
-                if nbX < bestX
+                visit ax: arrX
                 {
-                    bestX = nbX
-                    bestCoordX = ax
-                    bestSideXLeft = true
+                    nbX := right ? cast(f32) Math.abs(bound.right() - ax) : cast(f32) Math.abs(bound.x - ax)
+                    if nbX < bestX
+                    {
+                        bestX = nbX
+                        bestCoordX = ax
+                    }
                 }
             }
 
-            visit ay: arrY
+            if y
             {
-                nbY := cast(f32) Math.abs(bound.y - ay)
-                if nbY < bestY
+                visit ay: arrY
                 {
-                    bestY = nbY
-                    bestCoordY = ay
-                    bestSideYTop = true
+                    nbY := bottom ? cast(f32) Math.abs(bound.bottom() - ay) : cast(f32) Math.abs(bound.y - ay)
+                    if nbY < bestY
+                    {
+                        bestY = nbY
+                        bestCoordY = ay
+                    }
                 }
             }
         }
 
-        if bestX < SnapToler
+        if x and bestX < SnapToler
         {
-            bestX = Swag.F32.Max
+            bestX = right ? 0 : Swag.F32.Max
             snapX = bestCoordX
             visit s: selection
             {
                 f := forms[s]
                 r := f.boundRect(true)
 
-                if bestSideXLeft
+                if right and r.right() > bestX
                 {
-                    if r.x < bestX
-                    {
-                        bestX = r.x
-                        nx = cast(s32) (bestCoordX - r.x)
-                    }
+                    bestX = r.right()
+                    nx = cast(s32) (bestCoordX - r.right())
+                }
+                elif !right and r.x < bestX
+                {
+                    bestX = r.x
+                    nx = cast(s32) (bestCoordX - r.x)
                 }
             }
         }
 
-        if bestY < SnapToler
+        if y and bestY < SnapToler
         {
-            bestY = Swag.F32.Max
+            bestY = bottom ? 0 : Swag.F32.Max
             snapY = bestCoordY
             visit s: selection
             {
                 f := forms[s]
                 r := f.boundRect(true)
 
-                if bestSideYTop
+                if bottom and r.bottom() > bestY
                 {
-                    if r.y < bestY
-                    {
-                        bestY = r.y
-                        ny = cast(s32) (bestCoordY - r.y)
-                    }
+                    bestY = r.bottom()
+                    ny = cast(s32) (bestCoordY - r.bottom())
+                }
+                elif !bottom and r.y < bestY
+                {
+                    bestY = r.y
+                    ny = cast(s32) (bestCoordY - r.y)
                 }
             }
         }
 
-        dref x = nx
-        dref y = ny
+        if x dref x = nx
+        if y dref y = ny
     }
 
     mtd popupMenu(view: *EditView, pos: Math.Point)
@@ -540,6 +555,7 @@ impl Capture
             }
 
             // Resize capture
+            snapX, snapY = -1
             if gizmo.mouse(view, localPos, evt)
             {
                 view.invalidate()
@@ -668,7 +684,7 @@ impl Capture
                 undo()
 
             u := newUndo(.OffsetSelection)
-            snap(&newPosX, &newPosY)
+            snap(&newPosX, &newPosY, false, false)
             u.newPosX = newPosX
             u.newPosY = newPosY
             pushUndo(u)

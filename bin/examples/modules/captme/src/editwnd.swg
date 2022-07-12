@@ -82,14 +82,14 @@ impl EditWnd
         itf.setup(capture)
         capture.forms.add(itf)
 
-        form1 := Memory.new'FormShape()
+        /*form1 := Memory.new'FormShape()
         form1.x, form1.y = 150
         form1.w = 100
         form1.dashStyle = .Dot
         form1.backColor = Argb.Zero
         itf = cast(IForm) form1
         itf.setup(capture)
-        capture.forms.add(itf)
+        capture.forms.add(itf)*/
 
         form2 := Memory.new'FormShape()
         form2.kind = .Rectangle

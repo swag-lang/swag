@@ -195,7 +195,7 @@ impl IForm for FormText
         gizmo.paintSimpleBorder = false
         gizmo.paintBigBorder = true
 
-        gizmo.sigChanged = @|self|(g, first) {
+        gizmo.sigChanged = @|self|(g, first, hitMove) {
             if !first
                 self.capture.undo()
             undo := self.capture.newUndo(.MoveBaseForm)
