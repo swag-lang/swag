@@ -324,12 +324,6 @@ impl Capture
         visit f: forms
             paintForm(app, painter, rect, f, zoom)
 
-        // Snap
-        if snapX != -1
-            painter.drawLine(rect.x + snapX * zoom, rect.y, rect.x + snapX * zoom, rect.bottom(), Argb.Purple, 2)
-        if snapY != -1
-            painter.drawLine(rect.x, rect.y + snapY * zoom, rect.right(), rect.y + snapY * zoom, Argb.Purple, 2)
-
         // Gizmos
         visit f, i: forms
         {
@@ -340,6 +334,12 @@ impl Capture
                 flags |= .Selected
             f.paintGizmo(painter, zoom, flags)
         }
+
+        // Snap
+        if snapX != -1
+            painter.drawLine(rect.x + snapX * zoom, rect.y, rect.x + snapX * zoom, rect.bottom(), Argb.Purple, 2)
+        if snapY != -1
+            painter.drawLine(rect.x, rect.y + snapY * zoom, rect.right(), rect.y + snapY * zoom, Argb.Purple, 2)
     }
 
     //////////////////////////////
