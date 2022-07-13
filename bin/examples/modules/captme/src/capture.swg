@@ -354,11 +354,26 @@ impl Capture
     // CONTENT
     //////////////////////////////
 
-    mtd getSnapPoint(bound: Math.Rectangle, right, bottom: bool)->Math.Point
+    mtd getSnapPoint(bound: Math.Rectangle, right, bottom: bool, nx, ny: s32, idxPt: u32)->Math.Point
     {
         var result: retval
-        result.x = right ? bound.right() : bound.x
-        result.y = bottom ? bound.bottom() : bound.y
+
+        form := forms[selection[0]]
+        type := @kindof(form)
+
+        if selection.count == 1 and type == FormPolygon
+        {
+            poly := cast(*FormPolygon) @dataof(form)
+            result = dref poly.points[idxPt]
+            result.x += nx
+            result.y += ny
+        }
+        else
+        {
+            result.x = right ? bound.right() : bound.x
+            result.y = bottom ? bound.bottom() : bound.y
+        }
+
         return result
     }
 
@@ -446,7 +461,7 @@ impl Capture
             {
                 visit ax: arrX
                 {
-                    p   := getSnapPoint(bound, right, bottom)
+                    p   := getSnapPoint(bound, right, bottom, nx, ny, idxPt)
                     nbX := Math.abs(p.x - ax)
                     if nbX < bestX
                     {
@@ -460,7 +475,7 @@ impl Capture
             {
                 visit ay: arrY
                 {
-                    p   := getSnapPoint(bound, right, bottom)
+                    p   := getSnapPoint(bound, right, bottom, nx, ny, idxPt)
                     nbY := Math.abs(p.y - ay)
                     if nbY < bestY
                     {
@@ -474,14 +489,14 @@ impl Capture
         if x and bestX < SnapToler
         {
             snapX = bestCoordX
-            p := getSnapPoint(boundRaw, right, bottom)
+            p := getSnapPoint(boundRaw, right, bottom, 0, 0, idxPt)
             nx = cast(s32) (bestCoordX - p.x)
         }
 
         if y and bestY < SnapToler
         {
             snapY = bestCoordY
-            p := getSnapPoint(boundRaw, right, bottom)
+            p := getSnapPoint(boundRaw, right, bottom, 0, 0, idxPt)
             ny = cast(s32) (bestCoordY - p.y)
         }
 
