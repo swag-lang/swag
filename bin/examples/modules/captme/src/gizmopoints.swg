@@ -85,4 +85,23 @@ impl GizmoPoints
             painter.drawCircle(c.x, c.y, anchorSize2, Argb.Black, 1)
         }
     }
+
+    mtd apply(iform: IForm, diff: Math.Point, pt: u32, first: bool)
+    {
+        form := cast(*BaseForm) @dataof(iform)
+        capture := form.capture
+        if !first
+            capture.undo()
+        undo := capture.newUndo(.MovePoint)
+        zoom := capture.editView.zoom
+
+        undo.newPosX = cast(s32) (diff.x / zoom)
+        undo.newPosY = cast(s32) (diff.y / zoom)
+        capture.snap(&undo.newPosX, &undo.newPosY, pt > 0, pt > 0)
+
+        undo.pointIdx = pt
+        undo.baseForm = iform
+        capture.pushUndo(undo)
+        capture.editView.invalidate()
+    }
 }

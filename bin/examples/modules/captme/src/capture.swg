@@ -418,6 +418,14 @@ impl Capture
                 arrY.add(cast(s32) form2.ya)
                 arrY.add(cast(s32) form2.yb)
 
+            case FormPolygon:
+                form2 := cast(*FormPolygon) form
+                visit pt: form2.points
+                {
+                    arrX.add(cast(s32) pt.x)
+                    arrY.add(cast(s32) pt.y)
+                }
+
             default:
                 arrX.add(cast(s32) form.x)
                 arrX.add(cast(s32) (form.x + form.w))

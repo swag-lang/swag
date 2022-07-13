@@ -236,17 +236,7 @@ impl IForm for FormPolygon
         points.clear()
 
         gizmo.sigChanged = @|self|(g, diff, pt, first) {
-            capture := self.capture
-            if !first
-                capture.undo()
-            undo := capture.newUndo(.MovePoint)
-            zoom := capture.editView.zoom
-            undo.newPosX = cast(s32) (diff.x / zoom)
-            undo.newPosY = cast(s32) (diff.y / zoom)
-            undo.pointIdx = pt
-            undo.baseForm = self
-            capture.pushUndo(undo)
-            capture.editView.invalidate()
+            g.apply(self, diff, pt, first)
         }
     }
 }
