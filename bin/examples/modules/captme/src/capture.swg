@@ -372,6 +372,8 @@ impl Capture
         {
             result.x = right ? bound.right() : bound.x
             result.y = bottom ? bound.bottom() : bound.y
+            result.x += nx
+            result.y += ny
         }
 
         return result
@@ -409,16 +411,6 @@ impl Capture
         ny := y ? dref y : 0
 
         bound := getSelectionBoundRect()
-        boundRaw := bound
-        if right
-            bound.width += nx
-        else
-            bound.x += nx
-
-        if bottom
-            bound.height += ny
-        else
-            bound.y += ny
 
         bestX := Swag.F32.Max
         bestY := Swag.F32.Max
@@ -489,14 +481,14 @@ impl Capture
         if x and bestX < SnapToler
         {
             snapX = bestCoordX
-            p := getSnapPoint(boundRaw, right, bottom, 0, 0, idxPt)
+            p := getSnapPoint(bound, right, bottom, 0, 0, idxPt)
             nx = cast(s32) (bestCoordX - p.x)
         }
 
         if y and bestY < SnapToler
         {
             snapY = bestCoordY
-            p := getSnapPoint(boundRaw, right, bottom, 0, 0, idxPt)
+            p := getSnapPoint(bound, right, bottom, 0, 0, idxPt)
             ny = cast(s32) (bestCoordY - p.y)
         }
 
