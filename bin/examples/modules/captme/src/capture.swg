@@ -446,7 +446,8 @@ impl Capture
             {
                 visit ax: arrX
                 {
-                    nbX := right ? cast(f32) Math.abs(bound.right() - ax) : cast(f32) Math.abs(bound.x - ax)
+                    p   := getSnapPoint(bound, right, bottom)
+                    nbX := Math.abs(p.x - ax)
                     if nbX < bestX
                     {
                         bestX = nbX
@@ -459,7 +460,8 @@ impl Capture
             {
                 visit ay: arrY
                 {
-                    nbY := bottom ? cast(f32) Math.abs(bound.bottom() - ay) : cast(f32) Math.abs(bound.y - ay)
+                    p   := getSnapPoint(bound, right, bottom)
+                    nbY := Math.abs(p.y - ay)
                     if nbY < bestY
                     {
                         bestY = nbY
