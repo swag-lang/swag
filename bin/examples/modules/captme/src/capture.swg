@@ -354,6 +354,14 @@ impl Capture
     // CONTENT
     //////////////////////////////
 
+    mtd getSnapPoint(bound: Math.Rectangle, right, bottom: bool)->Math.Point
+    {
+        var result: retval
+        result.x = right ? bound.right() : bound.x
+        result.y = bottom ? bound.bottom() : bound.y
+        return result
+    }
+
     mtd getSelectionBoundRect()->Math.Rectangle
     {
         bound := Math.Rectangle{Swag.F32.Max, Swag.F32.Max, 0, 0}
@@ -370,7 +378,7 @@ impl Capture
         return bound
     }
 
-    mtd snap(x, y: *s32, right, bottom: bool)
+    mtd snap(x, y: *s32, right, bottom: bool, idxPt: u32 = 0)
     {
         const SnapToler = 10
 
@@ -386,6 +394,7 @@ impl Capture
         ny := y ? dref y : 0
 
         bound := getSelectionBoundRect()
+        boundRaw := bound
         if right
             bound.width += nx
         else
@@ -462,46 +471,16 @@ impl Capture
 
         if x and bestX < SnapToler
         {
-            bestX = right ? 0 : Swag.F32.Max
             snapX = bestCoordX
-            visit s: selection
-            {
-                f := forms[s]
-                r := f.boundRect(true)
-
-                if right and r.right() > bestX
-                {
-                    bestX = r.right()
-                    nx = cast(s32) (bestCoordX - r.right())
-                }
-                elif !right and r.x < bestX
-                {
-                    bestX = r.x
-                    nx = cast(s32) (bestCoordX - r.x)
-                }
-            }
+            p := getSnapPoint(boundRaw, right, bottom)
+            nx = cast(s32) (bestCoordX - p.x)
         }
 
         if y and bestY < SnapToler
         {
-            bestY = bottom ? 0 : Swag.F32.Max
             snapY = bestCoordY
-            visit s: selection
-            {
-                f := forms[s]
-                r := f.boundRect(true)
-
-                if bottom and r.bottom() > bestY
-                {
-                    bestY = r.bottom()
-                    ny = cast(s32) (bestCoordY - r.bottom())
-                }
-                elif !bottom and r.y < bestY
-                {
-                    bestY = r.y
-                    ny = cast(s32) (bestCoordY - r.y)
-                }
-            }
+            p := getSnapPoint(boundRaw, right, bottom)
+            ny = cast(s32) (bestCoordY - p.y)
         }
 
         if x dref x = nx

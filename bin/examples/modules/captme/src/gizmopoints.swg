@@ -97,7 +97,7 @@ impl GizmoPoints
 
         undo.newPosX = cast(s32) (diff.x / zoom)
         undo.newPosY = cast(s32) (diff.y / zoom)
-        capture.snap(&undo.newPosX, &undo.newPosY, pt > 0, pt > 0)
+        capture.snap(&undo.newPosX, &undo.newPosY, pt > 0, pt > 0, pt)
 
         undo.pointIdx = pt
         undo.baseForm = iform
