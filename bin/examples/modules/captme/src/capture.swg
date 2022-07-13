@@ -688,12 +688,36 @@ impl Capture
                 undo()
 
             u := newUndo(.OffsetSelection)
-            snap(&newPosX, &newPosY, false, false)
-            u.newPosX = newPosX
-            u.newPosY = newPosY
+
+            // Snap by bottom/right
+            nx := newPosX
+            ny := newPosY
+            snap(&nx, &ny, true, true)
+            saveSnapX := snapX
+            saveSnapY := snapY
+
+            // Snap by top/left
+            nx1 := newPosX
+            ny1 := newPosY
+            snap(&nx1, &ny1, false, false)
+
+            if Math.abs(nx - newPosX) > Math.abs(nx1 - newPosX)
+            {
+                snapX = saveSnapX
+                u.newPosX = nx
+            }
+            else
+                u.newPosX = nx1
+            if Math.abs(ny - newPosY) > Math.abs(ny1 - newPosY)
+            {
+                snapY = saveSnapY
+                u.newPosY = ny
+            }
+            else
+                u.newPosY = ny1
+
             pushUndo(u)
             view.invalidate()
-
             return true
 
         case Creating:
