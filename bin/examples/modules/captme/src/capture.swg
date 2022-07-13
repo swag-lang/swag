@@ -368,6 +368,23 @@ impl Capture
             result.x += nx
             result.y += ny
         }
+        elif selection.count == 1 and (type == FormLine or type == FormArrow)
+        {
+            line := cast(*FormLine) @dataof(form)
+            if idxPt == 0
+            {
+                result.x = line.xa
+                result.y = line.ya
+            }
+            else
+            {
+                result.x = line.xb
+                result.y = line.yb
+            }
+
+            result.x += nx
+            result.y += ny
+        }
         else
         {
             result.x = right ? bound.right() : bound.x
@@ -412,18 +429,22 @@ impl Capture
 
         bound := getSelectionBoundRect()
 
-        bestX := Swag.F32.Max
-        bestY := Swag.F32.Max
-        bestCoordX := 0.0
-        bestCoordY := 0.0
+        var arrX: Array's32
+        var arrY: Array's32
+
+        arrX.add(0)
+        arrX.add(width)
+        arrX.add(width / 2)
+        arrY.add(0)
+        arrY.add(height)
+        arrY.add(height / 2)
+
         visit f, i: forms
         {
             if selection.contains(i)
                 continue
 
             form := cast(*BaseForm) @dataof(f)
-            var arrX: Array's32
-            var arrY: Array's32
 
             switch @kindof(f)
             {
@@ -448,32 +469,37 @@ impl Capture
                 arrY.add(cast(s32) form.y)
                 arrY.add(cast(s32) (form.y + form.h))
             }
+        }
 
-            if x
+        bestX := Swag.F32.Max
+        bestY := Swag.F32.Max
+        bestCoordX := 0.0
+        bestCoordY := 0.0
+
+        if x
+        {
+            visit ax: arrX
             {
-                visit ax: arrX
+                p   := getSnapPoint(bound, right, bottom, nx, ny, idxPt)
+                nbX := Math.abs(p.x - ax)
+                if nbX < bestX
                 {
-                    p   := getSnapPoint(bound, right, bottom, nx, ny, idxPt)
-                    nbX := Math.abs(p.x - ax)
-                    if nbX < bestX
-                    {
-                        bestX = nbX
-                        bestCoordX = ax
-                    }
+                    bestX = nbX
+                    bestCoordX = ax
                 }
             }
+        }
 
-            if y
+        if y
+        {
+            visit ay: arrY
             {
-                visit ay: arrY
+                p   := getSnapPoint(bound, right, bottom, nx, ny, idxPt)
+                nbY := Math.abs(p.y - ay)
+                if nbY < bestY
                 {
-                    p   := getSnapPoint(bound, right, bottom, nx, ny, idxPt)
-                    nbY := Math.abs(p.y - ay)
-                    if nbY < bestY
-                    {
-                        bestY = nbY
-                        bestCoordY = ay
-                    }
+                    bestY = nbY
+                    bestCoordY = ay
                 }
             }
         }
