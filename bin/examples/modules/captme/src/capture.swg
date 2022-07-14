@@ -351,7 +351,7 @@ impl Capture
     }
 
     //////////////////////////////
-    // CONTENT
+    // SNAP
     //////////////////////////////
 
     mtd getSnapPoint(bound: Math.Rectangle, right, bottom: bool, nx, ny: s32, idxPt: u32)->Math.Point
@@ -521,6 +521,10 @@ impl Capture
         if x dref x = nx
         if y dref y = ny
     }
+
+    //////////////////////////////
+    // CONTENT
+    //////////////////////////////
 
     mtd popupMenu(view: *EditView, pos: Math.Point)
     {
