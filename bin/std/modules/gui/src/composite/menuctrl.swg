@@ -3,8 +3,8 @@ using Core, Pixel
 public enum PopupPos
 {
     TopLeft
-    TopCenter
-    BottomCenter
+    AnchorTopCenter
+    AnchorBottomCenter
 }
 
 public struct PopupMenuItem
@@ -679,15 +679,22 @@ public impl MenuCtrl
         {
         case TopLeft:
             setPosition(@{pt.x, pt.y, position.width, position.height})
-        case TopCenter:
+
+        case AnchorTopCenter:
             setPosition(@{pt.x - position.width * 0.5, pt.y, position.width, position.height})
-        case BottomCenter:
+            anchor = .Top
+            anchorPos = position.width * 0.5
+            setFrameFlags(.Borders | .SmallShadow)
+            setFrameForm(.Round)
+            paintByFrame = true
+
+        case AnchorBottomCenter:
             setPosition(@{pt.x - position.width * 0.5, pt.y - position.height, position.width, position.height})
             anchor = .Bottom
             anchorPos = position.width * 0.5
-            paintByFrame = true
             setFrameFlags(.Borders | .SmallShadow)
             setFrameForm(.Round)
+            paintByFrame = true
         }
 
         fitPosInParent()

@@ -321,7 +321,7 @@ impl Wnd
         if !(wndFlags & .Hidden)
             return
         wndFlags &= ~.Hidden
-        invalidate()
+        parent.invalidate()
     }
 
     // Hide the window
@@ -331,7 +331,7 @@ impl Wnd
             return
         wndFlags |= .Hidden
         getApp().unregisterWnd(self)
-        invalidate()
+        parent.invalidate()
     }
 
     // Enable/Disable the window

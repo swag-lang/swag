@@ -48,7 +48,7 @@ impl IWnd for MainWnd
         {
         case CmdIdSnap:
             evt.setFlags |= .Name | .Checked
-            evt.name = "Snap"
+            evt.name = "Snap To Forms"
             evt.checked = snap
             evt.accepted = true
 
@@ -495,7 +495,7 @@ impl MainWnd
             menu := MenuCtrl.createPopup(res)
             menu.addItem("Actual Size", "0")
             menu.addItem("Fit To View", "1")
-            result := menu.doModal(@{pos.horzCenter(), pos.y}, .BottomCenter)
+            result := menu.doModal(@{pos.horzCenter(), pos.y}, .AnchorBottomCenter)
             menu.destroy()
 
             view := res.editWnd.editView
