@@ -46,6 +46,8 @@ struct ThemeColors
     wnd_BtnCloseHotBk:              Color = 0xFFe62435
     wnd_Shadow:                     Color = 0x8C000000
 
+    view_Bk:                        Color = 0xFF282828
+
     dlg_Bk:                         Color = Gray6
     dlg_BtnBarBk:                   Color = Gray7
 

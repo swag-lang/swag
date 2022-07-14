@@ -30,6 +30,7 @@ enum BackgroundStyle
     Window
     Dialog
     DialogBar
+    View
 }
 
 enum FocusStategy
@@ -409,6 +410,8 @@ impl Wnd
             painter.fillRect(position, theme.colors.wnd_Bk)
         case Dialog:
             painter.fillRect(position, theme.colors.dlg_Bk)
+        case View:
+            painter.fillRect(position, theme.colors.view_Bk)
         case DialogBar:
             theme.drawSubRect(bc.painter, position, &theme.rects.dlg_BtnBar, theme.colors.dlg_BtnBarBk)
         }

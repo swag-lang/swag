@@ -310,6 +310,8 @@ impl Undo
             visit f: oldForms
                 capture.forms.add(f)
         }
+
+        capture.hasChanged()
     }
 
     mtd undo()
@@ -391,5 +393,7 @@ impl Undo
 
             capture.selectionHasChanged()
         }
+
+        capture.hasChanged()
     }
 }

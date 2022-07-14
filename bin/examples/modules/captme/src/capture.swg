@@ -52,11 +52,17 @@ impl Capture
     // CLIPBOARD
     //////////////////////////////
 
-    mtd toImage()->Image
+    mtd toPreview()->Image
+    {
+        ratio := 1.0
+        return toImage(ratio)
+    }
+
+    mtd toImage(ratio: f32 = 1)->Image
     {
         var result: retval
 
-        rect := Math.Rectangle{width: width, height: height}
+        rect := Math.Rectangle{width: width * ratio, height: height * ratio}
         var painter: Pixel.Painter
 
         app := editView.getApp()
@@ -69,6 +75,7 @@ impl Capture
         painter.setColorMask(true, true, true, true)
         paintBackImage(&painter, rect.x, rect.y, 1)
         painter.setColorMask(true, true, true, false)
+
         visit f: forms
             paintForm(app, &painter, rect, f, 1)
         painter.end()
@@ -317,7 +324,7 @@ impl Capture
 
     mtd paint(painter: *Painter, rect: Math.Rectangle)
     {
-        painter.fillRect(rect, Argb.Gray)
+        painter.fillRect(rect, Argb.LightGray)
         painter.fillRect(rect, Brush.createHatch(.CheckBoardLarge, Argb.DarkGray))
         painter.setParams(.Antialiased)
 
@@ -935,6 +942,11 @@ impl Capture
     //////////////////////////////
     // UNDO
     //////////////////////////////
+
+    mtd hasChanged()
+    {
+        editView.main.recentWnd.recentView.updateRecent(self)
+    }
 
     mtd newUndo(kind: UndoKind)->*Undo
     {
