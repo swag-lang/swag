@@ -19,6 +19,7 @@ struct MainWnd
     propWnd:    *PropWnd
     clipFmt:    Clipboard.Format
     captureBtn: *IconButton
+    zoomBtn:    *IconButton
 
     editMode: EditMode = .Shape
     snap:     bool
@@ -470,6 +471,48 @@ impl MainWnd
         res.propWnd.main = res
         res.propWnd.backgroundStyle = .Window
         res.propWnd.layoutKind = .TopAutoSize
+
+        // Bottom bar
+        barWnd := StackLayoutCtrl.create(res, .HorzCenter, @{0, 0, 300, 32})
+        barWnd.dockStyle = .Bottom
+        barWnd.backgroundStyle = .Window
+
+        func updateZoom(res: *MainWnd)
+        {
+            z := cast(s32) (res.editWnd.editView.zoom * 100)
+            res.zoomBtn.name = Format.toString("% %%", z)
+            res.zoomBtn.invalidate()
+        }
+
+        res.zoomBtn = IconButton.create(barWnd, res.getTheme().getIcon24(ThemeIcons24.Search), @{0, 0, 110, 32})
+        res.zoomBtn.textPos = .Right
+        res.zoomBtn.arrowPos = .RightUp
+        res.editWnd.sigScrollSizeChanged += @|res|(scroll, old, new) {
+            updateZoom(res);
+        }
+        res.zoomBtn.sigPressed += @|res|(btn) {
+            pos  := btn.getSurfaceRect()
+            menu := MenuCtrl.createPopup(res)
+            menu.addItem("Actual Size", "0")
+            menu.addItem("Fit To View", "1")
+            result := menu.doModal(@{pos.horzCenter(), pos.y}, .BottomCenter)
+            menu.destroy()
+
+            view := res.editWnd.editView
+            switch result
+            {
+            case "0":
+                view.setZoom(1)
+            case "1":
+                rect := view.getClientRect()
+                rect.inflate(-view.viewMargin)
+                zx := rect.width / res.getCapture().width
+                zy := rect.height / res.getCapture().height
+                view.setZoom(Math.min(zx, zy))
+            }
+        }
+
+        updateZoom(res)
 
         res.updateState()
         return res

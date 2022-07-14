@@ -11,6 +11,7 @@ struct EditView
     scroll:     *ScrollWnd
     capture:    *Capture
     zoom:       f32 = 1
+    viewMargin: f32 = 32
 }
 
 impl EditWnd
@@ -197,9 +198,9 @@ impl EditView
 
     mtd setZoom(z: f32)
     {
-        zoom = Math.clamp(z, 0.1, 2.0)
+        zoom = Math.clamp(z, 0.1, 10.0)
         captureRect := getCaptureRect()
-        scroll.setScrollSize(captureRect.width + 64, captureRect.height + 64)
+        scroll.setScrollSize(captureRect.width + (2*viewMargin), captureRect.height + (2*viewMargin))
         invalidate()
     }
 

@@ -18,6 +18,7 @@ public struct ScrollWnd
     scrollWndFlags  = ScrollWndFlags.None
 
     sigScrollPosChanged:    SigArray'closure(*Self, Math.Point, Math.Point)
+    sigScrollSizeChanged:   SigArray'closure(*Self, Math.Point, Math.Point)
 
     oldMouseCapture:    *Wnd
 
@@ -369,8 +370,10 @@ public impl ScrollWnd
         if scrollSize.x == x and scrollSize.y == y
             return
 
+        oldScrollSize := scrollSize
         scrollSize = @{x, y}
         setScrollPos(view.scrollPos.x, view.scrollPos.y)
+        sigScrollSizeChanged.call(self, oldScrollSize, scrollSize)
         sendResizeEvent()
     }
 

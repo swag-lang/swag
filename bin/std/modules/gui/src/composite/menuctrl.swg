@@ -1,5 +1,12 @@
 using Core, Pixel
 
+public enum PopupPos
+{
+    TopLeft
+    TopCenter
+    BottomCenter
+}
+
 public struct PopupMenuItem
 {
     using item: Item
@@ -14,7 +21,7 @@ public struct PopupMenuItem
 
 public struct MenuCtrl
 {
-    using wnd:          Wnd
+    using frameWnd:     FrameWnd
     onValidateResult:   func(self, WndId)
     onComputeItem:      func(self, *PopupMenuItem)
 
@@ -28,6 +35,7 @@ public struct MenuCtrl
     subVisible:     *MenuCtrl
     timer:          *Timer
     dirtyLayout:    bool
+    paintByFrame:   bool
 }
 
 impl IWnd for MenuCtrl
@@ -108,14 +116,21 @@ impl IWnd for MenuCtrl
         metrics := getThemeMetrics()
 
         // Shadow
-        subRect := &theme.rects.menuPopup_Shadow
-        theme.drawSubRect(painter, @{0, 0, position.width, position.height}, subRect, colors.menuPopup_Shadow)
+        if !paintByFrame
+        {
+            subRect := &theme.rects.menuPopup_Shadow
+            theme.drawSubRect(painter, @{0, 0, position.width, position.height}, subRect, colors.menuPopup_Shadow)
+        }
 
         // Back
         clientRect := getClientRect()
         clientRect.inflate(-metrics.menuPopup_ShadowSize)
-        theme.drawSubRect(painter, clientRect, &rects.menuPopup_Bk, colors.menuPopup_Bk)
-        theme.drawSubRect(painter, clientRect, &rects.menuPopup_Border, colors.menuPopup_Border)
+        if !paintByFrame
+        {
+            theme.drawSubRect(painter, clientRect, &rects.menuPopup_Bk, colors.menuPopup_Bk)
+            theme.drawSubRect(painter, clientRect, &rects.menuPopup_Border, colors.menuPopup_Border)
+        }
+
         clientRect.applyPadding(padding)
 
         var labelPos: Math.Rectangle = ?
@@ -198,13 +213,17 @@ impl IWnd for MenuCtrl
         }
 
         // Border
-        clientRect = getClientRect()
-        clientRect.inflate(-metrics.menuPopup_ShadowSize)
-        theme.drawSubRect(painter, clientRect, &rects.menuPopup_Border, colors.menuPopup_Border)
+        if !paintByFrame
+        {
+            clientRect = getClientRect()
+            clientRect.inflate(-metrics.menuPopup_ShadowSize)
+            theme.drawSubRect(painter, clientRect, &rects.menuPopup_Border, colors.menuPopup_Border)
+        }
     }
 
     mtd onPaintEvent(evt: *PaintEvent)
     {
+        frameWnd.IWnd.onPaintEvent(evt)
         if bar
             paintBar(evt.bc.painter)
         else
@@ -645,7 +664,7 @@ public impl MenuCtrl
 
     // Make the popup menu modal
     // Will return the selected id
-    mtd doModal(surfacePos: Math.Point)->WndId
+    mtd doModal(surfacePos: Math.Point, pos = PopupPos.TopLeft)->WndId
     {
         Debug.assert(!bar)
 
@@ -655,7 +674,22 @@ public impl MenuCtrl
         // Be sure popup menu is in the client area of the top view
         pt := parent.surfaceToLocal(surfacePos)
         pt -= getThemeMetrics().menuPopup_ShadowSize
-        setPosition(@{pt.x, pt.y, position.width, position.height})
+
+        switch pos
+        {
+        case TopLeft:
+            setPosition(@{pt.x, pt.y, position.width, position.height})
+        case TopCenter:
+            setPosition(@{pt.x - position.width * 0.5, pt.y, position.width, position.height})
+        case BottomCenter:
+            setPosition(@{pt.x - position.width * 0.5, pt.y - position.height, position.width, position.height})
+            anchor = .Bottom
+            anchorPos = position.width * 0.5
+            paintByFrame = true
+            setFrameFlags(.Borders | .SmallShadow)
+            setFrameForm(.Round)
+        }
+
         fitPosInParent()
 
         bringToTop()

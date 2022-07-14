@@ -645,8 +645,8 @@ impl Wnd
             return
         evt := MoveEvent{}
         evt.oldPos = @{position.x, position.y}
-        position.x = x
-        position.y = y
+        position.x = Math.round(x)
+        position.y = Math.round(y)
         sendEvent(&evt)
     }
 
@@ -670,8 +670,8 @@ impl Wnd
 
         evt := ResizeEvent{}
         evt.oldSize = @{position.width, position.height}
-        position.width = width
-        position.height = height
+        position.width = Math.round(width)
+        position.height = Math.round(height)
         clampSize(&position)
 
         sendEvent(&evt)

@@ -23,6 +23,7 @@ enum IconButtonArrowPos
     Left
     Top
     Right
+    RightUp
     RightDown
     Bottom
 }
@@ -227,6 +228,15 @@ impl IWnd for IconButton
                 theme.drawSubRect(bc.painter, posArrow, subRectBk, colorIcon)
                 pos.setRight(posArrow.x - metrics.btnIcon_SpacingArrow)
 
+            case RightUp:
+                subRectBk = &rects.btnIcon_ArrowUp
+                posArrow.width = w
+                posArrow.height = h
+                posArrow.x = pos.right() - w - metrics.btnIcon_MarginArrow
+                posArrow.y = pos.vertCenter() - h * 0.5
+                theme.drawSubRect(bc.painter, posArrow, subRectBk, colorIcon)
+                pos.setRight(posArrow.x - metrics.btnIcon_SpacingArrow)
+
             case RightDown:
                 subRectBk = &rects.btnIcon_ArrowDown
                 posArrow.width = w
@@ -268,10 +278,12 @@ impl IWnd for IconButton
                 pos.moveTop(sf.font.regular.height + metrics.btnIcon_SpacingText)
 
             case Right:
-                sf.horzAlignment = .Right
+                sf.horzAlignment = .Center
                 sf.vertAlignment = .Center
-                bc.painter.drawRichString(pos, &name, sf)
-                pos.width -= (name.boundRect.width + metrics.btnIcon_SpacingText)
+                pos1 := pos
+                pos1.moveLeft(icon.sizeX + metrics.btnIcon_SpacingIcon)
+                bc.painter.drawRichString(pos1, &name, sf)
+                pos.setRight(pos1.x)
 
             case Bottom:
                 sf.horzAlignment = .Center

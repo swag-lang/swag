@@ -101,5 +101,6 @@ public func show(owner: *Wnd, surfacePos: Math.Point, str: string, delay: Time.D
     w += 2 * metrics.toolTip_Padding
     h += 2 * metrics.toolTip_Padding
     g_Current.setPosition(Math.Rectangle{pos.x, pos.y, w, h})
+    g_Current.fitPosInParent()
     g_Current.bringToTop()
 }
