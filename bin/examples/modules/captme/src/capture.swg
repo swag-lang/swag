@@ -813,6 +813,7 @@ impl Capture
                 mouseMode = .None
             }
 
+            hasChanged()
             return true
         }
 

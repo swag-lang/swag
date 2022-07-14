@@ -42,6 +42,7 @@ impl IWnd for RecentView
             painter.fillRect(txtRect, Argb.LightGray)
             painter.fillRect(txtRect, Brush.createHatch(.CheckBoardLarge, Argb.DarkGray))
 
+            painter.setInterpolationMode(.Linear)
             painter.drawTexture(txtRect, i.preview)
             x = rect.right() + padding.x
         }
