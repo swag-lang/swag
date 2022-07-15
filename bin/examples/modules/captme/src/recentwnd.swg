@@ -56,24 +56,18 @@ impl RecentView
     {
         if items.count == 0
             return
-        img := capture.toPreview()
+        capture.computePreview()
         getApp().getRenderer().removeTexture(&items[0].preview)
-        items[0].preview = getApp().getRenderer().addImage(img)
+        items[0].preview = getApp().getRenderer().addImage(capture.preview)
         invalidate()
     }
 
-    mtd addRecent(preview: Image)
+    mtd addRecent(file: String, preview: Image)
     {
         item := items.newPtr()
         item.preview = getApp().getRenderer().addImage(preview)
+        item.file = file
         items.insertAt(0, item)
-
-        // Create file
-        t := Time.DateTime.now()
-        fileName := Format.toString("%_%_%_%_%_%.captme", t.month, t.day, t.year, t.hour, t.minute, t.second)
-        folder := Library.getFolder()
-        item.file = Path.combine(folder, fileName.toString())
-
         invalidate()
     }
 }

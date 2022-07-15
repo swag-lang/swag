@@ -421,10 +421,11 @@ impl MainWnd
         capture.width = img.width
         capture.height = img.height
         capture.backImg = img
+        capture.file = Library.newFileName()
         editWnd.editView.setCapture(capture)
 
-        imgt := capture.toPreview()
-        recentWnd.recentView.addRecent(imgt)
+        capture.computePreview()
+        recentWnd.recentView.addRecent(capture.file, capture.preview)
     }
 
     func create(parent: *Wnd)->*MainWnd

@@ -11,8 +11,10 @@ struct Capture
     width, height:  s32
     forms:          Array'IForm
     backImg:        Image
+    preview:        Image
 
     // Dyn
+    file:       String
     mouseMode:  MouseMode = None
     editView:   *EditView
     gizmo:      GizmoRect
@@ -52,10 +54,10 @@ impl Capture
     // CLIPBOARD
     //////////////////////////////
 
-    mtd toPreview()->Image
+    mtd computePreview()
     {
         ratio := 1.0
-        return toImage(ratio)
+        preview = toImage(ratio)
     }
 
     mtd toImage(ratio: f32 = 1)->Image
