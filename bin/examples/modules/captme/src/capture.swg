@@ -51,7 +51,7 @@ impl Capture
     }
 
     //////////////////////////////
-    // CLIPBOARD
+    // IMAGE
     //////////////////////////////
 
     mtd computePreview()
@@ -100,6 +100,28 @@ impl Capture
 
         return result
     }
+
+    //////////////////////////////
+    // FILE
+    //////////////////////////////
+
+    mtd save()
+    {
+        using Serialization
+
+        var buf: ConcatBuffer
+        var wri: Encoder'Write.JSon
+        wri.serializer.startWrite(&buf)
+        buf.makeLinear()
+    }
+
+    mtd load(file: String)
+    {
+    }
+
+    //////////////////////////////
+    // CLIPBOARD
+    //////////////////////////////
 
     mtd copyAll()
     {
