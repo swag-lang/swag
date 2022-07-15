@@ -168,13 +168,27 @@ impl Decoder
         }
     }
 
+    // Start reading
+    mtd start(input: const [..] u8)
+    {
+        serializer.startRead(input)
+        serializer.startRoot()
+    }
+
+    // Finish reading
+    mtd end()
+    {
+        serializer.endRoot()
+    }
+
     mtd(TR) read(input: const [..] u8)->*TR throw
     {
         Debug.assert(Reflection.isStruct(TR))
 
-        serializer.startRead(input)
+        start(input)
         val := Memory.new'TR()
         read(cast(*u8) val, TR)
+        end()
 
         return val
     }

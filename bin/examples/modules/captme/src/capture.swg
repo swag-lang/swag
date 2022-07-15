@@ -151,10 +151,12 @@ impl Capture
         }
 
         using Serialization
-        var buf: ConcatBuffer
-        var wri: Encoder'Write.JSon
-        wri.serializer.startWrite(&buf)
-        wri.write(@typeof(arr), acast &arr)
+        var buf:    ConcatBuffer
+        var encode: Encoder'Write.JSon
+        encode.start(&buf)
+        encode.write(@typeof(arr), acast &arr)
+        encode.end()
+
         buf.makeLinear()
         Clipboard.addData(editView.main.clipFmt, buf.toSlice())
     }
@@ -166,10 +168,11 @@ impl Capture
             return
 
         using Serialization
-        var rea: Decoder'Read.JSon
-        var res: Array'(Object'BaseForm)
-        rea.serializer.startRead(arr.toSlice())
-        catch rea.read(cast(*u8) &res, Array'(Object'BaseForm))
+        var decode: Decoder'Read.JSon
+        var res:    Array'(Object'BaseForm)
+        decode.start(arr.toSlice())
+        catch decode.read(cast(*u8) &res, Array'(Object'BaseForm))
+        decode.end()
         if @err or !res.count
             return
 

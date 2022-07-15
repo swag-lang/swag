@@ -429,6 +429,8 @@ namespace Win32Priv
         func FindNextFileA(hFindFile: HANDLE, lpFindFileData: *WIN32_FIND_DATAA)->BOOL;
         func FindNextFileW(hFindFile: HANDLE, lpFindFileData: *WIN32_FIND_DATAW)->BOOL;
         func FindClose(hFindFile: HANDLE)->BOOL;
+        func CreateDirectoryA(lpPathName: LPCSTR, lpSecurityAttributes: *SECURITY_ATTRIBUTES)->BOOL;
+        func CreateDirectoryW(lpPathName: LPCWSTR, lpSecurityAttributes: *SECURITY_ATTRIBUTES)->BOOL;
 
         func GetCurrentDirectoryA(nBufferLength: DWORD, lpBuffer: LPCSTR)->DWORD;
         func GetCurrentDirectoryW(nBufferLength: DWORD, lpBuffer: LPCWSTR)->DWORD;
@@ -741,5 +743,19 @@ namespace Win32Priv
         if !res
             try setError(GetLastError())
         return res
+    }
+
+    func CreateDirectoryA(lpPathName: LPCSTR, lpSecurityAttributes: *SECURITY_ATTRIBUTES) throw
+    {
+        res := Win32Priv.CreateDirectoryA(lpPathName, lpSecurityAttributes)
+        if !res
+            try setError(GetLastError())
+    }
+
+    func CreateDirectoryW(lpPathName: LPCWSTR, lpSecurityAttributes: *SECURITY_ATTRIBUTES) throw
+    {
+        res := Win32Priv.CreateDirectoryW(lpPathName, lpSecurityAttributes)
+        if !res
+            try setError(GetLastError())
     }
 }

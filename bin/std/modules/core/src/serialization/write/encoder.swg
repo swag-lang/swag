@@ -178,12 +178,25 @@ impl Encoder
         }
     }
 
+    // Start serialization
+    mtd start(result: *ConcatBuffer)
+    {
+        serializer.startWrite(result)
+        serializer.startRoot()
+    }
+
+    // End serialization
+    mtd end()
+    {
+        serializer.endRoot()
+    }
+
+    // Write a full struct
     mtd write(result: *ConcatBuffer, value: any)
     {
         Debug.assert(Reflection.isStruct(@kindof(value)))
-        serializer.startWrite(result)
-        serializer.startRoot()
+        start(result)
         write(@kindof(value), @dataof(value))
-        serializer.endRoot()
+        end()
     }
 }

@@ -32,6 +32,14 @@ public impl JSon
         stream.init(input)
     }
 
+    mtd startRoot()
+    {
+    }
+
+    mtd endRoot()
+    {
+    }
+
     mtd beginSequence(data: *u8, countElem: uint, typeElem: typeinfo)->bool throw
     {
         zapBlanks()
