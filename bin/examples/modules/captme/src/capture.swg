@@ -109,10 +109,17 @@ impl Capture
     {
         using Serialization
 
-        var buf: ConcatBuffer
-        var wri: Encoder'Write.JSon
-        wri.serializer.startWrite(&buf)
+        var buf:    ConcatBuffer
+        var encode: Encoder'Write.JSon
+        encode.start(&buf)
+        encode.write("version", 1)
+        encode.write("width", width)
+        encode.write("height", height)
+        encode.write("preview", preview)
+        encode.end()
+
         buf.makeLinear()
+        catch File.writeAllBytes(file, buf.toSlice())
     }
 
     mtd load(file: String)
@@ -170,11 +177,13 @@ impl Capture
         using Serialization
         var decode: Decoder'Read.JSon
         var res:    Array'(Object'BaseForm)
-        decode.start(arr.toSlice())
+
+        catch decode.start(arr.toSlice())
+        if @err return
         catch decode.read(cast(*u8) &res, Array'(Object'BaseForm))
-        decode.end()
-        if @err or !res.count
-            return
+        if @err or !res.count return
+        catch decode.end()
+        if @err return
 
         undo := newUndo(.CreateForm)
         selection.clear()

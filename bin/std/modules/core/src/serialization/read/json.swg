@@ -32,14 +32,6 @@ public impl JSon
         stream.init(input)
     }
 
-    mtd startRoot()
-    {
-    }
-
-    mtd endRoot()
-    {
-    }
-
     mtd beginSequence(data: *u8, countElem: uint, typeElem: typeinfo)->bool throw
     {
         zapBlanks()
@@ -65,13 +57,28 @@ public impl JSon
         return c != "]"'u8
     }
 
+    mtd beginRoot() throw
+    {
+        zapBlanks()
+        c := stream.readU8()
+        if c != "{"'u8
+            throw "malformed root (missing opening '{')"
+    }
+
+    mtd endRoot() throw
+    {
+        zapBlanks()
+        c := stream.readU8()
+        if c != "}"'u8
+            throw "malformed root (missing closing '}')"
+    }
+
     mtd beginStruct(data: *u8, type: typeinfo)->bool throw
     {
         zapBlanks()
         c := stream.readU8()
         if c != "{"'u8
             throw "malformed struct (missing opening '{')"
-
         return false
     }
 

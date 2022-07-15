@@ -169,14 +169,14 @@ impl Decoder
     }
 
     // Start reading
-    mtd start(input: const [..] u8)
+    mtd start(input: const [..] u8) throw
     {
         serializer.startRead(input)
-        serializer.startRoot()
+        serializer.beginRoot()
     }
 
     // Finish reading
-    mtd end()
+    mtd end() throw
     {
         serializer.endRoot()
     }

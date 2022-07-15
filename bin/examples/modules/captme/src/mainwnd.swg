@@ -426,6 +426,7 @@ impl MainWnd
 
         capture.computePreview()
         recentWnd.recentView.addRecent(capture.file, capture.preview)
+        capture.save()
     }
 
     func create(parent: *Wnd)->*MainWnd

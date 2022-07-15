@@ -33,16 +33,6 @@ impl JSon
         output = buf
     }
 
-    mtd startRoot()
-    {
-    }
-
-    mtd endRoot()
-    {
-        // Remove last ','
-        output.setSeek(lastSeekValue)
-    }
-
     mtd beginSequence(typeElem: typeinfo, countElem: uint, data: const *u8)->bool
     {
         output.addBytes("[")
@@ -68,6 +58,17 @@ impl JSon
         }
 
         output.addBytes("]")
+    }
+
+    mtd beginRoot()
+    {
+        discard beginStruct(null, null)
+    }
+
+    mtd endRoot()
+    {
+        output.setSeek(lastSeekValue) // Remove last ','
+        endStruct()
     }
 
     mtd beginStruct(type: typeinfo, data: const *u8)->bool

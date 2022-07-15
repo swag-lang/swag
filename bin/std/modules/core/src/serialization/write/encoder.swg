@@ -17,6 +17,7 @@ struct(T) Encoder
 {
     options:    EncoderOptions
     serializer: T
+    started:    bool
 }
 
 impl Encoder
@@ -181,22 +182,36 @@ impl Encoder
     // Start serialization
     mtd start(result: *ConcatBuffer)
     {
+        Debug.assert(!started)
+        started = true
         serializer.startWrite(result)
-        serializer.startRoot()
+        serializer.beginRoot()
     }
 
     // End serialization
     mtd end()
     {
+        Debug.assert(started)
+        started = false
         serializer.endRoot()
     }
 
     // Write a full struct
     mtd write(result: *ConcatBuffer, value: any)
     {
+        Debug.assert(!started)
         Debug.assert(Reflection.isStruct(@kindof(value)))
         start(result)
         write(@kindof(value), @dataof(value))
         end()
+    }
+
+    // Write an element
+    mtd write(name: string, value: any)
+    {
+        Debug.assert(started)
+        serializer.beginElement(name, @kindof(value))
+        write(@kindof(value), @dataof(value))
+        serializer.endElement()
     }
 }
