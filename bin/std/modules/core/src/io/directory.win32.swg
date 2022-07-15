@@ -3,15 +3,25 @@
 #global namespace Directory
 using Win32
 
+func create(dirname: string) throw
+{
+    winPath := Utf16.toZeroTerminated(dirname)
+    CreateDirectoryW(@dataof(winPath), null)
+}
+
 // Returns true if the given directory exists
 func exists(dirname: string)->bool
 {
-    if dirname == null return false
+    if dirname == null
+        return false
     winPath := Utf16.toZeroTerminated(dirname)
     attributes := catch GetFileAttributesW(@dataof(winPath))
-    if @err return false
-    if attributes == 0xFFFFFFFF return false
-    if !(attributes & FILE_ATTRIBUTE_DIRECTORY) return false
+    if @err
+        return false
+    if attributes == 0xFFFFFFFF
+        return false
+    if !(attributes & FILE_ATTRIBUTE_DIRECTORY)
+        return false
     return true
 }
 

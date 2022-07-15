@@ -86,7 +86,7 @@ public impl TypeFace
         // If file does not exist, try the system folder
         if !File.exists(fullname)
         {
-            p := Env.getFontDirectory()
+            p := Env.getSpecialDirectory(.Font)
             p += "/"
             p += fullname
             tf.buffer = try File.readAllBytes(p)

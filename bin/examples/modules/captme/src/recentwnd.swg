@@ -1,5 +1,6 @@
 struct RecentItem
 {
+    file:    String
     preview: Texture
 }
 
@@ -66,6 +67,13 @@ impl RecentView
         item := items.newPtr()
         item.preview = getApp().getRenderer().addImage(preview)
         items.insertAt(0, item)
+
+        // Create file
+        t := Time.DateTime.now()
+        fileName := Format.toString("%_%_%_%_%_%.captme", t.month, t.day, t.year, t.hour, t.minute, t.second)
+        folder := Library.getFolder()
+        item.file = Path.combine(folder, fileName.toString())
+
         invalidate()
     }
 }
