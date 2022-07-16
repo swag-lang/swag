@@ -15,7 +15,6 @@ struct EncoderOptions
 
 interface IEncoder
 {
-    writeAny:   func(self, string, any)
     write:      func(self, string, typeinfo, *void)
     writeS32:   func(self, string, s32)
 }
@@ -224,15 +223,6 @@ impl Encoder
 
 impl IEncoder for Encoder
 {
-    // Write an element
-    mtd writeAny(name: string, value: any)
-    {
-        Debug.assert(started)
-        serializer.beginElement(name, @kindof(value))
-        write(@kindof(value), @dataof(value))
-        serializer.endElement()
-    }
-
     mtd write(name: string, type: typeinfo, data: *void)
     {
         Debug.assert(started)

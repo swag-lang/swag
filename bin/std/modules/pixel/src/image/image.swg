@@ -265,16 +265,10 @@ impl ISerialize for Image
     mtd read(decoder: IDecoder) throw
     {
         serialize'IDecoder(decoder)
-/*        width = decoder.readS32("width")
-        height = decoder.readS32("height")
-        decoder.read("pf", acast &pf, @typeof(pf))*/
     }
 
     mtd write(encoder: IEncoder)
     {
         catch serialize'IEncoder(encoder)
-/*        encoder.writeS32("width", width)
-        encoder.writeS32("height", height)
-        encoder.writeAny("pf", pf)*/
     }
 }

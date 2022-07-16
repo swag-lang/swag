@@ -13,12 +13,12 @@ public struct(T, READ: bool) Serializer
 
 public impl Serializer
 {
-    mtd serialize(name: string, res: *void, type: typeinfo) throw
+    mtd(MT) serialize(name: string, res: *MT) throw
     {
     #if READ
-        ser.read(name, res, type)
+        ser.read(name, res, @typeof(MT))
     #else
-        ser.write(name, type, res)
+        ser.write(name, @typeof(MT), res)
     }
 
     mtd serializeS32(name: string, res: *s32) throw

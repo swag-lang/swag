@@ -114,7 +114,7 @@ impl Capture
         s.serializeS32("version", &version)
         s.serializeS32("width", &width)
         s.serializeS32("height", &height)
-        s.serialize("preview", &preview, Image)
+        s.serialize("preview", &preview)
     }
 
     mtd save()
