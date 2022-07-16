@@ -16,9 +16,11 @@ struct Capture
     width, height:  s32
     forms:          Array'IForm
     backImg:        Image
+    backImagePos:   Math.Point
     preview:        Image
 
     // Dyn
+    changed:    bool
     file:       String
     mouseMode:  MouseMode = None
     editView:   *EditView
@@ -29,10 +31,9 @@ struct Capture
     selection:  Array'uint
     paintRect:  Math.Rectangle
 
-    backTexture:    Texture
-    backImagePos:   Math.Point
-    snapX:          f32 = -1
-    snapY:          f32 = -1
+    backTexture: Texture
+    snapX:       f32 = -1
+    snapY:       f32 = -1
 
     firstMouseMove:     bool
     movingCursorSet:    bool
@@ -110,6 +111,12 @@ impl Capture
     // FILE
     //////////////////////////////
 
+    mtd hasChanged()
+    {
+        changed = true
+        editView.main.recentWnd.updateRecent(self)
+    }
+
     mtd toItf(o: Object'BaseForm)->IForm
     {
         var itf: IForm
@@ -141,6 +148,7 @@ impl Capture
         s.serialize("height", &height)
         s.serialize("preview", &preview)
         s.serialize("backImage", &backImg)
+        s.serialize("backImagePos", &backImagePos)
 
         var arr: Array'(Object'BaseForm)
         #if T == IEncoder
@@ -172,6 +180,10 @@ impl Capture
 
     mtd save()
     {
+        if !changed
+            return
+        changed = false
+
         var buf:    ConcatBuffer
         var encode: Encoder'Write.JSon
 
@@ -413,8 +425,8 @@ impl Capture
         if backTexture.isValid()
         {
             var backRect: Math.Rectangle
-            backRect.x = backImagePos.x + x
-            backRect.y = backImagePos.y + y
+            backRect.x = (backImagePos.x * z) + x
+            backRect.y = (backImagePos.y * z) + y
             backRect.width = backImg.width * z
             backRect.height = backImg.height * z
             painter.drawTexture(backRect, backTexture)
@@ -1042,11 +1054,6 @@ impl Capture
     //////////////////////////////
     // UNDO
     //////////////////////////////
-
-    mtd hasChanged()
-    {
-        editView.main.recentWnd.updateRecent(self)
-    }
 
     mtd newUndo(kind: UndoKind)->*Undo
     {

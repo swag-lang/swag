@@ -418,6 +418,7 @@ impl MainWnd
             return
 
         capture := Memory.new'Capture()
+        capture.changed = true
         capture.width = img.width
         capture.height = img.height
         capture.backImg = img

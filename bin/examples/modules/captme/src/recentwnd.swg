@@ -88,7 +88,7 @@ impl IWnd for RecentView
             if idx == hotItem
                 painter.drawRoundRect(rect, 8, 8, colors.hilightLight, 2)
             // Selected
-            if main.getCapture() and i.file == main.getCapture().file
+            if idx == selected
                 painter.drawRoundRect(rect, 8, 8, colors.hilightLight, 4)
 
             if !i.preview.isValid()
