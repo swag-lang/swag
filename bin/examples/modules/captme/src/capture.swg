@@ -107,9 +107,9 @@ impl Capture
     // FILE
     //////////////////////////////
 
-    mtd(T, READ: bool) serialize(ser: T) throw
+    mtd(T) serialize(ser: T) throw
     {
-        var s: Serializer'(T, READ){ser}
+        var s: Serializer'T{ser}
         version := 0's32
         s.serializeS32("version", &version)
         s.serializeS32("width", &width)
@@ -121,8 +121,9 @@ impl Capture
     {
         var buf:    ConcatBuffer
         var encode: Encoder'Write.JSon
+
         encode.start(&buf)
-        catch serialize'(IEncoder, false)(encode)
+        catch serialize(cast(IEncoder) encode)
         encode.end()
 
         buf.makeLinear()
@@ -143,7 +144,7 @@ impl Capture
 
         var decode: Decoder'Read.JSon
         decode.start(res.toSlice())
-        capture.serialize'(IDecoder, true)(decode)
+        capture.serialize(cast(IDecoder) decode)
         decode.end()
 
         return capture

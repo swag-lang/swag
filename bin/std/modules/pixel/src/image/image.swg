@@ -256,19 +256,18 @@ impl ISerialize for Image
 {
     mtd(T) serialize(ser: T) throw
     {
-        const R = @typeof(T) == IDecoder
-        var s: Serializer'(T, R){ser}
+        var s: Serializer'T{ser}
         s.serializeS32("width", &width)
         s.serializeS32("height", &height)
     }
 
     mtd read(decoder: IDecoder) throw
     {
-        serialize'IDecoder(decoder)
+        serialize(decoder)
     }
 
     mtd write(encoder: IEncoder)
     {
-        catch serialize'IEncoder(encoder)
+        catch serialize(encoder)
     }
 }
