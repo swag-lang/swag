@@ -69,6 +69,7 @@ impl JSon
         }
 
         output.addBytes("]")
+        lastSeekValue = output.getSeek()
     }
 
     mtd beginStruct(type: typeinfo, data: const *u8)->bool
@@ -96,6 +97,7 @@ impl JSon
         }
 
         output.addBytes("}")
+        lastSeekValue = output.getSeek()
     }
 
     mtd beginElement(name: string, type: typeinfo)

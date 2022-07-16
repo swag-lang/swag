@@ -32,14 +32,11 @@ public impl Serializer
         }
     }
 
-    mtd serializeBufferU8(name: string, res: **u8, count: uint, allocator: Swag.IAllocator) throw
+    mtd serializeBufferU8(name: string, res: **u8, count: uint) throw
     {
         #if T == IDecoder
-        {
-        }
+            dref res = ser.readBufferU8(name, count)
         #else
-        {
             ser.writeBufferU8(name, dref res, count)
-        }
     }
 }

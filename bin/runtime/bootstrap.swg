@@ -333,6 +333,9 @@ namespace Swag
         String
         Any
         CString
+        Undefined
+        UInt
+        Int
     }
 
     #[Swag.EnumFlags]

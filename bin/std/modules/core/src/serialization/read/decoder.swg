@@ -9,8 +9,9 @@ struct DecoderOptions
 
 interface IDecoder
 {
-    read:    func(self, string, *void, typeinfo) throw
-    readS32: func(self, string)->s32 throw
+    read:           func(self, string, *void, typeinfo) throw
+    readBufferU8:   func(self, string, uint)->*u8 throw
+    readS32:        func(self, string)->s32 throw
 }
 
 struct(T) Decoder
@@ -56,7 +57,7 @@ impl Decoder
                 dref cast(*u16) data = serializer.readU16()
             case U32, Rune:
                 dref cast(*u32) data = serializer.readU32()
-            case U64:
+            case U64, UInt:
                 dref cast(*u64) data = serializer.readU64()
             case S8:
                 dref cast(*s8) data = serializer.readS8()
@@ -64,7 +65,7 @@ impl Decoder
                 dref cast(*s16) data = serializer.readS16()
             case S32:
                 dref cast(*s32) data = serializer.readS32()
-            case S64:
+            case S64, Int:
                 dref cast(*s64) data = serializer.readS64()
             case F32:
                 dref cast(*f32) data = serializer.readF32()
@@ -99,7 +100,7 @@ impl Decoder
             {
                 valueType := structType.generics[0].pointedType
 
-                treated := serializer.beginSequence(data, 0, type)
+                treated := serializer.beginSequence(type, data, 0)
                 defer(noerr) serializer.endSequence()
 
                 if !treated
@@ -167,7 +168,7 @@ impl Decoder
         if Reflection.isArray(type)
         {
             typeArr := cast(const *TypeInfoArray) type
-            treated := serializer.beginSequence(data, typeArr.count, typeArr.pointedType)
+            treated := serializer.beginSequence(typeArr.pointedType, data, typeArr.count)
             defer(noerr) serializer.endSequence()
             if treated
                 return
@@ -223,6 +224,33 @@ impl IDecoder for Decoder
         serializer.beginElement(name, dataType)
         Decoder.read(self, data, dataType)
         serializer.endElement()
+    }
+
+    mtd readBufferU8(name: string, count: uint)->*u8 throw
+    {
+        Debug.assert(started)
+
+        serializer.beginElement(name, *u8)
+        defer(noerr) serializer.endElement()
+
+        data := cast(*u8) Memory.alloc(count)
+
+        treated := serializer.beginSequence(u8, data, count)
+        defer(noerr) serializer.endSequence()
+
+        if !treated
+        {
+            ptr := data
+            loop count
+            {
+                serializer.beginValue(u8)
+                dref ptr = serializer.readU8()
+                serializer.endValue()
+                ptr += 1
+            }
+        }
+
+        return data
     }
 
     mtd readS32(name: string)->s32 throw

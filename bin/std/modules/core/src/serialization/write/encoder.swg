@@ -51,7 +51,7 @@ impl Encoder
                 serializer.writeU16(dref cast(const *u16) data)
             case U32, Rune:
                 serializer.writeU32(dref cast(const *u32) data)
-            case U64:
+            case U64, UInt:
                 serializer.writeU64(dref cast(const *u64) data)
             case S8:
                 serializer.writeS8(dref cast(const *s8) data)
@@ -59,7 +59,7 @@ impl Encoder
                 serializer.writeS16(dref cast(const *s16) data)
             case S32:
                 serializer.writeS32(dref cast(const *s32) data)
-            case S64:
+            case S64, Int:
                 serializer.writeS64(dref cast(const *s64) data)
             case F32:
                 serializer.writeF32(dref cast(const *f32) data)
@@ -235,6 +235,7 @@ impl IEncoder for Encoder
     mtd writeBufferU8(name: string, data: const *u8, count: uint)
     {
         Debug.assert(started)
+
         serializer.beginElement(name, *u8)
         defer(noerr) serializer.endElement()
 
@@ -244,7 +245,7 @@ impl IEncoder for Encoder
         if !treated
         {
             ptr := data
-            while count
+            loop count
             {
                 serializer.beginValue(u8)
                 serializer.writeU8(dref ptr)

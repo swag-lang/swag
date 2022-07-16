@@ -32,7 +32,7 @@ public impl JSon
         stream.init(input)
     }
 
-    mtd beginSequence(data: *u8, countElem: uint, typeElem: typeinfo)->bool throw
+    mtd beginSequence(typeElem: typeinfo, data: *u8, countElem: uint)->bool throw
     {
         zapBlanks()
         c := stream.readU8()
