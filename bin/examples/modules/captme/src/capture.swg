@@ -117,28 +117,6 @@ impl Capture
         editView.main.recentWnd.updateRecent(self)
     }
 
-    mtd toItf(o: Object'BaseForm)->IForm
-    {
-        var itf: IForm
-
-        #[Swag.Complete]
-        switch o.type
-        {
-        case FormShape:
-            itf = cast(IForm) cast(*FormShape) o.value
-        case FormLine:
-            itf = cast(IForm) cast(*FormLine) o.value
-        case FormArrow:
-            itf = cast(IForm) cast(*FormArrow) o.value
-        case FormText:
-            itf = cast(IForm) cast(*FormText) o.value
-        case FormPolygon:
-            itf = cast(IForm) cast(*FormPolygon) o.value
-        }
-
-        return itf
-    }
-
     mtd(T) serialize(ser: T) throw
     {
         var s: Serializer'T{ser}
@@ -170,7 +148,7 @@ impl Capture
             s.serialize("forms", &arr)
             visit o: arr
             {
-                itf := toItf(o)
+                itf := @mkinterface(o.value, o.type, IForm)
                 itf.setup(self)
                 forms.add(itf)
             }
@@ -282,7 +260,7 @@ impl Capture
 
         visit &o, idx: res
         {
-            itf := toItf(o)
+            itf := @mkinterface(o.value, o.type, IForm)
             itf.setup(self)
 
             if idx == 0
