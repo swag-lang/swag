@@ -1,3 +1,5 @@
+using Serialization
+
 enum MouseMode
 {
     None
@@ -105,17 +107,21 @@ impl Capture
     // FILE
     //////////////////////////////
 
+    mtd(T, READ: bool) serialize(ser: *T) throw
+    {
+        var s: Serializer'(T, READ){ser}
+        version := 0's32
+        s.serializeS32(&version, "version")
+        s.serializeS32(&width, "width")
+        s.serializeS32(&height, "height")
+    }
+
     mtd save()
     {
-        using Serialization
-
         var buf:    ConcatBuffer
         var encode: Encoder'Write.JSon
         encode.start(&buf)
-        encode.IEncoder.writeS32("version", 1)
-        encode.IEncoder.writeS32("width", width)
-        encode.IEncoder.writeS32("height", height)
-        encode.IEncoder.writeAny("preview", preview)
+        catch serialize'(Write.JSon, false)(&encode.serializer)
         encode.end()
 
         buf.makeLinear()
@@ -124,8 +130,6 @@ impl Capture
 
     func load(file: String)->*Capture throw
     {
-        using Serialization
-
         capture := Memory.new'Capture()
         capture.file = file
         defer(err)
@@ -138,14 +142,7 @@ impl Capture
 
         var decode: Decoder'Read.JSon
         decode.start(res.toSlice())
-        version := decode.IDecoder.readS32("version")
-        with capture
-        {
-            width  = decode.IDecoder.readS32("width")
-            height = decode.IDecoder.readS32("height")
-            decode.IDecoder.read("preview", acast &preview, Image)
-        }
-
+        capture.serialize'(Read.JSon, true)(&decode.serializer)
         decode.end()
 
         return capture

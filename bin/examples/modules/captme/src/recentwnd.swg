@@ -30,11 +30,13 @@ impl IWnd for RecentView
 
             rect := Math.Rectangle{x, clientRect.y, w, h}
             painter.fillRoundRect(rect, 8, 8, colors.wnd_Bk)
+            defer x = rect.right() + 8
+
             if !i.preview.isValid() 
                 continue
 
-            rect.inflate(-4)
             txtRect := rect
+            txtRect.inflate(-4)
 
             ratio := Math.min(rect.width / i.preview.width, rect.height / i.preview.height)
             ratio =  Math.min(ratio, 1)
@@ -49,7 +51,6 @@ impl IWnd for RecentView
 
             painter.setInterpolationMode(.Linear)
             painter.drawTexture(txtRect, i.preview)
-            x = rect.right() + padding.x
         }
     }
 }
