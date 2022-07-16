@@ -425,7 +425,7 @@ impl MainWnd
         editWnd.editView.setCapture(capture)
 
         capture.computePreview()
-        recentWnd.recentView.addRecent(capture.file, capture.preview)
+        recentWnd.addRecent(capture.file, capture.preview)
         capture.save()
     }
 
@@ -524,11 +524,12 @@ impl MainWnd
 
         updateZoom(res)
 
+        res.recentWnd.recentView.select(0)
         res.updateState()
 
         // TEMP
-        temp := TEMP()
-        res.editWnd.editView.setCapture(temp)
+        //temp := TEMP()
+        //res.editWnd.editView.setCapture(temp)
 
         return res
     }

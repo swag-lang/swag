@@ -2,19 +2,63 @@ const MaxRecent = 10
 
 struct RecentItem
 {
-    file:    String
-    preview: Texture
+    file:       String
+    preview:    Texture
+    rect:       Math.Rectangle
 }
 
 struct RecentView
 {
     using wnd: Wnd
 
-    items: ArrayPtr'RecentItem
+    main:       *MainWnd
+    items:      ArrayPtr'RecentItem
+    hotItem:    uint = Swag.UInt.Max
+}
+
+impl RecentView
+{
+    mtd select(idx: uint)
+    {
+        if idx >= items.count return
+        capture := catch Capture.load(items[idx].file)
+        if capture
+        {
+            if main.getCapture()
+                main.getCapture().save()
+            main.editWnd.editView.setCapture(capture)
+            invalidate()
+        }
+    }
 }
 
 impl IWnd for RecentView
 {
+    mtd onMouseEvent(evt: *MouseEvent)
+    {
+        pos := surfaceToLocal(evt.surfacePos)
+
+        // Hit test
+        ht := Swag.UInt.Max
+        visit i, idx: items
+        {
+            if i.rect.contains(pos)
+            {
+                ht = idx
+                break
+            }
+        }
+
+        if ht != hotItem
+        {
+            invalidate()
+            hotItem = ht
+        }
+
+        if evt.kind == .MousePressed and hotItem != Swag.UInt.Max
+            select(hotItem)
+    }
+
     mtd onPaintEvent(evt: *PaintEvent)
     {
         painter    := evt.bc.painter
@@ -23,16 +67,25 @@ impl IWnd for RecentView
 
         painter.setParams(.Antialiased)
         x := clientRect.x
-        visit i: items
+        visit i, idx: items
         {
             h := clientRect.height
             w := h * (16.0 / 9)
 
             rect := Math.Rectangle{x, clientRect.y, w, h}
+            i.rect = rect
+
             painter.fillRoundRect(rect, 8, 8, colors.wnd_Bk)
             defer x = rect.right() + 8
 
-            if !i.preview.isValid() 
+            // Hot
+            if idx == hotItem
+                painter.drawRoundRect(rect, 8, 8, colors.hilightLight, 2)
+            // Selected
+            if main.getCapture() and i.file == main.getCapture().file
+                painter.drawRoundRect(rect, 8, 8, colors.hilightLight, 4)
+
+            if !i.preview.isValid()
                 continue
 
             txtRect := rect
@@ -55,28 +108,6 @@ impl IWnd for RecentView
     }
 }
 
-impl RecentView
-{
-    mtd updateRecent(capture: *Capture)
-    {
-        if items.count == 0
-            return
-        capture.computePreview()
-        getApp().getRenderer().removeTexture(&items[0].preview)
-        items[0].preview = getApp().getRenderer().addImage(capture.preview)
-        invalidate()
-    }
-
-    mtd addRecent(file: String, preview: Image)
-    {
-        item := items.newPtr()
-        item.preview = getApp().getRenderer().addImage(preview)
-        item.file = file
-        items.insertAt(0, item)
-        invalidate()
-    }
-}
-
 struct RecentWnd
 {
     using scrollWnd: ScrollWnd
@@ -85,13 +116,14 @@ struct RecentWnd
 
 impl RecentWnd
 {
-    func create(parent: *Wnd)->*RecentWnd
+    func create(parent: *MainWnd)->*RecentWnd
     {
         recent := Wnd.create'RecentWnd(parent, @{0, 0, 0, 128})
         recent.backgroundStyle = .Window
 
         recent.recentView = recent.createView'RecentView()
         recent.recentView.padding = 8
+        recent.recentView.main = parent
         recent.view.backgroundStyle = .View
 
         res := catch Directory.enumerateFiles(Library.getFolder(), "*.captme")
@@ -108,10 +140,29 @@ impl RecentWnd
             cptRecent += 1
             if cptRecent > MaxRecent
                 break
-            recent.recentView.addRecent(capture.file, capture.preview)
+            recent.addRecent(capture.file, capture.preview)
             Memory.delete(capture)
         }
 
         return recent
+    }
+
+    mtd updateRecent(capture: *Capture)
+    {
+        if recentView.items.count == 0
+            return
+        capture.computePreview()
+        getApp().getRenderer().removeTexture(&recentView.items[0].preview)
+        recentView.items[0].preview = getApp().getRenderer().addImage(capture.preview)
+        invalidate()
+    }
+
+    mtd addRecent(file: String, preview: Image)
+    {
+        item := recentView.items.newPtr()
+        item.preview = getApp().getRenderer().addImage(preview)
+        item.file = file
+        recentView.items.insertAt(0, item)
+        invalidate()
     }
 }

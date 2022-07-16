@@ -115,6 +115,7 @@ impl Capture
         s.serialize("width", &width)
         s.serialize("height", &height)
         s.serialize("preview", &preview)
+        s.serialize("backImage", &backImg)
     }
 
     mtd save()
@@ -1006,7 +1007,7 @@ impl Capture
 
     mtd hasChanged()
     {
-        editView.main.recentWnd.recentView.updateRecent(self)
+        editView.main.recentWnd.updateRecent(self)
     }
 
     mtd newUndo(kind: UndoKind)->*Undo
