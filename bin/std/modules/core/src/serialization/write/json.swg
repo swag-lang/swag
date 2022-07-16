@@ -5,7 +5,7 @@ using Swag
 struct JSonOptions
 {
     indentLevel: u32 = 4
-    saveBlanks:  bool = true
+    saveBlanks:  bool
 }
 
 struct JSon
