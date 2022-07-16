@@ -1,5 +1,7 @@
 const MaxRecent = 10
 
+const RecentPadding = 8.0
+
 struct RecentItem
 {
     file:       String
@@ -13,6 +15,7 @@ struct RecentView
 
     main:       *MainWnd
     items:      ArrayPtr'RecentItem
+    selected:   uint = Swag.UInt.Max
     hotItem:    uint = Swag.UInt.Max
 }
 
@@ -20,7 +23,10 @@ impl RecentView
 {
     mtd select(idx: uint)
     {
+        selected = Swag.UInt.Max
         if idx >= items.count return
+
+        selected = idx
         capture := catch Capture.load(items[idx].file)
         if capture
         {
@@ -69,14 +75,14 @@ impl IWnd for RecentView
         x := clientRect.x
         visit i, idx: items
         {
-            h := clientRect.height
-            w := h * (16.0 / 9)
+            h := PreviewHeight + RecentPadding*2
+            w := PreviewWidth + RecentPadding*2
 
-            rect := Math.Rectangle{x, clientRect.y, w, h}
+            rect := Math.Rectangle{x, clientRect.y, w, clientRect.height}
             i.rect = rect
 
             painter.fillRoundRect(rect, 8, 8, colors.wnd_Bk)
-            defer x = rect.right() + 8
+            defer x = rect.right() + RecentPadding
 
             // Hot
             if idx == hotItem
@@ -89,9 +95,9 @@ impl IWnd for RecentView
                 continue
 
             txtRect := rect
-            txtRect.inflate(-4)
+            txtRect.inflate(-RecentPadding*0.5)
 
-            ratio := Math.min(rect.width / i.preview.width, rect.height / i.preview.height)
+            ratio := Math.min(txtRect.width / i.preview.width, txtRect.height / i.preview.height)
             ratio =  Math.min(ratio, 1)
 
             txtRect.x = rect.horzCenter() - (i.preview.width * 0.5 * ratio)
@@ -118,11 +124,11 @@ impl RecentWnd
 {
     func create(parent: *MainWnd)->*RecentWnd
     {
-        recent := Wnd.create'RecentWnd(parent, @{0, 0, 0, 128})
+        recent := Wnd.create'RecentWnd(parent, @{0, 0, 0, PreviewHeight + RecentPadding*2})
         recent.backgroundStyle = .Window
 
         recent.recentView = recent.createView'RecentView()
-        recent.recentView.padding = 8
+        recent.recentView.padding = RecentPadding
         recent.recentView.main = parent
         recent.view.backgroundStyle = .View
 
@@ -149,11 +155,12 @@ impl RecentWnd
 
     mtd updateRecent(capture: *Capture)
     {
-        if recentView.items.count == 0
+        if recentView.selected >= recentView.items.count
             return
         capture.computePreview()
-        getApp().getRenderer().removeTexture(&recentView.items[0].preview)
-        recentView.items[0].preview = getApp().getRenderer().addImage(capture.preview)
+        item := recentView.items[recentView.selected]
+        getApp().getRenderer().removeTexture(&item.preview)
+        item.preview = getApp().getRenderer().addImage(capture.preview)
         invalidate()
     }
 

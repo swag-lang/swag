@@ -1,5 +1,8 @@
 using Serialization
 
+const PreviewHeight = 128.0
+const PreviewWidth  = PreviewHeight * (16/9.0)
+
 enum MouseMode
 {
     None
@@ -58,15 +61,15 @@ impl Capture
 
     mtd computePreview()
     {
-        ratio := 1.0
-        preview = toImage(ratio)
+        zoom := Math.min(PreviewWidth / width, PreviewHeight / height)
+        preview = toImage(zoom)
     }
 
-    mtd toImage(ratio: f32 = 1)->Image
+    mtd toImage(zoom: f32 = 1)->Image
     {
         var result: retval
 
-        rect := Math.Rectangle{width: width * ratio, height: height * ratio}
+        rect := Math.Rectangle{width: width * zoom, height: height * zoom}
         var painter: Pixel.Painter
 
         app := editView.getApp()
@@ -77,11 +80,11 @@ impl Capture
         painter.setColorMask(false, false, false, true)
         painter.clear(Argb.Zero)
         painter.setColorMask(true, true, true, true)
-        paintBackImage(&painter, rect.x, rect.y, 1)
+        paintBackImage(&painter, 0, 0, zoom)
         painter.setColorMask(true, true, true, false)
 
         visit f: forms
-            paintForm(app, &painter, rect, f, 1)
+            paintForm(app, &painter, rect, f, zoom)
         painter.end()
 
         render.begin(editView.surface.rc)
@@ -107,6 +110,28 @@ impl Capture
     // FILE
     //////////////////////////////
 
+    mtd toItf(o: Object'BaseForm)->IForm
+    {
+        var itf: IForm
+
+        #[Swag.Complete]
+        switch o.type
+        {
+        case FormShape:
+            itf = cast(IForm) cast(*FormShape) o.value
+        case FormLine:
+            itf = cast(IForm) cast(*FormLine) o.value
+        case FormArrow:
+            itf = cast(IForm) cast(*FormArrow) o.value
+        case FormText:
+            itf = cast(IForm) cast(*FormText) o.value
+        case FormPolygon:
+            itf = cast(IForm) cast(*FormPolygon) o.value
+        }
+
+        return itf
+    }
+
     mtd(T) serialize(ser: T) throw
     {
         var s: Serializer'T{ser}
@@ -116,6 +141,33 @@ impl Capture
         s.serialize("height", &height)
         s.serialize("preview", &preview)
         s.serialize("backImage", &backImg)
+
+        var arr: Array'(Object'BaseForm)
+        #if T == IEncoder
+        {
+            var o: Object'BaseForm
+            visit f: forms
+            {
+                o.type = @kindof(f)
+                o.value = @dataof(f)
+                arr.add(o)
+            }
+
+            s.serialize("forms", &arr)
+            arr.count = 0
+        }
+        #else
+        {
+            s.serialize("forms", &arr)
+            visit o: arr
+            {
+                itf := toItf(o)
+                itf.setup(self)
+                forms.add(itf)
+            }
+
+            arr.count = 0
+        }
     }
 
     mtd save()
@@ -217,28 +269,14 @@ impl Capture
 
         visit &o, idx: res
         {
-            var itf: IForm
-
-            #[Swag.Complete]
-            switch o.type
-            {
-            case FormShape:
-                itf = cast(IForm) cast(*FormShape) o.value
-            case FormLine:
-                itf = cast(IForm) cast(*FormLine) o.value
-            case FormArrow:
-                itf = cast(IForm) cast(*FormArrow) o.value
-            case FormText:
-                itf = cast(IForm) cast(*FormText) o.value
-            case FormPolygon:
-                itf = cast(IForm) cast(*FormPolygon) o.value
-            }
-
+            itf := toItf(o)
             itf.setup(self)
+
             if idx == 0
                 boundRect = itf.boundRect(false)
             else
                 boundRect.setUnion(itf.boundRect(false))
+
             undo.oldForms.add(itf)
             o.value = null
         }
