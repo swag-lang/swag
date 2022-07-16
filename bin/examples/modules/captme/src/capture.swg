@@ -112,18 +112,43 @@ impl Capture
         var buf:    ConcatBuffer
         var encode: Encoder'Write.JSon
         encode.start(&buf)
-        encode.IEncoder.write("version", 1)
-        encode.IEncoder.write("width", width)
-        encode.IEncoder.write("height", height)
-        encode.IEncoder.write("preview", preview)
+        encode.IEncoder.writeS32("version", 1)
+        encode.IEncoder.writeS32("width", width)
+        encode.IEncoder.writeS32("height", height)
+        encode.IEncoder.writeAny("preview", preview)
         encode.end()
 
         buf.makeLinear()
         catch File.writeAllBytes(file, buf.toSlice())
     }
 
-    mtd load(file: String)
+    func load(file: String)->*Capture throw
     {
+        using Serialization
+
+        capture := Memory.new'Capture()
+        capture.file = file
+        defer(err)
+        {
+            Memory.delete(capture)
+            capture = null
+        }
+
+        res := File.readAllBytes(file)
+
+        var decode: Decoder'Read.JSon
+        decode.start(res.toSlice())
+        version := decode.IDecoder.readS32("version")
+        with capture
+        {
+            width  = decode.IDecoder.readS32("width")
+            height = decode.IDecoder.readS32("height")
+            decode.IDecoder.read("preview", acast &preview, Image)
+        }
+
+        decode.end()
+
+        return capture
     }
 
     //////////////////////////////

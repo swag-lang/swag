@@ -16,6 +16,10 @@ struct Image
 
 impl Image
 {
+    // Returns true if the image is valid
+    #[Swag.Inline]
+    mtdc isValid() => pixels != null
+
     // Creates a new image
     func create(width, height: s32, pf: PixelFormat, buffer: const [..] u8 = null)->Image
     {
@@ -250,10 +254,17 @@ impl Image
 
 impl ISerialize for Image
 {
+    mtd read(decoder: IDecoder) throw
+    {
+        width = decoder.readS32("width")
+        height = decoder.readS32("height")
+        decoder.read("pf", acast &pf, @typeof(pf))
+    }
+
     mtd write(encoder: IEncoder)
     {
         encoder.writeS32("width", width)
         encoder.writeS32("height", height)
-        encoder.write("pf", pf)
+        encoder.writeAny("pf", pf)
     }
 }

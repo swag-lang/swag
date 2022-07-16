@@ -1,3 +1,5 @@
+const MaxRecent = 10
+
 struct RecentItem
 {
     file:    String
@@ -28,8 +30,10 @@ impl IWnd for RecentView
 
             rect := Math.Rectangle{x, clientRect.y, w, h}
             painter.fillRoundRect(rect, 8, 8, colors.wnd_Bk)
-            rect.inflate(-4)
+            if !i.preview.isValid() 
+                continue
 
+            rect.inflate(-4)
             txtRect := rect
 
             ratio := Math.min(rect.width / i.preview.width, rect.height / i.preview.height)
@@ -88,6 +92,24 @@ impl RecentWnd
         recent.recentView = recent.createView'RecentView()
         recent.recentView.padding = 8
         recent.view.backgroundStyle = .View
+
+        res := catch Directory.enumerateFiles(Library.getFolder(), "*.captme")
+        if @err return recent
+        res.sort(@(a, b) {
+            return a.creationTime <=> b.creationTime
+        })
+
+        cptRecent := 0
+        visit r: res
+        {
+            capture := catch Capture.load(r.fullname)
+            if @err continue
+            cptRecent += 1
+            if cptRecent > MaxRecent
+                break
+            recent.recentView.addRecent(capture.file, capture.preview)
+            Memory.delete(capture)
+        }
 
         return recent
     }

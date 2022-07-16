@@ -31,6 +31,25 @@ impl DateTime
         return Memory.compare(self, other, cast(uint) @sizeof(Self)) == 0
     }
 
+    mtdc opCmp(other: DateTime)->s32
+    {
+        if year < other.year return -1
+        if year > other.year return 1
+        if month < other.month return -1
+        if month > other.month return 1
+        if day < other.day return -1
+        if day > other.day return 1
+        if hour < other.hour return -1
+        if hour > other.hour return 1
+        if minute < other.minute return -1
+        if minute > other.minute return 1
+        if second < other.second return -1
+        if second > other.second return 1
+        if millisecond < other.millisecond return -1
+        if millisecond > other.millisecond return 1
+        return 0
+    }
+
     // Returns true if this is a valid datatime
     mtdc isValid()->bool
     {

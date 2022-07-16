@@ -408,6 +408,7 @@ impl RenderOgl
     // Register an image for rendering
     mtd addImage(image: Image)->Texture
     {
+        if !image.isValid() return @{}
         var fmt: GLenum = 0
         internal := GL_RGB
 

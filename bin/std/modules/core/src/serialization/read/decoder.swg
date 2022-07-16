@@ -7,10 +7,17 @@ struct DecoderOptions
     hasVersion: bool
 }
 
+interface IDecoder
+{
+    read:    func(self, string, *u8, typeinfo) throw
+    readS32: func(self, string)->s32 throw
+}
+
 struct(T) Decoder
 {
     options:    DecoderOptions
     serializer: T
+    started:    bool
 }
 
 impl Decoder
@@ -132,6 +139,14 @@ impl Decoder
                 return
             }
 
+            // A structure with an implementation of ISerialize
+            itf := @mkinterface(data, type, ISerialize)
+            if itf != null
+            {
+                itf.read(cast(IDecoder) self)
+                return
+            }
+
             version := readVersion()
             visit field: structType.fields
             {
@@ -171,6 +186,8 @@ impl Decoder
     // Start reading
     mtd start(input: const [..] u8) throw
     {
+        Debug.assert(!started)
+        started = true
         serializer.startRead(input)
         serializer.beginRoot()
     }
@@ -178,11 +195,15 @@ impl Decoder
     // Finish reading
     mtd end() throw
     {
+        Debug.assert(started)
+        started = false
         serializer.endRoot()
     }
 
+    // Read a full struct
     mtd(TR) read(input: const [..] u8)->*TR throw
     {
+        Debug.assert(!started)
         Debug.assert(Reflection.isStruct(TR))
 
         start(input)
@@ -191,5 +212,27 @@ impl Decoder
         end()
 
         return val
+    }
+}
+
+impl IDecoder for Decoder
+{
+    mtd read(name: string, data: *u8, dataType: typeinfo) throw
+    {
+        Debug.assert(started)
+        serializer.beginElement(name, dataType)
+        Decoder.read(self, data, dataType)
+        serializer.endElement()
+    }
+
+    mtd readS32(name: string)->s32 throw
+    {
+        Debug.assert(started)
+        serializer.beginElement(name, s32)
+        serializer.beginValue(s32)
+        res := serializer.readS32()
+        serializer.endValue()
+        serializer.endElement()
+        return res
     }
 }
