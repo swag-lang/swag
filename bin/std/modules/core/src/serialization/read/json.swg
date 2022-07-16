@@ -32,7 +32,7 @@ public impl JSon
         stream.init(input)
     }
 
-    mtd beginSequence(typeElem: typeinfo, data: *u8, countElem: uint)->bool throw
+    mtd beginSequence(typeElem: typeinfo, data: *u8, countElem: *uint)->bool throw
     {
         zapBlanks()
         c := stream.readU8()
@@ -50,7 +50,7 @@ public impl JSon
             throw "malformed array (missing closing ']')"
     }
 
-    mtd toNextSequenceElement()->bool
+    mtd toNextSequenceElement(countElem: *uint)->bool
     {
         zapBlanks()
         c := stream.peekU8()

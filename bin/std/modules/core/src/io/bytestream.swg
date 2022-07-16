@@ -40,6 +40,25 @@ public impl ByteStream
     // Returns true if end has been reached
     mtdc isEof() => eof
 
+    // Read a 'native' type value
+    mtd(T) readNative()->T throw
+    {
+        if seek + @sizeof(T) > @countof(buffer)
+            throw "byte stream overflow"
+        val := dref cast(const *T) (@dataof(buffer) + seek)
+        seek += @sizeof(T)
+        return val
+    }
+
+    // Read the given amount of bytes
+    mtd readBytes(dest: *u8, count: uint) throw
+    {
+        if seek + count > @countof(buffer)
+            throw "byte stream overflow"
+        Memory.copy(dest, @dataof(buffer) + seek, count)
+        seek += count
+    }
+
     // Read one byte and seek
     mtd readU8()->u8
     {

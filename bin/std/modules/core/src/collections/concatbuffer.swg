@@ -143,6 +143,13 @@ impl ConcatBuffer
         totalCount = 0
     }
 
+    // Offset the current write pointer
+    mtd seek(num: uint)
+    {
+        Debug.assert(currentSP + num <= lastBucket.datas + lastBucket.size)
+        currentSP += num
+    }
+
     // Append one byte to the buffer
     mtd addByte(byte: u8)
     {
@@ -151,11 +158,12 @@ impl ConcatBuffer
         currentSP += 1
     }
 
-    // Offset the current write pointer
-    mtd seek(num: uint)
+    // Append one byte to the buffer
+    mtd(T) addNative(val: T)
     {
-        Debug.assert(currentSP + num <= lastBucket.datas + lastBucket.size)
-        currentSP += num
+        grow(@sizeof(val))
+        dref cast(*T) currentSP = val
+        currentSP += @sizeof(val)
     }
 
     // Append a slice of bytes to the buffer

@@ -100,12 +100,13 @@ impl Decoder
             {
                 valueType := structType.generics[0].pointedType
 
-                treated := serializer.beginSequence(type, data, 0)
+                count := 0'uint
+                treated := serializer.beginSequence(type, data, &count)
                 defer(noerr) serializer.endSequence()
 
                 if !treated
                 {
-                    while serializer.toNextSequenceElement()
+                    while serializer.toNextSequenceElement(&count)
                     {
                         bufArr := Reflection.roomInArray(data, structType, valueType)
                         read(bufArr, valueType)
@@ -168,7 +169,7 @@ impl Decoder
         if Reflection.isArray(type)
         {
             typeArr := cast(const *TypeInfoArray) type
-            treated := serializer.beginSequence(typeArr.pointedType, data, typeArr.count)
+            treated := serializer.beginSequence(typeArr.pointedType, data, &typeArr.count)
             defer(noerr) serializer.endSequence()
             if treated
                 return
@@ -235,13 +236,14 @@ impl IDecoder for Decoder
 
         data := cast(*u8) Memory.alloc(count)
 
-        treated := serializer.beginSequence(u8, data, count)
+        cpt := count
+        treated := serializer.beginSequence(u8, data, &cpt)
         defer(noerr) serializer.endSequence()
 
         if !treated
         {
             ptr := data
-            loop count
+            loop cpt
             {
                 serializer.beginValue(u8)
                 dref ptr = serializer.readU8()

@@ -185,7 +185,7 @@ impl Capture
         changed = false
 
         var buf:    ConcatBuffer
-        var encode: Encoder'Write.JSon
+        var encode: Encoder'Write.Bin
 
         encode.start(&buf)
         catch serialize(cast(IEncoder) encode)
@@ -207,7 +207,7 @@ impl Capture
 
         res := File.readAllBytes(file)
 
-        var decode: Decoder'Read.JSon
+        var decode: Decoder'Read.Bin
         decode.start(res.toSlice())
         capture.serialize(cast(IDecoder) decode)
         decode.end()
