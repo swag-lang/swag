@@ -159,6 +159,7 @@ impl Capture
                 o.type = @kindof(f)
                 o.value = @dataof(f)
                 arr.add(o)
+                o.value = null
             }
 
             s.serialize("forms", &arr)

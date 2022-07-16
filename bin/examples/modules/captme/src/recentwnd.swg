@@ -117,7 +117,28 @@ impl IWnd for RecentView
 struct RecentWnd
 {
     using scrollWnd: ScrollWnd
+    main:       *MainWnd
     recentView: *RecentView
+    timer:      *Timer
+}
+
+impl IWnd for RecentWnd
+{
+    mtd onTimerEvent(evt: *TimerEvent)
+    {
+        capture := main.getCapture()
+        if !capture return
+
+        capture.computePreview()
+        item := recentView.items[recentView.selected]
+        getApp().getRenderer().removeTexture(&item.preview)
+        item.preview = getApp().getRenderer().addImage(capture.preview)
+        invalidate()
+
+        getApp().deleteTimer(evt.timer)
+        timer = null
+        capture.save()
+    }
 }
 
 impl RecentWnd
@@ -126,6 +147,7 @@ impl RecentWnd
     {
         recent := Wnd.create'RecentWnd(parent, @{0, 0, 0, PreviewHeight + RecentPadding*2})
         recent.backgroundStyle = .Window
+        recent.main = parent
 
         recent.recentView = recent.createView'RecentView()
         recent.recentView.padding = RecentPadding
@@ -157,11 +179,10 @@ impl RecentWnd
     {
         if recentView.selected >= recentView.items.count
             return
-        capture.computePreview()
-        item := recentView.items[recentView.selected]
-        getApp().getRenderer().removeTexture(&item.preview)
-        item.preview = getApp().getRenderer().addImage(capture.preview)
-        invalidate()
+
+        if timer
+            getApp().deleteTimer(timer)
+        timer = getApp().addTimer(1's, self)
     }
 
     mtd addRecent(file: String, preview: Image)
