@@ -16,17 +16,19 @@ public impl Serializer
 {
     mtd(MT) serialize(name: string, res: *MT) throw
     {
-    #if T == IDecoder
-        ser.read(name, res, @typeof(MT))
-    #else
-        ser.write(name, @typeof(MT), res)
-    }
-
-    mtd serializeS32(name: string, res: *s32) throw
-    {
-    #if T == IDecoder
-        dref res = ser.readS32(name)
-    #else
-        ser.writeS32(name, dref res)
+        #if T == IDecoder
+        {
+            #if MT == s32
+                dref res = ser.readS32(name)
+            #else
+                ser.read(name, res, @typeof(MT))
+        }
+        #else
+        {
+            #if MT == s32
+                ser.writeS32(name, dref res)
+            #else
+                ser.write(name, @typeof(MT), res)
+        }
     }
 }

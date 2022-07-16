@@ -111,9 +111,9 @@ impl Capture
     {
         var s: Serializer'T{ser}
         version := 0's32
-        s.serializeS32("version", &version)
-        s.serializeS32("width", &width)
-        s.serializeS32("height", &height)
+        s.serialize("version", &version)
+        s.serialize("width", &width)
+        s.serialize("height", &height)
         s.serialize("preview", &preview)
     }
 

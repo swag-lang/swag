@@ -257,8 +257,9 @@ impl ISerialize for Image
     mtd(T) serialize(ser: T) throw
     {
         var s: Serializer'T{ser}
-        s.serializeS32("width", &width)
-        s.serializeS32("height", &height)
+        s.serialize("width", &width)
+        s.serialize("height", &height)
+        s.serialize("pf", &pf)
     }
 
     mtd read(decoder: IDecoder) throw
