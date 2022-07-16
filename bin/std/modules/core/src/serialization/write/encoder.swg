@@ -13,6 +13,11 @@ struct EncoderOptions
     storeVersion: bool
 }
 
+interface IEncoder
+{
+    write: func(self, string, any)
+}
+
 struct(T) Encoder
 {
     options:    EncoderOptions
@@ -27,8 +32,8 @@ impl Encoder
         type := Reflection.makeConcreteAlias(dataType)
         type = Reflection.makeConcreteEnum(type)
 
-        serializer.IWrite.beginValue(type)
-        defer(noerr) serializer.IWrite.endValue()
+        serializer.beginValue(type)
+        defer(noerr) serializer.endValue()
 
         // Native
         if type.kind == .Native
@@ -37,27 +42,27 @@ impl Encoder
             switch typeNative.nativeKind
             {
             case Bool:
-                serializer.IWrite.writeBool(dref cast(const *bool) data)
+                serializer.writeBool(dref cast(const *bool) data)
             case U8:
-                serializer.IWrite.writeU8(dref cast(const *u8) data)
+                serializer.writeU8(dref cast(const *u8) data)
             case U16:
-                serializer.IWrite.writeU16(dref cast(const *u16) data)
+                serializer.writeU16(dref cast(const *u16) data)
             case U32, Rune:
-                serializer.IWrite.writeU32(dref cast(const *u32) data)
+                serializer.writeU32(dref cast(const *u32) data)
             case U64:
-                serializer.IWrite.writeU64(dref cast(const *u64) data)
+                serializer.writeU64(dref cast(const *u64) data)
             case S8:
-                serializer.IWrite.writeS8(dref cast(const *s8) data)
+                serializer.writeS8(dref cast(const *s8) data)
             case S16:
-                serializer.IWrite.writeS16(dref cast(const *s16) data)
+                serializer.writeS16(dref cast(const *s16) data)
             case S32:
-                serializer.IWrite.writeS32(dref cast(const *s32) data)
+                serializer.writeS32(dref cast(const *s32) data)
             case S64:
-                serializer.IWrite.writeS64(dref cast(const *s64) data)
+                serializer.writeS64(dref cast(const *s64) data)
             case F32:
-                serializer.IWrite.writeF32(dref cast(const *f32) data)
+                serializer.writeF32(dref cast(const *f32) data)
             case F64:
-                serializer.IWrite.writeF64(dref cast(const *f64) data)
+                serializer.writeF64(dref cast(const *f64) data)
             }
 
             return
@@ -66,7 +71,7 @@ impl Encoder
         if Reflection.isType(type)
         {
             typeType := dref cast(const **TypeInfo) data
-            serializer.IWrite.writeU32(typeType ? typeType.crc32 : 0)
+            serializer.writeU32(typeType ? typeType.crc32 : 0)
             return
         }
 
@@ -76,7 +81,7 @@ impl Encoder
             if type == String
             {
                 strBuf := cast(const *String) data
-                serializer.IWrite.writeString(strBuf.toString())
+                serializer.writeString(strBuf.toString())
                 return
             }
 
@@ -88,8 +93,8 @@ impl Encoder
                 valueType := structType.generics[0].pointedType
                 ptrArr    := cast(const *Array) data
 
-                treated := serializer.IWrite.beginSequence(valueType, ptrArr.count, cast(const *u8) ptrArr.buffer)
-                defer serializer.IWrite.endSequence()
+                treated := serializer.beginSequence(valueType, ptrArr.count, cast(const *u8) ptrArr.buffer)
+                defer serializer.endSequence()
 
                 if !treated
                 {
@@ -105,8 +110,8 @@ impl Encoder
             }
 
             // Generic structure save
-            treated := serializer.IWrite.beginStruct(structType, data)
-            defer(noerr) serializer.IWrite.endStruct()
+            treated := serializer.beginStruct(structType, data)
+            defer(noerr) serializer.endStruct()
             if treated
                 return
 
@@ -114,17 +119,25 @@ impl Encoder
             if structType.fromGeneric == @typeof(Object)
             {
                 dataObj := cast(const *Object'String) data // 'String' is fake
-                serializer.IWrite.beginElement("type", structType.fields[0].pointedType)
+                serializer.beginElement("type", structType.fields[0].pointedType)
                 write(structType.fields[0].pointedType, cast(const *u8) &dataObj.type)
-                serializer.IWrite.endElement()
+                serializer.endElement()
 
                 if dataObj.value
                 {
-                    serializer.IWrite.beginElement("value", structType.fields[0].pointedType)
+                    serializer.beginElement("value", structType.fields[0].pointedType)
                     write(dataObj.type, cast(const *u8) dataObj.value)
-                    serializer.IWrite.endElement()
+                    serializer.endElement()
                 }
 
+                return
+            }
+
+            // A structure with an implementation of ISerialize
+            itf := @mkinterface(data, type, ISerialize)
+            if itf != null
+            {
+                itf.write(cast(IEncoder) self)
                 return
             }
 
@@ -136,11 +149,11 @@ impl Encoder
                 if val != null
                     version = cast(u32) val
 
-                serializer.IWrite.beginElement("$version", u32)
-                serializer.IWrite.beginValue(u32)
-                serializer.IWrite.writeU32(version)
-                serializer.IWrite.endValue()
-                serializer.IWrite.endElement()
+                serializer.beginElement("$version", u32)
+                serializer.beginValue(u32)
+                serializer.writeU32(version)
+                serializer.endValue()
+                serializer.endElement()
             }
 
             // Get all fields to serialize
@@ -151,9 +164,9 @@ impl Encoder
                 if Reflection.hasAttribute(field.pointedType, NoSerialize)
                     continue
 
-                serializer.IWrite.beginElement(field.name, field.pointedType)
+                serializer.beginElement(field.name, field.pointedType)
                 write(field.pointedType, data + field.offset)
-                serializer.IWrite.endElement()
+                serializer.endElement()
             }
 
             return
@@ -163,8 +176,8 @@ impl Encoder
         if Reflection.isArray(type)
         {
             typeArr := cast(const *TypeInfoArray) type
-            treated := serializer.IWrite.beginSequence(typeArr.pointedType, typeArr.count, data)
-            defer serializer.IWrite.endSequence()
+            treated := serializer.beginSequence(typeArr.pointedType, typeArr.count, data)
+            defer serializer.endSequence()
             if treated
                 return
 
@@ -205,13 +218,16 @@ impl Encoder
         write(@kindof(value), @dataof(value))
         end()
     }
+}
 
+impl IEncoder for Encoder
+{
     // Write an element
     mtd write(name: string, value: any)
     {
         Debug.assert(started)
-        serializer.IWrite.beginElement(name, @kindof(value))
+        serializer.beginElement(name, @kindof(value))
         write(@kindof(value), @dataof(value))
-        serializer.IWrite.endElement()
+        serializer.endElement()
     }
 }

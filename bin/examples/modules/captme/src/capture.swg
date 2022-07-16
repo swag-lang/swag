@@ -112,10 +112,10 @@ impl Capture
         var buf:    ConcatBuffer
         var encode: Encoder'Write.JSon
         encode.start(&buf)
-        encode.write("version", 1)
-        encode.write("width", width)
-        encode.write("height", height)
-        encode.write("preview", preview)
+        encode.IEncoder.write("version", 1)
+        encode.IEncoder.write("width", width)
+        encode.IEncoder.write("height", height)
+        encode.IEncoder.write("preview", preview)
         encode.end()
 
         buf.makeLinear()

@@ -35,18 +35,15 @@ impl JSon
 
     mtd beginRoot()
     {
-        discard self.IWrite.beginStruct(null, null)
+        discard beginStruct(null, null)
     }
 
     mtd endRoot()
     {
         output.setSeek(lastSeekValue) // Remove last ','
-        self.IWrite.endStruct()
+        endStruct()
     }
-}
 
-impl IWrite for JSon
-{
     mtd beginSequence(typeElem: typeinfo, countElem: uint, data: const *u8)->bool
     {
         output.addBytes("[")

@@ -1,5 +1,5 @@
 #global public
-using Swag, Core
+using Swag, Core, Serialization
 
 struct Image
 {
@@ -245,5 +245,13 @@ impl Image
         }
 
         return result
+    }
+}
+
+impl ISerialize for Image
+{
+    mtd write(encoder: IEncoder)
+    {
+        encoder.write("width", width)
     }
 }
