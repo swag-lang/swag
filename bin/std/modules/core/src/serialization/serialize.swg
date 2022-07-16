@@ -31,4 +31,15 @@ public impl Serializer
                 ser.write(name, @typeof(MT), res)
         }
     }
+
+    mtd serializeBufferU8(name: string, res: **u8, count: uint, allocator: Swag.IAllocator) throw
+    {
+        #if T == IDecoder
+        {
+        }
+        #else
+        {
+            ser.writeBufferU8(name, dref res, count)
+        }
+    }
 }

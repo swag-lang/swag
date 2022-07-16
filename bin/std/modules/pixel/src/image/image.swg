@@ -260,6 +260,11 @@ impl ISerialize for Image
         s.serialize("width", &width)
         s.serialize("height", &height)
         s.serialize("pf", &pf)
+        s.serialize("size", &size)
+        s.serialize("width8", &width8)
+        s.serialize("bpp", &bpp)
+        s.serialize("bpp8", &bpp8)
+        //s.serializeBufferU8("pixels", &pixels, size, null)
     }
 
     mtd read(decoder: IDecoder) throw

@@ -15,8 +15,9 @@ struct EncoderOptions
 
 interface IEncoder
 {
-    write:      func(self, string, typeinfo, *void)
-    writeS32:   func(self, string, s32)
+    write:          func(self, string, typeinfo, *void)
+    writeBufferU8:  func(self, string, const *u8, uint)
+    writeS32:       func(self, string, s32)
 }
 
 struct(T) Encoder
@@ -94,7 +95,7 @@ impl Encoder
                 valueType := structType.generics[0].pointedType
                 ptrArr    := cast(const *Array) data
 
-                treated := serializer.beginSequence(valueType, ptrArr.count, cast(const *u8) ptrArr.buffer)
+                treated := serializer.beginSequence(valueType, ptrArr.buffer, ptrArr.count)
                 defer serializer.endSequence()
 
                 if !treated
@@ -177,7 +178,7 @@ impl Encoder
         if Reflection.isArray(type)
         {
             typeArr := cast(const *TypeInfoArray) type
-            treated := serializer.beginSequence(typeArr.pointedType, typeArr.count, data)
+            treated := serializer.beginSequence(typeArr.pointedType, data, typeArr.count)
             defer serializer.endSequence()
             if treated
                 return
@@ -229,6 +230,28 @@ impl IEncoder for Encoder
         serializer.beginElement(name, type)
         write(type, data)
         serializer.endElement()
+    }
+
+    mtd writeBufferU8(name: string, data: const *u8, count: uint)
+    {
+        Debug.assert(started)
+        serializer.beginElement(name, *u8)
+        defer(noerr) serializer.endElement()
+
+        treated := serializer.beginSequence(u8, data, count)
+        defer(noerr) serializer.endSequence()
+
+        if !treated
+        {
+            ptr := data
+            while count
+            {
+                serializer.beginValue(u8)
+                serializer.writeU8(dref ptr)
+                serializer.endValue()
+                ptr += 1
+            }
+        }
     }
 
     mtd writeS32(name: string, value: s32)

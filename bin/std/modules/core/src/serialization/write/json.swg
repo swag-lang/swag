@@ -44,7 +44,7 @@ impl JSon
         endStruct()
     }
 
-    mtd beginSequence(typeElem: typeinfo, countElem: uint, data: const *u8)->bool
+    mtd beginSequence(typeElem: typeinfo, data: const *void, countElem: uint)->bool
     {
         output.addBytes("[")
         lastSeekValue = output.getSeek()
