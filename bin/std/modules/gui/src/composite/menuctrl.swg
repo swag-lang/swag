@@ -124,9 +124,9 @@ impl IWnd for MenuCtrl
 
         // Back
         clientRect := getClientRect()
-        clientRect.inflate(-metrics.menuPopup_ShadowSize)
         if !paintByFrame
         {
+            clientRect.inflate(-metrics.menuPopup_ShadowSize)
             theme.drawSubRect(painter, clientRect, &rects.menuPopup_Bk, colors.menuPopup_Bk)
             theme.drawSubRect(painter, clientRect, &rects.menuPopup_Border, colors.menuPopup_Border)
         }
@@ -150,7 +150,6 @@ impl IWnd for MenuCtrl
                 continue
             }
 
-            var format: RichStringFormat
             colorText = i.disabled ? colors.popupItem_DisabledText : colors.popupItem_Text
             colorRightText = i.disabled ? colors.popupItem_DisabledText : colors.popupItem_RightText
 
@@ -158,9 +157,15 @@ impl IWnd for MenuCtrl
             if hotIdx == idx and !i.disabled
             {
                 backPos := labelPos
-                backPos.x = metrics.menuPopup_ShadowSize
+                if !paintByFrame
+                    backPos.x = metrics.menuPopup_ShadowSize
                 backPos.y -= metrics.menuPopup_SpaceLines * 0.5
-                backPos.width = position.width - 2 * metrics.menuPopup_ShadowSize
+                if !paintByFrame
+                {
+                    backPos.width = position.width
+                    backPos.width -= 2 * metrics.menuPopup_ShadowSize
+                }
+
                 backPos.height += metrics.menuPopup_SpaceLines
                 backPos.inflate(-4, 0)
                 theme.drawSubRect(painter, backPos, &rects.menuPopup_HotBk, colors.popupItem_HotBk)
@@ -186,6 +191,7 @@ impl IWnd for MenuCtrl
             labelPos.moveLeft(i.size + metrics.menuPopup_IconTextMargin)
 
             // Text
+            var format: RichStringFormat
             theme.setTextColors(&format, colorText)
             format.horzAlignment = .Left
             format.vertAlignment = .Center
@@ -528,7 +534,8 @@ impl MenuCtrl
         metrics := getThemeMetrics()
 
         clientRect := getClientRect()
-        clientRect.inflate(-metrics.menuPopup_ShadowSize)
+        if !paintByFrame
+            clientRect.inflate(-metrics.menuPopup_ShadowSize)
         clientRect.applyPadding(padding)
 
         y := clientRect.y
@@ -571,9 +578,13 @@ impl MenuCtrl
         }
 
         // Add shadow size
-        position.width  += 2 * metrics.menuPopup_ShadowSize
-        position.width  += 2 * (rsf.font.regular.height + metrics.menuPopup_IconTextMargin)
-        position.height += metrics.menuPopup_ShadowSize
+        if !paintByFrame
+            position.width += 2 * metrics.menuPopup_ShadowSize
+
+        position.width += (2 * rsf.font.regular.height) + metrics.menuPopup_IconTextMargin
+
+        if !paintByFrame
+            position.height += metrics.menuPopup_ShadowSize
 
         // Add padding
         position.width  += padding.x + padding.z
@@ -669,32 +680,46 @@ public impl MenuCtrl
         Debug.assert(!bar)
 
         updateState()
+
+        switch pos
+        {
+        case AnchorTopCenter:
+            paintByFrame = true
+            padding.y += 4
+        case AnchorBottomCenter:
+            paintByFrame = true
+            padding.w += 4
+        default:
+            paintByFrame = false
+        }
+
         computeLayoutPopup()
 
         // Be sure popup menu is in the client area of the top view
         pt := parent.surfaceToLocal(surfacePos)
-        pt -= getThemeMetrics().menuPopup_ShadowSize
 
         switch pos
         {
         case TopLeft:
+            pt -= getThemeMetrics().menuPopup_ShadowSize
             setPosition(@{pt.x, pt.y, position.width, position.height})
 
         case AnchorTopCenter:
+            pt.y += getThemeMetrics().menuPopup_ShadowSize
             setPosition(@{pt.x - position.width * 0.5, pt.y, position.width, position.height})
             anchor = .Top
             anchorPos = position.width * 0.5
             setFrameFlags(.Borders | .SmallShadow)
             setFrameForm(.Round)
-            paintByFrame = true
+            padding.y += 14
 
         case AnchorBottomCenter:
+            pt.y -= getThemeMetrics().menuPopup_ShadowSize
             setPosition(@{pt.x - position.width * 0.5, pt.y - position.height, position.width, position.height})
             anchor = .Bottom
             anchorPos = position.width * 0.5
             setFrameFlags(.Borders | .SmallShadow)
             setFrameForm(.Round)
-            paintByFrame = true
         }
 
         fitPosInParent()

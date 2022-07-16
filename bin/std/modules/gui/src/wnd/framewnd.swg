@@ -248,7 +248,7 @@ impl FrameWnd
             wndFlags &= ~.PreChildsPaint
 
         if frameFlags & .SmallShadow
-            invalidatePadding = getThemeMetrics().frameWnd_SmallShadowSize
+            invalidatePadding = -getThemeMetrics().frameWnd_SmallShadowSize
         else
             invalidatePadding.clear()
     }
