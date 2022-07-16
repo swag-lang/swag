@@ -126,75 +126,35 @@ impl JSon
         writeIndent()
     }
 
-    mtd writeBool(value: bool)
-    {
-        output.addBytes(value ? "true" : "false")
-    }
+    /////////////////////////////////
+    // VALUES
+    /////////////////////////////////
 
-    mtd writeF32(value: f32)
+    mtd(NT) writeNative(value: NT)
     {
-        fmtFloat.value = value
-        StrConv.convertFloat(output, fmtFloat)
-    }
-
-    mtd writeF64(value: f64)
-    {
-        fmtFloat.value = value
-        StrConv.convertFloat(output, fmtFloat)
-    }
-
-    mtd writeU8(value: u8)
-    {
-        fmtInt.value = value
-        StrConv.convertInt(output, fmtInt)
-    }
-
-    mtd writeU16(value: u16)
-    {
-        fmtInt.value = value
-        StrConv.convertInt(output, fmtInt)
-    }
-
-    mtd writeU32(value: u32)
-    {
-        fmtInt.value = value
-        StrConv.convertInt(output, fmtInt)
-    }
-
-    mtd writeU64(value: u64)
-    {
-        fmtInt.value = value
-        StrConv.convertInt(output, fmtInt)
-    }
-
-    mtd writeS8(value: s8)
-    {
-        fmtInt.value = value
-        StrConv.convertInt(output, fmtInt)
-    }
-
-    mtd writeS16(value: s16)
-    {
-        fmtInt.value = value
-        StrConv.convertInt(output, fmtInt)
-    }
-
-    mtd writeS32(value: s32)
-    {
-        fmtInt.value = value
-        StrConv.convertInt(output, fmtInt)
-    }
-
-    mtd writeS64(value: s64)
-    {
-        fmtInt.value = value
-        StrConv.convertInt(output, fmtInt)
-    }
-
-    mtd writeString(value: string)
-    {
-        output.addByte("\""'u8)
-        output.addBytes(value)
-        output.addByte("\""'u8)
+        #if NT == bool
+        {
+            output.addBytes(value ? "true" : "false")
+        }
+        #elif Reflection.isFloat(NT)
+        {
+            fmtFloat.value = value
+            StrConv.convertFloat(output, fmtFloat)
+        }
+        #elif Reflection.isInteger(NT)
+        {
+            fmtInt.value = value
+            StrConv.convertInt(output, fmtInt)
+        }
+        #elif NT == string
+        {
+            output.addByte("\""'u8)
+            output.addBytes(value)
+            output.addByte("\""'u8)
+        }
+        #else
+        {
+            #assert(false, "invalid type")
+        }
     }
 }

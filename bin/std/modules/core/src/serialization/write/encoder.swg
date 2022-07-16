@@ -44,27 +44,27 @@ impl Encoder
             switch typeNative.nativeKind
             {
             case Bool:
-                serializer.writeBool(dref cast(const *bool) data)
+                serializer.writeNative(dref cast(const *bool) data)
             case U8:
-                serializer.writeU8(dref cast(const *u8) data)
+                serializer.writeNative(dref cast(const *u8) data)
             case U16:
-                serializer.writeU16(dref cast(const *u16) data)
+                serializer.writeNative(dref cast(const *u16) data)
             case U32, Rune:
-                serializer.writeU32(dref cast(const *u32) data)
+                serializer.writeNative(dref cast(const *u32) data)
             case U64, UInt:
-                serializer.writeU64(dref cast(const *u64) data)
+                serializer.writeNative(dref cast(const *u64) data)
             case S8:
-                serializer.writeS8(dref cast(const *s8) data)
+                serializer.writeNative(dref cast(const *s8) data)
             case S16:
-                serializer.writeS16(dref cast(const *s16) data)
+                serializer.writeNative(dref cast(const *s16) data)
             case S32:
-                serializer.writeS32(dref cast(const *s32) data)
+                serializer.writeNative(dref cast(const *s32) data)
             case S64, Int:
-                serializer.writeS64(dref cast(const *s64) data)
+                serializer.writeNative(dref cast(const *s64) data)
             case F32:
-                serializer.writeF32(dref cast(const *f32) data)
+                serializer.writeNative(dref cast(const *f32) data)
             case F64:
-                serializer.writeF64(dref cast(const *f64) data)
+                serializer.writeNative(dref cast(const *f64) data)
             }
 
             return
@@ -73,7 +73,7 @@ impl Encoder
         if Reflection.isType(type)
         {
             typeType := dref cast(const **TypeInfo) data
-            serializer.writeU32(typeType ? typeType.crc32 : 0)
+            serializer.writeNative(typeType ? typeType.crc32 : 0'u32)
             return
         }
 
@@ -83,7 +83,7 @@ impl Encoder
             if type == String
             {
                 strBuf := cast(const *String) data
-                serializer.writeString(strBuf.toString())
+                serializer.writeNative(strBuf.toString())
                 return
             }
 
@@ -153,7 +153,7 @@ impl Encoder
 
                 serializer.beginElement("$version", u32)
                 serializer.beginValue(u32)
-                serializer.writeU32(version)
+                serializer.writeNative(version)
                 serializer.endValue()
                 serializer.endElement()
             }
@@ -248,7 +248,7 @@ impl IEncoder for Encoder
             loop count
             {
                 serializer.beginValue(u8)
-                serializer.writeU8(dref ptr)
+                serializer.writeNative(dref ptr)
                 serializer.endValue()
                 ptr += 1
             }
@@ -260,7 +260,7 @@ impl IEncoder for Encoder
         Debug.assert(started)
         serializer.beginElement(name, s32)
         serializer.beginValue(s32)
-        serializer.writeS32(value)
+        serializer.writeNative(value)
         serializer.endValue()
         serializer.endElement()
     }

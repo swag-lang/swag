@@ -29,7 +29,7 @@ impl Decoder
             return 0
         serializer.beginElement("$version", u32)
         serializer.beginValue(u32)
-        version := serializer.readU32()
+        version := serializer.readNative'u32()
         serializer.endValue()
         serializer.endElement()
         return version
@@ -50,27 +50,27 @@ impl Decoder
             switch typeNative.nativeKind
             {
             case Bool:
-                dref cast(*bool) data = serializer.readBool()
+                dref cast(*bool) data = serializer.readNative'bool()
             case U8:
-                dref cast(*u8) data = serializer.readU8()
+                dref cast(*u8) data   = serializer.readNative'u8()
             case U16:
-                dref cast(*u16) data = serializer.readU16()
+                dref cast(*u16) data  = serializer.readNative'u16()
             case U32, Rune:
-                dref cast(*u32) data = serializer.readU32()
+                dref cast(*u32) data  = serializer.readNative'u32()
             case U64, UInt:
-                dref cast(*u64) data = serializer.readU64()
+                dref cast(*u64) data  = serializer.readNative'u64()
             case S8:
-                dref cast(*s8) data = serializer.readS8()
+                dref cast(*s8) data   = serializer.readNative's8()
             case S16:
-                dref cast(*s16) data = serializer.readS16()
+                dref cast(*s16) data  = serializer.readNative's16()
             case S32:
-                dref cast(*s32) data = serializer.readS32()
+                dref cast(*s32) data  = serializer.readNative's32()
             case S64, Int:
-                dref cast(*s64) data = serializer.readS64()
+                dref cast(*s64) data  = serializer.readNative's64()
             case F32:
-                dref cast(*f32) data = serializer.readF32()
+                dref cast(*f32) data  = serializer.readNative'f32()
             case F64:
-                dref cast(*f64) data = serializer.readF64()
+                dref cast(*f64) data  = serializer.readNative'f64()
             }
 
             return
@@ -78,7 +78,7 @@ impl Decoder
 
         if Reflection.isType(type)
         {
-            crc := serializer.readU32()
+            crc := serializer.readNative'u32()
             typeType := Reflection.crcToType(crc)
             dref cast(*typeinfo) data = typeType
             return
@@ -90,7 +90,7 @@ impl Decoder
             if type == String
             {
                 strBuf := cast(*String) data
-                dref strBuf =,nodrop serializer.readString()
+                dref strBuf =,nodrop serializer.readNative'String()
                 return
             }
 
@@ -246,7 +246,7 @@ impl IDecoder for Decoder
             loop cpt
             {
                 serializer.beginValue(u8)
-                dref ptr = serializer.readU8()
+                dref ptr = serializer.readNative'u8()
                 serializer.endValue()
                 ptr += 1
             }
@@ -260,7 +260,7 @@ impl IDecoder for Decoder
         Debug.assert(started)
         serializer.beginElement(name, s32)
         serializer.beginValue(s32)
-        res := serializer.readS32()
+        res := serializer.readNative's32()
         serializer.endValue()
         serializer.endElement()
         return res

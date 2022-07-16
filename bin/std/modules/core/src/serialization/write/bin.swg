@@ -62,65 +62,20 @@ impl Bin
     {
     }
 
-    mtd writeBool(value: bool)
-    {
-        output.addNative(value)
-    }
+    /////////////////////////////////
+    // VALUES
+    /////////////////////////////////
 
-    mtd writeF32(value: f32)
+    mtd(NT) writeNative(value: NT)
     {
-        output.addNative(value)
-    }
-
-    mtd writeF64(value: f64)
-    {
-        output.addNative(value)
-    }
-
-    mtd writeU8(value: u8)
-    {
-        output.addNative(value)
-    }
-
-    mtd writeU16(value: u16)
-    {
-        output.addNative(value)
-    }
-
-    mtd writeU32(value: u32)
-    {
-        output.addNative(value)
-    }
-
-    mtd writeU64(value: u64)
-    {
-        output.addNative(value)
-    }
-
-    mtd writeS8(value: s8)
-    {
-        output.addNative(value)
-    }
-
-    mtd writeS16(value: s16)
-    {
-        output.addNative(value)
-    }
-
-    mtd writeS32(value: s32)
-    {
-        output.addNative(value)
-    }
-
-    mtd writeS64(value: s64)
-    {
-        output.addNative(value)
-    }
-
-    mtd writeString(value: string)
-    {
-        count := cast(u32) @countof(value)
-        output.addNative(count)
-        output.addBytes(value)
+        #if NT == string
+        {
+            output.addNative(cast(u32) @countof(value))
+            output.addBytes(value)
+        }
+        #else
+        {
+            output.addNative(value)
+        }
     }
 }

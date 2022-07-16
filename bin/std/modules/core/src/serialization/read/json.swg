@@ -134,117 +134,101 @@ public impl JSon
     // VALUES
     /////////////////////////////////
 
-    mtd readBool()->bool throw
+    mtd(NT) readNative()->NT throw
     {
         zapBlanks()
-        val := StrConv.parseBool(stream.toString())
-        stream.seekNext(acast val.eat)
-        return val.value
-    }
-
-    mtd readF32()->f32 throw
-    {
-        zapBlanks()
-        val := StrConv.parseF32(stream.toString())
-        stream.seekNext(acast val.eat)
-        return val.value
-    }
-
-    mtd readF64()->f64 throw
-    {
-        zapBlanks()
-        val := StrConv.parseF64(stream.toString())
-        stream.seekNext(acast val.eat)
-        return val.value
-    }
-
-    mtd readS8()->s8 throw
-    {
-        zapBlanks()
-        val := StrConv.parseS8(stream.toString())
-        stream.seekNext(acast val.eat)
-        return val.value
-    }
-
-    mtd readS16()->s16 throw
-    {
-        zapBlanks()
-        val := StrConv.parseS16(stream.toString())
-        stream.seekNext(acast val.eat)
-        return val.value
-    }
-
-
-    mtd readS32()->s32 throw
-    {
-        zapBlanks()
-        val := StrConv.parseS32(stream.toString())
-        stream.seekNext(acast val.eat)
-        return val.value
-    }
-
-    mtd readS64()->s64 throw
-    {
-        zapBlanks()
-        val := StrConv.parseS64(stream.toString())
-        stream.seekNext(acast val.eat)
-        return val.value
-    }
-
-    mtd readU8()->u8 throw
-    {
-        zapBlanks()
-        val := StrConv.parseU8(stream.toString())
-        stream.seekNext(acast val.eat)
-        return val.value
-    }
-
-    mtd readU16()->u16 throw
-    {
-        zapBlanks()
-        val := StrConv.parseU16(stream.toString())
-        stream.seekNext(acast val.eat)
-        return val.value
-    }
-
-
-    mtd readU32()->u32 throw
-    {
-        zapBlanks()
-        val := StrConv.parseU32(stream.toString())
-        stream.seekNext(acast val.eat)
-        return val.value
-    }
-
-    mtd readU64()->u64 throw
-    {
-        zapBlanks()
-        val := StrConv.parseU64(stream.toString())
-        stream.seekNext(acast val.eat)
-        return val.value
-    }
-
-    mtd readString()->String throw
-    {
-        var result: retval
-
-        zapBlanks()
-        c := stream.readU8()
-        if c != "\""'u8
-            throw "malformed string (missing opening '\"')"
-
-        c = stream.peekU8()
-        while c and c != "\""'u8
+        #if NT == bool
         {
-            c = stream.readU8()
-            result += c
-            c = stream.peekU8()
+            val := StrConv.parseBool(stream.toString())
+            stream.seekNext(acast val.eat)
+            return val.value
         }
+        #elif NT == f32
+        {
+            val := StrConv.parseF32(stream.toString())
+            stream.seekNext(acast val.eat)
+            return val.value
+        }
+        #elif NT == f64
+        {
+            val := StrConv.parseF64(stream.toString())
+            stream.seekNext(acast val.eat)
+            return val.value
+        }
+        #elif NT == s8
+        {
+            val := StrConv.parseS8(stream.toString())
+            stream.seekNext(acast val.eat)
+            return val.value
+        }
+        #elif NT == s16
+        {
+            val := StrConv.parseS16(stream.toString())
+            stream.seekNext(acast val.eat)
+            return val.value
+        }
+        #elif NT == s32
+        {
+            val := StrConv.parseS32(stream.toString())
+            stream.seekNext(acast val.eat)
+            return val.value
+        }
+        #elif NT == s64
+        {
+            val := StrConv.parseS64(stream.toString())
+            stream.seekNext(acast val.eat)
+            return val.value
+        }
+        #elif NT == u8
+        {
+            val := StrConv.parseU8(stream.toString())
+            stream.seekNext(acast val.eat)
+            return val.value
+        }
+        #elif NT == u16
+        {
+            val := StrConv.parseU16(stream.toString())
+            stream.seekNext(acast val.eat)
+            return val.value
+        }
+        #elif NT == u32
+        {
+            val := StrConv.parseU32(stream.toString())
+            stream.seekNext(acast val.eat)
+            return val.value
+        }
+        #elif NT == u64
+        {
+            val := StrConv.parseU64(stream.toString())
+            stream.seekNext(acast val.eat)
+            return val.value
+        }
+        #elif NT == Core.String
+        {
+            var result: retval
 
-        c = stream.readU8()
-        if c != "\""'u8
-            throw "malformed string (missing closing '\"')"
+            zapBlanks()
+            c := stream.readU8()
+            if c != "\""'u8
+                throw "malformed string (missing opening '\"')"
 
-        return result
+            c = stream.peekU8()
+            while c and c != "\""'u8
+            {
+                c = stream.readU8()
+                result += c
+                c = stream.peekU8()
+            }
+
+            c = stream.readU8()
+            if c != "\""'u8
+                throw "malformed string (missing closing '\"')"
+
+            return result
+        }
+        #else
+        {
+            #assert(false, "invalid type")
+        }
     }
 }
