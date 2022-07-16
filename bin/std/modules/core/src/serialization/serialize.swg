@@ -8,22 +8,24 @@ public interface ISerialize
 
 public struct(T, READ: bool) Serializer
 {
-    ser: *T
+    ser: T
 }
 
 public impl Serializer
 {
-    mtd serializeS32(res: *s32, name: string) throw
+    mtd serialize(name: string, res: *void, type: typeinfo) throw
     {
-        ser.beginElement(name, s32)
-        ser.beginValue(s32)
-
     #if READ
-        dref res = ser.readS32()
+        ser.read(name, res, type)
     #else
-        ser.writeS32(dref res)
+        ser.write(name, type, res)
+    }
 
-        ser.endElement()
-        ser.endValue()
+    mtd serializeS32(name: string, res: *s32) throw
+    {
+    #if READ
+        dref res = ser.readS32(name)
+    #else
+        ser.writeS32(name, dref res)
     }
 }

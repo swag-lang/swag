@@ -9,7 +9,7 @@ struct DecoderOptions
 
 interface IDecoder
 {
-    read:    func(self, string, *u8, typeinfo) throw
+    read:    func(self, string, *void, typeinfo) throw
     readS32: func(self, string)->s32 throw
 }
 
@@ -217,7 +217,7 @@ impl Decoder
 
 impl IDecoder for Decoder
 {
-    mtd read(name: string, data: *u8, dataType: typeinfo) throw
+    mtd read(name: string, data: *void, dataType: typeinfo) throw
     {
         Debug.assert(started)
         serializer.beginElement(name, dataType)

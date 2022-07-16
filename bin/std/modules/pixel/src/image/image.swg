@@ -254,17 +254,27 @@ impl Image
 
 impl ISerialize for Image
 {
+    mtd(T) serialize(ser: T) throw
+    {
+        const R = @typeof(T) == IDecoder
+        var s: Serializer'(T, R){ser}
+        s.serializeS32("width", &width)
+        s.serializeS32("height", &height)
+    }
+
     mtd read(decoder: IDecoder) throw
     {
-        width = decoder.readS32("width")
+        serialize'IDecoder(decoder)
+/*        width = decoder.readS32("width")
         height = decoder.readS32("height")
-        decoder.read("pf", acast &pf, @typeof(pf))
+        decoder.read("pf", acast &pf, @typeof(pf))*/
     }
 
     mtd write(encoder: IEncoder)
     {
-        encoder.writeS32("width", width)
+        catch serialize'IEncoder(encoder)
+/*        encoder.writeS32("width", width)
         encoder.writeS32("height", height)
-        encoder.writeAny("pf", pf)
+        encoder.writeAny("pf", pf)*/
     }
 }
