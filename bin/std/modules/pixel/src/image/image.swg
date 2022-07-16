@@ -252,6 +252,8 @@ impl ISerialize for Image
 {
     mtd write(encoder: IEncoder)
     {
-        encoder.write("width", width)
+        encoder.writeS32("width", width)
+        encoder.writeS32("height", height)
+        encoder.write("pf", pf)
     }
 }
