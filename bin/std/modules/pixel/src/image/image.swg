@@ -264,7 +264,26 @@ impl ISerialize for Image
         s.serialize("width8", &width8)
         s.serialize("bpp", &bpp)
         s.serialize("bpp8", &bpp8)
-        s.serializeBufferU8("pixels", &pixels, size)
+
+        #if T == IEncoder
+        {
+            var compress: Compress.Deflate
+            var result: Array'u8
+            compress.init()
+            compress.compress(&result, @mkslice(pixels, size))
+            s.serialize("pixels", &result)
+        }
+        #else
+        {
+            var decompress: Compress.Inflate
+            var in: Array'u8
+            s.serialize("pixels", &in)
+            result := decompress.decompress(in.toSlice())
+            pixels = result.buffer
+            result.buffer = null
+            if result.count != size
+                throw "image buffer overflow"
+        }
     }
 
     mtd read(decoder: IDecoder) throw
