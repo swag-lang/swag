@@ -75,4 +75,16 @@ public impl Stopwatch
     {
         return acast ((elapsedTicks * 1000000) / preciseFrequency())
     }
+
+    #[Swag.Mixin]
+    func measure()
+    {
+        var t: Time.Stopwatch
+        t.start()
+        defer
+        {
+            t.stop()
+            Console.printf("time: %ms\n", t.elapsedMilliseconds())
+        }
+    }
 }

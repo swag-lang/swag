@@ -181,10 +181,19 @@ impl RecentWnd
         })
 
         cptRecent := 0
-        visit r: res
+        visit r, idx: res
         {
-            catch recent.addRecent(r.fullname)
+            capture := catch recent.addRecent(r.fullname)
             if @err continue
+
+            if idx == res.count - 1
+            {
+                recent.recentView.selected = 0
+                parent.editWnd.editView.setCapture(capture)
+            }
+            else
+                Memory.delete(capture)
+
             cptRecent += 1
             if cptRecent > MaxRecent
                 break
@@ -203,11 +212,10 @@ impl RecentWnd
         timer = getApp().addTimer(1's, self)
     }
 
-    mtd addRecent(file: string) throw
+    mtd addRecent(file: string)->*Capture throw
     {
         capture := Capture.load(file)
-        if @err return
-        defer Memory.delete(capture)
+        if @err return null
 
         addRecent(capture.file, capture.preview)
         if recentView.items.count > MaxRecent
@@ -215,6 +223,8 @@ impl RecentWnd
             recentView.items.deletePtr(recentView.items.back())
             recentView.items.count -= 1
         }
+
+        return capture
     }
 
     mtd addRecent(file: string, preview: Image)

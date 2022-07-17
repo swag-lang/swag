@@ -232,8 +232,9 @@ impl IWnd for MainWnd
             file := Library.newFileName()
             catch File.duplicate(file, capture.file)
             if @err break
-            catch recentWnd.addRecent(file)
+            dupCapture := catch recentWnd.addRecent(file)
             if @err break
+            Memory.delete(dupCapture)
             recentWnd.recentView.select(0)
 
         case CmdIdSnap:
@@ -538,7 +539,7 @@ impl MainWnd
 
         updateZoom(res)
 
-        res.recentWnd.recentView.select(0)
+        //res.recentWnd.recentView.select(0)
         res.updateState()
 
         return res
