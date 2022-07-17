@@ -280,16 +280,16 @@ impl IDecoder for Decoder
         return data
     }
 
-    mtd readBool(name: string)->bool throw      => try readNative'bool(name)
-    mtd readS8(name: string)->s8 throw          => try readNative's8(name)
-    mtd readS16(name: string)->s16 throw        => try readNative's16(name)
-    mtd readS32(name: string)->s32 throw        => try readNative's32(name)
-    mtd readS64(name: string)->s64 throw        => try readNative's64(name)
-    mtd readU8(name: string)->u8 throw          => try readNative'u8(name)
-    mtd readU16(name: string)->u16 throw        => try readNative'u16(name)
-    mtd readU32(name: string)->u32 throw        => try readNative'u32(name)
-    mtd readU64(name: string)->u64 throw        => try readNative'u64(name)
-    mtd readF32(name: string)->f32 throw        => try readNative'f32(name)
-    mtd readF64(name: string)->f64 throw        => try readNative'f64(name)
-    mtd readString(name: string)->String throw  => try readNative'String(name)
+    mtd readBool(name: string)->bool throw      => readNative'bool(name)
+    mtd readS8(name: string)->s8 throw          => readNative's8(name)
+    mtd readS16(name: string)->s16 throw        => readNative's16(name)
+    mtd readS32(name: string)->s32 throw        => readNative's32(name)
+    mtd readS64(name: string)->s64 throw        => readNative's64(name)
+    mtd readU8(name: string)->u8 throw          => readNative'u8(name)
+    mtd readU16(name: string)->u16 throw        => readNative'u16(name)
+    mtd readU32(name: string)->u32 throw        => readNative'u32(name)
+    mtd readU64(name: string)->u64 throw        => readNative'u64(name)
+    mtd readF32(name: string)->f32 throw        => readNative'f32(name)
+    mtd readF64(name: string)->f64 throw        => readNative'f64(name)
+    mtd readString(name: string)->String throw  => readNative'String(name)
 }

@@ -672,12 +672,31 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         if (token.id == TokenId::SymEqualGreater)
         {
             SWAG_CHECK(eatToken());
-            auto stmt               = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, funcNode);
-            auto returnNode         = Ast::newNode<AstReturn>(this, AstNodeKind::Return, sourceFile, stmt);
-            returnNode->semanticFct = SemanticJob::resolveReturn;
-            funcNode->content       = returnNode;
-            funcNode->flags |= AST_SHORT_LAMBDA;
-            SWAG_CHECK(doExpression(returnNode, EXPR_FLAG_NONE));
+
+            if (funcNode->specFlags & AST_SPEC_FUNCDECL_THROW)
+            {
+                auto node = Ast::newNode<AstTryCatchAssume>(this, AstNodeKind::Try, sourceFile, funcNode);
+                node->specFlags |= AST_SPEC_TCA_GENERATED | AST_SPEC_TCA_BLOCK;
+                node->semanticFct = SemanticJob::resolveTryBlock;
+
+                ScopedTryCatchAssume sc(this, (AstTryCatchAssume*) node);
+                auto                 returnNode = Ast::newNode<AstReturn>(this, AstNodeKind::Return, sourceFile, node); // stmt);
+                returnNode->semanticFct         = SemanticJob::resolveReturn;
+                funcNode->content               = returnNode;
+                funcNode->flags |= AST_SHORT_LAMBDA;
+                SWAG_CHECK(doExpression(returnNode, EXPR_FLAG_NONE));
+            }
+            else
+            {
+
+                auto stmt               = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, funcNode);
+                auto returnNode         = Ast::newNode<AstReturn>(this, AstNodeKind::Return, sourceFile, stmt);
+                returnNode->semanticFct = SemanticJob::resolveReturn;
+                funcNode->content       = returnNode;
+                funcNode->flags |= AST_SHORT_LAMBDA;
+                SWAG_CHECK(doExpression(returnNode, EXPR_FLAG_NONE));
+            }
+
             funcNode->content->token.endLocation = token.startLocation;
             resStmt                              = funcNode->content;
         }
