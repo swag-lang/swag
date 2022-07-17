@@ -164,7 +164,7 @@ impl RecentWnd
     func create(parent: *MainWnd)->*RecentWnd
     {
         recent := Wnd.create'RecentWnd(parent, @{0, 0, 0, PreviewHeight + RecentPadding*2})
-        recent.scrollWndFlags |= .SmallBar
+        recent.scrollWndFlags |= .SmallBar | .ForceHorizontal
         recent.backgroundStyle = .Window
         recent.main = parent
 

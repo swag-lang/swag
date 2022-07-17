@@ -5,6 +5,8 @@ public enum ScrollWndFlags
 {
     None
     SmallBar
+    ForceHorizontal
+    ForceVertical
 }
 
 public struct ScrollWnd
@@ -23,12 +25,14 @@ public struct ScrollWnd
     oldMouseCapture:    *Wnd
 
     showBarV:       bool
+    needV:          bool
     posBoxV:        f32
     sizeBoxV:       f32
     isHotV:         bool
     isPressedV:     bool
 
     showBarH:       bool
+    needH:          bool
     posBoxH:        f32
     sizeBoxH:       f32
     isHotH:         bool
@@ -173,18 +177,21 @@ public impl IWnd for ScrollWnd
                 clientRect.height -= paddingW
             theme.drawSubRect(bc.painter, clientRect, &rects.scrollBar_BkV, colorBk)
 
-            clientRect.y = posBoxV
-            clientRect.height = sizeBoxV
+            if needV
+            {
+                clientRect.y = posBoxV
+                clientRect.height = sizeBoxV
 
-            var colorBox: Color = ?
-            if isHotV and isPressedV
-                colorBox = colors.scrollBar_PressedBox
-            elif isHotV
-                colorBox = colors.scrollBar_HotBox
-            else
-                colorBox = colors.scrollBar_Box
-            clientRect.inflate(-metrics.scrollBar_BoxPadding)
-            theme.drawSubRect(bc.painter, clientRect, &rects.scrollBar_BoxV, colorBox)
+                var colorBox: Color = ?
+                if isHotV and isPressedV
+                    colorBox = colors.scrollBar_PressedBox
+                elif isHotV
+                    colorBox = colors.scrollBar_HotBox
+                else
+                    colorBox = colors.scrollBar_Box
+                clientRect.inflate(-metrics.scrollBar_BoxPadding)
+                theme.drawSubRect(bc.painter, clientRect, &rects.scrollBar_BoxV, colorBox)
+            }
         }
 
         // Horizontal bar
@@ -197,18 +204,21 @@ public impl IWnd for ScrollWnd
                 clientRect.width -= paddingW
             theme.drawSubRect(bc.painter, clientRect, &rects.scrollBar_BkH, colorBk)
 
-            clientRect.x = posBoxH
-            clientRect.width = sizeBoxH
+            if needH
+            {
+                clientRect.x = posBoxH
+                clientRect.width = sizeBoxH
 
-            var colorBox: Color = ?
-            if isHotH and isPressedH
-                colorBox = colors.scrollBar_PressedBox
-            elif isHotH
-                colorBox = colors.scrollBar_HotBox
-            else
-                colorBox = colors.scrollBar_Box
-            clientRect.inflate(-metrics.scrollBar_BoxPadding)
-            theme.drawSubRect(bc.painter, clientRect, &rects.scrollBar_BoxH, colorBox)
+                var colorBox: Color = ?
+                if isHotH and isPressedH
+                    colorBox = colors.scrollBar_PressedBox
+                elif isHotH
+                    colorBox = colors.scrollBar_HotBox
+                else
+                    colorBox = colors.scrollBar_Box
+                clientRect.inflate(-metrics.scrollBar_BoxPadding)
+                theme.drawSubRect(bc.painter, clientRect, &rects.scrollBar_BoxH, colorBox)
+            }
         }
 
         // Corner
@@ -284,9 +294,16 @@ impl ScrollWnd
         metrics := getThemeMetrics()
 
         showBarV, showBarH = false
+        needH, needV = false
+
         if sy > clientRect.height
+            needV = true
+        if needV or scrollWndFlags & .ForceVertical
             showBarV = true
+
         if sx > clientRect.width
+            needH = true
+        if needH or scrollWndFlags & .ForceHorizontal
             showBarH = true
 
         barSize := (scrollWndFlags & .SmallBar) ? metrics.scrollBar_SmallSize : metrics.scrollBar_NormalSize
