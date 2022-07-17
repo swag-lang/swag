@@ -837,6 +837,27 @@ AstNode* AstImpl::clone(CloneContext& context)
     SWAG_ASSERT(cloneContext.ownerStructScope); // Should be setup in generic instantiation
     newNode->scope = cloneContext.parentScope;
 
+    // If this is an interface implementation block, we need to register a sub scope with the name
+    // of the interface in the instantiated struct scope.
+    // All following functions must be in that sub scope.
+    // :SubScopeImplFor
+    if (identifierFor)
+    {
+        auto baseScope           = cloneContext.ownerStructScope;
+        auto itfName             = childs.front()->token.text;
+        cloneContext.parentScope = Ast::newScope(newNode, itfName, ScopeKind::Impl, baseScope);
+        newNode->scope           = cloneContext.parentScope;
+
+        // :FakeImplForType
+        auto implTypeInfo        = allocType<TypeInfoStruct>();
+        implTypeInfo->name       = itfName;
+        implTypeInfo->structName = implTypeInfo->name;
+        implTypeInfo->scope      = newNode->scope;
+        implTypeInfo->declNode   = newNode;
+
+        baseScope->symTable.addSymbolTypeInfoNoLock(nullptr, newNode, implTypeInfo, SymbolKind::Struct, nullptr, OVERLOAD_IMPL_IN_STRUCT, nullptr, 0, nullptr, &itfName);
+    }
+
     for (auto c : childs)
     {
         auto newChild = c->clone(cloneContext);

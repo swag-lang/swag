@@ -122,6 +122,7 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
     }
 
     // For an interface implementation, creates a sub scope named like the interface
+    // :SubScopeImplFor
     auto parentScope = newScope;
     if (implInterface)
     {
@@ -131,7 +132,9 @@ bool SyntaxJob::doImpl(AstNode* parent, AstNode** result)
         Scope*     subScope = nullptr;
         if (!symbol)
         {
-            subScope             = Ast::newScope(implNode, itfName, ScopeKind::Impl, newScope, false);
+            subScope = Ast::newScope(implNode, itfName, ScopeKind::Impl, newScope, false);
+
+            // :FakeImplForType
             auto typeInfo        = allocType<TypeInfoStruct>();
             typeInfo->name       = implNode->identifier->childs.back()->token.text;
             typeInfo->structName = typeInfo->name;
