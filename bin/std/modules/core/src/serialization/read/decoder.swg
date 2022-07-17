@@ -11,7 +11,18 @@ interface IDecoder
 {
     read:           func(self, string, *void, typeinfo) throw
     readBufferU8:   func(self, string, uint)->*u8 throw
+    readBool:       func(self, string)->bool throw
+    readS8:         func(self, string)->s8 throw
+    readS16:        func(self, string)->s16 throw
     readS32:        func(self, string)->s32 throw
+    readS64:        func(self, string)->s64 throw
+    readU8:         func(self, string)->u8 throw
+    readU16:        func(self, string)->u16 throw
+    readU32:        func(self, string)->u32 throw
+    readU64:        func(self, string)->u64 throw
+    readF32:        func(self, string)->f32 throw
+    readF64:        func(self, string)->f64 throw
+    readString:     func(self, string)->String throw
 }
 
 struct(T) Decoder
@@ -217,6 +228,20 @@ impl Decoder
     }
 }
 
+impl Decoder
+{
+    mtd(NT) readNative(name: string)->NT throw
+    {
+        Debug.assert(started)
+        serializer.beginElement(name, NT)
+        serializer.beginValue(NT)
+        res := serializer.readNative'NT()
+        serializer.endValue()
+        serializer.endElement()
+        return res
+    }
+}
+
 impl IDecoder for Decoder
 {
     mtd read(name: string, data: *void, dataType: typeinfo) throw
@@ -255,14 +280,16 @@ impl IDecoder for Decoder
         return data
     }
 
-    mtd readS32(name: string)->s32 throw
-    {
-        Debug.assert(started)
-        serializer.beginElement(name, s32)
-        serializer.beginValue(s32)
-        res := serializer.readNative's32()
-        serializer.endValue()
-        serializer.endElement()
-        return res
-    }
+    mtd readBool(name: string)->bool throw      => try readNative'bool(name)
+    mtd readS8(name: string)->s8 throw          => try readNative's8(name)
+    mtd readS16(name: string)->s16 throw        => try readNative's16(name)
+    mtd readS32(name: string)->s32 throw        => try readNative's32(name)
+    mtd readS64(name: string)->s64 throw        => try readNative's64(name)
+    mtd readU8(name: string)->u8 throw          => try readNative'u8(name)
+    mtd readU16(name: string)->u16 throw        => try readNative'u16(name)
+    mtd readU32(name: string)->u32 throw        => try readNative'u32(name)
+    mtd readU64(name: string)->u64 throw        => try readNative'u64(name)
+    mtd readF32(name: string)->f32 throw        => try readNative'f32(name)
+    mtd readF64(name: string)->f64 throw        => try readNative'f64(name)
+    mtd readString(name: string)->String throw  => try readNative'String(name)
 }

@@ -17,7 +17,18 @@ interface IEncoder
 {
     write:          func(self, string, typeinfo, *void)
     writeBufferU8:  func(self, string, const *u8, uint)
+    writeBool:      func(self, string, bool)
+    writeS8:        func(self, string, s8)
+    writeS16:       func(self, string, s16)
     writeS32:       func(self, string, s32)
+    writeS64:       func(self, string, s64)
+    writeU8:        func(self, string, u8)
+    writeU16:       func(self, string, u16)
+    writeU32:       func(self, string, u32)
+    writeU64:       func(self, string, u64)
+    writeF32:       func(self, string, f32)
+    writeF64:       func(self, string, f64)
+    writeString:    func(self, string, string)
 }
 
 struct(T) Encoder
@@ -222,6 +233,19 @@ impl Encoder
     }
 }
 
+impl Encoder
+{
+    mtd(NT) writeNative(name: string, value: NT)
+    {
+        Debug.assert(started)
+        serializer.beginElement(name, NT)
+        serializer.beginValue(NT)
+        serializer.writeNative(value)
+        serializer.endValue()
+        serializer.endElement()
+    }
+}
+
 impl IEncoder for Encoder
 {
     mtd write(name: string, type: typeinfo, data: *void)
@@ -255,13 +279,16 @@ impl IEncoder for Encoder
         }
     }
 
-    mtd writeS32(name: string, value: s32)
-    {
-        Debug.assert(started)
-        serializer.beginElement(name, s32)
-        serializer.beginValue(s32)
-        serializer.writeNative(value)
-        serializer.endValue()
-        serializer.endElement()
-    }
+    mtd writeBool(name: string, value: bool)        = writeNative(name, value)
+    mtd writeS8(name: string, value: s8)            = writeNative(name, value)
+    mtd writeS16(name: string, value: s16)          = writeNative(name, value)
+    mtd writeS32(name: string, value: s32)          = writeNative(name, value)
+    mtd writeS64(name: string, value: s64)          = writeNative(name, value)
+    mtd writeU8(name: string, value: u8)            = writeNative(name, value)
+    mtd writeU16(name: string, value: u16)          = writeNative(name, value)
+    mtd writeU32(name: string, value: u32)          = writeNative(name, value)
+    mtd writeU64(name: string, value: u64)          = writeNative(name, value)
+    mtd writeF32(name: string, value: f32)          = writeNative(name, value)
+    mtd writeF64(name: string, value: f64)          = writeNative(name, value)
+    mtd writeString(name: string, value: string)    = writeNative(name, value)
 }

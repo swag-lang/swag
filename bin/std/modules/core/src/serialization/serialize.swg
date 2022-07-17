@@ -1,18 +1,19 @@
+#global export
 #global namespace Serialization
 
-public interface ISerialize
+interface ISerialize
 {
     read:  func(self, IDecoder) throw
     write: func(self, IEncoder)
 }
 
-public struct(T) Serializer
+struct(T) Serializer
 {
     #assert @typeof(T) == IDecoder or @typeof(T) == IEncoder
     ser: T
 }
 
-public impl Serializer
+impl Serializer
 {
     mtd(MT) serialize(name: string, res: *MT) throw
     {
