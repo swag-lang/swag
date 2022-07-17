@@ -846,20 +846,38 @@ AstNode* AstImpl::clone(CloneContext& context)
             auto newFunc = CastAst<AstFuncDecl>(newChild, AstNodeKind::FuncDecl);
 
             // Resolution of 'impl' needs all functions to have their symbol registered in the 'impl' scope,
-            // in order to be able to wait for the resolution of all function before solving the 'impl'
+            // in order to be able to wait for the resolution of all functions before solving the 'impl'
             // implementation.
             newNode->scope->symTable.registerSymbolName(nullptr, newFunc, SymbolKind::Function);
 
-            // The function inside the implementation was generic, so be sure we can now solve
-            // its content
-            newFunc->content->flags &= ~AST_NO_SEMANTIC;
+            if (!newFunc->genericParameters)
+            {
+                // The function inside the implementation was generic, so be sure we can now solve
+                // its content
+                newFunc->content->flags &= ~AST_NO_SEMANTIC;
 
-            // Be sure we have a specific no generic typeinfo
-            SWAG_ASSERT(newFunc->typeInfo);
-            newFunc->typeInfo = newFunc->typeInfo->clone();
-            newFunc->typeInfo->removeGenericFlag();
-            newFunc->typeInfo->declNode = newFunc;
-            newFunc->typeInfo->forceComputeName();
+                // Be sure we have a specific no generic typeinfo
+                SWAG_ASSERT(newFunc->typeInfo);
+                newFunc->typeInfo = newFunc->typeInfo->clone();
+                newFunc->typeInfo->removeGenericFlag();
+                newFunc->typeInfo->declNode = newFunc;
+                newFunc->typeInfo->forceComputeName();
+            }
+            else
+            {
+                // If function inside the impl block has specific generic parameters, then we
+                // consider it to be generic
+                newFunc->flags &= ~AST_FROM_GENERIC;
+                newFunc->flags |= AST_IS_GENERIC;
+
+                // Be sure we keep a generic typeinfo
+                SWAG_ASSERT(newFunc->typeInfo);
+                newFunc->typeInfo = newFunc->typeInfo->clone();
+                newFunc->typeInfo->flags &= ~TYPEINFO_FROM_GENERIC;
+                newFunc->typeInfo->flags |= TYPEINFO_GENERIC;
+                newFunc->typeInfo->declNode = newFunc;
+                newFunc->typeInfo->forceComputeName();
+            }
         }
     }
 

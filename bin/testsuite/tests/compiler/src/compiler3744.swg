@@ -1,8 +1,26 @@
-func titi() throw { throw "0"; }
-func toto() throw = titi()
+interface I
+{
+    toto: func(self)
+}
+
+struct(T) A {}
+
+impl I for A
+{
+    mtd(N) titi()
+    {
+        v := @typeof(N)
+        @assert(v.name == "s32")
+    }
+
+    mtd toto()
+    {
+        titi's32(self)
+    }
+}
 
 #test
 {
-    catch toto()
-    @assert(@err == "0")
+    var x: A's32
+    A.I.toto(x)
 }
