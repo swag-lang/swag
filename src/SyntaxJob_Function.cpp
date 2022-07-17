@@ -705,9 +705,24 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
         else if (token.id == TokenId::SymEqual)
         {
             SWAG_CHECK(eatToken());
+
             auto stmt         = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, funcNode);
             funcNode->content = stmt;
-            SWAG_CHECK(doEmbeddedInstruction(stmt));
+
+            if (funcNode->specFlags & AST_SPEC_FUNCDECL_THROW)
+            {
+                auto node = Ast::newNode<AstTryCatchAssume>(this, AstNodeKind::Try, sourceFile, stmt);
+                node->specFlags |= AST_SPEC_TCA_GENERATED | AST_SPEC_TCA_BLOCK;
+                node->semanticFct = SemanticJob::resolveTryBlock;
+
+                ScopedTryCatchAssume sc(this, (AstTryCatchAssume*) node);
+                SWAG_CHECK(doEmbeddedInstruction(stmt));
+            }
+            else
+            {
+                SWAG_CHECK(doEmbeddedInstruction(stmt));
+            }
+
             funcNode->content->token.endLocation = token.startLocation;
             resStmt                              = funcNode->content;
         }
