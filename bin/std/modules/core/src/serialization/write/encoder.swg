@@ -106,7 +106,7 @@ impl Encoder
                 valueType := structType.generics[0].pointedType
                 ptrArr    := cast(const *Array) data
 
-                treated := serializer.beginSequence(valueType, ptrArr.buffer, ptrArr.count)
+                treated := serializer.beginSequence(type, data, ptrArr.count)
                 defer serializer.endSequence()
 
                 if !treated

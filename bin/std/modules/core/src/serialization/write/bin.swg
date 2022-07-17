@@ -30,6 +30,26 @@ impl Bin
     mtd beginSequence(typeElem: typeinfo, data: const *void, countElem: uint)->bool
     {
         output.addNative(countElem)
+
+        // Dynamic array of raw serializable types
+        // Just write them in one batch
+        if typeElem.kind == .Struct
+        {
+            structType := cast(const *TypeInfoStruct) typeElem
+            if structType.fromGeneric == @typeof(Array)
+            {
+                valueType := structType.generics[0].pointedType
+                (raw, sizeof) := isRawSerializable(valueType)
+
+                if raw
+                {
+                    bufArr := cast(const *Array'u8) data
+                    output.addBytes(@mkslice(bufArr.buffer, countElem * sizeof))
+                    return true
+                }
+            }
+        }
+
         return false
     }
 

@@ -16,6 +16,29 @@ public impl Bin
     mtd beginSequence(typeElem: typeinfo, data: *u8, countElem: *uint)->bool throw
     {
         dref countElem = stream.readNative'uint()
+
+        // Dynamic array of raw serializable types
+        // Just read them in one batch
+        if typeElem.kind == .Struct
+        {
+            structType := cast(const *TypeInfoStruct) typeElem
+            if structType.fromGeneric == @typeof(Array)
+            {
+                valueType := structType.generics[0].pointedType
+                (raw, sizeof) := isRawSerializable(valueType)
+
+                if raw
+                {
+                    bufArr := cast(*Array'u8) data
+                    bufArr.count = dref countElem
+                    bufArr.reserve(bufArr.count * sizeof)
+                    bufArr.capacity = bufArr.count
+                    stream.readBytes(bufArr.buffer, bufArr.count * sizeof)
+                    return true
+                }
+            }
+        }
+
         return false
     }
 

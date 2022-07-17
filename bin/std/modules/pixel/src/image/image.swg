@@ -265,6 +265,14 @@ impl ISerialize for Image
         s.serialize("bpp", &bpp)
         s.serialize("bpp8", &bpp8)
 
+    var t: Time.Stopwatch
+    t.start()
+    defer
+    {
+        t.stop()
+        Console.printf("%\n", t.elapsedMilliseconds())
+    }
+
         #if T == IEncoder
         {
             var compress: Compress.Deflate
