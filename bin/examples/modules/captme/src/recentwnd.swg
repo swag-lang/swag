@@ -43,6 +43,9 @@ impl IWnd for RecentView
 {
     mtd onMouseEvent(evt: *MouseEvent)
     {
+        if evt.kind == .MouseWheel
+            evt.accepted = false
+
         pos := surfaceToLocal(evt.surfacePos)
         pos += recentWnd.getScrollPos()
 
@@ -67,7 +70,6 @@ impl IWnd for RecentView
         {
             if evt.button == .Left or evt.button == .Right
             {
-                evt.accepted = true
                 select(hotItem)
                 if evt.button == .Right
                 {
