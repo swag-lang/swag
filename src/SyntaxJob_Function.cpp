@@ -734,7 +734,7 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
             {
                 auto node = Ast::newNode<AstTryCatchAssume>(this, AstNodeKind::Try, sourceFile, funcNode);
                 node->specFlags |= AST_SPEC_TCA_GENERATED | AST_SPEC_TCA_BLOCK;
-                funcNode->content = node;
+                funcNode->content = node; // :AutomaticTryContent
                 node->semanticFct = SemanticJob::resolveTryBlock;
                 ScopedTryCatchAssume sc(this, (AstTryCatchAssume*) node);
                 SWAG_CHECK(doCurlyStatement(node, &resStmt));

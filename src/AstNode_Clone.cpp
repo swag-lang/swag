@@ -486,7 +486,18 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
         auto bodyScope           = Ast::newScope(newNode, newNode->token.text, ScopeKind::FunctionBody, functionScope);
         cloneContext.parentScope = bodyScope;
         newNode->content         = content->clone(cloneContext);
-        bodyScope->owner         = newNode->content;
+
+        // Content can be an automatic try block in case of a throwable function
+        // But we want to scope to have the function statement as an owner
+        // :AutomaticTryContent
+        if (newNode->content->kind == AstNodeKind::Try)
+        {
+            SWAG_ASSERT(newNode->content->childs.front()->kind == AstNodeKind::Statement);
+            bodyScope->owner = newNode->content->childs.front();
+        }
+        else
+            bodyScope->owner = newNode->content;
+
         cloneSubDecls(nullptr, cloneContext, this, newNode, newNode);
     }
     else

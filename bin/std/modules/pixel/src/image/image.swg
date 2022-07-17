@@ -265,7 +265,7 @@ impl ISerialize for Image
         s.serialize("bpp", &bpp)
         s.serialize("bpp8", &bpp8)
 
-        Time.Stopwatch.measure()
+        Time.Stopwatch.scopeMeasure("serialize image")
 
         #if T == IEncoder
         {
