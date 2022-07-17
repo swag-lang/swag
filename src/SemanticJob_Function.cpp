@@ -672,6 +672,34 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     // Set storageIndex of each parameters
     setFuncDeclParamsIndex(funcNode);
 
+    // To avoid ambiguity, we do not want a function to declare a generic type 'T' if the struct
+    // has the same generic parameter name (this is useless and implicit)
+    if (funcNode->genericParameters && funcNode->ownerStructScope)
+    {
+        auto structDecl = CastAst<AstStruct>(funcNode->ownerStructScope->owner, AstNodeKind::StructDecl);
+        if (structDecl->typeInfo->flags & TYPEINFO_GENERIC)
+        {
+            for (auto c : funcNode->genericParameters->childs)
+            {
+                if (!c->resolvedSymbolOverload)
+                    continue;
+
+                for (auto sc : structDecl->genericParameters->childs)
+                {
+                    if (!sc->resolvedSymbolOverload)
+                        continue;
+
+                    if (c->resolvedSymbolOverload->node->token.text == sc->resolvedSymbolOverload->node->token.text)
+                    {
+                        Diagnostic diag{c, Fmt(Err(Err0893), c->resolvedSymbolOverload->node->token.ctext())};
+                        Diagnostic note{sc->resolvedSymbolOverload->node, Nte(Nte0037), DiagnosticLevel::Note};
+                        return context->report(diag, &note);
+                    }
+                }
+            }
+        }
+    }
+
     // Do we have capture parameters ? If it's the case, then we need to register all symbols as variables in the function scope
     if (funcNode->captureParameters)
     {
