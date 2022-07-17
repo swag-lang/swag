@@ -1,7 +1,7 @@
 using Serialization
 
 const PreviewHeight = 128.0
-const PreviewWidth  = PreviewHeight * (16/9.0)
+const PreviewWidth  = PreviewHeight * (4/3.0)
 
 enum MouseMode
 {
