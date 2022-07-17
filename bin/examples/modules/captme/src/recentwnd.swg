@@ -44,6 +44,7 @@ impl IWnd for RecentView
     mtd onMouseEvent(evt: *MouseEvent)
     {
         pos := surfaceToLocal(evt.surfacePos)
+        pos += recentWnd.getScrollPos()
 
         // Hit test
         ht := Swag.UInt.Max
@@ -64,13 +65,16 @@ impl IWnd for RecentView
 
         if evt.kind == .MousePressed and hotItem != Swag.UInt.Max
         {
-            select(hotItem)
-
-            if evt.button == .Right
+            if evt.button == .Left or evt.button == .Right
             {
-                menu := MenuCtrl.createPopup(self)
-                menu.addItem(CmdIdDupCapture)
-                discard menu.doModal(evt.surfacePos, autoDestroy: true)
+                evt.accepted = true
+                select(hotItem)
+                if evt.button == .Right
+                {
+                    menu := MenuCtrl.createPopup(self)
+                    menu.addItem(CmdIdDupCapture)
+                    discard menu.doModal(evt.surfacePos, autoDestroy: true)
+                }
             }
         }
     }
@@ -121,6 +125,8 @@ impl IWnd for RecentView
             painter.setInterpolationMode(.Linear)
             painter.drawTexture(txtRect, i.preview)
         }
+
+        recentWnd.setScrollSize(x, 0)
     }
 }
 
@@ -156,6 +162,7 @@ impl RecentWnd
     func create(parent: *MainWnd)->*RecentWnd
     {
         recent := Wnd.create'RecentWnd(parent, @{0, 0, 0, PreviewHeight + RecentPadding*2})
+        recent.scrollWndFlags |= .SmallBar
         recent.backgroundStyle = .Window
         recent.main = parent
 
