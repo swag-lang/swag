@@ -675,7 +675,7 @@ public impl MenuCtrl
 
     // Make the popup menu modal
     // Will return the selected id
-    mtd doModal(surfacePos: Math.Point, pos = PopupPos.TopLeft)->WndId
+    mtd doModal(surfacePos: Math.Point, pos = PopupPos.TopLeft, autoDestroy: bool = false)->WndId
     {
         Debug.assert(!bar)
 
@@ -738,6 +738,10 @@ public impl MenuCtrl
 
         if endModalResult
             postCommandEvent(endModalResult)
+
+        if autoDestroy
+            destroy()
+
         return endModalResult
     }
 }

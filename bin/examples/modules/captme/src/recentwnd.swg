@@ -14,6 +14,7 @@ struct RecentView
     using wnd: Wnd
 
     main:       *MainWnd
+    recentWnd:  *RecentWnd
     items:      ArrayPtr'RecentItem
     selected:   uint = Swag.UInt.Max
     hotItem:    uint = Swag.UInt.Max
@@ -62,7 +63,27 @@ impl IWnd for RecentView
         }
 
         if evt.kind == .MousePressed and hotItem != Swag.UInt.Max
+        {
             select(hotItem)
+
+            if evt.button == .Right
+            {
+                menu := MenuCtrl.createPopup(self)
+                menu.addItem("Duplicate", "0")
+                result := menu.doModal(evt.surfacePos, autoDestroy: true)
+                switch result
+                {
+                case "0":
+                    item := items[hotItem]
+                    file := Library.newFileName()
+                    catch File.duplicate(file, item.file)
+                    if @err break
+                    catch recentWnd.addRecent(file)
+                    if @err break
+                    select(0)
+                }
+            }
+        }
     }
 
     mtd onPaintEvent(evt: *PaintEvent)
@@ -152,6 +173,7 @@ impl RecentWnd
         recent.recentView = recent.createView'RecentView()
         recent.recentView.padding = RecentPadding
         recent.recentView.main = parent
+        recent.recentView.recentWnd = recent
         recent.view.backgroundStyle = .View
 
         res := catch Directory.enumerateFiles(Library.getFolder(), "*.captme")
@@ -163,13 +185,11 @@ impl RecentWnd
         cptRecent := 0
         visit r: res
         {
-            capture := catch Capture.load(r.fullname)
+            catch recent.addRecent(r.fullname)
             if @err continue
             cptRecent += 1
             if cptRecent > MaxRecent
                 break
-            recent.addRecent(capture.file, capture.preview)
-            Memory.delete(capture)
         }
 
         return recent
@@ -185,7 +205,21 @@ impl RecentWnd
         timer = getApp().addTimer(1's, self)
     }
 
-    mtd addRecent(file: String, preview: Image)
+    mtd addRecent(file: string) throw
+    {
+        capture := Capture.load(file)
+        if @err return
+        defer Memory.delete(capture)
+
+        addRecent(capture.file, capture.preview)
+        if recentView.items.count > MaxRecent
+        {
+            recentView.items.deletePtr(recentView.items.back())
+            recentView.items.count -= 1
+        }
+    }
+
+    mtd addRecent(file: string, preview: Image)
     {
         item := recentView.items.newPtr()
         item.preview = getApp().getRenderer().addImage(preview)

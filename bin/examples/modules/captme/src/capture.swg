@@ -174,7 +174,7 @@ impl Capture
         catch File.writeAllBytes(file, buf.toSlice())
     }
 
-    func load(file: String)->*Capture throw
+    func load(file: string)->*Capture throw
     {
         capture := Memory.new'Capture()
         capture.file = file

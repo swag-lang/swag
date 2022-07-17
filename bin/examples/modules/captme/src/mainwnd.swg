@@ -506,8 +506,7 @@ impl MainWnd
             menu := MenuCtrl.createPopup(res)
             menu.addItem("Actual Size", "0")
             menu.addItem("Fit To View", "1")
-            result := menu.doModal(@{pos.horzCenter(), pos.y}, .AnchorBottomCenter)
-            menu.destroy()
+            result := menu.doModal(@{pos.horzCenter(), pos.y}, .AnchorBottomCenter, autoDestroy: true)
 
             view := res.editWnd.editView
             switch result

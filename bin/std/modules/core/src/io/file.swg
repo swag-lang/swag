@@ -132,3 +132,10 @@ func writeAllLines(fullname: string, lines: Array'string)->uint throw
 
     return total
 }
+
+// Duplicate a file
+func duplicate(newName, oldName: string) throw
+{
+    res := readAllBytes(oldName)
+    writeAllBytes(newName, res.toSlice())
+}

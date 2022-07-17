@@ -20,6 +20,12 @@ impl ArrayPtr
         base.count = 0
     }
 
+    // Delete one pointer allocated here
+    mtd deletePtr(item: *T)
+    {
+        Memory.delete(item, allocator)
+    }
+
     // Allocate a new pointer by using the contextual allocator
     mtd newPtr()->*T
     {
