@@ -23,5 +23,6 @@ const CmdIdPaste            = "CmdIdPaste"
 const CmdIdSelectAll        = "CmdIdSelectAll"
 const CmdIdCapture          = "CmdIdCapture"
 const CmdIdSnap             = "CmdIdSnap"
+const CmdIdDupCapture       = "CmdIdDupCapture"
 
 const ClipboardFormat = "Swag.CaptMe"

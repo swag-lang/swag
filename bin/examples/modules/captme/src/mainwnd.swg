@@ -47,6 +47,11 @@ impl IWnd for MainWnd
 
         switch evt.id
         {
+        case CmdIdDupCapture:
+            evt.setFlags |= .Name
+            evt.name = "Duplicate"
+            evt.accepted = true
+
         case CmdIdSnap:
             evt.setFlags |= .Name | .Checked
             evt.name = "Snap To Forms"
@@ -223,6 +228,14 @@ impl IWnd for MainWnd
         var undo: *Undo
         switch evt.id
         {
+        case CmdIdDupCapture:
+            file := Library.newFileName()
+            catch File.duplicate(file, capture.file)
+            if @err break
+            catch recentWnd.addRecent(file)
+            if @err break
+            recentWnd.recentView.select(0)
+
         case CmdIdSnap:
             snap = !snap
 
@@ -394,6 +407,7 @@ impl MainWnd
         registerKeyShortcut(Input.KeyModifiers.None,      Input.Key.Delete,         CmdIdDeleteSelection)
         registerKeyShortcut(Input.KeyModifiers.CtrlShift, Input.Key.A,              CmdIdCopyAsImage)
         registerKeyShortcut(Input.KeyModifiers.Control,   Input.Key.A,              CmdIdSelectAll)
+        registerKeyShortcut(Input.KeyModifiers.CtrlShift, Input.Key.D,              CmdIdDupCapture)
     }
 
     mtd updateState()

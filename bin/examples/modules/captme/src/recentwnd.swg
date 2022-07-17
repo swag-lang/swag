@@ -69,19 +69,8 @@ impl IWnd for RecentView
             if evt.button == .Right
             {
                 menu := MenuCtrl.createPopup(self)
-                menu.addItem("Duplicate", "0")
-                result := menu.doModal(evt.surfacePos, autoDestroy: true)
-                switch result
-                {
-                case "0":
-                    item := items[hotItem]
-                    file := Library.newFileName()
-                    catch File.duplicate(file, item.file)
-                    if @err break
-                    catch recentWnd.addRecent(file)
-                    if @err break
-                    select(0)
-                }
+                menu.addItem(CmdIdDupCapture)
+                discard menu.doModal(evt.surfacePos, autoDestroy: true)
             }
         }
     }
