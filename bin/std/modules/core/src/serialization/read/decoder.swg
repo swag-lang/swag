@@ -228,20 +228,6 @@ impl Decoder
     }
 }
 
-impl Decoder
-{
-    mtd(NT) readNative(name: string)->NT throw
-    {
-        Debug.assert(started)
-        serializer.beginElement(name, NT)
-        serializer.beginValue(NT)
-        res := serializer.readNative'NT()
-        serializer.endValue()
-        serializer.endElement()
-        return res
-    }
-}
-
 impl IDecoder for Decoder
 {
     mtd read(name: string, data: *void, dataType: typeinfo) throw
@@ -278,6 +264,17 @@ impl IDecoder for Decoder
         }
 
         return data
+    }
+
+    mtd(NT) readNative(name: string)->NT throw
+    {
+        Debug.assert(started)
+        serializer.beginElement(name, NT)
+        serializer.beginValue(NT)
+        res := serializer.readNative'NT()
+        serializer.endValue()
+        serializer.endElement()
+        return res
     }
 
     mtd readBool(name: string)->bool throw      => readNative'bool(name)
