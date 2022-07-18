@@ -24,6 +24,10 @@ public struct ScrollWnd
 
     oldMouseCapture:    *Wnd
 
+    scrollSmoothPos:    Math.Point
+    scrollRequestPos:   Math.Point
+    smoothScroll:       bool
+
     showBarV:       bool
     needV:          bool
     posBoxV:        f32
@@ -84,9 +88,11 @@ public impl IWnd for ScrollWnd
             if isGrabbing
             {
                 move := evt.surfacePos - grabbingPos
-                scroll := getScrollPos() - move
-                setScrollPos(scroll)
+                scroll := scrollRequestPos - move
+                scrollRequestPos = getScrollPosPrivate(scroll.x, scroll.y)
+                smoothScroll = true
                 grabbingPos = evt.surfacePos
+                invalidate()
                 break
             }
 
@@ -116,6 +122,7 @@ public impl IWnd for ScrollWnd
         case MousePressed:
             if evt.button == .Middle
             {
+                scrollSmoothPos = view.scrollPos
                 isGrabbing = true
                 grabbingPos = evt.surfacePos
                 oldMouseCapture = getMouseCapture()
@@ -181,6 +188,21 @@ public impl IWnd for ScrollWnd
 
     mtd onPaintEvent(evt: *PaintEvent)
     {
+        if smoothScroll
+        {
+            dt := getApp().getDt()
+            if  !Math.isEqualEpsilon(scrollRequestPos.x, view.scrollPos.x) or
+                !Math.isEqualEpsilon(scrollRequestPos.y, view.scrollPos.y)
+            {
+                scrollSmoothPos.x = Math.lerp(scrollSmoothPos.x, scrollRequestPos.x, 10*dt)
+                scrollSmoothPos.y = Math.lerp(scrollSmoothPos.y, scrollRequestPos.y, 10*dt)
+                discard setScrollPosPrivate(scrollSmoothPos.x, scrollSmoothPos.y)
+                invalidate()
+            }
+            else
+                smoothScroll = false
+        }
+
         bc      := evt.bc
         theme   := getTheme()
         metrics := getThemeMetrics()
@@ -387,9 +409,7 @@ public impl ScrollWnd
         return view.scrollPos
     }
 
-    // Set the current scroll position
-    mtd setScrollPos(pt: Math.Point) = setScrollPos(pt.x, pt.y)
-    mtd setScrollPos(x, y: f32)
+    private mtd getScrollPosPrivate(x, y: f32)->Math.Point
     {
         var newSP: Math.Point = ?
 
@@ -402,13 +422,33 @@ public impl ScrollWnd
         newSP.y = Math.max(newSP.y, 0)
         newSP.x = Math.round(newSP.x)
         newSP.y = Math.round(newSP.y)
-        if newSP == view.scrollPos
-            return
 
+        return newSP
+    }
+
+    private mtd setScrollPosPrivate(x, y: f32)->Math.Point
+    {
+        newSP := getScrollPosPrivate(x, y)
+        if newSP == view.scrollPos
+            return newSP
         oldPos := view.scrollPos
         view.scrollPos = newSP
         sigScrollPosChanged.call(self, oldPos, newSP)
         computeLayout()
+        return newSP
+    }
+
+    // Set the current scroll position
+    mtd setScrollPos(pt: Math.Point)
+    {
+        setScrollPos(pt.x, pt.y)
+    }
+
+    mtd setScrollPos(x, y: f32)
+    {
+        newSP := setScrollPosPrivate(x, y)
+        scrollRequestPos = newSP
+        smoothScroll = false
     }
 
     // Set the scroll size (window virtual size)
