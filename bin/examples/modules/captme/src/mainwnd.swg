@@ -47,6 +47,16 @@ impl IWnd for MainWnd
 
         switch evt.id
         {
+        case CmdIdZoom1:
+            evt.setFlags |= .Name
+            evt.name = "Zoom Actual Size"
+            evt.accepted = true
+
+        case CmdIdZoomFit:
+            evt.setFlags |= .Name
+            evt.name = "Zoom Fit To View"
+            evt.accepted = true
+
         case CmdIdDupCapture:
             evt.setFlags |= .Name
             evt.name = "Duplicate"
@@ -228,6 +238,12 @@ impl IWnd for MainWnd
         var undo: *Undo
         switch evt.id
         {
+        case CmdIdZoom1:
+            editWnd.editView.setZoom(1)
+
+        case CmdIdZoomFit:
+            editWnd.editView.zoomToFit()
+
         case CmdIdDupCapture:
             file := Library.newFileName()
             catch File.duplicate(file, capture.file)
@@ -503,7 +519,7 @@ impl MainWnd
         barWnd.dockStyle = .Bottom
         barWnd.backgroundStyle = .Window
 
-        func updateZoom(res: *MainWnd)
+        func updateZoomDisplay(res: *MainWnd)
         {
             z := cast(s32) (res.editWnd.editView.zoom * 100)
             res.zoomBtn.name = Format.toString("% %%", z)
@@ -514,32 +530,17 @@ impl MainWnd
         res.zoomBtn.textPos = .Right
         res.zoomBtn.arrowPos = .RightUp
         res.editWnd.sigScrollSizeChanged += @|res|(scroll, old, new) {
-            updateZoom(res);
+            updateZoomDisplay(res);
         }
         res.zoomBtn.sigPressed += @|res|(btn) {
             pos  := btn.getSurfaceRect()
             menu := MenuCtrl.createPopup(res)
-            menu.addItem("Actual Size", "0")
-            menu.addItem("Fit To View", "1")
-            result := menu.doModal(@{pos.horzCenter(), pos.y}, .AnchorBottomCenter, autoDestroy: true)
-
-            view := res.editWnd.editView
-            switch result
-            {
-            case "0":
-                view.setZoom(1)
-            case "1":
-                rect := view.getClientRect()
-                rect.inflate(-view.viewMargin)
-                zx := rect.width / res.getCapture().width
-                zy := rect.height / res.getCapture().height
-                view.setZoom(Math.min(zx, zy))
-            }
+            menu.addItem(CmdIdZoom1)
+            menu.addItem(CmdIdZoomFit)
+            discard menu.doModal(@{pos.horzCenter(), pos.y}, .AnchorBottomCenter, autoDestroy: true)
         }
 
-        updateZoom(res)
-
-        //res.recentWnd.recentView.select(0)
+        updateZoomDisplay(res)
         res.updateState()
 
         return res

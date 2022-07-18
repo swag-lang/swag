@@ -49,6 +49,8 @@ impl Bin
                 }
             }
         }
+
+        // Static array of raw serializable types
         else
         {
             (raw, sizeof) := isRawSerializable(typeElem)

@@ -24,5 +24,7 @@ const CmdIdSelectAll        = "CmdIdSelectAll"
 const CmdIdCapture          = "CmdIdCapture"
 const CmdIdSnap             = "CmdIdSnap"
 const CmdIdDupCapture       = "CmdIdDupCapture"
+const CmdIdZoom1            = "CmdIdZoom1"
+const CmdIdZoomFit          = "CmdIdZoomFit"
 
 const ClipboardFormat = "Swag.CaptMe"

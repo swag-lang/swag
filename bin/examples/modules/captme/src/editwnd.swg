@@ -96,6 +96,15 @@ impl EditView
         invalidate()
     }
 
+    mtd zoomToFit()
+    {
+        rect := getClientRect()
+        rect.inflate(-viewMargin)
+        zx := rect.width / capture.width
+        zy := rect.height / capture.height
+        setZoom(Math.min(zx, zy))
+    }
+
     mtd setCapture(c: *Capture)
     {
         if capture
