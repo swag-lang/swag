@@ -38,6 +38,15 @@ public impl Bin
                 }
             }
         }
+        else
+        {
+            (raw, sizeof) := isRawSerializable(typeElem)
+            if raw
+            {
+                stream.readBytes(data, dref countElem * sizeof)
+                return true
+            }
+        }
 
         return false
     }

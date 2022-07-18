@@ -49,6 +49,15 @@ impl Bin
                 }
             }
         }
+        else
+        {
+            (raw, sizeof) := isRawSerializable(typeElem)
+            if raw
+            {
+                output.addBytes(@mkslice(cast(const *u8) data, countElem * sizeof))
+                return true
+            }
+        }
 
         return false
     }
