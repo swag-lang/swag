@@ -1489,13 +1489,22 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     {
         // Replace user aliases of the form @alias?
         // Can come from the identifier itself (for visit) or from call parameters (for macros/mixins)
-        auto id  = CastAst<AstIdentifier>(identifier, AstNodeKind::Identifier);
-        int  idx = 0;
+        auto id = CastAst<AstIdentifier>(identifier, AstNodeKind::Identifier);
+
+        int idx = 0;
         for (auto& alias : id->aliasNames)
             cloneContext.replaceNames[Fmt("@alias%d", idx++)] = alias.text;
+
         idx = 0;
         for (auto& alias : id->callParameters->aliasNames)
             cloneContext.replaceNames[Fmt("@alias%d", idx++)] = alias.text;
+
+        // Replace user @mixin
+        if (funcDecl->hasSpecMixin)
+        {
+            for (int i = 0; i < 10; i++)
+                cloneContext.replaceNames[Fmt("@mixin%d", i)] = Fmt("__mixin%d", g_UniqueID.fetch_add(1));
+        }
 
         for (auto child : id->callParameters->childs)
         {

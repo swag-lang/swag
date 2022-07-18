@@ -22,10 +22,36 @@ bool SyntaxJob::checkIsValidVarName(AstNode* node)
     if (node->token.text[0] != '@')
         return true;
 
-    // @alias must be of the form @aliasNUM
     if (node->token.text.length() >= 6)
     {
-        if (node->token.text.find("@alias") == 0)
+        // @alias must be of the form @aliasNUM
+        if (node->token.text.find(g_LangSpec->name_atmixin) == 0)
+        {
+            if (node->token.text == g_LangSpec->name_atmixin)
+                return error(node->token, Err(Err0294));
+
+            const char* pz    = node->token.text.buffer + 6;
+            auto        endpz = node->token.text.buffer + node->token.text.count;
+            int         num   = 0;
+            while (pz != endpz)
+            {
+                if (!SWAG_IS_DIGIT(*pz))
+                    return error(node->token, Fmt(Err(Err0296), node->token.ctext(), node->token.ctext() + 6));
+                num *= 10;
+                num += *pz - '0';
+                pz++;
+            }
+
+            if (num >= 10)
+                return error(node->token, Fmt(Err(Err0277), num));
+            if (node->ownerFct)
+                node->ownerFct->hasSpecMixin = true;
+
+            return true;
+        }
+
+        // @alias must be of the form @aliasNUM
+        if (node->token.text.find(g_LangSpec->name_atalias) == 0)
         {
             if (node->token.text == g_LangSpec->name_atalias)
                 return error(node->token, Err(Err0275));

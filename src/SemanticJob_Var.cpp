@@ -665,8 +665,26 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     bool isCompilerConstant = node->kind == AstNodeKind::ConstDecl ? true : false;
     bool isLocalConstant    = false;
 
-    // Check alias
-    if (!(node->flags & AST_GENERATED) && !(node->ownerInline) && node->token.text[0] == '@' && node->token.text.find("@alias") == 0)
+    // Check @mixon
+    if (!(node->flags & AST_GENERATED) && !(node->ownerInline) && node->token.text[0] == '@' && node->token.text.find(g_LangSpec->name_atmixin) == 0)
+    {
+        auto ownerFct = node->ownerFct;
+        while (ownerFct)
+        {
+            if (ownerFct->attributeFlags & ATTRIBUTE_MIXIN)
+                break;
+            ownerFct = ownerFct->ownerFct;
+        }
+
+        if (!ownerFct)
+        {
+            Diagnostic note{ Hlp(Hlp0020), DiagnosticLevel::Help };
+            return context->report({ node, Fmt(Err(Err0410), node->token.ctext()) }, &note);
+        }
+    }
+
+    // Check @alias
+    if (!(node->flags & AST_GENERATED) && !(node->ownerInline) && node->token.text[0] == '@' && node->token.text.find(g_LangSpec->name_atalias) == 0)
     {
         auto ownerFct = node->ownerFct;
         while (ownerFct)

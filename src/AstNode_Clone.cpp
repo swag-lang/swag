@@ -476,6 +476,7 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
     newNode->nodeCounts             = nodeCounts;
     newNode->makePointerLambda      = newNode->makePointerLambda;
     newNode->needRegisterGetContext = needRegisterGetContext;
+    newNode->hasSpecMixin           = hasSpecMixin;
 
     newNode->returnType = returnType ? returnType->clone(cloneContext) : nullptr;
     if (newNode->returnType)

@@ -3111,7 +3111,7 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
 
         // In case of an alias, we take the first one, which should be the 'closest' one.
         // Not sure this is true, perhaps one day will have to change the way we find it.
-        if (overSym->name[0] == '@' && strstr(overSym->name.c_str(), "@alias") == overSym->name.c_str())
+        if (overSym->name[0] == '@' && strstr(overSym->name.c_str(), g_LangSpec->name_atalias) == overSym->name.c_str())
         {
             for (int j = 0; j < countMatches; j++)
             {

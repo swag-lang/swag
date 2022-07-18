@@ -147,7 +147,7 @@
       "patterns": [
         {
           "name": "constant.character.escape",
-          "match": "(@)(alias)([0-9]+)|(.)(item)([0-9]+)"
+          "match": "(@)(alias)([0-9]+)|(.)(item)([0-9]+)|(@)(mixin)([0-9]+)"
         }
       ]
     },

@@ -103,4 +103,25 @@
         setVar(30)      // No alias, so name is @alias0
         @assert(@alias0 == 30)
     }
+
+    // You can declare special variables named '@mixin?'
+    // Those variable will have a unique name each time the mixin is used
+    // So the same mixin, even if it declares local variables, can be used
+    // multiple time in the same scope
+    {
+        var total: s32
+
+        #[Swag.Mixin]
+        func toScope()
+        {
+            var @mixin0: s32 = 1
+            total += @mixin0
+        }
+
+        toScope()
+        toScope()
+        toScope()
+
+        @assert(total == 3)
+    }
 }

@@ -76,15 +76,16 @@ public impl Stopwatch
         return acast ((elapsedTicks * 1000000) / preciseFrequency())
     }
 
+    // Measure until the end of the scope, and print the result in the console
     #[Swag.Mixin]
     func scopeMeasure(name: string = "stopwatch")
     {
-        var t: Time.Stopwatch
-        t.start()
+        var @mixin0: Time.Stopwatch
+        @mixin0.start()
         defer
         {
-            t.stop()
-            Console.printf("%: %ms\n", name, t.elapsedMilliseconds())
+            @mixin0.stop()
+            Console.printf("%: %ms\n", name, @mixin0.elapsedMilliseconds())
         }
     }
 }

@@ -410,6 +410,7 @@ struct AstFuncDecl : public AstNode
     uint32_t funcFlags              = 0;
     uint32_t registerGetContext     = UINT32_MAX;
     bool     needRegisterGetContext = false;
+    bool     hasSpecMixin           = false;
     int      exportForeignLine      = 0;
 };
 
