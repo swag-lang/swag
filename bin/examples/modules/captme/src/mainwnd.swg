@@ -455,6 +455,7 @@ impl MainWnd
         capture.backImg = img
         capture.file = Library.newFileName()
         editWnd.editView.setCapture(capture)
+        editWnd.editView.zoomToFit(false)
 
         capture.computePreview()
         recentWnd.addRecent(capture.file, capture.preview)

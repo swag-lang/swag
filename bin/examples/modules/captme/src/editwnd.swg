@@ -12,6 +12,7 @@ struct EditView
     capture:    *Capture
     zoom:       f32 = 1
     viewMargin: f32 = 32
+    firstPaint: bool = true
 }
 
 impl EditWnd
@@ -56,6 +57,12 @@ impl IWnd for EditView
 
     mtd onPaintEvent(evt: *PaintEvent)
     {
+        if firstPaint
+        {
+            zoomToFit(false)
+            firstPaint = false
+        }
+
         painter := evt.bc.painter
 
         // Background
@@ -96,12 +103,20 @@ impl EditView
         invalidate()
     }
 
-    mtd zoomToFit()
+    mtd zoomToFit(canZoom = true)
     {
         rect := getClientRect()
-        rect.inflate(-viewMargin)
+        rect.inflate(-viewMargin*2)
+
         zx := rect.width / capture.width
         zy := rect.height / capture.height
+
+        if !canZoom
+        {
+            zx = Math.min(zx, 1)
+            zy = Math.min(zy, 1)
+        }
+
         setZoom(Math.min(zx, zy))
     }
 

@@ -7,6 +7,7 @@ struct RecentItem
     file:       String
     preview:    Texture
     rect:       Math.Rectangle
+    zoom:       f32
 }
 
 struct RecentView
@@ -24,16 +25,34 @@ impl RecentView
 {
     mtd select(idx: uint)
     {
-        selected = Swag.UInt.Max
-        if idx >= items.count return
+        if selected == idx
+            return
 
+        if idx >= items.count
+        {
+            selected = Swag.UInt.Max
+            return
+        }
+
+        view := main.editWnd.editView
+
+        // Save current zoom
+        if selected < items.count
+            items[selected].zoom = view.zoom
+
+        // Select new recent item
         selected = idx
-        capture := catch Capture.load(items[idx].file)
+        item := items[idx]
+        capture := catch Capture.load(item.file)
         if capture
         {
             if main.getCapture()
                 main.getCapture().save()
-            main.editWnd.editView.setCapture(capture)
+            view.setCapture(capture)
+            if item.zoom == 0
+                view.zoomToFit(false)
+            else
+                view.setZoom(item.zoom)
             invalidate()
         }
     }
