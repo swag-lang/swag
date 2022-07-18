@@ -46,11 +46,11 @@ impl IWnd for EditView
         switch evt.kind
         {
         case MouseWheel:
+            evt.accepted = true
             if evt.modifiers & .Control
             {
                 z := zoom + (evt.move.y > 0 ? 0.1 : -0.1)
                 setZoom(z, true)
-                evt.accepted = true
             }
         }
     }

@@ -39,11 +39,14 @@ public struct ScrollWnd
     isPressedH:     bool
 
     isMoving:       bool
+    isGrabbing:     bool
     correcMoving:   f32
     offsetClientV:  f32
     offsetClientH:  f32
     paddingZ:       f32
     paddingW:       f32
+
+    grabbingPos:    Math.Point
 }
 
 public impl IWnd for ScrollWnd
@@ -78,6 +81,15 @@ public impl IWnd for ScrollWnd
             invalidate()
 
         case MouseMove:
+            if isGrabbing
+            {
+                move := evt.surfacePos - grabbingPos
+                scroll := getScrollPos() - move
+                setScrollPos(scroll)
+                grabbingPos = evt.surfacePos
+                break
+            }
+
             if !isMoving
             {
                 hitTest(evt.surfacePos)
@@ -102,7 +114,15 @@ public impl IWnd for ScrollWnd
             invalidate()
 
         case MousePressed:
-            if evt.button == .Left
+            if evt.button == .Middle
+            {
+                isGrabbing = true
+                grabbingPos = evt.surfacePos
+                oldMouseCapture = getMouseCapture()
+                captureMouse()
+                invalidate()
+            }
+            elif evt.button == .Left
             {
                 isMoving = true
                 if isHotV
@@ -138,7 +158,16 @@ public impl IWnd for ScrollWnd
             }
 
         case MouseReleased:
-            if isMoving and evt.button == .Left
+            if isGrabbing and evt.button == .Middle
+            {
+                releaseMouse()
+                if oldMouseCapture
+                    oldMouseCapture.captureMouse()
+                hitTest(evt.surfacePos)
+                invalidate()
+                isGrabbing = false
+            }
+            elif isMoving and evt.button == .Left
             {
                 releaseMouse()
                 if oldMouseCapture
@@ -359,6 +388,7 @@ public impl ScrollWnd
     }
 
     // Set the current scroll position
+    mtd setScrollPos(pt: Math.Point) = setScrollPos(pt.x, pt.y)
     mtd setScrollPos(x, y: f32)
     {
         var newSP: Math.Point = ?
