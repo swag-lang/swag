@@ -49,12 +49,12 @@ impl IWnd for MainWnd
         {
         case CmdIdZoom1:
             evt.setFlags |= .Name
-            evt.name = "Zoom Actual Size"
+            evt.name = "Actual Size"
             evt.accepted = true
 
         case CmdIdZoomFit:
             evt.setFlags |= .Name
-            evt.name = "Zoom Fit To View"
+            evt.name = "Fit To View"
             evt.accepted = true
 
         case CmdIdDupCapture:
