@@ -31,6 +31,7 @@ impl Point
         #if   op == "+="    { x += other.x; y += other.y; }
         #elif op == "-="    { x -= other.x; y -= other.y; }
         #elif op == "*="    { x *= other.x; y *= other.y; }
+        #elif op == "/="    { x /= other.x; y /= other.y; }
         #else               #assert(false, "unsupported assign operation '" ++ op ++ "'")
     }
 
@@ -39,6 +40,7 @@ impl Point
         #if   op == "+="    { x += value; y += value; }
         #elif op == "-="    { x -= value; y -= value; }
         #elif op == "*="    { x *= value; y *= value; }
+        #elif op == "/="    { x /= value; y /= value; }
         #else               #assert(false, "unsupported assign operation '" ++ op ++ "'")
     }
 
@@ -47,6 +49,7 @@ impl Point
         #if   op == "+" return Point{x + other.x, y + other.y}
         #elif op == "-" return Point{x - other.x, y - other.y}
         #elif op == "*" return Point{x * other.x, y * other.y}
+        #elif op == "/" return Point{x / other.x, y / other.y}
         #else           #assert(false, "unsupported binary operation '" ++ op ++ "'")
     }
 
@@ -55,6 +58,7 @@ impl Point
         #if   op == "+" return Point{x + value, y + value}
         #elif op == "-" return Point{x - value, y - value}
         #elif op == "*" return Point{x * value, y * value}
+        #elif op == "/" return Point{x / value, y / value}
         #else           #assert(false, "unsupported binary operation '" ++ op ++ "'")
     }
 

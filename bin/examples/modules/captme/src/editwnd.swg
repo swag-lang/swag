@@ -48,8 +48,8 @@ impl IWnd for EditView
         case MouseWheel:
             if evt.modifiers & .Control
             {
-                zoom += evt.move.y > 0 ? 0.1 : -0.1
-                setZoom(zoom)
+                z := zoom + (evt.move.y > 0 ? 0.1 : -0.1)
+                setZoom(z, true)
                 evt.accepted = true
             }
         }
@@ -95,11 +95,29 @@ impl EditView
         return captureRect
     }
 
-    mtd setZoom(z: f32)
+    mtd setZoom(z: f32, mouseCenter = false)
     {
+        var mousePos, mousePos1: Math.Point
+        if mouseCenter
+        {
+            mousePos = getApp().mouse.getPosition()
+            mousePos = screenToSurface(mousePos)
+            mousePos = surfaceToLocal(mousePos)
+            mousePos1 = mousePos + scrollPos
+            mousePos1 /= zoom
+        }
+
         zoom = Math.clamp(z, 0.1, 10.0)
         captureRect := getCaptureRect()
         scroll.setScrollSize(captureRect.width + (2*viewMargin), captureRect.height + (2*viewMargin))
+
+        if mouseCenter
+        {
+            mousePos1 *= zoom
+            mousePos1 -= mousePos
+            scroll.setScrollPos(mousePos1.x, mousePos1.y)
+        }
+
         invalidate()
     }
 
