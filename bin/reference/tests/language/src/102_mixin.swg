@@ -105,7 +105,7 @@
     }
 
     // You can declare special variables named '@mixin?'
-    // Those variable will have a unique name each time the mixin is used
+    // Those variables will have a unique name each time the mixin is used
     // So the same mixin, even if it declares local variables, can be used
     // multiple time in the same scope
     {
