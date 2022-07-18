@@ -218,6 +218,7 @@ impl Painter
             whiteSpaces:    f32
             minTop:         f32
             maxHeight:      f32
+            hasEol:         bool
         }
 
         // Divide in lines
@@ -254,12 +255,15 @@ impl Painter
             {
                 line.start = startLine
                 line.end  = cast(s32) idx
+                line.hasEol = true
                 lines.add(line)
+
                 startLine = line.end + 1
                 line.width = 0
                 line.minTop = Swag.F32.Max
                 line.maxHeight = 0
                 line.countSpaces = 0
+                line.hasEol = false
                 continue
             }
 
@@ -372,7 +376,7 @@ impl Painter
             {
                 c := text.chunks[idx]
                 c.pos.x = x1
-                if c.isSpace and format.horzAlignment == .Justify and idxLine != lines.count - 1
+                if c.isSpace and format.horzAlignment == .Justify and idxLine != lines.count - 1 and !line.hasEol
                     x1 += (pos.width - line.width) / line.countSpaces
                 else
                     x1 += c.boundRect.width

@@ -47,6 +47,12 @@ impl IWnd for MainWnd
 
         switch evt.id
         {
+        case CmdIdDeleteCapture:
+            evt.setFlags |= .Name | .Disabled
+            evt.name = "Delete"
+            evt.disabled = !capture
+            evt.accepted = true
+
         case CmdIdFileLocation:
             evt.setFlags |= .Name | .Disabled
             evt.name = "Open File Location"
@@ -246,6 +252,9 @@ impl IWnd for MainWnd
         var undo: *Undo
         switch evt.id
         {
+        case CmdIdDeleteCapture:
+            discard MessageDlg.yesNo(surface, "This will delete the capture file.\nAre you sure ?")
+
         case CmdIdFileLocation:
             File.locateInExplorer(getCapture().file)
 

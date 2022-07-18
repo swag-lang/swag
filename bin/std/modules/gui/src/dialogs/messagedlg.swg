@@ -91,8 +91,10 @@ public impl MessageDlg
         {
             label = Label.create(srf.wnd.view, message, @{})
             label.dockStyle = .Center
-            label.setAllPaddings(metrics.msgDlg_Padding)
             label.horzAlignmentText = .Justify
+            label.padding.x = metrics.msgDlg_Padding
+            label.padding.z = metrics.msgDlg_Padding
+            label.padding.w = metrics.msgDlg_Padding
 
             h := srf.app.theme.metrics.btnPush_Height
             h += 2 * metrics.msgDlg_Padding
@@ -140,7 +142,7 @@ public impl MessageDlg
         w = Math.max(w, wl)
 
         // Height
-        h := Math.min(512, label.name.boundRect.height + 2 * metrics.msgDlg_Padding)
+        h := Math.min(512, label.name.boundRect.height + metrics.msgDlg_Padding)
         if labelIcon
             h += labelIcon.position.height
         h += wndBottom.position.height

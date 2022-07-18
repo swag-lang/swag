@@ -271,14 +271,16 @@ private impl Application
 
     mtd sendPostedEvents()
     {
-        for i := 0; i < postedEvents.count; i += 1
+        // Need to make a copy, in case the posted event triggers a modal loop
+        copy := postedEvents
+        postedEvents.clear()
+
+        for i := 0; i < copy.count; i += 1
         {
-            evt := postedEvents[i]
+            evt := copy[i]
             sendEvent(evt)
             Memory.delete(evt, evt.type)
         }
-
-        postedEvents.clear()
     }
 
     mtd sendDestroyEvents()
