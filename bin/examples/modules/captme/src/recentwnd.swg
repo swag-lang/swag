@@ -94,7 +94,9 @@ impl IWnd for RecentView
                 {
                     menu := MenuCtrl.createPopup(self)
                     menu.addItem(CmdIdDupCapture)
-                    discard menu.doModal(evt.surfacePos, autoDestroy: true)
+                    menu.addSeparator()
+                    menu.addItem(CmdIdFileLocation)
+                    res := menu.doModal(evt.surfacePos, autoDestroy: true)
                 }
             }
         }

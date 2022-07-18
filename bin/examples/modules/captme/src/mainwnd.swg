@@ -47,19 +47,27 @@ impl IWnd for MainWnd
 
         switch evt.id
         {
+        case CmdIdFileLocation:
+            evt.setFlags |= .Name | .Disabled
+            evt.name = "Open File Location"
+            evt.disabled = !capture
+            evt.accepted = true
+
         case CmdIdZoom1:
             evt.setFlags |= .Name
             evt.name = "Actual Size"
             evt.accepted = true
 
         case CmdIdZoomFit:
-            evt.setFlags |= .Name
+            evt.setFlags |= .Name | .Disabled
             evt.name = "Fit To View"
+            evt.disabled = !capture
             evt.accepted = true
 
         case CmdIdDupCapture:
-            evt.setFlags |= .Name
+            evt.setFlags |= .Name | .Disabled
             evt.name = "Duplicate"
+            evt.disabled = !capture
             evt.accepted = true
 
         case CmdIdSnap:
@@ -238,6 +246,9 @@ impl IWnd for MainWnd
         var undo: *Undo
         switch evt.id
         {
+        case CmdIdFileLocation:
+            File.locateInExplorer(getCapture().file)
+
         case CmdIdZoom1:
             editWnd.editView.setZoom(1)
 

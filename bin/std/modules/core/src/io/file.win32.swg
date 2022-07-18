@@ -161,3 +161,12 @@ func setPosition(stream: FileStream, origin: SeekOrigin, seek: u64) throw
 
     try SetFilePointer(hFile, low, &high, seekMode)
 }
+
+// Locate file in the file explorer
+func locateInExplorer(name: string)
+{
+    var x: String = name
+    x.replace("/", "\\")
+    x = Format.toString("/select,\"%\"", x)
+    discard catch Env.startProcess("explorer.exe", x)
+}
