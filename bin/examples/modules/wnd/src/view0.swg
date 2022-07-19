@@ -497,4 +497,19 @@ func createView0(tabView: *Tab, view: *Wnd)
         btn0.checkedForm = .Full
         btn0.iconBtnFlags = .CheckableToggle
     }
+
+    {
+        ib := IconBar.create(view, 24, @{880, 630, 124, 48})
+        ib.addItem(theme.getIcon24(ThemeIcons24.Play), "0")
+        ib.addItem(theme.getIcon24(ThemeIcons24.Pause), "1")
+        ib.addItem(theme.getIcon24(ThemeIcons24.Stop), "2")
+    }
+
+    {
+        ib := IconBar.create(view, 18, @{880, 680, 124, 48})
+        ib.setIconBarFlags(.Vertical)
+        ib.addItem(theme.getIcon24(ThemeIcons24.Play), "0")
+        ib.addItem(theme.getIcon24(ThemeIcons24.Pause), "1")
+        ib.addItem(theme.getIcon24(ThemeIcons24.Stop), "2")
+    }
 }
