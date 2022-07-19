@@ -625,7 +625,7 @@ impl Wnd
             idxToReplace -= 1
         }
 
-        swap(childs.buffer + idx, childs.buffer + idxToReplace)
+        swap(parent.childs.buffer + idx, parent.childs.buffer + idxToReplace)
     }
 
     // Move and size the wnd
