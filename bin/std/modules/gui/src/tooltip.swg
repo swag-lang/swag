@@ -8,6 +8,7 @@ struct ToolTip
     surfacePos: Math.Point
     str:        String
     delay:      f32
+    startDelay: f32
 }
 
 var g_Pending:      *ToolTip
@@ -42,12 +43,22 @@ public func hide()
 }
 
 // Hide the current tooltip, if visible
-public func hide(owner: *Wnd)
+func hide(owner: *Wnd)
 {
     if g_Pending and g_Pending.owner == owner
         hide()
     elif owner == g_CurrentOwner
         hide()
+}
+
+// Reset timer
+func resetTimer(mousePos: Math.Point)
+{
+    if g_Pending
+    {
+        g_Pending.surfacePos = mousePos
+        g_Pending.delay = g_Pending.startDelay
+    }
 }
 
 // Show a tooltip
@@ -60,6 +71,7 @@ public func show(owner: *Wnd, surfacePos: Math.Point, str: string, delay: Time.D
         g_Pending.owner = owner
         g_Pending.surfacePos = surfacePos
         g_Pending.str = str
+        g_Pending.startDelay = delay.timeInSeconds
         g_Pending.delay = delay.timeInSeconds
         return
     }
@@ -69,6 +81,7 @@ public func show(owner: *Wnd, surfacePos: Math.Point, str: string, delay: Time.D
 
     top := owner.surface.wnd
     pos := top.surfaceToLocal(surfacePos)
+    pos.offset(12)
 
     // Frame container
     g_Current = Wnd.create'FrameWnd(top, @{pos.x, pos.y, 50, 100})

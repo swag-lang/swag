@@ -158,6 +158,7 @@ private impl Application
             evt.kind = EventKind.MouseMove
             evt.move = move
             targetWnd.sendEvent(&evt)
+            ToolTip.resetTimer(evt.surfacePos)
         }
 
         // Detect changes
@@ -178,7 +179,7 @@ private impl Application
 
                 evt.button = cast(Input.MouseButton) i
                 targetWnd.sendEvent(&evt)
-                ToolTip.hide(targetWnd)
+                ToolTip.hide()
             }
             elif lastP and !curP
             {
