@@ -262,9 +262,8 @@ impl RecentWnd
     mtd addRecent(file: string)->*Capture throw
     {
         capture := Capture.load(file)
-        if @err return null
-
         addRecent(capture.file, capture.preview)
+
         if recentView.items.count > MaxRecent
         {
             recentView.items.deletePtr(recentView.items.back())
