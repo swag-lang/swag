@@ -107,6 +107,17 @@ public impl DebugAllocator
             ptrHeader = ptrHeader.next
         }
     }
+
+    func checkContextAll()
+    {
+        y := @getcontext().allocator
+        x := @kindof(y)
+        if x == Memory.DebugAllocator
+        {
+            i := cast(*Memory.DebugAllocator) @dataof(@getcontext().allocator)
+            i.checkAll()
+        }
+    }
 }
 
 public impl IAllocator for DebugAllocator
@@ -128,7 +139,6 @@ public impl IAllocator for DebugAllocator
             ptrHeader := cast(*Header) (userAddr - @sizeof(Header))
             ptrFooter := cast(*Footer) (userAddr + ptrHeader.userSize)
 
-            // Be sure size is correct
             Debug.assert(ptrHeader.userSize == request.size)
 
             // Unlink from allocated list
@@ -146,14 +156,21 @@ public impl IAllocator for DebugAllocator
             userSize := ptrHeader.userSize
             self.size -= userSize
 
-            // Fill the user memory area with garbage
+            freeAddr := ptrHeader.allocAddr
+            freeSize := ptrHeader.allocSize
+
+            // Fill the memory area with garbage
             Memory.set(userAddr, FreeByte, userSize)
+            Memory.set(ptrHeader, FreeByte, @sizeof(Header))
+            Memory.set(ptrFooter, FreeByte, @sizeof(Footer))
 
             // Really free the memory
             copyReq := dref request
-            copyReq.address = ptrHeader.allocAddr
-            copyReq.size = ptrHeader.allocSize
+            copyReq.address = freeAddr
+            copyReq.size = freeSize
             allocator.alloc(&copyReq)
+
+            //checkAll()
 
         case FreeAll:
             allocator.alloc(request)
