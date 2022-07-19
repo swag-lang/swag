@@ -25,7 +25,9 @@ func update(dt: f32)
     g_Pending.delay -= dt
     if g_Pending.delay < 0
     {
-        show(g_Pending.owner, g_Pending.surfacePos, g_Pending.str, 0's)
+        // Make a copy because g_Pending will be destroy by 'show'
+        copy := dref g_Pending
+        show(copy.owner, copy.surfacePos, copy.str, 0's)
     }
 }
 
