@@ -16,6 +16,7 @@ struct Surface
 
     flags:          SurfaceFlags = Zero
     dirtyRect:      Math.Rectangle = @{Swag.F32.Max, Swag.F32.Max, 0, 0}
+    colorDisabled:  Color
 
     isDirty:        bool
     isHidden:       bool = true
@@ -160,7 +161,8 @@ impl Surface
         subRect := &app.theme.rects.surfaceWnd_Shadow
         painter.pushClippingRect(clipRect)
         painter.setColorMask(true, true, true, true)
-        app.theme.drawSubRect(&painter, @{0, 0, position.width, position.height}, subRect, app.theme.colors.wnd_Shadow, false)
+        myRect := Math.Rectangle{0, 0, position.width, position.height}
+        app.theme.drawSubRect(&painter, myRect, subRect, app.theme.colors.wnd_Shadow, false)
         painter.setColorMask(true, true, true, false)
 
         // Hierarchy paint
@@ -182,7 +184,23 @@ impl Surface
         painter.setColorMask(true, true, true, true)
         painter.setInterpolationMode(.Pixel)
         painter.setBlendingMode(.Copy)
-        painter.drawTexture(0, 0, cast(f32) rc.width, cast(f32) rc.height, rt.colorBuffer)
+
+        // If surface is disabled, blend to disabled blit color
+        var color: Color
+        if isDisabled
+        {
+            colorDisabled = Color.getBlend(colorDisabled, app.theme.colors.surfaceDisabled, app.getDt())
+            color = colorDisabled
+            isDirty = true
+            dirtyRect.clear()
+        }
+        else
+        {
+            color = Argb.White
+            colorDisabled = Argb.White
+        }
+
+        painter.drawTexture(0, 0, cast(f32) rc.width, cast(f32) rc.height, rt.colorBuffer, color)
         painter.end()
         cxt.renderer.draw(&painter)
 

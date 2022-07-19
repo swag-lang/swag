@@ -27,6 +27,8 @@ struct ThemeColors
     richColor2: Color = Argb.Green
     richColor3: Color = Argb.Blue
 
+    surfaceDisabled:                Color = Color.fromArgb(0xFFBBBBBB)
+
     hilight:                        Color = Blue
     hilightLight:                   Color = Color.getLighter(Color.fromArgb(Blue), 0.2)
     hilightDark:                    Color = Color.getDarker(Color.fromArgb(Blue), 0.2)
