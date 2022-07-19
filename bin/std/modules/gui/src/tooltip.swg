@@ -33,6 +33,7 @@ public func hide()
 {
     if g_Current
         g_Current.destroy()
+
     g_Current = null
     g_CurrentOwner = null
 

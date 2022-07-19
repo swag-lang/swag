@@ -28,5 +28,8 @@ const CmdIdZoom1            = "CmdIdZoom1"
 const CmdIdZoomFit          = "CmdIdZoomFit"
 const CmdIdFileLocation     = "CmdIdFileLocation"
 const CmdIdDeleteCapture    = "CmdIdDeleteCapture"
+const CmdIdRecentSmall      = "CmdIdRecentSmall"
+const CmdIdRecentMedium     = "CmdIdRecentMedium"
+const CmdIdRecentBig        = "CmdIdRecentBig"
 
 const ClipboardFormat = "Swag.CaptMe"

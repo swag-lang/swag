@@ -14,6 +14,7 @@ struct IconBar
 
     iconBarFlags    = IconBarFlags.None
     iconSize:       f32
+    iconPadding:    f32 = 4
 }
 
 impl IconBar
@@ -28,7 +29,7 @@ impl IconBar
                 c.dockStyle = .Left
         }
 
-        pad := 2*getThemeMetrics().iconBar_ButtonsPadding
+        pad := 2*iconPadding
         size := cast(f32) (childs.count * (iconSize + pad))
         if iconBarFlags & .Vertical
             resize(iconSize + pad, size)
@@ -41,22 +42,25 @@ impl IconBar
     {
         Debug.assert(parent != null)
         pos := position
-        pos.height = #self.iconSize + 2*parent.getThemeMetrics().iconBar_ButtonsPadding
+        pos.height = #self.iconSize
         res := Wnd.create'IconBar(parent, null, pos, id)
+        res.setWndFlags(.DispatchToChildsUI)
         res.iconSize = #self.iconSize
         return res
     }
 
     // Add a new button
-    mtd addItem(icon: Icon, id: WndId)
+    mtd addItem(icon: Icon, id: WndId, iconBtnFlags = IconButtonFlags.None)
     {
         iconT := icon
         iconT.sizeX, iconT.sizeY = iconSize
-        size := iconSize + 2*getThemeMetrics().iconBar_ButtonsPadding
+        size := iconSize + 2*iconPadding
         b := IconButton.create(self, iconT, @{0, 0, size, size})
+        b.iconBtnFlags = iconBtnFlags
         b.id = #self.id
         b.dockStyle = .Left
         computeLayout()
+        updateCommandState()
     }
 
     // Change bar flags

@@ -8,10 +8,18 @@ enum EditMode
     Favorites
 }
 
+enum BottomSize
+{
+    Small
+    Medium
+    Big
+}
+
 struct MainWnd
 {
     using wnd: Wnd
 
+    icons24:    ImageList
     icons48:    ImageList
     toolbar:    *Wnd
     editWnd:    *EditWnd
@@ -21,6 +29,8 @@ struct MainWnd
     captureBtn: *IconButton
     zoomBtn:    *IconButton
     recentWnd:  *RecentWnd
+    bottomBar:  *Wnd
+    bottomSize: BottomSize = Medium
 
     editMode: EditMode = .Shape
     snap:     bool
@@ -33,6 +43,7 @@ struct MainWnd
     favoriteMdl:    IForm
 }
 
+const Icons24 = #load("datas/icons24.png")
 const Icons48 = #load("datas/icons48.png")
 
 impl IWnd for MainWnd
@@ -47,6 +58,27 @@ impl IWnd for MainWnd
 
         switch evt.id
         {
+        case CmdIdRecentSmall:
+            evt.setFlags |= .Name | .ToolTip | .Checked
+            //evt.name = "Small Recent View"
+            evt.toolTip = "Small recent view"
+            evt.checked = bottomSize == .Small
+            evt.accepted = true
+
+        case CmdIdRecentMedium:
+            evt.setFlags |= .Name | .ToolTip | .Checked
+            //evt.name = "Medium Recent View"
+            evt.toolTip = "Medium recent view"
+            evt.checked = bottomSize == .Medium
+            evt.accepted = true
+
+        case CmdIdRecentBig:
+            evt.setFlags |= .Name | .ToolTip | .Checked
+            //evt.name = "Big Recent View"
+            evt.toolTip = "Big recent view"
+            evt.checked = bottomSize == .Big
+            evt.accepted = true
+
         case CmdIdDeleteCapture:
             evt.setFlags |= .Name | .Disabled
             evt.name = "Delete"
@@ -252,6 +284,15 @@ impl IWnd for MainWnd
         var undo: *Undo
         switch evt.id
         {
+        case CmdIdRecentSmall:
+            setBottomSize(.Small)
+
+        case CmdIdRecentMedium:
+            setBottomSize(.Medium)
+
+        case CmdIdRecentBig:
+            setBottomSize(.Big)
+
         case CmdIdDeleteCapture:
             res := MessageDlg.yesNo(surface, "This will delete the capture file.\nAre you sure ?")
             if res == MessageDlg.BtnYes
@@ -432,6 +473,22 @@ impl MainWnd
         toolbar.updateCommandState()
     }
 
+    mtd setBottomSize(bottomSize: BottomSize)
+    {
+        self.bottomSize = #self.bottomSize
+        switch self.bottomSize
+        {
+        case Small:
+            bottomBar.resize(0, 80)
+        case Medium:
+            bottomBar.resize(0, 128)
+        case Big:
+            bottomBar.resize(0, 224)
+        }
+
+        applyLayout(@{position.width, position.height})
+    }
+
     mtd registerShortcuts()
     {
         registerKeyShortcut(Input.KeyModifiers.Control,   Input.Key.PrintScreen,    CmdIdCapture)
@@ -490,8 +547,12 @@ impl MainWnd
         res := Wnd.create'MainWnd(parent)
         renderer := parent.getApp().getRenderer()
 
-        img := assume Image.decode(".png", Icons48)
-        res.icons48.set(renderer.addImage(img), 48, 48)
+        img24 := assume Image.decode(".png", Icons24)
+        res.icons24.set(renderer.addImage(img24), 24, 24)
+
+        img48 := assume Image.decode(".png", Icons48)
+        res.icons48.set(renderer.addImage(img48), 48, 48)
+
         res.clipFmt = catch Clipboard.registerFormat(ClipboardFormat)
 
         topBar := Wnd.create'Wnd(res, @{0, 0, 64, 64})
@@ -512,9 +573,21 @@ impl MainWnd
         res.editWnd.dockStyle = .Center
         res.backgroundStyle = .Window
 
+        res.bottomBar = Wnd.create'Wnd(res, @{0, 0, 0, 128})
+        res.bottomBar.dockStyle = .Bottom
+
+        // Recent left toolbar
+        tb := IconBar.create(res.bottomBar, 20)
+        tb.setIconBarFlags(.Vertical)
+        tb.dockStyle = .Left
+        tb.iconPadding = 0
+        tb.addItem(Icon.from(&res.icons24, 0), CmdIdRecentSmall, .Checkable)
+        tb.addItem(Icon.from(&res.icons24, 1), CmdIdRecentMedium, .Checkable)
+        tb.addItem(Icon.from(&res.icons24, 2), CmdIdRecentBig, .Checkable)
+
         // Recent
-        res.recentWnd = RecentWnd.create(res)
-        res.recentWnd.dockStyle = .Bottom
+        res.recentWnd = RecentWnd.create(res.bottomBar, res)
+        res.recentWnd.dockStyle = .Center
 
         // Right bar
         rightWnd := StackLayoutCtrl.create(res, .Top, @{0, 0, 300, 0})
@@ -565,6 +638,7 @@ impl MainWnd
         }
 
         updateZoomDisplay(res)
+        res.setBottomSize(.Medium)
         res.updateState()
 
         return res

@@ -113,8 +113,7 @@ impl IWnd for RecentView
         x := clientRect.x
         visit i, idx: items
         {
-            h := PreviewHeight + RecentPadding*2
-            w := PreviewWidth + RecentPadding*2
+            w := clientRect.height * 4.0/3
 
             rect := Math.Rectangle{x, clientRect.y, w, clientRect.height}
             i.rect = rect
@@ -136,7 +135,6 @@ impl IWnd for RecentView
             txtRect.inflate(-RecentPadding*0.5)
 
             ratio := Math.min(txtRect.width / i.preview.width, txtRect.height / i.preview.height)
-            ratio =  Math.min(ratio, 1)
 
             txtRect.x = rect.horzCenter() - (i.preview.width * 0.5 * ratio)
             txtRect.y = rect.vertCenter() - (i.preview.height * 0.5 * ratio)
@@ -183,16 +181,16 @@ impl IWnd for RecentWnd
 
 impl RecentWnd
 {
-    func create(parent: *MainWnd)->*RecentWnd
+    func create(parent: *Wnd, main: *MainWnd)->*RecentWnd
     {
         recent := Wnd.create'RecentWnd(parent, @{0, 0, 0, PreviewHeight + RecentPadding*2})
         recent.scrollWndFlags |= .SmallBar | .ForceHorizontal
         recent.backgroundStyle = .Window
-        recent.main = parent
+        recent.main = main
 
         recent.recentView = recent.createView'RecentView()
         recent.recentView.padding = RecentPadding
-        recent.recentView.main = parent
+        recent.recentView.main = main
         recent.recentView.recentWnd = recent
         recent.view.backgroundStyle = .View
 
@@ -211,7 +209,7 @@ impl RecentWnd
             if idx == res.count - 1
             {
                 recent.recentView.selected = 0
-                parent.editWnd.editView.setCapture(capture)
+                main.editWnd.editView.setCapture(capture)
             }
             else
                 Memory.delete(capture)

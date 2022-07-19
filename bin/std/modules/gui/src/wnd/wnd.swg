@@ -78,6 +78,7 @@ enum WndFlags
     PreChildsPaint
     PostChildsPaint
     TopMost
+    DispatchToChildsUI
 }
 
 struct Wnd
@@ -1021,18 +1022,24 @@ impl Wnd
     {
         var arr: Array'*Wnd
 
+        // Test on the hierarchy of parents/owners
+        // Test also all childs of the current window, and if a parent/owner has the
+        // DispatchToChildsUI flag
         p := self
         while p
         {
-            if p.id != null
-                arr.add(p)
-            p = p.owner orelse p.parent
-        }
+            arr.add(p)
 
-        visit c: childs
-        {
-            if c.id != null
-                arr.add(c)
+            if p == self or p.wndFlags & .DispatchToChildsUI
+            {
+                visit c: p.childs
+                {
+                    if c.id != null
+                        arr.add(c)
+                }
+            }
+
+            p = p.owner orelse p.parent
         }
 
         visit c: arr

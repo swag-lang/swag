@@ -279,6 +279,14 @@ private impl Application
         {
             evt := copy[i]
             sendEvent(evt)
+
+            // Special event post process
+            if evt.kind == .Command
+            {
+                pevt := cast(*CommandEvent) evt
+                pevt.source.updateCommandState()
+            }
+
             Memory.delete(evt, evt.type)
         }
     }
