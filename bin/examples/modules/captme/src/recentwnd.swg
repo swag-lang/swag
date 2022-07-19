@@ -234,6 +234,31 @@ impl RecentWnd
         timer = getApp().addTimer(1's, self)
     }
 
+    mtd removeRecent()
+    {
+        if recentView.selected >= recentView.items.count
+            return
+
+        item := recentView.items[recentView.selected]
+
+        catch File.delete(item.file)
+        if @err return
+
+        // Be sure there's no pending save
+        if timer
+            getApp().deleteTimer(timer)
+        timer = null
+
+        // Remove from recent
+        recentView.items.deletePtr(item)
+        recentView.items.removeAtOrdered(recentView.selected)
+
+        // Select new one
+        sel := recentView.selected
+        recentView.selected = Swag.UInt.Max
+        recentView.select(sel)
+    }
+
     mtd addRecent(file: string)->*Capture throw
     {
         capture := Capture.load(file)

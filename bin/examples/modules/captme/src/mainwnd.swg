@@ -253,7 +253,9 @@ impl IWnd for MainWnd
         switch evt.id
         {
         case CmdIdDeleteCapture:
-            discard MessageDlg.yesNo(surface, "This will delete the capture file.\nAre you sure ?")
+            res := MessageDlg.yesNo(surface, "This will delete the capture file.\nAre you sure ?")
+            if res == MessageDlg.BtnYes
+                recentWnd.removeRecent()
 
         case CmdIdFileLocation:
             File.locateInExplorer(getCapture().file)
