@@ -2,7 +2,8 @@ var g_App: Application
 
 #main
 {
-    Memory.DebugAllocator.install(traceLeaks: true)
+    Memory.DebugAllocator.install(traceLeaks: false)
+
     try Jobs.setNumWorkers()
     try Library.init()
 

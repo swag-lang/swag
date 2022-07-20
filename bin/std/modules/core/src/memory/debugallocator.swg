@@ -66,10 +66,13 @@ public impl DebugAllocator
     mtd printAllocated()
     {
         scan := cast(*Header) first
-        Console.printf("% block(s), % byte(s)\n", count, size)
+        Console.printf("% block(s), %\n", count, StrConv.toDisplaySize(size))
+        Console.printf("\n")
         while scan
         {
-            Console.printf("id: % size: % hint: % loc: %:%\n", scan.allocId, scan.userSize, scan.hint, scan.locFilename, scan.locLine)
+            Console.printf("id: % size: %\n", scan.allocId, StrConv.toDisplaySize(scan.userSize))
+            Console.printf("    hint: %\n", scan.hint)
+            Console.printf("    loc: %:%\n", scan.locFilename, scan.locLine)
             scan = scan.next
         }
     }
@@ -293,7 +296,9 @@ public impl IAllocator for DebugAllocator
         dbg := cast(*DebugAllocator) @dataof(@getcontext().allocator)
         if dbg.traceLeaks and !dbg.isEmpty()
         {
-            Console.print("memory leaks !\n")
+            Console.print("#######################################\n")
+            Console.print("DebugAllocator: Memory leaks detected !\n")
+            Console.print("#######################################\n")
             dbg.printAllocated()
         }
     }

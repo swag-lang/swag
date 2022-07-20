@@ -1,0 +1,21 @@
+#global public
+#global namespace StrConv
+
+// Convert a size in a displayable format (with Kb, Mb and so on)
+func toDisplaySize(value: uint)->String
+{
+    size := value
+    if size < 1024
+        return Format.toString("% bytes", size)
+    size /= 1024
+    if size < 1024
+        return Format.toString("% Kb", size)
+    size /= 1024
+    if size < 1024
+        return Format.toString("% Mb", size)
+    size /= 1024
+    if size < 1024
+        return Format.toString("% Gb", size)
+    size /= 1024
+    return Format.toString("% Tb", size)
+}
