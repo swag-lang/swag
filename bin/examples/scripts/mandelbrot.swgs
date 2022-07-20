@@ -71,11 +71,8 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         g_Image   = Image.create(200, 200, .BGR8)
         g_Texture = wnd.getApp().renderer.addImage(g_Image)
 
-        var t: Time.Stopwatch
-        t.start()
+        Time.Stopwatch.scopeMeasure()
         compute()
-        t.stop()
-        Console.print(t.elapsedMilliseconds())
         return true
 
     case Paint:

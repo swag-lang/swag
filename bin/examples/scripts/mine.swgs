@@ -22,6 +22,7 @@ var g_Win:      bool
 var g_NumMines: s32
 var g_NumMarks: s32
 var g_Density:  s32 = 5
+var g_Discovered: u32
 
 func fillGrid()
 {
@@ -67,7 +68,12 @@ func floodFill(x, y: s32)
     while arr.count
     {
         pt := arr.popBack()
-        g_Grid[pt.x, pt.y].show = true
+        if !g_Grid[pt.x, pt.y].show
+        {
+            g_Grid[pt.x, pt.y].show = true
+            g_Discovered += 1
+        }
+
         if g_Grid[pt.x, pt.y].score
             continue
 
@@ -92,7 +98,7 @@ func floodFill(x, y: s32)
 func setup()
 {
     g_Lost, g_Win = false
-    g_NumMines, g_NumMarks = 0
+    g_NumMines, g_NumMarks, g_Discovered = 0
     fillGrid()
 }
 
@@ -136,9 +142,9 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         {
             g_Grid[x, y].mark = !g_Grid[x, y].mark
             g_NumMarks += g_Grid[x, y].mark ? 1 : -1
-            g_Win = g_NumMarks == g_NumMines
         }
 
+        g_Win = g_NumMarks == g_NumMines and g_Discovered == (GridSize * GridSize) - g_NumMines
         wnd.invalidate()
         return true
 
