@@ -152,6 +152,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         paintEvt := cast(*PaintEvent) evt
         painter  := paintEvt.bc.painter
 
+        painter.fillRect(wnd.getClientRect(), wnd.getThemeColors().wnd_Bk)
         bk := Math.Rectangle{CellSize, CellSize, GridSize * CellSize, GridSize * CellSize}
         painter.fillRect(bk, Argb.White)
 
