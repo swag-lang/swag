@@ -27,7 +27,7 @@ func filter(file: File.FileInfo)->bool
     {
     case ".exe":
         return Utf8.contains(file.fullname, "swag.exe")
-    case ".dll", ".lib", ".swg", ".glsl":
+    case ".dll", ".lib", ".swg", ".glsl", ".swgs":
         return true
     }
 
