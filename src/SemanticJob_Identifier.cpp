@@ -1422,6 +1422,13 @@ void SemanticJob::setupContextualGenericTypeReplacement(SemanticContext* context
 
 bool SemanticJob::isFunctionButNotACall(SemanticContext* context, AstNode* node, SymbolName* symbol)
 {
+    if (node && node->kind == AstNodeKind::Identifier)
+    {
+        auto id = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
+        if (id != id->identifierRef->childs.back())
+            return false;
+    }
+
     if (node && node->parent && node->parent->parent)
     {
         auto grandParent = node->parent->parent;
