@@ -95,6 +95,17 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                     break;
                 }
 
+                if (left->childs[i]->kind == AstNodeKind::ArrayPointerIndex)
+                {
+                    auto arr = CastAst<AstArrayPointerIndex>(left->childs[i], AstNodeKind::ArrayPointerIndex);
+                    if (arr->array->typeInfo->isNative(NativeTypeKind::String))
+                    {
+                        left = arr->array;
+                        hint = Hint::isType(left->typeInfo);
+                        break;
+                    }
+                }
+
                 if (left->childs[i]->kind == AstNodeKind::FuncCall && left->childs[i]->typeInfo->kind == TypeInfoKind::Struct)
                 {
                     left = left->childs[i];

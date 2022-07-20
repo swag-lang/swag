@@ -376,6 +376,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
         {
             arrayNode->typeInfo    = g_TypeMgr->typeInfoU8;
             arrayNode->byteCodeFct = ByteCodeGenJob::emitStringRef;
+            arrayNode->flags |= AST_IS_CONST;
         }
         else
         {
@@ -595,8 +596,8 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
             {
                 arrayNode->setFlagsValueIsComputed();
                 arrayNode->computedValue->storageSegment = storageSegment;
-                arrayNode->computedValue->storageOffset = storageOffset;
-                arrayNode->typeInfo = typePtr->finalType;
+                arrayNode->computedValue->storageOffset  = storageOffset;
+                arrayNode->typeInfo                      = typePtr->finalType;
                 if (arrayNode->resolvedSymbolOverload)
                 {
                     SWAG_ASSERT(arrayNode->resolvedSymbolOverload->computedValue.storageSegment == storageSegment);
