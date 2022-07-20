@@ -86,12 +86,22 @@ impl String
         return Utf8.compare(toString(), other.toString(), Utf8.ComparisonType.Latin1)
     }
 
+    mtd(op: string) opIndexAssign(index: uint, value: u8)
+    {
+        #if op == "+="
+            buffer[index] +=,safe value
+        #elif op == "-="
+            buffer[index] -=,safe value
+        #else
+            #assert(false, "invalid operator '" ++ op ++ "'")
+    }
+
     mtd(op: string) opAssign(value: string)
     {
         #if op == "+="
             append(value)
         #else
-            #assert(false, "invalid binary operator '" ++ op ++ "'")
+            #assert(false, "invalid operator '" ++ op ++ "'")
     }
 
     mtd(op: string) opAssign(value: rune)
@@ -99,7 +109,7 @@ impl String
         #if op == "+="
             append(value)
         #else
-            #assert(false, "invalid binary operator '" ++ op ++ "'")
+            #assert(false, "invalid operator '" ++ op ++ "'")
     }
 
     mtd(op: string) opAssign(value: u8)
@@ -107,7 +117,7 @@ impl String
         #if op == "+="
             append(value)
         #else
-            #assert(false, "invalid binary operator '" ++ op ++ "'")
+            #assert(false, "invalid operator '" ++ op ++ "'")
     }
 
     mtd opPostMove()
