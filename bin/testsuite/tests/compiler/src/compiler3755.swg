@@ -1,0 +1,7 @@
+#global testerror
+
+#test
+{
+    var x: cstring = "A"
+    x[0] += 1
+}
