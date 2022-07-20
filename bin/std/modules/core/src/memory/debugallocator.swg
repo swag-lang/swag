@@ -5,11 +5,12 @@ public struct DebugAllocator
 {
     allocator:  IAllocator
 
-    first:  *void
-    size:   uint    // Total user size, in bytes
-    nextId: u32
-    count:  u32     // Number of allocated block
-    mutex:  Mutex
+    first:      *void
+    size:       uint    // Total user size, in bytes
+    nextId:     u32
+    count:      u32     // Number of allocated block
+    mutex:      Mutex
+    traceLeaks: bool
 }
 
 // This will be address before and after each allocated block
@@ -44,17 +45,18 @@ private impl DebugAllocator
 public impl DebugAllocator
 {
     // Create the allocator
-    func create(allocator: IAllocator = null)->DebugAllocator
+    func create(allocator: IAllocator = null, traceLeaks = true)->DebugAllocator
     {
         var result: retval
-        result.init(allocator)
+        result.init(allocator, traceLeaks)
         return result
     }
 
     // Initialize the allocator
-    mtd init(allocator: IAllocator = null)
+    mtd init(allocator: IAllocator = null, traceLeaks = true)
     {
         self.allocator = #self.allocator orelse @getcontext().allocator
+        self.traceLeaks = #self.traceLeaks
     }
 
     // Returns true if there are some remaining allocations
@@ -108,7 +110,17 @@ public impl DebugAllocator
         }
     }
 
-    func checkContextAll()
+    // Install debug allocator as the default one
+    func install(traceLeaks = true)
+    {
+        #[Swag.Global]
+        var dbg: DebugAllocator
+        dbg = create(traceLeaks: traceLeaks)
+        @getcontext().allocator = dbg
+    }
+
+    // Check all allocated pointers taking the current contextual allocator
+    func cxtCheckAll()
     {
         y := @getcontext().allocator
         x := @kindof(y)
@@ -269,6 +281,20 @@ public impl IAllocator for DebugAllocator
             self.first = header
 
             //checkAll()
+        }
+    }
+}
+
+#drop
+{
+    if @kindof(@getcontext().allocator) == DebugAllocator
+    {
+        @getcontext().tempAllocator.release()
+        dbg := cast(*DebugAllocator) @dataof(@getcontext().allocator)
+        if dbg.traceLeaks and !dbg.isEmpty()
+        {
+            Console.print("memory leaks !\n")
+            dbg.printAllocated()
         }
     }
 }

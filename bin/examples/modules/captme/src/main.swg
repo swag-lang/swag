@@ -2,6 +2,8 @@ var g_App: Application
 
 #main
 {
+    Memory.DebugAllocator.install(traceLeaks: true)
+    try Jobs.setNumWorkers()
     try Library.init()
 
     surface := try g_App.createSurface(200, 100, 1200, 1000, SurfaceFlags.OverlappedWindow)
