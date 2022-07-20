@@ -1900,14 +1900,14 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                         auto         typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::Lambda);
                         AstFuncDecl* funcNode = CastAst<AstFuncDecl>(typeFunc->declNode, AstNodeKind::FuncDecl);
                         auto         orgNode  = funcNode->originalGeneric ? funcNode->originalGeneric : overload->typeInfo->declNode;
-                        auto         couldBe  = Fmt(Nte(Nte0045), overload->symbol->name.c_str(), orgNode->typeInfo->getDisplayNameC());
+                        auto         couldBe  = Fmt(Nte(Nte0045), orgNode->typeInfo->getDisplayNameC());
                         couldBe += Ast::computeGenericParametersReplacement(typeFunc->genericParameters);
                         note = new Diagnostic{overload->node, couldBe, DiagnosticLevel::NotePack};
-                        note->remarks.push_back(Fmt(Nte(Nte0047), overload->symbol->name.c_str(), overload->typeInfo->getDisplayNameC()));
+                        note->remarks.push_back(Fmt(Nte(Nte0047), overload->typeInfo->getDisplayNameC()));
                     }
                     else
                     {
-                        auto couldBe = Fmt(Nte(Nte0048), overload->symbol->name.c_str(), overload->typeInfo->getDisplayNameC());
+                        auto couldBe = Fmt(Nte(Nte0048), overload->typeInfo->getDisplayNameC());
                         note         = new Diagnostic{overload->node, couldBe, DiagnosticLevel::NotePack};
                     }
                 }
