@@ -70,6 +70,7 @@ const uint16_t R_RDX = 331;
 const uint16_t R_RDI = 333;
 const uint16_t R_RBP = 334;
 const uint16_t R_RSP = 335;
+const uint16_t R_R11 = 339;
 
 enum SimpleTypeKind : DbgTypeIndex
 {
@@ -1114,7 +1115,7 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
 
                     //////////
                     dbgStartRecord(pp, concat, S_DEFRANGE_REGISTER_REL);
-                    concat.addU16(R_RBP); // Register
+                    concat.addU16(R_R11); // Register
                     concat.addU16(0);     // Flags
                     concat.addU32(overload->computedValue.storageOffset);
                     dbgEmitSecRel(pp, concat, f.symbolIndex, pp.symCOIndex);

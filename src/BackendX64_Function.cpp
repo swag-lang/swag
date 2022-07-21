@@ -484,11 +484,11 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         }
     }
 
-    // Use RBP as base pointer for capture parameters
+    // Use R11 as base pointer for capture parameters
     // This is used to debug and have access to capture parameters, even if we "lose" rcx
     // which is the register that will have a pointer to the capture buffer (but rcx is volatile)
-    //if (typeFunc->isClosure() && debug)
-    //    pp.concat.addString3("\x48\x89\xCD"); // move rbp, rcx
+    if (typeFunc->isClosure() && debug)
+        pp.concat.addString3("\x49\x89\xCB"); // mov r11, rcx
 
     auto                                   ip = bc->out;
     VectorNative<uint32_t>                 pushRAParams;

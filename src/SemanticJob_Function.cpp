@@ -712,6 +712,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
             auto overload = funcNode->scope->symTable.addSymbolTypeInfo(context, c, c->typeInfo, SymbolKind::Variable, nullptr, OVERLOAD_VAR_CAPTURE, nullptr, 0, nullptr, &name);
             if (!overload)
                 return false;
+            c->resolvedSymbolOverload = overload;
             overload->computedValue.storageOffset = storageOffset;
             storageOffset += overload->typeInfo->sizeOf;
         }
