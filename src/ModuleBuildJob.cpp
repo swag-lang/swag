@@ -501,7 +501,10 @@ JobResult ModuleBuildJob::execute()
         // Setup runtime
         auto setupFct = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name__setupRuntime);
         SWAG_ASSERT(setupFct);
-        module->executeNode(setupFct->node->sourceFile, setupFct->node, baseContext);
+        ExecuteNodeParams execParams;
+        execParams.callParams.push_back((uint64_t)g_CommandLine->userArgumentsSlice.second);
+        execParams.callParams.push_back((uint64_t) g_CommandLine->userArgumentsSlice.first);
+        module->executeNode(setupFct->node->sourceFile, setupFct->node, baseContext, &execParams);
         if (module->criticalErrors)
             return JobResult::ReleaseJob;
 

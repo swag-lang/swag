@@ -364,10 +364,9 @@ const __MAX_ARGUMENTS = 512
 var __argv: [__MAX_ARGUMENTS] string
 var __argc = 0'u32
 
-func __convertArgcArgv()
+func __convertArgcArgv(args: const *u8)
 {
-    cmdLine := __getCommandLine()
-
+    cmdLine := args
     __argc = 0
     while dref cmdLine
     {
@@ -399,13 +398,15 @@ func __convertArgcArgv()
 func @args()->const [..] string
 {
     if __argc == 0
-        __convertArgcArgv()
+        __convertArgcArgv(__getCommandLine())
     return @mkslice(&__argv[0], cast(uint) __argc)
 }
 
 ////////////////////////////////////////////////////////////
-func __setupRuntime()
+func __setupRuntime(args: string)
 {
+    ptr := @dataof(args) orelse __getCommandLine()
+    __convertArgcArgv(ptr)
     @getcontext().tempAllocator.setup()
 }
 

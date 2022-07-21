@@ -158,7 +158,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
     }
 
     {
-        localCall(buildParameters, nullptr, allocT, g_LangSpec->name__setupRuntime, {}, {});
+        localCall(buildParameters, nullptr, allocT, g_LangSpec->name__setupRuntime, {UINT32_MAX, UINT32_MAX}, {pp.cst0_i64, pp.cst0_i64});
     }
 
     // Load all dependencies
