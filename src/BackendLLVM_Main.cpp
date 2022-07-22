@@ -122,43 +122,51 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
         builder.CreateStore(builder.getInt64(contextFlags), toFlags);
     }
 
-    // __process_infos.contextTlsId = swag_runtime_tlsAlloc()
-    {
-        auto toTlsId = TO_PTR_I64(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst1_i32}));
-        localCall(buildParameters, nullptr, allocT, g_LangSpec->name__tlsAlloc, {UINT32_MAX}, {toTlsId});
-    }
-
     // __process_infos.modules
     {
         auto v0 = builder.CreateInBoundsGEP(TO_PTR_I8(pp.constantSeg), builder.getInt32(module->modulesSliceOffset));
-        auto r0 = TO_PTR_PTR_I8(builder.CreateInBoundsGEP(pp.processInfos, pp.cst0_i64));
+        auto r0 = TO_PTR_PTR_I8(builder.CreateInBoundsGEP(pp.processInfos, builder.getInt32(0)));
         builder.CreateStore(v0, r0);
 
-        r0 = TO_PTR_I64(builder.CreateInBoundsGEP(TO_PTR_I8(pp.processInfos), builder.getInt32(sizeof(void*))));
-        builder.CreateStore(builder.getInt64(module->moduleDependencies.count + 1), r0);
+        auto r1 = TO_PTR_I64(builder.CreateInBoundsGEP(TO_PTR_I8(pp.processInfos), builder.getInt32(8)));
+        builder.CreateStore(builder.getInt64(module->moduleDependencies.count + 1), r1);
+    }
+
+    // __process_infos.args
+    {
+        auto r0 = TO_PTR_I64(builder.CreateInBoundsGEP(TO_PTR_I8(pp.processInfos), builder.getInt32(16)));
+        builder.CreateStore(pp.cst0_i64, r0);
+        auto r1 = TO_PTR_I64(builder.CreateInBoundsGEP(TO_PTR_I8(pp.processInfos), builder.getInt32(24)));
+        builder.CreateStore(pp.cst0_i64, r1);
+    }
+
+    // __process_infos.contextTlsId = swag_runtime_tlsAlloc()
+    {
+        auto toTlsId = TO_PTR_I64(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst2_i32}));
+        localCall(buildParameters, nullptr, allocT, g_LangSpec->name__tlsAlloc, {UINT32_MAX}, {toTlsId});
     }
 
     // Set main context
     {
-        auto toContext = builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst2_i32});
+        auto toContext = builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst3_i32});
         builder.CreateStore(pp.mainContext, toContext);
     }
 
     // Set current backend as LLVM
     {
-        auto toBackendKind = TO_PTR_I32(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst5_i32}));
+        auto toBackendKind = TO_PTR_I32(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst6_i32}));
         builder.CreateStore(builder.getInt32((uint32_t) SwagBackendGenType::LLVM), toBackendKind);
     }
 
     // Set default context in TLS
     {
-        auto toTlsId   = builder.CreateLoad(TO_PTR_I64(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst1_i32})));
+        auto toTlsId   = builder.CreateLoad(TO_PTR_I64(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst2_i32})));
         auto toContext = builder.CreatePointerCast(pp.mainContext, llvm::Type::getInt8PtrTy(context));
         localCall(buildParameters, nullptr, allocT, g_LangSpec->name__tlsSetValue, {UINT32_MAX, UINT32_MAX}, {toTlsId, toContext});
     }
 
     {
-        localCall(buildParameters, nullptr, allocT, g_LangSpec->name__setupRuntime, {UINT32_MAX, UINT32_MAX}, {pp.cst0_i64, pp.cst0_i64});
+        localCall(buildParameters, nullptr, allocT, g_LangSpec->name__setupRuntime, {}, {});
     }
 
     // Load all dependencies
@@ -310,12 +318,13 @@ bool BackendLLVM::emitGlobalPreMain(const BuildParameters& buildParameters)
     }
 
     // Call to #premain functions
+    auto fctType1 = llvm::FunctionType::get(llvm::Type::getVoidTy(context), {}, false);
     for (auto bc : module->byteCodePreMainFunc)
     {
         auto node = bc->node;
         if (node && node->attributeFlags & ATTRIBUTE_COMPILER)
             continue;
-        auto func = modu.getOrInsertFunction(bc->getCallName().c_str(), fctType);
+        auto func = modu.getOrInsertFunction(bc->getCallName().c_str(), fctType1);
         builder.CreateCall(func);
     }
 

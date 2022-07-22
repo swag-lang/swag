@@ -48,6 +48,7 @@ struct LLVMPerThread
     llvm::Value* cst3_i32 = nullptr;
     llvm::Value* cst4_i32 = nullptr;
     llvm::Value* cst5_i32 = nullptr;
+    llvm::Value* cst6_i32 = nullptr;
     llvm::Value* cst0_i64 = nullptr;
     llvm::Value* cst1_i64 = nullptr;
     llvm::Value* cst0_f32 = nullptr;

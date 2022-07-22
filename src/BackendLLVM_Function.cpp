@@ -3170,13 +3170,13 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::IntrinsicGetContext:
         {
-            auto v0 = builder.CreateLoad(TO_PTR_I64(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst1_i32})));
+            auto v0 = builder.CreateLoad(TO_PTR_I64(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst2_i32})));
             localCall(buildParameters, allocR, allocT, g_LangSpec->name__tlsGetValue, {ip->a.u32, UINT32_MAX}, {0, v0});
             break;
         }
         case ByteCodeOp::IntrinsicSetContext:
         {
-            auto v0 = builder.CreateLoad(TO_PTR_I64(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst1_i32})));
+            auto v0 = builder.CreateLoad(TO_PTR_I64(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst2_i32})));
             localCall(buildParameters, allocR, allocT, g_LangSpec->name__tlsSetValue, {UINT32_MAX, ip->a.u32}, {v0, 0});
             break;
         }
@@ -3959,7 +3959,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
             builder.SetInsertPoint(blockLambdaBC);
             {
-                auto r1 = builder.CreateLoad(TO_PTR_PTR_I8(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst4_i32})));
+                auto r1 = builder.CreateLoad(TO_PTR_PTR_I8(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst5_i32})));
                 auto PT = llvm::PointerType::getUnqual(pp.makeCallbackTy);
                 auto r2 = builder.CreatePointerCast(r1, PT);
                 auto v2 = builder.CreateIntToPtr(v0, builder.getInt8PtrTy());
@@ -4110,7 +4110,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 fctParams.push_front(r0);
                 getLocalCallParameters(buildParameters, allocR, allocRR, allocT, fctParams, typeFuncBC, pushRAParams, {});
 
-                auto r1 = builder.CreateLoad(TO_PTR_PTR_I8(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst3_i32})));
+                auto r1 = builder.CreateLoad(TO_PTR_PTR_I8(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst4_i32})));
                 auto PT = llvm::PointerType::getUnqual(pp.bytecodeRunTy);
                 auto r2 = builder.CreatePointerCast(r1, PT);
 

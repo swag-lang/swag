@@ -398,15 +398,17 @@ func __convertArgcArgv(args: const *u8)
 func @args()->const [..] string
 {
     if __argc == 0
-        __convertArgcArgv(__getCommandLine())
+    {
+        ptr := @dataof(@getpinfos().args) orelse __getCommandLine()
+        __convertArgcArgv(ptr)
+    }
+
     return @mkslice(&__argv[0], cast(uint) __argc)
 }
 
 ////////////////////////////////////////////////////////////
-func __setupRuntime(args: string)
+func __setupRuntime()
 {
-    ptr := @dataof(args) orelse __getCommandLine()
-    __convertArgcArgv(ptr)
     @getcontext().tempAllocator.setup()
 }
 

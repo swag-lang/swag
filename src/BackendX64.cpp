@@ -254,6 +254,10 @@ bool BackendX64::createRuntime(const BuildParameters& buildParameters)
         offset                  = pp.globalSegment.reserve(8, nullptr, sizeof(uint64_t));
         pp.symPI_modulesCount   = getOrAddSymbol(pp, "swag_process_infos_modulesCount", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
         offset                  = pp.globalSegment.reserve(8, nullptr, sizeof(uint64_t));
+        pp.symPI_argsAddr       = getOrAddSymbol(pp, "swag_process_infos_argsAddr", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
+        offset                  = pp.globalSegment.reserve(8, nullptr, sizeof(uint64_t));
+        pp.symPI_argsCount      = getOrAddSymbol(pp, "swag_process_infos_argsCount", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
+        offset                  = pp.globalSegment.reserve(8, nullptr, sizeof(uint64_t));
         pp.symPI_contextTlsId   = getOrAddSymbol(pp, "swag_process_infos_contextTlsId", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
         offset                  = pp.globalSegment.reserve(8, nullptr, sizeof(uint64_t));
         pp.symPI_defaultContext = getOrAddSymbol(pp, "swag_process_infos_defaultContext", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
@@ -287,6 +291,8 @@ bool BackendX64::createRuntime(const BuildParameters& buildParameters)
         pp.symPI_processInfos   = getOrAddSymbol(pp, "swag_process_infos", CoffSymbolKind::Extern)->index;
         pp.symPI_modulesAddr    = getOrAddSymbol(pp, "swag_process_infos_modulesAddr", CoffSymbolKind::Extern)->index;
         pp.symPI_modulesCount   = getOrAddSymbol(pp, "swag_process_infos_modulesCount", CoffSymbolKind::Extern)->index;
+        pp.symPI_argsAddr       = getOrAddSymbol(pp, "swag_process_infos_argsAddr", CoffSymbolKind::Extern)->index;
+        pp.symPI_argsCount      = getOrAddSymbol(pp, "swag_process_infos_argsCount", CoffSymbolKind::Extern)->index;
         pp.symPI_contextTlsId   = getOrAddSymbol(pp, "swag_process_infos_contextTlsId", CoffSymbolKind::Extern)->index;
         pp.symPI_defaultContext = getOrAddSymbol(pp, "swag_process_infos_defaultContext", CoffSymbolKind::Extern)->index;
         pp.symPI_byteCodeRun    = getOrAddSymbol(pp, "swag_process_infos_byteCodeRun", CoffSymbolKind::Extern)->index;

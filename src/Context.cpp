@@ -226,6 +226,15 @@ void initDefaultContext()
 
     g_ProcessInfos.modules.buffer = nullptr;
     g_ProcessInfos.modules.count  = 0;
+
+    static Utf8 args;
+    args += g_CommandLine->exePathStr;
+    args += " ";
+    args += g_CommandLine->userArguments;
+
+    g_ProcessInfos.args.buffer = (void*) args.c_str();
+    g_ProcessInfos.args.count  = (uint64_t) args.length();
+
     g_ProcessInfos.contextTlsId   = g_TlsContextId;
     g_ProcessInfos.defaultContext = &g_DefaultContext;
     g_ProcessInfos.byteCodeRun    = byteCodeRun;

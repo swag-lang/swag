@@ -94,6 +94,7 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
     {
         llvm::Type* members[] = {
             pp.sliceTy,
+            pp.sliceTy,
             llvm::Type::getInt64Ty(context),
             pp.contextTy->getPointerTo(),
             pp.bytecodeRunTy->getPointerTo(),
@@ -160,6 +161,7 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
     pp.cst3_i32 = llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 3);
     pp.cst4_i32 = llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 4);
     pp.cst5_i32 = llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 5);
+    pp.cst6_i32 = llvm::ConstantInt::get(llvm::Type::getInt32Ty(context), 6);
     pp.cst0_i64 = llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), 0);
     pp.cst1_i64 = llvm::ConstantInt::get(llvm::Type::getInt64Ty(context), 1);
     pp.cst0_f32 = llvm::ConstantFP::get(llvm::Type::getFloatTy(context), 0);

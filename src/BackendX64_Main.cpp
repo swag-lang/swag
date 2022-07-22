@@ -93,6 +93,13 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symPI_modulesCount, 0);
     BackendX64Inst::emit_Store64_Immediate(pp, 0, module->moduleDependencies.count + 1, RAX);
 
+    //__process_infos.args
+    BackendX64Inst::emit_Clear64(pp, RCX);
+    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symPI_argsAddr, 0);
+    BackendX64Inst::emit_Store64_Indirect(pp, 0, RCX, RAX);
+    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symPI_argsCount, 0);
+    BackendX64Inst::emit_Store64_Indirect(pp, 0, RCX, RAX);
+
     // Set main context
     BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symMC_mainContext, 0);
     BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_defaultContext, 0);
@@ -108,8 +115,6 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     emitCall(pp, g_LangSpec->name__tlsSetValue);
 
     // Setup runtime
-    BackendX64Inst::emit_Clear64(pp, RCX);
-    BackendX64Inst::emit_Clear64(pp, RDX);
     emitCall(pp, g_LangSpec->name__setupRuntime);
 
     // Load all dependencies

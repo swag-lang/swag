@@ -209,6 +209,7 @@ namespace Swag
     struct ProcessInfos
     {
         modules: const [..] Module
+        args:    string
     }
 
     // #########################################################
