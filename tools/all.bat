@@ -10,4 +10,4 @@ call x64.bat --cfg:release
 call llvm.bat --cfg:debug
 
 ..\bin\swag test -w:../bin/testsuite --backend:llvm --cfg:fast-debug --rebuild %1 %2 %3 %4
-
+call scripts.bat

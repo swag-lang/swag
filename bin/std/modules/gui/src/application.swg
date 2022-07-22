@@ -29,6 +29,7 @@ struct Application
     mouseEnterWnd:      *Wnd
     mouseCaptureWnd:    *Wnd
     keybFocusWnd:       *Wnd
+    maxRunFrame:        u32
 }
 
 private impl Application
@@ -373,6 +374,10 @@ private impl Application
 
     mtd runFrame()
     {
+        // Auto exit
+        if maxRunFrame and timing.frameCount > maxRunFrame
+            Env.exit(0)
+
         timing.update()
         Memory.freeTemp()
 
@@ -440,7 +445,7 @@ impl Application
     }
 
     // Create a main surface, and run
-    func runSurface(x, y, width, height: s32, title: string = null, view: *Wnd = null, borders = true, canSize = true, hook: HookEvent = null)
+    func runSurface(x, y, width, height: s32, title: string = null, view: *Wnd = null, borders = true, canSize = true, hook: HookEvent = null, init: func(*Application) = null)
     {
         var app: Application
 
@@ -449,6 +454,7 @@ impl Application
         if !borders flags &= ~.Border
         surface := assume app.createSurface(x, y, width, height, flags, view, hook)
         surface.setTitle(title)
+        if init init(&app)
         surface.show()
         app.run()
     }

@@ -71,7 +71,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         g_Image   = Image.create(200, 200, .BGR8)
         g_Texture = wnd.getApp().renderer.addImage(g_Image)
 
-        Time.Stopwatch.scopeMeasure()
+        //Time.Stopwatch.scopeMeasure()
         compute()
         return true
 
@@ -90,5 +90,6 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 #run
 {
     try Jobs.setNumWorkers()
-    Application.runSurface(100, 100, 512, 512, title: "Mandelbrot", hook: &onEvent)
+    func test(app: *Application) = if Env.getArg(1) == "swag.test" app.maxRunFrame = 100
+    Application.runSurface(100, 100, 512, 512, title: "Mandelbrot", hook: &onEvent, init: &test)
 }
