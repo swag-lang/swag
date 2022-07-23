@@ -44,7 +44,33 @@ bool SyntaxJob::doAlias(AstNode* parent, AstNode** result)
 
 bool SyntaxJob::doTypeExpressionLambdaClosure(AstNode* parent, AstNode** result)
 {
-    AstNodeKind kind = token.id == TokenId::KwdFunc ? AstNodeKind::TypeLambda : AstNodeKind::TypeClosure;
+    AstNodeKind kind;
+    bool        isMethod  = false;
+    bool        isMethodC = false;
+
+    if (token.id == TokenId::KwdMethod)
+    {
+        PushErrHint eh(Hnt(Hnt0049));
+        SWAG_VERIFY(currentStructScope, error(token, Err(Err0894)));
+        isMethod = true;
+        kind     = AstNodeKind::TypeLambda;
+    }
+    else if (token.id == TokenId::KwdConstMethod)
+    {
+        PushErrHint eh(Hnt(Hnt0050));
+        SWAG_VERIFY(currentStructScope, error(token, Err(Err0894)));
+        isMethodC = true;
+        kind      = AstNodeKind::TypeLambda;
+    }
+    else if (token.id == TokenId::KwdFunc)
+    {
+        kind = AstNodeKind::TypeLambda;
+    }
+    else
+    {
+        kind = AstNodeKind::TypeClosure;
+    }
+
     SWAG_CHECK(eatToken());
 
     auto node         = Ast::newNode<AstTypeLambda>(this, kind, sourceFile, parent);
@@ -64,6 +90,26 @@ bool SyntaxJob::doTypeExpressionLambdaClosure(AstNode* parent, AstNode** result)
         auto typeNode      = Ast::newTypeExpression(sourceFile, params);
         typeNode->typeInfo = g_TypeMgr->typeInfoPointers[(int) NativeTypeKind::Void];
         typeNode->flags |= AST_NO_SEMANTIC | AST_GENERATED;
+    }
+    else if (isMethod)
+    {
+        params               = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclParams, sourceFile, node);
+        node->parameters     = params;
+        auto typeNode        = Ast::newTypeExpression(sourceFile, params);
+        typeNode->ptrCount   = 1;
+        typeNode->typeFlags  = TYPEFLAG_ISSELF;
+        typeNode->identifier = Ast::newIdentifierRef(sourceFile, currentStructScope->name, typeNode, this);
+    }
+    else if (isMethodC)
+    {
+        params                = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclParams, sourceFile, node);
+        node->parameters      = params;
+        auto typeNode         = Ast::newTypeExpression(sourceFile, params);
+        typeNode->ptrCount    = 1;
+        typeNode->ptrFlags[0] = AstTypeExpression::PTR_CONST;
+        typeNode->typeFlags |= TYPEFLAG_ISCONST;
+        typeNode->typeFlags |= TYPEFLAG_ISSELF;
+        typeNode->identifier = Ast::newIdentifierRef(sourceFile, currentStructScope->name, typeNode, this);
     }
 
     SWAG_CHECK(eatToken(TokenId::SymLeftParen));
@@ -257,7 +303,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
     }
 
     // This is a lambda
-    if (token.id == TokenId::KwdFunc || token.id == TokenId::KwdClosure)
+    if (token.id == TokenId::KwdFunc || token.id == TokenId::KwdClosure || token.id == TokenId::KwdMethod || token.id == TokenId::KwdConstMethod)
     {
         return doTypeExpressionLambdaClosure(parent, result);
     }
@@ -466,7 +512,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
         SWAG_CHECK(convertExpressionListToTuple(node, &node->identifier, isConst, false, false));
         return true;
     }
-    else if (token.id == TokenId::KwdFunc || token.id == TokenId::KwdClosure)
+    else if (token.id == TokenId::KwdFunc || token.id == TokenId::KwdClosure || token.id == TokenId::KwdMethod || token.id == TokenId::KwdConstMethod)
     {
         // We generate a type alias, and make a reference to that type
         auto alias = Ast::newNode<AstAlias>(this, AstNodeKind::Alias, sourceFile, parent);

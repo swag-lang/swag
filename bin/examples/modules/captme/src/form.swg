@@ -1,18 +1,18 @@
 interface IForm
 {
-    paintGizmo:     func(self, *Painter, f32, FormFlags)
-    paint:          func(self, *Painter, f32, bool)
-    mouse:          func(self, *EditView, Math.Point, *MouseEvent)->bool
-    hitTest:        func(self, Math.Point, f32)->bool
-    boundRect:      func(self, bool)->Math.Rectangle
-    moveForm:       func(self, s32, s32)
-    moveBaseForm:   func(self, s32, s32, s32, s32)
-    setBaseForm:    func(self, s32, s32, s32, s32)
-    movePoint:      func(self, u32, s32, s32)
-    edit:           func(self, *MouseEvent, Math.Rectangle, Math.Point, Math.Point, f32)->bool
-    setup:          func(self, *Capture)
-    isSame:         func(self, *BaseForm)->bool
-    copy:           func(self, *BaseForm, *BaseForm)
+    paintGizmo:     mtd(*Painter, f32, FormFlags)
+    paint:          mtd(*Painter, f32, bool)
+    mouse:          mtd(*EditView, Math.Point, *MouseEvent)->bool
+    hitTest:        mtd(Math.Point, f32)->bool
+    boundRect:      mtd(bool)->Math.Rectangle
+    moveForm:       mtd(s32, s32)
+    moveBaseForm:   mtd(s32, s32, s32, s32)
+    setBaseForm:    mtd(s32, s32, s32, s32)
+    movePoint:      mtd(u32, s32, s32)
+    edit:           mtd(*MouseEvent, Math.Rectangle, Math.Point, Math.Point, f32)->bool
+    setup:          mtd(*Capture)
+    isSame:         mtd(*BaseForm)->bool
+    copy:           mtd(*BaseForm, *BaseForm)
 }
 
 #[Swag.EnumFlags]

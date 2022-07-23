@@ -3,8 +3,8 @@
 
 interface ISerialize
 {
-    read:  func(self, IDecoder) throw
-    write: func(self, IEncoder)
+    read:  mtd(IDecoder) throw
+    write: mtd(IEncoder)
 }
 
 struct(T) Serializer

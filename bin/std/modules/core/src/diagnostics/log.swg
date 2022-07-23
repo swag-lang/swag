@@ -17,7 +17,7 @@ enum LogFlags
 
 interface ILogWriter
 {
-    print: func(self, string)
+    print: mtd(string)
 }
 
 struct Log

@@ -15,20 +15,20 @@ struct EncoderOptions
 
 interface IEncoder
 {
-    write:          func(self, string, typeinfo, *void)
-    writeBufferU8:  func(self, string, const *u8, uint)
-    writeBool:      func(self, string, bool)
-    writeS8:        func(self, string, s8)
-    writeS16:       func(self, string, s16)
-    writeS32:       func(self, string, s32)
-    writeS64:       func(self, string, s64)
-    writeU8:        func(self, string, u8)
-    writeU16:       func(self, string, u16)
-    writeU32:       func(self, string, u32)
-    writeU64:       func(self, string, u64)
-    writeF32:       func(self, string, f32)
-    writeF64:       func(self, string, f64)
-    writeString:    func(self, string, string)
+    write:          mtd(string, typeinfo, *void)
+    writeBufferU8:  mtd(string, const *u8, uint)
+    writeBool:      mtd(string, bool)
+    writeS8:        mtd(string, s8)
+    writeS16:       mtd(string, s16)
+    writeS32:       mtd(string, s32)
+    writeS64:       mtd(string, s64)
+    writeU8:        mtd(string, u8)
+    writeU16:       mtd(string, u16)
+    writeU32:       mtd(string, u32)
+    writeU64:       mtd(string, u64)
+    writeF32:       mtd(string, f32)
+    writeF64:       mtd(string, f64)
+    writeString:    mtd(string, string)
 }
 
 struct(T) Encoder

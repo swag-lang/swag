@@ -11,6 +11,8 @@ struct Point3
 // Interfaces are virtual tables that can be associated to a struct
 interface IReset
 {
+    // The first parameter is always 'self', so you can either declare it
+    // yourself or use 'mtd/mtdc'
     set: func(self, f32)
 }
 

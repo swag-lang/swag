@@ -9,20 +9,20 @@ struct DecoderOptions
 
 interface IDecoder
 {
-    read:           func(self, string, *void, typeinfo) throw
-    readBufferU8:   func(self, string, uint)->*u8 throw
-    readBool:       func(self, string)->bool throw
-    readS8:         func(self, string)->s8 throw
-    readS16:        func(self, string)->s16 throw
-    readS32:        func(self, string)->s32 throw
-    readS64:        func(self, string)->s64 throw
-    readU8:         func(self, string)->u8 throw
-    readU16:        func(self, string)->u16 throw
-    readU32:        func(self, string)->u32 throw
-    readU64:        func(self, string)->u64 throw
-    readF32:        func(self, string)->f32 throw
-    readF64:        func(self, string)->f64 throw
-    readString:     func(self, string)->String throw
+    read:           mtd(string, *void, typeinfo) throw
+    readBufferU8:   mtd(string, uint)->*u8 throw
+    readBool:       mtd(string)->bool throw
+    readS8:         mtd(string)->s8 throw
+    readS16:        mtd(string)->s16 throw
+    readS32:        mtd(string)->s32 throw
+    readS64:        mtd(string)->s64 throw
+    readU8:         mtd(string)->u8 throw
+    readU16:        mtd(string)->u16 throw
+    readU32:        mtd(string)->u32 throw
+    readU64:        mtd(string)->u64 throw
+    readF32:        mtd(string)->f32 throw
+    readF64:        mtd(string)->f64 throw
+    readString:     mtd(string)->String throw
 }
 
 struct(T) Decoder

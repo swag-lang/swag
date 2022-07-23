@@ -885,7 +885,7 @@ SWAG_ERROR(Err0890, "the symbol `%s` is already defined as a name alias in an ac
 SWAG_ERROR(Err0891, "invalid `%s`, use `%s` instead to do a logical test")
 SWAG_ERROR(Err0892, "unused return value of intrinsic `%s`")
 SWAG_ERROR(Err0893, "generic symbol `%s` is already declared in a top level context")
-SWAG_ERROR(Err0894, nullptr)
+SWAG_ERROR(Err0894, "`mtd` or `mtdc` can only be used in a struct or interface context")
 SWAG_ERROR(Err0895, "expected a top level instruction")
 SWAG_ERROR(Err0896, "expected an embedded instruction or a curly block")
 SWAG_ERROR(Err0897, "expected a left expression")

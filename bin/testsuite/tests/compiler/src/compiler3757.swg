@@ -1,0 +1,4 @@
+interface I
+{
+    x: mtd()
+}

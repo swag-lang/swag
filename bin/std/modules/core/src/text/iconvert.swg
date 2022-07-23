@@ -4,6 +4,6 @@ namespace StrConv
 {
     interface IConvert
     {
-        convert: func(self, *ConcatBuffer, const *ConvertFormat, string)
+        convert: mtd(*ConcatBuffer, const *ConvertFormat, string)
     }
 }

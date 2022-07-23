@@ -237,7 +237,7 @@ namespace Swag
 
     interface IAllocator
     {
-        alloc: func(self, *AllocatorRequest)
+        alloc: mtd(*AllocatorRequest)
     }
 
     struct ScratchAllocator
@@ -598,9 +598,9 @@ namespace Swag
 
     interface ICompiler
     {
-        getMessage:     func(self)->const* CompilerMessage
-        getBuildCfg:    func(self)->*BuildCfg
-        compileString:  func(self, string)
+        getMessage:     mtd()->const* CompilerMessage
+        getBuildCfg:    mtd()->*BuildCfg
+        compileString:  mtd(string)
     }
 
     struct CompilerSourceLocation
