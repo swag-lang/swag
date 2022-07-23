@@ -106,9 +106,8 @@ struct TypeManager
     static TypeInfo* makeUntypedType(TypeInfo* typeInfo, uint32_t value);
     static TypeInfo* literalTypeToType(LiteralType literalType);
     static TypeInfo* literalTypeToType(const Token& token);
-    static void      promote3264(AstNode* left, AstNode* right);
-    static void      promote816(AstNode* left, AstNode* right);
-    static void      promoteOne(AstNode* left, AstNode* right, bool is3264);
+    static void      promote(AstNode* left, AstNode* right);
+    static void      promoteOne(AstNode* left, AstNode* right);
     static bool      promoteOne(SemanticContext* context, AstNode* right);
     static TypeInfo* promoteUntyped(TypeInfo* typeInfo);
     static void      promoteUntypedInteger(AstNode* left, AstNode* right);
@@ -159,8 +158,7 @@ struct TypeManager
     TypeInfoCode*     typeInfoCode           = nullptr;
     TypeInfoSlice*    typeInfoSliceRunes     = nullptr;
 
-    TypeInfoNative* promoteMatrix3264[(int) NativeTypeKind::Count][(int) NativeTypeKind::Count] = {{0}};
-    TypeInfoNative* promoteMatrix816[(int) NativeTypeKind::Count][(int) NativeTypeKind::Count]  = {{0}};
+    TypeInfoNative* promoteMatrix[(int) NativeTypeKind::Count][(int) NativeTypeKind::Count] = {{0}};
 };
 
 extern TypeManager* g_TypeMgr;

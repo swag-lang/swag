@@ -350,7 +350,7 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
         node->typeInfo = g_TypeMgr->typeInfoS32;
     else
         node->typeInfo = g_TypeMgr->typeInfoBool;
-    TypeManager::promote3264(left, right);
+    TypeManager::promote(left, right);
 
     left->typeInfo  = TypeManager::concreteReferenceType(left->typeInfo, CONCRETE_FUNC | CONCRETE_ENUM);
     right->typeInfo = TypeManager::concreteReferenceType(right->typeInfo, CONCRETE_FUNC | CONCRETE_ENUM);
