@@ -580,6 +580,27 @@ bool SyntaxJob::doModifiers(Token& forNode, uint32_t& mdfFlags)
     while (token.id == TokenId::SymComma)
     {
         SWAG_CHECK(eatToken());
+
+        if (token.text == g_LangSpec->name_np)
+        {
+            switch (opId)
+            {
+            case TokenId::SymPlus:
+            case TokenId::SymMinus:
+            case TokenId::SymSlash:
+            case TokenId::SymAsterisk:
+            case TokenId::SymPercent:
+                break;
+            default:
+                return error(token, Fmt(Err(Err0266), forNode.ctext()));
+            }
+
+            SWAG_VERIFY(!(mdfFlags & MODIFIER_NOPROMOTE), error(token, Fmt(Err(Err0265), token.ctext())));
+            mdfFlags |= MODIFIER_NOPROMOTE;
+            SWAG_CHECK(eatToken());
+            continue;
+        }
+
         if (token.text == g_LangSpec->name_safe)
         {
             switch (opId)
@@ -722,6 +743,11 @@ bool SyntaxJob::doFactorExpression(AstNode** parent, uint32_t exprFlags, AstNode
         if (mdfFlags & MODIFIER_SMALL)
         {
             binaryNode->specFlags |= AST_SPEC_OP_SMALL;
+        }
+
+        if (mdfFlags & MODIFIER_NOPROMOTE)
+        {
+            binaryNode->specFlags |= AST_SPEC_OP_NOPROMOTE;
         }
 
         Ast::addChildBack(binaryNode, leftNode);

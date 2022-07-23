@@ -2840,10 +2840,16 @@ bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeIn
     return castError(context, toType, fromType, fromNode, castFlags);
 }
 
-void TypeManager::promote(AstNode* left, AstNode* right)
+void TypeManager::promote3264(AstNode* left, AstNode* right)
 {
-    promoteOne(left, right);
-    promoteOne(right, left);
+    promoteOne(left, right, true);
+    promoteOne(right, left, true);
+}
+
+void TypeManager::promote816(AstNode* left, AstNode* right)
+{
+    promoteOne(left, right, false);
+    promoteOne(right, left, false);
 }
 
 TypeInfo* TypeManager::promoteUntyped(TypeInfo* typeInfo)
@@ -2915,7 +2921,7 @@ bool TypeManager::promoteOne(SemanticContext* context, AstNode* right)
     return true;
 }
 
-void TypeManager::promoteOne(AstNode* left, AstNode* right)
+void TypeManager::promoteOne(AstNode* left, AstNode* right, bool is3264)
 {
     TypeInfo* leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
     TypeInfo* rightTypeInfo = TypeManager::concreteType(right->typeInfo);
@@ -2943,7 +2949,11 @@ void TypeManager::promoteOne(AstNode* left, AstNode* right)
         return;
     }
 
-    TypeInfo* newLeftTypeInfo = (TypeInfo*) g_TypeMgr->promoteMatrix[(int) leftTypeInfo->nativeType][(int) rightTypeInfo->nativeType];
+    TypeInfo* newLeftTypeInfo = nullptr;
+    if (is3264)
+        newLeftTypeInfo = (TypeInfo*) g_TypeMgr->promoteMatrix3264[(int) leftTypeInfo->nativeType][(int) rightTypeInfo->nativeType];
+    else
+        newLeftTypeInfo = (TypeInfo*) g_TypeMgr->promoteMatrix816[(int) leftTypeInfo->nativeType][(int) rightTypeInfo->nativeType];
     if (newLeftTypeInfo == nullptr)
         newLeftTypeInfo = leftTypeInfo;
 

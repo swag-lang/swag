@@ -910,7 +910,7 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
     if (context->result == ContextResult::Pending)
         return true;
 
-    // Determin if we must promote to 32/64 bits.
+    // Determin if we must promote.
     // Bit manipulations do not promote.
     bool mustPromote = true;
     if (node->token.id == TokenId::SymVertical ||
@@ -970,7 +970,12 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
     node->inheritOrFlag(AST_SIDE_EFFECTS);
 
     if (mustPromote)
-        TypeManager::promote(left, right);
+    {
+        if (node->specFlags & AST_SPEC_OP_NOPROMOTE)
+            TypeManager::promote816(left, right);
+        else
+            TypeManager::promote3264(left, right);
+    }
 
     // Must do move and not copy
     if (leftTypeInfo->kind == TypeInfoKind::Struct || rightTypeInfo->kind == TypeInfoKind::Struct)
