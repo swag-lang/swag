@@ -427,7 +427,7 @@
       "patterns": [
         {
           "name": "constant.character.escape",
-          "match": "\\,(safe|small|nodrop|move|moveraw|np)\\b"
+          "match": "\\,(safe|small|nodrop|move|moveraw)\\b"
         }
       ]
     }

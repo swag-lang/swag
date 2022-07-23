@@ -146,7 +146,6 @@ struct LanguageSpec
     Utf8 name_location;
     Utf8 name_version;
 
-    Utf8 name_np;
     Utf8 name_safe;
     Utf8 name_small;
     Utf8 name_nodrop;

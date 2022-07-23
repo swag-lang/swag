@@ -42,7 +42,6 @@ static const uint32_t MODIFIER_SMALL       = 0x00000002;
 static const uint32_t MODIFIER_NOLEFTDROP  = 0x00000004;
 static const uint32_t MODIFIER_MOVE        = 0x00000008;
 static const uint32_t MODIFIER_NORIGHTDROP = 0x00000010;
-static const uint32_t MODIFIER_NOPROMOTE   = 0x00000020;
 
 static const uint32_t IDENTIFIER_NO_FCT_PARAMS   = 0x00000001;
 static const uint32_t IDENTIFIER_NO_GEN_PARAMS   = 0x00000002;

@@ -121,6 +121,23 @@ namespace BackendX64Inst
         emit_ModRM(pp, stackOffset, (reg & 0b111), memReg);
     }
 
+    inline void emit_Load32_Indirect(X64PerThread& pp, uint32_t stackOffset, uint8_t reg, uint8_t memReg)
+    {
+        SWAG_ASSERT(memReg < R8);
+        if (reg >= R8)
+            pp.concat.addU8(0x44);
+        pp.concat.addU8(0x8B);
+        emit_ModRM(pp, stackOffset, (reg & 0b111), memReg);
+    }
+
+    inline void emit_Load64_Indirect(X64PerThread& pp, uint32_t stackOffset, uint8_t reg, uint8_t memReg)
+    {
+        SWAG_ASSERT(memReg < R8);
+        pp.concat.addU8(0x48 | ((reg & 0b1000) >> 1));
+        pp.concat.addU8(0x8B);
+        emit_ModRM(pp, stackOffset, (reg & 0b111), memReg);
+    }
+
     inline void emit_LoadS8S32_Indirect(X64PerThread& pp, uint32_t stackOffset, uint8_t reg, uint8_t memReg)
     {
         SWAG_ASSERT(reg < R8 && memReg < R8);
@@ -135,56 +152,6 @@ namespace BackendX64Inst
         pp.concat.addU8(0x0F);
         pp.concat.addU8(0xB6);
         emit_ModRM(pp, stackOffset, reg, memReg);
-    }
-
-    inline void emit_LoadS16S32_Indirect(X64PerThread& pp, uint32_t stackOffset, uint8_t reg, uint8_t memReg)
-    {
-        SWAG_ASSERT(reg < R8 && memReg < R8);
-        pp.concat.addU8(0x0F);
-        pp.concat.addU8(0xB7);
-        emit_ModRM(pp, stackOffset, reg, memReg);
-    }
-
-    inline void emit_LoadU16U32_Indirect(X64PerThread& pp, uint32_t stackOffset, uint8_t reg, uint8_t memReg)
-    {
-        SWAG_ASSERT(reg < R8 && memReg < R8);
-        pp.concat.addU8(0x0F);
-        pp.concat.addU8(0xB7);
-        emit_ModRM(pp, stackOffset, reg, memReg);
-    }
-
-    inline void emit_Load32_Indirect(X64PerThread& pp, uint32_t stackOffset, uint8_t reg, uint8_t memReg, int bits = 32, bool isSigned = false)
-    {
-        SWAG_ASSERT(memReg < R8);
-        if (bits == 8)
-        {
-            if (isSigned)
-                emit_LoadS8S32_Indirect(pp, stackOffset, reg, memReg);
-            else
-                emit_LoadU8U32_Indirect(pp, stackOffset, reg, memReg);
-        }
-        else if (bits == 16)
-        {
-            if (isSigned)
-                emit_LoadS16S32_Indirect(pp, stackOffset, reg, memReg);
-            else
-                emit_LoadU16U32_Indirect(pp, stackOffset, reg, memReg);
-        }
-        else
-        {
-            if (reg >= R8)
-                pp.concat.addU8(0x44);
-            pp.concat.addU8(0x8B);
-            emit_ModRM(pp, stackOffset, (reg & 0b111), memReg);
-        }
-    }
-
-    inline void emit_Load64_Indirect(X64PerThread& pp, uint32_t stackOffset, uint8_t reg, uint8_t memReg)
-    {
-        SWAG_ASSERT(memReg < R8);
-        pp.concat.addU8(0x48 | ((reg & 0b1000) >> 1));
-        pp.concat.addU8(0x8B);
-        emit_ModRM(pp, stackOffset, (reg & 0b111), memReg);
     }
 
     inline void emit_LoadN_Indirect(X64PerThread& pp, uint32_t stackOffset, uint8_t reg, uint8_t memReg, uint8_t numBits)
@@ -399,27 +366,11 @@ namespace BackendX64Inst
         pp.concat.addU16(val);
     }
 
-    inline void emit_Load32_Immediate(X64PerThread& pp, uint32_t val, uint8_t reg, int bits = 32, bool isSigned = false)
+    inline void emit_Load32_Immediate(X64PerThread& pp, uint32_t val, uint8_t reg)
     {
         if (val == 0)
         {
             emit_Clear32(pp, reg);
-            return;
-        }
-
-        if (bits == 8)
-        {
-            emit_Clear32(pp, reg);
-            SWAG_ASSERT(val <= 0xFF);
-            emit_Load8_Immediate(pp, (uint8_t) val, reg);
-            return;
-        }
-
-        if (bits == 16)
-        {
-            emit_Clear32(pp, reg);
-            SWAG_ASSERT(val <= 0xFFFF);
-            emit_Load16_Immediate(pp, (uint16_t) val, reg);
             return;
         }
 
@@ -1223,67 +1174,8 @@ namespace BackendX64Inst
         emit_StoreF64_Indirect(pp, regOffset(ip->c.u32), XMM0, RDI);
     }
 
-    inline void emit_BinOpInt32(X64PerThread& pp, ByteCodeInstruction* ip, X64Op op, int bits = 32, bool isSigned = false)
+    inline void emit_BinOpInt8(X64PerThread& pp, ByteCodeInstruction* ip, X64Op op)
     {
-        if (bits == 32 && !(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B))
-        {
-            if (op == X64Op::MUL)
-            {
-                emit_Load32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI, bits, isSigned);
-                pp.concat.addString1("\xF7"); // mul
-                emit_ModRM(pp, regOffset(ip->b.u32), 4, RDI);
-            }
-            else
-            {
-                emit_Load32_Indirect(pp, regOffset(ip->a.u32), RCX, RDI, bits, isSigned);
-                if (op == X64Op::IMUL)
-                    pp.concat.addString2("\x0F\xAF"); // imul
-                else
-                    pp.concat.addU8((uint8_t) op | 2);
-                emit_ModRM(pp, regOffset(ip->b.u32), RCX, RDI); // ecx, [rdi+?]
-            }
-        }
-        // Mul by power of 2 => shift by log2
-        else if (bits == 32 && op == X64Op::MUL && !(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_B) && isPowerOfTwo(ip->b.u32) && (ip->b.u32 < 32))
-        {
-            emit_Load32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI, bits, isSigned);
-            emit_Load8_Immediate(pp, (uint8_t) log2(ip->b.u32), RCX);
-            pp.concat.addString2("\xD3\xE0"); // shl eax, cl
-        }
-        else
-        {
-            if (ip->flags & BCI_IMM_A)
-                emit_Load32_Immediate(pp, ip->a.u32, RCX, bits, isSigned);
-            else
-                emit_Load32_Indirect(pp, regOffset(ip->a.u32), RCX, RDI, bits, isSigned);
-            if (ip->flags & BCI_IMM_B)
-                emit_Load32_Immediate(pp, ip->b.u32, RAX, bits, isSigned);
-            else
-                emit_Load32_Indirect(pp, regOffset(ip->b.u32), RAX, RDI, bits, isSigned);
-            if (op == X64Op::MUL)
-            {
-                // mul rcx
-                pp.concat.addString3("\x48\xF7\xE1");
-            }
-            else if (op == X64Op::IMUL)
-            {
-                // imul ecx, eax
-                pp.concat.addString2("\x0F\xAF");
-                pp.concat.addU8(0xC8);
-            }
-            else
-                emit_Op32(pp, RAX, RCX, op);
-        }
-    }
-
-    inline void emit_BinOpInt8(X64PerThread& pp, ByteCodeInstruction* ip, X64Op op, bool isSigned = false)
-    {
-        if (op == X64Op::ADD || op == X64Op::SUB || op == X64Op::MUL)
-        {
-            emit_BinOpInt32(pp, ip, op, 8, isSigned);
-            return;
-        }
-
         if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B))
         {
             emit_Load8_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
@@ -1316,14 +1208,8 @@ namespace BackendX64Inst
         }
     }
 
-    inline void emit_BinOpInt16(X64PerThread& pp, ByteCodeInstruction* ip, X64Op op, bool isSigned = false)
+    inline void emit_BinOpInt16(X64PerThread& pp, ByteCodeInstruction* ip, X64Op op)
     {
-        if (op == X64Op::ADD || op == X64Op::SUB || op == X64Op::MUL)
-        {
-            emit_BinOpInt32(pp, ip, op, 16, isSigned);
-            return;
-        }
-
         if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B))
         {
             emit_Load16_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
@@ -1359,6 +1245,59 @@ namespace BackendX64Inst
             else
                 emit_Load16_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
             emit_Op16(pp, RAX, RCX, op);
+        }
+    }
+
+    inline void emit_BinOpInt32(X64PerThread& pp, ByteCodeInstruction* ip, X64Op op)
+    {
+        if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B))
+        {
+            if (op == X64Op::MUL)
+            {
+                emit_Load32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+                pp.concat.addString1("\xF7"); // mul
+                emit_ModRM(pp, regOffset(ip->b.u32), 4, RDI);
+            }
+            else
+            {
+                emit_Load32_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
+                if (op == X64Op::IMUL)
+                    pp.concat.addString2("\x0F\xAF"); // imul
+                else
+                    pp.concat.addU8((uint8_t) op | 2);
+                emit_ModRM(pp, regOffset(ip->b.u32), RCX, RDI); // ecx, [rdi+?]
+            }
+        }
+        // Mul by power of 2 => shift by log2
+        else if (op == X64Op::MUL && !(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_B) && isPowerOfTwo(ip->b.u32) && (ip->b.u32 < 32))
+        {
+            emit_Load32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            emit_Load8_Immediate(pp, (uint8_t) log2(ip->b.u32), RCX);
+            pp.concat.addString2("\xD3\xE0"); // shl eax, cl
+        }
+        else
+        {
+            if (ip->flags & BCI_IMM_A)
+                emit_Load32_Immediate(pp, ip->a.u32, RCX);
+            else
+                emit_Load32_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
+            if (ip->flags & BCI_IMM_B)
+                emit_Load32_Immediate(pp, ip->b.u32, RAX);
+            else
+                emit_Load32_Indirect(pp, regOffset(ip->b.u32), RAX, RDI);
+            if (op == X64Op::MUL)
+            {
+                // mul rcx
+                pp.concat.addString3("\x48\xF7\xE1");
+            }
+            else if (op == X64Op::IMUL)
+            {
+                // imul ecx, eax
+                pp.concat.addString2("\x0F\xAF");
+                pp.concat.addU8(0xC8);
+            }
+            else
+                emit_Op32(pp, RAX, RCX, op);
         }
     }
 
@@ -1419,22 +1358,16 @@ namespace BackendX64Inst
         }
     }
 
-    inline void emit_BinOpInt8_At_Reg(X64PerThread& pp, ByteCodeInstruction* ip, X64Op op, bool isSigned = false)
+    inline void emit_BinOpInt8_At_Reg(X64PerThread& pp, ByteCodeInstruction* ip, X64Op op)
     {
-        emit_BinOpInt8(pp, ip, op, isSigned);
-        if (op == X64Op::MUL)
-            emit_Store8_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
-        else
-            emit_Store8_Indirect(pp, regOffset(ip->c.u32), RCX, RDI);
+        emit_BinOpInt8(pp, ip, op);
+        emit_Store8_Indirect(pp, regOffset(ip->c.u32), RCX, RDI);
     }
 
-    inline void emit_BinOpInt16_At_Reg(X64PerThread& pp, ByteCodeInstruction* ip, X64Op op, bool isSigned = false)
+    inline void emit_BinOpInt16_At_Reg(X64PerThread& pp, ByteCodeInstruction* ip, X64Op op)
     {
-        emit_BinOpInt16(pp, ip, op, isSigned);
-        if (op == X64Op::MUL)
-            emit_Store16_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
-        else
-            emit_Store16_Indirect(pp, regOffset(ip->c.u32), RCX, RDI);
+        emit_BinOpInt16(pp, ip, op);
+        emit_Store16_Indirect(pp, regOffset(ip->c.u32), RCX, RDI);
     }
 
     inline void emit_BinOpInt32_At_Reg(X64PerThread& pp, ByteCodeInstruction* ip, X64Op op)
@@ -1486,14 +1419,28 @@ namespace BackendX64Inst
 
     /////////////////////////////////////////////////////////////////////
 
-    inline void emit_BinOpInt_Div_At_Reg(X64PerThread& pp, ByteCodeInstruction* ip, int bits, bool isSigned, bool modulo = false)
+    inline void emit_BinOpInt_Div_At_Reg(X64PerThread& pp, ByteCodeInstruction* ip, bool isSigned, uint32_t bits, bool modulo = false)
     {
         switch (bits)
         {
         case 8:
+            emit_Clear32(pp, RAX);
+            emit_Load8_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            if (isSigned)
+                pp.concat.addString1("\x99"); // cdq
+            else
+                emit_Clear32(pp, RDX);
+            break;
         case 16:
+            emit_Clear32(pp, RAX);
+            emit_Load16_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            if (isSigned)
+                pp.concat.addString1("\x99"); // cdq
+            else
+                emit_Clear32(pp, RDX);
+            break;
         case 32:
-            emit_Load32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI, bits, isSigned);
+            emit_Load32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             if (isSigned)
                 pp.concat.addString1("\x99"); // cdq
             else
