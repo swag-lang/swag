@@ -1433,20 +1433,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::BinOpPlusS8:
-        case ByteCodeOp::BinOpPlusS8_Safe:
-        {
-            MK_BINOP8_CAB();
-            OP_OVERFLOW(sadd_with_overflow, CreateAdd, TO_PTR_I8, getInt8Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr->typeInfoS8));
-            break;
-        }
-        case ByteCodeOp::BinOpPlusS16:
-        case ByteCodeOp::BinOpPlusS16_Safe:
-        {
-            MK_BINOP16_CAB();
-            OP_OVERFLOW(sadd_with_overflow, CreateAdd, TO_PTR_I16, getInt16Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr->typeInfoS16));
-            break;
-        }
         case ByteCodeOp::BinOpPlusS32:
         case ByteCodeOp::BinOpPlusS32_Safe:
         {
@@ -1454,32 +1440,18 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             OP_OVERFLOW(sadd_with_overflow, CreateAdd, TO_PTR_I32, getInt32Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr->typeInfoS32));
             break;
         }
-        case ByteCodeOp::BinOpPlusS64:
-        case ByteCodeOp::BinOpPlusS64_Safe:
-        {
-            MK_BINOP64_CAB();
-            OP_OVERFLOW(sadd_with_overflow, CreateAdd, TO_PTR_I64, getInt64Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr->typeInfoS64));
-            break;
-        }
-        case ByteCodeOp::BinOpPlusU8:
-        case ByteCodeOp::BinOpPlusU8_Safe:
-        {
-            MK_BINOP8_CAB();
-            OP_OVERFLOW(uadd_with_overflow, CreateAdd, TO_PTR_I8, getInt8Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr->typeInfoU8));
-            break;
-        }
-        case ByteCodeOp::BinOpPlusU16:
-        case ByteCodeOp::BinOpPlusU16_Safe:
-        {
-            MK_BINOP16_CAB();
-            OP_OVERFLOW(uadd_with_overflow, CreateAdd, TO_PTR_I16, getInt16Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr->typeInfoU16));
-            break;
-        }
         case ByteCodeOp::BinOpPlusU32:
         case ByteCodeOp::BinOpPlusU32_Safe:
         {
             MK_BINOP32_CAB();
             OP_OVERFLOW(uadd_with_overflow, CreateAdd, TO_PTR_I32, getInt32Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr->typeInfoU32));
+            break;
+        }
+        case ByteCodeOp::BinOpPlusS64:
+        case ByteCodeOp::BinOpPlusS64_Safe:
+        {
+            MK_BINOP64_CAB();
+            OP_OVERFLOW(sadd_with_overflow, CreateAdd, TO_PTR_I64, getInt64Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr->typeInfoS64));
             break;
         }
         case ByteCodeOp::BinOpPlusU64:
@@ -1504,20 +1476,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::BinOpMinusS8:
-        case ByteCodeOp::BinOpMinusS8_Safe:
-        {
-            MK_BINOP8_CAB();
-            OP_OVERFLOW(ssub_with_overflow, CreateSub, TO_PTR_I8, getInt8Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr->typeInfoS8));
-            break;
-        }
-        case ByteCodeOp::BinOpMinusS16:
-        case ByteCodeOp::BinOpMinusS16_Safe:
-        {
-            MK_BINOP16_CAB();
-            OP_OVERFLOW(ssub_with_overflow, CreateSub, TO_PTR_I16, getInt16Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr->typeInfoS16));
-            break;
-        }
         case ByteCodeOp::BinOpMinusS32:
         case ByteCodeOp::BinOpMinusS32_Safe:
         {
@@ -1525,32 +1483,18 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             OP_OVERFLOW(ssub_with_overflow, CreateSub, TO_PTR_I32, getInt32Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr->typeInfoS32));
             break;
         }
-        case ByteCodeOp::BinOpMinusS64:
-        case ByteCodeOp::BinOpMinusS64_Safe:
-        {
-            MK_BINOP64_CAB();
-            OP_OVERFLOW(ssub_with_overflow, CreateSub, TO_PTR_I64, getInt64Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr->typeInfoS64));
-            break;
-        }
-        case ByteCodeOp::BinOpMinusU8:
-        case ByteCodeOp::BinOpMinusU8_Safe:
-        {
-            MK_BINOP8_CAB();
-            OP_OVERFLOW(usub_with_overflow, CreateSub, TO_PTR_I8, getInt8Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr->typeInfoU8));
-            break;
-        }
-        case ByteCodeOp::BinOpMinusU16:
-        case ByteCodeOp::BinOpMinusU16_Safe:
-        {
-            MK_BINOP16_CAB();
-            OP_OVERFLOW(usub_with_overflow, CreateSub, TO_PTR_I16, getInt16Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr->typeInfoU16));
-            break;
-        }
         case ByteCodeOp::BinOpMinusU32:
         case ByteCodeOp::BinOpMinusU32_Safe:
         {
             MK_BINOP32_CAB();
             OP_OVERFLOW(usub_with_overflow, CreateSub, TO_PTR_I32, getInt32Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr->typeInfoU32));
+            break;
+        }
+        case ByteCodeOp::BinOpMinusS64:
+        case ByteCodeOp::BinOpMinusS64_Safe:
+        {
+            MK_BINOP64_CAB();
+            OP_OVERFLOW(ssub_with_overflow, CreateSub, TO_PTR_I64, getInt64Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr->typeInfoS64));
             break;
         }
         case ByteCodeOp::BinOpMinusU64:
@@ -1575,20 +1519,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::BinOpMulS8:
-        case ByteCodeOp::BinOpMulS8_Safe:
-        {
-            MK_BINOP8_CAB();
-            OP_OVERFLOW(smul_with_overflow, CreateMul, TO_PTR_I8, getInt8Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr->typeInfoS8));
-            break;
-        }
-        case ByteCodeOp::BinOpMulS16:
-        case ByteCodeOp::BinOpMulS16_Safe:
-        {
-            MK_BINOP16_CAB();
-            OP_OVERFLOW(smul_with_overflow, CreateMul, TO_PTR_I16, getInt16Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr->typeInfoS16));
-            break;
-        }
         case ByteCodeOp::BinOpMulS32:
         case ByteCodeOp::BinOpMulS32_Safe:
         {
@@ -1596,32 +1526,18 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             OP_OVERFLOW(smul_with_overflow, CreateMul, TO_PTR_I32, getInt32Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr->typeInfoS32));
             break;
         }
-        case ByteCodeOp::BinOpMulS64:
-        case ByteCodeOp::BinOpMulS64_Safe:
-        {
-            MK_BINOP64_CAB();
-            OP_OVERFLOW(smul_with_overflow, CreateMul, TO_PTR_I64, getInt64Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr->typeInfoS64));
-            break;
-        }
-        case ByteCodeOp::BinOpMulU8:
-        case ByteCodeOp::BinOpMulU8_Safe:
-        {
-            MK_BINOP8_CAB();
-            OP_OVERFLOW(umul_with_overflow, CreateMul, TO_PTR_I8, getInt8Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr->typeInfoU8));
-            break;
-        }
-        case ByteCodeOp::BinOpMulU16:
-        case ByteCodeOp::BinOpMulU16_Safe:
-        {
-            MK_BINOP16_CAB();
-            OP_OVERFLOW(umul_with_overflow, CreateMul, TO_PTR_I8, getInt16Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr->typeInfoU16));
-            break;
-        }
         case ByteCodeOp::BinOpMulU32:
         case ByteCodeOp::BinOpMulU32_Safe:
         {
             MK_BINOP32_CAB();
             OP_OVERFLOW(umul_with_overflow, CreateMul, TO_PTR_I32, getInt32Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr->typeInfoU32));
+            break;
+        }
+        case ByteCodeOp::BinOpMulS64:
+        case ByteCodeOp::BinOpMulS64_Safe:
+        {
+            MK_BINOP64_CAB();
+            OP_OVERFLOW(smul_with_overflow, CreateMul, TO_PTR_I64, getInt64Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr->typeInfoS64));
             break;
         }
         case ByteCodeOp::BinOpMulU64:
@@ -1771,20 +1687,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::BinOpDivS8:
-        {
-            MK_BINOP8_CAB();
-            auto v0 = builder.CreateSDiv(r1, r2);
-            builder.CreateStore(v0, TO_PTR_I8(r0));
-            break;
-        }
-        case ByteCodeOp::BinOpDivS16:
-        {
-            MK_BINOP16_CAB();
-            auto v0 = builder.CreateSDiv(r1, r2);
-            builder.CreateStore(v0, TO_PTR_I16(r0));
-            break;
-        }
         case ByteCodeOp::BinOpDivS32:
         {
             MK_BINOP32_CAB();
@@ -1797,20 +1699,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             MK_BINOP64_CAB();
             auto v0 = builder.CreateSDiv(r1, r2);
             builder.CreateStore(v0, TO_PTR_I64(r0));
-            break;
-        }
-        case ByteCodeOp::BinOpDivU8:
-        {
-            MK_BINOP8_CAB();
-            auto v0 = builder.CreateUDiv(r1, r2);
-            builder.CreateStore(v0, TO_PTR_I8(r0));
-            break;
-        }
-        case ByteCodeOp::BinOpDivU16:
-        {
-            MK_BINOP8_CAB();
-            auto v0 = builder.CreateUDiv(r1, r2);
-            builder.CreateStore(v0, TO_PTR_I16(r0));
             break;
         }
         case ByteCodeOp::BinOpDivU32:

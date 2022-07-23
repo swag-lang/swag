@@ -1176,6 +1176,7 @@ namespace BackendX64Inst
 
     inline void emit_BinOpInt8(X64PerThread& pp, ByteCodeInstruction* ip, X64Op op)
     {
+        SWAG_ASSERT(op == X64Op::AND || op == X64Op::OR || op == X64Op::XOR);
         if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B))
         {
             emit_Load8_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
@@ -1210,6 +1211,7 @@ namespace BackendX64Inst
 
     inline void emit_BinOpInt16(X64PerThread& pp, ByteCodeInstruction* ip, X64Op op)
     {
+        SWAG_ASSERT(op == X64Op::AND || op == X64Op::OR || op == X64Op::XOR);
         if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B))
         {
             emit_Load16_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
