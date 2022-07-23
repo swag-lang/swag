@@ -130,9 +130,22 @@ impl IForm for FormLine
     mtd hitTest(pt: Math.Point, z: f32)->bool
     {
         bSize := borderSize * z * 0.5
-        v := Math.Vector2{pt.x, pt.y}
+        v  := Math.Vector2{pt.x, pt.y}
+        p0 := Math.Vector2{x0, y0}
+        p1 := Math.Vector2{x1, y1}
         computePaintCoords(z)
-        return v.distanceToLine(@{x0, y0}, @{x1, y1}) < bSize
+        if v.distanceToLine(p0, p1) > bSize
+            return false
+
+        v -= p0
+        line := p1 - p0
+        length := line.length()
+        line.normalizeSafe()
+
+        dot := v.dot(line)
+        if dot < -bSize or dot > length
+            return false
+        return true
     }
 
     mtd paint(painter: *Painter, z: f32, quickMode: bool)
