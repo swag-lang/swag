@@ -2928,6 +2928,12 @@ void TypeManager::promoteOne(AstNode* left, AstNode* right)
         leftTypeInfo = left->typeInfo;
     }
 
+    if ((rightTypeInfo->flags & TYPEINFO_UNTYPED_INTEGER) && !(leftTypeInfo->flags & TYPEINFO_UNTYPED_INTEGER))
+    {
+        promoteUntypedInteger(right, left);
+        rightTypeInfo = right->typeInfo;
+    }
+
     // This types do not have a promotion
     switch (leftTypeInfo->nativeType)
     {
