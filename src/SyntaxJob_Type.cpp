@@ -130,6 +130,17 @@ bool SyntaxJob::doTypeExpressionLambdaClosure(AstNode* parent, AstNode** result)
                 SWAG_CHECK(eatToken());
             }
 
+            // Accept a parameter name
+            if (token.id == TokenId::Identifier)
+            {
+                tokenizer.saveState(token);
+                SWAG_CHECK(eatToken());
+                if (token.id != TokenId::SymColon)
+                    tokenizer.restoreState(token);
+                else
+                    SWAG_CHECK(eatToken());
+            }
+
             if (token.text == g_LangSpec->name_self)
             {
                 SWAG_VERIFY(currentStructScope, error(token, Err(Err0334)));
