@@ -894,53 +894,53 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::BinOpModuloS8:
-            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, true, 8, true);
+            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, 8, true, true);
             break;
         case ByteCodeOp::BinOpModuloS16:
-            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, true, 16, true);
+            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, 16, true, true);
             break;
         case ByteCodeOp::BinOpModuloS32:
-            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, true, 32, true);
+            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, 32, true, true);
             break;
         case ByteCodeOp::BinOpModuloS64:
-            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, true, 64, true);
+            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, 64, true, true);
             break;
         case ByteCodeOp::BinOpModuloU8:
-            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, false, 8, true);
+            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, 8, false, true);
             break;
         case ByteCodeOp::BinOpModuloU16:
-            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, false, 16, true);
+            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, 16, false, true);
             break;
         case ByteCodeOp::BinOpModuloU32:
-            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, false, 32, true);
+            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, 32, false, true);
             break;
         case ByteCodeOp::BinOpModuloU64:
-            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, false, 64, true);
+            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, 64, false, true);
             break;
 
         case ByteCodeOp::BinOpDivS8:
-            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, true, 8);
+            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, 8, true);
             break;
         case ByteCodeOp::BinOpDivS16:
-            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, true, 16);
+            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, 16, true);
             break;
         case ByteCodeOp::BinOpDivS32:
-            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, true, 32);
+            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, 32, true);
             break;
         case ByteCodeOp::BinOpDivS64:
-            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, true, 64);
+            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, 64, true);
             break;
         case ByteCodeOp::BinOpDivU8:
-            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, false, 8);
+            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, 8, false);
             break;
         case ByteCodeOp::BinOpDivU16:
-            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, false, 16);
+            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, 16, false);
             break;
         case ByteCodeOp::BinOpDivU32:
-            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, false, 32);
+            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, 32, false);
             break;
         case ByteCodeOp::BinOpDivU64:
-            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, false, 64);
+            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, 64, false);
             break;
         case ByteCodeOp::BinOpDivF32:
             BackendX64Inst::emit_BinOpFloat32_At_Reg(pp, ip, X64Op::FDIV);
@@ -951,12 +951,12 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::BinOpPlusS8:
         case ByteCodeOp::BinOpPlusS8_Safe:
-            BackendX64Inst::emit_BinOpInt8_At_Reg(pp, ip, X64Op::ADD);
+            BackendX64Inst::emit_BinOpInt8_At_Reg(pp, ip, X64Op::ADD, true);
             emitOverflowSigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr->typeInfoS8));
             break;
         case ByteCodeOp::BinOpPlusS16:
         case ByteCodeOp::BinOpPlusS16_Safe:
-            BackendX64Inst::emit_BinOpInt16_At_Reg(pp, ip, X64Op::ADD);
+            BackendX64Inst::emit_BinOpInt16_At_Reg(pp, ip, X64Op::ADD, true);
             emitOverflowSigned(buildParameters, concat, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr->typeInfoS16));
             break;
         case ByteCodeOp::BinOpPlusS32:

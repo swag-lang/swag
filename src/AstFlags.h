@@ -133,6 +133,7 @@ static const uint8_t AST_SPEC_IDENTIFIER_NO_INLINE     = 0x02;
 static const uint8_t AST_SPEC_RANGE_EXCLUDE_UP         = 0x01;
 static const uint8_t AST_SPEC_OP_SAFE                  = 0x01;
 static const uint8_t AST_SPEC_OP_SMALL                 = 0x02;
+static const uint8_t AST_SPEC_OP_NOPROMOTE             = 0x04;
 static const uint8_t AST_SPEC_INTRINSIC_TYPEOF_AS_TYPE = 0x01;
 static const uint8_t AST_SPEC_EXPRLIST_FOR_TUPLE       = 0x01;
 static const uint8_t AST_SPEC_EXPRLIST_FOR_CAPTURE     = 0x02;
