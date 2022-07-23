@@ -1425,22 +1425,6 @@ namespace BackendX64Inst
     {
         switch (bits)
         {
-        case 8:
-            emit_Clear32(pp, RAX);
-            emit_Load8_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            if (isSigned)
-                pp.concat.addString1("\x99"); // cdq
-            else
-                emit_Clear32(pp, RDX);
-            break;
-        case 16:
-            emit_Clear32(pp, RAX);
-            emit_Load16_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            if (isSigned)
-                pp.concat.addString1("\x99"); // cdq
-            else
-                emit_Clear32(pp, RDX);
-            break;
         case 32:
             emit_Load32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             if (isSigned)
@@ -1481,12 +1465,6 @@ namespace BackendX64Inst
         {
             switch (bits)
             {
-            case 8:
-                emit_Store8_Indirect(pp, regOffset(ip->c.u32), RDX, RDI);
-                break;
-            case 16:
-                emit_Store16_Indirect(pp, regOffset(ip->c.u32), RDX, RDI);
-                break;
             case 32:
                 emit_Store32_Indirect(pp, regOffset(ip->c.u32), RDX, RDI);
                 break;
@@ -1502,12 +1480,6 @@ namespace BackendX64Inst
         {
             switch (bits)
             {
-            case 8:
-                emit_Store8_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
-                break;
-            case 16:
-                emit_Store16_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
-                break;
             case 32:
                 emit_Store32_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
                 break;

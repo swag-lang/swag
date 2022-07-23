@@ -1630,20 +1630,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             emitShiftArithmetic(context, builder, allocR, ip, 64);
             break;
 
-        case ByteCodeOp::BinOpModuloS8:
-        {
-            MK_BINOP8_CAB();
-            auto v0 = builder.CreateSRem(r1, r2);
-            builder.CreateStore(v0, TO_PTR_I8(r0));
-            break;
-        }
-        case ByteCodeOp::BinOpModuloS16:
-        {
-            MK_BINOP16_CAB();
-            auto v0 = builder.CreateSRem(r1, r2);
-            builder.CreateStore(v0, TO_PTR_I16(r0));
-            break;
-        }
         case ByteCodeOp::BinOpModuloS32:
         {
             MK_BINOP32_CAB();
@@ -1656,20 +1642,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             MK_BINOP64_CAB();
             auto v0 = builder.CreateSRem(r1, r2);
             builder.CreateStore(v0, TO_PTR_I64(r0));
-            break;
-        }
-        case ByteCodeOp::BinOpModuloU8:
-        {
-            MK_BINOP8_CAB();
-            auto v0 = builder.CreateURem(r1, r2);
-            builder.CreateStore(v0, TO_PTR_I8(r0));
-            break;
-        }
-        case ByteCodeOp::BinOpModuloU16:
-        {
-            MK_BINOP16_CAB();
-            auto v0 = builder.CreateURem(r1, r2);
-            builder.CreateStore(v0, TO_PTR_I16(r0));
             break;
         }
         case ByteCodeOp::BinOpModuloU32:

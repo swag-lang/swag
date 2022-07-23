@@ -873,23 +873,11 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_BinOpFloat64_At_Reg(pp, ip, X64Op::FMUL);
             break;
 
-        case ByteCodeOp::BinOpModuloS8:
-            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, true, 8, true);
-            break;
-        case ByteCodeOp::BinOpModuloS16:
-            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, true, 16, true);
-            break;
         case ByteCodeOp::BinOpModuloS32:
             BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, true, 32, true);
             break;
         case ByteCodeOp::BinOpModuloS64:
             BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, true, 64, true);
-            break;
-        case ByteCodeOp::BinOpModuloU8:
-            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, false, 8, true);
-            break;
-        case ByteCodeOp::BinOpModuloU16:
-            BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, false, 16, true);
             break;
         case ByteCodeOp::BinOpModuloU32:
             BackendX64Inst::emit_BinOpInt_Div_At_Reg(pp, ip, false, 32, true);
