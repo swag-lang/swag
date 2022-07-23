@@ -911,7 +911,7 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
         return true;
 
     // Determin if we must promote to 32/64 bits.
-    // Bit manipulations to not promote.
+    // Bit manipulations do not promote.
     bool mustPromote = true;
     if (node->token.id == TokenId::SymVertical ||
         node->token.id == TokenId::SymAmpersand ||
