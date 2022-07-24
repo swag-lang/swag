@@ -16,7 +16,7 @@ static uint32_t                 g_MakeCallbackCount = 0;
 static void byteCodeRun(bool forCallback, void* byteCodePtr, va_list valist)
 {
     ByteCode*         bc       = (ByteCode*) ByteCode::undoByteCodeLambda(byteCodePtr);
-    TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(bc->node->typeInfo, TypeInfoKind::FuncAttr);
+    TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(bc->node ? bc->node->typeInfo : bc->typeInfoFunc, TypeInfoKind::FuncAttr);
 
     VectorNative<Register*> returnRegisters;
     VectorNative<Register*> paramRegisters;
@@ -28,10 +28,12 @@ static void byteCodeRun(bool forCallback, void* byteCodePtr, va_list valist)
         returnRegisters.push_back(r);
     }
 
-    auto saveNode       = g_RunContext.node;
+    auto saveNode = g_RunContext.node;
+    SWAG_ASSERT(saveNode);
+
     auto saveSourceFile = g_RunContext.sourceFile;
 
-    auto node           = bc->node;
+    auto node           = bc->node ? bc->node : saveNode;
     auto module         = node->sourceFile->module;
     bool stackAllocated = false;
 
