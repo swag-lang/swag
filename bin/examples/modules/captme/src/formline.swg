@@ -137,14 +137,15 @@ impl IForm for FormLine
         if v.distanceToLine(p0, p1) > bSize
             return false
 
+        // Be sure it's not before or after the line
         v -= p0
         line := p1 - p0
         length := line.length()
         line.normalizeSafe()
-
         dot := v.dot(line)
         if dot < -bSize or dot > length
             return false
+
         return true
     }
 

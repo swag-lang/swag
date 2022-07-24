@@ -19,6 +19,7 @@ struct Application
     mustQuit:       bool
     endModal:       bool
     endModalExit:   WndId
+    inModalLoop:    u32
     isActivated:    bool
     quitCode:       s32
     timing:         Time.FrameTiming
@@ -26,6 +27,7 @@ struct Application
     timers:             Array'(*Timer)
     frameEvents:        Array'(*Wnd)
     modalSurfaces:      Array'(*Surface)
+    toDelete:           Array'{*void, const *Swag.TypeInfo}
     mouseEnterWnd:      *Wnd
     mouseCaptureWnd:    *Wnd
     keybFocusWnd:       *Wnd
@@ -289,12 +291,14 @@ private impl Application
                 pevt.source.updateCommandState()
             }
 
-            Memory.delete(evt, evt.type)
+            toDelete.add(@{evt, evt.type})
         }
     }
 
     mtd sendDestroyEvents()
     {
+        if inModalLoop
+            return
         visit wnd: postDestroy
             destroyWnd(wnd)
         postDestroy.clear()
@@ -372,6 +376,15 @@ private impl Application
         }
     }
 
+    mtd deletePointers()
+    {
+        if inModalLoop
+            return
+        visit p: toDelete
+            Memory.delete(p.item0, p.item1)
+        toDelete.clear()
+    }
+
     mtd runFrame()
     {
         // Auto exit
@@ -392,10 +405,15 @@ private impl Application
 
         visit s:
             surfaces s.paint()
+
+        deletePointers()
     }
 
     mtd doModalLoop(surface: *Surface, cb: closure(self) = null)->WndId
     {
+        inModalLoop += 1
+        defer inModalLoop -= 1
+
         visit s: surfaces
             s.disable()
 
@@ -522,7 +540,9 @@ impl Application
         }
 
         if wnd.isAllocated
-            Memory.delete(wnd, wnd.type)
+        {
+            toDelete.add(@{wnd, wnd.type})
+        }
     }
 
     // Returns the window under the given point
