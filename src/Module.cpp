@@ -1030,3 +1030,10 @@ Utf8 Module::getGlobalPrivFct(const Utf8& nameFct)
 {
     return Fmt(nameFct.c_str(), nameNormalized.c_str());
 }
+
+void Module::logStage(const char* msg)
+{
+    if (!g_CommandLine->verboseStages)
+        return;
+    g_Log.verbose(Fmt("[%s] -- %s", name.c_str(), msg));
+}

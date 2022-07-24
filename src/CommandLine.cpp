@@ -28,7 +28,7 @@ bool CommandLine::check()
         rebuild = true;
 
     // Force verbose
-    if (verboseCmdLine || verbosePath || verboseLink || verboseTestErrors || verboseConcreteTypes)
+    if (verboseCmdLine || verbosePath || verboseLink || verboseTestErrors || verboseConcreteTypes || verboseStages)
         verbose = true;
 
     // Stats

@@ -111,6 +111,8 @@ bool Module::sendCompilerMessage(ConcreteCompilerMessage* msg, Job* dependentJob
     PushSwagContext cxt;
     for (auto bc : byteCodeCompiler[(int) msg->kind])
     {
+        if (g_CommandLine->verboseStages)
+            bc->node->sourceFile->module->logStage(Fmt("#message %s\n", bc->node->sourceFile->name.c_str()));
         SWAG_CHECK(executeNode(bc->node->sourceFile, bc->node, &context));
     }
 

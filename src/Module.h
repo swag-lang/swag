@@ -155,6 +155,8 @@ struct Module
     bool waitImplForToSolve(Job* job, TypeInfoStruct* typeStruct);
     void decImplForToSolve(TypeInfoStruct* typeStruct);
 
+    void logStage(const char* msg);
+
     struct ForToSolve
     {
         uint32_t      count;

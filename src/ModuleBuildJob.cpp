@@ -199,6 +199,8 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::Init)
     {
+        if (g_CommandLine->verboseStages)
+            module->logStage("ModuleBuildPass::Init\n");
         if (module->kind != ModuleKind::BootStrap && module->kind != ModuleKind::Runtime)
             module->initFrom(g_Workspace->runtimeModule);
         if (fromError)
@@ -213,6 +215,8 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::Dependencies)
     {
+        if (g_CommandLine->verboseStages)
+            module->logStage("ModuleBuildPass::Dependencies\n");
         module->allocateBackend();
         module->backend->setupExportFile();
 
@@ -249,6 +253,9 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::Syntax)
     {
+        if (g_CommandLine->verboseStages)
+            module->logStage("ModuleBuildPass::Syntax\n");
+
         // Determine now if we need to recompile
         module->backend->setMustCompile();
 
@@ -293,6 +300,8 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::Publish)
     {
+        if (g_CommandLine->verboseStages)
+            module->logStage("ModuleBuildPass::Publish\n");
         if (g_CommandLine->buildPass <= BuildPass::Syntax)
             return JobResult::ReleaseJob;
 
@@ -324,6 +333,9 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::IncludeSwg)
     {
+        if (g_CommandLine->verboseStages)
+            module->logStage("ModuleBuildPass::IncludeSwg\n");
+
         for (auto& dep : module->moduleDependencies)
         {
             if (!loadDependency(dep))
@@ -340,6 +352,9 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::SemanticModule)
     {
+        if (g_CommandLine->verboseStages)
+            module->logStage("ModuleBuildPass::SemanticModule\n");
+
         module->buildModulesSlice();
 
         pass = ModuleBuildPass::BeforeCompilerMessagesPass0;
@@ -358,6 +373,8 @@ JobResult ModuleBuildJob::execute()
     {
         if (module->numErrors)
             return JobResult::ReleaseJob;
+        if (g_CommandLine->verboseStages)
+            module->logStage("ModuleBuildPass::BeforeCompilerMessagesPass0\n");
 
         pass = ModuleBuildPass::CompilerMessagesPass0;
 
@@ -372,6 +389,8 @@ JobResult ModuleBuildJob::execute()
     {
         if (module->numErrors)
             return JobResult::ReleaseJob;
+        if (g_CommandLine->verboseStages)
+            module->logStage("ModuleBuildPass::CompilerMessagesPass0\n");
 
         pass = ModuleBuildPass::BeforeCompilerMessagesPass1;
 
@@ -392,6 +411,8 @@ JobResult ModuleBuildJob::execute()
     {
         if (module->numErrors)
             return JobResult::ReleaseJob;
+        if (g_CommandLine->verboseStages)
+            module->logStage("ModuleBuildPass::BeforeCompilerMessagesPass1\n");
 
         pass = ModuleBuildPass::AfterSemantic;
 
@@ -406,6 +427,8 @@ JobResult ModuleBuildJob::execute()
     {
         if (module->numErrors)
             return JobResult::ReleaseJob;
+        if (g_CommandLine->verboseStages)
+            module->logStage("ModuleBuildPass::AfterSemantic\n");
 
         // This is too late for meta programming of 'impl' blocks...
         module->acceptsCompileImpl = false;
@@ -436,6 +459,8 @@ JobResult ModuleBuildJob::execute()
     {
         if (module->numErrors)
             return JobResult::ReleaseJob;
+        if (g_CommandLine->verboseStages)
+            module->logStage("ModuleBuildPass::WaitForDependencies\n");
 
         // Close generated file
         for (auto& h : module->handleGeneratedFile)
@@ -453,6 +478,8 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::WaitForDependenciesEffective)
     {
+        if (g_CommandLine->verboseStages)
+            module->logStage("ModuleBuildPass::WaitForDependenciesEffective\n");
         if (!module->waitForDependenciesDone(this))
             return JobResult::KeepJobAlive;
         pass = ModuleBuildPass::OptimizeBc;
@@ -461,6 +488,9 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::OptimizeBc)
     {
+        if (g_CommandLine->verboseStages)
+            module->logStage("ModuleBuildPass::OptimizeBc\n");
+
         bool done = false;
         if (!ByteCodeOptimizer::optimize(this, module, done))
             return JobResult::ReleaseJob;
@@ -491,6 +521,8 @@ JobResult ModuleBuildJob::execute()
     {
         if (module->numErrors)
             return JobResult::ReleaseJob;
+        if (g_CommandLine->verboseStages)
+            module->logStage("ModuleBuildPass::RunByteCode\n");
 
         module->initProcessInfos();
         module->sendCompilerMessage(CompilerMsgKind::PassBeforeRunByteCode, this);
@@ -501,7 +533,11 @@ JobResult ModuleBuildJob::execute()
         // Setup runtime
         auto setupFct = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name__setupRuntime);
         SWAG_ASSERT(setupFct);
+
+        if (g_CommandLine->verboseStages)
+            module->logStage(Fmt("__setupRuntime %s\n", setupFct->node->sourceFile->name.c_str()));
         module->executeNode(setupFct->node->sourceFile, setupFct->node, baseContext);
+
         if (module->criticalErrors)
             return JobResult::ReleaseJob;
 
@@ -518,6 +554,8 @@ JobResult ModuleBuildJob::execute()
         {
             for (auto func : module->byteCodeInitFunc)
             {
+                if (g_CommandLine->verboseStages)
+                    module->logStage(Fmt("#init %s\n", func->node->sourceFile->name.c_str()));
                 module->executeNode(func->node->sourceFile, func->node, baseContext);
                 if (module->criticalErrors)
                     return JobResult::ReleaseJob;
@@ -527,6 +565,8 @@ JobResult ModuleBuildJob::execute()
 
             for (auto func : module->byteCodePreMainFunc)
             {
+                if (g_CommandLine->verboseStages)
+                    module->logStage(Fmt("#premain %s\n", func->node->sourceFile->name.c_str()));
                 module->executeNode(func->node->sourceFile, func->node, baseContext);
                 if (module->criticalErrors)
                     return JobResult::ReleaseJob;
@@ -547,6 +587,8 @@ JobResult ModuleBuildJob::execute()
             {
                 if (g_CommandLine->stats)
                     g_Stats.runFunctions++;
+                if (g_CommandLine->verboseStages)
+                    module->logStage(Fmt("#run %s\n", func->node->sourceFile->name.c_str()));
                 module->executeNode(func->node->sourceFile, func->node, baseContext);
                 if (module->criticalErrors)
                     return JobResult::ReleaseJob;
@@ -571,6 +613,8 @@ JobResult ModuleBuildJob::execute()
                 {
                     if (g_CommandLine->stats)
                         g_Stats.testFunctions++;
+                    if (g_CommandLine->verboseStages)
+                        module->logStage(Fmt("#test %s\n", func->node->sourceFile->name.c_str()));
                     module->executeNode(func->node->sourceFile, func->node, baseContext);
                     if (module->criticalErrors)
                         return JobResult::ReleaseJob;
@@ -589,6 +633,8 @@ JobResult ModuleBuildJob::execute()
         // #main function, in script mode
         if (module->byteCodeMainFunc && g_CommandLine->scriptMode)
         {
+            if (g_CommandLine->verboseStages)
+                module->logStage(Fmt("#main %s\n", module->byteCodeMainFunc->node->sourceFile->name.c_str()));
             module->executeNode(module->byteCodeMainFunc->node->sourceFile, module->byteCodeMainFunc->node, baseContext);
             if (module->criticalErrors)
                 return JobResult::ReleaseJob;
@@ -602,6 +648,8 @@ JobResult ModuleBuildJob::execute()
         {
             for (auto func : module->byteCodeDropFunc)
             {
+                if (g_CommandLine->verboseStages)
+                    module->logStage(Fmt("#drop %s\n", func->node->sourceFile->name.c_str()));
                 module->executeNode(func->node->sourceFile, func->node, baseContext);
                 if (module->criticalErrors)
                     return JobResult::ReleaseJob;
@@ -620,6 +668,8 @@ JobResult ModuleBuildJob::execute()
     {
         if (module->numErrors)
             return JobResult::ReleaseJob;
+        if (g_CommandLine->verboseStages)
+            module->logStage("ModuleBuildPass::Output\n");
 
         if (module->kind == ModuleKind::Config || module->kind == ModuleKind::Script)
             pass = ModuleBuildPass::Done;
@@ -648,6 +698,8 @@ JobResult ModuleBuildJob::execute()
     if (pass == ModuleBuildPass::RunNative)
     {
         checkMissingErrors();
+        if (g_CommandLine->verboseStages)
+            module->logStage("ModuleBuildPass::RunNative\n");
 
         pass = ModuleBuildPass::Done;
         if (module->numErrors)

@@ -9,6 +9,9 @@ JobResult ModuleOutputJob::execute()
 {
     if (pass == ModuleOutputJobPass::Init)
     {
+        if (g_CommandLine->verboseStages)
+            module->logStage("ModuleOutputJobPass::Init\n");
+
         // Generate .swg file with public definitions
         pass = ModuleOutputJobPass::PrepareOutput;
 
@@ -28,6 +31,8 @@ JobResult ModuleOutputJob::execute()
     {
         if (!g_CommandLine->output)
             return JobResult::ReleaseJob;
+        if (g_CommandLine->verboseStages)
+            module->logStage("ModuleOutputJobPass::PrepareOutput\n");
 
         pass = ModuleOutputJobPass::WaitForDependencies;
 
@@ -95,6 +100,8 @@ JobResult ModuleOutputJob::execute()
             return JobResult::ReleaseJob;
         if (module->numErrors)
             return JobResult::ReleaseJob;
+        if (g_CommandLine->verboseStages)
+            module->logStage("ModuleOutputJobPass::WaitForDependencies\n");
 
         if (!module->waitForDependenciesDone(this))
             return JobResult::KeepJobAlive;
@@ -105,6 +112,8 @@ JobResult ModuleOutputJob::execute()
     {
         if (module->numErrors)
             return JobResult::ReleaseJob;
+        if(g_CommandLine->verboseStages)
+            module->logStage("ModuleOutputJobPass::GenOutput\n");
 
         pass = ModuleOutputJobPass::Done;
 
