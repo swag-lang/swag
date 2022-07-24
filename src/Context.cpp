@@ -28,12 +28,12 @@ static void byteCodeRun(bool forCallback, void* byteCodePtr, va_list valist)
         returnRegisters.push_back(r);
     }
 
-    auto saveNode = g_RunContext.node;
-    SWAG_ASSERT(saveNode);
-
+    auto saveNode       = g_RunContext.node;
     auto saveSourceFile = g_RunContext.sourceFile;
 
-    auto node           = bc->node ? bc->node : saveNode;
+    auto node = bc->node ? bc->node : saveNode;
+    SWAG_ASSERT(node);
+
     auto module         = node->sourceFile->module;
     bool stackAllocated = false;
 

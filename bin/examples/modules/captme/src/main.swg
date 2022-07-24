@@ -12,5 +12,7 @@ var g_App: Application
     surface.setView(MainWnd.create(surface.wnd))
     surface.show()
 
+    if Env.getArg(1) == "swag.test"
+        g_App.maxRunFrame = 100
     g_App.run()
 }

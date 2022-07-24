@@ -48,5 +48,7 @@ var app: Application
     //surface1 := try app.createSurface(100+W+10, 100, W, H, SurfaceFlags.Secondary | SurfaceFlags.SmallCaption | SurfaceFlags.CloseBtn)
     //surface1.show()
 
+    if Env.getArg(1) == "swag.test"
+        app.maxRunFrame = 100
     app.run()
 }

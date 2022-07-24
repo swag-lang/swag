@@ -1,4 +1,8 @@
 ..\bin\swag_devmode clean --script
+
+..\bin\swag_devmode run -w:..\bin\examples -m:wnd --script --args:"swag.test"
+..\bin\swag_devmode run -w:..\bin\examples -m:captme --script --args:"swag.test"
+
 ..\bin\swag_devmode ..\bin\examples\scripts\mine.swgs --args:"swag.test"
 ..\bin\swag_devmode ..\bin\examples\scripts\pong.swgs --args:"swag.test"
 ..\bin\swag_devmode ..\bin\examples\scripts\verlet.swgs --args:"swag.test"
