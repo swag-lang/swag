@@ -620,6 +620,10 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
         }
     }
 
+    // Try with promoted type
+    if (fromType->promotedFrom && fromType->promotedFrom->isNative(NativeTypeKind::U8) && !(castFlags & CASTFLAG_EXPLICIT))
+        castFlags |= CASTFLAG_EXPLICIT | CASTFLAG_FROM_PROMOTE;
+
     if (castFlags & CASTFLAG_EXPLICIT)
     {
         switch (fromType->nativeType)
@@ -636,7 +640,12 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
         case NativeTypeKind::U32:
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
-            if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
+            if (fromNode && (castFlags & CASTFLAG_FROM_PROMOTE))
+            {
+                fromNode->castedTypeInfo = fromType;
+                fromNode->typeInfo       = g_TypeMgr->typeInfoU8;
+            }
+            else if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
                 {
@@ -738,6 +747,10 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
         }
     }
 
+    // Try with promoted type
+    if (fromType->promotedFrom && fromType->promotedFrom->isNative(NativeTypeKind::U16) && !(castFlags & CASTFLAG_EXPLICIT))
+        castFlags |= CASTFLAG_EXPLICIT | CASTFLAG_FROM_PROMOTE;
+
     if (castFlags & CASTFLAG_EXPLICIT)
     {
         switch (fromType->nativeType)
@@ -754,7 +767,12 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
         case NativeTypeKind::U32:
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
-            if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
+            if (fromNode && (castFlags & CASTFLAG_FROM_PROMOTE))
+            {
+                fromNode->castedTypeInfo = fromType;
+                fromNode->typeInfo       = g_TypeMgr->typeInfoU16;
+            }
+            else if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
                 {
@@ -1165,6 +1183,10 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
         }
     }
 
+    // Try with promoted type
+    if (fromType->promotedFrom && fromType->promotedFrom->isNative(NativeTypeKind::S8) && !(castFlags & CASTFLAG_EXPLICIT))
+        castFlags |= CASTFLAG_EXPLICIT | CASTFLAG_FROM_PROMOTE;
+
     if (castFlags & CASTFLAG_EXPLICIT)
     {
         switch (fromType->nativeType)
@@ -1181,7 +1203,12 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
         case NativeTypeKind::U32:
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
-            if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
+            if (fromNode && (castFlags & CASTFLAG_FROM_PROMOTE))
+            {
+                fromNode->castedTypeInfo = fromType;
+                fromNode->typeInfo       = g_TypeMgr->typeInfoS8;
+            }
+            else if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
                     fromNode->typeInfo = g_TypeMgr->typeInfoS8;
@@ -1267,6 +1294,10 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
         }
     }
 
+    // Try with promoted type
+    if (fromType->promotedFrom && fromType->promotedFrom->isNative(NativeTypeKind::S16) && !(castFlags & CASTFLAG_EXPLICIT))
+        castFlags |= CASTFLAG_EXPLICIT | CASTFLAG_FROM_PROMOTE;
+
     if (castFlags & CASTFLAG_EXPLICIT)
     {
         switch (fromType->nativeType)
@@ -1283,7 +1314,12 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
         case NativeTypeKind::U32:
         case NativeTypeKind::U64:
         case NativeTypeKind::UInt:
-            if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
+            if (fromNode && (castFlags & CASTFLAG_FROM_PROMOTE))
+            {
+                fromNode->castedTypeInfo = fromType;
+                fromNode->typeInfo       = g_TypeMgr->typeInfoS16;
+            }
+            else if (fromNode && fromNode->flags & AST_VALUE_COMPUTED)
             {
                 if (!(castFlags & CASTFLAG_JUST_CHECK))
                     fromNode->typeInfo = g_TypeMgr->typeInfoS16;
@@ -2840,10 +2876,16 @@ bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeIn
     return castError(context, toType, fromType, fromNode, castFlags);
 }
 
-void TypeManager::promote(AstNode* left, AstNode* right)
+void TypeManager::promote3264(AstNode* left, AstNode* right)
 {
-    promoteOne(left, right);
-    promoteOne(right, left);
+    promoteOne(left, right, true);
+    promoteOne(right, left, true);
+}
+
+void TypeManager::promote816(AstNode* left, AstNode* right)
+{
+    promoteOne(left, right, false);
+    promoteOne(right, left, false);
 }
 
 TypeInfo* TypeManager::promoteUntyped(TypeInfo* typeInfo)
@@ -2866,7 +2908,11 @@ void TypeManager::promoteUntypedInteger(AstNode* left, AstNode* right)
     auto leftNative = CastTypeInfo<TypeInfoNative>(leftTypeInfo, TypeInfoKind::Native);
     if (rightTypeInfo->isNativeInteger())
     {
-        if ((leftNative->valueInteger > 0) && (rightTypeInfo->flags & TYPEINFO_UNSIGNED))
+        if (leftNative->valueInteger == 0)
+        {
+            left->typeInfo = rightTypeInfo;
+        }
+        else if ((leftNative->valueInteger > 0) && (rightTypeInfo->flags & TYPEINFO_UNSIGNED))
         {
             if (leftNative->valueInteger <= UINT8_MAX)
                 left->typeInfo = g_TypeMgr->typeInfoU8;
@@ -2877,7 +2923,7 @@ void TypeManager::promoteUntypedInteger(AstNode* left, AstNode* right)
             else
                 left->typeInfo = g_TypeMgr->typeInfoU64;
         }
-        else if (leftNative->valueInteger < 0)
+        else
         {
             if (leftNative->valueInteger >= INT8_MIN && leftNative->valueInteger <= INT8_MAX)
                 left->typeInfo = g_TypeMgr->typeInfoS8;
@@ -2887,10 +2933,6 @@ void TypeManager::promoteUntypedInteger(AstNode* left, AstNode* right)
                 left->typeInfo = g_TypeMgr->typeInfoS32;
             else
                 left->typeInfo = g_TypeMgr->typeInfoS64;
-        }
-        else if (leftNative->valueInteger == 0)
-        {
-            left->typeInfo = rightTypeInfo;
         }
     }
 }
@@ -2915,7 +2957,7 @@ bool TypeManager::promoteOne(SemanticContext* context, AstNode* right)
     return true;
 }
 
-void TypeManager::promoteOne(AstNode* left, AstNode* right)
+void TypeManager::promoteOne(AstNode* left, AstNode* right, bool is3264)
 {
     TypeInfo* leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
     TypeInfo* rightTypeInfo = TypeManager::concreteType(right->typeInfo);
@@ -2928,6 +2970,12 @@ void TypeManager::promoteOne(AstNode* left, AstNode* right)
         leftTypeInfo = left->typeInfo;
     }
 
+    if (!(leftTypeInfo->flags & TYPEINFO_UNTYPED_INTEGER) && (rightTypeInfo->flags & TYPEINFO_UNTYPED_INTEGER))
+    {
+        promoteUntypedInteger(right, left);
+        rightTypeInfo = right->typeInfo;
+    }
+
     // This types do not have a promotion
     switch (leftTypeInfo->nativeType)
     {
@@ -2937,14 +2985,18 @@ void TypeManager::promoteOne(AstNode* left, AstNode* right)
         return;
     }
 
-    TypeInfo* newLeftTypeInfo = (TypeInfo*) g_TypeMgr->promoteMatrix[(int) leftTypeInfo->nativeType][(int) rightTypeInfo->nativeType];
+    TypeInfo* newLeftTypeInfo = nullptr;
+    if (is3264)
+        newLeftTypeInfo = (TypeInfo*) g_TypeMgr->promoteMatrix3264[(int) leftTypeInfo->nativeType][(int) rightTypeInfo->nativeType];
+    else
+        newLeftTypeInfo = (TypeInfo*) g_TypeMgr->promoteMatrix816[(int) leftTypeInfo->nativeType][(int) rightTypeInfo->nativeType];
     if (newLeftTypeInfo == nullptr)
         newLeftTypeInfo = leftTypeInfo;
 
     if (newLeftTypeInfo == leftTypeInfo)
         return;
 
-    if (!(left->flags & AST_VALUE_COMPUTED))
+    if (!(left->flags & AST_VALUE_COMPUTED) || !is3264)
     {
         left->typeInfo       = newLeftTypeInfo;
         left->castedTypeInfo = leftTypeInfo;

@@ -180,9 +180,9 @@ impl Decoder
         bb := cast(s16) up
         cc := cast(s16) upLeft
         p  := aa + bb - cc
-        pa := Math.abs(p - aa)
-        pb := Math.abs(p - bb)
-        pc := Math.abs(p - cc)
+        pa := Math.abs(cast(s16) (p - aa))
+        pb := Math.abs(cast(s16) (p - bb))
+        pc := Math.abs(cast(s16) (p - cc))
         if pa <= pb and pa <= pc
             return left
         if pb <= pc

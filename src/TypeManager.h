@@ -35,6 +35,7 @@ static const uint32_t CASTFLAG_NO_ITF         = 0x00200000;
 static const uint32_t CASTFLAG_PARAMS         = 0x00400000;
 static const uint32_t CASTFLAG_NO_USING_ST    = 0x00800000;
 static const uint32_t CASTFLAG_NO_IMPLICIT    = 0x01000000;
+static const uint32_t CASTFLAG_FROM_PROMOTE   = 0x02000000;
 
 // Stored in SymbolMatchContext.flags
 static const uint32_t CASTFLAG_RESULT_STRUCT_CONVERT = 0x01000000;
@@ -106,8 +107,9 @@ struct TypeManager
     static TypeInfo* makeUntypedType(TypeInfo* typeInfo, uint32_t value);
     static TypeInfo* literalTypeToType(LiteralType literalType);
     static TypeInfo* literalTypeToType(const Token& token);
-    static void      promote(AstNode* left, AstNode* right);
-    static void      promoteOne(AstNode* left, AstNode* right);
+    static void      promote3264(AstNode* left, AstNode* right);
+    static void      promote816(AstNode* left, AstNode* right);
+    static void      promoteOne(AstNode* left, AstNode* right, bool is3264);
     static bool      promoteOne(SemanticContext* context, AstNode* right);
     static TypeInfo* promoteUntyped(TypeInfo* typeInfo);
     static void      promoteUntypedInteger(AstNode* left, AstNode* right);
@@ -158,7 +160,8 @@ struct TypeManager
     TypeInfoCode*     typeInfoCode           = nullptr;
     TypeInfoSlice*    typeInfoSliceRunes     = nullptr;
 
-    TypeInfoNative* promoteMatrix[(int) NativeTypeKind::Count][(int) NativeTypeKind::Count] = {{0}};
+    TypeInfoNative* promoteMatrix3264[(int) NativeTypeKind::Count][(int) NativeTypeKind::Count] = {{0}};
+    TypeInfoNative* promoteMatrix816[(int) NativeTypeKind::Count][(int) NativeTypeKind::Count]  = {{0}};
 };
 
 extern TypeManager* g_TypeMgr;

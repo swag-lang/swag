@@ -69,7 +69,8 @@ static const uint64_t TYPEINFO_C_VARIADIC               = 0x00000010'00000000;
 static const uint64_t TYPEINFO_GENERATED_TUPLE          = 0x00000020'00000000;
 static const uint64_t TYPEINFO_CLOSURE                  = 0x00000040'00000000;
 static const uint64_t TYPEINFO_INCOMPLETE               = 0x00000080'00000000;
-static const uint64_t TYPEINFO_STRUCT_IS_ITABLE                   = 0x00000100'00000000;
+static const uint64_t TYPEINFO_STRUCT_IS_ITABLE         = 0x00000100'00000000;
+static const uint64_t TYPEINFO_CAN_PROMOTE_816          = 0x00000200'00000000;
 
 static const uint32_t ISSAME_EXACT      = 0x00000001;
 static const uint32_t ISSAME_CAST       = 0x00000002;
@@ -255,8 +256,9 @@ struct TypeInfo
     Utf8 scopedName;
     Utf8 scopedNameExport;
 
-    AstNode* declNode = nullptr;
-    uint64_t flags    = 0;
+    AstNode*  declNode     = nullptr;
+    uint64_t  flags        = 0;
+    TypeInfo* promotedFrom = nullptr;
 
     uint32_t       sizeOf     = 0;
     TypeInfoKind   kind       = TypeInfoKind::Invalid;
@@ -294,7 +296,7 @@ struct TypeInfoNative : public TypeInfo
         valueInteger = 0;
     }
 
-    TypeInfoNative(NativeTypeKind type, const char* tname, int sof, uint32_t fl)
+    TypeInfoNative(NativeTypeKind type, const char* tname, int sof, uint64_t fl)
     {
         kind       = TypeInfoKind::Native;
         nativeType = type;

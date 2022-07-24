@@ -394,9 +394,9 @@ impl Encoder
     func paeth(a, b, c: u8)->u32
     {
         p  := cast(s16) (a + b - c)
-        pa := Math.abs(p - cast(s16) a)
-        pb := Math.abs(p - cast(s16) b)
-        pc := Math.abs(p - cast(s16) c)
+        pa := Math.abs(cast(s16) (p - a))
+        pb := Math.abs(cast(s16) (p - b))
+        pc := Math.abs(cast(s16) (p - c))
 
         if pa <= pb and pa <= pc
             return a

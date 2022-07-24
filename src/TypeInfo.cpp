@@ -393,12 +393,13 @@ int TypeInfo::numRegisters()
 
 void TypeInfo::copyFrom(TypeInfo* from)
 {
-    name       = from->name;
-    declNode   = from->declNode;
-    kind       = from->kind;
-    nativeType = from->nativeType;
-    flags      = from->flags & ~TYPEINFO_SHARED;
-    sizeOf     = from->sizeOf;
+    name         = from->name;
+    declNode     = from->declNode;
+    kind         = from->kind;
+    nativeType   = from->nativeType;
+    flags        = from->flags & ~TYPEINFO_SHARED;
+    sizeOf       = from->sizeOf;
+    promotedFrom = from->promotedFrom;
 }
 
 void TypeInfo::removeGenericFlag()

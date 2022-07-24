@@ -849,8 +849,39 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
     node->inheritAndFlag2(AST_CONST_EXPR, AST_R_VALUE);
     node->inheritOrFlag(AST_SIDE_EFFECTS);
 
+    TypeInfo* promotedFrom = nullptr;
     if (mustPromote)
-        TypeManager::promote(left, right);
+    {
+        TypeInfo* saveLeftTypeInfo        = left->typeInfo;
+        TypeInfo* saveRightTypeInfo       = right->typeInfo;
+        TypeInfo* saveCastedLeftTypeInfo  = left->castedTypeInfo;
+        TypeInfo* saveCastedRightTypeInfo = right->castedTypeInfo;
+
+        // Special case for promotion of s8/s16/u8/u16. We want to keep trace of the original type
+        // in order to be able to make implicit conversions (with safety checks)
+        if (!(leftTypeInfo->flags & TYPEINFO_CAN_PROMOTE_816) && leftTypeInfo->promotedFrom)
+            leftTypeInfo = left->typeInfo = leftTypeInfo->promotedFrom;
+
+        if (!(rightTypeInfo->flags & TYPEINFO_CAN_PROMOTE_816) && rightTypeInfo->promotedFrom)
+            rightTypeInfo = right->typeInfo = rightTypeInfo->promotedFrom;
+
+        if (leftTypeInfo->flags & TYPEINFO_CAN_PROMOTE_816 || rightTypeInfo->flags & TYPEINFO_CAN_PROMOTE_816)
+        {
+            TypeManager::promote816(left, right);
+            promotedFrom = left->typeInfo;
+            if (!(promotedFrom->flags & TYPEINFO_CAN_PROMOTE_816))
+                promotedFrom = nullptr;
+
+            left->typeInfo        = saveLeftTypeInfo;
+            right->typeInfo       = saveRightTypeInfo;
+            left->castedTypeInfo  = saveCastedLeftTypeInfo;
+            right->castedTypeInfo = saveCastedRightTypeInfo;
+            leftTypeInfo          = TypeManager::concreteReferenceType(left->typeInfo);
+            rightTypeInfo         = TypeManager::concreteReferenceType(right->typeInfo);
+        }
+
+        TypeManager::promote3264(left, right);
+    }
 
     // Must do move and not copy
     if (leftTypeInfo->kind == TypeInfoKind::Struct || rightTypeInfo->kind == TypeInfoKind::Struct)
@@ -918,6 +949,12 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
     {
         if (leftTypeInfo->kind == TypeInfoKind::Struct && !(leftTypeInfo->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR))
             node->flags &= ~AST_CONST_EXPR;
+    }
+
+    if (promotedFrom)
+    {
+        node->typeInfo               = node->typeInfo->clone();
+        node->typeInfo->promotedFrom = promotedFrom;
     }
 
     return true;
