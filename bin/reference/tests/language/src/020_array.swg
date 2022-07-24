@@ -23,7 +23,7 @@
         ptr0 := @dataof(array)
         ptr0[0] = 1
 
-        // This is equivalent to take the address of the first element
+        // This is equivalent of taking the address of the first element
         ptr1 := &array[0]
         ptr1[1] = 2
 

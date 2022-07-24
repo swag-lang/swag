@@ -69,7 +69,7 @@
         #assert Value.C == 30
     }
 
-    // If you omit one value, it will assigned to the previous value + 1
+    // If you omit one value, it will be assigned to the previous value + 1
     {
         enum Value: u32
         {
@@ -149,7 +149,7 @@
         #[Swag.EnumFlags]
         enum MyFlags: u8
         {
-            A   // First value is 1
+            A   // First value is 1 and *not* 0
             B   // Value is 2
             C   // Value is 4
             D   // Value is 8
@@ -197,13 +197,6 @@
         y := Value.B
         @assert(y[0] == 10)
         @assert(y[1] == 20)
-    }
-
-    // A variable of type enum must be initialized, except if ? is used
-    {
-        enum Values { A; B; }
-        var x: Values = ?
-        var y: Values = Values.A
     }
 
     // The type of the enum is not necessary in the assignement expression when declaring a variable

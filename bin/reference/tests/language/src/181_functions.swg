@@ -1,5 +1,5 @@
 // #test is a special function than can be used in the 'tests/' folder of the workspace.
-// They will be executed only if swag is run in test mode.
+// They will be executed only if swag is running in test mode.
 #test
 {
 }
@@ -21,5 +21,11 @@
 // You can have as many #drop as you want
 // Order of #drop in the same module is undefined (but is always the inverse order of #init)
 #drop
+{
+}
+
+// #premain will be called after all modules have done their #init code,
+// but before the #main function is called
+#premain
 {
 }

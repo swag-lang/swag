@@ -18,8 +18,8 @@ namespace A.B.C
     @assert(A.B.C.a() == 2)
 }
 
-// You can also put using in front of the namespace to be able to access
-// the content without scoping
+// You can also put 'using' in front of the namespace to be able to access
+// the content without scoping in the *current* file
 using namespace Private
 {
     const FileSymbol = 0

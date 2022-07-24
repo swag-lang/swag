@@ -1,7 +1,7 @@
 #test
 {
     // 'switch' works like in C/C++, except that no 'break' is necessary (except if the 'case' is empty)
-    // That means that there's no automic 'fallthrough' from one case to another
+    // That means that there's no automatic 'fallthrough' from one case to another
     {
         value := 6
         switch value

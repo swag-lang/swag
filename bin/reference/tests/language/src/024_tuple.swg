@@ -79,7 +79,7 @@
         @assert(x.a == 1)
         @assert(x.b == 2)
 
-        // But not that 'x' and 'y' to not have the same type
+        // But note that 'x' and 'y' to not have the same type
         #assert @typeof(x) != @typeof(y)
     }
 }

@@ -38,8 +38,10 @@ func @seterr(err: string);
 @mkinterface()
 @mkcallback()
 @mkforeign()
+@getpinfos()
+@isconstexpr()
+
 @index
-@isconstexpr
 @err
 
 // Memory related

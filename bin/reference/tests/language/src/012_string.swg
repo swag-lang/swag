@@ -9,7 +9,7 @@
         #assert b == "this are some cyrillic characters: ӜИ"
     }
 
-    // A rune is unicode, and 32 bits
+    // A rune is an unicode codepoint, and is 32 bits
     {
         const a = "是"'rune
         #assert a == "是"'rune
@@ -37,7 +37,8 @@
         #assert a == "this is a string"
     }
 
-    // You can concatenate some values if the values are known at compile time. Use the '++' operator for that
+    // You can concatenate some values if the values are known at compile time.
+    // Use the '++' operator for that
     {
         const a = "the devil number is " ++ 666
         #assert a == "the devil number is 666"
@@ -101,7 +102,7 @@
     }
 
     // A multiline string starts and ends with """
-    // Unlink raw strings, they still evaluate escape sequences
+    // Unlike raw strings, they still evaluate escape sequences
     {
         const a = """this is
                      a
@@ -161,7 +162,8 @@
         @assert(a == null)
     }
 
-    // You can also use '@stringof' to return the result of a constant expression as a string
+    // You can also use '@stringof' to return at compile time the result of a
+    // constant expression as a string
     {
         const X = 1
         #assert @stringof(X) == "1"

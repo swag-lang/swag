@@ -9,7 +9,7 @@
 #assert sum(1, 2, 3) == 6
 
 // Note that in Swag, there's no implicit cast for function parameters
-// So you must always specifiy the right type
+// So you must always specify the right type
 #test
 {
     func over(x, y: s32) => x + y

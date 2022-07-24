@@ -115,6 +115,7 @@
 @drop
 @errormsg
 @getcontext
+@getpinfos
 @gettag
 @hastag
 @init

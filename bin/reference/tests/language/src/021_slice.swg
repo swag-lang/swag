@@ -21,7 +21,7 @@
         @assert(a[1] == 2)
     }
 
-    // '@dataof' will return the address of the values, '@countof' the number of elements
+    // At runtime, '@dataof' will return the address of the values, '@countof' the number of elements
     {
         var a: const [..] u32 = @[10, 20, 30, 40, 50]
         count := @countof(a)

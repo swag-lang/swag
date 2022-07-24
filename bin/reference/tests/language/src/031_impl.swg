@@ -17,7 +17,7 @@ impl enum RGB
     @assert(isRedOrBlue(R))
     @assert(isRedOrBlue(B))
 
-    // A first look at 'ufcs' (uniform function all syntax)
+    // A first look at 'ufcs' (uniform function call syntax)
     @assert(R.isRedOrBlue())
     @assert(!RGB.G.isRedOrBlue())
 }

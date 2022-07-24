@@ -83,7 +83,7 @@
     }
 
     // Swag has type reflection.
-    // You can use '@typeof' to get the type of an expression
+    // You can use '@typeof' to get the type of an expression.
     {
         var a = 0
         var b: @typeof(a) = 1   // 'b' will have the same type as 'a'
@@ -94,5 +94,12 @@
         // The #assert will be done by the compiler, and will not generate runtime code (unlike '@assert')
         #assert @typeof(a) == @typeof(b)
         #assert @typeof(a) == s32
+    }
+
+    // Types are values, at compile time and at runtime.
+    {
+        x := @typeof(s32)
+        @assert(x == s32)
+        @assert(x.name == "s32")
     }
 }
