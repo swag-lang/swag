@@ -265,7 +265,7 @@ void BackendX64::emitByteCodeLambdaFctCall(X64PerThread& pp, TypeInfoFuncAttr* t
         }
     }
 
-    uint32_t stackOffset = 0;
+    uint32_t stackOffset = typeFuncBC->numReturnRegisters() * sizeof(Register);
     for (int idxParam = (int) pushRAParams.size() - 1; idxParam >= 0; idxParam--, idxReg++)
     {
         static const uint8_t idxToReg[4] = {RDX, R8, R9};
