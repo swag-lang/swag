@@ -15,20 +15,25 @@ struct EncoderOptions
 
 interface IEncoder
 {
-    write:          mtd(string, typeinfo, *void)
-    writeBufferU8:  mtd(string, const *u8, uint)
-    writeBool:      mtd(string, bool)
-    writeS8:        mtd(string, s8)
-    writeS16:       mtd(string, s16)
-    writeS32:       mtd(string, s32)
-    writeS64:       mtd(string, s64)
-    writeU8:        mtd(string, u8)
-    writeU16:       mtd(string, u16)
-    writeU32:       mtd(string, u32)
-    writeU64:       mtd(string, u64)
-    writeF32:       mtd(string, f32)
-    writeF64:       mtd(string, f64)
-    writeString:    mtd(string, string)
+    beginElement:   mtd(string, typeinfo)
+    endElement:     mtd()
+    beginValue:     mtd()
+    endValue:       mtd()
+
+    write:          mtd(typeinfo, *void)
+    writeBufferU8:  mtd(const *u8, uint)
+    writeBool:      mtd(bool)
+    writeS8:        mtd(s8)
+    writeS16:       mtd(s16)
+    writeS32:       mtd(s32)
+    writeS64:       mtd(s64)
+    writeU8:        mtd(u8)
+    writeU16:       mtd(u16)
+    writeU32:       mtd(u32)
+    writeU64:       mtd(u64)
+    writeF32:       mtd(f32)
+    writeF64:       mtd(f64)
+    writeString:    mtd(string)
 }
 
 struct(T) Encoder
@@ -245,35 +250,37 @@ impl Encoder
     }
 }
 
-impl Encoder
-{
-    mtd(NT) writeNative(name: string, value: NT)
-    {
-        Debug.assert(started)
-        serializer.beginElement(name, NT)
-        serializer.beginValue()
-        serializer.writeNative(value)
-        serializer.endValue()
-        serializer.endElement()
-    }
-}
-
 impl IEncoder for Encoder
 {
-    mtd write(name: string, type: typeinfo, data: *void)
+    mtd beginElement(name: string, type: typeinfo)
     {
-        Debug.assert(started)
         serializer.beginElement(name, type)
-        write(type, data)
+    }
+
+    mtd endElement()
+    {
         serializer.endElement()
     }
 
-    mtd writeBufferU8(name: string, data: const *u8, count: uint)
+    mtd beginValue()
+    {
+        serializer.beginValue()
+    }
+
+    mtd endValue()
+    {
+        serializer.endValue()
+    }
+
+    mtd write(type: typeinfo, data: *void)
     {
         Debug.assert(started)
+        Encoder.write(self, type, data)
+    }
 
-        serializer.beginElement(name, *u8)
-        defer(noerr) serializer.endElement()
+    mtd writeBufferU8(data: const *u8, count: uint)
+    {
+        Debug.assert(started)
 
         treated := serializer.beginSequence(u8, data, count)
         defer(noerr) serializer.endSequence()
@@ -291,16 +298,16 @@ impl IEncoder for Encoder
         }
     }
 
-    mtd writeBool(name: string, value: bool)        = writeNative(name, value)
-    mtd writeS8(name: string, value: s8)            = writeNative(name, value)
-    mtd writeS16(name: string, value: s16)          = writeNative(name, value)
-    mtd writeS32(name: string, value: s32)          = writeNative(name, value)
-    mtd writeS64(name: string, value: s64)          = writeNative(name, value)
-    mtd writeU8(name: string, value: u8)            = writeNative(name, value)
-    mtd writeU16(name: string, value: u16)          = writeNative(name, value)
-    mtd writeU32(name: string, value: u32)          = writeNative(name, value)
-    mtd writeU64(name: string, value: u64)          = writeNative(name, value)
-    mtd writeF32(name: string, value: f32)          = writeNative(name, value)
-    mtd writeF64(name: string, value: f64)          = writeNative(name, value)
-    mtd writeString(name: string, value: string)    = writeNative(name, value)
+    mtd writeBool(value: bool)        = serializer.writeNative(value)
+    mtd writeS8(value: s8)            = serializer.writeNative(value)
+    mtd writeS16(value: s16)          = serializer.writeNative(value)
+    mtd writeS32(value: s32)          = serializer.writeNative(value)
+    mtd writeS64(value: s64)          = serializer.writeNative(value)
+    mtd writeU8(value: u8)            = serializer.writeNative(value)
+    mtd writeU16(value: u16)          = serializer.writeNative(value)
+    mtd writeU32(value: u32)          = serializer.writeNative(value)
+    mtd writeU64(value: u64)          = serializer.writeNative(value)
+    mtd writeF32(value: f32)          = serializer.writeNative(value)
+    mtd writeF64(value: f64)          = serializer.writeNative(value)
+    mtd writeString(value: string)    = serializer.writeNative(value)
 }

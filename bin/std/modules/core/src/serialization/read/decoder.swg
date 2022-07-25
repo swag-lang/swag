@@ -9,20 +9,25 @@ struct DecoderOptions
 
 interface IDecoder
 {
-    read:           mtd(string, *void, typeinfo) throw
-    readBufferU8:   mtd(string, uint)->*u8 throw
-    readBool:       mtd(string)->bool throw
-    readS8:         mtd(string)->s8 throw
-    readS16:        mtd(string)->s16 throw
-    readS32:        mtd(string)->s32 throw
-    readS64:        mtd(string)->s64 throw
-    readU8:         mtd(string)->u8 throw
-    readU16:        mtd(string)->u16 throw
-    readU32:        mtd(string)->u32 throw
-    readU64:        mtd(string)->u64 throw
-    readF32:        mtd(string)->f32 throw
-    readF64:        mtd(string)->f64 throw
-    readString:     mtd(string)->String throw
+    beginElement:   mtd(string, typeinfo)->bool throw
+    endElement:     mtd() throw
+    beginValue:     mtd() throw
+    endValue:       mtd() throw
+
+    read:           mtd(*void, typeinfo) throw
+    readBufferU8:   mtd(uint)->*u8 throw
+    readBool:       mtd()->bool throw
+    readS8:         mtd()->s8 throw
+    readS16:        mtd()->s16 throw
+    readS32:        mtd()->s32 throw
+    readS64:        mtd()->s64 throw
+    readU8:         mtd()->u8 throw
+    readU16:        mtd()->u16 throw
+    readU32:        mtd()->u32 throw
+    readU64:        mtd()->u64 throw
+    readF32:        mtd()->f32 throw
+    readF64:        mtd()->f64 throw
+    readString:     mtd()->String throw
 }
 
 struct(T) Decoder
@@ -247,23 +252,35 @@ impl Decoder
 
 impl IDecoder for Decoder
 {
-    mtd read(name: string, data: *void, dataType: typeinfo) throw
+    mtd beginElement(name: string, type: typeinfo)->bool throw
     {
-        Debug.assert(started)
-        if serializer.beginElement(name, dataType)
-        {
-            Decoder.read(self, data, dataType)
-            serializer.endElement()
-        }
+        return serializer.beginElement(name, type)
     }
 
-    mtd readBufferU8(name: string, count: uint)->*u8 throw
+    mtd endElement() throw
+    {
+        serializer.endElement()
+    }
+
+    mtd beginValue() throw
+    {
+        serializer.beginValue()
+    }
+
+    mtd endValue() throw
+    {
+        serializer.endValue()
+    }
+
+    mtd read(data: *void, dataType: typeinfo) throw
     {
         Debug.assert(started)
+        Decoder.read(self, data, dataType)
+    }
 
-        if !serializer.beginElement(name, *u8)
-            return null
-        defer(noerr) serializer.endElement()
+    mtd readBufferU8(count: uint)->*u8 throw
+    {
+        Debug.assert(started)
 
         data := cast(*u8) Memory.alloc(count)
 
@@ -286,32 +303,16 @@ impl IDecoder for Decoder
         return data
     }
 
-    mtd(NT) readNative(name: string)->NT throw
-    {
-        Debug.assert(started)
-
-        var result: retval
-        if serializer.beginElement(name, NT)
-        {
-            serializer.beginValue()
-            result = serializer.readNative'NT()
-            serializer.endValue()
-            serializer.endElement()
-        }
-
-        return result
-    }
-
-    mtd readBool(name: string)->bool throw      => readNative'bool(name)
-    mtd readS8(name: string)->s8 throw          => readNative's8(name)
-    mtd readS16(name: string)->s16 throw        => readNative's16(name)
-    mtd readS32(name: string)->s32 throw        => readNative's32(name)
-    mtd readS64(name: string)->s64 throw        => readNative's64(name)
-    mtd readU8(name: string)->u8 throw          => readNative'u8(name)
-    mtd readU16(name: string)->u16 throw        => readNative'u16(name)
-    mtd readU32(name: string)->u32 throw        => readNative'u32(name)
-    mtd readU64(name: string)->u64 throw        => readNative'u64(name)
-    mtd readF32(name: string)->f32 throw        => readNative'f32(name)
-    mtd readF64(name: string)->f64 throw        => readNative'f64(name)
-    mtd readString(name: string)->String throw  => readNative'String(name)
+    mtd readBool()->bool throw      => serializer.readNative'bool()
+    mtd readS8()->s8 throw          => serializer.readNative's8()
+    mtd readS16()->s16 throw        => serializer.readNative's16()
+    mtd readS32()->s32 throw        => serializer.readNative's32()
+    mtd readS64()->s64 throw        => serializer.readNative's64()
+    mtd readU8()->u8 throw          => serializer.readNative'u8()
+    mtd readU16()->u16 throw        => serializer.readNative'u16()
+    mtd readU32()->u32 throw        => serializer.readNative'u32()
+    mtd readU64()->u64 throw        => serializer.readNative'u64()
+    mtd readF32()->f32 throw        => serializer.readNative'f32()
+    mtd readF64()->f64 throw        => serializer.readNative'f64()
+    mtd readString()->String throw  => serializer.readNative'String()
 }

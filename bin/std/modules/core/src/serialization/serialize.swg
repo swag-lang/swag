@@ -19,25 +19,51 @@ impl Serializer
     {
         #if T == IDecoder
         {
+            if !ser.beginElement(name, MT)
+                return
+            ser.beginValue()
+
             #if MT == s32
-                dref res = ser.readS32(name)
+                dref res = ser.readS32()
             #else
-                ser.read(name, res, @typeof(MT))
+                ser.read(res, @typeof(MT))
+
+            ser.endValue()
+            ser.endElement()
         }
         #else
         {
+            ser.beginElement(name, MT)
+            ser.beginValue()
+
             #if MT == s32
-                ser.writeS32(name, dref res)
+                ser.writeS32(dref res)
             #else
-                ser.write(name, @typeof(MT), res)
+                ser.write(@typeof(MT), res)
+
+            ser.endValue()
+            ser.endElement()
         }
     }
 
     mtd serializeBufferU8(name: string, res: **u8, count: uint) throw
     {
         #if T == IDecoder
-            dref res = ser.readBufferU8(name, count)
+        {
+            if !ser.beginElement(name, *u8)
+                return
+            ser.beginValue()
+            dref res = ser.readBufferU8(count)
+            ser.endValue()
+            ser.endElement()
+        }
         #else
-            ser.writeBufferU8(name, dref res, count)
+        {
+            ser.beginElement(name, *u8)
+            ser.beginValue()
+            ser.writeBufferU8(dref res, count)
+            ser.endValue()
+            ser.endElement()
+        }
     }
 }

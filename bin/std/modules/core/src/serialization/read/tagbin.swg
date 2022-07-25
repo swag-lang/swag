@@ -95,15 +95,15 @@ impl TagBin
         return true
     }
 
-    mtd endElement()
+    mtd endElement() throw
     {
     }
 
-    mtd beginValue()
+    mtd beginValue() throw
     {
     }
 
-    mtd endValue()
+    mtd endValue() throw
     {
     }
 
