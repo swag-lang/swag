@@ -72,7 +72,12 @@ impl TagBin
 
         sec := sections.backPtr()
         crc := getCrc(name)
-        Debug.assert(sec.mapSeek.contains(crc))
+        ent := sec.mapSeek.find(crc)
+        if !ent
+            return
+
+        // Seek to the corresponding start of element
+        stream.setSeek(ent.value)
     }
 
     mtd endElement()

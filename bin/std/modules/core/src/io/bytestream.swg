@@ -86,4 +86,11 @@ public impl ByteStream
             return
         }
     }
+
+    // Seek to the given position
+    mtd setSeek(offset: uint)
+    {
+        Debug.assert(seek <= @countof(buffer))
+        seek = offset
+    }
 }
