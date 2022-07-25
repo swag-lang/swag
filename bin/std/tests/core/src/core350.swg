@@ -23,7 +23,7 @@ struct Toto
     toto.str = "my string"
     toto.arr2.add(@[1, 2, 3])
 
-    wri.write(&buf, toto)
+    wri.writeAll(&buf, toto)
 
     str := buf.toString()
     //Console.print(str, "\n")
@@ -31,7 +31,7 @@ struct Toto
     var rea: Decoder'Read.JSon
     rea.options.hasVersion = true
 
-    v := try rea.read'Toto(str.toSlice())
+    v := try rea.readAll'Toto(str.toSlice())
     defer Memory.delete(v)
 
     @assert(v.x == true)

@@ -239,7 +239,7 @@ impl Decoder
     }
 
     // Read a full struct
-    mtd(TR) read(input: const [..] u8)->*TR throw
+    mtd(TR) readAll(input: const [..] u8)->*TR throw
     {
         Debug.assert(!started)
         Debug.assert(Reflection.isStruct(TR))
@@ -277,14 +277,11 @@ impl IDecoder for Decoder
 
     mtd read(data: *void, dataType: typeinfo) throw
     {
-        Debug.assert(started)
         Decoder.read(self, data, dataType)
     }
 
     mtd readBufferU8(count: uint)->*u8 throw
     {
-        Debug.assert(started)
-
         data := cast(*u8) Memory.alloc(count)
 
         cpt := count
@@ -294,7 +291,7 @@ impl IDecoder for Decoder
         if !treated
         {
             ptr := data
-            loop cpt
+            loop Math.min(cpt, count)
             {
                 serializer.beginValue()
                 dref ptr = serializer.readNative'u8()

@@ -22,11 +22,11 @@ struct Toto2
     x.z = 3
 
     var buf: ConcatBuffer
-    enc.write(&buf, x)
+    enc.writeAll(&buf, x)
     buf.makeLinear()
 
     var dec: Decoder'Read.TagBin
-    x1 := try dec.read'Toto2(buf.toSlice())
+    x1 := try dec.readAll'Toto2(buf.toSlice())
     defer Memory.delete(x1)
 
     //Console.print(dref x1)

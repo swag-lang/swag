@@ -16,11 +16,11 @@ struct Toto
     x.z = 3
 
     var buf: ConcatBuffer
-    enc.write(&buf, x)
+    enc.writeAll(&buf, x)
     buf.makeLinear()
 
     var dec: Decoder'Read.TagBin
-    x1 := try dec.read'Toto(buf.toSlice())
+    x1 := try dec.readAll'Toto(buf.toSlice())
     defer Memory.delete(x1)
 
     @assert(x1.x == 1)

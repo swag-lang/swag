@@ -129,7 +129,7 @@ impl Capture
         var buf:     ConcatBuffer
         var encoder: Encoder'Write.TagBin
 
-        encoder.write(&buf, dref self)
+        encoder.writeAll(&buf, dref self)
         buf.makeLinear()
 
         catch File.writeAllBytes(file, buf.toSlice())
@@ -140,7 +140,7 @@ impl Capture
         res := File.readAllBytes(file)
 
         var decoder: Decoder'Read.TagBin
-        capture := decoder.read'Capture(res.toSlice())
+        capture := decoder.readAll'Capture(res.toSlice())
         return capture
     }
 
@@ -1097,7 +1097,7 @@ impl ISerialize for Capture
                 o.value = null
             }
 
-            encoder.write(@typeof(arr), &arr)
+            encoder.write(&arr, @typeof(arr))
             arr.count = 0
 
             encoder.endValue()

@@ -16,13 +16,13 @@ struct Toto
     toto.v2.add(@{1, 2})
     toto.v2.add(@{3, 4})
 
-    wri.write(&buf, toto)
+    wri.writeAll(&buf, toto)
 
     str := buf.toString()
     //Console.print(str, "\n")
 
     var rea: Decoder'Read.JSon
-    v := try rea.read'Toto(str.toSlice())
+    v := try rea.readAll'Toto(str.toSlice())
     defer Memory.delete(v)
 
     @assert(v.v2.count == 2)

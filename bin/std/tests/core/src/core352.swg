@@ -15,13 +15,13 @@ struct Toto
     var toto: Toto
     toto.e = .R
 
-    wri.write(&buf, toto)
+    wri.writeAll(&buf, toto)
 
     str := buf.toString()
     //Console.print(str, "\n")
 
     var rea: Decoder'Read.JSon
-    v := try rea.read'Toto(str.toSlice())
+    v := try rea.readAll'Toto(str.toSlice())
     defer Memory.delete(v)
 
     @assert(v.e == .R)
