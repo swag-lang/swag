@@ -122,7 +122,7 @@ impl JSon
     {
     }
 
-    mtd beginValue(type: typeinfo)
+    mtd beginValue()
     {
     }
 

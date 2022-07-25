@@ -39,7 +39,7 @@ impl Decoder
         type := Reflection.makeConcreteAlias(dataType)
         type = Reflection.makeConcreteEnum(type)
 
-        serializer.beginValue(type)
+        serializer.beginValue()
         defer(noerr) serializer.endValue()
 
         // Native
@@ -125,16 +125,19 @@ impl Decoder
             if structType.fromGeneric == @typeof(Object)
             {
                 dataObj := cast(*Object'String) data // 'String' is fake
-                serializer.beginElement("type", structType.fields[0].pointedType)
-                read(cast(*u8) &dataObj.type, structType.fields[0].pointedType)
-                serializer.endElement()
-
-                if dataObj.type
+                if serializer.beginElement("type", structType.fields[0].pointedType)
                 {
-                    dataObj.value = acast Memory.new(dataObj.type)
-                    serializer.beginElement("value", dataObj.type)
-                    read(cast(*u8) dataObj.value, dataObj.type)
+                    read(cast(*u8) &dataObj.type, structType.fields[0].pointedType)
                     serializer.endElement()
+                    if dataObj.type
+                    {
+                        dataObj.value = acast Memory.new(dataObj.type)
+                        if serializer.beginElement("value", dataObj.type)
+                        {
+                            read(cast(*u8) dataObj.value, dataObj.type)
+                            serializer.endElement()
+                        }
+                    }
                 }
 
                 return
@@ -144,11 +147,13 @@ impl Decoder
             var version: u32
             if options.hasVersion
             {
-                serializer.beginElement("$version", u32)
-                serializer.beginValue(u32)
-                version = serializer.readNative'u32()
-                serializer.endValue()
-                serializer.endElement()
+                if serializer.beginElement("$version", u32)
+                {
+                    serializer.beginValue()
+                    version = serializer.readNative'u32()
+                    serializer.endValue()
+                    serializer.endElement()
+                }
             }
 
             // A structure with an implementation of ISerialize
@@ -178,9 +183,11 @@ impl Decoder
 
             visit field: fields
             {
-                serializer.beginElement(field.name, field.pointedType)
-                read(data + field.offset, field.pointedType)
-                serializer.endElement()
+                if serializer.beginElement(field.name, field.pointedType)
+                {
+                    read(data + field.offset, field.pointedType)
+                    serializer.endElement()
+                }
             }
 
             return
@@ -243,16 +250,19 @@ impl IDecoder for Decoder
     mtd read(name: string, data: *void, dataType: typeinfo) throw
     {
         Debug.assert(started)
-        serializer.beginElement(name, dataType)
-        Decoder.read(self, data, dataType)
-        serializer.endElement()
+        if serializer.beginElement(name, dataType)
+        {
+            Decoder.read(self, data, dataType)
+            serializer.endElement()
+        }
     }
 
     mtd readBufferU8(name: string, count: uint)->*u8 throw
     {
         Debug.assert(started)
 
-        serializer.beginElement(name, *u8)
+        if !serializer.beginElement(name, *u8)
+            return null
         defer(noerr) serializer.endElement()
 
         data := cast(*u8) Memory.alloc(count)
@@ -266,7 +276,7 @@ impl IDecoder for Decoder
             ptr := data
             loop cpt
             {
-                serializer.beginValue(u8)
+                serializer.beginValue()
                 dref ptr = serializer.readNative'u8()
                 serializer.endValue()
                 ptr += 1
@@ -279,12 +289,17 @@ impl IDecoder for Decoder
     mtd(NT) readNative(name: string)->NT throw
     {
         Debug.assert(started)
-        serializer.beginElement(name, NT)
-        serializer.beginValue(NT)
-        res := serializer.readNative'NT()
-        serializer.endValue()
-        serializer.endElement()
-        return res
+
+        var result: retval
+        if serializer.beginElement(name, NT)
+        {
+            serializer.beginValue()
+            result = serializer.readNative'NT()
+            serializer.endValue()
+            serializer.endElement()
+        }
+
+        return result
     }
 
     mtd readBool(name: string)->bool throw      => readNative'bool(name)

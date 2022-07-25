@@ -99,7 +99,7 @@ public impl JSon
     {
     }
 
-    mtd beginElement(name: string, type: typeinfo) throw
+    mtd beginElement(name: string, type: typeinfo)->bool throw
     {
         zapBlanks()
         c := stream.readU8()
@@ -121,13 +121,15 @@ public impl JSon
         c = stream.readU8()
         if c != ":"'u8
             throw "malformed property (missing ':' after name)"
+
+        return true
     }
 
     mtd endElement()
     {
     }
 
-    mtd beginValue(type: typeinfo)
+    mtd beginValue()
     {
     }
 

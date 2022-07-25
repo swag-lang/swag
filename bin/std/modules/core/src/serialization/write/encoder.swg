@@ -45,7 +45,7 @@ impl Encoder
         type := Reflection.makeConcreteAlias(dataType)
         type = Reflection.makeConcreteEnum(type)
 
-        serializer.beginValue(type)
+        serializer.beginValue()
         defer(noerr) serializer.endValue()
 
         // Native
@@ -155,7 +155,7 @@ impl Encoder
                     version = cast(u32) val
 
                 serializer.beginElement("$version", u32)
-                serializer.beginValue(u32)
+                serializer.beginValue()
                 serializer.writeNative(version)
                 serializer.endValue()
                 serializer.endElement()
@@ -251,7 +251,7 @@ impl Encoder
     {
         Debug.assert(started)
         serializer.beginElement(name, NT)
-        serializer.beginValue(NT)
+        serializer.beginValue()
         serializer.writeNative(value)
         serializer.endValue()
         serializer.endElement()
@@ -283,7 +283,7 @@ impl IEncoder for Encoder
             ptr := data
             loop count
             {
-                serializer.beginValue(u8)
+                serializer.beginValue()
                 serializer.writeNative(dref ptr)
                 serializer.endValue()
                 ptr += 1

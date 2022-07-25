@@ -15,13 +15,16 @@ struct TagBin
 
 impl TagBin
 {
-    mtd startRead(input: const [..] u8)
+    mtd startRead(input: const [..] u8) throw
     {
         stream.init(input)
     }
 
     mtd beginRoot() throw
     {
+        sig := stream.readNative'u32()
+        if sig != Write.TagBinSignatures.File
+            throw "invalid file"
     }
 
     mtd endRoot() throw
@@ -40,8 +43,8 @@ impl TagBin
     mtd beginFields(fields: Array'(const *TypeValue), structData: *u8, structType: typeinfo)->bool throw
     {
         sig := stream.readNative'u32()
-        if sig != Write.TagBinSignatures.SignatureFat
-            throw "bad SignatureFat"
+        if sig != Write.TagBinSignatures.Fat
+            throw "bad fat signature"
 
         // Read fat
         sec := sections.emplaceAddress(1)
@@ -64,27 +67,39 @@ impl TagBin
         sections.removeBack()
     }
 
-    mtd beginElement(name: string, type: typeinfo) throw
+    mtd beginElement(name: string, type: typeinfo)->bool throw
     {
+        crcName := getCrc(name)
+
         // Outside a section
-        if sections.isEmpty()
-            return
+        if !sections.isEmpty()
+        {
+            sec := sections.backPtr()
+            ent := sec.mapSeek.find(crcName)
 
-        sec := sections.backPtr()
-        crc := getCrc(name)
-        ent := sec.mapSeek.find(crc)
-        if !ent
-            return
+            // If ent is null, then we are requesting a field that do not exist
+            // in the stream
+            if !ent
+                return false
 
-        // Seek to the corresponding start of element
-        stream.setSeek(ent.value)
+            // Seek to the corresponding start of element
+            stream.setSeek(ent.value)
+        }
+
+        // Read element signature
+        crc0 := stream.readNative'u32()
+        if crc0 != crcName
+            throw "stream corrupted"
+        crc1 := stream.readNative'u32()
+
+        return true
     }
 
     mtd endElement()
     {
     }
 
-    mtd beginValue(type: typeinfo)
+    mtd beginValue()
     {
     }
 

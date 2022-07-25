@@ -2,12 +2,13 @@ using Core, Serialization
 
 struct Toto1
 {
-    x, y, z: f32
+    x, y, z: s32
 }
 
 struct Toto2
 {
-    z, y, x: f32
+    str: String
+    z, y, x: s32
 }
 
 //#[Swag.PrintBc]

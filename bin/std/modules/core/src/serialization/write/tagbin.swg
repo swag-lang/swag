@@ -4,7 +4,8 @@ using Swag
 
 enum TagBinSignatures
 {
-    SignatureFat = 0xCAFECAFE
+    File = 0xC0DEC0DE
+    Fat  = 0xCAFECAFE
 }
 
 struct TagBinSection
@@ -30,9 +31,91 @@ impl TagBin
 
     mtd beginRoot()
     {
+        output.addNative(TagBinSignatures.File)
     }
 
     mtd endRoot()
+    {
+    }
+
+    mtd beginStruct(type: typeinfo, data: const *u8)->bool
+    {
+        return false
+    }
+
+    mtd endStruct()
+    {
+    }
+
+    mtd beginFields(fields: Array'(const *TypeValue), structType: typeinfo, structData: const *u8)->bool
+    {
+        sec := sections.emplaceAddress(1)
+        @init(sec)
+
+        output.addNative(TagBinSignatures.Fat)
+        output.addNative(fields.count)
+
+        sec.fields = fields
+        sec.startSeek = output.getSeek()
+
+        // Fat
+        visit field: fields
+        {
+            output.addNative(getCrc(field.name))
+            output.addNative(0'uint) // Will be replaced with the seek to the corresponding startElement
+        }
+
+        return false
+    }
+
+    mtd endFields()
+    {
+        curSeek := output.getSeek()
+        defer output.setSeek(curSeek)
+
+        // Patch fat table
+        sec := sections.backPtr()
+        output.setSeek(sec.startSeek)
+        visit field: sec.fields
+        {
+            // zap crc
+            output.seek(4)
+
+            p := sec.mapSeek.find(field.name)
+            Debug.assert(p != null)
+
+            // Write linear seek inside the buffer
+            output.addNative(output.getOffset(p.value))
+        }
+
+        sections.removeBack()
+    }
+
+    mtd beginElement(name: string, type: typeinfo)
+    {
+        // Outside a section
+        if !sections.isEmpty()
+        {
+            // Register the current seek for the fat generation
+            sec := sections.backPtr()
+            Debug.assert(!sec.mapSeek.contains(name))
+            sec.mapSeek.add(name, output.getSeek())
+        }
+
+        // Write element signature
+        output.addNative(getCrc(name))
+        output.addNative(type.crc32)
+    }
+
+    mtd endElement()
+    {
+    }
+
+    mtd beginValue()
+    {
+    }
+
+    mtd endValue()
     {
     }
 
@@ -74,84 +157,6 @@ impl TagBin
     }
 
     mtd endSequence()
-    {
-    }
-
-    mtd beginStruct(type: typeinfo, data: const *u8)->bool
-    {
-        return false
-    }
-
-    mtd endStruct()
-    {
-    }
-
-    mtd beginFields(fields: Array'(const *TypeValue), structType: typeinfo, structData: const *u8)->bool
-    {
-        sec := sections.emplaceAddress(1)
-        @init(sec)
-
-        output.addNative(TagBinSignatures.SignatureFat)
-        output.addNative(fields.count)
-
-        sec.fields = fields
-        sec.startSeek = output.getSeek()
-
-        // Fat
-        visit field: fields
-        {
-            output.addNative(getCrc(field.name))
-            // Will be replaced with the seek to the corresopnding startElement
-            output.addNative(0'uint)
-        }
-
-        return false
-    }
-
-    mtd endFields()
-    {
-        curSeek := output.getSeek()
-        defer output.setSeek(curSeek)
-
-        // Patch fat table
-        sec := sections.backPtr()
-        output.setSeek(sec.startSeek)
-        visit field: sec.fields
-        {
-            // zap crc
-            output.seek(4)
-
-            p := sec.mapSeek.find(field.name)
-            Debug.assert(p != null)
-
-            // Write linear seek inside the buffer
-            output.addNative(output.getOffset(p.value))
-        }
-
-        sections.removeBack()
-    }
-
-    mtd beginElement(name: string, type: typeinfo)
-    {
-        // Outside a section
-        if sections.isEmpty()
-            return
-
-        // Register the current seek for the fat generation
-        sec := sections.backPtr()
-        Debug.assert(!sec.mapSeek.contains(name))
-        sec.mapSeek.add(name, output.getSeek())
-    }
-
-    mtd endElement()
-    {
-    }
-
-    mtd beginValue(type: typeinfo)
-    {
-    }
-
-    mtd endValue()
     {
     }
 
