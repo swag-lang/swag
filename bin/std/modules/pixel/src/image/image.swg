@@ -267,13 +267,25 @@ impl ISerialize for Image
         s.serializeBufferU8("pixels", &pixels, size)
     }
 
-    mtd read(version: u32, decoder: IDecoder) throw
+    mtd read(version: u32, decoder: IDecoder)->bool throw
     {
         serialize(decoder)
+        return true
     }
 
-    mtd write(version: u32, encoder: IEncoder)
+    mtd write(version: u32, encoder: IEncoder)->bool
     {
         catch serialize(encoder)
+        return true
+    }
+
+    mtd readElement(version: u32, name: string, type: typeinfo, data: *void, decoder: IDecoder)->bool
+    {
+        return false
+    }
+
+    mtd writeElement(version: u32, name: string, type: typeinfo, data: const *void, encoder: IEncoder)->bool
+    {
+        return false
     }
 }

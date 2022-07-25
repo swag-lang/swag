@@ -165,8 +165,8 @@ impl Decoder
             itf := @mkinterface(data, type, ISerialize)
             if itf != null
             {
-                itf.read(version, cast(IDecoder) self)
-                return
+                if itf.read(version, cast(IDecoder) self)
+                    return
             }
 
             // Get all fields to serialize
@@ -188,10 +188,13 @@ impl Decoder
 
             visit field: fields
             {
-                if serializer.beginElement(field.name, field.pointedType)
+                if !itf or !itf.readElement(version, field.name, field.pointedType, data + field.offset, cast(IDecoder) self)
                 {
-                    read(data + field.offset, field.pointedType)
-                    serializer.endElement()
+                    if serializer.beginElement(field.name, field.pointedType)
+                    {
+                        read(data + field.offset, field.pointedType)
+                        serializer.endElement()
+                    }
                 }
             }
 

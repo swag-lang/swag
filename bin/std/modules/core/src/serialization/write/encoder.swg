@@ -170,8 +170,8 @@ impl Encoder
             itf := @mkinterface(data, type, ISerialize)
             if itf != null
             {
-                itf.write(version, cast(IEncoder) self)
-                return
+                if itf.write(version, cast(IEncoder) self)
+                    return
             }
 
             // Get all fields to serialize
@@ -194,9 +194,12 @@ impl Encoder
             // Generic structure save
             visit field: fields
             {
-                serializer.beginElement(field.name, field.pointedType)
-                write(field.pointedType, data + field.offset)
-                serializer.endElement()
+                if !itf or !itf.writeElement(version, field.name, field.pointedType, data + field.offset, cast(IEncoder) self)
+                {
+                    serializer.beginElement(field.name, field.pointedType)
+                    write(field.pointedType, data + field.offset)
+                    serializer.endElement()
+                }
             }
 
             return
