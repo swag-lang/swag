@@ -260,6 +260,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("var", TokenId::KwdVar);
     keywords.add("const", TokenId::KwdConst);
     keywords.add("namespace", TokenId::KwdNamespace);
+    keywords.add("scopefile", TokenId::KwdScopeFile);
     keywords.add("public", TokenId::KwdPublic);
     keywords.add("private", TokenId::KwdPrivate);
     keywords.add("alias", TokenId::KwdAlias);

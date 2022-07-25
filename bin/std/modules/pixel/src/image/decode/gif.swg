@@ -5,7 +5,7 @@
 #global namespace Gif
 using Swag, Core
 
-using namespace DecoderPrivate {
+scopefile {
 
 struct Entry
 {

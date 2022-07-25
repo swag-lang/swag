@@ -1,7 +1,7 @@
 #global if #os == Swag.TargetOs.Windows
 using Core, Win32, Gdi32, Pixel
 
-using namespace ScreenShotPriv {
+scopefile {
 
 var g_StartGrabX: s32
 var g_StartGrabY: s32

@@ -26,6 +26,16 @@ bool SyntaxJob::doWith(AstNode* parent, AstNode** result)
     return true;
 }
 
+bool SyntaxJob::doScopeFile(AstNode* parent, AstNode** result)
+{
+    Token privName = token;
+    SWAG_CHECK(eatToken());
+    privName.id   = TokenId::Identifier;
+    privName.text = Fmt("__privns_%d", g_UniqueID.fetch_add(1));
+    SWAG_CHECK(doNamespaceOnName(parent, result, false, true, &privName));
+    return true;
+}
+
 bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
 {
     SWAG_CHECK(eatToken());
@@ -44,7 +54,7 @@ bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
             AstNode* varNode;
             SWAG_CHECK(doVarDecl(parent, &varNode));
 
-            auto node = Ast::newNode<AstNode>(this, AstNodeKind::Using, sourceFile, parent);
+            auto node         = Ast::newNode<AstNode>(this, AstNodeKind::Using, sourceFile, parent);
             node->semanticFct = SemanticJob::resolveUsing;
             if (result)
                 *result = node;
@@ -110,7 +120,11 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result)
 bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result, bool forGlobal, bool forUsing)
 {
     SWAG_CHECK(eatToken());
+    return doNamespaceOnName(parent, result, forGlobal, forUsing);
+}
 
+bool SyntaxJob::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal, bool forUsing, Token* privName)
+{
     AstNode* namespaceNode;
     Scope*   oldScope = currentScope;
     Scope*   newScope = nullptr;
@@ -124,6 +138,9 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result, bool forGlobal, b
     while (true)
     {
         namespaceNode = Ast::newNode<AstNameSpace>(this, AstNodeKind::Namespace, sourceFile, parent);
+        if (privName)
+            namespaceNode->token.text = privName->text;
+
         if (first && result)
             *result = namespaceNode;
         if (forGlobal)
@@ -135,7 +152,9 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result, bool forGlobal, b
         case TokenId::Identifier:
             break;
         case TokenId::SymLeftCurly:
-            return error(token, Err(Err0389));
+            if (!privName)
+                return error(token, Err(Err0389));
+            break;
         case TokenId::SymSemiColon:
             return error(token, Err(Err0390));
         default:
@@ -144,7 +163,7 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result, bool forGlobal, b
 
         // Be sure this is not the swag namespace, except for a runtime file
         if (!sourceFile->isBootstrapFile && !sourceFile->isRuntimeFile)
-            SWAG_VERIFY(!token.text.compareNoCase(g_LangSpec->name_Swag), error(token, Fmt(Err(Err0392), token.ctext())));
+            SWAG_VERIFY(!namespaceNode->token.text.compareNoCase(g_LangSpec->name_Swag), error(token, Fmt(Err(Err0392), token.ctext())));
 
         // Add/Get namespace
         {
@@ -171,7 +190,10 @@ bool SyntaxJob::doNamespace(AstNode* parent, AstNode** result, bool forGlobal, b
                 newScope = CastTypeInfo<TypeInfoNamespace>(symbol->overloads[0]->typeInfo, TypeInfoKind::Namespace)->scope;
         }
 
-        SWAG_CHECK(eatToken());
+        if (privName)
+            privName = nullptr;
+        else
+            SWAG_CHECK(eatToken());
         if (token.id != TokenId::SymDot)
         {
             if (forUsing)
@@ -759,6 +781,9 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent, AstNode** result)
         break;
     case TokenId::KwdUsing:
         SWAG_CHECK(doUsing(parent, result));
+        break;
+    case TokenId::KwdScopeFile:
+        SWAG_CHECK(doScopeFile(parent, result));
         break;
     case TokenId::SymAttrStart:
     {

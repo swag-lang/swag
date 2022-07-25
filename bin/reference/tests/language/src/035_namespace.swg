@@ -27,3 +27,12 @@ using namespace Private
 
 const B = Private.FileSymbol
 const C = FileSymbol // No need to specify 'Private' because of the 'using'
+
+// This is equivalent to 'scopefile', but you don't have to specify a name,
+// the compiler will generate it for you
+
+scopefile {
+    const OtherSymbol = 0
+}
+
+const D = OtherSymbol

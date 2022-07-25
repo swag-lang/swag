@@ -8,7 +8,7 @@
 #global namespace Png
 using Swag, Core
 
-using namespace DecoderPrivate {
+scopefile {
 
 enum ChunkType: u32
 {

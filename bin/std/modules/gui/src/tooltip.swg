@@ -1,6 +1,6 @@
 #global namespace ToolTip
 
-using namespace ToolTipPriv {
+scopefile {
 
 struct ToolTip
 {

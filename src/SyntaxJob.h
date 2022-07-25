@@ -133,6 +133,7 @@ struct SyntaxJob : public Job
     bool doGlobalAttributeExpose(AstNode* parent, AstNode** result, bool forGlobal);
     bool doNamespace(AstNode* parent, AstNode** result = nullptr);
     bool doNamespace(AstNode* parent, AstNode** result, bool forGlobal, bool forUsing);
+    bool doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal, bool forUsing, Token *privName = nullptr);
     bool doEnumContent(AstNode* parent, AstNode** result = nullptr);
     bool doEnumValue(AstNode* parent, AstNode** result = nullptr);
     bool doEnum(AstNode* parent, AstNode** result = nullptr);
@@ -177,6 +178,7 @@ struct SyntaxJob : public Job
     bool doReturn(AstNode* parent, AstNode** result = nullptr);
     bool doLambdaExpression(AstNode* parent, AstNode** result = nullptr);
     bool doWith(AstNode* parent, AstNode** result = nullptr);
+    bool doScopeFile(AstNode* parent, AstNode** result = nullptr);
     bool doUsing(AstNode* parent, AstNode** result = nullptr);
     bool doCast(AstNode* parent, AstNode** result = nullptr);
     bool doBitCast(AstNode* parent, AstNode** result = nullptr);
