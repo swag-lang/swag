@@ -23,23 +23,19 @@
         @assert(pt.y == 2)
     }
 
+    // You can declare a variable with 'using' just before
     {
         struct Point { x: s32; y: s32; }
 
-        func setOne(using point: *Point)
-        {
-            // Here there's no need to specify 'point'
-            // So this is the equivalent to the hidden 'this' in C++
-            x, y = 1
-        }
+        using var pt: Point
+        x = 1 // no need to specify 'pt'
+        y = 2 // no need to specify 'pt'
 
-        var pt: Point
-        setOne(&pt)
         @assert(pt.x == 1)
-        @assert(pt.y == 1)
+        @assert(pt.y == 2)
     }
 
-    // For a variable, you can also use 'with'
+    // For a variable, you can also use 'with' which control the using scope
     {
         struct Point { x, y: s32; }
 
@@ -52,6 +48,22 @@
 
         @assert(pt.x == 1)
         @assert(pt.y == 2)
+    }
+
+    // using can be be the equivalent of the hidden 'this' in C++
+    {
+        struct Point { x: s32; y: s32; }
+
+        func setOne(using point: *Point)
+        {
+            // Here there's no need to specify 'point'
+            x, y = 1
+        }
+
+        var pt: Point
+        setOne(&pt)
+        @assert(pt.x == 1)
+        @assert(pt.y == 1)
     }
 
     // using can be used with a field inside a struct

@@ -93,14 +93,15 @@ func toto(x: s32, y = Values.A)
     // You can name the fields of the function result too
     func returns2() -> {x: s32, y: s32}
     {
-        // You can return a tuple literal
+        // You can return a tuple literal as long as the types match
         if false
             return @{1, 2}
 
-        // Or use the specifal type 'retval'
-        var result: retval
-        result.x = 1
-        result.y = 2
+        // Or use the specifal type 'retval' which is an alias to the
+        // function return type (but not only, we'll see later)
+        using var result: retval
+        x = 1
+        y = 2
         return result
     }
 

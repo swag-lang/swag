@@ -37,6 +37,13 @@
         @assert(G == 3)
     }
 
+    // 'defer' are executed in reverse order of their declaration
+    {
+        x := 1
+        defer @assert(x == 2)   // Will be executed second
+        defer x *= 2            // Will be executed first
+    }
+
     // It's typically used to unregister/destroy a resource, by putting the release
     // code just after the creation one
     {
@@ -60,30 +67,4 @@
 
         @assert(!resource.isResourceCreated())
     }
-}
-
-// defer can also have parameters like defer(err) or defer(noerr)
-
-var g_Defer = 0
-
-func raiseError() throw
-{
-    throw "error"
-}
-
-func testDefer(err: bool) throw
-{
-    defer(err)      g_Defer += 1    // This will be called in case an error is raised, before exiting
-    defer(noerr)    g_Defer += 2    // This will only be called in case an error is not raised
-    defer           g_Defer += 3    // This will be called in both cases
-    if err
-        raiseError()
-}
-
-#test
-{
-    catch testDefer(true)
-    @assert(g_Defer == 4)
-    catch testDefer(false)
-    @assert(g_Defer == 9)
 }

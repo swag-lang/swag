@@ -38,6 +38,20 @@ bool SyntaxJob::doUsing(AstNode* parent, AstNode** result)
 
     while (true)
     {
+        // using var
+        if (token.id == TokenId::KwdVar)
+        {
+            AstNode* varNode;
+            SWAG_CHECK(doVarDecl(parent, &varNode));
+
+            auto node = Ast::newNode<AstNode>(this, AstNodeKind::Using, sourceFile, parent);
+            node->semanticFct = SemanticJob::resolveUsing;
+            if (result)
+                *result = node;
+            Ast::newIdentifierRef(sourceFile, varNode->token.text, node, this);
+            return true;
+        }
+
         auto node         = Ast::newNode<AstNode>(this, AstNodeKind::Using, sourceFile, parent);
         node->semanticFct = SemanticJob::resolveUsing;
         if (result)
