@@ -11,7 +11,6 @@ enum TagBinSignatures
 struct TagBinSection
 {
     startSeek:  ConcatBufferSeek
-    fields:     Array'(const *TypeValue)
     mapSeek:    HashTable'(string, ConcatBufferSeek)
     raw:        bool
 }
@@ -37,6 +36,7 @@ impl TagBin
 
     mtd endRoot()
     {
+        Debug.assert(sections.isEmpty())
     }
 
     mtd beginStruct(type: typeinfo, data: const *u8)->bool
@@ -68,7 +68,6 @@ impl TagBin
         output.addNative(TagBinSignatures.Fat)
         output.addNative(fields.count)
 
-        sec.fields = fields
         sec.startSeek = output.getSeek()
 
         // Fat
@@ -81,7 +80,7 @@ impl TagBin
         return false
     }
 
-    mtd endFields()
+    mtd endFields(fields: Array'(const *TypeValue))
     {
         curSeek := output.getSeek()
         defer output.setSeek(curSeek)
@@ -89,7 +88,7 @@ impl TagBin
         // Patch fat table
         sec := sections.backPtr()
         output.setSeek(sec.startSeek)
-        visit field: sec.fields
+        visit field: fields
         {
             // zap crc
             output.seek(4)

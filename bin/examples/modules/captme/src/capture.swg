@@ -14,11 +14,11 @@ struct Capture
 {
     // To save
     width, height:  s32
-    forms:          Array'IForm
     backImg:        Image
     backImagePos:   Math.Point
     preview:        Image
     file:           String
+    forms:          Array'IForm
 
     // Dyn
     #[NoSerialize]
@@ -175,11 +175,10 @@ impl Capture
             arr.emplace(&o)
         }
 
-        using Serialization
         var buf:    ConcatBuffer
         var encode: Encoder'Write.TagBin
         encode.start(&buf)
-        encode.write(@typeof(arr), acast &arr)
+        encode.writeValue(&arr, @typeof(arr))
         encode.end()
 
         buf.makeLinear()
@@ -192,13 +191,12 @@ impl Capture
         if !arr.count
             return
 
-        using Serialization
         var decode: Decoder'Read.TagBin
         var res:    Array'(Object'BaseForm)
 
         catch decode.start(arr.toSlice())
         if @err return
-        catch decode.read(cast(*u8) &res, Array'(Object'BaseForm))
+        catch decode.readValue(&res, Array'(Object'BaseForm))
         if @err or !res.count return
         catch decode.end()
         if @err return

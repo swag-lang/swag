@@ -97,6 +97,13 @@ impl ConcatBuffer
             if bcount + numBytes <= lastBucket.size
                 return
 
+            if lastBucket.next
+            {
+                lastBucket = lastBucket.next
+                currentSP = lastBucket.datas
+                return
+            }
+
             totalCount += bcount
             lastBucket.count = bcount
         }

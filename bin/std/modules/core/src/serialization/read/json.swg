@@ -103,7 +103,7 @@ public impl JSon
         return false
     }
 
-    mtd endFields() throw
+    mtd endFields(fields: Array'(const *TypeValue)) throw
     {
     }
 

@@ -20,7 +20,7 @@ interface IEncoder
     beginValue:     mtd()
     endValue:       mtd()
 
-    write:          mtd(*void, typeinfo)
+    write:          mtd(const *void, typeinfo)
     writeBufferU8:  mtd(const *u8, uint)
     writeBool:      mtd(bool)
     writeS8:        mtd(s8)
@@ -45,7 +45,7 @@ struct(T) Encoder
 
 impl Encoder
 {
-    mtd write(data: const *void, dataType: typeinfo)
+    mtd writeValue(data: const *void, dataType: typeinfo)
     {
         type := Reflection.makeConcreteAlias(dataType)
         type = Reflection.makeConcreteEnum(type)
@@ -119,7 +119,7 @@ impl Encoder
                     bufArr := cast(const *u8) ptrArr.buffer
                     loop i: ptrArr.count
                     {
-                        write(bufArr, valueType)
+                        writeValue(bufArr, valueType)
                         bufArr += valueType.sizeof
                     }
                 }
@@ -141,13 +141,13 @@ impl Encoder
                 defer serializer.endSection()
 
                 serializer.beginElement("type", structType.fields[0].pointedType)
-                write(&dataObj.type, structType.fields[0].pointedType)
+                writeValue(&dataObj.type, structType.fields[0].pointedType)
                 serializer.endElement()
 
                 if dataObj.value
                 {
                     serializer.beginElement("value", structType.fields[0].pointedType)
-                    write(dataObj.value, dataObj.type)
+                    writeValue(dataObj.value, dataObj.type)
                     serializer.endElement()
                 }
 
@@ -190,7 +190,7 @@ impl Encoder
 
             // Start a fields section
             treated = serializer.beginFields(fields, structType, data)
-            defer(noerr) serializer.endFields()
+            defer(noerr) serializer.endFields(fields)
             if treated
                 return
 
@@ -200,7 +200,7 @@ impl Encoder
                 if !itf or !itf.writeElement(version, field.name, field.pointedType, data + field.offset, cast(IEncoder) self)
                 {
                     serializer.beginElement(field.name, field.pointedType)
-                    write(data + field.offset, field.pointedType)
+                    writeValue(data + field.offset, field.pointedType)
                     serializer.endElement()
                 }
             }
@@ -220,7 +220,7 @@ impl Encoder
             bufArr := cast(const *u8) data
             loop typeArr.count
             {
-                write(bufArr, typeArr.pointedType)
+                writeValue(bufArr, typeArr.pointedType)
                 bufArr += typeArr.pointedType.sizeof
             }
 
@@ -251,7 +251,7 @@ impl Encoder
         Debug.assert(!started)
         Debug.assert(Reflection.isStruct(@kindof(value)))
         start(result)
-        write(@dataof(value), @kindof(value))
+        writeValue(@dataof(value), @kindof(value))
         end()
     }
 }
@@ -278,9 +278,9 @@ impl IEncoder for Encoder
         serializer.endValue()
     }
 
-    mtd write(data: *void, type: typeinfo)
+    mtd write(data: const *void, type: typeinfo)
     {
-        Encoder.write(self, data, type)
+        writeValue(data, type)
     }
 
     mtd writeBufferU8(data: const *u8, count: uint)

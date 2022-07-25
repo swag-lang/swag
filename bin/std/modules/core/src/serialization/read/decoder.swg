@@ -39,7 +39,7 @@ struct(T) Decoder
 
 impl Decoder
 {
-    mtd read(data: *u8, dataType: typeinfo) throw
+    mtd readValue(data: *void, dataType: typeinfo) throw
     {
         type := Reflection.makeConcreteAlias(dataType)
         type = Reflection.makeConcreteEnum(type)
@@ -113,7 +113,7 @@ impl Decoder
                     while serializer.toNextSequenceElement(&count)
                     {
                         bufArr := Reflection.roomInArray(data, structType, valueType)
-                        read(bufArr, valueType)
+                        readValue(bufArr, valueType)
                     }
                 }
 
@@ -135,13 +135,13 @@ impl Decoder
                 defer serializer.endSection()
 
                 discard serializer.beginElement("type", structType.fields[0].pointedType)
-                read(cast(*u8) &dataObj.type, structType.fields[0].pointedType)
+                readValue(&dataObj.type, structType.fields[0].pointedType)
                 serializer.endElement()
                 if dataObj.type
                 {
                     dataObj.value = acast Memory.new(dataObj.type)
                     discard serializer.beginElement("value", dataObj.type)
-                    read(cast(*u8) dataObj.value, dataObj.type)
+                    readValue(dataObj.value, dataObj.type)
                     serializer.endElement()
                 }
 
@@ -182,7 +182,7 @@ impl Decoder
 
             // Generic struct load
             treated = serializer.beginFields(fields, data, structType)
-            defer(noerr) serializer.endFields()
+            defer(noerr) serializer.endFields(fields)
             if treated
                 return
 
@@ -192,7 +192,7 @@ impl Decoder
                 {
                     if serializer.beginElement(field.name, field.pointedType)
                     {
-                        read(data + field.offset, field.pointedType)
+                        readValue(data + field.offset, field.pointedType)
                         serializer.endElement()
                     }
                 }
@@ -213,7 +213,7 @@ impl Decoder
             bufArr := cast(*u8) data
             loop typeArr.count
             {
-                read(bufArr, typeArr.pointedType)
+                readValue(bufArr, typeArr.pointedType)
                 bufArr += typeArr.pointedType.sizeof
             }
 
@@ -246,7 +246,7 @@ impl Decoder
 
         start(input)
         val := Memory.new'TR()
-        read(cast(*u8) val, TR)
+        readValue(val, TR)
         end()
 
         return val
@@ -277,7 +277,7 @@ impl IDecoder for Decoder
 
     mtd read(data: *void, dataType: typeinfo) throw
     {
-        Decoder.read(self, data, dataType)
+        readValue(data, dataType)
     }
 
     mtd readBufferU8(count: uint)->*u8 throw

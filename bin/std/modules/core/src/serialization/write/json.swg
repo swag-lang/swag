@@ -113,7 +113,7 @@ impl JSon
         return false
     }
 
-    mtd endFields()
+    mtd endFields(fields: Array'(const *TypeValue))
     {
     }
 

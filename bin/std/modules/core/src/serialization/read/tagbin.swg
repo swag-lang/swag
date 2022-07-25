@@ -39,18 +39,18 @@ impl TagBin
 
     mtd endStruct() throw
     {
+    }
+
+    mtd beginSection()
+    {
         sec := sections.emplaceAddress(1)
         @init(sec)
         sec.raw = true
     }
 
-    mtd beginSection()
-    {
-        sections.removeBack()
-    }
-
     mtd endSection()
     {
+        sections.removeBack()
     }
 
     mtd beginFields(fields: Array'(const *TypeValue), structData: *u8, structType: typeinfo)->bool throw
@@ -75,7 +75,7 @@ impl TagBin
         return false
     }
 
-    mtd endFields() throw
+    mtd endFields(fields: Array'(const *TypeValue)) throw
     {
         sections.removeBack()
     }
