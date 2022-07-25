@@ -708,7 +708,7 @@ impl IWnd for MyView
 
     surface.show()
 
-    if Env.getArg(1) == "swag.test"
+    if Env.hasArg("swag.test")
         app.maxRunFrame = 100
     app.run()
 }

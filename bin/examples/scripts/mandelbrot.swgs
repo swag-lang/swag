@@ -90,6 +90,6 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 #run
 {
     try Jobs.setNumWorkers()
-    func test(app: *Application) = if Env.getArg(1) == "swag.test" app.maxRunFrame = 100
+    func test(app: *Application) = if Env.hasArg("swag.test") app.maxRunFrame = 100
     Application.runSurface(100, 100, 512, 512, title: "Mandelbrot", hook: &onEvent, init: &test)
 }

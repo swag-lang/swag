@@ -7,7 +7,6 @@
 #global if #os == Swag.TargetOs.Windows
 using Core, Win32, Ogl, Gdi32, Pixel
 
-var g_TestMode:  bool
 var g_HDC:       HDC
 var g_ImageIdx:  u32 = 28
 var g_EffectIdx: u32 = 49
@@ -283,27 +282,11 @@ func messageLoop()
         }
 
         display()
-
-        if g_TestMode
-        {
-            g_EffectIdx += 1
-            loadImg()
-            if g_EffectIdx == 0
-            {
-                g_ImageIdx += 1
-                loadImg()
-                if g_ImageIdx == 0
-                    break
-            }
-        }
     }
 }
 
 #main
 {
-    if Slice.contains(@args(), "test")
-        g_TestMode = true
-
     try
     {
         hWnd := createWindow()
