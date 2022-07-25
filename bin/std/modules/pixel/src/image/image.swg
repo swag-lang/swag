@@ -3,10 +3,11 @@ using Swag, Core, Serialization
 
 struct Image
 {
+    size:               uint
     allocator:          IAllocator
     pixels:             *u8
     workingBuffer:      *Image
-    size:               uint
+
     width, height:      s32
     width8:             s32
     pf:                 PixelFormat = ?
@@ -254,38 +255,44 @@ impl Image
 
 impl ISerialize for Image
 {
-    mtd(T) serialize(ser: T) throw
-    {
-        var s: Serializer'T{ser}
-        s.serialize("width", &width)
-        s.serialize("height", &height)
-        s.serialize("pf", &pf)
-        s.serialize("size", &size)
-        s.serialize("width8", &width8)
-        s.serialize("bpp", &bpp)
-        s.serialize("bpp8", &bpp8)
-        s.serializeBufferU8("pixels", &pixels, size)
-    }
-
     mtd read(version: u32, decoder: IDecoder)->bool throw
     {
-        serialize(decoder)
-        return true
+        return false
     }
 
     mtd write(version: u32, encoder: IEncoder)->bool
     {
-        catch serialize(encoder)
-        return true
+        return false
     }
 
-    mtd readElement(version: u32, name: string, type: typeinfo, data: *void, decoder: IDecoder)->bool
+    mtd readElement(version: u32, name: string, type: typeinfo, data: *void, decoder: IDecoder)->bool throw
     {
+        if name == @nameof(pixels)
+        {
+            if !decoder.beginElement(name, type)
+                return true
+            decoder.beginValue()
+            pixels = decoder.readBufferU8(size)
+            decoder.endValue()
+            decoder.endElement()
+            return true
+        }
+
         return false
     }
 
     mtd writeElement(version: u32, name: string, type: typeinfo, data: const *void, encoder: IEncoder)->bool
     {
+        if name == @nameof(pixels)
+        {
+            encoder.beginElement(name, type)
+            encoder.beginValue()
+            encoder.writeBufferU8(pixels, size)
+            encoder.endValue()
+            encoder.endElement()
+            return true
+        }
+
         return false
     }
 }
