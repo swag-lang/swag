@@ -5,6 +5,7 @@ using Swag
 struct TagBinSection
 {
     mapSeek: HashTable'(u32, uint)
+    raw:     bool
 }
 
 struct TagBin
@@ -37,6 +38,18 @@ impl TagBin
     }
 
     mtd endStruct() throw
+    {
+        sec := sections.emplaceAddress(1)
+        @init(sec)
+        sec.raw = true
+    }
+
+    mtd beginSection()
+    {
+        sections.removeBack()
+    }
+
+    mtd endSection()
     {
     }
 
@@ -75,15 +88,18 @@ impl TagBin
         if !sections.isEmpty()
         {
             sec := sections.backPtr()
-            ent := sec.mapSeek.find(crcName)
+            if !sec.raw
+            {
+                ent := sec.mapSeek.find(crcName)
 
-            // If ent is null, then we are requesting a field that do not exist
-            // in the stream
-            if !ent
-                return false
+                // If ent is null, then we are requesting a field that do not exist
+                // in the stream
+                if !ent
+                    return false
 
-            // Seek to the corresponding start of element
-            stream.setSeek(ent.value)
+                // Seek to the corresponding start of element
+                stream.setSeek(ent.value)
+            }
         }
 
         // Read element signature

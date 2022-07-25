@@ -100,6 +100,14 @@ impl JSon
         lastSeekValue = output.getSeek()
     }
 
+    mtd beginSection()
+    {
+    }
+
+    mtd endSection()
+    {
+    }
+
     mtd beginFields(fields: Array'(const *TypeValue), structType: typeinfo, structData: const *u8)->bool
     {
         return false

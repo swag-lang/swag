@@ -137,6 +137,9 @@ impl Encoder
             if structType.fromGeneric == @typeof(Object)
             {
                 dataObj := cast(const *Object'String) data // 'String' is fake
+                serializer.beginSection()
+                defer serializer.endSection()
+
                 serializer.beginElement("type", structType.fields[0].pointedType)
                 write(structType.fields[0].pointedType, cast(const *u8) &dataObj.type)
                 serializer.endElement()

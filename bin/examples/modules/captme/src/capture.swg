@@ -18,26 +18,29 @@ struct Capture
     backImg:        Image
     backImagePos:   Math.Point
     preview:        Image
+    file:           String
 
     // Dyn
-    changed:    bool
-    file:       String
-    mouseMode:  MouseMode = None
-    editView:   *EditView
-    gizmo:      GizmoRect
-    undos:      ArrayPtr'Undo
-    nextUndo:   uint
-    hotForm:    uint = Swag.UInt.Max
-    selection:  Array'uint
-    paintRect:  Math.Rectangle
+    #[NoSerialize]
+    {
+        changed:    bool
+        mouseMode:  MouseMode = None
+        editView:   *EditView
+        gizmo:      GizmoRect
+        undos:      ArrayPtr'Undo
+        nextUndo:   uint
+        hotForm:    uint = Swag.UInt.Max
+        selection:  Array'uint
+        paintRect:  Math.Rectangle
 
-    backTexture: Texture
-    snapX:       f32 = -1
-    snapY:       f32 = -1
+        backTexture: Texture
+        snapX:       f32 = -1
+        snapY:       f32 = -1
 
-    firstMouseMove:     bool
-    movingCursorSet:    bool
-    movingStart:        Math.Point
+        firstMouseMove:     bool
+        movingCursorSet:    bool
+        movingStart:        Math.Point
+    }
 }
 
 impl Capture
@@ -117,80 +120,27 @@ impl Capture
         editView.main.recentWnd.updateRecent(self)
     }
 
-    mtd(T) serialize(ser: T) throw
-    {
-        var s: Serializer'T{ser}
-        version := 0's32
-        s.serialize("version", &version)
-        s.serialize("width", &width)
-        s.serialize("height", &height)
-        s.serialize("preview", &preview)
-        s.serialize("backImage", &backImg)
-        s.serialize("backImagePos", &backImagePos)
-
-        var arr: Array'(Object'BaseForm)
-        #if T == IEncoder
-        {
-            var o: Object'BaseForm
-            visit f: forms
-            {
-                o.type = @kindof(f)
-                o.value = @dataof(f)
-                arr.add(o)
-                o.value = null
-            }
-
-            s.serialize("forms", &arr)
-            arr.count = 0
-        }
-        #else
-        {
-            s.serialize("forms", &arr)
-            visit o: arr
-            {
-                itf := @mkinterface(o.value, o.type, IForm)
-                itf.setup(self)
-                forms.add(itf)
-            }
-
-            arr.count = 0
-        }
-    }
-
     mtd save()
     {
         if !changed
             return
         changed = false
 
-        var buf:    ConcatBuffer
-        var encode: Encoder'Write.TagBin
+        var buf:     ConcatBuffer
+        var encoder: Encoder'Write.TagBin
 
-        encode.start(&buf)
-        catch serialize(cast(IEncoder) encode)
-        encode.end()
-
+        encoder.write(&buf, dref self)
         buf.makeLinear()
+
         catch File.writeAllBytes(file, buf.toSlice())
     }
 
     func load(file: string)->*Capture throw
     {
-        capture := Memory.new'Capture()
-        capture.file = file
-        defer(err)
-        {
-            Memory.delete(capture)
-            capture = null
-        }
-
         res := File.readAllBytes(file)
 
-        var decode: Decoder'Read.TagBin
-        decode.start(res.toSlice())
-        capture.serialize(cast(IDecoder) decode)
-        decode.end()
-
+        var decoder: Decoder'Read.TagBin
+        capture := decoder.read'Capture(res.toSlice())
         return capture
     }
 
@@ -1087,5 +1037,74 @@ impl Capture
         // Do it
         u.init()
         u.do()
+    }
+}
+
+impl ISerialize for Capture
+{
+    mtd read(version: u32, decoder: IDecoder)->bool throw
+    {
+        return false
+    }
+
+    mtd write(version: u32, encoder: IEncoder)->bool
+    {
+        return false
+    }
+
+    mtd readElement(version: u32, name: string, type: typeinfo, data: *void, decoder: IDecoder)->bool throw
+    {
+        if name == @nameof(forms)
+        {
+            if !decoder.beginElement(name, type)
+                return true
+            decoder.beginValue()
+
+            var arr: Array'(Object'BaseForm)
+            decoder.read(&arr, @typeof(arr))
+            visit o: arr
+            {
+                if !o.type continue
+                itf := @mkinterface(o.value, o.type, IForm)
+                itf.setup(self)
+                forms.add(itf)
+            }
+
+            arr.count = 0
+
+            decoder.endValue()
+            decoder.endElement()
+            return true
+        }
+
+        return false
+    }
+
+    mtd writeElement(version: u32, name: string, type: typeinfo, data: const *void, encoder: IEncoder)->bool
+    {
+        if name == @nameof(forms)
+        {
+            encoder.beginElement(name, type)
+            encoder.beginValue()
+
+            var arr: Array'(Object'BaseForm)
+            var o:   Object'BaseForm
+            visit f: forms
+            {
+                o.type = @kindof(f)
+                o.value = @dataof(f)
+                arr.add(o)
+                o.value = null
+            }
+
+            encoder.write(@typeof(arr), &arr)
+            arr.count = 0
+
+            encoder.endValue()
+            encoder.endElement()
+            return true
+        }
+
+        return false
     }
 }

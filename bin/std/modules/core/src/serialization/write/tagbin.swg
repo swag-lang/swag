@@ -13,6 +13,7 @@ struct TagBinSection
     startSeek:  ConcatBufferSeek
     fields:     Array'(const *TypeValue)
     mapSeek:    HashTable'(string, ConcatBufferSeek)
+    raw:        bool
 }
 
 struct TagBin
@@ -45,6 +46,18 @@ impl TagBin
 
     mtd endStruct()
     {
+    }
+
+    mtd beginSection()
+    {
+        sec := sections.emplaceAddress(1)
+        @init(sec)
+        sec.raw = true
+    }
+
+    mtd endSection()
+    {
+        sections.removeBack()
     }
 
     mtd beginFields(fields: Array'(const *TypeValue), structType: typeinfo, structData: const *u8)->bool
