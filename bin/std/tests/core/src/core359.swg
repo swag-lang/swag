@@ -23,5 +23,7 @@ struct Toto
     x1 := try dec.read'Toto(buf.toSlice())
     defer Memory.delete(x1)
 
-    Console.print(dref x1)
+    @assert(x1.x == 1)
+    @assert(x1.y == 2)
+    @assert(x1.z == 3)
 }

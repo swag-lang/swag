@@ -66,6 +66,10 @@ impl TagBin
 
     mtd beginElement(name: string, type: typeinfo) throw
     {
+        // Outside a section
+        if sections.isEmpty()
+            return
+
         sec := sections.backPtr()
         crc := getCrc(name)
         Debug.assert(sec.mapSeek.contains(crc))

@@ -164,7 +164,7 @@ impl Capture
         changed = false
 
         var buf:    ConcatBuffer
-        var encode: Encoder'Write.Bin
+        var encode: Encoder'Write.TagBin
 
         encode.start(&buf)
         catch serialize(cast(IEncoder) encode)
@@ -186,7 +186,7 @@ impl Capture
 
         res := File.readAllBytes(file)
 
-        var decode: Decoder'Read.Bin
+        var decode: Decoder'Read.TagBin
         decode.start(res.toSlice())
         capture.serialize(cast(IDecoder) decode)
         decode.end()
@@ -227,7 +227,7 @@ impl Capture
 
         using Serialization
         var buf:    ConcatBuffer
-        var encode: Encoder'Write.JSon
+        var encode: Encoder'Write.TagBin
         encode.start(&buf)
         encode.write(@typeof(arr), acast &arr)
         encode.end()
@@ -243,7 +243,7 @@ impl Capture
             return
 
         using Serialization
-        var decode: Decoder'Read.JSon
+        var decode: Decoder'Read.TagBin
         var res:    Array'(Object'BaseForm)
 
         catch decode.start(arr.toSlice())

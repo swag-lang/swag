@@ -133,6 +133,10 @@ impl TagBin
 
     mtd beginElement(name: string, type: typeinfo)
     {
+        // Outside a section
+        if sections.isEmpty()
+            return
+
         // Register the current seek for the fat generation
         sec := sections.backPtr()
         Debug.assert(!sec.mapSeek.contains(name))

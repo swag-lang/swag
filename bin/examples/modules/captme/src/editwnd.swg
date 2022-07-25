@@ -123,6 +123,8 @@ impl EditView
 
     mtd zoomToFit(canZoom = true)
     {
+        if !capture 
+            return
         rect := getClientRect()
         rect.inflate(-viewMargin*2)
 
