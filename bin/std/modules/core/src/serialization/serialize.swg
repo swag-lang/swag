@@ -3,8 +3,8 @@
 
 interface ISerialize
 {
-    read:  mtd(IDecoder) throw
-    write: mtd(IEncoder)
+    read:  mtd(u32, IDecoder) throw
+    write: mtd(u32, IEncoder)
 }
 
 struct(T) Serializer

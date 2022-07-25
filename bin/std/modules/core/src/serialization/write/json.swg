@@ -40,7 +40,7 @@ impl JSon
 
     mtd endRoot()
     {
-        output.setSeek(lastSeekValue) // Remove last ','
+        output.setEndSeek(lastSeekValue) // Remove last ','
         endStruct()
     }
 
@@ -60,7 +60,7 @@ impl JSon
 
     mtd endSequence()
     {
-        output.setSeek(lastSeekValue)
+        output.setEndSeek(lastSeekValue)
         if options.saveBlanks
         {
             output.addBytes("\n")
@@ -88,7 +88,7 @@ impl JSon
 
     mtd endStruct()
     {
-        output.setSeek(lastSeekValue)
+        output.setEndSeek(lastSeekValue)
         if options.saveBlanks
         {
             output.addBytes("\n")
@@ -98,6 +98,15 @@ impl JSon
 
         output.addBytes("}")
         lastSeekValue = output.getSeek()
+    }
+
+    mtd beginFields(fields: Array'(const *TypeValue), structType: typeinfo, structData: const *u8)->bool
+    {
+        return false
+    }
+
+    mtd endFields()
+    {
     }
 
     mtd beginElement(name: string, type: typeinfo)

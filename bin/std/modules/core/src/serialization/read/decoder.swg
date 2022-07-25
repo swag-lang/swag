@@ -34,18 +34,6 @@ struct(T) Decoder
 
 impl Decoder
 {
-    mtd readVersion()->u32 throw
-    {
-        if !options.hasVersion
-            return 0
-        serializer.beginElement("$version", u32)
-        serializer.beginValue(u32)
-        version := serializer.readNative'u32()
-        serializer.endValue()
-        serializer.endElement()
-        return version
-    }
-
     mtd read(data: *u8, dataType: typeinfo) throw
     {
         type := Reflection.makeConcreteAlias(dataType)
@@ -152,22 +140,44 @@ impl Decoder
                 return
             }
 
+            // Read version if requested
+            var version: u32
+            if options.hasVersion
+            {
+                serializer.beginElement("$version", u32)
+                serializer.beginValue(u32)
+                version = serializer.readNative'u32()
+                serializer.endValue()
+                serializer.endElement()
+            }
+
             // A structure with an implementation of ISerialize
             itf := @mkinterface(data, type, ISerialize)
             if itf != null
             {
-                itf.read(cast(IDecoder) self)
+                itf.read(version, cast(IDecoder) self)
                 return
             }
 
-            version := readVersion()
+            // Get all fields to serialize
+            var fields: Array'(const *TypeValue)
             visit field: structType.fields
             {
                 if Reflection.hasAttribute(field, NoSerialize)
                     continue
                 if Reflection.hasAttribute(field.pointedType, NoSerialize)
-                    return
+                    continue
+                fields.add(field)
+            }
 
+            // Generic struct load
+            treated = serializer.beginFields(fields, data, structType)
+            defer(noerr) serializer.endFields()
+            if treated
+                return
+
+            visit field: fields
+            {
                 serializer.beginElement(field.name, field.pointedType)
                 read(data + field.offset, field.pointedType)
                 serializer.endElement()

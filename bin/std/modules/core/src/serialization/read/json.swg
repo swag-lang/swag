@@ -90,6 +90,15 @@ public impl JSon
             throw "malformed struct (missing closing '}')"
     }
 
+    mtd beginFields(fields: Array'(const *TypeValue), structData: *u8, structType: typeinfo)->bool throw
+    {
+        return false
+    }
+
+    mtd endFields() throw
+    {
+    }
+
     mtd beginElement(name: string, type: typeinfo) throw
     {
         zapBlanks()

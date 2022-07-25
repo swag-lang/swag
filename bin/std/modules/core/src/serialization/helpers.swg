@@ -13,3 +13,8 @@ public func isRawSerializable(type: typeinfo)->{raw: bool, sizeof: uint}
 
     return @{false, 0}
 }
+
+public func getCrc(name: string)->u32
+{
+    return Hash.Crc32.compute(name)
+}

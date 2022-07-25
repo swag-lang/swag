@@ -1,16 +1,86 @@
 #global namespace Serialization.Read
+#global public
 using Swag
 
-public struct Bin
+struct TagBinSection
 {
-    stream: ByteStream
+    mapSeek: HashTable'(u32, uint)
 }
 
-public impl Bin
+struct TagBin
+{
+    stream:   ByteStream
+    sections: Array'TagBinSection
+}
+
+impl TagBin
 {
     mtd startRead(input: const [..] u8)
     {
         stream.init(input)
+    }
+
+    mtd beginRoot() throw
+    {
+    }
+
+    mtd endRoot() throw
+    {
+    }
+
+    mtd beginStruct(data: *u8, type: typeinfo)->bool throw
+    {
+        return false
+    }
+
+    mtd endStruct() throw
+    {
+    }
+
+    mtd beginFields(fields: Array'(const *TypeValue), structData: *u8, structType: typeinfo)->bool throw
+    {
+        sig := stream.readNative'u32()
+        if sig != Write.TagBinSignatures.SignatureFat
+            throw "bad SignatureFat"
+
+        // Read fat
+        sec := sections.emplaceAddress(1)
+        @init(sec)
+
+        fatCount := stream.readNative'uint()
+        while fatCount
+        {
+            crc  := stream.readNative'u32()
+            seek := stream.readNative'uint()
+            sec.mapSeek.add(crc, seek)
+            fatCount -= 1
+        }
+
+        return false
+    }
+
+    mtd endFields() throw
+    {
+        sections.removeBack()
+    }
+
+    mtd beginElement(name: string, type: typeinfo) throw
+    {
+        sec := sections.backPtr()
+        crc := getCrc(name)
+        Debug.assert(sec.mapSeek.contains(crc))
+    }
+
+    mtd endElement()
+    {
+    }
+
+    mtd beginValue(type: typeinfo)
+    {
+    }
+
+    mtd endValue()
+    {
     }
 
     mtd beginSequence(typeElem: typeinfo, data: *u8, countElem: *uint)->bool throw
@@ -63,48 +133,6 @@ public impl Bin
             return false
         dref countElem -= 1
         return true
-    }
-
-    mtd beginRoot() throw
-    {
-    }
-
-    mtd endRoot() throw
-    {
-    }
-
-    mtd beginStruct(data: *u8, type: typeinfo)->bool throw
-    {
-        return false
-    }
-
-    mtd endStruct() throw
-    {
-    }
-
-    mtd beginFields(fields: Array'(const *TypeValue), structData: *u8, structType: typeinfo)->bool throw
-    {
-        return false
-    }
-
-    mtd endFields() throw
-    {
-    }
-
-    mtd beginElement(name: string, type: typeinfo) throw
-    {
-    }
-
-    mtd endElement()
-    {
-    }
-
-    mtd beginValue(type: typeinfo)
-    {
-    }
-
-    mtd endValue()
-    {
     }
 
     /////////////////////////////////

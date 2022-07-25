@@ -143,13 +143,6 @@ impl ConcatBuffer
         totalCount = 0
     }
 
-    // Offset the current write pointer
-    mtd seek(num: uint)
-    {
-        Debug.assert(currentSP + num <= lastBucket.datas + lastBucket.size)
-        currentSP += num
-    }
-
     // Append one byte to the buffer
     mtd addByte(byte: u8)
     {
@@ -234,22 +227,80 @@ impl ConcatBuffer
         return result
     }
 
+    // Get the linearized seek offset
+    mtd getOffset(seek: ConcatBufferSeek)->uint
+    {
+        if !seek.bucket return 0
+
+        // Will have to optimize that !
+        offset := 0'uint
+        b := firstBucket
+        while b != seek.bucket
+        {
+            offset += b.count
+            b = b.next
+        }
+
+        return offset + (cast(uint) (seek.sp - seek.bucket.datas))
+    }
+
     // Returns the current 'seek' in the buffer
     mtd getSeek()->ConcatBufferSeek
     {
         var result: retval
         result.bucket = lastBucket
+        if lastBucket
+            lastBucket.count = cast(uint) (currentSP - lastBucket.datas)
         result.sp = currentSP
         result.totalCount = totalCount
         return result
     }
 
+    // Seek current write pointer
+    mtd seek(num: uint)
+    {
+        Debug.assert(currentSP + num <= lastBucket.datas + lastBucket.size)
+        currentSP += num
+
+        newOffset := cast(uint) (currentSP - lastBucket.datas)
+        if lastBucket.count and newOffset > lastBucket.count
+        {
+            Debug.assert(lastBucket.next != null)
+            lastBucket = lastBucket.next
+            currentSP = lastBucket.datas
+        }
+    }
+
     // Set the current 'seek'
     mtd setSeek(seek: ConcatBufferSeek)
     {
-        lastBucket = seek.bucket
-        currentSP  = seek.sp
-        totalCount = seek.totalCount
+        if !seek.bucket
+        {
+            lastBucket = firstBucket
+            currentSP = lastBucket.datas
+        }
+        else
+        {
+            lastBucket = seek.bucket
+            currentSP  = seek.sp
+        }
+    }
+
+    // Set the end 'seek'
+    mtd setEndSeek(seek: ConcatBufferSeek)
+    {
+        if !seek.bucket
+        {
+            lastBucket = firstBucket
+            currentSP = lastBucket.datas
+            totalCount = 0
+        }
+        else
+        {
+            lastBucket = seek.bucket
+            currentSP  = seek.sp
+            totalCount = seek.totalCount
+        }
     }
 
     // Convert to a slice *only* if the buffer is linear (see 'makeLinear')

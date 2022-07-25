@@ -2,21 +2,30 @@
 #global public
 using Swag
 
-struct BinOptions
+enum TagBinSignatures
 {
+    SignatureFat = 0xCAFECAFE
 }
 
-struct Bin
+struct TagBinSection
 {
-    options:    BinOptions
-    output:     *ConcatBuffer
+    startSeek:  ConcatBufferSeek
+    fields:     Array'(const *TypeValue)
+    mapSeek:    HashTable'(string, ConcatBufferSeek)
 }
 
-impl Bin
+struct TagBin
+{
+    output:   *ConcatBuffer
+    sections: Array'TagBinSection
+}
+
+impl TagBin
 {
     mtd startWrite(buf: *ConcatBuffer)
     {
         output = buf
+        sections.clear()
     }
 
     mtd beginRoot()
@@ -79,15 +88,55 @@ impl Bin
 
     mtd beginFields(fields: Array'(const *TypeValue), structType: typeinfo, structData: const *u8)->bool
     {
+        sec := sections.emplaceAddress(1)
+        @init(sec)
+
+        output.addNative(TagBinSignatures.SignatureFat)
+        output.addNative(fields.count)
+
+        sec.fields = fields
+        sec.startSeek = output.getSeek()
+
+        // Fat
+        visit field: fields
+        {
+            output.addNative(getCrc(field.name))
+            // Will be replaced with the seek to the corresopnding startElement
+            output.addNative(0'uint)
+        }
+
         return false
     }
 
     mtd endFields()
     {
+        curSeek := output.getSeek()
+        defer output.setSeek(curSeek)
+
+        // Patch fat table
+        sec := sections.backPtr()
+        output.setSeek(sec.startSeek)
+        visit field: sec.fields
+        {
+            // zap crc
+            output.seek(4)
+
+            p := sec.mapSeek.find(field.name)
+            Debug.assert(p != null)
+
+            // Write linear seek inside the buffer
+            output.addNative(output.getOffset(p.value))
+        }
+
+        sections.removeBack()
     }
 
     mtd beginElement(name: string, type: typeinfo)
     {
+        // Register the current seek for the fat generation
+        sec := sections.backPtr()
+        Debug.assert(!sec.mapSeek.contains(name))
+        sec.mapSeek.add(name, output.getSeek())
     }
 
     mtd endElement()

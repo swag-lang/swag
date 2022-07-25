@@ -146,18 +146,10 @@ impl Encoder
                 return
             }
 
-            // A structure with an implementation of ISerialize
-            itf := @mkinterface(data, type, ISerialize)
-            if itf != null
-            {
-                itf.write(cast(IEncoder) self)
-                return
-            }
-
             // Write version number
+            var version: u32
             if options.storeVersion
             {
-                var version: u32
                 val := Reflection.getAttributeValue(structType, Version, "v")
                 if val != null
                     version = cast(u32) val
@@ -169,14 +161,34 @@ impl Encoder
                 serializer.endElement()
             }
 
+            // A structure with an implementation of ISerialize
+            itf := @mkinterface(data, type, ISerialize)
+            if itf != null
+            {
+                itf.write(version, cast(IEncoder) self)
+                return
+            }
+
             // Get all fields to serialize
+            var fields: Array'(const *TypeValue)
             visit field: structType.fields
             {
                 if Reflection.hasAttribute(field, NoSerialize)
                     continue
                 if Reflection.hasAttribute(field.pointedType, NoSerialize)
                     continue
+                fields.add(field)
+            }
 
+            // Start a fields section
+            treated = serializer.beginFields(fields, structType, data)
+            defer(noerr) serializer.endFields()
+            if treated
+                return
+
+            // Generic structure save
+            visit field: fields
+            {
                 serializer.beginElement(field.name, field.pointedType)
                 write(field.pointedType, data + field.offset)
                 serializer.endElement()

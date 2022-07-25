@@ -267,12 +267,12 @@ impl ISerialize for Image
         s.serializeBufferU8("pixels", &pixels, size)
     }
 
-    mtd read(decoder: IDecoder) throw
+    mtd read(version: u32, decoder: IDecoder) throw
     {
         serialize(decoder)
     }
 
-    mtd write(encoder: IEncoder)
+    mtd write(version: u32, encoder: IEncoder)
     {
         catch serialize(encoder)
     }
