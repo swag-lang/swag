@@ -1,6 +1,6 @@
 /*
     :LICENCE
-    This code is based on the libspng library by Randy (https://https://libspng.org/)
+    This code is based on the libspng library by Randy (https://libspng.org/)
     The original code has been modified for Swag
     See LICENCE.md for the corresponding licence.
 */
