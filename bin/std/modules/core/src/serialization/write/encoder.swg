@@ -229,7 +229,7 @@ impl Encoder
     }
 
     // Start serialization
-    mtd start(result: *Array'u8)
+    mtd start(result: *ConcatBuffer)
     {
         Debug.assert(!started)
         started = true
@@ -246,7 +246,7 @@ impl Encoder
     }
 
     // Write a full struct
-    mtd writeAll(result: *Array'u8, value: any)
+    mtd writeAll(result: *ConcatBuffer, value: any)
     {
         Debug.assert(!started)
         Debug.assert(Reflection.isStruct(@kindof(value)))

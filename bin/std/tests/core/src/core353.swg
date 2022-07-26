@@ -10,7 +10,7 @@ struct Toto
 
 #test
 {
-    var buf: Array'u8
+    var buf: ConcatBuffer
     var wri: Encoder'Write.JSon
 
     var toto: Toto
@@ -18,9 +18,14 @@ struct Toto
 
     wri.writeAll(&buf, toto)
 
+    str := buf.toString()
+    //Console.print(str, "\n")
+
     var rea: Decoder'Read.JSon
-    v := try rea.readAll'Toto(buf.toSlice())
+    v := try rea.readAll'Toto(str.toSlice())
     defer Memory.delete(v)
 
     @assert(v.v2.x == 0)
+
+    //Console.print(dref v, "\n")
 }

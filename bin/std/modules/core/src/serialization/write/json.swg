@@ -11,12 +11,11 @@ struct JSonOptions
 struct JSon
 {
     options:        JSonOptions
-    output:         ByteStream
+    output:         *ConcatBuffer
     indent:         u32
     fmtInt:         StrConv.ConvertFormatInt
     fmtFloat:       StrConv.ConvertFormatFloat{fmt: "g"'u8}
-    lastSeekValue:  uint
-    convBuffer:     ConcatBuffer
+    lastSeekValue:  ConcatBufferSeek
 }
 
 impl JSon
@@ -26,12 +25,12 @@ impl JSon
         if !options.saveBlanks
             return
         loop indent * options.indentLevel
-            output.writeNative(" "'u8)
+            output.addByte(" "'u8)
     }
 
-    mtd startWrite(buf: *Array'u8)
+    mtd startWrite(buf: *ConcatBuffer)
     {
-        output = ByteStream.openWrite(buf)
+        output = buf
     }
 
     mtd beginRoot()
@@ -41,17 +40,17 @@ impl JSon
 
     mtd endRoot()
     {
-        output.setSeek(lastSeekValue) // Remove last ','
+        output.setEndSeek(lastSeekValue) // Remove last ','
         endStruct()
     }
 
     mtd beginSequence(typeElem: typeinfo, data: const *void, countElem: uint)->bool
     {
-        output.writeBytes("[")
+        output.addBytes("[")
         lastSeekValue = output.getSeek()
         if options.saveBlanks
         {
-            output.writeBytes("\n")
+            output.addBytes("\n")
             indent += 1
             writeIndent()
         }
@@ -61,25 +60,25 @@ impl JSon
 
     mtd endSequence()
     {
-        output.setSeek(lastSeekValue)
+        output.setEndSeek(lastSeekValue)
         if options.saveBlanks
         {
-            output.writeBytes("\n")
+            output.addBytes("\n")
             indent -= 1
             writeIndent()
         }
 
-        output.writeBytes("]")
+        output.addBytes("]")
         lastSeekValue = output.getSeek()
     }
 
     mtd beginStruct(type: typeinfo, data: const *u8)->bool
     {
-        output.writeBytes("{")
+        output.addBytes("{")
         lastSeekValue = output.getSeek()
         if options.saveBlanks
         {
-            output.writeBytes("\n")
+            output.addBytes("\n")
             indent += 1
             writeIndent()
         }
@@ -89,15 +88,15 @@ impl JSon
 
     mtd endStruct()
     {
-        output.setSeek(lastSeekValue)
+        output.setEndSeek(lastSeekValue)
         if options.saveBlanks
         {
-            output.writeBytes("\n")
+            output.addBytes("\n")
             indent -= 1
             writeIndent()
         }
 
-        output.writeBytes("}")
+        output.addBytes("}")
         lastSeekValue = output.getSeek()
     }
 
@@ -120,11 +119,11 @@ impl JSon
 
     mtd beginElement(name: string, type: typeinfo)
     {
-        output.writeNative("\""'u8)
-        output.writeBytes(name)
-        output.writeBytes("\":")
+        output.addByte("\""'u8)
+        output.addBytes(name)
+        output.addBytes("\":")
         if options.saveBlanks
-            output.writeBytes(" ")
+            output.addBytes(" ")
     }
 
     mtd endElement()
@@ -138,9 +137,9 @@ impl JSon
     mtd endValue()
     {
         lastSeekValue = output.getSeek()
-        output.writeBytes(",")
+        output.addBytes(",")
         if options.saveBlanks
-            output.writeBytes("\n")
+            output.addBytes("\n")
         writeIndent()
     }
 
@@ -152,27 +151,23 @@ impl JSon
     {
         #if NT == bool
         {
-            output.writeBytes(value ? "true" : "false")
+            output.addBytes(value ? "true" : "false")
         }
         #elif Reflection.isFloat(NT)
         {
             fmtFloat.value = value
-            convBuffer.clear() // Horrible
-            StrConv.convertFloat(&convBuffer, fmtFloat)
-            output.writeBytes(convBuffer.toSlice())
+            StrConv.convertFloat(output, fmtFloat)
         }
         #elif Reflection.isInteger(NT)
         {
             fmtInt.value = value
-            convBuffer.clear() // Horrible
-            StrConv.convertInt(&convBuffer, fmtInt)
-            output.writeBytes(convBuffer.toSlice())
+            StrConv.convertInt(output, fmtInt)
         }
         #elif NT == string
         {
-            output.writeNative("\""'u8)
-            output.writeBytes(value)
-            output.writeNative("\""'u8)
+            output.addByte("\""'u8)
+            output.addBytes(value)
+            output.addByte("\""'u8)
         }
         #else
         {
