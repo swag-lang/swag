@@ -8,6 +8,13 @@ struct ConcatBufferBucket
     size:   uint
 }
 
+struct ConcatBufferSeek
+{
+    bucket:     *ConcatBufferBucket
+    sp:         *u8
+    totalCount: uint
+}
+
 // Represents a growable buffer, which is divided in buckets to avoid a copy/realloc when
 // the buffer needs to increase its size. This is the main difference with Array
 struct ConcatBuffer
@@ -227,6 +234,35 @@ impl ConcatBuffer
         return result
     }
 
+    // Get the linearized seek offset
+    mtd getOffset(seek: ConcatBufferSeek)->uint
+    {
+        if !seek.bucket return 0
+
+        // Will have to optimize that !
+        offset := 0'uint
+        b := firstBucket
+        while b != seek.bucket
+        {
+            offset += b.count
+            b = b.next
+        }
+
+        return offset + (cast(uint) (seek.sp - seek.bucket.datas))
+    }
+
+    // Returns the current 'seek' in the buffer
+    mtd getSeek()->ConcatBufferSeek
+    {
+        var result: retval
+        result.bucket = lastBucket
+        if lastBucket
+            lastBucket.count = cast(uint) (currentSP - lastBucket.datas)
+        result.sp = currentSP
+        result.totalCount = totalCount
+        return result
+    }
+
     // Seek current write pointer
     mtd seek(num: uint)
     {
@@ -239,6 +275,38 @@ impl ConcatBuffer
             Debug.assert(lastBucket.next != null)
             lastBucket = lastBucket.next
             currentSP = lastBucket.datas
+        }
+    }
+
+    // Set the current 'seek'
+    mtd setSeek(seek: ConcatBufferSeek)
+    {
+        if !seek.bucket
+        {
+            lastBucket = firstBucket
+            currentSP = lastBucket.datas
+        }
+        else
+        {
+            lastBucket = seek.bucket
+            currentSP  = seek.sp
+        }
+    }
+
+    // Set the end 'seek'
+    mtd setEndSeek(seek: ConcatBufferSeek)
+    {
+        if !seek.bucket
+        {
+            lastBucket = firstBucket
+            currentSP = lastBucket.datas
+            totalCount = 0
+        }
+        else
+        {
+            lastBucket = seek.bucket
+            currentSP  = seek.sp
+            totalCount = seek.totalCount
         }
     }
 
