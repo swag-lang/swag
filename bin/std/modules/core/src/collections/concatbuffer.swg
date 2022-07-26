@@ -30,20 +30,6 @@ struct ConcatBuffer
 
 impl ConcatBuffer
 {
-    private mtd release()
-    {
-        if !firstBucket
-            return
-        ptr := firstBucket
-        while ptr
-        {
-            nextPtr := ptr.next
-            Memory.free(ptr.datas, ptr.size, allocator)
-            Memory.free(ptr, @sizeof(ConcatBufferBucket), allocator)
-            ptr = nextPtr
-        }
-    }
-
     mtd opCount()->uint
     {
         return count()
@@ -150,6 +136,25 @@ impl ConcatBuffer
         Debug.assert(size >= 4)
         clear()
         granularity = size
+    }
+
+    // Release all allocated buffers
+    mtd release()
+    {
+        if !firstBucket
+            return
+
+        ptr := firstBucket
+        while ptr
+        {
+            nextPtr := ptr.next
+            Memory.free(ptr.datas, ptr.size, allocator)
+            Memory.free(ptr, @sizeof(ConcatBufferBucket), allocator)
+            ptr = nextPtr
+        }
+
+        firstBucket = null
+        clear()
     }
 
     // Release the content of the buffer
@@ -340,7 +345,7 @@ impl ConcatBuffer
         return null
     }
 
-    // Make all buckets one single bucket
+    // linearize all buckets in one single big bucket
     mtd makeLinear()
     {
         // Already linear (and only one single bucket)
@@ -358,7 +363,7 @@ impl ConcatBuffer
         }
 
         Debug.assert(curPtr == newDatas + total)
-        clear()
+        release()
 
         // Make one single bucket
         firstBucket = Memory.new'ConcatBufferBucket(allocator)

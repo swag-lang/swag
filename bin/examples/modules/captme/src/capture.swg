@@ -130,9 +130,7 @@ impl Capture
         var encoder: Encoder'Write.TagBin
 
         encoder.writeAll(&buf, dref self)
-        buf.makeLinear()
-
-        catch File.writeAllBytes(file, buf.toSlice())
+        catch File.writeAllBytes(file, buf)
     }
 
     func load(file: string)->*Capture throw
