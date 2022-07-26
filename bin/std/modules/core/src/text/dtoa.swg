@@ -95,20 +95,20 @@ func fmtE(dst: *ConcatBuffer, neg, forceSign: bool, d: DecimalSlice, prec: s64, 
 {
 	// sign
 	if neg
-		dst.addByte(g_CultureInfo.numberFormat.negativeSign)
+		dst.addNative(g_CultureInfo.numberFormat.negativeSign)
     elif forceSign
-        dst.addByte(g_CultureInfo.numberFormat.positiveSign)
+        dst.addNative(g_CultureInfo.numberFormat.positiveSign)
 
 	// first digit
 	ch := "0"'u8
 	if d.nd != 0
 		ch = d.d[0]
-	dst.addByte(ch)
+	dst.addNative(ch)
 
 	// .moredigits
 	if prec > 0
     {
-		dst.addByte(g_CultureInfo.numberFormat.decimalSeparator)
+		dst.addNative(g_CultureInfo.numberFormat.decimalSeparator)
 		i := 1's64
 		m := Math.min(d.nd, prec + 1)
 		if i < m
@@ -125,7 +125,7 @@ func fmtE(dst: *ConcatBuffer, neg, forceSign: bool, d: DecimalSlice, prec: s64, 
 	}
 
 	// e±
-	dst.addByte(fmt)
+	dst.addNative(fmt)
 	exp := d.dp - 1
 	if d.nd == 0 // special case: 0 has exponent 0
 		exp = 0
@@ -139,21 +139,21 @@ func fmtE(dst: *ConcatBuffer, neg, forceSign: bool, d: DecimalSlice, prec: s64, 
 		ch = "+"'u8
 	}
 
-	dst.addByte(ch)
+	dst.addNative(ch)
 
 	// dd or ddd
 	switch
     {
 	case exp < 10:
-		dst.addByte("0"'u8)
-        dst.addByte(cast(u8) (exp + "0"'u8))
+		dst.addNative("0"'u8)
+        dst.addNative(cast(u8) (exp + "0"'u8))
 	case exp < 100:
-        dst.addByte(cast(u8) ((exp/10) + "0"'u8))
-        dst.addByte(cast(u8) ((exp%10) + "0"'u8))
+        dst.addNative(cast(u8) ((exp/10) + "0"'u8))
+        dst.addNative(cast(u8) ((exp%10) + "0"'u8))
 	default:
-        dst.addByte(cast(u8) ((exp/100) + "0"'u8))
-        dst.addByte(cast(u8) (((exp/10)%10) + "0"'u8))
-        dst.addByte(cast(u8) ((exp%10) + "0"'u8))
+        dst.addNative(cast(u8) ((exp/100) + "0"'u8))
+        dst.addNative(cast(u8) (((exp/10)%10) + "0"'u8))
+        dst.addNative(cast(u8) ((exp%10) + "0"'u8))
 	}
 }
 
@@ -161,9 +161,9 @@ func fmtF(dst: *ConcatBuffer, neg, forceSign: bool, d: DecimalSlice, prec: s64)
 {
 	// sign
 	if neg
-		dst.addByte(g_CultureInfo.numberFormat.negativeSign)
+		dst.addNative(g_CultureInfo.numberFormat.negativeSign)
     elif forceSign
-        dst.addByte(g_CultureInfo.numberFormat.positiveSign)
+        dst.addNative(g_CultureInfo.numberFormat.positiveSign)
 
 	// integer, padded with zeros as needed.
 	if d.dp > 0
@@ -172,24 +172,24 @@ func fmtF(dst: *ConcatBuffer, neg, forceSign: bool, d: DecimalSlice, prec: s64)
 		dst.addBytes(@mkslice(&d.d[0], m))
 		while m < d.dp
         {
-			dst.addByte("0"'u8)
+			dst.addNative("0"'u8)
             m += 1
 		}
 	}
     else
-		dst.addByte("0"'u8)
+		dst.addNative("0"'u8)
 
 	// fraction
 	if prec > 0
     {
-		dst.addByte(g_CultureInfo.numberFormat.decimalSeparator)
+		dst.addNative(g_CultureInfo.numberFormat.decimalSeparator)
 		for i := 0; i < prec; i += 1
         {
 			ch := "0"'u8
             j := d.dp + i
 			if 0 <= j and j < d.nd
 				ch = d.d[j]
-			dst.addByte(ch)
+			dst.addNative(ch)
 		}
 	}
 }

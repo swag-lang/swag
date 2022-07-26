@@ -396,14 +396,14 @@ impl Encoder
     #[Swag.Inline]
     mtd writeByte(b: u8)
     {
-        stream.addByte(b)
+        stream.addNative(b)
     }
 
     #[Swag.Inline]
     mtd writeWord(w: u16)
     {
-        stream.addByte(cast(u8) (w >>,safe 8))
-        stream.addByte(cast(u8) (w & 0xFF))
+        stream.addNative(cast(u8) (w >>,safe 8))
+        stream.addNative(cast(u8) (w & 0xFF))
     }
 
     #[Swag.Inline]

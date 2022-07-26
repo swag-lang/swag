@@ -10,9 +10,8 @@ struct ConcatBufferBucket
 
 struct ConcatBufferSeek
 {
-    bucket:     *ConcatBufferBucket
-    sp:         *u8
-    totalCount: uint
+    bucket: *ConcatBufferBucket
+    sp:     *u8
 }
 
 // Represents a growable buffer, which is divided in buckets to avoid a copy/realloc when
@@ -22,11 +21,11 @@ struct ConcatBuffer
     allocator:      Swag.IAllocator
 
     firstBucket:    *ConcatBufferBucket
+    curBucket:      *ConcatBufferBucket
     lastBucket:     *ConcatBufferBucket
     currentSP:      *u8
-
     granularity:    uint = 1024
-    totalCount:     uint
+    isAtEnd:        bool = true
 }
 
 impl ConcatBuffer
@@ -56,10 +55,12 @@ impl ConcatBuffer
     }
 
     #[Swag.Macro]
-    mtd(ptr: bool) opVisit(stmt: code)
+    mtdc(ptr: bool) opVisit(stmt: code)
     {
+        if !firstBucket
+            return
         b := firstBucket
-        while b
+        while b != lastBucket.next
         {
             #macro
             {
@@ -74,38 +75,48 @@ impl ConcatBuffer
     // Returns the number of bytes
     mtd count()->uint
     {
-        if !lastBucket
-            return 0;
-        lastBucket.count = cast(uint) (currentSP - lastBucket.datas)
-        return totalCount + lastBucket.count
-    }
+        if !firstBucket
+            return 0
 
-    // Returns the number of elements in the given bucket
-    func bucketCount(using const self, b: *ConcatBufferBucket)->uint
-    {
-        if b != lastBucket
-            return b.count
-        return cast(uint) (currentSP - lastBucket.datas)
+        count := 0'uint
+        b := firstBucket
+        while b != lastBucket.next
+        {
+            count += b.count
+            b = b.next
+        }
+
+        return count
     }
 
     // Be sure that there is enough room to store at least 'numBytes' bytes
     mtd grow(numBytes: uint)
     {
-        if lastBucket
+        // We have seek inside the buffer, so we must not change
+        // the size of the current bucket
+        total := numBytes
+        if !isAtEnd
         {
-            bcount := cast(uint) (currentSP - lastBucket.datas);
-            if bcount + numBytes <= lastBucket.size
-                return
-
-            if lastBucket.next
+            seek := cast(uint) (currentSP - curBucket.datas)
+            b := curBucket
+            while seek + total > b.count
             {
-                lastBucket = lastBucket.next
-                currentSP = lastBucket.datas
-                return
+                if !b.next
+                    break
+                total -= (b.count - seek)
+                b = b.next
+                seek = 0
             }
 
-            totalCount += bcount
-            lastBucket.count = bcount
+            Debug.assert(seek + total <= b.count)
+            return
+        }
+
+        if lastBucket
+        {
+            seek := cast(uint) (currentSP - lastBucket.datas)
+            if seek + total <= lastBucket.size
+                return
         }
 
         // Need to allocate a new bucket
@@ -116,9 +127,9 @@ impl ConcatBuffer
             lastBucket.next = newBucket
         else
             firstBucket = newBucket
-        lastBucket = newBucket
+        curBucket, lastBucket = newBucket
 
-        bsize := Math.max(granularity, numBytes)
+        bsize := Math.max(granularity, total)
         lastBucket.datas = Memory.alloc(bsize, allocator)
         lastBucket.size  = bsize
         currentSP = lastBucket.datas
@@ -144,32 +155,51 @@ impl ConcatBuffer
     // Release the content of the buffer
     mtd clear()
     {
-        @drop(self)
-        firstBucket, lastBucket = null
-        currentSP = null
-        totalCount = 0
-    }
+        if !firstBucket
+            return
 
-    // Append one byte to the buffer
-    mtd addByte(byte: u8)
-    {
-        grow(1)
-        currentSP[0] = byte
-        currentSP += 1
+        curBucket, lastBucket = firstBucket
+        currentSP = curBucket.datas
+        curBucket.count = 0
+        isAtEnd = true
     }
 
     // Append one byte to the buffer
     mtd(T) addNative(val: T)
     {
-        grow(@sizeof(val))
-        dref cast(*T) currentSP = val
-        currentSP += @sizeof(val)
+        if !isAtEnd
+        {
+            if currentSP == curBucket.datas + curBucket.count
+            {
+                curBucket = curBucket.next
+                currentSP = curBucket.datas
+            }
+
+            dref cast(*T) currentSP = val
+            currentSP += @sizeof(val)
+        }
+        else
+        {
+            grow(@sizeof(val))
+            dref cast(*T) currentSP = val
+            currentSP += @sizeof(val)
+            curBucket.count += @sizeof(val)
+        }
+    }
+
+    // Append the content of a struct
+    #[Swag.Inline]
+    mtd(T) addStruct(val: T)
+    {
+        addBytes(@mkslice(cast(const *u8) &val, @sizeof(T)))
     }
 
     // Append a slice of bytes to the buffer
     // If 'contiguous' is false, the slice will be divided in chunks if necessary
     mtd addBytes(bytes: const [..] u8, contiguous = true)
     {
+        Debug.assert(isAtEnd)
+
         num := @countof(bytes)
         if !num
             return
@@ -191,6 +221,7 @@ impl ConcatBuffer
                 num -= remain
                 slicePtr += remain
                 currentSP += remain
+                lastBucket.count += remain
                 if !num
                     return
                 grow(granularity) // Will alloc a new bucket as the current one is full
@@ -206,13 +237,7 @@ impl ConcatBuffer
         // rest of the slice
         Memory.copy(currentSP, slicePtr, num)
         currentSP += num
-    }
-
-    // Append the content of a struct
-    #[Swag.Inline]
-    mtd(T) addStruct(val: T)
-    {
-        addBytes(@mkslice(cast(const *u8) &val, @sizeof(T)))
+        lastBucket.count += num
     }
 
     // Convert buffer to a String
@@ -237,7 +262,8 @@ impl ConcatBuffer
     // Get the linearized seek offset
     mtd getOffset(seek: ConcatBufferSeek)->uint
     {
-        if !seek.bucket return 0
+        if !seek.bucket
+            return 0
 
         // Will have to optimize that !
         offset := 0'uint
@@ -256,26 +282,17 @@ impl ConcatBuffer
     {
         var result: retval
         result.bucket = lastBucket
-        if lastBucket
-            lastBucket.count = cast(uint) (currentSP - lastBucket.datas)
         result.sp = currentSP
-        result.totalCount = totalCount
         return result
     }
 
     // Seek current write pointer
     mtd seek(num: uint)
     {
-        Debug.assert(currentSP + num <= lastBucket.datas + lastBucket.size)
+        Debug.assert(currentSP + num <= curBucket.datas + curBucket.size)
         currentSP += num
-
-        newOffset := cast(uint) (currentSP - lastBucket.datas)
-        if lastBucket.count and newOffset > lastBucket.count
-        {
-            Debug.assert(lastBucket.next != null)
-            lastBucket = lastBucket.next
-            currentSP = lastBucket.datas
-        }
+        if isAtEnd
+            curBucket.count += num
     }
 
     // Set the current 'seek'
@@ -283,14 +300,16 @@ impl ConcatBuffer
     {
         if !seek.bucket
         {
-            lastBucket = firstBucket
-            currentSP = lastBucket.datas
+            curBucket = firstBucket
+            currentSP = curBucket.datas
         }
         else
         {
-            lastBucket = seek.bucket
-            currentSP  = seek.sp
+            curBucket = seek.bucket
+            currentSP = seek.sp
         }
+
+        isAtEnd = currentSP == lastBucket.datas + lastBucket.count
     }
 
     // Set the end 'seek'
@@ -298,23 +317,26 @@ impl ConcatBuffer
     {
         if !seek.bucket
         {
-            lastBucket = firstBucket
-            currentSP = lastBucket.datas
-            totalCount = 0
+            curBucket, lastBucket = firstBucket
+            currentSP = curBucket.datas
+            lastBucket.count = 0
+            isAtEnd = true
+
         }
         else
         {
-            lastBucket = seek.bucket
+            curBucket, lastBucket = seek.bucket
             currentSP  = seek.sp
-            totalCount = seek.totalCount
+            lastBucket.count = cast(uint) (seek.sp - seek.bucket.datas)
+            isAtEnd = true
         }
     }
 
     // Convert to a slice *only* if the buffer is linear (see 'makeLinear')
     mtd toSlice()->[..] u8
     {
-        if lastBucket == firstBucket and !lastBucket.next
-            return @mkslice(firstBucket.datas, bucketCount(firstBucket))
+        if lastBucket == firstBucket
+            return @mkslice(firstBucket.datas, firstBucket.count)
         return null
     }
 
@@ -322,7 +344,7 @@ impl ConcatBuffer
     mtd makeLinear()
     {
         // Already linear (and only one single bucket)
-        if lastBucket == firstBucket and !lastBucket.next
+        if lastBucket == firstBucket
             return
 
         total := count()
@@ -331,9 +353,8 @@ impl ConcatBuffer
         curPtr := newDatas
         visit b: dref self
         {
-            count := bucketCount(b)
-            Memory.copy(curPtr, b.datas, count)
-            curPtr += count
+            Memory.copy(curPtr, b.datas, b.count)
+            curPtr += b.count
         }
 
         Debug.assert(curPtr == newDatas + total)
@@ -343,7 +364,9 @@ impl ConcatBuffer
         firstBucket = Memory.new'ConcatBufferBucket(allocator)
         firstBucket.datas = newDatas
         firstBucket.size  = total
-        lastBucket = firstBucket
-        currentSP = firstBucket.datas + firstBucket.size
+        firstBucket.count = total
+        curBucket, lastBucket = firstBucket
+        currentSP = firstBucket.datas + firstBucket.count
+        isAtEnd = true
     }
 }

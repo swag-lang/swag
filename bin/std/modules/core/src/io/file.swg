@@ -105,12 +105,8 @@ func writeAllBytes(fullname: string, buffer: ConcatBuffer)->uint throw
     defer stream.close()
 
     total := 0'uint
-    p := buffer.firstBucket
-    while p
-    {
-        total += try write(stream, p.datas, buffer.bucketCount(p))
-        p = p.next
-    }
+    visit p: buffer
+        total += try write(stream, p.datas, p.count)
 
     return total
 }

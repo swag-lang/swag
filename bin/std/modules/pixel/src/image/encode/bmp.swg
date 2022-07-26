@@ -38,10 +38,10 @@ public impl IImageEncoder for Encoder
             {
                 loop x: header.biWidth
                 {
-                    result.addByte(psrc[2])
-                    result.addByte(psrc[1])
-                    result.addByte(psrc[0])
-                    result.addByte(psrc[3])
+                    result.addNative(psrc[2])
+                    result.addNative(psrc[1])
+                    result.addNative(psrc[0])
+                    result.addNative(psrc[3])
                     psrc += 4
                 }
             }
@@ -52,14 +52,14 @@ public impl IImageEncoder for Encoder
             {
                 loop x: header.biWidth
                 {
-                    result.addByte(psrc[2])
-                    result.addByte(psrc[1])
-                    result.addByte(psrc[0])
+                    result.addNative(psrc[2])
+                    result.addNative(psrc[1])
+                    result.addNative(psrc[0])
                     psrc += 3
                 }
 
                 loop 4 - align
-                    result.addByte(0)
+                    result.addNative(0)
             }
         }
         elif image.bpp != 24 or !align
@@ -74,7 +74,7 @@ public impl IImageEncoder for Encoder
                 psrc += header.biWidth * 3
 
                 loop 4 - align
-                    result.addByte(0)
+                    result.addNative(0)
             }
         }
     }

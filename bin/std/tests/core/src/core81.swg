@@ -12,9 +12,9 @@ using Core
 #test
 {
     var b: ConcatBuffer
-    b.addByte(55)
+    b.addNative(55'u8)
     @assert(@countof(b) == 1)
-    b.addByte(66)
+    b.addNative(66'u8)
     @assert(@countof(b) == 2)
 
     ptr := b.lastBucket.datas
@@ -23,7 +23,7 @@ using Core
 
     b.clear()
     @assert(@countof(b) == 0)
-    b.addByte(0)
+    b.addNative(0'u8)
     @assert(@countof(b) == 1)
     b.clear()
     @assert(@countof(b) == 0)
@@ -34,7 +34,7 @@ using Core
     var b: ConcatBuffer
     b.setBucketSize(50)
     loop 50
-        b.addByte(0xFE)
+        b.addNative(0xFE'u8)
 }
 
 #test

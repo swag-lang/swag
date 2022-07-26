@@ -25,7 +25,7 @@ impl JSon
         if !options.saveBlanks
             return
         loop indent * options.indentLevel
-            output.addByte(" "'u8)
+            output.addNative(" "'u8)
     }
 
     mtd startWrite(buf: *ConcatBuffer)
@@ -119,7 +119,7 @@ impl JSon
 
     mtd beginElement(name: string, type: typeinfo)
     {
-        output.addByte("\""'u8)
+        output.addNative("\""'u8)
         output.addBytes(name)
         output.addBytes("\":")
         if options.saveBlanks
@@ -165,9 +165,9 @@ impl JSon
         }
         #elif NT == string
         {
-            output.addByte("\""'u8)
+            output.addNative("\""'u8)
             output.addBytes(value)
-            output.addByte("\""'u8)
+            output.addNative("\""'u8)
         }
         #else
         {

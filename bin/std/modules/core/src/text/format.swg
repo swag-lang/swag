@@ -80,7 +80,7 @@ func append(buf: *ConcatBuffer, fmt: string, values: ...)
             // Deal with the parameter. %% is for one % only
             if ptr[nextIdx] == "%"'u8
             {
-                buf.addByte("%"'u8)
+                buf.addNative("%"'u8)
                 nextIdx += 1
                 idx += 1
                 continue

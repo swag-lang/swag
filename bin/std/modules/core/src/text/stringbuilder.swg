@@ -59,7 +59,7 @@ impl StringBuilder
     // Force a ending 0
     mtd zeroTerminated()
     {
-        buffer.addByte(0)
+        buffer.addNative(0'u8)
     }
 
     // Return the content as a string
