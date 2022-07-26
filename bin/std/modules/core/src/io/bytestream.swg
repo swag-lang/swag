@@ -1,102 +1,61 @@
 public struct ByteStream
 {
-    readBuffer:     const [..] u8
-    writeBuffer:    *Array'u8
-    seek:           uint
-    eof:            bool
+    buffer: const [..] u8
+    seek:   uint
+    eof:    bool
 }
 
 public impl ByteStream
 {
-    // Creates a byte stream to read from a slice
-    func openRead(readBuffer: const [..] u8)->ByteStream
+    // Creates a byte stream from a slice
+    func create(buffer: const [..] u8)->ByteStream
     {
         var result: retval
-        result.readBuffer = #self.readBuffer
+        result.init(buffer)
         return result
     }
 
-    // Creates a byte stream to write to an array
-    func openWrite(writeBuffer: *Array'u8)->ByteStream
+    // Initialize the byte stream with the given slice
+    mtd init(buffer: const [..] u8)
     {
-        var result: retval
-        result.writeBuffer = writeBuffer
-        return result
+        @init(self)
+        self.buffer = #self.buffer
     }
 
     // Returns a slice of the remaing bytes to read
-    mtd remainReadToSlice()->const [..] u8
+    mtd toSlice()->const [..] u8
     {
-        return @mkslice(readData() + seek, length() - seek)
+        return @mkslice(@dataof(buffer) + seek, @countof(buffer) - seek)
     }
 
     // Returns a string of the remaing bytes to read
-    mtd remainReadToString()->string
+    mtd toString()->string
     {
-        return @mkstring(readData() + seek, length() - seek)
+        return @mkstring(@dataof(buffer) + seek, @countof(buffer) - seek)
     }
 
     // Returns length of associated slice
-    mtdc length()->uint
-    {
-        return writeBuffer ? writeBuffer.count : @countof(readBuffer)
-    }
-
-    // Get the buffer of datas to read
-    mtd readData()->const *u8
-    {
-        return writeBuffer ? writeBuffer.buffer : @dataof(readBuffer)
-    }
+    mtdc length() => @countof(buffer)
 
     // Returns true if end has been reached
-    mtdc isEof()->bool
-    {
-        return eof
-    }
-
-    // Write a 'native' type value
-    mtd(T) writeNative(val: T) throw
-    {
-        Debug.assert(writeBuffer != null)
-
-        exceed := (seek + @sizeof(T)) - writeBuffer.count
-        if exceed > 0
-            writeBuffer.reserve(writeBuffer.size + exceed)
-        ptr := cast(*T) writeBuffer.buffer + seek
-        dref ptr = val
-        seek += @sizeof(T)
-    }
+    mtdc isEof() => eof
 
     // Read a 'native' type value
     mtd(T) readNative()->T throw
     {
-        if seek + @sizeof(T) > length()
+        if seek + @sizeof(T) > @countof(buffer)
             throw "byte stream overflow"
-        val := dref cast(const *T) (readData() + seek)
+        val := dref cast(const *T) (@dataof(buffer) + seek)
         seek += @sizeof(T)
         return val
-    }
-
-    // Write the given amount of bytes
-    mtd writeBytes(src: const *u8, count: uint)
-    {
-        Debug.assert(writeBuffer != null)
-        if !count return
-
-        exceed := (seek + count) - writeBuffer.count
-        if exceed > 0
-            writeBuffer.reserve(writeBuffer.count + exceed)
-        ptr := writeBuffer.buffer + seek
-        Memory.copy(ptr, src, count)
-        seek += count
     }
 
     // Read the given amount of bytes
     mtd readBytes(dest: *u8, count: uint) throw
     {
-        if seek + count > length()
+        if seek + count > @countof(buffer)
             throw "byte stream overflow"
-        Memory.copy(dest, readData() + seek, count)
+        Memory.copy(dest, @dataof(buffer) + seek, count)
         seek += count
     }
 
@@ -111,19 +70,18 @@ public impl ByteStream
     // Read one byte and seek
     mtd peekU8()->u8
     {
-        if seek >= length()
+        if seek >= @countof(buffer)
             return 0
-        return readBuffer[seek]
+        return buffer[seek]
     }
 
     // Seek to the next byte
     mtd seekNext(offset: uint = 1)
     {
         seek += offset
-        len := length()
-        if seek >= len
+        if seek >= @countof(buffer)
         {
-            seek = len
+            seek = @countof(buffer)
             eof = true
             return
         }
@@ -132,9 +90,7 @@ public impl ByteStream
     // Seek to the given position
     mtd setSeek(offset: uint)
     {
-        len := length()
-        Debug.assert(seek <= len)
+        Debug.assert(seek <= @countof(buffer))
         seek = offset
-        eof = seek >= len
     }
 }

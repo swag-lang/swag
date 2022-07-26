@@ -18,7 +18,7 @@ impl TagBin
 {
     mtd startRead(input: const [..] u8) throw
     {
-        stream = ByteStream.openRead(input)
+        stream.init(input)
     }
 
     mtd beginRoot() throw
