@@ -29,7 +29,7 @@ public impl JSon
 
     mtd startRead(input: const [..] u8)
     {
-        stream.init(input)
+        stream = ByteStream.openRead(input)
     }
 
     mtd beginSequence(typeElem: typeinfo, data: *u8, countElem: *uint)->bool throw
@@ -158,67 +158,67 @@ public impl JSon
         zapBlanks()
         #if NT == bool
         {
-            val := StrConv.parseBool(stream.toString())
+            val := StrConv.parseBool(stream.remainReadToString())
             stream.seekNext(acast val.eat)
             return val.value
         }
         #elif NT == f32
         {
-            val := StrConv.parseF32(stream.toString())
+            val := StrConv.parseF32(stream.remainReadToString())
             stream.seekNext(acast val.eat)
             return val.value
         }
         #elif NT == f64
         {
-            val := StrConv.parseF64(stream.toString())
+            val := StrConv.parseF64(stream.remainReadToString())
             stream.seekNext(acast val.eat)
             return val.value
         }
         #elif NT == s8
         {
-            val := StrConv.parseS8(stream.toString())
+            val := StrConv.parseS8(stream.remainReadToString())
             stream.seekNext(acast val.eat)
             return val.value
         }
         #elif NT == s16
         {
-            val := StrConv.parseS16(stream.toString())
+            val := StrConv.parseS16(stream.remainReadToString())
             stream.seekNext(acast val.eat)
             return val.value
         }
         #elif NT == s32
         {
-            val := StrConv.parseS32(stream.toString())
+            val := StrConv.parseS32(stream.remainReadToString())
             stream.seekNext(acast val.eat)
             return val.value
         }
         #elif NT == s64
         {
-            val := StrConv.parseS64(stream.toString())
+            val := StrConv.parseS64(stream.remainReadToString())
             stream.seekNext(acast val.eat)
             return val.value
         }
         #elif NT == u8
         {
-            val := StrConv.parseU8(stream.toString())
+            val := StrConv.parseU8(stream.remainReadToString())
             stream.seekNext(acast val.eat)
             return val.value
         }
         #elif NT == u16
         {
-            val := StrConv.parseU16(stream.toString())
+            val := StrConv.parseU16(stream.remainReadToString())
             stream.seekNext(acast val.eat)
             return val.value
         }
         #elif NT == u32
         {
-            val := StrConv.parseU32(stream.toString())
+            val := StrConv.parseU32(stream.remainReadToString())
             stream.seekNext(acast val.eat)
             return val.value
         }
         #elif NT == u64
         {
-            val := StrConv.parseU64(stream.toString())
+            val := StrConv.parseU64(stream.remainReadToString())
             stream.seekNext(acast val.eat)
             return val.value
         }
