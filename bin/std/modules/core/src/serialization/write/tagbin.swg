@@ -91,7 +91,7 @@ impl TagBin
         visit field: fields
         {
             // zap crc
-            output.seek(4)
+            output.moveSeek(4)
 
             p := sec.mapSeek.find(field.name)
             Debug.assert(p != null)

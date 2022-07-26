@@ -182,7 +182,7 @@ impl Encoder
         currentChunk.crc = crc.crc
 
         dataPtr := stream.currentSP
-        stream.seek(chunkLength)
+        stream.moveSeek(chunkLength)
 
         return dataPtr
     }

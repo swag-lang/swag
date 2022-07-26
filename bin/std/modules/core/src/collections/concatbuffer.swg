@@ -259,12 +259,36 @@ impl ConcatBuffer
     }
 
     // Seek current write pointer
-    mtd seek(num: uint)
+    mtd moveSeek(num: uint)
     {
-        Debug.assert(currentSP + num <= curBucket.datas + curBucket.size)
-        currentSP += num
-        if isAtEnd
-            curBucket.count += num
+        total := num
+
+        if !isAtEnd
+        {
+            seek := cast(uint) (currentSP - curBucket.datas)
+            while curBucket.next and seek + total > curBucket.count
+            {
+                total -= (curBucket.count - seek)
+                if !curBucket.next
+                    break
+                curBucket = curBucket.next
+                currentSP = curBucket.datas
+                seek = 0
+            }
+
+            if seek + total <= curBucket.count
+            {
+                currentSP += total
+                return
+            }
+
+            total -= (curBucket.count - seek)
+            isAtEnd = true
+        }
+
+        grow(total)
+        currentSP += total
+        curBucket.count += total
     }
 
     // Set the current 'seek'
