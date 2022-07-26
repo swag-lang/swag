@@ -55,16 +55,33 @@ public impl ByteStream
     }
 
     // Write a 'native' type value
-    mtd(T) writeNative(val: T) throw
+    mtd(T) writeNative(val: T)
     {
         Debug.assert(writeBuffer != null)
 
-        exceed := (seek + @sizeof(T)) - writeBuffer.count
-        if exceed > 0
-            writeBuffer.reserve(writeBuffer.size + exceed)
-        ptr := cast(*T) writeBuffer.buffer + seek
+        if seek + @sizeof(T) > writeBuffer.count
+            writeBuffer.reserve(seek + @sizeof(T))
+        ptr := cast(*T) (writeBuffer.buffer + seek)
         dref ptr = val
         seek += @sizeof(T)
+        writeBuffer.count = Math.max(writeBuffer.count, seek)
+    }
+
+    // Write the given amount of bytes
+    mtd writeBytes(slice: const [..] u8)
+    {
+        Debug.assert(writeBuffer != null)
+
+        count := @countof(slice)
+        if !count return
+
+        exceed := cast(int) ((seek + count) - writeBuffer.count)
+        if seek + count > writeBuffer.count
+            writeBuffer.reserve(seek + count)
+        ptr := writeBuffer.buffer + seek
+        Memory.copy(ptr, @dataof(slice), count)
+        seek += count
+        writeBuffer.count = Math.max(writeBuffer.count, seek)
     }
 
     // Read a 'native' type value
@@ -75,20 +92,6 @@ public impl ByteStream
         val := dref cast(const *T) (readData() + seek)
         seek += @sizeof(T)
         return val
-    }
-
-    // Write the given amount of bytes
-    mtd writeBytes(src: const *u8, count: uint)
-    {
-        Debug.assert(writeBuffer != null)
-        if !count return
-
-        exceed := (seek + count) - writeBuffer.count
-        if exceed > 0
-            writeBuffer.reserve(writeBuffer.count + exceed)
-        ptr := writeBuffer.buffer + seek
-        Memory.copy(ptr, src, count)
-        seek += count
     }
 
     // Read the given amount of bytes
@@ -137,4 +140,7 @@ public impl ByteStream
         seek = offset
         eof = seek >= len
     }
+
+    // Returns the seek value
+    mtdc getSeek() => seek
 }

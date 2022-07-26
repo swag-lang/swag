@@ -126,12 +126,9 @@ impl Capture
             return
         changed = false
 
-        var buf:     ConcatBuffer
+        var buf:     Array'u8
         var encoder: Encoder'Write.TagBin
-
         encoder.writeAll(&buf, dref self)
-        buf.makeLinear()
-
         catch File.writeAllBytes(file, buf.toSlice())
     }
 
@@ -175,13 +172,12 @@ impl Capture
             arr.emplace(&o)
         }
 
-        var buf:    ConcatBuffer
-        var encode: Encoder'Write.TagBin
-        encode.start(&buf)
-        encode.writeValue(&arr, @typeof(arr))
-        encode.end()
+        var buf:     Array'u8
+        var encoder: Encoder'Write.TagBin
+        encoder.start(&buf)
+        encoder.writeValue(&arr, @typeof(arr))
+        encoder.end()
 
-        buf.makeLinear()
         Clipboard.addData(editView.main.clipFmt, buf.toSlice())
     }
 

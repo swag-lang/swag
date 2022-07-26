@@ -12,7 +12,7 @@ struct Toto
 
 #test
 {
-    var buf: ConcatBuffer
+    var buf: Array'u8
     var wri: Encoder'Write.JSon
     wri.options.storeVersion = true
 
@@ -25,13 +25,10 @@ struct Toto
 
     wri.writeAll(&buf, toto)
 
-    str := buf.toString()
-    //Console.print(str, "\n")
-
     var rea: Decoder'Read.JSon
     rea.options.hasVersion = true
 
-    v := try rea.readAll'Toto(str.toSlice())
+    v := try rea.readAll'Toto(buf.toSlice())
     defer Memory.delete(v)
 
     @assert(v.x == true)
@@ -43,6 +40,4 @@ struct Toto
     @assert(v.arr2[0] == 1)
     @assert(v.arr2[1] == 2)
     @assert(v.arr2[2] == 3)
-
-    //Console.print(dref v, "\n")
 }

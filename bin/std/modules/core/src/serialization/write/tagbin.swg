@@ -10,28 +10,28 @@ enum TagBinSignatures
 
 struct TagBinSection
 {
-    startSeek:  ConcatBufferSeek
-    mapSeek:    HashTable'(string, ConcatBufferSeek)
+    startSeek:  uint
+    mapSeek:    HashTable'(string, uint)
     raw:        bool
 }
 
 struct TagBin
 {
-    output:   *ConcatBuffer
+    output:   ByteStream
     sections: Array'TagBinSection
 }
 
 impl TagBin
 {
-    mtd startWrite(buf: *ConcatBuffer)
+    mtd startWrite(buf: *Array'u8)
     {
-        output = buf
+        output = ByteStream.openWrite(buf)
         sections.clear()
     }
 
     mtd beginRoot()
     {
-        output.addNative(TagBinSignatures.File)
+        output.writeNative(TagBinSignatures.File)
     }
 
     mtd endRoot()
@@ -65,16 +65,16 @@ impl TagBin
         sec := sections.emplaceAddress(1)
         @init(sec)
 
-        output.addNative(TagBinSignatures.Fat)
-        output.addNative(fields.count)
+        output.writeNative(TagBinSignatures.Fat)
+        output.writeNative(fields.count)
 
         sec.startSeek = output.getSeek()
 
         // Fat
         visit field: fields
         {
-            output.addNative(getCrc(field.name))
-            output.addNative(0'uint) // Will be replaced with the seek to the corresponding startElement
+            output.writeNative(getCrc(field.name))
+            output.writeNative(0'uint) // Will be replaced with the seek to the corresponding startElement
         }
 
         return false
@@ -91,13 +91,13 @@ impl TagBin
         visit field: fields
         {
             // zap crc
-            output.seek(4)
+            output.seekNext(4)
 
             p := sec.mapSeek.find(field.name)
             Debug.assert(p != null)
 
             // Write linear seek inside the buffer
-            output.addNative(output.getOffset(p.value))
+            output.writeNative(p.value)
         }
 
         sections.removeBack()
@@ -115,8 +115,8 @@ impl TagBin
         }
 
         // Write element signature
-        output.addNative(getCrc(name))
-        output.addNative(type.crc32)
+        output.writeNative(getCrc(name))
+        output.writeNative(type.crc32)
     }
 
     mtd endElement()
@@ -133,7 +133,7 @@ impl TagBin
 
     mtd beginSequence(typeElem: typeinfo, data: const *void, countElem: uint)->bool
     {
-        output.addNative(countElem)
+        output.writeNative(countElem)
 
         // Dynamic array of raw serializable types
         // Just write them in one batch
@@ -148,7 +148,7 @@ impl TagBin
                 if raw
                 {
                     bufArr := cast(const *Array'u8) data
-                    output.addBytes(@mkslice(bufArr.buffer, countElem * sizeof))
+                    output.writeBytes(@mkslice(bufArr.buffer, countElem * sizeof))
                     return true
                 }
             }
@@ -160,7 +160,7 @@ impl TagBin
             (raw, sizeof) := isRawSerializable(typeElem)
             if raw
             {
-                output.addBytes(@mkslice(cast(const *u8) data, countElem * sizeof))
+                output.writeBytes(@mkslice(cast(const *u8) data, countElem * sizeof))
                 return true
             }
         }
@@ -180,12 +180,12 @@ impl TagBin
     {
         #if NT == string
         {
-            output.addNative(cast(u32) @countof(value))
-            output.addBytes(value)
+            output.writeNative(cast(u32) @countof(value))
+            output.writeBytes(value)
         }
         #else
         {
-            output.addNative(value)
+            output.writeNative(value)
         }
     }
 }
