@@ -2,10 +2,11 @@
 
 struct ConcatBufferBucket
 {
-    datas:  *u8
-    next:   *ConcatBufferBucket
-    count:  uint
-    size:   uint
+    datas:          *u8
+    next:           *ConcatBufferBucket
+    count:          uint
+    size:           uint
+    countBefore:    uint
 }
 
 struct ConcatBufferSeek
@@ -40,6 +41,7 @@ impl ConcatBuffer
         release()
     }
 
+    // Visit all valid buckets
     #[Swag.Macro]
     mtdc(ptr: bool) opVisit(stmt: code)
     {
@@ -61,18 +63,7 @@ impl ConcatBuffer
     // Returns the number of bytes
     mtd count()->uint
     {
-        if !firstBucket
-            return 0
-
-        count := 0'uint
-        b := firstBucket
-        while b != lastBucket.next
-        {
-            count += b.count
-            b = b.next
-        }
-
-        return count
+        return lastBucket ? lastBucket.countBefore + lastBucket.count : 0
     }
 
     // Be sure that there is enough room to store at least 'numBytes' bytes
@@ -113,6 +104,13 @@ impl ConcatBuffer
             lastBucket.next = newBucket
         else
             firstBucket = newBucket
+
+        // Each bucket knows the total count before it
+        if firstBucket and lastBucket == firstBucket
+            newBucket.countBefore = firstBucket.count
+        elif lastBucket
+            newBucket.countBefore = lastBucket.countBefore + lastBucket.count
+
         curBucket, lastBucket = newBucket
 
         bsize := Math.max(granularity, total)
@@ -157,7 +155,7 @@ impl ConcatBuffer
         clear()
     }
 
-    // Release the content of the buffer
+    // Clear the content without freing the buffers
     mtd clear()
     {
         if !firstBucket
@@ -245,41 +243,10 @@ impl ConcatBuffer
         lastBucket.count += num
     }
 
-    // Convert buffer to a String
-    mtd toString()->String
-    {
-        var result: retval
-        if !firstBucket
-            return result
-
-        result.reserve(count() + 1)
-
-        ptr := firstBucket
-        while ptr != lastBucket.next
-        {
-            result.append(@mkstring(ptr.datas, ptr.count))
-            ptr = ptr.next
-        }
-
-        return result
-    }
-
     // Get the linearized seek offset
     mtd getOffset(seek: ConcatBufferSeek)->uint
     {
-        if !seek.bucket
-            return 0
-
-        // Will have to optimize that !
-        offset := 0'uint
-        b := firstBucket
-        while b != seek.bucket
-        {
-            offset += b.count
-            b = b.next
-        }
-
-        return offset + (cast(uint) (seek.sp - seek.bucket.datas))
+        return seek.bucket ? seek.bucket.countBefore + cast(uint) (seek.sp - seek.bucket.datas) : 0
     }
 
     // Returns the current 'seek' in the buffer
@@ -335,6 +302,25 @@ impl ConcatBuffer
             lastBucket.count = cast(uint) (seek.sp - seek.bucket.datas)
             isAtEnd = true
         }
+    }
+
+    // Convert buffer to a String
+    mtd toString()->String
+    {
+        var result: retval
+        if !firstBucket
+            return result
+
+        result.reserve(count() + 1)
+
+        ptr := firstBucket
+        while ptr != lastBucket.next
+        {
+            result.append(@mkstring(ptr.datas, ptr.count))
+            ptr = ptr.next
+        }
+
+        return result
     }
 
     // Convert to a slice *only* if the buffer is linear (see 'makeLinear')
