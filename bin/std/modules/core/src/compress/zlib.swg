@@ -32,7 +32,7 @@ impl ZLib
     // Decompress stream
     mtd decompress(buffer: const [..] u8)->Array'u8 throw
     {
-        bs := ByteStream.create(buffer)
+        bs := ByteStream.openRead(buffer)
         if bs.length() < 6
             throw "invalid format"
 
@@ -59,7 +59,7 @@ impl ZLib
         flevel := (flg >>,safe 6) & 3
 
         var result: retval
-        result = try decoder.decompress(bs.toSlice(), winSize)
+        result = try decoder.decompress(bs.remainReadToSlice(), winSize)
 
         // Now we should have the checksum
         decoder.stream.discardToNextByte()
