@@ -138,11 +138,11 @@ bool TypeTableJob::computeStruct()
     {
         uint32_t count = (uint32_t) concreteType->generics.count;
         uint32_t storageArray;
-        auto     addrArray = (ConcreteTypeInfoParam*) typeTable->makeConcreteSlice(baseContext, count * sizeof(ConcreteTypeInfoParam), concreteTypeInfoValue, storageSegment, storageOffset, &concreteType->generics.buffer, storageArray);
+        auto     addrArray = (ConcreteTypeValue*) typeTable->makeConcreteSlice(baseContext, count * sizeof(ConcreteTypeValue), concreteTypeInfoValue, storageSegment, storageOffset, &concreteType->generics.buffer, storageArray);
         for (int param = 0; param < concreteType->generics.count; param++)
         {
-            SWAG_CHECK(typeTable->makeConcreteParam(baseContext, addrArray + param, storageSegment, storageArray, realType->genericParameters[param], cflags));
-            storageArray += sizeof(ConcreteTypeInfoParam);
+            SWAG_CHECK(typeTable->makeConcreteTypeValue(baseContext, addrArray + param, storageSegment, storageArray, realType->genericParameters[param], cflags));
+            storageArray += sizeof(ConcreteTypeValue);
         }
     }
 
@@ -156,11 +156,11 @@ bool TypeTableJob::computeStruct()
         {
             uint32_t count = (uint32_t) concreteType->fields.count;
             uint32_t storageArray;
-            auto     addrArray = (ConcreteTypeInfoParam*) typeTable->makeConcreteSlice(baseContext, count * sizeof(ConcreteTypeInfoParam), concreteTypeInfoValue, storageSegment, storageOffset, &concreteType->fields.buffer, storageArray);
+            auto     addrArray = (ConcreteTypeValue*) typeTable->makeConcreteSlice(baseContext, count * sizeof(ConcreteTypeValue), concreteTypeInfoValue, storageSegment, storageOffset, &concreteType->fields.buffer, storageArray);
             for (int param = 0; param < concreteType->fields.count; param++)
             {
-                SWAG_CHECK(typeTable->makeConcreteParam(baseContext, addrArray + param, storageSegment, storageArray, realType->fields[param], cflags));
-                storageArray += sizeof(ConcreteTypeInfoParam);
+                SWAG_CHECK(typeTable->makeConcreteTypeValue(baseContext, addrArray + param, storageSegment, storageArray, realType->fields[param], cflags));
+                storageArray += sizeof(ConcreteTypeValue);
             }
         }
     }
@@ -177,18 +177,18 @@ bool TypeTableJob::computeStruct()
             {
                 uint32_t count = (uint32_t) concreteType->methods.count;
                 uint32_t storageArray;
-                auto     addrArray = (ConcreteTypeInfoParam*) typeTable->makeConcreteSlice(baseContext, count * sizeof(ConcreteTypeInfoParam), concreteTypeInfoValue, storageSegment, storageOffset, &concreteType->methods.buffer, storageArray);
+                auto     addrArray = (ConcreteTypeValue*) typeTable->makeConcreteSlice(baseContext, count * sizeof(ConcreteTypeValue), concreteTypeInfoValue, storageSegment, storageOffset, &concreteType->methods.buffer, storageArray);
                 for (int param = 0; param < concreteType->methods.count; param++)
                 {
-                    SWAG_CHECK(typeTable->makeConcreteParam(baseContext, addrArray + param, storageSegment, storageArray, realType->methods[param], cflags));
+                    SWAG_CHECK(typeTable->makeConcreteTypeValue(baseContext, addrArray + param, storageSegment, storageArray, realType->methods[param], cflags));
 
                     // 'value' will contain a pointer to the lambda.
                     // Register it for later patches
-                    uint32_t     fieldOffset = storageArray + offsetof(ConcreteTypeInfoParam, value);
+                    uint32_t     fieldOffset = storageArray + offsetof(ConcreteTypeValue, value);
                     AstFuncDecl* funcNode    = CastAst<AstFuncDecl>(realType->methods[param]->typeInfo->declNode, AstNodeKind::FuncDecl);
                     patchMethods.push_back({funcNode, fieldOffset});
 
-                    storageArray += sizeof(ConcreteTypeInfoParam);
+                    storageArray += sizeof(ConcreteTypeValue);
                 }
             }
         }
@@ -204,19 +204,19 @@ bool TypeTableJob::computeStruct()
         {
             uint32_t count = (uint32_t) concreteType->interfaces.count;
             uint32_t storageArray;
-            auto     addrArray = (ConcreteTypeInfoParam*) typeTable->makeConcreteSlice(baseContext, count * sizeof(ConcreteTypeInfoParam), concreteTypeInfoValue, storageSegment, storageOffset, &concreteType->interfaces.buffer, storageArray);
+            auto     addrArray = (ConcreteTypeValue*) typeTable->makeConcreteSlice(baseContext, count * sizeof(ConcreteTypeValue), concreteTypeInfoValue, storageSegment, storageOffset, &concreteType->interfaces.buffer, storageArray);
             for (int param = 0; param < concreteType->interfaces.count; param++)
             {
-                SWAG_CHECK(typeTable->makeConcreteParam(baseContext, addrArray + param, storageSegment, storageArray, realType->interfaces[param], cflags));
+                SWAG_CHECK(typeTable->makeConcreteTypeValue(baseContext, addrArray + param, storageSegment, storageArray, realType->interfaces[param], cflags));
 
                 // :ItfIsConstantSeg
                 // Compute the storage of the interface for @interfaceof
-                uint32_t fieldOffset = offsetof(ConcreteTypeInfoParam, value);
+                uint32_t fieldOffset = offsetof(ConcreteTypeValue, value);
                 uint32_t valueOffset = storageArray + fieldOffset;
                 storageSegment->addInitPtr(valueOffset, realType->interfaces[param]->offset, SegmentKind::Constant);
                 addrArray[param].value = module->constantSegment.address(realType->interfaces[param]->offset);
 
-                storageArray += sizeof(ConcreteTypeInfoParam);
+                storageArray += sizeof(ConcreteTypeValue);
             }
         }
     }

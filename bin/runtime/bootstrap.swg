@@ -376,7 +376,7 @@ namespace Swag
         value:			const *void
         attributes:	    const [..] Attribute
         offset:			u32
-        padding:		u32
+        crc32:          u32
     }
 
     struct TypeInfo

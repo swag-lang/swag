@@ -130,7 +130,7 @@ typedef struct SwagProcessInfos
 {
     SwagSlice          modules;
     SwagSlice          args;
-    uint64_t           contextTlsId        ;
+    uint64_t           contextTlsId;
     SwagContext*       defaultContext;
     SwagBytecodeRun    byteCodeRun;
     SwagMakeCallback   makeCallback;
@@ -275,12 +275,6 @@ struct ConcreteAny
     ConcreteTypeInfo* type;
 };
 
-struct ConcreteTypeInfoNative
-{
-    ConcreteTypeInfo base;
-    NativeTypeKind   nativeKind;
-};
-
 struct ConcreteAttributeParameter
 {
     SwagSlice   name;
@@ -291,6 +285,22 @@ struct ConcreteAttribute
 {
     ConcreteTypeInfo* type;
     SwagSlice         params;
+};
+
+struct ConcreteTypeValue
+{
+    SwagSlice         name;
+    ConcreteTypeInfo* pointedType;
+    void*             value;
+    SwagSlice         attributes;
+    uint32_t          offsetOf;
+    uint32_t          crc32;
+};
+
+struct ConcreteTypeInfoNative
+{
+    ConcreteTypeInfo base;
+    NativeTypeKind   nativeKind;
 };
 
 struct ConcreteTypeInfoPointer
@@ -314,16 +324,6 @@ struct ConcreteTypeInfoAlias
 struct ConcreteTypeInfoNamespace
 {
     ConcreteTypeInfo base;
-};
-
-struct ConcreteTypeInfoParam
-{
-    SwagSlice         name;
-    ConcreteTypeInfo* pointedType;
-    void*             value;
-    SwagSlice         attributes;
-    uint32_t          offsetOf;
-    uint32_t          padding;
 };
 
 struct ConcreteTypeInfoStruct

@@ -49,7 +49,7 @@ void SwagScope::registerType(TypeInfo* typeInfo)
         SWAG_ASSERT(!regTypeInfoParam);
         regTypeInfoParam = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
         regTypeInfoParam->flags |= TYPEINFO_STRUCT_TYPEINFO;
-        SWAG_ASSERT(typeInfo->sizeOf == sizeof(ConcreteTypeInfoParam));
+        SWAG_ASSERT(typeInfo->sizeOf == sizeof(ConcreteTypeValue));
     }
     else if (typeInfo->name == g_LangSpec->name_TypeInfoFunc)
     {
