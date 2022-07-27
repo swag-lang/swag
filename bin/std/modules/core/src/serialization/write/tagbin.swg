@@ -73,7 +73,7 @@ impl TagBin
         // Fat
         visit field: fields
         {
-            output.addNative(getCrc(field.name))
+            output.addNative(field.crc32)
             output.addNative(0'uint) // Will be replaced with the seek to the corresponding startElement
         }
 
