@@ -80,9 +80,9 @@ impl TagBin
         sections.removeBack()
     }
 
-    mtd beginElement(name: string, type: typeinfo)->bool throw
+    mtd beginElement(val: TypeValue)->bool throw
     {
-        crcName := getCrc(name)
+        crcName := val.crc32
 
         // Outside a section
         if !sections.isEmpty()

@@ -10,7 +10,7 @@ attr NoSerialize()      // Do not serialize a struct or a field
 
 interface IEncoder
 {
-    beginElement:   mtd(string, typeinfo)
+    beginElement:   mtd(TypeValue)
     endElement:     mtd()
     beginValue:     mtd()
     endValue:       mtd()
@@ -134,14 +134,20 @@ impl Encoder
                 serializer.beginSection()
                 defer serializer.endSection()
 
-                objType := structType.fields[0].pointedType
-                serializer.beginElement("type", objType)
-                writeValue(&dataObj.type, objType)
+                var typeVal: TypeValue
+                typeVal.name = "type"
+                typeVal.crc32 = 1
+                typeVal.pointedType = structType.fields[0].pointedType
+
+                serializer.beginElement(typeVal)
+                writeValue(&dataObj.type, typeVal.pointedType)
                 serializer.endElement()
 
                 if dataObj.value
                 {
-                    serializer.beginElement("value", objType)
+                    typeVal.name = "value"
+                    typeVal.crc32 = 2
+                    serializer.beginElement(typeVal)
                     writeValue(dataObj.value, dataObj.type)
                     serializer.endElement()
                 }
@@ -177,9 +183,9 @@ impl Encoder
             // Generic structure save
             visit field: fields
             {
-                if !itf or !itf.writeElement(field.name, field.pointedType, data + field.offset, cast(IEncoder) self)
+                if !itf or !itf.writeElement(dref field, data + field.offset, cast(IEncoder) self)
                 {
-                    serializer.beginElement(field.name, field.pointedType)
+                    serializer.beginElement(field)
                     writeValue(data + field.offset, field.pointedType)
                     serializer.endElement()
                 }
@@ -238,9 +244,9 @@ impl Encoder
 
 impl IEncoder for Encoder
 {
-    mtd beginElement(name: string, type: typeinfo)
+    mtd beginElement(val: Swag.TypeValue)
     {
-        serializer.beginElement(name, type)
+        serializer.beginElement(val)
     }
 
     mtd endElement()

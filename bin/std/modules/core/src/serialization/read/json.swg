@@ -107,7 +107,7 @@ public impl JSon
     {
     }
 
-    mtd beginElement(name: string, type: typeinfo)->bool throw
+    mtd beginElement(val: TypeValue)->bool throw
     {
         zapBlanks()
         c := stream.readU8()
@@ -121,6 +121,9 @@ public impl JSon
             propName += c
             c = stream.readU8()
         }
+
+        if propName != val.name
+            throw "invalid property name"
 
         if c != "\""'u8
             throw "malformed property name (missing closing '\"')"

@@ -117,10 +117,10 @@ impl JSon
     {
     }
 
-    mtd beginElement(name: string, type: typeinfo)
+    mtd beginElement(val: TypeValue)
     {
         output.addNative("\""'u8)
-        output.addBytes(name)
+        output.addBytes(val.name)
         output.addBytes("\":")
         if options.saveBlanks
             output.addBytes(" ")

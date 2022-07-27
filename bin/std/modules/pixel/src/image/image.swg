@@ -265,11 +265,11 @@ impl ISerialize for Image
         return false
     }
 
-    mtd readElement(name: string, type: typeinfo, data: *void, decoder: IDecoder)->bool throw
+    mtd readElement(val: TypeValue, data: *void, decoder: IDecoder)->bool throw
     {
-        if name == @nameof(pixels)
+        if val.name == @nameof(pixels)
         {
-            if !decoder.beginElement(name, type)
+            if !decoder.beginElement(val)
                 return true
             decoder.beginValue()
             pixels = decoder.readBufferU8(size)
@@ -281,11 +281,11 @@ impl ISerialize for Image
         return false
     }
 
-    mtd writeElement(name: string, type: typeinfo, data: const *void, encoder: IEncoder)->bool
+    mtd writeElement(val: TypeValue, data: const *void, encoder: IEncoder)->bool
     {
-        if name == @nameof(pixels)
+        if val.name == @nameof(pixels)
         {
-            encoder.beginElement(name, type)
+            encoder.beginElement(val)
             encoder.beginValue()
             encoder.writeBufferU8(pixels, size)
             encoder.endValue()

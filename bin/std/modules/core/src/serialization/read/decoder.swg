@@ -4,7 +4,7 @@ using Swag
 
 interface IDecoder
 {
-    beginElement:   mtd(string, typeinfo)->bool throw
+    beginElement:   mtd(TypeValue)->bool throw
     endElement:     mtd() throw
     beginValue:     mtd() throw
     endValue:       mtd() throw
@@ -128,13 +128,21 @@ impl Decoder
                 serializer.beginSection()
                 defer serializer.endSection()
 
-                discard serializer.beginElement("type", structType.fields[0].pointedType)
+                var typeVal: TypeValue
+                typeVal.name = "type"
+                typeVal.crc32 = 1
+                typeVal.pointedType = structType.fields[0].pointedType
+
+                discard serializer.beginElement(typeVal)
                 readValue(&dataObj.type, structType.fields[0].pointedType)
                 serializer.endElement()
+
+                typeVal.name = "value"
+                typeVal.crc32 = 2
                 if dataObj.type
                 {
                     dataObj.value = acast Memory.new(dataObj.type)
-                    discard serializer.beginElement("value", dataObj.type)
+                    discard serializer.beginElement(typeVal)
                     readValue(dataObj.value, dataObj.type)
                     serializer.endElement()
                 }
@@ -169,9 +177,9 @@ impl Decoder
 
             visit field: fields
             {
-                if !itf or !itf.readElement(field.name, field.pointedType, data + field.offset, cast(IDecoder) self)
+                if !itf or !itf.readElement(dref field, data + field.offset, cast(IDecoder) self)
                 {
-                    if serializer.beginElement(field.name, field.pointedType)
+                    if serializer.beginElement(field)
                     {
                         readValue(data + field.offset, field.pointedType)
                         serializer.endElement()
@@ -236,9 +244,9 @@ impl Decoder
 
 impl IDecoder for Decoder
 {
-    mtd beginElement(name: string, type: typeinfo)->bool throw
+    mtd beginElement(val: Swag.TypeValue)->bool throw
     {
-        return serializer.beginElement(name, type)
+        return serializer.beginElement(val)
     }
 
     mtd endElement() throw

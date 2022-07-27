@@ -103,20 +103,20 @@ impl TagBin
         sections.removeBack()
     }
 
-    mtd beginElement(name: string, type: typeinfo)
+    mtd beginElement(val: TypeValue)
     {
         // Outside a section
         if !sections.isEmpty()
         {
             // Register the current seek for the fat generation
             sec := sections.backPtr()
-            Debug.assert(!sec.mapSeek.contains(name))
-            sec.mapSeek.add(name, output.getSeek())
+            Debug.assert(!sec.mapSeek.contains(val.name))
+            sec.mapSeek.add(val.name, output.getSeek())
         }
 
         // Write element signature
-        output.addNative(getCrc(name))
-        output.addNative(type.crc32)
+        output.addNative(val.crc32)
+        output.addNative(val.pointedType.crc32)
     }
 
     mtd endElement()

@@ -1048,11 +1048,11 @@ impl ISerialize for Capture
         return false
     }
 
-    mtd readElement(name: string, type: typeinfo, data: *void, decoder: IDecoder)->bool throw
+    mtd readElement(val: Swag.TypeValue, data: *void, decoder: IDecoder)->bool throw
     {
-        if name == @nameof(forms)
+        if val.name == @nameof(forms)
         {
-            if !decoder.beginElement(name, type)
+            if !decoder.beginElement(val)
                 return true
             decoder.beginValue()
 
@@ -1076,11 +1076,11 @@ impl ISerialize for Capture
         return false
     }
 
-    mtd writeElement(name: string, type: typeinfo, data: const *void, encoder: IEncoder)->bool
+    mtd writeElement(val: Swag.TypeValue, data: const *void, encoder: IEncoder)->bool
     {
-        if name == @nameof(forms)
+        if val.name == @nameof(forms)
         {
-            encoder.beginElement(name, type)
+            encoder.beginElement(val)
             encoder.beginValue()
 
             var arr: Array'(Object'BaseForm)
