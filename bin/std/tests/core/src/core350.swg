@@ -14,7 +14,6 @@ struct Toto
 {
     var buf: ConcatBuffer
     var wri: Encoder'Write.JSon
-    wri.options.storeVersion = true
 
     var toto: Toto
     toto.x = true
@@ -29,7 +28,6 @@ struct Toto
     //Console.print(str, "\n")
 
     var rea: Decoder'Read.JSon
-    rea.options.hasVersion = true
 
     v := try rea.readAll'Toto(str.toSlice())
     defer Memory.delete(v)

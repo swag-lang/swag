@@ -8,11 +8,6 @@ attr Version(v: u32)    // Set the struct version number
 #[AttrUsage(AttributeUsage.Struct|AttributeUsage.StructVariable)]
 attr NoSerialize()      // Do not serialize a struct or a field
 
-struct EncoderOptions
-{
-    storeVersion: bool
-}
-
 interface IEncoder
 {
     beginElement:   mtd(string, typeinfo)
@@ -38,7 +33,6 @@ interface IEncoder
 
 struct(T) Encoder
 {
-    options:    EncoderOptions
     serializer: T
     started:    bool
 }
@@ -140,13 +134,14 @@ impl Encoder
                 serializer.beginSection()
                 defer serializer.endSection()
 
-                serializer.beginElement("type", structType.fields[0].pointedType)
-                writeValue(&dataObj.type, structType.fields[0].pointedType)
+                objType := structType.fields[0].pointedType
+                serializer.beginElement("type", objType)
+                writeValue(&dataObj.type, objType)
                 serializer.endElement()
 
                 if dataObj.value
                 {
-                    serializer.beginElement("value", structType.fields[0].pointedType)
+                    serializer.beginElement("value", objType)
                     writeValue(dataObj.value, dataObj.type)
                     serializer.endElement()
                 }
@@ -154,26 +149,11 @@ impl Encoder
                 return
             }
 
-            // Write version number
-            var version: u32
-            if options.storeVersion
-            {
-                val := Reflection.getAttributeValue(structType, Version, "v")
-                if val != null
-                    version = cast(u32) val
-
-                serializer.beginElement("$version", u32)
-                serializer.beginValue()
-                serializer.writeNative(version)
-                serializer.endValue()
-                serializer.endElement()
-            }
-
             // A structure with an implementation of ISerialize
             itf := @mkinterface(data, type, ISerialize)
             if itf != null
             {
-                if itf.write(version, cast(IEncoder) self)
+                if itf.write(cast(IEncoder) self)
                     return
             }
 
@@ -197,7 +177,7 @@ impl Encoder
             // Generic structure save
             visit field: fields
             {
-                if !itf or !itf.writeElement(version, field.name, field.pointedType, data + field.offset, cast(IEncoder) self)
+                if !itf or !itf.writeElement(field.name, field.pointedType, data + field.offset, cast(IEncoder) self)
                 {
                     serializer.beginElement(field.name, field.pointedType)
                     writeValue(data + field.offset, field.pointedType)

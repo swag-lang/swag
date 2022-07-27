@@ -2,11 +2,6 @@
 #global namespace Serialization
 using Swag
 
-struct DecoderOptions
-{
-    hasVersion: bool
-}
-
 interface IDecoder
 {
     beginElement:   mtd(string, typeinfo)->bool throw
@@ -32,7 +27,6 @@ interface IDecoder
 
 struct(T) Decoder
 {
-    options:    DecoderOptions
     serializer: T
     started:    bool
 }
@@ -148,24 +142,11 @@ impl Decoder
                 return
             }
 
-            // Read version if requested
-            var version: u32
-            if options.hasVersion
-            {
-                if serializer.beginElement("$version", u32)
-                {
-                    serializer.beginValue()
-                    version = serializer.readNative'u32()
-                    serializer.endValue()
-                    serializer.endElement()
-                }
-            }
-
             // A structure with an implementation of ISerialize
             itf := @mkinterface(data, type, ISerialize)
             if itf != null
             {
-                if itf.read(version, cast(IDecoder) self)
+                if itf.read(cast(IDecoder) self)
                     return
             }
 
@@ -188,7 +169,7 @@ impl Decoder
 
             visit field: fields
             {
-                if !itf or !itf.readElement(version, field.name, field.pointedType, data + field.offset, cast(IDecoder) self)
+                if !itf or !itf.readElement(field.name, field.pointedType, data + field.offset, cast(IDecoder) self)
                 {
                     if serializer.beginElement(field.name, field.pointedType)
                     {

@@ -1038,17 +1038,17 @@ impl Capture
 
 impl ISerialize for Capture
 {
-    mtd read(version: u32, decoder: IDecoder)->bool throw
+    mtd read(decoder: IDecoder)->bool throw
     {
         return false
     }
 
-    mtd write(version: u32, encoder: IEncoder)->bool
+    mtd write(encoder: IEncoder)->bool
     {
         return false
     }
 
-    mtd readElement(version: u32, name: string, type: typeinfo, data: *void, decoder: IDecoder)->bool throw
+    mtd readElement(name: string, type: typeinfo, data: *void, decoder: IDecoder)->bool throw
     {
         if name == @nameof(forms)
         {
@@ -1076,7 +1076,7 @@ impl ISerialize for Capture
         return false
     }
 
-    mtd writeElement(version: u32, name: string, type: typeinfo, data: const *void, encoder: IEncoder)->bool
+    mtd writeElement(name: string, type: typeinfo, data: const *void, encoder: IEncoder)->bool
     {
         if name == @nameof(forms)
         {
