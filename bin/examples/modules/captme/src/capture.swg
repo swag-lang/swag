@@ -1050,7 +1050,7 @@ impl ISerialize for Capture
 
     mtd readElement(val: Swag.TypeValue, data: *void, decoder: IDecoder)->bool throw
     {
-        if val.name == @nameof(forms)
+        if val.crc32 == Hash.Crc32.compute(@nameof(forms))
         {
             if !decoder.beginElement(val)
                 return true
@@ -1078,7 +1078,7 @@ impl ISerialize for Capture
 
     mtd writeElement(val: Swag.TypeValue, data: const *void, encoder: IEncoder)->bool
     {
-        if val.name == @nameof(forms)
+        if val.crc32 == Hash.Crc32.compute(@nameof(forms))
         {
             encoder.beginElement(val)
             encoder.beginValue()

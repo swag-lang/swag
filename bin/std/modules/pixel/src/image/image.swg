@@ -267,7 +267,7 @@ impl ISerialize for Image
 
     mtd readElement(val: TypeValue, data: *void, decoder: IDecoder)->bool throw
     {
-        if val.name == @nameof(pixels)
+        if val.crc32 == Hash.Crc32.compute(@nameof(pixels))
         {
             if !decoder.beginElement(val)
                 return true
@@ -283,7 +283,7 @@ impl ISerialize for Image
 
     mtd writeElement(val: TypeValue, data: const *void, encoder: IEncoder)->bool
     {
-        if val.name == @nameof(pixels)
+        if val.crc32 == Hash.Crc32.compute(@nameof(pixels))
         {
             encoder.beginElement(val)
             encoder.beginValue()
