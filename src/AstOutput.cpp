@@ -420,6 +420,12 @@ bool AstOutput::outputAttributesGlobalUsing(OutputContext& context, Concat& conc
 
 bool AstOutput::outputAttributes(OutputContext& context, Concat& concat, AstNode* node, TypeInfo* typeInfo)
 {
+    switch (node->kind)
+    {
+    case AstNodeKind::ConstDecl:
+        return true;
+    }
+
     SWAG_CHECK(outputAttributesGlobalUsing(context, concat, node));
 
     AttributeList* attr = nullptr;
