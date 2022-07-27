@@ -224,11 +224,12 @@ impl ConcatBuffer
                 {
                     Memory.copy(currentSP, slicePtr, remain)
                     num -= remain
-                    slicePtr += remain
-                    currentSP += remain
+                    slicePtr, currentSP += remain
                     if !num
                         return
 
+                    // We have reached the end
+                    // So we must grow
                     if !curBucket.next
                     {
                         isAtEnd = true
@@ -259,8 +260,7 @@ impl ConcatBuffer
                 {
                     Memory.copy(currentSP, slicePtr, remain)
                     num -= remain
-                    slicePtr += remain
-                    currentSP += remain
+                    slicePtr, currentSP += remain
                     lastBucket.count += remain
                     if !num
                         return
