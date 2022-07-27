@@ -184,15 +184,13 @@ impl ConcatBuffer
     {
         if !isAtEnd
         {
-            if currentSP == curBucket.datas + curBucket.count
+            // If not enough room in the current bucket, then we
+            // have to split the content with the next bucket
+            if currentSP > curBucket.datas + curBucket.count - @sizeof(T)
             {
-                curBucket = curBucket.next
-                currentSP = curBucket.datas
-            }
-            else
-            {
-                // We must have enough room in the current bucket to store the value
-                Debug.assert(currentSP <= curBucket.datas + curBucket.count - @sizeof(T))
+                v := val
+                addBytes(@mkslice(cast(*u8) &v, @sizeof(T)), false)
+                return
             }
 
             dref cast(*T) currentSP = val
@@ -218,8 +216,6 @@ impl ConcatBuffer
     // If 'contiguous' is false, the slice will be divided in chunks if necessary
     mtd addBytes(bytes: const [..] u8, contiguous = true)
     {
-        Debug.assert(isAtEnd)
-
         num := @countof(bytes)
         if !num
             return
@@ -233,19 +229,47 @@ impl ConcatBuffer
         // Divide the slice in the given amount of buckets if necessary
         if !contiguous
         {
-            curCount := cast(uint) (currentSP - lastBucket.datas)
-            remain := lastBucket.size - curCount
-            while num > remain
+            // Overwrite
+            if !isAtEnd
             {
-                Memory.copy(currentSP, slicePtr, remain)
-                num -= remain
-                slicePtr += remain
-                currentSP += remain
-                lastBucket.count += remain
-                if !num
-                    return
-                grow(granularity) // Will alloc a new bucket as the current one is full
-                remain = lastBucket.size
+                curCount := cast(uint) (currentSP - curBucket.datas)
+                remain := curBucket.count - curCount
+                while num > remain
+                {
+                    Memory.copy(currentSP, slicePtr, remain)
+                    num -= remain
+                    slicePtr += remain
+                    currentSP += remain
+                    if !num
+                        return
+                    curBucket = curBucket.next
+                    currentSP = curBucket.datas
+                    remain = curBucket.count
+                }
+
+                Memory.copy(currentSP, slicePtr, num)
+                currentSP += num
+                setIsAtEnd()
+                return
+            }
+
+            // Append
+            else
+            {
+                curCount := cast(uint) (currentSP - lastBucket.datas)
+                remain := lastBucket.size - curCount
+                while num > remain
+                {
+                    Memory.copy(currentSP, slicePtr, remain)
+                    num -= remain
+                    slicePtr += remain
+                    currentSP += remain
+                    lastBucket.count += remain
+                    if !num
+                        return
+                    grow(granularity) // Will alloc a new bucket as the current one is full
+                    remain = lastBucket.size
+                }
             }
         }
         else
@@ -308,6 +332,12 @@ impl ConcatBuffer
         curBucket.count += total
     }
 
+    #[Swag.Inline]
+    private mtd setIsAtEnd()
+    {
+        isAtEnd = currentSP == lastBucket.datas + lastBucket.count
+    }
+
     // Set the current 'seek'
     mtd setSeek(seek: ConcatBufferSeek)
     {
@@ -322,7 +352,7 @@ impl ConcatBuffer
             currentSP = seek.sp
         }
 
-        isAtEnd = currentSP == lastBucket.datas + lastBucket.count
+        setIsAtEnd()
     }
 
     // Set the end 'seek'
