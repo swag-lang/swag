@@ -69,33 +69,18 @@ impl ConcatBuffer
     // Be sure that there is enough room to store at least 'numBytes' bytes
     mtd grow(numBytes: uint)
     {
-        // We have seek inside the buffer, so we must not change
-        // the size of the current bucket
-        total := numBytes
-        if !isAtEnd
-        {
-            seek := cast(uint) (currentSP - curBucket.datas)
-            b := curBucket
-            while seek + total > b.count
-            {
-                if !b.next
-                    break
-                total -= (b.count - seek)
-                b = b.next
-                seek = 0
-            }
-
-            Debug.assert(seek + total <= b.count)
-            return
-        }
+        Debug.assert(isAtEnd)
 
         if lastBucket
         {
+            // Enough room in the last bucket
             seek := cast(uint) (currentSP - lastBucket.datas)
-            if seek + total <= lastBucket.size
+            if seek + numBytes <= lastBucket.size
                 return
 
-            if lastBucket.next and total <= lastBucket.next.size
+            // Not enough room in the last bucket, but with have a bucket after that
+            // can old the bytes (because of a previous clear())
+            if lastBucket.next and numBytes <= lastBucket.next.size
             {
                 lastBucket.next.countBefore = lastBucket.countBefore + lastBucket.count
                 lastBucket.next.count = 0
@@ -127,7 +112,7 @@ impl ConcatBuffer
 
         curBucket, lastBucket = newBucket
 
-        bsize := Math.max(granularity, total)
+        bsize := Math.max(granularity, numBytes)
         lastBucket.datas = Memory.alloc(bsize, allocator)
         lastBucket.size  = bsize
         currentSP = lastBucket.datas
@@ -186,7 +171,8 @@ impl ConcatBuffer
         {
             // If not enough room in the current bucket, then we
             // have to split the content with the next bucket
-            if currentSP > curBucket.datas + curBucket.count - @sizeof(T)
+            if @sizeof(T) > curBucket.count or
+               currentSP > curBucket.datas + curBucket.count - @sizeof(T)
             {
                 v := val
                 addBytes(@mkslice(cast(*u8) &v, @sizeof(T)), false)
@@ -242,6 +228,14 @@ impl ConcatBuffer
                     currentSP += remain
                     if !num
                         return
+
+                    if !curBucket.next
+                    {
+                        isAtEnd = true
+                        grow(num)
+                        break
+                    }
+
                     curBucket = curBucket.next
                     currentSP = curBucket.datas
                     remain = curBucket.count
@@ -249,7 +243,10 @@ impl ConcatBuffer
 
                 Memory.copy(currentSP, slicePtr, num)
                 currentSP += num
-                setIsAtEnd()
+                if isAtEnd
+                    curBucket.count += num
+                else
+                    setIsAtEnd()
                 return
             }
 
