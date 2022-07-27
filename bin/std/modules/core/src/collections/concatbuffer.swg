@@ -94,14 +94,28 @@ impl ConcatBuffer
             seek := cast(uint) (currentSP - lastBucket.datas)
             if seek + total <= lastBucket.size
                 return
+
+            if lastBucket.next and total <= lastBucket.next.size
+            {
+                lastBucket.next.countBefore = lastBucket.countBefore + lastBucket.count
+                lastBucket.next.count = 0
+
+                curBucket, lastBucket = lastBucket.next
+                currentSP = curBucket.datas
+                return
+            }
         }
 
         // Need to allocate a new bucket
         if allocator == null
             allocator = @getcontext().allocator
         newBucket := Memory.new'ConcatBufferBucket(allocator)
+
         if lastBucket
+        {
+            newBucket.next = lastBucket.next
             lastBucket.next = newBucket
+        }
         else
             firstBucket = newBucket
 
