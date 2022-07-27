@@ -198,14 +198,7 @@ using Swag
         attrib := getAttribute(type, attribute)
         if !attrib
             return null
-
-        visit p: attrib.params
-        {
-            if p.name == value
-                return p.value
-        }
-
-        return null
+        return getAttributeValue(attrib, value)
     }
 
     // Returns the given attribute value, or null
@@ -214,14 +207,32 @@ using Swag
         attrib := getAttribute(type, attribute)
         if !attrib
             return null
+        return getAttributeValue(attrib, value)
+    }
 
-        visit p: attrib.params
+    // Returns the given attribute value, or null
+    func getAttributeValue(attribute: const *Swag.Attribute, value: string)->any
+    {
+        visit p: attribute.params
         {
             if p.name == value
                 return p.value
         }
 
         return null
+    }
+
+    // Returns the given associated attributes to 'value'
+    func getAttributes(value: const *Swag.TypeValue, attribute: typeinfo)->Array'(const *Swag.Attribute)
+    {
+        var result: retval
+        visit it: value.attributes
+        {
+            if attribute == it.type
+                result.add(it)
+        }
+
+        return result
     }
 
     // Returns the given associated 'attribute' to 'value' or null
@@ -240,6 +251,40 @@ using Swag
     func hasAttribute(value: const *Swag.TypeValue, attribute: typeinfo)->bool
     {
         return getAttribute(value, attribute) != null
+    }
+
+    // Returns the given associated attributes to 'type'
+    func getAttributes(type: typeinfo, attribute: typeinfo)->Array'(const *Swag.Attribute)
+    {
+        var result: retval
+        switch type.kind
+        {
+        case TypeInfoKind.Func:
+            typeFunc := cast(const *TypeInfoFunc) type
+            visit it: typeFunc.attributes
+            {
+                if attribute == it.type
+                    result.add(it)
+            }
+
+        case TypeInfoKind.Struct:
+            typeStruct := cast(const *TypeInfoStruct) type
+            visit it: typeStruct.attributes
+            {
+                if attribute == it.type
+                    result.add(it)
+            }
+
+        case TypeInfoKind.Enum:
+            typeEnum := cast(const *TypeInfoEnum) type
+            visit it: typeEnum.attributes
+            {
+                if attribute == it.type
+                    result.add(it)
+            }
+        }
+
+        return result
     }
 
     // Returns the given associated 'attribute' to 'type' or null

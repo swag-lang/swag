@@ -2,6 +2,23 @@
 #global public
 using Swag
 
+/*
+    Binary serializer with forward/backward compatibility
+    Changes that are supported from V to V+1 are :
+
+    - Adding a new field. The new field will stay at the default value
+    - Removing a field. It will just be ignored
+    - Reordering of fields, as long as their name/type are the same
+    - Renaming of a field with 'Serialization.Alias'
+
+    Supported attributes are :
+
+    - Serialization.Alias   To rename a field. Multiple aliases are supported.
+    - Serialization.Final   The struct will be loaded/saved in place without versioning
+                            (faster, lower serialization size)
+*/
+
+
 struct TagBinSection
 {
     mapSeek: HashTable'(u32, uint)
@@ -13,6 +30,25 @@ struct TagBin
 {
     stream:   ByteStream
     sections: Array'TagBinSection
+}
+
+private impl TagBin
+{
+    func canConvertType(to, from: typeinfo)->bool
+    {
+        // Conversion of a static array to another static array
+        // Are supported :
+        // - Size change
+        if Reflection.isArray(to) and Reflection.isArray(from)
+        {
+            toArr   := cast(const *Swag.TypeInfoArray) to
+            fromArr := cast(const *Swag.TypeInfoArray) from
+            if toArr.pointedType == fromArr.pointedType
+                return true
+        }
+
+        return false
+    }
 }
 
 impl TagBin
@@ -91,6 +127,8 @@ impl TagBin
 
     mtd beginElement(val: TypeValue)->bool throw
     {
+        reqCrcName := val.crc32
+
         // Outside a section
         if !sections.isEmpty()
         {
@@ -108,18 +146,44 @@ impl TagBin
                 // If ent is null, then we are requesting a field that do not exist
                 // in the stream
                 if !ent
-                    return false
+                {
+                    // So check for aliases
+                    aliases := Reflection.getAttributes(val, Serialization.Alias)
+                    visit al: aliases
+                    {
+                        val := Reflection.getAttributeValue(al, "name")
+                        Debug.assert(val != null)
+                        reqCrcName = Hash.Crc32.compute(cast(string) val)
+                        ent = sec.mapSeek.find(reqCrcName)
+                        if ent
+                            break
+                    }
+                }
 
-                // Seek to the corresponding start of element
+                if !ent
+                    return false
                 stream.setSeek(ent.value)
             }
         }
 
-        // Read element signature
+        // Read name signature
         crcName := stream.readNative'u32()
-        if crcName != val.crc32
-            throw "stream crc name invalid"
+        if crcName != reqCrcName
+        {
+            throw Format.toString("field `%`: names do not match", val.name)
+        }
+
+        // Read type signature
         crcType := stream.readNative'u32()
+        if crcType != val.pointedType.crc32
+        {
+            streamType := Reflection.crcToType(crcType)
+            if !streamType
+                throw Format.toString("field `%`: unknown type", val.name)
+
+            if !canConvertType(val.pointedType, streamType)
+                throw Format.toString("field `%`: types do not match", val.name)
+        }
 
         return true
     }
