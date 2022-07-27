@@ -1052,9 +1052,9 @@ impl ISerialize for Capture
     {
         if val.crc32 == Hash.Crc32.compute(@nameof(forms))
         {
-            if !decoder.beginElement(val)
+            if !decoder.beginField(val)
                 return true
-            decoder.beginValue()
+            defer(noerr) decoder.endField()
 
             var arr: Array'(Object'BaseForm)
             decoder.read(&arr, @typeof(arr))
@@ -1067,9 +1067,6 @@ impl ISerialize for Capture
             }
 
             arr.count = 0
-
-            decoder.endValue()
-            decoder.endElement()
             return true
         }
 
@@ -1080,8 +1077,8 @@ impl ISerialize for Capture
     {
         if val.crc32 == Hash.Crc32.compute(@nameof(forms))
         {
-            encoder.beginElement(val)
-            encoder.beginValue()
+            encoder.beginField(val)
+            defer encoder.endField()
 
             var arr: Array'(Object'BaseForm)
             var o:   Object'BaseForm
@@ -1095,9 +1092,6 @@ impl ISerialize for Capture
 
             encoder.write(&arr, @typeof(arr))
             arr.count = 0
-
-            encoder.endValue()
-            encoder.endElement()
             return true
         }
 

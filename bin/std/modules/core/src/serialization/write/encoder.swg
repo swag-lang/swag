@@ -10,10 +10,8 @@ attr NoSerialize()      // Do not serialize a struct or a field
 
 interface IEncoder
 {
-    beginElement:   mtd(TypeValue)
-    endElement:     mtd()
-    beginValue:     mtd()
-    endValue:       mtd()
+    beginField:     mtd(TypeValue)
+    endField:       mtd()
 
     write:          mtd(const *void, typeinfo)
     writeBufferU8:  mtd(const *u8, uint)
@@ -244,24 +242,16 @@ impl Encoder
 
 impl IEncoder for Encoder
 {
-    mtd beginElement(val: Swag.TypeValue)
+    mtd beginField(val: Swag.TypeValue)
     {
         serializer.beginElement(val)
-    }
-
-    mtd endElement()
-    {
-        serializer.endElement()
-    }
-
-    mtd beginValue()
-    {
         serializer.beginValue()
     }
 
-    mtd endValue()
+    mtd endField()
     {
         serializer.endValue()
+        serializer.endElement()
     }
 
     mtd write(data: const *void, type: typeinfo)

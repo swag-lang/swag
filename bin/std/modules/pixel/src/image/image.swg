@@ -269,12 +269,10 @@ impl ISerialize for Image
     {
         if val.crc32 == Hash.Crc32.compute(@nameof(pixels))
         {
-            if !decoder.beginElement(val)
+            if !decoder.beginField(val)
                 return true
-            decoder.beginValue()
             pixels = decoder.readBufferU8(size)
-            decoder.endValue()
-            decoder.endElement()
+            decoder.endField()
             return true
         }
 
@@ -285,11 +283,9 @@ impl ISerialize for Image
     {
         if val.crc32 == Hash.Crc32.compute(@nameof(pixels))
         {
-            encoder.beginElement(val)
-            encoder.beginValue()
+            encoder.beginField(val)
             encoder.writeBufferU8(pixels, size)
-            encoder.endValue()
-            encoder.endElement()
+            encoder.endField()
             return true
         }
 

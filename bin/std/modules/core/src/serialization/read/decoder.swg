@@ -4,10 +4,8 @@ using Swag
 
 interface IDecoder
 {
-    beginElement:   mtd(TypeValue)->bool throw
-    endElement:     mtd() throw
-    beginValue:     mtd() throw
-    endValue:       mtd() throw
+    beginField:     mtd(TypeValue)->bool throw
+    endField:       mtd() throw
 
     read:           mtd(*void, typeinfo) throw
     readBufferU8:   mtd(uint)->*u8 throw
@@ -244,24 +242,18 @@ impl Decoder
 
 impl IDecoder for Decoder
 {
-    mtd beginElement(val: Swag.TypeValue)->bool throw
+    mtd beginField(val: Swag.TypeValue)->bool throw
     {
-        return serializer.beginElement(val)
-    }
-
-    mtd endElement() throw
-    {
-        serializer.endElement()
-    }
-
-    mtd beginValue() throw
-    {
+        if !serializer.beginElement(val)
+            return false
         serializer.beginValue()
+        return true
     }
 
-    mtd endValue() throw
+    mtd endField() throw
     {
         serializer.endValue()
+        serializer.endElement()
     }
 
     mtd read(data: *void, dataType: typeinfo) throw
