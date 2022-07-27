@@ -120,8 +120,6 @@ impl TagBin
         if crcName != val.crc32
             throw "stream crc name invalid"
         crcType := stream.readNative'u32()
-        if crcType != val.pointedType.crc32
-            throw "stream crc type invalid"
 
         return true
     }
@@ -144,6 +142,8 @@ impl TagBin
         if sig != Write.TagBinSignatures.Sequence
             throw "invalid sequence signature"
 
+        // 0 for a dynamic array, > 0 for a static array
+        orgCount := dref countElem
         dref countElem = stream.readNative'uint()
 
         // Dynamic array of raw serializable types
@@ -171,6 +171,8 @@ impl TagBin
         // Static array of raw serializable types
         else
         {
+            dref countElem = Math.min(orgCount, dref countElem)
+
             (raw, sizeof) := isRawSerializable(typeElem)
             if raw
             {

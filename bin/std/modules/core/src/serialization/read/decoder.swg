@@ -192,13 +192,14 @@ impl Decoder
         if Reflection.isArray(type)
         {
             typeArr := cast(const *TypeInfoArray) type
-            treated := serializer.beginSequence(typeArr.pointedType, data, &typeArr.count)
+            count   := typeArr.count
+            treated := serializer.beginSequence(typeArr.pointedType, data, &count)
             defer(noerr) serializer.endSequence()
             if treated
                 return
 
             bufArr := cast(*u8) data
-            loop typeArr.count
+            loop count
             {
                 readValue(bufArr, typeArr.pointedType)
                 bufArr += typeArr.pointedType.sizeof
