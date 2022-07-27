@@ -9,7 +9,7 @@ namespace Res
     var image0:         Texture
     var image1:         Texture
     var image2:         Texture
-    var typeface:       const *TypeFace
+    var typeface:       *TypeFace
     var fontDefault:    *Font
     var font20:         *Font
     var font40:         *Font

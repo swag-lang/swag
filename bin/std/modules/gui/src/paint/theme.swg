@@ -37,14 +37,14 @@ struct ThemeResources
     icons24:                *ImageList
     icons64:                *ImageList
     spin:                   *ImageList
-    defaultTypeFaceR:       const *TypeFace
-    defaultTypeFaceB:       const *TypeFace
-    defaultTypeFaceI:       const *TypeFace
-    defaultTypeFaceBI:      const *TypeFace
-    defaultFsTypeFaceR:     const *TypeFace
-    defaultFsTypeFaceB:     const *TypeFace
-    defaultFsTypeFaceI:     const *TypeFace
-    defaultFsTypeFaceBI:    const *TypeFace
+    defaultTypeFaceR:       *TypeFace
+    defaultTypeFaceB:       *TypeFace
+    defaultTypeFaceI:       *TypeFace
+    defaultTypeFaceBI:      *TypeFace
+    defaultFsTypeFaceR:     *TypeFace
+    defaultFsTypeFaceB:     *TypeFace
+    defaultFsTypeFaceI:     *TypeFace
+    defaultFsTypeFaceBI:    *TypeFace
     fontDefault:            FontFamily
     fontDefaultFs:          FontFamily
 }

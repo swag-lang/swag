@@ -456,10 +456,10 @@ impl Application
     // Get application variables
     #[Swag.Inline]
     {
-        mtdc getRenderer() => &renderer
-        mtdc getKeyboard() => &keyb
-        mtdc getMouse()    => &mouse
-        mtdc getDt()       => timing.dt
+        mtd getRenderer() => &renderer
+        mtd getKeyboard() => &keyb
+        mtd getMouse()    => &mouse
+        mtdc getDt()      => timing.dt
     }
 
     // Create a main surface, and run

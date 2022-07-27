@@ -103,7 +103,7 @@ public impl TypeFace
     }
 
     // Convert a string to its outline, at a given size
-    mtdc getStringOutline(pathList: *LinePathList, text: string, size: u32, embolden: u32 = 0) throw
+    mtd getStringOutline(pathList: *LinePathList, text: string, size: u32, embolden: u32 = 0) throw
     {
         var itf: FT_Outline_Funcs
 

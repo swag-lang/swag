@@ -9,8 +9,8 @@ struct FormText
     {
         gizmo:      GizmoRect
         isDirty:    bool
-        typeFace:   const *TypeFace
-        cacheFace:  const *TypeFace
+        typeFace:   *TypeFace
+        cacheFace:  *TypeFace
         cachebSize: f32
         cachesSize: f32
         cachefSize: f32

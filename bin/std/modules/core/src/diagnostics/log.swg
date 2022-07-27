@@ -86,8 +86,8 @@ impl Log
         self.prefix = #self.prefix
     }
 
-    // Set the logger prefix
-    mtdc getPrefix()->string
+    // Get the logger prefix
+    mtd getPrefix()->string
     {
         Sync.scopedLock(&lock)
         return prefix
@@ -100,8 +100,8 @@ impl Log
         self.flags = #self.flags
     }
 
-    // Set the logger prefix
-    mtdc getFlags()->LogFlags
+    // Get the logger prefix
+    mtd getFlags()->LogFlags
     {
         Sync.scopedLock(&lock)
         return flags

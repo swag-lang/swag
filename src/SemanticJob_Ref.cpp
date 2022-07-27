@@ -151,6 +151,10 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
     ptrType->sizeOf      = sizeof(void*);
     ptrType->computeName();
 
+    // Taking the address of a const is const
+    if (child->flags & AST_IS_CONST)
+        ptrType->setConst();
+
     // Type is constant if we take address of a readonly variable
     if (child->resolvedSymbolOverload)
     {
