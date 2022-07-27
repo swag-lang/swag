@@ -141,12 +141,10 @@ impl ConcatBuffer
         allocator = alloc;
     }
 
-    // Set the granularity of datas of a given bucket. Minimum size is 4.
-    // The buffer will be erased before the change, even if the new size is the same as the current one.
+    // Set the granularity of datas when allocated new buckets. Minimum size is 4.
     mtd setBucketSize(size: uint)
     {
         Debug.assert(size >= 4)
-        clear()
         granularity = size
     }
 
@@ -177,7 +175,7 @@ impl ConcatBuffer
 
         curBucket, lastBucket = firstBucket
         currentSP = curBucket.datas
-        curBucket.count = 0
+        curBucket.countBefore, curBucket.count = 0
         isAtEnd = true
     }
 
@@ -191,16 +189,21 @@ impl ConcatBuffer
                 curBucket = curBucket.next
                 currentSP = curBucket.datas
             }
+            else
+            {
+                // We must have enough room in the current bucket to store the value
+                Debug.assert(currentSP <= curBucket.datas + curBucket.count - @sizeof(T))
+            }
 
             dref cast(*T) currentSP = val
-            currentSP += @sizeof(val)
+            currentSP += @sizeof(T)
         }
         else
         {
-            grow(@sizeof(val))
+            grow(@sizeof(T))
             dref cast(*T) currentSP = val
-            currentSP += @sizeof(val)
-            curBucket.count += @sizeof(val)
+            currentSP += @sizeof(T)
+            curBucket.count += @sizeof(T)
         }
     }
 
