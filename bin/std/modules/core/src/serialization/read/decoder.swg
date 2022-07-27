@@ -168,7 +168,7 @@ impl Decoder
             }
 
             // Generic struct load
-            treated = serializer.beginFields(fields, data, structType)
+            treated = serializer.beginFields(fields, structType, data)
             defer(noerr) serializer.endFields(fields)
             if treated
                 return

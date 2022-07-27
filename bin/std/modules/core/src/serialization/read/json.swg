@@ -98,7 +98,7 @@ public impl JSon
     {
     }
 
-    mtd beginFields(fields: Array'(const *TypeValue), structData: *u8, structType: typeinfo)->bool throw
+    mtd beginFields(fields: Array'(const *TypeValue), structType: typeinfo, structData: const *u8)->bool throw
     {
         return false
     }

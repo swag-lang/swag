@@ -2,6 +2,7 @@
 #global namespace Math
 
 // A simple rectangle with 4 coordinates
+#[Serialization.Final]
 struct Rectangle
 {
     x:      f32

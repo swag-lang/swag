@@ -4,8 +4,9 @@ using Swag
 
 enum TagBinSignatures
 {
-    File = 0xC0DEC0DE
-    Fat  = 0xCAFECAFE
+    Root        = 0xC0DE0000
+    Fat         = 0xC0DE0001
+    Sequence    = 0xC0DE0002
 }
 
 struct TagBinSection
@@ -13,6 +14,7 @@ struct TagBinSection
     startSeek:  ConcatBufferSeek
     mapSeek:    HashTable'(string, ConcatBufferSeek)
     raw:        bool
+    final:      bool
 }
 
 struct TagBin
@@ -31,7 +33,7 @@ impl TagBin
 
     mtd beginRoot()
     {
-        output.addNative(TagBinSignatures.File)
+        output.addNative(TagBinSignatures.Root)
     }
 
     mtd endRoot()
@@ -62,6 +64,14 @@ impl TagBin
 
     mtd beginFields(fields: Array'(const *TypeValue), structType: typeinfo, structData: const *u8)->bool
     {
+        if Reflection.hasAttribute(structType, Serialization.Final)
+        {
+            sec := sections.emplaceAddress(1)
+            @init(sec)
+            sec.final = true
+            return false
+        }
+
         sec := sections.emplaceAddress(1)
         @init(sec)
 
@@ -82,11 +92,17 @@ impl TagBin
 
     mtd endFields(fields: Array'(const *TypeValue))
     {
+        sec := sections.backPtr()
+        if sec.final
+        {
+            sections.removeBack()
+            return
+        }
+
         curSeek := output.getSeek()
         defer output.setSeek(curSeek)
 
         // Patch fat table
-        sec := sections.backPtr()
         output.setSeek(sec.startSeek)
         visit field: fields
         {
@@ -108,10 +124,19 @@ impl TagBin
         // Outside a section
         if !sections.isEmpty()
         {
-            // Register the current seek for the fat generation
             sec := sections.backPtr()
-            Debug.assert(!sec.mapSeek.contains(val.name))
-            sec.mapSeek.add(val.name, output.getSeek())
+
+            // If section is final, then we just have values without versionning
+            if sec.final
+                return
+
+            // If section is raw, then we do not have a fat, this are not fields
+            if !sec.raw
+            {
+                // Register the current seek for the fat generation
+                Debug.assert(!sec.mapSeek.contains(val.name))
+                sec.mapSeek.add(val.name, output.getSeek())
+            }
         }
 
         // Write element signature
@@ -133,6 +158,7 @@ impl TagBin
 
     mtd beginSequence(typeElem: typeinfo, data: const *void, countElem: uint)->bool
     {
+        output.addNative(TagBinSignatures.Sequence)
         output.addNative(countElem)
 
         // Dynamic array of raw serializable types

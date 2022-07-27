@@ -6,6 +6,7 @@ struct TagBinSection
 {
     mapSeek: HashTable'(u32, uint)
     raw:     bool
+    final:   bool
 }
 
 struct TagBin
@@ -24,7 +25,7 @@ impl TagBin
     mtd beginRoot() throw
     {
         sig := stream.readNative'u32()
-        if sig != Write.TagBinSignatures.File
+        if sig != Write.TagBinSignatures.Root
             throw "invalid file"
     }
 
@@ -53,11 +54,19 @@ impl TagBin
         sections.removeBack()
     }
 
-    mtd beginFields(fields: Array'(const *TypeValue), structData: *u8, structType: typeinfo)->bool throw
+    mtd beginFields(fields: Array'(const *TypeValue), structType: typeinfo, structData: const *u8)->bool throw
     {
+        if Reflection.hasAttribute(structType, Serialization.Final)
+        {
+            sec := sections.emplaceAddress(1)
+            @init(sec)
+            sec.final = true
+            return false
+        }
+
         sig := stream.readNative'u32()
         if sig != Write.TagBinSignatures.Fat
-            throw "bad fat signature"
+            throw "invalid fat signature"
 
         // Read fat
         sec := sections.emplaceAddress(1)
@@ -82,15 +91,19 @@ impl TagBin
 
     mtd beginElement(val: TypeValue)->bool throw
     {
-        crcName := val.crc32
-
         // Outside a section
         if !sections.isEmpty()
         {
             sec := sections.backPtr()
+
+            // If section is final, then we just have values without versionning
+            if sec.final
+                return true
+
+            // If section is raw, then we do not have a fat, this are not fields
             if !sec.raw
             {
-                ent := sec.mapSeek.find(crcName)
+                ent := sec.mapSeek.find(val.crc32)
 
                 // If ent is null, then we are requesting a field that do not exist
                 // in the stream
@@ -103,10 +116,12 @@ impl TagBin
         }
 
         // Read element signature
-        crc0 := stream.readNative'u32()
-        if crc0 != crcName
-            throw "stream corrupted"
-        crc1 := stream.readNative'u32()
+        crcName := stream.readNative'u32()
+        if crcName != val.crc32
+            throw "stream crc name invalid"
+        crcType := stream.readNative'u32()
+        if crcType != val.pointedType.crc32
+            throw "stream crc type invalid"
 
         return true
     }
@@ -125,6 +140,10 @@ impl TagBin
 
     mtd beginSequence(typeElem: typeinfo, data: *u8, countElem: *uint)->bool throw
     {
+        sig := stream.readNative'u32()
+        if sig != Write.TagBinSignatures.Sequence
+            throw "invalid sequence signature"
+
         dref countElem = stream.readNative'uint()
 
         // Dynamic array of raw serializable types
