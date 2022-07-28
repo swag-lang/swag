@@ -10,11 +10,11 @@ impl ArrayPtr
 {
     mtd opDrop()
     {
-        release()
+        ArrayPtr.clear(self)
     }
 
     // Release content
-    mtd release()
+    mtd clear()
     {
         visit item: dref self
             Memory.delete(item, allocator)

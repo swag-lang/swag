@@ -1723,7 +1723,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
     SWAG_CHECK(filterMatchesInContext(context, matches));
     if (context->result != ContextResult::Done)
         return true;
-    SWAG_CHECK(filterGenericMatches(context, genericMatches));
+    SWAG_CHECK(filterGenericMatches(context, matches, genericMatches));
     if (context->result != ContextResult::Done)
         return true;
 
@@ -2920,173 +2920,6 @@ bool SemanticJob::fillMatchContextGenericParameters(SemanticContext* context, Sy
     return true;
 }
 
-bool SemanticJob::filterGenericMatches(SemanticContext* context, VectorNative<OneGenericMatch*>& matches)
-{
-    if (matches.size() <= 1)
-        return true;
-
-    // Take the most "specialized" one, i.e. the one with the more 'genericReplaceTypes'
-    int bestS = -1;
-    for (int i = 0; i < matches.size(); i++)
-    {
-        bestS = max(bestS, (int) matches[i]->genericReplaceTypes.size());
-    }
-
-    for (int i = 0; i < matches.size(); i++)
-    {
-        if (matches[i]->genericReplaceTypes.size() < bestS)
-        {
-            matches[i] = matches.back();
-            matches.pop_back();
-            i--;
-        }
-    }
-
-    return true;
-}
-
-bool SemanticJob::filterMatchesInContext(SemanticContext* context, VectorNative<OneMatch*>& matches)
-{
-    if (matches.size() <= 1)
-        return true;
-
-    for (int i = 0; i < matches.size(); i++)
-    {
-        auto          oneMatch = matches[i];
-        auto          over     = oneMatch->symbolOverload;
-        TypeInfoEnum* typeEnum = nullptr;
-        SWAG_CHECK(findEnumTypeInContext(context, over->node, &typeEnum, false));
-        if (context->result != ContextResult::Done)
-            return true;
-
-        if (typeEnum && typeEnum->scope == oneMatch->scope)
-        {
-            matches.clear();
-            matches.push_back(oneMatch);
-            return true;
-        }
-
-        // We try to eliminate a function if it does not match a contextual generic match
-        // Because if we call a generic function without generic parameters, we can have multiple matches
-        // if the generic type has not been deduced from parameters (if any).
-        if (over->symbol->kind == SymbolKind::Function)
-        {
-            auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
-            if (typeFunc->replaceTypes.size())
-            {
-                auto                   node = context->node;
-                VectorNative<AstNode*> toCheck;
-
-                // Pick contextual generic type replacements
-                if (node->ownerFct)
-                    toCheck.push_back(node->ownerFct);
-                if (node->ownerInline)
-                    toCheck.push_back(node->ownerInline->func);
-
-                for (auto c : toCheck)
-                {
-                    auto typeFuncCheck = CastTypeInfo<TypeInfoFuncAttr>(c->typeInfo, TypeInfoKind::FuncAttr);
-                    if (typeFuncCheck->replaceTypes.size() != typeFunc->replaceTypes.size())
-                        continue;
-                    for (auto& it : typeFunc->replaceTypes)
-                    {
-                        auto it1 = typeFuncCheck->replaceTypes.find(it.first);
-                        if (it1 == typeFuncCheck->replaceTypes.end())
-                            continue;
-                        if (it.second != it1->second)
-                            oneMatch->remove = true;
-                    }
-                }
-
-                if (oneMatch->remove)
-                {
-                    matches[i] = matches.back();
-                    matches.pop_back();
-                    i--;
-                }
-            }
-        }
-    }
-
-    return true;
-}
-
-bool SemanticJob::solveSelectIf(SemanticContext* context, OneMatch* oneMatch, AstFuncDecl* funcDecl)
-{
-    ScopedLock lk0(funcDecl->funcMutex);
-    ScopedLock lk1(funcDecl->mutex);
-
-    // Be sure block has been solved
-    if (!(funcDecl->funcFlags & FUNC_FLAG_PARTIAL_RESOLVE))
-    {
-        funcDecl->dependentJobs.add(context->job);
-        context->job->setPending(funcDecl->resolvedSymbolName, JobWaitKind::SemPartialResolve, funcDecl, nullptr);
-        return true;
-    }
-
-    // Execute #selectif/#checkif block
-    auto expr = funcDecl->selectIf->childs.back();
-
-    // #checkif is evaluated for each call, so we remove the AST_VALUE_COMPUTED computed flag.
-    // #selectif is evaluated once, so keep it.
-    if (funcDecl->selectIf->kind == AstNodeKind::CompilerCheckIf)
-        expr->flags &= ~AST_VALUE_COMPUTED;
-
-    if (!(expr->flags & AST_VALUE_COMPUTED))
-    {
-        auto node                   = context->node;
-        context->selectIfParameters = oneMatch->oneOverload->callParameters;
-
-        JobContext::ErrorContextType type;
-        if (funcDecl->selectIf->kind == AstNodeKind::CompilerCheckIf)
-            type = JobContext::ErrorContextType::CheckIf;
-        else
-            type = JobContext::ErrorContextType::SelectIf;
-
-        PushErrContext ec(context, node, type);
-        auto           result       = executeCompilerNode(context, expr, false);
-        context->selectIfParameters = nullptr;
-        if (!result)
-            return false;
-        if (context->result != ContextResult::Done)
-            return true;
-    }
-
-    // Result
-    if (!expr->computedValue->reg.b)
-    {
-        oneMatch->remove                              = true;
-        oneMatch->oneOverload->symMatchContext.result = MatchResult::SelectIfFailed;
-        return true;
-    }
-
-    if (funcDecl->content && funcDecl->content->flags & AST_NO_SEMANTIC)
-    {
-        funcDecl->content->flags &= ~AST_NO_SEMANTIC;
-
-        // Need to restart semantic on instantiated function and on its content,
-        // because the #selectif has passed
-        // It's safe to create a job with the content as it has been fully evaluated.
-        // It's NOT safe for the function itself as the job that deals with it can be
-        // still running
-        auto job          = g_Allocator.alloc<SemanticJob>();
-        job->sourceFile   = context->sourceFile;
-        job->module       = context->sourceFile->module;
-        job->dependentJob = context->job->dependentJob;
-        job->nodes.push_back(funcDecl->content);
-
-        // To avoid a race condition with the job that is currently dealing with the funcDecl,
-        // we will reevaluate it with a semanticAfterFct trick
-        funcDecl->content->allocateExtension();
-        SWAG_ASSERT(!funcDecl->content->extension->semanticAfterFct || funcDecl->content->extension->semanticAfterFct == SemanticJob::resolveFuncDeclAfterSI);
-        funcDecl->content->extension->semanticAfterFct = SemanticJob::resolveFuncDeclAfterSI;
-
-        g_ThreadMgr.addJob(job);
-    }
-
-    return true;
-}
-
 bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*>& matches)
 {
     auto node         = context->node;
@@ -3347,6 +3180,217 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
             matches.pop_back();
             i--;
         }
+    }
+
+    return true;
+}
+
+static int scopeCost(Scope* from, Scope* to)
+{
+    // Not sure this is really correct, because we do not take care of 'using'
+    int cost = 0;
+    while (from && from != to)
+    {
+        cost += 1;
+        from = from->parentScope;
+    }
+
+    return cost;
+}
+
+bool SemanticJob::filterGenericMatches(SemanticContext* context, VectorNative<OneMatch*>& matches, VectorNative<OneGenericMatch*>& genMatches)
+{
+    if (genMatches.size() <= 1)
+        return true;
+
+    // We have a match and more than one generic match
+    // We need to be sure than instantiated another generic match will not be better than keeping
+    // the already instantiated one
+    if (genMatches.size() > 1 && matches.size() == 1)
+    {
+        auto idCost       = scopeCost(context->node->ownerScope, matches[0]->symbolOverload->node->ownerScope);
+        auto bestIsIdCost = true;
+        int  bestGenId    = 0;
+
+        for (int i = 0; i < genMatches.size(); i++)
+        {
+            auto& p    = genMatches[i];
+            auto  cost = scopeCost(context->node->ownerScope, p->symbolOverload->node->ownerScope);
+            if (cost < idCost)
+            {
+                bestIsIdCost = false;
+                bestGenId    = i;
+                idCost       = cost;
+            }
+        }
+
+        if (!bestIsIdCost)
+        {
+            matches.clear();
+            auto temp = genMatches[bestGenId];
+            genMatches.clear();
+            genMatches.push_back(temp);
+            return true;
+        }
+    }
+
+    // Take the most "specialized" one, i.e. the one with the more 'genericReplaceTypes'
+    int bestS = -1;
+    for (int i = 0; i < genMatches.size(); i++)
+    {
+        bestS = max(bestS, (int) genMatches[i]->genericReplaceTypes.size());
+    }
+
+    for (int i = 0; i < genMatches.size(); i++)
+    {
+        if (genMatches[i]->genericReplaceTypes.size() < bestS)
+        {
+            genMatches[i] = genMatches.back();
+            genMatches.pop_back();
+            i--;
+        }
+    }
+
+    return true;
+}
+
+bool SemanticJob::filterMatchesInContext(SemanticContext* context, VectorNative<OneMatch*>& matches)
+{
+    if (matches.size() <= 1)
+        return true;
+
+    for (int i = 0; i < matches.size(); i++)
+    {
+        auto          oneMatch = matches[i];
+        auto          over     = oneMatch->symbolOverload;
+        TypeInfoEnum* typeEnum = nullptr;
+        SWAG_CHECK(findEnumTypeInContext(context, over->node, &typeEnum, false));
+        if (context->result != ContextResult::Done)
+            return true;
+
+        if (typeEnum && typeEnum->scope == oneMatch->scope)
+        {
+            matches.clear();
+            matches.push_back(oneMatch);
+            return true;
+        }
+
+        // We try to eliminate a function if it does not match a contextual generic match
+        // Because if we call a generic function without generic parameters, we can have multiple matches
+        // if the generic type has not been deduced from parameters (if any).
+        if (over->symbol->kind == SymbolKind::Function)
+        {
+            auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
+            if (typeFunc->replaceTypes.size())
+            {
+                auto                   node = context->node;
+                VectorNative<AstNode*> toCheck;
+
+                // Pick contextual generic type replacements
+                if (node->ownerFct)
+                    toCheck.push_back(node->ownerFct);
+                if (node->ownerInline)
+                    toCheck.push_back(node->ownerInline->func);
+
+                for (auto c : toCheck)
+                {
+                    auto typeFuncCheck = CastTypeInfo<TypeInfoFuncAttr>(c->typeInfo, TypeInfoKind::FuncAttr);
+                    if (typeFuncCheck->replaceTypes.size() != typeFunc->replaceTypes.size())
+                        continue;
+                    for (auto& it : typeFunc->replaceTypes)
+                    {
+                        auto it1 = typeFuncCheck->replaceTypes.find(it.first);
+                        if (it1 == typeFuncCheck->replaceTypes.end())
+                            continue;
+                        if (it.second != it1->second)
+                            oneMatch->remove = true;
+                    }
+                }
+
+                if (oneMatch->remove)
+                {
+                    matches[i] = matches.back();
+                    matches.pop_back();
+                    i--;
+                }
+            }
+        }
+    }
+
+    return true;
+}
+
+bool SemanticJob::solveSelectIf(SemanticContext* context, OneMatch* oneMatch, AstFuncDecl* funcDecl)
+{
+    ScopedLock lk0(funcDecl->funcMutex);
+    ScopedLock lk1(funcDecl->mutex);
+
+    // Be sure block has been solved
+    if (!(funcDecl->funcFlags & FUNC_FLAG_PARTIAL_RESOLVE))
+    {
+        funcDecl->dependentJobs.add(context->job);
+        context->job->setPending(funcDecl->resolvedSymbolName, JobWaitKind::SemPartialResolve, funcDecl, nullptr);
+        return true;
+    }
+
+    // Execute #selectif/#checkif block
+    auto expr = funcDecl->selectIf->childs.back();
+
+    // #checkif is evaluated for each call, so we remove the AST_VALUE_COMPUTED computed flag.
+    // #selectif is evaluated once, so keep it.
+    if (funcDecl->selectIf->kind == AstNodeKind::CompilerCheckIf)
+        expr->flags &= ~AST_VALUE_COMPUTED;
+
+    if (!(expr->flags & AST_VALUE_COMPUTED))
+    {
+        auto node                   = context->node;
+        context->selectIfParameters = oneMatch->oneOverload->callParameters;
+
+        JobContext::ErrorContextType type;
+        if (funcDecl->selectIf->kind == AstNodeKind::CompilerCheckIf)
+            type = JobContext::ErrorContextType::CheckIf;
+        else
+            type = JobContext::ErrorContextType::SelectIf;
+
+        PushErrContext ec(context, node, type);
+        auto           result       = executeCompilerNode(context, expr, false);
+        context->selectIfParameters = nullptr;
+        if (!result)
+            return false;
+        if (context->result != ContextResult::Done)
+            return true;
+    }
+
+    // Result
+    if (!expr->computedValue->reg.b)
+    {
+        oneMatch->remove                              = true;
+        oneMatch->oneOverload->symMatchContext.result = MatchResult::SelectIfFailed;
+        return true;
+    }
+
+    if (funcDecl->content && funcDecl->content->flags & AST_NO_SEMANTIC)
+    {
+        funcDecl->content->flags &= ~AST_NO_SEMANTIC;
+
+        // Need to restart semantic on instantiated function and on its content,
+        // because the #selectif has passed
+        // It's safe to create a job with the content as it has been fully evaluated.
+        // It's NOT safe for the function itself as the job that deals with it can be
+        // still running
+        auto job          = g_Allocator.alloc<SemanticJob>();
+        job->sourceFile   = context->sourceFile;
+        job->module       = context->sourceFile->module;
+        job->dependentJob = context->job->dependentJob;
+        job->nodes.push_back(funcDecl->content);
+
+        // To avoid a race condition with the job that is currently dealing with the funcDecl,
+        // we will reevaluate it with a semanticAfterFct trick
+        funcDecl->content->allocateExtension();
+        SWAG_ASSERT(!funcDecl->content->extension->semanticAfterFct || funcDecl->content->extension->semanticAfterFct == SemanticJob::resolveFuncDeclAfterSI);
+        funcDecl->content->extension->semanticAfterFct = SemanticJob::resolveFuncDeclAfterSI;
+
+        g_ThreadMgr.addJob(job);
     }
 
     return true;

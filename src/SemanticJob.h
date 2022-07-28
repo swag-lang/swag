@@ -331,7 +331,7 @@ struct SemanticJob : public Job
     static bool          findIdentifierInScopes(SemanticContext* context, VectorNative<OneSymbolMatch>& dependentSymbols, AstIdentifierRef* identifierRef, AstIdentifier* node);
     static bool          ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* identifierRef, OneMatch& match);
     static bool          instantiateGenericSymbol(SemanticContext* context, OneGenericMatch& firstMatch, bool forStruct);
-    static bool          filterGenericMatches(SemanticContext* context, VectorNative<OneGenericMatch*>& matches);
+    static bool          filterGenericMatches(SemanticContext* context, VectorNative<OneMatch*>& matches, VectorNative<OneGenericMatch*>& genMatches);
     static bool          filterMatchesInContext(SemanticContext* context, VectorNative<OneMatch*>& matches);
     static bool          solveSelectIf(SemanticContext* context, OneMatch* oneMatch, AstFuncDecl* funcDecl);
     static bool          filterMatches(SemanticContext* context, VectorNative<OneMatch*>& matches);
