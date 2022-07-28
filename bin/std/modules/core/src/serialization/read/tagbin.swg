@@ -30,10 +30,24 @@ struct TagBinSection
     final:   bool
 }
 
+struct TagBinOptions
+{
+    tryForward: bool    // Accept to try to read a newest version, otherwise error
+}
+
 struct TagBin
 {
-    stream:   ByteStream
-    sections: Array'TagBinSection
+    stream:     ByteStream
+    options:    TagBinOptions
+    sections:   Array'TagBinSection
+}
+
+impl TagBin
+{
+    const ErrorInvalidFile      = "invalid file"
+    const ErrorCorrupted        = "stream is corrupted"
+    const ErrorFat              = "invalid fat signature"
+    const ErrorNewestVersion    = "version is too recent"
 }
 
 private impl TagBin
@@ -66,7 +80,7 @@ impl TagBin
     {
         sig := stream.readNative'u32()
         if sig != Write.TagBinSignatures.Root
-            throw "invalid file"
+            throw ErrorInvalidFile
     }
 
     mtd endRoot() throw
@@ -84,8 +98,7 @@ impl TagBin
 
     mtd beginSection()
     {
-        sec := sections.emplaceAddress(1)
-        @init(sec)
+        sec := sections.emplaceInitAddress()
         sec.raw = true
     }
 
@@ -96,34 +109,57 @@ impl TagBin
 
     mtd beginFields(fields: Array'(const *TypeValue), structType: typeinfo, structData: const *u8)->bool throw
     {
+        sec := sections.emplaceInitAddress(1)
+
         if Reflection.hasAttribute(structType, Serialization.Final)
         {
-            sec := sections.emplaceAddress(1)
-            @init(sec)
             sec.final = true
             return false
         }
 
-        sec := sections.emplaceAddress(1)
-        @init(sec)
-
+        // Read version
         sig := stream.readNative'u32()
         if sig != Write.TagBinSignatures.Version
-            throw "invalid version"
+            throw ErrorCorrupted
         sec.version = stream.readNative'u32()
 
+        // Deal with version
+        version := Reflection.getAttributeValue(structType, Serialization.Version, "v")
+        if version != null
+        {
+            curVersion    := cast(u32) version
+            streamVersion := sec.version
+            if !options.tryForward and curVersion < streamVersion
+                throw ErrorNewestVersion
+
+            if curVersion == streamVersion
+            {
+                sec.raw = true
+            }
+        }
+
+        // Read fat
         sig = stream.readNative'u32()
         if sig != Write.TagBinSignatures.Fat
-            throw "invalid fat signature"
+            throw ErrorFat
 
         // Read fat
         fatCount := stream.readNative'uint()
-        while fatCount
+
+        // When versions are the same, do not read the fat
+        if sec.raw
         {
-            crc  := stream.readNative'u32()
-            seek := stream.readNative'uint()
-            sec.mapSeek.add(crc, seek)
-            fatCount -= 1
+            stream.moveSeek(fatCount * (@sizeof(u32) + @sizeof(uint)))
+        }
+        else
+        {
+            while fatCount
+            {
+                crc  := stream.readNative'u32()
+                seek := stream.readNative'uint()
+                sec.mapSeek.add(crc, seek)
+                fatCount -= 1
+            }
         }
 
         return false
@@ -178,9 +214,7 @@ impl TagBin
         // Read name signature
         crcName := stream.readNative'u32()
         if crcName != reqCrcName
-        {
-            throw Format.toString("field `%`: names do not match", val.name)
-        }
+            throw ErrorCorrupted
 
         // Read type signature
         crcType := stream.readNative'u32()
@@ -188,10 +222,10 @@ impl TagBin
         {
             streamType := Reflection.crcToType(crcType)
             if !streamType
-                throw Format.toString("field `%`: unknown type", val.name)
+                throw ErrorCorrupted
 
             if !canConvertType(val.pointedType, streamType)
-                throw Format.toString("field `%`: types do not match", val.name)
+                throw ErrorCorrupted
         }
 
         return true
@@ -213,7 +247,7 @@ impl TagBin
     {
         sig := stream.readNative'u32()
         if sig != Write.TagBinSignatures.Sequence
-            throw "invalid sequence signature"
+            throw ErrorCorrupted
 
         // 0 for a dynamic array, > 0 for a static array
         orgCount := dref countElem

@@ -53,8 +53,7 @@ impl TagBin
 
     mtd beginSection()
     {
-        sec := sections.emplaceAddress(1)
-        @init(sec)
+        sec := sections.emplaceInitAddress()
         sec.raw = true
     }
 
@@ -65,19 +64,16 @@ impl TagBin
 
     mtd beginFields(fields: Array'(const *TypeValue), structType: typeinfo, structData: const *u8)->bool
     {
+        sec := sections.emplaceInitAddress()
+
         if Reflection.hasAttribute(structType, Serialization.Final)
         {
-            sec := sections.emplaceAddress(1)
-            @init(sec)
             sec.final = true
             return false
         }
 
-        sec := sections.emplaceAddress(1)
-        @init(sec)
-
         output.addNative(TagBinSignatures.Version)
-        version := Reflection.getAttributeValue(typeinfo, Serialization.Version, "v")
+        version := Reflection.getAttributeValue(structType, Serialization.Version, "v")
         if version == null
             output.addNative(0'u32)
         else

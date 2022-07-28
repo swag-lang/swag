@@ -107,7 +107,7 @@ public impl ByteStream
     mtd readU8()->u8
     {
         c := peekU8()
-        seekNext()
+        moveSeek()
         return c
     }
 
@@ -120,7 +120,7 @@ public impl ByteStream
     }
 
     // Seek to the next byte
-    mtd seekNext(offset: uint = 1)
+    mtd moveSeek(offset: uint = 1)
     {
         seek += offset
         len := length()

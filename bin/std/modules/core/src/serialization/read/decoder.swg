@@ -234,10 +234,13 @@ impl Decoder
         Debug.assert(Reflection.isStruct(TR))
 
         start(input)
-        val := Memory.new'TR()
-        readValue(val, TR)
-        end()
 
+        val := Memory.new'TR()
+        defer(err) Memory.delete(val)
+
+        readValue(val, TR)
+
+        end()
         return val
     }
 }
