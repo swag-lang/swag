@@ -16,11 +16,10 @@ using Swag
 
     Supported attributes are :
 
-    - Serialisation.Version     Version of a struct is saved/loaded
+    - Serialisation.Version     If version is specified, then loading will not have versioning if versions are the same
     - Serialization.Alias       To rename a field. Multiple aliases are supported.
     - Serialization.Final       The struct will be loaded/saved without versioning (faster and lower serialization size)
 */
-
 
 struct TagBinSection
 {
@@ -37,9 +36,10 @@ struct TagBinOptions
 
 struct TagBin
 {
-    stream:     ByteStream
-    options:    TagBinOptions
-    sections:   Array'TagBinSection
+    stream:         ByteStream
+    options:        TagBinOptions
+    freeSections:   ArrayPtr'TagBinSection
+    sections:       ArrayPtr'TagBinSection
 }
 
 impl TagBin
@@ -52,6 +52,28 @@ impl TagBin
 
 private impl TagBin
 {
+    mtd newSection()->*TagBinSection
+    {
+        if freeSections.count
+        {
+            ptr := freeSections.popBack()
+            ptr.mapSeek.clear()
+            ptr.version = 0
+            ptr.raw     = false
+            ptr.final   = false
+            sections.add(ptr)
+            return ptr
+        }
+
+        return sections.addNewPtr()
+    }
+
+    mtd releaseSection()
+    {
+        ptr := sections.popBack()
+        freeSections.add(ptr)
+    }
+
     func canConvertType(to, from: typeinfo)->bool
     {
         // Conversion of a static array to another static array
@@ -98,18 +120,18 @@ impl TagBin
 
     mtd beginSection()
     {
-        sec := sections.emplaceInitAddress()
+        sec := newSection()
         sec.raw = true
     }
 
     mtd endSection()
     {
-        sections.removeBack()
+        releaseSection()
     }
 
     mtd beginFields(fields: Array'(const *TypeValue), structType: typeinfo, structData: const *u8)->bool throw
     {
-        sec := sections.emplaceInitAddress(1)
+        sec := newSection()
 
         if Reflection.hasAttribute(structType, Serialization.Final)
         {
@@ -167,7 +189,7 @@ impl TagBin
 
     mtd endFields(fields: Array'(const *TypeValue)) throw
     {
-        sections.removeBack()
+        releaseSection()
     }
 
     mtd beginElement(val: TypeValue)->bool throw
@@ -177,7 +199,7 @@ impl TagBin
         // Outside a section
         if !sections.isEmpty()
         {
-            sec := sections.backPtr()
+            sec := sections.back()
 
             // If section is final, then we just have values without versionning
             if sec.final
@@ -307,7 +329,7 @@ impl TagBin
     {
         if sections.isEmpty()
             return 0
-        return sections.backPtr().version
+        return sections.back().version
     }
 
     /////////////////////////////////
