@@ -152,6 +152,11 @@ public impl JSon
             stream.seekNext()
     }
 
+    mtd getVersion()->u32
+    {
+        return 0
+    }
+
     /////////////////////////////////
     // VALUES
     /////////////////////////////////

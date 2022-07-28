@@ -6,22 +6,26 @@ using Swag
     Binary serializer with forward/backward compatibility
     Changes that are supported from V to V+1 are :
 
-    - Adding a new field. The new field will stay at the default value
-    - Removing a field. It will just be ignored
-    - Reordering of fields, as long as their name/type are the same
-    - Renaming of a field with 'Serialization.Alias'
+    - Add a new field. The new field will stay at the default value
+    - Remove a field. It will just be ignored
+    - Reorder of fields, as long as their name/type are the same
+    - Rename a field with 'Serialization.Alias'
+
+    Supported type changes are :
+    - Change the size of a static array
 
     Supported attributes are :
 
-    - Serialization.Alias   To rename a field. Multiple aliases are supported.
-    - Serialization.Final   The struct will be loaded/saved in place without versioning
-                            (faster, lower serialization size)
+    - Serialisation.Version     Version of a struct is saved/loaded
+    - Serialization.Alias       To rename a field. Multiple aliases are supported.
+    - Serialization.Final       The struct will be loaded/saved without versioning (faster and lower serialization size)
 */
 
 
 struct TagBinSection
 {
     mapSeek: HashTable'(u32, uint)
+    version: u32
     raw:     bool
     final:   bool
 }
@@ -100,14 +104,19 @@ impl TagBin
             return false
         }
 
+        sec := sections.emplaceAddress(1)
+        @init(sec)
+
         sig := stream.readNative'u32()
+        if sig != Write.TagBinSignatures.Version
+            throw "invalid version"
+        sec.version = stream.readNative'u32()
+
+        sig = stream.readNative'u32()
         if sig != Write.TagBinSignatures.Fat
             throw "invalid fat signature"
 
         // Read fat
-        sec := sections.emplaceAddress(1)
-        @init(sec)
-
         fatCount := stream.readNative'uint()
         while fatCount
         {
@@ -258,6 +267,13 @@ impl TagBin
             return false
         dref countElem -= 1
         return true
+    }
+
+    mtd getVersion()->u32
+    {
+        if sections.isEmpty()
+            return 0
+        return sections.backPtr().version
     }
 
     /////////////////////////////////

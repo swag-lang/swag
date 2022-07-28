@@ -6,6 +6,7 @@ interface IDecoder
 {
     beginField:     mtd(TypeValue)->bool throw
     endField:       mtd() throw
+    getVersion:     mtd()->u32
 
     read:           mtd(*void, typeinfo) throw
     readBufferU8:   mtd(uint)->*u8 throw
@@ -249,6 +250,11 @@ impl IDecoder for Decoder
             return false
         serializer.beginValue()
         return true
+    }
+
+    mtd getVersion()->u32
+    {
+        return serializer.getVersion()
     }
 
     mtd endField() throw

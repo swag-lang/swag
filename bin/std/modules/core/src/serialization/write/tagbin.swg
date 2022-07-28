@@ -7,6 +7,7 @@ enum TagBinSignatures
     Root        = 0xC0DE0000
     Fat         = 0xC0DE0001
     Sequence    = 0xC0DE0002
+    Version     = 0xC0DE0003
 }
 
 struct TagBinSection
@@ -74,6 +75,13 @@ impl TagBin
 
         sec := sections.emplaceAddress(1)
         @init(sec)
+
+        output.addNative(TagBinSignatures.Version)
+        version := Reflection.getAttributeValue(typeinfo, Serialization.Version, "v")
+        if version == null
+            output.addNative(0'u32)
+        else
+            output.addNative(cast(u32) version)
 
         output.addNative(TagBinSignatures.Fat)
         output.addNative(fields.count)
