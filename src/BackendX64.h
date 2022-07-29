@@ -121,7 +121,8 @@ struct DbgTypeRecordArray
 
 struct DbgTypeRecordPointer
 {
-    DbgTypeIndex pointeeType;
+    DbgTypeIndex pointeeType = 0;
+    bool         asRef       = false;
 };
 
 struct DbgTypeRecord

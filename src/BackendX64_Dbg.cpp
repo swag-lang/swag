@@ -64,6 +64,14 @@ const uint16_t LF_REAL128   = 0x8008;
 const uint16_t LF_QUADWORD  = 0x8009;
 const uint16_t LF_UQUADWORD = 0x800a;
 
+const uint8_t CV_PTR_MODE_PTR      = 0x00; // "normal" pointer
+const uint8_t CV_PTR_MODE_REF      = 0x01; // "old" reference
+const uint8_t CV_PTR_MODE_LVREF    = 0x01; // l-value reference
+const uint8_t CV_PTR_MODE_PMEM     = 0x02; // pointer to data member
+const uint8_t CV_PTR_MODE_PMFUNC   = 0x03; // pointer to member function
+const uint8_t CV_PTR_MODE_RVREF    = 0x04; // r-value reference
+const uint8_t CV_PTR_MODE_RESERVED = 0x05; // first unused pointer mode
+
 // https://github.com/microsoft/checkedc-llvm/blob/master/include/llvm/DebugInfo/CodeView/CodeViewRegisters.def
 const uint16_t R_RCX = 330;
 const uint16_t R_RDX = 331;
@@ -447,12 +455,12 @@ bool BackendX64::dbgEmitDataDebugT(const BuildParameters& buildParameters)
         {
             concat.addU32(f->LF_Pointer.pointeeType);
             uint32_t kind      = 0x0C; // Near64
-            uint32_t mode      = 0;
+            uint32_t mode      = f->LF_Pointer.asRef ? CV_PTR_MODE_LVREF : 0;
             uint32_t modifiers = 0;
             uint32_t size      = 8; // 64 bits
             uint32_t flags     = 0;
             uint32_t layout    = (flags << 19) | (size << 13) | (modifiers << 8) | (mode << 5) | kind;
-            concat.addU32(layout); // attributes (Near64)
+            concat.addU32(layout); // attributes
             break;
         }
 
@@ -543,6 +551,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreatePointerToType(X64PerThread& pp, TypeInfo*
     DbgTypeRecord* tr          = new DbgTypeRecord;
     tr->kind                   = LF_POINTER;
     tr->LF_Pointer.pointeeType = dbgGetOrCreateType(pp, typeInfo);
+    tr->LF_Pointer.asRef       = true;
     dbgAddTypeRecord(pp, tr);
     pp.dbgMapPtrTypes[typeInfo->name] = tr->index;
     return tr->index;
@@ -561,6 +570,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreatePointerPointerToType(X64PerThread& pp, Ty
     DbgTypeRecord* tr          = new DbgTypeRecord;
     tr->kind                   = LF_POINTER;
     tr->LF_Pointer.pointeeType = typeIdx;
+    tr->LF_Pointer.asRef       = true;
     dbgAddTypeRecord(pp, tr);
     pp.dbgMapPtrPtrTypes[typeInfo->name] = tr->index;
     return tr->index;
