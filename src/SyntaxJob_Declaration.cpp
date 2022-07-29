@@ -130,7 +130,7 @@ bool SyntaxJob::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlo
     Scope*   newScope = nullptr;
     bool     first    = true;
 
-    // There'is only one swag namespace, defined in the bootstrap. So if we redeclared it
+    // There is only one swag namespace, defined in the bootstrap. So if we redeclared it
     // in runtime, use the one from the bootstrap
     if (sourceFile->isRuntimeFile && token.text == g_LangSpec->name_Swag)
         currentScope = g_Workspace->bootstrapModule->files[0]->astRoot->ownerScope;
@@ -214,6 +214,9 @@ bool SyntaxJob::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlo
 
     currentScope   = oldScope;
     auto openCurly = token;
+
+    if (namespaceNode && forUsing)
+        namespaceNode->specFlags |= AST_SPEC_NAMESPACE_USING;
 
     if (forGlobal)
     {
