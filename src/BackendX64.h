@@ -295,7 +295,7 @@ struct X64PerThread
     uint16_t*                    dbgStartRecordPtr[MAX_RECORD];
     uint32_t                     dbgStartRecordOffset[MAX_RECORD];
     VectorNative<DbgTypeRecord*> dbgTypeRecords;
-    map<Utf8, DbgTypeIndex>      dbgMapTypes;
+    map<TypeInfo*, DbgTypeIndex> dbgMapTypes;
     map<Utf8, DbgTypeIndex>      dbgMapPtrTypes;
     map<Utf8, DbgTypeIndex>      dbgMapPtrPtrTypes;
     map<Utf8, DbgTypeIndex>      dbgMapTypesNames;

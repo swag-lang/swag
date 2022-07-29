@@ -592,13 +592,13 @@ DbgTypeIndex BackendX64::dbgEmitTypeSlice(X64PerThread& pp, TypeInfo* typeInfo, 
     if (typeInfo->kind == TypeInfoKind::Slice)
     {
         tr1->name = "[..] ";
-        tr1->name += pointedType->name; // debugger dosen't like 'const' before a slice name
+        tr1->name += pointedType->name; // debugger doesn't like 'const' before a slice name
     }
     else
         tr1->name = typeInfo->name;
 
     dbgAddTypeRecord(pp, tr1);
-    pp.dbgMapTypes[typeInfo->name] = tr1->index;
+    pp.dbgMapTypes[typeInfo] = tr1->index;
     return tr1->index;
 }
 
@@ -629,7 +629,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
 
     // In the cache
     /////////////////////////////////
-    auto it = pp.dbgMapTypes.find(typeInfo->name);
+    auto it = pp.dbgMapTypes.find(typeInfo);
     if (it != pp.dbgMapTypes.end())
         return it->second;
 
@@ -667,7 +667,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
         tr->LF_Array.indexType   = SimpleTypeKind::UInt64;
         tr->LF_Array.sizeOf      = typeArr->sizeOf;
         dbgAddTypeRecord(pp, tr);
-        pp.dbgMapTypes[typeInfo->name] = tr->index;
+        pp.dbgMapTypes[typeInfo] = tr->index;
         return tr->index;
     }
 
@@ -698,7 +698,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
         tr1->LF_Structure.fieldList   = tr0->index;
         tr1->name                     = "string";
         dbgAddTypeRecord(pp, tr1);
-        pp.dbgMapTypes[typeInfo->name] = tr1->index;
+        pp.dbgMapTypes[typeInfo] = tr1->index;
         return tr1->index;
     }
 
@@ -729,7 +729,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
         tr1->LF_Structure.fieldList   = tr0->index;
         tr1->name                     = "interface";
         dbgAddTypeRecord(pp, tr1);
-        pp.dbgMapTypes[typeInfo->name] = tr1->index;
+        pp.dbgMapTypes[typeInfo] = tr1->index;
         return tr1->index;
     }
 
@@ -760,7 +760,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
         tr1->LF_Structure.fieldList   = tr0->index;
         tr1->name                     = "any";
         dbgAddTypeRecord(pp, tr1);
-        pp.dbgMapTypes[typeInfo->name] = tr1->index;
+        pp.dbgMapTypes[typeInfo] = tr1->index;
         return tr1->index;
     }
 
@@ -769,14 +769,15 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
     if (typeInfo->kind == TypeInfoKind::Struct)
     {
         TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+        auto            sname      = dbgGetScopedName(typeStruct->declNode);
 
         // Create a forward reference, in case a field points to the struct itself
         DbgTypeRecord* tr2        = new DbgTypeRecord;
         tr2->kind                 = LF_STRUCTURE;
         tr2->LF_Structure.forward = true;
-        tr2->name                 = typeStruct->name;
+        tr2->name                 = sname;
         dbgAddTypeRecord(pp, tr2);
-        pp.dbgMapTypes[typeInfo->name] = tr2->index;
+        pp.dbgMapTypes[typeInfo] = tr2->index;
 
         // List of fields, after the forward ref
         DbgTypeRecord* tr0 = new DbgTypeRecord;
@@ -809,10 +810,10 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
         tr1->LF_Structure.memberCount = (uint16_t) typeStruct->fields.size();
         tr1->LF_Structure.sizeOf      = (uint16_t) typeStruct->sizeOf;
         tr1->LF_Structure.fieldList   = tr0->index;
-        tr1->name                     = typeStruct->name;
+        tr1->name                     = sname;
         dbgAddTypeRecord(pp, tr1);
 
-        pp.dbgMapTypes[typeInfo->name] = tr1->index;
+        pp.dbgMapTypes[typeInfo] = tr1->index;
         return tr1->index;
     }
 
@@ -821,6 +822,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
     if (typeInfo->kind == TypeInfoKind::Enum)
     {
         TypeInfoEnum* typeEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
+        auto          sname    = dbgGetScopedName(typeEnum->declNode);
 
         // List of values
         if (typeEnum->rawType->isNativeInteger())
@@ -845,9 +847,9 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64PerThread& pp, TypeInfo* typeInfo
             tr1->LF_Enum.count          = (uint16_t) typeEnum->values.size();
             tr1->LF_Enum.fieldList      = tr0->index;
             tr1->LF_Enum.underlyingType = dbgGetOrCreateType(pp, typeEnum->rawType);
-            tr1->name                   = typeEnum->name;
+            tr1->name                   = sname;
             dbgAddTypeRecord(pp, tr1);
-            pp.dbgMapTypes[typeInfo->name] = tr1->index;
+            pp.dbgMapTypes[typeInfo] = tr1->index;
             return tr1->index;
         }
 
