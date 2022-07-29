@@ -56,6 +56,7 @@ func filter(file: File.FileInfo)->bool
     defer catch File.delete("list.txt")
 
     // Zip them
-    catch File.delete("release.zip")
-    try Env.doSyncProcess("7z.exe", "a release.zip -spf2 @list.txt")
+    name := Format.toString("swag-windows-x86-64-v%.%.%.zip", #swagversion, #swagrevision, #swagbuildnum)
+    cmd  := Format.toString("a % -spf2 @list.txt", name)
+    try Env.doSyncProcess("7z.exe", cmd)
 }
