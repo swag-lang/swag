@@ -4,6 +4,7 @@
 ..\bin\swag run -w:..\bin\examples -m:captme --script --args:"swag.test"
 ..\bin\swag run -w:..\bin\examples -m:draw --script --args:"swag.test"
 
+..\bin\swag ..\bin\examples\scripts\chess.swgs --args:"swag.test"
 ..\bin\swag ..\bin\examples\scripts\mine.swgs --args:"swag.test"
 ..\bin\swag ..\bin\examples\scripts\pong.swgs --args:"swag.test"
 ..\bin\swag ..\bin\examples\scripts\verlet.swgs --args:"swag.test"

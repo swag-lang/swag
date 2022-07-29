@@ -1,0 +1,607 @@
+// Swag script file
+#dependencies
+{
+    #import "gui" location="swag@std"
+}
+
+using Core, Gui, Pixel
+
+const CellSize = 90'f32
+const BoardSize = CellSize * 8
+const BorderSize = 30'f32
+const BoardWithBorderSize = BoardSize + 2 * BorderSize
+
+const ColorOdd = Argb.Bisque
+const ColorEven = Argb.Tan
+const ColorBorder = Argb.SaddleBrown
+const ColorSelection = Argb.LawnGreen
+const ColorTargets = Argb.MediumTurquoise
+
+enum PiecesEnum: u8
+{
+    None
+    Pawn
+    Rook
+    Knight
+    Bishop
+    Queen
+    King
+}
+
+enum ContentEnum : u8
+{
+    White
+    Black
+    Empty
+    Invalid
+}
+
+namespace Res
+{
+    var piecesTexture: [2, 6] Texture
+    var font: *Font
+    var smallfont: *Font
+}
+
+struct Cell
+{
+    piece: PiecesEnum
+    content: ContentEnum
+}
+
+struct CellInfo
+{
+    odd: bool
+    rect : Math.Rectangle
+}
+
+struct MoveInfo
+{
+    from:s8
+    to:s8
+}
+
+struct GameInfo
+{
+    gameStatus:String
+    whiteTurn = true
+    castle:[2,2] bool = @[ @[true, true], @[true, true]]
+    priseEnPassant:s8=-1
+    possibleMoves: Array'MoveInfo
+    selectedCell = -1's8
+}
+
+var g_Board : [96] Cell
+var g_BoardInfo : [96] CellInfo
+var g_Game : GameInfo
+
+func moveIsPossible(from:s8, to:s8)->bool
+{
+    visit move: g_Game.possibleMoves
+        if (move.from == from and move.to == to)
+            return true
+    return false
+}
+
+func initGame()
+{
+    @init(&g_Game)
+    g_Game.gameStatus =  "Game is not over"
+}
+
+func initCells()
+{
+    loop i:96
+    {
+        x := cast(u8) (i%12)
+        y := cast(u8) (i/12)
+
+        g_Board[i].piece = .None
+        if (x < 2 or x >= 10)
+            g_Board[i].content = .Invalid
+        else
+        {
+            xinfo := x - 2
+            g_BoardInfo[i].odd = (xinfo + y)%2 == 1
+            g_BoardInfo[i].rect = Math.Rectangle{ BorderSize + xinfo * CellSize,
+                BorderSize + (7 - y) * CellSize, CellSize, CellSize }
+            g_Board[i].content = (y < 2) ? .White : ((y > 5) ? .Black : .Empty)
+        }
+    }
+
+    firstLine := @[PiecesEnum.Rook, .Knight, .Bishop, .Queen, .King, .Bishop, .Knight, .Rook]
+
+    loop x : 8
+    {
+        g_Board[x+2].piece = firstLine[x]
+        g_Board[x+2 + 12].piece = .Pawn
+        g_Board[x+2 + 6 * 12].piece = .Pawn
+        g_Board[x+2 + 7 * 12].piece = firstLine[x]
+    }
+
+    computeMoves()
+}
+
+func getCellWithOffset(board:*Cell, source, offset:s8) -> s8
+{
+    result := cast(s8)(source + offset)
+    if (result < 0 or result >= 96 or board[result].content == ContentEnum.Invalid)
+        return -1
+    return result
+}
+
+func getKingCell(board:*Cell, color:ContentEnum)->s8
+{
+    loop i:96's8
+        if board[i].content == color and board[i].piece == PiecesEnum.King
+            return i
+    return -1
+}
+
+func isCheck( board:*Cell, white:bool )->bool
+{
+    var kingCell:s8  = getKingCell(board, white ? .White : .Black)
+    if (kingCell == -1)
+        return false
+    var moves : Array's8
+    getKnightMoves(board, kingCell, &moves)
+    loop moves
+        if board[moves[@index]].piece == .Knight
+            return true
+    moves.clear()
+    getPawnAttacks(board, kingCell, &moves)
+    loop moves
+        if board[moves[@index]].piece == .Pawn
+            return true
+    moves.clear()
+    getBishopMoves(board, kingCell, &moves)
+    loop moves
+        if board[moves[@index]].piece == .Bishop or board[moves[@index]].piece == .Queen
+            return true
+    moves.clear()
+    getRookMoves(board, kingCell, &moves)
+    loop moves
+        if board[moves[@index]].piece == .Rook or board[moves[@index]].piece == .Queen
+            return true
+    return false
+}
+
+func computeMoves()
+{
+    contentToTreat := g_Game.whiteTurn ? ContentEnum.White : .Black
+    g_Game.possibleMoves.clear()
+
+    loop i:96's8
+    {
+        cell := &g_Board[i]
+        if (cell.content != contentToTreat)
+            continue
+
+        var moves:Array's8
+
+        switch cell.piece
+        {
+        case Pawn:
+            getPawnMoves(g_Board, i, &moves)
+            getPawnAttacks(g_Board, i, &moves)
+        case Knight:
+            getKnightMoves(g_Board, i, &moves)
+        case Bishop:
+            getBishopMoves(g_Board, i, &moves)
+        case Rook:
+            getRookMoves(g_Board, i, &moves)
+        case Queen:
+            getBishopMoves(g_Board, i, &moves)
+            getRookMoves(g_Board, i, &moves)
+        case King:
+            getKingMoves(g_Board, i, &moves)
+        }
+
+        visit move: moves
+        {
+            board := doMove( g_Board, i, move)
+            if (!isCheck(board, g_Game.whiteTurn))
+                g_Game.possibleMoves.add ( MoveInfo{i, move})
+        }
+    }
+
+    // castle special case
+    var ki:s8 = g_Game.whiteTurn ? 6 : 90;
+    littleCastle := g_Game.castle[ cast(s8)contentToTreat, 0 ]
+    bigCastle := g_Game.castle[ cast(s8)contentToTreat, 1 ]
+
+    if (littleCastle and moveIsPossible(ki, cast(s8)(ki+1))
+            and g_Board[ki+1].content == .Empty
+            and g_Board[ki+2].content == .Empty
+            and g_Board[ki+3].content == contentToTreat
+            and g_Board[ki+3].piece == .Rook )
+    {
+        board := doMove( g_Board, ki, cast(s8)(ki+2) )
+        if (!isCheck(board, g_Game.whiteTurn))
+            g_Game.possibleMoves.add ( MoveInfo{ki, cast(s8)(ki+2)})
+    }
+    if (bigCastle and moveIsPossible(ki, cast(s8)(ki-1))
+        and g_Board[ki-1].content == .Empty
+        and g_Board[ki-2].content == .Empty
+        and g_Board[ki-4].content == contentToTreat
+        and g_Board[ki-4].piece == .Rook  )
+    {
+        board := doMove( g_Board, ki, cast(s8)(ki-2) )
+        if (!isCheck(board, g_Game.whiteTurn))
+            g_Game.possibleMoves.add ( MoveInfo{ki, cast(s8)(ki-2)})
+    }
+
+    if (@countof(g_Game.possibleMoves) == 0)
+        g_Game.gameStatus = Format.toString("% player wins", !g_Game.whiteTurn ? "White": "Black")
+}
+
+func getPawnMoves(board:*Cell, from:s8, moves:*Array's8)
+{
+    var isWhite: bool = board[from].content == .White
+    var offset: s8 = isWhite ? 12 : -12
+    target := getCellWithOffset(board, from, offset);
+    if (target != -1 and board[target].content == .Empty)
+        moves.add(target)
+    // double move when pawn is in its original row
+    if ( cast(s8)(from/12) == (isWhite ? 1 : 6))
+    {
+        target = getCellWithOffset(board, from, cast(s8)(2*offset));
+        if (target != -1 and board[target].content == .Empty)
+            moves.add(target)
+    }
+}
+
+func getPawnAttacks(board:*Cell, from:s8, moves:*Array's8)
+{
+    var isWhite: bool = board[from].content == .White
+    targetContent := isWhite  ? ContentEnum.Black : .White
+    var offset: s8 = isWhite ? 12 : -12
+    target := getCellWithOffset(board, from, cast(s8)(offset-1))
+    if (target != -1 and (board[target].content == targetContent or g_Game.priseEnPassant == target))
+        moves.add(target)
+    target = getCellWithOffset(board, from, cast(s8)(offset + 1))
+    if (target != -1 and (board[target].content == targetContent or g_Game.priseEnPassant == target))
+        moves.add(target)
+}
+
+func getPieceMove( board:*Cell, from:s8, offset:s8, moves:*Array's8 ) -> bool
+{
+    target := getCellWithOffset(board, from, offset)
+    if target == -1
+        return false
+
+    if (board[from].content == board[target].content)
+        return false
+
+    moves.add(target)
+    return board[target].content == .Empty
+}
+
+const KnightMovesDeltas = @[10's8,23,25,14,-10,-23,-25,-14]
+func getKnightMoves(board:*Cell, from:s8, moves:*Array's8)
+{
+    visit delta: KnightMovesDeltas
+        discard getPieceMove(board, from, delta, moves)
+}
+
+const KingMovesDeltas = @[11's8,12,13,1,-11,-12,-13,-1]
+func getKingMoves(board:*Cell, from:s8, moves:*Array's8)
+{
+    visit delta: KingMovesDeltas
+        discard getPieceMove(board, from, delta, moves)
+}
+
+const BishopMovesDeltas = @[11's8,13,-11,-13]
+func getBishopMoves( board:*Cell, from:s8, moves:*Array's8)
+{
+    visit delta: BishopMovesDeltas
+    {
+        offset := delta
+        while getPieceMove(board, from, offset, moves)
+            offset += delta
+    }
+}
+
+const RookMovesDeltas = @[12's8,1,-12,-1]
+func getRookMoves( board:*Cell, from:s8, moves:*Array's8)
+{
+    visit delta: RookMovesDeltas
+    {
+        offset := delta
+        while getPieceMove(board, from, offset, moves)
+            offset += delta
+    }
+}
+
+func doMove( from:s8, to:s8 )
+{
+    content := g_Board[from].content
+    if (cast(s8)content > cast(s8)ContentEnum.Black )
+        return
+
+    // castle update and params
+    ki := (content == .White ? 6 : 90)
+    g_Game.castle[cast(uint)content, 0] = g_Game.castle[cast(uint)content, 0] and (from != ki) and (from != cast(s8)(ki+3))
+    g_Game.castle[cast(uint)content, 1] = g_Game.castle[cast(uint)content, 1] and (from != ki) and (from != cast(s8)(ki-4))
+
+    g_Board[to].piece = g_Board[from].piece
+    g_Board[to].content = g_Board[from].content
+    g_Board[from].piece = .None
+    g_Board[from].content = .Empty
+
+    // castle, king has moved, move rook
+    if (from == ki and to == ki+2 and g_Board[ki+2].piece == .King)
+        doMove(cast(s8)(ki+3),cast(s8)(ki+1))
+    if (from == ki and to == ki-1 and g_Board[ki-2].piece == .King)
+        doMove(cast(s8)(ki-4),cast(s8)(ki-1))
+
+    // prise en passant
+    if (to == g_Game.priseEnPassant)
+    {
+        otherTo := to - 12 * Math.sign(cast(s8) (to - from))
+        g_Board[otherTo].piece = .None
+        g_Board[otherTo].content = .Empty
+    }
+
+    if (g_Board[to].piece == .Pawn and Math.abs(cast(s8) (from - to)) == 24)
+        g_Game.priseEnPassant = cast(s8)((from + to) / 2)
+    else
+        g_Game.priseEnPassant = -1
+
+    // promotion
+    if (g_Board[to].piece == .Pawn and (to > 84 or (to < 12)))
+        g_Board[to].piece = .Queen
+}
+
+func doMove( board:*Cell, from:s8, to:s8)-> [96] Cell
+{
+    var result: [96] Cell
+
+    loop i:96's8
+        result[i] = board[i]
+
+    result[to].piece = result[from].piece
+    result[to].content = result[from].content
+    result[from].piece = .None
+    result[from].content = .Empty
+    return result
+}
+
+func paintCell(painter: *Pixel.Painter, index:s8)
+{
+    cell := &g_Board[index]
+    if (cell.content == .Invalid)
+        return
+    cellInfo := &g_BoardInfo[index]
+    painter.fillRect(cellInfo.rect, cellInfo.odd ? ColorOdd : ColorEven );
+    if (cell.piece == .None)
+        return
+
+    var texture:Texture
+    if (cell.content == .White)
+        texture = Res.piecesTexture[0, cast(u8)(cell.piece) - 1]
+    elif (cell.content == .Black)
+        texture = Res.piecesTexture[1, cast(u8)(cell.piece) - 1]
+    else
+        return
+    painter.drawTexture( cellInfo.rect, texture)
+}
+
+func paintBoard( evt: *Event)
+{
+    paintEvt := cast(*PaintEvent) evt
+    painter  := paintEvt.bc.painter
+
+    s := BoardSize
+    b := BorderSize
+
+    painter.fillRect( Math.Rectangle{ 0, 0, b + s + b, b}, ColorBorder)
+    painter.fillRect( Math.Rectangle{ 0, b + s, b + s + b, b}, ColorBorder)
+    painter.fillRect( Math.Rectangle{ 0, b, b, s}, ColorBorder)
+    painter.fillRect( Math.Rectangle{ b + s, b, b, s}, ColorBorder)
+
+    var rs:  RichString
+    var rsf: RichStringFormat
+    rsf.font.regular = Res.font
+    rsf.horzAlignment = .Center
+    rsf.vertAlignment = .Center
+    rsf.palette[0] = Argb.Black
+
+    rect := Math.Rectangle{ b, b + s, CellSize, b }
+    var str: String = "A"
+
+    loop column : 8
+    {
+        str.buffer[0] = cast(u8)(65 + column)
+        rs.set(str)
+        painter.drawRichString(rect, &rs, rsf)
+        rect.x += CellSize
+    }
+
+    rect = Math.Rectangle{ 0, b, b, CellSize }
+    loop row : 8
+    {
+        str.buffer[0] = cast(u8)(56 - row)
+        rs.set(str)
+        painter.drawRichString(rect, &rs, rsf)
+        rect.y += CellSize
+    }
+
+    loop i:96's8
+        paintCell(painter, i)
+
+    if (g_Game.selectedCell != -1)
+    {
+        cellInfo := g_BoardInfo[g_Game.selectedCell]
+        painter.drawRect( cellInfo.rect, ColorSelection, penSize: 3)
+
+        visit move: g_Game.possibleMoves
+        {
+            if (move.from == g_Game.selectedCell)
+            {
+                cellInfo = g_BoardInfo[move.to]
+                painter.drawRect( cellInfo.rect, ColorTargets, penSize: 3)
+            }
+        }
+    }
+}
+
+func paintStates(evt: *Event)
+{
+    paintEvt := cast(*PaintEvent) evt
+    painter  := paintEvt.bc.painter
+    var str: String
+
+    y := BoardWithBorderSize + 12
+    str = Format.toString("% player turn", g_Game.whiteTurn ? "White": "Black")
+    painter.drawString(0,y, str, Res.smallfont, Argb.White )
+    y += 12
+
+    str = Format.toString("White king is %", isCheck(g_Board, true) ? "in check" : "safe")
+    painter.drawString(0,y, str, Res.smallfont, Argb.White )
+    y += 12
+
+    str = Format.toString("Black king is %", isCheck(g_Board, false) ? "in check" : "safe")
+    painter.drawString(0, y, str, Res.smallfont, Argb.White )
+    y += 12
+
+    painter.drawString(0, y, g_Game.gameStatus, Res.smallfont, Argb.White )
+    y += 12
+
+    str = Format.toString("White little castle is %", g_Game.castle[0,0]
+        ? (g_Game.whiteTurn and moveIsPossible(6,8) ? "possible now" : "available")
+        : "not available anymore" )
+    painter.drawString(0, y, str, Res.smallfont, Argb.White )
+    y += 12
+
+    str = Format.toString("White big castle is %", g_Game.castle[0,1]
+        ? (g_Game.whiteTurn and moveIsPossible(6,4) ? "possible now" : "available")
+        : "not available anymore" )
+    painter.drawString(0, y, str, Res.smallfont, Argb.White )
+    y += 12
+
+    str = Format.toString("Black little castle is %", g_Game.castle[1,0]
+        ? (!g_Game.whiteTurn and moveIsPossible(90,92) ? "possible now" : "available")
+        : "not available anymore" )
+    painter.drawString(0, y, str, Res.smallfont, Argb.White )
+    y += 12
+
+    str = Format.toString("Black big castle is %", g_Game.castle[1,1]
+        ? (!g_Game.whiteTurn and moveIsPossible(90,88) ? "possible now" : "available")
+        : "not available anymore" )
+    painter.drawString(0, y, str, Res.smallfont, Argb.White )
+    y += 12
+
+}
+
+func pickCell(pos:Math.Point)->s8
+{
+    xpix := pos.x - BorderSize
+    if (xpix < 0 or xpix >= BoardSize)
+        return -1
+    ypix := pos.y - BorderSize
+    if (ypix < 0 or ypix >= BoardSize)
+        return -1
+
+    x := cast(s32) (xpix / CellSize)
+    y := 7 - cast(s32) (ypix / CellSize)
+    return cast(s8)(y * 12 + x + 2)
+}
+
+func onEvent(wnd: *Wnd, evt: *Event)->bool
+{
+    switch evt.kind
+    {
+    case Create:
+        Res.font = wnd.getTheme().createDefaultFont(20)
+        Res.smallfont = wnd.getTheme().createDefaultFont(12)
+        initGame()
+        initCells()
+
+        x:=  BoardWithBorderSize + 12
+        btn := PushButton.create(wnd, "Restart !", @{x, 12})
+        btn.sigPressed += @|wnd|(btn) {
+            initGame()
+            initCells()
+            wnd.invalidate();
+        }
+
+    case MousePressed:
+        mouseEvt := cast(*MouseEvent) evt
+        if mouseEvt.button == .Left
+        {
+            pos := wnd.surfaceToLocal(mouseEvt.surfacePos)
+            cell := pickCell(pos)
+
+            if (g_Game.selectedCell != -1 and moveIsPossible(g_Game.selectedCell, cell))
+            {
+                doMove(g_Game.selectedCell, cell)
+                g_Game.selectedCell = -1
+                g_Game.whiteTurn = !g_Game.whiteTurn
+                computeMoves()
+            }
+            else
+            {
+                if (cell != -1)
+                {
+                    if (g_Board[cell].content == .Empty)
+                        cell = -1
+                    else
+                    {
+                        isWhite := g_Board[cell].content == .White
+                        if (isWhite != g_Game.whiteTurn)
+                        cell = -1
+                    }
+                }
+                g_Game.selectedCell = cell == g_Game.selectedCell ? -1 : cell
+            }
+        }
+        elif mouseEvt.button == .Right
+            g_Game.selectedCell = -1
+
+        wnd.invalidate()
+        return true
+
+    case Paint:
+        paintBoard(evt)
+        paintStates(evt)
+    }
+
+    return false
+}
+
+#run
+{
+    var app: Gui.Application
+    if Env.hasArg("swag.test")
+        app.maxRunFrame = 100
+
+    surface := try app.createSurface(100, 100, 1024, 1024, flags: (.OverlappedWindow & ~.Sizeable), hook: &onEvent)
+    surface.setTitle("Chess")
+
+    assume
+    {
+        rdr := surface.app.getRenderer()
+
+        var dataPath: String = Path.getDirectoryName(#location.fileName)
+        dataPath = Path.combine(dataPath, "datas")
+        dataPath = Path.combine(dataPath, "pieces.png")
+        img := Image.load(dataPath)
+
+        y := 0
+        loop i:2
+        {
+
+            Res.piecesTexture[i, cast(s8)(PiecesEnum.King) - 1] = rdr.addImage(img.toCrop(0,y,128,128))
+            Res.piecesTexture[i, cast(s8)(PiecesEnum.Queen) - 1] = rdr.addImage(img.toCrop(128,y,128,128))
+            Res.piecesTexture[i, cast(s8)(PiecesEnum.Bishop) - 1] = rdr.addImage(img.toCrop(256,y,128,128))
+            Res.piecesTexture[i, cast(s8)(PiecesEnum.Knight) - 1] = rdr.addImage(img.toCrop(384,y,128,128))
+            Res.piecesTexture[i, cast(s8)(PiecesEnum.Rook) - 1] = rdr.addImage(img.toCrop(512,y,128,128))
+            Res.piecesTexture[i, cast(s8)(PiecesEnum.Pawn) - 1] = rdr.addImage(img.toCrop(640,y,128,128))
+            y = 128
+        }
+    }
+
+    surface.show()
+    app.run()
+}
