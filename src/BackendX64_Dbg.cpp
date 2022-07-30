@@ -551,7 +551,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreatePointerToType(X64PerThread& pp, TypeInfo*
     DbgTypeRecord* tr          = new DbgTypeRecord;
     tr->kind                   = LF_POINTER;
     tr->LF_Pointer.pointeeType = dbgGetOrCreateType(pp, typeInfo);
-    tr->LF_Pointer.asRef       = true;
+    // tr->LF_Pointer.asRef       = true;
     dbgAddTypeRecord(pp, tr);
     pp.dbgMapPtrTypes[typeInfo->name] = tr->index;
     return tr->index;
@@ -570,7 +570,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreatePointerPointerToType(X64PerThread& pp, Ty
     DbgTypeRecord* tr          = new DbgTypeRecord;
     tr->kind                   = LF_POINTER;
     tr->LF_Pointer.pointeeType = typeIdx;
-    tr->LF_Pointer.asRef       = true;
+    // tr->LF_Pointer.asRef       = true;
     dbgAddTypeRecord(pp, tr);
     pp.dbgMapPtrPtrTypes[typeInfo->name] = tr->index;
     return tr->index;
