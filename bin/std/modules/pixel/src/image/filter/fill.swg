@@ -12,7 +12,7 @@ impl Image
         #[Swag.Mixin]
         func(PF: PixelFormat) fillFirstLine()
         {
-            pix := pixels
+            pix := pixels.buffer
             loop x: width
             {
                 setPixelRGBA8'PF(pix, color.r, color.g, color.b, color.a)
@@ -31,7 +31,7 @@ impl Image
 
         visitPixels(stride: width)
         {
-            Memory.copy(pix, image.pixels, cast(uint) image.width * image.bpp8)
+            Memory.copy(pix, image.pixels.buffer, cast(uint) image.width * image.bpp8)
         }
     }
 }

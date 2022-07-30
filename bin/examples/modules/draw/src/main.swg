@@ -693,7 +693,7 @@ impl IWnd for MyView
         Res.image2 = rdr.addImage(img1)
         img1.grayScale()
         img1.setAlpha(128)
-        rdr.updateTexture(Res.image2, img1.pixels)
+        rdr.updateTexture(Res.image2, img1.pixels.buffer)
 
         Res.typeface = TypeFace.load(imagePath("arial.ttf"))
         Res.fontDefault = Font.create(Res.typeface, cast(u32) ((12 * 96) / 72))

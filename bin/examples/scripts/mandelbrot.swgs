@@ -79,7 +79,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         paintEvt := cast(*PaintEvent) evt
         painter  := paintEvt.bc.painter
         renderer := paintEvt.bc.renderer
-        renderer.updateTexture(g_Texture, g_Image.pixels)
+        renderer.updateTexture(g_Texture, g_Image.pixels.buffer)
         painter.drawTexture(0, 0, cast(f32) w, cast(f32) h, g_Texture)
         return true
     }

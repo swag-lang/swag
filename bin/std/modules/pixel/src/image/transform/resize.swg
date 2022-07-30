@@ -213,8 +213,8 @@ namespace ResizeTools
     func scaleRow(imgDst, imgSrc: *Image, row: int, contrib: *LineContrib)
     {
         bpp8   := imgDst.bpp8
-        dstRow := imgDst.pixels + row * bpp8 * imgDst.width
-        srcRow := imgSrc.pixels + row * bpp8 * imgSrc.width
+        dstRow := imgDst.pixels.buffer + row * bpp8 * imgDst.width
+        srcRow := imgSrc.pixels.buffer + row * bpp8 * imgSrc.width
 
         #[Swag.Mixin]
         func(BPP: u8) doIt()
@@ -260,8 +260,8 @@ namespace ResizeTools
     func scaleCol(imgDst, imgSrc: *Image, col: int, contrib: *LineContrib)
     {
         bpp8   := imgDst.bpp8
-        dstCol := imgDst.pixels + col * bpp8
-        srcCol := imgSrc.pixels + col * bpp8
+        dstCol := imgDst.pixels.buffer + col * bpp8
+        srcCol := imgSrc.pixels.buffer + col * bpp8
         w8Dst  := imgDst.width * bpp8
         w8Src  := imgSrc.width * bpp8
 
@@ -355,7 +355,7 @@ namespace ResizeTools
                 params := cast(*@typeof(f)) userData
                 fx := cast(u32) (x * params.xscale)
                 fy := cast(u32) (y * params.yscale)
-                pixSrc := params.srcImage.pixels + (fx * image.bpp8) + (fy * params.srcImage.width * image.bpp8)
+                pixSrc := params.srcImage.pixels.buffer + (fx * image.bpp8) + (fy * params.srcImage.width * image.bpp8)
                 Image.copyPixel'BPP(pix, pixSrc)
             }
         }

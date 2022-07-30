@@ -42,7 +42,7 @@ impl Image
             }
 
         case HueHorz:
-            pix := pixels
+            pix := pixels.buffer
             loop x: width
             {
                 factor0 := x / cast(f32) width
@@ -55,7 +55,7 @@ impl Image
 
             visitPixels(stride: width)
             {
-                Memory.copy(pix, image.pixels, cast(uint) image.width * image.bpp8)
+                Memory.copy(pix, image.pixels.buffer, cast(uint) image.width * image.bpp8)
             }
 
         case SaturationVert:
@@ -72,7 +72,7 @@ impl Image
             }
 
         case SaturationHorz:
-            pix := pixels
+            pix := pixels.buffer
             loop x: width
             {
                 factor0 := x / cast(f32) width
@@ -85,7 +85,7 @@ impl Image
 
             visitPixels(stride: width)
             {
-                Memory.copy(pix, image.pixels, cast(uint) image.width * image.bpp8)
+                Memory.copy(pix, image.pixels.buffer, cast(uint) image.width * image.bpp8)
             }
 
         case LightnessVert:
@@ -102,7 +102,7 @@ impl Image
             }
 
         case LightnessHorz:
-            pix := pixels
+            pix := pixels.buffer
             loop x: width
             {
                 factor0 := x / cast(f32) width
@@ -115,7 +115,7 @@ impl Image
 
             visitPixels(stride: width)
             {
-                Memory.copy(pix, image.pixels, cast(uint) image.width * image.bpp8)
+                Memory.copy(pix, image.pixels.buffer, cast(uint) image.width * image.bpp8)
             }
 
         case HueSaturation:

@@ -129,7 +129,7 @@ impl Movie
         case SpriteSheet:
             return imgList.texture.valid
         case Gif:
-            return frame.pixels != null
+            return frame.pixels.buffer != null
         }
 
         return false

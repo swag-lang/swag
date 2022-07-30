@@ -643,7 +643,7 @@ public impl IImageEncoder for Encoder
         loop
         {
             ioffset := (image.height - rowInfo.rowNum - 1) * image.width * image.bpp8
-            if encodeRow(image.pixels + ioffset, acast (image.width * image.bpp8))
+            if encodeRow(image.pixels.buffer + ioffset, acast (image.width * image.bpp8))
                 break
         }
 

@@ -190,7 +190,7 @@ func screenShot()->Image throw
     GetObjectA(acast hCaptureBitmap, cast(s32) @sizeof(BITMAP), &bmp)
 
     result = Image.create(bmp.bmWidth, bmp.bmHeight, .BGRA8)
-    GetBitmapBits(hCaptureBitmap, bmp.bmWidth * bmp.bmHeight * 4, result.pixels)
+    GetBitmapBits(hCaptureBitmap, bmp.bmWidth * bmp.bmHeight * 4, result.pixels.buffer)
     result.flip()
 
     ReleaseDC(hDesktopWnd, hDesktopDC)

@@ -184,7 +184,7 @@ func loadImg()
     glGenTextures(1, &g_TextureID)
     glBindTexture(GL_TEXTURE_2D, g_TextureID)
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
-    glTexImage2D(GL_TEXTURE_2D, 0, internal, cast(s32) g_MyImage.width, cast(s32) g_MyImage.height, 0, fmt, GL_UNSIGNED_BYTE, g_MyImage.pixels)
+    glTexImage2D(GL_TEXTURE_2D, 0, internal, cast(s32) g_MyImage.width, cast(s32) g_MyImage.height, 0, fmt, GL_UNSIGNED_BYTE, g_MyImage.pixels.buffer)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
 }

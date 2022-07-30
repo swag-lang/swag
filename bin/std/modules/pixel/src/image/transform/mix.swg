@@ -23,7 +23,7 @@ impl Image
                 dstImage := cast(*Image) params.dstImage
                 srcImage := cast(const *Image) params.srcImage
 
-                pixDst := dstImage.pixels + x * image.bpp8
+                pixDst := dstImage.pixels.buffer + x * image.bpp8
                 pixDst += cast(uint) (y * (image.width * image.bpp8))
 
                 y = image.height - y
@@ -39,7 +39,7 @@ impl Image
                 {
                     x1 := x - params.x
                     y1 := srcImage.height - (y - params.y)
-                    pixSrc := srcImage.pixels + x1 * srcImage.bpp8
+                    pixSrc := srcImage.pixels.buffer + x1 * srcImage.bpp8
                     pixSrc += cast(uint) (y1 * (srcImage.width * srcImage.bpp8))
 
                     #[Swag.Complete]
@@ -71,7 +71,7 @@ impl Image
     public mtd mix(srcImage: Image, x, y: s32, mode = MixMode.Copy)
     {
         Debug.assert(pf == srcImage.pf, "mismatched pixel format")
-        Debug.assert(pixels != null)
+        Debug.assert(pixels.buffer != null)
         allocWorkingBuffer()
         doMix(workingBuffer, srcImage, x, y, mode)
         applyWorkingBuffer()
@@ -80,7 +80,7 @@ impl Image
     // Mix with another image
     public mtd toMix(srcImage: Image, x, y: s32, mode = MixMode.Copy)->Image
     {
-        Debug.assert(pixels != null)
+        Debug.assert(pixels.buffer != null)
         Debug.assert(pf == srcImage.pf, "mismatched pixel format")
         var result: retval = create(width, height, pf)
         doMix(&result, srcImage, x, y, mode)

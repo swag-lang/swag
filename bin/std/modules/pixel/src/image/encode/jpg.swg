@@ -232,7 +232,7 @@ impl Encoder
 
         bufferRGB.resize(cast(uint) (xDiv8 * yDiv8))
         pdst := bufferRGB.buffer
-        pref := image.pixels
+        pref := image.pixels.buffer
 
         loop nrline: imageY
         {

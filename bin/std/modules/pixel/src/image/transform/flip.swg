@@ -9,14 +9,14 @@ impl Image
         {
             dstImage := cast(*Image) userData
             w8 := image.width * image.bpp8
-            Memory.copy(dstImage.pixels + (image.height - y - 1) * w8, pix, cast(uint) w8)
+            Memory.copy(dstImage.pixels.buffer + (image.height - y - 1) * w8, pix, cast(uint) w8)
         }
     }
 
     // Flip image vertically
     public mtd flip()
     {
-        Debug.assert(pixels != null)
+        Debug.assert(pixels.buffer != null)
         allocWorkingBuffer()
         doFlip(workingBuffer)
         applyWorkingBuffer()
@@ -25,7 +25,7 @@ impl Image
     // Flip image vertically
     public mtd toFlip()->Image
     {
-        Debug.assert(pixels != null)
+        Debug.assert(pixels.buffer != null)
         var result: retval = create(width, height, pf)
         doFlip(&result)
         return result

@@ -20,7 +20,7 @@ impl IWnd for ImageRect
         {
             if movie.source != .SpriteSheet
             {
-                getApp().renderer.updateTexture(textureFrame, movie.frame.pixels)
+                getApp().renderer.updateTexture(textureFrame, movie.frame.pixels.buffer)
             }
         }
 

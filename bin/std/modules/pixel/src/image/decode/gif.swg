@@ -519,7 +519,7 @@ public impl Decoder
             return false
         }
 
-        renderFrame(img.pixels, img.pf)
+        renderFrame(img.pixels.buffer, img.pf)
         return true
     }
 
@@ -566,7 +566,7 @@ public impl IImageDecoder for Decoder
         if !options.decodePixels
             return result
 
-        renderFrame(result.pixels, result.pf)
+        renderFrame(result.pixels.buffer, result.pf)
         return result
     }
 }

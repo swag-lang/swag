@@ -13,7 +13,7 @@ using Core, Pixel
         if Image.canLoad(f.fullname)
         {
             img := try Image.load(f.fullname, options)
-            @assert(img.pixels == null)
+            @assert(img.pixels.buffer == null)
         }
     }
 }

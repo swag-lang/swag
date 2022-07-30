@@ -138,7 +138,7 @@ public impl IImageDecoder for Decoder
             if c
             {
                 c = 4 - c
-                dst := result.pixels
+                dst := result.pixels.buffer
                 src := dataof
                 dstW := cast(uint) result.width * result.bpp8
                 srcW := dstW + c
@@ -151,11 +151,11 @@ public impl IImageDecoder for Decoder
             }
             else
             {
-                Memory.copy(result.pixels, dataof, byteSize)
+                Memory.copy(result.pixels.buffer, dataof, byteSize)
             }
 
         case 32:
-            Memory.copy(result.pixels, dataof, byteSize)
+            Memory.copy(result.pixels.buffer, dataof, byteSize)
         }
 
         return result

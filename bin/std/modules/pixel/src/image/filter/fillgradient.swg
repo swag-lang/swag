@@ -12,7 +12,7 @@ impl Image
         #[Swag.Mixin]
         func(PF: PixelFormat) doIt()
         {
-            pix := pixels
+            pix := pixels.buffer
             loop x: width
             {
                 factor0 := x / cast(f32) width

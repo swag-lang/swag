@@ -536,10 +536,10 @@ impl Decoder
         defilter()
 
         // If source == wanted channels, then we are done, dstPixels already contains everything
-        result.allocator = @getcontext().allocator
+        result.allocPixels()
         if inChannels == outChannels
         {
-            result.pixels = dstPixels
+            Memory.copy(result.pixels.buffer, dstPixels, result.size);
             return result
         }
 
@@ -549,7 +549,6 @@ impl Decoder
 
     func convert(using self, result: *Image)
     {
-        result.pixels = cast(*u8) Memory.alloc(result.size)
         defer Memory.free(dstPixels, dstPixelsSize)
 
         // Grayscale without alpha channel, no transparency
@@ -562,7 +561,8 @@ impl Decoder
                 pix[0] = src[0]
                 pix[1] = src[0]
                 pix[2] = src[0]
-                if image.bpp == 32 pix[3] = 255
+                if image.bpp == 32
+                    pix[3] = 255
             }
         }
 

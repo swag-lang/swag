@@ -24,7 +24,7 @@ impl Image
                     srcImage := cast(*Image) userData
                     nx := srcImage.width - y - 1
                     ny := x
-                    pixSrc := srcImage.pixels + (nx * srcImage.bpp8) + (ny * srcImage.width8)
+                    pixSrc := srcImage.pixels.buffer + (nx * srcImage.bpp8) + (ny * srcImage.width8)
                     copyPixel'BPP(pix, pixSrc)
                 }
                 break
@@ -35,7 +35,7 @@ impl Image
                     srcImage := cast(*Image) userData
                     nx := srcImage.width - x - 1
                     ny := srcImage.height - y - 1
-                    pixSrc := srcImage.pixels + (nx * srcImage.bpp8) + (ny * srcImage.width8)
+                    pixSrc := srcImage.pixels.buffer + (nx * srcImage.bpp8) + (ny * srcImage.width8)
                     copyPixel'BPP(pix, pixSrc)
                 }
                 break
@@ -46,7 +46,7 @@ impl Image
                     srcImage := cast(*Image) userData
                     nx := y
                     ny := srcImage.height - x - 1
-                    pixSrc := srcImage.pixels + (nx * srcImage.bpp8) + (ny * srcImage.width8)
+                    pixSrc := srcImage.pixels.buffer + (nx * srcImage.bpp8) + (ny * srcImage.width8)
                     copyPixel'BPP(pix, pixSrc)
                 }
                 break
@@ -64,7 +64,7 @@ impl Image
     // Turn image by a given predefined angle
     public mtd turn(angle: TurnAngle)
     {
-        Debug.assert(pixels != null)
+        Debug.assert(pixels.buffer != null)
         if angle == .T180
             allocWorkingBuffer()
         else
@@ -76,7 +76,7 @@ impl Image
     // Turn image by a given predefined angle
     public mtd toTurn(angle: TurnAngle)->Image
     {
-        Debug.assert(pixels != null)
+        Debug.assert(pixels.buffer != null)
 
         var result: retval
         if angle == .T180

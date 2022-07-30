@@ -2049,7 +2049,7 @@ public impl IImageDecoder for Decoder
             return result
         result.allocPixels()
 
-        doit(result.pixels)
+        doit(result.pixels.buffer)
         return result
     }
 }

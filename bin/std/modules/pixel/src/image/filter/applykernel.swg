@@ -51,7 +51,7 @@ impl Image
             w8 := image.width8
             w  := image.width
             h  := image.height
-            px := image.pixels
+            px := image.pixels.buffer
             ks := @dataof(params.kernel) + 2
 
             var bs, gs, rs: s32
@@ -100,7 +100,7 @@ impl Image
             ksum := params.kernel[1]
             if ksum > 1 bs, gs, rs /= ksum
 
-            dpix := params.dstImage.pixels + (x * b8) + (y * w8)
+            dpix := params.dstImage.pixels.buffer + (x * b8) + (y * w8)
             dpix[0] = cast(u8) Math.clamp(bs, 0, 255)
             dpix[1] = cast(u8) Math.clamp(gs, 0, 255)
             dpix[2] = cast(u8) Math.clamp(rs, 0, 255)
@@ -111,7 +111,7 @@ impl Image
     // Apply a kernel to the image
     public mtd applyKernel(kernel: Kernel)
     {
-        Debug.assert(pixels != null)
+        Debug.assert(pixels.buffer != null)
         allocWorkingBuffer()
         doKernel(workingBuffer, kernel)
         applyWorkingBuffer()
@@ -120,7 +120,7 @@ impl Image
     // Apply a kernel to the image
     public mtd toApplyKernel(kernel: Kernel)->Image
     {
-        Debug.assert(pixels != null)
+        Debug.assert(pixels.buffer != null)
         var result: retval = create(width, height, pf)
         doKernel(&result, kernel)
         return result

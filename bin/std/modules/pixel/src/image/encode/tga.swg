@@ -23,6 +23,6 @@ public impl IImageEncoder for Encoder
         header.width         = cast(u16) image.width
         header.height        = cast(u16) image.height
         result.addStruct(header)
-        result.addBytes(@mkslice(image.pixels, image.size))
+        result.addBytes(image.pixels.toSlice())
     }
 }

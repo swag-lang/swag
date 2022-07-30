@@ -128,7 +128,7 @@ impl IWnd for ColorPicker
         if dirty
         {
             dirty = false
-            if !img.pixels
+            if !img.pixels.buffer
                 img = Image.create(cast(s32) clientRect.width, cast(s32) clientRect.height, .RGBA8)
 
             var modeFill: Image.FillHslType = ?
@@ -211,7 +211,7 @@ impl IWnd for ColorPicker
             }
 
             if texture.valid
-                getApp().renderer.updateTexture(texture, img.pixels)
+                getApp().renderer.updateTexture(texture, img.pixels.buffer)
             else
                 texture = getApp().renderer.addImage(img)
             computeXY()

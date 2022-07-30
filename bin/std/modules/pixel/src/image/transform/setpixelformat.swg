@@ -15,7 +15,7 @@ impl Image
             visitPixels(f)
             {
                 dstImage := cast(*Image) userData
-                pixDst := dstImage.pixels + x * dstImage.bpp8 + y * dstImage.width8
+                pixDst := dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
                 pixDst[0] = pix[0]
                 pixDst[1] = pix[1]
                 pixDst[2] = pix[2]
@@ -24,7 +24,7 @@ impl Image
             visitPixels(f)
             {
                 dstImage := cast(*Image) userData
-                pixDst := dstImage.pixels + x * dstImage.bpp8 + y * dstImage.width8
+                pixDst := dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
                 pixDst[0] = pix[2]
                 pixDst[1] = pix[1]
                 pixDst[2] = pix[0]
@@ -45,7 +45,7 @@ impl Image
             visitPixels(f)
             {
                 dstImage := cast(*Image) userData
-                pixDst := dstImage.pixels + x * dstImage.bpp8 + y * dstImage.width8
+                pixDst := dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
                 pixDst[0] = pix[2]
                 pixDst[1] = pix[1]
                 pixDst[2] = pix[0]
@@ -55,7 +55,7 @@ impl Image
             visitPixels(f)
             {
                 dstImage := cast(*Image) userData
-                pixDst := dstImage.pixels + x * dstImage.bpp8 + y * dstImage.width8
+                pixDst := dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
                 pixDst[0] = pix[0]
                 pixDst[1] = pix[1]
                 pixDst[2] = pix[2]
@@ -65,7 +65,7 @@ impl Image
             visitPixels(f)
             {
                 dstImage := cast(*Image) userData
-                pixDst := dstImage.pixels + x * dstImage.bpp8 + y * dstImage.width8
+                pixDst := dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
                 pixDst[0] = pix[2]
                 pixDst[1] = pix[1]
                 pixDst[2] = pix[0]
@@ -87,7 +87,7 @@ impl Image
             visitPixels(f)
             {
                 dstImage := cast(*Image) userData
-                pixDst := dstImage.pixels + x * dstImage.bpp8 + y * dstImage.width8
+                pixDst := dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
                 pixDst[0] = pix[0]
                 pixDst[1] = pix[1]
                 pixDst[2] = pix[2]
@@ -96,7 +96,7 @@ impl Image
             visitPixels(f)
             {
                 dstImage := cast(*Image) userData
-                pixDst := dstImage.pixels + x * dstImage.bpp8 + y * dstImage.width8
+                pixDst := dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
                 pixDst[0] = pix[2]
                 pixDst[1] = pix[1]
                 pixDst[2] = pix[0]
@@ -117,7 +117,7 @@ impl Image
             visitPixels(f)
             {
                 dstImage := cast(*Image) userData
-                pixDst := dstImage.pixels + x * dstImage.bpp8 + y * dstImage.width8
+                pixDst := dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
                 pixDst[0] = pix[0]
                 pixDst[1] = pix[1]
                 pixDst[2] = pix[2]
@@ -127,7 +127,7 @@ impl Image
             visitPixels(f)
             {
                 dstImage := cast(*Image) userData
-                pixDst := dstImage.pixels + x * dstImage.bpp8 + y * dstImage.width8
+                pixDst := dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
                 pixDst[0] = pix[2]
                 pixDst[1] = pix[1]
                 pixDst[2] = pix[0]
@@ -137,7 +137,7 @@ impl Image
             visitPixels(f)
             {
                 dstImage := cast(*Image) userData
-                pixDst := dstImage.pixels + x * dstImage.bpp8 + y * dstImage.width8
+                pixDst := dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
                 pixDst[0] = pix[2]
                 pixDst[1] = pix[1]
                 pixDst[2] = pix[0]
@@ -161,7 +161,7 @@ impl Image
     // Change image pixel format
     public mtd setPixelFormat(newPf: PixelFormat)
     {
-        Debug.assert(pixels != null)
+        Debug.assert(pixels.buffer != null)
 
         if newPf == pf return
         allocWorkingBuffer(width, height, newPf)
@@ -172,7 +172,7 @@ impl Image
     // Change image pixel format
     public mtd toSetPixelFormat(newPf: PixelFormat)->Image
     {
-        Debug.assert(pixels != null)
+        Debug.assert(pixels.buffer != null)
 
         if newPf == pf
         {

@@ -12,7 +12,7 @@ impl Image
             visitPixels(f)
             {
                 dstImage := cast(*Image) userData
-                pixDst := dstImage.pixels + (image.width - x - 1) * image.bpp8
+                pixDst := dstImage.pixels.buffer + (image.width - x - 1) * image.bpp8
                 pixDst += cast(uint) (y * (image.width * image.bpp8))
                 copyPixel'BPP(pixDst, pix)
             }
@@ -29,7 +29,7 @@ impl Image
     // Flip image horizontally
     public mtd mirror()
     {
-        Debug.assert(pixels != null)
+        Debug.assert(pixels.buffer != null)
         allocWorkingBuffer()
         doMirror(workingBuffer)
         applyWorkingBuffer()
@@ -38,7 +38,7 @@ impl Image
     // Flip image horizontally
     public mtd toMirror()->Image
     {
-        Debug.assert(pixels != null)
+        Debug.assert(pixels.buffer != null)
         var result: retval = create(width, height, pf)
         doMirror(&result)
         return result

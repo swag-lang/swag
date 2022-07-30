@@ -128,9 +128,9 @@ public impl IImageDecoder for Decoder
         {
         case TYPE_MAP, TYPE_RGB, TYPE_MONO:
             if dataof + result.size > last throw "invalid source buffer"
-            Memory.copy(result.pixels, dataof, result.size)
+            Memory.copy(result.pixels.buffer, dataof, result.size)
         case TYPE_RLE_MAP, TYPE_RLE_RGB, TYPE_RLE_MONO:
-            uncompress(header.bpp, result.pixels, dataof, last, result.size)
+            uncompress(header.bpp, result.pixels.buffer, dataof, last, result.size)
         default:
             throw "unsupported type"
         }

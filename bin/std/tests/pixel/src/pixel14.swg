@@ -6,6 +6,6 @@ using Core, Pixel
     try img.save(tmpPath("__rgb.tga"))
     img1 := try Image.load(tmpPath("__rgb.tga"))
     @assert(img.size == img1.size)
-    @assert(Memory.compare(img.pixels, img1.pixels, img.size) == 0)
+    @assert(Memory.compare(img.pixels.buffer, img1.pixels.buffer, img.size) == 0)
     try File.delete(tmpPath("__rgb.tga"))
 }

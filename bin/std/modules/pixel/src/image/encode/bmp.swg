@@ -30,7 +30,7 @@ public impl IImageEncoder for Encoder
         result.addStruct(header)
 
         align := (header.biWidth * 3) & 3
-        psrc  := image.pixels
+        psrc  := image.pixels.buffer
 
         if image.pf == .RGBA8
         {
@@ -64,7 +64,7 @@ public impl IImageEncoder for Encoder
         }
         elif image.bpp != 24 or !align
         {
-            result.addBytes(@mkslice(image.pixels, image.size))
+            result.addBytes(image.pixels.toSlice())
         }
         else
         {

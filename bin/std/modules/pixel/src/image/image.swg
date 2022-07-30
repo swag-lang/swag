@@ -3,23 +3,21 @@ using Swag, Core, Serialization
 
 struct Image
 {
+    pixels:             Array'u8
     size:               uint
-    allocator:          IAllocator
-    pixels:             *u8
-    workingBuffer:      *Image
-
     width, height:      s32
     width8:             s32
     pf:                 PixelFormat = ?
     bpp:                u8  // Bits per pixel
     bpp8:               u8  // Bytes per pixel
+    workingBuffer:      *Image
 }
 
 impl Image
 {
     // Returns true if the image is valid
     #[Swag.Inline]
-    mtdc isValid() => pixels != null
+    mtdc isValid() => pixels.buffer != null
 
     // Creates a new image
     func create(width, height: s32, pf: PixelFormat, buffer: const [..] u8 = null)->Image
@@ -30,37 +28,24 @@ impl Image
         result.init(width, height, pf)
         result.allocPixels()
         if buffer
-            Memory.copy(result.pixels, @dataof(buffer), @countof(buffer))
+            Memory.copy(result.pixels.buffer, @dataof(buffer), @countof(buffer))
         return result
-    }
-
-    #[Inline]
-    private mtd free()
-    {
-        Memory.free(pixels, size, allocator)
-        Memory.delete'Image(workingBuffer, allocator)
     }
 
     func opDrop(using self)
     {
-        free()
+        Memory.delete'Image(workingBuffer)
     }
 
     func opPostCopy(using self)
     {
         workingBuffer = null
-        if pixels
-        {
-            newPixels := Memory.alloc(size, allocator)
-            Memory.copy(newPixels, pixels, size)
-            pixels = newPixels
-        }
     }
 
     #[Swag.Macro]
     func(ptr: bool) opVisit(using self, stmt: code)
     {
-        scan := pixels
+        scan := pixels.buffer
         loop width * height
         {
 			#macro
@@ -79,7 +64,7 @@ impl Image
     // This gives the opportunity to set the pixels with an external buffer
     mtd init(width, height: s32, pf: PixelFormat)
     {
-        self.pixels = null
+        self.pixels.clear()
         self.width = #self.width
         self.height = #self.height
         self.pf = #self.pf
@@ -93,10 +78,8 @@ impl Image
     // Allocate pixels
     mtd allocPixels()
     {
-        Debug.assert(pixels == null)
         Debug.assert(size != 0)
-        allocator = @getcontext().allocator
-        pixels = Memory.alloc(size, allocator)
+        pixels.resize(size)
     }
 
     // Allocate a computing buffer with current image size
@@ -115,14 +98,14 @@ impl Image
             return
 
         freeWorkingBuffer()
-        workingBuffer = Memory.new'Image(allocator)
+        workingBuffer = Memory.new'Image()
         dref workingBuffer = Image.create(newWidth, newHeight, newPf)
     }
 
     // Free the working buffer if allocated
     mtd freeWorkingBuffer()
     {
-        Memory.delete(workingBuffer, allocator)
+        Memory.delete(workingBuffer)
         workingBuffer = null
     }
 
@@ -153,7 +136,7 @@ impl Image
         Debug.assert(stride > 0)
 
         p := @{self, userData}
-        Jobs.parallelVisit(|buffer, data| @mkslice(pixels, size), cast(u32) bpp8 * stride, &p)
+        Jobs.parallelVisit(|buffer, data| pixels.toSlice(), cast(u32) bpp8 * stride, &p)
         {
             p := cast(*@typeof(p)) data
             #macro
@@ -162,7 +145,7 @@ impl Image
                 userData := `p.userData
                 pix      := `buffer
 
-                index := (cast(uint) (pix - image.pixels)) / image.bpp8
+                index := (cast(uint) (pix - image.pixels.buffer)) / image.bpp8
                 x := cast(s32) index % image.width
                 y := cast(s32) index / image.width
 
@@ -174,14 +157,15 @@ impl Image
     // Release the content of the image
     mtd release()
     {
-        free()
+        @drop(self)
         @init(self)
     }
 
     // Clear the content of the image
     mtd clear()
     {
-        Memory.clear(pixels, size)
+        Debug.assert(pixels.buffer != null)
+        Memory.clear(pixels.buffer, size)
     }
 
     // Copy one pixel, depending on bpp
@@ -224,25 +208,25 @@ impl Image
         switch pf
         {
         case RGBA8:
-            pix := pixels + (x * 4) + (y * width * 4)
+            pix := pixels.buffer + (x * 4) + (y * width * 4)
             result.r = pix[0]
             result.g = pix[1]
             result.b = pix[2]
             result.a = pix[3]
         case RGB8:
-            pix := pixels + (x * 3) + (y * width * 3)
+            pix := pixels.buffer + (x * 3) + (y * width * 3)
             result.r = pix[0]
             result.g = pix[1]
             result.b = pix[2]
             result.a = 255
         case BGRA8:
-            pix := pixels + (x * 4) + (y * width * 4)
+            pix := pixels.buffer + (x * 4) + (y * width * 4)
             result.b = pix[0]
             result.g = pix[1]
             result.r = pix[2]
             result.a = pix[3]
         case BGR8:
-            pix := pixels + (x * 3) + (y * width * 3)
+            pix := pixels.buffer + (x * 3) + (y * width * 3)
             result.b = pix[0]
             result.g = pix[1]
             result.r = pix[2]
@@ -250,45 +234,5 @@ impl Image
         }
 
         return result
-    }
-}
-
-impl ISerialize for Image
-{
-    mtd read(decoder: IDecoder)->bool throw
-    {
-        return false
-    }
-
-    mtd write(encoder: IEncoder)->bool
-    {
-        return false
-    }
-
-    mtd readElement(val: TypeValue, data: *void, decoder: IDecoder)->bool throw
-    {
-        if val.crc32 == Hash.Crc32.compute(@nameof(pixels))
-        {
-            if !decoder.beginField(val)
-                return true
-            pixels = decoder.readBufferU8(size)
-            decoder.endField()
-            return true
-        }
-
-        return false
-    }
-
-    mtd writeElement(val: TypeValue, data: const *void, encoder: IEncoder)->bool
-    {
-        if val.crc32 == Hash.Crc32.compute(@nameof(pixels))
-        {
-            encoder.beginField(val)
-            encoder.writeBufferU8(pixels, size)
-            encoder.endField()
-            return true
-        }
-
-        return false
     }
 }

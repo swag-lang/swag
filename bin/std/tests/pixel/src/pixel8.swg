@@ -8,7 +8,7 @@ using Pixel.Image
     img := try Image.load(imagePath("rgb.png"), options)
     @assert(img.width == 660)
     @assert(img.height == 441)
-    @assert(img.pixels == null)
+    @assert(img.pixels.buffer == null)
 
     /*pathName := dataPath()
     files := try Directory.enumerateFiles(pathName)
