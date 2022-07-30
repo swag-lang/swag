@@ -1,4 +1,3 @@
-#global skip
 using Core, Serialization, Math
 
 #[Version(1)]
