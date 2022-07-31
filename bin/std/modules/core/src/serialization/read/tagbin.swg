@@ -14,6 +14,7 @@ using Swag
     Supported type changes are :
     - Change the size of a static array
     - Convert a static array to a dynamic array, and vice versa
+    - Conversion from integer/float/rune/bool to integer/float/rune/bool
 
     Supported attributes are :
 
@@ -37,10 +38,11 @@ struct TagBinOptions
 
 struct TagBin
 {
-    stream:         ByteStream
-    options:        TagBinOptions
-    freeSections:   ArrayPtr'TagBinSection
-    sections:       ArrayPtr'TagBinSection
+    stream:             ByteStream
+    options:            TagBinOptions
+    freeSections:       ArrayPtr'TagBinSection
+    sections:           ArrayPtr'TagBinSection
+    convertNextValueTo: const *Swag.TypeInfoNative
 }
 
 impl TagBin
@@ -49,6 +51,7 @@ impl TagBin
     const ErrorCorrupted        = "stream is corrupted"
     const ErrorFat              = "invalid fat signature"
     const ErrorNewestVersion    = "version is too recent"
+    const ErrorBadName          = "bad field name"
     const ErrorBadType          = "bad field type"
 }
 
@@ -76,16 +79,23 @@ private impl TagBin
         freeSections.add(ptr)
     }
 
-    func canConvertType(to, from: typeinfo)->bool
+    mtd canConvertType(to, from: typeinfo)->bool
     {
         if to == from
             return true
+
+        // int/float/bool/rune to int/float/bool/rune
+        if Reflection.isSimpleNative(to) and Reflection.isSimpleNative(from)
+        {
+            convertNextValueTo = cast(const *Swag.TypeInfoNative) from
+            return true
+        }
 
         if Reflection.isArray(from)
         {
             fromArr := cast(const *Swag.TypeInfoArray) from
 
-            // Array to array, this is fine, we will deal with size change later
+            // Array to array, this is fine, we will deal with size change
             if Reflection.isArray(to)
             {
                 toArr := cast(const *Swag.TypeInfoArray) to
@@ -258,8 +268,10 @@ impl TagBin
                     }
                 }
 
+                // No alias, the field is not there, just ignore it
                 if !ent
                     return false
+
                 stream.setSeek(ent.value)
             }
         }
@@ -267,25 +279,25 @@ impl TagBin
         // Read name signature
         crcName := stream.readNative'u32()
         if crcName != reqCrcName
-            throw ErrorCorrupted
+            throw ErrorBadName
 
-        // Read type signature
+        // Read type signature. If they match, we are done
         crcType := stream.readNative'u32()
-        if crcType != val.pointedType.crc32
-        {
-            streamType := Reflection.crcToType(crcType)
-            if !streamType
-                throw ErrorBadType
+        if crcType == val.pointedType.crc32
+            return true
 
-            if !canConvertType(val.pointedType, streamType)
-                throw ErrorBadType
-        }
-
+        // Type from the stream is different
+        streamType := Reflection.crcToType(crcType)
+        if !streamType
+            throw ErrorBadType
+        if !canConvertType(val.pointedType, streamType)
+            throw ErrorBadType
         return true
     }
 
     mtd endElement() throw
     {
+        convertNextValueTo = null
     }
 
     mtd beginValue() throw
@@ -305,6 +317,10 @@ impl TagBin
         // 0 for a dynamic array, > 0 for a static array
         orgCount := dref countElem
         dref countElem = stream.readNative'uint()
+
+        // If we need to type conversion, we must read element by element
+        if convertNextValueTo
+            return false
 
         // Dynamic array of raw serializable types
         // Just read them in one batch
@@ -380,6 +396,47 @@ impl TagBin
         }
         #else
         {
+            if convertNextValueTo
+            {
+                #[Swag.Safety("", false)]
+                switch convertNextValueTo.nativeKind
+                {
+                case Bool:
+                    v := stream.readNative'bool()
+                    return cast(NT) v
+                case U8:
+                    v := stream.readNative'u8()
+                    return cast(NT) v
+                case U16:
+                    v := stream.readNative'u16()
+                    return cast(NT) v
+                case U32, Rune:
+                    v := stream.readNative'u32()
+                    return cast(NT) v
+                case U64, UInt:
+                    v := stream.readNative'u64()
+                    return cast(NT) v
+                case S8:
+                    v := stream.readNative's8()
+                    return cast(NT) v
+                case S16:
+                    v := stream.readNative's16()
+                    return cast(NT) v
+                case S32:
+                    v := stream.readNative's32()
+                    return cast(NT) v
+                case S64, Int:
+                    v := stream.readNative's64()
+                    return cast(NT) v
+                case F32:
+                    v := stream.readNative'f32()
+                    return cast(NT) v
+                case F64:
+                    v := stream.readNative'f64()
+                    return cast(NT) v
+                }
+            }
+
             return stream.readNative'NT()
         }
     }

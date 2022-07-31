@@ -17,6 +17,14 @@ using Swag
         func isTypeAlias(t: typeinfo)   => t.kind == .Alias
         func isGeneric(t: typeinfo)     => t.flags & .Generic
 
+        func isSimpleNative(t: typeinfo)->bool
+        {
+            if t.kind != .Native
+                return false
+            tt := cast(const *TypeInfoNative) t
+            return tt.nativeKind != .Any and tt.nativeKind != .String
+        }
+
         func isRune(t: typeinfo)->bool
         {
             if t.kind != .Native
