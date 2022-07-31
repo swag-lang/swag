@@ -916,13 +916,16 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     {
         if (node->specFlags & AST_SPEC_TCA_GENERATED && node->specFlags & AST_SPEC_TCA_BLOCK)
         {
-            concat.addEol();
+            context.indent += 1;
+            //concat.addIndent(context.indent);
+
             for (auto c : node->childs.front()->childs)
             {
-                concat.addIndent(context.indent + 1);
                 SWAG_CHECK(outputNode(context, concat, c));
-                concat.addEol();
+                concat.addEolIndent(context.indent);
             }
+
+            context.indent -= 1;
         }
         else
         {
