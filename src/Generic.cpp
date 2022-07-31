@@ -21,14 +21,14 @@ bool Generic::updateGenericParameters(SemanticContext* context, bool doType, boo
             {
                 auto genParam   = callGenericParameters->childs[i];
                 param->typeInfo = genParam->typeInfo;
+
                 if (genParam->computedValue)
                 {
                     param->allocateComputedValue();
                     *param->value = *genParam->computedValue;
+                    if ((genParam->flags & AST_VALUE_COMPUTED) && !(genParam->flags & AST_VALUE_IS_TYPEINFO))
+                        param->flags |= TYPEINFO_DEFINED_VALUE;
                 }
-
-                if ((genParam->flags & AST_VALUE_COMPUTED) && !(genParam->flags & AST_VALUE_IS_TYPEINFO))
-                    param->flags |= TYPEINFO_DEFINED_VALUE;
             }
 
             // If we have a calltype filled with the match, take it
@@ -51,6 +51,7 @@ bool Generic::updateGenericParameters(SemanticContext* context, bool doType, boo
         auto it1 = match.genericReplaceValues.find(param->namedParam);
         if (it1 != match.genericReplaceValues.end())
         {
+            param->flags |= TYPEINFO_DEFINED_VALUE;
             param->allocateComputedValue();
             *param->value = *it1->second.first;
         }
