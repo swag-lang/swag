@@ -127,6 +127,7 @@ impl Encoder
                 defer serializer.endSection()
 
                 var typeVal: TypeValue
+
                 typeVal.name = "type"
                 typeVal.crc32 = 1
                 typeVal.pointedType = structType.fields[0].pointedType
@@ -139,8 +140,10 @@ impl Encoder
                 {
                     typeVal.name = "value"
                     typeVal.crc32 = 2
+                    typeVal.pointedType = dataObj.type
+
                     serializer.beginElement(typeVal)
-                    writeValue(dataObj.value, dataObj.type)
+                    writeValue(dataObj.value, typeVal.pointedType)
                     serializer.endElement()
                 }
 

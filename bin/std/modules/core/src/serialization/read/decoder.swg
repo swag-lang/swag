@@ -128,6 +128,7 @@ impl Decoder
                 defer serializer.endSection()
 
                 var typeVal: TypeValue
+
                 typeVal.name = "type"
                 typeVal.crc32 = 1
                 typeVal.pointedType = structType.fields[0].pointedType
@@ -138,11 +139,14 @@ impl Decoder
 
                 typeVal.name = "value"
                 typeVal.crc32 = 2
+                typeVal.pointedType = dataObj.type
+
                 if dataObj.type
                 {
                     dataObj.value = acast Memory.new(dataObj.type)
+
                     discard serializer.beginElement(typeVal)
-                    readValue(dataObj.value, dataObj.type)
+                    readValue(dataObj.value, typeVal.pointedType)
                     serializer.endElement()
                 }
 
