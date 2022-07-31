@@ -574,8 +574,6 @@ void TypeInfoFuncAttr::computeWhateverName(Utf8& resName, uint32_t nameType)
         }
     }
 
-    computeNameGenericParameters(genericParameters, resName, nameType);
-
     if (!addedName)
     {
         if (flags & TYPEINFO_FUNC_IS_ATTR)
@@ -585,6 +583,8 @@ void TypeInfoFuncAttr::computeWhateverName(Utf8& resName, uint32_t nameType)
         else
             resName += "func";
     }
+
+    computeNameGenericParameters(genericParameters, resName, nameType);
 
     // Parameters
     resName += "(";
