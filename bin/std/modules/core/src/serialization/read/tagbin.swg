@@ -13,6 +13,7 @@ using Swag
 
     Supported type changes are :
     - Change the size of a static array
+    - Convert a static array to a dynamic array, and vice versa
 
     Supported attributes are :
 
@@ -48,6 +49,7 @@ impl TagBin
     const ErrorCorrupted        = "stream is corrupted"
     const ErrorFat              = "invalid fat signature"
     const ErrorNewestVersion    = "version is too recent"
+    const ErrorBadType          = "bad field type"
 }
 
 private impl TagBin
@@ -76,16 +78,45 @@ private impl TagBin
 
     func canConvertType(to, from: typeinfo)->bool
     {
-        // Conversion of a static array to another static array
-        // Are supported :
-        // - Size change
-        if Reflection.isArray(to) and Reflection.isArray(from)
+        if to == from
+            return true
+
+        if Reflection.isArray(from)
         {
-            toArr   := cast(const *Swag.TypeInfoArray) to
             fromArr := cast(const *Swag.TypeInfoArray) from
-            if toArr.pointedType == fromArr.pointedType
-                return true
+
+            // Array to array, this is fine, we will deal with size change later
+            if Reflection.isArray(to)
+            {
+                toArr := cast(const *Swag.TypeInfoArray) to
+                if canConvertType(toArr.pointedType, fromArr.pointedType)
+                    return true
+            }
+
+            // Static array to dynamic array
+            if Reflection.isStruct(to)
+            {
+                toStruct := cast(const *Swag.TypeInfoStruct) to
+                if toStruct.fromGeneric == @typeof(Array) and canConvertType(toStruct.generics[0].pointedType, fromArr.pointedType)
+                    return true
+            }
         }
+
+        if Reflection.isStruct(from)
+        {
+            fromStruct := cast(const *Swag.TypeInfoStruct) from
+            if fromStruct.fromGeneric == @typeof(Array)
+            {
+                // Dynamic array to Static array
+                if Reflection.isArray(to)
+                {
+                    toArr := cast(const *Swag.TypeInfoArray) to
+                    if canConvertType(toArr.pointedType, fromStruct.generics[0].pointedType)
+                        return true
+                }
+            }
+        }
+
 
         return false
     }
@@ -244,10 +275,10 @@ impl TagBin
         {
             streamType := Reflection.crcToType(crcType)
             if !streamType
-                throw ErrorCorrupted
+                throw ErrorBadType
 
             if !canConvertType(val.pointedType, streamType)
-                throw ErrorCorrupted
+                throw ErrorBadType
         }
 
         return true
