@@ -314,6 +314,17 @@ void Concat::addIndent(int num)
 
 void Concat::addEolIndent(int num)
 {
+    auto p = currentSP;
+    while (p != lastBucket->datas)
+    {
+        p--;
+        if (SWAG_IS_BLANK(*p))
+            continue;
+        if (*p == '\n')
+            return;
+        break;
+    }
+
     addEol();
     addIndent(num);
 }

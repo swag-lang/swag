@@ -167,6 +167,30 @@ bool AstOutput::outputFuncSignature(OutputContext& context, Concat& concat, AstN
     return true;
 }
 
+void AstOutput::removeLastBlankLine(Concat& concat)
+{
+    auto p = concat.currentSP;
+    if (p == concat.lastBucket->datas)
+        return;
+    p--;
+    if (*p != '\n')
+        return;
+
+    while (p != concat.lastBucket->datas)
+    {
+        p--;
+        if (SWAG_IS_BLANK(*p))
+            continue;
+        if (*p == '\n')
+        {
+            concat.currentSP = p + 1;
+            return;
+        }
+
+        return;
+    }
+}
+
 bool AstOutput::outputFunc(OutputContext& context, Concat& concat, AstFuncDecl* node)
 {
     PushErrContext ec(&context, node, JobContext::ErrorContextType::Export);
@@ -253,6 +277,7 @@ bool AstOutput::outputFunc(OutputContext& context, Concat& concat, AstFuncDecl* 
         }
     }
 
+    removeLastBlankLine(concat);
     context.indent--;
     concat.addIndent(context.indent);
     CONCAT_FIXED_STR(concat, "}");
@@ -917,7 +942,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         if (node->specFlags & AST_SPEC_TCA_GENERATED && node->specFlags & AST_SPEC_TCA_BLOCK)
         {
             context.indent += 1;
-            //concat.addIndent(context.indent);
+            // concat.addIndent(context.indent);
 
             for (auto c : node->childs.front()->childs)
             {
@@ -1685,6 +1710,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
                 concat.addEol();
             }
 
+            removeLastBlankLine(concat);
             concat.addIndent(context.indent);
             concat.addChar('}');
             concat.addEolIndent(context.indent);
@@ -1993,6 +2019,7 @@ bool AstOutput::outputScope(OutputContext& context, Concat& concat, Module* modu
         if (!(scope->flags & SCOPE_AUTO_GENERATED))
         {
             context.indent--;
+            removeLastBlankLine(concat);
             concat.addIndent(context.indent);
             CONCAT_FIXED_STR(concat, "}");
             concat.addEol();
@@ -2038,6 +2065,7 @@ bool AstOutput::outputScope(OutputContext& context, Concat& concat, Module* modu
         }
 
         context.indent--;
+        removeLastBlankLine(concat);
         concat.addIndent(context.indent);
         CONCAT_FIXED_STR(concat, "}");
         concat.addEol();
@@ -2064,6 +2092,7 @@ bool AstOutput::outputScope(OutputContext& context, Concat& concat, Module* modu
             SWAG_CHECK(outputScope(context, concat, moduleToGen, oneScope));
         context.indent--;
 
+        removeLastBlankLine(concat);
         concat.addIndent(context.indent);
         CONCAT_FIXED_STR(concat, "}");
         concat.addEol();

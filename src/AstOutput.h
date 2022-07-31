@@ -21,6 +21,7 @@ struct AstOutput
     static bool checkIsPublic(OutputContext& context, AstNode* testNode, AstNode* usedNode);
     static void incIndentStatement(AstNode* node, int& indent);
     static void decIndentStatement(AstNode* node, int& indent);
+    static void removeLastBlankLine(Concat& concat);
 
     static bool outputLambdaExpression(OutputContext& context, Concat& concat, AstNode* node);
     static bool outputEnum(OutputContext& context, Concat& concat, AstEnum* node);
