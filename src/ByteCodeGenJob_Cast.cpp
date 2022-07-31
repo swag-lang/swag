@@ -161,14 +161,14 @@ bool ByteCodeGenJob::emitCastToNativeBool(ByteCodeGenContext* context, AstNode* 
         case NativeTypeKind::Rune:
         case NativeTypeKind::U32:
         case NativeTypeKind::S32:
+        case NativeTypeKind::F32:
             emitInstruction(context, ByteCodeOp::CastBool32, r0, exprNode->resultRegisterRC);
             break;
         case NativeTypeKind::S64:
         case NativeTypeKind::U64:
         case NativeTypeKind::Int:
         case NativeTypeKind::UInt:
-            emitInstruction(context, ByteCodeOp::CastBool64, r0, exprNode->resultRegisterRC);
-            break;
+        case NativeTypeKind::F64:
         case NativeTypeKind::String:
             emitInstruction(context, ByteCodeOp::CastBool64, r0, exprNode->resultRegisterRC);
             break;
