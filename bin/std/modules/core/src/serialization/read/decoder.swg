@@ -133,7 +133,7 @@ impl Decoder
                 typeVal.pointedType = structType.fields[0].pointedType
 
                 discard serializer.beginElement(typeVal)
-                readValue(&dataObj.type, structType.fields[0].pointedType)
+                readValue(&dataObj.type, typeVal.pointedType)
                 serializer.endElement()
 
                 typeVal.name = "value"
@@ -150,10 +150,11 @@ impl Decoder
             }
 
             // A structure with an implementation of ISerialize
+            idecoder := cast(IDecoder) self
             itf := @mkinterface(data, type, ISerialize)
             if itf != null
             {
-                if itf.read(cast(IDecoder) self)
+                if itf.read(idecoder)
                     return
             }
 
@@ -176,7 +177,7 @@ impl Decoder
 
             visit field: fields
             {
-                if !itf or !itf.readElement(dref field, data + field.offset, cast(IDecoder) self)
+                if !itf or !itf.readElement(dref field, data + field.offset, idecoder)
                 {
                     if serializer.beginElement(field)
                     {
@@ -185,6 +186,10 @@ impl Decoder
                     }
                 }
             }
+
+            // Inform user code we are done
+            if itf
+                itf.postSerialize(data, idecoder)
 
             return
         }

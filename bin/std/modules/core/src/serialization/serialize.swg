@@ -24,4 +24,5 @@ interface ISerialize
     write:          mtd(IEncoder)->bool
     readElement:    mtd(TypeValue, *void, IDecoder)->bool throw
     writeElement:   mtd(TypeValue, const *void, IEncoder)->bool
+    postSerialize:  mtd(*void, IDecoder)
 }

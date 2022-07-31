@@ -1038,15 +1038,9 @@ impl Capture
 
 impl ISerialize for Capture
 {
-    mtd read(decoder: IDecoder)->bool throw
-    {
-        return false
-    }
-
-    mtd write(encoder: IEncoder)->bool
-    {
-        return false
-    }
+    mtd read(decoder: IDecoder)->bool throw             => false
+    mtd write(encoder: IEncoder)->bool                  => false
+    mtd postSerialize(data: *void, decoder: IDecoder)   {}
 
     mtd readElement(val: Swag.TypeValue, data: *void, decoder: IDecoder)->bool throw
     {
