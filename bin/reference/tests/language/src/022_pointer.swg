@@ -47,4 +47,19 @@
         var ptr1: const *const *u8  // Const pointer to a const pointer
         var ptr2: const **u8        // Const pointer to a normal pointer
     }
+
+    // Swag does not allow pointer arithmetic on this kind of pointer
+    // If you want to enable pointer arithmetic, declare your pointer
+    // with ^ instead of *
+    {
+        var ptr: ^u8
+        ptr = ptr - 1
+    }
+
+    // Taking the address of an array element enables pointer arithmetic
+    {
+        var x: [4] s32
+        ptr := &x[1]
+        ptr = ptr - 1
+    }
 }
