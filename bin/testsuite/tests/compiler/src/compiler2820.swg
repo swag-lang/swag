@@ -3,7 +3,7 @@ func toto(x: X)
 {
     x[0] = 1
     ptr := &x[0]
-    @assert(@stringof(@typeof(ptr)) == "*u32")
+    @assert(@stringof(@typeof(ptr)) == "^u32")
 }
 
 #test

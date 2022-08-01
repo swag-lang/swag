@@ -243,7 +243,7 @@ namespace Swag
     struct ScratchAllocator
     {
         allocator:    IAllocator
-        block:        *u8
+        block:        ^u8
         capacity:     uint
         used:         uint
         maxUsed:      uint

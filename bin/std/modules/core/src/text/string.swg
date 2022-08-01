@@ -12,7 +12,7 @@ enum CharacterSet
 
 struct String
 {
-    buffer:     *u8
+    buffer:     ^u8
     length:     uint
     capacity:   uint
     allocator:  IAllocator
@@ -28,7 +28,7 @@ impl String
     }
 
     #[Inline]
-    mtdc opData()->const *u8
+    mtdc opData()->const ^u8
     {
         return buffer
     }

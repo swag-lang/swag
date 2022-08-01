@@ -1,4 +1,3 @@
-
 #global testerror
 
 struct AA
@@ -17,5 +16,5 @@ struct BB
 #test
 {
     var v: BB
-    @print(cast(s64) (&v.z - &v.v.x))
+    @print(cast(s64) (cast(^u32) &v.z - cast(^u64) &v.v.x))
 }

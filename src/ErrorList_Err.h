@@ -186,7 +186,7 @@ SWAG_ERROR(Err0188, "not enough parameters $$for %s$$ (missing `%s` of type `%s`
 SWAG_ERROR(Err0189, "expected arguments `()` when calling %s")
 SWAG_ERROR(Err0190, "unexpected `throw` in attribute declaration")
 SWAG_ERROR(Err0191, "too many parameters for %s (`%d` expected, `%d` provided)")
-SWAG_ERROR(Err0192, nullptr)
+SWAG_ERROR(Err0192, "pointer arithmetic is not allowed")
 SWAG_ERROR(Err0193, nullptr)
 SWAG_ERROR(Err0194, nullptr)
 SWAG_ERROR(Err0195, "too many parameters in tuple initialization (`%d` expected, `%d` provided)")

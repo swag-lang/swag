@@ -83,14 +83,14 @@ public impl DebugAllocator
     {
         if !addr return
 
-        orgAddr := cast(*u8) addr
+        orgAddr := cast(^u8) addr
         ptrHeader := cast(*Header) (orgAddr - @sizeof(Header))
         checkOne(ptrHeader)
     }
 
     private mtd checkOne(ptrHeader: *Header)
     {
-        ptrEnd := cast(*u8) (ptrHeader + 1)
+        ptrEnd := cast(^u8) (ptrHeader + 1)
         ptrFooter := cast(*Footer) (ptrEnd + ptrHeader.userSize)
 
         Debug.assert(ptrHeader.magic == MagicAlloc)
@@ -150,7 +150,7 @@ public impl IAllocator for DebugAllocator
             if !request.address return
             assertIsAllocated(request.address)
 
-            userAddr := cast(*u8) request.address
+            userAddr := cast(^u8) request.address
             ptrHeader := cast(*Header) (userAddr - @sizeof(Header))
             ptrFooter := cast(*Footer) (userAddr + ptrHeader.userSize)
 
@@ -232,7 +232,7 @@ public impl IAllocator for DebugAllocator
             allocator.alloc(&copyReq)
 
             // This is the aligned returned user address
-            userAddr := cast(*u8) copyReq.address
+            userAddr := cast(^u8) copyReq.address
             userAddr += toAddAlign
 
             // Setup header

@@ -4,7 +4,7 @@ using Swag
 struct(T) Array
 {
     allocator:  IAllocator
-    buffer:     *T
+    buffer:     ^T
     count:      uint
     capacity:   uint
 }

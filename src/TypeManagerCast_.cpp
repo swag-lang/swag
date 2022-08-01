@@ -3655,3 +3655,12 @@ bool TypeManager::compareConcreteType(const ConcreteTypeInfo* type1, const Concr
         return false;
     return !memcmp(type1->fullName.buffer, type2->fullName.buffer, type1->fullName.count);
 }
+
+TypeInfo* TypeManager::asPointerArithmetic(TypeInfo* typeInfo)
+{
+    if (typeInfo->kind != TypeInfoKind::Pointer)
+        return typeInfo;
+    typeInfo = typeInfo->clone();
+    typeInfo->flags |= TYPEINFO_POINTER_ARITHMETIC;
+    return typeInfo;
+}

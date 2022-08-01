@@ -160,7 +160,10 @@ void TypeInfoPointer::computeWhateverName(Utf8& resName, uint32_t nameType)
 
     if (flags & TYPEINFO_CONST)
         resName += "const ";
-    resName += "*";
+    if (flags & TYPEINFO_POINTER_ARITHMETIC)
+        resName += "^";
+    else
+        resName += "*";
     resName += pointedType->computeWhateverName(nameType);
 }
 

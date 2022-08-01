@@ -384,7 +384,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             break;
         }
 
-        // Pointer arithmetic
+        // :PointerArithmetic
         if (leftTypeInfo->kind == TypeInfoKind::Pointer)
         {
             SWAG_VERIFY((leftTypeInfo->isPointerToTypeInfo()) == 0, context->report(left, Err(Err0144)));

@@ -9,7 +9,7 @@ namespace Swag
 }
 
 ////////////////////////////////////////////////////////////
-func __strcat(start: *u8, max: s32, src: string)
+func __strcat(start: ^u8, max: s32, src: string)
 {
     dstLen := @strlen(start)
     srcLen := @countof(src)
@@ -23,7 +23,7 @@ func __strcat(start: *u8, max: s32, src: string)
 
 #[Discardable]
 #[Safety("", false)]
-func __itoa(result: *u8, value: s64)->*u8
+func __itoa(result: ^u8, value: s64)->^u8
 {
     const conv = "zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdefghijklmnopqrstuvwxyz"
 
@@ -61,7 +61,7 @@ func __itoa(result: *u8, value: s64)->*u8
 
 #[Discardable]
 #[Safety("", false)]
-func __utoa(result: *u8, value: u64)->*u8
+func __utoa(result: ^u8, value: u64)->^u8
 {
     const conv = "zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdefghijklmnopqrstuvwxyz"
 
@@ -92,7 +92,7 @@ func __utoa(result: *u8, value: u64)->*u8
 }
 
 #[Safety("", false)]
-func __ftoa(result: *u8, value: f64)
+func __ftoa(result: ^u8, value: f64)
 {
     ipart := cast(s64) value
     fpart := value - cast(f64) ipart
@@ -364,7 +364,7 @@ const __MAX_ARGUMENTS = 512
 var __argv: [__MAX_ARGUMENTS] string
 var __argc = 0'u32
 
-func __convertArgcArgv(args: const *u8)
+func __convertArgcArgv(args: const ^u8)
 {
     cmdLine := args
     __argc = 0

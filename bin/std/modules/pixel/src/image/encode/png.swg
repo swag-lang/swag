@@ -131,13 +131,13 @@ public struct Encoder
     widestPass:             s32
     lastPass:               s32
     bytesPerPixel:          u32
-    scanlineBuf:            *u8
-    prevScanlineBuf:        *u8
-    row_buf:                *u8
-    filteredScanlineBuf:    *u8
-    filteredScanline:       *u8
-    scanline:               *u8
-    prevScanline:           *u8
+    scanlineBuf:            ^u8
+    prevScanlineBuf:        ^u8
+    row_buf:                ^u8
+    filteredScanlineBuf:    ^u8
+    filteredScanline:       ^u8
+    scanline:               ^u8
+    prevScanline:           ^u8
     encodeFlags:            EncodeFlags
     rowInfo:                RowInfo
     pixelSize:              u32

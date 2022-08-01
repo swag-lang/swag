@@ -2,7 +2,7 @@
 
 struct ConcatBufferBucket
 {
-    datas:          *u8
+    datas:          ^u8
     next:           *ConcatBufferBucket
     count:          uint
     size:           uint
@@ -12,7 +12,7 @@ struct ConcatBufferBucket
 struct ConcatBufferSeek
 {
     bucket: *ConcatBufferBucket
-    sp:     *u8
+    sp:     ^u8
 }
 
 // Represents a growable buffer, which is divided in buckets to avoid a copy/realloc when
@@ -24,7 +24,7 @@ struct ConcatBuffer
     firstBucket:    *ConcatBufferBucket
     curBucket:      *ConcatBufferBucket
     lastBucket:     *ConcatBufferBucket
-    currentSP:      *u8
+    currentSP:      ^u8
     granularity:    uint = 1024
     isAtEnd:        bool = true
 }
