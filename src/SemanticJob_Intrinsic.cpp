@@ -214,19 +214,21 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
     auto typeInfo = TypeManager::concreteReferenceType(expression->typeInfo);
     if (typeInfo->isNative(NativeTypeKind::String))
     {
-        node->typeInfo    = g_TypeMgr->typeInfoConstPointers[(int) NativeTypeKind::U8];
+        node->typeInfo    = g_TypeMgr->typeInfoConstArithPointers[(int) NativeTypeKind::U8];
         node->byteCodeFct = ByteCodeGenJob::emitIntrinsicDataOf;
     }
     else if (typeInfo->kind == TypeInfoKind::Slice)
     {
         auto ptrSlice     = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
         node->typeInfo    = g_TypeMgr->makePointerTo(ptrSlice->pointedType, ptrSlice->isConst(), true);
+        node->typeInfo    = g_TypeMgr->asPointerArithmetic(node->typeInfo);
         node->byteCodeFct = ByteCodeGenJob::emitIntrinsicDataOf;
     }
     else if (typeInfo->kind == TypeInfoKind::Array)
     {
         auto ptrArray     = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         node->typeInfo    = g_TypeMgr->makePointerTo(ptrArray->pointedType, ptrArray->isConst(), true);
+        node->typeInfo    = g_TypeMgr->asPointerArithmetic(node->typeInfo);
         node->byteCodeFct = ByteCodeGenJob::emitIntrinsicDataOf;
     }
     else if (typeInfo->isNative(NativeTypeKind::Any) || typeInfo->kind == TypeInfoKind::Interface)
