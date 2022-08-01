@@ -670,7 +670,7 @@ impl RegExp
     }
 
     #[Swag.Discardable]
-    mtd preprocessInter(sl: const [..] rune)->const *rune throw
+    mtd preprocessInter(sl: const [..] rune)->const ^rune throw
     {
         pz      := @dataof(sl)
         pzStart := pz
@@ -815,7 +815,7 @@ impl RegExp
         return pz
     }
 
-    mtd toI32(pz, pzEnd: const *rune, val: *s32)->const *rune throw
+    mtd toI32(pz, pzEnd: const ^rune, val: *s32)->const ^rune throw
     {
         var result: retval
         if !Unicode.isLatin1(pz[0]) or !Latin1.isDigit(cast(u8) pz[0])
@@ -938,7 +938,7 @@ impl RegExp
         return pz
     }
 
-    mtd preprocessUnicode(sl: const [..] rune)->const *rune throw
+    mtd preprocessUnicode(sl: const [..] rune)->const ^rune throw
     {
         pz      := @dataof(sl)
         pzStart := pz
@@ -986,7 +986,7 @@ impl RegExp
         return pz
     }
 
-    mtd preprocessEscape(sl: const [..] rune)->const *rune throw
+    mtd preprocessEscape(sl: const [..] rune)->const ^rune throw
     {
         pz := @dataof(sl)
         c := dref pz

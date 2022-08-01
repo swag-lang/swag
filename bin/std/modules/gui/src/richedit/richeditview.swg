@@ -320,8 +320,8 @@ impl RichEditView
         pStyle := line.styles.buffer
         if !count
         {
-            pChar  = &dummyChar
-            pStyle = &dummyStyle
+            pChar  = cast(^rune) &dummyChar
+            pStyle = cast(^u8) &dummyStyle
             count   = 1
         }
 

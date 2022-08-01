@@ -124,10 +124,10 @@ struct Compressor
     lookaheadPos:       u32
     lookaheadSize:      u32
     dictSize:           u32
-    lzCodeBufAddr:      *u8
+    lzCodeBufAddr:      ^u8
     lzFlags:            *u8
-    outputBufAddr:      *u8
-    outputBufEndAddr:   *u8
+    outputBufAddr:      ^u8
+    outputBufEndAddr:   ^u8
     numFlagsLeft:       u32
     totalLzBytes:       u32
     lzCodeBufDictPos:   u32
@@ -859,7 +859,7 @@ impl Deflate
         compBlockSucceeded := false
         useRawBlock := ((d.compressFlags & ForceAllRawBlocks) != 0) and (d.lookaheadPos - d.lzCodeBufDictPos) <= d.dictSize
 
-        var outputBufStart: *u8
+        var outputBufStart: ^u8
         if d.result.capacity - d.result.count >= OutBufSize
             outputBufStart = d.result.buffer + d.outBufOfs
         else

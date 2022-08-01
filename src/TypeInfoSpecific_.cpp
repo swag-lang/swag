@@ -177,10 +177,6 @@ bool TypeInfoPointer::isSame(TypeInfo* to, uint32_t isSameFlags)
     {
         if (to->kind == TypeInfoKind::Generic)
             return true;
-    }
-
-    if (isSameFlags & ISSAME_CAST)
-    {
         if (this == g_TypeMgr->typeInfoNull && to->kind == TypeInfoKind::Lambda)
             return true;
     }
@@ -199,8 +195,13 @@ bool TypeInfoPointer::isSame(TypeInfo* to, uint32_t isSameFlags)
     auto other = static_cast<TypeInfoPointer*>(to);
 
     // Anonymous pointers
-    if ((isSameFlags & ISSAME_CAST) && other->pointedType == g_TypeMgr->typeInfoVoid)
-        return true;
+    if (isSameFlags & ISSAME_CAST)
+    {
+        if (other->pointedType == g_TypeMgr->typeInfoVoid)
+            return true;
+        if ((to->flags & TYPEINFO_POINTER_ARITHMETIC) && !(flags & TYPEINFO_POINTER_ARITHMETIC))
+            return false;
+    }
 
     return pointedType->isSame(other->pointedType, isSameFlags);
 }

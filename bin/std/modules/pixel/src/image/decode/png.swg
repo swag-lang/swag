@@ -102,7 +102,7 @@ public struct Decoder
     inChannels:     s32
     outChannels:    s32
     dcmpBuf:        Array'u8
-    dstPixels:      *u8
+    dstPixels:      ^u8
     dstPixelsSize:  uint
     chunkTRNS:      Chunk
     seenTRSN:       bool
@@ -300,7 +300,7 @@ impl Decoder
         return cast(uint) inChannels * width
     }
 
-    func defilter8(using self, width, height: u32, input, output: *u8)
+    func defilter8(using self, width, height: u32, input, output: ^u8)
     {
         rowStrideIn := getStrideIn(width)
         rowStrideOut := cast(uint) inChannels * width
@@ -372,7 +372,7 @@ impl Decoder
         }
     }
 
-    func defilter(using self, width, height: u32, input, output: *u8)
+    func defilter(using self, width, height: u32, input, output: ^u8)
     {
         if header.bitDepth < 8
         {

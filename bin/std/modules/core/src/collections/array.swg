@@ -203,7 +203,7 @@ impl Array
             return
         }
 
-        newBuffer := cast(*T) Memory.realloc(buffer, newCapacity * @sizeof(T), capacity * @sizeof(T), allocator)
+        newBuffer := cast(^T) Memory.realloc(buffer, newCapacity * @sizeof(T), capacity * @sizeof(T), allocator)
 
         // Need to call opPostMove on every existing element if the buffer has not been reallocated
         // in place

@@ -27,7 +27,7 @@ namespace __Win32RT
         func RaiseException(dwExceptionCode: u32, dwExceptionFlags: u32, nNumberOfArguments: u32, lpArguments: *const *void);
         func DebugBreak();
         func LoadLibraryA(name: const *u8);
-        func GetCommandLineA()->const *u8;
+        func GetCommandLineA()->const ^u8;
         func TlsAlloc()->u32;
         func TlsSetValue(dwTlsIndex: u32, lpTlsValue: *void);
         func TlsGetValue(dwTlsIndex: u32)->*void;
