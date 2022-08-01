@@ -71,6 +71,7 @@ static const uint64_t TYPEINFO_CLOSURE                  = 0x00000040'00000000;
 static const uint64_t TYPEINFO_INCOMPLETE               = 0x00000080'00000000;
 static const uint64_t TYPEINFO_STRUCT_IS_ITABLE         = 0x00000100'00000000;
 static const uint64_t TYPEINFO_CAN_PROMOTE_816          = 0x00000200'00000000;
+static const uint64_t TYPEINFO_POINTER_ARITHMETIC       = 0x00000400'00000000;
 
 static const uint32_t ISSAME_EXACT      = 0x00000001;
 static const uint32_t ISSAME_CAST       = 0x00000002;

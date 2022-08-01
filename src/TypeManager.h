@@ -122,7 +122,7 @@ struct TypeManager
     static bool      compareConcreteType(const ConcreteTypeInfo* type1, const ConcreteTypeInfo* type2);
 
     void             registerTypeType();
-    TypeInfoPointer* makePointerTo(TypeInfo* toType, bool isConst, uint64_t ptrFlags = 0);
+    TypeInfoPointer* makePointerTo(TypeInfo* toType, bool isConst, bool isAritmetic, uint64_t ptrFlags = 0);
     TypeInfoParam*   makeParam();
 
     TypeInfoNative* typeInfoS8        = nullptr;
@@ -144,10 +144,12 @@ struct TypeManager
     TypeInfoNative* typeInfoUInt      = nullptr;
     TypeInfoNative* typeInfoInt       = nullptr;
 
-    TypeInfoPointer* typeInfoNull                                       = nullptr;
-    TypeInfoPointer* typeInfoCString                                    = nullptr;
-    TypeInfoPointer* typeInfoConstPointers[(int) NativeTypeKind::Count] = {0};
-    TypeInfoPointer* typeInfoPointers[(int) NativeTypeKind::Count]      = {0};
+    TypeInfoPointer* typeInfoNull                                            = nullptr;
+    TypeInfoPointer* typeInfoCString                                         = nullptr;
+    TypeInfoPointer* typeInfoConstPointers[(int) NativeTypeKind::Count]      = {0};
+    TypeInfoPointer* typeInfoConstArithPointers[(int) NativeTypeKind::Count] = {0};
+    TypeInfoPointer* typeInfoArithPointers[(int) NativeTypeKind::Count]      = {0};
+    TypeInfoPointer* typeInfoPointers[(int) NativeTypeKind::Count]           = {0};
 
     TypeInfoPointer*  typeInfoTypeType       = nullptr;
     TypeInfoVariadic* typeInfoVariadic       = nullptr;

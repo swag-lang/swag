@@ -452,20 +452,22 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
     }
 
     // Pointers
-    if (token.id == TokenId::SymAsterisk)
+    if (token.id == TokenId::SymAsterisk || token.id == TokenId::SymCircumflex)
     {
-        while (token.id == TokenId::SymAsterisk)
+        while (token.id == TokenId::SymAsterisk || token.id == TokenId::SymCircumflex)
         {
             if (node->ptrCount == AstTypeExpression::MAX_PTR_COUNT)
                 return error(token, Fmt(Err(Err0340), AstTypeExpression::MAX_PTR_COUNT));
             node->ptrFlags[node->ptrCount] = isPtrConst ? AstTypeExpression::PTR_CONST : 0;
+            if (token.id == TokenId::SymCircumflex)
+                node->ptrFlags[node->ptrCount] |= AstTypeExpression::PTR_ARITMETIC;
             SWAG_CHECK(eatToken());
             isPtrConst = false;
 
             if (token.id == TokenId::KwdConst)
             {
                 SWAG_CHECK(eatToken());
-                SWAG_VERIFY(token.id == TokenId::SymAsterisk || token.id == TokenId::SymAmpersand, error(token, Err(Err0339)));
+                SWAG_VERIFY(token.id == TokenId::SymAsterisk || token.id == TokenId::SymCircumflex || token.id == TokenId::SymAmpersand, error(token, Err(Err0339)));
 
                 // Pointer to a const reference
                 if (token.id == TokenId::SymAmpersand)

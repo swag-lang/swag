@@ -335,11 +335,15 @@ bool SemanticJob::resolveType(SemanticContext* context)
 
         for (int i = 0; i < typeNode->ptrCount; i++)
         {
-            bool isConst = false;
+            bool isConst      = false;
+            bool isArithmetic = false;
+
             if (typeNode->ptrFlags[i] & AstTypeExpression::PTR_CONST)
                 isConst = true;
             else if (typeNode->typeFlags & TYPEFLAG_ISCONST && i == 0)
                 isConst = true;
+            if (typeNode->ptrFlags[i] & AstTypeExpression::PTR_ARITMETIC)
+                isArithmetic = true;
 
             auto ptrFlags = (firstType->flags & TYPEINFO_GENERIC);
             if (typeNode->typeFlags & TYPEFLAG_ISSELF)
@@ -349,7 +353,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
             if (ptrFlags & TYPEINFO_GENERIC)
                 typeNode->flags |= AST_IS_GENERIC;
 
-            auto ptrPointer1 = g_TypeMgr->makePointerTo(firstType, isConst, ptrFlags);
+            auto ptrPointer1 = g_TypeMgr->makePointerTo(firstType, isConst, isArithmetic, ptrFlags);
 
             if (ptrPointer)
             {

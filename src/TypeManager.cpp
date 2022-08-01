@@ -58,17 +58,30 @@ void TypeManager::setup()
     typeInfoCString->pointedType = typeInfoU8;
     typeInfoCString->name.setView("cstring", 7);
 
-#define MAKE_PTR(__r, __p)                                                            \
-    typeInfoPointers[(int) __r]              = new TypeInfoPointer();                 \
-    typeInfoPointers[(int) __r]->pointedType = __p;                                   \
-    typeInfoPointers[(int) __r]->sizeOf      = sizeof(Register);                      \
-    typeInfoPointers[(int) __r]->flags       = TYPEINFO_SHARED;                       \
-    typeInfoPointers[(int) __r]->computeName();                                       \
-    typeInfoConstPointers[(int) __r]              = new TypeInfoPointer();            \
-    typeInfoConstPointers[(int) __r]->pointedType = __p;                              \
-    typeInfoConstPointers[(int) __r]->sizeOf      = sizeof(Register);                 \
-    typeInfoConstPointers[(int) __r]->flags       = TYPEINFO_CONST | TYPEINFO_SHARED; \
-    typeInfoConstPointers[(int) __r]->computeName();
+#define MAKE_PTR(__r, __p)                                                                                               \
+    typeInfoPointers[(int) __r]              = new TypeInfoPointer();                                                    \
+    typeInfoPointers[(int) __r]->pointedType = __p;                                                                      \
+    typeInfoPointers[(int) __r]->sizeOf      = sizeof(Register);                                                         \
+    typeInfoPointers[(int) __r]->flags       = TYPEINFO_SHARED;                                                          \
+    typeInfoPointers[(int) __r]->computeName();                                                                          \
+                                                                                                                         \
+    typeInfoArithPointers[(int) __r]              = new TypeInfoPointer();                                               \
+    typeInfoArithPointers[(int) __r]->pointedType = __p;                                                                 \
+    typeInfoArithPointers[(int) __r]->sizeOf      = sizeof(Register);                                                    \
+    typeInfoArithPointers[(int) __r]->flags       = TYPEINFO_SHARED | TYPEINFO_POINTER_ARITHMETIC;                       \
+    typeInfoArithPointers[(int) __r]->computeName();                                                                     \
+                                                                                                                         \
+    typeInfoConstPointers[(int) __r]              = new TypeInfoPointer();                                               \
+    typeInfoConstPointers[(int) __r]->pointedType = __p;                                                                 \
+    typeInfoConstPointers[(int) __r]->sizeOf      = sizeof(Register);                                                    \
+    typeInfoConstPointers[(int) __r]->flags       = TYPEINFO_CONST | TYPEINFO_SHARED;                                    \
+    typeInfoConstPointers[(int) __r]->computeName();                                                                     \
+                                                                                                                         \
+    typeInfoConstArithPointers[(int) __r]              = new TypeInfoPointer();                                          \
+    typeInfoConstArithPointers[(int) __r]->pointedType = __p;                                                            \
+    typeInfoConstArithPointers[(int) __r]->sizeOf      = sizeof(Register);                                               \
+    typeInfoConstArithPointers[(int) __r]->flags       = TYPEINFO_CONST | TYPEINFO_SHARED | TYPEINFO_POINTER_ARITHMETIC; \
+    typeInfoConstArithPointers[(int) __r]->computeName();
 
     MAKE_PTR(NativeTypeKind::Void, typeInfoVoid);
     MAKE_PTR(NativeTypeKind::U8, typeInfoU8);
@@ -723,17 +736,21 @@ uint32_t TypeManager::alignOf(TypeInfo* typeInfo)
 
 void TypeManager::registerTypeType()
 {
-    typeInfoTypeType                                = makePointerTo(g_Workspace->swagScope.regTypeInfo, true);
+    typeInfoTypeType                                = makePointerTo(g_Workspace->swagScope.regTypeInfo, true, false);
     g_LiteralTypeToType[(int) LiteralType::TT_TYPE] = typeInfoTypeType;
 }
 
-TypeInfoPointer* TypeManager::makePointerTo(TypeInfo* toType, bool isConst, uint64_t ptrFlags)
+TypeInfoPointer* TypeManager::makePointerTo(TypeInfo* toType, bool isConst, bool isAritmetic, uint64_t ptrFlags)
 {
     if (toType->kind == TypeInfoKind::Native && ptrFlags == 0)
     {
         TypeInfoPointer* result;
-        if (isConst)
+        if (isConst && !isAritmetic)
             result = typeInfoConstPointers[(int) toType->nativeType];
+        else if (isConst && isAritmetic)
+            result = typeInfoConstArithPointers[(int) toType->nativeType];
+        else if (isAritmetic)
+            result = typeInfoArithPointers[(int) toType->nativeType];
         else
             result = typeInfoPointers[(int) toType->nativeType];
         if (result)
@@ -743,7 +760,9 @@ TypeInfoPointer* TypeManager::makePointerTo(TypeInfo* toType, bool isConst, uint
     auto ptrType         = allocType<TypeInfoPointer>();
     ptrType->pointedType = toType;
     ptrType->sizeOf      = sizeof(Register);
-    ptrType->flags       = ptrFlags | (isConst ? TYPEINFO_CONST : 0);
+    ptrType->flags       = ptrFlags;
+    ptrType->flags |= isConst ? TYPEINFO_CONST : 0;
+    ptrType->flags |= isAritmetic ? TYPEINFO_POINTER_ARITHMETIC : 0;
     ptrType->computeName();
     return ptrType;
 }
