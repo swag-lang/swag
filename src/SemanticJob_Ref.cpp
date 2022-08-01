@@ -145,6 +145,8 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
             auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
             typeInfo       = typeArray->pointedType;
         }
+
+        ptrType = CastTypeInfo<TypeInfoPointer>(g_TypeMgr->asPointerArithmetic(ptrType), TypeInfoKind::Pointer);
     }
 
     ptrType->pointedType = typeInfo;
@@ -160,8 +162,8 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
     if (child->kind == AstNodeKind::IdentifierRef)
     {
         auto last = child->childs.back();
-        if(last->kind == AstNodeKind::ArrayPointerIndex)
-            ptrType = (TypeInfoPointer*)g_TypeMgr->asPointerArithmetic(ptrType);
+        if (last->kind == AstNodeKind::ArrayPointerIndex)
+            ptrType = (TypeInfoPointer*) g_TypeMgr->asPointerArithmetic(ptrType);
     }
 
     // Type is constant if we take address of a readonly variable
