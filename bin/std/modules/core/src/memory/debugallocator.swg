@@ -202,7 +202,7 @@ public impl IAllocator for DebugAllocator
             // This will be used to fill with garbage the difference
             copyReq := dref request
             prevSize := 0'uint
-            prevHeader := cast(*Header) request.address
+            prevHeader := cast(^Header) request.address
             if request.mode == AllocatorMode.Realloc and request.address
             {
                 prevHeader -= 1

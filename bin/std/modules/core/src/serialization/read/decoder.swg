@@ -208,7 +208,7 @@ impl Decoder
             if treated
                 return
 
-            bufArr := cast(*u8) data
+            bufArr := cast(^u8) data
             loop count
             {
                 readValue(bufArr, typeArr.pointedType)
@@ -282,7 +282,7 @@ impl IDecoder for Decoder
 
     mtd readBufferU8(count: uint)->*u8 throw
     {
-        data := cast(*u8) Memory.alloc(count)
+        data := cast(^u8) Memory.alloc(count)
 
         cpt := count
         treated := serializer.beginSequence(u8, data, &cpt)

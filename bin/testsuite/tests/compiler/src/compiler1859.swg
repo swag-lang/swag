@@ -1063,7 +1063,7 @@ func aaa(ptr: ^s64)
         }
 
         {
-            var x, y: *u8 = null
+            var x, y: ^u8 = null
             y += 1
             z := x orelse y
             if z != null

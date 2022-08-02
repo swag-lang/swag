@@ -112,7 +112,7 @@ func addImage(image: Image)
             break
 
         hglob := GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, buffer.count())
-        buf := cast(*u8) GlobalLock(hglob)
+        buf := cast(^u8) GlobalLock(hglob)
 
         bufCur := buf
         visit b: buffer

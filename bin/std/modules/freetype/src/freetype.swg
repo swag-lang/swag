@@ -211,11 +211,11 @@ struct FT_Bitmap
     rows:           u32
     width:          u32
     pitch:          s32
-    buffer:         *u8
+    buffer:         ^u8
     num_grays:      u16
     pixel_mode:     u8
     palette_mode:   u8
-    palette:        *void
+    palette:        ^void
 }
 
 struct FT_Outline

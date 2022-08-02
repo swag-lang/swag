@@ -116,7 +116,7 @@ func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOption
 
         typeField := typeParam.pointedType
 
-        addr := cast(*u8) st
+        addr := cast(^u8) st
         addr += typeParam.offset
 
         // Bool: Result is true if the option does not have an associated value
@@ -195,7 +195,7 @@ func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOption
         // Set the associated 'isSet' boolean to true
         typeFieldIsSet := Reflection.getField(@typeof(result.isSet), typeParam.name)
         Debug.assert(typeFieldIsSet != null)
-        addrIsSet := cast(*bool) &result.isSet
+        addrIsSet := cast(^bool) &result.isSet
         addrIsSet += typeFieldIsSet.offset
         dref addrIsSet = true
     }

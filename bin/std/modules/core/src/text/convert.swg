@@ -234,7 +234,7 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
         ptrArr := cast(const *TypeInfoArray) type
         buf.addBytes("[")
 
-        bufArr := cast(const *u8) valueData
+        bufArr := cast(const ^u8) valueData
         loop ptrArr.count
         {
             if @index buf.addBytes(",")

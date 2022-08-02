@@ -39,7 +39,7 @@ public func pokeValue(addr: *void, type: typeinfo, buf: string)->string throw
     if Reflection.isArray(type)
     {
         arrayType := cast(const *TypeInfoArray) type
-        addrVal := cast(*u8) addr
+        addrVal := cast(^u8) addr
         cpt := 0
         while @countof(one) and one[0] != "#"'u8
         {

@@ -344,7 +344,7 @@ impl Array
 
     // Reserve room at the end of the array for 'num' elements, but does not
     // initialize them. Returns the address of the first element
-    mtd emplaceAddress(num: u32 = 1)->*T
+    mtd emplaceAddress(num: u32 = 1)->^T
     {
         grow(count + num)
         count += num
@@ -353,7 +353,7 @@ impl Array
 
     // Reserve room at the end of the array for 'num' elements.
     // Returns the address of the first element
-    mtd emplaceInitAddress(num: u32 = 1)->*T
+    mtd emplaceInitAddress(num: u32 = 1)->^T
     {
         grow(count + num)
         count += num

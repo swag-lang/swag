@@ -264,7 +264,7 @@ impl Decoder
                     break
 
                 pdest1 := pdest
-                psrc := cast(*u8) scanLineOfs
+                psrc := cast(^u8) scanLineOfs
                 loop imageSizeX
                 {
                     pdest1[0] = dref psrc
@@ -1991,9 +1991,9 @@ impl Decoder
         }
     }
 
-    func memset16(p: *void, c: u16, n: u32)
+    func memset16(p: ^void, c: u16, n: u32)
     {
-        ps := cast(*u16) p
+        ps := cast(^u16) p
         loop n
         {
             dref ps = c

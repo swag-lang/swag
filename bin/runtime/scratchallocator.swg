@@ -111,7 +111,7 @@ impl IAllocator for ScratchAllocator
 
             // Otherwise we assume it's a leak. We unlink it, and free it with
             // the allocator
-            leak := cast(*LeakHeader) request.address
+            leak := cast(^LeakHeader) request.address
             leak -= 1
             if !leak.prev
                 firstLeak = leak.next

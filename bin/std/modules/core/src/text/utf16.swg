@@ -130,7 +130,7 @@ func toZeroTerminated(src: string)->Array'u16
 }
 
 // Compute the string length of a zero terminated utf16 buffer
-func lengthZeroTerminated(buf: const *u16)->uint
+func lengthZeroTerminated(buf: const ^u16)->uint
 {
     ptr := buf
     count := 0'uint

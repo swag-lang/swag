@@ -114,7 +114,7 @@ public impl Font
         assume FT_Load_Char(typeFace.face, cast(FT_ULong) c, FT_LOAD_DEFAULT)
         assume FT_Render_Glyph(typeFace.face.glyph, FT_Render_Mode.FT_RENDER_MODE_NORMAL)
 
-        bmp := typeFace.face.glyph.bitmap
+        bmp := &typeFace.face.glyph.bitmap
 
         // Creates a new atlas if this is the first time, or if the last atlas is full
         atlas := atlases.count ? atlases[atlases.count - 1] : null

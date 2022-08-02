@@ -102,7 +102,7 @@ impl Encoder
 
                 if !treated
                 {
-                    bufArr := cast(const *u8) ptrArr.buffer
+                    bufArr := cast(const ^u8) ptrArr.buffer
                     loop i: ptrArr.count
                     {
                         writeValue(bufArr, valueType)
@@ -198,7 +198,7 @@ impl Encoder
             if treated
                 return
 
-            bufArr := cast(const *u8) data
+            bufArr := cast(const ^u8) data
             loop typeArr.count
             {
                 writeValue(bufArr, typeArr.pointedType)
