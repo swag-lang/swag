@@ -17,7 +17,7 @@ func concrete1()->*f32
 func(T) toto(x: func()->*T)->T
 {
 	ptr := x()
-	return ptr[0]
+	return dref ptr
 }
 
 #test

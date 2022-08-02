@@ -839,7 +839,7 @@ impl Decoder
         d0 := scanLine0.buffer
         d1 := scanLine1.buffer
 
-        var y: *u8 = ?
+        var y: ^u8 = ?
         if row < 8
             y = pSampleBuf + row * 8
         else
@@ -921,7 +921,7 @@ impl Decoder
         d0 := scanLine0.buffer
         d1 := scanLine1.buffer
 
-        var y: *u8 = ?
+        var y: ^u8 = ?
         if row < 8
             y = pSampleBuf + row * 8
         else

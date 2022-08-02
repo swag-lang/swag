@@ -3,7 +3,7 @@
 //#[Swag.PrintBc]
 func(T) toto(x: *T)
 {
-	@assert(x[0] == 666)
+	@assert(dref x == 666)
 }
 
 #test

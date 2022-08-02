@@ -14,7 +14,7 @@
 {
 }*/
 
-func F1(b: *s32)->s32
+func F1(b: ^s32)->s32
 {
 	i := 0
 	while(b[i] != 0)

@@ -15,7 +15,7 @@ var g = 0
 
 func T(param: *s32)
 {
-	g += param[0]
+	g += dref param
 }
 
 //#[Swag.PrintBc]

@@ -17,7 +17,7 @@ struct Point
 	//@assert(x is Point)
 
 	ptr := cast(*s32) @dataof(x)
-	@assert(ptr[0] == 666)
+	@assert(dref ptr == 666)
 	//@assert(ptr.x == 10)
 	//@assert(ptr.y == 20)
 }

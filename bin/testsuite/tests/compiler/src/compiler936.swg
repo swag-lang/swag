@@ -8,5 +8,5 @@ var x: any = 666.0'f64
 	t := @kindof(x)
 	@assert(t.fullname == "f64")
 	ptr := cast(*f64) @dataof(x)
-	@assert(ptr[0] == 666)
+	@assert(dref ptr == 666)
 }

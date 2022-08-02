@@ -8,6 +8,6 @@
 	c := 20
 	res := @{&a, &c}
 	res1 := res
-	@assert(res1.item0[0] == 10)
-	@assert(res1.item1[0] == 20)
+	@assert(dref res1.item0 == 10)
+	@assert(dref res1.item1 == 20)
 }

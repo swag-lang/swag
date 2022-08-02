@@ -23,5 +23,5 @@ enum TOTO : string
 	@assert(ptr1.name == "G")
 
 	ptrVal := cast(const *string) ptr1.value;
-	@assert(ptrVal[0] == "str200")
+	@assert(dref ptrVal == "str200")
 }

@@ -319,9 +319,9 @@ public alias ThreadProc = func(*void)->u32;
 }
 
 #[Swag.Callback]
-public func tcf_entry(param: *void)->u32
+public func tcf_entry(param: ^void)->u32
 {
-    ptr := cast(*u64) param
+    ptr := cast(^u64) param
     @assert(ptr[1] == 666)
     return 0
 }

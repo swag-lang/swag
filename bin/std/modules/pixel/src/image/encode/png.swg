@@ -490,7 +490,7 @@ impl Encoder
         }
     }
 
-    mtd encodeScanLine(sl: *u8, len: u32)->bool throw
+    mtd encodeScanLine(sl: ^u8, len: u32)->bool throw
     {
         pass := rowInfo.pass
 

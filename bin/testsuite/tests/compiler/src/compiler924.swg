@@ -4,7 +4,7 @@
 func average(x: any)
 {
 	tx:= cast(*string) @dataof(x)
-	@assert(tx[0] == "toto")
+	@assert(dref tx == "toto")
 }
 
 //#[Swag.PrintBc]

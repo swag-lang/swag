@@ -17,7 +17,7 @@ impl IAllocator for SystemAllocator
         {
         case Free:
             if !request.address break
-            ptr := cast(**void) request.address
+            ptr := cast(^^void) request.address
             @free(ptr[bitcast(uint) -1'int])
             request.address = null
 

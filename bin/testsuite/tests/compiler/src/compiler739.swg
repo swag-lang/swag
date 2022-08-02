@@ -4,7 +4,7 @@
 
 func(T) toto(x: [1] *T)
 {
-	@assert(x[0,0] == 10)
+	@assert(dref x[0] == 10)
 }
 
 #test

@@ -18,7 +18,7 @@ impl Image
         f := &convArr[0]
         visitPixels(f)
         {
-            arr := cast(*u8) userData
+            arr := cast(^u8) userData
             pix[0] = arr[pix[0]]
             pix[1] = arr[pix[1]]
             pix[2] = arr[pix[2]]

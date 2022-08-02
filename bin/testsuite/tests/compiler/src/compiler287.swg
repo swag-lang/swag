@@ -3,7 +3,7 @@
 {
 	var a: bool = true;
 	var b = &a;
-	var c = b[0];
+	var c = dref b;
 	@assert(c == true);
 }
 
@@ -11,6 +11,6 @@
 {
 	var a: s32 = 666;
 	var b = &a;
-	var c = b[0];
+	var c = dref b;
 	@assert(c == 666);
 }

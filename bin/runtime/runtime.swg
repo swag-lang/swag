@@ -460,7 +460,7 @@ func __poperr()
 {
     cxt := @getcontext()
     @assert(cxt.errorMsgStart > 8)
-    ptr := cast(*u32) (&cxt.errorMsg[cxt.errorMsgStart] - 8)
+    ptr := cast(^u32) (&cxt.errorMsg[cxt.errorMsgStart] - 8)
     cxt.errorMsgLen = ptr[0]
     cxt.traceIndex = ptr[1]
     cxt.errorMsgStart -= (cxt.errorMsgLen + 8)

@@ -16,7 +16,7 @@ func fromName(name: string)->X
         if(param.name == name)
         {
             ptr := cast(const *TOTO) param.value
-            return ptr[0]
+            return dref ptr
         }
     }
 

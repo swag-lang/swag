@@ -32,5 +32,5 @@ struct Point
     //@print("\n")
 	@assert(ptr.fullname == "s32")
 	ptr1 := cast(*s32) @dataof(p.attributes[1].params[0].value)
-	@assert(ptr1[0] == 666)
+	@assert(dref ptr1 == 666)
 }

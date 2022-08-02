@@ -10,5 +10,5 @@
 	@assert(type.fullname == "s32")
 
 	ptr := cast(*s32) @dataof(x[0])
-	@assert(ptr[0] == 6)
+	@assert(dref ptr == 6)
 }

@@ -321,7 +321,7 @@ impl Encoder
         loop i: 162 dhtInfo.valuesCbAC[i] = StdAcChrominanceValues[i]
     }
 
-    mtd computeHuffmanTable(nrCodes: const *u8, stdTable: const *u8, hT: *BitString)
+    mtd computeHuffmanTable(nrCodes: const ^u8, stdTable: const ^u8, hT: ^BitString)
     {
         codevalue  := 0'u16
         posInTable := 0
@@ -655,7 +655,7 @@ impl Encoder
         }
     }
 
-    mtd processDU(componentDU: ^s8, fdtbl: ^f32, dC: ^s16, hTDC, hTAC: *BitString)
+    mtd processDU(componentDU: ^s8, fdtbl: ^f32, dC: ^s16, hTDC, hTAC: ^BitString)
     {
         eob       := hTAC[0x00]
         m16Zeroes := hTAC[0xF0]

@@ -38,7 +38,7 @@ impl HashSet
         if !table
             return
 
-        newTable := cast(*HashSetEntry) Memory.alloc(capacity * @sizeof(HashSetEntry), allocator)
+        newTable := cast(^HashSetEntry) Memory.alloc(capacity * @sizeof(HashSetEntry), allocator)
         #if Reflection.hasPostCopy(K)
         {
             loop i: capacity

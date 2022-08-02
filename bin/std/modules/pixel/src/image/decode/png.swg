@@ -556,7 +556,7 @@ impl Decoder
         {
             result.visitPixels(&dstPixels)
             {
-                src := dref cast(**u8) userData
+                src := dref cast(^^u8) userData
                 src += x + y * image.width
                 pix[0] = src[0]
                 pix[1] = src[0]
@@ -590,7 +590,7 @@ impl Decoder
         {
             result.visitPixels(&dstPixels)
             {
-                src := dref cast(**u8) userData
+                src := dref cast(^^u8) userData
                 src += (x * 2) + (y * image.width * 2)
                 pix[0] = src[0]
                 pix[1] = src[0]
@@ -602,7 +602,7 @@ impl Decoder
         // Color without alpha but transparency
         elif inChannels == 3 and seenTRSN
         {
-            key := cast(const *u8) @dataof(chunkTRNS.datas)
+            key := cast(const ^u8) @dataof(chunkTRNS.datas)
             key0 := key[1]
             key1 := key[3]
             key2 := key[5]

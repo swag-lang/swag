@@ -23,5 +23,5 @@ enum A
 	val := ptr1.attributes[0].params[0].value
 	@assert(@kindof(val) == @typeof(string))
 	ptrVal := cast(*string) @dataof(val)
-	@assert(ptrVal[0] == "TOTO")
+	@assert(dref ptrVal == "TOTO")
 }

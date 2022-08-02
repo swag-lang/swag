@@ -28,7 +28,7 @@ struct Context
     patternIndex:        s32
     error:               f32
     divError:            f32
-    pattern:             const *f32
+    pattern:             const ^f32
     patternCount:        s32
 }
 
@@ -655,7 +655,7 @@ impl Painter
         }
     }
 
-    func triangulateSnip(border: const [..] Vector2, u, v, w, n: s32, pv: *s32)->bool
+    func triangulateSnip(border: const [..] Vector2, u, v, w, n: s32, pv: ^s32)->bool
     {
         a := border[pv[u]]
         b := border[pv[v]]
@@ -771,19 +771,19 @@ impl Painter
             {
                 loop e: 3
                 {
-                    if !tri.constrainedEdge[e] 
+                    if !tri.constrainedEdge[e]
                         continue
                     switch e
                     {
-                    case 0: 
+                    case 0:
                         v1 := Vector2{cast(f32) tri.points[1].x, cast(f32) tri.points[1].y}
                         v2 := Vector2{cast(f32) tri.points[2].x, cast(f32) tri.points[2].y}
                         edges.add(@{v1, v2})
-                    case 1: 
+                    case 1:
                         v0 := Vector2{cast(f32) tri.points[0].x, cast(f32) tri.points[0].y}
                         v2 := Vector2{cast(f32) tri.points[2].x, cast(f32) tri.points[2].y}
                         edges.add(@{v0, v2})
-                    case 2: 
+                    case 2:
                         v0 := Vector2{cast(f32) tri.points[0].x, cast(f32) tri.points[0].y}
                         v1 := Vector2{cast(f32) tri.points[1].x, cast(f32) tri.points[1].y}
                         edges.add(@{v0, v1})

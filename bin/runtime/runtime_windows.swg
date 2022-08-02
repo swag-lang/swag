@@ -59,12 +59,12 @@ func memmove(dst: *void, src: const *void, size: uint)
 }
 
 #[Swag.Callback]
-func memcmp(dst, src: const *void, size: uint)->s32
+func memcmp(dst, src: const ^void, size: uint)->s32
 {
     len := __Win32RT.RtlCompareMemory(dst, src, size)
     if len == size return 0
-    p1 := cast(const *s8) dst
-    p2 := cast(const *s8) src
+    p1 := cast(const ^s8) dst
+    p2 := cast(const ^s8) src
     return p1[len] - p2[len]
 }
 

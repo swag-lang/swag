@@ -522,7 +522,7 @@ public impl Crc32
         length := @countof(data)
         if !length
             return
-        current := cast(const *u32) @dataof(data)
+        current := cast(const ^u32) @dataof(data)
 
         const unroll = 4
         const bytesAtOnce = 16 * unroll
@@ -571,7 +571,7 @@ public impl Crc32
             length -= bytesAtOnce
         }
 
-        currentChar := cast(const *u8) current
+        currentChar := cast(const ^u8) current
         while length
         {
             cur = (cur >>,safe 8) ^ LookupTable[0, (cur & 0xFF) ^ currentChar[0]]

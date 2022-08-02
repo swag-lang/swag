@@ -1,7 +1,7 @@
 func(T) valueof(x: any)->T
 {
 	ptr := cast(*T) @dataof(x)
-	return ptr[0]
+	return dref ptr
 }
 
 //#[Swag.PrintBc]

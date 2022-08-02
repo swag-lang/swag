@@ -2,7 +2,7 @@
 
 func(T) delete(addr: *T)
 {
-	@assert(addr[0] == 666)
+	@assert(dref addr == 666)
 }
 
 //#[Swag.PrintBc]

@@ -8,8 +8,8 @@
 	var b = &a;
 	var c: *s32;
 	c = b;
-	@assert(b[0] == 666);
-	@assert(c[0] == 666);
+	@assert(dref b == 666);
+	@assert(dref c == 666);
 	/*@assert(a == 1);
 	b[0] = 666;
 	@assert(a == 666);*/

@@ -10,5 +10,5 @@ struct Point
 {
 	var pt: Point
 	var slice: *Point = &pt
-	@assert(slice[0].x == 666)
+	@assert(slice.x == 666)
 }

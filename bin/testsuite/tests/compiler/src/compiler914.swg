@@ -1,7 +1,7 @@
 
 
 //#[Swag.PrintBc]
-func(T) sum(x, y: *T) => x[0] + y[0]
+func(T) sum(x, y: *T) => dref x + dref y
 
 //#[Swag.PrintBc]
 #test

@@ -7,7 +7,7 @@ func toto(x: any)
 	@assert(type.fullname == "u8")
 	ptr := cast(*u8) @dataof(x)
 	//@print(cast(s32) ptr[0])
-	@assert(ptr[0] == 125)
+	@assert(dref ptr == 125)
 }
 
 

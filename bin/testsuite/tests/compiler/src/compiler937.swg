@@ -8,5 +8,5 @@ var x: any = "666"
 	t := @kindof(x)
 	@assert(t.fullname == "string")
 	ptr := cast(*string) @dataof(x)
-	@assert(ptr[0] == "666")
+	@assert(dref ptr == "666")
 }

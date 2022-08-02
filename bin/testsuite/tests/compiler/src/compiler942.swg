@@ -10,8 +10,8 @@
 	@assert(type.fullname == "s32")
 
 	ptr := cast(*s32) @dataof(x[0])
-	@assert(ptr[0] == 6)
+	@assert(dref ptr == 6)
 
 	ptr1 := cast(*string) @dataof(x[1])
-	@assert(ptr1[0] == "6")
+	@assert(dref ptr1 == "6")
 }

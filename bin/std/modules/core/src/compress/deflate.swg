@@ -346,7 +346,7 @@ impl Deflate
         }
     }
 
-    mtd radixSortSyms(numSyms: u32, sym0, sym1: ^SymFreq)->*SymFreq
+    mtd radixSortSyms(numSyms: u32, sym0, sym1: ^SymFreq)->^SymFreq
     {
         var hist: [256 * 2] u32
         loop i: numSyms
@@ -389,7 +389,7 @@ impl Deflate
         return curSym
     }
 
-    mtd calculateMinimumRedundancy(symFreq: *SymFreq, n: u32)
+    mtd calculateMinimumRedundancy(symFreq: ^SymFreq, n: u32)
     {
         if n == 0
             return

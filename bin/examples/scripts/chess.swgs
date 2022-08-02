@@ -122,7 +122,7 @@ func initCells()
     computeMoves()
 }
 
-func getCellWithOffset(board:*Cell, source, offset:s8) -> s8
+func getCellWithOffset(board:^Cell, source, offset:s8) -> s8
 {
     result := cast(s8)(source + offset)
     if (result < 0 or result >= 96 or board[result].content == ContentEnum.Invalid)
@@ -130,7 +130,7 @@ func getCellWithOffset(board:*Cell, source, offset:s8) -> s8
     return result
 }
 
-func getKingCell(board:*Cell, color:ContentEnum)->s8
+func getKingCell(board:^Cell, color:ContentEnum)->s8
 {
     loop i:96's8
         if board[i].content == color and board[i].piece == PiecesEnum.King
@@ -138,7 +138,7 @@ func getKingCell(board:*Cell, color:ContentEnum)->s8
     return -1
 }
 
-func isCheck( board:*Cell, white:bool )->bool
+func isCheck( board:^Cell, white:bool )->bool
 {
     var kingCell:s8  = getKingCell(board, white ? .White : .Black)
     if (kingCell == -1)
@@ -235,7 +235,7 @@ func computeMoves()
         g_Game.gameStatus = Format.toString("% player wins", !g_Game.whiteTurn ? "White": "Black")
 }
 
-func getPawnMoves(board:*Cell, from:s8, moves:*Array's8)
+func getPawnMoves(board:^Cell, from:s8, moves:*Array's8)
 {
     var isWhite: bool = board[from].content == .White
     var offset: s8 = isWhite ? 12 : -12
@@ -251,7 +251,7 @@ func getPawnMoves(board:*Cell, from:s8, moves:*Array's8)
     }
 }
 
-func getPawnAttacks(board:*Cell, from:s8, moves:*Array's8)
+func getPawnAttacks(board:^Cell, from:s8, moves:*Array's8)
 {
     var isWhite: bool = board[from].content == .White
     targetContent := isWhite  ? ContentEnum.Black : .White
@@ -264,7 +264,7 @@ func getPawnAttacks(board:*Cell, from:s8, moves:*Array's8)
         moves.add(target)
 }
 
-func getPieceMove( board:*Cell, from:s8, offset:s8, moves:*Array's8 ) -> bool
+func getPieceMove( board:^Cell, from:s8, offset:s8, moves:*Array's8 ) -> bool
 {
     target := getCellWithOffset(board, from, offset)
     if target == -1
@@ -278,21 +278,21 @@ func getPieceMove( board:*Cell, from:s8, offset:s8, moves:*Array's8 ) -> bool
 }
 
 const KnightMovesDeltas = @[10's8,23,25,14,-10,-23,-25,-14]
-func getKnightMoves(board:*Cell, from:s8, moves:*Array's8)
+func getKnightMoves(board:^Cell, from:s8, moves:*Array's8)
 {
     visit delta: KnightMovesDeltas
         discard getPieceMove(board, from, delta, moves)
 }
 
 const KingMovesDeltas = @[11's8,12,13,1,-11,-12,-13,-1]
-func getKingMoves(board:*Cell, from:s8, moves:*Array's8)
+func getKingMoves(board:^Cell, from:s8, moves:*Array's8)
 {
     visit delta: KingMovesDeltas
         discard getPieceMove(board, from, delta, moves)
 }
 
 const BishopMovesDeltas = @[11's8,13,-11,-13]
-func getBishopMoves( board:*Cell, from:s8, moves:*Array's8)
+func getBishopMoves( board:^Cell, from:s8, moves:*Array's8)
 {
     visit delta: BishopMovesDeltas
     {
@@ -303,7 +303,7 @@ func getBishopMoves( board:*Cell, from:s8, moves:*Array's8)
 }
 
 const RookMovesDeltas = @[12's8,1,-12,-1]
-func getRookMoves( board:*Cell, from:s8, moves:*Array's8)
+func getRookMoves( board:^Cell, from:s8, moves:*Array's8)
 {
     visit delta: RookMovesDeltas
     {
@@ -353,7 +353,7 @@ func doMove( from:s8, to:s8 )
         g_Board[to].piece = .Queen
 }
 
-func doMove( board:*Cell, from:s8, to:s8)-> [96] Cell
+func doMove( board:^Cell, from:s8, to:s8)-> [96] Cell
 {
     var result: [96] Cell
 

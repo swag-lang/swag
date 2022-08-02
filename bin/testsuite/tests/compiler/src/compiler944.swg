@@ -8,7 +8,7 @@ func toto(x: f32, y: ...)
 	{
 		p := y[@index]
 		ptr := cast(*s32) @dataof(p)
-		result += ptr[0]
+		result += dref ptr
 	}
 
 	@assert(result == 60)

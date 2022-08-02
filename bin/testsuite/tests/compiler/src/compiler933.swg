@@ -9,7 +9,7 @@
 func valueof(x: any)
 {
 	ptr := cast(*s32) @dataof(x)
-	@assert(ptr[0] == 666)
+	@assert(dref ptr == 666)
 }
 
 //#[Swag.PrintBc]

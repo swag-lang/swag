@@ -9,13 +9,13 @@ func average(x: any)
 	if(tt == @typeof(s32))
 	{
 		val := cast(*s32) @dataof(x)
-		@assert(val[0] == 666)
+		@assert(dref val == 666)
 		G += 1
 	}
 	elif(tt == @typeof(string))
 	{
 		val := cast(*string) @dataof(x)
-		@assert(val[0] == "666")
+		@assert(dref val == "666")
 		G += 1
 	}
 }

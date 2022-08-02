@@ -14,9 +14,9 @@ const INFINITE = 0xFFFFFFFF
 var G: u64
 
 #[Swag.Callback]
-func entry(param: *void)->u32
+func entry(param: ^void)->u32
 {
-    ptr := cast(*u64) param
+    ptr := cast(^u64) param
     G = ptr[1]
     return 0
 }

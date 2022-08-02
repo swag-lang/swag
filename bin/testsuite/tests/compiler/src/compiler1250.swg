@@ -1,4 +1,4 @@
-func getChar(buffer: const *u8)->{const *u8, rune}
+func getChar(buffer: const ^u8)->{const ^u8, rune}
 {
 	ptr := buffer
 	c := cast(rune) dref ptr

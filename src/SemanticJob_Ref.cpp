@@ -585,6 +585,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     {
     case TypeInfoKind::Pointer:
     {
+        SWAG_VERIFY(arrayType->flags & TYPEINFO_POINTER_ARITHMETIC || arrayNode->specFlags & AST_SPEC_ARRAYPTRIDX_ISDEREF, context->report(Hint::isType(arrayType), {arrayNode, Err(Err0194)}));
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoUInt, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
         auto typePtr = CastTypeInfo<TypeInfoPointer>(arrayType, TypeInfoKind::Pointer);
         SWAG_VERIFY(typePtr->pointedType != g_TypeMgr->typeInfoVoid, context->report(arrayNode->access, Err(Err0486)));

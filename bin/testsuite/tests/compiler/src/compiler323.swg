@@ -8,5 +8,5 @@
 	var b = &a;
 	dref b = 666;
 	@assert(a == 666);
-	@assert(b[0] == a);
+	@assert(dref b == a);
 }
