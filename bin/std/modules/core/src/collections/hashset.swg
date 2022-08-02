@@ -14,7 +14,7 @@ struct(K) HashSet
     const HASH_FIRST = 2'u32
 
     allocator:  IAllocator
-    table:      *HashSetEntry
+    table:      ^HashSetEntry
     count:      uint // Number of valid entries
     capacity:   uint // Number of total entries the table can hold
     deleted:    uint // Number of deleted entries

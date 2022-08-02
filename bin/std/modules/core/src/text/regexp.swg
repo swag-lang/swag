@@ -834,7 +834,7 @@ impl RegExp
         return pzStart
     }
 
-    mtd preprocessEnum(sl: const [..] rune)->const *rune throw
+    mtd preprocessEnum(sl: const [..] rune)->const ^rune throw
     {
         pz      := @dataof(sl)
         pzStart := pz
@@ -1042,8 +1042,8 @@ impl RegExp
         in32 := Unicode.fromUtf8(in)
         in32.add(0)
 
-        start := cast(const *rune) in32.buffer
-        pz    := cast(const *rune) in32.buffer
+        start := cast(const ^rune) in32.buffer
+        pz    := cast(const ^rune) in32.buffer
         pzEnd := pz + in32.count
 
         c := pz[0]

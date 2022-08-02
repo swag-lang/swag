@@ -138,8 +138,8 @@ struct Compressor
     savedLit:           u32
     outputFlushOfs:     u32
     blockIndex:         u32
-    inBuf:              const *u8
-    inSrc:              const *u8
+    inBuf:              const ^u8
+    inSrc:              const ^u8
     srcBufLeft:         uint
     outBufOfs:          uint
     dict:               [LzDictSize + MaxMatchLen - 1] u8

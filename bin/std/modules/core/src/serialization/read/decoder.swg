@@ -32,7 +32,7 @@ struct(T) Decoder
 
 impl Decoder
 {
-    mtd readValue(data: *void, dataType: typeinfo) throw
+    mtd readValue(data: ^void, dataType: typeinfo) throw
     {
         type := Reflection.makeConcreteAlias(dataType)
         type = Reflection.makeConcreteEnum(type)

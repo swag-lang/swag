@@ -631,7 +631,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
 
         firstAliasVar = 2;
         content += "{ ";
-        content += Fmt("var __addr%u = cast(%s *%s) __tmp%u; ", id, typeArray->isConst() ? "const" : "", typeArray->finalType->name.c_str(), id);
+        content += Fmt("var __addr%u = cast(%s ^%s) __tmp%u; ", id, typeArray->isConst() ? "const" : "", typeArray->finalType->name.c_str(), id);
         content += Fmt("loop %u { ", typeArray->totalCount);
         if (node->specFlags & AST_SPEC_VISIT_WANTPOINTER)
         {

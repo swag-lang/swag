@@ -32,7 +32,7 @@ public struct Decoder
 
 impl Decoder
 {
-    func uncompress(bpp: u8, dstBuffer: *u8, srcBuffer: const *u8, lastSrc: const *u8, length: uint) throw
+    func uncompress(bpp: u8, dstBuffer: ^u8, srcBuffer, lastSrc: const ^u8, length: uint) throw
     {
         lastDest := dstBuffer + length
         dest := dstBuffer

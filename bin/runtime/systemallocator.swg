@@ -31,15 +31,15 @@ impl IAllocator for SystemAllocator
             alignement := request.alignement orelse @sizeof(*void)
             size += alignement - 1
 
-            storePtr := cast(**void) request.address
-            realPtr := cast(*u8) @realloc(storePtr ? storePtr[bitcast(uint) -1'int] : null, size)
+            storePtr := cast(^^void) request.address
+            realPtr := cast(^u8) @realloc(storePtr ? storePtr[bitcast(uint) -1'int] : null, size)
 
             userPtr := realPtr + @sizeof(*void)
-            userPtr = cast(*u8) (cast(uint) userPtr & ~(cast(uint) alignement - 1))
+            userPtr = cast(^u8) (cast(uint) userPtr & ~(cast(uint) alignement - 1))
             if userPtr != realPtr + @sizeof(*void)
                 userPtr += alignement
 
-            storePtr = cast(**void) userPtr
+            storePtr = cast(^^void) userPtr
             storePtr[bitcast(uint) -1'int] = realPtr
             request.address = userPtr
         }

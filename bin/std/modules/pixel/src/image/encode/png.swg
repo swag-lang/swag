@@ -302,7 +302,7 @@ impl Encoder
         bufferToCompress.add(@mkslice(sl, len))
     }
 
-    mtd encodeRow(row: *u8, len: u32)->bool throw
+    mtd encodeRow(row: ^u8, len: u32)->bool throw
     {
         pass := rowInfo.pass
 

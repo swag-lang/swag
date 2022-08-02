@@ -30,8 +30,8 @@ func addData(fmt: Format, data: const [..] u8)
 
     // Store the size in the first uint
     hglob := GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, @countof(data) + @sizeof(uint))
-    pz := cast(*u8) GlobalLock(hglob)
-    pzu := cast(*uint) pz
+    pz := cast(^u8) GlobalLock(hglob)
+    pzu := cast(^uint) pz
     dref pzu = @countof(data)
     Memory.copy(pz + @sizeof(uint), @dataof(data), @countof(data))
     discard GlobalUnlock(pz)
@@ -48,7 +48,7 @@ func addString(str: string)
     // Ansi/utf8
     {
         hglob := GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, @countof(str) + 1)
-        pz := cast(*u8) GlobalLock(hglob)
+        pz := cast(^u8) GlobalLock(hglob)
         Memory.copy(pz, @dataof(str), @countof(str))
         pz[@countof(str)] = 0
         discard GlobalUnlock(pz)
@@ -58,7 +58,7 @@ func addString(str: string)
     // Utf16
     {
         hglob := GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, @countof(str) * 2 + 2)
-        pz := cast(*u16) GlobalLock(hglob)
+        pz := cast(^u16) GlobalLock(hglob)
         u := Utf16.fromUtf8(str)
         Memory.copy(pz, u.buffer, u.count * 2)
         pz[u.count] = 0
@@ -79,7 +79,7 @@ func addImage(image: Image)
     {
         size := @sizeof(Bmp.Header) + image.size
         hglob := GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, size)
-        buf := cast(*u8) GlobalLock(hglob)
+        buf := cast(^u8) GlobalLock(hglob)
 
         header := cast(*Bmp.Header) buf
         header.biSize        = @sizeof(Bmp.Header)
@@ -140,8 +140,8 @@ func getData(fmt: Format)->Array'u8
         hglob := GetClipboardData(cast(UINT) fmt)
         if hglob
         {
-            pz := cast(*u8) GlobalLock(hglob)
-            pzu := cast(*uint) pz
+            pz := cast(^u8) GlobalLock(hglob)
+            pzu := cast(^uint) pz
             count := dref pzu
             result.add(@mkslice(pz + @sizeof(uint), count))
             discard GlobalUnlock(pz)
@@ -167,7 +167,7 @@ func getString()->String
         hglob := GetClipboardData(CF_UNICODETEXT)
         if hglob
         {
-            pz := cast(*u16) GlobalLock(hglob)
+            pz := cast(^u16) GlobalLock(hglob)
             result = Utf8.fromUtf16(@mkslice(pz, Utf16.lengthZeroTerminated(pz)))
             discard GlobalUnlock(pz)
             return result
@@ -180,7 +180,7 @@ func getString()->String
         hglob := GetClipboardData(CF_TEXT)
         if hglob
         {
-            pz := cast(*u8) GlobalLock(hglob)
+            pz := cast(^u8) GlobalLock(hglob)
             result = @mkstring(pz, @strlen(pz))
             discard GlobalUnlock(pz)
             return result

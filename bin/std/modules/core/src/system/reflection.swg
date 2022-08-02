@@ -126,7 +126,7 @@ using Swag
     // Get a field value with a given runtime type
     func getFieldValue(dest: *void, type: const *TypeValue, src: *void, hardCast: bool = false)
     {
-        patch := cast(*u8) src + type.offset
+        patch := cast(^u8) src + type.offset
         switch type.pointedType
         {
         case s8, u8, bool:          dref cast(*u8)  dest = dref cast(*u8)  patch
@@ -151,7 +151,7 @@ using Swag
     // Set a field value with a given runtime type
     func setFieldValue(dest: *void, type: const *TypeValue, src: const *void, hardCast: bool = false)
     {
-        patch := cast(*u8) dest + type.offset
+        patch := cast(^u8) dest + type.offset
         switch type.pointedType
         {
         case s8, u8, bool:          dref cast(*u8)  patch = dref cast(const *u8)  src

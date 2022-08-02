@@ -141,9 +141,9 @@ const Zag: [64] u32 = @[
 #[Opaque]
 public struct Decoder
 {
-    stream:             const *u8
-    inBufOfs:           *u8
-    pSampleBuf:         *u8
+    stream:             const ^u8
+    inBufOfs:           ^u8
+    pSampleBuf:         ^u8
 
     imageSizeX:         s32
     imageSizeY:         s32
@@ -293,11 +293,11 @@ impl Decoder
         }
     }
 
-    func coeffBufGetp(cb: CoeffBuf, blkX, blkY: s32)->*s16
+    func coeffBufGetp(cb: CoeffBuf, blkX, blkY: s32)->^s16
     {
         Debug.assert(blkX < cb.blockNumX)
         Debug.assert(blkY < cb.blockNumY)
-        return cast(*s16) (cb.pdata.buffer + blkX * cb.blockSize + blkY * (cb.blockSize * cb.blockNumX))
+        return cast(^s16) (cb.pdata.buffer + blkX * cb.blockSize + blkY * (cb.blockSize * cb.blockNumX))
     }
 
     mtd loadNextRow() throw

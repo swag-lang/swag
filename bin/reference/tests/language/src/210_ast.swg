@@ -57,7 +57,7 @@
 
     // '#ast' needs to return a 'string like' value, that can be dynamic
     {
-        func append(buf: *u8, val: string)
+        func append(buf: ^u8, val: string)
         {
             len := 0
             while buf[len] len += 1

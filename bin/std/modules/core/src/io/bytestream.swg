@@ -43,7 +43,7 @@ public impl ByteStream
     }
 
     // Get the buffer of datas to read
-    mtd readData()->const *u8
+    mtd readData()->const ^u8
     {
         return writeBuffer ? writeBuffer.buffer : @dataof(readBuffer)
     }

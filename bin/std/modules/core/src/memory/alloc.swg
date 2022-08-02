@@ -3,7 +3,7 @@
 using Swag
 
 // Free the specified memory block
-func free(buffer: *void, size: uint, allocator: IAllocator = null, hint: string = null, loc = #callerlocation)
+func free(buffer: ^void, size: uint, allocator: IAllocator = null, hint: string = null, loc = #callerlocation)
 {
     if !buffer return
 
@@ -31,7 +31,7 @@ func freeAll(allocator: IAllocator, hint: string = null, loc = #callerlocation)
 }
 
 // Reallocate/allocate a given amount of bytes
-func realloc(buffer: *void, newSize: uint, oldSize: uint, allocator: IAllocator = null, alignement: u16 = 0, hint: string = null, loc = #callerlocation)->*void
+func realloc(buffer: ^void, newSize: uint, oldSize: uint, allocator: IAllocator = null, alignement: u16 = 0, hint: string = null, loc = #callerlocation)->^void
 {
     var req: AllocatorRequest
     req.callerLoc   = loc
@@ -49,7 +49,7 @@ func realloc(buffer: *void, newSize: uint, oldSize: uint, allocator: IAllocator 
 }
 
 // Allocate a given amount of bytes
-func alloc(size: uint, allocator: IAllocator = null, alignement: u32 = 0, hint: string = null, loc = #callerlocation)->*void
+func alloc(size: uint, allocator: IAllocator = null, alignement: u32 = 0, hint: string = null, loc = #callerlocation)->^void
 {
     var req: AllocatorRequest
     req.callerLoc   = loc
@@ -65,7 +65,7 @@ func alloc(size: uint, allocator: IAllocator = null, alignement: u32 = 0, hint: 
 }
 
 // Allocate a given amount of bytes in the temporary allocator
-func tempAlloc(size: uint, alignement: u32 = 0, hint: string = null, loc = #callerlocation)->*void
+func tempAlloc(size: uint, alignement: u32 = 0, hint: string = null, loc = #callerlocation)->^void
 {
     var req: AllocatorRequest
     req.callerLoc   = loc

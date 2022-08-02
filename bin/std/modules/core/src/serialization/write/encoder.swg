@@ -31,7 +31,7 @@ struct(T) Encoder
 
 impl Encoder
 {
-    mtd writeValue(data: const *void, dataType: typeinfo)
+    mtd writeValue(data: const ^void, dataType: typeinfo)
     {
         type := Reflection.makeConcreteAlias(dataType)
         type = Reflection.makeConcreteEnum(type)
@@ -251,12 +251,12 @@ impl IEncoder for Encoder
         serializer.endElement()
     }
 
-    mtd write(data: const *void, type: typeinfo)
+    mtd write(data: const ^void, type: typeinfo)
     {
         writeValue(data, type)
     }
 
-    mtd writeBufferU8(data: const *u8, count: uint)
+    mtd writeBufferU8(data: const ^u8, count: uint)
     {
         treated := serializer.beginSequence(u8, data, count)
         defer(noerr) serializer.endSequence()

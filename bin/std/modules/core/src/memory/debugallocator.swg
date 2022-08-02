@@ -88,7 +88,7 @@ public impl DebugAllocator
         checkOne(ptrHeader)
     }
 
-    private mtd checkOne(ptrHeader: *Header)
+    private mtd checkOne(ptrHeader: ^Header)
     {
         ptrEnd := cast(^u8) (ptrHeader + 1)
         ptrFooter := cast(*Footer) (ptrEnd + ptrHeader.userSize)

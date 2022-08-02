@@ -15,7 +15,7 @@ struct(K, V) HashTable
     const HASH_FIRST = 2'u32
 
     allocator:  IAllocator
-    table:      *HashTableEntry
+    table:      ^HashTableEntry
     count:      uint // Number of valid entries
     capacity:   uint // Number of total entries the table can hold
     deleted:    uint // Number of deleted entries

@@ -191,7 +191,7 @@ impl Decoder
     }
 
     // Expand 1, 2, 4 bits to 8 bits
-    func expand8(using self, width, height: u32, output: *u8)
+    func expand8(using self, width, height: u32, output: ^u8)
     {
         rowStrideIn  := getStrideIn(width);
         rowStrideOut := inChannels * width

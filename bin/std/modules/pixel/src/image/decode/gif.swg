@@ -63,8 +63,8 @@ public struct Decoder
     reachEnd:   bool
     initDone:   bool
 
-    streamStart:    const *u8
-    stream:         const *u8
+    streamStart:    const ^u8
+    stream:         const ^u8
     streamLen:      uint
 }
 
@@ -373,7 +373,7 @@ impl Decoder
         readImageData(interlace)
     }
 
-    mtd renderFrame(buffer: *u8, pf: PixelFormat)
+    mtd renderFrame(buffer: ^u8, pf: PixelFormat)
     {
         i := fy * width + fx
 

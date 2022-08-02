@@ -5,7 +5,7 @@ using Swag
 struct Folder
 {
     type: typeinfo
-    data: *void
+    data: ^void
 }
 
 struct TweakFile
@@ -152,8 +152,8 @@ impl TweakFile
                     break
             }
 
-            ptrDst := cast(*u8) ref.folder.data + ref.dst.offset
-            ptrSrc := cast(*u8) ref.folder.data + ref.src.offset
+            ptrDst := cast(^u8) ref.folder.data + ref.dst.offset
+            ptrSrc := cast(^u8) ref.folder.data + ref.src.offset
             Reflection.copy(ptrDst, ptrSrc, ref.dst.pointedType)
 
             refs.removeAt(toDo)

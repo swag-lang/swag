@@ -291,7 +291,7 @@ func convertStruct(buf: *ConcatBuffer, value: any, strFormat: string)
 {
     kindof := cast(const *Swag.TypeInfoStruct) @kindof(value)
     Debug.assert(kindof.kind == TypeInfoKind.Struct, "this is not a structure")
-    ptr := @dataof(value)
+    ptr := cast(const ^u8) @dataof(value)
 
     // Core.String
     if kindof == String
