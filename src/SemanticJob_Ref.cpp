@@ -223,6 +223,7 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
     // Slicing of a pointer
     else if (typeVar->kind == TypeInfoKind::Pointer)
     {
+        SWAG_VERIFY(typeVar->flags & TYPEINFO_POINTER_ARITHMETIC, context->report(Hint::isType(typeVar), {node, Err(Err0193)}));
         auto typeInfoPointer  = CastTypeInfo<TypeInfoPointer>(node->array->typeInfo, TypeInfoKind::Pointer);
         auto ptrSlice         = allocType<TypeInfoSlice>();
         ptrSlice->pointedType = typeInfoPointer->pointedType;
