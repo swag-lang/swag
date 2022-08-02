@@ -208,9 +208,9 @@ public struct Encoder
     du:      [64] s16
 
     categoryAlloc: Array'u8
-    category:      *u8
+    category:      ^u8
     bitcodeAlloc:  Array'BitString
-    bitcode:       *BitString
+    bitcode:       ^BitString
 }
 
 impl Encoder
@@ -282,7 +282,7 @@ impl Encoder
         imageY = yDiv8
     }
 
-    mtd setQuantTable(basicTable: const *u8, newTable: *u8)
+    mtd setQuantTable(basicTable: const ^u8, newTable: ^u8)
     {
         loop i: 64
         {
@@ -553,7 +553,7 @@ impl Encoder
         }
     }
 
-    mtd quantization(data: *s8, fdtbl: *f32, outData: *s16)
+    mtd quantization(data: ^s8, fdtbl: ^f32, outData: ^s16)
     {
         var dataFloat: [64] f32
         loop i: 64
@@ -655,7 +655,7 @@ impl Encoder
         }
     }
 
-    mtd processDU(componentDU: *s8, fdtbl: *f32, dC: *s16, hTDC, hTAC: *BitString)
+    mtd processDU(componentDU: ^s8, fdtbl: ^f32, dC: ^s16, hTDC, hTAC: *BitString)
     {
         eob       := hTAC[0x00]
         m16Zeroes := hTAC[0xF0]

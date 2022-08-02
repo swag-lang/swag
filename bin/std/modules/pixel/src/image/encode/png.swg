@@ -453,7 +453,7 @@ impl Encoder
     }
 
     #[Swag.Safety("", false)]
-    mtd filterScanline(filtered: *u8, size: u32, filter: Filter)
+    mtd filterScanline(filtered: ^u8, size: u32, filter: Filter)
     {
         loop i: size
         {

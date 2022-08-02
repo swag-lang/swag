@@ -1,6 +1,6 @@
 struct Utf8
 {
-	buffer: *u8
+	buffer: ^u8
 	length:	uint
 	size:	uint
 }

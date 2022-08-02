@@ -1,6 +1,6 @@
 struct CStr
 {
-    buffer:     *u8
+    buffer:     ^u8
     length:     uint
 }
 
@@ -21,7 +21,7 @@ func cstr(x: string)->CStr
     countof := @countof(x)
     dataof := @dataof(x)
     tmp.length = countof
-    tmp.buffer = cast(*u8) @alloc(cast(uint) countof + 1)
+    tmp.buffer = cast(^u8) @alloc(cast(uint) countof + 1)
     @memcpy(tmp.buffer, dataof, cast(uint) countof)
     tmp.buffer[countof] = 0
     return tmp

@@ -419,7 +419,8 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
         if (g_TokenFlags[(int) token.id] & TOKEN_SYM &&
             token.id != TokenId::SymComma &&
             token.id != TokenId::SymLeftCurly &&
-            token.id != TokenId::SymAsterisk)
+            token.id != TokenId::SymAsterisk &&
+            token.id != TokenId::SymCircumflex)
         {
             Diagnostic diag{sourceFile, token, Fmt(Err(Err0343), token.ctext())};
             Diagnostic note{sourceFile, leftSquareToken, Hlp(Hlp0002), DiagnosticLevel::Help};

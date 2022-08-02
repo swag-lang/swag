@@ -93,7 +93,7 @@ impl TT
 	}
 }
 
-func aaa(ptr: *s64)
+func aaa(ptr: ^s64)
 {
     ptr[0] = 555
 }

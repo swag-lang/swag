@@ -131,7 +131,7 @@ func delete(ptr: *void, type: typeinfo, allocator: IAllocator = null, hint: stri
 }
 
 // Allocate and initialize an array of the given type
-func(T) new(num: uint, allocator: IAllocator = null, alignement: u32 = 0, hint: string = null, loc = #callerlocation)->*T
+func(T) new(num: uint, allocator: IAllocator = null, alignement: u32 = 0, hint: string = null, loc = #callerlocation)->^T
 {
     Debug.assert(num > 0)
 
@@ -142,7 +142,7 @@ func(T) new(num: uint, allocator: IAllocator = null, alignement: u32 = 0, hint: 
 }
 
 // Drop and release memory of an array of the given type
-func(T) delete(ptr: *T, num: uint, allocator: IAllocator = null, hint: string = null, loc = #callerlocation)
+func(T) delete(ptr: ^T, num: uint, allocator: IAllocator = null, hint: string = null, loc = #callerlocation)
 {
     if !ptr
         return

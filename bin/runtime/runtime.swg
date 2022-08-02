@@ -447,7 +447,7 @@ func __pusherr()
 {
     cxt := @getcontext()
     @assert(MaxLenErrorMsg - cxt.errorMsgStart >= 8)
-    ptr := cast(*u32) (&cxt.errorMsg[cxt.errorMsgStart] + cxt.errorMsgLen)
+    ptr := cast(^u32) (&cxt.errorMsg[cxt.errorMsgStart] + cxt.errorMsgLen)
     ptr[0] = cxt.errorMsgLen
     ptr[1] = cxt.traceIndex
     cxt.errorMsgStart += cxt.errorMsgLen + 8

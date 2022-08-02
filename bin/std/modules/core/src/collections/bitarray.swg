@@ -4,7 +4,7 @@ using Swag
 // the bit is on (1) and 'false' indicates the bit is off (0)
 public struct BitArray
 {
-    buffer:     *u32
+    buffer:     ^u32
     allocator:  IAllocator
     count:      uint
     capacity:   uint

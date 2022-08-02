@@ -2,7 +2,7 @@
 
 struct(T) Array
 {
-	buffer: *T
+	buffer: ^T
 	count:	u32
 	size:	u32
 }

@@ -237,7 +237,7 @@ impl Md5
         state[3] += d
     }
 
-    func encode(output: *u8, input: *u32, len: u32)
+    func encode(output: ^u8, input: ^u32, len: u32)
     {
         i, j := 0
         while j < len
@@ -251,7 +251,7 @@ impl Md5
         }
     }
 
-    func decode(output: *u32, input: const *u8, len: u32)
+    func decode(output: ^u32, input: const ^u8, len: u32)
     {
         i, j := 0
         while j < len

@@ -346,7 +346,7 @@ impl Deflate
         }
     }
 
-    mtd radixSortSyms(numSyms: u32, sym0, sym1: *SymFreq)->*SymFreq
+    mtd radixSortSyms(numSyms: u32, sym0, sym1: ^SymFreq)->*SymFreq
     {
         var hist: [256 * 2] u32
         loop i: numSyms
@@ -460,7 +460,7 @@ impl Deflate
         }
     }
 
-    mtd huffmanEnforceMaxCodeSize(numCodes: *s32, codeListLen, maxCodeSize: u32)
+    mtd huffmanEnforceMaxCodeSize(numCodes: ^s32, codeListLen, maxCodeSize: u32)
     {
         if codeListLen <= 1
             return

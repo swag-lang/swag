@@ -14,5 +14,5 @@ impl AA
 {
     var x: AA
     var ptr = &x
-    ptr[0] = "toto"
+    dref ptr = "toto"
 }

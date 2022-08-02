@@ -1,4 +1,4 @@
-func set(ptr: *u8)
+func set(ptr: ^u8)
 {
     ptr[0] = 0
 }

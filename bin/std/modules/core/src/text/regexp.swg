@@ -830,7 +830,7 @@ impl RegExp
             pzStart += 1
         }
 
-        val[0] = n
+        dref val = n
         return pzStart
     }
 

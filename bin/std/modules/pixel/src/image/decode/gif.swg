@@ -55,7 +55,7 @@ public struct Decoder
     fw:         u16
     fh:         u16
     bgIndex:    u8
-    canvas:     *u8
+    canvas:     ^u8
     frame:      Array'u8
     table:      Table
     animStart:  uint
@@ -217,7 +217,7 @@ impl Decoder
                 }
 
                 dref byte = readU8()
-                subLen[0] -= 1
+                dref subLen -= 1
             }
 
             frag_size = Math.min(cast(s32) (keySize - bits_read), cast(s32) (8 - rpad))

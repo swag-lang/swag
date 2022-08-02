@@ -191,7 +191,7 @@ public struct Decoder
     compQuant:      [MaxComponents] s32
     compIdent:      [MaxComponents] s32
     blockMaxZagSet: [MaxBlocksPerRow] s32
-    blockSeg:       [MaxBlocksPerRow] *s16
+    blockSeg:       [MaxBlocksPerRow] ^s16
     compList:       [MaxCompsInScan] s32
     compDcTab:      [MaxComponents] s32
     compAcTab:      [MaxComponents] s32
@@ -248,7 +248,7 @@ impl Decoder
             initSequential()
     }
 
-    mtd doit(buf: *u8) throw
+    mtd doit(buf: ^u8) throw
     {
         var scanLineOfs: *void
         var scanLineLen: u32
@@ -535,7 +535,7 @@ impl Decoder
         }
     }
 
-    mtd idct(data: *s16, buf: *u8)
+    mtd idct(data: ^s16, buf: ^u8)
     {
         pdstPtr := buf
         dataPtr := data
@@ -1046,7 +1046,7 @@ impl Decoder
         quantBuf.resize(cast(uint) maxBlocksPerRow * 64 * @sizeof(s16) + 8)
         loop i: maxBlocksPerRow
         {
-            blockSeg[i] = cast(*s16) (quantBuf.buffer + i * 64 * @sizeof(s16))
+            blockSeg[i] = cast(^s16) (quantBuf.buffer + i * 64 * @sizeof(s16))
             blockMaxZagSet[i] = 64
         }
 
