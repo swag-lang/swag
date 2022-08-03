@@ -409,6 +409,8 @@ bool SemanticJob::hasUserOp(SemanticContext* context, const Utf8& name, AstNode*
     auto leftType = TypeManager::concreteReferenceType(left->typeInfo);
     if (leftType->kind == TypeInfoKind::Array)
         leftType = CastTypeInfo<TypeInfoArray>(leftType, TypeInfoKind::Array)->finalType;
+    else if (leftType->kind == TypeInfoKind::Pointer)
+        leftType = CastTypeInfo<TypeInfoPointer>(leftType, TypeInfoKind::Pointer)->pointedType;
     auto leftStruct = CastTypeInfo<TypeInfoStruct>(leftType, TypeInfoKind::Struct);
     return hasUserOp(context, name, leftStruct, result);
 }

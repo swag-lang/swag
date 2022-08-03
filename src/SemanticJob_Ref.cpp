@@ -695,8 +695,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
         arrayNode->structFlatParams.push_front(arrayNode->array);
 
         // Resolve call
-        auto        typeInfo = arrayNode->array->typeInfo;
-        SymbolName* symbol   = nullptr;
+        SymbolName* symbol = nullptr;
         SWAG_CHECK(hasUserOp(context, g_LangSpec->name_opIndex, arrayNode->array, &symbol));
         if (!symbol)
         {
@@ -705,12 +704,12 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
 
             if (arrayNode->array->token.text.empty())
             {
-                Utf8 msg = Fmt(Err(Err0226), typeInfo->getDisplayNameC());
+                Utf8 msg = Fmt(Err(Err0226), arrayType->getDisplayNameC());
                 return context->report(arrayNode->access, msg);
             }
             else
             {
-                Utf8 msg = Fmt(Err(Err0227), arrayNode->array->token.ctext(), typeInfo->getDisplayNameC());
+                Utf8 msg = Fmt(Err(Err0227), arrayNode->array->token.ctext(), arrayType->getDisplayNameC());
                 return context->report(arrayNode->access, msg);
             }
         }
