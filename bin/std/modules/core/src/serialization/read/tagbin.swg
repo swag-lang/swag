@@ -21,6 +21,7 @@ using Swag
     - Serialisation.Version     If version is specified, then loading will not have versioning if versions are the same
     - Serialization.Alias       To rename a field. Multiple aliases are supported.
     - Serialization.Final       The struct will be loaded/saved without versioning (faster and lower serialization size)
+    - Serialization.PodFinal    The struct will be loaded/saved in place without versioning
 */
 
 struct TagBinSection
@@ -174,7 +175,8 @@ impl TagBin
     {
         sec := newSection()
 
-        if Reflection.hasAttribute(structType, Serialization.Final)
+        if  Reflection.hasAttribute(structType, Serialization.Final) or
+            Reflection.hasAttribute(structType, Serialization.PodFinal)
         {
             sec.final = true
             return false
@@ -330,7 +332,7 @@ impl TagBin
             if structType.fromGeneric == @typeof(Array)
             {
                 valueType := structType.generics[0].pointedType
-                (raw, sizeof) := isRawSerializable(valueType)
+                (raw, sizeof) := isPodFinal(valueType)
 
                 if raw
                 {
@@ -349,7 +351,7 @@ impl TagBin
         {
             dref countElem = Math.min(orgCount, dref countElem)
 
-            (raw, sizeof) := isRawSerializable(typeElem)
+            (raw, sizeof) := isPodFinal(typeElem)
             if raw
             {
                 stream.readBytes(data, dref countElem * sizeof)

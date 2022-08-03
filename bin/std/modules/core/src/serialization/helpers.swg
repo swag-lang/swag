@@ -1,7 +1,7 @@
 #global namespace Serialization
 
 // Determin if a type can be serialized by a simple copy
-public func isRawSerializable(type: typeinfo)->{raw: bool, sizeof: uint}
+public func isPodFinal(type: typeinfo)->{raw: bool, sizeof: uint}
 {
     if Reflection.isInteger(type) or
        Reflection.isFloat(type) or
@@ -10,6 +10,9 @@ public func isRawSerializable(type: typeinfo)->{raw: bool, sizeof: uint}
     {
         return @{true, type.sizeof}
     }
+
+    if Reflection.hasAttribute(type, Serialization.PodFinal)
+        return @{true, type.sizeof}
 
     return @{false, 0}
 }

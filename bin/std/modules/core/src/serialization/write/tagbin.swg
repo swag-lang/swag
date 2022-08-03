@@ -66,7 +66,8 @@ impl TagBin
     {
         sec := sections.emplaceInitAddress()
 
-        if Reflection.hasAttribute(structType, Serialization.Final)
+        if  Reflection.hasAttribute(structType, Serialization.Final) or
+            Reflection.hasAttribute(structType, Serialization.PodFinal)
         {
             sec.final = true
             return false
@@ -173,7 +174,7 @@ impl TagBin
             if structType.fromGeneric == @typeof(Array)
             {
                 valueType := structType.generics[0].pointedType
-                (raw, sizeof) := isRawSerializable(valueType)
+                (raw, sizeof) := isPodFinal(valueType)
 
                 if raw
                 {
@@ -187,7 +188,7 @@ impl TagBin
         // Static array of raw serializable types
         else
         {
-            (raw, sizeof) := isRawSerializable(typeElem)
+            (raw, sizeof) := isPodFinal(typeElem)
             if raw
             {
                 output.addBytes(@mkslice(cast(const *u8) data, countElem * sizeof))
