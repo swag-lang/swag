@@ -370,38 +370,10 @@ bool SemanticJob::resolveType(SemanticContext* context)
                 ptrPointer->forceComputeName();
             }
 
-            if (typeNode->ptrFlags[i] & AstTypeExpression::PTR_REF)
-            {
-                auto ptrRef         = allocType<TypeInfoReference>();
-                ptrRef->pointedType = ptrPointer1->pointedType;
-                if (typeNode->ptrFlags[i] & AstTypeExpression::PTR_CONST)
-                    ptrRef->flags |= TYPEINFO_CONST;
-                ptrRef->flags |= (firstType->flags & TYPEINFO_GENERIC);
-                ptrRef->computeName();
-
-                // Be sure we have a unique instance of the type, not a shared predefined one
-                if (ptrPointer1->flags & TYPEINFO_SHARED)
-                    ptrPointer1 = (TypeInfoPointer*) ptrPointer1->clone();
-                ptrPointer1->pointedType = ptrRef;
-                ptrPointer1->forceComputeName();
-            }
-
             ptrPointer = ptrPointer1;
             if (i == 0)
                 typeNode->typeInfo = ptrPointer;
         }
-    }
-
-    // In fact, this is a reference
-    else if (typeNode->typeFlags & TYPEFLAG_ISREF)
-    {
-        auto ptrRef         = allocType<TypeInfoReference>();
-        ptrRef->pointedType = typeNode->typeInfo;
-        if (typeNode->typeFlags & TYPEFLAG_ISCONST)
-            ptrRef->flags |= TYPEINFO_CONST;
-        ptrRef->flags |= (typeNode->typeInfo->flags & TYPEINFO_GENERIC);
-        ptrRef->computeName();
-        typeNode->typeInfo = ptrRef;
     }
 
     // A struct function parameter is const

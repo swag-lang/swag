@@ -124,16 +124,6 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
                 return context->report(nodeParam, Err(Err0734));
         }
 
-        // A struct/interface is forced to be a const reference
-        else if (paramType->kind == TypeInfoKind::Struct)
-        {
-            auto typeRef         = allocType<TypeInfoReference>();
-            typeRef->flags       = paramType->flags | TYPEINFO_CONST;
-            typeRef->pointedType = paramType;
-            typeRef->computeName();
-            nodeParam->typeInfo = typeRef;
-        }
-
         // Default parameter value
         if (nodeParam->assignment)
         {
@@ -712,7 +702,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
             auto overload = funcNode->scope->symTable.addSymbolTypeInfo(context, c, c->typeInfo, SymbolKind::Variable, nullptr, OVERLOAD_VAR_CAPTURE, nullptr, 0, nullptr, &name);
             if (!overload)
                 return false;
-            c->resolvedSymbolOverload = overload;
+            c->resolvedSymbolOverload             = overload;
             overload->computedValue.storageOffset = storageOffset;
             storageOffset += overload->typeInfo->sizeOf;
         }
