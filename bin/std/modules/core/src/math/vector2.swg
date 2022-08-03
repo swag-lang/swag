@@ -9,15 +9,15 @@ struct Vector2
 
 impl Vector2
 {
-    const Zero:     Vector2{0, 0}
-    const One:      Vector2{1, 1}
-    const UnitX:    Vector2{1, 0}
-    const UnitY:    Vector2{0, 1}
-    const NegUnitX: Vector2{-1, 0}
-    const NegUnitY: Vector2{0, -1}
-    const Max:      Vector2{Swag.F32.Max, Swag.F32.Max}
-    const NegMax:   Vector2{-Swag.F32.Max, -Swag.F32.Max}
-    const Min:      Vector2{Swag.F32.Min, Swag.F32.Min}
+    const Zero:     Self{0, 0}
+    const One:      Self{1, 1}
+    const UnitX:    Self{1, 0}
+    const UnitY:    Self{0, 1}
+    const NegUnitX: Self{-1, 0}
+    const NegUnitY: Self{0, -1}
+    const Max:      Self{Swag.F32.Max, Swag.F32.Max}
+    const NegMax:   Self{-Swag.F32.Max, -Swag.F32.Max}
+    const Min:      Self{Swag.F32.Min, Swag.F32.Min}
 
     #[Swag.Complete]
     mtd opAffect(value: f32)
@@ -50,25 +50,25 @@ impl Vector2
 
     mtd(op: string) opBinary(other: Self)->Self
     {
-        #if   op == "+" return Vector2{x + other.x, y + other.y}
-        #elif op == "-" return Vector2{x - other.x, y - other.y}
-        #elif op == "*" return Vector2{x * other.x, y * other.y}
-        #elif op == "/" return Vector2{x / other.x, y / other.y}
+        #if   op == "+" return Self{x + other.x, y + other.y}
+        #elif op == "-" return Self{x - other.x, y - other.y}
+        #elif op == "*" return Self{x * other.x, y * other.y}
+        #elif op == "/" return Self{x / other.x, y / other.y}
         #else           #assert(false, "unsupported binary operation '" ++ op ++ "'")
     }
 
     mtd(op: string) opBinary(value: f32)->Self
     {
-        #if   op == "+" return Vector2{x + value, y + value}
-        #elif op == "-" return Vector2{x - value, y - value}
-        #elif op == "*" return Vector2{x * value, y * value}
-        #elif op == "/" return Vector2{x / value, y / value}
+        #if   op == "+" return Self{x + value, y + value}
+        #elif op == "-" return Self{x - value, y - value}
+        #elif op == "*" return Self{x * value, y * value}
+        #elif op == "/" return Self{x / value, y / value}
         #else           #assert(false, "unsupported binary operation '" ++ op ++ "'")
     }
 
     mtd(op: string) opUnary()->Self
     {
-        #if   op == "-" return Vector2{-x, -y}
+        #if   op == "-" return Self{-x, -y}
         #else #assert(false, "unsupported unary operation '" ++ op ++ "'")
     }
 
@@ -91,13 +91,13 @@ impl Vector2
 
     // Returns the perpendicular vector in the 2D plane.
     // 'axis' will give the sign of the result
-    mtdc cross(axis: f32)->Vector2
+    mtdc cross(axis: f32)->Self
     {
         return @{y * axis, -x * axis}
     }
 
     // Returns the Z signed length of the perpendicular vector
-    mtdc cross(other: Vector2)->f32
+    mtdc cross(other: Self)->f32
     {
         return x * other.y - y * other.x
     }
@@ -115,20 +115,20 @@ impl Vector2
         y = -y
     }
 
-    // Returns true if this Vector2 is null
+    // Returns true if this vector is null
     mtdc isZero()->bool
     {
         return x == 0 and y == 0
     }
 
-    // Returns true if this Vector2 is null with an epsilon
+    // Returns true if this vector is null with an epsilon
     mtdc isZeroEpsilon(eps = cast(f32) ConstF64.Epsilon)->bool
     {
         return isZeroEpsilon(x, eps) and isZeroEpsilon(y, eps)
     }
 
-    // Returns true if this Vector2 is equals to another with an epsilon
-    mtdc isEqualEpsilon(other: Vector2, eps = cast(f32) ConstF64.Epsilon)->bool
+    // Returns true if this vector is equals to another with an epsilon
+    mtdc isEqualEpsilon(other: Self, eps = cast(f32) ConstF64.Epsilon)->bool
     {
         return Math.isEqualEpsilon(x, other.x, eps) and Math.isEqualEpsilon(y, other.y, eps)
     }
@@ -160,12 +160,12 @@ impl Vector2
     }
 
     // Returns this vector normalized
-    mtdc toNormalize()->Vector2
+    mtdc toNormalize()->Self
     {
         norm := sqrt((x * x) + (y * y))
         Debug.assert(!Math.isZeroEpsilon(norm))
         norm = 1 / norm
-        return Vector2{x * norm, y * norm}
+        return Self{x * norm, y * norm}
     }
 
     // Set the vector length
@@ -190,8 +190,7 @@ impl Vector2
         norm := sqrt((x * x) + (y * y))
         if Math.isZeroEpsilon(norm)
         {
-            x = 0
-            y = 0
+            x, y = 0
             return
         }
 
@@ -201,17 +200,17 @@ impl Vector2
     }
 
     // Returns this vector normalized even if its length is almost null
-    mtdc toNormalizeSafe()->Vector2
+    mtdc toNormalizeSafe()->Self
     {
         norm := sqrt((x * x) + (y * y))
         if Math.isZeroEpsilon(norm)
             return Zero
         norm = 1 / norm
-        return Vector2{x * norm, y * norm}
+        return Self{x * norm, y * norm}
     }
 
     // Returns a vector which is the 'min' of two vectors
-    func min(a, b: Vector2)->Vector2
+    func min(a, b: Self)->Self
     {
         var result: retval = ?
         result.x = Math.min(a.x, b.x)
@@ -220,7 +219,7 @@ impl Vector2
     }
 
     // Returns a vector which is the 'min' of two vectors
-    func max(a, b: Vector2)->Vector2
+    func max(a, b: Self)->Self
     {
         var result: retval = ?
         result.x = Math.max(a.x, b.x)
