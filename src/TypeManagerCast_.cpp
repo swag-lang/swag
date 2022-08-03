@@ -3620,19 +3620,22 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     // Const mismatch
     if (toType->kind != TypeInfoKind::Generic && toType->kind != TypeInfoKind::Lambda && !(castFlags & CASTFLAG_FORCE_UNCONST))
     {
-        if (!toType->isConst() && fromType->isConst())
+        if (!(castFlags & CASTFLAG_PARAMS) || toType->kind != TypeInfoKind::Struct)
         {
-            if (!toType->isNative(NativeTypeKind::String) &&
-                (toType != g_TypeMgr->typeInfoNull) &&
-                (!toType->isNative(NativeTypeKind::Bool) || !(castFlags & CASTFLAG_AUTO_BOOL)) &&
-                (!toType->isNative(NativeTypeKind::UInt) || fromType->kind != TypeInfoKind::Pointer))
+            if (!toType->isConst() && fromType->isConst())
             {
-                if (!(castFlags & CASTFLAG_UNCONST))
-                    return castError(context, toType, fromType, fromNode, castFlags | CASTFLAG_CONST_ERR);
+                if (!toType->isNative(NativeTypeKind::String) &&
+                    (toType != g_TypeMgr->typeInfoNull) &&
+                    (!toType->isNative(NativeTypeKind::Bool) || !(castFlags & CASTFLAG_AUTO_BOOL)) &&
+                    (!toType->isNative(NativeTypeKind::UInt) || fromType->kind != TypeInfoKind::Pointer))
+                {
+                    if (!(castFlags & CASTFLAG_UNCONST))
+                        return castError(context, toType, fromType, fromNode, castFlags | CASTFLAG_CONST_ERR);
 
-                // We can affect a const to an unconst if type is by copy, and we are in an affectation
-                if (!(fromType->flags & TYPEINFO_RETURN_BY_COPY) && !(toType->flags & TYPEINFO_RETURN_BY_COPY))
-                    return castError(context, toType, fromType, fromNode, castFlags | CASTFLAG_CONST_ERR);
+                    // We can affect a const to an unconst if type is by copy, and we are in an affectation
+                    if (!(fromType->flags & TYPEINFO_RETURN_BY_COPY) && !(toType->flags & TYPEINFO_RETURN_BY_COPY))
+                        return castError(context, toType, fromType, fromNode, castFlags | CASTFLAG_CONST_ERR);
+                }
             }
         }
     }
@@ -3671,4 +3674,27 @@ TypeInfo* TypeManager::asPointerArithmetic(TypeInfo* typeInfo)
     typeInfo = typeInfo->clone();
     typeInfo->flags |= TYPEINFO_POINTER_ARITHMETIC;
     return typeInfo;
+}
+
+void TypeManager::convertStructParamToRef(AstNode* node, TypeInfo* typeInfo)
+{
+    SWAG_ASSERT(node->kind == AstNodeKind::FuncDeclParam);
+
+    // A struct/interface is forced to be a const reference
+    if (!(node->typeInfo->flags & TYPEINFO_GENERIC))
+    {
+        if (typeInfo->kind == TypeInfoKind::Struct)
+        {
+            // If this has been transformed to an alias cause of const, take the original
+            // type to make the reference
+            if (typeInfo->flags & TYPEINFO_FAKE_ALIAS)
+                typeInfo = ((TypeInfoAlias*) typeInfo)->rawType;
+
+            auto typeRef         = allocType<TypeInfoReference>();
+            typeRef->flags       = typeInfo->flags | TYPEINFO_CONST;
+            typeRef->pointedType = typeInfo;
+            typeRef->computeName();
+            node->typeInfo = typeRef;
+        }
+    }
 }

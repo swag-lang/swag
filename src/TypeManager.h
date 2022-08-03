@@ -121,6 +121,7 @@ struct TypeManager
     static uint32_t  alignOf(TypeInfo* typeInfo);
     static bool      compareConcreteType(const ConcreteTypeInfo* type1, const ConcreteTypeInfo* type2);
     static TypeInfo* asPointerArithmetic(TypeInfo* typeInfo);
+    static void      convertStructParamToRef(AstNode* node, TypeInfo* typeInfo);
 
     void             registerTypeType();
     TypeInfoPointer* makePointerTo(TypeInfo* toType, bool isConst, bool isAritmetic, uint64_t ptrFlags = 0);

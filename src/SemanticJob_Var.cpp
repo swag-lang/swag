@@ -678,8 +678,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
         if (!ownerFct)
         {
-            Diagnostic note{ Hlp(Hlp0020), DiagnosticLevel::Help };
-            return context->report({ node, Fmt(Err(Err0410), node->token.ctext()) }, &note);
+            Diagnostic note{Hlp(Hlp0020), DiagnosticLevel::Help};
+            return context->report({node, Fmt(Err(Err0410), node->token.ctext())}, &note);
         }
     }
 
@@ -1213,24 +1213,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     else if (symbolFlags & OVERLOAD_VAR_FUNC_PARAM)
     {
         node->flags |= AST_R_VALUE;
-
-        // A struct/interface is forced to be a const reference
-        if (!(node->typeInfo->flags & TYPEINFO_GENERIC))
-        {
-            if (typeInfo->kind == TypeInfoKind::Struct)
-            {
-                // If this has been transformed to an alias cause of const, take the original
-                // type to make the reference
-                if (typeInfo->flags & TYPEINFO_FAKE_ALIAS)
-                    typeInfo = ((TypeInfoAlias*) typeInfo)->rawType;
-
-                auto typeRef         = allocType<TypeInfoReference>();
-                typeRef->flags       = typeInfo->flags | TYPEINFO_CONST;
-                typeRef->pointedType = typeInfo;
-                typeRef->computeName();
-                node->typeInfo = typeRef;
-            }
-        }
+        TypeManager::convertStructParamToRef(node, typeInfo);
     }
 
     // A using on a variable

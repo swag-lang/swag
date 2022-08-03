@@ -146,7 +146,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
 
                         // Yes, and the map is not the same, then this is an error
                         else
-                            same = TypeManager::makeCompatibles(context.semContext, it->second, callTypeInfo, nullptr, nullptr, CASTFLAG_NO_ERROR | CASTFLAG_JUST_CHECK);
+                            same = TypeManager::makeCompatibles(context.semContext, it->second, callTypeInfo, nullptr, nullptr, CASTFLAG_NO_ERROR | CASTFLAG_JUST_CHECK | CASTFLAG_FORCE_UNCONST);
                         if (!same)
                         {
                             context.badSignatureInfos.badSignatureParameterIdx  = i;
