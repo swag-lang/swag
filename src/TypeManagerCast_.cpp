@@ -3672,13 +3672,3 @@ TypeInfo* TypeManager::asPointerArithmetic(TypeInfo* typeInfo)
     typeInfo->flags |= TYPEINFO_POINTER_ARITHMETIC;
     return typeInfo;
 }
-
-TypeInfo* TypeManager::asKindofRef(AstNode* node, TypeInfo* typeInfo)
-{
-    if (typeInfo->kind != TypeInfoKind::Pointer)
-        return typeInfo;
-    if (typeInfo->flags & TYPEINFO_POINTER_ARITHMETIC || node->specFlags & AST_SPEC_ARRAYPTRIDX_ISDEREF)
-        return typeInfo;
-    auto typePtr = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
-    return typePtr->pointedType;
-}
