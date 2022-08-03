@@ -38,7 +38,7 @@ impl Image
 
         visitPixels(stride: width)
         {
-            Memory.copy(pix, image.pixels, cast(uint) image.width * image.bpp8)
+            Memory.copy(pix, image.pixels.buffer, cast(uint) image.width * image.bpp8)
         }
     }
 

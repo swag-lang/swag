@@ -47,11 +47,13 @@ impl IWnd for ColorPickerCtrl
 
         brush := Brush.createHatch(.CheckBoardLarge, getThemeColors().colorPicker_BackAlpha)
 
-        if oldColor.a != 255 painter.fillRect(rect, brush)
+        if oldColor.a != 255
+            painter.fillRect(rect, brush)
         painter.fillRect(rect, oldColor)
 
         rect.x += rect.width
-        if color.a != 255 painter.fillRect(rect, brush)
+        if color.a != 255
+            painter.fillRect(rect, brush)
         painter.fillRect(rect, color)
     }
 }
