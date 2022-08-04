@@ -1,0 +1,29 @@
+using Core, Serialization, Math
+
+struct Toto1
+{
+    x: Vector3
+}
+
+struct Toto2
+{
+    x: [4] Vector3
+}
+
+//#[Swag.PrintBc]
+#test
+{
+    var enc: Encoder'Write.TagBin
+
+    var x: Toto1
+    var buf: ConcatBuffer
+    x.x.z = 1.5
+    enc.writeAll(&buf, x)
+    buf.makeLinear()
+
+    var dec: Decoder'Read.TagBin
+    x1 := try dec.readAll'Toto2(buf.toSlice())
+    defer Memory.delete(x1)
+
+    @assert(x1.x[0].z == 1.5)
+}
