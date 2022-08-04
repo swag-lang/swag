@@ -184,6 +184,7 @@ void AstOutput::removeLastBlankLine(Concat& concat)
         if (*p == '\n')
         {
             concat.currentSP = p + 1;
+            concat.eolCount--;
             return;
         }
 
