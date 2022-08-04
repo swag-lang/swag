@@ -368,7 +368,9 @@ impl Capture
         zoom := rect.width / width
 
         // Background image
+        painter.pushClippingRect(rect)
         paintBackImage(painter, rect.x, rect.y, zoom)
+        painter.popClippingRect()
 
         // Shapes
         app := editView.getApp()
