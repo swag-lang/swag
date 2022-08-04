@@ -15,6 +15,7 @@ using Swag
     - Change the size of a static array
     - Convert a static array to a dynamic array, and vice versa
     - Conversion from integer/float/rune/bool to integer/float/rune/bool
+    - Conversion from single value to array/Core.Array
 
     Supported attributes are :
 
@@ -43,7 +44,8 @@ struct TagBin
     options:            TagBinOptions
     freeSections:       ArrayPtr'TagBinSection
     sections:           ArrayPtr'TagBinSection
-    convertNextValueTo: const *Swag.TypeInfoNative
+    convertNextNative:  const *Swag.TypeInfoNative
+    convertSkipArray:   bool
 }
 
 impl TagBin
@@ -88,7 +90,7 @@ private impl TagBin
         // int/float/bool/rune to int/float/bool/rune
         if Reflection.isSimpleNative(to) and Reflection.isSimpleNative(from)
         {
-            convertNextValueTo = cast(const *Swag.TypeInfoNative) from
+            convertNextNative = cast(const *Swag.TypeInfoNative) from
             return true
         }
 
@@ -112,8 +114,7 @@ private impl TagBin
                     return true
             }
         }
-
-        if Reflection.isStruct(from)
+        elif Reflection.isStruct(from)
         {
             fromStruct := cast(const *Swag.TypeInfoStruct) from
             if fromStruct.fromGeneric == @typeof(Array)
@@ -128,6 +129,29 @@ private impl TagBin
             }
         }
 
+        if Reflection.isArray(to)
+        {
+            toArr := cast(const *Swag.TypeInfoArray) to
+            // Conversion from simple value to array
+            if canConvertType(from, toArr.pointedType)
+            {
+                convertSkipArray = true
+                return true
+            }
+        }
+        elif Reflection.isStruct(to)
+        {
+            toStruct := cast(const *Swag.TypeInfoStruct) to
+            if toStruct.fromGeneric == @typeof(Array)
+            {
+                // Conversion from simple value to Core.Array
+                if canConvertType(from, toStruct.generics[0].pointedType)
+                {
+                    convertSkipArray = true
+                    return true
+                }
+            }
+        }
 
         return false
     }
@@ -299,7 +323,8 @@ impl TagBin
 
     mtd endElement() throw
     {
-        convertNextValueTo = null
+        convertNextNative = null
+        convertSkipArray  = false
     }
 
     mtd beginValue() throw
@@ -312,16 +337,25 @@ impl TagBin
 
     mtd beginSequence(typeElem: typeinfo, data: *u8, countElem: *uint)->bool throw
     {
-        sig := stream.readNative'u32()
-        if sig != Write.TagBinSignatures.Sequence
-            throw ErrorCorrupted
-
-        // 0 for a dynamic array, > 0 for a static array
         orgCount := dref countElem
-        dref countElem = stream.readNative'uint()
+
+        if convertSkipArray
+        {
+            dref countElem = 1
+        }
+        else
+        {
+            sig := stream.readNative'u32()
+
+            if sig != Write.TagBinSignatures.Sequence
+                throw ErrorCorrupted
+
+            // 0 for a dynamic array, > 0 for a static array
+            dref countElem = stream.readNative'uint()
+        }
 
         // If we need to type conversion, we must read element by element
-        if convertNextValueTo
+        if convertNextNative
             return false
 
         // Dynamic array of raw serializable types
@@ -398,10 +432,10 @@ impl TagBin
         }
         #else
         {
-            if convertNextValueTo
+            if convertNextNative
             {
                 #[Swag.Safety("", false)]
-                switch convertNextValueTo.nativeKind
+                switch convertNextNative.nativeKind
                 {
                 case Bool:
                     v := stream.readNative'bool()
