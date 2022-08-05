@@ -14,9 +14,19 @@ enum CursorShape
     Hand
     IBeam
     No
+    Wait
 }
 
 struct Cursor
 {
     using native: NativeCursor
+}
+
+impl Cursor
+{
+    // Force the wait cursor
+    func wait()
+    {
+        apply(Cursor.from(CursorShape.Wait))
+    }
 }

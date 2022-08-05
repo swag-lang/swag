@@ -90,7 +90,7 @@ func addImage(image: Image)
         header.biCompression = Bmp.BI_RGB
 
         datas := buf + @sizeof(Bmp.Header)
-        Memory.copy(datas, image.pixels, image.size)
+        Memory.copy(datas, image.pixels.buffer, image.size)
 
         discard GlobalUnlock(buf)
         discard SetClipboardData(CF_DIB, hglob)

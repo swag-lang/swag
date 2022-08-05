@@ -148,6 +148,7 @@ impl Capture
 
     mtd copyAll()
     {
+        Cursor.wait()
         img := toImage()
         Clipboard.addImage(img)
     }

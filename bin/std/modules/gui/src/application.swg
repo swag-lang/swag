@@ -649,6 +649,16 @@ impl Application
         cursorStack.removeBack()
     }
 
+    private mtd changeCursor(wnd: *Wnd)
+    {
+        if cursorStack.count
+            Cursor.apply(cursorStack.back())
+        elif wnd and wnd.cursor.native.cursor != null
+            Cursor.apply(wnd.cursor)
+        else
+            Cursor.apply(Cursor.from(CursorShape.Arrow))
+    }
+
     // Run until exit
     #[Swag.Discardable]
     mtd run()->s32

@@ -25,6 +25,7 @@ impl NativeCursor
     defaultCursors[Hand].cursor     = LoadCursorA(null, MAKEINTRESOURCEA(IDC_HAND))
     defaultCursors[IBeam].cursor    = LoadCursorA(null, MAKEINTRESOURCEA(IDC_IBEAM))
     defaultCursors[No].cursor       = LoadCursorA(null, MAKEINTRESOURCEA(IDC_NO))
+    defaultCursors[Wait].cursor     = LoadCursorA(null, MAKEINTRESOURCEA(IDC_WAIT))
 }
 
 impl Cursor
@@ -34,9 +35,13 @@ impl Cursor
         return NativeCursor.defaultCursors[shape]
     }
 
-
     public mtd clear()
     {
         cursor = null
+    }
+
+    public func apply(cursor: Cursor)
+    {
+        SetCursor(cursor.native.cursor)
     }
 }

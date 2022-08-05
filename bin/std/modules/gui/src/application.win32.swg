@@ -61,14 +61,4 @@ impl Application
 
         return null
     }
-
-    mtd changeCursor(wnd: *Wnd)
-    {
-        if cursorStack.count
-            SetCursor(cursorStack.back().native.cursor)
-        elif wnd and wnd.cursor.native.cursor != null
-            SetCursor(wnd.cursor.native.cursor)
-        else
-            SetCursor(Cursor.from(CursorShape.Arrow).native.cursor)
-    }
 }
