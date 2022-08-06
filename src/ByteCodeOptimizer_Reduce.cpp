@@ -34,6 +34,40 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
         setNop(context, ip + 1);
     }
 
+    // Useless InternalHasErr
+    if (ip[0].op == ByteCodeOp::InternalHasErr &&
+        ip[1].op == ByteCodeOp::JumpIfZero32 &&
+        ip[2].op == ByteCodeOp::MakeConstantSegPointer &&
+        ip[3].op == ByteCodeOp::InternalStackTrace &&
+        ip[4].op == ByteCodeOp::InternalHasErr &&
+        ip[5].op == ByteCodeOp::JumpIfZero32 &&
+        !(ip[4].flags & BCI_START_STMT))
+    {
+        setNop(context, ip + 4);
+        setNop(context, ip + 5);
+    }
+
+    // Useless InternalHasErr
+    if (ip[0].op == ByteCodeOp::InternalHasErr &&
+        ip[1].op == ByteCodeOp::JumpIfZero32 &&
+        ip[2].op == ByteCodeOp::InternalHasErr &&
+        ip[3].op == ByteCodeOp::JumpIfZero32 &&
+        !(ip[2].flags & BCI_START_STMT))
+    {
+        setNop(context, ip + 2);
+        setNop(context, ip + 3);
+    }
+
+    // Duplicated stack trace
+    if (ip[0].op == ByteCodeOp::MakeConstantSegPointer &&
+        ip[1].op == ByteCodeOp::InternalStackTrace &&
+        ip[2].op == ByteCodeOp::MakeConstantSegPointer &&
+        ip[3].op == ByteCodeOp::InternalStackTrace &&
+        !(ip[2].flags & BCI_START_STMT))
+    {
+        setNop(context, ip + 2);
+        setNop(context, ip + 3);
+    }
 
     // GetErr/Jump on another GetErr/Jump, make a shortcut
     if (ip[0].op == ByteCodeOp::InternalHasErr && ip[1].op == ByteCodeOp::JumpIfZero32)
