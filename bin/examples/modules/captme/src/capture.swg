@@ -88,7 +88,7 @@ impl Capture
         painter.setColorMask(true, true, true, false)
 
         visit f: forms
-            paintForm(app, &painter, rect, f, zoom)
+            paintForm(app, &painter, rect, f, zoom, snapMode: true)
         painter.end()
 
         render.begin(editView.surface.rc)
@@ -234,12 +234,14 @@ impl Capture
     // PAINT
     //////////////////////////////
 
-    func paintForm(app: *Application, painter: *Painter, rect: Math.Rectangle, f: IForm, zoom: f32, quickMode = false)
+    func paintForm(app: *Application, painter: *Painter, rect: Math.Rectangle, f: IForm, zoom: f32, quickMode = false, snapMode = false)
     {
         render := &app.renderer
 
         boundRect := f.boundRect(false)
         base := cast(*BaseForm) @dataof(f)
+
+        savePaintPos := base.paintPos
         base.paintPos.x      = rect.x + (boundRect.x * zoom)
         base.paintPos.y      = rect.y + (boundRect.y * zoom)
         base.paintPos.width  = boundRect.width * zoom
@@ -322,6 +324,9 @@ impl Capture
         painter.releaseRenderTarget(rt)
         painter.releaseRenderTarget(rt1)
         painter.releaseRenderTarget(rt2)
+
+        if snapMode
+            base.paintPos = savePaintPos
     }
 
     mtd paintBackImage(painter: *Painter, x, y: f32, z: f32)
