@@ -20,8 +20,33 @@ struct TagBinSection
 
 struct TagBin
 {
-    output:   *ConcatBuffer
-    sections: Array'TagBinSection
+    output:         *ConcatBuffer
+    freeSections:   ArrayPtr'TagBinSection
+    sections:       ArrayPtr'TagBinSection
+}
+
+private impl TagBin
+{
+    mtd newSection()->*TagBinSection
+    {
+        if freeSections.count
+        {
+            ptr := freeSections.popBack()
+            ptr.mapSeek.clear()
+            ptr.raw     = false
+            ptr.final   = false
+            sections.add(ptr)
+            return ptr
+        }
+
+        return sections.addNewPtr()
+    }
+
+    mtd releaseSection()
+    {
+        ptr := sections.popBack()
+        freeSections.add(ptr)
+    }
 }
 
 impl TagBin
@@ -29,7 +54,6 @@ impl TagBin
     mtd startWrite(buf: *ConcatBuffer)
     {
         output = buf
-        sections.clear()
     }
 
     mtd beginRoot()
@@ -53,18 +77,18 @@ impl TagBin
 
     mtd beginSection()
     {
-        sec := sections.emplaceInitAddress()
+        sec := newSection()
         sec.raw = true
     }
 
     mtd endSection()
     {
-        sections.removeBack()
+        releaseSection()
     }
 
     mtd beginFields(structType: typeinfo, structData: const *u8)->bool
     {
-        sec := sections.emplaceInitAddress()
+        sec := newSection()
 
         if  Reflection.hasAttribute(structType, Serialization.Final) or
             Reflection.hasAttribute(structType, Serialization.PodFinal)
@@ -91,10 +115,10 @@ impl TagBin
 
     mtd endFields()
     {
-        sec := sections.backPtr()
+        sec := sections.back()
         if sec.final
         {
-            sections.removeBack()
+            releaseSection()
             return
         }
 
@@ -117,7 +141,7 @@ impl TagBin
             output.addNative(output.getOffset(v))
         }
 
-        sections.removeBack()
+        releaseSection()
     }
 
     mtd beginElement(val: TypeValue)
@@ -125,7 +149,7 @@ impl TagBin
         // Outside a section
         if !sections.isEmpty()
         {
-            sec := sections.backPtr()
+            sec := sections.back()
 
             // If section is final, then we just have values without versionning
             if sec.final
