@@ -18,7 +18,7 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
         parent = parent->parent;
     if (parent->kind == AstNodeKind::IdentifierRef && parent->parent)
         parent = parent->parent;
-    SWAG_CHECK(checkCatchError(context, node, node->func, parent, node->func->typeInfo));
+    SWAG_CHECK(checkCatchError(context, node->func->typeInfo->declNode, node, node->func, parent, node->func->typeInfo));
 
     // Clear current error
     if (node->func->typeInfo->flags & TYPEINFO_CAN_THROW)

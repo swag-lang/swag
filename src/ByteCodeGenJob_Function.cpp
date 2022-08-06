@@ -475,8 +475,8 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     }
     case TokenId::IntrinsicItfTableOf:
     {
-        auto child0 = callParams->childs[0];
-        auto child1 = callParams->childs[1];
+        auto child0            = callParams->childs[0];
+        auto child1            = callParams->childs[1];
         node->resultRegisterRC = reserveRegisterRC(context);
         emitInstruction(context, ByteCodeOp::IntrinsicItfTableOf, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
         freeRegisterRC(context, child0);
@@ -1158,13 +1158,15 @@ void ByteCodeGenJob::emitPushRAParams(ByteCodeGenContext* context, VectorNative<
     accParams.clear();
 }
 
-bool ByteCodeGenJob::checkCatchError(ByteCodeGenContext* context, AstNode* callNode, AstNode* funcNode, AstNode* parent, TypeInfo* typeInfoFunc)
+bool ByteCodeGenJob::checkCatchError(ByteCodeGenContext* context, AstNode* srcNode, AstNode* callNode, AstNode* funcNode, AstNode* parent, TypeInfo* typeInfoFunc)
 {
     bool raiseErrors = typeInfoFunc->flags & TYPEINFO_CAN_THROW;
     if (raiseErrors && (!callNode->extension || !callNode->extension->ownerTryCatchAssume))
     {
+        if (!srcNode)
+            srcNode = typeInfoFunc->declNode;
         Diagnostic diag{callNode, Fmt(Err(Err0534), funcNode->token.ctext())};
-        Diagnostic note{typeInfoFunc->declNode, Fmt(Nte(Nte0040), typeInfoFunc->declNode->token.ctext()), DiagnosticLevel::Note};
+        Diagnostic note{srcNode, Fmt(Nte(Nte0040), srcNode->token.ctext()), DiagnosticLevel::Note};
         return context->report(diag, &note);
     }
 
@@ -1174,8 +1176,10 @@ bool ByteCodeGenJob::checkCatchError(ByteCodeGenContext* context, AstNode* callN
             parent->kind == AstNodeKind::Catch ||
             parent->kind == AstNodeKind::Assume)
         {
+            if (!srcNode)
+                srcNode = typeInfoFunc->declNode;
             Diagnostic diag{parent, Fmt(Err(Err0535), parent->token.ctext())};
-            Diagnostic note{typeInfoFunc->declNode, Fmt(Nte(Nte0040), typeInfoFunc->declNode->token.ctext()), DiagnosticLevel::Note};
+            Diagnostic note{srcNode, Fmt(Nte(Nte0040), srcNode->token.ctext()), DiagnosticLevel::Note};
             return context->report(diag, &note);
         }
     }
@@ -1276,15 +1280,13 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     {
         typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
     }
-
-    // :SilentCall
     else if (varNode->typeInfo->kind == TypeInfoKind::Array)
     {
+        // :SilentCall
         auto typeArr = CastTypeInfo<TypeInfoArray>(varNode->typeInfo, TypeInfoKind::Array);
         auto typeVar = TypeManager::concreteType(typeArr->finalType, CONCRETE_ALIAS);
         typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(typeVar, TypeInfoKind::Lambda);
     }
-
     else
     {
         auto typeVar = TypeManager::concreteType(varNode->typeInfo, CONCRETE_ALIAS);
@@ -1298,9 +1300,9 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
 
     // Error, check validity.
     if (node->parent->kind == AstNodeKind::IdentifierRef)
-        SWAG_CHECK(checkCatchError(context, node, node, node->parent->parent, typeInfoFunc));
+        SWAG_CHECK(checkCatchError(context, varNode, node, node, node->parent->parent, typeInfoFunc));
     else
-        SWAG_CHECK(checkCatchError(context, node, node, node->parent, typeInfoFunc));
+        SWAG_CHECK(checkCatchError(context, varNode, node, node, node->parent, typeInfoFunc));
 
     int precallStack  = 0;
     int numCallParams = allParams ? (int) allParams->childs.size() : 0;
