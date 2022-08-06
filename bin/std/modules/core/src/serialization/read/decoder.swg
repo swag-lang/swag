@@ -32,6 +32,13 @@ struct(T) Decoder
 
 impl Decoder
 {
+    mtd readTypeValue(typeVal: TypeValue, data: ^void) throw
+    {
+        discard serializer.beginElement(typeVal)
+        readValue(data, typeVal.pointedType)
+        serializer.endElement()
+    }
+
     mtd readValue(data: ^void, dataType: typeinfo) throw
     {
         type := Reflection.makeConcreteAlias(dataType)
@@ -78,6 +85,40 @@ impl Decoder
             crc := serializer.readNative'u32()
             typeType := Reflection.crcToType(crc)
             dref cast(*typeinfo) data = typeType
+            return
+        }
+
+        if Reflection.isInterface(type)
+        {
+            itf := cast(*Swag.Interface) data
+
+            serializer.beginSection()
+            defer serializer.endSection()
+
+            var objType, itfType: typeinfo
+            var typeVal: TypeValue
+            typeVal.pointedType = typeinfo
+
+            typeVal.name = "objtype"
+            typeVal.crc32 = 1
+            readTypeValue(typeVal, &objType)
+
+            if objType
+            {
+                typeVal.name = "itftype"
+                typeVal.crc32 = 2
+                readTypeValue(typeVal, &itfType)
+
+                itf.itable = @itftableof(cast(const *Swag.TypeInfoStruct) objType, cast(const *Swag.TypeInfoStruct) itfType)
+
+                typeVal.name = "value"
+                typeVal.crc32 = 3
+                typeVal.pointedType = objType
+
+                itf.obj = Memory.new(objType)
+                readTypeValue(typeVal, itf.obj)
+            }
+
             return
         }
 

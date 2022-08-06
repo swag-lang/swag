@@ -31,6 +31,13 @@ struct(T) Encoder
 
 impl Encoder
 {
+    mtd writeTypeValue(typeVal: TypeValue, data: const ^void)
+    {
+        serializer.beginElement(typeVal)
+        writeValue(data, typeVal.pointedType)
+        serializer.endElement()
+    }
+
     mtd writeValue(data: const ^void, dataType: typeinfo)
     {
         type := Reflection.makeConcreteAlias(dataType)
@@ -76,6 +83,43 @@ impl Encoder
         {
             typeType := dref cast(const **TypeInfo) data
             serializer.writeNative(typeType ? typeType.crc32 : 0'u32)
+            return
+        }
+
+        if Reflection.isInterface(type)
+        {
+            itf := cast(const *Swag.Interface) data
+
+            serializer.beginSection()
+            defer serializer.endSection()
+
+            var objType, itfType: typeinfo
+            if itf.itable
+            {
+                objType = itf.itable[bitcast(uint) -1'int]
+                itfType = itf.itable[bitcast(uint) -2'int]
+            }
+
+            var typeVal: TypeValue
+            typeVal.pointedType = typeinfo
+
+            typeVal.name = "objtype"
+            typeVal.crc32 = 1
+            writeTypeValue(typeVal, &objType)
+
+            if objType
+            {
+                typeVal.name = "itftype"
+                typeVal.crc32 = 2
+                writeTypeValue(typeVal, &itfType)
+
+                typeVal.name = "value"
+                typeVal.crc32 = 3
+                typeVal.pointedType = objType
+
+                writeTypeValue(typeVal, itf.obj)
+            }
+
             return
         }
 
@@ -131,20 +175,14 @@ impl Encoder
                 typeVal.name = "type"
                 typeVal.crc32 = 1
                 typeVal.pointedType = structType.fields[0].pointedType
-
-                serializer.beginElement(typeVal)
-                writeValue(&dataObj.type, typeVal.pointedType)
-                serializer.endElement()
+                writeTypeValue(typeVal, &dataObj.type)
 
                 if dataObj.value
                 {
                     typeVal.name = "value"
                     typeVal.crc32 = 2
                     typeVal.pointedType = dataObj.type
-
-                    serializer.beginElement(typeVal)
-                    writeValue(dataObj.value, typeVal.pointedType)
-                    serializer.endElement()
+                    writeTypeValue(typeVal, dataObj.value)
                 }
 
                 return
@@ -180,9 +218,7 @@ impl Encoder
             {
                 if !itf or !itf.writeElement(dref field, data + field.offset, cast(IEncoder) self)
                 {
-                    serializer.beginElement(field)
-                    writeValue(data + field.offset, field.pointedType)
-                    serializer.endElement()
+                    writeTypeValue(field, data + field.offset)
                 }
             }
 

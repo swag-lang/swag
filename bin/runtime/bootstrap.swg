@@ -357,6 +357,12 @@ namespace Swag
         Generic     = 0x0800
     }
 
+    struct Interface
+    {
+        obj:    *void
+        itable: const ^^void
+    }
+
     struct AttributeParam
     {
         name:	string

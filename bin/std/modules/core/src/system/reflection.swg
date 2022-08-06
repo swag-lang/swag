@@ -15,6 +15,7 @@ using Swag
         func isArray(t: typeinfo)       => t.kind == .Array
         func isSlice(t: typeinfo)       => t.kind == .Slice
         func isTypeAlias(t: typeinfo)   => t.kind == .Alias
+        func isInterface(t: typeinfo)   => t.kind == .Interface
         func isGeneric(t: typeinfo)     => t.flags & .Generic
 
         func isSimpleNative(t: typeinfo)->bool
@@ -30,7 +31,7 @@ using Swag
             if t.kind != .Native
                 return false
             tt := cast(const *TypeInfoNative) t
-            return tt.nativeKind == TypeInfoNativeKind.Rune
+            return tt.nativeKind == .Rune
         }
 
         func isAny(t: typeinfo)->bool
@@ -38,7 +39,7 @@ using Swag
             if t.kind != .Native
                 return false
             tt := cast(const *TypeInfoNative) t
-            return tt.nativeKind == TypeInfoNativeKind.Any
+            return tt.nativeKind == .Any
         }
 
         func isBool(t: typeinfo)->bool
@@ -46,7 +47,7 @@ using Swag
             if t.kind != .Native
                 return false
             tt := cast(const *TypeInfoNative) t
-            return tt.nativeKind == TypeInfoNativeKind.Bool
+            return tt.nativeKind == .Bool
         }
 
         func isString(t: typeinfo)->bool
@@ -54,7 +55,7 @@ using Swag
             if t.kind != .Native
                 return false
             tt := cast(const *TypeInfoNative) t
-            return tt.nativeKind == TypeInfoNativeKind.String
+            return tt.nativeKind == .String
         }
     }
 

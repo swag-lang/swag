@@ -154,24 +154,9 @@ impl Capture
 
     mtd copy()
     {
-        var arr: Array'(Object'BaseForm)
-        var o:   Object'BaseForm
-
+        var arr: Array'IForm
         visit s: selection
-        {
-            f       := forms[s]
-            mdlType := @kindof(f)
-            base    := cast(*BaseForm) @dataof(f)
-
-            save := o.alloc(mdlType)
-            Memory.copy(save, base, mdlType.sizeof)
-            if mdlType.opPostCopy
-                mdlType.opPostCopy(save)
-
-            o.type = mdlType
-            o.value = save
-            arr.emplace(&o)
-        }
+            arr.add(forms[s])
 
         var buf:    ConcatBuffer
         var encode: Encoder'Write.TagBin
@@ -190,11 +175,11 @@ impl Capture
             return
 
         var decode: Decoder'Read.TagBin
-        var res:    Array'(Object'BaseForm)
+        var res:    Array'IForm
 
         catch decode.start(arr.toSlice())
         if @err return
-        catch decode.readValue(&res, Array'(Object'BaseForm))
+        catch decode.readValue(&res, Array'IForm)
         if @err or !res.count return
         catch decode.end()
         if @err return
@@ -204,19 +189,16 @@ impl Capture
 
         var boundRect: Math.Rectangle
 
-        visit &o, idx: res
+        visit &itf, idx: res
         {
-            itf := @mkinterface(o.value, o.type, IForm)
             itf.setup(self)
-
             if idx == 0
                 boundRect = itf.boundRect(false)
             else
                 boundRect.setUnion(itf.boundRect(false))
-
-            undo.oldForms.add(itf)
-            o.value = null
         }
+
+        undo.oldForms = res
 
         // Move around mouse
         pt := editView.getApp().mouse.getPosition()
