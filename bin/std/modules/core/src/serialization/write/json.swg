@@ -100,7 +100,7 @@ impl JSon
         lastSeekValue = output.getSeek()
     }
 
-    mtd beginSection()
+    mtd beginSection(kind: SectionKind)
     {
     }
 

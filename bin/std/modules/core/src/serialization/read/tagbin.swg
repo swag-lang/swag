@@ -30,7 +30,8 @@ struct TagBinSection
     mapSeek:        HashTable'(u32, uint)
     afterFatSeek:   uint
     version:        u32
-    final:          bool
+    kind:           SectionKind
+    skipFat:        bool
 }
 
 struct TagBinOptions
@@ -68,7 +69,6 @@ private impl TagBin
             ptr := freeSections.popBack()
             ptr.mapSeek.clear()
             ptr.version = 0
-            ptr.final   = false
             sections.add(ptr)
             return ptr
         }
@@ -210,39 +210,59 @@ impl TagBin
     {
     }
 
-    mtd beginSection() throw
+    mtd beginSection(kind: SectionKind, skipFat = false) throw
     {
         sec := newSection()
+        sec.kind    = kind
+        sec.skipFat = skipFat
+        if kind != .Unordered
+            return
 
-        // Read fat position
+        // Read fat position and count
         sig := stream.readNative'u32()
         if sig != Write.TagBinSignatures.Fat
             throw ErrorFat
-        fatSeek := stream.readNative'uint()
-        stream.setSeek(fatSeek)
-
-        // Read fat
-        sig = stream.readNative'u32()
-        if sig != Write.TagBinSignatures.Fat
-            throw ErrorFat
+        fatSeek  := stream.readNative'uint()
         fatCount := stream.readNative'uint()
 
-        while fatCount
+        // We have a fat, but we do not want it !
+        if skipFat
         {
-            crc  := stream.readNative'u32()
-            seek := stream.readNative'uint()
-            sec.mapSeek.add(crc, seek)
-            fatCount -= 1
+            sec.afterFatSeek = fatSeek
+            sec.afterFatSeek += @sizeof(u32) // Signature
+            sec.afterFatSeek += fatCount * @sizeof(u32) // Crc
+            sec.afterFatSeek += fatCount * @sizeof(uint) // Element seek
         }
+        else
+        {
+            // Seek to fat and read it
+            stream.setSeek(fatSeek)
+            sig = stream.readNative'u32()
+            if sig != Write.TagBinSignatures.Fat
+                throw ErrorFat
 
-        sec.afterFatSeek = stream.getSeek()
+            while fatCount
+            {
+                crc  := stream.readNative'u32()
+                seek := stream.readNative'uint()
+                sec.mapSeek.add(crc, seek)
+                fatCount -= 1
+            }
+
+            sec.afterFatSeek = stream.getSeek()
+        }
     }
 
     mtd endSection() throw
     {
         sec := sections.back()
-        if !sec.final
+
+        // Fat is after the datas. We need to be sure to point
+        // to what's next, except in raw mode where we are already at
+        // the correct offset
+        if sec.kind != .Raw
             stream.setSeek(sec.afterFatSeek)
+
         releaseSection()
     }
 
@@ -251,27 +271,36 @@ impl TagBin
         if  Reflection.hasAttribute(structType, Serialization.Final) or
             Reflection.hasAttribute(structType, Serialization.PodFinal)
         {
-            sec := newSection()
-            sec.final = true
-            return false
+            beginSection(.Raw)
         }
-
-        // Read version
-        sig := stream.readNative'u32()
-        if sig != Write.TagBinSignatures.Version
-            throw ErrorCorrupted
-        streamVersion := stream.readNative'u32()
-
-        // Deal with version
-        version := Reflection.getAttributeValue(structType, Serialization.Version, "v")
-        if version != null
+        else
         {
-            curVersion := cast(u32) version
-            if !options.tryForward and curVersion < streamVersion
-                throw ErrorNewestVersion
+            // Read version
+            sig := stream.readNative'u32()
+            if sig != Write.TagBinSignatures.Version
+                throw ErrorCorrupted
+            streamVersion := stream.readNative'u32()
+
+            // Deal with version
+            skipFat := false
+            version := Reflection.getAttributeValue(structType, Serialization.Version, "v")
+            if version != null
+            {
+                curVersion := cast(u32) version
+
+                // Stream version is more recent than current code.
+                // Error, except if we want to try forward compatibility
+                if !options.tryForward and curVersion < streamVersion
+                    throw ErrorNewestVersion
+
+                // If this is the exact same version, then no need to read the fat
+                if curVersion == streamVersion
+                    skipFat = true
+            }
+
+            beginSection(.Unordered, skipFat)
         }
 
-        beginSection()
         return false
     }
 
@@ -283,16 +312,16 @@ impl TagBin
     mtd beginElement(val: TypeValue)->bool throw
     {
         reqCrcName := val.crc32
+        sec := sections.back()
 
-        // Outside a section
-        if !sections.isEmpty()
+        // If section is raw, then we just have values without versionning
+        if sec.kind == .Raw
+            return true
+
+        // If section is ordered, then we do not have a fat, but just elements
+        // descriptors followed by values
+        if sec.kind != .Ordered and !sec.skipFat
         {
-            sec := sections.back()
-
-            // If section is final, then we just have values without versionning
-            if sec.final
-                return true
-
             ent := sec.mapSeek.find(val.crc32)
 
             // If ent is null, then we are requesting a field that do not exist

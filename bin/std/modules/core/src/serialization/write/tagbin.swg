@@ -14,7 +14,7 @@ struct TagBinSection
 {
     startSeek:  ConcatBufferSeek
     mapSeek:    HashTable'(u32, ConcatBufferSeek)
-    final:      bool
+    kind:       SectionKind
 }
 
 struct TagBin
@@ -32,7 +32,6 @@ private impl TagBin
         {
             ptr := freeSections.popBack()
             ptr.mapSeek.clear()
-            ptr.final = false
             sections.add(ptr)
             return ptr
         }
@@ -73,42 +72,41 @@ impl TagBin
     {
     }
 
-    mtd beginSection()
+    mtd beginSection(kind: SectionKind)
     {
         sec := newSection()
+        sec.kind = kind
+        if sec.kind != .Unordered
+            return
 
-        // Will store the fat offset here
         output.addNative(TagBinSignatures.Fat)
         sec.startSeek = output.getSeek()
-        output.addNative(0'uint)
+        output.addNative(0'uint) // Will store the fat offset here
+        output.addNative(0'uint) // Will store the fat count here
     }
 
     mtd endSection()
     {
         sec := sections.back()
-        if sec.final
+        if sec.kind != .Unordered
         {
             releaseSection()
             return
         }
 
-        // Patch fat table seek
+        // Patch fat table seek and count
         curSeek := output.getSeek()
         output.setSeek(sec.startSeek)
         output.addNative(output.getOffset(curSeek))
+        output.addNative(sec.mapSeek.count)
         output.setSeek(curSeek)
 
         // Write fat table
         output.addNative(TagBinSignatures.Fat)
-        output.addNative(sec.mapSeek.count)
-
         visit k, v: sec.mapSeek
         {
-            // Crc
-            output.addNative(k)
-
-            // Linear seek inside the buffer
-            output.addNative(output.getOffset(v))
+            output.addNative(k) // Crc
+            output.addNative(output.getOffset(v)) // Linear seek inside the buffer
         }
 
         releaseSection()
@@ -119,20 +117,22 @@ impl TagBin
         if  Reflection.hasAttribute(structType, Serialization.Final) or
             Reflection.hasAttribute(structType, Serialization.PodFinal)
         {
-            sec := newSection()
-            sec.final = true
-            return false
+            beginSection(.Raw)
+        }
+        else
+        {
+            // Struct version
+            output.addNative(TagBinSignatures.Version)
+            version := Reflection.getAttributeValue(structType, Serialization.Version, "v")
+            if version == null
+                output.addNative(0'u32)
+            else
+                output.addNative(cast(u32) version)
+
+            // Start unordered section
+            beginSection(.Unordered)
         }
 
-        // Struct version
-        output.addNative(TagBinSignatures.Version)
-        version := Reflection.getAttributeValue(structType, Serialization.Version, "v")
-        if version == null
-            output.addNative(0'u32)
-        else
-            output.addNative(cast(u32) version)
-
-        beginSection()
         return false
     }
 
@@ -143,16 +143,15 @@ impl TagBin
 
     mtd beginElement(val: TypeValue)
     {
-        // Outside a section
-        if !sections.isEmpty()
+        sec := sections.back()
+
+        // If section is raw, then we just have values without versionning
+        if sec.kind == .Raw
+            return
+
+        // Register the current seek for the fat generation
+        if sec.kind == .Unordered
         {
-            sec := sections.back()
-
-            // If section is final, then we just have values without versionning
-            if sec.final
-                return
-
-            // Register the current seek for the fat generation
             Debug.assert(!sec.mapSeek.contains(val.crc32))
             sec.mapSeek.add(val.crc32, output.getSeek())
         }

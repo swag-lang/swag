@@ -6,6 +6,8 @@ interface IDecoder
 {
     beginField:     mtd(TypeValue)->bool throw
     endField:       mtd() throw
+    beginSection:   mtd(SectionKind) throw
+    endSection:     mtd() throw
     getVersion:     mtd()->u32
 
     read:           mtd(*void, typeinfo) throw
@@ -92,29 +94,22 @@ impl Decoder
         {
             itf := cast(*Swag.Interface) data
 
-            serializer.beginSection()
+            serializer.beginSection(.Raw)
             defer serializer.endSection()
 
             var objType, itfType: typeinfo
             var typeVal: TypeValue
             typeVal.pointedType = typeinfo
 
-            typeVal.name = "objtype"
-            typeVal.crc32 = 1
             readTypeValue(typeVal, &objType)
 
             if objType
             {
-                typeVal.name = "itftype"
-                typeVal.crc32 = 2
                 readTypeValue(typeVal, &itfType)
 
                 itf.itable = @itftableof(cast(const *Swag.TypeInfoStruct) objType, cast(const *Swag.TypeInfoStruct) itfType)
 
-                typeVal.name = "value"
-                typeVal.crc32 = 3
                 typeVal.pointedType = objType
-
                 itf.obj = Memory.new(objType)
                 readTypeValue(typeVal, itf.obj)
             }
@@ -265,15 +260,25 @@ impl IDecoder for Decoder
         return true
     }
 
-    mtd getVersion()->u32
-    {
-        return serializer.getVersion()
-    }
-
     mtd endField() throw
     {
         serializer.endValue()
         serializer.endElement()
+    }
+
+    mtd beginSection(kind: SectionKind) throw
+    {
+        serializer.beginSection(kind)
+    }
+
+    mtd endSection() throw
+    {
+        serializer.endSection()
+    }
+
+    mtd getVersion()->u32
+    {
+        return serializer.getVersion()
     }
 
     mtd read(data: *void, dataType: typeinfo) throw

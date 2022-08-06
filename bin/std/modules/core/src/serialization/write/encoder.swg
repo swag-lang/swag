@@ -2,10 +2,19 @@
 #global namespace Serialization
 using Swag
 
+enum SectionKind
+{
+    Raw
+    Unordered
+    Ordered
+}
+
 interface IEncoder
 {
     beginField:     mtd(TypeValue)
     endField:       mtd()
+    beginSection:   mtd(SectionKind)
+    endSection:     mtd()
 
     write:          mtd(const *void, typeinfo)
     writeBufferU8:  mtd(const *u8, uint)
@@ -90,7 +99,7 @@ impl Encoder
         {
             itf := cast(const *Swag.Interface) data
 
-            serializer.beginSection()
+            serializer.beginSection(.Raw)
             defer serializer.endSection()
 
             var objType, itfType: typeinfo
@@ -102,21 +111,12 @@ impl Encoder
 
             var typeVal: TypeValue
             typeVal.pointedType = typeinfo
-
-            typeVal.name = "objtype"
-            typeVal.crc32 = 1
             writeTypeValue(typeVal, &objType)
 
             if objType
             {
-                typeVal.name = "itftype"
-                typeVal.crc32 = 2
                 writeTypeValue(typeVal, &itfType)
-
-                typeVal.name = "value"
-                typeVal.crc32 = 3
                 typeVal.pointedType = objType
-
                 writeTypeValue(typeVal, itf.obj)
             }
 
@@ -254,6 +254,16 @@ impl IEncoder for Encoder
     {
         serializer.endValue()
         serializer.endElement()
+    }
+
+    mtd beginSection(kind: SectionKind)
+    {
+        serializer.beginSection(kind)
+    }
+
+    mtd endSection()
+    {
+        serializer.endSection()
     }
 
     mtd write(data: const ^void, type: typeinfo)

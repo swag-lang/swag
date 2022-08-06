@@ -90,7 +90,7 @@ public impl JSon
             throw "malformed struct (missing closing '}')"
     }
 
-    mtd beginSection()
+    mtd beginSection(kind: SectionKind)
     {
     }
 

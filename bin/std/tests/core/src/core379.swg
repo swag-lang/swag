@@ -17,14 +17,14 @@ struct Toto2
 
     var buf: ConcatBuffer
     enc.start(&buf)
-    enc.serializer.beginSection()
-    enc.serializer.endSection()
+    enc.IEncoder.beginSection(.Unordered)
+    enc.IEncoder.endSection()
     enc.end()
     buf.makeLinear()
 
     var dec: Decoder'Read.TagBin
     try dec.start(buf.toSlice())
-    try dec.serializer.beginSection()
-    try dec.serializer.endSection()
+    try dec.IDecoder.beginSection(.Unordered)
+    try dec.IDecoder.endSection()
     try dec.end()
 }
