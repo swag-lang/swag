@@ -21,6 +21,12 @@ func compare(dest, src: const ^void, size: uint)->s32
     return @memcmp(dest, src, size)
 }
 
+// Compare two blocks of memory
+func(T) equals(dest, src: const ^T)->bool
+{
+    return @memcmp(dest, src, @sizeof(T)) == 0
+}
+
 // Clear one block of memory
 func clear(dest: ^void, size: uint)
 {

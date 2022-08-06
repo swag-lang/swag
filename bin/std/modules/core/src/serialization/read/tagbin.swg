@@ -311,6 +311,8 @@ impl TagBin
 
     mtd beginElement(val: TypeValue)->bool throw
     {
+        Debug.assert(sections.count != 0, "Missing a previous 'beginSection' call")
+
         reqCrcName := val.crc32
         sec := sections.back()
 

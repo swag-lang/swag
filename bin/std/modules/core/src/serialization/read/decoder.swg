@@ -4,10 +4,14 @@ using Swag
 
 interface IDecoder
 {
+    start:          mtd(const [..] u8) throw
+    end:            mtd() throw
+
     beginField:     mtd(TypeValue)->bool throw
     endField:       mtd() throw
     beginSection:   mtd(SectionKind) throw
     endSection:     mtd() throw
+
     getVersion:     mtd()->u32
 
     read:           mtd(*void, typeinfo) throw
@@ -29,7 +33,6 @@ interface IDecoder
 struct(T) Decoder
 {
     serializer: T
-    started:    bool
 }
 
 impl Decoder
@@ -218,8 +221,6 @@ impl Decoder
     // Start reading
     mtd start(input: const [..] u8) throw
     {
-        Debug.assert(!started)
-        started = true
         serializer.startRead(input)
         serializer.beginRoot()
     }
@@ -227,15 +228,12 @@ impl Decoder
     // Finish reading
     mtd end() throw
     {
-        Debug.assert(started)
-        started = false
         serializer.endRoot()
     }
 
     // Read a full struct
     mtd(TR) readAll(input: const [..] u8)->*TR throw
     {
-        Debug.assert(!started)
         Debug.assert(Reflection.isStruct(TR))
 
         start(input)
@@ -252,6 +250,17 @@ impl Decoder
 
 impl IDecoder for Decoder
 {
+    mtd start(input: const [..] u8) throw
+    {
+        serializer.startRead(input)
+        serializer.beginRoot()
+    }
+
+    mtd end() throw
+    {
+        serializer.endRoot()
+    }
+
     mtd beginField(val: Swag.TypeValue)->bool throw
     {
         if !serializer.beginElement(val)

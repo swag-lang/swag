@@ -143,6 +143,8 @@ impl TagBin
 
     mtd beginElement(val: TypeValue)
     {
+        Debug.assert(sections.count != 0, "Missing a previous 'beginSection' call")
+
         sec := sections.back()
 
         // If section is raw, then we just have values without versionning

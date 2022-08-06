@@ -11,6 +11,9 @@ enum SectionKind
 
 interface IEncoder
 {
+    start:          mtd(*ConcatBuffer)
+    end:            mtd()
+
     beginField:     mtd(TypeValue)
     endField:       mtd()
     beginSection:   mtd(SectionKind)
@@ -35,11 +38,23 @@ interface IEncoder
 struct(T) Encoder
 {
     serializer: T
-    started:    bool
 }
 
 impl Encoder
 {
+    // Start serialization
+    mtd start(result: *ConcatBuffer)
+    {
+        serializer.startWrite(result)
+        serializer.beginRoot()
+    }
+
+    // End serialization
+    mtd end()
+    {
+        serializer.endRoot()
+    }
+
     mtd writeTypeValue(typeVal: TypeValue, data: const ^void)
     {
         serializer.beginElement(typeVal)
@@ -214,11 +229,21 @@ impl Encoder
         }
     }
 
+    // Write a full struct
+    mtd writeAll(result: *ConcatBuffer, value: any)
+    {
+        Debug.assert(Reflection.isStruct(@kindof(value)))
+        start(self, result)
+        writeValue(@dataof(value), @kindof(value))
+        end(self)
+    }
+}
+
+impl IEncoder for Encoder
+{
     // Start serialization
     mtd start(result: *ConcatBuffer)
     {
-        Debug.assert(!started)
-        started = true
         serializer.startWrite(result)
         serializer.beginRoot()
     }
@@ -226,24 +251,9 @@ impl Encoder
     // End serialization
     mtd end()
     {
-        Debug.assert(started)
-        started = false
         serializer.endRoot()
     }
 
-    // Write a full struct
-    mtd writeAll(result: *ConcatBuffer, value: any)
-    {
-        Debug.assert(!started)
-        Debug.assert(Reflection.isStruct(@kindof(value)))
-        start(result)
-        writeValue(@dataof(value), @kindof(value))
-        end()
-    }
-}
-
-impl IEncoder for Encoder
-{
     mtd beginField(val: Swag.TypeValue)
     {
         serializer.beginElement(val)

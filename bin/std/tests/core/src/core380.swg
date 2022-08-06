@@ -19,7 +19,7 @@ var toto2: Toto1
 
     func readWrite(where: *Toto1, ser: *Serializer) throw
     {
-        ser.beginSection(.Ordered)
+        ser.beginSection(.Raw)
         ser.serialize("x", &where.x)
         ser.serialize("y", &where.y)
         ser.endSection()

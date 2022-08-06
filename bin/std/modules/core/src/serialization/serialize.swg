@@ -30,3 +30,134 @@ interface ISerialize
     writeElement:   mtd(TypeValue, const *void, IEncoder)->bool
     postSerialize:  mtd(*void, IDecoder)
 }
+
+struct Serializer
+{
+    encode:     IEncoder
+    decode:     IDecoder
+    isWrite:    bool
+}
+
+impl Serializer
+{
+    // Start encoding
+    mtd startWrite(encoder: IEncoder, output: *ConcatBuffer)
+    {
+        encode = encoder
+        isWrite = true
+        encode.start(output)
+    }
+
+    // Start decoding
+    mtd startRead(decoder: IDecoder, input: const [..] u8) throw
+    {
+        decode = decoder
+        isWrite = false
+        decode.start(input)
+    }
+
+    // End encoding/decoding
+    mtd end() throw
+    {
+        if isWrite
+            encode.end()
+        else
+            decode.end()
+    }
+
+    // Start a new section
+    mtd beginSection(kind: SectionKind) throw
+    {
+        if isWrite
+            encode.beginSection(kind)
+        else
+            decode.beginSection(kind)
+    }
+
+    // End the previous section
+    mtd endSection() throw
+    {
+        if isWrite
+            encode.endSection()
+        else
+            decode.endSection()
+    }
+
+    mtd(MT) serialize(name: string, crc32: u32, res: *MT) throw
+    {
+        var value: Swag.TypeValue
+        value.name = name
+        value.crc32 = crc32
+        value.pointedType = @typeof(MT)
+
+        if isWrite
+        {
+            encode.beginField(value)
+
+            #if MT == s8
+                encode.writeS8(dref res)
+            #elif MT == s16
+                encode.writeS16(dref res)
+            #elif MT == s32
+                encode.writeS32(dref res)
+            #elif MT == s64
+                encode.writeS64(dref res)
+            #elif MT == u8
+                encode.writeU8(dref res)
+            #elif MT == u16
+                encode.writeU16(dref res)
+            #elif MT == u32 or MT == rune
+                encode.writeU32(dref res)
+            #elif MT == u64
+                encode.writeU64(dref res)
+            #elif MT == bool
+                encode.writeBool(dref res)
+            #elif MT == f32
+                encode.writeF32(dref res)
+            #elif MT == f64
+                encode.writeF64(dref res)
+            #else
+                encode.write(res, @typeof(MT))
+
+            encode.endField()
+        }
+        else
+        {
+            if !decode.beginField(value)
+                return
+
+            #if MT == s8
+                dref res = decode.readS8()
+            #elif MT == s16
+                dref res = decode.readS16()
+            #elif MT == s32
+                dref res = decode.readS32()
+            #elif MT == s64
+                dref res = decode.readS64()
+            #elif MT == u8
+                dref res = decode.readU8()
+            #elif MT == u16
+                dref res = decode.readU16()
+            #elif MT == u32 or MT == rune
+                dref res = decode.readU32()
+            #elif MT == u64
+                dref res = decode.readU64()
+            #elif MT == bool
+                dref res = decode.readBool()
+            #elif MT == f32
+                dref res = decode.readF32()
+            #elif MT == f64
+                dref res = decode.readF64()
+            #else
+                decode.read(res, @typeof(MT))
+
+            decode.endField()
+        }
+    }
+
+    // Serialize one value
+    mtd(MT) serialize(name: string, res: *MT) throw
+    {
+        serialize(name, Hash.Crc32.compute(name), res)
+    }
+}
