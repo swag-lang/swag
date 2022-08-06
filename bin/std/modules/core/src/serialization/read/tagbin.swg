@@ -30,7 +30,6 @@ struct TagBinSection
     mapSeek:        HashTable'(u32, uint)
     afterFatSeek:   uint
     version:        u32
-    raw:            bool
     final:          bool
 }
 
@@ -69,7 +68,6 @@ private impl TagBin
             ptr := freeSections.popBack()
             ptr.mapSeek.clear()
             ptr.version = 0
-            ptr.raw     = false
             ptr.final   = false
             sections.add(ptr)
             return ptr
@@ -212,24 +210,48 @@ impl TagBin
     {
     }
 
-    mtd beginSection()
+    mtd beginSection() throw
     {
         sec := newSection()
-        sec.raw = true
+
+        // Read fat position
+        sig := stream.readNative'u32()
+        if sig != Write.TagBinSignatures.Fat
+            throw ErrorFat
+        fatSeek := stream.readNative'uint()
+        stream.setSeek(fatSeek)
+
+        // Read fat
+        sig = stream.readNative'u32()
+        if sig != Write.TagBinSignatures.Fat
+            throw ErrorFat
+        fatCount := stream.readNative'uint()
+
+        while fatCount
+        {
+            crc  := stream.readNative'u32()
+            seek := stream.readNative'uint()
+            sec.mapSeek.add(crc, seek)
+            fatCount -= 1
+        }
+
+        sec.afterFatSeek = stream.getSeek()
     }
 
-    mtd endSection()
+    mtd endSection() throw
     {
+        sec := sections.back()
+        if !sec.final
+            stream.setSeek(sec.afterFatSeek)
         releaseSection()
     }
 
     mtd beginFields(structType: typeinfo, structData: const *u8)->bool throw
     {
-        sec := newSection()
-
         if  Reflection.hasAttribute(structType, Serialization.Final) or
             Reflection.hasAttribute(structType, Serialization.PodFinal)
         {
+            sec := newSection()
             sec.final = true
             return false
         }
@@ -238,61 +260,24 @@ impl TagBin
         sig := stream.readNative'u32()
         if sig != Write.TagBinSignatures.Version
             throw ErrorCorrupted
-        sec.version = stream.readNative'u32()
+        streamVersion := stream.readNative'u32()
 
         // Deal with version
         version := Reflection.getAttributeValue(structType, Serialization.Version, "v")
         if version != null
         {
-            curVersion    := cast(u32) version
-            streamVersion := sec.version
+            curVersion := cast(u32) version
             if !options.tryForward and curVersion < streamVersion
                 throw ErrorNewestVersion
-
-            if curVersion == streamVersion
-                sec.raw = true
         }
 
-        // Read fat position
-        sig = stream.readNative'u32()
-        if sig != Write.TagBinSignatures.Fat
-            throw ErrorFat
-        fatSeek := stream.readNative'uint()
-
-        // When versions are the same, do not read the fat
-        if !sec.raw
-        {
-            stream.setSeek(fatSeek)
-
-            sig = stream.readNative'u32()
-            if sig != Write.TagBinSignatures.Fat
-                throw ErrorFat
-            fatCount := stream.readNative'uint()
-
-            while fatCount
-            {
-                crc  := stream.readNative'u32()
-                seek := stream.readNative'uint()
-                sec.mapSeek.add(crc, seek)
-                fatCount -= 1
-            }
-
-            sec.afterFatSeek = stream.getSeek()
-        }
-
+        beginSection()
         return false
     }
 
     mtd endFields() throw
     {
-        if !sections.isEmpty()
-        {
-            sec := sections.back()
-            if !sec.raw and !sec.final
-                stream.setSeek(sec.afterFatSeek)
-        }
-
-        releaseSection()
+        endSection()
     }
 
     mtd beginElement(val: TypeValue)->bool throw
@@ -308,34 +293,30 @@ impl TagBin
             if sec.final
                 return true
 
-            // If section is raw, then we do not have a fat, this are not fields
-            if !sec.raw
+            ent := sec.mapSeek.find(val.crc32)
+
+            // If ent is null, then we are requesting a field that do not exist
+            // in the stream
+            if !ent
             {
-                ent := sec.mapSeek.find(val.crc32)
-
-                // If ent is null, then we are requesting a field that do not exist
-                // in the stream
-                if !ent
+                // So check for aliases
+                aliases := Reflection.getAttributes(val, Serialization.Alias)
+                visit al: aliases
                 {
-                    // So check for aliases
-                    aliases := Reflection.getAttributes(val, Serialization.Alias)
-                    visit al: aliases
-                    {
-                        val := Reflection.getAttributeValue(al, "name")
-                        Debug.assert(val != null)
-                        reqCrcName = Hash.Crc32.compute(cast(string) val)
-                        ent = sec.mapSeek.find(reqCrcName)
-                        if ent
-                            break
-                    }
+                    val := Reflection.getAttributeValue(al, "name")
+                    Debug.assert(val != null)
+                    reqCrcName = Hash.Crc32.compute(cast(string) val)
+                    ent = sec.mapSeek.find(reqCrcName)
+                    if ent
+                        break
                 }
-
-                // No alias, the field is not there, just ignore it
-                if !ent
-                    return false
-
-                stream.setSeek(ent.value)
             }
+
+            // No alias, the field is not there, just ignore it
+            if !ent
+                return false
+
+            stream.setSeek(ent.value)
         }
 
         // Read name signature

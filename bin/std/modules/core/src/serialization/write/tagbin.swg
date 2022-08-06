@@ -14,7 +14,6 @@ struct TagBinSection
 {
     startSeek:  ConcatBufferSeek
     mapSeek:    HashTable'(u32, ConcatBufferSeek)
-    raw:        bool
     final:      bool
 }
 
@@ -33,8 +32,7 @@ private impl TagBin
         {
             ptr := freeSections.popBack()
             ptr.mapSeek.clear()
-            ptr.raw     = false
-            ptr.final   = false
+            ptr.final = false
             sections.add(ptr)
             return ptr
         }
@@ -78,42 +76,14 @@ impl TagBin
     mtd beginSection()
     {
         sec := newSection()
-        sec.raw = true
-    }
 
-    mtd endSection()
-    {
-        releaseSection()
-    }
-
-    mtd beginFields(structType: typeinfo, structData: const *u8)->bool
-    {
-        sec := newSection()
-
-        if  Reflection.hasAttribute(structType, Serialization.Final) or
-            Reflection.hasAttribute(structType, Serialization.PodFinal)
-        {
-            sec.final = true
-            return false
-        }
-
-        // Struct version
-        output.addNative(TagBinSignatures.Version)
-        version := Reflection.getAttributeValue(structType, Serialization.Version, "v")
-        if version == null
-            output.addNative(0'u32)
-        else
-            output.addNative(cast(u32) version)
-
-        // Seek to the fat
+        // Will store the fat offset here
         output.addNative(TagBinSignatures.Fat)
         sec.startSeek = output.getSeek()
         output.addNative(0'uint)
-
-        return false
     }
 
-    mtd endFields()
+    mtd endSection()
     {
         sec := sections.back()
         if sec.final
@@ -144,6 +114,33 @@ impl TagBin
         releaseSection()
     }
 
+    mtd beginFields(structType: typeinfo, structData: const *u8)->bool
+    {
+        if  Reflection.hasAttribute(structType, Serialization.Final) or
+            Reflection.hasAttribute(structType, Serialization.PodFinal)
+        {
+            sec := newSection()
+            sec.final = true
+            return false
+        }
+
+        // Struct version
+        output.addNative(TagBinSignatures.Version)
+        version := Reflection.getAttributeValue(structType, Serialization.Version, "v")
+        if version == null
+            output.addNative(0'u32)
+        else
+            output.addNative(cast(u32) version)
+
+        beginSection()
+        return false
+    }
+
+    mtd endFields()
+    {
+        endSection()
+    }
+
     mtd beginElement(val: TypeValue)
     {
         // Outside a section
@@ -155,13 +152,9 @@ impl TagBin
             if sec.final
                 return
 
-            // If section is raw, then we do not have a fat, this are not fields
-            if !sec.raw
-            {
-                // Register the current seek for the fat generation
-                Debug.assert(!sec.mapSeek.contains(val.crc32))
-                sec.mapSeek.add(val.crc32, output.getSeek())
-            }
+            // Register the current seek for the fat generation
+            Debug.assert(!sec.mapSeek.contains(val.crc32))
+            sec.mapSeek.add(val.crc32, output.getSeek())
         }
 
         // Write element signature
