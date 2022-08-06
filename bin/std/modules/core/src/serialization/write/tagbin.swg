@@ -13,7 +13,7 @@ enum TagBinSignatures
 struct TagBinSection
 {
     startSeek:  ConcatBufferSeek
-    mapSeek:    HashTable'(string, ConcatBufferSeek)
+    mapSeek:    HashTable'(u32, ConcatBufferSeek)
     raw:        bool
     final:      bool
 }
@@ -73,6 +73,7 @@ impl TagBin
             return false
         }
 
+        // Struct version
         output.addNative(TagBinSignatures.Version)
         version := Reflection.getAttributeValue(structType, Serialization.Version, "v")
         if version == null
@@ -80,17 +81,10 @@ impl TagBin
         else
             output.addNative(cast(u32) version)
 
+        // Seek to the fat
         output.addNative(TagBinSignatures.Fat)
-        output.addNative(fields.count)
-
         sec.startSeek = output.getSeek()
-
-        // Fat
-        visit field: fields
-        {
-            output.addNative(field.crc32)
-            output.addNative(0'uint) // Will be replaced with the seek to the corresponding startElement
-        }
+        output.addNative(0'uint)
 
         return false
     }
@@ -104,21 +98,23 @@ impl TagBin
             return
         }
 
+        // Patch fat table seek
         curSeek := output.getSeek()
-        defer output.setSeek(curSeek)
-
-        // Patch fat table
         output.setSeek(sec.startSeek)
-        visit field: fields
+        output.addNative(output.getOffset(curSeek))
+        output.setSeek(curSeek)
+
+        // Write fat table
+        output.addNative(TagBinSignatures.Fat)
+        output.addNative(sec.mapSeek.count)
+
+        visit k, v: sec.mapSeek
         {
-            // zap crc
-            output.moveSeek(4)
+            // Crc
+            output.addNative(k)
 
-            p := sec.mapSeek.find(field.name)
-            Debug.assert(p != null)
-
-            // Write linear seek inside the buffer
-            output.addNative(output.getOffset(p.value))
+            // Linear seek inside the buffer
+            output.addNative(output.getOffset(v))
         }
 
         sections.removeBack()
@@ -139,8 +135,8 @@ impl TagBin
             if !sec.raw
             {
                 // Register the current seek for the fat generation
-                Debug.assert(!sec.mapSeek.contains(val.name))
-                sec.mapSeek.add(val.name, output.getSeek())
+                Debug.assert(!sec.mapSeek.contains(val.crc32))
+                sec.mapSeek.add(val.crc32, output.getSeek())
             }
         }
 

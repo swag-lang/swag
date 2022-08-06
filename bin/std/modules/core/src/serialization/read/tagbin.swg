@@ -27,10 +27,11 @@ using Swag
 
 struct TagBinSection
 {
-    mapSeek: HashTable'(u32, uint)
-    version: u32
-    raw:     bool
-    final:   bool
+    mapSeek:        HashTable'(u32, uint)
+    afterFatSeek:   uint
+    version:        u32
+    raw:            bool
+    final:          bool
 }
 
 struct TagBinOptions
@@ -249,26 +250,25 @@ impl TagBin
                 throw ErrorNewestVersion
 
             if curVersion == streamVersion
-            {
                 sec.raw = true
-            }
         }
 
-        // Read fat
+        // Read fat position
         sig = stream.readNative'u32()
         if sig != Write.TagBinSignatures.Fat
             throw ErrorFat
-
-        // Read fat
-        fatCount := stream.readNative'uint()
+        fatSeek := stream.readNative'uint()
 
         // When versions are the same, do not read the fat
-        if sec.raw
+        if !sec.raw
         {
-            stream.moveSeek(fatCount * (@sizeof(u32) + @sizeof(uint)))
-        }
-        else
-        {
+            stream.setSeek(fatSeek)
+
+            sig = stream.readNative'u32()
+            if sig != Write.TagBinSignatures.Fat
+                throw ErrorFat
+            fatCount := stream.readNative'uint()
+
             while fatCount
             {
                 crc  := stream.readNative'u32()
@@ -276,6 +276,8 @@ impl TagBin
                 sec.mapSeek.add(crc, seek)
                 fatCount -= 1
             }
+
+            sec.afterFatSeek = stream.getSeek()
         }
 
         return false
@@ -283,6 +285,13 @@ impl TagBin
 
     mtd endFields(fields: Array'(const *TypeValue)) throw
     {
+        if !sections.isEmpty()
+        {
+            sec := sections.back()
+            if !sec.raw and !sec.final
+                stream.setSeek(sec.afterFatSeek)
+        }
+
         releaseSection()
     }
 

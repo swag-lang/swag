@@ -187,6 +187,7 @@ impl RecentWnd
         recent.scrollWndFlags |= .SmallBar | .ForceHorizontal
         recent.backgroundStyle = .Window
         recent.main = main
+        recent.style.addStyleSheetColors("scrollBar_Bk $view_Bk")
 
         recent.recentView = recent.createView'RecentView()
         recent.recentView.padding = RecentPadding
