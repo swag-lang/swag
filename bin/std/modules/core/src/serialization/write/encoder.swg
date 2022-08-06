@@ -171,26 +171,20 @@ impl Encoder
                     return
             }
 
-            // Get all fields to serialize
-            var fields: Array'(const *TypeValue)
+            // Start a fields section
+            treated = serializer.beginFields(structType, data)
+            defer(noerr) serializer.endFields()
+            if treated
+                return
+
+            // Generic structure save
             visit field: structType.fields
             {
                 if Reflection.hasAttribute(field, NoSerialize)
                     continue
                 if Reflection.hasAttribute(field.pointedType, NoSerialize)
                     continue
-                fields.add(field)
-            }
 
-            // Start a fields section
-            treated = serializer.beginFields(fields, structType, data)
-            defer(noerr) serializer.endFields(fields)
-            if treated
-                return
-
-            // Generic structure save
-            visit field: fields
-            {
                 if !itf or !itf.writeElement(dref field, data + field.offset, cast(IEncoder) self)
                 {
                     writeTypeValue(field, data + field.offset)

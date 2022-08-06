@@ -223,7 +223,7 @@ impl TagBin
         releaseSection()
     }
 
-    mtd beginFields(fields: Array'(const *TypeValue), structType: typeinfo, structData: const *u8)->bool throw
+    mtd beginFields(structType: typeinfo, structData: const *u8)->bool throw
     {
         sec := newSection()
 
@@ -283,7 +283,7 @@ impl TagBin
         return false
     }
 
-    mtd endFields(fields: Array'(const *TypeValue)) throw
+    mtd endFields() throw
     {
         if !sections.isEmpty()
         {

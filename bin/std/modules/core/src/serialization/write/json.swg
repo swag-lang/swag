@@ -108,12 +108,12 @@ impl JSon
     {
     }
 
-    mtd beginFields(fields: Array'(const *TypeValue), structType: typeinfo, structData: const *u8)->bool
+    mtd beginFields(structType: typeinfo, structData: const *u8)->bool
     {
         return false
     }
 
-    mtd endFields(fields: Array'(const *TypeValue))
+    mtd endFields()
     {
     }
 

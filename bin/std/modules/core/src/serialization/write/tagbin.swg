@@ -62,7 +62,7 @@ impl TagBin
         sections.removeBack()
     }
 
-    mtd beginFields(fields: Array'(const *TypeValue), structType: typeinfo, structData: const *u8)->bool
+    mtd beginFields(structType: typeinfo, structData: const *u8)->bool
     {
         sec := sections.emplaceInitAddress()
 
@@ -89,7 +89,7 @@ impl TagBin
         return false
     }
 
-    mtd endFields(fields: Array'(const *TypeValue))
+    mtd endFields()
     {
         sec := sections.backPtr()
         if sec.final

@@ -169,25 +169,19 @@ impl Decoder
                     return
             }
 
-            // Get all fields to serialize
-            var fields: Array'(const *TypeValue)
+            // Generic struct load
+            treated = serializer.beginFields(structType, data)
+            defer(noerr) serializer.endFields()
+            if treated
+                return
+
             visit field: structType.fields
             {
                 if Reflection.hasAttribute(field, NoSerialize)
                     continue
                 if Reflection.hasAttribute(field.pointedType, NoSerialize)
                     continue
-                fields.add(field)
-            }
 
-            // Generic struct load
-            treated = serializer.beginFields(fields, structType, data)
-            defer(noerr) serializer.endFields(fields)
-            if treated
-                return
-
-            visit field: fields
-            {
                 if !itf or !itf.readElement(dref field, data + field.offset, idecoder)
                 {
                     if serializer.beginElement(field)
