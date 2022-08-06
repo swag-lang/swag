@@ -155,6 +155,7 @@ impl Serializer
     }
 
     // Serialize one value
+    #[Swag.Mixin]
     mtd(MT) serialize(name: string, res: *MT) throw
     {
         serialize(name, Hash.Crc32.compute(name), res)
