@@ -148,19 +148,19 @@ void LanguageSpec::setupNames()
     name_nozero     = "nozero";
     name_toplevel   = "toplevel";
 
-    name_atalias       = "@alias";
-    name_atmixin       = "@mixin";
-    name_atdrop        = "@drop";
-    name_atpostCopy    = "@postCopy";
-    name_atpostMove    = "@postMove";
-    name_atargs        = "@args";
-    name_atseterr      = "@seterr";
-    name_atpanic       = "@panic";
-    name_aterrormsg    = "@errormsg";
-    name_atinterfaceof = "@interfaceof";
-    name_atstrcmp      = "@stringcmp";
-    name_attypecmp     = "@typecmp";
-    name_sharpself     = "#self";
+    name_atalias      = "@alias";
+    name_atmixin      = "@mixin";
+    name_atdrop       = "@drop";
+    name_atpostCopy   = "@postCopy";
+    name_atpostMove   = "@postMove";
+    name_atargs       = "@args";
+    name_atseterr     = "@seterr";
+    name_atpanic      = "@panic";
+    name_aterrormsg   = "@errormsg";
+    name_atitftableof = "@itftableof";
+    name_atstrcmp     = "@stringcmp";
+    name_attypecmp    = "@typecmp";
+    name_sharpself    = "#self";
 
     name_memcpy  = "memcpy";
     name_memset  = "memset";
@@ -347,6 +347,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("@alloc", TokenId::IntrinsicAlloc);
     keywords.add("@realloc", TokenId::IntrinsicRealloc);
     keywords.add("@free", TokenId::IntrinsicFree);
+    keywords.add("@itftableof", TokenId::IntrinsicItfTableOf);
     keywords.add("@memcpy", TokenId::IntrinsicMemCpy);
     keywords.add("@memmove", TokenId::IntrinsicMemMove);
     keywords.add("@memset", TokenId::IntrinsicMemSet);

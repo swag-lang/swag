@@ -473,6 +473,16 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         freeRegisterRC(context, child1->resultRegisterRC[0]);
         break;
     }
+    case TokenId::IntrinsicItfTableOf:
+    {
+        auto child0 = callParams->childs[0];
+        auto child1 = callParams->childs[1];
+        node->resultRegisterRC = reserveRegisterRC(context);
+        emitInstruction(context, ByteCodeOp::IntrinsicItfTableOf, child0->resultRegisterRC, child1->resultRegisterRC, node->resultRegisterRC);
+        freeRegisterRC(context, child0);
+        freeRegisterRC(context, child1);
+        break;
+    }
     case TokenId::IntrinsicSetErr:
     {
         auto child0 = callParams->childs[0];

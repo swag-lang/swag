@@ -27,7 +27,7 @@ BYTECODE_OP(ForeignCall, OPFLAG_READ_VAL64_D, "call", 0)
 BYTECODE_OP(MakeLambda, OPFLAG_WRITE_A | OPFLAG_READ_VAL64_B, "_ra_ = ", 0)
 
 BYTECODE_OP(IntrinsicSetErr, OPFLAG_READ_A | OPFLAG_READ_B, "@seterr(_ra_, _rb_)", 2)
-BYTECODE_OP(IntrinsicInterfaceOf, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_WRITE_C, "_rc_ = @interfaceof(_ra_, _rb_)", 3)
+BYTECODE_OP(IntrinsicItfTableOf, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_WRITE_C, "_rc_ = @itftableof(_ra_, _rb_)", 3)
 BYTECODE_OP(IntrinsicErrorMsg, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_READ_C, "@errormsg(_ra_, _rb_, _rc_)", 3)
 BYTECODE_OP(IntrinsicPanic, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_READ_C, "@panic(_ra_, _rb_, _rc_)", 3)
 BYTECODE_OP(IntrinsicTypeCmp, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_READ_C | OPFLAG_IMM_C | OPFLAG_WRITE_D, "_rd_ = @typecmp(_ra_, _rb_, _rcu64_)", 4)

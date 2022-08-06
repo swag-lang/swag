@@ -274,6 +274,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, A
     case TokenId::IntrinsicIsConstExpr:
     case TokenId::IntrinsicCVaArg:
     case TokenId::IntrinsicTypeOf:
+    case TokenId::IntrinsicItfTableOf:
         SWAG_CHECK(doIdentifierRef(parent, result));
         break;
 

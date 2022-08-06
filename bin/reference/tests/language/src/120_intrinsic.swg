@@ -40,6 +40,7 @@ func @seterr(err: string);
 @mkforeign()
 @getpinfos()
 @isconstexpr()
+@itftableof()
 
 @index
 @err

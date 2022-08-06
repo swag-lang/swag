@@ -347,7 +347,7 @@ func @typecmp(typeA, typeB: typeinfo, cmpFlags: TypeCmpFlags)->bool
 
 ////////////////////////////////////////////////////////////
 #[Safety("", false)]
-func @interfaceof(structType, itfType: const *TypeInfoStruct)->const *void
+func @itftableof(structType, itfType: const *TypeInfoStruct)->const *void
 {
     loop i: structType.interfaces
     {

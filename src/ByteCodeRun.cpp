@@ -1909,9 +1909,9 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         localCall(context, bc, 3);
         break;
     }
-    case ByteCodeOp::IntrinsicInterfaceOf:
+    case ByteCodeOp::IntrinsicItfTableOf:
     {
-        auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_atinterfaceof);
+        auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_atitftableof);
         context->push(registersRC[ip->b.u32].pointer);
         context->push(registersRC[ip->a.u32].pointer);
         localCall(context, bc, 2, ip->c.u32);

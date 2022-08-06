@@ -2607,12 +2607,12 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->c.u32), R8, RDI);
             emitCall(pp, g_LangSpec->name_atpanic);
             break;
-        case ByteCodeOp::IntrinsicInterfaceOf:
+        case ByteCodeOp::IntrinsicItfTableOf:
             SWAG_ASSERT(sizeParamsStack >= 3 * sizeof(Register));
             BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->c.u32), RCX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RDX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), R8, RDI);
-            emitCall(pp, g_LangSpec->name_atinterfaceof);
+            emitCall(pp, g_LangSpec->name_atitftableof);
             break;
 
         case ByteCodeOp::CopyRCtoRR:

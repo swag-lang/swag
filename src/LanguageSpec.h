@@ -1,5 +1,4 @@
 #pragma once
-#pragma once
 #include "TypeInfo.h"
 #include "Tokenizer.h"
 #include "Utf8.h"
@@ -180,7 +179,7 @@ struct LanguageSpec
     Utf8 name_atseterr;
     Utf8 name_atpanic;
     Utf8 name_aterrormsg;
-    Utf8 name_atinterfaceof;
+    Utf8 name_atitftableof;
     Utf8 name_atstrcmp;
     Utf8 name_attypecmp;
 

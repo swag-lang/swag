@@ -1098,9 +1098,9 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::IntrinsicInterfaceOf:
+        case ByteCodeOp::IntrinsicItfTableOf:
         {
-            localCall(buildParameters, allocR, allocT, "@interfaceof", {ip->c.u32, ip->a.u32, ip->b.u32}, {});
+            localCall(buildParameters, allocR, allocT, "@itftableof", {ip->c.u32, ip->a.u32, ip->b.u32}, {});
             break;
         }
 

@@ -122,6 +122,7 @@
 @interfaceof
 @isbytecode
 @isconstexpr
+@itftableof
 @kindof
 @mkany
 @mkcallback
