@@ -83,6 +83,7 @@ impl Serializer
             decode.endSection()
     }
 
+    // Serialize one value
     mtd(MT) serialize(name: string, crc32: u32, res: *MT) throw
     {
         var value: Swag.TypeValue
@@ -93,6 +94,7 @@ impl Serializer
         if isWrite
         {
             encode.beginField(value)
+            defer encode.endField()
 
             #if MT == s8
                 encode.writeS8(dref res)
@@ -118,13 +120,12 @@ impl Serializer
                 encode.writeF64(dref res)
             #else
                 encode.write(res, @typeof(MT))
-
-            encode.endField()
         }
         else
         {
             if !decode.beginField(value)
                 return
+            defer decode.endField()
 
             #if MT == s8
                 dref res = decode.readS8()
@@ -150,8 +151,6 @@ impl Serializer
                 dref res = decode.readF64()
             #else
                 decode.read(res, @typeof(MT))
-
-            decode.endField()
         }
     }
 

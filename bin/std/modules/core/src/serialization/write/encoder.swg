@@ -32,7 +32,6 @@ interface IEncoder
     writeU64:       mtd(u64)
     writeF32:       mtd(f32)
     writeF64:       mtd(f64)
-    writeString:    mtd(string)
 }
 
 struct(T) Encoder
@@ -310,5 +309,4 @@ impl IEncoder for Encoder
     mtd writeU64(value: u64)          = serializer.writeNative(value)
     mtd writeF32(value: f32)          = serializer.writeNative(value)
     mtd writeF64(value: f64)          = serializer.writeNative(value)
-    mtd writeString(value: string)    = serializer.writeNative(value)
 }

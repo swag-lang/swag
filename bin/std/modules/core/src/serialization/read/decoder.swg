@@ -27,7 +27,6 @@ interface IDecoder
     readU64:        mtd()->u64 throw
     readF32:        mtd()->f32 throw
     readF64:        mtd()->f64 throw
-    readString:     mtd()->String throw
 }
 
 struct(T) Decoder
@@ -329,5 +328,4 @@ impl IDecoder for Decoder
     mtd readU64()->u64 throw        => serializer.readNative'u64()
     mtd readF32()->f32 throw        => serializer.readNative'f32()
     mtd readF64()->f64 throw        => serializer.readNative'f64()
-    mtd readString()->String throw  => serializer.readNative'String()
 }
