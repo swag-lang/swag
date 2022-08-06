@@ -163,31 +163,6 @@ impl Encoder
             if treated
                 return
 
-            // Core.Object
-            if structType.fromGeneric == @typeof(Object)
-            {
-                dataObj := cast(const *Object'String) data // 'String' is fake
-                serializer.beginSection()
-                defer serializer.endSection()
-
-                var typeVal: TypeValue
-
-                typeVal.name = "type"
-                typeVal.crc32 = 1
-                typeVal.pointedType = structType.fields[0].pointedType
-                writeTypeValue(typeVal, &dataObj.type)
-
-                if dataObj.value
-                {
-                    typeVal.name = "value"
-                    typeVal.crc32 = 2
-                    typeVal.pointedType = dataObj.type
-                    writeTypeValue(typeVal, dataObj.value)
-                }
-
-                return
-            }
-
             // A structure with an implementation of ISerialize
             itf := @mkinterface(data, type, ISerialize)
             if itf != null

@@ -160,40 +160,6 @@ impl Decoder
             if treated
                 return
 
-            // Core.Object
-            if structType.fromGeneric == @typeof(Object)
-            {
-                dataObj := cast(*Object'String) data // 'String' is fake
-
-                serializer.beginSection()
-                defer serializer.endSection()
-
-                var typeVal: TypeValue
-
-                typeVal.name = "type"
-                typeVal.crc32 = 1
-                typeVal.pointedType = structType.fields[0].pointedType
-
-                discard serializer.beginElement(typeVal)
-                readValue(&dataObj.type, typeVal.pointedType)
-                serializer.endElement()
-
-                typeVal.name = "value"
-                typeVal.crc32 = 2
-                typeVal.pointedType = dataObj.type
-
-                if dataObj.type
-                {
-                    dataObj.value = acast Memory.new(dataObj.type)
-
-                    discard serializer.beginElement(typeVal)
-                    readValue(dataObj.value, typeVal.pointedType)
-                    serializer.endElement()
-                }
-
-                return
-            }
-
             // A structure with an implementation of ISerialize
             idecoder := cast(IDecoder) self
             itf := @mkinterface(data, type, ISerialize)
