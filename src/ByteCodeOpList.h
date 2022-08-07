@@ -13,11 +13,11 @@ BYTECODE_OP(Ret, OPFLAG_READ_VAL32_A, "return", 0)
 BYTECODE_OP(CloneString, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_WRITE_A, "", 0)
 
 BYTECODE_OP(PushRVParam, OPFLAG_READ_A | OPFLAG_READ_VAL64_B, "", 0)
-BYTECODE_OP(PushRAParamCond, OPFLAG_READ_A | OPFLAG_READ_B, "if _ra_ pushstack _rb_", 0)
-BYTECODE_OP(PushRAParam, OPFLAG_READ_A, "pushstack _ra_", 0)
-BYTECODE_OP(PushRAParam2, OPFLAG_READ_A | OPFLAG_READ_B, "pushstack _ra_, _rb_", 0)
-BYTECODE_OP(PushRAParam3, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_READ_C, "pushstack _ra_, _rb_, _rc_", 0)
-BYTECODE_OP(PushRAParam4, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_READ_C | OPFLAG_READ_D, "pushstack _ra_, _rb_, _rc_, _rd_", 0)
+BYTECODE_OP(PushRAParamCond, OPFLAG_READ_A | OPFLAG_READ_B, "if _ra_ pushparam _rb_", 0)
+BYTECODE_OP(PushRAParam, OPFLAG_READ_A, "pushparam _ra_", 0)
+BYTECODE_OP(PushRAParam2, OPFLAG_READ_A | OPFLAG_READ_B, "pushparam _ra_, _rb_", 0)
+BYTECODE_OP(PushRAParam3, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_READ_C, "pushparam _ra_, _rb_, _rc_", 0)
+BYTECODE_OP(PushRAParam4, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_READ_C | OPFLAG_READ_D, "pushparam _ra_, _rb_, _rc_, _rd_", 0)
 
 BYTECODE_OP(MulAddVC64, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_READ_VAL64_C, "_ra_ = _ra_ * (_rb_ + _rcu8_)", 0)
 
