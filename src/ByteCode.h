@@ -14,23 +14,24 @@ struct ByteCodeRunContext;
 struct ByteCode;
 struct SourceLocation;
 
-static const uint16_t BCI_JUMP_DEST     = 0x0001;
-static const uint16_t BCI_DEBUG         = 0x0002;
-static const uint16_t BCI_CSTDONE       = 0x0004;
-static const uint16_t BCI_SAFETY        = 0x0008;
-static const uint16_t BCI_IMM_A         = 0x0010;
-static const uint16_t BCI_IMM_B         = 0x0020;
-static const uint16_t BCI_IMM_C         = 0x0040;
-static const uint16_t BCI_IMM_D         = 0x0080;
-static const uint16_t BCI_OPT_FLAG      = 0x0100;
-static const uint16_t BCI_POST_COPYMOVE = 0x0200;
-static const uint16_t BCI_UNPURE        = 0x0400;
-static const uint16_t BCI_TRYCATCH      = 0x0800;
-static const uint16_t BCI_SHIFT_SMALL   = 0x1000;
-static const uint16_t BCI_START_STMT_N  = 0x2000;
-static const uint16_t BCI_START_STMT_S  = 0x4000;
-static const uint16_t BCI_START_STMT    = BCI_START_STMT_N | BCI_START_STMT_S;
-static const uint16_t BCI_NO_BACKEND    = 0x8000;
+static const uint32_t BCI_JUMP_DEST     = 0x00000001;
+static const uint32_t BCI_DEBUG         = 0x00000002;
+static const uint32_t BCI_CSTDONE       = 0x00000004;
+static const uint32_t BCI_SAFETY        = 0x00000008;
+static const uint32_t BCI_IMM_A         = 0x00000010;
+static const uint32_t BCI_IMM_B         = 0x00000020;
+static const uint32_t BCI_IMM_C         = 0x00000040;
+static const uint32_t BCI_IMM_D         = 0x00000080;
+static const uint32_t BCI_OPT_FLAG      = 0x00000100;
+static const uint32_t BCI_POST_COPYMOVE = 0x00000200;
+static const uint32_t BCI_UNPURE        = 0x00000400;
+static const uint32_t BCI_TRYCATCH      = 0x00000800;
+static const uint32_t BCI_SHIFT_SMALL   = 0x00001000;
+static const uint32_t BCI_START_STMT_N  = 0x00002000;
+static const uint32_t BCI_START_STMT_S  = 0x00004000;
+static const uint32_t BCI_START_STMT    = BCI_START_STMT_N | BCI_START_STMT_S;
+static const uint32_t BCI_NO_BACKEND    = 0x00008000;
+static const uint32_t BCI_VARIADIC      = 0x00010000;
 
 struct ByteCodeInstruction
 {
@@ -40,8 +41,8 @@ struct ByteCodeInstruction
     Register        d;
     AstNode*        node;
     SourceLocation* location;
+    uint32_t        flags;
     ByteCodeOp      op;
-    uint16_t        flags;
 #ifdef SWAG_DEV_MODE
     const char* sourceFile;
     int         sourceLine;

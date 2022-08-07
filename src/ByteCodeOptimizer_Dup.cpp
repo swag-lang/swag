@@ -117,10 +117,10 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
             // Do it only for CopyRBtoRA64, as other copy have an implicit cast
             // *NOT* for PushRAParam, because the register numbers are important in case of variadic parameters.
             // *NOT* for CopySP, because the register numbers are important in case of variadic parameters.
-            if (ip->op != ByteCodeOp::PushRAParam &&
-                ip->op != ByteCodeOp::PushRAParam2 &&
-                ip->op != ByteCodeOp::PushRAParam3 &&
-                ip->op != ByteCodeOp::PushRAParam4 &&
+            if ((ip->op != ByteCodeOp::PushRAParam || !(ip->flags & BCI_VARIADIC)) &&
+                (ip->op != ByteCodeOp::PushRAParam2 || !(ip->flags & BCI_VARIADIC)) &&
+                (ip->op != ByteCodeOp::PushRAParam3 || !(ip->flags & BCI_VARIADIC)) &&
+                (ip->op != ByteCodeOp::PushRAParam4 || !(ip->flags & BCI_VARIADIC)) &&
                 ip->op != ByteCodeOp::CopySP)
             {
                 if ((flags & OPFLAG_READ_A) && !(ip->flags & BCI_IMM_A) && !(flags & OPFLAG_WRITE_A))

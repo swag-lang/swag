@@ -1109,7 +1109,7 @@ bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode*
     return true;
 }
 
-void ByteCodeGenJob::emitPushRAParams(ByteCodeGenContext* context, VectorNative<uint32_t>& accParams)
+void ByteCodeGenJob::emitPushRAParams(ByteCodeGenContext* context, VectorNative<uint32_t>& accParams, bool forVariadic)
 {
     auto node = context->node;
 
@@ -1129,26 +1129,29 @@ void ByteCodeGenJob::emitPushRAParams(ByteCodeGenContext* context, VectorNative<
     int i = 0;
     while (i < cpt)
     {
+        ByteCodeInstruction* inst;
         if (cpt - i >= 4)
         {
-            emitInstruction(context, ByteCodeOp::PushRAParam4, accParams[i], accParams[i + 1], accParams[i + 2], accParams[i + 3]);
+            inst = emitInstruction(context, ByteCodeOp::PushRAParam4, accParams[i], accParams[i + 1], accParams[i + 2], accParams[i + 3]);
             i += 4;
         }
         else if (cpt - i >= 3)
         {
-            emitInstruction(context, ByteCodeOp::PushRAParam3, accParams[i], accParams[i + 1], accParams[i + 2]);
+            inst = emitInstruction(context, ByteCodeOp::PushRAParam3, accParams[i], accParams[i + 1], accParams[i + 2]);
             i += 3;
         }
         else if (cpt - i >= 2)
         {
-            emitInstruction(context, ByteCodeOp::PushRAParam2, accParams[i], accParams[i + 1]);
+            inst = emitInstruction(context, ByteCodeOp::PushRAParam2, accParams[i], accParams[i + 1]);
             i += 2;
         }
         else
         {
-            emitInstruction(context, ByteCodeOp::PushRAParam, accParams[i]);
+            inst = emitInstruction(context, ByteCodeOp::PushRAParam, accParams[i]);
             i += 1;
         }
+
+        inst->flags |= forVariadic ? BCI_VARIADIC : 0;
     }
 
     // Closure context
@@ -1485,7 +1488,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             }
         }
 
-        emitPushRAParams(context, accParams);
+        emitPushRAParams(context, accParams, false);
     }
 
     // Fast call. No need to do fancy things, all the parameters are covered by the call
@@ -1493,10 +1496,20 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     {
         // Get the last variadic real type
         TypeInfo* typeRawVariadic = nullptr;
+        bool      forVariadic     = false;
         if (typeInfoFunc->parameters.back()->typeInfo->kind == TypeInfoKind::TypedVariadic)
         {
             auto typeVariadic = CastTypeInfo<TypeInfoVariadic>(typeInfoFunc->parameters.back()->typeInfo, TypeInfoKind::TypedVariadic);
             typeRawVariadic   = typeVariadic->rawType;
+            forVariadic       = true;
+        }
+        else if (typeInfoFunc->parameters.back()->typeInfo->kind == TypeInfoKind::Variadic)
+        {
+            forVariadic = true;
+        }
+        else if (typeInfoFunc->parameters.back()->typeInfo->kind == TypeInfoKind::CVariadic)
+        {
+            forVariadic = true;
         }
 
         VectorNative<uint32_t> accParams;
@@ -1589,7 +1602,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             }
         }
 
-        emitPushRAParams(context, accParams);
+        emitPushRAParams(context, accParams, forVariadic);
     }
 
     // Pass a variadic parameter to another function
