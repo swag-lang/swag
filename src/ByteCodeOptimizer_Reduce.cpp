@@ -7,128 +7,138 @@
 
 void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
-    // Useless pop/push
-    if (ip[0].op == ByteCodeOp::InternalPushErr &&
-        ip[1].op == ByteCodeOp::InternalPopErr)
+    switch (ip[0].op)
     {
-        setNop(context, ip);
-        setNop(context, ip + 1);
-    }
-
-    // Has err followed by ret
-    if (ip[0].op == ByteCodeOp::InternalHasErr &&
-        ip[1].op == ByteCodeOp::Ret)
-    {
-        setNop(context, ip);
-    }
-
-    // GetErr/Jump just after
-    if (ip[0].op == ByteCodeOp::InternalHasErr &&
-        ip[1].op == ByteCodeOp::JumpIfZero32 &&
-        ip[1].a.u32 == ip[0].a.u32 &&
-        ip[0].flags & BCI_TRYCATCH &&
-        ip[1].flags & BCI_TRYCATCH &&
-        ip[1].b.s32 == 0)
-    {
-        setNop(context, ip);
-        setNop(context, ip + 1);
-    }
-
-    // Useless InternalHasErr
-    if (ip[0].op == ByteCodeOp::InternalHasErr &&
-        ip[1].op == ByteCodeOp::JumpIfZero32 &&
-        ip[2].op == ByteCodeOp::MakeConstantSegPointer &&
-        ip[3].op == ByteCodeOp::InternalStackTrace &&
-        ip[4].op == ByteCodeOp::InternalHasErr &&
-        ip[5].op == ByteCodeOp::JumpIfZero32 &&
-        !(ip[4].flags & BCI_START_STMT))
-    {
-        setNop(context, ip + 4);
-        setNop(context, ip + 5);
-    }
-
-    // Useless InternalHasErr
-    if (ip[0].op == ByteCodeOp::InternalHasErr &&
-        ip[1].op == ByteCodeOp::JumpIfZero32 &&
-        ip[2].op == ByteCodeOp::InternalHasErr &&
-        ip[3].op == ByteCodeOp::JumpIfZero32 &&
-        !(ip[2].flags & BCI_START_STMT))
-    {
-        setNop(context, ip + 2);
-        setNop(context, ip + 3);
-    }
-
-    // Duplicated stack trace
-    if (ip[0].op == ByteCodeOp::MakeConstantSegPointer &&
-        ip[1].op == ByteCodeOp::InternalStackTrace &&
-        ip[2].op == ByteCodeOp::MakeConstantSegPointer &&
-        ip[3].op == ByteCodeOp::InternalStackTrace &&
-        !(ip[2].flags & BCI_START_STMT))
-    {
-        setNop(context, ip + 2);
-        setNop(context, ip + 3);
-    }
-
-    // GetErr/Jump on another GetErr/Jump, make a shortcut
-    if (ip[0].op == ByteCodeOp::InternalHasErr && ip[1].op == ByteCodeOp::JumpIfZero32)
-    {
-        auto ipNext = &ip[1] + ip[1].b.s32 + 1;
-        if (ipNext[0].op == ByteCodeOp::InternalHasErr && ipNext[1].op == ByteCodeOp::JumpIfZero32)
-        {
-            ip[1].b.s32 += ipNext[1].b.s32 + 2;
-            context->passHasDoneSomething = true;
-        }
-    }
-
-    // If there's not SetErr between push and pop, then remove them
-    if (ip[0].op == ByteCodeOp::InternalPushErr)
-    {
-        auto                 ipScan    = ip + 1;
-        auto                 cpt       = 1;
-        bool                 hasSetErr = false;
-        ByteCodeInstruction* ipEnd     = nullptr;
-        while (cpt)
-        {
-            if (ipScan[0].op == ByteCodeOp::InternalPushErr)
-                cpt++;
-            if (ipScan[0].op == ByteCodeOp::InternalPopErr)
-            {
-                cpt--;
-                if (!cpt)
-                    ipEnd = ipScan;
-            }
-
-            if (ipScan[0].op == ByteCodeOp::End ||
-                ipScan[0].op == ByteCodeOp::InternalSetErr ||
-                ipScan[0].op == ByteCodeOp::LambdaCall ||
-                ipScan[0].op == ByteCodeOp::LocalCall ||
-                ipScan[0].op == ByteCodeOp::ForeignCall)
-            {
-                hasSetErr = true;
-                break;
-            }
-
-            ipScan++;
-        }
-
-        if (!hasSetErr)
+    case ByteCodeOp::InternalHasErr:
+        // Has err followed by ret
+        if (ip[1].op == ByteCodeOp::Ret)
         {
             setNop(context, ip);
-            setNop(context, ipEnd);
+            break;
         }
-    }
 
-    // InternalHasErr followed by return
-    if (ip[0].op == ByteCodeOp::InternalHasErr &&
-        ip[1].op == ByteCodeOp::JumpIfZero32 &&
-        ip[2].op == ByteCodeOp::Ret &&
-        ip[1].b.s32 == 1 &&
-        !(ip[2].flags & BCI_START_STMT) &&
-        context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret)
-    {
-        SET_OP(ip + 1, ByteCodeOp::JumpIfNotZero32);
-        ip[1].b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1) - 1);
-        setNop(context, ip + 2);
+        // GetErr/Jump just after
+        if (ip[1].op == ByteCodeOp::JumpIfZero32 &&
+            ip[1].a.u32 == ip[0].a.u32 &&
+            ip[0].flags & BCI_TRYCATCH &&
+            ip[1].flags & BCI_TRYCATCH &&
+            ip[1].b.s32 == 0)
+        {
+            setNop(context, ip);
+            setNop(context, ip + 1);
+            break;
+        }
+
+        // Useless InternalHasErr
+        if (ip[1].op == ByteCodeOp::JumpIfZero32 &&
+            ip[2].op == ByteCodeOp::MakeConstantSegPointer &&
+            ip[3].op == ByteCodeOp::InternalStackTrace &&
+            ip[4].op == ByteCodeOp::InternalHasErr &&
+            ip[5].op == ByteCodeOp::JumpIfZero32 &&
+            !(ip[4].flags & BCI_START_STMT))
+        {
+            setNop(context, ip + 4);
+            setNop(context, ip + 5);
+            break;
+        }
+
+        // Useless InternalHasErr
+        if (ip[1].op == ByteCodeOp::JumpIfZero32 &&
+            ip[2].op == ByteCodeOp::InternalHasErr &&
+            ip[3].op == ByteCodeOp::JumpIfZero32 &&
+            !(ip[2].flags & BCI_START_STMT))
+        {
+            setNop(context, ip + 2);
+            setNop(context, ip + 3);
+            break;
+        }
+
+        // GetErr/Jump on another GetErr/Jump, make a shortcut
+        if (ip[1].op == ByteCodeOp::JumpIfZero32)
+        {
+            auto ipNext = &ip[1] + ip[1].b.s32 + 1;
+            if (ipNext[0].op == ByteCodeOp::InternalHasErr && ipNext[1].op == ByteCodeOp::JumpIfZero32)
+            {
+                ip[1].b.s32 += ipNext[1].b.s32 + 2;
+                context->passHasDoneSomething = true;
+                break;
+            }
+        }
+
+        // InternalHasErr followed by return
+        if (ip[1].op == ByteCodeOp::JumpIfZero32 &&
+            ip[2].op == ByteCodeOp::Ret &&
+            ip[1].b.s32 == 1 &&
+            !(ip[2].flags & BCI_START_STMT) &&
+            context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret)
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfNotZero32);
+            ip[1].b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1) - 1);
+            setNop(context, ip + 2);
+            break;
+        }
+
+        break;
+
+    case ByteCodeOp::InternalPushErr:
+        // Useless pop/push
+        if (ip[1].op == ByteCodeOp::InternalPopErr)
+        {
+            setNop(context, ip);
+            setNop(context, ip + 1);
+            break;
+        }
+
+        // If there's not SetErr between push and pop, then remove them
+        {
+            auto                 ipScan    = ip + 1;
+            auto                 cpt       = 1;
+            bool                 hasSetErr = false;
+            ByteCodeInstruction* ipEnd     = nullptr;
+            while (cpt)
+            {
+                if (ipScan[0].op == ByteCodeOp::InternalPushErr)
+                    cpt++;
+                if (ipScan[0].op == ByteCodeOp::InternalPopErr)
+                {
+                    cpt--;
+                    if (!cpt)
+                        ipEnd = ipScan;
+                }
+
+                if (ipScan[0].op == ByteCodeOp::End ||
+                    ipScan[0].op == ByteCodeOp::InternalSetErr ||
+                    ipScan[0].op == ByteCodeOp::LambdaCall ||
+                    ipScan[0].op == ByteCodeOp::LocalCall ||
+                    ipScan[0].op == ByteCodeOp::ForeignCall)
+                {
+                    hasSetErr = true;
+                    break;
+                }
+
+                ipScan++;
+            }
+
+            if (!hasSetErr)
+            {
+                setNop(context, ip);
+                setNop(context, ipEnd);
+            }
+        }
+
+        break;
+
+    case ByteCodeOp::MakeConstantSegPointer:
+        // Duplicated stack trace
+        if (ip[1].op == ByteCodeOp::InternalStackTrace &&
+            ip[2].op == ByteCodeOp::MakeConstantSegPointer &&
+            ip[3].op == ByteCodeOp::InternalStackTrace &&
+            !(ip[2].flags & BCI_START_STMT))
+        {
+            setNop(context, ip + 2);
+            setNop(context, ip + 3);
+        }
+        break;
     }
 }
 
