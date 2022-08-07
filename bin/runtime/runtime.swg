@@ -413,7 +413,7 @@ func __setupRuntime()
 }
 
 ////////////////////////////////////////////////////////////
-func @seterr(value: string)
+func __seterr(value: string)
 {
     cxt := @getcontext()
     len := @countof(value)

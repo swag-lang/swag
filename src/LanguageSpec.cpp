@@ -15,6 +15,7 @@ void LanguageSpec::setupNames()
     name__panic          = "__panic";
     name__pusherr        = "__pusherr";
     name__poperr         = "__poperr";
+    name__seterr         = "__seterr";
     name__geterr         = "__geterr";
     name__tlsAlloc       = "__tlsAlloc";
     name__tlsGetValue    = "__tlsGetValue";
@@ -154,7 +155,6 @@ void LanguageSpec::setupNames()
     name_atpostCopy   = "@postCopy";
     name_atpostMove   = "@postMove";
     name_atargs       = "@args";
-    name_atseterr     = "@seterr";
     name_atpanic      = "@panic";
     name_aterrormsg   = "@errormsg";
     name_atitftableof = "@itftableof";

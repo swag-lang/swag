@@ -29,6 +29,7 @@ struct LanguageSpec
     Utf8 name__pusherr;
     Utf8 name__poperr;
     Utf8 name__geterr;
+    Utf8 name__seterr;
     Utf8 name__tlsAlloc;
     Utf8 name__tlsGetValue;
     Utf8 name__tlsSetValue;
@@ -176,7 +177,6 @@ struct LanguageSpec
     Utf8 name_atpostCopy;
     Utf8 name_atpostMove;
     Utf8 name_atargs;
-    Utf8 name_atseterr;
     Utf8 name_atpanic;
     Utf8 name_aterrormsg;
     Utf8 name_atitftableof;

@@ -1400,9 +1400,6 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
         case AstNodeKind::Assume:
             extension->byteCodeAfterFct = ByteCodeGenJob::emitAssume;
             break;
-        case AstNodeKind::Catch:
-            extension->byteCodeAfterFct = ByteCodeGenJob::emitCatch;
-            break;
         }
 
         // Reset emit from the modifier if it exists, as the inline block will deal with that
@@ -1412,8 +1409,6 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
             if (extension->byteCodeAfterFct == ByteCodeGenJob::emitTry)
                 extension->byteCodeAfterFct = nullptr;
             else if (extension->byteCodeAfterFct == ByteCodeGenJob::emitAssume)
-                extension->byteCodeAfterFct = nullptr;
-            else if (extension->byteCodeAfterFct == ByteCodeGenJob::emitCatch)
                 extension->byteCodeAfterFct = nullptr;
         }
     }

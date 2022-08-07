@@ -291,22 +291,3 @@ bool ByteCodeGenJob::emitAssume(ByteCodeGenContext* context)
     context->bc->out[assumeNode->seekInsideJump].b.s32 = context->bc->numInstructions - assumeNode->seekInsideJump - 1;
     return true;
 }
-
-bool ByteCodeGenJob::emitCatch(ByteCodeGenContext* context)
-{
-    auto node      = context->node;
-    auto catchNode = CastAst<AstTryCatchAssume>(context->node->extension->ownerTryCatchAssume, AstNodeKind::Catch);
-
-    PushICFlags ic(context, BCI_TRYCATCH);
-
-    auto r0 = reserveRegisterRC(context);
-    emitInstruction(context, ByteCodeOp::InternalHasErr, r0, node->ownerFct->registerGetContext);
-    catchNode->seekInsideJump = context->bc->numInstructions;
-    emitInstruction(context, ByteCodeOp::JumpIfZero32, r0);
-    freeRegisterRC(context, r0);
-
-    emitDebugLine(context, node);
-
-    context->bc->out[catchNode->seekInsideJump].b.s32 = context->bc->numInstructions - catchNode->seekInsideJump - 1;
-    return true;
-}

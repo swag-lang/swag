@@ -1319,9 +1319,6 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
             case AstNodeKind::Assume:
                 extension->byteCodeAfterFct = ByteCodeGenJob::emitAssume;
                 break;
-            case AstNodeKind::Catch:
-                extension->byteCodeAfterFct = ByteCodeGenJob::emitCatch;
-                break;
             }
         }
 
