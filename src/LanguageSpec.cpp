@@ -338,7 +338,6 @@ void LanguageSpec::setupKeywords()
     keywords.add("@index", TokenId::IntrinsicIndex);
     keywords.add("@isconstexpr", TokenId::IntrinsicIsConstExpr);
     keywords.add("@err", TokenId::IntrinsicGetErr);
-    keywords.add("@seterr", TokenId::IntrinsicSetErr);
     keywords.add("@print", TokenId::IntrinsicPrint);
     keywords.add("@assert", TokenId::IntrinsicAssert);
     keywords.add("@bcdbg", TokenId::IntrinsicBcDbg);

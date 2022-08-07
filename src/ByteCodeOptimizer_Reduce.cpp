@@ -99,7 +99,7 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
             }
 
             if (ipScan[0].op == ByteCodeOp::End ||
-                ipScan[0].op == ByteCodeOp::IntrinsicSetErr ||
+                ipScan[0].op == ByteCodeOp::InternalSetErr ||
                 ipScan[0].op == ByteCodeOp::LambdaCall ||
                 ipScan[0].op == ByteCodeOp::LocalCall ||
                 ipScan[0].op == ByteCodeOp::ForeignCall)

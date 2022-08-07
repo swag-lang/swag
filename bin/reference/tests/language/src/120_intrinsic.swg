@@ -13,7 +13,6 @@ func @isbytecode()->bool;
 func @compiler()->Swag.ICompiler;
 
 func @args()->const [..] string;
-func @seterr(err: string);
 @panic()
 @errormsg()
 

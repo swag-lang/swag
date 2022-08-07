@@ -416,22 +416,12 @@ func __setupRuntime()
 func @seterr(value: string)
 {
     cxt := @getcontext()
-    if value == null
-        cxt.errorMsgLen = 0
-    else
-    {
-        len := @countof(value)
-        if len == 0
-            cxt.errorMsgLen = 0
-        else
-        {
-            if len > MaxLenErrorMsg - cxt.errorMsgStart
-                len = cast(uint) (MaxLenErrorMsg - cxt.errorMsgStart)
-            @assert(len > 0)
-            @memcpy(&cxt.errorMsg[cxt.errorMsgStart], @dataof(value), len)
-            cxt.errorMsgLen = cast(u32) len
-        }
-    }
+    len := @countof(value)
+    if len > MaxLenErrorMsg - cxt.errorMsgStart
+        len = cast(uint) (MaxLenErrorMsg - cxt.errorMsgStart)
+    @assert(len > 0)
+    @memcpy(&cxt.errorMsg[cxt.errorMsgStart], @dataof(value), len)
+    cxt.errorMsgLen = cast(u32) len
 }
 
 func __geterr()->string

@@ -1845,7 +1845,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         break;
     }
 
-    case ByteCodeOp::IntrinsicSetErr:
+    case ByteCodeOp::InternalSetErr:
     {
         auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_atseterr);
         context->push(registersRC[ip->b.u32].u64);

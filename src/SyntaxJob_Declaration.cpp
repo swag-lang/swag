@@ -552,7 +552,7 @@ bool SyntaxJob::doLeftInstruction(AstNode* parent, AstNode** result)
     case TokenId::IntrinsicAtomicXor:
     case TokenId::IntrinsicAtomicXchg:
     case TokenId::IntrinsicAtomicCmpXchg:
-    case TokenId::IntrinsicSetErr:
+    case TokenId::InternalSetErr:
     case TokenId::IntrinsicCVaStart:
     case TokenId::IntrinsicCVaEnd:
     case TokenId::IntrinsicCVaArg:
@@ -612,7 +612,7 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
     case TokenId::IntrinsicPostMove:
     case TokenId::IntrinsicPrint:
     case TokenId::IntrinsicSetContext:
-    case TokenId::IntrinsicSetErr:
+    case TokenId::InternalSetErr:
     case TokenId::IntrinsicGetProcessInfos:
         SWAG_CHECK(doLeftInstruction(parent, result));
         break;

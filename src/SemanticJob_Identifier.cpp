@@ -1310,13 +1310,17 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         if (identifier->extension && identifier->extension->ownerTryCatchAssume && (identifier->typeInfo->flags & TYPEINFO_CAN_THROW))
         {
             identifier->allocateExtension();
-            switch (identifier->extension->ownerTryCatchAssume->kind)
+            auto extension = identifier->extension;
+            switch (extension->ownerTryCatchAssume->kind)
             {
             case AstNodeKind::Try:
-                identifier->extension->byteCodeAfterFct = ByteCodeGenJob::emitTry;
+                extension->byteCodeAfterFct = ByteCodeGenJob::emitTry;
                 break;
             case AstNodeKind::Assume:
-                identifier->extension->byteCodeAfterFct = ByteCodeGenJob::emitAssume;
+                extension->byteCodeAfterFct = ByteCodeGenJob::emitAssume;
+                break;
+            case AstNodeKind::Catch:
+                extension->byteCodeAfterFct = ByteCodeGenJob::emitCatch;
                 break;
             }
         }
@@ -4212,6 +4216,8 @@ bool SemanticJob::resolveCatch(SemanticContext* context)
     auto lastChild     = identifierRef->childs.back();
 
     SWAG_CHECK(checkCanCatch(context));
+    SWAG_ASSERT(node->ownerFct);
+    node->ownerFct->needRegisterGetContext = true;
 
     node->allocateExtension();
     node->extension->byteCodeBeforeFct = ByteCodeGenJob::emitInitStackTrace;

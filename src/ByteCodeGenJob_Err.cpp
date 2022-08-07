@@ -196,7 +196,7 @@ bool ByteCodeGenJob::emitThrow(ByteCodeGenContext* context)
 
     if (!(node->doneFlags & AST_DONE_TRY_1))
     {
-        emitInstruction(context, ByteCodeOp::IntrinsicSetErr, expr->resultRegisterRC[0], expr->resultRegisterRC[1]);
+        emitInstruction(context, ByteCodeOp::InternalSetErr, expr->resultRegisterRC[0], expr->resultRegisterRC[1]);
         node->doneFlags |= AST_DONE_TRY_1;
     }
 
@@ -289,5 +289,24 @@ bool ByteCodeGenJob::emitAssume(ByteCodeGenContext* context)
     freeRegisterRC(context, r1);
 
     context->bc->out[assumeNode->seekInsideJump].b.s32 = context->bc->numInstructions - assumeNode->seekInsideJump - 1;
+    return true;
+}
+
+bool ByteCodeGenJob::emitCatch(ByteCodeGenContext* context)
+{
+    auto node      = context->node;
+    auto catchNode = CastAst<AstTryCatchAssume>(context->node->extension->ownerTryCatchAssume, AstNodeKind::Catch);
+
+    PushICFlags ic(context, BCI_TRYCATCH);
+
+    auto r0 = reserveRegisterRC(context);
+    emitInstruction(context, ByteCodeOp::InternalHasErr, r0, node->ownerFct->registerGetContext);
+    catchNode->seekInsideJump = context->bc->numInstructions;
+    emitInstruction(context, ByteCodeOp::JumpIfZero32, r0);
+    freeRegisterRC(context, r0);
+
+    emitDebugLine(context, node);
+
+    context->bc->out[catchNode->seekInsideJump].b.s32 = context->bc->numInstructions - catchNode->seekInsideJump - 1;
     return true;
 }

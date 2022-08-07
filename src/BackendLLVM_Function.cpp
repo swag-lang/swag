@@ -3236,7 +3236,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             localCall(buildParameters, allocR, allocT, g_LangSpec->name__geterr, {ip->a.u32, ip->b.u32}, {});
             break;
         }
-        case ByteCodeOp::IntrinsicSetErr:
+        case ByteCodeOp::InternalSetErr:
         {
             localCall(buildParameters, allocR, allocT, g_LangSpec->name_atseterr, {ip->a.u32, ip->b.u32}, {});
             break;

@@ -1391,23 +1391,30 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     // Try/Assume
     if (inlineNode->extension && inlineNode->extension->ownerTryCatchAssume && (inlineNode->func->typeInfo->flags & TYPEINFO_CAN_THROW))
     {
-        switch (inlineNode->extension->ownerTryCatchAssume->kind)
+        auto extension = inlineNode->extension;
+        switch (extension->ownerTryCatchAssume->kind)
         {
         case AstNodeKind::Try:
-            inlineNode->extension->byteCodeAfterFct = ByteCodeGenJob::emitTry;
+            extension->byteCodeAfterFct = ByteCodeGenJob::emitTry;
             break;
         case AstNodeKind::Assume:
-            inlineNode->extension->byteCodeAfterFct = ByteCodeGenJob::emitAssume;
+            extension->byteCodeAfterFct = ByteCodeGenJob::emitAssume;
+            break;
+        case AstNodeKind::Catch:
+            extension->byteCodeAfterFct = ByteCodeGenJob::emitCatch;
             break;
         }
 
         // Reset emit from the modifier if it exists, as the inline block will deal with that
         if (identifier->extension)
         {
-            if (identifier->extension->byteCodeAfterFct == ByteCodeGenJob::emitTry)
-                identifier->extension->byteCodeAfterFct = nullptr;
-            if (identifier->extension->byteCodeAfterFct == ByteCodeGenJob::emitAssume)
-                identifier->extension->byteCodeAfterFct = nullptr;
+            extension = identifier->extension;
+            if (extension->byteCodeAfterFct == ByteCodeGenJob::emitTry)
+                extension->byteCodeAfterFct = nullptr;
+            else if (extension->byteCodeAfterFct == ByteCodeGenJob::emitAssume)
+                extension->byteCodeAfterFct = nullptr;
+            else if (extension->byteCodeAfterFct == ByteCodeGenJob::emitCatch)
+                extension->byteCodeAfterFct = nullptr;
         }
     }
 
