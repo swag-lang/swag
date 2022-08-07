@@ -1529,6 +1529,19 @@ void ByteCodeOptimizer::reduceX2(ByteCodeOptContext* context, ByteCodeInstructio
 {
     switch (ip->op)
     {
+    case ByteCodeOp::MakeStackPointer:
+        if (ip[1].op == ByteCodeOp::MakeStackPointer &&
+            !(ip[0].flags & BCI_START_STMT) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            ip[0].c.u32 = ip[1].a.u32;
+            ip[0].d.u32 = ip[1].b.u32;
+            SET_OP(ip, ByteCodeOp::MakeStackPointer2);
+            setNop(context, ip + 1);
+            break;
+        }
+        break;
+
     case ByteCodeOp::ClearRA:
         if (ip[1].op == ByteCodeOp::ClearRA &&
             ip[2].op == ByteCodeOp::ClearRA &&

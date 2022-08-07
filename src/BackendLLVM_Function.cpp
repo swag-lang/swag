@@ -902,6 +902,17 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(r1, r0);
             break;
         }
+        case ByteCodeOp::MakeStackPointer2:
+        {
+            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
+            auto r1 = TO_PTR_I8(builder.CreateInBoundsGEP(allocStack, CST_RB32));
+            builder.CreateStore(r1, r0);
+
+            r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->c.u32));
+            r1 = TO_PTR_I8(builder.CreateInBoundsGEP(allocStack, CST_RD32));
+            builder.CreateStore(r1, r0);
+            break;
+        }
         case ByteCodeOp::MakeStackPointerRT:
         {
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocRR, 0));

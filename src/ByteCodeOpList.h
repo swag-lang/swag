@@ -222,6 +222,7 @@ BYTECODE_OP(CopyStack32, OPFLAG_READ_VAL32_A | OPFLAG_READ_VAL32_B, "stack[_rau3
 BYTECODE_OP(CopyStack64, OPFLAG_READ_VAL32_A | OPFLAG_READ_VAL32_B, "stack[_rau32_] = stack[_rbu32_]", 0)
 
 BYTECODE_OP(MakeStackPointer, OPFLAG_WRITE_A | OPFLAG_READ_VAL32_B, "_ra_ = stack + _rbu32_", 0)
+BYTECODE_OP(MakeStackPointer2, OPFLAG_WRITE_A | OPFLAG_READ_VAL32_B | OPFLAG_WRITE_C | OPFLAG_READ_VAL32_D, "_ra_ = stack + _rbu32_, _rc_ = stack + _rdu32_", 0)
 BYTECODE_OP(MakeStackPointerRT, OPFLAG_READ_VAL32_A, "resultPtr = stack + _rau32_", 0)
 
 BYTECODE_OP(SetZeroStack8, OPFLAG_READ_VAL32_A, "stack[_rau32_] = 0", 0)
