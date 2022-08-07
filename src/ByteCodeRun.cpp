@@ -949,6 +949,11 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         SWAG_ASSERT(context->bp + ip->b.u32 <= context->stack + g_CommandLine->stackSizeBC - 8);
         registersRC[ip->a.u32].u64 = *(uint64_t*) (context->bp + ip->b.u32);
         break;
+    case ByteCodeOp::GetIncFromStackParam64:
+        SWAG_ASSERT(context->bp + ip->b.u32 <= context->stack + g_CommandLine->stackSizeBC - 8);
+        registersRC[ip->a.u32].u64 = *(uint64_t*) (context->bp + ip->b.u32);
+        registersRC[ip->a.u32].u64 += ip->d.u64;
+        break;
 
     case ByteCodeOp::MakeStackPointer:
         SWAG_ASSERT(context->bp + ip->b.u32 < context->stack + g_CommandLine->stackSizeBC);

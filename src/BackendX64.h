@@ -377,7 +377,7 @@ struct BackendX64 : public Backend
     bool emitOS(const BuildParameters& buildParameters);
     bool emitMain(const BuildParameters& buildParameters);
 
-    void emitLocalParam(X64PerThread& pp, TypeInfoFuncAttr* typeFunc, int reg, int paramIdx, int sizeOf, int storeS4, int sizeStack);
+    void emitLocalParam(X64PerThread& pp, TypeInfoFuncAttr* typeFunc, int reg, int paramIdx, int sizeOf, int storeS4, int sizeStack, uint64_t toAdd = 0);
     void emitLocalFctCall(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, int offsetStack, int numCallParams, int popRAidx, int callerIndex, const VectorNative<uint32_t>& pushRAParams, int firstIdxCall);
     void emitLocalCallParameters(X64PerThread& pp, uint32_t sizeParamsStack, TypeInfoFuncAttr* typeFuncBC, uint32_t stackRR, const VectorNative<uint32_t>& pushRAParams, const VectorNative<pair<uint32_t, uint32_t>>& pushRVParams);
     void emitSymbolRelocation(X64PerThread& pp, const Utf8& name);

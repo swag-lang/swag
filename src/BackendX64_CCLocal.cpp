@@ -208,7 +208,7 @@ void BackendX64::storeRAXToCDeclParam(X64PerThread& pp, TypeInfo* typeParam, int
     }
 }
 
-void BackendX64::emitLocalParam(X64PerThread& pp, TypeInfoFuncAttr* typeFunc, int reg, int paramIdx, int sizeOf, int storeS4, int sizeStack)
+void BackendX64::emitLocalParam(X64PerThread& pp, TypeInfoFuncAttr* typeFunc, int reg, int paramIdx, int sizeOf, int storeS4, int sizeStack, uint64_t toAdd)
 {
     auto numReturnRegs = typeFunc->numReturnRegisters();
 
@@ -229,21 +229,31 @@ void BackendX64::emitLocalParam(X64PerThread& pp, TypeInfoFuncAttr* typeFunc, in
     switch (sizeOf)
     {
     case 1:
+        SWAG_ASSERT(!toAdd);
         BackendX64Inst::emit_Clear32(pp, RAX);
         BackendX64Inst::emit_Load8_Indirect(pp, stackOffset, RAX, RDI);
         BackendX64Inst::emit_Store32_Indirect(pp, regOffset(reg), RAX, RDI);
         break;
     case 2:
+        SWAG_ASSERT(!toAdd);
         BackendX64Inst::emit_Clear32(pp, RAX);
         BackendX64Inst::emit_Load16_Indirect(pp, stackOffset, RAX, RDI);
         BackendX64Inst::emit_Store32_Indirect(pp, regOffset(reg), RAX, RDI);
         break;
     case 4:
+        SWAG_ASSERT(!toAdd);
         BackendX64Inst::emit_Load32_Indirect(pp, stackOffset, RAX, RDI);
         BackendX64Inst::emit_Store64_Indirect(pp, regOffset(reg), RAX, RDI);
         break;
     default:
         BackendX64Inst::emit_Load64_Indirect(pp, stackOffset, RAX, RDI);
+
+        if (toAdd)
+        {
+            BackendX64Inst::emit_Load64_Immediate(pp, toAdd, RCX);
+            BackendX64Inst::emit_Op64(pp, RCX, RAX, X64Op::ADD);
+        }
+
         BackendX64Inst::emit_Store64_Indirect(pp, regOffset(reg), RAX, RDI);
         break;
     }

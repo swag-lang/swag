@@ -3133,7 +3133,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                     numParams--;
                 for (int iparam = 0; iparam < numParams; iparam++)
                 {
-                    SWAG_CHECK(storeLocalParam(buildParameters, func, typeFunc, iparam, r1));
+                    SWAG_CHECK(storeLocalParam(context, buildParameters, func, typeFunc, iparam, r1));
                 }
             }
 
@@ -3698,25 +3698,31 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::GetFromStackParam8:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            SWAG_CHECK(storeLocalParam(buildParameters, func, typeFunc, ip->c.u32, r0, 1));
+            SWAG_CHECK(storeLocalParam(context, buildParameters, func, typeFunc, ip->c.u32, r0, 1));
             break;
         }
         case ByteCodeOp::GetFromStackParam16:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            SWAG_CHECK(storeLocalParam(buildParameters, func, typeFunc, ip->c.u32, r0, 2));
+            SWAG_CHECK(storeLocalParam(context, buildParameters, func, typeFunc, ip->c.u32, r0, 2));
             break;
         }
         case ByteCodeOp::GetFromStackParam32:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            SWAG_CHECK(storeLocalParam(buildParameters, func, typeFunc, ip->c.u32, r0, 4));
+            SWAG_CHECK(storeLocalParam(context, buildParameters, func, typeFunc, ip->c.u32, r0, 4));
             break;
         }
         case ByteCodeOp::GetFromStackParam64:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            SWAG_CHECK(storeLocalParam(buildParameters, func, typeFunc, ip->c.u32, r0));
+            SWAG_CHECK(storeLocalParam(context, buildParameters, func, typeFunc, ip->c.u32, r0));
+            break;
+        }
+        case ByteCodeOp::GetIncFromStackParam64:
+        {
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            SWAG_CHECK(storeLocalParam(context, buildParameters, func, typeFunc, ip->c.u32, r0, 0, ip->d.u64));
             break;
         }
 

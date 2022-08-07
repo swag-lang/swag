@@ -602,6 +602,18 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
             setNop(context, ip + 1);
             break;
         }
+
+        if ((ip[1].op == ByteCodeOp::IncPointer64) &&
+            ip[0].a.u32 == ip[1].a.u32 &&
+            ip[1].a.u32 == ip[1].c.u32 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip, ByteCodeOp::GetIncFromStackParam64);
+            ip->d.u64 = ip[1].b.u64;
+            setNop(context, ip + 1);
+            break;
+        }
+
         break;
 
     case ByteCodeOp::SetZeroStack32:

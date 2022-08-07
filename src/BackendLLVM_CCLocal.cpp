@@ -3,6 +3,7 @@
 #include "Module.h"
 #include "TypeManager.h"
 #include "Workspace.h"
+#include "BackendLLVM_Macros.h"
 
 void BackendLLVM::getLocalCallParameters(const BuildParameters&      buildParameters,
                                          llvm::AllocaInst*           allocR,
@@ -73,7 +74,7 @@ void BackendLLVM::getLocalCallParameters(const BuildParameters&      buildParame
     int idxFirst = 0;
     if (typeFuncBC->isClosure() && closureToLambda)
     {
-        idxFirst = 1; 
+        idxFirst = 1;
         popRAidx--;
     }
 
@@ -222,7 +223,7 @@ llvm::FunctionType* BackendLLVM::createFunctionTypeLocal(const BuildParameters& 
     return result;
 }
 
-bool BackendLLVM::storeLocalParam(const BuildParameters& buildParameters, llvm::Function* func, TypeInfoFuncAttr* typeFunc, int idx, llvm::Value* r0, int sizeOf)
+bool BackendLLVM::storeLocalParam(llvm::LLVMContext& context, const BuildParameters& buildParameters, llvm::Function* func, TypeInfoFuncAttr* typeFunc, int idx, llvm::Value* r0, int sizeOf, uint64_t toAdd)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
@@ -249,14 +250,30 @@ bool BackendLLVM::storeLocalParam(const BuildParameters& buildParameters, llvm::
         {
             llvm::Type* ty = nullptr;
             SWAG_CHECK(swagTypeToLLVMType(buildParameters, module, param, &ty));
-            r0 = builder.CreatePointerCast(r0, ty->getPointerTo());
-            builder.CreateStore(arg, r0);
+
+            if (toAdd)
+            {
+                auto ra = builder.CreateInBoundsGEP(TO_PTR_I8(arg), builder.getInt64(toAdd));
+                builder.CreateStore(ra, TO_PTR_PTR_I8(r0));
+            }
+            else
+            {
+                r0 = builder.CreatePointerCast(r0, ty->getPointerTo());
+                builder.CreateStore(arg, r0);
+            }
         }
     }
     else
     {
-        SWAG_ASSERT(sizeOf == 0);
-        builder.CreateStore(arg, r0);
+        if (toAdd)
+        {
+            auto ra = builder.CreateAdd(arg, builder.getInt64(toAdd));
+            builder.CreateStore(ra, r0);
+        }
+        else
+        {
+            builder.CreateStore(arg, r0);
+        }
     }
 
     return true;

@@ -2791,6 +2791,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::GetFromStackParam64:
             emitLocalParam(pp, typeFunc, ip->a.u32, ip->c.u32, 8, offsetS4, sizeStack);
             break;
+        case ByteCodeOp::GetIncFromStackParam64:
+            emitLocalParam(pp, typeFunc, ip->a.u32, ip->c.u32, 8, offsetS4, sizeStack, ip->d.u64);
+            break;
 
         case ByteCodeOp::MakeLambda:
         {
