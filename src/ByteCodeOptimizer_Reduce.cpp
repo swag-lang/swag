@@ -117,6 +117,19 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
             setNop(context, ipEnd);
         }
     }
+
+    // InternalHasErr followed by return
+    if (ip[0].op == ByteCodeOp::InternalHasErr &&
+        ip[1].op == ByteCodeOp::JumpIfZero32 &&
+        ip[2].op == ByteCodeOp::Ret &&
+        ip[1].b.s32 == 1 &&
+        !(ip[2].flags & BCI_START_STMT) &&
+        context->bc->out[context->bc->numInstructions - 2].op == ByteCodeOp::Ret)
+    {
+        SET_OP(ip + 1, ByteCodeOp::JumpIfNotZero32);
+        ip[1].b.s32 = (int32_t) (&context->bc->out[context->bc->numInstructions - 2] - (ip + 1) - 1);
+        setNop(context, ip + 2);
+    }
 }
 
 void ByteCodeOptimizer::reduceEmptyFct(ByteCodeOptContext* context, ByteCodeInstruction* ip)
