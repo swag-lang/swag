@@ -79,9 +79,7 @@ void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd, ByteCode* nodebc)
     errorLoc = nullptr;
     errorMsg.clear();
 
-    popParamsOnRet.clear();
-    returnRegOnRet.clear();
-    returnRegOnRetRR.clear();
+    popOnRet.clear();
 }
 
 void ByteCodeRunContext::stackOverflow()

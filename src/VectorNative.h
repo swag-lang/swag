@@ -94,6 +94,13 @@ struct VectorNative
         count--;
     }
 
+    T get_pop_back()
+    {
+        SWAG_ASSERT(count);
+        count--;
+        return buffer[count];
+    }
+
     void expand_clear(int num)
     {
         if (num)

@@ -455,20 +455,17 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             return false;
 
         // Need to pop some parameters, by increasing the stack pointer
-        auto popP = context->popParamsOnRet.back();
-        context->popParamsOnRet.pop_back();
-        context->incSP(popP * sizeof(void*));
+        auto popP = context->popOnRet.get_pop_back();
+        context->incSP((uint32_t) popP * sizeof(void*));
 
         // A register needs to be initialized with the result register
-        auto popR = context->returnRegOnRet.back();
-        context->returnRegOnRet.pop_back();
+        auto popR = context->popOnRet.get_pop_back();
         if (popR != UINT32_MAX)
         {
             context->getRegBuffer(context->curRC)[popR].u64 = context->registersRR[0].u64;
 
             // Restore RR register to its previous value
-            context->registersRR[0].u64 = context->returnRegOnRetRR.back();
-            context->returnRegOnRetRR.pop_back();
+            context->registersRR[0].u64 = context->popOnRet.get_pop_back();
         }
 
         break;

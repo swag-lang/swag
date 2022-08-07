@@ -95,7 +95,7 @@ void ByteCode::addCallStack(ByteCodeRunContext* context)
     g_ByteCodeStack.push(stackStep);
 }
 
-void ByteCode::enterByteCode(ByteCodeRunContext* context, uint32_t popParamsOnRet, uint32_t returnReg)
+void ByteCode::enterByteCode(ByteCodeRunContext* context, uint32_t popParamsOnRet, uint32_t returnRegOnRet)
 {
     if (g_CommandLine->maxRecurse && context->curRC == (int) g_CommandLine->maxRecurse)
     {
@@ -109,10 +109,10 @@ void ByteCode::enterByteCode(ByteCodeRunContext* context, uint32_t popParamsOnRe
     context->curRegistersRC = context->registers.buffer + context->registers.count;
     context->registers.count += maxReservedRegisterRC;
 
-    context->popParamsOnRet.push_back(popParamsOnRet);
-    context->returnRegOnRet.push_back(returnReg);
-    if (returnReg != UINT32_MAX)
-        context->returnRegOnRetRR.push_back(context->registersRR[0].u64);
+    if (returnRegOnRet != UINT32_MAX)
+        context->popOnRet.push_back(context->registersRR[0].u64);
+    context->popOnRet.push_back(returnRegOnRet);
+    context->popOnRet.push_back(popParamsOnRet);
 }
 
 void ByteCode::leaveByteCode(ByteCodeRunContext* context, bool popCallStack)
@@ -122,10 +122,9 @@ void ByteCode::leaveByteCode(ByteCodeRunContext* context, bool popCallStack)
     context->curRC--;
     if (context->curRC >= 0)
     {
-        auto newCount = context->registersRC.back();
-        context->registersRC.pop_back();
+        auto newCount            = context->registersRC.get_pop_back();
         context->registers.count = newCount;
-        context->curRegistersRC = context->registers.buffer + context->registersRC.back();
+        context->curRegistersRC  = context->registers.buffer + context->registersRC.back();
     }
 }
 

@@ -85,9 +85,7 @@ struct ByteCodeRunContext : public JobContext
     Utf8                    errorMsg;
     VectorNative<int>       registersRC;
     VectorNative<Register>  registers;
-    vector<uint32_t>        popParamsOnRet;
-    vector<uint32_t>        returnRegOnRet;
-    vector<uint64_t>        returnRegOnRetRR;
+    VectorNative<uint64_t>  popOnRet;
 
     bool      ffi_StructByCopyDone = false;
     ffi_type  ffi_StructByCopy1;
