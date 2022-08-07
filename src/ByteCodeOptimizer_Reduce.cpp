@@ -9,6 +9,42 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
 {
     switch (ip[0].op)
     {
+    case ByteCodeOp::InternalClearErr:
+    {
+        auto ipScan = ip + 1;
+        while (ipScan->op != ByteCodeOp::Ret)
+        {
+            if (ipScan->op == ByteCodeOp::InternalHasErr ||
+                ipScan->op == ByteCodeOp::IntrinsicGetErr ||
+                ByteCode::isJump(ipScan) ||
+                (ipScan->flags & BCI_START_STMT))
+                break;
+
+            // An InternalClearErr followed by another one
+            if (ipScan->op == ByteCodeOp::InternalClearErr)
+            {
+                setNop(context, ip);
+                break;
+            }
+
+            // An InternalClearErr followed by a function call which will clear the error also
+            if (ipScan->op == ByteCodeOp::LocalCall ||
+                ipScan->op == ByteCodeOp::LambdaCall ||
+                ipScan->op == ByteCodeOp::ForeignCall)
+            {
+                TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ipScan->b.pointer;
+                if (typeFuncBC->flags & TYPEINFO_CAN_THROW)
+                {
+                    setNop(context, ip);
+                    break;
+                }
+            }
+
+            ipScan++;
+        }
+    }
+    break;
+
     case ByteCodeOp::InternalHasErr:
         // Has err followed by ret
         if (ip[1].op == ByteCodeOp::Ret)
