@@ -1101,6 +1101,18 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
             ip[1].b.u64 = 0xFFFFFFFF;
             break;
         }
+
+        if (ip[1].op == ByteCodeOp::SetAtStackPointer32 &&
+            (ip->flags & BCI_IMM_B) &&
+            (ip[1].flags & BCI_IMM_B) &&
+            (ip->a.u32 == ip[1].a.u32 - 4) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip, ByteCodeOp::SetAtStackPointer64);
+            ip[0].b.u64 |= ((uint64_t) ip[1].b.u32) << 32;
+            setNop(context, ip + 1);
+            break;
+        }
         break;
 
     case ByteCodeOp::SetAtStackPointer64:
@@ -1722,8 +1734,8 @@ void ByteCodeOptimizer::reduceCmpJump(ByteCodeOptContext* context, ByteCodeInstr
     if (ByteCode::isJump(ip + 1) &&
         !(ip[1].flags & BCI_START_STMT) &&
         !(ip[2].flags & BCI_START_STMT) &&
-        ip[0].op == ip[2].op && 
-        ip[0].flags == ip[2].flags && 
+        ip[0].op == ip[2].op &&
+        ip[0].flags == ip[2].flags &&
         ip[0].a.u64 == ip[2].a.u64 &&
         ip[0].b.u64 == ip[2].b.u64 &&
         ip[0].c.u64 == ip[2].c.u64 &&
