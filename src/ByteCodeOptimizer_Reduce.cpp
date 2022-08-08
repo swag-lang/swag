@@ -629,6 +629,21 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
             break;
         }
 
+        if ((ip[1].op == ByteCodeOp::GetFromStack64) &&
+            (ip[2].op == ByteCodeOp::IncPointer64) &&
+            ip[0].a.u32 == ip[2].a.u32 &&
+            ip[0].a.u32 != ip[1].a.u32 &&
+            ip[2].flags & BCI_IMM_B &&
+            ip[2].a.u32 == ip[2].c.u32 &&
+            !(ip[1].flags & BCI_START_STMT) &&
+            !(ip[2].flags & BCI_START_STMT))
+        {
+            SET_OP(ip, ByteCodeOp::GetIncFromStackParam64);
+            ip->d.u64 = ip[2].b.u64;
+            setNop(context, ip + 2);
+            break;
+        }
+
         break;
 
     case ByteCodeOp::SetZeroStack32:
@@ -1702,6 +1717,21 @@ void ByteCodeOptimizer::reduceX2(ByteCodeOptContext* context, ByteCodeInstructio
 
 void ByteCodeOptimizer::reduceCmpJump(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
+    // Instruction followed by jump followed by the exact same instruction, and no stmt start
+    // Remove the clone
+    if (ByteCode::isJump(ip + 1) &&
+        !(ip[1].flags & BCI_START_STMT) &&
+        !(ip[2].flags & BCI_START_STMT) &&
+        ip[0].op == ip[2].op && 
+        ip[0].flags == ip[2].flags && 
+        ip[0].a.u64 == ip[2].a.u64 &&
+        ip[0].b.u64 == ip[2].b.u64 &&
+        ip[0].c.u64 == ip[2].c.u64 &&
+        ip[0].d.u64 == ip[2].d.u64)
+    {
+        setNop(context, ip + 2);
+    }
+
     switch (ip->op)
     {
     case ByteCodeOp::ClearMaskU32:
