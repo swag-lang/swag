@@ -225,7 +225,7 @@ void ByteCodeOptimizer::setContextFlags(ByteCodeOptContext* context)
         case ByteCodeOp::MakeBssSegPointer:
         case ByteCodeOp::MakeConstantSegPointer:
         case ByteCodeOp::MakeMutableSegPointer:
-        case ByteCodeOp::GetFromStackParam64:
+        case ByteCodeOp::GetParam64:
         case ByteCodeOp::SetImmediate32:
         case ByteCodeOp::SetImmediate64:
             context->contextBcFlags |= OCF_HAS_DUPCOPY;

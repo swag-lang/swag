@@ -3696,31 +3696,31 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::GetFromStackParam8:
+        case ByteCodeOp::GetParam8:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
             SWAG_CHECK(storeLocalParam(context, buildParameters, func, typeFunc, ip->c.u32, r0, 1));
             break;
         }
-        case ByteCodeOp::GetFromStackParam16:
+        case ByteCodeOp::GetParam16:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
             SWAG_CHECK(storeLocalParam(context, buildParameters, func, typeFunc, ip->c.u32, r0, 2));
             break;
         }
-        case ByteCodeOp::GetFromStackParam32:
+        case ByteCodeOp::GetParam32:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
             SWAG_CHECK(storeLocalParam(context, buildParameters, func, typeFunc, ip->c.u32, r0, 4));
             break;
         }
-        case ByteCodeOp::GetFromStackParam64:
+        case ByteCodeOp::GetParam64:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
             SWAG_CHECK(storeLocalParam(context, buildParameters, func, typeFunc, ip->c.u32, r0));
             break;
         }
-        case ByteCodeOp::GetIncFromStackParam64:
+        case ByteCodeOp::GetIncParam64:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
             SWAG_CHECK(storeLocalParam(context, buildParameters, func, typeFunc, ip->c.u32, r0, 0, ip->d.u64));

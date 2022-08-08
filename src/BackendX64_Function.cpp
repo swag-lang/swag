@@ -2786,19 +2786,19 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pushRAParams.push_back(ip->d.u32);
             break;
 
-        case ByteCodeOp::GetFromStackParam8:
+        case ByteCodeOp::GetParam8:
             emitLocalParam(pp, typeFunc, ip->a.u32, ip->c.u32, 1, offsetS4, sizeStack);
             break;
-        case ByteCodeOp::GetFromStackParam16:
+        case ByteCodeOp::GetParam16:
             emitLocalParam(pp, typeFunc, ip->a.u32, ip->c.u32, 2, offsetS4, sizeStack);
             break;
-        case ByteCodeOp::GetFromStackParam32:
+        case ByteCodeOp::GetParam32:
             emitLocalParam(pp, typeFunc, ip->a.u32, ip->c.u32, 4, offsetS4, sizeStack);
             break;
-        case ByteCodeOp::GetFromStackParam64:
+        case ByteCodeOp::GetParam64:
             emitLocalParam(pp, typeFunc, ip->a.u32, ip->c.u32, 8, offsetS4, sizeStack);
             break;
-        case ByteCodeOp::GetIncFromStackParam64:
+        case ByteCodeOp::GetIncParam64:
             emitLocalParam(pp, typeFunc, ip->a.u32, ip->c.u32, 8, offsetS4, sizeStack, ip->d.u64);
             break;
 

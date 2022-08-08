@@ -22,6 +22,7 @@ impl Point
         x, y = value
     }
 
+#[Swag.PrintBc]
     mtdc opEquals(other: Point)->bool
     {
         return x == other.x and y == other.y

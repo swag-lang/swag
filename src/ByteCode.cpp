@@ -156,7 +156,7 @@ bool ByteCode::isDoingNothing()
 
     if (numInstructions == 3)
     {
-        if (out[0].op == ByteCodeOp::GetFromStackParam64 &&
+        if (out[0].op == ByteCodeOp::GetParam64 &&
             out[1].op == ByteCodeOp::Ret)
             return true;
     }

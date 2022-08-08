@@ -21,7 +21,7 @@ void ByteCodeGenJob::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* fu
     if (pushParam)
     {
         SWAG_ASSERT(numParams == 1);
-        emitInstruction(context, ByteCodeOp::GetFromStackParam64, 0, 24);
+        emitInstruction(context, ByteCodeOp::GetParam64, 0, 24);
         if (offset)
         {
             auto inst = emitInstruction(context, ByteCodeOp::IncPointer64, 0, 0, 0);
@@ -157,7 +157,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
     // No special value, so we can just clear the struct
     if (!(typeInfoStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES))
     {
-        emitInstruction(&cxt, ByteCodeOp::GetFromStackParam64, 0, 24);
+        emitInstruction(&cxt, ByteCodeOp::GetParam64, 0, 24);
         emitSetZeroAtPointer(&cxt, typeInfoStruct->sizeOf, 0);
         emitInstruction(&cxt, ByteCodeOp::Ret);
         emitInstruction(&cxt, ByteCodeOp::End);
@@ -175,7 +175,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         auto typeVar = TypeManager::concreteType(param->typeInfo);
 
         // Reference to the field
-        emitInstruction(&cxt, ByteCodeOp::GetFromStackParam64, 0, 24);
+        emitInstruction(&cxt, ByteCodeOp::GetParam64, 0, 24);
         if (param->offset)
         {
             auto inst = emitInstruction(&cxt, ByteCodeOp::IncPointer64, 0, 0, 0);

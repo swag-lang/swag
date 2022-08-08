@@ -340,7 +340,7 @@ void ByteCodeOptimizer::reduceAppend(ByteCodeOptContext* context, ByteCodeInstru
         case ByteCodeOp::GetFromStack16:
         case ByteCodeOp::GetFromStack32:
         case ByteCodeOp::GetFromStack64:
-        case ByteCodeOp::GetFromStackParam64:
+        case ByteCodeOp::GetParam64:
         case ByteCodeOp::NegBool:
         case ByteCodeOp::CastBool8:
         case ByteCodeOp::CastBool16:
@@ -572,13 +572,13 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
 
         break;
 
-    case ByteCodeOp::GetFromStackParam64:
+    case ByteCodeOp::GetParam64:
         if ((ip[1].op == ByteCodeOp::ClearMaskU32) &&
             (ip[1].b.u32 == 0xFF) &&
             (ip[0].a.u32 == ip[1].a.u32) &&
             !(ip[1].flags & BCI_START_STMT))
         {
-            SET_OP(ip, ByteCodeOp::GetFromStackParam8);
+            SET_OP(ip, ByteCodeOp::GetParam8);
             setNop(context, ip + 1);
             break;
         }
@@ -588,7 +588,7 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
             (ip[0].a.u32 == ip[1].a.u32) &&
             !(ip[1].flags & BCI_START_STMT))
         {
-            SET_OP(ip, ByteCodeOp::GetFromStackParam16);
+            SET_OP(ip, ByteCodeOp::GetParam16);
             setNop(context, ip + 1);
             break;
         }
@@ -598,7 +598,7 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
             (ip[0].a.u32 == ip[1].a.u32) &&
             !(ip[1].flags & BCI_START_STMT))
         {
-            SET_OP(ip, ByteCodeOp::GetFromStackParam32);
+            SET_OP(ip, ByteCodeOp::GetParam32);
             setNop(context, ip + 1);
             break;
         }
@@ -608,7 +608,7 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
             ip[1].a.u32 == ip[1].c.u32 &&
             !(ip[1].flags & BCI_START_STMT))
         {
-            SET_OP(ip, ByteCodeOp::GetIncFromStackParam64);
+            SET_OP(ip, ByteCodeOp::GetIncParam64);
             ip->d.u64 = ip[1].b.u64;
             setNop(context, ip + 1);
             break;
@@ -623,7 +623,7 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
             !(ip[1].flags & BCI_START_STMT) &&
             !(ip[2].flags & BCI_START_STMT))
         {
-            SET_OP(ip, ByteCodeOp::GetIncFromStackParam64);
+            SET_OP(ip, ByteCodeOp::GetIncParam64);
             ip->d.u64 = ip[2].b.u64;
             setNop(context, ip + 2);
             break;
@@ -638,7 +638,7 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
             !(ip[1].flags & BCI_START_STMT) &&
             !(ip[2].flags & BCI_START_STMT))
         {
-            SET_OP(ip, ByteCodeOp::GetIncFromStackParam64);
+            SET_OP(ip, ByteCodeOp::GetIncParam64);
             ip->d.u64 = ip[2].b.u64;
             setNop(context, ip + 2);
             break;
