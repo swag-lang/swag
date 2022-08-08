@@ -302,10 +302,22 @@ bool ByteCodeGenJob::emitLoop(ByteCodeGenContext* context)
 {
     auto node = static_cast<AstBreakable*>(context->node);
 
-    // Resolve ByteCodeOp::JumpIfFalse expression
-    auto instruction   = context->bc->out + node->seekJumpExpression;
-    auto diff          = node->seekJumpAfterBlock - node->seekJumpExpression;
-    instruction->b.s32 = diff - 1;
+    // Resolve ByteCodeOp::Jump expression
+    // Be sure this is not an infinite loop without a jump instruction
+    bool hasJump = true;
+    if (!node->hasSpecialFuncCall() && node->kind == AstNodeKind::Loop)
+    {
+        auto loopNode = CastAst<AstLoop>(node, AstNodeKind::Loop);
+        if (!loopNode->expression)
+            hasJump = false;
+    }
+
+    if (hasJump)
+    {
+        auto instruction   = context->bc->out + node->seekJumpExpression;
+        auto diff          = node->seekJumpAfterBlock - node->seekJumpExpression;
+        instruction->b.s32 = diff - 1;
+    }
 
     if (!node->hasSpecialFuncCall())
     {
