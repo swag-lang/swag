@@ -496,7 +496,7 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
             !(ip[1].flags & BCI_START_STMT))
         {
             SET_OP(ip + 1, ByteCodeOp::MakeStackPointerRT);
-            ip[1].a.u32 = ip[0].b.u32;
+            ip[1].a.u64 = ip[0].b.u32 + ip[1].b.u64;
             break;
         }
 
@@ -1273,6 +1273,18 @@ void ByteCodeOptimizer::reduceIncPtr(ByteCodeOptContext* context, ByteCodeInstru
         ip[1].b.s64 > 0)
     {
         ip[0].b.u32 += ip[1].b.u32;
+        setNop(context, ip + 1);
+    }
+
+    // Store offset of CopyRRtoRC directly in the instruction
+    if (ip[1].op == ByteCodeOp::CopyRRtoRC &&
+        ip[1].op == ByteCodeOp::IncPointer64 &&
+        ip[1].a.u32 == ip[1].c.u32 &&
+        ip[0].a.u32 == ip[1].a.u32 &&
+        (ip[1].flags & BCI_IMM_B) &&
+        !(ip[1].flags & BCI_START_STMT))
+    {
+        ip[0].b.u64 += ip[1].b.u64;
         setNop(context, ip + 1);
     }
 }

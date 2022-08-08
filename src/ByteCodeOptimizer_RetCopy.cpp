@@ -47,12 +47,14 @@ static void optimRetCopy(ByteCodeOptContext* context, ByteCodeInstruction* ipOrg
 
         // Change the original stack pointer offset to reference the variable instead of the temporary
         // copy
+        SWAG_ASSERT(ipOrg->op != ByteCodeOp::CopyRRtoRC);
         ipOrg->b.u32 = ip->b.u32;
     }
     else
     {
         SWAG_ASSERT(ip->op == ByteCodeOp::CopyRRtoRC);
         SET_OP(ipOrg, ByteCodeOp::CopyRRtoRC);
+        ipOrg->b.u64 = ip->b.u64;
     }
 
     // Is there a corresponding drop in the scope ?

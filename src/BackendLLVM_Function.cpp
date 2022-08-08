@@ -3673,7 +3673,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
             auto r1 = builder.CreateLoad(func->getArg(0));
-            builder.CreateStore(r1, r0);
+            auto r2 = builder.CreateAdd(r1, builder.getInt64(ip->b.u64));
+            builder.CreateStore(r2, r0);
             break;
         }
 

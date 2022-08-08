@@ -195,7 +195,7 @@ BYTECODE_OP(Add64byVB64, OPFLAG_READ_A | OPFLAG_WRITE_A | OPFLAG_READ_VAL64_B, "
 BYTECODE_OP(CopyRCtoRR, OPFLAG_READ_A | OPFLAG_IMM_A, "result = _rau64_", 0)
 BYTECODE_OP(CopyRCtoRR2, OPFLAG_READ_A | OPFLAG_READ_B, "result = _ra_, _rb_", 0)
 BYTECODE_OP(CopyRCtoRT, OPFLAG_READ_A, "resultPtr = _ra_", 0)
-BYTECODE_OP(CopyRRtoRC, OPFLAG_WRITE_A, "_ra_ = resultPtr", 0)
+BYTECODE_OP(CopyRRtoRC, OPFLAG_WRITE_A | OPFLAG_READ_VAL64_B, "_ra_ = resultPtr + _rbu64_", 0)
 BYTECODE_OP(CopyRTtoRC, OPFLAG_WRITE_A, "_ra_ = result", 0)
 BYTECODE_OP(CopyRTtoRC2, OPFLAG_WRITE_A | OPFLAG_WRITE_B, "_ra_, _rb_ = result", 0)
 
