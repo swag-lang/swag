@@ -208,7 +208,7 @@ void BackendX64::storeRAXToCDeclParam(X64PerThread& pp, TypeInfo* typeParam, int
     }
 }
 
-void BackendX64::emitLocalParam(X64PerThread& pp, TypeInfoFuncAttr* typeFunc, int reg, int paramIdx, int sizeOf, int storeS4, int sizeStack, uint64_t toAdd)
+void BackendX64::emitLocalParam(X64PerThread& pp, TypeInfoFuncAttr* typeFunc, int reg, int paramIdx, int sizeOf, int storeS4, int sizeStack, uint64_t toAdd, int deRefSize)
 {
     auto numReturnRegs = typeFunc->numReturnRegisters();
 
@@ -250,8 +250,54 @@ void BackendX64::emitLocalParam(X64PerThread& pp, TypeInfoFuncAttr* typeFunc, in
 
         if (toAdd)
         {
-            BackendX64Inst::emit_Load64_Immediate(pp, toAdd, RCX);
-            BackendX64Inst::emit_Op64(pp, RCX, RAX, X64Op::ADD);
+            if (deRefSize && toAdd <= 0x7FFFFFFFF)
+            {
+                switch (deRefSize)
+                {
+                case 1:
+                    BackendX64Inst::emit_Load8_Indirect(pp, (uint32_t) toAdd, RAX, RAX);
+                    BackendX64Inst::emit_UnsignedExtend_8_To_64(pp, RAX);
+                    break;
+                case 2:
+                    BackendX64Inst::emit_Load16_Indirect(pp, (uint32_t) toAdd, RAX, RAX);
+                    BackendX64Inst::emit_UnsignedExtend_16_To_64(pp, RAX);
+                    break;
+                case 4:
+                    BackendX64Inst::emit_Load32_Indirect(pp, (uint32_t) toAdd, RAX, RAX);
+                    break;
+                case 8:
+                    BackendX64Inst::emit_Load64_Indirect(pp, (uint32_t) toAdd, RAX, RAX);
+                    break;
+                }
+
+                deRefSize = false;
+            }
+            else
+            {
+                BackendX64Inst::emit_Load64_Immediate(pp, toAdd, RCX);
+                BackendX64Inst::emit_Op64(pp, RCX, RAX, X64Op::ADD);
+            }
+        }
+
+        if (deRefSize)
+        {
+            switch (deRefSize)
+            {
+            case 1:
+                BackendX64Inst::emit_Load8_Indirect(pp, 0, RAX, RAX);
+                BackendX64Inst::emit_UnsignedExtend_8_To_64(pp, RAX);
+                break;
+            case 2:
+                BackendX64Inst::emit_Load16_Indirect(pp, 0, RAX, RAX);
+                BackendX64Inst::emit_UnsignedExtend_16_To_64(pp, RAX);
+                break;
+            case 4:
+                BackendX64Inst::emit_Load32_Indirect(pp, 0, RAX, RAX);
+                break;
+            case 8:
+                BackendX64Inst::emit_Load64_Indirect(pp, 0, RAX, RAX);
+                break;
+            }
         }
 
         BackendX64Inst::emit_Store64_Indirect(pp, regOffset(reg), RAX, RDI);

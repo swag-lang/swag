@@ -572,6 +572,52 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
 
         break;
 
+    case ByteCodeOp::GetIncParam64:
+        if ((ip[1].op == ByteCodeOp::DeRef8) &&
+            ip[0].a.u32 == ip[1].a.u32 &&
+            ip[1].a.u32 == ip[1].b.u32 &&
+            ip[1].c.s64 == 0 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip, ByteCodeOp::GetIncParam64DeRef8);
+            setNop(context, ip + 1);
+            break;
+        }
+
+        if ((ip[1].op == ByteCodeOp::DeRef16) &&
+            ip[0].a.u32 == ip[1].a.u32 &&
+            ip[1].a.u32 == ip[1].b.u32 &&
+            ip[1].c.s64 == 0 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip, ByteCodeOp::GetIncParam64DeRef16);
+            setNop(context, ip + 1);
+            break;
+        }
+
+        if ((ip[1].op == ByteCodeOp::DeRef32) &&
+            ip[0].a.u32 == ip[1].a.u32 &&
+            ip[1].a.u32 == ip[1].b.u32 &&
+            ip[1].c.s64 == 0 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip, ByteCodeOp::GetIncParam64DeRef32);
+            setNop(context, ip + 1);
+            break;
+        }
+
+        if ((ip[1].op == ByteCodeOp::DeRef64) &&
+            ip[0].a.u32 == ip[1].a.u32 &&
+            ip[1].a.u32 == ip[1].b.u32 &&
+            ip[1].c.s64 == 0 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip, ByteCodeOp::GetIncParam64DeRef64);
+            setNop(context, ip + 1);
+            break;
+        }
+        break;
+
     case ByteCodeOp::GetParam64:
         if ((ip[1].op == ByteCodeOp::ClearMaskU32) &&
             (ip[1].b.u32 == 0xFF) &&
@@ -610,6 +656,50 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
         {
             SET_OP(ip, ByteCodeOp::GetIncParam64);
             ip->d.u64 = ip[1].b.u64;
+            setNop(context, ip + 1);
+            break;
+        }
+
+        if ((ip[1].op == ByteCodeOp::DeRef8) &&
+            ip[0].a.u32 == ip[1].a.u32 &&
+            ip[1].a.u32 == ip[1].b.u32 &&
+            ip[1].c.s64 == 0 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip, ByteCodeOp::GetParam64DeRef8);
+            setNop(context, ip + 1);
+            break;
+        }
+
+        if ((ip[1].op == ByteCodeOp::DeRef16) &&
+            ip[0].a.u32 == ip[1].a.u32 &&
+            ip[1].a.u32 == ip[1].b.u32 &&
+            ip[1].c.s64 == 0 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip, ByteCodeOp::GetParam64DeRef16);
+            setNop(context, ip + 1);
+            break;
+        }
+
+        if ((ip[1].op == ByteCodeOp::DeRef32) &&
+            ip[0].a.u32 == ip[1].a.u32 &&
+            ip[1].a.u32 == ip[1].b.u32 &&
+            ip[1].c.s64 == 0 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip, ByteCodeOp::GetParam64DeRef32);
+            setNop(context, ip + 1);
+            break;
+        }
+
+        if ((ip[1].op == ByteCodeOp::DeRef64) &&
+            ip[0].a.u32 == ip[1].a.u32 &&
+            ip[1].a.u32 == ip[1].b.u32 &&
+            ip[1].c.s64 == 0 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip, ByteCodeOp::GetParam64DeRef64);
             setNop(context, ip + 1);
             break;
         }

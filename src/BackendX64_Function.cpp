@@ -2802,6 +2802,32 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             emitLocalParam(pp, typeFunc, ip->a.u32, ip->c.u32, 8, offsetS4, sizeStack, ip->d.u64);
             break;
 
+        case ByteCodeOp::GetParam64DeRef8:
+            emitLocalParam(pp, typeFunc, ip->a.u32, ip->c.u32, 8, offsetS4, sizeStack, 0, 1);
+            break;
+        case ByteCodeOp::GetParam64DeRef16:
+            emitLocalParam(pp, typeFunc, ip->a.u32, ip->c.u32, 8, offsetS4, sizeStack, 0, 2);
+            break;
+        case ByteCodeOp::GetParam64DeRef32:
+            emitLocalParam(pp, typeFunc, ip->a.u32, ip->c.u32, 8, offsetS4, sizeStack, 0, 4);
+            break;
+        case ByteCodeOp::GetParam64DeRef64:
+            emitLocalParam(pp, typeFunc, ip->a.u32, ip->c.u32, 8, offsetS4, sizeStack, 0, 8);
+            break;
+
+        case ByteCodeOp::GetIncParam64DeRef8:
+            emitLocalParam(pp, typeFunc, ip->a.u32, ip->c.u32, 8, offsetS4, sizeStack, ip->d.u64, 1);
+            break;
+        case ByteCodeOp::GetIncParam64DeRef16:
+            emitLocalParam(pp, typeFunc, ip->a.u32, ip->c.u32, 8, offsetS4, sizeStack, ip->d.u64, 2);
+            break;
+        case ByteCodeOp::GetIncParam64DeRef32:
+            emitLocalParam(pp, typeFunc, ip->a.u32, ip->c.u32, 8, offsetS4, sizeStack, ip->d.u64, 4);
+            break;
+        case ByteCodeOp::GetIncParam64DeRef64:
+            emitLocalParam(pp, typeFunc, ip->a.u32, ip->c.u32, 8, offsetS4, sizeStack, ip->d.u64, 8);
+            break;
+
         case ByteCodeOp::MakeLambda:
         {
             auto funcNode = CastAst<AstFuncDecl>((AstNode*) ip->b.pointer, AstNodeKind::FuncDecl);

@@ -223,7 +223,7 @@ llvm::FunctionType* BackendLLVM::createFunctionTypeLocal(const BuildParameters& 
     return result;
 }
 
-bool BackendLLVM::storeLocalParam(llvm::LLVMContext& context, const BuildParameters& buildParameters, llvm::Function* func, TypeInfoFuncAttr* typeFunc, int idx, llvm::Value* r0, int sizeOf, uint64_t toAdd)
+bool BackendLLVM::storeLocalParam(llvm::LLVMContext& context, const BuildParameters& buildParameters, llvm::Function* func, TypeInfoFuncAttr* typeFunc, int idx, llvm::Value* r0, int sizeOf, uint64_t toAdd, int deRefSize)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
@@ -234,7 +234,46 @@ bool BackendLLVM::storeLocalParam(llvm::LLVMContext& context, const BuildParamet
     auto offArg = idx + typeFunc->numReturnRegisters();
     auto arg    = func->getArg(offArg);
 
-    if (passByValue(param))
+    if (toAdd || deRefSize)
+    {
+        llvm::Value* ra;
+        if(passByValue(param))
+            ra = builder.CreateInBoundsGEP(TO_PTR_I8(arg), builder.getInt64(toAdd));
+        else
+        {
+            ra = builder.CreateIntToPtr(arg, builder.getInt8PtrTy());
+            ra = builder.CreateInBoundsGEP(ra, builder.getInt64(toAdd));
+        }
+        if (deRefSize)
+        {
+            llvm::Value* v1;
+            switch (deRefSize)
+            {
+            case 1:
+                v1 = builder.CreateLoad(TO_PTR_I8(ra));
+                ra = builder.CreateIntCast(v1, builder.getInt64Ty(), false);
+                break;
+            case 2:
+                v1 = builder.CreateLoad(TO_PTR_I16(ra));
+                ra = builder.CreateIntCast(v1, builder.getInt64Ty(), false);
+                break;
+            case 4:
+                v1 = builder.CreateLoad(TO_PTR_I32(ra));
+                ra = builder.CreateIntCast(v1, builder.getInt64Ty(), false);
+                break;
+            case 8:
+                ra = builder.CreateLoad(TO_PTR_I64(ra));
+                break;
+            }
+
+            builder.CreateStore(ra, r0);
+        }
+        else
+        {
+            builder.CreateStore(ra, TO_PTR_PTR_I8(r0));
+        }
+    }
+    else if (passByValue(param))
     {
         // This can be casted to an integer
         if (sizeOf)
@@ -250,30 +289,13 @@ bool BackendLLVM::storeLocalParam(llvm::LLVMContext& context, const BuildParamet
         {
             llvm::Type* ty = nullptr;
             SWAG_CHECK(swagTypeToLLVMType(buildParameters, module, param, &ty));
-
-            if (toAdd)
-            {
-                auto ra = builder.CreateInBoundsGEP(TO_PTR_I8(arg), builder.getInt64(toAdd));
-                builder.CreateStore(ra, TO_PTR_PTR_I8(r0));
-            }
-            else
-            {
-                r0 = builder.CreatePointerCast(r0, ty->getPointerTo());
-                builder.CreateStore(arg, r0);
-            }
+            r0 = builder.CreatePointerCast(r0, ty->getPointerTo());
+            builder.CreateStore(arg, r0);
         }
     }
     else
     {
-        if (toAdd)
-        {
-            auto ra = builder.CreateAdd(arg, builder.getInt64(toAdd));
-            builder.CreateStore(ra, r0);
-        }
-        else
-        {
-            builder.CreateStore(arg, r0);
-        }
+        builder.CreateStore(arg, r0);
     }
 
     return true;

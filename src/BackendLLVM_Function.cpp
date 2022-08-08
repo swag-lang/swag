@@ -3727,6 +3727,56 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
+        case ByteCodeOp::GetParam64DeRef8:
+        {
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            SWAG_CHECK(storeLocalParam(context, buildParameters, func, typeFunc, ip->c.u32, r0, 0, 0, 1));
+            break;
+        }
+        case ByteCodeOp::GetParam64DeRef16:
+        {
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            SWAG_CHECK(storeLocalParam(context, buildParameters, func, typeFunc, ip->c.u32, r0, 0, 0, 2));
+            break;
+        }
+        case ByteCodeOp::GetParam64DeRef32:
+        {
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            SWAG_CHECK(storeLocalParam(context, buildParameters, func, typeFunc, ip->c.u32, r0, 0, 0, 4));
+            break;
+        }
+        case ByteCodeOp::GetParam64DeRef64:
+        {
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            SWAG_CHECK(storeLocalParam(context, buildParameters, func, typeFunc, ip->c.u32, r0, 0, 0, 8));
+            break;
+        }
+
+        case ByteCodeOp::GetIncParam64DeRef8:
+        {
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            SWAG_CHECK(storeLocalParam(context, buildParameters, func, typeFunc, ip->c.u32, r0, 0, ip->d.u64, 1));
+            break;
+        }
+        case ByteCodeOp::GetIncParam64DeRef16:
+        {
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            SWAG_CHECK(storeLocalParam(context, buildParameters, func, typeFunc, ip->c.u32, r0, 0, ip->d.u64, 2));
+            break;
+        }
+        case ByteCodeOp::GetIncParam64DeRef32:
+        {
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            SWAG_CHECK(storeLocalParam(context, buildParameters, func, typeFunc, ip->c.u32, r0, 0, ip->d.u64, 4));
+            break;
+        }
+        case ByteCodeOp::GetIncParam64DeRef64:
+        {
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            SWAG_CHECK(storeLocalParam(context, buildParameters, func, typeFunc, ip->c.u32, r0, 0, ip->d.u64, 8));
+            break;
+        }
+
         case ByteCodeOp::ZeroToTrue:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
