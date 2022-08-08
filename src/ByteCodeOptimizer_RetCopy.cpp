@@ -174,7 +174,15 @@ void ByteCodeOptimizer::registerMakeAddr(ByteCodeOptContext* context, ByteCodeIn
         context->mapRegReg.set(ip->a.u32, ip->b.u32);
         break;
     case ByteCodeOp::InternalGetTlsPtr:
+        context->mapRegReg.set(ip->a.u32, UINT32_MAX); // Disable optim whatever
+        break;
+
     case ByteCodeOp::GetFromStackParam64:
+
+        // If the next instruction changes the value, then we can do the optim (this is in fact a GetIncFromStackParam64)
+        if (ip[1].op == ByteCodeOp::IncPointer64 && ip[1].a.u32 == ip[1].c.u32 && ip[0].a.u32 == ip[1].a.u32)
+            break;
+
         context->mapRegReg.set(ip->a.u32, UINT32_MAX); // Disable optim whatever
         break;
     }
