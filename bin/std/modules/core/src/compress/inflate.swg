@@ -150,7 +150,6 @@ impl Inflate
 {
     public const InflateMaxDistance = 32768'u32
 
-    #[Swag.PrintBc]
     mtd decode(ht: *HuffmanTable)->u16 throw
     {
         if stream.numBits < 16
