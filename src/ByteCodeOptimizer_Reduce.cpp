@@ -400,6 +400,14 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
 {
     switch (ip->op)
     {
+    case ByteCodeOp::CopyStack8:
+    case ByteCodeOp::CopyStack16:
+    case ByteCodeOp::CopyStack32:
+    case ByteCodeOp::CopyStack64:
+        if (ip->a.u32 == ip->b.u32)
+            setNop(context, ip);
+        break;
+
     case ByteCodeOp::GetFromStack8:
         if ((ip[1].op == ByteCodeOp::SetAtStackPointer8) &&
             ip[1].b.u32 == ip[0].a.u32 &&
