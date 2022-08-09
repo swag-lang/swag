@@ -1907,3 +1907,17 @@ bool ByteCodeGenJob::emitForeignCall(ByteCodeGenContext* context)
     emitCall(context, allParams, funcNode, nullptr, funcNode->resultRegisterRC, true, false, true);
     return true;
 }
+
+bool ByteCodeGenJob::makeInline(ByteCodeGenContext* context, AstFuncDecl* funcDecl, AstNode* identifier)
+{
+    SWAG_CHECK(SemanticJob::makeInline((JobContext*) context, funcDecl, identifier));
+
+    // Create a semantic job to resolve the inline part, and wait for that to be finished
+    context->job->setPending(nullptr, JobWaitKind::MakeInline, funcDecl, nullptr);
+    auto inlineNode = identifier->childs.back();
+    SWAG_ASSERT(inlineNode->kind == AstNodeKind::Inline);
+    auto job = SemanticJob::newJob(context->job->dependentJob, context->sourceFile, inlineNode, false);
+    job->addDependentJob(context->job);
+    context->job->jobsToAdd.push_back(job);
+    return true;
+}
