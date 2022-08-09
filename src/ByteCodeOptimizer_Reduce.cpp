@@ -1394,7 +1394,7 @@ void ByteCodeOptimizer::reduceIncPtr(ByteCodeOptContext* context, ByteCodeInstru
     }
 
     // Store offset of CopyRRtoRC directly in the instruction
-    if (ip[1].op == ByteCodeOp::CopyRRtoRC &&
+    if (ip[0].op == ByteCodeOp::CopyRRtoRC &&
         ip[1].op == ByteCodeOp::IncPointer64 &&
         ip[1].a.u32 == ip[1].c.u32 &&
         ip[0].a.u32 == ip[1].a.u32 &&
