@@ -1274,6 +1274,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
             // This will avoid to do the right expression multiple times (if this is a function call for example).
             //
             // If this is not the '=' operator, then we have to duplicate the affectation for each variable
+            // If the affect expression is a literal, it's better to duplicate also
             AstNode* affectExpression = nullptr;
             bool     firstDone        = false;
             auto     front            = CastAst<AstIdentifierRef>(leftNode->childs.front(), AstNodeKind::IdentifierRef);
@@ -1301,7 +1302,7 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
                 }
 
                 // This is not an initialization, so we need to duplicate the right expression
-                else if (affectNode->token.id != TokenId::SymEqual)
+                else if (affectNode->token.id != TokenId::SymEqual || affectExpression->kind == AstNodeKind::Literal)
                 {
                     auto newAffect = Ast::clone(affectExpression, affectNode);
                     newAffect->inheritTokenLocation(affectExpression);

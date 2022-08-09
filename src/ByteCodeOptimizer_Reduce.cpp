@@ -1670,6 +1670,64 @@ void ByteCodeOptimizer::reduceSetAt(ByteCodeOptContext* context, ByteCodeInstruc
 
     switch (ip->op)
     {
+    case ByteCodeOp::SetAtPointer8:
+        if (ip[1].op == ByteCodeOp::SetAtPointer8 &&
+            ip->c.u32 + sizeof(uint8_t) == ip[1].c.u32 &&
+            !(ip[0].flags & BCI_START_STMT) &&
+            !(ip[1].flags & BCI_START_STMT) &&
+            (ip->flags & BCI_IMM_B) &&
+            (ip[1].flags & BCI_IMM_B))
+        {
+            SET_OP(ip, ByteCodeOp::SetAtPointer16);
+            ip->b.u64 |= (uint64_t) ip[1].b.u32 << 8;
+            setNop(context, ip + 1);
+            break;
+        }
+
+        break;
+
+    case ByteCodeOp::SetAtPointer16:
+        if (ip[1].op == ByteCodeOp::SetAtPointer16 &&
+            ip->c.u32 + sizeof(uint16_t) == ip[1].c.u32 &&
+            !(ip[0].flags & BCI_START_STMT) &&
+            !(ip[1].flags & BCI_START_STMT) &&
+            (ip->flags & BCI_IMM_B) &&
+            (ip[1].flags & BCI_IMM_B))
+        {
+            SET_OP(ip, ByteCodeOp::SetAtPointer32);
+            ip->b.u64 |= (uint64_t) ip[1].b.u32 << 16;
+            setNop(context, ip + 1);
+            break;
+        }
+
+        break;
+
+    case ByteCodeOp::SetAtPointer32:
+        if (ip[1].op == ByteCodeOp::SetAtPointer32 &&
+            ip->c.u32 + sizeof(uint32_t) == ip[1].c.u32 &&
+            !(ip[0].flags & BCI_START_STMT) &&
+            !(ip[1].flags & BCI_START_STMT) &&
+            (ip->flags & BCI_IMM_B) &&
+            (ip[1].flags & BCI_IMM_B))
+        {
+            SET_OP(ip, ByteCodeOp::SetAtPointer64);
+            ip->b.u64 |= (uint64_t) ip[1].b.u32 << 32;
+            setNop(context, ip + 1);
+            break;
+        }
+
+        break;
+
+    case ByteCodeOp::SetAtPointer64:
+        if ((ip->flags & BCI_IMM_B) && ip->b.u64 == 0)
+        {
+            SET_OP(ip, ByteCodeOp::SetZeroAtPointer64);
+            ip->b.u64 = ip->c.u32;
+            break;
+        }
+
+        break;
+
     case ByteCodeOp::SetAtStackPointer8:
         if (ip[1].op == ByteCodeOp::SetAtStackPointer8 &&
             ip->a.u32 + sizeof(uint8_t) == ip[1].a.u32 &&
