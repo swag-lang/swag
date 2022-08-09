@@ -245,10 +245,10 @@ void ByteCodeOptimizer::setContextFlags(ByteCodeOptContext* context)
 
 void ByteCodeOptimizer::setJumps(ByteCodeOptContext* context)
 {
+    context->jumps.clear();
     if (!context->bc->numJumps)
         return;
 
-    context->jumps.clear();
     context->jumps.reserve(context->bc->numJumps);
     context->bc->numJumps = 0;
 
