@@ -511,6 +511,54 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
         break;
 
     case ByteCodeOp::GetFromStack64:
+        if ((ip[1].op == ByteCodeOp::DeRef8) &&
+            ip[0].a.u32 == ip[1].a.u32 &&
+            ip[1].a.u32 == ip[1].b.u32 &&
+            ip[1].c.u64 == 0 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip, ByteCodeOp::GetIncFromStack64DeRef8);
+            ip->c.u64 = 0;
+            setNop(context, ip + 1);
+            break;
+        }
+
+        if ((ip[1].op == ByteCodeOp::DeRef16) &&
+            ip[0].a.u32 == ip[1].a.u32 &&
+            ip[1].a.u32 == ip[1].b.u32 &&
+            ip[1].c.u64 == 0 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip, ByteCodeOp::GetIncFromStack64DeRef16);
+            ip->c.u64 = 0;
+            setNop(context, ip + 1);
+            break;
+        }
+
+        if ((ip[1].op == ByteCodeOp::DeRef32) &&
+            ip[0].a.u32 == ip[1].a.u32 &&
+            ip[1].a.u32 == ip[1].b.u32 &&
+            ip[1].c.u64 == 0 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip, ByteCodeOp::GetIncFromStack64DeRef32);
+            ip->c.u64 = 0;
+            setNop(context, ip + 1);
+            break;
+        }
+
+        if ((ip[1].op == ByteCodeOp::DeRef64) &&
+            ip[0].a.u32 == ip[1].a.u32 &&
+            ip[1].a.u32 == ip[1].b.u32 &&
+            ip[1].c.u64 == 0 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip, ByteCodeOp::GetIncFromStack64DeRef64);
+            ip->c.u64 = 0;
+            setNop(context, ip + 1);
+            break;
+        }
+
         if ((ip[1].op == ByteCodeOp::IncPointer64) &&
             ip[0].a.u32 == ip[1].a.u32 &&
             ip[1].a.u32 == ip[1].c.u32 &&
