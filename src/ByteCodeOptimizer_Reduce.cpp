@@ -442,6 +442,26 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
             ip[1].b.u64 = ip[0].b.u64;
             break;
         }
+
+        if ((ip[1].op == ByteCodeOp::ClearMaskU32) &&
+            ip[0].a.u32 == ip[1].a.u32 &&
+            ip[1].b.u32 == 0xFF &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip, ByteCodeOp::GetFromStack8);
+            setNop(context, ip + 1);
+            break;
+        }
+
+        if ((ip[1].op == ByteCodeOp::ClearMaskU32) &&
+            ip[0].a.u32 == ip[1].a.u32 &&
+            ip[1].b.u32 == 0xFFFF &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip, ByteCodeOp::GetFromStack16);
+            setNop(context, ip + 1);
+            break;
+        }
         break;
 
     case ByteCodeOp::GetFromStack64:
@@ -452,6 +472,36 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
         {
             SET_OP(ip + 1, ByteCodeOp::CopyStack64);
             ip[1].b.u64 = ip[0].b.u64;
+            break;
+        }
+
+        if ((ip[1].op == ByteCodeOp::ClearMaskU64) &&
+            ip[0].a.u32 == ip[1].a.u32 &&
+            ip[1].b.u64 == 0xFF &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip, ByteCodeOp::GetFromStack8);
+            setNop(context, ip + 1);
+            break;
+        }
+
+        if ((ip[1].op == ByteCodeOp::ClearMaskU64) &&
+            ip[0].a.u32 == ip[1].a.u32 &&
+            ip[1].b.u64 == 0xFFFF &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip, ByteCodeOp::GetFromStack16);
+            setNop(context, ip + 1);
+            break;
+        }
+
+        if ((ip[1].op == ByteCodeOp::ClearMaskU64) &&
+            ip[0].a.u32 == ip[1].a.u32 &&
+            ip[1].b.u64 == 0xFFFFFFFF &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip, ByteCodeOp::GetFromStack32);
+            setNop(context, ip + 1);
             break;
         }
         break;
