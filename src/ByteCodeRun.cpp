@@ -902,10 +902,35 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         SWAG_ASSERT(context->bp + ip->b.u32 <= context->stack + g_CommandLine->stackSizeBC - 8);
         registersRC[ip->a.u32].u64 = *(uint64_t*) (context->bp + ip->b.u32);
         break;
+
     case ByteCodeOp::GetIncFromStack64:
         SWAG_ASSERT(context->bp + ip->b.u32 <= context->stack + g_CommandLine->stackSizeBC - 8);
         registersRC[ip->a.u32].u64 = *(uint64_t*) (context->bp + ip->b.u32);
         registersRC[ip->a.u32].u64 += ip->c.u64;
+        break;
+    case ByteCodeOp::GetIncFromStack64DeRef8:
+        SWAG_ASSERT(context->bp + ip->b.u32 <= context->stack + g_CommandLine->stackSizeBC - 8);
+        registersRC[ip->a.u32].u64 = *(uint64_t*) (context->bp + ip->b.u32);
+        registersRC[ip->a.u32].u64 += ip->c.u64;
+        registersRC[ip->a.u32].u64 = *(uint8_t*) registersRC[ip->a.u32].pointer;
+        break;
+    case ByteCodeOp::GetIncFromStack64DeRef16:
+        SWAG_ASSERT(context->bp + ip->b.u32 <= context->stack + g_CommandLine->stackSizeBC - 8);
+        registersRC[ip->a.u32].u64 = *(uint64_t*) (context->bp + ip->b.u32);
+        registersRC[ip->a.u32].u64 += ip->c.u64;
+        registersRC[ip->a.u32].u64 = *(uint16_t*) registersRC[ip->a.u32].pointer;
+        break;
+    case ByteCodeOp::GetIncFromStack64DeRef32:
+        SWAG_ASSERT(context->bp + ip->b.u32 <= context->stack + g_CommandLine->stackSizeBC - 8);
+        registersRC[ip->a.u32].u64 = *(uint64_t*) (context->bp + ip->b.u32);
+        registersRC[ip->a.u32].u64 += ip->c.u64;
+        registersRC[ip->a.u32].u64 = *(uint32_t*) registersRC[ip->a.u32].pointer;
+        break;
+    case ByteCodeOp::GetIncFromStack64DeRef64:
+        SWAG_ASSERT(context->bp + ip->b.u32 <= context->stack + g_CommandLine->stackSizeBC - 8);
+        registersRC[ip->a.u32].u64 = *(uint64_t*) (context->bp + ip->b.u32);
+        registersRC[ip->a.u32].u64 += ip->c.u64;
+        registersRC[ip->a.u32].u64 = *(uint64_t*) registersRC[ip->a.u32].pointer;
         break;
 
     case ByteCodeOp::CopyStack8:
