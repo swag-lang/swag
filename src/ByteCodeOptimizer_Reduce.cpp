@@ -831,6 +831,11 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
         }
 
         if ((ip[1].op == ByteCodeOp::IncPointer64) &&
+            ip[2].op != ByteCodeOp::SetZeroAtPointer8 &&
+            ip[2].op != ByteCodeOp::SetZeroAtPointer16 &&
+            ip[2].op != ByteCodeOp::SetZeroAtPointer32 &&
+            ip[2].op != ByteCodeOp::SetZeroAtPointer64 &&
+            ip[2].op != ByteCodeOp::SetZeroAtPointerX &&
             ip[0].a.u32 == ip[1].a.u32 &&
             ip[1].a.u32 == ip[1].c.u32 &&
             !(ip[1].flags & BCI_START_STMT))
