@@ -1655,6 +1655,14 @@ void ByteCodeOptimizer::reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruct
 {
     switch (ip->op)
     {
+    case ByteCodeOp::Mul64byVB64:
+        if (ip->b.u64 == 1)
+        {
+            setNop(context, ip);
+            break;
+        }
+        break;
+
     case ByteCodeOp::DebugNop:
         if (ip[1].op == ByteCodeOp::DebugNop)
         {
