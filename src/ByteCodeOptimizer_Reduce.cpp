@@ -5,6 +5,26 @@
 #include "Log.h"
 #include "AstNode.h"
 
+void ByteCodeOptimizer::reduceFactor(ByteCodeOptContext* context, ByteCodeInstruction* ip)
+{
+    switch (ip[0].op)
+    {
+    case ByteCodeOp::CopyRBtoRA64:
+        if (ip[1].op == ByteCodeOp::Mul64byVB64 &&
+            !(ip[1].flags & BCI_START_STMT) &&
+            ip[0].a.u32 == ip[1].a.u32)
+        {
+            setNop(context, ip);
+            SET_OP(ip + 1, ByteCodeOp::BinOpMulU64_Safe);
+            ip[1].a.u32 = ip[0].b.u32;
+            ip[1].c.u32 = ip[0].a.u32;
+            ip[1].flags |= BCI_IMM_B;
+            break;
+        }
+        break;
+    }
+}
+
 void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
     switch (ip[0].op)
@@ -838,6 +858,7 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
             ip[2].op != ByteCodeOp::SetZeroAtPointerX &&
             ip[0].a.u32 == ip[1].a.u32 &&
             ip[1].a.u32 == ip[1].c.u32 &&
+            ip[1].flags & BCI_IMM_B &&
             !(ip[1].flags & BCI_START_STMT))
         {
             SET_OP(ip, ByteCodeOp::GetIncParam64);
@@ -3790,6 +3811,7 @@ bool ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
         reduceSwap(context, ip);
         reduceAppend(context, ip);
         reduceForceSafe(context, ip);
+        reduceFactor(context, ip);
     }
 
     return true;
