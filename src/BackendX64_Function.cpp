@@ -1999,6 +1999,12 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load64_Indirect(pp, offsetStack + ip->b.u32, RAX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
+        case ByteCodeOp::GetIncFromStack64:
+            BackendX64Inst::emit_Load64_Indirect(pp, offsetStack + ip->b.u32, RAX, RDI);
+            BackendX64Inst::emit_Load64_Immediate(pp, ip->c.u64, RCX);
+            BackendX64Inst::emit_Op64(pp, RCX, RAX, X64Op::ADD);
+            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+            break;
 
         case ByteCodeOp::CopyStack8:
             BackendX64Inst::emit_Load8_Indirect(pp, offsetStack + ip->b.u32, RAX, RDI);

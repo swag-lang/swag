@@ -952,6 +952,15 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(builder.CreateLoad(r1), r0);
             break;
         }
+        case ByteCodeOp::GetIncFromStack64:
+        {
+            auto r0 = GEP_I32(allocR, ip->a.u32);
+            auto r1 = TO_PTR_I64(builder.CreateInBoundsGEP(allocStack, CST_RB32));
+            auto v0 = builder.CreateLoad(r1);
+            auto v1 = builder.CreateAdd(v0, builder.getInt64(ip->c.s64));
+            builder.CreateStore(v1, r0);
+            break;
+        }
 
         case ByteCodeOp::CopyStack8:
         {
