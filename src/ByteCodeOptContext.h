@@ -56,6 +56,7 @@ struct ByteCodeOptContext : public JobContext
     MapRegTo<ByteCodeInstruction*>                      mapRegInstA;
     MapRegTo<ByteCodeInstruction*>                      mapRegInstB;
     map<uint64_t, pair<uint64_t, ByteCodeInstruction*>> mapCst;
+    map<uint64_t, uint32_t>                             map6432;
 
     bool allPassesHaveDoneSomething = false;
     bool passHasDoneSomething       = false;
@@ -75,6 +76,7 @@ struct ByteCodeOptContext : public JobContext
         tree.clear();
         mapInstNode.clear();
         vecReg.clear();
+        map6432.clear();
         allPassesHaveDoneSomething = false;
         passHasDoneSomething       = false;
     }
