@@ -1542,6 +1542,89 @@ void ByteCodeOptimizer::reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruct
     }
 
     // Remove operators which do nothing
+    if (ip->flags & BCI_IMM_B)
+    {
+        switch (ip->op)
+        {
+        case ByteCodeOp::AffectOpDivEqS8:
+        case ByteCodeOp::AffectOpMulEqS8:
+            if (ip->b.u8 == 1)
+                setNop(context, ip);
+            break;
+        case ByteCodeOp::AffectOpDivEqS16:
+        case ByteCodeOp::AffectOpMulEqS16:
+            if (ip->b.u16 == 1)
+                setNop(context, ip);
+            break;
+        case ByteCodeOp::AffectOpDivEqS32:
+        case ByteCodeOp::AffectOpMulEqS32:
+            if (ip->b.u32 == 1)
+                setNop(context, ip);
+            break;
+        case ByteCodeOp::AffectOpDivEqS64:
+        case ByteCodeOp::AffectOpMulEqS64:
+            if (ip->b.u64 == 1)
+                setNop(context, ip);
+            break;
+        case ByteCodeOp::AffectOpPlusEqS8:
+        case ByteCodeOp::AffectOpPlusEqS8_Safe:
+        case ByteCodeOp::AffectOpPlusEqU8:
+        case ByteCodeOp::AffectOpPlusEqU8_Safe:
+        case ByteCodeOp::AffectOpMinusEqS8:
+        case ByteCodeOp::AffectOpMinusEqS8_Safe:
+        case ByteCodeOp::AffectOpMinusEqU8:
+        case ByteCodeOp::AffectOpMinusEqU8_Safe:
+            if (ip->b.u8 == 0)
+                setNop(context, ip);
+            break;
+        case ByteCodeOp::AffectOpPlusEqS16:
+        case ByteCodeOp::AffectOpPlusEqS16_Safe:
+        case ByteCodeOp::AffectOpPlusEqU16:
+        case ByteCodeOp::AffectOpPlusEqU16_Safe:
+        case ByteCodeOp::AffectOpMinusEqS16:
+        case ByteCodeOp::AffectOpMinusEqS16_Safe:
+        case ByteCodeOp::AffectOpMinusEqU16:
+        case ByteCodeOp::AffectOpMinusEqU16_Safe:
+            if (ip->b.u16 == 0)
+                setNop(context, ip);
+            break;
+        case ByteCodeOp::AffectOpPlusEqS32:
+        case ByteCodeOp::AffectOpPlusEqS32_Safe:
+        case ByteCodeOp::AffectOpPlusEqU32:
+        case ByteCodeOp::AffectOpPlusEqU32_Safe:
+        case ByteCodeOp::AffectOpMinusEqS32:
+        case ByteCodeOp::AffectOpMinusEqS32_Safe:
+        case ByteCodeOp::AffectOpMinusEqU32:
+        case ByteCodeOp::AffectOpMinusEqU32_Safe:
+            if (ip->b.u32 == 0)
+                setNop(context, ip);
+            break;
+        case ByteCodeOp::AffectOpPlusEqS64:
+        case ByteCodeOp::AffectOpPlusEqS64_Safe:
+        case ByteCodeOp::AffectOpPlusEqU64:
+        case ByteCodeOp::AffectOpPlusEqU64_Safe:
+        case ByteCodeOp::AffectOpMinusEqS64:
+        case ByteCodeOp::AffectOpMinusEqS64_Safe:
+        case ByteCodeOp::AffectOpMinusEqU64:
+        case ByteCodeOp::AffectOpMinusEqU64_Safe:
+            if (ip->b.u64 == 0)
+                setNop(context, ip);
+            break;
+
+        case ByteCodeOp::AffectOpShiftLeftEqU8:
+        case ByteCodeOp::AffectOpShiftLeftEqU16:
+        case ByteCodeOp::AffectOpShiftLeftEqU32:
+        case ByteCodeOp::AffectOpShiftLeftEqU64:
+        case ByteCodeOp::AffectOpShiftRightEqU8:
+        case ByteCodeOp::AffectOpShiftRightEqU16:
+        case ByteCodeOp::AffectOpShiftRightEqU32:
+        case ByteCodeOp::AffectOpShiftRightEqU64:
+            if (ip->b.u32 == 0)
+                setNop(context, ip);
+            break;
+        }
+    }
+
     if ((ip->flags & BCI_IMM_B) &&
         !(ip->flags & BCI_IMM_A) &&
         !(ip->flags & BCI_IMM_C) &&
