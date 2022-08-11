@@ -449,6 +449,16 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
             break;
         }
         break;
+    case ByteCodeOp::LambdaCall:
+        if (ip[1].op == ByteCodeOp::IncSPPostCall &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip, ByteCodeOp::LambdaCallPop);
+            ip->c.u32 = ip[1].a.u32;
+            setNop(context, ip + 1);
+            break;
+        }
+        break;
 
     case ByteCodeOp::CopyStack8:
     case ByteCodeOp::CopyStack16:

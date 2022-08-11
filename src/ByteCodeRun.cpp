@@ -477,7 +477,6 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         break;
     }
 
-
     case ByteCodeOp::IntrinsicMakeCallback:
     {
         auto ptr = (void*) registersRC[ip->a.u32].pointer;
@@ -497,12 +496,12 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
 
     case ByteCodeOp::LocalCall:
     {
-        localCall(context, (ByteCode*)ip->a.pointer);
+        localCall(context, (ByteCode*) ip->a.pointer);
         break;
     }
     case ByteCodeOp::LocalCallPop:
     {
-        localCall(context, (ByteCode*)ip->a.pointer, 0, UINT32_MAX, ip->c.u32);
+        localCall(context, (ByteCode*) ip->a.pointer, 0, UINT32_MAX, ip->c.u32);
         break;
     }
     case ByteCodeOp::ForeignCall:
@@ -521,6 +520,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         break;
     }
     case ByteCodeOp::LambdaCall:
+    case ByteCodeOp::LambdaCallPop:
     {
         auto ptr = registersRC[ip->a.u32].u64;
         if (ByteCode::isByteCodeLambda((void*) ptr))
@@ -535,7 +535,10 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             context->ip = context->bc->out;
             SWAG_ASSERT(context->ip);
             context->bp = context->sp;
-            context->bc->enterByteCode(context);
+            if (ip->op == ByteCodeOp::LambdaCallPop)
+                context->bc->enterByteCode(context, 0, UINT32_MAX, ip->c.u32);
+            else
+                context->bc->enterByteCode(context);
         }
 
         // Marked as foreign, need to resolve address
@@ -545,6 +548,8 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             SWAG_ASSERT(funcPtr);
             auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>((TypeInfo*) ip->b.pointer, TypeInfoKind::Lambda);
             ffiCall(context, funcPtr, typeInfoFunc);
+            if (ip->op == ByteCodeOp::LambdaCallPop)
+                context->incSP(ip->c.u32);
         }
 
         // Normal lambda
@@ -552,6 +557,8 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         {
             auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>((TypeInfo*) ip->b.pointer, TypeInfoKind::Lambda);
             ffiCall(context, (void*) registersRC[ip->a.u32].pointer, typeInfoFunc);
+            if (ip->op == ByteCodeOp::LambdaCallPop)
+                context->incSP(ip->c.u32);
         }
 
         break;
