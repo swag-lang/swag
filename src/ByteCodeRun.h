@@ -28,7 +28,7 @@ struct ByteCodeRun
     bool executeIsConstExprSI(ByteCodeRunContext* context, ByteCodeInstruction* ip);
     void executeGetFromStackSI(ByteCodeRunContext* context, ByteCodeInstruction* ip);
 
-    void         localCall(ByteCodeRunContext* context, ByteCode* bc, uint32_t popParamsOnRet = 0, uint32_t returnReg = UINT32_MAX);
+    void         localCall(ByteCodeRunContext* context, ByteCode* bc, uint32_t popParamsOnRet = 0, uint32_t returnRegOnRet = UINT32_MAX, uint32_t incSPPosCall = 0);
     void         callInternalPanic(ByteCodeRunContext* context, ByteCodeInstruction* ip, const char* msg);
     static void* makeLambda(JobContext* context, AstFuncDecl* funcNode, ByteCode* bc);
     static void  executeShiftLeft(JobContext* context, Register* rdest, const Register& rleft, const Register& rright, uint32_t numBits, bool isSmall);

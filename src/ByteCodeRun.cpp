@@ -54,7 +54,7 @@
 #define IMMD_U32(ip) ((ip->flags & BCI_IMM_D) ? ip->d.u32 : registersRC[ip->d.u32].u32)
 #define IMMD_U64(ip) ((ip->flags & BCI_IMM_D) ? ip->d.u64 : registersRC[ip->d.u32].u64)
 
-void ByteCodeRun::localCall(ByteCodeRunContext* context, ByteCode* bc, uint32_t popParamsOnRet, uint32_t returnReg)
+void ByteCodeRun::localCall(ByteCodeRunContext* context, ByteCode* bc, uint32_t popParamsOnRet, uint32_t returnRegOnRet, uint32_t incSPPostCall)
 {
     SWAG_ASSERT(!bc->node || bc->node->semFlags & AST_SEM_BYTECODE_GENERATED);
 
@@ -68,7 +68,7 @@ void ByteCodeRun::localCall(ByteCodeRunContext* context, ByteCode* bc, uint32_t 
     context->ip = context->bc->out;
     SWAG_ASSERT(context->ip);
     context->bp = context->sp;
-    context->bc->enterByteCode(context, popParamsOnRet, returnReg);
+    context->bc->enterByteCode(context, popParamsOnRet, returnRegOnRet, incSPPostCall);
 }
 
 void ByteCodeRun::callInternalPanic(ByteCodeRunContext* context, ByteCodeInstruction* ip, const char* msg)
@@ -452,11 +452,17 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         context->bc = context->pop<ByteCode*>();
         context->bp = context->pop<uint8_t*>();
         if (context->curRC == context->firstRC)
+        {
+            context->popOnRet.pop_back();
+            auto popR = context->popOnRet.get_pop_back();
+            if (popR != UINT32_MAX)
+                context->popOnRet.pop_back();
             return false;
+        }
 
         // Need to pop some parameters, by increasing the stack pointer
         auto popP = context->popOnRet.get_pop_back();
-        context->incSP((uint32_t) popP * sizeof(void*));
+        context->incSP((uint32_t) popP);
 
         // A register needs to be initialized with the result register
         auto popR = context->popOnRet.get_pop_back();
@@ -473,6 +479,11 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     case ByteCodeOp::LocalCall:
     {
         localCall(context, (ByteCode*) ip->a.pointer);
+        break;
+    }
+    case ByteCodeOp::LocalCallPop:
+    {
+        localCall(context, (ByteCode*) ip->a.pointer, 0, UINT32_MAX, ip->c.u32);
         break;
     }
 

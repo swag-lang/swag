@@ -206,7 +206,7 @@ void ByteCodeOptimizer::reduceEmptyFct(ByteCodeOptContext* context, ByteCodeInst
         context->passHasDoneSomething = true;
     }
 
-    if (ip->op == ByteCodeOp::LocalCall)
+    if (ip->op == ByteCodeOp::LocalCall || ip->op == ByteCodeOp::LocalCallPop)
     {
         auto destBC = (ByteCode*) ip->a.pointer;
         if (destBC->isEmpty.load() != true)
@@ -227,6 +227,7 @@ void ByteCodeOptimizer::reduceEmptyFct(ByteCodeOptContext* context, ByteCodeInst
         {
             while (backIp != context->bc->out &&
                    backIp->op != ByteCodeOp::LocalCall &&
+                   backIp->op != ByteCodeOp::LocalCallPop &&
                    backIp->op != ByteCodeOp::ForeignCall &&
                    backIp->op != ByteCodeOp::LambdaCall)
             {
@@ -420,6 +421,17 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
 {
     switch (ip->op)
     {
+    case ByteCodeOp::LocalCall:
+        if (ip[1].op == ByteCodeOp::IncSPPostCall &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip, ByteCodeOp::LocalCallPop);
+            ip->c.u32 = ip[1].a.u32;
+            setNop(context, ip + 1);
+            break;
+        }
+        break;
+
     case ByteCodeOp::CopyStack8:
     case ByteCodeOp::CopyStack16:
     case ByteCodeOp::CopyStack32:

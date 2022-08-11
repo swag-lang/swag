@@ -24,6 +24,16 @@ static void removeOpDrop(ByteCodeOptContext* context, ByteCodeInstruction* ipOrg
                     ByteCodeOptimizer::setNop(context, ipe + 3);
                 }
             }
+            else if (ipe[1].op == ByteCodeOp::PushRAParam &&
+                     ipe[2].op == ByteCodeOp::LocalCallPop)
+            {
+                if (ip->node->ownerScope->isSameOrParentOf(ipe->node->ownerScope))
+                {
+                    ByteCodeOptimizer::setNop(context, ipe);
+                    ByteCodeOptimizer::setNop(context, ipe + 1);
+                    ByteCodeOptimizer::setNop(context, ipe + 2);
+                }
+            }
         }
 
         ipe++;
@@ -125,9 +135,15 @@ bool ByteCodeOptimizer::optimizePassRetCopyLocal(ByteCodeOptContext* context)
     {
         bool startOk = false;
 
-        if (ip->op == ByteCodeOp::MakeStackPointer && ip[1].op == ByteCodeOp::CopyRCtoRT && ip->a.u32 == ip[1].a.u32)
+        if (ip->op == ByteCodeOp::MakeStackPointer &&
+            ip[1].op == ByteCodeOp::CopyRCtoRT &&
+            ip->a.u32 == ip[1].a.u32)
             startOk = true;
-        if (ip->op == ByteCodeOp::MakeStackPointer && ip[1].op == ByteCodeOp::IncPointer64 && ip[2].op == ByteCodeOp::CopyRCtoRT && ip->a.u32 == ip[2].a.u32)
+
+        if (ip->op == ByteCodeOp::MakeStackPointer &&
+            ip[1].op == ByteCodeOp::IncPointer64 &&
+            ip[2].op == ByteCodeOp::CopyRCtoRT &&
+            ip->a.u32 == ip[2].a.u32)
             startOk = true;
 
         // Detect pushing pointer to the stack for a return value
@@ -137,7 +153,11 @@ bool ByteCodeOptimizer::optimizePassRetCopyLocal(ByteCodeOptContext* context)
 
             // Find the following call
             context->vecReg.clear();
-            while (ip->op != ByteCodeOp::End && ip->op != ByteCodeOp::LocalCall && ip->op != ByteCodeOp::ForeignCall && ip->op != ByteCodeOp::LambdaCall)
+            while (ip->op != ByteCodeOp::End &&
+                   ip->op != ByteCodeOp::LocalCallPop &&
+                   ip->op != ByteCodeOp::LocalCall &&
+                   ip->op != ByteCodeOp::ForeignCall &&
+                   ip->op != ByteCodeOp::LambdaCall)
                 ip++;
 
             if (ip->op != ByteCodeOp::End)
@@ -198,9 +218,16 @@ bool ByteCodeOptimizer::optimizePassRetCopyGlobal(ByteCodeOptContext* context)
         bool startOk = false;
         registerMakeAddr(context, ip);
 
-        if (ip->op == ByteCodeOp::MakeStackPointer && ip[1].op == ByteCodeOp::CopyRCtoRT && ip->a.u32 == ip[1].a.u32)
+        if (ip->op == ByteCodeOp::MakeStackPointer &&
+            ip[1].op == ByteCodeOp::CopyRCtoRT &&
+            ip->a.u32 == ip[1].a.u32)
             startOk = true;
-        if (ip->op == ByteCodeOp::MakeStackPointer && ip[1].op == ByteCodeOp::IncPointer64 && ip[2].op == ByteCodeOp::CopyRCtoRT && ip->a.u32 == ip[2].a.u32 && ip[1].a.u32 == ip[1].c.u32)
+
+        if (ip->op == ByteCodeOp::MakeStackPointer &&
+            ip[1].op == ByteCodeOp::IncPointer64 &&
+            ip[2].op == ByteCodeOp::CopyRCtoRT &&
+            ip->a.u32 == ip[2].a.u32 &&
+            ip[1].a.u32 == ip[1].c.u32)
             startOk = true;
 
         // Detect pushing pointer to the stack for a return value
@@ -211,7 +238,11 @@ bool ByteCodeOptimizer::optimizePassRetCopyGlobal(ByteCodeOptContext* context)
 
             // Find the following call
             context->vecReg.clear();
-            while (ip->op != ByteCodeOp::End && ip->op != ByteCodeOp::LocalCall && ip->op != ByteCodeOp::ForeignCall && ip->op != ByteCodeOp::LambdaCall)
+            while (ip->op != ByteCodeOp::End &&
+                   ip->op != ByteCodeOp::LocalCall &&
+                   ip->op != ByteCodeOp::LocalCallPop &&
+                   ip->op != ByteCodeOp::ForeignCall &&
+                   ip->op != ByteCodeOp::LambdaCall)
             {
                 registerParamsReg(context, ip);
                 ip++;

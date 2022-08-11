@@ -95,7 +95,7 @@ void ByteCode::addCallStack(ByteCodeRunContext* context)
     g_ByteCodeStack.push(stackStep);
 }
 
-void ByteCode::enterByteCode(ByteCodeRunContext* context, uint32_t popParamsOnRet, uint32_t returnRegOnRet)
+void ByteCode::enterByteCode(ByteCodeRunContext* context, uint32_t popParamsOnRet, uint32_t returnRegOnRet, uint32_t incSPPostCall)
 {
     if (g_CommandLine->maxRecurse && context->curRC == (int) g_CommandLine->maxRecurse)
     {
@@ -112,7 +112,7 @@ void ByteCode::enterByteCode(ByteCodeRunContext* context, uint32_t popParamsOnRe
     if (returnRegOnRet != UINT32_MAX)
         context->popOnRet.push_back(context->registersRR[0].u64);
     context->popOnRet.push_back(returnRegOnRet);
-    context->popOnRet.push_back(popParamsOnRet);
+    context->popOnRet.push_back((popParamsOnRet * sizeof(void*)) + incSPPostCall);
 }
 
 void ByteCode::leaveByteCode(ByteCodeRunContext* context, bool popCallStack)

@@ -306,6 +306,7 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* cu
     }
 
     case ByteCodeOp::LocalCall:
+    case ByteCodeOp::LocalCallPop:
     {
         auto bc = (ByteCode*) ip->a.pointer;
         SWAG_ASSERT(bc);

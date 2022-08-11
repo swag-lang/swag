@@ -4277,6 +4277,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
 
         case ByteCodeOp::LocalCall:
+        case ByteCodeOp::LocalCallPop:
         {
             auto              funcBC     = (ByteCode*) ip->a.pointer;
             TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;

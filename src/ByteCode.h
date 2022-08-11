@@ -109,7 +109,7 @@ struct ByteCode
     // clang-format on
 
     void addCallStack(ByteCodeRunContext* context);
-    void enterByteCode(ByteCodeRunContext* context, uint32_t popParamsOnRet = 0, uint32_t returnRegOnRet = UINT32_MAX);
+    void enterByteCode(ByteCodeRunContext* context, uint32_t popParamsOnRet = 0, uint32_t returnRegOnRet = UINT32_MAX, uint32_t incSPPostCall = 0);
     void leaveByteCode(ByteCodeRunContext* context, bool popCallStack = true);
     void markLabels();
     bool isDoingNothing();
