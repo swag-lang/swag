@@ -338,9 +338,13 @@ bool ByteCodeOptimizer::optimizePassRetCopyInline(ByteCodeOptContext* context)
     {
         bool startOk = false;
 
-        if (ip->op == ByteCodeOp::MakeStackPointer && ip[1].node->ownerInline != ip[0].node->ownerInline)
+        if (ip->op == ByteCodeOp::MakeStackPointer &&
+            ip[1].node->ownerInline != ip[0].node->ownerInline)
             startOk = true;
-        if (ip->op == ByteCodeOp::MakeStackPointer && ip[1].op == ByteCodeOp::IncPointer64 && ip[2].node->ownerInline != ip[0].node->ownerInline)
+
+        if (ip->op == ByteCodeOp::MakeStackPointer &&
+            ip[1].op == ByteCodeOp::IncPointer64 &&
+            ip[2].node->ownerInline != ip[0].node->ownerInline)
             startOk = true;
 
         // Detect pushing pointer to the stack for a return value

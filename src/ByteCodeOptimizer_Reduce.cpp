@@ -425,10 +425,22 @@ void ByteCodeOptimizer::reduceSwap(ByteCodeOptContext* context, ByteCodeInstruct
     }
 }
 
-void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruction* ip)
+void ByteCodeOptimizer::reduceFunc(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
     switch (ip->op)
     {
+    // Swap CopyRTtoRC and IncSPPostCall to put IncSPPostCall right next to the call, which
+    // give the opportunity to optimize the call pop
+    case ByteCodeOp::CopyRTtoRC:
+        if (ip[1].op == ByteCodeOp::IncSPPostCall &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            swap(ip[0], ip[1]);
+            context->passHasDoneSomething = true;
+            break;
+        }
+        break;
+
     case ByteCodeOp::LocalCall:
         if (ip[1].op == ByteCodeOp::IncSPPostCall &&
             !(ip[1].flags & BCI_START_STMT))
@@ -459,7 +471,13 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
             break;
         }
         break;
+    }
+}
 
+void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruction* ip)
+{
+    switch (ip->op)
+    {
     case ByteCodeOp::CopyStack8:
     case ByteCodeOp::CopyStack16:
     case ByteCodeOp::CopyStack32:
@@ -3851,6 +3869,7 @@ bool ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
         reduceErr(context, ip);
         reduceEmptyFct(context, ip);
         reduceMemcpy(context, ip);
+        reduceFunc(context, ip);
         reduceStack(context, ip);
         reduceIncPtr(context, ip);
         reduceSetAt(context, ip);
