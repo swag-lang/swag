@@ -299,6 +299,7 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* cu
     }
 
     case ByteCodeOp::ForeignCall:
+    case ByteCodeOp::ForeignCallPop:
     {
         auto funcNode = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
         g_Log.print(Utf8::truncateDisplay(funcNode->token.text, 30));

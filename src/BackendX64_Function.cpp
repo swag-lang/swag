@@ -2957,7 +2957,27 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         }
 
+        case ByteCodeOp::LocalCall:
+        case ByteCodeOp::LocalCallPop:
+        {
+            auto              funcBC = (ByteCode*)ip->a.pointer;
+            TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*)ip->b.pointer;
+            emitLocalCallParameters(pp, sizeParamsStack, typeFuncBC, offsetRT, pushRAParams, pushRVParams);
+            emitCall(pp, funcBC->getCallName());
+            pushRAParams.clear();
+            pushRVParams.clear();
+            break;
+        }
+
+        case ByteCodeOp::ForeignCall:
+        case ByteCodeOp::ForeignCallPop:
+            emitForeignCall(pp, moduleToGen, ip, offsetRT, pushRAParams);
+            pushRAParams.clear();
+            pushRVParams.clear();
+            break;
+
         case ByteCodeOp::LambdaCall:
+        case ByteCodeOp::LambdaCallPop:
         {
             TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
 
@@ -3023,24 +3043,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::IncSPPostCall:
         case ByteCodeOp::IncSPPostCallCond:
-            pushRAParams.clear();
-            pushRVParams.clear();
-            break;
-
-        case ByteCodeOp::LocalCall:
-        case ByteCodeOp::LocalCallPop:
-        {
-            auto              funcBC     = (ByteCode*) ip->a.pointer;
-            TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
-            emitLocalCallParameters(pp, sizeParamsStack, typeFuncBC, offsetRT, pushRAParams, pushRVParams);
-            emitCall(pp, funcBC->getCallName());
-            pushRAParams.clear();
-            pushRVParams.clear();
-            break;
-        }
-
-        case ByteCodeOp::ForeignCall:
-            emitForeignCall(pp, moduleToGen, ip, offsetRT, pushRAParams);
             pushRAParams.clear();
             pushRVParams.clear();
             break;

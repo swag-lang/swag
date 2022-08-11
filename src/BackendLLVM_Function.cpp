@@ -4101,7 +4101,30 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
+        case ByteCodeOp::LocalCall:
+        case ByteCodeOp::LocalCallPop:
+        {
+            auto              funcBC = (ByteCode*)ip->a.pointer;
+            TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*)ip->b.pointer;
+
+            auto                       FT = createFunctionTypeLocal(buildParameters, typeFuncBC);
+            VectorNative<llvm::Value*> fctParams;
+            getLocalCallParameters(buildParameters, allocR, allocRR, allocT, fctParams, typeFuncBC, pushRAParams, {});
+            builder.CreateCall(modu.getOrInsertFunction(funcBC->getCallName().c_str(), FT), { fctParams.begin(), fctParams.end() });
+            pushRAParams.clear();
+            pushRVParams.clear();
+            break;
+        }
+
+        case ByteCodeOp::ForeignCall:
+        case ByteCodeOp::ForeignCallPop:
+            SWAG_CHECK(emitForeignCall(buildParameters, allocR, allocRR, moduleToGen, ip, pushRAParams));
+            pushRAParams.clear();
+            pushRVParams.clear();
+            break;
+
         case ByteCodeOp::LambdaCall:
+        case ByteCodeOp::LambdaCallPop:
         {
             TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
 
@@ -4276,26 +4299,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             pushRVParams.clear();
             break;
 
-        case ByteCodeOp::LocalCall:
-        case ByteCodeOp::LocalCallPop:
-        {
-            auto              funcBC     = (ByteCode*) ip->a.pointer;
-            TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
-
-            auto                       FT = createFunctionTypeLocal(buildParameters, typeFuncBC);
-            VectorNative<llvm::Value*> fctParams;
-            getLocalCallParameters(buildParameters, allocR, allocRR, allocT, fctParams, typeFuncBC, pushRAParams, {});
-            builder.CreateCall(modu.getOrInsertFunction(funcBC->getCallName().c_str(), FT), {fctParams.begin(), fctParams.end()});
-            pushRAParams.clear();
-            pushRVParams.clear();
-            break;
-        }
-
-        case ByteCodeOp::ForeignCall:
-            SWAG_CHECK(emitForeignCall(buildParameters, allocR, allocRR, moduleToGen, ip, pushRAParams));
-            pushRAParams.clear();
-            pushRVParams.clear();
-            break;
 
         case ByteCodeOp::IntrinsicS8x1:
         {

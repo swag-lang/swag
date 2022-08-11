@@ -25,7 +25,7 @@ static void removeOpDrop(ByteCodeOptContext* context, ByteCodeInstruction* ipOrg
                 }
             }
             else if (ipe[1].op == ByteCodeOp::PushRAParam &&
-                     ipe[2].op == ByteCodeOp::LocalCallPop)
+                     (ipe[2].op == ByteCodeOp::LocalCallPop || ipe[2].op == ByteCodeOp::ForeignCallPop))
             {
                 if (ip->node->ownerScope->isSameOrParentOf(ipe->node->ownerScope))
                 {
@@ -154,10 +154,12 @@ bool ByteCodeOptimizer::optimizePassRetCopyLocal(ByteCodeOptContext* context)
             // Find the following call
             context->vecReg.clear();
             while (ip->op != ByteCodeOp::End &&
-                   ip->op != ByteCodeOp::LocalCallPop &&
                    ip->op != ByteCodeOp::LocalCall &&
+                   ip->op != ByteCodeOp::LocalCallPop &&
                    ip->op != ByteCodeOp::ForeignCall &&
-                   ip->op != ByteCodeOp::LambdaCall)
+                   ip->op != ByteCodeOp::ForeignCallPop &&
+                   ip->op != ByteCodeOp::LambdaCall &&
+                   ip->op != ByteCodeOp::LambdaCallPop)
                 ip++;
 
             if (ip->op != ByteCodeOp::End)
@@ -242,7 +244,9 @@ bool ByteCodeOptimizer::optimizePassRetCopyGlobal(ByteCodeOptContext* context)
                    ip->op != ByteCodeOp::LocalCall &&
                    ip->op != ByteCodeOp::LocalCallPop &&
                    ip->op != ByteCodeOp::ForeignCall &&
-                   ip->op != ByteCodeOp::LambdaCall)
+                   ip->op != ByteCodeOp::ForeignCallPop &&
+                   ip->op != ByteCodeOp::LambdaCall &&
+                   ip->op != ByteCodeOp::LambdaCallPop)
             {
                 registerParamsReg(context, ip);
                 ip++;

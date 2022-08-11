@@ -476,16 +476,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
 
         break;
     }
-    case ByteCodeOp::LocalCall:
-    {
-        localCall(context, (ByteCode*) ip->a.pointer);
-        break;
-    }
-    case ByteCodeOp::LocalCallPop:
-    {
-        localCall(context, (ByteCode*) ip->a.pointer, 0, UINT32_MAX, ip->c.u32);
-        break;
-    }
+
 
     case ByteCodeOp::IntrinsicMakeCallback:
     {
@@ -504,6 +495,31 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         break;
     }
 
+    case ByteCodeOp::LocalCall:
+    {
+        localCall(context, (ByteCode*)ip->a.pointer);
+        break;
+    }
+    case ByteCodeOp::LocalCallPop:
+    {
+        localCall(context, (ByteCode*)ip->a.pointer, 0, UINT32_MAX, ip->c.u32);
+        break;
+    }
+    case ByteCodeOp::ForeignCall:
+    {
+        context->bc->addCallStack(context);
+        ffiCall(context, ip);
+        g_ByteCodeStack.pop();
+        break;
+    }
+    case ByteCodeOp::ForeignCallPop:
+    {
+        context->bc->addCallStack(context);
+        ffiCall(context, ip);
+        g_ByteCodeStack.pop();
+        context->incSP(ip->c.u32);
+        break;
+    }
     case ByteCodeOp::LambdaCall:
     {
         auto ptr = registersRC[ip->a.u32].u64;
@@ -544,13 +560,6 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     {
         auto funcNode                  = (AstFuncDecl*) ip->b.pointer;
         registersRC[ip->a.u32].pointer = (uint8_t*) makeLambda(context, funcNode, (ByteCode*) ip->c.pointer);
-        break;
-    }
-    case ByteCodeOp::ForeignCall:
-    {
-        context->bc->addCallStack(context);
-        ffiCall(context, ip);
-        g_ByteCodeStack.pop();
         break;
     }
 
