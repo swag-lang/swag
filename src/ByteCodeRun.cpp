@@ -12,6 +12,7 @@
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
 #include "SemanticJob.h"
+#include "Module.h"
 
 #define IMMA_B(ip) ((ip->flags & BCI_IMM_A) ? ip->a.b : registersRC[ip->a.u32].b)
 #define IMMB_B(ip) ((ip->flags & BCI_IMM_B) ? ip->b.b : registersRC[ip->b.u32].b)
@@ -169,6 +170,17 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     case ByteCodeOp::TestNotZero64:
     {
         registersRC[ip->a.u32].b = IMMB_U64(ip) != 0;
+        break;
+    }
+
+    case ByteCodeOp::JumpDyn:
+    {
+        uint32_t* table = (uint32_t*) context->bc->sourceFile->module->constantSegment.address(ip->d.u32);
+        auto      val   = registersRC[ip->a.u32].u32;
+        if (val >= ip->b.u64 + ip->c.u64)
+            context->ip += table[0];
+        else
+            context->ip += table[1 + (val - ip->b.u64)];
         break;
     }
 
@@ -3277,6 +3289,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         break;
 
     default:
+        SWAG_ASSERT(false);
         SWAG_UNREACHABLE;
         break;
     }

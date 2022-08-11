@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ByteCodeOptimizer.h"
+#include "Module.h"
 
 // Eliminate all the instructions that can never be called
 // We parse all the branches to see what can be reached for an execution flow
@@ -29,6 +30,14 @@ bool ByteCodeOptimizer::optimizePassDeadCode(ByteCodeOptContext* context)
         {
             ADD_TODO(ip + ip->b.s32 + 1);
             ADD_TODO(ip + 1);
+        }
+        else if (ip->op == ByteCodeOp::JumpDyn)
+        {
+            uint32_t* table = (uint32_t*) context->module->constantSegment.address(ip->d.u32);
+            for (uint32_t i = 0; i < ip->c.u32; i++)
+            {
+                ADD_TODO(ip + table[i] + 1);
+            }
         }
         else if (ip->op != ByteCodeOp::Ret && ip->op != ByteCodeOp::End)
         {

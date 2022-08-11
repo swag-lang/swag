@@ -2,6 +2,7 @@
 #include "ByteCodeOptimizer.h"
 #include "AstNode.h"
 #include "SourceFile.h"
+#include "Module.h"
 
 // Eliminate unnecessary jumps
 bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
@@ -1315,5 +1316,90 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         }
     }
 
+    return true;
+}
+
+void ByteCodeOptimizer::optimizePassSwitch(ByteCodeOptContext* context, ByteCodeOp op)
+{
+    if (context->bc->name != "__compiler3776_toto")
+        return;
+
+    for (int idx = 0; idx < context->jumps.size(); idx++)
+    {
+        auto ip = context->jumps[idx];
+        if (!ByteCode::isJump(ip))
+            continue;
+
+        if (ip->op != op || !(ip->flags & BCI_IMM_C) || ip->b.s32 < 0)
+            continue;
+
+        auto orgValue0 = ip->a.u32;
+        auto orgValue1 = UINT32_MAX;
+        if (ip[-1].op == ByteCodeOp::CopyRBtoRA64 && ip[-1].b.u32 == ip->a.u32 && !(ip->flags & BCI_START_STMT))
+            orgValue1 = ip[-1].a.u32;
+
+        auto ipStart = ip;
+        context->map6432.clear();
+        context->vecInst.clear();
+        context->vecInst.push_back(ip);
+
+        context->map6432[ip->c.u64] = 0;
+
+        auto                 destIp    = ip + ip->b.s32 + 1;
+        ByteCodeInstruction* defaultIp = nullptr;
+        while (true)
+        {
+            defaultIp = destIp;
+            if (destIp->op != op || !(ip->flags & BCI_IMM_C) || ip->b.s32 < 0)
+                break;
+            if (ipStart->a.u32 != orgValue0 && ipStart->a.u32 != orgValue1)
+                break;
+            if (context->map6432.contains(destIp->c.u64)) // Only one value per jump
+                break;
+
+            context->vecInst.push_back(destIp);
+            context->map6432[destIp->c.u64] = (uint32_t) (destIp - ipStart);
+            destIp                          = destIp + destIp->b.s32 + 1;
+        }
+
+        // No enough values
+        if (context->vecInst.size() < 3)
+            continue;
+
+        uint64_t minValue = UINT64_MAX;
+        uint64_t maxValue = 0;
+        for (auto inst : context->vecInst)
+        {
+            minValue = min(minValue, inst->c.u64);
+            maxValue = max(maxValue, inst->c.u64);
+        }
+
+        // Heuristic : too much values compared to the number of cases
+        auto range = (uint32_t) (maxValue - minValue) + 1;
+        if (range > context->vecInst.size() * 2)
+            continue;
+
+        // Create the jump table
+        // First element is always the "default" one
+        uint8_t* addr        = nullptr;
+        auto     offsetTable = context->module->constantSegment.reserve((range + 1) * sizeof(uint32_t), &addr);
+
+        uint32_t* patch = (uint32_t*) addr;
+        for (uint32_t i = 0; i < range + 1; i++)
+            patch[i] = (uint32_t) (defaultIp - ipStart) - 1;
+        for (auto& it : context->map6432)
+            patch[(it.first - minValue) + 1] = it.second;
+
+        SET_OP(ipStart, ByteCodeOp::JumpDyn);
+        ip->b.u64 = minValue;
+        ip->c.u64 = range + 1;
+        ip->d.u64 = offsetTable;
+        break;
+    }
+}
+
+bool ByteCodeOptimizer::optimizePassSwitch(ByteCodeOptContext* context)
+{
+    //optimizePassSwitch(context, ByteCodeOp::JumpIfNotEqual32);
     return true;
 }

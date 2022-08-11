@@ -28,31 +28,46 @@ void ByteCodeOptimizer::genTree(ByteCodeOptContext* context, uint32_t nodeIdx)
     ByteCodeOptTreeNode* node = &context->tree[nodeIdx];
     node->end                 = node->start;
 
-    while (node->end->op != ByteCodeOp::Ret && !ByteCode::isJump(node->end))
+    while (node->end->op != ByteCodeOp::Ret && !ByteCode::isJump(node->end) && node->end->op != ByteCodeOp::JumpDyn)
         node->end++;
     if (node->end->op == ByteCodeOp::Ret)
         return;
 
     bool here = false;
 
-    ByteCodeInstruction* nextIp = node->end + node->end->b.s32 + 1;
-    if (nextIp->op != ByteCodeOp::End)
+    if (node->end->op == ByteCodeOp::JumpDyn)
     {
-        auto newNode = newTreeNode(context, nextIp, here);
-        if (!here)
-            genTree(context, newNode);
-        node        = &context->tree[nodeIdx];
-        node->next1 = newNode;
+        uint32_t* table = (uint32_t*) context->module->constantSegment.address(node->end->d.u32);
+        for (uint32_t i = 0; i < node->end->c.u32; i++)
+        {
+            auto newNode = newTreeNode(context, node->end + table[i] + 1, here);
+            if (!here)
+                genTree(context, newNode);
+            node = &context->tree[nodeIdx];
+            node->next.push_back(newNode);
+        }
     }
-
-    if (node->end->op != ByteCodeOp::Jump && node->end->op != ByteCodeOp::End)
+    else
     {
-        nextIp       = node->end + 1;
-        auto newNode = newTreeNode(context, nextIp, here);
-        if (!here)
-            genTree(context, newNode);
-        node        = &context->tree[nodeIdx];
-        node->next2 = newNode;
+        ByteCodeInstruction* nextIp = node->end + node->end->b.s32 + 1;
+        if (nextIp->op != ByteCodeOp::End)
+        {
+            auto newNode = newTreeNode(context, nextIp, here);
+            if (!here)
+                genTree(context, newNode);
+            node = &context->tree[nodeIdx];
+            node->next.push_back(newNode);
+        }
+
+        if (node->end->op != ByteCodeOp::Jump && node->end->op != ByteCodeOp::End)
+        {
+            nextIp       = node->end + 1;
+            auto newNode = newTreeNode(context, nextIp, here);
+            if (!here)
+                genTree(context, newNode);
+            node = &context->tree[nodeIdx];
+            node->next.push_back(newNode);
+        }
     }
 }
 
@@ -99,28 +114,17 @@ void ByteCodeOptimizer::parseTree(ByteCodeOptContext* context, ByteCodeOptTreePa
         parseCxt.curIp++;
     }
 
-    // Parse left
-    if (node->next1 == UINT32_MAX)
-        return;
-    if (!(context->tree[node->next1].flags & parseCxt.doneFlag))
+    for (auto n : node->next)
     {
-        context->tree[node->next1].flags |= parseCxt.doneFlag;
-        parseCxt.curNode = node->next1;
-        parseCxt.curIp   = context->tree[node->next1].start;
-        parseTree(context, parseCxt);
-        if (parseCxt.mustStopAll)
-            return;
-    }
-
-    // Parse right
-    if (node->next2 == UINT32_MAX)
-        return;
-    if (!(context->tree[node->next2].flags & parseCxt.doneFlag))
-    {
-        context->tree[node->next2].flags |= parseCxt.doneFlag;
-        parseCxt.curNode = node->next2;
-        parseCxt.curIp   = context->tree[node->next2].start;
-        parseTree(context, parseCxt);
+        if (!(context->tree[n].flags & parseCxt.doneFlag))
+        {
+            context->tree[n].flags |= parseCxt.doneFlag;
+            parseCxt.curNode = n;
+            parseCxt.curIp   = context->tree[n].start;
+            parseTree(context, parseCxt);
+            if (parseCxt.mustStopAll)
+                return;
+        }
     }
 }
 
@@ -184,7 +188,6 @@ void ByteCodeOptimizer::removeNops(ByteCodeOptContext* context)
 
                 // If this is a ordered jump, and there's a nop between the destination jump
                 // and the jump, then we need to remove one jump instruction
-                // If we jump on a nop, we must NOT decrease by 1 to jump to the following instruction
                 if (srcJump < dstJump && idxNop > srcJump && idxNop < dstJump)
                 {
                     ip->b.s32--;
@@ -192,10 +195,24 @@ void ByteCodeOptimizer::removeNops(ByteCodeOptContext* context)
 
                 // If this is a back jump, and there's a nop between the destination jump
                 // and the jump, then we need to remove one jump instruction
-                // If we jump on a nop, we MUST decrease also by 1 to jump to the following instruction
                 else if (srcJump > dstJump && idxNop >= dstJump && idxNop < srcJump)
                 {
                     ip->b.s32++;
+                }
+            }
+        }
+        else if (ip->op == ByteCodeOp::JumpDyn)
+        {
+            uint32_t* table = (uint32_t*) context->module->constantSegment.address(ip->d.u32);
+            for (uint32_t idx = 0; idx < ip->c.u32; idx++)
+            {
+                auto srcJump = (int) (ip - context->bc->out);
+                auto dstJump = srcJump + (int) table[idx] + 1;
+                for (auto nop : context->nops)
+                {
+                    auto idxNop = (int) (nop - context->bc->out);
+                    if (srcJump < dstJump && idxNop > srcJump && idxNop < dstJump)
+                        table[idx]--;
                 }
             }
         }

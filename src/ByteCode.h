@@ -106,6 +106,7 @@ struct ByteCode
     static uint32_t isCopyRBtoRA(ByteCodeInstruction* inst) { return g_ByteCodeOpDesc[(int)inst->op].flags & OPFLAG_IS_COPY_RBRA; }
     static bool     isMemCpy(ByteCodeInstruction* inst)     { return g_ByteCodeOpDesc[(int) inst->op].flags & OPFLAG_IS_MEMCPY; }
     static bool     isJump(ByteCodeInstruction* inst)       { return g_ByteCodeOpDesc[(int) inst->op].flags & OPFLAG_IS_JUMP; }
+    static bool     isJumpOrDyn(ByteCodeInstruction* inst) { return (g_ByteCodeOpDesc[(int)inst->op].flags & OPFLAG_IS_JUMP) || (inst->op == ByteCodeOp::JumpDyn); }
     // clang-format on
 
     void addCallStack(ByteCodeRunContext* context);

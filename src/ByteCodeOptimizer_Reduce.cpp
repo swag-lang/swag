@@ -2288,6 +2288,7 @@ void ByteCodeOptimizer::reduceCmpJump(ByteCodeOptContext* context, ByteCodeInstr
     // Instruction followed by jump followed by the exact same instruction, and no stmt start
     // Remove the clone
     if (ByteCode::isJump(ip + 1) &&
+        ip[1].op != ByteCodeOp::Jump &&
         !(ip[1].flags & BCI_START_STMT) &&
         !(ip[2].flags & BCI_START_STMT) &&
         ip[0].op == ip[2].op &&

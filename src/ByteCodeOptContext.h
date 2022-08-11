@@ -15,11 +15,10 @@ static const uint32_t BCOTN_USER2 = 0x00000002;
 
 struct ByteCodeOptTreeNode
 {
-    ByteCodeInstruction* start = nullptr;
-    ByteCodeInstruction* end   = nullptr;
-    uint32_t             next1 = UINT32_MAX;
-    uint32_t             next2 = UINT32_MAX;
-    uint32_t             flags = 0;
+    ByteCodeInstruction*   start = nullptr;
+    ByteCodeInstruction*   end   = nullptr;
+    VectorNative<uint32_t> next;
+    uint32_t               flags = 0;
 };
 
 struct ByteCodeOptContext;

@@ -1755,6 +1755,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
 
+        case ByteCodeOp::JumpDyn:
+            break;
+
         case ByteCodeOp::JumpIfTrue:
             BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             BackendX64Inst::emit_Test8(pp, RAX, RAX);
