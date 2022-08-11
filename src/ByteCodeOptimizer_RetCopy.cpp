@@ -156,6 +156,7 @@ bool ByteCodeOptimizer::optimizePassRetCopyLocal(ByteCodeOptContext* context)
             while (ip->op != ByteCodeOp::End &&
                    ip->op != ByteCodeOp::LocalCall &&
                    ip->op != ByteCodeOp::LocalCallPop &&
+                   ip->op != ByteCodeOp::LocalCallPopRC &&
                    ip->op != ByteCodeOp::ForeignCall &&
                    ip->op != ByteCodeOp::ForeignCallPop &&
                    ip->op != ByteCodeOp::LambdaCall &&
@@ -243,6 +244,7 @@ bool ByteCodeOptimizer::optimizePassRetCopyGlobal(ByteCodeOptContext* context)
             while (ip->op != ByteCodeOp::End &&
                    ip->op != ByteCodeOp::LocalCall &&
                    ip->op != ByteCodeOp::LocalCallPop &&
+                   ip->op != ByteCodeOp::LocalCallPopRC &&
                    ip->op != ByteCodeOp::ForeignCall &&
                    ip->op != ByteCodeOp::ForeignCallPop &&
                    ip->op != ByteCodeOp::LambdaCall &&

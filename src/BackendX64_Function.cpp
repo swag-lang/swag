@@ -2959,13 +2959,21 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::LocalCall:
         case ByteCodeOp::LocalCallPop:
+        case ByteCodeOp::LocalCallPopRC:
         {
-            auto              funcBC = (ByteCode*)ip->a.pointer;
-            TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*)ip->b.pointer;
+            auto              funcBC     = (ByteCode*) ip->a.pointer;
+            TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
             emitLocalCallParameters(pp, sizeParamsStack, typeFuncBC, offsetRT, pushRAParams, pushRVParams);
             emitCall(pp, funcBC->getCallName());
             pushRAParams.clear();
             pushRVParams.clear();
+
+            if (ip->op == ByteCodeOp::LocalCallPopRC)
+            {
+                BackendX64Inst::emit_Load64_Indirect(pp, offsetRT + regOffset(0), RAX, RDI);
+                BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->d.u32), RAX, RDI);
+            }
+
             break;
         }
 

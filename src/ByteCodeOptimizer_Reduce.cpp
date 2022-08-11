@@ -50,6 +50,7 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
             // An InternalClearErr followed by a function call which will clear the error also
             if (ipScan->op == ByteCodeOp::LocalCall ||
                 ipScan->op == ByteCodeOp::LocalCallPop ||
+                ipScan->op == ByteCodeOp::LocalCallPopRC ||
                 ipScan->op == ByteCodeOp::LambdaCall ||
                 ipScan->op == ByteCodeOp::LambdaCallPop ||
                 ipScan->op == ByteCodeOp::ForeignCall ||
@@ -171,6 +172,7 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
                     ipScan[0].op == ByteCodeOp::LambdaCallPop ||
                     ipScan[0].op == ByteCodeOp::LocalCall ||
                     ipScan[0].op == ByteCodeOp::LocalCallPop ||
+                    ipScan[0].op == ByteCodeOp::LocalCallPopRC ||
                     ipScan[0].op == ByteCodeOp::ForeignCall ||
                     ipScan[0].op == ByteCodeOp::ForeignCallPop)
                 {
@@ -212,7 +214,7 @@ void ByteCodeOptimizer::reduceEmptyFct(ByteCodeOptContext* context, ByteCodeInst
         context->passHasDoneSomething = true;
     }
 
-    if (ip->op == ByteCodeOp::LocalCall || ip->op == ByteCodeOp::LocalCallPop)
+    if (ip->op == ByteCodeOp::LocalCall || ip->op == ByteCodeOp::LocalCallPop || ip->op == ByteCodeOp::LocalCallPopRC)
     {
         auto destBC = (ByteCode*) ip->a.pointer;
         if (destBC->isEmpty.load() != true)
@@ -234,6 +236,7 @@ void ByteCodeOptimizer::reduceEmptyFct(ByteCodeOptContext* context, ByteCodeInst
             while (backIp != context->bc->out &&
                    backIp->op != ByteCodeOp::LocalCall &&
                    backIp->op != ByteCodeOp::LocalCallPop &&
+                   backIp->op != ByteCodeOp::LocalCallPopRC &&
                    backIp->op != ByteCodeOp::ForeignCall &&
                    backIp->op != ByteCodeOp::ForeignCallPop &&
                    backIp->op != ByteCodeOp::LambdaCall &&
@@ -437,6 +440,17 @@ void ByteCodeOptimizer::reduceFunc(ByteCodeOptContext* context, ByteCodeInstruct
         {
             swap(ip[0], ip[1]);
             context->passHasDoneSomething = true;
+            break;
+        }
+        break;
+
+    case ByteCodeOp::LocalCallPop:
+        if (ip[1].op == ByteCodeOp::CopyRTtoRC &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip, ByteCodeOp::LocalCallPopRC);
+            ip->d.u32 = ip[1].a.u32;
+            setNop(context, ip + 1);
             break;
         }
         break;

@@ -4103,16 +4103,25 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::LocalCall:
         case ByteCodeOp::LocalCallPop:
+        case ByteCodeOp::LocalCallPopRC:
         {
-            auto              funcBC = (ByteCode*)ip->a.pointer;
-            TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*)ip->b.pointer;
+            auto              funcBC     = (ByteCode*) ip->a.pointer;
+            TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
 
             auto                       FT = createFunctionTypeLocal(buildParameters, typeFuncBC);
             VectorNative<llvm::Value*> fctParams;
             getLocalCallParameters(buildParameters, allocR, allocRR, allocT, fctParams, typeFuncBC, pushRAParams, {});
-            builder.CreateCall(modu.getOrInsertFunction(funcBC->getCallName().c_str(), FT), { fctParams.begin(), fctParams.end() });
+            builder.CreateCall(modu.getOrInsertFunction(funcBC->getCallName().c_str(), FT), {fctParams.begin(), fctParams.end()});
             pushRAParams.clear();
             pushRVParams.clear();
+
+            if (ip->op == ByteCodeOp::LocalCallPopRC)
+            {
+                auto r0 = GEP_I32(allocR, ip->d.u32);
+                auto r1 = builder.CreateLoad(GEP_I32(allocRR, 0));
+                builder.CreateStore(r1, r0);
+            }
+
             break;
         }
 
@@ -4298,7 +4307,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             pushRAParams.clear();
             pushRVParams.clear();
             break;
-
 
         case ByteCodeOp::IntrinsicS8x1:
         {
