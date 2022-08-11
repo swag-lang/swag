@@ -82,6 +82,8 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
             break;
 
         default:
+            if (ip->flags & BCI_START_STMT)
+                regs.clear();
             if (!regs.count)
                 break;
 
@@ -187,9 +189,6 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
             regs.remove(ip->c.u32);
         if (flags & OPFLAG_READ_D && !(ip->flags & BCI_IMM_D))
             regs.remove(ip->d.u32);
-
-        if (ByteCode::isJump(ip))
-            regs.clear();
     }
 
     return true;
