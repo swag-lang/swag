@@ -31,9 +31,9 @@ bool ByteCodeOptimizer::optimizePassDeadCode(ByteCodeOptContext* context)
             ADD_TODO(ip + ip->b.s32 + 1);
             ADD_TODO(ip + 1);
         }
-        else if (ip->op == ByteCodeOp::JumpDyn)
+        else if (ByteCode::isJumpDyn(ip))
         {
-            uint32_t* table = (uint32_t*) context->module->constantSegment.address(ip->d.u32);
+            int32_t* table = (int32_t*) context->module->compilerSegment.address(ip->d.u32);
             for (uint32_t i = 0; i < ip->c.u32; i++)
             {
                 ADD_TODO(ip + table[i] + 1);

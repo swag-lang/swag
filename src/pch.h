@@ -1,8 +1,7 @@
 #pragma once
 
-#ifdef _MSC_VER
 #define _SILENCE_ALL_CXX17_DEPRECATION_WARNINGS
-#endif
+#define _SILENCE_CXX20_CISO646_REMOVED_WARNING
 
 ////////////////////////////
 #include "LLVMInc.h"

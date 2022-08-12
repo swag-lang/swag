@@ -173,14 +173,47 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         break;
     }
 
-    case ByteCodeOp::JumpDyn:
+    case ByteCodeOp::JumpDyn8:
     {
-        uint32_t* table = (uint32_t*) context->bc->sourceFile->module->constantSegment.address(ip->d.u32);
-        auto      val   = registersRC[ip->a.u32].u32;
-        if (val >= ip->b.u64 + ip->c.u64)
+        int32_t* table = (int32_t*) context->bc->sourceFile->module->compilerSegment.address(ip->d.u32);
+        auto     val   = (uint64_t) (registersRC[ip->a.u32].s8 - (ip->b.s8 - 1));
+        if (val >= ip->c.u64)
             context->ip += table[0];
         else
-            context->ip += table[1 + (val - ip->b.u64)];
+            context->ip += table[val];
+        break;
+    }
+
+    case ByteCodeOp::JumpDyn16:
+    {
+        int32_t* table = (int32_t*) context->bc->sourceFile->module->compilerSegment.address(ip->d.u32);
+        auto     val   = (uint64_t) (registersRC[ip->a.u32].s16 - (ip->b.s16 - 1));
+        if (val >= ip->c.u64)
+            context->ip += table[0];
+        else
+            context->ip += table[val];
+        break;
+    }
+
+    case ByteCodeOp::JumpDyn32:
+    {
+        int32_t* table = (int32_t*) context->bc->sourceFile->module->compilerSegment.address(ip->d.u32);
+        auto     val   = (uint64_t) (registersRC[ip->a.u32].s32 - (ip->b.s32 - 1));
+        if (val >= ip->c.u64)
+            context->ip += table[0];
+        else
+            context->ip += table[val];
+        break;
+    }
+
+    case ByteCodeOp::JumpDyn64:
+    {
+        int32_t* table = (int32_t*) context->bc->sourceFile->module->compilerSegment.address(ip->d.u32);
+        auto     val   = (uint64_t) (registersRC[ip->a.u32].s64 - (ip->b.s64 - 1));
+        if (val >= ip->c.u64)
+            context->ip += table[0];
+        else
+            context->ip += table[val];
         break;
     }
 

@@ -28,16 +28,16 @@ void ByteCodeOptimizer::genTree(ByteCodeOptContext* context, uint32_t nodeIdx)
     ByteCodeOptTreeNode* node = &context->tree[nodeIdx];
     node->end                 = node->start;
 
-    while (node->end->op != ByteCodeOp::Ret && !ByteCode::isJump(node->end) && node->end->op != ByteCodeOp::JumpDyn)
+    while (node->end->op != ByteCodeOp::Ret && !ByteCode::isJumpOrDyn(node->end))
         node->end++;
     if (node->end->op == ByteCodeOp::Ret)
         return;
 
     bool here = false;
 
-    if (node->end->op == ByteCodeOp::JumpDyn)
+    if (ByteCode::isJumpDyn(node->end))
     {
-        uint32_t* table = (uint32_t*) context->module->constantSegment.address(node->end->d.u32);
+        int32_t* table = (int32_t*) context->module->compilerSegment.address(node->end->d.u32);
         for (uint32_t i = 0; i < node->end->c.u32; i++)
         {
             auto newNode = newTreeNode(context, node->end + table[i] + 1, here);
@@ -201,9 +201,9 @@ void ByteCodeOptimizer::removeNops(ByteCodeOptContext* context)
                 }
             }
         }
-        else if (ip->op == ByteCodeOp::JumpDyn)
+        else if (ByteCode::isJumpDyn(ip))
         {
-            uint32_t* table = (uint32_t*) context->module->constantSegment.address(ip->d.u32);
+            int32_t* table = (int32_t*) context->module->compilerSegment.address(ip->d.u32);
             for (uint32_t idx = 0; idx < ip->c.u32; idx++)
             {
                 auto srcJump = (int) (ip - context->bc->out);
@@ -213,6 +213,8 @@ void ByteCodeOptimizer::removeNops(ByteCodeOptContext* context)
                     auto idxNop = (int) (nop - context->bc->out);
                     if (srcJump < dstJump && idxNop > srcJump && idxNop < dstJump)
                         table[idx]--;
+                    else if (srcJump > dstJump && idxNop >= dstJump && idxNop < srcJump)
+                        table[idx]++;
                 }
             }
         }
@@ -272,7 +274,7 @@ void ByteCodeOptimizer::setJumps(ByteCodeOptContext* context)
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
         ip->flags &= ~BCI_START_STMT;
-        if (ByteCode::isJump(ip))
+        if (ByteCode::isJumpOrDyn(ip))
             context->jumps.push_back(ip);
     }
 
@@ -280,10 +282,24 @@ void ByteCodeOptimizer::setJumps(ByteCodeOptContext* context)
     context->bc->numJumps = (uint32_t) context->jumps.size();
     for (auto jump : context->jumps)
     {
-        if (jump->flags & BCI_SAFETY)
-            jump[jump->b.s32 + 1].flags |= BCI_START_STMT_S;
+        if (ByteCode::isJumpDyn(jump))
+        {
+            int32_t* table = (int32_t*) context->module->compilerSegment.address(jump->d.u64 & 0xFFFFFFFF);
+            for (uint32_t i = 0; i < jump->c.u32; i++)
+            {
+                if (jump->flags & BCI_SAFETY)
+                    jump[table[i] + 1].flags |= BCI_START_STMT_S;
+                else
+                    jump[table[i] + 1].flags |= BCI_START_STMT_N;
+            }
+        }
         else
-            jump[jump->b.s32 + 1].flags |= BCI_START_STMT_N;
+        {
+            if (jump->flags & BCI_SAFETY)
+                jump[jump->b.s32 + 1].flags |= BCI_START_STMT_S;
+            else
+                jump[jump->b.s32 + 1].flags |= BCI_START_STMT_N;
+        }
     }
 }
 

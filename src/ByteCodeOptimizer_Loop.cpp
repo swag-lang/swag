@@ -10,6 +10,9 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
     for (int idx = 0; idx < context->jumps.size(); idx++)
     {
         auto ip = context->jumps[idx];
+        if (!ByteCode::isJump(ip))
+            continue;
+
         if (ip->op == ByteCodeOp::JumpIfNotZero64 && ip->b.s32 < 0)
         {
             mapRA.clear();

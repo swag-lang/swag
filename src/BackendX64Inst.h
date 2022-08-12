@@ -1040,6 +1040,8 @@ namespace BackendX64Inst
     inline void emit_SignedExtend_EAX_To_RAX(X64PerThread& pp) { pp.concat.addString2("\x48\x98"); } // cdqe
     inline void emit_SignedExtend_BX_To_EBX(X64PerThread& pp) { pp.concat.addString3("\x0f\xbf\xdb"); } // movsx ebx, bx
     inline void emit_SignedExtend_CL_To_ECX(X64PerThread& pp) { pp.concat.addString3("\x0f\xbe\xC9"); } // movsx ecx, cl
+    inline void emit_SignedExtend_CL_To_RCX(X64PerThread& pp) { pp.concat.addString4("\x48\x0F\xBE\xC9"); } // movsx rcx, cl
+    inline void emit_SignedExtend_CX_To_RCX(X64PerThread& pp) { pp.concat.addString4("\x48\x0F\xBF\xC9"); } // movsx rcx, cx
     inline void emit_SignedExtend_ECX_To_RCX(X64PerThread& pp) { pp.concat.addString3("\x48\x63\xC9"); } // movsx rcx, ecx
 
     inline void emit_SignedExtend_8_To_32(X64PerThread& pp, uint8_t reg)
@@ -1051,6 +1053,38 @@ namespace BackendX64Inst
             break;
         case RCX:
             emit_SignedExtend_CL_To_ECX(pp);
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
+        }
+    }
+
+    inline void emit_SignedExtend_8_To_64(X64PerThread& pp, uint8_t reg)
+    {
+        switch (reg)
+        {
+        case RAX:
+            emit_SignedExtend_AL_To_RAX(pp);
+            break;
+        case RCX:
+            emit_SignedExtend_CL_To_RCX(pp);
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
+        }
+    }
+
+    inline void emit_SignedExtend_16_To_64(X64PerThread& pp, uint8_t reg)
+    {
+        switch (reg)
+        {
+        case RAX:
+            emit_SignedExtend_AX_To_RAX(pp);
+            break;
+        case RCX:
+            emit_SignedExtend_CX_To_RCX(pp);
             break;
         default:
             SWAG_ASSERT(false);
@@ -1599,8 +1633,8 @@ namespace BackendX64Inst
         auto it = pp.labels.find(label.ipDest);
         if (it != pp.labels.end())
         {
-            label.currentOffset = (int32_t) pp.concat.totalCount() + 1;
-            int relOffset       = it->second - (label.currentOffset + 1);
+            auto currentOffset = (int32_t) pp.concat.totalCount() + 1;
+            int  relOffset     = it->second - (currentOffset + 1);
             if (relOffset >= -127 && relOffset <= 128)
             {
                 emit_NearJumpOp(pp, jumpType);
@@ -1610,8 +1644,8 @@ namespace BackendX64Inst
             else
             {
                 emit_LongJumpOp(pp, jumpType);
-                label.currentOffset = (int32_t) pp.concat.totalCount();
-                relOffset           = it->second - (label.currentOffset + 4);
+                currentOffset = (int32_t) pp.concat.totalCount();
+                relOffset     = it->second - (currentOffset + 4);
                 pp.concat.addU32(*(uint32_t*) &relOffset);
             }
 
@@ -1620,9 +1654,9 @@ namespace BackendX64Inst
 
         // Here we do not know the destination label, so we assume 32 bits of offset
         emit_LongJumpOp(pp, jumpType);
-        label.currentOffset = (int32_t) pp.concat.totalCount();
         pp.concat.addU32(0);
-        label.patch = pp.concat.getSeekPtr() - 4;
+        label.currentOffset = (int32_t) pp.concat.totalCount();
+        label.patch         = pp.concat.getSeekPtr() - 4;
         pp.labelsToSolve.push_back(label);
     }
 

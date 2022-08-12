@@ -1755,8 +1755,73 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
 
-        case ByteCodeOp::JumpDyn:
+        case ByteCodeOp::JumpDyn8:
+        case ByteCodeOp::JumpDyn16:
+        case ByteCodeOp::JumpDyn32:
+        case ByteCodeOp::JumpDyn64:
+        {
+            int32_t* tableCompiler = (int32_t*) moduleToGen->compilerSegment.address(ip->d.u32);
+
+            if (ip->op == ByteCodeOp::JumpDyn8)
+            {
+                BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->a.u32), RCX, RDI); // rcx = ra
+                BackendX64Inst::emit_SignedExtend_8_To_64(pp, RCX);
+            }
+            else if (ip->op == ByteCodeOp::JumpDyn16)
+            {
+                BackendX64Inst::emit_Load16_Indirect(pp, regOffset(ip->a.u32), RCX, RDI); // rcx = ra
+                BackendX64Inst::emit_SignedExtend_16_To_64(pp, RCX);
+            }
+            else if (ip->op == ByteCodeOp::JumpDyn32)
+            {
+                BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->a.u32), RCX, RDI); // rcx = ra
+                BackendX64Inst::emit_SignedExtend_ECX_To_RCX(pp);
+            }
+            else
+            {
+                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI); // rcx = ra
+            }
+
+            BackendX64Inst::emit_Load64_Immediate(pp, ip->b.s64 - 1, RAX);
+            concat.addString3("\x48\x29\xC1"); // sub rcx, rax
+
+            BackendX64Inst::emit_Load64_Immediate(pp, ip->c.s64, RAX);
+            BackendX64Inst::emit_Cmp64(pp, RCX, RAX);
+            BackendX64Inst::emit_Jump(pp, BackendX64Inst::JAE, i, tableCompiler[0]);
+
+            BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symCSIndex, ip->d.u64 >> 32); // rax = jump table
+            concat.addString4("\x48\xC1\xE1\x02");                                               // shl rcx, 2
+            concat.addString3("\x48\x01\xC8");                                                   // add rax, rcx
+            concat.addString2("\x8B\x00");                                                       // move eax, dword ptr [rax]
+
+            BackendX64Inst::emit_Load64_Immediate(pp, 0, RCX, true);
+
+            auto           id      = g_UniqueID.fetch_add(1);
+            Utf8           symName = Fmt("__jumptable%u", id);
+            auto           sym     = getOrAddSymbol(pp, symName, CoffSymbolKind::Function, 5 + concat.totalCount() - pp.textSectionOffset);
+            CoffRelocation reloc;
+            reloc.virtualAddress = (concat.totalCount() - 8) - pp.textSectionOffset;
+            reloc.symbolIndex    = sym->index;
+            reloc.type           = IMAGE_REL_AMD64_ADDR64;
+            pp.relocTableTextSection.table.push_back(reloc);
+
+            concat.addString3("\x48\x01\xC8"); // add rax, rcx
+            concat.addString2("\xFF\xE0");     // jmp rax
+
+            auto currentOffset = (int32_t) pp.concat.totalCount();
+
+            int32_t*     tableConstant = (int32_t*) moduleToGen->constantSegment.address(ip->d.u64 >> 32);
+            LabelToSolve label;
+            for (uint32_t idx = 0; idx < ip->c.u32; idx++)
+            {
+                label.ipDest        = tableCompiler[idx] + i + 1;
+                label.currentOffset = currentOffset;
+                label.patch         = (uint8_t*) (tableConstant + idx);
+                pp.labelsToSolve.push_back(label);
+            }
+
             break;
+        }
 
         case ByteCodeOp::JumpIfTrue:
             BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
@@ -3818,7 +3883,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         auto it = pp.labels.find(toSolve.ipDest);
         SWAG_ASSERT(it != pp.labels.end());
 
-        auto relOffset             = it->second - (toSolve.currentOffset + 4);
+        auto relOffset             = it->second - toSolve.currentOffset;
         *(uint32_t*) toSolve.patch = relOffset;
     }
 

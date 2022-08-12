@@ -317,7 +317,7 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
     else
         ins.location = &node->token.startLocation;
 
-    if (ByteCode::isJump(&ins))
+    if (ByteCode::isJumpOrDyn(&ins))
         bc->numJumps++;
 
     // Some operations, like IntrinsicTypeCmp for example, are in fact call to runtime functions.

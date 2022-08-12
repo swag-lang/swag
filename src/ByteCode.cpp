@@ -140,6 +140,16 @@ void ByteCode::markLabels()
             ip[1].flags |= BCI_JUMP_DEST;
             count--;
         }
+        else if (ByteCode::isJumpDyn(ip))
+        {
+            int32_t* table = (int32_t*) sourceFile->module->compilerSegment.address(ip->d.u32);
+            for (uint32_t idx = 0; idx < ip->c.u32; idx++)
+            {
+                ip[table[idx] + 1].flags |= BCI_JUMP_DEST;
+            }
+
+            count--;
+        }
     }
 }
 
