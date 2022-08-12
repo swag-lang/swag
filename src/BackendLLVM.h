@@ -80,7 +80,7 @@ struct LLVMPerThread
     llvm::FunctionCallee fn_realloc;
     llvm::FunctionCallee fn_free;
 
-    map<int32_t, llvm::BasicBlock*>             labels;
+    map<int64_t, llvm::BasicBlock*>             labels;
     map<TypeInfoFuncAttr*, llvm::FunctionType*> mapFctTypeInternal;
     map<TypeInfoFuncAttr*, llvm::FunctionType*> mapFctTypeInternalClosure;
     map<TypeInfoFuncAttr*, llvm::FunctionType*> mapFctTypeForeign;
@@ -162,7 +162,7 @@ struct BackendLLVM : public Backend
     bool emitOS(const BuildParameters& buildParameters);
     bool emitMain(const BuildParameters& buildParameters);
 
-    llvm::BasicBlock* getOrCreateLabel(LLVMPerThread& pp, llvm::Function* func, int32_t ip);
+    llvm::BasicBlock* getOrCreateLabel(LLVMPerThread& pp, llvm::Function* func, int64_t ip);
     bool              storeLocalParam(llvm::LLVMContext& context, const BuildParameters& buildParameters, llvm::Function* func, TypeInfoFuncAttr* typeFunc, int idx, llvm::Value* r0, int sizeOf = 0, uint64_t toAdd = 0, int deRefSize = 0);
     void              localCall(const BuildParameters& buildParameters, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, const char* name, const vector<uint32_t>& regs, const vector<llvm::Value*>& values);
 

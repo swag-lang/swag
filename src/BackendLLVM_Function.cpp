@@ -145,14 +145,14 @@ bool BackendLLVM::swagTypeToLLVMType(const BuildParameters& buildParameters, Mod
     return moduleToGen->internalError(Fmt("swagTypeToLLVMType, invalid type `%s`", typeInfo->getDisplayNameC()));
 }
 
-llvm::BasicBlock* BackendLLVM::getOrCreateLabel(LLVMPerThread& pp, llvm::Function* func, int32_t ip)
+llvm::BasicBlock* BackendLLVM::getOrCreateLabel(LLVMPerThread& pp, llvm::Function* func, int64_t ip)
 {
     auto& context = *pp.context;
 
     auto it = pp.labels.find(ip);
     if (it == pp.labels.end())
     {
-        llvm::BasicBlock* label = llvm::BasicBlock::Create(context, Fmt("%d", ip).c_str(), func);
+        llvm::BasicBlock* label = llvm::BasicBlock::Create(context, Fmt("%lld", ip).c_str(), func);
         pp.labels[ip]           = label;
         return label;
     }
@@ -2679,6 +2679,79 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 r1 = builder.CreateLoad(TO_PTR_I64(GEP_I32(allocR, ip->b.u32)));
             auto b0 = builder.CreateIsNotNull(r1);
             builder.CreateStore(builder.CreateIntCast(b0, builder.getInt8Ty(), false), r0);
+            break;
+        }
+
+        case ByteCodeOp::JumpDyn8:
+        case ByteCodeOp::JumpDyn16:
+        case ByteCodeOp::JumpDyn64:
+        case ByteCodeOp::JumpDyn32:
+        {
+            int32_t* tableCompiler = (int32_t*) moduleToGen->compilerSegment.address(ip->d.u32);
+
+            VectorNative<llvm::BasicBlock*> falseBlocks;
+            VectorNative<llvm::BasicBlock*> trueBlocks;
+
+            for (uint32_t idx = 0; idx < ip->c.u32; idx++)
+            {
+                if (idx == 0)
+                    falseBlocks.push_back(nullptr);
+                else
+                    falseBlocks.push_back(getOrCreateLabel(pp, func, (int64_t) UINT32_MAX + g_UniqueID.fetch_add(1)));
+                trueBlocks.push_back(getOrCreateLabel(pp, func, i + tableCompiler[idx] + 1));
+            }
+
+            llvm::Value* r0 = nullptr;
+            llvm::Value* r1 = nullptr;
+            switch (ip->op)
+            {
+            case ByteCodeOp::JumpDyn8:
+                r0 = MK_IMMA_8();
+                r1 = builder.getInt8(ip->b.u8);
+                break;
+            case ByteCodeOp::JumpDyn16:
+                r0 = MK_IMMA_16();
+                r1 = builder.getInt16(ip->b.u16);
+                break;
+            case ByteCodeOp::JumpDyn32:
+                r0 = MK_IMMA_32();
+                r1 = builder.getInt32(ip->b.u32);
+                break;
+            case ByteCodeOp::JumpDyn64:
+                r0 = MK_IMMA_64();
+                r1 = builder.getInt64(ip->b.u64);
+                break;
+            }
+
+            auto b0 = builder.CreateICmpEQ(r0, r1);
+            builder.CreateCondBr(b0, trueBlocks[1], falseBlocks[1]);
+            builder.SetInsertPoint(falseBlocks[1]);
+
+            for (uint32_t idx = 2; idx < ip->c.u32; idx++)
+            {
+                switch (ip->op)
+                {
+                case ByteCodeOp::JumpDyn8:
+                    r1 = builder.getInt8((uint8_t) (idx - 1) + ip->b.u8);
+                    break;
+                case ByteCodeOp::JumpDyn16:
+                    r1 = builder.getInt16((uint16_t) (idx - 1) + ip->b.u16);
+                    break;
+                case ByteCodeOp::JumpDyn32:
+                    r1 = builder.getInt32((uint32_t) (idx - 1) + ip->b.u32);
+                    break;
+                case ByteCodeOp::JumpDyn64:
+                    r1 = builder.getInt64((uint64_t) (idx - 1) + ip->b.u64);
+                    break;
+                }
+
+                b0 = builder.CreateICmpEQ(r0, r1);
+                builder.CreateCondBr(b0, trueBlocks[idx], falseBlocks[idx]);
+                builder.SetInsertPoint(falseBlocks[idx]);
+            }
+
+            builder.CreateBr(trueBlocks[0]);
+            blockIsClosed = true;
             break;
         }
 

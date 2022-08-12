@@ -1,4 +1,3 @@
-//#[Swag.PrintBc]
 func toto(x: s32)->s32
 {
     switch x
