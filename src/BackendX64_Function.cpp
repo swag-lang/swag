@@ -1763,27 +1763,20 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             int32_t* tableCompiler = (int32_t*) moduleToGen->compilerSegment.address(ip->d.u32);
 
             if (ip->op == ByteCodeOp::JumpDyn8)
-            {
-                BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->a.u32), RCX, RDI); // rcx = ra
-                BackendX64Inst::emit_SignedExtend_8_To_64(pp, RCX);
-            }
+                BackendX64Inst::emit_LoadS8S64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             else if (ip->op == ByteCodeOp::JumpDyn16)
-            {
-                BackendX64Inst::emit_Load16_Indirect(pp, regOffset(ip->a.u32), RCX, RDI); // rcx = ra
-                BackendX64Inst::emit_SignedExtend_16_To_64(pp, RCX);
-            }
+                BackendX64Inst::emit_LoadS16S64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             else if (ip->op == ByteCodeOp::JumpDyn32)
-            {
-                BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->a.u32), RCX, RDI); // rcx = ra
-                BackendX64Inst::emit_SignedExtend_ECX_To_RCX(pp);
-            }
+                BackendX64Inst::emit_LoadS32S64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             else
-            {
-                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI); // rcx = ra
-            }
+                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
 
-            BackendX64Inst::emit_Load64_Immediate(pp, ip->b.s64 - 1, RAX);
-            concat.addString3("\x48\x29\xC1"); // sub rcx, rax
+            auto subVal = ip->b.s64 - 1;
+            if (subVal)
+            {
+                BackendX64Inst::emit_Load64_Immediate(pp, subVal, RAX);
+                concat.addString3("\x48\x29\xC1"); // sub rcx, rax
+            }
 
             BackendX64Inst::emit_Load64_Immediate(pp, ip->c.s64, RAX);
             BackendX64Inst::emit_Cmp64(pp, RCX, RAX);

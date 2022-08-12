@@ -146,6 +146,32 @@ namespace BackendX64Inst
         emit_ModRM(pp, stackOffset, reg, memReg);
     }
 
+    inline void emit_LoadS8S64_Indirect(X64PerThread& pp, uint32_t stackOffset, uint8_t reg, uint8_t memReg)
+    {
+        SWAG_ASSERT(reg < R8 && memReg < R8);
+        pp.concat.addU8(0x48);
+        pp.concat.addU8(0x0F);
+        pp.concat.addU8(0xBE);
+        emit_ModRM(pp, stackOffset, reg, memReg);
+    }
+
+    inline void emit_LoadS16S64_Indirect(X64PerThread& pp, uint32_t stackOffset, uint8_t reg, uint8_t memReg)
+    {
+        SWAG_ASSERT(reg < R8 && memReg < R8);
+        pp.concat.addU8(0x48);
+        pp.concat.addU8(0x0F);
+        pp.concat.addU8(0xBF);
+        emit_ModRM(pp, stackOffset, reg, memReg);
+    }
+
+    inline void emit_LoadS32S64_Indirect(X64PerThread& pp, uint32_t stackOffset, uint8_t reg, uint8_t memReg)
+    {
+        SWAG_ASSERT(reg < R8 && memReg < R8);
+        pp.concat.addU8(0x48);
+        pp.concat.addU8(0x63);
+        emit_ModRM(pp, stackOffset, reg, memReg);
+    }
+
     inline void emit_LoadU8U32_Indirect(X64PerThread& pp, uint32_t stackOffset, uint8_t reg, uint8_t memReg)
     {
         SWAG_ASSERT(reg < R8 && memReg < R8);
