@@ -672,6 +672,37 @@ namespace BackendX64Inst
         pp.concat.addU8(modRM(0b11, reg2 & 0b111, reg1 & 0b111));
     }
 
+    inline void emit_Cmp64_Immediate(X64PerThread& pp, uint64_t value, uint8_t reg, uint8_t altReg)
+    {
+        SWAG_ASSERT(reg == RAX || reg == RCX);
+
+        if (value <= 0x7f)
+        {
+            pp.concat.addU8(0x48);
+            pp.concat.addU8(0x83);
+            pp.concat.addU8(0xF8 | reg);
+            pp.concat.addU8((uint8_t) value);
+        }
+        else if (value <= 0x7fffffff)
+        {
+            pp.concat.addU8(0x48);
+            if (reg == RAX)
+                pp.concat.addU8(0x3d);
+            else
+            {
+                pp.concat.addU8(0x81);
+                pp.concat.addU8(0xF9);
+            }
+
+            pp.concat.addU32((uint32_t) value);
+        }
+        else
+        {
+            BackendX64Inst::emit_Load64_Immediate(pp, value, altReg);
+            BackendX64Inst::emit_Cmp64(pp, reg, altReg);
+        }
+    }
+
     inline void emit_CmpF32(X64PerThread& pp, uint8_t reg1, uint8_t reg2)
     {
         SWAG_ASSERT(reg1 < R8 && reg2 < R8);
@@ -954,26 +985,41 @@ namespace BackendX64Inst
         }
     }
 
-    inline void emit_Sub64_Immediate(X64PerThread& pp, uint64_t value, uint8_t reg)
+    inline void emit_Sub64_Immediate(X64PerThread& pp, uint64_t value, uint8_t reg, uint8_t altReg)
     {
         if (!value)
             return;
+
         SWAG_ASSERT(reg == RAX || reg == RCX);
-        SWAG_ASSERT(value <= 0x7FFFFFFF);
-        pp.concat.addU8(0x48);
-        if (value <= 0x7F)
+        SWAG_ASSERT(altReg == RAX || altReg == RCX);
+
+        if (value > 0x7FFFFFFF)
         {
+            emit_Load64_Immediate(pp, value, altReg);
+
+            pp.concat.addU8(0x48);
+            pp.concat.addU8(0x29);
+            if (reg == RCX)
+                pp.concat.addU8(0xC1); // sub rcx, rax
+            else
+                pp.concat.addU8(0xC8); // sub rax, rcx
+        }
+        else if (value <= 0x7F)
+        {
+            pp.concat.addU8(0x48);
             pp.concat.addU8(0x83);
             pp.concat.addU8(0xE8 | reg);
             pp.concat.addU8((uint8_t) value);
         }
         else if (reg == RAX)
         {
+            pp.concat.addU8(0x48);
             pp.concat.addU8(0x2D);
             pp.concat.addU32((uint32_t) value);
         }
         else if (reg == RCX)
         {
+            pp.concat.addU8(0x48);
             pp.concat.addU8(0x81);
             pp.concat.addU8(0xE9);
             pp.concat.addU32((uint32_t) value);

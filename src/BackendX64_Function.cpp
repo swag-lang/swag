@@ -1771,17 +1771,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             else
                 BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
 
-            auto subVal = ip->b.u64 - 1;
-            if (subVal <= 0x7FFFFFFF)
-                BackendX64Inst::emit_Sub64_Immediate(pp, subVal, RCX);
-            else
-            {
-                BackendX64Inst::emit_Load64_Immediate(pp, subVal, RAX);
-                concat.addString3("\x48\x29\xC1"); // sub rcx, rax
-            }
-
-            BackendX64Inst::emit_Load64_Immediate(pp, ip->c.s64, RAX);
-            BackendX64Inst::emit_Cmp64(pp, RCX, RAX);
+            BackendX64Inst::emit_Sub64_Immediate(pp, ip->b.u64 - 1, RCX, RAX);
+            BackendX64Inst::emit_Cmp64_Immediate(pp, ip->c.u64, RCX, RAX);
             BackendX64Inst::emit_Jump(pp, BackendX64Inst::JAE, i, tableCompiler[0]);
 
             BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symCSIndex, ip->d.u64 >> 32); // rax = jump table
@@ -2452,18 +2443,15 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             }
             break;
         case ByteCodeOp::DecPointer64:
-            if (ip->flags & BCI_IMM_B && ip->b.u64 <= 0x7FFFFFFF)
+            if (ip->flags & BCI_IMM_B)
             {
                 BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-                BackendX64Inst::emit_Sub64_Immediate(pp, ip->b.u64, RAX);
+                BackendX64Inst::emit_Sub64_Immediate(pp, ip->b.u64, RAX, RCX);
                 BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
             }
             else
             {
-                if (ip->flags & BCI_IMM_B)
-                    BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u64, RCX);
-                else
-                    BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
                 if (ip->a.u32 == ip->c.u32)
                     BackendX64Inst::emit_Op64_IndirectDst(pp, regOffset(ip->a.u32), RCX, RDI, X64Op::SUB);
                 else
