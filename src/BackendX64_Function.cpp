@@ -718,14 +718,12 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::CastS8F64:
-            BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            BackendX64Inst::emit_UnsignedExtend_8_To_32(pp, RAX);
+            BackendX64Inst::emit_LoadS8S32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             concat.addString4("\xF2\x0F\x2A\xC0"); // cvtsi2sd xmm0, eax
             BackendX64Inst::emit_StoreF64_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
             break;
         case ByteCodeOp::CastS16F64:
-            BackendX64Inst::emit_Load16_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            BackendX64Inst::emit_UnsignedExtend_16_To_32(pp, RAX);
+            BackendX64Inst::emit_LoadS16S32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             concat.addString4("\xF2\x0F\x2A\xC0"); // cvtsi2sd xmm0, eax
             BackendX64Inst::emit_StoreF64_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
             break;
@@ -740,14 +738,12 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_StoreF64_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
             break;
         case ByteCodeOp::CastU8F64:
-            BackendX64Inst::emit_Load8_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            BackendX64Inst::emit_UnsignedExtend_8_To_32(pp, RAX);
+            BackendX64Inst::emit_LoadU8U32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             concat.addString4("\xF2\x0F\x2A\xC0"); // cvtsi2sd xmm0, eax
             BackendX64Inst::emit_StoreF64_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
             break;
         case ByteCodeOp::CastU16F64:
-            BackendX64Inst::emit_Load16_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            BackendX64Inst::emit_UnsignedExtend_16_To_32(pp, RAX);
+            BackendX64Inst::emit_LoadU16U32_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             concat.addString4("\xF2\x0F\x2A\xC0"); // cvtsi2sd xmm0, eax
             BackendX64Inst::emit_StoreF64_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
             break;
