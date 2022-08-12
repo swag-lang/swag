@@ -1475,9 +1475,9 @@ void ByteCodeOptimizer::optimizePassSwitch(ByteCodeOptContext* context, ByteCode
 
 bool ByteCodeOptimizer::optimizePassSwitch(ByteCodeOptContext* context)
 {
-    /*optimizePassSwitch(context, ByteCodeOp::JumpIfNotEqual8);
+    optimizePassSwitch(context, ByteCodeOp::JumpIfNotEqual8);
     optimizePassSwitch(context, ByteCodeOp::JumpIfNotEqual16);
     optimizePassSwitch(context, ByteCodeOp::JumpIfNotEqual32);
-    optimizePassSwitch(context, ByteCodeOp::JumpIfNotEqual64);*/
+    optimizePassSwitch(context, ByteCodeOp::JumpIfNotEqual64);
     return true;
 }

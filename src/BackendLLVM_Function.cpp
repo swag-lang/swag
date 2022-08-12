@@ -2698,7 +2698,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                     falseBlocks.push_back(nullptr);
                 else
                     falseBlocks.push_back(getOrCreateLabel(pp, func, (int64_t) UINT32_MAX + g_UniqueID.fetch_add(1)));
-                trueBlocks.push_back(getOrCreateLabel(pp, func, i + tableCompiler[idx] + 1));
+                trueBlocks.push_back(getOrCreateLabel(pp, func, i + (int64_t) tableCompiler[idx] + 1));
             }
 
             llvm::Value* r0 = nullptr;

@@ -1790,9 +1790,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Jump(pp, BackendX64Inst::JAE, i, tableCompiler[0]);
 
             BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symCSIndex, ip->d.u64 >> 32); // rax = jump table
-            concat.addString4("\x48\xC1\xE1\x02");                                               // shl rcx, 2
-            concat.addString3("\x48\x01\xC8");                                                   // add rax, rcx
-            concat.addString2("\x8B\x00");                                                       // move eax, dword ptr [rax]
+            concat.addString4("\x48\x63\x04\x88");                                               // movsx rax, dword ptr [rax + rcx*4]
 
             BackendX64Inst::emit_Load64_Immediate(pp, 0, RCX, true);
 
@@ -1805,8 +1803,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             reloc.type           = IMAGE_REL_AMD64_ADDR64;
             pp.relocTableTextSection.table.push_back(reloc);
 
-            concat.addString3("\x48\x01\xC8"); // add rax, rcx
-            concat.addString2("\xFF\xE0");     // jmp rax
+            concat.addString3("\x48\x01\xC1"); // add rcx, rax
+            concat.addString2("\xFF\xE1");     // jmp rcx
 
             auto currentOffset = (int32_t) pp.concat.totalCount();
 
