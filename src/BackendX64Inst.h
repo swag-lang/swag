@@ -197,6 +197,14 @@ namespace BackendX64Inst
         emit_ModRM(pp, stackOffset, reg, memReg);
     }
 
+    inline void emit_LoadU16U32_Indirect(X64PerThread& pp, uint32_t stackOffset, uint8_t reg, uint8_t memReg)
+    {
+        SWAG_ASSERT(reg < R8 && memReg < R8);
+        pp.concat.addU8(0x0F);
+        pp.concat.addU8(0xB7);
+        emit_ModRM(pp, stackOffset, reg, memReg);
+    }
+
     inline void emit_LoadN_Indirect(X64PerThread& pp, uint32_t stackOffset, uint8_t reg, uint8_t memReg, uint8_t numBits)
     {
         switch (numBits)
