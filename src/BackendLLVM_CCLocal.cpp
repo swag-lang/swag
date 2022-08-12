@@ -237,7 +237,7 @@ bool BackendLLVM::storeLocalParam(llvm::LLVMContext& context, const BuildParamet
     if (toAdd || deRefSize)
     {
         llvm::Value* ra;
-        if(passByValue(param))
+        if (passByValue(param))
             ra = builder.CreateInBoundsGEP(TO_PTR_I8(arg), builder.getInt64(toAdd));
         else
         {
@@ -275,8 +275,14 @@ bool BackendLLVM::storeLocalParam(llvm::LLVMContext& context, const BuildParamet
     }
     else if (passByValue(param))
     {
+        // By convention, all remaining bits should be zero
+        if (param->isNativeIntegerSigned() && param->sizeOf < 8)
+            builder.CreateStore(builder.CreateIntCast(arg, builder.getInt64Ty(), true), r0);
+        else if (param->isNativeIntegerUnsigned() && param->sizeOf < 8)
+            builder.CreateStore(builder.CreateIntCast(arg, builder.getInt64Ty(), false), r0);
+
         // This can be casted to an integer
-        if (sizeOf)
+        else if (sizeOf)
         {
             if (sizeOf == sizeof(void*))
                 builder.CreateStore(arg, r0);
