@@ -138,6 +138,15 @@ namespace BackendX64Inst
         emit_ModRM(pp, stackOffset, (reg & 0b111), memReg);
     }
 
+    inline void emit_LoadS8S16_Indirect(X64PerThread& pp, uint32_t stackOffset, uint8_t reg, uint8_t memReg)
+    {
+        SWAG_ASSERT(reg < R8 && memReg < R8);
+        pp.concat.addU8(0x66);
+        pp.concat.addU8(0x0F);
+        pp.concat.addU8(0xBE);
+        emit_ModRM(pp, stackOffset, reg, memReg);
+    }
+
     inline void emit_LoadS8S32_Indirect(X64PerThread& pp, uint32_t stackOffset, uint8_t reg, uint8_t memReg)
     {
         SWAG_ASSERT(reg < R8 && memReg < R8);
@@ -1125,38 +1134,6 @@ namespace BackendX64Inst
             break;
         case RCX:
             emit_SignedExtend_CL_To_ECX(pp);
-            break;
-        default:
-            SWAG_ASSERT(false);
-            break;
-        }
-    }
-
-    inline void emit_SignedExtend_8_To_64(X64PerThread& pp, uint8_t reg)
-    {
-        switch (reg)
-        {
-        case RAX:
-            emit_SignedExtend_AL_To_RAX(pp);
-            break;
-        case RCX:
-            emit_SignedExtend_CL_To_RCX(pp);
-            break;
-        default:
-            SWAG_ASSERT(false);
-            break;
-        }
-    }
-
-    inline void emit_SignedExtend_16_To_64(X64PerThread& pp, uint8_t reg)
-    {
-        switch (reg)
-        {
-        case RAX:
-            emit_SignedExtend_AX_To_RAX(pp);
-            break;
-        case RCX:
-            emit_SignedExtend_CX_To_RCX(pp);
             break;
         default:
             SWAG_ASSERT(false);
