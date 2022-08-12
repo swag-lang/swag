@@ -1771,8 +1771,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             else
                 BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
 
-            auto subVal = ip->b.s64 - 1;
-            if (subVal)
+            auto subVal = ip->b.u64 - 1;
+            if (subVal <= 0x7FFFFFFF)
+                BackendX64Inst::emit_Sub64_Immediate(pp, subVal, RCX);
+            else
             {
                 BackendX64Inst::emit_Load64_Immediate(pp, subVal, RAX);
                 concat.addString3("\x48\x29\xC1"); // sub rcx, rax
