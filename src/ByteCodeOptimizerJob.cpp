@@ -38,7 +38,7 @@ bool ByteCodeOptimizerJob::optimize(ByteCode* bc, bool& restart)
         OPT_PASS(ByteCodeOptimizer::optimizePassRetCopyGlobal);
         OPT_PASS(ByteCodeOptimizer::optimizePassReduce);
         OPT_PASS(ByteCodeOptimizer::optimizePassDeadStore);
-        //OPT_PASS(ByteCodeOptimizer::optimizePassDeadStoreDup);
+        OPT_PASS(ByteCodeOptimizer::optimizePassDeadStoreDup);
         OPT_PASS(ByteCodeOptimizer::optimizePassLoop);
         OPT_PASS(ByteCodeOptimizer::optimizePassAlias);
         OPT_PASS(ByteCodeOptimizer::optimizePassSwitch);

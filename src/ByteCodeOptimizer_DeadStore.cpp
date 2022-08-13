@@ -122,9 +122,10 @@ bool ByteCodeOptimizer::optimizePassDeadStore(ByteCodeOptContext* context)
     return true;
 }
 
-static bool optimizePassDeadStoreDupScan(ByteCodeOptContext* context, ByteCodeOptTreeNode* node, ByteCodeInstruction* ip, ByteCodeInstruction* ipScan, bool& canRemove)
+static bool optimizePassDeadStoreDupScan(ByteCodeOptContext* context, uint32_t curNode, ByteCodeOptTreeNode* node, ByteCodeInstruction* ip, ByteCodeInstruction* ipScan, bool& canRemove)
 {
     node->mark = context->mark;
+
     bool hasA  = ByteCodeOptimizer::hasWriteRegInA(ip);
     bool hasB  = ByteCodeOptimizer::hasWriteRegInB(ip);
     bool hasC  = ByteCodeOptimizer::hasWriteRegInC(ip);
@@ -173,10 +174,10 @@ static bool optimizePassDeadStoreDupScan(ByteCodeOptContext* context, ByteCodeOp
     for (auto n : node->parent)
     {
         ByteCodeOptTreeNode* parentNode = &context->tree[n];
-        if (parentNode->mark == context->mark)
+        if (parentNode->mark == context->mark && n != curNode)
             continue;
 
-        if (!optimizePassDeadStoreDupScan(context, parentNode, ip, parentNode->end, canRemove))
+        if (!optimizePassDeadStoreDupScan(context, curNode, parentNode, ip, parentNode->end, canRemove))
             return false;
     }
 
@@ -198,7 +199,7 @@ bool ByteCodeOptimizer::optimizePassDeadStoreDup(ByteCodeOptContext* context)
 
                   bool canRemove = false;
                   context->mark++;
-                  if (!optimizePassDeadStoreDupScan(context, node, ip, ip - 1, canRemove))
+                  if (!optimizePassDeadStoreDupScan(context, parseCxt.curNode, node, ip, ip - 1, canRemove))
                       return;
 
                   if (canRemove)
