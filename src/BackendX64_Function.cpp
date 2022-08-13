@@ -1762,8 +1762,11 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Cmp64_Immediate(pp, ip->c.u64, RCX, RAX);
             BackendX64Inst::emit_Jump(pp, BackendX64Inst::JAE, i, tableCompiler[0]);
 
-            BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symCSIndex, ip->d.u64 >> 32); // rax = jump table
-            concat.addString4("\x48\x63\x04\x88");                                               // movsx rax, dword ptr [rax + rcx*4]
+            uint8_t* addrConstant        = nullptr;
+            auto     offsetTableConstant = moduleToGen->constantSegment.reserve(((uint32_t) ip->c.u64) * sizeof(uint32_t), &addrConstant);
+
+            BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symCSIndex, offsetTableConstant); // rax = jump table
+            concat.addString4("\x48\x63\x04\x88");                                                   // movsx rax, dword ptr [rax + rcx*4]
 
             BackendX64Inst::emit_Load64_Immediate(pp, 0, RCX, true);
 
@@ -1781,7 +1784,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
             auto currentOffset = (int32_t) pp.concat.totalCount();
 
-            int32_t*     tableConstant = (int32_t*) moduleToGen->constantSegment.address(ip->d.u64 >> 32);
+            int32_t*     tableConstant = (int32_t*) addrConstant;
             LabelToSolve label;
             for (uint32_t idx = 0; idx < ip->c.u32; idx++)
             {

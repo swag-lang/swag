@@ -1462,13 +1462,7 @@ void ByteCodeOptimizer::optimizePassSwitch(ByteCodeOptContext* context, ByteCode
         // Create the jump table
         // First element is always the "default" one
         uint8_t* addrCompiler        = nullptr;
-        uint8_t* addrConstant        = nullptr;
-        uint32_t offsetTableCompiler = 0;
-        uint32_t offsetTableConstant = 0;
-
-        offsetTableCompiler = context->module->compilerSegment.reserve(((uint32_t) range + 1) * sizeof(uint32_t), &addrCompiler);
-        offsetTableConstant = context->module->constantSegment.reserve(((uint32_t) range + 1) * sizeof(uint32_t), &addrConstant);
-        memset(addrConstant, 0, ((uint32_t) range + 1) * sizeof(uint32_t));
+        auto     offsetTableCompiler = context->module->compilerSegment.reserve(((uint32_t) range + 1) * sizeof(uint32_t), &addrCompiler);
 
         int32_t* patchCompiler = (int32_t*) addrCompiler;
 
@@ -1501,7 +1495,7 @@ void ByteCodeOptimizer::optimizePassSwitch(ByteCodeOptContext* context, ByteCode
 
         ip->b.u64 = minValue;
         ip->c.u64 = range + 1;
-        ip->d.u64 = ((uint64_t) offsetTableConstant << 32) | (offsetTableCompiler);
+        ip->d.u64 = offsetTableCompiler;
         break;
     }
 }
