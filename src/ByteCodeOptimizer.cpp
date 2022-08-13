@@ -28,8 +28,18 @@ void ByteCodeOptimizer::genTree(ByteCodeOptContext* context, uint32_t nodeIdx)
     ByteCodeOptTreeNode* node = &context->tree[nodeIdx];
     node->end                 = node->start;
 
-    while (node->end->op != ByteCodeOp::Ret && !ByteCode::isJumpOrDyn(node->end))
+    while (node->end->op != ByteCodeOp::Ret && !ByteCode::isJumpOrDyn(node->end) && !(node->end[1].flags & BCI_START_STMT))
+    {
+#ifdef SWAG_DEV_MODE
+        node->end->treeNode = nodeIdx + 1;
+#endif
         node->end++;
+    }
+
+#ifdef SWAG_DEV_MODE
+    node->end->treeNode = nodeIdx + 1;
+#endif
+
     if (node->end->op == ByteCodeOp::Ret)
         return;
 
@@ -45,9 +55,11 @@ void ByteCodeOptimizer::genTree(ByteCodeOptContext* context, uint32_t nodeIdx)
                 genTree(context, newNode);
             node = &context->tree[nodeIdx];
             node->next.push_back(newNode);
+            auto newNodePtr = &context->tree[newNode];
+            newNodePtr->parent.push_back(nodeIdx);
         }
     }
-    else
+    else if (ByteCode::isJump(node->end))
     {
         ByteCodeInstruction* nextIp = node->end + node->end->b.s32 + 1;
         if (nextIp->op != ByteCodeOp::End)
@@ -57,6 +69,8 @@ void ByteCodeOptimizer::genTree(ByteCodeOptContext* context, uint32_t nodeIdx)
                 genTree(context, newNode);
             node = &context->tree[nodeIdx];
             node->next.push_back(newNode);
+            auto newNodePtr = &context->tree[newNode];
+            newNodePtr->parent.push_back(nodeIdx);
         }
 
         if (node->end->op != ByteCodeOp::Jump && node->end->op != ByteCodeOp::End)
@@ -67,7 +81,20 @@ void ByteCodeOptimizer::genTree(ByteCodeOptContext* context, uint32_t nodeIdx)
                 genTree(context, newNode);
             node = &context->tree[nodeIdx];
             node->next.push_back(newNode);
+            auto newNodePtr = &context->tree[newNode];
+            newNodePtr->parent.push_back(nodeIdx);
         }
+    }
+    else
+    {
+        auto nextIp  = node->end + 1;
+        auto newNode = newTreeNode(context, nextIp, here);
+        if (!here)
+            genTree(context, newNode);
+        node = &context->tree[nodeIdx];
+        node->next.push_back(newNode);
+        auto newNodePtr = &context->tree[newNode];
+        newNodePtr->parent.push_back(nodeIdx);
     }
 }
 

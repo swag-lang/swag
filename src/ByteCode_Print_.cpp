@@ -266,6 +266,12 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* cu
     g_Log.print(ip->flags & BCI_START_STMT ? "S" : ".");
     g_Log.print(ip->flags & BCI_UNPURE ? "U" : ".");
 
+    // Tree Node
+#ifdef SWAG_DEV_MODE
+    g_Log.print("  ");
+    wprintf(bcNum, ip->treeNode);
+#endif
+
     g_Log.setColor(LogColor::White);
     while (g_Log.length < ALIGN_PRETTY)
         g_Log.print(" ");

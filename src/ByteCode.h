@@ -47,6 +47,7 @@ struct ByteCodeInstruction
     const char* sourceFile;
     int         sourceLine;
     int         serial;
+    int         treeNode;
 #endif
 };
 

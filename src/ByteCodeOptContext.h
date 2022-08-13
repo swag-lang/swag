@@ -18,6 +18,8 @@ struct ByteCodeOptTreeNode
     ByteCodeInstruction*   start = nullptr;
     ByteCodeInstruction*   end   = nullptr;
     VectorNative<uint32_t> next;
+    VectorNative<uint32_t> parent;
+    uint32_t               mark  = 0;
     uint32_t               flags = 0;
 };
 
@@ -56,6 +58,7 @@ struct ByteCodeOptContext : public JobContext
     MapRegTo<ByteCodeInstruction*>                      mapRegInstB;
     map<uint64_t, pair<uint64_t, ByteCodeInstruction*>> mapCst;
     map<uint64_t, uint32_t>                             map6432;
+    uint32_t                                            mark = 0;
 
     bool allPassesHaveDoneSomething = false;
     bool passHasDoneSomething       = false;
@@ -78,5 +81,6 @@ struct ByteCodeOptContext : public JobContext
         map6432.clear();
         allPassesHaveDoneSomething = false;
         passHasDoneSomething       = false;
+        mark                       = 0;
     }
 };
