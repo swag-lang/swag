@@ -743,6 +743,7 @@ bool SemanticJob::preResolveStructContent(SemanticContext* context)
 
 void SemanticJob::flattenStructChilds(SemanticContext* context, AstNode* parent, VectorNative<AstNode*>& result)
 {
+    SharedLock lock(parent->mutex);
     for (auto child : parent->childs)
     {
         switch (child->kind)
