@@ -1758,6 +1758,14 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             else
                 BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
 
+            // Note:
+            // 
+            // This is not optimal yet.
+            // The sub could be removed by baking it in the 'cmp', and by changing the jump table address by substracting the min value
+            // Also, if the jumptable was encoded in the text segment, then there will be no need to have two relocations
+            // 
+            // We could in the end remove two instructions and be as the llvm generation
+
             BackendX64Inst::emit_Sub64_Immediate(pp, ip->b.u64 - 1, RCX, RAX);
             BackendX64Inst::emit_Cmp64_Immediate(pp, ip->c.u64, RCX, RAX);
             BackendX64Inst::emit_Jump(pp, BackendX64Inst::JAE, i, tableCompiler[0]);
