@@ -649,7 +649,7 @@ JobResult ByteCodeGenJob::execute()
                     g_Stats.numInstructions += context.bc->numInstructions;
 
                 // Print resulting bytecode
-                if (originalNode->attributeFlags & ATTRIBUTE_PRINT_BC)
+                if (originalNode->attributeFlags & ATTRIBUTE_PRINT_BC && !(originalNode->attributeFlags & ATTRIBUTE_GENERATED_FUNC))
                 {
                     ScopedLock lk(module->mutexByteCode);
                     module->byteCodePrintBC.push_back(context.bc);
@@ -751,11 +751,11 @@ JobResult ByteCodeGenJob::execute()
     if (originalNode->attributeFlags & ATTRIBUTE_COMPILER_FUNC)
         module->addCompilerFunc(originalNode->extension->bc);
 
-    // #ast can have a #[Swag.printbc]. We need to print it now, because it's compile time, and the legit
+    // #ast/#run etc... can have a #[Swag.printbc]. We need to print it now, because it's compile time, and the legit
     // pipeline for printing (after bc optimize) will not be called in that case
-    if (originalNode->attributeFlags & ATTRIBUTE_PRINT_BC)
+    if (originalNode->attributeFlags & ATTRIBUTE_PRINT_BC || (originalNode->ownerFct && originalNode->ownerFct->attributeFlags & ATTRIBUTE_PRINT_BC))
     {
-        if (originalNode->attributeFlags & ATTRIBUTE_AST_FUNC || originalNode->attributeFlags & ATTRIBUTE_COMPILER_FUNC)
+        if (originalNode->attributeFlags & ATTRIBUTE_GENERATED_FUNC || originalNode->kind != AstNodeKind::FuncDecl)
             context.bc->print();
     }
 
