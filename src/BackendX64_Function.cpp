@@ -1768,17 +1768,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symCSIndex, offsetTableConstant); // rax = jump table
             concat.addString4("\x48\x63\x04\x88");                                                   // movsx rax, dword ptr [rax + rcx*4]
 
-            BackendX64Inst::emit_Load64_Immediate(pp, 0, RCX, true);
-
-            auto           id      = g_UniqueID.fetch_add(1);
-            Utf8           symName = Fmt("__jumptable%u", id);
-            auto           sym     = getOrAddSymbol(pp, symName, CoffSymbolKind::Function, 5 + concat.totalCount() - pp.textSectionOffset);
-            CoffRelocation reloc;
-            reloc.virtualAddress = (concat.totalCount() - 8) - pp.textSectionOffset;
-            reloc.symbolIndex    = sym->index;
-            reloc.type           = IMAGE_REL_AMD64_ADDR64;
-            pp.relocTableTextSection.table.push_back(reloc);
-
+            // + 5 for the two following instructions
+            // + 7 for this instruction
+            BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, symbolFuncIndex, concat.totalCount() - startAddress + 5 + 7);
             concat.addString3("\x48\x01\xC1"); // add rcx, rax
             concat.addString2("\xFF\xE1");     // jmp rcx
 
