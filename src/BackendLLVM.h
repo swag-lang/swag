@@ -124,7 +124,7 @@ struct BackendLLVM : public Backend
         memset(perThread, 0, sizeof(perThread));
     }
 
-    JobResult                   prepareOutput(const BuildParameters& buildParameters, Job* ownerJob) override;
+    JobResult                   prepareOutput(int stage, const BuildParameters& buildParameters, Job* ownerJob) override;
     bool                        generateOutput(const BuildParameters& backendParameters) override;
     BackendFunctionBodyJobBase* newFunctionJob() override;
 

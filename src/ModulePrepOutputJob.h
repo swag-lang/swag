@@ -4,9 +4,14 @@
 #include "Backend.h"
 struct Module;
 
-struct ModulePrepOutputJob : public Job
+struct ModulePrepOutputStage1Job : public Job
 {
     JobResult       execute() override;
     BuildParameters buildParameters;
 };
 
+struct ModulePrepOutputStage2Job : public Job
+{
+    JobResult       execute() override;
+    BuildParameters buildParameters;
+};

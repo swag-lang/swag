@@ -11,7 +11,7 @@
 #include "Os.h"
 #include "BackendFunctionBodyJobBase.h"
 
-JobResult Backend::prepareOutput(const BuildParameters& buildParameters, Job* ownerJob)
+JobResult Backend::prepareOutput(int stage, const BuildParameters& buildParameters, Job* ownerJob)
 {
     return JobResult::ReleaseJob;
 }

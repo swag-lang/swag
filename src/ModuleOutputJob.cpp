@@ -13,7 +13,7 @@ JobResult ModuleOutputJob::execute()
             module->logStage("ModuleOutputJobPass::Init\n");
 
         // Generate .swg file with public definitions
-        pass = ModuleOutputJobPass::PrepareOutput;
+        pass = ModuleOutputJobPass::PrepareOutputStage1;
 
         // This can arrive when testing, if the error is raised late, when generating export
         // Arrives also with --output:false
@@ -27,14 +27,14 @@ JobResult ModuleOutputJob::execute()
         return JobResult::KeepJobAlive;
     }
 
-    if (pass == ModuleOutputJobPass::PrepareOutput)
+    if (pass == ModuleOutputJobPass::PrepareOutputStage1)
     {
         if (!g_CommandLine->output)
             return JobResult::ReleaseJob;
         if (g_CommandLine->verboseStages)
-            module->logStage("ModuleOutputJobPass::PrepareOutput\n");
+            module->logStage("ModuleOutputJobPass::PrepareOutputStage1\n");
 
-        pass = ModuleOutputJobPass::WaitForDependencies;
+        pass = ModuleOutputJobPass::PrepareOutputStage2;
 
         // Compute the number of sub modules (i.e the number of output temporary files)
         int minPerFile = 1024;
@@ -63,7 +63,7 @@ JobResult ModuleOutputJob::execute()
             // Precompile a specific version, to test it
             if (module->mustGenerateTestExe())
             {
-                auto preCompileJob                             = g_Allocator.alloc<ModulePrepOutputJob>();
+                auto preCompileJob                             = g_Allocator.alloc<ModulePrepOutputStage1Job>();
                 preCompileJob->module                          = module;
                 preCompileJob->dependentJob                    = this;
                 preCompileJob->buildParameters                 = module->buildParameters;
@@ -75,10 +75,53 @@ JobResult ModuleOutputJob::execute()
             // Precompile the normal version
             if (module->canGenerateLegit())
             {
-                auto preCompileJob                             = g_Allocator.alloc<ModulePrepOutputJob>();
+                auto preCompileJob                             = g_Allocator.alloc<ModulePrepOutputStage1Job>();
                 preCompileJob->module                          = module;
                 preCompileJob->dependentJob                    = this;
                 preCompileJob->buildParameters                 = module->buildParameters;
+                preCompileJob->buildParameters.precompileIndex = i;
+                if (module->kind == ModuleKind::Test)
+                    preCompileJob->buildParameters.compileType = BackendCompileType::Test;
+                else if (module->kind == ModuleKind::Example)
+                    preCompileJob->buildParameters.compileType = BackendCompileType::Example;
+                else
+                    preCompileJob->buildParameters.compileType = BackendCompileType::Normal;
+                jobsToAdd.push_back(preCompileJob);
+            }
+        }
+
+        if (!jobsToAdd.empty())
+            return JobResult::KeepJobAlive;
+    }
+
+    if (pass == ModuleOutputJobPass::PrepareOutputStage2)
+    {
+        if (g_CommandLine->verboseStages)
+            module->logStage("ModuleOutputJobPass::PrepareOutputStage2\n");
+
+        pass = ModuleOutputJobPass::WaitForDependencies;
+
+        for (int i = 0; i < module->backend->numPreCompileBuffers; i++)
+        {
+            // Precompile a specific version, to test it
+            if (module->mustGenerateTestExe())
+            {
+                auto preCompileJob = g_Allocator.alloc<ModulePrepOutputStage2Job>();
+                preCompileJob->module = module;
+                preCompileJob->dependentJob = this;
+                preCompileJob->buildParameters = module->buildParameters;
+                preCompileJob->buildParameters.precompileIndex = i;
+                preCompileJob->buildParameters.compileType = BackendCompileType::Test;
+                jobsToAdd.push_back(preCompileJob);
+            }
+
+            // Precompile the normal version
+            if (module->canGenerateLegit())
+            {
+                auto preCompileJob = g_Allocator.alloc<ModulePrepOutputStage2Job>();
+                preCompileJob->module = module;
+                preCompileJob->dependentJob = this;
+                preCompileJob->buildParameters = module->buildParameters;
                 preCompileJob->buildParameters.precompileIndex = i;
                 if (module->kind == ModuleKind::Test)
                     preCompileJob->buildParameters.compileType = BackendCompileType::Test;
@@ -112,7 +155,7 @@ JobResult ModuleOutputJob::execute()
     {
         if (module->numErrors)
             return JobResult::ReleaseJob;
-        if(g_CommandLine->verboseStages)
+        if (g_CommandLine->verboseStages)
             module->logStage("ModuleOutputJobPass::GenOutput\n");
 
         pass = ModuleOutputJobPass::Done;

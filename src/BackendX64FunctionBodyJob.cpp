@@ -10,7 +10,7 @@
 
 JobResult BackendX64FunctionBodyJob::execute()
 {
-    Timer timer0{&g_Stats.prepOutputTimeJob};
+    Timer timer0{&g_Stats.prepOutputStage1TimeJob};
     Timer timer1{&g_Stats.prepOutputTimeJob_GenFunc};
 
     BackendX64* bachendX64 = (BackendX64*) backend;

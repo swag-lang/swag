@@ -1,7 +1,7 @@
 #pragma once
 #include "Job.h"
 struct Module;
-struct ModulePrepOutputJob;
+struct ModulePrepOutputStage1Job;
 
 struct BackendX64SaveObjJob : public Job
 {
@@ -12,6 +12,6 @@ struct BackendX64SaveObjJob : public Job
 
     JobResult execute() override;
 
-    ModulePrepOutputJob* prepJob;
+    ModulePrepOutputStage1Job* prepJob;
 };
 

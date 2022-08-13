@@ -8,7 +8,7 @@
 
 JobResult BackendLLVMFunctionBodyJob::execute()
 {
-    Timer timer0{&g_Stats.prepOutputTimeJob};
+    Timer timer0{&g_Stats.prepOutputStage1TimeJob};
     Timer timer1{&g_Stats.prepOutputTimeJob_GenFunc};
 
     BackendLLVM* bachendLLVM = (BackendLLVM*) backend;

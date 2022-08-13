@@ -37,7 +37,7 @@ struct Backend
     {
     }
 
-    virtual JobResult                   prepareOutput(const BuildParameters& buildParameters, Job* ownerJob);
+    virtual JobResult                   prepareOutput(int stage, const BuildParameters& buildParameters, Job* ownerJob);
     virtual bool                        generateOutput(const BuildParameters& backendParameters);
     virtual BackendFunctionBodyJobBase* newFunctionJob();
 

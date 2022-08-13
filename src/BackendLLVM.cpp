@@ -171,7 +171,7 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
     return true;
 }
 
-JobResult BackendLLVM::prepareOutput(const BuildParameters& buildParameters, Job* ownerJob)
+JobResult BackendLLVM::prepareOutput(int stage, const BuildParameters& buildParameters, Job* ownerJob)
 {
     int ct              = buildParameters.compileType;
     int precompileIndex = buildParameters.precompileIndex;
@@ -215,6 +215,7 @@ JobResult BackendLLVM::prepareOutput(const BuildParameters& buildParameters, Job
     {
         pp.pass = BackendPreCompilePass::End;
         emitAllFunctionBody(buildParameters, module, ownerJob);
+
         return JobResult::KeepJobAlive;
     }
 
@@ -223,6 +224,8 @@ JobResult BackendLLVM::prepareOutput(const BuildParameters& buildParameters, Job
         if (g_Workspace->bootstrapModule->numErrors || g_Workspace->runtimeModule->numErrors)
             module->numErrors++;
         if (module->numErrors)
+            return JobResult::ReleaseJob;
+        if (stage == 1)
             return JobResult::ReleaseJob;
 
         if (precompileIndex == 0)

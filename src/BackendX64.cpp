@@ -305,7 +305,7 @@ bool BackendX64::createRuntime(const BuildParameters& buildParameters)
     return true;
 }
 
-JobResult BackendX64::prepareOutput(const BuildParameters& buildParameters, Job* ownerJob)
+JobResult BackendX64::prepareOutput(int stage, const BuildParameters& buildParameters, Job* ownerJob)
 {
     int ct              = buildParameters.compileType;
     int precompileIndex = buildParameters.precompileIndex;
@@ -344,6 +344,7 @@ JobResult BackendX64::prepareOutput(const BuildParameters& buildParameters, Job*
         *pp.patchTextSectionOffset = pp.textSectionOffset;
 
         emitAllFunctionBody(buildParameters, module, ownerJob);
+
         return JobResult::KeepJobAlive;
     }
 
@@ -352,6 +353,8 @@ JobResult BackendX64::prepareOutput(const BuildParameters& buildParameters, Job*
         if (g_Workspace->bootstrapModule->numErrors || g_Workspace->runtimeModule->numErrors)
             module->numErrors++;
         if (module->numErrors)
+            return JobResult::ReleaseJob;
+        if (stage == 1)
             return JobResult::ReleaseJob;
 
         pp.pass = BackendPreCompilePass::GenerateObj;
@@ -481,7 +484,7 @@ JobResult BackendX64::prepareOutput(const BuildParameters& buildParameters, Job*
         auto job          = g_Allocator.alloc<BackendX64SaveObjJob>();
         job->module       = module;
         job->dependentJob = ownerJob;
-        job->prepJob      = (ModulePrepOutputJob*) ownerJob;
+        job->prepJob      = (ModulePrepOutputStage1Job*) ownerJob;
         ownerJob->jobsToAdd.push_back(job);
         return JobResult::KeepJobAlive;
     }

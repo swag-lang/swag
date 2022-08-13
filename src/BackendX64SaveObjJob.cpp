@@ -7,7 +7,7 @@
 
 JobResult BackendX64SaveObjJob::execute()
 {
-    Timer timer0{&g_Stats.prepOutputTimeJob};
+    Timer timer0{&g_Stats.prepOutputStage1TimeJob};
     Timer timer1{&g_Stats.prepOutputTimeJob_SaveObj};
 
     ((BackendX64*) module->backend)->saveObjFile(prepJob->buildParameters);
