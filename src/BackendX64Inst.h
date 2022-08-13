@@ -1140,6 +1140,7 @@ namespace BackendX64Inst
     inline void emit_SignedExtend_CL_To_RCX(X64PerThread& pp) { pp.concat.addString4("\x48\x0F\xBE\xC9"); } // movsx rcx, cl
     inline void emit_SignedExtend_CX_To_RCX(X64PerThread& pp) { pp.concat.addString4("\x48\x0F\xBF\xC9"); } // movsx rcx, cx
     inline void emit_SignedExtend_ECX_To_RCX(X64PerThread& pp) { pp.concat.addString3("\x48\x63\xC9"); } // movsx rcx, ecx
+    // clang-format on
 
     inline void emit_SignedExtend_8_To_32(X64PerThread& pp, uint8_t reg)
     {
@@ -1190,8 +1191,6 @@ namespace BackendX64Inst
         pp.concat.addU8(0xB7);
         pp.concat.addU8(modRM(REGREG, reg, reg));
     }
-
-    // clang-format on
 
     /////////////////////////////////////////////////////////////////////
 

@@ -1319,34 +1319,36 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
     return true;
 }
 
-void ByteCodeOptimizer::optimizePassSwitch(ByteCodeOptContext* context, ByteCodeOp op)
+void ByteCodeOptimizer::optimizePassSwitch(ByteCodeOptContext* context, ByteCodeOp op0, ByteCodeOp op1)
 {
     int sizeOf = 0;
-    switch (op)
+    switch (op0)
     {
-    case ByteCodeOp::JumpIfNotEqual8:
+    case ByteCodeOp::JumpIfEqual8:
         sizeOf = 1;
         break;
-    case ByteCodeOp::JumpIfNotEqual16:
+    case ByteCodeOp::JumpIfEqual16:
         sizeOf = 2;
         break;
-    case ByteCodeOp::JumpIfNotEqual32:
+    case ByteCodeOp::JumpIfEqual32:
         sizeOf = 4;
         break;
-    case ByteCodeOp::JumpIfNotEqual64:
+    case ByteCodeOp::JumpIfEqual64:
         sizeOf = 8;
         break;
     default:
         SWAG_ASSERT(false);
+        break;
     }
+
+    int64_t minJumpTableSize = 4;
+    int64_t maxJumpTableSize = UINT32_MAX;
+    int64_t minDensity       = 10;
 
     for (int idx = 0; idx < context->jumps.size(); idx++)
     {
         auto ip = context->jumps[idx];
         if (!ByteCode::isJump(ip))
-            continue;
-
-        if (ip->op != op || !(ip->flags & BCI_IMM_C) || ip->b.s32 < 0)
             continue;
 
         auto orgValue0 = ip->a.u32;
@@ -1363,41 +1365,65 @@ void ByteCodeOptimizer::optimizePassSwitch(ByteCodeOptContext* context, ByteCode
         while (true)
         {
             defaultIp = destIp;
-            if (destIp->op != op || !(ip->flags & BCI_IMM_C) || ip->b.s32 < 0)
-                break;
-            if (ipStart->a.u32 != orgValue0 && ipStart->a.u32 != orgValue1)
-                break;
-            if (context->map6432.contains(destIp->c.u64)) // Only one value per jump
-                break;
 
-            context->vecInst.push_back(destIp);
-            int64_t v;
-            switch (sizeOf)
+            if (destIp->op == op0 && (destIp->flags & BCI_IMM_C) && destIp->b.s32 > 0 &&
+                (destIp->a.u32 == orgValue0 || destIp->a.u32 == orgValue1))
             {
-            case 1:
-                v                   = destIp->c.s8;
-                context->map6432[v] = (uint32_t) (destIp - ipStart);
-                break;
-            case 2:
-                v                   = destIp->c.s16;
-                context->map6432[v] = (uint32_t) (destIp - ipStart);
-                break;
-            case 4:
-                v                   = destIp->c.s32;
-                context->map6432[v] = (uint32_t) (destIp - ipStart);
-                break;
-            case 8:
-                v                   = destIp->c.s64;
-                context->map6432[v] = (uint32_t) (destIp - ipStart);
-                break;
+                if (context->map6432.contains(destIp->c.u64)) // Only one value per jump
+                    break;
+
+                context->vecInst.push_back(destIp);
+                auto offset = (uint32_t) (destIp - ipStart) + destIp->b.s32;
+                switch (sizeOf)
+                {
+                case 1:
+                    context->map6432[destIp->c.s8] = offset;
+                    break;
+                case 2:
+                    context->map6432[destIp->c.s16] = offset;
+                    break;
+                case 4:
+                    context->map6432[destIp->c.s32] = offset;
+                    break;
+                case 8:
+                    context->map6432[destIp->c.s64] = offset;
+                    break;
+                }
+
+                destIp++;
+                continue;
             }
 
-            destIp = destIp + destIp->b.s32 + 1;
-        }
+            if (destIp->op == op1 && (destIp->flags & BCI_IMM_C) && destIp->b.s32 > 0 &&
+                (destIp->a.u32 == orgValue0 || destIp->a.u32 == orgValue1))
+            {
+                if (context->map6432.contains(destIp->c.u64)) // Only one value per jump
+                    break;
 
-        // No enough values
-        if (context->vecInst.size() < 3)
-            continue;
+                context->vecInst.push_back(destIp);
+                auto offset = (uint32_t) (destIp - ipStart);
+                switch (sizeOf)
+                {
+                case 1:
+                    context->map6432[destIp->c.s8] = offset;
+                    break;
+                case 2:
+                    context->map6432[destIp->c.s16] = offset;
+                    break;
+                case 4:
+                    context->map6432[destIp->c.s32] = offset;
+                    break;
+                case 8:
+                    context->map6432[destIp->c.s64] = offset;
+                    break;
+                }
+
+                destIp = destIp + destIp->b.s32 + 1;
+                continue;
+            }
+
+            break;
+        }
 
         int64_t minValue = INT64_MAX;
         int64_t maxValue = 0;
@@ -1425,16 +1451,23 @@ void ByteCodeOptimizer::optimizePassSwitch(ByteCodeOptContext* context, ByteCode
         }
 
         // Heuristic : too much values compared to the number of cases
-        auto range = (maxValue - minValue) + 1;
-        if (range <= 0 || range > (int64_t) context->vecInst.size() * 2)
+        auto range    = (maxValue - minValue) + 1;
+        auto numCases = (int64_t) context->vecInst.size();
+
+        // Come from TargetLoweringBase::isSuitableForJumpTable in llvm
+        bool canGen = range >= minJumpTableSize && range <= maxJumpTableSize && (numCases * 100 >= range * minDensity);
+        if (!canGen)
             continue;
 
         // Create the jump table
         // First element is always the "default" one
         uint8_t* addrCompiler        = nullptr;
         uint8_t* addrConstant        = nullptr;
-        auto     offsetTableCompiler = context->module->compilerSegment.reserve(((uint32_t) range + 1) * sizeof(uint32_t), &addrCompiler);
-        auto     offsetTableConstant = context->module->constantSegment.reserve(((uint32_t) range + 1) * sizeof(uint32_t), &addrConstant);
+        uint32_t offsetTableCompiler = 0;
+        uint32_t offsetTableConstant = 0;
+
+        offsetTableCompiler = context->module->compilerSegment.reserve(((uint32_t) range + 1) * sizeof(uint32_t), &addrCompiler);
+        offsetTableConstant = context->module->constantSegment.reserve(((uint32_t) range + 1) * sizeof(uint32_t), &addrConstant);
         memset(addrConstant, 0, ((uint32_t) range + 1) * sizeof(uint32_t));
 
         int32_t* patchCompiler = (int32_t*) addrCompiler;
@@ -1475,9 +1508,9 @@ void ByteCodeOptimizer::optimizePassSwitch(ByteCodeOptContext* context, ByteCode
 
 bool ByteCodeOptimizer::optimizePassSwitch(ByteCodeOptContext* context)
 {
-    optimizePassSwitch(context, ByteCodeOp::JumpIfNotEqual8);
-    optimizePassSwitch(context, ByteCodeOp::JumpIfNotEqual16);
-    optimizePassSwitch(context, ByteCodeOp::JumpIfNotEqual32);
-    optimizePassSwitch(context, ByteCodeOp::JumpIfNotEqual64);
+    optimizePassSwitch(context, ByteCodeOp::JumpIfEqual8, ByteCodeOp::JumpIfNotEqual8);
+    optimizePassSwitch(context, ByteCodeOp::JumpIfEqual16, ByteCodeOp::JumpIfNotEqual16);
+    optimizePassSwitch(context, ByteCodeOp::JumpIfEqual32, ByteCodeOp::JumpIfNotEqual32);
+    optimizePassSwitch(context, ByteCodeOp::JumpIfEqual64, ByteCodeOp::JumpIfNotEqual64);
     return true;
 }
