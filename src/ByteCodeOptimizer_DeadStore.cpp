@@ -12,13 +12,13 @@ bool ByteCodeOptimizer::optimizePassDeadStore(ByteCodeOptContext* context)
                   auto flags = g_ByteCodeOpDesc[(int) ip->op].flags;
 
                   uint32_t regScan = UINT32_MAX;
-                  if (flags & OPFLAG_WRITE_A && !(flags & (OPFLAG_WRITE_B | OPFLAG_WRITE_C | OPFLAG_WRITE_D)))
+                  if (flags & OPFLAG_WRITE_A && !(flags & (OPFLAG_READ_A | OPFLAG_WRITE_B | OPFLAG_WRITE_C | OPFLAG_WRITE_D)))
                       regScan = ip->a.u32;
-                  if (flags & OPFLAG_WRITE_B && !(flags & (OPFLAG_WRITE_A | OPFLAG_WRITE_C | OPFLAG_WRITE_D)))
+                  if (flags & OPFLAG_WRITE_B && !(flags & (OPFLAG_READ_B | OPFLAG_WRITE_A | OPFLAG_WRITE_C | OPFLAG_WRITE_D)))
                       regScan = ip->b.u32;
-                  if (flags & OPFLAG_WRITE_C && !(flags & (OPFLAG_WRITE_A | OPFLAG_WRITE_B | OPFLAG_WRITE_D)))
+                  if (flags & OPFLAG_WRITE_C && !(flags & (OPFLAG_READ_C | OPFLAG_WRITE_A | OPFLAG_WRITE_B | OPFLAG_WRITE_D)))
                       regScan = ip->c.u32;
-                  if (flags & OPFLAG_WRITE_D && !(flags & (OPFLAG_WRITE_A | OPFLAG_WRITE_B | OPFLAG_WRITE_C)))
+                  if (flags & OPFLAG_WRITE_D && !(flags & (OPFLAG_READ_D | OPFLAG_WRITE_A | OPFLAG_WRITE_B | OPFLAG_WRITE_C)))
                       regScan = ip->d.u32;
 
                   if (regScan == UINT32_MAX)
@@ -126,10 +126,10 @@ static bool optimizePassDeadStoreDupScan(ByteCodeOptContext* context, uint32_t c
 {
     node->mark = context->mark;
 
-    bool hasA  = ByteCodeOptimizer::hasWriteRegInA(ip);
-    bool hasB  = ByteCodeOptimizer::hasWriteRegInB(ip);
-    bool hasC  = ByteCodeOptimizer::hasWriteRegInC(ip);
-    bool hasD  = ByteCodeOptimizer::hasWriteRegInD(ip);
+    bool hasA = ByteCodeOptimizer::hasWriteRegInA(ip);
+    bool hasB = ByteCodeOptimizer::hasWriteRegInB(ip);
+    bool hasC = ByteCodeOptimizer::hasWriteRegInC(ip);
+    bool hasD = ByteCodeOptimizer::hasWriteRegInD(ip);
 
     if (ipScan >= node->start)
     {
@@ -142,8 +142,54 @@ static bool optimizePassDeadStoreDupScan(ByteCodeOptContext* context, uint32_t c
             {
                 switch (ip->op)
                 {
+                case ByteCodeOp::ClearRA:
+                    if (ipScan->a.u32 == ip->a.u32)
+                    {
+                        canRemove = true;
+                        return true;
+                    }
+                    break;
+
+                case ByteCodeOp::SetImmediate32:
+                    if (ipScan->a.u32 == ip->a.u32 && ipScan->b.u32 == ip->b.u32)
+                    {
+                        canRemove = true;
+                        return true;
+                    }
+                    break;
+                case ByteCodeOp::SetImmediate64:
+                    if (ipScan->a.u32 == ip->a.u32 && ipScan->b.u64 == ip->b.u64)
+                    {
+                        canRemove = true;
+                        return true;
+                    }
+                    break;
+
+                case ByteCodeOp::MakeStackPointer:
+                case ByteCodeOp::MakeConstantSegPointer:
+                case ByteCodeOp::MakeCompilerSegPointer:
+                case ByteCodeOp::MakeBssSegPointer:
+                case ByteCodeOp::MakeMutableSegPointer:
+                    if (ipScan->a.u32 == ip->a.u32 && ipScan->b.u32 == ip->b.u32)
+                    {
+                        canRemove = true;
+                        return true;
+                    }
+                    break;
+
+                case ByteCodeOp::GetParam8:
+                case ByteCodeOp::GetParam16:
+                case ByteCodeOp::GetParam32:
                 case ByteCodeOp::GetParam64:
                     if (ipScan->a.u32 == ip->a.u32 && ipScan->b.u32 == ip->b.u32 && ipScan->c.u32 == ip->c.u32)
+                    {
+                        canRemove = true;
+                        return true;
+                    }
+                    break;
+
+                case ByteCodeOp::GetIncParam64:
+                    if (ipScan->a.u32 == ip->a.u32 && ipScan->b.u32 == ip->b.u32 && ipScan->c.u32 == ip->c.u32 && ipScan->d.u64 == ip->d.u64)
                     {
                         canRemove = true;
                         return true;
@@ -186,12 +232,35 @@ static bool optimizePassDeadStoreDupScan(ByteCodeOptContext* context, uint32_t c
 
 bool ByteCodeOptimizer::optimizePassDeadStoreDup(ByteCodeOptContext* context)
 {
+    // if (context->bc->name != "Core.Compress.__privns_99.HuffmanTable_init")
+    //     return true;
+    // ByteCodeOptimizer::removeNops(context);
+    // context->bc->print();
+
     context->mark = 0;
     parseTree(context, 0, context->tree[0].start, BCOTN_USER1, [](ByteCodeOptContext* context, ByteCodeOptTreeParseContext& parseCxt)
               {
                   auto ip = parseCxt.curIp;
-                  if (ip->op != ByteCodeOp::GetParam64)
+                  switch (ip->op)
+                  {
+                  case ByteCodeOp::GetParam8:
+                  case ByteCodeOp::GetParam16:
+                  case ByteCodeOp::GetParam32:
+                  case ByteCodeOp::GetParam64:
+                  case ByteCodeOp::MakeStackPointer:
+                  case ByteCodeOp::MakeConstantSegPointer:
+                  case ByteCodeOp::MakeCompilerSegPointer:
+                  case ByteCodeOp::MakeBssSegPointer:
+                  case ByteCodeOp::MakeMutableSegPointer:
+                  case ByteCodeOp::ClearRA:
+                  case ByteCodeOp::SetImmediate32:
+                  case ByteCodeOp::SetImmediate64:
+                  //case ByteCodeOp::GetIncParam64:
+                      break;
+
+                  default:
                       return;
+                  }
 
                   ByteCodeOptTreeNode* node = &context->tree[parseCxt.curNode];
                   if (!node->parent.size())
@@ -204,6 +273,7 @@ bool ByteCodeOptimizer::optimizePassDeadStoreDup(ByteCodeOptContext* context)
 
                   if (canRemove)
                   {
+                      //printf("X");
                       setNop(context, ip);
                   } });
 
