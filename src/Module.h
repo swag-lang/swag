@@ -164,7 +164,6 @@ struct Module
 
     void logStage(const char* msg);
 
-    bool canEmitFunction(ByteCode* bc);
     void removeDuplicatedFunctions();
     void filterOutputFunctions();
 
@@ -246,6 +245,7 @@ struct Module
     uint32_t    hasBeenBuilt         = BUILDRES_NONE;
     uint32_t    modulesSliceOffset   = UINT32_MAX;
     uint32_t    typesSliceOffset     = UINT32_MAX;
+    uint32_t    numKickedFunc        = 0;
     int         optimPass            = 0;
     atomic<int> numTestErrors        = 0;
     atomic<int> numTestWarnings      = 0;

@@ -1038,73 +1038,60 @@ void Module::logStage(const char* msg)
     g_Log.verbose(Fmt("[%s] -- %s", name.c_str(), msg));
 }
 
-bool Module::canEmitFunction(ByteCode* bc)
-{
-    if (bc->isDuplicated)
-        return false;
-    if (!bc->node)
-        return true;
-
-    auto node = CastAst<AstFuncDecl>(bc->node, AstNodeKind::FuncDecl);
-
-    // Do we need to generate that function ?
-    if (node->attributeFlags & ATTRIBUTE_COMPILER)
-        return false;
-    if ((node->attributeFlags & ATTRIBUTE_TEST_FUNC) && !g_CommandLine->test)
-        return false;
-    if (node->attributeFlags & ATTRIBUTE_FOREIGN)
-        return false;
-    if (!node->content && !node->isSpecialFunctionGenerated())
-        return false;
-
-    if (node->sourceFile->isBootstrapFile || node->sourceFile->isRuntimeFile)
-        return true;
-    if (node->attributeFlags & (ATTRIBUTE_PUBLIC | ATTRIBUTE_MAIN_FUNC | ATTRIBUTE_INIT_FUNC | ATTRIBUTE_DROP_FUNC | ATTRIBUTE_PREMAIN_FUNC | ATTRIBUTE_TEST_FUNC))
-        return true;
-    if (node->specFlags & AST_SPEC_FUNCDECL_PATCH)
-        return true;
-
-    if (!bc->isUsed)
-        return false;
-
-    return true;
-}
-
 void Module::removeDuplicatedFunctions()
 {
     unordered_map<uint32_t, ByteCode*> mapCrcBc;
 
-    for (auto one : byteCodeFuncToGen)
+    auto bufGen = byteCodeFuncToGen;
+    byteCodeFuncToGen.clear();
+
+    for (auto one : bufGen)
     {
-        if (!canEmitFunction(one))
+        if (one->isDuplicated)
             continue;
 
-        if (!one->crc || !one->typeInfoFunc)
+        if (!one->crc || !one->typeInfoFunc || one->forceEmit)
+        {
+            byteCodeFuncToGen.push_back(one);
             continue;
-        if (one->forceEmit)
-            continue;
+        }
 
         if (one->node)
         {
             auto node = CastAst<AstFuncDecl>(one->node, AstNodeKind::FuncDecl);
             if (node->sourceFile->isBootstrapFile || node->sourceFile->isRuntimeFile)
+            {
+                byteCodeFuncToGen.push_back(one);
                 continue;
+            }
             if (node->attributeFlags & (ATTRIBUTE_PUBLIC | ATTRIBUTE_CALLBACK | ATTRIBUTE_MAIN_FUNC | ATTRIBUTE_INIT_FUNC | ATTRIBUTE_DROP_FUNC | ATTRIBUTE_PREMAIN_FUNC | ATTRIBUTE_TEST_FUNC))
+            {
+                byteCodeFuncToGen.push_back(one);
                 continue;
+            }
             if (node->specFlags & AST_SPEC_FUNCDECL_PATCH)
+            {
+                byteCodeFuncToGen.push_back(one);
                 continue;
+            }
         }
 
         auto it = mapCrcBc.find(one->crc);
         if (it != mapCrcBc.end())
         {
             if (one->numInstructions != it->second->numInstructions)
+            {
+                byteCodeFuncToGen.push_back(one);
                 continue;
+            }
 
             auto type0 = one->typeInfoFunc;
             auto type1 = it->second->typeInfoFunc;
             if (type0->parameters.size() != type1->parameters.size())
+            {
+                byteCodeFuncToGen.push_back(one);
                 continue;
+            }
 
             bool abiIsCompatible = true;
             for (int i = 0; i < type0->parameters.size(); i++)
@@ -1120,25 +1107,27 @@ void Module::removeDuplicatedFunctions()
 
             if (abiIsCompatible)
             {
+                numKickedFunc++;
                 one->setCallName(it->second->getCallName());
                 one->isDuplicated = true;
+                continue;
             }
         }
-        else
-        {
-            mapCrcBc[one->crc] = one;
-        }
+
+        mapCrcBc[one->crc] = one;
+        byteCodeFuncToGen.push_back(one);
     }
 }
 
 void Module::filterOutputFunctions()
 {
-    for (auto f : byteCodeFunc)
+    byteCodeFuncToGen.reserve((int) byteCodeFunc.size());
+    for (auto bc : byteCodeFunc)
     {
-        if (!canEmitFunction(f))
+        if (!bc->canEmit())
             continue;
-        byteCodeFuncToGen.push_back(f);
+        byteCodeFuncToGen.push_back(bc);
     }
 
-    // removeDuplicatedFunctions(buildParameters);
+    //removeDuplicatedFunctions();
 }

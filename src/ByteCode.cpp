@@ -243,3 +243,33 @@ bool ByteCode::isByteCodeLambda(void* ptr)
     uint64_t u = (uint64_t) ptr;
     return u & SWAG_LAMBDA_BC_MARKER;
 }
+
+bool ByteCode::canEmit()
+{
+    if (!node)
+        return true;
+
+    auto funcNode = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
+
+    // Do we need to generate that function ?
+    if (funcNode->attributeFlags & ATTRIBUTE_COMPILER)
+        return false;
+    if ((funcNode->attributeFlags & ATTRIBUTE_TEST_FUNC) && !g_CommandLine->test)
+        return false;
+    if (funcNode->attributeFlags & ATTRIBUTE_FOREIGN)
+        return false;
+    if (!funcNode->content && !funcNode->isSpecialFunctionGenerated())
+        return false;
+
+    if (funcNode->sourceFile->isBootstrapFile || funcNode->sourceFile->isRuntimeFile)
+        return true;
+    if (funcNode->attributeFlags & (ATTRIBUTE_PUBLIC | ATTRIBUTE_MAIN_FUNC | ATTRIBUTE_INIT_FUNC | ATTRIBUTE_DROP_FUNC | ATTRIBUTE_PREMAIN_FUNC | ATTRIBUTE_TEST_FUNC))
+        return true;
+    if (funcNode->specFlags & AST_SPEC_FUNCDECL_PATCH)
+        return true;
+
+    if (!isUsed)
+        return false;
+
+    return true;
+}

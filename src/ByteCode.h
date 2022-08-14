@@ -166,6 +166,7 @@ struct ByteCode
     void              setCallName(const Utf8& n);
     Utf8              getCallName();
     TypeInfoFuncAttr* getCallType();
+    bool              canEmit();
     static void       getLocation(ByteCode* bc, ByteCodeInstruction* ip, SourceFile** file, SourceLocation** location, bool force = false);
 
     VectorNative<uint32_t>            availableRegistersRC;
