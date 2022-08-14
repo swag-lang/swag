@@ -46,7 +46,8 @@ bool TypeTableJob::computeStruct()
             }
             else
             {
-                realType->opInit->isUsed = true;
+                realType->opInit->isUsed            = true;
+                realType->opInit->forceEmit = true;
                 storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opInit), realType->opInit->getCallName(), DataSegment::RelocType::Local);
             }
         }
@@ -61,7 +62,8 @@ bool TypeTableJob::computeStruct()
             }
             else
             {
-                realType->opDrop->isUsed = true;
+                realType->opDrop->isUsed            = true;
+                realType->opDrop->forceEmit = true;
                 storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opDrop), realType->opDrop->getCallName(), DataSegment::RelocType::Local);
             }
         }
@@ -76,7 +78,8 @@ bool TypeTableJob::computeStruct()
             }
             else
             {
-                realType->opPostCopy->isUsed = true;
+                realType->opPostCopy->isUsed            = true;
+                realType->opPostCopy->forceEmit = true;
                 storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opPostCopy), realType->opPostCopy->getCallName(), DataSegment::RelocType::Local);
             }
         }
@@ -91,7 +94,8 @@ bool TypeTableJob::computeStruct()
             }
             else
             {
-                realType->opPostMove->isUsed = true;
+                realType->opPostMove->isUsed            = true;
+                realType->opPostMove->forceEmit = true;
                 storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opPostMove), realType->opPostMove->getCallName(), DataSegment::RelocType::Local);
             }
         }

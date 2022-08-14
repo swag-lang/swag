@@ -236,6 +236,8 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
                 child->extension->bc->node       = child;
                 child->extension->bc->sourceFile = child->sourceFile;
             }
+
+            child->extension->bc->forceEmit = true;
         }
 
         // Match function signature

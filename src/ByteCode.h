@@ -163,7 +163,8 @@ struct ByteCode
     void              printInstructionReg(const char* name, const Register& reg, bool regW, bool regR, bool regImm);
     void              printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* curIp = nullptr);
     void              print(ByteCodeInstruction* curIp = nullptr);
-    const Utf8&       getCallName();
+    void              setCallName(const Utf8& n);
+    Utf8              getCallName();
     TypeInfoFuncAttr* getCallType();
     static void       getLocation(ByteCode* bc, ByteCodeInstruction* ip, SourceFile** file, SourceLocation** location, bool force = false);
 
@@ -188,13 +189,16 @@ struct ByteCode
     uint32_t maxSPVaargs           = 0;
     uint32_t maxReservedRegisterRC = 0;
     uint32_t numJumps              = 0;
+    uint32_t crc                   = 0;
     uint32_t registerGetContext    = UINT32_MAX;
 
     bool isCompilerGenerated = false;
     bool isAddedToList       = false;
     bool isDirtyRegistersRC  = false;
-    bool hasFunctionCalls    = false;
     bool isUsed              = false;
+    bool isDuplicated        = false;
+    bool forceEmit           = false;
+    bool hasFunctionCalls    = false;
 
     atomic<bool> isEmpty;
 };

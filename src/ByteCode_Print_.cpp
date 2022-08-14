@@ -323,7 +323,7 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* cu
     {
         auto bc = (ByteCode*) ip->a.pointer;
         SWAG_ASSERT(bc);
-        g_Log.print(bc->node ? bc->node->token.text : bc->name);
+        g_Log.print(bc->name);
         if (bc->node && bc->node->typeInfo)
         {
             g_Log.print(" ");

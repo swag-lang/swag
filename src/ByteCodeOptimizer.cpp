@@ -63,6 +63,7 @@ void ByteCodeOptimizer::genTree(ByteCodeOptContext* context, uint32_t nodeIdx)
     }
 
     computeCrcNode(context, node);
+    context->bc->crc = Crc32::compute((const uint8_t*) &node->crc, sizeof(node->crc), context->bc->crc);
 
 #ifdef SWAG_DEV_MODE
     node->end->treeNode = nodeIdx + 1;
@@ -137,7 +138,9 @@ void ByteCodeOptimizer::genTree(ByteCodeOptContext* context)
     context->tree.clear();
     context->mapInstNode.clear();
 
-    auto bc   = context->bc;
+    auto bc = context->bc;
+    bc->crc = 0;
+
     bool here = false;
     auto node = newTreeNode(context, bc->out, here);
     genTree(context, node);

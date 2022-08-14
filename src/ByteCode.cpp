@@ -50,7 +50,13 @@ void ByteCode::getLocation(ByteCode* bc, ByteCodeInstruction* ip, SourceFile** f
     *location = ip->location;
 }
 
-const Utf8& ByteCode::getCallName()
+void ByteCode::setCallName(const Utf8& n)
+{
+    ScopedLock lk(mutexCallName);
+    callName = n;
+}
+
+Utf8 ByteCode::getCallName()
 {
     ScopedLock lk(mutexCallName);
     if (!callName.empty())
@@ -69,7 +75,10 @@ const Utf8& ByteCode::getCallName()
     }
 
     if (name.empty())
+    {
+        ScopedLock lock(node->mutex);
         callName = node->getScopedName();
+    }
     else
         callName = name;
     callName += Fmt("_%lX", (uint64_t) this);
