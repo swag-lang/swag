@@ -221,13 +221,13 @@ void ByteCodeOptimizer::registerMakeAddr(ByteCodeOptContext* context, ByteCodeIn
 
     default:
     {
-        if (ByteCodeOptimizer::hasWriteRegInA(ip))
+        if (ByteCode::hasWriteRegInA(ip))
             context->mapRegReg.remove(ip->a.u32);
-        if (ByteCodeOptimizer::hasWriteRegInB(ip))
+        if (ByteCode::hasWriteRegInB(ip))
             context->mapRegReg.remove(ip->b.u32);
-        if (ByteCodeOptimizer::hasWriteRegInC(ip))
+        if (ByteCode::hasWriteRegInC(ip))
             context->mapRegReg.remove(ip->c.u32);
-        if (ByteCodeOptimizer::hasWriteRegInD(ip))
+        if (ByteCode::hasWriteRegInD(ip))
             context->mapRegReg.remove(ip->d.u32);
         break;
     }

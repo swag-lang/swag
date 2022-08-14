@@ -126,10 +126,10 @@ static bool optimizePassDeadStoreDupScan(ByteCodeOptContext* context, uint32_t c
 {
     node->mark = context->mark;
 
-    bool hasA = ByteCodeOptimizer::hasWriteRegInA(ip);
-    bool hasB = ByteCodeOptimizer::hasWriteRegInB(ip);
-    bool hasC = ByteCodeOptimizer::hasWriteRegInC(ip);
-    bool hasD = ByteCodeOptimizer::hasWriteRegInD(ip);
+    bool hasA = ByteCode::hasWriteRegInA(ip);
+    bool hasB = ByteCode::hasWriteRegInB(ip);
+    bool hasC = ByteCode::hasWriteRegInC(ip);
+    bool hasD = ByteCode::hasWriteRegInD(ip);
 
     if (ipScan >= node->start)
     {
@@ -198,13 +198,13 @@ static bool optimizePassDeadStoreDupScan(ByteCodeOptContext* context, uint32_t c
                 }
             }
 
-            if (hasA && ByteCodeOptimizer::hasWriteRefToReg(ipScan, ip->a.u32))
+            if (hasA && ByteCode::hasWriteRefToReg(ipScan, ip->a.u32))
                 return false;
-            if (hasB && ByteCodeOptimizer::hasWriteRefToReg(ipScan, ip->b.u32))
+            if (hasB && ByteCode::hasWriteRefToReg(ipScan, ip->b.u32))
                 return false;
-            if (hasC && ByteCodeOptimizer::hasWriteRefToReg(ipScan, ip->c.u32))
+            if (hasC && ByteCode::hasWriteRefToReg(ipScan, ip->c.u32))
                 return false;
-            if (hasD && ByteCodeOptimizer::hasWriteRefToReg(ipScan, ip->d.u32))
+            if (hasD && ByteCode::hasWriteRefToReg(ipScan, ip->d.u32))
                 return false;
 
             if (ipScan <= node->start)

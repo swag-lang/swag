@@ -29,13 +29,13 @@ static void computeCrcNode(ByteCodeOptTreeNode* node)
     node->crc = Crc32::compute((const uint8_t*) &node->end->op, sizeof(node->end->op), node->crc);
     node->crc = Crc32::compute((const uint8_t*) &node->end->flags, sizeof(node->end->flags), node->crc);
 
-    if (ByteCodeOptimizer::hasSomethingInA(node->end))
+    if (ByteCode::hasSomethingInA(node->end))
         node->crc = Crc32::compute((const uint8_t*) &node->end->a.u64, sizeof(node->end->a.u64), node->crc);
-    if (ByteCodeOptimizer::hasSomethingInB(node->end))
+    if (ByteCode::hasSomethingInB(node->end))
         node->crc = Crc32::compute((const uint8_t*) &node->end->b.u64, sizeof(node->end->b.u64), node->crc);
-    if (ByteCodeOptimizer::hasSomethingInC(node->end))
+    if (ByteCode::hasSomethingInC(node->end))
         node->crc = Crc32::compute((const uint8_t*) &node->end->c.u64, sizeof(node->end->c.u64), node->crc);
-    if (ByteCodeOptimizer::hasSomethingInD(node->end))
+    if (ByteCode::hasSomethingInD(node->end))
         node->crc = Crc32::compute((const uint8_t*) &node->end->d.u64, sizeof(node->end->d.u64), node->crc);
 }
 

@@ -25,13 +25,13 @@ bool ByteCodeOptimizer::optimizePassDupBlocks(ByteCodeOptContext* context)
                         same = false;
                     else if (ip0->flags != ip1->flags)
                         same = false;
-                    else if (ByteCodeOptimizer::hasSomethingInA(ip0) && ip0->a.u64 != ip1->a.u64)
+                    else if (ByteCode::hasSomethingInA(ip0) && ip0->a.u64 != ip1->a.u64)
                         same = false;
-                    else if (ByteCodeOptimizer::hasSomethingInB(ip0) && ip0->b.u64 != ip1->b.u64)
+                    else if (ByteCode::hasSomethingInB(ip0) && ip0->b.u64 != ip1->b.u64)
                         same = false;
-                    else if (ByteCodeOptimizer::hasSomethingInC(ip0) && ip0->c.u64 != ip1->c.u64)
+                    else if (ByteCode::hasSomethingInC(ip0) && ip0->c.u64 != ip1->c.u64)
                         same = false;
-                    else if (ByteCodeOptimizer::hasSomethingInD(ip0) && ip0->d.u64 != ip1->d.u64)
+                    else if (ByteCode::hasSomethingInD(ip0) && ip0->d.u64 != ip1->d.u64)
                         same = false;
                     ip0++;
                     ip1++;

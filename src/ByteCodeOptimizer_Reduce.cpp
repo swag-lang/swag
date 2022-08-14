@@ -411,7 +411,7 @@ void ByteCodeOptimizer::reduceSwap(ByteCodeOptContext* context, ByteCodeInstruct
     if (ip->op == ByteCodeOp::MakeStackPointer &&
         ip[1].op != ByteCodeOp::IncPointer64 &&
         ip[1].op != ip->op &&
-        !hasRefToReg(ip + 1, ip->a.u32))
+        !ByteCode::hasRefToReg(ip + 1, ip->a.u32))
     {
         swap(ip[0], ip[1]);
         context->passHasDoneSomething = true;
@@ -420,8 +420,8 @@ void ByteCodeOptimizer::reduceSwap(ByteCodeOptContext* context, ByteCodeInstruct
     if (ip->op == ByteCodeOp::IncPointer64 &&
         ip[1].op != ip->op &&
         ip->flags & BCI_IMM_B &&
-        !hasRefToReg(ip + 1, ip->a.u32) &&
-        !hasRefToReg(ip + 1, ip->c.u32))
+        !ByteCode::hasRefToReg(ip + 1, ip->a.u32) &&
+        !ByteCode::hasRefToReg(ip + 1, ip->c.u32))
     {
         swap(ip[0], ip[1]);
         context->passHasDoneSomething = true;
