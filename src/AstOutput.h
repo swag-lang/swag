@@ -29,9 +29,9 @@ struct AstOutput
     static bool outputFuncSignature(OutputContext& context, Concat& concat, AstNode* node, AstNode* parameters, AstNode* selectIf);
     static bool outputGenericParameters(OutputContext& context, Concat& concat, AstNode* node);
     static bool outputAttributesUsage(OutputContext& context, Concat& concat, TypeInfoFuncAttr* typeFunc);
+    static bool outputAttributes(OutputContext& context, Concat& concat, AstNode* node, TypeInfo* typeInfo, AttributeList& attributes);
     static bool outputAttributes(OutputContext& context, Concat& concat, AstNode* node, TypeInfo* typeInfo);
     static bool outputAttributesGlobalUsing(OutputContext& context, Concat& concat, AstNode* node);
-    static bool outputAttributes(OutputContext& context, Concat& concat, AttributeList& attributes);
     static bool outputLiteral(OutputContext& context, Concat& concat, AstNode* node, TypeInfo* typeInfo, const ComputedValue& value);
     static bool outputVar(OutputContext& context, Concat& concat, AstVarDecl* node);
     static bool outputStruct(OutputContext& context, Concat& concat, AstStruct* node);

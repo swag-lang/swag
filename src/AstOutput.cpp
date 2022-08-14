@@ -362,19 +362,34 @@ bool AstOutput::outputAttributesUsage(OutputContext& context, Concat& concat, Ty
     return true;
 }
 
-bool AstOutput::outputAttributes(OutputContext& context, Concat& concat, AttributeList& attributes)
+bool AstOutput::outputAttributes(OutputContext& context, Concat& concat, AstNode* node, TypeInfo* typeInfo, AttributeList& attributes)
 {
     auto attr = &attributes;
     if (attr && !attr->empty())
     {
-        concat.addIndent(context.indent);
-        CONCAT_FIXED_STR(concat, "#[");
-
+        bool first = true;
         for (int j = 0; j < attr->allAttributes.size(); j++)
         {
             auto& one = attr->allAttributes[j];
-            if (j)
+
+            // Be sure usage is valid
+            if (typeInfo->kind == TypeInfoKind::Struct && one.typeFunc && !(one.typeFunc->attributeUsage & (AttributeUsage::All | AttributeUsage::Struct)))
+                continue;
+            if (typeInfo->kind == TypeInfoKind::Interface && one.typeFunc && !(one.typeFunc->attributeUsage & (AttributeUsage::All | AttributeUsage::Struct)))
+                continue;
+            if (typeInfo->kind == TypeInfoKind::FuncAttr && one.typeFunc && !(one.typeFunc->attributeUsage & (AttributeUsage::All | AttributeUsage::Function)))
+                continue;
+            if (typeInfo->kind == TypeInfoKind::Enum && one.typeFunc && !(one.typeFunc->attributeUsage & (AttributeUsage::All | AttributeUsage::Enum)))
+                continue;
+
+            if (!first)
                 CONCAT_FIXED_STR(concat, ", ");
+            else
+            {
+                first = false;
+                concat.addIndent(context.indent);
+                CONCAT_FIXED_STR(concat, "#[");
+            }
 
             // No need to write "Swag.", less to write, less to read, as export files have
             // a 'using Swag' on top.
@@ -399,8 +414,11 @@ bool AstOutput::outputAttributes(OutputContext& context, Concat& concat, Attribu
             }
         }
 
-        CONCAT_FIXED_STR(concat, "]");
-        concat.addEol();
+        if (!first)
+        {
+            CONCAT_FIXED_STR(concat, "]");
+            concat.addEol();
+        }
     }
 
     return true;
@@ -478,7 +496,7 @@ bool AstOutput::outputAttributes(OutputContext& context, Concat& concat, AstNode
     }
     }
 
-    SWAG_CHECK(outputAttributes(context, concat, *attr));
+    SWAG_CHECK(outputAttributes(context, concat, node, typeInfo, *attr));
     return true;
 }
 
