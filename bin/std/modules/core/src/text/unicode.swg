@@ -19,37 +19,43 @@ public
 {
     func isDigit(c: rune)->bool
     {
-        if isLatin1(c) return Latin1.isDigit(cast(u8) c)
+        if isLatin1(c)
+            return Latin1.isDigit(cast(u8) c)
         return isInTable(TableDigit, c)
     }
 
     func isNumber(c: rune)->bool
     {
-        if isLatin1(c) return Latin1.isNumber(cast(u8) c)
+        if isLatin1(c)
+            return Latin1.isNumber(cast(u8) c)
         return isInTable(TableNumber, c)
     }
 
     func isControl(c: rune)->bool
     {
-        if isLatin1(c) return Latin1.isControl(cast(u8) c)
+        if isLatin1(c)
+            return Latin1.isControl(cast(u8) c)
         return false
     }
 
     func isSpace(c: rune)->bool
     {
-        if isLatin1(c) return Latin1.isSpace(cast(u8) c)
+        if isLatin1(c)
+            return Latin1.isSpace(cast(u8) c)
         return isInTable(TableWhiteSpace, c)
     }
 
     func isLetter(c: rune)->bool
     {
-        if isLatin1(c) return Latin1.isLetter(cast(u8) c)
+        if isLatin1(c)
+            return Latin1.isLetter(cast(u8) c)
         return isInTable(TableLetter, c)
     }
 
     func isSymbol(c: rune)->bool
     {
-        if isLatin1(c) return Latin1.isSymbol(bitcast(u8) c)
+        if isLatin1(c)
+            return Latin1.isSymbol(bitcast(u8) c)
         return isInTable(TableSymbol, c)
     }
 
@@ -60,59 +66,72 @@ public
 
     func isLetterOrDigit(c: rune)->bool
     {
-        if isLatin1(c) return Latin1.isLetterOrDigit(cast(u8) c)
+        if isLatin1(c)
+            return Latin1.isLetterOrDigit(cast(u8) c)
         return isDigit(c) or isLetter(c)
     }
 
     func isTitle(c: rune)->bool
     {
-        if isLatin1(c) return false
+        if isLatin1(c)
+            return false
         return isInTable(TableTitle, c)
     }
 
     func isLower(c: rune)->bool
     {
-        if isLatin1(c) return Latin1.isLower(cast(u8) c)
+        if isLatin1(c)
+            return Latin1.isLower(cast(u8) c)
         return isInTable(TableLower, c)
     }
 
     func isUpper(c: rune)->bool
     {
-        if isLatin1(c) return Latin1.isUpper(cast(u8) c)
+        if isLatin1(c)
+            return Latin1.isUpper(cast(u8) c)
         return isInTable(TableUpper, c)
     }
 
     func toLower(c: rune)->rune
     {
-        if isLatin1(c) return acast Latin1.toLower(cast(u8) c)
+        if isLatin1(c)
+            return acast Latin1.toLower(cast(u8) c)
 
         res := caseChangeTo(WantedCase.LowerCase, c, TableSpecialCaseRanges)
-        if res.foundMapping return res.mappedRune
+        if res.foundMapping
+            return res.mappedRune
         res = caseChangeTo(WantedCase.LowerCase, c, TableCaseRanges)
-        if !res.foundMapping return c
+        if !res.foundMapping
+            return c
         return res.mappedRune
     }
 
     func toUpper(c: rune)->rune
     {
-        if isLatin1(c) return acast Latin1.toUpper(cast(u8) c)
+        if isLatin1(c)
+            return acast Latin1.toUpper(cast(u8) c)
 
         res := caseChangeTo(WantedCase.UpperCase, c, TableSpecialCaseRanges)
-        if res.foundMapping return res.mappedRune
+        if res.foundMapping
+            return res.mappedRune
         res = caseChangeTo(WantedCase.UpperCase, c, TableCaseRanges)
-        if !res.foundMapping return c
+        if !res.foundMapping
+            return c
 
         return res.mappedRune
     }
 
     func toTitle(c: rune)->rune
     {
-        if isLatin1(c) return acast Latin1.toUpper(cast(u8) c)
+        if isLatin1(c)
+            return acast Latin1.toUpper(cast(u8) c)
 
         res := caseChangeTo(WantedCase.TitleCase, c, TableSpecialCaseRanges)
-        if res.foundMapping return res.mappedRune
+        if res.foundMapping
+            return res.mappedRune
         res = caseChangeTo(WantedCase.TitleCase, c, TableCaseRanges)
-        if !res.foundMapping return c
+        if !res.foundMapping
+            return c
 
         return res.mappedRune
     }
@@ -250,8 +269,10 @@ func isInTable(ranges: const [..] Range, r: rune)->bool
     {
         visit &range: ranges
         {
-            if r < range.lo  return false
-            if r <= range.hi return range.stride == 1 or (r - range.lo) % range.stride == 0
+            if r < range.lo
+                return false
+            if r <= range.hi
+                return range.stride == 1 or (r - range.lo) % range.stride == 0
         }
 
         return false
@@ -265,7 +286,10 @@ func isInTable(ranges: const [..] Range, r: rune)->bool
         m := lo + (hi-lo)/2
         range := &ranges[m]
         if range.lo <= r and r <= range.hi
+        {
             return range.stride == 1 or (r-range.lo) % range.stride == 0
+        }
+
         if r < range.lo
             hi = m
         else

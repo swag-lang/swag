@@ -208,8 +208,29 @@ void ByteCodeOptimizer::registerMakeAddr(ByteCodeOptContext* context, ByteCodeIn
         if (ip[1].op == ByteCodeOp::IncPointer64 && ip[1].a.u32 == ip[1].c.u32 && ip[0].a.u32 == ip[1].a.u32)
             break;
 
+        // If parameter is a simple native, then this is a copy, so this is safe
+        if (context->bc->typeInfoFunc)
+        {
+            auto param = context->bc->typeInfoFunc->registerIdxToType(ip->c.u32);
+            if(param->isNativeIntegerOrRune() || param->isNativeFloat() || param->isNative(NativeTypeKind::Bool))
+                break;
+        }
+
         context->mapRegReg.set(ip->a.u32, UINT32_MAX); // Disable optim whatever
         break;
+
+    default:
+    {
+        if (ByteCodeOptimizer::hasWriteRegInA(ip))
+            context->mapRegReg.remove(ip->a.u32);
+        if (ByteCodeOptimizer::hasWriteRegInB(ip))
+            context->mapRegReg.remove(ip->b.u32);
+        if (ByteCodeOptimizer::hasWriteRegInC(ip))
+            context->mapRegReg.remove(ip->c.u32);
+        if (ByteCodeOptimizer::hasWriteRegInD(ip))
+            context->mapRegReg.remove(ip->d.u32);
+        break;
+    }
     }
 }
 
