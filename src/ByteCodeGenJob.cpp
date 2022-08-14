@@ -423,7 +423,7 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags, Byt
             else
             {
                 extension->bc->name = node->ownerScope->getFullName();
-                extension->bc->name += "_";
+                extension->bc->name += ".";
                 extension->bc->name += node->token.text;
             }
 
