@@ -27,11 +27,16 @@ uint32_t ByteCodeOptimizer::newTreeNode(ByteCodeOptContext* context, ByteCodeIns
 static void computeCrcNode(ByteCodeOptTreeNode* node)
 {
     node->crc = Crc32::compute((const uint8_t*) &node->end->op, sizeof(node->end->op), node->crc);
-    node->crc = Crc32::compute((const uint8_t*) &node->end->a.u64, sizeof(node->end->a.u64), node->crc);
-    node->crc = Crc32::compute((const uint8_t*) &node->end->b.u64, sizeof(node->end->b.u64), node->crc);
-    node->crc = Crc32::compute((const uint8_t*) &node->end->c.u64, sizeof(node->end->c.u64), node->crc);
-    node->crc = Crc32::compute((const uint8_t*) &node->end->d.u64, sizeof(node->end->d.u64), node->crc);
     node->crc = Crc32::compute((const uint8_t*) &node->end->flags, sizeof(node->end->flags), node->crc);
+
+    if (ByteCodeOptimizer::hasSomethingInA(node->end))
+        node->crc = Crc32::compute((const uint8_t*) &node->end->a.u64, sizeof(node->end->a.u64), node->crc);
+    if (ByteCodeOptimizer::hasSomethingInB(node->end))
+        node->crc = Crc32::compute((const uint8_t*) &node->end->b.u64, sizeof(node->end->b.u64), node->crc);
+    if (ByteCodeOptimizer::hasSomethingInC(node->end))
+        node->crc = Crc32::compute((const uint8_t*) &node->end->c.u64, sizeof(node->end->c.u64), node->crc);
+    if (ByteCodeOptimizer::hasSomethingInD(node->end))
+        node->crc = Crc32::compute((const uint8_t*) &node->end->d.u64, sizeof(node->end->d.u64), node->crc);
 }
 
 void ByteCodeOptimizer::genTree(ByteCodeOptContext* context, uint32_t nodeIdx)
@@ -193,8 +198,7 @@ void ByteCodeOptimizer::setNop(ByteCodeOptContext* context, ByteCodeInstruction*
 {
     if (ip->op == ByteCodeOp::Nop)
         return;
-    if (ip->flags & BCI_UNPURE &&
-        ip->op != ByteCodeOp::ClearRA)
+    if (ip->flags & BCI_UNPURE && ip->op != ByteCodeOp::ClearRA)
         return;
     auto flags = g_ByteCodeOpDesc[(int) ip->op].flags;
     if (flags & OPFLAG_UNPURE)
