@@ -3,6 +3,7 @@
 #include "Workspace.h"
 #include "Version.h"
 #include "Os.h"
+#include "Module.h"
 
 Stats g_Stats;
 
@@ -88,6 +89,19 @@ void Stats::print()
         {
             g_Log.print("\n");
             g_Log.messageHeaderDot("mem x64 dbg", Fmt("%s", Utf8::toNiceSize(sizeBackendDbg.load()).c_str()));
+        }
+    }
+
+    if (g_CommandLine->statsWhat == StatsWhat::All || g_CommandLine->statsWhat == StatsWhat::Module)
+    {
+        for (auto m : g_Workspace->modules)
+        {
+            if (m->isErrorModule)
+                continue;
+
+            g_Log.print("\n");
+            g_Log.messageHeaderDot("module", Fmt("%s", m->name.c_str()));
+            g_Log.messageHeaderDot("num func", Fmt("%u", m->byteCodeFunc.size()));
         }
     }
 

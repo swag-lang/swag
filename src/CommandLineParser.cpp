@@ -8,7 +8,7 @@
 void CommandLineParser::setup(CommandLine* cmdLine)
 {
     // clang-format off
-    addArg("all",            "--stats",                nullptr,    CommandLineType::EnumInt,       &cmdLine->statsWhat, "none|all|count|mem|time", "display statistics at the end");
+    addArg("all",            "--stats",                nullptr,    CommandLineType::EnumInt,       &cmdLine->statsWhat, "none|all|count|mem|time|module", "display statistics at the end");
     addArg("all",            "--silent",               "-s",       CommandLineType::Bool,          &cmdLine->silent, nullptr, "do not log messages");
                                                                                                    
     addArg("all",            "--verbose-cmdline",      nullptr,    CommandLineType::Bool,          &cmdLine->verboseCmdLine, nullptr, "log swag command line");

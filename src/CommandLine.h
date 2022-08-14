@@ -18,6 +18,7 @@ enum class StatsWhat
     Count,
     Memory,
     Time,
+    Module,
 };
 
 struct CommandLine
