@@ -232,11 +232,6 @@ static bool optimizePassDeadStoreDupScan(ByteCodeOptContext* context, uint32_t c
 
 bool ByteCodeOptimizer::optimizePassDeadStoreDup(ByteCodeOptContext* context)
 {
-    // if (context->bc->name != "Core.Compress.__privns_99.HuffmanTable_init")
-    //     return true;
-    // ByteCodeOptimizer::removeNops(context);
-    // context->bc->print();
-
     context->mark = 0;
     parseTree(context, 0, context->tree[0].start, BCOTN_USER1, [](ByteCodeOptContext* context, ByteCodeOptTreeParseContext& parseCxt)
               {
@@ -255,7 +250,7 @@ bool ByteCodeOptimizer::optimizePassDeadStoreDup(ByteCodeOptContext* context)
                   case ByteCodeOp::ClearRA:
                   case ByteCodeOp::SetImmediate32:
                   case ByteCodeOp::SetImmediate64:
-                  //case ByteCodeOp::GetIncParam64:
+                  case ByteCodeOp::GetIncParam64:
                       break;
 
                   default:
@@ -273,7 +268,6 @@ bool ByteCodeOptimizer::optimizePassDeadStoreDup(ByteCodeOptContext* context)
 
                   if (canRemove)
                   {
-                      //printf("X");
                       setNop(context, ip);
                   } });
 
