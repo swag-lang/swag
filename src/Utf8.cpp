@@ -2,6 +2,7 @@
 #include "Utf8.h"
 #include "CommandLine.h"
 #include "Mutex.h"
+#include "Hash.h"
 
 Utf8::Utf8()
 {
@@ -602,7 +603,7 @@ void Utf8::replace(const char* src, const char* dst)
 
 uint32_t Utf8::hash() const
 {
-    return hash(buffer, count);
+    return Crc32::compute((const uint8_t *) buffer, count);
 }
 
 const char* Utf8::decodeUtf8(const char* pz, uint32_t& wc, unsigned& offset)
@@ -669,34 +670,6 @@ const char* Utf8::decodeUtf8(const char* pz, uint32_t& wc, unsigned& offset)
     offset = 1;
     wc     = c;
     return pz;
-}
-
-uint32_t Utf8::hash(const char* buffer, int count)
-{
-    uint32_t hash = 0;
-
-    auto s = buffer;
-    while (count > 4)
-    {
-        hash += *(uint32_t*) s;
-        hash += (hash << 10);
-        hash ^= (hash >> 6);
-        s += 4;
-        count -= 4;
-    }
-
-    while (count--)
-    {
-        hash += *s++;
-        hash += (hash << 10);
-        hash ^= (hash >> 6);
-    }
-
-    hash += (hash << 3);
-    hash ^= (hash >> 11);
-    hash += (hash << 15);
-
-    return hash;
 }
 
 Utf8 Fmt(const char* format, ...)

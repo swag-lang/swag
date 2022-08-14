@@ -38,6 +38,13 @@ enum class DependencyFetchKind
     Invalid,
 };
 
+struct SourceLocationCache
+{
+    SwagCompilerSourceLocation loc;
+    DataSegment*               storageSegment;
+    uint32_t                   storageOffset;
+};
+
 struct ModuleDependency
 {
     Token               tokenLocation;
@@ -190,32 +197,34 @@ struct Module
     DependentJobs    dependentJobs;
     SwagProcessInfos processInfos = {{0}};
 
-    VectorNative<SourceFile*>       files;
-    VectorNative<Module*>           errorModules;
-    VectorNative<ByteCode*>         byteCodeCompiler[(int) CompilerMsgKind::Max];
-    Mutex                           byteCodeCompilerMutex[(int) CompilerMsgKind::Max];
-    Mutex                           mutexCompilerMessages;
-    VectorNative<ByteCode*>         byteCodeFunc;
-    VectorNative<ByteCode*>         byteCodeTestFunc;
-    VectorNative<ByteCode*>         byteCodeInitFunc;
-    VectorNative<ByteCode*>         byteCodeDropFunc;
-    VectorNative<ByteCode*>         byteCodePreMainFunc;
-    VectorNative<ByteCode*>         byteCodeRunFunc;
-    VectorNative<ByteCode*>         byteCodePrintBC;
-    VectorNative<ModuleDependency*> moduleDependencies;
-    VectorNative<AstNode*>          globalVarsBss;
-    VectorNative<AstNode*>          globalVarsMutable;
-    VectorNative<AstNode*>          globalVarsConstant;
-    vector<CompilerMessage>         compilerMessages[2];
-    set<SourceFile*>                exportSourceFiles;
-    map<Utf8, ByteCode*>            mapRuntimeFcts;
-    map<Utf8, ForToSolve>           implForToSolve;
-    JobGroup                        syntaxGroup;
-    VectorNative<FILE*>             handleGeneratedFile;
-    VectorNative<bool>              appendGeneratedFile;
-    VectorNative<uint32_t>          countLinesGeneratedFile;
+    VectorNative<SourceFile*>                        files;
+    VectorNative<Module*>                            errorModules;
+    VectorNative<ByteCode*>                          byteCodeCompiler[(int) CompilerMsgKind::Max];
+    Mutex                                            byteCodeCompilerMutex[(int) CompilerMsgKind::Max];
+    Mutex                                            mutexCompilerMessages;
+    VectorNative<ByteCode*>                          byteCodeFunc;
+    VectorNative<ByteCode*>                          byteCodeTestFunc;
+    VectorNative<ByteCode*>                          byteCodeInitFunc;
+    VectorNative<ByteCode*>                          byteCodeDropFunc;
+    VectorNative<ByteCode*>                          byteCodePreMainFunc;
+    VectorNative<ByteCode*>                          byteCodeRunFunc;
+    VectorNative<ByteCode*>                          byteCodePrintBC;
+    VectorNative<ModuleDependency*>                  moduleDependencies;
+    VectorNative<AstNode*>                           globalVarsBss;
+    VectorNative<AstNode*>                           globalVarsMutable;
+    VectorNative<AstNode*>                           globalVarsConstant;
+    vector<CompilerMessage>                          compilerMessages[2];
+    set<SourceFile*>                                 exportSourceFiles;
+    map<Utf8, ByteCode*>                             mapRuntimeFcts;
+    map<Utf8, ForToSolve>                            implForToSolve;
+    map<uint32_t, VectorNative<SourceLocationCache>> cacheSourceLoc;
+    JobGroup                                         syntaxGroup;
+    VectorNative<FILE*>                              handleGeneratedFile;
+    VectorNative<bool>                               appendGeneratedFile;
+    VectorNative<uint32_t>                           countLinesGeneratedFile;
 
     Mutex                              mutexMapCrcBc;
+    Mutex                              mutexSourceLoc;
     unordered_map<uint32_t, ByteCode*> mapCrcBc;
 
     AstNode*          astRoot          = nullptr;

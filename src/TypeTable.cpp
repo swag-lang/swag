@@ -7,7 +7,7 @@
 #include "TypeManager.h"
 #include "Module.h"
 #include "ErrorIds.h"
-#include "Crc32.h"
+#include "Hash.h"
 
 bool TypeTable::makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t* storage, uint32_t cflags, TypeInfo** ptrTypeInfo)
 {

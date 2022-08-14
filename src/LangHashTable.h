@@ -1,4 +1,6 @@
 #pragma once
+#include "Hash.h"
+
 template<typename V, int N>
 struct LangHashTable
 {
@@ -27,7 +29,7 @@ struct LangHashTable
             return nullptr;
 
         if (!crc)
-            crc = Utf8::hash(key, keyLen);
+            crc = Crc32::compute((const uint8_t*) key, keyLen);
 
         uint32_t idx = crc % allocated;
         while (buffer[idx].hash)
@@ -43,7 +45,7 @@ struct LangHashTable
     void addElem(const char* key, int keyLen, const V& value, uint32_t crc = 0)
     {
         if (!crc)
-            crc = Utf8::hash(key, keyLen);
+            crc = Crc32::compute((const uint8_t*) key, keyLen);
 
         // Find a free slot
         uint32_t idx = crc % allocated;

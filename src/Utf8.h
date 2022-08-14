@@ -81,7 +81,6 @@ struct Utf8
     bool toChar32(uint32_t& ch);
     void replace(const char* src, const char* dst);
 
-    static uint32_t    hash(const char* buffer, int count);
     static const char* decodeUtf8(const char* pz, uint32_t& c, unsigned& offset);
     static Utf8        format(const char* format, ...);
     static string      normalizePath(const fs::path& path);

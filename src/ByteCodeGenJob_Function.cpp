@@ -11,6 +11,7 @@
 #include "TypeTable.h"
 #include "ErrorIds.h"
 #include "Os.h"
+#include "Hash.h"
 
 bool ByteCodeGenJob::emitLocalFuncDecl(ByteCodeGenContext* context)
 {
@@ -1017,20 +1018,61 @@ void ByteCodeGenJob::computeSourceLocation(JobContext* context, AstNode* node, u
     auto seg        = SemanticJob::getConstantSegFromContext(context->node);
     *storageSegment = seg;
 
-    auto                        sourceFile = node->sourceFile;
-    auto                        str        = Utf8(Utf8::normalizePath(sourceFile->path));
+    auto sourceFile = node->sourceFile;
+    auto module     = sourceFile->module;
+
+    auto     str = Utf8(Utf8::normalizePath(sourceFile->path));
+    uint8_t* addrName;
+    auto     offsetName = seg->addString(str, &addrName);
+
+    SourceLocationCache tmpLoc;
+    tmpLoc.loc.fileName.buffer = addrName;
+    tmpLoc.loc.fileName.count  = str.length();
+    tmpLoc.loc.lineStart       = node->token.startLocation.line;
+    tmpLoc.loc.colStart        = node->token.startLocation.column;
+    tmpLoc.loc.lineEnd         = node->token.endLocation.line;
+    tmpLoc.loc.colEnd          = node->token.endLocation.column;
+
+    ScopedLock lock(module->mutexSourceLoc);
+
+    // Is the same location is in the cache ?
+    uint32_t crc = Crc32::compute(addrName, str.length());
+    crc          = Crc32::compute((uint8_t*) &node->token.startLocation.line, sizeof(uint32_t), crc);
+    crc          = Crc32::compute((uint8_t*) &node->token.startLocation.column, sizeof(uint32_t), crc);
+    crc          = Crc32::compute((uint8_t*) &node->token.endLocation.line, sizeof(uint32_t), crc);
+    crc          = Crc32::compute((uint8_t*) &node->token.endLocation.column, sizeof(uint32_t), crc);
+    auto it      = module->cacheSourceLoc.find(crc);
+    if (it != module->cacheSourceLoc.end())
+    {
+        for (auto& l : it->second)
+        {
+            if (l.loc.lineStart == node->token.startLocation.line &&
+                l.loc.colStart == node->token.startLocation.column &&
+                l.loc.lineEnd == node->token.endLocation.line &&
+                l.loc.colEnd == node->token.endLocation.column &&
+                l.storageSegment == seg &&
+                !strncmp((const char*) l.loc.fileName.buffer, (const char*) addrName, l.loc.fileName.count))
+            {
+                *storageOffset = l.storageOffset;
+                return;
+            }
+        }
+    }
+
     SwagCompilerSourceLocation* loc;
     auto                        offset = seg->reserve(sizeof(SwagCompilerSourceLocation), (uint8_t**) &loc, sizeof(void*));
-    uint8_t*                    addrName;
-    auto                        offsetName = seg->addString(str, &addrName);
     seg->addInitPtr(offset, offsetName);
-    loc->fileName.buffer = addrName;
-    loc->fileName.count  = str.length();
-    loc->lineStart       = node->token.startLocation.line;
-    loc->colStart        = node->token.startLocation.column;
-    loc->lineEnd         = node->token.endLocation.line;
-    loc->colEnd          = node->token.endLocation.column;
-    *storageOffset       = offset;
+    memcpy(loc, &tmpLoc.loc, sizeof(tmpLoc.loc));
+
+    // Store in the cache
+    tmpLoc.storageSegment = seg;
+    tmpLoc.storageOffset  = offset;
+    if (it != module->cacheSourceLoc.end())
+        it->second.push_back(tmpLoc);
+    else
+        module->cacheSourceLoc[crc] = {tmpLoc};
+
+    *storageOffset = offset;
 }
 
 bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode* param, RegisterList& regList)
