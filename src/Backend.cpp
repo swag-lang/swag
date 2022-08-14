@@ -302,52 +302,18 @@ bool Backend::saveExportFile()
     return true;
 }
 
-bool Backend::canEmitFunction(ByteCode* bc)
-{
-    if (bc->isDuplicated)
-        return false;
-    if (!bc->node)
-        return true;
-
-    auto node = CastAst<AstFuncDecl>(bc->node, AstNodeKind::FuncDecl);
-
-    // Do we need to generate that function ?
-    if (node->attributeFlags & ATTRIBUTE_COMPILER)
-        return false;
-    if ((node->attributeFlags & ATTRIBUTE_TEST_FUNC) && !g_CommandLine->test)
-        return false;
-    if (node->attributeFlags & ATTRIBUTE_FOREIGN)
-        return false;
-    if (!node->content && !node->isSpecialFunctionGenerated())
-        return false;
-
-    if (node->sourceFile->isBootstrapFile || node->sourceFile->isRuntimeFile)
-        return true;
-    if (node->attributeFlags & (ATTRIBUTE_PUBLIC | ATTRIBUTE_MAIN_FUNC | ATTRIBUTE_INIT_FUNC | ATTRIBUTE_DROP_FUNC | ATTRIBUTE_PREMAIN_FUNC | ATTRIBUTE_TEST_FUNC))
-        return true;
-    if (node->specFlags & AST_SPEC_FUNCDECL_PATCH)
-        return true;
-
-    if (!bc->isUsed)
-        return false;
-
-    return true;
-}
-
 void Backend::addFunctionsToJob(Module* moduleToGen, BackendFunctionBodyJobBase* job, int start, int end)
 {
     for (int i = start; i < end; i++)
     {
-        auto one = moduleToGen->byteCodeFunc[i];
-        if (!canEmitFunction(one))
-            continue;
+        auto one = moduleToGen->byteCodeFuncToGen[i];
         job->byteCodeFunc.push_back(one);
     }
 }
 
 void Backend::getRangeFunctionIndexForJob(const BuildParameters& buildParameters, Module* moduleToGen, int& start, int& end)
 {
-    int size            = (int) moduleToGen->byteCodeFunc.size();
+    int size            = (int) moduleToGen->byteCodeFuncToGen.size();
     int precompileIndex = buildParameters.precompileIndex;
     int range           = size / numPreCompileBuffers;
 
@@ -365,71 +331,9 @@ void Backend::getRangeFunctionIndexForJob(const BuildParameters& buildParameters
     }
 }
 
-void Backend::removeDuplicatedFunctions(const BuildParameters& buildParameters, Module* moduleToGen, Job* ownerJob)
-{
-    map<uint32_t, ByteCode*> mapCrcBc;
-
-    for (auto one : moduleToGen->byteCodeFunc)
-    {
-        if (!canEmitFunction(one))
-            continue;
-
-        if (!one->crc || !one->typeInfoFunc)
-            continue;
-        if (one->forceEmit)
-            continue;
-
-        if (one->node)
-        {
-            auto node = CastAst<AstFuncDecl>(one->node, AstNodeKind::FuncDecl);
-            if (node->sourceFile->isBootstrapFile || node->sourceFile->isRuntimeFile)
-                continue;
-            if (node->attributeFlags & (ATTRIBUTE_PUBLIC | ATTRIBUTE_CALLBACK | ATTRIBUTE_MAIN_FUNC | ATTRIBUTE_INIT_FUNC | ATTRIBUTE_DROP_FUNC | ATTRIBUTE_PREMAIN_FUNC | ATTRIBUTE_TEST_FUNC))
-                continue;
-            if (node->specFlags & AST_SPEC_FUNCDECL_PATCH)
-                continue;
-        }
-
-        auto it = mapCrcBc.find(one->crc);
-        if (it != mapCrcBc.end())
-        {
-            if (one->numInstructions != it->second->numInstructions)
-                continue;
-
-            auto type0 = one->typeInfoFunc;
-            auto type1 = it->second->typeInfoFunc;
-            if (type0->parameters.size() != type1->parameters.size())
-                continue;
-
-            bool abiIsCompatible = true;
-            for (int i = 0; i < type0->parameters.size(); i++)
-            {
-                auto param0 = type0->parameters[i]->typeInfo;
-                auto param1 = type1->parameters[i]->typeInfo;
-                if (param0->isNativeFloat() != param1->isNativeFloat())
-                {
-                    abiIsCompatible = false;
-                    break;
-                }
-            }
-
-            if (abiIsCompatible)
-            {
-                one->setCallName(it->second->getCallName());
-                one->isDuplicated = true;
-            }
-        }
-        else
-        {
-            mapCrcBc[one->crc] = one;
-        }
-    }
-}
-
 bool Backend::emitAllFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, Job* ownerJob)
 {
     SWAG_ASSERT(moduleToGen);
-    //removeDuplicatedFunctions(buildParameters, moduleToGen, ownerJob);
 
     // Batch functions between files
     int start = 0;
@@ -447,9 +351,9 @@ bool Backend::emitAllFunctionBody(const BuildParameters& buildParameters, Module
     if (precompileIndex == 0)
     {
         SWAG_ASSERT(g_Workspace->bootstrapModule);
-        addFunctionsToJob(g_Workspace->bootstrapModule, job, 0, (int) g_Workspace->bootstrapModule->byteCodeFunc.size());
+        addFunctionsToJob(g_Workspace->bootstrapModule, job, 0, (int) g_Workspace->bootstrapModule->byteCodeFuncToGen.size());
         SWAG_ASSERT(g_Workspace->runtimeModule);
-        addFunctionsToJob(g_Workspace->runtimeModule, job, 0, (int) g_Workspace->runtimeModule->byteCodeFunc.size());
+        addFunctionsToJob(g_Workspace->runtimeModule, job, 0, (int) g_Workspace->runtimeModule->byteCodeFuncToGen.size());
     }
 
     addFunctionsToJob(moduleToGen, job, start, end);

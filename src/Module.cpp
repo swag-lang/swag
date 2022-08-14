@@ -1037,3 +1037,108 @@ void Module::logStage(const char* msg)
         return;
     g_Log.verbose(Fmt("[%s] -- %s", name.c_str(), msg));
 }
+
+bool Module::canEmitFunction(ByteCode* bc)
+{
+    if (bc->isDuplicated)
+        return false;
+    if (!bc->node)
+        return true;
+
+    auto node = CastAst<AstFuncDecl>(bc->node, AstNodeKind::FuncDecl);
+
+    // Do we need to generate that function ?
+    if (node->attributeFlags & ATTRIBUTE_COMPILER)
+        return false;
+    if ((node->attributeFlags & ATTRIBUTE_TEST_FUNC) && !g_CommandLine->test)
+        return false;
+    if (node->attributeFlags & ATTRIBUTE_FOREIGN)
+        return false;
+    if (!node->content && !node->isSpecialFunctionGenerated())
+        return false;
+
+    if (node->sourceFile->isBootstrapFile || node->sourceFile->isRuntimeFile)
+        return true;
+    if (node->attributeFlags & (ATTRIBUTE_PUBLIC | ATTRIBUTE_MAIN_FUNC | ATTRIBUTE_INIT_FUNC | ATTRIBUTE_DROP_FUNC | ATTRIBUTE_PREMAIN_FUNC | ATTRIBUTE_TEST_FUNC))
+        return true;
+    if (node->specFlags & AST_SPEC_FUNCDECL_PATCH)
+        return true;
+
+    if (!bc->isUsed)
+        return false;
+
+    return true;
+}
+
+void Module::removeDuplicatedFunctions()
+{
+    unordered_map<uint32_t, ByteCode*> mapCrcBc;
+
+    for (auto one : byteCodeFuncToGen)
+    {
+        if (!canEmitFunction(one))
+            continue;
+
+        if (!one->crc || !one->typeInfoFunc)
+            continue;
+        if (one->forceEmit)
+            continue;
+
+        if (one->node)
+        {
+            auto node = CastAst<AstFuncDecl>(one->node, AstNodeKind::FuncDecl);
+            if (node->sourceFile->isBootstrapFile || node->sourceFile->isRuntimeFile)
+                continue;
+            if (node->attributeFlags & (ATTRIBUTE_PUBLIC | ATTRIBUTE_CALLBACK | ATTRIBUTE_MAIN_FUNC | ATTRIBUTE_INIT_FUNC | ATTRIBUTE_DROP_FUNC | ATTRIBUTE_PREMAIN_FUNC | ATTRIBUTE_TEST_FUNC))
+                continue;
+            if (node->specFlags & AST_SPEC_FUNCDECL_PATCH)
+                continue;
+        }
+
+        auto it = mapCrcBc.find(one->crc);
+        if (it != mapCrcBc.end())
+        {
+            if (one->numInstructions != it->second->numInstructions)
+                continue;
+
+            auto type0 = one->typeInfoFunc;
+            auto type1 = it->second->typeInfoFunc;
+            if (type0->parameters.size() != type1->parameters.size())
+                continue;
+
+            bool abiIsCompatible = true;
+            for (int i = 0; i < type0->parameters.size(); i++)
+            {
+                auto param0 = type0->parameters[i]->typeInfo;
+                auto param1 = type1->parameters[i]->typeInfo;
+                if (param0->isNativeFloat() != param1->isNativeFloat())
+                {
+                    abiIsCompatible = false;
+                    break;
+                }
+            }
+
+            if (abiIsCompatible)
+            {
+                one->setCallName(it->second->getCallName());
+                one->isDuplicated = true;
+            }
+        }
+        else
+        {
+            mapCrcBc[one->crc] = one;
+        }
+    }
+}
+
+void Module::filterOutputFunctions()
+{
+    for (auto f : byteCodeFunc)
+    {
+        if (!canEmitFunction(f))
+            continue;
+        byteCodeFuncToGen.push_back(f);
+    }
+
+    // removeDuplicatedFunctions(buildParameters);
+}

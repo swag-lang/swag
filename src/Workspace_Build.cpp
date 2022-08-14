@@ -628,6 +628,7 @@ bool Workspace::buildRTModule(Module* module)
         return false;
     }
 
+    module->filterOutputFunctions();
     return true;
 }
 

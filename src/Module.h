@@ -164,6 +164,10 @@ struct Module
 
     void logStage(const char* msg);
 
+    bool canEmitFunction(ByteCode* bc);
+    void removeDuplicatedFunctions();
+    void filterOutputFunctions();
+
     struct ForToSolve
     {
         uint32_t      count;
@@ -202,7 +206,9 @@ struct Module
     VectorNative<ByteCode*>                          byteCodeCompiler[(int) CompilerMsgKind::Max];
     Mutex                                            byteCodeCompilerMutex[(int) CompilerMsgKind::Max];
     Mutex                                            mutexCompilerMessages;
+    Mutex                                            mutexSourceLoc;
     VectorNative<ByteCode*>                          byteCodeFunc;
+    VectorNative<ByteCode*>                          byteCodeFuncToGen;
     VectorNative<ByteCode*>                          byteCodeTestFunc;
     VectorNative<ByteCode*>                          byteCodeInitFunc;
     VectorNative<ByteCode*>                          byteCodeDropFunc;
@@ -222,10 +228,6 @@ struct Module
     VectorNative<FILE*>                              handleGeneratedFile;
     VectorNative<bool>                               appendGeneratedFile;
     VectorNative<uint32_t>                           countLinesGeneratedFile;
-
-    Mutex                              mutexMapCrcBc;
-    Mutex                              mutexSourceLoc;
-    unordered_map<uint32_t, ByteCode*> mapCrcBc;
 
     AstNode*          astRoot          = nullptr;
     Scope*            scopeRoot        = nullptr;

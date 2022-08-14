@@ -44,10 +44,8 @@ struct Backend
     void setMustCompile();
     bool isUpToDate(uint64_t moreRecentSourceFile, bool invert = false);
 
-    static bool canEmitFunction(ByteCode* bc);
     void        addFunctionsToJob(Module* moduleToGen, BackendFunctionBodyJobBase* job, int start, int end);
     void        getRangeFunctionIndexForJob(const BuildParameters& buildParameters, Module* moduleToGen, int& start, int& end);
-    void        removeDuplicatedFunctions(const BuildParameters& buildParameters, Module* moduleToGen, Job* ownerJob);
     bool        emitAllFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, Job* ownerJob);
 
     JobResult generateExportFile(Job* ownerJob);

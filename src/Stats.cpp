@@ -101,7 +101,8 @@ void Stats::print()
 
             g_Log.print("\n");
             g_Log.messageHeaderDot("module", Fmt("%s", m->name.c_str()));
-            g_Log.messageHeaderDot("num func", Fmt("%u", m->byteCodeFunc.size()));
+            g_Log.messageHeaderDot("func total", Fmt("%u", m->byteCodeFunc.size()));
+            g_Log.messageHeaderDot("func output", Fmt("%u", m->byteCodeFuncToGen.size()));
         }
     }
 
