@@ -309,6 +309,7 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
     static atomic<int> serial = 0;
     ins.serial                = serial++;
     ins.treeNode              = 0;
+    ins.crc                   = 0;
 #endif
 
     if (context->noLocation)

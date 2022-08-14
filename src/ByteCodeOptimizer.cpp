@@ -3,6 +3,7 @@
 #include "ByteCodeOptimizerJob.h"
 #include "Module.h"
 #include "ThreadManager.h"
+#include "Crc32.h"
 
 uint32_t ByteCodeOptimizer::newTreeNode(ByteCodeOptContext* context, ByteCodeInstruction* ip, bool& here)
 {
@@ -23,6 +24,16 @@ uint32_t ByteCodeOptimizer::newTreeNode(ByteCodeOptContext* context, ByteCodeIns
     return pos;
 }
 
+static void computeCrcNode(ByteCodeOptTreeNode* node)
+{
+    node->crc = Crc32::compute((const uint8_t*) &node->end->op, sizeof(node->end->op), node->crc);
+    node->crc = Crc32::compute((const uint8_t*) &node->end->a.u64, sizeof(node->end->a.u64), node->crc);
+    node->crc = Crc32::compute((const uint8_t*) &node->end->b.u64, sizeof(node->end->b.u64), node->crc);
+    node->crc = Crc32::compute((const uint8_t*) &node->end->c.u64, sizeof(node->end->c.u64), node->crc);
+    node->crc = Crc32::compute((const uint8_t*) &node->end->d.u64, sizeof(node->end->d.u64), node->crc);
+    node->crc = Crc32::compute((const uint8_t*) &node->end->flags, sizeof(node->end->flags), node->crc);
+}
+
 void ByteCodeOptimizer::genTree(ByteCodeOptContext* context, uint32_t nodeIdx)
 {
     ByteCodeOptTreeNode* node = &context->tree[nodeIdx];
@@ -30,14 +41,23 @@ void ByteCodeOptimizer::genTree(ByteCodeOptContext* context, uint32_t nodeIdx)
 
     while (node->end->op != ByteCodeOp::Ret && !ByteCode::isJumpOrDyn(node->end) && !(node->end[1].flags & BCI_START_STMT))
     {
+        computeCrcNode(node);
 #ifdef SWAG_DEV_MODE
         node->end->treeNode = nodeIdx + 1;
 #endif
         node->end++;
     }
 
+    computeCrcNode(node);
+
 #ifdef SWAG_DEV_MODE
     node->end->treeNode = nodeIdx + 1;
+    auto ip             = node->start;
+    while (ip != node->end + 1)
+    {
+        ip->crc = node->crc;
+        ip++;
+    }
 #endif
 
     if (node->end->op == ByteCodeOp::Ret)

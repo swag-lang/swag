@@ -46,6 +46,7 @@ bool ByteCodeOptimizerJob::optimize(ByteCode* bc, bool& restart)
         ByteCodeOptimizer::removeNops(&optContext);
         if (!optContext.allPassesHaveDoneSomething)
         {
+            OPT_PASS(ByteCodeOptimizer::optimizePassDupBlocks);
             OPT_PASS(ByteCodeOptimizer::optimizePassReduceX2);
             ByteCodeOptimizer::removeNops(&optContext);
             if (!optContext.allPassesHaveDoneSomething)

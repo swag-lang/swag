@@ -139,7 +139,7 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo
     SWAG_ASSERT(!typeName.empty());
     SWAG_CHECK(makeConcreteString(context, &concreteTypeInfoValue->fullName, nonPartialTypeName, storageSegment, OFFSETOF(concreteTypeInfoValue->fullName)));
     SWAG_CHECK(makeConcreteString(context, &concreteTypeInfoValue->name, typeInfo->getName(), storageSegment, OFFSETOF(concreteTypeInfoValue->name)));
-    concreteTypeInfoValue->crc32 = Crc32::compute((const char*) concreteTypeInfoValue->fullName.buffer, (uint32_t) concreteTypeInfoValue->fullName.count);
+    concreteTypeInfoValue->crc32 = Crc32::compute((const uint8_t*) concreteTypeInfoValue->fullName.buffer, (uint32_t) concreteTypeInfoValue->fullName.count);
 
     if (typeInfo->flags & TYPEINFO_FUNC_IS_ATTR)
         concreteTypeInfoValue->kind = TypeInfoKind::Attribute;
@@ -423,7 +423,7 @@ bool TypeTable::makeConcreteTypeValue(JobContext* context, void* concreteTypeInf
     concreteType->offsetOf = realType->offset;
 
     SWAG_CHECK(makeConcreteString(context, &concreteType->name, realType->namedParam, storageSegment, OFFSETOF(concreteType->name)));
-    concreteType->crc32 = Crc32::compute((const char*) concreteType->name.buffer, (uint32_t) concreteType->name.count);
+    concreteType->crc32 = Crc32::compute((const uint8_t*) concreteType->name.buffer, (uint32_t) concreteType->name.count);
     SWAG_CHECK(makeConcreteSubTypeInfo(context, &concreteType->pointedType, concreteTypeInfoValue, storageSegment, storageOffset, realType->typeInfo, cflags));
     SWAG_CHECK(makeConcreteAttributes(context, realType->attributes, concreteTypeInfoValue, storageSegment, storageOffset, &concreteType->attributes, cflags));
 

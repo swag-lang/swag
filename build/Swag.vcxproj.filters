@@ -497,6 +497,9 @@
     <ClCompile Include="..\src\ByteCodeOptimizer_Alias.cpp">
       <Filter>Backend\ByteCode\Optimize</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\ByteCodeOptimizer_DupBlocks.cpp">
+      <Filter>Backend\ByteCode\Optimize</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/JobThread.h">

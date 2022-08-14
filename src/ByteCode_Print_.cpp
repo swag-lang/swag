@@ -268,8 +268,13 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* cu
 
     // Tree Node
 #ifdef SWAG_DEV_MODE
+    g_Log.setColor(LogColor::Magenta);
     g_Log.print("  ");
     wprintf(bcNum, ip->treeNode);
+    g_Log.print("  ");
+    g_Log.print(Fmt("%08X", ip->crc));
+    g_Log.print("  ");
+    g_Log.setColor(LogColor::Gray);
 #endif
 
     g_Log.setColor(LogColor::White);

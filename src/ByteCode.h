@@ -48,6 +48,7 @@ struct ByteCodeInstruction
     int         sourceLine;
     int         serial;
     int         treeNode;
+    uint32_t    crc;
 #endif
 };
 

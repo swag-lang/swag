@@ -73,6 +73,7 @@ struct ByteCodeOptimizer
     static void optimizePassDupCopyOp(ByteCodeOptContext* context, ByteCodeOp op);
     static bool optimizePassDupCopyRBRA(ByteCodeOptContext* context);
     static bool optimizePassDupCopy(ByteCodeOptContext* context);
+    static bool optimizePassDupBlocks(ByteCodeOptContext* context);
 
     static void reduceFactor(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void reduceErr(ByteCodeOptContext* context, ByteCodeInstruction* ip);
