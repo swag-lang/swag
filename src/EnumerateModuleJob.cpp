@@ -101,7 +101,8 @@ void EnumerateModuleJob::enumerateFilesInModule(const fs::path& basePath, Module
         tmp = move(directories.back());
         directories.pop_back();
 
-        OS::visitFilesFolders(tmp.c_str(), [&](uint64_t writeTime, const char* cFileName, bool isFolder)
+        OS::visitFilesFolders(tmp.c_str(),
+                              [&](uint64_t writeTime, const char* cFileName, bool isFolder)
                               {
                                   if (isFolder)
                                   {
@@ -155,7 +156,8 @@ void EnumerateModuleJob::enumerateFilesInModule(const fs::path& basePath, Module
 void EnumerateModuleJob::loadFilesInModules(const fs::path& basePath)
 {
     // Scan source folder
-    OS::visitFolders(basePath.string().c_str(), [&](const char* cFileName)
+    OS::visitFolders(basePath.string().c_str(),
+                     [&](const char* cFileName)
                      {
                          string path = basePath.string() + cFileName;
                          path        = g_ModuleCfgMgr->getAliasPath(path).string();
@@ -176,7 +178,8 @@ void EnumerateModuleJob::loadFilesInModules(const fs::path& basePath)
                              tmp = move(directories.back());
                              directories.pop_back();
 
-                             OS::visitFilesFolders(tmp.c_str(), [&](uint64_t writeTime, const char* cFileName, bool isFolder)
+                             OS::visitFilesFolders(tmp.c_str(),
+                                                   [&](uint64_t writeTime, const char* cFileName, bool isFolder)
                                                    {
                                                        if (isFolder)
                                                        {
@@ -229,7 +232,8 @@ void EnumerateModuleJob::enumerateModules(const fs::path& path)
     vector<string> allModules;
 
     // Scan source folder
-    OS::visitFolders(path.string().c_str(), [&](const char* cFolderName)
+    OS::visitFolders(path.string().c_str(),
+                     [&](const char* cFolderName)
                      {
                          // If we have only one core, then we will sort modules in alphabetical order to always
                          // treat them in a reliable order. That way, --randomize and --seed can work.

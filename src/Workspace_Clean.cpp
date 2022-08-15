@@ -9,14 +9,16 @@ void Workspace::cleanFolderContent(const fs::path& path)
     if (g_CommandLine->cleanLog)
         return;
 
-    OS::visitFilesRec(path.string().c_str(), [&](const char* cFileName)
+    OS::visitFilesRec(path.string().c_str(),
+                      [&](const char* cFileName)
                       {
                           std::error_code err;
                           if (fs::remove_all(cFileName, err) == -1)
                           {
                               g_Log.errorOS(Fmt(Err(Err0344), cFileName));
                               OS::exit(-1);
-                          } });
+                          }
+                      });
 
     std::error_code err;
     if (fs::remove_all(path, err) == -1)
@@ -30,7 +32,8 @@ void Workspace::cleanPublic(const fs::path& basePath)
 {
     if (fs::exists(basePath))
     {
-        OS::visitFolders(basePath.string().c_str(), [&, this](const char* folder)
+        OS::visitFolders(basePath.string().c_str(),
+                         [&, this](const char* folder)
                          {
                              auto path = basePath.string() + folder;
                              path += "/";
@@ -40,7 +43,8 @@ void Workspace::cleanPublic(const fs::path& basePath)
                              if (fs::exists(path))
                              {
                                  // Clean all targets
-                                 OS::visitFolders(path.c_str(), [&, this](const char* folder)
+                                 OS::visitFolders(path.c_str(),
+                                                  [&, this](const char* folder)
                                                   {
                                                       auto cfgpath = path + folder;
                                                       cfgpath      = Utf8::normalizePath(cfgpath);
@@ -54,7 +58,8 @@ void Workspace::cleanPublic(const fs::path& basePath)
                                  // Clean public folder itself
                                  g_Log.messageHeaderCentered("Cleaning", path);
                                  cleanFolderContent(path);
-                             } });
+                             }
+                         });
     }
 }
 
@@ -105,12 +110,14 @@ void Workspace::cleanCommand()
     targetPath += "/";
     if (fs::exists(targetPath))
     {
-        OS::visitFolders(targetPath.string().c_str(), [this](const char* folder)
+        OS::visitFolders(targetPath.string().c_str(),
+                         [this](const char* folder)
                          {
                              auto path = targetPath.string() + folder;
                              path      = Utf8::normalizePath(path);
                              g_Log.messageHeaderCentered("Cleaning", path);
-                             cleanFolderContent(path); });
+                             cleanFolderContent(path);
+                         });
     }
 
     // Clean all cache folders for the given workspace
@@ -119,7 +126,8 @@ void Workspace::cleanCommand()
     cachePath += "/";
     if (fs::exists(cachePath))
     {
-        OS::visitFolders(cachePath.string().c_str(), [this](const char* folder)
+        OS::visitFolders(cachePath.string().c_str(),
+                         [this](const char* folder)
                          {
                              auto wkPath = workspacePath.filename().string() + "-";
 
@@ -130,7 +138,8 @@ void Workspace::cleanCommand()
                                  path      = Utf8::normalizePath(path);
                                  g_Log.messageHeaderCentered("Cleaning", path);
                                  cleanFolderContent(path);
-                             } });
+                             }
+                         });
     }
 
     // Clean all public folders of the workspace modules
