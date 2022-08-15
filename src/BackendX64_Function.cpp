@@ -1759,11 +1759,11 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
 
             // Note:
-            // 
+            //
             // This is not optimal yet.
             // The sub could be removed by baking it in the 'cmp', and by changing the jump table address by substracting the min value
             // Also, if the jumptable was encoded in the text segment, then there will be no need to have two relocations
-            // 
+            //
             // We could in the end remove two instructions and be as the llvm generation
 
             BackendX64Inst::emit_Sub64_Immediate(pp, ip->b.u64 - 1, RCX, RAX);
@@ -3000,8 +3000,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::LocalCallPop:
         case ByteCodeOp::LocalCallPopRC:
         {
-            auto              funcBC     = (ByteCode*) ip->a.pointer;
-            TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
+            auto funcBC = (ByteCode*) ip->a.pointer;
+            SWAG_ASSERT(funcBC);
+            TypeInfoFuncAttr* typeFuncBC = funcBC->getCallType();
             emitLocalCallParameters(pp, sizeParamsStack, typeFuncBC, offsetRT, pushRAParams, pushRVParams);
             emitCall(pp, funcBC->getCallName());
             pushRAParams.clear();

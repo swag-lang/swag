@@ -1105,23 +1105,31 @@ void Module::removeDuplicatedFunctions()
                 auto type0 = one->typeInfoFunc;
                 auto type1 = it->second->typeInfoFunc;
                 if (type0->parameters.size() != type1->parameters.size())
-                {
                     toKick = false;
-                }
-
-                for (int i = 0; toKick && i < type0->parameters.size(); i++)
+                else if (type0->returnType && !type1->returnType)
+                    toKick = false;
+                else if (!type0->returnType && type1->returnType)
+                    toKick = false;
+                else if (type0->returnType->isNativeFloat() != type1->returnType->isNativeFloat())
+                    toKick = false;
+                else if (type0->returnType->sizeOf != type1->returnType->sizeOf)
+                    toKick = false;
+                else
                 {
-                    auto param0 = type0->parameters[i]->typeInfo;
-                    auto param1 = type1->parameters[i]->typeInfo;
-                    if (param0->isNativeFloat() != param1->isNativeFloat())
+                    for (int i = 0; i < type0->parameters.size(); i++)
                     {
-                        toKick = false;
-                        break;
+                        auto param0 = type0->parameters[i]->typeInfo;
+                        auto param1 = type1->parameters[i]->typeInfo;
+                        if (param0->isNativeFloat() != param1->isNativeFloat() || param0->sizeOf != param1->sizeOf)
+                        {
+                            toKick = false;
+                            break;
+                        }
                     }
                 }
 
                 // Test content
-                if (!one->areSame(one->out, one->out + one->numInstructions, it->second->out, it->second->out + it->second->numInstructions, false, true))
+                if (toKick && !one->areSame(one->out, one->out + one->numInstructions, it->second->out, it->second->out + it->second->numInstructions, false, true))
                 {
                     toKick = false;
                 }
@@ -1129,7 +1137,6 @@ void Module::removeDuplicatedFunctions()
                 if (toKick)
                 {
                     numKickedFunc++;
-                    one->setCallName(it->second->getCallName());
                     one->alias = it->second;
                     restart    = true;
                     continue;

@@ -160,7 +160,6 @@ struct ByteCode
     void              printInstructionReg(const char* name, const Register& reg, bool regW, bool regR, bool regImm);
     void              printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* curIp = nullptr);
     void              print(ByteCodeInstruction* curIp = nullptr);
-    void              setCallName(const Utf8& n);
     Utf8              getCallName();
     TypeInfoFuncAttr* getCallType();
     bool              canEmit();

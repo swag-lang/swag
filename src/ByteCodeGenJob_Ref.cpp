@@ -480,7 +480,10 @@ bool ByteCodeGenJob::emitMakeLambda(ByteCodeGenContext* context)
     SWAG_ASSERT(funcNode->extension);
     inst->c.pointer = (uint8_t*) funcNode->extension->bc;
     if (funcNode->extension->bc)
-        funcNode->extension->bc->isUsed = true;
+    {
+        funcNode->extension->bc->isUsed    = true;
+        funcNode->extension->bc->forceEmit = true;
+    }
 
     // :CaptureBlock
     // Block capture

@@ -51,14 +51,11 @@ void ByteCode::getLocation(ByteCode* bc, ByteCodeInstruction* ip, SourceFile** f
     *location = ip->location;
 }
 
-void ByteCode::setCallName(const Utf8& n)
-{
-    ScopedLock lk(mutexCallName);
-    callName = n;
-}
-
 Utf8 ByteCode::getCallName()
 {
+    if (alias)
+        return alias->getCallName();
+
     ScopedLock lk(mutexCallName);
     if (!callName.empty())
         return callName;
@@ -88,13 +85,12 @@ Utf8 ByteCode::getCallName()
 
 TypeInfoFuncAttr* ByteCode::getCallType()
 {
-    auto self = this;
     if (alias)
-        self = alias;
+        return alias->getCallType();
 
-    if (self->node && self->node->typeInfo->kind == TypeInfoKind::FuncAttr)
-        return CastTypeInfo<TypeInfoFuncAttr>(self->node->typeInfo, TypeInfoKind::FuncAttr);
-    return self->typeInfoFunc;
+    if (node && node->typeInfo->kind == TypeInfoKind::FuncAttr)
+        return CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
+    return typeInfoFunc;
 }
 
 void ByteCode::addCallStack(ByteCodeRunContext* context)
