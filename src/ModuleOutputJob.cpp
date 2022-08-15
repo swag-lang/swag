@@ -37,7 +37,7 @@ JobResult ModuleOutputJob::execute()
         pass = ModuleOutputJobPass::PrepareOutputStage2;
 
         // Generate list of functions to export
-        module->filterOutputFunctions();
+        module->filterFunctionsToEmit();
 
         // Compute the number of sub modules (i.e the number of output temporary files)
         int minPerFile = 1024;

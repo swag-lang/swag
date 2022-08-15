@@ -550,6 +550,7 @@ namespace Swag
         // Bytecode
         byteCodeOptimize        = true
         byteCodeDebugInline     = true
+        byteCodeRemoveDup       = true
         byteCodeEmitAssume      = true
         byteCodeInline          = true
 

@@ -165,7 +165,7 @@ struct Module
     void logStage(const char* msg);
 
     void removeDuplicatedFunctions();
-    void filterOutputFunctions();
+    void filterFunctionsToEmit();
 
     struct ForToSolve
     {

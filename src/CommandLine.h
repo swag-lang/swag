@@ -75,14 +75,15 @@ struct CommandLine
     bool      errorAbsolute         = false;
 
     // Output
-    string buildCfg           = "fast-debug";
-    string buildCfgDebug      = "default";
-    string buildCfgSafety     = "default";
-    string buildCfgInlineBC   = "default";
-    string buildCfgOptimBC    = "default";
-    string buildCfgOptimSpeed = "default";
-    string buildCfgOptimSize  = "default";
-    string buildCfgStackTrace = "default";
+    string buildCfg            = "fast-debug";
+    string buildCfgDebug       = "default";
+    string buildCfgSafety      = "default";
+    string buildCfgInlineBC    = "default";
+    string buildCfgOptimBC     = "default";
+    string buildCfgRemoveDupBC = "default";
+    string buildCfgOptimSpeed  = "default";
+    string buildCfgOptimSize   = "default";
+    string buildCfgStackTrace  = "default";
 
     BackendTarget target;
 

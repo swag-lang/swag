@@ -88,9 +88,13 @@ Utf8 ByteCode::getCallName()
 
 TypeInfoFuncAttr* ByteCode::getCallType()
 {
-    if (node && node->typeInfo->kind == TypeInfoKind::FuncAttr)
-        return CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
-    return typeInfoFunc;
+    auto self = this;
+    if (alias)
+        self = alias;
+
+    if (self->node && self->node->typeInfo->kind == TypeInfoKind::FuncAttr)
+        return CastTypeInfo<TypeInfoFuncAttr>(self->node->typeInfo, TypeInfoKind::FuncAttr);
+    return self->typeInfoFunc;
 }
 
 void ByteCode::addCallStack(ByteCodeRunContext* context)
@@ -283,14 +287,30 @@ bool ByteCode::areSame(ByteCodeInstruction* start0, ByteCodeInstruction* end0, B
     while (same && ip0 != end0)
     {
         if (ip0->op != ip1->op)
+        {
             same = false;
-        else if (ip0->flags != ip1->flags)
+            break;
+        }
+
+        uint32_t flags0 = ip0->flags & ~(BCI_JUMP_DEST | BCI_START_STMT);
+        uint32_t flags1 = ip1->flags & ~(BCI_JUMP_DEST | BCI_START_STMT);
+        if (flags0 != flags1)
+        {
             same = false;
+            break;
+        }
 
         if (ByteCode::hasSomethingInC(ip0) && ip0->c.u64 != ip1->c.u64)
+        {
             same = false;
+            break;
+        }
+
         if (ByteCode::hasSomethingInD(ip0) && ip0->d.u64 != ip1->d.u64)
+        {
             same = false;
+            break;
+        }
 
         // Compare if the 2 bytes codes or their alias are the same
         if (specialCall && (ip0->op == ByteCodeOp::LocalCall || ip0->op == ByteCodeOp::LocalCallPop || ip0->op == ByteCodeOp::LocalCallPopRC))
@@ -305,7 +325,10 @@ bool ByteCode::areSame(ByteCodeInstruction* start0, ByteCodeInstruction* end0, B
                 same = false;
         }
         else if (ByteCode::hasSomethingInA(ip0) && ip0->a.u64 != ip1->a.u64)
+        {
             same = false;
+            break;
+        }
 
         // Compare if the 2 jump destinations are the same
         if (specialJump && ip0->op == ByteCodeOp::Jump)
@@ -316,7 +339,10 @@ bool ByteCode::areSame(ByteCodeInstruction* start0, ByteCodeInstruction* end0, B
                 same = false;
         }
         else if (ByteCode::hasSomethingInB(ip0) && ip0->b.u64 != ip1->b.u64)
+        {
             same = false;
+            break;
+        }
 
         ip0++;
         ip1++;
@@ -328,7 +354,9 @@ bool ByteCode::areSame(ByteCodeInstruction* start0, ByteCodeInstruction* end0, B
 uint32_t ByteCode::computeCrc(ByteCodeInstruction* ip, uint32_t oldCrc, bool specialJump, bool specialCall)
 {
     oldCrc = Crc32::compute((const uint8_t*) &ip->op, sizeof(ip->op), oldCrc);
-    oldCrc = Crc32::compute((const uint8_t*) &ip->flags, sizeof(ip->flags), oldCrc);
+
+    uint32_t flags = ip->flags & ~(BCI_JUMP_DEST | BCI_START_STMT);
+    oldCrc         = Crc32::compute((const uint8_t*) &flags, sizeof(ip->flags), oldCrc);
 
     if (ByteCode::hasSomethingInC(ip))
         oldCrc = Crc32::compute((const uint8_t*) &ip->c.u64, sizeof(ip->c.u64), oldCrc);
@@ -361,12 +389,11 @@ uint32_t ByteCode::computeCrc(ByteCodeInstruction* ip, uint32_t oldCrc, bool spe
     return oldCrc;
 }
 
-void ByteCode::computeCrc()
+void ByteCode::computeCrcNoCall()
 {
     crcNoCall = 0;
-    crc       = 0;
+    localCalls.clear();
 
-    VectorNative<ByteCodeInstruction*> localCalls;
     for (auto ip = out; ip->op != ByteCodeOp::End; ip++)
     {
         if (ip->op == ByteCodeOp::LocalCall || ip->op == ByteCodeOp::LocalCallPop || ip->op == ByteCodeOp::LocalCallPopRC)
@@ -376,8 +403,19 @@ void ByteCode::computeCrc()
     }
 
     crc = crcNoCall;
+}
+
+void ByteCode::computeCrcLocalCalls()
+{
+    crc = crcNoCall;
     for (auto ip : localCalls)
     {
         crc = computeCrc(ip, crc, false, true);
     }
+}
+
+void ByteCode::computeCrc()
+{
+    computeCrcNoCall();
+    computeCrcLocalCalls();
 }

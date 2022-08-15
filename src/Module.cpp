@@ -43,6 +43,7 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
     if (g_CommandLine->buildCfg == "fast-compile")
     {
         buildCfg.byteCodeOptimize         = false;
+        buildCfg.byteCodeRemoveDup        = false;
         buildCfg.byteCodeDebugInline      = false;
         buildCfg.byteCodeInline           = false;
         buildCfg.byteCodeEmitAssume       = true;
@@ -55,6 +56,7 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
     else if (g_CommandLine->buildCfg == "debug")
     {
         buildCfg.byteCodeOptimize         = false;
+        buildCfg.byteCodeRemoveDup        = false;
         buildCfg.byteCodeDebugInline      = true;
         buildCfg.byteCodeInline           = true;
         buildCfg.byteCodeEmitAssume       = true;
@@ -67,6 +69,7 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
     else if (g_CommandLine->buildCfg == "fast-debug")
     {
         buildCfg.byteCodeOptimize         = true;
+        buildCfg.byteCodeRemoveDup        = false;
         buildCfg.byteCodeDebugInline      = false;
         buildCfg.byteCodeInline           = true;
         buildCfg.byteCodeEmitAssume       = true;
@@ -79,6 +82,7 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
     else if (g_CommandLine->buildCfg == "release")
     {
         buildCfg.byteCodeOptimize         = true;
+        buildCfg.byteCodeRemoveDup        = true;
         buildCfg.byteCodeDebugInline      = false;
         buildCfg.byteCodeInline           = true;
         buildCfg.byteCodeEmitAssume       = false;
@@ -94,6 +98,8 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
         buildCfg.byteCodeInline = g_CommandLine->buildCfgInlineBC == "true" ? true : false;
     if (g_CommandLine->buildCfgOptimBC != "default")
         buildCfg.byteCodeOptimize = g_CommandLine->buildCfgOptimBC == "true" ? true : false;
+    if (g_CommandLine->buildCfgRemoveDupBC != "default")
+        buildCfg.byteCodeRemoveDup = g_CommandLine->buildCfgRemoveDupBC == "true" ? true : false;
     if (g_CommandLine->buildCfgDebug != "default")
         buildCfg.backendDebugInformations = g_CommandLine->buildCfgDebug == "true" ? true : false;
     if (g_CommandLine->buildCfgOptimSpeed != "default")
@@ -1044,10 +1050,9 @@ void Module::removeDuplicatedFunctions()
     VectorNative<ByteCode*>            bufGenToTreat;
 
     bufGenToTreat.reserve((uint32_t) byteCodeFuncToGen.size());
-    auto bufGen = byteCodeFuncToGen;
-    byteCodeFuncToGen.clear();
+    auto bufGen = move(byteCodeFuncToGen);
 
-    // First pass : isolate functions that can be filtered
+    // First pass : isolate functions that can be filtered and those that can't
     for (auto one : bufGen)
     {
         if (!one->crc || !one->typeInfoFunc || one->forceEmit)
@@ -1076,59 +1081,89 @@ void Module::removeDuplicatedFunctions()
             }
         }
 
+        // This is a valide candidate
         bufGenToTreat.push_back(one);
     }
 
-    for (auto one : bufGenToTreat)
+    if (bufGenToTreat.empty())
+        return;
+
+    VectorNative<ByteCode*> stage2;
+    while (true)
     {
-        if (one->isDuplicated)
-            continue;
+        bool restart = false;
+        stage2.clear();
 
-        auto it = mapCrcBc.find(one->crc);
-        if (it != mapCrcBc.end())
+        for (auto one : bufGenToTreat)
         {
-            if (one->numInstructions != it->second->numInstructions)
+            auto it = mapCrcBc.find(one->crc);
+            if (it != mapCrcBc.end() && it->second != one)
             {
-                byteCodeFuncToGen.push_back(one);
-                continue;
-            }
+                bool toKick = true;
 
-            auto type0 = one->typeInfoFunc;
-            auto type1 = it->second->typeInfoFunc;
-            if (type0->parameters.size() != type1->parameters.size())
-            {
-                byteCodeFuncToGen.push_back(one);
-                continue;
-            }
-
-            bool abiIsCompatible = true;
-            for (int i = 0; i < type0->parameters.size(); i++)
-            {
-                auto param0 = type0->parameters[i]->typeInfo;
-                auto param1 = type1->parameters[i]->typeInfo;
-                if (param0->isNativeFloat() != param1->isNativeFloat())
+                // Test abi
+                auto type0 = one->typeInfoFunc;
+                auto type1 = it->second->typeInfoFunc;
+                if (type0->parameters.size() != type1->parameters.size())
                 {
-                    abiIsCompatible = false;
-                    break;
+                    toKick = false;
+                }
+
+                for (int i = 0; toKick && i < type0->parameters.size(); i++)
+                {
+                    auto param0 = type0->parameters[i]->typeInfo;
+                    auto param1 = type1->parameters[i]->typeInfo;
+                    if (param0->isNativeFloat() != param1->isNativeFloat())
+                    {
+                        toKick = false;
+                        break;
+                    }
+                }
+
+                // Test content
+                if (!one->areSame(one->out, one->out + one->numInstructions, it->second->out, it->second->out + it->second->numInstructions, false, true))
+                {
+                    toKick = false;
+                }
+
+                if (toKick)
+                {
+                    numKickedFunc++;
+                    one->setCallName(it->second->getCallName());
+                    one->alias = it->second;
+                    restart    = true;
+                    continue;
                 }
             }
-
-            if (abiIsCompatible)
+            else if (it == mapCrcBc.end())
             {
-                numKickedFunc++;
-                one->setCallName(it->second->getCallName());
-                one->alias        = it->second;
-                one->isDuplicated = true;
-                continue;
+                mapCrcBc[one->crc] = one;
             }
+
+            // If the function does not have local calls, then this is it, we are done with her
+            // Otherwise, we put it for stage 2
+            if (one->localCalls.empty())
+                byteCodeFuncToGen.push_back(one);
+            else
+                stage2.push_back(one);
         }
 
-        mapCrcBc[one->crc] = one;
-        byteCodeFuncToGen.push_back(one);
+        if (!restart || stage2.empty())
+        {
+            byteCodeFuncToGen.append(stage2);
+            break;
+        }
+
+        // We recompute the crc of the functions, but only the part that are related to
+        // local calls (by taking care of potential new aliases)
+        for (auto f : stage2)
+            f->computeCrcLocalCalls();
+
+        bufGenToTreat = move(stage2);
     }
 }
 
-void Module::filterOutputFunctions()
+void Module::filterFunctionsToEmit()
 {
     byteCodeFuncToGen.reserve((int) byteCodeFunc.size());
     for (auto bc : byteCodeFunc)
@@ -1138,5 +1173,6 @@ void Module::filterOutputFunctions()
         byteCodeFuncToGen.push_back(bc);
     }
 
-    //removeDuplicatedFunctions();
+    if (buildParameters.buildCfg->byteCodeOptimize && buildParameters.buildCfg->byteCodeRemoveDup)
+        removeDuplicatedFunctions();
 }

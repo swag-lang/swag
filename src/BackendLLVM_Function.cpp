@@ -4178,10 +4178,9 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::LocalCallPop:
         case ByteCodeOp::LocalCallPopRC:
         {
-            auto              funcBC     = (ByteCode*) ip->a.pointer;
-            TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
-
-            auto                       FT = createFunctionTypeLocal(buildParameters, typeFuncBC);
+            auto                       funcBC     = (ByteCode*) ip->a.pointer;
+            TypeInfoFuncAttr*          typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
+            auto                       FT         = createFunctionTypeLocal(buildParameters, typeFuncBC);
             VectorNative<llvm::Value*> fctParams;
             getLocalCallParameters(buildParameters, allocR, allocRR, allocT, fctParams, typeFuncBC, pushRAParams, {});
             builder.CreateCall(modu.getOrInsertFunction(funcBC->getCallName().c_str(), FT), {fctParams.begin(), fctParams.end()});

@@ -17,6 +17,16 @@ struct VectorNative
         memcpy(buffer, other.buffer, count * sizeof(T));
     }
 
+    VectorNative(VectorNative&& other)
+    {
+        buffer          = other.buffer;
+        count           = other.count;
+        allocated       = other.allocated;
+        other.buffer    = nullptr;
+        other.count     = 0;
+        other.allocated = 0;
+    }
+
     ~VectorNative()
     {
         if (buffer)

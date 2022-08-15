@@ -51,7 +51,8 @@ bool ByteCodeOptimizerJob::optimize(ByteCode* bc, bool& restart)
             ByteCodeOptimizer::removeNops(&optContext);
             if (!optContext.allPassesHaveDoneSomething)
             {
-                bc->computeCrc();
+                if (module->buildCfg.byteCodeRemoveDup)
+                    bc->computeCrc();
                 break;
             }
         }

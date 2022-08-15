@@ -102,7 +102,7 @@ void Stats::print()
             g_Log.print("\n");
             g_Log.messageHeaderDot("module", Fmt("%s", m->name.c_str()));
             g_Log.messageHeaderDot("func total", Fmt("%u", m->byteCodeFunc.size()));
-            g_Log.messageHeaderDot("func output", Fmt("%u", m->byteCodeFuncToGen.size()));
+            g_Log.messageHeaderDot("func emit", Fmt("%u", m->byteCodeFuncToGen.size()));
             g_Log.messageHeaderDot("func kicked", Fmt("%u", m->numKickedFunc));
             g_Log.messageHeaderDot("seg constant", Fmt("%s", Utf8::toNiceSize(m->constantSegment.totalCount).c_str()));
             g_Log.messageHeaderDot("seg mutable", Fmt("%s", Utf8::toNiceSize(m->mutableSegment.totalCount).c_str()));

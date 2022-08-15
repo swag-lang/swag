@@ -178,6 +178,7 @@ struct BuildCfg
     // Bytecode
     bool byteCodeOptimize    = true;
     bool byteCodeDebugInline = true;
+    bool byteCodeRemoveDup   = true;
     bool byteCodeEmitAssume  = true;
     bool byteCodeInline      = true;
 
