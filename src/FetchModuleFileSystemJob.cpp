@@ -12,7 +12,11 @@ JobResult FetchModuleFileSystemJob::execute()
 {
     auto dep = module->fetchDep;
 
-    auto depName = Fmt("%s %u.%d.%d", dep->name.c_str(), dep->module->buildCfg.moduleVersion, dep->module->buildCfg.moduleRevision, dep->module->buildCfg.moduleBuildNum);
+    auto depName = Fmt("%s %u.%d.%d",
+                       dep->name.c_str(),
+                       dep->module->buildCfg.moduleVersion,
+                       dep->module->buildCfg.moduleRevision,
+                       dep->module->buildCfg.moduleBuildNum);
     if (collectSourceFiles)
         g_Log.messageHeaderCentered("Copying", depName.c_str());
     else
@@ -20,7 +24,8 @@ JobResult FetchModuleFileSystemJob::execute()
 
     // Collect list of source files
     set<string> srcFiles;
-    OS::visitFilesRec(dep->resolvedLocation, [&](const char* fileName)
+    OS::visitFilesRec(dep->resolvedLocation,
+                      [&](const char* fileName)
                       {
                           auto n = Utf8::normalizePath(fileName + dep->resolvedLocation.length());
 
@@ -39,9 +44,10 @@ JobResult FetchModuleFileSystemJob::execute()
     auto destPath = g_Workspace->dependenciesPath.string();
     destPath += dep->name.c_str();
 
-    // Collect list of dest files if they exist, in order to remove old ones
+    // Collect list of already existing files in the dependency folder, in order to remove old ones if necessary
     vector<string> dstFiles;
-    OS::visitFilesRec(destPath.c_str(), [&](const char* fileName)
+    OS::visitFilesRec(destPath.c_str(),
+                      [&](const char* fileName)
                       {
                           auto n = Utf8::normalizePath(fileName + destPath.length());
 
@@ -52,7 +58,7 @@ JobResult FetchModuleFileSystemJob::execute()
                           dstFiles.push_back(n);
                       });
 
-    // Remove all files in dest folder that are no more in source folder
+    // Remove all files in the dependency folder that are no more in the module source folder
     for (auto f : dstFiles)
     {
         if (srcFiles.find(f) == srcFiles.end())
@@ -68,7 +74,7 @@ JobResult FetchModuleFileSystemJob::execute()
         }
     }
 
-    // Copy all files
+    // Copy all collected files
     error_code errorCode;
     for (auto& f : srcFiles)
     {

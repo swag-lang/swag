@@ -255,17 +255,18 @@ struct Module
     atomic<int> numWarnings          = 0;
     atomic<int> criticalErrors       = 0;
 
+    bool isLocalToWorkspace = false;
+    bool isErrorModule      = false;
+    bool isScriptFile       = false;
+    bool isSwag             = false;
+
     bool addedToBuild         = false;
     bool saveBssValues        = false;
     bool saveMutableValues    = false;
     bool bssCannotChange      = false;
-    bool isSwag               = false;
-    bool isLocalToWorkspace   = false;
     bool dependenciesDone     = false;
     bool mustFetchDep         = false;
     bool wasAddedDep          = false;
-    bool isErrorModule        = false;
-    bool isScriptFile         = false;
     bool acceptsCompileString = true;
     bool acceptsCompileImpl   = true;
 };

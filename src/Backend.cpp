@@ -84,7 +84,10 @@ bool Backend::isUpToDate(uint64_t moreRecentSourceFile, bool invert)
     {
         if (g_CommandLine->rebuildAll)
             return false;
-        if (g_CommandLine->moduleName.empty())
+
+        Utf8 modulePath = Utf8::normalizePath(module->path);
+        Utf8 srcPath    = Utf8::normalizePath(g_Workspace->modulesPath);
+        if (g_CommandLine->moduleName.empty() && modulePath.find(srcPath) == 0)
             return false;
         if (g_CommandLine->moduleName == module->name)
             return false;

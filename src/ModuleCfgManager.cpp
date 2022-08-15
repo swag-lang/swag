@@ -116,7 +116,8 @@ void ModuleCfgManager::enumerateCfgFiles(const fs::path& path)
 {
     vector<SourceFile*> allFiles;
 
-    OS::visitFolders(path.string().c_str(), [&](const char* cFileName)
+    OS::visitFolders(path.string().c_str(),
+                     [&](const char* cFileName)
                      {
                          auto cfgPath = path;
                          cfgPath.append(cFileName);
@@ -127,7 +128,8 @@ void ModuleCfgManager::enumerateCfgFiles(const fs::path& path)
 
                          // Each module must have a SWAG_CFG_FILE at its root, otherwise this is not a valid module
                          if (fs::exists(cfgName))
-                             newCfgFile(allFiles, cfgPath.string(), SWAG_CFG_FILE); });
+                             newCfgFile(allFiles, cfgPath.string(), SWAG_CFG_FILE);
+                     });
 
     // Sort files, and register them in a constant order
     if (!allFiles.empty())
@@ -145,8 +147,7 @@ bool ModuleCfgManager::fetchModuleCfgLocal(ModuleDependency* dep, Utf8& cfgFileP
     remotePath += "/";
     remotePath.append(SWAG_CFG_FILE);
 
-    // No cfg file, we are done, and this is ok, we have found a module without
-    // a specific configuration file. This is legit.
+    // No cfg file, we are done, we need one !
     if (!fs::exists(remotePath))
         return dep->node->sourceFile->report({dep->node, dep->tokenLocation, Fmt(Err(Err0508), SWAG_CFG_FILE, remotePath.c_str())});
 
@@ -301,7 +302,8 @@ bool ModuleCfgManager::resolveModuleDependency(Module* srcModule, ModuleDependen
 
     auto cfgModule = dep->module;
 
-    // If this is the first time, that means that we compare the requested dependency with the local version of the module.
+    // If this is the first time, that means that we compare the requested dependency with the local version of the
+    // module.
     if (!cfgModule->fetchDep)
     {
         cfgModule->fetchDep = dep;
@@ -545,12 +547,14 @@ bool ModuleCfgManager::execute()
         auto cmp = compareVersions(dep->verNum, dep->revNum, dep->buildNum, module->buildCfg.moduleVersion, module->buildCfg.moduleRevision, module->buildCfg.moduleBuildNum);
         if (cmp != CompareVersionResult::EQUAL)
         {
-            Diagnostic diag{dep->node, Fmt(Err(Err0518), dep->name.c_str(), dep->version.c_str(), dep->resolvedLocation.c_str())};
+            Diagnostic diag{dep->node,
+                            Fmt(Err(Err0518), dep->name.c_str(), dep->version.c_str(), dep->resolvedLocation.c_str())};
             dep->node->sourceFile->report(diag);
             ok = false;
         }
 
-        // Compare the fetch version with the original local one. If they do not match, then we must fetch the module content
+        // Compare the fetch version with the original local one. If they do not match, then we must fetch the module
+        // content
         if (!module->wasAddedDep && !module->mustFetchDep)
         {
             cmp = compareVersions(module->localCfgDep.moduleVersion, module->localCfgDep.moduleRevision, module->localCfgDep.moduleBuildNum, module->buildCfg.moduleVersion, module->buildCfg.moduleRevision, module->buildCfg.moduleBuildNum);
@@ -579,12 +583,18 @@ bool ModuleCfgManager::execute()
             if (module->fetchDep && module->fetchDep->fetchKind == DependencyFetchKind::Swag)
                 msg += " [swag]";
             else if (module->mustFetchDep)
-                msg += Fmt(" => version %d.%d.%d is available", module->buildCfg.moduleVersion, module->buildCfg.moduleRevision, module->buildCfg.moduleBuildNum);
+                msg += Fmt(" => version %d.%d.%d is available",
+                           module->buildCfg.moduleVersion,
+                           module->buildCfg.moduleRevision,
+                           module->buildCfg.moduleBuildNum);
             g_Log.messageHeaderDot(module->name, msg);
         }
     }
 
-    // Fetch all modules
+    // Fetch all dependencies in the dependencies/ folder of the workspace
+    // The copy will occur if
+    // 1/ The module is not present (first time)
+    // 2/ The module is present but is not up to date
     //////////////////////////////////////////////////
     if (g_CommandLine->fetchDep)
     {
@@ -598,10 +608,15 @@ bool ModuleCfgManager::execute()
             Job* fetchJob = nullptr;
             switch (m.second->fetchDep->fetchKind)
             {
+                // Copy from the disk, elsewhere
             case DependencyFetchKind::Disk:
                 fetchJob = g_Allocator.alloc<FetchModuleFileSystemJob>();
                 break;
 
+                // This is a dependency to the swag compiler std workspace
+                // No need to make a copy, as we already have the source tree with the compiler
+                // So we create a special dependency file named SWAG_ALIAS_FILENAME which will trick the compiler
+                // That file will contain the path to the corresponding module location
             case DependencyFetchKind::Swag:
             {
                 error_code errorCode;
