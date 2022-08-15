@@ -143,6 +143,7 @@ enum class AstNodeKind : uint8_t
     CompilerCode,
     CompilerDependencies,
     CompilerImport,
+    CompilerInclude,
     CompilerPlaceHolder,
     CompilerSpecialFunction,
     CompilerForeignLib,
@@ -800,6 +801,7 @@ struct AstCompilerIfBlock : public AstNode
     VectorNative<MethodCount> methodsCount;
     VectorNative<AstNode*>    subDecls;
     VectorNative<AstNode*>    imports;
+    VectorNative<AstNode*>    includes;
 
     int numTestErrors   = 0;
     int numTestWarnings = 0;

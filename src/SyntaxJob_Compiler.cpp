@@ -687,6 +687,42 @@ bool SyntaxJob::doCompilerDependencies(AstNode* parent)
     return true;
 }
 
+bool SyntaxJob::doCompilerInclude(AstNode* parent)
+{
+    SWAG_VERIFY(sourceFile->isCfgFile || sourceFile->isScriptFile, sourceFile->report({sourceFile, token, Err(Err0461)}));
+    SWAG_VERIFY(currentScope->isTopLevel(), sourceFile->report({sourceFile, token, Err(Err0363)}));
+
+    // Be sure this is in a '#dependencies' block
+    if (sourceFile->module->kind == ModuleKind::Config)
+    {
+        auto scan = parent;
+        while (scan)
+        {
+            if (scan->kind == AstNodeKind::CompilerDependencies)
+                break;
+            scan = scan->parent;
+        }
+        SWAG_VERIFY(scan, sourceFile->report({sourceFile, token, Err(Err0247)}));
+    }
+
+    auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerInclude, sourceFile, parent);
+    SWAG_CHECK(eatToken());
+    SWAG_VERIFY(token.id == TokenId::LiteralString, sourceFile->report({sourceFile, token, Err(Err0479)}));
+    node->inheritTokenName(token);
+    node->inheritTokenLocation(token);
+    SWAG_CHECK(eatToken());
+
+    SWAG_CHECK(eatSemiCol("`#include` expression"));
+    if (sourceFile->module->kind == ModuleKind::Config)
+    {
+        if (node->ownerCompilerIfBlock)
+            node->ownerCompilerIfBlock->includes.push_back(node);
+        SWAG_CHECK(sourceFile->module->addInclude(node));
+    }
+
+    return true;
+}
+
 bool SyntaxJob::doCompilerImport(AstNode* parent)
 {
     SWAG_VERIFY(sourceFile->isGenerated || sourceFile->isCfgFile || sourceFile->isScriptFile, sourceFile->report({sourceFile, token, Err(Err0377)}));

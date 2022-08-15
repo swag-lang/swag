@@ -568,6 +568,20 @@ void Module::addForeignLib(const Utf8& text)
     buildParameters.foreignLibs.insert(text);
 }
 
+bool Module::addInclude(AstNode* includeNode)
+{
+    ScopedLock lk(mutexDependency);
+    includes.push_back(includeNode);
+    return true;
+}
+
+bool Module::removeInclude(AstNode* includeNode)
+{
+    ScopedLock lk(mutexDependency);
+    includes.erase_unordered_byval(includeNode);
+    return true;
+}
+
 bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, const Token& tokenVersion)
 {
     ScopedLock lk(mutexDependency);

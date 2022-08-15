@@ -241,6 +241,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("#swagos", TokenId::CompilerSwagOs);
     keywords.add("#dependencies", TokenId::CompilerDependencies);
     keywords.add("#import", TokenId::CompilerImport);
+    keywords.add("#include", TokenId::CompilerInclude);
     keywords.add("#test", TokenId::CompilerFuncTest);
     keywords.add("#init", TokenId::CompilerFuncInit);
     keywords.add("#premain", TokenId::CompilerFuncPreMain);

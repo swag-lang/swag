@@ -113,6 +113,7 @@ struct SyntaxJob : public Job
     bool doIntrinsicDefined(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerLoad(AstNode* parent, AstNode** result = nullptr);
     bool doCompilerDependencies(AstNode* parent);
+    bool doCompilerInclude(AstNode* parent);
     bool doCompilerImport(AstNode* parent);
     bool doCompilerPlaceHolder(AstNode* parent);
     bool doTopLevelInstruction(AstNode* parent, AstNode** result = nullptr);

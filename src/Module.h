@@ -146,6 +146,8 @@ struct Module
     TypeInfoFuncAttr* getRuntimeTypeFct(const Utf8& fctName);
     ByteCode*         getRuntimeFct(const Utf8& fctName);
 
+    bool addInclude(AstNode* includeNode);
+    bool removeInclude(AstNode* includeNode);
     bool addDependency(AstNode* importNode, const Token& tokenLocation, const Token& tokenVersion);
     bool removeDependency(AstNode* importNode);
     bool hasDependencyTo(Module* module);
@@ -215,6 +217,7 @@ struct Module
     VectorNative<ByteCode*>                          byteCodeRunFunc;
     VectorNative<ByteCode*>                          byteCodePrintBC;
     VectorNative<ModuleDependency*>                  moduleDependencies;
+    VectorNative<AstNode*>                           includes;
     VectorNative<AstNode*>                           globalVarsBss;
     VectorNative<AstNode*>                           globalVarsMutable;
     VectorNative<AstNode*>                           globalVarsConstant;

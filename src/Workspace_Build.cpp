@@ -109,6 +109,7 @@ Module* Workspace::createOrUseModule(const Utf8& moduleName, const Utf8& moduleP
         module->buildParameters.foreignLibs = cfgModule->buildParameters.foreignLibs;
         module->buildParameters.globalUsing = cfgModule->buildParameters.globalUsing;
         module->moduleDependencies          = cfgModule->moduleDependencies;
+        module->includes                    = cfgModule->includes;
     }
 
     // Is this the module we want to build ?
@@ -688,6 +689,8 @@ bool Workspace::buildTarget()
     enumJob1->readFileMode = false;
     g_ThreadMgr.addJob(enumJob1);
     g_ThreadMgr.waitEndJobs();
+    if (g_Workspace->numErrors)
+        return false;
 
     // Filter modules to build
     //////////////////////////////////////////////////

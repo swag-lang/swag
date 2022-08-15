@@ -7,6 +7,9 @@
 #include "LoadSourceFileJob.h"
 #include "ThreadManager.h"
 #include "SyntaxJob.h"
+#include "AstNode.h"
+#include "Diagnostic.h"
+#include "ErrorIds.h"
 
 SourceFile* EnumerateModuleJob::addFileToModule(Module* theModule, vector<SourceFile*>& allFiles, string dirName, string fileName, uint64_t writeTime, SourceFile* prePass)
 {
@@ -57,6 +60,54 @@ SourceFile* EnumerateModuleJob::addFileToModule(Module* theModule, vector<Source
     return file;
 }
 
+bool EnumerateModuleJob::dealWithIncludes(Module* theModule)
+{
+    vector<SourceFile*> allFiles;
+
+    // Treat includes
+    for (auto n : theModule->includes)
+    {
+        fs::path orgFilePath = n->token.text.c_str();
+
+        // Is this a simple file ?
+        if (orgFilePath.extension() == ".swg")
+        {
+            auto filePath = orgFilePath;
+            if (!fs::exists(filePath))
+            {
+                filePath = theModule->path;
+                filePath.append(orgFilePath.string());
+                filePath = fs::absolute(filePath).string();
+                error_code errorCode;
+                auto       filePath1 = fs::canonical(filePath, errorCode).string();
+                if (!errorCode)
+                    filePath = filePath1;
+                if (!fs::exists(filePath))
+                {
+                    Diagnostic diag{n->sourceFile, n->token, Fmt(Err(Err0304), n->token.text.c_str())};
+                    n->sourceFile->report(diag);
+                    return false;
+                }
+            }
+
+            auto fileName  = filePath.filename().string();
+            auto writeTime = OS::getFileWriteTime(filePath.string().c_str());
+            addFileToModule(theModule, allFiles, fs::path(filePath.c_str()).parent_path().string(), fileName, writeTime);
+        }
+    }
+
+    // Sort files, and register them in a constant order
+    if (!allFiles.empty())
+    {
+        sort(allFiles.begin(), allFiles.end(), [](SourceFile* a, SourceFile* b)
+             { return strcmp(a->name.c_str(), b->name.c_str()) == -1; });
+        for (auto file : allFiles)
+            theModule->addFile(file);
+    }
+
+    return true;
+}
+
 void EnumerateModuleJob::enumerateFilesInModule(const fs::path& basePath, Module* theModule)
 {
     vector<SourceFile*> allFiles;
@@ -66,6 +117,9 @@ void EnumerateModuleJob::enumerateFilesInModule(const fs::path& basePath, Module
     path += "/";
     path += SWAG_SRC_FOLDER;
     path += "/";
+
+    if (!dealWithIncludes(theModule))
+        return;
 
     // Is the list of files already computed ?
     auto it = g_Workspace->mapFirstPassModulesNames.find(path.string());
@@ -292,6 +346,9 @@ JobResult EnumerateModuleJob::execute()
         scriptModule->isScriptFile = true;
         scriptModule->addFile(file);
         g_Workspace->runModule = scriptModule;
+
+        if (!dealWithIncludes(scriptModule))
+            return JobResult::ReleaseJob;
     }
 
     return JobResult::ReleaseJob;
