@@ -148,8 +148,6 @@ struct ByteCode
     void addCallStack(ByteCodeRunContext* context);
     void enterByteCode(ByteCodeRunContext* context, uint32_t popParamsOnRet = 0, uint32_t returnRegOnRet = UINT32_MAX, uint32_t incSPPostCall = 0);
     void leaveByteCode(ByteCodeRunContext* context, bool popCallStack = true);
-    void markLabels();
-    bool isDoingNothing();
 
     static void* doForeignLambda(void* ptr);
     static bool  isForeignLambda(void* ptr);
@@ -157,6 +155,7 @@ struct ByteCode
     static void* doByteCodeLambda(void* ptr);
     static void* undoByteCodeLambda(void* ptr);
     static bool  isByteCodeLambda(void* ptr);
+    static void  getLocation(ByteCode* bc, ByteCodeInstruction* ip, SourceFile** file, SourceLocation** location, bool force = false);
 
     void              printSourceCode(ByteCodeInstruction* ip, uint32_t* lastLine = nullptr, SourceFile** lastFile = nullptr);
     void              printPrettyInstruction(ByteCodeInstruction* ip);
@@ -167,7 +166,12 @@ struct ByteCode
     Utf8              getCallName();
     TypeInfoFuncAttr* getCallType();
     bool              canEmit();
-    static void       getLocation(ByteCode* bc, ByteCodeInstruction* ip, SourceFile** file, SourceLocation** location, bool force = false);
+    void              markLabels();
+    bool              isDoingNothing();
+
+    bool     areSame(ByteCodeInstruction* start0, ByteCodeInstruction* end0, ByteCodeInstruction* start1, ByteCodeInstruction* end1, bool specialJump, bool specialCall);
+    uint32_t computeCrc(ByteCodeInstruction* ip, uint32_t oldCrc, bool specialJump, bool specialCall);
+    void     computeCrc();
 
     VectorNative<uint32_t>            availableRegistersRC;
     VectorNative<pair<void*, size_t>> autoFree;
@@ -182,6 +186,7 @@ struct ByteCode
     SourceFile*          sourceFile   = nullptr;
     TypeInfoFuncAttr*    typeInfoFunc = nullptr;
     AstNode*             node         = nullptr;
+    ByteCode*            alias        = nullptr;
 
     uint32_t numInstructions       = 0;
     uint32_t maxInstructions       = 0;
@@ -190,6 +195,7 @@ struct ByteCode
     uint32_t maxSPVaargs           = 0;
     uint32_t maxReservedRegisterRC = 0;
     uint32_t numJumps              = 0;
+    uint32_t crcNoCall             = 0;
     uint32_t crc                   = 0;
     uint32_t registerGetContext    = UINT32_MAX;
 

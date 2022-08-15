@@ -1041,15 +1041,15 @@ void Module::logStage(const char* msg)
 void Module::removeDuplicatedFunctions()
 {
     unordered_map<uint32_t, ByteCode*> mapCrcBc;
+    VectorNative<ByteCode*>            bufGenToTreat;
 
+    bufGenToTreat.reserve((uint32_t) byteCodeFuncToGen.size());
     auto bufGen = byteCodeFuncToGen;
     byteCodeFuncToGen.clear();
 
+    // First pass : isolate functions that can be filtered
     for (auto one : bufGen)
     {
-        if (one->isDuplicated)
-            continue;
-
         if (!one->crc || !one->typeInfoFunc || one->forceEmit)
         {
             byteCodeFuncToGen.push_back(one);
@@ -1075,6 +1075,14 @@ void Module::removeDuplicatedFunctions()
                 continue;
             }
         }
+
+        bufGenToTreat.push_back(one);
+    }
+
+    for (auto one : bufGenToTreat)
+    {
+        if (one->isDuplicated)
+            continue;
 
         auto it = mapCrcBc.find(one->crc);
         if (it != mapCrcBc.end())
@@ -1109,6 +1117,7 @@ void Module::removeDuplicatedFunctions()
             {
                 numKickedFunc++;
                 one->setCallName(it->second->getCallName());
+                one->alias        = it->second;
                 one->isDuplicated = true;
                 continue;
             }

@@ -7,6 +7,7 @@
 #include "ErrorIds.h"
 #include "Diagnostic.h"
 #include "Backend.h"
+#include "Hash.h"
 
 #undef BYTECODE_OP
 #define BYTECODE_OP(__op, __flags, __dis, __nump) {#__op, (int) strlen(#__op), __flags, __dis, __nump},
@@ -272,4 +273,111 @@ bool ByteCode::canEmit()
         return false;
 
     return true;
+}
+
+bool ByteCode::areSame(ByteCodeInstruction* start0, ByteCodeInstruction* end0, ByteCodeInstruction* start1, ByteCodeInstruction* end1, bool specialJump, bool specialCall)
+{
+    bool                 same = end0 - start0 == end1 - start1;
+    ByteCodeInstruction* ip0  = start0;
+    ByteCodeInstruction* ip1  = start1;
+    while (same && ip0 != end0)
+    {
+        if (ip0->op != ip1->op)
+            same = false;
+        else if (ip0->flags != ip1->flags)
+            same = false;
+
+        if (ByteCode::hasSomethingInC(ip0) && ip0->c.u64 != ip1->c.u64)
+            same = false;
+        if (ByteCode::hasSomethingInD(ip0) && ip0->d.u64 != ip1->d.u64)
+            same = false;
+
+        // Compare if the 2 bytes codes or their alias are the same
+        if (specialCall && (ip0->op == ByteCodeOp::LocalCall || ip0->op == ByteCodeOp::LocalCallPop || ip0->op == ByteCodeOp::LocalCallPopRC))
+        {
+            ByteCode* bc0 = (ByteCode*) ip0->a.u64;
+            ByteCode* bc1 = (ByteCode*) ip1->a.u64;
+            if (bc0 && bc0->alias)
+                bc0 = bc0->alias;
+            if (bc1 && bc1->alias)
+                bc1 = bc1->alias;
+            if (bc0 != bc1)
+                same = false;
+        }
+        else if (ByteCode::hasSomethingInA(ip0) && ip0->a.u64 != ip1->a.u64)
+            same = false;
+
+        // Compare if the 2 jump destinations are the same
+        if (specialJump && ip0->op == ByteCodeOp::Jump)
+        {
+            auto destIp0 = ip0 + ip0->b.s32 + 1;
+            auto destIp1 = ip1 + ip1->b.s32 + 1;
+            if (destIp0 != destIp1)
+                same = false;
+        }
+        else if (ByteCode::hasSomethingInB(ip0) && ip0->b.u64 != ip1->b.u64)
+            same = false;
+
+        ip0++;
+        ip1++;
+    }
+
+    return same;
+}
+
+uint32_t ByteCode::computeCrc(ByteCodeInstruction* ip, uint32_t oldCrc, bool specialJump, bool specialCall)
+{
+    oldCrc = Crc32::compute((const uint8_t*) &ip->op, sizeof(ip->op), oldCrc);
+    oldCrc = Crc32::compute((const uint8_t*) &ip->flags, sizeof(ip->flags), oldCrc);
+
+    if (ByteCode::hasSomethingInC(ip))
+        oldCrc = Crc32::compute((const uint8_t*) &ip->c.u64, sizeof(ip->c.u64), oldCrc);
+    if (ByteCode::hasSomethingInD(ip))
+        oldCrc = Crc32::compute((const uint8_t*) &ip->d.u64, sizeof(ip->d.u64), oldCrc);
+
+    // Special call. We add the alias if it exitsts instead of the called bytecode
+    if (specialCall && (ip->op == ByteCodeOp::LocalCall || ip->op == ByteCodeOp::LocalCallPop || ip->op == ByteCodeOp::LocalCallPopRC))
+    {
+        ByteCode* bc = (ByteCode*) ip->a.u64;
+        if (bc && bc->alias)
+            oldCrc = Crc32::compute((const uint8_t*) &bc->alias, sizeof(bc->alias), oldCrc);
+        else
+            oldCrc = Crc32::compute((const uint8_t*) &bc, sizeof(bc), oldCrc);
+    }
+    else if (ByteCode::hasSomethingInA(ip))
+        oldCrc = Crc32::compute((const uint8_t*) &ip->a.u64, sizeof(ip->a.u64), oldCrc);
+
+    // For a jump, we compute the crc to go the the destination (if two jump nodes
+    // are going to the same instruction, then we consider they are equal)
+    if (specialJump && ip->op == ByteCodeOp::Jump)
+    {
+        auto destIp = ip + ip->b.s32 + 1;
+        auto destN  = destIp - out;
+        oldCrc      = Crc32::compute((const uint8_t*) &destN, sizeof(destN), oldCrc);
+    }
+    else if (ByteCode::hasSomethingInB(ip))
+        oldCrc = Crc32::compute((const uint8_t*) &ip->b.u64, sizeof(ip->b.u64), oldCrc);
+
+    return oldCrc;
+}
+
+void ByteCode::computeCrc()
+{
+    crcNoCall = 0;
+    crc       = 0;
+
+    VectorNative<ByteCodeInstruction*> localCalls;
+    for (auto ip = out; ip->op != ByteCodeOp::End; ip++)
+    {
+        if (ip->op == ByteCodeOp::LocalCall || ip->op == ByteCodeOp::LocalCallPop || ip->op == ByteCodeOp::LocalCallPopRC)
+            localCalls.push_back(ip);
+        else
+            crcNoCall = computeCrc(ip, crcNoCall, false, false);
+    }
+
+    crc = crcNoCall;
+    for (auto ip : localCalls)
+    {
+        crc = computeCrc(ip, crc, false, true);
+    }
 }

@@ -50,7 +50,10 @@ bool ByteCodeOptimizerJob::optimize(ByteCode* bc, bool& restart)
             OPT_PASS(ByteCodeOptimizer::optimizePassReduceX2);
             ByteCodeOptimizer::removeNops(&optContext);
             if (!optContext.allPassesHaveDoneSomething)
+            {
+                bc->computeCrc();
                 break;
+            }
         }
 
         restart = true;
