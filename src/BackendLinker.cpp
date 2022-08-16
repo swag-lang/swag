@@ -33,10 +33,18 @@ namespace BackendLinker
                 g_Log.lock();
                 for (auto& l : subNames)
                 {
-                    if (strstr(l.c_str(), ": error"))
+                    auto pze = strstr(l.c_str(), ": error:");
+                    if (pze)
                     {
                         errCount++;
                         g_Log.setColor(LogColor::Red);
+                        if (module)
+                        {
+                            Utf8 l2 = pze + 8;
+                            l2.trim();
+                            auto l1 = Fmt("linker error: module '%s': %s", module->name.c_str(), l2.c_str());
+                            l       = l1;
+                        }
                     }
                     else
                         g_Log.setColor(LogColor::Gray);
