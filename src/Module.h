@@ -59,6 +59,8 @@ struct ModuleDependency
     Module*             module             = nullptr;
     bool                importDone         = false;
     bool                isLocalToWorkspace = false;
+    bool                embbed             = false;
+    bool                embbedRec          = false;
     DependencyFetchKind fetchKind          = DependencyFetchKind::Invalid;
 };
 
@@ -148,7 +150,7 @@ struct Module
 
     bool addInclude(AstNode* includeNode);
     bool removeInclude(AstNode* includeNode);
-    bool addDependency(AstNode* importNode, const Token& tokenLocation, const Token& tokenVersion);
+    bool addDependency(AstNode* importNode, const Token& tokenLocation, const Token& tokenVersion, bool embbed, bool embbedRec);
     bool removeDependency(AstNode* importNode);
     bool hasDependencyTo(Module* module);
     void sortDependenciesByInitOrder(VectorNative<ModuleDependency*>& result);
@@ -221,6 +223,7 @@ struct Module
     VectorNative<AstNode*>                           globalVarsBss;
     VectorNative<AstNode*>                           globalVarsMutable;
     VectorNative<AstNode*>                           globalVarsConstant;
+    VectorNative<Module*>                            embbedModules;
     vector<CompilerMessage>                          compilerMessages[2];
     set<SourceFile*>                                 exportSourceFiles;
     map<Utf8, ByteCode*>                             mapRuntimeFcts;

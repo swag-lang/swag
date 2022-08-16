@@ -11,11 +11,12 @@
 #include "Diagnostic.h"
 #include "ErrorIds.h"
 
-SourceFile* EnumerateModuleJob::addFileToModule(Module* theModule, vector<SourceFile*>& allFiles, string dirName, string fileName, uint64_t writeTime, SourceFile* prePass)
+SourceFile* EnumerateModuleJob::addFileToModule(Module* theModule, vector<SourceFile*>& allFiles, string dirName, string fileName, uint64_t writeTime, SourceFile* prePass, Module* imported)
 {
     auto file       = g_Allocator.alloc<SourceFile>();
     file->fromTests = theModule->kind == ModuleKind::Test;
     file->name      = fileName;
+    file->imported  = imported;
 
     if (prePass)
     {
@@ -346,6 +347,70 @@ JobResult EnumerateModuleJob::execute()
 
         if (!dealWithIncludes(scriptModule))
             return JobResult::ReleaseJob;
+    }
+
+    // Deal with embbeded modules
+    for (auto m : g_Workspace->modules)
+    {
+        vector<SourceFile*>             allFiles;
+        VectorNative<ModuleDependency*> toKeep;
+        for (int i = (int) m->moduleDependencies.size() - 1; i >= 0; i--)
+        {
+            auto dep = m->moduleDependencies[i];
+            if (!dep->embbed)
+            {
+                toKeep.push_back(dep);
+                continue;
+            }
+
+            auto mod = g_Workspace->getModuleByName(dep->name);
+            if (!mod)
+            {
+                toKeep.push_back(dep);
+                continue;
+            }
+
+            m->embbedModules.push_back(mod);
+
+            for (auto f : mod->files)
+            {
+                if (f->isCfgFile)
+                    continue;
+                addFileToModule(m, allFiles, fs::path(f->path).parent_path().string(), f->name.c_str(), f->writeTime, nullptr, mod);
+            }
+
+            // Add the dependencies of the embedded module too
+            for (auto otherDep : mod->moduleDependencies)
+            {
+                auto cpt = m->moduleDependencies.size();
+
+                if (!m->addDependency(otherDep->node, otherDep->tokenLocation, otherDep->tokenVersion, otherDep->embbed || dep->embbedRec, dep->embbedRec))
+                    return JobResult::ReleaseJob;
+
+                if (m->moduleDependencies.size() > cpt)
+                {
+                    auto cfgModule = g_ModuleCfgMgr->getCfgModule(mod->name);
+
+                    // :GetCfgFileParams
+                    for (const auto& fl : cfgModule->buildParameters.foreignLibs)
+                        m->buildParameters.foreignLibs.insert(fl);
+
+                    i++;
+                }
+            }
+        }
+
+        // Sort files, and register them in a constant order
+        if (!allFiles.empty())
+        {
+            sort(allFiles.begin(), allFiles.end(), [](SourceFile* a, SourceFile* b)
+                 { return strcmp(a->name.c_str(), b->name.c_str()) == -1; });
+            for (auto file : allFiles)
+                m->addFile(file);
+        }
+
+        m->moduleDependencies.clear();
+        m->moduleDependencies.append(toKeep);
     }
 
     return JobResult::ReleaseJob;

@@ -105,6 +105,7 @@ Module* Workspace::createOrUseModule(const Utf8& moduleName, const Utf8& moduleP
     auto cfgModule = g_ModuleCfgMgr->getCfgModule(moduleName);
     if (cfgModule)
     {
+        // :GetCfgFileParams
         module->buildCfg                    = cfgModule->buildCfg;
         module->buildParameters.foreignLibs = cfgModule->buildParameters.foreignLibs;
         module->buildParameters.globalUsing = cfgModule->buildParameters.globalUsing;

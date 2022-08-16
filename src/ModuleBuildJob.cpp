@@ -72,7 +72,14 @@ void ModuleBuildJob::publishFilesToPublic()
 
 void ModuleBuildJob::publishFilesToTarget()
 {
-    string publishPath = module->path + "/";
+    publishFilesToTarget(module);
+    for (auto m : module->embbedModules)
+        publishFilesToTarget(m);
+}
+
+void ModuleBuildJob::publishFilesToTarget(Module* moduleToPublish)
+{
+    string publishPath = moduleToPublish->path + "/";
     publishPath += SWAG_PUBLISH_FOLDER;
     if (!fs::exists(publishPath))
         return;

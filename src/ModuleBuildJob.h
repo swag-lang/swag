@@ -30,6 +30,7 @@ struct ModuleBuildJob : public Job
     void      release() override;
     bool      loadDependency(ModuleDependency* dep);
     void      publishFilesToTarget();
+    void      publishFilesToTarget(Module* moduleToPublish);
     void      publishFilesToPublic();
     void      checkMissingErrors();
     JobResult execute() override;

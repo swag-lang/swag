@@ -5,7 +5,7 @@ struct EnumerateModuleJob : public Job
 {
     JobResult execute() override;
 
-    SourceFile* addFileToModule(Module* theModule, vector<SourceFile*>& allFiles, string dirName, string fileName, uint64_t writeTime, SourceFile* prePass = nullptr);
+    SourceFile* addFileToModule(Module* theModule, vector<SourceFile*>& allFiles, string dirName, string fileName, uint64_t writeTime, SourceFile* prePass = nullptr, Module* imported = nullptr);
     bool        dealWithIncludes(Module* theModule);
     void        enumerateFilesInModule(const fs::path& basePath, Module* module);
     void        loadFilesInModules(const fs::path& path);

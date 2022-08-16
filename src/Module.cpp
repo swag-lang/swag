@@ -582,7 +582,7 @@ bool Module::removeInclude(AstNode* includeNode)
     return true;
 }
 
-bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, const Token& tokenVersion)
+bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, const Token& tokenVersion, bool embbed, bool embbedRec)
 {
     ScopedLock lk(mutexDependency);
     for (auto& dep : moduleDependencies)
@@ -614,6 +614,8 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
     dep->version          = tokenVersion.text.empty() ? "?.?.?" : tokenVersion.text;
     dep->tokenLocation    = tokenLocation;
     dep->tokenVersion     = tokenVersion;
+    dep->embbed           = embbed;
+    dep->embbedRec        = embbedRec;
     moduleDependencies.push_front(dep);
 
     // Check version

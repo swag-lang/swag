@@ -123,6 +123,8 @@ void LanguageSpec::setupNames()
     name_testwarnings = "testwarnings";
     name_location     = "location";
     name_version      = "version";
+    name_embbed       = "embbed";
+    name_embbedrec    = "embbedrec";
 
     name_safe    = "safe";
     name_small   = "small";

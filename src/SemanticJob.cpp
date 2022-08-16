@@ -199,6 +199,7 @@ JobResult SemanticJob::execute()
     if (!originalNode)
     {
         originalNode = nodes.front();
+        SWAG_ASSERT(originalNode);
 
         canSpawn = originalNode->kind == AstNodeKind::Impl ||
                    originalNode->kind == AstNodeKind::File ||

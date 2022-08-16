@@ -145,6 +145,8 @@ struct LanguageSpec
     Utf8 name_testwarnings;
     Utf8 name_location;
     Utf8 name_version;
+    Utf8 name_embbed;
+    Utf8 name_embbedrec;
 
     Utf8 name_safe;
     Utf8 name_small;
