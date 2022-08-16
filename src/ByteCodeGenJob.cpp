@@ -678,25 +678,6 @@ JobResult ByteCodeGenJob::execute()
             getDependantCalls(originalNode, dependentNodes);
             dependentNodesTmp = dependentNodes;
 
-            if (context.bc)
-            {
-                auto ip = context.bc->out;
-                for (uint32_t i = 0; i < context.bc->numInstructions; i++, ip++)
-                {
-                    if (ip->op == ByteCodeOp::ForeignCall)
-                    {
-                        context.bc->hasForeignFunctionCalls = true;
-                        break;
-                    }
-
-                    if (ip->op == ByteCodeOp::LambdaCall)
-                    {
-                        context.bc->hasForeignFunctionCalls = true;
-                        break;
-                    }
-                }
-            }
-
             originalNode->semFlags |= AST_SEM_BYTECODE_GENERATED;
             dependentJobs.setRunning();
         }
@@ -728,6 +709,14 @@ JobResult ByteCodeGenJob::execute()
                 }
             }
 
+            // Propagate hasForeignFunctionCalls
+            if (context.bc)
+            {
+                SWAG_ASSERT(node->extension && node->extension->bc);
+                if (node->extension->bc->hasForeignFunctionCalls)
+                    context.bc->hasForeignFunctionCalls = true;
+            }
+
             // Deal with registered dependent nodes, by adding them to the list
             dependentNodesTmp.pop_back();
             if (node == originalNode)
@@ -750,20 +739,6 @@ JobResult ByteCodeGenJob::execute()
         }
 
         pass = Pass::ComputeDependenciesResolved;
-    }
-
-    // Compute if there's a foreign call dependency
-    if (context.bc)
-    {
-        for (auto n : dependentNodes)
-        {
-            SWAG_ASSERT(n->extension && n->extension->bc);
-            if (n->extension->bc->hasForeignFunctionCalls)
-            {
-                context.bc->hasForeignFunctionCalls = true;
-                break;
-            }
-        }
     }
 
     // Inform dependencies that everything is done
