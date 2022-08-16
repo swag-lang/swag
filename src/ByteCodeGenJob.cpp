@@ -660,7 +660,6 @@ JobResult ByteCodeGenJob::execute()
 
         // Byte code is generated (but not yet resolved, as we need all dependencies to be resolved too)
         {
-            // Make one optimization
             if (context.bc &&
                 context.bc->node &&
                 context.bc->node->kind == AstNodeKind::FuncDecl)
@@ -671,17 +670,6 @@ JobResult ByteCodeGenJob::execute()
                 {
                     context.bc->registerGetContext = funcNode->registerGetContext;
                     freeRegisterRC(&context, context.bc->registerGetContext);
-                }
-
-                if (!funcNode->sourceFile->numTestErrors)
-                {
-                    if (sourceFile->module->kind != ModuleKind::BootStrap && sourceFile->module->kind != ModuleKind::Runtime)
-                    {
-                        ByteCodeOptimizerJob opt;
-                        bool                 restart;
-                        opt.module = module;
-                        opt.optimize(context.bc, restart);
-                    }
                 }
             }
 

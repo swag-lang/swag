@@ -366,18 +366,32 @@ bool ByteCodeOptimizer::optimize(Job* job, Module* module, bool& done)
     if (module->optimPass == 0)
     {
         module->optimNeedRestart.store(0);
-        auto count     = (int) module->byteCodeFunc.size() / g_Stats.numWorkers;
-        count          = max(count, 1);
-        count          = min(count, (int) module->byteCodeFunc.size());
+
+        // Divide so that each job as the quite same amout of bytecode to optimize
+        uint32_t totalInstructions = 0;
+        for (auto bc : module->byteCodeFunc)
+            totalInstructions += bc->numInstructions;
+        totalInstructions /= (g_Stats.numWorkers * 4);
+        totalInstructions = max(totalInstructions, 1);
+
         int startIndex = 0;
         while (startIndex < module->byteCodeFunc.size())
         {
             auto newJob          = g_Allocator.alloc<ByteCodeOptimizerJob>();
             newJob->module       = module;
-            newJob->startIndex   = startIndex;
-            newJob->endIndex     = min(startIndex + count, (int) module->byteCodeFunc.size());
             newJob->dependentJob = job;
-            startIndex += count;
+            newJob->startIndex   = startIndex;
+            newJob->endIndex     = min(startIndex + 1, (int) module->byteCodeFunc.size());
+            startIndex           = newJob->endIndex;
+
+            auto curInst = module->byteCodeFunc[newJob->startIndex]->numInstructions;
+            while (curInst < totalInstructions && newJob->endIndex + 1 < (int) module->byteCodeFunc.size())
+            {
+                curInst += module->byteCodeFunc[newJob->endIndex]->numInstructions;
+                newJob->endIndex++;
+                startIndex = newJob->endIndex;
+            }
+
             if (job)
                 job->jobsToAdd.push_back(newJob);
             else

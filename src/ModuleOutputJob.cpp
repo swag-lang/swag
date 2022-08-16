@@ -24,7 +24,6 @@ JobResult ModuleOutputJob::execute()
         exportJob->backend      = module->backend;
         exportJob->dependentJob = this;
         jobsToAdd.push_back(exportJob);
-        return JobResult::KeepJobAlive;
     }
 
     if (pass == ModuleOutputJobPass::PrepareOutputStage1)
@@ -109,22 +108,22 @@ JobResult ModuleOutputJob::execute()
             // Precompile a specific version, to test it
             if (module->mustGenerateTestExe())
             {
-                auto preCompileJob = g_Allocator.alloc<ModulePrepOutputStage2Job>();
-                preCompileJob->module = module;
-                preCompileJob->dependentJob = this;
-                preCompileJob->buildParameters = module->buildParameters;
+                auto preCompileJob                             = g_Allocator.alloc<ModulePrepOutputStage2Job>();
+                preCompileJob->module                          = module;
+                preCompileJob->dependentJob                    = this;
+                preCompileJob->buildParameters                 = module->buildParameters;
                 preCompileJob->buildParameters.precompileIndex = i;
-                preCompileJob->buildParameters.compileType = BackendCompileType::Test;
+                preCompileJob->buildParameters.compileType     = BackendCompileType::Test;
                 jobsToAdd.push_back(preCompileJob);
             }
 
             // Precompile the normal version
             if (module->canGenerateLegit())
             {
-                auto preCompileJob = g_Allocator.alloc<ModulePrepOutputStage2Job>();
-                preCompileJob->module = module;
-                preCompileJob->dependentJob = this;
-                preCompileJob->buildParameters = module->buildParameters;
+                auto preCompileJob                             = g_Allocator.alloc<ModulePrepOutputStage2Job>();
+                preCompileJob->module                          = module;
+                preCompileJob->dependentJob                    = this;
+                preCompileJob->buildParameters                 = module->buildParameters;
                 preCompileJob->buildParameters.precompileIndex = i;
                 if (module->kind == ModuleKind::Test)
                     preCompileJob->buildParameters.compileType = BackendCompileType::Test;

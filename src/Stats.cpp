@@ -56,7 +56,7 @@ void Stats::print()
         g_Log.messageHeaderDot("run time", Fmt("%.3fs", OS::timerToSeconds(runTime.load())));
         g_Log.messageHeaderDot("run test time", Fmt("%.3fs", OS::timerToSeconds(runTestTime.load())));
         g_Log.messageHeaderDot("prep out 1 time", Fmt("%.3fs (genfunc: %.3fs)", OS::timerToSeconds(prepOutputStage1TimeJob.load()), OS::timerToSeconds(prepOutputTimeJob_GenFunc.load())));
-        g_Log.messageHeaderDot("prep out 2 time", Fmt("%.3fs (saveobj: %.3fs)", OS::timerToSeconds(prepOutputStage1TimeJob.load()), OS::timerToSeconds(prepOutputTimeJob_SaveObj.load())));
+        g_Log.messageHeaderDot("prep out 2 time", Fmt("%.3fs (saveobj: %.3fs)", OS::timerToSeconds(prepOutputStage2TimeJob.load()), OS::timerToSeconds(prepOutputTimeJob_SaveObj.load())));
         g_Log.messageHeaderDot("gen out time", Fmt("%.3fs", OS::timerToSeconds(genOutputTimeJob.load())));
         g_Log.messageHeaderDot("optim bc time", Fmt("%.3fs", OS::timerToSeconds(optimBCTime.load())));
         g_Log.messageHeaderDot("alloc time", Fmt("%.3fs", OS::timerToSeconds(allocTime.load())));

@@ -16,7 +16,6 @@ enum class ModuleBuildPass
     BeforeCompilerMessagesPass1,
     AfterSemantic,
     WaitForDependencies,
-    WaitForDependenciesEffective,
     OptimizeBc,
     Publish,
     SemanticModule,

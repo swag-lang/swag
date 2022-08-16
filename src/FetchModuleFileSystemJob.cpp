@@ -2,7 +2,7 @@
 #include "Module.h"
 #include "FetchModuleFileSystemJob.h"
 #include "Workspace.h"
-#include "CopyFileJob.h"
+#include "FileJob.h"
 #include "ThreadManager.h"
 #include "ErrorIds.h"
 #include "Os.h"

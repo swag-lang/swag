@@ -284,16 +284,13 @@
     <ClCompile Include="../src/LanguageSpec.cpp">
       <Filter>Tokenizer</Filter>
     </ClCompile>
-    <ClCompile Include="../src/CopyFileJob.cpp">
+    <ClCompile Include="..\src\FileJob.cpp">
       <Filter>Main\Jobs</Filter>
     </ClCompile>
     <ClCompile Include="../src/DependentJobs.cpp">
       <Filter>Main\Jobs</Filter>
     </ClCompile>
     <ClCompile Include="../src/EnumerateModuleJob.cpp">
-      <Filter>Main\Jobs</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/LoadFileJob.cpp">
       <Filter>Main\Jobs</Filter>
     </ClCompile>
     <ClCompile Include="../src/ModuleBuildJob.cpp">
@@ -650,16 +647,13 @@
     <ClInclude Include="../src/LanguageSpec.h">
       <Filter>Tokenizer</Filter>
     </ClInclude>
-    <ClInclude Include="../src/CopyFileJob.h">
+    <ClInclude Include="..\src\FileJob.h">
       <Filter>Main\Jobs</Filter>
     </ClInclude>
     <ClInclude Include="../src/DependentJobs.h">
       <Filter>Main\Jobs</Filter>
     </ClInclude>
     <ClInclude Include="../src/EnumerateModuleJob.h">
-      <Filter>Main\Jobs</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/LoadFileJob.h">
       <Filter>Main\Jobs</Filter>
     </ClInclude>
     <ClInclude Include="../src/ModuleBuildJob.h">

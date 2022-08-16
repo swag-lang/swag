@@ -29,7 +29,7 @@ JobResult ModulePrepOutputStage1Job::execute()
 
 JobResult ModulePrepOutputStage2Job::execute()
 {
-    Timer timer{&g_Stats.prepOutputStage1TimeJob};
+    Timer timer{&g_Stats.prepOutputStage2TimeJob};
 
     // Be sure we have a #main in case of an executable
     if (module->backend->mustCompile &&

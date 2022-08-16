@@ -4,7 +4,7 @@
 #include "ModuleSemanticJob.h"
 #include "ModuleOutputJob.h"
 #include "Backend.h"
-#include "CopyFileJob.h"
+#include "FileJob.h"
 #include "SemanticJob.h"
 #include "Module.h"
 #include "ModuleRunJob.h"
@@ -470,26 +470,9 @@ JobResult ModuleBuildJob::execute()
         if (g_CommandLine->verboseStages)
             module->logStage("ModuleBuildPass::WaitForDependencies\n");
 
-        // Close generated file
-        for (auto& h : module->handleGeneratedFile)
-        {
-            if (h)
-            {
-                fclose(h);
-                h = nullptr;
-            }
-        }
-
-        pass = ModuleBuildPass::WaitForDependenciesEffective;
-    }
-
-    //////////////////////////////////////////////////
-    if (pass == ModuleBuildPass::WaitForDependenciesEffective)
-    {
-        if (g_CommandLine->verboseStages)
-            module->logStage("ModuleBuildPass::WaitForDependenciesEffective\n");
         if (!module->waitForDependenciesDone(this))
             return JobResult::KeepJobAlive;
+
         pass = ModuleBuildPass::OptimizeBc;
     }
 
@@ -502,7 +485,21 @@ JobResult ModuleBuildJob::execute()
         bool done = false;
         if (!ByteCodeOptimizer::optimize(this, module, done))
             return JobResult::ReleaseJob;
-        if (!done)
+
+        // During the first optimization pass, we also flush the generated files
+        for (auto& h : module->handleGeneratedFile)
+        {
+            if (!h)
+                continue;
+            auto newJob          = g_Allocator.alloc<CloseFileJob>();
+            newJob->module       = module;
+            newJob->dependentJob = this;
+            newJob->h            = h;
+            jobsToAdd.push_back(newJob);
+            h = nullptr;
+        }
+
+        if (!done || !jobsToAdd.empty())
             return JobResult::KeepJobAlive;
 
         module->printBC();

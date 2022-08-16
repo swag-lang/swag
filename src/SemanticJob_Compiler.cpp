@@ -4,7 +4,7 @@
 #include "Module.h"
 #include "ByteCodeGenJob.h"
 #include "Workspace.h"
-#include "LoadFileJob.h"
+#include "FileJob.h"
 #include "ByteCode.h"
 #include "Backend.h"
 #include "ErrorIds.h"
