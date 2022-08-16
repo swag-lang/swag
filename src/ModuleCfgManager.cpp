@@ -189,7 +189,7 @@ bool ModuleCfgManager::fetchModuleCfgLocal(ModuleDependency* dep, Utf8& cfgFileP
     return true;
 }
 
-bool ModuleCfgManager::fetchModuleCfgSwag(ModuleDependency* dep, Utf8& cfgFilePath, Utf8& cfgFileName)
+bool ModuleCfgManager::fetchModuleCfgSwag(ModuleDependency* dep, Utf8& cfgFilePath, Utf8& cfgFileName, bool fetch)
 {
     string remotePath = g_CommandLine->exePath.parent_path().string();
     remotePath += "/";
@@ -206,12 +206,13 @@ bool ModuleCfgManager::fetchModuleCfgSwag(ModuleDependency* dep, Utf8& cfgFilePa
     remotePath = Utf8::normalizePath(fs::path(remotePath.c_str()));
     if (!fs::exists(remotePath))
         return dep->node->sourceFile->report({dep->node, dep->tokenLocation, Fmt(Err(Err0511), remotePath.c_str())});
+    if (!fetch)
+        return true;
     dep->resolvedLocation = remotePath;
-
     return fetchModuleCfgLocal(dep, cfgFilePath, cfgFileName);
 }
 
-bool ModuleCfgManager::fetchModuleCfgDisk(ModuleDependency* dep, Utf8& cfgFilePath, Utf8& cfgFileName)
+bool ModuleCfgManager::fetchModuleCfgDisk(ModuleDependency* dep, Utf8& cfgFilePath, Utf8& cfgFileName, bool fetch)
 {
     auto remotePath = string(dep->locationParam);
     remotePath += "/";
@@ -226,12 +227,14 @@ bool ModuleCfgManager::fetchModuleCfgDisk(ModuleDependency* dep, Utf8& cfgFilePa
     remotePath = Utf8::normalizePath(fs::path(remotePath.c_str()));
     if (!fs::exists(remotePath))
         return dep->node->sourceFile->report({dep->node, dep->tokenLocation, Fmt(Err(Err0511), remotePath.c_str())});
-    dep->resolvedLocation = remotePath;
+    if (!fetch)
+        return true;
 
+    dep->resolvedLocation = remotePath;
     return fetchModuleCfgLocal(dep, cfgFilePath, cfgFileName);
 }
 
-bool ModuleCfgManager::fetchModuleCfg(ModuleDependency* dep, Utf8& cfgFilePath, Utf8& cfgFileName)
+bool ModuleCfgManager::fetchModuleCfg(ModuleDependency* dep, Utf8& cfgFilePath, Utf8& cfgFileName, bool fetch)
 {
     if (dep->location.empty())
         return dep->node->sourceFile->report({dep->node, Fmt(Err(Err0513), dep->name.c_str())});
@@ -257,14 +260,14 @@ bool ModuleCfgManager::fetchModuleCfg(ModuleDependency* dep, Utf8& cfgFilePath, 
     if (tokens[0] == g_LangSpec->name_disk)
     {
         dep->fetchKind = DependencyFetchKind::Disk;
-        return fetchModuleCfgDisk(dep, cfgFilePath, cfgFileName);
+        return fetchModuleCfgDisk(dep, cfgFilePath, cfgFileName, fetch);
     }
 
     // Direct access to compiler std workspace
     if (tokens[0] == g_LangSpec->name_swag)
     {
         dep->fetchKind = DependencyFetchKind::Swag;
-        return fetchModuleCfgSwag(dep, cfgFilePath, cfgFileName);
+        return fetchModuleCfgSwag(dep, cfgFilePath, cfgFileName, fetch);
     }
 
     SWAG_ASSERT(false);
@@ -490,6 +493,13 @@ bool ModuleCfgManager::execute()
 
             for (auto dep : parentModule->moduleDependencies)
             {
+                // We need to be sure that the dependency declaration is correct
+                if (!dep->location.empty())
+                {
+                    Utf8 cfgFilePath, cfgFileName;
+                    SWAG_CHECK(fetchModuleCfg(dep, cfgFilePath, cfgFileName, false));
+                }
+
                 dep->module = getCfgModule(dep->name);
                 ok &= resolveModuleDependency(parentModule, dep);
             }
@@ -503,13 +513,13 @@ bool ModuleCfgManager::execute()
         // We have modules to parse again
         for (auto cfgModule : pendingCfgModules)
         {
-            // Nothing to fetch if this is an internal workspace module
+            // Nothing to fetch if this is module already there
             if (cfgModule->isLocalToWorkspace)
                 continue;
 
             // Get the remote config file in cache (if it exists), that depends on the dependency
             Utf8 cfgFilePath, cfgFileName;
-            SWAG_CHECK(fetchModuleCfg(cfgModule->fetchDep, cfgFilePath, cfgFileName));
+            SWAG_CHECK(fetchModuleCfg(cfgModule->fetchDep, cfgFilePath, cfgFileName, true));
 
             cfgModule->files.clear(); // memleak
 
