@@ -678,6 +678,25 @@ JobResult ByteCodeGenJob::execute()
             getDependantCalls(originalNode, dependentNodes);
             dependentNodesTmp = dependentNodes;
 
+            if (context.bc)
+            {
+                auto ip = context.bc->out;
+                for (uint32_t i = 0; i < context.bc->numInstructions; i++, ip++)
+                {
+                    if (ip->op == ByteCodeOp::ForeignCall)
+                    {
+                        context.bc->hasForeignFunctionCalls = true;
+                        break;
+                    }
+
+                    if (ip->op == ByteCodeOp::LambdaCall)
+                    {
+                        context.bc->hasForeignFunctionCalls = true;
+                        break;
+                    }
+                }
+            }
+
             originalNode->semFlags |= AST_SEM_BYTECODE_GENERATED;
             dependentJobs.setRunning();
         }
@@ -736,19 +755,14 @@ JobResult ByteCodeGenJob::execute()
     // Compute if there's a foreign call dependency
     if (context.bc)
     {
-        auto ip = context.bc->out;
-        for (uint32_t i = 0; i < context.bc->numInstructions; i++, ip++)
+        for (auto n : dependentNodes)
         {
-            if (ip->op == ByteCodeOp::ForeignCall)
-                context.bc->hasForeignFunctionCalls = true;
-            else if (ip->op == ByteCodeOp::LocalCall)
+            SWAG_ASSERT(n->extension && n->extension->bc);
+            if (n->extension->bc->hasForeignFunctionCalls)
             {
-                ByteCode* bc = (ByteCode*) ip->a.pointer;
-                if (bc->hasForeignFunctionCalls)
-                    context.bc->hasForeignFunctionCalls = true;
-            }
-            else if (ip->op == ByteCodeOp::LambdaCall)
                 context.bc->hasForeignFunctionCalls = true;
+                break;
+            }
         }
     }
 

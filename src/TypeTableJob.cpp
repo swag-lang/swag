@@ -4,6 +4,7 @@
 #include "Generic.h"
 #include "ByteCode.h"
 #include "Ast.h"
+#include "ModuleManager.h"
 
 bool TypeTableJob::computeStruct()
 {
@@ -36,68 +37,60 @@ bool TypeTableJob::computeStruct()
 
     if (!(cflags & MAKE_CONCRETE_PARTIAL))
     {
-        if (realType->opInit || (realType->opUserInitFct && realType->opUserInitFct->isForeign()))
+        if (realType->opUserInitFct && realType->opUserInitFct->isForeign())
         {
-            concreteType->opInit = ByteCodeRun::makeLambda(baseContext, realType->opUserInitFct, realType->opInit);
-            if (!realType->opInit)
-            {
-                realType->opUserInitFct->computeFullNameForeign(false);
-                storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opInit), realType->opUserInitFct->fullnameForeign, DataSegment::RelocType::Foreign);
-            }
-            else
-            {
-                realType->opInit->isUsed            = true;
-                realType->opInit->forceEmit = true;
-                storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opInit), realType->opInit->getCallName(), DataSegment::RelocType::Local);
-            }
+            realType->opUserInitFct->computeFullNameForeign(false);
+            g_ModuleMgr->addPatchFuncAddress(&concreteType->opInit, realType->opUserInitFct);
+            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opInit), realType->opUserInitFct->fullnameForeign, DataSegment::RelocType::Foreign);
+        }
+        else if (realType->opInit)
+        {
+            concreteType->opInit        = ByteCodeRun::makeLambda(baseContext, realType->opUserInitFct, realType->opInit);
+            realType->opInit->isUsed    = true;
+            realType->opInit->forceEmit = true;
+            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opInit), realType->opInit->getCallName(), DataSegment::RelocType::Local);
         }
 
-        if (realType->opDrop || (realType->opUserDropFct && realType->opUserDropFct->isForeign()))
+        if (realType->opUserDropFct && realType->opUserDropFct->isForeign())
         {
-            concreteType->opDrop = ByteCodeRun::makeLambda(baseContext, realType->opUserDropFct, realType->opDrop);
-            if (!realType->opDrop)
-            {
-                realType->opUserDropFct->computeFullNameForeign(false);
-                storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opDrop), realType->opUserDropFct->fullnameForeign, DataSegment::RelocType::Foreign);
-            }
-            else
-            {
-                realType->opDrop->isUsed            = true;
-                realType->opDrop->forceEmit = true;
-                storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opDrop), realType->opDrop->getCallName(), DataSegment::RelocType::Local);
-            }
+            realType->opUserDropFct->computeFullNameForeign(false);
+            g_ModuleMgr->addPatchFuncAddress(&concreteType->opDrop, realType->opUserDropFct);
+            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opDrop), realType->opUserDropFct->fullnameForeign, DataSegment::RelocType::Foreign);
+        }
+        else if (realType->opDrop)
+        {
+            concreteType->opDrop        = ByteCodeRun::makeLambda(baseContext, realType->opUserDropFct, realType->opDrop);
+            realType->opDrop->isUsed    = true;
+            realType->opDrop->forceEmit = true;
+            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opDrop), realType->opDrop->getCallName(), DataSegment::RelocType::Local);
         }
 
-        if (realType->opPostCopy || (realType->opUserPostCopyFct && realType->opUserPostCopyFct->isForeign()))
+        if (realType->opUserPostCopyFct && realType->opUserPostCopyFct->isForeign())
         {
-            concreteType->opPostCopy = ByteCodeRun::makeLambda(baseContext, realType->opUserPostCopyFct, realType->opPostCopy);
-            if (!realType->opPostCopy)
-            {
-                realType->opUserPostCopyFct->computeFullNameForeign(false);
-                storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opPostCopy), realType->opUserPostCopyFct->fullnameForeign, DataSegment::RelocType::Foreign);
-            }
-            else
-            {
-                realType->opPostCopy->isUsed            = true;
-                realType->opPostCopy->forceEmit = true;
-                storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opPostCopy), realType->opPostCopy->getCallName(), DataSegment::RelocType::Local);
-            }
+            realType->opUserPostCopyFct->computeFullNameForeign(false);
+            g_ModuleMgr->addPatchFuncAddress(&concreteType->opPostCopy, realType->opUserPostCopyFct);
+            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opPostCopy), realType->opUserPostCopyFct->fullnameForeign, DataSegment::RelocType::Foreign);
+        }
+        else if (realType->opPostCopy)
+        {
+            concreteType->opPostCopy        = ByteCodeRun::makeLambda(baseContext, realType->opUserPostCopyFct, realType->opPostCopy);
+            realType->opPostCopy->isUsed    = true;
+            realType->opPostCopy->forceEmit = true;
+            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opPostCopy), realType->opPostCopy->getCallName(), DataSegment::RelocType::Local);
         }
 
-        if (realType->opPostMove || (realType->opUserPostMoveFct && realType->opUserPostMoveFct->isForeign()))
+        if (realType->opUserPostMoveFct && realType->opUserPostMoveFct->isForeign())
         {
-            concreteType->opPostMove = ByteCodeRun::makeLambda(baseContext, realType->opUserPostMoveFct, realType->opPostMove);
-            if (!realType->opPostMove)
-            {
-                realType->opUserPostMoveFct->computeFullNameForeign(false);
-                storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opPostMove), realType->opUserPostMoveFct->fullnameForeign, DataSegment::RelocType::Foreign);
-            }
-            else
-            {
-                realType->opPostMove->isUsed            = true;
-                realType->opPostMove->forceEmit = true;
-                storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opPostMove), realType->opPostMove->getCallName(), DataSegment::RelocType::Local);
-            }
+            realType->opUserPostMoveFct->computeFullNameForeign(false);
+            g_ModuleMgr->addPatchFuncAddress(&concreteType->opPostMove, realType->opUserPostMoveFct);
+            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opPostMove), realType->opUserPostMoveFct->fullnameForeign, DataSegment::RelocType::Foreign);
+        }
+        else if (realType->opPostMove)
+        {
+            concreteType->opPostMove        = ByteCodeRun::makeLambda(baseContext, realType->opUserPostMoveFct, realType->opPostMove);
+            realType->opPostMove->isUsed    = true;
+            realType->opPostMove->forceEmit = true;
+            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opPostMove), realType->opPostMove->getCallName(), DataSegment::RelocType::Local);
         }
     }
 
@@ -255,21 +248,6 @@ JobResult TypeTableJob::execute()
             return JobResult::KeepJobAlive;
         waitStructGenerated(realType);
         if (baseContext->result == ContextResult::Pending)
-            return JobResult::KeepJobAlive;
-
-        // We also wait for dependencies, because we need to know the foreign address of special
-        // functions that will be stored in the struct type.
-        // And we cannot retrieve thoses addresses before the dlls have been generated.
-        bool mustWait = false;
-        if (!realType->opInit && realType->opUserInitFct && realType->opUserInitFct->isForeign())
-            mustWait = true;
-        if (!realType->opDrop && realType->opUserDropFct && realType->opUserDropFct->isForeign())
-            mustWait = true;
-        if (!realType->opPostCopy && realType->opUserPostCopyFct && realType->opUserPostCopyFct->isForeign())
-            mustWait = true;
-        if (!realType->opPostMove && realType->opUserPostMoveFct && realType->opUserPostMoveFct->isForeign())
-            mustWait = true;
-        if (mustWait && !sourceFile->module->waitForDependenciesDone(this))
             return JobResult::KeepJobAlive;
     }
 

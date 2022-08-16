@@ -1765,9 +1765,10 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
 
     if (foreign)
     {
-        auto inst       = emitInstruction(context, ByteCodeOp::ForeignCall);
-        inst->a.pointer = (uint8_t*) funcNode;
-        inst->b.pointer = (uint8_t*) typeInfoFunc;
+        auto inst                            = emitInstruction(context, ByteCodeOp::ForeignCall);
+        inst->a.pointer                      = (uint8_t*) funcNode;
+        inst->b.pointer                      = (uint8_t*) typeInfoFunc;
+        context->bc->hasForeignFunctionCalls = true;
     }
     else if (funcNode)
     {
@@ -1780,8 +1781,9 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     else
     {
         SWAG_ASSERT(varNodeRegisters.size() > 0);
-        auto inst       = emitInstruction(context, ByteCodeOp::LambdaCall, varNodeRegisters);
-        inst->b.pointer = (uint8_t*) typeInfoFunc;
+        auto inst                            = emitInstruction(context, ByteCodeOp::LambdaCall, varNodeRegisters);
+        inst->b.pointer                      = (uint8_t*) typeInfoFunc;
+        context->bc->hasForeignFunctionCalls = true;
     }
 
     // Free all registers now that the call can really be done

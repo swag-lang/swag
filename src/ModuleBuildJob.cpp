@@ -448,6 +448,9 @@ JobResult ModuleBuildJob::execute()
         // This is too late for meta programming of 'impl' blocks...
         module->acceptsCompileImpl = false;
 
+        if (module->kind != ModuleKind::Config && !module->waitForDependenciesDone(this))
+            return JobResult::KeepJobAlive;
+
         if (!module->flushCompilerMessages(&context, 1))
             return JobResult::ReleaseJob;
         if (context.result != ContextResult::Done)
