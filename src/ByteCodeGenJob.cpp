@@ -733,6 +733,25 @@ JobResult ByteCodeGenJob::execute()
         pass = Pass::ComputeDependenciesResolved;
     }
 
+    // Compute if there's a foreign call dependency
+    if (context.bc)
+    {
+        auto ip = context.bc->out;
+        for (uint32_t i = 0; i < context.bc->numInstructions; i++, ip++)
+        {
+            if (ip->op == ByteCodeOp::ForeignCall)
+                context.bc->hasForeignFunctionCalls = true;
+            else if (ip->op == ByteCodeOp::LocalCall)
+            {
+                ByteCode* bc = (ByteCode*) ip->a.pointer;
+                if (bc->hasForeignFunctionCalls)
+                    context.bc->hasForeignFunctionCalls = true;
+            }
+            else if (ip->op == ByteCodeOp::LambdaCall)
+                context.bc->hasForeignFunctionCalls = true;
+        }
+    }
+
     // Inform dependencies that everything is done
     releaseByteCodeJob(originalNode);
 

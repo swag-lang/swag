@@ -209,7 +209,7 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
 
     // Before executing the node, we need to be sure that our dependencies have generated their dll
     // In case there's a foreign call somewhere...
-    if (node->extension->bc->hasFunctionCalls)
+    if (node->extension->bc->hasForeignFunctionCalls)
     {
         if (!module->waitForDependenciesDone(context->job))
         {

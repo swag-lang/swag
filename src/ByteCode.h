@@ -199,12 +199,12 @@ struct ByteCode
     uint32_t crc                   = 0;
     uint32_t registerGetContext    = UINT32_MAX;
 
-    bool isCompilerGenerated = false;
-    bool isAddedToList       = false;
-    bool isDirtyRegistersRC  = false;
-    bool isUsed              = false;
-    bool forceEmit           = false;
-    bool hasFunctionCalls    = false;
+    bool isCompilerGenerated     = false;
+    bool isAddedToList           = false;
+    bool isDirtyRegistersRC      = false;
+    bool isUsed                  = false;
+    bool forceEmit               = false;
+    bool hasForeignFunctionCalls = false;
 
     atomic<bool> isEmpty;
 };

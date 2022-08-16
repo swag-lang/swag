@@ -1763,7 +1763,6 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         precallStack += 2 * sizeof(Register);
     }
 
-    context->bc->hasFunctionCalls = true;
     if (foreign)
     {
         auto inst       = emitInstruction(context, ByteCodeOp::ForeignCall);
