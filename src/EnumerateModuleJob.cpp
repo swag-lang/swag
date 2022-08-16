@@ -70,30 +70,27 @@ bool EnumerateModuleJob::dealWithIncludes(Module* theModule)
         fs::path orgFilePath = n->token.text.c_str();
 
         // Is this a simple file ?
-        if (orgFilePath.extension() == ".swg")
+        auto filePath = orgFilePath;
+        if (!fs::exists(filePath))
         {
-            auto filePath = orgFilePath;
+            filePath = theModule->path;
+            filePath.append(orgFilePath.string());
+            filePath = fs::absolute(filePath).string();
+            error_code errorCode;
+            auto       filePath1 = fs::canonical(filePath, errorCode).string();
+            if (!errorCode)
+                filePath = filePath1;
             if (!fs::exists(filePath))
             {
-                filePath = theModule->path;
-                filePath.append(orgFilePath.string());
-                filePath = fs::absolute(filePath).string();
-                error_code errorCode;
-                auto       filePath1 = fs::canonical(filePath, errorCode).string();
-                if (!errorCode)
-                    filePath = filePath1;
-                if (!fs::exists(filePath))
-                {
-                    Diagnostic diag{n->sourceFile, n->token, Fmt(Err(Err0304), n->token.text.c_str())};
-                    n->sourceFile->report(diag);
-                    return false;
-                }
+                Diagnostic diag{n->sourceFile, n->token, Fmt(Err(Err0304), n->token.text.c_str())};
+                n->sourceFile->report(diag);
+                return false;
             }
-
-            auto fileName  = filePath.filename().string();
-            auto writeTime = OS::getFileWriteTime(filePath.string().c_str());
-            addFileToModule(theModule, allFiles, fs::path(filePath.c_str()).parent_path().string(), fileName, writeTime);
         }
+
+        auto fileName  = filePath.filename().string();
+        auto writeTime = OS::getFileWriteTime(filePath.string().c_str());
+        addFileToModule(theModule, allFiles, fs::path(filePath.c_str()).parent_path().string(), fileName, writeTime);
     }
 
     // Sort files, and register them in a constant order
