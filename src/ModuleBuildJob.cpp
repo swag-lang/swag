@@ -409,8 +409,10 @@ JobResult ModuleBuildJob::execute()
 
         pass = ModuleBuildPass::BeforeCompilerMessagesPass1;
 
-        if (!module->flushCompilerMessages(&context, 0))
+        if (!module->flushCompilerMessages(&context, 0, this))
             return JobResult::ReleaseJob;
+        if (context.result != ContextResult::Done)
+            return JobResult::KeepJobAlive;
 
         // This is a dummy job, in case the user code does not trigger new jobs during the message pass
         auto semanticJob          = g_Allocator.alloc<ModuleSemanticJob>();
@@ -448,10 +450,7 @@ JobResult ModuleBuildJob::execute()
         // This is too late for meta programming of 'impl' blocks...
         module->acceptsCompileImpl = false;
 
-        if (module->kind != ModuleKind::Config && !module->waitForDependenciesDone(this))
-            return JobResult::KeepJobAlive;
-
-        if (!module->flushCompilerMessages(&context, 1))
+        if (!module->flushCompilerMessages(&context, 1, this))
             return JobResult::ReleaseJob;
         if (context.result != ContextResult::Done)
             return JobResult::KeepJobAlive;

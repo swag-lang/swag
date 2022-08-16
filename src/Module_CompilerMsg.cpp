@@ -64,8 +64,20 @@ bool Module::prepareCompilerMessages(JobContext* context, uint32_t pass)
     return true;
 }
 
-bool Module::flushCompilerMessages(JobContext* context, uint32_t pass)
+bool Module::flushCompilerMessages(JobContext* context, uint32_t pass, Job* job)
 {
+    if (compilerMessages[pass].empty())
+        return true;
+
+    if (kind != ModuleKind::Config)
+    {
+        if (!waitForDependenciesDone(job))
+        {
+            context->result = ContextResult::Pending;
+            return true;
+        }
+    }
+
     for (auto& msg : compilerMessages[pass])
     {
         SWAG_ASSERT(!byteCodeCompiler[(int) msg.concrete.kind].empty());

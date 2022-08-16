@@ -139,7 +139,7 @@ struct Module
     bool sendCompilerMessage(ConcreteCompilerMessage* msg, Job* dependentJob);
     bool postCompilerMessage(JobContext* context, CompilerMessage& msg);
     bool prepareCompilerMessages(JobContext* context, uint32_t pass);
-    bool flushCompilerMessages(JobContext* context, uint32_t pass);
+    bool flushCompilerMessages(JobContext* context, uint32_t pass, Job* job);
 
     void              addCompilerFunc(ByteCode* bc);
     void              addByteCodeFunc(ByteCode* bc);
