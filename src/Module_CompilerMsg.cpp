@@ -78,6 +78,9 @@ bool Module::flushCompilerMessages(JobContext* context, uint32_t pass, Job* job)
         }
     }
 
+    if (g_CommandLine->verboseStages)
+        logStage("#message flush\n");
+
     for (auto& msg : compilerMessages[pass])
     {
         SWAG_ASSERT(!byteCodeCompiler[(int) msg.concrete.kind].empty());
@@ -123,8 +126,6 @@ bool Module::sendCompilerMessage(ConcreteCompilerMessage* msg, Job* dependentJob
     PushSwagContext cxt;
     for (auto bc : byteCodeCompiler[(int) msg->kind])
     {
-        if (g_CommandLine->verboseStages)
-            bc->node->sourceFile->module->logStage(Fmt("#message %s\n", bc->node->sourceFile->name.c_str()));
         SWAG_CHECK(executeNode(bc->node->sourceFile, bc->node, &context));
     }
 
