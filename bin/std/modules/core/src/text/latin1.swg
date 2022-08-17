@@ -5,18 +5,18 @@ using Swag
 #[Inline, ConstExpr]
 {
     func isAscii(c: u8)         => c <= 0x7F
-    func isDigit(c: u8)         => cast(bool) (CharProperties[c] & CharAttribute.Digit)
-    func isNumber(c: u8)        => cast(bool) (CharProperties[c] & CharAttribute.Digit)
-    func isBinDigit(c: u8)      => cast(bool) (CharProperties[c] & CharAttribute.BinDigit)
-    func isHexDigit(c: u8)      => cast(bool) (CharProperties[c] & CharAttribute.HexDigit)
-    func isUpper(c: u8)         => cast(bool) (CharProperties[c] & CharAttribute.Upper)
-    func isLower(c: u8)         => cast(bool) (CharProperties[c] & CharAttribute.Lower)
-    func isPunctuation(c: u8)   => cast(bool) (CharProperties[c] & CharAttribute.Punctuation)
-    func isLetter(c: u8)        => cast(bool) (CharProperties[c] & CharAttribute.Letter)
-    func isLetterOrDigit(c: u8) => cast(bool) (CharProperties[c] & (CharAttribute.Letter | CharAttribute.Digit))
-    func isSpace(c: u8)         => cast(bool) (CharProperties[c] & CharAttribute.Spacing)
-    func isControl(c: u8)       => cast(bool) (CharProperties[c] & CharAttribute.Control)
-    func isSymbol(c: u8)        => cast(bool) (CharProperties[c] & CharAttribute.Symbol)
+    func isDigit(c: u8)         => cast(bool) (CharProperties[c] & .Digit)
+    func isNumber(c: u8)        => cast(bool) (CharProperties[c] & .Digit)
+    func isBinDigit(c: u8)      => cast(bool) (CharProperties[c] & .BinDigit)
+    func isHexDigit(c: u8)      => cast(bool) (CharProperties[c] & .HexDigit)
+    func isUpper(c: u8)         => cast(bool) (CharProperties[c] & .Upper)
+    func isLower(c: u8)         => cast(bool) (CharProperties[c] & .Lower)
+    func isPunctuation(c: u8)   => cast(bool) (CharProperties[c] & .Punctuation)
+    func isLetter(c: u8)        => cast(bool) (CharProperties[c] & .Letter)
+    func isLetterOrDigit(c: u8) => cast(bool) (CharProperties[c] & (.Letter | .Digit))
+    func isSpace(c: u8)         => cast(bool) (CharProperties[c] & .Spacing)
+    func isControl(c: u8)       => cast(bool) (CharProperties[c] & .Control)
+    func isSymbol(c: u8)        => cast(bool) (CharProperties[c] & .Symbol)
     func toLower(c: u8)         => isUpper(c) ? (c | 0x20'u8) : c
     func toUpper(c: u8)         => isLower(c) ? (c & ~0x20'u8) : c
 }
@@ -26,7 +26,7 @@ private func isLowerUtf8(c: u8)->bool
 {
     if isAscii(c) and isLower(c)
         return true
-    return cast(bool) (CharProperties[c] & CharAttribute.LowerUtf8)
+    return cast(bool) (CharProperties[c] & .LowerUtf8)
 }
 
 #[Inline, ConstExpr]
@@ -34,7 +34,7 @@ private func isUpperUtf8(c: u8)->bool
 {
     if isAscii(c) and isUpper(c)
         return true
-    return cast(bool) (CharProperties[c] & CharAttribute.UpperUtf8)
+    return cast(bool) (CharProperties[c] & .UpperUtf8)
 }
 
 // Make an utf8 buffer upper case, dealing only with latin1 table

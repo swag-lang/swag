@@ -7,16 +7,6 @@
 #include "ErrorIds.h"
 #include "Mutex.h"
 
-void SymTableHash::clone(SymTableHash* from)
-{
-    if (!from->allocated)
-        return;
-    allocated = from->allocated;
-    count     = from->count;
-    buffer    = (Entry*) g_Allocator.alloc(from->allocated * sizeof(Entry));
-    memcpy(buffer, from->buffer, from->allocated * sizeof(Entry));
-}
-
 SymbolName* SymTable::find(const Utf8& name, uint32_t crc)
 {
     SharedLock lk(mutex);
@@ -581,9 +571,24 @@ void SymbolName::unregisterNode(AstNode* node)
     }
 }
 
+void SymTableHash::clone(SymTableHash* from)
+{
+    if (!from->allocated)
+        return;
+    fastReject = from->fastReject;
+    allocated  = from->allocated;
+    count      = from->count;
+    buffer     = (Entry*) g_Allocator.alloc(from->allocated * sizeof(Entry));
+    memcpy(buffer, from->buffer, from->allocated * sizeof(Entry));
+}
+
 SymbolName* SymTableHash::find(const Utf8& str, uint32_t crc)
 {
     if (!allocated)
+        return nullptr;
+
+    uint32_t a = (str[0] | 0x20) - 'a';
+    if (a < 32 && !(fastReject & (1 << a)))
         return nullptr;
 
     if (!crc)
@@ -620,6 +625,10 @@ void SymTableHash::remove(SymbolName* data)
 
 void SymTableHash::addElem(SymbolName* data, uint32_t crc)
 {
+    uint32_t a = (data->name[0] | 0x20) - 'a';
+    if (a < 32)
+        fastReject |= 1 << a;
+
     if (!crc)
         crc = data->name.hash();
 
