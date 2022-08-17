@@ -166,8 +166,8 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, A
         SWAG_CHECK(doIntrinsicDefined(parent, result));
         break;
 
-    case TokenId::CompilerLoad:
-        SWAG_CHECK(doCompilerLoad(parent, result));
+    case TokenId::CompilerInclude:
+        SWAG_CHECK(doCompilerInclude(parent, result));
         break;
 
     case TokenId::CompilerSelf:

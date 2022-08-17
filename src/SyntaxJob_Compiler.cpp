@@ -652,23 +652,6 @@ bool SyntaxJob::doIntrinsicDefined(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doCompilerLoad(AstNode* parent, AstNode** result)
-{
-    auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::CompilerLoad, sourceFile, parent);
-    if (result)
-        *result = exprNode;
-    exprNode->flags |= AST_NO_BYTECODE;
-    SWAG_CHECK(eatToken());
-    SWAG_CHECK(eatToken(TokenId::SymLeftParen));
-
-    ScopedFlags sc(this, AST_SILENT_CHECK);
-    SWAG_CHECK(doExpression(exprNode, EXPR_FLAG_NONE, nullptr));
-
-    SWAG_CHECK(eatToken(TokenId::SymRightParen));
-    exprNode->semanticFct = SemanticJob::resolveCompilerLoad;
-    return true;
-}
-
 bool SyntaxJob::doCompilerDependencies(AstNode* parent)
 {
     SWAG_VERIFY(sourceFile->isCfgFile || sourceFile->isScriptFile, sourceFile->report({sourceFile, token, Err(Err0232)}));
@@ -687,7 +670,24 @@ bool SyntaxJob::doCompilerDependencies(AstNode* parent)
     return true;
 }
 
-bool SyntaxJob::doCompilerInclude(AstNode* parent)
+bool SyntaxJob::doCompilerInclude(AstNode* parent, AstNode** result)
+{
+    auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::CompilerLoad, sourceFile, parent);
+    if (result)
+        *result = exprNode;
+    exprNode->flags |= AST_NO_BYTECODE;
+    SWAG_CHECK(eatToken());
+    SWAG_CHECK(eatToken(TokenId::SymLeftParen));
+
+    ScopedFlags sc(this, AST_SILENT_CHECK);
+    SWAG_CHECK(doExpression(exprNode, EXPR_FLAG_NONE, nullptr));
+
+    SWAG_CHECK(eatToken(TokenId::SymRightParen));
+    exprNode->semanticFct = SemanticJob::resolveCompilerInclude;
+    return true;
+}
+
+bool SyntaxJob::doCompilerLoad(AstNode* parent)
 {
     SWAG_VERIFY(sourceFile->isCfgFile || sourceFile->isScriptFile, sourceFile->report({sourceFile, token, Err(Err0461)}));
     SWAG_VERIFY(currentScope->isTopLevel(), sourceFile->report({sourceFile, token, Err(Err0363)}));

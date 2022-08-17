@@ -17,18 +17,18 @@ private const DefaultIcons24Name        = "theme/icons24.png"
 private const DefaultIcons64Name        = "theme/icons64.png"
 private const DefaultSpinName           = "theme/spin.png"
 
-private const DefaultImage              = #load(DefaultImageName)
-private const DefaultFontRegular        = #load(DefaultFontRegularName)
-private const DefaultFontBold           = #load(DefaultFontBoldName)
-private const DefaultFontBoldItalic     = #load(DefaultFontBoldItalicName)
-private const DefaultFontItalic         = #load(DefaultFontItalicName)
-private const DefaultFontFsRegular      = #load(DefaultFontFsRegularName)
-private const DefaultFontFsBold         = #load(DefaultFontFsBoldName)
-private const DefaultFontFsBoldItalic   = #load(DefaultFontFsBoldItalicName)
-private const DefaultFontFsItalic       = #load(DefaultFontFsItalicName)
-private const DefaultIcons24            = #load(DefaultIcons24Name)
-private const DefaultIcons64            = #load(DefaultIcons64Name)
-private const DefaultSpin               = #load(DefaultSpinName)
+private const DefaultImage              = #include(DefaultImageName)
+private const DefaultFontRegular        = #include(DefaultFontRegularName)
+private const DefaultFontBold           = #include(DefaultFontBoldName)
+private const DefaultFontBoldItalic     = #include(DefaultFontBoldItalicName)
+private const DefaultFontItalic         = #include(DefaultFontItalicName)
+private const DefaultFontFsRegular      = #include(DefaultFontFsRegularName)
+private const DefaultFontFsBold         = #include(DefaultFontFsBoldName)
+private const DefaultFontFsBoldItalic   = #include(DefaultFontFsBoldItalicName)
+private const DefaultFontFsItalic       = #include(DefaultFontFsItalicName)
+private const DefaultIcons24            = #include(DefaultIcons24Name)
+private const DefaultIcons64            = #include(DefaultIcons64Name)
+private const DefaultSpin               = #include(DefaultSpinName)
 
 
 struct ThemeResources

@@ -295,7 +295,7 @@ impl IRichEditLexer for RichEditLexerSwag
 
         mapWords.add("#global", State.CompilerStatement)
 
-        mapWords.add("#load", State.CompilerStatement)
+        mapWords.add("#include", State.CompilerStatement)
         mapWords.add("#assert", State.CompilerStatement)
         mapWords.add("#print", State.CompilerStatement)
         mapWords.add("#import", State.CompilerStatement)

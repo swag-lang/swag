@@ -1,5 +1,5 @@
 const F = #file
-const g = #load(F)
+const g = #include(F)
 
 #test
 {

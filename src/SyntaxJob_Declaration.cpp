@@ -834,8 +834,8 @@ bool SyntaxJob::doTopLevelInstruction(AstNode* parent, AstNode** result)
     case TokenId::CompilerImport:
         SWAG_CHECK(doCompilerImport(parent));
         break;
-    case TokenId::CompilerInclude:
-        SWAG_CHECK(doCompilerInclude(parent));
+    case TokenId::CompilerLoad:
+        SWAG_CHECK(doCompilerLoad(parent));
         break;
     case TokenId::CompilerPlaceHolder:
         SWAG_CHECK(doCompilerPlaceHolder(parent));

@@ -3,15 +3,15 @@ using Core, Ogl, Math
 
 private
 {
-    const BaseVertexShader   = #load("shaders/base.vert")
-    const BasePixelShader    = #load("shaders/base.frag")
+    const BaseVertexShader   = #include("shaders/base.vert")
+    const BasePixelShader    = #include("shaders/base.frag")
 
-    const VertexShaderSimple = #load("shaders/simple.vert")
-    const PixelShaderSimple  = #load("shaders/simple.frag")
+    const VertexShaderSimple = #include("shaders/simple.vert")
+    const PixelShaderSimple  = #include("shaders/simple.frag")
 
-    const VertexShaderAA     = #load("shaders/aa.vert")
-    const PixelShaderAA      = #load("shaders/aa.frag")
-    const PixelShaderBlur    = #load("shaders/blur.frag")
+    const VertexShaderAA     = #include("shaders/aa.vert")
+    const PixelShaderAA      = #include("shaders/aa.frag")
+    const PixelShaderBlur    = #include("shaders/blur.frag")
 }
 
 #[Swag.Strict]

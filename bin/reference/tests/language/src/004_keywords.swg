@@ -31,6 +31,7 @@
 #if
 #import
 #inline
+#include
 #load
 #macro
 #mixin

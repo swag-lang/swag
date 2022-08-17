@@ -1,4 +1,4 @@
-var g = #load(#file)
+var g = #include(#file)
 
 #test
 {

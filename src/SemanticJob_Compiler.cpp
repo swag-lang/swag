@@ -663,7 +663,7 @@ bool SemanticJob::resolveCompilerIf(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveCompilerLoad(SemanticContext* context)
+bool SemanticJob::resolveCompilerInclude(SemanticContext* context)
 {
     auto job    = context->job;
     auto node   = context->node;

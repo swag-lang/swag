@@ -1,7 +1,7 @@
 using Core, Gui, Pixel
 
-const Txt = #load("view0.swg")
-const Txt1 = #load("view4.swg")
+const Txt = #include("view0.swg")
+const Txt1 = #include("view4.swg")
 
 var g_LexerSwag: RichEditLexerSwag
 
