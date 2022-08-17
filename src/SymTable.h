@@ -152,5 +152,18 @@ struct SymTable
     SymTableHash               mapNames;
     VectorNative<StructToDrop> structVarsToDrop;
 
-    Scope* scope = nullptr;
+    Scope* scope    = nullptr;
+    bool   occupied = false;
+
+    bool tryRead()
+    {
+        if (occupied)
+            return false;
+        return mutex.mt.try_lock_shared();
+    }
+
+    void endRead()
+    {
+        mutex.mt.unlock_shared();
+    }
 };

@@ -2466,11 +2466,21 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, VectorNative<
             break;
 
         // Search symbol in all the scopes of the hierarchy
-        for (auto& as : scopeHierarchy)
+        while (scopeHierarchy.size())
         {
-            auto symbol = as.scope->symTable.find(node->token.text, crc);
-            if (symbol)
-                addDependentSymbol(dependentSymbols, symbol, as.scope, as.flags);
+            for (int i = 0; i < scopeHierarchy.size(); i++)
+            {
+                const auto& as = scopeHierarchy[i];
+                if (as.scope->symTable.tryRead())
+                {
+                    auto symbol = as.scope->symTable.findNoLock(node->token.text, crc);
+                    as.scope->symTable.endRead();
+                    if (symbol)
+                        addDependentSymbol(dependentSymbols, symbol, as.scope, as.flags);
+                    scopeHierarchy.erase_unordered(i);
+                    i--;
+                }
+            }
         }
 
         if (!dependentSymbols.empty())

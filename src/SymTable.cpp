@@ -34,13 +34,18 @@ SymbolName* SymTable::findNoLock(const Utf8& name, uint32_t crc)
 void SymTable::removeSymbolName(SymbolName* sym)
 {
     ScopedLock lk(mutex);
+    occupied = true;
     mapNames.remove(sym);
+    occupied = false;
 }
 
 SymbolName* SymTable::registerSymbolName(JobContext* context, AstNode* node, SymbolKind kind, Utf8* aliasName)
 {
     ScopedLock lk(mutex);
-    return registerSymbolNameNoLock(context, node, kind, aliasName);
+    occupied    = true;
+    auto result = registerSymbolNameNoLock(context, node, kind, aliasName);
+    occupied    = false;
+    return result;
 }
 
 SymbolName* SymTable::registerSymbolNameNoLock(JobContext* context, AstNode* node, SymbolKind kind, Utf8* aliasName)
@@ -101,7 +106,10 @@ SymbolOverload* SymTable::addSymbolTypeInfo(JobContext*    context,
                                             Utf8*          aliasName)
 {
     ScopedLock lk(mutex);
-    return addSymbolTypeInfoNoLock(context, node, typeInfo, kind, computedValue, flags, resultName, storageOffset, storageSegment, aliasName);
+    occupied = true;
+    auto res = addSymbolTypeInfoNoLock(context, node, typeInfo, kind, computedValue, flags, resultName, storageOffset, storageSegment, aliasName);
+    occupied = false;
+    return res;
 }
 
 SymbolOverload* SymTable::addSymbolTypeInfoNoLock(JobContext*    context,
@@ -288,7 +296,10 @@ void SymTable::disabledIfBlockOverloadNoLock(AstNode* node, SymbolName* symbol)
 bool SymTable::checkHiddenSymbol(JobContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind type)
 {
     SharedLock lk(mutex);
-    return checkHiddenSymbolNoLock(context, node, typeInfo, type, nullptr, true);
+    occupied = true;
+    auto res = checkHiddenSymbolNoLock(context, node, typeInfo, type, nullptr, true);
+    occupied = false;
+    return res;
 }
 
 bool SymTable::acceptGhostSymbolNoLock(JobContext* context, AstNode* node, SymbolKind kind, SymbolName* symbol)
