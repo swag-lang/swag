@@ -280,8 +280,9 @@ bool ModuleCfgManager::resolveModuleDependency(Module* srcModule, ModuleDependen
     // with that dependency
     if (dep->location.empty())
     {
-        dep->isLocalToWorkspace = srcModule->isLocalToWorkspace;
-        dep->location           = srcModule->remoteLocationDep;
+        dep->isLocalToWorkspace   = srcModule->isLocalToWorkspace;
+        dep->location             = srcModule->remoteLocationDep;
+        dep->locationAutoResolved = true;
     }
 
     // Module not here : add it.
@@ -494,7 +495,7 @@ bool ModuleCfgManager::execute()
             for (auto dep : parentModule->moduleDependencies)
             {
                 // We need to be sure that the dependency declaration is correct
-                if (!dep->location.empty())
+                if (!dep->location.empty() && !dep->locationAutoResolved)
                 {
                     Utf8 cfgFilePath, cfgFileName;
                     SWAG_CHECK(fetchModuleCfg(dep, cfgFilePath, cfgFileName, false));
