@@ -54,14 +54,13 @@ struct ModuleDependency
     Utf8                locationParam;
     Utf8                resolvedLocation;
     Utf8                version;
+    AstNode*            node      = nullptr;
+    Module*             module    = nullptr;
+    DependencyFetchKind fetchKind = DependencyFetchKind::Invalid;
     int                 verNum, revNum, buildNum;
-    AstNode*            node               = nullptr;
-    Module*             module             = nullptr;
-    bool                importDone         = false;
-    bool                isLocalToWorkspace = false;
-    bool                embbed             = false;
-    bool                embbedRec          = false;
-    DependencyFetchKind fetchKind          = DependencyFetchKind::Invalid;
+    bool                importDone           = false;
+    bool                isLocalToWorkspace   = false;
+    bool                locationAutoResolved = false;
 };
 
 enum class ModuleKind
@@ -150,7 +149,7 @@ struct Module
 
     bool addInclude(AstNode* includeNode);
     bool removeInclude(AstNode* includeNode);
-    bool addDependency(AstNode* importNode, const Token& tokenLocation, const Token& tokenVersion, bool embbed, bool embbedRec);
+    bool addDependency(AstNode* importNode, const Token& tokenLocation, const Token& tokenVersion);
     bool removeDependency(AstNode* importNode);
     bool hasDependencyTo(Module* module);
     void sortDependenciesByInitOrder(VectorNative<ModuleDependency*>& result);
@@ -220,11 +219,11 @@ struct Module
     VectorNative<ByteCode*>                          byteCodeRunFunc;
     VectorNative<ByteCode*>                          byteCodePrintBC;
     VectorNative<ModuleDependency*>                  moduleDependencies;
+    VectorNative<Module*>                            moduleEmbbeded;
     VectorNative<AstNode*>                           includes;
     VectorNative<AstNode*>                           globalVarsBss;
     VectorNative<AstNode*>                           globalVarsMutable;
     VectorNative<AstNode*>                           globalVarsConstant;
-    VectorNative<Module*>                            embbedModules;
     vector<CompilerMessage>                          compilerMessages[2];
     set<SourceFile*>                                 exportSourceFiles;
     map<Utf8, ByteCode*>                             mapRuntimeFcts;

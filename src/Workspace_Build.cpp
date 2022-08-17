@@ -106,11 +106,11 @@ Module* Workspace::createOrUseModule(const Utf8& moduleName, const Utf8& moduleP
     if (cfgModule)
     {
         // :GetCfgFileParams
-        module->buildCfg                    = cfgModule->buildCfg;
-        module->buildParameters.foreignLibs = cfgModule->buildParameters.foreignLibs;
-        module->buildParameters.globalUsing = cfgModule->buildParameters.globalUsing;
-        module->moduleDependencies          = cfgModule->moduleDependencies;
-        module->includes                    = cfgModule->includes;
+        module->buildCfg                     = cfgModule->buildCfg;
+        module->buildParameters.foreignLibs  = cfgModule->buildParameters.foreignLibs;
+        module->buildParameters.globalUsings = cfgModule->buildParameters.globalUsings;
+        module->moduleDependencies           = cfgModule->moduleDependencies;
+        module->includes                     = cfgModule->includes;
     }
 
     // Is this the module we want to build ?
@@ -720,6 +720,8 @@ bool Workspace::buildTarget()
                 }
 
                 auto depModule = it->second;
+                if (filteredModule->moduleEmbbeded.contains(depModule))
+                    continue;
                 if (depModule->addedToBuild)
                     continue;
                 toBuild.push_back(depModule);

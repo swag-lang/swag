@@ -73,7 +73,7 @@ void ModuleBuildJob::publishFilesToPublic()
 void ModuleBuildJob::publishFilesToTarget()
 {
     publishFilesToTarget(module);
-    for (auto m : module->embbedModules)
+    for (auto m : module->moduleEmbbeded)
         publishFilesToTarget(m);
 }
 

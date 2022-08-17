@@ -536,6 +536,7 @@ namespace Swag
         moduleRevision:     u32 = 0
         moduleBuildNum:     u32 = 0
         moduleNamespace:    string
+        embbedImports       = false
 
         // Debug
         const SafetyBC  = 0x0000100000000000    // "boundcheck"
@@ -550,7 +551,7 @@ namespace Swag
         // Bytecode
         byteCodeOptimize        = true
         byteCodeDebugInline     = true
-        byteCodeRemoveDup       = true
+        byteCodeRemoveDup       = false
         byteCodeEmitAssume      = true
         byteCodeInline          = true
 

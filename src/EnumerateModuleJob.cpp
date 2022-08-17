@@ -352,17 +352,14 @@ JobResult EnumerateModuleJob::execute()
     // Deal with embbeded modules
     for (auto m : g_Workspace->modules)
     {
+        if (!m->buildCfg.embbedImports)
+            continue;
+
         vector<SourceFile*>             allFiles;
         VectorNative<ModuleDependency*> toKeep;
         for (int i = (int) m->moduleDependencies.size() - 1; i >= 0; i--)
         {
             auto dep = m->moduleDependencies[i];
-            if (!dep->embbed)
-            {
-                toKeep.push_back(dep);
-                continue;
-            }
-
             auto mod = g_Workspace->getModuleByName(dep->name);
             if (!mod)
             {
@@ -370,13 +367,15 @@ JobResult EnumerateModuleJob::execute()
                 continue;
             }
 
-            m->embbedModules.push_back(mod);
+            m->moduleEmbbeded.push_back(mod);
 
             for (auto f : mod->files)
             {
                 if (f->isCfgFile)
                     continue;
-                addFileToModule(m, allFiles, fs::path(f->path).parent_path().string(), f->name.c_str(), f->writeTime, nullptr, mod);
+                auto newFile                = addFileToModule(m, allFiles, fs::path(f->path).parent_path().string(), f->name.c_str(), f->writeTime, nullptr, mod);
+                newFile->isEmbbeded         = true;
+                newFile->globalUsingsEmbbed = mod->buildParameters.globalUsings;
             }
 
             // Add the dependencies of the embedded module too
@@ -384,7 +383,7 @@ JobResult EnumerateModuleJob::execute()
             {
                 auto cpt = m->moduleDependencies.size();
 
-                if (!m->addDependency(otherDep->node, otherDep->tokenLocation, otherDep->tokenVersion, otherDep->embbed || dep->embbedRec, dep->embbedRec))
+                if (!m->addDependency(otherDep->node, otherDep->tokenLocation, otherDep->tokenVersion))
                     return JobResult::ReleaseJob;
 
                 if (m->moduleDependencies.size() > cpt)

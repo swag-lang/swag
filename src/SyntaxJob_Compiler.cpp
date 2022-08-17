@@ -592,7 +592,7 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
         SWAG_CHECK(doUsing(parent));
         while (prevCount != parent->childs.count)
         {
-            sourceFile->module->buildParameters.globalUsing.push_back(parent->childs[prevCount]);
+            sourceFile->module->buildParameters.globalUsings.push_back(parent->childs[prevCount]);
             prevCount++;
         }
     }
@@ -749,8 +749,6 @@ bool SyntaxJob::doCompilerImport(AstNode* parent)
     SWAG_CHECK(eatToken());
 
     // Specific dependency stuff
-    bool  embbed    = false;
-    bool  embbedRec = false;
     Token tokenLocation, tokenVersion;
     if (sourceFile->isCfgFile || sourceFile->isScriptFile)
     {
@@ -778,20 +776,6 @@ bool SyntaxJob::doCompilerImport(AstNode* parent)
                 continue;
             }
 
-            if (token.text == g_LangSpec->name_embbed)
-            {
-                SWAG_CHECK(eatToken());
-                embbed = true;
-                continue;
-            }
-
-            if (token.text == g_LangSpec->name_embbedrec)
-            {
-                SWAG_CHECK(eatToken());
-                embbed = embbedRec = true;
-                continue;
-            }
-
             break;
         }
     }
@@ -801,7 +785,7 @@ bool SyntaxJob::doCompilerImport(AstNode* parent)
     {
         if (node->ownerCompilerIfBlock)
             node->ownerCompilerIfBlock->imports.push_back(node);
-        SWAG_CHECK(sourceFile->module->addDependency(node, tokenLocation, tokenVersion, embbed, embbedRec));
+        SWAG_CHECK(sourceFile->module->addDependency(node, tokenLocation, tokenVersion));
     }
 
     return true;

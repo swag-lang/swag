@@ -166,6 +166,7 @@ struct BuildCfg
     uint32_t  moduleRevision = 0;
     uint32_t  moduleBuildNum = 0;
     SwagSlice moduleNamespace;
+    bool      embbedImports = false;
 
     // Debug
     static const auto SAFETY_BC    = ATTRIBUTE_SAFETY_BOUNDCHECK_ON;
@@ -178,7 +179,7 @@ struct BuildCfg
     // Bytecode
     bool byteCodeOptimize    = true;
     bool byteCodeDebugInline = true;
-    bool byteCodeRemoveDup   = true;
+    bool byteCodeRemoveDup   = false;
     bool byteCodeEmitAssume  = true;
     bool byteCodeInline      = true;
 
