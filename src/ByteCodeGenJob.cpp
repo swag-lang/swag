@@ -715,6 +715,8 @@ JobResult ByteCodeGenJob::execute()
                 SWAG_ASSERT(node->extension && node->extension->bc);
                 if (node->extension->bc->hasForeignFunctionCalls)
                     context.bc->hasForeignFunctionCalls = true;
+                for (auto const& fmn : node->extension->bc->hasForeignFunctionCallsModules)
+                    context.bc->hasForeignFunctionCallsModules.insert(fmn);
             }
 
             // Deal with registered dependent nodes, by adding them to the list

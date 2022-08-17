@@ -455,10 +455,7 @@ JobResult ModuleBuildJob::execute()
         if (context.result != ContextResult::Done)
             return JobResult::KeepJobAlive;
 
-        if (module->kind == ModuleKind::Config)
-            pass = ModuleBuildPass::OptimizeBc;
-        else
-            pass = ModuleBuildPass::WaitForDependencies;
+        pass = ModuleBuildPass::OptimizeBc;
 
         module->sendCompilerMessage(CompilerMsgKind::PassAfterSemantic, this);
 
@@ -469,20 +466,6 @@ JobResult ModuleBuildJob::execute()
         jobsToAdd.push_back(semanticJob);
 
         return JobResult::KeepJobAlive;
-    }
-
-    //////////////////////////////////////////////////
-    if (pass == ModuleBuildPass::WaitForDependencies)
-    {
-        if (module->numErrors)
-            return JobResult::ReleaseJob;
-        if (g_CommandLine->verboseStages)
-            module->logStage("ModuleBuildPass::WaitForDependencies\n");
-
-        if (!module->waitForDependenciesDone(this))
-            return JobResult::KeepJobAlive;
-
-        pass = ModuleBuildPass::OptimizeBc;
     }
 
     //////////////////////////////////////////////////
@@ -516,13 +499,30 @@ JobResult ModuleBuildJob::execute()
         if (module->numErrors)
             return JobResult::ReleaseJob;
 
-        // Now we can patch all methods pointers in type definitions
-        module->mutableSegment.doPatchMethods(&context);
-        module->tlsSegment.doPatchMethods(&context);
-        module->constantSegment.doPatchMethods(&context);
+        pass = ModuleBuildPass::WaitForDependencies;
+    }
 
-        // We can also build the type table for the current module
-        module->buildTypesSlice();
+    //////////////////////////////////////////////////
+    if (pass == ModuleBuildPass::WaitForDependencies)
+    {
+        if (module->numErrors)
+            return JobResult::ReleaseJob;
+        if (g_CommandLine->verboseStages)
+            module->logStage("ModuleBuildPass::WaitForDependencies\n");
+
+        if (module->kind != ModuleKind::Config)
+        {
+            if (!module->waitForDependenciesDone(this))
+                return JobResult::KeepJobAlive;
+
+            // Now we can patch all methods pointers in type definitions
+            module->mutableSegment.doPatchMethods(&context);
+            module->tlsSegment.doPatchMethods(&context);
+            module->constantSegment.doPatchMethods(&context);
+
+            // We can also build the type table for the current module
+            module->buildTypesSlice();
+        }
 
         if (!module->hasBytecodeToRun())
             pass = ModuleBuildPass::Output;

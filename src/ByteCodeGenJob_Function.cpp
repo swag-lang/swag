@@ -12,6 +12,7 @@
 #include "ErrorIds.h"
 #include "Os.h"
 #include "Hash.h"
+#include "ModuleManager.h"
 
 bool ByteCodeGenJob::emitLocalFuncDecl(ByteCodeGenContext* context)
 {
@@ -1765,10 +1766,10 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
 
     if (foreign)
     {
-        auto inst                            = emitInstruction(context, ByteCodeOp::ForeignCall);
-        inst->a.pointer                      = (uint8_t*) funcNode;
-        inst->b.pointer                      = (uint8_t*) typeInfoFunc;
-        context->bc->hasForeignFunctionCalls = true;
+        auto inst       = emitInstruction(context, ByteCodeOp::ForeignCall);
+        inst->a.pointer = (uint8_t*) funcNode;
+        inst->b.pointer = (uint8_t*) typeInfoFunc;
+        context->bc->hasForeignFunctionCallsModules.insert(ModuleManager::getForeignModuleName(funcNode));
     }
     else if (funcNode)
     {

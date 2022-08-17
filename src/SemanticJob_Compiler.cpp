@@ -218,6 +218,15 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
             return true;
         }
     }
+    else if (!node->extension->bc->hasForeignFunctionCallsModules.empty())
+    {
+        if (!module->waitForDependenciesDone(context->job, node->extension->bc->hasForeignFunctionCallsModules))
+        {
+            context->job->waitingKind = JobWaitKind::WaitDepDoneExec;
+            context->result           = ContextResult::Pending;
+            return true;
+        }
+    }
 
     PushErrContext ec(context, node, JobContext::ErrorContextType::Node);
     SWAG_CHECK(module->executeNode(sourceFile, node, context, &execParams));

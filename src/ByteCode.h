@@ -181,6 +181,7 @@ struct ByteCode
     Utf8                   callName;
     VectorNative<AstNode*> localVars;
     VectorNative<AstNode*> dependentCalls;
+    set<Utf8>              hasForeignFunctionCallsModules;
 
     ByteCodeInstruction* out          = nullptr;
     SourceFile*          sourceFile   = nullptr;

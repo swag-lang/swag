@@ -712,6 +712,32 @@ bool Module::hasDependencyTo(Module* module)
     return false;
 }
 
+bool Module::waitForDependenciesDone(Job* job, const set<Utf8>& modules)
+{
+    for (auto& dep : moduleDependencies)
+    {
+        auto depModule = dep->module;
+        SWAG_ASSERT(depModule);
+
+        if (depModule->numErrors)
+            continue;
+        if (modules.find(depModule->name) == modules.end())
+            continue;
+
+        ScopedLock lk(depModule->mutexDependency);
+        if (depModule->hasBeenBuilt != BUILDRES_FULL)
+        {
+            job->waitingKind = JobWaitKind::DepDone;
+            depModule->dependentJobs.add(job);
+            return false;
+        }
+
+        g_ModuleMgr->loadModule(depModule->name);
+    }
+
+    return true;
+}
+
 bool Module::waitForDependenciesDone(Job* job)
 {
     if (dependenciesDone)

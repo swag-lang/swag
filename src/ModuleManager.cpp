@@ -101,18 +101,23 @@ void* ModuleManager::getFnPointer(const Utf8& moduleName, const Utf8& funcName)
     return nullptr;
 }
 
-void ModuleManager::addPatchFuncAddress(void** patchAddress, AstFuncDecl* func)
+Utf8 ModuleManager::getForeignModuleName(AstFuncDecl* func)
 {
-    ScopedLock lk(mutexPatch);
-
     auto typeFunc   = CastTypeInfo<TypeInfoFuncAttr>(func->typeInfo, TypeInfoKind::FuncAttr);
     auto moduleName = typeFunc->attributes.getValue(g_LangSpec->name_Swag_Foreign, g_LangSpec->name_module);
     SWAG_ASSERT(moduleName && !moduleName->text.empty());
+    return moduleName->text;
+}
+
+void ModuleManager::addPatchFuncAddress(void** patchAddress, AstFuncDecl* func)
+{
+    auto       moduleName = getForeignModuleName(func);
+    ScopedLock lk(mutexPatch);
 
     // Apply patch now, because module is already loaded
-    if (isModuleLoaded(moduleName->text))
+    if (isModuleLoaded(moduleName))
     {
-        auto fnPtr = getFnPointer(moduleName->text, func->fullnameForeign);
+        auto fnPtr = getFnPointer(moduleName, func->fullnameForeign);
         SWAG_ASSERT(fnPtr);
         *patchAddress = ByteCode::doForeignLambda(fnPtr);
     }
@@ -122,9 +127,9 @@ void ModuleManager::addPatchFuncAddress(void** patchAddress, AstFuncDecl* func)
         newPatch.patchAddress = patchAddress;
         newPatch.funcDecl     = func;
 
-        auto it = patchOffsets.find(moduleName->text);
+        auto it = patchOffsets.find(moduleName);
         if (it == patchOffsets.end())
-            patchOffsets[moduleName->text] = {newPatch};
+            patchOffsets[moduleName] = {newPatch};
         else
             it->second.push_back(newPatch);
     }

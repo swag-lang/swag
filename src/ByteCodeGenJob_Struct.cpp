@@ -7,6 +7,7 @@
 #include "ErrorIds.h"
 #include "SemanticJob.h"
 #include "LanguageSpec.h"
+#include "ModuleManager.h"
 
 void ByteCodeGenJob::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* funcDecl, ByteCode* bc, bool pushParam, uint32_t offset, uint32_t numParams)
 {
@@ -35,10 +36,10 @@ void ByteCodeGenJob::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* fu
 
     if (funcDecl && !bc && funcDecl->attributeFlags & ATTRIBUTE_FOREIGN)
     {
-        auto inst                            = emitInstruction(context, ByteCodeOp::ForeignCall);
-        inst->a.pointer                      = (uint8_t*) funcDecl;
-        inst->b.pointer                      = (uint8_t*) funcDecl->typeInfo;
-        context->bc->hasForeignFunctionCalls = true;
+        auto inst       = emitInstruction(context, ByteCodeOp::ForeignCall);
+        inst->a.pointer = (uint8_t*) funcDecl;
+        inst->b.pointer = (uint8_t*) funcDecl->typeInfo;
+        context->bc->hasForeignFunctionCallsModules.insert(ModuleManager::getForeignModuleName(funcDecl));
         SWAG_ASSERT(inst->a.pointer);
     }
     else
