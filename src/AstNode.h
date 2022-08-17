@@ -193,8 +193,9 @@ struct CloneContext
     }
 };
 
-static const uint32_t ALTSCOPE_WITH  = 0x00000001;
-static const uint32_t ALTSCOPE_USING = 0x00000002;
+static const uint32_t ALTSCOPE_WITH      = 0x00000001;
+static const uint32_t ALTSCOPE_USING     = 0x00000002;
+static const uint32_t ALTSCOPE_SCOPEFILE = 0x00000004;
 
 struct AlternativeScope
 {
