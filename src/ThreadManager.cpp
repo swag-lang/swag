@@ -150,13 +150,17 @@ void ThreadManager::jobHasEnded(Job* job, JobResult result)
     }
 
     // Do we need to wakeup my parent job ?
-    // Only if the job is done, or if we are waiting for a placeholder symbol to be solved, because
-    // the parent job *will* generate the placeholder
     bool wakeUpParent = false;
-    if (result != JobResult::KeepJobAlive || (job->waitingSymbolSolved && job->waitingSymbolSolved->kind == SymbolKind::PlaceHolder))
+
+    // Only if the job is done
+    if (result != JobResult::KeepJobAlive)
         wakeUpParent = true;
 
-    // Same if the symbol is waiting for code generation
+    // or if we are waiting for a placeholder symbol to be solved, because the parent job *will* generate the placeholder
+    else if (job->waitingSymbolSolved && job->waitingSymbolSolved->kind == SymbolKind::PlaceHolder)
+        wakeUpParent = true;
+
+    // or if the symbol is waiting for code generation
     else if (job->waitingSymbolSolved && job->waitingSymbolSolved->flags & SYMBOL_ATTRIBUTE_GEN)
         wakeUpParent = true;
 
