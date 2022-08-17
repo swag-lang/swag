@@ -59,7 +59,19 @@ bool Generic::updateGenericParameters(SemanticContext* context, bool doType, boo
         // We should not instantiate with unresolved types
         auto genGen = match.genericParametersGenTypes[i];
         if (genGen->kind == TypeInfoKind::Generic)
-            param->typeInfo = TypeManager::solidifyUntyped(param->typeInfo);
+        {
+            if (param->typeInfo->flags & TYPEINFO_UNTYPED_INTEGER)
+            {
+                auto symbol = match.symbolName;
+                return context->report({context->node, Utf8::format(g_E[Err0808], SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())});
+            }
+
+            if (param->typeInfo->flags & TYPEINFO_UNTYPED_FLOAT)
+            {
+                auto symbol = match.symbolName;
+                return context->report({context->node, Utf8::format(g_E[Err0809], SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())});
+            }
+        }
 
         if (doNode)
         {
