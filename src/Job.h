@@ -15,14 +15,15 @@ struct AstFuncDecl;
 struct JobGroup;
 enum class DiagnosticLevel;
 
-static const uint8_t JOB_IS_IN_QUEUE       = 0x01;
-static const uint8_t JOB_IS_IN_THREAD      = 0x02;
-static const uint8_t JOB_IS_PENDING        = 0x04;
-static const uint8_t JOB_IS_PENDING_RUN    = 0x08;
-static const uint8_t JOB_COMPILER_PASS     = 0x10;
-static const uint8_t JOB_IS_IO             = 0x20;
-static const uint8_t JOB_IS_OPT            = 0x40;
-static const uint8_t JOB_NO_PENDING_REPORT = 0x80;
+static const uint32_t JOB_IS_IN_QUEUE          = 0x00000001;
+static const uint32_t JOB_IS_IN_THREAD         = 0x00000002;
+static const uint32_t JOB_IS_PENDING           = 0x00000004;
+static const uint32_t JOB_IS_PENDING_RUN       = 0x00000008;
+static const uint32_t JOB_COMPILER_PASS        = 0x00000010;
+static const uint32_t JOB_IS_IO                = 0x00000020;
+static const uint32_t JOB_IS_OPT               = 0x00000040;
+static const uint32_t JOB_NO_PENDING_REPORT    = 0x00000080;
+static const uint32_t JOB_PENDING_PLACE_HOLDER = 0x00000100;
 
 enum class ContextResult
 {
@@ -161,9 +162,9 @@ struct Job
     Job*        waitingJob          = nullptr;
     JobGroup*   jobGroup            = nullptr;
 
-    JobWaitKind waitingKind     = JobWaitKind::None;
-    int32_t     waitingJobIndex = -1;
-    uint32_t    waitOnJobs      = 0;
-
-    uint8_t flags = 0;
+    JobWaitKind waitingKind       = JobWaitKind::None;
+    int32_t     waitingJobIndex   = -1;
+    uint32_t    waitOnJobs        = 0;
+    uint32_t    flags             = 0;
+    uint32_t    waitOnJobsPending = 0;
 };

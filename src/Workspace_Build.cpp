@@ -746,8 +746,34 @@ bool Workspace::buildTarget()
         }
     }
 
-    g_ThreadMgr.waitEndJobs();
-    checkPendingJobs();
+    while (true)
+    {
+        g_ThreadMgr.waitEndJobs();
+
+        bool restart     = false;
+        auto waitingJobs = g_ThreadMgr.waitingJobs;
+        for (int i = 0; i < waitingJobs.size(); i++)
+        {
+            auto job = waitingJobs[i];
+            if (job->flags & JOB_PENDING_PLACE_HOLDER)
+            {
+                job->flags &= ~JOB_PENDING_PLACE_HOLDER;
+                job->waitOnJobsPending = job->waitOnJobs;
+                job->waitOnJobs        = 0;
+                restart                = true;
+                waitingJobs.erase(i);
+                i--;
+                g_ThreadMgr.addJob(job);
+            }
+        }
+
+        if (!restart)
+        {
+            checkPendingJobs();
+            break;
+        }
+    }
+
     return true;
 }
 

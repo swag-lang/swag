@@ -46,7 +46,7 @@ void ThreadManager::addJobNoLock(Job* job)
         return;
     }
 
-    // This should not happend... but this can happen
+    // This should not happen... but this can happen
     // A thread is added, but should not run because a dependency is still running
     // So, yes, this is an anti bug...
     if (job->waitOnJobs != 0)
@@ -158,7 +158,11 @@ void ThreadManager::jobHasEnded(Job* job, JobResult result)
 
     // or if we are waiting for a placeholder symbol to be solved, because the parent job *will* generate the placeholder
     else if (job->waitingSymbolSolved && job->waitingSymbolSolved->kind == SymbolKind::PlaceHolder)
+    {
+        if (job->dependentJob)
+            job->dependentJob->flags |= JOB_PENDING_PLACE_HOLDER;
         wakeUpParent = true;
+    }
 
     // or if the symbol is waiting for code generation
     else if (job->waitingSymbolSolved && job->waitingSymbolSolved->flags & SYMBOL_ATTRIBUTE_GEN)

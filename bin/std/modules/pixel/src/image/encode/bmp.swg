@@ -59,7 +59,7 @@ public impl IImageEncoder for Encoder
                 }
 
                 loop 4 - align
-                    result.addNative(0)
+                    result.addNative(0'u8)
             }
         }
         elif image.bpp != 24 or !align
@@ -74,7 +74,7 @@ public impl IImageEncoder for Encoder
                 psrc += header.biWidth * 3
 
                 loop 4 - align
-                    result.addNative(0)
+                    result.addNative(0'u8)
             }
         }
     }

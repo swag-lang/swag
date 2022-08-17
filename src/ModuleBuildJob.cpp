@@ -457,6 +457,7 @@ JobResult ModuleBuildJob::execute()
 
         pass = ModuleBuildPass::OptimizeBc;
 
+        waitOnJobs += waitOnJobsPending;
         module->sendCompilerMessage(CompilerMsgKind::PassAfterSemantic, this);
 
         // This is a dummy job, in case the user code does not trigger new jobs during the message pass

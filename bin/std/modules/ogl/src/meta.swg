@@ -21,6 +21,7 @@ var g_Functions: Array'OneFunc
     g_Functions.add(@{msg.type, msg.name})
 }
 
+#placeholder glInitExtensions
 #message(CompilerMsgMask.PassAfterSemantic)
 {
     var builderVars: StringBuilder

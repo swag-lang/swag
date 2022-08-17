@@ -183,7 +183,7 @@ bool SemanticJob::sendCompilerMsgFuncDecl(SemanticContext* context)
     // Filter what we send
     if (module->kind == ModuleKind::BootStrap || module->kind == ModuleKind::Runtime)
         return true;
-    if (sourceFile->imported)
+    if (sourceFile->imported && !sourceFile->isEmbbeded)
         return true;
     if (!context->node->ownerScope->isGlobalOrImpl())
         return true;
@@ -707,6 +707,12 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
             storageOffset += overload->typeInfo->sizeOf;
         }
     }
+
+    /*if (funcNode->flags & AST_EMPTY_FCT && funcNode->sourceFile->path.find("/ogl/") != -1 && funcNode->sourceFile->isEmbbeded && !funcNode->isForeign())
+    {
+        funcNode->resolvedSymbolName->kind = SymbolKind::PlaceHolder;
+        return true;
+    }*/
 
     // For a short lambda without a specified return type, we need to defer the symbol registration, as we
     // need to infer it from the lambda expression
