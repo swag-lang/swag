@@ -135,6 +135,7 @@ bool SyntaxJob::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlo
     if (sourceFile->isRuntimeFile && token.text == g_LangSpec->name_Swag)
         currentScope = g_Workspace->bootstrapModule->files[0]->astRoot->ownerScope;
 
+    bool scopeFilePriv = privName != nullptr;
     while (true)
     {
         namespaceNode = Ast::newNode<AstNameSpace>(this, AstNodeKind::Namespace, sourceFile, parent);
@@ -194,6 +195,7 @@ bool SyntaxJob::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlo
             privName = nullptr;
         else
             SWAG_CHECK(eatToken());
+
         if (token.id != TokenId::SymDot)
         {
             if (forUsing)
@@ -201,7 +203,7 @@ bool SyntaxJob::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlo
                 while (parent->kind != AstNodeKind::File)
                     parent = parent->parent;
                 parent->allocateExtension();
-                parent->addAlternativeScope(newScope);
+                parent->addAlternativeScope(newScope, scopeFilePriv ? ALTSCOPE_SCOPEFILE : true);
             }
 
             break;

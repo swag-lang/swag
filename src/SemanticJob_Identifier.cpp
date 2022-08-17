@@ -3422,6 +3422,16 @@ bool SemanticJob::filterSymbols(SemanticContext* context, AstIdentifier* node)
         if (p.remove)
             continue;
 
+        // A variable inside a scopefile has priority
+        if (p.asFlags & ALTSCOPE_SCOPEFILE)
+        {
+            for (auto& p1 : dependentSymbols)
+            {
+                if (!(p1.asFlags & ALTSCOPE_SCOPEFILE))
+                    p1.remove = true;
+            }
+        }
+
         // A variable which is name as a function for example...
         if (!node->callParameters &&
             oneSymbol->kind == SymbolKind::Function &&
@@ -3439,9 +3449,7 @@ bool SemanticJob::filterSymbols(SemanticContext* context, AstIdentifier* node)
                 for (auto& p1 : dependentSymbols)
                 {
                     if (!(p1.asFlags & ALTSCOPE_WITH))
-                    {
                         p1.remove = true;
-                    }
                 }
             }
         }
@@ -3452,9 +3460,7 @@ bool SemanticJob::filterSymbols(SemanticContext* context, AstIdentifier* node)
             for (auto& p1 : dependentSymbols)
             {
                 if (p1.asFlags & ALTSCOPE_USING && p1.symbol->kind == SymbolKind::GenericType)
-                {
                     p1.remove = true;
-                }
             }
         }
 
