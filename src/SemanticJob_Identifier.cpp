@@ -3422,7 +3422,10 @@ bool SemanticJob::filterSymbols(SemanticContext* context, AstIdentifier* node)
         if (p.remove)
             continue;
 
-        if (!node->callParameters && oneSymbol->kind == SymbolKind::Function)
+        // A variable which is name as a function for example...
+        if (!node->callParameters &&
+            oneSymbol->kind == SymbolKind::Function &&
+            !isFunctionButNotACall(context, node, oneSymbol))
         {
             p.remove = true;
             continue;
