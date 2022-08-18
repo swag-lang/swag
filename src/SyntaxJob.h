@@ -69,6 +69,7 @@ struct SyntaxJob : public Job
     }
 
     JobResult execute() override;
+    bool      saveEmbedded(const Utf8& content, AstNode* parent, AstNode* fromNode, Utf8& tmpFileName, Utf8& tmpFilePath, uint32_t& previousLogLine);
     bool      constructEmbedded(const Utf8& content, AstNode* parent, AstNode* fromNode, enum class CompilerAstKind kind, bool logGenerated);
 
     bool error(const Token& tk, const Utf8& msg, const char* help = nullptr, const char* hint = nullptr);

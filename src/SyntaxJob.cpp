@@ -190,65 +190,72 @@ bool SyntaxJob::eatSemiCol(const char* msg)
     return true;
 }
 
+bool SyntaxJob::saveEmbedded(const Utf8& content, AstNode* parent, AstNode* fromNode, Utf8& tmpFileName, Utf8& tmpFilePath, uint32_t& previousLogLine)
+{
+    auto modl       = fromNode->sourceFile->module;
+    auto publicPath = modl->publicPath;
+    tmpFilePath     = publicPath;
+    tmpFileName     = Fmt("%s%d.gwg", modl->name.c_str(), g_ThreadIndex);
+
+    publicPath += tmpFileName;
+
+    uint32_t    countEol = 0;
+    const char* pz       = content.c_str();
+    for (int i = 0; i < content.length(); i++)
+    {
+        if (*pz == '\n')
+            countEol++;
+        pz++;
+    }
+
+    FILE* h = modl->handleGeneratedFile[g_ThreadIndex];
+
+    if (!h)
+    {
+        if (modl->appendGeneratedFile[g_ThreadIndex])
+            fopen_s(&h, publicPath.c_str(), "a+N");
+        else
+            fopen_s(&h, publicPath.c_str(), "wN");
+        modl->handleGeneratedFile[g_ThreadIndex] = h;
+
+        if (!h)
+        {
+            modl->numErrors++;
+            g_Log.errorOS(Fmt(Err(Err0524), publicPath.c_str()));
+            return false;
+        }
+    }
+
+    modl->appendGeneratedFile[g_ThreadIndex] = true;
+
+    Utf8 sourceCode = Fmt("// %s:%d:%d:%d:%d\n", fromNode->sourceFile->path.c_str(), fromNode->token.startLocation.line + 1, fromNode->token.startLocation.column + 1, fromNode->token.endLocation.line + 1, fromNode->token.endLocation.column + 1);
+    modl->countLinesGeneratedFile[g_ThreadIndex] += 1;
+    previousLogLine = modl->countLinesGeneratedFile[g_ThreadIndex];
+    modl->countLinesGeneratedFile[g_ThreadIndex] += countEol;
+    modl->countLinesGeneratedFile[g_ThreadIndex] += 2;
+
+    fwrite(sourceCode.c_str(), sourceCode.length(), 1, h);
+    fwrite(content.c_str(), content.length(), 1, h);
+    static const char* eol = "\n\n";
+    fwrite(eol, 1, 2, h);
+
+    return true;
+}
+
 bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode* fromNode, CompilerAstKind kind, bool logGenerated)
 {
     Utf8     tmpFileName     = "<generated>";
     Utf8     tmpFilePath     = "<generated>";
     uint32_t previousLogLine = 0;
+
     SWAG_ASSERT(module);
 
     // Log the generated code in '<module>.swg'
     if (logGenerated && !fromNode->sourceFile->numTestErrors && !fromNode->sourceFile->numTestWarnings && g_CommandLine->output)
     {
-        auto modl = fromNode->sourceFile->module;
-        if (modl->buildCfg.backendDebugInformations && !g_CommandLine->scriptCommand)
+        if (fromNode->sourceFile->module->buildCfg.backendDebugInformations && !g_CommandLine->scriptCommand)
         {
-            auto publicPath = modl->publicPath;
-            tmpFilePath     = publicPath;
-            tmpFileName     = Fmt("%s%d.gwg", modl->name.c_str(), g_ThreadIndex);
-
-            publicPath += tmpFileName;
-
-            uint32_t    countEol = 0;
-            const char* pz       = content.c_str();
-            for (int i = 0; i < content.length(); i++)
-            {
-                if (*pz == '\n')
-                    countEol++;
-                pz++;
-            }
-
-            FILE* h = modl->handleGeneratedFile[g_ThreadIndex];
-
-            if (!h)
-            {
-                if (modl->appendGeneratedFile[g_ThreadIndex])
-                    fopen_s(&h, publicPath.c_str(), "a+N");
-                else
-                    fopen_s(&h, publicPath.c_str(), "wN");
-                modl->handleGeneratedFile[g_ThreadIndex] = h;
-
-                if (!h)
-                {
-                    modl->numErrors++;
-                    g_Log.errorOS(Fmt(Err(Err0524), publicPath.c_str()));
-                    return false;
-                }
-            }
-
-            modl->appendGeneratedFile[g_ThreadIndex] = true;
-
-            Utf8 sourceCode = Fmt("// %s:%d:%d:%d:%d\n", fromNode->sourceFile->path.c_str(), fromNode->token.startLocation.line + 1, fromNode->token.startLocation.column + 1, fromNode->token.endLocation.line + 1, fromNode->token.endLocation.column + 1);
-            fwrite(sourceCode.c_str(), sourceCode.length(), 1, h);
-            modl->countLinesGeneratedFile[g_ThreadIndex] += 1;
-            previousLogLine = modl->countLinesGeneratedFile[g_ThreadIndex];
-
-            fwrite(content.c_str(), content.length(), 1, h);
-            modl->countLinesGeneratedFile[g_ThreadIndex] += countEol;
-
-            static const char* eol = "\n\n";
-            fwrite(eol, 1, 2, h);
-            modl->countLinesGeneratedFile[g_ThreadIndex] += 2;
+            SWAG_CHECK(saveEmbedded(content, parent, fromNode, tmpFileName, tmpFilePath, previousLogLine));
         }
     }
 
