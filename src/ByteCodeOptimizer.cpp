@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "ThreadManager.h"
 #include "Hash.h"
+#include "AstNode.h"
 
 uint32_t ByteCodeOptimizer::newTreeNode(ByteCodeOptContext* context, ByteCodeInstruction* ip, bool& here)
 {
@@ -269,6 +270,12 @@ void ByteCodeOptimizer::setContextFlags(ByteCodeOptContext* context)
     context->contextBcFlags = 0;
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
+        // Mark some instructions for some specific passes
+        if (ip->node && ip->node->sourceFile && ip->node->sourceFile->module && ip->node->sourceFile->module->mustEmitSafetyOF(ip->node))
+            ip->flags |= BCI_SAFETY_OF;
+        else
+            ip->flags &= ~BCI_SAFETY_OF;
+
         switch (ip->op)
         {
         case ByteCodeOp::CopyRBtoRA8:

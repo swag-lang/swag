@@ -399,32 +399,36 @@ void ByteCodeOptimizer::reduceAppend(ByteCodeOptContext* context, ByteCodeInstru
 
 void ByteCodeOptimizer::reduceSwap(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
-    if (ip->op == ByteCodeOp::Ret || ip[1].op == ByteCodeOp::Ret || ip[2].op == ByteCodeOp::Ret)
-        return;
-    if (ip->op == ByteCodeOp::Nop || ip[1].op == ByteCodeOp::Nop || ip[2].op == ByteCodeOp::Nop)
-        return;
-    if (ByteCode::isJump(ip) || ByteCode::isJump(ip + 1) || ByteCode::isJump(ip + 2))
-        return;
-    if (ip->flags & BCI_START_STMT || ip[1].flags & BCI_START_STMT || ip[2].flags & BCI_START_STMT)
-        return;
-    if (ip->node->ownerInline != ip[1].node->ownerInline)
-        return;
-
+    bool canSwap = false;
     if (ip->op == ByteCodeOp::MakeStackPointer &&
         ip[1].op != ByteCodeOp::IncPointer64 &&
         ip[1].op != ip->op &&
         !ByteCode::hasRefToReg(ip + 1, ip->a.u32))
     {
-        swap(ip[0], ip[1]);
-        context->passHasDoneSomething = true;
+        canSwap = true;
+    }
+    else if (ip->op == ByteCodeOp::IncPointer64 &&
+             ip[1].op != ip->op &&
+             ip->flags & BCI_IMM_B &&
+             !ByteCode::hasRefToReg(ip + 1, ip->a.u32) &&
+             !ByteCode::hasRefToReg(ip + 1, ip->c.u32))
+    {
+        canSwap = true;
     }
 
-    if (ip->op == ByteCodeOp::IncPointer64 &&
-        ip[1].op != ip->op &&
-        ip->flags & BCI_IMM_B &&
-        !ByteCode::hasRefToReg(ip + 1, ip->a.u32) &&
-        !ByteCode::hasRefToReg(ip + 1, ip->c.u32))
+    if (canSwap)
     {
+        if (ip[1].op == ByteCodeOp::Ret || ip[2].op == ByteCodeOp::Ret)
+            return;
+        if (ip[1].op == ByteCodeOp::Nop || ip[2].op == ByteCodeOp::Nop)
+            return;
+        if (ByteCode::isJump(ip + 1) || ByteCode::isJump(ip + 2))
+            return;
+        if (ip->flags & BCI_START_STMT || ip[1].flags & BCI_START_STMT || ip[2].flags & BCI_START_STMT)
+            return;
+        if (ip->node->ownerInline != ip[1].node->ownerInline)
+            return;
+
         swap(ip[0], ip[1]);
         context->passHasDoneSomething = true;
     }
@@ -3745,127 +3749,124 @@ void ByteCodeOptimizer::reduceCmpJump(ByteCodeOptContext* context, ByteCodeInstr
 
 void ByteCodeOptimizer::reduceForceSafe(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
-    if (!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->module)
+    if (ip->flags & BCI_SAFETY_OF)
         return;
 
-    if (!ip->node->sourceFile->module->mustEmitSafetyOF(ip->node))
+    switch (ip->op)
     {
-        switch (ip->op)
-        {
-        case ByteCodeOp::AffectOpPlusEqS8:
-            SET_OP(ip, ByteCodeOp::AffectOpPlusEqS8_Safe);
-            break;
-        case ByteCodeOp::AffectOpPlusEqS16:
-            SET_OP(ip, ByteCodeOp::AffectOpPlusEqS16_Safe);
-            break;
-        case ByteCodeOp::AffectOpPlusEqS32:
-            SET_OP(ip, ByteCodeOp::AffectOpPlusEqS32_Safe);
-            break;
-        case ByteCodeOp::AffectOpPlusEqS64:
-            SET_OP(ip, ByteCodeOp::AffectOpPlusEqS64_Safe);
-            break;
-        case ByteCodeOp::AffectOpPlusEqU8:
-            SET_OP(ip, ByteCodeOp::AffectOpPlusEqU8_Safe);
-            break;
-        case ByteCodeOp::AffectOpPlusEqU16:
-            SET_OP(ip, ByteCodeOp::AffectOpPlusEqU16_Safe);
-            break;
-        case ByteCodeOp::AffectOpPlusEqU32:
-            SET_OP(ip, ByteCodeOp::AffectOpPlusEqU32_Safe);
-            break;
-        case ByteCodeOp::AffectOpPlusEqU64:
-            SET_OP(ip, ByteCodeOp::AffectOpPlusEqU64_Safe);
-            break;
+    case ByteCodeOp::AffectOpPlusEqS8:
+        SET_OP(ip, ByteCodeOp::AffectOpPlusEqS8_Safe);
+        break;
+    case ByteCodeOp::AffectOpPlusEqS16:
+        SET_OP(ip, ByteCodeOp::AffectOpPlusEqS16_Safe);
+        break;
+    case ByteCodeOp::AffectOpPlusEqS32:
+        SET_OP(ip, ByteCodeOp::AffectOpPlusEqS32_Safe);
+        break;
+    case ByteCodeOp::AffectOpPlusEqS64:
+        SET_OP(ip, ByteCodeOp::AffectOpPlusEqS64_Safe);
+        break;
+    case ByteCodeOp::AffectOpPlusEqU8:
+        SET_OP(ip, ByteCodeOp::AffectOpPlusEqU8_Safe);
+        break;
+    case ByteCodeOp::AffectOpPlusEqU16:
+        SET_OP(ip, ByteCodeOp::AffectOpPlusEqU16_Safe);
+        break;
+    case ByteCodeOp::AffectOpPlusEqU32:
+        SET_OP(ip, ByteCodeOp::AffectOpPlusEqU32_Safe);
+        break;
+    case ByteCodeOp::AffectOpPlusEqU64:
+        SET_OP(ip, ByteCodeOp::AffectOpPlusEqU64_Safe);
+        break;
 
-        case ByteCodeOp::AffectOpMinusEqS8:
-            SET_OP(ip, ByteCodeOp::AffectOpMinusEqS8_Safe);
-            break;
-        case ByteCodeOp::AffectOpMinusEqU8:
-            SET_OP(ip, ByteCodeOp::AffectOpMinusEqU8_Safe);
-            break;
-        case ByteCodeOp::AffectOpMinusEqS16:
-            SET_OP(ip, ByteCodeOp::AffectOpMinusEqS16_Safe);
-            break;
-        case ByteCodeOp::AffectOpMinusEqU16:
-            SET_OP(ip, ByteCodeOp::AffectOpMinusEqU16_Safe);
-            break;
-        case ByteCodeOp::AffectOpMinusEqS32:
-            SET_OP(ip, ByteCodeOp::AffectOpMinusEqS32_Safe);
-            break;
-        case ByteCodeOp::AffectOpMinusEqU32:
-            SET_OP(ip, ByteCodeOp::AffectOpMinusEqU32_Safe);
-            break;
-        case ByteCodeOp::AffectOpMinusEqS64:
-            SET_OP(ip, ByteCodeOp::AffectOpMinusEqS64_Safe);
-            break;
-        case ByteCodeOp::AffectOpMinusEqU64:
-            SET_OP(ip, ByteCodeOp::AffectOpMinusEqU64_Safe);
-            break;
+    case ByteCodeOp::AffectOpMinusEqS8:
+        SET_OP(ip, ByteCodeOp::AffectOpMinusEqS8_Safe);
+        break;
+    case ByteCodeOp::AffectOpMinusEqU8:
+        SET_OP(ip, ByteCodeOp::AffectOpMinusEqU8_Safe);
+        break;
+    case ByteCodeOp::AffectOpMinusEqS16:
+        SET_OP(ip, ByteCodeOp::AffectOpMinusEqS16_Safe);
+        break;
+    case ByteCodeOp::AffectOpMinusEqU16:
+        SET_OP(ip, ByteCodeOp::AffectOpMinusEqU16_Safe);
+        break;
+    case ByteCodeOp::AffectOpMinusEqS32:
+        SET_OP(ip, ByteCodeOp::AffectOpMinusEqS32_Safe);
+        break;
+    case ByteCodeOp::AffectOpMinusEqU32:
+        SET_OP(ip, ByteCodeOp::AffectOpMinusEqU32_Safe);
+        break;
+    case ByteCodeOp::AffectOpMinusEqS64:
+        SET_OP(ip, ByteCodeOp::AffectOpMinusEqS64_Safe);
+        break;
+    case ByteCodeOp::AffectOpMinusEqU64:
+        SET_OP(ip, ByteCodeOp::AffectOpMinusEqU64_Safe);
+        break;
 
-        case ByteCodeOp::AffectOpMulEqS8:
-            SET_OP(ip, ByteCodeOp::AffectOpMulEqS8_Safe);
-            break;
-        case ByteCodeOp::AffectOpMulEqU8:
-            SET_OP(ip, ByteCodeOp::AffectOpMulEqU8_Safe);
-            break;
-        case ByteCodeOp::AffectOpMulEqS16:
-            SET_OP(ip, ByteCodeOp::AffectOpMulEqS16_Safe);
-            break;
-        case ByteCodeOp::AffectOpMulEqU16:
-            SET_OP(ip, ByteCodeOp::AffectOpMulEqU16_Safe);
-            break;
-        case ByteCodeOp::AffectOpMulEqS32:
-            SET_OP(ip, ByteCodeOp::AffectOpMulEqS32_Safe);
-            break;
-        case ByteCodeOp::AffectOpMulEqU32:
-            SET_OP(ip, ByteCodeOp::AffectOpMulEqU32_Safe);
-            break;
-        case ByteCodeOp::AffectOpMulEqS64:
-            SET_OP(ip, ByteCodeOp::AffectOpMulEqS64_Safe);
-            break;
-        case ByteCodeOp::AffectOpMulEqU64:
-            SET_OP(ip, ByteCodeOp::AffectOpMulEqU64_Safe);
-            break;
+    case ByteCodeOp::AffectOpMulEqS8:
+        SET_OP(ip, ByteCodeOp::AffectOpMulEqS8_Safe);
+        break;
+    case ByteCodeOp::AffectOpMulEqU8:
+        SET_OP(ip, ByteCodeOp::AffectOpMulEqU8_Safe);
+        break;
+    case ByteCodeOp::AffectOpMulEqS16:
+        SET_OP(ip, ByteCodeOp::AffectOpMulEqS16_Safe);
+        break;
+    case ByteCodeOp::AffectOpMulEqU16:
+        SET_OP(ip, ByteCodeOp::AffectOpMulEqU16_Safe);
+        break;
+    case ByteCodeOp::AffectOpMulEqS32:
+        SET_OP(ip, ByteCodeOp::AffectOpMulEqS32_Safe);
+        break;
+    case ByteCodeOp::AffectOpMulEqU32:
+        SET_OP(ip, ByteCodeOp::AffectOpMulEqU32_Safe);
+        break;
+    case ByteCodeOp::AffectOpMulEqS64:
+        SET_OP(ip, ByteCodeOp::AffectOpMulEqS64_Safe);
+        break;
+    case ByteCodeOp::AffectOpMulEqU64:
+        SET_OP(ip, ByteCodeOp::AffectOpMulEqU64_Safe);
+        break;
 
-        case ByteCodeOp::BinOpPlusS32:
-            SET_OP(ip, ByteCodeOp::BinOpPlusS32_Safe);
-            break;
-        case ByteCodeOp::BinOpPlusU32:
-            SET_OP(ip, ByteCodeOp::BinOpPlusU32_Safe);
-            break;
-        case ByteCodeOp::BinOpPlusS64:
-            SET_OP(ip, ByteCodeOp::BinOpPlusS64_Safe);
-            break;
-        case ByteCodeOp::BinOpPlusU64:
-            SET_OP(ip, ByteCodeOp::BinOpPlusU64_Safe);
-            break;
+    case ByteCodeOp::BinOpPlusS32:
+        SET_OP(ip, ByteCodeOp::BinOpPlusS32_Safe);
+        break;
+    case ByteCodeOp::BinOpPlusU32:
+        SET_OP(ip, ByteCodeOp::BinOpPlusU32_Safe);
+        break;
+    case ByteCodeOp::BinOpPlusS64:
+        SET_OP(ip, ByteCodeOp::BinOpPlusS64_Safe);
+        break;
+    case ByteCodeOp::BinOpPlusU64:
+        SET_OP(ip, ByteCodeOp::BinOpPlusU64_Safe);
+        break;
 
-        case ByteCodeOp::BinOpMinusS32:
-            SET_OP(ip, ByteCodeOp::BinOpMinusS32_Safe);
-            break;
-        case ByteCodeOp::BinOpMinusU32:
-            SET_OP(ip, ByteCodeOp::BinOpMinusU32_Safe);
-            break;
-        case ByteCodeOp::BinOpMinusS64:
-            SET_OP(ip, ByteCodeOp::BinOpMinusS64_Safe);
-            break;
-        case ByteCodeOp::BinOpMinusU64:
-            SET_OP(ip, ByteCodeOp::BinOpMinusU64_Safe);
-            break;
+    case ByteCodeOp::BinOpMinusS32:
+        SET_OP(ip, ByteCodeOp::BinOpMinusS32_Safe);
+        break;
+    case ByteCodeOp::BinOpMinusU32:
+        SET_OP(ip, ByteCodeOp::BinOpMinusU32_Safe);
+        break;
+    case ByteCodeOp::BinOpMinusS64:
+        SET_OP(ip, ByteCodeOp::BinOpMinusS64_Safe);
+        break;
+    case ByteCodeOp::BinOpMinusU64:
+        SET_OP(ip, ByteCodeOp::BinOpMinusU64_Safe);
+        break;
 
-        case ByteCodeOp::BinOpMulS32:
-            SET_OP(ip, ByteCodeOp::BinOpMulS32_Safe);
-            break;
-        case ByteCodeOp::BinOpMulU32:
-            SET_OP(ip, ByteCodeOp::BinOpMulU32_Safe);
-            break;
-        case ByteCodeOp::BinOpMulS64:
-            SET_OP(ip, ByteCodeOp::BinOpMulS64_Safe);
-            break;
-        case ByteCodeOp::BinOpMulU64:
-            SET_OP(ip, ByteCodeOp::BinOpMulU64_Safe);
-            break;
-        }
+    case ByteCodeOp::BinOpMulS32:
+        SET_OP(ip, ByteCodeOp::BinOpMulS32_Safe);
+        break;
+    case ByteCodeOp::BinOpMulU32:
+        SET_OP(ip, ByteCodeOp::BinOpMulU32_Safe);
+        break;
+    case ByteCodeOp::BinOpMulS64:
+        SET_OP(ip, ByteCodeOp::BinOpMulS64_Safe);
+        break;
+    case ByteCodeOp::BinOpMulU64:
+        SET_OP(ip, ByteCodeOp::BinOpMulU64_Safe);
+        break;
     }
 }
 

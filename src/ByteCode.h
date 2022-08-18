@@ -30,6 +30,7 @@ static const uint16_t BCI_START_STMT_S  = 0x1000;
 static const uint16_t BCI_START_STMT    = BCI_START_STMT_N | BCI_START_STMT_S;
 static const uint16_t BCI_NO_BACKEND    = 0x2000;
 static const uint16_t BCI_VARIADIC      = 0x4000;
+static const uint16_t BCI_SAFETY_OF     = 0x8000;
 
 struct ByteCodeInstruction
 {
