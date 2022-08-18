@@ -407,6 +407,8 @@ void ByteCodeOptimizer::reduceSwap(ByteCodeOptContext* context, ByteCodeInstruct
         return;
     if (ip->flags & BCI_START_STMT || ip[1].flags & BCI_START_STMT || ip[2].flags & BCI_START_STMT)
         return;
+    if (ip->node->ownerInline != ip[1].node->ownerInline)
+        return;
 
     if (ip->op == ByteCodeOp::MakeStackPointer &&
         ip[1].op != ByteCodeOp::IncPointer64 &&
