@@ -36,6 +36,7 @@ struct TypeTable
         unordered_map<ConcreteTypeInfo*, TypeInfo*>  concreteTypesReverse;
     };
 
+    void  setup(const Utf8& moduleName);
     bool  makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t* storageOffset, uint32_t cflags = 0, TypeInfo** ptrTypeInfo = nullptr);
     bool  makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo** result, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t* storageOffset, uint32_t cflags = 0, TypeInfo** ptrTypeInfo = nullptr);
     bool  makeConcreteTypeValue(JobContext* context, void* concreteTypeInfoValue, DataSegment* storageSegment, uint32_t storageOffset, TypeInfoParam* realType, uint32_t cflags);
@@ -53,8 +54,9 @@ struct TypeTable
     TypeInfo*  getRealType(DataSegment* segment, ConcreteTypeInfo* concreteType);
     void       initFrom(Module* module, TypeTable* other);
 
-    Utf8      name;
-    MapPerSeg mapPerSegment[2];
+    Utf8                     name;
+    Mutex                    mutexMapPerSeg;
+    VectorNative<MapPerSeg*> mapPerSegment;
 };
 
 #define OFFSETOF(__field) (storageOffset + (uint32_t) ((uint64_t) & (__field) - (uint64_t) concreteTypeInfoValue))

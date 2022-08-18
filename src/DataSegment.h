@@ -117,9 +117,10 @@ struct DataSegment
     const char* name   = nullptr;
     Module*     module = nullptr;
 
-    SegmentKind kind        = SegmentKind::Me;
-    uint32_t    granularity = 0;
-    uint32_t    totalCount  = 0;
+    SegmentKind kind              = SegmentKind::Me;
+    uint32_t    granularity       = 0;
+    uint32_t    totalCount        = 0;
+    uint32_t    compilerThreadIdx = UINT32_MAX;
 
     bool overflow = false;
 

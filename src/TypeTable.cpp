@@ -8,6 +8,7 @@
 #include "Module.h"
 #include "ErrorIds.h"
 #include "Hash.h"
+#include "JobThread.h"
 
 bool TypeTable::makeConcreteTypeInfo(JobContext* context, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t* storage, uint32_t cflags, TypeInfo** ptrTypeInfo)
 {
@@ -585,24 +586,39 @@ TypeInfo* TypeTable::getRealType(DataSegment* segment, ConcreteTypeInfo* concret
 
 void TypeTable::initFrom(Module* module, TypeTable* other)
 {
-    mapPerSegment[0].concreteTypes = other->mapPerSegment[0].concreteTypes;
-    for (auto& it : mapPerSegment[0].concreteTypes)
+    if (mapPerSegment.count == 0)
+        setup(name);
+
+    mapPerSegment[0]->concreteTypes = other->mapPerSegment[0]->concreteTypes;
+    for (auto& it : mapPerSegment[0]->concreteTypes)
     {
-        it.second.concreteType                                        = (ConcreteTypeInfo*) module->constantSegment.address(it.second.storageOffset);
-        mapPerSegment[0].concreteTypesReverse[it.second.concreteType] = it.second.realType;
+        it.second.concreteType                                         = (ConcreteTypeInfo*) module->constantSegment.address(it.second.storageOffset);
+        mapPerSegment[0]->concreteTypesReverse[it.second.concreteType] = it.second.realType;
     }
 
-    mapPerSegment[1].concreteTypes = other->mapPerSegment[1].concreteTypes;
-    for (auto& it : mapPerSegment[1].concreteTypes)
+    mapPerSegment[1]->concreteTypes = other->mapPerSegment[1]->concreteTypes;
+    for (auto& it : mapPerSegment[1]->concreteTypes)
     {
-        it.second.concreteType                                        = (ConcreteTypeInfo*) module->compilerSegment.address(it.second.storageOffset);
-        mapPerSegment[1].concreteTypesReverse[it.second.concreteType] = it.second.realType;
+        it.second.concreteType                                         = (ConcreteTypeInfo*) module->compilerSegment.address(it.second.storageOffset);
+        mapPerSegment[1]->concreteTypesReverse[it.second.concreteType] = it.second.realType;
     }
+}
+
+void TypeTable::setup(const Utf8& moduleName)
+{
+    name = moduleName;
+    mapPerSegment.set_size_clear(2 + g_CommandLine->numCores);
+    for (int i = 0; i < mapPerSegment.count; i++)
+        mapPerSegment[i] = new MapPerSeg;
 }
 
 TypeTable::MapPerSeg& TypeTable::getMapPerSeg(DataSegment* segment)
 {
-    return mapPerSegment[segment->kind == SegmentKind::Compiler ? 1 : 0];
+    if (segment->kind != SegmentKind::Compiler)
+        return *mapPerSegment[0];
+    if (segment->compilerThreadIdx == UINT32_MAX)
+        return *mapPerSegment[1];
+    return *mapPerSegment[2 + segment->compilerThreadIdx];
 }
 
 bool TypeTable::makeConcreteStruct(JobContext* context, const auto& typeName, ConcreteTypeInfo* concreteTypeInfoValue, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t storageOffset, uint32_t cflags)

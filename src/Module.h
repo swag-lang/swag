@@ -234,6 +234,7 @@ struct Module
     VectorNative<FILE*>                              handleGeneratedFile;
     VectorNative<bool>                               appendGeneratedFile;
     VectorNative<uint32_t>                           countLinesGeneratedFile;
+    VectorNative<DataSegment*>                       compilerSegmentPerThread;
 
     AstNode*          astRoot          = nullptr;
     Scope*            scopeRoot        = nullptr;

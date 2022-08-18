@@ -25,9 +25,16 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
     handleGeneratedFile.set_size_clear(g_CommandLine->numCores);
     appendGeneratedFile.set_size_clear(g_CommandLine->numCores);
     countLinesGeneratedFile.set_size_clear(g_CommandLine->numCores);
+    compilerSegmentPerThread.set_size_clear(g_CommandLine->numCores);
+    for (int i = 0; i < g_CommandLine->numCores; i++)
+    {
+        compilerSegmentPerThread[i] = new DataSegment;
+        compilerSegmentPerThread[i]->setup(SegmentKind::Compiler, this);
+        compilerSegmentPerThread[i]->compilerThreadIdx = i;
+    }
 
-    name           = moduleName;
-    typeTable.name = moduleName;
+    name = moduleName;
+    typeTable.setup(moduleName);
     nameNormalized = name;
     nameNormalized.replaceAll('.', '_');
     path = modulePath.c_str();
