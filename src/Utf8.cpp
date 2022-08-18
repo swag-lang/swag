@@ -399,8 +399,9 @@ int Utf8::find(const char* str, int startpos) const
 {
     if (!count)
         return -1;
-    auto pz = strstr(buffer + startpos, str);
-    if (!pz)
+
+    auto pz = std::search(buffer, buffer + count, str, str + strlen(str));
+    if (pz == buffer + count)
         return -1;
     return (int) (pz - buffer);
 }
@@ -603,7 +604,7 @@ void Utf8::replace(const char* src, const char* dst)
 
 uint32_t Utf8::hash() const
 {
-    return Crc32::compute((const uint8_t *) buffer, count);
+    return Crc32::compute((const uint8_t*) buffer, count);
 }
 
 const char* Utf8::decodeUtf8(const char* pz, uint32_t& wc, unsigned& offset)

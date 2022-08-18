@@ -11,7 +11,7 @@ struct MARGINS
     cyBottomHeight: s32
 }
 
-#[Swag.Foreign("dwmapi.lib")]
+#[Swag.Foreign("dwmapi")]
 {
     func DwmExtendFrameIntoClientArea(hWnd: HWND, pMarInset: *MARGINS);
 }

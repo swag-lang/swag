@@ -291,7 +291,17 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
             // Predefined attributes will mark some flags (to speed up detection)
             auto it = g_LangSpec->attributesFlags.find(child->token.text);
             if (it)
+            {
                 flags |= *it;
+
+                //////
+                if (*it == ATTRIBUTE_FOREIGN)
+                {
+                    auto attrParam = curAttr->attributes.getParam(g_LangSpec->name_Swag_Foreign, g_LangSpec->name_module);
+                    SWAG_VERIFY(!attrParam->value.text.empty(), context->report({child, attrParam->token, Err(Err0811)}));
+                    SWAG_VERIFY(attrParam->value.text.find(".", 0) == -1, context->report({child, attrParam->token, Err(Err0813)}));
+                }
+            }
 
             //////
             else if (child->token.text == g_LangSpec->name_Using)
@@ -338,9 +348,9 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
             else if (child->token.text == g_LangSpec->name_ExportType)
             {
                 auto attrParam = curAttr->attributes.getParam(g_LangSpec->name_Swag_ExportType, g_LangSpec->name_what);
-                auto attrWhat  = &attrParam->value;
-                SWAG_ASSERT(attrWhat);
-                auto text = attrWhat->text;
+                SWAG_ASSERT(attrParam);
+                auto attrWhat = &attrParam->value;
+                auto text     = attrWhat->text;
                 text.trim();
                 vector<Utf8> what;
                 Utf8::tokenize(text, '|', what);
@@ -364,9 +374,9 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
             else if (child->token.text == g_LangSpec->name_Safety)
             {
                 auto attrParam = curAttr->attributes.getParam(g_LangSpec->name_Swag_Safety, g_LangSpec->name_what);
-                auto attrWhat  = &attrParam->value;
-                SWAG_ASSERT(attrWhat);
-                auto text = attrWhat->text;
+                SWAG_ASSERT(attrParam);
+                auto attrWhat = &attrParam->value;
+                auto text     = attrWhat->text;
                 text.trim();
                 vector<Utf8> what;
                 Utf8::tokenize(text, '|', what);
@@ -424,9 +434,9 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
             else if (child->token.text == g_LangSpec->name_Optim)
             {
                 auto attrParam = curAttr->attributes.getParam(g_LangSpec->name_Swag_Optim, g_LangSpec->name_what);
-                auto attrWhat  = &attrParam->value;
-                SWAG_ASSERT(attrWhat);
-                auto text = attrWhat->text;
+                SWAG_ASSERT(attrParam);
+                auto attrWhat = &attrParam->value;
+                auto text     = attrWhat->text;
                 text.trim();
                 vector<Utf8> what;
                 Utf8::tokenize(text, '|', what);
@@ -475,8 +485,8 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
             else if (child->token.text == g_LangSpec->name_Pack)
             {
                 auto attrParam = curAttr->attributes.getParam(g_LangSpec->name_Swag_Pack, g_LangSpec->name_value);
+                SWAG_ASSERT(attrParam);
                 auto attrValue = &attrParam->value;
-                SWAG_ASSERT(attrValue);
                 SWAG_VERIFY(!attrValue->reg.u8 || isPowerOfTwo(attrValue->reg.u8), context->report({child, attrParam->token, Fmt(Err(Err0595), attrValue->reg.u8)}));
             }
 
@@ -484,8 +494,8 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
             else if (child->token.text == g_LangSpec->name_Align)
             {
                 auto attrParam = curAttr->attributes.getParam(g_LangSpec->name_Swag_Align, g_LangSpec->name_value);
+                SWAG_ASSERT(attrParam);
                 auto attrValue = &attrParam->value;
-                SWAG_ASSERT(attrValue);
                 SWAG_VERIFY(isPowerOfTwo(attrValue->reg.u8), context->report({child, attrParam->token, Fmt(Err(Err0596), attrValue->reg.u8)}));
             }
 

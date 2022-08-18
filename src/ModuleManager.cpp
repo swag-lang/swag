@@ -101,7 +101,7 @@ void* ModuleManager::getFnPointer(const Utf8& moduleName, const Utf8& funcName)
     return nullptr;
 }
 
-Utf8 ModuleManager::getForeignModuleName(AstFuncDecl* func)
+const Utf8& ModuleManager::getForeignModuleName(AstFuncDecl* func)
 {
     auto typeFunc   = CastTypeInfo<TypeInfoFuncAttr>(func->typeInfo, TypeInfoKind::FuncAttr);
     auto moduleName = typeFunc->attributes.getValue(g_LangSpec->name_Swag_Foreign, g_LangSpec->name_module);

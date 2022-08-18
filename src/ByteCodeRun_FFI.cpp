@@ -23,10 +23,8 @@ void* ByteCodeRun::ffiGetFuncAddress(JobContext* context, AstFuncDecl* nodeFunc)
     auto& funcName = nodeFunc->token.text;
 
     // Load module if specified
-    auto moduleName = typeFunc->attributes.getValue(g_LangSpec->name_Swag_Foreign, g_LangSpec->name_module);
-    SWAG_ASSERT(moduleName && !moduleName->text.empty());
-
-    if (!g_ModuleMgr->loadModule(moduleName->text))
+    auto moduleName = ModuleManager::getForeignModuleName(nodeFunc);
+    if (!g_ModuleMgr->loadModule(moduleName))
     {
         // Perhaps the module is dependent on another module, so we need to be sure that our dependencies are
         // all loaded : load all, from last to first (dependencies are added in reverse order, latest first)
@@ -36,13 +34,13 @@ void* ByteCodeRun::ffiGetFuncAddress(JobContext* context, AstFuncDecl* nodeFunc)
             g_ModuleMgr->loadModule(dep->name);
 
         // Then try again
-        g_ModuleMgr->resetFailedModule(moduleName->text);
-        if (!g_ModuleMgr->loadModule(moduleName->text))
+        g_ModuleMgr->resetFailedModule(moduleName);
+        if (!g_ModuleMgr->loadModule(moduleName))
         {
 #ifdef SWAG_DEV_MODE
             SWAG_ASSERT(false);
 #endif
-            Diagnostic diag{nodeFunc, Fmt(Err(Err0257), moduleName->text.c_str(), funcName.c_str(), g_ModuleMgr->loadModuleError.c_str())};
+            Diagnostic diag{nodeFunc, Fmt(Err(Err0257), moduleName.c_str(), funcName.c_str(), g_ModuleMgr->loadModuleError.c_str())};
             diag.showSource = false;
             context->report(diag);
             return nullptr;
@@ -52,9 +50,9 @@ void* ByteCodeRun::ffiGetFuncAddress(JobContext* context, AstFuncDecl* nodeFunc)
     void* fn           = nullptr;
     auto  foreignValue = typeFunc->attributes.getValue(g_LangSpec->name_Swag_Foreign, g_LangSpec->name_function);
     if (foreignValue && !foreignValue->text.empty())
-        fn = g_ModuleMgr->getFnPointer(moduleName->text, foreignValue->text);
+        fn = g_ModuleMgr->getFnPointer(moduleName, foreignValue->text);
     else
-        fn = g_ModuleMgr->getFnPointer(moduleName->text, funcName);
+        fn = g_ModuleMgr->getFnPointer(moduleName, funcName);
 
     if (!fn)
     {
@@ -190,7 +188,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
         {
             if (!context->ffi_StructByCopyDone)
             {
-                context->ffi_StructByCopyDone        = true;
+                context->ffi_StructByCopyDone = true;
 
                 context->ffi_StructByCopy1.alignment = 1;
                 context->ffi_StructByCopy1.size      = 1;
@@ -200,17 +198,17 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
                 context->ffi_StructByCopy2.alignment = 2;
                 context->ffi_StructByCopy2.size      = 2;
                 context->ffi_StructByCopy2.type      = FFI_TYPE_STRUCT;
-                context->ffi_StructByCopy1.elements = &context->ffi_StructByCopy2T[0];
+                context->ffi_StructByCopy1.elements  = &context->ffi_StructByCopy2T[0];
 
                 context->ffi_StructByCopy4.alignment = 4;
                 context->ffi_StructByCopy4.size      = 4;
                 context->ffi_StructByCopy4.type      = FFI_TYPE_STRUCT;
-                context->ffi_StructByCopy1.elements = &context->ffi_StructByCopy4T[0];
+                context->ffi_StructByCopy1.elements  = &context->ffi_StructByCopy4T[0];
 
                 context->ffi_StructByCopy8.alignment = 8;
                 context->ffi_StructByCopy8.size      = 8;
                 context->ffi_StructByCopy8.type      = FFI_TYPE_STRUCT;
-                context->ffi_StructByCopy1.elements = &context->ffi_StructByCopy8T[0];
+                context->ffi_StructByCopy1.elements  = &context->ffi_StructByCopy8T[0];
             }
 
             switch (typeParam->sizeOf)
