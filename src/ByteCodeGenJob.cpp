@@ -690,55 +690,9 @@ JobResult ByteCodeGenJob::execute()
     // for the next pass
     if (pass == Pass::WaitForDependenciesGenerated)
     {
-        VectorNative<AstNode*> done;
-        while (!dependentNodesTmp.empty())
-        {
-            auto node = dependentNodesTmp.back();
-            SWAG_ASSERT(node->extension && node->extension->bc);
-
-            // Wait for the node if not generated
-            {
-                ScopedLock lk(node->mutex);
-                if (!(node->semFlags & AST_SEM_BYTECODE_GENERATED))
-                {
-                    ScopedLock lk1(node->extension->byteCodeJob->mutexDependent);
-                    waitingKind   = JobWaitKind::SemByteCodeGenerated;
-                    waitingIdNode = node;
-                    node->extension->byteCodeJob->dependentJobs.add(this);
-                    return JobResult::KeepJobAlive;
-                }
-            }
-
-            // Propagate hasForeignFunctionCalls
-            if (context.bc)
-            {
-                SWAG_ASSERT(node->extension && node->extension->bc);
-                if (node->extension->bc->hasForeignFunctionCalls)
-                    context.bc->hasForeignFunctionCalls = true;
-                for (auto const& fmn : node->extension->bc->hasForeignFunctionCallsModules)
-                    context.bc->hasForeignFunctionCallsModules.insert(fmn);
-            }
-
-            // Deal with registered dependent nodes, by adding them to the list
-            dependentNodesTmp.pop_back();
-            if (node == originalNode)
-                continue;
-
-            // Register the full dependency tree
-            VectorNative<AstNode*> depNodes;
-            getDependantCalls(node, depNodes);
-            for (auto dep : depNodes)
-            {
-                ScopedLock lk(dep->mutex);
-                if (!done.contains(dep))
-                {
-                    dependentNodesTmp.push_back_once(dep);
-                    done.push_back(dep);
-                }
-
-                dependentNodes.push_back_once(dep);
-            }
-        }
+        auto res = waitForDependenciesGenerated();
+        if (res != JobResult::Continue)
+            return res;
 
         pass = Pass::ComputeDependenciesResolved;
     }
@@ -790,4 +744,59 @@ JobResult ByteCodeGenJob::execute()
     }
 
     return JobResult::ReleaseJob;
+}
+
+JobResult ByteCodeGenJob::waitForDependenciesGenerated()
+{
+    VectorNative<AstNode*> done;
+    while (!dependentNodesTmp.empty())
+    {
+        auto node = dependentNodesTmp.back();
+        SWAG_ASSERT(node->extension && node->extension->bc);
+
+        // Wait for the node if not generated
+        {
+            ScopedLock lk(node->mutex);
+            if (!(node->semFlags & AST_SEM_BYTECODE_GENERATED))
+            {
+                ScopedLock lk1(node->extension->byteCodeJob->mutexDependent);
+                waitingKind   = JobWaitKind::SemByteCodeGenerated;
+                waitingIdNode = node;
+                node->extension->byteCodeJob->dependentJobs.add(this);
+                return JobResult::KeepJobAlive;
+            }
+        }
+
+        // Propagate hasForeignFunctionCalls
+        if (context.bc)
+        {
+            SWAG_ASSERT(node->extension && node->extension->bc);
+            if (node->extension->bc->hasForeignFunctionCalls)
+                context.bc->hasForeignFunctionCalls = true;
+            for (auto const& fmn : node->extension->bc->hasForeignFunctionCallsModules)
+                context.bc->hasForeignFunctionCallsModules.insert(fmn);
+        }
+
+        // Deal with registered dependent nodes, by adding them to the list
+        dependentNodesTmp.pop_back();
+        if (node == originalNode)
+            continue;
+
+        // Register the full dependency tree
+        VectorNative<AstNode*> depNodes;
+        getDependantCalls(node, depNodes);
+        for (auto dep : depNodes)
+        {
+            ScopedLock lk(dep->mutex);
+            if (!done.contains(dep))
+            {
+                dependentNodesTmp.push_back_once(dep);
+                done.push_back(dep);
+            }
+
+            dependentNodes.push_back_once(dep);
+        }
+    }
+
+    return JobResult::Continue;
 }

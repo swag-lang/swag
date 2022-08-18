@@ -181,6 +181,7 @@ static const uint32_t ASKBC_WAIT_RESOLVED          = 0x00000004;
 
 struct ByteCodeGenJob : public Job
 {
+    JobResult waitForDependenciesGenerated();
     JobResult execute() override;
 
     void release() override
