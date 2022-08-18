@@ -99,17 +99,19 @@ enum class MatchResult
 
 struct BadSignatureInfos
 {
+    Utf8           badGenMatch;
     AstNode*       badNode;
     TypeInfo*      badSignatureRequestedType;
     TypeInfo*      badSignatureGivenType;
-    Utf8           badGenMatch;
-    int            badSignatureParameterIdx;
+    TypeInfo*      castErrorToType;
+    TypeInfo*      castErrorFromType;
     ComputedValue* badGenValue1;
     ComputedValue* badGenValue2;
-    int            badSignatureNum1;
-    int            badSignatureNum2;
-    Utf8           castErrorHint;
-    Utf8           castErrorMsg;
+
+    uint32_t castErrorFlags;
+    int      badSignatureParameterIdx;
+    int      badSignatureNum1;
+    int      badSignatureNum2;
 
     void clear()
     {
@@ -122,8 +124,9 @@ struct BadSignatureInfos
         badGenValue2              = nullptr;
         badSignatureNum1          = 0;
         badSignatureNum2          = 0;
-        castErrorMsg.clear();
-        castErrorHint.clear();
+        castErrorFlags            = 0;
+        castErrorToType           = nullptr;
+        castErrorFromType         = nullptr;
     }
 };
 

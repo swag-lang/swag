@@ -505,10 +505,12 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         result0.push_back(diag);
 
         // A more specific message ?
-        if (!bi.castErrorMsg.empty())
+        Utf8 castMsg, castHint;
+        TypeManager::getCastErrorMsg(castMsg, castHint, bi.castErrorToType, bi.castErrorFromType, bi.castErrorFlags);
+        if (!castMsg.empty())
         {
-            auto note1  = new Diagnostic{diag->sourceNode, bi.castErrorMsg, DiagnosticLevel::Note};
-            note1->hint = bi.castErrorHint;
+            auto note1  = new Diagnostic{diag->sourceNode, castMsg, DiagnosticLevel::Note};
+            note1->hint = castHint;
             result1.push_back(note1);
         }
 

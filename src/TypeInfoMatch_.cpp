@@ -86,9 +86,10 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
             castFlags |= CASTFLAG_LITERAL_SUFFIX;
         castFlags |= forceCastFlags | CASTFLAG_PARAMS;
 
-        context.semContext->castFlagsResult = 0;
-        context.semContext->castErrorHint.clear();
-        context.semContext->castErrorMsg.clear();
+        context.semContext->castFlagsResult   = 0;
+        context.semContext->castErrorToType   = nullptr;
+        context.semContext->castErrorFromType = nullptr;
+        context.semContext->castErrorFlags    = 0;
 
         bool same = TypeManager::makeCompatibles(context.semContext, wantedTypeInfo, callTypeInfo, nullptr, nullptr, castFlags);
         if (context.semContext->result != ContextResult::Done)
@@ -104,8 +105,9 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                 context.badSignatureInfos.badSignatureParameterIdx  = i;
                 context.badSignatureInfos.badSignatureRequestedType = wantedTypeInfo;
                 context.badSignatureInfos.badSignatureGivenType     = callTypeInfo;
-                context.badSignatureInfos.castErrorMsg              = context.semContext->castErrorMsg;
-                context.badSignatureInfos.castErrorHint             = context.semContext->castErrorHint;
+                context.badSignatureInfos.castErrorToType           = context.semContext->castErrorToType;
+                context.badSignatureInfos.castErrorFromType         = context.semContext->castErrorFromType;
+                context.badSignatureInfos.castErrorFlags            = context.semContext->castErrorFlags;
                 SWAG_ASSERT(context.badSignatureInfos.badSignatureRequestedType);
             }
 

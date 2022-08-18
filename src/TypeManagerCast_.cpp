@@ -234,19 +234,13 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
     return false;
 }
 
-bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
+void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& hint, TypeInfo* toType, TypeInfo* fromType, uint32_t castFlags)
 {
-    // Last minute change : convert 'fromType' (struct) to 'toType' with an opCast
-    if (!(castFlags & CASTFLAG_NO_LAST_MINUTE))
-    {
-        if (tryOpCast(context, toType, fromType, fromNode, castFlags))
-            return true;
-        if (tryOpAffect(context, toType, fromType, fromNode, castFlags))
-            return true;
-    }
+    msg.clear();
+    hint.clear();
+    if (!toType || !fromType)
+        return;
 
-    // More specific message
-    Utf8 hint, msg;
     if (toType->kind == TypeInfoKind::Interface && ((fromType->kind == TypeInfoKind::Struct) || (fromType->isPointerTo(TypeInfoKind::Struct))))
     {
         auto fromTypeCpy = fromType;
@@ -277,12 +271,30 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
     {
         msg = Fmt(Err(Err0178));
     }
+}
 
-    context->castErrorMsg  = msg;
-    context->castErrorHint = hint;
+bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
+{
+    // Last minute change : convert 'fromType' (struct) to 'toType' with an opCast
+    if (!(castFlags & CASTFLAG_NO_LAST_MINUTE))
+    {
+        if (tryOpCast(context, toType, fromType, fromNode, castFlags))
+            return true;
+        if (tryOpAffect(context, toType, fromType, fromNode, castFlags))
+            return true;
+    }
+
+    // Remember, for caller
+    context->castErrorToType   = toType;
+    context->castErrorFromType = fromType;
+    context->castErrorFlags    = castFlags;
 
     if (!(castFlags & CASTFLAG_NO_ERROR))
     {
+        // More specific message
+        Utf8 hint, msg;
+        getCastErrorMsg(msg, hint, toType, fromType, castFlags);
+
         SWAG_ASSERT(fromNode);
         if (fromNode != context->node)
             context->errorContextStack.push_back({context->node, JobContext::ErrorContextType::Node});
