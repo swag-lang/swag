@@ -1931,15 +1931,15 @@ bool ByteCodeGenJob::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
         emitInstruction(context, ByteCodeOp::IntrinsicGetContext, funcNode->registerGetContext);
     }
 
-    if (funcNode->stackSize)
-    {
-        // Should be aligned !
-        SWAG_ASSERT(!(funcNode->stackSize & 7));
+    // Should be aligned !
+    SWAG_ASSERT(!(funcNode->stackSize & 7));
 
-        if (funcNode->stackSize > g_CommandLine->stackSizeRT)
-            context->sourceFile->report({funcNode, Fmt(Err(Err0536), Utf8::toNiceSize(g_CommandLine->stackSizeRT).c_str())});
-        emitInstruction(context, ByteCodeOp::DecSPBP)->a.u32 = funcNode->stackSize;
-    }
+    if (funcNode->stackSize > g_CommandLine->stackSizeRT)
+        context->sourceFile->report({funcNode, Fmt(Err(Err0536), Utf8::toNiceSize(g_CommandLine->stackSizeRT).c_str())});
+
+    // We emit ByteCodeOp::DecSPBP even is stacksize is null, because the instruction sets 'bp' too !
+    // Backend does not care about that intruction anyway
+    emitInstruction(context, ByteCodeOp::DecSPBP)->a.u32 = funcNode->stackSize;
 
     return true;
 }
