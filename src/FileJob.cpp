@@ -2,6 +2,7 @@
 #include "File.h"
 #include "FileJob.h"
 #include "Os.h"
+#include "Module.h"
 
 JobResult CopyFileJob::execute()
 {
@@ -18,6 +19,7 @@ JobResult CopyFileJob::execute()
     FILE* fdest = nullptr;
     if (!openFile(&fsrc, sourcePath.c_str(), "rbN") || !openFile(&fdest, destPath.c_str(), "wbN"))
     {
+        module->numErrors++;
         closeFile(&fsrc);
         closeFile(&fdest);
         return JobResult::ReleaseJob;

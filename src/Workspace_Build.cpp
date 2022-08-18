@@ -735,6 +735,8 @@ bool Workspace::buildTarget()
     {
         SharedLock lk(mutexModules);
         for (auto module : toBuild)
+            module->addedToBuild = true;
+        for (auto module : toBuild)
         {
             if (module == bootstrapModule)
                 continue;

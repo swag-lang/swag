@@ -17,12 +17,12 @@
 #include "LoadSourceFileJob.h"
 #include "Mutex.h"
 
-void ModuleBuildJob::publishFilesToPublic()
+void ModuleBuildJob::publishFilesToPublic(Module* moduleToPublish)
 {
     if (module->exportSourceFiles.empty())
         return;
 
-    string publicPath = module->publicPath.c_str();
+    string publicPath = moduleToPublish->publicPath.c_str();
     if (publicPath.empty())
         return;
 
@@ -30,7 +30,7 @@ void ModuleBuildJob::publishFilesToPublic()
     // That means that every files in the public folder that is no more '#global export' must
     // be removed (and every old file that does not exist anymore)
     set<Utf8> publicFiles;
-    for (auto one : module->exportSourceFiles)
+    for (auto one : moduleToPublish->exportSourceFiles)
     {
         auto name = one->name;
         name.makeUpper();
@@ -41,7 +41,7 @@ void ModuleBuildJob::publishFilesToPublic()
                    [&](const char* filename)
                    {
                        // Keep the generated file untouched !
-                       if (module->backend->exportFileName == filename)
+                       if (moduleToPublish->backend->exportFileName == filename)
                            return;
 
                        // If this is still a #public file, then do nothing. The job will erase it
@@ -59,7 +59,7 @@ void ModuleBuildJob::publishFilesToPublic()
                    });
 
     // Add all #public files
-    for (auto one : module->exportSourceFiles)
+    for (auto one : moduleToPublish->exportSourceFiles)
     {
         auto job          = g_Allocator.alloc<CopyFileJob>();
         job->module       = module;
@@ -68,13 +68,6 @@ void ModuleBuildJob::publishFilesToPublic()
         job->dependentJob = this;
         jobsToAdd.push_back(job);
     }
-}
-
-void ModuleBuildJob::publishFilesToTarget()
-{
-    publishFilesToTarget(module);
-    for (auto m : module->moduleEmbbeded)
-        publishFilesToTarget(m);
 }
 
 void ModuleBuildJob::publishFilesToTarget(Module* moduleToPublish)
@@ -118,6 +111,26 @@ void ModuleBuildJob::publishFilesToTarget(Module* moduleToPublish)
     }
 }
 
+void ModuleBuildJob::publishFilesToPublic()
+{
+    publishFilesToPublic(module);
+    for (auto m : module->moduleEmbbeded)
+    {
+        if (!m->addedToBuild)
+            publishFilesToPublic(m);
+    }
+}
+
+void ModuleBuildJob::publishFilesToTarget()
+{
+    publishFilesToTarget(module);
+    for (auto m : module->moduleEmbbeded)
+    {
+        if (!m->addedToBuild)
+            publishFilesToTarget(m);
+    }
+}
+
 bool ModuleBuildJob::loadDependency(ModuleDependency* dep)
 {
     auto depModule = dep->module;
@@ -135,11 +148,15 @@ bool ModuleBuildJob::loadDependency(ModuleDependency* dep)
 
     dep->importDone = true;
 
-    VectorNative<SourceFile*> files;
     SWAG_ASSERT(depModule->backend);
+    return loadDependency(depModule);
+}
 
+bool ModuleBuildJob::loadDependency(Module* depModule)
+{
     // Add all public files from the dependency module
-    auto publicPath = depModule->publicPath;
+    VectorNative<SourceFile*> files;
+    auto                      publicPath = depModule->publicPath;
     if (fs::exists(publicPath.c_str()))
     {
         OS::visitFiles(publicPath.c_str(),
@@ -258,6 +275,20 @@ JobResult ModuleBuildJob::execute()
             }
         }
 
+        // If we have an embbed module, and that module is also compiled as a normal module,
+        // then we need to wait for it to have published its files
+        for (auto& depModule : module->moduleEmbbeded)
+        {
+            if (!depModule->addedToBuild)
+                continue;
+            ScopedLock lk1(depModule->mutexDependency);
+            if ((depModule->hasBeenBuilt & BUILDRES_PUBLISH) == 0)
+            {
+                depModule->dependentJobs.add(this);
+                return JobResult::KeepJobAlive;
+            }
+        }
+
         pass = ModuleBuildPass::Syntax;
     }
 
@@ -268,6 +299,8 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::Syntax)
     {
+        if (module->numErrors)
+            return JobResult::ReleaseJob;
         if (g_CommandLine->verboseStages)
             module->logStage("ModuleBuildPass::Syntax\n");
 
@@ -315,6 +348,8 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::Publish)
     {
+        if (module->numErrors)
+            return JobResult::ReleaseJob;
         if (g_CommandLine->verboseStages)
             module->logStage("ModuleBuildPass::Publish\n");
         if (g_CommandLine->buildPass <= BuildPass::Syntax)
@@ -348,6 +383,8 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::IncludeSwg)
     {
+        module->setHasBeenBuilt(BUILDRES_PUBLISH);
+
         if (g_CommandLine->verboseStages)
             module->logStage("ModuleBuildPass::IncludeSwg\n");
 
@@ -357,7 +394,6 @@ JobResult ModuleBuildJob::execute()
                 return JobResult::ReleaseJob;
         }
 
-        // Sync with all jobs
         if (!jobsToAdd.empty())
             return JobResult::KeepJobAlive;
 

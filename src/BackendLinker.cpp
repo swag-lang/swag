@@ -123,6 +123,25 @@ namespace BackendLinker
                 arguments.push_back(libName);
         }
 
+        for (const auto& dep : module->moduleEmbbeded)
+        {
+            if (dep->buildCfg.backendKind != BuildCfgBackendKind::Export)
+                continue;
+
+            auto libName = dep->name;
+            if (Utf8::getExtension(libName) != Backend::getOutputFileExtension(g_CommandLine->target, BuildCfgBackendKind::StaticLib))
+                libName += Backend::getOutputFileExtension(g_CommandLine->target, BuildCfgBackendKind::StaticLib);
+            auto fullName = g_Workspace->targetPath.string();
+            fullName      = Utf8::normalizePath(fs::path(fullName.c_str()));
+            fullName += "/";
+            fullName += libName;
+
+            // Be sure that the library exits. Some modules rely on external libraries, and do not have their
+            // own one
+            if (fs::exists(fs::path(fullName.c_str())))
+                arguments.push_back(libName);
+        }
+
         arguments.push_back("/INCREMENTAL:NO");
         arguments.push_back("/NOLOGO");
         arguments.push_back("/SUBSYSTEM:CONSOLE");
