@@ -708,11 +708,11 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         }
     }
 
-    if (funcNode->flags & AST_EMPTY_FCT && funcNode->sourceFile->path.find("/ogl/") != -1 && funcNode->sourceFile->isEmbbeded && !funcNode->isForeign())
+    /*if (funcNode->flags & AST_EMPTY_FCT && funcNode->sourceFile->path.find("/ogl/") != -1 && funcNode->sourceFile->isEmbbeded && !funcNode->isForeign())
     {
         funcNode->resolvedSymbolName->kind = SymbolKind::PlaceHolder;
         return true;
-    }
+    }*/
 
     // For a short lambda without a specified return type, we need to defer the symbol registration, as we
     // need to infer it from the lambda expression
