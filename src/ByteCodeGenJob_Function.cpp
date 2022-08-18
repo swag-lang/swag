@@ -1933,6 +1933,9 @@ bool ByteCodeGenJob::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
 
     if (funcNode->stackSize)
     {
+        // Should be aligned !
+        SWAG_ASSERT(!(funcNode->stackSize & 7));
+
         if (funcNode->stackSize > g_CommandLine->stackSizeRT)
             context->sourceFile->report({funcNode, Fmt(Err(Err0536), Utf8::toNiceSize(g_CommandLine->stackSizeRT).c_str())});
         emitInstruction(context, ByteCodeOp::DecSPBP)->a.u32 = funcNode->stackSize;

@@ -931,7 +931,6 @@ func GET_Y_LPARAM(lp: LPARAM) => cast(s32) HIWORD(lp)
 {
     func GetAsyncKeyState(vKey: s32)->SHORT;
     func GetKeyboardState(lpKeystate: *u8)->BOOL;
-    func GetCursorPos(lpPoint: *POINT);
     func SetCursorPos(x, y: s32);
     func ShowCursor(show: BOOL);
     func LoadCursorA(hInstance: HINSTANCE, lpCursorName: LPCSTR)->HCURSOR;
@@ -975,6 +974,8 @@ func GET_Y_LPARAM(lp: LPARAM) => cast(s32) HIWORD(lp)
 
 #[Foreign("user32"), Discardable]
 {
+    func GetCursorPos(lpPoint: *POINT)->BOOL;
+
     func FillRect(hDC: HDC, lprc: const *RECT, hbr: HBRUSH)->s32;
     func GetClientRect(hWnd: HWND, lpRect: *RECT)->BOOL;
 

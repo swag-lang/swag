@@ -1339,6 +1339,9 @@ uint32_t SemanticJob::getMaxStackSize(AstNode* node)
 
 void SemanticJob::setOwnerMaxStackSize(AstNode* node, uint32_t size)
 {
+    size = max(size, 1);
+    size = (uint32_t) TypeManager::align(size, sizeof(void*));
+
     if (node->semFlags & AST_SEM_SPEC_STACKSIZE)
     {
         auto p = node;
@@ -1348,14 +1351,10 @@ void SemanticJob::setOwnerMaxStackSize(AstNode* node, uint32_t size)
         ScopedLock mk(p->mutex);
         p->allocateExtension();
         p->extension->stackSize = max(p->extension->stackSize, size);
-        p->extension->stackSize = max(p->extension->stackSize, 1);
-        return;
     }
-
-    if (node->ownerFct)
+    else if (node->ownerFct)
     {
         node->ownerFct->stackSize = max(node->ownerFct->stackSize, size);
-        node->ownerFct->stackSize = max(node->ownerFct->stackSize, 1);
     }
 }
 
