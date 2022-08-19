@@ -21,6 +21,10 @@ void ThreadManager::init()
     numWorkers         = min(numWorkers, numCores);
     g_Stats.numWorkers = numWorkers;
 
+    queueJobs.affinity.resize(g_CommandLine->numCores);
+    queueJobsIO.affinity.resize(g_CommandLine->numCores);
+    queueJobsOpt.affinity.resize(g_CommandLine->numCores);
+
     // When numWorkers is 1, then we do not want any worker thread. The main thread
     // will execute jobs by its own (otherwise the main thread will be suspended, and workers
     // do their job)
@@ -79,11 +83,35 @@ void ThreadManager::addJobNoLock(Job* job)
     job->flags &= ~JOB_ACCEPT_PENDING_COUNT;
 
     if (job->flags & JOB_IS_OPT)
-        queueJobsOpt.push_back(job);
+    {
+        if (job->affinity != UINT32_MAX)
+        {
+            queueJobsOpt.affinity[job->affinity].push_back(job);
+            queueJobsOpt.affinityCount++;
+        }
+        else
+            queueJobsOpt.jobs.push_back(job);
+    }
     else if (job->flags & JOB_IS_IO)
-        queueJobsIO.push_back(job);
+    {
+        if (job->affinity != UINT32_MAX)
+        {
+            queueJobsIO.affinity[job->affinity].push_back(job);
+            queueJobsIO.affinityCount++;
+        }
+        else
+            queueJobsIO.jobs.push_back(job);
+    }
     else
-        queueJobs.push_back(job);
+    {
+        if (job->affinity != UINT32_MAX)
+        {
+            queueJobs.affinity[job->affinity].push_back(job);
+            queueJobs.affinityCount++;
+        }
+        else
+            queueJobs.jobs.push_back(job);
+    }
 
     // Wakeup one thread
     if (g_CommandLine->numCores != 1)
@@ -251,16 +279,31 @@ void ThreadManager::executeOneJob(Job* job)
 
 bool ThreadManager::doneWithJobs()
 {
-    return queueJobs.empty() && queueJobsIO.empty() && jobsInThreads == 0;
+    return queueJobs.jobs.empty() &&
+           queueJobsIO.jobs.empty() &&
+           queueJobs.affinityCount == 0 &&
+           queueJobsIO.affinityCount == 0 &&
+           jobsInThreads == 0;
 }
 
 void ThreadManager::clearOptionalJobs()
 {
     {
         ScopedLock lk(mutexAdd);
-        for (auto p : queueJobsOpt)
+
+        for (auto p : queueJobsOpt.jobs)
+        {
             p->release();
-        queueJobsOpt.clear();
+        }
+        queueJobsOpt.jobs.clear();
+
+        for (int i = 0; i < g_CommandLine->numCores; i++)
+        {
+            for (auto p : queueJobsOpt.affinity[i])
+                p->release();
+            queueJobsOpt.affinity[i].clear();
+        }
+        queueJobsOpt.affinityCount = 0;
     }
 
     while (jobsOptInThreads)
@@ -346,20 +389,45 @@ Job* ThreadManager::getJobNoLock()
     return nullptr;
 }
 
-Job* ThreadManager::getJobNoLock(VectorNative<Job*>& queue)
+Job* ThreadManager::getJobNoLock(JobQueue& queue)
 {
-    if (queue.empty())
+    bool jEmpty = queue.jobs.empty();
+    if (jEmpty && !queue.affinityCount)
         return nullptr;
 
-    auto jobPickIndex = (int) queue.size() - 1;
+    Job* job;
+    if (!queue.affinity[g_ThreadIndex].empty())
+    {
+        job = queue.affinity[g_ThreadIndex].get_pop_back();
+        SWAG_ASSERT(queue.affinityCount);
+        queue.affinityCount--;
+    }
+    else if (jEmpty)
+    {
+        job = nullptr;
+        for (int i = 0; i < queue.affinity.size(); i++)
+        {
+            if (!queue.affinity[i].empty())
+            {
+                job = queue.affinity[i].get_pop_back();
+                SWAG_ASSERT(queue.affinityCount);
+                queue.affinityCount--;
+                break;
+            }
+        }
+    }
+    else
+    {
+        auto jobPickIndex = (int) queue.jobs.size() - 1;
 #ifdef SWAG_DEV_MODE
-    if (g_CommandLine->randomize)
-        jobPickIndex = rand() % queue.count;
+        if (g_CommandLine->randomize)
+            jobPickIndex = rand() % queue.jobs.count;
 #endif
+        job = queue.jobs[jobPickIndex];
+        queue.jobs.erase(jobPickIndex);
+    }
 
-    auto job = queue[jobPickIndex];
-    queue.erase(jobPickIndex);
-
+    SWAG_ASSERT(job);
     SWAG_ASSERT(job->flags & JOB_IS_IN_QUEUE);
     job->flags &= ~JOB_IS_IN_QUEUE;
     SWAG_ASSERT(!(job->flags & JOB_IS_IN_THREAD));

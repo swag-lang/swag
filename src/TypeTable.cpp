@@ -640,6 +640,7 @@ bool TypeTable::makeConcreteStruct(JobContext* context, const auto& typeName, Co
     job->typeInfo              = typeInfo;
     job->storageOffset         = storageOffset;
     job->storageSegment        = storageSegment;
+    job->affinity              = storageSegment->compilerThreadIdx;
     job->cflags                = cflags & ~MAKE_CONCRETE_SHOULD_WAIT;
     job->typeName              = typeName;
     job->nodes.push_back(context->node);

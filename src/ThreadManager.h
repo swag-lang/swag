@@ -5,6 +5,13 @@ struct JobThread;
 struct IoThread;
 enum class JobResult;
 
+struct JobQueue
+{
+    VectorNative<Job*>         jobs;
+    vector<VectorNative<Job*>> affinity;
+    uint32_t                   affinityCount = 0;
+};
+
 struct ThreadManager
 {
     void init();
@@ -12,7 +19,7 @@ struct ThreadManager
     void addJobNoLock(Job* job);
     Job* getJob();
     Job* getJobNoLock();
-    Job* getJobNoLock(VectorNative<Job*>& queue);
+    Job* getJobNoLock(JobQueue& queue);
     Job* getJob(JobThread* thread);
     bool doneWithJobs();
     void clearOptionalJobs();
@@ -21,9 +28,10 @@ struct ThreadManager
     void waitEndJobs();
     bool tryExecuteJob();
 
-    VectorNative<Job*>       queueJobsIO;
-    VectorNative<Job*>       queueJobs;
-    VectorNative<Job*>       queueJobsOpt;
+    JobQueue queueJobsIO;
+    JobQueue queueJobs;
+    JobQueue queueJobsOpt;
+
     VectorNative<JobThread*> availableThreads;
     VectorNative<JobThread*> workerThreads;
     VectorNative<Job*>       waitingJobs;

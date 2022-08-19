@@ -168,4 +168,5 @@ struct Job
     int32_t     waitingJobIndex = -1;
     uint32_t    waitOnJobs      = 0;
     uint32_t    flags           = 0;
+    uint32_t    affinity        = UINT32_MAX;
 };
