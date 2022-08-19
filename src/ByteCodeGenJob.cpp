@@ -706,10 +706,13 @@ JobResult ByteCodeGenJob::execute()
 
     // #ast/#run etc... can have a #[Swag.printbc]. We need to print it now, because it's compile time, and the legit
     // pipeline for printing (after bc optimize) will not be called in that case
-    if (originalNode->attributeFlags & ATTRIBUTE_PRINT_BC || (originalNode->ownerFct && originalNode->ownerFct->attributeFlags & ATTRIBUTE_PRINT_BC))
+    if (context.bc)
     {
-        if (originalNode->attributeFlags & ATTRIBUTE_GENERATED_FUNC || originalNode->kind != AstNodeKind::FuncDecl)
-            context.bc->print();
+        if (originalNode->attributeFlags & ATTRIBUTE_PRINT_BC || (originalNode->ownerFct && originalNode->ownerFct->attributeFlags & ATTRIBUTE_PRINT_BC))
+        {
+            if (originalNode->attributeFlags & ATTRIBUTE_GENERATED_FUNC || originalNode->kind != AstNodeKind::FuncDecl)
+                context.bc->print();
+        }
     }
 
     // Register runtime function type, by name
