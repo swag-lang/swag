@@ -403,14 +403,14 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::SemanticModule)
     {
+        if (module->numErrors)
+            return JobResult::ReleaseJob;
         if (g_CommandLine->verboseStages)
             module->logStage("ModuleBuildPass::SemanticModule\n");
 
         module->buildModulesSlice();
-
         pass = ModuleBuildPass::BeforeCompilerMessagesPass0;
-        if (module->numErrors)
-            return JobResult::ReleaseJob;
+        flags |= JOB_PENDING_PLACE_HOLDER; // We can now be relaunched if necessary
 
         auto semanticJob          = g_Allocator.alloc<ModuleSemanticJob>();
         semanticJob->module       = module;
@@ -492,8 +492,8 @@ JobResult ModuleBuildJob::execute()
             return JobResult::KeepJobAlive;
 
         pass = ModuleBuildPass::OptimizeBc;
+        flags &= ~JOB_PENDING_PLACE_HOLDER; // We can't be relaunched anymore
 
-        waitOnJobs += waitOnJobsPending;
         module->sendCompilerMessage(CompilerMsgKind::PassAfterSemantic, this);
 
         // This is a dummy job, in case the user code does not trigger new jobs during the message pass

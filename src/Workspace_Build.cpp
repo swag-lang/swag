@@ -748,6 +748,8 @@ bool Workspace::buildTarget()
         }
     }
 
+    // Restart if necessary until it's no more possible
+    //////////////////////////////////////////////////
     while (true)
     {
         g_ThreadMgr.waitEndJobs();
@@ -759,10 +761,8 @@ bool Workspace::buildTarget()
             auto job = waitingJobs[i];
             if (job->flags & JOB_PENDING_PLACE_HOLDER)
             {
-                job->flags &= ~JOB_PENDING_PLACE_HOLDER;
-                job->waitOnJobsPending = job->waitOnJobs;
-                job->waitOnJobs        = 0;
-                restart                = true;
+                job->flags |= JOB_ACCEPT_PENDING_COUNT;
+                restart = true;
                 waitingJobs.erase(i);
                 i--;
                 g_ThreadMgr.addJob(job);

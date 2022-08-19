@@ -708,11 +708,29 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         }
     }
 
-    /*if (funcNode->flags & AST_EMPTY_FCT && funcNode->sourceFile->path.find("/ogl/") != -1 && funcNode->sourceFile->isEmbbeded && !funcNode->isForeign())
+    // We should never reference an empty function
+    // So consider this is a placeholder. This will generate an error in case the empty function is not replaced by a
+    // real function at some point.
+    if (funcNode->flags & AST_EMPTY_FCT && !(funcNode->attributeFlags & ATTRIBUTE_FOREIGN) && funcNode->token.text[0] != '@')
     {
-        funcNode->resolvedSymbolName->kind = SymbolKind::PlaceHolder;
-        return true;
-    }*/
+        ScopedLock lk(funcNode->resolvedSymbolName->mutex);
+
+        // We need to be sure that we only have empty functions, and not a real one.
+        // As we can have multiple times the same empty function prototype, count them.
+        int cptEmpty = 0;
+        for (auto n : funcNode->resolvedSymbolName->nodes)
+        {
+            if (!(n->flags & AST_EMPTY_FCT))
+                break;
+            cptEmpty++;
+        }
+
+        if(cptEmpty == funcNode->resolvedSymbolName->nodes.size() && funcNode->resolvedSymbolName->cptOverloads == 1)
+        {
+            funcNode->resolvedSymbolName->kind = SymbolKind::PlaceHolder;
+            return true;
+        }
+    }
 
     // For a short lambda without a specified return type, we need to defer the symbol registration, as we
     // need to infer it from the lambda expression
