@@ -152,6 +152,7 @@ Utf8 BackendX64::dbgGetScopedName(AstNode* node)
 {
     auto nn = node->getScopedName();
     Utf8 result;
+    result.reserve(nn.allocated);
 
     auto pz      = nn.buffer;
     bool lastDot = false;
