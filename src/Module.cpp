@@ -22,9 +22,9 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
     compilerSegment.setup(SegmentKind::Compiler, this);
     tlsSegment.setup(SegmentKind::Tls, this);
 
-    handleGeneratedFile.set_size_clear(g_CommandLine->numCores);
-    appendGeneratedFile.set_size_clear(g_CommandLine->numCores);
+    contentJobGeneratedFile.resize(g_CommandLine->numCores);
     countLinesGeneratedFile.set_size_clear(g_CommandLine->numCores);
+
     compilerSegmentPerThread.set_size_clear(g_CommandLine->numCores);
     for (int i = 0; i < g_CommandLine->numCores; i++)
     {

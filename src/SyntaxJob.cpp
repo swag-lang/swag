@@ -208,36 +208,15 @@ bool SyntaxJob::saveEmbedded(const Utf8& content, AstNode* parent, AstNode* from
         pz++;
     }
 
-    FILE* h = modl->handleGeneratedFile[g_ThreadIndex];
-
-    if (!h)
-    {
-        if (modl->appendGeneratedFile[g_ThreadIndex])
-            fopen_s(&h, publicPath.c_str(), "a+N");
-        else
-            fopen_s(&h, publicPath.c_str(), "wN");
-        modl->handleGeneratedFile[g_ThreadIndex] = h;
-
-        if (!h)
-        {
-            modl->numErrors++;
-            g_Log.errorOS(Fmt(Err(Err0524), publicPath.c_str()));
-            return false;
-        }
-    }
-
-    modl->appendGeneratedFile[g_ThreadIndex] = true;
-
     Utf8 sourceCode = Fmt("// %s:%d:%d:%d:%d\n", fromNode->sourceFile->path.c_str(), fromNode->token.startLocation.line + 1, fromNode->token.startLocation.column + 1, fromNode->token.endLocation.line + 1, fromNode->token.endLocation.column + 1);
     modl->countLinesGeneratedFile[g_ThreadIndex] += 1;
     previousLogLine = modl->countLinesGeneratedFile[g_ThreadIndex];
     modl->countLinesGeneratedFile[g_ThreadIndex] += countEol;
     modl->countLinesGeneratedFile[g_ThreadIndex] += 2;
 
-    fwrite(sourceCode.c_str(), sourceCode.length(), 1, h);
-    fwrite(content.c_str(), content.length(), 1, h);
-    static const char* eol = "\n\n";
-    fwrite(eol, 1, 2, h);
+    modl->contentJobGeneratedFile[g_ThreadIndex] += sourceCode;
+    modl->contentJobGeneratedFile[g_ThreadIndex] += content;
+    modl->contentJobGeneratedFile[g_ThreadIndex] += "\n\n";
 
     return true;
 }

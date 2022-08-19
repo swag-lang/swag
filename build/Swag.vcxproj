@@ -265,6 +265,7 @@
     <ClInclude Include="..\src\RaceCondition.h" />
     <ClInclude Include="..\src\Mutex.h" />
     <ClInclude Include="..\src\Array.h" />
+    <ClInclude Include="..\src\SaveGenJob.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="../src/Allocator.cpp" />
@@ -375,6 +376,7 @@
     <ClCompile Include="..\src\OutputFileWin32.cpp" />
     <ClCompile Include="../src/Scope.cpp" />
     <ClCompile Include="..\src\PrepCompilerMsgJob.cpp" />
+    <ClCompile Include="..\src\SaveGenJob.cpp" />
     <ClCompile Include="..\src\SemanticJob_AffectExpression.cpp" />
     <ClCompile Include="..\src\SemanticJob_Attribute.cpp" />
     <ClCompile Include="..\src\SemanticJob_BinaryExpression.cpp" />

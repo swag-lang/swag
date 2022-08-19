@@ -497,6 +497,9 @@
     <ClCompile Include="..\src\ByteCodeOptimizer_DupBlocks.cpp">
       <Filter>Backend\ByteCode\Optimize</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\SaveGenJob.cpp">
+      <Filter>Lexer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/JobThread.h">
@@ -811,6 +814,9 @@
     </ClInclude>
     <ClInclude Include="..\src\Hash.h">
       <Filter>Main\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SaveGenJob.h">
+      <Filter>Lexer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -231,8 +231,7 @@ struct Module
     map<Utf8, ForToSolve>                            implForToSolve;
     map<uint32_t, VectorNative<SourceLocationCache>> cacheSourceLoc;
     JobGroup                                         syntaxGroup;
-    VectorNative<FILE*>                              handleGeneratedFile;
-    VectorNative<bool>                               appendGeneratedFile;
+    vector<Utf8>                                     contentJobGeneratedFile;
     VectorNative<uint32_t>                           countLinesGeneratedFile;
     VectorNative<DataSegment*>                       compilerSegmentPerThread;
 

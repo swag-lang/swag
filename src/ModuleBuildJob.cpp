@@ -16,6 +16,7 @@
 #include "LanguageSpec.h"
 #include "LoadSourceFileJob.h"
 #include "Mutex.h"
+#include "SaveGenJob.h"
 
 void ModuleBuildJob::publishFilesToPublic(Module* moduleToPublish)
 {
@@ -508,33 +509,18 @@ JobResult ModuleBuildJob::execute()
     //////////////////////////////////////////////////
     if (pass == ModuleBuildPass::OptimizeBc)
     {
+        if (module->numErrors)
+            return JobResult::ReleaseJob;
         if (g_CommandLine->verboseStages)
             module->logStage("ModuleBuildPass::OptimizeBc\n");
 
         bool done = false;
         if (!ByteCodeOptimizer::optimize(this, module, done))
             return JobResult::ReleaseJob;
-
-        // During the first optimization pass, we also flush the generated files
-        for (auto& h : module->handleGeneratedFile)
-        {
-            if (!h)
-                continue;
-            auto newJob          = g_Allocator.alloc<CloseFileJob>();
-            newJob->module       = module;
-            newJob->dependentJob = this;
-            newJob->h            = h;
-            jobsToAdd.push_back(newJob);
-            h = nullptr;
-        }
-
-        if (!done || !jobsToAdd.empty())
+        if (!done)
             return JobResult::KeepJobAlive;
 
         module->printBC();
-
-        if (module->numErrors)
-            return JobResult::ReleaseJob;
 
         pass = ModuleBuildPass::WaitForDependencies;
     }
@@ -559,6 +545,29 @@ JobResult ModuleBuildJob::execute()
 
             // We can also build the type table for the current module
             module->buildTypesSlice();
+        }
+
+        pass = ModuleBuildPass::FlushGenFiles;
+    }
+
+    //////////////////////////////////////////////////
+    if (pass == ModuleBuildPass::FlushGenFiles)
+    {
+        if (module->numErrors)
+            return JobResult::ReleaseJob;
+        if (g_CommandLine->verboseStages)
+            module->logStage("ModuleBuildPass::FlushGenFiles\n");
+
+        // We flush the generated files, but do not wait for them to complete
+        for (int idx = 0; idx < module->contentJobGeneratedFile.size(); idx++)
+        {
+            auto& h = module->contentJobGeneratedFile[idx];
+            if (h.empty())
+                continue;
+            auto newJob    = g_Allocator.alloc<SaveGenJob>();
+            newJob->module = module;
+            newJob->index  = idx;
+            g_ThreadMgr.addJob(newJob);
         }
 
         if (!module->hasBytecodeToRun())

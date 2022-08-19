@@ -20,27 +20,6 @@ struct CopyFileJob : public Job
     string destPath;
 };
 
-struct CloseFileJob : public Job
-{
-    CloseFileJob()
-    {
-        flags |= JOB_IS_IO;
-    }
-
-    void release() override
-    {
-        g_Allocator.free<CloseFileJob>(this);
-    }
-
-    JobResult execute() override
-    {
-        fclose(h);
-        return JobResult::ReleaseJob;
-    }
-
-    FILE* h;
-};
-
 struct LoadFileJob : public Job
 {
     LoadFileJob()
