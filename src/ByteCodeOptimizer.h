@@ -75,9 +75,10 @@ struct ByteCodeOptimizer
         context->passHasDoneSomething = true;     \
     } while (0);
 #else
-#define SET_OP(__ip, __op) \
-    do                     \
-    {                      \
-        (__ip)->op = __op; \
+#define SET_OP(__ip, __op)                    \
+    do                                        \
+    {                                         \
+        (__ip)->op                    = __op; \
+        context->passHasDoneSomething = true; \
     } while (0);
 #endif
