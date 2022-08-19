@@ -675,8 +675,8 @@ JobResult ByteCodeGenJob::execute()
 
             ScopedLock lk(originalNode->mutex);
             SWAG_ASSERT(originalNode->extension && originalNode->extension->byteCodeJob);
-            getDependantCalls(originalNode, dependentNodes);
-            dependentNodesTmp = dependentNodes;
+            getDependantCalls(originalNode, originalNode->extension->dependentNodes);
+            dependentNodesTmp = originalNode->extension->dependentNodes;
 
             originalNode->semFlags |= AST_SEM_BYTECODE_GENERATED;
             dependentJobs.setRunning();
@@ -749,6 +749,8 @@ JobResult ByteCodeGenJob::execute()
 JobResult ByteCodeGenJob::waitForDependenciesGenerated()
 {
     VectorNative<AstNode*> done;
+    VectorNative<AstNode*> depNodes;
+
     while (!dependentNodesTmp.empty())
     {
         auto node = dependentNodesTmp.back();
@@ -759,9 +761,9 @@ JobResult ByteCodeGenJob::waitForDependenciesGenerated()
             ScopedLock lk(node->mutex);
             if (!(node->semFlags & AST_SEM_BYTECODE_GENERATED))
             {
-                ScopedLock lk1(node->extension->byteCodeJob->mutexDependent);
                 waitingKind   = JobWaitKind::SemByteCodeGenerated;
                 waitingIdNode = node;
+                ScopedLock lk1(node->extension->byteCodeJob->mutexDependent);
                 node->extension->byteCodeJob->dependentJobs.add(this);
                 return JobResult::KeepJobAlive;
             }
@@ -782,19 +784,30 @@ JobResult ByteCodeGenJob::waitForDependenciesGenerated()
         if (node == originalNode)
             continue;
 
+        // If my dependent node has already been computed, then just get the result
+        {
+            SharedLock lk(node->mutex);
+            if (node->semFlags & AST_SEM_BYTECODE_RESOLVED)
+            {
+                SWAG_ASSERT(!node->extension->byteCodeJob);
+                originalNode->extension->dependentNodes.append(node->extension->dependentNodes);
+                break;
+            }
+        }
+
         // Register the full dependency tree
-        VectorNative<AstNode*> depNodes;
+        depNodes.clear();
         getDependantCalls(node, depNodes);
         for (auto dep : depNodes)
         {
-            ScopedLock lk(dep->mutex);
             if (!done.contains(dep))
             {
                 dependentNodesTmp.push_back_once(dep);
                 done.push_back(dep);
             }
 
-            dependentNodes.push_back_once(dep);
+            ScopedLock lk1(dep->mutex);
+            originalNode->extension->dependentNodes.push_back_once(dep);
         }
     }
 

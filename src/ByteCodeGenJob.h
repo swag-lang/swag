@@ -416,7 +416,6 @@ struct ByteCodeGenJob : public Job
     ByteCodeGenContext     context;
     VectorNative<AstNode*> collectChilds;
     VectorNative<Scope*>   collectScopes;
-    VectorNative<AstNode*> dependentNodes;
     VectorNative<AstNode*> dependentNodesTmp;
 
     enum class Pass

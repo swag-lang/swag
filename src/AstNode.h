@@ -273,6 +273,7 @@ struct AstNode
         VectorNative<AlternativeScope>    alternativeScopes;
         VectorNative<AlternativeScopeVar> alternativeScopesVars;
         VectorNative<uint32_t>            registersToRelease;
+        VectorNative<AstNode*>            dependentNodes;
 
         SemanticFct        semanticBeforeFct            = nullptr;
         SemanticFct        semanticAfterFct             = nullptr;
