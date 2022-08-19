@@ -780,6 +780,8 @@ Utf8 Utf8::toStringF64(double v)
 
 Utf8 Utf8::toNiceSize(size_t size)
 {
+    if (size <= 1)
+        return Fmt("%u byte", size);
     if (size < 1024)
         return Fmt("%u bytes", size);
     if (size < 1024 * 1024)

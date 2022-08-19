@@ -92,11 +92,18 @@ void Stats::print()
         }
     }
 
-    if (g_CommandLine->statsWhat == StatsWhat::All || g_CommandLine->statsWhat == StatsWhat::Module)
+    if (g_CommandLine->statsWhat == StatsWhat::Module)
     {
         for (auto m : g_Workspace->modules)
         {
             if (m->isErrorModule)
+                continue;
+
+            // Nothing has been done
+            if (m->byteCodeFunc.empty() &&
+                !m->constantSegment.totalCount &&
+                !m->mutableSegment.totalCount &&
+                !m->tlsSegment.totalCount)
                 continue;
 
             g_Log.print("\n");
