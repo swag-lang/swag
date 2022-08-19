@@ -105,6 +105,7 @@ enum class JobWaitKind
     SemFullResolve,
     SemPartialResolve,
     MakeConcrete,
+    MakeConcrete1,
     PendingLambdaTyping,
     LoadFile,
     AskBcWaitResolve,

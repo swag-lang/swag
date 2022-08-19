@@ -623,6 +623,10 @@ TypeTable::MapPerSeg& TypeTable::getMapPerSeg(DataSegment* segment)
 
 bool TypeTable::makeConcreteStruct(JobContext* context, const auto& typeName, ConcreteTypeInfo* concreteTypeInfoValue, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t storageOffset, uint32_t cflags)
 {
+    // If we are already waiting for a job to finish, then we must... wait, and not generate new jobs
+    if (context->baseJob->waitingKind == JobWaitKind::MakeConcrete && context->result != ContextResult::Done)
+        return true;
+
     SWAG_ASSERT(context);
     auto sourceFile = context->sourceFile;
     auto module     = sourceFile->module;
@@ -645,9 +649,9 @@ bool TypeTable::makeConcreteStruct(JobContext* context, const auto& typeName, Co
 
     if (cflags & MAKE_CONCRETE_SHOULD_WAIT)
     {
-        SWAG_ASSERT(context->result == ContextResult::Done || context->baseJob->waitingKind == JobWaitKind::MakeConcrete);
+        SWAG_ASSERT(context->result == ContextResult::Done || context->baseJob->waitingKind == JobWaitKind::MakeConcrete1);
         job->dependentJob = context->baseJob;
-        context->baseJob->setPending(nullptr, JobWaitKind::MakeConcrete, nullptr, typeInfo);
+        context->baseJob->setPending(nullptr, JobWaitKind::MakeConcrete1, nullptr, typeInfo);
         context->baseJob->jobsToAdd.push_back(job);
     }
     else

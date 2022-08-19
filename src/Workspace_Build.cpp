@@ -274,6 +274,7 @@ static Utf8 errorPendingJobsType(Job* pendingJob)
     case JobWaitKind::WaitInterfaces:
         return "waiting for all interfaces to be solved";
     case JobWaitKind::MakeConcrete:
+    case JobWaitKind::MakeConcrete1:
         return "waiting for type to be generated";
     case JobWaitKind::SemFullResolve:
         return Fmt("waiting for %s to be fully solved", sym.c_str());
