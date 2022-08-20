@@ -61,7 +61,7 @@ bool ByteCodeOptimizerJob::optimize(ByteCode* bc, bool& restart)
 
             if (!optContext.allPassesHaveDoneSomething)
             {
-                if (module->buildCfg.byteCodeRemoveDup)
+                if (module->buildCfg.byteCodeOptimizeLevel == 2)
                     bc->computeCrc();
                 break;
             }
@@ -86,7 +86,7 @@ bool ByteCodeOptimizerJob::optimize()
 
     // Restart everything if something has been done during this pass
     if (restart)
-        module->optimNeedRestart = module->optimNeedRestart + 1;
+        module->optimNeedRestart++;
 
     return true;
 }

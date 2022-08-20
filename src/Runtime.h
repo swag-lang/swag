@@ -177,11 +177,10 @@ struct BuildCfg
     bool              stackTrace   = true;
 
     // Bytecode
-    bool byteCodeOptimize    = true;
-    bool byteCodeDebugInline = true;
-    bool byteCodeRemoveDup   = false;
-    bool byteCodeEmitAssume  = true;
-    bool byteCodeInline      = true;
+    uint32_t byteCodeOptimizeLevel = 1;
+    bool     byteCodeDebugInline   = true;
+    bool     byteCodeEmitAssume    = true;
+    bool     byteCodeInline        = true;
 
     // Backend common
     BuildCfgBackendKind backendKind              = BuildCfgBackendKind::Executable;

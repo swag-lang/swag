@@ -50,8 +50,7 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
     // Setup build configuration
     if (g_CommandLine->buildCfg == "fast-compile")
     {
-        buildCfg.byteCodeOptimize         = false;
-        buildCfg.byteCodeRemoveDup        = false;
+        buildCfg.byteCodeOptimizeLevel    = 0;
         buildCfg.byteCodeDebugInline      = false;
         buildCfg.byteCodeInline           = false;
         buildCfg.byteCodeEmitAssume       = true;
@@ -63,8 +62,7 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
     }
     else if (g_CommandLine->buildCfg == "debug")
     {
-        buildCfg.byteCodeOptimize         = false;
-        buildCfg.byteCodeRemoveDup        = false;
+        buildCfg.byteCodeOptimizeLevel    = 0;
         buildCfg.byteCodeDebugInline      = true;
         buildCfg.byteCodeInline           = true;
         buildCfg.byteCodeEmitAssume       = true;
@@ -76,8 +74,7 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
     }
     else if (g_CommandLine->buildCfg == "fast-debug")
     {
-        buildCfg.byteCodeOptimize         = true;
-        buildCfg.byteCodeRemoveDup        = false;
+        buildCfg.byteCodeOptimizeLevel    = 1;
         buildCfg.byteCodeDebugInline      = false;
         buildCfg.byteCodeInline           = true;
         buildCfg.byteCodeEmitAssume       = true;
@@ -89,8 +86,7 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
     }
     else if (g_CommandLine->buildCfg == "release")
     {
-        buildCfg.byteCodeOptimize         = true;
-        buildCfg.byteCodeRemoveDup        = true;
+        buildCfg.byteCodeOptimizeLevel    = 2;
         buildCfg.byteCodeDebugInline      = false;
         buildCfg.byteCodeInline           = true;
         buildCfg.byteCodeEmitAssume       = false;
@@ -105,9 +101,7 @@ void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
     if (g_CommandLine->buildCfgInlineBC != "default")
         buildCfg.byteCodeInline = g_CommandLine->buildCfgInlineBC == "true" ? true : false;
     if (g_CommandLine->buildCfgOptimBC != "default")
-        buildCfg.byteCodeOptimize = g_CommandLine->buildCfgOptimBC == "true" ? true : false;
-    if (g_CommandLine->buildCfgRemoveDupBC != "default")
-        buildCfg.byteCodeRemoveDup = g_CommandLine->buildCfgRemoveDupBC == "true" ? true : false;
+        buildCfg.byteCodeOptimizeLevel = max(0, min(atoi(g_CommandLine->buildCfgOptimBC.c_str()), 2));
     if (g_CommandLine->buildCfgDebug != "default")
         buildCfg.backendDebugInformations = g_CommandLine->buildCfgDebug == "true" ? true : false;
     if (g_CommandLine->buildCfgOptimSpeed != "default")
@@ -880,7 +874,7 @@ bool Module::mustEmitSafety(AstNode* node, uint64_t whatOn, uint64_t whatOff)
 bool Module::mustOptimizeBC(AstNode* node)
 {
     if (!node)
-        return buildCfg.byteCodeOptimize;
+        return buildCfg.byteCodeOptimizeLevel > 0;
 
     while (node)
     {
@@ -891,14 +885,14 @@ bool Module::mustOptimizeBC(AstNode* node)
         node = node->ownerFct;
     }
 
-    return buildCfg.byteCodeOptimize;
+    return buildCfg.byteCodeOptimizeLevel > 0;
 }
 
 bool Module::mustOptimizeBK(AstNode* node)
 {
     if (!node)
-        return buildCfg.byteCodeOptimize;
-    return (buildCfg.byteCodeOptimize || (node->attributeFlags & ATTRIBUTE_OPTIM_BACKEND_ON)) && !(node->attributeFlags & ATTRIBUTE_OPTIM_BACKEND_OFF);
+        return buildCfg.byteCodeOptimizeLevel > 0;
+    return (buildCfg.byteCodeOptimizeLevel > 0 || (node->attributeFlags & ATTRIBUTE_OPTIM_BACKEND_ON)) && !(node->attributeFlags & ATTRIBUTE_OPTIM_BACKEND_OFF);
 }
 
 bool Module::hasBytecodeToRun()
@@ -1228,7 +1222,7 @@ void Module::filterFunctionsToEmit()
         byteCodeFuncToGen.push_back(bc);
     }
 
-    if (buildParameters.buildCfg->byteCodeOptimize && buildParameters.buildCfg->byteCodeRemoveDup)
+    if (buildParameters.buildCfg->byteCodeOptimizeLevel == 2)
         removeDuplicatedFunctions();
 }
 

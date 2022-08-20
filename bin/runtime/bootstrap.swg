@@ -549,9 +549,8 @@ namespace Swag
         stackTrace      = true
 
         // Bytecode
-        byteCodeOptimize        = true
+        byteCodeOptimizeLevel   = 1
         byteCodeDebugInline     = true
-        byteCodeRemoveDup       = false
         byteCodeEmitAssume      = true
         byteCodeInline          = true
 
