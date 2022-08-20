@@ -849,11 +849,11 @@ void Module::printStartBuilding(const BuildParameters& bp)
     else
     {
         if (bp.compileType == BackendCompileType::Test)
-            g_Log.messageHeaderCentered("Building test", name.c_str());
+            g_Log.messageHeaderCentered("Writing test", name.c_str());
         else if (bp.compileType == BackendCompileType::Example)
-            g_Log.messageHeaderCentered("Building example", name.c_str());
+            g_Log.messageHeaderCentered("Writing example", name.c_str());
         else
-            g_Log.messageHeaderCentered("Building", name.c_str());
+            g_Log.messageHeaderCentered("Writing", name.c_str());
     }
 }
 

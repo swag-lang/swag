@@ -18,5 +18,4 @@ struct SaveGenJob : public Job
     JobResult execute() override;
 
     Utf8 content;
-    int  index;
 };
