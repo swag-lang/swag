@@ -1511,7 +1511,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         }
 
         {
-            LockSymbolOncePerContext ls(context, symbol);
+            ScopedLock ls(symbol->mutex);
             if ((symbol->kind != SymbolKind::Function || symbol->cptOverloadsInit != symbol->overloads.size()) && symbol->cptOverloads)
             {
                 job->waitSymbolNoLock(symbol);
@@ -2183,7 +2183,7 @@ bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node,
                 return true;
 
             {
-                LockSymbolOncePerContext ls(context, symbol);
+                ScopedLock ls(symbol->mutex);
                 if (symbol->cptOverloads)
                 {
                     context->job->waitSymbolNoLock(symbol);

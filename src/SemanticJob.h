@@ -27,36 +27,11 @@ struct AstFuncCallParam;
 
 struct SemanticContext : public JobContext
 {
-    SemanticJob*              job = nullptr;
-    VectorNative<SymbolName*> currentLockedSymbol;
-    uint32_t                  castFlagsResult   = 0;
-    TypeInfo*                 castErrorToType   = nullptr;
-    TypeInfo*                 castErrorFromType = nullptr;
-    uint32_t                  castErrorFlags    = 0;
-};
-
-struct LockSymbolOncePerContext
-{
-    LockSymbolOncePerContext(SemanticContext* context, SymbolName* sym)
-    {
-        if (context->currentLockedSymbol.contains(sym))
-            return;
-        savedContext = context;
-        savedSymbol  = sym;
-        context->currentLockedSymbol.push_back(sym);
-        sym->mutex.lock();
-    }
-
-    ~LockSymbolOncePerContext()
-    {
-        if (!savedContext)
-            return;
-        savedSymbol->mutex.unlock();
-        savedContext->currentLockedSymbol.erase_unordered_byval(savedSymbol);
-    }
-
-    SemanticContext* savedContext = nullptr;
-    SymbolName*      savedSymbol  = nullptr;
+    SemanticJob* job               = nullptr;
+    uint32_t     castFlagsResult   = 0;
+    TypeInfo*    castErrorToType   = nullptr;
+    TypeInfo*    castErrorFromType = nullptr;
+    uint32_t     castErrorFlags    = 0;
 };
 
 struct OneOverload
