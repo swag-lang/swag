@@ -1510,12 +1510,25 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
             }
         }
 
+        // Major contention offender.
+        // Do it in two passes, as most of the time if will fail
         {
-            ScopedLock ls(symbol->mutex);
-            if ((symbol->kind != SymbolKind::Function || symbol->cptOverloadsInit != symbol->overloads.size()) && symbol->cptOverloads)
+            bool needLock = false;
+
             {
-                job->waitSymbolNoLock(symbol);
-                return true;
+                SharedLock ls(symbol->mutex);
+                if ((symbol->kind != SymbolKind::Function || symbol->cptOverloadsInit != symbol->overloads.size()) && symbol->cptOverloads)
+                    needLock = true;
+            }
+
+            if (needLock)
+            {
+                ScopedLock ls(symbol->mutex);
+                if ((symbol->kind != SymbolKind::Function || symbol->cptOverloadsInit != symbol->overloads.size()) && symbol->cptOverloads)
+                {
+                    job->waitSymbolNoLock(symbol);
+                    return true;
+                }
             }
         }
 

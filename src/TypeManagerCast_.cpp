@@ -2220,14 +2220,9 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
 
 bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* toStruct, TypeInfoStruct* fromStruct, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags, bool& ok)
 {
-    struct OneField
-    {
-        TypeInfoStruct* typeStruct;
-        uint32_t        offset;
-        TypeInfoParam*  field;
-    };
+    context->castStructStructFields.clear();
+    auto& stack = context->castStructStructFields;
 
-    vector<OneField> stack;
     stack.push_back({fromStruct, 0, nullptr});
     while (!stack.empty())
     {
@@ -2330,17 +2325,11 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
 
 bool TypeManager::collectInterface(SemanticContext* context, TypeInfoStruct* fromTypeStruct, TypeInfoStruct* toTypeItf, InterfaceRef& ref, bool skipFirst)
 {
-    struct OneField
-    {
-        TypeInfoStruct* typeStruct;
-        uint32_t        offset;
-        TypeInfoParam*  field;
-        Utf8            fieldAccessName;
-    };
-
     TypeInfoParam* foundField = nullptr;
 
-    vector<OneField> stack;
+    context->castCollectInterfaceField.clear();
+    auto& stack = context->castCollectInterfaceField;
+
     stack.push_back({fromTypeStruct, 0, nullptr});
     while (!stack.empty())
     {

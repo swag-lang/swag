@@ -25,13 +25,30 @@ struct DataSegment;
 struct SymbolName;
 struct AstFuncCallParam;
 
+struct CastStructStructField
+{
+    TypeInfoStruct* typeStruct;
+    uint32_t        offset;
+    TypeInfoParam*  field;
+};
+
+struct CastCollectInterfaceField
+{
+    TypeInfoStruct* typeStruct;
+    uint32_t        offset;
+    TypeInfoParam*  field;
+    Utf8            fieldAccessName;
+};
+
 struct SemanticContext : public JobContext
 {
-    SemanticJob* job               = nullptr;
-    uint32_t     castFlagsResult   = 0;
-    TypeInfo*    castErrorToType   = nullptr;
-    TypeInfo*    castErrorFromType = nullptr;
-    uint32_t     castErrorFlags    = 0;
+    vector<CastStructStructField>     castStructStructFields;
+    vector<CastCollectInterfaceField> castCollectInterfaceField;
+    SemanticJob*                      job               = nullptr;
+    uint32_t                          castFlagsResult   = 0;
+    TypeInfo*                         castErrorToType   = nullptr;
+    TypeInfo*                         castErrorFromType = nullptr;
+    uint32_t                          castErrorFlags    = 0;
 };
 
 struct OneOverload
