@@ -526,7 +526,6 @@ namespace Swag
         Export
         Executable
         DynamicLib
-        StaticLib
     }
 
     struct BuildCfg

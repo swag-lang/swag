@@ -12,7 +12,6 @@ JobResult ModuleOutputJob::execute()
         if (g_CommandLine->verboseStages)
             module->logStage("ModuleOutputJobPass::Init\n");
 
-        // Generate .swg file with public definitions
         pass = ModuleOutputJobPass::PrepareOutputStage1;
 
         // This can arrive when testing, if the error is raised late, when generating export
@@ -20,10 +19,18 @@ JobResult ModuleOutputJob::execute()
         if (!module->backend)
             module->allocateBackend();
 
-        auto exportJob          = g_Allocator.alloc<ModuleExportJob>();
-        exportJob->backend      = module->backend;
-        exportJob->dependentJob = this;
-        jobsToAdd.push_back(exportJob);
+        // Generate .swg file with public definitions
+        if (module->buildCfg.backendKind != BuildCfgBackendKind::Executable || module->isErrorModule)
+        {
+            auto exportJob          = g_Allocator.alloc<ModuleExportJob>();
+            exportJob->backend      = module->backend;
+            exportJob->dependentJob = this;
+            jobsToAdd.push_back(exportJob);
+        }
+        else
+        {
+            module->setHasBeenBuilt(BUILDRES_EXPORT);
+        }
     }
 
     if (pass == ModuleOutputJobPass::PrepareOutputStage1)
