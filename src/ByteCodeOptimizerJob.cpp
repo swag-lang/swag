@@ -27,7 +27,11 @@ bool ByteCodeOptimizerJob::optimize(ByteCode* bc, bool& restart)
             return false;
         optContext.allPassesHaveDoneSomething = false;
 
-        bc->isEmpty = bc->isDoingNothing();
+        if (!bc->isEmpty && bc->isDoingNothing())
+        {
+            bc->isEmpty                           = true;
+            optContext.allPassesHaveDoneSomething = true;
+        }
 
         OPT_PASS(ByteCodeOptimizer::optimizePassJumps);
         OPT_PASS(ByteCodeOptimizer::optimizePassDeadCode);
