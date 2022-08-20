@@ -233,7 +233,7 @@ void ByteCodeOptimizer::removeNops(ByteCodeOptContext* context)
         if (ip->op == ByteCodeOp::Nop)
         {
             if (g_CommandLine->stats)
-                g_Stats.totalOptimsBC = g_Stats.totalOptimsBC + 1;
+                g_Stats.totalOptimsBC++;
             ip++;
             continue;
         }
