@@ -1234,14 +1234,7 @@ void Module::filterFunctionsToEmit()
 
 void Module::flushGenFiles()
 {
-    //for (int idx = 0; idx < contentJobGeneratedFile.size(); idx++)
-    {
-        //auto& h = contentJobGeneratedFile[idx];
-        //if (h.empty())
-        //    continue;
-        auto newJob    = g_Allocator.alloc<SaveGenJob>();
-        newJob->module = this;
-       //newJob->index  = idx;
-        g_ThreadMgr.addJob(newJob);
-    }
+    auto newJob    = g_Allocator.alloc<SaveGenJob>();
+    newJob->module = this;
+    g_ThreadMgr.addJob(newJob);
 }
