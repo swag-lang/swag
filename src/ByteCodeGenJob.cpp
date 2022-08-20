@@ -753,64 +753,81 @@ JobResult ByteCodeGenJob::waitForDependenciesGenerated()
 {
     VectorNative<AstNode*> done;
     VectorNative<AstNode*> depNodes;
+    VectorNative<AstNode*> save;
 
     while (!dependentNodesTmp.empty())
     {
-        auto node = dependentNodesTmp.back();
-        SWAG_ASSERT(node->extension && node->extension->bc);
-
-        // Wait for the node if not generated
+        for (int i = 0; i < dependentNodesTmp.size(); i++)
         {
-            ScopedLock lk(node->mutex);
-            if (!(node->semFlags & AST_SEM_BYTECODE_GENERATED))
-            {
-                waitingKind   = JobWaitKind::SemByteCodeGenerated;
-                waitingIdNode = node;
-                ScopedLock lk1(node->extension->byteCodeJob->mutexDependent);
-                node->extension->byteCodeJob->dependentJobs.add(this);
-                return JobResult::KeepJobAlive;
-            }
-        }
-
-        // Propagate hasForeignFunctionCalls
-        if (context.bc)
-        {
+            auto node = dependentNodesTmp[i];
             SWAG_ASSERT(node->extension && node->extension->bc);
-            if (node->extension->bc->hasForeignFunctionCalls)
-                context.bc->hasForeignFunctionCalls = true;
-            for (auto const& fmn : node->extension->bc->hasForeignFunctionCallsModules)
-                context.bc->hasForeignFunctionCallsModules.insert(fmn);
-        }
 
-        // Deal with registered dependent nodes, by adding them to the list
-        dependentNodesTmp.pop_back();
-        if (node == originalNode)
-            continue;
-
-        // If my dependent node has already been computed, then just get the result
-        {
-            SharedLock lk(node->mutex);
-            if (node->semFlags & AST_SEM_BYTECODE_RESOLVED)
+            // Wait for the node if not generated
             {
-                SWAG_ASSERT(!node->extension->byteCodeJob);
-                originalNode->extension->dependentNodes.append(node->extension->dependentNodes);
-                break;
-            }
-        }
-
-        // Register the full dependency tree
-        depNodes.clear();
-        getDependantCalls(node, depNodes);
-        for (auto dep : depNodes)
-        {
-            if (!done.contains(dep))
-            {
-                dependentNodesTmp.push_back_once(dep);
-                done.push_back(dep);
+                ScopedLock lk(node->mutex);
+                if (!(node->semFlags & AST_SEM_BYTECODE_GENERATED))
+                {
+                    waitingKind   = JobWaitKind::SemByteCodeGenerated;
+                    waitingIdNode = node;
+                    ScopedLock lk1(node->extension->byteCodeJob->mutexDependent);
+                    node->extension->byteCodeJob->dependentJobs.add(this);
+                    return JobResult::KeepJobAlive;
+                }
             }
 
-            ScopedLock lk1(dep->mutex);
-            originalNode->extension->dependentNodes.push_back_once(dep);
+            // Propagate hasForeignFunctionCalls
+            if (context.bc)
+            {
+                SWAG_ASSERT(node->extension && node->extension->bc);
+                if (node->extension->bc->hasForeignFunctionCalls)
+                    context.bc->hasForeignFunctionCalls = true;
+                for (auto const& fmn : node->extension->bc->hasForeignFunctionCallsModules)
+                    context.bc->hasForeignFunctionCallsModules.insert(fmn);
+            }
+
+            // Deal with registered dependent nodes, by adding them to the list
+            if (node == originalNode)
+                continue;
+        }
+
+        save = dependentNodesTmp;
+        dependentNodesTmp.clear();
+
+        while (save.size())
+        {
+            auto node = save.get_pop_back();
+            if (node == originalNode)
+                continue;
+
+            // If my dependent node has already been computed, then just get the result
+            {
+                SharedLock lk(node->mutex);
+                if (node->semFlags & AST_SEM_BYTECODE_RESOLVED)
+                {
+                    SWAG_ASSERT(!node->extension->byteCodeJob);
+                    originalNode->extension->dependentNodes.append(node->extension->dependentNodes);
+#ifdef SWAG_DEV_MODE
+                    for (auto n : node->extension->dependentNodes)
+                        SWAG_ASSERT(n->semFlags & AST_SEM_BYTECODE_GENERATED);
+#endif
+                    break;
+                }
+            }
+
+            // Register the full dependency tree
+            depNodes.clear();
+            getDependantCalls(node, depNodes);
+            for (auto dep : depNodes)
+            {
+                if (!done.contains(dep))
+                {
+                    dependentNodesTmp.push_back_once(dep);
+                    done.push_back(dep);
+                }
+
+                ScopedLock lk1(dep->mutex);
+                originalNode->extension->dependentNodes.push_back_once(dep);
+            }
         }
     }
 
