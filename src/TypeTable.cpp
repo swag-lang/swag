@@ -645,7 +645,7 @@ bool TypeTable::makeConcreteStruct(JobContext* context, const auto& typeName, Co
     job->typeName              = typeName;
     job->nodes.push_back(context->node);
     mapPerSeg.concreteTypesJob[typeName] = job;
-    if (g_CommandLine->stats)
+    if (g_CommandLine->stats && storageSegment->kind != SegmentKind::Compiler)
         g_Stats.totalConcreteStructTypes++;
 
     if (cflags & MAKE_CONCRETE_SHOULD_WAIT)
