@@ -116,13 +116,23 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(JobContext*    context,
     if (!aliasName)
         aliasName = &node->token.text;
 
-    auto symbol = findNoLock(*aliasName);
-
     // Be sure we have a symbol
+    auto symbol = findNoLock(*aliasName);
     if (!symbol)
         symbol = registerSymbolNameNoLock(context, node, kind, aliasName);
-    else if (symbol->kind == SymbolKind::PlaceHolder && kind != SymbolKind::PlaceHolder)
+
+    ScopedLock lock(symbol->mutex);
+
+    // In case an #if block has passed before us
+    if (symbol->cptOverloadsInit == 0)
+        symbol = registerSymbolNameNoLock(context, node, kind, aliasName);
+
+    // If symbol was registered as a place holder, and is no more, then replace its kind
+    if (symbol->kind == SymbolKind::PlaceHolder && kind != SymbolKind::PlaceHolder)
+    {
         symbol->kind = kind;
+    }
+
     // Only add an inline parameter/retval once in a given scope
     else if ((flags & (OVERLOAD_VAR_INLINE | OVERLOAD_RETVAL)) && symbol->overloads.size())
     {
@@ -135,7 +145,6 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(JobContext*    context,
     if (resultName)
         *resultName = symbol;
 
-    ScopedLock      lock(symbol->mutex);
     SymbolOverload* result           = nullptr;
     SymbolOverload* resultIncomplete = nullptr;
     if (flags & OVERLOAD_STORE_SYMBOLS)
@@ -281,15 +290,6 @@ void SymTable::disabledIfBlockOverloadNoLock(AstNode* node, SymbolName* symbol)
     symbol->unregisterNode(node);
     if (symbol->cptOverloads == 0)
         symbol->dependentJobs.setRunning();
-}
-
-bool SymTable::checkHiddenSymbol(JobContext* context, AstNode* node, TypeInfo* typeInfo, SymbolKind type)
-{
-    SharedLock lk(mutex);
-    occupied = true;
-    auto res = checkHiddenSymbolNoLock(context, node, typeInfo, type, nullptr, true);
-    occupied = false;
-    return res;
 }
 
 bool SymTable::acceptGhostSymbolNoLock(JobContext* context, AstNode* node, SymbolKind kind, SymbolName* symbol)
