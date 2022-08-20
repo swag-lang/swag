@@ -54,13 +54,14 @@ struct ByteCodeOptContext : public JobContext
     map<uint64_t, uint32_t>                             map6432;
     map<uint32_t, ByteCodeOptTreeNode*>                 map32Node;
     vector<ByteCodeOptTreeNode>                         tree;
-    map<ByteCodeInstruction*, uint32_t>                 mapInstNode;
+    unordered_map<ByteCodeInstruction*, uint32_t>       mapInstNode;
 
     ByteCode* bc;
     Module*   module;
 
     uint32_t mark           = 0;
     uint32_t contextBcFlags = 0;
+    uint32_t nextTreeNode   = 0;
 
     bool allPassesHaveDoneSomething = false;
     bool passHasDoneSomething       = false;

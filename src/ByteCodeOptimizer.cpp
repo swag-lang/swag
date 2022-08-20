@@ -17,9 +17,26 @@ uint32_t ByteCodeOptimizer::newTreeNode(ByteCodeOptContext* context, ByteCodeIns
         return it->second;
     }
 
+    if (context->nextTreeNode < context->tree.size())
+    {
+        auto tn   = &context->tree[context->nextTreeNode];
+        tn->start = ip;
+        tn->end   = nullptr;
+        tn->next.clear();
+        tn->parent.clear();
+        tn->mark  = 0;
+        tn->flags = 0;
+        tn->crc   = 0;
+
+        context->mapInstNode[ip] = context->nextTreeNode;
+        return context->nextTreeNode++;
+    }
+
     ByteCodeOptTreeNode newNode;
     newNode.start = ip;
     context->tree.push_back(newNode);
+    context->nextTreeNode++;
+
     uint32_t pos             = (uint32_t) context->tree.size() - 1;
     context->mapInstNode[ip] = pos;
     return pos;
@@ -113,8 +130,8 @@ void ByteCodeOptimizer::genTree(ByteCodeOptContext* context, uint32_t nodeIdx, b
 
 void ByteCodeOptimizer::genTree(ByteCodeOptContext* context, bool computeCrc)
 {
-    context->tree.clear();
     context->mapInstNode.clear();
+    context->nextTreeNode = 0;
 
     auto bc = context->bc;
     bc->crc = 0;
@@ -159,6 +176,7 @@ void ByteCodeOptimizer::parseTree(ByteCodeOptContext* context, ByteCodeOptTreePa
 
     for (auto n : node->next)
     {
+        SWAG_ASSERT(n < context->nextTreeNode);
         if (!(context->tree[n].flags & parseCxt.doneFlag))
         {
             context->tree[n].flags |= parseCxt.doneFlag;
@@ -173,8 +191,8 @@ void ByteCodeOptimizer::parseTree(ByteCodeOptContext* context, ByteCodeOptTreePa
 
 void ByteCodeOptimizer::parseTree(ByteCodeOptContext* context, uint32_t startNode, ByteCodeInstruction* startIp, uint32_t doneFlag, function<void(ByteCodeOptContext*, ByteCodeOptTreeParseContext&)> cb)
 {
-    for (auto& n : context->tree)
-        n.flags &= ~doneFlag;
+    for (uint32_t i = 0; i < context->nextTreeNode; i++)
+        context->tree[i].flags &= ~doneFlag;
 
     ByteCodeOptTreeParseContext parseCxt;
     parseCxt.curNode  = startNode;
