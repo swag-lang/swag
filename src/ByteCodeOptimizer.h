@@ -11,8 +11,8 @@ struct Job;
 struct ByteCodeOptimizer
 {
     static uint32_t newTreeNode(ByteCodeOptContext* context, ByteCodeInstruction* ip, bool& here);
-    static void     genTree(ByteCodeOptContext* context, uint32_t nodeIdx);
-    static void     genTree(ByteCodeOptContext* context);
+    static void     genTree(ByteCodeOptContext* context, uint32_t nodeIdx, bool computeCrc);
+    static void     genTree(ByteCodeOptContext* context, bool computeCrc);
     static void     parseTree(ByteCodeOptContext* context, ByteCodeOptTreeParseContext& parseCxt);
     static void     parseTree(ByteCodeOptContext* context, uint32_t startNode, ByteCodeInstruction* startIp, uint32_t doneFlag, function<void(ByteCodeOptContext*, ByteCodeOptTreeParseContext&)> cb);
 

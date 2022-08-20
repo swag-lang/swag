@@ -42,15 +42,8 @@ static const uint32_t OCF_HAS_DUPCOPY  = 0x00000002;
 
 struct ByteCodeOptContext : public JobContext
 {
-    ByteCode*                          bc;
-    Module*                            module;
-    VectorNative<ByteCodeInstruction*> jumps;
-    VectorNative<ByteCodeInstruction*> nops;
-    uint32_t                           contextBcFlags = 0;
-
-    vector<ByteCodeOptTreeNode>         tree;
-    map<ByteCodeInstruction*, uint32_t> mapInstNode;
-
+    VectorNative<ByteCodeInstruction*>                  jumps;
+    VectorNative<ByteCodeInstruction*>                  nops;
     VectorNative<ByteCodeInstruction*>                  vecInst;
     VectorNative<uint32_t>                              vecReg;
     MapRegTo<uint32_t>                                  mapRegReg;
@@ -60,30 +53,15 @@ struct ByteCodeOptContext : public JobContext
     map<uint64_t, pair<uint64_t, ByteCodeInstruction*>> mapCst;
     map<uint64_t, uint32_t>                             map6432;
     map<uint32_t, ByteCodeOptTreeNode*>                 map32Node;
-    uint32_t                                            mark = 0;
+    vector<ByteCodeOptTreeNode>                         tree;
+    map<ByteCodeInstruction*, uint32_t>                 mapInstNode;
+
+    ByteCode* bc;
+    Module*   module;
+
+    uint32_t mark           = 0;
+    uint32_t contextBcFlags = 0;
 
     bool allPassesHaveDoneSomething = false;
     bool passHasDoneSomething       = false;
-
-    void reset()
-    {
-        JobContext::reset();
-        bc             = nullptr;
-        contextBcFlags = 0;
-        jumps.clear();
-        nops.clear();
-        vecInst.clear();
-        mapRegReg.clear();
-        mapRegInstA.clear();
-        mapRegInstB.clear();
-        mapCst.clear();
-        tree.clear();
-        mapInstNode.clear();
-        vecReg.clear();
-        map6432.clear();
-        map32Node.clear();
-        allPassesHaveDoneSomething = false;
-        passHasDoneSomething       = false;
-        mark                       = 0;
-    }
 };

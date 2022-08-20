@@ -208,12 +208,6 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
 
 void ByteCodeOptimizer::reduceEmptyFct(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
-    if (context->bc->isDoingNothing() && !context->bc->isEmpty)
-    {
-        context->bc->isEmpty          = true;
-        context->passHasDoneSomething = true;
-    }
-
     if (ip->op == ByteCodeOp::LocalCall || ip->op == ByteCodeOp::LocalCallPop || ip->op == ByteCodeOp::LocalCallPopRC)
     {
         auto destBC = (ByteCode*) ip->a.pointer;

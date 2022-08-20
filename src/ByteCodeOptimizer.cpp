@@ -25,21 +25,23 @@ uint32_t ByteCodeOptimizer::newTreeNode(ByteCodeOptContext* context, ByteCodeIns
     return pos;
 }
 
-void ByteCodeOptimizer::genTree(ByteCodeOptContext* context, uint32_t nodeIdx)
+void ByteCodeOptimizer::genTree(ByteCodeOptContext* context, uint32_t nodeIdx, bool computeCrc)
 {
     ByteCodeOptTreeNode* node = &context->tree[nodeIdx];
     node->end                 = node->start;
 
     while (node->end->op != ByteCodeOp::Ret && !ByteCode::isJumpOrDyn(node->end) && !(node->end[1].flags & BCI_START_STMT))
     {
-        node->crc = context->bc->computeCrc(node->end, node->crc, true, false);
+        if (computeCrc)
+            node->crc = context->bc->computeCrc(node->end, node->crc, true, false);
 #ifdef SWAG_DEV_MODE
         node->end->treeNode = nodeIdx + 1;
 #endif
         node->end++;
     }
 
-    node->crc = context->bc->computeCrc(node->end, node->crc, true, false);
+    if (computeCrc)
+        node->crc = context->bc->computeCrc(node->end, node->crc, true, false);
 
 #ifdef SWAG_DEV_MODE
     node->end->treeNode = nodeIdx + 1;
@@ -63,7 +65,7 @@ void ByteCodeOptimizer::genTree(ByteCodeOptContext* context, uint32_t nodeIdx)
         {
             auto newNode = newTreeNode(context, node->end + table[i] + 1, here);
             if (!here)
-                genTree(context, newNode);
+                genTree(context, newNode, computeCrc);
             node = &context->tree[nodeIdx];
             node->next.push_back(newNode);
             auto newNodePtr = &context->tree[newNode];
@@ -77,7 +79,7 @@ void ByteCodeOptimizer::genTree(ByteCodeOptContext* context, uint32_t nodeIdx)
         {
             auto newNode = newTreeNode(context, nextIp, here);
             if (!here)
-                genTree(context, newNode);
+                genTree(context, newNode, computeCrc);
             node = &context->tree[nodeIdx];
             node->next.push_back(newNode);
             auto newNodePtr = &context->tree[newNode];
@@ -89,7 +91,7 @@ void ByteCodeOptimizer::genTree(ByteCodeOptContext* context, uint32_t nodeIdx)
             nextIp       = node->end + 1;
             auto newNode = newTreeNode(context, nextIp, here);
             if (!here)
-                genTree(context, newNode);
+                genTree(context, newNode, computeCrc);
             node = &context->tree[nodeIdx];
             node->next.push_back(newNode);
             auto newNodePtr = &context->tree[newNode];
@@ -101,7 +103,7 @@ void ByteCodeOptimizer::genTree(ByteCodeOptContext* context, uint32_t nodeIdx)
         auto nextIp  = node->end + 1;
         auto newNode = newTreeNode(context, nextIp, here);
         if (!here)
-            genTree(context, newNode);
+            genTree(context, newNode, computeCrc);
         node = &context->tree[nodeIdx];
         node->next.push_back(newNode);
         auto newNodePtr = &context->tree[newNode];
@@ -109,7 +111,7 @@ void ByteCodeOptimizer::genTree(ByteCodeOptContext* context, uint32_t nodeIdx)
     }
 }
 
-void ByteCodeOptimizer::genTree(ByteCodeOptContext* context)
+void ByteCodeOptimizer::genTree(ByteCodeOptContext* context, bool computeCrc)
 {
     context->tree.clear();
     context->mapInstNode.clear();
@@ -119,7 +121,8 @@ void ByteCodeOptimizer::genTree(ByteCodeOptContext* context)
 
     bool here = false;
     auto node = newTreeNode(context, bc->out, here);
-    genTree(context, node);
+
+    genTree(context, node, computeCrc);
 }
 
 void ByteCodeOptimizer::parseTree(ByteCodeOptContext* context, ByteCodeOptTreeParseContext& parseCxt)
@@ -394,7 +397,9 @@ bool ByteCodeOptimizer::optimize(Job* job, Module* module, bool& done)
             auto curInst = module->byteCodeFunc[newJob->startIndex]->numInstructions;
             while (curInst < totalInstructions && newJob->endIndex + 1 < (int) module->byteCodeFunc.size())
             {
-                curInst += module->byteCodeFunc[newJob->endIndex]->numInstructions;
+                auto bc     = module->byteCodeFunc[newJob->endIndex];
+                bc->isEmpty = bc->isDoingNothing();
+                curInst += bc->numInstructions;
                 newJob->endIndex++;
                 startIndex = newJob->endIndex;
             }

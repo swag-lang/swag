@@ -21,11 +21,13 @@ bool ByteCodeOptimizerJob::optimize(ByteCode* bc, bool& restart)
     {
         ByteCodeOptimizer::setContextFlags(&optContext);
         ByteCodeOptimizer::setJumps(&optContext);
-        ByteCodeOptimizer::genTree(&optContext);
+        ByteCodeOptimizer::genTree(&optContext, false);
 
         if (optContext.hasError)
             return false;
         optContext.allPassesHaveDoneSomething = false;
+
+        bc->isEmpty = bc->isDoingNothing();
 
         OPT_PASS(ByteCodeOptimizer::optimizePassJumps);
         OPT_PASS(ByteCodeOptimizer::optimizePassDeadCode);
@@ -46,9 +48,13 @@ bool ByteCodeOptimizerJob::optimize(ByteCode* bc, bool& restart)
         ByteCodeOptimizer::removeNops(&optContext);
         if (!optContext.allPassesHaveDoneSomething)
         {
+            ByteCodeOptimizer::setJumps(&optContext);
+            ByteCodeOptimizer::genTree(&optContext, true);
+
             OPT_PASS(ByteCodeOptimizer::optimizePassDupBlocks);
             OPT_PASS(ByteCodeOptimizer::optimizePassReduceX2);
             ByteCodeOptimizer::removeNops(&optContext);
+
             if (!optContext.allPassesHaveDoneSomething)
             {
                 if (module->buildCfg.byteCodeRemoveDup)
