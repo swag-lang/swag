@@ -19,6 +19,15 @@ bool ByteCodeOptimizerJob::optimize(ByteCode* bc, bool& restart)
 
     while (true)
     {
+        if (!bc->isEmpty && bc->isDoingNothing())
+        {
+            bc->isEmpty = true;
+            restart     = true;
+        }
+
+        if (bc->isEmpty)
+            return true;
+
         ByteCodeOptimizer::setContextFlags(&optContext);
         ByteCodeOptimizer::setJumps(&optContext);
         ByteCodeOptimizer::genTree(&optContext, false);
@@ -26,12 +35,6 @@ bool ByteCodeOptimizerJob::optimize(ByteCode* bc, bool& restart)
         if (optContext.hasError)
             return false;
         optContext.allPassesHaveDoneSomething = false;
-
-        if (!bc->isEmpty && bc->isDoingNothing())
-        {
-            bc->isEmpty                           = true;
-            optContext.allPassesHaveDoneSomething = true;
-        }
 
         OPT_PASS(ByteCodeOptimizer::optimizePassJumps);
         OPT_PASS(ByteCodeOptimizer::optimizePassDeadCode);
