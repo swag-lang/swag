@@ -11,6 +11,7 @@
 #include "ErrorIds.h"
 #include "CommandLine.h"
 #include "LanguageSpec.h"
+#include "SaveGenJob.h"
 
 void Module::setup(const Utf8& moduleName, const Utf8& modulePath)
 {
@@ -1229,4 +1230,18 @@ void Module::filterFunctionsToEmit()
 
     if (buildParameters.buildCfg->byteCodeOptimize && buildParameters.buildCfg->byteCodeRemoveDup)
         removeDuplicatedFunctions();
+}
+
+void Module::flushGenFiles()
+{
+    //for (int idx = 0; idx < contentJobGeneratedFile.size(); idx++)
+    {
+        //auto& h = contentJobGeneratedFile[idx];
+        //if (h.empty())
+        //    continue;
+        auto newJob    = g_Allocator.alloc<SaveGenJob>();
+        newJob->module = this;
+       //newJob->index  = idx;
+        g_ThreadMgr.addJob(newJob);
+    }
 }

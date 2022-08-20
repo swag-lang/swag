@@ -6,21 +6,26 @@
 
 JobResult SaveGenJob::execute()
 {
-    auto publicPath  = module->publicPath;
-    auto tmpFilePath = publicPath;
-    auto tmpFileName = Fmt("%s%d.gwg", module->name.c_str(), index);
-
-    publicPath += tmpFileName;
-
-    FILE* h;
-    fopen_s(&h, publicPath.c_str(), "wN");
-    if (!h)
+    for (int idx = 0; idx < module->contentJobGeneratedFile.size(); idx++)
     {
-        module->numErrors++;
-        g_Log.errorOS(Fmt(Err(Err0524), publicPath.c_str()));
-        return JobResult::ReleaseJob;
+        auto publicPath  = module->publicPath;
+        auto tmpFilePath = publicPath;
+        auto tmpFileName = Fmt("%s%d.gwg", module->name.c_str(), index);
+
+        publicPath += tmpFileName;
+
+        FILE* h;
+        fopen_s(&h, publicPath.c_str(), "wN");
+        if (!h)
+        {
+            module->numErrors++;
+            g_Log.errorOS(Fmt(Err(Err0524), publicPath.c_str()));
+            return JobResult::ReleaseJob;
+        }
+
+        fwrite(module->contentJobGeneratedFile[index].c_str(), module->contentJobGeneratedFile[index].length(), 1, h);
+        fclose(h);
     }
 
-    fwrite(module->contentJobGeneratedFile[index].c_str(), module->contentJobGeneratedFile[index].length(), 1, h);
     return JobResult::ReleaseJob;
 }

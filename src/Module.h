@@ -162,6 +162,7 @@ struct Module
     bool     canGenerateLegit();
     void     setHasBeenBuilt(uint32_t buildResult);
     uint32_t getHasBeenBuilt();
+    void     flushGenFiles();
 
     void addImplForToSolve(const Utf8& structName, uint32_t count = 1);
     bool waitImplForToSolve(Job* job, TypeInfoStruct* typeStruct);
