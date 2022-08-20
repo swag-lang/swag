@@ -1481,13 +1481,12 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
 
     for (auto oneMatch : overloads)
     {
-        auto&                    oneOverload       = *oneMatch;
-        auto                     genericParameters = oneOverload.genericParameters;
-        auto                     callParameters    = oneOverload.callParameters;
-        auto                     dependentVar      = oneOverload.dependentVar;
-        auto                     overload          = oneOverload.overload;
-        auto                     symbol            = overload->symbol;
-        LockSymbolOncePerContext ls(context, symbol);
+        auto& oneOverload       = *oneMatch;
+        auto  genericParameters = oneOverload.genericParameters;
+        auto  callParameters    = oneOverload.callParameters;
+        auto  dependentVar      = oneOverload.dependentVar;
+        auto  overload          = oneOverload.overload;
+        auto  symbol            = overload->symbol;
 
         if (oneOverload.symMatchContext.parameters.empty() && oneOverload.symMatchContext.genericParameters.empty())
         {
@@ -1500,8 +1499,6 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                 symbolKind != SymbolKind::Interface &&
                 overload->typeInfo->kind != TypeInfoKind::Lambda)
             {
-                SWAG_ASSERT(symbol->overloads.size() == 1);
-
                 auto match              = job->getOneMatch();
                 match->symbolOverload   = overload;
                 match->scope            = oneMatch->scope;
@@ -1513,14 +1510,17 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
             }
         }
 
-        if (symbol->kind == SymbolKind::Function && symbol->cptOverloadsInit == symbol->overloads.size())
         {
-            // This is enough to resolve
-        }
-        else if (symbol->cptOverloads)
-        {
-            job->waitSymbolNoLock(symbol);
-            return true;
+            LockSymbolOncePerContext ls(context, symbol);
+            if (symbol->kind == SymbolKind::Function && symbol->cptOverloadsInit == symbol->overloads.size())
+            {
+                // This is enough to resolve
+            }
+            else if (symbol->cptOverloads)
+            {
+                job->waitSymbolNoLock(symbol);
+                return true;
+            }
         }
 
         auto rawTypeInfo = overload->typeInfo;
