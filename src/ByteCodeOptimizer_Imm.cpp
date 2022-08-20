@@ -25,6 +25,7 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
 
         auto flags = g_ByteCodeOpDesc[(int) ip->op].flags;
 
+        bool optPostWrite = false;
         switch (ip->op)
         {
         case ByteCodeOp::ClearRA:
@@ -86,6 +87,8 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
                 regs.clear();
             if (!regs.count)
                 break;
+
+            optPostWrite = true;
 
             // Read/write to A, and A is a constant, we store the current value in B. The constant folding pass can take care of that
             // depending on the instruction
@@ -179,6 +182,18 @@ bool ByteCodeOptimizer::optimizePassImmediate(ByteCodeOptContext* context)
                 regs.remove(ip->d.u32);
                 ip->d.u64 = regsRW.val[ip->d.u32];
             }
+        }
+
+        if (optPostWrite)
+        {
+            if (flags & OPFLAG_WRITE_A)
+                regs.remove(ip->a.u32);
+            if (flags & OPFLAG_WRITE_B)
+                regs.remove(ip->b.u32);
+            if (flags & OPFLAG_WRITE_C)
+                regs.remove(ip->c.u32);
+            if (flags & OPFLAG_WRITE_D)
+                regs.remove(ip->d.u32);
         }
 
         if (flags & OPFLAG_READ_A && !(ip->flags & BCI_IMM_A))
