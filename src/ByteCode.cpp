@@ -349,27 +349,27 @@ bool ByteCode::areSame(ByteCodeInstruction* start0, ByteCodeInstruction* end0, B
 
 uint32_t ByteCode::computeCrc(ByteCodeInstruction* ip, uint32_t oldCrc, bool specialJump, bool specialCall)
 {
-    oldCrc = Crc32::compute((const uint8_t*) &ip->op, sizeof(ip->op), oldCrc);
+    oldCrc = Crc32::compute2((const uint8_t*) &ip->op, oldCrc);
 
     uint32_t flags = ip->flags & ~(BCI_JUMP_DEST | BCI_START_STMT);
-    oldCrc         = Crc32::compute((const uint8_t*) &flags, sizeof(ip->flags), oldCrc);
+    oldCrc         = Crc32::compute2((const uint8_t*) &flags, oldCrc);
 
     if (ByteCode::hasSomethingInC(ip))
-        oldCrc = Crc32::compute((const uint8_t*) &ip->c.u64, sizeof(ip->c.u64), oldCrc);
+        oldCrc = Crc32::compute8((const uint8_t*) &ip->c.u64, oldCrc);
     if (ByteCode::hasSomethingInD(ip))
-        oldCrc = Crc32::compute((const uint8_t*) &ip->d.u64, sizeof(ip->d.u64), oldCrc);
+        oldCrc = Crc32::compute8((const uint8_t*) &ip->d.u64, oldCrc);
 
     // Special call. We add the alias if it exitsts instead of the called bytecode
     if (specialCall && (ip->op == ByteCodeOp::LocalCall || ip->op == ByteCodeOp::LocalCallPop || ip->op == ByteCodeOp::LocalCallPopRC))
     {
         ByteCode* bc = (ByteCode*) ip->a.u64;
         if (bc && bc->alias)
-            oldCrc = Crc32::compute((const uint8_t*) &bc->alias, sizeof(bc->alias), oldCrc);
+            oldCrc = Crc32::compute8((const uint8_t*) &bc->alias, oldCrc);
         else
-            oldCrc = Crc32::compute((const uint8_t*) &bc, sizeof(bc), oldCrc);
+            oldCrc = Crc32::compute8((const uint8_t*) &bc, oldCrc);
     }
     else if (ByteCode::hasSomethingInA(ip))
-        oldCrc = Crc32::compute((const uint8_t*) &ip->a.u64, sizeof(ip->a.u64), oldCrc);
+        oldCrc = Crc32::compute8((const uint8_t*) &ip->a.u64, oldCrc);
 
     // For a jump, we compute the crc to go the the destination (if two jump nodes
     // are going to the same instruction, then we consider they are equal)
@@ -377,10 +377,10 @@ uint32_t ByteCode::computeCrc(ByteCodeInstruction* ip, uint32_t oldCrc, bool spe
     {
         auto destIp = ip + ip->b.s32 + 1;
         auto destN  = destIp - out;
-        oldCrc      = Crc32::compute((const uint8_t*) &destN, sizeof(destN), oldCrc);
+        oldCrc      = Crc32::compute8((const uint8_t*) &destN, oldCrc);
     }
     else if (ByteCode::hasSomethingInB(ip))
-        oldCrc = Crc32::compute((const uint8_t*) &ip->b.u64, sizeof(ip->b.u64), oldCrc);
+        oldCrc = Crc32::compute8((const uint8_t*) &ip->b.u64, oldCrc);
 
     return oldCrc;
 }

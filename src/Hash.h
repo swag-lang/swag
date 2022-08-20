@@ -72,4 +72,28 @@ namespace Crc32
         crc = crc ^ 0xFFFFFFFFU;
         return crc;
     }
+
+    constexpr uint32_t compute2(const uint8_t* data, uint32_t crc = 0)
+    {
+        crc = crc ^ 0xFFFFFFFFU;
+        crc = table[data[0] ^ (crc & 0xFF)] ^ (crc >> 8);
+        crc = table[data[1] ^ (crc & 0xFF)] ^ (crc >> 8);
+        crc = crc ^ 0xFFFFFFFFU;
+        return crc;
+    }
+
+    constexpr uint32_t compute8(const uint8_t* data, uint32_t crc = 0)
+    {
+        crc = crc ^ 0xFFFFFFFFU;
+        crc = table[data[0] ^ (crc & 0xFF)] ^ (crc >> 8);
+        crc = table[data[1] ^ (crc & 0xFF)] ^ (crc >> 8);
+        crc = table[data[2] ^ (crc & 0xFF)] ^ (crc >> 8);
+        crc = table[data[3] ^ (crc & 0xFF)] ^ (crc >> 8);
+        crc = table[data[4] ^ (crc & 0xFF)] ^ (crc >> 8);
+        crc = table[data[5] ^ (crc & 0xFF)] ^ (crc >> 8);
+        crc = table[data[6] ^ (crc & 0xFF)] ^ (crc >> 8);
+        crc = table[data[7] ^ (crc & 0xFF)] ^ (crc >> 8);
+        crc = crc ^ 0xFFFFFFFFU;
+        return crc;
+    }
 } // namespace Crc32
