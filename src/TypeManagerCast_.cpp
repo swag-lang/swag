@@ -124,13 +124,15 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
             return false;
 
         // Wait for all opAffect to be solved
-        LockSymbolOncePerContext lk(context, symbol);
-        if (symbol->cptOverloads)
         {
-            SWAG_ASSERT(context && context->job);
-            SWAG_ASSERT(context->result == ContextResult::Done);
-            context->job->waitSymbolNoLock(symbol);
-            return true;
+            LockSymbolOncePerContext lk(context, symbol);
+            if (symbol->cptOverloads)
+            {
+                SWAG_ASSERT(context && context->job);
+                SWAG_ASSERT(context->result == ContextResult::Done);
+                context->job->waitSymbolNoLock(symbol);
+                return true;
+            }
         }
 
         // Resolve opAffect that match
@@ -194,13 +196,15 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
             return false;
 
         // Wait for all opCast to be solved
-        LockSymbolOncePerContext lk(context, symbol);
-        if (symbol->cptOverloads)
         {
-            SWAG_ASSERT(context && context->job);
-            SWAG_ASSERT(context->result == ContextResult::Done);
-            context->job->waitSymbolNoLock(symbol);
-            return true;
+            LockSymbolOncePerContext lk(context, symbol);
+            if (symbol->cptOverloads)
+            {
+                SWAG_ASSERT(context && context->job);
+                SWAG_ASSERT(context->result == ContextResult::Done);
+                context->job->waitSymbolNoLock(symbol);
+                return true;
+            }
         }
 
         // Resolve opCast that match
