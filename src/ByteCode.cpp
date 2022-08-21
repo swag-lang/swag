@@ -120,15 +120,13 @@ void ByteCode::enterByteCode(ByteCodeRunContext* context, uint32_t popParamsOnRe
     context->registers.count += maxReservedRegisterRC;
 
     if (returnRegOnRet != UINT32_MAX)
-        context->popOnRet.push_back(context->registersRR[0].u64);
-    context->popOnRet.push_back(returnRegOnRet);
-    context->popOnRet.push_back((popParamsOnRet * sizeof(void*)) + incSPPostCall);
+        context->pushAlt<uint64_t>(context->registersRR[0].u64);
+    context->pushAlt<uint32_t>(returnRegOnRet);
+    context->pushAlt<uint32_t>((popParamsOnRet * sizeof(void*)) + incSPPostCall);
 }
 
-void ByteCode::leaveByteCode(ByteCodeRunContext* context, bool popCallStack)
+void ByteCode::leaveByteCode(ByteCodeRunContext* context)
 {
-    if (popCallStack)
-        g_ByteCodeStack.pop();
     context->curRC--;
     if (context->curRC >= 0)
     {

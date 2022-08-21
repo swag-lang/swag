@@ -4,6 +4,7 @@
 #include "AstNode.h"
 #include "ErrorIds.h"
 #include "Diagnostic.h"
+#include "ByteCodeStack.h"
 
 extern bool g_Exiting;
 
@@ -62,24 +63,24 @@ void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd, ByteCode* nodebc)
     sourceFile = sf;
     node       = nd;
 
-    bp = stack + g_CommandLine->stackSizeBC;
-    sp = bp;
-    bc = nodebc;
-    ip = bc->out;
+    bp    = stack + g_CommandLine->stackSizeBC;
+    sp    = bp;
+    spAlt = stack;
+    bc    = nodebc;
+    ip    = bc->out;
     SWAG_ASSERT(ip);
 
     registers.reserve(4096);
     registersRC.reserve(1024);
     registers.count   = 0;
     registersRC.count = 0;
+    g_ByteCodeStack.steps.reserve(4096);
 
     curRC    = -1;
     firstRC  = -1;
     hasError = false;
     errorLoc = nullptr;
     errorMsg.clear();
-
-    popOnRet.clear();
 }
 
 void ByteCodeRunContext::stackOverflow()

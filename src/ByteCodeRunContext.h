@@ -40,9 +40,16 @@ struct ByteCodeRunContext : public JobContext
     }
 
     template<typename T>
+    inline T popAlt()
+    {
+        spAlt -= sizeof(T);
+        return *(T*) spAlt;
+    }
+
+    template<typename T>
     inline void push(const T& value)
     {
-        if (sp - sizeof(T) < stack)
+        if (sp - sizeof(T) < spAlt)
         {
             stackOverflow();
             return;
@@ -50,6 +57,19 @@ struct ByteCodeRunContext : public JobContext
 
         sp -= sizeof(T);
         *(T*) sp = value;
+    }
+
+    template<typename T>
+    inline void pushAlt(const T& value)
+    {
+        if (spAlt + sizeof(T) >= sp)
+        {
+            stackOverflow();
+            return;
+        }
+
+        *(T*) spAlt = value;
+        spAlt += sizeof(T);
     }
 
     inline void incSP(uint32_t offset)
@@ -85,7 +105,6 @@ struct ByteCodeRunContext : public JobContext
     Utf8                    errorMsg;
     VectorNative<int>       registersRC;
     VectorNative<Register>  registers;
-    VectorNative<uint64_t>  popOnRet;
 
     bool      ffi_StructByCopyDone = false;
     ffi_type  ffi_StructByCopy1;
@@ -105,6 +124,7 @@ struct ByteCodeRunContext : public JobContext
     AstNode*             node           = nullptr;
     uint8_t*             stack          = nullptr;
     uint8_t*             sp             = nullptr;
+    uint8_t*             spAlt          = nullptr;
     uint8_t*             bp             = nullptr;
     ByteCode*            bc             = nullptr;
     ByteCodeInstruction* ip             = nullptr;

@@ -267,7 +267,7 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
     else
     {
         result = module->runner.run(&g_RunContext);
-        bc->leaveByteCode(&g_RunContext, false);
+        bc->leaveByteCode(&g_RunContext);
     }
 
     g_ByteCodeStack.clear();

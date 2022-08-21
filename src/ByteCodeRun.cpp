@@ -67,7 +67,6 @@ void ByteCodeRun::localCall(ByteCodeRunContext* context, ByteCode* bc, uint32_t 
     SWAG_ASSERT(context->bc);
     SWAG_ASSERT(context->bc->out);
     context->ip = context->bc->out;
-    SWAG_ASSERT(context->ip);
     context->bp = context->sp;
     context->bc->enterByteCode(context, popParamsOnRet, returnRegOnRet, incSPPostCall);
 }
@@ -488,35 +487,36 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     }
     case ByteCodeOp::Ret:
     {
-        if (ip->a.u32)
-            context->incSP(ip->a.u32);
+        context->incSP(ip->a.u32);
         if (context->sp == context->stack + g_CommandLine->stackSizeBC)
             return false;
         context->bc->leaveByteCode(context);
+        g_ByteCodeStack.pop();
+
         context->ip = context->pop<ByteCodeInstruction*>();
         context->bc = context->pop<ByteCode*>();
         context->bp = context->pop<uint8_t*>();
         if (context->curRC == context->firstRC)
         {
-            context->popOnRet.pop_back();
-            auto popR = context->popOnRet.get_pop_back();
+            context->popAlt<uint32_t>();
+            auto popR = context->popAlt<uint32_t>();
             if (popR != UINT32_MAX)
-                context->popOnRet.pop_back();
+                context->popAlt<uint64_t>();
             return false;
         }
 
         // Need to pop some parameters, by increasing the stack pointer
-        auto popP = context->popOnRet.get_pop_back();
-        context->incSP((uint32_t) popP);
+        auto popP = context->popAlt<uint32_t>();
+        context->incSP(popP);
 
         // A register needs to be initialized with the result register
-        auto popR = context->popOnRet.get_pop_back();
+        auto popR = context->popAlt<uint32_t>();
         if (popR != UINT32_MAX)
         {
             context->getRegBuffer(context->curRC)[popR].u64 = context->registersRR[0].u64;
 
             // Restore RR register to its previous value
-            context->registersRR[0].u64 = context->popOnRet.get_pop_back();
+            context->registersRR[0].u64 = context->popAlt<uint64_t>();
         }
 
         break;
