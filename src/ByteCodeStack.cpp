@@ -84,7 +84,7 @@ void ByteCodeStack::logStep(int level, bool current, ByteCodeStackStep& step)
     }
 }
 
-void ByteCodeStack::getSteps(vector<ByteCodeStackStep>& copySteps)
+void ByteCodeStack::getSteps(VectorNative<ByteCodeStackStep>& copySteps)
 {
     // Add one step for the current context if necessary
     copySteps = steps;
@@ -104,7 +104,7 @@ void ByteCodeStack::getSteps(vector<ByteCodeStackStep>& copySteps)
 void ByteCodeStack::log()
 {
     // Add one step for the current context if necessary
-    vector<ByteCodeStackStep> copySteps;
+    VectorNative<ByteCodeStackStep> copySteps;
     getSteps(copySteps);
     if (copySteps.empty())
         return;

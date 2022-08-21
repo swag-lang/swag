@@ -1,8 +1,8 @@
 #pragma once
 #include "CommandLine.h"
+#include "ByteCodeRunContext.h"
 struct ByteCode;
 struct ByteCodeInstruction;
-struct ByteCodeRunContext;
 
 struct ByteCodeStackStep
 {
@@ -18,10 +18,29 @@ struct ByteCodeStack
         steps.push_back(step);
     }
 
+    void push(ByteCodeRunContext* context)
+    {
+        if (steps.count < steps.allocated)
+        {
+            auto buf = steps.buffer + steps.count++;
+            buf->bc = context->bc;
+            buf->ip = context->ip - 1;
+            buf->bp = context->bp;
+        }
+        else
+        {
+            ByteCodeStackStep stackStep;
+            stackStep.bc = context->bc;
+            stackStep.ip = context->ip - 1;
+            stackStep.bp = context->bp;
+            push(stackStep);
+        }
+    }
+
     void pop()
     {
-        if (!steps.empty())
-            steps.pop_back();
+        if (steps.count)
+            steps.count--;
     }
 
     ByteCodeStackStep& last()
@@ -36,13 +55,13 @@ struct ByteCodeStack
     }
 
     void     reportError(const Utf8& msg);
-    void     getSteps(vector<ByteCodeStackStep>& copySteps);
+    void     getSteps(VectorNative<ByteCodeStackStep>& copySteps);
     uint32_t maxLevel(ByteCodeRunContext* context);
     void     logStep(int level, bool current, ByteCodeStackStep& step);
     void     log();
 
-    vector<ByteCodeStackStep> steps;
-    ByteCodeRunContext*       currentContext = nullptr;
+    VectorNative<ByteCodeStackStep> steps;
+    ByteCodeRunContext*             currentContext = nullptr;
 };
 
 extern thread_local ByteCodeStack g_ByteCodeStack;

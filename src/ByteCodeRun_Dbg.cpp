@@ -244,7 +244,7 @@ static void computeCxt(ByteCodeRunContext* context)
     if (context->debugStackFrameOffset == 0)
         return;
 
-    vector<ByteCodeStackStep> steps;
+    VectorNative<ByteCodeStackStep> steps;
     g_ByteCodeStack.getSteps(steps);
     if (steps.empty())
         return;

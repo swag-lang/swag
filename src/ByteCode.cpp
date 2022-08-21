@@ -97,12 +97,7 @@ void ByteCode::addCallStack(ByteCodeRunContext* context)
 {
     if (context->bc && context->bc->node && context->bc->node->flags & AST_NO_CALLSTACK)
         return;
-
-    ByteCodeStackStep stackStep;
-    stackStep.bc = context->bc;
-    stackStep.ip = context->ip - 1;
-    stackStep.bp = context->bp;
-    g_ByteCodeStack.push(stackStep);
+    g_ByteCodeStack.push(context);
 }
 
 void ByteCode::enterByteCode(ByteCodeRunContext* context, uint32_t popParamsOnRet, uint32_t returnRegOnRet, uint32_t incSPPostCall)
@@ -130,8 +125,7 @@ void ByteCode::leaveByteCode(ByteCodeRunContext* context)
     context->curRC--;
     if (context->curRC >= 0)
     {
-        auto newCount            = context->registersRC.get_pop_back();
-        context->registers.count = newCount;
+        context->registers.count = context->registersRC.get_pop_back();
         context->curRegistersRC  = context->registers.buffer + context->registersRC.back();
     }
 }
