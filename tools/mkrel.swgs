@@ -7,7 +7,7 @@ using Core
 
 func filter(file: File.FileInfo)->bool
 {
-    if Utf8.contains(file.fullname, "/foreign/")
+    if Utf8.contains(file.fullname, "/vendor/")
         return false
     if Utf8.contains(file.fullname, "/output/")
         return false
