@@ -9,14 +9,18 @@ struct SourceLocation;
 
 struct ByteCodeInstruction
 {
+    // Keep 'op' first to derefence it in the runner without an offset
+    ByteCodeOp op;
+    uint16_t   flags;
+    uint32_t   padding;
+
     Register        a;
     Register        b;
     Register        c;
     Register        d;
     AstNode*        node;
     SourceLocation* location;
-    uint16_t        flags;
-    ByteCodeOp      op;
+
 #ifdef SWAG_DEV_MODE
     const char* sourceFile;
     int         sourceLine;
