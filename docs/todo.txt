@@ -51,6 +51,19 @@ STRANGE
 
 
 
+****************************************
+PENIBLE
+****************************************
+
+-------------------------------------
+PB du cross compile avec le full compile time exec. BIG BIG BIG !!!
+-------------------------------------
+PB des references
+-------------------------------------
+Call conv x64/llvm local, passer les valeurs de retour par RAX si possible
+-------------------------------------
+
+
 
 ****************************************
 TODO
@@ -69,8 +82,6 @@ lambda short form in declaration var x: func(s32) = @(x) {}
 closure & ufcs (exemple 3477)
 -------------------------------------
 context & tempallocator, y'a vraiment aucun usage dans std, c'est pas normal, faut se pencher sur l'utilisation de ce truc
--------------------------------------
-PB du cross compile avec le full compile time exec. BIG BIG BIG !!!
 -------------------------------------
 foreign a cvarargs
 -------------------------------------
