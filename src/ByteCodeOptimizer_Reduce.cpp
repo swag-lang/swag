@@ -1742,6 +1742,67 @@ void ByteCodeOptimizer::reduceIncPtr(ByteCodeOptContext* context, ByteCodeInstru
     }
 }
 
+void ByteCodeOptimizer::reduceCast(ByteCodeOptContext* context, ByteCodeInstruction* ip)
+{
+    switch (ip->op)
+    {
+    case ByteCodeOp::ClearMaskU64:
+        if (ip[1].op == ByteCodeOp::ClearMaskU32 &&
+            ip[1].a.u32 == ip[0].a.u32 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            ip[0].b.u64 = min(ip[0].b.u64, ip[1].b.u64);
+            setNop(context, ip + 1);
+            break;
+        }
+
+        break;
+
+        // GetFromStack8/16/32 clear the other bits by convention, so no need to
+        // have a ClearMask after
+    case ByteCodeOp::GetFromStack8:
+        if (ip[1].op == ByteCodeOp::ClearMaskU64 &&
+            ip[0].a.u32 == ip[1].a.u32)
+        {
+            setNop(context, ip + 1);
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::ClearMaskU32 &&
+            ip[0].a.u32 == ip[1].a.u32)
+        {
+            setNop(context, ip + 1);
+            break;
+        }
+        break;
+
+    case ByteCodeOp::GetFromStack16:
+        if (ip[1].op == ByteCodeOp::ClearMaskU64 &&
+            ip[0].a.u32 == ip[1].a.u32)
+        {
+            setNop(context, ip + 1);
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::ClearMaskU32 &&
+            ip[0].a.u32 == ip[1].a.u32)
+        {
+            setNop(context, ip + 1);
+            break;
+        }
+        break;
+
+    case ByteCodeOp::GetFromStack32:
+        if (ip[1].op == ByteCodeOp::ClearMaskU64 &&
+            ip[0].a.u32 == ip[1].a.u32)
+        {
+            setNop(context, ip + 1);
+            break;
+        }
+        break;
+    }
+}
+
 void ByteCodeOptimizer::reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
     switch (ip->op)
@@ -1791,49 +1852,6 @@ void ByteCodeOptimizer::reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruct
             ip[2].b.s32 == 1)
         {
             setNop(context, ip);
-            setNop(context, ip + 1);
-            break;
-        }
-        break;
-
-        // GetFromStack8/16/32 clear the other bits by convention, so no need to
-        // have a ClearMask after
-    case ByteCodeOp::GetFromStack8:
-        if (ip[1].op == ByteCodeOp::ClearMaskU64 &&
-            ip[0].a.u32 == ip[1].a.u32)
-        {
-            setNop(context, ip + 1);
-            break;
-        }
-
-        if (ip[1].op == ByteCodeOp::ClearMaskU32 &&
-            ip[0].a.u32 == ip[1].a.u32)
-        {
-            setNop(context, ip + 1);
-            break;
-        }
-        break;
-
-    case ByteCodeOp::GetFromStack16:
-        if (ip[1].op == ByteCodeOp::ClearMaskU64 &&
-            ip[0].a.u32 == ip[1].a.u32)
-        {
-            setNop(context, ip + 1);
-            break;
-        }
-
-        if (ip[1].op == ByteCodeOp::ClearMaskU32 &&
-            ip[0].a.u32 == ip[1].a.u32)
-        {
-            setNop(context, ip + 1);
-            break;
-        }
-        break;
-
-    case ByteCodeOp::GetFromStack32:
-        if (ip[1].op == ByteCodeOp::ClearMaskU64 &&
-            ip[0].a.u32 == ip[1].a.u32)
-        {
             setNop(context, ip + 1);
             break;
         }
@@ -3904,6 +3922,7 @@ bool ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
         reduceStack(context, ip);
         reduceIncPtr(context, ip);
         reduceSetAt(context, ip);
+        reduceCast(context, ip);
         reduceNoOp(context, ip);
         reduceCmpJump(context, ip);
         reduceSwap(context, ip);

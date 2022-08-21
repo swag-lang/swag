@@ -32,7 +32,6 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         // Revert the condition to remove the unconditional jump
         switch (ip->op)
         {
-            //
         case ByteCodeOp::JumpIfGreaterF32:
             if (ip[1].op == ByteCodeOp::Jump &&
                 ip[0].b.s32 == 1 &&
