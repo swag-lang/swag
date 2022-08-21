@@ -21,7 +21,7 @@ struct StackValue
     void*    addr;
 };
 
-struct ByteCodeRunContext : public JobContext
+struct ByteCodeRunContext
 {
     ~ByteCodeRunContext();
 
@@ -93,13 +93,26 @@ struct ByteCodeRunContext : public JobContext
         return registers.buffer + registersRC[cur];
     }
 
+    // Keep 'ip' first to derefence it in the runner without an offset
+    ByteCodeInstruction* ip             = nullptr;
+    Register*            curRegistersRC = nullptr;
+    Register*            registersRR    = nullptr;
+    uint8_t*             stack          = nullptr;
+    uint8_t*             sp             = nullptr;
+    uint8_t*             spAlt          = nullptr;
+    uint8_t*             bp             = nullptr;
+    int                  curRC          = -1;
+    int                  firstRC        = -1;
+    ByteCode*            bc             = nullptr;
+
+    JobContext jc;
+
     VectorNative<ffi_type*> ffiArgs;
     VectorNative<void*>     ffiArgsValues;
     Utf8                    errorMsg;
     VectorNative<int>       registersRC;
     VectorNative<Register>  registers;
 
-    bool      ffi_StructByCopyDone = false;
     ffi_type  ffi_StructByCopy1;
     ffi_type* ffi_StructByCopy1T[1];
     ffi_type  ffi_StructByCopy2;
@@ -112,22 +125,15 @@ struct ByteCodeRunContext : public JobContext
     SwagCompilerSourceLocation* errorLoc      = nullptr;
     JobContext*                 callerContext = nullptr;
 
-    bool canCatchError = false;
+    AstNode*         node         = nullptr;
+    static const int MAX_ALLOC_RR = 2;
 
-    AstNode*             node           = nullptr;
-    uint8_t*             stack          = nullptr;
-    uint8_t*             sp             = nullptr;
-    uint8_t*             spAlt          = nullptr;
-    uint8_t*             bp             = nullptr;
-    ByteCode*            bc             = nullptr;
-    ByteCodeInstruction* ip             = nullptr;
-    static const int     MAX_ALLOC_RR   = 2;
-    Register*            registersRR    = nullptr;
-    Register*            curRegistersRC = nullptr;
-
-    int  curRC    = -1;
-    int  firstRC  = -1;
-    bool hasError = false;
+    bool canCatchError        = false;
+    bool hasError             = false;
+    bool ffi_StructByCopyDone = false;
+    bool raiseDebugStart      = false;
+    bool debugEntry           = false;
+    bool debugOn              = false;
 
     const ConcreteCompilerMessage* currentCompilerMessage = nullptr;
     Job*                           currentCompilerJob     = nullptr;
@@ -141,21 +147,18 @@ struct ByteCodeRunContext : public JobContext
         FinishedFunction,
     };
 
-    bool raiseDebugStart = false;
-
-    bool                 debugEntry            = false;
-    bool                 debugOn               = false;
-    uint32_t             debugLastCurRC        = 0;
     ByteCodeInstruction* debugLastIp           = nullptr;
-    int32_t              debugStepRC           = 0;
-    DebugStepMode        debugStepMode         = DebugStepMode::None;
     SourceFile*          debugStepLastFile     = nullptr;
     SourceLocation*      debugStepLastLocation = nullptr;
-    uint32_t             debugStackFrameOffset = 0;
     ByteCode*            debugCxtBc            = nullptr;
-    uint32_t             debugCxtRc            = 0;
     ByteCodeInstruction* debugCxtIp            = nullptr;
     uint8_t*             debugCxtBp            = nullptr;
+
+    uint32_t      debugLastCurRC        = 0;
+    int32_t       debugStepRC           = 0;
+    DebugStepMode debugStepMode         = DebugStepMode::None;
+    uint32_t      debugStackFrameOffset = 0;
+    uint32_t      debugCxtRc            = 0;
 };
 
 extern bool g_Exiting;

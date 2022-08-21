@@ -60,8 +60,8 @@ void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd, ByteCode* nodebc)
         }
     }
 
-    sourceFile = sf;
-    node       = nd;
+    jc.sourceFile = sf;
+    node          = nd;
 
     bp    = stack + g_CommandLine->stackSizeBC;
     sp    = bp;

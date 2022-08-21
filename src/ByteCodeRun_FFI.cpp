@@ -118,7 +118,7 @@ ffi_type* ByteCodeRun::ffiFromTypeInfo(TypeInfo* typeInfo)
 void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
 {
     if (OS::atomicTestNull((void**) &ip->d.pointer))
-        OS::atomicSetIfNotNull((void**) &ip->d.pointer, (uint8_t*) ffiGetFuncAddress(context, ip));
+        OS::atomicSetIfNotNull((void**) &ip->d.pointer, (uint8_t*) ffiGetFuncAddress(&context->jc, ip));
     if (OS::atomicTestNull((void**) &ip->d.pointer))
         return;
     auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>((TypeInfo*) ip->b.pointer, TypeInfoKind::FuncAttr);

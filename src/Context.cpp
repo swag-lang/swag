@@ -29,7 +29,7 @@ static void byteCodeRun(bool forCallback, void* byteCodePtr, va_list valist)
     }
 
     auto saveNode       = g_RunContext.node;
-    auto saveSourceFile = g_RunContext.sourceFile;
+    auto saveSourceFile = g_RunContext.jc.sourceFile;
 
     auto node = bc->node ? bc->node : saveNode;
     SWAG_ASSERT(node);
@@ -45,8 +45,8 @@ static void byteCodeRun(bool forCallback, void* byteCodePtr, va_list valist)
     }
     else
     {
-        g_RunContext.sourceFile = node->sourceFile;
-        g_RunContext.node       = node;
+        g_RunContext.jc.sourceFile = node->sourceFile;
+        g_RunContext.node          = node;
     }
 
     // Parameters
@@ -82,10 +82,10 @@ static void byteCodeRun(bool forCallback, void* byteCodePtr, va_list valist)
 
     module->runner.run(&g_RunContext);
 
-    g_RunContext.sp         = saveSp;
-    g_RunContext.node       = saveNode;
-    g_RunContext.sourceFile = saveSourceFile;
-    g_RunContext.firstRC    = saveFirstRC;
+    g_RunContext.sp            = saveSp;
+    g_RunContext.node          = saveNode;
+    g_RunContext.jc.sourceFile = saveSourceFile;
+    g_RunContext.firstRC       = saveFirstRC;
 
     // Get result
     for (int i = 0; i < returnRegisters.size(); i++)
