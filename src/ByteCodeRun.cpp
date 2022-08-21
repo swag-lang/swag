@@ -3334,6 +3334,12 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     return true;
 }
 
+void ByteCodeRun::runLoopNoDbg(ByteCodeRunContext* context)
+{
+    while (executeInstruction(context, context->ip++))
+        ;
+}
+
 bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
 {
     if (context->debugOn)
@@ -3348,11 +3354,7 @@ bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
     }
     else
     {
-        while (true)
-        {
-            if (!executeInstruction(context, context->ip++))
-                break;
-        }
+        runLoopNoDbg(context);
     }
 
     return true;

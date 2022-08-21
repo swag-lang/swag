@@ -21,6 +21,7 @@ struct ByteCodeRun
     bool debugger(ByteCodeRunContext* context);
 
     bool executeInstruction(ByteCodeRunContext* context, ByteCodeInstruction* ip);
+    void runLoopNoDbg(ByteCodeRunContext* context);
     bool runLoop(ByteCodeRunContext* context);
     bool run(ByteCodeRunContext* runContext);
 
