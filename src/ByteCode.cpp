@@ -93,43 +93,6 @@ TypeInfoFuncAttr* ByteCode::getCallType()
     return typeInfoFunc;
 }
 
-void ByteCode::addCallStack(ByteCodeRunContext* context)
-{
-    if (context->bc && context->bc->node && context->bc->node->flags & AST_NO_CALLSTACK)
-        return;
-    g_ByteCodeStack.push(context);
-}
-
-void ByteCode::enterByteCode(ByteCodeRunContext* context, uint32_t popParamsOnRet, uint32_t returnRegOnRet, uint32_t incSPPostCall)
-{
-    if (g_CommandLine->maxRecurse && context->curRC == (int) g_CommandLine->maxRecurse)
-    {
-        context->raiseError(Fmt(Err(Err0076), g_CommandLine->maxRecurse));
-        return;
-    }
-
-    context->curRC++;
-    context->registersRC.push_back(context->registers.count);
-    context->registers.reserve(context->registers.count + maxReservedRegisterRC);
-    context->curRegistersRC = context->registers.buffer + context->registers.count;
-    context->registers.count += maxReservedRegisterRC;
-
-    if (returnRegOnRet != UINT32_MAX)
-        context->pushAlt<uint64_t>(context->registersRR[0].u64);
-    context->pushAlt<uint32_t>(returnRegOnRet);
-    context->pushAlt<uint32_t>((popParamsOnRet * sizeof(void*)) + incSPPostCall);
-}
-
-void ByteCode::leaveByteCode(ByteCodeRunContext* context)
-{
-    context->curRC--;
-    if (context->curRC >= 0)
-    {
-        context->registers.count = context->registersRC.get_pop_back();
-        context->curRegistersRC  = context->registers.buffer + context->registersRC.back();
-    }
-}
-
 void ByteCode::markLabels()
 {
     uint32_t count = numJumps;

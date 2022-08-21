@@ -1,8 +1,9 @@
 #pragma once
 #include "CommandLine.h"
 #include "ByteCodeRunContext.h"
+#include "ByteCodeInstruction.h"
+
 struct ByteCode;
-struct ByteCodeInstruction;
 
 struct ByteCodeStackStep
 {
@@ -13,19 +14,19 @@ struct ByteCodeStackStep
 
 struct ByteCodeStack
 {
-    void push(const ByteCodeStackStep& step)
+    SWAG_FORCE_INLINE void push(const ByteCodeStackStep& step)
     {
         steps.push_back(step);
     }
 
-    void push(ByteCodeRunContext* context)
+    SWAG_FORCE_INLINE void push(ByteCodeRunContext* context)
     {
         if (steps.count < steps.allocated)
         {
             auto buf = steps.buffer + steps.count++;
-            buf->bc = context->bc;
-            buf->ip = context->ip - 1;
-            buf->bp = context->bp;
+            buf->bc  = context->bc;
+            buf->ip  = context->ip - 1;
+            buf->bp  = context->bp;
         }
         else
         {
@@ -37,7 +38,7 @@ struct ByteCodeStack
         }
     }
 
-    void pop()
+    SWAG_FORCE_INLINE void pop()
     {
         if (steps.count)
             steps.count--;

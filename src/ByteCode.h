@@ -4,13 +4,18 @@
 #include "Assert.h"
 #include "VectorNative.h"
 #include "ByteCodeOp.h"
+#include "ByteCodeRunContext.h"
 #include "Mutex.h"
+#include "ByteCodeStack.h"
+#include "ByteCodeInstruction.h"
+#include "AstNode.h"
+#include "ErrorIds.h"
+#include "Diagnostic.h"
 
 enum class ByteCodeOp : uint16_t;
 struct AstNode;
 struct SourceFile;
 struct TypeInfoFuncAttr;
-struct ByteCodeRunContext;
 struct ByteCode;
 struct SourceLocation;
 
@@ -31,25 +36,6 @@ static const uint16_t BCI_START_STMT    = BCI_START_STMT_N | BCI_START_STMT_S;
 static const uint16_t BCI_NO_BACKEND    = 0x2000;
 static const uint16_t BCI_VARIADIC      = 0x4000;
 static const uint16_t BCI_SAFETY_OF     = 0x8000;
-
-struct ByteCodeInstruction
-{
-    Register        a;
-    Register        b;
-    Register        c;
-    Register        d;
-    AstNode*        node;
-    SourceLocation* location;
-    uint16_t        flags;
-    ByteCodeOp      op;
-#ifdef SWAG_DEV_MODE
-    const char* sourceFile;
-    int         sourceLine;
-    int         serial;
-    int         treeNode;
-    uint32_t    crc;
-#endif
-};
 
 struct ByteCode
 {
@@ -101,6 +87,43 @@ struct ByteCode
         return 0;
     }
 
+    SWAG_FORCE_INLINE void addCallStack(ByteCodeRunContext* context)
+    {
+        if (context->bc && context->bc->node && context->bc->node->flags & AST_NO_CALLSTACK)
+            return;
+        g_ByteCodeStack.push(context);
+    }
+
+    SWAG_FORCE_INLINE void enterByteCode(ByteCodeRunContext* context, uint32_t popParamsOnRet = 0, uint32_t returnRegOnRet = UINT32_MAX, uint32_t incSPPostCall = 0)
+    {
+        if (g_CommandLine->maxRecurse && context->curRC == (int) g_CommandLine->maxRecurse)
+        {
+            context->raiseError(Fmt(Err(Err0076), g_CommandLine->maxRecurse));
+            return;
+        }
+
+        context->curRC++;
+        context->registersRC.push_back(context->registers.count);
+        context->registers.reserve(context->registers.count + maxReservedRegisterRC);
+        context->curRegistersRC = context->registers.buffer + context->registers.count;
+        context->registers.count += maxReservedRegisterRC;
+
+        if (returnRegOnRet != UINT32_MAX)
+            context->pushAlt<uint64_t>(context->registersRR[0].u64);
+        context->pushAlt<uint32_t>(returnRegOnRet);
+        context->pushAlt<uint32_t>((popParamsOnRet * sizeof(void*)) + incSPPostCall);
+    }
+
+    SWAG_FORCE_INLINE void leaveByteCode(ByteCodeRunContext* context)
+    {
+        context->curRC--;
+        if (context->curRC >= 0)
+        {
+            context->registers.count = context->registersRC.get_pop_back();
+            context->curRegistersRC  = context->registers.buffer + context->registersRC.back();
+        }
+    }
+
     void releaseOut();
 
     // clang-format off
@@ -143,10 +166,6 @@ struct ByteCode
     inline static bool hasSomethingInC(ByteCodeInstruction* inst) { return g_ByteCodeOpDesc[(int)inst->op].flags & (OPFLAG_READ_C | OPFLAG_WRITE_C | OPFLAG_READ_VAL32_C | OPFLAG_READ_VAL64_C); }
     inline static bool hasSomethingInD(ByteCodeInstruction* inst) { return g_ByteCodeOpDesc[(int)inst->op].flags & (OPFLAG_READ_D | OPFLAG_WRITE_D | OPFLAG_READ_VAL32_D | OPFLAG_READ_VAL64_D); }
     // clang-format on
-
-    void addCallStack(ByteCodeRunContext* context);
-    void enterByteCode(ByteCodeRunContext* context, uint32_t popParamsOnRet = 0, uint32_t returnRegOnRet = UINT32_MAX, uint32_t incSPPostCall = 0);
-    void leaveByteCode(ByteCodeRunContext* context);
 
     static void* doForeignLambda(void* ptr);
     static bool  isForeignLambda(void* ptr);

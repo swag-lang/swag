@@ -4,7 +4,6 @@
 #include "SourceFile.h"
 #include "Job.h"
 #include "ffi/ffi.h"
-#include "ByteCode.h"
 struct SemanticContext;
 struct AstNode;
 struct ByteCodeRunContext;
@@ -30,6 +29,7 @@ struct ByteCodeRunContext : public JobContext
     void releaseStack();
     void stackOverflow();
     void raiseError(const char* msg, SwagCompilerSourceLocation* loc = nullptr);
+    int  getRegCount(int cur);
 
     template<typename T>
     inline T pop()
@@ -91,13 +91,6 @@ struct ByteCodeRunContext : public JobContext
     inline Register* getRegBuffer(int cur)
     {
         return registers.buffer + registersRC[cur];
-    }
-
-    inline int getRegCount(int cur)
-    {
-        if (cur >= registersRC.size() - 1)
-            return (int) bc->maxReservedRegisterRC;
-        return (int) (registersRC[cur + 1] - registersRC[cur]);
     }
 
     VectorNative<ffi_type*> ffiArgs;
