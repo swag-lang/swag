@@ -1937,9 +1937,10 @@ bool ByteCodeGenJob::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
     if (funcNode->stackSize > g_CommandLine->stackSizeRT)
         context->sourceFile->report({funcNode, Fmt(Err(Err0536), Utf8::toNiceSize(g_CommandLine->stackSizeRT).c_str())});
 
-    // We emit ByteCodeOp::DecSPBP even is stacksize is null, because the instruction sets 'bp' too !
-    // Backend does not care about that intruction anyway
-    emitInstruction(context, ByteCodeOp::DecSPBP)->a.u32 = funcNode->stackSize;
+    if (funcNode->stackSize == 0)
+        emitInstruction(context, ByteCodeOp::SetBP);
+    else
+        emitInstruction(context, ByteCodeOp::DecSPBP)->a.u32 = funcNode->stackSize;
 
     return true;
 }

@@ -502,6 +502,15 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
         }
         break;
 
+    case ByteCodeOp::SetBP:
+        if ((ip[1].op == ByteCodeOp::Ret) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            setNop(context, ip);
+            break;
+        }
+        break;
+
     case ByteCodeOp::CopyStack8:
     case ByteCodeOp::CopyStack16:
     case ByteCodeOp::CopyStack32:

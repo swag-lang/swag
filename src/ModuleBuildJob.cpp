@@ -242,20 +242,6 @@ JobResult ModuleBuildJob::execute()
             pass = ModuleBuildPass::SemanticModule;
         else
             pass = ModuleBuildPass::Dependencies;
-
-        if (module->kind != ModuleKind::Config &&
-            !module->isErrorModule &&
-            module != g_Workspace->runtimeModule &&
-            module != g_Workspace->bootstrapModule &&
-            module->buildCfg.backendKind != BuildCfgBackendKind::Export)
-        {
-            if (module->kind == ModuleKind::Test)
-                g_Log.messageHeaderCentered("Building test", module->name.c_str());
-            else if (module->kind == ModuleKind::Example)
-                g_Log.messageHeaderCentered("Building example", module->name.c_str());
-            else
-                g_Log.messageHeaderCentered("Building", module->name.c_str());
-        }
     }
 
     // Wait for dependencies to be build
@@ -338,6 +324,21 @@ JobResult ModuleBuildJob::execute()
         }
         else
         {
+            // We are starting the real deal...
+            if (module->kind != ModuleKind::Config &&
+                !module->isErrorModule &&
+                module != g_Workspace->runtimeModule &&
+                module != g_Workspace->bootstrapModule &&
+                module->buildCfg.backendKind != BuildCfgBackendKind::Export)
+            {
+                if (module->kind == ModuleKind::Test)
+                    g_Log.messageHeaderCentered("Building test", module->name.c_str());
+                else if (module->kind == ModuleKind::Example)
+                    g_Log.messageHeaderCentered("Building example", module->name.c_str());
+                else
+                    g_Log.messageHeaderCentered("Building", module->name.c_str());
+            }
+
             pass = ModuleBuildPass::Publish;
             module->syntaxGroup.complete(this);
 

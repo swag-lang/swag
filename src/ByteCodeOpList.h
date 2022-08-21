@@ -8,6 +8,7 @@ BYTECODE_OP(DebugNop, 0, "nop", 0)
 BYTECODE_OP(IncSPPostCallCond, OPFLAG_READ_A | OPFLAG_READ_VAL32_B, "if _ra_ popstack _rbu32_", 0)
 BYTECODE_OP(IncSPPostCall, OPFLAG_READ_VAL32_A, "popstack _rau32_", 0)
 BYTECODE_OP(DecSPBP, OPFLAG_READ_VAL32_A, "stacksize _rau32_", 0)
+BYTECODE_OP(SetBP, 0, "stacksize 0", 0)
 BYTECODE_OP(Ret, OPFLAG_READ_VAL32_A, "return(pop _rau32_)", 0)
 
 BYTECODE_OP(CloneString, OPFLAG_READ_A | OPFLAG_READ_B | OPFLAG_WRITE_A, "", 0)

@@ -182,6 +182,15 @@ bool ByteCode::isDoingNothing()
         }
     }
 
+    if (numInstructions == 3)
+    {
+        if (out[0].op == ByteCodeOp::SetBP &&
+            out[1].op == ByteCodeOp::Ret)
+        {
+            return true;
+        }
+    }
+
     if (numInstructions == 4)
     {
         if (out[0].op == ByteCodeOp::ClearRA &&
