@@ -7,6 +7,7 @@ struct Module;
 enum class ModuleOutputJobPass
 {
     Init,
+    SaveExport,
     PrepareOutputStage1,
     PrepareOutputStage2,
     WaitForDependencies,
