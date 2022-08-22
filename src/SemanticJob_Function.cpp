@@ -725,7 +725,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
             cptEmpty++;
         }
 
-        if(cptEmpty == funcNode->resolvedSymbolName->nodes.size() && funcNode->resolvedSymbolName->cptOverloads == 1)
+        if (cptEmpty == funcNode->resolvedSymbolName->nodes.size() && funcNode->resolvedSymbolName->cptOverloads == 1)
         {
             funcNode->resolvedSymbolName->kind = SymbolKind::PlaceHolder;
             return true;
@@ -1544,6 +1544,12 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
         newContent->extension->byteCodeBeforeFct = nullptr;
         if (funcDecl->attributeFlags & ATTRIBUTE_MIXIN)
             newContent->extension->byteCodeAfterFct = nullptr; // Do not release the scope, as there's no specific scope
+    }
+
+    if (newContent->kind == AstNodeKind::Try || newContent->kind == AstNodeKind::Assume)
+    {
+        if (funcDecl->attributeFlags & ATTRIBUTE_MIXIN && newContent->childs.front()->extension)
+            newContent->childs.front()->extension->byteCodeAfterFct = nullptr; // Do not release the scope, as there's no specific scope
     }
 
     newContent->flags &= ~AST_NO_SEMANTIC;
