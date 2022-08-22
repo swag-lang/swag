@@ -605,7 +605,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         else
         {
             auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>((TypeInfo*) ip->b.pointer, TypeInfoKind::Lambda);
-            ffiCall(context, (void*) registersRC[ip->a.u32].pointer, typeInfoFunc);
+            ffiCall(context, (void*) ptr, typeInfoFunc);
             if (ip->op == ByteCodeOp::LambdaCallPop)
                 context->incSP(ip->c.u32);
         }

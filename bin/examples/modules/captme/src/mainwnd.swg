@@ -48,6 +48,13 @@ const Icons48 = #include("datas/icons48.png")
 
 impl IWnd for MainWnd
 {
+    mtd onSerializeStateEvent(evt: *SerializeStateEvent)
+    {
+        catch evt.ser.serialize("editMode", &editMode)
+        if evt.ser.isReading()
+            updateState()
+    }
+
     mtd onCommandUIEvent(evt: *CommandUIEvent)
     {
         editView := editWnd  ? cast(*EditView) editWnd.view : null

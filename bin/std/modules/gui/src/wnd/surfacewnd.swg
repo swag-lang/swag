@@ -324,5 +324,11 @@ impl SurfaceWnd
 
     mtd serializeState(ser: *Serializer) throw
     {
+        if !view
+            return
+
+        var evt: SerializeStateEvent
+        evt.ser = ser
+        view.processEvent(&evt)
     }
 }

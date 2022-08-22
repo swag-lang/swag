@@ -238,7 +238,7 @@ impl Surface
     private mtd serializeState(ser: *Serializer) throw
     {
         // Save position and surface state
-        if wnd.view.id != null
+        if wnd.view != null and wnd.view.id != null
         {
             ser.serialize(wnd.view.id, &state)
             if ser.isReading()

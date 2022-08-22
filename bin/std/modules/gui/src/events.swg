@@ -32,6 +32,7 @@ enum EventKind
     CommandUI
     CommandState
     Frame
+    SerializeState
 }
 
 struct Event
@@ -182,4 +183,10 @@ struct SetThemeEvent
     using base: Event{kind: EventKind.SetTheme}
     style:  *ThemeStyle
     parent: *ThemeStyle
+}
+
+struct SerializeStateEvent
+{
+    using base: Event{kind: EventKind.SerializeState}
+    ser: *Serialization.Serializer
 }

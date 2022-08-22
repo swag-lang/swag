@@ -48,23 +48,24 @@ struct KeyShortcut
 
 interface IWnd
 {
-    onEvent:             mtd(*Event)
-    onHookEvent:         mtd(*Event)
-    onCreateEvent:       mtd(*CreateEvent)
-    onDestroyEvent:      mtd(*DestroyEvent)
-    onResizeEvent:       mtd(*ResizeEvent)
-    onPrePaintEvent:     mtd(*PaintEvent)
-    onPaintEvent:        mtd(*PaintEvent)
-    onPostPaintEvent:    mtd(*PaintEvent)
-    onKeyEvent:          mtd(*KeyEvent)
-    onMouseEvent:        mtd(*MouseEvent)
-    onSysCommandEvent:   mtd(*SysCommandEvent)
-    onSetThemeEvent:     mtd(*SetThemeEvent)
-    onTimerEvent:        mtd(*TimerEvent)
-    onFocusEvent:        mtd(*FocusEvent)
-    onCommandEvent:      mtd(*CommandEvent)
-    onCommandUIEvent:    mtd(*CommandUIEvent)
-    onCommandStateEvent: mtd(*CommandUIEvent)
+    onEvent:                mtd(*Event)
+    onHookEvent:            mtd(*Event)
+    onCreateEvent:          mtd(*CreateEvent)
+    onDestroyEvent:         mtd(*DestroyEvent)
+    onResizeEvent:          mtd(*ResizeEvent)
+    onPrePaintEvent:        mtd(*PaintEvent)
+    onPaintEvent:           mtd(*PaintEvent)
+    onPostPaintEvent:       mtd(*PaintEvent)
+    onKeyEvent:             mtd(*KeyEvent)
+    onMouseEvent:           mtd(*MouseEvent)
+    onSysCommandEvent:      mtd(*SysCommandEvent)
+    onSetThemeEvent:        mtd(*SetThemeEvent)
+    onTimerEvent:           mtd(*TimerEvent)
+    onFocusEvent:           mtd(*FocusEvent)
+    onCommandEvent:         mtd(*CommandEvent)
+    onCommandUIEvent:       mtd(*CommandUIEvent)
+    onCommandStateEvent:    mtd(*CommandUIEvent)
+    onSerializeStateEvent:  mtd(*SerializeStateEvent)
 }
 
 #[Swag.EnumFlags]
@@ -160,19 +161,22 @@ impl IWnd for Wnd
             itf.onCommandUIEvent(cast(*CommandUIEvent) evt)
         case CommandState:
             itf.onCommandStateEvent(cast(*CommandUIEvent) evt)
+        case SerializeState:
+            itf.onSerializeStateEvent(cast(*SerializeStateEvent) evt)
         }
     }
 
-    mtd onCreateEvent(evt: *CreateEvent)            {}
-    mtd onDestroyEvent(evt: *DestroyEvent)          {}
-    mtd onResizeEvent(evt: *ResizeEvent)            {}
-    mtd onPrePaintEvent(evt: *PaintEvent)           {}
-    mtd onPaintEvent(evt: *PaintEvent)              {}
-    mtd onPostPaintEvent(evt: *PaintEvent)          {}
-    mtd onSysCommandEvent(evt: *SysCommandEvent)    {}
-    mtd onSetThemeEvent(evt: *SetThemeEvent)        {}
-    mtd onTimerEvent(evt: *TimerEvent)              {}
-    mtd onHookEvent(evt: *Event)                    {}
+    mtd onCreateEvent(evt: *CreateEvent)                    {}
+    mtd onDestroyEvent(evt: *DestroyEvent)                  {}
+    mtd onResizeEvent(evt: *ResizeEvent)                    {}
+    mtd onPrePaintEvent(evt: *PaintEvent)                   {}
+    mtd onPaintEvent(evt: *PaintEvent)                      {}
+    mtd onPostPaintEvent(evt: *PaintEvent)                  {}
+    mtd onSysCommandEvent(evt: *SysCommandEvent)            {}
+    mtd onSetThemeEvent(evt: *SetThemeEvent)                {}
+    mtd onTimerEvent(evt: *TimerEvent)                      {}
+    mtd onHookEvent(evt: *Event)                            {}
+    mtd onSerializeStateEvent(evt: *SerializeStateEvent)    {}
 
     mtd onFocusEvent(evt: *FocusEvent)              { evt.accepted = false; }
     mtd onKeyEvent(evt: *KeyEvent)                  { evt.accepted = false; }

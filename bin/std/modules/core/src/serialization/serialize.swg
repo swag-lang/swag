@@ -89,6 +89,7 @@ impl Serializer
     }
 
     // Serialize one value
+    #[Swag.Optim("", false)]
     mtd(MT) serialize(name: string, crc32: u32, res: *MT) throw
     {
         var value: Swag.TypeValue
@@ -128,6 +129,8 @@ impl Serializer
         }
         else
         {
+            Console.printf("decode: %\n", cast(const *void) decode)
+            Console.printf("value:  %\n", &value)
             if !decode.beginField(value)
                 return
             defer decode.endField()
