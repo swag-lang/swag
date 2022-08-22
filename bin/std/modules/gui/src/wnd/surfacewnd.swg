@@ -1,4 +1,4 @@
-using Core, Pixel
+using Core, Pixel, Serialization
 
 #[Swag.EnumFlags]
 public enum SizingBorder{ Zero = 0; Left; Top; Right; Bottom; }
@@ -320,5 +320,9 @@ impl SurfaceWnd
             closeBtn.style.addStyleSheetColors(@nameof(btnIcon_HotBk)     ++" $" ++ @nameof(wnd_BtnCloseBk))
             closeBtn.style.addStyleSheetColors(@nameof(btnIcon_PressedBk) ++" $" ++ @nameof(wnd_BtnCloseHotBk))
         }
+    }
+
+    mtd serializeState(ser: *Serializer) throw
+    {
     }
 }

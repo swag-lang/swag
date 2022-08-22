@@ -1,5 +1,5 @@
 #global public
-using Core, Pixel
+using Core, Pixel, Serialization
 
 struct Surface
 {
@@ -21,6 +21,7 @@ struct Surface
     isDirty:        bool
     isHidden:       bool = true
     isDisabled:     bool
+    isMaximized:    bool
 }
 
 #[Swag.EnumFlags]
@@ -78,6 +79,9 @@ impl Surface
     // Destroy the surface
     mtd destroy()
     {
+        if self == app.mainSurface
+            catch app.saveState()
+
         wnd.destroy()
     }
 
@@ -224,5 +228,10 @@ impl Surface
             wnd.view.destroy()
         wnd.view = view
         wnd.sendResizeEvent()
+    }
+
+    private mtd serializeState(ser: *Serializer) throw
+    {
+        wnd.serializeState(ser)
     }
 }

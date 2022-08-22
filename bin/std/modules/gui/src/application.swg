@@ -522,11 +522,13 @@ impl Application
         configPath = path
     }
 
-    private mtd serializeConfig(ser: *Serializer)
+    private mtd serializeState(ser: *Serializer) throw
     {
+        visit s: surfaces
+            s.serializeState(ser)
     }
 
-    mtd saveConfig() throw
+    mtd saveState() throw
     {
         if configPath.isEmpty()
             return
@@ -535,13 +537,13 @@ impl Application
         var save: Encoder'Write.TagBin
         var ser:  Serializer
         ser.startWrite(save, &buf)
-        serializeConfig(&ser)
+        serializeState(&ser)
         ser.end()
 
         File.writeAllBytes(configPath, buf)
     }
 
-    mtd loadConfig() throw
+    mtd loadState() throw
     {
         if configPath.isEmpty()
             return
@@ -551,7 +553,7 @@ impl Application
         var load: Decoder'Read.TagBin
         var ser:  Serializer
         ser.startRead(load, buf.toSlice())
-        serializeConfig(&ser)
+        serializeState(&ser)
         ser.end()
     }
 
@@ -703,10 +705,9 @@ impl Application
     #[Swag.Discardable]
     mtd run()->s32
     {
-        catch loadConfig()
+        catch loadState()
         while !mustQuit
             runFrame()
-        catch saveConfig()
         return quitCode
     }
 

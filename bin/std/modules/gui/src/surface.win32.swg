@@ -20,7 +20,6 @@ struct MARGINS
 struct NativeSurface
 {
     hWnd:           HWND
-    isMaximized:    bool
     lastDeadChar:   WPARAM
 }
 
