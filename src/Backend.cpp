@@ -281,7 +281,7 @@ JobResult Backend::generateExportFile(Job* ownerJob)
 
 bool Backend::saveExportFile()
 {
-    if (g_CommandLine->output)
+    if (mustCompile && g_CommandLine->output)
     {
         auto result = bufferSwg.flushToFile(exportFilePath);
         if (!result)
