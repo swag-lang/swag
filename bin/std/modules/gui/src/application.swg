@@ -524,8 +524,10 @@ impl Application
 
     private mtd serializeState(ser: *Serializer) throw
     {
+        ser.beginSection(.Unordered)
         visit s: surfaces
             s.serializeState(ser)
+        ser.endSection()
     }
 
     mtd saveState() throw

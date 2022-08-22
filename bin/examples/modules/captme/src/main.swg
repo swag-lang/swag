@@ -3,14 +3,12 @@ var g_App: Application
 #main
 {
     Memory.DebugAllocator.install(traceLeaks: false)
-
-    path := Env.getSpecialDirectory(.UserAppData)
-    path = Path.combine(path, "captme.cfg")
-    path = "f:/captme.cfg"
-    g_App.setConfigPath(path)
-
     try Jobs.setNumWorkers()
     try Library.init()
+
+    path := Library.getFolder()
+    path = Path.combine(path, "captme.cfg")
+    g_App.setConfigPath(path)
 
     surface := try g_App.createSurface(200, 100, 1200, 1000, SurfaceFlags.OverlappedWindow)
     surface.setTitle("CaptMe")

@@ -544,7 +544,7 @@ impl MainWnd
 
     func create(parent: *Wnd)->*MainWnd
     {
-        res := Wnd.create'MainWnd(parent)
+        res := Wnd.create'MainWnd(parent, "captme.mainwnd")
         renderer := parent.getApp().getRenderer()
 
         img24 := assume Image.decode(".png", Icons24)

@@ -40,6 +40,11 @@ struct Serializer
 
 impl Serializer
 {
+    #[Swag.Inline]
+    mtd isWriting() => isWrite
+    #[Swag.Inline]
+    mtd isReading() => !isWrite
+
     // Start encoding
     mtd startWrite(encoder: IEncoder, output: *ConcatBuffer)
     {

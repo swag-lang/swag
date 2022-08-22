@@ -203,13 +203,13 @@ impl Wnd
     #[Swag.Inline]
     func(T) create(parent: *Wnd = null, id: WndId = null, hook: HookEvent = null)->*T
     {
-        return create(parent, "", @{}, hook: hook)
+        return create(parent, "", @{}, id: id, hook: hook)
     }
 
     #[Swag.Inline]
     func(T) create(parent: *Wnd, position: Math.Rectangle, id: WndId = null, hook: HookEvent = null)->*T
     {
-        return create(parent, "", position, hook: hook)
+        return create(parent, "", position, id: id, hook: hook)
     }
 
     func(T) create(parent: *Wnd, name: string, position: Math.Rectangle, id: WndId = null, hook: HookEvent = null)->*T

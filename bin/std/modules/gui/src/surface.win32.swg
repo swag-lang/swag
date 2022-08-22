@@ -282,6 +282,7 @@ impl Surface
         if isMaximized
             return
         isMaximized = true
+        positionNotMaximized = position
         ShowWindow(hWnd, SW_SHOWMAXIMIZED)
     }
 

@@ -10,7 +10,6 @@ struct Surface
     rt:             RenderTarget
 
     rc:             RenderingContext
-    position:       Math.Rectangle
     minSize:        Math.Point
     maxSize:        Math.Point
 
@@ -21,7 +20,13 @@ struct Surface
     isDirty:        bool
     isHidden:       bool = true
     isDisabled:     bool
-    isMaximized:    bool
+
+    using state: struct
+    {
+        position:               Math.Rectangle
+        positionNotMaximized:   Math.Rectangle
+        isMaximized:            bool
+    }
 }
 
 #[Swag.EnumFlags]
@@ -232,6 +237,25 @@ impl Surface
 
     private mtd serializeState(ser: *Serializer) throw
     {
+        // Save position and surface state
+        if wnd.view.id != null
+        {
+            ser.serialize(wnd.view.id, &state)
+            if ser.isReading()
+            {
+                if isMaximized
+                {
+                    setPosition(positionNotMaximized)
+                    isMaximized = false
+                    showMaximized()
+                }
+                else
+                {
+                    setPosition(position)
+                }
+            }
+        }
+
         wnd.serializeState(ser)
     }
 }
