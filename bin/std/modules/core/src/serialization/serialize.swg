@@ -66,7 +66,7 @@ impl Serializer
     }
 
     // Start a new section
-    mtd beginSection(kind: SectionKind) throw
+    mtd beginSection(kind = SectionKind.Unordered) throw
     {
         if isWrite
             encode.beginSection(kind)

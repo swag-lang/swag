@@ -73,7 +73,15 @@ public impl JSon
             throw "malformed root (missing closing '}')"
     }
 
-    mtd beginStruct(data: *u8, type: typeinfo)->bool throw
+    mtd beginSection(kind: SectionKind)
+    {
+    }
+
+    mtd endSection()
+    {
+    }
+
+    mtd beginStruct(structType: typeinfo, structData: const *u8)->bool throw
     {
         zapBlanks()
         c := stream.readU8()
@@ -88,23 +96,6 @@ public impl JSon
         c := stream.readU8()
         if c != "}"'u8
             throw "malformed struct (missing closing '}')"
-    }
-
-    mtd beginSection(kind: SectionKind)
-    {
-    }
-
-    mtd endSection()
-    {
-    }
-
-    mtd beginFields(structType: typeinfo, structData: const *u8)->bool throw
-    {
-        return false
-    }
-
-    mtd endFields() throw
-    {
     }
 
     mtd beginElement(val: TypeValue)->bool throw

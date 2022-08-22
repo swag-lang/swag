@@ -63,15 +63,6 @@ impl TagBin
         Debug.assert(sections.isEmpty())
     }
 
-    mtd beginStruct(type: typeinfo, data: const *u8)->bool
-    {
-        return false
-    }
-
-    mtd endStruct()
-    {
-    }
-
     mtd beginSection(kind: SectionKind)
     {
         sec := newSection()
@@ -112,7 +103,7 @@ impl TagBin
         releaseSection()
     }
 
-    mtd beginFields(structType: typeinfo, structData: const *u8)->bool
+    mtd beginStruct(structType: typeinfo, structData: const *u8)->bool
     {
         if  Reflection.hasAttribute(structType, Serialization.Final) or
             Reflection.hasAttribute(structType, Serialization.PodFinal)
@@ -136,7 +127,7 @@ impl TagBin
         return false
     }
 
-    mtd endFields()
+    mtd endStruct()
     {
         endSection()
     }

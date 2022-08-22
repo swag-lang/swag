@@ -4,6 +4,11 @@ var g_App: Application
 {
     Memory.DebugAllocator.install(traceLeaks: false)
 
+    path := Env.getSpecialDirectory(.UserAppData)
+    path = Path.combine(path, "captme.cfg")
+    path = "f:/captme.cfg"
+    g_App.setConfigPath(path)
+
     try Jobs.setNumWorkers()
     try Library.init()
 

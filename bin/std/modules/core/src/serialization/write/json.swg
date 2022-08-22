@@ -72,7 +72,15 @@ impl JSon
         lastSeekValue = output.getSeek()
     }
 
-    mtd beginStruct(type: typeinfo, data: const *u8)->bool
+    mtd beginSection(kind: SectionKind)
+    {
+    }
+
+    mtd endSection()
+    {
+    }
+
+    mtd beginStruct(structType: typeinfo, structData: const *u8)->bool
     {
         output.addBytes("{")
         lastSeekValue = output.getSeek()
@@ -98,23 +106,6 @@ impl JSon
 
         output.addBytes("}")
         lastSeekValue = output.getSeek()
-    }
-
-    mtd beginSection(kind: SectionKind)
-    {
-    }
-
-    mtd endSection()
-    {
-    }
-
-    mtd beginFields(structType: typeinfo, structData: const *u8)->bool
-    {
-        return false
-    }
-
-    mtd endFields()
-    {
     }
 
     mtd beginElement(val: TypeValue)

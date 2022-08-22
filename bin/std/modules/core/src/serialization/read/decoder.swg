@@ -151,12 +151,6 @@ impl Decoder
                 return
             }
 
-            // Generic struct load
-            treated := serializer.beginStruct(data, structType)
-            defer(noerr) serializer.endStruct()
-            if treated
-                return
-
             // A structure with an implementation of ISerialize
             idecoder := cast(IDecoder) self
             itf := @mkinterface(data, type, ISerialize)
@@ -167,8 +161,8 @@ impl Decoder
             }
 
             // Generic struct load
-            treated = serializer.beginFields(structType, data)
-            defer(noerr) serializer.endFields()
+            treated := serializer.beginStruct(structType, data)
+            defer(noerr) serializer.endStruct()
             if treated
                 return
 

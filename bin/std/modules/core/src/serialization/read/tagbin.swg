@@ -201,15 +201,6 @@ impl TagBin
     {
     }
 
-    mtd beginStruct(data: *u8, type: typeinfo)->bool throw
-    {
-        return false
-    }
-
-    mtd endStruct() throw
-    {
-    }
-
     mtd beginSection(kind: SectionKind, skipFat = false) throw
     {
         sec := newSection()
@@ -266,7 +257,7 @@ impl TagBin
         releaseSection()
     }
 
-    mtd beginFields(structType: typeinfo, structData: const *u8)->bool throw
+    mtd beginStruct(structType: typeinfo, structData: const *u8)->bool throw
     {
         if  Reflection.hasAttribute(structType, Serialization.Final) or
             Reflection.hasAttribute(structType, Serialization.PodFinal)
@@ -304,7 +295,7 @@ impl TagBin
         return false
     }
 
-    mtd endFields() throw
+    mtd endStruct() throw
     {
         endSection()
     }

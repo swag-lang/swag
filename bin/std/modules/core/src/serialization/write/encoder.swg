@@ -171,12 +171,6 @@ impl Encoder
                 return
             }
 
-            // Generic structure save
-            treated := serializer.beginStruct(structType, data)
-            defer(noerr) serializer.endStruct()
-            if treated
-                return
-
             // A structure with an implementation of ISerialize
             itf := @mkinterface(data, type, ISerialize)
             if itf != null
@@ -186,8 +180,8 @@ impl Encoder
             }
 
             // Start a fields section
-            treated = serializer.beginFields(structType, data)
-            defer(noerr) serializer.endFields()
+            treated := serializer.beginStruct(structType, data)
+            defer(noerr) serializer.endStruct()
             if treated
                 return
 

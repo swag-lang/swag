@@ -1,5 +1,5 @@
 #global public
-using Core
+using Core, Serialization
 
 alias FrameCallback = closure(*Application)
 
@@ -32,6 +32,7 @@ struct Application
     mouseCaptureWnd:    *Wnd
     keybFocusWnd:       *Wnd
     maxRunFrame:        u32
+    configPath:         String
 }
 
 private impl Application
@@ -515,6 +516,45 @@ impl Application
         return surface
     }
 
+    // Associate a configuration file
+    mtd setConfigPath(path: string)
+    {
+        configPath = path
+    }
+
+    private mtd serializeConfig(ser: *Serializer)
+    {
+    }
+
+    mtd saveConfig() throw
+    {
+        if configPath.isEmpty()
+            return
+
+        var buf:  ConcatBuffer
+        var save: Encoder'Write.TagBin
+        var ser:  Serializer
+        ser.startWrite(save, &buf)
+        serializeConfig(&ser)
+        ser.end()
+
+        File.writeAllBytes(configPath, buf)
+    }
+
+    mtd loadConfig() throw
+    {
+        if configPath.isEmpty()
+            return
+
+        buf := File.readAllBytes(configPath)
+
+        var load: Decoder'Read.TagBin
+        var ser:  Serializer
+        ser.startRead(load, buf.toSlice())
+        serializeConfig(&ser)
+        ser.end()
+    }
+
     // Return the captured wnd for mouse
     mtd getMouseCapture()->*Wnd
     {
@@ -663,11 +703,10 @@ impl Application
     #[Swag.Discardable]
     mtd run()->s32
     {
+        catch loadConfig()
         while !mustQuit
-        {
             runFrame()
-        }
-
+        catch saveConfig()
         return quitCode
     }
 
