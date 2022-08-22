@@ -74,14 +74,6 @@ impl JSon
 
     mtd beginSection(kind: SectionKind)
     {
-    }
-
-    mtd endSection()
-    {
-    }
-
-    mtd beginStruct(structType: typeinfo, structData: const *u8)->bool
-    {
         output.addBytes("{")
         lastSeekValue = output.getSeek()
         if options.saveBlanks
@@ -90,11 +82,9 @@ impl JSon
             indent += 1
             writeIndent()
         }
-
-        return false
     }
 
-    mtd endStruct()
+    mtd endSection()
     {
         output.setEndSeek(lastSeekValue)
         if options.saveBlanks
@@ -106,6 +96,17 @@ impl JSon
 
         output.addBytes("}")
         lastSeekValue = output.getSeek()
+    }
+
+    mtd beginStruct(structType: typeinfo, structData: const *u8)->bool
+    {
+        beginSection(.Ordered)
+        return false
+    }
+
+    mtd endStruct()
+    {
+        endSection()
     }
 
     mtd beginElement(val: TypeValue)
