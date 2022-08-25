@@ -79,7 +79,8 @@ Utf8 ByteCode::getCallName()
     }
     else
         callName = name;
-    //callName += Fmt("_%lX", (uint64_t) this);
+
+    callName += Fmt("_%lX", (uint64_t) this);
     return callName;
 }
 

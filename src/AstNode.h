@@ -380,6 +380,7 @@ struct AstFuncDecl : public AstNode
     Utf8        getDisplayName();
     const char* getDisplayNameC();
     Utf8        getNameForUserCompiler();
+    Utf8        getCallName();
 
     bool isForeign()
     {

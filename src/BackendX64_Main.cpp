@@ -70,8 +70,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     SWAG_ASSERT(bcAlloc);
     BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symDefaultAllocTable, 0);
     concat.addString3("\x48\x8d\x0d"); // lea rcx, qword ptr ????????[rip]
-    auto funcName = getFuncCallName(CastAst<AstFuncDecl>(bcAlloc->node, AstNodeKind::FuncDecl), bcAlloc, false);
-    emitSymbolRelocation(pp, funcName);
+    emitSymbolRelocation(pp, bcAlloc->getCallName());
     BackendX64Inst::emit_Store64_Indirect(pp, 0, RCX, RAX);
 
     // mainContext.allocator.itable = &defaultAllocTable;

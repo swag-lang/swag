@@ -13,18 +13,7 @@
 #define UWOP_ALLOC_LARGE 1
 #define UWOP_ALLOC_SMALL 2
 
-Utf8 BackendX64::getFuncCallName(AstFuncDecl* node, ByteCode* bc, bool forExport)
-{
-    if (node)
-    {
-        node->computeFullNameForeign(forExport);
-        return node->fullnameForeign;
-    }
-
-    return bc->getCallName();
-}
-
-bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, AstFuncDecl* node, ByteCode* bc)
+bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc)
 {
     // Do not emit a text function if we are not compiling a test executable
     if (bc->node && (bc->node->attributeFlags & ATTRIBUTE_TEST_FUNC) && (buildParameters.compileType != BackendCompileType::Test))
@@ -47,7 +36,19 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     bc->markLabels();
 
     // Get function name
-    Utf8 funcName = getFuncCallName(node, bc, true);
+    Utf8         funcName = bc->getCallName();
+    AstFuncDecl* node     = bc->node ? CastAst<AstFuncDecl>(bc->node, AstNodeKind::FuncDecl) : nullptr;
+    if (node)
+        funcName = node->getCallName();
+    else
+        funcName = bc->getCallName();
+
+    // Export symbol
+    if (node && node->attributeFlags & (ATTRIBUTE_PUBLIC | ATTRIBUTE_CALLBACK))
+    {
+        if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
+            pp.directives += Fmt("/EXPORT:%s ", node->fullnameForeign.c_str());
+    }
 
     // Symbol
     auto symbolFuncIndex  = getOrAddSymbol(pp, funcName, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
@@ -55,15 +56,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     coffFct->startAddress = startAddress;
     if (debug)
         dbgSetLocation(coffFct, bc, nullptr, 0);
-
-    // Export symbol
-    if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
-    {
-        if (node && node->attributeFlags & (ATTRIBUTE_PUBLIC | ATTRIBUTE_CALLBACK))
-        {
-            pp.directives += Fmt("/EXPORT:%s ", node->fullnameForeign.c_str());
-        }
-    }
 
     // In order, starting at RSP, we have :
     //
@@ -1306,7 +1298,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::IntrinsicStringCmp:
-            SWAG_ASSERT(sizeParamsStack >= 5 * sizeof(Register));
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RDX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->c.u32), R8, RDI);
@@ -1315,7 +1306,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->d.u32), RAX, RDI);
             break;
         case ByteCodeOp::IntrinsicTypeCmp:
-            SWAG_ASSERT(sizeParamsStack >= 4 * sizeof(Register));
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RDX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->c.u32), R8, RDI);
@@ -2343,25 +2333,22 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Store32_Immediate(pp, 0, 0, RAX);
             break;
         case ByteCodeOp::IntrinsicErrorMsg:
-            SWAG_ASSERT(sizeParamsStack >= 3 * sizeof(Register));
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RDX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->c.u32), R8, RDI);
             emitCall(pp, g_LangSpec->name_aterrormsg);
             break;
         case ByteCodeOp::IntrinsicPanic:
-            SWAG_ASSERT(sizeParamsStack >= 3 * sizeof(Register));
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RDX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->c.u32), R8, RDI);
             emitCall(pp, g_LangSpec->name_atpanic);
             break;
         case ByteCodeOp::IntrinsicItfTableOf:
-            SWAG_ASSERT(sizeParamsStack >= 3 * sizeof(Register));
-            BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->c.u32), RCX, RDI);
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RDX, RDI);
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), R8, RDI);
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RDX, RDI);
             emitCall(pp, g_LangSpec->name_atitftableof);
+            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->c.u32), RAX, RDI);
             break;
 
         case ByteCodeOp::CopyRCtoRR:
@@ -2633,14 +2620,13 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         {
             auto funcNode = CastAst<AstFuncDecl>((AstNode*) ip->b.pointer, AstNodeKind::FuncDecl);
             auto funcBC   = (ByteCode*) ip->c.pointer;
-            SWAG_ASSERT(funcNode);
-
-            Utf8 name = getFuncCallName(funcNode, funcBC, true);
+            SWAG_ASSERT(funcNode && funcNode->extension && funcNode->extension->bc == funcBC);
+            Utf8 callName = funcNode->getCallName();
             BackendX64Inst::emit_Load64_Immediate(pp, 0, RAX, true);
 
             CoffRelocation reloc;
             reloc.virtualAddress = concat.totalCount() - sizeof(uint64_t) - pp.textSectionOffset;
-            auto callSym         = getOrAddSymbol(pp, name, CoffSymbolKind::Extern);
+            auto callSym         = getOrAddSymbol(pp, callName, CoffSymbolKind::Extern);
             reloc.symbolIndex    = callSym->index;
             reloc.type           = IMAGE_REL_AMD64_ADDR64;
             pp.relocTableTextSection.table.push_back(reloc);
@@ -2707,9 +2693,18 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::LocalCallPop:
         case ByteCodeOp::LocalCallPopRC:
         {
-            ByteCode* callBc   = (ByteCode*) ip->a.pointer;
-            auto      funcNode = (AstFuncDecl*) callBc->node;
-            emitForeignCall(pp, moduleToGen, funcNode, callBc, ip, offsetRT, pushRAParams);
+            ByteCode* callBc = (ByteCode*) ip->a.pointer;
+
+            Utf8 callName;
+            if (callBc->node)
+            {
+                auto funcNode = CastAst<AstFuncDecl>(callBc->node, AstNodeKind::FuncDecl);
+                callName = funcNode->getCallName();
+            }
+            else
+                callName = callBc->getCallName();
+
+            emitForeignCall(pp, moduleToGen, callName, ip, offsetRT, pushRAParams, true);
             pushRAParams.clear();
             pushRVParams.clear();
 
@@ -2726,7 +2721,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::ForeignCallPop:
         {
             auto funcNode = (AstFuncDecl*) ip->a.pointer;
-            emitForeignCall(pp, moduleToGen, funcNode, nullptr, ip, offsetRT, pushRAParams);
+            funcNode->computeFullNameForeign(false);
+            emitForeignCall(pp, moduleToGen, funcNode->fullnameForeign, ip, offsetRT, pushRAParams, false);
             pushRAParams.clear();
             pushRVParams.clear();
             break;

@@ -588,6 +588,18 @@ void AstIdentifierRef::computeName()
     }
 }
 
+Utf8 AstFuncDecl::getCallName()
+{
+    if (attributeFlags & (ATTRIBUTE_PUBLIC | ATTRIBUTE_CALLBACK))
+    {
+        computeFullNameForeign(true);
+        return fullnameForeign;
+    }
+
+    SWAG_ASSERT(extension && extension->bc);
+    return extension->bc->getCallName();
+}
+
 Utf8 AstFuncDecl::getNameForUserCompiler()
 {
     if (attributeFlags & ATTRIBUTE_SHARP_FUNC)
@@ -689,14 +701,8 @@ void AstFuncDecl::computeFullNameForeign(bool forExport)
             auto pz = strstr(typeFunc->scopedName.c_str(), "(");
             SWAG_ASSERT(pz);
             nameForeign += pz;
-
-            if (selectIf)
-                nameForeign += Fmt("@%lX", (uint64_t) selectIf);
         }
     }
-
-    //if (!(attributeFlags & ATTRIBUTE_FOREIGN) && !sourceFile->isRuntimeFile && !sourceFile->isBootstrapFile)
-     //   nameForeign += Fmt("@%lX", (uint64_t)this);
 
     fullnameForeign = nameForeign;
 

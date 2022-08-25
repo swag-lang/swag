@@ -325,8 +325,7 @@ struct BackendX64 : public Backend
     void     emitShiftEqArithmetic(X64PerThread& pp, Concat& concat, ByteCodeInstruction* ip, uint8_t numBits);
     void     emitShiftEqLogical(X64PerThread& pp, Concat& concat, ByteCodeInstruction* ip, uint8_t numBits, uint8_t op);
     void     emitInternalPanic(const BuildParameters& buildParameters, AstNode* node, const char* msg);
-    Utf8     getFuncCallName(AstFuncDecl* node, ByteCode* bc, bool forExport);
-    bool     emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, AstFuncDecl* node, ByteCode* bc);
+    bool     emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc);
 
     CoffSymbol* getSymbol(X64PerThread& pp, const Utf8& name);
     CoffSymbol* getOrAddSymbol(X64PerThread& pp, const Utf8& name, CoffSymbolKind kind, uint32_t value = 0, uint16_t sectionIdx = 0);
@@ -382,7 +381,7 @@ struct BackendX64 : public Backend
     void emitCall(X64PerThread& pp, const Utf8& name);
 
     void emitForeignCallResult(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT);
-    bool emitForeignCall(X64PerThread& pp, Module* moduleToGen, AstFuncDecl* funcNode, ByteCode* bc, ByteCodeInstruction* ip, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams);
+    bool emitForeignCall(X64PerThread& pp, Module* moduleToGen, const Utf8& funcName, ByteCodeInstruction* ip, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams, bool localCall);
     bool emitForeignFctCall(X64PerThread& pp, Module* moduleToGen, TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& paramsRegisters, VectorNative<TypeInfo*>& paramsTypes);
     bool emitForeignCallParameters(X64PerThread& pp, Module* moduleToGen, uint32_t offsetRT, TypeInfoFuncAttr* typeFuncBC, const VectorNative<uint32_t>& pushRAParams);
 

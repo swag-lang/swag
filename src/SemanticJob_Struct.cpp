@@ -383,7 +383,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
             funcChild->extension->bc->isUsed = true;
 
             *ptrITable = ByteCode::doByteCodeLambda(funcChild->extension->bc);
-            constSegment->addInitPtrFunc(offset, funcChild->extension->bc->getCallName(), DataSegment::RelocType::Local);
+            constSegment->addInitPtrFunc(offset, funcChild->getCallName(), DataSegment::RelocType::Local);
         }
 
         ptrITable++;

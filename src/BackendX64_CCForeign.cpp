@@ -106,10 +106,9 @@ void BackendX64::emitGetParam(X64PerThread& pp, TypeInfoFuncAttr* typeFunc, int 
     BackendX64Inst::emit_Store64_Indirect(pp, regOffset(reg), RAX, RDI);
 }
 
-bool BackendX64::emitForeignCall(X64PerThread& pp, Module* moduleToGen, AstFuncDecl* funcNode, ByteCode* bc, ByteCodeInstruction* ip, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams)
+bool BackendX64::emitForeignCall(X64PerThread& pp, Module* moduleToGen, const Utf8& funcName, ByteCodeInstruction* ip, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams, bool localCall)
 {
     TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
-    auto              funcName   = getFuncCallName(funcNode, bc, bc != nullptr);
 
     // Push parameters
     SWAG_CHECK(emitForeignCallParameters(pp, moduleToGen, offsetRT, typeFuncBC, pushRAParams));
@@ -117,7 +116,7 @@ bool BackendX64::emitForeignCall(X64PerThread& pp, Module* moduleToGen, AstFuncD
     auto& concat = pp.concat;
 
     // Dll imported function name will have "__imp_" before (imported mangled name)
-    if (!bc)
+    if (!localCall)
     {
         // Need to make a far call
         concat.addU8(0xFF); // call
@@ -125,9 +124,10 @@ bool BackendX64::emitForeignCall(X64PerThread& pp, Module* moduleToGen, AstFuncD
 
         CoffRelocation reloc;
         reloc.virtualAddress = concat.totalCount() - pp.textSectionOffset;
-        auto callSym         = getOrAddSymbol(pp, "__imp_" + funcName, CoffSymbolKind::Extern);
-        reloc.symbolIndex    = callSym->index;
-        reloc.type           = IMAGE_REL_AMD64_REL32;
+
+        auto callSym      = getOrAddSymbol(pp, "__imp_" + funcName, CoffSymbolKind::Extern);
+        reloc.symbolIndex = callSym->index;
+        reloc.type        = IMAGE_REL_AMD64_REL32;
         pp.relocTableTextSection.table.push_back(reloc);
         concat.addU32(0);
     }
@@ -237,7 +237,7 @@ bool BackendX64::emitForeignFctCall(X64PerThread& pp, Module* moduleToGen, TypeI
     // Store all parameters after 4 on the stack, with an offset of 4 * sizeof(uint64_t)
     // because the first 4 x uint64_t are for the first 4 parameters (even if they are passed in
     // registers, this is the x64 cdecl convention...)
-    //uint32_t offsetStack = min(callConvRegisters, maxParamsPerRegister) * sizeof(uint64_t);
+    // uint32_t offsetStack = min(callConvRegisters, maxParamsPerRegister) * sizeof(uint64_t);
     uint32_t offsetStack = 4 * sizeof(uint64_t);
     for (; i < (int) paramsRegisters.size(); i++)
     {

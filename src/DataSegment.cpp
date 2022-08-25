@@ -387,7 +387,7 @@ void DataSegment::doPatchMethods(JobContext* context)
             bc            = funcNode->extension->bc;
             bc->forceEmit = true;
             lambdaPtr     = ByteCodeRun::makeLambda(context, funcNode, bc);
-            addInitPtrFunc(it.second, bc->getCallName(), DataSegment::RelocType::Local);
+            addInitPtrFunc(it.second, funcNode->getCallName(), DataSegment::RelocType::Local);
         }
 
         if (lambdaPtr)
