@@ -362,6 +362,9 @@ struct TypeInfoFuncAttr : public TypeInfo
     void      computeWhateverName(Utf8& resName, uint32_t nameType) override;
     void      match(SymbolMatchContext& context);
     bool      isSame(TypeInfoFuncAttr* from, uint32_t isSameFlags);
+    bool      returnByCopy();
+    bool      isVariadic();
+    bool      isCVariadic();
     uint32_t  registerIdxToParamIdx(int argIdx);
     TypeInfo* registerIdxToType(int argIdx);
     int       numParamsRegisters();

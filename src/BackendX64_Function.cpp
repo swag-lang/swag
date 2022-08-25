@@ -13,371 +13,18 @@
 #define UWOP_ALLOC_LARGE 1
 #define UWOP_ALLOC_SMALL 2
 
-BackendFunctionBodyJobBase* BackendX64::newFunctionJob()
+Utf8 BackendX64::getFuncCallName(AstFuncDecl* node, ByteCode* bc, bool forExport)
 {
-    return g_Allocator.alloc<BackendX64FunctionBodyJob>();
-}
-
-uint32_t BackendX64::getOrCreateLabel(X64PerThread& pp, uint32_t ip)
-{
-    auto it = pp.labels.find(ip);
-    if (it == pp.labels.end())
+    if (node)
     {
-        auto count    = pp.concat.totalCount();
-        pp.labels[ip] = count;
-        return count;
+        node->computeFullNameForeign(forExport);
+        return node->fullnameForeign;
     }
 
-    return it->second;
+    return bc->getCallName();
 }
 
-uint16_t BackendX64::computeUnwindPushRDI(uint32_t offsetSubRSP)
-{
-    uint16_t unwind0 = 0;
-
-    unwind0 = (RDI << 12);
-    unwind0 |= (UWOP_PUSH_NONVOL << 8);
-    unwind0 |= (uint8_t) offsetSubRSP;
-    return unwind0;
-}
-
-void BackendX64::computeUnwindStack(uint32_t sizeStack, uint32_t offsetSubRSP, VectorNative<uint16_t>& unwind)
-{
-    // UNWIND_CODE
-    // UBYTE:8: offset of the instruction after the "sub rsp"
-    // UBYTE:4: code (UWOP_ALLOC_LARGE or UWOP_ALLOC_SMALL)
-    // UBYTE:4: info (will code the size of the decrement of rsp)
-
-    SWAG_ASSERT(offsetSubRSP <= 0xFF);
-    SWAG_ASSERT((sizeStack & 7) == 0); // Must be aligned
-
-    if (sizeStack <= 128)
-    {
-        SWAG_ASSERT(sizeStack >= 8);
-        sizeStack -= 8;
-        sizeStack /= 8;
-        auto unwind0 = (uint16_t) (UWOP_ALLOC_SMALL | (sizeStack << 4));
-        unwind0 <<= 8;
-        unwind0 |= (uint16_t) offsetSubRSP;
-        unwind.push_back(unwind0);
-    }
-    else
-    {
-        SWAG_ASSERT(sizeStack <= (512 * 1024) - 8);
-        auto unwind0 = (uint16_t) (UWOP_ALLOC_LARGE);
-        unwind0 <<= 8;
-        unwind0 |= (uint16_t) offsetSubRSP;
-        unwind.push_back(unwind0);
-        unwind0 = (uint16_t) (sizeStack / 8);
-        unwind.push_back(unwind0);
-    }
-}
-
-void BackendX64::emitShiftArithmetic(X64PerThread& pp, Concat& concat, ByteCodeInstruction* ip, uint8_t numBits)
-{
-    if (ip->flags & BCI_IMM_B && ip->b.u32 >= numBits && !(ip->flags & BCI_SHIFT_SMALL))
-    {
-        switch (numBits)
-        {
-        case 8:
-            concat.addString2("\xC0\xF8"); // sar al
-            break;
-        case 16:
-            concat.addString3("\x66\xC1\xF8"); // sar ax
-            break;
-        case 32:
-            concat.addString2("\xC1\xF8"); // sar eax
-            break;
-        case 64:
-            concat.addString3("\x48\xC1\xF8"); // sar rax
-            break;
-        }
-
-        concat.addU8(numBits - 1);
-    }
-    else
-    {
-        if (ip->flags & BCI_IMM_A)
-            BackendX64Inst::emit_LoadN_Immediate(pp, ip->a, RAX, numBits);
-        else
-            BackendX64Inst::emit_LoadN_Indirect(pp, regOffset(ip->a.u32), RAX, RDI, numBits);
-        if (ip->flags & BCI_IMM_B)
-            BackendX64Inst::emit_Load8_Immediate(pp, ip->b.u8 & (numBits - 1), RCX);
-        else
-        {
-            BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
-            if (ip->flags & BCI_SHIFT_SMALL)
-            {
-                concat.addString2("\x80\xE1"); // and cl, ??
-                concat.addU8(numBits - 1);
-            }
-            else
-            {
-                concat.addString2("\x83\xF9"); // cmp ecx, ??
-                concat.addU8(numBits);
-                BackendX64Inst::emit_NearJumpOp(pp, BackendX64Inst::JL);
-                pp.concat.addU8(0); // mov below
-                auto seekPtr = pp.concat.getSeekPtr() - 1;
-                auto seekJmp = pp.concat.totalCount();
-                BackendX64Inst::emit_Load8_Immediate(pp, numBits - 1, RCX);
-                *seekPtr = (uint8_t) (concat.totalCount() - seekJmp);
-            }
-        }
-
-        switch (numBits)
-        {
-        case 8:
-            concat.addString2("\xD2\xF8"); // sar al, cl
-            break;
-        case 16:
-            concat.addString3("\x66\xD3\xF8"); // sar ax, cl
-            break;
-        case 32:
-            concat.addString2("\xD3\xF8"); // sar eax, cl
-            break;
-        case 64:
-            concat.addString3("\x48\xD3\xF8"); // sar rax, cl
-            break;
-        }
-    }
-
-    BackendX64Inst::emit_StoreN_Indirect(pp, regOffset(ip->c.u32), RAX, RDI, numBits);
-}
-
-void BackendX64::emitShiftLogical(X64PerThread& pp, Concat& concat, ByteCodeInstruction* ip, uint8_t numBits, uint8_t op)
-{
-    if (ip->flags & BCI_IMM_B && ip->b.u32 >= numBits && !(ip->flags & BCI_SHIFT_SMALL))
-        BackendX64Inst::emit_ClearN(pp, RAX, numBits);
-    else
-    {
-        if (ip->flags & BCI_IMM_A)
-            BackendX64Inst::emit_LoadN_Immediate(pp, ip->a, RAX, numBits);
-        else
-            BackendX64Inst::emit_LoadN_Indirect(pp, regOffset(ip->a.u32), RAX, RDI, numBits);
-
-        if (ip->flags & BCI_IMM_B)
-            BackendX64Inst::emit_Load8_Immediate(pp, ip->b.u8 & (numBits - 1), RCX);
-        else
-        {
-            BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
-            if (ip->flags & BCI_SHIFT_SMALL)
-            {
-                concat.addString2("\x80\xE1"); // and cl, ??
-                concat.addU8(numBits - 1);
-            }
-            else
-            {
-                concat.addString2("\x83\xF9"); // cmp ecx, ?
-                concat.addU8(numBits);
-                BackendX64Inst::emit_NearJumpOp(pp, BackendX64Inst::JL);
-                pp.concat.addU8(0); // clear below
-                auto seekPtr = pp.concat.getSeekPtr() - 1;
-                auto seekJmp = pp.concat.totalCount();
-                BackendX64Inst::emit_ClearN(pp, RAX, numBits);
-                *seekPtr = (uint8_t) (concat.totalCount() - seekJmp);
-            }
-        }
-
-        switch (numBits)
-        {
-        case 8:
-            concat.addString1("\xD2");
-            break;
-        case 16:
-            concat.addString2("\x66\xD3");
-            break;
-        case 32:
-            concat.addString1("\xD3");
-            break;
-        case 64:
-            concat.addString2("\x48\xD3");
-            break;
-        }
-
-        concat.addU8(op);
-    }
-
-    BackendX64Inst::emit_StoreN_Indirect(pp, regOffset(ip->c.u32), RAX, RDI, numBits);
-}
-
-void BackendX64::emitShiftEqArithmetic(X64PerThread& pp, Concat& concat, ByteCodeInstruction* ip, uint8_t numBits)
-{
-    BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-    if (ip->flags & BCI_IMM_B)
-    {
-        switch (numBits)
-        {
-        case 8:
-            concat.addString2("\xC0\x38");
-            break;
-        case 16:
-            concat.addString3("\x66\xC1\x38");
-            break;
-        case 32:
-            concat.addString2("\xC1\x38");
-            break;
-        case 64:
-            concat.addString3("\x48\xC1\x38");
-            break;
-        }
-
-        if (ip->flags & BCI_SHIFT_SMALL)
-            concat.addU8(ip->b.u8 & (numBits - 1));
-        else
-            concat.addU8(min(ip->b.u8, numBits - 1));
-    }
-    else
-    {
-        BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
-        if (ip->flags & BCI_SHIFT_SMALL)
-        {
-            concat.addString2("\x80\xE1"); // and cl, ??
-            concat.addU8(numBits - 1);
-        }
-        else
-        {
-            concat.addString2("\x83\xF9"); // cmp ecx, ??
-            concat.addU8(numBits);
-            BackendX64Inst::emit_NearJumpOp(pp, BackendX64Inst::JL);
-            pp.concat.addU8(0); // move below
-            auto seekPtr = pp.concat.getSeekPtr() - 1;
-            auto seekJmp = pp.concat.totalCount();
-            BackendX64Inst::emit_Load8_Immediate(pp, numBits - 1, RCX);
-            *seekPtr = (uint8_t) (concat.totalCount() - seekJmp);
-        }
-
-        switch (numBits)
-        {
-        case 8:
-            concat.addString2("\xd2\x38");
-            break;
-        case 16:
-            concat.addString3("\x66\xd3\x38");
-            break;
-        case 32:
-            concat.addString2("\xd3\x38");
-            break;
-        case 64:
-            concat.addString3("\x48\xd3\x38");
-            break;
-        }
-    }
-}
-
-void BackendX64::emitShiftEqLogical(X64PerThread& pp, Concat& concat, ByteCodeInstruction* ip, uint8_t numBits, uint8_t op)
-{
-    BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-    if (ip->flags & BCI_IMM_B && ip->b.u32 >= numBits && !(ip->flags & BCI_SHIFT_SMALL))
-    {
-        BackendX64Inst::emit_ClearN(pp, RCX, numBits);
-        BackendX64Inst::emit_StoreN_Indirect(pp, 0, RCX, RAX, numBits);
-    }
-    else if (ip->flags & BCI_IMM_B)
-    {
-        switch (numBits)
-        {
-        case 8:
-            concat.addString1("\xc0");
-            break;
-        case 16:
-            concat.addString2("\x66\xc1");
-            break;
-        case 32:
-            concat.addString1("\xc1");
-            break;
-        case 64:
-            concat.addString2("\x48\xc1");
-            break;
-        }
-
-        concat.addU8(op);
-        if (ip->flags & BCI_SHIFT_SMALL)
-            concat.addU8(ip->b.u8 & (numBits - 1));
-        else
-            concat.addU8(ip->b.u8);
-    }
-    else
-    {
-        BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
-        if (ip->flags & BCI_SHIFT_SMALL)
-        {
-            concat.addString2("\x80\xE1"); // and cl, ??
-            concat.addU8(numBits - 1);
-        }
-        else
-        {
-            concat.addString2("\x83\xF9"); // cmp ecx, ??
-            concat.addU8(numBits);
-            BackendX64Inst::emit_NearJumpOp(pp, BackendX64Inst::JL);
-            pp.concat.addU8(0); // clear + store below
-            auto seekPtr = pp.concat.getSeekPtr() - 1;
-            auto seekJmp = pp.concat.totalCount();
-            BackendX64Inst::emit_ClearN(pp, RCX, numBits);
-            BackendX64Inst::emit_StoreN_Indirect(pp, 0, RCX, RAX, numBits);
-            *seekPtr = (uint8_t) (concat.totalCount() - seekJmp);
-        }
-
-        switch (numBits)
-        {
-        case 8:
-            concat.addString1("\xd2");
-            break;
-        case 16:
-            concat.addString2("\x66\xd3");
-            break;
-        case 32:
-            concat.addString1("\xd3");
-            break;
-        case 64:
-            concat.addString2("\x48\xd3");
-            break;
-        }
-
-        concat.addU8(op);
-    }
-}
-
-void BackendX64::emitOverflowSigned(const BuildParameters& buildParameters, Concat& concat, AstNode* node, const char* msg)
-{
-    if (!module->mustEmitSafetyOF(node))
-        return;
-    concat.addString2("\x0f\x81"); // jno
-    concat.addU32(0);
-    auto addr      = (uint32_t*) concat.getSeekPtr() - 1;
-    auto prevCount = concat.totalCount();
-    emitInternalPanic(buildParameters, node, msg);
-    *addr = concat.totalCount() - prevCount;
-}
-
-void BackendX64::emitOverflowUnsigned(const BuildParameters& buildParameters, Concat& concat, AstNode* node, const char* msg)
-{
-    if (!module->mustEmitSafetyOF(node))
-        return;
-    concat.addString2("\x0f\x83"); // jnc
-    concat.addU32(0);
-    auto addr      = (uint32_t*) concat.getSeekPtr() - 1;
-    auto prevCount = concat.totalCount();
-    emitInternalPanic(buildParameters, node, msg);
-    *addr = concat.totalCount() - prevCount;
-}
-
-void BackendX64::emitInternalPanic(const BuildParameters& buildParameters, AstNode* node, const char* msg)
-{
-    int   ct              = buildParameters.compileType;
-    int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = *perThread[ct][precompileIndex];
-
-    emitGlobalString(pp, precompileIndex, Utf8::normalizePath(node->sourceFile->path), RCX);
-    BackendX64Inst::emit_Load64_Immediate(pp, node->token.startLocation.line, RDX);
-    BackendX64Inst::emit_Load64_Immediate(pp, node->token.startLocation.column, R8);
-    if (msg)
-        emitGlobalString(pp, precompileIndex, msg, R9);
-    else
-        BackendX64Inst::emit_Clear64(pp, R9);
-    emitCall(pp, g_LangSpec->name__panic);
-}
-
-bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc)
+bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, AstFuncDecl* node, ByteCode* bc)
 {
     // Do not emit a text function if we are not compiling a test executable
     if (bc->node && (bc->node->attributeFlags & ATTRIBUTE_TEST_FUNC) && (buildParameters.compileType != BackendCompileType::Test))
@@ -388,6 +35,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     auto& pp              = *perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
     auto  typeFunc        = bc->getCallType();
+    auto  returnType      = TypeManager::concreteReferenceType(typeFunc->returnType);
     bool  ok              = true;
     bool  debug           = buildParameters.buildCfg->backendDebugInformations;
 
@@ -398,12 +46,24 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     pp.labelsToSolve.clear();
     bc->markLabels();
 
+    // Get function name
+    Utf8 funcName = getFuncCallName(node, bc, true);
+
     // Symbol
-    auto symbolFuncIndex  = getOrAddSymbol(pp, bc->getCallName(), CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
+    auto symbolFuncIndex  = getOrAddSymbol(pp, funcName, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
     auto coffFct          = registerFunction(pp, bc->node, symbolFuncIndex);
     coffFct->startAddress = startAddress;
     if (debug)
         dbgSetLocation(coffFct, bc, nullptr, 0);
+
+    // Export symbol
+    if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
+    {
+        if (node && node->attributeFlags & (ATTRIBUTE_PUBLIC | ATTRIBUTE_CALLBACK))
+        {
+            pp.directives += Fmt("/EXPORT:%s ", node->fullnameForeign.c_str());
+        }
+    }
 
     // In order, starting at RSP, we have :
     //
@@ -452,7 +112,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
     coffFct->offsetStack  = offsetStack;
     coffFct->offsetRetVal = 16 + sizeStack;
-    coffFct->offsetParam  = 16 + sizeStack + regOffset(typeFunc->numReturnRegisters());
+    coffFct->offsetParam  = offsetS4;
     coffFct->frameSize    = sizeStack + sizeParamsStack;
 
     sizeProlog = concat.totalCount() - beforeProlog;
@@ -466,23 +126,22 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     pp.concat.addU32(sizeParamsStack); // lea rdi, [rsp + sizeParamsStack]
 
     // Save register parameters
-    auto numReturnRegs = typeFunc->numReturnRegisters();
-    auto numTotalRegs  = typeFunc->numTotalRegisters();
-    for (int i = 0; i < min(4, numTotalRegs); i++)
+    static uint8_t x64Reg[]     = {RCX, RDX, R8, R9};
+    static uint8_t x64RegF[]    = {XMM0, XMM1, XMM2, XMM3};
+    auto           numTotalRegs = typeFunc->numParamsRegisters();
+    int            iReg         = 0;
+    while (iReg < min(4, numTotalRegs))
     {
-        static uint8_t x64Reg[]  = {RCX, RDX, R8, R9};
-        static uint8_t x64RegF[] = {XMM0, XMM1, XMM2, XMM3};
-        if (i < numReturnRegs)
-            BackendX64Inst::emit_Store64_Indirect(pp, offsetS4 + (i * 8), x64Reg[i], RDI);
+        auto typeParam = typeFunc->registerIdxToType(iReg);
+        if (typeParam->isNativeFloat())
+            BackendX64Inst::emit_StoreF64_Indirect(pp, offsetS4 + (iReg * sizeof(Register)), x64RegF[iReg], RDI);
         else
-        {
-            auto typeParam = typeFunc->registerIdxToType(i - numReturnRegs);
-            if (typeParam->isNativeFloat())
-                BackendX64Inst::emit_StoreF64_Indirect(pp, offsetS4 + (i * 8), x64RegF[i], RDI);
-            else
-                BackendX64Inst::emit_Store64_Indirect(pp, offsetS4 + (i * 8), x64Reg[i], RDI);
-        }
+            BackendX64Inst::emit_Store64_Indirect(pp, offsetS4 + (iReg * sizeof(Register)), x64Reg[iReg], RDI);
+        iReg++;
     }
+
+    if (typeFunc->returnByCopy() && iReg < 4)
+        BackendX64Inst::emit_Store64_Indirect(pp, offsetS4 + (iReg * sizeof(Register)), x64Reg[iReg], RDI);
 
     // Use R11 as base pointer for capture parameters
     // This is used to debug and have access to capture parameters, even if we "lose" rcx
@@ -1648,21 +1307,20 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::IntrinsicStringCmp:
             SWAG_ASSERT(sizeParamsStack >= 5 * sizeof(Register));
-            BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->d.u32), RCX, RDI);
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RDX, RDI);
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), R8, RDI);
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->c.u32), R9, RDI);
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->d.u32), RAX, RDI);
-            BackendX64Inst::emit_Store64_Indirect(pp, 32, RAX, RSP);
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RDX, RDI);
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->c.u32), R8, RDI);
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->d.u32), R9, RDI);
             emitCall(pp, g_LangSpec->name_atstrcmp);
+            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->d.u32), RAX, RDI);
             break;
         case ByteCodeOp::IntrinsicTypeCmp:
             SWAG_ASSERT(sizeParamsStack >= 4 * sizeof(Register));
-            BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->d.u32), RCX, RDI);
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RDX, RDI);
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), R8, RDI);
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->c.u32), R9, RDI);
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RDX, RDI);
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->c.u32), R8, RDI);
             emitCall(pp, g_LangSpec->name_attypecmp);
+            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->d.u32), RAX, RDI);
             break;
 
         case ByteCodeOp::TestNotZero8:
@@ -2581,17 +2239,17 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::InternalGetTlsPtr:
-            BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
-            BackendX64Inst::emit_Symbol_RelocationValue(pp, RDX, pp.symTls_threadLocalId, 0);
-            BackendX64Inst::emit_Load64_Immediate(pp, module->tlsSegment.totalCount, R8, true);
-            BackendX64Inst::emit_Symbol_RelocationAddr(pp, R9, pp.symTLSIndex, 0);
+            BackendX64Inst::emit_Symbol_RelocationValue(pp, RCX, pp.symTls_threadLocalId, 0);
+            BackendX64Inst::emit_Load64_Immediate(pp, module->tlsSegment.totalCount, RDX, true);
+            BackendX64Inst::emit_Symbol_RelocationAddr(pp, R8, pp.symTLSIndex, 0);
             emitCall(pp, g_LangSpec->name__tlsGetPtr);
+            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
 
         case ByteCodeOp::IntrinsicGetContext:
-            BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
-            BackendX64Inst::emit_Symbol_RelocationValue(pp, RDX, pp.symPI_contextTlsId, 0);
+            BackendX64Inst::emit_Symbol_RelocationValue(pp, RCX, pp.symPI_contextTlsId, 0);
             emitCall(pp, g_LangSpec->name__tlsGetValue);
+            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
         case ByteCodeOp::IntrinsicSetContext:
             BackendX64Inst::emit_Symbol_RelocationValue(pp, RCX, pp.symPI_contextTlsId, 0);
@@ -2606,13 +2264,22 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::IntrinsicCVaStart:
         {
-            // We need to add 8 because the call has pushed one register on the stack
-            // We need to add 8 again, because of the first 'push edi' at the start of the function
-            // Se we add 16 in total to get the offset of the parameter in the stack
-            int stackOffset = 16 + sizeStack + regOffset(ip->c.u32);
+            int stackOffset = 0;
+            int paramIdx    = max(4, typeFunc->numParamsRegisters());
+            if (typeFunc->returnByCopy())
+                paramIdx += 1;
+            stackOffset = 16 + sizeStack + regOffset(paramIdx);
             BackendX64Inst::emit_LoadAddress_Indirect(pp, stackOffset, RAX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RCX);
+
+            // We need to add 8 because the call has pushed one register on the stack
+            // We need to add 8 again, because of the first 'push edi' at the start of the function
+            // Se we add 16 in total to get the offset of the parameter in the stack
+            /*int stackOffset = 16 + sizeStack + regOffset(ip->c.u32);
+            BackendX64Inst::emit_LoadAddress_Indirect(pp, stackOffset, RAX, RDI);
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
+            BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RCX);*/
             break;
         }
         case ByteCodeOp::IntrinsicCVaEnd:
@@ -2698,32 +2365,74 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::CopyRCtoRR:
-            BackendX64Inst::emit_Load64_Indirect(pp, offsetS4 + regOffset(0), RAX, RDI);
-            if (ip->flags & BCI_IMM_A && ip->a.u64 <= 0x7FFFFFFF)
+            if (returnType->kind == TypeInfoKind::Native)
             {
-                BackendX64Inst::emit_Store64_Immediate(pp, 0, ip->a.u64, RAX);
-            }
-            else if (ip->flags & BCI_IMM_A)
-            {
-                BackendX64Inst::emit_Load64_Immediate(pp, ip->a.u64, RCX);
-                BackendX64Inst::emit_Store64_Indirect(pp, 0, RCX, RAX);
+                if (returnType->isNative(NativeTypeKind::F32))
+                {
+                    if (ip->flags & BCI_IMM_A)
+                    {
+                        BackendX64Inst::emit_Load32_Immediate(pp, ip->a.u32, RAX);
+                        BackendX64Inst::emit_CopyF32(pp, RAX, XMM0);
+                    }
+                    else
+                        BackendX64Inst::emit_LoadF32_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
+                }
+                else if (returnType->isNative(NativeTypeKind::F64))
+                {
+                    if (ip->flags & BCI_IMM_A)
+                    {
+                        BackendX64Inst::emit_Load64_Immediate(pp, ip->a.u64, RAX);
+                        BackendX64Inst::emit_CopyF64(pp, RAX, XMM0);
+                    }
+                    else
+                        BackendX64Inst::emit_LoadF64_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
+                }
+                else
+                {
+                    if (ip->flags & BCI_IMM_A)
+                        BackendX64Inst::emit_Load64_Immediate(pp, ip->a.u64, RAX);
+                    else
+                        BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+                }
             }
             else
             {
-                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
-                BackendX64Inst::emit_Store64_Indirect(pp, 0, RCX, RAX);
+                SWAG_ASSERT(returnType->numRegisters() == 1);
+                if (ip->flags & BCI_IMM_A)
+                    BackendX64Inst::emit_Load64_Immediate(pp, ip->a.u64, RAX);
+                else
+                    BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             }
+
             break;
 
         case ByteCodeOp::CopyRCtoRR2:
-            BackendX64Inst::emit_Load64_Indirect(pp, offsetS4 + regOffset(0), RAX, RDI);
+        {
+            int stackOffset = 0;
+            int paramIdx    = typeFunc->numParamsRegisters();
+
+            // If this was a register, then get the value from storeS4 (where input registers have been saveed)
+            // instead of value from the stack
+            if (paramIdx < 4)
+                stackOffset = offsetS4 + regOffset(paramIdx);
+
+            // Value from the caller stack
+            // We need to add 8 because the call has pushed one register on the stack
+            // We need to add 8 again, because of the first 'push edi' at the start of the function
+            // Se we add 16 in total to get the offset of the parameter in the stack
+            else
+                stackOffset = 16 + sizeStack + regOffset(paramIdx);
+
+            BackendX64Inst::emit_Load64_Indirect(pp, stackOffset, RAX, RDI);
+
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
             BackendX64Inst::emit_Store64_Indirect(pp, 0, RCX, RAX);
 
-            BackendX64Inst::emit_Load64_Indirect(pp, offsetS4 + regOffset(1), RAX, RDI);
+            BackendX64Inst::emit_Load64_Indirect(pp, stackOffset, RAX, RDI);
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
-            BackendX64Inst::emit_Store64_Indirect(pp, 0, RCX, RAX);
+            BackendX64Inst::emit_Store64_Indirect(pp, 8, RCX, RAX);
             break;
+        }
 
         case ByteCodeOp::CopyRCtoRT:
             BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
@@ -2731,9 +2440,23 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::CopyRRtoRC:
-            BackendX64Inst::emit_Load64_Indirect(pp, offsetS4 + regOffset(0), RAX, RDI);
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(0), RAX, RAX);
+        {
+            int stackOffset = 0;
+            int paramIdx    = typeFunc->numParamsRegisters();
 
+            // If this was a register, then get the value from storeS4 (where input registers have been saveed)
+            // instead of value from the stack
+            if (paramIdx < 4)
+                stackOffset = offsetS4 + regOffset(paramIdx);
+
+            // Value from the caller stack
+            // We need to add 8 because the call has pushed one register on the stack
+            // We need to add 8 again, because of the first 'push edi' at the start of the function
+            // Se we add 16 in total to get the offset of the parameter in the stack
+            else
+                stackOffset = 16 + sizeStack + regOffset(paramIdx);
+
+            BackendX64Inst::emit_Load64_Indirect(pp, stackOffset, RAX, RDI);
             if (ip->b.u64)
             {
                 BackendX64Inst::emit_Load64_Immediate(pp, ip->b.u64, RCX);
@@ -2742,6 +2465,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
+        }
 
         case ByteCodeOp::CopyRTtoRC:
             BackendX64Inst::emit_Load64_Indirect(pp, offsetRT + regOffset(0), RAX, RDI);
@@ -2764,17 +2488,18 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         {
             auto typeFuncCall    = CastTypeInfo<TypeInfoFuncAttr>((TypeInfo*) ip->d.pointer, TypeInfoKind::FuncAttr, TypeInfoKind::Lambda);
             bool foreignOrLambda = ip->c.b;
-            if (!foreignOrLambda)
+            /*if (!foreignOrLambda)
             {
                 // We are close to the byte code, as all PushRaParams are already in the correct order for variadics.
                 // We need the RAX register to address the stack where all are stored.
                 // There's 2 more PushRAParam to come after CopySPVaargs, so offset is 16.
                 // We also need to take care of real parameters (offset is ip->b.u32)
                 // We also need to take care of the return registers, which are always first
-                BackendX64Inst::emit_LoadAddress_Indirect(pp, (uint8_t) (16 + ip->b.u32 + (typeFuncCall->numReturnRegisters() * 8)), RAX, RSP);
+                BackendX64Inst::emit_LoadAddress_Indirect(pp, (uint8_t) (16 + ip->b.u32), RAX, RSP);
                 BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             }
-            else if (!pushRVParams.empty())
+            else */
+            if (!pushRVParams.empty())
             {
                 auto     sizeOf            = pushRVParams[0].second;
                 int      idxParam          = (int) pushRVParams.size() - 1;
@@ -2863,73 +2588,54 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::GetParam8:
-            emitLocalParam(pp, typeFunc, ip->a.u32, ip->c.u32, 1, offsetS4, sizeStack);
+            emitGetParam(pp, typeFunc, ip->a.u32, ip->c.u32, 1, offsetS4, sizeStack);
             break;
         case ByteCodeOp::GetParam16:
-            emitLocalParam(pp, typeFunc, ip->a.u32, ip->c.u32, 2, offsetS4, sizeStack);
+            emitGetParam(pp, typeFunc, ip->a.u32, ip->c.u32, 2, offsetS4, sizeStack);
             break;
         case ByteCodeOp::GetParam32:
-            emitLocalParam(pp, typeFunc, ip->a.u32, ip->c.u32, 4, offsetS4, sizeStack);
+            emitGetParam(pp, typeFunc, ip->a.u32, ip->c.u32, 4, offsetS4, sizeStack);
             break;
         case ByteCodeOp::GetParam64:
-            emitLocalParam(pp, typeFunc, ip->a.u32, ip->c.u32, 8, offsetS4, sizeStack);
+            emitGetParam(pp, typeFunc, ip->a.u32, ip->c.u32, 8, offsetS4, sizeStack);
             break;
         case ByteCodeOp::GetIncParam64:
-            emitLocalParam(pp, typeFunc, ip->a.u32, ip->c.u32, 8, offsetS4, sizeStack, ip->d.u64);
+            emitGetParam(pp, typeFunc, ip->a.u32, ip->c.u32, 8, offsetS4, sizeStack, ip->d.u64);
             break;
 
         case ByteCodeOp::GetParam64DeRef8:
-            emitLocalParam(pp, typeFunc, ip->a.u32, ip->c.u32, 8, offsetS4, sizeStack, 0, 1);
+            emitGetParam(pp, typeFunc, ip->a.u32, ip->c.u32, 8, offsetS4, sizeStack, 0, 1);
             break;
         case ByteCodeOp::GetParam64DeRef16:
-            emitLocalParam(pp, typeFunc, ip->a.u32, ip->c.u32, 8, offsetS4, sizeStack, 0, 2);
+            emitGetParam(pp, typeFunc, ip->a.u32, ip->c.u32, 8, offsetS4, sizeStack, 0, 2);
             break;
         case ByteCodeOp::GetParam64DeRef32:
-            emitLocalParam(pp, typeFunc, ip->a.u32, ip->c.u32, 8, offsetS4, sizeStack, 0, 4);
+            emitGetParam(pp, typeFunc, ip->a.u32, ip->c.u32, 8, offsetS4, sizeStack, 0, 4);
             break;
         case ByteCodeOp::GetParam64DeRef64:
-            emitLocalParam(pp, typeFunc, ip->a.u32, ip->c.u32, 8, offsetS4, sizeStack, 0, 8);
+            emitGetParam(pp, typeFunc, ip->a.u32, ip->c.u32, 8, offsetS4, sizeStack, 0, 8);
             break;
 
         case ByteCodeOp::GetIncParam64DeRef8:
-            emitLocalParam(pp, typeFunc, ip->a.u32, ip->c.u32, 8, offsetS4, sizeStack, ip->d.u64, 1);
+            emitGetParam(pp, typeFunc, ip->a.u32, ip->c.u32, 8, offsetS4, sizeStack, ip->d.u64, 1);
             break;
         case ByteCodeOp::GetIncParam64DeRef16:
-            emitLocalParam(pp, typeFunc, ip->a.u32, ip->c.u32, 8, offsetS4, sizeStack, ip->d.u64, 2);
+            emitGetParam(pp, typeFunc, ip->a.u32, ip->c.u32, 8, offsetS4, sizeStack, ip->d.u64, 2);
             break;
         case ByteCodeOp::GetIncParam64DeRef32:
-            emitLocalParam(pp, typeFunc, ip->a.u32, ip->c.u32, 8, offsetS4, sizeStack, ip->d.u64, 4);
+            emitGetParam(pp, typeFunc, ip->a.u32, ip->c.u32, 8, offsetS4, sizeStack, ip->d.u64, 4);
             break;
         case ByteCodeOp::GetIncParam64DeRef64:
-            emitLocalParam(pp, typeFunc, ip->a.u32, ip->c.u32, 8, offsetS4, sizeStack, ip->d.u64, 8);
+            emitGetParam(pp, typeFunc, ip->a.u32, ip->c.u32, 8, offsetS4, sizeStack, ip->d.u64, 8);
             break;
 
         case ByteCodeOp::MakeLambda:
         {
             auto funcNode = CastAst<AstFuncDecl>((AstNode*) ip->b.pointer, AstNodeKind::FuncDecl);
+            auto funcBC   = (ByteCode*) ip->c.pointer;
             SWAG_ASSERT(funcNode);
 
-            Utf8 name;
-
-            if (funcNode->attributeFlags & ATTRIBUTE_FOREIGN)
-            {
-                TypeInfoFuncAttr* typeFuncNode = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
-                auto              foreignValue = typeFuncNode->attributes.getValue(g_LangSpec->name_Swag_Foreign, g_LangSpec->name_function);
-                SWAG_ASSERT(foreignValue && !foreignValue->text.empty());
-                name = foreignValue->text;
-            }
-            else if (funcNode->attributeFlags & ATTRIBUTE_CALLBACK)
-            {
-                funcNode->computeFullNameForeign(true);
-                name = funcNode->fullnameForeign;
-            }
-            else
-            {
-                auto funcBC = (ByteCode*) ip->c.pointer;
-                SWAG_ASSERT(funcBC);
-                name = funcBC->getCallName();
-            }
-
+            Utf8 name = getFuncCallName(funcNode, funcBC, true);
             BackendX64Inst::emit_Load64_Immediate(pp, 0, RAX, true);
 
             CoffRelocation reloc;
@@ -3001,11 +2707,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::LocalCallPop:
         case ByteCodeOp::LocalCallPopRC:
         {
-            auto funcBC = (ByteCode*) ip->a.pointer;
-            SWAG_ASSERT(funcBC);
-            TypeInfoFuncAttr* typeFuncBC = funcBC->getCallType();
-            emitLocalCallParameters(pp, sizeParamsStack, typeFuncBC, offsetRT, pushRAParams, pushRVParams);
-            emitCall(pp, funcBC->getCallName());
+            ByteCode* callBc   = (ByteCode*) ip->a.pointer;
+            auto      funcNode = (AstFuncDecl*) callBc->node;
+            emitForeignCall(pp, moduleToGen, funcNode, callBc, ip, offsetRT, pushRAParams);
             pushRAParams.clear();
             pushRVParams.clear();
 
@@ -3020,10 +2724,13 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::ForeignCall:
         case ByteCodeOp::ForeignCallPop:
-            emitForeignCall(pp, moduleToGen, ip, offsetRT, pushRAParams);
+        {
+            auto funcNode = (AstFuncDecl*) ip->a.pointer;
+            emitForeignCall(pp, moduleToGen, funcNode, nullptr, ip, offsetRT, pushRAParams);
             pushRAParams.clear();
             pushRVParams.clear();
             break;
+        }
 
         case ByteCodeOp::LambdaCall:
         case ByteCodeOp::LambdaCallPop:
@@ -3049,8 +2756,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
             // Local lambda
             //////////////////
-            emitLocalCallParameters(pp, sizeParamsStack, typeFuncBC, offsetRT, pushRAParams, pushRVParams);
+            SWAG_CHECK(emitForeignCallParameters(pp, moduleToGen, offsetRT, typeFuncBC, pushRAParams));
             concat.addString3("\x41\xFF\xD2"); // call r10
+            emitForeignCallResult(pp, typeFuncBC, offsetRT);
 
             concat.addString1("\xe9"); // jmp ???????? => jump after bytecode lambda
             concat.addU32(0);
@@ -3863,4 +3571,368 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     uint32_t endAddress = concat.totalCount();
     registerFunction(coffFct, startAddress, endAddress, sizeProlog, unwind);
     return ok;
+}
+
+BackendFunctionBodyJobBase* BackendX64::newFunctionJob()
+{
+    return g_Allocator.alloc<BackendX64FunctionBodyJob>();
+}
+
+uint32_t BackendX64::getOrCreateLabel(X64PerThread& pp, uint32_t ip)
+{
+    auto it = pp.labels.find(ip);
+    if (it == pp.labels.end())
+    {
+        auto count    = pp.concat.totalCount();
+        pp.labels[ip] = count;
+        return count;
+    }
+
+    return it->second;
+}
+
+uint16_t BackendX64::computeUnwindPushRDI(uint32_t offsetSubRSP)
+{
+    uint16_t unwind0 = 0;
+
+    unwind0 = (RDI << 12);
+    unwind0 |= (UWOP_PUSH_NONVOL << 8);
+    unwind0 |= (uint8_t) offsetSubRSP;
+    return unwind0;
+}
+
+void BackendX64::computeUnwindStack(uint32_t sizeStack, uint32_t offsetSubRSP, VectorNative<uint16_t>& unwind)
+{
+    // UNWIND_CODE
+    // UBYTE:8: offset of the instruction after the "sub rsp"
+    // UBYTE:4: code (UWOP_ALLOC_LARGE or UWOP_ALLOC_SMALL)
+    // UBYTE:4: info (will code the size of the decrement of rsp)
+
+    SWAG_ASSERT(offsetSubRSP <= 0xFF);
+    SWAG_ASSERT((sizeStack & 7) == 0); // Must be aligned
+
+    if (sizeStack <= 128)
+    {
+        SWAG_ASSERT(sizeStack >= 8);
+        sizeStack -= 8;
+        sizeStack /= 8;
+        auto unwind0 = (uint16_t) (UWOP_ALLOC_SMALL | (sizeStack << 4));
+        unwind0 <<= 8;
+        unwind0 |= (uint16_t) offsetSubRSP;
+        unwind.push_back(unwind0);
+    }
+    else
+    {
+        SWAG_ASSERT(sizeStack <= (512 * 1024) - 8);
+        auto unwind0 = (uint16_t) (UWOP_ALLOC_LARGE);
+        unwind0 <<= 8;
+        unwind0 |= (uint16_t) offsetSubRSP;
+        unwind.push_back(unwind0);
+        unwind0 = (uint16_t) (sizeStack / 8);
+        unwind.push_back(unwind0);
+    }
+}
+
+void BackendX64::emitShiftArithmetic(X64PerThread& pp, Concat& concat, ByteCodeInstruction* ip, uint8_t numBits)
+{
+    if (ip->flags & BCI_IMM_B && ip->b.u32 >= numBits && !(ip->flags & BCI_SHIFT_SMALL))
+    {
+        switch (numBits)
+        {
+        case 8:
+            concat.addString2("\xC0\xF8"); // sar al
+            break;
+        case 16:
+            concat.addString3("\x66\xC1\xF8"); // sar ax
+            break;
+        case 32:
+            concat.addString2("\xC1\xF8"); // sar eax
+            break;
+        case 64:
+            concat.addString3("\x48\xC1\xF8"); // sar rax
+            break;
+        }
+
+        concat.addU8(numBits - 1);
+    }
+    else
+    {
+        if (ip->flags & BCI_IMM_A)
+            BackendX64Inst::emit_LoadN_Immediate(pp, ip->a, RAX, numBits);
+        else
+            BackendX64Inst::emit_LoadN_Indirect(pp, regOffset(ip->a.u32), RAX, RDI, numBits);
+        if (ip->flags & BCI_IMM_B)
+            BackendX64Inst::emit_Load8_Immediate(pp, ip->b.u8 & (numBits - 1), RCX);
+        else
+        {
+            BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+            if (ip->flags & BCI_SHIFT_SMALL)
+            {
+                concat.addString2("\x80\xE1"); // and cl, ??
+                concat.addU8(numBits - 1);
+            }
+            else
+            {
+                concat.addString2("\x83\xF9"); // cmp ecx, ??
+                concat.addU8(numBits);
+                BackendX64Inst::emit_NearJumpOp(pp, BackendX64Inst::JL);
+                pp.concat.addU8(0); // mov below
+                auto seekPtr = pp.concat.getSeekPtr() - 1;
+                auto seekJmp = pp.concat.totalCount();
+                BackendX64Inst::emit_Load8_Immediate(pp, numBits - 1, RCX);
+                *seekPtr = (uint8_t) (concat.totalCount() - seekJmp);
+            }
+        }
+
+        switch (numBits)
+        {
+        case 8:
+            concat.addString2("\xD2\xF8"); // sar al, cl
+            break;
+        case 16:
+            concat.addString3("\x66\xD3\xF8"); // sar ax, cl
+            break;
+        case 32:
+            concat.addString2("\xD3\xF8"); // sar eax, cl
+            break;
+        case 64:
+            concat.addString3("\x48\xD3\xF8"); // sar rax, cl
+            break;
+        }
+    }
+
+    BackendX64Inst::emit_StoreN_Indirect(pp, regOffset(ip->c.u32), RAX, RDI, numBits);
+}
+
+void BackendX64::emitShiftLogical(X64PerThread& pp, Concat& concat, ByteCodeInstruction* ip, uint8_t numBits, uint8_t op)
+{
+    if (ip->flags & BCI_IMM_B && ip->b.u32 >= numBits && !(ip->flags & BCI_SHIFT_SMALL))
+        BackendX64Inst::emit_ClearN(pp, RAX, numBits);
+    else
+    {
+        if (ip->flags & BCI_IMM_A)
+            BackendX64Inst::emit_LoadN_Immediate(pp, ip->a, RAX, numBits);
+        else
+            BackendX64Inst::emit_LoadN_Indirect(pp, regOffset(ip->a.u32), RAX, RDI, numBits);
+
+        if (ip->flags & BCI_IMM_B)
+            BackendX64Inst::emit_Load8_Immediate(pp, ip->b.u8 & (numBits - 1), RCX);
+        else
+        {
+            BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+            if (ip->flags & BCI_SHIFT_SMALL)
+            {
+                concat.addString2("\x80\xE1"); // and cl, ??
+                concat.addU8(numBits - 1);
+            }
+            else
+            {
+                concat.addString2("\x83\xF9"); // cmp ecx, ?
+                concat.addU8(numBits);
+                BackendX64Inst::emit_NearJumpOp(pp, BackendX64Inst::JL);
+                pp.concat.addU8(0); // clear below
+                auto seekPtr = pp.concat.getSeekPtr() - 1;
+                auto seekJmp = pp.concat.totalCount();
+                BackendX64Inst::emit_ClearN(pp, RAX, numBits);
+                *seekPtr = (uint8_t) (concat.totalCount() - seekJmp);
+            }
+        }
+
+        switch (numBits)
+        {
+        case 8:
+            concat.addString1("\xD2");
+            break;
+        case 16:
+            concat.addString2("\x66\xD3");
+            break;
+        case 32:
+            concat.addString1("\xD3");
+            break;
+        case 64:
+            concat.addString2("\x48\xD3");
+            break;
+        }
+
+        concat.addU8(op);
+    }
+
+    BackendX64Inst::emit_StoreN_Indirect(pp, regOffset(ip->c.u32), RAX, RDI, numBits);
+}
+
+void BackendX64::emitShiftEqArithmetic(X64PerThread& pp, Concat& concat, ByteCodeInstruction* ip, uint8_t numBits)
+{
+    BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+    if (ip->flags & BCI_IMM_B)
+    {
+        switch (numBits)
+        {
+        case 8:
+            concat.addString2("\xC0\x38");
+            break;
+        case 16:
+            concat.addString3("\x66\xC1\x38");
+            break;
+        case 32:
+            concat.addString2("\xC1\x38");
+            break;
+        case 64:
+            concat.addString3("\x48\xC1\x38");
+            break;
+        }
+
+        if (ip->flags & BCI_SHIFT_SMALL)
+            concat.addU8(ip->b.u8 & (numBits - 1));
+        else
+            concat.addU8(min(ip->b.u8, numBits - 1));
+    }
+    else
+    {
+        BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+        if (ip->flags & BCI_SHIFT_SMALL)
+        {
+            concat.addString2("\x80\xE1"); // and cl, ??
+            concat.addU8(numBits - 1);
+        }
+        else
+        {
+            concat.addString2("\x83\xF9"); // cmp ecx, ??
+            concat.addU8(numBits);
+            BackendX64Inst::emit_NearJumpOp(pp, BackendX64Inst::JL);
+            pp.concat.addU8(0); // move below
+            auto seekPtr = pp.concat.getSeekPtr() - 1;
+            auto seekJmp = pp.concat.totalCount();
+            BackendX64Inst::emit_Load8_Immediate(pp, numBits - 1, RCX);
+            *seekPtr = (uint8_t) (concat.totalCount() - seekJmp);
+        }
+
+        switch (numBits)
+        {
+        case 8:
+            concat.addString2("\xd2\x38");
+            break;
+        case 16:
+            concat.addString3("\x66\xd3\x38");
+            break;
+        case 32:
+            concat.addString2("\xd3\x38");
+            break;
+        case 64:
+            concat.addString3("\x48\xd3\x38");
+            break;
+        }
+    }
+}
+
+void BackendX64::emitShiftEqLogical(X64PerThread& pp, Concat& concat, ByteCodeInstruction* ip, uint8_t numBits, uint8_t op)
+{
+    BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+    if (ip->flags & BCI_IMM_B && ip->b.u32 >= numBits && !(ip->flags & BCI_SHIFT_SMALL))
+    {
+        BackendX64Inst::emit_ClearN(pp, RCX, numBits);
+        BackendX64Inst::emit_StoreN_Indirect(pp, 0, RCX, RAX, numBits);
+    }
+    else if (ip->flags & BCI_IMM_B)
+    {
+        switch (numBits)
+        {
+        case 8:
+            concat.addString1("\xc0");
+            break;
+        case 16:
+            concat.addString2("\x66\xc1");
+            break;
+        case 32:
+            concat.addString1("\xc1");
+            break;
+        case 64:
+            concat.addString2("\x48\xc1");
+            break;
+        }
+
+        concat.addU8(op);
+        if (ip->flags & BCI_SHIFT_SMALL)
+            concat.addU8(ip->b.u8 & (numBits - 1));
+        else
+            concat.addU8(ip->b.u8);
+    }
+    else
+    {
+        BackendX64Inst::emit_Load32_Indirect(pp, regOffset(ip->b.u32), RCX, RDI);
+        if (ip->flags & BCI_SHIFT_SMALL)
+        {
+            concat.addString2("\x80\xE1"); // and cl, ??
+            concat.addU8(numBits - 1);
+        }
+        else
+        {
+            concat.addString2("\x83\xF9"); // cmp ecx, ??
+            concat.addU8(numBits);
+            BackendX64Inst::emit_NearJumpOp(pp, BackendX64Inst::JL);
+            pp.concat.addU8(0); // clear + store below
+            auto seekPtr = pp.concat.getSeekPtr() - 1;
+            auto seekJmp = pp.concat.totalCount();
+            BackendX64Inst::emit_ClearN(pp, RCX, numBits);
+            BackendX64Inst::emit_StoreN_Indirect(pp, 0, RCX, RAX, numBits);
+            *seekPtr = (uint8_t) (concat.totalCount() - seekJmp);
+        }
+
+        switch (numBits)
+        {
+        case 8:
+            concat.addString1("\xd2");
+            break;
+        case 16:
+            concat.addString2("\x66\xd3");
+            break;
+        case 32:
+            concat.addString1("\xd3");
+            break;
+        case 64:
+            concat.addString2("\x48\xd3");
+            break;
+        }
+
+        concat.addU8(op);
+    }
+}
+
+void BackendX64::emitOverflowSigned(const BuildParameters& buildParameters, Concat& concat, AstNode* node, const char* msg)
+{
+    if (!module->mustEmitSafetyOF(node))
+        return;
+    concat.addString2("\x0f\x81"); // jno
+    concat.addU32(0);
+    auto addr      = (uint32_t*) concat.getSeekPtr() - 1;
+    auto prevCount = concat.totalCount();
+    emitInternalPanic(buildParameters, node, msg);
+    *addr = concat.totalCount() - prevCount;
+}
+
+void BackendX64::emitOverflowUnsigned(const BuildParameters& buildParameters, Concat& concat, AstNode* node, const char* msg)
+{
+    if (!module->mustEmitSafetyOF(node))
+        return;
+    concat.addString2("\x0f\x83"); // jnc
+    concat.addU32(0);
+    auto addr      = (uint32_t*) concat.getSeekPtr() - 1;
+    auto prevCount = concat.totalCount();
+    emitInternalPanic(buildParameters, node, msg);
+    *addr = concat.totalCount() - prevCount;
+}
+
+void BackendX64::emitInternalPanic(const BuildParameters& buildParameters, AstNode* node, const char* msg)
+{
+    int   ct              = buildParameters.compileType;
+    int   precompileIndex = buildParameters.precompileIndex;
+    auto& pp              = *perThread[ct][precompileIndex];
+
+    emitGlobalString(pp, precompileIndex, Utf8::normalizePath(node->sourceFile->path), RCX);
+    BackendX64Inst::emit_Load64_Immediate(pp, node->token.startLocation.line, RDX);
+    BackendX64Inst::emit_Load64_Immediate(pp, node->token.startLocation.column, R8);
+    if (msg)
+        emitGlobalString(pp, precompileIndex, msg, R9);
+    else
+        BackendX64Inst::emit_Clear64(pp, R9);
+    emitCall(pp, g_LangSpec->name__panic);
 }

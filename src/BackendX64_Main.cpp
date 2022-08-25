@@ -70,7 +70,8 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     SWAG_ASSERT(bcAlloc);
     BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symDefaultAllocTable, 0);
     concat.addString3("\x48\x8d\x0d"); // lea rcx, qword ptr ????????[rip]
-    emitSymbolRelocation(pp, bcAlloc->getCallName());
+    auto funcName = getFuncCallName(CastAst<AstFuncDecl>(bcAlloc->node, AstNodeKind::FuncDecl), bcAlloc, false);
+    emitSymbolRelocation(pp, funcName);
     BackendX64Inst::emit_Store64_Indirect(pp, 0, RCX, RAX);
 
     // mainContext.allocator.itable = &defaultAllocTable;
@@ -83,8 +84,9 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     BackendX64Inst::emit_Store64_Immediate(pp, 0, contextFlags, RCX);
 
     //__process_infos.contextTlsId = swag_runtime_tlsAlloc();
-    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_contextTlsId, 0);
     emitCall(pp, g_LangSpec->name__tlsAlloc);
+    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_contextTlsId, 0);
+    BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RCX);
 
     //__process_infos.modules
     BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_modulesAddr, 0);

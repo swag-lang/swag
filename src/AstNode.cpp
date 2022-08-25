@@ -689,8 +689,14 @@ void AstFuncDecl::computeFullNameForeign(bool forExport)
             auto pz = strstr(typeFunc->scopedName.c_str(), "(");
             SWAG_ASSERT(pz);
             nameForeign += pz;
+
+            if (selectIf)
+                nameForeign += Fmt("@%lX", (uint64_t) selectIf);
         }
     }
+
+    //if (!(attributeFlags & ATTRIBUTE_FOREIGN) && !sourceFile->isRuntimeFile && !sourceFile->isBootstrapFile)
+     //   nameForeign += Fmt("@%lX", (uint64_t)this);
 
     fullnameForeign = nameForeign;
 

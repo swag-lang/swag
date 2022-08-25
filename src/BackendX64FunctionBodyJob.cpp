@@ -29,15 +29,8 @@ JobResult BackendX64FunctionBodyJob::execute()
         }
 
         // Emit the internal function
-        if (!bachendX64->emitFunctionBody(buildParameters, module, one))
+        if (!bachendX64->emitFunctionBody(buildParameters, module, node, one))
             return JobResult::ReleaseJob;
-
-        // Emit public function wrapper, from real C prototype to swag registers
-        if (node && node->attributeFlags & (ATTRIBUTE_PUBLIC | ATTRIBUTE_CALLBACK))
-        {
-            if (!bachendX64->emitFuncWrapperPublic(buildParameters, module, typeFunc, node, one))
-                return JobResult::ReleaseJob;
-        }
     }
 
     return JobResult::ReleaseJob;

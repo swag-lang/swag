@@ -760,6 +760,43 @@ bool TypeInfoFuncAttr::isSame(TypeInfo* to, uint32_t isSameFlags)
     return true;
 }
 
+bool TypeInfoFuncAttr::isVariadic()
+{
+    if (parameters.empty())
+        return false;
+    auto typeParam = ((TypeInfoParam*) parameters.back())->typeInfo;
+    if (typeParam->kind == TypeInfoKind::Variadic || typeParam->kind == TypeInfoKind::TypedVariadic)
+        return true;
+    return false;
+}
+
+bool TypeInfoFuncAttr::isCVariadic()
+{
+    if (parameters.empty())
+        return false;
+    auto typeParam = ((TypeInfoParam*)parameters.back())->typeInfo;
+    if (typeParam->kind == TypeInfoKind::CVariadic)
+        return true;
+    return false;
+}
+
+bool TypeInfoFuncAttr::returnByCopy()
+{
+    if (!returnType || returnType == g_TypeMgr->typeInfoVoid)
+        return false;
+    auto type = TypeManager::concreteReferenceType(returnType);
+    if (type->kind == TypeInfoKind::Slice ||
+        type->kind == TypeInfoKind::Interface ||
+        type->isNative(NativeTypeKind::Any) ||
+        type->isNative(NativeTypeKind::String) ||
+        type->flags & TYPEINFO_RETURN_BY_COPY)
+    {
+        return true;
+    }
+
+    return false;
+}
+
 // argIdx is the argument index of a function, starting after the return arguments
 uint32_t TypeInfoFuncAttr::registerIdxToParamIdx(int argIdx)
 {

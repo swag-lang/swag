@@ -169,7 +169,6 @@ struct CoffFunction
     uint32_t               offsetRetVal = 0;
     uint32_t               offsetParam  = 0;
     uint32_t               frameSize    = 0;
-    bool                   wrapper      = false;
 };
 
 struct X64PerThread
@@ -316,11 +315,9 @@ struct BackendX64 : public Backend
     BackendFunctionBodyJobBase* newFunctionJob() override;
 
     uint32_t getOrCreateLabel(X64PerThread& pp, uint32_t ip);
-    void     storeCDeclParamToRegister(X64PerThread& pp, TypeInfo* typeParam, int calleeIndex, int stackOffset, uint32_t sizeStack, uint32_t offsetStructCopy);
     void     storeRAXToCDeclParam(X64PerThread& pp, TypeInfo* typeParam, int callerIndex);
     uint16_t computeUnwindPushRDI(uint32_t offsetSubRSP);
     void     computeUnwindStack(uint32_t sizeStack, uint32_t offsetSubRSP, VectorNative<uint16_t>& unwind);
-    bool     emitFuncWrapperPublic(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, AstFuncDecl* node, ByteCode* bc);
     void     emitOverflowSigned(const BuildParameters& buildParameters, Concat& concat, AstNode* node, const char* msg);
     void     emitOverflowUnsigned(const BuildParameters& buildParameters, Concat& concat, AstNode* node, const char* msg);
     void     emitShiftArithmetic(X64PerThread& pp, Concat& concat, ByteCodeInstruction* ip, uint8_t numBits);
@@ -328,7 +325,8 @@ struct BackendX64 : public Backend
     void     emitShiftEqArithmetic(X64PerThread& pp, Concat& concat, ByteCodeInstruction* ip, uint8_t numBits);
     void     emitShiftEqLogical(X64PerThread& pp, Concat& concat, ByteCodeInstruction* ip, uint8_t numBits, uint8_t op);
     void     emitInternalPanic(const BuildParameters& buildParameters, AstNode* node, const char* msg);
-    bool     emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc);
+    Utf8     getFuncCallName(AstFuncDecl* node, ByteCode* bc, bool forExport);
+    bool     emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, AstFuncDecl* node, ByteCode* bc);
 
     CoffSymbol* getSymbol(X64PerThread& pp, const Utf8& name);
     CoffSymbol* getOrAddSymbol(X64PerThread& pp, const Utf8& name, CoffSymbolKind kind, uint32_t value = 0, uint16_t sectionIdx = 0);
@@ -377,14 +375,14 @@ struct BackendX64 : public Backend
     bool emitOS(const BuildParameters& buildParameters);
     bool emitMain(const BuildParameters& buildParameters);
 
-    void emitLocalParam(X64PerThread& pp, TypeInfoFuncAttr* typeFunc, int reg, int paramIdx, int sizeOf, int storeS4, int sizeStack, uint64_t toAdd = 0, int derefSize = 0);
+    void emitGetParam(X64PerThread& pp, TypeInfoFuncAttr* typeFunc, int reg, int paramIdx, int sizeOf, int storeS4, int sizeStack, uint64_t toAdd = 0, int derefSize = 0);
     void emitLocalFctCall(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, int offsetStack, int numCallParams, int popRAidx, int callerIndex, const VectorNative<uint32_t>& pushRAParams, int firstIdxCall);
     void emitLocalCallParameters(X64PerThread& pp, uint32_t sizeParamsStack, TypeInfoFuncAttr* typeFuncBC, uint32_t stackRR, const VectorNative<uint32_t>& pushRAParams, const VectorNative<pair<uint32_t, uint32_t>>& pushRVParams);
     void emitSymbolRelocation(X64PerThread& pp, const Utf8& name);
     void emitCall(X64PerThread& pp, const Utf8& name);
 
     void emitForeignCallResult(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT);
-    bool emitForeignCall(X64PerThread& pp, Module* moduleToGen, ByteCodeInstruction* ip, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams);
+    bool emitForeignCall(X64PerThread& pp, Module* moduleToGen, AstFuncDecl* funcNode, ByteCode* bc, ByteCodeInstruction* ip, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams);
     bool emitForeignFctCall(X64PerThread& pp, Module* moduleToGen, TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& paramsRegisters, VectorNative<TypeInfo*>& paramsTypes);
     bool emitForeignCallParameters(X64PerThread& pp, Module* moduleToGen, uint32_t offsetRT, TypeInfoFuncAttr* typeFuncBC, const VectorNative<uint32_t>& pushRAParams);
 

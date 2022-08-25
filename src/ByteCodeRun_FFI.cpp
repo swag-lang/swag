@@ -269,21 +269,11 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
     auto      returnType = TypeManager::concreteType(typeInfoFunc->returnType);
     if (returnType != g_TypeMgr->typeInfoVoid)
     {
-        // Special return
-        if (returnType->kind == TypeInfoKind::Slice ||
-            returnType->kind == TypeInfoKind::Interface ||
-            returnType->isNative(NativeTypeKind::Any) ||
-            returnType->isNative(NativeTypeKind::String))
+        if (typeInfoFunc->returnByCopy())
         {
             numParameters++;
             context->ffiArgs.push_back(&ffi_type_pointer);
             context->ffiArgsValues.push_back(&context->registersRR);
-        }
-        else if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
-        {
-            numParameters++;
-            context->ffiArgs.push_back(&ffi_type_pointer);
-            context->ffiArgsValues.push_back(context->registersRR);
         }
         else
         {

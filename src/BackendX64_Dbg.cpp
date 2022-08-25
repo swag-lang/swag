@@ -1067,7 +1067,7 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
             // Proc ID
             // PROCSYM32
             /////////////////////////////////
-            dbgStartRecord(pp, concat, f.wrapper ? S_GPROC32_ID : S_LPROC32_ID);
+            dbgStartRecord(pp, concat, S_LPROC32_ID);
             concat.addU32(0);                             // Parent = 0
             concat.addU32(0);                             // End = 0
             concat.addU32(0);                             // Next = 0
@@ -1095,7 +1095,7 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
 
             // Capture parameters
             /////////////////////////////////
-            if (decl->captureParameters && !(decl->attributeFlags & ATTRIBUTE_COMPILER_FUNC) && !f.wrapper)
+            if (decl->captureParameters && !(decl->attributeFlags & ATTRIBUTE_COMPILER_FUNC))
             {
                 auto countParams = decl->captureParameters->childs.size();
                 for (int i = 0; i < countParams; i++)
@@ -1139,7 +1139,7 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
 
             // Parameters
             /////////////////////////////////
-            if (decl->parameters && !(decl->attributeFlags & ATTRIBUTE_COMPILER_FUNC) && !f.wrapper)
+            if (decl->parameters && !(decl->attributeFlags & ATTRIBUTE_COMPILER_FUNC))
             {
                 auto countParams = decl->parameters->childs.size();
                 for (int i = 0; i < countParams; i++)
@@ -1170,7 +1170,16 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
                     dbgStartRecord(pp, concat, S_DEFRANGE_REGISTER_REL);
                     concat.addU16(R_RDI); // Register
                     concat.addU16(0);     // Flags
-                    concat.addU32(overload->storageIndex * sizeof(Register) + f.offsetParam);
+                    uint32_t offsetStackParam = 0;
+                    uint32_t regParam         = i;
+                    if (typeFunc->isVariadic() && i != countParams - 1)
+                        regParam += 2;
+                    else if (typeFunc->isVariadic())
+                        regParam = 0;
+                    if (regParam < 4)
+                        offsetStackParam = (regParam * sizeof(Register)) + f.offsetParam;
+                    else
+                        offsetStackParam = overload->storageIndex * sizeof(Register) + f.offsetRetVal;
                     dbgEmitSecRel(pp, concat, f.symbolIndex, pp.symCOIndex);
                     concat.addU16((uint16_t) (f.endAddress - f.startAddress)); // Range
                     dbgEndRecord(pp, concat);
@@ -1190,7 +1199,7 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
                         dbgStartRecord(pp, concat, S_DEFRANGE_REGISTER_REL);
                         concat.addU16(R_RDI); // Register
                         concat.addU16(0);     // Flags
-                        concat.addU32(overload->storageIndex * sizeof(Register) + f.offsetParam);
+                        concat.addU32(offsetStackParam);
                         dbgEmitSecRel(pp, concat, f.symbolIndex, pp.symCOIndex);
                         concat.addU16((uint16_t) (f.endAddress - f.startAddress)); // Range
                         dbgEndRecord(pp, concat);
@@ -1237,12 +1246,8 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
 
             // Compute file name index in the checksum table
             auto    checkSymIndex = 0;
-            string* name          = nullptr;
-            if (f.wrapper)
-                name = &exportFilePath;
-            else
-                name = &sourceFile->path;
-            auto it = mapFileNames.find(*name);
+            string* name          = &sourceFile->path;
+            auto    it            = mapFileNames.find(*name);
             if (it == mapFileNames.end())
             {
                 checkSymIndex = (uint32_t) arrFileNames.size();
