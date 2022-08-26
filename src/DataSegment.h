@@ -86,7 +86,7 @@ struct DataSegment
     uint32_t addString(const Utf8& str, uint8_t** resultPtr = nullptr);
     uint32_t addStringNoLock(const Utf8& str, uint8_t** resultPtr = nullptr);
     void     addInitPtr(uint32_t patchOffset, uint32_t srcOffset, SegmentKind seg = SegmentKind::Me);
-    void     addInitPtrFunc(uint32_t offset, const Utf8& funcName, RelocType relocType);
+    void     addInitPtrFunc(uint32_t offset, const Utf8& funcName);
     void     addPatchPtr(int64_t* addr, int64_t value);
     void     applyPatchPtr();
     void     addPatchMethod(AstFuncDecl* funcDecl, uint32_t storageOffset);
@@ -109,7 +109,7 @@ struct DataSegment
     map<uint64_t, CacheValue> storedValues64;
 
     VectorNative<InitPtrRef>             initPtr;
-    map<uint32_t, pair<Utf8, RelocType>> initFuncPtr;
+    map<uint32_t, Utf8>                  initFuncPtr;
     map<void*, SaveValue>                savedValues;
     vector<PatchPtrRef>                  patchPtr;
     vector<pair<AstFuncDecl*, uint32_t>> patchMethods;

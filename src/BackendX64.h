@@ -366,7 +366,6 @@ struct BackendX64 : public Backend
 
     bool buildRelocSegment(const BuildParameters& buildParameters, DataSegment* dataSegment, CoffRelocationTable& relocTable, SegmentKind me);
 
-    void emitPatchForeignPointers(const BuildParameters& buildParameters, DataSegment* segment, uint32_t segIndex);
     bool emitGetTypeTable(const BuildParameters& buildParameters);
     bool emitGlobalPreMain(const BuildParameters& buildParameters);
     bool emitGlobalInit(const BuildParameters& buildParameters);

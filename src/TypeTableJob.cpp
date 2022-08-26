@@ -42,7 +42,7 @@ bool TypeTableJob::computeStruct()
         {
             realType->opUserInitFct->computeFullNameForeign(false);
             g_ModuleMgr->addPatchFuncAddress(&concreteType->opInit, realType->opUserInitFct);
-            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opInit), realType->opUserInitFct->fullnameForeign, DataSegment::RelocType::Foreign);
+            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opInit), realType->opUserInitFct->fullnameForeign);
         }
         else if (realType->opInit)
         {
@@ -58,14 +58,14 @@ bool TypeTableJob::computeStruct()
             else
                 callName = realType->opInit->getCallName();
 
-            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opInit), callName, DataSegment::RelocType::Local);
+            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opInit), callName);
         }
 
         if (realType->opUserDropFct && realType->opUserDropFct->isForeign())
         {
             realType->opUserDropFct->computeFullNameForeign(false);
             g_ModuleMgr->addPatchFuncAddress(&concreteType->opDrop, realType->opUserDropFct);
-            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opDrop), realType->opUserDropFct->fullnameForeign, DataSegment::RelocType::Foreign);
+            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opDrop), realType->opUserDropFct->fullnameForeign);
         }
         else if (realType->opDrop)
         {
@@ -81,14 +81,14 @@ bool TypeTableJob::computeStruct()
             else
                 callName = realType->opDrop->getCallName();
 
-            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opDrop), callName, DataSegment::RelocType::Local);
+            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opDrop), callName);
         }
 
         if (realType->opUserPostCopyFct && realType->opUserPostCopyFct->isForeign())
         {
             realType->opUserPostCopyFct->computeFullNameForeign(false);
             g_ModuleMgr->addPatchFuncAddress(&concreteType->opPostCopy, realType->opUserPostCopyFct);
-            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opPostCopy), realType->opUserPostCopyFct->fullnameForeign, DataSegment::RelocType::Foreign);
+            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opPostCopy), realType->opUserPostCopyFct->fullnameForeign);
         }
         else if (realType->opPostCopy)
         {
@@ -104,14 +104,14 @@ bool TypeTableJob::computeStruct()
             else
                 callName = realType->opPostCopy->getCallName();
 
-            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opPostCopy), callName, DataSegment::RelocType::Local);
+            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opPostCopy), callName);
         }
 
         if (realType->opUserPostMoveFct && realType->opUserPostMoveFct->isForeign())
         {
             realType->opUserPostMoveFct->computeFullNameForeign(false);
             g_ModuleMgr->addPatchFuncAddress(&concreteType->opPostMove, realType->opUserPostMoveFct);
-            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opPostMove), realType->opUserPostMoveFct->fullnameForeign, DataSegment::RelocType::Foreign);
+            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opPostMove), realType->opUserPostMoveFct->fullnameForeign);
         }
         else if (realType->opPostMove)
         {
@@ -127,7 +127,7 @@ bool TypeTableJob::computeStruct()
             else
                 callName = realType->opPostMove->getCallName();
 
-            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opPostMove), callName, DataSegment::RelocType::Local);
+            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opPostMove), callName);
         }
     }
 

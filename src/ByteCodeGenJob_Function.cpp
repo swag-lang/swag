@@ -1701,7 +1701,6 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         if (node->typeInfo && node->typeInfo->isClosure())
             inst->b.u32 -= sizeof(Register);
 
-        inst->c.b       = foreign || lambda;
         inst->d.pointer = (uint8_t*) typeInfoFunc;
 
         // In case of a real closure not affected to a lambda, we must count the first parameter
@@ -1742,7 +1741,6 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         if (node->typeInfo && node->typeInfo->isClosure())
             inst->b.u32 -= sizeof(Register);
 
-        inst->c.b       = foreign || lambda;
         inst->d.pointer = (uint8_t*) typeInfoFunc;
 
         // In case of a real closure not affected to a lambda, we must count the first parameter

@@ -49,15 +49,9 @@ bool BackendX64::buildRelocSegment(const BuildParameters& buildParameters, DataS
 
     for (auto& k : dataSegment->initFuncPtr)
     {
-        auto relocType                          = k.second.second;
         *(void**) dataSegment->address(k.first) = 0;
 
-        // Will be done dynamically during the module init, because we need to patch the pointer with
-        // the foreign marker
-        if (relocType == DataSegment::RelocType::Foreign)
-            continue;
-
-        auto sym             = getOrAddSymbol(pp, k.second.first, CoffSymbolKind::Extern, pp.sectionIndexText);
+        auto sym             = getOrAddSymbol(pp, k.second, CoffSymbolKind::Extern);
         reloc.virtualAddress = k.first;
         reloc.symbolIndex    = sym->index;
         reloc.type           = IMAGE_REL_AMD64_ADDR64;

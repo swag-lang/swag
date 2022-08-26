@@ -119,7 +119,7 @@ void ModuleManager::addPatchFuncAddress(void** patchAddress, AstFuncDecl* func)
     {
         auto fnPtr = getFnPointer(moduleName, func->fullnameForeign);
         SWAG_ASSERT(fnPtr);
-        *patchAddress = ByteCode::doForeignLambda(fnPtr);
+        *patchAddress = fnPtr;
     }
     else
     {
@@ -152,7 +152,7 @@ bool ModuleManager::applyPatches(const Utf8& moduleName, void* moduleHandle)
             return false;
         }
 
-        *one.patchAddress = ByteCode::doForeignLambda(fnPtr);
+        *one.patchAddress = fnPtr;
     }
 
     return true;

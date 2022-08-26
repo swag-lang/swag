@@ -1146,7 +1146,6 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
                 {
                     auto child     = decl->parameters->childs[i];
                     auto typeParam = typeFunc->parameters[i]->typeInfo;
-                    auto overload  = child->resolvedSymbolOverload;
 
                     DbgTypeIndex typeIdx;
                     switch (typeParam->kind)

@@ -335,7 +335,6 @@ void LanguageSpec::setupKeywords()
     keywords.add("@mkany", TokenId::IntrinsicMakeAny);
     keywords.add("@mkinterface", TokenId::IntrinsicMakeInterface);
     keywords.add("@mkcallback", TokenId::IntrinsicMakeCallback);
-    keywords.add("@mkforeign", TokenId::IntrinsicMakeForeign);
     keywords.add("@index", TokenId::IntrinsicIndex);
     keywords.add("@isconstexpr", TokenId::IntrinsicIsConstExpr);
     keywords.add("@err", TokenId::IntrinsicGetErr);

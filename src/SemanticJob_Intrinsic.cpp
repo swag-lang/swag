@@ -76,27 +76,6 @@ bool SemanticJob::resolveIntrinsicTag(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveIntrinsicMakeForeign(SemanticContext* context)
-{
-    auto node  = context->node;
-    auto first = node->childs.front();
-    auto expr  = node->childs.back();
-
-    // Check first parameter
-    if (first->typeInfo->kind != TypeInfoKind::Lambda)
-        return context->report(first, Err(Err0782));
-    first->flags |= AST_NO_BYTECODE;
-
-    // Check expression
-    SWAG_CHECK(checkIsConcrete(context, expr));
-    if (!expr->typeInfo->isSame(g_TypeMgr->typeInfoConstPointers[(int) NativeTypeKind::Void], ISSAME_CAST))
-        return context->report(expr, Err(Err0783));
-
-    node->typeInfo    = first->typeInfo;
-    node->byteCodeFct = ByteCodeGenJob::emitIntrinsicMakeForeign;
-    return true;
-}
-
 bool SemanticJob::resolveIntrinsicMakeCallback(SemanticContext* context, AstNode* node)
 {
     auto first     = node->childs.front();
@@ -765,12 +744,6 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
         auto expr = node->childs.front();
         SWAG_CHECK(checkIsConcrete(context, expr));
         SWAG_CHECK(resolveIntrinsicMakeCallback(context, node));
-        break;
-    }
-
-    case TokenId::IntrinsicMakeForeign:
-    {
-        SWAG_CHECK(resolveIntrinsicMakeForeign(context));
         break;
     }
 

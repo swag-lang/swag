@@ -189,7 +189,6 @@ bool SyntaxJob::doIdentifierRef(AstNode* parent, AstNode** result, uint32_t iden
     case TokenId::IntrinsicMakeString:
     case TokenId::IntrinsicMakeInterface:
     case TokenId::IntrinsicMakeCallback:
-    case TokenId::IntrinsicMakeForeign:
     case TokenId::IntrinsicIsConstExpr:
     case TokenId::IntrinsicCVaStart:
     case TokenId::IntrinsicCVaEnd:

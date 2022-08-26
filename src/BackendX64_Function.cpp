@@ -2452,19 +2452,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::CopySPVaargs:
         {
-            auto typeFuncCall    = CastTypeInfo<TypeInfoFuncAttr>((TypeInfo*) ip->d.pointer, TypeInfoKind::FuncAttr, TypeInfoKind::Lambda);
-            bool foreignOrLambda = ip->c.b;
-            /*if (!foreignOrLambda)
-            {
-                // We are close to the byte code, as all PushRaParams are already in the correct order for variadics.
-                // We need the RAX register to address the stack where all are stored.
-                // There's 2 more PushRAParam to come after CopySPVaargs, so offset is 16.
-                // We also need to take care of real parameters (offset is ip->b.u32)
-                // We also need to take care of the return registers, which are always first
-                BackendX64Inst::emit_LoadAddress_Indirect(pp, (uint8_t) (16 + ip->b.u32), RAX, RSP);
-                BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            }
-            else */
+            auto typeFuncCall = CastTypeInfo<TypeInfoFuncAttr>((TypeInfo*) ip->d.pointer, TypeInfoKind::FuncAttr, TypeInfoKind::Lambda);
             if (!pushRVParams.empty())
             {
                 auto     sizeOf            = pushRVParams[0].second;
@@ -2598,8 +2586,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::MakeLambda:
         {
             auto funcNode = CastAst<AstFuncDecl>((AstNode*) ip->b.pointer, AstNodeKind::FuncDecl);
-            auto funcBC   = (ByteCode*) ip->c.pointer;
-            SWAG_ASSERT(funcNode && funcNode->extension && funcNode->extension->bc == funcBC);
+            SWAG_ASSERT(funcNode && funcNode->extension && funcNode->extension->bc == (ByteCode*) ip->c.pointer);
             Utf8 callName = funcNode->getCallName();
             BackendX64Inst::emit_Load64_Immediate(pp, 0, RAX, true);
 
@@ -2609,22 +2596,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             reloc.symbolIndex    = callSym->index;
             reloc.type           = IMAGE_REL_AMD64_ADDR64;
             pp.relocTableTextSection.table.push_back(reloc);
-
-            if (funcNode->attributeFlags & (ATTRIBUTE_FOREIGN | ATTRIBUTE_CALLBACK))
-            {
-                BackendX64Inst::emit_Load64_Immediate(pp, SWAG_LAMBDA_FOREIGN_MARKER, RCX);
-                BackendX64Inst::emit_Op64(pp, RCX, RAX, X64Op::OR);
-            }
-
-            BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            break;
-        }
-
-        case ByteCodeOp::IntrinsicMakeForeign:
-        {
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-            BackendX64Inst::emit_Load64_Immediate(pp, SWAG_LAMBDA_FOREIGN_MARKER, RCX);
-            BackendX64Inst::emit_Op64(pp, RCX, RAX, X64Op::OR);
             BackendX64Inst::emit_Store64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
             break;
         }
@@ -2636,24 +2607,13 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             BackendX64Inst::emit_Load64_Immediate(pp, SWAG_LAMBDA_BC_MARKER, RCX);
             BackendX64Inst::emit_Op64(pp, RAX, RCX, X64Op::AND);
             BackendX64Inst::emit_Test64(pp, RCX, RCX);
-            concat.addString2("\x0f\x85"); // jnz ???????? => jump to bytecode lambda
-            concat.addU32(0);
-            auto jumpToBCAddr   = (uint32_t*) concat.getSeekPtr() - 1;
-            auto jumpToBCOffset = concat.totalCount();
-
-            // Foreign lambda
-            //////////////////
-
-            BackendX64Inst::emit_Load64_Immediate(pp, ~SWAG_LAMBDA_FOREIGN_MARKER, RCX);
-            BackendX64Inst::emit_Op64(pp, RCX, RAX, X64Op::AND);
-            concat.addString1("\xe9"); // jmp ???????? => jump after foreign lambda
+            concat.addString2("\x0f\x84"); // jz ???????? => jump to after bytecode lambda
             concat.addU32(0);
             auto jumpBCToAfterAddr   = (uint32_t*) concat.getSeekPtr() - 1;
             auto jumpBCToAfterOffset = concat.totalCount();
 
             // ByteCode lambda
             //////////////////
-            *jumpToBCAddr = concat.totalCount() - jumpToBCOffset;
 
             BackendX64Inst::emit_Copy64(pp, RAX, RCX);
             BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symPI_makeCallback, 0);
@@ -2721,15 +2681,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             auto jumpToBCAddr   = (uint32_t*) concat.getSeekPtr() - 1;
             auto jumpToBCOffset = concat.totalCount();
 
-            // Test if it's a foreign lambda (and clear the bit if it is)
-            concat.addString4("\x49\x0F\xBA\xF2"); // btr r10, ??
-            concat.addU8(SWAG_LAMBDA_FOREIGN_MARKER_BIT);
-            concat.addString2("\x0f\x82"); // jb ???????? => jump to foreign lambda
-            concat.addU32(0);
-            auto jumpToForeignAddr   = (uint32_t*) concat.getSeekPtr() - 1;
-            auto jumpToForeignOffset = concat.totalCount();
-
-            // Local lambda
+            // Native lambda
             //////////////////
             SWAG_CHECK(emitForeignCallParameters(pp, moduleToGen, offsetRT, typeFuncBC, pushRAParams));
             concat.addString3("\x41\xFF\xD2"); // call r10
@@ -2739,19 +2691,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             concat.addU32(0);
             auto jumpBCToAfterAddr   = (uint32_t*) concat.getSeekPtr() - 1;
             auto jumpBCToAfterOffset = concat.totalCount();
-
-            // Foreign lambda
-            //////////////////
-            *jumpToForeignAddr = concat.totalCount() - jumpToForeignOffset;
-
-            SWAG_CHECK(emitForeignCallParameters(pp, moduleToGen, offsetRT, typeFuncBC, pushRAParams));
-            concat.addString3("\x41\xFF\xD2"); // call r10
-            emitForeignCallResult(pp, typeFuncBC, offsetRT);
-
-            concat.addString1("\xe9"); // jmp ???????? => jump after bytecode lambda
-            concat.addU32(0);
-            auto jumpForeignToAfterAddr   = (uint32_t*) concat.getSeekPtr() - 1;
-            auto jumpForeignToAfterOffset = concat.totalCount();
 
             // ByteCode lambda
             //////////////////
@@ -2765,8 +2704,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
             // End
             //////////////////
-            *jumpBCToAfterAddr      = concat.totalCount() - jumpBCToAfterOffset;
-            *jumpForeignToAfterAddr = concat.totalCount() - jumpForeignToAfterOffset;
+            *jumpBCToAfterAddr = concat.totalCount() - jumpBCToAfterOffset;
 
             pushRAParams.clear();
             pushRVParams.clear();

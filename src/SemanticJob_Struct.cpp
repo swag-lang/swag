@@ -364,7 +364,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         if (funcChild->attributeFlags & ATTRIBUTE_FOREIGN)
         {
             funcChild->computeFullNameForeign(true);
-            constSegment->addInitPtrFunc(offset, funcChild->fullnameForeign, DataSegment::RelocType::Foreign);
+            constSegment->addInitPtrFunc(offset, funcChild->fullnameForeign);
 
             // This will be filled when the module will be loaded, with the real function address
             *ptrITable = nullptr;
@@ -376,14 +376,14 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
 
             *ptrITable = ByteCode::doByteCodeLambda(funcChild->extension->bc);
             funcChild->computeFullNameForeign(true);
-            constSegment->addInitPtrFunc(offset, funcChild->fullnameForeign, DataSegment::RelocType::Foreign);
+            constSegment->addInitPtrFunc(offset, funcChild->fullnameForeign);
         }
         else
         {
             funcChild->extension->bc->isUsed = true;
 
             *ptrITable = ByteCode::doByteCodeLambda(funcChild->extension->bc);
-            constSegment->addInitPtrFunc(offset, funcChild->getCallName(), DataSegment::RelocType::Local);
+            constSegment->addInitPtrFunc(offset, funcChild->getCallName());
         }
 
         ptrITable++;

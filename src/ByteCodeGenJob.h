@@ -351,7 +351,6 @@ struct ByteCodeGenJob : public Job
     static bool emitIntrinsicMakeAny(ByteCodeGenContext* context);
     static bool emitIntrinsicMakeSlice(ByteCodeGenContext* context);
     static bool emitIntrinsicMakeCallback(ByteCodeGenContext* context);
-    static bool emitIntrinsicMakeForeign(ByteCodeGenContext* context);
     static bool emitIntrinsicMakeInterface(ByteCodeGenContext* context);
     static bool emitUserOp(ByteCodeGenContext* context, AstNode* allParams = nullptr, AstNode* forNode = nullptr, bool freeRegisterParams = true);
     static bool emitLeaveScope(ByteCodeGenContext* context);

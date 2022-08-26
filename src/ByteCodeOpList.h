@@ -51,7 +51,6 @@ BYTECODE_OP(IntrinsicModules, OPFLAG_WRITE_A | OPFLAG_WRITE_B, "_ra_, _rb_ = @mo
 BYTECODE_OP(IntrinsicCompiler, OPFLAG_WRITE_A | OPFLAG_WRITE_B, "_ra_, _rb_ = @compiler()", 0)
 BYTECODE_OP(IntrinsicIsByteCode, OPFLAG_WRITE_A, "_ra_ = @isbytecode()", 0)
 BYTECODE_OP(IntrinsicMakeCallback, OPFLAG_WRITE_A | OPFLAG_READ_A, "_ra_ = @mkcallback(_ra_)", 0)
-BYTECODE_OP(IntrinsicMakeForeign, OPFLAG_WRITE_A | OPFLAG_READ_A, "_ra_ = @mkforeign(_ra_)", 0)
 BYTECODE_OP(IntrinsicGetErr, OPFLAG_WRITE_A | OPFLAG_WRITE_B, "_ra_, _rb_ = @geterr()", 0)
 BYTECODE_OP(IntrinsicBcDbg, 0, "@bcdbg()", 0)
 
@@ -209,7 +208,7 @@ BYTECODE_OP(CopyRTtoRC, OPFLAG_WRITE_A, "_ra_ = result", 0)
 BYTECODE_OP(CopyRTtoRC2, OPFLAG_WRITE_A | OPFLAG_WRITE_B, "_ra_, _rb_ = result", 0)
 
 BYTECODE_OP(CopySP, OPFLAG_WRITE_A | OPFLAG_READ_VAL32_B | OPFLAG_READ_C, "_ra_ = &_rc_", 0)
-BYTECODE_OP(CopySPVaargs, OPFLAG_WRITE_A | OPFLAG_READ_VAL32_B | OPFLAG_READ_VAL32_C | OPFLAG_READ_VAL64_D, "_ra_ = &sp + _rbu32_", 0)
+BYTECODE_OP(CopySPVaargs, OPFLAG_WRITE_A | OPFLAG_READ_VAL32_B | OPFLAG_READ_VAL64_D, "_ra_ = &sp + _rbu32_", 0)
 
 BYTECODE_OP(GetParam64SI, OPFLAG_WRITE_A | OPFLAG_WRITE_B | OPFLAG_READ_VAL32_C, "", 0)
 BYTECODE_OP(IntrinsicIsConstExprSI, OPFLAG_WRITE_A | OPFLAG_READ_VAL32_C, "", 0)

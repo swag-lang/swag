@@ -77,7 +77,7 @@ void DataSegment::initFrom(DataSegment* other)
     }
 
     for (auto& it : other->initFuncPtr)
-        addInitPtrFunc(it.first, it.second.first, it.second.second);
+        addInitPtrFunc(it.first, it.second);
 
     // This maps contain direct pointer to the original buffers from bootstrap/runtime.
     // This is fine, as original buffers are persistent, and byte code will use them.
@@ -380,14 +380,14 @@ void DataSegment::doPatchMethods(JobContext* context)
         {
             funcNode->computeFullNameForeign(false);
             lambdaPtr = ByteCodeRun::makeLambda(context, funcNode, nullptr);
-            addInitPtrFunc(it.second, funcNode->fullnameForeign, DataSegment::RelocType::Foreign);
+            addInitPtrFunc(it.second, funcNode->fullnameForeign);
         }
         else if (funcNode->extension && funcNode->extension->bc)
         {
             bc            = funcNode->extension->bc;
             bc->forceEmit = true;
             lambdaPtr     = ByteCodeRun::makeLambda(context, funcNode, bc);
-            addInitPtrFunc(it.second, funcNode->getCallName(), DataSegment::RelocType::Local);
+            addInitPtrFunc(it.second, funcNode->getCallName());
         }
 
         if (lambdaPtr)
@@ -427,14 +427,14 @@ void DataSegment::addInitPtr(uint32_t patchOffset, uint32_t srcOffset, SegmentKi
         g_Stats.numInitPtr++;
 }
 
-void DataSegment::addInitPtrFunc(uint32_t offset, const Utf8& funcName, RelocType relocType)
+void DataSegment::addInitPtrFunc(uint32_t offset, const Utf8& funcName)
 {
     if (kind == SegmentKind::Compiler)
         return;
 
     ScopedLock lk(mutexPtr);
 
-    initFuncPtr[offset] = {funcName, relocType};
+    initFuncPtr[offset] = funcName;
     if (g_CommandLine->stats)
         g_Stats.numInitFuncPtr++;
 }

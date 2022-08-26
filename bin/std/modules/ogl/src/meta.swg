@@ -58,7 +58,7 @@ var g_Functions: Array'OneFunc
         builderVars.appendString(");\n}\n\n")
 
         // Initialize the variable with the getExtensionAddress
-        builderInit.appendFormat("\text_% = @mkforeign(%, getExtensionAddress(@dataof(\"%\")))\n", e.name, typeFunc.name, e.name);
+        builderInit.appendFormat("\text_% = cast(%) getExtensionAddress(@dataof(\"%\"))\n", e.name, typeFunc.name, e.name);
     }
 
     itf := @compiler()

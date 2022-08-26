@@ -167,9 +167,6 @@ struct ByteCode
     inline static bool hasSomethingInD(ByteCodeInstruction* inst) { return g_ByteCodeOpDesc[(int)inst->op].flags & (OPFLAG_READ_D | OPFLAG_WRITE_D | OPFLAG_READ_VAL32_D | OPFLAG_READ_VAL64_D); }
     // clang-format on
 
-    static void* doForeignLambda(void* ptr);
-    static bool  isForeignLambda(void* ptr);
-    static void* undoForeignLambda(void* ptr);
     static void* doByteCodeLambda(void* ptr);
     static void* undoByteCodeLambda(void* ptr);
     static bool  isByteCodeLambda(void* ptr);

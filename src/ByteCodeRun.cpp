@@ -99,7 +99,7 @@ void* ByteCodeRun::makeLambda(JobContext* context, AstFuncDecl* funcNode, ByteCo
         // So now its the highest bit.
         SWAG_ASSERT(!ByteCode::isByteCodeLambda(funcPtr));
 
-        return ByteCode::doForeignLambda(funcPtr);
+        return funcPtr;
     }
     else
     {
@@ -527,14 +527,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         if (ByteCode::isByteCodeLambda(ptr))
             registersRC[ip->a.u32].pointer = (uint8_t*) makeCallback(ptr);
         else
-            registersRC[ip->a.u32].pointer = (uint8_t*) ByteCode::undoForeignLambda(ptr);
-        break;
-    }
-
-    case ByteCodeOp::IntrinsicMakeForeign:
-    {
-        auto ptr                       = (void*) registersRC[ip->a.u32].pointer;
-        registersRC[ip->a.u32].pointer = (uint8_t*) ByteCode::doForeignLambda(ptr);
+            registersRC[ip->a.u32].pointer = (uint8_t*) ptr;
         break;
     }
 
@@ -588,17 +581,6 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
                 context->bc->enterByteCode(context, 0, UINT32_MAX, ip->c.u32);
             else
                 context->bc->enterByteCode(context);
-        }
-
-        // Marked as foreign, need to resolve address
-        else if (ByteCode::isForeignLambda((void*) ptr))
-        {
-            auto funcPtr = ByteCode::undoForeignLambda((void*) ptr);
-            SWAG_ASSERT(funcPtr);
-            auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>((TypeInfo*) ip->b.pointer, TypeInfoKind::Lambda);
-            ffiCall(context, funcPtr, typeInfoFunc);
-            if (ip->op == ByteCodeOp::LambdaCallPop)
-                context->incSP(ip->c.u32);
         }
 
         // Normal lambda
