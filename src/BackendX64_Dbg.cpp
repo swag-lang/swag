@@ -1167,9 +1167,6 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
                     dbgEndRecord(pp, concat);
 
                     //////////
-                    dbgStartRecord(pp, concat, S_DEFRANGE_REGISTER_REL);
-                    concat.addU16(R_RDI); // Register
-                    concat.addU16(0);     // Flags
                     uint32_t offsetStackParam = 0;
                     uint32_t regParam         = i;
                     if (typeFunc->isVariadic() && i != countParams - 1)
@@ -1179,7 +1176,13 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
                     if (regParam < 4)
                         offsetStackParam = (regParam * sizeof(Register)) + f.offsetParam;
                     else
-                        offsetStackParam = overload->storageIndex * sizeof(Register) + f.offsetRetVal;
+                        offsetStackParam = (regParam * sizeof(Register)) + f.offsetRetVal;
+
+                    //////////
+                    dbgStartRecord(pp, concat, S_DEFRANGE_REGISTER_REL);
+                    concat.addU16(R_RDI); // Register
+                    concat.addU16(0);     // Flags
+                    concat.addU32(offsetStackParam);
                     dbgEmitSecRel(pp, concat, f.symbolIndex, pp.symCOIndex);
                     concat.addU16((uint16_t) (f.endAddress - f.startAddress)); // Range
                     dbgEndRecord(pp, concat);

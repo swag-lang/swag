@@ -270,7 +270,7 @@ bool BackendX64::emitForeignFctCall(X64PerThread& pp, Module* moduleToGen, TypeI
 
                 // :StructByCopy
                 // Store the content of the struct in the stack
-                if (sizeOf < sizeof(void*))
+                if (sizeOf <= sizeof(void*))
                 {
                     switch (sizeOf)
                     {
