@@ -129,8 +129,6 @@ impl Serializer
         }
         else
         {
-            Console.printf("decode: %\n", cast(const *void) decode)
-            Console.printf("value:  %\n", &value)
             if !decode.beginField(value)
                 return
             defer decode.endField()

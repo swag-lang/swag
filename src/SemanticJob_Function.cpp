@@ -288,7 +288,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
 
     if (!(node->attributeFlags & ATTRIBUTE_GENERATED_FUNC))
     {
-        if (node->flags & AST_SPECIAL_COMPILER_FUNC)
+        if (node->attributeFlags & ATTRIBUTE_SHARP_FUNC)
         {
             SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_INLINE), context->report(node, Err(Err0743)));
         }
@@ -500,7 +500,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
             funcNode->attributeFlags |= ATTRIBUTE_MACRO;
         }
 
-        if (funcNode->flags & AST_SPECIAL_COMPILER_FUNC)
+        if (funcNode->attributeFlags & ATTRIBUTE_SHARP_FUNC)
         {
             SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MACRO), context->report(funcNode, Fmt(Err(Err0761), funcNode->getDisplayNameC())));
             SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MIXIN), context->report(funcNode, Fmt(Err(Err0762), funcNode->getDisplayNameC())));
@@ -790,7 +790,7 @@ bool SemanticJob::isMethod(AstFuncDecl* funcNode)
         funcNode->parent->kind != AstNodeKind::CompilerSelectIf &&
         funcNode->parent->kind != AstNodeKind::CompilerCheckIf &&
         !(funcNode->flags & AST_FROM_GENERIC) &&
-        !(funcNode->flags & AST_SPECIAL_COMPILER_FUNC) &&
+        !(funcNode->attributeFlags & ATTRIBUTE_SHARP_FUNC) &&
         (funcNode->ownerScope->kind == ScopeKind::Struct) &&
         (funcNode->ownerStructScope->owner->typeInfo->kind == TypeInfoKind::Struct))
     {

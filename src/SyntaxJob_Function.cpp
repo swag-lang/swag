@@ -459,7 +459,6 @@ bool SyntaxJob::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId
     // Name
     if (funcForCompiler)
     {
-        funcNode->flags |= AST_SPECIAL_COMPILER_FUNC;
         int id = g_UniqueID.fetch_add(1);
         switch (typeFuncId)
         {

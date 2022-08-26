@@ -62,6 +62,8 @@ PB des references
 -------------------------------------
 Call conv x64/llvm local, passer les valeurs de retour par RAX si possible
 -------------------------------------
+Erreur affichées dans les fichiers d'export plutot que dans le code source d'origine
+-------------------------------------
 
 
 

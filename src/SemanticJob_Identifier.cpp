@@ -2365,7 +2365,7 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, VectorNative<
     {
         SWAG_VERIFY(node->ownerFct, context->report(node, Err(Err0348)));
         AstNode* parent = node;
-        while (parent->ownerFct->flags & AST_SPECIAL_COMPILER_FUNC && parent->ownerFct->parent->ownerFct)
+        while ((parent->ownerFct->attributeFlags & ATTRIBUTE_SHARP_FUNC) && parent->ownerFct->parent->ownerFct)
             parent = parent->ownerFct->parent;
         SWAG_VERIFY(parent, context->report(parent, Err(Err0348)));
 
@@ -4172,7 +4172,7 @@ bool SemanticJob::checkCanThrow(SemanticContext* context)
     if (parentFct->isSpecialFunctionName())
         return context->report(node, Fmt(Err(Err0137), node->token.ctext(), parentFct->token.ctext()));
 
-    if (!(parentFct->typeInfo->flags & TYPEINFO_CAN_THROW) && !(parentFct->flags & AST_SPECIAL_COMPILER_FUNC))
+    if (!(parentFct->typeInfo->flags & TYPEINFO_CAN_THROW) && !(parentFct->attributeFlags & ATTRIBUTE_SHARP_FUNC))
         return context->report(node, Fmt(Err(Err0138), node->token.ctext(), parentFct->token.ctext()));
 
     return true;

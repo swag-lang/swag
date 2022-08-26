@@ -36,8 +36,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     bc->markLabels();
 
     // Get function name
-    Utf8         funcName = bc->getCallName();
-    AstFuncDecl* node     = bc->node ? CastAst<AstFuncDecl>(bc->node, AstNodeKind::FuncDecl) : nullptr;
+    Utf8         funcName;
+    AstFuncDecl* node = bc->node ? CastAst<AstFuncDecl>(bc->node, AstNodeKind::FuncDecl) : nullptr;
     if (node)
         funcName = node->getCallName();
     else
@@ -47,7 +47,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     if (node && node->attributeFlags & (ATTRIBUTE_PUBLIC | ATTRIBUTE_CALLBACK))
     {
         if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
-            pp.directives += Fmt("/EXPORT:%s ", node->fullnameForeign.c_str());
+            pp.directives += Fmt("/EXPORT:%s ", funcName.c_str());
     }
 
     // Symbol
@@ -65,13 +65,15 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     // All registers:       bc->maxReservedRegisterRC
     // offsetRT:            bc->maxCallResults
     // offsetS4:            4 registers, to store RCX, RDX, R8, R9
+    // offsetResult:        sizeof(Register) to store return value
     // offsetStack:         stackSize, function local stack
     // offsetFLT:           sizeof(Register)
     // ...padding to 16... => total is sizeStack
 
-    uint32_t offsetRT    = bc->maxReservedRegisterRC * sizeof(Register);
-    uint32_t offsetS4    = offsetRT + bc->maxCallResults * sizeof(Register);
-    uint32_t offsetStack = offsetS4 + 4 * sizeof(Register);
+    uint32_t offsetRT     = bc->maxReservedRegisterRC * sizeof(Register);
+    uint32_t offsetS4     = offsetRT + bc->maxCallResults * sizeof(Register);
+    uint32_t offsetResult = offsetS4 + 4 * sizeof(Register);
+    uint32_t offsetStack  = offsetResult + sizeof(Register);
 
     // For float load (should be reserved only if we have floating point operations in that function)
     uint32_t offsetFLT = offsetStack + typeFunc->stackSize;
@@ -2352,43 +2354,20 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::CopyRCtoRR:
-            if (returnType->kind == TypeInfoKind::Native)
+            BackendX64Inst::emit_LoadAddress_Indirect(pp, offsetResult, RAX, RDI);
+            if (ip->flags & BCI_IMM_A && ip->a.u64 <= 0x7FFFFFFF)
             {
-                if (returnType->isNative(NativeTypeKind::F32))
-                {
-                    if (ip->flags & BCI_IMM_A)
-                    {
-                        BackendX64Inst::emit_Load32_Immediate(pp, ip->a.u32, RAX);
-                        BackendX64Inst::emit_CopyF32(pp, RAX, XMM0);
-                    }
-                    else
-                        BackendX64Inst::emit_LoadF32_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
-                }
-                else if (returnType->isNative(NativeTypeKind::F64))
-                {
-                    if (ip->flags & BCI_IMM_A)
-                    {
-                        BackendX64Inst::emit_Load64_Immediate(pp, ip->a.u64, RAX);
-                        BackendX64Inst::emit_CopyF64(pp, RAX, XMM0);
-                    }
-                    else
-                        BackendX64Inst::emit_LoadF64_Indirect(pp, regOffset(ip->a.u32), XMM0, RDI);
-                }
-                else
-                {
-                    if (ip->flags & BCI_IMM_A)
-                        BackendX64Inst::emit_Load64_Immediate(pp, ip->a.u64, RAX);
-                    else
-                        BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
-                }
+                BackendX64Inst::emit_Store64_Immediate(pp, 0, ip->a.u64, RAX);
+            }
+            else if (ip->flags & BCI_IMM_A)
+            {
+                BackendX64Inst::emit_Load64_Immediate(pp, ip->a.u64, RCX);
+                BackendX64Inst::emit_Store64_Indirect(pp, 0, RCX, RAX);
             }
             else
             {
-                SWAG_ASSERT(returnType->numRegisters() == 1);
-                if (ip->flags & BCI_IMM_A)
-                    BackendX64Inst::emit_Load64_Immediate(pp, ip->a.u64, RAX);
-                else
-                    BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
+                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
+                BackendX64Inst::emit_Store64_Indirect(pp, 0, RCX, RAX);
             }
 
             break;
@@ -2699,7 +2678,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             if (callBc->node)
             {
                 auto funcNode = CastAst<AstFuncDecl>(callBc->node, AstNodeKind::FuncDecl);
-                callName = funcNode->getCallName();
+                callName      = funcNode->getCallName();
             }
             else
                 callName = callBc->getCallName();
@@ -2801,6 +2780,20 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::Ret:
+
+            // Emit result
+            if (returnType != g_TypeMgr->typeInfoVoid && !typeFunc->returnByCopy())
+            {
+                BackendX64Inst::emit_Load64_Indirect(pp, offsetResult, RAX, RDI);
+                if (returnType->kind == TypeInfoKind::Native)
+                {
+                    if (returnType->isNative(NativeTypeKind::F32))
+                        BackendX64Inst::emit_CopyF32(pp, RAX, XMM0);
+                    else if (returnType->isNative(NativeTypeKind::F64))
+                        BackendX64Inst::emit_CopyF64(pp, RAX, XMM0);
+                }
+            }
+
             BackendX64Inst::emit_Add_Cst32_To_RSP(pp, sizeStack + sizeParamsStack);
             BackendX64Inst::emit_Pop(pp, RDI);
             BackendX64Inst::emit_Ret(pp);

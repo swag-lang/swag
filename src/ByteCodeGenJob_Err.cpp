@@ -202,7 +202,7 @@ bool ByteCodeGenJob::emitThrow(ByteCodeGenContext* context)
 
     // In a top level function, this should panic
     auto parentFct = (node->semFlags & AST_SEM_EMBEDDED_RETURN) ? node->ownerInline->func : node->ownerFct;
-    if (parentFct->flags & AST_SPECIAL_COMPILER_FUNC)
+    if (parentFct->attributeFlags & ATTRIBUTE_SHARP_FUNC)
     {
         uint32_t     storageOffset;
         DataSegment* storageSegment;
@@ -240,7 +240,7 @@ bool ByteCodeGenJob::emitTry(ByteCodeGenContext* context)
         parentFct = node->ownerInline->func;
     else
         parentFct = node->ownerFct;
-    if (parentFct->flags & AST_SPECIAL_COMPILER_FUNC)
+    if (parentFct->attributeFlags & ATTRIBUTE_SHARP_FUNC)
         return emitAssume(context);
 
     if (!(node->doneFlags & AST_DONE_TRY_1))

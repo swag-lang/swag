@@ -490,3 +490,7 @@ public struct AZE
 {
     x: {s32} = @{0}
 }
+
+#premain
+{
+}

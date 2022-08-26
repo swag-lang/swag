@@ -592,8 +592,11 @@ Utf8 AstFuncDecl::getCallName()
 {
     if (attributeFlags & (ATTRIBUTE_FOREIGN | ATTRIBUTE_PUBLIC | ATTRIBUTE_CALLBACK))
     {
-        computeFullNameForeign(true);
-        return fullnameForeign;
+        if (!(attributeFlags & ATTRIBUTE_SHARP_FUNC))
+        {
+            computeFullNameForeign(true);
+            return fullnameForeign;
+        }
     }
 
     SWAG_ASSERT(extension && extension->bc);
@@ -645,7 +648,7 @@ Utf8 AstFuncDecl::getDisplayName()
     if (flags & AST_IS_LAMBDA_EXPRESSION)
         return "lambda";
 
-    if (flags & AST_SPECIAL_COMPILER_FUNC)
+    if (attributeFlags & ATTRIBUTE_SHARP_FUNC)
         return Fmt("`%s` block", token.ctext());
 
     if (attributeFlags & ATTRIBUTE_MIXIN)
