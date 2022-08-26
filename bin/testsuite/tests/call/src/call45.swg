@@ -1,4 +1,3 @@
-#global skip
 using test_foreign
 
 #test

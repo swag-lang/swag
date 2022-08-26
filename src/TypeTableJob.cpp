@@ -37,6 +37,7 @@ bool TypeTableJob::computeStruct()
 
     if (!(cflags & MAKE_CONCRETE_PARTIAL))
     {
+        Utf8 callName;
         if (realType->opUserInitFct && realType->opUserInitFct->isForeign())
         {
             realType->opUserInitFct->computeFullNameForeign(false);
@@ -48,7 +49,16 @@ bool TypeTableJob::computeStruct()
             concreteType->opInit        = ByteCodeRun::makeLambda(baseContext, realType->opUserInitFct, realType->opInit);
             realType->opInit->isUsed    = true;
             realType->opInit->forceEmit = true;
-            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opInit), realType->opInit->getCallName(), DataSegment::RelocType::Local);
+
+            if (realType->opInit->node)
+            {
+                auto funcNode = CastAst<AstFuncDecl>(realType->opInit->node, AstNodeKind::FuncDecl);
+                callName = funcNode->getCallName();
+            }
+            else
+                callName = realType->opInit->getCallName();
+
+            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opInit), callName, DataSegment::RelocType::Local);
         }
 
         if (realType->opUserDropFct && realType->opUserDropFct->isForeign())
@@ -62,7 +72,16 @@ bool TypeTableJob::computeStruct()
             concreteType->opDrop        = ByteCodeRun::makeLambda(baseContext, realType->opUserDropFct, realType->opDrop);
             realType->opDrop->isUsed    = true;
             realType->opDrop->forceEmit = true;
-            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opDrop), realType->opDrop->getCallName(), DataSegment::RelocType::Local);
+
+            if (realType->opDrop->node)
+            {
+                auto funcNode = CastAst<AstFuncDecl>(realType->opDrop->node, AstNodeKind::FuncDecl);
+                callName = funcNode->getCallName();
+            }
+            else
+                callName = realType->opDrop->getCallName();
+
+            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opDrop), callName, DataSegment::RelocType::Local);
         }
 
         if (realType->opUserPostCopyFct && realType->opUserPostCopyFct->isForeign())
@@ -76,7 +95,16 @@ bool TypeTableJob::computeStruct()
             concreteType->opPostCopy        = ByteCodeRun::makeLambda(baseContext, realType->opUserPostCopyFct, realType->opPostCopy);
             realType->opPostCopy->isUsed    = true;
             realType->opPostCopy->forceEmit = true;
-            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opPostCopy), realType->opPostCopy->getCallName(), DataSegment::RelocType::Local);
+
+            if (realType->opPostCopy->node)
+            {
+                auto funcNode = CastAst<AstFuncDecl>(realType->opPostCopy->node, AstNodeKind::FuncDecl);
+                callName = funcNode->getCallName();
+            }
+            else
+                callName = realType->opPostCopy->getCallName();
+
+            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opPostCopy), callName, DataSegment::RelocType::Local);
         }
 
         if (realType->opUserPostMoveFct && realType->opUserPostMoveFct->isForeign())
@@ -90,7 +118,16 @@ bool TypeTableJob::computeStruct()
             concreteType->opPostMove        = ByteCodeRun::makeLambda(baseContext, realType->opUserPostMoveFct, realType->opPostMove);
             realType->opPostMove->isUsed    = true;
             realType->opPostMove->forceEmit = true;
-            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opPostMove), realType->opPostMove->getCallName(), DataSegment::RelocType::Local);
+
+            if (realType->opPostMove->node)
+            {
+                auto funcNode = CastAst<AstFuncDecl>(realType->opPostMove->node, AstNodeKind::FuncDecl);
+                callName = funcNode->getCallName();
+            }
+            else
+                callName = realType->opPostMove->getCallName();
+
+            storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opPostMove), callName, DataSegment::RelocType::Local);
         }
     }
 
