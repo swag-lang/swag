@@ -287,8 +287,7 @@
     <ClCompile Include="../src/BackendLinker.cpp" />
     <ClCompile Include="../src/BackendLLVM.cpp" />
     <ClCompile Include="../src/BackendX64.cpp" />
-    <ClCompile Include="..\src\BackendX64_CCForeign.cpp" />
-    <ClCompile Include="..\src\BackendX64_CCLocal.cpp" />
+    <ClCompile Include="..\src\BackendX64_Call.cpp" />
     <ClCompile Include="..\src\BackendX64_Data.cpp" />
     <ClCompile Include="..\src\BackendX64_Dbg.cpp" />
     <ClCompile Include="../src/BackendX64FunctionBodyJob.cpp" />

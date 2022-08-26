@@ -3,7 +3,6 @@
 #include "BackendX64Inst.h"
 #include "BackendX64_Macros.h"
 #include "TypeManager.h"
-#include "LanguageSpec.h"
 
 void BackendX64::emitGetParam(X64PerThread& pp, TypeInfoFuncAttr* typeFunc, int reg, int paramIdx, int sizeOf, int storeS4, int sizeStack, uint64_t toAdd, int deRefSize)
 {
@@ -461,4 +460,79 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, Module* moduleToGen
     }
 
     return true;
+}
+
+void BackendX64::emitByteCodeLambdaFctCall(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams)
+{
+    int idxReg = 0;
+    for (int idxParam = typeFuncBC->numReturnRegisters() - 1; idxParam >= 0; idxParam--, idxReg++)
+    {
+        switch (idxReg)
+        {
+        case 0:
+            BackendX64Inst::emit_LoadAddress_Indirect(pp, offsetRT, RDX, RDI);
+            break;
+        case 1:
+            BackendX64Inst::emit_LoadAddress_Indirect(pp, offsetRT + sizeof(Register), R8, RDI);
+            break;
+        }
+    }
+
+    uint32_t stackOffset = typeFuncBC->numReturnRegisters() * sizeof(Register);
+    for (int idxParam = (int) pushRAParams.size() - 1; idxParam >= 0; idxParam--, idxReg++)
+    {
+        static const uint8_t idxToReg[4] = {RDX, R8, R9};
+
+        // Pass by value
+        stackOffset += sizeof(Register);
+        if (idxReg <= 2)
+        {
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(pushRAParams[idxParam]), idxToReg[idxReg], RDI);
+        }
+        else
+        {
+            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(pushRAParams[idxParam]), RAX, RDI);
+            BackendX64Inst::emit_Store64_Indirect(pp, stackOffset, RAX, RSP);
+        }
+    }
+}
+
+void BackendX64::emitByteCodeLambdaParams(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams)
+{
+    // If the closure is assigned to a lambda, then we must not use the first parameter (the first
+    // parameter is the capture context, which does not exist in a normal function)
+    // But as this is dynamic, we need to have two call path : one for the closure (normal call), and
+    // one for the lambda (omit first parameter)
+    if (typeFuncBC->isClosure())
+    {
+        auto reg = pushRAParams.back();
+        BackendX64Inst::emit_Load64_Indirect(pp, regOffset(reg), RAX, RDI);
+        BackendX64Inst::emit_Test64(pp, RAX, RAX);
+
+        // If not zero, jump to closure call
+        BackendX64Inst::emit_LongJumpOp(pp, BackendX64Inst::JZ);
+        pp.concat.addU32(0);
+        auto seekPtrClosure = pp.concat.getSeekPtr() - 4;
+        auto seekJmpClosure = pp.concat.totalCount();
+
+        emitByteCodeLambdaFctCall(pp, typeFuncBC, offsetRT, pushRAParams);
+
+        // Jump to after closure call
+        BackendX64Inst::emit_LongJumpOp(pp, BackendX64Inst::JUMP);
+        pp.concat.addU32(0);
+        auto seekPtrAfterClosure = pp.concat.getSeekPtr() - 4;
+        auto seekJmpAfterClosure = pp.concat.totalCount();
+
+        // Update jump to closure call
+        *seekPtrClosure = (uint8_t) (pp.concat.totalCount() - seekJmpClosure);
+
+        pushRAParams.pop_back();
+        emitByteCodeLambdaFctCall(pp, typeFuncBC, offsetRT, pushRAParams);
+
+        *seekPtrAfterClosure = (uint8_t) (pp.concat.totalCount() - seekJmpAfterClosure);
+    }
+    else
+    {
+        emitByteCodeLambdaFctCall(pp, typeFuncBC, offsetRT, pushRAParams);
+    }
 }

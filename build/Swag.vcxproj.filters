@@ -467,16 +467,13 @@
     <ClCompile Include="..\src\ByteCodeGenJob_Err.cpp">
       <Filter>Backend\ByteCode\Gen</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\BackendX64_CCForeign.cpp">
-      <Filter>Backend\X64</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\BackendLLVM_CCForeign.cpp">
       <Filter>Backend\LLVM</Filter>
     </ClCompile>
     <ClCompile Include="..\src\BackendLLVM_CCLocal.cpp">
       <Filter>Backend\LLVM</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\BackendX64_CCLocal.cpp">
+    <ClCompile Include="..\src\BackendX64_Call.cpp">
       <Filter>Backend\X64</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SemanticJob_Literal.cpp">

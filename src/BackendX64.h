@@ -372,13 +372,10 @@ struct BackendX64 : public Backend
     bool emitGlobalDrop(const BuildParameters& buildParameters);
     bool emitOS(const BuildParameters& buildParameters);
     bool emitMain(const BuildParameters& buildParameters);
-
-    void emitGetParam(X64PerThread& pp, TypeInfoFuncAttr* typeFunc, int reg, int paramIdx, int sizeOf, int storeS4, int sizeStack, uint64_t toAdd = 0, int derefSize = 0);
-    void emitLocalFctCall(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, int offsetStack, int numCallParams, int popRAidx, int callerIndex, const VectorNative<uint32_t>& pushRAParams, int firstIdxCall);
-    void emitLocalCallParameters(X64PerThread& pp, uint32_t sizeParamsStack, TypeInfoFuncAttr* typeFuncBC, uint32_t stackRR, const VectorNative<uint32_t>& pushRAParams, const VectorNative<pair<uint32_t, uint32_t>>& pushRVParams);
     void emitSymbolRelocation(X64PerThread& pp, const Utf8& name);
     void emitCall(X64PerThread& pp, const Utf8& name);
 
+    void emitGetParam(X64PerThread& pp, TypeInfoFuncAttr* typeFunc, int reg, int paramIdx, int sizeOf, int storeS4, int sizeStack, uint64_t toAdd = 0, int derefSize = 0);
     void emitForeignCallResult(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT);
     bool emitForeignCall(X64PerThread& pp, Module* moduleToGen, const Utf8& funcName, ByteCodeInstruction* ip, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams, bool localCall);
     bool emitForeignFctCall(X64PerThread& pp, Module* moduleToGen, TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& paramsRegisters, VectorNative<TypeInfo*>& paramsTypes);
