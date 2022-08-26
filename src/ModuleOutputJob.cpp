@@ -3,7 +3,6 @@
 #include "ModuleExportJob.h"
 #include "ModulePrepOutputJob.h"
 #include "ModuleGenOutputJob.h"
-#include "ModuleSaveExportJob.h"
 #include "Module.h"
 
 JobResult ModuleOutputJob::execute()
@@ -12,6 +11,7 @@ JobResult ModuleOutputJob::execute()
     {
         if (g_CommandLine->verboseStages)
             module->logStage("ModuleOutputJobPass::Init\n");
+        pass = ModuleOutputJobPass::PrepareOutputStage1;
 
         // This can arrive when testing, if the error is raised late, when generating export
         // Arrives also with --output:false
@@ -21,30 +21,15 @@ JobResult ModuleOutputJob::execute()
         // Generate .swg file with public definitions
         if (module->buildCfg.backendKind != BuildCfgBackendKind::Executable || module->isErrorModule)
         {
-            pass = ModuleOutputJobPass::SaveExport;
             auto exportJob          = g_Allocator.alloc<ModuleExportJob>();
             exportJob->backend      = module->backend;
             exportJob->dependentJob = this;
             jobsToAdd.push_back(exportJob);
-            return JobResult::KeepJobAlive;
         }
         else
         {
-            pass = ModuleOutputJobPass::PrepareOutputStage1;
             module->setHasBeenBuilt(BUILDRES_EXPORT);
         }
-    }
-
-    if (pass == ModuleOutputJobPass::SaveExport)
-    {
-        if (g_CommandLine->verboseStages)
-            module->logStage("ModuleOutputJobPass::SaveExport\n");
-        pass = ModuleOutputJobPass::PrepareOutputStage1;
-
-        auto job = g_Allocator.alloc<ModuleSaveExportJob>();
-        job->module = module;
-        job->dependentJob = this;
-        jobsToAdd.push_back(job);
     }
 
     if (pass == ModuleOutputJobPass::PrepareOutputStage1)

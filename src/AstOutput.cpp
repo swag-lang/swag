@@ -1985,8 +1985,6 @@ bool AstOutput::outputScopeContent(OutputContext& context, Concat& concat, Modul
             }
             else
                 SWAG_CHECK(outputFuncSignature(context, concat, node, node->parameters, node->selectIf));
-
-            node->exportForeignLine = concat.eolCount;
         }
     }
 

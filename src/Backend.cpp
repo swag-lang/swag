@@ -5,10 +5,10 @@
 #include "LLVMSetup.h"
 #include "Backend.h"
 #include "Version.h"
-#include "ModuleSaveExportJob.h"
 #include "Backend.h"
 #include "ByteCode.h"
 #include "Os.h"
+#include "ModuleSaveExportJob.h"
 #include "BackendFunctionBodyJobBase.h"
 
 JobResult Backend::prepareOutput(int stage, const BuildParameters& buildParameters, Job* ownerJob)
@@ -248,33 +248,48 @@ bool Backend::setupExportFile(bool force)
 
 JobResult Backend::generateExportFile(Job* ownerJob)
 {
-    if (!setupExportFile(true))
-        return JobResult::ReleaseJob;
-    if (!mustCompile)
-        return JobResult::ReleaseJob;
-
-    bufferSwg.init(4 * 1024);
-    bufferSwg.addStringFormat("// GENERATED WITH SWAG VERSION %d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
-    bufferSwg.addEol();
-    bufferSwg.addString("#global generated");
-    module->isSwag = true;
-    bufferSwg.addEol();
-
-    for (const auto& dep : module->moduleDependencies)
+    if (passExport == BackendPreCompilePass::Init)
     {
-        CONCAT_FIXED_STR(bufferSwg, "#import \"");
-        bufferSwg.addString(dep->name);
-        bufferSwg.addChar('"');
+        passExport = BackendPreCompilePass::GenerateObj;
+        if (!setupExportFile(true))
+            return JobResult::ReleaseJob;
+        if (!mustCompile)
+            return JobResult::ReleaseJob;
+
+        bufferSwg.init(4 * 1024);
+        bufferSwg.addStringFormat("// GENERATED WITH SWAG VERSION %d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
         bufferSwg.addEol();
+        bufferSwg.addString("#global generated");
+        module->isSwag = true;
+        bufferSwg.addEol();
+
+        for (const auto& dep : module->moduleDependencies)
+        {
+            CONCAT_FIXED_STR(bufferSwg, "#import \"");
+            bufferSwg.addString(dep->name);
+            bufferSwg.addChar('"');
+            bufferSwg.addEol();
+        }
+
+        CONCAT_FIXED_STR(bufferSwg, "using Swag");
+        bufferSwg.addEol();
+        bufferSwg.addEol();
+
+        // Emit everything that's public
+        if (!AstOutput::outputScope(outputContext, bufferSwg, module, module->scopeRoot))
+            return JobResult::ReleaseJob;
     }
 
-    CONCAT_FIXED_STR(bufferSwg, "using Swag");
-    bufferSwg.addEol();
-    bufferSwg.addEol();
-
-    // Emit everything that's public
-    if (!AstOutput::outputScope(outputContext, bufferSwg, module, module->scopeRoot))
-        return JobResult::ReleaseJob;
+    // Save the export file
+    if (passExport == BackendPreCompilePass::GenerateObj)
+    {
+        passExport        = BackendPreCompilePass::Release;
+        auto job          = g_Allocator.alloc<ModuleSaveExportJob>();
+        job->module       = module;
+        job->dependentJob = ownerJob;
+        ownerJob->jobsToAdd.push_back(job);
+        return JobResult::KeepJobAlive;
+    }
 
     return JobResult::ReleaseJob;
 }

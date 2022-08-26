@@ -541,7 +541,7 @@ void BackendLLVMDbg::startWrapperFunction(LLVMPerThread& pp, ByteCode* bc, AstFu
 {
     auto                    file        = exportFile;
     Utf8                    name        = node->fullnameForeign;
-    auto                    lineNo      = node->exportForeignLine;
+    auto                    lineNo      = 0;
     llvm::DISubroutineType* dbgFuncType = getFunctionType(bc->getCallType(), file);
 
     // Flags

@@ -565,6 +565,8 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     case ByteCodeOp::LambdaCallPop:
     {
         auto ptr = registersRC[ip->a.u32].u64;
+
+        // Bytecode lambda
         if (ByteCode::isByteCodeLambda((void*) ptr))
         {
             context->bc->addCallStack(context);
@@ -583,7 +585,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
                 context->bc->enterByteCode(context);
         }
 
-        // Normal lambda
+        // Native lambda
         else
         {
             auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>((TypeInfo*) ip->b.pointer, TypeInfoKind::Lambda);
