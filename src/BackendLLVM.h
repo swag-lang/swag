@@ -137,6 +137,7 @@ struct BackendLLVM : public Backend
     llvm::FunctionType* createFunctionTypeForeign(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFuncBC, bool closureToLambda = false);
     void                emitInternalPanic(const BuildParameters& buildParameters, Module* moduleToGen, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, AstNode* node, const char* message);
     void                setFuncAttributes(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc, llvm::Function* func);
+    void                storeTypedValueToRegister(llvm::LLVMContext& context, const BuildParameters& buildParameters, llvm::Value* value, uint32_t reg, llvm::AllocaInst* allocR);
     bool                emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc);
     void                getLocalCallParameters(const BuildParameters& buildParameters, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR, llvm::AllocaInst* allocT, VectorNative<llvm::Value*>& params, TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& pushRAParams, const vector<llvm::Value*>& values, bool closureToLambda = false);
 

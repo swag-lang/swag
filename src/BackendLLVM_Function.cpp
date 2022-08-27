@@ -3493,18 +3493,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::CopyRTtoRC:
         {
-            auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = returnResult;
-            if (returnResult->getType()->isPointerTy())
-                builder.CreateStore(builder.CreatePtrToInt(r1, builder.getInt64Ty()), r0);
-            else if (returnResult->getType()->isIntegerTy(8))
-                builder.CreateStore(r1, TO_PTR_I8(r0));
-            else if (returnResult->getType()->isIntegerTy(16))
-                builder.CreateStore(r1, TO_PTR_I16(r0));
-            else if (returnResult->getType()->isIntegerTy(32))
-                builder.CreateStore(r1, TO_PTR_I32(r0));
-            else
-                builder.CreateStore(r1, r0);
+            storeTypedValueToRegister(context, buildParameters, returnResult, ip->a.u32, allocR);
             break;
         }
         case ByteCodeOp::CopyRTtoRC2:
@@ -3879,13 +3868,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             else
                 callName = callBc->getCallName();
             returnResult = emitForeignCall(buildParameters, moduleToGen, callName, typeFuncCall, allocR, allocRR, pushRAParams, {}, true);
-
             if (ip->op == ByteCodeOp::LocalCallPopRC)
-            {
-                auto r0 = GEP_I32(allocR, ip->d.u32);
-                builder.CreateStore(returnResult, r0);
-            }
-
+                storeTypedValueToRegister(context, buildParameters, returnResult, ip->d.u32, allocR);
             break;
         }
 
@@ -4893,4 +4877,25 @@ void BackendLLVM::setFuncAttributes(const BuildParameters& buildParameters, Modu
     }
 
     func->addAttributes(llvm::AttributeList::FunctionIndex, attr);
+}
+
+void BackendLLVM::storeTypedValueToRegister(llvm::LLVMContext& context, const BuildParameters& buildParameters, llvm::Value* value, uint32_t reg, llvm::AllocaInst* allocR)
+{
+    int   ct              = buildParameters.compileType;
+    int   precompileIndex = buildParameters.precompileIndex;
+    auto& pp              = *perThread[ct][precompileIndex];
+    auto& builder         = *pp.builder;
+
+    auto r0 = GEP_I32(allocR, reg);
+    auto r1 = value;
+    if (value->getType()->isPointerTy())
+        builder.CreateStore(builder.CreatePtrToInt(r1, builder.getInt64Ty()), r0);
+    else if (value->getType()->isIntegerTy(8))
+        builder.CreateStore(r1, TO_PTR_I8(r0));
+    else if (value->getType()->isIntegerTy(16))
+        builder.CreateStore(r1, TO_PTR_I16(r0));
+    else if (value->getType()->isIntegerTy(32))
+        builder.CreateStore(r1, TO_PTR_I32(r0));
+    else
+        builder.CreateStore(r1, r0);
 }
