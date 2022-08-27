@@ -11,350 +11,6 @@
 #include "ErrorIds.h"
 #include "Diagnostic.h"
 
-BackendFunctionBodyJobBase* BackendLLVM::newFunctionJob()
-{
-    return g_Allocator.alloc<BackendLLVMFunctionBodyJob>();
-}
-
-llvm::Value* BackendLLVM::getImmediateConstantA(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint8_t numBits)
-{
-    if (ip->flags & BCI_IMM_A)
-    {
-        switch (numBits)
-        {
-        case 8:
-            return builder.getInt8(ip->a.u8);
-        case 16:
-            return builder.getInt16(ip->a.u16);
-        case 32:
-            return builder.getInt32(ip->a.u32);
-        case 64:
-            return builder.getInt64(ip->a.u64);
-        }
-    }
-
-    auto r0 = TO_PTR_I_N(GEP_I32(allocR, ip->a.u32), numBits);
-    return builder.CreateLoad(r0);
-}
-
-llvm::Type* BackendLLVM::getIntType(llvm::LLVMContext& context, uint8_t numBits)
-{
-    switch (numBits)
-    {
-    case 8:
-        return llvm::Type::getInt8Ty(context);
-    case 16:
-        return llvm::Type::getInt16Ty(context);
-    case 32:
-        return llvm::Type::getInt32Ty(context);
-    case 64:
-        return llvm::Type::getInt64Ty(context);
-    default:
-        SWAG_ASSERT(false);
-        break;
-    }
-
-    return nullptr;
-}
-
-llvm::Type* BackendLLVM::getIntPtrType(llvm::LLVMContext& context, uint8_t numBits)
-{
-    return getIntType(context, numBits)->getPointerTo();
-}
-
-bool BackendLLVM::swagTypeToLLVMType(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfo* typeInfo, llvm::Type** llvmType)
-{
-    int   ct              = buildParameters.compileType;
-    int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = *perThread[ct][precompileIndex];
-    auto& context         = *pp.context;
-
-    typeInfo  = TypeManager::concreteType(typeInfo, CONCRETE_ALIAS | CONCRETE_FORCEALIAS);
-    *llvmType = nullptr;
-
-    if (typeInfo->kind == TypeInfoKind::Enum)
-    {
-        auto typeInfoEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
-        SWAG_CHECK(swagTypeToLLVMType(buildParameters, moduleToGen, typeInfoEnum->rawType, llvmType));
-        return true;
-    }
-
-    if (typeInfo->kind == TypeInfoKind::Pointer)
-    {
-        auto typeInfoPointer = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
-        auto pointedType     = TypeManager::concreteType(typeInfoPointer->pointedType);
-        if (pointedType->isNative(NativeTypeKind::Void))
-            *llvmType = llvm::Type::getInt8Ty(context);
-        else
-            SWAG_CHECK(swagTypeToLLVMType(buildParameters, moduleToGen, pointedType, llvmType));
-        *llvmType = (*llvmType)->getPointerTo();
-        return true;
-    }
-
-    if (typeInfo->kind == TypeInfoKind::Slice ||
-        typeInfo->kind == TypeInfoKind::Array ||
-        typeInfo->kind == TypeInfoKind::Struct ||
-        typeInfo->kind == TypeInfoKind::Interface ||
-        typeInfo->kind == TypeInfoKind::Lambda ||
-        typeInfo->isNative(NativeTypeKind::Any) ||
-        typeInfo->isNative(NativeTypeKind::String) ||
-        typeInfo->kind == TypeInfoKind::Reference)
-    {
-        *llvmType = llvm::Type::getInt8PtrTy(context);
-        return true;
-    }
-
-    if (typeInfo->kind == TypeInfoKind::Native)
-    {
-        switch (typeInfo->nativeType)
-        {
-        case NativeTypeKind::Bool:
-            *llvmType = llvm::Type::getInt8Ty(context);
-            return true;
-        case NativeTypeKind::S8:
-        case NativeTypeKind::U8:
-            *llvmType = llvm::Type::getInt8Ty(context);
-            return true;
-        case NativeTypeKind::S16:
-        case NativeTypeKind::U16:
-            *llvmType = llvm::Type::getInt16Ty(context);
-            return true;
-        case NativeTypeKind::S32:
-        case NativeTypeKind::U32:
-        case NativeTypeKind::Rune:
-            *llvmType = llvm::Type::getInt32Ty(context);
-            return true;
-        case NativeTypeKind::S64:
-        case NativeTypeKind::U64:
-        case NativeTypeKind::Int:
-        case NativeTypeKind::UInt:
-            *llvmType = llvm::Type::getInt64Ty(context);
-            return true;
-        case NativeTypeKind::F32:
-            *llvmType = llvm::Type::getFloatTy(context);
-            return true;
-        case NativeTypeKind::F64:
-            *llvmType = llvm::Type::getDoubleTy(context);
-            return true;
-        case NativeTypeKind::Void:
-            *llvmType = llvm::Type::getVoidTy(context);
-            return true;
-        }
-    }
-
-    return moduleToGen->internalError(Fmt("swagTypeToLLVMType, invalid type `%s`", typeInfo->getDisplayNameC()));
-}
-
-llvm::BasicBlock* BackendLLVM::getOrCreateLabel(LLVMPerThread& pp, llvm::Function* func, int64_t ip)
-{
-    auto& context = *pp.context;
-
-    auto it = pp.labels.find(ip);
-    if (it == pp.labels.end())
-    {
-        llvm::BasicBlock* label = llvm::BasicBlock::Create(context, Fmt("%lld", ip).c_str(), func);
-        pp.labels[ip]           = label;
-        return label;
-    }
-
-    return it->second;
-}
-
-void BackendLLVM::emitShiftArithmetic(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint8_t numBits)
-{
-    auto         iType = getIntType(context, numBits);
-    auto         r0    = TO_PTR_I_N(GEP_I32(allocR, ip->c.u32), numBits);
-    llvm::Value* r1    = getImmediateConstantA(context, builder, allocR, ip, numBits);
-
-    llvm::Value* r2;
-    if (ip->flags & BCI_IMM_B)
-        r2 = builder.getInt32(ip->b.u32 & (numBits - 1));
-    else
-        r2 = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->b.u32)));
-
-    auto c2    = builder.CreateIntCast(r2, iType, false);
-    auto shift = llvm::ConstantInt::get(iType, numBits - 1);
-
-    // Smart shift, imm mode overflow
-    if ((ip->flags & BCI_IMM_B) && !(ip->flags & BCI_SHIFT_SMALL) && ip->b.u32 >= numBits)
-        c2 = shift;
-
-    // Smart shift, dyn mode
-    else if (!(ip->flags & BCI_IMM_B) && !(ip->flags & BCI_SHIFT_SMALL))
-    {
-        auto cond    = builder.CreateICmpULT(r2, builder.getInt32(numBits));
-        auto iftrue  = c2;
-        auto iffalse = shift;
-        c2           = builder.CreateSelect(cond, iftrue, iffalse);
-    }
-
-    // Small shift, dyn mode, we mask the operand
-    else if (!(ip->flags & BCI_IMM_B))
-        c2 = builder.CreateAnd(c2, llvm::ConstantInt::get(iType, numBits - 1));
-
-    auto v0 = builder.CreateAShr(r1, c2);
-    builder.CreateStore(v0, TO_PTR_I_N(r0, numBits));
-}
-
-void BackendLLVM::emitShiftLogical(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint8_t numBits, bool left)
-{
-    auto iType = getIntType(context, numBits);
-    auto r0    = TO_PTR_I_N(GEP_I32(allocR, ip->c.u32), numBits);
-    auto zero  = llvm::ConstantInt::get(iType, 0);
-
-    // Smart shift, imm mode overflow
-    if ((ip->flags & BCI_IMM_B) && !(ip->flags & BCI_SHIFT_SMALL) && ip->b.u32 >= numBits)
-        builder.CreateStore(zero, r0);
-    else
-    {
-        llvm::Value* r1 = getImmediateConstantA(context, builder, allocR, ip, numBits);
-
-        llvm::Value* r2;
-        if (ip->flags & BCI_IMM_B)
-            r2 = builder.getInt32(ip->b.u32 & (numBits - 1));
-        else
-            r2 = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->b.u32)));
-        auto c2 = builder.CreateIntCast(r2, iType, false);
-
-        // Smart shift, dyn mode
-        if (!(ip->flags & BCI_IMM_B) && !(ip->flags & BCI_SHIFT_SMALL))
-        {
-            auto cond    = builder.CreateICmpULT(r2, builder.getInt32(numBits));
-            auto iftrue  = left ? builder.CreateShl(r1, c2) : builder.CreateLShr(r1, c2);
-            auto iffalse = zero;
-            auto v0      = builder.CreateSelect(cond, iftrue, iffalse);
-            builder.CreateStore(v0, r0);
-        }
-        else
-        {
-            // Small shift, dyn mode, we mask the operand
-            if (!(ip->flags & BCI_IMM_B))
-                c2 = builder.CreateAnd(c2, llvm::ConstantInt::get(iType, numBits - 1));
-            auto v0 = left ? builder.CreateShl(r1, c2) : builder.CreateLShr(r1, c2);
-            builder.CreateStore(v0, r0);
-        }
-    }
-}
-
-void BackendLLVM::emitShiftEqArithmetic(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint8_t numBits)
-{
-    auto iType = getIntType(context, numBits);
-    auto r0    = GEP_I32(allocR, ip->a.u32);
-    auto r1    = builder.CreateLoad(TO_PTR_PTR_I_N(r0, numBits));
-
-    llvm::Value* r2;
-    if (ip->flags & BCI_IMM_B)
-        r2 = builder.getInt32(ip->b.u32 & (numBits - 1));
-    else
-        r2 = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->b.u32)));
-
-    auto c2    = builder.CreateIntCast(r2, iType, false);
-    auto shift = llvm::ConstantInt::get(iType, numBits - 1);
-
-    // Smart shift, imm mode overflow
-    if ((ip->flags & BCI_IMM_B) && !(ip->flags & BCI_SHIFT_SMALL) && ip->b.u32 >= numBits)
-        c2 = shift;
-
-    // Smart shift, dyn mode
-    else if (!(ip->flags & BCI_IMM_B) && !(ip->flags & BCI_SHIFT_SMALL))
-    {
-        auto cond    = builder.CreateICmpULT(r2, builder.getInt32(numBits));
-        auto iftrue  = c2;
-        auto iffalse = shift;
-        c2           = builder.CreateSelect(cond, iftrue, iffalse);
-    }
-
-    // Small shift, dyn mode, we mask the operand
-    else if (!(ip->flags & BCI_IMM_B))
-        c2 = builder.CreateAnd(c2, llvm::ConstantInt::get(iType, numBits - 1));
-
-    auto v0 = builder.CreateAShr(builder.CreateLoad(r1), c2);
-    builder.CreateStore(v0, r1);
-}
-
-void BackendLLVM::emitShiftEqLogical(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint8_t numBits, bool left)
-{
-    auto iType = getIntType(context, numBits);
-    auto r0    = GEP_I32(allocR, ip->a.u32);
-    auto r1    = builder.CreateLoad(TO_PTR_PTR_I_N(r0, numBits));
-
-    llvm::Value* r2;
-    if (ip->flags & BCI_IMM_B)
-        r2 = builder.getInt32(ip->b.u32 & (numBits - 1));
-    else
-        r2 = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->b.u32)));
-
-    auto         c2   = builder.CreateIntCast(r2, iType, false);
-    auto         zero = llvm::ConstantInt::get(iType, 0);
-    auto         v1   = builder.CreateLoad(r1);
-    llvm::Value* v0;
-
-    // Smart shift, imm mode overflow
-    if ((ip->flags & BCI_IMM_B) && !(ip->flags & BCI_SHIFT_SMALL) && ip->b.u32 >= numBits)
-        v0 = zero;
-
-    // Smart shift, dyn mode
-    else if (!(ip->flags & BCI_IMM_B) && !(ip->flags & BCI_SHIFT_SMALL))
-    {
-        auto cond    = builder.CreateICmpULT(r2, builder.getInt32(numBits));
-        auto iftrue  = left ? builder.CreateShl(v1, c2) : builder.CreateLShr(v1, c2);
-        auto iffalse = zero;
-        v0           = builder.CreateSelect(cond, iftrue, iffalse);
-    }
-
-    // Imm mode
-    else
-    {
-        // Small shift, dyn mode, we mask the operand
-        if (!(ip->flags & BCI_IMM_B))
-            c2 = builder.CreateAnd(c2, llvm::ConstantInt::get(iType, numBits - 1));
-        v0 = left ? builder.CreateShl(v1, c2) : builder.CreateLShr(v1, c2);
-    }
-
-    builder.CreateStore(v0, r1);
-}
-
-void BackendLLVM::emitInternalPanic(const BuildParameters& buildParameters, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, AstNode* node, const char* message)
-{
-    int   ct              = buildParameters.compileType;
-    int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = *perThread[ct][precompileIndex];
-    auto& context         = *pp.context;
-    auto& builder         = *pp.builder;
-
-    // Filename
-    llvm::Value* r1 = builder.CreateGlobalString(Utf8::normalizePath(node->sourceFile->path).c_str());
-    r1              = TO_PTR_I8(builder.CreateInBoundsGEP(r1, {pp.cst0_i32}));
-
-    // Line & column
-    auto r2 = builder.getInt32(node->token.startLocation.line);
-    auto r3 = builder.getInt32(node->token.startLocation.column);
-
-    // Message
-    llvm::Value* r4;
-    if (message)
-    {
-        r4 = builder.CreateGlobalString(message);
-        r4 = TO_PTR_I8(builder.CreateInBoundsGEP(r4, {pp.cst0_i32}));
-    }
-    else
-        r4 = builder.CreateIntToPtr(pp.cst0_i64, builder.getInt8PtrTy());
-
-    localCall(buildParameters, allocR, allocT, g_LangSpec->name__panic, {UINT32_MAX, UINT32_MAX, UINT32_MAX, UINT32_MAX}, {r1, r2, r3, r4});
-}
-
-void BackendLLVM::setFuncAttributes(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc, llvm::Function* func)
-{
-    llvm::AttrBuilder attr;
-
-    if (!moduleToGen->mustOptimizeBK(bc->node))
-    {
-        attr.addAttribute(llvm::Attribute::OptimizeNone);
-    }
-
-    func->addAttributes(llvm::AttributeList::FunctionIndex, attr);
-}
-
 bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc)
 {
     // Do not emit a text function if we are not compiling a test executable
@@ -368,21 +24,38 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     auto& builder         = *pp.builder;
     auto& modu            = *pp.module;
     auto  typeFunc        = bc->getCallType();
+    auto  returnType      = TypeManager::concreteReferenceType(typeFunc->returnType);
     bool  ok              = true;
 
+    // Get function name
+    Utf8         funcName;
+    AstFuncDecl* node = bc->node ? CastAst<AstFuncDecl>(bc->node, AstNodeKind::FuncDecl) : nullptr;
+    if (node)
+        funcName = node->getCallName();
+    else
+        funcName = bc->getCallName();
+
     // Function prototype
-    llvm::FunctionType* funcType = createFunctionTypeLocal(buildParameters, typeFunc);
-    llvm::Function*     func     = (llvm::Function*) modu.getOrInsertFunction(bc->getCallName().c_str(), funcType).getCallee();
+    llvm::FunctionType* funcType;
+    SWAG_CHECK(createFunctionTypeForeign(buildParameters, moduleToGen, typeFunc, &funcType));
+    llvm::Function* func = (llvm::Function*) modu.getOrInsertFunction(funcName.c_str(), funcType).getCallee();
     // setFuncAttributes(buildParameters, moduleToGen, bc, func);
 
     // No pointer aliasing, on all pointers. Is this correct ??
     // Note that without the NoAlias flag, some optims will not trigger (like vectorisation)
-    for (int i = 0; i < func->arg_size(); i++)
+    /*for (int i = 0; i < func->arg_size(); i++)
     {
         auto arg = func->getArg(i);
         if (!arg->getType()->isPointerTy())
             continue;
         arg->addAttr(llvm::Attribute::NoAlias);
+    }*/
+
+    // Export symbol
+    if (node && node->attributeFlags & (ATTRIBUTE_PUBLIC | ATTRIBUTE_CALLBACK))
+    {
+        if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
+            func->setDLLStorageClass(llvm::GlobalValue::DLLExportStorageClass);
     }
 
     // Content
@@ -404,6 +77,10 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     llvm::AllocaInst* allocVA = nullptr;
     if (bc->maxSPVaargs)
         allocVA = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(bc->maxSPVaargs));
+
+    // To store function call result
+    llvm::AllocaInst* allocResult = nullptr;
+    allocResult                   = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(1));
 
     // Stack
     llvm::AllocaInst* allocStack = nullptr;
@@ -1049,12 +726,12 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::IntrinsicStringCmp:
         {
-            localCall(buildParameters, allocR, allocT, "@stringcmp", {ip->d.u32, ip->a.u32, ip->b.u32, ip->c.u32, ip->d.u32}, {});
+            localCall(buildParameters, moduleToGen, "@stringcmp", allocR, allocT, {ip->d.u32, ip->a.u32, ip->b.u32, ip->c.u32, ip->d.u32}, {});
             break;
         }
         case ByteCodeOp::IntrinsicTypeCmp:
         {
-            localCall(buildParameters, allocR, allocT, "@typecmp", {ip->d.u32, ip->a.u32, ip->b.u32, ip->c.u32}, {});
+            localCall(buildParameters, moduleToGen, "@typecmp", allocR, allocT, {ip->d.u32, ip->a.u32, ip->b.u32, ip->c.u32}, {});
             break;
         }
 
@@ -1164,7 +841,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::IntrinsicItfTableOf:
         {
-            localCall(buildParameters, allocR, allocT, "@itftableof", {ip->c.u32, ip->a.u32, ip->b.u32}, {});
+            localCall(buildParameters, moduleToGen, "@itftableof", allocR, allocT, {ip->c.u32, ip->a.u32, ip->b.u32}, {});
             break;
         }
 
@@ -3263,7 +2940,16 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 }
             }
 
-            builder.CreateRetVoid();
+            // Emit result
+            if (returnType != g_TypeMgr->typeInfoVoid && !typeFunc->returnByCopy())
+            {
+                builder.CreateRetVoid();
+            }
+            else
+            {
+                builder.CreateRetVoid();
+            }
+
             blockIsClosed = true;
             break;
         }
@@ -3271,28 +2957,28 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::IntrinsicErrorMsg:
         {
             auto bcF = ((AstFuncDecl*) ip->node->resolvedSymbolOverload->node)->extension->bc;
-            localCall(buildParameters, allocR, allocT, bcF->getCallName().c_str(), {ip->a.u32, ip->b.u32, ip->c.u32}, {});
+            localCall(buildParameters, moduleToGen, bcF->getCallName().c_str(), allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32}, {});
             break;
         }
         case ByteCodeOp::IntrinsicPanic:
         {
-            localCall(buildParameters, allocR, allocT, g_LangSpec->name_atpanic, {ip->a.u32, ip->b.u32, ip->c.u32}, {});
+            localCall(buildParameters, moduleToGen, g_LangSpec->name_atpanic, allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32}, {});
             break;
         }
 
         case ByteCodeOp::InternalInitStackTrace:
         {
-            localCall(buildParameters, allocR, allocT, g_LangSpec->name__initStackTrace, {}, {});
+            localCall(buildParameters, moduleToGen, g_LangSpec->name__initStackTrace, allocR, allocT, {}, {});
             break;
         }
         case ByteCodeOp::InternalStackTrace:
         {
-            localCall(buildParameters, allocR, allocT, g_LangSpec->name__stackTrace, {ip->a.u32}, {});
+            localCall(buildParameters, moduleToGen, g_LangSpec->name__stackTrace, allocR, allocT, {ip->a.u32}, {});
             break;
         }
         case ByteCodeOp::InternalPanic:
         {
-            emitInternalPanic(buildParameters, allocR, allocT, ip->node, (const char*) ip->d.pointer);
+            emitInternalPanic(buildParameters, moduleToGen, allocR, allocT, ip->node, (const char*) ip->d.pointer);
             break;
         }
 
@@ -3301,20 +2987,20 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto v0  = builder.getInt64(module->tlsSegment.totalCount);
             auto r1  = builder.CreateInBoundsGEP(TO_PTR_I8(pp.tlsSeg), pp.cst0_i64);
             auto vid = builder.CreateLoad(pp.symTls_threadLocalId);
-            localCall(buildParameters, allocR, allocT, g_LangSpec->name__tlsGetPtr, {ip->a.u32, UINT32_MAX, UINT32_MAX, UINT32_MAX}, {0, vid, v0, r1});
+            localCall(buildParameters, moduleToGen, g_LangSpec->name__tlsGetPtr, allocR, allocT, {ip->a.u32, UINT32_MAX, UINT32_MAX, UINT32_MAX}, {0, vid, v0, r1});
             break;
         }
 
         case ByteCodeOp::IntrinsicGetContext:
         {
             auto v0 = builder.CreateLoad(TO_PTR_I64(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst2_i32})));
-            localCall(buildParameters, allocR, allocT, g_LangSpec->name__tlsGetValue, {ip->a.u32, UINT32_MAX}, {0, v0});
+            localCall(buildParameters, moduleToGen, g_LangSpec->name__tlsGetValue, allocR, allocT, {ip->a.u32, UINT32_MAX}, {0, v0});
             break;
         }
         case ByteCodeOp::IntrinsicSetContext:
         {
             auto v0 = builder.CreateLoad(TO_PTR_I64(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst2_i32})));
-            localCall(buildParameters, allocR, allocT, g_LangSpec->name__tlsSetValue, {UINT32_MAX, ip->a.u32}, {v0, 0});
+            localCall(buildParameters, moduleToGen, g_LangSpec->name__tlsSetValue, allocR, allocT, {UINT32_MAX, ip->a.u32}, {v0, 0});
             break;
         }
         case ByteCodeOp::IntrinsicGetProcessInfos:
@@ -3364,23 +3050,23 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::IntrinsicArguments:
         {
-            localCall(buildParameters, allocR, allocT, g_LangSpec->name_atargs, {ip->a.u32, ip->b.u32}, {});
+            localCall(buildParameters, moduleToGen, g_LangSpec->name_atargs, allocR, allocT, {ip->a.u32, ip->b.u32}, {});
             break;
         }
 
         case ByteCodeOp::IntrinsicGetErr:
         {
-            localCall(buildParameters, allocR, allocT, g_LangSpec->name__geterr, {ip->a.u32, ip->b.u32}, {});
+            localCall(buildParameters, moduleToGen, g_LangSpec->name__geterr, allocR, allocT, {ip->a.u32, ip->b.u32}, {});
             break;
         }
         case ByteCodeOp::InternalSetErr:
         {
-            localCall(buildParameters, allocR, allocT, g_LangSpec->name__seterr, {ip->a.u32, ip->b.u32}, {});
+            localCall(buildParameters, moduleToGen, g_LangSpec->name__seterr, allocR, allocT, {ip->a.u32, ip->b.u32}, {});
             break;
         }
         case ByteCodeOp::InternalCheckAny:
         {
-            localCall(buildParameters, allocR, allocT, g_LangSpec->name__checkAny, {ip->a.u32, ip->b.u32, ip->c.u32}, {});
+            localCall(buildParameters, moduleToGen, g_LangSpec->name__checkAny, allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32}, {});
             break;
         }
 
@@ -3401,12 +3087,12 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::InternalPushErr:
         {
-            localCall(buildParameters, allocR, allocT, g_LangSpec->name__pusherr, {}, {});
+            localCall(buildParameters, moduleToGen, g_LangSpec->name__pusherr, allocR, allocT, {}, {});
             break;
         }
         case ByteCodeOp::InternalPopErr:
         {
-            localCall(buildParameters, allocR, allocT, g_LangSpec->name__poperr, {}, {});
+            localCall(buildParameters, moduleToGen, g_LangSpec->name__poperr, allocR, allocT, {}, {});
             break;
         }
 
@@ -3777,15 +3463,16 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::CopyRCtoRR:
         {
             auto r1 = MK_IMMA_64();
-            builder.CreateStore(r1, func->getArg(0));
+            builder.CreateStore(r1, allocResult);
             break;
         }
         case ByteCodeOp::CopyRCtoRR2:
         {
-            auto r1 = builder.CreateLoad(GEP_I32(allocR, ip->a.u32));
-            builder.CreateStore(r1, func->getArg(0));
-            r1 = builder.CreateLoad(GEP_I32(allocR, ip->b.u32));
-            builder.CreateStore(r1, func->getArg(1));
+            auto r1        = builder.CreateLoad(GEP_I32(allocR, ip->a.u32));
+            auto r2        = builder.CreateLoad(GEP_I32(allocR, ip->b.u32));
+            auto resultPtr = builder.CreatePointerCast(func->getArg((int) func->arg_size() - 1), builder.getInt64Ty()->getPointerTo());
+            builder.CreateStore(r1, resultPtr);
+            builder.CreateStore(r2, builder.CreateInBoundsGEP(resultPtr, builder.getInt64(1)));
             break;
         }
         case ByteCodeOp::CopyRCtoRT:
@@ -4171,15 +3858,18 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::LocalCallPop:
         case ByteCodeOp::LocalCallPopRC:
         {
-            auto funcBC = (ByteCode*) ip->a.pointer;
-            SWAG_ASSERT(funcBC);
-            TypeInfoFuncAttr*          typeFuncBC = funcBC->getCallType();
-            auto                       FT         = createFunctionTypeLocal(buildParameters, typeFuncBC);
-            VectorNative<llvm::Value*> fctParams;
-            getLocalCallParameters(buildParameters, allocR, allocRR, allocT, fctParams, typeFuncBC, pushRAParams, {});
-            builder.CreateCall(modu.getOrInsertFunction(funcBC->getCallName().c_str(), FT), {fctParams.begin(), fctParams.end()});
-            pushRAParams.clear();
-            pushRVParams.clear();
+            auto              callBc       = (ByteCode*) ip->a.pointer;
+            TypeInfoFuncAttr* typeFuncCall = (TypeInfoFuncAttr*) ip->b.pointer;
+
+            Utf8 callName;
+            if (callBc->node)
+            {
+                auto funcNode = CastAst<AstFuncDecl>(callBc->node, AstNodeKind::FuncDecl);
+                callName      = funcNode->getCallName();
+            }
+            else
+                callName = callBc->getCallName();
+            SWAG_CHECK(emitForeignCall(buildParameters, moduleToGen, callName, typeFuncCall, allocR, allocRR, pushRAParams, {}, true));
 
             if (ip->op == ByteCodeOp::LocalCallPopRC)
             {
@@ -4193,10 +3883,16 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::ForeignCall:
         case ByteCodeOp::ForeignCallPop:
-            SWAG_CHECK(emitForeignCall(buildParameters, allocR, allocRR, moduleToGen, ip, pushRAParams));
+        {
+            auto              funcNode     = (AstFuncDecl*) ip->a.pointer;
+            TypeInfoFuncAttr* typeFuncCall = (TypeInfoFuncAttr*) ip->b.pointer;
+
+            funcNode->computeFullNameForeign(false);
+            SWAG_CHECK(emitForeignCall(buildParameters, moduleToGen, funcNode->fullnameForeign, typeFuncCall, allocR, allocRR, pushRAParams, {}, false));
             pushRAParams.clear();
             pushRVParams.clear();
             break;
+        }
 
         case ByteCodeOp::LambdaCall:
         case ByteCodeOp::LambdaCallPop:
@@ -4232,7 +3928,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 auto                       r0 = builder.CreateLoad(GEP_I32(allocR, ip->a.u32));
                 auto                       v1 = builder.CreateAnd(r0, builder.getInt64(~SWAG_LAMBDA_FOREIGN_MARKER));
                 VectorNative<llvm::Value*> fctParams;
-                getForeignCallParameters(buildParameters, allocR, allocRR, moduleToGen, typeFuncBC, fctParams, pushRAParams);
+                getForeignCallParameters(buildParameters, allocR, allocRR, moduleToGen, typeFuncBC, fctParams, pushRAParams, {});
 
                 if (typeFuncBC->isClosure())
                 {
@@ -4247,7 +3943,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                     // Lambda call. We must eliminate the first parameter (closure context)
                     builder.SetInsertPoint(blockLambda);
                     VectorNative<llvm::Value*> fctParamsLocal;
-                    getForeignCallParameters(buildParameters, allocR, allocRR, moduleToGen, typeFuncBC, fctParamsLocal, pushRAParams, true);
+                    getForeignCallParameters(buildParameters, allocR, allocRR, moduleToGen, typeFuncBC, fctParamsLocal, pushRAParams, {}, true);
 
                     SWAG_CHECK(createFunctionTypeForeign(buildParameters, moduleToGen, typeFuncBC, &FT, true));
                     auto l_PT     = llvm::PointerType::getUnqual(FT);
@@ -4857,4 +4553,348 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     if (!blockIsClosed)
         builder.CreateRetVoid();
     return ok;
+}
+
+BackendFunctionBodyJobBase* BackendLLVM::newFunctionJob()
+{
+    return g_Allocator.alloc<BackendLLVMFunctionBodyJob>();
+}
+
+llvm::Value* BackendLLVM::getImmediateConstantA(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint8_t numBits)
+{
+    if (ip->flags & BCI_IMM_A)
+    {
+        switch (numBits)
+        {
+        case 8:
+            return builder.getInt8(ip->a.u8);
+        case 16:
+            return builder.getInt16(ip->a.u16);
+        case 32:
+            return builder.getInt32(ip->a.u32);
+        case 64:
+            return builder.getInt64(ip->a.u64);
+        }
+    }
+
+    auto r0 = TO_PTR_I_N(GEP_I32(allocR, ip->a.u32), numBits);
+    return builder.CreateLoad(r0);
+}
+
+llvm::Type* BackendLLVM::getIntType(llvm::LLVMContext& context, uint8_t numBits)
+{
+    switch (numBits)
+    {
+    case 8:
+        return llvm::Type::getInt8Ty(context);
+    case 16:
+        return llvm::Type::getInt16Ty(context);
+    case 32:
+        return llvm::Type::getInt32Ty(context);
+    case 64:
+        return llvm::Type::getInt64Ty(context);
+    default:
+        SWAG_ASSERT(false);
+        break;
+    }
+
+    return nullptr;
+}
+
+llvm::Type* BackendLLVM::getIntPtrType(llvm::LLVMContext& context, uint8_t numBits)
+{
+    return getIntType(context, numBits)->getPointerTo();
+}
+
+bool BackendLLVM::swagTypeToLLVMType(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfo* typeInfo, llvm::Type** llvmType)
+{
+    int   ct              = buildParameters.compileType;
+    int   precompileIndex = buildParameters.precompileIndex;
+    auto& pp              = *perThread[ct][precompileIndex];
+    auto& context         = *pp.context;
+
+    typeInfo  = TypeManager::concreteType(typeInfo, CONCRETE_ALIAS | CONCRETE_FORCEALIAS);
+    *llvmType = nullptr;
+
+    if (typeInfo->kind == TypeInfoKind::Enum)
+    {
+        auto typeInfoEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
+        SWAG_CHECK(swagTypeToLLVMType(buildParameters, moduleToGen, typeInfoEnum->rawType, llvmType));
+        return true;
+    }
+
+    if (typeInfo->kind == TypeInfoKind::Pointer)
+    {
+        auto typeInfoPointer = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
+        auto pointedType     = TypeManager::concreteType(typeInfoPointer->pointedType);
+        if (pointedType->isNative(NativeTypeKind::Void))
+            *llvmType = llvm::Type::getInt8Ty(context);
+        else
+            SWAG_CHECK(swagTypeToLLVMType(buildParameters, moduleToGen, pointedType, llvmType));
+        *llvmType = (*llvmType)->getPointerTo();
+        return true;
+    }
+
+    if (typeInfo->kind == TypeInfoKind::Slice ||
+        typeInfo->kind == TypeInfoKind::Array ||
+        typeInfo->kind == TypeInfoKind::Struct ||
+        typeInfo->kind == TypeInfoKind::Interface ||
+        typeInfo->kind == TypeInfoKind::Lambda ||
+        typeInfo->isNative(NativeTypeKind::Any) ||
+        typeInfo->isNative(NativeTypeKind::String) ||
+        typeInfo->kind == TypeInfoKind::Reference)
+    {
+        *llvmType = llvm::Type::getInt8PtrTy(context);
+        return true;
+    }
+
+    if (typeInfo->kind == TypeInfoKind::Native)
+    {
+        switch (typeInfo->nativeType)
+        {
+        case NativeTypeKind::Bool:
+            *llvmType = llvm::Type::getInt8Ty(context);
+            return true;
+        case NativeTypeKind::S8:
+        case NativeTypeKind::U8:
+            *llvmType = llvm::Type::getInt8Ty(context);
+            return true;
+        case NativeTypeKind::S16:
+        case NativeTypeKind::U16:
+            *llvmType = llvm::Type::getInt16Ty(context);
+            return true;
+        case NativeTypeKind::S32:
+        case NativeTypeKind::U32:
+        case NativeTypeKind::Rune:
+            *llvmType = llvm::Type::getInt32Ty(context);
+            return true;
+        case NativeTypeKind::S64:
+        case NativeTypeKind::U64:
+        case NativeTypeKind::Int:
+        case NativeTypeKind::UInt:
+            *llvmType = llvm::Type::getInt64Ty(context);
+            return true;
+        case NativeTypeKind::F32:
+            *llvmType = llvm::Type::getFloatTy(context);
+            return true;
+        case NativeTypeKind::F64:
+            *llvmType = llvm::Type::getDoubleTy(context);
+            return true;
+        case NativeTypeKind::Void:
+            *llvmType = llvm::Type::getVoidTy(context);
+            return true;
+        }
+    }
+
+    return moduleToGen->internalError(Fmt("swagTypeToLLVMType, invalid type `%s`", typeInfo->getDisplayNameC()));
+}
+
+llvm::BasicBlock* BackendLLVM::getOrCreateLabel(LLVMPerThread& pp, llvm::Function* func, int64_t ip)
+{
+    auto& context = *pp.context;
+
+    auto it = pp.labels.find(ip);
+    if (it == pp.labels.end())
+    {
+        llvm::BasicBlock* label = llvm::BasicBlock::Create(context, Fmt("%lld", ip).c_str(), func);
+        pp.labels[ip]           = label;
+        return label;
+    }
+
+    return it->second;
+}
+
+void BackendLLVM::emitShiftArithmetic(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint8_t numBits)
+{
+    auto         iType = getIntType(context, numBits);
+    auto         r0    = TO_PTR_I_N(GEP_I32(allocR, ip->c.u32), numBits);
+    llvm::Value* r1    = getImmediateConstantA(context, builder, allocR, ip, numBits);
+
+    llvm::Value* r2;
+    if (ip->flags & BCI_IMM_B)
+        r2 = builder.getInt32(ip->b.u32 & (numBits - 1));
+    else
+        r2 = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->b.u32)));
+
+    auto c2    = builder.CreateIntCast(r2, iType, false);
+    auto shift = llvm::ConstantInt::get(iType, numBits - 1);
+
+    // Smart shift, imm mode overflow
+    if ((ip->flags & BCI_IMM_B) && !(ip->flags & BCI_SHIFT_SMALL) && ip->b.u32 >= numBits)
+        c2 = shift;
+
+    // Smart shift, dyn mode
+    else if (!(ip->flags & BCI_IMM_B) && !(ip->flags & BCI_SHIFT_SMALL))
+    {
+        auto cond    = builder.CreateICmpULT(r2, builder.getInt32(numBits));
+        auto iftrue  = c2;
+        auto iffalse = shift;
+        c2           = builder.CreateSelect(cond, iftrue, iffalse);
+    }
+
+    // Small shift, dyn mode, we mask the operand
+    else if (!(ip->flags & BCI_IMM_B))
+        c2 = builder.CreateAnd(c2, llvm::ConstantInt::get(iType, numBits - 1));
+
+    auto v0 = builder.CreateAShr(r1, c2);
+    builder.CreateStore(v0, TO_PTR_I_N(r0, numBits));
+}
+
+void BackendLLVM::emitShiftLogical(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint8_t numBits, bool left)
+{
+    auto iType = getIntType(context, numBits);
+    auto r0    = TO_PTR_I_N(GEP_I32(allocR, ip->c.u32), numBits);
+    auto zero  = llvm::ConstantInt::get(iType, 0);
+
+    // Smart shift, imm mode overflow
+    if ((ip->flags & BCI_IMM_B) && !(ip->flags & BCI_SHIFT_SMALL) && ip->b.u32 >= numBits)
+        builder.CreateStore(zero, r0);
+    else
+    {
+        llvm::Value* r1 = getImmediateConstantA(context, builder, allocR, ip, numBits);
+
+        llvm::Value* r2;
+        if (ip->flags & BCI_IMM_B)
+            r2 = builder.getInt32(ip->b.u32 & (numBits - 1));
+        else
+            r2 = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->b.u32)));
+        auto c2 = builder.CreateIntCast(r2, iType, false);
+
+        // Smart shift, dyn mode
+        if (!(ip->flags & BCI_IMM_B) && !(ip->flags & BCI_SHIFT_SMALL))
+        {
+            auto cond    = builder.CreateICmpULT(r2, builder.getInt32(numBits));
+            auto iftrue  = left ? builder.CreateShl(r1, c2) : builder.CreateLShr(r1, c2);
+            auto iffalse = zero;
+            auto v0      = builder.CreateSelect(cond, iftrue, iffalse);
+            builder.CreateStore(v0, r0);
+        }
+        else
+        {
+            // Small shift, dyn mode, we mask the operand
+            if (!(ip->flags & BCI_IMM_B))
+                c2 = builder.CreateAnd(c2, llvm::ConstantInt::get(iType, numBits - 1));
+            auto v0 = left ? builder.CreateShl(r1, c2) : builder.CreateLShr(r1, c2);
+            builder.CreateStore(v0, r0);
+        }
+    }
+}
+
+void BackendLLVM::emitShiftEqArithmetic(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint8_t numBits)
+{
+    auto iType = getIntType(context, numBits);
+    auto r0    = GEP_I32(allocR, ip->a.u32);
+    auto r1    = builder.CreateLoad(TO_PTR_PTR_I_N(r0, numBits));
+
+    llvm::Value* r2;
+    if (ip->flags & BCI_IMM_B)
+        r2 = builder.getInt32(ip->b.u32 & (numBits - 1));
+    else
+        r2 = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->b.u32)));
+
+    auto c2    = builder.CreateIntCast(r2, iType, false);
+    auto shift = llvm::ConstantInt::get(iType, numBits - 1);
+
+    // Smart shift, imm mode overflow
+    if ((ip->flags & BCI_IMM_B) && !(ip->flags & BCI_SHIFT_SMALL) && ip->b.u32 >= numBits)
+        c2 = shift;
+
+    // Smart shift, dyn mode
+    else if (!(ip->flags & BCI_IMM_B) && !(ip->flags & BCI_SHIFT_SMALL))
+    {
+        auto cond    = builder.CreateICmpULT(r2, builder.getInt32(numBits));
+        auto iftrue  = c2;
+        auto iffalse = shift;
+        c2           = builder.CreateSelect(cond, iftrue, iffalse);
+    }
+
+    // Small shift, dyn mode, we mask the operand
+    else if (!(ip->flags & BCI_IMM_B))
+        c2 = builder.CreateAnd(c2, llvm::ConstantInt::get(iType, numBits - 1));
+
+    auto v0 = builder.CreateAShr(builder.CreateLoad(r1), c2);
+    builder.CreateStore(v0, r1);
+}
+
+void BackendLLVM::emitShiftEqLogical(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint8_t numBits, bool left)
+{
+    auto iType = getIntType(context, numBits);
+    auto r0    = GEP_I32(allocR, ip->a.u32);
+    auto r1    = builder.CreateLoad(TO_PTR_PTR_I_N(r0, numBits));
+
+    llvm::Value* r2;
+    if (ip->flags & BCI_IMM_B)
+        r2 = builder.getInt32(ip->b.u32 & (numBits - 1));
+    else
+        r2 = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->b.u32)));
+
+    auto         c2   = builder.CreateIntCast(r2, iType, false);
+    auto         zero = llvm::ConstantInt::get(iType, 0);
+    auto         v1   = builder.CreateLoad(r1);
+    llvm::Value* v0;
+
+    // Smart shift, imm mode overflow
+    if ((ip->flags & BCI_IMM_B) && !(ip->flags & BCI_SHIFT_SMALL) && ip->b.u32 >= numBits)
+        v0 = zero;
+
+    // Smart shift, dyn mode
+    else if (!(ip->flags & BCI_IMM_B) && !(ip->flags & BCI_SHIFT_SMALL))
+    {
+        auto cond    = builder.CreateICmpULT(r2, builder.getInt32(numBits));
+        auto iftrue  = left ? builder.CreateShl(v1, c2) : builder.CreateLShr(v1, c2);
+        auto iffalse = zero;
+        v0           = builder.CreateSelect(cond, iftrue, iffalse);
+    }
+
+    // Imm mode
+    else
+    {
+        // Small shift, dyn mode, we mask the operand
+        if (!(ip->flags & BCI_IMM_B))
+            c2 = builder.CreateAnd(c2, llvm::ConstantInt::get(iType, numBits - 1));
+        v0 = left ? builder.CreateShl(v1, c2) : builder.CreateLShr(v1, c2);
+    }
+
+    builder.CreateStore(v0, r1);
+}
+
+void BackendLLVM::emitInternalPanic(const BuildParameters& buildParameters, Module* moduleToGen, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, AstNode* node, const char* message)
+{
+    int   ct              = buildParameters.compileType;
+    int   precompileIndex = buildParameters.precompileIndex;
+    auto& pp              = *perThread[ct][precompileIndex];
+    auto& context         = *pp.context;
+    auto& builder         = *pp.builder;
+
+    // Filename
+    llvm::Value* r1 = builder.CreateGlobalString(Utf8::normalizePath(node->sourceFile->path).c_str());
+    r1              = TO_PTR_I8(builder.CreateInBoundsGEP(r1, {pp.cst0_i32}));
+
+    // Line & column
+    auto r2 = builder.getInt32(node->token.startLocation.line);
+    auto r3 = builder.getInt32(node->token.startLocation.column);
+
+    // Message
+    llvm::Value* r4;
+    if (message)
+    {
+        r4 = builder.CreateGlobalString(message);
+        r4 = TO_PTR_I8(builder.CreateInBoundsGEP(r4, {pp.cst0_i32}));
+    }
+    else
+        r4 = builder.CreateIntToPtr(pp.cst0_i64, builder.getInt8PtrTy());
+
+    localCall(buildParameters, moduleToGen, g_LangSpec->name__panic, allocR, allocT, {UINT32_MAX, UINT32_MAX, UINT32_MAX, UINT32_MAX}, {r1, r2, r3, r4});
+}
+
+void BackendLLVM::setFuncAttributes(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc, llvm::Function* func)
+{
+    llvm::AttrBuilder attr;
+
+    if (!moduleToGen->mustOptimizeBK(bc->node))
+    {
+        attr.addAttribute(llvm::Attribute::OptimizeNone);
+    }
+
+    func->addAttributes(llvm::AttributeList::FunctionIndex, attr);
 }

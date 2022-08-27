@@ -414,9 +414,10 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
     }
 
     // Parameters
-    if (decl && decl->parameters && !(decl->attributeFlags & ATTRIBUTE_COMPILER_FUNC))
+    //if (decl && decl->parameters && !(decl->attributeFlags & ATTRIBUTE_COMPILER_FUNC))
+    if(false)
     {
-        auto idxParam    = typeFunc->numReturnRegisters();
+        int  idxParam    = 0;
         auto countParams = decl->parameters->childs.size();
 
         // Variadic. Pass as first parameters, but get type at the end

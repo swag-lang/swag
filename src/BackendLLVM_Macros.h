@@ -94,7 +94,7 @@
         auto v2 = builder.CreateIsNull(v1);                                                                                         \
         builder.CreateCondBr(v2, blockOk, blockErr);                                                                                \
         builder.SetInsertPoint(blockErr);                                                                                           \
-        emitInternalPanic(buildParameters, allocR, allocT, ip->node, __msg);                                                        \
+        emitInternalPanic(buildParameters, moduleToGen, allocR, allocT, ip->node, __msg);                                           \
         builder.CreateBr(blockOk);                                                                                                  \
         builder.SetInsertPoint(blockOk);                                                                                            \
         builder.CreateStore(v0, r1);                                                                                                \
@@ -118,7 +118,7 @@
         auto v2 = builder.CreateIsNull(v1);                                                                     \
         builder.CreateCondBr(v2, blockOk, blockErr);                                                            \
         builder.SetInsertPoint(blockErr);                                                                       \
-        emitInternalPanic(buildParameters, allocR, allocT, ip->node, __msg);                                    \
+        emitInternalPanic(buildParameters, moduleToGen, allocR, allocT, ip->node, __msg);                       \
         builder.CreateBr(blockOk);                                                                              \
         builder.SetInsertPoint(blockOk);                                                                        \
         builder.CreateStore(v0, __cast(r0));                                                                    \

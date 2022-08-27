@@ -26,16 +26,9 @@ JobResult BackendLLVMFunctionBodyJob::execute()
             typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
         }
 
-        // Emit the internal function
+        // Emit the function
         if (!bachendLLVM->emitFunctionBody(buildParameters, module, one))
             return JobResult::ReleaseJob;
-
-        // Emit public function wrapper, from real C prototype to swag registers
-        if (node && node->attributeFlags & (ATTRIBUTE_PUBLIC | ATTRIBUTE_CALLBACK))
-        {
-            if (!bachendLLVM->emitFuncWrapperPublic(buildParameters, module, typeFunc, node, one))
-                return JobResult::ReleaseJob;
-        }
     }
 
     return JobResult::ReleaseJob;

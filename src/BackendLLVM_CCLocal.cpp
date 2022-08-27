@@ -230,9 +230,9 @@ bool BackendLLVM::storeLocalParam(llvm::LLVMContext& context, const BuildParamet
     auto& pp              = *perThread[ct][precompileIndex];
     auto& builder         = *pp.builder;
 
-    auto param  = typeFunc->registerIdxToType(idx);
-    auto offArg = idx + typeFunc->numReturnRegisters();
-    auto arg    = func->getArg(offArg);
+    idx        = typeFunc->registerIdxToParamIdx(idx);
+    auto param = typeFunc->registerIdxToType(idx);
+    auto arg   = func->getArg(idx);
 
     if (toAdd || deRefSize)
     {
@@ -301,22 +301,20 @@ bool BackendLLVM::storeLocalParam(llvm::LLVMContext& context, const BuildParamet
     }
     else
     {
-        builder.CreateStore(arg, r0);
+        if (arg->getType()->isPointerTy())
+            builder.CreateStore(arg, builder.CreatePointerCast(r0, arg->getType()->getPointerTo()));
+        else
+            builder.CreateStore(arg, r0);
     }
 
     return true;
 }
 
-void BackendLLVM::localCall(const BuildParameters& buildParameters, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, const char* name, const vector<uint32_t>& regs, const vector<llvm::Value*>& values)
+void BackendLLVM::localCall(const BuildParameters& buildParameters, Module* moduleToGen, const char* name, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, const vector<uint32_t>& regs, const vector<llvm::Value*>& values)
 {
-    int   ct              = buildParameters.compileType;
-    int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = *perThread[ct][precompileIndex];
-    auto& builder         = *pp.builder;
-    auto& modu            = *pp.module;
-
-    auto typeFuncBC = g_Workspace->runtimeModule->getRuntimeTypeFct(name);
-    auto FT         = createFunctionTypeLocal(buildParameters, typeFuncBC);
+    auto                typeFunc = g_Workspace->runtimeModule->getRuntimeTypeFct(name);
+    llvm::FunctionType* FT;
+    createFunctionTypeForeign(buildParameters, moduleToGen, typeFunc, &FT);
 
     // Invert regs
     VectorNative<uint32_t> pushRAParams;
@@ -326,8 +324,5 @@ void BackendLLVM::localCall(const BuildParameters& buildParameters, llvm::Alloca
     for (int i = (int) values.size() - 1; i >= 0; i--)
         pushVParams.push_back(values[i]);
 
-    VectorNative<llvm::Value*> fctParams;
-    getLocalCallParameters(buildParameters, allocR, nullptr, allocT, fctParams, typeFuncBC, pushRAParams, pushVParams);
-
-    builder.CreateCall(modu.getOrInsertFunction(name, FT), {fctParams.begin(), fctParams.end()});
+    emitForeignCall(buildParameters, moduleToGen, name, typeFunc, allocR, allocT, pushRAParams, pushVParams, true);
 }
