@@ -2304,7 +2304,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::IntrinsicArguments:
             BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->a.u32), RCX, RDI);
-            BackendX64Inst::emit_LoadAddress_Indirect(pp, regOffset(ip->b.u32), RDX, RDI);
+            SWAG_ASSERT(ip->b.u32 == ip->a.u32 + 1);
             emitCall(pp, g_LangSpec->name_atargs);
             break;
         case ByteCodeOp::IntrinsicModules:

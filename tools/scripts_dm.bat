@@ -1,8 +1,8 @@
 ..\bin\swag_devmode clean --script
 
-..\bin\swag_devmode run -w:..\bin\examples -m:wnd    --script --args:"swag.test"
-..\bin\swag_devmode run -w:..\bin\examples -m:captme --script --args:"swag.test"
-..\bin\swag_devmode run -w:..\bin\examples -m:draw   --script --args:"swag.test"
+..\bin\swag_devmode run -w:..\bin\examples -m:wnd    --bytecode --args:"swag.test"
+..\bin\swag_devmode run -w:..\bin\examples -m:captme --bytecode --args:"swag.test"
+..\bin\swag_devmode run -w:..\bin\examples -m:draw   --bytecode --args:"swag.test"
 ..\bin\swag_devmode run -w:..\bin\examples -m:wnd    --args:"swag.test"
 ..\bin\swag_devmode run -w:..\bin\examples -m:captme --args:"swag.test"
 ..\bin\swag_devmode run -w:..\bin\examples -m:draw   --args:"swag.test"
