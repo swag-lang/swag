@@ -1488,6 +1488,7 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     cloneContext.parentScope    = newScope;
     cloneContext.forceFlags |= identifier->flags & AST_NO_BACKEND;
     cloneContext.forceFlags |= identifier->flags & AST_RUN_BLOCK;
+    cloneContext.forceFlags |= identifier->flags & AST_IN_DEFER;
 
     // Here we inline a call in a global declaration, like a variable/constant initialization
     // We do not want the function to be the original one, in case of local variables, because we

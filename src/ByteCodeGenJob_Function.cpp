@@ -1350,22 +1350,30 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     else
         SWAG_CHECK(checkCatchError(context, varNode, node, node, node->parent, typeInfoFunc));
 
-    int precallStack  = 0;
-    int numCallParams = allParams ? (int) allParams->childs.size() : 0;
+    int  precallStack  = 0;
+    int  numCallParams = allParams ? (int) allParams->childs.size() : 0;
+    auto returnType    = typeInfoFunc->returnType;
 
     // If we are in a function that need to keep the RR0 register alive, we need to save it
     bool rr0Saved = false;
     if (node->ownerFct &&
         node->ownerFct->returnType &&
         node->ownerFct->returnType->typeInfo &&
-        (node->ownerFct->returnType->typeInfo->flags & TYPEINFO_RETURN_BY_COPY))
+        node->ownerFct->returnType->typeInfo != g_TypeMgr->typeInfoVoid)
     {
-        emitInstruction(context, ByteCodeOp::PushRR);
-        rr0Saved = true;
+        if (node->ownerFct->returnType->typeInfo->flags & TYPEINFO_RETURN_BY_COPY)
+        {
+            emitInstruction(context, ByteCodeOp::PushRR);
+            rr0Saved = true;
+        }
+        else if (node->flags & AST_IN_DEFER)
+        {
+            emitInstruction(context, ByteCodeOp::PushRR);
+            rr0Saved = true;
+        }
     }
 
     // Return by copy
-    auto returnType = typeInfoFunc->returnType;
     if (returnType && (returnType->flags & TYPEINFO_RETURN_BY_COPY))
     {
         SWAG_CHECK(emitReturnByCopyAddress(context, node, typeInfoFunc));

@@ -1101,6 +1101,7 @@ bool SyntaxJob::doDefer(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatToken(TokenId::SymRightParen));
     }
 
+    ScopedFlags scopedFlags(this, AST_IN_DEFER);
     if (token.id == TokenId::SymLeftCurly)
         SWAG_CHECK(doScopedCurlyStatement(node));
     else
