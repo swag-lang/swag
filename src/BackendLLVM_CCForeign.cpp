@@ -6,8 +6,9 @@
 #include "ByteCode.h"
 #include "TypeManager.h"
 #include "LanguageSpec.h"
+#include "Workspace.h"
 
-bool BackendLLVM::createFunctionTypeForeign(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, llvm::FunctionType** result, bool closureToLambda)
+llvm::FunctionType* BackendLLVM::createFunctionTypeForeign(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, bool closureToLambda)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
@@ -19,27 +20,20 @@ bool BackendLLVM::createFunctionTypeForeign(const BuildParameters& buildParamete
     {
         auto it = pp.mapFctTypeForeignClosure.find(typeFunc);
         if (it != pp.mapFctTypeForeignClosure.end())
-        {
-            *result = it->second;
-            return true;
-        }
+            return it->second;
     }
     else
     {
         auto it = pp.mapFctTypeForeign.find(typeFunc);
         if (it != pp.mapFctTypeForeign.end())
-        {
-            *result = it->second;
-            return true;
-        }
+            return it->second;
     }
 
     VectorNative<llvm::Type*> params;
-    llvm::Type*               llvmRealReturnType = nullptr;
-    llvm::Type*               returnType         = nullptr;
-    bool                      returnByCopy       = typeFunc->returnByCopy();
+    llvm::Type*               returnType   = nullptr;
+    bool                      returnByCopy = typeFunc->returnByCopy();
 
-    SWAG_CHECK(swagTypeToLLVMType(buildParameters, moduleToGen, typeFunc->returnType, &llvmRealReturnType));
+    llvm::Type* llvmRealReturnType = swagTypeToLLVMType(buildParameters, moduleToGen, typeFunc->returnType);
     if (returnByCopy)
         returnType = builder.getVoidTy();
     else
@@ -64,7 +58,6 @@ bool BackendLLVM::createFunctionTypeForeign(const BuildParameters& buildParamete
         if (typeFunc->isClosure() && closureToLambda)
             idxFirst = 1;
 
-        llvm::Type* cType = nullptr;
         for (int i = idxFirst; i < numParams; i++)
         {
             auto param = TypeManager::concreteReferenceType(typeFunc->parameters[i]->typeInfo);
@@ -76,19 +69,19 @@ bool BackendLLVM::createFunctionTypeForeign(const BuildParameters& buildParamete
             }
             else if (param->isNative(NativeTypeKind::String) || param->kind == TypeInfoKind::Slice)
             {
-                SWAG_CHECK(swagTypeToLLVMType(buildParameters, moduleToGen, param, &cType));
+                auto cType = swagTypeToLLVMType(buildParameters, moduleToGen, param);
                 params.push_back(cType);
                 params.push_back(builder.getInt64Ty());
             }
             else if (param->isNative(NativeTypeKind::Any) || param->kind == TypeInfoKind::Interface)
             {
-                SWAG_CHECK(swagTypeToLLVMType(buildParameters, moduleToGen, param, &cType));
+                auto cType = swagTypeToLLVMType(buildParameters, moduleToGen, param);
                 params.push_back(cType);
                 params.push_back(builder.getInt8Ty()->getPointerTo());
             }
             else
             {
-                SWAG_CHECK(swagTypeToLLVMType(buildParameters, moduleToGen, param, &cType));
+                auto cType = swagTypeToLLVMType(buildParameters, moduleToGen, param);
                 params.push_back(cType);
             }
         }
@@ -98,14 +91,14 @@ bool BackendLLVM::createFunctionTypeForeign(const BuildParameters& buildParamete
     if (returnByCopy)
         params.push_back(llvmRealReturnType);
 
-    *result = llvm::FunctionType::get(returnType, {params.begin(), params.end()}, false);
+    auto result = llvm::FunctionType::get(returnType, {params.begin(), params.end()}, false);
 
     if (closureToLambda)
-        pp.mapFctTypeForeignClosure[typeFunc] = *result;
+        pp.mapFctTypeForeignClosure[typeFunc] = result;
     else
-        pp.mapFctTypeForeign[typeFunc] = *result;
+        pp.mapFctTypeForeign[typeFunc] = result;
 
-    return true;
+    return result;
 }
 
 bool BackendLLVM::getForeignCallParameters(const BuildParameters&        buildParameters,
@@ -168,12 +161,11 @@ bool BackendLLVM::getForeignCallParameters(const BuildParameters&        buildPa
         }
         else if (typeParam->kind == TypeInfoKind::Pointer)
         {
-            auto        typePtr = CastTypeInfo<TypeInfoPointer>(typeParam, TypeInfoKind::Pointer);
-            llvm::Type* llvmType;
-            SWAG_CHECK(swagTypeToLLVMType(buildParameters, moduleToGen, typePtr, &llvmType));
-            llvmType = llvmType->getPointerTo();
-            auto r0  = GEP_I32(allocR, index);
-            auto r   = builder.CreatePointerCast(r0, llvmType);
+            auto typePtr  = CastTypeInfo<TypeInfoPointer>(typeParam, TypeInfoKind::Pointer);
+            auto llvmType = swagTypeToLLVMType(buildParameters, moduleToGen, typePtr);
+            llvmType      = llvmType->getPointerTo();
+            auto r0       = GEP_I32(allocR, index);
+            auto r        = builder.CreatePointerCast(r0, llvmType);
             params.push_back(builder.CreateLoad(r));
         }
         // :StructByCopy
@@ -280,18 +272,19 @@ bool BackendLLVM::getForeignCallReturnValue(const BuildParameters& buildParamete
             return moduleToGen->internalError(typeFuncBC->declNode, typeFuncBC->declNode->token, "emitForeignCall, invalid return type");
         }
     }
+
     return true;
 }
 
-bool BackendLLVM::emitForeignCall(const BuildParameters&        buildParameters,
-                                  Module*                       moduleToGen,
-                                  const Utf8&                   funcName,
-                                  TypeInfoFuncAttr*             typeFuncBC,
-                                  llvm::AllocaInst*             allocR,
-                                  llvm::AllocaInst*             allocRR,
-                                  const VectorNative<uint32_t>& pushParams,
-                                  const vector<llvm::Value*>&   values,
-                                  bool                          localCall)
+llvm::Value* BackendLLVM::emitForeignCall(const BuildParameters&        buildParameters,
+                                          Module*                       moduleToGen,
+                                          const Utf8&                   funcName,
+                                          TypeInfoFuncAttr*             typeFuncBC,
+                                          llvm::AllocaInst*             allocR,
+                                          llvm::AllocaInst*             allocRR,
+                                          const VectorNative<uint32_t>& pushParams,
+                                          const vector<llvm::Value*>&   values,
+                                          bool                          localCall)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
@@ -304,19 +297,34 @@ bool BackendLLVM::emitForeignCall(const BuildParameters&        buildParameters,
     getForeignCallParameters(buildParameters, allocR, allocRR, moduleToGen, typeFuncBC, params, pushParams, values);
 
     // Make the call
-    llvm::FunctionType* typeF;
-    SWAG_CHECK(createFunctionTypeForeign(buildParameters, moduleToGen, typeFuncBC, &typeF));
-    auto func = modu.getOrInsertFunction(funcName.c_str(), typeF);
-    auto F    = llvm::dyn_cast<llvm::Function>(func.getCallee());
+    auto typeF = createFunctionTypeForeign(buildParameters, moduleToGen, typeFuncBC);
+    auto func  = modu.getOrInsertFunction(funcName.c_str(), typeF);
+    auto F     = llvm::dyn_cast<llvm::Function>(func.getCallee());
 
     // Why this can be null ????
     if (F && !localCall)
         F->setDLLStorageClass(llvm::GlobalValue::DLLImportStorageClass);
 
-    auto result = builder.CreateCall(func, {params.begin(), params.end()});
+    return builder.CreateCall(func, {params.begin(), params.end()});
 
     // Store result to rt0
-    SWAG_CHECK(getForeignCallReturnValue(buildParameters, allocRR, moduleToGen, typeFuncBC, result));
+    // SWAG_CHECK(getForeignCallReturnValue(buildParameters, allocRR, moduleToGen, typeFuncBC, result));
+    // return true;
+}
 
-    return true;
+llvm::Value* BackendLLVM::localCall(const BuildParameters& buildParameters, Module* moduleToGen, const char* name, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, const vector<uint32_t>& regs, const vector<llvm::Value*>& values)
+{
+    auto                typeFunc = g_Workspace->runtimeModule->getRuntimeTypeFct(name);
+    llvm::FunctionType* FT;
+    createFunctionTypeForeign(buildParameters, moduleToGen, typeFunc, &FT);
+
+    // Invert regs
+    VectorNative<uint32_t> pushRAParams;
+    for (int i = (int) regs.size() - 1; i >= 0; i--)
+        pushRAParams.push_back(regs[i]);
+    vector<llvm::Value*> pushVParams;
+    for (int i = (int) values.size() - 1; i >= 0; i--)
+        pushVParams.push_back(values[i]);
+
+    return emitForeignCall(buildParameters, moduleToGen, name, typeFunc, allocR, allocT, pushRAParams, pushVParams, true);
 }

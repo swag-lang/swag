@@ -89,8 +89,7 @@ void BackendLLVM::getLocalCallParameters(const BuildParameters&      buildParame
             // By value
             if (passByValue(typeParam))
             {
-                llvm::Type* ty;
-                swagTypeToLLVMType(buildParameters, module, typeParam, &ty);
+                auto ty = swagTypeToLLVMType(buildParameters, module, typeParam);
                 if (index == UINT32_MAX)
                 {
                     auto v0 = values[popRAidx + 1];
@@ -204,8 +203,7 @@ llvm::FunctionType* BackendLLVM::createFunctionTypeLocal(const BuildParameters& 
         auto typeParam = TypeManager::concreteReferenceType(param->typeInfo);
         if (passByValue(typeParam))
         {
-            llvm::Type* ty;
-            swagTypeToLLVMType(buildParameters, module, typeParam, &ty);
+            auto ty = swagTypeToLLVMType(buildParameters, module, typeParam);
             params.push_back(ty);
         }
         else
@@ -230,9 +228,12 @@ bool BackendLLVM::storeLocalParam(llvm::LLVMContext& context, const BuildParamet
     auto& pp              = *perThread[ct][precompileIndex];
     auto& builder         = *pp.builder;
 
-    idx        = typeFunc->registerIdxToParamIdx(idx);
     auto param = typeFunc->registerIdxToType(idx);
     auto arg   = func->getArg(idx);
+
+    // First two parameters are occupied by the variadic slice
+    if (typeFunc->isVariadic())
+        idx += 2;
 
     if (toAdd || deRefSize)
     {
@@ -293,9 +294,8 @@ bool BackendLLVM::storeLocalParam(llvm::LLVMContext& context, const BuildParamet
         // Real type
         else
         {
-            llvm::Type* ty = nullptr;
-            SWAG_CHECK(swagTypeToLLVMType(buildParameters, module, param, &ty));
-            r0 = builder.CreatePointerCast(r0, ty->getPointerTo());
+            auto ty = swagTypeToLLVMType(buildParameters, module, param);
+            r0      = builder.CreatePointerCast(r0, ty->getPointerTo());
             builder.CreateStore(arg, r0);
         }
     }
@@ -308,21 +308,4 @@ bool BackendLLVM::storeLocalParam(llvm::LLVMContext& context, const BuildParamet
     }
 
     return true;
-}
-
-void BackendLLVM::localCall(const BuildParameters& buildParameters, Module* moduleToGen, const char* name, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, const vector<uint32_t>& regs, const vector<llvm::Value*>& values)
-{
-    auto                typeFunc = g_Workspace->runtimeModule->getRuntimeTypeFct(name);
-    llvm::FunctionType* FT;
-    createFunctionTypeForeign(buildParameters, moduleToGen, typeFunc, &FT);
-
-    // Invert regs
-    VectorNative<uint32_t> pushRAParams;
-    for (int i = (int) regs.size() - 1; i >= 0; i--)
-        pushRAParams.push_back(regs[i]);
-    vector<llvm::Value*> pushVParams;
-    for (int i = (int) values.size() - 1; i >= 0; i--)
-        pushVParams.push_back(values[i]);
-
-    emitForeignCall(buildParameters, moduleToGen, name, typeFunc, allocR, allocT, pushRAParams, pushVParams, true);
 }

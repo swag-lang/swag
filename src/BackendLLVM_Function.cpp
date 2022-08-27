@@ -36,9 +36,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         funcName = bc->getCallName();
 
     // Function prototype
-    llvm::FunctionType* funcType;
-    SWAG_CHECK(createFunctionTypeForeign(buildParameters, moduleToGen, typeFunc, &funcType));
-    llvm::Function* func = (llvm::Function*) modu.getOrInsertFunction(funcName.c_str(), funcType).getCallee();
+    auto            funcType = createFunctionTypeForeign(buildParameters, moduleToGen, typeFunc);
+    llvm::Function* func     = (llvm::Function*) modu.getOrInsertFunction(funcName.c_str(), funcType).getCallee();
     // setFuncAttributes(buildParameters, moduleToGen, bc, func);
 
     // No pointer aliasing, on all pointers. Is this correct ??
@@ -78,10 +77,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     if (bc->maxSPVaargs)
         allocVA = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(bc->maxSPVaargs));
 
-    // To store function call result
-    llvm::AllocaInst* allocResult = nullptr;
-    allocResult                   = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(1));
-
     // Stack
     llvm::AllocaInst* allocStack = nullptr;
     if (typeFunc->stackSize)
@@ -105,6 +100,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     auto                                   ip = bc->out;
     VectorNative<pair<uint32_t, uint32_t>> pushRVParams;
     VectorNative<uint32_t>                 pushRAParams;
+    llvm::Value*                           returnResult = nullptr;
     for (uint32_t i = 0; i < bc->numInstructions; i++, ip++)
     {
         if (ip->node->flags & AST_NO_BACKEND)
@@ -726,12 +722,14 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::IntrinsicStringCmp:
         {
-            localCall(buildParameters, moduleToGen, "@stringcmp", allocR, allocT, {ip->d.u32, ip->a.u32, ip->b.u32, ip->c.u32, ip->d.u32}, {});
+            auto result = localCall(buildParameters, moduleToGen, g_LangSpec->name_atstrcmp, allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32, ip->d.u32}, {});
+            builder.CreateStore(result, TO_PTR_I8(GEP_I32(allocR, ip->d.u32)));
             break;
         }
         case ByteCodeOp::IntrinsicTypeCmp:
         {
-            localCall(buildParameters, moduleToGen, "@typecmp", allocR, allocT, {ip->d.u32, ip->a.u32, ip->b.u32, ip->c.u32}, {});
+            auto result = localCall(buildParameters, moduleToGen, g_LangSpec->name_attypecmp, allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32}, {});
+            builder.CreateStore(result, TO_PTR_I8(GEP_I32(allocR, ip->d.u32)));
             break;
         }
 
@@ -841,7 +839,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::IntrinsicItfTableOf:
         {
-            localCall(buildParameters, moduleToGen, "@itftableof", allocR, allocT, {ip->c.u32, ip->a.u32, ip->b.u32}, {});
+            auto result = localCall(buildParameters, moduleToGen, g_LangSpec->name_atitftableof, allocR, allocT, {ip->a.u32, ip->b.u32}, {});
+            builder.CreateStore(result, TO_PTR_PTR_I8(GEP_I32(allocR, ip->c.u32)));
             break;
         }
 
@@ -2927,7 +2926,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             // RIDICULOUS !!
             //
             // If we request an optimized code, do not do that crap.
-            bool isDebug = !buildParameters.buildCfg->backendOptimizeSpeed && !buildParameters.buildCfg->backendOptimizeSize;
+            /*bool isDebug = !buildParameters.buildCfg->backendOptimizeSpeed && !buildParameters.buildCfg->backendOptimizeSize;
             if (isDebug && buildParameters.buildCfg->backendDebugInformations)
             {
                 auto r1        = GEP_I32(allocT, 0);
@@ -2938,12 +2937,12 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 {
                     SWAG_CHECK(storeLocalParam(context, buildParameters, func, typeFunc, iparam, r1));
                 }
-            }
+            }*/
 
             // Emit result
             if (returnType != g_TypeMgr->typeInfoVoid && !typeFunc->returnByCopy())
             {
-                builder.CreateRetVoid();
+                builder.CreateRet(returnResult);
             }
             else
             {
@@ -2984,17 +2983,19 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::InternalGetTlsPtr:
         {
-            auto v0  = builder.getInt64(module->tlsSegment.totalCount);
-            auto r1  = builder.CreateInBoundsGEP(TO_PTR_I8(pp.tlsSeg), pp.cst0_i64);
-            auto vid = builder.CreateLoad(pp.symTls_threadLocalId);
-            localCall(buildParameters, moduleToGen, g_LangSpec->name__tlsGetPtr, allocR, allocT, {ip->a.u32, UINT32_MAX, UINT32_MAX, UINT32_MAX}, {0, vid, v0, r1});
+            auto v0     = builder.getInt64(module->tlsSegment.totalCount);
+            auto r1     = builder.CreateInBoundsGEP(TO_PTR_I8(pp.tlsSeg), pp.cst0_i64);
+            auto vid    = builder.CreateLoad(pp.symTls_threadLocalId);
+            auto result = localCall(buildParameters, moduleToGen, g_LangSpec->name__tlsGetPtr, allocR, allocT, {UINT32_MAX, UINT32_MAX, UINT32_MAX}, {vid, v0, r1});
+            builder.CreateStore(result, GEP_I32(allocR, ip->a.u32));
             break;
         }
 
         case ByteCodeOp::IntrinsicGetContext:
         {
-            auto v0 = builder.CreateLoad(TO_PTR_I64(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst2_i32})));
-            localCall(buildParameters, moduleToGen, g_LangSpec->name__tlsGetValue, allocR, allocT, {ip->a.u32, UINT32_MAX}, {0, v0});
+            auto v0     = builder.CreateLoad(TO_PTR_I64(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst2_i32})));
+            auto result = localCall(buildParameters, moduleToGen, g_LangSpec->name__tlsGetValue, allocR, allocT, {UINT32_MAX}, {v0});
+            builder.CreateStore(builder.CreatePtrToInt(result, builder.getInt64Ty()), GEP_I32(allocR, ip->a.u32));
             break;
         }
         case ByteCodeOp::IntrinsicSetContext:
@@ -3462,8 +3463,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::CopyRCtoRR:
         {
-            auto r1 = MK_IMMA_64();
-            builder.CreateStore(r1, allocResult);
+            returnResult = MK_IMMA_64();
             break;
         }
         case ByteCodeOp::CopyRCtoRR2:
@@ -3485,7 +3485,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::CopyRRtoRC:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = builder.CreateLoad(func->getArg(0));
+            auto r1 = returnResult;
             auto r2 = builder.CreateAdd(r1, builder.getInt64(ip->b.u64));
             builder.CreateStore(r2, r0);
             break;
@@ -3494,8 +3494,17 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::CopyRTtoRC:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = builder.CreateLoad(GEP_I32(allocRR, 0));
-            builder.CreateStore(r1, r0);
+            auto r1 = returnResult;
+            if (returnResult->getType()->isPointerTy())
+                builder.CreateStore(builder.CreatePtrToInt(r1, builder.getInt64Ty()), r0);
+            else if (returnResult->getType()->isIntegerTy(8))
+                builder.CreateStore(r1, TO_PTR_I8(r0));
+            else if (returnResult->getType()->isIntegerTy(16))
+                builder.CreateStore(r1, TO_PTR_I16(r0));
+            else if (returnResult->getType()->isIntegerTy(32))
+                builder.CreateStore(r1, TO_PTR_I32(r0));
+            else
+                builder.CreateStore(r1, r0);
             break;
         }
         case ByteCodeOp::CopyRTtoRC2:
@@ -3869,13 +3878,12 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             }
             else
                 callName = callBc->getCallName();
-            SWAG_CHECK(emitForeignCall(buildParameters, moduleToGen, callName, typeFuncCall, allocR, allocRR, pushRAParams, {}, true));
+            returnResult = emitForeignCall(buildParameters, moduleToGen, callName, typeFuncCall, allocR, allocRR, pushRAParams, {}, true);
 
             if (ip->op == ByteCodeOp::LocalCallPopRC)
             {
                 auto r0 = GEP_I32(allocR, ip->d.u32);
-                auto r1 = builder.CreateLoad(GEP_I32(allocRR, 0));
-                builder.CreateStore(r1, r0);
+                builder.CreateStore(returnResult, r0);
             }
 
             break;
@@ -3888,7 +3896,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             TypeInfoFuncAttr* typeFuncCall = (TypeInfoFuncAttr*) ip->b.pointer;
 
             funcNode->computeFullNameForeign(false);
-            SWAG_CHECK(emitForeignCall(buildParameters, moduleToGen, funcNode->fullnameForeign, typeFuncCall, allocR, allocRR, pushRAParams, {}, false));
+            returnResult = emitForeignCall(buildParameters, moduleToGen, funcNode->fullnameForeign, typeFuncCall, allocR, allocRR, pushRAParams, {}, false);
             pushRAParams.clear();
             pushRVParams.clear();
             break;
@@ -3945,7 +3953,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                     VectorNative<llvm::Value*> fctParamsLocal;
                     getForeignCallParameters(buildParameters, allocR, allocRR, moduleToGen, typeFuncBC, fctParamsLocal, pushRAParams, {}, true);
 
-                    SWAG_CHECK(createFunctionTypeForeign(buildParameters, moduleToGen, typeFuncBC, &FT, true));
+                    FT            = createFunctionTypeForeign(buildParameters, moduleToGen, typeFuncBC, true);
                     auto l_PT     = llvm::PointerType::getUnqual(FT);
                     auto l_r1     = builder.CreateIntToPtr(v1, l_PT);
                     auto l_result = builder.CreateCall(FT, l_r1, {fctParamsLocal.begin(), fctParamsLocal.end()});
@@ -3954,7 +3962,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
                     // Closure call. Normal call, as the type contains the first parameter.
                     builder.SetInsertPoint(blockClosure);
-                    SWAG_CHECK(createFunctionTypeForeign(buildParameters, moduleToGen, typeFuncBC, &FT));
+                    FT            = createFunctionTypeForeign(buildParameters, moduleToGen, typeFuncBC);
                     auto c_PT     = llvm::PointerType::getUnqual(FT);
                     auto c_r1     = builder.CreateIntToPtr(v1, c_PT);
                     auto c_result = builder.CreateCall(FT, c_r1, {fctParams.begin(), fctParams.end()});
@@ -3963,7 +3971,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 }
                 else
                 {
-                    SWAG_CHECK(createFunctionTypeForeign(buildParameters, moduleToGen, typeFuncBC, &FT));
+                    FT          = createFunctionTypeForeign(buildParameters, moduleToGen, typeFuncBC);
                     auto PT     = llvm::PointerType::getUnqual(FT);
                     auto r1     = builder.CreateIntToPtr(v1, PT);
                     auto result = builder.CreateCall(FT, r1, {fctParams.begin(), fctParams.end()});
@@ -4606,21 +4614,19 @@ llvm::Type* BackendLLVM::getIntPtrType(llvm::LLVMContext& context, uint8_t numBi
     return getIntType(context, numBits)->getPointerTo();
 }
 
-bool BackendLLVM::swagTypeToLLVMType(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfo* typeInfo, llvm::Type** llvmType)
+llvm::Type* BackendLLVM::swagTypeToLLVMType(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfo* typeInfo)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
     auto& pp              = *perThread[ct][precompileIndex];
     auto& context         = *pp.context;
 
-    typeInfo  = TypeManager::concreteType(typeInfo, CONCRETE_ALIAS | CONCRETE_FORCEALIAS);
-    *llvmType = nullptr;
+    typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_ALIAS | CONCRETE_FORCEALIAS);
 
     if (typeInfo->kind == TypeInfoKind::Enum)
     {
         auto typeInfoEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
-        SWAG_CHECK(swagTypeToLLVMType(buildParameters, moduleToGen, typeInfoEnum->rawType, llvmType));
-        return true;
+        return swagTypeToLLVMType(buildParameters, moduleToGen, typeInfoEnum->rawType);
     }
 
     if (typeInfo->kind == TypeInfoKind::Pointer)
@@ -4628,11 +4634,9 @@ bool BackendLLVM::swagTypeToLLVMType(const BuildParameters& buildParameters, Mod
         auto typeInfoPointer = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
         auto pointedType     = TypeManager::concreteType(typeInfoPointer->pointedType);
         if (pointedType->isNative(NativeTypeKind::Void))
-            *llvmType = llvm::Type::getInt8Ty(context);
+            return llvm::Type::getInt8PtrTy(context);
         else
-            SWAG_CHECK(swagTypeToLLVMType(buildParameters, moduleToGen, pointedType, llvmType));
-        *llvmType = (*llvmType)->getPointerTo();
-        return true;
+            return swagTypeToLLVMType(buildParameters, moduleToGen, pointedType)->getPointerTo();
     }
 
     if (typeInfo->kind == TypeInfoKind::Slice ||
@@ -4644,8 +4648,7 @@ bool BackendLLVM::swagTypeToLLVMType(const BuildParameters& buildParameters, Mod
         typeInfo->isNative(NativeTypeKind::String) ||
         typeInfo->kind == TypeInfoKind::Reference)
     {
-        *llvmType = llvm::Type::getInt8PtrTy(context);
-        return true;
+        return llvm::Type::getInt8PtrTy(context);
     }
 
     if (typeInfo->kind == TypeInfoKind::Native)
@@ -4653,40 +4656,33 @@ bool BackendLLVM::swagTypeToLLVMType(const BuildParameters& buildParameters, Mod
         switch (typeInfo->nativeType)
         {
         case NativeTypeKind::Bool:
-            *llvmType = llvm::Type::getInt8Ty(context);
-            return true;
+            return llvm::Type::getInt8Ty(context);
         case NativeTypeKind::S8:
         case NativeTypeKind::U8:
-            *llvmType = llvm::Type::getInt8Ty(context);
-            return true;
+            return llvm::Type::getInt8Ty(context);
         case NativeTypeKind::S16:
         case NativeTypeKind::U16:
-            *llvmType = llvm::Type::getInt16Ty(context);
-            return true;
+            return llvm::Type::getInt16Ty(context);
         case NativeTypeKind::S32:
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
-            *llvmType = llvm::Type::getInt32Ty(context);
-            return true;
+            return llvm::Type::getInt32Ty(context);
         case NativeTypeKind::S64:
         case NativeTypeKind::U64:
         case NativeTypeKind::Int:
         case NativeTypeKind::UInt:
-            *llvmType = llvm::Type::getInt64Ty(context);
-            return true;
+            return llvm::Type::getInt64Ty(context);
         case NativeTypeKind::F32:
-            *llvmType = llvm::Type::getFloatTy(context);
-            return true;
+            return llvm::Type::getFloatTy(context);
         case NativeTypeKind::F64:
-            *llvmType = llvm::Type::getDoubleTy(context);
-            return true;
+            return llvm::Type::getDoubleTy(context);
         case NativeTypeKind::Void:
-            *llvmType = llvm::Type::getVoidTy(context);
-            return true;
+            return llvm::Type::getVoidTy(context);
         }
     }
 
-    return moduleToGen->internalError(Fmt("swagTypeToLLVMType, invalid type `%s`", typeInfo->getDisplayNameC()));
+    SWAG_ASSERT(false);
+    return nullptr;
 }
 
 llvm::BasicBlock* BackendLLVM::getOrCreateLabel(LLVMPerThread& pp, llvm::Function* func, int64_t ip)

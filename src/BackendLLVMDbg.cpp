@@ -414,8 +414,8 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
     }
 
     // Parameters
-    //if (decl && decl->parameters && !(decl->attributeFlags & ATTRIBUTE_COMPILER_FUNC))
-    if(false)
+    // if (decl && decl->parameters && !(decl->attributeFlags & ATTRIBUTE_COMPILER_FUNC))
+    if (false)
     {
         int  idxParam    = 0;
         auto countParams = decl->parameters->childs.size();
@@ -705,8 +705,8 @@ void BackendLLVMDbg::createGlobalVariablesForSegment(const BuildParameters& buil
         constExpr = llvm::ConstantExpr::getIntToPtr(constExpr, builder.getInt8Ty()->getPointerTo());
 
         // Cast to the correct type
-        llvm::Type* varType = nullptr;
-        if (!llvm->swagTypeToLLVMType(buildParameters, module, typeInfo, &varType))
+        auto varType = llvm->swagTypeToLLVMType(buildParameters, module, typeInfo);
+        if (!varType)
             continue;
 
         varType         = varType->getPointerTo();

@@ -142,8 +142,9 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
 
     // __process_infos.contextTlsId = swag_runtime_tlsAlloc()
     {
+        auto result  = localCall(buildParameters, module, g_LangSpec->name__tlsAlloc, nullptr, allocT, {}, {});
         auto toTlsId = TO_PTR_I64(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst2_i32}));
-        localCall(buildParameters, module, g_LangSpec->name__tlsAlloc, nullptr, allocT, {UINT32_MAX}, {toTlsId});
+        builder.CreateStore(result, toTlsId);
     }
 
     // Set main context
