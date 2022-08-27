@@ -58,6 +58,9 @@ struct CommandLineArgument
 
             if (p == "all" || p == "ge")
                 cmds.insert("get");
+
+            if (p == "all" || p == "ru")
+                cmds.insert("run");
         }
     }
 };
