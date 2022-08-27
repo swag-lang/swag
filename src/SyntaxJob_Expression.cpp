@@ -863,8 +863,7 @@ bool SyntaxJob::doExpression(AstNode* parent, uint32_t exprFlags, AstNode** resu
             SWAG_CHECK(doFuncDecl(node, &funcNode, TokenId::CompilerGeneratedRunExp));
             funcNode->attributeFlags |= ATTRIBUTE_COMPILER;
 
-            ScopedFlags scoped(this, AST_NO_CALLSTACK);
-            auto        idRef               = Ast::newIdentifierRef(sourceFile, funcNode->token.text, node, this);
+            auto idRef                      = Ast::newIdentifierRef(sourceFile, funcNode->token.text, node, this);
             idRef->token.startLocation      = node->token.startLocation;
             idRef->token.endLocation        = node->token.endLocation;
             auto identifier                 = CastAst<AstIdentifier>(idRef->childs.back(), AstNodeKind::Identifier);

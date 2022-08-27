@@ -253,7 +253,7 @@ static void exceptionMessage(Job* job, LPEXCEPTION_POINTERS args)
 static int exceptionHandler(Job* job, LPEXCEPTION_POINTERS args)
 {
 #ifdef SWAG_DEV_MODE
-    g_ByteCodeStack.reportError("exception during job execution !");
+    g_ByteCodeStackTrace.reportError("exception during job execution !");
     OS::errorBox("[Developer Mode]", "Exception raised !");
     return EXCEPTION_CONTINUE_EXECUTION;
 #else

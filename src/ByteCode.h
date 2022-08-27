@@ -87,22 +87,14 @@ struct ByteCode
         return 0;
     }
 
-    SWAG_FORCE_INLINE void addCallStack(ByteCodeRunContext* context)
-    {
-        if (context->bc && context->bc->node && context->bc->node->flags & AST_NO_CALLSTACK)
-            return;
-        g_ByteCodeStack.push(context);
-    }
-
     SWAG_FORCE_INLINE void enterByteCode(ByteCodeRunContext* context, uint32_t popParamsOnRet = 0, uint32_t returnRegOnRet = UINT32_MAX, uint32_t incSPPostCall = 0)
     {
-        if (g_CommandLine->maxRecurse && context->curRC == (int) g_CommandLine->maxRecurse)
+        if (++context->curRC > context->maxRecurse)
         {
-            context->raiseError(Fmt(Err(Err0076), g_CommandLine->maxRecurse));
+            context->raiseError(Fmt(Err(Err0076), context->maxRecurse));
             return;
         }
 
-        context->curRC++;
         context->registersRC.push_back(context->registers.count);
         context->registers.reserve(context->registers.count + maxReservedRegisterRC);
         context->curRegistersRC = context->registers.buffer + context->registers.count;
@@ -116,8 +108,7 @@ struct ByteCode
 
     SWAG_FORCE_INLINE void leaveByteCode(ByteCodeRunContext* context)
     {
-        context->curRC--;
-        if (context->curRC >= 0)
+        if (--context->curRC >= 0)
         {
             context->registers.count = context->registersRC.get_pop_back();
             context->curRegistersRC  = context->registers.buffer + context->registersRC.back();

@@ -5,6 +5,7 @@
 #include "ErrorIds.h"
 #include "Diagnostic.h"
 #include "ByteCodeStack.h"
+#include "Module.h"
 
 extern bool g_Exiting;
 
@@ -74,7 +75,10 @@ void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd, ByteCode* nodebc)
     registersRC.reserve(1024);
     registers.count   = 0;
     registersRC.count = 0;
-    g_ByteCodeStack.steps.reserve(4096);
+    g_ByteCodeStackTrace.steps.reserve(4096);
+
+    stackTrace = sf->module->buildCfg.stackTrace;
+    maxRecurse = g_CommandLine->maxRecurse;
 
     curRC    = -1;
     firstRC  = -1;

@@ -103,6 +103,7 @@ struct ByteCodeRunContext
     uint8_t*             bp             = nullptr;
     int                  curRC          = -1;
     int                  firstRC        = -1;
+    int                  maxRecurse     = 0;
     ByteCode*            bc             = nullptr;
 
     JobContext jc;
@@ -128,12 +129,13 @@ struct ByteCodeRunContext
     AstNode*         node         = nullptr;
     static const int MAX_ALLOC_RR = 2;
 
-    bool canCatchError        = false;
-    bool hasError             = false;
-    bool ffi_StructByCopyDone = false;
-    bool raiseDebugStart      = false;
-    bool debugEntry           = false;
-    bool debugOn              = false;
+    bool canCatchError       = false;
+    bool hasError            = false;
+    bool ffiStructByCopyDone = false;
+    bool raiseDebugStart     = false;
+    bool debugEntry          = false;
+    bool debugOn             = false;
+    bool stackTrace          = true;
 
     const ConcreteCompilerMessage* currentCompilerMessage = nullptr;
     Job*                           currentCompilerJob     = nullptr;

@@ -6,7 +6,7 @@
 #include "Ast.h"
 #include "ErrorIds.h"
 
-thread_local ByteCodeStack g_ByteCodeStack;
+thread_local ByteCodeStack g_ByteCodeStackTrace;
 
 uint32_t ByteCodeStack::maxLevel(ByteCodeRunContext* context)
 {

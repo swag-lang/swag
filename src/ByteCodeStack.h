@@ -65,4 +65,4 @@ struct ByteCodeStack
     ByteCodeRunContext*             currentContext = nullptr;
 };
 
-extern thread_local ByteCodeStack g_ByteCodeStack;
+extern thread_local ByteCodeStack g_ByteCodeStackTrace;

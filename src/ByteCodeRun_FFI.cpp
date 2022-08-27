@@ -186,9 +186,9 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
         // :StructByCopy
         else if (typeParam->kind == TypeInfoKind::Struct && typeParam->sizeOf <= sizeof(void*))
         {
-            if (!context->ffi_StructByCopyDone)
+            if (!context->ffiStructByCopyDone)
             {
-                context->ffi_StructByCopyDone = true;
+                context->ffiStructByCopyDone = true;
 
                 context->ffi_StructByCopy1.alignment = 1;
                 context->ffi_StructByCopy1.size      = 1;

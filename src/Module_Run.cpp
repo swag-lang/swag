@@ -223,8 +223,8 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
     cxt->flags |= (uint64_t) ContextFlags::ByteCode;
 
     // Global setup
-    g_ByteCodeStack.clear();
-    g_ByteCodeStack.currentContext = &g_RunContext;
+    g_ByteCodeStackTrace.clear();
+    g_ByteCodeStackTrace.currentContext = &g_RunContext;
     g_RunContext.callerContext     = callerContext;
     g_RunContext.setup(sourceFile, node, bc);
 
@@ -270,7 +270,7 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
         bc->leaveByteCode(&g_RunContext);
     }
 
-    g_ByteCodeStack.clear();
+    g_ByteCodeStackTrace.clear();
 
     if (!result)
         return false;

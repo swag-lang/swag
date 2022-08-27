@@ -245,11 +245,11 @@ static void computeCxt(ByteCodeRunContext* context)
         return;
 
     VectorNative<ByteCodeStackStep> steps;
-    g_ByteCodeStack.getSteps(steps);
+    g_ByteCodeStackTrace.getSteps(steps);
     if (steps.empty())
         return;
 
-    uint32_t maxLevel              = g_ByteCodeStack.maxLevel(context);
+    uint32_t maxLevel              = g_ByteCodeStackTrace.maxLevel(context);
     context->debugStackFrameOffset = min(context->debugStackFrameOffset, maxLevel);
     uint32_t ns                    = 0;
 
@@ -337,7 +337,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
     auto ip = context->ip;
 
     g_Log.lock();
-    g_ByteCodeStack.currentContext = context;
+    g_ByteCodeStackTrace.currentContext = context;
 
     if (context->debugEntry)
     {
@@ -552,7 +552,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             if (cmd == "frame" && cmds.size() == 2)
             {
                 uint32_t off                   = atoi(cmds[1].c_str());
-                uint32_t maxLevel              = g_ByteCodeStack.maxLevel(context);
+                uint32_t maxLevel              = g_ByteCodeStackTrace.maxLevel(context);
                 off                            = min(off, maxLevel);
                 context->debugStackFrameOffset = maxLevel - off;
                 computeCxt(context);
@@ -566,7 +566,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 uint32_t off = 1;
                 if (cmds.size() == 2)
                     off = atoi(cmds[1].c_str());
-                uint32_t maxLevel = g_ByteCodeStack.maxLevel(context);
+                uint32_t maxLevel = g_ByteCodeStackTrace.maxLevel(context);
                 if (context->debugStackFrameOffset == maxLevel)
                     g_Log.printColor("initial frame selected; you cannot go up\n");
                 else
@@ -653,9 +653,9 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             // Stack
             if (cmd == "stk" || cmd == "stack")
             {
-                g_ByteCodeStack.currentContext = context;
-                g_ByteCodeStack.log();
-                g_ByteCodeStack.currentContext = nullptr;
+                g_ByteCodeStackTrace.currentContext = context;
+                g_ByteCodeStackTrace.log();
+                g_ByteCodeStackTrace.currentContext = nullptr;
                 continue;
             }
 

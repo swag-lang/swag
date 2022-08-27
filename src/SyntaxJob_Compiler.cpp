@@ -212,8 +212,7 @@ bool SyntaxJob::doCompilerSelectIf(AstNode* parent, AstNode** result)
         AstNode* funcNode;
         SWAG_CHECK(doFuncDecl(node, &funcNode, tokenId));
 
-        ScopedFlags scoped(this, AST_NO_CALLSTACK);
-        auto        idRef               = Ast::newIdentifierRef(sourceFile, funcNode->token.text, node, this);
+        auto idRef                      = Ast::newIdentifierRef(sourceFile, funcNode->token.text, node, this);
         idRef->token.startLocation      = node->token.startLocation;
         idRef->token.endLocation        = node->token.endLocation;
         auto identifier                 = CastAst<AstIdentifier>(idRef->childs.back(), AstNodeKind::Identifier);
@@ -246,8 +245,7 @@ bool SyntaxJob::doCompilerAst(AstNode* parent, AstNode** result)
         AstNode* funcNode;
         SWAG_CHECK(doFuncDecl(node, &funcNode, TokenId::CompilerAst));
 
-        ScopedFlags scoped(this, AST_NO_CALLSTACK);
-        auto        idRef               = Ast::newIdentifierRef(sourceFile, funcNode->token.text, node, this);
+        auto idRef                      = Ast::newIdentifierRef(sourceFile, funcNode->token.text, node, this);
         idRef->token.startLocation      = node->token.startLocation;
         idRef->token.endLocation        = node->token.endLocation;
         auto identifier                 = CastAst<AstIdentifier>(idRef->childs.back(), AstNodeKind::Identifier);
@@ -301,8 +299,7 @@ bool SyntaxJob::doCompilerRunEmbedded(AstNode* parent, AstNode** result)
         AstNode* funcNode;
         SWAG_CHECK(doFuncDecl(node, &funcNode, TokenId::CompilerGeneratedRun));
 
-        ScopedFlags scoped(this, AST_NO_CALLSTACK);
-        auto        idRef               = Ast::newIdentifierRef(sourceFile, funcNode->token.text, node, this);
+        auto idRef                      = Ast::newIdentifierRef(sourceFile, funcNode->token.text, node, this);
         idRef->token.startLocation      = node->token.startLocation;
         idRef->token.endLocation        = node->token.endLocation;
         auto identifier                 = CastAst<AstIdentifier>(idRef->childs.back(), AstNodeKind::Identifier);

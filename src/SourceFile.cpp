@@ -306,11 +306,11 @@ bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>&
         g_Workspace->numErrors++;
 
         // Callstack
-        if (g_ByteCodeStack.currentContext)
-            g_ByteCodeStack.currentContext->canCatchError = true;
+        if (g_ByteCodeStackTrace.currentContext)
+            g_ByteCodeStackTrace.currentContext->canCatchError = true;
         SwagContext* context = (SwagContext*) OS::tlsGetValue(g_TlsContextId);
         if (context && (context->flags & (uint64_t) ContextFlags::ByteCode))
-            g_ByteCodeStack.log();
+            g_ByteCodeStackTrace.log();
 
         // Error stack trace
         for (int i = context->traceIndex - 1; i >= 0; i--)
