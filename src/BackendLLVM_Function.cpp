@@ -2943,6 +2943,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             if (returnType != g_TypeMgr->typeInfoVoid && !typeFunc->returnByCopy())
             {
                 auto returnResult = returnResults.get_pop_back();
+                SWAG_ASSERT(!returnResult->getType()->isVoidTy());
                 builder.CreateRet(returnResult);
             }
             else
@@ -3467,34 +3468,51 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             llvm::Value* returnResult = nullptr;
             if (returnType->kind == TypeInfoKind::Native)
             {
-                SWAG_ASSERT(!(ip->flags & BCI_IMM_A)); // TODO
                 switch (returnType->nativeType)
                 {
                 case NativeTypeKind::U8:
                 case NativeTypeKind::S8:
                 case NativeTypeKind::Bool:
-                    returnResult = builder.CreateLoad(TO_PTR_I8(GEP_I32(allocR, ip->a.u32)));
+                    if (ip->flags & BCI_IMM_A)
+                        returnResult = builder.getInt8(ip->a.u8);
+                    else
+                        returnResult = builder.CreateLoad(TO_PTR_I8(GEP_I32(allocR, ip->a.u32)));
                     break;
                 case NativeTypeKind::U16:
                 case NativeTypeKind::S16:
-                    returnResult = builder.CreateLoad(TO_PTR_I16(GEP_I32(allocR, ip->a.u32)));
+                    if (ip->flags & BCI_IMM_A)
+                        returnResult = builder.getInt16(ip->a.u16);
+                    else
+                        returnResult = builder.CreateLoad(TO_PTR_I16(GEP_I32(allocR, ip->a.u32)));
                     break;
                 case NativeTypeKind::U32:
                 case NativeTypeKind::S32:
                 case NativeTypeKind::Rune:
-                    returnResult = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->a.u32)));
+                    if (ip->flags & BCI_IMM_A)
+                        returnResult = builder.getInt32(ip->a.u32);
+                    else
+                        returnResult = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->a.u32)));
                     break;
                 case NativeTypeKind::U64:
                 case NativeTypeKind::S64:
                 case NativeTypeKind::UInt:
                 case NativeTypeKind::Int:
-                    returnResult = builder.CreateLoad(GEP_I32(allocR, ip->a.u32));
+                    if (ip->flags & BCI_IMM_A)
+                        returnResult = builder.getInt64(ip->a.u64);
+                    else
+                        returnResult = builder.CreateLoad(GEP_I32(allocR, ip->a.u32));
                     break;
                 case NativeTypeKind::F32:
-                    returnResult = builder.CreateLoad(TO_PTR_F32(GEP_I32(allocR, ip->a.u32)));
+                    if (ip->flags & BCI_IMM_A)
+                        returnResult = llvm::ConstantFP::get(builder.getFloatTy(), ip->a.f32);
+                    else
+                        returnResult = builder.CreateLoad(TO_PTR_F32(GEP_I32(allocR, ip->a.u32)));
                     break;
                 case NativeTypeKind::F64:
-                    returnResult = builder.CreateLoad(TO_PTR_F64(GEP_I32(allocR, ip->a.u32)));
+                    if (ip->flags & BCI_IMM_A)
+                        returnResult = llvm::ConstantFP::get(builder.getDoubleTy(), ip->a.f32);
+                    else
+                        returnResult = builder.CreateLoad(TO_PTR_F64(GEP_I32(allocR, ip->a.u32)));
                     break;
                 default:
                     SWAG_ASSERT(false);
@@ -3874,8 +3892,11 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto returnResult = emitCall(buildParameters, moduleToGen, callName, typeFuncCall, allocR, allocRR, pushRAParams, {}, true);
             if (ip->op == ByteCodeOp::LocalCallPopRC)
                 storeTypedValueToRegister(context, buildParameters, returnResult, ip->d.u32, allocR);
-            else if (!ip->node || !(ip->node->flags & AST_DISCARD))
+            else if ((!ip->node || !(ip->node->flags & AST_DISCARD)) && !typeFuncCall->returnType->isNative(NativeTypeKind::Void))
                 returnResults.push_back(returnResult);
+
+            pushRAParams.clear();
+            pushRVParams.clear();
             break;
         }
 
@@ -3887,7 +3908,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
             funcNode->computeFullNameForeign(false);
             auto returnResult = emitCall(buildParameters, moduleToGen, funcNode->fullnameForeign, typeFuncCall, allocR, allocRR, pushRAParams, {}, false);
-            if (!ip->node || !(ip->node->flags & AST_DISCARD))
+            if ((!ip->node || !(ip->node->flags & AST_DISCARD)) && !typeFuncCall->returnType->isNative(NativeTypeKind::Void))
                 returnResults.push_back(returnResult);
             pushRAParams.clear();
             pushRVParams.clear();
@@ -3949,7 +3970,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                     auto c_result = builder.CreateCall(FT, c_r1, {fctParams.begin(), fctParams.end()});
                     SWAG_CHECK(emitCallReturnValue(buildParameters, allocRR, moduleToGen, typeFuncCall, c_result));
                     builder.CreateBr(blockNext);
-                    if (!ip->node || !(ip->node->flags & AST_DISCARD))
+                    if ((!ip->node || !(ip->node->flags & AST_DISCARD)) && !typeFuncCall->returnType->isNative(NativeTypeKind::Void))
                         returnResults.push_back(nullptr);
                 }
                 else
@@ -3959,7 +3980,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                     auto r1           = builder.CreateIntToPtr(v1, PT);
                     auto returnResult = builder.CreateCall(FT, r1, {fctParams.begin(), fctParams.end()});
                     builder.CreateBr(blockNext);
-                    if (!ip->node || !(ip->node->flags & AST_DISCARD))
+                    if ((!ip->node || !(ip->node->flags & AST_DISCARD)) && !typeFuncCall->returnType->isNative(NativeTypeKind::Void))
                         returnResults.push_back(returnResult);
                 }
             }
