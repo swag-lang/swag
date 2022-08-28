@@ -142,7 +142,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
 
     // __process_infos.contextTlsId = swag_runtime_tlsAlloc()
     {
-        auto result  = localCall(buildParameters, module, g_LangSpec->name__tlsAlloc, nullptr, allocT, {}, {});
+        auto result  = emitCall(buildParameters, module, g_LangSpec->name__tlsAlloc, nullptr, allocT, {}, {});
         auto toTlsId = TO_PTR_I64(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst2_i32}));
         builder.CreateStore(result, toTlsId);
     }
@@ -163,11 +163,11 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
     {
         auto toTlsId   = builder.CreateLoad(TO_PTR_I64(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst2_i32})));
         auto toContext = builder.CreatePointerCast(pp.mainContext, llvm::Type::getInt8PtrTy(context));
-        localCall(buildParameters, module, g_LangSpec->name__tlsSetValue, nullptr, allocT, {UINT32_MAX, UINT32_MAX}, {toTlsId, toContext});
+        emitCall(buildParameters, module, g_LangSpec->name__tlsSetValue, nullptr, allocT, {UINT32_MAX, UINT32_MAX}, {toTlsId, toContext});
     }
 
     {
-        localCall(buildParameters, module, g_LangSpec->name__setupRuntime, nullptr, allocT, {}, {});
+        emitCall(buildParameters, module, g_LangSpec->name__setupRuntime, nullptr, allocT, {}, {});
     }
 
     // Load all dependencies
@@ -180,7 +180,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
         Ast::normalizeIdentifierName(nameDown);
         auto nameLib = nameDown + Backend::getOutputFileExtension(g_CommandLine->target, BuildCfgBackendKind::DynamicLib);
         auto ptrStr  = builder.CreateGlobalStringPtr(nameLib.c_str());
-        localCall(buildParameters, module, g_LangSpec->name__loaddll, nullptr, allocT, {UINT32_MAX, UINT32_MAX}, {ptrStr, builder.getInt64(nameLib.length())});
+        emitCall(buildParameters, module, g_LangSpec->name__loaddll, nullptr, allocT, {UINT32_MAX, UINT32_MAX}, {ptrStr, builder.getInt64(nameLib.length())});
     }
 
     // Call to global init of all dependencies
@@ -260,7 +260,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
     }
 
     // Call exit
-    localCall(buildParameters, module, g_LangSpec->name__exit, nullptr, allocT, {}, {});
+    emitCall(buildParameters, module, g_LangSpec->name__exit, nullptr, allocT, {}, {});
 
     builder.CreateRetVoid();
     return true;
@@ -361,7 +361,7 @@ bool BackendLLVM::emitGlobalInit(const BuildParameters& buildParameters)
     // Init thread local storage id
     {
         auto allocT = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt64(1));
-        localCall(buildParameters, module, g_LangSpec->name__tlsAlloc, nullptr, allocT, {UINT32_MAX}, {pp.symTls_threadLocalId});
+        emitCall(buildParameters, module, g_LangSpec->name__tlsAlloc, nullptr, allocT, {UINT32_MAX}, {pp.symTls_threadLocalId});
     }
 
     // Initialize data segments

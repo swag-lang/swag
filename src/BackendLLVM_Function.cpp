@@ -722,13 +722,13 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::IntrinsicStringCmp:
         {
-            auto result = localCall(buildParameters, moduleToGen, g_LangSpec->name_atstrcmp, allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32, ip->d.u32}, {});
+            auto result = emitCall(buildParameters, moduleToGen, g_LangSpec->name_atstrcmp, allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32, ip->d.u32}, {});
             builder.CreateStore(result, TO_PTR_I8(GEP_I32(allocR, ip->d.u32)));
             break;
         }
         case ByteCodeOp::IntrinsicTypeCmp:
         {
-            auto result = localCall(buildParameters, moduleToGen, g_LangSpec->name_attypecmp, allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32}, {});
+            auto result = emitCall(buildParameters, moduleToGen, g_LangSpec->name_attypecmp, allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32}, {});
             builder.CreateStore(result, TO_PTR_I8(GEP_I32(allocR, ip->d.u32)));
             break;
         }
@@ -839,7 +839,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::IntrinsicItfTableOf:
         {
-            auto result = localCall(buildParameters, moduleToGen, g_LangSpec->name_atitftableof, allocR, allocT, {ip->a.u32, ip->b.u32}, {});
+            auto result = emitCall(buildParameters, moduleToGen, g_LangSpec->name_atitftableof, allocR, allocT, {ip->a.u32, ip->b.u32}, {});
             builder.CreateStore(result, TO_PTR_PTR_I8(GEP_I32(allocR, ip->c.u32)));
             break;
         }
@@ -2956,23 +2956,23 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::IntrinsicErrorMsg:
         {
             auto bcF = ((AstFuncDecl*) ip->node->resolvedSymbolOverload->node)->extension->bc;
-            localCall(buildParameters, moduleToGen, bcF->getCallName().c_str(), allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32}, {});
+            emitCall(buildParameters, moduleToGen, bcF->getCallName().c_str(), allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32}, {});
             break;
         }
         case ByteCodeOp::IntrinsicPanic:
         {
-            localCall(buildParameters, moduleToGen, g_LangSpec->name_atpanic, allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32}, {});
+            emitCall(buildParameters, moduleToGen, g_LangSpec->name_atpanic, allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32}, {});
             break;
         }
 
         case ByteCodeOp::InternalInitStackTrace:
         {
-            localCall(buildParameters, moduleToGen, g_LangSpec->name__initStackTrace, allocR, allocT, {}, {});
+            emitCall(buildParameters, moduleToGen, g_LangSpec->name__initStackTrace, allocR, allocT, {}, {});
             break;
         }
         case ByteCodeOp::InternalStackTrace:
         {
-            localCall(buildParameters, moduleToGen, g_LangSpec->name__stackTrace, allocR, allocT, {ip->a.u32}, {});
+            emitCall(buildParameters, moduleToGen, g_LangSpec->name__stackTrace, allocR, allocT, {ip->a.u32}, {});
             break;
         }
         case ByteCodeOp::InternalPanic:
@@ -2986,7 +2986,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto v0     = builder.getInt64(module->tlsSegment.totalCount);
             auto r1     = builder.CreateInBoundsGEP(TO_PTR_I8(pp.tlsSeg), pp.cst0_i64);
             auto vid    = builder.CreateLoad(pp.symTls_threadLocalId);
-            auto result = localCall(buildParameters, moduleToGen, g_LangSpec->name__tlsGetPtr, allocR, allocT, {UINT32_MAX, UINT32_MAX, UINT32_MAX}, {vid, v0, r1});
+            auto result = emitCall(buildParameters, moduleToGen, g_LangSpec->name__tlsGetPtr, allocR, allocT, {UINT32_MAX, UINT32_MAX, UINT32_MAX}, {vid, v0, r1});
             builder.CreateStore(result, TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
             break;
         }
@@ -2994,14 +2994,14 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::IntrinsicGetContext:
         {
             auto v0     = builder.CreateLoad(TO_PTR_I64(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst2_i32})));
-            auto result = localCall(buildParameters, moduleToGen, g_LangSpec->name__tlsGetValue, allocR, allocT, {UINT32_MAX}, {v0});
+            auto result = emitCall(buildParameters, moduleToGen, g_LangSpec->name__tlsGetValue, allocR, allocT, {UINT32_MAX}, {v0});
             builder.CreateStore(builder.CreatePtrToInt(result, builder.getInt64Ty()), GEP_I32(allocR, ip->a.u32));
             break;
         }
         case ByteCodeOp::IntrinsicSetContext:
         {
             auto v0 = builder.CreateLoad(TO_PTR_I64(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst2_i32})));
-            localCall(buildParameters, moduleToGen, g_LangSpec->name__tlsSetValue, allocR, allocT, {UINT32_MAX, ip->a.u32}, {v0, 0});
+            emitCall(buildParameters, moduleToGen, g_LangSpec->name__tlsSetValue, allocR, allocT, {UINT32_MAX, ip->a.u32}, {v0, 0});
             break;
         }
         case ByteCodeOp::IntrinsicGetProcessInfos:
@@ -3051,25 +3051,25 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::IntrinsicArguments:
         {
-            localCall(buildParameters, moduleToGen, g_LangSpec->name_atargs, allocR, allocT, {}, {});
+            emitCall(buildParameters, moduleToGen, g_LangSpec->name_atargs, allocR, allocT, {}, {});
             storeRT2ToRegisters(context, buildParameters, ip->a.u32, ip->b.u32, allocR, allocT);
             break;
         }
 
         case ByteCodeOp::IntrinsicGetErr:
         {
-            localCall(buildParameters, moduleToGen, g_LangSpec->name__geterr, allocR, allocT, {}, {});
+            emitCall(buildParameters, moduleToGen, g_LangSpec->name__geterr, allocR, allocT, {}, {});
             storeRT2ToRegisters(context, buildParameters, ip->a.u32, ip->b.u32, allocR, allocT);
             break;
         }
         case ByteCodeOp::InternalSetErr:
         {
-            localCall(buildParameters, moduleToGen, g_LangSpec->name__seterr, allocR, allocT, {ip->a.u32, ip->b.u32}, {});
+            emitCall(buildParameters, moduleToGen, g_LangSpec->name__seterr, allocR, allocT, {ip->a.u32, ip->b.u32}, {});
             break;
         }
         case ByteCodeOp::InternalCheckAny:
         {
-            localCall(buildParameters, moduleToGen, g_LangSpec->name__checkAny, allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32}, {});
+            emitCall(buildParameters, moduleToGen, g_LangSpec->name__checkAny, allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32}, {});
             break;
         }
 
@@ -3090,12 +3090,12 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::InternalPushErr:
         {
-            localCall(buildParameters, moduleToGen, g_LangSpec->name__pusherr, allocR, allocT, {}, {});
+            emitCall(buildParameters, moduleToGen, g_LangSpec->name__pusherr, allocR, allocT, {}, {});
             break;
         }
         case ByteCodeOp::InternalPopErr:
         {
-            localCall(buildParameters, moduleToGen, g_LangSpec->name__poperr, allocR, allocT, {}, {});
+            emitCall(buildParameters, moduleToGen, g_LangSpec->name__poperr, allocR, allocT, {}, {});
             break;
         }
 
@@ -3775,8 +3775,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(TO_PTR_I8(F), r0);
 
             auto v0 = builder.CreateLoad(GEP_I32(allocR, ip->a.u32));
-            auto v1 = builder.CreateOr(v0, builder.getInt64(SWAG_LAMBDA_FOREIGN_MARKER));
-            builder.CreateStore(v1, GEP_I32(allocR, ip->a.u32));
+            builder.CreateStore(v0, GEP_I32(allocR, ip->a.u32));
             break;
         }
 
@@ -3863,8 +3862,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.SetInsertPoint(blockLambdaForeign);
             {
                 llvm::FunctionType*        FT = nullptr;
-                auto                       r0 = builder.CreateLoad(GEP_I32(allocR, ip->a.u32));
-                auto                       v1 = builder.CreateAnd(r0, builder.getInt64(~SWAG_LAMBDA_FOREIGN_MARKER));
+                auto                       v1 = builder.CreateLoad(GEP_I32(allocR, ip->a.u32));
                 VectorNative<llvm::Value*> fctParams;
                 emitCallParameters(buildParameters, allocR, allocRR, moduleToGen, typeFuncBC, fctParams, pushRAParams, {});
 
@@ -4767,7 +4765,7 @@ void BackendLLVM::emitInternalPanic(const BuildParameters& buildParameters, Modu
     else
         r4 = builder.CreateIntToPtr(pp.cst0_i64, builder.getInt8PtrTy());
 
-    localCall(buildParameters, moduleToGen, g_LangSpec->name__panic, allocR, allocT, {UINT32_MAX, UINT32_MAX, UINT32_MAX, UINT32_MAX}, {r1, r2, r3, r4});
+    emitCall(buildParameters, moduleToGen, g_LangSpec->name__panic, allocR, allocT, {UINT32_MAX, UINT32_MAX, UINT32_MAX, UINT32_MAX}, {r1, r2, r3, r4});
 }
 
 void BackendLLVM::setFuncAttributes(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc, llvm::Function* func)

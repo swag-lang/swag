@@ -164,7 +164,7 @@ struct BackendLLVM : public Backend
 
     llvm::BasicBlock* getOrCreateLabel(LLVMPerThread& pp, llvm::Function* func, int64_t ip);
     bool              emitGetParam(llvm::LLVMContext& context, const BuildParameters& buildParameters, llvm::Function* func, TypeInfoFuncAttr* typeFunc, int idx, llvm::Value* r0, int sizeOf = 0, uint64_t toAdd = 0, int deRefSize = 0);
-    llvm::Value*      localCall(const BuildParameters& buildParameters, Module* moduleToGen, const char* name, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, const vector<uint32_t>& regs, const vector<llvm::Value*>& values);
+    llvm::Value*      emitCall(const BuildParameters& buildParameters, Module* moduleToGen, const char* name, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, const vector<uint32_t>& regs, const vector<llvm::Value*>& values);
 
     LLVMPerThread* perThread[BackendCompileType::Count][MAX_PRECOMPILE_BUFFERS];
 };

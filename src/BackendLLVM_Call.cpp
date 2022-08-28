@@ -242,8 +242,7 @@ bool BackendLLVM::emitCallParameters(const BuildParameters&        buildParamete
         SWAG_ASSERT(numCallParams);
         numCallParams--;
     }
-
-    if (typeFuncBC->isCVariadic())
+    else if (typeFuncBC->isCVariadic())
     {
         numCallParams--;
     }
@@ -427,19 +426,15 @@ llvm::Value* BackendLLVM::emitCall(const BuildParameters&        buildParameters
         F->setDLLStorageClass(llvm::GlobalValue::DLLImportStorageClass);
 
     return builder.CreateCall(func, {params.begin(), params.end()});
-
-    // Store result to rt0
-    // SWAG_CHECK(emitCallReturnValue(buildParameters, allocRR, moduleToGen, typeFuncBC, result));
-    // return true;
 }
 
-llvm::Value* BackendLLVM::localCall(const BuildParameters&      buildParameters,
-                                    Module*                     moduleToGen,
-                                    const char*                 name,
-                                    llvm::AllocaInst*           allocR,
-                                    llvm::AllocaInst*           allocT,
-                                    const vector<uint32_t>&     regs,
-                                    const vector<llvm::Value*>& values)
+llvm::Value* BackendLLVM::emitCall(const BuildParameters&      buildParameters,
+                                   Module*                     moduleToGen,
+                                   const char*                 name,
+                                   llvm::AllocaInst*           allocR,
+                                   llvm::AllocaInst*           allocT,
+                                   const vector<uint32_t>&     regs,
+                                   const vector<llvm::Value*>& values)
 {
     auto                typeFunc = g_Workspace->runtimeModule->getRuntimeTypeFct(name);
     llvm::FunctionType* FT;
@@ -505,7 +500,7 @@ void BackendLLVM::emitByteCodeCallParameters(const BuildParameters&      buildPa
     }
 
     // Two registers for variadics first
-    if (typeFuncBC->flags & (TYPEINFO_VARIADIC | TYPEINFO_TYPED_VARIADIC))
+    if (typeFuncBC->isVariadic())
     {
         auto index = pushRAParams[popRAidx--];
         SWAG_ASSERT(index != UINT32_MAX);
@@ -517,7 +512,7 @@ void BackendLLVM::emitByteCodeCallParameters(const BuildParameters&      buildPa
         params.push_back(builder.CreateLoad(r0));
         numCallParams--;
     }
-    else if (typeFuncBC->flags & TYPEINFO_C_VARIADIC)
+    else if (typeFuncBC->isCVariadic())
     {
         numCallParams--;
     }
@@ -585,7 +580,7 @@ void BackendLLVM::emitByteCodeCallParameters(const BuildParameters&      buildPa
     }
 
     // C variadic arguments
-    if (typeFuncBC->flags & TYPEINFO_C_VARIADIC)
+    if (typeFuncBC->isCVariadic())
     {
         auto numVariadics = popRAidx + 1;
         for (int idxCall = 0; idxCall < numVariadics; idxCall++)
