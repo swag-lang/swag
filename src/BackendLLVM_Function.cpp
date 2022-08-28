@@ -2987,7 +2987,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto r1     = builder.CreateInBoundsGEP(TO_PTR_I8(pp.tlsSeg), pp.cst0_i64);
             auto vid    = builder.CreateLoad(pp.symTls_threadLocalId);
             auto result = localCall(buildParameters, moduleToGen, g_LangSpec->name__tlsGetPtr, allocR, allocT, {UINT32_MAX, UINT32_MAX, UINT32_MAX}, {vid, v0, r1});
-            builder.CreateStore(result, GEP_I32(allocR, ip->a.u32));
+            builder.CreateStore(result, TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
             break;
         }
 

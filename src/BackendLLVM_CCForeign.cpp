@@ -41,17 +41,20 @@ llvm::FunctionType* BackendLLVM::createFunctionTypeForeign(const BuildParameters
 
     if (typeFunc->parameters.size())
     {
-        // Variadic parameters are always first
         auto numParams = typeFunc->parameters.size();
-        if (numParams)
+
+        // Variadic parameters are always first
+        if (typeFunc->isVariadic())
         {
-            auto param = typeFunc->parameters.back();
-            if (param->typeInfo->kind == TypeInfoKind::Variadic || param->typeInfo->kind == TypeInfoKind::TypedVariadic)
-            {
-                params.push_back(builder.getInt8Ty()->getPointerTo());
-                params.push_back(builder.getInt64Ty());
-                numParams--;
-            }
+            params.push_back(builder.getInt8Ty()->getPointerTo());
+            params.push_back(builder.getInt64Ty());
+            SWAG_ASSERT(numParams);
+            numParams--;
+        }
+        else if (typeFunc->isCVariadic())
+        {
+            SWAG_ASSERT(numParams);
+            numParams--;
         }
 
         int idxFirst = 0;
@@ -91,7 +94,7 @@ llvm::FunctionType* BackendLLVM::createFunctionTypeForeign(const BuildParameters
     if (returnByCopy)
         params.push_back(llvmRealReturnType);
 
-    auto result = llvm::FunctionType::get(returnType, {params.begin(), params.end()}, false);
+    auto result = llvm::FunctionType::get(returnType, {params.begin(), params.end()}, typeFunc->isCVariadic());
 
     if (closureToLambda)
         pp.mapFctTypeForeignClosure[typeFunc] = result;
@@ -121,20 +124,22 @@ bool BackendLLVM::getForeignCallParameters(const BuildParameters&        buildPa
     int idxParam      = (int) pushParams.size() - 1;
 
     // Variadic are first
-    if (numCallParams)
+    if (typeFuncBC->isVariadic())
     {
-        auto typeParam = TypeManager::concreteReferenceType(typeFuncBC->parameters.back()->typeInfo);
-        if (typeParam->kind == TypeInfoKind::Variadic || typeParam->kind == TypeInfoKind::TypedVariadic)
-        {
-            auto index = pushParams[idxParam--];
-            auto r0    = TO_PTR_PTR_I8(GEP_I32(allocR, index));
-            params.push_back(builder.CreateLoad(r0));
+        auto index = pushParams[idxParam--];
+        auto r0    = TO_PTR_PTR_I8(GEP_I32(allocR, index));
+        params.push_back(builder.CreateLoad(r0));
 
-            index   = pushParams[idxParam--];
-            auto r1 = GEP_I32(allocR, index);
-            params.push_back(builder.CreateLoad(r1));
-            numCallParams--;
-        }
+        index   = pushParams[idxParam--];
+        auto r1 = GEP_I32(allocR, index);
+        params.push_back(builder.CreateLoad(r1));
+        SWAG_ASSERT(numCallParams);
+        numCallParams--;
+    }
+
+    if (typeFuncBC->isCVariadic())
+    {
+        numCallParams--;
     }
 
     int idxFirst = 0;
@@ -206,8 +211,7 @@ bool BackendLLVM::getForeignCallParameters(const BuildParameters&        buildPa
         {
             auto r0 = GEP_I32(allocR, index);
             auto r  = TO_PTR_NATIVE(r0, typeParam->nativeType);
-            if (!r)
-                return moduleToGen->internalError(typeFuncBC->declNode, typeFuncBC->declNode->token, "emitForeignCall, invalid param native type");
+            SWAG_ASSERT(r);
             params.push_back(builder.CreateLoad(r));
         }
         else
@@ -228,6 +232,17 @@ bool BackendLLVM::getForeignCallParameters(const BuildParameters&        buildPa
     else if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
     {
         params.push_back(builder.CreateLoad(TO_PTR_PTR_I8(allocRR)));
+    }
+
+    // Add all C variadic parameters
+    if (typeFuncBC->isCVariadic())
+    {
+        for (int i = typeFuncBC->numParamsRegisters(); i < pushParams.size(); i++)
+        {
+            auto index = pushParams[idxParam--];
+            auto r0    = GEP_I32(allocR, index);
+            params.push_back(builder.CreateLoad(r0));
+        }
     }
 
     return true;
@@ -403,9 +418,15 @@ bool BackendLLVM::emitGetParam(llvm::LLVMContext&     context,
             builder.CreateStore(builder.CreateIntCast(arg, builder.getInt64Ty(), true), r0);
         else if (param->isNativeIntegerUnsigned() && param->sizeOf < sizeof(void*))
             builder.CreateStore(builder.CreateIntCast(arg, builder.getInt64Ty(), false), r0);
+
         // :StructByCopy
         else if (param->kind == TypeInfoKind::Struct && param->sizeOf <= sizeof(void*))
-            builder.CreateStore(builder.CreateIntCast(arg, builder.getInt64Ty(), false), r0);
+        {
+            // Make a copy of the value on the stack, and return the address
+            auto allocR = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt32(1));
+            builder.CreateStore(builder.CreateIntCast(arg, builder.getInt64Ty(), false), allocR);
+            builder.CreateStore(allocR, TO_PTR_PTR_I64(r0));
+        }
 
         // This can be casted to an integer
         else if (sizeOf)
