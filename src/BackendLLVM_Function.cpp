@@ -100,7 +100,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     auto                                   ip = bc->out;
     VectorNative<pair<uint32_t, uint32_t>> pushRVParams;
     VectorNative<uint32_t>                 pushRAParams;
-    llvm::Value*                           returnResult = nullptr;
+    VectorNative<llvm::Value*>             returnResults;
     for (uint32_t i = 0; i < bc->numInstructions; i++, ip++)
     {
         if (ip->node->flags & AST_NO_BACKEND)
@@ -2942,12 +2942,11 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             // Emit result
             if (returnType != g_TypeMgr->typeInfoVoid && !typeFunc->returnByCopy())
             {
+                auto returnResult = returnResults.get_pop_back();
                 builder.CreateRet(returnResult);
             }
             else
-            {
                 builder.CreateRetVoid();
-            }
 
             blockIsClosed = true;
             break;
@@ -3465,7 +3464,49 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::CopyRCtoRR:
         {
-            returnResult = MK_IMMA_64();
+            llvm::Value* returnResult = nullptr;
+            if (returnType->kind == TypeInfoKind::Native)
+            {
+                SWAG_ASSERT(!(ip->flags & BCI_IMM_A)); // TODO
+                switch (returnType->nativeType)
+                {
+                case NativeTypeKind::U8:
+                case NativeTypeKind::S8:
+                case NativeTypeKind::Bool:
+                    returnResult = builder.CreateLoad(TO_PTR_I8(GEP_I32(allocR, ip->a.u32)));
+                    break;
+                case NativeTypeKind::U16:
+                case NativeTypeKind::S16:
+                    returnResult = builder.CreateLoad(TO_PTR_I16(GEP_I32(allocR, ip->a.u32)));
+                    break;
+                case NativeTypeKind::U32:
+                case NativeTypeKind::S32:
+                case NativeTypeKind::Rune:
+                    returnResult = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->a.u32)));
+                    break;
+                case NativeTypeKind::U64:
+                case NativeTypeKind::S64:
+                case NativeTypeKind::UInt:
+                case NativeTypeKind::Int:
+                    returnResult = builder.CreateLoad(GEP_I32(allocR, ip->a.u32));
+                    break;
+                case NativeTypeKind::F32:
+                    returnResult = builder.CreateLoad(TO_PTR_F32(GEP_I32(allocR, ip->a.u32)));
+                    break;
+                case NativeTypeKind::F64:
+                    returnResult = builder.CreateLoad(TO_PTR_F64(GEP_I32(allocR, ip->a.u32)));
+                    break;
+                default:
+                    SWAG_ASSERT(false);
+                    break;
+                }
+            }
+            else
+            {
+                returnResult = MK_IMMA_64();
+            }
+
+            returnResults.push_back(returnResult);
             break;
         }
         case ByteCodeOp::CopyRCtoRR2:
@@ -3496,7 +3537,15 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::CopyRTtoRC:
         {
-            storeTypedValueToRegister(context, buildParameters, returnResult, ip->a.u32, allocR);
+            auto returnResult = returnResults.get_pop_back();
+            if (returnResult)
+                storeTypedValueToRegister(context, buildParameters, returnResult, ip->a.u32, allocR);
+            else
+            {
+                auto r0 = GEP_I32(allocR, ip->a.u32);
+                auto r1 = builder.CreateLoad(GEP_I32(allocRR, 0));
+                builder.CreateStore(r1, r0);
+            }
             break;
         }
         case ByteCodeOp::CopyRTtoRC2:
@@ -3822,9 +3871,11 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             }
             else
                 callName = callBc->getCallName();
-            returnResult = emitCall(buildParameters, moduleToGen, callName, typeFuncCall, allocR, allocRR, pushRAParams, {}, true);
+            auto returnResult = emitCall(buildParameters, moduleToGen, callName, typeFuncCall, allocR, allocRR, pushRAParams, {}, true);
             if (ip->op == ByteCodeOp::LocalCallPopRC)
                 storeTypedValueToRegister(context, buildParameters, returnResult, ip->d.u32, allocR);
+            else if (!ip->node || !(ip->node->flags & AST_DISCARD))
+                returnResults.push_back(returnResult);
             break;
         }
 
@@ -3835,7 +3886,9 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             TypeInfoFuncAttr* typeFuncCall = (TypeInfoFuncAttr*) ip->b.pointer;
 
             funcNode->computeFullNameForeign(false);
-            returnResult = emitCall(buildParameters, moduleToGen, funcNode->fullnameForeign, typeFuncCall, allocR, allocRR, pushRAParams, {}, false);
+            auto returnResult = emitCall(buildParameters, moduleToGen, funcNode->fullnameForeign, typeFuncCall, allocR, allocRR, pushRAParams, {}, false);
+            if (!ip->node || !(ip->node->flags & AST_DISCARD))
+                returnResults.push_back(returnResult);
             pushRAParams.clear();
             pushRVParams.clear();
             break;
@@ -3844,29 +3897,29 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::LambdaCall:
         case ByteCodeOp::LambdaCallPop:
         {
-            TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
+            TypeInfoFuncAttr* typeFuncCall = (TypeInfoFuncAttr*) ip->b.pointer;
 
-            llvm::BasicBlock* blockLambdaBC      = llvm::BasicBlock::Create(context, "", func);
-            llvm::BasicBlock* blockLambdaForeign = llvm::BasicBlock::Create(context, "", func);
-            llvm::BasicBlock* blockNext          = llvm::BasicBlock::Create(context, "", func);
+            llvm::BasicBlock* blockLambdaBC     = llvm::BasicBlock::Create(context, "", func);
+            llvm::BasicBlock* blockLambdaNative = llvm::BasicBlock::Create(context, "", func);
+            llvm::BasicBlock* blockNext         = llvm::BasicBlock::Create(context, "", func);
 
             {
                 auto v0 = builder.CreateLoad(GEP_I32(allocR, ip->a.u32));
                 auto v1 = builder.CreateAnd(v0, builder.getInt64(SWAG_LAMBDA_BC_MARKER));
                 auto v2 = builder.CreateIsNotNull(v1);
-                builder.CreateCondBr(v2, blockLambdaBC, blockLambdaForeign);
+                builder.CreateCondBr(v2, blockLambdaBC, blockLambdaNative);
             }
 
             // Foreign
             //////////////////////////////
-            builder.SetInsertPoint(blockLambdaForeign);
+            builder.SetInsertPoint(blockLambdaNative);
             {
                 llvm::FunctionType*        FT = nullptr;
                 auto                       v1 = builder.CreateLoad(GEP_I32(allocR, ip->a.u32));
                 VectorNative<llvm::Value*> fctParams;
-                emitCallParameters(buildParameters, allocR, allocRR, moduleToGen, typeFuncBC, fctParams, pushRAParams, {});
+                emitCallParameters(buildParameters, allocR, allocRR, moduleToGen, typeFuncCall, fctParams, pushRAParams, {});
 
-                if (typeFuncBC->isClosure())
+                if (typeFuncCall->isClosure())
                 {
                     llvm::BasicBlock* blockLambda  = llvm::BasicBlock::Create(context, "", func);
                     llvm::BasicBlock* blockClosure = llvm::BasicBlock::Create(context, "", func);
@@ -3879,32 +3932,35 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                     // Lambda call. We must eliminate the first parameter (closure context)
                     builder.SetInsertPoint(blockLambda);
                     VectorNative<llvm::Value*> fctParamsLocal;
-                    emitCallParameters(buildParameters, allocR, allocRR, moduleToGen, typeFuncBC, fctParamsLocal, pushRAParams, {}, true);
+                    emitCallParameters(buildParameters, allocR, allocRR, moduleToGen, typeFuncCall, fctParamsLocal, pushRAParams, {}, true);
 
-                    FT            = getOrCreateFuncType(buildParameters, moduleToGen, typeFuncBC, true);
+                    FT            = getOrCreateFuncType(buildParameters, moduleToGen, typeFuncCall, true);
                     auto l_PT     = llvm::PointerType::getUnqual(FT);
                     auto l_r1     = builder.CreateIntToPtr(v1, l_PT);
                     auto l_result = builder.CreateCall(FT, l_r1, {fctParamsLocal.begin(), fctParamsLocal.end()});
-                    SWAG_CHECK(emitCallReturnValue(buildParameters, allocRR, moduleToGen, typeFuncBC, l_result));
+                    SWAG_CHECK(emitCallReturnValue(buildParameters, allocRR, moduleToGen, typeFuncCall, l_result));
                     builder.CreateBr(blockNext);
 
                     // Closure call. Normal call, as the type contains the first parameter.
                     builder.SetInsertPoint(blockClosure);
-                    FT            = getOrCreateFuncType(buildParameters, moduleToGen, typeFuncBC);
+                    FT            = getOrCreateFuncType(buildParameters, moduleToGen, typeFuncCall);
                     auto c_PT     = llvm::PointerType::getUnqual(FT);
                     auto c_r1     = builder.CreateIntToPtr(v1, c_PT);
                     auto c_result = builder.CreateCall(FT, c_r1, {fctParams.begin(), fctParams.end()});
-                    SWAG_CHECK(emitCallReturnValue(buildParameters, allocRR, moduleToGen, typeFuncBC, c_result));
-                    returnResult = nullptr;
+                    SWAG_CHECK(emitCallReturnValue(buildParameters, allocRR, moduleToGen, typeFuncCall, c_result));
                     builder.CreateBr(blockNext);
+                    if (!ip->node || !(ip->node->flags & AST_DISCARD))
+                        returnResults.push_back(nullptr);
                 }
                 else
                 {
-                    FT           = getOrCreateFuncType(buildParameters, moduleToGen, typeFuncBC);
-                    auto PT      = llvm::PointerType::getUnqual(FT);
-                    auto r1      = builder.CreateIntToPtr(v1, PT);
-                    returnResult = builder.CreateCall(FT, r1, {fctParams.begin(), fctParams.end()});
+                    FT                = getOrCreateFuncType(buildParameters, moduleToGen, typeFuncCall);
+                    auto PT           = llvm::PointerType::getUnqual(FT);
+                    auto r1           = builder.CreateIntToPtr(v1, PT);
+                    auto returnResult = builder.CreateCall(FT, r1, {fctParams.begin(), fctParams.end()});
                     builder.CreateBr(blockNext);
+                    if (!ip->node || !(ip->node->flags & AST_DISCARD))
+                        returnResults.push_back(returnResult);
                 }
             }
 
@@ -3915,13 +3971,13 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 auto                       r0 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
                 VectorNative<llvm::Value*> fctParams;
                 fctParams.push_front(r0);
-                emitByteCodeCallParameters(buildParameters, allocR, allocRR, allocT, fctParams, typeFuncBC, pushRAParams, {});
+                emitByteCodeCallParameters(buildParameters, allocR, allocRR, allocT, fctParams, typeFuncCall, pushRAParams, {});
 
                 auto r1 = builder.CreateLoad(TO_PTR_PTR_I8(builder.CreateInBoundsGEP(pp.processInfos, {pp.cst0_i32, pp.cst4_i32})));
                 auto PT = llvm::PointerType::getUnqual(pp.bytecodeRunTy);
                 auto r2 = builder.CreatePointerCast(r1, PT);
 
-                if (typeFuncBC->isClosure())
+                if (typeFuncCall->isClosure())
                 {
                     llvm::BasicBlock* blockLambda  = llvm::BasicBlock::Create(context, "", func);
                     llvm::BasicBlock* blockClosure = llvm::BasicBlock::Create(context, "", func);
@@ -3935,7 +3991,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                     builder.SetInsertPoint(blockLambda);
                     VectorNative<llvm::Value*> fctParamsLocal;
                     fctParamsLocal.push_front(r0);
-                    emitByteCodeCallParameters(buildParameters, allocR, allocRR, allocT, fctParamsLocal, typeFuncBC, pushRAParams, {}, true);
+                    emitByteCodeCallParameters(buildParameters, allocR, allocRR, allocT, fctParamsLocal, typeFuncCall, pushRAParams, {}, true);
                     builder.CreateCall(pp.bytecodeRunTy, r2, {fctParamsLocal.begin(), fctParamsLocal.end()});
                     builder.CreateBr(blockNext);
 
