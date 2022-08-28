@@ -260,8 +260,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
     }
 
     // Call exit
-    auto typeF = createFunctionTypeLocal(buildParameters, nullptr);
-    builder.CreateCall(modu.getOrInsertFunction(g_LangSpec->name__exit.c_str(), typeF), {});
+    localCall(buildParameters, module, g_LangSpec->name__exit, nullptr, allocT, {}, {});
 
     builder.CreateRetVoid();
     return true;

@@ -2635,7 +2635,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             else
                 callName = callBc->getCallName();
 
-            emitForeignCall(pp, moduleToGen, callName, ip, offsetRT, pushRAParams, true);
+            emitCall(pp, moduleToGen, callName, ip, offsetRT, pushRAParams, true);
             pushRAParams.clear();
             pushRVParams.clear();
 
@@ -2653,7 +2653,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         {
             auto funcNode = (AstFuncDecl*) ip->a.pointer;
             funcNode->computeFullNameForeign(false);
-            emitForeignCall(pp, moduleToGen, funcNode->fullnameForeign, ip, offsetRT, pushRAParams, false);
+            emitCall(pp, moduleToGen, funcNode->fullnameForeign, ip, offsetRT, pushRAParams, false);
             pushRAParams.clear();
             pushRVParams.clear();
             break;
@@ -2675,9 +2675,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
             // Native lambda
             //////////////////
-            SWAG_CHECK(emitForeignCallParameters(pp, moduleToGen, offsetRT, typeFuncBC, pushRAParams));
+            SWAG_CHECK(emitCallParameters(pp, moduleToGen, offsetRT, typeFuncBC, pushRAParams));
             concat.addString3("\x41\xFF\xD2"); // call r10
-            emitForeignCallResult(pp, typeFuncBC, offsetRT);
+            emitCallResult(pp, typeFuncBC, offsetRT);
 
             concat.addString1("\xe9"); // jmp ???????? => jump after bytecode lambda
             concat.addU32(0);
@@ -2689,7 +2689,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             *jumpToBCAddr = concat.totalCount() - jumpToBCOffset;
 
             BackendX64Inst::emit_Copy64(pp, R10, RCX);
-            emitByteCodeLambdaParams(pp, typeFuncBC, offsetRT, pushRAParams);
+            emitByteCodeCallParameters(pp, typeFuncBC, offsetRT, pushRAParams);
             BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symPI_byteCodeRun, 0);
             BackendX64Inst::emit_Load64_Indirect(pp, 0, RAX, RAX);
             concat.addString2("\xff\xd0"); // call rax

@@ -277,8 +277,7 @@
     <ClCompile Include="../src/Attribute.cpp" />
     <ClCompile Include="../src/Backend.cpp" />
     <ClCompile Include="..\src\AstNode_Clone.cpp" />
-    <ClCompile Include="..\src\BackendLLVM_CCForeign.cpp" />
-    <ClCompile Include="..\src\BackendLLVM_CCLocal.cpp" />
+    <ClCompile Include="..\src\BackendLLVM_Call.cpp" />
     <ClCompile Include="..\src\BackendLLVM_Data.cpp" />
     <ClCompile Include="../src/BackendLLVMDbg.cpp" />
     <ClCompile Include="../src/BackendLLVMFunctionBodyJob.cpp" />

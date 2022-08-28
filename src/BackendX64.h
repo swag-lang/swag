@@ -359,8 +359,8 @@ struct BackendX64 : public Backend
     bool         dbgEmitFctDebugS(const BuildParameters& buildParameters);
     bool         dbgEmitScope(X64PerThread& pp, Concat& concat, CoffFunction& f, Scope* scope);
     bool         emitDebug(const BuildParameters& buildParameters);
-    void         emitByteCodeLambdaFctCall(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams);
-    void         emitByteCodeLambdaParams(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams);
+    void         emitByteCodeCall(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams);
+    void         emitByteCodeCallParameters(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams);
 
     bool saveObjFile(const BuildParameters& buildParameters);
 
@@ -376,10 +376,10 @@ struct BackendX64 : public Backend
     void emitCall(X64PerThread& pp, const Utf8& name);
 
     void emitGetParam(X64PerThread& pp, TypeInfoFuncAttr* typeFunc, int reg, int paramIdx, int sizeOf, int storeS4, int sizeStack, uint64_t toAdd = 0, int derefSize = 0);
-    void emitForeignCallResult(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT);
-    bool emitForeignCall(X64PerThread& pp, Module* moduleToGen, const Utf8& funcName, ByteCodeInstruction* ip, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams, bool localCall);
-    bool emitForeignFctCall(X64PerThread& pp, Module* moduleToGen, TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& paramsRegisters, VectorNative<TypeInfo*>& paramsTypes);
-    bool emitForeignCallParameters(X64PerThread& pp, Module* moduleToGen, uint32_t offsetRT, TypeInfoFuncAttr* typeFuncBC, const VectorNative<uint32_t>& pushRAParams);
+    void emitCallResult(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT);
+    bool emitCall(X64PerThread& pp, Module* moduleToGen, const Utf8& funcName, ByteCodeInstruction* ip, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams, bool localCall);
+    bool emitCall(X64PerThread& pp, Module* moduleToGen, TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& paramsRegisters, VectorNative<TypeInfo*>& paramsTypes);
+    bool emitCallParameters(X64PerThread& pp, Module* moduleToGen, uint32_t offsetRT, TypeInfoFuncAttr* typeFuncBC, const VectorNative<uint32_t>& pushRAParams);
 
     CoffFunction* registerFunction(X64PerThread& pp, AstNode* node, uint32_t symbolIndex);
     void          registerFunction(CoffFunction* fct, uint32_t startAddress, uint32_t endAddress, uint32_t sizeProlog, VectorNative<uint16_t>& unwind);

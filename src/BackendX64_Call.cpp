@@ -105,12 +105,12 @@ void BackendX64::emitGetParam(X64PerThread& pp, TypeInfoFuncAttr* typeFunc, int 
     BackendX64Inst::emit_Store64_Indirect(pp, regOffset(reg), RAX, RDI);
 }
 
-bool BackendX64::emitForeignCall(X64PerThread& pp, Module* moduleToGen, const Utf8& funcName, ByteCodeInstruction* ip, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams, bool localCall)
+bool BackendX64::emitCall(X64PerThread& pp, Module* moduleToGen, const Utf8& funcName, ByteCodeInstruction* ip, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams, bool localCall)
 {
     TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
 
     // Push parameters
-    SWAG_CHECK(emitForeignCallParameters(pp, moduleToGen, offsetRT, typeFuncBC, pushRAParams));
+    SWAG_CHECK(emitCallParameters(pp, moduleToGen, offsetRT, typeFuncBC, pushRAParams));
 
     auto& concat = pp.concat;
 
@@ -136,36 +136,11 @@ bool BackendX64::emitForeignCall(X64PerThread& pp, Module* moduleToGen, const Ut
     }
 
     // Store result
-    emitForeignCallResult(pp, typeFuncBC, offsetRT);
+    emitCallResult(pp, typeFuncBC, offsetRT);
     return true;
 }
 
-void BackendX64::emitForeignCallResult(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT)
-{
-    // Store result to rt0
-    auto returnType = TypeManager::concreteReferenceType(typeFuncBC->returnType);
-    if (returnType != g_TypeMgr->typeInfoVoid)
-    {
-        if ((returnType->kind == TypeInfoKind::Slice) ||
-            (returnType->kind == TypeInfoKind::Interface) ||
-            (returnType->isNative(NativeTypeKind::Any)) ||
-            (returnType->isNative(NativeTypeKind::String)) ||
-            (returnType->flags & TYPEINFO_RETURN_BY_COPY))
-        {
-            // Return by parameter
-        }
-        else if (returnType->isNativeFloat())
-        {
-            BackendX64Inst::emit_StoreF64_Indirect(pp, offsetRT, XMM0, RDI);
-        }
-        else
-        {
-            BackendX64Inst::emit_Store64_Indirect(pp, offsetRT, RAX, RDI);
-        }
-    }
-}
-
-bool BackendX64::emitForeignFctCall(X64PerThread& pp, Module* moduleToGen, TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& paramsRegisters, VectorNative<TypeInfo*>& paramsTypes)
+bool BackendX64::emitCall(X64PerThread& pp, Module* moduleToGen, TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& paramsRegisters, VectorNative<TypeInfo*>& paramsTypes)
 {
     auto returnType   = TypeManager::concreteReferenceType(typeFuncBC->returnType);
     bool returnByCopy = returnType->flags & TYPEINFO_RETURN_BY_COPY;
@@ -319,7 +294,7 @@ bool BackendX64::emitForeignFctCall(X64PerThread& pp, Module* moduleToGen, TypeI
                     BackendX64Inst::emit_Store64_Indirect(pp, offsetStack, RAX, RSP);
                     break;
                 default:
-                    return moduleToGen->internalError(typeFuncBC->declNode, typeFuncBC->declNode->token, "emitForeignCall, invalid parameter type");
+                    return moduleToGen->internalError(typeFuncBC->declNode, typeFuncBC->declNode->token, "emitCall, invalid parameter type");
                 }
             }
         }
@@ -331,7 +306,32 @@ bool BackendX64::emitForeignFctCall(X64PerThread& pp, Module* moduleToGen, TypeI
     return true;
 }
 
-bool BackendX64::emitForeignCallParameters(X64PerThread& pp, Module* moduleToGen, uint32_t offsetRT, TypeInfoFuncAttr* typeFuncBC, const VectorNative<uint32_t>& pushRAParams)
+void BackendX64::emitCallResult(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT)
+{
+    // Store result to rt0
+    auto returnType = TypeManager::concreteReferenceType(typeFuncBC->returnType);
+    if (returnType != g_TypeMgr->typeInfoVoid)
+    {
+        if ((returnType->kind == TypeInfoKind::Slice) ||
+            (returnType->kind == TypeInfoKind::Interface) ||
+            (returnType->isNative(NativeTypeKind::Any)) ||
+            (returnType->isNative(NativeTypeKind::String)) ||
+            (returnType->flags & TYPEINFO_RETURN_BY_COPY))
+        {
+            // Return by parameter
+        }
+        else if (returnType->isNativeFloat())
+        {
+            BackendX64Inst::emit_StoreF64_Indirect(pp, offsetRT, XMM0, RDI);
+        }
+        else
+        {
+            BackendX64Inst::emit_Store64_Indirect(pp, offsetRT, RAX, RDI);
+        }
+    }
+}
+
+bool BackendX64::emitCallParameters(X64PerThread& pp, Module* moduleToGen, uint32_t offsetRT, TypeInfoFuncAttr* typeFuncBC, const VectorNative<uint32_t>& pushRAParams)
 {
     int numCallParams = (int) typeFuncBC->parameters.size();
 
@@ -397,7 +397,7 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, Module* moduleToGen
         else
         {
             if (typeParam->sizeOf > sizeof(void*))
-                return moduleToGen->internalError(typeFuncBC->declNode, typeFuncBC->declNode->token, "emitForeignCall, invalid parameter type");
+                return moduleToGen->internalError(typeFuncBC->declNode, typeFuncBC->declNode->token, "emitCall, invalid parameter type");
             paramsRegisters.push_back(index);
             paramsTypes.push_back(typeParam);
         }
@@ -437,7 +437,7 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, Module* moduleToGen
         auto seekPtrClosure = pp.concat.getSeekPtr() - 4;
         auto seekJmpClosure = pp.concat.totalCount();
 
-        SWAG_CHECK(emitForeignFctCall(pp, moduleToGen, typeFuncBC, paramsRegisters, paramsTypes));
+        SWAG_CHECK(emitCall(pp, moduleToGen, typeFuncBC, paramsRegisters, paramsTypes));
 
         // Jump to after closure call
         BackendX64Inst::emit_LongJumpOp(pp, BackendX64Inst::JUMP);
@@ -450,19 +450,19 @@ bool BackendX64::emitForeignCallParameters(X64PerThread& pp, Module* moduleToGen
 
         paramsRegisters.erase(0);
         paramsTypes.erase(0);
-        SWAG_CHECK(emitForeignFctCall(pp, moduleToGen, typeFuncBC, paramsRegisters, paramsTypes));
+        SWAG_CHECK(emitCall(pp, moduleToGen, typeFuncBC, paramsRegisters, paramsTypes));
 
         *seekPtrAfterClosure = (uint8_t) (pp.concat.totalCount() - seekJmpAfterClosure);
     }
     else
     {
-        SWAG_CHECK(emitForeignFctCall(pp, moduleToGen, typeFuncBC, paramsRegisters, paramsTypes));
+        SWAG_CHECK(emitCall(pp, moduleToGen, typeFuncBC, paramsRegisters, paramsTypes));
     }
 
     return true;
 }
 
-void BackendX64::emitByteCodeLambdaFctCall(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams)
+void BackendX64::emitByteCodeCall(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams)
 {
     int idxReg = 0;
     for (int idxParam = typeFuncBC->numReturnRegisters() - 1; idxParam >= 0; idxParam--, idxReg++)
@@ -497,7 +497,7 @@ void BackendX64::emitByteCodeLambdaFctCall(X64PerThread& pp, TypeInfoFuncAttr* t
     }
 }
 
-void BackendX64::emitByteCodeLambdaParams(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams)
+void BackendX64::emitByteCodeCallParameters(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams)
 {
     // If the closure is assigned to a lambda, then we must not use the first parameter (the first
     // parameter is the capture context, which does not exist in a normal function)
@@ -515,7 +515,7 @@ void BackendX64::emitByteCodeLambdaParams(X64PerThread& pp, TypeInfoFuncAttr* ty
         auto seekPtrClosure = pp.concat.getSeekPtr() - 4;
         auto seekJmpClosure = pp.concat.totalCount();
 
-        emitByteCodeLambdaFctCall(pp, typeFuncBC, offsetRT, pushRAParams);
+        emitByteCodeCall(pp, typeFuncBC, offsetRT, pushRAParams);
 
         // Jump to after closure call
         BackendX64Inst::emit_LongJumpOp(pp, BackendX64Inst::JUMP);
@@ -527,12 +527,12 @@ void BackendX64::emitByteCodeLambdaParams(X64PerThread& pp, TypeInfoFuncAttr* ty
         *seekPtrClosure = (uint8_t) (pp.concat.totalCount() - seekJmpClosure);
 
         pushRAParams.pop_back();
-        emitByteCodeLambdaFctCall(pp, typeFuncBC, offsetRT, pushRAParams);
+        emitByteCodeCall(pp, typeFuncBC, offsetRT, pushRAParams);
 
         *seekPtrAfterClosure = (uint8_t) (pp.concat.totalCount() - seekJmpAfterClosure);
     }
     else
     {
-        emitByteCodeLambdaFctCall(pp, typeFuncBC, offsetRT, pushRAParams);
+        emitByteCodeCall(pp, typeFuncBC, offsetRT, pushRAParams);
     }
 }
