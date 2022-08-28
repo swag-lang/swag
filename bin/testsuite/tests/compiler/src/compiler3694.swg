@@ -17,6 +17,7 @@ func GetFontData()->s32 throw
     return 0
 }
 
+//#[Swag.PrintBc]
 func getDataFromHFONT()->Array throw
 {
     var result: retval
@@ -34,4 +35,5 @@ func createFromHFONT() throw
 #test
 {
     catch createFromHFONT()
+    @assert(@err == "toto")
 }

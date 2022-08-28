@@ -2935,7 +2935,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                     numParams--;
                 for (int iparam = 0; iparam < numParams; iparam++)
                 {
-                    SWAG_CHECK(storeLocalParam(context, buildParameters, func, typeFunc, iparam, r1));
+                    SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, iparam, r1));
                 }
             }*/
 
@@ -3051,13 +3051,15 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::IntrinsicArguments:
         {
-            localCall(buildParameters, moduleToGen, g_LangSpec->name_atargs, allocR, allocT, {ip->a.u32, ip->b.u32}, {});
+            localCall(buildParameters, moduleToGen, g_LangSpec->name_atargs, allocR, allocT, {}, {});
+            storeRT2ToRegisters(context, buildParameters, ip->a.u32, ip->b.u32, allocR, allocT);
             break;
         }
 
         case ByteCodeOp::IntrinsicGetErr:
         {
-            localCall(buildParameters, moduleToGen, g_LangSpec->name__geterr, allocR, allocT, {ip->a.u32, ip->b.u32}, {});
+            localCall(buildParameters, moduleToGen, g_LangSpec->name__geterr, allocR, allocT, {}, {});
+            storeRT2ToRegisters(context, buildParameters, ip->a.u32, ip->b.u32, allocR, allocT);
             break;
         }
         case ByteCodeOp::InternalSetErr:
@@ -3484,10 +3486,11 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::CopyRRtoRC:
         {
-            auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = returnResult;
-            auto r2 = builder.CreateAdd(r1, builder.getInt64(ip->b.u64));
-            builder.CreateStore(r2, r0);
+            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
+            auto r1 = TO_PTR_I8(func->getArg((int) func->arg_size() - 1));
+            if (ip->b.u64)
+                r1 = builder.CreateInBoundsGEP(r1, builder.getInt64(ip->b.u64));
+            builder.CreateStore(r1, r0);
             break;
         }
 
@@ -3498,93 +3501,88 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
         case ByteCodeOp::CopyRTtoRC2:
         {
-            auto r0 = GEP_I32(allocR, ip->a.u32);
-            auto r1 = builder.CreateLoad(GEP_I32(allocRR, 0));
-            builder.CreateStore(r1, r0);
-            r0 = GEP_I32(allocR, ip->b.u32);
-            r1 = builder.CreateLoad(GEP_I32(allocRR, 1));
-            builder.CreateStore(r1, r0);
+            storeRT2ToRegisters(context, buildParameters, ip->a.u32, ip->b.u32, allocR, allocRR);
             break;
         }
 
         case ByteCodeOp::GetParam8:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            SWAG_CHECK(storeLocalParam(context, buildParameters, func, typeFunc, ip->c.u32, r0, 1));
+            SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->c.u32, r0, 1));
             break;
         }
         case ByteCodeOp::GetParam16:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            SWAG_CHECK(storeLocalParam(context, buildParameters, func, typeFunc, ip->c.u32, r0, 2));
+            SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->c.u32, r0, 2));
             break;
         }
         case ByteCodeOp::GetParam32:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            SWAG_CHECK(storeLocalParam(context, buildParameters, func, typeFunc, ip->c.u32, r0, 4));
+            SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->c.u32, r0, 4));
             break;
         }
         case ByteCodeOp::GetParam64:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            SWAG_CHECK(storeLocalParam(context, buildParameters, func, typeFunc, ip->c.u32, r0));
+            SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->c.u32, r0));
             break;
         }
         case ByteCodeOp::GetIncParam64:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            SWAG_CHECK(storeLocalParam(context, buildParameters, func, typeFunc, ip->c.u32, r0, 0, ip->d.u64));
+            SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->c.u32, r0, 0, ip->d.u64));
             break;
         }
 
         case ByteCodeOp::GetParam64DeRef8:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            SWAG_CHECK(storeLocalParam(context, buildParameters, func, typeFunc, ip->c.u32, r0, 0, 0, 1));
+            SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->c.u32, r0, 0, 0, 1));
             break;
         }
         case ByteCodeOp::GetParam64DeRef16:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            SWAG_CHECK(storeLocalParam(context, buildParameters, func, typeFunc, ip->c.u32, r0, 0, 0, 2));
+            SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->c.u32, r0, 0, 0, 2));
             break;
         }
         case ByteCodeOp::GetParam64DeRef32:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            SWAG_CHECK(storeLocalParam(context, buildParameters, func, typeFunc, ip->c.u32, r0, 0, 0, 4));
+            SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->c.u32, r0, 0, 0, 4));
             break;
         }
         case ByteCodeOp::GetParam64DeRef64:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            SWAG_CHECK(storeLocalParam(context, buildParameters, func, typeFunc, ip->c.u32, r0, 0, 0, 8));
+            SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->c.u32, r0, 0, 0, 8));
             break;
         }
 
         case ByteCodeOp::GetIncParam64DeRef8:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            SWAG_CHECK(storeLocalParam(context, buildParameters, func, typeFunc, ip->c.u32, r0, 0, ip->d.u64, 1));
+            SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->c.u32, r0, 0, ip->d.u64, 1));
             break;
         }
         case ByteCodeOp::GetIncParam64DeRef16:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            SWAG_CHECK(storeLocalParam(context, buildParameters, func, typeFunc, ip->c.u32, r0, 0, ip->d.u64, 2));
+            SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->c.u32, r0, 0, ip->d.u64, 2));
             break;
         }
         case ByteCodeOp::GetIncParam64DeRef32:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            SWAG_CHECK(storeLocalParam(context, buildParameters, func, typeFunc, ip->c.u32, r0, 0, ip->d.u64, 4));
+            SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->c.u32, r0, 0, ip->d.u64, 4));
             break;
         }
         case ByteCodeOp::GetIncParam64DeRef64:
         {
             auto r0 = GEP_I32(allocR, ip->a.u32);
-            SWAG_CHECK(storeLocalParam(context, buildParameters, func, typeFunc, ip->c.u32, r0, 0, ip->d.u64, 8));
+            SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, ip->c.u32, r0, 0, ip->d.u64, 8));
             break;
         }
 
@@ -3766,66 +3764,32 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::MakeLambda:
         {
-            auto funcNode = CastAst<AstFuncDecl>((AstNode*) ip->b.pointer, AstNodeKind::FuncDecl);
-            SWAG_ASSERT(funcNode);
+            auto              funcNode     = CastAst<AstFuncDecl>((AstNode*) ip->b.pointer, AstNodeKind::FuncDecl);
+            Utf8              callName     = funcNode->getCallName();
             TypeInfoFuncAttr* typeFuncNode = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
 
-            if (funcNode->attributeFlags & ATTRIBUTE_FOREIGN)
-            {
-                auto foreignValue = typeFuncNode->attributes.getValue(g_LangSpec->name_Swag_Foreign, g_LangSpec->name_function);
-                SWAG_ASSERT(foreignValue && !foreignValue->text.empty());
+            auto T = createFunctionTypeForeign(buildParameters, moduleToGen, typeFuncNode);
+            auto F = (llvm::Function*) modu.getOrInsertFunction(callName.c_str(), T).getCallee();
 
-                llvm::FunctionType* T;
-                SWAG_CHECK(createFunctionTypeForeign(buildParameters, moduleToGen, typeFuncNode, &T));
-                auto F = (llvm::Function*) modu.getOrInsertFunction(foreignValue->text.c_str(), T).getCallee();
+            auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
+            builder.CreateStore(TO_PTR_I8(F), r0);
 
-                auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
-                builder.CreateStore(TO_PTR_I8(F), r0);
-
-                auto v0 = builder.CreateLoad(GEP_I32(allocR, ip->a.u32));
-                auto v1 = builder.CreateOr(v0, builder.getInt64(SWAG_LAMBDA_FOREIGN_MARKER));
-                builder.CreateStore(v1, GEP_I32(allocR, ip->a.u32));
-            }
-            else if (funcNode->attributeFlags & ATTRIBUTE_CALLBACK)
-            {
-                funcNode->computeFullNameForeign(true);
-
-                llvm::FunctionType* T;
-                SWAG_CHECK(createFunctionTypeForeign(buildParameters, moduleToGen, typeFuncNode, &T));
-                auto F = (llvm::Function*) modu.getOrInsertFunction(funcNode->fullnameForeign.c_str(), T).getCallee();
-
-                auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
-                builder.CreateStore(TO_PTR_I8(F), r0);
-
-                auto v0 = builder.CreateLoad(GEP_I32(allocR, ip->a.u32));
-                auto v1 = builder.CreateOr(v0, builder.getInt64(SWAG_LAMBDA_FOREIGN_MARKER));
-                builder.CreateStore(v1, GEP_I32(allocR, ip->a.u32));
-            }
-            else
-            {
-                auto funcBC = (ByteCode*) ip->c.pointer;
-                SWAG_ASSERT(funcBC);
-                auto typeFuncLambda = CastTypeInfo<TypeInfoFuncAttr>(funcBC->node->typeInfo, TypeInfoKind::FuncAttr);
-
-                auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
-                auto T  = createFunctionTypeLocal(buildParameters, typeFuncLambda);
-                auto F  = (llvm::Function*) modu.getOrInsertFunction(funcBC->getCallName().c_str(), T).getCallee();
-                builder.CreateStore(TO_PTR_I8(F), r0);
-            }
+            auto v0 = builder.CreateLoad(GEP_I32(allocR, ip->a.u32));
+            auto v1 = builder.CreateOr(v0, builder.getInt64(SWAG_LAMBDA_FOREIGN_MARKER));
+            builder.CreateStore(v1, GEP_I32(allocR, ip->a.u32));
             break;
         }
 
         case ByteCodeOp::IntrinsicMakeCallback:
         {
-            llvm::BasicBlock* blockLambdaBC      = llvm::BasicBlock::Create(context, "", func);
-            llvm::BasicBlock* blockLambdaForeign = llvm::BasicBlock::Create(context, "", func);
-            llvm::BasicBlock* blockNext          = llvm::BasicBlock::Create(context, "", func);
-            auto              v0                 = builder.CreateLoad(GEP_I32(allocR, ip->a.u32));
+            llvm::BasicBlock* blockLambdaBC = llvm::BasicBlock::Create(context, "", func);
+            llvm::BasicBlock* blockNext     = llvm::BasicBlock::Create(context, "", func);
+            auto              v0            = builder.CreateLoad(GEP_I32(allocR, ip->a.u32));
 
             {
                 auto v1 = builder.CreateAnd(v0, builder.getInt64(SWAG_LAMBDA_BC_MARKER));
                 auto v2 = builder.CreateIsNotNull(v1);
-                builder.CreateCondBr(v2, blockLambdaBC, blockLambdaForeign);
+                builder.CreateCondBr(v2, blockLambdaBC, blockNext);
             }
 
             builder.SetInsertPoint(blockLambdaBC);
@@ -3836,14 +3800,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 auto v2 = builder.CreateIntToPtr(v0, builder.getInt8PtrTy());
                 auto v1 = builder.CreateCall(pp.makeCallbackTy, r2, {v2});
                 auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32));
-                builder.CreateStore(v1, r0);
-                builder.CreateBr(blockNext);
-            }
-
-            builder.SetInsertPoint(blockLambdaForeign);
-            {
-                auto v1 = builder.CreateAnd(v0, builder.getInt64(~SWAG_LAMBDA_FOREIGN_MARKER));
-                auto r0 = GEP_I32(allocR, ip->a.u32);
                 builder.CreateStore(v1, r0);
                 builder.CreateBr(blockNext);
             }
@@ -3891,25 +3847,15 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         {
             TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
 
-            llvm::BasicBlock* blockLambdaBC             = llvm::BasicBlock::Create(context, "", func);
-            llvm::BasicBlock* blockLambdaLocalOrForeign = llvm::BasicBlock::Create(context, "", func);
-            llvm::BasicBlock* blockLambdaForeign        = llvm::BasicBlock::Create(context, "", func);
-            llvm::BasicBlock* blockLambdaLocal          = llvm::BasicBlock::Create(context, "", func);
-            llvm::BasicBlock* blockNext                 = llvm::BasicBlock::Create(context, "", func);
+            llvm::BasicBlock* blockLambdaBC      = llvm::BasicBlock::Create(context, "", func);
+            llvm::BasicBlock* blockLambdaForeign = llvm::BasicBlock::Create(context, "", func);
+            llvm::BasicBlock* blockNext          = llvm::BasicBlock::Create(context, "", func);
 
             {
                 auto v0 = builder.CreateLoad(GEP_I32(allocR, ip->a.u32));
                 auto v1 = builder.CreateAnd(v0, builder.getInt64(SWAG_LAMBDA_BC_MARKER));
                 auto v2 = builder.CreateIsNotNull(v1);
-                builder.CreateCondBr(v2, blockLambdaBC, blockLambdaLocalOrForeign);
-            }
-
-            builder.SetInsertPoint(blockLambdaLocalOrForeign);
-            {
-                auto v0 = builder.CreateLoad(GEP_I32(allocR, ip->a.u32));
-                auto v1 = builder.CreateAnd(v0, builder.getInt64(SWAG_LAMBDA_FOREIGN_MARKER));
-                auto v2 = builder.CreateIsNotNull(v1);
-                builder.CreateCondBr(v2, blockLambdaForeign, blockLambdaLocal);
+                builder.CreateCondBr(v2, blockLambdaBC, blockLambdaForeign);
             }
 
             // Foreign
@@ -3951,58 +3897,15 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                     auto c_r1     = builder.CreateIntToPtr(v1, c_PT);
                     auto c_result = builder.CreateCall(FT, c_r1, {fctParams.begin(), fctParams.end()});
                     SWAG_CHECK(getForeignCallReturnValue(buildParameters, allocRR, moduleToGen, typeFuncBC, c_result));
+                    returnResult = nullptr;
                     builder.CreateBr(blockNext);
                 }
                 else
                 {
-                    FT          = createFunctionTypeForeign(buildParameters, moduleToGen, typeFuncBC);
-                    auto PT     = llvm::PointerType::getUnqual(FT);
-                    auto r1     = builder.CreateIntToPtr(v1, PT);
-                    auto result = builder.CreateCall(FT, r1, {fctParams.begin(), fctParams.end()});
-                    SWAG_CHECK(getForeignCallReturnValue(buildParameters, allocRR, moduleToGen, typeFuncBC, result));
-                    builder.CreateBr(blockNext);
-                }
-            }
-
-            // Local
-            //////////////////////////////
-            builder.SetInsertPoint(blockLambdaLocal);
-            {
-                auto                       r0 = builder.CreateLoad(TO_PTR_PTR_I8(GEP_I32(allocR, ip->a.u32)));
-                VectorNative<llvm::Value*> fctParams;
-                getLocalCallParameters(buildParameters, allocR, allocRR, allocT, fctParams, typeFuncBC, pushRAParams, {});
-
-                if (typeFuncBC->isClosure())
-                {
-                    llvm::BasicBlock* blockLambda  = llvm::BasicBlock::Create(context, "", func);
-                    llvm::BasicBlock* blockClosure = llvm::BasicBlock::Create(context, "", func);
-
-                    // Test closure context pointer. If null, this is a lambda.
-                    auto v0 = builder.CreateLoad(GEP_I32(allocR, pushRAParams.back()));
-                    auto v2 = builder.CreateIsNotNull(v0);
-                    builder.CreateCondBr(v2, blockClosure, blockLambda);
-
-                    // Lambda call. We must eliminate the first parameter (closure context)
-                    builder.SetInsertPoint(blockLambda);
-                    auto                       l_FT = createFunctionTypeLocal(buildParameters, typeFuncBC, true);
-                    auto                       l_r1 = builder.CreatePointerCast(r0, llvm::PointerType::getUnqual(l_FT));
-                    VectorNative<llvm::Value*> fctParamsLocal;
-                    getLocalCallParameters(buildParameters, allocR, allocRR, allocT, fctParamsLocal, typeFuncBC, pushRAParams, {}, true);
-                    builder.CreateCall(l_FT, l_r1, {fctParamsLocal.begin(), fctParamsLocal.end()});
-                    builder.CreateBr(blockNext);
-
-                    // Closure call. Normal call, as the type contains the first parameter.
-                    builder.SetInsertPoint(blockClosure);
-                    auto c_FT = createFunctionTypeLocal(buildParameters, typeFuncBC);
-                    auto c_r1 = builder.CreatePointerCast(r0, llvm::PointerType::getUnqual(c_FT));
-                    builder.CreateCall(c_FT, c_r1, {fctParams.begin(), fctParams.end()});
-                    builder.CreateBr(blockNext);
-                }
-                else
-                {
-                    auto FT = createFunctionTypeLocal(buildParameters, typeFuncBC);
-                    auto r1 = builder.CreatePointerCast(r0, llvm::PointerType::getUnqual(FT));
-                    builder.CreateCall(FT, r1, {fctParams.begin(), fctParams.end()});
+                    FT           = createFunctionTypeForeign(buildParameters, moduleToGen, typeFuncBC);
+                    auto PT      = llvm::PointerType::getUnqual(FT);
+                    auto r1      = builder.CreateIntToPtr(v1, PT);
+                    returnResult = builder.CreateCall(FT, r1, {fctParams.begin(), fctParams.end()});
                     builder.CreateBr(blockNext);
                 }
             }
@@ -4886,6 +4789,7 @@ void BackendLLVM::storeTypedValueToRegister(llvm::LLVMContext& context, const Bu
     auto& pp              = *perThread[ct][precompileIndex];
     auto& builder         = *pp.builder;
 
+    SWAG_ASSERT(value);
     auto r0 = GEP_I32(allocR, reg);
     auto r1 = value;
     if (value->getType()->isPointerTy())
@@ -4896,6 +4800,25 @@ void BackendLLVM::storeTypedValueToRegister(llvm::LLVMContext& context, const Bu
         builder.CreateStore(r1, TO_PTR_I16(r0));
     else if (value->getType()->isIntegerTy(32))
         builder.CreateStore(r1, TO_PTR_I32(r0));
+    else if (value->getType()->isFloatTy())
+        builder.CreateStore(r1, TO_PTR_F32(r0));
+    else if (value->getType()->isDoubleTy())
+        builder.CreateStore(r1, TO_PTR_F64(r0));
     else
         builder.CreateStore(r1, r0);
+}
+
+void BackendLLVM::storeRT2ToRegisters(llvm::LLVMContext& context, const BuildParameters& buildParameters, uint32_t reg0, uint32_t reg1, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR)
+{
+    int   ct              = buildParameters.compileType;
+    int   precompileIndex = buildParameters.precompileIndex;
+    auto& pp              = *perThread[ct][precompileIndex];
+    auto& builder         = *pp.builder;
+
+    auto r0 = GEP_I32(allocR, reg0);
+    auto r1 = builder.CreateLoad(GEP_I32(allocRR, 0));
+    builder.CreateStore(r1, r0);
+    r0 = GEP_I32(allocR, reg1);
+    r1 = builder.CreateLoad(GEP_I32(allocRR, 1));
+    builder.CreateStore(r1, r0);
 }
