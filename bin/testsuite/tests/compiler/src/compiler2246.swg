@@ -19,7 +19,6 @@ struct Thread
     param:  u64
 }
 
-#[Swag.Callback]
 func entry(param: *void)->u32
 {
     th := cast(*Thread) param

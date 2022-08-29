@@ -51,7 +51,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     }*/
 
     // Export symbol
-    if (node && node->attributeFlags & (ATTRIBUTE_PUBLIC | ATTRIBUTE_CALLBACK))
+    if (node && node->attributeFlags & ATTRIBUTE_PUBLIC)
     {
         if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
             func->setDLLStorageClass(llvm::GlobalValue::DLLExportStorageClass);

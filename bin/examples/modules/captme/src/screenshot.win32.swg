@@ -25,7 +25,6 @@ func getGrabRect()->{x1: s32, y1: s32, x2: s32, y2: s32}
     return result
 }
 
-#[Swag.Callback]
 func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
 {
     switch msg

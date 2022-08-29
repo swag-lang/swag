@@ -15,7 +15,6 @@ func yield()
     SwitchToThread()
 }
 
-#[Swag.Callback]
 private func threadEntry(param: *void)->DWORD
 {
     th := cast(*Thread) param

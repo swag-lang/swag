@@ -3,7 +3,6 @@
 #global namespace Time
 using Win32
 
-#[Swag.Callback]
 private func timerEntry(param: *void, timerOrWaitFired: BOOL)
 {
     t := cast(*Timer) param

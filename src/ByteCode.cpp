@@ -63,7 +63,7 @@ Utf8 ByteCode::getCallName()
     // If this is an intrinsic that can be called by the compiler itself, it should not
     // have overloads, and the name will be the name alone (without the node address which is
     // used to differentiate overloads)
-    if (node && node->sourceFile->isRuntimeFile && !(node->attributeFlags & ATTRIBUTE_CALLBACK) && !node->ownerStructScope)
+    if (node && node->sourceFile->isRuntimeFile && !node->ownerStructScope)
     {
         if (node->resolvedSymbolName && node->resolvedSymbolName->cptOverloadsInit == 1)
         {

@@ -15,7 +15,6 @@ public struct FontFamilyEnumerate
 
 impl FontFamily
 {
-    #[Swag.Callback]
     func enumSubFamily(fa: const *LOGFONTW, tm: const *TEXTMETRICW, fontType: DWORD, lParam: LPARAM)->BOOL
     {
         len := Utf16.lengthZeroTerminated(&fa.lfFaceName[0])
@@ -41,7 +40,6 @@ impl FontFamily
         return TRUE
     }
 
-    #[Swag.Callback]
     func enumFamily(fa: const *LOGFONTW, tm: const *TEXTMETRICW, fontType: DWORD, lParam: LPARAM)->BOOL
     {
         if fontType & TRUETYPE_FONTTYPE

@@ -60,9 +60,6 @@ namespace Swag
     #[AttrUsage(AttributeUsage.Function)]
     attr Foreign(module: string, function: string = "");
 
-    #[AttrUsage(AttributeUsage.Function)]
-    attr Callback()
-
     #[AttrUsage(AttributeUsage.Function|AttributeUsage.Variable)]
     attr Discardable()
 

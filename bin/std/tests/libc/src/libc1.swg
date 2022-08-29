@@ -1,6 +1,5 @@
 using Libc
 
-#[Swag.Callback]
 func titi(x, y: *s32)->s32
 {
     return dref x <=> dref y

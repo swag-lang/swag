@@ -23,7 +23,6 @@ struct NativeSurface
     lastDeadChar:   WPARAM
 }
 
-#[Swag.Callback]
 private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
 {
     // Associate pointer to surface with 'hWnd'

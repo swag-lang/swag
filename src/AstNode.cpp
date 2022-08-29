@@ -590,7 +590,7 @@ void AstIdentifierRef::computeName()
 
 Utf8 AstFuncDecl::getCallName()
 {
-    if (attributeFlags & (ATTRIBUTE_FOREIGN | ATTRIBUTE_PUBLIC | ATTRIBUTE_CALLBACK))
+    if (attributeFlags & (ATTRIBUTE_FOREIGN | ATTRIBUTE_PUBLIC))
     {
         if (!(attributeFlags & ATTRIBUTE_SHARP_FUNC))
         {

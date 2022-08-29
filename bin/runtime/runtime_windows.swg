@@ -40,25 +40,21 @@ namespace __Win32RT
 }
 
 ////////////////////////////////////////////////////////////
-#[Swag.Callback]
 func memset(dst: *void, value: s32, size: uint)
 {
     __Win32RT.RtlFillMemory(dst, size, value)
 }
 
-#[Swag.Callback]
 func memcpy(dst: *void, src: const *void, size: uint)
 {
     __Win32RT.RtlCopyMemory(dst, src, size)
 }
 
-#[Swag.Callback]
 func memmove(dst: *void, src: const *void, size: uint)
 {
     __Win32RT.RtlMoveMemory(dst, src, size)
 }
 
-#[Swag.Callback]
 func memcmp(dst, src: const ^void, size: uint)->s32
 {
     len := __Win32RT.RtlCompareMemory(dst, src, size)

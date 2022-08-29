@@ -1,6 +1,5 @@
 alias F = func()
 
-#[Swag.Callback]
 func toto()
 {
 }

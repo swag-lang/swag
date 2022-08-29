@@ -44,7 +44,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         funcName = bc->getCallName();
 
     // Export symbol
-    if (node && node->attributeFlags & (ATTRIBUTE_PUBLIC | ATTRIBUTE_CALLBACK))
+    if (node && node->attributeFlags & ATTRIBUTE_PUBLIC)
     {
         if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
             pp.directives += Fmt("/EXPORT:%s ", funcName.c_str());

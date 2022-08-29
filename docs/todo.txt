@@ -71,7 +71,6 @@ CLEAN CONV
 
 - function cvargargs qui renvoie qqchose, ca marche ?
 - rationnaliser callconv avec une struct
-- @mkcallback vraiment utile ? Swag.CallBack vraiment utile ?
 - foreign a cvarargs en fait c bon ?
 - Call conv x64/llvm local, passer les valeurs de retour par RAX si possible ?
 
@@ -80,9 +79,6 @@ CLEAN CONV
 TODO
 ****************************************
 
--------------------------------------
-@mkcallback ne vérifie pas qu'il y a #[Swag.Callback] sur la fonction, mais
-le pb c'est que ça peut être une variable, un paramètre etc...
 -------------------------------------
 erreur si opDrop est privé et la struct publique (on doit exporter)
 -------------------------------------

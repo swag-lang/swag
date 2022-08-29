@@ -1,4 +1,3 @@
-#[Swag.Callback]
 func titi()
 {
     //@print("x")

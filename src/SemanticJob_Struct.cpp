@@ -370,14 +370,6 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
             *ptrITable = nullptr;
             g_ModuleMgr->addPatchFuncAddress((void**) constSegment->address(offset), funcChild);
         }
-        else if (funcChild->attributeFlags & ATTRIBUTE_CALLBACK)
-        {
-            funcChild->extension->bc->isUsed = true;
-
-            *ptrITable = ByteCode::doByteCodeLambda(funcChild->extension->bc);
-            funcChild->computeFullNameForeign(true);
-            constSegment->addInitPtrFunc(offset, funcChild->fullnameForeign);
-        }
         else
         {
             funcChild->extension->bc->isUsed = true;

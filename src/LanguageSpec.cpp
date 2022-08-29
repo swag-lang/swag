@@ -466,7 +466,6 @@ void LanguageSpec::setupAttributesFlags()
     attributesFlags.add("Global", ATTRIBUTE_GLOBAL);
     attributesFlags.add("Tls", ATTRIBUTE_TLS);
     attributesFlags.add("Strict", ATTRIBUTE_STRICT);
-    attributesFlags.add("Callback", ATTRIBUTE_CALLBACK);
     attributesFlags.add("NoCopy", ATTRIBUTE_NO_COPY);
     attributesFlags.add("Opaque", ATTRIBUTE_OPAQUE);
     attributesFlags.add("NotGeneric", ATTRIBUTE_NOT_GENERIC);
