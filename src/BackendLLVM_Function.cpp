@@ -2926,6 +2926,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::Ret:
         {
+            // :OptimizedAwayDebugCrap
             // Hack thanks to llvm in debug mode : we need to force the usage of function parameters until the very end of the function (i.e. each return),
             // otherwhise :
             // - parameters not used in the function body will be removed by llvm (even without optims activated !)
@@ -2934,7 +2935,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             // RIDICULOUS !!
             //
             // If we request an optimized code, do not do that crap.
-            /*bool isDebug = !buildParameters.buildCfg->backendOptimizeSpeed && !buildParameters.buildCfg->backendOptimizeSize;
+            bool isDebug = !buildParameters.buildCfg->backendOptimizeSpeed && !buildParameters.buildCfg->backendOptimizeSize;
             if (isDebug && buildParameters.buildCfg->backendDebugInformations)
             {
                 auto r1        = GEP_I32(allocT, 0);
@@ -2945,7 +2946,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 {
                     SWAG_CHECK(emitGetParam(context, buildParameters, func, typeFunc, iparam, r1));
                 }
-            }*/
+            }
 
             // Emit result
             if (returnType != g_TypeMgr->typeInfoVoid && !typeFunc->returnByCopy())
