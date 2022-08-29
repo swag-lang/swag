@@ -3517,7 +3517,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                     break;
                 case NativeTypeKind::F64:
                     if (ip->flags & BCI_IMM_A)
-                        returnResult = llvm::ConstantFP::get(builder.getDoubleTy(), ip->a.f32);
+                        returnResult = llvm::ConstantFP::get(builder.getDoubleTy(), ip->a.f64);
                     else
                         returnResult = builder.CreateLoad(TO_PTR_F64(GEP_I32(allocR, ip->a.u32)));
                     break;
@@ -3529,7 +3529,10 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             else if (returnType->kind == TypeInfoKind::Pointer || returnType->kind == TypeInfoKind::Lambda)
             {
                 auto llvmType = swagTypeToLLVMType(buildParameters, moduleToGen, returnType);
-                returnResult  = builder.CreateIntToPtr(builder.CreateLoad(GEP_I32(allocR, ip->a.u32)), llvmType);
+                if (ip->flags & BCI_IMM_A)
+                    returnResult = builder.CreateIntToPtr(builder.getInt64(ip->a.u64), llvmType);
+                else
+                    returnResult = builder.CreateIntToPtr(builder.CreateLoad(GEP_I32(allocR, ip->a.u32)), llvmType);
             }
             else
             {

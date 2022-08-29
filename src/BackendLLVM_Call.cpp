@@ -133,33 +133,27 @@ bool BackendLLVM::emitGetParam(llvm::LLVMContext&     context,
         // :StructByCopy
         if (param->kind == TypeInfoKind::Struct && param->sizeOf <= sizeof(void*))
         {
-            llvm::Value* rarg = arg;
+            ra = builder.CreateIntCast(arg, builder.getInt64Ty(), false);
 
-            // If this is a value, then we just have to shift it on the right with the given amount of byte
+            // If this is a value, then we just have to shift it on the right with the given amount of bits
             if (toAdd)
             {
-                rarg = builder.CreateLShr(arg, builder.getInt64(toAdd * 8));
+                ra = builder.CreateLShr(ra, builder.getInt64(toAdd * 8));
             }
 
-            if (param->sizeOf == (uint32_t) deRefSize)
-            {
-                ra = builder.CreateIntCast(rarg, builder.getInt64Ty(), false);
-            }
-            else
+            // We need to mask in order to derefence only the correct value
+            if (param->sizeOf != (uint32_t) deRefSize)
             {
                 switch (deRefSize)
                 {
                 case 1:
-                    ra = builder.CreateAnd(rarg, builder.getInt64(0xFF));
-                    ra = builder.CreateIntCast(ra, builder.getInt64Ty(), false);
+                    ra = builder.CreateAnd(ra, builder.getInt64(0xFF));
                     break;
                 case 2:
-                    ra = builder.CreateAnd(rarg, builder.getInt64(0xFFFF));
-                    ra = builder.CreateIntCast(ra, builder.getInt64Ty(), false);
+                    ra = builder.CreateAnd(ra, builder.getInt64(0xFFFF));
                     break;
                 case 4:
-                    ra = builder.CreateAnd(rarg, builder.getInt64(0xFFFFFFFF));
-                    ra = builder.CreateIntCast(ra, builder.getInt64Ty(), false);
+                    ra = builder.CreateAnd(ra, builder.getInt64(0xFFFFFFFF));
                     break;
                 default:
                     SWAG_ASSERT(false);
