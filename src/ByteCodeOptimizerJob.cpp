@@ -61,13 +61,8 @@ bool ByteCodeOptimizerJob::optimize(ByteCode* bc, bool& restart)
             OPT_PASS(ByteCodeOptimizer::optimizePassDupBlocks);
             OPT_PASS(ByteCodeOptimizer::optimizePassReduceX2);
             ByteCodeOptimizer::removeNops(&optContext);
-
             if (!optContext.allPassesHaveDoneSomething)
-            {
-                if (module->buildCfg.byteCodeOptimizeLevel == 2)
-                    bc->computeCrc();
                 break;
-            }
         }
 
         restart = true;

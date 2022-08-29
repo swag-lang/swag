@@ -156,6 +156,7 @@ struct Module
     void sortDependenciesByInitOrder(VectorNative<ModuleDependency*>& result);
     bool waitForDependenciesDone(Job* job, const set<Utf8>& modules);
     bool waitForDependenciesDone(Job* job);
+    void filterFunctionsToEmit();
 
     bool     mustOutputSomething();
     bool     mustGenerateTestExe();
@@ -169,9 +170,6 @@ struct Module
     void decImplForToSolve(TypeInfoStruct* typeStruct);
 
     void logStage(const char* msg);
-
-    void removeDuplicatedFunctions();
-    void filterFunctionsToEmit();
 
     struct ForToSolve
     {

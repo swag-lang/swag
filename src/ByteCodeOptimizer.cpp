@@ -134,7 +134,6 @@ void ByteCodeOptimizer::genTree(ByteCodeOptContext* context, bool computeCrc)
     context->nextTreeNode = 0;
 
     auto bc = context->bc;
-    bc->crc = 0;
 
     bool here = false;
     auto node = newTreeNode(context, bc->out, here);

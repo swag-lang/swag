@@ -328,34 +328,3 @@ uint32_t ByteCode::computeCrc(ByteCodeInstruction* ip, uint32_t oldCrc, bool spe
 
     return oldCrc;
 }
-
-void ByteCode::computeCrcNoCall()
-{
-    crcNoCall = 0;
-    localCalls.clear();
-
-    for (auto ip = out; ip->op != ByteCodeOp::End; ip++)
-    {
-        if (ip->op == ByteCodeOp::LocalCall || ip->op == ByteCodeOp::LocalCallPop || ip->op == ByteCodeOp::LocalCallPopRC)
-            localCalls.push_back(ip);
-        else
-            crcNoCall = computeCrc(ip, crcNoCall, false, false);
-    }
-
-    crc = crcNoCall;
-}
-
-void ByteCode::computeCrcLocalCalls()
-{
-    crc = crcNoCall;
-    for (auto ip : localCalls)
-    {
-        crc = computeCrc(ip, crc, false, true);
-    }
-}
-
-void ByteCode::computeCrc()
-{
-    computeCrcNoCall();
-    computeCrcLocalCalls();
-}

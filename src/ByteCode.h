@@ -176,13 +176,9 @@ struct ByteCode
 
     bool     areSame(ByteCodeInstruction* start0, ByteCodeInstruction* end0, ByteCodeInstruction* start1, ByteCodeInstruction* end1, bool specialJump, bool specialCall);
     uint32_t computeCrc(ByteCodeInstruction* ip, uint32_t oldCrc, bool specialJump, bool specialCall);
-    void     computeCrcNoCall();
-    void     computeCrcLocalCalls();
-    void     computeCrc();
 
     VectorNative<uint32_t>             availableRegistersRC;
     VectorNative<pair<void*, size_t>>  autoFree;
-    VectorNative<ByteCodeInstruction*> localCalls;
 
     Mutex                  mutexCallName;
     Utf8                   name;
@@ -204,8 +200,6 @@ struct ByteCode
     uint32_t maxSPVaargs           = 0;
     uint32_t maxReservedRegisterRC = 0;
     uint32_t numJumps              = 0;
-    uint32_t crcNoCall             = 0;
-    uint32_t crc                   = 0;
     uint32_t registerGetContext    = UINT32_MAX;
 
     bool isCompilerGenerated     = false;
