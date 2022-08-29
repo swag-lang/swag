@@ -60,11 +60,20 @@ PB du cross compile avec le full compile time exec. BIG BIG BIG !!!
 -------------------------------------
 PB des references
 -------------------------------------
-Call conv x64/llvm local, passer les valeurs de retour par RAX si possible
--------------------------------------
 Erreur affichées dans les fichiers d'export plutot que dans le code source d'origine
 -------------------------------------
 
+
+
+****************************************
+CLEAN CONV
+****************************************
+
+- function cvargargs qui renvoie qqchose, ca marche ?
+- rationnaliser callconv avec une struct
+- @mkcallback vraiment utile ? Swag.CallBack vraiment utile ?
+- foreign a cvarargs en fait c bon ?
+- Call conv x64/llvm local, passer les valeurs de retour par RAX si possible ?
 
 
 ****************************************
@@ -84,8 +93,6 @@ lambda short form in declaration var x: func(s32) = @(x) {}
 closure & ufcs (exemple 3477)
 -------------------------------------
 context & tempallocator, y'a vraiment aucun usage dans std, c'est pas normal, faut se pencher sur l'utilisation de ce truc
--------------------------------------
-foreign a cvarargs
 -------------------------------------
 cast interface vers struct (avec safety)
 -------------------------------------

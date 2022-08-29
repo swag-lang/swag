@@ -100,7 +100,9 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     auto                                   ip = bc->out;
     VectorNative<pair<uint32_t, uint32_t>> pushRVParams;
     VectorNative<uint32_t>                 pushRAParams;
-    VectorNative<llvm::Value*>             returnResults;
+    VectorNative<llvm::Value*>             stackResultValue;
+    llvm::Value*                           resultFuncCall = nullptr;
+    llvm::Value*                           resultValue    = nullptr;
     for (uint32_t i = 0; i < bc->numInstructions; i++, ip++)
     {
         if (ip->node->flags & AST_NO_BACKEND)
@@ -128,14 +130,20 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::Nop:
         case ByteCodeOp::DecSPBP:
         case ByteCodeOp::SetBP:
-        case ByteCodeOp::PushRR:
-        case ByteCodeOp::PopRR:
         case ByteCodeOp::IntrinsicBcDbg:
             continue;
         }
 
         switch (ip->op)
         {
+        case ByteCodeOp::PushRR:
+            stackResultValue.push_back(resultValue);
+            break;
+
+        case ByteCodeOp::PopRR:
+            resultValue = stackResultValue.get_pop_back();
+            break;
+
         case ByteCodeOp::DebugNop:
         {
             auto r0 = TO_PTR_I32(GEP_I32(allocT, 0));
@@ -2942,9 +2950,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             // Emit result
             if (returnType != g_TypeMgr->typeInfoVoid && !typeFunc->returnByCopy())
             {
-                auto returnResult = returnResults.get_pop_back();
-                SWAG_ASSERT(!returnResult->getType()->isVoidTy());
-                builder.CreateRet(returnResult);
+                SWAG_ASSERT(resultValue);
+                builder.CreateRet(resultValue);
             }
             else
                 builder.CreateRetVoid();
@@ -3529,7 +3536,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 SWAG_ASSERT(false);
             }
 
-            returnResults.push_back(returnResult);
+            resultValue = returnResult;
             break;
         }
         case ByteCodeOp::CopyRCtoRR2:
@@ -3560,9 +3567,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::CopyRTtoRC:
         {
-            auto returnResult = returnResults.get_pop_back();
-            if (returnResult)
-                storeTypedValueToRegister(context, buildParameters, returnResult, ip->a.u32, allocR);
+            if (resultFuncCall)
+                storeTypedValueToRegister(context, buildParameters, resultFuncCall, ip->a.u32, allocR);
             else
             {
                 auto r0 = GEP_I32(allocR, ip->a.u32);
@@ -3894,11 +3900,12 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             }
             else
                 callName = callBc->getCallName();
-            auto returnResult = emitCall(buildParameters, moduleToGen, callName, typeFuncCall, allocR, allocRR, pushRAParams, {}, true);
+            resultFuncCall = emitCall(buildParameters, moduleToGen, callName, typeFuncCall, allocR, allocRR, pushRAParams, {}, true);
             if (ip->op == ByteCodeOp::LocalCallPopRC)
-                storeTypedValueToRegister(context, buildParameters, returnResult, ip->d.u32, allocR);
-            else if ((!ip->node || !(ip->node->flags & AST_DISCARD)) && !typeFuncCall->returnType->isNative(NativeTypeKind::Void))
-                returnResults.push_back(returnResult);
+            {
+                storeTypedValueToRegister(context, buildParameters, resultFuncCall, ip->d.u32, allocR);
+                resultFuncCall = nullptr;
+            }
 
             pushRAParams.clear();
             pushRVParams.clear();
@@ -3912,9 +3919,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             TypeInfoFuncAttr* typeFuncCall = (TypeInfoFuncAttr*) ip->b.pointer;
 
             funcNode->computeFullNameForeign(false);
-            auto returnResult = emitCall(buildParameters, moduleToGen, funcNode->fullnameForeign, typeFuncCall, allocR, allocRR, pushRAParams, {}, false);
-            if ((!ip->node || !(ip->node->flags & AST_DISCARD)) && !typeFuncCall->returnType->isNative(NativeTypeKind::Void))
-                returnResults.push_back(returnResult);
+            resultFuncCall = emitCall(buildParameters, moduleToGen, funcNode->fullnameForeign, typeFuncCall, allocR, allocRR, pushRAParams, {}, false);
             pushRAParams.clear();
             pushRVParams.clear();
             break;
@@ -4033,8 +4038,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.SetInsertPoint(blockNext);
             pushRAParams.clear();
             pushRVParams.clear();
-            if ((!ip->node || !(ip->node->flags & AST_DISCARD)) && !typeFuncCall->returnType->isNative(NativeTypeKind::Void))
-                returnResults.push_back(nullptr);
+            resultFuncCall = nullptr;
             break;
         }
 
