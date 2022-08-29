@@ -320,7 +320,7 @@ llvm::DISubroutineType* BackendLLVMDbg::getFunctionType(TypeInfoFuncAttr* typeFu
     for (auto one : typeFunc->parameters)
     {
         auto typeInfo = TypeManager::concreteType(one->typeInfo);
-        if (Backend::passByValue(typeInfo))
+        if (typeInfo->numRegisters() == 1)
         {
             params.push_back(getType(typeInfo, file));
         }

@@ -139,11 +139,6 @@ bool Backend::isUpToDate(uint64_t moreRecentSourceFile, bool invert)
     return true;
 }
 
-bool Backend::passByValue(TypeInfo* typeInfo)
-{
-    return typeInfo->numRegisters() == 1;
-}
-
 Utf8 Backend::getOutputFileName(const BuildParameters& buildParameters)
 {
     SWAG_ASSERT(!buildParameters.outputFileName.empty());

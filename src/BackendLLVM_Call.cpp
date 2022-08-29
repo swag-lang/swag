@@ -136,32 +136,43 @@ bool BackendLLVM::emitGetParam(llvm::LLVMContext&     context,
             ra = builder.CreateIntCast(arg, builder.getInt64Ty(), false);
 
             // If this is a value, then we just have to shift it on the right with the given amount of bits
-            if (toAdd)
+            if (deRefSize)
             {
-                ra = builder.CreateLShr(ra, builder.getInt64(toAdd * 8));
-            }
+                if (toAdd)
+                    ra = builder.CreateLShr(ra, builder.getInt64(toAdd * 8));
 
-            // We need to mask in order to derefence only the correct value
-            if (param->sizeOf != (uint32_t) deRefSize)
-            {
-                switch (deRefSize)
+                // We need to mask in order to derefence only the correct value
+                if (param->sizeOf != (uint32_t)deRefSize)
                 {
-                case 1:
-                    ra = builder.CreateAnd(ra, builder.getInt64(0xFF));
-                    break;
-                case 2:
-                    ra = builder.CreateAnd(ra, builder.getInt64(0xFFFF));
-                    break;
-                case 4:
-                    ra = builder.CreateAnd(ra, builder.getInt64(0xFFFFFFFF));
-                    break;
-                default:
-                    SWAG_ASSERT(false);
-                    break;
+                    switch (deRefSize)
+                    {
+                    case 1:
+                        ra = builder.CreateAnd(ra, builder.getInt64(0xFF));
+                        break;
+                    case 2:
+                        ra = builder.CreateAnd(ra, builder.getInt64(0xFFFF));
+                        break;
+                    case 4:
+                        ra = builder.CreateAnd(ra, builder.getInt64(0xFFFFFFFF));
+                        break;
+                    default:
+                        SWAG_ASSERT(false);
+                        break;
+                    }
                 }
+
+                builder.CreateStore(ra, r0);
             }
 
-            builder.CreateStore(ra, r0);
+            // We need the pointer
+            else
+            {
+                auto allocR = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt32(1));
+                builder.CreateStore(ra, allocR);
+                ra = builder.CreateInBoundsGEP(TO_PTR_I8(allocR), builder.getInt64(toAdd));
+                builder.CreateStore(ra, r0);
+            }
+
             return true;
         }
 
@@ -204,7 +215,7 @@ bool BackendLLVM::emitGetParam(llvm::LLVMContext&     context,
             builder.CreateStore(ra, TO_PTR_PTR_I8(r0));
         }
     }
-    else if (passByValue(param))
+    else if (param->numRegisters() == 1)
     {
         // By convention, all remaining bits should be zero
         if (param->isNativeIntegerSigned() && param->sizeOf < sizeof(void*))
@@ -572,7 +583,7 @@ void BackendLLVM::emitByteCodeCallParameters(const BuildParameters&      buildPa
             auto index = pushRAParams[popRAidx--];
 
             // By value
-            if (passByValue(typeParam))
+            if (typeParam->numRegisters() == 1)
             {
                 auto ty = swagTypeToLLVMType(buildParameters, module, typeParam);
                 if (index == UINT32_MAX)
