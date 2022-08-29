@@ -3519,9 +3519,14 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                     break;
                 }
             }
+            else if (returnType->kind == TypeInfoKind::Pointer || returnType->kind == TypeInfoKind::Lambda)
+            {
+                auto llvmType = swagTypeToLLVMType(buildParameters, moduleToGen, returnType);
+                returnResult  = builder.CreateIntToPtr(builder.CreateLoad(GEP_I32(allocR, ip->a.u32)), llvmType);
+            }
             else
             {
-                returnResult = MK_IMMA_64();
+                SWAG_ASSERT(false);
             }
 
             returnResults.push_back(returnResult);
@@ -3970,8 +3975,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                     auto c_result = builder.CreateCall(FT, c_r1, {fctParams.begin(), fctParams.end()});
                     SWAG_CHECK(emitCallReturnValue(buildParameters, allocRR, moduleToGen, typeFuncCall, c_result));
                     builder.CreateBr(blockNext);
-                    if ((!ip->node || !(ip->node->flags & AST_DISCARD)) && !typeFuncCall->returnType->isNative(NativeTypeKind::Void))
-                        returnResults.push_back(nullptr);
                 }
                 else
                 {
@@ -3979,9 +3982,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
                     auto PT           = llvm::PointerType::getUnqual(FT);
                     auto r1           = builder.CreateIntToPtr(v1, PT);
                     auto returnResult = builder.CreateCall(FT, r1, {fctParams.begin(), fctParams.end()});
+                    SWAG_CHECK(emitCallReturnValue(buildParameters, allocRR, moduleToGen, typeFuncCall, returnResult));
                     builder.CreateBr(blockNext);
-                    if ((!ip->node || !(ip->node->flags & AST_DISCARD)) && !typeFuncCall->returnType->isNative(NativeTypeKind::Void))
-                        returnResults.push_back(returnResult);
                 }
             }
 
@@ -4031,6 +4033,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.SetInsertPoint(blockNext);
             pushRAParams.clear();
             pushRVParams.clear();
+            if ((!ip->node || !(ip->node->flags & AST_DISCARD)) && !typeFuncCall->returnType->isNative(NativeTypeKind::Void))
+                returnResults.push_back(nullptr);
             break;
         }
 

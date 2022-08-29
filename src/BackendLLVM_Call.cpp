@@ -128,14 +128,59 @@ bool BackendLLVM::emitGetParam(llvm::LLVMContext&     context,
 
     if (toAdd || deRefSize)
     {
-        llvm::Value* ra;
-        if (passByValue(param))
+        llvm::Value* ra = nullptr;
+
+        // :StructByCopy
+        if (param->kind == TypeInfoKind::Struct && param->sizeOf <= sizeof(void*))
+        {
+            llvm::Value* rarg = arg;
+
+            // If this is a value, then we just have to shift it on the right with the given amount of byte
+            if (toAdd)
+            {
+                rarg = builder.CreateLShr(arg, builder.getInt64(toAdd * 8));
+            }
+
+            if (param->sizeOf == (uint32_t) deRefSize)
+            {
+                ra = builder.CreateIntCast(rarg, builder.getInt64Ty(), false);
+            }
+            else
+            {
+                switch (deRefSize)
+                {
+                case 1:
+                    ra = builder.CreateAnd(rarg, builder.getInt64(0xFF));
+                    ra = builder.CreateIntCast(ra, builder.getInt64Ty(), false);
+                    break;
+                case 2:
+                    ra = builder.CreateAnd(rarg, builder.getInt64(0xFFFF));
+                    ra = builder.CreateIntCast(ra, builder.getInt64Ty(), false);
+                    break;
+                case 4:
+                    ra = builder.CreateAnd(rarg, builder.getInt64(0xFFFFFFFF));
+                    ra = builder.CreateIntCast(ra, builder.getInt64Ty(), false);
+                    break;
+                default:
+                    SWAG_ASSERT(false);
+                    break;
+                }
+            }
+
+            builder.CreateStore(ra, r0);
+            return true;
+        }
+
+        if (param->numRegisters() == 1)
+        {
             ra = builder.CreateInBoundsGEP(TO_PTR_I8(arg), builder.getInt64(toAdd));
+        }
         else
         {
             ra = builder.CreateIntToPtr(arg, builder.getInt8PtrTy());
             ra = builder.CreateInBoundsGEP(ra, builder.getInt64(toAdd));
         }
+
         if (deRefSize)
         {
             llvm::Value* v1;
