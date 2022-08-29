@@ -80,13 +80,9 @@ static void byteCodeRun(bool forCallback, void* byteCodePtr, va_list valist)
     g_RunContext.firstRC = g_RunContext.curRC;
     g_RunContext.bc->enterByteCode(&g_RunContext);
 
-    if (g_RunContext.stackTrace)
-        g_ByteCodeStackTrace.push({nullptr, nullptr});
-
+    g_ByteCodeStackTrace.push({nullptr, nullptr});
     module->runner.run(&g_RunContext);
-
-    if (g_RunContext.stackTrace)
-        g_ByteCodeStackTrace.pop();
+    g_ByteCodeStackTrace.pop();
 
     g_RunContext.sp            = saveSp;
     g_RunContext.node          = saveNode;

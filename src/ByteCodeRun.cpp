@@ -59,8 +59,7 @@ SWAG_FORCE_INLINE void ByteCodeRun::localCall(ByteCodeRunContext* context, ByteC
 {
     SWAG_ASSERT(!bc->node || bc->node->semFlags & AST_SEM_BYTECODE_GENERATED);
 
-    if (context->stackTrace)
-        g_ByteCodeStackTrace.push(context);
+    g_ByteCodeStackTrace.push(context);
     context->push(context->bp);
     context->push(context->bc);
     context->push(context->ip);
@@ -491,9 +490,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         if (context->sp == context->stack + g_CommandLine->stackSizeBC)
             return false;
         context->bc->leaveByteCode(context);
-
-        if (context->stackTrace)
-            g_ByteCodeStackTrace.pop();
+        g_ByteCodeStackTrace.pop();
 
         context->ip = context->pop<ByteCodeInstruction*>();
         context->bc = context->pop<ByteCode*>();
@@ -551,20 +548,16 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     }
     case ByteCodeOp::ForeignCall:
     {
-        if (context->stackTrace)
-            g_ByteCodeStackTrace.push(context);
+        g_ByteCodeStackTrace.push(context);
         ffiCall(context, ip);
-        if (context->stackTrace)
-            g_ByteCodeStackTrace.pop();
+        g_ByteCodeStackTrace.pop();
         break;
     }
     case ByteCodeOp::ForeignCallPop:
     {
-        if (context->stackTrace)
-            g_ByteCodeStackTrace.push(context);
+        g_ByteCodeStackTrace.push(context);
         ffiCall(context, ip);
-        if (context->stackTrace)
-            g_ByteCodeStackTrace.pop();
+        g_ByteCodeStackTrace.pop();
         context->incSP(ip->c.u32);
         break;
     }
@@ -576,8 +569,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         // Bytecode lambda
         if (ByteCode::isByteCodeLambda((void*) ptr))
         {
-            if (context->stackTrace)
-                g_ByteCodeStackTrace.push(context);
+            g_ByteCodeStackTrace.push(context);
             context->push(context->bp);
             context->push(context->bc);
             context->push(context->ip);
