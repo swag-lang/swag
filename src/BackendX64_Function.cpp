@@ -134,8 +134,23 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         iReg++;
     }
 
+    // Save ppinter to return value if this is a return by copy
     if (typeFunc->returnByCopy() && iReg < 4)
+    {
         BackendX64Inst::emit_Store64_Indirect(pp, offsetS4 + (iReg * sizeof(Register)), x64Reg[iReg], RDI);
+        iReg++;
+    }
+
+    // Save C variadics
+    if (typeFunc->isCVariadic())
+    {
+        while (iReg < 4)
+        {
+            uint32_t stackOffset = 16 + sizeStack + regOffset(iReg);
+            BackendX64Inst::emit_Store64_Indirect(pp, stackOffset, x64Reg[iReg], RDI);
+            iReg++;
+        }
+    }
 
     // Use R11 as base pointer for capture parameters
     // This is used to debug and have access to capture parameters, even if we "lose" rcx

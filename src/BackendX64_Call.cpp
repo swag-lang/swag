@@ -148,12 +148,6 @@ bool BackendX64::emitCall(X64PerThread& pp, Module* moduleToGen, TypeInfoFuncAtt
     int callConvRegisters    = 4;
     int maxParamsPerRegister = (int) paramsRegisters.size();
 
-    // Pass by stack
-    if (typeFuncBC->isCVariadic())
-    {
-        maxParamsPerRegister = typeFuncBC->numParamsRegisters();
-    }
-
     // Set the first 4 parameters. Can be return register, or function parameter.
     int i = 0;
     for (; i < min(callConvRegisters, maxParamsPerRegister); i++)
