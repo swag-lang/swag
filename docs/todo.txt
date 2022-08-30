@@ -69,10 +69,7 @@ Erreur affichées dans les fichiers d'export plutot que dans le code source d'or
 CLEAN CONV
 ****************************************
 
-- function cvargargs qui renvoie qqchose, ca marche ?
 - rationnaliser callconv avec une struct
-- foreign a cvarargs en fait c bon ?
-- Call conv x64/llvm local, passer les valeurs de retour par RAX si possible ?
 
 
 ****************************************
