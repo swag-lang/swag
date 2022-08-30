@@ -10,10 +10,11 @@
 
 llvm::FunctionType* BackendLLVM::getOrCreateFuncType(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, bool closureToLambda)
 {
-    int   ct              = buildParameters.compileType;
-    int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = *perThread[ct][precompileIndex];
-    auto& builder         = *pp.builder;
+    const auto& cc              = g_CallConv[typeFunc->callConv];
+    int         ct              = buildParameters.compileType;
+    int         precompileIndex = buildParameters.precompileIndex;
+    auto&       pp              = *perThread[ct][precompileIndex];
+    auto&       builder         = *pp.builder;
 
     // Already done ?
     if (closureToLambda)
@@ -65,8 +66,7 @@ llvm::FunctionType* BackendLLVM::getOrCreateFuncType(const BuildParameters& buil
         {
             auto param = TypeManager::concreteReferenceType(typeFunc->parameters[i]->typeInfo);
 
-            // :StructByCopy
-            if (param->kind == TypeInfoKind::Struct && param->sizeOf <= sizeof(void*))
+            if (cc.structByRegister && param->kind == TypeInfoKind::Struct && param->sizeOf <= sizeof(void*))
             {
                 params.push_back(builder.getIntNTy(param->sizeOf * 8));
             }
@@ -114,10 +114,11 @@ bool BackendLLVM::emitGetParam(llvm::LLVMContext&     context,
                                uint64_t               toAdd,
                                int                    deRefSize)
 {
-    int   ct              = buildParameters.compileType;
-    int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = *perThread[ct][precompileIndex];
-    auto& builder         = *pp.builder;
+    const auto& cc              = g_CallConv[typeFunc->callConv];
+    int         ct              = buildParameters.compileType;
+    int         precompileIndex = buildParameters.precompileIndex;
+    auto&       pp              = *perThread[ct][precompileIndex];
+    auto&       builder         = *pp.builder;
 
     auto param = typeFunc->registerIdxToType(idx);
     auto arg   = func->getArg(idx);
@@ -130,8 +131,7 @@ bool BackendLLVM::emitGetParam(llvm::LLVMContext&     context,
     {
         llvm::Value* ra = nullptr;
 
-        // :StructByCopy
-        if (param->kind == TypeInfoKind::Struct && param->sizeOf <= sizeof(void*))
+        if (cc.structByRegister && param->kind == TypeInfoKind::Struct && param->sizeOf <= sizeof(void*))
         {
             ra = builder.CreateIntCast(arg, builder.getInt64Ty(), false);
 
@@ -142,7 +142,7 @@ bool BackendLLVM::emitGetParam(llvm::LLVMContext&     context,
                     ra = builder.CreateLShr(ra, builder.getInt64(toAdd * 8));
 
                 // We need to mask in order to derefence only the correct value
-                if (param->sizeOf != (uint32_t)deRefSize)
+                if (param->sizeOf != (uint32_t) deRefSize)
                 {
                     switch (deRefSize)
                     {
@@ -223,8 +223,8 @@ bool BackendLLVM::emitGetParam(llvm::LLVMContext&     context,
         else if (param->isNativeIntegerUnsigned() && param->sizeOf < sizeof(void*))
             builder.CreateStore(builder.CreateIntCast(arg, builder.getInt64Ty(), false), r0);
 
-        // :StructByCopy
-        else if (param->kind == TypeInfoKind::Struct && param->sizeOf <= sizeof(void*))
+        // Struct by copy
+        else if (cc.structByRegister && param->kind == TypeInfoKind::Struct && param->sizeOf <= sizeof(void*))
         {
             // Make a copy of the value on the stack, and return the address
             auto allocR = builder.CreateAlloca(builder.getInt64Ty(), builder.getInt32(1));
@@ -270,11 +270,12 @@ bool BackendLLVM::emitCallParameters(const BuildParameters&        buildParamete
                                      const vector<llvm::Value*>&   values,
                                      bool                          closureToLambda)
 {
-    int   ct              = buildParameters.compileType;
-    int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = *perThread[ct][precompileIndex];
-    auto& context         = *pp.context;
-    auto& builder         = *pp.builder;
+    const auto& cc              = g_CallConv[typeFuncBC->callConv];
+    int         ct              = buildParameters.compileType;
+    int         precompileIndex = buildParameters.precompileIndex;
+    auto&       pp              = *perThread[ct][precompileIndex];
+    auto&       context         = *pp.context;
+    auto&       builder         = *pp.builder;
 
     int numCallParams = (int) typeFuncBC->parameters.size();
     int idxParam      = (int) pushParams.size() - 1;
@@ -328,8 +329,7 @@ bool BackendLLVM::emitCallParameters(const BuildParameters&        buildParamete
             auto r        = builder.CreatePointerCast(r0, llvmType);
             params.push_back(builder.CreateLoad(r));
         }
-        // :StructByCopy
-        else if (typeParam->kind == TypeInfoKind::Struct && typeParam->sizeOf <= sizeof(void*))
+        else if (cc.structByRegister && typeParam->kind == TypeInfoKind::Struct && typeParam->sizeOf <= sizeof(void*))
         {
             auto r0 = TO_PTR_PTR_I8(GEP_I32(allocR, index));
             auto v0 = builder.CreateLoad(r0);

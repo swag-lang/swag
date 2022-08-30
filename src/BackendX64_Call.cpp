@@ -6,6 +6,8 @@
 
 void BackendX64::emitGetParam(X64PerThread& pp, TypeInfoFuncAttr* typeFunc, int reg, int paramIdx, int sizeOf, int storeS4, int sizeStack, uint64_t toAdd, int deRefSize)
 {
+    const auto& cc = g_CallConv[typeFunc->callConv];
+
     int stackOffset = 0;
 
     // If this was a register, then get the value from storeS4 (where input registers have been saveed)
@@ -44,8 +46,7 @@ void BackendX64::emitGetParam(X64PerThread& pp, TypeInfoFuncAttr* typeFunc, int 
     paramIdx       = typeFunc->registerIdxToParamIdx(paramIdx);
     auto typeParam = TypeManager::concreteReferenceType(typeFunc->parameters[paramIdx]->typeInfo);
 
-    // :StructByCopy
-    if (typeParam->kind == TypeInfoKind::Struct && typeParam->sizeOf <= sizeof(void*))
+    if (cc.structByRegister && typeParam->kind == TypeInfoKind::Struct && typeParam->sizeOf <= sizeof(void*))
         BackendX64Inst::emit_LoadAddress_Indirect(pp, stackOffset, RAX, RDI);
     else
         BackendX64Inst::emit_Load64_Indirect(pp, stackOffset, RAX, RDI);
@@ -142,70 +143,64 @@ bool BackendX64::emitCall(X64PerThread& pp, Module* moduleToGen, const Utf8& fun
 
 bool BackendX64::emitCall(X64PerThread& pp, Module* moduleToGen, TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& paramsRegisters, VectorNative<TypeInfo*>& paramsTypes)
 {
-    auto returnType   = TypeManager::concreteReferenceType(typeFuncBC->returnType);
-    bool returnByCopy = returnType->flags & TYPEINFO_RETURN_BY_COPY;
+    const auto& cc           = g_CallConv[typeFuncBC->callConv];
+    auto        returnType   = TypeManager::concreteReferenceType(typeFuncBC->returnType);
+    bool        returnByCopy = returnType->flags & TYPEINFO_RETURN_BY_COPY;
 
-    int callConvRegisters    = 4;
+    int callConvRegisters    = cc.byRegisterCount;
     int maxParamsPerRegister = (int) paramsRegisters.size();
 
-    // Set the first 4 parameters. Can be return register, or function parameter.
+    // Set the first N parameters. Can be return register, or function parameter.
     int i = 0;
     for (; i < min(callConvRegisters, maxParamsPerRegister); i++)
     {
         auto type = paramsTypes[i];
         auto r    = paramsRegisters[i];
 
-        static const uint8_t reg4[]  = {RCX, RDX, R8, R9};
-        static const uint8_t regf4[] = {XMM0, XMM1, XMM2, XMM3};
-
         // This is a return register
         if (type == g_TypeMgr->typeInfoUndefined)
         {
             if (returnByCopy)
-                BackendX64Inst::emit_Load64_Indirect(pp, r, reg4[i], RDI);
+                BackendX64Inst::emit_Load64_Indirect(pp, r, cc.byRegisterInteger[i], RDI);
             else
-                BackendX64Inst::emit_LoadAddress_Indirect(pp, r, reg4[i], RDI);
+                BackendX64Inst::emit_LoadAddress_Indirect(pp, r, cc.byRegisterInteger[i], RDI);
         }
 
         // This is a normal parameter, which can be float or integer
         else
         {
             // Pass struct in a register if small enough
-            // :StructByCopy
-            if (type->kind == TypeInfoKind::Struct && type->sizeOf <= sizeof(void*))
+            if (cc.structByRegister && type->kind == TypeInfoKind::Struct && type->sizeOf <= sizeof(void*))
             {
                 BackendX64Inst::emit_Load64_Indirect(pp, regOffset(r), RAX, RDI);
                 switch (type->sizeOf)
                 {
                 case 1:
-                    BackendX64Inst::emit_Load8_Indirect(pp, 0, reg4[i], RAX);
+                    BackendX64Inst::emit_Load8_Indirect(pp, 0, cc.byRegisterInteger[i], RAX);
                     break;
                 case 2:
-                    BackendX64Inst::emit_Load16_Indirect(pp, 0, reg4[i], RAX);
+                    BackendX64Inst::emit_Load16_Indirect(pp, 0, cc.byRegisterInteger[i], RAX);
                     break;
                 case 4:
-                    BackendX64Inst::emit_Load32_Indirect(pp, 0, reg4[i], RAX);
+                    BackendX64Inst::emit_Load32_Indirect(pp, 0, cc.byRegisterInteger[i], RAX);
                     break;
                 case 8:
-                    BackendX64Inst::emit_Load64_Indirect(pp, 0, reg4[i], RAX);
+                    BackendX64Inst::emit_Load64_Indirect(pp, 0, cc.byRegisterInteger[i], RAX);
                     break;
                 }
             }
-            else if (type->isNativeFloat())
+            else if (cc.useRegisterFloat && type->isNativeFloat())
             {
-                BackendX64Inst::emit_LoadF64_Indirect(pp, regOffset(r), regf4[i], RDI);
+                BackendX64Inst::emit_LoadF64_Indirect(pp, regOffset(r), cc.byRegisterFloat[i], RDI);
             }
             else
             {
-                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(r), reg4[i], RDI);
+                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(r), cc.byRegisterInteger[i], RDI);
             }
         }
     }
 
-    // Store all parameters after 4 on the stack, with an offset of 4 * sizeof(uint64_t)
-    // because the first 4 x uint64_t are for the first 4 parameters (even if they are passed in
-    // registers, this is the x64 cdecl convention...)
-    // uint32_t offsetStack = min(callConvRegisters, maxParamsPerRegister) * sizeof(uint64_t);
+    // Store all parameters after N on the stack, with an offset of N * sizeof(uint64_t)
     uint32_t offsetStack = min(callConvRegisters, maxParamsPerRegister) * sizeof(uint64_t);
     for (; i < (int) paramsRegisters.size(); i++)
     {
@@ -236,9 +231,8 @@ bool BackendX64::emitCall(X64PerThread& pp, Module* moduleToGen, TypeInfoFuncAtt
             {
                 BackendX64Inst::emit_Load64_Indirect(pp, regOffset(paramsRegisters[i]), RAX, RDI);
 
-                // :StructByCopy
                 // Store the content of the struct in the stack
-                if (sizeOf <= sizeof(void*))
+                if (cc.structByRegister && sizeOf <= sizeof(void*))
                 {
                     switch (sizeOf)
                     {
@@ -302,6 +296,8 @@ bool BackendX64::emitCall(X64PerThread& pp, Module* moduleToGen, TypeInfoFuncAtt
 
 void BackendX64::emitCallResult(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT)
 {
+    const auto& cc = g_CallConv[typeFuncBC->callConv];
+
     // Store result to rt0
     auto returnType = TypeManager::concreteReferenceType(typeFuncBC->returnType);
     if (returnType != g_TypeMgr->typeInfoVoid)
@@ -314,13 +310,13 @@ void BackendX64::emitCallResult(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, 
         {
             // Return by parameter
         }
-        else if (returnType->isNativeFloat())
+        else if (cc.useReturnByRegisterFloat && returnType->isNativeFloat())
         {
-            BackendX64Inst::emit_StoreF64_Indirect(pp, offsetRT, XMM0, RDI);
+            BackendX64Inst::emit_StoreF64_Indirect(pp, offsetRT, cc.returnByRegisterFloat, RDI);
         }
         else
         {
-            BackendX64Inst::emit_Store64_Indirect(pp, offsetRT, RAX, RDI);
+            BackendX64Inst::emit_Store64_Indirect(pp, offsetRT, cc.returnByRegisterInteger, RDI);
         }
     }
 }

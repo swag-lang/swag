@@ -19,14 +19,15 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     if (bc->node && (bc->node->attributeFlags & ATTRIBUTE_TEST_FUNC) && (buildParameters.compileType != BackendCompileType::Test))
         return true;
 
-    int   ct              = buildParameters.compileType;
-    int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = *perThread[ct][precompileIndex];
-    auto& concat          = pp.concat;
-    auto  typeFunc        = bc->getCallType();
-    auto  returnType      = TypeManager::concreteReferenceType(typeFunc->returnType);
-    bool  ok              = true;
-    bool  debug           = buildParameters.buildCfg->backendDebugInformations;
+    int         ct              = buildParameters.compileType;
+    int         precompileIndex = buildParameters.precompileIndex;
+    auto&       pp              = *perThread[ct][precompileIndex];
+    auto&       concat          = pp.concat;
+    auto        typeFunc        = bc->getCallType();
+    auto        returnType      = TypeManager::concreteReferenceType(typeFunc->returnType);
+    bool        ok              = true;
+    bool        debug           = buildParameters.buildCfg->backendDebugInformations;
+    const auto& cc              = g_CallConv[typeFunc->callConv];
 
     concat.align(16);
     uint32_t startAddress = concat.totalCount();
@@ -64,7 +65,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
     // All registers:       bc->maxReservedRegisterRC
     // offsetRT:            bc->maxCallResults
-    // offsetS4:            4 registers, to store RCX, RDX, R8, R9
+    // offsetS4:            N registers to store registers used to pass parameters (4 in Swag calling convention)
     // offsetResult:        sizeof(Register) to store return value
     // offsetStack:         stackSize, function local stack
     // offsetFLT:           sizeof(Register)
@@ -72,7 +73,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
     uint32_t offsetRT     = bc->maxReservedRegisterRC * sizeof(Register);
     uint32_t offsetS4     = offsetRT + bc->maxCallResults * sizeof(Register);
-    uint32_t offsetResult = offsetS4 + 4 * sizeof(Register);
+    uint32_t offsetResult = offsetS4 + cc.byRegisterCount * sizeof(Register);
     uint32_t offsetStack  = offsetResult + sizeof(Register);
 
     // For float load (should be reserved only if we have floating point operations in that function)
@@ -81,9 +82,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     uint32_t sizeStack = offsetFLT + 8;
     MK_ALIGN16(sizeStack);
 
-    // x64 calling convention, space for at least 4 parameters when calling a function
+    // Calling convention, space for at least 'cc.byRegisterCount' parameters when calling a function
     // (should ideally be reserved only if we have a call)
-    uint32_t sizeParamsStack = max(4 * sizeof(Register), (bc->maxCallParams + 1) * sizeof(Register));
+    uint32_t sizeParamsStack = max(cc.byRegisterCount * sizeof(Register), (bc->maxCallParams + 1) * sizeof(Register));
 
     // Because of variadic parameters in fct calls, we need to add some extra room, in case we have to flatten them
     // We want to be sure to have the room to flatten the array of variadics (make all params contiguous). That's
@@ -120,34 +121,32 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     pp.concat.addU32(sizeParamsStack); // lea rdi, [rsp + sizeParamsStack]
 
     // Save register parameters
-    static uint8_t x64Reg[]     = {RCX, RDX, R8, R9};
-    static uint8_t x64RegF[]    = {XMM0, XMM1, XMM2, XMM3};
-    auto           numTotalRegs = typeFunc->numParamsRegisters();
-    int            iReg         = 0;
-    while (iReg < min(4, numTotalRegs))
+    uint32_t numTotalRegs = typeFunc->numParamsRegisters();
+    uint32_t iReg         = 0;
+    while (iReg < min(cc.byRegisterCount, numTotalRegs))
     {
         auto typeParam = typeFunc->registerIdxToType(iReg);
-        if (typeParam->isNativeFloat())
-            BackendX64Inst::emit_StoreF64_Indirect(pp, offsetS4 + (iReg * sizeof(Register)), x64RegF[iReg], RDI);
+        if (cc.useRegisterFloat && typeParam->isNativeFloat())
+            BackendX64Inst::emit_StoreF64_Indirect(pp, offsetS4 + (iReg * sizeof(Register)), cc.byRegisterFloat[iReg], RDI);
         else
-            BackendX64Inst::emit_Store64_Indirect(pp, offsetS4 + (iReg * sizeof(Register)), x64Reg[iReg], RDI);
+            BackendX64Inst::emit_Store64_Indirect(pp, offsetS4 + (iReg * sizeof(Register)), cc.byRegisterInteger[iReg], RDI);
         iReg++;
     }
 
     // Save ppinter to return value if this is a return by copy
-    if (typeFunc->returnByCopy() && iReg < 4)
+    if (typeFunc->returnByCopy() && iReg < cc.byRegisterCount)
     {
-        BackendX64Inst::emit_Store64_Indirect(pp, offsetS4 + (iReg * sizeof(Register)), x64Reg[iReg], RDI);
+        BackendX64Inst::emit_Store64_Indirect(pp, offsetS4 + (iReg * sizeof(Register)), cc.byRegisterInteger[iReg], RDI);
         iReg++;
     }
 
     // Save C variadics
     if (typeFunc->isCVariadic())
     {
-        while (iReg < 4)
+        while (iReg < cc.byRegisterCount)
         {
             uint32_t stackOffset = 16 + sizeStack + regOffset(iReg);
-            BackendX64Inst::emit_Store64_Indirect(pp, stackOffset, x64Reg[iReg], RDI);
+            BackendX64Inst::emit_Store64_Indirect(pp, stackOffset, cc.byRegisterInteger[iReg], RDI);
             iReg++;
         }
     }
@@ -2381,12 +2380,12 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::CopyRCtoRR2:
         {
-            int stackOffset = 0;
-            int paramIdx    = typeFunc->numParamsRegisters();
+            int      stackOffset = 0;
+            uint32_t paramIdx    = typeFunc->numParamsRegisters();
 
-            // If this was a register, then get the value from storeS4 (where input registers have been saveed)
+            // If this was passed as a register, then get the value from storeS4 (where input registers have been saveed)
             // instead of value from the stack
-            if (paramIdx < 4)
+            if (paramIdx < cc.byRegisterCount)
                 stackOffset = offsetS4 + regOffset(paramIdx);
 
             // Value from the caller stack
@@ -2414,12 +2413,12 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::CopyRRtoRC:
         {
-            int stackOffset = 0;
-            int paramIdx    = typeFunc->numParamsRegisters();
+            int      stackOffset = 0;
+            uint32_t paramIdx    = typeFunc->numParamsRegisters();
 
-            // If this was a register, then get the value from storeS4 (where input registers have been saveed)
+            // If this was passed as a register, then get the value from storeS4 (where input registers have been saveed)
             // instead of value from the stack
-            if (paramIdx < 4)
+            if (paramIdx < cc.byRegisterCount)
                 stackOffset = offsetS4 + regOffset(paramIdx);
 
             // Value from the caller stack
@@ -2729,13 +2728,13 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             // Emit result
             if (returnType != g_TypeMgr->typeInfoVoid && !typeFunc->returnByCopy())
             {
-                BackendX64Inst::emit_Load64_Indirect(pp, offsetResult, RAX, RDI);
-                if (returnType->kind == TypeInfoKind::Native)
+                BackendX64Inst::emit_Load64_Indirect(pp, offsetResult, cc.returnByRegisterInteger, RDI);
+                if (cc.useReturnByRegisterFloat)
                 {
                     if (returnType->isNative(NativeTypeKind::F32))
-                        BackendX64Inst::emit_CopyF32(pp, RAX, XMM0);
+                        BackendX64Inst::emit_CopyF32(pp, RAX, cc.returnByRegisterFloat);
                     else if (returnType->isNative(NativeTypeKind::F64))
-                        BackendX64Inst::emit_CopyF64(pp, RAX, XMM0);
+                        BackendX64Inst::emit_CopyF64(pp, RAX, cc.returnByRegisterFloat);
                 }
             }
 

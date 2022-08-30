@@ -8,6 +8,7 @@
 #include "CommandLine.h"
 #include "Mutex.h"
 #include "RaceCondition.h"
+#include "CallConv.h"
 
 struct Scope;
 struct TypeInfo;
@@ -379,9 +380,10 @@ struct TypeInfoFuncAttr : public TypeInfo
 
     TypeInfo* returnType = nullptr;
 
-    int      firstDefaultValueIdx = -1;
-    int      stackSize            = 0;
-    uint32_t attributeUsage       = AttributeUsage::All;
+    int               firstDefaultValueIdx = -1;
+    int               stackSize            = 0;
+    uint32_t          attributeUsage       = AttributeUsage::All;
+    CallingConvention callConv             = CallingConvention::Swag;
 };
 
 struct TypeInfoPointer : public TypeInfo

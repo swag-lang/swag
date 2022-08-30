@@ -127,6 +127,8 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
 
 void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInfoFuncAttr* typeInfoFunc, int numCVariadicParams)
 {
+    const auto& cc = g_CallConv[typeInfoFunc->callConv];
+
     // Function call parameters
     ffi_cif cif;
     int     numParameters = (int) typeInfoFunc->parameters.size();
@@ -183,8 +185,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
             context->ffiArgsValues.push_back(&sp->pointer);
             sp++;
         }
-        // :StructByCopy
-        else if (typeParam->kind == TypeInfoKind::Struct && typeParam->sizeOf <= sizeof(void*))
+        else if (cc.structByRegister && typeParam->kind == TypeInfoKind::Struct && typeParam->sizeOf <= sizeof(void*))
         {
             if (!context->ffiStructByCopyDone)
             {

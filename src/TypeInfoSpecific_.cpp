@@ -514,6 +514,7 @@ TypeInfo* TypeInfoFuncAttr::clone()
     newType->stackSize            = stackSize;
     newType->attributes           = attributes;
     newType->attributeUsage       = attributeUsage;
+    newType->callConv             = callConv;
 
     for (int i = 0; i < genericParameters.size(); i++)
     {
@@ -774,7 +775,7 @@ bool TypeInfoFuncAttr::isCVariadic()
 {
     if (parameters.empty())
         return false;
-    auto typeParam = ((TypeInfoParam*)parameters.back())->typeInfo;
+    auto typeParam = ((TypeInfoParam*) parameters.back())->typeInfo;
     if (typeParam->kind == TypeInfoKind::CVariadic)
         return true;
     return false;

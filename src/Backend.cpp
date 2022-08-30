@@ -10,6 +10,7 @@
 #include "Os.h"
 #include "ModuleSaveExportJob.h"
 #include "BackendFunctionBodyJobBase.h"
+#include "CallConv.h"
 
 JobResult Backend::prepareOutput(int stage, const BuildParameters& buildParameters, Job* ownerJob)
 {
@@ -33,6 +34,7 @@ void Backend::setup()
         return;
 
     LLVM::setup();
+    initCallingConventions();
 
     string rtPath;
 
