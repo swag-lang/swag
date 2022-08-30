@@ -1580,7 +1580,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                 bool done = false;
 
                 // If this is a variadic parameter of a cvarargs, we need to promote the value
-                if ((typeInfoFunc->flags & TYPEINFO_C_VARIADIC) &&
+                if ((typeInfoFunc->isCVariadic()) &&
                     i >= numTypeParams - 1 &&
                     param->typeInfo->kind == TypeInfoKind::Native &&
                     param->typeInfo->sizeOf < sizeof(Register))
@@ -1657,7 +1657,8 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     }
 
     // Pass a variadic parameter to another function
-    auto lastParam = allParams && !allParams->childs.empty() ? allParams->childs.back() : nullptr;
+    auto numVariadic = (uint32_t) (numCallParams - numTypeParams) + 1;
+    auto lastParam   = allParams && !allParams->childs.empty() ? allParams->childs.back() : nullptr;
     if (lastParam && lastParam->typeInfo && lastParam->typeInfo->kind == TypeInfoKind::TypedVariadic)
     {
         precallStack += 2 * sizeof(Register);
@@ -1689,8 +1690,6 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     // Variadic parameter is on top of stack
     else if (typeInfoFunc->flags & TYPEINFO_VARIADIC)
     {
-        auto numVariadic = (uint32_t) (numCallParams - numTypeParams) + 1;
-
         // The array of any has been pushed first, so we need to offset all pushed parameters to point to it
         // This is the main difference with typedvariadic, which directly point to the pushed variadic parameters
         auto offset = numPushParams;
@@ -1731,7 +1730,6 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     }
     else if (typeInfoFunc->flags & TYPEINFO_TYPED_VARIADIC)
     {
-        auto numVariadic  = (uint32_t) (numCallParams - numTypeParams) + 1;
         auto typeVariadic = CastTypeInfo<TypeInfoVariadic>(typeInfoFunc->parameters.back()->typeInfo, TypeInfoKind::TypedVariadic);
         auto offset       = (numPushParams - numVariadic * typeVariadic->rawType->numRegisters());
 
@@ -1772,9 +1770,10 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
 
     if (foreign)
     {
-        auto inst       = emitInstruction(context, ByteCodeOp::ForeignCall);
-        inst->a.pointer = (uint8_t*) funcNode;
-        inst->b.pointer = (uint8_t*) typeInfoFunc;
+        auto inst               = emitInstruction(context, ByteCodeOp::ForeignCall);
+        inst->a.pointer         = (uint8_t*) funcNode;
+        inst->b.pointer         = (uint8_t*) typeInfoFunc;
+        inst->numVariadicParams = numVariadic;
         context->bc->hasForeignFunctionCallsModules.insert(ModuleManager::getForeignModuleName(funcNode));
     }
     else if (funcNode)
@@ -1783,6 +1782,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         SWAG_ASSERT(funcNode->extension && funcNode->extension->bc);
         inst->a.pointer                 = (uint8_t*) funcNode->extension->bc;
         inst->b.pointer                 = (uint8_t*) typeInfoFunc;
+        inst->numVariadicParams         = numVariadic;
         funcNode->extension->bc->isUsed = true;
     }
     else
@@ -1790,6 +1790,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         SWAG_ASSERT(varNodeRegisters.size() > 0);
         auto inst                            = emitInstruction(context, ByteCodeOp::LambdaCall, varNodeRegisters);
         inst->b.pointer                      = (uint8_t*) typeInfoFunc;
+        inst->numVariadicParams              = numVariadic;
         context->bc->hasForeignFunctionCalls = true;
     }
 

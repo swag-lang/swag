@@ -2257,7 +2257,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::IntrinsicCVaStart:
         {
             int stackOffset = 0;
-            int paramIdx    = max(4, typeFunc->numParamsRegisters());
+            int paramIdx    = typeFunc->numParamsRegisters();
             if (typeFunc->returnByCopy())
                 paramIdx += 1;
             stackOffset = 16 + sizeStack + regOffset(paramIdx);

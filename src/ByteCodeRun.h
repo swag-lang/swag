@@ -16,7 +16,7 @@ struct ByteCodeRun
     static void* ffiGetFuncAddress(JobContext* context, AstFuncDecl* nodeFunc);
     ffi_type*    ffiFromTypeInfo(TypeInfo* typeInfo);
     void         ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip);
-    void         ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInfoFuncAttr* typeInfoFunc);
+    void         ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInfoFuncAttr* typeInfoFunc, int numCVariadicParams = 0);
 
     bool debugger(ByteCodeRunContext* context);
 

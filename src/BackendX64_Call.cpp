@@ -212,7 +212,7 @@ bool BackendX64::emitCall(X64PerThread& pp, Module* moduleToGen, TypeInfoFuncAtt
     // because the first 4 x uint64_t are for the first 4 parameters (even if they are passed in
     // registers, this is the x64 cdecl convention...)
     // uint32_t offsetStack = min(callConvRegisters, maxParamsPerRegister) * sizeof(uint64_t);
-    uint32_t offsetStack = 4 * sizeof(uint64_t);
+    uint32_t offsetStack = min(callConvRegisters, maxParamsPerRegister) * sizeof(uint64_t);
     for (; i < (int) paramsRegisters.size(); i++)
     {
         // This is a C variadic parameter

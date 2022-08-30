@@ -122,10 +122,10 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
     if (OS::atomicTestNull((void**) &ip->d.pointer))
         return;
     auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>((TypeInfo*) ip->b.pointer, TypeInfoKind::FuncAttr);
-    ffiCall(context, (void*) ip->d.pointer, typeInfoFunc);
+    ffiCall(context, (void*) ip->d.pointer, typeInfoFunc, ip->numVariadicParams);
 }
 
-void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInfoFuncAttr* typeInfoFunc)
+void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInfoFuncAttr* typeInfoFunc, int numCVariadicParams)
 {
     // Function call parameters
     ffi_cif cif;
@@ -135,23 +135,23 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
     Register* sp = (Register*) context->sp;
 
     // Variadic parameters are first on the stack, so need to treat them before
-    if (numParameters)
+    if (typeInfoFunc->isVariadic())
     {
-        auto typeParam = ((TypeInfoParam*) typeInfoFunc->parameters.back())->typeInfo;
-        if (typeParam->kind == TypeInfoKind::Variadic || typeParam->kind == TypeInfoKind::TypedVariadic)
-        {
-            // Pointer
-            context->ffiArgs.push_back(ffiFromTypeInfo(typeParam));
-            context->ffiArgsValues.push_back(&sp->pointer);
-            sp++;
+        // Pointer
+        context->ffiArgs.push_back(&ffi_type_pointer);
+        context->ffiArgsValues.push_back(&sp->pointer);
+        sp++;
 
-            // Count
-            context->ffiArgs.push_back(&ffi_type_uint64);
-            context->ffiArgsValues.push_back(&sp->u64);
-            sp++;
+        // Count
+        context->ffiArgs.push_back(&ffi_type_uint64);
+        context->ffiArgsValues.push_back(&sp->u64);
+        sp++;
 
-            numParameters--;
-        }
+        numParameters--;
+    }
+    else if (typeInfoFunc->isCVariadic())
+    {
+        numParameters--;
     }
 
     for (int i = 0; i < numParameters; i++)
@@ -296,8 +296,22 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
         }
     }
 
+    if (typeInfoFunc->isCVariadic())
+    {
+        for (int i = 0; i < numCVariadicParams; i++)
+        {
+            context->ffiArgs.push_back(&ffi_type_uint64);
+            context->ffiArgsValues.push_back(&sp->u64);
+            sp++;
+        }
+    }
+
     // Initialize the cif
-    ffi_prep_cif(&cif, FFI_DEFAULT_ABI, numParameters, typeResult, context->ffiArgs.empty() ? nullptr : &context->ffiArgs[0]);
+    auto ffiArgs = context->ffiArgs.empty() ? nullptr : &context->ffiArgs[0];
+    if (typeInfoFunc->isCVariadic())
+        ffi_prep_cif_var(&cif, FFI_DEFAULT_ABI, numParameters, numParameters + numCVariadicParams, typeResult, ffiArgs);
+    else
+        ffi_prep_cif(&cif, FFI_DEFAULT_ABI, numParameters, typeResult, ffiArgs);
 
     void* resultPtr = nullptr;
     if (typeResult != &ffi_type_void)

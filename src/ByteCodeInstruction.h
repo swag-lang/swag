@@ -12,7 +12,12 @@ struct ByteCodeInstruction
     // Keep 'op' first to derefence it in the runner without an offset
     ByteCodeOp op;
     uint16_t   flags;
-    uint32_t   padding;
+
+    union
+    {
+        uint32_t numVariadicParams;
+        uint32_t padding;
+    };
 
     Register        a;
     Register        b;
