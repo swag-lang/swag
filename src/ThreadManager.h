@@ -20,6 +20,7 @@ struct ThreadManager
     Job* getJob();
     Job* getJobNoLock();
     Job* getJobNoLock(JobQueue& queue);
+    void eatJob(Job* job);
     Job* getJob(JobThread* thread);
     bool doneWithJobs();
     void clearOptionalJobs();

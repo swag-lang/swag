@@ -766,10 +766,11 @@ bool Workspace::buildTarget()
             auto job = waitingJobs[i];
             if (job->flags & JOB_PENDING_PLACE_HOLDER)
             {
+                SWAG_ASSERT(!(job->flags & JOB_IS_IN_THREAD));
                 job->flags |= JOB_ACCEPT_PENDING_COUNT;
-                restart = true;
-                waitingJobs.erase(i);
+                waitingJobs.erase_unordered(i);
                 i--;
+                restart = true;
                 g_ThreadMgr.addJob(job);
             }
         }

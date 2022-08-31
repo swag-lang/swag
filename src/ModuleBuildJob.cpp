@@ -459,12 +459,12 @@ JobResult ModuleBuildJob::execute()
         if (g_CommandLine->verboseStages)
             module->logStage("ModuleBuildPass::CompilerMessagesPass0\n");
 
-        pass = ModuleBuildPass::BeforeCompilerMessagesPass1;
-
         if (!module->flushCompilerMessages(&context, 0, this))
             return JobResult::ReleaseJob;
         if (context.result != ContextResult::Done)
             return JobResult::KeepJobAlive;
+
+        pass = ModuleBuildPass::BeforeCompilerMessagesPass1;
 
         // This is a dummy job, in case the user code does not trigger new jobs during the message pass
         auto semanticJob          = g_Allocator.alloc<ModuleSemanticJob>();

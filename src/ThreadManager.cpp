@@ -128,13 +128,21 @@ void ThreadManager::addJobNoLock(Job* job)
 void ThreadManager::jobHasEnded(Job* job, JobResult result)
 {
     ScopedLock lk(mutexAdd);
+    ScopedLock lk1(mutexDone);
 
     SWAG_ASSERT(job->flags & JOB_IS_IN_THREAD);
     job->flags &= ~JOB_IS_IN_THREAD;
     if (job->flags & JOB_IS_OPT)
+    {
+        SWAG_ASSERT(jobsOptInThreads);
         jobsOptInThreads--;
+    }
     else
+    {
+        SWAG_ASSERT(jobsInThreads);
         jobsInThreads--;
+    }
+
     job->wakeUpBy = nullptr;
 
     // Some jobs have been registered to be pushed
@@ -161,7 +169,7 @@ void ThreadManager::jobHasEnded(Job* job, JobResult result)
     // Some jobs need to be run because this one is finished
     if (result == JobResult::ReleaseJob)
     {
-        ScopedLock lk1(job->mutexDependent);
+        ScopedLock lk2(job->mutexDependent);
         for (auto toRun : job->dependentJobs.list)
         {
             toRun->wakeUpBy = job;
@@ -218,7 +226,6 @@ void ThreadManager::jobHasEnded(Job* job, JobResult result)
     }
 
     // Is this the last job ?
-    ScopedLock lk1(mutexDone);
     if (doneWithJobs())
         condVarDone.notify_all();
 }
@@ -345,7 +352,8 @@ Job* ThreadManager::getJob()
         auto job = p->syntaxGroup.pickJob();
         if (job)
         {
-            job->flags |= JOB_IS_IN_THREAD;
+            SWAG_ASSERT(job->flags & JOB_IS_OPT);
+            eatJob(job);
             return job;
         }
     }
@@ -395,7 +403,9 @@ Job* ThreadManager::getJobNoLock(JobQueue& queue)
     if (jEmpty && !queue.affinityCount)
         return nullptr;
 
-    Job* job;
+    ScopedLock lk(mutexDone);
+    Job*       job;
+
     if (!queue.affinity[g_ThreadIndex].empty())
     {
         job = queue.affinity[g_ThreadIndex].get_pop_back();
@@ -430,6 +440,13 @@ Job* ThreadManager::getJobNoLock(JobQueue& queue)
     SWAG_ASSERT(job);
     SWAG_ASSERT(job->flags & JOB_IS_IN_QUEUE);
     job->flags &= ~JOB_IS_IN_QUEUE;
+    eatJob(job);
+
+    return job;
+}
+
+void ThreadManager::eatJob(Job* job)
+{
     SWAG_ASSERT(!(job->flags & JOB_IS_IN_THREAD));
     job->flags |= JOB_IS_IN_THREAD;
 
@@ -440,8 +457,6 @@ Job* ThreadManager::getJobNoLock(JobQueue& queue)
         jobsOptInThreads++;
     else
         jobsInThreads++;
-
-    return job;
 }
 
 Job* ThreadManager::getJob(JobThread* thread)
