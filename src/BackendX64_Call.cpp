@@ -141,7 +141,7 @@ bool BackendX64::emitCall(X64PerThread& pp, Module* moduleToGen, const Utf8& fun
     return true;
 }
 
-bool BackendX64::emitCall(X64PerThread& pp, Module* moduleToGen, TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& paramsRegisters, VectorNative<TypeInfo*>& paramsTypes)
+bool BackendX64::emitCallParameters(X64PerThread& pp, Module* moduleToGen, TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& paramsRegisters, VectorNative<TypeInfo*>& paramsTypes)
 {
     const auto& cc           = g_CallConv[typeFuncBC->callConv];
     auto        returnType   = TypeManager::concreteReferenceType(typeFuncBC->returnType);
@@ -427,7 +427,7 @@ bool BackendX64::emitCallParameters(X64PerThread& pp, Module* moduleToGen, uint3
         auto seekPtrClosure = pp.concat.getSeekPtr() - 4;
         auto seekJmpClosure = pp.concat.totalCount();
 
-        SWAG_CHECK(emitCall(pp, moduleToGen, typeFuncBC, paramsRegisters, paramsTypes));
+        SWAG_CHECK(emitCallParameters(pp, moduleToGen, typeFuncBC, paramsRegisters, paramsTypes));
 
         // Jump to after closure call
         BackendX64Inst::emit_LongJumpOp(pp, BackendX64Inst::JUMP);
@@ -440,13 +440,13 @@ bool BackendX64::emitCallParameters(X64PerThread& pp, Module* moduleToGen, uint3
 
         paramsRegisters.erase(0);
         paramsTypes.erase(0);
-        SWAG_CHECK(emitCall(pp, moduleToGen, typeFuncBC, paramsRegisters, paramsTypes));
+        SWAG_CHECK(emitCallParameters(pp, moduleToGen, typeFuncBC, paramsRegisters, paramsTypes));
 
         *seekPtrAfterClosure = (uint8_t) (pp.concat.totalCount() - seekJmpAfterClosure);
     }
     else
     {
-        SWAG_CHECK(emitCall(pp, moduleToGen, typeFuncBC, paramsRegisters, paramsTypes));
+        SWAG_CHECK(emitCallParameters(pp, moduleToGen, typeFuncBC, paramsRegisters, paramsTypes));
     }
 
     return true;
