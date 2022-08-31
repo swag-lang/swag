@@ -55,7 +55,14 @@ bool OutputFileWin32::save(void* buffer, uint32_t count)
         DWORD written = 0;
         while (!GetOverlappedResult(winHandle, over, &written, false))
         {
-            //g_ThreadMgr.tryExecuteJob();
+            err = GetLastError();
+            if (err != ERROR_IO_INCOMPLETE)
+            {
+                g_Log.errorOS(Fmt(Err(Err0525), filePath.c_str()));
+                return false;
+            }
+
+            this_thread::yield();
         }
     }
 

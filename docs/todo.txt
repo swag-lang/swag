@@ -65,17 +65,15 @@ Erreur affichées dans les fichiers d'export plutot que dans le code source d'or
 
 
 
-****************************************
-CLEAN CONV
-****************************************
-
-- rationnaliser callconv avec une struct
-
 
 ****************************************
 TODO
 ****************************************
 
+-------------------------------------
+rationnaliser callconv, tout passer par des appels normaux non hardcodés, dans l'optique de pouvoir changer de callconv par fonction
+-------------------------------------
+se débarasser de ffi pour tout faire à la main
 -------------------------------------
 erreur si opDrop est privé et la struct publique (on doit exporter)
 -------------------------------------
