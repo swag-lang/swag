@@ -3861,7 +3861,12 @@ void SemanticJob::collectAlternativeScopes(AstNode* startNode, VectorNative<Alte
     // a using itself, and so on...
     VectorNative<AlternativeScope> toAdd;
     VectorNative<Scope*>           done;
-    toAdd.append(startNode->extension->alternativeScopes);
+
+    {
+        SharedLock lk(startNode->extension->mutexAltScopes);
+        toAdd.append(startNode->extension->alternativeScopes);
+    }
+
     while (!toAdd.empty())
     {
         auto it0 = toAdd.back();
@@ -3876,8 +3881,11 @@ void SemanticJob::collectAlternativeScopes(AstNode* startNode, VectorNative<Alte
             {
                 // We register the sub scope with the original "node" (top level), because the original node will in the end
                 // become the dependentVar node, and will be converted by cast to the correct type.
-                for (auto& it1 : it0.scope->owner->extension->alternativeScopes)
-                    toAdd.push_back({it1.scope, it1.flags | it0.flags & ALTSCOPE_WITH});
+                {
+                    SharedLock lk(it0.scope->owner->extension->mutexAltScopes);
+                    for (auto& it1 : it0.scope->owner->extension->alternativeScopes)
+                        toAdd.push_back({it1.scope, it1.flags | it0.flags & ALTSCOPE_WITH});
+                }
             }
         }
     }
