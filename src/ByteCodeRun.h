@@ -1,5 +1,4 @@
 #pragma once
-#include "ffi/ffi.h"
 #include "VectorNative.h"
 struct ByteCodeRunContext;
 struct ByteCodeInstruction;
@@ -14,7 +13,6 @@ struct ByteCodeRun
 {
     static void* ffiGetFuncAddress(JobContext* context, ByteCodeInstruction* ip);
     static void* ffiGetFuncAddress(JobContext* context, AstFuncDecl* nodeFunc);
-    ffi_type*    ffiFromTypeInfo(TypeInfo* typeInfo);
     void         ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip);
     void         ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInfoFuncAttr* typeInfoFunc, int numCVariadicParams = 0);
 

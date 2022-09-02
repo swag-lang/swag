@@ -3,7 +3,6 @@
 #include "Log.h"
 #include "SourceFile.h"
 #include "Job.h"
-#include "ffi/ffi.h"
 struct SemanticContext;
 struct AstNode;
 struct ByteCodeRunContext;
@@ -108,20 +107,9 @@ struct ByteCodeRunContext
 
     JobContext jc;
 
-    VectorNative<ffi_type*> ffiArgs;
-    VectorNative<void*>     ffiArgsValues;
-    Utf8                    errorMsg;
-    VectorNative<int>       registersRC;
-    VectorNative<Register>  registers;
-
-    ffi_type  ffi_StructByCopy1;
-    ffi_type* ffi_StructByCopy1T[1];
-    ffi_type  ffi_StructByCopy2;
-    ffi_type* ffi_StructByCopy2T[1];
-    ffi_type  ffi_StructByCopy4;
-    ffi_type* ffi_StructByCopy4T[1];
-    ffi_type  ffi_StructByCopy8;
-    ffi_type* ffi_StructByCopy8T[1];
+    Utf8                   errorMsg;
+    VectorNative<int>      registersRC;
+    VectorNative<Register> registers;
 
     SwagCompilerSourceLocation* errorLoc      = nullptr;
     JobContext*                 callerContext = nullptr;

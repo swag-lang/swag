@@ -70,55 +70,6 @@ void* ByteCodeRun::ffiGetFuncAddress(JobContext* context, AstFuncDecl* nodeFunc)
     return fn;
 }
 
-ffi_type* ByteCodeRun::ffiFromTypeInfo(TypeInfo* typeInfo)
-{
-    if (typeInfo->kind == TypeInfoKind::Pointer ||
-        typeInfo->kind == TypeInfoKind::Struct ||
-        typeInfo->kind == TypeInfoKind::Array ||
-        typeInfo->kind == TypeInfoKind::Slice ||
-        typeInfo->kind == TypeInfoKind::Variadic ||
-        typeInfo->kind == TypeInfoKind::TypedVariadic ||
-        typeInfo->kind == TypeInfoKind::Interface ||
-        typeInfo->kind == TypeInfoKind::Lambda ||
-        typeInfo->isNative(NativeTypeKind::Any) ||
-        typeInfo->isNative(NativeTypeKind::String))
-        return &ffi_type_pointer;
-
-    if (typeInfo->kind != TypeInfoKind::Native)
-        return nullptr;
-
-    switch (typeInfo->nativeType)
-    {
-    case NativeTypeKind::U8:
-        return &ffi_type_uint8;
-    case NativeTypeKind::S8:
-        return &ffi_type_sint8;
-    case NativeTypeKind::U16:
-        return &ffi_type_uint16;
-    case NativeTypeKind::S16:
-        return &ffi_type_sint16;
-    case NativeTypeKind::S32:
-        return &ffi_type_sint32;
-    case NativeTypeKind::U32:
-    case NativeTypeKind::Rune:
-        return &ffi_type_uint32;
-    case NativeTypeKind::S64:
-    case NativeTypeKind::Int:
-        return &ffi_type_sint64;
-    case NativeTypeKind::U64:
-    case NativeTypeKind::UInt:
-        return &ffi_type_uint64;
-    case NativeTypeKind::F32:
-        return &ffi_type_float;
-    case NativeTypeKind::F64:
-        return &ffi_type_double;
-    case NativeTypeKind::Bool:
-        return &ffi_type_uint8;
-    }
-
-    return nullptr;
-}
-
 void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
 {
     if (OS::atomicTestNull((void**) &ip->d.pointer))
@@ -137,27 +88,13 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
     uint32_t               cptParam = 0;
 
     // Function call parameters
-    ffi_cif cif;
-    int     numParameters = (int) typeInfoFunc->parameters.size();
-    context->ffiArgs.clear();
-    context->ffiArgsValues.clear();
-    Register* sp = (Register*) context->sp;
+    int numParameters = (int) typeInfoFunc->parameters.size();
 
     // Variadic parameters are first on the stack, so need to treat them before
     if (typeInfoFunc->isVariadic())
     {
-        // Pointer
-        context->ffiArgs.push_back(&ffi_type_pointer);
-        context->ffiArgsValues.push_back(&sp->pointer);
         pushRAParam.push_front(cptParam++);
-        sp++;
-
-        // Count
-        context->ffiArgs.push_back(&ffi_type_uint64);
-        context->ffiArgsValues.push_back(&sp->u64);
         pushRAParam.push_front(cptParam++);
-        sp++;
-
         numParameters--;
     }
     else if (typeInfoFunc->isCVariadic())
@@ -169,122 +106,24 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
     {
         auto typeParam = ((TypeInfoParam*) typeInfoFunc->parameters[i])->typeInfo;
         typeParam      = TypeManager::concreteReferenceType(typeParam);
-        auto fromTTi   = ffiFromTypeInfo(typeParam);
-        if (!fromTTi)
+
+        if (typeParam->isNative(NativeTypeKind::String) ||
+            typeParam->isNative(NativeTypeKind::Any) ||
+            typeParam->kind == TypeInfoKind::Slice ||
+            typeParam->kind == TypeInfoKind::Interface)
         {
-            context->raiseError(Fmt("ffi failed to convert argument type `%s`", typeParam->name.c_str()));
-            return;
-        }
-
-        if (typeParam->isNative(NativeTypeKind::String) || typeParam->kind == TypeInfoKind::Slice)
-        {
-            context->ffiArgs.push_back(fromTTi);
-            context->ffiArgsValues.push_back(&sp->pointer);
             pushRAParam.push_front(cptParam++);
-            sp++;
-            context->ffiArgs.push_back(&ffi_type_uint64);
-            context->ffiArgsValues.push_back(&sp->u64);
             pushRAParam.push_front(cptParam++);
-            sp++;
-        }
-        else if (typeParam->isNative(NativeTypeKind::Any) || typeParam->kind == TypeInfoKind::Interface)
-        {
-            context->ffiArgs.push_back(fromTTi);
-            context->ffiArgsValues.push_back(&sp->pointer);
-            pushRAParam.push_front(cptParam++);
-            sp++;
-            context->ffiArgs.push_back(&ffi_type_pointer);
-            context->ffiArgsValues.push_back(&sp->pointer);
-            pushRAParam.push_front(cptParam++);
-            sp++;
-        }
-        else if (cc.structByRegister && typeParam->kind == TypeInfoKind::Struct && typeParam->sizeOf <= sizeof(void*))
-        {
-            if (!context->ffiStructByCopyDone)
-            {
-                context->ffiStructByCopyDone = true;
-
-                context->ffi_StructByCopy1.alignment = 1;
-                context->ffi_StructByCopy1.size      = 1;
-                context->ffi_StructByCopy1.type      = FFI_TYPE_STRUCT;
-                context->ffi_StructByCopy1.elements  = &context->ffi_StructByCopy1T[0];
-
-                context->ffi_StructByCopy2.alignment = 2;
-                context->ffi_StructByCopy2.size      = 2;
-                context->ffi_StructByCopy2.type      = FFI_TYPE_STRUCT;
-                context->ffi_StructByCopy1.elements  = &context->ffi_StructByCopy2T[0];
-
-                context->ffi_StructByCopy4.alignment = 4;
-                context->ffi_StructByCopy4.size      = 4;
-                context->ffi_StructByCopy4.type      = FFI_TYPE_STRUCT;
-                context->ffi_StructByCopy1.elements  = &context->ffi_StructByCopy4T[0];
-
-                context->ffi_StructByCopy8.alignment = 8;
-                context->ffi_StructByCopy8.size      = 8;
-                context->ffi_StructByCopy8.type      = FFI_TYPE_STRUCT;
-                context->ffi_StructByCopy1.elements  = &context->ffi_StructByCopy8T[0];
-            }
-
-            switch (typeParam->sizeOf)
-            {
-            case 1:
-                context->ffiArgs.push_back(&context->ffi_StructByCopy1);
-                break;
-            case 2:
-                context->ffiArgs.push_back(&context->ffi_StructByCopy2);
-                break;
-            case 4:
-                context->ffiArgs.push_back(&context->ffi_StructByCopy4);
-                break;
-            case 8:
-                context->ffiArgs.push_back(&context->ffi_StructByCopy8);
-                break;
-            }
-
-            context->ffiArgsValues.push_back(sp->pointer);
-            pushRAParam.push_front(cptParam++);
-            sp++;
-        }
-        else if (typeParam->flags & TYPEINFO_RETURN_BY_COPY)
-        {
-            context->ffiArgs.push_back(fromTTi);
-            context->ffiArgsValues.push_back(&sp->pointer);
-            pushRAParam.push_front(cptParam++);
-            sp++;
         }
         else
         {
-            context->ffiArgs.push_back(fromTTi);
             pushRAParam.push_front(cptParam++);
-            switch (typeParam->sizeOf)
-            {
-            case 1:
-                context->ffiArgsValues.push_back(&sp->u8);
-                break;
-            case 2:
-                context->ffiArgsValues.push_back(&sp->u16);
-                break;
-            case 4:
-                context->ffiArgsValues.push_back(&sp->u32);
-                break;
-            case 8:
-                context->ffiArgsValues.push_back(&sp->u64);
-                break;
-            default:
-                context->raiseError(Fmt("ffi failed to convert argument type `%s`", typeParam->name.c_str()));
-                return;
-            }
-
-            sp++;
         }
     }
 
-    numParameters = (int) context->ffiArgs.size();
-
     // Function return type
-    void*     retCopyAddr = nullptr;
-    ffi_type* typeResult  = &ffi_type_void;
-    auto      returnType  = TypeManager::concreteReferenceType(typeInfoFunc->returnType);
+    void* retCopyAddr = nullptr;
+    auto  returnType  = TypeManager::concreteReferenceType(typeInfoFunc->returnType);
     if (returnType != g_TypeMgr->typeInfoVoid)
     {
         // Special return
@@ -293,26 +132,11 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
             returnType->isNative(NativeTypeKind::Any) ||
             returnType->isNative(NativeTypeKind::String))
         {
-            numParameters++;
-            context->ffiArgs.push_back(&ffi_type_pointer);
-            context->ffiArgsValues.push_back(&context->registersRR);
             retCopyAddr = context->registersRR;
         }
         else if (returnType->flags & TYPEINFO_RETURN_BY_COPY)
         {
-            numParameters++;
-            context->ffiArgs.push_back(&ffi_type_pointer);
-            context->ffiArgsValues.push_back(context->registersRR);
             retCopyAddr = context->registersRR[0].pointer;
-        }
-        else
-        {
-            typeResult = ffiFromTypeInfo(returnType);
-            if (!typeResult)
-            {
-                context->raiseError(Fmt("ffi failed to convert return type `%s`", typeInfoFunc->returnType->getDisplayNameC()));
-                return;
-            }
         }
     }
 
@@ -320,51 +144,9 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
     {
         for (int i = 0; i < numCVariadicParams; i++)
         {
-            context->ffiArgs.push_back(&ffi_type_uint64);
-            context->ffiArgsValues.push_back(&sp->u64);
             pushRAParam.push_front(cptParam++);
-            sp++;
         }
     }
-
-    // Initialize the cif
-    auto ffiArgs = context->ffiArgs.empty() ? nullptr : &context->ffiArgs[0];
-    if (typeInfoFunc->isCVariadic())
-        ffi_prep_cif_var(&cif, FFI_DEFAULT_ABI, numParameters, numParameters + numCVariadicParams, typeResult, ffiArgs);
-    else
-        ffi_prep_cif(&cif, FFI_DEFAULT_ABI, numParameters, typeResult, ffiArgs);
-
-    void* resultPtr = nullptr;
-    if (typeResult != &ffi_type_void)
-    {
-        SWAG_ASSERT(context->registersRR);
-        switch (returnType->sizeOf)
-        {
-        case 1:
-            resultPtr = &context->registersRR[0].u8;
-            break;
-        case 2:
-            resultPtr = &context->registersRR[0].u16;
-            break;
-        case 4:
-            resultPtr = &context->registersRR[0].u32;
-            break;
-        case 8:
-            resultPtr = &context->registersRR[0].u64;
-            break;
-        default:
-            context->raiseError(Fmt("ffi failed to get return result of type `%s`", typeInfoFunc->returnType->getDisplayNameC()));
-            return;
-        }
-    }
-
-    static int ii = 0;
-    ii++;
-    if (ii == 0x1935)
-        int a = 0;
-
-    // Make the call
-    //ffi_call(&cif, FFI_FN(foreignPtr), resultPtr, context->ffiArgsValues.empty() ? nullptr : &context->ffiArgsValues[0]);
 
     if (!g_PP.concat.firstBucket)
     {

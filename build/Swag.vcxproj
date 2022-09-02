@@ -202,10 +202,6 @@
     <ClInclude Include="../src/Diagnostic.h" />
     <ClInclude Include="../src/ByteCodeStack.h" />
     <ClInclude Include="../src/EnumerateModuleJob.h" />
-    <ClInclude Include="../src/ffi/ffi.h" />
-    <ClInclude Include="../src/ffi/fficonfig.h" />
-    <ClInclude Include="../src/ffi/ffitarget.h" />
-    <ClInclude Include="../src/ffi/ffi_common.h" />
     <ClInclude Include="../src/File.h" />
     <ClInclude Include="../src/Generic.h" />
     <ClInclude Include="../src/ModuleBuildJob.h" />
@@ -330,11 +326,6 @@
     <ClCompile Include="../src/ByteCodeRunContext.cpp" />
     <ClCompile Include="..\src\ByteCodeRun_FFI.cpp" />
     <ClCompile Include="../src/DependentJobs.cpp" />
-    <ClCompile Include="../src/ffi/closures.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release (DevMode)|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="../src/CommandLine.cpp" />
     <ClCompile Include="../src/CommandLineParser.cpp" />
     <ClCompile Include="../src/Concat.cpp">
@@ -348,11 +339,6 @@
     <ClCompile Include="../src/Context.cpp" />
     <ClCompile Include="../src/DataSegment.cpp" />
     <ClCompile Include="../src/Diagnostic.cpp" />
-    <ClCompile Include="../src/ffi/ffi.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release (DevMode)|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="../src/Generic.cpp" />
     <ClCompile Include="../src/JobThread.cpp" />
     <ClCompile Include="../src/LanguageSpec.cpp" />
@@ -421,11 +407,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release (DevMode)|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="../src/ffi/prep_cif.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release (DevMode)|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="../src/SyntaxJob.cpp" />
     <ClCompile Include="../src/SourceFile.cpp" />
     <ClCompile Include="..\src\ByteCode_Print_.cpp" />
@@ -440,11 +421,6 @@
     <ClCompile Include="../src/TypeInfoSpecific_.cpp" />
     <ClCompile Include="../src/TypeManager.cpp" />
     <ClCompile Include="../src/TypeManagerCast_.cpp" />
-    <ClCompile Include="../src/ffi/types.c">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release (DevMode)|x64'">NotUsing</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="../src/TypeTable.cpp" />
     <ClCompile Include="../src/TypeTableJob.cpp" />
     <ClCompile Include="../src/Utf8.cpp" />
@@ -458,29 +434,6 @@
     <ClCompile Include="..\src\Workspace_Clean.cpp" />
     <ClCompile Include="..\src\Workspace_New.cpp" />
     <ClCompile Include="..\src\Workspace_Script.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="../src/ffi/win64.S">
-      <FileType>Document</FileType>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-cl.exe /EP ../src/ffi/win64.S &gt; ../src/ffi/win64_plain.asm
-
-ml64.exe /c /Cx /Fo "../.tmp/swag/$(Configuration)/win64.obj" ../src/ffi/win64_plain.asm
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../.tmp/swag/$(Configuration)/win64.obj</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-cl.exe /EP ../src/ffi/win64.S &gt; ../src/ffi/win64_plain.asm
-
-ml64.exe /c /Cx /Fo "../.tmp/swag/$(Configuration)/win64.obj" ../src/ffi/win64_plain.asm
-</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release (DevMode)|x64'">
-cl.exe /EP ../src/ffi/win64.S &gt; ../src/ffi/win64_plain.asm
-
-ml64.exe /c /Cx /Fo "../.tmp/swag/$(Configuration)/win64.obj" ../src/ffi/win64_plain.asm
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">../.tmp/swag/$(Configuration)/win64.obj</Outputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release (DevMode)|x64'">../.tmp/swag/$(Configuration)/win64.obj</Outputs>
-    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\FileJob.cpp" />

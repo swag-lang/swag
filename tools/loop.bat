@@ -1,4 +1,3 @@
 :loop
-rem call %1 %2 %3 %4 %5
-swag_devmode build -w:../bin/examples
+call %1 %2 %3 %4 %5
 goto loop

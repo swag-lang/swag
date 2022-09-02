@@ -164,18 +164,6 @@
     <ClCompile Include="../src/OsWin32.cpp">
       <Filter>Main\Os</Filter>
     </ClCompile>
-    <ClCompile Include="../src/ffi/closures.c">
-      <Filter>Backend\ByteCode\FFI</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/ffi/ffi.c">
-      <Filter>Backend\ByteCode\FFI</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/ffi/prep_cif.c">
-      <Filter>Backend\ByteCode\FFI</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/ffi/types.c">
-      <Filter>Backend\ByteCode\FFI</Filter>
-    </ClCompile>
     <ClCompile Include="../src/TypeInfo.cpp">
       <Filter>Semantic\Type</Filter>
     </ClCompile>
@@ -575,18 +563,6 @@
     <ClInclude Include="../src/BackendLLVMDbg.h">
       <Filter>Backend\LLVM</Filter>
     </ClInclude>
-    <ClInclude Include="../src/ffi/ffi.h">
-      <Filter>Backend\ByteCode\FFI</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/ffi/ffi_common.h">
-      <Filter>Backend\ByteCode\FFI</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/ffi/fficonfig.h">
-      <Filter>Backend\ByteCode\FFI</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/ffi/ffitarget.h">
-      <Filter>Backend\ByteCode\FFI</Filter>
-    </ClInclude>
     <ClInclude Include="../src/TypeTableJob.h">
       <Filter>Semantic\Type</Filter>
     </ClInclude>
@@ -880,20 +856,12 @@
     <Filter Include="Backend\ByteCode\Optimize">
       <UniqueIdentifier>{78754e10-947b-4b7b-bdfa-8eb19470f27d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Backend\ByteCode\FFI">
-      <UniqueIdentifier>{4e25712b-01db-43ce-b213-34d28464abfd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Backend\ByteCode\Run">
       <UniqueIdentifier>{6addfd73-dbad-40f7-b7cb-5bbaa1cde9cd}</UniqueIdentifier>
     </Filter>
     <Filter Include="Backend\ByteCode\Gen">
       <UniqueIdentifier>{6af8e653-2a30-49e1-a10c-e6fd51ae7787}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="../src/ffi/win64.S">
-      <Filter>Backend\ByteCode\FFI</Filter>
-    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="swag.natvis" />
