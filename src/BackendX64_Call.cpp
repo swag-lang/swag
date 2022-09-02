@@ -106,12 +106,12 @@ void BackendX64::emitGetParam(X64PerThread& pp, TypeInfoFuncAttr* typeFunc, int 
     BackendX64Inst::emit_Store64_Indirect(pp, regOffset(reg), RAX, RDI);
 }
 
-bool BackendX64::emitCall(X64PerThread& pp, Module* moduleToGen, const Utf8& funcName, ByteCodeInstruction* ip, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams, bool localCall)
+void BackendX64::emitCall(X64PerThread& pp, const Utf8& funcName, ByteCodeInstruction* ip, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams, bool localCall)
 {
     TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
 
     // Push parameters
-    SWAG_CHECK(emitCallParameters(pp, moduleToGen, offsetRT, typeFuncBC, pushRAParams));
+    emitCallParameters(pp, offsetRT, typeFuncBC, pushRAParams);
 
     auto& concat = pp.concat;
 
@@ -138,10 +138,36 @@ bool BackendX64::emitCall(X64PerThread& pp, Module* moduleToGen, const Utf8& fun
 
     // Store result
     emitCallResult(pp, typeFuncBC, offsetRT);
-    return true;
 }
 
-bool BackendX64::emitCallParameters(X64PerThread& pp, Module* moduleToGen, TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& paramsRegisters, VectorNative<TypeInfo*>& paramsTypes)
+void BackendX64::emitCallResult(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT)
+{
+    const auto& cc = g_CallConv[typeFuncBC->callConv];
+
+    // Store result to rt0
+    auto returnType = TypeManager::concreteReferenceType(typeFuncBC->returnType);
+    if (returnType != g_TypeMgr->typeInfoVoid)
+    {
+        if ((returnType->kind == TypeInfoKind::Slice) ||
+            (returnType->kind == TypeInfoKind::Interface) ||
+            (returnType->isNative(NativeTypeKind::Any)) ||
+            (returnType->isNative(NativeTypeKind::String)) ||
+            (returnType->flags & TYPEINFO_RETURN_BY_COPY))
+        {
+            // Return by parameter
+        }
+        else if (cc.useReturnByRegisterFloat && returnType->isNativeFloat())
+        {
+            BackendX64Inst::emit_StoreF64_Indirect(pp, offsetRT, cc.returnByRegisterFloat, RDI);
+        }
+        else
+        {
+            BackendX64Inst::emit_Store64_Indirect(pp, offsetRT, cc.returnByRegisterInteger, RDI);
+        }
+    }
+}
+
+void BackendX64::emitCallParameters(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& paramsRegisters, VectorNative<TypeInfo*>& paramsTypes, void* retCopy)
 {
     const auto& cc           = g_CallConv[typeFuncBC->callConv];
     auto        returnType   = TypeManager::concreteReferenceType(typeFuncBC->returnType);
@@ -160,7 +186,10 @@ bool BackendX64::emitCallParameters(X64PerThread& pp, Module* moduleToGen, TypeI
         // This is a return register
         if (type == g_TypeMgr->typeInfoUndefined)
         {
-            if (returnByCopy)
+            // r is an address to registerRR, for FFI
+            if (retCopy)
+                BackendX64Inst::emit_Load64_Immediate(pp, (uint64_t) retCopy, cc.byRegisterInteger[i]);
+            else if (returnByCopy)
                 BackendX64Inst::emit_Load64_Indirect(pp, r, cc.byRegisterInteger[i], RDI);
             else
                 BackendX64Inst::emit_LoadAddress_Indirect(pp, r, cc.byRegisterInteger[i], RDI);
@@ -214,7 +243,10 @@ bool BackendX64::emitCallParameters(X64PerThread& pp, Module* moduleToGen, TypeI
         // This is for a return value
         else if (paramsTypes[i] == g_TypeMgr->typeInfoUndefined)
         {
-            if (returnByCopy)
+            // r is an address to registerRR, for FFI
+            if (retCopy)
+                BackendX64Inst::emit_Load64_Immediate(pp, (uint64_t) retCopy, RAX);
+            else if (returnByCopy)
                 BackendX64Inst::emit_Load64_Indirect(pp, paramsRegisters[i], RAX, RDI);
             else
                 BackendX64Inst::emit_LoadAddress_Indirect(pp, paramsRegisters[i], RAX, RDI);
@@ -282,7 +314,8 @@ bool BackendX64::emitCallParameters(X64PerThread& pp, Module* moduleToGen, TypeI
                     BackendX64Inst::emit_Store64_Indirect(pp, offsetStack, RAX, RSP);
                     break;
                 default:
-                    return moduleToGen->internalError(typeFuncBC->declNode, typeFuncBC->declNode->token, "emitCall, invalid parameter type");
+                    SWAG_ASSERT(false);
+                    return;
                 }
             }
         }
@@ -290,38 +323,9 @@ bool BackendX64::emitCallParameters(X64PerThread& pp, Module* moduleToGen, TypeI
         // Push is always aligned
         offsetStack += 8;
     }
-
-    return true;
 }
 
-void BackendX64::emitCallResult(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT)
-{
-    const auto& cc = g_CallConv[typeFuncBC->callConv];
-
-    // Store result to rt0
-    auto returnType = TypeManager::concreteReferenceType(typeFuncBC->returnType);
-    if (returnType != g_TypeMgr->typeInfoVoid)
-    {
-        if ((returnType->kind == TypeInfoKind::Slice) ||
-            (returnType->kind == TypeInfoKind::Interface) ||
-            (returnType->isNative(NativeTypeKind::Any)) ||
-            (returnType->isNative(NativeTypeKind::String)) ||
-            (returnType->flags & TYPEINFO_RETURN_BY_COPY))
-        {
-            // Return by parameter
-        }
-        else if (cc.useReturnByRegisterFloat && returnType->isNativeFloat())
-        {
-            BackendX64Inst::emit_StoreF64_Indirect(pp, offsetRT, cc.returnByRegisterFloat, RDI);
-        }
-        else
-        {
-            BackendX64Inst::emit_Store64_Indirect(pp, offsetRT, cc.returnByRegisterInteger, RDI);
-        }
-    }
-}
-
-bool BackendX64::emitCallParameters(X64PerThread& pp, Module* moduleToGen, uint32_t offsetRT, TypeInfoFuncAttr* typeFuncBC, const VectorNative<uint32_t>& pushRAParams)
+void BackendX64::emitCallParameters(X64PerThread& pp, uint32_t offsetRT, TypeInfoFuncAttr* typeFuncBC, const VectorNative<uint32_t>& pushRAParams, void* retCopy)
 {
     int numCallParams = (int) typeFuncBC->parameters.size();
 
@@ -386,8 +390,7 @@ bool BackendX64::emitCallParameters(X64PerThread& pp, Module* moduleToGen, uint3
         }
         else
         {
-            if (typeParam->sizeOf > sizeof(void*))
-                return moduleToGen->internalError(typeFuncBC->declNode, typeFuncBC->declNode->token, "emitCall, invalid parameter type");
+            SWAG_ASSERT(typeParam->sizeOf <= sizeof(void*));
             paramsRegisters.push_back(index);
             paramsTypes.push_back(typeParam);
         }
@@ -427,7 +430,7 @@ bool BackendX64::emitCallParameters(X64PerThread& pp, Module* moduleToGen, uint3
         auto seekPtrClosure = pp.concat.getSeekPtr() - 4;
         auto seekJmpClosure = pp.concat.totalCount();
 
-        SWAG_CHECK(emitCallParameters(pp, moduleToGen, typeFuncBC, paramsRegisters, paramsTypes));
+        emitCallParameters(pp, typeFuncBC, paramsRegisters, paramsTypes, retCopy);
 
         // Jump to after closure call
         BackendX64Inst::emit_LongJumpOp(pp, BackendX64Inst::JUMP);
@@ -440,16 +443,14 @@ bool BackendX64::emitCallParameters(X64PerThread& pp, Module* moduleToGen, uint3
 
         paramsRegisters.erase(0);
         paramsTypes.erase(0);
-        SWAG_CHECK(emitCallParameters(pp, moduleToGen, typeFuncBC, paramsRegisters, paramsTypes));
+        emitCallParameters(pp, typeFuncBC, paramsRegisters, paramsTypes, retCopy);
 
         *seekPtrAfterClosure = (uint8_t) (pp.concat.totalCount() - seekJmpAfterClosure);
     }
     else
     {
-        SWAG_CHECK(emitCallParameters(pp, moduleToGen, typeFuncBC, paramsRegisters, paramsTypes));
+        emitCallParameters(pp, typeFuncBC, paramsRegisters, paramsTypes, retCopy);
     }
-
-    return true;
 }
 
 void BackendX64::emitByteCodeCall(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams)

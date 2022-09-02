@@ -2649,7 +2649,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             else
                 callName = callBc->getCallName();
 
-            emitCall(pp, moduleToGen, callName, ip, offsetRT, pushRAParams, true);
+            emitCall(pp, callName, ip, offsetRT, pushRAParams, true);
             pushRAParams.clear();
             pushRVParams.clear();
 
@@ -2667,7 +2667,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         {
             auto funcNode = (AstFuncDecl*) ip->a.pointer;
             funcNode->computeFullNameForeign(false);
-            emitCall(pp, moduleToGen, funcNode->fullnameForeign, ip, offsetRT, pushRAParams, false);
+            emitCall(pp, funcNode->fullnameForeign, ip, offsetRT, pushRAParams, false);
             pushRAParams.clear();
             pushRVParams.clear();
             break;
@@ -2689,7 +2689,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
             // Native lambda
             //////////////////
-            SWAG_CHECK(emitCallParameters(pp, moduleToGen, offsetRT, typeFuncBC, pushRAParams));
+            emitCallParameters(pp, offsetRT, typeFuncBC, pushRAParams);
             concat.addString3("\x41\xFF\xD2"); // call r10
             emitCallResult(pp, typeFuncBC, offsetRT);
 

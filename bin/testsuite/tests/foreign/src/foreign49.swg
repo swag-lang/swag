@@ -1,9 +1,9 @@
-public struct TT48
+public struct TT49
 {
     x, y: s32
 }
 
-public func foufou49(a: string, b: s32, x: cvarargs)->TT48
+public func foufou49(a: string, b: s32, x: cvarargs)->TT49
 {
     @assert(a == "string")
     @assert(b == 666)

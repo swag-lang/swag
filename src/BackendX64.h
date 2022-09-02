@@ -309,6 +309,12 @@ struct BackendX64 : public Backend
         memset(perThread, 0, sizeof(perThread));
     }
 
+    BackendX64()
+        : Backend{nullptr}
+    {
+        memset(perThread, 0, sizeof(perThread));
+    }
+
     bool                        createRuntime(const BuildParameters& buildParameters);
     JobResult                   prepareOutput(int stage, const BuildParameters& buildParameters, Job* ownerJob) override;
     bool                        generateOutput(const BuildParameters& backendParameters) override;
@@ -375,11 +381,11 @@ struct BackendX64 : public Backend
     void emitSymbolRelocation(X64PerThread& pp, const Utf8& name);
     void emitCall(X64PerThread& pp, const Utf8& name);
 
-    void emitGetParam(X64PerThread& pp, TypeInfoFuncAttr* typeFunc, int reg, int paramIdx, int sizeOf, int storeS4, int sizeStack, uint64_t toAdd = 0, int derefSize = 0);
-    void emitCallResult(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT);
-    bool emitCall(X64PerThread& pp, Module* moduleToGen, const Utf8& funcName, ByteCodeInstruction* ip, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams, bool localCall);
-    bool emitCallParameters(X64PerThread& pp, Module* moduleToGen, TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& paramsRegisters, VectorNative<TypeInfo*>& paramsTypes);
-    bool emitCallParameters(X64PerThread& pp, Module* moduleToGen, uint32_t offsetRT, TypeInfoFuncAttr* typeFuncBC, const VectorNative<uint32_t>& pushRAParams);
+    void        emitGetParam(X64PerThread& pp, TypeInfoFuncAttr* typeFunc, int reg, int paramIdx, int sizeOf, int storeS4, int sizeStack, uint64_t toAdd = 0, int derefSize = 0);
+    void        emitCallResult(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT);
+    void        emitCall(X64PerThread& pp, const Utf8& funcName, ByteCodeInstruction* ip, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams, bool localCall);
+    static void emitCallParameters(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& paramsRegisters, VectorNative<TypeInfo*>& paramsTypes, void* retCopy = nullptr);
+    static void emitCallParameters(X64PerThread& pp, uint32_t offsetRT, TypeInfoFuncAttr* typeFuncBC, const VectorNative<uint32_t>& pushRAParams, void* retCopy = nullptr);
 
     CoffFunction* registerFunction(X64PerThread& pp, AstNode* node, uint32_t symbolIndex);
     void          registerFunction(CoffFunction* fct, uint32_t startAddress, uint32_t endAddress, uint32_t sizeProlog, VectorNative<uint16_t>& unwind);
