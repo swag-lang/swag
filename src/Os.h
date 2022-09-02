@@ -1,10 +1,13 @@
 #pragma once
 #include "Log.h"
+#include "VectorNative.h"
 
 struct OutputFile;
 struct BuildParameters;
 struct Module;
 struct BackendTarget;
+struct TypeInfoFuncAttr;
+struct ByteCodeRunContext;
 
 namespace OS
 {
@@ -39,6 +42,8 @@ namespace OS
 
     uint64_t timerNow();
     double   timerToSeconds(uint64_t timer);
+
+    void ffi(ByteCodeRunContext* context, void* foreignPtr, TypeInfoFuncAttr* typeInfoFunc, const VectorNative<uint32_t>& pushRAParam, void* retCopyAddr);
 
     bool    atomicTestNull(void** ptr);
     void    atomicSetIfNotNull(void** ptr, void* what);
