@@ -966,7 +966,7 @@ namespace OS
         g_X64Gen.emit_Push(RDI);
         g_X64Gen.emit_Sub_Cst32_To_RSP(stackSize);
         g_X64Gen.emit_Load64_Immediate((uint64_t) context->sp, RDI, true);
-        g_X64Gen.emit_Call_Parameters(0, typeInfoFunc, pushRAParam, retCopyAddr);
+        g_X64Gen.emit_Call_Parameters(typeInfoFunc, pushRAParam, 0, retCopyAddr);
         g_X64Gen.emit_Load64_Immediate((uint64_t) foreignPtr, RAX, true);
         g_X64Gen.emit_Call_Indirect(RAX);
 

@@ -102,10 +102,10 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
         auto typeParam = ((TypeInfoParam*) typeInfoFunc->parameters[i])->typeInfo;
         typeParam      = TypeManager::concreteReferenceType(typeParam);
 
-        if (typeParam->isNative(NativeTypeKind::String) ||
+        if (typeParam->isSlice() ||
+            typeParam->isInterface() ||
             typeParam->isNative(NativeTypeKind::Any) ||
-            typeParam->kind == TypeInfoKind::Slice ||
-            typeParam->kind == TypeInfoKind::Interface)
+            typeParam->isNative(NativeTypeKind::String))
         {
             pushRAParam.push_front(cptParam++);
             pushRAParam.push_front(cptParam++);
@@ -118,12 +118,11 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, void* foreignPtr, TypeInf
 
     // Function return type
     void* retCopyAddr = nullptr;
-    auto  returnType  = TypeManager::concreteReferenceType(typeInfoFunc->returnType);
+    auto  returnType  = typeInfoFunc->concreteReturnType();
     if (returnType != g_TypeMgr->typeInfoVoid)
     {
-        // Special return
-        if (returnType->kind == TypeInfoKind::Slice ||
-            returnType->kind == TypeInfoKind::Interface ||
+        if (returnType->isSlice() ||
+            returnType->isInterface() ||
             returnType->isNative(NativeTypeKind::Any) ||
             returnType->isNative(NativeTypeKind::String))
         {

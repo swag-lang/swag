@@ -226,6 +226,8 @@ struct TypeInfo
     bool isConst()                          { return (flags & TYPEINFO_CONST); }
     bool isStrict()                         { return (flags & TYPEINFO_STRICT); }
     bool isGeneric()                        { return (flags & TYPEINFO_GENERIC); }
+    bool isSlice()                          { return kind == TypeInfoKind::Slice; }
+    bool isInterface()                      { return kind == TypeInfoKind::Interface; }
     // clang-format on
 
     virtual bool        isSame(TypeInfo* from, uint32_t isSameFlags);
@@ -358,12 +360,14 @@ struct TypeInfoFuncAttr : public TypeInfo
     {
     }
 
-    bool      isSame(TypeInfo* from, uint32_t isSameFlags) override;
     TypeInfo* clone() override;
     void      computeWhateverName(Utf8& resName, uint32_t nameType) override;
-    void      match(SymbolMatchContext& context);
+    bool      isSame(TypeInfo* from, uint32_t isSameFlags) override;
     bool      isSame(TypeInfoFuncAttr* from, uint32_t isSameFlags);
+    void      match(SymbolMatchContext& context);
     bool      returnByCopy();
+    bool      returnByValue();
+    TypeInfo* concreteReturnType();
     bool      isVariadic();
     bool      isCVariadic();
     uint32_t  registerIdxToParamIdx(int argIdx);

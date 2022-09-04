@@ -2690,7 +2690,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
             // Native lambda
             //////////////////
-            pp.emit_Call_Parameters(offsetRT, typeFuncBC, pushRAParams);
+            pp.emit_Call_Parameters(typeFuncBC, pushRAParams, offsetRT);
             pp.emit_Call_Indirect(R10);
             pp.emit_Call_Result(typeFuncBC, offsetRT);
 

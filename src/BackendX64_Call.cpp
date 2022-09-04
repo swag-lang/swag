@@ -111,7 +111,7 @@ void BackendX64::emitCall(X64Gen& pp, const Utf8& funcName, ByteCodeInstruction*
     TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
 
     // Push parameters
-    pp.emit_Call_Parameters(offsetRT, typeFuncBC, pushRAParams);
+    pp.emit_Call_Parameters(typeFuncBC, pushRAParams, offsetRT);
 
     auto& concat = pp.concat;
 

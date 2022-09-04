@@ -785,9 +785,10 @@ bool TypeInfoFuncAttr::returnByCopy()
 {
     if (!returnType || returnType == g_TypeMgr->typeInfoVoid)
         return false;
-    auto type = TypeManager::concreteReferenceType(returnType);
-    if (type->kind == TypeInfoKind::Slice ||
-        type->kind == TypeInfoKind::Interface ||
+
+    auto type = concreteReturnType();
+    if (type->isSlice() ||
+        type->isInterface() ||
         type->isNative(NativeTypeKind::Any) ||
         type->isNative(NativeTypeKind::String) ||
         type->flags & TYPEINFO_RETURN_BY_COPY)
@@ -796,6 +797,20 @@ bool TypeInfoFuncAttr::returnByCopy()
     }
 
     return false;
+}
+
+bool TypeInfoFuncAttr::returnByValue()
+{
+    if (!returnType || returnType == g_TypeMgr->typeInfoVoid)
+        return false;
+    return !returnByCopy();
+}
+
+TypeInfo* TypeInfoFuncAttr::concreteReturnType()
+{
+    if (!returnType)
+        return g_TypeMgr->typeInfoVoid;
+    return TypeManager::concreteReferenceType(returnType);
 }
 
 // argIdx is the argument index of a function, starting after the return arguments

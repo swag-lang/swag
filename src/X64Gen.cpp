@@ -1986,7 +1986,7 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<uin
     }
 }
 
-void X64Gen::emit_Call_Parameters(uint32_t offsetRT, TypeInfoFuncAttr* typeFuncBC, const VectorNative<uint32_t>& pushRAParams, void* retCopy)
+void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT, void* retCopy)
 {
     int numCallParams = (int) typeFuncBC->parameters.size();
 
@@ -2114,31 +2114,18 @@ void X64Gen::emit_Call_Parameters(uint32_t offsetRT, TypeInfoFuncAttr* typeFuncB
     }
 }
 
-void X64Gen::emit_Call_Result(TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT)
+void X64Gen::emit_Call_Result(TypeInfoFuncAttr* typeFunc, uint32_t offsetRT)
 {
-    const auto& cc = g_CallConv[typeFuncBC->callConv];
+    if (!typeFunc->returnByValue())
+        return;
 
-    // Store result to rt0
-    auto returnType = TypeManager::concreteReferenceType(typeFuncBC->returnType);
-    if (returnType != g_TypeMgr->typeInfoVoid)
-    {
-        if ((returnType->kind == TypeInfoKind::Slice) ||
-            (returnType->kind == TypeInfoKind::Interface) ||
-            (returnType->isNative(NativeTypeKind::Any)) ||
-            (returnType->isNative(NativeTypeKind::String)) ||
-            (returnType->flags & TYPEINFO_RETURN_BY_COPY))
-        {
-            // Return by parameter
-        }
-        else if (cc.useReturnByRegisterFloat && returnType->isNativeFloat())
-        {
-            emit_StoreF64_Indirect(offsetRT, cc.returnByRegisterFloat, RDI);
-        }
-        else
-        {
-            emit_Store64_Indirect(offsetRT, cc.returnByRegisterInteger, RDI);
-        }
-    }
+    const auto& cc         = g_CallConv[typeFunc->callConv];
+    auto        returnType = TypeManager::concreteReferenceType(typeFunc->returnType);
+
+    if (cc.useReturnByRegisterFloat && returnType->isNativeFloat())
+        emit_StoreF64_Indirect(offsetRT, cc.returnByRegisterFloat, RDI);
+    else
+        emit_Store64_Indirect(offsetRT, cc.returnByRegisterInteger, RDI);
 }
 
 void X64Gen::emit_Call_Indirect(uint8_t reg)

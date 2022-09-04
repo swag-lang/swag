@@ -482,8 +482,8 @@ struct X64Gen
     void    emit_Jump(JumpType jumpType, int32_t instructionCount, int32_t jumpOffset);
     void    emit_CopyX(uint32_t count, uint32_t offset, uint8_t regDst, uint8_t regSrc);
     void    emit_ClearX(uint32_t count, uint32_t offset, uint8_t reg);
-    void    emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& paramsRegisters, VectorNative<TypeInfo*>& paramsTypes, void* retCopy = nullptr);
-    void    emit_Call_Parameters(uint32_t offsetRT, TypeInfoFuncAttr* typeFuncBC, const VectorNative<uint32_t>& pushRAParams, void* retCopy = nullptr);
-    void    emit_Call_Result(TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT);
+    void    emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, VectorNative<uint32_t>& paramsRegisters, VectorNative<TypeInfo*>& paramsTypes, void* retCopy = nullptr);
+    void    emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT, void* retCopy = nullptr);
+    void    emit_Call_Result(TypeInfoFuncAttr* typeFunc, uint32_t offsetRT);
     void    emit_Call_Indirect(uint8_t reg);
 };
