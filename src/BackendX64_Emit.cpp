@@ -347,12 +347,6 @@ void BackendX64::emitSymbolRelocation(X64Gen& pp, const Utf8& name)
     }
 }
 
-void BackendX64::emitCall(X64Gen& pp, const Utf8& name)
-{
-    pp.concat.addU8(0xE8); // call
-    emitSymbolRelocation(pp, name);
-}
-
 void BackendX64::emitBinOpFloat32(X64Gen& pp, ByteCodeInstruction* ip, X64Op op)
 {
     if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B))

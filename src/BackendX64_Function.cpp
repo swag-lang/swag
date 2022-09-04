@@ -2615,7 +2615,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             else
                 callName = callBc->getCallName();
 
-            emitCall(pp, callName, ip, offsetRT, pushRAParams, true);
+            emitCall(pp, (TypeInfoFuncAttr*) ip->b.pointer, callName, pushRAParams, offsetRT, true);
             pushRAParams.clear();
             pushRVParams.clear();
 
@@ -2633,7 +2633,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         {
             auto funcNode = (AstFuncDecl*) ip->a.pointer;
             funcNode->computeFullNameForeign(false);
-            emitCall(pp, funcNode->fullnameForeign, ip, offsetRT, pushRAParams, false);
+            emitCall(pp, (TypeInfoFuncAttr*)ip->b.pointer, funcNode->fullnameForeign, pushRAParams, offsetRT, false);
             pushRAParams.clear();
             pushRVParams.clear();
             break;

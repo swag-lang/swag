@@ -109,12 +109,10 @@ void BackendX64::emitGetParam(X64Gen& pp, TypeInfoFuncAttr* typeFunc, int reg, i
     pp.emit_Store64_Indirect(regOffset(reg), RAX, RDI);
 }
 
-void BackendX64::emitCall(X64Gen& pp, const Utf8& funcName, ByteCodeInstruction* ip, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams, bool localCall)
+void BackendX64::emitCall(X64Gen& pp, TypeInfoFuncAttr* typeFunc, const Utf8& funcName, VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT, bool localCall)
 {
-    TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
-
     // Push parameters
-    pp.emit_Call_Parameters(typeFuncBC, pushRAParams, offsetRT);
+    pp.emit_Call_Parameters(typeFunc, pushRAParams, offsetRT);
 
     auto& concat = pp.concat;
 
@@ -140,7 +138,13 @@ void BackendX64::emitCall(X64Gen& pp, const Utf8& funcName, ByteCodeInstruction*
     }
 
     // Store result
-    pp.emit_Call_Result(typeFuncBC, offsetRT);
+    pp.emit_Call_Result(typeFunc, offsetRT);
+}
+
+void BackendX64::emitCall(X64Gen& pp, const Utf8& funcName)
+{
+    pp.concat.addU8(0xE8); // call
+    emitSymbolRelocation(pp, funcName);
 }
 
 void BackendX64::emitByteCodeCall(X64Gen& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams)
