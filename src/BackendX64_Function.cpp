@@ -2614,7 +2614,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Load64_Immediate(SWAG_LAMBDA_BC_MARKER, RCX);
             pp.emit_Op64(RAX, RCX, X64Op::AND);
             pp.emit_Test64(RCX, RCX);
-            concat.addString2("\x0f\x84"); // jz ???????? => jump to after bytecode lambda
+            pp.emit_LongJumpOp(JZ);
             concat.addU32(0);
             auto jumpBCToAfterAddr   = (uint32_t*) concat.getSeekPtr() - 1;
             auto jumpBCToAfterOffset = concat.totalCount();
@@ -2625,7 +2625,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Copy64(RAX, RCX);
             pp.emit_Symbol_RelocationAddr(RAX, pp.symPI_makeCallback, 0);
             pp.emit_Load64_Indirect(0, RAX, RAX);
-            concat.addString2("\xff\xd0"); // call rax
+            pp.emit_Call_Indirect(RAX);
 
             // End
             //////////////////
@@ -2683,7 +2683,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), R10, RDI);
             concat.addString4("\x49\x0F\xBA\xE2"); // bt r10, ??
             concat.addU8(SWAG_LAMBDA_BC_MARKER_BIT);
-            concat.addString2("\x0f\x82"); // jb ???????? => jump to bytecode lambda
+            pp.emit_LongJumpOp(JB);
             concat.addU32(0);
             auto jumpToBCAddr   = (uint32_t*) concat.getSeekPtr() - 1;
             auto jumpToBCOffset = concat.totalCount();
@@ -2694,7 +2694,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Call_Indirect(R10);
             pp.emit_Call_Result(typeFuncBC, offsetRT);
 
-            concat.addString1("\xe9"); // jmp ???????? => jump after bytecode lambda
+            pp.emit_LongJumpOp(JUMP);
             concat.addU32(0);
             auto jumpBCToAfterAddr   = (uint32_t*) concat.getSeekPtr() - 1;
             auto jumpBCToAfterOffset = concat.totalCount();
