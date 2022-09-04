@@ -1,7 +1,3 @@
-#define MK_ALIGN16(__s) \
-    if (__s % 16)       \
-        __s += 16 - (__s % 16);
-
 #define MK_BINOP8_CAB(__opInd, __op)                                \
     if (!(ip->flags & (BCI_IMM_A | BCI_IMM_B)))                     \
     {                                                               \

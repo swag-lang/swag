@@ -1440,7 +1440,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             auto     offsetTableConstant = moduleToGen->constantSegment.reserve(((uint32_t) ip->c.u64) * sizeof(uint32_t), &addrConstant);
 
             pp.emit_Symbol_RelocationAddr(RAX, pp.symCSIndex, offsetTableConstant); // rax = jump table
-            concat.addString4("\x48\x63\x04\x88");                                      // movsx rax, dword ptr [rax + rcx*4]
+            concat.addString4("\x48\x63\x04\x88");                                  // movsx rax, dword ptr [rax + rcx*4]
 
             // + 5 for the two following instructions
             // + 7 for this instruction
@@ -2690,9 +2690,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
             // Native lambda
             //////////////////
-            pp.emit_CallParameters(offsetRT, typeFuncBC, pushRAParams);
-            concat.addString3("\x41\xFF\xD2"); // call r10
-            pp.emit_CallResult(typeFuncBC, offsetRT);
+            pp.emit_Call_Parameters(offsetRT, typeFuncBC, pushRAParams);
+            pp.emit_Call_Indirect(R10);
+            pp.emit_Call_Result(typeFuncBC, offsetRT);
 
             concat.addString1("\xe9"); // jmp ???????? => jump after bytecode lambda
             concat.addU32(0);
@@ -2707,7 +2707,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             emitByteCodeCallParameters(pp, typeFuncBC, offsetRT, pushRAParams);
             pp.emit_Symbol_RelocationAddr(RAX, pp.symPI_byteCodeRun, 0);
             pp.emit_Load64_Indirect(0, RAX, RAX);
-            concat.addString2("\xff\xd0"); // call rax
+            pp.emit_Call_Indirect(RAX);
 
             // End
             //////////////////

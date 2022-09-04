@@ -961,25 +961,21 @@ namespace OS
         }
 
         uint32_t stackSize = (uint32_t) max(cc.byRegisterCount, pushRAParam.size()) * sizeof(void*);
-        if (typeInfoFunc->returnByCopy())
-            stackSize += sizeof(void*);
-
-        // Need to align stack on 16 !
-        stackSize &= 0xFFFFFFFFFFFFFFF0;
-        stackSize += 16;
+        stackSize += sizeof(void*);
+        MK_ALIGN16(stackSize);
 
         auto startOffset = g_X64Gen.concat.currentSP - g_X64Gen.concat.firstBucket->datas;
         g_X64Gen.emit_Push(RDI);
         g_X64Gen.emit_Sub_Cst32_To_RSP(stackSize);
         g_X64Gen.emit_Load64_Immediate((uint64_t) context->sp, RDI, true);
-        g_X64Gen.emit_CallParameters(0, typeInfoFunc, pushRAParam, retCopyAddr);
+        g_X64Gen.emit_Call_Parameters(0, typeInfoFunc, pushRAParam, retCopyAddr);
         g_X64Gen.emit_Load64_Immediate((uint64_t) foreignPtr, RAX, true);
-        g_X64Gen.concat.addString2("\xff\xd0"); // call rax
+        g_X64Gen.emit_Call_Indirect(RAX);
 
         if (returnType != g_TypeMgr->typeInfoVoid && !retCopyAddr)
         {
             g_X64Gen.emit_Load64_Immediate((uint64_t) context->registersRR, RDI, true);
-            g_X64Gen.emit_CallResult(typeInfoFunc, 0);
+            g_X64Gen.emit_Call_Result(typeInfoFunc, 0);
         }
 
         g_X64Gen.emit_Add_Cst32_To_RSP(stackSize);

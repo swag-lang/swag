@@ -1828,7 +1828,7 @@ void X64Gen::emit_ClearX(uint32_t count, uint32_t offset, uint8_t reg)
     }
 }
 
-void X64Gen::emit_CallParameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& paramsRegisters, VectorNative<TypeInfo*>& paramsTypes, void* retCopy)
+void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& paramsRegisters, VectorNative<TypeInfo*>& paramsTypes, void* retCopy)
 {
     const auto& cc           = g_CallConv[typeFuncBC->callConv];
     auto        returnType   = TypeManager::concreteReferenceType(typeFuncBC->returnType);
@@ -1986,7 +1986,7 @@ void X64Gen::emit_CallParameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<uint
     }
 }
 
-void X64Gen::emit_CallParameters(uint32_t offsetRT, TypeInfoFuncAttr* typeFuncBC, const VectorNative<uint32_t>& pushRAParams, void* retCopy)
+void X64Gen::emit_Call_Parameters(uint32_t offsetRT, TypeInfoFuncAttr* typeFuncBC, const VectorNative<uint32_t>& pushRAParams, void* retCopy)
 {
     int numCallParams = (int) typeFuncBC->parameters.size();
 
@@ -2091,7 +2091,7 @@ void X64Gen::emit_CallParameters(uint32_t offsetRT, TypeInfoFuncAttr* typeFuncBC
         auto seekPtrClosure = concat.getSeekPtr() - 4;
         auto seekJmpClosure = concat.totalCount();
 
-        emit_CallParameters(typeFuncBC, paramsRegisters, paramsTypes, retCopy);
+        emit_Call_Parameters(typeFuncBC, paramsRegisters, paramsTypes, retCopy);
 
         // Jump to after closure call
         emit_LongJumpOp(JUMP);
@@ -2104,17 +2104,17 @@ void X64Gen::emit_CallParameters(uint32_t offsetRT, TypeInfoFuncAttr* typeFuncBC
 
         paramsRegisters.erase(0);
         paramsTypes.erase(0);
-        emit_CallParameters(typeFuncBC, paramsRegisters, paramsTypes, retCopy);
+        emit_Call_Parameters(typeFuncBC, paramsRegisters, paramsTypes, retCopy);
 
         *seekPtrAfterClosure = (uint8_t) (concat.totalCount() - seekJmpAfterClosure);
     }
     else
     {
-        emit_CallParameters(typeFuncBC, paramsRegisters, paramsTypes, retCopy);
+        emit_Call_Parameters(typeFuncBC, paramsRegisters, paramsTypes, retCopy);
     }
 }
 
-void X64Gen::emit_CallResult(TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT)
+void X64Gen::emit_Call_Result(TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT)
 {
     const auto& cc = g_CallConv[typeFuncBC->callConv];
 
@@ -2139,4 +2139,13 @@ void X64Gen::emit_CallResult(TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT)
             emit_Store64_Indirect(offsetRT, cc.returnByRegisterInteger, RDI);
         }
     }
+}
+
+void X64Gen::emit_Call_Indirect(uint8_t reg)
+{
+    SWAG_ASSERT(reg == RAX || reg == RCX || reg == R10);
+    if (reg == R10)
+        concat.addU8(0x41);
+    concat.addU8(0xFF);
+    concat.addU8(0xD0 | (reg & 0b111));
 }
