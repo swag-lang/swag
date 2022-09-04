@@ -4,23 +4,26 @@
 #include "TypeManager.h"
 #include "ByteCode.h"
 
-void BackendX64::emitGetParam(X64Gen& pp, TypeInfoFuncAttr* typeFunc, int reg, int paramIdx, int sizeOf, int storeS4, int sizeStack, uint64_t toAdd, int deRefSize)
+uint32_t BackendX64::getParamStackOffset(TypeInfoFuncAttr* typeFunc, int paramIdx, int offsetS4, int sizeStack)
 {
     const auto& cc = g_CallConv[typeFunc->callConv];
 
-    int stackOffset = 0;
-
-    // If this was a register, then get the value from storeS4 (where input registers have been saveed)
+    // If this was passed as a register, then get the value from storeS4 (where input registers have been saveed)
     // instead of value from the stack
-    if (paramIdx < 4)
-        stackOffset = storeS4 + regOffset(paramIdx);
+    if (paramIdx < (int) cc.byRegisterCount)
+        return offsetS4 + regOffset(paramIdx);
 
     // Value from the caller stack
     // We need to add 8 because the call has pushed one register on the stack
     // We need to add 8 again, because of the first 'push edi' at the start of the function
     // Se we add 16 in total to get the offset of the parameter in the stack
-    else
-        stackOffset = 16 + sizeStack + regOffset(paramIdx);
+    return 16 + sizeStack + regOffset(paramIdx);
+}
+
+void BackendX64::emitGetParam(X64Gen& pp, TypeInfoFuncAttr* typeFunc, int reg, int paramIdx, int sizeOf, int storeS4, int sizeStack, uint64_t toAdd, int deRefSize)
+{
+    const auto& cc          = g_CallConv[typeFunc->callConv];
+    int         stackOffset = getParamStackOffset(typeFunc, paramIdx, storeS4, sizeStack);
 
     switch (sizeOf)
     {

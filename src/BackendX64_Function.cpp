@@ -2381,26 +2381,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::CopyRCtoRR2:
         {
-            int      stackOffset = 0;
-            uint32_t paramIdx    = typeFunc->numParamsRegisters();
-
-            // If this was passed as a register, then get the value from storeS4 (where input registers have been saveed)
-            // instead of value from the stack
-            if (paramIdx < cc.byRegisterCount)
-                stackOffset = offsetS4 + regOffset(paramIdx);
-
-            // Value from the caller stack
-            // We need to add 8 because the call has pushed one register on the stack
-            // We need to add 8 again, because of the first 'push edi' at the start of the function
-            // Se we add 16 in total to get the offset of the parameter in the stack
-            else
-                stackOffset = 16 + sizeStack + regOffset(paramIdx);
-
+            int stackOffset = getParamStackOffset(typeFunc, typeFunc->numParamsRegisters(), offsetS4, sizeStack);
             pp.emit_Load64_Indirect(stackOffset, RAX, RDI);
-
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
             pp.emit_Store64_Indirect(0, RCX, RAX);
-
             pp.emit_Load64_Indirect(stackOffset, RAX, RDI);
             pp.emit_Load64_Indirect(regOffset(ip->b.u32), RCX, RDI);
             pp.emit_Store64_Indirect(8, RCX, RAX);
@@ -2414,21 +2398,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::CopyRRtoRC:
         {
-            int      stackOffset = 0;
-            uint32_t paramIdx    = typeFunc->numParamsRegisters();
-
-            // If this was passed as a register, then get the value from storeS4 (where input registers have been saveed)
-            // instead of value from the stack
-            if (paramIdx < cc.byRegisterCount)
-                stackOffset = offsetS4 + regOffset(paramIdx);
-
-            // Value from the caller stack
-            // We need to add 8 because the call has pushed one register on the stack
-            // We need to add 8 again, because of the first 'push edi' at the start of the function
-            // Se we add 16 in total to get the offset of the parameter in the stack
-            else
-                stackOffset = 16 + sizeStack + regOffset(paramIdx);
-
+            int stackOffset = getParamStackOffset(typeFunc, typeFunc->numParamsRegisters(), offsetS4, sizeStack);
             pp.emit_Load64_Indirect(stackOffset, RAX, RDI);
             if (ip->b.u64)
             {
