@@ -1062,11 +1062,6 @@ void X64Gen::emit_Add32_RSP(uint32_t value)
 
 /////////////////////////////////////////////////////////////////////
 
-void X64Gen::emit_SignedExtend_AL_To_AX()
-{
-    concat.addString2("\x66\x98"); // cbw
-}
-
 void X64Gen::emit_SignedExtend_8_To_32(uint8_t reg)
 {
     switch (reg)

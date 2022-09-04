@@ -441,7 +441,6 @@ struct X64Gen
     void emit_SetNA();
     void emit_SetNE();
     void emit_SignedExtend_8_To_32(uint8_t reg);
-    void emit_SignedExtend_AL_To_AX();
     void emit_Store16_Immediate(uint32_t offset, uint16_t val, uint8_t reg);
     void emit_Store16_Indirect(uint32_t stackOffset, uint8_t reg, uint8_t memReg);
     void emit_Store32_Immediate(uint32_t offset, uint32_t val, uint8_t reg);
