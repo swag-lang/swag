@@ -10,7 +10,7 @@
 
 namespace OS
 {
-    static thread_local X64PerThread g_PP;
+    static thread_local X64Gen g_PP;
     static BackendTarget             nativeTarget;
     static HANDLE                    consoleHandle     = NULL;
     static WORD                      defaultAttributes = 0;

@@ -310,7 +310,7 @@ JobResult BackendX64::prepareOutput(int stage, const BuildParameters& buildParam
     int ct              = buildParameters.compileType;
     int precompileIndex = buildParameters.precompileIndex;
     if (!perThread[ct][precompileIndex])
-        perThread[ct][precompileIndex] = new X64PerThread;
+        perThread[ct][precompileIndex] = new X64Gen;
 
     auto& pp     = *perThread[ct][precompileIndex];
     auto& concat = pp.concat;
@@ -492,7 +492,7 @@ JobResult BackendX64::prepareOutput(int stage, const BuildParameters& buildParam
     return JobResult::ReleaseJob;
 }
 
-CoffFunction* BackendX64::registerFunction(X64PerThread& pp, AstNode* node, uint32_t symbolIndex)
+CoffFunction* BackendX64::registerFunction(X64Gen& pp, AstNode* node, uint32_t symbolIndex)
 {
     CoffFunction cf;
     cf.node        = node;
@@ -509,7 +509,7 @@ void BackendX64::registerFunction(CoffFunction* fct, uint32_t startAddress, uint
     fct->unwind       = move(unwind);
 }
 
-CoffSymbol* BackendX64::getSymbol(X64PerThread& pp, const Utf8& name)
+CoffSymbol* BackendX64::getSymbol(X64Gen& pp, const Utf8& name)
 {
     auto it = pp.mapSymbols.find(name);
     if (it != pp.mapSymbols.end())
@@ -517,7 +517,7 @@ CoffSymbol* BackendX64::getSymbol(X64PerThread& pp, const Utf8& name)
     return nullptr;
 }
 
-CoffSymbol* BackendX64::getOrAddSymbol(X64PerThread& pp, const Utf8& name, CoffSymbolKind kind, uint32_t value, uint16_t sectionIdx)
+CoffSymbol* BackendX64::getOrAddSymbol(X64Gen& pp, const Utf8& name, CoffSymbolKind kind, uint32_t value, uint16_t sectionIdx)
 {
     auto it = getSymbol(pp, name);
     if (it)
@@ -548,7 +548,7 @@ CoffSymbol* BackendX64::getOrAddSymbol(X64PerThread& pp, const Utf8& name, CoffS
     return &pp.allSymbols.back();
 }
 
-void BackendX64::emitGlobalString(X64PerThread& pp, int precompileIndex, const Utf8& str, uint8_t reg)
+void BackendX64::emitGlobalString(X64Gen& pp, int precompileIndex, const Utf8& str, uint8_t reg)
 {
     BackendX64Inst::emit_Load64_Immediate(pp, 0, reg, true);
 
@@ -789,7 +789,7 @@ bool BackendX64::emitRelocationTable(Concat& concat, CoffRelocationTable& coffta
     return true;
 }
 
-void BackendX64::emitSymbolRelocation(X64PerThread& pp, const Utf8& name)
+void BackendX64::emitSymbolRelocation(X64Gen& pp, const Utf8& name)
 {
     auto& concat  = pp.concat;
     auto  callSym = getOrAddSymbol(pp, name, CoffSymbolKind::Extern);
@@ -808,7 +808,7 @@ void BackendX64::emitSymbolRelocation(X64PerThread& pp, const Utf8& name)
     }
 }
 
-void BackendX64::emitCall(X64PerThread& pp, const Utf8& name)
+void BackendX64::emitCall(X64Gen& pp, const Utf8& name)
 {
     auto& concat = pp.concat;
     concat.addU8(0xE8); // call

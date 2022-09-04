@@ -73,8 +73,6 @@ TODO
 -------------------------------------
 rationnaliser callconv, tout passer par des appels normaux non hardcodés, dans l'optique de pouvoir changer de callconv par fonction
 -------------------------------------
-se débarasser de ffi pour tout faire à la main
--------------------------------------
 erreur si opDrop est privé et la struct publique (on doit exporter)
 -------------------------------------
 on doit exporter les implementation d'interface pour un truc public ?

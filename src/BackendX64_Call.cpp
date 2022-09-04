@@ -4,7 +4,7 @@
 #include "BackendX64_Macros.h"
 #include "TypeManager.h"
 
-void BackendX64::emitGetParam(X64PerThread& pp, TypeInfoFuncAttr* typeFunc, int reg, int paramIdx, int sizeOf, int storeS4, int sizeStack, uint64_t toAdd, int deRefSize)
+void BackendX64::emitGetParam(X64Gen& pp, TypeInfoFuncAttr* typeFunc, int reg, int paramIdx, int sizeOf, int storeS4, int sizeStack, uint64_t toAdd, int deRefSize)
 {
     const auto& cc = g_CallConv[typeFunc->callConv];
 
@@ -106,7 +106,7 @@ void BackendX64::emitGetParam(X64PerThread& pp, TypeInfoFuncAttr* typeFunc, int 
     BackendX64Inst::emit_Store64_Indirect(pp, regOffset(reg), RAX, RDI);
 }
 
-void BackendX64::emitCall(X64PerThread& pp, const Utf8& funcName, ByteCodeInstruction* ip, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams, bool localCall)
+void BackendX64::emitCall(X64Gen& pp, const Utf8& funcName, ByteCodeInstruction* ip, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams, bool localCall)
 {
     TypeInfoFuncAttr* typeFuncBC = (TypeInfoFuncAttr*) ip->b.pointer;
 
@@ -140,7 +140,7 @@ void BackendX64::emitCall(X64PerThread& pp, const Utf8& funcName, ByteCodeInstru
     emitCallResult(pp, typeFuncBC, offsetRT);
 }
 
-void BackendX64::emitCallResult(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT)
+void BackendX64::emitCallResult(X64Gen& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT)
 {
     const auto& cc = g_CallConv[typeFuncBC->callConv];
 
@@ -167,7 +167,7 @@ void BackendX64::emitCallResult(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, 
     }
 }
 
-void BackendX64::emitCallParameters(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& paramsRegisters, VectorNative<TypeInfo*>& paramsTypes, void* retCopy)
+void BackendX64::emitCallParameters(X64Gen& pp, TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& paramsRegisters, VectorNative<TypeInfo*>& paramsTypes, void* retCopy)
 {
     const auto& cc           = g_CallConv[typeFuncBC->callConv];
     auto        returnType   = TypeManager::concreteReferenceType(typeFuncBC->returnType);
@@ -325,7 +325,7 @@ void BackendX64::emitCallParameters(X64PerThread& pp, TypeInfoFuncAttr* typeFunc
     }
 }
 
-void BackendX64::emitCallParameters(X64PerThread& pp, uint32_t offsetRT, TypeInfoFuncAttr* typeFuncBC, const VectorNative<uint32_t>& pushRAParams, void* retCopy)
+void BackendX64::emitCallParameters(X64Gen& pp, uint32_t offsetRT, TypeInfoFuncAttr* typeFuncBC, const VectorNative<uint32_t>& pushRAParams, void* retCopy)
 {
     int numCallParams = (int) typeFuncBC->parameters.size();
 
@@ -453,7 +453,7 @@ void BackendX64::emitCallParameters(X64PerThread& pp, uint32_t offsetRT, TypeInf
     }
 }
 
-void BackendX64::emitByteCodeCall(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams)
+void BackendX64::emitByteCodeCall(X64Gen& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams)
 {
     int idxReg = 0;
     for (int idxParam = typeFuncBC->numReturnRegisters() - 1; idxParam >= 0; idxParam--, idxReg++)
@@ -488,7 +488,7 @@ void BackendX64::emitByteCodeCall(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC
     }
 }
 
-void BackendX64::emitByteCodeCallParameters(X64PerThread& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams)
+void BackendX64::emitByteCodeCallParameters(X64Gen& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams)
 {
     // If the closure is assigned to a lambda, then we must not use the first parameter (the first
     // parameter is the capture context, which does not exist in a normal function)

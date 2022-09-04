@@ -264,6 +264,7 @@
     <ClInclude Include="..\src\Mutex.h" />
     <ClInclude Include="..\src\Array.h" />
     <ClInclude Include="..\src\SaveGenJob.h" />
+    <ClInclude Include="..\src\X64Gen.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="../src/Allocator.cpp" />

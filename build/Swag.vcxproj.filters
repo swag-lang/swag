@@ -797,6 +797,9 @@
     <ClInclude Include="..\src\CallConv.h">
       <Filter>Backend</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\X64Gen.h">
+      <Filter>Backend\X64</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Main">

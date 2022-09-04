@@ -3511,7 +3511,7 @@ BackendFunctionBodyJobBase* BackendX64::newFunctionJob()
     return g_Allocator.alloc<BackendX64FunctionBodyJob>();
 }
 
-uint32_t BackendX64::getOrCreateLabel(X64PerThread& pp, uint32_t ip)
+uint32_t BackendX64::getOrCreateLabel(X64Gen& pp, uint32_t ip)
 {
     auto it = pp.labels.find(ip);
     if (it == pp.labels.end())
@@ -3566,7 +3566,7 @@ void BackendX64::computeUnwindStack(uint32_t sizeStack, uint32_t offsetSubRSP, V
     }
 }
 
-void BackendX64::emitShiftArithmetic(X64PerThread& pp, Concat& concat, ByteCodeInstruction* ip, uint8_t numBits)
+void BackendX64::emitShiftArithmetic(X64Gen& pp, Concat& concat, ByteCodeInstruction* ip, uint8_t numBits)
 {
     if (ip->flags & BCI_IMM_B && ip->b.u32 >= numBits && !(ip->flags & BCI_SHIFT_SMALL))
     {
@@ -3637,7 +3637,7 @@ void BackendX64::emitShiftArithmetic(X64PerThread& pp, Concat& concat, ByteCodeI
     BackendX64Inst::emit_StoreN_Indirect(pp, regOffset(ip->c.u32), RAX, RDI, numBits);
 }
 
-void BackendX64::emitShiftLogical(X64PerThread& pp, Concat& concat, ByteCodeInstruction* ip, uint8_t numBits, uint8_t op)
+void BackendX64::emitShiftLogical(X64Gen& pp, Concat& concat, ByteCodeInstruction* ip, uint8_t numBits, uint8_t op)
 {
     if (ip->flags & BCI_IMM_B && ip->b.u32 >= numBits && !(ip->flags & BCI_SHIFT_SMALL))
         BackendX64Inst::emit_ClearN(pp, RAX, numBits);
@@ -3693,7 +3693,7 @@ void BackendX64::emitShiftLogical(X64PerThread& pp, Concat& concat, ByteCodeInst
     BackendX64Inst::emit_StoreN_Indirect(pp, regOffset(ip->c.u32), RAX, RDI, numBits);
 }
 
-void BackendX64::emitShiftEqArithmetic(X64PerThread& pp, Concat& concat, ByteCodeInstruction* ip, uint8_t numBits)
+void BackendX64::emitShiftEqArithmetic(X64Gen& pp, Concat& concat, ByteCodeInstruction* ip, uint8_t numBits)
 {
     BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
     if (ip->flags & BCI_IMM_B)
@@ -3757,7 +3757,7 @@ void BackendX64::emitShiftEqArithmetic(X64PerThread& pp, Concat& concat, ByteCod
     }
 }
 
-void BackendX64::emitShiftEqLogical(X64PerThread& pp, Concat& concat, ByteCodeInstruction* ip, uint8_t numBits, uint8_t op)
+void BackendX64::emitShiftEqLogical(X64Gen& pp, Concat& concat, ByteCodeInstruction* ip, uint8_t numBits, uint8_t op)
 {
     BackendX64Inst::emit_Load64_Indirect(pp, regOffset(ip->a.u32), RAX, RDI);
     if (ip->flags & BCI_IMM_B && ip->b.u32 >= numBits && !(ip->flags & BCI_SHIFT_SMALL))
