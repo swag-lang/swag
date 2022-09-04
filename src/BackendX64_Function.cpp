@@ -1310,19 +1310,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::IntrinsicStringCmp:
-            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
-            pp.emit_Load64_Indirect(regOffset(ip->b.u32), RDX, RDI);
-            pp.emit_Load64_Indirect(regOffset(ip->c.u32), R8, RDI);
-            pp.emit_Load64_Indirect(regOffset(ip->d.u32), R9, RDI);
-            emitCall(pp, g_LangSpec->name_atstrcmp);
-            pp.emit_Store64_Indirect(regOffset(ip->d.u32), RAX, RDI);
+            emitInternalCall(pp, moduleToGen, g_LangSpec->name_atstrcmp, {ip->a.u32, ip->b.u32, ip->c.u32, ip->d.u32}, regOffset(ip->d.u32));
             break;
         case ByteCodeOp::IntrinsicTypeCmp:
-            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
-            pp.emit_Load64_Indirect(regOffset(ip->b.u32), RDX, RDI);
-            pp.emit_Load64_Indirect(regOffset(ip->c.u32), R8, RDI);
-            emitCall(pp, g_LangSpec->name_attypecmp);
-            pp.emit_Store64_Indirect(regOffset(ip->d.u32), RAX, RDI);
+            emitInternalCall(pp, moduleToGen, g_LangSpec->name_attypecmp, {ip->a.u32, ip->b.u32, ip->c.u32}, regOffset(ip->d.u32));
             break;
 
         case ByteCodeOp::TestNotZero8:
@@ -2233,8 +2224,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             emitCall(pp, g_LangSpec->name__initStackTrace);
             break;
         case ByteCodeOp::InternalStackTrace:
-            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
-            emitCall(pp, g_LangSpec->name__stackTrace);
+            emitInternalCall(pp, moduleToGen, g_LangSpec->name__stackTrace, {ip->a.u32});
             break;
         case ByteCodeOp::InternalPanic:
             emitInternalPanic(pp, ip->node, (const char*) ip->d.pointer);
@@ -2305,9 +2295,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::IntrinsicArguments:
-            pp.emit_LoadAddress_Indirect(regOffset(ip->a.u32), RCX, RDI);
             SWAG_ASSERT(ip->b.u32 == ip->a.u32 + 1);
-            emitCall(pp, g_LangSpec->name_atargs);
+            emitInternalCall(pp, moduleToGen, g_LangSpec->name_atargs, {}, regOffset(ip->a.u32));
             break;
         case ByteCodeOp::IntrinsicModules:
             if (moduleToGen->modulesSliceOffset == UINT32_MAX)
@@ -2337,22 +2326,13 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Store32_Immediate(0, 0, RAX);
             break;
         case ByteCodeOp::IntrinsicErrorMsg:
-            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
-            pp.emit_Load64_Indirect(regOffset(ip->b.u32), RDX, RDI);
-            pp.emit_Load64_Indirect(regOffset(ip->c.u32), R8, RDI);
-            emitCall(pp, g_LangSpec->name_aterrormsg);
+            emitInternalCall(pp, moduleToGen, g_LangSpec->name_aterrormsg, {ip->a.u32, ip->b.u32, ip->c.u32});
             break;
         case ByteCodeOp::IntrinsicPanic:
-            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
-            pp.emit_Load64_Indirect(regOffset(ip->b.u32), RDX, RDI);
-            pp.emit_Load64_Indirect(regOffset(ip->c.u32), R8, RDI);
-            emitCall(pp, g_LangSpec->name_atpanic);
+            emitInternalCall(pp, moduleToGen, g_LangSpec->name_atpanic, {ip->a.u32, ip->b.u32, ip->c.u32});
             break;
         case ByteCodeOp::IntrinsicItfTableOf:
-            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
-            pp.emit_Load64_Indirect(regOffset(ip->b.u32), RDX, RDI);
-            emitCall(pp, g_LangSpec->name_atitftableof);
-            pp.emit_Store64_Indirect(regOffset(ip->c.u32), RAX, RDI);
+            emitInternalCall(pp, moduleToGen, g_LangSpec->name_atitftableof, {ip->a.u32, ip->b.u32}, regOffset(ip->c.u32));
             break;
 
         case ByteCodeOp::CopyRCtoRR:
