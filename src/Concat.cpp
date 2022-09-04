@@ -18,7 +18,7 @@ void Concat::init(int size)
 
     bucketSize            = size;
     firstBucket           = g_Allocator.alloc<ConcatBucket>();
-    firstBucket->datas    = (uint8_t*) g_Allocator.alloc(bucketSize);
+    firstBucket->datas    = bucketSize ? (uint8_t*) g_Allocator.alloc(bucketSize) : nullptr;
     firstBucket->capacity = size;
 
     if (g_CommandLine->stats)
@@ -73,6 +73,8 @@ void Concat::ensureSpace(int numBytes)
     auto count = (int) (currentSP - lastBucket->datas);
     if (count + numBytes <= lastBucket->capacity)
         return;
+
+    SWAG_ASSERT(bucketSize);
     totalCountBytes += count;
     lastBucket->countBytes = count;
 

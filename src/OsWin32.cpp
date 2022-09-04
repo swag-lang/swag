@@ -951,13 +951,11 @@ namespace OS
 
         if (!g_X64Gen.concat.firstBucket)
         {
-            g_X64Gen.concat.init();
-            SYSTEM_INFO systemInfo;
-            GetSystemInfo(&systemInfo);
-            auto const buffer                     = VirtualAlloc(nullptr, systemInfo.dwPageSize, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
-            g_X64Gen.concat.firstBucket->datas    = (uint8_t*) buffer;
-            g_X64Gen.concat.currentSP             = g_X64Gen.concat.firstBucket->datas;
-            g_X64Gen.concat.firstBucket->capacity = systemInfo.dwPageSize;
+            auto& concat = g_X64Gen.concat;
+            concat.init(0);
+            concat.firstBucket->capacity = 16 * 1024;
+            concat.firstBucket->datas    = (uint8_t*) VirtualAlloc(nullptr, g_X64Gen.concat.firstBucket->capacity, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
+            concat.currentSP             = g_X64Gen.concat.firstBucket->datas;
         }
 
         uint32_t stackSize = (uint32_t) max(cc.byRegisterCount, pushRAParam.size()) * sizeof(void*);

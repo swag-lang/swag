@@ -46,15 +46,14 @@ struct Concat
     void      addString5(const char* v);
     void      addString(const char* v, int len);
     void      addString(const char* v);
-
-    void addString(const Utf8& v);
-    void addEolIndent(int num);
-    void addIndent(int num);
-    void addChar(char c);
-    void addEol();
-    void addStringFormat(const char* format, ...);
-    void addU32Str(uint32_t value);
-    void addS32Str8(int value);
+    void      addString(const Utf8& v);
+    void      addEolIndent(int num);
+    void      addIndent(int num);
+    void      addChar(char c);
+    void      addEol();
+    void      addStringFormat(const char* format, ...);
+    void      addU32Str(uint32_t value);
+    void      addS32Str8(int value);
 
     bool flushToFile(const string& path);
 
