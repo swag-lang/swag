@@ -997,8 +997,12 @@ TypeInfoFuncAttr* Module::getRuntimeTypeFct(const Utf8& fctName)
 {
     SharedLock lk(mutexFile);
     auto       it = mapRuntimeFcts.find(fctName);
-    SWAG_ASSERT(it != mapRuntimeFcts.end());
-    return it->second->typeInfoFunc;
+    if (it != mapRuntimeFcts.end())
+        return it->second->typeInfoFunc;
+    auto it1 = mapRuntimeFctsTypes.find(fctName);
+    if (it1 != mapRuntimeFctsTypes.end())
+        return it1->second;
+    return nullptr;
 }
 
 ByteCode* Module::getRuntimeFct(const Utf8& fctName)

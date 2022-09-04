@@ -40,6 +40,12 @@ namespace __Win32RT
 }
 
 ////////////////////////////////////////////////////////////
+// LIBC
+////////////////////////////////////////////////////////////
+
+func sinf(val: f32)->f32;
+func cosf(val: f32)->f32;
+
 func memset(dst: *void, value: s32, size: uint)
 {
     __Win32RT.RtlFillMemory(dst, size, value)

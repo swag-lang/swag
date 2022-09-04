@@ -111,10 +111,10 @@ void BackendX64::emitGetParam(X64Gen& pp, TypeInfoFuncAttr* typeFunc, int reg, i
     pp.emit_Store64_Indirect(regOffset(reg), RAX, RDI);
 }
 
-void BackendX64::emitCall(X64Gen& pp, TypeInfoFuncAttr* typeFunc, const Utf8& funcName, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT, bool localCall)
+void BackendX64::emitCall(X64Gen& pp, TypeInfoFuncAttr* typeFunc, const Utf8& funcName, const VectorNative<X64PushParam>& pushParams, uint32_t offsetRT, bool localCall)
 {
     // Push parameters
-    pp.emit_Call_Parameters(typeFunc, pushRAParams, offsetRT);
+    pp.emit_Call_Parameters(typeFunc, pushParams, offsetRT);
 
     auto& concat = pp.concat;
 
@@ -143,16 +143,30 @@ void BackendX64::emitCall(X64Gen& pp, TypeInfoFuncAttr* typeFunc, const Utf8& fu
     pp.emit_Call_Result(typeFunc, offsetRT);
 }
 
+void BackendX64::emitCall(X64Gen& pp, TypeInfoFuncAttr* typeFunc, const Utf8& funcName, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT, bool localCall)
+{
+    VectorNative<X64PushParam> p;
+    for (auto r : pushRAParams)
+        p.push_back({r});
+    emitCall(pp, typeFunc, funcName, p, offsetRT, localCall);
+}
+
 void BackendX64::emitInternalCall(X64Gen& pp, Module* moduleToGen, const Utf8& funcName, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT)
 {
     auto typeFunc = g_Workspace->runtimeModule->getRuntimeTypeFct(funcName);
 
     // Invert order
-    VectorNative<uint32_t> p;
+    VectorNative<X64PushParam> p;
     for (int i = (int) pushRAParams.size() - 1; i >= 0; i--)
-        p.push_back(pushRAParams[i]);
+        p.push_back({pushRAParams[i]});
 
     emitCall(pp, typeFunc, funcName, p, offsetRT, true);
+}
+
+void BackendX64::emitInternalCallExt(X64Gen& pp, Module* moduleToGen, const Utf8& funcName, const VectorNative<X64PushParam>& pushParams, uint32_t offsetRT)
+{
+    auto typeFunc = g_Workspace->runtimeModule->getRuntimeTypeFct(funcName);
+    emitCall(pp, typeFunc, funcName, pushParams, offsetRT, true);
 }
 
 void BackendX64::emitCall(X64Gen& pp, const Utf8& funcName)

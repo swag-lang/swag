@@ -3249,6 +3249,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 concat.addString4("\xF3\x0F\x5F\xC1"); // maxss xmm0, xmm1
                 pp.emit_StoreF32_Indirect(regOffset(ip->a.u32), XMM0, RDI);
                 break;
+
             case TokenId::IntrinsicPow:
                 MK_IMMB_F32(XMM0);
                 MK_IMMC_F32(XMM1);
@@ -3284,6 +3285,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 concat.addString4("\xF2\x0F\x5F\xC1"); // maxss xmm0, xmm1
                 pp.emit_StoreF64_Indirect(regOffset(ip->a.u32), XMM0, RDI);
                 break;
+
             case TokenId::IntrinsicPow:
                 MK_IMMB_F64(XMM0);
                 MK_IMMC_F64(XMM1);
@@ -3306,6 +3308,12 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::IntrinsicF32x1:
         {
+            VectorNative<X64PushParam> pushParams;
+            if (ip->flags & BCI_IMM_B)
+                pushParams.push_back({UINT32_MAX, ip->b.u64});
+            else
+                pushParams.push_back({ip->b.u32});
+
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicSqrt:
@@ -3322,14 +3330,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 break;
 
             case TokenId::IntrinsicSin:
-                MK_IMMB_F32(XMM0);
-                emitCall(pp, g_LangSpec->name_sinf);
-                pp.emit_StoreF32_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_sinf, pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicCos:
-                MK_IMMB_F32(XMM0);
-                emitCall(pp, g_LangSpec->name_cosf);
-                pp.emit_StoreF32_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_cosf, pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicTan:
                 MK_IMMB_F32(XMM0);
