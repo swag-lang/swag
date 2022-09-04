@@ -971,18 +971,14 @@ namespace OS
         auto startOffset = g_X64Gen.concat.currentSP - g_X64Gen.concat.firstBucket->datas;
         g_X64Gen.emit_Push(RDI);
         g_X64Gen.emit_Sub_Cst32_To_RSP(stackSize);
-        g_X64Gen.concat.addString2("\x48\xBF"); // move rdi, sp
-        g_X64Gen.concat.addU64((uint64_t) context->sp);
+        g_X64Gen.emit_Load64_Immediate((uint64_t) context->sp, RDI, true);
         BackendX64::emitCallParameters(g_X64Gen, 0, typeInfoFunc, pushRAParam, retCopyAddr);
-        g_X64Gen.concat.addString2("\x48\xB8"); // move rax, foreignPtr
-        g_X64Gen.concat.addU64((uint64_t) foreignPtr);
+        g_X64Gen.emit_Load64_Immediate((uint64_t) foreignPtr, RAX, true);
         g_X64Gen.concat.addString2("\xff\xd0"); // call rax
 
         if (returnType != g_TypeMgr->typeInfoVoid && !retCopyAddr)
         {
-            g_X64Gen.concat.addString2("\x48\xB9");
-            g_X64Gen.concat.addU64((uint64_t) context->registersRR); // move rcx, context->registersRR
-
+            g_X64Gen.emit_Load64_Immediate((uint64_t) context->registersRR, RCX, true);
             if (cc.useReturnByRegisterFloat && returnType->isNativeFloat())
                 g_X64Gen.concat.addString4("\xF2\x0F\x11\x01"); // movsd [rcx], xmm0
             else
