@@ -4,7 +4,6 @@
 #include "AstNode.h"
 #include "ByteCode.h"
 #include "Context.h"
-#include "BackendX64Inst.h"
 #include "Workspace.h"
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
@@ -23,8 +22,8 @@ bool BackendX64::emitOS(const BuildParameters& buildParameters)
     {
         // int _DllMainCRTStartup(void*, int, void*)
         getOrAddSymbol(pp, "_DllMainCRTStartup", CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset);
-        BackendX64Inst::emit_Load64_Immediate(pp, 1, RAX);
-        BackendX64Inst::emit_Ret(pp);
+        pp.emit_Load64_Immediate(1, RAX);
+        pp.emit_Ret();
         return true;
     }
     else
@@ -59,7 +58,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     auto coffFct         = registerFunction(pp, nullptr, symbolFuncIndex);
 
     auto beforeProlog = concat.totalCount();
-    BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, 40);
+    pp.emit_Sub_Cst32_To_RSP(40);
     auto                   sizeProlog = concat.totalCount() - beforeProlog;
     VectorNative<uint16_t> unwind;
     computeUnwindStack(40, sizeProlog, unwind);
@@ -68,51 +67,51 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     SWAG_ASSERT(g_DefaultContext.allocator.itable);
     auto bcAlloc = (ByteCode*) ByteCode::undoByteCodeLambda(((void**) g_DefaultContext.allocator.itable)[0]);
     SWAG_ASSERT(bcAlloc);
-    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symDefaultAllocTable, 0);
+    pp.emit_Symbol_RelocationAddr(RAX, pp.symDefaultAllocTable, 0);
     concat.addString3("\x48\x8d\x0d"); // lea rcx, qword ptr ????????[rip]
     emitSymbolRelocation(pp, bcAlloc->getCallName());
-    BackendX64Inst::emit_Store64_Indirect(pp, 0, RCX, RAX);
+    pp.emit_Store64_Indirect(0, RCX, RAX);
 
     // mainContext.allocator.itable = &defaultAllocTable;
-    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symMC_mainContext_allocator_itable, 0);
-    BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RCX);
+    pp.emit_Symbol_RelocationAddr(RCX, pp.symMC_mainContext_allocator_itable, 0);
+    pp.emit_Store64_Indirect(0, RAX, RCX);
 
     // main context flags
-    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symMC_mainContext_flags, 0);
+    pp.emit_Symbol_RelocationAddr(RCX, pp.symMC_mainContext_flags, 0);
     uint64_t contextFlags = getDefaultContextFlags(module);
-    BackendX64Inst::emit_Store64_Immediate(pp, 0, contextFlags, RCX);
+    pp.emit_Store64_Immediate(0, contextFlags, RCX);
 
     //__process_infos.contextTlsId = swag_runtime_tlsAlloc();
     emitCall(pp, g_LangSpec->name__tlsAlloc);
-    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_contextTlsId, 0);
-    BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RCX);
+    pp.emit_Symbol_RelocationAddr(RCX, pp.symPI_contextTlsId, 0);
+    pp.emit_Store64_Indirect(0, RAX, RCX);
 
     //__process_infos.modules
-    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_modulesAddr, 0);
-    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symCSIndex, module->modulesSliceOffset);
-    BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RCX);
-    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symPI_modulesCount, 0);
-    BackendX64Inst::emit_Store64_Immediate(pp, 0, module->moduleDependencies.count + 1, RAX);
+    pp.emit_Symbol_RelocationAddr(RCX, pp.symPI_modulesAddr, 0);
+    pp.emit_Symbol_RelocationAddr(RAX, pp.symCSIndex, module->modulesSliceOffset);
+    pp.emit_Store64_Indirect(0, RAX, RCX);
+    pp.emit_Symbol_RelocationAddr(RAX, pp.symPI_modulesCount, 0);
+    pp.emit_Store64_Immediate(0, module->moduleDependencies.count + 1, RAX);
 
     //__process_infos.args
-    BackendX64Inst::emit_Clear64(pp, RCX);
-    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symPI_argsAddr, 0);
-    BackendX64Inst::emit_Store64_Indirect(pp, 0, RCX, RAX);
-    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symPI_argsCount, 0);
-    BackendX64Inst::emit_Store64_Indirect(pp, 0, RCX, RAX);
+    pp.emit_Clear64(RCX);
+    pp.emit_Symbol_RelocationAddr(RAX, pp.symPI_argsAddr, 0);
+    pp.emit_Store64_Indirect(0, RCX, RAX);
+    pp.emit_Symbol_RelocationAddr(RAX, pp.symPI_argsCount, 0);
+    pp.emit_Store64_Indirect(0, RCX, RAX);
 
     // Set main context
-    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symMC_mainContext, 0);
-    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_defaultContext, 0);
-    BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RCX);
+    pp.emit_Symbol_RelocationAddr(RAX, pp.symMC_mainContext, 0);
+    pp.emit_Symbol_RelocationAddr(RCX, pp.symPI_defaultContext, 0);
+    pp.emit_Store64_Indirect(0, RAX, RCX);
 
     // Set current backend as X64
-    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_backendKind, 0);
-    BackendX64Inst::emit_Store32_Immediate(pp, 0, (uint32_t) SwagBackendGenType::X64, RCX);
+    pp.emit_Symbol_RelocationAddr(RCX, pp.symPI_backendKind, 0);
+    pp.emit_Store32_Immediate(0, (uint32_t) SwagBackendGenType::X64, RCX);
 
     // Set default context in TLS
-    BackendX64Inst::emit_Symbol_RelocationValue(pp, RCX, pp.symPI_contextTlsId, 0);
-    BackendX64Inst::emit_Symbol_RelocationValue(pp, RDX, pp.symPI_defaultContext, 0);
+    pp.emit_Symbol_RelocationValue(RCX, pp.symPI_contextTlsId, 0);
+    pp.emit_Symbol_RelocationValue(RDX, pp.symPI_defaultContext, 0);
     emitCall(pp, g_LangSpec->name__tlsSetValue);
 
     // Setup runtime
@@ -129,7 +128,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
         auto nameLib = nameDown;
         nameLib += Backend::getOutputFileExtension(g_CommandLine->target, BuildCfgBackendKind::DynamicLib);
         emitGlobalString(pp, precompileIndex, nameLib, RCX);
-        BackendX64Inst::emit_Load64_Immediate(pp, nameLib.length(), RDX);
+        pp.emit_Load64_Immediate(nameLib.length(), RDX);
         emitCall(pp, g_LangSpec->name__loaddll);
     }
 
@@ -140,13 +139,13 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
         SWAG_ASSERT(dep->module);
         if (!dep->module->isSwag)
             continue;
-        BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_processInfos, 0);
+        pp.emit_Symbol_RelocationAddr(RCX, pp.symPI_processInfos, 0);
         auto nameFct = dep->module->getGlobalPrivFct(g_LangSpec->name_globalInit);
         emitCall(pp, nameFct);
     }
 
     // Call to global init of this module
-    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_processInfos, 0);
+    pp.emit_Symbol_RelocationAddr(RCX, pp.symPI_processInfos, 0);
     auto thisInit = module->getGlobalPrivFct(g_LangSpec->name_globalInit);
     emitCall(pp, thisInit);
 
@@ -157,13 +156,13 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
         SWAG_ASSERT(dep->module);
         if (!dep->module->isSwag)
             continue;
-        BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_processInfos, 0);
+        pp.emit_Symbol_RelocationAddr(RCX, pp.symPI_processInfos, 0);
         auto nameFct = dep->module->getGlobalPrivFct(g_LangSpec->name_globalPreMain);
         emitCall(pp, nameFct);
     }
 
     // Call to global premain of this module
-    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_processInfos, 0);
+    pp.emit_Symbol_RelocationAddr(RCX, pp.symPI_processInfos, 0);
     thisInit = module->getGlobalPrivFct(g_LangSpec->name_globalPreMain);
     emitCall(pp, thisInit);
 
@@ -201,9 +200,9 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
 
     emitCall(pp, g_LangSpec->name__exit);
 
-    BackendX64Inst::emit_Clear64(pp, RAX);
-    BackendX64Inst::emit_Add_Cst32_To_RSP(pp, 40);
-    BackendX64Inst::emit_Ret(pp);
+    pp.emit_Clear64(RAX);
+    pp.emit_Add_Cst32_To_RSP(40);
+    pp.emit_Ret();
 
     uint32_t endAddress = concat.totalCount();
     registerFunction(coffFct, startAddress, endAddress, sizeProlog, unwind);
@@ -231,14 +230,14 @@ bool BackendX64::emitGetTypeTable(const BuildParameters& buildParameters)
         pp.directives += Fmt("/EXPORT:%s ", thisInit.c_str());
 
     auto beforeProlog = concat.totalCount();
-    BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, 40);
+    pp.emit_Sub_Cst32_To_RSP(40);
     auto                   sizeProlog = concat.totalCount() - beforeProlog;
     VectorNative<uint16_t> unwind;
     computeUnwindStack(40, sizeProlog, unwind);
 
-    BackendX64Inst::emit_Add_Cst32_To_RSP(pp, 40);
-    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RAX, pp.symCSIndex, module->typesSliceOffset);
-    BackendX64Inst::emit_Ret(pp);
+    pp.emit_Add_Cst32_To_RSP(40);
+    pp.emit_Symbol_RelocationAddr(RAX, pp.symCSIndex, module->typesSliceOffset);
+    pp.emit_Ret();
 
     uint32_t endAddress = concat.totalCount();
     registerFunction(coffFct, startAddress, endAddress, sizeProlog, unwind);
@@ -264,15 +263,15 @@ bool BackendX64::emitGlobalPreMain(const BuildParameters& buildParameters)
         pp.directives += Fmt("/EXPORT:%s ", thisInit.c_str());
 
     auto beforeProlog = concat.totalCount();
-    BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, 40);
+    pp.emit_Sub_Cst32_To_RSP(40);
     auto                   sizeProlog = concat.totalCount() - beforeProlog;
     VectorNative<uint16_t> unwind;
     computeUnwindStack(40, sizeProlog, unwind);
 
     // Copy process infos
-    BackendX64Inst::emit_Copy64(pp, RCX, RDX);
-    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_processInfos, 0);
-    BackendX64Inst::emit_Load64_Immediate(pp, sizeof(SwagProcessInfos), R8);
+    pp.emit_Copy64(RCX, RDX);
+    pp.emit_Symbol_RelocationAddr(RCX, pp.symPI_processInfos, 0);
+    pp.emit_Load64_Immediate(sizeof(SwagProcessInfos), R8);
     emitCall(pp, g_LangSpec->name_memcpy);
 
     // Call to #premain functions
@@ -284,8 +283,8 @@ bool BackendX64::emitGlobalPreMain(const BuildParameters& buildParameters)
         emitCall(pp, bc->getCallName());
     }
 
-    BackendX64Inst::emit_Add_Cst32_To_RSP(pp, 40);
-    BackendX64Inst::emit_Ret(pp);
+    pp.emit_Add_Cst32_To_RSP(40);
+    pp.emit_Ret();
 
     uint32_t endAddress = concat.totalCount();
     registerFunction(coffFct, startAddress, endAddress, sizeProlog, unwind);
@@ -310,28 +309,28 @@ bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
         pp.directives += Fmt("/EXPORT:%s ", thisInit.c_str());
 
     auto beforeProlog = concat.totalCount();
-    BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, 40);
+    pp.emit_Sub_Cst32_To_RSP(40);
     auto                   sizeProlog = concat.totalCount() - beforeProlog;
     VectorNative<uint16_t> unwind;
     computeUnwindStack(40, sizeProlog, unwind);
 
     // Copy process infos
-    BackendX64Inst::emit_Copy64(pp, RCX, RDX);
-    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symPI_processInfos, 0);
-    BackendX64Inst::emit_Load64_Immediate(pp, sizeof(SwagProcessInfos), R8);
+    pp.emit_Copy64(RCX, RDX);
+    pp.emit_Symbol_RelocationAddr(RCX, pp.symPI_processInfos, 0);
+    pp.emit_Load64_Immediate(sizeof(SwagProcessInfos), R8);
     emitCall(pp, g_LangSpec->name_memcpy);
 
     // Thread local storage
-    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symTls_threadLocalId, 0);
+    pp.emit_Symbol_RelocationAddr(RCX, pp.symTls_threadLocalId, 0);
     emitCall(pp, g_LangSpec->name__tlsAlloc);
 
     // Init type table slice for each dependency (by calling ???_getTypeTable)
-    BackendX64Inst::emit_Symbol_RelocationAddr(pp, RCX, pp.symCSIndex, module->modulesSliceOffset + sizeof(SwagModule) + offsetof(SwagModule, types));
+    pp.emit_Symbol_RelocationAddr(RCX, pp.symCSIndex, module->modulesSliceOffset + sizeof(SwagModule) + offsetof(SwagModule, types));
     for (auto& dep : module->moduleDependencies)
     {
         if (!dep->module->isSwag)
         {
-            BackendX64Inst::emit_Add64_Immediate(pp, sizeof(SwagModule), RCX);
+            pp.emit_Add64_Immediate(sizeof(SwagModule), RCX);
             continue;
         }
 
@@ -339,13 +338,13 @@ bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
         emitCall(pp, callTable);
 
         // Count types is stored as a uint64_t at the start of the address
-        BackendX64Inst::emit_Load64_Indirect(pp, 0, R8, RAX);
-        BackendX64Inst::emit_Store64_Indirect(pp, sizeof(uint64_t), R8, RCX);
-        BackendX64Inst::emit_Add64_Immediate(pp, sizeof(uint64_t), RAX);
+        pp.emit_Load64_Indirect(0, R8, RAX);
+        pp.emit_Store64_Indirect(sizeof(uint64_t), R8, RCX);
+        pp.emit_Add64_Immediate(sizeof(uint64_t), RAX);
 
-        BackendX64Inst::emit_Store64_Indirect(pp, 0, RAX, RCX);
+        pp.emit_Store64_Indirect(0, RAX, RCX);
 
-        BackendX64Inst::emit_Add64_Immediate(pp, sizeof(SwagModule), RCX);
+        pp.emit_Add64_Immediate(sizeof(SwagModule), RCX);
     }
 
     // Call to #init functions
@@ -357,8 +356,8 @@ bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
         emitCall(pp, bc->getCallName());
     }
 
-    BackendX64Inst::emit_Add_Cst32_To_RSP(pp, 40);
-    BackendX64Inst::emit_Ret(pp);
+    pp.emit_Add_Cst32_To_RSP(40);
+    pp.emit_Ret();
 
     uint32_t endAddress = concat.totalCount();
     registerFunction(coffFct, startAddress, endAddress, sizeProlog, unwind);
@@ -383,7 +382,7 @@ bool BackendX64::emitGlobalDrop(const BuildParameters& buildParameters)
         pp.directives += Fmt("/EXPORT:%s ", thisDrop.c_str());
 
     auto beforeProlog = concat.totalCount();
-    BackendX64Inst::emit_Sub_Cst32_To_RSP(pp, 40);
+    pp.emit_Sub_Cst32_To_RSP(40);
     auto                   sizeProlog = concat.totalCount() - beforeProlog;
     VectorNative<uint16_t> unwind;
     computeUnwindStack(40, sizeProlog, unwind);
@@ -397,8 +396,8 @@ bool BackendX64::emitGlobalDrop(const BuildParameters& buildParameters)
         emitCall(pp, bc->getCallName());
     }
 
-    BackendX64Inst::emit_Add_Cst32_To_RSP(pp, 40);
-    BackendX64Inst::emit_Ret(pp);
+    pp.emit_Add_Cst32_To_RSP(40);
+    pp.emit_Ret();
 
     uint32_t endAddress = concat.totalCount();
     registerFunction(coffFct, startAddress, endAddress, sizeProlog, unwind);

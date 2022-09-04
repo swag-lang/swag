@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "BackendX64.h"
-#include "BackendX64Inst.h"
 #include "BackendLinker.h"
 #include "Module.h"
 #include "File.h"
@@ -550,7 +549,7 @@ CoffSymbol* BackendX64::getOrAddSymbol(X64Gen& pp, const Utf8& name, CoffSymbolK
 
 void BackendX64::emitGlobalString(X64Gen& pp, int precompileIndex, const Utf8& str, uint8_t reg)
 {
-    BackendX64Inst::emit_Load64_Immediate(pp, 0, reg, true);
+    pp.emit_Load64_Immediate(0, reg, true);
 
     auto&       concat = pp.concat;
     auto        it     = pp.globalStrings.find(str);

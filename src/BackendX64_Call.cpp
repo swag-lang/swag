@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "BackendX64.h"
-#include "BackendX64Inst.h"
 #include "BackendX64_Macros.h"
 #include "TypeManager.h"
+#include "ByteCode.h"
 
 void BackendX64::emitGetParam(X64Gen& pp, TypeInfoFuncAttr* typeFunc, int reg, int paramIdx, int sizeOf, int storeS4, int sizeStack, uint64_t toAdd, int deRefSize)
 {
@@ -26,20 +26,20 @@ void BackendX64::emitGetParam(X64Gen& pp, TypeInfoFuncAttr* typeFunc, int reg, i
     {
     case 1:
         SWAG_ASSERT(!toAdd);
-        BackendX64Inst::emit_Clear32(pp, RAX);
-        BackendX64Inst::emit_Load8_Indirect(pp, stackOffset, RAX, RDI);
-        BackendX64Inst::emit_Store32_Indirect(pp, regOffset(reg), RAX, RDI);
+        pp.emit_Clear32(RAX);
+        pp.emit_Load8_Indirect(stackOffset, RAX, RDI);
+        pp.emit_Store32_Indirect(regOffset(reg), RAX, RDI);
         return;
     case 2:
         SWAG_ASSERT(!toAdd);
-        BackendX64Inst::emit_Clear32(pp, RAX);
-        BackendX64Inst::emit_Load16_Indirect(pp, stackOffset, RAX, RDI);
-        BackendX64Inst::emit_Store32_Indirect(pp, regOffset(reg), RAX, RDI);
+        pp.emit_Clear32(RAX);
+        pp.emit_Load16_Indirect(stackOffset, RAX, RDI);
+        pp.emit_Store32_Indirect(regOffset(reg), RAX, RDI);
         return;
     case 4:
         SWAG_ASSERT(!toAdd);
-        BackendX64Inst::emit_Load32_Indirect(pp, stackOffset, RAX, RDI);
-        BackendX64Inst::emit_Store64_Indirect(pp, regOffset(reg), RAX, RDI);
+        pp.emit_Load32_Indirect(stackOffset, RAX, RDI);
+        pp.emit_Store64_Indirect(regOffset(reg), RAX, RDI);
         return;
     }
 
@@ -47,9 +47,9 @@ void BackendX64::emitGetParam(X64Gen& pp, TypeInfoFuncAttr* typeFunc, int reg, i
     auto typeParam = TypeManager::concreteReferenceType(typeFunc->parameters[paramIdx]->typeInfo);
 
     if (cc.structByRegister && typeParam->kind == TypeInfoKind::Struct && typeParam->sizeOf <= sizeof(void*))
-        BackendX64Inst::emit_LoadAddress_Indirect(pp, stackOffset, RAX, RDI);
+        pp.emit_LoadAddress_Indirect(stackOffset, RAX, RDI);
     else
-        BackendX64Inst::emit_Load64_Indirect(pp, stackOffset, RAX, RDI);
+        pp.emit_Load64_Indirect(stackOffset, RAX, RDI);
 
     if (toAdd)
     {
@@ -58,18 +58,18 @@ void BackendX64::emitGetParam(X64Gen& pp, TypeInfoFuncAttr* typeFunc, int reg, i
             switch (deRefSize)
             {
             case 1:
-                BackendX64Inst::emit_Load8_Indirect(pp, (uint32_t) toAdd, RAX, RAX);
-                BackendX64Inst::emit_UnsignedExtend_8_To_64(pp, RAX);
+                pp.emit_Load8_Indirect((uint32_t) toAdd, RAX, RAX);
+                pp.emit_UnsignedExtend_8_To_64(RAX);
                 break;
             case 2:
-                BackendX64Inst::emit_Load16_Indirect(pp, (uint32_t) toAdd, RAX, RAX);
-                BackendX64Inst::emit_UnsignedExtend_16_To_64(pp, RAX);
+                pp.emit_Load16_Indirect((uint32_t) toAdd, RAX, RAX);
+                pp.emit_UnsignedExtend_16_To_64(RAX);
                 break;
             case 4:
-                BackendX64Inst::emit_Load32_Indirect(pp, (uint32_t) toAdd, RAX, RAX);
+                pp.emit_Load32_Indirect((uint32_t) toAdd, RAX, RAX);
                 break;
             case 8:
-                BackendX64Inst::emit_Load64_Indirect(pp, (uint32_t) toAdd, RAX, RAX);
+                pp.emit_Load64_Indirect((uint32_t) toAdd, RAX, RAX);
                 break;
             }
 
@@ -77,8 +77,8 @@ void BackendX64::emitGetParam(X64Gen& pp, TypeInfoFuncAttr* typeFunc, int reg, i
         }
         else
         {
-            BackendX64Inst::emit_Load64_Immediate(pp, toAdd, RCX);
-            BackendX64Inst::emit_Op64(pp, RCX, RAX, X64Op::ADD);
+            pp.emit_Load64_Immediate(toAdd, RCX);
+            pp.emit_Op64(RCX, RAX, X64Op::ADD);
         }
     }
 
@@ -87,23 +87,23 @@ void BackendX64::emitGetParam(X64Gen& pp, TypeInfoFuncAttr* typeFunc, int reg, i
         switch (deRefSize)
         {
         case 1:
-            BackendX64Inst::emit_Load8_Indirect(pp, 0, RAX, RAX);
-            BackendX64Inst::emit_UnsignedExtend_8_To_64(pp, RAX);
+            pp.emit_Load8_Indirect(0, RAX, RAX);
+            pp.emit_UnsignedExtend_8_To_64(RAX);
             break;
         case 2:
-            BackendX64Inst::emit_Load16_Indirect(pp, 0, RAX, RAX);
-            BackendX64Inst::emit_UnsignedExtend_16_To_64(pp, RAX);
+            pp.emit_Load16_Indirect(0, RAX, RAX);
+            pp.emit_UnsignedExtend_16_To_64(RAX);
             break;
         case 4:
-            BackendX64Inst::emit_Load32_Indirect(pp, 0, RAX, RAX);
+            pp.emit_Load32_Indirect(0, RAX, RAX);
             break;
         case 8:
-            BackendX64Inst::emit_Load64_Indirect(pp, 0, RAX, RAX);
+            pp.emit_Load64_Indirect(0, RAX, RAX);
             break;
         }
     }
 
-    BackendX64Inst::emit_Store64_Indirect(pp, regOffset(reg), RAX, RDI);
+    pp.emit_Store64_Indirect(regOffset(reg), RAX, RDI);
 }
 
 void BackendX64::emitCall(X64Gen& pp, const Utf8& funcName, ByteCodeInstruction* ip, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams, bool localCall)
@@ -158,11 +158,11 @@ void BackendX64::emitCallResult(X64Gen& pp, TypeInfoFuncAttr* typeFuncBC, uint32
         }
         else if (cc.useReturnByRegisterFloat && returnType->isNativeFloat())
         {
-            BackendX64Inst::emit_StoreF64_Indirect(pp, offsetRT, cc.returnByRegisterFloat, RDI);
+            pp.emit_StoreF64_Indirect(offsetRT, cc.returnByRegisterFloat, RDI);
         }
         else
         {
-            BackendX64Inst::emit_Store64_Indirect(pp, offsetRT, cc.returnByRegisterInteger, RDI);
+            pp.emit_Store64_Indirect(offsetRT, cc.returnByRegisterInteger, RDI);
         }
     }
 }
@@ -188,11 +188,11 @@ void BackendX64::emitCallParameters(X64Gen& pp, TypeInfoFuncAttr* typeFuncBC, Ve
         {
             // r is an address to registerRR, for FFI
             if (retCopy)
-                BackendX64Inst::emit_Load64_Immediate(pp, (uint64_t) retCopy, cc.byRegisterInteger[i]);
+                pp.emit_Load64_Immediate((uint64_t) retCopy, cc.byRegisterInteger[i]);
             else if (returnByCopy)
-                BackendX64Inst::emit_Load64_Indirect(pp, r, cc.byRegisterInteger[i], RDI);
+                pp.emit_Load64_Indirect(r, cc.byRegisterInteger[i], RDI);
             else
-                BackendX64Inst::emit_LoadAddress_Indirect(pp, r, cc.byRegisterInteger[i], RDI);
+                pp.emit_LoadAddress_Indirect(r, cc.byRegisterInteger[i], RDI);
         }
 
         // This is a normal parameter, which can be float or integer
@@ -201,30 +201,30 @@ void BackendX64::emitCallParameters(X64Gen& pp, TypeInfoFuncAttr* typeFuncBC, Ve
             // Pass struct in a register if small enough
             if (cc.structByRegister && type->kind == TypeInfoKind::Struct && type->sizeOf <= sizeof(void*))
             {
-                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(r), RAX, RDI);
+                pp.emit_Load64_Indirect(regOffset(r), RAX, RDI);
                 switch (type->sizeOf)
                 {
                 case 1:
-                    BackendX64Inst::emit_Load8_Indirect(pp, 0, cc.byRegisterInteger[i], RAX);
+                    pp.emit_Load8_Indirect(0, cc.byRegisterInteger[i], RAX);
                     break;
                 case 2:
-                    BackendX64Inst::emit_Load16_Indirect(pp, 0, cc.byRegisterInteger[i], RAX);
+                    pp.emit_Load16_Indirect(0, cc.byRegisterInteger[i], RAX);
                     break;
                 case 4:
-                    BackendX64Inst::emit_Load32_Indirect(pp, 0, cc.byRegisterInteger[i], RAX);
+                    pp.emit_Load32_Indirect(0, cc.byRegisterInteger[i], RAX);
                     break;
                 case 8:
-                    BackendX64Inst::emit_Load64_Indirect(pp, 0, cc.byRegisterInteger[i], RAX);
+                    pp.emit_Load64_Indirect(0, cc.byRegisterInteger[i], RAX);
                     break;
                 }
             }
             else if (cc.useRegisterFloat && type->isNativeFloat())
             {
-                BackendX64Inst::emit_LoadF64_Indirect(pp, regOffset(r), cc.byRegisterFloat[i], RDI);
+                pp.emit_LoadF64_Indirect(regOffset(r), cc.byRegisterFloat[i], RDI);
             }
             else
             {
-                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(r), cc.byRegisterInteger[i], RDI);
+                pp.emit_Load64_Indirect(regOffset(r), cc.byRegisterInteger[i], RDI);
             }
         }
     }
@@ -236,8 +236,8 @@ void BackendX64::emitCallParameters(X64Gen& pp, TypeInfoFuncAttr* typeFuncBC, Ve
         // This is a C variadic parameter
         if (i >= maxParamsPerRegister)
         {
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(paramsRegisters[i]), RAX, RDI);
-            BackendX64Inst::emit_Store64_Indirect(pp, offsetStack, RAX, RSP);
+            pp.emit_Load64_Indirect(regOffset(paramsRegisters[i]), RAX, RDI);
+            pp.emit_Store64_Indirect(offsetStack, RAX, RSP);
         }
 
         // This is for a return value
@@ -245,12 +245,12 @@ void BackendX64::emitCallParameters(X64Gen& pp, TypeInfoFuncAttr* typeFuncBC, Ve
         {
             // r is an address to registerRR, for FFI
             if (retCopy)
-                BackendX64Inst::emit_Load64_Immediate(pp, (uint64_t) retCopy, RAX);
+                pp.emit_Load64_Immediate((uint64_t) retCopy, RAX);
             else if (returnByCopy)
-                BackendX64Inst::emit_Load64_Indirect(pp, paramsRegisters[i], RAX, RDI);
+                pp.emit_Load64_Indirect(paramsRegisters[i], RAX, RDI);
             else
-                BackendX64Inst::emit_LoadAddress_Indirect(pp, paramsRegisters[i], RAX, RDI);
-            BackendX64Inst::emit_Store64_Indirect(pp, offsetStack, RAX, RSP);
+                pp.emit_LoadAddress_Indirect(paramsRegisters[i], RAX, RDI);
+            pp.emit_Store64_Indirect(offsetStack, RAX, RSP);
         }
 
         // This is for a normal parameter
@@ -261,7 +261,7 @@ void BackendX64::emitCallParameters(X64Gen& pp, TypeInfoFuncAttr* typeFuncBC, Ve
             // Struct by copy. Will be a pointer to the stack
             if (paramsTypes[i]->kind == TypeInfoKind::Struct)
             {
-                BackendX64Inst::emit_Load64_Indirect(pp, regOffset(paramsRegisters[i]), RAX, RDI);
+                pp.emit_Load64_Indirect(regOffset(paramsRegisters[i]), RAX, RDI);
 
                 // Store the content of the struct in the stack
                 if (cc.structByRegister && sizeOf <= sizeof(void*))
@@ -269,20 +269,20 @@ void BackendX64::emitCallParameters(X64Gen& pp, TypeInfoFuncAttr* typeFuncBC, Ve
                     switch (sizeOf)
                     {
                     case 1:
-                        BackendX64Inst::emit_Load8_Indirect(pp, 0, RAX, RAX);
-                        BackendX64Inst::emit_Store8_Indirect(pp, offsetStack, RAX, RSP);
+                        pp.emit_Load8_Indirect(0, RAX, RAX);
+                        pp.emit_Store8_Indirect(offsetStack, RAX, RSP);
                         break;
                     case 2:
-                        BackendX64Inst::emit_Load16_Indirect(pp, 0, RAX, RAX);
-                        BackendX64Inst::emit_Store16_Indirect(pp, offsetStack, RAX, RSP);
+                        pp.emit_Load16_Indirect(0, RAX, RAX);
+                        pp.emit_Store16_Indirect(offsetStack, RAX, RSP);
                         break;
                     case 4:
-                        BackendX64Inst::emit_Load32_Indirect(pp, 0, RAX, RAX);
-                        BackendX64Inst::emit_Store32_Indirect(pp, offsetStack, RAX, RSP);
+                        pp.emit_Load32_Indirect(0, RAX, RAX);
+                        pp.emit_Store32_Indirect(offsetStack, RAX, RSP);
                         break;
                     case 8:
-                        BackendX64Inst::emit_Load64_Indirect(pp, 0, RAX, RAX);
-                        BackendX64Inst::emit_Store64_Indirect(pp, offsetStack, RAX, RSP);
+                        pp.emit_Load64_Indirect(0, RAX, RAX);
+                        pp.emit_Store64_Indirect(offsetStack, RAX, RSP);
                         break;
                     }
                 }
@@ -290,7 +290,7 @@ void BackendX64::emitCallParameters(X64Gen& pp, TypeInfoFuncAttr* typeFuncBC, Ve
                 // Store the address of the struct in the stack
                 else
                 {
-                    BackendX64Inst::emit_Store64_Indirect(pp, offsetStack, RAX, RSP);
+                    pp.emit_Store64_Indirect(offsetStack, RAX, RSP);
                 }
             }
             else
@@ -298,20 +298,20 @@ void BackendX64::emitCallParameters(X64Gen& pp, TypeInfoFuncAttr* typeFuncBC, Ve
                 switch (sizeOf)
                 {
                 case 1:
-                    BackendX64Inst::emit_Load8_Indirect(pp, regOffset(paramsRegisters[i]), RAX, RDI);
-                    BackendX64Inst::emit_Store8_Indirect(pp, offsetStack, RAX, RSP);
+                    pp.emit_Load8_Indirect(regOffset(paramsRegisters[i]), RAX, RDI);
+                    pp.emit_Store8_Indirect(offsetStack, RAX, RSP);
                     break;
                 case 2:
-                    BackendX64Inst::emit_Load16_Indirect(pp, regOffset(paramsRegisters[i]), RAX, RDI);
-                    BackendX64Inst::emit_Store16_Indirect(pp, offsetStack, RAX, RSP);
+                    pp.emit_Load16_Indirect(regOffset(paramsRegisters[i]), RAX, RDI);
+                    pp.emit_Store16_Indirect(offsetStack, RAX, RSP);
                     break;
                 case 4:
-                    BackendX64Inst::emit_Load32_Indirect(pp, regOffset(paramsRegisters[i]), RAX, RDI);
-                    BackendX64Inst::emit_Store32_Indirect(pp, offsetStack, RAX, RSP);
+                    pp.emit_Load32_Indirect(regOffset(paramsRegisters[i]), RAX, RDI);
+                    pp.emit_Store32_Indirect(offsetStack, RAX, RSP);
                     break;
                 case 8:
-                    BackendX64Inst::emit_Load64_Indirect(pp, regOffset(paramsRegisters[i]), RAX, RDI);
-                    BackendX64Inst::emit_Store64_Indirect(pp, offsetStack, RAX, RSP);
+                    pp.emit_Load64_Indirect(regOffset(paramsRegisters[i]), RAX, RDI);
+                    pp.emit_Store64_Indirect(offsetStack, RAX, RSP);
                     break;
                 default:
                     SWAG_ASSERT(false);
@@ -421,11 +421,11 @@ void BackendX64::emitCallParameters(X64Gen& pp, uint32_t offsetRT, TypeInfoFuncA
     if (typeFuncBC->isClosure())
     {
         auto reg = paramsRegisters[0];
-        BackendX64Inst::emit_Load64_Indirect(pp, regOffset(reg), RAX, RDI);
-        BackendX64Inst::emit_Test64(pp, RAX, RAX);
+        pp.emit_Load64_Indirect(regOffset(reg), RAX, RDI);
+        pp.emit_Test64(RAX, RAX);
 
         // If not zero, jump to closure call
-        BackendX64Inst::emit_LongJumpOp(pp, BackendX64Inst::JZ);
+        pp.emit_LongJumpOp(JZ);
         pp.concat.addU32(0);
         auto seekPtrClosure = pp.concat.getSeekPtr() - 4;
         auto seekJmpClosure = pp.concat.totalCount();
@@ -433,7 +433,7 @@ void BackendX64::emitCallParameters(X64Gen& pp, uint32_t offsetRT, TypeInfoFuncA
         emitCallParameters(pp, typeFuncBC, paramsRegisters, paramsTypes, retCopy);
 
         // Jump to after closure call
-        BackendX64Inst::emit_LongJumpOp(pp, BackendX64Inst::JUMP);
+        pp.emit_LongJumpOp(JUMP);
         pp.concat.addU32(0);
         auto seekPtrAfterClosure = pp.concat.getSeekPtr() - 4;
         auto seekJmpAfterClosure = pp.concat.totalCount();
@@ -461,10 +461,10 @@ void BackendX64::emitByteCodeCall(X64Gen& pp, TypeInfoFuncAttr* typeFuncBC, uint
         switch (idxReg)
         {
         case 0:
-            BackendX64Inst::emit_LoadAddress_Indirect(pp, offsetRT, RDX, RDI);
+            pp.emit_LoadAddress_Indirect(offsetRT, RDX, RDI);
             break;
         case 1:
-            BackendX64Inst::emit_LoadAddress_Indirect(pp, offsetRT + sizeof(Register), R8, RDI);
+            pp.emit_LoadAddress_Indirect(offsetRT + sizeof(Register), R8, RDI);
             break;
         }
     }
@@ -478,12 +478,12 @@ void BackendX64::emitByteCodeCall(X64Gen& pp, TypeInfoFuncAttr* typeFuncBC, uint
         stackOffset += sizeof(Register);
         if (idxReg <= 2)
         {
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(pushRAParams[idxParam]), idxToReg[idxReg], RDI);
+            pp.emit_Load64_Indirect(regOffset(pushRAParams[idxParam]), idxToReg[idxReg], RDI);
         }
         else
         {
-            BackendX64Inst::emit_Load64_Indirect(pp, regOffset(pushRAParams[idxParam]), RAX, RDI);
-            BackendX64Inst::emit_Store64_Indirect(pp, stackOffset, RAX, RSP);
+            pp.emit_Load64_Indirect(regOffset(pushRAParams[idxParam]), RAX, RDI);
+            pp.emit_Store64_Indirect(stackOffset, RAX, RSP);
         }
     }
 }
@@ -497,11 +497,11 @@ void BackendX64::emitByteCodeCallParameters(X64Gen& pp, TypeInfoFuncAttr* typeFu
     if (typeFuncBC->isClosure())
     {
         auto reg = pushRAParams.back();
-        BackendX64Inst::emit_Load64_Indirect(pp, regOffset(reg), RAX, RDI);
-        BackendX64Inst::emit_Test64(pp, RAX, RAX);
+        pp.emit_Load64_Indirect(regOffset(reg), RAX, RDI);
+        pp.emit_Test64(RAX, RAX);
 
         // If not zero, jump to closure call
-        BackendX64Inst::emit_LongJumpOp(pp, BackendX64Inst::JZ);
+        pp.emit_LongJumpOp(JZ);
         pp.concat.addU32(0);
         auto seekPtrClosure = pp.concat.getSeekPtr() - 4;
         auto seekJmpClosure = pp.concat.totalCount();
@@ -509,7 +509,7 @@ void BackendX64::emitByteCodeCallParameters(X64Gen& pp, TypeInfoFuncAttr* typeFu
         emitByteCodeCall(pp, typeFuncBC, offsetRT, pushRAParams);
 
         // Jump to after closure call
-        BackendX64Inst::emit_LongJumpOp(pp, BackendX64Inst::JUMP);
+        pp.emit_LongJumpOp(JUMP);
         pp.concat.addU32(0);
         auto seekPtrAfterClosure = pp.concat.getSeekPtr() - 4;
         auto seekJmpAfterClosure = pp.concat.totalCount();

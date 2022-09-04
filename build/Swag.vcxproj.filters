@@ -485,6 +485,9 @@
     <ClCompile Include="..\src\CallConv.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\X64Gen.cpp">
+      <Filter>Backend\X64</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/JobThread.h">
@@ -579,9 +582,6 @@
       <Filter>Backend\X64</Filter>
     </ClInclude>
     <ClInclude Include="../src/BackendX64FunctionBodyJob.h">
-      <Filter>Backend\X64</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/BackendX64Inst.h">
       <Filter>Backend\X64</Filter>
     </ClInclude>
     <ClInclude Include="..\src\BackendLLVM_Macros.h">

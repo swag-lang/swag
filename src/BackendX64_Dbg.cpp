@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "BackendX64.h"
-#include "BackendX64Inst.h"
 #include "BackendX64FunctionBodyJob.h"
 #include "BackendX64_Macros.h"
 #include "ByteCodeOp.h"
@@ -10,6 +9,7 @@
 #include "Version.h"
 #include "Workspace.h"
 #include "LanguageSpec.h"
+#include "ByteCode.h"
 
 // https://github.com/microsoft/microsoft-pdb/blob/master/include/cvinfo.h
 
