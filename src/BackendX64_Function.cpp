@@ -2845,31 +2845,38 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::IntrinsicS8x1:
         {
-            MK_IMMB_8(RAX);
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicAbs:
+                MK_IMMB_8(RAX);
                 pp.emit_Copy8(RAX, RCX);
                 concat.addString3("\xC0\xF9\x07"); // sar cl, 7
                 concat.addString2("\x30\xC8");     // xor al, cl
                 concat.addString2("\x28\xC8");     // sub al, cl
+                pp.emit_Store8_Indirect(regOffset(ip->a.u32), RAX, RDI);
                 break;
             case TokenId::IntrinsicBitCountNz:
+                MK_IMMB_8(RAX);
                 pp.emit_UnsignedExtend_8_To_32(RAX);
                 concat.addString4("\xF3\x0F\xB8\xC0"); // popcnt eax, eax
+                pp.emit_Store8_Indirect(regOffset(ip->a.u32), RAX, RDI);
                 break;
             case TokenId::IntrinsicBitCountTz:
+                MK_IMMB_8(RAX);
                 pp.emit_UnsignedExtend_8_To_32(RAX);
                 concat.addString3("\x0F\xBC\xC0"); // bsf eax, eax
                 pp.emit_Load32_Immediate(8, RCX);
                 concat.addString3("\x0F\x44\xC1"); // cmove eax, ecx
+                pp.emit_Store8_Indirect(regOffset(ip->a.u32), RAX, RDI);
                 break;
             case TokenId::IntrinsicBitCountLz:
+                MK_IMMB_8(RAX);
                 pp.emit_UnsignedExtend_8_To_32(RAX);
                 concat.addString3("\x0F\xBD\xC0"); // bsr eax, eax
                 pp.emit_Load32_Immediate(15, RCX);
                 concat.addString3("\x0F\x44\xC1"); // cmove eax, ecx
                 concat.addString3("\x83\xF0\x07"); // xor eax, 7
+                pp.emit_Store8_Indirect(regOffset(ip->a.u32), RAX, RDI);
                 break;
             default:
                 ok = false;
@@ -2877,37 +2884,45 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 break;
             }
 
-            pp.emit_Store8_Indirect(regOffset(ip->a.u32), RAX, RDI);
             break;
         }
         case ByteCodeOp::IntrinsicS16x1:
         {
-            MK_IMMB_16(RAX);
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicAbs:
+                MK_IMMB_16(RAX);
                 pp.emit_Copy16(RAX, RCX);
                 concat.addString4("\x66\xC1\xF9\x0F"); // sar cx, 15
                 concat.addString3("\x66\x31\xC8");     // xor ax, cx
                 concat.addString3("\x66\x29\xC8");     // sub ax, cx
+                pp.emit_Store16_Indirect(regOffset(ip->a.u32), RAX, RDI);
                 break;
             case TokenId::IntrinsicBitCountNz:
+                MK_IMMB_16(RAX);
                 pp.emit_UnsignedExtend_16_To_32(RAX);
                 concat.addString5("\x66\xF3\x0F\xB8\xC0"); // popcnt ax, ax
+                pp.emit_Store16_Indirect(regOffset(ip->a.u32), RAX, RDI);
                 break;
             case TokenId::IntrinsicBitCountTz:
+                MK_IMMB_16(RAX);
                 concat.addString4("\x66\x0F\xBC\xC0"); // bsf ax, ax
                 pp.emit_Load16_Immediate(16, RCX);
                 concat.addString4("\x66\x0F\x44\xC1"); // cmove ax, cx
+                pp.emit_Store16_Indirect(regOffset(ip->a.u32), RAX, RDI);
                 break;
             case TokenId::IntrinsicBitCountLz:
+                MK_IMMB_16(RAX);
                 concat.addString4("\x66\x0F\xBD\xC0"); // bsr ax, ax
                 pp.emit_Load16_Immediate(31, RCX);
                 concat.addString4("\x66\x0F\x44\xC1"); // cmove ax, cx
                 concat.addString4("\x66\x83\xF0\x0F"); // xor ax, 15
+                pp.emit_Store16_Indirect(regOffset(ip->a.u32), RAX, RDI);
                 break;
             case TokenId::IntrinsicByteSwap:
+                MK_IMMB_16(RAX);
                 concat.addString4("\x66\xC1\xC0\x08"); // rol ax, 8
+                pp.emit_Store16_Indirect(regOffset(ip->a.u32), RAX, RDI);
                 break;
             default:
                 ok = false;
@@ -2915,36 +2930,44 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 break;
             }
 
-            pp.emit_Store16_Indirect(regOffset(ip->a.u32), RAX, RDI);
             break;
         }
         case ByteCodeOp::IntrinsicS32x1:
         {
-            MK_IMMB_32(RAX);
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicAbs:
+                MK_IMMB_32(RAX);
                 pp.emit_Copy32(RAX, RCX);
                 concat.addString3("\xC1\xF9\x1F"); // sar ecx, 31
                 concat.addString2("\x31\xC8");     // xor eax, ecx
                 concat.addString2("\x29\xC8");     // sub eax, ecx
+                pp.emit_Store32_Indirect(regOffset(ip->a.u32), RAX, RDI);
                 break;
             case TokenId::IntrinsicBitCountNz:
+                MK_IMMB_32(RAX);
                 concat.addString4("\xF3\x0F\xB8\xC0"); // popcnt eax, eax
+                pp.emit_Store32_Indirect(regOffset(ip->a.u32), RAX, RDI);
                 break;
             case TokenId::IntrinsicBitCountTz:
+                MK_IMMB_32(RAX);
                 concat.addString3("\x0F\xBC\xC0"); // bsf eax, eax
                 pp.emit_Load32_Immediate(32, RCX);
                 concat.addString3("\x0F\x44\xC1"); // cmove eax, ecx
+                pp.emit_Store32_Indirect(regOffset(ip->a.u32), RAX, RDI);
                 break;
             case TokenId::IntrinsicBitCountLz:
+                MK_IMMB_32(RAX);
                 concat.addString3("\x0F\xBD\xC0"); // bsr eax, eax
                 pp.emit_Load32_Immediate(63, RCX);
                 concat.addString3("\x0F\x44\xC1"); // cmove eax, ecx
                 concat.addString3("\x83\xF0\x1F"); // xor eax, 31
+                pp.emit_Store32_Indirect(regOffset(ip->a.u32), RAX, RDI);
                 break;
             case TokenId::IntrinsicByteSwap:
+                MK_IMMB_32(RAX);
                 concat.addString2("\x0F\xC8"); // bswap eax
+                pp.emit_Store32_Indirect(regOffset(ip->a.u32), RAX, RDI);
                 break;
             default:
                 ok = false;
@@ -2952,36 +2975,44 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 break;
             }
 
-            pp.emit_Store32_Indirect(regOffset(ip->a.u32), RAX, RDI);
             break;
         }
         case ByteCodeOp::IntrinsicS64x1:
         {
-            MK_IMMB_64(RAX);
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicAbs:
+                MK_IMMB_64(RAX);
                 pp.emit_Copy64(RAX, RCX);
                 concat.addString4("\x48\xC1\xF9\x3F"); // sar rcx, 63
                 concat.addString3("\x48\x31\xC8");     // xor rax, rcx
                 concat.addString3("\x48\x29\xC8");     // sub rax, rcx
+                pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX, RDI);
                 break;
             case TokenId::IntrinsicBitCountNz:
+                MK_IMMB_64(RAX);
                 concat.addString5("\xF3\x48\x0F\xB8\xC0"); // popcnt rax, rax
+                pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX, RDI);
                 break;
             case TokenId::IntrinsicBitCountTz:
+                MK_IMMB_64(RAX);
                 concat.addString4("\x48\x0F\xBC\xC0"); // bsf rax, rax
                 pp.emit_Load32_Immediate(64, RCX);
                 concat.addString4("\x48\x0F\x44\xC1"); // cmove rax, rcx
+                pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX, RDI);
                 break;
             case TokenId::IntrinsicBitCountLz:
+                MK_IMMB_64(RAX);
                 concat.addString4("\x48\x0F\xBD\xC0"); // bsr rax, rax
                 pp.emit_Load64_Immediate(127, RCX);
                 concat.addString4("\x48\x0F\x44\xC1"); // cmove rax, rcx
                 concat.addString4("\x48\x83\xF0\x3F"); // xor rax, 63
+                pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX, RDI);
                 break;
             case TokenId::IntrinsicByteSwap:
+                MK_IMMB_64(RAX);
                 concat.addString3("\x48\x0F\xC8"); // bswap rax
+                pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX, RDI);
                 break;
             default:
                 ok = false;
@@ -2989,23 +3020,26 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 break;
             }
 
-            pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX, RDI);
             break;
         }
 
         case ByteCodeOp::IntrinsicS8x2:
         {
-            MK_IMMB_S8_TO_S32(RAX);
-            MK_IMMC_S8_TO_S32(RCX);
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicMin:
+                MK_IMMB_S8_TO_S32(RAX);
+                MK_IMMC_S8_TO_S32(RCX);
                 pp.emit_Cmp32(RCX, RAX);
                 concat.addString3("\x0F\x4C\xC1"); // cmovl eax, ecx
+                pp.emit_Store8_Indirect(regOffset(ip->a.u32), RAX, RDI);
                 break;
             case TokenId::IntrinsicMax:
+                MK_IMMB_S8_TO_S32(RAX);
+                MK_IMMC_S8_TO_S32(RCX);
                 pp.emit_Cmp32(RAX, RCX);
                 concat.addString3("\x0F\x4C\xC1"); // cmovl eax, ecx
+                pp.emit_Store8_Indirect(regOffset(ip->a.u32), RAX, RDI);
                 break;
             default:
                 ok = false;
@@ -3013,22 +3047,25 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 break;
             }
 
-            pp.emit_Store8_Indirect(regOffset(ip->a.u32), RAX, RDI);
             break;
         }
         case ByteCodeOp::IntrinsicS16x2:
         {
-            MK_IMMB_16(RAX);
-            MK_IMMC_16(RCX);
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicMin:
+                MK_IMMB_16(RAX);
+                MK_IMMC_16(RCX);
                 pp.emit_Cmp16(RCX, RAX);
                 concat.addString4("\x66\x0F\x4C\xC1"); // cmovl ax, cx
+                pp.emit_Store16_Indirect(regOffset(ip->a.u32), RAX, RDI);
                 break;
             case TokenId::IntrinsicMax:
+                MK_IMMB_16(RAX);
+                MK_IMMC_16(RCX);
                 pp.emit_Cmp16(RAX, RCX);
                 concat.addString4("\x66\x0F\x4C\xC1"); // cmovl ax, cx
+                pp.emit_Store16_Indirect(regOffset(ip->a.u32), RAX, RDI);
                 break;
             default:
                 ok = false;
@@ -3036,22 +3073,25 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 break;
             }
 
-            pp.emit_Store16_Indirect(regOffset(ip->a.u32), RAX, RDI);
             break;
         }
         case ByteCodeOp::IntrinsicS32x2:
         {
-            MK_IMMB_32(RAX);
-            MK_IMMC_32(RCX);
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicMin:
+                MK_IMMB_32(RAX);
+                MK_IMMC_32(RCX);
                 pp.emit_Cmp32(RCX, RAX);
                 concat.addString3("\x0F\x4C\xC1"); // cmovl eax, ecx
+                pp.emit_Store32_Indirect(regOffset(ip->a.u32), RAX, RDI);
                 break;
             case TokenId::IntrinsicMax:
+                MK_IMMB_32(RAX);
+                MK_IMMC_32(RCX);
                 pp.emit_Cmp32(RAX, RCX);
                 concat.addString3("\x0F\x4C\xC1"); // cmovl eax, ecx
+                pp.emit_Store32_Indirect(regOffset(ip->a.u32), RAX, RDI);
                 break;
             default:
                 ok = false;
@@ -3059,22 +3099,25 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 break;
             }
 
-            pp.emit_Store32_Indirect(regOffset(ip->a.u32), RAX, RDI);
             break;
         }
         case ByteCodeOp::IntrinsicS64x2:
         {
-            MK_IMMB_64(RAX);
-            MK_IMMC_64(RCX);
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicMin:
+                MK_IMMB_64(RAX);
+                MK_IMMC_64(RCX);
                 pp.emit_Cmp64(RCX, RAX);
                 concat.addString4("\x48\x0F\x4C\xC1"); // cmovl rax, rcx
+                pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX, RDI);
                 break;
             case TokenId::IntrinsicMax:
+                MK_IMMB_64(RAX);
+                MK_IMMC_64(RCX);
                 pp.emit_Cmp64(RAX, RCX);
                 concat.addString4("\x48\x0F\x4C\xC1"); // cmovl rax, rcx
+                pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX, RDI);
                 break;
             default:
                 ok = false;
@@ -3082,23 +3125,26 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 break;
             }
 
-            pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX, RDI);
             break;
         }
 
         case ByteCodeOp::IntrinsicU8x2:
         {
-            MK_IMMB_U8_TO_U32(RAX);
-            MK_IMMC_U8_TO_U32(RCX);
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicMin:
+                MK_IMMB_U8_TO_U32(RAX);
+                MK_IMMC_U8_TO_U32(RCX);
                 pp.emit_Cmp32(RCX, RAX);
                 concat.addString3("\x0F\x42\xC1"); // cmovb eax, ecx
+                pp.emit_Store8_Indirect(regOffset(ip->a.u32), RAX, RDI);
                 break;
             case TokenId::IntrinsicMax:
+                MK_IMMB_U8_TO_U32(RAX);
+                MK_IMMC_U8_TO_U32(RCX);
                 pp.emit_Cmp32(RAX, RCX);
                 concat.addString3("\x0F\x42\xC1"); // cmovb eax, ecx
+                pp.emit_Store8_Indirect(regOffset(ip->a.u32), RAX, RDI);
                 break;
             default:
                 ok = false;
@@ -3106,22 +3152,25 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 break;
             }
 
-            pp.emit_Store8_Indirect(regOffset(ip->a.u32), RAX, RDI);
             break;
         }
         case ByteCodeOp::IntrinsicU16x2:
         {
-            MK_IMMB_16(RAX);
-            MK_IMMC_16(RCX);
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicMin:
+                MK_IMMB_16(RAX);
+                MK_IMMC_16(RCX);
                 pp.emit_Cmp16(RCX, RAX);
                 concat.addString4("\x66\x0F\x42\xC1"); // cmovb ax, cx
+                pp.emit_Store16_Indirect(regOffset(ip->a.u32), RAX, RDI);
                 break;
             case TokenId::IntrinsicMax:
+                MK_IMMB_16(RAX);
+                MK_IMMC_16(RCX);
                 pp.emit_Cmp16(RAX, RCX);
                 concat.addString4("\x66\x0F\x42\xC1"); // cmovb ax, cx
+                pp.emit_Store16_Indirect(regOffset(ip->a.u32), RAX, RDI);
                 break;
             default:
                 ok = false;
@@ -3129,22 +3178,25 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 break;
             }
 
-            pp.emit_Store16_Indirect(regOffset(ip->a.u32), RAX, RDI);
             break;
         }
         case ByteCodeOp::IntrinsicU32x2:
         {
-            MK_IMMB_32(RAX);
-            MK_IMMC_32(RCX);
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicMin:
+                MK_IMMB_32(RAX);
+                MK_IMMC_32(RCX);
                 pp.emit_Cmp32(RCX, RAX);
                 concat.addString3("\x0F\x42\xC1"); // cmovb eax, ecx
+                pp.emit_Store32_Indirect(regOffset(ip->a.u32), RAX, RDI);
                 break;
             case TokenId::IntrinsicMax:
+                MK_IMMB_32(RAX);
+                MK_IMMC_32(RCX);
                 pp.emit_Cmp32(RAX, RCX);
                 concat.addString3("\x0F\x42\xC1"); // cmovb eax, ecx
+                pp.emit_Store32_Indirect(regOffset(ip->a.u32), RAX, RDI);
                 break;
             default:
                 ok = false;
@@ -3152,22 +3204,25 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 break;
             }
 
-            pp.emit_Store32_Indirect(regOffset(ip->a.u32), RAX, RDI);
             break;
         }
         case ByteCodeOp::IntrinsicU64x2:
         {
-            MK_IMMB_64(RAX);
-            MK_IMMC_64(RCX);
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicMin:
+                MK_IMMB_64(RAX);
+                MK_IMMC_64(RCX);
                 pp.emit_Cmp64(RCX, RAX);
                 concat.addString4("\x48\x0F\x42\xC1"); // cmovb rax, rcx
+                pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX, RDI);
                 break;
             case TokenId::IntrinsicMax:
+                MK_IMMB_64(RAX);
+                MK_IMMC_64(RCX);
                 pp.emit_Cmp64(RAX, RCX);
                 concat.addString4("\x48\x0F\x42\xC1"); // cmovb rax, rcx
+                pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX, RDI);
                 break;
             default:
                 ok = false;
@@ -3175,129 +3230,186 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 break;
             }
 
-            pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX, RDI);
             break;
         }
 
         case ByteCodeOp::IntrinsicF32x2:
         {
-            MK_IMMB_F32(XMM0);
-            MK_IMMC_F32(XMM1);
             switch ((TokenId) ip->d.u32)
             {
-            case TokenId::IntrinsicPow:
-                emitCall(pp, g_LangSpec->name_powf);
-                break;
             case TokenId::IntrinsicMin:
+                MK_IMMB_F32(XMM0);
+                MK_IMMC_F32(XMM1);
                 concat.addString4("\xF3\x0F\x5D\xC1"); // minss xmm0, xmm1
+                pp.emit_StoreF32_Indirect(regOffset(ip->a.u32), XMM0, RDI);
                 break;
             case TokenId::IntrinsicMax:
+                MK_IMMB_F32(XMM0);
+                MK_IMMC_F32(XMM1);
                 concat.addString4("\xF3\x0F\x5F\xC1"); // maxss xmm0, xmm1
+                pp.emit_StoreF32_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                break;
+            case TokenId::IntrinsicPow:
+                MK_IMMB_F32(XMM0);
+                MK_IMMC_F32(XMM1);
+                emitCall(pp, g_LangSpec->name_powf);
+                pp.emit_StoreF32_Indirect(regOffset(ip->a.u32), XMM0, RDI);
                 break;
             case TokenId::IntrinsicATan2:
+                MK_IMMB_F32(XMM0);
+                MK_IMMC_F32(XMM1);
                 emitCall(pp, g_LangSpec->name_atan2f);
+                pp.emit_StoreF32_Indirect(regOffset(ip->a.u32), XMM0, RDI);
                 break;
             default:
                 ok = false;
                 moduleToGen->internalError(Fmt("unknown intrinsic `%s` during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
-            pp.emit_StoreF32_Indirect(regOffset(ip->a.u32), XMM0, RDI);
             break;
         }
         case ByteCodeOp::IntrinsicF64x2:
         {
-            MK_IMMB_F64(XMM0);
-            MK_IMMC_F64(XMM1);
             switch ((TokenId) ip->d.u32)
             {
-            case TokenId::IntrinsicPow:
-                emitCall(pp, g_LangSpec->name_pow);
-                break;
             case TokenId::IntrinsicMin:
+                MK_IMMB_F64(XMM0);
+                MK_IMMC_F64(XMM1);
                 concat.addString4("\xF2\x0F\x5D\xC1"); // minss xmm0, xmm1
+                pp.emit_StoreF64_Indirect(regOffset(ip->a.u32), XMM0, RDI);
                 break;
             case TokenId::IntrinsicMax:
+                MK_IMMB_F64(XMM0);
+                MK_IMMC_F64(XMM1);
                 concat.addString4("\xF2\x0F\x5F\xC1"); // maxss xmm0, xmm1
+                pp.emit_StoreF64_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                break;
+            case TokenId::IntrinsicPow:
+                MK_IMMB_F64(XMM0);
+                MK_IMMC_F64(XMM1);
+                emitCall(pp, g_LangSpec->name_pow);
+                pp.emit_StoreF64_Indirect(regOffset(ip->a.u32), XMM0, RDI);
                 break;
             case TokenId::IntrinsicATan2:
+                MK_IMMB_F64(XMM0);
+                MK_IMMC_F64(XMM1);
                 emitCall(pp, g_LangSpec->name_atan2);
+                pp.emit_StoreF64_Indirect(regOffset(ip->a.u32), XMM0, RDI);
                 break;
             default:
                 ok = false;
                 moduleToGen->internalError(Fmt("unknown intrinsic `%s` during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
                 break;
             }
-            pp.emit_StoreF64_Indirect(regOffset(ip->a.u32), XMM0, RDI);
             break;
         }
 
         case ByteCodeOp::IntrinsicF32x1:
         {
-            MK_IMMB_F32(XMM0);
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicSqrt:
+                MK_IMMB_F32(XMM0);
                 concat.addString3("\x0F\x51\xC0"); // sqrtps xmm0, xmm0
-                break;
-            case TokenId::IntrinsicSin:
-                emitCall(pp, g_LangSpec->name_sinf);
-                break;
-            case TokenId::IntrinsicCos:
-                emitCall(pp, g_LangSpec->name_cosf);
-                break;
-            case TokenId::IntrinsicTan:
-                emitCall(pp, g_LangSpec->name_tanf);
-                break;
-            case TokenId::IntrinsicSinh:
-                emitCall(pp, g_LangSpec->name_sinhf);
-                break;
-            case TokenId::IntrinsicCosh:
-                emitCall(pp, g_LangSpec->name_coshf);
-                break;
-            case TokenId::IntrinsicTanh:
-                emitCall(pp, g_LangSpec->name_tanhf);
-                break;
-            case TokenId::IntrinsicASin:
-                emitCall(pp, g_LangSpec->name_asinf);
-                break;
-            case TokenId::IntrinsicACos:
-                emitCall(pp, g_LangSpec->name_acosf);
-                break;
-            case TokenId::IntrinsicATan:
-                emitCall(pp, g_LangSpec->name_atanf);
-                break;
-            case TokenId::IntrinsicLog:
-                emitCall(pp, g_LangSpec->name_logf);
-                break;
-            case TokenId::IntrinsicLog2:
-                emitCall(pp, g_LangSpec->name_log2f);
-                break;
-            case TokenId::IntrinsicLog10:
-                emitCall(pp, g_LangSpec->name_log10f);
-                break;
-            case TokenId::IntrinsicFloor:
-                emitCall(pp, g_LangSpec->name_floorf);
-                break;
-            case TokenId::IntrinsicCeil:
-                emitCall(pp, g_LangSpec->name_ceilf);
-                break;
-            case TokenId::IntrinsicTrunc:
-                emitCall(pp, g_LangSpec->name_truncf);
-                break;
-            case TokenId::IntrinsicRound:
-                emitCall(pp, g_LangSpec->name_roundf);
+                pp.emit_StoreF32_Indirect(regOffset(ip->a.u32), XMM0, RDI);
                 break;
             case TokenId::IntrinsicAbs:
+                MK_IMMB_F32(XMM0);
                 pp.emit_Load64_Immediate(0x7FFFFFFF, RAX);
                 pp.emit_CopyF64(RAX, XMM1);
                 concat.addString3("\x0F\x54\xC1"); // andps xmm0, xmm1
+                pp.emit_StoreF32_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                break;
+
+            case TokenId::IntrinsicSin:
+                MK_IMMB_F32(XMM0);
+                emitCall(pp, g_LangSpec->name_sinf);
+                pp.emit_StoreF32_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                break;
+            case TokenId::IntrinsicCos:
+                MK_IMMB_F32(XMM0);
+                emitCall(pp, g_LangSpec->name_cosf);
+                pp.emit_StoreF32_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                break;
+            case TokenId::IntrinsicTan:
+                MK_IMMB_F32(XMM0);
+                emitCall(pp, g_LangSpec->name_tanf);
+                pp.emit_StoreF32_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                break;
+            case TokenId::IntrinsicSinh:
+                MK_IMMB_F32(XMM0);
+                emitCall(pp, g_LangSpec->name_sinhf);
+                pp.emit_StoreF32_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                break;
+            case TokenId::IntrinsicCosh:
+                MK_IMMB_F32(XMM0);
+                emitCall(pp, g_LangSpec->name_coshf);
+                pp.emit_StoreF32_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                break;
+            case TokenId::IntrinsicTanh:
+                MK_IMMB_F32(XMM0);
+                emitCall(pp, g_LangSpec->name_tanhf);
+                pp.emit_StoreF32_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                break;
+            case TokenId::IntrinsicASin:
+                MK_IMMB_F32(XMM0);
+                emitCall(pp, g_LangSpec->name_asinf);
+                pp.emit_StoreF32_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                break;
+            case TokenId::IntrinsicACos:
+                MK_IMMB_F32(XMM0);
+                emitCall(pp, g_LangSpec->name_acosf);
+                pp.emit_StoreF32_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                break;
+            case TokenId::IntrinsicATan:
+                MK_IMMB_F32(XMM0);
+                emitCall(pp, g_LangSpec->name_atanf);
+                pp.emit_StoreF32_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                break;
+            case TokenId::IntrinsicLog:
+                MK_IMMB_F32(XMM0);
+                emitCall(pp, g_LangSpec->name_logf);
+                pp.emit_StoreF32_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                break;
+            case TokenId::IntrinsicLog2:
+                MK_IMMB_F32(XMM0);
+                emitCall(pp, g_LangSpec->name_log2f);
+                pp.emit_StoreF32_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                break;
+            case TokenId::IntrinsicLog10:
+                MK_IMMB_F32(XMM0);
+                emitCall(pp, g_LangSpec->name_log10f);
+                pp.emit_StoreF32_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                break;
+            case TokenId::IntrinsicFloor:
+                MK_IMMB_F32(XMM0);
+                emitCall(pp, g_LangSpec->name_floorf);
+                pp.emit_StoreF32_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                break;
+            case TokenId::IntrinsicCeil:
+                MK_IMMB_F32(XMM0);
+                emitCall(pp, g_LangSpec->name_ceilf);
+                pp.emit_StoreF32_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                break;
+            case TokenId::IntrinsicTrunc:
+                MK_IMMB_F32(XMM0);
+                emitCall(pp, g_LangSpec->name_truncf);
+                pp.emit_StoreF32_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                break;
+            case TokenId::IntrinsicRound:
+                MK_IMMB_F32(XMM0);
+                emitCall(pp, g_LangSpec->name_roundf);
+                pp.emit_StoreF32_Indirect(regOffset(ip->a.u32), XMM0, RDI);
                 break;
             case TokenId::IntrinsicExp:
+                MK_IMMB_F32(XMM0);
                 emitCall(pp, g_LangSpec->name_expf);
+                pp.emit_StoreF32_Indirect(regOffset(ip->a.u32), XMM0, RDI);
                 break;
             case TokenId::IntrinsicExp2:
+                MK_IMMB_F32(XMM0);
                 emitCall(pp, g_LangSpec->name_exp2f);
+                pp.emit_StoreF32_Indirect(regOffset(ip->a.u32), XMM0, RDI);
                 break;
             default:
                 ok = false;
@@ -3305,79 +3417,119 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 break;
             }
 
-            pp.emit_StoreF32_Indirect(regOffset(ip->a.u32), XMM0, RDI);
             break;
         }
 
         case ByteCodeOp::IntrinsicF64x1:
         {
-            MK_IMMB_F64(XMM0);
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicSqrt:
+                MK_IMMB_F64(XMM0);
                 concat.addString4("\x66\x0F\x51\xC0"); // sqrtpd xmm0, xmm0
-                break;
-            case TokenId::IntrinsicSin:
-                emitCall(pp, g_LangSpec->name_sin);
-                break;
-            case TokenId::IntrinsicCos:
-                emitCall(pp, g_LangSpec->name_cos);
-                break;
-            case TokenId::IntrinsicTan:
-                emitCall(pp, g_LangSpec->name_tan);
-                break;
-            case TokenId::IntrinsicSinh:
-                emitCall(pp, g_LangSpec->name_sinh);
-                break;
-            case TokenId::IntrinsicCosh:
-                emitCall(pp, g_LangSpec->name_cosh);
-                break;
-            case TokenId::IntrinsicTanh:
-                emitCall(pp, g_LangSpec->name_tanh);
-                break;
-            case TokenId::IntrinsicASin:
-                emitCall(pp, g_LangSpec->name_asin);
-                break;
-            case TokenId::IntrinsicACos:
-                emitCall(pp, g_LangSpec->name_acos);
-                break;
-            case TokenId::IntrinsicATan:
-                emitCall(pp, g_LangSpec->name_atan);
-                break;
-            case TokenId::IntrinsicATan2:
-                emitCall(pp, g_LangSpec->name_atan2);
-                break;
-            case TokenId::IntrinsicLog:
-                emitCall(pp, g_LangSpec->name_log);
-                break;
-            case TokenId::IntrinsicLog2:
-                emitCall(pp, g_LangSpec->name_log2);
-                break;
-            case TokenId::IntrinsicLog10:
-                emitCall(pp, g_LangSpec->name_log10);
-                break;
-            case TokenId::IntrinsicFloor:
-                emitCall(pp, g_LangSpec->name_floor);
-                break;
-            case TokenId::IntrinsicCeil:
-                emitCall(pp, g_LangSpec->name_ceil);
-                break;
-            case TokenId::IntrinsicTrunc:
-                emitCall(pp, g_LangSpec->name_trunc);
-                break;
-            case TokenId::IntrinsicRound:
-                emitCall(pp, g_LangSpec->name_round);
+                pp.emit_StoreF64_Indirect(regOffset(ip->a.u32), XMM0, RDI);
                 break;
             case TokenId::IntrinsicAbs:
+                MK_IMMB_F64(XMM0);
                 pp.emit_Load64_Immediate(0x7FFFFFFF'FFFFFFFF, RAX);
                 pp.emit_CopyF64(RAX, XMM1);
                 concat.addString4("\x66\x0F\x54\xC1"); // andpd xmm0, xmm1
+                pp.emit_StoreF64_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                break;
+
+            case TokenId::IntrinsicSin:
+                MK_IMMB_F64(XMM0);
+                emitCall(pp, g_LangSpec->name_sin);
+                pp.emit_StoreF64_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                break;
+            case TokenId::IntrinsicCos:
+                MK_IMMB_F64(XMM0);
+                emitCall(pp, g_LangSpec->name_cos);
+                pp.emit_StoreF64_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                break;
+            case TokenId::IntrinsicTan:
+                MK_IMMB_F64(XMM0);
+                emitCall(pp, g_LangSpec->name_tan);
+                pp.emit_StoreF64_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                break;
+            case TokenId::IntrinsicSinh:
+                MK_IMMB_F64(XMM0);
+                emitCall(pp, g_LangSpec->name_sinh);
+                pp.emit_StoreF64_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                break;
+            case TokenId::IntrinsicCosh:
+                MK_IMMB_F64(XMM0);
+                emitCall(pp, g_LangSpec->name_cosh);
+                pp.emit_StoreF64_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                break;
+            case TokenId::IntrinsicTanh:
+                MK_IMMB_F64(XMM0);
+                emitCall(pp, g_LangSpec->name_tanh);
+                pp.emit_StoreF64_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                break;
+            case TokenId::IntrinsicASin:
+                MK_IMMB_F64(XMM0);
+                emitCall(pp, g_LangSpec->name_asin);
+                pp.emit_StoreF64_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                break;
+            case TokenId::IntrinsicACos:
+                MK_IMMB_F64(XMM0);
+                emitCall(pp, g_LangSpec->name_acos);
+                break;
+            case TokenId::IntrinsicATan:
+                MK_IMMB_F64(XMM0);
+                emitCall(pp, g_LangSpec->name_atan);
+                pp.emit_StoreF64_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                break;
+            case TokenId::IntrinsicATan2:
+                MK_IMMB_F64(XMM0);
+                emitCall(pp, g_LangSpec->name_atan2);
+                pp.emit_StoreF64_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                break;
+            case TokenId::IntrinsicLog:
+                MK_IMMB_F64(XMM0);
+                emitCall(pp, g_LangSpec->name_log);
+                pp.emit_StoreF64_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                break;
+            case TokenId::IntrinsicLog2:
+                MK_IMMB_F64(XMM0);
+                emitCall(pp, g_LangSpec->name_log2);
+                pp.emit_StoreF64_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                break;
+            case TokenId::IntrinsicLog10:
+                MK_IMMB_F64(XMM0);
+                emitCall(pp, g_LangSpec->name_log10);
+                pp.emit_StoreF64_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                break;
+            case TokenId::IntrinsicFloor:
+                MK_IMMB_F64(XMM0);
+                emitCall(pp, g_LangSpec->name_floor);
+                pp.emit_StoreF64_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                break;
+            case TokenId::IntrinsicCeil:
+                MK_IMMB_F64(XMM0);
+                emitCall(pp, g_LangSpec->name_ceil);
+                pp.emit_StoreF64_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                break;
+            case TokenId::IntrinsicTrunc:
+                MK_IMMB_F64(XMM0);
+                emitCall(pp, g_LangSpec->name_trunc);
+                pp.emit_StoreF64_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                break;
+            case TokenId::IntrinsicRound:
+                MK_IMMB_F64(XMM0);
+                emitCall(pp, g_LangSpec->name_round);
+                pp.emit_StoreF64_Indirect(regOffset(ip->a.u32), XMM0, RDI);
                 break;
             case TokenId::IntrinsicExp:
+                MK_IMMB_F64(XMM0);
                 emitCall(pp, g_LangSpec->name_exp);
+                pp.emit_StoreF64_Indirect(regOffset(ip->a.u32), XMM0, RDI);
                 break;
             case TokenId::IntrinsicExp2:
+                MK_IMMB_F64(XMM0);
                 emitCall(pp, g_LangSpec->name_exp2);
+                pp.emit_StoreF64_Indirect(regOffset(ip->a.u32), XMM0, RDI);
                 break;
             default:
                 ok = false;
@@ -3385,7 +3537,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 break;
             }
 
-            pp.emit_StoreF64_Indirect(regOffset(ip->a.u32), XMM0, RDI);
             break;
         }
 
