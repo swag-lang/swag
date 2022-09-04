@@ -53,6 +53,7 @@ enum Disp
 
 enum JumpType
 {
+    JNO,
     JNZ,
     JZ,
     JL,

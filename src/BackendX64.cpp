@@ -547,7 +547,7 @@ CoffSymbol* BackendX64::getOrAddSymbol(X64Gen& pp, const Utf8& name, CoffSymbolK
     return &pp.allSymbols.back();
 }
 
-void BackendX64::emitGlobalString(X64Gen& pp, int precompileIndex, const Utf8& str, uint8_t reg)
+void BackendX64::emitGlobalString(X64Gen& pp, const Utf8& str, uint8_t reg)
 {
     pp.emit_Load64_Immediate(0, reg, true);
 

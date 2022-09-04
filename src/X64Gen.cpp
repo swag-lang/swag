@@ -1613,6 +1613,10 @@ void X64Gen::emit_LongJumpOp(JumpType jumpType)
 {
     switch (jumpType)
     {
+    case JNO:
+        concat.addU8(0x0F);
+        concat.addU8(0x81);
+        break;
     case JB:
         concat.addU8(0x0F);
         concat.addU8(0x82);

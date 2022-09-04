@@ -35,18 +35,18 @@ struct BackendX64 : public Backend
     uint32_t getOrCreateLabel(X64Gen& pp, uint32_t ip);
     uint16_t computeUnwindPushRDI(uint32_t offsetSubRSP);
     void     computeUnwindStack(uint32_t sizeStack, uint32_t offsetSubRSP, VectorNative<uint16_t>& unwind);
-    void     emitOverflowSigned(const BuildParameters& buildParameters, Concat& concat, AstNode* node, const char* msg);
-    void     emitOverflowUnsigned(const BuildParameters& buildParameters, Concat& concat, AstNode* node, const char* msg);
-    void     emitShiftArithmetic(X64Gen& pp, Concat& concat, ByteCodeInstruction* ip, uint8_t numBits);
-    void     emitShiftLogical(X64Gen& pp, Concat& concat, ByteCodeInstruction* ip, uint8_t numBits, uint8_t op);
-    void     emitShiftEqArithmetic(X64Gen& pp, Concat& concat, ByteCodeInstruction* ip, uint8_t numBits);
-    void     emitShiftEqLogical(X64Gen& pp, Concat& concat, ByteCodeInstruction* ip, uint8_t numBits, uint8_t op);
-    void     emitInternalPanic(const BuildParameters& buildParameters, AstNode* node, const char* msg);
+    void     emitOverflowSigned(X64Gen& pp, AstNode* node, const char* msg);
+    void     emitOverflowUnsigned(X64Gen& pp, AstNode* node, const char* msg);
+    void     emitShiftArithmetic(X64Gen& pp, ByteCodeInstruction* ip, uint8_t numBits);
+    void     emitShiftLogical(X64Gen& pp, ByteCodeInstruction* ip, uint8_t numBits, uint8_t op);
+    void     emitShiftEqArithmetic(X64Gen& pp, ByteCodeInstruction* ip, uint8_t numBits);
+    void     emitShiftEqLogical(X64Gen& pp, ByteCodeInstruction* ip, uint8_t numBits, uint8_t op);
+    void     emitInternalPanic(X64Gen& pp, AstNode* node, const char* msg);
     bool     emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc);
 
     CoffSymbol* getSymbol(X64Gen& pp, const Utf8& name);
     CoffSymbol* getOrAddSymbol(X64Gen& pp, const Utf8& name, CoffSymbolKind kind, uint32_t value = 0, uint16_t sectionIdx = 0);
-    void        emitGlobalString(X64Gen& pp, int precompileIndex, const Utf8& str, uint8_t reg);
+    void        emitGlobalString(X64Gen& pp, const Utf8& str, uint8_t reg);
 
     bool emitXData(const BuildParameters& buildParameters);
     bool emitPData(const BuildParameters& buildParameters);
