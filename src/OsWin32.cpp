@@ -972,7 +972,7 @@ namespace OS
         g_X64Gen.emit_Push(RDI);
         g_X64Gen.emit_Sub_Cst32_To_RSP(stackSize);
         g_X64Gen.emit_Load64_Immediate((uint64_t) context->sp, RDI, true);
-        BackendX64::emitCallParameters(g_X64Gen, 0, typeInfoFunc, pushRAParam, retCopyAddr);
+        g_X64Gen.emit_CallParameters(0, typeInfoFunc, pushRAParam, retCopyAddr);
         g_X64Gen.emit_Load64_Immediate((uint64_t) foreignPtr, RAX, true);
         g_X64Gen.concat.addString2("\xff\xd0"); // call rax
 

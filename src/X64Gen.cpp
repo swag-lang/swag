@@ -4,6 +4,7 @@
 #include "ByteCode.h"
 #include "CallConv.h"
 #include "X64Gen.h"
+#include "TypeManager.h"
 
 uint8_t X64Gen::emit_modRM(uint8_t mod, uint8_t r, uint8_t m)
 {
@@ -1824,5 +1825,291 @@ void X64Gen::emit_ClearX(uint32_t count, uint32_t offset, uint8_t reg)
         emit_Store8_Immediate(offset, 0, reg);
         count -= 1;
         offset += 1;
+    }
+}
+
+void X64Gen::emit_CallParameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& paramsRegisters, VectorNative<TypeInfo*>& paramsTypes, void* retCopy)
+{
+    const auto& cc           = g_CallConv[typeFuncBC->callConv];
+    auto        returnType   = TypeManager::concreteReferenceType(typeFuncBC->returnType);
+    bool        returnByCopy = returnType->flags & TYPEINFO_RETURN_BY_COPY;
+
+    int callConvRegisters    = cc.byRegisterCount;
+    int maxParamsPerRegister = (int) paramsRegisters.size();
+
+    // Set the first N parameters. Can be return register, or function parameter.
+    int i = 0;
+    for (; i < min(callConvRegisters, maxParamsPerRegister); i++)
+    {
+        auto type = paramsTypes[i];
+        auto r    = paramsRegisters[i];
+
+        // This is a return register
+        if (type == g_TypeMgr->typeInfoUndefined)
+        {
+            // r is an address to registerRR, for FFI
+            if (retCopy)
+                emit_Load64_Immediate((uint64_t) retCopy, cc.byRegisterInteger[i]);
+            else if (returnByCopy)
+                emit_Load64_Indirect(r, cc.byRegisterInteger[i], RDI);
+            else
+                emit_LoadAddress_Indirect(r, cc.byRegisterInteger[i], RDI);
+        }
+
+        // This is a normal parameter, which can be float or integer
+        else
+        {
+            // Pass struct in a register if small enough
+            if (cc.structByRegister && type->kind == TypeInfoKind::Struct && type->sizeOf <= sizeof(void*))
+            {
+                emit_Load64_Indirect(regOffset(r), RAX, RDI);
+                switch (type->sizeOf)
+                {
+                case 1:
+                    emit_Load8_Indirect(0, cc.byRegisterInteger[i], RAX);
+                    break;
+                case 2:
+                    emit_Load16_Indirect(0, cc.byRegisterInteger[i], RAX);
+                    break;
+                case 4:
+                    emit_Load32_Indirect(0, cc.byRegisterInteger[i], RAX);
+                    break;
+                case 8:
+                    emit_Load64_Indirect(0, cc.byRegisterInteger[i], RAX);
+                    break;
+                }
+            }
+            else if (cc.useRegisterFloat && type->isNativeFloat())
+            {
+                emit_LoadF64_Indirect(regOffset(r), cc.byRegisterFloat[i], RDI);
+            }
+            else
+            {
+                emit_Load64_Indirect(regOffset(r), cc.byRegisterInteger[i], RDI);
+            }
+        }
+    }
+
+    // Store all parameters after N on the stack, with an offset of N * sizeof(uint64_t)
+    uint32_t offsetStack = min(callConvRegisters, maxParamsPerRegister) * sizeof(uint64_t);
+    for (; i < (int) paramsRegisters.size(); i++)
+    {
+        // This is a C variadic parameter
+        if (i >= maxParamsPerRegister)
+        {
+            emit_Load64_Indirect(regOffset(paramsRegisters[i]), RAX, RDI);
+            emit_Store64_Indirect(offsetStack, RAX, RSP);
+        }
+
+        // This is for a return value
+        else if (paramsTypes[i] == g_TypeMgr->typeInfoUndefined)
+        {
+            // r is an address to registerRR, for FFI
+            if (retCopy)
+                emit_Load64_Immediate((uint64_t) retCopy, RAX);
+            else if (returnByCopy)
+                emit_Load64_Indirect(paramsRegisters[i], RAX, RDI);
+            else
+                emit_LoadAddress_Indirect(paramsRegisters[i], RAX, RDI);
+            emit_Store64_Indirect(offsetStack, RAX, RSP);
+        }
+
+        // This is for a normal parameter
+        else
+        {
+            auto sizeOf = paramsTypes[i]->sizeOf;
+
+            // Struct by copy. Will be a pointer to the stack
+            if (paramsTypes[i]->kind == TypeInfoKind::Struct)
+            {
+                emit_Load64_Indirect(regOffset(paramsRegisters[i]), RAX, RDI);
+
+                // Store the content of the struct in the stack
+                if (cc.structByRegister && sizeOf <= sizeof(void*))
+                {
+                    switch (sizeOf)
+                    {
+                    case 1:
+                        emit_Load8_Indirect(0, RAX, RAX);
+                        emit_Store8_Indirect(offsetStack, RAX, RSP);
+                        break;
+                    case 2:
+                        emit_Load16_Indirect(0, RAX, RAX);
+                        emit_Store16_Indirect(offsetStack, RAX, RSP);
+                        break;
+                    case 4:
+                        emit_Load32_Indirect(0, RAX, RAX);
+                        emit_Store32_Indirect(offsetStack, RAX, RSP);
+                        break;
+                    case 8:
+                        emit_Load64_Indirect(0, RAX, RAX);
+                        emit_Store64_Indirect(offsetStack, RAX, RSP);
+                        break;
+                    }
+                }
+
+                // Store the address of the struct in the stack
+                else
+                {
+                    emit_Store64_Indirect(offsetStack, RAX, RSP);
+                }
+            }
+            else
+            {
+                switch (sizeOf)
+                {
+                case 1:
+                    emit_Load8_Indirect(regOffset(paramsRegisters[i]), RAX, RDI);
+                    emit_Store8_Indirect(offsetStack, RAX, RSP);
+                    break;
+                case 2:
+                    emit_Load16_Indirect(regOffset(paramsRegisters[i]), RAX, RDI);
+                    emit_Store16_Indirect(offsetStack, RAX, RSP);
+                    break;
+                case 4:
+                    emit_Load32_Indirect(regOffset(paramsRegisters[i]), RAX, RDI);
+                    emit_Store32_Indirect(offsetStack, RAX, RSP);
+                    break;
+                case 8:
+                    emit_Load64_Indirect(regOffset(paramsRegisters[i]), RAX, RDI);
+                    emit_Store64_Indirect(offsetStack, RAX, RSP);
+                    break;
+                default:
+                    SWAG_ASSERT(false);
+                    return;
+                }
+            }
+        }
+
+        // Push is always aligned
+        offsetStack += 8;
+    }
+}
+
+void X64Gen::emit_CallParameters(uint32_t offsetRT, TypeInfoFuncAttr* typeFuncBC, const VectorNative<uint32_t>& pushRAParams, void* retCopy)
+{
+    int numCallParams = (int) typeFuncBC->parameters.size();
+
+    VectorNative<uint32_t>  paramsRegisters;
+    VectorNative<TypeInfo*> paramsTypes;
+
+    int indexParam = (int) pushRAParams.size() - 1;
+
+    // Variadic are first
+    if (typeFuncBC->isVariadic())
+    {
+        auto index = pushRAParams[indexParam--];
+        paramsRegisters.push_back(index);
+        paramsTypes.push_back(g_TypeMgr->typeInfoU64);
+
+        index = pushRAParams[indexParam--];
+        paramsRegisters.push_back(index);
+        paramsTypes.push_back(g_TypeMgr->typeInfoU64);
+        numCallParams--;
+    }
+    else if (typeFuncBC->isCVariadic())
+    {
+        numCallParams--;
+    }
+
+    // All parameters
+    for (int i = 0; i < (int) numCallParams; i++)
+    {
+        auto typeParam = TypeManager::concreteReferenceType(typeFuncBC->parameters[i]->typeInfo);
+
+        auto index = pushRAParams[indexParam--];
+
+        if (typeParam->kind == TypeInfoKind::Pointer ||
+            typeParam->kind == TypeInfoKind::Lambda ||
+            typeParam->kind == TypeInfoKind::Array)
+        {
+            paramsRegisters.push_back(index);
+            paramsTypes.push_back(g_TypeMgr->typeInfoU64);
+        }
+        else if (typeParam->kind == TypeInfoKind::Struct)
+        {
+            paramsRegisters.push_back(index);
+            paramsTypes.push_back(typeParam);
+        }
+        else if (typeParam->kind == TypeInfoKind::Slice ||
+                 typeParam->isNative(NativeTypeKind::String))
+        {
+            paramsRegisters.push_back(index);
+            paramsTypes.push_back(g_TypeMgr->typeInfoU64);
+            index = pushRAParams[indexParam--];
+            paramsRegisters.push_back(index);
+            paramsTypes.push_back(g_TypeMgr->typeInfoU64);
+        }
+        else if (typeParam->isNative(NativeTypeKind::Any) ||
+                 typeParam->kind == TypeInfoKind::Interface)
+        {
+            paramsRegisters.push_back(index);
+            paramsTypes.push_back(g_TypeMgr->typeInfoU64);
+            index = pushRAParams[indexParam--];
+            paramsRegisters.push_back(index);
+            paramsTypes.push_back(g_TypeMgr->typeInfoU64);
+        }
+        else
+        {
+            SWAG_ASSERT(typeParam->sizeOf <= sizeof(void*));
+            paramsRegisters.push_back(index);
+            paramsTypes.push_back(typeParam);
+        }
+    }
+
+    // Return by parameter
+    if (typeFuncBC->returnByCopy())
+    {
+        paramsRegisters.push_back(offsetRT);
+        paramsTypes.push_back(g_TypeMgr->typeInfoUndefined);
+    }
+
+    // Add all C variadic parameters
+    if (typeFuncBC->isCVariadic())
+    {
+        for (int i = typeFuncBC->numParamsRegisters(); i < pushRAParams.size(); i++)
+        {
+            auto index = pushRAParams[indexParam--];
+            paramsRegisters.push_back(index);
+            paramsTypes.push_back(g_TypeMgr->typeInfoU64);
+        }
+    }
+
+    // If the closure is assigned to a lambda, then we must not use the first parameter (the first
+    // parameter is the capture context, which does not exist in a normal function)
+    // But as this is dynamic, we need to have two call path : one for the closure (normal call), and
+    // one for the lambda (omit first parameter)
+    if (typeFuncBC->isClosure())
+    {
+        auto reg = paramsRegisters[0];
+        emit_Load64_Indirect(regOffset(reg), RAX, RDI);
+        emit_Test64(RAX, RAX);
+
+        // If not zero, jump to closure call
+        emit_LongJumpOp(JZ);
+        concat.addU32(0);
+        auto seekPtrClosure = concat.getSeekPtr() - 4;
+        auto seekJmpClosure = concat.totalCount();
+
+        emit_CallParameters(typeFuncBC, paramsRegisters, paramsTypes, retCopy);
+
+        // Jump to after closure call
+        emit_LongJumpOp(JUMP);
+        concat.addU32(0);
+        auto seekPtrAfterClosure = concat.getSeekPtr() - 4;
+        auto seekJmpAfterClosure = concat.totalCount();
+
+        // Update jump to closure call
+        *seekPtrClosure = (uint8_t) (concat.totalCount() - seekJmpClosure);
+
+        paramsRegisters.erase(0);
+        paramsTypes.erase(0);
+        emit_CallParameters(typeFuncBC, paramsRegisters, paramsTypes, retCopy);
+
+        *seekPtrAfterClosure = (uint8_t) (concat.totalCount() - seekJmpAfterClosure);
+    }
+    else
+    {
+        emit_CallParameters(typeFuncBC, paramsRegisters, paramsTypes, retCopy);
     }
 }
