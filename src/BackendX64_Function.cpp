@@ -2692,7 +2692,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             //////////////////
             pp.emit_CallParameters(offsetRT, typeFuncBC, pushRAParams);
             concat.addString3("\x41\xFF\xD2"); // call r10
-            emitCallResult(pp, typeFuncBC, offsetRT);
+            pp.emit_CallResult(typeFuncBC, offsetRT);
 
             concat.addString1("\xe9"); // jmp ???????? => jump after bytecode lambda
             concat.addU32(0);

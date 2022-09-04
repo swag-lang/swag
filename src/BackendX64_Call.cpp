@@ -137,34 +137,7 @@ void BackendX64::emitCall(X64Gen& pp, const Utf8& funcName, ByteCodeInstruction*
     }
 
     // Store result
-    emitCallResult(pp, typeFuncBC, offsetRT);
-}
-
-void BackendX64::emitCallResult(X64Gen& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT)
-{
-    const auto& cc = g_CallConv[typeFuncBC->callConv];
-
-    // Store result to rt0
-    auto returnType = TypeManager::concreteReferenceType(typeFuncBC->returnType);
-    if (returnType != g_TypeMgr->typeInfoVoid)
-    {
-        if ((returnType->kind == TypeInfoKind::Slice) ||
-            (returnType->kind == TypeInfoKind::Interface) ||
-            (returnType->isNative(NativeTypeKind::Any)) ||
-            (returnType->isNative(NativeTypeKind::String)) ||
-            (returnType->flags & TYPEINFO_RETURN_BY_COPY))
-        {
-            // Return by parameter
-        }
-        else if (cc.useReturnByRegisterFloat && returnType->isNativeFloat())
-        {
-            pp.emit_StoreF64_Indirect(offsetRT, cc.returnByRegisterFloat, RDI);
-        }
-        else
-        {
-            pp.emit_Store64_Indirect(offsetRT, cc.returnByRegisterInteger, RDI);
-        }
-    }
+    pp.emit_CallResult(typeFuncBC, offsetRT);
 }
 
 void BackendX64::emitByteCodeCall(X64Gen& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams)

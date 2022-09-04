@@ -2113,3 +2113,30 @@ void X64Gen::emit_CallParameters(uint32_t offsetRT, TypeInfoFuncAttr* typeFuncBC
         emit_CallParameters(typeFuncBC, paramsRegisters, paramsTypes, retCopy);
     }
 }
+
+void X64Gen::emit_CallResult(TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT)
+{
+    const auto& cc = g_CallConv[typeFuncBC->callConv];
+
+    // Store result to rt0
+    auto returnType = TypeManager::concreteReferenceType(typeFuncBC->returnType);
+    if (returnType != g_TypeMgr->typeInfoVoid)
+    {
+        if ((returnType->kind == TypeInfoKind::Slice) ||
+            (returnType->kind == TypeInfoKind::Interface) ||
+            (returnType->isNative(NativeTypeKind::Any)) ||
+            (returnType->isNative(NativeTypeKind::String)) ||
+            (returnType->flags & TYPEINFO_RETURN_BY_COPY))
+        {
+            // Return by parameter
+        }
+        else if (cc.useReturnByRegisterFloat && returnType->isNativeFloat())
+        {
+            emit_StoreF64_Indirect(offsetRT, cc.returnByRegisterFloat, RDI);
+        }
+        else
+        {
+            emit_Store64_Indirect(offsetRT, cc.returnByRegisterInteger, RDI);
+        }
+    }
+}

@@ -978,11 +978,8 @@ namespace OS
 
         if (returnType != g_TypeMgr->typeInfoVoid && !retCopyAddr)
         {
-            g_X64Gen.emit_Load64_Immediate((uint64_t) context->registersRR, RCX, true);
-            if (cc.useReturnByRegisterFloat && returnType->isNativeFloat())
-                g_X64Gen.concat.addString4("\xF2\x0F\x11\x01"); // movsd [rcx], xmm0
-            else
-                g_X64Gen.concat.addString3("\x48\x89\x01"); // mov [rcx], rax
+            g_X64Gen.emit_Load64_Immediate((uint64_t) context->registersRR, RDI, true);
+            g_X64Gen.emit_CallResult(typeInfoFunc, 0);
         }
 
         g_X64Gen.emit_Add_Cst32_To_RSP(stackSize);

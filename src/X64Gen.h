@@ -480,4 +480,5 @@ struct X64Gen
     void    emit_ClearX(uint32_t count, uint32_t offset, uint8_t reg);
     void    emit_CallParameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<uint32_t>& paramsRegisters, VectorNative<TypeInfo*>& paramsTypes, void* retCopy = nullptr);
     void    emit_CallParameters(uint32_t offsetRT, TypeInfoFuncAttr* typeFuncBC, const VectorNative<uint32_t>& pushRAParams, void* retCopy = nullptr);
+    void    emit_CallResult(TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT);
 };
