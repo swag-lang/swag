@@ -143,7 +143,7 @@ void BackendX64::emitCall(X64Gen& pp, TypeInfoFuncAttr* typeFunc, const Utf8& fu
     pp.emit_Call_Result(typeFunc, offsetRT);
 }
 
-void BackendX64::emitInternalCall(X64Gen& pp, Module* moduleToGen, const Utf8& funcName, const VectorNative<uint32_t>& pushRAParams)
+void BackendX64::emitInternalCall(X64Gen& pp, Module* moduleToGen, const Utf8& funcName, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT)
 {
     auto typeFunc = g_Workspace->runtimeModule->getRuntimeTypeFct(funcName);
 
@@ -152,7 +152,7 @@ void BackendX64::emitInternalCall(X64Gen& pp, Module* moduleToGen, const Utf8& f
     for (int i = (int) pushRAParams.size() - 1; i >= 0; i--)
         p.push_back(pushRAParams[i]);
 
-    emitCall(pp, typeFunc, funcName, p, 0, true);
+    emitCall(pp, typeFunc, funcName, p, offsetRT, true);
 }
 
 void BackendX64::emitCall(X64Gen& pp, const Utf8& funcName)

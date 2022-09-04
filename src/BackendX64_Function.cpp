@@ -3410,12 +3410,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         }
 
         case ByteCodeOp::IntrinsicGetErr:
-        {
-            pp.emit_LoadAddress_Indirect(regOffset(ip->a.u32), RCX, RDI);
-            pp.emit_LoadAddress_Indirect(regOffset(ip->b.u32), RDX, RDI);
-            emitCall(pp, g_LangSpec->name__geterr);
+            SWAG_ASSERT(ip->b.u32 == ip->a.u32 + 1);
+            emitInternalCall(pp, moduleToGen, g_LangSpec->name__geterr, {}, regOffset(ip->a.u32));
             break;
-        }
         case ByteCodeOp::InternalSetErr:
             emitInternalCall(pp, moduleToGen, g_LangSpec->name__seterr, {ip->a.u32, ip->b.u32});
             break;

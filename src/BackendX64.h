@@ -108,7 +108,7 @@ struct BackendX64 : public Backend
     void     emitGetParam(X64Gen& pp, TypeInfoFuncAttr* typeFunc, int reg, int paramIdx, int sizeOf, int storeS4, int sizeStack, uint64_t toAdd = 0, int derefSize = 0);
     void     emitCall(X64Gen& pp, TypeInfoFuncAttr* typeFunc, const Utf8& funcName, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT, bool localCall);
     void     emitCall(X64Gen& pp, const Utf8& funcName);
-    void     emitInternalCall(X64Gen& pp, Module* moduleToGen, const Utf8& funcName, const VectorNative<uint32_t>& pushRAParams);
+    void     emitInternalCall(X64Gen& pp, Module* moduleToGen, const Utf8& funcName, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT = UINT32_MAX);
 
     CoffFunction* registerFunction(X64Gen& pp, AstNode* node, uint32_t symbolIndex);
     void          registerFunction(CoffFunction* fct, uint32_t startAddress, uint32_t endAddress, uint32_t sizeProlog, VectorNative<uint16_t>& unwind);
