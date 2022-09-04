@@ -43,6 +43,19 @@ struct BackendX64 : public Backend
     void     emitShiftEqLogical(X64Gen& pp, ByteCodeInstruction* ip, uint8_t numBits, uint8_t op);
     void     emitInternalPanic(X64Gen& pp, AstNode* node, const char* msg);
     bool     emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc);
+    void     emitBinOpFloat32(X64Gen& pp, ByteCodeInstruction* ip, X64Op op);
+    void     emitBinOpFloat32AtReg(X64Gen& pp, ByteCodeInstruction* ip, X64Op op);
+    void     emitBinOpFloat64(X64Gen& pp, ByteCodeInstruction* ip, X64Op op);
+    void     emitBinOpFloat64AtReg(X64Gen& pp, ByteCodeInstruction* ip, X64Op op);
+    void     emitBinOpInt16(X64Gen& pp, ByteCodeInstruction* ip, X64Op op);
+    void     emitBinOpInt16AtReg(X64Gen& pp, ByteCodeInstruction* ip, X64Op op);
+    void     emitBinOpInt32(X64Gen& pp, ByteCodeInstruction* ip, X64Op op);
+    void     emitBinOpInt32AtReg(X64Gen& pp, ByteCodeInstruction* ip, X64Op op);
+    void     emitBinOpInt64(X64Gen& pp, ByteCodeInstruction* ip, X64Op op);
+    void     emitBinOpInt64AtReg(X64Gen& pp, ByteCodeInstruction* ip, X64Op op);
+    void     emitBinOpInt8(X64Gen& pp, ByteCodeInstruction* ip, X64Op op);
+    void     emitBinOpInt8AtReg(X64Gen& pp, ByteCodeInstruction* ip, X64Op op);
+    void     emitBinOpIntDivAtReg(X64Gen& pp, ByteCodeInstruction* ip, bool isSigned, uint32_t bits, bool modulo = false);
 
     CoffSymbol* getSymbol(X64Gen& pp, const Utf8& name);
     CoffSymbol* getOrAddSymbol(X64Gen& pp, const Utf8& name, CoffSymbolKind kind, uint32_t value = 0, uint16_t sectionIdx = 0);

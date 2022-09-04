@@ -351,19 +351,6 @@ struct X64Gen
 
     void emit_Add32_RSP(uint32_t value);
     void emit_Add64_Immediate(uint64_t value, uint8_t reg);
-    void emit_BinOpFloat32(ByteCodeInstruction* ip, X64Op op);
-    void emit_BinOpFloat32_At_Reg(ByteCodeInstruction* ip, X64Op op);
-    void emit_BinOpFloat64(ByteCodeInstruction* ip, X64Op op);
-    void emit_BinOpFloat64_At_Reg(ByteCodeInstruction* ip, X64Op op);
-    void emit_BinOpInt16(ByteCodeInstruction* ip, X64Op op);
-    void emit_BinOpInt16_At_Reg(ByteCodeInstruction* ip, X64Op op);
-    void emit_BinOpInt32(ByteCodeInstruction* ip, X64Op op);
-    void emit_BinOpInt32_At_Reg(ByteCodeInstruction* ip, X64Op op);
-    void emit_BinOpInt64(ByteCodeInstruction* ip, X64Op op);
-    void emit_BinOpInt64_At_Reg(ByteCodeInstruction* ip, X64Op op);
-    void emit_BinOpInt8(ByteCodeInstruction* ip, X64Op op);
-    void emit_BinOpInt8_At_Reg(ByteCodeInstruction* ip, X64Op op);
-    void emit_BinOpInt_Div_At_Reg(ByteCodeInstruction* ip, bool isSigned, uint32_t bits, bool modulo = false);
     void emit_Call_Indirect(uint8_t reg);
     void emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, VectorNative<uint32_t>& paramsRegisters, VectorNative<TypeInfo*>& paramsTypes, void* retCopy = nullptr);
     void emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT, void* retCopy = nullptr);
@@ -455,8 +442,6 @@ struct X64Gen
     void emit_SetNE();
     void emit_SignedExtend_8_To_32(uint8_t reg);
     void emit_SignedExtend_AL_To_AX();
-    void emit_SignedExtend_AL_To_EAX();
-    void emit_SignedExtend_CL_To_ECX();
     void emit_Store16_Immediate(uint32_t offset, uint16_t val, uint8_t reg);
     void emit_Store16_Indirect(uint32_t stackOffset, uint8_t reg, uint8_t memReg);
     void emit_Store32_Immediate(uint32_t offset, uint32_t val, uint8_t reg);

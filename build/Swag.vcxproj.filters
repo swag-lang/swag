@@ -488,6 +488,9 @@
     <ClCompile Include="..\src\X64Gen.cpp">
       <Filter>Backend\X64</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\BackendX64_Emit.cpp">
+      <Filter>Backend\X64</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/JobThread.h">

@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "BackendX64.h"
-#include "BackendX64FunctionBodyJob.h"
 #include "BackendX64_Macros.h"
 #include "ByteCodeGenJob.h"
 #include "ErrorIds.h"
@@ -490,155 +489,155 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::BinOpXorU8:
-            pp.emit_BinOpInt8_At_Reg(ip, X64Op::XOR);
+            emitBinOpInt8AtReg(pp, ip, X64Op::XOR);
             break;
         case ByteCodeOp::BinOpXorU16:
-            pp.emit_BinOpInt16_At_Reg(ip, X64Op::XOR);
+            emitBinOpInt16AtReg(pp, ip, X64Op::XOR);
             break;
         case ByteCodeOp::BinOpXorU32:
-            pp.emit_BinOpInt32_At_Reg(ip, X64Op::XOR);
+            emitBinOpInt32AtReg(pp, ip, X64Op::XOR);
             break;
         case ByteCodeOp::BinOpXorU64:
-            pp.emit_BinOpInt64_At_Reg(ip, X64Op::XOR);
+            emitBinOpInt64AtReg(pp, ip, X64Op::XOR);
             break;
 
         case ByteCodeOp::BinOpMulS32:
         case ByteCodeOp::BinOpMulS32_Safe:
-            pp.emit_BinOpInt32_At_Reg(ip, X64Op::IMUL);
+            emitBinOpInt32AtReg(pp, ip, X64Op::IMUL);
             emitOverflowSigned(pp, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr->typeInfoS32));
             break;
         case ByteCodeOp::BinOpMulU32:
         case ByteCodeOp::BinOpMulU32_Safe:
-            pp.emit_BinOpInt32_At_Reg(ip, X64Op::MUL);
+            emitBinOpInt32AtReg(pp, ip, X64Op::MUL);
             emitOverflowUnsigned(pp, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr->typeInfoU32));
             break;
         case ByteCodeOp::BinOpMulS64:
         case ByteCodeOp::BinOpMulS64_Safe:
-            pp.emit_BinOpInt64_At_Reg(ip, X64Op::IMUL);
+            emitBinOpInt64AtReg(pp, ip, X64Op::IMUL);
             emitOverflowSigned(pp, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr->typeInfoS64));
             break;
         case ByteCodeOp::BinOpMulU64:
         case ByteCodeOp::BinOpMulU64_Safe:
-            pp.emit_BinOpInt64_At_Reg(ip, X64Op::MUL);
+            emitBinOpInt64AtReg(pp, ip, X64Op::MUL);
             emitOverflowUnsigned(pp, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMul, g_TypeMgr->typeInfoU64));
             break;
         case ByteCodeOp::BinOpMulF32:
-            pp.emit_BinOpFloat32_At_Reg(ip, X64Op::FMUL);
+            emitBinOpFloat32AtReg(pp, ip, X64Op::FMUL);
             break;
         case ByteCodeOp::BinOpMulF64:
-            pp.emit_BinOpFloat64_At_Reg(ip, X64Op::FMUL);
+            emitBinOpFloat64AtReg(pp, ip, X64Op::FMUL);
             break;
 
         case ByteCodeOp::BinOpModuloS32:
-            pp.emit_BinOpInt_Div_At_Reg(ip, true, 32, true);
+            emitBinOpIntDivAtReg(pp, ip, true, 32, true);
             break;
         case ByteCodeOp::BinOpModuloS64:
-            pp.emit_BinOpInt_Div_At_Reg(ip, true, 64, true);
+            emitBinOpIntDivAtReg(pp, ip, true, 64, true);
             break;
         case ByteCodeOp::BinOpModuloU32:
-            pp.emit_BinOpInt_Div_At_Reg(ip, false, 32, true);
+            emitBinOpIntDivAtReg(pp, ip, false, 32, true);
             break;
         case ByteCodeOp::BinOpModuloU64:
-            pp.emit_BinOpInt_Div_At_Reg(ip, false, 64, true);
+            emitBinOpIntDivAtReg(pp, ip, false, 64, true);
             break;
 
         case ByteCodeOp::BinOpDivS32:
-            pp.emit_BinOpInt_Div_At_Reg(ip, true, 32);
+            emitBinOpIntDivAtReg(pp, ip, true, 32);
             break;
         case ByteCodeOp::BinOpDivS64:
-            pp.emit_BinOpInt_Div_At_Reg(ip, true, 64);
+            emitBinOpIntDivAtReg(pp, ip, true, 64);
             break;
         case ByteCodeOp::BinOpDivU32:
-            pp.emit_BinOpInt_Div_At_Reg(ip, false, 32);
+            emitBinOpIntDivAtReg(pp, ip, false, 32);
             break;
         case ByteCodeOp::BinOpDivU64:
-            pp.emit_BinOpInt_Div_At_Reg(ip, false, 64);
+            emitBinOpIntDivAtReg(pp, ip, false, 64);
             break;
         case ByteCodeOp::BinOpDivF32:
-            pp.emit_BinOpFloat32_At_Reg(ip, X64Op::FDIV);
+            emitBinOpFloat32AtReg(pp, ip, X64Op::FDIV);
             break;
         case ByteCodeOp::BinOpDivF64:
-            pp.emit_BinOpFloat64_At_Reg(ip, X64Op::FDIV);
+            emitBinOpFloat64AtReg(pp, ip, X64Op::FDIV);
             break;
 
         case ByteCodeOp::BinOpPlusS32:
         case ByteCodeOp::BinOpPlusS32_Safe:
-            pp.emit_BinOpInt32_At_Reg(ip, X64Op::ADD);
+            emitBinOpInt32AtReg(pp, ip, X64Op::ADD);
             emitOverflowSigned(pp, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr->typeInfoS32));
             break;
         case ByteCodeOp::BinOpPlusU32:
         case ByteCodeOp::BinOpPlusU32_Safe:
-            pp.emit_BinOpInt32_At_Reg(ip, X64Op::ADD);
+            emitBinOpInt32AtReg(pp, ip, X64Op::ADD);
             emitOverflowUnsigned(pp, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr->typeInfoU32));
             break;
         case ByteCodeOp::BinOpPlusS64:
         case ByteCodeOp::BinOpPlusS64_Safe:
-            pp.emit_BinOpInt64_At_Reg(ip, X64Op::ADD);
+            emitBinOpInt64AtReg(pp, ip, X64Op::ADD);
             emitOverflowSigned(pp, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr->typeInfoS64));
             break;
         case ByteCodeOp::BinOpPlusU64:
         case ByteCodeOp::BinOpPlusU64_Safe:
-            pp.emit_BinOpInt64_At_Reg(ip, X64Op::ADD);
+            emitBinOpInt64AtReg(pp, ip, X64Op::ADD);
             emitOverflowUnsigned(pp, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlus, g_TypeMgr->typeInfoU64));
             break;
         case ByteCodeOp::BinOpPlusF32:
-            pp.emit_BinOpFloat32_At_Reg(ip, X64Op::FADD);
+            emitBinOpFloat32AtReg(pp, ip, X64Op::FADD);
             break;
         case ByteCodeOp::BinOpPlusF64:
-            pp.emit_BinOpFloat64_At_Reg(ip, X64Op::FADD);
+            emitBinOpFloat64AtReg(pp, ip, X64Op::FADD);
             break;
 
         case ByteCodeOp::BinOpMinusS32:
         case ByteCodeOp::BinOpMinusS32_Safe:
-            pp.emit_BinOpInt32_At_Reg(ip, X64Op::SUB);
+            emitBinOpInt32AtReg(pp, ip, X64Op::SUB);
             emitOverflowSigned(pp, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr->typeInfoS32));
             break;
         case ByteCodeOp::BinOpMinusU32:
         case ByteCodeOp::BinOpMinusU32_Safe:
-            pp.emit_BinOpInt32_At_Reg(ip, X64Op::SUB);
+            emitBinOpInt32AtReg(pp, ip, X64Op::SUB);
             emitOverflowUnsigned(pp, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr->typeInfoU32));
             break;
         case ByteCodeOp::BinOpMinusS64:
         case ByteCodeOp::BinOpMinusS64_Safe:
-            pp.emit_BinOpInt64_At_Reg(ip, X64Op::SUB);
+            emitBinOpInt64AtReg(pp, ip, X64Op::SUB);
             emitOverflowSigned(pp, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr->typeInfoS64));
             break;
         case ByteCodeOp::BinOpMinusU64:
         case ByteCodeOp::BinOpMinusU64_Safe:
-            pp.emit_BinOpInt64_At_Reg(ip, X64Op::SUB);
+            emitBinOpInt64AtReg(pp, ip, X64Op::SUB);
             emitOverflowUnsigned(pp, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFMinus, g_TypeMgr->typeInfoU64));
             break;
         case ByteCodeOp::BinOpMinusF32:
-            pp.emit_BinOpFloat32_At_Reg(ip, X64Op::FSUB);
+            emitBinOpFloat32AtReg(pp, ip, X64Op::FSUB);
             break;
         case ByteCodeOp::BinOpMinusF64:
-            pp.emit_BinOpFloat64_At_Reg(ip, X64Op::FSUB);
+            emitBinOpFloat64AtReg(pp, ip, X64Op::FSUB);
             break;
 
         case ByteCodeOp::BinOpBitmaskAnd8:
-            pp.emit_BinOpInt8_At_Reg(ip, X64Op::AND);
+            emitBinOpInt8AtReg(pp, ip, X64Op::AND);
             break;
         case ByteCodeOp::BinOpBitmaskAnd16:
-            pp.emit_BinOpInt16_At_Reg(ip, X64Op::AND);
+            emitBinOpInt16AtReg(pp, ip, X64Op::AND);
             break;
         case ByteCodeOp::BinOpBitmaskAnd32:
-            pp.emit_BinOpInt32_At_Reg(ip, X64Op::AND);
+            emitBinOpInt32AtReg(pp, ip, X64Op::AND);
             break;
         case ByteCodeOp::BinOpBitmaskAnd64:
-            pp.emit_BinOpInt64_At_Reg(ip, X64Op::AND);
+            emitBinOpInt64AtReg(pp, ip, X64Op::AND);
             break;
 
         case ByteCodeOp::BinOpBitmaskOr8:
-            pp.emit_BinOpInt8_At_Reg(ip, X64Op::OR);
+            emitBinOpInt8AtReg(pp, ip, X64Op::OR);
             break;
         case ByteCodeOp::BinOpBitmaskOr16:
-            pp.emit_BinOpInt16_At_Reg(ip, X64Op::OR);
+            emitBinOpInt16AtReg(pp, ip, X64Op::OR);
             break;
         case ByteCodeOp::BinOpBitmaskOr32:
-            pp.emit_BinOpInt32_At_Reg(ip, X64Op::OR);
+            emitBinOpInt32AtReg(pp, ip, X64Op::OR);
             break;
         case ByteCodeOp::BinOpBitmaskOr64:
-            pp.emit_BinOpInt64_At_Reg(ip, X64Op::OR);
+            emitBinOpInt64AtReg(pp, ip, X64Op::OR);
             break;
 
         case ByteCodeOp::AffectOpShiftLeftEqU8:
@@ -1229,7 +1228,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::CompareOp3WayU32:
         case ByteCodeOp::CompareOp3WayS32:
-            pp.emit_BinOpInt32(ip, X64Op::SUB);
+            emitBinOpInt32(pp, ip, X64Op::SUB);
             pp.emit_Clear32(RAX);
             pp.emit_Test32(RCX, RCX);
             pp.emit_SetG();
@@ -1239,7 +1238,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         case ByteCodeOp::CompareOp3WayU64:
         case ByteCodeOp::CompareOp3WayS64:
-            pp.emit_BinOpInt64(ip, X64Op::SUB);
+            emitBinOpInt64(pp, ip, X64Op::SUB);
             pp.emit_Clear64(RAX);
             pp.emit_Test64(RCX, RCX);
             pp.emit_SetG();
@@ -1248,7 +1247,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Store32_Indirect(regOffset(ip->c.u32), RAX, RDI);
             break;
         case ByteCodeOp::CompareOp3WayF32:
-            pp.emit_BinOpFloat32(ip, X64Op::FSUB);
+            emitBinOpFloat32(pp, ip, X64Op::FSUB);
             pp.emit_Clear32(RAX);
             pp.emit_Clear32(RCX);
             pp.concat.addString3("\x0F\x57\xC9"); // xorps xmm1, xmm1
@@ -1260,7 +1259,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Store32_Indirect(regOffset(ip->c.u32), RAX, RDI);
             break;
         case ByteCodeOp::CompareOp3WayF64:
-            pp.emit_BinOpFloat64(ip, X64Op::FSUB);
+            emitBinOpFloat64(pp, ip, X64Op::FSUB);
             pp.emit_Clear32(RAX);
             pp.emit_Clear32(RCX);
             pp.concat.addString3("\x0F\x57\xC9");     // xorps xmm1, xmm1
@@ -3477,11 +3476,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     return ok;
 }
 
-BackendFunctionBodyJobBase* BackendX64::newFunctionJob()
-{
-    return g_Allocator.alloc<BackendX64FunctionBodyJob>();
-}
-
 uint32_t BackendX64::getOrCreateLabel(X64Gen& pp, uint32_t ip)
 {
     auto it = pp.labels.find(ip);
@@ -3498,8 +3492,7 @@ uint32_t BackendX64::getOrCreateLabel(X64Gen& pp, uint32_t ip)
 uint16_t BackendX64::computeUnwindPushRDI(uint32_t offsetSubRSP)
 {
     uint16_t unwind0 = 0;
-
-    unwind0 = (RDI << 12);
+    unwind0          = (RDI << 12);
     unwind0 |= (UWOP_PUSH_NONVOL << 8);
     unwind0 |= (uint8_t) offsetSubRSP;
     return unwind0;
@@ -3535,304 +3528,4 @@ void BackendX64::computeUnwindStack(uint32_t sizeStack, uint32_t offsetSubRSP, V
         unwind0 = (uint16_t) (sizeStack / 8);
         unwind.push_back(unwind0);
     }
-}
-
-void BackendX64::emitShiftArithmetic(X64Gen& pp, ByteCodeInstruction* ip, uint8_t numBits)
-{
-    if (ip->flags & BCI_IMM_B && ip->b.u32 >= numBits && !(ip->flags & BCI_SHIFT_SMALL))
-    {
-        switch (numBits)
-        {
-        case 8:
-            pp.concat.addString2("\xC0\xF8"); // sar al
-            break;
-        case 16:
-            pp.concat.addString3("\x66\xC1\xF8"); // sar ax
-            break;
-        case 32:
-            pp.concat.addString2("\xC1\xF8"); // sar eax
-            break;
-        case 64:
-            pp.concat.addString3("\x48\xC1\xF8"); // sar rax
-            break;
-        }
-
-        pp.concat.addU8(numBits - 1);
-    }
-    else
-    {
-        if (ip->flags & BCI_IMM_A)
-            pp.emit_LoadN_Immediate(ip->a, RAX, numBits);
-        else
-            pp.emit_LoadN_Indirect(regOffset(ip->a.u32), RAX, RDI, numBits);
-        if (ip->flags & BCI_IMM_B)
-            pp.emit_Load8_Immediate(ip->b.u8 & (numBits - 1), RCX);
-        else
-        {
-            pp.emit_Load32_Indirect(regOffset(ip->b.u32), RCX, RDI);
-            if (ip->flags & BCI_SHIFT_SMALL)
-            {
-                pp.concat.addString2("\x80\xE1"); // and cl, ??
-                pp.concat.addU8(numBits - 1);
-            }
-            else
-            {
-                pp.concat.addString2("\x83\xF9"); // cmp ecx, ??
-                pp.concat.addU8(numBits);
-                pp.emit_NearJumpOp(JL);
-                pp.concat.addU8(0); // mov below
-                auto seekPtr = pp.concat.getSeekPtr() - 1;
-                auto seekJmp = pp.concat.totalCount();
-                pp.emit_Load8_Immediate(numBits - 1, RCX);
-                *seekPtr = (uint8_t) (pp.concat.totalCount() - seekJmp);
-            }
-        }
-
-        switch (numBits)
-        {
-        case 8:
-            pp.concat.addString2("\xD2\xF8"); // sar al, cl
-            break;
-        case 16:
-            pp.concat.addString3("\x66\xD3\xF8"); // sar ax, cl
-            break;
-        case 32:
-            pp.concat.addString2("\xD3\xF8"); // sar eax, cl
-            break;
-        case 64:
-            pp.concat.addString3("\x48\xD3\xF8"); // sar rax, cl
-            break;
-        }
-    }
-
-    pp.emit_StoreN_Indirect(regOffset(ip->c.u32), RAX, RDI, numBits);
-}
-
-void BackendX64::emitShiftLogical(X64Gen& pp, ByteCodeInstruction* ip, uint8_t numBits, uint8_t op)
-{
-    if (ip->flags & BCI_IMM_B && ip->b.u32 >= numBits && !(ip->flags & BCI_SHIFT_SMALL))
-        pp.emit_ClearN(RAX, numBits);
-    else
-    {
-        if (ip->flags & BCI_IMM_A)
-            pp.emit_LoadN_Immediate(ip->a, RAX, numBits);
-        else
-            pp.emit_LoadN_Indirect(regOffset(ip->a.u32), RAX, RDI, numBits);
-
-        if (ip->flags & BCI_IMM_B)
-            pp.emit_Load8_Immediate(ip->b.u8 & (numBits - 1), RCX);
-        else
-        {
-            pp.emit_Load32_Indirect(regOffset(ip->b.u32), RCX, RDI);
-            if (ip->flags & BCI_SHIFT_SMALL)
-            {
-                pp.concat.addString2("\x80\xE1"); // and cl, ??
-                pp.concat.addU8(numBits - 1);
-            }
-            else
-            {
-                pp.concat.addString2("\x83\xF9"); // cmp ecx, ?
-                pp.concat.addU8(numBits);
-                pp.emit_NearJumpOp(JL);
-                pp.concat.addU8(0); // clear below
-                auto seekPtr = pp.concat.getSeekPtr() - 1;
-                auto seekJmp = pp.concat.totalCount();
-                pp.emit_ClearN(RAX, numBits);
-                *seekPtr = (uint8_t) (pp.concat.totalCount() - seekJmp);
-            }
-        }
-
-        switch (numBits)
-        {
-        case 8:
-            pp.concat.addString1("\xD2");
-            break;
-        case 16:
-            pp.concat.addString2("\x66\xD3");
-            break;
-        case 32:
-            pp.concat.addString1("\xD3");
-            break;
-        case 64:
-            pp.concat.addString2("\x48\xD3");
-            break;
-        }
-
-        pp.concat.addU8(op);
-    }
-
-    pp.emit_StoreN_Indirect(regOffset(ip->c.u32), RAX, RDI, numBits);
-}
-
-void BackendX64::emitShiftEqArithmetic(X64Gen& pp, ByteCodeInstruction* ip, uint8_t numBits)
-{
-    pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX, RDI);
-    if (ip->flags & BCI_IMM_B)
-    {
-        switch (numBits)
-        {
-        case 8:
-            pp.concat.addString2("\xC0\x38");
-            break;
-        case 16:
-            pp.concat.addString3("\x66\xC1\x38");
-            break;
-        case 32:
-            pp.concat.addString2("\xC1\x38");
-            break;
-        case 64:
-            pp.concat.addString3("\x48\xC1\x38");
-            break;
-        }
-
-        if (ip->flags & BCI_SHIFT_SMALL)
-            pp.concat.addU8(ip->b.u8 & (numBits - 1));
-        else
-            pp.concat.addU8(min(ip->b.u8, numBits - 1));
-    }
-    else
-    {
-        pp.emit_Load32_Indirect(regOffset(ip->b.u32), RCX, RDI);
-        if (ip->flags & BCI_SHIFT_SMALL)
-        {
-            pp.concat.addString2("\x80\xE1"); // and cl, ??
-            pp.concat.addU8(numBits - 1);
-        }
-        else
-        {
-            pp.concat.addString2("\x83\xF9"); // cmp ecx, ??
-            pp.concat.addU8(numBits);
-            pp.emit_NearJumpOp(JL);
-            pp.concat.addU8(0); // move below
-            auto seekPtr = pp.concat.getSeekPtr() - 1;
-            auto seekJmp = pp.concat.totalCount();
-            pp.emit_Load8_Immediate(numBits - 1, RCX);
-            *seekPtr = (uint8_t) (pp.concat.totalCount() - seekJmp);
-        }
-
-        switch (numBits)
-        {
-        case 8:
-            pp.concat.addString2("\xd2\x38");
-            break;
-        case 16:
-            pp.concat.addString3("\x66\xd3\x38");
-            break;
-        case 32:
-            pp.concat.addString2("\xd3\x38");
-            break;
-        case 64:
-            pp.concat.addString3("\x48\xd3\x38");
-            break;
-        }
-    }
-}
-
-void BackendX64::emitShiftEqLogical(X64Gen& pp, ByteCodeInstruction* ip, uint8_t numBits, uint8_t op)
-{
-    pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX, RDI);
-    if (ip->flags & BCI_IMM_B && ip->b.u32 >= numBits && !(ip->flags & BCI_SHIFT_SMALL))
-    {
-        pp.emit_ClearN(RCX, numBits);
-        pp.emit_StoreN_Indirect(0, RCX, RAX, numBits);
-    }
-    else if (ip->flags & BCI_IMM_B)
-    {
-        switch (numBits)
-        {
-        case 8:
-            pp.concat.addString1("\xc0");
-            break;
-        case 16:
-            pp.concat.addString2("\x66\xc1");
-            break;
-        case 32:
-            pp.concat.addString1("\xc1");
-            break;
-        case 64:
-            pp.concat.addString2("\x48\xc1");
-            break;
-        }
-
-        pp.concat.addU8(op);
-        if (ip->flags & BCI_SHIFT_SMALL)
-            pp.concat.addU8(ip->b.u8 & (numBits - 1));
-        else
-            pp.concat.addU8(ip->b.u8);
-    }
-    else
-    {
-        pp.emit_Load32_Indirect(regOffset(ip->b.u32), RCX, RDI);
-        if (ip->flags & BCI_SHIFT_SMALL)
-        {
-            pp.concat.addString2("\x80\xE1"); // and cl, ??
-            pp.concat.addU8(numBits - 1);
-        }
-        else
-        {
-            pp.concat.addString2("\x83\xF9"); // cmp ecx, ??
-            pp.concat.addU8(numBits);
-            pp.emit_NearJumpOp(JL);
-            pp.concat.addU8(0); // clear + store below
-            auto seekPtr = pp.concat.getSeekPtr() - 1;
-            auto seekJmp = pp.concat.totalCount();
-            pp.emit_ClearN(RCX, numBits);
-            pp.emit_StoreN_Indirect(0, RCX, RAX, numBits);
-            *seekPtr = (uint8_t) (pp.concat.totalCount() - seekJmp);
-        }
-
-        switch (numBits)
-        {
-        case 8:
-            pp.concat.addString1("\xd2");
-            break;
-        case 16:
-            pp.concat.addString2("\x66\xd3");
-            break;
-        case 32:
-            pp.concat.addString1("\xd3");
-            break;
-        case 64:
-            pp.concat.addString2("\x48\xd3");
-            break;
-        }
-
-        pp.concat.addU8(op);
-    }
-}
-
-void BackendX64::emitOverflowSigned(X64Gen& pp, AstNode* node, const char* msg)
-{
-    if (!module->mustEmitSafetyOF(node))
-        return;
-    pp.emit_LongJumpOp(JNO);
-    pp.concat.addU32(0);
-    auto addr      = (uint32_t*) pp.concat.getSeekPtr() - 1;
-    auto prevCount = pp.concat.totalCount();
-    emitInternalPanic(pp, node, msg);
-    *addr = pp.concat.totalCount() - prevCount;
-}
-
-void BackendX64::emitOverflowUnsigned(X64Gen& pp, AstNode* node, const char* msg)
-{
-    if (!module->mustEmitSafetyOF(node))
-        return;
-    pp.emit_LongJumpOp(JAE);
-    pp.concat.addU32(0);
-    auto addr      = (uint32_t*) pp.concat.getSeekPtr() - 1;
-    auto prevCount = pp.concat.totalCount();
-    emitInternalPanic(pp, node, msg);
-    *addr = pp.concat.totalCount() - prevCount;
-}
-
-void BackendX64::emitInternalPanic(X64Gen& pp, AstNode* node, const char* msg)
-{
-    emitGlobalString(pp, Utf8::normalizePath(node->sourceFile->path), RCX);
-    pp.emit_Load64_Immediate(node->token.startLocation.line, RDX);
-    pp.emit_Load64_Immediate(node->token.startLocation.column, R8);
-    if (msg)
-        emitGlobalString(pp, msg, R9);
-    else
-        pp.emit_Clear64(R9);
-    emitCall(pp, g_LangSpec->name__panic);
 }

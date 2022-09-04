@@ -287,6 +287,7 @@
     <ClCompile Include="..\src\BackendX64_Data.cpp" />
     <ClCompile Include="..\src\BackendX64_Dbg.cpp" />
     <ClCompile Include="../src/BackendX64FunctionBodyJob.cpp" />
+    <ClCompile Include="..\src\BackendX64_Emit.cpp" />
     <ClCompile Include="..\src\BackendX64_Function.cpp" />
     <ClCompile Include="../src/BackendX64SaveObjJob.cpp" />
     <ClCompile Include="..\src\BackendX64_Main.cpp" />

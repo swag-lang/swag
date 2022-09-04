@@ -6,6 +6,12 @@
 #include "Os.h"
 #include "Workspace.h"
 #include "BackendX64SaveObjJob.h"
+#include "BackendX64FunctionBodyJob.h"
+
+BackendFunctionBodyJobBase* BackendX64::newFunctionJob()
+{
+    return g_Allocator.alloc<BackendX64FunctionBodyJob>();
+}
 
 bool BackendX64::emitHeader(const BuildParameters& buildParameters)
 {
@@ -547,30 +553,6 @@ CoffSymbol* BackendX64::getOrAddSymbol(X64Gen& pp, const Utf8& name, CoffSymbolK
     return &pp.allSymbols.back();
 }
 
-void BackendX64::emitGlobalString(X64Gen& pp, const Utf8& str, uint8_t reg)
-{
-    pp.emit_Load64_Immediate(0, reg, true);
-
-    auto&       concat = pp.concat;
-    auto        it     = pp.globalStrings.find(str);
-    CoffSymbol* sym    = nullptr;
-    if (it != pp.globalStrings.end())
-        sym = &pp.allSymbols[it->second];
-    else
-    {
-        Utf8 symName          = Fmt("__str%u", (uint32_t) pp.globalStrings.size());
-        sym                   = getOrAddSymbol(pp, symName, CoffSymbolKind::GlobalString);
-        pp.globalStrings[str] = sym->index;
-        sym->value            = pp.stringSegment.addStringNoLock(str);
-    }
-
-    CoffRelocation reloc;
-    reloc.virtualAddress = (concat.totalCount() - 8) - pp.textSectionOffset;
-    reloc.symbolIndex    = sym->index;
-    reloc.type           = IMAGE_REL_AMD64_ADDR64;
-    pp.relocTableTextSection.table.push_back(reloc);
-}
-
 bool BackendX64::emitXData(const BuildParameters& buildParameters)
 {
     int   ct              = buildParameters.compileType;
@@ -786,32 +768,6 @@ bool BackendX64::emitRelocationTable(Concat& concat, CoffRelocationTable& coffta
     }
 
     return true;
-}
-
-void BackendX64::emitSymbolRelocation(X64Gen& pp, const Utf8& name)
-{
-    auto& concat  = pp.concat;
-    auto  callSym = getOrAddSymbol(pp, name, CoffSymbolKind::Extern);
-    if (callSym->kind == CoffSymbolKind::Function)
-    {
-        concat.addS32((callSym->value + pp.textSectionOffset) - (concat.totalCount() + 4));
-    }
-    else
-    {
-        CoffRelocation reloc;
-        reloc.virtualAddress = concat.totalCount() - pp.textSectionOffset;
-        reloc.symbolIndex    = callSym->index;
-        reloc.type           = IMAGE_REL_AMD64_REL32;
-        pp.relocTableTextSection.table.push_back(reloc);
-        concat.addU32(0);
-    }
-}
-
-void BackendX64::emitCall(X64Gen& pp, const Utf8& name)
-{
-    auto& concat = pp.concat;
-    concat.addU8(0xE8); // call
-    emitSymbolRelocation(pp, name);
 }
 
 bool BackendX64::saveObjFile(const BuildParameters& buildParameters)
