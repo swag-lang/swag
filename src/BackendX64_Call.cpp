@@ -3,6 +3,8 @@
 #include "BackendX64_Macros.h"
 #include "TypeManager.h"
 #include "ByteCode.h"
+#include "Module.h"
+#include "Workspace.h"
 
 uint32_t BackendX64::getParamStackOffset(TypeInfoFuncAttr* typeFunc, int paramIdx, int offsetS4, int sizeStack)
 {
@@ -109,7 +111,7 @@ void BackendX64::emitGetParam(X64Gen& pp, TypeInfoFuncAttr* typeFunc, int reg, i
     pp.emit_Store64_Indirect(regOffset(reg), RAX, RDI);
 }
 
-void BackendX64::emitCall(X64Gen& pp, TypeInfoFuncAttr* typeFunc, const Utf8& funcName, VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT, bool localCall)
+void BackendX64::emitCall(X64Gen& pp, TypeInfoFuncAttr* typeFunc, const Utf8& funcName, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT, bool localCall)
 {
     // Push parameters
     pp.emit_Call_Parameters(typeFunc, pushRAParams, offsetRT);
@@ -139,6 +141,18 @@ void BackendX64::emitCall(X64Gen& pp, TypeInfoFuncAttr* typeFunc, const Utf8& fu
 
     // Store result
     pp.emit_Call_Result(typeFunc, offsetRT);
+}
+
+void BackendX64::emitInternalCall(X64Gen& pp, Module* moduleToGen, const Utf8& funcName, const VectorNative<uint32_t>& pushRAParams)
+{
+    auto typeFunc = g_Workspace->runtimeModule->getRuntimeTypeFct(funcName);
+
+    // Invert order
+    VectorNative<uint32_t> p;
+    for (int i = (int) pushRAParams.size() - 1; i >= 0; i--)
+        p.push_back(pushRAParams[i]);
+
+    emitCall(pp, typeFunc, funcName, p, 0, true);
 }
 
 void BackendX64::emitCall(X64Gen& pp, const Utf8& funcName)

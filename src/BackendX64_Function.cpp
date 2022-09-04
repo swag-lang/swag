@@ -2633,7 +2633,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         {
             auto funcNode = (AstFuncDecl*) ip->a.pointer;
             funcNode->computeFullNameForeign(false);
-            emitCall(pp, (TypeInfoFuncAttr*)ip->b.pointer, funcNode->fullnameForeign, pushRAParams, offsetRT, false);
+            emitCall(pp, (TypeInfoFuncAttr*) ip->b.pointer, funcNode->fullnameForeign, pushRAParams, offsetRT, false);
             pushRAParams.clear();
             pushRVParams.clear();
             break;
@@ -3416,24 +3416,12 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             emitCall(pp, g_LangSpec->name__geterr);
             break;
         }
-
         case ByteCodeOp::InternalSetErr:
-        {
-            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
-            pp.emit_Load64_Indirect(regOffset(ip->b.u32), RDX, RDI);
-            emitCall(pp, g_LangSpec->name__seterr);
+            emitInternalCall(pp, moduleToGen, g_LangSpec->name__seterr, {ip->a.u32, ip->b.u32});
             break;
-        }
-
         case ByteCodeOp::InternalCheckAny:
-        {
-            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
-            pp.emit_Load64_Indirect(regOffset(ip->b.u32), RDX, RDI);
-            pp.emit_Load64_Indirect(regOffset(ip->c.u32), R8, RDI);
-            emitCall(pp, g_LangSpec->name__checkAny);
+            emitInternalCall(pp, moduleToGen, g_LangSpec->name__checkAny, {ip->a.u32, ip->b.u32, ip->c.u32});
             break;
-        }
-
         case ByteCodeOp::InternalHasErr:
             pp.emit_Load64_Indirect(regOffset(ip->b.u32), RAX, RDI);
             pp.emit_Load32_Indirect(offsetof(SwagContext, errorMsgLen), RCX, RAX);

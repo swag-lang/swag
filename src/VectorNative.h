@@ -27,6 +27,12 @@ struct VectorNative
         other.allocated = 0;
     }
 
+    VectorNative(const initializer_list<T>& other)
+    {
+        for (auto it : other)
+            push_back(it);
+    }
+
     ~VectorNative()
     {
         if (buffer)
@@ -140,6 +146,16 @@ struct VectorNative
     }
 
     T* end()
+    {
+        return buffer + count;
+    }
+
+    const T* begin() const
+    {
+        return buffer;
+    }
+
+    const T* end() const
     {
         return buffer + count;
     }
