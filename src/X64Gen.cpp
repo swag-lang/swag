@@ -503,20 +503,20 @@ void X64Gen::emit_SetNE()
     concat.addU8(0xC0);
 }
 
-void X64Gen::emit_SetA(uint8_t regDst)
+void X64Gen::emit_SetA(uint8_t reg)
 {
-    SWAG_ASSERT(regDst < R8);
+    SWAG_ASSERT(reg < R8);
     concat.addU8(0x0F);
     concat.addU8(0x97);
-    concat.addU8(0xC0 | regDst);
+    concat.addU8(0xC0 | reg);
 }
 
-void X64Gen::emit_SetAE(uint8_t regDst)
+void X64Gen::emit_SetAE(uint8_t reg)
 {
-    SWAG_ASSERT(regDst < R8);
+    SWAG_ASSERT(reg < R8);
     concat.addU8(0x0F);
     concat.addU8(0x93);
-    concat.addU8(0xC0 | regDst);
+    concat.addU8(0xC0 | reg);
 }
 
 void X64Gen::emit_SetNA()
@@ -1026,7 +1026,7 @@ void X64Gen::emit_Symbol_RelocationValue(uint8_t reg, uint32_t symbolIndex, uint
     concat.addU32(offset);
 }
 
-void X64Gen::emit_Sub_Cst32_To_RSP(uint32_t value)
+void X64Gen::emit_Sub32_RSP(uint32_t value)
 {
     if (value)
     {
@@ -1043,7 +1043,7 @@ void X64Gen::emit_Sub_Cst32_To_RSP(uint32_t value)
     }
 }
 
-void X64Gen::emit_Add_Cst32_To_RSP(uint32_t value)
+void X64Gen::emit_Add32_RSP(uint32_t value)
 {
     if (value)
     {
@@ -1424,7 +1424,7 @@ void X64Gen::emit_BinOpInt64_At_Reg(ByteCodeInstruction* ip, X64Op op)
 }
 
 /////////////////////////////////////////////////////////////////////
-void X64Gen::emit_imul64_RAX(uint64_t value)
+void X64Gen::emit_Mul64_RAX(uint64_t value)
 {
     if (value == 2)
     {

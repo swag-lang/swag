@@ -104,7 +104,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     sizeProlog       = concat.totalCount() - beforeProlog;
     uint16_t unwind0 = computeUnwindPushRDI(sizeProlog);
 
-    pp.emit_Sub_Cst32_To_RSP(sizeStack + sizeParamsStack);
+    pp.emit_Sub32_RSP(sizeStack + sizeParamsStack);
 
     coffFct->offsetStack  = offsetStack;
     coffFct->offsetRetVal = 16 + sizeStack;
@@ -1845,7 +1845,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
             pp.emit_Clear64(RDX);
             pp.emit_Load64_Indirect(regOffset(ip->b.u32), RAX, RDI);
-            pp.emit_imul64_RAX(ip->c.u64);
+            pp.emit_Mul64_RAX(ip->c.u64);
             pp.emit_Copy64(RAX, R8);
             emitCall(pp, g_LangSpec->name_memset);
             break;
@@ -2121,7 +2121,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::Mul64byVB64:
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX, RDI);
-            pp.emit_imul64_RAX(ip->b.u64);
+            pp.emit_Mul64_RAX(ip->b.u64);
             pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX, RDI);
             break;
 
@@ -2709,7 +2709,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 }
             }
 
-            pp.emit_Add_Cst32_To_RSP(sizeStack + sizeParamsStack);
+            pp.emit_Add32_RSP(sizeStack + sizeParamsStack);
             pp.emit_Pop(RDI);
             pp.emit_Ret();
             break;

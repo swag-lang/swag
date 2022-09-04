@@ -58,7 +58,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     auto coffFct         = registerFunction(pp, nullptr, symbolFuncIndex);
 
     auto beforeProlog = concat.totalCount();
-    pp.emit_Sub_Cst32_To_RSP(40);
+    pp.emit_Sub32_RSP(40);
     auto                   sizeProlog = concat.totalCount() - beforeProlog;
     VectorNative<uint16_t> unwind;
     computeUnwindStack(40, sizeProlog, unwind);
@@ -201,7 +201,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     emitCall(pp, g_LangSpec->name__exit);
 
     pp.emit_Clear64(RAX);
-    pp.emit_Add_Cst32_To_RSP(40);
+    pp.emit_Add32_RSP(40);
     pp.emit_Ret();
 
     uint32_t endAddress = concat.totalCount();
@@ -230,12 +230,12 @@ bool BackendX64::emitGetTypeTable(const BuildParameters& buildParameters)
         pp.directives += Fmt("/EXPORT:%s ", thisInit.c_str());
 
     auto beforeProlog = concat.totalCount();
-    pp.emit_Sub_Cst32_To_RSP(40);
+    pp.emit_Sub32_RSP(40);
     auto                   sizeProlog = concat.totalCount() - beforeProlog;
     VectorNative<uint16_t> unwind;
     computeUnwindStack(40, sizeProlog, unwind);
 
-    pp.emit_Add_Cst32_To_RSP(40);
+    pp.emit_Add32_RSP(40);
     pp.emit_Symbol_RelocationAddr(RAX, pp.symCSIndex, module->typesSliceOffset);
     pp.emit_Ret();
 
@@ -263,7 +263,7 @@ bool BackendX64::emitGlobalPreMain(const BuildParameters& buildParameters)
         pp.directives += Fmt("/EXPORT:%s ", thisInit.c_str());
 
     auto beforeProlog = concat.totalCount();
-    pp.emit_Sub_Cst32_To_RSP(40);
+    pp.emit_Sub32_RSP(40);
     auto                   sizeProlog = concat.totalCount() - beforeProlog;
     VectorNative<uint16_t> unwind;
     computeUnwindStack(40, sizeProlog, unwind);
@@ -283,7 +283,7 @@ bool BackendX64::emitGlobalPreMain(const BuildParameters& buildParameters)
         emitCall(pp, bc->getCallName());
     }
 
-    pp.emit_Add_Cst32_To_RSP(40);
+    pp.emit_Add32_RSP(40);
     pp.emit_Ret();
 
     uint32_t endAddress = concat.totalCount();
@@ -309,7 +309,7 @@ bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
         pp.directives += Fmt("/EXPORT:%s ", thisInit.c_str());
 
     auto beforeProlog = concat.totalCount();
-    pp.emit_Sub_Cst32_To_RSP(40);
+    pp.emit_Sub32_RSP(40);
     auto                   sizeProlog = concat.totalCount() - beforeProlog;
     VectorNative<uint16_t> unwind;
     computeUnwindStack(40, sizeProlog, unwind);
@@ -356,7 +356,7 @@ bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
         emitCall(pp, bc->getCallName());
     }
 
-    pp.emit_Add_Cst32_To_RSP(40);
+    pp.emit_Add32_RSP(40);
     pp.emit_Ret();
 
     uint32_t endAddress = concat.totalCount();
@@ -382,7 +382,7 @@ bool BackendX64::emitGlobalDrop(const BuildParameters& buildParameters)
         pp.directives += Fmt("/EXPORT:%s ", thisDrop.c_str());
 
     auto beforeProlog = concat.totalCount();
-    pp.emit_Sub_Cst32_To_RSP(40);
+    pp.emit_Sub32_RSP(40);
     auto                   sizeProlog = concat.totalCount() - beforeProlog;
     VectorNative<uint16_t> unwind;
     computeUnwindStack(40, sizeProlog, unwind);
@@ -396,7 +396,7 @@ bool BackendX64::emitGlobalDrop(const BuildParameters& buildParameters)
         emitCall(pp, bc->getCallName());
     }
 
-    pp.emit_Add_Cst32_To_RSP(40);
+    pp.emit_Add32_RSP(40);
     pp.emit_Ret();
 
     uint32_t endAddress = concat.totalCount();

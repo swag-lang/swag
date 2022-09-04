@@ -964,7 +964,7 @@ namespace OS
 
         auto startOffset = g_X64Gen.concat.currentSP - g_X64Gen.concat.firstBucket->datas;
         g_X64Gen.emit_Push(RDI);
-        g_X64Gen.emit_Sub_Cst32_To_RSP(stackSize);
+        g_X64Gen.emit_Sub32_RSP(stackSize);
         g_X64Gen.emit_Load64_Immediate((uint64_t) context->sp, RDI, true);
         g_X64Gen.emit_Call_Parameters(typeInfoFunc, pushRAParam, 0, retCopyAddr);
         g_X64Gen.emit_Load64_Immediate((uint64_t) foreignPtr, RAX, true);
@@ -976,7 +976,7 @@ namespace OS
             g_X64Gen.emit_Call_Result(typeInfoFunc, 0);
         }
 
-        g_X64Gen.emit_Add_Cst32_To_RSP(stackSize);
+        g_X64Gen.emit_Add32_RSP(stackSize);
         g_X64Gen.emit_Pop(RDI);
         g_X64Gen.emit_Ret();
 
