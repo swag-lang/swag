@@ -342,7 +342,7 @@ struct X64Gen
     map<Utf8, DbgTypeIndex>      dbgMapPtrPtrTypes;
     map<Utf8, DbgTypeIndex>      dbgMapTypesNames;
 
-    uint8_t modRM(uint8_t mod, uint8_t r, uint8_t m);
+    uint8_t emit_modRM(uint8_t mod, uint8_t r, uint8_t m);
     void    emit_ModRM(uint32_t stackOffset, uint8_t reg, uint8_t memReg, uint8_t op = 1);
     void    emit_Load8_Indirect(uint32_t stackOffset, uint8_t reg, uint8_t memReg);
     void    emit_Load16_Indirect(uint32_t stackOffset, uint8_t reg, uint8_t memReg);
@@ -471,11 +471,11 @@ struct X64Gen
     void    emit_BinOpInt16_At_Reg(ByteCodeInstruction* ip, X64Op op);
     void    emit_BinOpInt32_At_Reg(ByteCodeInstruction* ip, X64Op op);
     void    emit_BinOpInt64_At_Reg(ByteCodeInstruction* ip, X64Op op);
-    void    emit_imul64_RAX(uint64_t value);
     void    emit_BinOpInt_Div_At_Reg(ByteCodeInstruction* ip, bool isSigned, uint32_t bits, bool modulo = false);
+    void    emit_imul64_RAX(uint64_t value);
     void    emit_NearJumpOp(JumpType jumpType);
     void    emit_LongJumpOp(JumpType jumpType);
     void    emit_Jump(JumpType jumpType, int32_t instructionCount, int32_t jumpOffset);
-    void    emitCopyX(uint32_t count, uint32_t offset, uint8_t regDst, uint8_t regSrc);
-    void    emitClearX(uint32_t count, uint32_t offset, uint8_t reg);
+    void    emit_CopyX(uint32_t count, uint32_t offset, uint8_t regDst, uint8_t regSrc);
+    void    emit_ClearX(uint32_t count, uint32_t offset, uint8_t reg);
 };

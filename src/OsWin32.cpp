@@ -10,10 +10,10 @@
 
 namespace OS
 {
-    static thread_local X64Gen g_PP;
-    static BackendTarget             nativeTarget;
-    static HANDLE                    consoleHandle     = NULL;
-    static WORD                      defaultAttributes = 0;
+    static thread_local X64Gen g_X64Gen;
+    static BackendTarget       nativeTarget;
+    static HANDLE              consoleHandle     = NULL;
+    static WORD                defaultAttributes = 0;
 
     void setup()
     {
@@ -949,15 +949,15 @@ namespace OS
         const auto& cc         = g_CallConv[typeInfoFunc->callConv];
         auto        returnType = TypeManager::concreteReferenceType(typeInfoFunc->returnType);
 
-        if (!g_PP.concat.firstBucket)
+        if (!g_X64Gen.concat.firstBucket)
         {
-            g_PP.concat.init();
+            g_X64Gen.concat.init();
             SYSTEM_INFO systemInfo;
             GetSystemInfo(&systemInfo);
-            auto const buffer                 = VirtualAlloc(nullptr, systemInfo.dwPageSize, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
-            g_PP.concat.firstBucket->datas    = (uint8_t*) buffer;
-            g_PP.concat.currentSP             = g_PP.concat.firstBucket->datas;
-            g_PP.concat.firstBucket->capacity = systemInfo.dwPageSize;
+            auto const buffer                     = VirtualAlloc(nullptr, systemInfo.dwPageSize, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
+            g_X64Gen.concat.firstBucket->datas    = (uint8_t*) buffer;
+            g_X64Gen.concat.currentSP             = g_X64Gen.concat.firstBucket->datas;
+            g_X64Gen.concat.firstBucket->capacity = systemInfo.dwPageSize;
         }
 
         uint32_t stackSize = (uint32_t) max(cc.byRegisterCount, pushRAParam.size()) * sizeof(void*);
@@ -968,39 +968,36 @@ namespace OS
         stackSize &= 0xFFFFFFFFFFFFFFF0;
         stackSize += 16;
 
-        auto startOffset = g_PP.concat.currentSP - g_PP.concat.firstBucket->datas;
-        g_PP.concat.addU8(0x57);                // push rdi
-        g_PP.concat.addString3("\x48\x89\xF9"); // mov rcx, rdi
-        g_PP.concat.addString3("\x48\x81\xEC"); // sub rsp, stackSize
-        g_PP.concat.addU32(stackSize);
-        g_PP.concat.addString2("\x48\xBF"); // move rdi, sp
-        g_PP.concat.addU64((uint64_t) context->sp);
-        BackendX64::emitCallParameters(g_PP, 0, typeInfoFunc, pushRAParam, retCopyAddr);
-        g_PP.concat.addString3("\x48\x89\xCF"); // mov rdi, rcx
-        g_PP.concat.addString2("\x48\xB8");     // move rax, foreignPtr
-        g_PP.concat.addU64((uint64_t) foreignPtr);
-        g_PP.concat.addString2("\xff\xd0"); // call rax
+        auto startOffset = g_X64Gen.concat.currentSP - g_X64Gen.concat.firstBucket->datas;
+        g_X64Gen.emit_Push(RDI);
+        g_X64Gen.emit_Sub_Cst32_To_RSP(stackSize);
+        g_X64Gen.concat.addString2("\x48\xBF"); // move rdi, sp
+        g_X64Gen.concat.addU64((uint64_t) context->sp);
+        BackendX64::emitCallParameters(g_X64Gen, 0, typeInfoFunc, pushRAParam, retCopyAddr);
+        g_X64Gen.concat.addString2("\x48\xB8"); // move rax, foreignPtr
+        g_X64Gen.concat.addU64((uint64_t) foreignPtr);
+        g_X64Gen.concat.addString2("\xff\xd0"); // call rax
 
         if (returnType != g_TypeMgr->typeInfoVoid && !retCopyAddr)
         {
-            g_PP.concat.addString2("\x48\xB9");
-            g_PP.concat.addU64((uint64_t) context->registersRR); // move rcx, context->registersRR
+            g_X64Gen.concat.addString2("\x48\xB9");
+            g_X64Gen.concat.addU64((uint64_t) context->registersRR); // move rcx, context->registersRR
 
             if (cc.useReturnByRegisterFloat && returnType->isNativeFloat())
-                g_PP.concat.addString4("\xF2\x0F\x11\x01"); // movsd [rcx], xmm0
+                g_X64Gen.concat.addString4("\xF2\x0F\x11\x01"); // movsd [rcx], xmm0
             else
-                g_PP.concat.addString3("\x48\x89\x01"); // mov [rcx], rax
+                g_X64Gen.concat.addString3("\x48\x89\x01"); // mov [rcx], rax
         }
-        g_PP.concat.addString3("\x48\x81\xC4"); // add rsp, stackSize
-        g_PP.concat.addU32(stackSize);
-        g_PP.concat.addU8(0x5F); // pop rdi
-        g_PP.concat.addU8(0xC3); // ret
+
+        g_X64Gen.emit_Add_Cst32_To_RSP(stackSize);
+        g_X64Gen.emit_Pop(RDI);
+        g_X64Gen.emit_Ret();
 
         typedef void (*funcPtr)();
-        auto ptr = (funcPtr) (g_PP.concat.firstBucket->datas + startOffset);
+        auto ptr = (funcPtr) (g_X64Gen.concat.firstBucket->datas + startOffset);
         ptr();
 
-        g_PP.concat.currentSP = (uint8_t*) ptr;
+        g_X64Gen.concat.currentSP = (uint8_t*) ptr;
     }
 
 }; // namespace OS

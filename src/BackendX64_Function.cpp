@@ -1830,7 +1830,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             if (ip->b.u32 <= 128 && buildParameters.buildCfg->backendOptimizeSpeed)
             {
                 pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX, RDI);
-                pp.emitClearX(ip->b.u32, ip->c.u32, RAX);
+                pp.emit_ClearX(ip->b.u32, ip->c.u32, RAX);
             }
             else
             {
@@ -1867,7 +1867,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             // Expand
             if (ip->b.u32 <= 128 && buildParameters.buildCfg->backendOptimizeSpeed)
             {
-                pp.emitClearX(ip->b.u32, offsetStack + ip->a.u32, RDI);
+                pp.emit_ClearX(ip->b.u32, offsetStack + ip->a.u32, RDI);
             }
             else
             {
@@ -2149,29 +2149,29 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::MemCpy8:
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
             pp.emit_Load64_Indirect(regOffset(ip->b.u32), RDX, RDI);
-            pp.emitCopyX(1, 0, RCX, RDX);
+            pp.emit_CopyX(1, 0, RCX, RDX);
             break;
         case ByteCodeOp::MemCpy16:
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
             pp.emit_Load64_Indirect(regOffset(ip->b.u32), RDX, RDI);
-            pp.emitCopyX(2, 0, RCX, RDX);
+            pp.emit_CopyX(2, 0, RCX, RDX);
             break;
         case ByteCodeOp::MemCpy32:
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
             pp.emit_Load64_Indirect(regOffset(ip->b.u32), RDX, RDI);
-            pp.emitCopyX(4, 0, RCX, RDX);
+            pp.emit_CopyX(4, 0, RCX, RDX);
             break;
         case ByteCodeOp::MemCpy64:
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
             pp.emit_Load64_Indirect(regOffset(ip->b.u32), RDX, RDI);
-            pp.emitCopyX(8, 0, RCX, RDX);
+            pp.emit_CopyX(8, 0, RCX, RDX);
             break;
 
         case ByteCodeOp::IntrinsicMemCpy:
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
             pp.emit_Load64_Indirect(regOffset(ip->b.u32), RDX, RDI);
             if ((ip->flags & BCI_IMM_C) && ip->c.u64 <= 128 && buildParameters.buildCfg->backendOptimizeSpeed)
-                pp.emitCopyX(ip->c.u32, 0, RCX, RDX);
+                pp.emit_CopyX(ip->c.u32, 0, RCX, RDX);
             else
             {
                 MK_IMMC_64(R8);
@@ -2189,7 +2189,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::IntrinsicMemSet:
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
             if ((ip->flags & BCI_IMM_B) && (ip->flags & BCI_IMM_C) && (ip->b.u8 == 0) && (ip->c.u64 <= 128) && buildParameters.buildCfg->backendOptimizeSpeed)
-                pp.emitClearX(ip->c.u32, 0, RCX);
+                pp.emit_ClearX(ip->c.u32, 0, RCX);
             else
             {
                 MK_IMMB_8(RDX);
