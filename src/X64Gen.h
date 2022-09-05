@@ -19,10 +19,16 @@ struct ByteCodeInstruction;
     if (__s % 16)       \
         __s += 16 - (__s % 16);
 
+enum class X64PushParamType
+{
+    Reg,
+    Imm,
+};
+
 struct X64PushParam
 {
-    uint32_t reg = 0;
-    uint64_t val = 0;
+    X64PushParamType type = X64PushParamType::Reg;
+    uint64_t         reg  = 0;
 };
 
 enum class X64Op : uint8_t

@@ -147,7 +147,7 @@ void BackendX64::emitCall(X64Gen& pp, TypeInfoFuncAttr* typeFunc, const Utf8& fu
 {
     VectorNative<X64PushParam> p;
     for (auto r : pushRAParams)
-        p.push_back({r});
+        p.push_back({X64PushParamType::Reg, r});
     emitCall(pp, typeFunc, funcName, p, offsetRT, localCall);
 }
 
@@ -159,7 +159,7 @@ void BackendX64::emitInternalCall(X64Gen& pp, Module* moduleToGen, const Utf8& f
     // Invert order
     VectorNative<X64PushParam> p;
     for (int i = (int) pushRAParams.size() - 1; i >= 0; i--)
-        p.push_back({pushRAParams[i]});
+        p.push_back({X64PushParamType::Reg, pushRAParams[i]});
 
     emitCall(pp, typeFunc, funcName, p, offsetRT, true);
 }

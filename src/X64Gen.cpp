@@ -1422,12 +1422,12 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
     for (; i < min(callConvRegisters, maxParamsPerRegister); i++)
     {
         auto type = paramsTypes[i];
-        auto reg  = paramsRegisters[i].reg;
+        auto reg  = (uint32_t) paramsRegisters[i].reg;
 
         // This is a return register
         if (type == g_TypeMgr->typeInfoUndefined)
         {
-            SWAG_ASSERT(reg != UINT32_MAX);
+            SWAG_ASSERT(paramsRegisters[i].type == X64PushParamType::Reg);
             if (retCopy)
                 emit_Load64_Immediate((uint64_t) retCopy, cc.byRegisterInteger[i]);
             else if (returnByCopy)
@@ -1442,7 +1442,7 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
             // Pass struct in a register if small enough
             if (cc.structByRegister && type->kind == TypeInfoKind::Struct && type->sizeOf <= sizeof(void*))
             {
-                SWAG_ASSERT(reg != UINT32_MAX);
+                SWAG_ASSERT(paramsRegisters[i].type == X64PushParamType::Reg);
                 emit_Load64_Indirect(regOffset(reg), RAX, RDI);
                 switch (type->sizeOf)
                 {
@@ -1462,10 +1462,10 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
             }
             else if (cc.useRegisterFloat && type->isNative(NativeTypeKind::F32))
             {
-                if (reg == UINT32_MAX)
+                if (paramsRegisters[i].type == X64PushParamType::Imm)
                 {
-                    SWAG_ASSERT(paramsRegisters[i].val <= UINT32_MAX);
-                    emit_Load32_Immediate((uint32_t) paramsRegisters[i].val, RAX);
+                    SWAG_ASSERT(paramsRegisters[i].reg <= UINT32_MAX);
+                    emit_Load32_Immediate((uint32_t) paramsRegisters[i].reg, RAX);
                     emit_CopyF32(RAX, cc.byRegisterFloat[i]);
                 }
                 else
@@ -1475,9 +1475,9 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
             }
             else if (cc.useRegisterFloat && type->isNative(NativeTypeKind::F64))
             {
-                if (reg == UINT32_MAX)
+                if (paramsRegisters[i].type == X64PushParamType::Imm)
                 {
-                    emit_Load64_Immediate(paramsRegisters[i].val, RAX);
+                    emit_Load64_Immediate(paramsRegisters[i].reg, RAX);
                     emit_CopyF64(RAX, cc.byRegisterFloat[i]);
                 }
                 else
@@ -1485,8 +1485,8 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
             }
             else
             {
-                if (reg == UINT32_MAX)
-                    emit_Load64_Immediate(paramsRegisters[i].val, cc.byRegisterInteger[i]);
+                if (paramsRegisters[i].type == X64PushParamType::Imm)
+                    emit_Load64_Immediate(paramsRegisters[i].reg, cc.byRegisterInteger[i]);
                 else
                     emit_Load64_Indirect(regOffset(reg), cc.byRegisterInteger[i], RDI);
             }
@@ -1497,8 +1497,8 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
     uint32_t offsetStack = min(callConvRegisters, maxParamsPerRegister) * sizeof(uint64_t);
     for (; i < (int) paramsRegisters.size(); i++)
     {
-        auto reg = paramsRegisters[i].reg;
-        SWAG_ASSERT(reg != UINT32_MAX);
+        auto reg = (uint32_t) paramsRegisters[i].reg;
+        SWAG_ASSERT(paramsRegisters[i].type == X64PushParamType::Reg);
 
         // This is a C variadic parameter
         if (i >= maxParamsPerRegister)
@@ -1596,7 +1596,7 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative
 {
     VectorNative<X64PushParam> p;
     for (auto r : pushRAParams)
-        p.push_back({r});
+        p.push_back({X64PushParamType::Reg, r});
     emit_Call_Parameters(typeFunc, p, offsetRT, retCopy);
 }
 
@@ -1674,7 +1674,7 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative
     // Return by parameter
     if (typeFunc->returnByCopy())
     {
-        paramsRegisters.push_back({offsetRT});
+        paramsRegisters.push_back({X64PushParamType::Reg, offsetRT});
         paramsTypes.push_back(g_TypeMgr->typeInfoUndefined);
     }
 

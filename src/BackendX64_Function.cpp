@@ -2164,12 +2164,12 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             else
             {
                 pushParams.clear();
-                pushParams.push_back({ip->a.u32});
-                pushParams.push_back({ip->b.u32});
+                pushParams.push_back({X64PushParamType::Reg, ip->a.u32});
+                pushParams.push_back({X64PushParamType::Reg, ip->b.u32});
                 if (ip->flags & BCI_IMM_C)
-                    pushParams.push_back({UINT32_MAX, ip->c.u64});
+                    pushParams.push_back({X64PushParamType::Imm, ip->c.u64});
                 else
-                    pushParams.push_back({ip->c.u32});
+                    pushParams.push_back({X64PushParamType::Reg, ip->c.u32});
                 emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_memcpy, pushParams);
             }
             break;
@@ -2182,36 +2182,36 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             else
             {
                 pushParams.clear();
-                pushParams.push_back({ip->a.u32});
+                pushParams.push_back({X64PushParamType::Reg, ip->a.u32});
                 if (ip->flags & BCI_IMM_B)
-                    pushParams.push_back({UINT32_MAX, ip->b.u8});
+                    pushParams.push_back({X64PushParamType::Imm, ip->b.u8});
                 else
-                    pushParams.push_back({ip->b.u32});
+                    pushParams.push_back({X64PushParamType::Reg, ip->b.u32});
                 if (ip->flags & BCI_IMM_C)
-                    pushParams.push_back({UINT32_MAX, ip->c.u64});
+                    pushParams.push_back({X64PushParamType::Imm, ip->c.u64});
                 else
-                    pushParams.push_back({ip->c.u32});
+                    pushParams.push_back({X64PushParamType::Reg, ip->c.u32});
                 emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_memset, pushParams);
             }
             break;
         case ByteCodeOp::IntrinsicMemMove:
             pushParams.clear();
-            pushParams.push_back({ip->a.u32});
-            pushParams.push_back({ip->b.u32});
+            pushParams.push_back({X64PushParamType::Reg, ip->a.u32});
+            pushParams.push_back({X64PushParamType::Reg, ip->b.u32});
             if (ip->flags & BCI_IMM_C)
-                pushParams.push_back({UINT32_MAX, ip->c.u64});
+                pushParams.push_back({X64PushParamType::Imm, ip->c.u64});
             else
-                pushParams.push_back({ip->c.u32});
+                pushParams.push_back({X64PushParamType::Reg, ip->c.u32});
             emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_memmove, pushParams);
             break;
         case ByteCodeOp::IntrinsicMemCmp:
             pushParams.clear();
-            pushParams.push_back({ip->b.u32});
-            pushParams.push_back({ip->c.u32});
+            pushParams.push_back({X64PushParamType::Reg, ip->b.u32});
+            pushParams.push_back({X64PushParamType::Reg, ip->c.u32});
             if (ip->flags & BCI_IMM_D)
-                pushParams.push_back({UINT32_MAX, ip->d.u64});
+                pushParams.push_back({X64PushParamType::Imm, ip->d.u64});
             else
-                pushParams.push_back({ip->d.u32});
+                pushParams.push_back({X64PushParamType::Reg, ip->d.u32});
             emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_memcmp, pushParams, regOffset(ip->a.u32));
             break;
 
@@ -3249,13 +3249,13 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         {
             pushParams.clear();
             if (ip->flags & BCI_IMM_B)
-                pushParams.push_back({UINT32_MAX, ip->b.u32});
+                pushParams.push_back({X64PushParamType::Imm, ip->b.u32});
             else
-                pushParams.push_back({ip->b.u32});
+                pushParams.push_back({X64PushParamType::Reg, ip->b.u32});
             if (ip->flags & BCI_IMM_C)
-                pushParams.push_back({UINT32_MAX, ip->c.u32});
+                pushParams.push_back({X64PushParamType::Imm, ip->c.u32});
             else
-                pushParams.push_back({ip->c.u32});
+                pushParams.push_back({X64PushParamType::Reg, ip->c.u32});
 
             switch ((TokenId) ip->d.u32)
             {
@@ -3289,13 +3289,13 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         {
             pushParams.clear();
             if (ip->flags & BCI_IMM_B)
-                pushParams.push_back({UINT32_MAX, ip->b.u64});
+                pushParams.push_back({X64PushParamType::Imm, ip->b.u64});
             else
-                pushParams.push_back({ip->b.u32});
+                pushParams.push_back({X64PushParamType::Reg, ip->b.u32});
             if (ip->flags & BCI_IMM_C)
-                pushParams.push_back({UINT32_MAX, ip->c.u64});
+                pushParams.push_back({X64PushParamType::Imm, ip->c.u64});
             else
-                pushParams.push_back({ip->c.u32});
+                pushParams.push_back({X64PushParamType::Reg, ip->c.u32});
 
             switch ((TokenId) ip->d.u32)
             {
@@ -3330,9 +3330,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         {
             pushParams.clear();
             if (ip->flags & BCI_IMM_B)
-                pushParams.push_back({UINT32_MAX, ip->b.u32});
+                pushParams.push_back({X64PushParamType::Imm, ip->b.u32});
             else
-                pushParams.push_back({ip->b.u32});
+                pushParams.push_back({X64PushParamType::Reg, ip->b.u32});
 
             switch ((TokenId) ip->d.u32)
             {
@@ -3416,9 +3416,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         {
             pushParams.clear();
             if (ip->flags & BCI_IMM_B)
-                pushParams.push_back({UINT32_MAX, ip->b.u64});
+                pushParams.push_back({X64PushParamType::Imm, ip->b.u64});
             else
-                pushParams.push_back({ip->b.u32});
+                pushParams.push_back({X64PushParamType::Reg, ip->b.u32});
 
             switch ((TokenId) ip->d.u32)
             {
