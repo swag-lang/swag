@@ -51,7 +51,7 @@ bool BackendX64::buildRelocSegment(const BuildParameters& buildParameters, DataS
     {
         *(void**) dataSegment->address(k.first) = 0;
 
-        auto sym             = getOrAddSymbol(pp, k.second, CoffSymbolKind::Extern);
+        auto sym             = pp.getOrAddSymbol(k.second, CoffSymbolKind::Extern);
         reloc.virtualAddress = k.first;
         reloc.symbolIndex    = sym->index;
         reloc.type           = IMAGE_REL_AMD64_ADDR64;

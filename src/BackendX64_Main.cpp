@@ -22,7 +22,7 @@ bool BackendX64::emitOS(const BuildParameters& buildParameters)
     if (g_CommandLine->target.os == SwagTargetOs::Windows)
     {
         // int _DllMainCRTStartup(void*, int, void*)
-        getOrAddSymbol(pp, "_DllMainCRTStartup", CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset);
+        pp.getOrAddSymbol("_DllMainCRTStartup", CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset);
         pp.emit_Load64_Immediate(1, RAX);
         pp.emit_Ret();
         return true;
@@ -56,7 +56,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
         return false;
     }
 
-    auto symbolFuncIndex = getOrAddSymbol(pp, entryPoint, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
+    auto symbolFuncIndex = pp.getOrAddSymbol(entryPoint, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
     auto coffFct         = registerFunction(pp, nullptr, symbolFuncIndex);
 
     auto beforeProlog = concat.totalCount();
@@ -129,9 +129,11 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
         Ast::normalizeIdentifierName(nameDown);
         auto nameLib = nameDown;
         nameLib += Backend::getOutputFileExtension(g_CommandLine->target, BuildCfgBackendKind::DynamicLib);
-        emitGlobalString(pp, nameLib, RCX);
-        pp.emit_Load64_Immediate(nameLib.length(), RDX);
-        emitCall(pp, g_LangSpec->name__loaddll);
+
+        pushParams.clear();
+        pushParams.push_back({X64PushParamType::GlobalString, (uint64_t) nameLib.c_str()});
+        pushParams.push_back({X64PushParamType::Imm, (uint64_t) nameLib.length()});
+        emitInternalCallExt(pp, module, g_LangSpec->name__loaddll, pushParams);
     }
 
     pushParams.clear();
@@ -225,7 +227,7 @@ bool BackendX64::emitGetTypeTable(const BuildParameters& buildParameters)
     auto startAddress = concat.totalCount();
 
     auto thisInit        = module->getGlobalPrivFct(g_LangSpec->name_getTypeTable);
-    auto symbolFuncIndex = getOrAddSymbol(pp, thisInit, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
+    auto symbolFuncIndex = pp.getOrAddSymbol(thisInit, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
     auto coffFct         = registerFunction(pp, nullptr, symbolFuncIndex);
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
@@ -258,7 +260,7 @@ bool BackendX64::emitGlobalPreMain(const BuildParameters& buildParameters)
     auto startAddress = concat.totalCount();
 
     auto thisInit        = module->getGlobalPrivFct(g_LangSpec->name_globalPreMain);
-    auto symbolFuncIndex = getOrAddSymbol(pp, thisInit, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
+    auto symbolFuncIndex = pp.getOrAddSymbol(thisInit, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
     auto coffFct         = registerFunction(pp, nullptr, symbolFuncIndex);
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
@@ -304,7 +306,7 @@ bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
     auto startAddress = concat.totalCount();
 
     auto thisInit        = module->getGlobalPrivFct(g_LangSpec->name_globalInit);
-    auto symbolFuncIndex = getOrAddSymbol(pp, thisInit, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
+    auto symbolFuncIndex = pp.getOrAddSymbol(thisInit, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
     auto coffFct         = registerFunction(pp, nullptr, symbolFuncIndex);
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
@@ -377,7 +379,7 @@ bool BackendX64::emitGlobalDrop(const BuildParameters& buildParameters)
     auto startAddress = concat.totalCount();
 
     auto thisDrop        = module->getGlobalPrivFct(g_LangSpec->name_globalDrop);
-    auto symbolFuncIndex = getOrAddSymbol(pp, thisDrop, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
+    auto symbolFuncIndex = pp.getOrAddSymbol(thisDrop, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
     auto coffFct         = registerFunction(pp, nullptr, symbolFuncIndex);
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)

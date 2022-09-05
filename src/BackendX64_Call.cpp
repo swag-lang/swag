@@ -128,7 +128,7 @@ void BackendX64::emitCall(X64Gen& pp, TypeInfoFuncAttr* typeFunc, const Utf8& fu
         CoffRelocation reloc;
         reloc.virtualAddress = concat.totalCount() - pp.textSectionOffset;
 
-        auto callSym      = getOrAddSymbol(pp, "__imp_" + funcName, CoffSymbolKind::Extern);
+        auto callSym      = pp.getOrAddSymbol("__imp_" + funcName, CoffSymbolKind::Extern);
         reloc.symbolIndex = callSym->index;
         reloc.type        = IMAGE_REL_AMD64_REL32;
         pp.relocTableTextSection.table.push_back(reloc);

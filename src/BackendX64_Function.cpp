@@ -53,7 +53,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     }
 
     // Symbol
-    auto symbolFuncIndex  = getOrAddSymbol(pp, funcName, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
+    auto symbolFuncIndex  = pp.getOrAddSymbol(funcName, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
     auto coffFct          = registerFunction(pp, bc->node, symbolFuncIndex);
     coffFct->startAddress = startAddress;
     if (debug)
@@ -2550,7 +2550,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
             CoffRelocation reloc;
             reloc.virtualAddress = concat.totalCount() - sizeof(uint64_t) - pp.textSectionOffset;
-            auto callSym         = getOrAddSymbol(pp, callName, CoffSymbolKind::Extern);
+            auto callSym         = pp.getOrAddSymbol(callName, CoffSymbolKind::Extern);
             reloc.symbolIndex    = callSym->index;
             reloc.type           = IMAGE_REL_AMD64_ADDR64;
             pp.relocTableTextSection.table.push_back(reloc);

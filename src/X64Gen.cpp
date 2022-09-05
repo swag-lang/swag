@@ -11,6 +11,45 @@ uint8_t X64Gen::getModRM(uint8_t mod, uint8_t r, uint8_t m)
     return mod << 6 | r << 3 | m;
 }
 
+CoffSymbol* X64Gen::getSymbol(const Utf8& name)
+{
+    auto it = mapSymbols.find(name);
+    if (it != mapSymbols.end())
+        return &allSymbols[it->second];
+    return nullptr;
+}
+
+CoffSymbol* X64Gen::getOrAddSymbol(const Utf8& name, CoffSymbolKind kind, uint32_t value, uint16_t sectionIdx)
+{
+    auto it = getSymbol(name);
+    if (it)
+    {
+        if (it->kind == kind)
+            return it;
+        if (kind == CoffSymbolKind::Extern)
+            return it;
+        if (kind == CoffSymbolKind::Function && it->kind == CoffSymbolKind::Extern)
+        {
+            it->kind  = kind;
+            it->value = value;
+            return it;
+        }
+
+        SWAG_ASSERT(false);
+    }
+
+    CoffSymbol sym;
+    sym.name       = name;
+    sym.kind       = kind;
+    sym.value      = value;
+    sym.sectionIdx = sectionIdx;
+    SWAG_ASSERT(allSymbols.size() < UINT32_MAX);
+    sym.index = (uint32_t) allSymbols.size();
+    allSymbols.emplace_back(sym);
+    mapSymbols[name] = (uint32_t) allSymbols.size() - 1;
+    return &allSymbols.back();
+}
+
 void X64Gen::emit_ModRM(uint32_t stackOffset, uint8_t reg, uint8_t memReg, uint8_t op)
 {
     if (stackOffset == 0)
@@ -1512,6 +1551,10 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
                     emit_Mul64_RAX(paramsRegisters[i].val);
                     emit_Copy64(RAX, cc.byRegisterInteger[i]);
                 }
+                else if (paramsRegisters[i].type == X64PushParamType::GlobalString)
+                {
+                    emit_GlobalString((const char*) paramsRegisters[i].reg, cc.byRegisterInteger[i]);
+                }
                 else
                 {
                     SWAG_ASSERT(paramsRegisters[i].type == X64PushParamType::Reg);
@@ -1779,4 +1822,27 @@ void X64Gen::emit_Call_Indirect(uint8_t reg)
         concat.addU8(0x41);
     concat.addU8(0xFF);
     concat.addU8(0xD0 | (reg & 0b111));
+}
+
+void X64Gen::emit_GlobalString(const Utf8& str, uint8_t reg)
+{
+    emit_Load64_Immediate(0, reg, true);
+
+    auto        it  = globalStrings.find(str);
+    CoffSymbol* sym = nullptr;
+    if (it != globalStrings.end())
+        sym = &allSymbols[it->second];
+    else
+    {
+        Utf8 symName       = Fmt("__str%u", (uint32_t) globalStrings.size());
+        sym                = getOrAddSymbol(symName, CoffSymbolKind::GlobalString);
+        globalStrings[str] = sym->index;
+        sym->value         = stringSegment.addStringNoLock(str);
+    }
+
+    CoffRelocation reloc;
+    reloc.virtualAddress = (concat.totalCount() - 8) - textSectionOffset;
+    reloc.symbolIndex    = sym->index;
+    reloc.type           = IMAGE_REL_AMD64_ADDR64;
+    relocTableTextSection.table.push_back(reloc);
 }

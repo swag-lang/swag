@@ -57,10 +57,6 @@ struct BackendX64 : public Backend
     void     emitBinOpInt8AtReg(X64Gen& pp, ByteCodeInstruction* ip, X64Op op);
     void     emitBinOpIntDivAtReg(X64Gen& pp, ByteCodeInstruction* ip, bool isSigned, uint32_t bits, bool modulo = false);
 
-    CoffSymbol* getSymbol(X64Gen& pp, const Utf8& name);
-    CoffSymbol* getOrAddSymbol(X64Gen& pp, const Utf8& name, CoffSymbolKind kind, uint32_t value = 0, uint16_t sectionIdx = 0);
-    void        emitGlobalString(X64Gen& pp, const Utf8& str, uint8_t reg);
-
     bool emitXData(const BuildParameters& buildParameters);
     bool emitPData(const BuildParameters& buildParameters);
     bool emitDirectives(const BuildParameters& buildParameters);

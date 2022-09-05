@@ -4,30 +4,6 @@
 #include "LanguageSpec.h"
 #include "Math.h"
 
-void BackendX64::emitGlobalString(X64Gen& pp, const Utf8& str, uint8_t reg)
-{
-    pp.emit_Load64_Immediate(0, reg, true);
-
-    auto&       concat = pp.concat;
-    auto        it     = pp.globalStrings.find(str);
-    CoffSymbol* sym    = nullptr;
-    if (it != pp.globalStrings.end())
-        sym = &pp.allSymbols[it->second];
-    else
-    {
-        Utf8 symName          = Fmt("__str%u", (uint32_t) pp.globalStrings.size());
-        sym                   = getOrAddSymbol(pp, symName, CoffSymbolKind::GlobalString);
-        pp.globalStrings[str] = sym->index;
-        sym->value            = pp.stringSegment.addStringNoLock(str);
-    }
-
-    CoffRelocation reloc;
-    reloc.virtualAddress = (concat.totalCount() - 8) - pp.textSectionOffset;
-    reloc.symbolIndex    = sym->index;
-    reloc.type           = IMAGE_REL_AMD64_ADDR64;
-    pp.relocTableTextSection.table.push_back(reloc);
-}
-
 void BackendX64::emitShiftArithmetic(X64Gen& pp, ByteCodeInstruction* ip, uint8_t numBits)
 {
     if (ip->flags & BCI_IMM_B && ip->b.u32 >= numBits && !(ip->flags & BCI_SHIFT_SMALL))
@@ -318,11 +294,11 @@ void BackendX64::emitOverflowUnsigned(X64Gen& pp, AstNode* node, const char* msg
 
 void BackendX64::emitInternalPanic(X64Gen& pp, AstNode* node, const char* msg)
 {
-    emitGlobalString(pp, Utf8::normalizePath(node->sourceFile->path), RCX);
+    pp.emit_GlobalString(Utf8::normalizePath(node->sourceFile->path), RCX);
     pp.emit_Load64_Immediate(node->token.startLocation.line, RDX);
     pp.emit_Load64_Immediate(node->token.startLocation.column, R8);
     if (msg)
-        emitGlobalString(pp, msg, R9);
+        pp.emit_GlobalString(msg, R9);
     else
         pp.emit_Clear64(R9);
     emitCall(pp, g_LangSpec->name__panic);
@@ -331,7 +307,7 @@ void BackendX64::emitInternalPanic(X64Gen& pp, AstNode* node, const char* msg)
 void BackendX64::emitSymbolRelocation(X64Gen& pp, const Utf8& name)
 {
     auto& concat  = pp.concat;
-    auto  callSym = getOrAddSymbol(pp, name, CoffSymbolKind::Extern);
+    auto  callSym = pp.getOrAddSymbol(name, CoffSymbolKind::Extern);
     if (callSym->kind == CoffSymbolKind::Function)
     {
         concat.addS32((callSym->value + pp.textSectionOffset) - (concat.totalCount() + 4));

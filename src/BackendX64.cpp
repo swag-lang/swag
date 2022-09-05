@@ -228,54 +228,54 @@ bool BackendX64::createRuntime(const BuildParameters& buildParameters)
         pp.globalSegment.setup(SegmentKind::Global, module);
         pp.stringSegment.setup(SegmentKind::String, module);
 
-        pp.symBSIndex  = getOrAddSymbol(pp, "__bs", CoffSymbolKind::Custom, 0, pp.sectionIndexBS)->index;
-        pp.symCSIndex  = getOrAddSymbol(pp, "__cs", CoffSymbolKind::Custom, 0, pp.sectionIndexCS)->index;
-        pp.symMSIndex  = getOrAddSymbol(pp, "__ms", CoffSymbolKind::Custom, 0, pp.sectionIndexMS)->index;
-        pp.symTLSIndex = getOrAddSymbol(pp, "__tls", CoffSymbolKind::Custom, 0, pp.sectionIndexTLS)->index;
-        pp.symCOIndex  = getOrAddSymbol(pp, Fmt("__co%d", precompileIndex), CoffSymbolKind::Custom, 0, pp.sectionIndexText)->index;
-        pp.symXDIndex  = getOrAddSymbol(pp, Fmt("__xd%d", precompileIndex), CoffSymbolKind::Custom, 0, pp.sectionIndexXD)->index;
+        pp.symBSIndex  = pp.getOrAddSymbol("__bs", CoffSymbolKind::Custom, 0, pp.sectionIndexBS)->index;
+        pp.symCSIndex  = pp.getOrAddSymbol("__cs", CoffSymbolKind::Custom, 0, pp.sectionIndexCS)->index;
+        pp.symMSIndex  = pp.getOrAddSymbol("__ms", CoffSymbolKind::Custom, 0, pp.sectionIndexMS)->index;
+        pp.symTLSIndex = pp.getOrAddSymbol("__tls", CoffSymbolKind::Custom, 0, pp.sectionIndexTLS)->index;
+        pp.symCOIndex  = pp.getOrAddSymbol(Fmt("__co%d", precompileIndex), CoffSymbolKind::Custom, 0, pp.sectionIndexText)->index;
+        pp.symXDIndex  = pp.getOrAddSymbol(Fmt("__xd%d", precompileIndex), CoffSymbolKind::Custom, 0, pp.sectionIndexXD)->index;
 
         // This should match the structure SwagContext declared in Runtime.h
         auto offset                         = pp.globalSegment.reserve(sizeof(SwagContext), nullptr, sizeof(uint64_t));
-        pp.symMC_mainContext                = getOrAddSymbol(pp, "swag_main_context", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
-        pp.symMC_mainContext_allocator_addr = getOrAddSymbol(pp, "swag_main_context_allocator_addr", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
+        pp.symMC_mainContext                = pp.getOrAddSymbol("swag_main_context", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
+        pp.symMC_mainContext_allocator_addr = pp.getOrAddSymbol("swag_main_context_allocator_addr", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
         offset += sizeof(void*);
-        pp.symMC_mainContext_allocator_itable = getOrAddSymbol(pp, "swag_main_context_allocator_itable", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
+        pp.symMC_mainContext_allocator_itable = pp.getOrAddSymbol("swag_main_context_allocator_itable", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
         offset += sizeof(void*);
-        pp.symMC_mainContext_flags = getOrAddSymbol(pp, "swag_main_context_flags", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
+        pp.symMC_mainContext_flags = pp.getOrAddSymbol("swag_main_context_flags", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
 
         // defaultAllocTable, an interface itable that contains only one entry
         offset                  = pp.globalSegment.reserve(8, nullptr, 8);
-        pp.symDefaultAllocTable = getOrAddSymbol(pp, "swag_default_alloc_table", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
+        pp.symDefaultAllocTable = pp.getOrAddSymbol("swag_default_alloc_table", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
 
         // tls ID
         offset                  = pp.globalSegment.reserve(8, nullptr, sizeof(uint64_t));
-        pp.symTls_threadLocalId = getOrAddSymbol(pp, "swag_tls_threadLocalId", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
+        pp.symTls_threadLocalId = pp.getOrAddSymbol("swag_tls_threadLocalId", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
 
         // This should match the structure SwagProcessInfo declared in Runtime.h
         offset                  = pp.globalSegment.reserve(8, nullptr, sizeof(uint64_t));
-        pp.symPI_processInfos   = getOrAddSymbol(pp, "swag_process_infos", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
-        pp.symPI_modulesAddr    = getOrAddSymbol(pp, "swag_process_infos_modulesAddr", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
+        pp.symPI_processInfos   = pp.getOrAddSymbol("swag_process_infos", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
+        pp.symPI_modulesAddr    = pp.getOrAddSymbol("swag_process_infos_modulesAddr", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
         offset                  = pp.globalSegment.reserve(8, nullptr, sizeof(uint64_t));
-        pp.symPI_modulesCount   = getOrAddSymbol(pp, "swag_process_infos_modulesCount", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
+        pp.symPI_modulesCount   = pp.getOrAddSymbol("swag_process_infos_modulesCount", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
         offset                  = pp.globalSegment.reserve(8, nullptr, sizeof(uint64_t));
-        pp.symPI_argsAddr       = getOrAddSymbol(pp, "swag_process_infos_argsAddr", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
+        pp.symPI_argsAddr       = pp.getOrAddSymbol("swag_process_infos_argsAddr", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
         offset                  = pp.globalSegment.reserve(8, nullptr, sizeof(uint64_t));
-        pp.symPI_argsCount      = getOrAddSymbol(pp, "swag_process_infos_argsCount", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
+        pp.symPI_argsCount      = pp.getOrAddSymbol("swag_process_infos_argsCount", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
         offset                  = pp.globalSegment.reserve(8, nullptr, sizeof(uint64_t));
-        pp.symPI_contextTlsId   = getOrAddSymbol(pp, "swag_process_infos_contextTlsId", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
+        pp.symPI_contextTlsId   = pp.getOrAddSymbol("swag_process_infos_contextTlsId", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
         offset                  = pp.globalSegment.reserve(8, nullptr, sizeof(uint64_t));
-        pp.symPI_defaultContext = getOrAddSymbol(pp, "swag_process_infos_defaultContext", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
+        pp.symPI_defaultContext = pp.getOrAddSymbol("swag_process_infos_defaultContext", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
         offset                  = pp.globalSegment.reserve(8, nullptr, sizeof(uint64_t));
-        pp.symPI_byteCodeRun    = getOrAddSymbol(pp, "swag_process_infos_byteCodeRun", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
+        pp.symPI_byteCodeRun    = pp.getOrAddSymbol("swag_process_infos_byteCodeRun", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
         offset                  = pp.globalSegment.reserve(8, nullptr, sizeof(uint64_t));
-        pp.symPI_makeCallback   = getOrAddSymbol(pp, "swag_process_infos_makeCallback", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
+        pp.symPI_makeCallback   = pp.getOrAddSymbol("swag_process_infos_makeCallback", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
         offset                  = pp.globalSegment.reserve(8, nullptr, sizeof(uint64_t));
-        pp.symPI_backendKind    = getOrAddSymbol(pp, "swag_process_infos_backendKind", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
+        pp.symPI_backendKind    = pp.getOrAddSymbol("swag_process_infos_backendKind", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
 
         // Constant stuff needed to convert U64 to F64 (code from clang)
         offset                   = pp.globalSegment.reserve(32, nullptr, 2 * sizeof(uint64_t));
-        pp.symCst_U64F64         = getOrAddSymbol(pp, "swag_cast_u64f64", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
+        pp.symCst_U64F64         = pp.getOrAddSymbol("swag_cast_u64f64", CoffSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
         auto addr                = pp.globalSegment.address(offset);
         *(uint32_t*) (addr + 0)  = 0x43300000;
         *(uint32_t*) (addr + 4)  = 0x45300000;
@@ -286,25 +286,25 @@ bool BackendX64::createRuntime(const BuildParameters& buildParameters)
     }
     else
     {
-        pp.symBSIndex  = getOrAddSymbol(pp, "__bs", CoffSymbolKind::Extern)->index;
-        pp.symCSIndex  = getOrAddSymbol(pp, "__cs", CoffSymbolKind::Extern)->index;
-        pp.symMSIndex  = getOrAddSymbol(pp, "__ms", CoffSymbolKind::Extern)->index;
-        pp.symTLSIndex = getOrAddSymbol(pp, "__tls", CoffSymbolKind::Extern)->index;
-        pp.symCOIndex  = getOrAddSymbol(pp, Fmt("__co%d", precompileIndex), CoffSymbolKind::Custom, 0, pp.sectionIndexText)->index;
-        pp.symXDIndex  = getOrAddSymbol(pp, Fmt("__xd%d", precompileIndex), CoffSymbolKind::Custom, 0, pp.sectionIndexXD)->index;
+        pp.symBSIndex  = pp.getOrAddSymbol("__bs", CoffSymbolKind::Extern)->index;
+        pp.symCSIndex  = pp.getOrAddSymbol("__cs", CoffSymbolKind::Extern)->index;
+        pp.symMSIndex  = pp.getOrAddSymbol("__ms", CoffSymbolKind::Extern)->index;
+        pp.symTLSIndex = pp.getOrAddSymbol("__tls", CoffSymbolKind::Extern)->index;
+        pp.symCOIndex  = pp.getOrAddSymbol(Fmt("__co%d", precompileIndex), CoffSymbolKind::Custom, 0, pp.sectionIndexText)->index;
+        pp.symXDIndex  = pp.getOrAddSymbol(Fmt("__xd%d", precompileIndex), CoffSymbolKind::Custom, 0, pp.sectionIndexXD)->index;
 
-        pp.symPI_processInfos   = getOrAddSymbol(pp, "swag_process_infos", CoffSymbolKind::Extern)->index;
-        pp.symPI_modulesAddr    = getOrAddSymbol(pp, "swag_process_infos_modulesAddr", CoffSymbolKind::Extern)->index;
-        pp.symPI_modulesCount   = getOrAddSymbol(pp, "swag_process_infos_modulesCount", CoffSymbolKind::Extern)->index;
-        pp.symPI_argsAddr       = getOrAddSymbol(pp, "swag_process_infos_argsAddr", CoffSymbolKind::Extern)->index;
-        pp.symPI_argsCount      = getOrAddSymbol(pp, "swag_process_infos_argsCount", CoffSymbolKind::Extern)->index;
-        pp.symPI_contextTlsId   = getOrAddSymbol(pp, "swag_process_infos_contextTlsId", CoffSymbolKind::Extern)->index;
-        pp.symPI_defaultContext = getOrAddSymbol(pp, "swag_process_infos_defaultContext", CoffSymbolKind::Extern)->index;
-        pp.symPI_byteCodeRun    = getOrAddSymbol(pp, "swag_process_infos_byteCodeRun", CoffSymbolKind::Extern)->index;
-        pp.symPI_makeCallback   = getOrAddSymbol(pp, "swag_process_infos_makeCallback", CoffSymbolKind::Extern)->index;
-        pp.symPI_backendKind    = getOrAddSymbol(pp, "swag_process_infos_backendKind", CoffSymbolKind::Extern)->index;
-        pp.symTls_threadLocalId = getOrAddSymbol(pp, "swag_tls_threadLocalId", CoffSymbolKind::Extern)->index;
-        pp.symCst_U64F64        = getOrAddSymbol(pp, "swag_cast_u64f64", CoffSymbolKind::Extern)->index;
+        pp.symPI_processInfos   = pp.getOrAddSymbol("swag_process_infos", CoffSymbolKind::Extern)->index;
+        pp.symPI_modulesAddr    = pp.getOrAddSymbol("swag_process_infos_modulesAddr", CoffSymbolKind::Extern)->index;
+        pp.symPI_modulesCount   = pp.getOrAddSymbol("swag_process_infos_modulesCount", CoffSymbolKind::Extern)->index;
+        pp.symPI_argsAddr       = pp.getOrAddSymbol("swag_process_infos_argsAddr", CoffSymbolKind::Extern)->index;
+        pp.symPI_argsCount      = pp.getOrAddSymbol("swag_process_infos_argsCount", CoffSymbolKind::Extern)->index;
+        pp.symPI_contextTlsId   = pp.getOrAddSymbol("swag_process_infos_contextTlsId", CoffSymbolKind::Extern)->index;
+        pp.symPI_defaultContext = pp.getOrAddSymbol("swag_process_infos_defaultContext", CoffSymbolKind::Extern)->index;
+        pp.symPI_byteCodeRun    = pp.getOrAddSymbol("swag_process_infos_byteCodeRun", CoffSymbolKind::Extern)->index;
+        pp.symPI_makeCallback   = pp.getOrAddSymbol("swag_process_infos_makeCallback", CoffSymbolKind::Extern)->index;
+        pp.symPI_backendKind    = pp.getOrAddSymbol("swag_process_infos_backendKind", CoffSymbolKind::Extern)->index;
+        pp.symTls_threadLocalId = pp.getOrAddSymbol("swag_tls_threadLocalId", CoffSymbolKind::Extern)->index;
+        pp.symCst_U64F64        = pp.getOrAddSymbol("swag_cast_u64f64", CoffSymbolKind::Extern)->index;
     }
 
     return true;
@@ -512,45 +512,6 @@ void BackendX64::registerFunction(CoffFunction* fct, uint32_t startAddress, uint
     fct->endAddress   = endAddress;
     fct->sizeProlog   = sizeProlog;
     fct->unwind       = move(unwind);
-}
-
-CoffSymbol* BackendX64::getSymbol(X64Gen& pp, const Utf8& name)
-{
-    auto it = pp.mapSymbols.find(name);
-    if (it != pp.mapSymbols.end())
-        return &pp.allSymbols[it->second];
-    return nullptr;
-}
-
-CoffSymbol* BackendX64::getOrAddSymbol(X64Gen& pp, const Utf8& name, CoffSymbolKind kind, uint32_t value, uint16_t sectionIdx)
-{
-    auto it = getSymbol(pp, name);
-    if (it)
-    {
-        if (it->kind == kind)
-            return it;
-        if (kind == CoffSymbolKind::Extern)
-            return it;
-        if (kind == CoffSymbolKind::Function && it->kind == CoffSymbolKind::Extern)
-        {
-            it->kind  = kind;
-            it->value = value;
-            return it;
-        }
-
-        SWAG_ASSERT(false);
-    }
-
-    CoffSymbol sym;
-    sym.name       = name;
-    sym.kind       = kind;
-    sym.value      = value;
-    sym.sectionIdx = sectionIdx;
-    SWAG_ASSERT(pp.allSymbols.size() < UINT32_MAX);
-    sym.index = (uint32_t) pp.allSymbols.size();
-    pp.allSymbols.emplace_back(sym);
-    pp.mapSymbols[name] = (uint32_t) pp.allSymbols.size() - 1;
-    return &pp.allSymbols.back();
 }
 
 bool BackendX64::emitXData(const BuildParameters& buildParameters)

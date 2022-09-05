@@ -29,6 +29,7 @@ enum class X64PushParamType
     RelocV,
     RelocAddr,
     Addr,
+    GlobalString,
 };
 
 struct X64PushParam
@@ -366,7 +367,9 @@ struct X64Gen
     map<Utf8, DbgTypeIndex>      dbgMapPtrPtrTypes;
     map<Utf8, DbgTypeIndex>      dbgMapTypesNames;
 
-    uint8_t getModRM(uint8_t mod, uint8_t r, uint8_t m);
+    uint8_t     getModRM(uint8_t mod, uint8_t r, uint8_t m);
+    CoffSymbol* getSymbol(const Utf8& name);
+    CoffSymbol* getOrAddSymbol(const Utf8& name, CoffSymbolKind kind, uint32_t value = 0, uint16_t sectionIdx = 0);
 
     void emit_Add32_RSP(uint32_t value);
     void emit_Add64_Immediate(uint64_t value, uint8_t reg);
@@ -375,6 +378,7 @@ struct X64Gen
     void emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative<X64PushParam>& pushParams, uint32_t offsetRT, void* retCopy = nullptr);
     void emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT, void* retCopy = nullptr);
     void emit_Call_Result(TypeInfoFuncAttr* typeFunc, uint32_t offsetRT);
+    void emit_GlobalString(const Utf8& str, uint8_t reg);
     void emit_Clear16(uint8_t reg);
     void emit_Clear32(uint8_t reg);
     void emit_Clear64(uint8_t reg);
