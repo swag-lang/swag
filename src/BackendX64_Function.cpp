@@ -1858,10 +1858,11 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             }
             else
             {
-                pp.emit_LoadAddress_Indirect(offsetStack + ip->a.u32, RCX, RDI);
-                pp.emit_Clear64(RDX);
-                pp.emit_Load64_Immediate(ip->b.u32, R8);
-                emitCall(pp, g_LangSpec->name_memset);
+                pushParams.clear();
+                pushParams.push_back({X64PushParamType::Addr, offsetStack + ip->a.u32});
+                pushParams.push_back({X64PushParamType::Imm, 0});
+                pushParams.push_back({X64PushParamType::Imm, ip->b.u32});
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_memset, pushParams);
             }
             break;
         }

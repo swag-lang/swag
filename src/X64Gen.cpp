@@ -1489,7 +1489,9 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
             }
             else
             {
-                if (paramsRegisters[i].type == X64PushParamType::Imm)
+                if (paramsRegisters[i].type == X64PushParamType::Imm && paramsRegisters[i].reg == 0)
+                    emit_Clear64(cc.byRegisterInteger[i]);
+                else if (paramsRegisters[i].type == X64PushParamType::Imm)
                     emit_Load64_Immediate(paramsRegisters[i].reg, cc.byRegisterInteger[i]);
                 else if (paramsRegisters[i].type == X64PushParamType::Imm64)
                     emit_Load64_Immediate(paramsRegisters[i].reg, cc.byRegisterInteger[i], true);
@@ -1497,6 +1499,8 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
                     emit_Symbol_RelocationValue(cc.byRegisterInteger[i], (uint32_t) paramsRegisters[i].reg, 0);
                 else if (paramsRegisters[i].type == X64PushParamType::RelocAddr)
                     emit_Symbol_RelocationAddr(cc.byRegisterInteger[i], (uint32_t) paramsRegisters[i].reg, 0);
+                else if (paramsRegisters[i].type == X64PushParamType::Addr)
+                    emit_LoadAddress_Indirect((uint32_t) paramsRegisters[i].reg, cc.byRegisterInteger[i], RDI);
                 else
                     emit_Load64_Indirect(regOffset(reg), cc.byRegisterInteger[i], RDI);
             }

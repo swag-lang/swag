@@ -26,6 +26,7 @@ enum class X64PushParamType
     Imm64,
     RelocV,
     RelocAddr,
+    Addr,
 };
 
 struct X64PushParam
