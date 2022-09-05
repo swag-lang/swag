@@ -2206,19 +2206,13 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::IntrinsicAlloc:
-            pp.emit_Load64_Indirect(regOffset(ip->b.u32), RCX, RDI);
-            emitCall(pp, g_LangSpec->name_malloc);
-            pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX, RDI);
+            emitInternalCall(pp, moduleToGen, g_LangSpec->name_malloc, {ip->b.u32}, regOffset(ip->a.u32));
             break;
         case ByteCodeOp::IntrinsicRealloc:
-            pp.emit_Load64_Indirect(regOffset(ip->b.u32), RCX, RDI);
-            pp.emit_Load64_Indirect(regOffset(ip->c.u32), RDX, RDI);
-            emitCall(pp, g_LangSpec->name_realloc);
-            pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX, RDI);
+            emitInternalCall(pp, moduleToGen, g_LangSpec->name_realloc, {ip->b.u32, ip->c.u32}, regOffset(ip->a.u32));
             break;
         case ByteCodeOp::IntrinsicFree:
-            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
-            emitCall(pp, g_LangSpec->name_free);
+            emitInternalCall(pp, moduleToGen, g_LangSpec->name_free, {ip->a.u32});
             break;
 
         case ByteCodeOp::InternalInitStackTrace:
