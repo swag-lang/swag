@@ -2243,22 +2243,22 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::InternalGetTlsPtr:
-            pp.emit_Symbol_RelocationValue(RCX, pp.symTls_threadLocalId, 0);
-            pp.emit_Load64_Immediate(module->tlsSegment.totalCount, RDX, true);
-            pp.emit_Symbol_RelocationAddr(R8, pp.symTLSIndex, 0);
-            emitCall(pp, g_LangSpec->name__tlsGetPtr);
-            pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX, RDI);
+            pushParams.clear();
+            pushParams.push_back({X64PushParamType::RelocV, pp.symTls_threadLocalId});
+            pushParams.push_back({X64PushParamType::Imm64, module->tlsSegment.totalCount});
+            pushParams.push_back({X64PushParamType::RelocAddr, pp.symTLSIndex});
+            emitInternalCallExt(pp, moduleToGen, g_LangSpec->name__tlsGetPtr, pushParams, regOffset(ip->a.u32));
             break;
-
         case ByteCodeOp::IntrinsicGetContext:
-            pp.emit_Symbol_RelocationValue(RCX, pp.symPI_contextTlsId, 0);
-            emitCall(pp, g_LangSpec->name__tlsGetValue);
-            pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX, RDI);
+            pushParams.clear();
+            pushParams.push_back({X64PushParamType::RelocV, pp.symPI_contextTlsId});
+            emitInternalCallExt(pp, moduleToGen, g_LangSpec->name__tlsGetValue, pushParams, regOffset(ip->a.u32));
             break;
         case ByteCodeOp::IntrinsicSetContext:
-            pp.emit_Symbol_RelocationValue(RCX, pp.symPI_contextTlsId, 0);
-            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RDX, RDI);
-            emitCall(pp, g_LangSpec->name__tlsSetValue);
+            pushParams.clear();
+            pushParams.push_back({X64PushParamType::RelocV, pp.symPI_contextTlsId});
+            pushParams.push_back({X64PushParamType::Reg, ip->a.u32});
+            emitInternalCallExt(pp, moduleToGen, g_LangSpec->name__tlsSetValue, pushParams);
             break;
 
         case ByteCodeOp::IntrinsicGetProcessInfos:

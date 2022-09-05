@@ -708,8 +708,8 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         }
     }
 
-    // Register runtime function type, by name
-    if (funcNode->sourceFile && funcNode->sourceFile->isRuntimeFile)
+    // Register runtime libc function type, by name
+    if (funcNode->sourceFile && funcNode->sourceFile->isRuntimeFile && (funcNode->flags & AST_EMPTY_FCT))
     {
         ScopedLock lk(funcNode->sourceFile->module->mutexFile);
         funcNode->sourceFile->module->mapRuntimeFctsTypes[funcNode->token.text] = typeInfo;

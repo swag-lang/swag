@@ -1470,6 +1470,7 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
                 }
                 else
                 {
+                    SWAG_ASSERT(paramsRegisters[i].type == X64PushParamType::Reg);
                     emit_LoadF32_Indirect(regOffset(reg), cc.byRegisterFloat[i], RDI);
                 }
             }
@@ -1481,12 +1482,21 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
                     emit_CopyF64(RAX, cc.byRegisterFloat[i]);
                 }
                 else
+                {
+                    SWAG_ASSERT(paramsRegisters[i].type == X64PushParamType::Reg);
                     emit_LoadF64_Indirect(regOffset(reg), cc.byRegisterFloat[i], RDI);
+                }
             }
             else
             {
                 if (paramsRegisters[i].type == X64PushParamType::Imm)
                     emit_Load64_Immediate(paramsRegisters[i].reg, cc.byRegisterInteger[i]);
+                else if (paramsRegisters[i].type == X64PushParamType::Imm64)
+                    emit_Load64_Immediate(paramsRegisters[i].reg, cc.byRegisterInteger[i], true);
+                else if (paramsRegisters[i].type == X64PushParamType::RelocV)
+                    emit_Symbol_RelocationValue(cc.byRegisterInteger[i], (uint32_t) paramsRegisters[i].reg, 0);
+                else if (paramsRegisters[i].type == X64PushParamType::RelocAddr)
+                    emit_Symbol_RelocationAddr(cc.byRegisterInteger[i], (uint32_t) paramsRegisters[i].reg, 0);
                 else
                     emit_Load64_Indirect(regOffset(reg), cc.byRegisterInteger[i], RDI);
             }
@@ -1695,7 +1705,9 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative
     // one for the lambda (omit first parameter)
     if (typeFunc->isClosure())
     {
-        auto reg = paramsRegisters[0].reg;
+        SWAG_ASSERT(paramsRegisters[0].type == X64PushParamType::Reg);
+        auto reg = (uint32_t) paramsRegisters[0].reg;
+
         emit_Load64_Indirect(regOffset(reg), RAX, RDI);
         emit_Test64(RAX, RAX);
 
