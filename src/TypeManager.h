@@ -161,6 +161,7 @@ struct TypeManager
     TypeInfoNative*   typeInfoUntypedBinHexa = nullptr;
     TypeInfoNative*   typeInfoUntypedFloat   = nullptr;
     TypeInfoFuncAttr* typeInfoOpCall         = nullptr;
+    TypeInfoFuncAttr* typeInfoModuleCall     = nullptr;
     TypeInfoFuncAttr* typeInfoOpCall2        = nullptr;
     TypeInfoCode*     typeInfoCode           = nullptr;
     TypeInfoSlice*    typeInfoSliceRunes     = nullptr;

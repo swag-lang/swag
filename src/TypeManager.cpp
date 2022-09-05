@@ -122,6 +122,12 @@ void TypeManager::setup()
     typeInfoOpCall2->parameters[1]->typeInfo = typePtr;
     typeInfoOpCall2->computeName();
 
+    typeInfoModuleCall             = new TypeInfoFuncAttr();
+    typeInfoModuleCall->returnType = typeInfoVoid;
+    typeInfoModuleCall->parameters.push_back(new TypeInfoParam());
+    typeInfoModuleCall->parameters[0]->typeInfo = typePtr;
+    typeInfoModuleCall->computeName();
+
     typeInfoSliceRunes              = new TypeInfoSlice();
     typeInfoSliceRunes->pointedType = typeInfoRune;
     typeInfoSliceRunes->flags |= TYPEINFO_CONST;

@@ -8,6 +8,7 @@
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
 #include "Diagnostic.h"
+#include "TypeManager.h"
 
 bool BackendX64::emitOS(const BuildParameters& buildParameters)
 {
@@ -133,6 +134,9 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
         emitCall(pp, g_LangSpec->name__loaddll);
     }
 
+    pushParams.clear();
+    pushParams.push_back({X64PushParamType::RelocAddr, pp.symPI_processInfos});
+
     // Call to global init of all dependencies
     for (int i = 0; i < moduleDependencies.size(); i++)
     {
@@ -140,15 +144,13 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
         SWAG_ASSERT(dep->module);
         if (!dep->module->isSwag)
             continue;
-        pp.emit_Symbol_RelocationAddr(RCX, pp.symPI_processInfos, 0);
         auto nameFct = dep->module->getGlobalPrivFct(g_LangSpec->name_globalInit);
-        emitCall(pp, nameFct);
+        emitInternalCallExt(pp, module, nameFct, pushParams, UINT32_MAX, g_TypeMgr->typeInfoModuleCall);
     }
 
     // Call to global init of this module
-    pp.emit_Symbol_RelocationAddr(RCX, pp.symPI_processInfos, 0);
     auto thisInit = module->getGlobalPrivFct(g_LangSpec->name_globalInit);
-    emitCall(pp, thisInit);
+    emitInternalCallExt(pp, module, thisInit, pushParams, UINT32_MAX, g_TypeMgr->typeInfoModuleCall);
 
     // Call to global premain of all dependencies
     for (int i = 0; i < moduleDependencies.size(); i++)
@@ -157,15 +159,14 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
         SWAG_ASSERT(dep->module);
         if (!dep->module->isSwag)
             continue;
-        pp.emit_Symbol_RelocationAddr(RCX, pp.symPI_processInfos, 0);
+
         auto nameFct = dep->module->getGlobalPrivFct(g_LangSpec->name_globalPreMain);
-        emitCall(pp, nameFct);
+        emitInternalCallExt(pp, module, nameFct, pushParams, UINT32_MAX, g_TypeMgr->typeInfoModuleCall);
     }
 
     // Call to global premain of this module
-    pp.emit_Symbol_RelocationAddr(RCX, pp.symPI_processInfos, 0);
     thisInit = module->getGlobalPrivFct(g_LangSpec->name_globalPreMain);
-    emitCall(pp, thisInit);
+    emitInternalCallExt(pp, module, thisInit, pushParams, UINT32_MAX, g_TypeMgr->typeInfoModuleCall);
 
     // Call to test functions
     if (buildParameters.compileType == BackendCompileType::Test && !module->byteCodeTestFunc.empty())
