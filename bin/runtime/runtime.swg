@@ -652,4 +652,7 @@ namespace Swag.LibC
     func malloc(s: int)->^void;
     func realloc(ptr: ^void, s: int)->^void;
     func free(ptr: ^void);
+
+    func strlen(a: const ^u8)->int;
+    func strcmp(a, b: const ^u8)->s32;
 }

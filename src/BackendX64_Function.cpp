@@ -2165,14 +2165,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 emitCall(pp, g_LangSpec->name_memcpy);
             }
             break;
-
-        case ByteCodeOp::IntrinsicMemMove:
-            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
-            pp.emit_Load64_Indirect(regOffset(ip->b.u32), RDX, RDI);
-            MK_IMMC_64(R8);
-            emitCall(pp, g_LangSpec->name_memmove);
-            break;
-
         case ByteCodeOp::IntrinsicMemSet:
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
             if ((ip->flags & BCI_IMM_B) && (ip->flags & BCI_IMM_C) && (ip->b.u8 == 0) && (ip->c.u64 <= 128) && buildParameters.buildCfg->backendOptimizeSpeed)
@@ -2184,7 +2176,12 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 emitCall(pp, g_LangSpec->name_memset);
             }
             break;
-
+        case ByteCodeOp::IntrinsicMemMove:
+            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
+            pp.emit_Load64_Indirect(regOffset(ip->b.u32), RDX, RDI);
+            MK_IMMC_64(R8);
+            emitCall(pp, g_LangSpec->name_memmove);
+            break;
         case ByteCodeOp::IntrinsicMemCmp:
             pp.emit_Load64_Indirect(regOffset(ip->b.u32), RCX, RDI);
             pp.emit_Load64_Indirect(regOffset(ip->c.u32), RDX, RDI);
@@ -2194,15 +2191,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::IntrinsicStrLen:
-            pp.emit_Load64_Indirect(regOffset(ip->b.u32), RCX, RDI);
-            emitCall(pp, g_LangSpec->name_strlen);
-            pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX, RDI);
+            emitInternalCall(pp, moduleToGen, g_LangSpec->name_strlen, {ip->b.u32}, regOffset(ip->a.u32));
             break;
         case ByteCodeOp::IntrinsicStrCmp:
-            pp.emit_Load64_Indirect(regOffset(ip->b.u32), RCX, RDI);
-            pp.emit_Load64_Indirect(regOffset(ip->c.u32), RDX, RDI);
-            emitCall(pp, g_LangSpec->name_strcmp);
-            pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX, RDI);
+            emitInternalCall(pp, moduleToGen, g_LangSpec->name_strcmp, {ip->b.u32, ip->c.u32}, regOffset(ip->a.u32));
             break;
 
         case ByteCodeOp::IntrinsicAlloc:
