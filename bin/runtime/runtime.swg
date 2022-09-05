@@ -653,8 +653,10 @@ namespace Swag.LibC
     func realloc(ptr: ^void, s: int)->^void;
     func free(ptr: ^void);
 
-    func memmove(a: ^void, b: const ^void, s: int);
-    func memcmp(a, b: const ^u8, s: int)->s32;
+    func memcpy(a: ^void, b: const ^void, num: int);
+    func memmove(a: ^void, b: const ^void, num: int);
+    func memcmp(a, b: const ^void, num: int)->s32;
+    func memset(a: ^void, value: s32, num: int);
 
     func strlen(a: const ^u8)->int;
     func strcmp(a, b: const ^u8)->s32;

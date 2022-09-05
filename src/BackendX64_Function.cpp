@@ -2155,25 +2155,43 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::IntrinsicMemCpy:
-            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
-            pp.emit_Load64_Indirect(regOffset(ip->b.u32), RDX, RDI);
             if ((ip->flags & BCI_IMM_C) && ip->c.u64 <= 128 && buildParameters.buildCfg->backendOptimizeSpeed)
+            {
+                pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
+                pp.emit_Load64_Indirect(regOffset(ip->b.u32), RDX, RDI);
                 pp.emit_CopyX(ip->c.u32, 0, RCX, RDX);
+            }
             else
             {
-                MK_IMMC_64(R8);
-                emitCall(pp, g_LangSpec->name_memcpy);
+                pushParams.clear();
+                pushParams.push_back({ip->a.u32});
+                pushParams.push_back({ip->b.u32});
+                if (ip->flags & BCI_IMM_C)
+                    pushParams.push_back({UINT32_MAX, ip->c.u64});
+                else
+                    pushParams.push_back({ip->c.u32});
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_memcpy, pushParams);
             }
             break;
         case ByteCodeOp::IntrinsicMemSet:
-            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
             if ((ip->flags & BCI_IMM_B) && (ip->flags & BCI_IMM_C) && (ip->b.u8 == 0) && (ip->c.u64 <= 128) && buildParameters.buildCfg->backendOptimizeSpeed)
+            {
+                pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
                 pp.emit_ClearX(ip->c.u32, 0, RCX);
+            }
             else
             {
-                MK_IMMB_8(RDX);
-                MK_IMMC_64(R8);
-                emitCall(pp, g_LangSpec->name_memset);
+                pushParams.clear();
+                pushParams.push_back({ip->a.u32});
+                if (ip->flags & BCI_IMM_B)
+                    pushParams.push_back({UINT32_MAX, ip->b.u8});
+                else
+                    pushParams.push_back({ip->b.u32});
+                if (ip->flags & BCI_IMM_C)
+                    pushParams.push_back({UINT32_MAX, ip->c.u64});
+                else
+                    pushParams.push_back({ip->c.u32});
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_memset, pushParams);
             }
             break;
         case ByteCodeOp::IntrinsicMemMove:
