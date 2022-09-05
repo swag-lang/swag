@@ -1828,12 +1828,11 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             }
             break;
         case ByteCodeOp::SetZeroAtPointerXRB:
-            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
-            pp.emit_Clear64(RDX);
-            pp.emit_Load64_Indirect(regOffset(ip->b.u32), RAX, RDI);
-            pp.emit_Mul64_RAX(ip->c.u64);
-            pp.emit_Copy64(RAX, R8);
-            emitCall(pp, g_LangSpec->name_memset);
+            pushParams.clear();
+            pushParams.push_back({X64PushParamType::Reg, ip->a.u32});
+            pushParams.push_back({X64PushParamType::Imm, 0});
+            pushParams.push_back({X64PushParamType::RegMul, ip->b.u32, ip->c.u64});
+            emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_memset, pushParams);
             break;
 
         case ByteCodeOp::SetZeroStack8:

@@ -23,6 +23,7 @@ enum class X64PushParamType
 {
     Reg,
     RegAdd,
+    RegMul,
     Imm,
     Imm64,
     RelocV,

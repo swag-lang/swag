@@ -1506,6 +1506,12 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
                     emit_Load64_Indirect(regOffset(reg), cc.byRegisterInteger[i], RDI);
                     emit_Add64_Immediate(paramsRegisters[i].val, cc.byRegisterInteger[i]);
                 }
+                else if (paramsRegisters[i].type == X64PushParamType::RegMul)
+                {
+                    emit_Load64_Indirect(regOffset(reg), RAX, RDI);
+                    emit_Mul64_RAX(paramsRegisters[i].val);
+                    emit_Copy64(RAX, cc.byRegisterInteger[i]);
+                }
                 else
                 {
                     SWAG_ASSERT(paramsRegisters[i].type == X64PushParamType::Reg);
