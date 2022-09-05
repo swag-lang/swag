@@ -3236,6 +3236,16 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::IntrinsicF32x2:
         {
+            pushParams.clear();
+            if (ip->flags & BCI_IMM_B)
+                pushParams.push_back({UINT32_MAX, ip->b.u32});
+            else
+                pushParams.push_back({ip->b.u32});
+            if (ip->flags & BCI_IMM_C)
+                pushParams.push_back({UINT32_MAX, ip->c.u32});
+            else
+                pushParams.push_back({ip->c.u32});
+
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicMin:
@@ -3252,16 +3262,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 break;
 
             case TokenId::IntrinsicPow:
-                MK_IMMB_F32(XMM0);
-                MK_IMMC_F32(XMM1);
-                emitCall(pp, g_LangSpec->name_powf);
-                pp.emit_StoreF32_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_powf, pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicATan2:
-                MK_IMMB_F32(XMM0);
-                MK_IMMC_F32(XMM1);
-                emitCall(pp, g_LangSpec->name_atan2f);
-                pp.emit_StoreF32_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_atan2f, pushParams, regOffset(ip->a.u32));
                 break;
             default:
                 ok = false;
@@ -3272,6 +3276,16 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         }
         case ByteCodeOp::IntrinsicF64x2:
         {
+            pushParams.clear();
+            if (ip->flags & BCI_IMM_B)
+                pushParams.push_back({UINT32_MAX, ip->b.u64});
+            else
+                pushParams.push_back({ip->b.u32});
+            if (ip->flags & BCI_IMM_C)
+                pushParams.push_back({UINT32_MAX, ip->c.u64});
+            else
+                pushParams.push_back({ip->c.u32});
+
             switch ((TokenId) ip->d.u32)
             {
             case TokenId::IntrinsicMin:
@@ -3288,16 +3302,10 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 break;
 
             case TokenId::IntrinsicPow:
-                MK_IMMB_F64(XMM0);
-                MK_IMMC_F64(XMM1);
-                emitCall(pp, g_LangSpec->name_pow);
-                pp.emit_StoreF64_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_pow, pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicATan2:
-                MK_IMMB_F64(XMM0);
-                MK_IMMC_F64(XMM1);
-                emitCall(pp, g_LangSpec->name_atan2);
-                pp.emit_StoreF64_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_atan2, pushParams, regOffset(ip->a.u32));
                 break;
             default:
                 ok = false;
@@ -3311,7 +3319,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         {
             pushParams.clear();
             if (ip->flags & BCI_IMM_B)
-                pushParams.push_back({UINT32_MAX, ip->b.u64});
+                pushParams.push_back({UINT32_MAX, ip->b.u32});
             else
                 pushParams.push_back({ip->b.u32});
 
