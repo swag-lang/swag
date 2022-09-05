@@ -154,6 +154,7 @@ void BackendX64::emitCall(X64Gen& pp, TypeInfoFuncAttr* typeFunc, const Utf8& fu
 void BackendX64::emitInternalCall(X64Gen& pp, Module* moduleToGen, const Utf8& funcName, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT)
 {
     auto typeFunc = g_Workspace->runtimeModule->getRuntimeTypeFct(funcName);
+    SWAG_ASSERT(typeFunc);
 
     // Invert order
     VectorNative<X64PushParam> p;
@@ -166,7 +167,14 @@ void BackendX64::emitInternalCall(X64Gen& pp, Module* moduleToGen, const Utf8& f
 void BackendX64::emitInternalCallExt(X64Gen& pp, Module* moduleToGen, const Utf8& funcName, const VectorNative<X64PushParam>& pushParams, uint32_t offsetRT)
 {
     auto typeFunc = g_Workspace->runtimeModule->getRuntimeTypeFct(funcName);
-    emitCall(pp, typeFunc, funcName, pushParams, offsetRT, true);
+    SWAG_ASSERT(typeFunc);
+
+    // Invert order
+    VectorNative<X64PushParam> p;
+    for (int i = (int) pushParams.size() - 1; i >= 0; i--)
+        p.push_back({pushParams[i]});
+
+    emitCall(pp, typeFunc, funcName, p, offsetRT, true);
 }
 
 void BackendX64::emitCall(X64Gen& pp, const Utf8& funcName)

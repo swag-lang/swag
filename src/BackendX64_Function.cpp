@@ -2177,17 +2177,24 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             }
             break;
         case ByteCodeOp::IntrinsicMemMove:
-            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
-            pp.emit_Load64_Indirect(regOffset(ip->b.u32), RDX, RDI);
-            MK_IMMC_64(R8);
-            emitCall(pp, g_LangSpec->name_memmove);
+            pushParams.clear();
+            pushParams.push_back({ip->a.u32});
+            pushParams.push_back({ip->b.u32});
+            if (ip->flags & BCI_IMM_C)
+                pushParams.push_back({UINT32_MAX, ip->c.u64});
+            else
+                pushParams.push_back({ip->c.u32});
+            emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_memmove, pushParams);
             break;
         case ByteCodeOp::IntrinsicMemCmp:
-            pp.emit_Load64_Indirect(regOffset(ip->b.u32), RCX, RDI);
-            pp.emit_Load64_Indirect(regOffset(ip->c.u32), RDX, RDI);
-            MK_IMMD_64(R8);
-            emitCall(pp, g_LangSpec->name_memcmp);
-            pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX, RDI);
+            pushParams.clear();
+            pushParams.push_back({ip->b.u32});
+            pushParams.push_back({ip->c.u32});
+            if (ip->flags & BCI_IMM_D)
+                pushParams.push_back({UINT32_MAX, ip->d.u64});
+            else
+                pushParams.push_back({ip->d.u32});
+            emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_memcmp, pushParams, regOffset(ip->a.u32));
             break;
 
         case ByteCodeOp::IntrinsicStrLen:
