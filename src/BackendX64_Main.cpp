@@ -35,10 +35,11 @@ bool BackendX64::emitOS(const BuildParameters& buildParameters)
 
 bool BackendX64::emitMain(const BuildParameters& buildParameters)
 {
-    int   ct              = buildParameters.compileType;
-    int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = *perThread[ct][precompileIndex];
-    auto& concat          = pp.concat;
+    int                        ct              = buildParameters.compileType;
+    int                        precompileIndex = buildParameters.precompileIndex;
+    auto&                      pp              = *perThread[ct][precompileIndex];
+    auto&                      concat          = pp.concat;
+    VectorNative<X64PushParam> pushParams;
 
     concat.align(16);
     auto startAddress = concat.totalCount();
@@ -82,9 +83,8 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     pp.emit_Store64_Immediate(0, contextFlags, RCX);
 
     //__process_infos.contextTlsId = swag_runtime_tlsAlloc();
-    emitCall(pp, g_LangSpec->name__tlsAlloc);
-    pp.emit_Symbol_RelocationAddr(RCX, pp.symPI_contextTlsId, 0);
-    pp.emit_Store64_Indirect(0, RAX, RCX);
+    pp.emit_Symbol_RelocationAddr(RDI, pp.symPI_contextTlsId, 0);
+    emitInternalCall(pp, module, g_LangSpec->name__tlsAlloc, {}, 0);
 
     //__process_infos.modules
     pp.emit_Symbol_RelocationAddr(RCX, pp.symPI_modulesAddr, 0);
@@ -110,9 +110,10 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     pp.emit_Store32_Immediate(0, (uint32_t) SwagBackendGenType::X64, RCX);
 
     // Set default context in TLS
-    pp.emit_Symbol_RelocationValue(RCX, pp.symPI_contextTlsId, 0);
-    pp.emit_Symbol_RelocationValue(RDX, pp.symPI_defaultContext, 0);
-    emitCall(pp, g_LangSpec->name__tlsSetValue);
+    pushParams.clear();
+    pushParams.push_back({X64PushParamType::RelocV, pp.symPI_contextTlsId});
+    pushParams.push_back({X64PushParamType::RelocV, pp.symPI_defaultContext});
+    emitInternalCallExt(pp, module, g_LangSpec->name__tlsSetValue, pushParams);
 
     // Setup runtime
     emitCall(pp, g_LangSpec->name__setupRuntime);

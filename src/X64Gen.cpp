@@ -991,7 +991,7 @@ void X64Gen::emit_Sub64_Immediate(uint64_t value, uint8_t reg, uint8_t altReg)
 
 void X64Gen::emit_Symbol_RelocationAddr(uint8_t reg, uint32_t symbolIndex, uint32_t offset)
 {
-    SWAG_ASSERT(reg == RAX || reg == RCX || reg == RDX || reg == R8 || reg == R9);
+    SWAG_ASSERT(reg == RAX || reg == RCX || reg == RDX || reg == R8 || reg == R9 || reg == RDI);
     if (reg == R8 || reg == R9)
         concat.addU8(0x4C);
     else
