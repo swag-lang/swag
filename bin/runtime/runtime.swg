@@ -599,3 +599,48 @@ func __panic(file: const *u8, line: u32, col: u32, message: const *u8)
     var msg: string = message ? cast(string) @mkslice(message, @strlen(message)) : "panic"
     @panic(msg, loc)
 }
+
+////////////////////////////////////////////////////////////
+// LIBC
+////////////////////////////////////////////////////////////
+
+namespace Swag.LibC
+{
+    func sinf(val: f32)->f32;
+    func cosf(val: f32)->f32;
+    func tanf(val: f32)->f32;
+    func sinhf(val: f32)->f32;
+    func coshf(val: f32)->f32;
+    func tanhf(val: f32)->f32;
+    func asinf(val: f32)->f32;
+    func acosf(val: f32)->f32;
+    func atanf(val: f32)->f32;
+    func logf(val: f32)->f32;
+    func log2f(val: f32)->f32;
+    func log10f(val: f32)->f32;
+    func floorf(val: f32)->f32;
+    func ceilf(val: f32)->f32;
+    func truncf(val: f32)->f32;
+    func roundf(val: f32)->f32;
+    func expf(val: f32)->f32;
+    func exp2f(val: f32)->f32;
+
+    func sin(val: f64)->f64;
+    func cos(val: f64)->f64;
+    func tan(val: f64)->f64;
+    func sinh(val: f64)->f64;
+    func cosh(val: f64)->f64;
+    func tanh(val: f64)->f64;
+    func asin(val: f64)->f64;
+    func acos(val: f64)->f64;
+    func atan(val: f64)->f64;
+    func log(val: f64)->f64;
+    func log2(val: f64)->f64;
+    func log10(val: f64)->f64;
+    func floor(val: f64)->f64;
+    func ceil(val: f64)->f64;
+    func trunc(val: f64)->f64;
+    func round(val: f64)->f64;
+    func exp(val: f64)->f64;
+    func exp2(val: f64)->f64;
+}
