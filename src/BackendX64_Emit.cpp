@@ -294,14 +294,17 @@ void BackendX64::emitOverflowUnsigned(X64Gen& pp, AstNode* node, const char* msg
 
 void BackendX64::emitInternalPanic(X64Gen& pp, AstNode* node, const char* msg)
 {
-    pp.emit_GlobalString(Utf8::normalizePath(node->sourceFile->path), RCX);
-    pp.emit_Load64_Immediate(node->token.startLocation.line, RDX);
-    pp.emit_Load64_Immediate(node->token.startLocation.column, R8);
+    VectorNative<X64PushParam> pushParams;
+
+    auto np = Utf8::normalizePath(node->sourceFile->path);
+    pushParams.push_back({X64PushParamType::GlobalString, (uint64_t) np.c_str()});
+    pushParams.push_back({X64PushParamType::Imm, node->token.startLocation.line});
+    pushParams.push_back({X64PushParamType::Imm, node->token.startLocation.column});
     if (msg)
-        pp.emit_GlobalString(msg, R9);
+        pushParams.push_back({X64PushParamType::GlobalString, (uint64_t) msg});
     else
-        pp.emit_Clear64(R9);
-    emitCall(pp, g_LangSpec->name__panic);
+        pushParams.push_back({X64PushParamType::Imm, 0});
+    emitInternalCallExt(pp, module, g_LangSpec->name__panic, pushParams);
 }
 
 void BackendX64::emitSymbolRelocation(X64Gen& pp, const Utf8& name)
