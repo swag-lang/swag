@@ -1813,7 +1813,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         case ByteCodeOp::SetZeroAtPointerX:
             SWAG_ASSERT(ip->c.s64 >= 0 && ip->c.s64 <= 0x7FFFFFFF);
-            // Expand
             if (ip->b.u32 <= 128 && buildParameters.buildCfg->backendOptimizeSpeed)
             {
                 pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX, RDI);
@@ -1821,11 +1820,11 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             }
             else
             {
-                pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX, RDI);
-                pp.emit_Add64_Immediate(ip->c.u64, RCX);
-                pp.emit_Clear64(RDX);
-                pp.emit_Load64_Immediate(ip->b.u64, R8);
-                emitCall(pp, g_LangSpec->name_memset);
+                pushParams.clear();
+                pushParams.push_back({X64PushParamType::RegAdd, ip->a.u32, ip->c.u64});
+                pushParams.push_back({X64PushParamType::Imm, 0});
+                pushParams.push_back({X64PushParamType::Imm, ip->b.u64});
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_memset, pushParams);
             }
             break;
         case ByteCodeOp::SetZeroAtPointerXRB:
@@ -1850,12 +1849,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Store64_Immediate(offsetStack + ip->a.u32, 0, RDI);
             break;
         case ByteCodeOp::SetZeroStackX:
-        {
-            // Expand
             if (ip->b.u32 <= 128 && buildParameters.buildCfg->backendOptimizeSpeed)
-            {
                 pp.emit_ClearX(ip->b.u32, offsetStack + ip->a.u32, RDI);
-            }
             else
             {
                 pushParams.clear();
@@ -1865,7 +1860,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_memset, pushParams);
             }
             break;
-        }
 
         case ByteCodeOp::SetAtPointer8:
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX, RDI);

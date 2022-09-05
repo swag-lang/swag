@@ -22,6 +22,7 @@ struct ByteCodeInstruction;
 enum class X64PushParamType
 {
     Reg,
+    RegAdd,
     Imm,
     Imm64,
     RelocV,
@@ -33,6 +34,7 @@ struct X64PushParam
 {
     X64PushParamType type = X64PushParamType::Reg;
     uint64_t         reg  = 0;
+    uint64_t         val  = 0;
 };
 
 enum class X64Op : uint8_t
