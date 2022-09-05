@@ -3336,84 +3336,52 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
                 emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_cosf, pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicTan:
-                MK_IMMB_F32(XMM0);
-                emitCall(pp, g_LangSpec->name_tanf);
-                pp.emit_StoreF32_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_tanf, pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicSinh:
-                MK_IMMB_F32(XMM0);
-                emitCall(pp, g_LangSpec->name_sinhf);
-                pp.emit_StoreF32_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_sinhf, pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicCosh:
-                MK_IMMB_F32(XMM0);
-                emitCall(pp, g_LangSpec->name_coshf);
-                pp.emit_StoreF32_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_coshf, pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicTanh:
-                MK_IMMB_F32(XMM0);
-                emitCall(pp, g_LangSpec->name_tanhf);
-                pp.emit_StoreF32_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_tanhf, pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicASin:
-                MK_IMMB_F32(XMM0);
-                emitCall(pp, g_LangSpec->name_asinf);
-                pp.emit_StoreF32_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_asinf, pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicACos:
-                MK_IMMB_F32(XMM0);
-                emitCall(pp, g_LangSpec->name_acosf);
-                pp.emit_StoreF32_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_acosf, pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicATan:
-                MK_IMMB_F32(XMM0);
-                emitCall(pp, g_LangSpec->name_atanf);
-                pp.emit_StoreF32_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_atanf, pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicLog:
-                MK_IMMB_F32(XMM0);
-                emitCall(pp, g_LangSpec->name_logf);
-                pp.emit_StoreF32_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_logf, pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicLog2:
-                MK_IMMB_F32(XMM0);
-                emitCall(pp, g_LangSpec->name_log2f);
-                pp.emit_StoreF32_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_log2f, pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicLog10:
-                MK_IMMB_F32(XMM0);
-                emitCall(pp, g_LangSpec->name_log10f);
-                pp.emit_StoreF32_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_log10f, pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicFloor:
-                MK_IMMB_F32(XMM0);
-                emitCall(pp, g_LangSpec->name_floorf);
-                pp.emit_StoreF32_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_floorf, pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicCeil:
-                MK_IMMB_F32(XMM0);
-                emitCall(pp, g_LangSpec->name_ceilf);
-                pp.emit_StoreF32_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_ceilf, pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicTrunc:
-                MK_IMMB_F32(XMM0);
-                emitCall(pp, g_LangSpec->name_truncf);
-                pp.emit_StoreF32_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_truncf, pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicRound:
-                MK_IMMB_F32(XMM0);
-                emitCall(pp, g_LangSpec->name_roundf);
-                pp.emit_StoreF32_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_roundf, pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicExp:
-                MK_IMMB_F32(XMM0);
-                emitCall(pp, g_LangSpec->name_expf);
-                pp.emit_StoreF32_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_expf, pushParams, regOffset(ip->a.u32));
                 break;
             case TokenId::IntrinsicExp2:
-                MK_IMMB_F32(XMM0);
-                emitCall(pp, g_LangSpec->name_exp2f);
-                pp.emit_StoreF32_Indirect(regOffset(ip->a.u32), XMM0, RDI);
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_exp2f, pushParams, regOffset(ip->a.u32));
                 break;
             default:
                 ok = false;

@@ -45,6 +45,22 @@ namespace __Win32RT
 
 func sinf(val: f32)->f32;
 func cosf(val: f32)->f32;
+func tanf(val: f32)->f32;
+func sinhf(val: f32)->f32;
+func coshf(val: f32)->f32;
+func tanhf(val: f32)->f32;
+func asinf(val: f32)->f32;
+func acosf(val: f32)->f32;
+func atanf(val: f32)->f32;
+func logf(val: f32)->f32;
+func log2f(val: f32)->f32;
+func log10f(val: f32)->f32;
+func floorf(val: f32)->f32;
+func ceilf(val: f32)->f32;
+func truncf(val: f32)->f32;
+func roundf(val: f32)->f32;
+func expf(val: f32)->f32;
+func exp2f(val: f32)->f32;
 
 func memset(dst: *void, value: s32, size: uint)
 {
