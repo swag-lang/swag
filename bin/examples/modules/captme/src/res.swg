@@ -31,5 +31,6 @@ const CmdIdDeleteCapture    = "CmdIdDeleteCapture"
 const CmdIdRecentSmall      = "CmdIdRecentSmall"
 const CmdIdRecentMedium     = "CmdIdRecentMedium"
 const CmdIdRecentBig        = "CmdIdRecentBig"
+const CmdIdResetQuickStyle  = "CmdIdResetQuickStyle"
 
 const ClipboardFormat = "Swag.CaptMe"

@@ -66,6 +66,11 @@ impl IWnd for MainWnd
 
         switch evt.id
         {
+        case CmdIdResetQuickStyle:
+            evt.setFlags |= .Name
+            evt.name = "Reset to default"
+            evt.accepted = true
+
         case CmdIdRecentSmall:
             evt.setFlags |= .Name | .ToolTip | .Checked
             //evt.name = "Small Recent View"
@@ -292,6 +297,9 @@ impl IWnd for MainWnd
         var undo: *Undo
         switch evt.id
         {
+        case CmdIdResetQuickStyle:
+            quickWnd.resetQuickStyles()
+
         case CmdIdRecentSmall:
             setBottomSize(.Small)
 

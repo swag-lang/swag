@@ -3,6 +3,23 @@ struct QuickStyle
     forms: Array'IForm
 }
 
+impl QuickStyle
+{
+    mtd deleteOne(itf: IForm)
+    {
+        data := @dataof(itf)
+        type := @kindof(itf)
+        Memory.delete(data, type)
+    }
+
+    mtd clear()
+    {
+        visit i: forms
+            deleteOne(i)
+        forms.clear()
+    }
+}
+
 struct QuickButton
 {
     using iconBtn: IconButton
@@ -30,6 +47,16 @@ impl IWnd for QuickWnd
 {
     mtd onPaintEvent(evt: *PaintEvent)
     {
+    }
+
+    mtd onMouseEvent(evt: *MouseEvent)
+    {
+        if evt.kind == .MousePressed and evt.button == .Right
+        {
+            menu := MenuCtrl.createPopup(self)
+            menu.addItem(CmdIdResetQuickStyle)
+            res := menu.doModal(evt.surfacePos, autoDestroy: true)
+        }
     }
 
     mtd onSerializeStateEvent(evt: *SerializeStateEvent)
@@ -251,6 +278,31 @@ impl QuickWnd
             curMdl.isChecked = true
 
         invalidate()
+    }
+
+    mtd resetQuickStyles()
+    {
+        if !currentStyle
+            return
+
+        res := MessageDlg.yesNo(surface, "This will reset all the styles.\nAre you sure ?")
+        if res != MessageDlg.BtnYes
+            return
+
+        currentStyle.clear()
+
+        #[Swag.Complete]
+        switch main.editMode
+        {
+        case Arrow:     defaultQuickStyleArrow()
+        case Shape:     defaultQuickStyleShape()
+        case Line:      defaultQuickStyleLine()
+        case Polygon:   defaultQuickStylePolygon()
+        case Text:      defaultQuickStyleText()
+        case Favorites: break
+        }
+
+        updateQuickStyles()
     }
 
     mtd updateQuickStyles()
