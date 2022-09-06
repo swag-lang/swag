@@ -141,10 +141,12 @@ impl Surface
 
     private mtd createRT()
     {
-        if !rt.colorBuffer.valid or rt.colorBuffer.width != rc.width or rt.colorBuffer.height != rc.height
+        if !rt.colorBuffer.valid or rt.colorBuffer.width < rc.width or rt.colorBuffer.height < rc.height
         {
             app.renderer.deleteRenderTarget(&rt)
-            rt = app.renderer.createRenderTarget(rc.width, rc.height)
+            var w: s32 = Math.roundUpToPowerOf2(acast rc.width)
+            var h: s32 = Math.roundUpToPowerOf2(acast rc.height)
+            rt = app.renderer.createRenderTarget(w, h)
             invalidate()
         }
     }
@@ -182,7 +184,7 @@ impl Surface
         painter.end()
 
         // Paint to surface render target
-        cxt.renderer.bindRenderTarget(&rt)
+        cxt.renderer.bindRenderTarget(&rt, vp: &myRect)
         cxt.renderer.setScissorRect(clipRect)
         cxt.renderer.clear()
         cxt.renderer.draw(&painter)
@@ -209,7 +211,8 @@ impl Surface
             colorDisabled = Argb.White
         }
 
-        painter.drawTexture(0, 0, cast(f32) rc.width, cast(f32) rc.height, rt.colorBuffer, color)
+        dstRect := Math.Rectangle{0, 0, cast(f32) rc.width, cast(f32) rc.height}
+        painter.drawTexture(dstRect, dstRect, rt.colorBuffer, color)
         painter.end()
         cxt.renderer.draw(&painter)
 

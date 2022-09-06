@@ -321,7 +321,7 @@ impl RenderOgl
     }
 
     // Set the current render target
-    mtd bindRenderTarget(rt: *RenderTarget, paintAlpha = false)
+    mtd bindRenderTarget(rt: *RenderTarget, paintAlpha = false, vp: *Math.Rectangle = null)
     {
         Debug.assert(rt != null)
         if !rt.colorBuffer.valid
@@ -332,7 +332,10 @@ impl RenderOgl
         curRT.paintAlpha = paintAlpha
         curRT.tris.clear()
         glBindFramebuffer(GL_FRAMEBUFFER, cast(GLuint) curRT.handle)
-        glViewport(0, 0, curRT.colorBuffer.width, curRT.colorBuffer.height)
+        if vp
+            glViewport(acast vp.x, acast vp.y, acast vp.width, acast vp.height)
+        else
+            glViewport(0, 0, curRT.colorBuffer.width, curRT.colorBuffer.height)
     }
 
     // Go back to the frame buffer
