@@ -34,7 +34,22 @@ impl IWnd for QuickWnd
 
     mtd onSerializeStateEvent(evt: *SerializeStateEvent)
     {
-        //catch evt.ser.serialize("qsFavorites", &qsFavorites)
+        catch evt.ser.serialize("QuickWnd.qsArrow",     &qsArrow)
+        catch evt.ser.serialize("QuickWnd.qsShape",     &qsShape)
+        catch evt.ser.serialize("QuickWnd.qsLine",      &qsLine)
+        catch evt.ser.serialize("QuickWnd.qsPolygon",   &qsPolygon)
+        catch evt.ser.serialize("QuickWnd.qsText",      &qsText)
+        catch evt.ser.serialize("QuickWnd.qsFavorites", &qsFavorites)
+
+        if evt.ser.isReading()
+        {
+            if qsArrow.forms.isEmpty()   defaultQuickStyleArrow()
+            if qsShape.forms.isEmpty()   defaultQuickStyleShape()
+            if qsLine.forms.isEmpty()    defaultQuickStyleLine()
+            if qsPolygon.forms.isEmpty() defaultQuickStylePolygon()
+            if qsText.forms.isEmpty()    defaultQuickStyleText()
+            updateQuickStyles()
+        }
     }
 }
 
@@ -49,7 +64,6 @@ impl QuickWnd
         quick.layout.padding = 6
         quick.layout.spacing = 10
         quick.setView(quick.layout)
-        quick.defaultQuickStyles()
         return quick
     }
 
@@ -163,10 +177,6 @@ impl QuickWnd
         add(BorderSize, Argb.Black)
     }
 
-    mtd defaultQuickStyleFavorites()
-    {
-    }
-
     mtd defaultQuickStyleText()
     {
         #[Swag.Macro]
@@ -194,16 +204,6 @@ impl QuickWnd
         add(2, 48, Argb.White, Argb.Blue)
         add(2, 48, Argb.Zero, Argb.White)
         add(2, 48, Argb.Zero, Argb.Black)
-    }
-
-    mtd defaultQuickStyles()
-    {
-        defaultQuickStyleArrow()
-        defaultQuickStyleShape()
-        defaultQuickStyleLine()
-        defaultQuickStylePolygon()
-        defaultQuickStyleText()
-        defaultQuickStyleFavorites()
     }
 
     mtd updateSelection()
