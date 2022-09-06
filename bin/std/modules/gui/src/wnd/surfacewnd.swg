@@ -321,14 +321,4 @@ impl SurfaceWnd
             closeBtn.style.addStyleSheetColors(@nameof(btnIcon_PressedBk) ++" $" ++ @nameof(wnd_BtnCloseHotBk))
         }
     }
-
-    mtd serializeState(ser: *Serializer) throw
-    {
-        if !view
-            return
-
-        var evt: SerializeStateEvent
-        evt.ser = ser
-        view.processEvent(&evt)
-    }
 }

@@ -25,6 +25,8 @@ impl IWnd for WrapLayoutCtrl
         y := padding.y
         visit c: childs
         {
+            if c.wndFlags & .Hidden
+                continue
             rect := Math.Rectangle{x, y, wrapWidth, wrapHeight}
             c.setPosition(rect)
             x += wrapWidth + spacing

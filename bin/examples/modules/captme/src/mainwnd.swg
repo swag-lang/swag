@@ -51,6 +51,7 @@ impl IWnd for MainWnd
     mtd onSerializeStateEvent(evt: *SerializeStateEvent)
     {
         catch evt.ser.serialize("editMode", &editMode)
+        catch evt.ser.serialize("snap", &snap)
         if evt.ser.isReading()
             updateState()
     }

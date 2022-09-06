@@ -1,3 +1,8 @@
+struct QuickStyle
+{
+    forms: Array'IForm
+}
+
 struct QuickButton
 {
     using iconBtn: IconButton
@@ -10,12 +15,14 @@ struct QuickWnd
 
     layout:         *WrapLayoutCtrl
     main:           *MainWnd
-    qsArrow:        *QuickStyle
-    qsShape:        *QuickStyle
-    qsLine:         *QuickStyle
-    qsPolygon:      *QuickStyle
-    qsText:         *QuickStyle
-    qsFavorites:    *QuickStyle
+
+    qsArrow:        QuickStyle
+    qsShape:        QuickStyle
+    qsLine:         QuickStyle
+    qsPolygon:      QuickStyle
+    qsText:         QuickStyle
+    qsFavorites:    QuickStyle
+
     currentStyle:   *QuickStyle
 }
 
@@ -23,6 +30,11 @@ impl IWnd for QuickWnd
 {
     mtd onPaintEvent(evt: *PaintEvent)
     {
+    }
+
+    mtd onSerializeStateEvent(evt: *SerializeStateEvent)
+    {
+        //catch evt.ser.serialize("qsFavorites", &qsFavorites)
     }
 }
 
@@ -37,14 +49,12 @@ impl QuickWnd
         quick.layout.padding = 6
         quick.layout.spacing = 10
         quick.setView(quick.layout)
-        quick.loadQuickStyles()
+        quick.defaultQuickStyles()
         return quick
     }
 
-    mtd loadQuickStyleArrow()
+    mtd defaultQuickStyleArrow()
     {
-        qsArrow = Memory.new'QuickStyle()
-
         #[Swag.Macro]
         func add(startSize, borderSize, endSize: f32, color: Color)
         {
@@ -76,10 +86,8 @@ impl QuickWnd
         add(ArrowSize, BorderSize, ArrowSize, Argb.Yellow)
     }
 
-    mtd loadQuickStyleShape()
+    mtd defaultQuickStyleShape()
     {
-        qsShape = Memory.new'QuickStyle()
-
         #[Swag.Macro]
         func add(borderSize: f32, kind: FormShapeKind, color: Color, backColor: Color)
         {
@@ -107,10 +115,8 @@ impl QuickWnd
         add(BorderSize, .Rectangle, Argb.Black, Argb.Zero)
     }
 
-    mtd loadQuickStyleLine()
+    mtd defaultQuickStyleLine()
     {
-        qsLine = Memory.new'QuickStyle()
-
         #[Swag.Macro]
         func add(borderSize: f32, color: Color)
         {
@@ -133,10 +139,8 @@ impl QuickWnd
         add(BorderSize, Argb.Purple)
     }
 
-    mtd loadQuickStylePolygon()
+    mtd defaultQuickStylePolygon()
     {
-        qsPolygon = Memory.new'QuickStyle()
-
         #[Swag.Macro]
         func add(borderSize: f32, color: Color)
         {
@@ -159,15 +163,12 @@ impl QuickWnd
         add(BorderSize, Argb.Black)
     }
 
-    mtd loadQuickStyleFavorites()
+    mtd defaultQuickStyleFavorites()
     {
-        qsFavorites = Memory.new'QuickStyle()
     }
 
-    mtd loadQuickStyleText()
+    mtd defaultQuickStyleText()
     {
-        qsText = Memory.new'QuickStyle()
-
         #[Swag.Macro]
         func add(borderSize, fontSize: f32, bdColor, bkColor: Color)
         {
@@ -195,14 +196,14 @@ impl QuickWnd
         add(2, 48, Argb.Zero, Argb.Black)
     }
 
-    mtd loadQuickStyles()
+    mtd defaultQuickStyles()
     {
-        loadQuickStyleArrow()
-        loadQuickStyleShape()
-        loadQuickStyleLine()
-        loadQuickStylePolygon()
-        loadQuickStyleText()
-        loadQuickStyleFavorites()
+        defaultQuickStyleArrow()
+        defaultQuickStyleShape()
+        defaultQuickStyleLine()
+        defaultQuickStylePolygon()
+        defaultQuickStyleText()
+        defaultQuickStyleFavorites()
     }
 
     mtd updateSelection()
@@ -211,10 +212,19 @@ impl QuickWnd
             return
         done := false
         mode := main.getEditMode()
+
+        firstVisible := 0's32
+        visit c: layout.childs
+        {
+            if c.isVisible()
+                break
+            firstVisible += 1
+        }
+
         visit it, i: currentStyle.forms
         {
             type := @kindof(it)
-            btn  := cast(*IconButton) layout.childs[i]
+            btn  := cast(*IconButton) layout.childs[i + firstVisible]
 
             #[Swag.Complete]
             switch type
@@ -277,23 +287,23 @@ impl QuickWnd
         switch main.editMode
         {
         case Arrow:
-            currentStyle = qsArrow
+            currentStyle = &qsArrow
         case Shape:
-            currentStyle = qsShape
+            currentStyle = &qsShape
         case Line:
-            currentStyle = qsLine
+            currentStyle = &qsLine
         case Polygon:
-            currentStyle = qsPolygon
+            currentStyle = &qsPolygon
         case Text:
-            currentStyle = qsText
+            currentStyle = &qsText
         case Favorites:
-            currentStyle = qsFavorites
+            currentStyle = &qsFavorites
         default:
             currentStyle = null
         }
 
-        while layout.childs.count
-            layout.childs[0].destroyNow()
+        visit c: layout.childs
+            c.destroy()
         if !currentStyle
             return
 
@@ -394,6 +404,7 @@ impl QuickWnd
         btn.style.addStyleSheetColors("btnIcon_Bk          0x0")
         btn.style.addStyleSheetColors("btnIcon_HotBk       0x0")
         btn.style.addStyleSheetColors("btnIcon_PressedBk   0x0")
+        layout.sendResizeEvent()
 
         mode := main.getEditMode()
 

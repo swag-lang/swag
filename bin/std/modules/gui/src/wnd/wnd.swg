@@ -257,6 +257,7 @@ impl Wnd
     {
         if isPendingDestroy
             return
+        wndFlags |= .Hidden
         isPendingDestroy = true
         visit c: childs
             c.destroy()
@@ -367,6 +368,20 @@ impl Wnd
     mtd disable()
     {
         enable(false)
+    }
+
+    // Returns true if window, and all its parents, are visible
+    mtd isVisible()->bool
+    {
+        check := self
+        while check
+        {
+            if check.wndFlags & .Hidden
+                return false
+            check = check.parent
+        }
+
+        return true
     }
 
     // Returns true if window, and all its parents, are enabled
@@ -1085,5 +1100,19 @@ impl Wnd
             eat = hookOnEvent(self, evt)
         if !eat
             itf.onEvent(evt)
+    }
+
+    mtd serializeState(ser: *Serialization.Serializer) throw
+    {
+        var evt: SerializeStateEvent
+        evt.accepted = false
+        evt.ser = ser
+        processEvent(&evt)
+
+        if !evt.accepted
+        {
+            visit c: childs
+                c.serializeState(ser)
+        }
     }
 }
