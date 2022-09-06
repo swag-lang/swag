@@ -24,6 +24,7 @@ impl IWnd for MessageDlg
                     if btn.form == .Default
                     {
                         btn.form = .Normal
+                        btn.invalidate()
                         nextBtn := buttons[(idx + 1) % buttons.count]
                         nextBtn.form = .Default
                         nextBtn.invalidate()
@@ -37,6 +38,7 @@ impl IWnd for MessageDlg
                     if btn.form == .Default
                     {
                         btn.form = .Normal
+                        btn.invalidate()
                         prevBtn := idx ? buttons[idx - 1] : buttons.back()
                         prevBtn.form = .Default
                         prevBtn.invalidate()
