@@ -35,6 +35,12 @@ impl Rectangle
         return y + (height * 0.5)
     }
 
+    // Central point
+    mtdc center()->Point
+    {
+        return Point{horzCenter(), vertCenter()}
+    }
+
     // right coordinate (x + width)
     #[Swag.Inline]
     mtdc right()->f32

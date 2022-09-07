@@ -68,7 +68,7 @@ impl IWnd for MainWnd
         {
         case CmdIdResetQuickStyle:
             evt.setFlags |= .Name
-            evt.name = "Reset to default"
+            evt.name = "Restore default styles"
             evt.accepted = true
 
         case CmdIdRecentSmall:

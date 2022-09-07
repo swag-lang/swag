@@ -2,12 +2,13 @@ public struct Button
 {
     using wnd: Wnd
 
-    icon:           Icon
-    sigPressed:     SigArray'closure(*Self)
-    isPressed:      bool
-    isPressing:     bool
-    isHot:          bool
-    isIn:           bool
+    icon:               Icon
+    sigPressed:         SigArray'closure(*Self)
+    sigRightPressed:    SigArray'closure(*Self)
+    isPressed:          bool
+    isPressing:         bool
+    isHot:              bool
+    isIn:               bool
 }
 
 impl IWnd for Button
@@ -74,6 +75,11 @@ impl Button
                 isPressed, isPressing = true
                 captureMouse()
                 invalidate()
+            }
+            elif evt.button == .Right
+            {
+                if isIn
+                    sigRightPressed.call(self)
             }
 
         case MouseReleased:

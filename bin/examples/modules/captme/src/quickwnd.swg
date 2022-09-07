@@ -7,9 +7,7 @@ impl QuickStyle
 {
     mtd deleteOne(itf: IForm)
     {
-        data := @dataof(itf)
-        type := @kindof(itf)
-        Memory.delete(data, type)
+        Memory.delete(@dataof(itf), @kindof(itf))
     }
 
     mtd clear()
@@ -52,11 +50,7 @@ impl IWnd for QuickWnd
     mtd onMouseEvent(evt: *MouseEvent)
     {
         if evt.kind == .MousePressed and evt.button == .Right
-        {
-            menu := MenuCtrl.createPopup(self)
-            menu.addItem(CmdIdResetQuickStyle)
-            res := menu.doModal(evt.surfacePos, autoDestroy: true)
-        }
+            btnPopup(null, evt.surfacePos)
     }
 
     mtd onSerializeStateEvent(evt: *SerializeStateEvent)
@@ -82,6 +76,15 @@ impl IWnd for QuickWnd
 
 impl QuickWnd
 {
+    mtd btnPopup(btn: *Button, pos: Math.Point)
+    {
+        menu := MenuCtrl.createPopup(self)
+        menu.addItem("Remove Style", "", disabled: !btn)
+        menu.addSeparator()
+        menu.addItem(CmdIdResetQuickStyle)
+        discard menu.doModal(pos, autoDestroy: true)
+    }
+
     func create(parent: *Wnd)->*QuickWnd
     {
         quick := Wnd.create'QuickWnd(parent, @{0, 0, 0, 300})
@@ -370,6 +373,11 @@ impl QuickWnd
                 paintForm(bc.painter, cast(*QuickButton) btn)
             }
 
+            btn.sigRightPressed += @|self|(btn) {
+                rect := btn.getSurfaceRect()
+                self.btnPopup(btn, rect.center())
+            }
+
             btn.sigCheckChanged += @|self, it|(btn) {
                 if !btn.isChecked
                     return
@@ -492,6 +500,7 @@ impl QuickWnd
         btn1.style.addStyleSheetColors("btnIcon_HotBk       $hilightLight")
         btn1.style.addStyleSheetColors("btnIcon_PressedBk   $hilightDark")
         btn1.setForm(.Round)
+
         btn1.sigPressed += @|self, main|(btn) {
             mode := main.getEditMode()
             #[Swag.Complete]
