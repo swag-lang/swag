@@ -7,6 +7,7 @@
 #include "OutputFileWin32.h"
 #include "TypeManager.h"
 #include "BackendX64.h"
+#include "Context.h"
 
 namespace OS
 {
@@ -948,6 +949,21 @@ namespace OS
     {
         const auto& cc         = g_CallConv[typeInfoFunc->callConv];
         auto        returnType = TypeManager::concreteReferenceType(typeInfoFunc->returnType);
+
+        // Special case when rising an exception (__raiseException666 in windows runtime)
+        // Do it by hand, because i don't know how to deal with the JIT below and exceptions.
+        // It's weird, but it seems to work in release/devmode, but not in debug.
+        // 
+        // As there's no real function, i don't know how to specify the "unwind" informations necessary to catch and pass exceptions to the caller.
+        // Do that hack for now... Instead of calling the windows function in the ffi, i call it there...
+        if (typeInfoFunc->declNode && typeInfoFunc->declNode->sourceFile->isRuntimeFile && typeInfoFunc->declNode->token.text == "RaiseException")
+        {
+            SWAG_ASSERT(pushRAParam.size() == 4);
+            RaiseException(context->curRegistersRC[pushRAParam[3]].u32,
+                           context->curRegistersRC[pushRAParam[2]].u32,
+                           context->curRegistersRC[pushRAParam[1]].u32,
+                           (ULONG_PTR*) context->curRegistersRC[pushRAParam[0]].pointer);
+        }
 
         if (!g_X64Gen.concat.firstBucket)
         {
