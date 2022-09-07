@@ -138,7 +138,7 @@ static void cleanMessage(Utf8& msg, bool forOverloads)
                 break;
             if (pos && SWAG_IS_BLANK(msg[end + 2]) && SWAG_IS_BLANK(msg[pos - 1]))
                 end += 1;
-            else if (pos && msg[end + 2] == 0 && SWAG_IS_BLANK(msg[pos - 1]))
+            else if (pos && SWAG_IS_BLANK(msg[end + 2]) && SWAG_IS_BLANK(msg[pos - 1]))
                 end += 1;
             else if (pos && msg[end + 2] == ',' && SWAG_IS_BLANK(msg[pos - 1]))
                 end += 1;

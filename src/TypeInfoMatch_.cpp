@@ -43,6 +43,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
             context.cptResolved                         = (int) context.parameters.size();
             param->resolvedParameter                    = parameters.back();
             param->indexParam                           = (int) parameters.size() - 1;
+            context.doneParameters[param->indexParam]   = true;
             context.solvedParameters[param->indexParam] = parameters.back();
             return;
         }
@@ -862,6 +863,19 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
     matchParameters(context, parameters, castFlags);
     if (context.result == MatchResult::Ok)
         matchNamedParameters(context, parameters);
+
+    int cptDone = 0;
+    if (!context.doneParameters.empty())
+    {
+        for (auto b : context.doneParameters)
+        {
+            if (!b)
+                break;
+            cptDone++;
+        }
+    }
+
+    context.cptResolved = min(context.cptResolved, cptDone);
 
     // Not enough parameters
     int firstDefault = firstDefaultValueIdx == -1 ? (int) parameters.size() : firstDefaultValueIdx;
