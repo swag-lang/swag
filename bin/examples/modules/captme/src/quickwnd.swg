@@ -5,9 +5,15 @@ struct QuickStyle
 
 impl QuickStyle
 {
-    mtd deleteOne(itf: IForm)
+    func deleteOne(itf: IForm)
     {
         Memory.delete(@dataof(itf), @kindof(itf))
+    }
+
+    mtd remove(itf: IForm)
+    {
+        deleteOne(itf)
+        forms.remove(itf)
     }
 
     mtd clear()
@@ -79,10 +85,17 @@ impl QuickWnd
     mtd btnPopup(btn: *Button, pos: Math.Point)
     {
         menu := MenuCtrl.createPopup(self)
-        menu.addItem("Remove Style", "", disabled: !btn)
+        menu.addItem("Remove Quick Style", "0", disabled: !btn)
         menu.addSeparator()
         menu.addItem(CmdIdResetQuickStyle)
-        discard menu.doModal(pos, autoDestroy: true)
+        res := menu.doModal(pos, autoDestroy: true)
+        if res == "0"
+        {
+            qbtn := cast(*QuickButton) btn
+            currentStyle.remove(qbtn.formItf)
+            qbtn.destroy()
+            updateQuickStyles()
+        }
     }
 
     func create(parent: *Wnd)->*QuickWnd
