@@ -83,7 +83,7 @@ impl Button
             }
 
         case MouseReleased:
-            if evt.button == .Left
+            if evt.button == .Left and isPressed
             {
                 releaseMouse()
                 isPressed, isPressing = false
