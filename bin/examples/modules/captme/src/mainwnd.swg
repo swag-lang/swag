@@ -30,10 +30,11 @@ struct MainWnd
     zoomBtn:    *IconButton
     recentWnd:  *RecentWnd
     bottomBar:  *Wnd
-    bottomSize: BottomSize = Medium
+    bottomSizeBar: *IconBar
 
-    editMode: EditMode = .Shape
-    snap:     bool
+    editMode:   EditMode = .Shape
+    bottomSize: BottomSize = Medium
+    snap:       bool
 
     mdlFormShape:   FormShape
     mdlFormArrow:   FormArrow
@@ -52,8 +53,12 @@ impl IWnd for MainWnd
     {
         catch evt.ser.serialize("MainWnd.editMode", &editMode)
         catch evt.ser.serialize("MainWnd.snap", &snap)
+        catch evt.ser.serialize("MainWnd.bottomSize", &bottomSize)
         if evt.ser.isReading()
+        {
+            setBottomSize(bottomSize)
             updateState()
+        }
     }
 
     mtd onCommandUIEvent(evt: *CommandUIEvent)
@@ -526,6 +531,7 @@ impl MainWnd
     {
         captureBtn.updateCommandState()
         toolbar.updateCommandState()
+        bottomSizeBar.updateCommandState()
         propWnd.selectionHasChanged()
         quickWnd.updateQuickStyles()
     }
@@ -581,8 +587,11 @@ impl MainWnd
         res.favoriteMdl = &res.mdlFormShape
 
         res.captureBtn = IconButton.create(topBar, Icon.from(&res.icons48, 6), @{0, 0, 64, 64}, id: CmdIdCapture)
-        res.captureBtn.style.addStyleSheetColors("btnIcon_Icon    0xFFFF0000")
-        res.captureBtn.style.addStyleSheetColors("btnIcon_HotIcon 0xFFFF4444")
+        with res.captureBtn
+        {
+            style.addStyleSheetColors("btnIcon_Icon    0xFFFF0000")
+            style.addStyleSheetColors("btnIcon_HotIcon 0xFFFF4444")
+        }
 
         // Main edit area
         res.editWnd = EditWnd.create(res, res)
@@ -593,13 +602,16 @@ impl MainWnd
         res.bottomBar.dockStyle = .Bottom
 
         // Recent left toolbar
-        tb := IconBar.create(res.bottomBar, 20)
-        tb.setIconBarFlags(.Vertical)
-        tb.dockStyle = .Left
-        tb.iconPadding = 0
-        tb.addItem(Icon.from(&res.icons24, 0), CmdIdRecentSmall, .Checkable)
-        tb.addItem(Icon.from(&res.icons24, 1), CmdIdRecentMedium, .Checkable)
-        tb.addItem(Icon.from(&res.icons24, 2), CmdIdRecentBig, .Checkable)
+        res.bottomSizeBar = IconBar.create(res.bottomBar, 20)
+        with res.bottomSizeBar
+        {
+            setIconBarFlags(.Vertical)
+            dockStyle = .Left
+            iconPadding = 0
+            addItem(Icon.from(&res.icons24, 0), CmdIdRecentSmall, .Checkable)
+            addItem(Icon.from(&res.icons24, 1), CmdIdRecentMedium, .Checkable)
+            addItem(Icon.from(&res.icons24, 2), CmdIdRecentBig, .Checkable)
+        }
 
         // Recent
         res.recentWnd = RecentWnd.create(res.bottomBar, res)
