@@ -763,35 +763,6 @@ impl Painter
         t.triangulate()
         res := t.getTriangles()
 
-        // Collect all borders for AA
-        var edges: Array'{Vector2, Vector2}
-        if curState.paintParams & .Antialiased
-        {
-            visit tri: res
-            {
-                loop e: 3
-                {
-                    if !tri.constrainedEdge[e]
-                        continue
-                    switch e
-                    {
-                    case 0:
-                        v1 := Vector2{cast(f32) tri.points[1].x, cast(f32) tri.points[1].y}
-                        v2 := Vector2{cast(f32) tri.points[2].x, cast(f32) tri.points[2].y}
-                        edges.add(@{v1, v2})
-                    case 1:
-                        v0 := Vector2{cast(f32) tri.points[0].x, cast(f32) tri.points[0].y}
-                        v2 := Vector2{cast(f32) tri.points[2].x, cast(f32) tri.points[2].y}
-                        edges.add(@{v0, v2})
-                    case 2:
-                        v0 := Vector2{cast(f32) tri.points[0].x, cast(f32) tri.points[0].y}
-                        v1 := Vector2{cast(f32) tri.points[1].x, cast(f32) tri.points[1].y}
-                        edges.add(@{v0, v1})
-                    }
-                }
-            }
-        }
-
         visit tri: res
         {
             v0 := Vector2{cast(f32) tri.points[0].x, cast(f32) tri.points[0].y}
@@ -801,14 +772,32 @@ impl Painter
 
             if curState.paintParams & .Antialiased
             {
-                // Add all borders with a shared point
-                visit e: edges
+                curTri := tri
+                loop triIdx: 4
                 {
-                    if v0.isEqualEpsilon(e.item0) or v0.isEqualEpsilon(e.item1) or
-                       v1.isEqualEpsilon(e.item0) or v1.isEqualEpsilon(e.item1) or
-                       v2.isEqualEpsilon(e.item0) or v2.isEqualEpsilon(e.item1)
+                    if triIdx > 0
                     {
-                        addEdgeAA(prim, e.item0, e.item1)
+                        curTri = tri.neighbors[triIdx-1]
+                        if !curTri
+                            continue
+                        v0 = Vector2{cast(f32) curTri.points[0].x, cast(f32) curTri.points[0].y}
+                        v1 = Vector2{cast(f32) curTri.points[1].x, cast(f32) curTri.points[1].y}
+                        v2 = Vector2{cast(f32) curTri.points[2].x, cast(f32) curTri.points[2].y}
+                    }
+
+                    loop e: 3
+                    {
+                        if !curTri.constrainedEdge[e]
+                            continue
+                        switch e
+                        {
+                        case 0:
+                            addEdgeAA(prim, v1, v2)
+                        case 1:
+                            addEdgeAA(prim, v0, v2)
+                        case 2:
+                            addEdgeAA(prim, v0, v1)
+                        }
                     }
                 }
             }
