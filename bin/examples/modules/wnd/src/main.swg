@@ -4,10 +4,7 @@ var app: Application
 
 #main
 {
-    dbg := Memory.DebugAllocator.create()
-    cxt := dref @getcontext()
-    cxt.allocator = dbg
-    @setcontext(cxt)
+    Memory.DebugAllocator.install(traceLeaks: false)
 
     surface0 := try app.createSurface(100, 100, 1200, 1000, SurfaceFlags.OverlappedWindow)
     surface0.setTitle("Example 0")

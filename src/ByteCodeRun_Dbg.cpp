@@ -6,6 +6,7 @@
 #include "AstNode.h"
 #include "Ast.h"
 
+#pragma optimize("", off)
 static void printRegister(ByteCodeRunContext* context, uint32_t curRC, uint32_t reg, bool read)
 {
     auto registersRC = context->getRegBuffer(curRC);
@@ -283,10 +284,37 @@ static void appendValue(Utf8& str, TypeInfo* typeInfo, void* addr)
         return;
     }
 
+    if (typeInfo->kind == TypeInfoKind::Interface)
+    {
+        str += Fmt("(0x%016llx ", ((void**) addr)[0]);
+        str += Fmt("0x%016llx)", ((void**) addr)[1]);
+        return;
+    }
+
     if (typeInfo->kind == TypeInfoKind::Native)
     {
         switch (typeInfo->nativeType)
         {
+        case NativeTypeKind::String:
+        {
+            const void* ptr = ((const void**) addr)[0];
+            uint64_t    len = ((const uint64_t*) addr)[1];
+            if (!ptr || !len)
+                str += "<empty>";
+            else
+            {
+                Utf8 str1;
+                str1.reserve((int) len + 1);
+                memcpy(str1.buffer, ptr, len);
+                str1.buffer[len] = 0;
+                str += "\"";
+                str += str1;
+                str += "\"";
+            }
+
+            return;
+        }
+
         case NativeTypeKind::Bool:
             str += Fmt("%s", *(bool*) addr ? "true" : "false");
             return;
@@ -353,10 +381,33 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
         context->debugStackFrameOffset = 0;
     }
 
+    // Check breakpoints
+    for (auto it = context->debugBreakpoints.begin(); it != context->debugBreakpoints.end(); it++)
+    {
+        const auto& bkp = *it;
+
+        if (bkp.type == ByteCodeRunContext::DebugBkpType::FuncName)
+        {
+            if (context->bc->node && context->bc->node->token.text == bkp.name)
+            {
+                g_Log.print(Fmt("==> break entering function '%s'\n", context->bc->node->token.text.c_str()));
+
+                context->bc->printSourceCode(ip);
+                context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
+                context->debugBreakpoints.erase(it);
+                break;
+            }
+        }
+    }
+
     // Step to the next line
     bool zapCurrentIp = false;
     switch (context->debugStepMode)
     {
+    case ByteCodeRunContext::DebugStepMode::ToNextBreakpoint:
+        zapCurrentIp = true;
+        break;
+
     case ByteCodeRunContext::DebugStepMode::NextLine:
     {
         SourceFile*     file;
@@ -365,7 +416,10 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
         if (!location || (context->debugStepLastFile == file && context->debugStepLastLocation && context->debugStepLastLocation->line == location->line))
             zapCurrentIp = true;
         else
+        {
             context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
+            context->bc->printSourceCode(ip);
+        }
     }
     break;
     case ByteCodeRunContext::DebugStepMode::NextLineStepOut:
@@ -378,16 +432,19 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
         else if (context->curRC > context->debugStepRC)
             zapCurrentIp = true;
         else
+        {
             context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
+            context->bc->printSourceCode(ip);
+        }
     }
     break;
     case ByteCodeRunContext::DebugStepMode::FinishedFunction:
     {
-        if (context->curRC > context->debugStepRC)
+        if (context->curRC == 0 && context->debugStepRC == -1 && ip->op == ByteCodeOp::Ret)
+            context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
+        else if (context->curRC > context->debugStepRC)
             zapCurrentIp = true;
         else
-            context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
-        if (context->curRC == 0 && context->debugStepRC == -1 && ip->op == ByteCodeOp::Ret)
             context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
     }
     break;
@@ -445,8 +502,12 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 g_Log.print("cxt, context           print contextual informations\n");
                 g_Log.print("r                      print all registers\n");
                 g_Log.print("r <num>                print register <num>\n");
-                g_Log.print("list                   print current source code line\n");
+                g_Log.print("l, line                print current source code line\n");
                 g_Log.print("bc, printbc            print current function bytecode\n");
+                g_Log.eol();
+
+                g_Log.print("bkp fct <name>         add breakpoint when entering function <name>\n");
+                g_Log.print("bkp clear              clear all breakpoints\n");
                 g_Log.eol();
 
                 g_Log.print("x8  <addr|reg> [num]   print memory at address <addr> or register value <reg>, in 8 bits\n");
@@ -514,7 +575,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             }
 
             // Print current instruction
-            if (cmd == "list" && cmds.size() == 1)
+            if (cmd == "l" || cmd == "line")
             {
                 context->debugCxtBc->printSourceCode(context->debugCxtIp);
                 continue;
@@ -640,7 +701,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 g_Log.setColor(LogColor::Gray);
                 int regN = atoi(cmds[1].c_str());
                 if (regN >= context->getRegCount(context->debugCxtRc))
-                    g_Log.print(Fmt("invalid register number, maximum value is '%u'\n", (uint32_t) context->getRegCount(context->debugCxtRc)));
+                    g_Log.printColor(Fmt("invalid register number, maximum value is '%u'\n", (uint32_t) context->getRegCount(context->debugCxtRc)), LogColor::Red);
                 else
                 {
                     auto& regP = context->getRegBuffer(context->debugCxtRc)[regN];
@@ -665,6 +726,23 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 g_Log.unlock();
                 context->debugCxtBc->print(context->debugCxtIp);
                 g_Log.lock();
+                continue;
+            }
+
+            // Breakpoints
+            if (cmd == "bkp" && cmds.size() == 3 && cmds[1] == "fct")
+            {
+                ByteCodeRunContext::DebugBreakpoint bkp;
+                bkp.type = ByteCodeRunContext::DebugBkpType::FuncName;
+                bkp.name = cmds[2];
+                context->debugBreakpoints.push_back(bkp);
+                g_Log.printColor(Fmt("==> adding breakpoint at start of function '%s'\n", bkp.name.c_str()), LogColor::White);
+                continue;
+            }
+
+            if (cmd == "bkp" && cmds.size() == 2 && cmds[1] == "clear")
+            {
+                context->debugBreakpoints.clear();
                 continue;
             }
 
@@ -704,7 +782,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             if (cmd == "c")
             {
                 context->debugStackFrameOffset = 0;
-                context->debugOn               = false;
+                context->debugStepMode         = ByteCodeRunContext::DebugStepMode::ToNextBreakpoint;
                 break;
             }
 

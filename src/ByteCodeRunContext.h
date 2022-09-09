@@ -134,20 +134,32 @@ struct ByteCodeRunContext
         NextLine,
         NextLineStepOut,
         FinishedFunction,
+        ToNextBreakpoint,
     };
 
-    ByteCodeInstruction* debugLastIp           = nullptr;
-    SourceFile*          debugStepLastFile     = nullptr;
-    SourceLocation*      debugStepLastLocation = nullptr;
-    ByteCode*            debugCxtBc            = nullptr;
-    ByteCodeInstruction* debugCxtIp            = nullptr;
-    uint8_t*             debugCxtBp            = nullptr;
+    enum class DebugBkpType
+    {
+        FuncName,
+    };
 
-    uint32_t      debugLastCurRC        = 0;
-    int32_t       debugStepRC           = 0;
-    DebugStepMode debugStepMode         = DebugStepMode::None;
-    uint32_t      debugStackFrameOffset = 0;
-    uint32_t      debugCxtRc            = 0;
+    struct DebugBreakpoint
+    {
+        DebugBkpType type;
+        Utf8         name;
+    };
+
+    ByteCodeInstruction*    debugLastIp           = nullptr;
+    SourceFile*             debugStepLastFile     = nullptr;
+    SourceLocation*         debugStepLastLocation = nullptr;
+    ByteCode*               debugCxtBc            = nullptr;
+    ByteCodeInstruction*    debugCxtIp            = nullptr;
+    uint8_t*                debugCxtBp            = nullptr;
+    uint32_t                debugLastCurRC        = 0;
+    int32_t                 debugStepRC           = 0;
+    DebugStepMode           debugStepMode         = DebugStepMode::None;
+    uint32_t                debugStackFrameOffset = 0;
+    uint32_t                debugCxtRc            = 0;
+    vector<DebugBreakpoint> debugBreakpoints;
 };
 
 extern bool g_Exiting;
