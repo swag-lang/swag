@@ -29,7 +29,7 @@ impl Keyboard
         now := Time.nowMilliseconds()
         loop i: @countof(Key)
         {
-            if !self.isKeyPressed(cast(Key) i)
+            if !currentState.isKeyPressed(cast(Key) i)
             {
                 pressedRepeat[i] = false
                 pressedTime[i] = 0
@@ -43,7 +43,7 @@ impl Keyboard
                 // First repetition
                 if !pressedRepeat[i]
                 {
-                    if (now - pressedTime[i] >= pressedRepeatStartTimeMs)
+                    if now - pressedTime[i] >= pressedRepeatStartTimeMs
                     {
                         pressedRepeat[i] = true
                         pressedTime[i]   = now

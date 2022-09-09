@@ -13,4 +13,12 @@ impl KeyboardStateNative
     {
         discard GetKeyboardState(nativeState)
     }
+
+    mtd isKeyPressed(key: Input.Key)->bool
+    {
+        vkey := Keyboard.mapKeyToVKey[key]
+        if vkey == 0
+            return false
+        return nativeState[vkey] & 0x80 ? true : false
+    }
 }
