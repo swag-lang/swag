@@ -619,9 +619,12 @@ impl MainWnd
 
         // Right bar
         rightWnd := StackLayoutCtrl.create(res, .Top, @{0, 0, 300, 0})
-        rightWnd.dockStyle = .Right
-        rightWnd.backgroundStyle = .Window
-        rightWnd.spacing = 0
+        with rightWnd
+        {
+            dockStyle = .Right
+            backgroundStyle = .Window
+            spacing = 0
+        }
 
         label0 := Label.create(rightWnd, "Quick Styles", @{0, 0, 0, 30})
         label0.backgroundStyle = .Window
@@ -635,9 +638,12 @@ impl MainWnd
         label1.style.addStyleSheetColors("wnd_Bk $dlg_BtnBarBk")
 
         res.propWnd = Wnd.create'PropWnd(rightWnd, @{0, 0, 0, 300})
-        res.propWnd.main = res
-        res.propWnd.backgroundStyle = .Window
-        res.propWnd.layoutKind = .TopAutoSize
+        with res.propWnd
+        {
+            main = res
+            backgroundStyle = .Window
+            layoutKind = .TopAutoSize
+        }
 
         // Bottom bar
         barWnd := StackLayoutCtrl.create(res, .HorzCenter, @{0, 0, 300, 32})

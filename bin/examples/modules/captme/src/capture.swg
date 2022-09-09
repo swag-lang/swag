@@ -67,6 +67,7 @@ impl Capture
     {
         zoom := Math.min(PreviewWidth / width, PreviewHeight / height)
         preview = toImage(zoom)
+        preview.applyKernel(.GaussianBlur3x3A)
     }
 
     mtd toImage(zoom: f32 = 1)->Image
