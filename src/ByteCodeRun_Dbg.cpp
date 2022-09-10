@@ -669,13 +669,14 @@ static void printHelp()
     g_Log.setColor(LogColor::Gray);
     g_Log.eol();
     g_Log.print("<return>                   runs to the next line/instruction depending on 'bcmode'\n");
-    g_Log.print("s                          runs to the next line\n");
-    g_Log.print("n                          like s, but does not step into functions\n");
-    g_Log.print("c                          runs until another breakpoint is reached\n");
-    g_Log.print("f                          runs until the current function is done\n");
+    g_Log.eol();
+    g_Log.print("s(tep)                     runs to the next line\n");
+    g_Log.print("n(ext)                     like s, but does not step into functions\n");
+    g_Log.print("r(eturn)                   runs until the current function is done\n");
+    g_Log.print("c(ont(inue))               runs until another breakpoint is reached\n");
     g_Log.eol();
 
-    g_Log.print("l [num]                    print the current source code line and <num> lines around\n");
+    g_Log.print("l(ist) [num]               print the current source code line and <num> lines around\n");
     g_Log.print("ll                         print the current function source code\n");
 
     g_Log.eol();
@@ -684,8 +685,8 @@ static void printHelp()
     g_Log.eol();
 
     g_Log.print("p <name>                   print the value of <name>\n");
-    g_Log.print("locals                     print all current local variables\n");
-    g_Log.print("args                       print all current function arguments\n");
+    g_Log.print("loc(als)                   print all current local variables\n");
+    g_Log.print("a(rgs)                     print all current function arguments\n");
     g_Log.eol();
 
     g_Log.print("b(reak)                    print all breakpoints\n");
@@ -704,7 +705,7 @@ static void printHelp()
     g_Log.eol();
 
     g_Log.print("i [num]                    print the current bytecode instruction and <num> instructions around\n");
-    g_Log.print("r                          print all registers\n");
+    g_Log.print("r(egs)                     print all registers\n");
     g_Log.print("r<num>                     print register <num>\n");
     g_Log.print("bc                         print the current function bytecode\n");
     g_Log.eol();
@@ -715,7 +716,7 @@ static void printHelp()
     g_Log.eol();
 
     g_Log.print("?                          print this list of commands\n");
-    g_Log.print("q, quit                    quit the compiler\n");
+    g_Log.print("q(uit)                     quit the compiler\n");
     g_Log.eol();
 }
 
@@ -975,7 +976,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             }
 
             // Info locals
-            if (cmd == "locals" && cmds.size() == 1)
+            if ((cmd == "loc" || cmd == "locals") && cmds.size() == 1)
             {
                 if (context->debugCxtBc->localVars.empty())
                     g_Log.printColor("no locals\n");
@@ -998,7 +999,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             }
 
             // Info args
-            if (cmd == "args" && cmds.size() == 1)
+            if ((cmd == "a" || cmd == "args") && cmds.size() == 1)
             {
                 auto funcDecl = CastAst<AstFuncDecl>(context->debugCxtBc->node, AstNodeKind::FuncDecl);
                 if (!funcDecl->parameters || funcDecl->parameters->childs.empty())
@@ -1106,7 +1107,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             }
 
             // Print all registers
-            if (cmd == "r" && cmds.size() == 1)
+            if ((cmd == "r" || cmd == "regs") && cmds.size() == 1)
             {
                 g_Log.setColor(LogColor::White);
                 for (int i = 0; i < context->getRegCount(context->debugCxtRc); i++)
@@ -1157,7 +1158,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             }
 
             // Function code
-            if ((cmd == "l" && cmds.size() <= 2) ||
+            if (((cmd == "l" || cmd == "list") && cmds.size() <= 2) ||
                 (cmd == "ll" && cmds.size() == 1))
             {
                 if (context->debugCxtBc->node && context->debugCxtBc->node->kind == AstNodeKind::FuncDecl && context->debugCxtBc->node->sourceFile)
@@ -1311,7 +1312,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             }
 
             // Step to next line
-            if (cmd == "s")
+            if ((cmd == "s" || cmd == "step") && cmds.size() == 1)
             {
                 context->debugStackFrameOffset = 0;
                 context->debugStepMode         = ByteCodeRunContext::DebugStepMode::NextLine;
@@ -1319,7 +1320,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             }
 
             // Step to next line, step out
-            if (cmd == "n")
+            if ((cmd == "n" || cmd == "next") && cmds.size() == 1)
             {
                 context->debugStackFrameOffset = 0;
                 context->debugStepMode         = ByteCodeRunContext::DebugStepMode::NextLineStepOut;
@@ -1328,7 +1329,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             }
 
             // Exit current function
-            if (cmd == "f")
+            if ((cmd == "r" || cmd == "return") && cmds.size() == 1)
             {
                 context->debugStackFrameOffset = 0;
                 context->debugStepMode         = ByteCodeRunContext::DebugStepMode::FinishedFunction;
@@ -1336,8 +1337,8 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 break;
             }
 
-            // Debug off
-            if (cmd == "c")
+            // Continue
+            if ((cmd == "c" || cmd == "cont" || cmd == "continue") && cmds.size() == 1)
             {
                 context->debugStackFrameOffset = 0;
                 context->debugStepMode         = ByteCodeRunContext::DebugStepMode::ToNextBreakpoint;
