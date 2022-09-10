@@ -123,7 +123,7 @@ uint32_t SourceFile::getChar(unsigned& offset)
     return wc;
 }
 
-Utf8 SourceFile::getLine(long lineNo)
+Utf8 SourceFile::getLine(long lineNo, bool* eof)
 {
     ScopedLock lk(mutex);
     auto       checkFile = this;
@@ -169,7 +169,14 @@ Utf8 SourceFile::getLine(long lineNo)
     }
 
     if (lineNo >= allLines.size())
+    {
+        if (eof)
+            *eof = true;
         return "";
+    }
+    
+    if (eof)
+        *eof = false;
     return allLines[lineNo];
 }
 

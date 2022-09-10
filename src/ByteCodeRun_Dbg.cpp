@@ -5,6 +5,10 @@
 #include "ByteCodeStack.h"
 #include "AstNode.h"
 #include "Ast.h"
+#include "AstOutput.h"
+#include "Concat.h"
+
+#pragma optimize("", off)
 
 static bool getRegIdx(ByteCodeRunContext* context, const Utf8& arg, int& regN)
 {
@@ -177,7 +181,7 @@ static void printContext(ByteCodeRunContext* context)
     g_Log.unlock();
     g_Log.eol();
 
-    g_Log.messageHeaderDot("bytecode name", bc->getCallName().c_str(), LogColor::Gray, LogColor::Gray, " ");
+    g_Log.messageHeaderDot("bytecode name", bc->name.c_str(), LogColor::Gray, LogColor::Gray, " ");
     g_Log.messageHeaderDot("bytecode type", bc->getCallType()->getDisplayNameC(), LogColor::Gray, LogColor::Gray, " ");
 
     if (bc->sourceFile)
@@ -210,32 +214,44 @@ static void printFullRegister(Register& regP)
 {
     auto col = LogColor::Magenta;
 
-    // clang-format off
-    g_Log.printColor("s8  ", col); g_Log.printColor(Fmt("%d ", regP.s8));
-    g_Log.printColor("u8 ", col); g_Log.printColor(Fmt("%u ", regP.u8));
-    g_Log.printColor("x8 ", col); g_Log.printColor(Fmt("%02x ", regP.u8));
+    g_Log.printColor("s8 ", col);
+    g_Log.printColor(Fmt("%d ", regP.s8));
+    g_Log.printColor("u8 ", col);
+    g_Log.printColor(Fmt("%u ", regP.u8));
+    g_Log.printColor("x8 ", col);
+    g_Log.printColor(Fmt("%02x ", regP.u8));
     g_Log.eol();
 
-    g_Log.printColor("s16 ", col); g_Log.printColor(Fmt("%d ", regP.s16));
-    g_Log.printColor("u16 ", col); g_Log.printColor(Fmt("%u ", regP.u16));
-    g_Log.printColor("x16 ", col); g_Log.printColor(Fmt("%04x ", regP.u16));
+    g_Log.printColor("s16 ", col);
+    g_Log.printColor(Fmt("%d ", regP.s16));
+    g_Log.printColor("u16 ", col);
+    g_Log.printColor(Fmt("%u ", regP.u16));
+    g_Log.printColor("x16 ", col);
+    g_Log.printColor(Fmt("%04x ", regP.u16));
     g_Log.eol();
 
-    g_Log.printColor("s32 ", col); g_Log.printColor(Fmt("%d ", regP.s32));
-    g_Log.printColor("u32 ", col); g_Log.printColor(Fmt("%u ", regP.u32));
-    g_Log.printColor("x32 ", col); g_Log.printColor(Fmt("%08x ", regP.u32));
+    g_Log.printColor("s32 ", col);
+    g_Log.printColor(Fmt("%d ", regP.s32));
+    g_Log.printColor("u32 ", col);
+    g_Log.printColor(Fmt("%u ", regP.u32));
+    g_Log.printColor("x32 ", col);
+    g_Log.printColor(Fmt("%08x ", regP.u32));
     g_Log.eol();
 
-    g_Log.printColor("s64 ", col); g_Log.printColor(Fmt("%lld ", regP.s64));
-    g_Log.printColor("u64 ", col); g_Log.printColor(Fmt("%llu ", regP.u64));
-    g_Log.printColor("x64 ", col); g_Log.printColor(Fmt("%016llx ", regP.u64));
+    g_Log.printColor("s64 ", col);
+    g_Log.printColor(Fmt("%lld ", regP.s64));
+    g_Log.printColor("u64 ", col);
+    g_Log.printColor(Fmt("%llu ", regP.u64));
+    g_Log.printColor("x64 ", col);
+    g_Log.printColor(Fmt("%016llx ", regP.u64));
     g_Log.eol();
-    
-    g_Log.printColor("f32 ", col); g_Log.printColor(Fmt("%lf", regP.f32));
+
+    g_Log.printColor("f32 ", col);
+    g_Log.printColor(Fmt("%lf", regP.f32));
     g_Log.eol();
-    g_Log.printColor("f64 ", col); g_Log.printColor(Fmt("%lf", regP.f64));
+    g_Log.printColor("f64 ", col);
+    g_Log.printColor(Fmt("%lf", regP.f64));
     g_Log.eol();
-    // clang-format on
 }
 
 static void printInstruction(ByteCodeRunContext* context, ByteCode* bc, ByteCodeInstruction* ip, int num = 1)
@@ -299,8 +315,66 @@ static void computeCxt(ByteCodeRunContext* context)
     }
 }
 
-static void appendValue(Utf8& str, TypeInfo* typeInfo, void* addr)
+static void appendValue(Utf8& str, TypeInfo* typeInfo, void* addr, int indent = 0)
 {
+    if (typeInfo->kind == TypeInfoKind::Struct)
+    {
+        auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+        str += Fmt("0x%016llx\n", addr);
+        for (auto p : typeStruct->fields)
+        {
+            for (int i = 0; i < indent; i++)
+                str += "   ";
+            str += " | ";
+            str += p->namedParam.c_str();
+            str += ": ";
+            str += p->typeInfo->getDisplayName().c_str();
+            str += " = ";
+            appendValue(str, p->typeInfo, ((uint8_t*) addr) + p->offset, indent + 1);
+            if (str.back() != '\n')
+                str += "\n";
+        }
+
+        return;
+    }
+
+    if (typeInfo->kind == TypeInfoKind::Array)
+    {
+        auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        str += Fmt("0x%016llx\n", addr);
+        for (uint32_t idx = 0; idx < typeArray->count; idx++)
+        {
+            for (int i = 0; i < indent; i++)
+                str += "   ";
+            str += Fmt(" [%d] ", idx);
+            appendValue(str, typeArray->pointedType, ((uint8_t*) addr) + (idx * typeArray->pointedType->sizeOf), indent + 1);
+            if (str.back() != '\n')
+                str += "\n";
+        }
+
+        return;
+    }
+
+    if (typeInfo->kind == TypeInfoKind::Slice)
+    {
+        auto typeSlice = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
+        auto count     = ((uint64_t*) addr)[1];
+        auto ptr       = ((uint8_t**) addr)[0];
+        str += Fmt("(0x%016llx ", ptr);
+        str += Fmt("%llu)\n", count);
+        for (uint64_t idx = 0; idx < count; idx++)
+        {
+            for (int i = 0; i < indent; i++)
+                str += "   ";
+            str += Fmt(" [%d] ", idx);
+            appendValue(str, typeSlice->pointedType, ptr + (idx * typeSlice->pointedType->sizeOf), indent + 1);
+            if (str.back() != '\n')
+                str += "\n";
+        }
+
+        return;
+    }
+
     if (typeInfo->kind == TypeInfoKind::Pointer)
     {
         str += Fmt("0x%016llx", *(void**) addr);
@@ -320,16 +394,15 @@ static void appendValue(Utf8& str, TypeInfo* typeInfo, void* addr)
         {
         case NativeTypeKind::String:
         {
-            const void* ptr = ((const void**) addr)[0];
-            uint64_t    len = ((const uint64_t*) addr)[1];
+            auto ptr = ((void**) addr)[0];
+            auto len = ((uint64_t*) addr)[1];
             if (!ptr || !len)
                 str += "<empty>";
             else
             {
                 Utf8 str1;
-                str1.reserve((int) len + 1);
+                str1.resize((int) len);
                 memcpy(str1.buffer, ptr, len);
-                str1.buffer[len] = 0;
                 str += "\"";
                 str += str1;
                 str += "\"";
@@ -383,6 +456,16 @@ static void appendValue(Utf8& str, TypeInfo* typeInfo, void* addr)
     str += "?";
 }
 
+static void printValue(ByteCodeRunContext* context, SymbolOverload* over)
+{
+    Utf8 str;
+    str = Fmt("%s: %s = ", over->symbol->name.c_str(), over->typeInfo->getDisplayNameC());
+    appendValue(str, over->typeInfo, context->debugCxtBp + over->computedValue.storageOffset);
+    g_Log.printColor(str);
+    if (str.back() != '\n')
+        g_Log.eol();
+}
+
 bool ByteCodeRun::debugger(ByteCodeRunContext* context)
 {
     auto ip = context->ip;
@@ -412,10 +495,10 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
 
         if (bkp.type == ByteCodeRunContext::DebugBkpType::FuncName)
         {
-            if (context->bc->node && context->bc->node->token.text == bkp.name)
+            if (context->bc->node && (context->bc->node->token.text == bkp.name || context->bc->name == bkp.name))
             {
                 g_Log.eol();
-                g_Log.printColor(Fmt("#### breakpoint entering function '%s' ####\n", context->bc->getCallName().c_str()), LogColor::Magenta);
+                g_Log.printColor(Fmt("#### breakpoint hit at function '%s' ####\n", context->bc->name.c_str()), LogColor::Magenta);
                 g_Log.eol();
 
                 context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
@@ -483,7 +566,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
     {
         // Print function name
         if (context->debugLastBc != context->bc)
-            g_Log.printColor(Fmt("          %s %s\n", context->bc->getCallName().c_str(), context->bc->getCallType()->getDisplayNameC()), LogColor::Magenta);
+            g_Log.printColor(Fmt("          %s %s\n", context->bc->name.c_str(), context->bc->getCallType()->getDisplayNameC()), LogColor::Magenta);
         context->debugLastBc = context->bc;
 
         // Print source line
@@ -530,8 +613,23 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 g_Log.print("<return>               runs the current instruction\n");
                 g_Log.print("s                      runs to the next line\n");
                 g_Log.print("n                      like s, but does not step into functions\n");
-                g_Log.print("c                      runs until another break is reached\n");
+                g_Log.print("c                      runs until another breakpoint is reached\n");
                 g_Log.print("f                      runs until the current function is done\n");
+                g_Log.eol();
+
+                g_Log.print("l                      print the current source code line\n");
+                g_Log.print("l <num>                print the current source code line and <num> lines around\n");
+                g_Log.print("ll                     print the current function source code\n");
+                g_Log.print("cxt, context           print contextual informations\n");
+                g_Log.eol();
+
+                g_Log.print("p <name>               print the value of <name>\n");
+                g_Log.print("locals                 print all current local variables\n");
+                g_Log.print("args                   print all current function arguments\n");
+                g_Log.eol();
+
+                g_Log.print("bkp fct <name>         add breakpoint when entering function <name>\n");
+                g_Log.print("bkp clear              clear all breakpoints\n");
                 g_Log.eol();
 
                 g_Log.print("stk, stack             print callstack\n");
@@ -542,15 +640,9 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
 
                 g_Log.print("i                      print the current instruction\n");
                 g_Log.print("i <num>                print the current instruction and <num> instructions around\n");
-                g_Log.print("cxt, context           print contextual informations\n");
                 g_Log.print("r                      print all registers\n");
-                g_Log.print("r<num>                 stkprint register <num>\n");
-                g_Log.print("l, line                print current source code line\n");
-                g_Log.print("bc, printbc            print current function bytecode\n");
-                g_Log.eol();
-
-                g_Log.print("bkp fct <name>         add breakpoint when entering function <name>\n");
-                g_Log.print("bkp clear              clear all breakpoints\n");
+                g_Log.print("r<num>                 print register <num>\n");
+                g_Log.print("bc, printbc            print the current function bytecode\n");
                 g_Log.eol();
 
                 g_Log.print("x8  <addr|reg> [num]   print memory at address <addr> or register value <reg>, in 8 bits\n");
@@ -559,18 +651,46 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 g_Log.print("x64 <addr|reg> [num]   print memory at address or register value, in 64 bits\n");
                 g_Log.eol();
 
-                g_Log.print("info locals            print local variables\n");
-                g_Log.print("info args              print function arguments\n");
-                g_Log.eol();
-
                 g_Log.print("?                      print this list of commands\n");
                 g_Log.print("q, quit                quit the compiler\n");
                 g_Log.eol();
                 continue;
             }
 
+            // Info name
+            if (cmd == "p" && cmds.size() == 2)
+            {
+                bool done     = false;
+                auto funcDecl = CastAst<AstFuncDecl>(context->debugCxtBc->node, AstNodeKind::FuncDecl);
+                for (auto l : context->debugCxtBc->localVars)
+                {
+                    auto over = l->resolvedSymbolOverload;
+                    if (over && over->symbol->name == cmds[1])
+                    {
+                        done = true;
+                        printValue(context, over);
+                        break;
+                    }
+                }
+
+                for (auto l : funcDecl->parameters->childs)
+                {
+                    auto over = l->resolvedSymbolOverload;
+                    if (over && over->symbol->name == cmds[1])
+                    {
+                        done = true;
+                        printValue(context, over);
+                        break;
+                    }
+                }
+
+                if (!done)
+                    g_Log.printColor(Fmt("cannot resolve name '%s'\n", cmds[1].c_str()), LogColor::Red);
+                continue;
+            }
+
             // Info locals
-            if (cmd == "info" && cmds.size() == 2 && cmds[1] == "locals")
+            if (cmd == "locals" && cmds.size() == 1)
             {
                 if (context->debugCxtBc->localVars.empty())
                     g_Log.printColor("no locals\n");
@@ -581,12 +701,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                         auto over = l->resolvedSymbolOverload;
                         if (!over)
                             continue;
-
-                        Utf8 str;
-                        str = Fmt("%s (%s) = ", over->symbol->name.c_str(), over->typeInfo->getDisplayNameC());
-                        appendValue(str, over->typeInfo, context->debugCxtBp + over->computedValue.storageOffset);
-                        g_Log.printColor(str);
-                        g_Log.eol();
+                        printValue(context, over);
                     }
                 }
 
@@ -594,7 +709,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             }
 
             // Info args
-            if (cmd == "info" && cmds.size() == 2 && cmds[1] == "args")
+            if (cmd == "args" && cmds.size() == 1)
             {
                 auto funcDecl = CastAst<AstFuncDecl>(context->debugCxtBc->node, AstNodeKind::FuncDecl);
                 if (!funcDecl->parameters || funcDecl->parameters->childs.empty())
@@ -606,24 +721,14 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                         auto over = l->resolvedSymbolOverload;
                         if (!over)
                             continue;
-                        Utf8 str;
-                        str = Fmt("%s (%s) = ", over->symbol->name.c_str(), over->typeInfo->getDisplayNameC());
-                        appendValue(str, over->typeInfo, context->debugCxtBp + over->computedValue.storageOffset);
-                        g_Log.printColor(str);
-                        g_Log.eol();
+                        printValue(context, over);
                     }
                 }
 
                 continue;
             }
 
-            // Print current instruction
-            if (cmd == "l" || cmd == "line")
-            {
-                context->debugCxtBc->printSourceCode(context->debugCxtIp);
-                continue;
-            }
-
+            // Print memory
             if (cmd == "x8" && cmds.size() >= 2)
             {
                 int count = cmds.size() >= 3 ? atoi(cmds[2].c_str()) : 64;
@@ -751,7 +856,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 continue;
             }
 
-            // Stack
+            // Print stack
             if (cmd == "stk" || cmd == "stack")
             {
                 g_ByteCodeStackTrace.currentContext = context;
@@ -769,6 +874,60 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 continue;
             }
 
+            // Function code
+            if ((cmd == "l" && cmds.size() <= 2) ||
+                (cmd == "ll" && cmds.size() == 1))
+            {
+                if (context->debugCxtBc->node && context->debugCxtBc->node->kind == AstNodeKind::FuncDecl && context->debugCxtBc->node->sourceFile)
+                {
+                    SourceFile*     curFile;
+                    SourceLocation* curLocation;
+                    ByteCode::getLocation(context->debugCxtBc, context->debugCxtIp, &curFile, &curLocation);
+
+                    auto funcNode = CastAst<AstFuncDecl>(context->debugCxtBc->node, AstNodeKind::FuncDecl);
+
+                    uint32_t startLine = context->debugCxtBc->node->token.startLocation.line;
+                    uint32_t endLine   = funcNode->content->token.endLocation.line;
+
+                    if (cmd == "l" && cmds.size() == 1)
+                    {
+                        startLine = curLocation->line;
+                        endLine   = startLine;
+                    }
+                    else if (cmd == "l" && cmds.size() == 2)
+                    {
+                        uint32_t offset = atoi(cmds[1]);
+                        if (offset > curLocation->line)
+                            startLine = 0;
+                        else
+                            startLine = curLocation->line - offset;
+                        endLine = curLocation->line + offset;
+                    }
+
+                    vector<Utf8> lines;
+                    bool         eof = false;
+                    for (uint32_t l = startLine; l <= endLine && !eof; l++)
+                        lines.push_back(context->debugCxtBc->node->sourceFile->getLine(l, &eof));
+
+                    g_Log.setColor(LogColor::Yellow);
+                    uint32_t lineIdx = 0;
+                    for (const auto& l : lines)
+                    {
+                        g_Log.print(Fmt("%08u ", startLine + lineIdx + 1));
+                        if (curLocation->line == startLine + lineIdx)
+                            g_Log.print(" --> ");
+                        else
+                            g_Log.print("     ");
+                        g_Log.print(l.c_str());
+                        g_Log.eol();
+                        lineIdx++;
+                    }
+                }
+                else
+                    g_Log.printColor("no source code\n", LogColor::Red);
+                continue;
+            }
+
             // Breakpoints
             if (cmd == "bkp" && cmds.size() == 3 && cmds[1] == "fct")
             {
@@ -776,7 +935,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 bkp.type = ByteCodeRunContext::DebugBkpType::FuncName;
                 bkp.name = cmds[2];
                 context->debugBreakpoints.push_back(bkp);
-                g_Log.printColor(Fmt("adding breakpoint at start of function '%s'\n", bkp.name.c_str()), LogColor::Magenta);
+                g_Log.printColor(Fmt("breakpoint %d at function '%s'\n", context->debugBreakpoints.size(), bkp.name.c_str()), LogColor::Magenta);
                 continue;
             }
 
