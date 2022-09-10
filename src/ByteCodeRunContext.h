@@ -141,6 +141,7 @@ struct ByteCodeRunContext
     {
         FuncName,
         FileLine,
+        InstructionIndex,
     };
 
     struct DebugBreakpoint
@@ -150,6 +151,7 @@ struct ByteCodeRunContext
         uint32_t     line         = 0;
         bool         disabled     = false;
         bool         autoDisabled = false;
+        bool         autoRemove   = false;
     };
 
     ByteCodeInstruction*    debugLastIp           = nullptr;

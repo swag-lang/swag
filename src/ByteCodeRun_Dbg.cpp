@@ -668,12 +668,14 @@ static void printHelp()
 {
     g_Log.setColor(LogColor::Gray);
     g_Log.eol();
-    g_Log.print("<return>                   runs to the next line/instruction depending on 'bcmode'\n");
+    g_Log.print("<return>                   runs to the next line or instruction (depends on 'bcmode')\n");
     g_Log.eol();
     g_Log.print("s(tep)                     runs to the next line\n");
     g_Log.print("n(ext)                     like s, but does not step into functions\n");
-    g_Log.print("r(eturn)                   runs until the current function is done\n");
+    g_Log.print("f(inish)                   runs until the current function is done\n");
     g_Log.print("c(ont(inue))               runs until another breakpoint is reached\n");
+    g_Log.print("u(ntil) <num>              runs to the given line or instruction (depends on 'bcmode')\n");
+    g_Log.print("j(ump) <num>               jump to the given line or instruction (depends on 'bcmode')\n");
     g_Log.eol();
 
     g_Log.print("l(ist) [num]               print the current source code line and <num> lines around\n");
@@ -710,7 +712,7 @@ static void printHelp()
     g_Log.print("bc                         print the current function bytecode\n");
     g_Log.eol();
 
-    g_Log.print("x [format] [num] <expr>    print memory (format = s8|s16|s32|s64|u8|u16|u32|u64|f32|f64)\n");
+    g_Log.print("x [format] [num] <expr>    print memory (format = s8|s16|s32|s64|u8|u16|u32|u64|x8|x16|x32|x64|f32|f64)\n");
     g_Log.print("x [format] [num] $r<num>   print memory at current register value\n");
     g_Log.print("x [format] [num] $sp       print memory at current stack pointer\n");
     g_Log.eol();
@@ -741,6 +743,9 @@ static void printBreakpoints(ByteCodeRunContext* context)
         case ByteCodeRunContext::DebugBkpType::FileLine:
             g_Log.print(Fmt("file %s, line '%d'", bkp.name.c_str(), bkp.line));
             break;
+        case ByteCodeRunContext::DebugBkpType::InstructionIndex:
+            g_Log.print(Fmt("instruction '%d'", bkp.line));
+            break;
         }
 
         if (bkp.disabled)
@@ -767,6 +772,10 @@ static void checkBreakpoints(ByteCodeRunContext* context)
                     context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
                     context->debugOn       = true;
                     bkp.autoDisabled       = true;
+                    if (bkp.autoRemove)
+                        context->debugBreakpoints.erase(it);
+                    else
+                        bkp.autoDisabled = true;
                     break;
                 }
             }
@@ -787,13 +796,31 @@ static void checkBreakpoints(ByteCodeRunContext* context)
                     g_Log.printColor(Fmt("#### breakpoint hit at line '%d' ####\n", bkp.line), LogColor::Magenta);
                     context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
                     context->debugOn       = true;
-                    bkp.autoDisabled       = true;
+                    if (bkp.autoRemove)
+                        context->debugBreakpoints.erase(it);
+                    else
+                        bkp.autoDisabled = true;
                     break;
                 }
             }
             else
             {
                 bkp.autoDisabled = false;
+            }
+        }
+        else if (bkp.type == ByteCodeRunContext::DebugBkpType::InstructionIndex)
+        {
+            uint32_t offset = (uint32_t) (context->ip - context->bc->out);
+            if (offset == bkp.line)
+            {
+                g_Log.printColor(Fmt("#### breakpoint hit at instruction '%d' ####\n", bkp.line), LogColor::Magenta);
+                context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
+                context->debugOn       = true;
+                if (bkp.autoRemove)
+                    context->debugBreakpoints.erase(it);
+                else
+                    bkp.autoDisabled = true;
+                break;
             }
         }
     }
@@ -812,6 +839,37 @@ static bool addBreakpoint(ByteCodeRunContext* context, const ByteCodeRunContext:
 
     context->debugBreakpoints.push_back(bkp);
     return true;
+}
+
+static void setContextInstruction(ByteCodeRunContext* context)
+{
+    // Print function name
+    if (context->debugLastBc != context->bc)
+        g_Log.printColor(Fmt("--> function %s %s\n", context->bc->name.c_str(), context->bc->getCallType()->getDisplayNameC()), LogColor::Yellow);
+
+    // Print source line
+    SourceFile*     file;
+    SourceLocation* location;
+    ByteCode::getLocation(context->bc, context->ip, &file, &location);
+    if (location && (context->debugStepLastFile != file || context->debugStepLastLocation && context->debugStepLastLocation->line != location->line))
+    {
+        if (context->bc->node && context->bc->node->sourceFile)
+        {
+            g_Log.printColor("--> ", LogColor::Yellow);
+            auto str1 = context->bc->node->sourceFile->getLine(location->line);
+            str1.trim();
+            g_Log.printColor(str1, LogColor::Yellow);
+            g_Log.eol();
+        }
+    }
+
+    // Print instruction
+    if (context->debugBcMode)
+        printInstruction(context, context->bc, context->ip);
+
+    context->debugLastBc           = context->bc;
+    context->debugStepLastFile     = file;
+    context->debugStepLastLocation = location;
 }
 
 bool ByteCodeRun::debugger(ByteCodeRunContext* context)
@@ -894,33 +952,9 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
 
     if (!zapCurrentIp)
     {
-        // Print function name
-        if (context->debugLastBc != context->bc)
-            g_Log.printColor(Fmt("--> function %s %s\n", context->bc->name.c_str(), context->bc->getCallType()->getDisplayNameC()), LogColor::Yellow);
-        context->debugLastBc = context->bc;
-
-        // Print source line
-        SourceFile*     file;
-        SourceLocation* location;
-        ByteCode::getLocation(context->bc, ip, &file, &location);
-        if (location && (context->debugStepLastFile != file || context->debugStepLastLocation && context->debugStepLastLocation->line != location->line))
-        {
-            if (context->bc->node && context->bc->node->sourceFile)
-            {
-                g_Log.printColor("--> ", LogColor::Yellow);
-                auto str1 = context->bc->node->sourceFile->getLine(location->line);
-                str1.trim();
-                g_Log.printColor(str1, LogColor::Yellow);
-                g_Log.eol();
-            }
-        }
-
-        context->debugStepLastFile     = file;
-        context->debugStepLastLocation = location;
+        setContextInstruction(context);
 
         computeCxt(context);
-        if (context->debugBcMode)
-            printInstruction(context, context->bc, ip);
 
         while (true)
         {
@@ -1328,8 +1362,8 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 break;
             }
 
-            // Exit current function
-            if ((cmd == "r" || cmd == "return") && cmds.size() == 1)
+            // Run to the end of the current function
+            if ((cmd == "f" || cmd == "finish") && cmds.size() == 1)
             {
                 context->debugStackFrameOffset = 0;
                 context->debugStepMode         = ByteCodeRunContext::DebugStepMode::FinishedFunction;
@@ -1343,6 +1377,69 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 context->debugStackFrameOffset = 0;
                 context->debugStepMode         = ByteCodeRunContext::DebugStepMode::ToNextBreakpoint;
                 context->debugOn               = false;
+                break;
+            }
+
+            // Jump to line/instruction
+            if ((cmd == "j" || cmd == "jump") && cmds.size() == 2 && isdigit(cmds[1][0]))
+            {
+                context->debugStackFrameOffset = 0;
+
+                uint32_t to = (uint32_t) atoi(cmds[1]);
+                if (to >= context->bc->numInstructions - 1)
+                {
+                    g_Log.printColor("invalid jump destination\n", LogColor::Red);
+                    continue;
+                }
+
+                if (context->debugBcMode)
+                {
+                    context->ip         = context->bc->out + to;
+                    context->debugCxtIp = context->ip;
+                }
+                else
+                {
+                    auto curIp = context->ip;
+                    while (true)
+                    {
+                        if (curIp >= context->bc->out + context->bc->numInstructions - 1)
+                        {
+                            g_Log.printColor("invalid jump destination\n", LogColor::Red);
+                            break;
+                        }
+
+                        SourceFile*     file;
+                        SourceLocation* location;
+                        ByteCode::getLocation(context->bc, curIp, &file, &location);
+                        if (location && location->line == to)
+                        {
+                            context->ip         = curIp;
+                            context->debugCxtIp = context->ip;
+                            break;
+                        }
+
+                        curIp++;
+                    }
+                }
+
+                setContextInstruction(context);
+                continue;
+            }
+
+            // Run until a line/instruction is reached
+            if ((cmd == "u" || cmd == "until") && cmds.size() == 2 && isdigit(cmds[1][0]))
+            {
+                ByteCodeRunContext::DebugBreakpoint bkp;
+                if (context->debugBcMode)
+                    bkp.type = ByteCodeRunContext::DebugBkpType::InstructionIndex;
+                else
+                    bkp.type = ByteCodeRunContext::DebugBkpType::FileLine;
+                bkp.name       = context->debugStepLastFile->name;
+                bkp.line       = atoi(cmds[1]);
+                bkp.autoRemove = true;
+                addBreakpoint(context, bkp);
+                context->debugStackFrameOffset = 0;
+                context->debugStepMode         = ByteCodeRunContext::DebugStepMode::ToNextBreakpoint;
                 break;
             }
 
