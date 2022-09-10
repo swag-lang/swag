@@ -195,11 +195,15 @@ static void printMemory(ByteCodeRunContext* context, const Utf8& arg)
     // Expression
     Utf8 expr;
     for (int i = startIdx; i < cmds.size(); i++)
+    {
         expr += cmds[i];
+        expr += " ";
+    }
+
     expr.trim();
     if (expr.empty())
     {
-        g_Log.printColor("invalid expression\n", LogColor::Red);
+        g_Log.printColor("empty expression\n", LogColor::Red);
         return;
     }
 
@@ -282,9 +286,9 @@ static void printMemory(ByteCodeRunContext* context, const Utf8& arg)
             case 8:
             default:
                 if (isSigned)
-                    g_Log.print(Fmt("%d ", getAddrValue<int8_t>(addrB)));
+                    g_Log.print(Fmt("%4d ", getAddrValue<int8_t>(addrB)));
                 else if (!isHexa)
-                    g_Log.print(Fmt("%u ", getAddrValue<uint8_t>(addrB)));
+                    g_Log.print(Fmt("%3u ", getAddrValue<uint8_t>(addrB)));
                 else
                     g_Log.print(Fmt("%02llx ", getAddrValue<uint8_t>(addrB)));
                 addrB += 1;
@@ -292,9 +296,9 @@ static void printMemory(ByteCodeRunContext* context, const Utf8& arg)
 
             case 16:
                 if (isSigned)
-                    g_Log.print(Fmt("%d ", getAddrValue<int16_t>(addrB)));
+                    g_Log.print(Fmt("%6d ", getAddrValue<int16_t>(addrB)));
                 else if (!isHexa)
-                    g_Log.print(Fmt("%u ", getAddrValue<uint16_t>(addrB)));
+                    g_Log.print(Fmt("%5u ", getAddrValue<uint16_t>(addrB)));
                 else
                     g_Log.print(Fmt("%04llx ", getAddrValue<uint16_t>(addrB)));
                 addrB += 2;
@@ -302,11 +306,11 @@ static void printMemory(ByteCodeRunContext* context, const Utf8& arg)
 
             case 32:
                 if (isFloat)
-                    g_Log.print(Fmt("%f ", getAddrValue<float>(addrB)));
+                    g_Log.print(Fmt("%16.5g ", getAddrValue<float>(addrB)));
                 else if (isSigned)
-                    g_Log.print(Fmt("%d ", getAddrValue<int32_t>(addrB)));
+                    g_Log.print(Fmt("%11d ", getAddrValue<int32_t>(addrB)));
                 else if (!isHexa)
-                    g_Log.print(Fmt("%u ", getAddrValue<uint32_t>(addrB)));
+                    g_Log.print(Fmt("%10u ", getAddrValue<uint32_t>(addrB)));
                 else
                     g_Log.print(Fmt("%08llx ", getAddrValue<uint32_t>(addrB)));
                 addrB += 4;
@@ -314,11 +318,11 @@ static void printMemory(ByteCodeRunContext* context, const Utf8& arg)
 
             case 64:
                 if (isFloat)
-                    g_Log.print(Fmt("%f ", getAddrValue<double>(addrB)));
+                    g_Log.print(Fmt("%16.5g ", getAddrValue<double>(addrB)));
                 else if (isSigned)
-                    g_Log.print(Fmt("%lld ", getAddrValue<int64_t>(addrB)));
+                    g_Log.print(Fmt("%21lld ", getAddrValue<int64_t>(addrB)));
                 else if (!isHexa)
-                    g_Log.print(Fmt("%llu ", getAddrValue<uint64_t>(addrB)));
+                    g_Log.print(Fmt("%20llu ", getAddrValue<uint64_t>(addrB)));
                 else
                     g_Log.print(Fmt("%016llx ", getAddrValue<uint64_t>(addrB)));
                 addrB += 8;
@@ -330,7 +334,14 @@ static void printMemory(ByteCodeRunContext* context, const Utf8& arg)
         if (bitCount == 8)
         {
             for (int i = 0; i < perLine - min(count, perLine); i++)
-                g_Log.print("   ");
+            {
+                if (isHexa)
+                    g_Log.print("   ");
+                else if (!isSigned)
+                    g_Log.print("    ");
+                else
+                    g_Log.print("     ");
+            }
 
             g_Log.print(" ");
             for (int i = 0; i < min(count, perLine); i++)
@@ -396,32 +407,40 @@ static void printFullRegister(Register& regP)
 
     g_Log.printColor("s8 ", col);
     g_Log.printColor(Fmt("%d ", regP.s8));
+
     g_Log.printColor("u8 ", col);
     g_Log.printColor(Fmt("%u ", regP.u8));
+
     g_Log.printColor("x8 ", col);
     g_Log.printColor(Fmt("%02x ", regP.u8));
     g_Log.eol();
 
     g_Log.printColor("s16 ", col);
     g_Log.printColor(Fmt("%d ", regP.s16));
+
     g_Log.printColor("u16 ", col);
     g_Log.printColor(Fmt("%u ", regP.u16));
+
     g_Log.printColor("x16 ", col);
     g_Log.printColor(Fmt("%04x ", regP.u16));
     g_Log.eol();
 
     g_Log.printColor("s32 ", col);
     g_Log.printColor(Fmt("%d ", regP.s32));
+
     g_Log.printColor("u32 ", col);
     g_Log.printColor(Fmt("%u ", regP.u32));
+
     g_Log.printColor("x32 ", col);
     g_Log.printColor(Fmt("%08x ", regP.u32));
     g_Log.eol();
 
     g_Log.printColor("s64 ", col);
     g_Log.printColor(Fmt("%lld ", regP.s64));
+
     g_Log.printColor("u64 ", col);
     g_Log.printColor(Fmt("%llu ", regP.u64));
+
     g_Log.printColor("x64 ", col);
     g_Log.printColor(Fmt("%016llx ", regP.u64));
     g_Log.eol();
