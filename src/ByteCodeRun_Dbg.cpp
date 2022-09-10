@@ -420,6 +420,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
 
                 context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
                 context->debugBreakpoints.erase(it);
+                context->debugOn = true;
                 break;
             }
         }
@@ -441,9 +442,12 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
         if (!location || (context->debugStepLastFile == file && context->debugStepLastLocation && context->debugStepLastLocation->line == location->line))
             zapCurrentIp = true;
         else
+        {
+            context->debugOn       = true;
             context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
+        }
+        break;
     }
-    break;
     case ByteCodeRunContext::DebugStepMode::NextLineStepOut:
     {
         SourceFile*     file;
@@ -454,9 +458,12 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
         else if (context->curRC > context->debugStepRC)
             zapCurrentIp = true;
         else
+        {
+            context->debugOn       = true;
             context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
+        }
+        break;
     }
-    break;
     case ByteCodeRunContext::DebugStepMode::FinishedFunction:
     {
         if (context->curRC == 0 && context->debugStepRC == -1 && ip->op == ByteCodeOp::Ret)
@@ -464,9 +471,12 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
         else if (context->curRC > context->debugStepRC)
             zapCurrentIp = true;
         else
+        {
+            context->debugOn       = true;
             context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
+        }
+        break;
     }
-    break;
     }
 
     if (!zapCurrentIp)
@@ -818,6 +828,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             {
                 context->debugStackFrameOffset = 0;
                 context->debugStepMode         = ByteCodeRunContext::DebugStepMode::ToNextBreakpoint;
+                context->debugOn               = false;
                 break;
             }
 
@@ -825,7 +836,6 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
         }
     }
 
-    g_Log.setDefaultColor();
     g_Log.unlock();
 
     context->debugLastCurRC = context->curRC;

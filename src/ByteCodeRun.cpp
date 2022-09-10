@@ -3335,6 +3335,11 @@ bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
                 OS::exit(0);
             if (!executeInstruction(context, context->ip++))
                 break;
+            if (!context->debugOn && context->debugBreakpoints.empty() && context->debugStepMode == ByteCodeRunContext::DebugStepMode::ToNextBreakpoint)
+            {
+                runLoopNoDbg(context);
+                break;
+            }
         }
     }
     else
