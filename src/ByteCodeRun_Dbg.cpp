@@ -10,6 +10,38 @@
 
 #pragma optimize("", off)
 
+static bool evalExpression(ByteCodeRunContext* context, const Utf8& expr, TypeInfo** resType, void** resAddr)
+{
+    auto funcDecl = CastAst<AstFuncDecl>(context->debugCxtBc->node, AstNodeKind::FuncDecl);
+    for (auto l : context->debugCxtBc->localVars)
+    {
+        auto over = l->resolvedSymbolOverload;
+        if (over && over->symbol->name == expr)
+        {
+            *resType = over->typeInfo;
+            *resAddr = context->debugCxtBp + over->computedValue.storageOffset;
+            return true;
+        }
+    }
+
+    if (funcDecl->parameters)
+    {
+        for (auto l : funcDecl->parameters->childs)
+        {
+            auto over = l->resolvedSymbolOverload;
+            if (over && over->symbol->name == expr)
+            {
+                *resType = over->typeInfo;
+                *resAddr = context->debugCxtBp + over->computedValue.storageOffset;
+                return true;
+            }
+        }
+    }
+
+    g_Log.printColor(Fmt("cannot solve expression '%s'\n", expr.c_str()), LogColor::Red);
+    return false;
+}
+
 static bool getRegIdx(ByteCodeRunContext* context, const Utf8& arg, int& regN)
 {
     regN = atoi(arg.c_str() + 1);
@@ -37,22 +69,12 @@ static void printRegister(ByteCodeRunContext* context, uint32_t curRC, uint32_t 
     g_Log.print(str);
 }
 
-static uint64_t getAddrValue(const void* addr, uint32_t bitCount)
+template<typename T>
+static T getAddrValue(const void* addr)
 {
     __try
     {
-        switch (bitCount)
-        {
-        case 8:
-        default:
-            return *(uint8_t*) addr;
-        case 16:
-            return *(uint16_t*) addr;
-        case 32:
-            return *(uint32_t*) addr;
-        case 64:
-            return *(uint64_t*) addr;
-        }
+        return *(T*) addr;
     }
     __except (EXCEPTION_EXECUTE_HANDLER)
     {
@@ -60,27 +82,147 @@ static uint64_t getAddrValue(const void* addr, uint32_t bitCount)
     }
 }
 
-static void printMemory(ByteCodeRunContext* context, uint32_t curRC, const Utf8& arg, int count, uint32_t bitCount = 8)
+static void printMemory(ByteCodeRunContext* context, const Utf8& arg)
 {
+    vector<Utf8> cmds;
+    Utf8::tokenize(arg.c_str(), ' ', cmds);
+
+    int  bitCount = 8;
+    bool isSigned = false;
+    bool isFloat  = false;
+    bool isHexa   = true;
+    int  startIdx = 0;
+
+    // Format
+    if (cmds[0] == "s8")
+    {
+        bitCount = 8;
+        isSigned = true;
+        isHexa   = false;
+        startIdx++;
+    }
+    else if (cmds[0] == "s16")
+    {
+        bitCount = 16;
+        isSigned = true;
+        isHexa   = false;
+        startIdx++;
+    }
+    else if (cmds[0] == "s32")
+    {
+        bitCount = 32;
+        isSigned = true;
+        isHexa   = false;
+        startIdx++;
+    }
+    else if (cmds[0] == "s64")
+    {
+        bitCount = 64;
+        isSigned = true;
+        isHexa   = false;
+        startIdx++;
+    }
+    else if (cmds[0] == "u8")
+    {
+        bitCount = 8;
+        isHexa   = false;
+        startIdx++;
+    }
+    else if (cmds[0] == "u16")
+    {
+        bitCount = 16;
+        isHexa   = false;
+        startIdx++;
+    }
+    else if (cmds[0] == "u32")
+    {
+        bitCount = 32;
+        isHexa   = false;
+        startIdx++;
+    }
+    else if (cmds[0] == "u64")
+    {
+        bitCount = 64;
+        isHexa   = false;
+        startIdx++;
+    }
+    else if (cmds[0] == "x8")
+    {
+        bitCount = 8;
+        startIdx++;
+    }
+    else if (cmds[0] == "x16")
+    {
+        bitCount = 16;
+        startIdx++;
+    }
+    else if (cmds[0] == "x32")
+    {
+        bitCount = 32;
+        startIdx++;
+    }
+    else if (cmds[0] == "x64")
+    {
+        bitCount = 64;
+        startIdx++;
+    }
+    else if (cmds[0] == "f32")
+    {
+        bitCount = 32;
+        isFloat  = true;
+        isHexa   = false;
+        startIdx++;
+    }
+    else if (cmds[0] == "f64")
+    {
+        bitCount = 64;
+        isFloat  = true;
+        isHexa   = false;
+        startIdx++;
+    }
+
+    // Count
+    int count = 64;
+    if (startIdx < cmds.size() && isdigit(cmds[startIdx][0]))
+    {
+        count = atoi(cmds[startIdx]);
+        startIdx++;
+    }
+
     count = max(count, 1);
     count = min(count, 4096);
 
-    uint64_t addrVal = 0;
-    auto     addr    = arg.c_str();
+    // Expression
+    Utf8 expr;
+    for (int i = startIdx; i < cmds.size(); i++)
+        expr += cmds[i];
+    expr.trim();
+    if (expr.empty())
+    {
+        g_Log.printColor("invalid expression\n", LogColor::Red);
+        return;
+    }
 
-    if (arg[0] == 'r')
+    uint64_t addrVal = 0;
+    auto     addr    = expr.c_str();
+
+    if (expr[0] == '$')
     {
-        int regN;
-        if (!getRegIdx(context, arg, regN))
-            return;
-        auto& regP = context->getRegBuffer(curRC)[regN];
-        addrVal    = regP.u64;
+        expr.remove(0, 1);
+        if (expr[0] == 'r')
+        {
+            int regN;
+            if (!getRegIdx(context, arg, regN))
+                return;
+            auto& regP = context->getRegBuffer(context->debugCxtRc)[regN];
+            addrVal    = regP.u64;
+        }
+        else if (expr == "sp")
+        {
+            addrVal = (uint64_t) context->sp;
+        }
     }
-    else if (arg == "sp")
-    {
-        addrVal = (uint64_t) context->sp;
-    }
-    else
+    else if (isdigit(expr[0]))
     {
         while (*addr)
         {
@@ -93,6 +235,19 @@ static void printMemory(ByteCodeRunContext* context, uint32_t curRC, const Utf8&
                 addrVal += (*addr - '0');
             addr++;
         }
+    }
+    else
+    {
+        TypeInfo* resType;
+        void*     resAddr;
+        if (!evalExpression(context, expr, &resType, &resAddr))
+            return;
+        if (!resAddr)
+            return;
+        if (resType->kind == TypeInfoKind::Pointer)
+            addrVal = *(uint64_t*) resAddr;
+        else
+            addrVal = (uint64_t) resAddr;
     }
 
     int perLine = 8;
@@ -126,21 +281,46 @@ static void printMemory(ByteCodeRunContext* context, uint32_t curRC, const Utf8&
             {
             case 8:
             default:
-                g_Log.print(Fmt("%02llx ", getAddrValue(addrB, 8)));
+                if (isSigned)
+                    g_Log.print(Fmt("%d ", getAddrValue<int8_t>(addrB)));
+                else if (!isHexa)
+                    g_Log.print(Fmt("%u ", getAddrValue<uint8_t>(addrB)));
+                else
+                    g_Log.print(Fmt("%02llx ", getAddrValue<uint8_t>(addrB)));
                 addrB += 1;
                 break;
 
             case 16:
-                g_Log.print(Fmt("%04llx ", getAddrValue(addrB, 16)));
+                if (isSigned)
+                    g_Log.print(Fmt("%d ", getAddrValue<int16_t>(addrB)));
+                else if (!isHexa)
+                    g_Log.print(Fmt("%u ", getAddrValue<uint16_t>(addrB)));
+                else
+                    g_Log.print(Fmt("%04llx ", getAddrValue<uint16_t>(addrB)));
                 addrB += 2;
                 break;
 
             case 32:
-                g_Log.print(Fmt("%08llx ", getAddrValue(addrB, 32)));
+                if (isFloat)
+                    g_Log.print(Fmt("%f ", getAddrValue<float>(addrB)));
+                else if (isSigned)
+                    g_Log.print(Fmt("%d ", getAddrValue<int32_t>(addrB)));
+                else if (!isHexa)
+                    g_Log.print(Fmt("%u ", getAddrValue<uint32_t>(addrB)));
+                else
+                    g_Log.print(Fmt("%08llx ", getAddrValue<uint32_t>(addrB)));
+                addrB += 4;
                 break;
 
             case 64:
-                g_Log.print(Fmt("%016llx ", getAddrValue(addrB, 64)));
+                if (isFloat)
+                    g_Log.print(Fmt("%f ", getAddrValue<double>(addrB)));
+                else if (isSigned)
+                    g_Log.print(Fmt("%lld ", getAddrValue<int64_t>(addrB)));
+                else if (!isHexa)
+                    g_Log.print(Fmt("%llu ", getAddrValue<uint64_t>(addrB)));
+                else
+                    g_Log.print(Fmt("%016llx ", getAddrValue<uint64_t>(addrB)));
                 addrB += 8;
                 break;
             }
@@ -155,7 +335,7 @@ static void printMemory(ByteCodeRunContext* context, uint32_t curRC, const Utf8&
             g_Log.print(" ");
             for (int i = 0; i < min(count, perLine); i++)
             {
-                auto c = getAddrValue(addrB, 8);
+                auto c = getAddrValue<uint8_t>(addrB);
                 if (c < 32 || c > 127)
                     c = '.';
                 g_Log.print(Fmt("%c", c));
@@ -465,69 +645,58 @@ static void appendValue(Utf8& str, TypeInfo* typeInfo, void* addr, int indent = 
     str += "?";
 }
 
-static void printValue(ByteCodeRunContext* context, SymbolOverload* over)
-{
-    Utf8 str;
-    str = Fmt("%s: %s = ", over->symbol->name.c_str(), over->typeInfo->getDisplayNameC());
-    appendValue(str, over->typeInfo, context->debugCxtBp + over->computedValue.storageOffset);
-    g_Log.printColor(str);
-    if (str.back() != '\n')
-        g_Log.eol();
-}
-
 static void printHelp()
 {
     g_Log.setColor(LogColor::Gray);
     g_Log.eol();
-    g_Log.print("<return>               runs the current instruction\n");
-    g_Log.print("s                      runs to the next line\n");
-    g_Log.print("n                      like s, but does not step into functions\n");
-    g_Log.print("c                      runs until another breakpoint is reached\n");
-    g_Log.print("f                      runs until the current function is done\n");
+    g_Log.print("<return>                   runs to the next line/instruction depending on 'bcmode'\n");
+    g_Log.print("s                          runs to the next line\n");
+    g_Log.print("n                          like s, but does not step into functions\n");
+    g_Log.print("c                          runs until another breakpoint is reached\n");
+    g_Log.print("f                          runs until the current function is done\n");
     g_Log.eol();
 
-    g_Log.print("l [num]                print the current source code line and <num> lines around\n");
-    g_Log.print("ll                     print the current function source code\n");
+    g_Log.print("l [num]                    print the current source code line and <num> lines around\n");
+    g_Log.print("ll                         print the current function source code\n");
 
     g_Log.eol();
-    g_Log.print("cxt                    print contextual informations\n");
-    g_Log.print("bcmode                 swap between bytecode mode and source mode\n");
+    g_Log.print("cxt                        print contextual informations\n");
+    g_Log.print("bcmode                     swap between bytecode mode and source mode\n");
     g_Log.eol();
 
-    g_Log.print("p <name>               print the value of <name>\n");
-    g_Log.print("locals                 print all current local variables\n");
-    g_Log.print("args                   print all current function arguments\n");
+    g_Log.print("p <name>                   print the value of <name>\n");
+    g_Log.print("locals                     print all current local variables\n");
+    g_Log.print("args                       print all current function arguments\n");
     g_Log.eol();
 
-    g_Log.print("b(reak)                print all breakpoints\n");
-    g_Log.print("b(reak) fct <name>     add breakpoint when entering function <name>\n");
-    g_Log.print("b(reak) <line>         add breakpoint in the current source file at line <line>\n");
-    g_Log.print("b(reak) clear          remove all breakpoints\n");
-    g_Log.print("b(reak) clear <num>    remove breakpoint <num>\n");
-    g_Log.print("b(reak) enable <num>   enable breakpoint <num>\n");
-    g_Log.print("b(reak) disable <num>  disable breakpoint <num>\n");
+    g_Log.print("b(reak)                    print all breakpoints\n");
+    g_Log.print("b(reak) fct <name>         add breakpoint when entering function <name>\n");
+    g_Log.print("b(reak) <line>             add breakpoint in the current source file at line <line>\n");
+    g_Log.print("b(reak) clear              remove all breakpoints\n");
+    g_Log.print("b(reak) clear <num>        remove breakpoint <num>\n");
+    g_Log.print("b(reak) enable <num>       enable breakpoint <num>\n");
+    g_Log.print("b(reak) disable <num>      disable breakpoint <num>\n");
     g_Log.eol();
 
-    g_Log.print("stack                  print callstack\n");
-    g_Log.print("up [num]               move stack frame <num> level up\n");
-    g_Log.print("down [num]             move stack frame <num> level down\n");
-    g_Log.print("frame <num>            move stack frame to level <num>\n");
+    g_Log.print("stack                      print callstack\n");
+    g_Log.print("up [num]                   move stack frame <num> level up\n");
+    g_Log.print("down [num]                 move stack frame <num> level down\n");
+    g_Log.print("frame <num>                move stack frame to level <num>\n");
     g_Log.eol();
 
-    g_Log.print("i [num]                print the current bytecode instruction and <num> instructions around\n");
-    g_Log.print("r                      print all registers\n");
-    g_Log.print("r<num>                 print register <num>\n");
-    g_Log.print("bc                     print the current function bytecode\n");
+    g_Log.print("i [num]                    print the current bytecode instruction and <num> instructions around\n");
+    g_Log.print("r                          print all registers\n");
+    g_Log.print("r<num>                     print register <num>\n");
+    g_Log.print("bc                         print the current function bytecode\n");
     g_Log.eol();
 
-    g_Log.print("x8  <addr|reg> [num]   print memory at address <addr> or register value <reg>, in 8 bits\n");
-    g_Log.print("x16 <addr|reg> [num]   print memory at address or register value, in 16 bits\n");
-    g_Log.print("x32 <addr|reg> [num]   print memory at address or register value, in 32 bits\n");
-    g_Log.print("x64 <addr|reg> [num]   print memory at address or register value, in 64 bits\n");
+    g_Log.print("x [format] [num] <expr>    print memory (format = s8|s16|s32|s64|u8|u16|u32|u64|f32|f64)\n");
+    g_Log.print("x [format] [num] $r<num>   print memory at current register value\n");
+    g_Log.print("x [format] [num] $sp       print memory at current stack pointer\n");
     g_Log.eol();
 
-    g_Log.print("?                      print this list of commands\n");
-    g_Log.print("q, quit                quit the compiler\n");
+    g_Log.print("?                          print this list of commands\n");
+    g_Log.print("q, quit                    quit the compiler\n");
     g_Log.eol();
 }
 
@@ -748,6 +917,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
 
             // Split in command + parameters
             Utf8         cmd;
+            Utf8         cmdExpr;
             vector<Utf8> cmds;
             if (!line.empty())
             {
@@ -756,6 +926,10 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                     c.trim();
                 cmd = cmds[0];
             }
+
+            for (int i = 1; i < cmds.size(); i++)
+                cmdExpr += cmds[i] + " ";
+            cmdExpr.trim();
 
             // Help
             if (cmd == "?")
@@ -767,40 +941,17 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             // Info name
             if (cmd == "p" && cmds.size() == 2)
             {
-                bool done     = false;
-                auto funcDecl = CastAst<AstFuncDecl>(context->debugCxtBc->node, AstNodeKind::FuncDecl);
-                for (auto l : context->debugCxtBc->localVars)
+                TypeInfo* resType;
+                void*     resAddr;
+                if (evalExpression(context, cmdExpr, &resType, &resAddr))
                 {
-                    auto over = l->resolvedSymbolOverload;
-                    if (over && over->symbol->name == cmds[1])
-                    {
-                        done = true;
-                        printValue(context, over);
-                        break;
-                    }
+                    Utf8 str = Fmt("%s = ", cmdExpr.c_str(), resType->getDisplayNameC());
+                    appendValue(str, resType, resAddr);
+                    g_Log.printColor(str);
+                    if (str.back() != '\n')
+                        g_Log.eol();
                 }
 
-                if (done)
-                    continue;
-
-                if (funcDecl->parameters)
-                {
-                    for (auto l : funcDecl->parameters->childs)
-                    {
-                        auto over = l->resolvedSymbolOverload;
-                        if (over && over->symbol->name == cmds[1])
-                        {
-                            done = true;
-                            printValue(context, over);
-                            break;
-                        }
-                    }
-                }
-
-                if (done)
-                    continue;
-
-                g_Log.printColor(Fmt("cannot resolve name '%s'\n", cmds[1].c_str()), LogColor::Red);
                 continue;
             }
 
@@ -816,7 +967,11 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                         auto over = l->resolvedSymbolOverload;
                         if (!over)
                             continue;
-                        printValue(context, over);
+                        Utf8 str = Fmt("%s: %s = ", over->symbol->name.c_str(), over->typeInfo->getDisplayNameC());
+                        appendValue(str, over->typeInfo, context->debugCxtBp + over->computedValue.storageOffset);
+                        g_Log.printColor(str);
+                        if (str.back() != '\n')
+                            g_Log.eol();
                     }
                 }
 
@@ -836,7 +991,11 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                         auto over = l->resolvedSymbolOverload;
                         if (!over)
                             continue;
-                        printValue(context, over);
+                        Utf8 str = Fmt("%s: %s = ", over->symbol->name.c_str(), over->typeInfo->getDisplayNameC());
+                        appendValue(str, over->typeInfo, context->debugCxtBp + over->computedValue.storageOffset);
+                        g_Log.printColor(str);
+                        if (str.back() != '\n')
+                            g_Log.eol();
                     }
                 }
 
@@ -844,31 +1003,9 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             }
 
             // Print memory
-            if (cmd == "x8" && cmds.size() >= 2)
+            if (cmd == "x" && cmds.size() >= 2)
             {
-                int count = cmds.size() >= 3 ? atoi(cmds[2].c_str()) : 64;
-                printMemory(context, context->debugCxtRc, cmds[1], count, 8);
-                continue;
-            }
-
-            if (cmd == "x16" && cmds.size() >= 2)
-            {
-                int count = cmds.size() >= 3 ? atoi(cmds[2].c_str()) : 64;
-                printMemory(context, context->debugCxtRc, cmds[1], count, 16);
-                continue;
-            }
-
-            if (cmd == "x32" && cmds.size() >= 2)
-            {
-                int count = cmds.size() >= 3 ? atoi(cmds[2].c_str()) : 64;
-                printMemory(context, context->debugCxtRc, cmds[1], count, 32);
-                continue;
-            }
-
-            if (cmd == "x64" && cmds.size() >= 2)
-            {
-                int count = cmds.size() >= 3 ? atoi(cmds[2].c_str()) : 64;
-                printMemory(context, context->debugCxtRc, cmds[1], count, 64);
+                printMemory(context, cmdExpr);
                 continue;
             }
 
