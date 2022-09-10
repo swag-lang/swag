@@ -152,6 +152,7 @@ struct ByteCodeRunContext
     SourceFile*             debugStepLastFile     = nullptr;
     SourceLocation*         debugStepLastLocation = nullptr;
     ByteCode*               debugCxtBc            = nullptr;
+    ByteCode*               debugLastBc           = nullptr;
     ByteCodeInstruction*    debugCxtIp            = nullptr;
     uint8_t*                debugCxtBp            = nullptr;
     uint32_t                debugLastCurRC        = 0;

@@ -6,13 +6,29 @@
 #include "AstNode.h"
 #include "Ast.h"
 
-#pragma optimize("", off)
-static void printRegister(ByteCodeRunContext* context, uint32_t curRC, uint32_t reg, bool read)
+static bool getRegIdx(ByteCodeRunContext* context, const Utf8& arg, int& regN)
+{
+    regN = atoi(arg.c_str() + 1);
+    if (!context->getRegCount(context->debugCxtRc))
+    {
+        g_Log.printColor("no available register", LogColor::Red);
+        return false;
+    }
+
+    if (regN >= context->getRegCount(context->debugCxtRc))
+    {
+        g_Log.printColor(Fmt("invalid register number, maximum value is '%u'\n", (uint32_t) context->getRegCount(context->debugCxtRc) - 1), LogColor::Red);
+        return false;
+    }
+
+    return true;
+}
+
+static void printRegister(ByteCodeRunContext* context, uint32_t curRC, uint32_t reg)
 {
     auto registersRC = context->getRegBuffer(curRC);
     Utf8 str;
-    str += read ? Fmt("(%u)", reg) : Fmt("[%u]", reg);
-    str += Fmt(" = %016llx\n", registersRC[reg].u64);
+    str += Fmt("r%u = %016llx\n", reg, registersRC[reg].u64);
     g_Log.setColor(LogColor::Gray);
     g_Log.print(str);
 }
@@ -40,19 +56,25 @@ static uint64_t getAddrValue(const void* addr, uint32_t bitCount)
     }
 }
 
-static void printMemory(ByteCodeRunContext* context, uint32_t curRC, const char* addr, int count, uint32_t bitCount = 8)
+static void printMemory(ByteCodeRunContext* context, uint32_t curRC, const Utf8& arg, int count, uint32_t bitCount = 8)
 {
     count = max(count, 1);
     count = min(count, 4096);
 
     uint64_t addrVal = 0;
+    auto     addr    = arg.c_str();
 
-    if (addr[0] == 'r')
+    if (arg[0] == 'r')
     {
-        addr += 1;
-        auto reg         = atoi(addr);
-        auto registersRC = context->getRegBuffer(curRC);
-        addrVal          = registersRC[reg].u64;
+        int regN;
+        if (!getRegIdx(context, arg, regN))
+            return;
+        auto& regP = context->getRegBuffer(curRC)[regN];
+        addrVal    = regP.u64;
+    }
+    else if (arg == "sp")
+    {
+        addrVal = (uint64_t) context->sp;
     }
     else
     {
@@ -155,7 +177,8 @@ static void printContext(ByteCodeRunContext* context)
     g_Log.unlock();
     g_Log.eol();
 
-    g_Log.messageHeaderDot("bytecode name", bc->name, LogColor::Gray, LogColor::Gray, " ");
+    g_Log.messageHeaderDot("bytecode name", bc->getCallName().c_str(), LogColor::Gray, LogColor::Gray, " ");
+    g_Log.messageHeaderDot("bytecode type", bc->getCallType()->getDisplayNameC(), LogColor::Gray, LogColor::Gray, " ");
 
     if (bc->sourceFile)
     {
@@ -371,9 +394,10 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
     {
         g_Log.setColor(LogColor::Gray);
         g_Log.eol();
-        g_Log.print("#############################################\n");
-        g_Log.print("entering bytecode debugger, type '?' for help\n");
-        g_Log.print("#############################################\n");
+        g_Log.printColor("#############################################\n", LogColor::Magenta);
+        g_Log.printColor("entering bytecode debugger, type '?' for help\n", LogColor::Magenta);
+        g_Log.printColor("#############################################\n", LogColor::Magenta);
+        g_Log.eol();
         context->debugEntry            = false;
         context->debugStepMode         = ByteCodeRunContext::DebugStepMode::None;
         context->debugStepLastLocation = nullptr;
@@ -390,9 +414,10 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
         {
             if (context->bc->node && context->bc->node->token.text == bkp.name)
             {
-                g_Log.print(Fmt("==> break entering function '%s'\n", context->bc->node->token.text.c_str()));
+                g_Log.eol();
+                g_Log.printColor(Fmt("#### breakpoint entering function '%s' ####\n", context->bc->getCallName().c_str()), LogColor::Magenta);
+                g_Log.eol();
 
-                context->bc->printSourceCode(ip);
                 context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
                 context->debugBreakpoints.erase(it);
                 break;
@@ -416,10 +441,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
         if (!location || (context->debugStepLastFile == file && context->debugStepLastLocation && context->debugStepLastLocation->line == location->line))
             zapCurrentIp = true;
         else
-        {
             context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
-            context->bc->printSourceCode(ip);
-        }
     }
     break;
     case ByteCodeRunContext::DebugStepMode::NextLineStepOut:
@@ -432,10 +454,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
         else if (context->curRC > context->debugStepRC)
             zapCurrentIp = true;
         else
-        {
             context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
-            context->bc->printSourceCode(ip);
-        }
     }
     break;
     case ByteCodeRunContext::DebugStepMode::FinishedFunction:
@@ -452,6 +471,20 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
 
     if (!zapCurrentIp)
     {
+        // Print function name
+        if (context->debugLastBc != context->bc)
+            g_Log.printColor(Fmt("          %s %s\n", context->bc->getCallName().c_str(), context->bc->getCallType()->getDisplayNameC()), LogColor::Magenta);
+        context->debugLastBc = context->bc;
+
+        // Print source line
+        SourceFile*     file;
+        SourceLocation* location;
+        ByteCode::getLocation(context->bc, ip, &file, &location);
+        if (location && (context->debugStepLastFile != file || context->debugStepLastLocation && context->debugStepLastLocation->line != location->line))
+            context->bc->printSourceCode(ip);
+        context->debugStepLastFile     = file;
+        context->debugStepLastLocation = location;
+
         computeCxt(context);
         printInstruction(context, context->bc, ip);
 
@@ -501,7 +534,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 g_Log.print("i <num>                print the current instruction and <num> instructions around\n");
                 g_Log.print("cxt, context           print contextual informations\n");
                 g_Log.print("r                      print all registers\n");
-                g_Log.print("r <num>                print register <num>\n");
+                g_Log.print("r<num>                 stkprint register <num>\n");
                 g_Log.print("l, line                print current source code line\n");
                 g_Log.print("bc, printbc            print current function bytecode\n");
                 g_Log.eol();
@@ -584,28 +617,28 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             if (cmd == "x8" && cmds.size() >= 2)
             {
                 int count = cmds.size() >= 3 ? atoi(cmds[2].c_str()) : 64;
-                printMemory(context, context->debugCxtRc, cmds[1].c_str(), count, 8);
+                printMemory(context, context->debugCxtRc, cmds[1], count, 8);
                 continue;
             }
 
             if (cmd == "x16" && cmds.size() >= 2)
             {
                 int count = cmds.size() >= 3 ? atoi(cmds[2].c_str()) : 64;
-                printMemory(context, context->debugCxtRc, cmds[1].c_str(), count, 16);
+                printMemory(context, context->debugCxtRc, cmds[1], count, 16);
                 continue;
             }
 
             if (cmd == "x32" && cmds.size() >= 2)
             {
                 int count = cmds.size() >= 3 ? atoi(cmds[2].c_str()) : 64;
-                printMemory(context, context->debugCxtRc, cmds[1].c_str(), count, 32);
+                printMemory(context, context->debugCxtRc, cmds[1], count, 32);
                 continue;
             }
 
             if (cmd == "x64" && cmds.size() >= 2)
             {
                 int count = cmds.size() >= 3 ? atoi(cmds[2].c_str()) : 64;
-                printMemory(context, context->debugCxtRc, cmds[1].c_str(), count, 64);
+                printMemory(context, context->debugCxtRc, cmds[1], count, 64);
                 continue;
             }
 
@@ -629,7 +662,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                     off = atoi(cmds[1].c_str());
                 uint32_t maxLevel = g_ByteCodeStackTrace.maxLevel(context);
                 if (context->debugStackFrameOffset == maxLevel)
-                    g_Log.printColor("initial frame selected; you cannot go up\n");
+                    g_Log.printColor("initial frame selected; you cannot go up\n", LogColor::Red);
                 else
                 {
                     context->debugStackFrameOffset += off;
@@ -647,7 +680,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 if (cmds.size() == 2)
                     off = atoi(cmds[1].c_str());
                 if (context->debugStackFrameOffset == 0)
-                    g_Log.printColor("bottom(innermost) frame selected; you cannot go down\n");
+                    g_Log.printColor("bottom(innermost) frame selected; you cannot go down\n", LogColor::Red);
                 else
                 {
                     context->debugStackFrameOffset -= min(context->debugStackFrameOffset, off);
@@ -658,7 +691,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 continue;
             }
 
-            // Print current instruction
+            // Exit
             if (cmd == "q" || cmd == "quit")
             {
                 g_Log.unlock();
@@ -691,23 +724,20 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             {
                 g_Log.setColor(LogColor::White);
                 for (int i = 0; i < context->getRegCount(context->debugCxtRc); i++)
-                    printRegister(context, context->debugCxtRc, i, true);
+                    printRegister(context, context->debugCxtRc, i);
+                g_Log.print(Fmt("sp = %016llx\n", context->sp));
                 continue;
             }
 
             // Print one register
-            if (cmd == "r" && cmds.size() == 2)
+            if (cmd[0] == 'r' && cmd.length() > 1 && isdigit(cmd[1]))
             {
                 g_Log.setColor(LogColor::Gray);
-                int regN = atoi(cmds[1].c_str());
-                if (regN >= context->getRegCount(context->debugCxtRc))
-                    g_Log.printColor(Fmt("invalid register number, maximum value is '%u'\n", (uint32_t) context->getRegCount(context->debugCxtRc)), LogColor::Red);
-                else
-                {
-                    auto& regP = context->getRegBuffer(context->debugCxtRc)[regN];
-                    printFullRegister(regP);
-                }
-
+                int regN;
+                if (!getRegIdx(context, cmd, regN))
+                    continue;
+                auto& regP = context->getRegBuffer(context->debugCxtRc)[regN];
+                printFullRegister(regP);
                 continue;
             }
 
@@ -736,13 +766,20 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 bkp.type = ByteCodeRunContext::DebugBkpType::FuncName;
                 bkp.name = cmds[2];
                 context->debugBreakpoints.push_back(bkp);
-                g_Log.printColor(Fmt("==> adding breakpoint at start of function '%s'\n", bkp.name.c_str()), LogColor::White);
+                g_Log.printColor(Fmt("adding breakpoint at start of function '%s'\n", bkp.name.c_str()), LogColor::Magenta);
                 continue;
             }
 
             if (cmd == "bkp" && cmds.size() == 2 && cmds[1] == "clear")
             {
-                context->debugBreakpoints.clear();
+                if (context->debugBreakpoints.empty())
+                    g_Log.printColor("no breakpoint\n", LogColor::Red);
+                else
+                {
+                    context->debugBreakpoints.clear();
+                    g_Log.printColor("breakpoints have been cleared\n", LogColor::Magenta);
+                }
+
                 continue;
             }
 
@@ -755,7 +792,6 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             {
                 context->debugStackFrameOffset = 0;
                 context->debugStepMode         = ByteCodeRunContext::DebugStepMode::NextLine;
-                ByteCode::getLocation(context->bc, ip, &context->debugStepLastFile, &context->debugStepLastLocation);
                 break;
             }
 
@@ -764,8 +800,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             {
                 context->debugStackFrameOffset = 0;
                 context->debugStepMode         = ByteCodeRunContext::DebugStepMode::NextLineStepOut;
-                ByteCode::getLocation(context->bc, ip, &context->debugStepLastFile, &context->debugStepLastLocation);
-                context->debugStepRC = context->curRC;
+                context->debugStepRC           = context->curRC;
                 break;
             }
 
@@ -786,8 +821,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 break;
             }
 
-            g_Log.setColor(LogColor::Red);
-            g_Log.print("invalid command, type '?' for help\n");
+            g_Log.printColor("invalid command or argument, type '?' for help\n", LogColor::Red);
         }
     }
 
