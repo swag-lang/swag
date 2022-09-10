@@ -317,6 +317,15 @@ static void computeCxt(ByteCodeRunContext* context)
 
 static void appendValue(Utf8& str, TypeInfo* typeInfo, void* addr, int indent = 0)
 {
+    if (typeInfo->isPointerToTypeInfo())
+    {
+        auto ptr = ((ConcreteTypeInfo**) addr)[0];
+        Utf8 str1;
+        str1.setView((const char*) ptr->name.buffer, (int) ptr->name.count);
+        str += str1;
+        return;
+    }
+
     if (typeInfo->kind == TypeInfoKind::Struct)
     {
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
@@ -466,6 +475,153 @@ static void printValue(ByteCodeRunContext* context, SymbolOverload* over)
         g_Log.eol();
 }
 
+static void printHelp()
+{
+    g_Log.setColor(LogColor::Gray);
+    g_Log.eol();
+    g_Log.print("<return>               runs the current instruction\n");
+    g_Log.print("s                      runs to the next line\n");
+    g_Log.print("n                      like s, but does not step into functions\n");
+    g_Log.print("c                      runs until another breakpoint is reached\n");
+    g_Log.print("f                      runs until the current function is done\n");
+    g_Log.eol();
+
+    g_Log.print("l [num]                print the current source code line and <num> lines around\n");
+    g_Log.print("ll                     print the current function source code\n");
+    g_Log.print("cxt                    print contextual informations\n");
+    g_Log.eol();
+
+    g_Log.print("p <name>               print the value of <name>\n");
+    g_Log.print("locals                 print all current local variables\n");
+    g_Log.print("args                   print all current function arguments\n");
+    g_Log.eol();
+
+    g_Log.print("b(reak)                print all breakpoints\n");
+    g_Log.print("b(reak) fct <name>     add breakpoint when entering function <name>\n");
+    g_Log.print("b(reak) <line>         add breakpoint in the current source file at line <line>\n");
+    g_Log.print("b(reak) clear          remove all breakpoints\n");
+    g_Log.print("b(reak) clear <num>    remove breakpoint <num>\n");
+    g_Log.print("b(reak) enable <num>   enable breakpoint <num>\n");
+    g_Log.print("b(reak) disable <num>  disable breakpoint <num>\n");
+    g_Log.eol();
+
+    g_Log.print("stack                  print callstack\n");
+    g_Log.print("up [num]               move stack frame <num> level up\n");
+    g_Log.print("down [num]             move stack frame <num> level down\n");
+    g_Log.print("frame <num>            move stack frame to level <num>\n");
+    g_Log.eol();
+
+    g_Log.print("i [num]                print the current bytecode instruction and <num> instructions around\n");
+    g_Log.print("r                      print all registers\n");
+    g_Log.print("r<num>                 print register <num>\n");
+    g_Log.print("bc                     print the current function bytecode\n");
+    g_Log.eol();
+
+    g_Log.print("x8  <addr|reg> [num]   print memory at address <addr> or register value <reg>, in 8 bits\n");
+    g_Log.print("x16 <addr|reg> [num]   print memory at address or register value, in 16 bits\n");
+    g_Log.print("x32 <addr|reg> [num]   print memory at address or register value, in 32 bits\n");
+    g_Log.print("x64 <addr|reg> [num]   print memory at address or register value, in 64 bits\n");
+    g_Log.eol();
+
+    g_Log.print("?                      print this list of commands\n");
+    g_Log.print("q, quit                quit the compiler\n");
+    g_Log.eol();
+}
+
+static void printBreakpoints(ByteCodeRunContext* context)
+{
+    if (context->debugBreakpoints.empty())
+    {
+        g_Log.printColor("no breakpoint\n", LogColor::Red);
+        return;
+    }
+
+    g_Log.setColor(LogColor::White);
+    for (int i = 0; i < context->debugBreakpoints.size(); i++)
+    {
+        const auto& bkp = context->debugBreakpoints[i];
+        g_Log.print(Fmt("#%d: ", i + 1));
+        switch (bkp.type)
+        {
+        case ByteCodeRunContext::DebugBkpType::FuncName:
+            g_Log.print(Fmt("entering function '%s'", bkp.name.c_str()));
+            break;
+        case ByteCodeRunContext::DebugBkpType::FileLine:
+            g_Log.print(Fmt("file %s, line '%d'", bkp.name.c_str(), bkp.line));
+            break;
+        }
+
+        if (bkp.disabled)
+            g_Log.print(" (DISABLED)");
+        g_Log.eol();
+    }
+}
+
+static void checkBreakpoints(ByteCodeRunContext* context)
+{
+    for (auto it = context->debugBreakpoints.begin(); it != context->debugBreakpoints.end(); it++)
+    {
+        auto& bkp = *it;
+        if (bkp.disabled)
+            continue;
+
+        if (bkp.type == ByteCodeRunContext::DebugBkpType::FuncName)
+        {
+            if (context->bc->node && (context->bc->node->token.text == bkp.name || context->bc->name == bkp.name))
+            {
+                if (!bkp.autoDisabled)
+                {
+                    g_Log.printColor(Fmt("#### breakpoint hit entering function '%s' ####\n", context->bc->name.c_str()), LogColor::Magenta);
+                    context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
+                    context->debugOn       = true;
+                    bkp.autoDisabled       = true;
+                    break;
+                }
+            }
+            else if (context->bc->node && context->bc->node->token.text != bkp.name && context->bc->name != bkp.name)
+            {
+                bkp.autoDisabled = false;
+            }
+        }
+        else if (bkp.type == ByteCodeRunContext::DebugBkpType::FileLine)
+        {
+            SourceFile*     file;
+            SourceLocation* location;
+            ByteCode::getLocation(context->bc, context->ip, &file, &location);
+            if (file->name == bkp.name && location->line == bkp.line)
+            {
+                if (!bkp.autoDisabled)
+                {
+                    g_Log.printColor(Fmt("#### breakpoint hit at line '%d' ####\n", bkp.line), LogColor::Magenta);
+                    context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
+                    context->debugOn       = true;
+                    bkp.autoDisabled       = true;
+                    break;
+                }
+            }
+            else
+            {
+                bkp.autoDisabled = false;
+            }
+        }
+    }
+}
+
+static bool addBreakpoint(ByteCodeRunContext* context, const ByteCodeRunContext::DebugBreakpoint& bkp)
+{
+    for (const auto& b : context->debugBreakpoints)
+    {
+        if (b.type == bkp.type && b.name == bkp.name && b.line == bkp.line)
+        {
+            g_Log.printColor("breakpoint already exists\n", LogColor::Red);
+            return false;
+        }
+    }
+
+    context->debugBreakpoints.push_back(bkp);
+    return true;
+}
+
 bool ByteCodeRun::debugger(ByteCodeRunContext* context)
 {
     auto ip = context->ip;
@@ -489,25 +645,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
     }
 
     // Check breakpoints
-    for (auto it = context->debugBreakpoints.begin(); it != context->debugBreakpoints.end(); it++)
-    {
-        const auto& bkp = *it;
-
-        if (bkp.type == ByteCodeRunContext::DebugBkpType::FuncName)
-        {
-            if (context->bc->node && (context->bc->node->token.text == bkp.name || context->bc->name == bkp.name))
-            {
-                g_Log.eol();
-                g_Log.printColor(Fmt("#### breakpoint hit at function '%s' ####\n", context->bc->name.c_str()), LogColor::Magenta);
-                g_Log.eol();
-
-                context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
-                context->debugBreakpoints.erase(it);
-                context->debugOn = true;
-                break;
-            }
-        }
-    }
+    checkBreakpoints(context);
 
     // Step to the next line
     bool zapCurrentIp = false;
@@ -566,7 +704,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
     {
         // Print function name
         if (context->debugLastBc != context->bc)
-            g_Log.printColor(Fmt("          %s %s\n", context->bc->name.c_str(), context->bc->getCallType()->getDisplayNameC()), LogColor::Magenta);
+            g_Log.printColor(Fmt("          %s %s\n", context->bc->name.c_str(), context->bc->getCallType()->getDisplayNameC()), LogColor::Yellow);
         context->debugLastBc = context->bc;
 
         // Print source line
@@ -608,52 +746,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             // Help
             if (cmd == "?")
             {
-                g_Log.setColor(LogColor::Gray);
-                g_Log.eol();
-                g_Log.print("<return>               runs the current instruction\n");
-                g_Log.print("s                      runs to the next line\n");
-                g_Log.print("n                      like s, but does not step into functions\n");
-                g_Log.print("c                      runs until another breakpoint is reached\n");
-                g_Log.print("f                      runs until the current function is done\n");
-                g_Log.eol();
-
-                g_Log.print("l                      print the current source code line\n");
-                g_Log.print("l <num>                print the current source code line and <num> lines around\n");
-                g_Log.print("ll                     print the current function source code\n");
-                g_Log.print("cxt, context           print contextual informations\n");
-                g_Log.eol();
-
-                g_Log.print("p <name>               print the value of <name>\n");
-                g_Log.print("locals                 print all current local variables\n");
-                g_Log.print("args                   print all current function arguments\n");
-                g_Log.eol();
-
-                g_Log.print("bkp fct <name>         add breakpoint when entering function <name>\n");
-                g_Log.print("bkp clear              clear all breakpoints\n");
-                g_Log.eol();
-
-                g_Log.print("stk, stack             print callstack\n");
-                g_Log.print("up [num]               move stack frame <num> level up\n");
-                g_Log.print("down [num]             move stack frame <num> level down\n");
-                g_Log.print("frame <num>            move stack frame to level <num>\n");
-                g_Log.eol();
-
-                g_Log.print("i                      print the current instruction\n");
-                g_Log.print("i <num>                print the current instruction and <num> instructions around\n");
-                g_Log.print("r                      print all registers\n");
-                g_Log.print("r<num>                 print register <num>\n");
-                g_Log.print("bc, printbc            print the current function bytecode\n");
-                g_Log.eol();
-
-                g_Log.print("x8  <addr|reg> [num]   print memory at address <addr> or register value <reg>, in 8 bits\n");
-                g_Log.print("x16 <addr|reg> [num]   print memory at address or register value, in 16 bits\n");
-                g_Log.print("x32 <addr|reg> [num]   print memory at address or register value, in 32 bits\n");
-                g_Log.print("x64 <addr|reg> [num]   print memory at address or register value, in 64 bits\n");
-                g_Log.eol();
-
-                g_Log.print("?                      print this list of commands\n");
-                g_Log.print("q, quit                quit the compiler\n");
-                g_Log.eol();
+                printHelp();
                 continue;
             }
 
@@ -828,7 +921,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             }
 
             // Print context
-            if (cmd == "cxt" || cmd == "context")
+            if (cmd == "cxt")
             {
                 printContext(context);
                 continue;
@@ -857,7 +950,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             }
 
             // Print stack
-            if (cmd == "stk" || cmd == "stack")
+            if (cmd == "stack")
             {
                 g_ByteCodeStackTrace.currentContext = context;
                 g_ByteCodeStackTrace.log();
@@ -866,7 +959,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             }
 
             // Bytecode dump
-            if (cmd == "bc" || cmd == "printbc")
+            if (cmd == "bc")
             {
                 g_Log.unlock();
                 context->debugCxtBc->print(context->debugCxtIp);
@@ -913,7 +1006,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                     uint32_t lineIdx = 0;
                     for (const auto& l : lines)
                     {
-                        g_Log.print(Fmt("%08u ", startLine + lineIdx + 1));
+                        g_Log.print(Fmt("%08u ", startLine + lineIdx));
                         if (curLocation->line == startLine + lineIdx)
                             g_Log.print(" --> ");
                         else
@@ -929,27 +1022,94 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             }
 
             // Breakpoints
-            if (cmd == "bkp" && cmds.size() == 3 && cmds[1] == "fct")
+            if (cmd == "b" || cmd == "break")
             {
-                ByteCodeRunContext::DebugBreakpoint bkp;
-                bkp.type = ByteCodeRunContext::DebugBkpType::FuncName;
-                bkp.name = cmds[2];
-                context->debugBreakpoints.push_back(bkp);
-                g_Log.printColor(Fmt("breakpoint %d at function '%s'\n", context->debugBreakpoints.size(), bkp.name.c_str()), LogColor::Magenta);
-                continue;
-            }
-
-            if (cmd == "bkp" && cmds.size() == 2 && cmds[1] == "clear")
-            {
-                if (context->debugBreakpoints.empty())
-                    g_Log.printColor("no breakpoint\n", LogColor::Red);
-                else
+                if (cmds.size() == 1)
                 {
-                    context->debugBreakpoints.clear();
-                    g_Log.printColor("breakpoints have been cleared\n", LogColor::Magenta);
+                    printBreakpoints(context);
+                    continue;
                 }
 
-                continue;
+                if (cmds.size() == 3 && cmds[1] == "fct")
+                {
+                    ByteCodeRunContext::DebugBreakpoint bkp;
+                    bkp.type = ByteCodeRunContext::DebugBkpType::FuncName;
+                    bkp.name = cmds[2];
+                    if (addBreakpoint(context, bkp))
+                        g_Log.printColor(Fmt("set breakpoint #%d entering function '%s'\n", context->debugBreakpoints.size(), bkp.name.c_str()), LogColor::White);
+                    continue;
+                }
+
+                if (cmds.size() == 2 && isdigit(cmds[1][0]))
+                {
+                    SourceFile*     curFile;
+                    SourceLocation* curLocation;
+                    ByteCode::getLocation(context->debugCxtBc, context->debugCxtIp, &curFile, &curLocation);
+
+                    int                                 lineNo = atoi(cmds[1]);
+                    ByteCodeRunContext::DebugBreakpoint bkp;
+                    bkp.type = ByteCodeRunContext::DebugBkpType::FileLine;
+                    bkp.name = curFile->name;
+                    bkp.line = lineNo;
+                    if (addBreakpoint(context, bkp))
+                        g_Log.printColor(Fmt("set breakpoint #%d at line '%d'\n", context->debugBreakpoints.size(), lineNo), LogColor::White);
+                    continue;
+                }
+
+                if (cmds.size() == 2 && cmds[1] == "clear")
+                {
+                    if (context->debugBreakpoints.empty())
+                        g_Log.printColor("no breakpoint\n", LogColor::Red);
+                    else
+                    {
+                        g_Log.printColor(Fmt("%d breakpoint(s) have been removed\n", context->debugBreakpoints.size()), LogColor::White);
+                        context->debugBreakpoints.clear();
+                    }
+
+                    continue;
+                }
+
+                if (cmds.size() == 3 && cmds[1] == "clear" && isdigit(cmds[2][0]))
+                {
+                    int numB = atoi(cmds[2]);
+                    if (!numB || numB - 1 >= context->debugBreakpoints.size())
+                        g_Log.printColor("invalid breakpoint number\n", LogColor::Red);
+                    else
+                    {
+                        context->debugBreakpoints.erase(context->debugBreakpoints.begin() + numB - 1);
+                        g_Log.printColor(Fmt("breakpoint #%d has been removed\n", numB), LogColor::White);
+                    }
+
+                    continue;
+                }
+
+                if (cmds.size() == 3 && cmds[1] == "disable" && isdigit(cmds[2][0]))
+                {
+                    int numB = atoi(cmds[2]);
+                    if (!numB || numB - 1 >= context->debugBreakpoints.size())
+                        g_Log.printColor("invalid breakpoint number\n", LogColor::Red);
+                    else
+                    {
+                        context->debugBreakpoints[numB - 1].disabled = true;
+                        g_Log.printColor(Fmt("breakpoint #%d has been disabled\n", numB), LogColor::White);
+                    }
+
+                    continue;
+                }
+
+                if (cmds.size() == 3 && cmds[1] == "enable" && isdigit(cmds[2][0]))
+                {
+                    int numB = atoi(cmds[2]);
+                    if (!numB || numB - 1 >= context->debugBreakpoints.size())
+                        g_Log.printColor("invalid breakpoint number\n", LogColor::Red);
+                    else
+                    {
+                        context->debugBreakpoints[numB - 1].disabled = false;
+                        g_Log.printColor(Fmt("breakpoint #%d has been enabled\n", numB), LogColor::White);
+                    }
+
+                    continue;
+                }
             }
 
             // Next instruction

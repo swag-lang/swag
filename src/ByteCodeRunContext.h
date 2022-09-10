@@ -140,12 +140,16 @@ struct ByteCodeRunContext
     enum class DebugBkpType
     {
         FuncName,
+        FileLine,
     };
 
     struct DebugBreakpoint
     {
         DebugBkpType type;
         Utf8         name;
+        uint32_t     line         = 0;
+        bool         disabled     = false;
+        bool         autoDisabled = false;
     };
 
     ByteCodeInstruction*    debugLastIp           = nullptr;
