@@ -60,15 +60,6 @@ static bool getRegIdx(ByteCodeRunContext* context, const Utf8& arg, int& regN)
     return true;
 }
 
-static void printRegister(ByteCodeRunContext* context, uint32_t curRC, uint32_t reg)
-{
-    auto registersRC = context->getRegBuffer(curRC);
-    Utf8 str;
-    str += Fmt("r%u = %016llx\n", reg, registersRC[reg].u64);
-    g_Log.setColor(LogColor::Gray);
-    g_Log.print(str);
-}
-
 template<typename T>
 static T getAddrValue(const void* addr)
 {
@@ -82,104 +73,168 @@ static T getAddrValue(const void* addr)
     }
 }
 
+struct ValueFormat
+{
+    int  bitCount = 8;
+    bool isSigned = false;
+    bool isFloat  = false;
+    bool isHexa   = true;
+};
+
+static bool getValueFormat(const Utf8& cmd, ValueFormat& fmt)
+{
+    // Format
+    if (cmd == "s8")
+    {
+        fmt.bitCount = 8;
+        fmt.isSigned = true;
+        fmt.isHexa   = false;
+        return true;
+    }
+
+    if (cmd == "s16")
+    {
+        fmt.bitCount = 16;
+        fmt.isSigned = true;
+        fmt.isHexa   = false;
+        return true;
+    }
+
+    if (cmd == "s32")
+    {
+        fmt.bitCount = 32;
+        fmt.isSigned = true;
+        fmt.isHexa   = false;
+        return true;
+    }
+
+    if (cmd == "s64")
+    {
+        fmt.bitCount = 64;
+        fmt.isSigned = true;
+        fmt.isHexa   = false;
+        return true;
+    }
+
+    if (cmd == "u8")
+    {
+        fmt.bitCount = 8;
+        fmt.isHexa   = false;
+        return true;
+    }
+
+    if (cmd == "u16")
+    {
+        fmt.bitCount = 16;
+        fmt.isHexa   = false;
+        return true;
+    }
+
+    if (cmd == "u32")
+    {
+        fmt.bitCount = 32;
+        fmt.isHexa   = false;
+        return true;
+    }
+
+    if (cmd == "u64")
+    {
+        fmt.bitCount = 64;
+        fmt.isHexa   = false;
+        return true;
+    }
+
+    if (cmd == "x8")
+    {
+        fmt.bitCount = 8;
+        return true;
+    }
+
+    if (cmd == "x16")
+    {
+        fmt.bitCount = 16;
+        return true;
+    }
+
+    if (cmd == "x32")
+    {
+        fmt.bitCount = 32;
+        return true;
+    }
+
+    if (cmd == "x64")
+    {
+        fmt.bitCount = 64;
+        return true;
+    }
+
+    if (cmd == "f32")
+    {
+        fmt.bitCount = 32;
+        fmt.isFloat  = true;
+        fmt.isHexa   = false;
+        return true;
+    }
+
+    if (cmd == "f64")
+    {
+        fmt.bitCount = 64;
+        fmt.isFloat  = true;
+        fmt.isHexa   = false;
+        return true;
+    }
+
+    return false;
+}
+
+static Utf8 printValue(ByteCodeRunContext* context, const ValueFormat& fmt, const void* addr)
+{
+    switch (fmt.bitCount)
+    {
+    case 8:
+    default:
+        if (fmt.isSigned)
+            return Fmt("%4d ", getAddrValue<int8_t>(addr));
+        if (!fmt.isHexa)
+            return Fmt("%3u ", getAddrValue<uint8_t>(addr));
+        return Fmt("%02llx ", getAddrValue<uint8_t>(addr));
+
+    case 16:
+        if (fmt.isSigned)
+            return Fmt("%6d ", getAddrValue<int16_t>(addr));
+        if (!fmt.isHexa)
+            return Fmt("%5u ", getAddrValue<uint16_t>(addr));
+        return Fmt("%04llx ", getAddrValue<uint16_t>(addr));
+
+    case 32:
+        if (fmt.isFloat)
+            return Fmt("%16.5g ", getAddrValue<float>(addr));
+        if (fmt.isSigned)
+            return Fmt("%11d ", getAddrValue<int32_t>(addr));
+        if (!fmt.isHexa)
+            return Fmt("%10u ", getAddrValue<uint32_t>(addr));
+        return Fmt("%08llx ", getAddrValue<uint32_t>(addr));
+
+    case 64:
+        if (fmt.isFloat)
+            return Fmt("%16.5g ", getAddrValue<double>(addr));
+        if (fmt.isSigned)
+            return Fmt("%21lld ", getAddrValue<int64_t>(addr));
+        if (!fmt.isHexa)
+            return Fmt("%20llu ", getAddrValue<uint64_t>(addr));
+        return Fmt("%016llx ", getAddrValue<uint64_t>(addr));
+    }
+}
+
 static void printMemory(ByteCodeRunContext* context, const Utf8& arg)
 {
     vector<Utf8> cmds;
     Utf8::tokenize(arg.c_str(), ' ', cmds);
 
-    int  bitCount = 8;
-    bool isSigned = false;
-    bool isFloat  = false;
-    bool isHexa   = true;
-    int  startIdx = 0;
-
-    // Format
-    if (cmds[0] == "s8")
-    {
-        bitCount = 8;
-        isSigned = true;
-        isHexa   = false;
+    ValueFormat fmt;
+    int         startIdx = 0;
+    if (cmds.size() && getValueFormat(cmds[0], fmt))
         startIdx++;
-    }
-    else if (cmds[0] == "s16")
-    {
-        bitCount = 16;
-        isSigned = true;
-        isHexa   = false;
-        startIdx++;
-    }
-    else if (cmds[0] == "s32")
-    {
-        bitCount = 32;
-        isSigned = true;
-        isHexa   = false;
-        startIdx++;
-    }
-    else if (cmds[0] == "s64")
-    {
-        bitCount = 64;
-        isSigned = true;
-        isHexa   = false;
-        startIdx++;
-    }
-    else if (cmds[0] == "u8")
-    {
-        bitCount = 8;
-        isHexa   = false;
-        startIdx++;
-    }
-    else if (cmds[0] == "u16")
-    {
-        bitCount = 16;
-        isHexa   = false;
-        startIdx++;
-    }
-    else if (cmds[0] == "u32")
-    {
-        bitCount = 32;
-        isHexa   = false;
-        startIdx++;
-    }
-    else if (cmds[0] == "u64")
-    {
-        bitCount = 64;
-        isHexa   = false;
-        startIdx++;
-    }
-    else if (cmds[0] == "x8")
-    {
-        bitCount = 8;
-        startIdx++;
-    }
-    else if (cmds[0] == "x16")
-    {
-        bitCount = 16;
-        startIdx++;
-    }
-    else if (cmds[0] == "x32")
-    {
-        bitCount = 32;
-        startIdx++;
-    }
-    else if (cmds[0] == "x64")
-    {
-        bitCount = 64;
-        startIdx++;
-    }
-    else if (cmds[0] == "f32")
-    {
-        bitCount = 32;
-        isFloat  = true;
-        isHexa   = false;
-        startIdx++;
-    }
-    else if (cmds[0] == "f64")
-    {
-        bitCount = 64;
-        isFloat  = true;
-        isHexa   = false;
-        startIdx++;
-    }
 
     // Count
     int count = 64;
@@ -255,7 +310,7 @@ static void printMemory(ByteCodeRunContext* context, const Utf8& arg)
     }
 
     int perLine = 8;
-    switch (bitCount)
+    switch (fmt.bitCount)
     {
     case 8:
         perLine = 16;
@@ -281,63 +336,19 @@ static void printMemory(ByteCodeRunContext* context, const Utf8& arg)
 
         for (int i = 0; i < min(count, perLine); i++)
         {
-            switch (bitCount)
-            {
-            case 8:
-            default:
-                if (isSigned)
-                    g_Log.print(Fmt("%4d ", getAddrValue<int8_t>(addrB)));
-                else if (!isHexa)
-                    g_Log.print(Fmt("%3u ", getAddrValue<uint8_t>(addrB)));
-                else
-                    g_Log.print(Fmt("%02llx ", getAddrValue<uint8_t>(addrB)));
-                addrB += 1;
-                break;
-
-            case 16:
-                if (isSigned)
-                    g_Log.print(Fmt("%6d ", getAddrValue<int16_t>(addrB)));
-                else if (!isHexa)
-                    g_Log.print(Fmt("%5u ", getAddrValue<uint16_t>(addrB)));
-                else
-                    g_Log.print(Fmt("%04llx ", getAddrValue<uint16_t>(addrB)));
-                addrB += 2;
-                break;
-
-            case 32:
-                if (isFloat)
-                    g_Log.print(Fmt("%16.5g ", getAddrValue<float>(addrB)));
-                else if (isSigned)
-                    g_Log.print(Fmt("%11d ", getAddrValue<int32_t>(addrB)));
-                else if (!isHexa)
-                    g_Log.print(Fmt("%10u ", getAddrValue<uint32_t>(addrB)));
-                else
-                    g_Log.print(Fmt("%08llx ", getAddrValue<uint32_t>(addrB)));
-                addrB += 4;
-                break;
-
-            case 64:
-                if (isFloat)
-                    g_Log.print(Fmt("%16.5g ", getAddrValue<double>(addrB)));
-                else if (isSigned)
-                    g_Log.print(Fmt("%21lld ", getAddrValue<int64_t>(addrB)));
-                else if (!isHexa)
-                    g_Log.print(Fmt("%20llu ", getAddrValue<uint64_t>(addrB)));
-                else
-                    g_Log.print(Fmt("%016llx ", getAddrValue<uint64_t>(addrB)));
-                addrB += 8;
-                break;
-            }
+            auto str = printValue(context, fmt, addrB);
+            g_Log.print(str);
+            addrB += fmt.bitCount / 8;
         }
 
         addrB = addrLine;
-        if (bitCount == 8)
+        if (fmt.bitCount == 8)
         {
             for (int i = 0; i < perLine - min(count, perLine); i++)
             {
-                if (isHexa)
+                if (fmt.isHexa)
                     g_Log.print("   ");
-                else if (!isSigned)
+                else if (!fmt.isSigned)
                     g_Log.print("    ");
                 else
                     g_Log.print("     ");
@@ -357,7 +368,7 @@ static void printMemory(ByteCodeRunContext* context, const Utf8& arg)
         g_Log.eol();
 
         addrB = addrLine;
-        addrB += count * (bitCount / 8);
+        addrB += count * (fmt.bitCount / 8);
         count -= min(count, 8);
         if (!count)
             break;
@@ -399,58 +410,6 @@ static void printContext(ByteCodeRunContext* context)
 
     g_Log.eol();
     g_Log.lock();
-}
-
-static void printFullRegister(Register& regP)
-{
-    auto col = LogColor::Magenta;
-
-    g_Log.printColor("s8 ", col);
-    g_Log.printColor(Fmt("%d ", regP.s8));
-
-    g_Log.printColor("u8 ", col);
-    g_Log.printColor(Fmt("%u ", regP.u8));
-
-    g_Log.printColor("x8 ", col);
-    g_Log.printColor(Fmt("%02x ", regP.u8));
-    g_Log.eol();
-
-    g_Log.printColor("s16 ", col);
-    g_Log.printColor(Fmt("%d ", regP.s16));
-
-    g_Log.printColor("u16 ", col);
-    g_Log.printColor(Fmt("%u ", regP.u16));
-
-    g_Log.printColor("x16 ", col);
-    g_Log.printColor(Fmt("%04x ", regP.u16));
-    g_Log.eol();
-
-    g_Log.printColor("s32 ", col);
-    g_Log.printColor(Fmt("%d ", regP.s32));
-
-    g_Log.printColor("u32 ", col);
-    g_Log.printColor(Fmt("%u ", regP.u32));
-
-    g_Log.printColor("x32 ", col);
-    g_Log.printColor(Fmt("%08x ", regP.u32));
-    g_Log.eol();
-
-    g_Log.printColor("s64 ", col);
-    g_Log.printColor(Fmt("%lld ", regP.s64));
-
-    g_Log.printColor("u64 ", col);
-    g_Log.printColor(Fmt("%llu ", regP.u64));
-
-    g_Log.printColor("x64 ", col);
-    g_Log.printColor(Fmt("%016llx ", regP.u64));
-    g_Log.eol();
-
-    g_Log.printColor("f32 ", col);
-    g_Log.printColor(Fmt("%lf", regP.f32));
-    g_Log.eol();
-    g_Log.printColor("f64 ", col);
-    g_Log.printColor(Fmt("%lf", regP.f64));
-    g_Log.eol();
 }
 
 static void printInstruction(ByteCodeRunContext* context, ByteCode* bc, ByteCodeInstruction* ip, int num = 1)
@@ -707,8 +666,8 @@ static void printHelp()
     g_Log.eol();
 
     g_Log.print("i [num]                    print the current bytecode instruction and <num> instructions around\n");
-    g_Log.print("r(egs)                     print all registers\n");
-    g_Log.print("r<num>                     print register <num>\n");
+    g_Log.print("r(egs) [format]            print all registers (format is the same as 'x' command)\n");
+    g_Log.print("r<num> [format]            print register <num> (format is the same as 'x' command)\n");
     g_Log.print("bc                         print the current function bytecode\n");
     g_Log.eol();
 
@@ -1141,24 +1100,61 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             }
 
             // Print all registers
-            if ((cmd == "r" || cmd == "regs") && cmds.size() == 1)
+            if ((cmd == "r" || cmd == "regs") && (cmds.size() == 1 || cmds.size() == 2))
             {
+                ValueFormat fmt;
+                fmt.isHexa   = true;
+                fmt.bitCount = 64;
+                if (cmds.size() > 1)
+                {
+                    if (!getValueFormat(cmds[1], fmt))
+                    {
+                        g_Log.printColor("invalid format\n", LogColor::Red);
+                        continue;
+                    }
+                }
+
                 g_Log.setColor(LogColor::White);
                 for (int i = 0; i < context->getRegCount(context->debugCxtRc); i++)
-                    printRegister(context, context->debugCxtRc, i);
+                {
+                    auto& regP = context->getRegBuffer(context->debugCxtRc)[i];
+                    auto  str  = printValue(context, fmt, &regP);
+                    str.trim();
+                    g_Log.print(Fmt("r%d = ", i));
+                    g_Log.print(str);
+                    g_Log.eol();
+                }
+
                 g_Log.print(Fmt("sp = %016llx\n", context->sp));
                 continue;
             }
 
             // Print one register
-            if (cmd[0] == 'r' && cmd.length() > 1 && isdigit(cmd[1]))
+            if (cmd[0] == 'r' && cmd.length() > 1 && isdigit(cmd[1]) && (cmds.size() == 1 || cmds.size() == 2))
             {
                 g_Log.setColor(LogColor::Gray);
                 int regN;
                 if (!getRegIdx(context, cmd, regN))
                     continue;
                 auto& regP = context->getRegBuffer(context->debugCxtRc)[regN];
-                printFullRegister(regP);
+
+                ValueFormat fmt;
+                fmt.isHexa   = true;
+                fmt.bitCount = 64;
+                if (cmds.size() > 1)
+                {
+                    if (!getValueFormat(cmds[1], fmt))
+                    {
+                        g_Log.printColor("invalid format\n", LogColor::Red);
+                        continue;
+                    }
+                }
+
+                g_Log.setColor(LogColor::White);
+                auto str = printValue(context, fmt, &regP);
+                str.trim();
+                g_Log.print(str);
+                g_Log.eol();
                 continue;
             }
 
