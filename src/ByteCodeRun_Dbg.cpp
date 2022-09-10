@@ -488,7 +488,10 @@ static void printHelp()
 
     g_Log.print("l [num]                print the current source code line and <num> lines around\n");
     g_Log.print("ll                     print the current function source code\n");
+
+    g_Log.eol();
     g_Log.print("cxt                    print contextual informations\n");
+    g_Log.print("bcmode                 swap between bytecode mode and source mode\n");
     g_Log.eol();
 
     g_Log.print("p <name>               print the value of <name>\n");
@@ -704,7 +707,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
     {
         // Print function name
         if (context->debugLastBc != context->bc)
-            g_Log.printColor(Fmt("          %s %s\n", context->bc->name.c_str(), context->bc->getCallType()->getDisplayNameC()), LogColor::Yellow);
+            g_Log.printColor(Fmt("--> function %s %s\n", context->bc->name.c_str(), context->bc->getCallType()->getDisplayNameC()), LogColor::Yellow);
         context->debugLastBc = context->bc;
 
         // Print source line
@@ -712,12 +715,23 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
         SourceLocation* location;
         ByteCode::getLocation(context->bc, ip, &file, &location);
         if (location && (context->debugStepLastFile != file || context->debugStepLastLocation && context->debugStepLastLocation->line != location->line))
-            context->bc->printSourceCode(ip);
+        {
+            if (context->bc->node && context->bc->node->sourceFile)
+            {
+                g_Log.printColor("--> ", LogColor::Yellow);
+                auto str1 = context->bc->node->sourceFile->getLine(location->line);
+                str1.trim();
+                g_Log.printColor(str1, LogColor::Yellow);
+                g_Log.eol();
+            }
+        }
+
         context->debugStepLastFile     = file;
         context->debugStepLastLocation = location;
 
         computeCxt(context);
-        printInstruction(context, context->bc, ip);
+        if (context->debugBcMode)
+            printInstruction(context, context->bc, ip);
 
         while (true)
         {
@@ -766,19 +780,27 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                     }
                 }
 
-                for (auto l : funcDecl->parameters->childs)
+                if (done)
+                    continue;
+
+                if (funcDecl->parameters)
                 {
-                    auto over = l->resolvedSymbolOverload;
-                    if (over && over->symbol->name == cmds[1])
+                    for (auto l : funcDecl->parameters->childs)
                     {
-                        done = true;
-                        printValue(context, over);
-                        break;
+                        auto over = l->resolvedSymbolOverload;
+                        if (over && over->symbol->name == cmds[1])
+                        {
+                            done = true;
+                            printValue(context, over);
+                            break;
+                        }
                     }
                 }
 
-                if (!done)
-                    g_Log.printColor(Fmt("cannot resolve name '%s'\n", cmds[1].c_str()), LogColor::Red);
+                if (done)
+                    continue;
+
+                g_Log.printColor(Fmt("cannot resolve name '%s'\n", cmds[1].c_str()), LogColor::Red);
                 continue;
             }
 
@@ -967,6 +989,17 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 continue;
             }
 
+            // Bc mode
+            if (cmd == "bcmode")
+            {
+                context->debugBcMode = !context->debugBcMode;
+                if (context->debugBcMode)
+                    g_Log.printColor("bytecode mode\n", LogColor::White);
+                else
+                    g_Log.printColor("source code mode\n", LogColor::White);
+                continue;
+            }
+
             // Function code
             if ((cmd == "l" && cmds.size() <= 2) ||
                 (cmd == "ll" && cmds.size() == 1))
@@ -981,7 +1014,6 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
 
                     uint32_t startLine = context->debugCxtBc->node->token.startLocation.line;
                     uint32_t endLine   = funcNode->content->token.endLocation.line;
-
                     if (cmd == "l" && cmds.size() == 1)
                     {
                         startLine = curLocation->line;
@@ -1114,7 +1146,13 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
 
             // Next instruction
             if (cmd.empty())
+            {
+                if (context->debugBcMode)
+                    break;
+                context->debugStackFrameOffset = 0;
+                context->debugStepMode         = ByteCodeRunContext::DebugStepMode::NextLine;
                 break;
+            }
 
             // Step to next line
             if (cmd == "s")

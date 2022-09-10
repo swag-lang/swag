@@ -164,6 +164,7 @@ struct ByteCodeRunContext
     DebugStepMode           debugStepMode         = DebugStepMode::None;
     uint32_t                debugStackFrameOffset = 0;
     uint32_t                debugCxtRc            = 0;
+    uint32_t                debugBcMode           = false;
     vector<DebugBreakpoint> debugBreakpoints;
 };
 
