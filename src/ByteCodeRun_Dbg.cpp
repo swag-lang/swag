@@ -857,6 +857,7 @@ static void printHelp()
     g_Log.print("b(reak) clear <num>        remove breakpoint <num>\n");
     g_Log.print("b(reak) enable <num>       enable breakpoint <num>\n");
     g_Log.print("b(reak) disable <num>      disable breakpoint <num>\n");
+    g_Log.print("tb(reak) ...               same as 'b(reak)' except that the breakpoint will be automatically removed on hit\n");
     g_Log.eol();
 
     g_Log.print("stack                      print callstack\n");
@@ -892,6 +893,7 @@ static void printBreakpoints(ByteCodeRunContext* context)
         return;
     }
 
+    g_Log.setColor(LogColor::Gray);
     for (int i = 0; i < context->debugBreakpoints.size(); i++)
     {
         const auto& bkp = context->debugBreakpoints[i];
@@ -911,6 +913,8 @@ static void printBreakpoints(ByteCodeRunContext* context)
 
         if (bkp.disabled)
             g_Log.print(" (DISABLED)");
+        if (bkp.autoRemove)
+            g_Log.print(" (ONE SHOT)");
         g_Log.eol();
     }
 }
@@ -991,7 +995,7 @@ static bool addBreakpoint(ByteCodeRunContext* context, const ByteCodeRunContext:
 {
     for (const auto& b : context->debugBreakpoints)
     {
-        if (b.type == bkp.type && b.name == bkp.name && b.line == bkp.line)
+        if (b.type == bkp.type && b.name == bkp.name && b.line == bkp.line && b.autoRemove == bkp.autoRemove)
         {
             g_Log.printColor("breakpoint already exists\n", LogColor::Red);
             return false;
@@ -1455,7 +1459,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             }
 
             // Breakpoints
-            if (cmd == "b" || cmd == "break")
+            if (cmd == "b" || cmd == "break" || cmd == "tb" || cmd == "tbreak")
             {
                 if (cmds.size() == 1)
                 {
@@ -1463,13 +1467,18 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                     continue;
                 }
 
+                bool oneShot = false;
+                if (cmd == "tb" || cmd == "tbreak")
+                    oneShot = true;
+
                 if (cmds.size() == 3 && cmds[1] == "fct")
                 {
                     ByteCodeRunContext::DebugBreakpoint bkp;
-                    bkp.type = ByteCodeRunContext::DebugBkpType::FuncName;
-                    bkp.name = cmds[2];
+                    bkp.type       = ByteCodeRunContext::DebugBkpType::FuncName;
+                    bkp.name       = cmds[2];
+                    bkp.autoRemove = oneShot;
                     if (addBreakpoint(context, bkp))
-                        g_Log.printColor(Fmt("set breakpoint #%d entering function '%s'\n", context->debugBreakpoints.size(), bkp.name.c_str()), LogColor::White);
+                        g_Log.printColor(Fmt("breakpoint #%d entering function '%s'\n", context->debugBreakpoints.size(), bkp.name.c_str()), LogColor::White);
                     continue;
                 }
 
@@ -1481,11 +1490,12 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
 
                     int                                 lineNo = atoi(cmds[1]);
                     ByteCodeRunContext::DebugBreakpoint bkp;
-                    bkp.type = ByteCodeRunContext::DebugBkpType::FileLine;
-                    bkp.name = curFile->name;
-                    bkp.line = lineNo;
+                    bkp.type       = ByteCodeRunContext::DebugBkpType::FileLine;
+                    bkp.name       = curFile->name;
+                    bkp.line       = lineNo;
+                    bkp.autoRemove = oneShot;
                     if (addBreakpoint(context, bkp))
-                        g_Log.printColor(Fmt("set breakpoint #%d at line '%d'\n", context->debugBreakpoints.size(), lineNo), LogColor::White);
+                        g_Log.printColor(Fmt("breakpoint #%d, file '%s', line '%d'\n", context->debugBreakpoints.size(), curFile->name.c_str(), lineNo), LogColor::White);
                     continue;
                 }
 
