@@ -11,6 +11,7 @@
 #include "SemanticJob.h"
 #include "ByteCodeGenJob.h"
 #include "Context.h"
+#include "TypeManager.h"
 
 #pragma optimize("", off)
 
@@ -19,6 +20,7 @@ struct EvaluateResult
     TypeInfo*      type  = nullptr;
     void*          addr  = nullptr;
     ComputedValue* value = nullptr;
+    void*          storage[2];
 };
 
 static bool evalExpression(ByteCodeRunContext* context, const Utf8& expr, EvaluateResult& res)
@@ -130,18 +132,18 @@ static bool evalExpression(ByteCodeRunContext* context, const Utf8& expr, Evalua
         return false;
     }
 
-    // This has been evaluated to a constant
-    if (child->flags & AST_VALUE_COMPUTED)
+    sourceFile->silent--;
+    res.type = TypeManager::concreteReferenceType(child->typeInfo);
+    if (res.type->flags & TYPEINFO_RETURN_BY_COPY)
+        res.addr = execParams.debuggerResult[0];
+    else
     {
-        sourceFile->silent--;
-        res.type  = child->typeInfo;
-        res.value = child->computedValue;
-        return true;
+        res.storage[0] = execParams.debuggerResult[0];
+        res.storage[1] = execParams.debuggerResult[1];
+        res.addr       = &res.storage[0];
     }
 
-    sourceFile->silent--;
-    g_Log.printColor("cannot evaluate expression\n", LogColor::Red);
-    return false;
+    return true;
 }
 
 static bool getRegIdx(ByteCodeRunContext* context, const Utf8& arg, int& regN)
@@ -601,7 +603,7 @@ static void appendValueProtected(Utf8& str, const EvaluateResult& res, int inden
     auto addr     = res.addr;
 
     if (!addr && res.value)
-        addr = &res.value->reg;
+        addr = res.value->reg.pointer;
 
     if (typeInfo->isPointerToTypeInfo())
     {
@@ -614,6 +616,8 @@ static void appendValueProtected(Utf8& str, const EvaluateResult& res, int inden
 
     if (typeInfo->kind == TypeInfoKind::Struct)
     {
+        if (res.value)
+            addr = res.value->reg.pointer;
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
         str += Fmt("0x%016llx\n", addr);
         for (auto p : typeStruct->fields)

@@ -10,6 +10,16 @@
 
 bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* sourceFile, AstNode* node, JobContext* callerContext, ExecuteNodeParams* params)
 {
+    if (params && params->forDebugger)
+    {
+        if (!node->resultRegisterRC.size())
+            return true;
+        params->debuggerResult[0] = runContext->registers.buffer[node->resultRegisterRC[0]].pointer;
+        if (node->resultRegisterRC.size() > 1)
+            params->debuggerResult[1] = runContext->registers.buffer[node->resultRegisterRC[1]].pointer;
+        return true;
+    }
+
     // :CheckConstExprFuncReturnType
     // :opAffectConstExpr
     // Result is on the stack. Store it in the compiler segment.
@@ -159,8 +169,7 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
     // Default
     if (realType->isNativeIntegerOrRune() ||
         realType->isNativeFloat() ||
-        realType->isNative(NativeTypeKind::Bool) ||
-        (params && params->forDebugger))
+        realType->isNative(NativeTypeKind::Bool))
     {
         switch (realType->sizeOf)
         {

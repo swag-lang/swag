@@ -83,7 +83,9 @@ struct ExecuteNodeParams
     SymbolOverload*        specReturnOpDrop  = nullptr;
     ByteCodeRunContext*    runContext        = nullptr;
     ByteCodeRunContext*    inheritRunContext = nullptr;
-    bool                   forDebugger       = false;
+
+    void* debuggerResult[2];
+    bool  forDebugger = false;
 };
 
 struct CompilerMessage
