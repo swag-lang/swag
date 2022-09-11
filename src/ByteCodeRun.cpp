@@ -3327,7 +3327,7 @@ void ByteCodeRun::runLoopNoDbg(ByteCodeRunContext* context)
 
 bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
 {
-    if (context->debugOn)
+    if (context->debugOn && context->acceptDebugger)
     {
         while (true)
         {

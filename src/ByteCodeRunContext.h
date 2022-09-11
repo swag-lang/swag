@@ -123,6 +123,7 @@ struct ByteCodeRunContext
     bool raiseDebugStart     = false;
     bool debugEntry          = false;
     bool debugOn             = false;
+    bool acceptDebugger      = true;
 
     const ConcreteCompilerMessage* currentCompilerMessage = nullptr;
     Job*                           currentCompilerJob     = nullptr;

@@ -96,6 +96,7 @@ static bool evalDynExpression(ByteCodeRunContext* context, const Utf8& expr, Eva
     execParams.runContext        = &runContext;
     execParams.inheritRunContext = &g_RunContext;
     execParams.forDebugger       = true;
+    runContext.acceptDebugger    = false;
     if (!sourceFile->module->executeNode(sourceFile, child, &callerContext, &execParams))
     {
         sourceFile->silent--;
