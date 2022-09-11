@@ -114,7 +114,7 @@ void ByteCodeStack::log()
         return;
 
     int maxSteps = 20;
-    for (int i = (int) copySteps.size() - 1; i >= 0; i--)
+    for (int i = max(0, (int) copySteps.size() - maxSteps); i < (int) copySteps.size(); i++)
     {
         maxSteps--;
         if (maxSteps == 0)
