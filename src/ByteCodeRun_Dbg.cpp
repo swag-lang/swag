@@ -133,15 +133,13 @@ static bool evalExpression(ByteCodeRunContext* context, const Utf8& expr, Evalua
     }
 
     sourceFile->silent--;
-    res.type = TypeManager::concreteReferenceType(child->typeInfo);
+    res.type       = TypeManager::concreteReferenceType(child->typeInfo);
+    res.storage[0] = runContext.registersRR[0].pointer;
+    res.storage[1] = runContext.registersRR[1].pointer;
     if (res.type->flags & TYPEINFO_RETURN_BY_COPY)
-        res.addr = execParams.debuggerResult[0];
+        res.addr = res.storage[0];
     else
-    {
-        res.storage[0] = execParams.debuggerResult[0];
-        res.storage[1] = execParams.debuggerResult[1];
-        res.addr       = &res.storage[0];
-    }
+        res.addr = &res.storage[0];
 
     return true;
 }
@@ -597,20 +595,36 @@ static void computeCxt(ByteCodeRunContext* context)
     }
 }
 
+static void appendValue(Utf8& str, const EvaluateResult& res, int indent);
 static void appendValueProtected(Utf8& str, const EvaluateResult& res, int indent = 0)
 {
     auto typeInfo = res.type;
     auto addr     = res.addr;
 
     if (!addr && res.value)
-        addr = res.value->reg.pointer;
+        addr = &res.value->reg;
+
+    if (typeInfo->kind == TypeInfoKind::Enum)
+    {
+        Register reg;
+        auto     ptr = ((uint8_t**) addr)[0];
+        reg.pointer  = ptr;
+        str += Ast::enumToString(typeInfo, res.value ? res.value->text : Utf8{}, reg);
+        return;
+    }
 
     if (typeInfo->isPointerToTypeInfo())
     {
         auto ptr = ((ConcreteTypeInfo**) addr)[0];
-        Utf8 str1;
-        str1.setView((const char*) ptr->name.buffer, (int) ptr->name.count);
-        str += str1;
+        if (!ptr)
+            str += "null";
+        else
+        {
+            Utf8 str1;
+            str1.setView((const char*) ptr->name.buffer, (int) ptr->name.count);
+            str += str1;
+        }
+
         return;
     }
 
@@ -619,12 +633,11 @@ static void appendValueProtected(Utf8& str, const EvaluateResult& res, int inden
         if (res.value)
             addr = res.value->reg.pointer;
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
-        str += Fmt("0x%016llx\n", addr);
+        str += "\n";
         for (auto p : typeStruct->fields)
         {
-            for (int i = 0; i < indent; i++)
+            for (int i = 0; i < indent + 1; i++)
                 str += "   ";
-            str += " | ";
             str += p->namedParam.c_str();
             str += ": ";
             str += p->typeInfo->getDisplayName().c_str();
@@ -632,7 +645,7 @@ static void appendValueProtected(Utf8& str, const EvaluateResult& res, int inden
             EvaluateResult res1;
             res1.type = p->typeInfo;
             res1.addr = ((uint8_t*) addr) + p->offset;
-            appendValueProtected(str, res1, indent + 1);
+            appendValue(str, res1, indent + 1);
             if (str.back() != '\n')
                 str += "\n";
         }
@@ -652,7 +665,7 @@ static void appendValueProtected(Utf8& str, const EvaluateResult& res, int inden
             EvaluateResult res1;
             res1.type = typeArray->pointedType;
             res1.addr = ((uint8_t*) addr) + (idx * typeArray->pointedType->sizeOf);
-            appendValueProtected(str, res1, indent + 1);
+            appendValue(str, res1, indent + 1);
             if (str.back() != '\n')
                 str += "\n";
         }
@@ -663,21 +676,26 @@ static void appendValueProtected(Utf8& str, const EvaluateResult& res, int inden
     if (typeInfo->kind == TypeInfoKind::Slice)
     {
         auto typeSlice = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
-        auto count     = ((uint64_t*) addr)[1];
         auto ptr       = ((uint8_t**) addr)[0];
-        str += Fmt("(0x%016llx ", ptr);
-        str += Fmt("%llu)\n", count);
-        for (uint64_t idx = 0; idx < count; idx++)
+        auto count     = ((uint64_t*) addr)[1];
+        if (ptr == nullptr)
+            str += "null";
+        else
         {
-            for (int i = 0; i < indent; i++)
-                str += "   ";
-            str += Fmt(" [%d] ", idx);
-            EvaluateResult res1;
-            res1.type = typeSlice->pointedType;
-            res1.addr = ptr + (idx * typeSlice->pointedType->sizeOf);
-            appendValueProtected(str, res1, indent + 1);
-            if (str.back() != '\n')
-                str += "\n";
+            str += Fmt("(0x%016llx ", ptr);
+            str += Fmt("%llu)\n", count);
+            for (uint64_t idx = 0; idx < count; idx++)
+            {
+                for (int i = 0; i < indent; i++)
+                    str += "   ";
+                str += Fmt(" [%d] ", idx);
+                EvaluateResult res1;
+                res1.type = typeSlice->pointedType;
+                res1.addr = ptr + (idx * typeSlice->pointedType->sizeOf);
+                appendValue(str, res1, indent + 1);
+                if (str.back() != '\n')
+                    str += "\n";
+            }
         }
 
         return;
@@ -685,14 +703,24 @@ static void appendValueProtected(Utf8& str, const EvaluateResult& res, int inden
 
     if (typeInfo->kind == TypeInfoKind::Pointer)
     {
-        str += Fmt("0x%016llx", *(void**) addr);
+        auto ptr = ((uint8_t**) addr)[0];
+        if (ptr == nullptr)
+            str += "null";
+        else
+            str += Fmt("0x%016llx", ptr);
         return;
     }
 
     if (typeInfo->kind == TypeInfoKind::Interface)
     {
-        str += Fmt("(0x%016llx ", ((void**) addr)[0]);
-        str += Fmt("0x%016llx)", ((void**) addr)[1]);
+        auto ptr = ((uint8_t**) addr)[0];
+        if (ptr == nullptr)
+            str += "null";
+        else
+        {
+            str += Fmt("(0x%016llx ", ptr);
+            str += Fmt("0x%016llx)", ((void**) addr)[1]);
+        }
         return;
     }
 
@@ -716,8 +744,8 @@ static void appendValueProtected(Utf8& str, const EvaluateResult& res, int inden
                 len = ((uint64_t*) addr)[1];
             }
 
-            if (!ptr || !len)
-                str += "<empty>";
+            if (!ptr)
+                str += "null";
             else
             {
                 Utf8 str1;

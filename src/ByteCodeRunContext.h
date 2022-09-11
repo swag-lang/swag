@@ -93,17 +93,18 @@ struct ByteCodeRunContext
     }
 
     // Keep 'ip' first to derefence it in the runner without an offset
-    ByteCodeInstruction* ip             = nullptr;
-    Register*            curRegistersRC = nullptr;
-    Register*            registersRR    = nullptr;
-    uint8_t*             stack          = nullptr;
-    uint8_t*             sp             = nullptr;
-    uint8_t*             spAlt          = nullptr;
-    uint8_t*             bp             = nullptr;
-    int                  curRC          = -1;
-    int                  firstRC        = -1;
-    int                  maxRecurse     = 0;
-    ByteCode*            bc             = nullptr;
+    ByteCodeInstruction* ip                        = nullptr;
+    Register*            curRegistersRC            = nullptr;
+    static const int     MAX_ALLOC_RR              = 2;
+    Register             registersRR[MAX_ALLOC_RR] = {0};
+    uint8_t*             stack                     = nullptr;
+    uint8_t*             sp                        = nullptr;
+    uint8_t*             spAlt                     = nullptr;
+    uint8_t*             bp                        = nullptr;
+    int                  curRC                     = -1;
+    int                  firstRC                   = -1;
+    int                  maxRecurse                = 0;
+    ByteCode*            bc                        = nullptr;
 
     JobContext jc;
 
@@ -114,8 +115,7 @@ struct ByteCodeRunContext
     SwagCompilerSourceLocation* errorLoc      = nullptr;
     JobContext*                 callerContext = nullptr;
 
-    AstNode*         node         = nullptr;
-    static const int MAX_ALLOC_RR = 2;
+    AstNode* node = nullptr;
 
     bool canCatchError       = false;
     bool hasError            = false;

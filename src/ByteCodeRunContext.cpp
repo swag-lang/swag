@@ -23,9 +23,6 @@ void ByteCodeRunContext::releaseStack()
 {
     if (stack)
     {
-        g_Allocator.free(registersRR, MAX_ALLOC_RR * sizeof(Register));
-        registersRR = nullptr;
-
         // To avoid wasting memory, we recycle bytecode stacks
         ScopedLock lk(g_FreeStackMutex);
         *(void**) stack  = g_FirstFreeStack;
@@ -36,13 +33,9 @@ void ByteCodeRunContext::releaseStack()
 
 void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd, ByteCode* nodebc)
 {
-    if (!registersRR)
-    {
-        registersRR = (Register*) g_Allocator.alloc(MAX_ALLOC_RR * sizeof(Register));
 #ifdef SWAG_DEV_MODE
-        memset(registersRR, 0xFE, MAX_ALLOC_RR * sizeof(Register));
+    memset(registersRR, 0xFE, MAX_ALLOC_RR * sizeof(Register));
 #endif
-    }
 
     if (!stack)
     {

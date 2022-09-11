@@ -14,9 +14,9 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
     {
         if (!node->resultRegisterRC.size())
             return true;
-        params->debuggerResult[0] = runContext->registers.buffer[node->resultRegisterRC[0]].pointer;
+        runContext->registersRR[0].pointer = runContext->registers.buffer[node->resultRegisterRC[0]].pointer;
         if (node->resultRegisterRC.size() > 1)
-            params->debuggerResult[1] = runContext->registers.buffer[node->resultRegisterRC[1]].pointer;
+            runContext->registersRR[1].pointer = runContext->registers.buffer[node->resultRegisterRC[1]].pointer;
         return true;
     }
 
