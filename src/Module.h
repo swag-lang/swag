@@ -81,8 +81,10 @@ struct ExecuteNodeParams
     SymbolOverload*        specReturnOpCount = nullptr;
     SymbolOverload*        specReturnOpSlice = nullptr;
     SymbolOverload*        specReturnOpDrop  = nullptr;
-    ByteCodeRunContext*    runContext        = nullptr;
-    ByteCodeRunContext*    inheritRunContext = nullptr;
+    uint8_t*               inheritSp         = nullptr;
+    uint8_t*               inheritSpAlt      = nullptr;
+    uint8_t*               inheritBp         = nullptr;
+    uint8_t*               inheritStack      = nullptr;
 
     void* debuggerResult[2];
     bool  forDebugger = false;

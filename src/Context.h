@@ -6,11 +6,12 @@ union Register;
 struct ByteCode;
 struct Module;
 
-extern uint64_t                        g_TlsThreadLocalId;
-extern uint64_t                        g_TlsContextId;
-extern SwagContext                     g_DefaultContext;
-extern SwagProcessInfos                g_ProcessInfos;
-extern thread_local ByteCodeRunContext g_RunContext;
+extern uint64_t                         g_TlsThreadLocalId;
+extern uint64_t                         g_TlsContextId;
+extern SwagContext                      g_DefaultContext;
+extern SwagProcessInfos                 g_ProcessInfos;
+extern thread_local ByteCodeRunContext  g_RunContextVal;
+extern thread_local ByteCodeRunContext* g_RunContext;
 
 void     initDefaultContext();
 uint64_t getDefaultContextFlags(Module* module);

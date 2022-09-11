@@ -118,7 +118,7 @@ bool Module::sendCompilerMessage(ConcreteCompilerMessage* msg, Job* dependentJob
     msg->moduleName.count  = name.length();
 
     // Find to do that, as this function can only be called once (not multi threaded)
-    g_RunContext.currentCompilerMessage = msg;
+    g_RunContext->currentCompilerMessage = msg;
 
     JobContext context;
     context.baseJob = dependentJob;
@@ -129,7 +129,7 @@ bool Module::sendCompilerMessage(ConcreteCompilerMessage* msg, Job* dependentJob
         SWAG_CHECK(executeNode(bc->node->sourceFile, bc->node, &context));
     }
 
-    g_RunContext.currentCompilerMessage = nullptr;
+    g_RunContext->currentCompilerMessage = nullptr;
 
     return true;
 }

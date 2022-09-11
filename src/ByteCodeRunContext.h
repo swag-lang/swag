@@ -162,6 +162,9 @@ struct ByteCodeRunContext
     ByteCode*               debugLastBc           = nullptr;
     ByteCodeInstruction*    debugCxtIp            = nullptr;
     uint8_t*                debugCxtBp            = nullptr;
+    uint8_t*                debugCxtSp            = nullptr;
+    uint8_t*                debugCxtSpAlt         = nullptr;
+    uint8_t*                debugCxtStack         = nullptr;
     uint32_t                debugLastCurRC        = 0;
     int32_t                 debugStepRC           = 0;
     DebugStepMode           debugStepMode         = DebugStepMode::None;

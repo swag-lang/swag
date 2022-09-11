@@ -33,7 +33,7 @@ static bool evalDynExpression(ByteCodeRunContext* context, const Utf8& expr, Eva
     AstNode   parent;
     syntaxJob.module  = sourceFile->module;
     parent.ownerScope = context->debugCxtIp->node ? context->debugCxtIp->node->ownerScope : nullptr;
-    parent.ownerFct   = CastAst<AstFuncDecl>(context->bc->node, AstNodeKind::FuncDecl);
+    parent.ownerFct   = CastAst<AstFuncDecl>(context->debugCxtBc->node, AstNodeKind::FuncDecl);
     parent.sourceFile = sourceFile;
     if (!syntaxJob.constructEmbedded(expr, &parent, nullptr, kind, false, true))
     {
@@ -82,7 +82,7 @@ static bool evalDynExpression(ByteCodeRunContext* context, const Utf8& expr, Eva
     if (result != JobResult::ReleaseJob || !sourceFile->silentError.empty())
     {
         sourceFile->silent--;
-        if (child->sourceFile->silentError.empty())
+        if (sourceFile->silentError.empty())
             g_Log.printColor("cannot generate expression\n", LogColor::Red);
         else
             g_Log.printColor(Fmt("%s\n", child->sourceFile->silentError.c_str()), LogColor::Red);
@@ -92,14 +92,26 @@ static bool evalDynExpression(ByteCodeRunContext* context, const Utf8& expr, Eva
     // Execute node
     JobContext         callerContext;
     ByteCodeRunContext runContext;
+    ByteCodeStack      stackTrace;
     ExecuteNodeParams  execParams;
-    execParams.runContext        = &runContext;
-    execParams.inheritRunContext = &g_RunContext;
-    execParams.forDebugger       = true;
-    runContext.acceptDebugger    = false;
-    if (!sourceFile->module->executeNode(sourceFile, child, &callerContext, &execParams))
+    execParams.inheritSp      = context->debugCxtSp;
+    execParams.inheritSpAlt   = context->debugCxtSpAlt;
+    execParams.inheritStack   = context->debugCxtStack;
+    execParams.inheritBp      = context->debugCxtBp;
+    execParams.forDebugger    = true;
+    runContext.acceptDebugger = false;
+
+    g_RunContext         = &runContext;
+    g_ByteCodeStackTrace = &stackTrace;
+
+    auto resExec = sourceFile->module->executeNode(sourceFile, child, &callerContext, &execParams);
+
+    sourceFile->silent--;
+    g_RunContext         = &g_RunContextVal;
+    g_ByteCodeStackTrace = &g_ByteCodeStackTraceVal;
+
+    if (!resExec)
     {
-        sourceFile->silent--;
         if (child->sourceFile->silentError.empty())
             g_Log.printColor("cannot run expression\n", LogColor::Red);
         else
@@ -107,7 +119,6 @@ static bool evalDynExpression(ByteCodeRunContext* context, const Utf8& expr, Eva
         return false;
     }
 
-    sourceFile->silent--;
     res.type       = TypeManager::concreteReferenceType(child->typeInfo);
     res.storage[0] = runContext.registersRR[0].pointer;
     res.storage[1] = runContext.registersRR[1].pointer;
@@ -562,19 +573,22 @@ static void printInstruction(ByteCodeRunContext* context, ByteCode* bc, ByteCode
 
 static void computeDebugContext(ByteCodeRunContext* context)
 {
-    context->debugCxtBc = context->bc;
-    context->debugCxtIp = context->ip;
-    context->debugCxtRc = context->curRC;
-    context->debugCxtBp = context->bp;
+    context->debugCxtBc    = context->bc;
+    context->debugCxtIp    = context->ip;
+    context->debugCxtRc    = context->curRC;
+    context->debugCxtBp    = context->bp;
+    context->debugCxtSp    = context->sp;
+    context->debugCxtSpAlt = context->spAlt;
+    context->debugCxtStack = context->stack;
     if (context->debugStackFrameOffset == 0)
         return;
 
     VectorNative<ByteCodeStackStep> steps;
-    g_ByteCodeStackTrace.getSteps(steps);
+    g_ByteCodeStackTrace->getSteps(steps);
     if (steps.empty())
         return;
 
-    uint32_t maxLevel              = g_ByteCodeStackTrace.maxLevel(context);
+    uint32_t maxLevel              = g_ByteCodeStackTrace->maxLevel(context);
     context->debugStackFrameOffset = min(context->debugStackFrameOffset, maxLevel);
     uint32_t ns                    = 0;
 
@@ -586,9 +600,12 @@ static void computeDebugContext(ByteCodeRunContext* context)
         auto& step = steps[i];
         if (ns == context->debugStackFrameOffset)
         {
-            context->debugCxtBc = step.bc;
-            context->debugCxtIp = step.ip;
-            context->debugCxtBp = step.bp;
+            context->debugCxtBc    = step.bc;
+            context->debugCxtIp    = step.ip;
+            context->debugCxtBp    = step.bp;
+            context->debugCxtSp    = step.sp;
+            context->debugCxtSpAlt = step.spAlt;
+            context->debugCxtStack = step.stack;
             break;
         }
 
@@ -1044,7 +1061,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
     auto ip = context->ip;
 
     g_Log.lock();
-    g_ByteCodeStackTrace.currentContext = context;
+    g_ByteCodeStackTrace->currentContext = context;
 
     if (context->debugEntry)
     {
@@ -1245,8 +1262,8 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             // Print stack
             if (cmd == "stack")
             {
-                g_ByteCodeStackTrace.currentContext = context;
-                g_ByteCodeStackTrace.log();
+                g_ByteCodeStackTrace->currentContext = context;
+                g_ByteCodeStackTrace->log();
                 continue;
             }
 
@@ -1254,7 +1271,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             if (cmd == "frame" && cmds.size() == 2)
             {
                 uint32_t off      = atoi(cmds[1].c_str());
-                uint32_t maxLevel = g_ByteCodeStackTrace.maxLevel(context);
+                uint32_t maxLevel = g_ByteCodeStackTrace->maxLevel(context);
                 off               = min(off, maxLevel);
 
                 auto oldIndex                  = context->debugStackFrameOffset;
@@ -1278,7 +1295,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 uint32_t off = 1;
                 if (cmds.size() == 2)
                     off = atoi(cmds[1].c_str());
-                uint32_t maxLevel = g_ByteCodeStackTrace.maxLevel(context);
+                uint32_t maxLevel = g_ByteCodeStackTrace->maxLevel(context);
                 if (context->debugStackFrameOffset == maxLevel)
                     g_Log.printColor("initial frame selected; you cannot go up\n", LogColor::Red);
                 else

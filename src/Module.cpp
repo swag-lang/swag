@@ -959,17 +959,17 @@ bool Module::compileString(const Utf8& text)
     if (text.empty())
         return true;
 
-    SWAG_ASSERT(g_RunContext.callerContext->baseJob);
-    SWAG_ASSERT(g_RunContext.ip);
-    SWAG_ASSERT(g_RunContext.ip->node);
-    SWAG_ASSERT(g_RunContext.ip->node->sourceFile);
+    SWAG_ASSERT(g_RunContext->callerContext->baseJob);
+    SWAG_ASSERT(g_RunContext->ip);
+    SWAG_ASSERT(g_RunContext->ip->node);
+    SWAG_ASSERT(g_RunContext->ip->node->sourceFile);
 
-    auto sourceFile = g_RunContext.ip->node->sourceFile;
+    auto sourceFile = g_RunContext->ip->node->sourceFile;
 
     // Is it still possible to generate some code ?
     if (!acceptsCompileString)
     {
-        g_RunContext.ip->node->sourceFile->report({g_RunContext.ip->node, Err(Err0859)});
+        g_RunContext->ip->node->sourceFile->report({g_RunContext->ip->node, Err(Err0859)});
         return false;
     }
 
@@ -977,14 +977,14 @@ bool Module::compileString(const Utf8& text)
     SyntaxJob syntaxJob;
     syntaxJob.module = this;
 
-    if (!syntaxJob.constructEmbedded(text, parent, g_RunContext.ip->node, CompilerAstKind::TopLevelInstruction, true))
+    if (!syntaxJob.constructEmbedded(text, parent, g_RunContext->ip->node, CompilerAstKind::TopLevelInstruction, true))
         return false;
 
     auto job        = g_Allocator.alloc<SemanticJob>();
     job->sourceFile = files[0];
     job->module     = this;
 
-    job->dependentJob = g_RunContext.callerContext->baseJob;
+    job->dependentJob = g_RunContext->callerContext->baseJob;
     while (job->dependentJob && job->dependentJob->dependentJob)
         job->dependentJob = job->dependentJob->dependentJob;
 

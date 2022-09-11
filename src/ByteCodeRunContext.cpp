@@ -68,7 +68,7 @@ void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd, ByteCode* nodebc)
     registersRC.reserve(1024);
     registers.count   = 0;
     registersRC.count = 0;
-    g_ByteCodeStackTrace.steps.reserve(4096);
+    g_ByteCodeStackTrace->steps.reserve(4096);
 
     maxRecurse = g_CommandLine->maxRecurse;
 

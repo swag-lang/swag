@@ -6,7 +6,8 @@
 #include "Ast.h"
 #include "ErrorIds.h"
 
-thread_local ByteCodeStack g_ByteCodeStackTrace;
+thread_local ByteCodeStack  g_ByteCodeStackTraceVal;
+thread_local ByteCodeStack* g_ByteCodeStackTrace = &g_ByteCodeStackTraceVal;
 
 uint32_t ByteCodeStack::maxLevel(ByteCodeRunContext* context)
 {
@@ -93,9 +94,12 @@ void ByteCodeStack::getSteps(VectorNative<ByteCodeStackStep>& copySteps)
         if (copySteps.empty() || copySteps.back().bc != currentContext->bc || copySteps.back().ip != currentContext->ip)
         {
             ByteCodeStackStep step;
-            step.bc = currentContext->bc;
-            step.ip = currentContext->ip;
-            step.bp = currentContext->bp;
+            step.bc    = currentContext->bc;
+            step.ip    = currentContext->ip;
+            step.bp    = currentContext->bp;
+            step.sp    = currentContext->sp;
+            step.spAlt = currentContext->spAlt;
+            step.stack = currentContext->stack;
             copySteps.push_back(step);
         }
     }

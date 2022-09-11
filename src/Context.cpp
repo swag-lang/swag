@@ -5,13 +5,14 @@
 #include "Backend.h"
 #include "ByteCodeStack.h"
 
-uint64_t                        g_TlsContextId     = 0;
-uint64_t                        g_TlsThreadLocalId = 0;
-SwagContext                     g_DefaultContext   = {{0}};
-SwagProcessInfos                g_ProcessInfos     = {{0}};
-thread_local ByteCodeRunContext g_RunContext;
-static Mutex                    g_MakeCallbackMutex;
-static uint32_t                 g_MakeCallbackCount = 0;
+uint64_t                         g_TlsContextId     = 0;
+uint64_t                         g_TlsThreadLocalId = 0;
+SwagContext                      g_DefaultContext   = {{0}};
+SwagProcessInfos                 g_ProcessInfos     = {{0}};
+thread_local ByteCodeRunContext  g_RunContextVal;
+thread_local ByteCodeRunContext* g_RunContext = &g_RunContextVal;
+static Mutex                     g_MakeCallbackMutex;
+static uint32_t                  g_MakeCallbackCount = 0;
 
 static void byteCodeRun(bool forCallback, void* byteCodePtr, va_list valist)
 {
@@ -28,8 +29,8 @@ static void byteCodeRun(bool forCallback, void* byteCodePtr, va_list valist)
         returnRegisters.push_back(r);
     }
 
-    auto saveNode       = g_RunContext.node;
-    auto saveSourceFile = g_RunContext.jc.sourceFile;
+    auto saveNode       = g_RunContext->node;
+    auto saveSourceFile = g_RunContext->jc.sourceFile;
 
     auto node = bc->node ? bc->node : saveNode;
     SWAG_ASSERT(node);
@@ -37,16 +38,16 @@ static void byteCodeRun(bool forCallback, void* byteCodePtr, va_list valist)
     auto module         = node->sourceFile->module;
     bool stackAllocated = false;
 
-    if (!g_RunContext.stack)
+    if (!g_RunContext->stack)
     {
         SWAG_ASSERT(node->extension && node->extension->bc);
-        g_RunContext.setup(node->sourceFile, node, node->extension->bc);
+        g_RunContext->setup(node->sourceFile, node, node->extension->bc);
         stackAllocated = true;
     }
     else
     {
-        g_RunContext.jc.sourceFile = node->sourceFile;
-        g_RunContext.node          = node;
+        g_RunContext->jc.sourceFile = node->sourceFile;
+        g_RunContext->node          = node;
     }
 
     // Parameters
@@ -60,44 +61,44 @@ static void byteCodeRun(bool forCallback, void* byteCodePtr, va_list valist)
         paramRegisters.push_back(&fakeRegisters.back());
     }
 
-    auto saveSp      = g_RunContext.sp;
-    auto saveFirstRC = g_RunContext.firstRC;
+    auto saveSp      = g_RunContext->sp;
+    auto saveFirstRC = g_RunContext->firstRC;
 
     while (!paramRegisters.empty())
     {
         auto r = paramRegisters.back();
         paramRegisters.pop_back();
-        g_RunContext.push(r->pointer);
+        g_RunContext->push(r->pointer);
     }
 
     // Simulate a LocalCall
-    g_RunContext.push(g_RunContext.bp);
-    g_RunContext.push(g_RunContext.bc);
-    g_RunContext.push(g_RunContext.ip);
-    g_RunContext.bc      = bc;
-    g_RunContext.ip      = bc->out;
-    g_RunContext.bp      = g_RunContext.sp;
-    g_RunContext.firstRC = g_RunContext.curRC;
-    g_RunContext.bc->enterByteCode(&g_RunContext);
+    g_RunContext->push(g_RunContext->bp);
+    g_RunContext->push(g_RunContext->bc);
+    g_RunContext->push(g_RunContext->ip);
+    g_RunContext->bc      = bc;
+    g_RunContext->ip      = bc->out;
+    g_RunContext->bp      = g_RunContext->sp;
+    g_RunContext->firstRC = g_RunContext->curRC;
+    g_RunContext->bc->enterByteCode(g_RunContext);
 
-    g_ByteCodeStackTrace.push({nullptr, nullptr});
-    module->runner.run(&g_RunContext);
-    g_ByteCodeStackTrace.pop();
+    g_ByteCodeStackTrace->push({nullptr, nullptr});
+    module->runner.run(g_RunContext);
+    g_ByteCodeStackTrace->pop();
 
-    g_RunContext.sp            = saveSp;
-    g_RunContext.node          = saveNode;
-    g_RunContext.jc.sourceFile = saveSourceFile;
-    g_RunContext.firstRC       = saveFirstRC;
+    g_RunContext->sp            = saveSp;
+    g_RunContext->node          = saveNode;
+    g_RunContext->jc.sourceFile = saveSourceFile;
+    g_RunContext->firstRC       = saveFirstRC;
 
     // Get result
     for (int i = 0; i < returnRegisters.size(); i++)
     {
         auto r = returnRegisters[i];
-        *r     = g_RunContext.registersRR[i];
+        *r     = g_RunContext->registersRR[i];
     }
 
     if (stackAllocated)
-        g_RunContext.releaseStack();
+        g_RunContext->releaseStack();
 }
 
 static void byteCodeRun(void* byteCodePtr, ...)

@@ -7,7 +7,7 @@
 
 void* getMessage(Module* module)
 {
-    return (void*) g_RunContext.currentCompilerMessage;
+    return (void*) g_RunContext->currentCompilerMessage;
 }
 
 void* getBuildCfg(Module* module)

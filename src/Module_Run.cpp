@@ -206,7 +206,6 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
     ByteCode            bcTmp;
     ByteCodeInstruction instTmp;
     bool                foreignCall = false;
-    ByteCodeRunContext* runContext  = params && params->runContext ? params->runContext : &g_RunContext;
 
     // Direct call to a foreign function ?
     if (!node->extension || !node->extension->bc)
@@ -234,18 +233,22 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
     cxt->flags |= (uint64_t) ContextFlags::ByteCode;
 
     // Global setup
-    g_ByteCodeStackTrace.clear();
-    g_ByteCodeStackTrace.currentContext = runContext;
-    runContext->callerContext           = callerContext;
-    runContext->setup(sourceFile, node, bc);
+    g_ByteCodeStackTrace->clear();
+    g_ByteCodeStackTrace->currentContext = g_RunContext;
+    g_RunContext->callerContext          = callerContext;
+    g_RunContext->setup(sourceFile, node, bc);
 
     // Setup run context
-    if (params && params->inheritRunContext)
+    if (params)
     {
-        runContext->stack = params->inheritRunContext->stack;
-        runContext->sp    = params->inheritRunContext->sp;
-        runContext->spAlt = params->inheritRunContext->spAlt;
-        runContext->bp    = params->inheritRunContext->bp;
+        if (params->inheritSp)
+            g_RunContext->sp = params->inheritSp;
+        if (params->inheritSpAlt)
+            g_RunContext->spAlt = params->inheritSpAlt;
+        if (params->inheritBp)
+            g_RunContext->bp = params->inheritBp;
+        if (params->inheritStack)
+            g_RunContext->stack = params->inheritStack;
     }
 
     // Params ?
@@ -253,31 +256,31 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
     if (params && !params->callParams.empty())
     {
         for (auto r : params->callParams)
-            runContext->push(r);
+            g_RunContext->push(r);
 
         if (!foreignCall)
-            module->runner.localCall(runContext, bc, (uint32_t) params->callParams.size());
+            module->runner.localCall(g_RunContext, bc, (uint32_t) params->callParams.size());
     }
     else if (!foreignCall)
     {
-        bc->enterByteCode(runContext);
+        bc->enterByteCode(g_RunContext);
     }
 
     // We need to take care of the room necessary in the stack, as bytecode instruction IncSPBP is not
     // generated for expression (just for functions)
     if (node->ownerScope)
     {
-        if (!params || !params->inheritRunContext)
+        if (!params || !params->inheritSp)
         {
             auto decSP = SemanticJob::getMaxStackSize(node);
-            runContext->decSP(decSP);
+            g_RunContext->decSP(decSP);
 
             // :opAffectConstExpr
             // Reserve room on the stack to store the result
             if (node->semFlags & AST_SEM_EXEC_RET_STACK)
-                runContext->decSP(node->typeInfo->sizeOf);
+                g_RunContext->decSP(node->typeInfo->sizeOf);
 
-            runContext->bp = runContext->sp;
+            g_RunContext->bp = g_RunContext->sp;
         }
     }
 
@@ -285,15 +288,15 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
 
     if (foreignCall)
     {
-        module->runner.ffiCall(runContext, &bc->out[0]);
+        module->runner.ffiCall(g_RunContext, &bc->out[0]);
     }
     else
     {
-        result = module->runner.run(runContext);
-        bc->leaveByteCode(runContext);
+        result = module->runner.run(g_RunContext);
+        bc->leaveByteCode(g_RunContext);
     }
 
-    g_ByteCodeStackTrace.clear();
+    g_ByteCodeStackTrace->clear();
 
     if (!result)
         return false;
@@ -303,6 +306,6 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
         g_Allocator.free(ptr.first, ptr.second);
 
     // Get result
-    SWAG_CHECK(computeExecuteResult(runContext, sourceFile, node, callerContext, params));
+    SWAG_CHECK(computeExecuteResult(g_RunContext, sourceFile, node, callerContext, params));
     return true;
 }
