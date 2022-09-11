@@ -572,11 +572,11 @@ namespace OS
         info.dwThreadID = dwThreadID;
         info.dwFlags    = 0;
 
-        __try
+        SWAG_TRY
         {
             RaiseException(MS_VC_EXCEPTION, 0, sizeof(info) / sizeof(ULONG_PTR), (ULONG_PTR*) &info);
         }
-        __except (EXCEPTION_EXECUTE_HANDLER)
+        SWAG_EXCEPT(SWAG_EXCEPTION_EXECUTE_HANDLER)
         {
         }
     }
@@ -953,7 +953,7 @@ namespace OS
         // Special case when rising an exception (__raiseException666 in windows runtime)
         // Do it by hand, because i don't know how to deal with the JIT below and exceptions.
         // It's weird, but it seems to work in release/devmode, but not in debug.
-        // 
+        //
         // As there's no real function, i don't know how to specify the "unwind" informations necessary to catch and pass exceptions to the caller.
         // Do that hack for now... Instead of calling the windows function in the ffi, i call it there...
         if (typeInfoFunc->declNode && typeInfoFunc->declNode->sourceFile->isRuntimeFile && typeInfoFunc->declNode->token.text == "RaiseException")

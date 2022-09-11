@@ -7,6 +7,7 @@
 #include "Ast.h"
 #include "AstOutput.h"
 #include "Concat.h"
+#include "Os.h"
 
 #pragma optimize("", off)
 
@@ -63,11 +64,11 @@ static bool getRegIdx(ByteCodeRunContext* context, const Utf8& arg, int& regN)
 template<typename T>
 static T getAddrValue(const void* addr)
 {
-    __try
+    SWAG_TRY
     {
         return *(T*) addr;
     }
-    __except (EXCEPTION_EXECUTE_HANDLER)
+    SWAG_EXCEPT(SWAG_EXCEPTION_EXECUTE_HANDLER)
     {
         return 0;
     }
@@ -187,42 +188,62 @@ static bool getValueFormat(const Utf8& cmd, ValueFormat& fmt)
     return false;
 }
 
-static Utf8 printValue(ByteCodeRunContext* context, const ValueFormat& fmt, const void* addr)
+static void printValueProtected(ByteCodeRunContext* context, Utf8& result, const ValueFormat& fmt, const void* addr)
 {
     switch (fmt.bitCount)
     {
     case 8:
     default:
         if (fmt.isSigned)
-            return Fmt("%4d ", getAddrValue<int8_t>(addr));
-        if (!fmt.isHexa)
-            return Fmt("%3u ", getAddrValue<uint8_t>(addr));
-        return Fmt("%02llx ", getAddrValue<uint8_t>(addr));
+            result = Fmt("%4d ", getAddrValue<int8_t>(addr));
+        else if (!fmt.isHexa)
+            result = Fmt("%3u ", getAddrValue<uint8_t>(addr));
+        else
+            result = Fmt("%02llx ", getAddrValue<uint8_t>(addr));
+        break;
 
     case 16:
         if (fmt.isSigned)
-            return Fmt("%6d ", getAddrValue<int16_t>(addr));
-        if (!fmt.isHexa)
-            return Fmt("%5u ", getAddrValue<uint16_t>(addr));
-        return Fmt("%04llx ", getAddrValue<uint16_t>(addr));
+            result = Fmt("%6d ", getAddrValue<int16_t>(addr));
+        else if (!fmt.isHexa)
+            result = Fmt("%5u ", getAddrValue<uint16_t>(addr));
+        else
+            result = Fmt("%04llx ", getAddrValue<uint16_t>(addr));
+        break;
 
     case 32:
         if (fmt.isFloat)
-            return Fmt("%16.5g ", getAddrValue<float>(addr));
-        if (fmt.isSigned)
-            return Fmt("%11d ", getAddrValue<int32_t>(addr));
-        if (!fmt.isHexa)
-            return Fmt("%10u ", getAddrValue<uint32_t>(addr));
-        return Fmt("%08llx ", getAddrValue<uint32_t>(addr));
+            result = Fmt("%16.5g ", getAddrValue<float>(addr));
+        else if (fmt.isSigned)
+            result = Fmt("%11d ", getAddrValue<int32_t>(addr));
+        else if (!fmt.isHexa)
+            result = Fmt("%10u ", getAddrValue<uint32_t>(addr));
+        else
+            result = Fmt("%08llx ", getAddrValue<uint32_t>(addr));
+        break;
 
     case 64:
         if (fmt.isFloat)
-            return Fmt("%16.5g ", getAddrValue<double>(addr));
-        if (fmt.isSigned)
-            return Fmt("%21lld ", getAddrValue<int64_t>(addr));
-        if (!fmt.isHexa)
-            return Fmt("%20llu ", getAddrValue<uint64_t>(addr));
-        return Fmt("%016llx ", getAddrValue<uint64_t>(addr));
+            result = Fmt("%16.5g ", getAddrValue<double>(addr));
+        else if (fmt.isSigned)
+            result = Fmt("%21lld ", getAddrValue<int64_t>(addr));
+        else if (!fmt.isHexa)
+            result = Fmt("%20llu ", getAddrValue<uint64_t>(addr));
+        else
+            result = Fmt("%016llx ", getAddrValue<uint64_t>(addr));
+        break;
+    }
+}
+
+static void printValue(ByteCodeRunContext* context, Utf8& result, const ValueFormat& fmt, const void* addr)
+{
+    SWAG_TRY
+    {
+        printValueProtected(context, result, fmt, addr);
+    }
+    SWAG_EXCEPT(SWAG_EXCEPTION_EXECUTE_HANDLER)
+    {
+        result = "<error>";
     }
 }
 
@@ -271,7 +292,7 @@ static void printMemory(ByteCodeRunContext* context, const Utf8& arg)
         if (expr[0] == 'r')
         {
             int regN;
-            if (!getRegIdx(context, arg, regN))
+            if (!getRegIdx(context, expr, regN))
                 return;
             auto& regP = context->getRegBuffer(context->debugCxtRc)[regN];
             addrVal    = regP.u64;
@@ -336,7 +357,8 @@ static void printMemory(ByteCodeRunContext* context, const Utf8& arg)
 
         for (int i = 0; i < min(count, perLine); i++)
         {
-            auto str = printValue(context, fmt, addrB);
+            Utf8 str;
+            printValue(context, str, fmt, addrB);
             g_Log.print(str);
             addrB += fmt.bitCount / 8;
         }
@@ -473,7 +495,7 @@ static void computeCxt(ByteCodeRunContext* context)
     }
 }
 
-static void appendValue(Utf8& str, TypeInfo* typeInfo, void* addr, int indent = 0)
+static void appendValueProtected(Utf8& str, TypeInfo* typeInfo, void* addr, int indent = 0)
 {
     if (typeInfo->isPointerToTypeInfo())
     {
@@ -497,7 +519,7 @@ static void appendValue(Utf8& str, TypeInfo* typeInfo, void* addr, int indent = 
             str += ": ";
             str += p->typeInfo->getDisplayName().c_str();
             str += " = ";
-            appendValue(str, p->typeInfo, ((uint8_t*) addr) + p->offset, indent + 1);
+            appendValueProtected(str, p->typeInfo, ((uint8_t*) addr) + p->offset, indent + 1);
             if (str.back() != '\n')
                 str += "\n";
         }
@@ -514,7 +536,7 @@ static void appendValue(Utf8& str, TypeInfo* typeInfo, void* addr, int indent = 
             for (int i = 0; i < indent; i++)
                 str += "   ";
             str += Fmt(" [%d] ", idx);
-            appendValue(str, typeArray->pointedType, ((uint8_t*) addr) + (idx * typeArray->pointedType->sizeOf), indent + 1);
+            appendValueProtected(str, typeArray->pointedType, ((uint8_t*) addr) + (idx * typeArray->pointedType->sizeOf), indent + 1);
             if (str.back() != '\n')
                 str += "\n";
         }
@@ -534,7 +556,7 @@ static void appendValue(Utf8& str, TypeInfo* typeInfo, void* addr, int indent = 
             for (int i = 0; i < indent; i++)
                 str += "   ";
             str += Fmt(" [%d] ", idx);
-            appendValue(str, typeSlice->pointedType, ptr + (idx * typeSlice->pointedType->sizeOf), indent + 1);
+            appendValueProtected(str, typeSlice->pointedType, ptr + (idx * typeSlice->pointedType->sizeOf), indent + 1);
             if (str.back() != '\n')
                 str += "\n";
         }
@@ -621,6 +643,18 @@ static void appendValue(Utf8& str, TypeInfo* typeInfo, void* addr, int indent = 
     }
 
     str += "?";
+}
+
+static void appendValue(Utf8& str, TypeInfo* typeInfo, void* addr, int indent = 0)
+{
+    SWAG_TRY
+    {
+        appendValueProtected(str, typeInfo, addr, indent);
+    }
+    SWAG_EXCEPT(SWAG_EXCEPTION_EXECUTE_HANDLER)
+    {
+        str += "<error>";
+    }
 }
 
 static void printHelp()
@@ -1118,7 +1152,8 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 for (int i = 0; i < context->getRegCount(context->debugCxtRc); i++)
                 {
                     auto& regP = context->getRegBuffer(context->debugCxtRc)[i];
-                    auto  str  = printValue(context, fmt, &regP);
+                    Utf8  str;
+                    printValue(context, str, fmt, &regP);
                     str.trim();
                     g_Log.print(Fmt("r%d = ", i));
                     g_Log.print(str);
@@ -1151,7 +1186,8 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 }
 
                 g_Log.setColor(LogColor::White);
-                auto str = printValue(context, fmt, &regP);
+                Utf8 str;
+                printValue(context, str, fmt, &regP);
                 str.trim();
                 g_Log.print(str);
                 g_Log.eol();

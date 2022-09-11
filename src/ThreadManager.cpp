@@ -231,7 +231,7 @@ void ThreadManager::jobHasEnded(Job* job, JobResult result)
 }
 
 #ifndef SWAG_DEV_MODE
-static void exceptionMessage(Job* job, LPEXCEPTION_POINTERS args)
+static void exceptionMessage(Job* job, SWAG_LPEXCEPTION_POINTERS args)
 {
     g_Log.lock();
     g_Log.setColor(LogColor::Red);
@@ -257,7 +257,7 @@ static void exceptionMessage(Job* job, LPEXCEPTION_POINTERS args)
 }
 #endif
 
-static int exceptionHandler(Job* job, LPEXCEPTION_POINTERS args)
+static int exceptionHandler(Job* job, SWAG_LPEXCEPTION_POINTERS args)
 {
 #ifdef SWAG_DEV_MODE
     g_ByteCodeStackTrace.reportError("exception during job execution !");
@@ -265,20 +265,20 @@ static int exceptionHandler(Job* job, LPEXCEPTION_POINTERS args)
     return EXCEPTION_CONTINUE_EXECUTION;
 #else
     exceptionMessage(job, args);
-    return EXCEPTION_EXECUTE_HANDLER;
+    return SWAG_EXCEPTION_EXECUTE_HANDLER;
 #endif
 }
 
 void ThreadManager::executeOneJob(Job* job)
 {
-    __try
+    SWAG_TRY
     {
         auto result = job->execute();
         jobHasEnded(job, result);
         if (result == JobResult::ReleaseJob)
             job->release();
     }
-    __except (exceptionHandler(job, GetExceptionInformation()))
+    SWAG_EXCEPT(exceptionHandler(job, SWAG_GET_EXCEPTION_INFOS()))
     {
         OS::exit(-1);
     }

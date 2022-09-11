@@ -3353,7 +3353,7 @@ bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
 static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS args)
 {
     if (runContext->raiseDebugStart)
-        return EXCEPTION_EXECUTE_HANDLER;
+        return SWAG_EXCEPTION_EXECUTE_HANDLER;
 
     // Error ?
     if (runContext->hasError)
@@ -3393,7 +3393,7 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
             }
         }
 
-        return EXCEPTION_EXECUTE_HANDLER;
+        return SWAG_EXCEPTION_EXECUTE_HANDLER;
     }
 
     // Special exception raised by @error, to simply log an error message
@@ -3439,7 +3439,7 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
                     firstSrcFile->report(diag, notes);
                     g_ByteCodeStackTrace.currentContext = nullptr;
                     runContext->ip++;
-                    return EXCEPTION_EXECUTE_HANDLER;
+                    return SWAG_EXCEPTION_EXECUTE_HANDLER;
                 }
             }
         }
@@ -3457,7 +3457,7 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
         sourceFile->report(diag, notes);
         g_ByteCodeStackTrace.currentContext = nullptr;
         runContext->ip++;
-        return EXCEPTION_EXECUTE_HANDLER;
+        return SWAG_EXCEPTION_EXECUTE_HANDLER;
     }
 
 // Hardware exception
@@ -3476,9 +3476,9 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
     g_ByteCodeStackTrace.currentContext = nullptr;
     runContext->ip++;
 #ifdef SWAG_DEV_MODE
-    return EXCEPTION_CONTINUE_EXECUTION;
+    return SWAG_EXCEPTION_CONTINUE_EXECUTION;
 #else
-    return EXCEPTION_EXECUTE_HANDLER;
+    return SWAG_EXCEPTION_EXECUTE_HANDLER;
 #endif
 }
 
@@ -3488,11 +3488,11 @@ bool ByteCodeRun::run(ByteCodeRunContext* runContext)
 
     while (true)
     {
-        __try
+        SWAG_TRY
         {
             return module->runner.runLoop(runContext);
         }
-        __except (exceptionHandler(runContext, GetExceptionInformation()))
+        SWAG_EXCEPT(exceptionHandler(runContext, SWAG_GET_EXCEPTION_INFOS()))
         {
             if (runContext->raiseDebugStart)
             {
