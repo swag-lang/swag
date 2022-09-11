@@ -23,34 +23,8 @@ struct EvaluateResult
     void*          storage[2];
 };
 
-static bool evalExpression(ByteCodeRunContext* context, const Utf8& expr, EvaluateResult& res)
+static bool evalDynExpression(ByteCodeRunContext* context, const Utf8& expr, EvaluateResult& res, CompilerAstKind kind)
 {
-    auto funcDecl = CastAst<AstFuncDecl>(context->debugCxtBc->node, AstNodeKind::FuncDecl);
-    for (auto l : context->debugCxtBc->localVars)
-    {
-        auto over = l->resolvedSymbolOverload;
-        if (over && over->symbol->name == expr)
-        {
-            res.type = over->typeInfo;
-            res.addr = context->debugCxtBp + over->computedValue.storageOffset;
-            return true;
-        }
-    }
-
-    if (funcDecl->parameters)
-    {
-        for (auto l : funcDecl->parameters->childs)
-        {
-            auto over = l->resolvedSymbolOverload;
-            if (over && over->symbol->name == expr)
-            {
-                res.type = over->typeInfo;
-                res.addr = context->debugCxtBp + over->computedValue.storageOffset;
-                return true;
-            }
-        }
-    }
-
     auto sourceFile = context->debugCxtBc->sourceFile;
     sourceFile->silentError.clear();
 
@@ -61,7 +35,7 @@ static bool evalExpression(ByteCodeRunContext* context, const Utf8& expr, Evalua
     parent.ownerScope = context->debugCxtIp->node ? context->debugCxtIp->node->ownerScope : nullptr;
     parent.ownerFct   = CastAst<AstFuncDecl>(context->bc->node, AstNodeKind::FuncDecl);
     parent.sourceFile = sourceFile;
-    if (!syntaxJob.constructEmbedded(expr, &parent, nullptr, CompilerAstKind::Expression, false, true))
+    if (!syntaxJob.constructEmbedded(expr, &parent, nullptr, kind, false, true))
     {
         if (sourceFile->silentError.empty())
             g_Log.printColor("expression syntax error\n", LogColor::Red);
@@ -140,8 +114,38 @@ static bool evalExpression(ByteCodeRunContext* context, const Utf8& expr, Evalua
         res.addr = res.storage[0];
     else
         res.addr = &res.storage[0];
-
     return true;
+}
+
+static bool evalExpression(ByteCodeRunContext* context, const Utf8& expr, EvaluateResult& res)
+{
+    auto funcDecl = CastAst<AstFuncDecl>(context->debugCxtBc->node, AstNodeKind::FuncDecl);
+    for (auto l : context->debugCxtBc->localVars)
+    {
+        auto over = l->resolvedSymbolOverload;
+        if (over && over->symbol->name == expr)
+        {
+            res.type = over->typeInfo;
+            res.addr = context->debugCxtBp + over->computedValue.storageOffset;
+            return true;
+        }
+    }
+
+    if (funcDecl->parameters)
+    {
+        for (auto l : funcDecl->parameters->childs)
+        {
+            auto over = l->resolvedSymbolOverload;
+            if (over && over->symbol->name == expr)
+            {
+                res.type = over->typeInfo;
+                res.addr = context->debugCxtBp + over->computedValue.storageOffset;
+                return true;
+            }
+        }
+    }
+
+    return evalDynExpression(context, expr, res, CompilerAstKind::Expression);
 }
 
 static bool getRegIdx(ByteCodeRunContext* context, const Utf8& arg, int& regN)
@@ -820,8 +824,10 @@ static void printHelp()
 {
     g_Log.setColor(LogColor::Gray);
     g_Log.eol();
+
     g_Log.print("<return>                   runs to the next line or instruction (depends on 'bcmode')\n");
     g_Log.eol();
+
     g_Log.print("s(tep)                     runs to the next line\n");
     g_Log.print("n(ext)                     like s, but does not step into functions\n");
     g_Log.print("f(inish)                   runs until the current function is done\n");
@@ -832,15 +838,15 @@ static void printHelp()
 
     g_Log.print("l(ist) [num]               print the current source code line and <num> lines around\n");
     g_Log.print("ll                         print the current function source code\n");
-
     g_Log.eol();
-    g_Log.print("cxt                        print contextual informations\n");
-    g_Log.print("bcmode                     swap between bytecode mode and source mode\n");
+
+    g_Log.print("e(xec(ute)) <stmt>         execute <stmt>\n");
     g_Log.eol();
 
     g_Log.print("p(rint) <expr>             print the value of <expr>\n");
     g_Log.print("loc(als)                   print all current local variables\n");
     g_Log.print("a(rgs)                     print all current function arguments\n");
+    g_Log.print("cxt                        print contextual informations\n");
     g_Log.eol();
 
     g_Log.print("b(reak)                    print all breakpoints\n");
@@ -856,6 +862,9 @@ static void printHelp()
     g_Log.print("up [num]                   move stack frame <num> level up\n");
     g_Log.print("down [num]                 move stack frame <num> level down\n");
     g_Log.print("frame <num>                move stack frame to level <num>\n");
+    g_Log.eol();
+
+    g_Log.print("bcmode                     swap between bytecode mode and source mode\n");
     g_Log.eol();
 
     g_Log.print("i [num]                    print the current bytecode instruction and <num> instructions around\n");
@@ -1155,6 +1164,14 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                         g_Log.eol();
                 }
 
+                continue;
+            }
+
+            // Execute expression
+            if ((cmd == "e" || cmd == "exec" || cmd == "execute") && cmds.size() >= 2)
+            {
+                EvaluateResult res;
+                evalDynExpression(context, cmdExpr, res, CompilerAstKind::EmbeddedInstruction);
                 continue;
             }
 
