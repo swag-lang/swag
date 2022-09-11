@@ -528,7 +528,6 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
     case MousePressed:
         mouseEvt := cast(*MouseEvent) evt
-        @bcdbg()
         if mouseEvt.button == .Left
         {
             pos := wnd.surfaceToLocal(mouseEvt.surfacePos)
