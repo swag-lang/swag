@@ -5,6 +5,7 @@
 #include "ByteCodeGenJob.h"
 #include "TypeManager.h"
 #include "Module.h"
+#include "Os.h"
 
 atomic<int> g_UniqueID;
 
@@ -61,7 +62,7 @@ namespace Ast
         }
     }
 
-    Utf8 enumToString(TypeInfo* typeInfo, const Utf8& text, const Register& reg)
+    Utf8 enumToString(TypeInfo* typeInfo, const Utf8& text, const Register& reg, bool scoped)
     {
         SWAG_ASSERT(typeInfo->kind == TypeInfoKind::Enum);
 
@@ -81,20 +82,36 @@ namespace Ast
                 switch (typeEnum->rawType->nativeType)
                 {
                 case NativeTypeKind::U8:
-                    if (value->value->reg.u8 & reg.u8)
+                    if (value->value->reg.u8 == 0 && reg.u8 == 0)
+                        ok = true;
+                    else if (value->value->reg.u8 == 0)
+                        break;
+                    else if ((value->value->reg.u8 & reg.u8) == value->value->reg.u8)
                         ok = true;
                     break;
                 case NativeTypeKind::U16:
-                    if (value->value->reg.u16 & reg.u16)
+                    if (value->value->reg.u16 == 0 && reg.u16 == 0)
+                        ok = true;
+                    else if (value->value->reg.u16 == 0)
+                        break;
+                    else if ((value->value->reg.u16 & reg.u16) == value->value->reg.u16)
                         ok = true;
                     break;
                 case NativeTypeKind::U32:
-                    if (value->value->reg.u32 & reg.u32)
+                    if (value->value->reg.u32 == 0 && reg.u32 == 0)
+                        ok = true;
+                    else if (value->value->reg.u32 == 0)
+                        break;
+                    else if ((value->value->reg.u32 & reg.u32) == value->value->reg.u32)
                         ok = true;
                     break;
                 case NativeTypeKind::U64:
                 case NativeTypeKind::UInt:
-                    if (value->value->reg.u64 & reg.u64)
+                    if (value->value->reg.u64 == 0 && reg.u64 == 0)
+                        ok = true;
+                    else if (value->value->reg.u64 == 0)
+                        break;
+                    else if ((value->value->reg.u64 & reg.u64) == value->value->reg.u64)
                         ok = true;
                     break;
                 }
@@ -104,7 +121,8 @@ namespace Ast
                     found = true;
                     if (!result.empty())
                         result += "|";
-                    result += typeInfo->name;
+                    if (scoped)
+                        result += typeInfo->name;
                     result += ".";
                     result += value->namedParam;
                 }
@@ -112,7 +130,8 @@ namespace Ast
         }
         else
         {
-            result = typeInfo->name;
+            if (scoped)
+                result = typeInfo->name;
             result += ".";
             for (int i = 0; i < typeEnum->values.size(); i++)
             {

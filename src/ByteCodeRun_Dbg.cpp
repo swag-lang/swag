@@ -609,7 +609,7 @@ static void appendValueProtected(Utf8& str, const EvaluateResult& res, int inden
         Register reg;
         auto     ptr = ((uint8_t**) addr)[0];
         reg.pointer  = ptr;
-        str += Ast::enumToString(typeInfo, res.value ? res.value->text : Utf8{}, reg);
+        str += Ast::enumToString(typeInfo, res.value ? res.value->text : Utf8{}, reg, false);
         return;
     }
 
@@ -625,6 +625,16 @@ static void appendValueProtected(Utf8& str, const EvaluateResult& res, int inden
             str += str1;
         }
 
+        return;
+    }
+
+    if (typeInfo->kind == TypeInfoKind::Pointer || typeInfo->kind == TypeInfoKind::Lambda)
+    {
+        auto ptr = ((uint8_t**) addr)[0];
+        if (ptr == nullptr)
+            str += "null";
+        else
+            str += Fmt("0x%016llx", ptr);
         return;
     }
 
@@ -698,16 +708,6 @@ static void appendValueProtected(Utf8& str, const EvaluateResult& res, int inden
             }
         }
 
-        return;
-    }
-
-    if (typeInfo->kind == TypeInfoKind::Pointer)
-    {
-        auto ptr = ((uint8_t**) addr)[0];
-        if (ptr == nullptr)
-            str += "null";
-        else
-            str += Fmt("0x%016llx", ptr);
         return;
     }
 
@@ -838,7 +838,7 @@ static void printHelp()
     g_Log.print("bcmode                     swap between bytecode mode and source mode\n");
     g_Log.eol();
 
-    g_Log.print("p <name>                   print the value of <name>\n");
+    g_Log.print("p(rint) <expr>             print the value of <expr>\n");
     g_Log.print("loc(als)                   print all current local variables\n");
     g_Log.print("a(rgs)                     print all current function arguments\n");
     g_Log.eol();
@@ -1144,8 +1144,8 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 continue;
             }
 
-            // Info name
-            if (cmd == "p" && cmds.size() >= 2)
+            // Print expression
+            if ((cmd == "p" || cmd == "print") && cmds.size() >= 2)
             {
                 EvaluateResult res;
                 if (evalExpression(context, cmdExpr, res))
