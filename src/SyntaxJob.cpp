@@ -221,7 +221,7 @@ bool SyntaxJob::saveEmbedded(const Utf8& content, AstNode* parent, AstNode* from
     return true;
 }
 
-bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode* fromNode, CompilerAstKind kind, bool logGenerated)
+bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode* fromNode, CompilerAstKind kind, bool logGenerated, bool silentError)
 {
     Utf8     tmpFileName     = "<generated>";
     Utf8     tmpFilePath     = "<generated>";
@@ -245,9 +245,15 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
     tmpFile->name   = tmpFileName;
     tmpFile->path   = tmpFilePath;
     tmpFile->path += tmpFileName;
-    tmpFile->sourceNode = fromNode;
-    tmpFile->numTestErrors.store(fromNode->sourceFile->numTestErrors);
-    tmpFile->numTestWarnings.store(fromNode->sourceFile->numTestWarnings);
+    if (silentError)
+        tmpFile->silent++;
+    if (fromNode)
+    {
+        tmpFile->sourceNode = fromNode;
+        tmpFile->numTestErrors.store(fromNode->sourceFile->numTestErrors);
+        tmpFile->numTestWarnings.store(fromNode->sourceFile->numTestWarnings);
+    }
+
     sourceFile         = tmpFile;
     currentScope       = parent->ownerScope;
     currentStructScope = parent->ownerStructScope;
@@ -278,8 +284,14 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
     sflags |= AST_GENERATED;
     if (logGenerated)
         sflags |= AST_GENERATED_USER;
+
     ScopedFlags scopedFlags(this, sflags);
-    SWAG_CHECK(eatToken());
+    if (!eatToken())
+    {
+        parent->sourceFile->silentError = sourceFile->silentError;
+        return false;
+    }
+
     while (true)
     {
         if (token.id == TokenId::EndOfFile)
@@ -298,6 +310,13 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
             break;
         case CompilerAstKind::EnumValue:
             SWAG_CHECK(doEnumValue(parent));
+            break;
+        case CompilerAstKind::Expression:
+            if (!doExpression(parent, EXPR_FLAG_NONE))
+            {
+                parent->sourceFile->silentError = sourceFile->silentError;
+                return false;
+            }
             break;
         default:
             SWAG_ASSERT(false);

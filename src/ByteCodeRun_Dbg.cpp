@@ -8,10 +8,20 @@
 #include "AstOutput.h"
 #include "Concat.h"
 #include "Os.h"
+#include "SemanticJob.h"
+#include "ByteCodeGenJob.h"
+#include "Context.h"
 
 #pragma optimize("", off)
 
-static bool evalExpression(ByteCodeRunContext* context, const Utf8& expr, TypeInfo** resType, void** resAddr)
+struct EvaluateResult
+{
+    TypeInfo*      type  = nullptr;
+    void*          addr  = nullptr;
+    ComputedValue* value = nullptr;
+};
+
+static bool evalExpression(ByteCodeRunContext* context, const Utf8& expr, EvaluateResult& res)
 {
     auto funcDecl = CastAst<AstFuncDecl>(context->debugCxtBc->node, AstNodeKind::FuncDecl);
     for (auto l : context->debugCxtBc->localVars)
@@ -19,8 +29,8 @@ static bool evalExpression(ByteCodeRunContext* context, const Utf8& expr, TypeIn
         auto over = l->resolvedSymbolOverload;
         if (over && over->symbol->name == expr)
         {
-            *resType = over->typeInfo;
-            *resAddr = context->debugCxtBp + over->computedValue.storageOffset;
+            res.type = over->typeInfo;
+            res.addr = context->debugCxtBp + over->computedValue.storageOffset;
             return true;
         }
     }
@@ -32,14 +42,105 @@ static bool evalExpression(ByteCodeRunContext* context, const Utf8& expr, TypeIn
             auto over = l->resolvedSymbolOverload;
             if (over && over->symbol->name == expr)
             {
-                *resType = over->typeInfo;
-                *resAddr = context->debugCxtBp + over->computedValue.storageOffset;
+                res.type = over->typeInfo;
+                res.addr = context->debugCxtBp + over->computedValue.storageOffset;
                 return true;
             }
         }
     }
 
-    g_Log.printColor(Fmt("cannot solve expression '%s'\n", expr.c_str()), LogColor::Red);
+    auto sourceFile = context->debugCxtBc->sourceFile;
+    sourceFile->silentError.clear();
+
+    // Syntax
+    SyntaxJob syntaxJob;
+    AstNode   parent;
+    syntaxJob.module  = sourceFile->module;
+    parent.ownerScope = context->debugCxtIp->node ? context->debugCxtIp->node->ownerScope : nullptr;
+    parent.ownerFct   = CastAst<AstFuncDecl>(context->bc->node, AstNodeKind::FuncDecl);
+    parent.sourceFile = sourceFile;
+    if (!syntaxJob.constructEmbedded(expr, &parent, nullptr, CompilerAstKind::Expression, false, true))
+    {
+        if (sourceFile->silentError.empty())
+            g_Log.printColor("expression syntax error\n", LogColor::Red);
+        else
+            g_Log.printColor(Fmt("%s\n", sourceFile->silentError.c_str()), LogColor::Red);
+        return false;
+    }
+
+    // Semantic
+    auto        child = parent.childs.front();
+    SemanticJob semanticJob;
+    semanticJob.sourceFile = sourceFile;
+    sourceFile->silent++;
+    semanticJob.nodes.push_back(child);
+    auto result = semanticJob.execute();
+    if (result != JobResult::ReleaseJob || !sourceFile->silentError.empty())
+    {
+        sourceFile->silent--;
+        if (sourceFile->silentError.empty())
+            g_Log.printColor("cannot solve expression\n", LogColor::Red);
+        else
+            g_Log.printColor(Fmt("%s\n", sourceFile->silentError.c_str()), LogColor::Red);
+        return false;
+    }
+
+    // This has been evaluated to a constant
+    if (child->flags & AST_VALUE_COMPUTED)
+    {
+        sourceFile->silent--;
+        res.type  = child->typeInfo;
+        res.value = child->computedValue;
+        return true;
+    }
+
+    // Gen bytecode for expression
+    ByteCodeGenJob genJob;
+    genJob.sourceFile = sourceFile;
+    genJob.nodes.push_back(child);
+    child->allocateExtension();
+    child->extension->bc             = g_Allocator.alloc<ByteCode>();
+    child->extension->bc->node       = child;
+    child->extension->bc->sourceFile = sourceFile;
+    result                           = genJob.execute();
+    if (result != JobResult::ReleaseJob || !sourceFile->silentError.empty())
+    {
+        sourceFile->silent--;
+        if (child->sourceFile->silentError.empty())
+            g_Log.printColor("cannot generate expression\n", LogColor::Red);
+        else
+            g_Log.printColor(Fmt("%s\n", child->sourceFile->silentError.c_str()), LogColor::Red);
+        return false;
+    }
+
+    // Execute node
+    JobContext         callerContext;
+    ByteCodeRunContext runContext;
+    ExecuteNodeParams  execParams;
+    execParams.runContext        = &runContext;
+    execParams.inheritRunContext = &g_RunContext;
+    execParams.forDebugger       = true;
+    if (!sourceFile->module->executeNode(sourceFile, child, &callerContext, &execParams))
+    {
+        sourceFile->silent--;
+        if (child->sourceFile->silentError.empty())
+            g_Log.printColor("cannot run expression\n", LogColor::Red);
+        else
+            g_Log.printColor(Fmt("%s\n", child->sourceFile->silentError.c_str()), LogColor::Red);
+        return false;
+    }
+
+    // This has been evaluated to a constant
+    if (child->flags & AST_VALUE_COMPUTED)
+    {
+        sourceFile->silent--;
+        res.type  = child->typeInfo;
+        res.value = child->computedValue;
+        return true;
+    }
+
+    sourceFile->silent--;
+    g_Log.printColor("cannot evaluate expression\n", LogColor::Red);
     return false;
 }
 
@@ -318,16 +419,15 @@ static void printMemory(ByteCodeRunContext* context, const Utf8& arg)
     }
     else
     {
-        TypeInfo* resType;
-        void*     resAddr;
-        if (!evalExpression(context, expr, &resType, &resAddr))
+        EvaluateResult res;
+        if (!evalExpression(context, expr, res))
             return;
-        if (!resAddr)
-            return;
-        if (resType->kind == TypeInfoKind::Pointer)
-            addrVal = *(uint64_t*) resAddr;
+        if (!res.addr)
+            res.addr = &res.value->reg;
+        if (res.type->kind == TypeInfoKind::Pointer)
+            addrVal = *(uint64_t*) res.addr;
         else
-            addrVal = (uint64_t) resAddr;
+            addrVal = (uint64_t) res.addr;
     }
 
     int perLine = 8;
@@ -495,8 +595,14 @@ static void computeCxt(ByteCodeRunContext* context)
     }
 }
 
-static void appendValueProtected(Utf8& str, TypeInfo* typeInfo, void* addr, int indent = 0)
+static void appendValueProtected(Utf8& str, const EvaluateResult& res, int indent = 0)
 {
+    auto typeInfo = res.type;
+    auto addr     = res.addr;
+
+    if (!addr && res.value)
+        addr = &res.value->reg;
+
     if (typeInfo->isPointerToTypeInfo())
     {
         auto ptr = ((ConcreteTypeInfo**) addr)[0];
@@ -519,7 +625,10 @@ static void appendValueProtected(Utf8& str, TypeInfo* typeInfo, void* addr, int 
             str += ": ";
             str += p->typeInfo->getDisplayName().c_str();
             str += " = ";
-            appendValueProtected(str, p->typeInfo, ((uint8_t*) addr) + p->offset, indent + 1);
+            EvaluateResult res1;
+            res1.type = p->typeInfo;
+            res1.addr = ((uint8_t*) addr) + p->offset;
+            appendValueProtected(str, res1, indent + 1);
             if (str.back() != '\n')
                 str += "\n";
         }
@@ -536,7 +645,10 @@ static void appendValueProtected(Utf8& str, TypeInfo* typeInfo, void* addr, int 
             for (int i = 0; i < indent; i++)
                 str += "   ";
             str += Fmt(" [%d] ", idx);
-            appendValueProtected(str, typeArray->pointedType, ((uint8_t*) addr) + (idx * typeArray->pointedType->sizeOf), indent + 1);
+            EvaluateResult res1;
+            res1.type = typeArray->pointedType;
+            res1.addr = ((uint8_t*) addr) + (idx * typeArray->pointedType->sizeOf);
+            appendValueProtected(str, res1, indent + 1);
             if (str.back() != '\n')
                 str += "\n";
         }
@@ -556,7 +668,10 @@ static void appendValueProtected(Utf8& str, TypeInfo* typeInfo, void* addr, int 
             for (int i = 0; i < indent; i++)
                 str += "   ";
             str += Fmt(" [%d] ", idx);
-            appendValueProtected(str, typeSlice->pointedType, ptr + (idx * typeSlice->pointedType->sizeOf), indent + 1);
+            EvaluateResult res1;
+            res1.type = typeSlice->pointedType;
+            res1.addr = ptr + (idx * typeSlice->pointedType->sizeOf);
+            appendValueProtected(str, res1, indent + 1);
             if (str.back() != '\n')
                 str += "\n";
         }
@@ -583,8 +698,20 @@ static void appendValueProtected(Utf8& str, TypeInfo* typeInfo, void* addr, int 
         {
         case NativeTypeKind::String:
         {
-            auto ptr = ((void**) addr)[0];
-            auto len = ((uint64_t*) addr)[1];
+            void*    ptr;
+            uint64_t len;
+
+            if (res.value)
+            {
+                ptr = res.value->text.buffer;
+                len = res.value->text.length();
+            }
+            else
+            {
+                ptr = ((void**) addr)[0];
+                len = ((uint64_t*) addr)[1];
+            }
+
             if (!ptr || !len)
                 str += "<empty>";
             else
@@ -645,11 +772,11 @@ static void appendValueProtected(Utf8& str, TypeInfo* typeInfo, void* addr, int 
     str += "?";
 }
 
-static void appendValue(Utf8& str, TypeInfo* typeInfo, void* addr, int indent = 0)
+static void appendValue(Utf8& str, const EvaluateResult& res, int indent = 0)
 {
     SWAG_TRY
     {
-        appendValueProtected(str, typeInfo, addr, indent);
+        appendValueProtected(str, res, indent);
     }
     SWAG_EXCEPT(SWAG_EXCEPTION_EXECUTE_HANDLER)
     {
@@ -986,14 +1113,13 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             }
 
             // Info name
-            if (cmd == "p" && cmds.size() == 2)
+            if (cmd == "p" && cmds.size() >= 2)
             {
-                TypeInfo* resType;
-                void*     resAddr;
-                if (evalExpression(context, cmdExpr, &resType, &resAddr))
+                EvaluateResult res;
+                if (evalExpression(context, cmdExpr, res))
                 {
-                    Utf8 str = Fmt("%s = ", cmdExpr.c_str(), resType->getDisplayNameC());
-                    appendValue(str, resType, resAddr);
+                    Utf8 str = Fmt("%s: ", res.type->getDisplayNameC());
+                    appendValue(str, res);
                     g_Log.printColor(str);
                     if (str.back() != '\n')
                         g_Log.eol();
@@ -1014,8 +1140,11 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                         auto over = l->resolvedSymbolOverload;
                         if (!over)
                             continue;
-                        Utf8 str = Fmt("%s: %s = ", over->symbol->name.c_str(), over->typeInfo->getDisplayNameC());
-                        appendValue(str, over->typeInfo, context->debugCxtBp + over->computedValue.storageOffset);
+                        Utf8           str = Fmt("%s: %s = ", over->symbol->name.c_str(), over->typeInfo->getDisplayNameC());
+                        EvaluateResult res;
+                        res.type = over->typeInfo;
+                        res.addr = context->debugCxtBp + over->computedValue.storageOffset;
+                        appendValue(str, res);
                         g_Log.printColor(str);
                         if (str.back() != '\n')
                             g_Log.eol();
@@ -1038,8 +1167,11 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                         auto over = l->resolvedSymbolOverload;
                         if (!over)
                             continue;
-                        Utf8 str = Fmt("%s: %s = ", over->symbol->name.c_str(), over->typeInfo->getDisplayNameC());
-                        appendValue(str, over->typeInfo, context->debugCxtBp + over->computedValue.storageOffset);
+                        Utf8           str = Fmt("%s: %s = ", over->symbol->name.c_str(), over->typeInfo->getDisplayNameC());
+                        EvaluateResult res;
+                        res.type = over->typeInfo;
+                        res.addr = context->debugCxtBp + over->computedValue.storageOffset;
+                        appendValue(str, res);
                         g_Log.printColor(str);
                         if (str.back() != '\n')
                             g_Log.eol();

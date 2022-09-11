@@ -8,7 +8,7 @@
 #include "Ast.h"
 #include "ErrorIds.h"
 
-bool Module::computeExecuteResult(SourceFile* sourceFile, AstNode* node, JobContext* callerContext, ExecuteNodeParams* params)
+bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* sourceFile, AstNode* node, JobContext* callerContext, ExecuteNodeParams* params)
 {
     // :CheckConstExprFuncReturnType
     // :opAffectConstExpr
@@ -21,7 +21,7 @@ bool Module::computeExecuteResult(SourceFile* sourceFile, AstNode* node, JobCont
         node->allocateComputedValue();
         node->computedValue->storageSegment = storageSegment;
         node->computedValue->storageOffset  = storageOffset;
-        auto addrSrc                        = g_RunContext.bp;
+        auto addrSrc                        = runContext->bp;
         memcpy(addrDst, addrSrc, node->typeInfo->sizeOf);
         return true;
     }
@@ -34,16 +34,16 @@ bool Module::computeExecuteResult(SourceFile* sourceFile, AstNode* node, JobCont
     node->typeInfo = TypeManager::concreteReferenceType(node->typeInfo, CONCRETE_FUNC);
     node->setFlagsValueIsComputed();
 
-    g_RunContext.registersRR[0].u64 = g_RunContext.registers.buffer[node->resultRegisterRC[0]].u64;
+    runContext->registersRR[0].u64 = runContext->registers.buffer[node->resultRegisterRC[0]].u64;
     if (node->resultRegisterRC.size() > 1)
-        g_RunContext.registersRR[1].u64 = g_RunContext.registers.buffer[node->resultRegisterRC[1]].u64;
+        runContext->registersRR[1].u64 = runContext->registers.buffer[node->resultRegisterRC[1]].u64;
 
     // String
     if (realType->isNative(NativeTypeKind::String))
     {
         SWAG_ASSERT(node->resultRegisterRC.size() == 2);
-        const char* pz  = (const char*) g_RunContext.registersRR[0].pointer;
-        uint32_t    len = g_RunContext.registersRR[1].u32;
+        const char* pz  = (const char*) runContext->registersRR[0].pointer;
+        uint32_t    len = runContext->registersRR[1].u32;
         node->computedValue->text.reserve(len + 1);
         node->computedValue->text.count = len;
         memcpy(node->computedValue->text.buffer, pz, len);
@@ -59,7 +59,7 @@ bool Module::computeExecuteResult(SourceFile* sourceFile, AstNode* node, JobCont
         auto     offsetStorage              = storageSegment->reserve(realType->sizeOf, &addrDst);
         node->computedValue->storageOffset  = offsetStorage;
         node->computedValue->storageSegment = storageSegment;
-        auto addrSrc                        = g_RunContext.registersRR[0].pointer;
+        auto addrSrc                        = runContext->registersRR[0].pointer;
         memcpy(addrDst, (const void*) addrSrc, realType->sizeOf);
         return true;
     }
@@ -75,7 +75,7 @@ bool Module::computeExecuteResult(SourceFile* sourceFile, AstNode* node, JobCont
             auto     offsetStorage              = storageSegment->reserve(realType->sizeOf, &addrDst);
             node->computedValue->storageOffset  = offsetStorage;
             node->computedValue->storageSegment = storageSegment;
-            auto addrSrc                        = g_RunContext.registersRR[0].pointer;
+            auto addrSrc                        = runContext->registersRR[0].pointer;
             memcpy(addrDst, (const void*) addrSrc, realType->sizeOf);
             return true;
         }
@@ -86,13 +86,13 @@ bool Module::computeExecuteResult(SourceFile* sourceFile, AstNode* node, JobCont
         // Make a copy of the returned struct, as we will lose the memory
         auto selfSize = Allocator::alignSize(realType->sizeOf);
         auto self     = g_Allocator.alloc(selfSize);
-        memcpy(self, (void*) g_RunContext.registersRR[0].pointer, realType->sizeOf);
+        memcpy(self, (void*) runContext->registersRR[0].pointer, realType->sizeOf);
 
         // Get number of elements by calling 'opCount'
         SWAG_ASSERT(params->specReturnOpCount);
         opParams.callParams.push_back((uint64_t) self);
         SWAG_CHECK(executeNode(sourceFile, params->specReturnOpCount->node, callerContext, &opParams));
-        auto count = g_RunContext.registersRR[0].u64;
+        auto count = runContext->registersRR[0].u64;
         if (!count)
             return callerContext->report(Hint::isType(realType), {node, Fmt(Err(Err0161), realType->getDisplayNameC())});
 
@@ -103,7 +103,7 @@ bool Module::computeExecuteResult(SourceFile* sourceFile, AstNode* node, JobCont
         opParams.callParams.push_back(0);
         opParams.callParams.push_back((uint64_t) self);
         SWAG_CHECK(executeNode(sourceFile, params->specReturnOpSlice->node, callerContext, &opParams));
-        if (!g_RunContext.registersRR[0].u64 || !g_RunContext.registersRR[1].u64)
+        if (!runContext->registersRR[0].u64 || !runContext->registersRR[1].u64)
             return callerContext->report(Hint::isType(realType), {node, Fmt(Err(Err0162), realType->getDisplayNameC())});
 
         auto      concreteType = TypeManager::concreteType(params->specReturnOpSlice->typeInfo);
@@ -112,13 +112,13 @@ bool Module::computeExecuteResult(SourceFile* sourceFile, AstNode* node, JobCont
 
         if (concreteType->isNative(NativeTypeKind::String))
         {
-            sizeSlice = (uint32_t) g_RunContext.registersRR[1].u64;
+            sizeSlice = (uint32_t) runContext->registersRR[1].u64;
             sliceType = g_TypeMgr->typeInfoU8;
         }
         else
         {
             auto typeSlice = CastTypeInfo<TypeInfoSlice>(concreteType, TypeInfoKind::Slice);
-            sizeSlice      = (uint32_t) g_RunContext.registersRR[1].u64 * typeSlice->pointedType->sizeOf;
+            sizeSlice      = (uint32_t) runContext->registersRR[1].u64 * typeSlice->pointedType->sizeOf;
             sliceType      = typeSlice->pointedType;
         }
 
@@ -130,7 +130,7 @@ bool Module::computeExecuteResult(SourceFile* sourceFile, AstNode* node, JobCont
         auto     offsetStorage              = storageSegment->reserve(sizeSlice, &addrDst);
         node->computedValue->storageOffset  = offsetStorage;
         node->computedValue->storageSegment = storageSegment;
-        auto addrSrc                        = g_RunContext.registersRR[0].pointer;
+        auto addrSrc                        = runContext->registersRR[0].pointer;
         memcpy(addrDst, (const void*) addrSrc, sizeSlice);
 
         // Then transform the returned type to a static array
@@ -138,8 +138,8 @@ bool Module::computeExecuteResult(SourceFile* sourceFile, AstNode* node, JobCont
         node->typeInfo         = typeArray;
         typeArray->pointedType = sliceType;
         typeArray->finalType   = sliceType;
-        typeArray->count       = g_RunContext.registersRR[1].u32;
-        typeArray->totalCount  = g_RunContext.registersRR[1].u32;
+        typeArray->count       = runContext->registersRR[1].u32;
+        typeArray->totalCount  = runContext->registersRR[1].u32;
         typeArray->sizeOf      = sizeSlice;
         typeArray->computeName();
         typeArray->setConst();
@@ -159,21 +159,22 @@ bool Module::computeExecuteResult(SourceFile* sourceFile, AstNode* node, JobCont
     // Default
     if (realType->isNativeIntegerOrRune() ||
         realType->isNativeFloat() ||
-        realType->isNative(NativeTypeKind::Bool))
+        realType->isNative(NativeTypeKind::Bool) ||
+        (params && params->forDebugger))
     {
         switch (realType->sizeOf)
         {
         case 1:
-            node->computedValue->reg.u64 = g_RunContext.registersRR[0].u8;
+            node->computedValue->reg.u64 = runContext->registersRR[0].u8;
             return true;
         case 2:
-            node->computedValue->reg.u64 = g_RunContext.registersRR[0].u16;
+            node->computedValue->reg.u64 = runContext->registersRR[0].u16;
             return true;
         case 4:
-            node->computedValue->reg.u64 = g_RunContext.registersRR[0].u32;
+            node->computedValue->reg.u64 = runContext->registersRR[0].u32;
             return true;
         case 8:
-            node->computedValue->reg.u64 = g_RunContext.registersRR[0].u64;
+            node->computedValue->reg.u64 = runContext->registersRR[0].u64;
             return true;
         }
     }
@@ -196,6 +197,7 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
     ByteCode            bcTmp;
     ByteCodeInstruction instTmp;
     bool                foreignCall = false;
+    ByteCodeRunContext* runContext  = params && params->runContext ? params->runContext : &g_RunContext;
 
     // Direct call to a foreign function ?
     if (!node->extension || !node->extension->bc)
@@ -224,50 +226,62 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
 
     // Global setup
     g_ByteCodeStackTrace.clear();
-    g_ByteCodeStackTrace.currentContext = &g_RunContext;
-    g_RunContext.callerContext     = callerContext;
-    g_RunContext.setup(sourceFile, node, bc);
+    g_ByteCodeStackTrace.currentContext = runContext;
+    runContext->callerContext           = callerContext;
+    runContext->setup(sourceFile, node, bc);
+
+    // Setup run context
+    if (params && params->inheritRunContext)
+    {
+        runContext->stack = params->inheritRunContext->stack;
+        runContext->sp    = params->inheritRunContext->sp;
+        runContext->spAlt = params->inheritRunContext->spAlt;
+        runContext->bp    = params->inheritRunContext->bp;
+    }
 
     // Params ?
     auto module = sourceFile->module;
     if (params && !params->callParams.empty())
     {
         for (auto r : params->callParams)
-            g_RunContext.push(r);
+            runContext->push(r);
 
         if (!foreignCall)
-            module->runner.localCall(&g_RunContext, bc, (uint32_t) params->callParams.size());
+            module->runner.localCall(runContext, bc, (uint32_t) params->callParams.size());
     }
     else if (!foreignCall)
     {
-        bc->enterByteCode(&g_RunContext);
+        bc->enterByteCode(runContext);
     }
 
     // We need to take care of the room necessary in the stack, as bytecode instruction IncSPBP is not
     // generated for expression (just for functions)
     if (node->ownerScope)
     {
-        auto decSP = SemanticJob::getMaxStackSize(node);
-        g_RunContext.decSP(decSP);
+        if (!params || !params->inheritRunContext)
+        {
+            auto decSP = SemanticJob::getMaxStackSize(node);
+            runContext->decSP(decSP);
 
-        // :opAffectConstExpr
-        // Reserve room on the stack to store the result
-        if (node->semFlags & AST_SEM_EXEC_RET_STACK)
-            g_RunContext.decSP(node->typeInfo->sizeOf);
+            // :opAffectConstExpr
+            // Reserve room on the stack to store the result
+            if (node->semFlags & AST_SEM_EXEC_RET_STACK)
+                runContext->decSP(node->typeInfo->sizeOf);
 
-        g_RunContext.bp = g_RunContext.sp;
+            runContext->bp = runContext->sp;
+        }
     }
 
     bool result = true;
 
     if (foreignCall)
     {
-        module->runner.ffiCall(&g_RunContext, &bc->out[0]);
+        module->runner.ffiCall(runContext, &bc->out[0]);
     }
     else
     {
-        result = module->runner.run(&g_RunContext);
-        bc->leaveByteCode(&g_RunContext);
+        result = module->runner.run(runContext);
+        bc->leaveByteCode(runContext);
     }
 
     g_ByteCodeStackTrace.clear();
@@ -280,6 +294,6 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
         g_Allocator.free(ptr.first, ptr.second);
 
     // Get result
-    SWAG_CHECK(computeExecuteResult(sourceFile, node, callerContext, params));
+    SWAG_CHECK(computeExecuteResult(runContext, sourceFile, node, callerContext, params));
     return true;
 }

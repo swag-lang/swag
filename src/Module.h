@@ -81,6 +81,9 @@ struct ExecuteNodeParams
     SymbolOverload*        specReturnOpCount = nullptr;
     SymbolOverload*        specReturnOpSlice = nullptr;
     SymbolOverload*        specReturnOpDrop  = nullptr;
+    ByteCodeRunContext*    runContext        = nullptr;
+    ByteCodeRunContext*    inheritRunContext = nullptr;
+    bool                   forDebugger       = false;
 };
 
 struct CompilerMessage
@@ -123,7 +126,7 @@ struct Module
     void printStartBuilding(const BuildParameters& bp);
     void printBC();
 
-    bool computeExecuteResult(SourceFile* sourceFile, AstNode* node, JobContext* callerContext, ExecuteNodeParams* params);
+    bool computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* sourceFile, AstNode* node, JobContext* callerContext, ExecuteNodeParams* params);
     bool executeNode(SourceFile* sourceFile, AstNode* node, JobContext* callerContext, ExecuteNodeParams* params = nullptr);
     bool compileString(const Utf8& str);
     bool hasBytecodeToRun();

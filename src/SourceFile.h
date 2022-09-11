@@ -35,6 +35,7 @@ struct SourceFile
     string                 path;
     Utf8                   externalContent;
     Utf8                   scopeName;
+    Utf8                   silentError;
 
     Module*     module                = nullptr;
     AstNode*    astRoot               = nullptr;

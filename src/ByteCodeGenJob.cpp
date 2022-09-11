@@ -515,7 +515,6 @@ JobResult ByteCodeGenJob::execute()
     if (pass == Pass::Generate)
     {
         SWAG_ASSERT(originalNode->extension);
-        SWAG_ASSERT(originalNode->extension->byteCodeJob);
 
         // Register SystemAllocator interface to the default bytecode context
         if (sourceFile->isRuntimeFile && (originalNode->token.text == g_LangSpec->name_SystemAllocator))
@@ -674,7 +673,6 @@ JobResult ByteCodeGenJob::execute()
             }
 
             ScopedLock lk(originalNode->mutex);
-            SWAG_ASSERT(originalNode->extension && originalNode->extension->byteCodeJob);
             getDependantCalls(originalNode, originalNode->extension->dependentNodes);
             dependentNodesTmp = originalNode->extension->dependentNodes;
 

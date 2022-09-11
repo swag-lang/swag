@@ -218,7 +218,10 @@ void SourceFile::reportNotes(const vector<const Diagnostic*>& notes, bool verbos
 bool SourceFile::report(const Diagnostic& diag, const vector<const Diagnostic*>& notes)
 {
     if (silent > 0 && !diag.exceptionError)
+    {
+        silentError = diag.textMsg;
         return false;
+    }
 
     ScopedLock lock(g_Log.mutexAccess);
 

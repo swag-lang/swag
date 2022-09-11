@@ -816,6 +816,7 @@ enum class CompilerAstKind
     StructVarDecl,
     EnumValue,
     MissingInterfaceMtd,
+    Expression,
 };
 
 struct AstCompilerSpecFunc : public AstNode
