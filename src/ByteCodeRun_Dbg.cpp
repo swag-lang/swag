@@ -560,7 +560,7 @@ static void printInstruction(ByteCodeRunContext* context, ByteCode* bc, ByteCode
     }
 }
 
-static void computeCxt(ByteCodeRunContext* context)
+static void computeDebugContext(ByteCodeRunContext* context)
 {
     context->debugCxtBc = context->bc;
     context->debugCxtIp = context->ip;
@@ -834,7 +834,7 @@ static void printHelp()
     g_Log.print("f(inish)                   runs until the current function is done\n");
     g_Log.print("c(ont(inue))               runs until another breakpoint is reached\n");
     g_Log.print("u(ntil) <num>              runs to the given line or instruction (depends on 'bcmode')\n");
-    g_Log.print("j(ump) <num>               jump to the given line or instruction (depends on 'bcmode')\n");
+    g_Log.print("j(ump)  <num>              jump to the given line or instruction (depends on 'bcmode')\n");
     g_Log.eol();
 
     g_Log.print("l(ist) [num]               print the current source code line and <num> lines around\n");
@@ -851,19 +851,19 @@ static void printHelp()
     g_Log.eol();
 
     g_Log.print("b(reak)                    print all breakpoints\n");
-    g_Log.print("b(reak) fct <name>         add breakpoint when entering function <name>\n");
-    g_Log.print("b(reak) <line>             add breakpoint in the current source file at line <line>\n");
-    g_Log.print("b(reak) clear              remove all breakpoints\n");
-    g_Log.print("b(reak) clear <num>        remove breakpoint <num>\n");
-    g_Log.print("b(reak) enable <num>       enable breakpoint <num>\n");
-    g_Log.print("b(reak) disable <num>      disable breakpoint <num>\n");
+    g_Log.print("b(reak)  fct <name>        add breakpoint when entering function <name>\n");
+    g_Log.print("b(reak)  <line>            add breakpoint in the current source file at line <line>\n");
+    g_Log.print("b(reak)  clear             remove all breakpoints\n");
+    g_Log.print("b(reak)  clear <num>       remove breakpoint <num>\n");
+    g_Log.print("b(reak)  enable <num>      enable breakpoint <num>\n");
+    g_Log.print("b(reak)  disable <num>     disable breakpoint <num>\n");
     g_Log.print("tb(reak) ...               same as 'b(reak)' except that the breakpoint will be automatically removed on hit\n");
     g_Log.eol();
 
     g_Log.print("stack                      print callstack\n");
-    g_Log.print("up [num]                   move stack frame <num> level up\n");
-    g_Log.print("down [num]                 move stack frame <num> level down\n");
-    g_Log.print("frame <num>                move stack frame to level <num>\n");
+    g_Log.print("u(p)   [num]               move stack frame <num> level up\n");
+    g_Log.print("d(own) [num]               move stack frame <num> level down\n");
+    g_Log.print("frame  <num>               move stack frame to level <num>\n");
     g_Log.eol();
 
     g_Log.print("bcmode                     swap between bytecode mode and source mode\n");
@@ -1006,22 +1006,25 @@ static bool addBreakpoint(ByteCodeRunContext* context, const ByteCodeRunContext:
     return true;
 }
 
-static void setContextInstruction(ByteCodeRunContext* context)
+static void printContextInstruction(ByteCodeRunContext* context)
 {
+    SWAG_ASSERT(context->debugCxtBc);
+    SWAG_ASSERT(context->debugCxtIp);
+
     // Print function name
-    if (context->debugLastBc != context->bc)
-        g_Log.printColor(Fmt("=> function %s %s\n", context->bc->name.c_str(), context->bc->getCallType()->getDisplayNameC()), LogColor::Yellow);
+    if (context->debugLastBc != context->debugCxtBc)
+        g_Log.printColor(Fmt("=> function %s %s\n", context->debugCxtBc->name.c_str(), context->debugCxtBc->getCallType()->getDisplayNameC()), LogColor::Yellow);
 
     // Print source line
     SourceFile*     file;
     SourceLocation* location;
-    ByteCode::getLocation(context->bc, context->ip, &file, &location);
+    ByteCode::getLocation(context->debugCxtBc, context->debugCxtIp, &file, &location);
     if (location && (context->debugStepLastFile != file || context->debugStepLastLocation && context->debugStepLastLocation->line != location->line))
     {
-        if (context->bc->node && context->bc->node->sourceFile)
+        if (context->debugCxtBc->node && context->debugCxtBc->node->sourceFile)
         {
             g_Log.printColor("-> ", LogColor::Yellow);
-            auto str1 = context->bc->node->sourceFile->getLine(location->line);
+            auto str1 = context->debugCxtBc->node->sourceFile->getLine(location->line);
             g_Log.printColor(str1, LogColor::Yellow);
             g_Log.eol();
         }
@@ -1029,9 +1032,9 @@ static void setContextInstruction(ByteCodeRunContext* context)
 
     // Print instruction
     if (context->debugBcMode)
-        printInstruction(context, context->bc, context->ip);
+        printInstruction(context, context->debugCxtBc, context->debugCxtIp);
 
-    context->debugLastBc           = context->bc;
+    context->debugLastBc           = context->debugCxtBc;
     context->debugStepLastFile     = file;
     context->debugStepLastLocation = location;
 }
@@ -1116,9 +1119,8 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
 
     if (!zapCurrentIp)
     {
-        setContextInstruction(context);
-
-        computeCxt(context);
+        computeDebugContext(context);
+        printContextInstruction(context);
 
         while (true)
         {
@@ -1240,20 +1242,38 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 continue;
             }
 
-            // Stack frame up
+            // Print stack
+            if (cmd == "stack")
+            {
+                g_ByteCodeStackTrace.currentContext = context;
+                g_ByteCodeStackTrace.log();
+                continue;
+            }
+
+            // Set stack frame
             if (cmd == "frame" && cmds.size() == 2)
             {
-                uint32_t off                   = atoi(cmds[1].c_str());
-                uint32_t maxLevel              = g_ByteCodeStackTrace.maxLevel(context);
-                off                            = min(off, maxLevel);
+                uint32_t off      = atoi(cmds[1].c_str());
+                uint32_t maxLevel = g_ByteCodeStackTrace.maxLevel(context);
+                off               = min(off, maxLevel);
+
+                auto oldIndex                  = context->debugStackFrameOffset;
                 context->debugStackFrameOffset = maxLevel - off;
-                computeCxt(context);
-                printInstruction(context, context->debugCxtBc, context->debugCxtIp);
+                computeDebugContext(context);
+                if (!context->debugCxtIp)
+                {
+                    context->debugStackFrameOffset = oldIndex;
+                    computeDebugContext(context);
+                    g_Log.printColor("this frame is of an external code; you cannot go there\n", LogColor::Red);
+                    continue;
+                }
+
+                printContextInstruction(context);
                 continue;
             }
 
             // Stack frame up
-            if (cmd == "up")
+            if ((cmd == "u" || cmd == "up") && (cmds.size() == 1 || cmds.size() == 2))
             {
                 uint32_t off = 1;
                 if (cmds.size() == 2)
@@ -1263,16 +1283,25 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                     g_Log.printColor("initial frame selected; you cannot go up\n", LogColor::Red);
                 else
                 {
+                    auto oldIndex = context->debugStackFrameOffset;
                     context->debugStackFrameOffset += off;
-                    computeCxt(context);
-                    printInstruction(context, context->debugCxtBc, context->debugCxtIp);
+                    computeDebugContext(context);
+                    if (!context->debugCxtIp)
+                    {
+                        context->debugStackFrameOffset = oldIndex;
+                        computeDebugContext(context);
+                        g_Log.printColor("this frame is of an external code; you cannot go up\n", LogColor::Red);
+                        continue;
+                    }
+
+                    printContextInstruction(context);
                 }
 
                 continue;
             }
 
             // Stack frame down
-            if (cmd == "down")
+            if ((cmd == "d" || cmd == "down") && (cmds.size() == 1 || cmds.size() == 2))
             {
                 uint32_t off = 1;
                 if (cmds.size() == 2)
@@ -1281,9 +1310,18 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                     g_Log.printColor("bottom(innermost) frame selected; you cannot go down\n", LogColor::Red);
                 else
                 {
+                    auto oldIndex = context->debugStackFrameOffset;
                     context->debugStackFrameOffset -= min(context->debugStackFrameOffset, off);
-                    computeCxt(context);
-                    printInstruction(context, context->debugCxtBc, context->debugCxtIp);
+                    computeDebugContext(context);
+                    if (!context->debugCxtIp)
+                    {
+                        context->debugStackFrameOffset = oldIndex;
+                        computeDebugContext(context);
+                        g_Log.printColor("this frame is of an external code; you cannot go down\n", LogColor::Red);
+                        continue;
+                    }
+
+                    printContextInstruction(context);
                 }
 
                 continue;
@@ -1375,15 +1413,6 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 str.trim();
                 g_Log.print(str);
                 g_Log.eol();
-                continue;
-            }
-
-            // Print stack
-            if (cmd == "stack")
-            {
-                g_ByteCodeStackTrace.currentContext = context;
-                g_ByteCodeStackTrace.log();
-                g_ByteCodeStackTrace.currentContext = nullptr;
                 continue;
             }
 
@@ -1642,7 +1671,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                     }
                 }
 
-                setContextInstruction(context);
+                printContextInstruction(context);
                 continue;
             }
 
