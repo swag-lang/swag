@@ -289,7 +289,7 @@ static bool getValueFormat(const Utf8& cmd, ValueFormat& fmt)
     return false;
 }
 
-static void printValueProtected(ByteCodeRunContext* context, Utf8& result, const ValueFormat& fmt, const void* addr)
+static void appendLiteralValueProtected(ByteCodeRunContext* context, Utf8& result, const ValueFormat& fmt, const void* addr)
 {
     switch (fmt.bitCount)
     {
@@ -336,11 +336,11 @@ static void printValueProtected(ByteCodeRunContext* context, Utf8& result, const
     }
 }
 
-static void printValue(ByteCodeRunContext* context, Utf8& result, const ValueFormat& fmt, const void* addr)
+static void appendLiteralValue(ByteCodeRunContext* context, Utf8& result, const ValueFormat& fmt, const void* addr)
 {
     SWAG_TRY
     {
-        printValueProtected(context, result, fmt, addr);
+        appendLiteralValueProtected(context, result, fmt, addr);
     }
     SWAG_EXCEPT(SWAG_EXCEPTION_EXECUTE_HANDLER)
     {
@@ -458,7 +458,7 @@ static void printMemory(ByteCodeRunContext* context, const Utf8& arg)
         for (int i = 0; i < min(count, perLine); i++)
         {
             Utf8 str;
-            printValue(context, str, fmt, addrB);
+            appendLiteralValue(context, str, fmt, addrB);
             g_Log.print(str);
             addrB += fmt.bitCount / 8;
         }
@@ -882,7 +882,6 @@ static void printBreakpoints(ByteCodeRunContext* context)
         return;
     }
 
-    g_Log.setColor(LogColor::White);
     for (int i = 0; i < context->debugBreakpoints.size(); i++)
     {
         const auto& bkp = context->debugBreakpoints[i];
@@ -997,7 +996,7 @@ static void setContextInstruction(ByteCodeRunContext* context)
 {
     // Print function name
     if (context->debugLastBc != context->bc)
-        g_Log.printColor(Fmt("--> function %s %s\n", context->bc->name.c_str(), context->bc->getCallType()->getDisplayNameC()), LogColor::Yellow);
+        g_Log.printColor(Fmt("=> function %s %s\n", context->bc->name.c_str(), context->bc->getCallType()->getDisplayNameC()), LogColor::Yellow);
 
     // Print source line
     SourceFile*     file;
@@ -1007,9 +1006,8 @@ static void setContextInstruction(ByteCodeRunContext* context)
     {
         if (context->bc->node && context->bc->node->sourceFile)
         {
-            g_Log.printColor("--> ", LogColor::Yellow);
+            g_Log.printColor("-> ", LogColor::Yellow);
             auto str1 = context->bc->node->sourceFile->getLine(location->line);
-            str1.trim();
             g_Log.printColor(str1, LogColor::Yellow);
             g_Log.eol();
         }
@@ -1312,12 +1310,12 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                     }
                 }
 
-                g_Log.setColor(LogColor::White);
+                g_Log.setColor(LogColor::Gray);
                 for (int i = 0; i < context->getRegCount(context->debugCxtRc); i++)
                 {
                     auto& regP = context->getRegBuffer(context->debugCxtRc)[i];
                     Utf8  str;
-                    printValue(context, str, fmt, &regP);
+                    appendLiteralValue(context, str, fmt, &regP);
                     str.trim();
                     g_Log.print(Fmt("r%d = ", i));
                     g_Log.print(str);
@@ -1349,9 +1347,9 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                     }
                 }
 
-                g_Log.setColor(LogColor::White);
+                g_Log.setColor(LogColor::Gray);
                 Utf8 str;
-                printValue(context, str, fmt, &regP);
+                appendLiteralValue(context, str, fmt, &regP);
                 str.trim();
                 g_Log.print(str);
                 g_Log.eol();
@@ -1401,14 +1399,12 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
 
                     uint32_t startLine = context->debugCxtBc->node->token.startLocation.line;
                     uint32_t endLine   = funcNode->content->token.endLocation.line;
-                    if (cmd == "l" && cmds.size() == 1)
+
+                    if (cmd == "l")
                     {
-                        startLine = curLocation->line;
-                        endLine   = startLine;
-                    }
-                    else if (cmd == "l" && cmds.size() == 2)
-                    {
-                        uint32_t offset = atoi(cmds[1]);
+                        uint32_t offset = 3;
+                        if (cmds.size() == 2)
+                            offset = atoi(cmds[1]);
                         if (offset > curLocation->line)
                             startLine = 0;
                         else
@@ -1427,9 +1423,9 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                     {
                         g_Log.print(Fmt("%08u ", startLine + lineIdx));
                         if (curLocation->line == startLine + lineIdx)
-                            g_Log.print(" --> ");
+                            g_Log.print(" -> ");
                         else
-                            g_Log.print("     ");
+                            g_Log.print("    ");
                         g_Log.print(l.c_str());
                         g_Log.eol();
                         lineIdx++;
