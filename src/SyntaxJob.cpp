@@ -298,9 +298,6 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
             break;
         switch (kind)
         {
-        case CompilerAstKind::EmbeddedInstruction:
-            SWAG_CHECK(doEmbeddedInstruction(parent));
-            break;
         case CompilerAstKind::TopLevelInstruction:
         case CompilerAstKind::MissingInterfaceMtd:
             SWAG_CHECK(doTopLevelInstruction(parent));
@@ -310,6 +307,13 @@ bool SyntaxJob::constructEmbedded(const Utf8& content, AstNode* parent, AstNode*
             break;
         case CompilerAstKind::EnumValue:
             SWAG_CHECK(doEnumValue(parent));
+            break;
+        case CompilerAstKind::EmbeddedInstruction:
+            if (!doEmbeddedInstruction(parent))
+            {
+                parent->sourceFile->silentError = sourceFile->silentError;
+                return false;
+            }
             break;
         case CompilerAstKind::Expression:
             if (!doExpression(parent, EXPR_FLAG_NONE))

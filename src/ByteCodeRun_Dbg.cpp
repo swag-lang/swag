@@ -23,7 +23,7 @@ struct EvaluateResult
     void*          storage[2];
 };
 
-static bool evalDynExpression(ByteCodeRunContext* context, const Utf8& expr, EvaluateResult& res, CompilerAstKind kind)
+static bool evalDynExpression(ByteCodeRunContext* context, const Utf8& expr, EvaluateResult& res, CompilerAstKind kind, bool silent = false)
 {
     auto sourceFile = context->debugCxtBc->sourceFile;
     sourceFile->silentError.clear();
@@ -37,6 +37,8 @@ static bool evalDynExpression(ByteCodeRunContext* context, const Utf8& expr, Eva
     parent.sourceFile = sourceFile;
     if (!syntaxJob.constructEmbedded(expr, &parent, nullptr, kind, false, true))
     {
+        if (silent)
+            return false;
         if (sourceFile->silentError.empty())
             g_Log.printColor("expression syntax error\n", LogColor::Red);
         else
@@ -54,6 +56,8 @@ static bool evalDynExpression(ByteCodeRunContext* context, const Utf8& expr, Eva
     if (result != JobResult::ReleaseJob || !sourceFile->silentError.empty())
     {
         sourceFile->silent--;
+        if (silent)
+            return false;
         if (sourceFile->silentError.empty())
             g_Log.printColor("cannot solve expression\n", LogColor::Red);
         else
@@ -82,6 +86,8 @@ static bool evalDynExpression(ByteCodeRunContext* context, const Utf8& expr, Eva
     if (result != JobResult::ReleaseJob || !sourceFile->silentError.empty())
     {
         sourceFile->silent--;
+        if (silent)
+            return false;
         if (sourceFile->silentError.empty())
             g_Log.printColor("cannot generate expression\n", LogColor::Red);
         else
@@ -113,6 +119,8 @@ static bool evalDynExpression(ByteCodeRunContext* context, const Utf8& expr, Eva
 
     if (!resExec)
     {
+        if (silent)
+            return false;
         if (child->sourceFile->silentError.empty())
             g_Log.printColor("cannot run expression\n", LogColor::Red);
         else
@@ -130,7 +138,7 @@ static bool evalDynExpression(ByteCodeRunContext* context, const Utf8& expr, Eva
     return true;
 }
 
-static bool evalExpression(ByteCodeRunContext* context, const Utf8& expr, EvaluateResult& res)
+static bool evalExpression(ByteCodeRunContext* context, const Utf8& expr, EvaluateResult& res, bool silent = false)
 {
     auto funcDecl = CastAst<AstFuncDecl>(context->debugCxtBc->node, AstNodeKind::FuncDecl);
     for (auto l : context->debugCxtBc->localVars)
@@ -158,7 +166,19 @@ static bool evalExpression(ByteCodeRunContext* context, const Utf8& expr, Evalua
         }
     }
 
-    return evalDynExpression(context, expr, res, CompilerAstKind::Expression);
+    return evalDynExpression(context, expr, res, CompilerAstKind::Expression, silent);
+}
+
+static bool isNumber(const char* pz)
+{
+    while (*pz)
+    {
+        if (!isdigit(*pz))
+            return false;
+        pz++;
+    }
+
+    return true;
 }
 
 static bool getRegIdx(ByteCodeRunContext* context, const Utf8& arg, int& regN)
@@ -377,7 +397,7 @@ static void printMemory(ByteCodeRunContext* context, const Utf8& arg)
 
     // Count
     int count = 64;
-    if (startIdx < cmds.size() && isdigit(cmds[startIdx][0]))
+    if (startIdx < cmds.size() && isNumber(cmds[startIdx]))
     {
         count = atoi(cmds[startIdx]);
         startIdx++;
@@ -397,7 +417,7 @@ static void printMemory(ByteCodeRunContext* context, const Utf8& arg)
     expr.trim();
     if (expr.empty())
     {
-        g_Log.printColor("empty expression\n", LogColor::Red);
+        g_Log.printColor("invalid 'x' expression\n", LogColor::Red);
         return;
     }
 
@@ -407,8 +427,21 @@ static void printMemory(ByteCodeRunContext* context, const Utf8& arg)
     if (expr[0] == '$')
     {
         expr.remove(0, 1);
+        expr.trim();
+        if (expr.empty())
+        {
+            g_Log.printColor("empty 'x' parameter after '$'\n", LogColor::Red);
+            return;
+        }
+
         if (expr[0] == 'r')
         {
+            if (!isNumber(expr.buffer + 1))
+            {
+                g_Log.printColor("invalid 'x' register number after '$r'\n", LogColor::Red);
+                return;
+            }
+
             int regN;
             if (!getRegIdx(context, expr, regN))
                 return;
@@ -419,8 +452,13 @@ static void printMemory(ByteCodeRunContext* context, const Utf8& arg)
         {
             addrVal = (uint64_t) context->sp;
         }
+        else
+        {
+            g_Log.printColor("invalid 'x' parameter after '$'\n", LogColor::Red);
+            return;
+        }
     }
-    else if (isdigit(expr[0]))
+    else if (isxdigit(expr[0]))
     {
         while (*addr)
         {
@@ -431,6 +469,12 @@ static void printMemory(ByteCodeRunContext* context, const Utf8& arg)
                 addrVal += 10 + (*addr - 'A');
             else if (*addr >= '0' && *addr <= '9')
                 addrVal += (*addr - '0');
+            else
+            {
+                g_Log.printColor(Fmt("invalid hexadecimal digit '%c' in 'x' parameter", *addr), LogColor::Red);
+                return;
+            }
+
             addr++;
         }
     }
@@ -1343,6 +1387,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             cmdExpr.trim();
 
             // Help
+            /////////////////////////////////////////
             if (cmd == "?")
             {
                 printHelp();
@@ -1350,8 +1395,12 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             }
 
             // Print expression
-            if ((cmd == "p" || cmd == "print") && cmds.size() >= 2)
+            /////////////////////////////////////////
+            if (cmd == "p" || cmd == "print")
             {
+                if (cmds.size() < 2)
+                    goto evalDefault;
+
                 EvaluateResult res;
                 if (evalExpression(context, cmdExpr, res))
                 {
@@ -1366,16 +1415,24 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             }
 
             // Execute expression
-            if ((cmd == "e" || cmd == "exec" || cmd == "execute") && cmds.size() >= 2)
+            /////////////////////////////////////////
+            if (cmd == "e" || cmd == "exec" || cmd == "execute")
             {
+                if (cmds.size() < 2)
+                    goto evalDefault;
+
                 EvaluateResult res;
                 evalDynExpression(context, cmdExpr, res, CompilerAstKind::EmbeddedInstruction);
                 continue;
             }
 
             // Info locals
-            if ((cmd == "loc" || cmd == "locals") && cmds.size() == 1)
+            /////////////////////////////////////////
+            if (cmd == "loc" || cmd == "locals")
             {
+                if (cmds.size() != 1)
+                    goto evalDefault;
+
                 if (context->debugCxtBc->localVars.empty())
                     g_Log.printColor("no locals\n");
                 else
@@ -1400,8 +1457,12 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             }
 
             // Info args
-            if ((cmd == "a" || cmd == "args") && cmds.size() == 1)
+            /////////////////////////////////////////
+            if (cmd == "a" || cmd == "args")
             {
+                if (cmds.size() != 1)
+                    goto evalDefault;
+
                 auto funcDecl = CastAst<AstFuncDecl>(context->debugCxtBc->node, AstNodeKind::FuncDecl);
                 if (!funcDecl->parameters || funcDecl->parameters->childs.empty())
                     g_Log.printColor("no arguments\n");
@@ -1427,23 +1488,43 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             }
 
             // Print memory
-            if (cmd == "x" && cmds.size() >= 2)
+            /////////////////////////////////////////
+            if (cmd == "x")
             {
+                if (cmds.size() < 2)
+                    goto evalDefault;
+
                 printMemory(context, cmdExpr);
                 continue;
             }
 
             // Print stack
+            /////////////////////////////////////////
             if (cmd == "stack")
             {
+                if (cmds.size() != 1)
+                    goto evalDefault;
+
                 g_ByteCodeStackTrace->currentContext = context;
                 g_ByteCodeStackTrace->log();
                 continue;
             }
 
             // Set stack frame
-            if (cmd == "frame" && cmds.size() == 2)
+            /////////////////////////////////////////
+            if (cmd == "frame")
             {
+                if (cmds.size() == 1)
+                    goto evalDefault;
+                if (cmds.size() > 2)
+                    goto evalDefault;
+
+                if (!isNumber(cmds[1]))
+                {
+                    g_Log.printColor("invalid 'frame' number\n", LogColor::Red);
+                    continue;
+                }
+
                 uint32_t off      = atoi(cmds[1].c_str());
                 uint32_t maxLevel = g_ByteCodeStackTrace->maxLevel(context);
                 off               = min(off, maxLevel);
@@ -1464,8 +1545,14 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             }
 
             // Stack frame up
-            if ((cmd == "u" || cmd == "up") && (cmds.size() == 1 || cmds.size() == 2))
+            /////////////////////////////////////////
+            if (cmd == "u" || cmd == "up")
             {
+                if (cmds.size() > 2)
+                    goto evalDefault;
+                if (cmds.size() != 1 && !isNumber(cmds[1]))
+                    goto evalDefault;
+
                 uint32_t off = 1;
                 if (cmds.size() == 2)
                     off = atoi(cmds[1].c_str());
@@ -1492,8 +1579,14 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             }
 
             // Stack frame down
-            if ((cmd == "d" || cmd == "down") && (cmds.size() == 1 || cmds.size() == 2))
+            /////////////////////////////////////////
+            if (cmd == "d" || cmd == "down")
             {
+                if (cmds.size() > 2)
+                    goto evalDefault;
+                if (cmds.size() != 1 && !isNumber(cmds[1]))
+                    goto evalDefault;
+
                 uint32_t off = 1;
                 if (cmds.size() == 2)
                     off = atoi(cmds[1].c_str());
@@ -1519,46 +1612,57 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             }
 
             // Exit
+            /////////////////////////////////////////
             if (cmd == "q" || cmd == "quit")
             {
+                if (cmds.size() != 1)
+                    goto evalDefault;
                 g_Log.unlock();
                 return false;
             }
 
             // Print current instruction
-            if (cmd == "i" && cmds.size() == 1)
+            /////////////////////////////////////////
+            if (cmd == "i")
             {
-                printInstruction(context, context->debugCxtBc, context->debugCxtIp);
-                continue;
-            }
+                int regN = 1;
 
-            if (cmd == "i" && cmds.size() == 2)
-            {
-                int regN = atoi(cmds[1].c_str());
-                printInstruction(context, context->debugCxtBc, context->debugCxtIp, regN + 1);
+                if (cmds.size() > 2)
+                    goto evalDefault;
+                if (cmds.size() != 1 && !isNumber(cmds[1]))
+                    goto evalDefault;
+
+                if (cmds.size() == 2)
+                    regN = atoi(cmds[1].c_str());
+
+                printInstruction(context, context->debugCxtBc, context->debugCxtIp, regN);
                 continue;
             }
 
             // Print context
+            /////////////////////////////////////////
             if (cmd == "cxt")
             {
+                if (cmds.size() != 1)
+                    goto evalDefault;
                 printContext(context);
                 continue;
             }
 
             // Print all registers
-            if ((cmd == "r" || cmd == "regs") && (cmds.size() == 1 || cmds.size() == 2))
+            /////////////////////////////////////////
+            if (cmd == "r" || cmd == "regs")
             {
+                if (cmds.size() > 2)
+                    goto evalDefault;
+
                 ValueFormat fmt;
                 fmt.isHexa   = true;
                 fmt.bitCount = 64;
                 if (cmds.size() > 1)
                 {
                     if (!getValueFormat(cmds[1], fmt))
-                    {
-                        g_Log.printColor("invalid format\n", LogColor::Red);
-                        continue;
-                    }
+                        goto evalDefault;
                 }
 
                 g_Log.setColor(LogColor::Gray);
@@ -1578,8 +1682,16 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             }
 
             // Print one register
-            if (cmd[0] == 'r' && cmd.length() > 1 && isdigit(cmd[1]) && (cmds.size() == 1 || cmds.size() == 2))
+            /////////////////////////////////////////
+            if (cmd[0] == 'r')
             {
+                if (cmd.length() == 1)
+                    goto evalDefault;
+                if (!isNumber(cmd.buffer + 1))
+                    goto evalDefault;
+                if (cmds.size() > 2)
+                    goto evalDefault;
+
                 g_Log.setColor(LogColor::Gray);
                 int regN;
                 if (!getRegIdx(context, cmd, regN))
@@ -1593,7 +1705,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 {
                     if (!getValueFormat(cmds[1], fmt))
                     {
-                        g_Log.printColor("invalid format\n", LogColor::Red);
+                        g_Log.printColor("invalid 'r' print format\n", LogColor::Red);
                         continue;
                     }
                 }
@@ -1608,8 +1720,12 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             }
 
             // Bytecode dump
+            /////////////////////////////////////////
             if (cmd == "bc")
             {
+                if (cmds.size() != 1)
+                    goto evalDefault;
+
                 g_Log.unlock();
                 context->debugCxtBc->print(context->debugCxtIp);
                 g_Log.lock();
@@ -1617,8 +1733,12 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             }
 
             // Bc mode
+            /////////////////////////////////////////
             if (cmd == "bcmode")
             {
+                if (cmds.size() != 1)
+                    goto evalDefault;
+
                 context->debugBcMode = !context->debugBcMode;
                 if (context->debugBcMode)
                     g_Log.printColor("bytecode mode\n", LogColor::White);
@@ -1628,9 +1748,20 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             }
 
             // Function code
-            if (((cmd == "l" || cmd == "list") && cmds.size() <= 2) ||
-                (cmd == "ll" && cmds.size() == 1))
+            /////////////////////////////////////////
+            if (cmd == "l" || cmd == "list" || cmd == "ll")
             {
+                if (cmd == "ll" && cmds.size() != 1)
+                    goto evalDefault;
+
+                if (cmd == "l" || cmd == "list")
+                {
+                    if (cmds.size() > 2)
+                        goto evalDefault;
+                    if (cmds.size() > 1 && !isNumber(cmds[1]))
+                        goto evalDefault;
+                }
+
                 if (context->debugCxtBc->node && context->debugCxtBc->node->kind == AstNodeKind::FuncDecl && context->debugCxtBc->node->sourceFile)
                 {
                     SourceFile*     curFile;
@@ -1679,6 +1810,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             }
 
             // Breakpoints
+            /////////////////////////////////////////
             if (cmd == "b" || cmd == "break" || cmd == "tb" || cmd == "tbreak")
             {
                 if (cmds.size() == 1)
@@ -1687,22 +1819,15 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                     continue;
                 }
 
+                if (cmds.size() > 3)
+                    goto evalDefault;
+
                 bool oneShot = false;
                 if (cmd == "tb" || cmd == "tbreak")
                     oneShot = true;
 
-                if (cmds.size() == 3 && cmds[1] == "fct")
-                {
-                    ByteCodeRunContext::DebugBreakpoint bkp;
-                    bkp.type       = ByteCodeRunContext::DebugBkpType::FuncName;
-                    bkp.name       = cmds[2];
-                    bkp.autoRemove = oneShot;
-                    if (addBreakpoint(context, bkp))
-                        g_Log.printColor(Fmt("breakpoint #%d entering function '%s'\n", context->debugBreakpoints.size(), bkp.name.c_str()), LogColor::White);
-                    continue;
-                }
-
-                if (cmds.size() == 2 && isdigit(cmds[1][0]))
+                // At line
+                if (cmds.size() == 2 && isNumber(cmds[1]))
                 {
                     SourceFile*     curFile;
                     SourceLocation* curLocation;
@@ -1719,6 +1844,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                     continue;
                 }
 
+                // Clear breakpoints
                 if (cmds.size() == 2 && cmds[1] == "clear")
                 {
                     if (context->debugBreakpoints.empty())
@@ -1732,7 +1858,26 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                     continue;
                 }
 
-                if (cmds.size() == 3 && cmds[1] == "clear" && isdigit(cmds[2][0]))
+                if (cmds.size() == 2)
+                    goto evalDefault;
+
+                // Break on function
+                if (cmds[1] == "fct")
+                {
+                    ByteCodeRunContext::DebugBreakpoint bkp;
+                    bkp.type       = ByteCodeRunContext::DebugBkpType::FuncName;
+                    bkp.name       = cmds[2];
+                    bkp.autoRemove = oneShot;
+                    if (addBreakpoint(context, bkp))
+                        g_Log.printColor(Fmt("breakpoint #%d entering function '%s'\n", context->debugBreakpoints.size(), bkp.name.c_str()), LogColor::White);
+                    continue;
+                }
+
+                if (!isNumber(cmds[2]))
+                    goto evalDefault;
+
+                // Clear one breakpoint
+                if (cmds[1] == "clear")
                 {
                     int numB = atoi(cmds[2]);
                     if (!numB || numB - 1 >= context->debugBreakpoints.size())
@@ -1746,7 +1891,8 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                     continue;
                 }
 
-                if (cmds.size() == 3 && cmds[1] == "disable" && isdigit(cmds[2][0]))
+                // Disable one breakpoint
+                if (cmds[1] == "disable")
                 {
                     int numB = atoi(cmds[2]);
                     if (!numB || numB - 1 >= context->debugBreakpoints.size())
@@ -1760,7 +1906,8 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                     continue;
                 }
 
-                if (cmds.size() == 3 && cmds[1] == "enable" && isdigit(cmds[2][0]))
+                // Enable one breakpoint
+                if (cmds[1] == "enable")
                 {
                     int numB = atoi(cmds[2]);
                     if (!numB || numB - 1 >= context->debugBreakpoints.size())
@@ -1776,6 +1923,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             }
 
             // Next instruction
+            /////////////////////////////////////////
             if (cmd.empty())
             {
                 if (context->debugBcMode)
@@ -1786,16 +1934,24 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             }
 
             // Step to next line
-            if ((cmd == "s" || cmd == "step") && cmds.size() == 1)
+            /////////////////////////////////////////
+            if (cmd == "s" || cmd == "step")
             {
+                if (cmds.size() > 1)
+                    goto evalDefault;
+
                 context->debugStackFrameOffset = 0;
                 context->debugStepMode         = ByteCodeRunContext::DebugStepMode::NextLine;
                 break;
             }
 
             // Step to next line, step out
-            if ((cmd == "n" || cmd == "next") && cmds.size() == 1)
+            /////////////////////////////////////////
+            if (cmd == "n" || cmd == "next")
             {
+                if (cmds.size() > 1)
+                    goto evalDefault;
+
                 context->debugStackFrameOffset = 0;
                 context->debugStepMode         = ByteCodeRunContext::DebugStepMode::NextLineStepOut;
                 context->debugStepRC           = context->curRC;
@@ -1803,8 +1959,12 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             }
 
             // Run to the end of the current function
-            if ((cmd == "f" || cmd == "finish") && cmds.size() == 1)
+            /////////////////////////////////////////
+            if (cmd == "f" || cmd == "finish")
             {
+                if (cmds.size() > 1)
+                    goto evalDefault;
+
                 context->debugStackFrameOffset = 0;
                 context->debugStepMode         = ByteCodeRunContext::DebugStepMode::FinishedFunction;
                 context->debugStepRC           = context->curRC - 1;
@@ -1812,8 +1972,12 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             }
 
             // Continue
-            if ((cmd == "c" || cmd == "cont" || cmd == "continue") && cmds.size() == 1)
+            /////////////////////////////////////////
+            if (cmd == "c" || cmd == "cont" || cmd == "continue")
             {
+                if (cmds.size() > 1)
+                    goto evalDefault;
+
                 context->debugStackFrameOffset = 0;
                 context->debugStepMode         = ByteCodeRunContext::DebugStepMode::ToNextBreakpoint;
                 context->debugOn               = false;
@@ -1821,14 +1985,20 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             }
 
             // Jump to line/instruction
-            if ((cmd == "j" || cmd == "jump") && cmds.size() == 2 && isdigit(cmds[1][0]))
+            /////////////////////////////////////////
+            if (cmd == "j" || cmd == "jump")
             {
+                if (cmds.size() > 2)
+                    goto evalDefault;
+                if (cmds.size() > 1 && !isNumber(cmds[1]))
+                    goto evalDefault;
+
                 context->debugStackFrameOffset = 0;
 
                 uint32_t to = (uint32_t) atoi(cmds[1]);
                 if (to >= context->bc->numInstructions - 1)
                 {
-                    g_Log.printColor("invalid jump destination\n", LogColor::Red);
+                    g_Log.printColor("cannot reach this 'jump' destination\n", LogColor::Red);
                     continue;
                 }
 
@@ -1844,7 +2014,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                     {
                         if (curIp >= context->bc->out + context->bc->numInstructions - 1)
                         {
-                            g_Log.printColor("invalid jump destination\n", LogColor::Red);
+                            g_Log.printColor("cannot reach this 'jump' destination\n", LogColor::Red);
                             break;
                         }
 
@@ -1867,8 +2037,14 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             }
 
             // Run until a line/instruction is reached
-            if ((cmd == "un" || cmd == "until") && cmds.size() == 2 && isdigit(cmds[1][0]))
+            /////////////////////////////////////////
+            if (cmd == "un" || cmd == "until")
             {
+                if (cmds.size() > 2)
+                    goto evalDefault;
+                if (cmds.size() > 1 && !isNumber(cmds[1]))
+                    goto evalDefault;
+
                 ByteCodeRunContext::DebugBreakpoint bkp;
                 if (context->debugBcMode)
                     bkp.type = ByteCodeRunContext::DebugBkpType::InstructionIndex;
@@ -1883,7 +2059,21 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 break;
             }
 
-            g_Log.printColor("invalid command or argument, type '?' for help\n", LogColor::Red);
+        evalDefault:
+            // Default to 'print' / 'execute'
+            /////////////////////////////////////////
+            EvaluateResult res;
+            if(evalExpression(context, line, res, true))
+            {
+                Utf8 str = Fmt("%s: ", res.type->getDisplayNameC());
+                appendValue(str, res);
+                g_Log.printColor(str);
+                if (str.back() != '\n')
+                    g_Log.eol();
+                continue;
+            }
+
+            evalDynExpression(context, line, res, CompilerAstKind::EmbeddedInstruction);
         }
     }
 
