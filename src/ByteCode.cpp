@@ -21,7 +21,7 @@ void ByteCode::releaseOut()
     g_Allocator.free(out, s);
 }
 
-void ByteCode::getLocation(ByteCode* bc, ByteCodeInstruction* ip, SourceFile** file, SourceLocation** location, bool force)
+void ByteCode::getLocation(ByteCode* bc, ByteCodeInstruction* ip, SourceFile** file, SourceLocation** location, bool force, bool noInline)
 {
     *file = ip && ip->node && ip->node->sourceFile ? ip->node->sourceFile : bc->sourceFile;
 
@@ -35,7 +35,7 @@ void ByteCode::getLocation(ByteCode* bc, ByteCodeInstruction* ip, SourceFile** f
         return;
 
     // When inside an inline block (and not a mixin), zap all inline chain to the caller
-    if (!bc->sourceFile || !bc->sourceFile->module->buildCfg.byteCodeDebugInline)
+    if (!bc->sourceFile || !bc->sourceFile->module->buildCfg.byteCodeDebugInline || !noInline)
     {
         if (ip->node->ownerInline && !(ip->node->flags & AST_IN_MIXIN) && ip->node->ownerInline->ownerFct == ip->node->ownerFct)
         {

@@ -161,7 +161,7 @@ struct ByteCode
     static void* doByteCodeLambda(void* ptr);
     static void* undoByteCodeLambda(void* ptr);
     static bool  isByteCodeLambda(void* ptr);
-    static void  getLocation(ByteCode* bc, ByteCodeInstruction* ip, SourceFile** file, SourceLocation** location, bool force = false);
+    static void  getLocation(ByteCode* bc, ByteCodeInstruction* ip, SourceFile** file, SourceLocation** location, bool force = false, bool noInline = false);
 
     void              printSourceCode(ByteCodeInstruction* ip, uint32_t* lastLine = nullptr, SourceFile** lastFile = nullptr);
     void              printPrettyInstruction(ByteCodeInstruction* ip);

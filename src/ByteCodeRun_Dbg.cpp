@@ -1063,6 +1063,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
 
     g_Log.lock();
     g_ByteCodeStackTrace->currentContext = context;
+    auto module                          = context->bc->sourceFile->module;
 
     if (context->debugEntry)
     {
@@ -1070,6 +1071,11 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
         g_Log.eol();
         g_Log.printColor("#############################################\n", LogColor::Magenta);
         g_Log.printColor("entering bytecode debugger, type '?' for help\n", LogColor::Magenta);
+        g_Log.printColor("---------------------------------------------\n", LogColor::Magenta);
+        g_Log.printColor(Fmt("build configuration            = %s\n", g_CommandLine->buildCfg.c_str()), LogColor::Magenta);
+        g_Log.printColor(Fmt("BuildCfg.byteCodeDebugInline   = %s\n", module->buildCfg.byteCodeDebugInline ? "true" : "false"), LogColor::Magenta);
+        g_Log.printColor(Fmt("BuildCfg.byteCodeInline        = %s\n", module->buildCfg.byteCodeInline ? "true" : "false"), LogColor::Magenta);
+        g_Log.printColor(Fmt("BuildCfg.byteCodeOptimizeLevel = %d\n", module->buildCfg.byteCodeOptimizeLevel), LogColor::Magenta);
         g_Log.printColor("#############################################\n", LogColor::Magenta);
         g_Log.eol();
         context->debugEntry            = false;
@@ -1108,7 +1114,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
     {
         SourceFile*     file;
         SourceLocation* location;
-        ByteCode::getLocation(context->bc, ip, &file, &location);
+        ByteCode::getLocation(context->bc, ip, &file, &location, false, true);
         if (!location || (context->debugStepLastFile == file && context->debugStepLastLocation && context->debugStepLastLocation->line == location->line))
             zapCurrentIp = true;
         else if (context->curRC > context->debugStepRC)
