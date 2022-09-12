@@ -522,28 +522,22 @@ static void printContext(ByteCodeRunContext* context)
     g_Log.unlock();
     g_Log.eol();
 
+    if (ipNode && ipNode->ownerFct)
+    {
+        ipNode->ownerFct->typeInfo->computeScopedName();
+        g_Log.messageHeaderDot("function", ipNode->ownerFct->typeInfo->scopedName, LogColor::Gray, LogColor::Gray, " ");
+    }
+
     g_Log.messageHeaderDot("bytecode name", bc->name.c_str(), LogColor::Gray, LogColor::Gray, " ");
     g_Log.messageHeaderDot("bytecode type", bc->getCallType()->getDisplayNameC(), LogColor::Gray, LogColor::Gray, " ");
 
-    if (bc->sourceFile)
-    {
-        if (bc->node)
-            g_Log.messageHeaderDot("bytecode location", Fmt("%s:%u:%u", bc->sourceFile->path.c_str(), bc->node->token.startLocation.line + 1, bc->node->token.startLocation.column + 1), LogColor::Gray, LogColor::Gray, " ");
-        else
-            g_Log.messageHeaderDot("bytecode source file", bc->sourceFile->path, LogColor::Gray, LogColor::Gray, " ");
-    }
+    if (bc->sourceFile && bc->node)
+        g_Log.messageHeaderDot("bytecode location", Fmt("%s:%u:%u", bc->sourceFile->path.c_str(), bc->node->token.startLocation.line + 1, bc->node->token.startLocation.column + 1), LogColor::Gray, LogColor::Gray, " ");
+    else if (bc->sourceFile)
+        g_Log.messageHeaderDot("bytecode source file", bc->sourceFile->path, LogColor::Gray, LogColor::Gray, " ");
 
-    if (ipNode)
-    {
-        if (ipNode->sourceFile)
-            g_Log.messageHeaderDot("instruction location", Fmt("%s:%u:%u", ipNode->sourceFile->path.c_str(), ipNode->token.startLocation.line + 1, ipNode->token.startLocation.column + 1), LogColor::Gray, LogColor::Gray, " ");
-
-        if (ipNode->ownerFct)
-        {
-            ipNode->ownerFct->typeInfo->computeScopedName();
-            g_Log.messageHeaderDot("function", ipNode->ownerFct->typeInfo->scopedName, LogColor::Gray, LogColor::Gray, " ");
-        }
-    }
+    if (ipNode && ipNode->sourceFile)
+        g_Log.messageHeaderDot("instruction location", Fmt("%s:%u:%u", ipNode->sourceFile->path.c_str(), ipNode->token.startLocation.line + 1, ipNode->token.startLocation.column + 1), LogColor::Gray, LogColor::Gray, " ");
 
     g_Log.messageHeaderDot("stack level", Fmt("%u", context->debugStackFrameOffset), LogColor::Gray, LogColor::Gray, " ");
 
@@ -1057,6 +1051,113 @@ static void printContextInstruction(ByteCodeRunContext* context)
     context->debugStepLastLocation = location;
 }
 
+static Utf8 getCommandLine(ByteCodeRunContext* context)
+{
+    static vector<Utf8> debugCmdHistory;
+    static uint32_t     debugCmdHistoryIndex = 0;
+
+    Utf8 line;
+    int  cursorX = 0;
+
+    while (true)
+    {
+        int  c     = 0;
+        bool ctrl  = false;
+        bool shift = false;
+        auto key   = OS::promptChar(c, ctrl, shift);
+
+        if (key == OS::Key::Return)
+            break;
+
+        switch (key)
+        {
+        case OS::Key::Left:
+            if (!cursorX)
+                continue;
+            fputs("\x1B[1D", stdout); // Move the cursor one unit to the left
+            cursorX--;
+            continue;
+        case OS::Key::Right:
+            if (cursorX == line.count)
+                continue;
+            fputs("\x1B[1C", stdout); // Move the cursor one unit to the right
+            cursorX++;
+            continue;
+        case OS::Key::Home:
+            if (cursorX)
+                fputs(Fmt("\x1B[%dD", cursorX), stdout); // Move the cursor at 0
+            cursorX = 0;
+            continue;
+        case OS::Key::End:
+            if (cursorX != line.count)
+                fputs(Fmt("\x1B[%dC", line.count - cursorX), stdout); // Move the cursor to the end of line
+            cursorX = line.count;
+            continue;
+        case OS::Key::Delete:
+            if (cursorX == line.count)
+                continue;
+            fputs("\x1B[1P", stdout); // Delete the character
+            line.remove(cursorX, 1);
+            continue;
+        case OS::Key::Back:
+            if (!cursorX)
+                continue;
+            fputs("\x1B[1D", stdout); // Move the cursor one unit to the left
+            fputs("\x1B[1P", stdout); // Delete the character
+            cursorX--;
+            line.remove(cursorX, 1);
+            continue;
+        case OS::Key::Up:
+            if (debugCmdHistoryIndex == 0)
+                continue;
+            if (cursorX) // Move the cursor at 0
+                fputs(Fmt("\x1B[%dD", cursorX), stdout);
+            fputs(Fmt("\x1B[%dX", line.count), stdout); // Erase the current command
+            line = debugCmdHistory[--debugCmdHistoryIndex];
+            fputs(line, stdout); // Insert command from history
+            cursorX = line.count;
+            break;
+        case OS::Key::Down:
+            if (debugCmdHistoryIndex == debugCmdHistory.size())
+                continue;
+            if (cursorX) // Move the cursor at 0
+                fputs(Fmt("\x1B[%dD", cursorX), stdout);
+            fputs(Fmt("\x1B[%dX", line.count), stdout); // Erase the current command
+            debugCmdHistoryIndex++;
+            if (debugCmdHistoryIndex != debugCmdHistory.size())
+            {
+                line = debugCmdHistory[debugCmdHistoryIndex];
+                fputs(line, stdout); // Insert command from history
+                cursorX = line.count;
+            }
+            else
+            {
+                line.clear();
+                cursorX = 0;
+            }
+            break;
+        case OS::Key::Ascii:
+            fputs("\x1B[1@", stdout); // Insert n blanks and shift right
+            fputc(c, stdout);
+            line.insert(cursorX, (char) c);
+            cursorX++;
+            break;
+        }
+    }
+
+    line.trim();
+    if (!line.empty())
+    {
+        while (debugCmdHistory.size() != debugCmdHistoryIndex)
+            debugCmdHistory.pop_back();
+        debugCmdHistory.push_back(line);
+        debugCmdHistoryIndex = (uint32_t) debugCmdHistory.size();
+    }
+
+    g_Log.eol();
+    return line;
+}
+
 bool ByteCodeRun::debugger(ByteCodeRunContext* context)
 {
     auto ip = context->ip;
@@ -1067,17 +1168,29 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
 
     if (context->debugEntry)
     {
+        static bool firstOne = true;
+
         g_Log.setColor(LogColor::Gray);
-        g_Log.eol();
-        g_Log.printColor("#############################################\n", LogColor::Magenta);
-        g_Log.printColor("entering bytecode debugger, type '?' for help\n", LogColor::Magenta);
-        g_Log.printColor("---------------------------------------------\n", LogColor::Magenta);
-        g_Log.printColor(Fmt("build configuration            = %s\n", g_CommandLine->buildCfg.c_str()), LogColor::Magenta);
-        g_Log.printColor(Fmt("BuildCfg.byteCodeDebugInline   = %s\n", module->buildCfg.byteCodeDebugInline ? "true" : "false"), LogColor::Magenta);
-        g_Log.printColor(Fmt("BuildCfg.byteCodeInline        = %s\n", module->buildCfg.byteCodeInline ? "true" : "false"), LogColor::Magenta);
-        g_Log.printColor(Fmt("BuildCfg.byteCodeOptimizeLevel = %d\n", module->buildCfg.byteCodeOptimizeLevel), LogColor::Magenta);
-        g_Log.printColor("#############################################\n", LogColor::Magenta);
-        g_Log.eol();
+
+        if (firstOne)
+        {
+            firstOne = false;
+            g_Log.eol();
+            g_Log.printColor("#############################################\n", LogColor::Magenta);
+            g_Log.printColor("entering bytecode debugger, type '?' for help\n", LogColor::Magenta);
+            g_Log.printColor("---------------------------------------------\n", LogColor::Magenta);
+            g_Log.printColor(Fmt("build configuration            = '%s'\n", g_CommandLine->buildCfg.c_str()), LogColor::Magenta);
+            g_Log.printColor(Fmt("BuildCfg.byteCodeDebugInline   = %s\n", module->buildCfg.byteCodeDebugInline ? "true" : "false"), LogColor::Magenta);
+            g_Log.printColor(Fmt("BuildCfg.byteCodeInline        = %s\n", module->buildCfg.byteCodeInline ? "true" : "false"), LogColor::Magenta);
+            g_Log.printColor(Fmt("BuildCfg.byteCodeOptimizeLevel = %d\n", module->buildCfg.byteCodeOptimizeLevel), LogColor::Magenta);
+            g_Log.printColor("#############################################\n", LogColor::Magenta);
+            g_Log.eol();
+        }
+        else
+        {
+            g_Log.printColor("#### @breakpoint() hit ####\n", LogColor::Magenta);
+        }
+
         context->debugEntry            = false;
         context->debugStepMode         = ByteCodeRunContext::DebugStepMode::None;
         context->debugStepLastLocation = nullptr;
@@ -1152,12 +1265,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             g_Log.print("> ");
 
             // Get command from user
-            char az[1024];
-            fgets(az, 1024, stdin);
-            Utf8 line = az;
-            if (line.length() > 0 && line.back() == '\n')
-                line.count--;
-            line.trim();
+            auto line = getCommandLine(context);
 
             // Split in command + parameters
             Utf8         cmd;

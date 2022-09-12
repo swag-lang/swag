@@ -1003,6 +1003,61 @@ namespace OS
         g_X64Gen.concat.currentSP = (uint8_t*) ptr;
     }
 
+    Key promptChar(int& c, bool& ctrl, bool& shift)
+    {
+        INPUT_RECORD buffer[128];
+        DWORD        dwRead;
+        auto         hStdin = GetStdHandle(STD_INPUT_HANDLE);
+        SetConsoleMode(hStdin, ENABLE_WINDOW_INPUT);
+
+        while (true)
+        {
+            if (!ReadConsoleInput(hStdin, buffer, 128, &dwRead))
+                continue;
+
+            for (DWORD i = 0; i < dwRead; i++)
+            {
+                const auto& evt = buffer[i];
+                if (evt.EventType != KEY_EVENT)
+                    continue;
+                if (!evt.Event.KeyEvent.bKeyDown)
+                    continue;
+
+                ctrl  = GetAsyncKeyState(VK_CONTROL) < 0;
+                shift = GetAsyncKeyState(VK_SHIFT) < 0;
+
+                switch (evt.Event.KeyEvent.wVirtualKeyCode)
+                {
+                case VK_RETURN:
+                    return OS::Key::Return;
+                case VK_LEFT:
+                    return OS::Key::Left;
+                case VK_RIGHT:
+                    return OS::Key::Right;
+                case VK_UP:
+                    return OS::Key::Up;
+                case VK_DOWN:
+                    return OS::Key::Down;
+                case VK_HOME:
+                    return OS::Key::Home;
+                case VK_END:
+                    return OS::Key::End;
+                case VK_DELETE:
+                    return OS::Key::Delete;
+                case VK_BACK:
+                    return OS::Key::Back;
+                case VK_TAB:
+                    return OS::Key::Tab;
+                default:
+                    c = evt.Event.KeyEvent.uChar.AsciiChar;
+                    if (c >= ' ' && c <= 127)
+                        return OS::Key::Ascii;
+                    continue;
+                }
+            }
+        }
+    }
+
 }; // namespace OS
 
 #endif

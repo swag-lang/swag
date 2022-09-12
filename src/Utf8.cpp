@@ -581,6 +581,22 @@ void Utf8::insert(int index, const char* str)
     buffer[count] = 0;
 }
 
+void Utf8::insert(int index, char c)
+{
+    if (index >= count)
+    {
+        append(c);
+        return;
+    }
+
+    makeLocal();
+    reserve(count + 2);
+    memmove(buffer + index + 1, buffer + index, count - index);
+    buffer[index] = c;
+    count += 1;
+    buffer[count] = 0;
+}
+
 void Utf8::replace(const char* src, const char* dst)
 {
     int pos;

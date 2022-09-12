@@ -11,6 +11,21 @@ struct ByteCodeRunContext;
 
 namespace OS
 {
+    enum class Key
+    {
+        Left,
+        Right,
+        Up,
+        Down,
+        Tab,
+        Return,
+        Home,
+        End,
+        Delete,
+        Back,
+        Ascii,
+    };
+
     void                 setup();
     void                 consoleSetColor(LogColor color);
     const BackendTarget& getNativeTarget();
@@ -22,6 +37,7 @@ namespace OS
     void* loadLibrary(const char* name);
     void* getProcAddress(void* handle, const char* name);
     bool  isDebuggerAttached();
+    Key   promptChar(int& c, bool& ctrl, bool& shift);
 
     Utf8 getExePath();
     Utf8 getLastErrorAsString();

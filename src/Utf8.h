@@ -55,6 +55,7 @@ struct Utf8
     int         find(const char* str, int startpos = 0) const;
     void        remove(int index, int len);
     void        insert(int index, const char* str);
+    void        insert(int index, char c);
     bool        compareNoCase(const Utf8& txt1);
 
                 operator const char*();
