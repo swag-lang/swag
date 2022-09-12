@@ -839,6 +839,7 @@ static void printHelp()
     g_Log.eol();
 
     g_Log.print("<return>                   runs to the next line or instruction (depends on 'bcmode')\n");
+    g_Log.print("<tab>                      contextual completion of the current word\n");
     g_Log.eol();
 
     g_Log.print("s(tep)                     runs to the next line\n");
@@ -1141,6 +1142,64 @@ static Utf8 getCommandLine(ByteCodeRunContext* context)
             fputc(c, stdout);
             line.insert(cursorX, (char) c);
             cursorX++;
+            break;
+
+        case OS::Key::Tab:
+            if (!context->debugCxtIp || !context->debugCxtIp->node || !context->debugCxtIp->node->sourceFile)
+                continue;
+            if (cursorX != line.count)
+                continue;
+
+            vector<Utf8> tokens;
+            Utf8::tokenize(line, ' ', tokens);
+            if (tokens.empty())
+                continue;
+
+            SemanticContext                   semContext;
+            SemanticJob                       semJob;
+            VectorNative<AlternativeScope>    scopeHierarchy;
+            VectorNative<AlternativeScopeVar> scopeHierarchyVars;
+            semContext.node       = context->debugCxtIp->node;
+            semContext.job        = &semJob;
+            semContext.sourceFile = context->debugCxtIp->node->sourceFile;
+            if (SemanticJob::collectScopeHierarchy(&semContext, scopeHierarchy, scopeHierarchyVars, context->debugCxtIp->node, COLLECT_ALL))
+            {
+                bool done = false;
+                for (const auto& p : scopeHierarchy)
+                {
+                    const auto& mm       = p.scope->symTable.mapNames;
+                    uint32_t    cptValid = 0;
+                    for (uint32_t i = 0; i < mm.allocated; i++)
+                    {
+                        if (!mm.buffer[i].symbolName || !mm.buffer[i].hash)
+                            continue;
+                        const auto& sn = mm.buffer[i].symbolName->name;
+                        if (sn == tokens.back())
+                        {
+                            done = true;
+                            break;
+                        }
+
+                        if (sn.find(tokens.back()) == 0)
+                        {
+                            auto n = mm.buffer[i].symbolName->name;
+                            n.remove(0, tokens.back().length());
+                            fputs(n, stdout);
+                            line += n;
+                            cursorX += n.length();
+                            done = true;
+                            break;
+                        }
+
+                        cptValid++;
+                        if (cptValid >= mm.count)
+                            break;
+                    }
+
+                    if (done)
+                        break;
+                }
+            }
             break;
         }
     }
