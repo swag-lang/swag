@@ -1564,7 +1564,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 {
                     context->debugStackFrameOffset = oldIndex;
                     computeDebugContext(context);
-                    g_Log.printColor("this frame is of an external code; you cannot go there\n", LogColor::Red);
+                    g_Log.printColor("this frame is external; you cannot go there\n", LogColor::Red);
                     continue;
                 }
 
@@ -1596,7 +1596,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                     {
                         context->debugStackFrameOffset = oldIndex;
                         computeDebugContext(context);
-                        g_Log.printColor("this frame is of an external code; you cannot go up\n", LogColor::Red);
+                        g_Log.printColor("the up frame is external; you cannot go there\n", LogColor::Red);
                         continue;
                     }
 
@@ -1629,7 +1629,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                     {
                         context->debugStackFrameOffset = oldIndex;
                         computeDebugContext(context);
-                        g_Log.printColor("this frame is of an external code; you cannot go down\n", LogColor::Red);
+                        g_Log.printColor("the down frame is external; you cannot go there\n", LogColor::Red);
                         continue;
                     }
 

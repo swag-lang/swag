@@ -84,7 +84,6 @@ static void byteCodeRun(bool forCallback, void* byteCodePtr, va_list valist)
 
     g_ByteCodeStackTrace->push({nullptr, nullptr});
     module->runner.run(g_RunContext);
-    g_ByteCodeStackTrace->pop();
 
     g_RunContext->sp            = saveSp;
     g_RunContext->spAlt         = saveSpAlt;

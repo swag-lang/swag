@@ -37,7 +37,8 @@ void Diagnostic::printSourceLine() const
             path = path1;
     }
 
-    g_Log.print("--> ");
+    if (errorLevel != DiagnosticLevel::CallStack && errorLevel != DiagnosticLevel::CallStackInlined)
+        g_Log.print("--> ");
     g_Log.print(Utf8::normalizePath(path).c_str());
     if (hasRangeLocation)
         g_Log.print(Fmt(":%d:%d:%d:%d: ", startLocation.line + 1, startLocation.column + 1, endLocation.line + 1, endLocation.column + 1));
@@ -118,9 +119,9 @@ void Diagnostic::report(bool verboseMode) const
     {
         g_Log.setColor(stackColor);
         if (currentStackLevel)
-            g_Log.print(Fmt("callstack:[%03u]: ", stackLevel));
+            g_Log.print(Fmt("--> callstack:%03u: ", stackLevel));
         else
-            g_Log.print(Fmt("callstack:%03u: ", stackLevel));
+            g_Log.print(Fmt("    callstack:%03u: ", stackLevel));
         break;
     }
     case DiagnosticLevel::CallStackInlined:
