@@ -848,7 +848,7 @@ static void printHelp()
     g_Log.eol();
 
     g_Log.print("s(tep)                     runs to the next line\n");
-    g_Log.print("n(ext)                     like s, but does not step into functions\n");
+    g_Log.print("n(ext)                     like s, but does not step into functions or inlined code\n");
     g_Log.print("f(inish)                   runs until the current function is done\n");
     g_Log.print("c(ont(inue))               runs until another breakpoint is reached\n");
     g_Log.print("un(til) <num>              runs to the given line or instruction (depends on 'bcmode')\n");
@@ -859,10 +859,10 @@ static void printHelp()
     g_Log.print("ll                         print the current function source code\n");
     g_Log.eol();
 
-    g_Log.print("e(xec(ute)) <stmt>         execute <stmt>\n");
+    g_Log.print("e(xec(ute)) <stmt>         execute the Swag code statement <stmt>\n");
     g_Log.eol();
 
-    g_Log.print("p(rint) <expr>             print the value of <expr>\n");
+    g_Log.print("p(rint) <expr>             print the value of the Swag expression <expr>\n");
     g_Log.print("loc(als)                   print all current local variables\n");
     g_Log.print("a(rgs)                     print all current function arguments\n");
     g_Log.print("cxt                        print contextual informations\n");

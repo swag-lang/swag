@@ -134,6 +134,7 @@ func mySillyFunction()->string
 # For the braves
 
 * [Start](docs/getting_started.md) your first project, compile it, run it.
+* Use the compiler as a [script](docs/swag_as_script.md) interpreter.
 * [Contribute](docs/contribute_tests.md) to the compiler **test suite**, this will help (a lot).
 
 # For the very braves
