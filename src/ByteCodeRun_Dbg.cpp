@@ -527,6 +527,7 @@ static void printMemory(ByteCodeRunContext* context, const Utf8& arg)
         addrB = addrLine;
         if (fmt.bitCount == 8)
         {
+            // Align to the right
             for (int i = 0; i < perLine - min(count, perLine); i++)
             {
                 if (fmt.isHexa)
@@ -537,6 +538,7 @@ static void printMemory(ByteCodeRunContext* context, const Utf8& arg)
                     g_Log.print("     ");
             }
 
+            // Print as 'char'
             g_Log.print(" ");
             for (int i = 0; i < min(count, perLine); i++)
             {
@@ -551,7 +553,7 @@ static void printMemory(ByteCodeRunContext* context, const Utf8& arg)
         g_Log.eol();
 
         addrB = addrLine;
-        addrB += count * (fmt.bitCount / 8);
+        addrB += min(count, perLine) * (fmt.bitCount / 8);
         count -= min(count, 8);
         if (!count)
             break;
