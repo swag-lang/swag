@@ -128,7 +128,7 @@ static bool evalDynExpression(ByteCodeRunContext* context, const Utf8& expr, Eva
         return false;
     }
 
-    res.type       = TypeManager::concreteReferenceType(child->typeInfo);
+    res.type       = TypeManager::concreteReferenceType(child->typeInfo, CONCRETE_FUNC);
     res.storage[0] = runContext.registersRR[0].pointer;
     res.storage[1] = runContext.registersRR[1].pointer;
     if (res.type->flags & TYPEINFO_RETURN_BY_COPY)
@@ -1087,7 +1087,7 @@ static void printContextInstruction(ByteCodeRunContext* context)
     if (context->debugCxtIp->node && context->debugCxtIp->node->ownerInline)
     {
         isInlined = true;
-        newFunc = context->debugCxtIp->node->ownerInline->func;
+        newFunc   = context->debugCxtIp->node->ownerInline->func;
     }
     else if (context->debugCxtIp->node)
     {
@@ -1096,7 +1096,7 @@ static void printContextInstruction(ByteCodeRunContext* context)
 
     if (newFunc != context->debugStepLastFunc)
     {
-        if(isInlined)
+        if (isInlined)
             g_Log.printColor(Fmt("=> inlined function %s\n", newFunc->getScopedName().c_str()), LogColor::Yellow);
         else
             g_Log.printColor(Fmt("=> function %s\n", newFunc->getScopedName().c_str()), LogColor::Yellow);
