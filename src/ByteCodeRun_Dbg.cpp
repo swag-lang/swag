@@ -50,6 +50,7 @@ static bool evalDynExpression(ByteCodeRunContext* context, const Utf8& expr, Eva
     auto        child = parent.childs.front();
     SemanticJob semanticJob;
     semanticJob.sourceFile = sourceFile;
+    semanticJob.module     = sourceFile->module;
     sourceFile->silent++;
     semanticJob.nodes.push_back(child);
     auto result = semanticJob.execute();
@@ -77,6 +78,7 @@ static bool evalDynExpression(ByteCodeRunContext* context, const Utf8& expr, Eva
     // Gen bytecode for expression
     ByteCodeGenJob genJob;
     genJob.sourceFile = sourceFile;
+    genJob.module     = sourceFile->module;
     genJob.nodes.push_back(child);
     child->allocateExtension();
     child->extension->bc             = g_Allocator.alloc<ByteCode>();
@@ -2103,11 +2105,15 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             EvaluateResult res;
             if (evalExpression(context, line, res, true))
             {
-                Utf8 str = Fmt("%s: ", res.type->getDisplayNameC());
-                appendValue(str, res);
-                g_Log.printColor(str);
-                if (str.back() != '\n')
-                    g_Log.eol();
+                if (!res.type->isNative(NativeTypeKind::Void))
+                {
+                    Utf8 str = Fmt("%s: ", res.type->getDisplayNameC());
+                    appendValue(str, res);
+                    g_Log.printColor(str);
+                    if (str.back() != '\n')
+                        g_Log.eol();
+                }
+
                 continue;
             }
 
