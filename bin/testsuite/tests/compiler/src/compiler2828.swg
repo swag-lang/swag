@@ -11,7 +11,7 @@ func level0()
 #[Swag.Optim("", false)]
 func test(level: int)
 {
-    //@bcdbg()
+    //@breakpoint()
     ptr := &level
     level0()
     toto := level

@@ -3303,7 +3303,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     case ByteCodeOp::IntrinsicAtomicCmpXchgS64:
         registersRC[ip->d.u32].s64 = OS::atomicCmpXchg((int64_t*) registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].s64, registersRC[ip->c.u32].s64);
         break;
-    case ByteCodeOp::IntrinsicBcDbg:
+    case ByteCodeOp::IntrinsicBcBreakpoint:
         context->raiseDebugStart = true;
         context->debugEntry      = !context->debugOn;
         context->debugStepMode   = ByteCodeRunContext::DebugStepMode::None;

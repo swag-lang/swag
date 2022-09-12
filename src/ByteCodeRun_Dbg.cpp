@@ -851,7 +851,7 @@ static void printHelp()
     g_Log.print("n(ext)                     like s, but does not step into functions\n");
     g_Log.print("f(inish)                   runs until the current function is done\n");
     g_Log.print("c(ont(inue))               runs until another breakpoint is reached\n");
-    g_Log.print("u(ntil) <num>              runs to the given line or instruction (depends on 'bcmode')\n");
+    g_Log.print("un(til) <num>              runs to the given line or instruction (depends on 'bcmode')\n");
     g_Log.print("j(ump)  <num>              jump to the given line or instruction (depends on 'bcmode')\n");
     g_Log.eol();
 
@@ -1700,7 +1700,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             }
 
             // Run until a line/instruction is reached
-            if ((cmd == "u" || cmd == "until") && cmds.size() == 2 && isdigit(cmds[1][0]))
+            if ((cmd == "un" || cmd == "until") && cmds.size() == 2 && isdigit(cmds[1][0]))
             {
                 ByteCodeRunContext::DebugBreakpoint bkp;
                 if (context->debugBcMode)

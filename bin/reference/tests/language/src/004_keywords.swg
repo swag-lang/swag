@@ -108,7 +108,7 @@
 @alignof
 @args
 @assert
-@bcdbg
+@breakpoint
 @compiler
 @countof
 @dataof

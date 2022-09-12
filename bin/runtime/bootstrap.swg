@@ -624,7 +624,7 @@ namespace Swag
 //
 
 func @assert(value: bool);
-func @bcdbg();
+func @breakpoint();
 func @getcontext()->*Swag.Context;
 func @setcontext(context: const *Swag.Context);
 func @getpinfos()->*Swag.ProcessInfos;

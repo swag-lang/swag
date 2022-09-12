@@ -7,7 +7,7 @@ struct Game
 //#[Swag.Optim("", false)]
 func play(game: *Game)
 {
-    //@bcdbg()
+    //@breakpoint()
     dref game = update(game)
 }
 

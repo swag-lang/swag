@@ -19,7 +19,7 @@ func sendWords(text: string)
             break
         word := text[start..stop]
         sendMessage(word)
-        //@bcdbg()
+        //@breakpoint()
         start = stop + 1
         //@print("start:", start, "\n")
         @assert(start == 3)

@@ -6,7 +6,7 @@
 // Base
 
 func @assert(value: bool);
-func @bcdbg();
+func @breakpoint();
 func @getcontext()->*Swag.Context;
 func @setcontext(context: const *Swag.Context);
 func @isbytecode()->bool;

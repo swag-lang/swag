@@ -130,7 +130,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::Nop:
         case ByteCodeOp::DecSPBP:
         case ByteCodeOp::SetBP:
-        case ByteCodeOp::IntrinsicBcDbg:
+        case ByteCodeOp::IntrinsicBcBreakpoint:
             continue;
         }
 

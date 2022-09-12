@@ -156,7 +156,7 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("@isbytecode", State.Intrinsic)
         mapWords.add("@print", State.Intrinsic)
         mapWords.add("@errormsg", State.Intrinsic)
-        mapWords.add("@bcdbg", State.Intrinsic)
+        mapWords.add("@breakpoint", State.Intrinsic)
         mapWords.add("@assert", State.Intrinsic)
         mapWords.add("@panic", State.Intrinsic)
         mapWords.add("@seterr", State.Intrinsic)

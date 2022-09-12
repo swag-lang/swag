@@ -340,7 +340,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("@err", TokenId::IntrinsicGetErr);
     keywords.add("@print", TokenId::IntrinsicPrint);
     keywords.add("@assert", TokenId::IntrinsicAssert);
-    keywords.add("@bcdbg", TokenId::IntrinsicBcDbg);
+    keywords.add("@breakpoint", TokenId::IntrinsicBcBreakpoint);
     keywords.add("@panic", TokenId::IntrinsicPanic);
     keywords.add("@errormsg", TokenId::IntrinsicErrorMsg);
     keywords.add("@alloc", TokenId::IntrinsicAlloc);
