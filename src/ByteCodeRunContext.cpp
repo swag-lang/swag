@@ -21,7 +21,7 @@ ByteCodeRunContext::~ByteCodeRunContext()
 
 void ByteCodeRunContext::releaseStack()
 {
-    if (stack)
+    if (stack && !sharedStack)
     {
         // To avoid wasting memory, we recycle bytecode stacks
         ScopedLock lk(g_FreeStackMutex);

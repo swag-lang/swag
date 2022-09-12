@@ -100,6 +100,7 @@ static bool evalDynExpression(ByteCodeRunContext* context, const Utf8& expr, Eva
     execParams.inheritBp      = context->debugCxtBp;
     execParams.forDebugger    = true;
     runContext.acceptDebugger = false;
+    runContext.sharedStack    = true;
 
     g_RunContext         = &runContext;
     g_ByteCodeStackTrace = &stackTrace;
@@ -1038,10 +1039,10 @@ static void printContextInstruction(ByteCodeRunContext* context)
     ByteCode::getLocation(context->debugCxtBc, context->debugCxtIp, &file, &location);
     if (location && (context->debugStepLastFile != file || context->debugStepLastLocation && context->debugStepLastLocation->line != location->line))
     {
-        if (context->debugCxtBc->node && context->debugCxtBc->node->sourceFile)
+        if (file)
         {
             g_Log.printColor("-> ", LogColor::Yellow);
-            auto str1 = context->debugCxtBc->node->sourceFile->getLine(location->line);
+            auto str1 = file->getLine(location->line);
             g_Log.printColor(str1, LogColor::Yellow);
             g_Log.eol();
         }

@@ -124,6 +124,7 @@ struct ByteCodeRunContext
     bool debugEntry          = false;
     bool debugOn             = false;
     bool acceptDebugger      = true;
+    bool sharedStack         = false;
 
     const ConcreteCompilerMessage* currentCompilerMessage = nullptr;
     Job*                           currentCompilerJob     = nullptr;
