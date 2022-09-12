@@ -35,7 +35,7 @@ void ByteCode::getLocation(ByteCode* bc, ByteCodeInstruction* ip, SourceFile** f
         return;
 
     // When inside an inline block (and not a mixin), zap all inline chain to the caller
-    if (!bc->sourceFile || !bc->sourceFile->module->buildCfg.byteCodeDebugInline || !noInline)
+    if (!bc->sourceFile || !bc->sourceFile->module->buildCfg.byteCodeDebugInline || noInline)
     {
         if (ip->node->ownerInline && !(ip->node->flags & AST_IN_MIXIN) && ip->node->ownerInline->ownerFct == ip->node->ownerFct)
         {

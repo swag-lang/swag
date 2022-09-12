@@ -62,6 +62,7 @@ static void byteCodeRun(bool forCallback, void* byteCodePtr, va_list valist)
     }
 
     auto saveSp      = g_RunContext->sp;
+    auto saveSpAlt   = g_RunContext->spAlt;
     auto saveFirstRC = g_RunContext->firstRC;
 
     while (!paramRegisters.empty())
@@ -86,6 +87,7 @@ static void byteCodeRun(bool forCallback, void* byteCodePtr, va_list valist)
     g_ByteCodeStackTrace->pop();
 
     g_RunContext->sp            = saveSp;
+    g_RunContext->spAlt         = saveSpAlt;
     g_RunContext->node          = saveNode;
     g_RunContext->jc.sourceFile = saveSourceFile;
     g_RunContext->firstRC       = saveFirstRC;

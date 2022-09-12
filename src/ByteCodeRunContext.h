@@ -159,6 +159,7 @@ struct ByteCodeRunContext
     ByteCodeInstruction*    debugLastIp           = nullptr;
     SourceFile*             debugStepLastFile     = nullptr;
     SourceLocation*         debugStepLastLocation = nullptr;
+    AstNode*                debugStepLastFunc     = nullptr;
     ByteCode*               debugCxtBc            = nullptr;
     ByteCode*               debugLastBc           = nullptr;
     ByteCodeInstruction*    debugCxtIp            = nullptr;

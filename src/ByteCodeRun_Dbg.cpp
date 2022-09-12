@@ -884,7 +884,8 @@ static void printHelp()
     g_Log.setColor(LogColor::Gray);
     g_Log.eol();
 
-    g_Log.print("<return>                   runs to the next line or instruction (depends on 'bcmode')\n");
+    g_Log.print("<return>                   'step', runs to the next line or instruction (depends on 'bcmode')\n");
+    g_Log.print("<shift>+<return>           'next', runs to the next line or instruction (depends on 'bcmode')\n");
     g_Log.print("<tab>                      contextual completion of the current word\n");
     g_Log.eol();
 
@@ -1070,19 +1071,43 @@ static void printContextInstruction(ByteCodeRunContext* context)
     SWAG_ASSERT(context->debugCxtBc);
     SWAG_ASSERT(context->debugCxtIp);
 
-    // Print function name
-    if (context->debugLastBc != context->debugCxtBc)
-        g_Log.printColor(Fmt("=> function %s %s\n", context->debugCxtBc->name.c_str(), context->debugCxtBc->getCallType()->getDisplayNameC()), LogColor::Yellow);
-
-    // Print source line
     SourceFile*     file;
     SourceLocation* location;
     ByteCode::getLocation(context->debugCxtBc, context->debugCxtIp, &file, &location);
+
+    // Print file
+    if (file && file != context->debugStepLastFile)
+    {
+        g_Log.printColor(Fmt("=> file %s\n", file->name.c_str()), LogColor::Yellow);
+    }
+
+    // Print function name
+    AstNode* newFunc   = nullptr;
+    bool     isInlined = false;
+    if (context->debugCxtIp->node && context->debugCxtIp->node->ownerInline)
+    {
+        isInlined = true;
+        newFunc = context->debugCxtIp->node->ownerInline->func;
+    }
+    else if (context->debugCxtIp->node)
+    {
+        newFunc = context->debugCxtIp->node->ownerFct;
+    }
+
+    if (newFunc != context->debugStepLastFunc)
+    {
+        if(isInlined)
+            g_Log.printColor(Fmt("=> inlined function %s\n", newFunc->getScopedName().c_str()), LogColor::Yellow);
+        else
+            g_Log.printColor(Fmt("=> function %s\n", newFunc->getScopedName().c_str()), LogColor::Yellow);
+    }
+
+    // Print source line
     if (location && (context->debugStepLastFile != file || context->debugStepLastLocation && context->debugStepLastLocation->line != location->line))
     {
         if (file)
         {
-            g_Log.printColor("-> ", LogColor::Yellow);
+            g_Log.printColor(Fmt("%08u -> ", location->line), LogColor::Yellow);
             auto str1 = file->getLine(location->line);
             g_Log.printColor(str1, LogColor::Yellow);
             g_Log.eol();
@@ -1096,9 +1121,10 @@ static void printContextInstruction(ByteCodeRunContext* context)
     context->debugLastBc           = context->debugCxtBc;
     context->debugStepLastFile     = file;
     context->debugStepLastLocation = location;
+    context->debugStepLastFunc     = newFunc;
 }
 
-static Utf8 getCommandLine(ByteCodeRunContext* context)
+static Utf8 getCommandLine(ByteCodeRunContext* context, bool& ctrl, bool& shift)
 {
     static vector<Utf8> debugCmdHistory;
     static uint32_t     debugCmdHistoryIndex = 0;
@@ -1108,10 +1134,8 @@ static Utf8 getCommandLine(ByteCodeRunContext* context)
 
     while (true)
     {
-        int  c     = 0;
-        bool ctrl  = false;
-        bool shift = false;
-        auto key   = OS::promptChar(c, ctrl, shift);
+        int  c   = 0;
+        auto key = OS::promptChar(c, ctrl, shift);
 
         if (key == OS::Key::Return)
             break;
@@ -1370,7 +1394,9 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             g_Log.print("> ");
 
             // Get command from user
-            auto line = getCommandLine(context);
+            bool ctrl  = false;
+            bool shift = false;
+            auto line  = getCommandLine(context, ctrl, shift);
 
             // Split in command + parameters
             Utf8         cmd;
@@ -1930,8 +1956,18 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             {
                 if (context->debugBcMode)
                     break;
+
                 context->debugStackFrameOffset = 0;
-                context->debugStepMode         = ByteCodeRunContext::DebugStepMode::NextLine;
+                if (shift)
+                {
+                    context->debugStepRC   = context->curRC;
+                    context->debugStepMode = ByteCodeRunContext::DebugStepMode::NextLineStepOut;
+                }
+                else
+                {
+                    context->debugStepMode = ByteCodeRunContext::DebugStepMode::NextLine;
+                }
+
                 break;
             }
 
@@ -2065,7 +2101,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             // Default to 'print' / 'execute'
             /////////////////////////////////////////
             EvaluateResult res;
-            if(evalExpression(context, line, res, true))
+            if (evalExpression(context, line, res, true))
             {
                 Utf8 str = Fmt("%s: ", res.type->getDisplayNameC());
                 appendValue(str, res);
