@@ -117,14 +117,9 @@ struct ByteCodeRunContext
 
     AstNode* node = nullptr;
 
-    bool canCatchError       = false;
-    bool hasError            = false;
-    bool ffiStructByCopyDone = false;
-    bool raiseDebugStart     = false;
-    bool debugEntry          = false;
-    bool debugOn             = false;
-    bool acceptDebugger      = true;
-    bool sharedStack         = false;
+    bool canCatchError = false;
+    bool hasError      = false;
+    bool sharedStack   = false;
 
     const ConcreteCompilerMessage* currentCompilerMessage = nullptr;
     Job*                           currentCompilerJob     = nullptr;
@@ -172,7 +167,11 @@ struct ByteCodeRunContext
     DebugStepMode           debugStepMode         = DebugStepMode::None;
     uint32_t                debugStackFrameOffset = 0;
     uint32_t                debugCxtRc            = 0;
-    uint32_t                debugBcMode           = false;
+    bool                    debugOn;
+    uint32_t                debugBcMode     = false;
+    bool                    debugRaiseStart = false;
+    bool                    debugEntry      = false;
+    bool                    debugAccept     = true;
     vector<DebugBreakpoint> debugBreakpoints;
 };
 

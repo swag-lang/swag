@@ -12,8 +12,7 @@
 #include "ByteCodeGenJob.h"
 #include "Context.h"
 #include "TypeManager.h"
-
-#pragma optimize("", off)
+#include "Workspace.h"
 
 struct EvaluateResult
 {
@@ -102,19 +101,20 @@ static bool evalDynExpression(ByteCodeRunContext* context, const Utf8& expr, Eva
     ByteCodeRunContext runContext;
     ByteCodeStack      stackTrace;
     ExecuteNodeParams  execParams;
-    execParams.inheritSp      = context->debugCxtSp;
-    execParams.inheritSpAlt   = context->debugCxtSpAlt;
-    execParams.inheritStack   = context->debugCxtStack;
-    execParams.inheritBp      = context->debugCxtBp;
-    execParams.forDebugger    = true;
-    runContext.acceptDebugger = false;
-    runContext.sharedStack    = true;
+    execParams.inheritSp    = context->debugCxtSp;
+    execParams.inheritSpAlt = context->debugCxtSpAlt;
+    execParams.inheritStack = context->debugCxtStack;
+    execParams.inheritBp    = context->debugCxtBp;
+    execParams.forDebugger  = true;
+    runContext.debugAccept  = false;
+    runContext.sharedStack  = true;
 
     g_RunContext         = &runContext;
     g_ByteCodeStackTrace = &stackTrace;
 
     auto resExec = sourceFile->module->executeNode(sourceFile, child, &callerContext, &execParams);
 
+    child->extension->bc->releaseOut();
     sourceFile->silent--;
     g_RunContext         = &g_RunContextVal;
     g_ByteCodeStackTrace = &g_ByteCodeStackTraceVal;
@@ -886,65 +886,66 @@ static void printHelp()
     g_Log.setColor(LogColor::Gray);
     g_Log.eol();
 
-    g_Log.print("<return>                   'step', runs to the next line or instruction (depends on 'bcmode')\n");
-    g_Log.print("<shift+return>             'next', runs to the next line or instruction (depends on 'bcmode')\n");
-    g_Log.print("<tab>                      contextual completion of the current word\n");
+    g_Log.print("<return>                      'step', runs to the next line or instruction (depends on 'bcmode')\n");
+    g_Log.print("<shift+return>                'next', runs to the next line or instruction (depends on 'bcmode')\n");
+    g_Log.print("<tab>                         contextual completion of the current word\n");
     g_Log.eol();
 
-    g_Log.print("s(tep)                     runs to the next line\n");
-    g_Log.print("n(ext)                     like s, but does not step into functions or inlined code\n");
-    g_Log.print("f(inish)                   runs until the current function is done\n");
-    g_Log.print("c(ont(inue))               runs until another breakpoint is reached\n");
-    g_Log.print("un(til) <num>              runs to the given line or instruction (depends on 'bcmode')\n");
-    g_Log.print("j(ump)  <num>              jump to the given line or instruction (depends on 'bcmode')\n");
+    g_Log.print("s(tep)                        runs to the next line\n");
+    g_Log.print("n(ext)                        like s, but does not step into functions or inlined code\n");
+    g_Log.print("f(inish)                      runs until the current function is done\n");
+    g_Log.print("c(ont(inue))                  runs until another breakpoint is reached\n");
+    g_Log.print("un(til) <num>                 runs to the given line or instruction (depends on 'bcmode')\n");
+    g_Log.print("j(ump)  <num>                 jump to the given line or instruction (depends on 'bcmode')\n");
     g_Log.eol();
 
-    g_Log.print("l(ist) [num]               print the current source code line and <num> lines around\n");
-    g_Log.print("ll                         print the current function source code\n");
+    g_Log.print("l(ist) [num]                  print the current source code line and <num> lines around\n");
+    g_Log.print("ll                            print the current function source code\n");
     g_Log.eol();
 
-    g_Log.print("e(xec(ute)) <stmt>         execute the Swag code statement <stmt> in the current context\n");
-    g_Log.print("$<expr|stmt>               execute the Swag code expression/statement <stmt> in the current context\n");
+    g_Log.print("e(xec(ute)) <stmt>            execute the Swag code statement <stmt> in the current context\n");
+    g_Log.print("$<expr|stmt>                  execute the Swag code expression/statement <stmt> in the current context\n");
     g_Log.eol();
 
-    g_Log.print("p(rint) <expr>             print the value of the Swag expression <expr> in the current context\n");
-    g_Log.print("loc(als)                   print all current local variables\n");
-    g_Log.print("a(rgs)                     print all current function arguments\n");
-    g_Log.print("cxt                        print contextual informations\n");
+    g_Log.print("p(rint) <expr>                print the value of the Swag expression <expr> in the current context\n");
+    g_Log.print("loc(als)                      print all current local variables\n");
+    g_Log.print("a(rgs)                        print all current function arguments\n");
+    g_Log.print("cxt                           print contextual informations\n");
     g_Log.eol();
 
-    g_Log.print("b(reak)                    print all breakpoints\n");
-    g_Log.print("b(reak) fct <name>         add breakpoint when entering function <name>\n");
-    g_Log.print("b(reak) <line>             add breakpoint in the current source file at line <line>\n");
-    g_Log.print("b(reak) clear              remove all breakpoints\n");
-    g_Log.print("b(reak) clear <num>        remove breakpoint <num>\n");
-    g_Log.print("b(reak) enable <num>       enable breakpoint <num>\n");
-    g_Log.print("b(reak) disable <num>      disable breakpoint <num>\n");
-    g_Log.print("tb(reak) ...               same as 'b(reak)' except that the breakpoint will be automatically removed on hit\n");
+    g_Log.print("b(reak)                       print all breakpoints\n");
+    g_Log.print("b(reak) fct <name>            add breakpoint when entering function <name> in the current file\n");
+    g_Log.print("b(reak) fct <file>:<name>     add breakpoint when entering function <name> in <file>\n");
+    g_Log.print("b(reak) <line>                add breakpoint in the current source file at <line>\n");
+    g_Log.print("b(reak) clear                 remove all breakpoints\n");
+    g_Log.print("b(reak) clear <num>           remove breakpoint <num>\n");
+    g_Log.print("b(reak) enable <num>          enable breakpoint <num>\n");
+    g_Log.print("b(reak) disable <num>         disable breakpoint <num>\n");
+    g_Log.print("tb(reak) ...                  same as 'b(reak)' except that the breakpoint will be automatically removed on hit\n");
     g_Log.eol();
 
-    g_Log.print("stack                      print callstack\n");
-    g_Log.print("u(p)   [num]               move stack frame <num> level up\n");
-    g_Log.print("d(own) [num]               move stack frame <num> level down\n");
-    g_Log.print("frame  <num>               move stack frame to level <num>\n");
+    g_Log.print("stack                         print callstack\n");
+    g_Log.print("u(p)   [num]                  move stack frame <num> level up\n");
+    g_Log.print("d(own) [num]                  move stack frame <num> level down\n");
+    g_Log.print("frame  <num>                  move stack frame to level <num>\n");
     g_Log.eol();
 
-    g_Log.print("bcmode                     swap between bytecode mode and source mode\n");
+    g_Log.print("bcmode                        swap between bytecode mode and source mode\n");
     g_Log.eol();
 
-    g_Log.print("i [num]                    print the current bytecode instruction and <num> instructions around\n");
-    g_Log.print("r(egs) [format]            print all registers (format is the same as 'x' command)\n");
-    g_Log.print("r<num> [format]            print register <num> (format is the same as 'x' command)\n");
-    g_Log.print("bc                         print the current function bytecode\n");
+    g_Log.print("i [num]                       print the current bytecode instruction and <num> instructions around\n");
+    g_Log.print("r(egs) [format]               print all registers (format is the same as 'x' command)\n");
+    g_Log.print("r<num> [format]               print register <num> (format is the same as 'x' command)\n");
+    g_Log.print("bc                            print the current function bytecode\n");
     g_Log.eol();
 
-    g_Log.print("x [format] [num] <expr>    print memory (format = s8|s16|s32|s64|u8|u16|u32|u64|x8|x16|x32|x64|f32|f64)\n");
-    g_Log.print("x [format] [num] $r<num>   print memory at current register value\n");
-    g_Log.print("x [format] [num] $sp       print memory at current stack pointer\n");
+    g_Log.print("x [format] [num] <expr>       print memory (format = s8|s16|s32|s64|u8|u16|u32|u64|x8|x16|x32|x64|f32|f64)\n");
+    g_Log.print("x [format] [num] $r<num>      print memory at current register value\n");
+    g_Log.print("x [format] [num] $sp          print memory at current stack pointer\n");
     g_Log.eol();
 
-    g_Log.print("?                          print this list of commands\n");
-    g_Log.print("q(uit)                     quit the compiler\n");
+    g_Log.print("?                             print this list of commands\n");
+    g_Log.print("q(uit)                        quit the compiler\n");
     g_Log.eol();
 }
 
@@ -1017,7 +1018,7 @@ static void checkBreakpoints(ByteCodeRunContext* context)
             SourceFile*     file;
             SourceLocation* location;
             ByteCode::getLocation(context->bc, context->ip, &file, &location);
-            if (file->name == bkp.name && location->line == bkp.line)
+            if (file && location && file->name == bkp.name && location->line == bkp.line)
             {
                 if (!bkp.autoDisabled)
                 {
@@ -1861,16 +1862,37 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                     oneShot = true;
 
                 // At line
-                if (cmds.size() == 2 && isNumber(cmds[1]))
+                vector<Utf8> fileFunc;
+                Utf8::tokenize(cmds[1], ':', fileFunc);
+                if (cmds.size() == 2 && ((fileFunc.size() == 1 && isNumber(cmds[1])) || (fileFunc.size() == 2 && isNumber(fileFunc[1]))))
                 {
                     SourceFile*     curFile;
                     SourceLocation* curLocation;
                     ByteCode::getLocation(context->debugCxtBc, context->debugCxtIp, &curFile, &curLocation);
 
-                    int                                 lineNo = atoi(cmds[1]);
                     ByteCodeRunContext::DebugBreakpoint bkp;
+                    bkp.name = curFile->name;
+
+                    if (fileFunc.size() == 2)
+                    {
+                        if (fileFunc[0] != curFile->name && fileFunc[0] + ".swg" != curFile->name && fileFunc[0] + ".swgs" != curFile->name)
+                        {
+                            auto f = g_Workspace->findFile(fileFunc[0]);
+                            if (!f)
+                                f = g_Workspace->findFile(fileFunc[0] + ".swg");
+                            if (!f)
+                                f = g_Workspace->findFile(fileFunc[0] + ".swgs");
+                            if (!f)
+                            {
+                                g_Log.printColor(Fmt("cannot find file '%s'", fileFunc[0].c_str()), LogColor::Red);
+                                continue;
+                            }
+                            bkp.name = f->name;
+                        }
+                    }
+
+                    int lineNo     = fileFunc.size() == 2 ? atoi(fileFunc[1]) : atoi(cmds[1]);
                     bkp.type       = ByteCodeRunContext::DebugBkpType::FileLine;
-                    bkp.name       = curFile->name;
                     bkp.line       = lineNo;
                     bkp.autoRemove = oneShot;
                     if (addBreakpoint(context, bkp))
@@ -1878,7 +1900,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                     continue;
                 }
 
-                // Clear breakpoints
+                // Clear all breakpoints
                 if (cmds.size() == 2 && cmds[1] == "clear")
                 {
                     if (context->debugBreakpoints.empty())

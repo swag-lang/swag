@@ -3304,7 +3304,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         registersRC[ip->d.u32].s64 = OS::atomicCmpXchg((int64_t*) registersRC[ip->a.u32].pointer, registersRC[ip->b.u32].s64, registersRC[ip->c.u32].s64);
         break;
     case ByteCodeOp::IntrinsicBcBreakpoint:
-        context->raiseDebugStart = true;
+        context->debugRaiseStart = true;
         context->debugEntry      = !context->debugOn;
         context->debugStepMode   = ByteCodeRunContext::DebugStepMode::None;
         throw "start debug";
@@ -3327,7 +3327,7 @@ void ByteCodeRun::runLoopNoDbg(ByteCodeRunContext* context)
 
 bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
 {
-    if (context->debugOn && context->acceptDebugger)
+    if ((context->debugOn || !context->debugBreakpoints.empty()) && context->debugAccept)
     {
         while (true)
         {
@@ -3335,7 +3335,7 @@ bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
                 OS::exit(0);
             if (!executeInstruction(context, context->ip++))
                 break;
-            if (!context->debugOn && context->debugBreakpoints.empty() && context->debugStepMode == ByteCodeRunContext::DebugStepMode::ToNextBreakpoint)
+            if (!context->debugOn && context->debugBreakpoints.empty())
             {
                 runLoopNoDbg(context);
                 break;
@@ -3352,7 +3352,7 @@ bool ByteCodeRun::runLoop(ByteCodeRunContext* context)
 
 static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS args)
 {
-    if (runContext->raiseDebugStart)
+    if (runContext->debugRaiseStart)
         return SWAG_EXCEPTION_EXECUTE_HANDLER;
 
     // Error ?
@@ -3494,9 +3494,9 @@ bool ByteCodeRun::run(ByteCodeRunContext* runContext)
         }
         SWAG_EXCEPT(exceptionHandler(runContext, SWAG_GET_EXCEPTION_INFOS()))
         {
-            if (runContext->raiseDebugStart)
+            if (runContext->debugRaiseStart)
             {
-                runContext->raiseDebugStart = false;
+                runContext->debugRaiseStart = false;
                 runContext->debugOn         = true;
                 continue;
             }
