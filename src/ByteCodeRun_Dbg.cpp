@@ -887,7 +887,7 @@ static void printHelp()
     g_Log.eol();
 
     g_Log.print("<return>                   'step', runs to the next line or instruction (depends on 'bcmode')\n");
-    g_Log.print("<shift>+<return>           'next', runs to the next line or instruction (depends on 'bcmode')\n");
+    g_Log.print("<shift+return>             'next', runs to the next line or instruction (depends on 'bcmode')\n");
     g_Log.print("<tab>                      contextual completion of the current word\n");
     g_Log.eol();
 
@@ -903,22 +903,23 @@ static void printHelp()
     g_Log.print("ll                         print the current function source code\n");
     g_Log.eol();
 
-    g_Log.print("e(xec(ute)) <stmt>         execute the Swag code statement <stmt>\n");
+    g_Log.print("e(xec(ute)) <stmt>         execute the Swag code statement <stmt> in the current context\n");
+    g_Log.print("$<expr|stmt>               execute the Swag code expression/statement <stmt> in the current context\n");
     g_Log.eol();
 
-    g_Log.print("p(rint) <expr>             print the value of the Swag expression <expr>\n");
+    g_Log.print("p(rint) <expr>             print the value of the Swag expression <expr> in the current context\n");
     g_Log.print("loc(als)                   print all current local variables\n");
     g_Log.print("a(rgs)                     print all current function arguments\n");
     g_Log.print("cxt                        print contextual informations\n");
     g_Log.eol();
 
     g_Log.print("b(reak)                    print all breakpoints\n");
-    g_Log.print("b(reak)  fct <name>        add breakpoint when entering function <name>\n");
-    g_Log.print("b(reak)  <line>            add breakpoint in the current source file at line <line>\n");
-    g_Log.print("b(reak)  clear             remove all breakpoints\n");
-    g_Log.print("b(reak)  clear <num>       remove breakpoint <num>\n");
-    g_Log.print("b(reak)  enable <num>      enable breakpoint <num>\n");
-    g_Log.print("b(reak)  disable <num>     disable breakpoint <num>\n");
+    g_Log.print("b(reak) fct <name>         add breakpoint when entering function <name>\n");
+    g_Log.print("b(reak) <line>             add breakpoint in the current source file at line <line>\n");
+    g_Log.print("b(reak) clear              remove all breakpoints\n");
+    g_Log.print("b(reak) clear <num>        remove breakpoint <num>\n");
+    g_Log.print("b(reak) enable <num>       enable breakpoint <num>\n");
+    g_Log.print("b(reak) disable <num>      disable breakpoint <num>\n");
     g_Log.print("tb(reak) ...               same as 'b(reak)' except that the breakpoint will be automatically removed on hit\n");
     g_Log.eol();
 
@@ -1434,11 +1435,14 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 EvaluateResult res;
                 if (evalExpression(context, cmdExpr, res))
                 {
-                    Utf8 str = Fmt("%s: ", res.type->getDisplayNameC());
-                    appendValue(str, res);
-                    g_Log.printColor(str);
-                    if (str.back() != '\n')
-                        g_Log.eol();
+                    if (!res.type->isNative(NativeTypeKind::Void))
+                    {
+                        Utf8 str = Fmt("%s: ", res.type->getDisplayNameC());
+                        appendValue(str, res);
+                        g_Log.printColor(str);
+                        if (str.back() != '\n')
+                            g_Log.eol();
+                    }
                 }
 
                 continue;
@@ -2102,6 +2106,11 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
         evalDefault:
             // Default to 'print' / 'execute'
             /////////////////////////////////////////
+            line.trim();
+            if (line[0] == '$')
+                line.remove(0, 1);
+            if (line.empty())
+                continue;
             EvaluateResult res;
             if (evalExpression(context, line, res, true))
             {
