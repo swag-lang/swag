@@ -34,6 +34,7 @@ static bool evalDynExpression(ByteCodeRunContext* context, const Utf8& expr, Eva
     parent.ownerScope = context->debugCxtIp->node ? context->debugCxtIp->node->ownerScope : nullptr;
     parent.ownerFct   = CastAst<AstFuncDecl>(context->debugCxtBc->node, AstNodeKind::FuncDecl);
     parent.sourceFile = sourceFile;
+    parent.parent     = context->debugCxtIp->node;
     if (!syntaxJob.constructEmbedded(expr, &parent, nullptr, kind, false, true))
     {
         if (silent)
