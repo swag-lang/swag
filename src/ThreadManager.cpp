@@ -43,6 +43,9 @@ void ThreadManager::addJob(Job* job)
 
 void ThreadManager::addJobNoLock(Job* job)
 {
+    if (doJobCount)
+        addJobCount++;
+
     if (job->flags & JOB_IS_IN_THREAD)
     {
         SWAG_ASSERT(job->waitOnJobs == 0);
@@ -129,6 +132,9 @@ void ThreadManager::jobHasEnded(Job* job, JobResult result)
 {
     ScopedLock lk(mutexAdd);
     ScopedLock lk1(mutexDone);
+
+    if (doJobCount)
+        addJobCount--;
 
     SWAG_ASSERT(job->flags & JOB_IS_IN_THREAD);
     job->flags &= ~JOB_IS_IN_THREAD;

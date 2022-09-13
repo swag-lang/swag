@@ -13,6 +13,7 @@
 #include "Context.h"
 #include "TypeManager.h"
 #include "Workspace.h"
+#include "ThreadManager.h"
 
 struct EvaluateResult
 {
@@ -53,8 +54,19 @@ static bool evalDynExpression(ByteCodeRunContext* context, const Utf8& expr, Eva
     semanticJob.module     = sourceFile->module;
     sourceFile->silent++;
     semanticJob.nodes.push_back(child);
-    auto result = semanticJob.execute();
-    if (result != JobResult::ReleaseJob || !sourceFile->silentError.empty())
+
+    g_ThreadMgr.doJobCount = true;
+    while (true)
+    {
+        auto result = semanticJob.execute();
+        if (result == JobResult::ReleaseJob)
+            break;
+        while (g_ThreadMgr.addJobCount.load())
+            this_thread::yield();
+    }
+    g_ThreadMgr.doJobCount = false;
+
+    if (!sourceFile->silentError.empty())
     {
         sourceFile->silent--;
         if (silent)
@@ -84,8 +96,19 @@ static bool evalDynExpression(ByteCodeRunContext* context, const Utf8& expr, Eva
     child->extension->bc             = g_Allocator.alloc<ByteCode>();
     child->extension->bc->node       = child;
     child->extension->bc->sourceFile = sourceFile;
-    result                           = genJob.execute();
-    if (result != JobResult::ReleaseJob || !sourceFile->silentError.empty())
+
+    g_ThreadMgr.doJobCount = true;
+    while (true)
+    {
+        auto result = genJob.execute();
+        if (result == JobResult::ReleaseJob)
+            break;
+        while (g_ThreadMgr.addJobCount.load())
+            this_thread::yield();
+    }
+    g_ThreadMgr.doJobCount = false;
+
+    if (!sourceFile->silentError.empty())
     {
         sourceFile->silent--;
         if (silent)
@@ -905,10 +928,11 @@ static void printHelp()
     g_Log.eol();
 
     g_Log.print("e(xec(ute)) <stmt>            execute the Swag code statement <stmt> in the current context\n");
-    g_Log.print("$<expr|stmt>                  execute the Swag code expression/statement <stmt> in the current context\n");
+    g_Log.print("$<expr|stmt>                  execute the Swag code expression <expr> or statement <stmt> in the current context\n");
+    g_Log.print("<expr|stmt>                   execute the Swag code expression <expr> or statement <stmt> in the current context (if not a valid debugger command)\n");
     g_Log.eol();
 
-    g_Log.print("p(rint) <expr>                print the value of the Swag expression <expr> in the current context\n");
+    g_Log.print("p(rint) <expr>                print the value of the Swag code expression <expr> in the current context\n");
     g_Log.print("loc(als)                      print all current local variables\n");
     g_Log.print("a(rgs)                        print all current function arguments\n");
     g_Log.print("cxt                           print contextual informations\n");

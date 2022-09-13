@@ -42,7 +42,9 @@ struct ThreadManager
     condition_variable       condVarDone;
     atomic<int>              jobsInThreads    = 0;
     atomic<int>              jobsOptInThreads = 0;
+    atomic<int>              addJobCount      = 0;
     int                      currentJobsIO    = 0;
+    bool                     doJobCount       = false;
 };
 
 extern ThreadManager g_ThreadMgr;
