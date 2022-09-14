@@ -122,6 +122,7 @@ int main(int argc, const char* argv[])
 
     // Prints stats, then exit
     g_Stats.print();
+    g_Stats.printProfile();
 
     // To avoid freeing some stuff, and have a fast exit
     g_Exiting = true;

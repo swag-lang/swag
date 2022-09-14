@@ -11,6 +11,7 @@
 #include "AstNode.h"
 #include "ErrorIds.h"
 #include "Diagnostic.h"
+#include "OS.h"
 
 enum class ByteCodeOp : uint16_t;
 struct AstNode;
@@ -95,6 +96,12 @@ struct ByteCode
             return;
         }
 
+        if (context->profile)
+        {
+            profileCallCount++;
+            profileStart = OS::timerNow();
+        }
+
         context->registersRC.push_back(context->registers.count);
         context->registers.reserve(context->registers.count + maxReservedRegisterRC);
         context->curRegistersRC = context->registers.buffer + context->registers.count;
@@ -112,6 +119,11 @@ struct ByteCode
         {
             context->registers.count = context->registersRC.get_pop_back();
             context->curRegistersRC  = context->registers.buffer + context->registersRC.back();
+        }
+
+        if (context->profile)
+        {
+            profileCumTime += OS::timerNow() - profileStart;
         }
     }
 
@@ -177,8 +189,8 @@ struct ByteCode
     bool     areSame(ByteCodeInstruction* start0, ByteCodeInstruction* end0, ByteCodeInstruction* start1, ByteCodeInstruction* end1, bool specialJump, bool specialCall);
     uint32_t computeCrc(ByteCodeInstruction* ip, uint32_t oldCrc, bool specialJump, bool specialCall);
 
-    VectorNative<uint32_t>             availableRegistersRC;
-    VectorNative<pair<void*, size_t>>  autoFree;
+    VectorNative<uint32_t>            availableRegistersRC;
+    VectorNative<pair<void*, size_t>> autoFree;
 
     Mutex                  mutexCallName;
     Utf8                   name;
@@ -192,6 +204,11 @@ struct ByteCode
     TypeInfoFuncAttr*    typeInfoFunc = nullptr;
     AstNode*             node         = nullptr;
     ByteCode*            alias        = nullptr;
+
+    uint64_t profileStart     = 0;
+    uint64_t profileCumTime   = 0;
+    uint32_t profileCallCount = 0;
+    double   profilePerCall   = 0;
 
     uint32_t numInstructions       = 0;
     uint32_t maxInstructions       = 0;

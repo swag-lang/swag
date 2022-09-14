@@ -31,6 +31,7 @@ struct CommandLine
     bool      run           = false;
     bool      scriptMode    = false;
     bool      scriptCommand = false;
+    bool      profile       = false;
 
     // Input
     string scriptName;
