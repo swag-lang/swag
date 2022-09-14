@@ -100,6 +100,8 @@ struct ByteCode
         {
             profileCallCount++;
             profileStart = OS::timerNow();
+            if (context->oldBc)
+                context->oldBc->profileChilds.insert(this);
         }
 
         context->registersRC.push_back(context->registers.count);
@@ -205,10 +207,11 @@ struct ByteCode
     AstNode*             node         = nullptr;
     ByteCode*            alias        = nullptr;
 
-    uint64_t profileStart     = 0;
-    uint64_t profileCumTime   = 0;
-    uint32_t profileCallCount = 0;
-    double   profilePerCall   = 0;
+    uint64_t       profileStart     = 0;
+    uint64_t       profileCumTime   = 0;
+    uint32_t       profileCallCount = 0;
+    double         profilePerCall   = 0;
+    set<ByteCode*> profileChilds;
 
     uint32_t numInstructions       = 0;
     uint32_t maxInstructions       = 0;

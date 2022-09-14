@@ -31,7 +31,11 @@ struct CommandLine
     bool      run           = false;
     bool      scriptMode    = false;
     bool      scriptCommand = false;
-    bool      profile       = false;
+
+    // Profile
+    bool   profile = false;
+    string profileFilter;
+    int    profileChildsLevel = 0;
 
     // Input
     string scriptName;

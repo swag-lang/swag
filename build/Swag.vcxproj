@@ -259,6 +259,7 @@
     <ClInclude Include="..\src\ModuleCfgManager.h" />
     <ClInclude Include="..\src\FetchModuleFileSystemJob.h" />
     <ClInclude Include="..\src\PrepCompilerMsgJob.h" />
+    <ClInclude Include="..\src\Profiler.h" />
     <ClInclude Include="..\src\RaceCondition.h" />
     <ClInclude Include="..\src\Mutex.h" />
     <ClInclude Include="..\src\Array.h" />
@@ -364,6 +365,7 @@
     <ClCompile Include="..\src\OutputFileWin32.cpp" />
     <ClCompile Include="../src/Scope.cpp" />
     <ClCompile Include="..\src\PrepCompilerMsgJob.cpp" />
+    <ClCompile Include="..\src\Profiler.cpp" />
     <ClCompile Include="..\src\SaveGenJob.cpp" />
     <ClCompile Include="..\src\SemanticJob_AffectExpression.cpp" />
     <ClCompile Include="..\src\SemanticJob_Attribute.cpp" />

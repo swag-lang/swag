@@ -116,7 +116,8 @@ struct ByteCodeRunContext
     SwagCompilerSourceLocation* errorLoc      = nullptr;
     JobContext*                 callerContext = nullptr;
 
-    AstNode* node = nullptr;
+    AstNode*  node  = nullptr;
+    ByteCode* oldBc = nullptr;
 
     bool canCatchError = false;
     bool hasError      = false;

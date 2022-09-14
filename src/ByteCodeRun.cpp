@@ -63,7 +63,8 @@ SWAG_FORCE_INLINE void ByteCodeRun::localCall(ByteCodeRunContext* context, ByteC
     context->push(context->bp);
     context->push(context->bc);
     context->push(context->ip);
-    context->bc = bc;
+    context->oldBc = context->bc;
+    context->bc    = bc;
     SWAG_ASSERT(context->bc);
     SWAG_ASSERT(context->bc->out);
     context->ip = context->bc->out;

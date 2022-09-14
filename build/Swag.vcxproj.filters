@@ -491,6 +491,9 @@
     <ClCompile Include="..\src\BackendX64_Emit.cpp">
       <Filter>Backend\X64</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Profiler.cpp">
+      <Filter>Backend\ByteCode</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/JobThread.h">
@@ -802,6 +805,9 @@
     </ClInclude>
     <ClInclude Include="..\src\X64Gen.h">
       <Filter>Backend\X64</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Profiler.h">
+      <Filter>Backend\ByteCode</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

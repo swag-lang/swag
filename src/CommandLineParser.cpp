@@ -72,8 +72,11 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("bu sc",          "--backend",              nullptr,    CommandLineType::EnumInt,       &cmdLine->backendGenType, "llvm|x64", "the type of backend to use");
     addArg("ru",             "--bytecode",             nullptr,    CommandLineType::Bool,          &cmdLine->scriptMode, nullptr, "run in bytecode mode");
     addArg("cl",             "--script",               nullptr,    CommandLineType::Bool,          &cmdLine->scriptMode, nullptr, "clean also script cache");
+
     addArg("bu sc ru te",    "--profile",              nullptr,    CommandLineType::Bool,          &cmdLine->profile, nullptr, "profile bytecode execution");
-                                                                                                   
+    addArg("bu sc ru te",    "--profile-filter",       nullptr,    CommandLineType::String,        &cmdLine->profileFilter, nullptr, "filter profile output names");
+    addArg("bu sc ru te",    "--profile-childs",       nullptr,    CommandLineType::Int,           &cmdLine->profileChildsLevel, nullptr, "diplay to the a given amount of sub-functions level");
+
     addArg("cl sc",          "--clean-dep",            nullptr,    CommandLineType::Bool,          &cmdLine->cleanDep, nullptr, "removes the content of the dependency folder");
     addArg("cl",             "--clean-log",            nullptr,    CommandLineType::Bool,          &cmdLine->cleanLog, nullptr, "display what will be removed, without actually cleaning");
     // clang-format on
