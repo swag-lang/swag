@@ -123,6 +123,7 @@ struct Module
     void        addErrorModule(Module* module);
     void        removeFile(SourceFile* file);
     SourceFile* findFile(const Utf8& fileName);
+    ByteCode*   findBc(const Utf8& bcName);
 
     bool error(const Utf8& msg);
     bool internalError(const Utf8& msg);

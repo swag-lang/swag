@@ -924,7 +924,7 @@ static void printHelp()
     g_Log.eol();
 
     g_Log.print("l(ist) [num]                  print the current source code line and <num> lines around\n");
-    g_Log.print("ll                            print the current function source code\n");
+    g_Log.print("ll [name]                     print the current function (or function [name]) source code\n");
     g_Log.eol();
 
     g_Log.print("e(xec(ute)) <stmt>            execute the Swag code statement <stmt> in the current context\n");
@@ -1153,6 +1153,46 @@ static void printContextInstruction(ByteCodeRunContext* context)
     context->debugStepLastFunc     = newFunc;
 }
 
+static Utf8 completion(ByteCodeRunContext* context, const Utf8& line, Utf8& toComplete)
+{
+    vector<Utf8> tokens;
+    Utf8::tokenize(line.c_str(), ' ', tokens);
+    if (tokens.empty())
+        return "";
+
+    toComplete = tokens.back();
+
+    SemanticContext                   semContext;
+    SemanticJob                       semJob;
+    VectorNative<AlternativeScope>    scopeHierarchy;
+    VectorNative<AlternativeScopeVar> scopeHierarchyVars;
+    semContext.sourceFile = context->debugCxtIp->node->sourceFile;
+    semContext.node       = context->debugCxtIp->node;
+    semContext.job        = &semJob;
+    if (SemanticJob::collectScopeHierarchy(&semContext, scopeHierarchy, scopeHierarchyVars, context->debugCxtIp->node, COLLECT_ALL))
+    {
+        for (const auto& p : scopeHierarchy)
+        {
+            const auto& mm       = p.scope->symTable.mapNames;
+            uint32_t    cptValid = 0;
+            for (uint32_t i = 0; i < mm.allocated; i++)
+            {
+                if (!mm.buffer[i].symbolName || !mm.buffer[i].hash)
+                    continue;
+                const auto& sn = mm.buffer[i].symbolName->name;
+                if (sn.find(toComplete) == 0)
+                    return mm.buffer[i].symbolName->name;
+
+                cptValid++;
+                if (cptValid >= mm.count)
+                    break;
+            }
+        }
+    }
+
+    return "";
+}
+
 static Utf8 getCommandLine(ByteCodeRunContext* context, bool& ctrl, bool& shift)
 {
     static vector<Utf8> debugCmdHistory;
@@ -1249,56 +1289,17 @@ static Utf8 getCommandLine(ByteCodeRunContext* context, bool& ctrl, bool& shift)
             if (cursorX != line.count)
                 continue;
 
-            vector<Utf8> tokens;
-            Utf8::tokenize(line, ' ', tokens);
-            if (tokens.empty())
-                continue;
-
-            SemanticContext                   semContext;
-            SemanticJob                       semJob;
-            VectorNative<AlternativeScope>    scopeHierarchy;
-            VectorNative<AlternativeScopeVar> scopeHierarchyVars;
-            semContext.node       = context->debugCxtIp->node;
-            semContext.job        = &semJob;
-            semContext.sourceFile = context->debugCxtIp->node->sourceFile;
-            if (SemanticJob::collectScopeHierarchy(&semContext, scopeHierarchy, scopeHierarchyVars, context->debugCxtIp->node, COLLECT_ALL))
+            Utf8 toComplete;
+            auto n = completion(context, line, toComplete);
+            if (!n.empty() && n != toComplete)
             {
-                bool done = false;
-                for (const auto& p : scopeHierarchy)
-                {
-                    const auto& mm       = p.scope->symTable.mapNames;
-                    uint32_t    cptValid = 0;
-                    for (uint32_t i = 0; i < mm.allocated; i++)
-                    {
-                        if (!mm.buffer[i].symbolName || !mm.buffer[i].hash)
-                            continue;
-                        const auto& sn = mm.buffer[i].symbolName->name;
-                        if (sn == tokens.back())
-                        {
-                            done = true;
-                            break;
-                        }
-
-                        if (sn.find(tokens.back()) == 0)
-                        {
-                            auto n = mm.buffer[i].symbolName->name;
-                            n.remove(0, tokens.back().length());
-                            fputs(n, stdout);
-                            line += n;
-                            cursorX += n.length();
-                            done = true;
-                            break;
-                        }
-
-                        cptValid++;
-                        if (cptValid >= mm.count)
-                            break;
-                    }
-
-                    if (done)
-                        break;
-                }
+                n.remove(0, toComplete.length());
+                fputs(n, stdout);
+                line += n;
+                cursorX += n.length();
+                continue;
             }
+
             break;
         }
     }
@@ -1811,9 +1812,6 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
             /////////////////////////////////////////
             if (cmd == "l" || cmd == "list" || cmd == "ll")
             {
-                if (cmd == "ll" && cmds.size() != 1)
-                    goto evalDefault;
-
                 if (cmd == "l" || cmd == "list")
                 {
                     if (cmds.size() > 2)
@@ -1822,15 +1820,36 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                         goto evalDefault;
                 }
 
-                if (context->debugCxtBc->node && context->debugCxtBc->node->kind == AstNodeKind::FuncDecl && context->debugCxtBc->node->sourceFile)
+                auto toLogBc = context->debugCxtBc;
+                auto toLogIp = context->debugCxtIp;
+
+                if (cmd == "ll")
+                {
+                    if (cmds.size() > 2)
+                        goto evalDefault;
+                    auto name = cmds[1];
+                    auto bc   = g_Workspace->findBc(name);
+                    if (bc)
+                    {
+                        toLogBc = bc;
+                        toLogIp = bc->out;
+                    }
+                    else
+                    {
+                        g_Log.printColor(Fmt("cannot find function '%s'\n", name.c_str()), LogColor::Red);
+                        continue;
+                    }
+                }
+
+                if (toLogBc->node && toLogBc->node->kind == AstNodeKind::FuncDecl && toLogBc->node->sourceFile)
                 {
                     SourceFile*     curFile;
                     SourceLocation* curLocation;
-                    ByteCode::getLocation(context->debugCxtBc, context->debugCxtIp, &curFile, &curLocation);
+                    ByteCode::getLocation(toLogBc, toLogIp, &curFile, &curLocation);
 
-                    auto funcNode = CastAst<AstFuncDecl>(context->debugCxtBc->node, AstNodeKind::FuncDecl);
+                    auto funcNode = CastAst<AstFuncDecl>(toLogBc->node, AstNodeKind::FuncDecl);
 
-                    uint32_t startLine = context->debugCxtBc->node->token.startLocation.line;
+                    uint32_t startLine = toLogBc->node->token.startLocation.line;
                     uint32_t endLine   = funcNode->content->token.endLocation.line;
 
                     if (cmd == "l")
@@ -1848,7 +1867,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                     vector<Utf8> lines;
                     bool         eof = false;
                     for (uint32_t l = startLine; l <= endLine && !eof; l++)
-                        lines.push_back(context->debugCxtBc->node->sourceFile->getLine(l, &eof));
+                        lines.push_back(toLogBc->node->sourceFile->getLine(l, &eof));
 
                     g_Log.setColor(LogColor::Yellow);
                     uint32_t lineIdx = 0;
@@ -1909,7 +1928,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                                 f = g_Workspace->findFile(fileFunc[0] + ".swgs");
                             if (!f)
                             {
-                                g_Log.printColor(Fmt("cannot find file '%s'", fileFunc[0].c_str()), LogColor::Red);
+                                g_Log.printColor(Fmt("cannot find file '%s'\n", fileFunc[0].c_str()), LogColor::Red);
                                 continue;
                             }
                             bkp.name = f->name;
@@ -1946,7 +1965,14 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 if (cmds[1] == "fct")
                 {
                     ByteCodeRunContext::DebugBreakpoint bkp;
-                    bkp.type       = ByteCodeRunContext::DebugBkpType::FuncName;
+                    bkp.type = ByteCodeRunContext::DebugBkpType::FuncName;
+                    auto bc  = g_Workspace->findBc(cmds[2]);
+                    if (!bc)
+                    {
+                        g_Log.printColor(Fmt("cannot find function '%s'", cmds[2].c_str()), LogColor::Red);
+                        continue;
+                    }
+
                     bkp.name       = cmds[2];
                     bkp.autoRemove = oneShot;
                     if (addBreakpoint(context, bkp))
@@ -2069,6 +2095,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 if (cmds.size() > 1)
                     goto evalDefault;
 
+                g_Log.printColor("continue...\n", LogColor::White);
                 context->debugStackFrameOffset = 0;
                 context->debugStepMode         = ByteCodeRunContext::DebugStepMode::ToNextBreakpoint;
                 context->debugOn               = false;

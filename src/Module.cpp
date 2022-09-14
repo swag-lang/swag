@@ -367,6 +367,22 @@ SourceFile* Module::findFile(const Utf8& fileName)
     return nullptr;
 }
 
+ByteCode* Module::findBc(const Utf8& bcName)
+{
+    Utf8 n1;
+    for (auto bc : byteCodeFunc)
+    {
+        if (bc->name == bcName)
+            return bc;
+        n1 = name + ".";
+        n1 += bcName;
+        if (bc->name == n1)
+            return bc;
+    }
+
+    return nullptr;
+}
+
 void Module::allocateBackend()
 {
     ScopedLock lk(mutexFile);

@@ -9,6 +9,7 @@ struct SourceFile;
 struct AstNode;
 struct BackendTarget;
 struct Diagnostic;
+struct ByteCode;
 enum class ModuleKind;
 
 #define SWAG_CACHE_FOLDER "swag_cache"
@@ -61,6 +62,7 @@ struct Workspace
     void        setup();
     void        computeModuleName(const fs::path& path, Utf8& moduleName, Utf8& moduleFolder, ModuleKind& kind);
     SourceFile* findFile(const char* fileName);
+    ByteCode*   findBc(const char* name);
     Module*     getModuleByName(const Utf8& moduleName);
     void        cleanFolderContent(const fs::path& path);
     OneTag*     hasTag(const Utf8& name);
