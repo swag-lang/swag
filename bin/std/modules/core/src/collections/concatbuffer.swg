@@ -19,14 +19,15 @@ struct ConcatBufferSeek
 // the buffer needs to increase its size. This is the main difference with Array
 struct ConcatBuffer
 {
-    allocator:      Swag.IAllocator
+    allocator:          Swag.IAllocator
 
-    firstBucket:    *ConcatBufferBucket
-    curBucket:      *ConcatBufferBucket
-    lastBucket:     *ConcatBufferBucket
-    currentSP:      ^u8
-    granularity:    uint = 1024
-    isAtEnd:        bool = true
+    firstBucket:        *ConcatBufferBucket
+    curBucket:          *ConcatBufferBucket
+    lastBucket:         *ConcatBufferBucket
+    currentSP:          ^u8
+    granularity:        uint = 1024
+    isAtEnd:            bool = true
+    viewFirstBucket:    ConcatBufferBucket
 }
 
 impl ConcatBuffer
@@ -144,7 +145,8 @@ impl ConcatBuffer
         {
             nextPtr := ptr.next
             Memory.free(ptr.datas, ptr.size, allocator)
-            Memory.free(ptr, @sizeof(ConcatBufferBucket), allocator)
+            if ptr != &viewFirstBucket
+                Memory.free(ptr, @sizeof(ConcatBufferBucket), allocator)
             ptr = nextPtr
         }
 
@@ -397,6 +399,33 @@ impl ConcatBuffer
         if lastBucket == firstBucket
             return @mkslice(firstBucket.datas, firstBucket.count)
         return null
+    }
+
+    // Share 'data' with the firstBucket
+    mtd setFirstBucket(data: [..] u8)
+    {
+        Debug.assert(firstBucket == null)
+        @init(&viewFirstBucket)
+        viewFirstBucket.datas = @dataof(data)
+        viewFirstBucket.size = @countof(data)
+        firstBucket, lastBucket, curBucket = &viewFirstBucket
+        currentSP = firstBucket.datas
+    }
+
+    mtd eatBuffer()->{data: ^u8, size: uint, capacity: uint}
+    {
+        // Must be linear ?
+        Debug.assert(lastBucket == firstBucket)
+
+        rdata     := firstBucket.datas
+        rcount    := firstBucket.count
+        rcapacity := firstBucket.size
+
+        if firstBucket != &viewFirstBucket
+            Memory.free(firstBucket, @sizeof(ConcatBufferBucket), allocator)
+        firstBucket = null
+
+        return @{rdata, rcount, rcapacity}
     }
 
     // linearize all buckets in one single big bucket

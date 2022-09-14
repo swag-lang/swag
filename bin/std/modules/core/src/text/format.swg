@@ -34,6 +34,31 @@ func countPercent(fmt: string)->u32
     return cptPercent
 }
 
+// Format a string in 'dest'
+// Can be lot faster than the convenient version which returns a string
+func replaceString(dest: *String, fmt: string, values: ...)
+    #checkif
+    {
+        if !@isconstexpr(fmt) return true
+        checkFormat(@nameof(#self), fmt, values)
+        return true
+    }
+{
+    var buf: ConcatBuffer
+
+    buf.setFirstBucket(@mkslice(dest.buffer, dest.capacity))
+
+    #[SelectIf(false)]
+    append(&buf, fmt, values)
+
+    buf.makeLinear()
+    (data, count, capacity) := buf.eatBuffer()
+
+    dest.buffer   = data
+    dest.length   = count
+    dest.capacity = capacity
+}
+
 // Format a string and returns the result as a String
 func toString(fmt: string, values: ...)->String
     #checkif

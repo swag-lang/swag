@@ -9,22 +9,23 @@ func createTreeSimple(view: *Wnd, maxItems = 50)->*ListCtrl
     tree.selectionMode = .Multi
     tree.iconSize = 16
 
+    var str: String
     loop i: maxItems
     {
-        str  := Format.toString("item %", i)
+        Format.replaceString(&str, "item %", i)
         icon := app.theme.getIcon24(cast(ThemeIcons24) rng.nextU32(0, cast(u32) @countof(ThemeIcons24)))
         line := tree.createLine(str, icon)
 
         loop j: maxItems / 2
         {
-            str1  := Format.toString("sub item %", j)
+            Format.replaceString(&str, "sub item %", j)
             icon1 := app.theme.getIcon24(cast(ThemeIcons24) rng.nextU32(0, cast(u32) @countof(ThemeIcons24)))
-            line1 := tree.createLine(str1, icon1, parentLine: line)
+            line1 := tree.createLine(str, icon1, parentLine: line)
 
             loop k: maxItems / 3
             {
-                str2  := Format.toString("sub sub item %", k)
-                line2 := tree.createLine(str2, parentLine: line1)
+                Format.replaceString(&str, "sub sub item %", k)
+                line2 := tree.createLine(str, parentLine: line1)
             }
         }
     }
@@ -45,29 +46,30 @@ func createTreeMulti(view: *Wnd)->*ListCtrl
     tree.iconMarginFirstCol = false
     tree.header.getItem(2).iconMargin = true
 
+    var str: String
     loop i: 50
     {
-        str := Format.toString("item %", i)
+        Format.replaceString(&str, "item %", i)
         icon := app.theme.getIcon24(ThemeIcons24.Search, 16)
         if i % 2 == 0 icon.clear()
         line := tree.createLine(str, icon)
-        str = Format.toString("sub item %", i)
+        Format.replaceString(&str, "sub item %", i)
         line.setItem(1, str)
         line.setItem(2, str, icon)
 
         loop j: 25
         {
-            str1 := Format.toString("sub line %", j)
-            line1 := tree.createLine(str1, parentLine: line)
-            str = Format.toString("sub item %", j)
+            Format.replaceString(&str, "sub line %", j)
+            line1 := tree.createLine(str, parentLine: line)
+            Format.replaceString(&str, "sub item %", j)
             line1.setItem(1, str)
             line1.setItem(2, str, icon)
 
             loop k: 10
             {
-                str2  := Format.toString("XX %", k)
-                line2 := tree.createLine(str2, parentLine: line1)
-                str = Format.toString("sub item %", k)
+                Format.replaceString(&str, "XX %", k)
+                line2 := tree.createLine(str, parentLine: line1)
+                Format.replaceString(&str, "sub item %", k)
                 line2.checkable = true
                 line2.setItem(1, str)
                 line2.setItem(2, str, icon)

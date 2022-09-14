@@ -7,9 +7,10 @@ func createListSimple(view: *Wnd, maxItems = 50)->*ListCtrl
     list.selectionMode = .Multi
     list.iconSize = 16
 
+    var str: String
     loop i: maxItems
     {
-        str := Format.toString("item %", i)
+        Format.replaceString(&str, "item %", i)
         icon := app.theme.getIcon24(ThemeIcons24.Search, 16)
         if i % 2 == 0 icon.clear()
         line := list.createLine(str, icon)
@@ -30,9 +31,10 @@ func createListMulti(view: *Wnd, checkable: bool = false)->*ListCtrl
     list.selectionMode = .Multi
     list.iconSize = 16
 
+    var str: String
     loop i: 50
     {
-        str := Format.toString("item %", i)
+        Format.replaceString(&str, "item %", i)
         icon := app.theme.getIcon24(ThemeIcons24.Search, 16)
         if i % 2 == 0 icon.clear()
         line := list.createLine(str, icon)
