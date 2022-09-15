@@ -691,10 +691,8 @@ bool Workspace::buildTarget()
     //////////////////////////////////////////////////
     g_ThreadMgr.waitEndJobs();
     g_ThreadMgr.clearOptionalJobs();
-#ifdef SWAG_DEV_MODE
     bootstrapModule->printBC();
     runtimeModule->printBC();
-#endif
 
     // Config pass (compute/fetch dependencies...
     //////////////////////////////////////////////////
