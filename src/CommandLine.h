@@ -51,6 +51,8 @@ struct CommandLine
 
     bool warningsAsErrors = false;
     bool dbgCatch         = false;
+    bool dbgOff           = false;
+
 #ifdef SWAG_DEV_MODE
     bool randomize = false;
     int  randSeed  = 0;

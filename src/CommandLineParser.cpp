@@ -44,7 +44,8 @@ void CommandLineParser::setup(CommandLine* cmdLine)
                                                                                                    
     addArg("te",             "--test-filter",          nullptr,    CommandLineType::String,        &cmdLine->testFilter, nullptr, "will only compile and test files that match the filter");
                                                                                                    
-    addArg("bu sc",          "--dbgcatch",             nullptr,    CommandLineType::Bool,          &cmdLine->dbgCatch, nullptr, "open bytecode debugger in case of compile time errors");
+    addArg("bu sc",          "--dbg-catch",            nullptr,    CommandLineType::Bool,          &cmdLine->dbgCatch, nullptr, "open bytecode debugger in case of compile time errors");
+    addArg("bu sc",          "--dbg-off",              nullptr,    CommandLineType::Bool,          &cmdLine->dbgOff, nullptr, "disable @breakpoint() instruction");
 #ifdef SWAG_DEV_MODE                                                                               
     addArg("bu sc",          "--randomize",            nullptr,    CommandLineType::Bool,          &cmdLine->randomize, nullptr, "[devmode] randomize behavior");
     addArg("bu sc",          "--seed",                 nullptr,    CommandLineType::Int,           &cmdLine->randSeed, nullptr, "[devmode] set seed for randomize behavior");
