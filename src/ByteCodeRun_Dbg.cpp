@@ -933,14 +933,16 @@ static void printHelp()
     g_Log.eol();
 
     g_Log.print("p(rint) <expr>                print the value of the Swag code expression <expr> in the current context\n");
-    g_Log.print("loc(als)                      print all current local variables\n");
-    g_Log.print("a(rgs)                        print all current function arguments\n");
+    g_Log.print("info locals                   print all current local variables\n");
+    g_Log.print("info args                     print all current function arguments\n");
+    g_Log.print("info func [filter]            print all functions which contains [filter] in their names\n");
+    g_Log.print("info modules                  print all modules\n");
     g_Log.print("(w)here                       print contextual informations\n");
     g_Log.eol();
 
     g_Log.print("b(reak)                       print all breakpoints\n");
-    g_Log.print("b(reak) fct <name>            add breakpoint when entering function <name> in the current file\n");
-    g_Log.print("b(reak) fct <file>:<name>     add breakpoint when entering function <name> in <file>\n");
+    g_Log.print("b(reak) func <name>           add breakpoint when entering function <name> in the current file\n");
+    g_Log.print("b(reak) func <file>:<name>    add breakpoint when entering function <name> in <file>\n");
     g_Log.print("b(reak) <line>                add breakpoint in the current source file at <line>\n");
     g_Log.print("b(reak) clear                 remove all breakpoints\n");
     g_Log.print("b(reak) clear <num>           remove breakpoint <num>\n");
@@ -959,7 +961,7 @@ static void printHelp()
     g_Log.eol();
 
     g_Log.print("i [num]                       print the current bytecode instruction and <num> instructions around\n");
-    g_Log.print("r(egs) [format]               print all registers (format is the same as 'x' command)\n");
+    g_Log.print("info regs [format]            print all registers (format is the same as 'x' command)\n");
     g_Log.print("r<num> [format]               print register <num> (format is the same as 'x' command)\n");
     g_Log.print("bc                            print the current function bytecode\n");
     g_Log.eol();
@@ -1525,13 +1527,53 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 continue;
             }
 
+            // Info functions
+            /////////////////////////////////////////
+            if (cmd == "info" && cmds.size() >= 2 && cmds[1] == "func")
+            {
+                if (cmds.size() > 3)
+                    goto evalDefault;
+                auto filter = cmds.size() == 3 ? cmds[2] : Utf8("");
+                g_Log.setColor(LogColor::Gray);
+                for (auto m : g_Workspace->modules)
+                {
+                    for (auto bc : m->byteCodeFunc)
+                    {
+                        if (filter.empty() || bc->name.find(filter) != -1)
+                        {
+                            g_Log.print(Fmt("%s ", bc->name.c_str()));
+                            SourceFile*     bcFile;
+                            SourceLocation* bcLocation;
+                            ByteCode::getLocation(bc, bc->out, &bcFile, &bcLocation);
+                            if (bcFile)
+                                g_Log.print(Fmt("%s", bcFile->name.c_str()));
+                            if (bcLocation)
+                                g_Log.print(Fmt(":%d", bcLocation->line));
+                            g_Log.eol();
+                        }
+                    }
+                }
+
+                continue;
+            }
+
+            // Info modules
+            /////////////////////////////////////////
+            if (cmd == "info" && cmds.size() == 2 && cmds[1] == "modules")
+            {
+                g_Log.setColor(LogColor::Gray);
+                for (auto m : g_Workspace->modules)
+                {
+                    g_Log.print(Fmt("%s\n", m->name.c_str()));
+                }
+
+                continue;
+            }
+
             // Info locals
             /////////////////////////////////////////
-            if (cmd == "loc" || cmd == "locals")
+            if (cmd == "info" && cmds.size() == 2 && cmds[1] == "locals")
             {
-                if (cmds.size() != 1)
-                    goto evalDefault;
-
                 if (context->debugCxtBc->localVars.empty())
                     g_Log.printColor("no locals\n");
                 else
@@ -1560,11 +1602,8 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
 
             // Info args
             /////////////////////////////////////////
-            if (cmd == "a" || cmd == "args")
+            if (cmd == "info" && cmds.size() == 2 && cmds[1] == "args")
             {
-                if (cmds.size() != 1)
-                    goto evalDefault;
-
                 auto funcDecl = CastAst<AstFuncDecl>(context->debugCxtBc->node, AstNodeKind::FuncDecl);
                 if (!funcDecl->parameters || funcDecl->parameters->childs.empty())
                     g_Log.printColor("no arguments\n");
@@ -1753,17 +1792,17 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
 
             // Print all registers
             /////////////////////////////////////////
-            if (cmd == "r" || cmd == "regs")
+            if (cmd == "info" && cmds.size() >= 2 && cmds[1] == "regs")
             {
-                if (cmds.size() > 2)
+                if (cmds.size() > 3)
                     goto evalDefault;
 
                 ValueFormat fmt;
                 fmt.isHexa   = true;
                 fmt.bitCount = 64;
-                if (cmds.size() > 1)
+                if (cmds.size() > 2)
                 {
-                    if (!getValueFormat(cmds[1], fmt))
+                    if (!getValueFormat(cmds[2], fmt))
                         goto evalDefault;
                 }
 
@@ -2003,7 +2042,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                     goto evalDefault;
 
                 // Break on function
-                if (cmds[1] == "fct")
+                if (cmds[1] == "func")
                 {
                     ByteCodeRunContext::DebugBreakpoint bkp;
                     bkp.type = ByteCodeRunContext::DebugBkpType::FuncName;
