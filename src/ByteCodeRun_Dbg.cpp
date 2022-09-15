@@ -1541,6 +1541,9 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                         auto over = l->resolvedSymbolOverload;
                         if (!over)
                             continue;
+                        // Generated
+                        if (over->symbol->name.length() > 2 && over->symbol->name[0] == '_' && over->symbol->name[1] == '_')
+                            continue;
                         Utf8           str = Fmt("%s: %s = ", over->symbol->name.c_str(), over->typeInfo->getDisplayNameC());
                         EvaluateResult res;
                         res.type = over->typeInfo;
