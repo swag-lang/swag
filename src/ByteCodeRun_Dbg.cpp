@@ -448,7 +448,6 @@ static void printMemory(ByteCodeRunContext* context, const Utf8& arg)
     }
 
     uint64_t addrVal = 0;
-    auto     addr    = expr.c_str();
 
     if (expr[0] == '$')
     {
@@ -478,30 +477,14 @@ static void printMemory(ByteCodeRunContext* context, const Utf8& arg)
         {
             addrVal = (uint64_t) context->sp;
         }
+        else if (expr == "bp")
+        {
+            addrVal = (uint64_t) context->bp;
+        }
         else
         {
             g_Log.printColor("invalid 'x' parameter after '$'\n", LogColor::Red);
             return;
-        }
-    }
-    else if (isxdigit(expr[0]))
-    {
-        while (*addr)
-        {
-            addrVal <<= 4;
-            if (*addr >= 'a' && *addr <= 'f')
-                addrVal += 10 + (*addr - 'a');
-            else if (*addr >= 'A' && *addr <= 'F')
-                addrVal += 10 + (*addr - 'A');
-            else if (*addr >= '0' && *addr <= '9')
-                addrVal += (*addr - '0');
-            else
-            {
-                g_Log.printColor(Fmt("invalid hexadecimal digit '%c' in 'x' parameter", *addr), LogColor::Red);
-                return;
-            }
-
-            addr++;
         }
     }
     else
@@ -923,7 +906,7 @@ static void printHelp()
     g_Log.print("j(ump)  <num>                 jump to the given line or instruction (depends on 'bcmode')\n");
     g_Log.eol();
 
-    g_Log.print("l(ist) [num]                  print the current source code line and <num> lines around\n");
+    g_Log.print("l(ist) [num]                  print the current source code line and [num] lines around\n");
     g_Log.print("ll [name]                     print the current function (or function [name]) source code\n");
     g_Log.eol();
 
@@ -942,8 +925,8 @@ static void printHelp()
 
     g_Log.print("b(reak)                       print all breakpoints\n");
     g_Log.print("b(reak) func <name>           add breakpoint when entering function <name> in the current file\n");
-    g_Log.print("b(reak) func <file>:<name>    add breakpoint when entering function <name> in <file>\n");
     g_Log.print("b(reak) <line>                add breakpoint in the current source file at <line>\n");
+    g_Log.print("b(reak) <file>:<line>         add breakpoint in <file> at <line>\n");
     g_Log.print("b(reak) clear                 remove all breakpoints\n");
     g_Log.print("b(reak) clear <num>           remove breakpoint <num>\n");
     g_Log.print("b(reak) enable <num>          enable breakpoint <num>\n");
@@ -962,13 +945,14 @@ static void printHelp()
 
     g_Log.print("i [num]                       print the current bytecode instruction and <num> instructions around\n");
     g_Log.print("info regs [format]            print all registers (format is the same as 'x' command)\n");
-    g_Log.print("r<num> [format]               print register <num> (format is the same as 'x' command)\n");
+    g_Log.print("$r<num> [format]              print register <num> (format is the same as 'x' command)\n");
+    g_Log.print("$sp|$bp                       print stack register\n");
     g_Log.print("bc                            print the current function bytecode\n");
     g_Log.eol();
 
     g_Log.print("x [format] [num] <expr>       print memory (format = s8|s16|s32|s64|u8|u16|u32|u64|x8|x16|x32|x64|f32|f64)\n");
     g_Log.print("x [format] [num] $r<num>      print memory at current register value\n");
-    g_Log.print("x [format] [num] $sp          print memory at current stack pointer\n");
+    g_Log.print("x [format] [num] $sp|$bp      print memory at current stack pointer\n");
     g_Log.eol();
 
     g_Log.print("?                             print this list of commands\n");
@@ -1822,23 +1806,22 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 }
 
                 g_Log.print(Fmt("sp = %016llx\n", context->sp));
+                g_Log.print(Fmt("bp = %016llx\n", context->bp));
                 continue;
             }
 
             // Print one register
             /////////////////////////////////////////
-            if (cmd[0] == 'r')
+            if (cmd.length() > 2 && cmd[0] == '$' && cmd[1] == 'r')
             {
-                if (cmd.length() == 1)
-                    goto evalDefault;
-                if (!isNumber(cmd.buffer + 1))
+                if (!isNumber(cmd.buffer + 2))
                     goto evalDefault;
                 if (cmds.size() > 2)
                     goto evalDefault;
 
                 g_Log.setColor(LogColor::Gray);
                 int regN;
-                if (!getRegIdx(context, cmd, regN))
+                if (!getRegIdx(context, cmd.c_str() + 1, regN))
                     continue;
                 auto& regP = context->getRegBuffer(context->debugCxtRc)[regN];
 
@@ -1860,6 +1843,18 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 str.trim();
                 g_Log.print(str);
                 g_Log.eol();
+                continue;
+            }
+
+            if (cmd[0] == '$sp')
+            {
+                g_Log.print(Fmt("sp = %016llx\n", context->sp));
+                continue;
+            }
+
+            if (cmd[0] == '$bp')
+            {
+                g_Log.print(Fmt("bp = %016llx\n", context->bp));
                 continue;
             }
 
@@ -1906,7 +1901,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 auto toLogBc = context->debugCxtBc;
                 auto toLogIp = context->debugCxtIp;
 
-                if (cmd == "ll")
+                if (cmd == "ll" && cmds.size() > 1)
                 {
                     if (cmds.size() > 2)
                         goto evalDefault;
