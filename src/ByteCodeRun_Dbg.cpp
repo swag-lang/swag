@@ -935,7 +935,7 @@ static void printHelp()
     g_Log.print("p(rint) <expr>                print the value of the Swag code expression <expr> in the current context\n");
     g_Log.print("loc(als)                      print all current local variables\n");
     g_Log.print("a(rgs)                        print all current function arguments\n");
-    g_Log.print("cxt                           print contextual informations\n");
+    g_Log.print("(w)here                       print contextual informations\n");
     g_Log.eol();
 
     g_Log.print("b(reak)                       print all breakpoints\n");
@@ -1209,20 +1209,59 @@ static Utf8 getCommandLine(ByteCodeRunContext* context, bool& ctrl, bool& shift)
         if (key == OS::Key::Return)
             break;
 
+#define MOVE_LEFT()               \
+    {                             \
+        fputs("\x1B[1D", stdout); \
+        cursorX--;                \
+    }
+#define MOVE_RIGHT()              \
+    {                             \
+        fputs("\x1B[1C", stdout); \
+        cursorX++;                \
+    }
+
         switch (key)
         {
         case OS::Key::Left:
             if (!cursorX)
                 continue;
-            fputs("\x1B[1D", stdout); // Move the cursor one unit to the left
-            cursorX--;
+            if (ctrl)
+            {
+                if (isblank(line[cursorX - 1]))
+                {
+                    while (cursorX && isblank(line[cursorX - 1]))
+                        MOVE_LEFT();
+                }
+                else
+                {
+                    while (cursorX && (isalnum(line[cursorX - 1]) || line[cursorX - 1] == '_' || isdigit(line[cursorX - 1])))
+                        MOVE_LEFT();
+                }
+            }
+            else
+                MOVE_LEFT();
             continue;
+
         case OS::Key::Right:
             if (cursorX == line.count)
                 continue;
-            fputs("\x1B[1C", stdout); // Move the cursor one unit to the right
-            cursorX++;
+            if (ctrl)
+            {
+                if (isblank(line[cursorX]))
+                {
+                    while (cursorX != line.count && isblank(line[cursorX]))
+                        MOVE_RIGHT();
+                }
+                else
+                {
+                    while (cursorX != line.count && (isalnum(line[cursorX]) || line[cursorX] == '_' || isdigit(line[cursorX])))
+                        MOVE_RIGHT();
+                }
+            }
+            else
+                MOVE_RIGHT();
             continue;
+
         case OS::Key::Home:
             if (cursorX)
                 fputs(Fmt("\x1B[%dD", cursorX), stdout); // Move the cursor at 0
@@ -1242,9 +1281,8 @@ static Utf8 getCommandLine(ByteCodeRunContext* context, bool& ctrl, bool& shift)
         case OS::Key::Back:
             if (!cursorX)
                 continue;
-            fputs("\x1B[1D", stdout); // Move the cursor one unit to the left
+            MOVE_LEFT();
             fputs("\x1B[1P", stdout); // Delete the character
-            cursorX--;
             line.remove(cursorX, 1);
             continue;
         case OS::Key::Up:
@@ -1702,7 +1740,7 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
 
             // Print context
             /////////////////////////////////////////
-            if (cmd == "cxt")
+            if (cmd == "w" || cmd == "where")
             {
                 if (cmds.size() != 1)
                     goto evalDefault;
