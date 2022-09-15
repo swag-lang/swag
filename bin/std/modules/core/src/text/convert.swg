@@ -352,18 +352,18 @@ func convertStruct(buf: *ConcatBuffer, value: any, strFormat: string)
 // Convert a float to an utf8 string, and put the result in a ConcatBuffer
 func convertFloat(buf: *ConcatBuffer, fmt: ConvertFormatFloat)
 {
-    kindof := @kindof(fmt.value)
+    kindof := cast(const *Swag.TypeInfoNative) @kindof(fmt.value)
     Debug.assert(kindof.flags & TypeInfoFlags.Float != 0, "value to convert is not a float")
 
     dataof := @dataof(fmt.value)
     bits := kindof.sizeof * 8
 
     var value: f64
-    switch kindof
+    switch kindof.nativeKind
     {
-    case f32:
+    case F32:
         value = cast(f64) dref cast(*f32) dataof
-    case f64:
+    case F64:
         value = dref cast(*f64) dataof
     }
 
@@ -373,7 +373,7 @@ func convertFloat(buf: *ConcatBuffer, fmt: ConvertFormatFloat)
 // Convert an integer to an utf8 string, and put the result in a ConcatBuffer
 func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
 {
-    kindof := @kindof(fmt.value)
+    kindof := cast(const *Swag.TypeInfoNative) @kindof(fmt.value)
     Debug.assert(kindof.flags & TypeInfoFlags.Integer != 0, "value to convert is not an integer")
     Debug.assert(0 < fmt.base and fmt.base <= 16, "invalid convert base")
 
@@ -385,31 +385,31 @@ func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
     var signed: bool
 
     overflowS64 := false
-    switch kindof
+    switch kindof.nativeKind
     {
-    case s8:
+    case S8:
         signedValue = cast(s64) dref cast(*s8) dataof
         value = cast(u64) Math.abs(signedValue)
-    case s16:
+    case S16:
         signedValue = cast(s64) dref cast(*s16) dataof
         value = cast(u64) Math.abs(signedValue)
-    case s32:
+    case S32:
         signedValue = cast(s64) dref cast(*s32) dataof
         value = cast(u64) Math.abs(signedValue)
-    case s64, int:
+    case S64, Int:
         signedValue = dref cast(*s64) dataof
         // Cannot take the absolute value of Swag.S64.Min
         if signedValue == Swag.S64.Min
             overflowS64 = true
         else
             value = cast(u64) Math.abs(signedValue)
-    case u8:
+    case U8:
         value = cast(u64) dref cast(*u8) dataof
-    case u16:
+    case U16:
         value = cast(u64) dref cast(*u16) dataof
-    case u32:
+    case U32:
         value = cast(u64) dref cast(*u32) dataof
-    case u64, uint:
+    case U64, UInt:
         value = dref cast(*u64) dataof
     }
 
