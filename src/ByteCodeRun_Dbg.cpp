@@ -1359,16 +1359,15 @@ static Utf8 getCommandLine(ByteCodeRunContext* context, bool& ctrl, bool& shift)
 
 bool ByteCodeRun::debugger(ByteCodeRunContext* context)
 {
-    auto ip = context->ip;
-
-    g_Log.lock();
-    g_ByteCodeStackTrace->currentContext = context;
+    auto ip                              = context->ip;
     auto module                          = context->bc->sourceFile->module;
+    g_ByteCodeStackTrace->currentContext = context;
 
     if (context->debugEntry)
     {
         static bool firstOne = true;
 
+        g_Log.lock();
         g_Log.setColor(LogColor::Gray);
 
         if (firstOne)
@@ -1395,6 +1394,8 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
         context->debugStepLastLocation = nullptr;
         context->debugStepLastFile     = nullptr;
         context->debugStackFrameOffset = 0;
+
+        g_Log.unlock();
     }
 
     // Check breakpoints
@@ -1455,6 +1456,8 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
 
     if (!zapCurrentIp)
     {
+        g_Log.lock();
+
         computeDebugContext(context);
         printContextInstruction(context);
 
@@ -2282,9 +2285,9 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
 
             evalDynExpression(context, line, res, CompilerAstKind::EmbeddedInstruction);
         }
-    }
 
-    g_Log.unlock();
+        g_Log.unlock();
+    }
 
     context->debugLastCurRC = context->curRC;
     context->debugLastIp    = ip;
