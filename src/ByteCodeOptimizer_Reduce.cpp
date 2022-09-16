@@ -1639,48 +1639,80 @@ void ByteCodeOptimizer::reduceIncPtr(ByteCodeOptContext* context, ByteCodeInstru
             if (ip[1].op == ByteCodeOp::DeRef8 &&
                 (ip[0].b.s64 + ip[1].c.s64 >= 0) &&
                 (ip[0].b.s64 + ip[1].c.s64 <= 0x7FFFFFFF) &&
-                ip[0].c.u32 == ip[1].b.u32 &&
-                ip[1].a.u32 == ip[1].b.u32)
+                ip[0].c.u32 == ip[1].b.u32)
             {
-                ip[1].b.u32 = ip[0].a.u32;
-                ip[1].c.s64 += ip[0].b.s64;
-                setNop(context, ip);
+                if (ip[1].a.u32 == ip[1].b.u32)
+                {
+                    ip[1].b.u32 = ip[0].a.u32;
+                    ip[1].c.s64 += ip[0].b.s64;
+                    setNop(context, ip);
+                }
+                else
+                {
+                    ip[1].b.u32 = ip[0].a.u32;
+                    ip[1].c.s64 += ip[0].b.s64;
+                    swap(ip[0], ip[1]);
+                }
                 break;
             }
 
             if (ip[1].op == ByteCodeOp::DeRef16 &&
                 (ip[0].b.s64 + ip[1].c.s64 >= 0) &&
                 (ip[0].b.s64 + ip[1].c.s64 <= 0x7FFFFFFF) &&
-                ip[0].c.u32 == ip[1].b.u32 &&
-                ip[1].a.u32 == ip[1].b.u32)
+                ip[0].c.u32 == ip[1].b.u32)
             {
-                ip[1].b.u32 = ip[0].a.u32;
-                ip[1].c.s64 += ip[0].b.s64;
-                setNop(context, ip);
+                if (ip[1].a.u32 == ip[1].b.u32)
+                {
+                    ip[1].b.u32 = ip[0].a.u32;
+                    ip[1].c.s64 += ip[0].b.s64;
+                    setNop(context, ip);
+                }
+                else
+                {
+                    ip[1].b.u32 = ip[0].a.u32;
+                    ip[1].c.s64 += ip[0].b.s64;
+                    swap(ip[0], ip[1]);
+                }
                 break;
             }
 
             if (ip[1].op == ByteCodeOp::DeRef32 &&
                 (ip[0].b.s64 + ip[1].c.s64 >= 0) &&
                 (ip[0].b.s64 + ip[1].c.s64 <= 0x7FFFFFFF) &&
-                ip[0].c.u32 == ip[1].b.u32 &&
-                ip[1].a.u32 == ip[1].b.u32)
+                ip[0].c.u32 == ip[1].b.u32)
             {
-                ip[1].b.u32 = ip[0].a.u32;
-                ip[1].c.s64 += ip[0].b.s64;
-                setNop(context, ip);
+                if (ip[1].a.u32 == ip[1].b.u32)
+                {
+                    ip[1].b.u32 = ip[0].a.u32;
+                    ip[1].c.s64 += ip[0].b.s64;
+                    setNop(context, ip);
+                }
+                else
+                {
+                    ip[1].b.u32 = ip[0].a.u32;
+                    ip[1].c.s64 += ip[0].b.s64;
+                    swap(ip[0], ip[1]);
+                }
                 break;
             }
 
             if (ip[1].op == ByteCodeOp::DeRef64 &&
                 (ip[0].b.s64 + ip[1].c.s64 >= 0) &&
                 (ip[0].b.s64 + ip[1].c.s64 <= 0x7FFFFFFF) &&
-                ip[0].c.u32 == ip[1].b.u32 &&
-                ip[1].a.u32 == ip[1].b.u32)
+                ip[0].c.u32 == ip[1].b.u32)
             {
-                ip[1].b.u32 = ip[0].a.u32;
-                ip[1].c.s64 += ip[0].b.s64;
-                setNop(context, ip);
+                if (ip[1].a.u32 == ip[1].b.u32)
+                {
+                    ip[1].b.u32 = ip[0].a.u32;
+                    ip[1].c.s64 += ip[0].b.s64;
+                    setNop(context, ip);
+                }
+                else
+                {
+                    ip[1].b.u32 = ip[0].a.u32;
+                    ip[1].c.s64 += ip[0].b.s64;
+                    swap(ip[0], ip[1]);
+                }
                 break;
             }
 
