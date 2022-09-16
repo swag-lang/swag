@@ -76,6 +76,7 @@ static void byteCodeRun(bool forCallback, void* byteCodePtr, va_list valist)
     g_RunContext->push(g_RunContext->bp);
     g_RunContext->push(g_RunContext->bc);
     g_RunContext->push(g_RunContext->ip);
+    g_RunContext->oldBc   = nullptr;
     g_RunContext->bc      = bc;
     g_RunContext->ip      = bc->out;
     g_RunContext->bp      = g_RunContext->sp;

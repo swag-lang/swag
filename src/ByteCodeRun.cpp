@@ -575,7 +575,8 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             context->push(context->bc);
             context->push(context->ip);
 
-            context->bc = (ByteCode*) ByteCode::undoByteCodeLambda((void*) ptr);
+            context->oldBc = context->bc;
+            context->bc    = (ByteCode*) ByteCode::undoByteCodeLambda((void*) ptr);
             SWAG_ASSERT(context->bc);
             context->ip = context->bc->out;
             SWAG_ASSERT(context->ip);
