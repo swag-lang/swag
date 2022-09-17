@@ -485,6 +485,24 @@ impl MainWnd
         return editMode
     }
 
+    mtd createTopMenu()
+    {
+        topMenu := MenuCtrl.createBar(parent)
+        topMenu.owner = self
+        topMenu.bringToFront()
+        topMenu.dockStyle = .Top
+        topMenu.margin.y = -parent.padding.y
+        topMenu.backgroundStyle = .Transparent
+        topMenu.addItem("Coucou", "0")
+
+        editMenu := MenuCtrl.createPopup(parent)
+        editMenu.owner = self
+        editMenu.addItem(CmdIdCopy)
+        topMenu.addPopup("Edit", editMenu)
+
+        topMenu.addItem("Toto", "0")
+    }
+
     mtd createToolbar(topBar: *Wnd)
     {
         mtd createBtn(id: WndId)
@@ -593,15 +611,6 @@ impl MainWnd
         res.icons48.set(renderer.addImage(img48), 48, 48)
 
         res.clipFmt = catch Clipboard.registerFormat(ClipboardFormat)
-
-        topMenu := MenuCtrl.createBar(res.parent)
-        topMenu.bringToFront()
-        topMenu.dockStyle = .Top
-        topMenu.margin.y = -res.parent.padding.y
-        topMenu.backgroundStyle = .Transparent
-        topMenu.addItem("Coucou", "0")
-        topMenu.addItem("Salut", "0")
-        topMenu.addItem("La", "0")
 
         topBar := Wnd.create'Wnd(res, @{0, 0, 64, 64})
         topBar.dockStyle = .Top

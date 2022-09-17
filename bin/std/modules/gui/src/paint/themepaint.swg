@@ -13,7 +13,7 @@ impl Theme
         if subRect == null or subRect.rect.isEmpty() or dstRect.isEmpty() or color.a == 0
             return
 
-        painter.setInterpolationMode(InterpolationMode.Linear)
+        painter.setInterpolationMode(.Linear)
 
         if subRect.corner == 0
         {

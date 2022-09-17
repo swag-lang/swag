@@ -11,7 +11,9 @@ var g_App: Application
     g_App.setConfigPath(path)
 
     surface := try g_App.createSurface(200, 100, 1200, 1000, SurfaceFlags.OverlappedWindow)
-    surface.setView(MainWnd.create(surface.wnd))
+    mainWnd := MainWnd.create(surface.wnd)
+    surface.setView(mainWnd)
+    mainWnd.createTopMenu()
     surface.show()
 
     if Env.hasArg("swag.test")

@@ -241,7 +241,7 @@ struct ThemeColors
     menuPopup_Separator:            Color = Color.getLighter(Color.fromArgb(Gray6), 0.2)
     menuBar_Bk:                     Color = Gray4
     menuBar_Border:                 Color = 0
-    menuBar_SelectedBk:             Color = Gray5
+    menuBar_SelectedBk:             Color = 0x1F000000
 
     popupItem_Text:                 Color = Gray1
     popupItem_RightText:            Color = Gray2

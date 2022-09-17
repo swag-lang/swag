@@ -191,7 +191,8 @@ impl IWnd for MenuCtrl
                 i.icon.paint(painter, labelPos.x, labelPos.vertCenter() - i.icon.sizeY * 0.5, colorText)
             }
 
-            labelPos.moveLeft(i.size + metrics.menuPopup_IconTextMargin)
+            labelPos.moveLeft(metrics.menuPopup_IconTextMargin + i.size)
+            labelPos.width -= i.size
 
             // Text
             var format: RichStringFormat
@@ -217,7 +218,7 @@ impl IWnd for MenuCtrl
             if i.popup
             {
                 icon := theme.getIcon24(ThemeIcons24.RightPopupArrow)
-                icon.paint(painter, labelPos.right() - icon.sizeX, labelPos.vertCenter() - icon.sizeY * 0.5, colors.popupItem_Text)
+                icon.paint(painter, labelPos.right(), labelPos.vertCenter() - icon.sizeY * 0.5, colors.popupItem_Text)
             }
         }
 
@@ -280,7 +281,7 @@ impl IWnd for MenuCtrl
             return
         }
 
-        if hotIdx == Swag.U32.Max and bar
+        if hotIdx == Swag.U32.Max and bar and !subVisible
         {
             evt.accepted = false
             return
@@ -590,7 +591,7 @@ impl MenuCtrl
         if !paintByFrame
             position.width += 2 * metrics.menuPopup_ShadowSize
 
-        position.width += (2 * rsf.font.regular.height) + metrics.menuPopup_IconTextMargin
+        position.width += (3 * rsf.font.regular.height) + (1 * metrics.menuPopup_IconTextMargin)
 
         if !paintByFrame
             position.height += metrics.menuPopup_ShadowSize

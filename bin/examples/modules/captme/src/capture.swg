@@ -500,6 +500,14 @@ impl Capture
                     arrY.add(cast(s32) pt.y)
                 }
 
+            case FormDraw:
+                form2 := cast(*FormDraw) form
+                bound := f.boundRect(false)
+                arrX.add(cast(s32) bound.x)
+                arrX.add(cast(s32) bound.right())
+                arrY.add(cast(s32) bound.y)
+                arrY.add(cast(s32) bound.bottom())
+
             default:
                 arrX.add(cast(s32) form.x)
                 arrX.add(cast(s32) (form.x + form.w))

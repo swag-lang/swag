@@ -337,6 +337,7 @@ func createView0(tabView: *Tab, view: *Wnd)
         popup.addItem("Coucou0", "0")
         popup.addItem("Coucou1", "1")
         popup.addPopup("Popup1", popup1)
+
         menu.addPopup("Popup1", popup)
         menu.addPopup("Popup2", popup)
     }

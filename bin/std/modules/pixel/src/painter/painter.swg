@@ -585,6 +585,7 @@ impl Painter
         rrect := rect
         if !isSurfacePos
             rrect.offset(curState.transform.tx, curState.transform.ty)
+        rrect.round()
 
         if curState.clippingRectOn
         {
