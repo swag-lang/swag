@@ -330,13 +330,17 @@ impl MenuCtrl
             onValidateResult(self, result)
 
         if bar
+        {
             hideSubVisible()
+            postCommandEvent(result)
+        }
 
         if p.bar
         {
             p.selectedIdx   = Swag.U32.Max
             p.hotIdx        = Swag.U32.Max
             p.subVisible    = null
+            p.postCommandEvent(result)
         }
     }
 

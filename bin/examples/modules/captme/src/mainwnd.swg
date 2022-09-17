@@ -146,6 +146,18 @@ impl IWnd for MainWnd
             evt.name = "Select All Objects"
             evt.accepted = true
 
+        case CmdIdDeSelectAll:
+            evt.setFlags |= .Disabled | .Name
+            evt.disabled = !capture or !hasSel
+            evt.name = "Deselect All Objects"
+            evt.accepted = true
+
+        case CmdIdInvertSelection:
+            evt.setFlags |= .Disabled | .Name
+            evt.disabled = !capture
+            evt.name = "Invert Selection"
+            evt.accepted = true
+
         case CmdIdCopy:
             evt.setFlags |= .Disabled | .Name
             evt.disabled = !hasSel
@@ -359,6 +371,20 @@ impl IWnd for MainWnd
                 capture.selection.add(@index)
             capture.selectionHasChanged()
 
+        case CmdIdDeSelectAll:
+            capture.selection.clear()
+            capture.selectionHasChanged()
+
+        case CmdIdInvertSelection:
+            var newSel: Array'uint
+            loop i: capture.forms
+            {
+                if !capture.selection.contains(i)
+                    newSel.add(i)
+            }
+            capture.selection = newSel
+            capture.selectionHasChanged()
+
         case CmdIdCopy:
             capture.copy()
         case CmdIdPaste:
@@ -497,7 +523,16 @@ impl MainWnd
 
         editMenu := MenuCtrl.createPopup(parent)
         editMenu.owner = self
+        editMenu.addItem(CmdIdUndo)
+        editMenu.addItem(CmdIdRedo)
+        editMenu.addSeparator()
         editMenu.addItem(CmdIdCopy)
+        editMenu.addItem(CmdIdPaste)
+        editMenu.addItem(CmdIdCopyAsImage)
+        editMenu.addSeparator()
+        editMenu.addItem(CmdIdSelectAll)
+        editMenu.addItem(CmdIdDeSelectAll)
+        editMenu.addItem(CmdIdInvertSelection)
         topMenu.addPopup("Edit", editMenu)
 
         topMenu.addItem("Toto", "0")
@@ -559,7 +594,9 @@ impl MainWnd
         registerKeyShortcut(Input.KeyModifiers.None,      Input.Key.Delete,         CmdIdDeleteSelection)
         registerKeyShortcut(Input.KeyModifiers.CtrlShift, Input.Key.A,              CmdIdCopyAsImage)
         registerKeyShortcut(Input.KeyModifiers.Control,   Input.Key.A,              CmdIdSelectAll)
+        registerKeyShortcut(Input.KeyModifiers.Control,   Input.Key.D,              CmdIdDeSelectAll)
         registerKeyShortcut(Input.KeyModifiers.CtrlShift, Input.Key.D,              CmdIdDupCapture)
+        registerKeyShortcut(Input.KeyModifiers.CtrlShift, Input.Key.I,              CmdIdInvertSelection)
     }
 
     mtd updateState()

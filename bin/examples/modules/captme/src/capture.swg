@@ -605,6 +605,7 @@ impl Capture
         menu.addSeparator()
         menu.addItem(CmdIdCopyAsImage)
         menu.addItem(CmdIdSelectAll)
+        menu.addItem(CmdIdDeSelectAll)
         menu.addSeparator()
         menu.addItem(CmdIdSnap)
 
