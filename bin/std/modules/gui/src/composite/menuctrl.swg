@@ -576,7 +576,7 @@ impl MenuCtrl
             if !i.rightName.isEmpty()
             {
                 fake.drawRichString(@{0, 0, 512, 0}, &i.rightName, rsf)
-                w += i.rightName.boundRect.width
+                w += i.rightName.boundRect.width + rsf.font.regular.height
             }
 
             position.width = Math.max(position.width, w)
@@ -587,7 +587,7 @@ impl MenuCtrl
         if !paintByFrame
             position.width += 2 * metrics.menuPopup_ShadowSize
 
-        position.width += (3 * rsf.font.regular.height) + (1 * metrics.menuPopup_IconTextMargin)
+        position.width += (2 * rsf.font.regular.height) + (1 * metrics.menuPopup_IconTextMargin)
 
         if !paintByFrame
             position.height += metrics.menuPopup_ShadowSize

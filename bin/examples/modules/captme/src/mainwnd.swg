@@ -112,13 +112,26 @@ impl IWnd for MainWnd
             evt.accepted = true
 
         case CmdIdZoom1:
-            evt.setFlags |= .Name
+            evt.setFlags |= .Name | .Disabled
             evt.name = "Actual Size"
+            evt.disabled = !capture
             evt.accepted = true
 
         case CmdIdZoomFit:
             evt.setFlags |= .Name | .Disabled
             evt.name = "Fit To View"
+            evt.disabled = !capture
+            evt.accepted = true
+
+        case CmdIdZoomIn:
+            evt.setFlags |= .Name | .Disabled
+            evt.name = "Zoom In"
+            evt.disabled = !capture
+            evt.accepted = true
+
+        case CmdIdZoomOut:
+            evt.setFlags |= .Name | .Disabled
+            evt.name = "Zoom Out"
             evt.disabled = !capture
             evt.accepted = true
 
@@ -289,7 +302,7 @@ impl IWnd for MainWnd
             evt.accepted = true
 
         case CmdIdBringForward:
-            evt.setFlags |= .Disabled | .Icon | .Shortcut | .Name
+            evt.setFlags |= .Disabled | .Icon | .Name
             evt.name = "Bring Forward"
             evt.disabled = !hasSel or capture.selection.contains(capture.forms.count - 1)
             evt.icon = evt.target.getTheme().getIcon24(.BringForward)
@@ -349,6 +362,11 @@ impl IWnd for MainWnd
 
         case CmdIdZoomFit:
             editWnd.editView.zoomToFit()
+
+        case CmdIdZoomIn:
+            editWnd.editView.zoomIn()
+        case CmdIdZoomOut:
+            editWnd.editView.zoomOut()
 
         case CmdIdDupCapture:
             file := Library.newFileName()
@@ -519,7 +537,6 @@ impl MainWnd
         topMenu.dockStyle = .Top
         topMenu.margin.y = -parent.padding.y
         topMenu.backgroundStyle = .Transparent
-        topMenu.addItem("Coucou", "0")
 
         editMenu := MenuCtrl.createPopup(parent)
         editMenu.owner = self
@@ -535,7 +552,13 @@ impl MainWnd
         editMenu.addItem(CmdIdInvertSelection)
         topMenu.addPopup("Edit", editMenu)
 
-        topMenu.addItem("Toto", "0")
+        displayMenu := MenuCtrl.createPopup(parent)
+        displayMenu.owner = self
+        displayMenu.addItem(CmdIdZoomIn)
+        displayMenu.addItem(CmdIdZoomOut)
+        displayMenu.addItem(CmdIdZoom1)
+        displayMenu.addItem(CmdIdZoomFit)
+        topMenu.addPopup("View", displayMenu)
     }
 
     mtd createToolbar(topBar: *Wnd)
@@ -595,6 +618,9 @@ impl MainWnd
         registerKeyShortcut(Input.KeyModifiers.CtrlShift, Input.Key.A,              CmdIdCopyAsImage)
         registerKeyShortcut(Input.KeyModifiers.Control,   Input.Key.A,              CmdIdSelectAll)
         registerKeyShortcut(Input.KeyModifiers.Control,   Input.Key.D,              CmdIdDeSelectAll)
+        registerKeyShortcut(Input.KeyModifiers.Control,   Input.Key.Add,            CmdIdZoomIn)
+        registerKeyShortcut(Input.KeyModifiers.Control,   Input.Key.Subtract,       CmdIdZoomOut)
+        registerKeyShortcut(Input.KeyModifiers.Control,   Input.Key.NumPad0,        CmdIdZoom1)
         registerKeyShortcut(Input.KeyModifiers.CtrlShift, Input.Key.D,              CmdIdDupCapture)
         registerKeyShortcut(Input.KeyModifiers.CtrlShift, Input.Key.I,              CmdIdInvertSelection)
     }
