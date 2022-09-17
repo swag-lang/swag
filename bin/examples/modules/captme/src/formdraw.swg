@@ -14,9 +14,10 @@ impl FormDraw
     mtd setDefaultShape()
     {
         points.clear()
-        points.add(@{0, 0})
         points.add(@{48, 0})
-        points.add(@{24, 48})
+        points.add(@{0, 12})
+        points.add(@{34, 28})
+        points.add(@{0, 48})
     }
 }
 
@@ -162,7 +163,16 @@ impl IForm for FormDraw
     {
         if flags & (.Hot | .Selected)
         {
-            painter.drawRect(paintPos, Argb.White, 2)
+            const anchorSize = 8
+            anchorSize2 := anchorSize * 0.5
+            color := Color.getBlend(Argb.Black, Argb.White, (flags & .Hot) ? 0.8 : 1)
+
+            start := paintPoints[0]
+            painter.fillCircle(start.x, start.y, anchorSize2, color)
+            painter.drawCircle(start.x, start.y, anchorSize2, Argb.Black, 1)
+            end := paintPoints.back()
+            painter.fillCircle(end.x, end.y, anchorSize2, color)
+            painter.drawCircle(end.x, end.y, anchorSize2, Argb.Black, 1)
         }
     }
 
@@ -193,7 +203,9 @@ impl IForm for FormDraw
         loop i: 1..paintPoints.count-1
             pl.lineTo(paintPoints[i].x - paintPos.x, paintPoints[i].y - paintPos.y)
 
-        painter.drawPath(&pl, borderColor, bSize)
+        pen := Pen.createSolid(borderColor, bSize)
+        pen.joinStyle = .Round
+        painter.drawPath(&pl, pen)
     }
 
     mtd setup(capt: *Capture)
