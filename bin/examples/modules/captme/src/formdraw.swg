@@ -5,8 +5,7 @@ struct FormDraw
 
     #[Serialization.NoSerialize]
     {
-        gizmo:          GizmoPoints
-        paintPoints:    Array'Math.Point
+        paintPoints: Array'Math.Point
     }
 }
 
@@ -42,12 +41,8 @@ impl IForm for FormDraw
 
     mtd edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
     {
-        if evt.kind == .MouseDoubleClick and evt.button == .Left
-        {
-            if points.count > 3
-                points.removeBack()
+        if evt.kind == .MouseReleased and evt.button == .Left
             return false
-        }
 
         x0 := cast(s32) ((localPos.x - paintRect.x) / zoom)
         y0 := cast(s32) ((localPos.y - paintRect.y) / zoom)
@@ -59,9 +54,12 @@ impl IForm for FormDraw
             points.add(@{xs, ys})
             points.add(@{x0, y0})
         }
-        elif evt.kind == .MouseReleased and evt.button == .Left
+        elif evt.kind == .MouseMove
         {
-            points.add(@{x0, y0})
+            xs := cast(s32) Math.abs(((x0 - points.back().x) / zoom))
+            ys := cast(s32) Math.abs(((y0 - points.back().y) / zoom))
+            if xs > 5 or ys > 5
+                points.add(@{x0, y0})
         }
         else
         {
@@ -161,18 +159,14 @@ impl IForm for FormDraw
 
     mtd mouse(view: *EditView, pos: Math.Point, evt: *MouseEvent)->bool
     {
-        return gizmo.mouse(view, pos, evt)
+        return false
     }
 
     mtd paintGizmo(painter: *Painter, z: f32, flags: FormFlags)
     {
         if flags & (.Hot | .Selected)
         {
-            computePaintCoords(z)
-            gizmo.anchors.clear()
-            visit pt: paintPoints
-                gizmo.anchors.add(dref pt)
-            gizmo.paint(painter, flags & .Selected ? false : true)
+            painter.drawRect(paintPos, Argb.White, 2)
         }
     }
 
@@ -211,9 +205,5 @@ impl IForm for FormDraw
     {
         capture = capt
         points.clear()
-
-        gizmo.sigChanged = @|self|(g, diff, pt, first) {
-            g.apply(self, diff, pt, first)
-        }
     }
 }

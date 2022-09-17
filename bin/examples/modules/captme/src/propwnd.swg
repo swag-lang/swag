@@ -383,7 +383,7 @@ impl PropWnd
         curSelType := getSelectedFormType()
         switch curSelType
         {
-        case FormLine, FormArrow:
+        case FormLine, FormArrow, FormDraw:
             btn.name = "Color"
         default:
             btn.name = "Outline"
@@ -417,7 +417,7 @@ impl PropWnd
     mtd propBackColor(stack: *Wnd)
     {
         curSelType := getSelectedFormType()
-        if curSelType == FormLine or curSelType == FormArrow
+        if curSelType == FormLine or curSelType == FormArrow or curSelType == FormDraw
             return
 
         btn := createArrowButton(stack, BtnColorWidth, BtnColorHeight)

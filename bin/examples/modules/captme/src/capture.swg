@@ -913,6 +913,8 @@ impl Capture
                 main.favoriteMdl = main.mdlFormPolygon
             case FormText:
                 main.favoriteMdl = main.mdlFormText
+            case FormDraw:
+                main.favoriteMdl = main.mdlFormDraw
             }
         }
         else
@@ -930,6 +932,8 @@ impl Capture
                 main.editMode = .Polygon
             case FormText:
                 main.editMode = .Text
+            case FormDraw:
+                main.editMode = .Draw
             }
         }
     }
@@ -964,6 +968,10 @@ impl Capture
         case FormText:
             b := cast(*FormText) @dataof(f)
             editView.main.mdlFormText = dref b
+
+        case FormDraw:
+            b := cast(*FormDraw) @dataof(f)
+            editView.main.mdlFormDraw = dref b
         }
     }
 
