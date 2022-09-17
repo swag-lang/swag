@@ -3,17 +3,18 @@ using Core, Pixel
 
 impl Theme
 {
-    mtd drawSubRect(painter: *Painter, dstRect: Math.Rectangle, subRect: *ThemeImageRect, color: Color, center = true)
+    mtd drawSubRect(painter: *Painter, dstRect: Math.Rectangle, subRect: *ThemeImageRect, color: Color, center = true, interpol = InterpolationMode.Linear)
     {
-        drawSubRect(painter, res.imgWidgets, dstRect, subRect, color, center)
+        drawSubRect(painter, res.imgWidgets, dstRect, subRect, color, center, interpol)
     }
 
-    func drawSubRect(painter: *Painter, texture: Texture, dstRect: Math.Rectangle, subRect: *ThemeImageRect, color: Color, center = true)
+    func drawSubRect(painter: *Painter, texture: Texture, dstRect: Math.Rectangle, subRect: *ThemeImageRect, color: Color, center = true, interpol = InterpolationMode.Linear)
     {
         if subRect == null or subRect.rect.isEmpty() or dstRect.isEmpty() or color.a == 0
             return
 
-        painter.setInterpolationMode(.Linear)
+        painter.setInterpolationMode(interpol)
+        defer painter.setInterpolationMode(.Linear)
 
         if subRect.corner == 0
         {

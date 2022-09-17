@@ -236,7 +236,7 @@ struct ThemeColors
     tabView_RoundBk:                Color = Gray6
 
     menuPopup_Bk:                   Color = Gray6
-    menuPopup_Border:               Color = 0
+    menuPopup_Border:               Color = Color.getLighter(Color.fromArgb(Gray6), 0.2)
     menuPopup_Shadow:               Color = 0xFF000000
     menuPopup_Separator:            Color = Color.getLighter(Color.fromArgb(Gray6), 0.2)
     menuBar_Bk:                     Color = Gray4

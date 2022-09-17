@@ -88,7 +88,7 @@ struct ThemeImageRects
 
     menuPopup_Shadow:           ThemeImageRect = @{{189,1,66,66}, 24}
     menuPopup_Bk:               ThemeImageRect = @{{1,197,27,27}, 12}
-    menuPopup_Border:           ThemeImageRect = @{{29,197,27,27}, 5}
+    menuPopup_Border:           ThemeImageRect = @{{29,197,27,27}, 12}
     menuPopup_HotBk:            ThemeImageRect = @{{57,197,27,27}, 12}
     menuBar_Bk:                 ThemeImageRect = @{{1,225,27,27}, 12}
     menuBar_Border:             ThemeImageRect = @{{29,225,27,27}, 5}

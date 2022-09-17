@@ -131,7 +131,7 @@ impl IWnd for MenuCtrl
         {
             clientRect.inflate(-metrics.menuPopup_ShadowSize)
             theme.drawSubRect(painter, clientRect, &rects.menuPopup_Bk, colors.menuPopup_Bk)
-            theme.drawSubRect(painter, clientRect, &rects.menuPopup_Border, colors.menuPopup_Border)
+            theme.drawSubRect(painter, clientRect, &rects.menuPopup_Border, colors.menuPopup_Border, interpol: .Pixel)
         }
 
         clientRect.applyPadding(padding)
@@ -220,14 +220,6 @@ impl IWnd for MenuCtrl
                 icon := theme.getIcon24(ThemeIcons24.RightPopupArrow)
                 icon.paint(painter, labelPos.right(), labelPos.vertCenter() - icon.sizeY * 0.5, colors.popupItem_Text)
             }
-        }
-
-        // Border
-        if !paintByFrame
-        {
-            clientRect = getClientRect()
-            clientRect.inflate(-metrics.menuPopup_ShadowSize)
-            theme.drawSubRect(painter, clientRect, &rects.menuPopup_Border, colors.menuPopup_Border)
         }
     }
 
