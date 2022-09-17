@@ -192,7 +192,7 @@ impl IForm for FormPolygon
                 p0 := Math.Vector2{paintPoints[i].x, paintPoints[i].y}
                 ni := (i + 1) % paintPoints.count
                 p1 := Math.Vector2{paintPoints[ni].x, paintPoints[ni].y}
-                if v.distanceToLine(p0, p1) < bSize
+                if v.distanceToSegment(p0, p1) < bSize
                     return true
             }
 

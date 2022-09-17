@@ -116,11 +116,7 @@ impl IForm for FormDraw
     mtd boundRect(raw: bool)->Math.Rectangle
     {
         if !points.count
-        {
-            points.add(@{0, 0})
-            points.add(@{48, 0})
-            points.add(@{24, 48})
-        }
+            setDefaultShape()
 
         var result: retval
 
@@ -176,12 +172,11 @@ impl IForm for FormDraw
         computePaintCoords(z)
         v := Math.Vector2{pt.x, pt.y}
 
-        loop i: paintPoints
+        loop i: 0..paintPoints.count-2
         {
             p0 := Math.Vector2{paintPoints[i].x, paintPoints[i].y}
-            ni := (i + 1) % paintPoints.count
-            p1 := Math.Vector2{paintPoints[ni].x, paintPoints[ni].y}
-            if v.distanceToLine(p0, p1) < bSize
+            p1 := Math.Vector2{paintPoints[i+1].x, paintPoints[i+1].y}
+            if v.distanceToSegment(p0, p1) < bSize
                 return true
         }
 

@@ -32,7 +32,7 @@ impl Vector2
         return (aCROSSbp >= 0) and (bCROSScp >= 0) and (cCROSSap >= 0)
     }
 
-    // Returns the distance of the point to the given segment
+    // Returns the distance of the point to the given line
     mtdc distanceToLine(a, b: Vector2)->f32
     {
         toPt := dref self - a
@@ -42,6 +42,19 @@ impl Vector2
         seg  *= dot
         cross := toPt - seg
         return cross.length()
+    }
+
+    // Returns the distance of the point to the given segment
+    mtdc distanceToSegment(a, b: Vector2)->f32
+    {
+        ab := b - a
+        l2 := ab.lengthSquared()
+        if l2 == 0 return distance(a)
+        vp := a - dref self
+        wp := b - dref self
+        t := Math.max(0, Math.min(1, vp.dot(wp) / l2))
+        projection := dref self + t * (b - a)
+        return distance(projection)
     }
 
     private func getLineLineIntersectCoefs(start0, end0, start1, end1: Vector2, epsilon: f32)->{yes: bool, d0: f32, d1: f32}
