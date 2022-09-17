@@ -624,6 +624,20 @@ impl Wnd
     mtd setAllPaddings(value: f32)          = setPadding(value, value, value, value)
     mtd setAllPaddings(value: Math.Vector4) = setPadding(value.x, value.y, value.z, value.w)
 
+    // Force the window to be the first painted (before all siblings)
+    mtd bringToFront()
+    {
+        Debug.assert(parent != null)
+        if parent.childs.front() == self
+            return
+
+        (idx, found) := Slice.findLinear(parent.childs.toSlice(), self)
+        Debug.assert(found)
+
+        parent.childs.removeAtOrdered(idx)
+        parent.childs.insertAt(0, self)
+    }
+
     // Force the window to be the last painted (on top of siblings)
     mtd bringToTop()
     {

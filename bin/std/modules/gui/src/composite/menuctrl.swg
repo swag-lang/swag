@@ -55,8 +55,11 @@ impl IWnd for MenuCtrl
 
         // Back
         clientRect := getClientRect()
-        theme.drawSubRect(painter, clientRect, &rects.menuBar_Bk, colors.menuBar_Bk)
-        theme.drawSubRect(painter, clientRect, &rects.menuBar_Border, colors.menuBar_Border)
+        if backgroundStyle != .Transparent
+        {
+            theme.drawSubRect(painter, clientRect, &rects.menuBar_Bk, colors.menuBar_Bk)
+            theme.drawSubRect(painter, clientRect, &rects.menuBar_Border, colors.menuBar_Border)
+        }
 
         var labelPos: Math.Rectangle = ?
         var colorText: Color
@@ -274,6 +277,12 @@ impl IWnd for MenuCtrl
         if hotIdx == Swag.U32.Max and ownerMenu
         {
             ownerMenu.onMouseEvent(evt)
+            return
+        }
+
+        if hotIdx == Swag.U32.Max and bar
+        {
+            evt.accepted = false
             return
         }
 
@@ -609,7 +618,7 @@ public impl MenuCtrl
     }
 
     #[Swag.Discardable]
-    func createBar(parent: *Wnd, pos: Math.Rectangle, id: WndId = null)->*MenuCtrl
+    func createBar(parent: *Wnd, pos: Math.Rectangle = @{}, id: WndId = null)->*MenuCtrl
     {
         res := Wnd.create'MenuCtrl(parent, null, pos, id)
         with res
