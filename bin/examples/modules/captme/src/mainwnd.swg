@@ -126,13 +126,13 @@ impl IWnd for MainWnd
         case CmdIdZoomIn:
             evt.setFlags |= .Name | .Disabled
             evt.name = "Zoom In"
-            evt.disabled = !capture
+            evt.disabled = !capture or !editWnd.editView.canZoomIn()
             evt.accepted = true
 
         case CmdIdZoomOut:
             evt.setFlags |= .Name | .Disabled
             evt.name = "Zoom Out"
-            evt.disabled = !capture
+            evt.disabled = !capture or !editWnd.editView.canZoomOut()
             evt.accepted = true
 
         case CmdIdDupCapture:
@@ -764,6 +764,7 @@ impl MainWnd
         res.zoomBtn.sigPressed += @|res|(btn) {
             pos  := btn.getSurfaceRect()
             menu := MenuCtrl.createPopup(res)
+            menu.menuCtrlFlags |= .NoKeyShortcuts
             menu.addItem(CmdIdZoom1)
             menu.addItem(CmdIdZoomFit)
             discard menu.doModal(@{pos.horzCenter(), pos.y}, .AnchorBottomCenter, autoDestroy: true)

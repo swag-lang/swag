@@ -230,6 +230,23 @@ public func getKeyName(mdf: KeyModifiers, key: Key)->String
 
     if result.length result += "+"
     k := key
-    result += Reflection.getEnumName(Input.Key, &k, fullname: false)
+
+    switch key
+    {
+    case NumPad0:   result += "0"
+    case NumPad1:   result += "1"
+    case NumPad2:   result += "2"
+    case NumPad3:   result += "3"
+    case NumPad4:   result += "4"
+    case NumPad5:   result += "5"
+    case NumPad6:   result += "6"
+    case NumPad7:   result += "7"
+    case NumPad8:   result += "8"
+    case NumPad9:   result += "9"
+    case Add:       result += "+"
+    case Subtract:  result += "-"
+    default:        result += Reflection.getEnumName(Input.Key, &k, fullname: false)
+    }
+
     return result
 }

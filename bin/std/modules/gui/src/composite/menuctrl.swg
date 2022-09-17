@@ -7,6 +7,13 @@ public enum PopupPos
     AnchorBottomCenter
 }
 
+#[Swag.EnumFlags]
+public enum MenuCtrlFlags
+{
+    None
+    NoKeyShortcuts
+}
+
 public struct PopupMenuItem
 {
     using item: Item
@@ -24,6 +31,7 @@ public struct MenuCtrl
     using frameWnd:     FrameWnd
     onValidateResult:   func(self, WndId)
     onComputeItem:      func(self, *PopupMenuItem)
+    menuCtrlFlags:      MenuCtrlFlags = None
 
     items:          ArrayPtr'PopupMenuItem
     hotIdx:         u32 = Swag.U32.Max
@@ -204,7 +212,7 @@ impl IWnd for MenuCtrl
             painter.drawRichString(labelPos, &i.name, format)
 
             // Text right
-            if !i.rightName.isEmpty()
+            if !(menuCtrlFlags & .NoKeyShortcuts) and !i.rightName.isEmpty()
             {
                 format.palette[0] = colorRightText
                 format.horzAlignment = .Right
@@ -573,7 +581,7 @@ impl MenuCtrl
             fake.drawRichString(@{0, 0, 512, 0}, &i.name, rsf)
             w := i.name.boundRect.width
 
-            if !i.rightName.isEmpty()
+            if !(menuCtrlFlags & .NoKeyShortcuts) and !i.rightName.isEmpty()
             {
                 fake.drawRichString(@{0, 0, 512, 0}, &i.rightName, rsf)
                 w += i.rightName.boundRect.width + rsf.font.regular.height

@@ -95,6 +95,9 @@ impl EditView
         return captureRect
     }
 
+    const MinZoom = 0.1
+    const MaxZoom = 10.0
+
     mtd setZoom(z: f32, mouseCenter = false)
     {
         var mousePos, mousePos1: Math.Point
@@ -107,7 +110,7 @@ impl EditView
             mousePos1 /= zoom
         }
 
-        zoom = Math.clamp(z, 0.1, 10.0)
+        zoom = Math.clamp(z, MinZoom, MaxZoom)
         captureRect := getCaptureRect()
         scroll.setScrollSize(captureRect.width + (2*viewMargin), captureRect.height + (2*viewMargin))
 
@@ -120,6 +123,9 @@ impl EditView
 
         invalidate()
     }
+
+    mtd canZoomIn() => zoom != MaxZoom
+    mtd canZoomOut() => zoom != MinZoom
 
     mtd zoomIn()
     {
