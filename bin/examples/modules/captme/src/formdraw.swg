@@ -199,6 +199,5 @@ impl IForm for FormDraw
     mtd setup(capt: *Capture)
     {
         capture = capt
-        points.clear()
     }
 }

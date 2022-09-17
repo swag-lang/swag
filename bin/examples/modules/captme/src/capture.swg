@@ -819,6 +819,7 @@ impl Capture
                 case Polygon:
                     form := Memory.new'FormPolygon()
                     dref form = editView.main.mdlFormPolygon
+                    form.points.clear()
                     itf = cast(IForm) form
                 case Text:
                     form := Memory.new'FormText()
@@ -827,6 +828,7 @@ impl Capture
                 case Draw:
                     form := Memory.new'FormDraw()
                     dref form = editView.main.mdlFormDraw
+                    form.points.clear()
                     itf = cast(IForm) form
                 case Favorites:
                     break

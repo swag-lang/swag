@@ -47,9 +47,9 @@ impl Vector2
     // Returns the distance of the point to the given segment
     mtdc distanceToSegment(a, b: Vector2)->f32
     {
-        ab := b - a
-        l2 := ab.lengthSquared()
-        if l2 == 0 return distance(a)
+        l2 := distanceSquared(a, b)
+        if l2 == 0
+            return distance(a)
         vp := a - dref self
         wp := b - dref self
         t := Math.max(0, Math.min(1, vp.dot(wp) / l2))
