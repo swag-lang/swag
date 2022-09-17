@@ -6,6 +6,7 @@ enum EditMode
     Polygon
     Text
     Favorites
+    Draw
 }
 
 enum BottomSize
@@ -41,6 +42,7 @@ struct MainWnd
     mdlFormLine:    FormLine
     mdlFormPolygon: FormPolygon
     mdlFormText:    FormText
+    mdlFormDraw:    FormDraw
     favoriteMdl:    IForm
 }
 
@@ -206,6 +208,14 @@ impl IWnd for MainWnd
             evt.name = "Text"
             evt.toolTip = "Add some text to the capture"
             evt.checked = editMode == .Text
+            evt.accepted = true
+
+        case CmdIdModeDraw:
+            evt.setFlags |= .Icon | .Checked | .Name | .ToolTip
+            evt.icon = Icon.from(&icons48, 7)
+            evt.name = "Draw"
+            evt.toolTip = "Add some free hand paint to the capture"
+            evt.checked = editMode == .Draw
             evt.accepted = true
 
         case CmdIdModeFavorites:
@@ -386,6 +396,11 @@ impl IWnd for MainWnd
             evt.accepted = true
             updateState()
 
+        case CmdIdModeDraw:
+            editMode = .Draw
+            evt.accepted = true
+            updateState()
+
         case CmdIdModeFavorites:
             editMode = .Favorites
             evt.accepted = true
@@ -463,6 +478,7 @@ impl MainWnd
             case FormLine:      return EditMode.Line
             case FormPolygon:   return EditMode.Polygon
             case FormText:      return EditMode.Text
+            case FormDraw:      return EditMode.Draw
             }
         }
 
@@ -491,6 +507,7 @@ impl MainWnd
         createBtn(CmdIdModeLine)
         createBtn(CmdIdModePolygon)
         createBtn(CmdIdModeText)
+        createBtn(CmdIdModeDraw)
         toolbar.updateCommandState()
     }
 

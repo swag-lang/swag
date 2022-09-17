@@ -43,6 +43,7 @@ struct QuickWnd
     qsPolygon:      QuickStyle
     qsText:         QuickStyle
     qsFavorites:    QuickStyle
+    qsDraw:         QuickStyle
 
     currentStyle:   *QuickStyle
 }
@@ -67,6 +68,7 @@ impl IWnd for QuickWnd
         catch evt.ser.serialize("QuickWnd.qsPolygon",   &qsPolygon)
         catch evt.ser.serialize("QuickWnd.qsText",      &qsText)
         catch evt.ser.serialize("QuickWnd.qsFavorites", &qsFavorites)
+        catch evt.ser.serialize("QuickWnd.qsDraw",      &qsDraw)
 
         if evt.ser.isReading()
         {
@@ -75,6 +77,7 @@ impl IWnd for QuickWnd
             if qsLine.forms.isEmpty()    defaultQuickStyleLine()
             if qsPolygon.forms.isEmpty() defaultQuickStylePolygon()
             if qsText.forms.isEmpty()    defaultQuickStyleText()
+            if qsDraw.forms.isEmpty()    defaultQuickStyleDraw()
             updateQuickStyles()
         }
     }
@@ -249,6 +252,30 @@ impl QuickWnd
         add(2, 48, Argb.Zero, Argb.Black)
     }
 
+    mtd defaultQuickStyleDraw()
+    {
+        #[Swag.Macro]
+        func add(borderSize: f32, color: Color)
+        {
+            form := Memory.new'FormDraw()
+            form.borderSize = borderSize
+            form.borderColor = color
+            it := cast(IForm) form
+            it.setup(null)
+            `qsDraw.forms.add(it)
+        }
+
+        const BorderSize = 10.0
+        add(BorderSize, Argb.White)
+        add(BorderSize, Argb.Gray)
+        add(BorderSize, Argb.Black)
+        add(BorderSize, Argb.Red)
+        add(BorderSize, Argb.Green)
+        add(BorderSize, Argb.Blue)
+        add(BorderSize, Argb.Yellow)
+        add(BorderSize, Argb.Purple)
+    }
+
     mtd updateSelection()
     {
         if !currentStyle
@@ -282,6 +309,8 @@ impl QuickWnd
                 btn.isChecked = mode == .Polygon and it.isSame(&main.mdlFormPolygon)
             case FormText:
                 btn.isChecked = mode == .Text and it.isSame(&main.mdlFormText)
+            case FormDraw:
+                btn.isChecked = mode == .Draw and it.isSame(&main.mdlFormDraw)
             }
 
             if btn.isChecked
@@ -315,6 +344,7 @@ impl QuickWnd
         case Line:      defaultQuickStyleLine()
         case Polygon:   defaultQuickStylePolygon()
         case Text:      defaultQuickStyleText()
+        case Draw:      defaultQuickStyleDraw()
         case Favorites: break
         }
 
@@ -334,6 +364,9 @@ impl QuickWnd
             {
             case FormPolygon:
                 poly := cast(*FormPolygon) @dataof(btnp.formItf)
+                poly.setDefaultShape()
+            case FormDraw:
+                poly := cast(*FormDraw) @dataof(btnp.formItf)
                 poly.setDefaultShape()
             case FormText:
                 txt := cast(*FormText) @dataof(btnp.formItf)
@@ -366,6 +399,8 @@ impl QuickWnd
             currentStyle = &qsText
         case Favorites:
             currentStyle = &qsFavorites
+        case Draw:
+            currentStyle = &qsDraw
         default:
             currentStyle = null
         }
@@ -420,6 +455,10 @@ impl QuickWnd
                     b := cast(*FormText) @dataof(it)
                     self.main.mdlFormText = dref b
                     self.main.favoriteMdl = &self.main.mdlFormText
+                case FormDraw:
+                    b := cast(*FormDraw) @dataof(it)
+                    self.main.mdlFormDraw = dref b
+                    self.main.favoriteMdl = &self.main.mdlFormDraw
                 }
 
                 if self.main.editMode != .Favorites
@@ -448,6 +487,10 @@ impl QuickWnd
                     case FormText:
                         b := cast(*FormText) @dataof(it)
                         mdlValue = Memory.new'FormText()
+                        it.copy(mdlValue, b)
+                    case FormDraw:
+                        b := cast(*FormDraw) @dataof(it)
+                        mdlValue = Memory.new'FormDraw()
                         it.copy(mdlValue, b)
                     }
 
@@ -494,6 +537,8 @@ impl QuickWnd
             btn.formItf = cast(IForm) main.mdlFormPolygon
         case Text:
             btn.formItf = cast(IForm) main.mdlFormText
+        case Draw:
+            btn.formItf = cast(IForm) main.mdlFormDraw
         case Favorites:
             btn.formItf = main.favoriteMdl
         }
@@ -538,6 +583,10 @@ impl QuickWnd
             case Text:
                 mdl := Memory.new'FormText()
                 mdl.IForm.copy(mdl, &main.mdlFormText)
+                self.currentStyle.forms.add(mdl)
+            case Draw:
+                mdl := Memory.new'FormDraw()
+                mdl.IForm.copy(mdl, &main.mdlFormDraw)
                 self.currentStyle.forms.add(mdl)
             case Favorites:
                 break

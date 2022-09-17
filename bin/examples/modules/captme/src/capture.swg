@@ -824,6 +824,10 @@ impl Capture
                     form := Memory.new'FormText()
                     dref form = editView.main.mdlFormText
                     itf = cast(IForm) form
+                case Draw:
+                    form := Memory.new'FormDraw()
+                    dref form = editView.main.mdlFormDraw
+                    itf = cast(IForm) form
                 case Favorites:
                     break
                 }
