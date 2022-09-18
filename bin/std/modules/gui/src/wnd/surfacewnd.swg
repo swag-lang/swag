@@ -281,7 +281,9 @@ impl SurfaceWnd
 
     func onClose(btn: *Button)
     {
-        btn.surface.destroy()
+        evt := Event.create'SysCommandEvent()
+        evt.sysKind = .Close
+        btn.surface.wnd.view.postEvent(evt)
     }
 
     mtd create(userView: *Wnd, hook: HookEvent)

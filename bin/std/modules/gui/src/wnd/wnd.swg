@@ -172,12 +172,12 @@ impl IWnd for Wnd
     mtd onPrePaintEvent(evt: *PaintEvent)                   {}
     mtd onPaintEvent(evt: *PaintEvent)                      {}
     mtd onPostPaintEvent(evt: *PaintEvent)                  {}
-    mtd onSysCommandEvent(evt: *SysCommandEvent)            {}
     mtd onSetThemeEvent(evt: *SetThemeEvent)                {}
     mtd onTimerEvent(evt: *TimerEvent)                      {}
     mtd onHookEvent(evt: *Event)                            {}
     mtd onSerializeStateEvent(evt: *SerializeStateEvent)    {}
 
+    mtd onSysCommandEvent(evt: *SysCommandEvent)    { evt.accepted = false; }
     mtd onFocusEvent(evt: *FocusEvent)              { evt.accepted = false; }
     mtd onKeyEvent(evt: *KeyEvent)                  { evt.accepted = false; }
     mtd onMouseEvent(evt: *MouseEvent)              { evt.accepted = false; }

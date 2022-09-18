@@ -15,7 +15,7 @@ enum ThreadPriority
 #[Swag.NoCopy]
 struct Thread
 {
-    userLambda: func(Thread)
+    userLambda: closure(Thread)
 
     context:    Swag.Context
     userParam:  *void

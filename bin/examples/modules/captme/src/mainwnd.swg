@@ -26,6 +26,7 @@ struct MainWnd
     editWnd:    *EditWnd
     quickWnd:   *QuickWnd
     propWnd:    *PropWnd
+    libWnd:     *LibraryWnd
     clipFmt:    Clipboard.Format
     captureBtn: *IconButton
     zoomBtn:    *IconButton
@@ -51,6 +52,15 @@ const Icons48 = #include("datas/icons48.png")
 
 impl IWnd for MainWnd
 {
+    mtd onSysCommandEvent(evt: *SysCommandEvent)
+    {
+        evt.accepted = false
+        if evt.sysKind == .Close
+        {
+            libWnd.requestClose()
+        }
+    }
+
     mtd onSerializeStateEvent(evt: *SerializeStateEvent)
     {
         catch evt.ser.serialize("MainWnd.editMode", &editMode)
@@ -773,6 +783,10 @@ impl MainWnd
         updateZoomDisplay(res)
         res.setBottomSize(.Medium)
         res.updateState()
+
+        res.editWnd.hide()
+        res.libWnd = LibraryWnd.create(res)
+        res.libWnd.bringToTop()
 
         return res
     }

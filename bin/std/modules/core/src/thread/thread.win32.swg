@@ -54,7 +54,7 @@ func wait(threads: *Thread...)
 impl Thread
 {
     // Initialize a thread in pause state
-    func init(using self, lambda: func(Thread), userParam: *void = null, priority = ThreadPriority.Normal, tempAllocSize: s32 = -1) throw
+    mtd init(lambda: closure(Thread), userParam: *void = null, priority = ThreadPriority.Normal, tempAllocSize: s32 = -1) throw
     {
         Debug.assert(!isValid(), "thread already created")
         Debug.assert(lambda != null, "lambda parameter is null")
@@ -75,14 +75,14 @@ impl Thread
     }
 
     // Resume the given thread, if it was paused
-    func start(using self) throw
+    mtd start() throw
     {
         Debug.assert(isValid())
         try ResumeThread(handle)
     }
 
     // Set the thread priority
-    func setPriority(using self, priority: ThreadPriority) throw
+    mtd setPriority(priority: ThreadPriority) throw
     {
         Debug.assert(isValid())
 
@@ -107,7 +107,7 @@ impl Thread
 
     // Wait for the given thread to be done, and close it
     // After that call, isValid() will return false
-    func wait(using self)
+    mtd wait()
     {
         Debug.assert(isValid())
         assume WaitForSingleObject(handle, INFINITE)
@@ -116,7 +116,7 @@ impl Thread
     }
 
     // Returns true if the thread has finished
-    func isDone(using self)->bool
+    mtd isDone()->bool
     {
         Debug.assert(isValid())
         res := assume WaitForSingleObject(handle, 0)
