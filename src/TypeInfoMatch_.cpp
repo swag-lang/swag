@@ -97,6 +97,8 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
             return;
 
         context.flags |= context.semContext->castFlagsResult;
+        if (context.cptResolved < context.doneParameters.size())
+            context.doneParameters[context.cptResolved] = true;
 
         if (!same)
         {
@@ -116,9 +118,6 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
         }
         else
         {
-            if (context.cptResolved < context.doneParameters.size())
-                context.doneParameters[context.cptResolved] = true;
-
             // This is a generic type match
             if (wantedTypeInfo->flags & TYPEINFO_GENERIC)
             {
