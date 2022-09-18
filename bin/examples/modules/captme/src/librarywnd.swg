@@ -18,6 +18,7 @@ struct LibraryView
 {
     using wnd: Wnd
     scrollWnd:      *ScrollWnd
+    mainWnd:        *MainWnd
     items:          Array'LibraryItem
     mutexLoaded:    Sync.Mutex
     loaded:         Array'*Capture
@@ -53,13 +54,16 @@ impl IWnd for LibraryView
             hotItem = ht
         }
 
-        if evt.kind == .MousePressed and hotItem != Swag.UInt.Max
+        if evt.kind == .MousePressed and hotItem != Swag.UInt.Max and evt.button == .Left
         {
-            if evt.button == .Left
-            {
-                selectedItem = hotItem
-                invalidate()
-            }
+            selectedItem = hotItem
+            invalidate()
+        }
+
+        if evt.kind == .MouseDoubleClick and selectedItem != Swag.UInt.Max and evt.button == .Left
+        {
+            mainWnd.recentWnd.addRecent(items[selectedItem].fi.fullname, items[selectedItem].capture.preview, true, true)
+            mainWnd.swapLibraryMode()
         }
     }
 
@@ -200,7 +204,7 @@ impl LibraryWnd
         catch view.fill()
     }
 
-    func create(parent: *Wnd)->*LibraryWnd
+    func create(parent: *MainWnd)->*LibraryWnd
     {
         res := Wnd.create'LibraryWnd(parent, "captme.librarywnd")
         res.dockStyle = .Center
@@ -212,6 +216,7 @@ impl LibraryWnd
         view := Wnd.create'LibraryView(scrollWnd)
         view.padding = 8
         view.scrollWnd = scrollWnd
+        view.mainWnd = parent
         scrollWnd.setView(view)
         res.view = view
 

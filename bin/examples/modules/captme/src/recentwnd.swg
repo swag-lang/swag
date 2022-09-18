@@ -23,9 +23,9 @@ struct RecentView
 
 impl RecentView
 {
-    mtd select(idx: uint)
+    mtd select(idx: uint, force = false)
     {
-        if selected == idx
+        if selected == idx and !force
             return
 
         if idx >= items.count
@@ -263,10 +263,10 @@ impl RecentWnd
         recentView.select(sel)
     }
 
-    mtd addRecent(file: string, front = true)->*Capture throw
+    mtd addRecent(file: string, front = true, sel = false)->*Capture throw
     {
         capture := Capture.load(file)
-        addRecent(capture.file, capture.preview, front)
+        addRecent(capture.file, capture.preview, front, sel)
 
         // Too much recent. Remove the oldest
         if front and recentView.items.count > MaxRecent
@@ -281,15 +281,36 @@ impl RecentWnd
         return capture
     }
 
-    mtd addRecent(file: string, preview: Image, front = true)
+    mtd addRecent(file: string, preview: Image, front = true, sel = false)
     {
         item := recentView.items.newPtr()
+
+        // Already there ?
+        visit it, i: recentView.items
+        {
+            if it.file == file
+            {
+                if sel
+                    recentView.select(i)
+                return
+            }
+        }
+
         item.preview = getApp().getRenderer().addImage(preview)
         item.file = file
         if front
+        {
             recentView.items.insertAt(0, item)
+            if sel
+                recentView.select(0, force: true)
+        }
         else
+        {
             recentView.items.add(item)
+            if sel
+                recentView.select(recentView.items.count - 1, force: true)
+        }
+
         invalidate()
     }
 }
