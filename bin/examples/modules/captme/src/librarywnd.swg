@@ -163,16 +163,16 @@ impl LibraryView
             thread.init(@|self|(th: Thread) {
                 visit &it: self.items
                 {
-                    self.mutexLoaded.lock()
                     capture := catch Capture.load(it.fi.fullname)
                     if capture
                     {
+                        self.mutexLoaded.lock()
                         capture.backImg.release()
                         self.loaded.add(capture)
+                        self.mutexLoaded.unlock()
+                        self.postInvalidateEvent()
                     }
-                    self.mutexLoaded.unlock()
 
-                    self.postInvalidateEvent()
                     if th.requestEnd
                         break
                 }
