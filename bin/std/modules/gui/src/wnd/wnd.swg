@@ -1018,6 +1018,13 @@ impl Wnd
         surface.app.postEvent(evt)
     }
 
+    mtd postInvalidateEvent()
+    {
+        evt := Event.create'Event()
+        evt.kind = .Invalidate
+        postEvent(evt)
+    }
+
     mtd sendEvent(evt: *Event)
     {
         evt.target = self

@@ -23,18 +23,26 @@ struct Thread
     priority =  ThreadPriority.Normal
     handle:     ThreadHandle
     id:         u32
+    requestEnd  = false
 }
 
 impl Thread
 {
-    func opDrop(using self)
+    mtd opDrop()
     {
         Debug.assert(!isValid(), "thread is not terminated")
     }
 
     // Returns true if the thread is valid
-    func isValid(using self)->bool
+    mtdc isValid()->bool
     {
         return handle != null
+    }
+
+    // Force the thread to safely exist
+    // User code needs to check for 'requestEnd'
+    mtd safeForceEnd()
+    {
+        requestEnd = true
     }
 }

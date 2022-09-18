@@ -16,8 +16,11 @@ struct LibraryItem
 struct LibraryView
 {
     using wnd: Wnd
-    items:  Array'LibraryItem
-    thread: Thread
+    scrollWnd:      *ScrollWnd
+    items:          Array'LibraryItem
+    mutexLoaded:    Sync.Mutex
+    loaded:         Array'*Capture
+    thread:         Thread
 }
 
 impl IWnd for LibraryView
@@ -30,34 +33,53 @@ impl IWnd for LibraryView
         x := clientRect.x
         y := clientRect.y
 
+        // Get loaded captures from thread
+        mutexLoaded.lock()
+        copyLoaded := loaded
+        loaded.clear()
+        mutexLoaded.unlock()
+
         const W = 128.0
         const H = 128.0
         const Margin = 8.0
 
-        visit &fi, i: items
+        visit &it, i: items
         {
-            if fi.capture and !fi.texture.isValid()
+            // Retreive the loaded capture if it exists
+            if !it.capture
             {
-                fi.texture = evt.bc.renderer.addImage(fi.capture.preview)
+                visit l, idx: copyLoaded
+                {
+                    if l.file == it.fi.fullname
+                    {
+                        it.capture = l
+                        break
+                    }
+                }
             }
 
-            if fi.texture.isValid()
-            {
-                rect := Math.Rectangle{x, y, W, H}
-                painter.drawTexture(rect, fi.texture)
-            }
-            else
-            {
+            // We have a capture but not yet a texture. Create it.
+            if it.capture and !it.texture.isValid()
+                it.texture = evt.bc.renderer.addImage(it.capture.preview)
+
+            rect := Math.Rectangle{x, y, W, H}
+            if it.texture.isValid()
+                painter.drawTexture(rect, it.texture)
+            else if it.capture
                 painter.fillRect(x, y, W, H, Argb.Red)
-            }
+            else
+                painter.fillRect(x, y, W, H, Argb.White)
 
+            // Next item
             x += W + Margin
-            if x >= clientRect.right()
+            if x + W + Margin >= clientRect.right()
             {
                 x = clientRect.x
                 y += H + Margin
             }
         }
+
+        scrollWnd.setScrollSize(0, y + H + Margin)
     }
 }
 
@@ -67,16 +89,16 @@ impl LibraryView
     {
         Debug.assert(!thread.isValid())
 
+        res := Directory.enumerateFiles(Library.getFolder(), "*.captme")
+
         renderer := getApp().getRenderer()
         visit &it: items
         {
+            renderer.removeTexture(&it.texture)
             Memory.delete(it.capture)
-            texture := &it.texture
-            renderer.removeTexture(texture)
         }
 
-        res := Directory.enumerateFiles(Library.getFolder(), "*.captme")
-
+        // Add items
         items.clear()
         items.reserve(res.count)
         visit fi: res
@@ -86,12 +108,26 @@ impl LibraryView
             items.add(item)
         }
 
+        // Launch thread to read all captures
         try
         {
             thread.init(@|self|(th: Thread) {
                 visit &it: self.items
                 {
-                    it.capture = catch Capture.load(it.fi.fullname)
+                    self.mutexLoaded.lock()
+                    capture := catch Capture.load(it.fi.fullname)
+                    if capture
+                    {
+                        capture.backImg.release()
+                        self.loaded.add(capture)
+                    }
+                    self.mutexLoaded.unlock()
+
+                    self.postInvalidateEvent()
+
+                    sleep(1's)
+                    if th.requestEnd
+                        break
                 }
             })
             thread.start()
@@ -106,7 +142,10 @@ impl LibraryWnd
     mtd requestClose()
     {
         if view.thread.isValid()
+        {
+            view.thread.safeForceEnd()
             view.thread.wait()
+        }
     }
 
     func create(parent: *Wnd)->*LibraryWnd
@@ -120,6 +159,7 @@ impl LibraryWnd
 
         view := Wnd.create'LibraryView(scrollWnd)
         view.padding = 8
+        view.scrollWnd = scrollWnd
         scrollWnd.setView(view)
         catch view.fill()
 

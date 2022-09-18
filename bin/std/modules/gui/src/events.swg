@@ -33,6 +33,7 @@ enum EventKind
     CommandState
     Frame
     SerializeState
+    Invalidate
 }
 
 struct Event

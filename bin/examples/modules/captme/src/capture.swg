@@ -140,6 +140,7 @@ impl Capture
 
         var decoder: Decoder'Read.TagBin
         capture := decoder.readAll'Capture(res.toSlice())
+        capture.file = file
 
         visit itf: capture.forms
             itf.setup(capture)

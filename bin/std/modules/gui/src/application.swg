@@ -24,6 +24,8 @@ struct Application
     quitCode:       s32
     timing:         Time.FrameTiming
 
+    mutexPostedEvents:  Sync.Mutex
+
     timers:             Array'(*Timer)
     frameEvents:        Array'(*Wnd)
     modalSurfaces:      Array'(*Surface)
@@ -277,13 +279,18 @@ private impl Application
     mtd sendPostedEvents()
     {
         // Need to make a copy, in case the posted event triggers a modal loop
+        mutexPostedEvents.lock()
         copy := postedEvents
         postedEvents.clear()
+        mutexPostedEvents.unlock()
 
         for i := 0; i < copy.count; i += 1
         {
             evt := copy[i]
-            sendEvent(evt)
+            if evt.kind == .Invalidate
+                evt.target.invalidate()
+            else
+                sendEvent(evt)
 
             // Special event post process
             if evt.kind == .Command
@@ -627,9 +634,10 @@ impl Application
         postEvent(evt)
     }
 
-    // Post a new event
+    // Post a new event (thread safe)
     mtd postEvent(event: *Event)
     {
+        Sync.scopedLock(&mutexPostedEvents)
         postedEvents.add(event)
     }
 
