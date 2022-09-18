@@ -2673,7 +2673,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     }
     case ByteCodeOp::AffectOpPlusEqU8_Safe:
     {
-        *(int8_t*) registersRC[ip->a.u32].pointer += IMMB_S8(ip);
+        *(uint8_t*) registersRC[ip->a.u32].pointer += IMMB_S8(ip);
         break;
     }
     case ByteCodeOp::AffectOpPlusEqS16_Safe:
@@ -2683,7 +2683,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     }
     case ByteCodeOp::AffectOpPlusEqU16_Safe:
     {
-        *(int16_t*) registersRC[ip->a.u32].pointer += IMMB_S16(ip);
+        *(uint16_t*) registersRC[ip->a.u32].pointer += IMMB_S16(ip);
         break;
     }
     case ByteCodeOp::AffectOpPlusEqS32_Safe:
@@ -2693,7 +2693,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     }
     case ByteCodeOp::AffectOpPlusEqU32_Safe:
     {
-        *(int32_t*) registersRC[ip->a.u32].pointer += IMMB_S32(ip);
+        *(uint32_t*) registersRC[ip->a.u32].pointer += IMMB_S32(ip);
         break;
     }
     case ByteCodeOp::AffectOpPlusEqS64_Safe:
@@ -2703,7 +2703,17 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     }
     case ByteCodeOp::AffectOpPlusEqU64_Safe:
     {
-        *(int64_t*) registersRC[ip->a.u32].pointer += IMMB_S64(ip);
+        *(uint64_t*) registersRC[ip->a.u32].pointer += IMMB_S64(ip);
+        break;
+    }
+    case ByteCodeOp::AffectOpPlusEqU64_SSafe:
+    {
+        *(uint64_t*) (context->bp + ip->a.u32) += IMMB_S64(ip);
+        break;
+    }
+    case ByteCodeOp::AffectOpPlusEqU64_SSSafe:
+    {
+        *(uint64_t*)(context->bp + ip->a.u32) += *(uint64_t*)(context->bp + ip->b.u32);
         break;
     }
 

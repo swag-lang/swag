@@ -3854,6 +3854,28 @@ void ByteCodeOptimizer::reduceCmpJump(ByteCodeOptContext* context, ByteCodeInstr
     }
 }
 
+void ByteCodeOptimizer::reduceStackOp(ByteCodeOptContext* context, ByteCodeInstruction* ip)
+{
+    switch (ip->op)
+    {
+    case ByteCodeOp::MakeStackPointer:
+        if (ip[0].a.u32 == ip[1].a.u32 && ip[1].op == ByteCodeOp::AffectOpPlusEqU64_Safe)
+        {
+            ip[1].a.u32 = ip->b.u32;
+            SET_OP(ip + 1, ByteCodeOp::AffectOpPlusEqU64_SSafe);
+        }
+        break;
+
+    case ByteCodeOp::GetFromStack64:
+        if (ip[0].a.u32 == ip[1].b.u32 && ip[1].op == ByteCodeOp::AffectOpPlusEqU64_SSafe)
+        {
+            ip[1].b.u32 = ip->b.u32;
+            SET_OP(ip + 1, ByteCodeOp::AffectOpPlusEqU64_SSSafe);
+        }
+        break;
+    }
+}
+
 void ByteCodeOptimizer::reduceForceSafe(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
     if (ip->flags & BCI_SAFETY_OF)
@@ -4004,6 +4026,7 @@ bool ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
         reduceSwap(context, ip);
         reduceAppend(context, ip);
         reduceForceSafe(context, ip);
+        reduceStackOp(context, ip);
         reduceFactor(context, ip);
     }
 

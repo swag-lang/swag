@@ -70,6 +70,12 @@
     auto         r0 = GEP_I32(allocR, ip->a.u32);             \
     auto         r1 = builder.CreateLoad(TO_PTR_PTR_I64(r0)); \
     llvm::Value* r2 = MK_IMMB_64();
+#define MK_BINOPEQ64_SCAB()                                                        \
+    auto         r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocStack, CST_RA32)); \
+    llvm::Value* r1 = MK_IMMB_64();
+#define MK_BINOPEQ64_SSCAB()                                                       \
+    auto         r0 = TO_PTR_I64(builder.CreateInBoundsGEP(allocStack, CST_RA32)); \
+    llvm::Value* r1 = TO_PTR_I64(builder.CreateInBoundsGEP(allocStack, CST_RB32));
 
 #define MK_BINOPEQF32_CAB()                                   \
     auto         r0 = GEP_I32(allocR, ip->a.u32);             \

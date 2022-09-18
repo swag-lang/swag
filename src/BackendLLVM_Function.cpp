@@ -1635,6 +1635,21 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             OPEQ_OVERFLOW(uadd_with_overflow, CreateAdd, getInt64Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlusEq, g_TypeMgr->typeInfoU64));
             break;
         }
+        case ByteCodeOp::AffectOpPlusEqU64_SSafe:
+        {
+            MK_BINOPEQ64_SCAB();
+            auto v0 = builder.CreateAdd(builder.CreateLoad(r0), r1);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+        case ByteCodeOp::AffectOpPlusEqU64_SSSafe:
+        {
+            MK_BINOPEQ64_SSCAB();
+            auto v0 = builder.CreateAdd(builder.CreateLoad(r0), builder.CreateLoad(r1));
+            builder.CreateStore(v0, r0);
+            break;
+        }
+
         case ByteCodeOp::AffectOpPlusEqF32:
         {
             MK_BINOPEQF32_CAB();

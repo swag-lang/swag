@@ -1062,6 +1062,13 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             MK_BINOPEQ64_CAB(X64Op::ADD);
             emitOverflowUnsigned(pp, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlusEq, g_TypeMgr->typeInfoU64));
             break;
+        case ByteCodeOp::AffectOpPlusEqU64_SSafe:
+            MK_BINOPEQ64_SCAB(X64Op::ADD);
+            break;
+        case ByteCodeOp::AffectOpPlusEqU64_SSSafe:
+            MK_BINOPEQ64_SSCAB(X64Op::ADD);
+            break;
+
         case ByteCodeOp::AffectOpPlusEqF32:
             MK_BINOPEQF32_CAB(X64Op::FADD);
             break;
