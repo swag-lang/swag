@@ -142,6 +142,9 @@ impl LibraryView
         }
 
         res := Directory.enumerateFiles(Library.getFolder(), "*.captme")
+        res.sort(@(a, b) {
+            return b.lastWriteTime <=> a.lastWriteTime
+        })
 
         renderer := getApp().getRenderer()
         visit &it: items
