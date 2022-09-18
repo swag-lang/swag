@@ -203,16 +203,16 @@ impl RecentWnd
         res := catch Directory.enumerateFiles(Library.getFolder(), "*.captme")
         if @err return recent
         res.sort(@(a, b) {
-            return a.creationTime <=> b.creationTime
+            return b.lastWriteTime <=> a.lastWriteTime
         })
 
         cptRecent := 0
         visit r, idx: res
         {
-            capture := catch recent.addRecent(r.fullname)
+            capture := catch recent.addRecent(r.fullname, front: false)
             if @err continue
 
-            if idx == res.count - 1
+            if idx == 0
             {
                 recent.recentView.selected = 0
                 main.editWnd.editView.setCapture(capture)
@@ -263,26 +263,33 @@ impl RecentWnd
         recentView.select(sel)
     }
 
-    mtd addRecent(file: string)->*Capture throw
+    mtd addRecent(file: string, front = true)->*Capture throw
     {
         capture := Capture.load(file)
-        addRecent(capture.file, capture.preview)
+        addRecent(capture.file, capture.preview, front)
 
-        if recentView.items.count > MaxRecent
+        // Too much recent. Remove the oldest
+        if front and recentView.items.count > MaxRecent
         {
-            recentView.items.deletePtr(recentView.items.back())
+            back := recentView.items.back()
+            if back.preview.isValid()
+                getApp().getRenderer().removeTexture(&back.preview)
+            recentView.items.deletePtr(back)
             recentView.items.count -= 1
         }
 
         return capture
     }
 
-    mtd addRecent(file: string, preview: Image)
+    mtd addRecent(file: string, preview: Image, front = true)
     {
         item := recentView.items.newPtr()
         item.preview = getApp().getRenderer().addImage(preview)
         item.file = file
-        recentView.items.insertAt(0, item)
+        if front
+            recentView.items.insertAt(0, item)
+        else
+            recentView.items.add(item)
         invalidate()
     }
 }

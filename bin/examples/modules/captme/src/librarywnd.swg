@@ -22,10 +22,47 @@ struct LibraryView
     mutexLoaded:    Sync.Mutex
     loaded:         Array'*Capture
     thread:         Thread
+    hotItem         = Swag.UInt.Max
+    selectedItem    = Swag.UInt.Max
 }
 
 impl IWnd for LibraryView
 {
+    mtd onMouseEvent(evt: *MouseEvent)
+    {
+        if evt.kind == .MouseWheel
+            evt.accepted = false
+
+        pos := surfaceToLocal(evt.surfacePos)
+        pos += scrollWnd.getScrollPos()
+
+        // Hit test
+        ht := Swag.UInt.Max
+        visit it, idx: items
+        {
+            if it.rect.contains(pos)
+            {
+                ht = idx
+                break
+            }
+        }
+
+        if ht != hotItem
+        {
+            invalidate()
+            hotItem = ht
+        }
+
+        if evt.kind == .MousePressed and hotItem != Swag.UInt.Max
+        {
+            if evt.button == .Left
+            {
+                selectedItem = hotItem
+                invalidate()
+            }
+        }
+    }
+
     mtd onPaintEvent(evt: *PaintEvent)
     {
         painter    := evt.bc.painter
@@ -65,7 +102,7 @@ impl IWnd for LibraryView
                 it.texture = evt.bc.renderer.addImage(it.capture.preview)
 
             it.rect = Math.Rectangle{x, y, W, H}
-            RecentView.IWnd.paintRecent(self, painter, it.texture, it.rect, false, false)
+            RecentView.IWnd.paintRecent(self, painter, it.texture, it.rect, i == hotItem, i == selectedItem)
 
             // Waiting for texture
             if !it.texture.isValid()
@@ -113,6 +150,9 @@ impl LibraryView
             items.add(item)
         }
 
+        hotItem = Swag.UInt.Max
+        selectedItem = Swag.UInt.Max
+
         // Launch thread to read all captures
         try
         {
@@ -151,6 +191,11 @@ impl LibraryWnd
         }
     }
 
+    mtd fill()
+    {
+        catch view.fill()
+    }
+
     func create(parent: *Wnd)->*LibraryWnd
     {
         res := Wnd.create'LibraryWnd(parent, "captme.librarywnd")
@@ -164,8 +209,6 @@ impl LibraryWnd
         view.padding = 8
         view.scrollWnd = scrollWnd
         scrollWnd.setView(view)
-        catch view.fill()
-
         res.view = view
 
         return res

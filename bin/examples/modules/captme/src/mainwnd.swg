@@ -784,9 +784,10 @@ impl MainWnd
         res.setBottomSize(.Medium)
         res.updateState()
 
-        res.editWnd.hide()
         res.libWnd = LibraryWnd.create(res)
-        res.libWnd.bringToTop()
+        res.libWnd.hide()
+        //res.editWnd.hide()
+        //res.libWnd.fill()
 
         return res
     }
