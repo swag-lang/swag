@@ -11,6 +11,7 @@ struct LibraryItem
     fi:         File.FileInfo
     capture:    *Capture
     texture:    Texture
+    rect:       Math.Rectangle
 }
 
 struct LibraryView
@@ -27,7 +28,8 @@ impl IWnd for LibraryView
 {
     mtd onPaintEvent(evt: *PaintEvent)
     {
-        painter := evt.bc.painter
+        painter    := evt.bc.painter
+        colors     := getThemeColors()
         clientRect := getClientRectPadding()
 
         x := clientRect.x
@@ -39,8 +41,8 @@ impl IWnd for LibraryView
         loaded.clear()
         mutexLoaded.unlock()
 
-        const W = 128.0
         const H = 128.0
+        const W = H * 4.0/3.0
         const Margin = 8.0
 
         visit &it, i: items
@@ -62,13 +64,16 @@ impl IWnd for LibraryView
             if it.capture and !it.texture.isValid()
                 it.texture = evt.bc.renderer.addImage(it.capture.preview)
 
-            rect := Math.Rectangle{x, y, W, H}
-            if it.texture.isValid()
-                painter.drawTexture(rect, it.texture)
-            else if it.capture
-                painter.fillRect(x, y, W, H, Argb.Red)
-            else
-                painter.fillRect(x, y, W, H, Argb.White)
+            it.rect = Math.Rectangle{x, y, W, H}
+            RecentView.IWnd.paintRecent(self, painter, it.texture, it.rect, false, false)
+
+            // Waiting for texture
+            if !it.texture.isValid()
+            {
+                icon := getTheme().getIcon64(.HourGlass, 48)
+                color := Color.fromArgb(50, Argb.White)
+                icon.paint(painter, it.rect.horzCenter() - icon.sizeX*0.5, it.rect.vertCenter() - icon.sizeY*0.5, color)
+            }
 
             // Next item
             x += W + Margin
@@ -124,8 +129,6 @@ impl LibraryView
                     self.mutexLoaded.unlock()
 
                     self.postInvalidateEvent()
-
-                    sleep(1's)
                     if th.requestEnd
                         break
                 }

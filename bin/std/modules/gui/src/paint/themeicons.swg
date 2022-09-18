@@ -28,6 +28,7 @@ enum ThemeIcons64
     Warning
     Critical
     Information
+    HourGlass
 }
 
 impl Theme

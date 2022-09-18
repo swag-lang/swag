@@ -103,6 +103,37 @@ impl IWnd for RecentView
         }
     }
 
+    func paintRecent(parent: *Wnd, painter: *Painter, texture: Texture, rect: Math.Rectangle, hot, selected: bool)
+    {
+        colors := parent.getThemeColors()
+
+        painter.fillRoundRect(rect, 8, 8, colors.wnd_Bk)
+
+        if hot
+            painter.drawRoundRect(rect, 8, 8, colors.hilightLight, 2)
+        if selected
+            painter.drawRoundRect(rect, 8, 8, colors.hilightLight, 4)
+
+        if !texture.isValid()
+            return
+
+        txtRect := rect
+        txtRect.inflate(-RecentPadding*0.5)
+
+        ratio := Math.min(txtRect.width / texture.width, txtRect.height / texture.height)
+
+        txtRect.x = rect.horzCenter() - (texture.width * 0.5 * ratio)
+        txtRect.y = rect.vertCenter() - (texture.height * 0.5 * ratio)
+        txtRect.width = texture.width * ratio
+        txtRect.height = texture.height * ratio
+
+        painter.fillRect(txtRect, Argb.LightGray)
+        painter.fillRect(txtRect, Brush.createHatch(.CheckBoardLarge, Argb.DarkGray))
+
+        painter.setInterpolationMode(.Linear)
+        painter.drawTexture(txtRect, texture)
+    }
+
     mtd onPaintEvent(evt: *PaintEvent)
     {
         painter    := evt.bc.painter
@@ -118,34 +149,8 @@ impl IWnd for RecentView
             rect := Math.Rectangle{x, clientRect.y, w, clientRect.height}
             i.rect = rect
 
-            painter.fillRoundRect(rect, 8, 8, colors.wnd_Bk)
+            paintRecent(self, painter, i.preview, rect, idx == hotItem, idx == selected)
             defer x = rect.right() + RecentPadding
-
-            // Hot
-            if idx == hotItem
-                painter.drawRoundRect(rect, 8, 8, colors.hilightLight, 2)
-            // Selected
-            if idx == selected
-                painter.drawRoundRect(rect, 8, 8, colors.hilightLight, 4)
-
-            if !i.preview.isValid()
-                continue
-
-            txtRect := rect
-            txtRect.inflate(-RecentPadding*0.5)
-
-            ratio := Math.min(txtRect.width / i.preview.width, txtRect.height / i.preview.height)
-
-            txtRect.x = rect.horzCenter() - (i.preview.width * 0.5 * ratio)
-            txtRect.y = rect.vertCenter() - (i.preview.height * 0.5 * ratio)
-            txtRect.width = i.preview.width * ratio
-            txtRect.height = i.preview.height * ratio
-
-            painter.fillRect(txtRect, Argb.LightGray)
-            painter.fillRect(txtRect, Brush.createHatch(.CheckBoardLarge, Argb.DarkGray))
-
-            painter.setInterpolationMode(.Linear)
-            painter.drawTexture(txtRect, i.preview)
         }
 
         recentWnd.setScrollSize(x, 0)
