@@ -1479,9 +1479,6 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
 
     bool forStruct = false;
 
-    if (node && node->token.text == "addRecent" && node->sourceFile && node->sourceFile->name == "librarywnd.swg")
-        int a = 0;
-
     for (auto oneMatch : overloads)
     {
         auto& oneOverload       = *oneMatch;
