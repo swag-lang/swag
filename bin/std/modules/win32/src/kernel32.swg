@@ -88,10 +88,12 @@ const FILE_ATTRIBUTE_UNPINNED              = 0x00100000
 const FILE_ATTRIBUTE_RECALL_ON_OPEN        = 0x00040000
 const FILE_ATTRIBUTE_RECALL_ON_DATA_ACCESS = 0x00400000
 
-const GENERIC_READ    = 0x80000000
-const GENERIC_WRITE   = 0x40000000
-const GENERIC_EXECUTE = 0x20000000
-const GENERIC_ALL     = 0x10000000
+const GENERIC_READ          = 0x80000000
+const GENERIC_WRITE         = 0x40000000
+const GENERIC_EXECUTE       = 0x20000000
+const GENERIC_ALL           = 0x10000000
+const FILE_READ_ATTRIBUTES  = 0x0080
+const FILE_WRITE_ATTRIBUTES = 0x0100
 
 const FILE_BEGIN   = 0'u32
 const FILE_CURRENT = 1'u32
@@ -100,11 +102,11 @@ const INVALID_FILE_SIZE         = bitcast(DWORD) -1
 const INVALID_SET_FILE_POINTER  = bitcast(DWORD) -1
 const INVALID_FILE_ATTRIBUTES   = bitcast(DWORD) -1
 
-const CREATE_NEW          = 1'u32
-const CREATE_ALWAYS       = 2'u32
-const OPEN_EXISTING       = 3'u32
-const OPEN_ALWAYS         = 4'u32
-const TRUNCATE_EXISTING   = 5'u32
+const CREATE_NEW            = 1'u32
+const CREATE_ALWAYS         = 2'u32
+const OPEN_EXISTING         = 3'u32
+const OPEN_ALWAYS           = 4'u32
+const TRUNCATE_EXISTING     = 5'u32
 
 const INVALID_HANDLE_VALUE = cast(HANDLE) bitcast(uint) -1'int
 const CONSOLE_TEXTMODE_BUFFER = 1'u32
@@ -362,6 +364,7 @@ struct PROCESS_INFORMATION
     func QueryPerformanceCounter(lpPerformanceCount: *LARGE_INTEGER);
     func QueryPerformanceFrequency(lpFrequency: *LARGE_INTEGER);
     func GetLocalTime(lpSystemTime: *SYSTEMTIME);
+    func GetSystemTime(lpSystemTime: *SYSTEMTIME);
 
     func Sleep(dwMilliseconds: DWORD);
     func SleepEx(dwMilliseconds: DWORD, bAltertable: BOOL);
@@ -424,6 +427,8 @@ namespace Win32Priv
         func SetFilePointer(hFile: HANDLE, lDistanceToMove: LONG, lpDistanceToMoveHigh: PLONG, dwMoveMethod: DWORD)->DWORD;
         func GetFileSize(hFile: HANDLE, lpFileSizeHigh: LPDWORD)->DWORD;
         func FileTimeToSystemTime(lpFileTime: const *FILETIME, lpSystemTime: *SYSTEMTIME)->BOOL;
+        func SystemTimeToFileTime(lpSystemTime: const *SYSTEMTIME, lpFileTime: *FILETIME)->BOOL;
+        func SetFileTime(hFile: HANDLE, lpCreationTime: const *FILETIME, lpLastAccessTime: const *FILETIME, lpLastWriteTime: const *FILETIME)->BOOL;
         func FindFirstFileA(lpFileName: LPCSTR, lpFindFileData: *WIN32_FIND_DATAA)->HANDLE;
         func FindFirstFileW(lpFileName: LPCWSTR, lpFindFileData: *WIN32_FIND_DATAW)->HANDLE;
         func FindNextFileA(hFindFile: HANDLE, lpFindFileData: *WIN32_FIND_DATAA)->BOOL;
@@ -585,6 +590,18 @@ namespace Win32Priv
     func FileTimeToSystemTime(lpFileTime: const *FILETIME, lpSystemTime: *SYSTEMTIME) throw
     {
         if !Win32Priv.FileTimeToSystemTime(lpFileTime, lpSystemTime)
+            try setError(GetLastError())
+    }
+
+    func SystemTimeToFileTime(lpSystemTime: const *SYSTEMTIME, lpFileTime: *FILETIME) throw
+    {
+        if !Win32Priv.SystemTimeToFileTime(lpSystemTime, lpFileTime)
+            try setError(GetLastError())
+    }
+
+    func SetFileTime(hFile: HANDLE, lpCreationTime: const *FILETIME, lpLastAccessTime: const *FILETIME, lpLastWriteTime: const *FILETIME) throw
+    {
+        if !Win32Priv.SetFileTime(hFile, lpCreationTime, lpLastAccessTime, lpLastWriteTime)
             try setError(GetLastError())
     }
 

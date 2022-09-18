@@ -10,6 +10,21 @@ func delete(fullname: string) throw
     try DeleteFileW(@dataof(winPath))
 }
 
+// Change the file write date/time
+func touch(fullname: string) throw
+{
+    winPath := Utf16.toZeroTerminated(fullname)
+
+    hFile := CreateFileW(@dataof(winPath), FILE_WRITE_ATTRIBUTES, 0, null, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, null)
+    defer CloseHandle(hFile)
+
+    var ft: FILETIME = ?
+    var st: SYSTEMTIME = ?
+    GetSystemTime(&st)
+    SystemTimeToFileTime(&st, &ft)
+    SetFileTime(hFile, null, null, &ft)
+}
+
 // Returns true if the given file exists
 func exists(fullname: string)->bool
 {
