@@ -20,23 +20,27 @@ struct MainWnd
 {
     using wnd: Wnd
 
-    icons24:    ImageList
-    icons48:    ImageList
-    toolbar:    *Wnd
-    editWnd:    *EditWnd
-    quickWnd:   *QuickWnd
-    propWnd:    *PropWnd
-    libWnd:     *LibraryWnd
-    clipFmt:    Clipboard.Format
-    captureBtn: *IconButton
-    zoomBtn:    *IconButton
-    recentWnd:  *RecentWnd
-    bottomBar:  *Wnd
-    bottomSizeBar: *IconBar
+    icons24:        ImageList
+    icons48:        ImageList
+    editToolBar:    *Wnd
+    editWnd:        *EditWnd
+    quickWnd:       *QuickWnd
+    propWnd:        *PropWnd
+    libWnd:         *LibraryWnd
+    clipFmt:        Clipboard.Format
+    captureBtn:     *IconButton
+    libraryBtn:     *IconButton
+    zoomBtn:        *IconButton
+    recentWnd:      *RecentWnd
+    recentBar:      *Wnd
+    recentSizeBar:  *IconBar
+    quickStyleBar:  *StackLayoutCtrl
+    editZoomBar:    *StackLayoutCtrl
 
-    editMode:   EditMode = .Shape
-    bottomSize: BottomSize = Medium
-    snap:       bool
+    editMode:       EditMode = .Shape
+    bottomSize:     BottomSize = Medium
+    snap:           bool
+    libraryMode:    bool
 
     mdlFormShape:   FormShape
     mdlFormArrow:   FormArrow
@@ -162,6 +166,13 @@ impl IWnd for MainWnd
             evt.name = "Capture"
             evt.toolTip = "Start a new capture"
             evt.accepted = true
+
+        case CmdIdLibrary:
+            evt.setFlags |= .Name | .ToolTip | .Checked
+            evt.name = "Library"
+            evt.toolTip = "Display captures library"
+            evt.accepted = true
+            evt.checked = libraryMode
 
         case CmdIdSelectAll:
             evt.setFlags |= .Disabled | .Name
@@ -393,6 +404,9 @@ impl IWnd for MainWnd
         case CmdIdCapture:
             captureScreen()
 
+        case CmdIdLibrary:
+            swapLibraryMode()
+
         case CmdIdSelectAll:
             capture.selection.clear()
             loop capture.forms
@@ -575,7 +589,7 @@ impl MainWnd
     {
         mtd createBtn(id: WndId)
         {
-            b := IconButton.create(toolbar, position: @{0, 0, 60, 64})
+            b := IconButton.create(editToolBar, position: @{0, 0, 60, 64})
             b.id = #self.id
             b.style.addStyleSheetColors("btnIcon_CheckedBk    $btnIcon_HotBk")
             b.style.addStyleSheetColors("btnIcon_CheckedHotBk $btnIcon_HotBk")
@@ -583,10 +597,10 @@ impl MainWnd
             b.checkedForm = .Bottom
         }
 
-        toolbar = StackLayoutCtrl.create(topBar, .HorzCenter, @{0, 0, 64, 64})
-        toolbar.dockStyle = .Top
-        toolbar.backgroundStyle = .Window
-        toolbar.style.addStyleSheetColors("wnd_Bk $wnd_Caption")
+        editToolBar = StackLayoutCtrl.create(topBar, .HorzCenter, @{0, 0, 64, 64})
+        editToolBar.dockStyle = .Top
+        editToolBar.backgroundStyle = .Window
+        editToolBar.style.addStyleSheetColors("wnd_Bk $wnd_Caption")
         createBtn(CmdIdModeFavorites)
         createBtn(CmdIdModeShape)
         createBtn(CmdIdModeArrow)
@@ -594,7 +608,7 @@ impl MainWnd
         createBtn(CmdIdModePolygon)
         createBtn(CmdIdModeText)
         createBtn(CmdIdModeDraw)
-        toolbar.updateCommandState()
+        editToolBar.updateCommandState()
     }
 
     mtd setBottomSize(bottomSize: BottomSize)
@@ -603,14 +617,32 @@ impl MainWnd
         switch self.bottomSize
         {
         case Small:
-            bottomBar.resize(0, 80)
+            recentBar.resize(0, 80)
         case Medium:
-            bottomBar.resize(0, 128)
+            recentBar.resize(0, 128)
         case Big:
-            bottomBar.resize(0, 224)
+            recentBar.resize(0, 224)
         }
 
         applyLayout(@{position.width, position.height})
+    }
+
+    mtd swapLibraryMode()
+    {
+        libraryMode = !libraryMode
+
+        editWnd.show(!libraryMode)
+        quickStyleBar.show(!libraryMode)
+        recentBar.show(!libraryMode)
+        editZoomBar.show(!libraryMode)
+        editToolBar.show(!libraryMode)
+
+        libWnd.show(libraryMode)
+
+        if libraryMode
+            libWnd.fill()
+
+        applyLayout()
     }
 
     mtd registerShortcuts()
@@ -638,8 +670,9 @@ impl MainWnd
     mtd updateState()
     {
         captureBtn.updateCommandState()
-        toolbar.updateCommandState()
-        bottomSizeBar.updateCommandState()
+        libraryBtn.updateCommandState()
+        editToolBar.updateCommandState()
+        recentSizeBar.updateCommandState()
         propWnd.selectionHasChanged()
         quickWnd.updateQuickStyles()
     }
@@ -670,6 +703,12 @@ impl MainWnd
         recentWnd.addRecent(capture.file, capture.preview)
         recentWnd.recentView.selected = 0
         capture.save()
+
+        if libraryMode
+        {
+            swapLibraryMode()
+            updateState()
+        }
     }
 
     func create(parent: *Wnd)->*MainWnd
@@ -701,17 +740,19 @@ impl MainWnd
             style.addStyleSheetColors("btnIcon_HotIcon 0xFFFF4444")
         }
 
+        res.libraryBtn = IconButton.create(topBar, Icon.from(&res.icons48, 8), @{64, 0, 64, 64}, id: CmdIdLibrary)
+
         // Main edit area
         res.editWnd = EditWnd.create(res, res)
         res.editWnd.dockStyle = .Center
         res.backgroundStyle = .Window
 
-        res.bottomBar = Wnd.create'Wnd(res, @{0, 0, 0, 128})
-        res.bottomBar.dockStyle = .Bottom
+        res.recentBar = Wnd.create'Wnd(res, @{0, 0, 0, 128})
+        res.recentBar.dockStyle = .Bottom
 
-        // Recent left toolbar
-        res.bottomSizeBar = IconBar.create(res.bottomBar, 20)
-        with res.bottomSizeBar
+        // Recent left editToolBar
+        res.recentSizeBar = IconBar.create(res.recentBar, 20)
+        with res.recentSizeBar
         {
             setIconBarFlags(.Vertical)
             dockStyle = .Left
@@ -722,30 +763,30 @@ impl MainWnd
         }
 
         // Recent
-        res.recentWnd = RecentWnd.create(res.bottomBar, res)
+        res.recentWnd = RecentWnd.create(res.recentBar, res)
         res.recentWnd.dockStyle = .Center
 
         // Right bar
-        rightWnd := StackLayoutCtrl.create(res, .Top, @{0, 0, 300, 0})
-        with rightWnd
+        res.quickStyleBar = StackLayoutCtrl.create(res, .Top, @{0, 0, 300, 0})
+        with res.quickStyleBar
         {
             dockStyle = .Right
             backgroundStyle = .Window
             spacing = 0
         }
 
-        label0 := Label.create(rightWnd, "Quick Styles", @{0, 0, 0, 30})
+        label0 := Label.create(res.quickStyleBar, "Quick Styles", @{0, 0, 0, 30})
         label0.backgroundStyle = .Window
         label0.style.addStyleSheetColors("wnd_Bk $dlg_BtnBarBk")
 
-        res.quickWnd = QuickWnd.create(rightWnd)
+        res.quickWnd = QuickWnd.create(res.quickStyleBar)
         res.quickWnd.main = res
 
-        label1 := Label.create(rightWnd, "Tool Properties", @{0, 0, 0, 30})
+        label1 := Label.create(res.quickStyleBar, "Tool Properties", @{0, 0, 0, 30})
         label1.backgroundStyle = .Window
         label1.style.addStyleSheetColors("wnd_Bk $dlg_BtnBarBk")
 
-        res.propWnd = Wnd.create'PropWnd(rightWnd, @{0, 0, 0, 300})
+        res.propWnd = Wnd.create'PropWnd(res.quickStyleBar, @{0, 0, 0, 300})
         with res.propWnd
         {
             main = res
@@ -754,9 +795,12 @@ impl MainWnd
         }
 
         // Bottom bar
-        barWnd := StackLayoutCtrl.create(res, .HorzCenter, @{0, 0, 300, 32})
-        barWnd.dockStyle = .Bottom
-        barWnd.backgroundStyle = .Window
+        res.editZoomBar = StackLayoutCtrl.create(res, .HorzCenter, @{0, 0, 300, 32})
+        with res.editZoomBar
+        {
+            dockStyle = .Bottom
+            backgroundStyle = .Window
+        }
 
         func updateZoomDisplay(res: *MainWnd)
         {
@@ -765,7 +809,7 @@ impl MainWnd
             res.zoomBtn.invalidate()
         }
 
-        res.zoomBtn = IconButton.create(barWnd, res.getTheme().getIcon24(ThemeIcons24.Search), @{0, 0, 110, 32})
+        res.zoomBtn = IconButton.create(res.editZoomBar, res.getTheme().getIcon24(ThemeIcons24.Search), @{0, 0, 110, 32})
         res.zoomBtn.textPos = .Right
         res.zoomBtn.arrowPos = .RightUp
         res.editWnd.sigScrollSizeChanged += @|res|(scroll, old, new) {
@@ -786,8 +830,6 @@ impl MainWnd
 
         res.libWnd = LibraryWnd.create(res)
         res.libWnd.hide()
-        //res.editWnd.hide()
-        //res.libWnd.fill()
 
         return res
     }

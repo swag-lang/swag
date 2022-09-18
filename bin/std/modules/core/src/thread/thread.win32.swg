@@ -69,6 +69,7 @@ impl Thread
 
         handle = try CreateThread(null, 0, @mkcallback(&threadEntry), self, CREATE_SUSPENDED, &id)
         userLambda = lambda
+        requestEnd = false
 
         self.userParam = #self.userParam
         try setPriority(#self.priority)

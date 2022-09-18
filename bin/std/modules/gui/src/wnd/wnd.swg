@@ -716,6 +716,11 @@ impl Wnd
     }
 
     // Apply the current layout (childs constraints)
+    mtd applyLayout()
+    {
+        applyLayout(@{position.width, position.height})
+    }
+
     mtd applyLayout(oldSize: Math.Point)
     {
         clientRect := getClientRectPadding()
@@ -757,6 +762,8 @@ impl Wnd
         visit c: childs
         {
             oldSizes.add(@{c.position.width, c.position.height})
+            if !c.isVisible()
+                continue
             switch c.dockStyle
             {
             case Left:
@@ -819,6 +826,8 @@ impl Wnd
 
         visit c, i: childs
         {
+            if !c.isVisible()
+                continue
             c.applyLayout(oldSizes[i])
         }
     }

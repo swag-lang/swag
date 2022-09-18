@@ -129,7 +129,11 @@ impl LibraryView
 {
     mtd fill(filter: string = null) throw
     {
-        Debug.assert(!thread.isValid())
+        if thread.isValid()
+        {
+            thread.safeForceEnd()
+            thread.wait()
+        }
 
         res := Directory.enumerateFiles(Library.getFolder(), "*.captme")
 
