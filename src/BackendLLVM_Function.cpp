@@ -2091,28 +2091,28 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::AffectOpAndEqS8:
+        case ByteCodeOp::AffectOpAndEqU8:
         {
             MK_BINOPEQ8_CAB();
             auto v0 = builder.CreateAnd(builder.CreateLoad(r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
-        case ByteCodeOp::AffectOpAndEqS16:
+        case ByteCodeOp::AffectOpAndEqU16:
         {
             MK_BINOPEQ16_CAB();
             auto v0 = builder.CreateAnd(builder.CreateLoad(r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
-        case ByteCodeOp::AffectOpAndEqS32:
+        case ByteCodeOp::AffectOpAndEqU32:
         {
             MK_BINOPEQ32_CAB();
             auto v0 = builder.CreateAnd(builder.CreateLoad(r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
-        case ByteCodeOp::AffectOpAndEqS64:
+        case ByteCodeOp::AffectOpAndEqU64:
         {
             MK_BINOPEQ64_CAB();
             auto v0 = builder.CreateAnd(builder.CreateLoad(r1), r2);
@@ -2120,28 +2120,28 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::AffectOpOrEqS8:
+        case ByteCodeOp::AffectOpOrEqU8:
         {
             MK_BINOPEQ8_CAB();
             auto v0 = builder.CreateOr(builder.CreateLoad(r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
-        case ByteCodeOp::AffectOpOrEqS16:
+        case ByteCodeOp::AffectOpOrEqU16:
         {
             MK_BINOPEQ16_CAB();
             auto v0 = builder.CreateOr(builder.CreateLoad(r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
-        case ByteCodeOp::AffectOpOrEqS32:
+        case ByteCodeOp::AffectOpOrEqU32:
         {
             MK_BINOPEQ32_CAB();
             auto v0 = builder.CreateOr(builder.CreateLoad(r1), r2);
             builder.CreateStore(v0, r1);
             break;
         }
-        case ByteCodeOp::AffectOpOrEqS64:
+        case ByteCodeOp::AffectOpOrEqU64:
         {
             MK_BINOPEQ64_CAB();
             auto v0 = builder.CreateOr(builder.CreateLoad(r1), r2);

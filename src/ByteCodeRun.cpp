@@ -3166,43 +3166,43 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         break;
     }
 
-    case ByteCodeOp::AffectOpAndEqS8:
+    case ByteCodeOp::AffectOpAndEqU8:
     {
         *(int8_t*) registersRC[ip->a.u32].pointer &= IMMB_S8(ip);
         break;
     }
-    case ByteCodeOp::AffectOpAndEqS16:
+    case ByteCodeOp::AffectOpAndEqU16:
     {
         *(int16_t*) registersRC[ip->a.u32].pointer &= IMMB_S16(ip);
         break;
     }
-    case ByteCodeOp::AffectOpAndEqS32:
+    case ByteCodeOp::AffectOpAndEqU32:
     {
         *(int32_t*) registersRC[ip->a.u32].pointer &= IMMB_S32(ip);
         break;
     }
-    case ByteCodeOp::AffectOpAndEqS64:
+    case ByteCodeOp::AffectOpAndEqU64:
     {
         *(int64_t*) registersRC[ip->a.u32].pointer &= IMMB_S64(ip);
         break;
     }
 
-    case ByteCodeOp::AffectOpOrEqS8:
+    case ByteCodeOp::AffectOpOrEqU8:
     {
         *(int8_t*) registersRC[ip->a.u32].pointer |= IMMB_S8(ip);
         break;
     }
-    case ByteCodeOp::AffectOpOrEqS16:
+    case ByteCodeOp::AffectOpOrEqU16:
     {
         *(int16_t*) registersRC[ip->a.u32].pointer |= IMMB_S16(ip);
         break;
     }
-    case ByteCodeOp::AffectOpOrEqS32:
+    case ByteCodeOp::AffectOpOrEqU32:
     {
         *(int32_t*) registersRC[ip->a.u32].pointer |= IMMB_S32(ip);
         break;
     }
-    case ByteCodeOp::AffectOpOrEqS64:
+    case ByteCodeOp::AffectOpOrEqU64:
     {
         *(int64_t*) registersRC[ip->a.u32].pointer |= IMMB_S64(ip);
         break;
