@@ -1103,6 +1103,19 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             MK_BINOPEQF64_CAB(X64Op::FADD);
             break;
 
+        case ByteCodeOp::AffectOpPlusEqF32_S:
+            MK_BINOPEQF32_SCAB(X64Op::FADD);
+            break;
+        case ByteCodeOp::AffectOpPlusEqF32_SS:
+            MK_BINOPEQF32_SSCAB(X64Op::FADD);
+            break;
+        case ByteCodeOp::AffectOpPlusEqF64_S:
+            MK_BINOPEQF64_SCAB(X64Op::FADD);
+            break;
+        case ByteCodeOp::AffectOpPlusEqF64_SS:
+            MK_BINOPEQF64_SSCAB(X64Op::FADD);
+            break;
+
         case ByteCodeOp::ZeroToTrue:
             pp.emit_Load32_Indirect(regOffset(ip->a.u32), RAX, RDI);
             pp.emit_Test32(RAX, RAX);

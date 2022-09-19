@@ -2757,6 +2757,19 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         *(uint64_t*) (context->bp + ip->a.u32) += *(uint64_t*) (context->bp + ip->b.u32);
         break;
 
+    case ByteCodeOp::AffectOpPlusEqF32_S:
+        *(float*) (context->bp + ip->a.u32) += IMMB_F32(ip);
+        break;
+    case ByteCodeOp::AffectOpPlusEqF32_SS:
+        *(float*) (context->bp + ip->a.u32) += *(float*) (context->bp + ip->b.u32);
+        break;
+    case ByteCodeOp::AffectOpPlusEqF64_S:
+        *(double*) (context->bp + ip->a.u32) += IMMB_F64(ip);
+        break;
+    case ByteCodeOp::AffectOpPlusEqF64_SS:
+        *(double*) (context->bp + ip->a.u32) += *(double*) (context->bp + ip->b.u32);
+        break;
+
     case ByteCodeOp::AffectOpPlusEqF32:
     {
         *(float*) registersRC[ip->a.u32].pointer += IMMB_F32(ip);

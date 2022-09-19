@@ -1716,6 +1716,35 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
+        case ByteCodeOp::AffectOpPlusEqF32_S:
+        {
+            MK_BINOPEQF32_SCAB();
+            auto v0 = builder.CreateFAdd(builder.CreateLoad(r0), r1);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+        case ByteCodeOp::AffectOpPlusEqF32_SS:
+        {
+            MK_BINOPEQF32_SSCAB();
+            auto v0 = builder.CreateFAdd(builder.CreateLoad(r0), builder.CreateLoad(r1));
+            builder.CreateStore(v0, r0);
+            break;
+        }
+        case ByteCodeOp::AffectOpPlusEqF64_S:
+        {
+            MK_BINOPEQF64_SCAB();
+            auto v0 = builder.CreateFAdd(builder.CreateLoad(r0), r1);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+        case ByteCodeOp::AffectOpPlusEqF64_SS:
+        {
+            MK_BINOPEQF64_SSCAB();
+            auto v0 = builder.CreateFAdd(builder.CreateLoad(r0), builder.CreateLoad(r1));
+            builder.CreateStore(v0, r0);
+            break;
+        }
+
         case ByteCodeOp::AffectOpMulEqS8:
         case ByteCodeOp::AffectOpMulEqS8_Safe:
         {
