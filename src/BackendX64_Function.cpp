@@ -975,6 +975,98 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_StoreF64_Indirect(0, XMM0, RAX);
             break;
 
+        case ByteCodeOp::AffectOpPlusEqS8:
+        case ByteCodeOp::AffectOpPlusEqS8_Safe:
+            MK_BINOPEQ8_CAB(X64Op::ADD);
+            emitOverflowSigned(pp, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlusEq, g_TypeMgr->typeInfoS8));
+            break;
+        case ByteCodeOp::AffectOpPlusEqU8:
+        case ByteCodeOp::AffectOpPlusEqU8_Safe:
+            MK_BINOPEQ8_CAB(X64Op::ADD);
+            emitOverflowUnsigned(pp, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlusEq, g_TypeMgr->typeInfoU8));
+            break;
+        case ByteCodeOp::AffectOpPlusEqS16:
+        case ByteCodeOp::AffectOpPlusEqS16_Safe:
+            MK_BINOPEQ16_CAB(X64Op::ADD);
+            emitOverflowSigned(pp, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlusEq, g_TypeMgr->typeInfoS16));
+            break;
+        case ByteCodeOp::AffectOpPlusEqU16:
+        case ByteCodeOp::AffectOpPlusEqU16_Safe:
+            MK_BINOPEQ16_CAB(X64Op::ADD);
+            emitOverflowUnsigned(pp, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlusEq, g_TypeMgr->typeInfoU16));
+            break;
+        case ByteCodeOp::AffectOpPlusEqS32:
+        case ByteCodeOp::AffectOpPlusEqS32_Safe:
+            MK_BINOPEQ32_CAB(X64Op::ADD);
+            emitOverflowSigned(pp, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlusEq, g_TypeMgr->typeInfoS32));
+            break;
+        case ByteCodeOp::AffectOpPlusEqU32:
+        case ByteCodeOp::AffectOpPlusEqU32_Safe:
+            MK_BINOPEQ32_CAB(X64Op::ADD);
+            emitOverflowUnsigned(pp, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlusEq, g_TypeMgr->typeInfoU32));
+            break;
+        case ByteCodeOp::AffectOpPlusEqS64:
+        case ByteCodeOp::AffectOpPlusEqS64_Safe:
+            MK_BINOPEQ64_CAB(X64Op::ADD);
+            emitOverflowSigned(pp, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlusEq, g_TypeMgr->typeInfoS64));
+            break;
+        case ByteCodeOp::AffectOpPlusEqU64:
+        case ByteCodeOp::AffectOpPlusEqU64_Safe:
+            MK_BINOPEQ64_CAB(X64Op::ADD);
+            emitOverflowUnsigned(pp, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlusEq, g_TypeMgr->typeInfoU64));
+            break;
+        case ByteCodeOp::AffectOpPlusEqF32:
+            MK_BINOPEQF32_CAB(X64Op::FADD);
+            break;
+        case ByteCodeOp::AffectOpPlusEqF64:
+            MK_BINOPEQF64_CAB(X64Op::FADD);
+            break;
+
+        case ByteCodeOp::AffectOpPlusEqS8_SSafe:
+        case ByteCodeOp::AffectOpPlusEqU8_SSafe:
+            MK_BINOPEQ8_SCAB(X64Op::ADD);
+            break;
+        case ByteCodeOp::AffectOpPlusEqS8_SSSafe:
+        case ByteCodeOp::AffectOpPlusEqU8_SSSafe:
+            MK_BINOPEQ8_SSCAB(X64Op::ADD);
+            break;
+        case ByteCodeOp::AffectOpPlusEqS16_SSafe:
+        case ByteCodeOp::AffectOpPlusEqU16_SSafe:
+            MK_BINOPEQ16_SCAB(X64Op::ADD);
+            break;
+        case ByteCodeOp::AffectOpPlusEqS16_SSSafe:
+        case ByteCodeOp::AffectOpPlusEqU16_SSSafe:
+            MK_BINOPEQ16_SSCAB(X64Op::ADD);
+            break;
+        case ByteCodeOp::AffectOpPlusEqS32_SSafe:
+        case ByteCodeOp::AffectOpPlusEqU32_SSafe:
+            MK_BINOPEQ32_SCAB(X64Op::ADD);
+            break;
+        case ByteCodeOp::AffectOpPlusEqS32_SSSafe:
+        case ByteCodeOp::AffectOpPlusEqU32_SSSafe:
+            MK_BINOPEQ32_SSCAB(X64Op::ADD);
+            break;
+        case ByteCodeOp::AffectOpPlusEqS64_SSafe:
+        case ByteCodeOp::AffectOpPlusEqU64_SSafe:
+            MK_BINOPEQ64_SCAB(X64Op::ADD);
+            break;
+        case ByteCodeOp::AffectOpPlusEqS64_SSSafe:
+        case ByteCodeOp::AffectOpPlusEqU64_SSSafe:
+            MK_BINOPEQ64_SSCAB(X64Op::ADD);
+            break;
+        case ByteCodeOp::AffectOpPlusEqF32_S:
+            MK_BINOPEQF32_SCAB(X64Op::FADD);
+            break;
+        case ByteCodeOp::AffectOpPlusEqF32_SS:
+            MK_BINOPEQF32_SSCAB(X64Op::FADD);
+            break;
+        case ByteCodeOp::AffectOpPlusEqF64_S:
+            MK_BINOPEQF64_SCAB(X64Op::FADD);
+            break;
+        case ByteCodeOp::AffectOpPlusEqF64_SS:
+            MK_BINOPEQF64_SSCAB(X64Op::FADD);
+            break;
+
         case ByteCodeOp::AffectOpMinusEqS8:
         case ByteCodeOp::AffectOpMinusEqS8_Safe:
             MK_BINOPEQ8_CAB(X64Op::SUB);
@@ -1022,98 +1114,49 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             MK_BINOPEQF64_CAB(X64Op::FSUB);
             break;
 
-        case ByteCodeOp::AffectOpPlusEqS8:
-        case ByteCodeOp::AffectOpPlusEqS8_Safe:
-            MK_BINOPEQ8_CAB(X64Op::ADD);
-            emitOverflowSigned(pp, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlusEq, g_TypeMgr->typeInfoS8));
+        case ByteCodeOp::AffectOpMinusEqS8_SSafe:
+        case ByteCodeOp::AffectOpMinusEqU8_SSafe:
+            MK_BINOPEQ8_SCAB(X64Op::SUB);
             break;
-        case ByteCodeOp::AffectOpPlusEqU8:
-        case ByteCodeOp::AffectOpPlusEqU8_Safe:
-            MK_BINOPEQ8_CAB(X64Op::ADD);
-            emitOverflowUnsigned(pp, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlusEq, g_TypeMgr->typeInfoU8));
+        case ByteCodeOp::AffectOpMinusEqS8_SSSafe:
+        case ByteCodeOp::AffectOpMinusEqU8_SSSafe:
+            MK_BINOPEQ8_SSCAB(X64Op::SUB);
             break;
-        case ByteCodeOp::AffectOpPlusEqS16:
-        case ByteCodeOp::AffectOpPlusEqS16_Safe:
-            MK_BINOPEQ16_CAB(X64Op::ADD);
-            emitOverflowSigned(pp, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlusEq, g_TypeMgr->typeInfoS16));
+        case ByteCodeOp::AffectOpMinusEqS16_SSafe:
+        case ByteCodeOp::AffectOpMinusEqU16_SSafe:
+            MK_BINOPEQ16_SCAB(X64Op::SUB);
             break;
-        case ByteCodeOp::AffectOpPlusEqU16:
-        case ByteCodeOp::AffectOpPlusEqU16_Safe:
-            MK_BINOPEQ16_CAB(X64Op::ADD);
-            emitOverflowUnsigned(pp, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlusEq, g_TypeMgr->typeInfoU16));
+        case ByteCodeOp::AffectOpMinusEqS16_SSSafe:
+        case ByteCodeOp::AffectOpMinusEqU16_SSSafe:
+            MK_BINOPEQ16_SSCAB(X64Op::SUB);
             break;
-        case ByteCodeOp::AffectOpPlusEqS32:
-        case ByteCodeOp::AffectOpPlusEqS32_Safe:
-            MK_BINOPEQ32_CAB(X64Op::ADD);
-            emitOverflowSigned(pp, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlusEq, g_TypeMgr->typeInfoS32));
+        case ByteCodeOp::AffectOpMinusEqS32_SSafe:
+        case ByteCodeOp::AffectOpMinusEqU32_SSafe:
+            MK_BINOPEQ32_SCAB(X64Op::SUB);
             break;
-        case ByteCodeOp::AffectOpPlusEqU32:
-        case ByteCodeOp::AffectOpPlusEqU32_Safe:
-            MK_BINOPEQ32_CAB(X64Op::ADD);
-            emitOverflowUnsigned(pp, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlusEq, g_TypeMgr->typeInfoU32));
+        case ByteCodeOp::AffectOpMinusEqS32_SSSafe:
+        case ByteCodeOp::AffectOpMinusEqU32_SSSafe:
+            MK_BINOPEQ32_SSCAB(X64Op::SUB);
             break;
-        case ByteCodeOp::AffectOpPlusEqS64:
-        case ByteCodeOp::AffectOpPlusEqS64_Safe:
-            MK_BINOPEQ64_CAB(X64Op::ADD);
-            emitOverflowSigned(pp, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlusEq, g_TypeMgr->typeInfoS64));
+        case ByteCodeOp::AffectOpMinusEqS64_SSafe:
+        case ByteCodeOp::AffectOpMinusEqU64_SSafe:
+            MK_BINOPEQ64_SCAB(X64Op::SUB);
             break;
-        case ByteCodeOp::AffectOpPlusEqU64:
-        case ByteCodeOp::AffectOpPlusEqU64_Safe:
-            MK_BINOPEQ64_CAB(X64Op::ADD);
-            emitOverflowUnsigned(pp, ip->node, ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlusEq, g_TypeMgr->typeInfoU64));
+        case ByteCodeOp::AffectOpMinusEqS64_SSSafe:
+        case ByteCodeOp::AffectOpMinusEqU64_SSSafe:
+            MK_BINOPEQ64_SSCAB(X64Op::SUB);
             break;
-
-        case ByteCodeOp::AffectOpPlusEqS8_SSafe:
-        case ByteCodeOp::AffectOpPlusEqU8_SSafe:
-            MK_BINOPEQ8_SCAB(X64Op::ADD);
+        case ByteCodeOp::AffectOpMinusEqF32_S:
+            MK_BINOPEQF32_SCAB(X64Op::FSUB);
             break;
-        case ByteCodeOp::AffectOpPlusEqS8_SSSafe:
-        case ByteCodeOp::AffectOpPlusEqU8_SSSafe:
-            MK_BINOPEQ8_SSCAB(X64Op::ADD);
+        case ByteCodeOp::AffectOpMinusEqF32_SS:
+            MK_BINOPEQF32_SSCAB(X64Op::FSUB);
             break;
-        case ByteCodeOp::AffectOpPlusEqS16_SSafe:
-        case ByteCodeOp::AffectOpPlusEqU16_SSafe:
-            MK_BINOPEQ16_SCAB(X64Op::ADD);
+        case ByteCodeOp::AffectOpMinusEqF64_S:
+            MK_BINOPEQF64_SCAB(X64Op::FSUB);
             break;
-        case ByteCodeOp::AffectOpPlusEqS16_SSSafe:
-        case ByteCodeOp::AffectOpPlusEqU16_SSSafe:
-            MK_BINOPEQ16_SSCAB(X64Op::ADD);
-            break;
-        case ByteCodeOp::AffectOpPlusEqS32_SSafe:
-        case ByteCodeOp::AffectOpPlusEqU32_SSafe:
-            MK_BINOPEQ32_SCAB(X64Op::ADD);
-            break;
-        case ByteCodeOp::AffectOpPlusEqS32_SSSafe:
-        case ByteCodeOp::AffectOpPlusEqU32_SSSafe:
-            MK_BINOPEQ32_SSCAB(X64Op::ADD);
-            break;
-        case ByteCodeOp::AffectOpPlusEqS64_SSafe:
-        case ByteCodeOp::AffectOpPlusEqU64_SSafe:
-            MK_BINOPEQ64_SCAB(X64Op::ADD);
-            break;
-        case ByteCodeOp::AffectOpPlusEqS64_SSSafe:
-        case ByteCodeOp::AffectOpPlusEqU64_SSSafe:
-            MK_BINOPEQ64_SSCAB(X64Op::ADD);
-            break;
-
-        case ByteCodeOp::AffectOpPlusEqF32:
-            MK_BINOPEQF32_CAB(X64Op::FADD);
-            break;
-        case ByteCodeOp::AffectOpPlusEqF64:
-            MK_BINOPEQF64_CAB(X64Op::FADD);
-            break;
-
-        case ByteCodeOp::AffectOpPlusEqF32_S:
-            MK_BINOPEQF32_SCAB(X64Op::FADD);
-            break;
-        case ByteCodeOp::AffectOpPlusEqF32_SS:
-            MK_BINOPEQF32_SSCAB(X64Op::FADD);
-            break;
-        case ByteCodeOp::AffectOpPlusEqF64_S:
-            MK_BINOPEQF64_SCAB(X64Op::FADD);
-            break;
-        case ByteCodeOp::AffectOpPlusEqF64_SS:
-            MK_BINOPEQF64_SSCAB(X64Op::FADD);
+        case ByteCodeOp::AffectOpMinusEqF64_SS:
+            MK_BINOPEQF64_SSCAB(X64Op::FSUB);
             break;
 
         case ByteCodeOp::ZeroToTrue:
