@@ -1635,6 +1635,49 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             OPEQ_OVERFLOW(uadd_with_overflow, CreateAdd, getInt64Ty(), ByteCodeGenJob::safetyMsg(SafetyMsg::IFPlusEq, g_TypeMgr->typeInfoU64));
             break;
         }
+
+        case ByteCodeOp::AffectOpPlusEqU8_SSafe:
+        {
+            MK_BINOPEQ8_SCAB();
+            auto v0 = builder.CreateAdd(builder.CreateLoad(r0), r1);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+        case ByteCodeOp::AffectOpPlusEqU8_SSSafe:
+        {
+            MK_BINOPEQ8_SSCAB();
+            auto v0 = builder.CreateAdd(builder.CreateLoad(r0), builder.CreateLoad(r1));
+            builder.CreateStore(v0, r0);
+            break;
+        }
+        case ByteCodeOp::AffectOpPlusEqU16_SSafe:
+        {
+            MK_BINOPEQ16_SCAB();
+            auto v0 = builder.CreateAdd(builder.CreateLoad(r0), r1);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+        case ByteCodeOp::AffectOpPlusEqU16_SSSafe:
+        {
+            MK_BINOPEQ16_SSCAB();
+            auto v0 = builder.CreateAdd(builder.CreateLoad(r0), builder.CreateLoad(r1));
+            builder.CreateStore(v0, r0);
+            break;
+        }
+        case ByteCodeOp::AffectOpPlusEqU32_SSafe:
+        {
+            MK_BINOPEQ32_SCAB();
+            auto v0 = builder.CreateAdd(builder.CreateLoad(r0), r1);
+            builder.CreateStore(v0, r0);
+            break;
+        }
+        case ByteCodeOp::AffectOpPlusEqU32_SSSafe:
+        {
+            MK_BINOPEQ32_SSCAB();
+            auto v0 = builder.CreateAdd(builder.CreateLoad(r0), builder.CreateLoad(r1));
+            builder.CreateStore(v0, r0);
+            break;
+        }
         case ByteCodeOp::AffectOpPlusEqU64_SSafe:
         {
             MK_BINOPEQ64_SCAB();

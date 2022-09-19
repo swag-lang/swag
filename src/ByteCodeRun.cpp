@@ -2706,16 +2706,31 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         *(uint64_t*) registersRC[ip->a.u32].pointer += IMMB_S64(ip);
         break;
     }
+
+    case ByteCodeOp::AffectOpPlusEqU8_SSafe:
+        *(uint8_t*) (context->bp + ip->a.u32) += IMMB_S8(ip);
+        break;
+    case ByteCodeOp::AffectOpPlusEqU8_SSSafe:
+        *(uint8_t*) (context->bp + ip->a.u32) += *(uint8_t*) (context->bp + ip->b.u32);
+        break;
+    case ByteCodeOp::AffectOpPlusEqU16_SSafe:
+        *(uint16_t*) (context->bp + ip->a.u32) += IMMB_S16(ip);
+        break;
+    case ByteCodeOp::AffectOpPlusEqU16_SSSafe:
+        *(uint16_t*) (context->bp + ip->a.u32) += *(uint16_t*) (context->bp + ip->b.u32);
+        break;
+    case ByteCodeOp::AffectOpPlusEqU32_SSafe:
+        *(uint32_t*) (context->bp + ip->a.u32) += IMMB_S32(ip);
+        break;
+    case ByteCodeOp::AffectOpPlusEqU32_SSSafe:
+        *(uint32_t*) (context->bp + ip->a.u32) += *(uint32_t*) (context->bp + ip->b.u32);
+        break;
     case ByteCodeOp::AffectOpPlusEqU64_SSafe:
-    {
         *(uint64_t*) (context->bp + ip->a.u32) += IMMB_S64(ip);
         break;
-    }
     case ByteCodeOp::AffectOpPlusEqU64_SSSafe:
-    {
-        *(uint64_t*)(context->bp + ip->a.u32) += *(uint64_t*)(context->bp + ip->b.u32);
+        *(uint64_t*) (context->bp + ip->a.u32) += *(uint64_t*) (context->bp + ip->b.u32);
         break;
-    }
 
     case ByteCodeOp::AffectOpPlusEqF32:
     {

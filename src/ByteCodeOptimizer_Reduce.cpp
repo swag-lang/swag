@@ -3859,18 +3859,79 @@ void ByteCodeOptimizer::reduceStackOp(ByteCodeOptContext* context, ByteCodeInstr
     switch (ip->op)
     {
     case ByteCodeOp::MakeStackPointer:
-        if (ip[0].a.u32 == ip[1].a.u32 && ip[1].op == ByteCodeOp::AffectOpPlusEqU64_Safe)
+        if (ip[0].a.u32 == ip[1].a.u32)
         {
-            ip[1].a.u32 = ip->b.u32;
-            SET_OP(ip + 1, ByteCodeOp::AffectOpPlusEqU64_SSafe);
+            switch (ip[1].op)
+            {
+            case ByteCodeOp::AffectOpPlusEqU8_Safe:
+                ip[1].a.u32 = ip->b.u32;
+                SET_OP(ip + 1, ByteCodeOp::AffectOpPlusEqU8_SSafe);
+                break;
+            case ByteCodeOp::AffectOpPlusEqU16_Safe:
+                ip[1].a.u32 = ip->b.u32;
+                SET_OP(ip + 1, ByteCodeOp::AffectOpPlusEqU16_SSafe);
+                break;
+            case ByteCodeOp::AffectOpPlusEqU32_Safe:
+                ip[1].a.u32 = ip->b.u32;
+                SET_OP(ip + 1, ByteCodeOp::AffectOpPlusEqU32_SSafe);
+                break;
+            case ByteCodeOp::AffectOpPlusEqU64_Safe:
+                ip[1].a.u32 = ip->b.u32;
+                SET_OP(ip + 1, ByteCodeOp::AffectOpPlusEqU64_SSafe);
+                break;
+            }
+        }
+        break;
+
+    case ByteCodeOp::GetFromStack8:
+        if (ip[0].a.u32 == ip[1].b.u32)
+        {
+            switch (ip[1].op)
+            {
+            case ByteCodeOp::AffectOpPlusEqU8_SSafe:
+                ip[1].b.u32 = ip->b.u32;
+                SET_OP(ip + 1, ByteCodeOp::AffectOpPlusEqU8_SSSafe);
+                break;
+            }
+        }
+        break;
+
+    case ByteCodeOp::GetFromStack16:
+        if (ip[0].a.u32 == ip[1].b.u32)
+        {
+            switch (ip[1].op)
+            {
+            case ByteCodeOp::AffectOpPlusEqU16_SSafe:
+                ip[1].b.u32 = ip->b.u32;
+                SET_OP(ip + 1, ByteCodeOp::AffectOpPlusEqU16_SSSafe);
+                break;
+            }
+        }
+        break;
+
+    case ByteCodeOp::GetFromStack32:
+        if (ip[0].a.u32 == ip[1].b.u32)
+        {
+            switch (ip[1].op)
+            {
+            case ByteCodeOp::AffectOpPlusEqU32_SSafe:
+                ip[1].b.u32 = ip->b.u32;
+                SET_OP(ip + 1, ByteCodeOp::AffectOpPlusEqU32_SSSafe);
+                break;
+            }
         }
         break;
 
     case ByteCodeOp::GetFromStack64:
-        if (ip[0].a.u32 == ip[1].b.u32 && ip[1].op == ByteCodeOp::AffectOpPlusEqU64_SSafe)
+        if (ip[0].a.u32 == ip[1].b.u32)
         {
-            ip[1].b.u32 = ip->b.u32;
-            SET_OP(ip + 1, ByteCodeOp::AffectOpPlusEqU64_SSSafe);
+            switch (ip[1].op)
+            {
+            case ByteCodeOp::AffectOpPlusEqU64_SSafe:
+                ip[1].b.u32 = ip->b.u32;
+                SET_OP(ip + 1, ByteCodeOp::AffectOpPlusEqU64_SSSafe);
+                break;
+            }
         }
         break;
     }

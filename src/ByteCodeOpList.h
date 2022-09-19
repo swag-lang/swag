@@ -481,6 +481,12 @@ BYTECODE_OP(AffectOpPlusEqU16_Safe, OPFLAG_READ_A | OPFLAG_WRITE_A | OPFLAG_READ
 BYTECODE_OP(AffectOpPlusEqU32_Safe, OPFLAG_READ_A | OPFLAG_WRITE_A | OPFLAG_READ_B | OPFLAG_IMM_B, "[_ra_] += _rbu32_", 0)
 BYTECODE_OP(AffectOpPlusEqU64_Safe, OPFLAG_READ_A | OPFLAG_WRITE_A | OPFLAG_READ_B | OPFLAG_IMM_B, "[_ra_] += _rbu64_", 0)
 
+BYTECODE_OP(AffectOpPlusEqU8_SSafe, OPFLAG_READ_VAL32_A | OPFLAG_READ_B | OPFLAG_IMM_B, "[stack + _rau32_] += _rbu8_", 0)
+BYTECODE_OP(AffectOpPlusEqU8_SSSafe, OPFLAG_READ_VAL32_A | OPFLAG_READ_VAL32_B, "[stack + _rau32_] += [stack + _rbu32_]", 0)
+BYTECODE_OP(AffectOpPlusEqU16_SSafe, OPFLAG_READ_VAL32_A | OPFLAG_READ_B | OPFLAG_IMM_B, "[stack + _rau32_] += _rbu16_", 0)
+BYTECODE_OP(AffectOpPlusEqU16_SSSafe, OPFLAG_READ_VAL32_A | OPFLAG_READ_VAL32_B, "[stack + _rau32_] += [stack + _rbu32_]", 0)
+BYTECODE_OP(AffectOpPlusEqU32_SSafe, OPFLAG_READ_VAL32_A | OPFLAG_READ_B | OPFLAG_IMM_B, "[stack + _rau32_] += _rbu32_", 0)
+BYTECODE_OP(AffectOpPlusEqU32_SSSafe, OPFLAG_READ_VAL32_A | OPFLAG_READ_VAL32_B, "[stack + _rau32_] += [stack + _rbu32_]", 0)
 BYTECODE_OP(AffectOpPlusEqU64_SSafe, OPFLAG_READ_VAL32_A | OPFLAG_READ_B | OPFLAG_IMM_B, "[stack + _rau32_] += _rbu64_", 0)
 BYTECODE_OP(AffectOpPlusEqU64_SSSafe, OPFLAG_READ_VAL32_A | OPFLAG_READ_VAL32_B, "[stack + _rau32_] += [stack + _rbu32_]", 0)
 
