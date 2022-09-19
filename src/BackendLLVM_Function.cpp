@@ -1636,6 +1636,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
+        case ByteCodeOp::AffectOpPlusEqS8_SSafe:
         case ByteCodeOp::AffectOpPlusEqU8_SSafe:
         {
             MK_BINOPEQ8_SCAB();
@@ -1643,6 +1644,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(v0, r0);
             break;
         }
+        case ByteCodeOp::AffectOpPlusEqS8_SSSafe:
         case ByteCodeOp::AffectOpPlusEqU8_SSSafe:
         {
             MK_BINOPEQ8_SSCAB();
@@ -1650,6 +1652,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(v0, r0);
             break;
         }
+        case ByteCodeOp::AffectOpPlusEqS16_SSafe:
         case ByteCodeOp::AffectOpPlusEqU16_SSafe:
         {
             MK_BINOPEQ16_SCAB();
@@ -1657,6 +1660,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(v0, r0);
             break;
         }
+        case ByteCodeOp::AffectOpPlusEqS16_SSSafe:
         case ByteCodeOp::AffectOpPlusEqU16_SSSafe:
         {
             MK_BINOPEQ16_SSCAB();
@@ -1664,6 +1668,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(v0, r0);
             break;
         }
+        case ByteCodeOp::AffectOpPlusEqS32_SSafe:
         case ByteCodeOp::AffectOpPlusEqU32_SSafe:
         {
             MK_BINOPEQ32_SCAB();
@@ -1671,6 +1676,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(v0, r0);
             break;
         }
+        case ByteCodeOp::AffectOpPlusEqS32_SSSafe:
         case ByteCodeOp::AffectOpPlusEqU32_SSSafe:
         {
             MK_BINOPEQ32_SSCAB();
@@ -1678,6 +1684,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(v0, r0);
             break;
         }
+        case ByteCodeOp::AffectOpPlusEqS64_SSafe:
         case ByteCodeOp::AffectOpPlusEqU64_SSafe:
         {
             MK_BINOPEQ64_SCAB();
@@ -1685,6 +1692,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(v0, r0);
             break;
         }
+        case ByteCodeOp::AffectOpPlusEqS64_SSSafe:
         case ByteCodeOp::AffectOpPlusEqU64_SSSafe:
         {
             MK_BINOPEQ64_SSCAB();

@@ -2707,6 +2707,31 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         break;
     }
 
+    case ByteCodeOp::AffectOpPlusEqS8_SSafe:
+        *(int8_t*) (context->bp + ip->a.u32) += IMMB_S8(ip);
+        break;
+    case ByteCodeOp::AffectOpPlusEqS8_SSSafe:
+        *(int8_t*) (context->bp + ip->a.u32) += *(int8_t*) (context->bp + ip->b.u32);
+        break;
+    case ByteCodeOp::AffectOpPlusEqS16_SSafe:
+        *(int16_t*) (context->bp + ip->a.u32) += IMMB_S16(ip);
+        break;
+    case ByteCodeOp::AffectOpPlusEqS16_SSSafe:
+        *(int16_t*) (context->bp + ip->a.u32) += *(int16_t*) (context->bp + ip->b.u32);
+        break;
+    case ByteCodeOp::AffectOpPlusEqS32_SSafe:
+        *(int32_t*) (context->bp + ip->a.u32) += IMMB_S32(ip);
+        break;
+    case ByteCodeOp::AffectOpPlusEqS32_SSSafe:
+        *(int32_t*) (context->bp + ip->a.u32) += *(int32_t*) (context->bp + ip->b.u32);
+        break;
+    case ByteCodeOp::AffectOpPlusEqS64_SSafe:
+        *(int64_t*) (context->bp + ip->a.u32) += IMMB_S64(ip);
+        break;
+    case ByteCodeOp::AffectOpPlusEqS64_SSSafe:
+        *(int64_t*) (context->bp + ip->a.u32) += *(int64_t*) (context->bp + ip->b.u32);
+        break;
+
     case ByteCodeOp::AffectOpPlusEqU8_SSafe:
         *(uint8_t*) (context->bp + ip->a.u32) += IMMB_S8(ip);
         break;
