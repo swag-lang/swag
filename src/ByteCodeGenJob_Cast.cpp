@@ -757,6 +757,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
             job->allParamsTmp->allocateExtension();
             job->allParamsTmp->extension->resolvedUserOpSymbolOverload = exprNode->extension->resolvedUserOpSymbolOverload;
             job->allParamsTmp->inheritOwners(exprNode);
+            job->allParamsTmp->doneFlags = 0;
         }
 
         if (!isExplicit)
