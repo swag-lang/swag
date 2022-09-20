@@ -189,7 +189,7 @@ bool ByteCodeGenJob::emitThrow(ByteCodeGenContext* context)
     if (!(node->doneFlags & AST_DONE_CAST1))
     {
         SWAG_CHECK(emitCast(context, expr, TypeManager::concreteType(expr->typeInfo), expr->castedTypeInfo));
-        if (context->result == ContextResult::Pending)
+        if (context->result != ContextResult::Done)
             return true;
         node->doneFlags |= AST_DONE_CAST1;
     }

@@ -418,8 +418,10 @@ func __seterr(value: string)
     cxt := @getcontext()
     len := @countof(value)
     if len > MaxLenErrorMsg - cxt.errorMsgStart
+    {
         len = cast(uint) (MaxLenErrorMsg - cxt.errorMsgStart)
-    @assert(len > 0)
+        @assert(len > 0)
+    }
     @memcpy(&cxt.errorMsg[cxt.errorMsgStart], @dataof(value), len)
     cxt.errorMsgLen = cast(u32) len
 }
