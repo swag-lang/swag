@@ -3203,6 +3203,8 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
+        case ByteCodeOp::CopyRCtoRRRet:
+            resultValue = getReturnResult(context, buildParameters, moduleToGen, returnType, ip->flags & BCI_IMM_B, ip->b, allocR);
         case ByteCodeOp::Ret:
         {
             // :OptimizedAwayDebugCrap
@@ -3752,74 +3754,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::CopyRCtoRR:
         {
-            llvm::Value* returnResult = nullptr;
-            if (returnType->kind == TypeInfoKind::Native)
-            {
-                switch (returnType->nativeType)
-                {
-                case NativeTypeKind::U8:
-                case NativeTypeKind::S8:
-                case NativeTypeKind::Bool:
-                    if (ip->flags & BCI_IMM_A)
-                        returnResult = builder.getInt8(ip->a.u8);
-                    else
-                        returnResult = builder.CreateLoad(TO_PTR_I8(GEP_I32(allocR, ip->a.u32)));
-                    break;
-                case NativeTypeKind::U16:
-                case NativeTypeKind::S16:
-                    if (ip->flags & BCI_IMM_A)
-                        returnResult = builder.getInt16(ip->a.u16);
-                    else
-                        returnResult = builder.CreateLoad(TO_PTR_I16(GEP_I32(allocR, ip->a.u32)));
-                    break;
-                case NativeTypeKind::U32:
-                case NativeTypeKind::S32:
-                case NativeTypeKind::Rune:
-                    if (ip->flags & BCI_IMM_A)
-                        returnResult = builder.getInt32(ip->a.u32);
-                    else
-                        returnResult = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, ip->a.u32)));
-                    break;
-                case NativeTypeKind::U64:
-                case NativeTypeKind::S64:
-                case NativeTypeKind::UInt:
-                case NativeTypeKind::Int:
-                    if (ip->flags & BCI_IMM_A)
-                        returnResult = builder.getInt64(ip->a.u64);
-                    else
-                        returnResult = builder.CreateLoad(GEP_I32(allocR, ip->a.u32));
-                    break;
-                case NativeTypeKind::F32:
-                    if (ip->flags & BCI_IMM_A)
-                        returnResult = llvm::ConstantFP::get(builder.getFloatTy(), ip->a.f32);
-                    else
-                        returnResult = builder.CreateLoad(TO_PTR_F32(GEP_I32(allocR, ip->a.u32)));
-                    break;
-                case NativeTypeKind::F64:
-                    if (ip->flags & BCI_IMM_A)
-                        returnResult = llvm::ConstantFP::get(builder.getDoubleTy(), ip->a.f64);
-                    else
-                        returnResult = builder.CreateLoad(TO_PTR_F64(GEP_I32(allocR, ip->a.u32)));
-                    break;
-                default:
-                    SWAG_ASSERT(false);
-                    break;
-                }
-            }
-            else if (returnType->kind == TypeInfoKind::Pointer || returnType->kind == TypeInfoKind::Lambda)
-            {
-                auto llvmType = swagTypeToLLVMType(buildParameters, moduleToGen, returnType);
-                if (ip->flags & BCI_IMM_A)
-                    returnResult = builder.CreateIntToPtr(builder.getInt64(ip->a.u64), llvmType);
-                else
-                    returnResult = builder.CreateIntToPtr(builder.CreateLoad(GEP_I32(allocR, ip->a.u32)), llvmType);
-            }
-            else
-            {
-                SWAG_ASSERT(false);
-            }
-
-            resultValue = returnResult;
+            resultValue = getReturnResult(context, buildParameters, moduleToGen, returnType, ip->flags & BCI_IMM_A, ip->a, allocR);
             break;
         }
         case ByteCodeOp::CopyRCtoRR2:
@@ -5187,4 +5122,81 @@ void BackendLLVM::storeRT2ToRegisters(llvm::LLVMContext& context, const BuildPar
     r0 = GEP_I32(allocR, reg1);
     r1 = builder.CreateLoad(GEP_I32(allocRR, 1));
     builder.CreateStore(r1, r0);
+}
+
+llvm::Value* BackendLLVM::getReturnResult(llvm::LLVMContext& context, const BuildParameters& buildParameters, Module* moduleToGen, TypeInfo* returnType, bool imm, Register& reg, llvm::AllocaInst* allocR)
+{
+    int   ct              = buildParameters.compileType;
+    int   precompileIndex = buildParameters.precompileIndex;
+    auto& pp              = *perThread[ct][precompileIndex];
+    auto& builder         = *pp.builder;
+
+    llvm::Value* returnResult = nullptr;
+    if (returnType->kind == TypeInfoKind::Native)
+    {
+        switch (returnType->nativeType)
+        {
+        case NativeTypeKind::U8:
+        case NativeTypeKind::S8:
+        case NativeTypeKind::Bool:
+            if (imm)
+                returnResult = builder.getInt8(reg.u8);
+            else
+                returnResult = builder.CreateLoad(TO_PTR_I8(GEP_I32(allocR, reg.u32)));
+            break;
+        case NativeTypeKind::U16:
+        case NativeTypeKind::S16:
+            if (imm)
+                returnResult = builder.getInt16(reg.u16);
+            else
+                returnResult = builder.CreateLoad(TO_PTR_I16(GEP_I32(allocR, reg.u32)));
+            break;
+        case NativeTypeKind::U32:
+        case NativeTypeKind::S32:
+        case NativeTypeKind::Rune:
+            if (imm)
+                returnResult = builder.getInt32(reg.u32);
+            else
+                returnResult = builder.CreateLoad(TO_PTR_I32(GEP_I32(allocR, reg.u32)));
+            break;
+        case NativeTypeKind::U64:
+        case NativeTypeKind::S64:
+        case NativeTypeKind::UInt:
+        case NativeTypeKind::Int:
+            if (imm)
+                returnResult = builder.getInt64(reg.u64);
+            else
+                returnResult = builder.CreateLoad(GEP_I32(allocR, reg.u32));
+            break;
+        case NativeTypeKind::F32:
+            if (imm)
+                returnResult = llvm::ConstantFP::get(builder.getFloatTy(), reg.f32);
+            else
+                returnResult = builder.CreateLoad(TO_PTR_F32(GEP_I32(allocR, reg.u32)));
+            break;
+        case NativeTypeKind::F64:
+            if (imm)
+                returnResult = llvm::ConstantFP::get(builder.getDoubleTy(), reg.f64);
+            else
+                returnResult = builder.CreateLoad(TO_PTR_F64(GEP_I32(allocR, reg.u32)));
+            break;
+        default:
+            SWAG_ASSERT(false);
+            break;
+        }
+    }
+    else if (returnType->kind == TypeInfoKind::Pointer || returnType->kind == TypeInfoKind::Lambda)
+    {
+        auto llvmType = swagTypeToLLVMType(buildParameters, moduleToGen, returnType);
+        if (imm)
+            returnResult = builder.CreateIntToPtr(builder.getInt64(reg.u64), llvmType);
+        else
+            returnResult = builder.CreateIntToPtr(builder.CreateLoad(GEP_I32(allocR, reg.u32)), llvmType);
+    }
+    else
+    {
+        SWAG_ASSERT(false);
+    }
+
+    return returnResult;
 }

@@ -485,6 +485,8 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         context->ip += ip->b.s32;
         break;
     }
+    case ByteCodeOp::CopyRCtoRRRet:
+        context->registersRR[0].u64 = IMMB_U64(ip);
     case ByteCodeOp::Ret:
     {
         context->incSP(ip->a.u32);

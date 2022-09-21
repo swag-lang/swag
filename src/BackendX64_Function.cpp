@@ -2922,6 +2922,23 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pushRVParams.clear();
             break;
 
+        case ByteCodeOp::CopyRCtoRRRet:
+            pp.emit_LoadAddress_Indirect(offsetResult, RAX, RDI);
+            if (ip->flags & BCI_IMM_B && ip->b.u64 <= 0x7FFFFFFF)
+            {
+                pp.emit_Store64_Immediate(0, ip->b.u64, RAX);
+            }
+            else if (ip->flags & BCI_IMM_B)
+            {
+                pp.emit_Load64_Immediate(ip->b.u64, RCX);
+                pp.emit_Store64_Indirect(0, RCX, RAX);
+            }
+            else
+            {
+                pp.emit_Load64_Indirect(regOffset(ip->b.u32), RCX, RDI);
+                pp.emit_Store64_Indirect(0, RCX, RAX);
+            }
+
         case ByteCodeOp::Ret:
 
             // Emit result

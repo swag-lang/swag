@@ -432,6 +432,18 @@ void ByteCodeOptimizer::reduceFunc(ByteCodeOptContext* context, ByteCodeInstruct
 {
     switch (ip->op)
     {
+    case ByteCodeOp::CopyRCtoRR:
+        if (ip[1].op == ByteCodeOp::Ret)
+        {
+            ip[0].b.u64 = ip[0].a.u64;
+            ip[0].a.u64 = ip[1].a.u64;
+            ip[0].flags |= ip[0].flags & BCI_IMM_A ? BCI_IMM_B : 0;
+            ip[0].flags &= ~BCI_IMM_A;
+            SET_OP(ip, ByteCodeOp::CopyRCtoRRRet);
+            break;
+        }
+        break;
+
     // Swap CopyRTtoRC and IncSPPostCall to put IncSPPostCall right next to the call, which
     // give the opportunity to optimize the call pop
     case ByteCodeOp::CopyRTtoRC:
