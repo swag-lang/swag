@@ -86,7 +86,7 @@ bool ByteCodeGenJob::emitConditionalOpAfterExpr(ByteCodeGenContext* context)
 
     // We need to cast right now, in case the shortcut is activated
     SWAG_CHECK(emitCast(context, expr, TypeManager::concreteType(expr->typeInfo), expr->castedTypeInfo));
-    if (context->result == ContextResult::Pending)
+    if (context->result != ContextResult::Done)
         return true;
     binNode->doneFlags |= AST_DONE_CAST1;
 

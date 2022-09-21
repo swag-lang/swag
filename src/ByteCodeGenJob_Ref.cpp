@@ -14,7 +14,7 @@ bool ByteCodeGenJob::emitPointerRef(ByteCodeGenContext* context)
     if (!(node->access->doneFlags & AST_DONE_CAST1))
     {
         SWAG_CHECK(emitCast(context, node->access, node->access->typeInfo, node->access->castedTypeInfo));
-        if (context->result == ContextResult::Pending)
+        if (context->result != ContextResult::Done)
             return true;
         node->access->doneFlags |= AST_DONE_CAST1;
     }
@@ -47,7 +47,7 @@ bool ByteCodeGenJob::emitStringRef(ByteCodeGenContext* context)
     if (!(node->access->doneFlags & AST_DONE_CAST1))
     {
         SWAG_CHECK(emitCast(context, node->access, node->access->typeInfo, node->access->castedTypeInfo));
-        if (context->result == ContextResult::Pending)
+        if (context->result != ContextResult::Done)
             return true;
         node->access->doneFlags |= AST_DONE_CAST1;
     }
@@ -71,7 +71,7 @@ bool ByteCodeGenJob::emitArrayRef(ByteCodeGenContext* context)
     if (!(node->access->doneFlags & AST_DONE_CAST1))
     {
         SWAG_CHECK(emitCast(context, node->access, node->access->typeInfo, node->access->castedTypeInfo));
-        if (context->result == ContextResult::Pending)
+        if (context->result != ContextResult::Done)
             return true;
         node->access->doneFlags |= AST_DONE_CAST1;
     }
@@ -102,7 +102,7 @@ bool ByteCodeGenJob::emitSliceRef(ByteCodeGenContext* context)
     if (!(node->access->doneFlags & AST_DONE_CAST1))
     {
         SWAG_CHECK(emitCast(context, node->access, node->access->typeInfo, node->access->castedTypeInfo));
-        if (context->result == ContextResult::Pending)
+        if (context->result != ContextResult::Done)
             return true;
         node->access->doneFlags |= AST_DONE_CAST1;
     }
@@ -268,7 +268,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     if (!(node->access->doneFlags & AST_DONE_CAST3))
     {
         SWAG_CHECK(emitCast(context, node->access, node->access->typeInfo, node->access->castedTypeInfo));
-        if (context->result == ContextResult::Pending)
+        if (context->result != ContextResult::Done)
             return true;
         node->access->doneFlags |= AST_DONE_CAST3;
     }
@@ -512,7 +512,7 @@ bool ByteCodeGenJob::emitMakeArrayPointerSlicing(ByteCodeGenContext* context)
     if (!(node->lowerBound->doneFlags & AST_DONE_CAST1))
     {
         SWAG_CHECK(emitCast(context, node->lowerBound, node->lowerBound->typeInfo, node->lowerBound->castedTypeInfo));
-        if (context->result == ContextResult::Pending)
+        if (context->result != ContextResult::Done)
             return true;
         node->lowerBound->doneFlags |= AST_DONE_CAST1;
     }
@@ -520,7 +520,7 @@ bool ByteCodeGenJob::emitMakeArrayPointerSlicing(ByteCodeGenContext* context)
     if (!(node->lowerBound->doneFlags & AST_DONE_CAST2))
     {
         SWAG_CHECK(emitCast(context, node->upperBound, node->upperBound->typeInfo, node->upperBound->castedTypeInfo));
-        if (context->result == ContextResult::Pending)
+        if (context->result != ContextResult::Done)
             return true;
         node->upperBound->doneFlags |= AST_DONE_CAST2;
     }
@@ -601,7 +601,7 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context)
     else if (!(node->count->doneFlags & AST_DONE_CAST1))
     {
         SWAG_CHECK(emitCast(context, node->count, node->count->typeInfo, node->count->castedTypeInfo));
-        if (context->result == ContextResult::Pending)
+        if (context->result != ContextResult::Done)
             return true;
         node->count->doneFlags |= AST_DONE_CAST1;
     }
@@ -794,7 +794,7 @@ bool ByteCodeGenJob::emitDropCopyMove(ByteCodeGenContext* context)
     else if (!(node->count->doneFlags & AST_DONE_CAST1))
     {
         SWAG_CHECK(emitCast(context, node->count, node->count->typeInfo, node->count->castedTypeInfo));
-        if (context->result == ContextResult::Pending)
+        if (context->result != ContextResult::Done)
             return true;
         node->count->doneFlags |= AST_DONE_CAST1;
     }

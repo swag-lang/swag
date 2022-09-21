@@ -120,13 +120,13 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
         }
 
         SWAG_CHECK(emitCast(context, node->assignment, node->assignment->typeInfo, node->assignment->castedTypeInfo));
-        if (context->result == ContextResult::Pending)
+        if (context->result != ContextResult::Done)
             return true;
 
         if (!mustDropLeft)
             node->assignment->flags |= AST_NO_LEFT_DROP;
         emitAffectEqual(context, node->additionalRegisterRC, node->resultRegisterRC, node->typeInfo, node->assignment);
-        if (context->result == ContextResult::Pending)
+        if (context->result != ContextResult::Done)
             return true;
 
         freeRegisterRC(context, node);

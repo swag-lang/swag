@@ -9,7 +9,7 @@ bool ByteCodeGenJob::emitUnaryOpMinus(ByteCodeGenContext* context, TypeInfo* typ
 {
     auto typeInfo = TypeManager::concreteReferenceType(typeInfoExpr);
     if (typeInfo->kind != TypeInfoKind::Native)
-        return context->internalError( "emitUnaryOpMinus, type not native");
+        return context->internalError("emitUnaryOpMinus, type not native");
 
     emitSafetyNeg(context, r0, typeInfoExpr);
     switch (typeInfo->nativeType)
@@ -30,7 +30,7 @@ bool ByteCodeGenJob::emitUnaryOpMinus(ByteCodeGenContext* context, TypeInfo* typ
         emitInstruction(context, ByteCodeOp::NegF64, r0);
         return true;
     default:
-        return context->internalError( "emitUnaryOpMinus, type not supported");
+        return context->internalError("emitUnaryOpMinus, type not supported");
     }
 }
 
@@ -38,7 +38,7 @@ bool ByteCodeGenJob::emitUnaryOpInvert(ByteCodeGenContext* context, TypeInfo* ty
 {
     auto typeInfo = TypeManager::concreteReferenceType(typeInfoExpr);
     if (typeInfo->kind != TypeInfoKind::Native)
-        return context->internalError( "emitUnaryOpInvert, type not native");
+        return context->internalError("emitUnaryOpInvert, type not native");
 
     switch (typeInfo->nativeType)
     {
@@ -61,7 +61,7 @@ bool ByteCodeGenJob::emitUnaryOpInvert(ByteCodeGenContext* context, TypeInfo* ty
         emitInstruction(context, ByteCodeOp::InvertU64, r0);
         return true;
     default:
-        return context->internalError( "emitUnaryOpInvert, type not supported");
+        return context->internalError("emitUnaryOpInvert, type not supported");
     }
 }
 
@@ -90,6 +90,7 @@ bool ByteCodeGenJob::emitUnaryOp(ByteCodeGenContext* context)
             case TokenId::SymExclam:
             {
                 SWAG_CHECK(emitCast(context, node, front->typeInfo, front->castedTypeInfo));
+                SWAG_ASSERT(context->result == ContextResult::Done);
                 auto rt = reserveRegisterRC(context);
                 emitInstruction(context, ByteCodeOp::NegBool, rt, node->resultRegisterRC);
                 freeRegisterRC(context, node->resultRegisterRC);
@@ -108,7 +109,7 @@ bool ByteCodeGenJob::emitUnaryOp(ByteCodeGenContext* context)
                 break;
 
             default:
-                return context->internalError( "emitUnaryOp, invalid token op");
+                return context->internalError("emitUnaryOp, invalid token op");
             }
 
             node->doneFlags |= AST_DONE_EMIT_OP;
@@ -118,7 +119,7 @@ bool ByteCodeGenJob::emitUnaryOp(ByteCodeGenContext* context)
     if (!(node->doneFlags & AST_DONE_CAST1))
     {
         SWAG_CHECK(emitCast(context, node, node->typeInfo, node->castedTypeInfo));
-        if (context->result == ContextResult::Pending)
+        if (context->result != ContextResult::Done)
             return true;
         node->doneFlags |= AST_DONE_CAST1;
     }

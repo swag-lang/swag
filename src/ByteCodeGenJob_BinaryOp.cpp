@@ -465,7 +465,7 @@ bool ByteCodeGenJob::emitLogicalAndAfterLeft(ByteCodeGenContext* context)
 
     // We need to cast right now, in case the shortcut is activated
     SWAG_CHECK(emitCast(context, left, TypeManager::concreteType(left->typeInfo), left->castedTypeInfo));
-    if (context->result == ContextResult::Pending)
+    if (context->result != ContextResult::Done)
         return true;
     binNode->doneFlags |= AST_DONE_CAST1;
 
@@ -501,7 +501,7 @@ bool ByteCodeGenJob::emitLogicalOrAfterLeft(ByteCodeGenContext* context)
 
     // We need to cast right now, in case the shortcut is activated
     SWAG_CHECK(emitCast(context, left, TypeManager::concreteType(left->typeInfo), left->castedTypeInfo));
-    if (context->result == ContextResult::Pending)
+    if (context->result != ContextResult::Done)
         return true;
     binNode->doneFlags |= AST_DONE_CAST1;
 
@@ -537,7 +537,7 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
     if (!(node->doneFlags & AST_DONE_CAST1))
     {
         SWAG_CHECK(emitCast(context, node->childs[0], TypeManager::concreteType(node->childs[0]->typeInfo), node->childs[0]->castedTypeInfo));
-        if (context->result == ContextResult::Pending)
+        if (context->result != ContextResult::Done)
             return true;
         node->doneFlags |= AST_DONE_CAST1;
     }
@@ -545,7 +545,7 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
     if (!(node->doneFlags & AST_DONE_CAST2))
     {
         SWAG_CHECK(emitCast(context, node->childs[1], TypeManager::concreteType(node->childs[1]->typeInfo), node->childs[1]->castedTypeInfo));
-        if (context->result == ContextResult::Pending)
+        if (context->result != ContextResult::Done)
             return true;
         node->doneFlags |= AST_DONE_CAST2;
     }
@@ -634,7 +634,7 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
     if (!(node->doneFlags & AST_DONE_CAST3))
     {
         SWAG_CHECK(emitCast(context, node, TypeManager::concreteType(node->typeInfo), node->castedTypeInfo));
-        if (context->result == ContextResult::Pending)
+        if (context->result != ContextResult::Done)
             return true;
         node->doneFlags |= AST_DONE_CAST3;
     }
