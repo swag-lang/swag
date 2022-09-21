@@ -856,8 +856,13 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
     // it can lead to ambiguities depending on the instantiation order :
     // First we instantate A, then B, then we call A which has an opCast to B (2558)
     uint32_t castFlags = CASTFLAG_AUTO_OPCAST;
-    if (declNode && declNode->flags & AST_IS_GENERIC)
-        castFlags &= ~CASTFLAG_AUTO_OPCAST;
+
+    if (declNode && declNode->kind == AstNodeKind::FuncDecl)
+    {
+        auto funcNode = CastAst<AstFuncDecl>(declNode, AstNodeKind::FuncDecl);
+        if (funcNode->parameters && (funcNode->parameters->flags & AST_IS_GENERIC))
+            castFlags &= ~CASTFLAG_AUTO_OPCAST;
+    }
 
     matchParameters(context, parameters, castFlags);
     if (context.result == MatchResult::Ok)
