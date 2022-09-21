@@ -985,7 +985,7 @@ bool ByteCodeGenJob::emitDeferredStatements(ByteCodeGenContext* context, Scope* 
             // We also do not want to change the number of childs of "node", that's why we fill "parent" of the
             // clone without registering the node in the list of childs.
             CloneContext cloneContext;
-            cloneContext.rawClone        = true;
+            cloneContext.cloneFlags      = CLONE_RAW;
             cloneContext.ownerDeferScope = scope;
 
             // If we emit a defer block during a try block, we need to be sure that the defer has its

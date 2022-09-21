@@ -1170,7 +1170,6 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         }
 
         SWAG_ASSERT(node->ownerScope);
-        SWAG_ASSERT(node->ownerFct);
 
         // Do not allocate space on the stack for a 'retval' variable, because it's not really a variable
         if (node->type && node->type->kind == AstNodeKind::TypeExpression)

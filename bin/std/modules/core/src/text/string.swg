@@ -33,19 +33,19 @@ impl String
         return buffer
     }
 
-    #[Implicit]
+    #[Implicit, Inline]
     mtdc opCast()->cstring
     {
         return buffer
     }
 
-    #[Implicit]
+    #[Implicit, Inline]
     mtdc opCast()->string
     {
         return @mkstring(buffer, length)
     }
 
-    #[Implicit]
+    #[Implicit, Inline]
     mtdc opCast()->const [..] u8
     {
         return @mkslice(buffer, length)

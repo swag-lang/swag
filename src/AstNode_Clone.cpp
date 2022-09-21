@@ -30,7 +30,7 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     ownerScope           = context.parentScope ? context.parentScope : from->ownerScope;
     ownerBreakable       = context.ownerBreakable ? context.ownerBreakable : from->ownerBreakable;
     ownerInline          = context.ownerInline ? context.ownerInline : from->ownerInline;
-    ownerFct             = context.ownerFct ? context.ownerFct : from->ownerFct;
+    ownerFct             = (context.ownerFct || (context.cloneFlags & CLONE_FORCE_OWNER_FCT)) ? context.ownerFct : from->ownerFct;
     ownerCompilerIfBlock = context.ownerCompilerIfBlock ? context.ownerCompilerIfBlock : from->ownerCompilerIfBlock;
 
     // We do not want a defer statement to have some defers in the same scope, otherwise it's infinite
@@ -63,7 +63,7 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     // This should not be copied. It will be recomputed if necessary.
     // This can cause some problems with inline functions and autocast, as inline functions are evaluated
     // as functions, and also each time they are inlined.
-    if (context.rawClone)
+    if (context.cloneFlags & CLONE_RAW)
         castedTypeInfo = from->castedTypeInfo;
 
     resolvedSymbolName     = from->resolvedSymbolName;
@@ -981,7 +981,7 @@ AstNode* AstReturn::clone(CloneContext& context)
     newNode->copyFrom(context, this);
 
     // If return in an inline block has already been solved, we need this flag !
-    if (context.rawClone)
+    if (context.cloneFlags & CLONE_RAW)
         newNode->semFlags |= semFlags & AST_SEM_EMBEDDED_RETURN;
 
     return newNode;

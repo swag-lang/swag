@@ -162,6 +162,9 @@ enum class AstNodeKind : uint8_t
     Throw,
 };
 
+static const uint32_t CLONE_RAW             = 0x00000001;
+static const uint32_t CLONE_FORCE_OWNER_FCT = 0x00000002;
+
 struct CloneContext
 {
     map<Utf8, TypeInfo*>    replaceTypes;
@@ -185,7 +188,7 @@ struct CloneContext
     uint64_t            forceFlags             = 0;
     uint64_t            removeFlags            = 0;
     uint64_t            forceSemFlags          = 0;
-    bool                rawClone               = false;
+    uint32_t            cloneFlags             = 0;
 
     void propageResult(CloneContext& context)
     {

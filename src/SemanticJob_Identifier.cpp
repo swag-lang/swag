@@ -302,10 +302,10 @@ bool SemanticJob::createTmpVarStruct(SemanticContext* context, AstIdentifier* id
     varNode->flags |= AST_GENERATED;
     varNode->type = typeNode;
     CloneContext cloneContext;
-    cloneContext.parent   = typeNode;
-    cloneContext.rawClone = true;
-    typeNode->identifier  = identifier->identifierRef->clone(cloneContext);
-    auto back             = CastAst<AstIdentifier>(typeNode->identifier->childs.back(), AstNodeKind::Identifier);
+    cloneContext.parent     = typeNode;
+    cloneContext.cloneFlags = CLONE_RAW;
+    typeNode->identifier    = identifier->identifierRef->clone(cloneContext);
+    auto back               = CastAst<AstIdentifier>(typeNode->identifier->childs.back(), AstNodeKind::Identifier);
     back->flags &= ~AST_NO_BYTECODE;
     back->flags |= AST_IN_TYPE_VAR_DECLARATION;
 
@@ -2482,6 +2482,13 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, VectorNative<
             for (int i = 0; i < scopeHierarchy.size(); i++)
             {
                 const auto& as = scopeHierarchy[i];
+                if (!as.scope)
+                {
+                    scopeHierarchy.erase_unordered(i);
+                    i--;
+                    continue;
+                }
+
                 if (as.scope->symTable.tryRead())
                 {
                     auto symbol = as.scope->symTable.findNoLock(node->token.text, crc);
@@ -4125,6 +4132,8 @@ bool SemanticJob::collectScopeHierarchy(SemanticContext* context, VectorNative<A
     {
         auto& as    = toProcess[i];
         auto  scope = as.scope;
+        if (!scope)
+            continue;
 
         // For an inline scope, jump right to the function
         if (scope->kind == ScopeKind::Inline)

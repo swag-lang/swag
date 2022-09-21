@@ -1044,9 +1044,10 @@ bool SemanticJob::resolveRetVal(SemanticContext* context)
 
 void SemanticJob::propagateReturn(AstNode* node)
 {
-    auto stopFct = node->ownerFct->parent;
+    auto stopFct = node->ownerFct ? node->ownerFct->parent : nullptr;
     if (node->semFlags & AST_SEM_EMBEDDED_RETURN)
         stopFct = node->ownerInline->parent;
+    SWAG_ASSERT(stopFct);
 
     AstNode* scanNode = node;
 
@@ -1496,6 +1497,7 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     cloneContext.forceFlags |= identifier->flags & AST_NO_BACKEND;
     cloneContext.forceFlags |= identifier->flags & AST_RUN_BLOCK;
     cloneContext.forceFlags |= identifier->flags & AST_IN_DEFER;
+    cloneContext.cloneFlags |= CLONE_FORCE_OWNER_FCT;
 
     // Here we inline a call in a global declaration, like a variable/constant initialization
     // We do not want the function to be the original one, in case of local variables, because we

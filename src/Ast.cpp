@@ -404,7 +404,7 @@ namespace Ast
         cloneContext.parent      = parent;
         cloneContext.forceFlags  = forceFlags;
         cloneContext.removeFlags = removeFlags;
-        cloneContext.rawClone    = true;
+        cloneContext.cloneFlags |= CLONE_RAW;
         return source->clone(cloneContext);
     }
 
