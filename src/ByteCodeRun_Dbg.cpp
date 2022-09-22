@@ -15,6 +15,8 @@
 #include "Workspace.h"
 #include "ThreadManager.h"
 
+#pragma optimize("", off)
+
 struct EvaluateResult
 {
     TypeInfo*      type  = nullptr;
@@ -249,7 +251,7 @@ struct ValueFormat
 static bool getValueFormat(const Utf8& cmd, ValueFormat& fmt)
 {
     // Format
-    if (cmd == "s8")
+    if (cmd == "@s8")
     {
         fmt.bitCount = 8;
         fmt.isSigned = true;
@@ -257,7 +259,7 @@ static bool getValueFormat(const Utf8& cmd, ValueFormat& fmt)
         return true;
     }
 
-    if (cmd == "s16")
+    if (cmd == "@s16")
     {
         fmt.bitCount = 16;
         fmt.isSigned = true;
@@ -265,7 +267,7 @@ static bool getValueFormat(const Utf8& cmd, ValueFormat& fmt)
         return true;
     }
 
-    if (cmd == "s32")
+    if (cmd == "@s32")
     {
         fmt.bitCount = 32;
         fmt.isSigned = true;
@@ -273,7 +275,7 @@ static bool getValueFormat(const Utf8& cmd, ValueFormat& fmt)
         return true;
     }
 
-    if (cmd == "s64")
+    if (cmd == "@s64")
     {
         fmt.bitCount = 64;
         fmt.isSigned = true;
@@ -281,59 +283,59 @@ static bool getValueFormat(const Utf8& cmd, ValueFormat& fmt)
         return true;
     }
 
-    if (cmd == "u8")
+    if (cmd == "@u8")
     {
         fmt.bitCount = 8;
         fmt.isHexa   = false;
         return true;
     }
 
-    if (cmd == "u16")
+    if (cmd == "@u16")
     {
         fmt.bitCount = 16;
         fmt.isHexa   = false;
         return true;
     }
 
-    if (cmd == "u32")
+    if (cmd == "@u32")
     {
         fmt.bitCount = 32;
         fmt.isHexa   = false;
         return true;
     }
 
-    if (cmd == "u64")
+    if (cmd == "@u64")
     {
         fmt.bitCount = 64;
         fmt.isHexa   = false;
         return true;
     }
 
-    if (cmd == "x8")
+    if (cmd == "@x8")
     {
         fmt.bitCount = 8;
         return true;
     }
 
-    if (cmd == "x16")
+    if (cmd == "@x16")
     {
         fmt.bitCount = 16;
         return true;
     }
 
-    if (cmd == "x32")
+    if (cmd == "@x32")
     {
         fmt.bitCount = 32;
         return true;
     }
 
-    if (cmd == "x64")
+    if (cmd == "@x64")
     {
         fmt.bitCount = 64;
         return true;
     }
 
-    if (cmd == "f32")
+    if (cmd == "@f32")
     {
         fmt.bitCount = 32;
         fmt.isFloat  = true;
@@ -341,7 +343,7 @@ static bool getValueFormat(const Utf8& cmd, ValueFormat& fmt)
         return true;
     }
 
-    if (cmd == "f64")
+    if (cmd == "@f64")
     {
         fmt.bitCount = 64;
         fmt.isFloat  = true;
@@ -423,9 +425,9 @@ static void printMemory(ByteCodeRunContext* context, const Utf8& arg)
 
     // Count
     int count = 64;
-    if (startIdx < cmds.size() && isNumber(cmds[startIdx]))
+    if (startIdx < cmds.size() && cmds[startIdx].length() > 1 && cmds[startIdx][0] == '@' && isNumber(cmds[startIdx] + 1) && cmds.size() != 1)
     {
-        count = atoi(cmds[startIdx]);
+        count = atoi(cmds[startIdx] + 1);
         startIdx++;
     }
 
@@ -447,58 +449,19 @@ static void printMemory(ByteCodeRunContext* context, const Utf8& arg)
         return;
     }
 
-    uint64_t addrVal = 0;
-
-    if (expr[0] == '$')
+    uint64_t       addrVal = 0;
+    EvaluateResult res;
+    if (!evalExpression(context, expr, res))
+        return;
+    if (!res.addr)
     {
-        expr.remove(0, 1);
-        expr.trim();
-        if (expr.empty())
-        {
-            g_Log.printColor("empty 'x' parameter after '$'\n", LogColor::Red);
-            return;
-        }
-
-        if (expr[0] == 'r')
-        {
-            if (!isNumber(expr.buffer + 1))
-            {
-                g_Log.printColor("invalid 'x' register number after '$r'\n", LogColor::Red);
-                return;
-            }
-
-            int regN;
-            if (!getRegIdx(context, expr, regN))
-                return;
-            auto& regP = context->getRegBuffer(context->debugCxtRc)[regN];
-            addrVal    = regP.u64;
-        }
-        else if (expr == "sp")
-        {
-            addrVal = (uint64_t) context->sp;
-        }
-        else if (expr == "bp")
-        {
-            addrVal = (uint64_t) context->bp;
-        }
-        else
-        {
-            g_Log.printColor("invalid 'x' parameter after '$'\n", LogColor::Red);
-            return;
-        }
+        res.addr = res.value->reg.pointer;
+        addrVal  = (uint64_t) res.addr;
     }
+    else if (res.type->kind == TypeInfoKind::Pointer)
+        addrVal = *(uint64_t*) res.addr;
     else
-    {
-        EvaluateResult res;
-        if (!evalExpression(context, expr, res))
-            return;
-        if (!res.addr)
-            res.addr = &res.value->reg;
-        if (res.type->kind == TypeInfoKind::Pointer)
-            addrVal = *(uint64_t*) res.addr;
-        else
-            addrVal = (uint64_t) res.addr;
-    }
+        addrVal = (uint64_t) res.addr;
 
     int perLine = 8;
     switch (fmt.bitCount)
@@ -915,11 +878,12 @@ static void printHelp()
     g_Log.print("<expr|stmt>                   execute the Swag code expression <expr> or statement <stmt> in the current context (if not a valid debugger command)\n");
     g_Log.eol();
 
-    g_Log.print("p(rint) <expr>                print the value of the Swag code expression <expr> in the current context\n");
+    g_Log.print("p(rint) [@format] <expr>      print the value of the Swag code expression <expr> in the current context (format is the same as 'x' command)\n");
     g_Log.print("info locals                   print all current local variables\n");
     g_Log.print("info args                     print all current function arguments\n");
     g_Log.print("info func [filter]            print all functions which contains [filter] in their names\n");
     g_Log.print("info modules                  print all modules\n");
+    g_Log.print("info regs [@format]           print all registers (format is the same as 'x' command)\n");
     g_Log.print("(w)here                       print contextual informations\n");
     g_Log.eol();
 
@@ -940,19 +904,12 @@ static void printHelp()
     g_Log.print("frame  <num>                  move stack frame to level <num>\n");
     g_Log.eol();
 
-    g_Log.print("bcmode                        swap between bytecode mode and source mode\n");
-    g_Log.eol();
-
     g_Log.print("i [num]                       print the current bytecode instruction and <num> instructions around\n");
-    g_Log.print("info regs [format]            print all registers (format is the same as 'x' command)\n");
-    g_Log.print("$r<num> [format]              print register <num> (format is the same as 'x' command)\n");
-    g_Log.print("$sp|$bp                       print stack register\n");
     g_Log.print("bc                            print the current function bytecode\n");
+    g_Log.print("x [@format] [@num] <expr>     print memory (format = s8|s16|s32|s64|u8|u16|u32|u64|x8|x16|x32|x64|f32|f64)\n");
     g_Log.eol();
 
-    g_Log.print("x [format] [num] <expr>       print memory (format = s8|s16|s32|s64|u8|u16|u32|u64|x8|x16|x32|x64|f32|f64)\n");
-    g_Log.print("x [format] [num] $r<num>      print memory at current register value\n");
-    g_Log.print("x [format] [num] $sp|$bp      print memory at current stack pointer\n");
+    g_Log.print("bcmode                        swap between bytecode mode and source mode\n");
     g_Log.eol();
 
     g_Log.print("?                             print this list of commands\n");
@@ -1467,8 +1424,46 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 cmd = cmds[0];
             }
 
-            for (int i = 1; i < cmds.size(); i++)
-                cmdExpr += cmds[i] + " ";
+            // Replace some stuff
+            line.clear();
+            bool err = false;
+            for (int i = 0; i < cmds.size() && !err; i++)
+            {
+                // Make some replacements
+                if (cmds[i] == "$sp")
+                {
+                    cmds[i] = Fmt("0x%llx", (uint64_t) context->sp);
+                }
+                else if (cmds[i] == "$bp")
+                {
+                    cmds[i] = Fmt("0x%llx", (uint64_t) context->bp);
+                }
+                else if (cmds[i].length() > 2 && cmds[i][0] == '$' && cmds[i][1] == 'r' && isNumber(cmds[i] + 2))
+                {
+                    int regN;
+                    if (!getRegIdx(context, cmds[i] + 1, regN))
+                    {
+                        err = true;
+                        continue;
+                    }
+                    auto& regP = context->getRegBuffer(context->debugCxtRc)[regN];
+                    cmds[i]    = Fmt("0x%llx", regP.u64);
+                }
+
+                line += cmds[i];
+                line += " ";
+
+                if (i > 0)
+                {
+                    cmdExpr += cmds[i];
+                    cmdExpr += " ";
+                }
+            }
+
+            if (err)
+                continue;
+
+            line.trim();
             cmdExpr.trim();
 
             // Help
@@ -1486,14 +1481,44 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 if (cmds.size() < 2)
                     goto evalDefault;
 
+                ValueFormat fmt;
+                fmt.isHexa     = true;
+                fmt.bitCount   = 64;
+                bool hasFormat = false;
+                if (cmds.size() > 1)
+                {
+                    if (getValueFormat(cmds[1], fmt))
+                    {
+                        hasFormat = true;
+                        cmdExpr.clear();
+                        for (int i = 2; i < cmds.size(); i++)
+                            cmdExpr += cmds[i] + " ";
+                        cmdExpr.trim();
+                        if (cmdExpr.empty())
+                            goto evalDefault;
+                    }
+                }
+
                 EvaluateResult res;
                 if (evalExpression(context, cmdExpr, res))
                 {
                     if (!res.type->isNative(NativeTypeKind::Void))
                     {
-                        Utf8 str = Fmt("%s: ", res.type->getDisplayNameC());
-                        appendValue(str, res);
+                        Utf8 str;
+                        if (hasFormat)
+                        {
+                            if (!res.addr && res.value)
+                                res.addr = &res.value->reg;
+                            appendLiteralValue(context, str, fmt, res.addr);
+                        }
+                        else
+                        {
+                            str = Fmt("%s: ", res.type->getDisplayNameC());
+                            appendValue(str, res);
+                        }
+
                         g_Log.printColor(str);
+                        str.trim();
                         if (str.back() != '\n')
                             g_Log.eol();
                     }
@@ -1806,54 +1831,6 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                 }
 
                 g_Log.print(Fmt("sp = %016llx\n", context->sp));
-                g_Log.print(Fmt("bp = %016llx\n", context->bp));
-                continue;
-            }
-
-            // Print one register
-            /////////////////////////////////////////
-            if (cmd.length() > 2 && cmd[0] == '$' && cmd[1] == 'r')
-            {
-                if (!isNumber(cmd.buffer + 2))
-                    goto evalDefault;
-                if (cmds.size() > 2)
-                    goto evalDefault;
-
-                g_Log.setColor(LogColor::Gray);
-                int regN;
-                if (!getRegIdx(context, cmd.c_str() + 1, regN))
-                    continue;
-                auto& regP = context->getRegBuffer(context->debugCxtRc)[regN];
-
-                ValueFormat fmt;
-                fmt.isHexa   = true;
-                fmt.bitCount = 64;
-                if (cmds.size() > 1)
-                {
-                    if (!getValueFormat(cmds[1], fmt))
-                    {
-                        g_Log.printColor("invalid 'r' print format\n", LogColor::Red);
-                        continue;
-                    }
-                }
-
-                g_Log.setColor(LogColor::Gray);
-                Utf8 str;
-                appendLiteralValue(context, str, fmt, &regP);
-                str.trim();
-                g_Log.print(str);
-                g_Log.eol();
-                continue;
-            }
-
-            if (cmd[0] == '$sp')
-            {
-                g_Log.print(Fmt("sp = %016llx\n", context->sp));
-                continue;
-            }
-
-            if (cmd[0] == '$bp')
-            {
                 g_Log.print(Fmt("bp = %016llx\n", context->bp));
                 continue;
             }
