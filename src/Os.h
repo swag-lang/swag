@@ -24,6 +24,7 @@ namespace OS
         Delete,
         Back,
         Ascii,
+        Escape,
     };
 
     void                 setup();

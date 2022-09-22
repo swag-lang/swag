@@ -1257,6 +1257,15 @@ static Utf8 getCommandLine(ByteCodeRunContext* context, bool& ctrl, bool& shift)
                 cursorX = 0;
             }
             break;
+
+        case OS::Key::Escape:
+            if (cursorX) // Move the cursor at 0
+                fputs(Fmt("\x1B[%dD", cursorX), stdout);
+            fputs(Fmt("\x1B[%dX", line.count), stdout); // Erase the current command
+            line.clear();
+            cursorX = 0;
+            break;
+
         case OS::Key::Ascii:
             fputs("\x1B[1@", stdout); // Insert n blanks and shift right
             fputc(c, stdout);

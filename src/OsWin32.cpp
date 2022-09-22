@@ -1048,6 +1048,8 @@ namespace OS
                     return OS::Key::Back;
                 case VK_TAB:
                     return OS::Key::Tab;
+                case VK_ESCAPE:
+                    return OS::Key::Escape;
                 default:
                     c = evt.Event.KeyEvent.uChar.AsciiChar;
                     if (c >= ' ' && c <= 127)
