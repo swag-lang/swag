@@ -80,7 +80,7 @@ impl IWnd for MainWnd
     mtd onCommandUIEvent(evt: *CommandUIEvent)
     {
         editView := editWnd  ? cast(*EditView) editWnd.view : null
-        capture  := editView ? editView.capture : null
+        capture  := editView and !libraryMode ? editView.capture : null
 
         hasSel       := capture and capture.selection.count
         hasSingleSel := capture and capture.selection.count == 1

@@ -230,7 +230,7 @@ impl LibraryWnd
         listCtrl.lineHeight = 28
 
         line := listCtrl.createLine("All Captures", Icon.from(&main.icons24, 4))
-        item := line.setItem(1, Format.toString("%", files.count))
+        item := line.setItem(1, Format.toString("% ", files.count))
         item.horzAlign = .Right
 
         files.sort(@(a, b) {
@@ -247,17 +247,33 @@ impl LibraryWnd
         cptYear  := 0
         cptMonth := 0
 
+        #[Swag.Mixin]
+        func fillLastYear()
+        {
+            if lastLineYear
+            {
+                item = lastLineYear.setItem(1, Format.toString("% ", cptYear))
+                item.horzAlign = .Right
+                cptYear = 0
+            }
+        }
+
+        #[Swag.Mixin]
+        func fillLastMonth()
+        {
+            if lastLineMonth
+            {
+                item = lastLineMonth.setItem(1, Format.toString("% ", cptMonth))
+                item.horzAlign = .Right
+                cptMonth = 0
+            }
+        }
+
         visit fi: files
         {
             if !lastDateTime or (fi.lastWriteTime.year != lastDateTime.year)
             {
-                if lastLineYear
-                {
-                    item = lastLineYear.setItem(1, Format.toString("%", cptYear))
-                    item.horzAlign = .Right
-                    cptYear = 0
-                }
-
+                fillLastYear()
                 lastLine = listCtrl.createLine(Format.toString("%", fi.lastWriteTime.year), icon1)
                 lastLine.userData0 = acast cast(uint) fi.lastWriteTime.year
                 lastLineYear = lastLine
@@ -265,13 +281,7 @@ impl LibraryWnd
 
             if !lastDateTime or (fi.lastWriteTime.month != lastDateTime.month)
             {
-                if lastLineMonth
-                {
-                    item = lastLineMonth.setItem(1, Format.toString("%", cptMonth))
-                    item.horzAlign = .Right
-                    cptMonth = 0
-                }
-
+                fillLastMonth()
                 lastLine = listCtrl.createLine(Format.toString("%", DateTime.monthName(fi.lastWriteTime.month)), icon1, lastLineYear)
                 lastLine.userData0 = acast cast(uint) fi.lastWriteTime.year
                 lastLine.userData1 = acast cast(uint) fi.lastWriteTime.month
@@ -283,17 +293,8 @@ impl LibraryWnd
             cptMonth += 1
         }
 
-        if lastLineYear
-        {
-            item = lastLineYear.setItem(1, Format.toString("%", cptYear))
-            item.horzAlign = .Right
-        }
-
-        if lastLineMonth
-        {
-            item = lastLineMonth.setItem(1, Format.toString("%", cptMonth))
-            item.horzAlign = .Right
-        }
+        fillLastYear()
+        fillLastMonth()
 
         listCtrl.computeLayout()
         catch view.fill()
