@@ -7,6 +7,7 @@ public enum ScrollWndFlags
     SmallBar
     ForceHorizontal
     ForceVertical
+    TransparentBar
 }
 
 public struct ScrollWnd
@@ -209,9 +210,11 @@ public impl IWnd for ScrollWnd
         colors  := getThemeColors()
         rects   := getThemeRects()
 
-        var colorBk: Color = ?
+        var colorBk: Color
         switch
         {
+            case scrollWndFlags & .TransparentBar:
+                break
             case bc.isDisabled:
                 colorBk = colors.scrollBar_DisabledBk
             default:

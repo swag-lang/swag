@@ -37,6 +37,8 @@ struct ListLine
     forceExpandMark:    bool
     checkable:          bool
     iconMargin:         bool
+    userData0:          *void
+    userData1:          *void
 
     lines:      ArrayPtr'ListLine
     items:      ArrayPtr'ListItem

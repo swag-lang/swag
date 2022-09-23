@@ -30,6 +30,8 @@ struct LibraryView
     thread:         Thread
     hotItem         = Swag.UInt.Max
     selectedItem    = Swag.UInt.Max
+    filterYear:     uint
+    filterMonth:    uint
 }
 
 impl IWnd for LibraryView
@@ -138,7 +140,7 @@ impl IWnd for LibraryView
 
 impl LibraryView
 {
-    mtd fill(filter: string = null) throw
+    mtd fill() throw
     {
         if thread.isValid()
         {
@@ -146,7 +148,17 @@ impl LibraryView
             thread.wait()
         }
 
-        res := libWnd.files
+        // Filter
+        var res: Array'File.FileInfo
+        visit fi: libWnd.files
+        {
+            if (filterYear == 0 or fi.lastWriteTime.year == filterYear) and
+               (filterMonth == 0 or fi.lastWriteTime.month == filterMonth)
+            {
+                res.add(dref fi)
+            }
+        }
+
         res.sort(@(a, b) {
             return b.lastWriteTime <=> a.lastWriteTime
         })
@@ -211,7 +223,8 @@ impl LibraryWnd
 
     mtd fill()
     {
-        files = catch Directory.enumerateFiles(Library.getFolder(), "*.captme")
+        //files = catch Directory.enumerateFiles(Library.getFolder(), "*.captme")
+        files = catch Directory.enumerateFiles("f:/swag-lang/swag/src", "*.*")
 
         listCtrl.clear()
         listCtrl.lineHeight = 28
@@ -226,24 +239,63 @@ impl LibraryWnd
 
         var lastDateTime:   const *DateTime
         var lastLine:       *ListLine
+        var lastLineYear:   *ListLine
+        var lastLineMonth:  *ListLine
 
         icon1 := Icon.from(&main.icons24, 3)
+
+        cptYear  := 0
+        cptMonth := 0
 
         visit fi: files
         {
             if !lastDateTime or (fi.lastWriteTime.year != lastDateTime.year)
             {
+                if lastLineYear
+                {
+                    item = lastLineYear.setItem(1, Format.toString("%", cptYear))
+                    item.horzAlign = .Right
+                    cptYear = 0
+                }
+
                 lastLine = listCtrl.createLine(Format.toString("%", fi.lastWriteTime.year), icon1)
+                lastLine.userData0 = acast cast(uint) fi.lastWriteTime.year
+                lastLineYear = lastLine
             }
 
             if !lastDateTime or (fi.lastWriteTime.month != lastDateTime.month)
             {
-                lastLine = listCtrl.createLine(Format.toString("%", DateTime.monthName(fi.lastWriteTime.month)), icon1, lastLine)
+                if lastLineMonth
+                {
+                    item = lastLineMonth.setItem(1, Format.toString("%", cptMonth))
+                    item.horzAlign = .Right
+                    cptMonth = 0
+                }
+
+                lastLine = listCtrl.createLine(Format.toString("%", DateTime.monthName(fi.lastWriteTime.month)), icon1, lastLineYear)
+                lastLine.userData0 = acast cast(uint) fi.lastWriteTime.year
+                lastLine.userData1 = acast cast(uint) fi.lastWriteTime.month
+                lastLineMonth = lastLine
             }
 
             lastDateTime = &fi.lastWriteTime
+            cptYear += 1
+            cptMonth += 1
         }
 
+        if lastLineYear
+        {
+            item = lastLineYear.setItem(1, Format.toString("%", cptYear))
+            item.horzAlign = .Right
+        }
+
+        if lastLineMonth
+        {
+            item = lastLineMonth.setItem(1, Format.toString("%", cptMonth))
+            item.horzAlign = .Right
+        }
+
+        listCtrl.computeLayout()
         catch view.fill()
     }
 
@@ -257,19 +309,6 @@ impl LibraryWnd
         rightBar := Wnd.create'Wnd(res, @{0, 0, 300, 0})
         rightBar.dockStyle = .Right
 
-        list := ListCtrl.createMultiColumns(rightBar)
-        list.addColumn("name", 200)
-        list.addColumn("count", 75)
-        list.header.hide()
-        list.backgroundStyle = .Window
-        list.listFlags |= .ForceMarginExpandMark
-        list.dockStyle = .Center
-        list.sigSelChanged += @(list) {
-            sel := list.getSelectedLine()
-        }
-
-        res.listCtrl = list
-
         scrollWnd := Wnd.create'ScrollWnd(res)
         scrollWnd.dockStyle = .Center
 
@@ -280,6 +319,23 @@ impl LibraryWnd
         view.mainWnd = parent
         scrollWnd.setView(view)
         res.view = view
+
+        list := ListCtrl.createMultiColumns(rightBar)
+        list.addColumn("name", 200)
+        list.addColumn("count", 70)
+        list.scrollWnd.scrollWndFlags |= .SmallBar | .ForceVertical | .TransparentBar
+        list.header.hide()
+        list.backgroundStyle = .Window
+        list.listFlags |= .ForceMarginExpandMark
+        list.dockStyle = .Center
+        list.sigSelChanged += @|view|(list) {
+            sel := list.getSelectedLine()
+            if !sel return
+            view.filterYear = cast(uint) sel.userData0
+            view.filterMonth = cast(uint) sel.userData1
+            catch view.fill()
+        }
+        res.listCtrl = list
 
         return res
     }
