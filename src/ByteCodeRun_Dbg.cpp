@@ -1834,13 +1834,13 @@ bool ByteCodeRun::debugger(ByteCodeRunContext* context)
                     Utf8  str;
                     appendLiteralValue(context, str, fmt, &regP);
                     str.trim();
-                    g_Log.print(Fmt("r%d = ", i));
+                    g_Log.print(Fmt("$r%d = ", i));
                     g_Log.print(str);
                     g_Log.eol();
                 }
 
-                g_Log.print(Fmt("sp = %016llx\n", context->sp));
-                g_Log.print(Fmt("bp = %016llx\n", context->bp));
+                g_Log.print(Fmt("$sp = %016llx\n", context->sp));
+                g_Log.print(Fmt("$bp = %016llx\n", context->bp));
                 continue;
             }
 
