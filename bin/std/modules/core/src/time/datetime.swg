@@ -12,6 +12,14 @@ enum DayOfWeek
     Saturday = 6
 }
 
+enum DateTimeFormat
+{
+    DateTime        // DDDD MMMM D YYYY HH:MM:SS
+    DateTimeMs      // DDDD MMMM D YYYY HH:MM:SS.ZZZ
+    Iso             // YYYY-MM-DD YYYY HH:MM:SS
+    IsoMs           // YYYY-MM-DD YYYY HH:MM:SS.ZZZ
+}
+
 // Represents an instant in time, typically expressed as a date and time of day
 struct DateTime
 {
@@ -86,5 +94,87 @@ impl DateTime
     {
         const Names = @["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
         return Names[cast(u32) day]
+    }
+
+    // Convert to string
+    mtd toString(fmt = DateTimeFormat.DateTime)->String
+    {
+        #[Swag.Complete]
+        switch fmt
+        {
+        case DateTime:
+            return Format.toString(
+                "% % % % %:%:%",
+                dayOfWeekName(dayOfWeek()),
+                monthName(month),
+                day,
+                year,
+                hour,
+                minute,
+                second
+            )
+        case DateTimeMs:
+            return Format.toString(
+                "% % % % %:%:%.%",
+                dayOfWeekName(dayOfWeek()),
+                monthName(month),
+                day,
+                year,
+                hour,
+                minute,
+                second,
+                millisecond
+            )
+        case Iso:
+            return Format.toString(
+                "%-%{02}-%{02} %{02}:%{02}:%{02}",
+                year,
+                month,
+                day,
+                hour,
+                minute,
+                second
+            )
+        case IsoMs:
+            return Format.toString(
+                "%-%{02}-%{02} %{02}:%{02}:%{02}.%",
+                year,
+                month,
+                day,
+                hour,
+                minute,
+                second,
+                millisecond
+            )
+        }
+
+        var result: retval
+        return result
+    }
+}
+
+impl StrConv.IConvert for DateTime
+{
+    mtd convert(buf: *ConcatBuffer, fmt: const *StrConv.ConvertFormat, strFormat: string)
+    {
+        var str: String
+        if @countof(strFormat) == 0 or @countof(strFormat) > 1
+            str = toString(DateTimeFormat.DateTime)
+        else
+        {
+            switch strFormat[0]
+            {
+            case "a"'u8:
+                str = toString(DateTimeFormat.DateTime)
+            case "b"'u8:
+                str = toString(DateTimeFormat.DateTimeMs)
+            case "c"'u8:
+                str = toString(DateTimeFormat.Iso)
+            case "d"'u8:
+                str = toString(DateTimeFormat.IsoMs)
+            }
+        }
+
+        buf.addBytes(str)
     }
 }
