@@ -1,9 +1,13 @@
-using Threading
+using Threading, Time
 
 struct LibraryWnd
 {
     using wnd: Wnd
-    view: *LibraryView
+
+    files:      Array'File.FileInfo
+    main:       *MainWnd
+    view:       *LibraryView
+    listCtrl:   *ListCtrl
 }
 
 struct LibraryItem
@@ -18,6 +22,7 @@ struct LibraryView
 {
     using wnd: Wnd
     scrollWnd:      *ScrollWnd
+    libWnd:         *LibraryWnd
     mainWnd:        *MainWnd
     items:          Array'LibraryItem
     mutexLoaded:    Sync.Mutex
@@ -141,7 +146,7 @@ impl LibraryView
             thread.wait()
         }
 
-        res := Directory.enumerateFiles(Library.getFolder(), "*.captme")
+        res := libWnd.files
         res.sort(@(a, b) {
             return b.lastWriteTime <=> a.lastWriteTime
         })
@@ -206,19 +211,70 @@ impl LibraryWnd
 
     mtd fill()
     {
+        files = catch Directory.enumerateFiles(Library.getFolder(), "*.captme")
+
+        listCtrl.clear()
+        listCtrl.lineHeight = 28
+
+        line := listCtrl.createLine("All Captures", Icon.from(&main.icons24, 4))
+        item := line.setItem(1, Format.toString("%", files.count))
+        item.horzAlign = .Right
+
+        files.sort(@(a, b) {
+            return b.lastWriteTime <=> a.lastWriteTime
+        })
+
+        var lastDateTime:   const *DateTime
+        var lastLine:       *ListLine
+
+        icon1 := Icon.from(&main.icons24, 3)
+
+        visit fi: files
+        {
+            if !lastDateTime or (fi.lastWriteTime.year != lastDateTime.year)
+            {
+                lastLine = listCtrl.createLine(Format.toString("%", fi.lastWriteTime.year), icon1)
+            }
+
+            if !lastDateTime or (fi.lastWriteTime.month != lastDateTime.month)
+            {
+                lastLine = listCtrl.createLine(Format.toString("%", fi.lastWriteTime.month), icon1, lastLine)
+            }
+
+            lastDateTime = &fi.lastWriteTime
+        }
+
         catch view.fill()
     }
 
     func create(parent: *MainWnd)->*LibraryWnd
     {
         res := Wnd.create'LibraryWnd(parent, "captme.librarywnd")
+        res.main = parent
         res.dockStyle = .Center
         res.backgroundStyle = .View
+
+        rightBar := Wnd.create'Wnd(res, @{0, 0, 300, 0})
+        rightBar.dockStyle = .Right
+
+        list := ListCtrl.createMultiColumns(rightBar)
+        list.addColumn("name", 200)
+        list.addColumn("count", 75)
+        list.header.hide()
+        list.backgroundStyle = .Window
+        list.listFlags |= .ForceMarginExpandMark
+        list.dockStyle = .Center
+        list.sigSelChanged += @(list) {
+            sel := list.getSelectedLine()
+        }
+
+        res.listCtrl = list
 
         scrollWnd := Wnd.create'ScrollWnd(res)
         scrollWnd.dockStyle = .Center
 
         view := Wnd.create'LibraryView(scrollWnd)
+        view.libWnd = res
         view.padding = 8
         view.scrollWnd = scrollWnd
         view.mainWnd = parent

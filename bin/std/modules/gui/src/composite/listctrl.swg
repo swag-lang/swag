@@ -16,6 +16,7 @@ enum ListFlags
     AlternateLines
     HorzLines
     VertLines
+    ForceMarginExpandMark
 }
 
 struct ListItem
@@ -25,6 +26,7 @@ struct ListItem
     colorBk:    Color
     colorFg:    Color
     column:     u32
+    horzAlign   = StringHorzAlignment.Left
 }
 
 struct ListLine
@@ -50,11 +52,12 @@ struct ListCtrl
 
     horizontalExtent:   f32
     lineHeight:         f32 = 22
-    indentWidth:        f32 = 10
+    indentWidth:        f32 = 22
     iconSize:           f32
-    iconMarginFirstCol: bool = true
+    iconMarginFirstCol  = true
     listFlags           = ListFlags.None
     selectionMode       = ListSelectionMode.Single
+
     sigSelChanged:      SigArray'closure(*Self)
     sigCheckChanged:    SigArray'closure(*Self)
     sigRightClick:      SigArray'closure(*Self, Math.Point)
@@ -112,7 +115,8 @@ impl ListLine
     }
 
     // Initialize a given column item
-    mtd setItem(column: u32, name: string, icon: Icon = @{})
+    #[Swag.Discardable]
+    mtd setItem(column: u32, name: string, icon: Icon = @{})->*ListItem
     {
         visit item: items
         {
@@ -120,7 +124,7 @@ impl ListLine
             {
                 item.name = name
                 item.icon = icon
-                return
+                return item
             }
         }
 
@@ -129,6 +133,7 @@ impl ListLine
         item.name = name
         item.icon = icon
         items.add(item)
+        return item
     }
 }
 
@@ -581,7 +586,7 @@ private impl ListView
             else
                 colorFg = colorText
             theme.setTextColors(&format, colorFg)
-            format.horzAlignment = .Left
+            format.horzAlignment = item.horzAlign
             format.vertAlignment = .Center
             format.flags = .Clip
             format.font = theme.res.fontDefault
@@ -603,11 +608,16 @@ private impl ListView
                 labelPos.moveLeft(line.level * list.indentWidth)
 
                 // Expand/collapse mark
-                if line.canExpand()
+                canExpand := line.canExpand()
+                if canExpand or (list.listFlags & .ForceMarginExpandMark)
                 {
                     widthExpand := Math.min(metrics.btnCheck_Size, list.lineHeight)
-                    expand := theme.getIcon24(line.expanded ? .SortArrowDown : .SortArrowRight, widthExpand)
-                    expand.paint(painter, labelPos.x, labelPos.vertCenter() - rect.height * 0.5, colorExpand)
+                    if canExpand
+                    {
+                        expand := theme.getIcon24(line.expanded ? .SortArrowDown : .SortArrowRight, widthExpand)
+                        expand.paint(painter, labelPos.x, labelPos.vertCenter() - rect.height * 0.5, colorExpand)
+                    }
+
                     labelPos.moveLeft(widthExpand)
                 }
             }
@@ -704,7 +714,7 @@ private impl ListView
 impl ListCtrl
 {
     #[Swag.Discardable]
-    func createSimple(parent: *Wnd, position: Math.Rectangle, id: WndId = null)->*ListCtrl
+    func createSimple(parent: *Wnd, position: Math.Rectangle = @{}, id: WndId = null)->*ListCtrl
     {
         list := Wnd.create'ListCtrl(parent, "", position, id)
 
@@ -724,7 +734,7 @@ impl ListCtrl
     }
 
     #[Swag.Discardable]
-    func createMultiColumns(parent: *Wnd, position: Math.Rectangle, id: WndId = null)->*ListCtrl
+    func createMultiColumns(parent: *Wnd, position: Math.Rectangle = @{}, id: WndId = null)->*ListCtrl
     {
         list := Wnd.create'ListCtrl(parent, "", position, id)
 
@@ -904,6 +914,7 @@ impl ListCtrl
     }
 
     // Add one line, and set first column
+    #[Swag.Discardable]
     mtd createLine(name: string, icon: Icon = @{}, parentLine: *ListLine = null)->*ListLine
     {
         line := createLine(parentLine)
