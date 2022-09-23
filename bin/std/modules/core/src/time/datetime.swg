@@ -72,4 +72,19 @@ impl DateTime
         dn += 3
         return cast(DayOfWeek) (dn % 7)
     }
+
+    // Returns the month name
+    func monthName(month: u16)->string
+    {
+        Debug.assert(month >= 1 and month <= 12)
+        const Names = @["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+        return Names[month]
+    }
+
+    // Returns the day of week name
+    func dayOfWeekName(day: DayOfWeek)->string
+    {
+        const Names = @["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+        return Names[cast(u32) day]
+    }
 }

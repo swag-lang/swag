@@ -238,7 +238,7 @@ impl LibraryWnd
 
             if !lastDateTime or (fi.lastWriteTime.month != lastDateTime.month)
             {
-                lastLine = listCtrl.createLine(Format.toString("%", fi.lastWriteTime.month), icon1, lastLine)
+                lastLine = listCtrl.createLine(Format.toString("%", DateTime.monthName(fi.lastWriteTime.month)), icon1, lastLine)
             }
 
             lastDateTime = &fi.lastWriteTime
