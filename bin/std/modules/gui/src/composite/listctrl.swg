@@ -16,7 +16,8 @@ enum ListFlags
     AlternateLines
     HorzLines
     VertLines
-    ForceMarginExpandMark
+    ForceMarginExpandMark   // Force one margin even if no expand mark
+    NoMouseEmptySel         // Click does not clear selection if not on an item
 }
 
 struct ListItem
@@ -420,7 +421,8 @@ impl IWnd for ListView
 
         discardMouseRelease = evt.kind == .MousePressed
 
-        if list.selectionMode == .Single or (!ctrl and !shift)
+        canUnsel := idx != Swag.U32.Max or !(list.listFlags & .NoMouseEmptySel)
+        if canUnsel and (list.selectionMode == .Single or (!ctrl and !shift))
             list.selModel.unselectAll()
 
         if idx != Swag.U32.Max
@@ -445,9 +447,11 @@ impl IWnd for ListView
             }
         }
 
-        list.focusIndex = idx
+        if canUnsel
+            list.focusIndex = idx
         invalidate()
-        list.sigSelChanged.call(list)
+        if canUnsel or idx != Swag.U32.Max
+            list.sigSelChanged.call(list)
     }
 
     mtd onPaintEvent(evt: *PaintEvent)
@@ -613,14 +617,13 @@ private impl ListView
                 canExpand := line.canExpand()
                 if canExpand or (list.listFlags & .ForceMarginExpandMark)
                 {
-                    widthExpand := Math.min(metrics.btnCheck_Size, list.lineHeight)
                     if canExpand
                     {
-                        expand := theme.getIcon24(line.expanded ? .SortArrowDown : .SortArrowRight, widthExpand)
-                        expand.paint(painter, labelPos.x, labelPos.vertCenter() - rect.height * 0.5, colorExpand)
+                        expand := theme.getIcon24(line.expanded ? .SortArrowDown : .SortArrowRight)
+                        expand.paint(painter, labelPos.x, labelPos.vertCenter() - expand.sizeY * 0.5, colorExpand)
                     }
 
-                    labelPos.moveLeft(widthExpand)
+                    labelPos.moveLeft(metrics.list_ExpandSize)
                 }
             }
 

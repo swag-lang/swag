@@ -223,11 +223,13 @@ impl LibraryWnd
 
     mtd fill()
     {
+        if files.count
+            return
+
         //files = catch Directory.enumerateFiles(Library.getFolder(), "*.captme")
         files = catch Directory.enumerateFiles("f:/swag-lang/swag/src", "*.*")
 
         listCtrl.clear()
-        listCtrl.lineHeight = 28
 
         line := listCtrl.createLine("All Captures", Icon.from(&main.icons24, 4))
         item := line.setItem(1, Format.toString("% ", files.count))
@@ -324,6 +326,9 @@ impl LibraryWnd
         list := ListCtrl.createMultiColumns(rightBar)
         list.addColumn("name", 200)
         list.addColumn("count", 70)
+        list.listView.style.addStyleSheetColors("listItem_SelectedBk $listItem_FocusSelectedBk")
+        list.lineHeight = 30
+        list.listFlags |= .NoMouseEmptySel
         list.scrollWnd.scrollWndFlags |= .SmallBar | .ForceVertical | .TransparentBar
         list.header.hide()
         list.backgroundStyle = .Window
