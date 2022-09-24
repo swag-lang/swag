@@ -14,7 +14,7 @@ Note that a `visual studio code` extension (Swag) exists for syntax coloration.
     <img width="50%" height="50%" src="https://github.com/swag-lang/swag/blob/master/vscode/images/syntax.png">
 </p>
 
-This is one example fully written in Swag with the help of the Swag standard libraries (core, pixel, gui...), which could be compiled as a native executable (fast) or just interpreted as a script (less... fast).
+This is one (wip) example fully written in Swag with the help of the Swag standard libraries (core, pixel, gui...), which could be compiled as a native executable (fast) or just interpreted as a script (less... fast). Code is [there](https://github.com/swag-lang/swag/blob/master/bin/examples/modules/captme/src).
 
 <p align="center">
     <img width="50%" height="50%" src="https://github.com/swag-lang/swag/blob/master/docs/captme.png">
