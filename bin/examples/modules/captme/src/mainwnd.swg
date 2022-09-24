@@ -724,7 +724,7 @@ impl MainWnd
 
         res.clipFmt = catch Clipboard.registerFormat(ClipboardFormat)
 
-        topBar := Wnd.create'Wnd(res, @{0, 0, 64, 64})
+        topBar := Wnd.create'Wnd(res, @{0, 0, 64, 68})
         topBar.dockStyle = .Top
         topBar.backgroundStyle = .Window
         topBar.style.addStyleSheetColors("wnd_Bk $wnd_Caption")
