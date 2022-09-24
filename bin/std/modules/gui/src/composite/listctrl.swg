@@ -1184,9 +1184,18 @@ impl ListCtrl
         // Insert at the right position
         idxInsert := idxLineToIdxList.find(line.index).value
         lines.removeAtOrdered(cast(uint) (idxInsert + 1), cast(uint) removeCount)
+
         // Update indexes after the insertion
         for idx := idxInsert + 1; idx < cast(u32) lines.count; idx += 1
             idxLineToIdxList.add(lines[idx].index, idx)
+
+        // Update selection
+        if focusIndex >= idxInsert + 1 and focusIndex <= idxInsert + 1 + removeCount
+        {
+            unselectAll()
+            focusIndex = idxInsert
+            selectLine(focusIndex)
+        }
 
         computeLayout()
     }
