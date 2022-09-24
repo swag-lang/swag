@@ -90,7 +90,7 @@
     return "const myGeneratedConst = " ++ value
 }
 
-// You can use '#placeholder' in case you are generating symbols that can be
+// You must use '#placeholder' in case you are generating symbols that can be
 // used by something else in the code.
 #placeholder myGeneratedConst
 

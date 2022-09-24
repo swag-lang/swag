@@ -20,7 +20,7 @@
         @assert(ptr[0] == 0)
         @assert(ptr[2] == 2)
 
-        // As this is a constant, we can test it at compile time
+        // But as this is a constant, we can also test it at compile time
         #assert a[0] == 0
         #assert a[1] == 1
         #assert a[2] == 2

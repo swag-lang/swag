@@ -127,7 +127,6 @@
 @kindof
 @mkany
 @mkcallback
-@mkforeign
 @mkinterface
 @mkslice
 @mkstring
@@ -139,7 +138,6 @@
 @postmove
 @print
 @setcontext
-@seterr
 @sizeof
 @spread
 @stringcmp

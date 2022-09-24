@@ -1,13 +1,14 @@
 #test
 {
     // 'for' accepts a start statement, an expression to test, and an ending statement
-    // This is close to the C/C++ 'for'
+    // This is the same as the C/C++ 'for'
     {
         cpt := 0
         for i := 0; i < 10; i += 1
             cpt += 1
         @assert(cpt == 10)
 
+        // ';' can be replaced by a newline (like always)
         for i := 0
             i < 10
             i += 1

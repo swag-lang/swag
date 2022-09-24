@@ -56,7 +56,7 @@
         @assert(a == 2)
     }
 
-    // You can use #macro inside a macro to force the code after to be in the
+    // You can use '#macro' inside a macro to force the code after to be in the
     // same scope of the caller. That is, no back tick is necessary to reference
     // variables of the caller.
     {
@@ -76,7 +76,7 @@
         a := 1
         myMacro()
         {
-            a += 2  // will reference the 'a' above because this code is inside #macro
+            a += 2  // will reference the 'a' above because this code has been inserted inside '#macro'
         }
 
         @assert(a == 3)

@@ -90,7 +90,7 @@
         @assert(@typeof(a) == @typeof(b))
         @assert(@typeof(a) == s32)
 
-        // As the types of 'a' and 'b' are known at compile time, we can use #assert instead
+        // As the types of 'a' and 'b' are known at compile time, we can use '#assert' instead of '@assert'
         // The #assert will be done by the compiler, and will not generate runtime code (unlike '@assert')
         #assert @typeof(a) == @typeof(b)
         #assert @typeof(a) == s32

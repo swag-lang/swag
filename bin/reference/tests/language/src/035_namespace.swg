@@ -36,3 +36,6 @@ scopefile {
 }
 
 const D = OtherSymbol
+
+// All symbols from a Swag source file are exported to other files of the same module.
+// So using 'scopefile' can protect from name conflicts.

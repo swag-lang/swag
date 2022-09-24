@@ -1,7 +1,7 @@
 #test
 {
     {
-        // By default, swag will panic if some operators overflow.
+        // By default, swag will panic if some operators overflow (it depends on the build configuration)
 
         x := 255'u8
         // x += 1      // This would overflow, and panic, because we lose informations
@@ -34,4 +34,8 @@
         x >>= 1     // 127
         @assert(x == 127)
     }
+
+    // Note that safety checks can be changed for a specific build configuration (--cfg:configuration).
+    // Swag comes with four predefined configurations : 'debug', 'fast-debug', 'fast-compile' and 'release'
+    // Safety checks are disabled in 'release'.
 }

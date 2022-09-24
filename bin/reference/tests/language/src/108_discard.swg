@@ -7,7 +7,7 @@
     // This would generated an error, because the return value of 'sum' is not used
     // sum(2, 3)
 
-    // To force the return value to be ignored, you can use 'discard'
+    // To force the return value to be ignored, you can use 'discard' at the call site
     discard sum(2, 3)
 
     // If a function authorizes the caller to not use its return value, because

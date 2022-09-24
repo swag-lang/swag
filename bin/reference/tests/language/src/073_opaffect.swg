@@ -94,6 +94,6 @@ impl Vector2
     }
 }
 
-const One: Vector2 = 1.0    // This will call opAffect(1.0)
+const One: Vector2 = 1.0    // This will call opAffect(1.0) at compile time
 #assert One.x == 1.0
 #assert One.y == 1.0

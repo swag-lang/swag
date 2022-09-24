@@ -16,7 +16,7 @@
     // But 'retval' will also make a direct reference to the caller storage, to
     // avoid an unnecessary copy (if possible). So this is mostly a hint for the
     // compiler, and usefull when the function returns a complexe type like a
-    // struct or an array.
+    // struct, a tuple or an array.
     {
         struct RGB { x, y, z: f64; }
 
@@ -38,7 +38,7 @@
         @assert(b == 1.0)
     }
 
-    // This is the preferred way (because optimal) to return a struct or an array.
+    // This is the preferred way (because optimal) to return a struct, a tuple or an array.
     {
         func toto()->[255] s32
         {

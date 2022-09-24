@@ -14,9 +14,12 @@
         #assert @sizeof(MyStruct) == 4
         v := MyStruct{}
         v.x = 666
+
+        // As 'y' and 'x' are sharing the same space, affecting to 'x' also affects to 'y'.
         @assert(v.y == 666)
     }
 
+    // An example to reference a field by index.
     {
         struct MyStruct
         {

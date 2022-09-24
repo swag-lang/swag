@@ -31,7 +31,7 @@ impl Vector3
 
     // "copy semantic"
     // 1. This will call 'opDrop' on 'a' if it exists
-    // 2. This will copy 'b' to 'a'
+    // 2. This will raw copy 'b' to 'a'
     // 3. This will call 'opPostCopy' on 'a' if it exists
     a = b
     @assert(a.x == 101)
@@ -40,7 +40,7 @@ impl Vector3
 
     // "move semantic"
     // 1. This will call 'opDrop' on 'a' if it exists
-    // 2. This will copy 'b' to 'a'
+    // 2. This will raw copy 'b' to 'a'
     // 3. This will call 'opPostMove' on 'a' if it exists
     // 4. This will reinitialize 'b' to the default values if 'opDrop' exists
     a =,move b

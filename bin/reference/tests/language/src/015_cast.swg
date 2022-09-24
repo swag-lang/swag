@@ -54,7 +54,7 @@
     // The compiler will add an implicit cast, and a safety check
     {
         // Even if the resulting type of the '+' operator is 's32', you can still
-        // affect to a 's8' value. Swag will panic at runtime if the cast is invalid.
+        // affect to a 's8' value. Swag will panic at runtime if the conversion is invalid.
         var x: s8 = 1's8 + 2's8
     }
 }

@@ -4,7 +4,7 @@
     {
         loop 10
             break
-        for i:= 0; i < 10; i += 1
+        for i := 0; i < 10; i += 1
             break
         while true
             break

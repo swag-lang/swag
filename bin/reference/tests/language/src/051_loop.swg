@@ -49,7 +49,7 @@
 
     // Warning !
     // On a string, it will loop for each byte, *not* runes (if a rune is encoded in more than one byte)
-    // Note: If you want to iterate on all runes, you will have to use the Std.Core module.
+    // If you want to iterate on all runes, you will have to use the Std.Core module.
     {
         cpt := 0
         loop "⻘"

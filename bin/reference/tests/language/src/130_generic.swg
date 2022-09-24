@@ -4,6 +4,8 @@
         // A function can be generic by specifying parameters after 'func'
         // At the call site, you specify the generic parameters with funcCall'(type1, type2, ...)(parameters)
         // Note that parenthesis can be ommited if there's only one generic parameter
+
+        // Here 'T' is a generic type
         func(T) myFunc(val: T) => 2 * val
 
         @assert(myFunc's32(2) == 4)
@@ -30,15 +32,14 @@
         @assert(myFunc'(s32, bool)(2, true) == true)
     }
 
+    // You can also specify constants as generic parameters
     {
-        // You can also specify constants as generic parameters
         func(N: s32) myFunc() = @assert(N == 10)
-
         myFunc'10()
     }
 
+    // And you can mix
     {
-        // And you can mix
         func(T, N: s32) myFunc(x: T) => x * N
 
         alias call = myFunc'(s32, 10)

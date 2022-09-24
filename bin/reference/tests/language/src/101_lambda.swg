@@ -21,7 +21,7 @@
         @assert(lambda == null)
     }
 
-    // You can use lambda as a function parameter type
+    // You can use a lambda as a function parameter type
     {
         alias callback = func(s32)->s32
         func toDo(value: s32, ptr: callback)->s32 => ptr(value)

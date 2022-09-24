@@ -17,7 +17,7 @@ impl MyStruct
         // We do not use it in this example.
         #assert(!ptr, "visiting myStruct by pointer is not supported")
 
-        // Loop on 3 fields
+        // Loop on the 3 fields
         loop idx: 3
         {
             // The '#macro' force its body to be in the scope of the caller
@@ -72,7 +72,7 @@ impl MyStruct
 impl MyStruct
 {
     #[Swag.Macro]
-    mtd(ptr: bool) opVisitReverse(stmt: code)
+    mtd(ptr: bool) opVisitReverse(stmt: code)   // We add 'Reverse' in the name
     {
         // Visit fields in reverse order (z, y then x)
         loop idx: 3

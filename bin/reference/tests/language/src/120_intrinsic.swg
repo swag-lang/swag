@@ -36,7 +36,6 @@ func @args()->const [..] string;
 @mkany()
 @mkinterface()
 @mkcallback()
-@mkforeign()
 @getpinfos()
 @isconstexpr()
 @itftableof()

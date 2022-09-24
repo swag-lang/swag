@@ -33,7 +33,7 @@
     }
 
     // A boolean is 'true' or 'false'
-    // Note that as constants are known at compile time, we can use #assert to check the values
+    // Note that as constants are known at compile time, we can use '#assert' to check the values
     {
         const a = true
         #assert a == true
@@ -43,7 +43,7 @@
         #assert c == false
     }
 
-    // A float value has the usual format C/C++ form
+    // A float value has the usual C/C++ form
     {
         var a = 1.5
         @assert(a == 1.5)

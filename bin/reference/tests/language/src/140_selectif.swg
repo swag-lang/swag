@@ -112,7 +112,7 @@
             return 555
         }
 
-        // A version of 'first' where 'x' is *NOT* known at compile time
+        // A version of 'first' where 'x' is *not* known at compile time
         func first(x: s32)->s32
             #checkif !@isconstexpr(x)
         {

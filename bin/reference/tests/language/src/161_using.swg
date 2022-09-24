@@ -50,7 +50,7 @@
         @assert(pt.y == 2)
     }
 
-    // using can be be the equivalent of the hidden 'this' in C++
+    // using can be the equivalent of the hidden 'this' in C++
     {
         struct Point { x: s32; y: s32; }
 
@@ -62,6 +62,11 @@
 
         var pt: Point
         setOne(&pt)
+        @assert(pt.x == 1)
+        @assert(pt.y == 1)
+
+        // ufcs
+        pt.setOne()
         @assert(pt.x == 1)
         @assert(pt.y == 1)
     }

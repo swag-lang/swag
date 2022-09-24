@@ -7,6 +7,7 @@
     itf := @compiler()          // Get the interface to communicate with the compiler
     msg := itf.getMessage()     // Get the current message
 
+    // We know the type is a function because of the '#message' mask
     typeFunc := cast(const *Swag.TypeInfoFunc) msg.type
     nameFunc := msg.name
 
