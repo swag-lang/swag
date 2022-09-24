@@ -39,7 +39,8 @@ This is one example fully written in Swag with the help of the Swag standard lib
 * **Meta programming** (you can write code that writes code).
 * **Interfaces** for dynamic dispatch, inspired by *Go*.
 * **Modules**, compiled as separate dynamic libraries.
-* **Fast compile time** (at least in debug with the x64 backend) thanks to heavy multithreading.
+* **Very fast compile time** (at least in debug with the x64 backend) thanks to heavy multithreading.
+* **Fast interpretation** in script mode. Seems faster than Python or Lua for example (without JIT).
 * **Simple error system**, inspired by *Zig*.
 * **Generics**, for a simple usage. No template nightmare here...
 * **Powerful macro/mixin** system, without the need of a specific syntax, inspired by *Jai*.
