@@ -4,7 +4,6 @@ struct LibraryWnd
 {
     using wnd: Wnd
 
-    files:      Array'File.FileInfo
     main:       *MainWnd
     view:       *LibraryView
     listCtrl:   *ListCtrl
@@ -150,7 +149,7 @@ impl LibraryView
 
         // Filter
         var res: Array'File.FileInfo
-        visit fi: libWnd.files
+        visit fi: g_Library.files
         {
             if (filterYear == 0 or fi.lastWriteTime.year == filterYear) and
                (filterMonth == 0 or fi.lastWriteTime.month == filterMonth)
@@ -223,18 +222,14 @@ impl LibraryWnd
 
     mtd fill()
     {
-        if files.count
+        if listCtrl.getLineCount()
             return
 
-        files = catch Directory.enumerateFiles(Library.getFolder(), "*.captme")
-
-        listCtrl.clear()
-
         line := listCtrl.createLine("All Captures", Icon.from(&main.icons24, 4))
-        item := line.setItem(1, Format.toString("% ", files.count))
+        item := line.setItem(1, Format.toString("% ", g_Library.files.count))
         item.horzAlign = .Right
 
-        files.sort(@(a, b) {
+        g_Library.files.sort(@(a, b) {
             return b.lastWriteTime <=> a.lastWriteTime
         })
 
@@ -270,7 +265,7 @@ impl LibraryWnd
             }
         }
 
-        visit fi: files
+        visit fi: g_Library.files
         {
             if !lastDateTime or (fi.lastWriteTime.year != lastDateTime.year)
             {

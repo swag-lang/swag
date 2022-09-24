@@ -1,5 +1,8 @@
+var g_Library: Library
+
 struct Library
 {
+    files: Array'File.FileInfo
 }
 
 impl Library
@@ -24,5 +27,30 @@ impl Library
         fileName := Format.toString("%_%_%_%_%_%.captme", t.month, t.day, t.year, t.hour, t.minute, t.second)
         folder := getFolder()
         return Path.combine(folder, fileName.toString())
+    }
+
+    mtd fill()
+    {
+        files = catch Directory.enumerateFiles(getFolder(), "*.captme")
+    }
+
+    mtd removeFile(name: string)
+    {
+        visit fi, idx: files
+        {
+            if fi.fullname == name
+            {
+                files.removeAtOrdered(idx)
+                break
+            }
+        }
+    }
+
+    mtd addFile(name: string)
+    {
+        file := catch File.getFileInfo(name)
+        if @err
+            return
+        files.add(file)
     }
 }

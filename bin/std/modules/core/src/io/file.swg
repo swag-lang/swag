@@ -135,3 +135,10 @@ func duplicate(newName, oldName: string) throw
     res := readAllBytes(oldName)
     writeAllBytes(newName, res.toSlice())
 }
+
+// Get informations about a file
+func getFileInfo(fullName: string)->FileInfo throw
+{
+    file := Directory.enumerateFiles(Path.getDirectoryName(fullName), Path.getFileName(fullName))
+    return dref file[0]
+}

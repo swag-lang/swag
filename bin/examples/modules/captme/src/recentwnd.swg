@@ -200,8 +200,10 @@ impl RecentWnd
         recent.recentView.recentWnd = recent
         recent.view.backgroundStyle = .View
 
-        res := catch Directory.enumerateFiles(Library.getFolder(), "*.captme")
+        g_Library.fill()
         if @err return recent
+
+        res := g_Library.files
         res.sort(@(a, b) {
             return b.lastWriteTime <=> a.lastWriteTime
         })
@@ -246,7 +248,9 @@ impl RecentWnd
         item := recentView.items[recentView.selected]
 
         catch File.delete(item.file)
-        if @err return
+        if @err
+            return
+        g_Library.removeFile(item.file)
 
         // Be sure there's no pending save
         if timer

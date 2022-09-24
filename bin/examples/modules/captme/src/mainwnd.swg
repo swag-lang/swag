@@ -397,6 +397,7 @@ impl IWnd for MainWnd
             if @err break
             Memory.delete(dupCapture)
             recentWnd.recentView.select(0)
+            g_Library.addFile(file)
 
         case CmdIdSnap:
             snap = !snap
@@ -703,7 +704,9 @@ impl MainWnd
         recentWnd.addRecent(capture.file, capture.preview)
         recentWnd.recentView.selected = 0
         capture.save()
+        g_Library.addFile(capture.file)
 
+        // Force edition mode
         if libraryMode
         {
             swapLibraryMode()
