@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/swag-lang/swag/blob/master/docs/swag_logo.png">
+    <img src="https://github.com/swag-lang/swag/blob/master/docs/swag_logo.png">
 </p>
 
 > Work in progress ! There's no "official" release yet.
@@ -8,7 +8,9 @@ Swag is a programming language made for fun because, let's be honest, **C++** is
 
 If you want to have a look at the language, this is [here](bin/reference/tests/language/src/).
 
-![Swag logo](vscode/images/syntax.png)
+<p align="center">
+    <img src="https://github.com/swag-lang/swag/blob/master/vscode/images/syntax.png">
+</p>
 
 ### Swag is...
 * **Currently in development** (since 2019), and very very far to be mature. Bugs, unexpected changes, silly decisions, do not use it to send a rocket on the moon ! It's a **toy**.
