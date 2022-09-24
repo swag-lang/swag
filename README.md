@@ -4,9 +4,9 @@
 
 > Work in progress ! There's no "official" release yet.
 
-Swag is a native/interpreted programming language made for fun because, let's be honest, **C++** is now an **horrible and ugly beast** ! This is my third compiler (the other ones were developed for AAA game engines), but that one is by far the most advanced.
+Swag is a native and/or interpreted programming language made for fun because, let's be honest, **C++** is now an **horrible and ugly beast** ! This is my third compiler (the other ones were developed for AAA game engines), but that one is by far the most advanced.
 
-If you want to have a look at the language, this is [here](bin/reference/tests/language/src/).
+If you want to take a look at the language, this is [here](bin/reference/tests/language/src/).
 
 Note that a `visual studio code` extension (Swag) exists for syntax coloration.
 
@@ -14,7 +14,7 @@ Note that a `visual studio code` extension (Swag) exists for syntax coloration.
     <img width="50%" height="50%" src="https://github.com/swag-lang/swag/blob/master/vscode/images/syntax.png">
 </p>
 
-One example totally written in Swag with the help of the Swag standard libraries (core, pixel, gui...), that could be executed as a native executable (fast) or as a script (less fast).
+This is one example fully written in Swag with the help of the Swag standard libraries (core, pixel, gui...), which could be compiled as a native executable (fast) or just interpreted as a script (less... fast).
 
 <p align="center">
     <img width="50%" height="50%" src="https://github.com/swag-lang/swag/blob/master/docs/captme.png">
