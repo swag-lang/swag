@@ -1142,6 +1142,7 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
             if (decl->parameters && !(decl->attributeFlags & ATTRIBUTE_COMPILER_FUNC))
             {
                 auto countParams = decl->parameters->childs.size();
+                int  regCounter  = 0;
                 for (int i = 0; i < countParams; i++)
                 {
                     auto child     = decl->parameters->childs[i];
@@ -1167,7 +1168,7 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
 
                     //////////
                     uint32_t offsetStackParam = 0;
-                    uint32_t regParam         = i;
+                    uint32_t regParam         = regCounter;
                     if (typeFunc->isVariadic() && i != countParams - 1)
                         regParam += 2;
                     else if (typeFunc->isVariadic())
@@ -1176,6 +1177,7 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
                         offsetStackParam = (regParam * sizeof(Register)) + f.offsetParam;
                     else
                         offsetStackParam = (regParam * sizeof(Register)) + f.offsetRetVal;
+                    regCounter += typeParam->numRegisters();
 
                     //////////
                     dbgStartRecord(pp, concat, S_DEFRANGE_REGISTER_REL);
