@@ -99,7 +99,7 @@ impl DateTime
     }
 
     // Convert a string to a DateTime with the given format
-    func parse(str: string, fmt = DateTimeFormat.DateTime)->{value: DateTime, eat: u32} throw
+    func parse(str: string, fmt = DateTimeFormat.DateTime, checkDate = true)->{value: DateTime, eat: u32} throw
     {
         var result: retval
 
@@ -111,11 +111,13 @@ impl DateTime
         {
             // Day of week name
             done := false
-            visit dow: DayOfWeekNames
+            var dayOfWeek: DayOfWeek
+            visit dow, idx: DayOfWeekNames
             {
                 len := @countof(dow)
                 if @mkstring(@dataof(buf), Math.min(@countof(buf), len)) == dow
                 {
+                    dayOfWeek = acast idx
                     buf = Tokenize.eatCount(buf, cast(uint) len)
                     result.eat += cast(u32) len
                     done = true
@@ -158,7 +160,7 @@ impl DateTime
 
             // Day
             (day, eat2, ovf2) := StrConv.parseU8(buf)
-            if ovf2 or day > 31
+            if ovf2
                 throw StrConv.ParseErrorInvalid
             result.eat += eat2
             result.value.day = day
@@ -177,6 +179,10 @@ impl DateTime
             result.value.year = year
             result.eat += eat3
             buf = Tokenize.eatCount(buf, cast(uint) eat3)
+
+            // Check day of week
+            if checkDate and dayOfWeek != result.value.dayOfWeek()
+                throw StrConv.ParseErrorInvalid
         }
         elif fmt == .Iso or fmt == .IsoMs
         {
@@ -194,7 +200,7 @@ impl DateTime
 
             // Month
             (month, eat1, ovf1) := StrConv.parseU8(buf)
-            if ovf1 or month == 0 or month > 12
+            if ovf1
                 throw StrConv.ParseErrorInvalid
             result.eat += eat1
             result.value.month = month
@@ -206,7 +212,7 @@ impl DateTime
 
             // Day
             (day, eat2, ovf2) := StrConv.parseU8(buf)
-            if ovf2 or day > 31
+            if ovf2
                 throw StrConv.ParseErrorInvalid
             result.eat += eat2
             result.value.day = day
@@ -221,7 +227,7 @@ impl DateTime
 
         // Hour
         (hour, eat3, ovf3) := StrConv.parseU8(buf)
-        if ovf3 or hour > 24
+        if ovf3
             throw StrConv.ParseErrorInvalid
         result.eat += eat3
         result.value.hour = hour
@@ -233,7 +239,7 @@ impl DateTime
 
         // Minute
         (minute, eat4, ovf4) := StrConv.parseU8(buf)
-        if ovf4 or minute > 59
+        if ovf4
             throw StrConv.ParseErrorInvalid
         result.eat += eat4
         result.value.minute = minute
@@ -245,7 +251,7 @@ impl DateTime
 
         // Seconds
         (second, eat5, ovf5) := StrConv.parseU8(buf)
-        if ovf5 or second > 59
+        if ovf5
             throw StrConv.ParseErrorInvalid
         result.eat += eat5
         result.value.second = second
@@ -260,12 +266,15 @@ impl DateTime
             result.eat += 1
 
             (millisecond, eat6, ovf6) := StrConv.parseU16(buf)
-            if ovf6 or millisecond > 999
+            if ovf6
                 throw StrConv.ParseErrorInvalid
             result.eat += eat6
             result.value.millisecond = millisecond
             buf = Tokenize.eatCount(buf, cast(uint) eat6)
         }
+
+        if checkDate and !result.value.isValid()
+            throw StrConv.ParseErrorInvalid
 
         return result
     }
@@ -333,19 +342,19 @@ impl StrConv.IConvert for DateTime
     {
         var str: String
         if @countof(strFormat) == 0 or @countof(strFormat) > 1
-            str = toString(DateTimeFormat.DateTime)
+            str = toString(.DateTime)
         else
         {
             switch strFormat[0]
             {
             case "a"'u8:
-                str = toString(DateTimeFormat.DateTime)
+                str = toString(.DateTime)
             case "b"'u8:
-                str = toString(DateTimeFormat.DateTimeMs)
+                str = toString(.DateTimeMs)
             case "c"'u8:
-                str = toString(DateTimeFormat.Iso)
+                str = toString(.Iso)
             case "d"'u8:
-                str = toString(DateTimeFormat.IsoMs)
+                str = toString(.IsoMs)
             }
         }
 
