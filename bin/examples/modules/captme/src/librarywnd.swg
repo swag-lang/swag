@@ -226,8 +226,7 @@ impl LibraryWnd
         if files.count
             return
 
-        //files = catch Directory.enumerateFiles(Library.getFolder(), "*.captme")
-        files = catch Directory.enumerateFiles("f:/swag-lang/swag/src", "*.*")
+        files = catch Directory.enumerateFiles(Library.getFolder(), "*.captme")
 
         listCtrl.clear()
 
