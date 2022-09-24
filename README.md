@@ -8,6 +8,8 @@ Swag is a programming language made for fun because, let's be honest, **C++** is
 
 If you want to have a look at the language, this is [here](bin/reference/tests/language/src/).
 
+Note that a `visual studio code` extension (Swag) exists for syntax coloration.
+
 <p align="center">
     <img src="https://github.com/swag-lang/swag/blob/master/vscode/images/syntax.png">
 </p>
