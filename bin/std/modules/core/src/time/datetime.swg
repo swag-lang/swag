@@ -1,6 +1,9 @@
 #global public
 #global namespace Time
 
+const MonthNames     = @["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+const DayOfWeekNames = @["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+
 enum DayOfWeek
 {
     Sunday = 0
@@ -34,6 +37,7 @@ struct DateTime
 
 impl DateTime
 {
+    #[Swag.Inline]
     mtdc opEquals(other: Self)->bool
     {
         return Memory.compare(self, other, cast(uint) @sizeof(Self)) == 0
@@ -85,15 +89,185 @@ impl DateTime
     func monthName(month: u16)->string
     {
         Debug.assert(month >= 1 and month <= 12)
-        const Names = @["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-        return Names[month]
+        return MonthNames[month - 1]
     }
 
     // Returns the day of week name
     func dayOfWeekName(day: DayOfWeek)->string
     {
-        const Names = @["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-        return Names[cast(u32) day]
+        return DayOfWeekNames[cast(u32) day]
+    }
+
+    // Convert a string to a DateTime with the given format
+    func parse(str: string, fmt = DateTimeFormat.DateTime)->{value: DateTime, eat: u32} throw
+    {
+        var result: retval
+
+        buf := str
+        if !@countof(buf)
+            throw StrConv.ParseErrorInvalid
+
+        if fmt == .DateTime or fmt == .DateTimeMs
+        {
+            // Day of week name
+            done := false
+            visit dow: DayOfWeekNames
+            {
+                len := @countof(dow)
+                if @mkstring(@dataof(buf), Math.min(@countof(buf), len)) == dow
+                {
+                    buf = Tokenize.eatCount(buf, cast(uint) len)
+                    result.eat += cast(u32) len
+                    done = true
+                    break
+                }
+            }
+
+            if !done
+                throw StrConv.ParseErrorInvalid
+            done = false
+
+            // Blank
+            if !@countof(buf) or buf[0] != " "'u8
+                throw StrConv.ParseErrorInvalid
+            buf = Tokenize.eatCount(buf, 1)
+            result.eat += 1
+
+            // Month name
+            visit dow, idx: MonthNames
+            {
+                len := @countof(dow)
+                if @mkstring(@dataof(buf), Math.min(@countof(buf), len)) == dow
+                {
+                    result.value.month = cast(u16) idx + 1
+                    buf = Tokenize.eatCount(buf, cast(uint) len)
+                    result.eat += cast(u32) len
+                    done = true
+                    break
+                }
+            }
+
+            if !done
+                throw StrConv.ParseErrorInvalid
+
+            // Blank
+            if !@countof(buf) or buf[0] != " "'u8
+                throw StrConv.ParseErrorInvalid
+            buf = Tokenize.eatCount(buf, 1)
+            result.eat += 1
+
+            // Day
+            (day, eat2, ovf2) := StrConv.parseU8(buf)
+            if ovf2 or day > 31
+                throw StrConv.ParseErrorInvalid
+            result.eat += eat2
+            result.value.day = day
+            buf = Tokenize.eatCount(buf, cast(uint) eat2)
+
+            // Blank
+            if !@countof(buf) or buf[0] != " "'u8
+                throw StrConv.ParseErrorInvalid
+            buf = Tokenize.eatCount(buf, 1)
+            result.eat += 1
+
+            // Year
+            (year, eat3, ovf3) := StrConv.parseU16(buf)
+            if ovf3
+                throw StrConv.ParseErrorInvalid
+            result.value.year = year
+            result.eat += eat3
+            buf = Tokenize.eatCount(buf, cast(uint) eat3)
+        }
+        elif fmt == .Iso or fmt == .IsoMs
+        {
+            // Year
+            (year, eat0, ovf0) := StrConv.parseU16(buf)
+            if ovf0
+                throw StrConv.ParseErrorInvalid
+            result.value.year = year
+            result.eat += eat0
+            buf = Tokenize.eatCount(buf, cast(uint) eat0)
+            if !@countof(buf) or buf[0] != "-"'u8
+                throw StrConv.ParseErrorInvalid
+            buf = Tokenize.eatCount(buf, 1)
+            result.eat += 1
+
+            // Month
+            (month, eat1, ovf1) := StrConv.parseU8(buf)
+            if ovf1 or month == 0 or month > 12
+                throw StrConv.ParseErrorInvalid
+            result.eat += eat1
+            result.value.month = month
+            buf = Tokenize.eatCount(buf, cast(uint) eat1)
+            if !@countof(buf) or buf[0] != "-"'u8
+                throw StrConv.ParseErrorInvalid
+            buf = Tokenize.eatCount(buf, 1)
+            result.eat += 1
+
+            // Day
+            (day, eat2, ovf2) := StrConv.parseU8(buf)
+            if ovf2 or day > 31
+                throw StrConv.ParseErrorInvalid
+            result.eat += eat2
+            result.value.day = day
+            buf = Tokenize.eatCount(buf, cast(uint) eat2)
+        }
+
+        // Blank
+        if !@countof(buf) or buf[0] != " "'u8
+            throw StrConv.ParseErrorInvalid
+        buf = Tokenize.eatCount(buf, 1)
+        result.eat += 1
+
+        // Hour
+        (hour, eat3, ovf3) := StrConv.parseU8(buf)
+        if ovf3 or hour > 24
+            throw StrConv.ParseErrorInvalid
+        result.eat += eat3
+        result.value.hour = hour
+        buf = Tokenize.eatCount(buf, cast(uint) eat3)
+        if !@countof(buf) or buf[0] != ":"'u8
+            throw StrConv.ParseErrorInvalid
+        buf = Tokenize.eatCount(buf, 1)
+        result.eat += 1
+
+        // Minute
+        (minute, eat4, ovf4) := StrConv.parseU8(buf)
+        if ovf4 or minute > 59
+            throw StrConv.ParseErrorInvalid
+        result.eat += eat4
+        result.value.minute = minute
+        buf = Tokenize.eatCount(buf, cast(uint) eat4)
+        if !@countof(buf) or buf[0] != ":"'u8
+            throw StrConv.ParseErrorInvalid
+        buf = Tokenize.eatCount(buf, 1)
+        result.eat += 1
+
+        // Seconds
+        (second, eat5, ovf5) := StrConv.parseU8(buf)
+        if ovf5 or second > 59
+            throw StrConv.ParseErrorInvalid
+        result.eat += eat5
+        result.value.second = second
+        buf = Tokenize.eatCount(buf, cast(uint) eat5)
+
+        // Milliseconds
+        if fmt == .DateTimeMs or fmt == .IsoMs
+        {
+            if !@countof(buf) or buf[0] != "."'u8
+                throw StrConv.ParseErrorInvalid
+            buf = Tokenize.eatCount(buf, 1)
+            result.eat += 1
+
+            (millisecond, eat6, ovf6) := StrConv.parseU16(buf)
+            if ovf6 or millisecond > 999
+                throw StrConv.ParseErrorInvalid
+            result.eat += eat6
+            result.value.millisecond = millisecond
+            buf = Tokenize.eatCount(buf, cast(uint) eat6)
+        }
+
+        return result
     }
 
     // Convert to string
@@ -104,7 +278,7 @@ impl DateTime
         {
         case DateTime:
             return Format.toString(
-                "% % % % %:%:%",
+                "% % % % %{02}:%{02}:%{02}",
                 dayOfWeekName(dayOfWeek()),
                 monthName(month),
                 day,
@@ -115,7 +289,7 @@ impl DateTime
             )
         case DateTimeMs:
             return Format.toString(
-                "% % % % %:%:%.%",
+                "% % % % %{02}:%{02}:%{02}.%",
                 dayOfWeekName(dayOfWeek()),
                 monthName(month),
                 day,
