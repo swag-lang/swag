@@ -1202,7 +1202,7 @@ bool SyntaxJob::doLeftExpressionAffect(AstNode* parent, AstNode** result)
     }
 }
 
-bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result, AstNode* withNode)
+bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result, AstWith* withNode)
 {
     AstNode* leftNode;
     SWAG_CHECK(doLeftExpressionAffect(parent, &leftNode));
@@ -1212,11 +1212,10 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result, AstNode* w
     if (withNode)
     {
         SWAG_ASSERT(leftNode->kind == AstNodeKind::IdentifierRef);
-        auto front = withNode->childs.front();
-        SWAG_ASSERT(front->kind == AstNodeKind::IdentifierRef);
-        for (int wi = front->childs.count - 1; wi >= 0; wi--)
+        auto n = withNode->getIdName();
+        for (int wi = (int) n.size() - 1; wi >= 0; wi--)
         {
-            auto id = Ast::newIdentifier(sourceFile, front->childs[wi]->token.text, (AstIdentifierRef*) leftNode, leftNode, this);
+            auto id = Ast::newIdentifier(sourceFile, n[wi], (AstIdentifierRef*) leftNode, leftNode, this);
             id->flags |= AST_GENERATED;
             id->specFlags |= AST_SPEC_IDENTIFIER_FROM_WITH;
             id->inheritTokenLocation(leftNode);

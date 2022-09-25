@@ -41,17 +41,48 @@ bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, Ty
     return true;
 }
 
+bool SemanticJob::resolveWithVarDeclAfter(SemanticContext* context)
+{
+    SWAG_CHECK(resolveVarDeclAfter(context));
+    SWAG_CHECK(resolveWith(context));
+    return true;
+}
+
+bool SemanticJob::resolveWithAfterAffectLeft(SemanticContext* context)
+{
+    SWAG_CHECK(resolveAfterAffectLeft(context));
+    SWAG_CHECK(resolveWith(context));
+    return true;
+}
+
 bool SemanticJob::resolveWith(SemanticContext* context)
 {
-    auto node = context->node->parent;
-    SWAG_ASSERT(node->kind == AstNodeKind::With);
-    auto idref = CastAst<AstIdentifierRef>(node->childs[0], AstNodeKind::IdentifierRef);
-    node->childs[0]->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
+    auto n = context->node->findParent(AstNodeKind::With);
+    SWAG_ASSERT(n);
+    auto node = CastAst<AstWith>(n, AstNodeKind::With);
 
-    SWAG_ASSERT(idref->resolvedSymbolName);
-    SWAG_VERIFY(idref->resolvedSymbolOverload, context->report(node, Err(Err0694)));
+    // If this is a simple identifier, no bytecode generation
+    TypeInfo* typeResolved = nullptr;
+    auto      front        = node->childs.front();
+    if (front->kind == AstNodeKind::IdentifierRef)
+    {
+        front->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
+        SWAG_ASSERT(front->resolvedSymbolName);
+        SWAG_VERIFY(front->resolvedSymbolOverload, context->report(node, Err(Err0694)));
+        typeResolved = front->resolvedSymbolOverload->typeInfo;
+    }
+    else if (front->kind == AstNodeKind::VarDecl)
+    {
+        SWAG_VERIFY(front->resolvedSymbolOverload, context->report(node, Err(Err0694)));
+        typeResolved = front->resolvedSymbolOverload->typeInfo;
+    }
+    else if (front->kind == AstNodeKind::AffectOp)
+    {
+        SWAG_VERIFY(front->childs.front()->resolvedSymbolOverload, context->report(node, Err(Err0694)));
+        typeResolved = front->childs.front()->resolvedSymbolOverload->typeInfo;
+    }
 
-    auto typeResolved = idref->resolvedSymbolOverload->typeInfo;
+    SWAG_ASSERT(typeResolved);
     switch (typeResolved->kind)
     {
     case TypeInfoKind::Pointer:

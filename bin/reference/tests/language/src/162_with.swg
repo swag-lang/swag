@@ -58,6 +58,29 @@ impl Point
             .inside1()
         }
     }
+
+    // Instead of an identifier name, 'with' also accepts a variable declaration
+    {
+        with pt := Point{1, 2}
+        {
+            .x = 10
+            .y = 20
+        }
+
+        @assert(pt.x == 10 and pt.y == 20)
+    }
+
+    // Or an affect statement
+    {
+        var pt: Point
+        with pt = Point{1, 2}
+        {
+            .x = 10
+            .y = 20
+        }
+
+        @assert(pt.x == 10 and pt.y == 20)
+    }
 }
 
 namespace NameSpace

@@ -721,9 +721,7 @@ impl ListCtrl
     #[Swag.Discardable]
     func createSimple(parent: *Wnd, position: Math.Rectangle = @{}, id: WndId = null)->*ListCtrl
     {
-        list := Wnd.create'ListCtrl(parent, "", position, id)
-
-        with list
+        with list := Wnd.create'ListCtrl(parent, "", position, id)
         {
             .scrollWnd = .createView'ScrollWnd()
             .scrollWnd.dockStyle = .Center

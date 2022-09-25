@@ -2432,16 +2432,15 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, VectorNative<
                 }
                 else
                 {
-                    auto withNode = node->findParent(AstNodeKind::With);
-                    if (!withNode)
-                        return context->report(identifierRef, Fmt(Err(Err0881), node->token.text.c_str()));
+                    auto withNodeP = node->findParent(AstNodeKind::With);
+                    SWAG_VERIFY(withNodeP, context->report(identifierRef, Fmt(Err(Err0881), node->token.text.c_str())));
+                    auto withNode = CastAst<AstWith>(withNodeP, AstNodeKind::With);
+                    auto n        = withNode->getIdName();
 
                     // Prepend the 'with' identifier, and reevaluate
-                    auto front = withNode->childs.front();
-                    SWAG_ASSERT(front->kind == AstNodeKind::IdentifierRef);
-                    for (int wi = front->childs.count - 1; wi >= 0; wi--)
+                    for (int wi = (int) n.size() - 1; wi >= 0; wi--)
                     {
-                        auto id = Ast::newIdentifier(context->sourceFile, front->childs[wi]->token.text, identifierRef, identifierRef);
+                        auto id = Ast::newIdentifier(context->sourceFile, n[wi], identifierRef, identifierRef);
                         id->flags |= AST_GENERATED;
                         id->specFlags |= AST_SPEC_IDENTIFIER_FROM_WITH;
                         id->inheritTokenLocation(identifierRef);

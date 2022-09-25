@@ -893,3 +893,9 @@ struct AstDefer : public AstNode
     AstNode*  clone(CloneContext& context);
     DeferKind deferKind = DeferKind::Normal;
 };
+
+struct AstWith : public AstNode
+{
+    AstNode*     clone(CloneContext& context);
+    vector<Utf8> getIdName();
+};

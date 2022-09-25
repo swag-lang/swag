@@ -736,8 +736,7 @@ impl MainWnd
         res.registerShortcuts()
         res.favoriteMdl = &res.mdlFormShape
 
-        res.captureBtn = IconButton.create(topBar, Icon.from(&res.icons48, 6), @{0, 0, 64, 64}, id: CmdIdCapture)
-        with res.captureBtn
+        with res.captureBtn = IconButton.create(topBar, Icon.from(&res.icons48, 6), @{0, 0, 64, 64}, id: CmdIdCapture)
         {
             .style.addStyleSheetColors("btnIcon_Icon    0xFFFF0000")
             .style.addStyleSheetColors("btnIcon_HotIcon 0xFFFF4444")
@@ -754,8 +753,7 @@ impl MainWnd
         res.recentBar.dockStyle = .Bottom
 
         // Recent left editToolBar
-        res.recentSizeBar = IconBar.create(res.recentBar, 20)
-        with res.recentSizeBar
+        with res.recentSizeBar = IconBar.create(res.recentBar, 20)
         {
             .setIconBarFlags(.Vertical)
             .dockStyle = .Left
@@ -770,8 +768,7 @@ impl MainWnd
         res.recentWnd.dockStyle = .Center
 
         // Right bar
-        res.quickStyleBar = StackLayoutCtrl.create(res, .Top, @{0, 0, 300, 0})
-        with res.quickStyleBar
+        with res.quickStyleBar = StackLayoutCtrl.create(res, .Top, @{0, 0, 300, 0})
         {
             .dockStyle = .Right
             .backgroundStyle = .Window
@@ -789,8 +786,7 @@ impl MainWnd
         label1.backgroundStyle = .Window
         label1.style.addStyleSheetColors("wnd_Bk $dlg_BtnBarBk")
 
-        res.propWnd = Wnd.create'PropWnd(res.quickStyleBar, @{0, 0, 0, 300})
-        with res.propWnd
+        with res.propWnd = Wnd.create'PropWnd(res.quickStyleBar, @{0, 0, 0, 300})
         {
             .main = res
             .backgroundStyle = .Window
@@ -798,8 +794,7 @@ impl MainWnd
         }
 
         // Bottom bar
-        res.editZoomBar = StackLayoutCtrl.create(res, .HorzCenter, @{0, 0, 300, 32})
-        with res.editZoomBar
+        with res.editZoomBar = StackLayoutCtrl.create(res, .HorzCenter, @{0, 0, 300, 32})
         {
             .dockStyle = .Bottom
             .backgroundStyle = .Window

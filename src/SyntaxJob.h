@@ -19,6 +19,8 @@ struct SyntaxJob;
 struct AstAttrUse;
 struct AstInline;
 struct AstFuncCallParams;
+struct AstWith;
+
 enum class AstNodeKind : uint8_t;
 
 enum class InvalidTokenError
@@ -124,7 +126,7 @@ struct SyntaxJob : public Job
     bool doTypeExpressionLambdaClosure(AstNode* parent, AstNode** result = nullptr);
     bool doDefer(AstNode* parent, AstNode** result = nullptr);
     bool doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const Token& assignToken, AstNodeKind kind, AstNode** result);
-    bool doAffectExpression(AstNode* parent, AstNode** result = nullptr, AstNode* withNode = nullptr);
+    bool doAffectExpression(AstNode* parent, AstNode** result = nullptr, AstWith* withNode = nullptr);
     bool doIdentifier(AstNode* parent, uint32_t identifierFlags = 0);
     bool doIdentifierRef(AstNode* parent, AstNode** result = nullptr, uint32_t identifierFlags = 0);
     bool doDiscard(AstNode* parent, AstNode** result = nullptr);
@@ -134,7 +136,7 @@ struct SyntaxJob : public Job
     bool doGlobalAttributeExpose(AstNode* parent, AstNode** result, bool forGlobal);
     bool doNamespace(AstNode* parent, AstNode** result = nullptr);
     bool doNamespace(AstNode* parent, AstNode** result, bool forGlobal, bool forUsing);
-    bool doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal, bool forUsing, Token *privName = nullptr);
+    bool doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal, bool forUsing, Token* privName = nullptr);
     bool doEnumContent(AstNode* parent, AstNode** result = nullptr);
     bool doEnumValue(AstNode* parent, AstNode** result = nullptr);
     bool doEnum(AstNode* parent, AstNode** result = nullptr);
@@ -194,7 +196,7 @@ struct SyntaxJob : public Job
     bool doFallThrough(AstNode* parent, AstNode** result = nullptr);
     bool doContinue(AstNode* parent, AstNode** result = nullptr);
     bool doArrayPointerIndex(AstNode** exprNode);
-    bool doLeftInstruction(AstNode* parent, AstNode** result = nullptr, AstNode* withNode = nullptr);
+    bool doLeftInstruction(AstNode* parent, AstNode** result = nullptr, AstWith* withNode = nullptr);
     bool doLeftExpressionVar(AstNode* parent, AstNode** result, uint32_t identifierFlags = 0);
     bool doLeftExpressionAffect(AstNode* parent, AstNode** result = nullptr);
     bool doInit(AstNode* parent, AstNode** result = nullptr);

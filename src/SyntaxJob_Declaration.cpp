@@ -11,18 +11,42 @@
 bool SyntaxJob::doWith(AstNode* parent, AstNode** result)
 {
     SWAG_CHECK(eatToken());
-    auto node = Ast::newNode<AstNode>(this, AstNodeKind::With, sourceFile, parent);
+    auto node = Ast::newNode<AstWith>(this, AstNodeKind::With, sourceFile, parent);
     if (result)
         *result = node;
     AstNode* id = nullptr;
-    SWAG_CHECK(doIdentifierRef(node, &id, IDENTIFIER_NO_PARAMS));
 
-    AstNode* stmt;
-    SWAG_CHECK(doEmbeddedStatement(node, &stmt));
+    SWAG_CHECK(doAffectExpression(node, &id));
+
+    if (id->kind != AstNodeKind::IdentifierRef &&
+        id->kind != AstNodeKind::VarDecl &&
+        id->kind != AstNodeKind::AffectOp)
+        return error(node->token, Err(Err0483));
+
+    SWAG_CHECK(doEmbeddedStatement(node));
 
     id->allocateExtension();
-    SWAG_ASSERT(!id->extension->semanticAfterFct);
-    id->extension->semanticAfterFct = SemanticJob::resolveWith;
+
+    if (id->kind == AstNodeKind::IdentifierRef)
+    {
+        SWAG_ASSERT(!id->extension->semanticAfterFct);
+        id->extension->semanticAfterFct = SemanticJob::resolveWith;
+    }
+    else if (id->kind == AstNodeKind::VarDecl)
+    {
+        SWAG_ASSERT(id->extension->semanticAfterFct == SemanticJob::resolveVarDeclAfter);
+        id->extension->semanticAfterFct = SemanticJob::resolveWithVarDeclAfter;
+    }
+    else if (id->kind == AstNodeKind::AffectOp)
+    {
+        id = id->childs.front();
+        SWAG_ASSERT(id->extension->semanticAfterFct == SemanticJob::resolveAfterAffectLeft);
+        id->extension->semanticAfterFct = SemanticJob::resolveWithAfterAffectLeft;
+    }
+    else
+    {
+        SWAG_ASSERT(false);
+    }
 
     return true;
 }
@@ -478,7 +502,7 @@ bool SyntaxJob::doScopeBreakable(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doLeftInstruction(AstNode* parent, AstNode** result, AstNode* withNode)
+bool SyntaxJob::doLeftInstruction(AstNode* parent, AstNode** result, AstWith* withNode)
 {
     switch (token.id)
     {
@@ -736,7 +760,7 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         SWAG_VERIFY(withNode, error(token, Err(Err0836)));
         eatToken();
         SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Err(Err0816)));
-        return doLeftInstruction(parent, result, withNode);
+        return doLeftInstruction(parent, result, CastAst<AstWith>(withNode, AstNodeKind::With));
     }
 
     default:
