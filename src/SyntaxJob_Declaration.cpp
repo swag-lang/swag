@@ -14,14 +14,15 @@ bool SyntaxJob::doWith(AstNode* parent, AstNode** result)
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::With, sourceFile, parent);
     if (result)
         *result = node;
-    SWAG_CHECK(doIdentifierRef(node, nullptr, IDENTIFIER_NO_PARAMS));
+    AstNode* id = nullptr;
+    SWAG_CHECK(doIdentifierRef(node, &id, IDENTIFIER_NO_PARAMS));
 
     AstNode* stmt;
-    SWAG_CHECK(doEmbeddedStatement(parent, &stmt));
+    SWAG_CHECK(doEmbeddedStatement(node, &stmt));
 
-    node->ownerScope = stmt->ownerScope;
-    node->allocateExtension();
-    node->semanticFct = SemanticJob::resolveWith;
+    id->allocateExtension();
+    SWAG_ASSERT(!id->extension->semanticAfterFct);
+    id->extension->semanticAfterFct = SemanticJob::resolveWith;
 
     return true;
 }
@@ -477,7 +478,7 @@ bool SyntaxJob::doScopeBreakable(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doLeftInstruction(AstNode* parent, AstNode** result)
+bool SyntaxJob::doLeftInstruction(AstNode* parent, AstNode** result, AstNode* withNode)
 {
     switch (token.id)
     {
@@ -530,7 +531,7 @@ bool SyntaxJob::doLeftInstruction(AstNode* parent, AstNode** result)
     case TokenId::Identifier:
     case TokenId::SymLeftParen:
     case TokenId::KwdDeRef:
-        SWAG_CHECK(doAffectExpression(parent, result));
+        SWAG_CHECK(doAffectExpression(parent, result, withNode));
         break;
 
     case TokenId::IntrinsicGetContext:
@@ -728,6 +729,15 @@ bool SyntaxJob::doEmbeddedInstruction(AstNode* parent, AstNode** result)
     case TokenId::KwdPublic:
     case TokenId::KwdPrivate:
         return error(token, Fmt(Err(Err0665), token.ctext()));
+
+    case TokenId::SymDot:
+    {
+        auto withNode = parent->findParent(AstNodeKind::With);
+        SWAG_VERIFY(withNode, error(token, Err(Err0836)));
+        eatToken();
+        SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Err(Err0816)));
+        return doLeftInstruction(parent, result, withNode);
+    }
 
     default:
         if (Tokenizer::isIntrinsicReturn(token.id))

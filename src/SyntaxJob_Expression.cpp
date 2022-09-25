@@ -1202,11 +1202,28 @@ bool SyntaxJob::doLeftExpressionAffect(AstNode* parent, AstNode** result)
     }
 }
 
-bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result)
+bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result, AstNode* withNode)
 {
     AstNode* leftNode;
     SWAG_CHECK(doLeftExpressionAffect(parent, &leftNode));
     Ast::removeFromParent(leftNode);
+
+    // Prepend the 'with' identifier
+    if (withNode)
+    {
+        SWAG_ASSERT(leftNode->kind == AstNodeKind::IdentifierRef);
+        auto front = withNode->childs.front();
+        SWAG_ASSERT(front->kind == AstNodeKind::IdentifierRef);
+        for (int wi = front->childs.count - 1; wi >= 0; wi--)
+        {
+            auto id = Ast::newIdentifier(sourceFile, front->childs[wi]->token.text, (AstIdentifierRef*) leftNode, leftNode, this);
+            id->flags |= AST_GENERATED;
+            id->specFlags |= AST_SPEC_IDENTIFIER_FROM_WITH;
+            id->inheritTokenLocation(leftNode);
+            leftNode->childs.pop_back();
+            Ast::addChildFront(leftNode, id);
+        }
+    }
 
     // Variable declaration and initialization by ':='
     if (token.id == TokenId::SymColonEqual)

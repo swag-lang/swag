@@ -246,21 +246,21 @@ impl RichEditCtrl
 
         with ed
         {
-            scrollWnd = createView'ScrollWnd()
-            scrollWnd.dockStyle = .Center
-            scrollWnd.focusStrategy = .None
-            scrollWnd.setAllPaddings(getThemeMetrics().richEdit_Padding)
-            scrollWnd.sigScrollPosChanged += @|ed|(scrollWnd, op, np) {
+            .scrollWnd = .createView'ScrollWnd()
+            .scrollWnd.dockStyle = .Center
+            .scrollWnd.focusStrategy = .None
+            .scrollWnd.setAllPaddings(.getThemeMetrics().richEdit_Padding)
+            .scrollWnd.sigScrollPosChanged += @|ed|(scrollWnd, op, np) {
                 if op.y != np.y
                     ed.dirtyFirstLineView = true
             }
 
-            edView = scrollWnd.createView'RichEditView()
-            edView.ed = ed
-            edView.wndFlags |= .NoScroll
+            .edView = .scrollWnd.createView'RichEditView()
+            .edView.ed = ed
+            .edView.wndFlags |= .NoScroll
 
-            setDefaultMapping()
-            setDefaultStyles()
+            .setDefaultMapping()
+            .setDefaultStyles()
         }
 
         return ed

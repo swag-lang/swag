@@ -725,14 +725,14 @@ impl ListCtrl
 
         with list
         {
-            scrollWnd = createView'ScrollWnd()
-            scrollWnd.dockStyle = .Center
-            scrollWnd.focusStrategy = .None
-            scrollWnd.setAllPaddings(getThemeMetrics().list_Padding)
+            .scrollWnd = .createView'ScrollWnd()
+            .scrollWnd.dockStyle = .Center
+            .scrollWnd.focusStrategy = .None
+            .scrollWnd.setAllPaddings(.getThemeMetrics().list_Padding)
 
-            listView = scrollWnd.createView'ListView()
-            listView.list = list
-            listView.wndFlags |= .NoScroll
+            .listView = .scrollWnd.createView'ListView()
+            .listView.list = list
+            .listView.wndFlags |= .NoScroll
         }
 
         return list
@@ -776,32 +776,32 @@ impl ListCtrl
         {
             // Header
             // Need to recompute layout when header size has changed
-            header = Header.create(fwnd, @{})
-            header.dockStyle = .Top
-            header.form = .Round
-            header.sigLayoutChanged = @|list|(header) {
+            .header = Header.create(fwnd, @{})
+            .header.dockStyle = .Top
+            .header.form = .Round
+            .header.sigLayoutChanged = @|list|(header) {
                 list.computeLayout()
             }
 
-            header.sigClicked = @|list|(header, col) {
+            .header.sigClicked = @|list|(header, col) {
                 list.sort(col, header.sortMark <= 0 ? false : true, true)
             }
 
             // Scroll that contains the list view
-            scrollWnd = Wnd.create'ScrollWnd(fwnd, @{})
-            scrollWnd.dockStyle = .Center
-            scrollWnd.focusStrategy = .None
-            scrollWnd.backgroundStyle = .Transparent
-            scrollWnd.setAllPaddings(getThemeMetrics().list_Padding)
-            scrollWnd.sigScrollPosChanged += @|header|(scrollWnd, op, np) {
+            .scrollWnd = Wnd.create'ScrollWnd(fwnd, @{})
+            .scrollWnd.dockStyle = .Center
+            .scrollWnd.focusStrategy = .None
+            .scrollWnd.backgroundStyle = .Transparent
+            .scrollWnd.setAllPaddings(.getThemeMetrics().list_Padding)
+            .scrollWnd.sigScrollPosChanged += @|list.header|(scrollWnd, op, np) {
                 header.scrollPos.x = np.x
                 header.invalidate()
             }
 
             // ListCtrl view
-            listView = scrollWnd.createView'ListView()
-            listView.list = list
-            listView.wndFlags |= .NoScroll
+            .listView = .scrollWnd.createView'ListView()
+            .listView.list = list
+            .listView.wndFlags |= .NoScroll
         }
 
         return list

@@ -1,4 +1,4 @@
-#global testerror
+//#global testerror
 var G = 0
 
 struct A

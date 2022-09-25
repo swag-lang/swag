@@ -91,22 +91,22 @@ public impl MessageDlg
 
         with dlg
         {
-            label = Label.create(srf.wnd.view, message, @{})
-            label.dockStyle = .Center
-            label.horzAlignmentText = .Justify
-            label.padding.x = metrics.msgDlg_Padding
-            label.padding.z = metrics.msgDlg_Padding
-            label.padding.w = metrics.msgDlg_Padding
+            .label = Label.create(srf.wnd.view, message, @{})
+            .label.dockStyle = .Center
+            .label.horzAlignmentText = .Justify
+            .label.padding.x = metrics.msgDlg_Padding
+            .label.padding.z = metrics.msgDlg_Padding
+            .label.padding.w = metrics.msgDlg_Padding
 
             h := srf.app.theme.metrics.btnPush_Height
             h += 2 * metrics.msgDlg_Padding
-            wndBottom = Wnd.create'Wnd(srf.wnd.view, "", @{0, 0, 0, h})
-            wndBottom.dockStyle = .Bottom
-            wndBottom.backgroundStyle = .DialogBar
-            wndBottom.setAllPaddings(metrics.msgDlg_Padding)
+            .wndBottom = Wnd.create'Wnd(srf.wnd.view, "", @{0, 0, 0, h})
+            .wndBottom.dockStyle = .Bottom
+            .wndBottom.backgroundStyle = .DialogBar
+            .wndBottom.setAllPaddings(metrics.msgDlg_Padding)
 
-            setIcon(icon)
-            setFocus()
+            .setIcon(icon)
+            .setFocus()
         }
 
         dlg.sendResizeEvent()

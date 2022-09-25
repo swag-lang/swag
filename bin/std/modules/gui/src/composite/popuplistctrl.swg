@@ -217,13 +217,13 @@ impl PopupListCtrl
 
         with popup
         {
-            popup.setFrameFlags(FrameWndFlags.SmallShadow)
-            setFrameForm(FrameWndForm.Square)
-            scrollWnd = createView'ScrollWnd()
-            scrollWnd.dockStyle = .Center
-            scrollWnd.focusStrategy = .None
-            scrollWnd.scrollWndFlags |= .SmallBar
-            popupView := scrollWnd.createView'PopupListView()
+            .setFrameFlags(FrameWndFlags.SmallShadow)
+            .setFrameForm(FrameWndForm.Square)
+            .scrollWnd = .createView'ScrollWnd()
+            .scrollWnd.dockStyle = .Center
+            .scrollWnd.focusStrategy = .None
+            .scrollWnd.scrollWndFlags |= .SmallBar
+            popupView := .scrollWnd.createView'PopupListView()
             popupView.list = popup
         }
 
@@ -254,10 +254,10 @@ impl PopupListCtrl
         item := items.newPtr()
         with item
         {
-            name     = #self.name
-            icon     = #self.icon
-            id       = #self.id
-            userData = #self.userData
+            .name     = #self.name
+            .icon     = #self.icon
+            .id       = #self.id
+            .userData = #self.userData
         }
 
         if item.icon.isValid()

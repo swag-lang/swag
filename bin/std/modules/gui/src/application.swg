@@ -512,12 +512,12 @@ impl Application
 
         with surface
         {
-            wnd.create(view, hook)
-            wnd.surface = surface
-            wnd.itf = cast(IWnd) surface.wnd
-            wnd.computeStyle()
-            wnd.view.computeStyle()
-            wnd.sendResizeEvent()
+            .wnd.create(view, hook)
+            .wnd.surface = surface
+            .wnd.itf = cast(IWnd) surface.wnd
+            .wnd.computeStyle()
+            .wnd.view.computeStyle()
+            .wnd.sendResizeEvent()
         }
 
         return surface

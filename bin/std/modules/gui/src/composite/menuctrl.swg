@@ -614,9 +614,9 @@ public impl MenuCtrl
         res := Wnd.create'MenuCtrl(parent.getTopView(), null, @{}, id)
         with res
         {
-            owner = #self.parent
-            setAllPaddings(getThemeMetrics().menuPopup_Padding)
-            wndFlags |= .Hidden
+            .owner = #self.parent
+            .setAllPaddings(.getThemeMetrics().menuPopup_Padding)
+            .wndFlags |= .Hidden
         }
 
         return res
@@ -628,11 +628,11 @@ public impl MenuCtrl
         res := Wnd.create'MenuCtrl(parent, null, pos, id)
         with res
         {
-            metrics := getThemeMetrics()
-            if position.height == 0
-                position.height = metrics.menuBar_Height
-            setAllPaddings(metrics.menuPopup_Padding)
-            bar = true
+            metrics := .getThemeMetrics()
+            if .position.height == 0
+                .position.height = metrics.menuBar_Height
+            .setAllPaddings(metrics.menuPopup_Padding)
+            .bar = true
         }
 
         return res
@@ -650,12 +650,12 @@ public impl MenuCtrl
         mitem := items.newPtr()
         with mitem
         {
-            name      = #self.name
-            icon      = #self.icon
-            id        = #self.id
-            rightName = #self.rightName
-            disabled  = #self.disabled
-            checked   = #self.checked
+            .name      = #self.name
+            .icon      = #self.icon
+            .id        = #self.id
+            .rightName = rightName
+            .disabled  = disabled
+            .checked   = checked
         }
 
         items.add(mitem)
@@ -668,9 +668,9 @@ public impl MenuCtrl
         mitem := items.newPtr()
         with mitem
         {
-            name  = #self.name
-            icon  = #self.icon
-            popup = #self.popup
+            .name  = #self.name
+            .icon  = #self.icon
+            .popup = #self.popup
         }
 
         popup.ownerMenu = self

@@ -45,11 +45,11 @@ impl SliderCtrl
 
         with ctrlXXX
         {
-            label = Label.create(ctrlXXX, #self.name, @{})
-            label.horzAlignmentText = .Right
+            .label = Label.create(ctrlXXX, #self.name, @{})
+            .label.horzAlignmentText = .Right
 
-            slider = Slider.create(ctrlXXX, @{})
-            slider.sigChanged += @|ctrlXXX|(wnd)
+            .slider = Slider.create(ctrlXXX, @{})
+            .slider.sigChanged += @|ctrlXXX|(wnd)
             {
                 var val: String
                 switch ctrlXXX.edit.inputMode
@@ -65,10 +65,10 @@ impl SliderCtrl
                 ctrlXXX.edit.setText(val)
             }
 
-            edit = EditBox.create(ctrlXXX, "", @{})
-            edit.setForm(.Transparent)
-            edit.editBoxFlags |= .RightAlign
-            edit.sigLoseFocus += @|ctrlXXX|(edit)
+            .edit = EditBox.create(ctrlXXX, "", @{})
+            .edit.setForm(.Transparent)
+            .edit.editBoxFlags |= .RightAlign
+            .edit.sigLoseFocus += @|ctrlXXX|(edit)
             {
                 switch edit.inputMode
                 {
@@ -86,7 +86,7 @@ impl SliderCtrl
                 }
             }
 
-            sendResizeEvent()
+            .sendResizeEvent()
         }
 
         return ctrlXXX

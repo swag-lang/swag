@@ -209,10 +209,10 @@ impl ComboBox
         item := items.newPtr()
         with item
         {
-            name     = #self.name
-            icon     = #self.icon
-            id       = #self.id
-            userData = #self.userData
+            .name     = #self.name
+            .icon     = #self.icon
+            .id       = #self.id
+            .userData = #self.userData
         }
 
         if item.icon.isValid()

@@ -17,8 +17,8 @@ impl AA
         var v: AA
         with v
         {
-            @assert(x == 555)
-            titi()
+            @assert(.x == 555);
+            .titi()
         }
     }
 }

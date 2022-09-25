@@ -201,7 +201,7 @@ bool SyntaxJob::doIdentifierRef(AstNode* parent, AstNode** result, uint32_t iden
         break;
     }
 
-    while (token.id == TokenId::SymDot)
+    while (token.id == TokenId::SymDot && !token.lastTokenIsEOL)
     {
         SWAG_CHECK(eatToken());
         SWAG_CHECK(doIdentifier(identifierRef, identifierFlags));

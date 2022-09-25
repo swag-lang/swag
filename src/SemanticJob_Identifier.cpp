@@ -690,6 +690,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         parent->previousResolvedNode->resolvedSymbolName->kind == SymbolKind::Variable &&
         !(parent->previousResolvedNode->flags & AST_FROM_UFCS))
     {
+        if (parent->previousResolvedNode->kind == AstNodeKind::Identifier && parent->previousResolvedNode->specFlags & AST_SPEC_IDENTIFIER_FROM_WITH)
+            return context->report(parent->previousResolvedNode, Fmt(Err(Err0310), parent->previousResolvedNode->token.ctext(), symbol->name.c_str(), parent->startScope->name.c_str()));
         return context->report(parent->previousResolvedNode, Fmt(Err(Err0086), parent->previousResolvedNode->token.ctext(), symbol->name.c_str(), parent->startScope->name.c_str()));
     }
 
@@ -828,7 +830,6 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                     context->job->nodes.push_back(idNode);
                     if (i == 0)
                         idNode->specFlags |= identifier->specFlags & AST_SPEC_IDENTIFIER_BACKTICK;
-                    idNode->semFlags |= AST_SEM_NO_WITH_PRIO;
                 }
             }
             else
@@ -848,7 +849,6 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 idNode->specFlags |= identifier->specFlags & AST_SPEC_IDENTIFIER_BACKTICK;
                 Ast::insertChild(idRef, idNode, newParent->childParentIdx);
                 context->job->nodes.push_back(idNode);
-                idNode->semFlags |= AST_SEM_NO_WITH_PRIO;
             }
 
             context->node->semanticState = AstNodeResolveState::Enter;
@@ -2423,17 +2423,42 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, VectorNative<
             // :AutoScope
             // Auto scoping depending on the context
             // We scan the parent hierarchy for an already defined type that can be used for scoping
-            if (identifierRef->specFlags & AST_SPEC_IDENTIFIERREF_AUTO_SCOPE)
+            if (identifierRef->specFlags & AST_SPEC_IDENTIFIERREF_AUTO_SCOPE && !(identifierRef->doneFlags & AST_DONE_SPEC_SCOPE))
             {
                 TypeInfoEnum* typeEnum = nullptr;
                 SWAG_CHECK(findEnumTypeInContext(context, identifierRef, &typeEnum, true));
                 if (context->result == ContextResult::Pending)
                     return true;
-                if (!typeEnum)
-                    return context->report(identifierRef, Fmt(Err(Err0881), node->token.text.c_str()));
-                identifierRef->startScope = typeEnum->scope;
-                scopeHierarchy.clear();
-                addAlternativeScopeOnce(scopeHierarchy, typeEnum->scope);
+                if (typeEnum)
+                {
+                    identifierRef->startScope = typeEnum->scope;
+                    scopeHierarchy.clear();
+                    addAlternativeScopeOnce(scopeHierarchy, typeEnum->scope);
+                }
+                else
+                {
+                    auto withNode = node->findParent(AstNodeKind::With);
+                    if (!withNode)
+                        return context->report(identifierRef, Fmt(Err(Err0881), node->token.text.c_str()));
+
+                    // Prepend the 'with' identifier, and reevaluate
+                    auto front = withNode->childs.front();
+                    SWAG_ASSERT(front->kind == AstNodeKind::IdentifierRef);
+                    for (int wi = front->childs.count - 1; wi >= 0; wi--)
+                    {
+                        auto id = Ast::newIdentifier(context->sourceFile, front->childs[wi]->token.text, identifierRef, identifierRef);
+                        id->flags |= AST_GENERATED;
+                        id->specFlags |= AST_SPEC_IDENTIFIER_FROM_WITH;
+                        id->inheritTokenLocation(identifierRef);
+                        identifierRef->childs.pop_back();
+                        Ast::addChildFront(identifierRef, id);
+                        identifierRef->doneFlags |= AST_DONE_SPEC_SCOPE;
+                        context->job->nodes.push_back(id);
+                    }
+
+                    context->result = ContextResult::NewChilds;
+                    return true;
+                }
             }
             else
             {
@@ -3459,19 +3484,6 @@ bool SemanticJob::filterSymbols(SemanticContext* context, AstIdentifier* node)
             continue;
         }
 
-        // If symbol comes from a 'with', it has priority
-        if (!(node->semFlags & AST_SEM_NO_WITH_PRIO))
-        {
-            if (p.asFlags & ALTSCOPE_WITH)
-            {
-                for (auto& p1 : dependentSymbols)
-                {
-                    if (!(p1.asFlags & ALTSCOPE_WITH))
-                        p1.remove = true;
-                }
-            }
-        }
-
         // If a generic type does not come from a 'using', it has priority
         if (!(p.asFlags & ALTSCOPE_USING) && p.symbol->kind == SymbolKind::GenericType)
         {
@@ -3641,7 +3653,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
         else
         {
             SWAG_CHECK(findIdentifierInScopes(context, identifierRef, node));
-            if (context->result == ContextResult::Pending)
+            if (context->result != ContextResult::Done)
                 return true;
         }
 
@@ -3891,7 +3903,7 @@ void SemanticJob::collectAlternativeScopes(AstNode* startNode, VectorNative<Alte
                 {
                     SharedLock lk(it0.scope->owner->extension->mutexAltScopes);
                     for (auto& it1 : it0.scope->owner->extension->alternativeScopes)
-                        toAdd.push_back({it1.scope, it1.flags | it0.flags & ALTSCOPE_WITH});
+                        toAdd.push_back({it1.scope, it1.flags});
                 }
             }
         }
@@ -3928,7 +3940,7 @@ void SemanticJob::collectAlternativeScopeVars(AstNode* startNode, VectorNative<A
                 {
                     SharedLock lk(it0.scope->owner->extension->mutexAltScopes);
                     for (auto& it1 : it0.scope->owner->extension->alternativeScopesVars)
-                        toAdd.push_back({it0.node, it1.node, it1.scope, it1.flags | it0.flags & ALTSCOPE_WITH});
+                        toAdd.push_back({it0.node, it1.node, it1.scope, it1.flags});
                 }
 
                 // If this is a struct that comes from a generic, we need to also register the generic scope in order

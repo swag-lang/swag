@@ -143,22 +143,22 @@ impl Decoder
 
         with header
         {
-            if width == 0 or height == 0
+            if .width == 0 or .height == 0
                 throw "invalid dimensions"
-            if compressionMethod != 0
+            if .compressionMethod != 0
                 throw "invalid compression mtd"
-            if filterMethod != 0
+            if .filterMethod != 0
                 throw "invalid filter mtd"
-            if interlaceMethod != .None and interlaceMethod != .Adam7
+            if .interlaceMethod != .None and .interlaceMethod != .Adam7
                 throw "invalid interlace mtd"
 
-            if colorType & .Paletted
+            if .colorType & .Paletted
                 throw "unsupported paletted image"
-            if colorType > 7
+            if .colorType > 7
                 throw "invalid color type"
-            if bitDepth > 8
+            if .bitDepth > 8
                 throw "unsupported bit depth"
-            if bitDepth != 1 and bitDepth != 2 and bitDepth != 4 and bitDepth != 8
+            if .bitDepth != 1 and .bitDepth != 2 and .bitDepth != 4 and .bitDepth != 8
                 throw "invalid bit depth"
 
             outChannels = 3

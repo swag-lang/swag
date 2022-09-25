@@ -17,10 +17,11 @@ impl AA
         var x: BB
         with x
         {
-            abc = "1"
+            abc = "2"
+            .abc = "1"
         }
 
-        @assert(abc == null)
+        @assert(abc == "2")
         @assert(x.abc == "1")
     }
 }

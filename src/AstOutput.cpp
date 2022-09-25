@@ -949,6 +949,15 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
     switch (node->kind)
     {
+    case AstNodeKind::With:
+    {
+        concat.addString("with ");
+        SWAG_CHECK(outputNode(context, concat, node->childs[0]));
+        concat.addEolIndent(context.indent);
+        SWAG_CHECK(outputNode(context, concat, node->childs[1]));
+        break;
+    }
+
     case AstNodeKind::Throw:
         concat.addString(node->token.text);
         concat.addChar(' ');
@@ -961,8 +970,6 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         if (node->specFlags & AST_SPEC_TCA_GENERATED && node->specFlags & AST_SPEC_TCA_BLOCK)
         {
             context.indent += 1;
-            // concat.addIndent(context.indent);
-
             for (auto c : node->childs.front()->childs)
             {
                 SWAG_CHECK(outputNode(context, concat, c));

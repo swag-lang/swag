@@ -21,7 +21,8 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     doneFlags |= from->doneFlags & AST_DONE_STRUCT_CONVERT;
     doneFlags |= from->doneFlags & AST_DONE_CLOSURE_FIRST_PARAM;
     doneFlags |= from->doneFlags & AST_DONE_AST_BLOCK;
-
+    doneFlags |= from->doneFlags & AST_DONE_SPEC_SCOPE;
+    
     semFlags |= from->semFlags & AST_SEM_STRUCT_REGISTERED;
     semFlags |= from->semFlags & AST_SEM_SPEC_STACKSIZE;
     semFlags |= context.forceSemFlags;

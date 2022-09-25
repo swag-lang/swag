@@ -739,8 +739,8 @@ impl MainWnd
         res.captureBtn = IconButton.create(topBar, Icon.from(&res.icons48, 6), @{0, 0, 64, 64}, id: CmdIdCapture)
         with res.captureBtn
         {
-            style.addStyleSheetColors("btnIcon_Icon    0xFFFF0000")
-            style.addStyleSheetColors("btnIcon_HotIcon 0xFFFF4444")
+            .style.addStyleSheetColors("btnIcon_Icon    0xFFFF0000")
+            .style.addStyleSheetColors("btnIcon_HotIcon 0xFFFF4444")
         }
 
         res.libraryBtn = IconButton.create(topBar, Icon.from(&res.icons48, 8), @{64, 0, 64, 64}, id: CmdIdLibrary)
@@ -757,12 +757,12 @@ impl MainWnd
         res.recentSizeBar = IconBar.create(res.recentBar, 20)
         with res.recentSizeBar
         {
-            setIconBarFlags(.Vertical)
-            dockStyle = .Left
-            iconPadding = 0
-            addItem(Icon.from(&res.icons24, 0), CmdIdRecentSmall, .Checkable)
-            addItem(Icon.from(&res.icons24, 1), CmdIdRecentMedium, .Checkable)
-            addItem(Icon.from(&res.icons24, 2), CmdIdRecentBig, .Checkable)
+            .setIconBarFlags(.Vertical)
+            .dockStyle = .Left
+            .iconPadding = 0
+            .addItem(Icon.from(&res.icons24, 0), CmdIdRecentSmall, .Checkable)
+            .addItem(Icon.from(&res.icons24, 1), CmdIdRecentMedium, .Checkable)
+            .addItem(Icon.from(&res.icons24, 2), CmdIdRecentBig, .Checkable)
         }
 
         // Recent
@@ -773,9 +773,9 @@ impl MainWnd
         res.quickStyleBar = StackLayoutCtrl.create(res, .Top, @{0, 0, 300, 0})
         with res.quickStyleBar
         {
-            dockStyle = .Right
-            backgroundStyle = .Window
-            spacing = 0
+            .dockStyle = .Right
+            .backgroundStyle = .Window
+            .spacing = 0
         }
 
         label0 := Label.create(res.quickStyleBar, "Quick Styles", @{0, 0, 0, 30})
@@ -792,17 +792,17 @@ impl MainWnd
         res.propWnd = Wnd.create'PropWnd(res.quickStyleBar, @{0, 0, 0, 300})
         with res.propWnd
         {
-            main = res
-            backgroundStyle = .Window
-            layoutKind = .TopAutoSize
+            .main = res
+            .backgroundStyle = .Window
+            .layoutKind = .TopAutoSize
         }
 
         // Bottom bar
         res.editZoomBar = StackLayoutCtrl.create(res, .HorzCenter, @{0, 0, 300, 32})
         with res.editZoomBar
         {
-            dockStyle = .Bottom
-            backgroundStyle = .Window
+            .dockStyle = .Bottom
+            .backgroundStyle = .Window
         }
 
         func updateZoomDisplay(res: *MainWnd)

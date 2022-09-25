@@ -80,7 +80,6 @@ struct SyntaxJob : public Job
 
     bool eatToken();
     bool eatToken(TokenId id, const char* msg = nullptr);
-    bool eatTokenNoEOL(TokenId id, const char* msg);
     bool eatSemiCol(const char* msg = nullptr);
     bool checkIsSingleIdentifier(AstNode* node, const char* msg);
 
@@ -125,7 +124,7 @@ struct SyntaxJob : public Job
     bool doTypeExpressionLambdaClosure(AstNode* parent, AstNode** result = nullptr);
     bool doDefer(AstNode* parent, AstNode** result = nullptr);
     bool doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const Token& assignToken, AstNodeKind kind, AstNode** result);
-    bool doAffectExpression(AstNode* parent, AstNode** result = nullptr);
+    bool doAffectExpression(AstNode* parent, AstNode** result = nullptr, AstNode* withNode = nullptr);
     bool doIdentifier(AstNode* parent, uint32_t identifierFlags = 0);
     bool doIdentifierRef(AstNode* parent, AstNode** result = nullptr, uint32_t identifierFlags = 0);
     bool doDiscard(AstNode* parent, AstNode** result = nullptr);
@@ -195,7 +194,7 @@ struct SyntaxJob : public Job
     bool doFallThrough(AstNode* parent, AstNode** result = nullptr);
     bool doContinue(AstNode* parent, AstNode** result = nullptr);
     bool doArrayPointerIndex(AstNode** exprNode);
-    bool doLeftInstruction(AstNode* parent, AstNode** result = nullptr);
+    bool doLeftInstruction(AstNode* parent, AstNode** result = nullptr, AstNode* withNode = nullptr);
     bool doLeftExpressionVar(AstNode* parent, AstNode** result, uint32_t identifierFlags = 0);
     bool doLeftExpressionAffect(AstNode* parent, AstNode** result = nullptr);
     bool doInit(AstNode* parent, AstNode** result = nullptr);

@@ -593,10 +593,14 @@ impl Wnd
     {
         with margin
         {
-            if left   != Swag.F32.Inf x = left
-            if top    != Swag.F32.Inf y = top
-            if right  != Swag.F32.Inf z = right
-            if bottom != Swag.F32.Inf w = bottom
+            if left != Swag.F32.Inf
+                .x = left
+            if top    != Swag.F32.Inf
+                .y = top
+            if right  != Swag.F32.Inf
+                .z = right
+            if bottom != Swag.F32.Inf
+                .w = bottom
         }
 
         if parent
@@ -612,10 +616,14 @@ impl Wnd
     {
         with padding
         {
-            if left   != Swag.F32.Inf x = left
-            if top    != Swag.F32.Inf y = top
-            if right  != Swag.F32.Inf z = right
-            if bottom != Swag.F32.Inf w = bottom
+            if left   != Swag.F32.Inf
+                .x = left
+            if top    != Swag.F32.Inf
+                .y = top
+            if right  != Swag.F32.Inf
+                .z = right
+            if bottom != Swag.F32.Inf
+                .w = bottom
         }
 
         sendResizeEvent()

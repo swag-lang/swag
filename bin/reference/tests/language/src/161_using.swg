@@ -35,21 +35,6 @@
         @assert(pt.y == 2)
     }
 
-    // For a variable, you can also use 'with' which control the using scope
-    {
-        struct Point { x, y: s32; }
-
-        var pt: Point
-        with pt
-        {
-            x = 1   // equivalent to pt.x
-            y = 2   // equivalent to pt.y
-        }
-
-        @assert(pt.x == 1)
-        @assert(pt.y == 2)
-    }
-
     // using can be the equivalent of the hidden 'this' in C++
     {
         struct Point { x: s32; y: s32; }

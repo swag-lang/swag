@@ -95,6 +95,7 @@ static const uint32_t AST_DONE_CLOSURE_FIRST_PARAM       = 0x04000000;
 static const uint32_t AST_DONE_FORCE_CAST_PTR_STRUCT     = 0x08000000;
 static const uint32_t AST_DONE_FIELD_STRUCT              = 0x10000000;
 static const uint32_t AST_DONE_AST_BLOCK                 = 0x20000000;
+static const uint32_t AST_DONE_SPEC_SCOPE                = 0x40000000;
 
 static const uint32_t AST_SEM_FORCE_TAKE_ADDRESS      = 0x00000001;
 static const uint32_t AST_SEM_FORCE_NO_TAKE_ADDRESS   = 0x00000002;
@@ -122,14 +123,14 @@ static const uint64_t AST_SEM_FORCE_UFCS              = 0x00400000;
 static const uint64_t AST_SEM_STRUCT_REGISTERED       = 0x00800000;
 static const uint64_t AST_SEM_PENDING_LAMBDA_TYPING   = 0x01000000;
 static const uint64_t AST_SEM_IS_CONST_ASSIGN         = 0x02000000;
-static const uint64_t AST_SEM_NO_WITH_PRIO            = 0x04000000;
-static const uint64_t AST_SEM_TYPE_SOLVED             = 0x08000000;
-static const uint64_t AST_SEM_SPEC_STACKSIZE          = 0x10000000;
-static const uint64_t AST_SEM_FROM_NULL               = 0x20000000;
+static const uint64_t AST_SEM_TYPE_SOLVED             = 0x04000000;
+static const uint64_t AST_SEM_SPEC_STACKSIZE          = 0x08000000;
+static const uint64_t AST_SEM_FROM_NULL               = 0x10000000;
 
 static const uint8_t AST_SPEC_IDENTIFIERREF_AUTO_SCOPE = 0x01;
 static const uint8_t AST_SPEC_IDENTIFIER_BACKTICK      = 0x01;
 static const uint8_t AST_SPEC_IDENTIFIER_NO_INLINE     = 0x02;
+static const uint8_t AST_SPEC_IDENTIFIER_FROM_WITH     = 0x04;
 static const uint8_t AST_SPEC_RANGE_EXCLUDE_UP         = 0x01;
 static const uint8_t AST_SPEC_OP_SAFE                  = 0x01;
 static const uint8_t AST_SPEC_OP_SMALL                 = 0x02;

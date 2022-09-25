@@ -6,7 +6,7 @@
 #include "Module.h"
 #include "ErrorIds.h"
 
-bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, TypeInfo* typeInfoVar, bool forWith)
+bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, TypeInfo* typeInfoVar)
 {
     auto node    = context->node;
     auto regNode = node->ownerScope ? node->ownerScope->owner : node;
@@ -15,8 +15,6 @@ bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, Ty
     SWAG_VERIFY(node->ownerFct || node->ownerScope->kind == ScopeKind::Struct, context->report(node, Fmt(Err(Err0689), Scope::getNakedKindName(node->ownerScope->kind))));
 
     uint32_t altFlags = node->flags & AST_STRUCT_MEMBER ? ALTSCOPE_USING : 0;
-    if (forWith)
-        altFlags |= ALTSCOPE_WITH;
 
     typeInfoVar = TypeManager::concreteReference(typeInfoVar);
     if (typeInfoVar->kind == TypeInfoKind::Struct)
@@ -45,39 +43,31 @@ bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, Ty
 
 bool SemanticJob::resolveWith(SemanticContext* context)
 {
-    auto node  = context->node;
+    auto node = context->node->parent;
+    SWAG_ASSERT(node->kind == AstNodeKind::With);
     auto idref = CastAst<AstIdentifierRef>(node->childs[0], AstNodeKind::IdentifierRef);
-    node->flags |= AST_NO_BYTECODE;
+    node->childs[0]->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
 
     SWAG_ASSERT(idref->resolvedSymbolName);
-    if (idref->resolvedSymbolName->kind == SymbolKind::Variable)
-    {
-        SWAG_VERIFY(idref->resolvedSymbolOverload, context->report(node, Err(Err0694)));
-        SWAG_CHECK(resolveUsingVar(context, idref, idref->resolvedSymbolOverload->typeInfo, true));
-        return true;
-    }
+    SWAG_VERIFY(idref->resolvedSymbolOverload, context->report(node, Err(Err0694)));
 
-    Scope* scope        = nullptr;
-    auto   typeResolved = idref->resolvedSymbolOverload->typeInfo;
+    auto typeResolved = idref->resolvedSymbolOverload->typeInfo;
     switch (typeResolved->kind)
     {
+    case TypeInfoKind::Pointer:
+        if (!typeResolved->isPointerTo(TypeInfoKind::Struct))
+            return context->report(node, Fmt(Err(Err0703), typeResolved->getDisplayNameC()));
+        break;
+
     case TypeInfoKind::Namespace:
-    {
-        auto typeInfo = CastTypeInfo<TypeInfoNamespace>(typeResolved, typeResolved->kind);
-        scope         = typeInfo->scope;
-        break;
-    }
     case TypeInfoKind::Enum:
-    {
-        auto typeInfo = CastTypeInfo<TypeInfoEnum>(typeResolved, typeResolved->kind);
-        scope         = typeInfo->scope;
+    case TypeInfoKind::Struct:
         break;
-    }
+
     default:
         return context->report(node, Fmt(Err(Err0703), typeResolved->getDisplayNameC()));
     }
 
-    context->node->addAlternativeScope(scope);
     return true;
 }
 
@@ -91,7 +81,7 @@ bool SemanticJob::resolveUsing(SemanticContext* context)
     if (idref->resolvedSymbolName->kind == SymbolKind::Variable)
     {
         SWAG_VERIFY(idref->resolvedSymbolOverload, context->report(node, Err(Err0694)));
-        SWAG_CHECK(resolveUsingVar(context, idref, idref->resolvedSymbolOverload->typeInfo, false));
+        SWAG_CHECK(resolveUsingVar(context, idref, idref->resolvedSymbolOverload->typeInfo));
         return true;
     }
 

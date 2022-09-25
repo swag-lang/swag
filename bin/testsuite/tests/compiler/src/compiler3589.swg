@@ -1,4 +1,4 @@
-#global testerror
+//#global testerror
 
 struct A {
     x: s32
@@ -10,6 +10,6 @@ struct A {
     with a
     {
         var x: bool
-        @print(x)
+        //@print(x)
     }
 }
