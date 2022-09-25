@@ -775,21 +775,16 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
     }
 
     // If this a L or R value
-    if (!dependentVar && (overload->flags & OVERLOAD_VAR_STRUCT))
+    if (overload->flags & OVERLOAD_VAR_STRUCT)
     {
         if (symbol->kind != SymbolKind::GenericType)
         {
             if (parent->previousResolvedNode)
             {
                 if (parent->previousResolvedNode->flags & AST_R_VALUE)
-                {
                     identifier->flags |= AST_L_VALUE | AST_R_VALUE;
-                }
                 else
-                {
                     identifier->flags |= (parent->previousResolvedNode->flags & AST_L_VALUE);
-                    identifier->flags |= (parent->previousResolvedNode->flags & AST_R_VALUE);
-                }
             }
         }
     }
