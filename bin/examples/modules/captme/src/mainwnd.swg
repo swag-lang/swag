@@ -67,9 +67,16 @@ impl IWnd for MainWnd
 
     mtd onSerializeStateEvent(evt: *SerializeStateEvent)
     {
-        catch evt.ser.serialize("MainWnd.editMode", &editMode)
-        catch evt.ser.serialize("MainWnd.snap", &snap)
-        catch evt.ser.serialize("MainWnd.bottomSize", &bottomSize)
+        catch
+        {
+            with evt.ser
+            {
+                .serialize("MainWnd.editMode", &editMode)
+                .serialize("MainWnd.snap", &snap)
+                .serialize("MainWnd.bottomSize", &bottomSize)
+            }
+        }
+
         if evt.ser.isReading()
         {
             setBottomSize(bottomSize)

@@ -1,9 +1,10 @@
 // swag contains a *very* simple error system used to deal with function returning errors
-// Will probably be changed at some point
+// Will probably be changed/improved at some point
+// This are *not* exceptions !
 
 // A function that can return an error must be marked with 'throw'
-// It must then raise an error with the 'throw' keyword, passing an error message.
-// Note that when an error is raised by a function, the return value is always equal to the default value,
+// It can then raise an error with the 'throw' keyword, passing an error message.
+// When an error is raised by a function, the return value is always equal to the default value,
 // depending on the return type.
 func count(name: string)->uint throw
 {
@@ -19,7 +20,10 @@ func count(name: string)->uint throw
 // Execution will continue at the call site.
 func myFunc()
 {
+    // Dismiss the eventual error with 'catch'
     cpt := catch count("fileName")
+
+    // And test it with @err, which returns the 'throw' corresponding string
     if @err
     {
         @assert(cpt == 0)
@@ -45,7 +49,33 @@ func myFunc2()
     cpt := assume count("filename")
 }
 
-// When a function is marked with "throw", the "try" for a subfunction call is automatic
+// Note that you can use a block instead of one single statement (this does not create a scope)
+func myFunc3() throw
+{
+    // This is not really necessary, see below, but this is just de show 'try' with a block
+    // instead of one single call
+    try
+    {
+        cpt0 := count("filename")
+        cpt1 := count("other filename")
+    }
+
+    assume
+    {
+        cpt2 := count("filename")
+        cpt3 := count("other filename")
+    }
+
+    // Works also for 'catch' if you do not want to deal with the error message.
+    // '@err' in that case is not really relevant.
+    catch
+    {
+        cpt4 := count("filename")
+        cpt5 := count("other filename")
+    }
+}
+
+// When a function is marked with "throw", the "try" for a function call is automatic
 // if not specified.
 // That means that most of the time it's not necessary to specify it.
 #test
@@ -57,10 +87,10 @@ func myFunc2()
 
     func mySubFunc1() throw
     {
-        // No need to add a 'try' before the call because mySubFunction1 is
-        // marked with "throw"
-        // Less verbose when you do not want to do something special in case
-        // of errors (with "assume" or "catch")
+        // In fact there's no need to add a 'try' before the call because 'mySubFunc1' is
+        // marked with 'throw'
+        // This is less verbose when you do not want to do something special in case
+        // of errors (with 'assume' or 'catch')
         mySubFunc2()
     }
 
@@ -68,7 +98,7 @@ func myFunc2()
     @assert(@err == "error")
 }
 
-// defer can also have parameters like defer(err) or defer(noerr) to control
+// 'defer' can have parameters like defer(err) or defer(noerr) to control
 // if it should be executed depending on the error status
 var g_Defer = 0
 
@@ -88,8 +118,11 @@ func testDefer(err: bool) throw
 
 #test
 {
+    g_Defer = 0
     catch testDefer(true)
-    @assert(g_Defer == 4)   // Will call only defer(err) and normal defer
+    @assert(g_Defer == 4)   // Will call only defer(err) and the normal defer
+
+    g_Defer = 0
     catch testDefer(false)
-    @assert(g_Defer == 9)   // Will call only defer(noerror) and normal defer
+    @assert(g_Defer == 5)   // Will call only defer(noerr) and the normal defer
 }

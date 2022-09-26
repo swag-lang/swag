@@ -225,7 +225,7 @@ bool SyntaxJob::doDiscard(AstNode* parent, AstNode** result)
         SWAG_CHECK(doTryAssume(parent, &idRef, true));
         break;
     case TokenId::KwdCatch:
-        SWAG_CHECK(doCatch(parent, &idRef));
+        SWAG_CHECK(doCatch(parent, &idRef, true));
         break;
     default:
         if (Tokenizer::isIntrinsicReturn(token.id))
@@ -303,7 +303,7 @@ bool SyntaxJob::doTryAssume(AstNode* parent, AstNode** result, bool afterDiscard
     return true;
 }
 
-bool SyntaxJob::doCatch(AstNode* parent, AstNode** result)
+bool SyntaxJob::doCatch(AstNode* parent, AstNode** result, bool afterDiscard)
 {
     auto node = Ast::newNode<AstTryCatchAssume>(this, AstNodeKind::Catch, sourceFile, parent);
     SWAG_VERIFY(node->ownerFct, error(node, Err(Err0848)));
@@ -313,12 +313,24 @@ bool SyntaxJob::doCatch(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
 
     ScopedTryCatchAssume sc(this, (AstTryCatchAssume*) node);
-    SWAG_VERIFY(token.id != TokenId::KwdTry, error(token, Fmt(Err(Err0843), node->token.ctext())));
-    SWAG_VERIFY(token.id != TokenId::KwdCatch, error(token, Fmt(Err(Err0844), node->token.ctext())));
-    SWAG_VERIFY(token.id != TokenId::KwdAssume, error(token, Fmt(Err(Err0845), node->token.ctext())));
-    SWAG_VERIFY(token.id != TokenId::KwdThrow, error(token, Fmt(Err(Err0846), node->token.ctext())));
-    SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Err0853), node->token.ctext())));
-    SWAG_CHECK(doIdentifierRef(node));
+
+    if (token.id == TokenId::SymLeftCurly)
+    {
+        node->specFlags |= AST_SPEC_TCA_BLOCK;
+        SWAG_VERIFY(!afterDiscard, error(token, Err(Err0847)));
+        SWAG_CHECK(doCurlyStatement(node));
+        node->semanticFct = nullptr;
+    }
+    else
+    {
+        SWAG_VERIFY(token.id != TokenId::KwdTry, error(token, Fmt(Err(Err0843), node->token.ctext())));
+        SWAG_VERIFY(token.id != TokenId::KwdCatch, error(token, Fmt(Err(Err0844), node->token.ctext())));
+        SWAG_VERIFY(token.id != TokenId::KwdAssume, error(token, Fmt(Err(Err0845), node->token.ctext())));
+        SWAG_VERIFY(token.id != TokenId::KwdThrow, error(token, Fmt(Err(Err0846), node->token.ctext())));
+        SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Err0853), node->token.ctext())));
+        SWAG_CHECK(doIdentifierRef(node));
+    }
+
     return true;
 }
 

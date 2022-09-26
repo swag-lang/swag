@@ -62,13 +62,19 @@ impl IWnd for QuickWnd
 
     mtd onSerializeStateEvent(evt: *SerializeStateEvent)
     {
-        catch evt.ser.serialize("QuickWnd.qsArrow",     &qsArrow)
-        catch evt.ser.serialize("QuickWnd.qsShape",     &qsShape)
-        catch evt.ser.serialize("QuickWnd.qsLine",      &qsLine)
-        catch evt.ser.serialize("QuickWnd.qsPolygon",   &qsPolygon)
-        catch evt.ser.serialize("QuickWnd.qsText",      &qsText)
-        catch evt.ser.serialize("QuickWnd.qsFavorites", &qsFavorites)
-        catch evt.ser.serialize("QuickWnd.qsDraw",      &qsDraw)
+        catch
+        {
+            with evt.ser
+            {
+                .serialize("QuickWnd.qsArrow",     &qsArrow)
+                .serialize("QuickWnd.qsShape",     &qsShape)
+                .serialize("QuickWnd.qsLine",      &qsLine)
+                .serialize("QuickWnd.qsPolygon",   &qsPolygon)
+                .serialize("QuickWnd.qsText",      &qsText)
+                .serialize("QuickWnd.qsFavorites", &qsFavorites)
+                .serialize("QuickWnd.qsDraw",      &qsDraw)
+            }
+        }
 
         if evt.ser.isReading()
         {
