@@ -396,15 +396,15 @@ impl MenuCtrl
     {
         with subVisible
         {
-            pt := parent.surfaceToLocal(ptSurface)
-            setPosition(@{pt.x, pt.y, position.width, position.height})
-            bringToTop()
-            show()
-            captureMouse()
-            hotIdx = Swag.U32.Max
-            selectedIdx = Swag.U32.Max
-            subVisible = null
-            timer = null
+            pt := .parent.surfaceToLocal(ptSurface)
+            .setPosition(@{pt.x, pt.y, .position.width, .position.height})
+            .bringToTop()
+            .show()
+            .captureMouse()
+            .hotIdx = Swag.U32.Max
+            .selectedIdx = Swag.U32.Max
+            .subVisible = null
+            .timer = null
         }
     }
 
@@ -611,8 +611,7 @@ public impl MenuCtrl
     #[Swag.Discardable]
     func createPopup(parent: *Wnd, id: WndId = null)->*MenuCtrl
     {
-        res := Wnd.create'MenuCtrl(parent.getTopView(), null, @{}, id)
-        with res
+        with res := Wnd.create'MenuCtrl(parent.getTopView(), null, @{}, id)
         {
             .owner = #self.parent
             .setAllPaddings(.getThemeMetrics().menuPopup_Padding)
@@ -625,8 +624,7 @@ public impl MenuCtrl
     #[Swag.Discardable]
     func createBar(parent: *Wnd, pos: Math.Rectangle = @{}, id: WndId = null)->*MenuCtrl
     {
-        res := Wnd.create'MenuCtrl(parent, null, pos, id)
-        with res
+        with res := Wnd.create'MenuCtrl(parent, null, pos, id)
         {
             metrics := .getThemeMetrics()
             if .position.height == 0
@@ -647,8 +645,7 @@ public impl MenuCtrl
     // Add a new item
     mtd addItem(name: string, id: WndId, icon: Icon = @{}, rightName: string = null, disabled = false, checked = false)
     {
-        mitem := items.newPtr()
-        with mitem
+        with mitem := items.newPtr()
         {
             .name      = #self.name
             .icon      = #self.icon
@@ -665,8 +662,7 @@ public impl MenuCtrl
     // Add a new item
     mtd addPopup(name: string, popup: *MenuCtrl, icon: Icon = @{})
     {
-        mitem := items.newPtr()
-        with mitem
+        with mitem := items.newPtr()
         {
             .name  = #self.name
             .icon  = #self.icon
