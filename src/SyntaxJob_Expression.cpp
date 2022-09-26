@@ -1212,10 +1212,9 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result, AstWith* w
     if (withNode)
     {
         SWAG_ASSERT(leftNode->kind == AstNodeKind::IdentifierRef);
-        auto n = withNode->getIdName();
-        for (int wi = (int) n.size() - 1; wi >= 0; wi--)
+        for (int wi = (int) withNode->id.size() - 1; wi >= 0; wi--)
         {
-            auto id = Ast::newIdentifier(sourceFile, n[wi], (AstIdentifierRef*) leftNode, leftNode, this);
+            auto id = Ast::newIdentifier(sourceFile, withNode->id[wi], (AstIdentifierRef*) leftNode, leftNode, this);
             id->flags |= AST_GENERATED;
             id->specFlags |= AST_SPEC_IDENTIFIER_FROM_WITH;
             id->inheritTokenLocation(leftNode);

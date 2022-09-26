@@ -897,5 +897,5 @@ struct AstDefer : public AstNode
 struct AstWith : public AstNode
 {
     AstNode*     clone(CloneContext& context);
-    vector<Utf8> getIdName();
+    vector<Utf8> id;
 };

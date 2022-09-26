@@ -1252,5 +1252,6 @@ AstNode* AstWith::clone(CloneContext& context)
 {
     auto newNode = Ast::newNode<AstWith>();
     newNode->copyFrom(context, this);
+    newNode->id = id;
     return newNode;
 }

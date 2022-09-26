@@ -23,31 +23,34 @@ bool SyntaxJob::doWith(AstNode* parent, AstNode** result)
         id->kind != AstNodeKind::AffectOp)
         return error(node->token, Err(Err0483));
 
-    SWAG_CHECK(doEmbeddedStatement(node));
-
     id->allocateExtension();
-
     if (id->kind == AstNodeKind::IdentifierRef)
     {
         SWAG_ASSERT(!id->extension->semanticAfterFct);
         id->extension->semanticAfterFct = SemanticJob::resolveWith;
+        for (int i = 0; i < id->childs.size(); i++)
+            node->id.push_back(id->childs[i]->token.text);
     }
     else if (id->kind == AstNodeKind::VarDecl)
     {
         SWAG_ASSERT(id->extension->semanticAfterFct == SemanticJob::resolveVarDeclAfter);
         id->extension->semanticAfterFct = SemanticJob::resolveWithVarDeclAfter;
+        node->id.push_back(id->token.text);
     }
     else if (id->kind == AstNodeKind::AffectOp)
     {
         id = id->childs.front();
         SWAG_ASSERT(id->extension->semanticAfterFct == SemanticJob::resolveAfterAffectLeft);
         id->extension->semanticAfterFct = SemanticJob::resolveWithAfterAffectLeft;
+        for (int i = 0; i < id->childs.size(); i++)
+            node->id.push_back(id->childs[i]->token.text);
     }
     else
     {
         SWAG_ASSERT(false);
     }
 
+    SWAG_CHECK(doEmbeddedStatement(node));
     return true;
 }
 

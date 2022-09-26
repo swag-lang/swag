@@ -754,30 +754,3 @@ void AstNode::setOwnerAttrUse(AstAttrUse* attrUse)
         break;
     }
 }
-
-vector<Utf8> AstWith::getIdName()
-{
-    vector<Utf8> n;
-
-    auto front = childs.front();
-    if (front->kind == AstNodeKind::IdentifierRef)
-    {
-        for (int i = 0; i < front->childs.size(); i++)
-            n.push_back(front->childs[i]->token.text);
-    }
-    else if (front->kind == AstNodeKind::VarDecl)
-    {
-        n.push_back(front->token.text);
-    }
-    else if (front->kind == AstNodeKind::AffectOp)
-    {
-        for (int i = 0; i < front->childs.front()->childs.size(); i++)
-            n.push_back(front->childs.front()->childs[i]->token.text);
-    }
-    else
-    {
-        SWAG_ASSERT(false);
-    }
-
-    return n;
-}
