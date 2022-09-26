@@ -298,42 +298,53 @@ impl LibraryWnd
 
     func create(parent: *MainWnd)->*LibraryWnd
     {
-        res := Wnd.create'LibraryWnd(parent, "captme.librarywnd")
-        res.main = parent
-        res.dockStyle = .Center
-        res.backgroundStyle = .View
+        with res := Wnd.create'LibraryWnd(parent, "captme.librarywnd")
+        {
+            .main = parent
+            .dockStyle = .Center
+            .backgroundStyle = .View
+        }
 
-        rightBar := Wnd.create'Wnd(res, @{0, 0, 300, 0})
-        rightBar.dockStyle = .Right
+        with rightBar := Wnd.create'Wnd(res, @{0, 0, 300, 0})
+        {
+            .dockStyle = .Right
+        }
 
-        scrollWnd := Wnd.create'ScrollWnd(res)
-        scrollWnd.dockStyle = .Center
+        with scrollWnd := Wnd.create'ScrollWnd(res)
+        {
+            .dockStyle = .Center
+        }
 
-        view := Wnd.create'LibraryView(scrollWnd)
-        view.libWnd = res
-        view.padding = 8
-        view.scrollWnd = scrollWnd
-        view.mainWnd = parent
+        with view := Wnd.create'LibraryView(scrollWnd)
+        {
+            .libWnd = res
+            .padding = 8
+            .scrollWnd = scrollWnd
+            .mainWnd = parent
+        }
+
         scrollWnd.setView(view)
         res.view = view
 
-        list := ListCtrl.createMultiColumns(rightBar)
-        list.addColumn("name", 200)
-        list.addColumn("count", 70)
-        list.listView.style.addStyleSheetColors("listItem_SelectedBk $listItem_FocusSelectedBk")
-        list.lineHeight = 30
-        list.listFlags |= .NoMouseEmptySel
-        list.scrollWnd.scrollWndFlags |= .SmallBar | .ForceVertical | .TransparentBar
-        list.header.hide()
-        list.backgroundStyle = .Window
-        list.listFlags |= .ForceMarginExpandMark
-        list.dockStyle = .Center
-        list.sigSelChanged += @|view|(list) {
-            sel := list.getSelectedLine()
-            if !sel return
-            view.filterYear = cast(uint) sel.userData0
-            view.filterMonth = cast(uint) sel.userData1
-            catch view.fill()
+        with list := ListCtrl.createMultiColumns(rightBar)
+        {
+            .addColumn("name", 200)
+            .addColumn("count", 70)
+            .listView.style.addStyleSheetColors("listItem_SelectedBk $listItem_FocusSelectedBk")
+            .lineHeight = 30
+            .listFlags |= .NoMouseEmptySel
+            .scrollWnd.scrollWndFlags |= .SmallBar | .ForceVertical | .TransparentBar
+            .header.hide()
+            .backgroundStyle = .Window
+            .listFlags |= .ForceMarginExpandMark
+            .dockStyle = .Center
+            .sigSelChanged += @|view|(list) {
+                sel := list.getSelectedLine()
+                if !sel return
+                view.filterYear = cast(uint) sel.userData0
+                view.filterMonth = cast(uint) sel.userData1
+                catch view.fill()
+            }
         }
         res.listCtrl = list
 

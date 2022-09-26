@@ -827,7 +827,7 @@ SWAG_ERROR(Err0832, "cannot negate number `%I64d` because `%I64u` is not in the 
 SWAG_ERROR(Err0833, "a bit inversion operation is not allowed on type `%s`")
 SWAG_ERROR(Err0834, "%s size overflow")
 SWAG_ERROR(Err0835, "expected an identifier, found symbol `%s`")
-SWAG_ERROR(Err0836, "usage of '.' as a statement is only valid inside a `with` block")
+SWAG_ERROR(Err0836, "usage of '.' in a statement is only valid inside a `with` block")
 SWAG_ERROR(Err0837, "unexpected symbol `%s` after the %s")
 SWAG_ERROR(Err0838, "type `Self` should not be used outside an `impl`, `struct` or `interface` block")
 SWAG_ERROR(Err0839, "unexpected symbol `%s` in a type declaration")

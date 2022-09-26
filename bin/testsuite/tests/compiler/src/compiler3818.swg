@@ -1,0 +1,15 @@
+#global testerror
+struct A
+{
+    x, y: s32
+}
+
+func toto()->A
+{
+    return @{}
+}
+
+func aa()
+{
+    x := .y
+}
