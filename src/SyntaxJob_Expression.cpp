@@ -1109,7 +1109,7 @@ bool SyntaxJob::doDefer(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool SyntaxJob::doLeftExpressionVar(AstNode* parent, AstNode** result, uint32_t identifierFlags)
+bool SyntaxJob::doLeftExpressionVar(AstNode* parent, AstNode** result, uint32_t identifierFlags, AstWith* withNode)
 {
     switch (token.id)
     {
@@ -1135,13 +1135,37 @@ bool SyntaxJob::doLeftExpressionVar(AstNode* parent, AstNode** result, uint32_t 
     case TokenId::SymBackTick:
     case TokenId::CompilerSelf:
     {
-        AstNode* exprNode = nullptr;
-        AstNode* multi    = nullptr;
+        AstNode* exprNode     = nullptr;
+        AstNode* multi        = nullptr;
+        bool     prePrendWith = withNode != nullptr;
         while (true)
         {
+            if (token.id == TokenId::SymDot)
+            {
+                SWAG_VERIFY(withNode, error(token, Err(Err0836)));
+                prePrendWith = true;
+                eatToken();
+            }
+
             SWAG_CHECK(doIdentifierRef(multi == nullptr ? parent : multi, &exprNode, identifierFlags));
             if (multi == nullptr)
                 Ast::removeFromParent(exprNode);
+
+            // Prepend the 'with' identifier
+            if (withNode && prePrendWith)
+            {
+                prePrendWith = false;
+                SWAG_ASSERT(exprNode->kind == AstNodeKind::IdentifierRef);
+                for (int wi = (int) withNode->id.size() - 1; wi >= 0; wi--)
+                {
+                    auto id = Ast::newIdentifier(sourceFile, withNode->id[wi], (AstIdentifierRef*) exprNode, exprNode, this);
+                    id->flags |= AST_GENERATED;
+                    id->specFlags |= AST_SPEC_IDENTIFIER_FROM_WITH;
+                    id->inheritTokenLocation(exprNode);
+                    exprNode->childs.pop_back();
+                    Ast::addChildFront(exprNode, id);
+                }
+            }
 
             if (token.id != TokenId::SymComma)
                 break;
@@ -1166,7 +1190,7 @@ bool SyntaxJob::doLeftExpressionVar(AstNode* parent, AstNode** result, uint32_t 
     return true;
 }
 
-bool SyntaxJob::doLeftExpressionAffect(AstNode* parent, AstNode** result)
+bool SyntaxJob::doLeftExpressionAffect(AstNode* parent, AstNode** result, AstWith* withNode)
 {
     switch (token.id)
     {
@@ -1178,7 +1202,7 @@ bool SyntaxJob::doLeftExpressionAffect(AstNode* parent, AstNode** result)
     case TokenId::Identifier:
     case TokenId::SymBackTick:
     case TokenId::CompilerSelf:
-        SWAG_CHECK(doLeftExpressionVar(parent, result));
+        SWAG_CHECK(doLeftExpressionVar(parent, result, 0, withNode));
         Ast::removeFromParent(*result);
         return true;
 
@@ -1205,23 +1229,8 @@ bool SyntaxJob::doLeftExpressionAffect(AstNode* parent, AstNode** result)
 bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result, AstWith* withNode)
 {
     AstNode* leftNode;
-    SWAG_CHECK(doLeftExpressionAffect(parent, &leftNode));
+    SWAG_CHECK(doLeftExpressionAffect(parent, &leftNode, withNode));
     Ast::removeFromParent(leftNode);
-
-    // Prepend the 'with' identifier
-    if (withNode)
-    {
-        SWAG_ASSERT(leftNode->kind == AstNodeKind::IdentifierRef);
-        for (int wi = (int) withNode->id.size() - 1; wi >= 0; wi--)
-        {
-            auto id = Ast::newIdentifier(sourceFile, withNode->id[wi], (AstIdentifierRef*) leftNode, leftNode, this);
-            id->flags |= AST_GENERATED;
-            id->specFlags |= AST_SPEC_IDENTIFIER_FROM_WITH;
-            id->inheritTokenLocation(leftNode);
-            leftNode->childs.pop_back();
-            Ast::addChildFront(leftNode, id);
-        }
-    }
 
     // Variable declaration and initialization by ':='
     if (token.id == TokenId::SymColonEqual)

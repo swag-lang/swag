@@ -197,8 +197,8 @@ struct SyntaxJob : public Job
     bool doContinue(AstNode* parent, AstNode** result = nullptr);
     bool doArrayPointerIndex(AstNode** exprNode);
     bool doLeftInstruction(AstNode* parent, AstNode** result = nullptr, AstWith* withNode = nullptr);
-    bool doLeftExpressionVar(AstNode* parent, AstNode** result, uint32_t identifierFlags = 0);
-    bool doLeftExpressionAffect(AstNode* parent, AstNode** result = nullptr);
+    bool doLeftExpressionVar(AstNode* parent, AstNode** result, uint32_t identifierFlags = 0, AstWith* withNode = nullptr);
+    bool doLeftExpressionAffect(AstNode* parent, AstNode** result = nullptr, AstWith* withNode = nullptr);
     bool doInit(AstNode* parent, AstNode** result = nullptr);
     bool doDropCopyMove(AstNode* parent, AstNode** result = nullptr);
     bool doRange(AstNode* parent, AstNode* expression, AstNode** result = nullptr);
