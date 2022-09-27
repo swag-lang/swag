@@ -1,18 +1,18 @@
 interface IForm
 {
-    paintGizmo:     mtd(*Painter, f32, FormFlags)
-    paint:          mtd(*Painter, f32, bool)
-    mouse:          mtd(*EditView, Math.Point, *MouseEvent)->bool
-    hitTest:        mtd(Math.Point, f32)->bool
-    boundRect:      mtd(bool)->Math.Rectangle
-    moveForm:       mtd(s32, s32)
-    moveBaseForm:   mtd(s32, s32, s32, s32)
-    setBaseForm:    mtd(s32, s32, s32, s32)
-    movePoint:      mtd(u32, s32, s32)
-    edit:           mtd(*MouseEvent, Math.Rectangle, Math.Point, Math.Point, f32)->bool
-    setup:          mtd(*Capture)
-    isSame:         mtd(*BaseForm)->bool
-    copy:           mtd(*BaseForm, *BaseForm)
+    mtd paintGizmo(painter: *Painter, z: f32, flags: FormFlags)
+    mtd paint(painter: *Painter, z: f32, quickMode: bool)
+    mtd mouse(view: *EditView, pos: Math.Point, evt: *MouseEvent)->bool
+    mtd hitTest(pt: Math.Point, z: f32)->bool
+    mtd boundRect(raw: bool)->Math.Rectangle
+    mtd moveForm(newPosX, newPosY: s32)
+    mtd moveBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
+    mtd setBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
+    mtd movePoint(pt: u32, newPosX, newPosY: s32)
+    mtd edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
+    mtd setup(capt: *Capture)
+    mtd isSame(ptr: *BaseForm)->bool
+    mtd copy(dst, src: *BaseForm)
 }
 
 #[Swag.EnumFlags]

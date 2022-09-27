@@ -11,9 +11,14 @@ struct Point3
 // Interfaces are virtual tables that can be associated to a struct
 interface IReset
 {
-    // The first parameter is always 'self', so you can either declare it
+    // You must declare a lambda variable for each "virtual" function.
+    // As the first parameter is always 'self', you can either declare it
     // yourself or use 'mtd/mtdc'
-    set: func(self, f32)
+    set: mtd(f32)
+
+    // You can also use the normal "func/mtd" declaration.
+    // The compiler will then create the table entry for you.
+    mtd reset()
 }
 
 // You can implement an interface for any given struct with 'impl' and 'for'
@@ -25,6 +30,11 @@ impl IReset for Point2
         x = val
         y = val+1
     }
+
+    mtd reset()
+    {
+        x, y = 0
+    }
 }
 
 // And we implement interface 'IReset' also for struct 'Point3'.
@@ -35,6 +45,11 @@ impl IReset for Point3
         x = val
         y = val+1
         z = val+2
+    }
+
+    mtd reset()
+    {
+        x, y, z = 0
     }
 }
 
@@ -54,6 +69,8 @@ impl IReset for Point3
     @assert(pt3.x == 10)
     @assert(pt3.y == 10+1)
     @assert(pt3.z == 10+2)
+    itf.reset()
+    @assert(pt3.x == 0 and pt3.y == 0)
 
     // An interface is a real type, with a size equivalent to 2 pointers
     #assert @sizeof(itf) == 2 * @sizeof(*void)

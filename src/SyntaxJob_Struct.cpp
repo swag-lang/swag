@@ -489,6 +489,61 @@ bool SyntaxJob::doStructBody(AstNode* parent, SyntaxStructType structType, AstNo
         return sourceFile->report({parent, token, Err(Err0453)});
     }
 
+    case TokenId::KwdMethod:
+    case TokenId::KwdConstMethod:
+    case TokenId::KwdFunc:
+    {
+        SWAG_VERIFY(structType == SyntaxStructType::Interface, error(token, Err(Err0484)));
+
+        auto kind = token.id;
+        SWAG_CHECK(eatToken());
+
+        auto funcNode = Ast::newNode<AstFuncDecl>(this, AstNodeKind::FuncDecl, sourceFile, nullptr);
+        SWAG_CHECK(checkIsValidUserName(funcNode));
+        SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Err0414), token.ctext())));
+        SWAG_CHECK(eatToken());
+
+        auto scope = Ast::newScope(funcNode, "", ScopeKind::Function, nullptr);
+
+        {
+            Scoped scoped(this, scope);
+            SWAG_CHECK(doFuncDeclParameters(funcNode,
+                                            &funcNode->parameters,
+                                            false,
+                                            nullptr,
+                                            kind == TokenId::KwdMethod || kind == TokenId::KwdConstMethod,
+                                            kind == TokenId::KwdConstMethod,
+                                            true));
+        }
+
+        ScopedFlags scopedFlags(this, AST_STRUCT_MEMBER);
+        auto        varNode = Ast::newVarDecl(sourceFile, funcNode->token.text, parent, this);
+        varNode->inheritTokenLocation(funcNode->token);
+        SemanticJob::setVarDeclResolve(varNode);
+        varNode->flags |= AST_R_VALUE;
+
+        auto typeNode         = Ast::newNode<AstTypeLambda>(this, AstNodeKind::TypeLambda, sourceFile, varNode);
+        typeNode->semanticFct = SemanticJob::resolveTypeLambdaClosure;
+        varNode->type         = typeNode;
+        Ast::removeFromParent(funcNode->parameters);
+        Ast::addChildFront(typeNode, funcNode->parameters);
+        typeNode->parameters = funcNode->parameters;
+
+        if (token.id == TokenId::SymMinusGreat)
+        {
+            SWAG_CHECK(eatToken());
+            SWAG_CHECK(doTypeExpression(typeNode, &typeNode->returnType));
+        }
+
+        if (token.id == TokenId::KwdThrow)
+        {
+            SWAG_CHECK(eatToken(TokenId::KwdThrow));
+            typeNode->specFlags |= AST_SPEC_TYPELAMBDA_CANTHROW;
+        }
+
+        break;
+    }
+
     // A normal declaration
     default:
     {

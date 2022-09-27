@@ -119,7 +119,7 @@ void TypeInfoReference::computeWhateverName(Utf8& resName, uint32_t nameType)
 {
     if (flags & TYPEINFO_CONST)
         resName += "const ";
-    if (nameType != COMPUTE_DISPLAY_NAME)
+    if (nameType != COMPUTE_DISPLAY_NAME && nameType != COMPUTE_SCOPED_NAME_EXPORT)
         resName += "&";
     resName += pointedType->computeWhateverName(nameType);
 }

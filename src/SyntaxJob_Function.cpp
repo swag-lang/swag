@@ -307,7 +307,7 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, boo
     return true;
 }
 
-bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result, bool acceptMissingType, bool* hasMissingType, bool isMethod, bool isConstMethod)
+bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result, bool acceptMissingType, bool* hasMissingType, bool isMethod, bool isConstMethod, bool isItfMethod)
 {
     SWAG_CHECK(verifyError(token, token.id != TokenId::SymLeftCurly, Err(Err0883)));
 
@@ -329,12 +329,15 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result, bool acc
         if (isMethod || isConstMethod)
         {
             auto paramNode = Ast::newVarDecl(sourceFile, "", allParams, this, AstNodeKind::FuncDeclParam);
-            paramNode->flags |= AST_DECL_USING;
+            if (!isItfMethod)
+                paramNode->flags |= AST_DECL_USING;
             paramNode->specFlags |= AST_SPEC_DECLPARAM_GENERATED_SELF;
             paramNode->token.text = g_LangSpec->name_self;
             auto typeNode         = Ast::newTypeExpression(sourceFile, paramNode);
             typeNode->ptrCount    = 1;
-            typeNode->typeFlags   = TYPEFLAG_ISSELF | TYPEFLAG_USING;
+            typeNode->typeFlags   = TYPEFLAG_ISSELF;
+            if (!isItfMethod)
+                typeNode->typeFlags |= TYPEFLAG_USING;
             if (isConstMethod)
                 typeNode->typeFlags |= TYPEFLAG_ISCONST;
             typeNode->identifier = Ast::newIdentifierRef(sourceFile, paramNode->ownerStructScope->name, typeNode, this);
