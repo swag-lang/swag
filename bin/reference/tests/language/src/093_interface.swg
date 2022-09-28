@@ -16,7 +16,7 @@ interface IReset
     // yourself or use 'mtd/mtdc'
     set: mtd(f32)
 
-    // You can also use the normal "func/mtd" declaration.
+    // You can also use the normal "func/mtd/mtdc" declaration.
     // The compiler will then create the table entry for you.
     mtd reset()
 }
@@ -71,6 +71,14 @@ impl IReset for Point3
     @assert(pt3.z == 10+2)
     itf.reset()
     @assert(pt3.x == 0 and pt3.y == 0)
+
+    // You can also access, with a normal call, all functions declared in an interface
+    // implementation block for a given struct.
+    // They are located in dedicated scope.
+    pt2.IReset.set(10)
+    pt2.IReset.reset()
+    pt3.IReset.set(10)
+    pt3.IReset.reset()
 
     // An interface is a real type, with a size equivalent to 2 pointers
     #assert @sizeof(itf) == 2 * @sizeof(*void)
