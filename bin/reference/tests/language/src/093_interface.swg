@@ -1,3 +1,9 @@
+// Interfaces are 'virtual tables' (a list of function pointers) that can be associated to a struct.
+// Unlike c++, the virtual table is not embedded with the struct. It is a separate
+// object.
+// You can then 'implement' an interface for a given struct without changing the struct
+// definition.
+
 struct Point2
 {
     x, y: f32
@@ -8,7 +14,7 @@ struct Point3
     x, y, z: f32
 }
 
-// Interfaces are virtual tables that can be associated to a struct
+// Here we declare an interface, with two functions 'set' and 'reset'.
 interface IReset
 {
     // You must declare a lambda variable for each "virtual" function.
@@ -58,7 +64,8 @@ impl IReset for Point3
     var pt2: Point2
     var pt3: Point3
 
-    // To get the interface associated to a given struct, use the 'cast' operator
+    // To get the interface associated to a given struct, use the 'cast' operator.
+    // If the compiler does not find the corresponding implementation, it will raise an error.
     itf := cast(IReset) pt2
     itf.set(10)
     @assert(pt2.x == 10)
@@ -74,7 +81,7 @@ impl IReset for Point3
 
     // You can also access, with a normal call, all functions declared in an interface
     // implementation block for a given struct.
-    // They are located in dedicated scope.
+    // They are located in a dedicated scope.
     pt2.IReset.set(10)
     pt2.IReset.reset()
     pt3.IReset.set(10)

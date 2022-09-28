@@ -96,7 +96,7 @@ impl IWnd for LibraryView
 
         visit &it, i: items
         {
-            // Retreive the loaded capture if it exists
+            // Retrieve the loaded capture if it exists
             if !it.capture
             {
                 visit l, idx: copyLoaded
