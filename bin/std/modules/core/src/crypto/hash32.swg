@@ -3,7 +3,7 @@ using Swag
 
 public interface IHash32
 {
-    compute: mtdc()->u32
+    mtdc compute()->u32
 }
 
 // Hash the given value and returns the corresponding u32

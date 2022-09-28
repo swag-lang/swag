@@ -503,7 +503,7 @@ bool SyntaxJob::doStructBody(AstNode* parent, SyntaxStructType structType, AstNo
         SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Err0414), token.ctext())));
         SWAG_CHECK(eatToken());
 
-        auto scope = Ast::newScope(funcNode, "", ScopeKind::Function, nullptr);
+        auto scope = Ast::newScope(funcNode, "", ScopeKind::Function, parent->ownerStructScope);
 
         {
             Scoped scoped(this, scope);

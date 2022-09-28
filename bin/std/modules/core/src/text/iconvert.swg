@@ -4,6 +4,6 @@ namespace StrConv
 {
     interface IConvert
     {
-        convert: mtd(*ConcatBuffer, const *ConvertFormat, string)
+        mtd convert(buf: *ConcatBuffer, fmt: const *ConvertFormat, strFormat: string)
     }
 }

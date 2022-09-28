@@ -9,8 +9,8 @@ struct ImageEncoder
 // Interface to decode a buffer
 public interface IImageEncoder
 {
-    canEncode:  func(self, string)->bool
-    encode:     func(self, *ConcatBuffer, Image, any) throw
+    mtd canEncode(filename: string)->bool
+    mtd encode(buf: *ConcatBuffer, img: Image, opt: any) throw
 }
 
 public impl Image

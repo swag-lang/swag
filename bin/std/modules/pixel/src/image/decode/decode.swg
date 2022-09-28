@@ -16,8 +16,8 @@ public struct DecodeOptions
 // Interface to decode a buffer
 public interface IImageDecoder
 {
-    canDecode:  func(self, string)->bool
-    decode:     func(self, const [..] u8, DecodeOptions)->Image throw
+    mtd canDecode(filename: string)->bool
+    mtd decode(buf: const [..] u8, opt: DecodeOptions)->Image throw
 }
 
 impl Image
