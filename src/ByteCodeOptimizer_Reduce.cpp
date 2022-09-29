@@ -1951,6 +1951,21 @@ void ByteCodeOptimizer::reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruct
     {
         switch (ip->op)
         {
+        case ByteCodeOp::IncPointer64:
+            if (ip->b.u64 == 0)
+            {
+                if (ip->a.u32 == ip->c.u32)
+                    setNop(context, ip);
+                else
+                {
+                    SET_OP(ip, ByteCodeOp::CopyRBtoRA64);
+                    ip->b.u64 = ip->a.u64;
+                    ip->a.u64 = ip->c.u64;
+                    ip->flags &= ~BCI_IMM_B;
+                }
+            }
+            break;
+
         case ByteCodeOp::AffectOpDivEqS8:
         case ByteCodeOp::AffectOpMulEqS8:
             if (ip->b.u8 == 1)
