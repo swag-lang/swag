@@ -524,11 +524,69 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
         break;
 
     case ByteCodeOp::CopyStack8:
+        if (ip->a.u32 == ip->b.u32)
+        {
+            setNop(context, ip);
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::CopyStack8 &&
+            !(ip[1].flags & BCI_START_STMT) &&
+            ip[1].a.u32 == ip[0].a.u32 + 1 &&
+            ip[1].b.u32 == ip[0].b.u32 + 1)
+        {
+            SET_OP(ip, ByteCodeOp::CopyStack16);
+            setNop(context, ip + 1);
+            break;
+        }
+
+        break;
+
     case ByteCodeOp::CopyStack16:
+        if (ip->a.u32 == ip->b.u32)
+        {
+            setNop(context, ip);
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::CopyStack16 &&
+            !(ip[1].flags & BCI_START_STMT) &&
+            ip[1].a.u32 == ip[0].a.u32 + 2 &&
+            ip[1].b.u32 == ip[0].b.u32 + 2)
+        {
+            SET_OP(ip, ByteCodeOp::CopyStack32);
+            setNop(context, ip + 1);
+            break;
+        }
+
+        break;
+
     case ByteCodeOp::CopyStack32:
+        if (ip->a.u32 == ip->b.u32)
+        {
+            setNop(context, ip);
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::CopyStack32 &&
+            !(ip[1].flags & BCI_START_STMT) &&
+            ip[1].a.u32 == ip[0].a.u32 + 4 &&
+            ip[1].b.u32 == ip[0].b.u32 + 4)
+        {
+            SET_OP(ip, ByteCodeOp::CopyStack64);
+            setNop(context, ip + 1);
+            break;
+        }
+
+        break;
+
     case ByteCodeOp::CopyStack64:
         if (ip->a.u32 == ip->b.u32)
+        {
             setNop(context, ip);
+            break;
+        }
+
         break;
 
     case ByteCodeOp::GetFromStack8:
