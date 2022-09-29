@@ -70,8 +70,6 @@ TODO
 ****************************************
 
 -------------------------------------
-debuger, pouvoir mettre $r0 dans une expression évaluée, pour pouvoir faire x $r0 + 10 par exemple, ou cast(*Struct) $sp + 32
--------------------------------------
 erreur si opDrop est privé et la struct publique (on doit exporter)
 -------------------------------------
 on doit exporter les implementation d'interface pour un truc public ?

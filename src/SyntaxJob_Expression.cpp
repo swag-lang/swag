@@ -1344,70 +1344,46 @@ bool SyntaxJob::doAffectExpression(AstNode* parent, AstNode** result, AstWith* w
             AstNode* assignment;
             SWAG_CHECK(doExpression(nullptr, EXPR_FLAG_NONE, &assignment));
 
-            // If right side is an expression list, then simply convert to a bunch of affectations without
-            // dealing with a tuple...
-            if (assignment->kind == AstNodeKind::ExpressionList)
+            // Generate an expression of the form "var __tmp_0 = assignment"
+            auto        tmpVarName = Fmt("__4tmp_%d", g_UniqueID.fetch_add(1));
+            AstVarDecl* varNode    = Ast::newVarDecl(sourceFile, tmpVarName, parentNode, this);
+            varNode->flags |= AST_GENERATED | AST_HAS_FULL_STRUCT_PARAMETERS;
+            Ast::addChildBack(varNode, assignment);
+            assignment->inheritOwners(varNode);
+            varNode->assignment = assignment;
+            varNode->assignment->flags |= AST_NO_LEFT_DROP;
+
+            varNode->token.startLocation = leftNode->childs.front()->token.startLocation;
+            varNode->token.endLocation   = leftNode->childs.back()->token.endLocation;
+            varNode->allocateExtension();
+            varNode->extension->semanticAfterFct = SemanticJob::resolveTupleUnpackBefore;
+
+            // And reference that variable, in the form value = __tmp_0.item?
+            int idx = 0;
+            while (!leftNode->childs.empty())
             {
-                SWAG_VERIFY(leftNode->childs.size() == assignment->childs.size(), error(assignment, Fmt(Err(Err0282), leftNode->childs.size(), assignment->childs.size())));
-                while (!leftNode->childs.empty())
+                auto child = leftNode->childs.front();
+
+                // Ignore field if '?', otherwise check that this is a valid variable name
+                if (child->childs.front()->token.text == '?')
                 {
-                    auto child             = leftNode->childs.front();
-                    auto affectNode        = Ast::newAffectOp(sourceFile, parentNode, opFlags, opAttrFlags);
-                    affectNode->token.id   = savedtoken.id;
-                    affectNode->token.text = savedtoken.text;
+                    idx++;
                     Ast::removeFromParent(child);
-                    Ast::addChildBack(affectNode, child);
-                    forceTakeAddress(child);
-                    auto assign = assignment->childs[0];
-                    Ast::removeFromParent(assign);
-                    Ast::addChildBack(affectNode, assign);
-                    leftNode->flags |= AST_NO_SEMANTIC;
-                    assignment->flags |= AST_NO_SEMANTIC;
+                    Ast::addChildBack(parentNode, child);
+                    child->flags |= AST_NO_SEMANTIC | AST_NO_BYTECODE;
+                    continue;
                 }
-            }
-            else
-            {
-                // Generate an expression of the form "var __tmp_0 = assignment"
-                auto        tmpVarName = Fmt("__4tmp_%d", g_UniqueID.fetch_add(1));
-                AstVarDecl* varNode    = Ast::newVarDecl(sourceFile, tmpVarName, parentNode, this);
-                varNode->flags |= AST_GENERATED | AST_HAS_FULL_STRUCT_PARAMETERS;
-                Ast::addChildBack(varNode, assignment);
-                assignment->inheritOwners(varNode);
-                varNode->assignment = assignment;
-                varNode->assignment->flags |= AST_NO_LEFT_DROP;
 
-                varNode->token.startLocation = leftNode->childs.front()->token.startLocation;
-                varNode->token.endLocation   = leftNode->childs.back()->token.endLocation;
-                varNode->allocateExtension();
-                varNode->extension->semanticAfterFct = SemanticJob::resolveTupleUnpackBefore;
+                auto affectNode        = Ast::newAffectOp(sourceFile, parentNode, opFlags, opAttrFlags);
+                affectNode->token.id   = savedtoken.id;
+                affectNode->token.text = savedtoken.text;
+                Ast::removeFromParent(child);
+                Ast::addChildBack(affectNode, child);
+                forceTakeAddress(child);
+                auto idRef = Ast::newIdentifierRef(sourceFile, Fmt("%s.item%d", tmpVarName.c_str(), idx++), affectNode, this);
 
-                // And reference that variable, in the form value = __tmp_0.item?
-                int idx = 0;
-                while (!leftNode->childs.empty())
-                {
-                    auto child = leftNode->childs.front();
-
-                    // Ignore field if '?', otherwise check that this is a valid variable name
-                    if (child->childs.front()->token.text == '?')
-                    {
-                        idx++;
-                        Ast::removeFromParent(child);
-                        Ast::addChildBack(parentNode, child);
-                        child->flags |= AST_NO_SEMANTIC | AST_NO_BYTECODE;
-                        continue;
-                    }
-
-                    auto affectNode        = Ast::newAffectOp(sourceFile, parentNode, opFlags, opAttrFlags);
-                    affectNode->token.id   = savedtoken.id;
-                    affectNode->token.text = savedtoken.text;
-                    Ast::removeFromParent(child);
-                    Ast::addChildBack(affectNode, child);
-                    forceTakeAddress(child);
-                    auto idRef = Ast::newIdentifierRef(sourceFile, Fmt("%s.item%d", tmpVarName.c_str(), idx++), affectNode, this);
-
-                    // Force a move between the generated temporary variable and the real var
-                    idRef->flags |= AST_FORCE_MOVE;
-                }
+                // Force a move between the generated temporary variable and the real var
+                idRef->flags |= AST_FORCE_MOVE;
             }
         }
 
