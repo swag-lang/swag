@@ -34,7 +34,6 @@ struct ListLine
 {
     colorBk:            Color
     colorFg:            Color
-    userData:           *void
     forceExpandMark:    bool
     checkable:          bool
     iconMargin:         bool
