@@ -1,7 +1,3 @@
-	/* salut la foule
-		/* */
-	*/
-
 //#[Swag.PrintBc]
 #test
 {
