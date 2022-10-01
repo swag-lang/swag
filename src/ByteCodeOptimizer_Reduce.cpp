@@ -1641,6 +1641,17 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
             ip[1].b.u64 = 0xFF;
             break;
         }
+
+        if ((ip[1].op == ByteCodeOp::SetAtStackPointer8 || ip[1].op == ByteCodeOp::SetAtStackPointer16 || ip[1].op == ByteCodeOp::SetAtStackPointer32 || ip[1].op == ByteCodeOp::SetAtStackPointer64) &&
+            (ip->flags & BCI_IMM_B) &&
+            (ip[1].flags & BCI_IMM_B) &&
+            (ip->a.u32 == ip[1].a.u32) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            setNop(context, ip);
+            break;
+        }
+
         break;
 
     case ByteCodeOp::SetAtStackPointer16:
@@ -1672,6 +1683,17 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
             ip[1].b.u64 = 0xFFFF;
             break;
         }
+
+        if ((ip[1].op == ByteCodeOp::SetAtStackPointer16 || ip[1].op == ByteCodeOp::SetAtStackPointer32 || ip[1].op == ByteCodeOp::SetAtStackPointer64) &&
+            (ip->flags & BCI_IMM_B) &&
+            (ip[1].flags & BCI_IMM_B) &&
+            (ip->a.u32 == ip[1].a.u32) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            setNop(context, ip);
+            break;
+        }
+
         break;
 
     case ByteCodeOp::SetAtStackPointer32:
@@ -1715,6 +1737,17 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
             setNop(context, ip + 1);
             break;
         }
+
+        if ((ip[1].op == ByteCodeOp::SetAtStackPointer32 || ip[1].op == ByteCodeOp::SetAtStackPointer64) &&
+            (ip->flags & BCI_IMM_B) &&
+            (ip[1].flags & BCI_IMM_B) &&
+            (ip->a.u32 == ip[1].a.u32) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            setNop(context, ip);
+            break;
+        }
+
         break;
 
     case ByteCodeOp::SetAtStackPointer64:
@@ -1743,6 +1776,16 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
             !(ip[1].flags & BCI_START_STMT))
         {
             setNop(context, ip + 1);
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::SetAtStackPointer64 &&
+            (ip->flags & BCI_IMM_B) &&
+            (ip[1].flags & BCI_IMM_B) &&
+            (ip->a.u32 == ip[1].a.u32) &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            setNop(context, ip);
             break;
         }
         break;
