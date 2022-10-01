@@ -615,7 +615,6 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     SWAG_CHECK(AstOutput::outputNode(outputContext, concat, node->expression));
     concat.addU8(0);
     SWAG_ASSERT(concat.firstBucket->nextBucket == nullptr);
-    node->expression->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
 
     AstNode* newVar        = nullptr;
     int      firstAliasVar = 0;
@@ -629,7 +628,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
 
         auto varDecl        = Ast::newVarDecl(sourceFile, Utf8::format("__tmp%u", id), node);
         varDecl->assignment = Ast::newIntrinsicProp(sourceFile, TokenId::IntrinsicDataOf, varDecl);
-        Ast::clone(node->expression, varDecl->assignment, 0, AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS);
+        Ast::clone(node->expression, varDecl->assignment);
         newVar = varDecl;
 
         firstAliasVar = 2;
@@ -659,7 +658,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
 
         auto varDecl        = Ast::newVarDecl(sourceFile, Utf8::format("__addr%u", id), node);
         varDecl->assignment = Ast::newIntrinsicProp(sourceFile, TokenId::IntrinsicDataOf, varDecl);
-        Ast::clone(node->expression, varDecl->assignment, 0, AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS);
+        Ast::clone(node->expression, varDecl->assignment);
         newVar = varDecl;
 
         firstAliasVar = 1;
@@ -685,7 +684,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         auto pointedType = typeSlice->pointedType;
 
         auto varDecl        = Ast::newVarDecl(sourceFile, Utf8::format("__tmp%u", id), node);
-        varDecl->assignment = Ast::clone(node->expression, varDecl, 0, AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS);
+        varDecl->assignment = Ast::clone(node->expression, varDecl);
         newVar              = varDecl;
 
         firstAliasVar = 1;
@@ -709,7 +708,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     else if (typeInfo->isNative(NativeTypeKind::String))
     {
         auto varDecl        = Ast::newVarDecl(sourceFile, Utf8::format("__tmp%u", id), node);
-        varDecl->assignment = Ast::clone(node->expression, varDecl, 0, AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS);
+        varDecl->assignment = Ast::clone(node->expression, varDecl);
         newVar              = varDecl;
 
         firstAliasVar = 1;
@@ -775,6 +774,8 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         PushErrHint errh(Hnt(Hnt0006));
         return context->report(node->expression, Fmt(Err(Err0629), typeInfo->getDisplayNameC()));
     }
+
+    node->expression->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
 
     SyntaxJob syntaxJob;
     syntaxJob.module = context->sourceFile->module;
