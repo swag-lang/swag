@@ -1066,7 +1066,7 @@ static void printContextInstruction(ByteCodeRunContext* context)
         newFunc = context->debugCxtIp->node->ownerFct;
     }
 
-    if (newFunc != context->debugStepLastFunc)
+    if (newFunc && newFunc != context->debugStepLastFunc)
     {
         if (isInlined)
             g_Log.printColor(Fmt("=> inlined function %s\n", newFunc->getScopedName().c_str()), LogColor::Yellow);
