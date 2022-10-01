@@ -323,41 +323,37 @@ void ByteCodeOptimizer::reduceMemcpy(ByteCodeOptContext* context, ByteCodeInstru
         case ByteCodeOp::MemCpy8:
         {
             auto ptr = context->bc->sourceFile->module->constantSegment.address(ip->b.u32);
-            SET_OP(ip + 1, ByteCodeOp::SetAtStackPointer8);
-            ip[1].a.u64 = ip[1].b.u64;
-            ip[1].b.u64 = *(uint8_t*) ptr;
-            ip[1].flags |= BCI_IMM_B;
-            setNop(context, ip + 2);
+            SET_OP(ip + 2, ByteCodeOp::SetAtStackPointer8);
+            ip[2].a.u64 = ip[1].b.u64;
+            ip[2].b.u64 = *(uint8_t*) ptr;
+            ip[2].flags |= BCI_IMM_B;
             break;
         }
         case ByteCodeOp::MemCpy16:
         {
             auto ptr = context->bc->sourceFile->module->constantSegment.address(ip->b.u32);
-            SET_OP(ip + 1, ByteCodeOp::SetAtStackPointer16);
-            ip[1].a.u64 = ip[1].b.u64;
-            ip[1].b.u64 = *(uint16_t*) ptr;
-            ip[1].flags |= BCI_IMM_B;
-            setNop(context, ip + 2);
+            SET_OP(ip + 2, ByteCodeOp::SetAtStackPointer16);
+            ip[2].a.u64 = ip[1].b.u64;
+            ip[2].b.u64 = *(uint16_t*) ptr;
+            ip[2].flags |= BCI_IMM_B;
             break;
         }
         case ByteCodeOp::MemCpy32:
         {
             auto ptr = context->bc->sourceFile->module->constantSegment.address(ip->b.u32);
-            SET_OP(ip + 1, ByteCodeOp::SetAtStackPointer32);
-            ip[1].a.u64 = ip[1].b.u64;
-            ip[1].b.u64 = *(uint32_t*) ptr;
-            ip[1].flags |= BCI_IMM_B;
-            setNop(context, ip + 2);
+            SET_OP(ip + 2, ByteCodeOp::SetAtStackPointer32);
+            ip[2].a.u64 = ip[1].b.u64;
+            ip[2].b.u64 = *(uint32_t*) ptr;
+            ip[2].flags |= BCI_IMM_B;
             break;
         }
         case ByteCodeOp::MemCpy64:
         {
             auto ptr = context->bc->sourceFile->module->constantSegment.address(ip->b.u32);
-            SET_OP(ip + 1, ByteCodeOp::SetAtStackPointer64);
-            ip[1].a.u64 = ip[1].b.u64;
-            ip[1].b.u64 = *(uint64_t*) ptr;
-            ip[1].flags |= BCI_IMM_B;
-            setNop(context, ip + 2);
+            SET_OP(ip + 2, ByteCodeOp::SetAtStackPointer64);
+            ip[2].a.u64 = ip[1].b.u64;
+            ip[2].b.u64 = *(uint64_t*) ptr;
+            ip[2].flags |= BCI_IMM_B;
             break;
         }
         }

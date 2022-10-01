@@ -15,8 +15,6 @@
 #include "Workspace.h"
 #include "ThreadManager.h"
 
-#pragma optimize("", off)
-
 struct EvaluateResult
 {
     TypeInfo*      type  = nullptr;
