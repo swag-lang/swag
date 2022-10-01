@@ -183,8 +183,7 @@ impl Array
         // Need to drop every structs
         #if Reflection.hasDrop(T)
         {
-            loop count
-                @drop(buffer + @index)
+            @drop(buffer, count)
         }
 
         Memory.free(buffer, capacity * @sizeof(T), allocator)
