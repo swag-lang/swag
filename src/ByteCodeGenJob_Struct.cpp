@@ -1034,6 +1034,16 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context, TypeInfoPointer* type
 
             ensureCanBeChangedRC(context, rExpr);
             auto startLoop = context->bc->numInstructions;
+
+            // Dynamic loop
+            uint32_t jumpAfter = 0;
+            if (numToInit == 0)
+            {
+                jumpAfter = context->bc->numInstructions;
+                emitInstruction(context, ByteCodeOp::JumpIfZero64, count->resultRegisterRC);
+                emitInstruction(context, ByteCodeOp::DecrementRA64, count->resultRegisterRC);
+            }
+
             emitInstruction(context, ByteCodeOp::PushRAParam, rExpr);
             SWAG_ASSERT(typeStruct->opInit || typeStruct->opUserInitFct);
             emitOpCallUser(context, typeStruct->opUserInitFct, typeStruct->opInit, false);
@@ -1043,10 +1053,10 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context, TypeInfoPointer* type
             {
                 auto inst = emitInstruction(context, ByteCodeOp::IncPointer64, rExpr, 0, rExpr);
                 inst->flags |= BCI_IMM_B;
-                inst->b.u64 = typeStruct->sizeOf;
-                emitInstruction(context, ByteCodeOp::DecrementRA64, count->resultRegisterRC);
-                auto instJump   = emitInstruction(context, ByteCodeOp::JumpIfNotZero64, count->resultRegisterRC);
-                instJump->b.s32 = startLoop - context->bc->numInstructions;
+                inst->b.u64                       = typeStruct->sizeOf;
+                auto instJump                     = emitInstruction(context, ByteCodeOp::Jump);
+                instJump->b.s32                   = startLoop - context->bc->numInstructions;
+                context->bc->out[jumpAfter].b.s32 = context->bc->numInstructions - jumpAfter - 1;
             }
 
             // Constant loop
@@ -1067,16 +1077,27 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context, TypeInfoPointer* type
         auto child = parameters->childs.front();
         ensureCanBeChangedRC(context, rExpr);
         auto startLoop = context->bc->numInstructions;
+
+        uint32_t jumpAfter = 0;
+        if (numToInit != 1)
+        {
+            jumpAfter = context->bc->numInstructions;
+            emitInstruction(context, ByteCodeOp::JumpIfZero64, count->resultRegisterRC);
+            emitInstruction(context, ByteCodeOp::DecrementRA64, count->resultRegisterRC);
+        }
+
         SWAG_CHECK(emitAffectEqual(context, rExpr, child->resultRegisterRC, child->typeInfo, child));
         SWAG_ASSERT(context->result == ContextResult::Done);
+
         if (numToInit != 1)
         {
             auto inst = emitInstruction(context, ByteCodeOp::IncPointer64, rExpr, 0, rExpr);
             inst->flags |= BCI_IMM_B;
             inst->b.u64 = typeExpression->pointedType->sizeOf;
-            emitInstruction(context, ByteCodeOp::DecrementRA64, count->resultRegisterRC);
-            auto instJump   = emitInstruction(context, ByteCodeOp::JumpIfNotZero64, count->resultRegisterRC);
-            instJump->b.s32 = startLoop - context->bc->numInstructions;
+
+            auto instJump                     = emitInstruction(context, ByteCodeOp::Jump);
+            instJump->b.s32                   = startLoop - context->bc->numInstructions;
+            context->bc->out[jumpAfter].b.s32 = context->bc->numInstructions - jumpAfter - 1;
         }
     }
     else
@@ -1086,6 +1107,14 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context, TypeInfoPointer* type
         ensureCanBeChangedRC(context, rExpr);
 
         auto startLoop = context->bc->numInstructions;
+
+        uint32_t jumpAfter = 0;
+        if (numToInit != 1)
+        {
+            jumpAfter = context->bc->numInstructions;
+            emitInstruction(context, ByteCodeOp::JumpIfZero64, count->resultRegisterRC);
+            emitInstruction(context, ByteCodeOp::DecrementRA64, count->resultRegisterRC);
+        }
 
         for (auto child : parameters->childs)
         {
@@ -1104,9 +1133,9 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context, TypeInfoPointer* type
             inst->b.u64 = typeExpression->pointedType->sizeOf;
             inst->flags |= BCI_IMM_B;
 
-            emitInstruction(context, ByteCodeOp::DecrementRA64, count->resultRegisterRC);
-            auto instJump   = emitInstruction(context, ByteCodeOp::JumpIfNotZero64, count->resultRegisterRC);
-            instJump->b.s32 = startLoop - context->bc->numInstructions;
+            auto instJump                     = emitInstruction(context, ByteCodeOp::Jump);
+            instJump->b.s32                   = startLoop - context->bc->numInstructions;
+            context->bc->out[jumpAfter].b.s32 = context->bc->numInstructions - jumpAfter - 1;
         }
 
         for (auto child : parameters->childs)

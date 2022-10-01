@@ -13,7 +13,7 @@ struct A
 
     count := 1
     count -= 1
-    @init(&x[0], count)
+    @init(&x[0], count)(55)
 
     @assert(x[0].x == 1)
     @assert(x[1].x == 2)
