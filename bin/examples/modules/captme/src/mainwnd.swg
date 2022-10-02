@@ -94,6 +94,12 @@ impl IWnd for MainWnd
 
         switch evt.id
         {
+        case CmdIdNewFromClipboard:
+            evt.setFlags |= .Name | .Disabled
+            evt.name = "New From Clipboard"
+            evt.disabled = !Clipboard.hasImage()
+            evt.accepted = true
+
         case CmdIdExit:
             evt.setFlags |= .Name
             evt.name = "Exit"
@@ -385,6 +391,11 @@ impl IWnd for MainWnd
         var undo: *Undo
         switch evt.id
         {
+        case CmdIdNewFromClipboard:
+            img := Clipboard.getImage()
+            if img.isValid()
+                newCapture(img)
+
         case CmdIdExit:
             postQuitEvent()
 
@@ -608,6 +619,8 @@ impl MainWnd
 
         with fileMenu := MenuCtrl.createPopup(parent, owner: self)
         {
+            .addItem(CmdIdNewFromClipboard)
+            .addSeparator()
             .addItem(CmdIdExit)
             topMenu.addPopup("File", fileMenu)
         }
@@ -742,14 +755,8 @@ impl MainWnd
         return editWnd.editView.capture
     }
 
-    mtd captureScreen()
+    mtd newCapture(img: Image)
     {
-        surface.hide()
-        img := catch screenShot()
-        surface.show()
-        if @err or img.width == 0 or img.height == 0
-            return
-
         with capture := Memory.new'Capture()
         {
             .changed = true
@@ -774,6 +781,16 @@ impl MainWnd
             swapLibraryMode()
             updateState()
         }
+    }
+
+    mtd captureScreen()
+    {
+        surface.hide()
+        img := catch screenShot()
+        surface.show()
+        if @err or img.width == 0 or img.height == 0
+            return
+        newCapture(img)
     }
 
     mtd updateZoomDisplay()
