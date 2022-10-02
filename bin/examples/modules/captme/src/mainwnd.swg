@@ -642,12 +642,14 @@ impl MainWnd
     {
         mtd createBtn(id: WndId)
         {
-            b := IconButton.create(editToolBar, position: @{0, 0, 60, 64})
-            b.id = #self.id
-            b.style.addStyleSheetColors("btnIcon_CheckedBk    $btnIcon_HotBk")
-            b.style.addStyleSheetColors("btnIcon_CheckedHotBk $btnIcon_HotBk")
-            b.iconBtnFlags |= .Checkable
-            b.checkedForm = .Bottom
+            with b := IconButton.create(editToolBar, position: @{0, 0, 60, 64})
+            {
+                .id = #self.id
+                .style.addStyleSheetColors("btnIcon_CheckedBk    $btnIcon_HotBk")
+                .style.addStyleSheetColors("btnIcon_CheckedHotBk $btnIcon_HotBk")
+                .iconBtnFlags |= .Checkable
+                .checkedForm = .Bottom
+            }
         }
 
         with editToolBar = StackLayoutCtrl.create(topBar, .HorzCenter, @{0, 0, 64, 64})
