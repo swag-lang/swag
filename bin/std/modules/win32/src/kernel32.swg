@@ -360,6 +360,7 @@ struct PROCESS_INFORMATION
     func LocalFree(hLocal: HLOCAL)->HLOCAL;
     func GlobalLock(hMem: HGLOBAL)->LPVOID;
     func GlobalUnlock(hMem: HGLOBAL)->BOOL;
+    func GlobalSize(hMem: HGLOBAL)->SIZE_T;
 
     func QueryPerformanceCounter(lpPerformanceCount: *LARGE_INTEGER);
     func QueryPerformanceFrequency(lpFrequency: *LARGE_INTEGER);

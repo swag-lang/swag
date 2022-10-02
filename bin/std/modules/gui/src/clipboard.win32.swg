@@ -5,6 +5,8 @@ using Core, Win32, Pixel
 
 alias Format = uint
 
+private var g_PngFormat: UINT
+
 // Register a new format
 func registerFormat(name: string)->Format throw
 {
@@ -38,33 +40,45 @@ func addData(fmt: Format, data: const [..] u8)
     discard SetClipboardData(cast(UINT) fmt, hglob)
 }
 
-// Add string to clipboard
-func addString(str: string)
+// Get data of the given format
+func getData(fmt: Format)->Array'u8
 {
+    var result: retval
+
     if !OpenClipboard(GetDesktopWindow())
-        return
+        return result
     defer discard CloseClipboard()
 
-    // Ansi/utf8
+    if IsClipboardFormatAvailable(cast(UINT) fmt)
     {
-        hglob := GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, @countof(str) + 1)
-        pz := cast(^u8) GlobalLock(hglob)
-        Memory.copy(pz, @dataof(str), @countof(str))
-        pz[@countof(str)] = 0
-        discard GlobalUnlock(pz)
-        discard SetClipboardData(CF_TEXT, hglob)
+        hglob := GetClipboardData(cast(UINT) fmt)
+        if hglob
+        {
+            pz := cast(^u8) GlobalLock(hglob)
+            pzu := cast(^uint) pz
+            count := dref pzu
+            result.add(@mkslice(pz + @sizeof(uint), count))
+            discard GlobalUnlock(pz)
+            return result
+        }
     }
 
-    // Utf16
-    {
-        hglob := GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, @countof(str) * 2 + 2)
-        pz := cast(^u16) GlobalLock(hglob)
-        u := Utf16.fromUtf8(str)
-        Memory.copy(pz, u.buffer, u.count * 2)
-        pz[u.count] = 0
-        discard GlobalUnlock(pz)
-        discard SetClipboardData(CF_UNICODETEXT, hglob)
-    }
+    return result
+}
+
+// Returns true if the clipbboard contains an image
+func hasImage()->bool
+{
+    if !OpenClipboard(GetDesktopWindow())
+        return false
+    defer discard CloseClipboard()
+
+    if IsClipboardFormatAvailable(CF_DIB)
+        return true
+    if IsClipboardFormatAvailable(g_PngFormat)
+        return true
+
+    return false
 }
 
 // Add an image
@@ -107,9 +121,6 @@ func addImage(image: Image)
         catch png.IImageEncoder.encode(&buffer, image, opt)
         if @err
             break
-        clipData := catch RegisterClipboardFormatA(@dataof("PNG"))
-        if @err
-            break
 
         hglob := GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, buffer.count())
         buf := cast(^u8) GlobalLock(hglob)
@@ -122,12 +133,12 @@ func addImage(image: Image)
         }
 
         discard GlobalUnlock(buf)
-        discard SetClipboardData(clipData, hglob)
+        discard SetClipboardData(g_PngFormat, hglob)
     }
 }
 
-// Get data of the given format
-func getData(fmt: Format)->Array'u8
+// Get image from clipboard
+func getImage()->Image
 {
     var result: retval
 
@@ -135,21 +146,82 @@ func getData(fmt: Format)->Array'u8
         return result
     defer discard CloseClipboard()
 
-    if IsClipboardFormatAvailable(cast(UINT) fmt)
+    // PNG
+    if IsClipboardFormatAvailable(g_PngFormat)
     {
-        hglob := GetClipboardData(cast(UINT) fmt)
+        hglob := GetClipboardData(g_PngFormat)
+        if hglob
+        {
+            size := GlobalSize(hglob)
+            pz := cast(^u8) GlobalLock(hglob)
+            defer discard GlobalUnlock(pz)
+            var png: Png.Decoder
+            return catch png.IImageDecoder.decode(@mkslice(pz, size), @{})
+        }
+    }
+
+    // DIB
+    if IsClipboardFormatAvailable(CF_DIB)
+    {
+        hglob := GetClipboardData(CF_DIB)
         if hglob
         {
             pz := cast(^u8) GlobalLock(hglob)
-            pzu := cast(^uint) pz
-            count := dref pzu
-            result.add(@mkslice(pz + @sizeof(uint), count))
-            discard GlobalUnlock(pz)
-            return result
+            defer discard GlobalUnlock(pz)
+
+            header := cast(*Bmp.Header) pz
+            size := @sizeof(Bmp.Header) + (header.biWidth * header.biHeight * header.biBitCount)
+
+            var bmp: Bmp.Decoder
+            return catch bmp.IImageDecoder.decode(@mkslice(pz, size), @{})
         }
     }
 
     return result
+}
+
+// Returns true if the clipboard contains a string
+func hasString()->bool
+{
+    if !OpenClipboard(GetDesktopWindow())
+        return false
+    defer discard CloseClipboard()
+
+    if IsClipboardFormatAvailable(CF_UNICODETEXT)
+        return true
+    if IsClipboardFormatAvailable(CF_TEXT)
+        return true
+
+    return false
+}
+
+// Add string to clipboard
+func addString(str: string)
+{
+    if !OpenClipboard(GetDesktopWindow())
+        return
+    defer discard CloseClipboard()
+
+    // Ansi/utf8
+    {
+        hglob := GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, @countof(str) + 1)
+        pz := cast(^u8) GlobalLock(hglob)
+        Memory.copy(pz, @dataof(str), @countof(str))
+        pz[@countof(str)] = 0
+        discard GlobalUnlock(pz)
+        discard SetClipboardData(CF_TEXT, hglob)
+    }
+
+    // Utf16
+    {
+        hglob := GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, @countof(str) * 2 + 2)
+        pz := cast(^u16) GlobalLock(hglob)
+        u := Utf16.fromUtf8(str)
+        Memory.copy(pz, u.buffer, u.count * 2)
+        pz[u.count] = 0
+        discard GlobalUnlock(pz)
+        discard SetClipboardData(CF_UNICODETEXT, hglob)
+    }
 }
 
 // Get utf8 string from clipboard
@@ -188,4 +260,9 @@ func getString()->String
     }
 
     return result
+}
+
+#init
+{
+    g_PngFormat = catch RegisterClipboardFormatA(@dataof("PNG"))
 }
