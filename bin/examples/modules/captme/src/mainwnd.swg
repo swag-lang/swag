@@ -771,27 +771,37 @@ impl MainWnd
         }
     }
 
+    func updateZoomDisplay(res: *MainWnd)
+    {
+        z := cast(s32) (res.editWnd.editView.zoom * 100)
+        res.zoomBtn.name = Format.toString("% %%", z)
+        res.zoomBtn.invalidate()
+    }
+
     func create(parent: *Wnd)->*MainWnd
     {
-        res := Wnd.create'MainWnd(parent, "captme.mainwnd")
+        img24 := assume Image.decode(".png", Icons24)
+        img48 := assume Image.decode(".png", Icons48)
         renderer := parent.getApp().getRenderer()
 
-        img24 := assume Image.decode(".png", Icons24)
-        res.icons24.set(renderer.addImage(img24), 24, 24)
+        with res := Wnd.create'MainWnd(parent, "captme.mainwnd")
+        {
+            .icons24.set(renderer.addImage(img24), 24, 24)
+            .icons48.set(renderer.addImage(img48), 48, 48)
+            .clipFmt = catch Clipboard.registerFormat(ClipboardFormat)
+            .backgroundStyle = .Window
+            .favoriteMdl = &res.mdlFormShape
+            .registerShortcuts()
+        }
 
-        img48 := assume Image.decode(".png", Icons48)
-        res.icons48.set(renderer.addImage(img48), 48, 48)
-
-        res.clipFmt = catch Clipboard.registerFormat(ClipboardFormat)
-
-        topBar := Wnd.create'Wnd(res, @{0, 0, 64, 68})
-        topBar.dockStyle = .Top
-        topBar.backgroundStyle = .Window
-        topBar.style.addStyleSheetColors("wnd_Bk $wnd_Caption")
+        with topBar := Wnd.create'Wnd(res, @{0, 0, 64, 68})
+        {
+            .dockStyle = .Top
+            .backgroundStyle = .Window
+            .style.addStyleSheetColors("wnd_Bk $wnd_Caption")
+        }
 
         res.createToolbar(topBar)
-        res.registerShortcuts()
-        res.favoriteMdl = &res.mdlFormShape
 
         with res.captureBtn = IconButton.create(topBar, Icon.from(&res.icons48, 6), @{0, 0, 64, 64}, id: CmdIdCapture)
         {
@@ -802,12 +812,18 @@ impl MainWnd
         res.libraryBtn = IconButton.create(topBar, Icon.from(&res.icons48, 8), @{64, 0, 64, 64}, id: CmdIdLibrary)
 
         // Main edit area
-        res.editWnd = EditWnd.create(res, res)
-        res.editWnd.dockStyle = .Center
-        res.backgroundStyle = .Window
+        with res.editWnd = EditWnd.create(res, res)
+        {
+            .dockStyle = .Center
+            .sigScrollSizeChanged += @|res|(scroll, old, new) {
+                updateZoomDisplay(res)
+            }
+        }
 
-        res.recentBar = Wnd.create'Wnd(res, @{0, 0, 0, 128})
-        res.recentBar.dockStyle = .Bottom
+        with res.recentBar = Wnd.create'Wnd(res, @{0, 0, 0, 128})
+        {
+            .dockStyle = .Bottom
+        }
 
         // Recent left editToolBar
         with res.recentSizeBar = IconBar.create(res.recentBar, 20)
@@ -865,34 +881,29 @@ impl MainWnd
             .backgroundStyle = .Window
         }
 
-        func updateZoomDisplay(res: *MainWnd)
+        with res.zoomBtn = IconButton.create(res.editZoomBar, res.getTheme().getIcon24(ThemeIcons24.Search), @{0, 0, 110, 32})
         {
-            z := cast(s32) (res.editWnd.editView.zoom * 100)
-            res.zoomBtn.name = Format.toString("% %%", z)
-            res.zoomBtn.invalidate()
-        }
-
-        res.zoomBtn = IconButton.create(res.editZoomBar, res.getTheme().getIcon24(ThemeIcons24.Search), @{0, 0, 110, 32})
-        res.zoomBtn.textPos = .Right
-        res.zoomBtn.arrowPos = .RightUp
-        res.editWnd.sigScrollSizeChanged += @|res|(scroll, old, new) {
-            updateZoomDisplay(res);
-        }
-        res.zoomBtn.sigPressed += @|res|(btn) {
-            pos  := btn.getSurfaceRect()
-            menu := MenuCtrl.createPopup(res)
-            menu.menuCtrlFlags |= .NoKeyShortcuts
-            menu.addItem(CmdIdZoom1)
-            menu.addItem(CmdIdZoomFit)
-            discard menu.doModal(@{pos.horzCenter(), pos.y}, .AnchorBottomCenter, autoDestroy: true)
+            .textPos = .Right
+            .arrowPos = .RightUp
+            .sigPressed += @|res|(btn) {
+                pos  := btn.getSurfaceRect()
+                menu := MenuCtrl.createPopup(res)
+                menu.menuCtrlFlags |= .NoKeyShortcuts
+                menu.addItem(CmdIdZoom1)
+                menu.addItem(CmdIdZoomFit)
+                discard menu.doModal(@{pos.horzCenter(), pos.y}, .AnchorBottomCenter, autoDestroy: true)
+            }
         }
 
         updateZoomDisplay(res)
-        res.setBottomSize(.Medium)
-        res.updateState()
 
-        res.libWnd = LibraryWnd.create(res)
-        res.libWnd.hide()
+        with res
+        {
+            .setBottomSize(.Medium)
+            .updateState()
+            .libWnd = LibraryWnd.create(res)
+            .libWnd.hide()
+        }
 
         return res
     }
