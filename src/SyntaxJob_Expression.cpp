@@ -211,7 +211,7 @@ bool SyntaxJob::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, A
         SWAG_CHECK(doIdentifierRef(parent, &idref));
         if (result)
             *result = idref;
-        ((AstIdentifierRef*) idref)->specFlags |= AST_SPEC_IDENTIFIERREF_AUTO_SCOPE;
+        CastAst<AstIdentifierRef>(idref, AstNodeKind::IdentifierRef)->specFlags |= AST_SPEC_IDENTIFIERREF_AUTO_SCOPE;
         break;
     }
 
@@ -387,9 +387,21 @@ bool SyntaxJob::doPrimaryExpression(AstNode* parent, uint32_t exprFlags, AstNode
         exprNode->semanticFct = SemanticJob::resolveMakePointer;
         SWAG_CHECK(eatToken());
 
+        bool hasDot = false;
+        if (token.id == TokenId::SymDot)
+        {
+            SWAG_CHECK(eatToken());
+            hasDot = true;
+        }
+
         AstNode* identifierRef;
         SWAG_CHECK(doIdentifierRef(nullptr, &identifierRef));
         forceTakeAddress(identifierRef);
+
+        if (hasDot)
+        {
+            CastAst<AstIdentifierRef>(identifierRef, AstNodeKind::IdentifierRef)->specFlags |= AST_SPEC_IDENTIFIERREF_AUTO_SCOPE;
+        }
 
         if (token.id == TokenId::SymLeftSquare)
             SWAG_CHECK(doArrayPointerIndex(&identifierRef));
