@@ -94,28 +94,30 @@ impl IWnd for MainWnd
 
         switch evt.id
         {
+        case CmdIdRestoreOrg:
+            evt.setFlags |= .Name
+            evt.name = "Restore to Original"
+            evt.accepted = true
+
         case CmdIdResetQuickStyle:
             evt.setFlags |= .Name
-            evt.name = "Restore default styles"
+            evt.name = "Restore Default Styles"
             evt.accepted = true
 
         case CmdIdRecentSmall:
             evt.setFlags |= .Name | .ToolTip | .Checked
-            //evt.name = "Small Recent View"
             evt.toolTip = "Small recent view"
             evt.checked = bottomSize == .Small
             evt.accepted = true
 
         case CmdIdRecentMedium:
             evt.setFlags |= .Name | .ToolTip | .Checked
-            //evt.name = "Medium Recent View"
             evt.toolTip = "Medium recent view"
             evt.checked = bottomSize == .Medium
             evt.accepted = true
 
         case CmdIdRecentBig:
             evt.setFlags |= .Name | .ToolTip | .Checked
-            //evt.name = "Big Recent View"
             evt.toolTip = "Big recent view"
             evt.checked = bottomSize == .Big
             evt.accepted = true
@@ -494,6 +496,10 @@ impl IWnd for MainWnd
             evt.accepted = true
             updateState()
 
+        case CmdIdRestoreOrg:
+            undo = capture.newUndo(.RestoreOrg)
+            evt.accepted = true
+
         case CmdIdAlignLeft:
             undo = capture.newUndo(.AlignLeft)
             evt.accepted = true
@@ -583,34 +589,41 @@ impl MainWnd
 
     mtd createTopMenu()
     {
-        topMenu := MenuCtrl.createBar(parent)
-        topMenu.owner = self
-        topMenu.bringToFront()
-        topMenu.dockStyle = .Top
-        topMenu.margin.y = -parent.padding.y
-        topMenu.backgroundStyle = .Transparent
+        with topMenu := MenuCtrl.createBar(parent)
+        {
+            .owner = self
+            .bringToFront()
+            .dockStyle = .Top
+            .margin.y = -parent.padding.y
+            .backgroundStyle = .Transparent
+        }
 
-        editMenu := MenuCtrl.createPopup(parent)
-        editMenu.owner = self
-        editMenu.addItem(CmdIdUndo)
-        editMenu.addItem(CmdIdRedo)
-        editMenu.addSeparator()
-        editMenu.addItem(CmdIdCopy)
-        editMenu.addItem(CmdIdPaste)
-        editMenu.addItem(CmdIdCopyAsImage)
-        editMenu.addSeparator()
-        editMenu.addItem(CmdIdSelectAll)
-        editMenu.addItem(CmdIdDeSelectAll)
-        editMenu.addItem(CmdIdInvertSelection)
-        topMenu.addPopup("Edit", editMenu)
+        with editMenu := MenuCtrl.createPopup(parent)
+        {
+            .owner = self
+            .addItem(CmdIdUndo)
+            .addItem(CmdIdRedo)
+            .addItem(CmdIdRestoreOrg)
+            .addSeparator()
+            .addItem(CmdIdCopy)
+            .addItem(CmdIdPaste)
+            .addItem(CmdIdCopyAsImage)
+            .addSeparator()
+            .addItem(CmdIdSelectAll)
+            .addItem(CmdIdDeSelectAll)
+            .addItem(CmdIdInvertSelection)
+            topMenu.addPopup("Edit", editMenu)
+        }
 
-        displayMenu := MenuCtrl.createPopup(parent)
-        displayMenu.owner = self
-        displayMenu.addItem(CmdIdZoomIn)
-        displayMenu.addItem(CmdIdZoomOut)
-        displayMenu.addItem(CmdIdZoom1)
-        displayMenu.addItem(CmdIdZoomFit)
-        topMenu.addPopup("View", displayMenu)
+        with displayMenu := MenuCtrl.createPopup(parent)
+        {
+            .owner = self
+            .addItem(CmdIdZoomIn)
+            .addItem(CmdIdZoomOut)
+            .addItem(CmdIdZoom1)
+            .addItem(CmdIdZoomFit)
+            topMenu.addPopup("View", displayMenu)
+        }
     }
 
     mtd createToolbar(topBar: *Wnd)
@@ -719,12 +732,15 @@ impl MainWnd
         if @err or img.width == 0 or img.height == 0
             return
 
-        capture := Memory.new'Capture()
-        capture.changed = true
-        capture.width = img.width
-        capture.height = img.height
-        capture.backImg = img
-        capture.file = Library.newFileName()
+        with capture := Memory.new'Capture()
+        {
+            .changed = true
+            .width, .widthOrg = img.width
+            .height, .heightOrg = img.height
+            .backImg, .backImgOrg = img
+            .file = Library.newFileName()
+        }
+
         editWnd.editView.setCapture(capture)
         editWnd.editView.zoomToFit(false)
 

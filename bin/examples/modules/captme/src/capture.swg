@@ -13,8 +13,11 @@ enum MouseMode
 struct Capture
 {
     // To save
-    width, height:  s32
-    backImg:        Image
+    width, height:          s32
+    backImg:                Image
+    widthOrg, heightOrg:    s32
+    backImgOrg:             Image
+
     backImagePos:   Math.Point
     preview:        Image
     file:           String

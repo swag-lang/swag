@@ -21,6 +21,7 @@ enum UndoKind
     SetText
     Flatten
     FlattenAll
+    RestoreOrg
 }
 
 struct Undo
@@ -57,6 +58,10 @@ impl Undo
     {
         switch kind
         {
+        case RestoreOrg:
+            oldImg = capture.backImg
+            oldForms = capture.forms
+
         case Flatten:
             selection = capture.selection
             oldImg = capture.backImg
@@ -160,6 +165,18 @@ impl Undo
         #[Swag.Complete]
         switch kind
         {
+        case RestoreOrg:
+            with capture
+            {
+                .backImg = .backImgOrg
+                .width = .widthOrg
+                .height = .heightOrg
+                .selection.clear()
+                .forms.clear()
+                .dirtyBackImg = true
+                .selectionHasChanged()
+            }
+
         case Flatten:
             capture.backImg = capture.toImage(onlySel: true)
             capture.dirtyBackImg = true
@@ -351,12 +368,25 @@ impl Undo
         #[Swag.Complete]
         switch kind
         {
+        case RestoreOrg:
+            with capture
+            {
+                .backImg = oldImg
+                .forms   = oldForms
+                .selection.clear()
+                .dirtyBackImg = true
+                .selectionHasChanged()
+            }
+
         case Flatten, FlattenAll:
-            capture.backImg = oldImg
-            capture.forms   = oldForms
-            capture.selection.clear()
-            capture.dirtyBackImg = true
-            capture.selectionHasChanged()
+            with capture
+            {
+                .backImg = oldImg
+                .forms   = oldForms
+                .selection.clear()
+                .dirtyBackImg = true
+                .selectionHasChanged()
+            }
 
         case SetText:
             visit s, i: selection
