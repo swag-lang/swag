@@ -53,8 +53,9 @@ public impl MessageDlg
         label.name.invalidate()
 
         // Width
-        var w: f32 = 0
-        visit btn: buttons w += btn.position.width
+        w := 0'f32
+        visit btn: buttons
+            w += btn.position.width
         w += cast(f32) ((buttons.count - 1) * metrics.msgDlg_BtnPadding)
         w += 2 * metrics.msgDlg_Padding
         w += metrics.btnPush_Width
