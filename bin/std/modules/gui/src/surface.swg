@@ -102,7 +102,7 @@ impl Surface
         app := surface.app
         try createNative(app, surface, x, y, width, height, flags, mainSurface)
 
-        surface.minSize = @{256, 256}
+        surface.minSize = @{128, 128}
         w := cast(f32) Math.max(surface.minSize.x, cast(f32) width)
         h := cast(f32) Math.max(surface.minSize.y, cast(f32) height)
         surface.sendResizeEvent(w, h)

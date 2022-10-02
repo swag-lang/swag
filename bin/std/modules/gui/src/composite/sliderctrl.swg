@@ -41,18 +41,16 @@ impl SliderCtrl
         if pos.height == 0
             pos.height = Math.max(metrics.slider_Height, metrics.editBox_Height)
 
-        ctrlXXX := Wnd.create'SliderCtrl(parent, pos, id)
-
-        with ctrlXXX
+        with ctrl := Wnd.create'SliderCtrl(parent, pos, id)
         {
-            .label = Label.create(ctrlXXX, #self.name, @{})
+            .label = Label.create(ctrl, #self.name, @{})
             .label.horzAlignmentText = .Right
 
-            .slider = Slider.create(ctrlXXX, @{})
-            .slider.sigChanged += @|ctrlXXX|(wnd)
+            .slider = Slider.create(ctrl, @{})
+            .slider.sigChanged += @|ctrl|(wnd)
             {
                 var val: String
-                switch ctrlXXX.edit.inputMode
+                switch ctrl.edit.inputMode
                 {
                 case .U64:
                     val = Format.toString("%", cast(u64) wnd.getValue())
@@ -62,34 +60,34 @@ impl SliderCtrl
                     val = Format.toString("%{f2}", wnd.getValue())
                 }
 
-                ctrlXXX.edit.setText(val)
+                ctrl.edit.setText(val)
             }
 
-            .edit = EditBox.create(ctrlXXX, "", @{})
+            .edit = EditBox.create(ctrl, "", @{})
             .edit.setForm(.Transparent)
             .edit.editBoxFlags |= .RightAlign
-            .edit.sigLoseFocus += @|ctrlXXX|(edit)
+            .edit.sigLoseFocus += @|ctrl|(edit)
             {
                 switch edit.inputMode
                 {
                 case .U64:
                     (val, ?, ?) := catch StrConv.parseU64(edit.text)
-                    ctrlXXX.slider.setValue(cast(f32) val)
+                    ctrl.slider.setValue(cast(f32) val)
 
                 case .S64:
                     (val, ?, ?) := catch StrConv.parseS64(edit.text)
-                    ctrlXXX.slider.setValue(cast(f32) val)
+                    ctrl.slider.setValue(cast(f32) val)
 
                 case .F64:
                     (val, ?, ?) := catch StrConv.parseF64(edit.text)
-                    ctrlXXX.slider.setValue(cast(f32) val)
+                    ctrl.slider.setValue(cast(f32) val)
                 }
             }
 
             .sendResizeEvent()
         }
 
-        return ctrlXXX
+        return ctrl
     }
 
     // Set a f32 range

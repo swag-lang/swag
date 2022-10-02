@@ -121,7 +121,7 @@ impl Dialog
             .dockStyle = .Right
             .form = isDefault ? .Default : .Strong
             .margin = @{metrics.dialog_BtnPadding, 0, metrics.dialog_BtnPadding, 0}
-            .sigPressed += @(btn) { btn.surface.app.exitModal(btn.id); }
+            .sigPressed += @(btn) { btn.getApp().exitModal(btn.id); }
             buttons.insertAt(0, btn)
         }
 
