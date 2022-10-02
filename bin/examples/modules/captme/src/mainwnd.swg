@@ -94,6 +94,11 @@ impl IWnd for MainWnd
 
         switch evt.id
         {
+        case CmdIdExit:
+            evt.setFlags |= .Name
+            evt.name = "Exit"
+            evt.accepted = true
+
         case CmdIdRestoreOrg:
             evt.setFlags |= .Name | .Disabled
             evt.name = "Restore to Original"
@@ -380,6 +385,9 @@ impl IWnd for MainWnd
         var undo: *Undo
         switch evt.id
         {
+        case CmdIdExit:
+            postQuitEvent()
+
         case CmdIdResetQuickStyle:
             quickWnd.resetQuickStyles()
 
@@ -598,6 +606,12 @@ impl MainWnd
             .backgroundStyle = .Transparent
         }
 
+        with fileMenu := MenuCtrl.createPopup(parent, owner: self)
+        {
+            .addItem(CmdIdExit)
+            topMenu.addPopup("File", fileMenu)
+        }
+
         with editMenu := MenuCtrl.createPopup(parent, owner: self)
         {
             .addItem(CmdIdUndo)
@@ -705,6 +719,7 @@ impl MainWnd
         registerKeyShortcut(Input.KeyModifiers.CtrlShift, Input.Key.D,              CmdIdDupCapture)
         registerKeyShortcut(Input.KeyModifiers.CtrlShift, Input.Key.I,              CmdIdInvertSelection)
         registerKeyShortcut(Input.KeyModifiers.CtrlShift, Input.Key.T,              CmdIdFlattenAll)
+        registerKeyShortcut(Input.KeyModifiers.Alt,       Input.Key.F4,             CmdIdExit)
     }
 
     mtd updateState()

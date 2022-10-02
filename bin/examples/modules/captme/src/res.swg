@@ -41,5 +41,6 @@ const CmdIdResetQuickStyle  = "CmdIdResetQuickStyle"
 const CmdIdFlatten          = "CmdIdFlatten"
 const CmdIdFlattenAll       = "CmdIdFlattenAll"
 const CmdIdRestoreOrg       = "CmdIdRestoreOrg"
+const CmdIdExit             = "CmdIdExit"
 
 const ClipboardFormat = "Swag.CaptMe"
