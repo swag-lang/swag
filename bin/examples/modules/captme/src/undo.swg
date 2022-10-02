@@ -35,21 +35,22 @@ struct Undo
     newPosX:    s32
     newPosY:    s32
 
-    selection:  Array'uint
-    oldForms:   Array'IForm
-    oldS32:     Array's32
-    minP:       s32
-    maxP:       s32
-    pointIdx:   u32
-    valU32:     u32
-    oldU32:     Array'u32
-    valRef:     const *Swag.TypeValue
-    mdlType:    typeinfo
-    text:       String
-    mdlValue:   *BaseForm
-    oldForm:    Array'*BaseForm
-    oldText:    Array'String
-    oldImg:     Image
+    selection:      Array'uint
+    oldForms:       Array'IForm
+    oldS32:         Array's32
+    minP:           s32
+    maxP:           s32
+    pointIdx:       u32
+    valU32:         u32
+    oldU32:         Array'u32
+    valRef:         const *Swag.TypeValue
+    mdlType:        typeinfo
+    text:           String
+    mdlValue:       *BaseForm
+    oldForm:        Array'*BaseForm
+    oldText:        Array'String
+    oldImg:         Image
+    oldImagePos:    Math.Point
 }
 
 impl Undo
@@ -59,6 +60,7 @@ impl Undo
         switch kind
         {
         case RestoreOrg:
+            oldImagePos = capture.backImagePos
             oldImg = capture.backImg
             oldForms = capture.forms
 
@@ -174,6 +176,7 @@ impl Undo
                 .selection.clear()
                 .forms.clear()
                 .dirtyBackImg = true
+                .backImagePos.clear()
                 .selectionHasChanged()
             }
 
@@ -375,6 +378,7 @@ impl Undo
                 .forms   = oldForms
                 .selection.clear()
                 .dirtyBackImg = true
+                .backImagePos = oldImagePos
                 .selectionHasChanged()
             }
 

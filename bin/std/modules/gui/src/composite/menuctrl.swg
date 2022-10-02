@@ -609,11 +609,11 @@ impl MenuCtrl
 public impl MenuCtrl
 {
     #[Swag.Discardable]
-    func createPopup(parent: *Wnd, id: WndId = null)->*MenuCtrl
+    func createPopup(parent: *Wnd, id: WndId = null, owner: *Wnd = null)->*MenuCtrl
     {
         with res := Wnd.create'MenuCtrl(parent.getTopView(), null, @{}, id)
         {
-            .owner = #self.parent
+            .owner = owner orelse #self.parent
             .setAllPaddings(.getThemeMetrics().menuPopup_Padding)
             .wndFlags |= .Hidden
         }
@@ -622,10 +622,11 @@ public impl MenuCtrl
     }
 
     #[Swag.Discardable]
-    func createBar(parent: *Wnd, pos: Math.Rectangle = @{}, id: WndId = null)->*MenuCtrl
+    func createBar(parent: *Wnd, pos: Math.Rectangle = @{}, id: WndId = null, owner: *Wnd = null)->*MenuCtrl
     {
         with res := Wnd.create'MenuCtrl(parent, null, pos, id)
         {
+            .owner = owner
             metrics := .getThemeMetrics()
             if .position.height == 0
                 .position.height = metrics.menuBar_Height

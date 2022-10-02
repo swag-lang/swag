@@ -95,8 +95,9 @@ impl IWnd for MainWnd
         switch evt.id
         {
         case CmdIdRestoreOrg:
-            evt.setFlags |= .Name
+            evt.setFlags |= .Name | .Disabled
             evt.name = "Restore to Original"
+            evt.disabled = !capture or !capture.backImgOrg.isValid()
             evt.accepted = true
 
         case CmdIdResetQuickStyle:
@@ -197,7 +198,7 @@ impl IWnd for MainWnd
 
         case CmdIdSelectAll:
             evt.setFlags |= .Disabled | .Name
-            evt.disabled = !capture
+            evt.disabled = !capture or !capture.forms.count
             evt.name = "Select All Objects"
             evt.accepted = true
 
@@ -589,18 +590,16 @@ impl MainWnd
 
     mtd createTopMenu()
     {
-        with topMenu := MenuCtrl.createBar(parent)
+        with topMenu := MenuCtrl.createBar(parent, owner: self)
         {
-            .owner = self
             .bringToFront()
             .dockStyle = .Top
             .margin.y = -parent.padding.y
             .backgroundStyle = .Transparent
         }
 
-        with editMenu := MenuCtrl.createPopup(parent)
+        with editMenu := MenuCtrl.createPopup(parent, owner: self)
         {
-            .owner = self
             .addItem(CmdIdUndo)
             .addItem(CmdIdRedo)
             .addItem(CmdIdRestoreOrg)
@@ -615,9 +614,8 @@ impl MainWnd
             topMenu.addPopup("Edit", editMenu)
         }
 
-        with displayMenu := MenuCtrl.createPopup(parent)
+        with displayMenu := MenuCtrl.createPopup(parent, owner: self)
         {
-            .owner = self
             .addItem(CmdIdZoomIn)
             .addItem(CmdIdZoomOut)
             .addItem(CmdIdZoom1)
