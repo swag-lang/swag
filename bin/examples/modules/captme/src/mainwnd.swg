@@ -126,6 +126,18 @@ impl IWnd for MainWnd
             evt.disabled = !capture
             evt.accepted = true
 
+        case CmdIdFlatten:
+            evt.setFlags |= .Name | .Disabled
+            evt.name = "Flatten"
+            evt.disabled = !capture or !hasSel
+            evt.accepted = true
+
+        case CmdIdFlattenAll:
+            evt.setFlags |= .Name | .Disabled
+            evt.name = "Flatten All"
+            evt.disabled = !capture or !capture.forms.count
+            evt.accepted = true
+
         case CmdIdFileLocation:
             evt.setFlags |= .Name | .Disabled
             evt.name = "Open File Location"
@@ -522,6 +534,14 @@ impl IWnd for MainWnd
             undo = capture.newUndo(.MoveBackward)
             evt.accepted = true
 
+        case CmdIdFlatten:
+            undo = capture.newUndo(.Flatten)
+            evt.accepted = true
+
+        case CmdIdFlattenAll:
+            undo = capture.newUndo(.FlattenAll)
+            evt.accepted = true
+
         case CmdIdUndo:
             capture.undo()
             evt.accepted = true
@@ -673,6 +693,7 @@ impl MainWnd
         registerKeyShortcut(Input.KeyModifiers.Control,   Input.Key.NumPad0,        CmdIdZoom1)
         registerKeyShortcut(Input.KeyModifiers.CtrlShift, Input.Key.D,              CmdIdDupCapture)
         registerKeyShortcut(Input.KeyModifiers.CtrlShift, Input.Key.I,              CmdIdInvertSelection)
+        registerKeyShortcut(Input.KeyModifiers.CtrlShift, Input.Key.T,              CmdIdFlattenAll)
     }
 
     mtd updateState()

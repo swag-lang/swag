@@ -40,6 +40,7 @@ struct Capture
         firstMouseMove:     bool
         movingCursorSet:    bool
         movingStart:        Math.Point
+        dirtyBackImg:       bool
     }
 }
 
@@ -70,7 +71,7 @@ impl Capture
         preview.applyKernel(.GaussianBlur3x3A)
     }
 
-    mtd toImage(zoom: f32 = 1)->Image
+    mtd toImage(zoom: f32 = 1, onlySel = false)->Image
     {
         var result: retval
 
@@ -88,8 +89,20 @@ impl Capture
         paintBackImage(&painter, 0, 0, zoom)
         painter.setColorMask(true, true, true, false)
 
-        visit f: forms
-            paintForm(app, &painter, rect, f, zoom, snapMode: true)
+        if onlySel
+        {
+            visit sel: selection
+            {
+                f := forms[sel]
+                paintForm(app, &painter, rect, f, zoom, snapMode: true)
+            }
+        }
+        else
+        {
+            visit f: forms
+                paintForm(app, &painter, rect, f, zoom, snapMode: true)
+        }
+
         painter.end()
 
         render.begin(editView.surface.rc)
@@ -340,8 +353,15 @@ impl Capture
         // Background image
         if !backTexture.isValid() and backImg.width > 0
             backTexture = editView.getApp().renderer.addImage(backImg)
+
         if backTexture.isValid()
         {
+            if dirtyBackImg
+            {
+                editView.getApp().renderer.updateTexture(&backTexture, backImg.pixels.buffer)
+                dirtyBackImg = false
+            }
+
             var backRect: Math.Rectangle
             backRect.x = (backImagePos.x * z) + x
             backRect.y = (backImagePos.y * z) + y
@@ -582,31 +602,34 @@ impl Capture
         menu.addItem(CmdIdDeleteSelection)
         menu.addSeparator()
 
+        with popup0 := MenuCtrl.createPopup(view)
         {
-            popup := MenuCtrl.createPopup(view)
-            popup.addItem(CmdIdAlignLeft)
-            popup.addItem(CmdIdAlignCenter)
-            popup.addItem(CmdIdAlignRight)
-            popup.addSeparator()
-            popup.addItem(CmdIdAlignTop)
-            popup.addItem(CmdIdAlignMiddle)
-            popup.addItem(CmdIdAlignBottom)
-            menu.addPopup("Align", popup)
+            .addItem(CmdIdAlignLeft)
+            .addItem(CmdIdAlignCenter)
+            .addItem(CmdIdAlignRight)
+            .addSeparator()
+            .addItem(CmdIdAlignTop)
+            .addItem(CmdIdAlignMiddle)
+            .addItem(CmdIdAlignBottom)
+            menu.addPopup("Align", popup0)
         }
 
+        with popup1 := MenuCtrl.createPopup(view)
         {
-            popup := MenuCtrl.createPopup(view)
-            popup.addItem(CmdIdBringToFront)
-            popup.addItem(CmdIdSendToBack)
-            popup.addItem(CmdIdBringForward)
-            popup.addItem(CmdIdSendBackward)
-            menu.addPopup("Arrange", popup)
+            .addItem(CmdIdBringToFront)
+            .addItem(CmdIdSendToBack)
+            .addItem(CmdIdBringForward)
+            .addItem(CmdIdSendBackward)
+            menu.addPopup("Arrange", popup1)
         }
 
         menu.addSeparator()
         menu.addItem(CmdIdCopyAsImage)
         menu.addItem(CmdIdSelectAll)
         menu.addItem(CmdIdDeSelectAll)
+        menu.addSeparator()
+        menu.addItem(CmdIdFlatten)
+        menu.addItem(CmdIdFlattenAll)
         menu.addSeparator()
         menu.addItem(CmdIdSnap)
 

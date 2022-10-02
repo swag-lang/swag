@@ -19,6 +19,8 @@ enum UndoKind
     SetTypedValue
     SetFormFromModel
     SetText
+    Flatten
+    FlattenAll
 }
 
 struct Undo
@@ -46,6 +48,7 @@ struct Undo
     mdlValue:   *BaseForm
     oldForm:    Array'*BaseForm
     oldText:    Array'String
+    oldImg:     Image
 }
 
 impl Undo
@@ -54,6 +57,15 @@ impl Undo
     {
         switch kind
         {
+        case Flatten:
+            selection = capture.selection
+            oldImg = capture.backImg
+            oldForms = capture.forms
+
+        case FlattenAll:
+            oldImg = capture.backImg
+            oldForms = capture.forms
+
         case SetText:
             selection = capture.selection
             visit s: selection
@@ -130,9 +142,39 @@ impl Undo
 
     mtd do()
     {
+        mtd removeSelection()
+        {
+            selection.sort()
+            offset := 0
+            visit s: selection
+            {
+                f := capture.forms[s - offset]
+                offset += 1
+                capture.forms.removeOrdered(f)
+            }
+
+            capture.selection.clear()
+            capture.selectionHasChanged()
+        }
+
         #[Swag.Complete]
         switch kind
         {
+        case Flatten:
+            capture.backImg = capture.toImage(onlySel: true)
+            capture.dirtyBackImg = true
+            removeSelection()
+
+        case FlattenAll:
+            with capture
+            {
+                .backImg = capture.toImage()
+                .selection.clear()
+                .forms.clear()
+                .dirtyBackImg = true
+                .selectionHasChanged()
+            }
+
         case SetText:
             visit s, i: selection
             {
@@ -294,17 +336,7 @@ impl Undo
             }
 
         case DeleteSelection:
-            selection.sort()
-            offset := 0
-            visit s: selection
-            {
-                f := capture.forms[s - offset]
-                offset += 1
-                capture.forms.removeOrdered(f)
-            }
-
-            capture.selection.clear()
-            capture.selectionHasChanged()
+            removeSelection()
 
         case CreateForm:
             visit f: oldForms
@@ -319,6 +351,13 @@ impl Undo
         #[Swag.Complete]
         switch kind
         {
+        case Flatten, FlattenAll:
+            capture.backImg = oldImg
+            capture.forms   = oldForms
+            capture.selection.clear()
+            capture.dirtyBackImg = true
+            capture.selectionHasChanged()
+
         case SetText:
             visit s, i: selection
             {

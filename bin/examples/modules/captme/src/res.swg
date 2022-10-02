@@ -38,5 +38,7 @@ const CmdIdRecentSmall      = "CmdIdRecentSmall"
 const CmdIdRecentMedium     = "CmdIdRecentMedium"
 const CmdIdRecentBig        = "CmdIdRecentBig"
 const CmdIdResetQuickStyle  = "CmdIdResetQuickStyle"
+const CmdIdFlatten          = "CmdIdFlatten"
+const CmdIdFlattenAll       = "CmdIdFlattenAll"
 
 const ClipboardFormat = "Swag.CaptMe"
