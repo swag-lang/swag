@@ -164,66 +164,81 @@ public impl MessageDlg
     {
         if !icon.isValid()
             return
-        if !labelIcon
-        {
-            h := icon.sizeX + icon.sizeX * 0.5
-            labelIcon = Label.create(surface.wnd.view, "", @{0,0,0,h})
-            labelIcon.dockStyle = .Top
-            labelIcon.setAllPaddings(getThemeMetrics().msgDlg_Padding)
-        }
 
-        labelIcon.icon = icon
-        labelIcon.horzAlignmentIcon = .Center
-        labelIcon.vertAlignmentIcon = .Center
+        if !labelIcon
+            labelIcon = Label.create(surface.wnd.view, "", @{0,0,0,icon.sizeX + icon.sizeX * 0.5})
+
+        with labelIcon
+        {
+            .dockStyle = .Top
+            .setAllPaddings(getThemeMetrics().msgDlg_Padding)
+            .icon = icon
+            .horzAlignmentIcon = .Center
+            .vertAlignmentIcon = .Center
+        }
     }
 
     // Add a button
     #[Swag.Discardable]
     mtd addButton(str: string, id: WndId, isDefault: bool = false)->*PushButton
     {
-        btn := PushButton.create(wndBottom, str, @{}, #self.id)
-        btn.dockStyle = .Right
-        btn.form = isDefault ? .Default : .Strong
         metrics := getThemeMetrics()
-        btn.margin = @{metrics.msgDlg_BtnPadding, 0, metrics.msgDlg_BtnPadding, 0}
-        btn.sigPressed += @(btn) { btn.surface.app.exitModal(btn.id); }
-        buttons.insertAt(0, btn)
+        with btn := PushButton.create(wndBottom, str, @{}, #self.id)
+        {
+            .dockStyle = .Right
+            .form = isDefault ? .Default : .Strong
+            .margin = @{metrics.msgDlg_BtnPadding, 0, metrics.msgDlg_BtnPadding, 0}
+            .sigPressed += @(btn) { btn.surface.app.exitModal(btn.id); }
+            buttons.insertAt(0, btn)
+        }
         return btn
     }
 
     // Message box with a 'ok'
     func ok(from: *Surface, message: string, icon: Icon = @{})
     {
-        dlg := create(from, 0, 0, message, icon)
-        dlg.addButton("OK", BtnOk, true)
+        with dlg := create(from, 0, 0, message, icon)
+        {
+            .addButton("OK", BtnOk, true)
+        }
+
         discard dlg.doModal(from)
     }
 
     // Message box with a 'ok' and 'cancel' button
     func okCancel(from: *Surface, message: string, defaultId = BtnCancel, icon: Icon = @{})->WndId
     {
-        dlg := create(from, 0, 0, message, icon)
-        dlg.addButton("Cancel", BtnCancel, defaultId == BtnCancel)
-        discard dlg.addButton("OK", BtnOk, defaultId == BtnOk)
+        with dlg := create(from, 0, 0, message, icon)
+        {
+            .addButton("Cancel", BtnCancel, defaultId == BtnCancel)
+            .addButton("OK", BtnOk, defaultId == BtnOk)
+        }
+
         return dlg.doModal(from)
     }
 
     // Message box with a 'yes' and 'no' button
     func yesNo(from: *Surface, message: string, defaultId = BtnNo, icon: Icon = @{})->WndId
     {
-        dlg := create(from, 0, 0, message, icon.isValid() ? icon : from.app.theme.getIcon64(ThemeIcons64.Question))
-        dlg.addButton("No", BtnNo, defaultId == BtnNo)
-        dlg.addButton("Yes", BtnYes, defaultId == BtnYes)
+        with dlg := create(from, 0, 0, message, icon.isValid() ? icon : from.app.theme.getIcon64(ThemeIcons64.Question))
+        {
+            .addButton("No", BtnNo, defaultId == BtnNo)
+            .addButton("Yes", BtnYes, defaultId == BtnYes)
+        }
+
         return dlg.doModal(from)
     }
 
     // Message box with a 'yes' and 'no' button
     func yesNoCancel(from: *Surface, message: string, defaultId = BtnCancel, icon: Icon = @{})->WndId
     {
-        dlg := create(from, 0, 0, message, icon.isValid() ? icon : from.app.theme.getIcon64(ThemeIcons64.Question))
-        dlg.addButton("Cancel", BtnCancel, defaultId == BtnCancel)
-        dlg.addButton("No", BtnNo, defaultId == BtnNo)
-        dlg.addButton("Yes", BtnYes, defaultId == BtnYes)
+        with dlg := create(from, 0, 0, message, icon.isValid() ? icon : from.app.theme.getIcon64(ThemeIcons64.Question))
+        {
+            .addButton("Cancel", BtnCancel, defaultId == BtnCancel)
+            .addButton("No", BtnNo, defaultId == BtnNo)
+            .addButton("Yes", BtnYes, defaultId == BtnYes)
+        }
+
         return dlg.doModal(from)
     }
 }

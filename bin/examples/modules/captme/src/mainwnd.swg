@@ -94,6 +94,11 @@ impl IWnd for MainWnd
 
         switch evt.id
         {
+        case CmdIdNewImage:
+            evt.setFlags |= .Name
+            evt.name = "New Image"
+            evt.accepted = true
+
         case CmdIdNewFromClipboard:
             evt.setFlags |= .Name | .Disabled
             evt.name = "New From Clipboard"
@@ -391,11 +396,6 @@ impl IWnd for MainWnd
         var undo: *Undo
         switch evt.id
         {
-        case CmdIdNewFromClipboard:
-            img := Clipboard.getImage()
-            if img.isValid()
-                newCapture(img)
-
         case CmdIdExit:
             postQuitEvent()
 
@@ -442,6 +442,12 @@ impl IWnd for MainWnd
 
         case CmdIdSnap:
             snap = !snap
+
+        case CmdIdNewImage:
+            newImage()
+
+        case CmdIdNewFromClipboard:
+            newCapture(Clipboard.getImage())
 
         case CmdIdCapture:
             captureScreen()
@@ -619,6 +625,7 @@ impl MainWnd
 
         with fileMenu := MenuCtrl.createPopup(parent, owner: self)
         {
+            .addItem(CmdIdNewImage)
             .addItem(CmdIdNewFromClipboard)
             .addSeparator()
             .addItem(CmdIdExit)
@@ -738,6 +745,8 @@ impl MainWnd
         registerKeyShortcut(.CtrlShift,        .I,              CmdIdInvertSelection)
         registerKeyShortcut(.CtrlShift,        .T,              CmdIdFlattenAll)
         registerKeyShortcut(.Alt,              .F4,             CmdIdExit)
+        registerKeyShortcut(.Control,          .N,              CmdIdNewImage)
+        registerKeyShortcut(.CtrlShift,        .N,              CmdIdNewFromClipboard)
     }
 
     mtd updateState()
@@ -755,8 +764,15 @@ impl MainWnd
         return editWnd.editView.capture
     }
 
+    mtd newImage()
+    {
+    }
+
     mtd newCapture(img: Image)
     {
+        if !img.isValid()
+            return
+
         with capture := Memory.new'Capture()
         {
             .changed = true

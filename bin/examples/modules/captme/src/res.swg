@@ -43,5 +43,6 @@ const CmdIdFlattenAll       = "CmdIdFlattenAll"
 const CmdIdRestoreOrg       = "CmdIdRestoreOrg"
 const CmdIdExit             = "CmdIdExit"
 const CmdIdNewFromClipboard = "CmdIdNewFromClipboard"
+const CmdIdNewImage         = "CmdIdNewImage"
 
 const ClipboardFormat = "Swag.CaptMe"
