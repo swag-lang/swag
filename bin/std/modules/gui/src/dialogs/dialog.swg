@@ -9,6 +9,13 @@ struct Dialog
 
 impl IWnd for Dialog
 {
+    mtd onSysCommandEvent(evt: *SysCommandEvent)
+    {
+        if evt.sysKind == .Close
+            surface.app.exitModal(BtnCancel)
+        evt.accepted = true
+    }
+
     mtd onKeyEvent(evt: *KeyEvent)
     {
         if evt.kind == .KeyPressed
@@ -80,16 +87,16 @@ impl Dialog
 
     mtd createSurface(from: *Surface, x, y: s32, width = 512, height = 300)->*Surface
     {
-        srf := assume from.app.createSurface(x, y, width, height, SurfaceFlags.Border | SurfaceFlags.Secondary, self)
+        srf := assume from.app.createSurface(x, y, width, height, .BigCaption | .Border | .Secondary, self)
         srf.wnd.view.backgroundStyle = .Dialog
 
         metrics := getThemeMetrics()
         h := metrics.btnPush_Height
-        h += 2 * metrics.msgDlg_Padding
+        h += 2 * metrics.dialog_Padding
         wndBottom = Wnd.create'Wnd(srf.wnd.view, "", @{0, 0, 0, h})
         wndBottom.dockStyle = .Bottom
         wndBottom.backgroundStyle = .DialogBar
-        wndBottom.setAllPaddings(metrics.msgDlg_Padding)
+        wndBottom.setAllPaddings(metrics.dialog_Padding)
 
         setFocus()
 
@@ -113,10 +120,14 @@ impl Dialog
         {
             .dockStyle = .Right
             .form = isDefault ? .Default : .Strong
-            .margin = @{metrics.msgDlg_BtnPadding, 0, metrics.msgDlg_BtnPadding, 0}
+            .margin = @{metrics.dialog_BtnPadding, 0, metrics.dialog_BtnPadding, 0}
             .sigPressed += @(btn) { btn.surface.app.exitModal(btn.id); }
             buttons.insertAt(0, btn)
         }
+
+        if #self.id == BtnCancel or #self.id == BtnNo
+            surface.setSurfaceFlags(add: .CloseBtn)
+
         return btn
     }
 }

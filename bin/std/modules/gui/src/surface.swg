@@ -49,30 +49,57 @@ enum SurfaceFlags
 
 impl Surface
 {
-    // Creates the surface
-    func create(surface: *Surface, x, y, width, height: s32, flags: SurfaceFlags, mainSurface: *Surface) throw
+    // Change flag surfaces
+    mtd setSurfaceFlags(add, remove = SurfaceFlags.Zero)
     {
-        surface.flags = flags
-        surface.wnd = Memory.new'SurfaceWnd()
-        surface.wnd.itf = cast(IWnd) surface.wnd
-        surface.wnd.surface = surface
-        surface.wnd.focusStrategy = .None
-        app := surface.app
+        // Cannot be changed at runtime
+        Debug.assert(!(add & .Secondary) and !(remove & .Secondary))
 
+        flags |= add
+        flags &= ~remove
+        applySurfaceFlags()
+    }
+
+    private mtd applySurfaceFlags()
+    {
         if flags & .BigCaption
-            surface.wnd.padding.y = app.theme.metrics.wnd_BigCaptionCY
+            wnd.padding.y = app.theme.metrics.wnd_BigCaptionCY
         elif flags & .SmallCaption
-            surface.wnd.padding.y = app.theme.metrics.wnd_SmallCaptionCY
+            wnd.padding.y = app.theme.metrics.wnd_SmallCaptionCY
+        else
+            wnd.padding.y = 0
 
         if flags & .Border
         {
             size := app.theme.metrics.wnd_BorderSize
-            surface.wnd.padding.x = size
-            surface.wnd.padding.y = Math.max(surface.wnd.padding.y, size)
-            surface.wnd.padding.z = size
-            surface.wnd.padding.w = size
+            wnd.padding.x = size
+            wnd.padding.y = Math.max(wnd.padding.y, size)
+            wnd.padding.z = size
+            wnd.padding.w = size
+        }
+        else
+        {
+            wnd.padding = 0
         }
 
+        wnd.applySurfaceFlags()
+        wnd.sendResizeEvent()
+    }
+
+    // Creates the surface
+    func create(surface: *Surface, x, y, width, height: s32, flags: SurfaceFlags, mainSurface: *Surface) throw
+    {
+        with surface
+        {
+            .flags = flags
+            .wnd = Memory.new'SurfaceWnd()
+            .wnd.itf = cast(IWnd) .wnd
+            .wnd.surface = surface
+            .wnd.focusStrategy = .None
+            .applySurfaceFlags()
+        }
+
+        app := surface.app
         try createNative(app, surface, x, y, width, height, flags, mainSurface)
 
         surface.minSize = @{256, 256}

@@ -22,9 +22,9 @@ public impl MessageDlg
             .label = Label.create(srf.getView(), message, @{})
             .label.dockStyle = .Center
             .label.horzAlignmentText = .Justify
-            .label.padding.x = metrics.msgDlg_Padding
-            .label.padding.z = metrics.msgDlg_Padding
-            .label.padding.w = metrics.msgDlg_Padding
+            .label.padding.x = metrics.dialog_Padding
+            .label.padding.z = metrics.dialog_Padding
+            .label.padding.w = metrics.dialog_Padding
             .setIcon(icon)
             .sendResizeEvent()
         }
@@ -56,19 +56,25 @@ public impl MessageDlg
         w := 0'f32
         visit btn: buttons
             w += btn.position.width
-        w += cast(f32) ((buttons.count - 1) * metrics.msgDlg_BtnPadding)
-        w += 2 * metrics.msgDlg_Padding
+        w += cast(f32) ((buttons.count - 1) * metrics.dialog_BtnPadding)
+        w += 2 * metrics.dialog_Padding
         w += metrics.btnPush_Width
-        wl := label.name.boundRect.width + 2 * metrics.msgDlg_Padding
+        wl := label.name.boundRect.width + 2 * metrics.dialog_Padding
         wl += 2 * metrics.wnd_BorderSize
         w = Math.max(w, wl)
 
         // Height
-        h := Math.min(512, label.name.boundRect.height + metrics.msgDlg_Padding)
+        h := Math.min(512, label.name.boundRect.height + metrics.dialog_Padding)
         if labelIcon
             h += labelIcon.position.height
+        else
+            h += metrics.dialog_Padding
         h += wndBottom.position.height
         h += 2 * metrics.wnd_BorderSize
+        if surface.flags & .SmallCaption
+            h += metrics.wnd_SmallCaptionCY
+        elif surface.flags & .BigCaption
+            h += metrics.wnd_BigCaptionCY
 
         pos := surface.position
         pos.width = w
@@ -91,7 +97,7 @@ public impl MessageDlg
         with labelIcon
         {
             .dockStyle = .Top
-            .setAllPaddings(getThemeMetrics().msgDlg_Padding)
+            .setAllPaddings(getThemeMetrics().dialog_Padding)
             .icon = icon
             .horzAlignmentIcon = .Center
             .vertAlignmentIcon = .Center

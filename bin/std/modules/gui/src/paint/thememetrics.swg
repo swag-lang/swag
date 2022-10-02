@@ -25,8 +25,8 @@ struct ThemeMetrics
     btnCheck_Size:              f32 = 24
     btnCheck_Padding:           f32 = 4
 
-    msgDlg_Padding:             f32 = 20
-    msgDlg_BtnPadding:          f32 = 5
+    dialog_Padding:             f32 = 20
+    dialog_BtnPadding:          f32 = 5
 
     editBox_SquarePadding:      Math.Vector4 = @{10, 5, 10, 5}
     editBox_RoundPadding:       Math.Vector4 = @{12, 5, 12, 5}

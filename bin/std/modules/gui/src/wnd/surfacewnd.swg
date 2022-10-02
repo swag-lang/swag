@@ -286,6 +286,51 @@ impl SurfaceWnd
         btn.surface.wnd.view.postEvent(evt)
     }
 
+    private mtd applySurfaceFlags()
+    {
+        theme := surface.app.theme
+        if surface.flags & .MinimizeBtn
+        {
+            with minimizeBtn = IconButton.create(self, theme.getIcon24(ThemeIcons24.WndMinimize), @{0,0,0,0})
+            {
+                .sigPressed += &onMinimize
+            }
+        }
+        elif minimizeBtn
+        {
+            minimizeBtn.destroy()
+            minimizeBtn = null
+        }
+
+        if surface.flags & .MaximizeBtn
+        {
+            with maximizeBtn = IconButton.create(self, theme.getIcon24(ThemeIcons24.WndMaximize), @{0,0,0,0})
+            {
+                .sigPressed += &onMaximize
+            }
+        }
+        elif maximizeBtn
+        {
+            maximizeBtn.destroy()
+            maximizeBtn = null
+        }
+
+        if surface.flags & .CloseBtn
+        {
+            with closeBtn = IconButton.create(self, theme.getIcon24(ThemeIcons24.WndClose), @{0,0,0,0})
+            {
+                .sigPressed += &onClose
+                .style.addStyleSheetColors(@nameof(ThemeColors.btnIcon_HotBk)     ++" $" ++ @nameof(ThemeColors.wnd_BtnCloseBk))
+                .style.addStyleSheetColors(@nameof(ThemeColors.btnIcon_PressedBk) ++" $" ++ @nameof(ThemeColors.wnd_BtnCloseHotBk))
+            }
+        }
+        elif closeBtn
+        {
+            closeBtn.destroy()
+            closeBtn = null
+        }
+    }
+
     mtd create(userView: *Wnd, hook: HookEvent)
     {
         computeStyle()
@@ -301,26 +346,6 @@ impl SurfaceWnd
             createView'Wnd(hook)
         }
 
-        theme := surface.app.theme
-        if surface.flags & .MinimizeBtn
-        {
-            minimizeBtn = IconButton.create(self, theme.getIcon24(ThemeIcons24.WndMinimize), @{0,0,0,0})
-            minimizeBtn.sigPressed += &onMinimize
-        }
-
-        if surface.flags & .MaximizeBtn
-        {
-            maximizeBtn = IconButton.create(self, theme.getIcon24(ThemeIcons24.WndMaximize), @{0,0,0,0})
-            maximizeBtn.sigPressed += &onMaximize
-        }
-
-        if surface.flags & .CloseBtn
-        {
-            closeBtn = IconButton.create(self, theme.getIcon24(ThemeIcons24.WndClose), @{0,0,0,0})
-            closeBtn.sigPressed += &onClose
-            using ThemeColors
-            closeBtn.style.addStyleSheetColors(@nameof(btnIcon_HotBk)     ++" $" ++ @nameof(wnd_BtnCloseBk))
-            closeBtn.style.addStyleSheetColors(@nameof(btnIcon_PressedBk) ++" $" ++ @nameof(wnd_BtnCloseHotBk))
-        }
+        applySurfaceFlags()
     }
 }
