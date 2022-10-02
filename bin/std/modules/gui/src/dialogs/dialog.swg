@@ -97,11 +97,11 @@ impl Dialog
     }
 
     // Display dialog as modal, and returns the user selected window id
-    func doModal(dlg: *Surface)->string
+    mtd doModal()->string
     {
-        dlg.bringToTop()
-        dlg.show()
-        return dlg.app.doModalLoop(dlg)
+        surface.bringToTop()
+        surface.show()
+        return surface.app.doModalLoop(surface)
     }
 
     // Add a button

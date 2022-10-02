@@ -37,7 +37,7 @@ public impl MessageDlg
     {
         adaptSizeToMessage()
         surface.center(from)
-        return Dialog.doModal(surface)
+        return doModal()
     }
 
     private mtd adaptSizeToMessage()

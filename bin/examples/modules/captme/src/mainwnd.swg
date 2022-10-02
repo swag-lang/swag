@@ -767,11 +767,11 @@ impl MainWnd
     mtd newImage()
     {
         dlg := Wnd.create'Dialog()
-        srf := dlg.createSurface(surface, 0, 0, 500, 300)
+        srf := dlg.createSurface(surface, 0, 0, 400, 256)
         dlg.addButton("Cancel", Dialog.BtnCancel)
         dlg.addButton("Ok", Dialog.BtnOk, true)
         srf.center(surface)
-        if Dialog.doModal(srf) != Dialog.BtnOk
+        if dlg.doModal() != Dialog.BtnOk
             return
 
         w := 512
