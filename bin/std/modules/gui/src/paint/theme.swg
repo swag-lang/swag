@@ -51,16 +51,19 @@ struct ThemeResources
 
 struct Theme
 {
-    res:     ThemeResources
-    rects:   ThemeImageRects
-    metrics: ThemeMetrics
-    colors:  ThemeColors
+    intialized: bool
+    res:        ThemeResources
+    rects:      ThemeImageRects
+    metrics:    ThemeMetrics
+    colors:     ThemeColors
 }
 
 impl Theme
 {
     private mtd setupDefault(renderer: *RenderOgl)
     {
+        intialized = true
+
         img := assume Image.decode(DefaultImageName, DefaultImage)
         res.imgWidgets = renderer.addImage(img)
 

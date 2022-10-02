@@ -3,7 +3,7 @@
 struct Dialog
 {
     using wnd: Wnd
-    wndBottom: *Wnd
+    wndBottom: *StackLayoutCtrl
     buttons:   Array'(*PushButton)
 }
 
@@ -93,10 +93,14 @@ impl Dialog
         metrics := getThemeMetrics()
         h := metrics.btnPush_Height
         h += 2 * metrics.dialog_Padding
-        wndBottom = Wnd.create'Wnd(srf.wnd.view, "", @{0, 0, 0, h})
-        wndBottom.dockStyle = .Bottom
-        wndBottom.backgroundStyle = .DialogBar
-        wndBottom.setAllPaddings(metrics.dialog_Padding)
+        with wndBottom = Wnd.create'StackLayoutCtrl(srf.wnd.view, "", @{0, 0, 0, h})
+        {
+            .spacing = 10
+            .layoutKind = .HorzCenterVertCenter
+            .dockStyle = .Bottom
+            .backgroundStyle = .DialogBar
+            .setAllPaddings(metrics.dialog_Padding)
+        }
 
         setFocus()
 
@@ -118,11 +122,9 @@ impl Dialog
         metrics := getThemeMetrics()
         with btn := PushButton.create(wndBottom, str, @{}, #self.id)
         {
-            .dockStyle = .Right
             .form = isDefault ? .Default : .Strong
-            .margin = @{metrics.dialog_BtnPadding, 0, metrics.dialog_BtnPadding, 0}
             .sigPressed += @(btn) { btn.getApp().exitModal(btn.id); }
-            buttons.insertAt(0, btn)
+            buttons.add(btn)
         }
 
         if #self.id == BtnCancel or #self.id == BtnNo

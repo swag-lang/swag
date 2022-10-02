@@ -10,6 +10,7 @@ enum StackLayoutKind
     LeftAutoSize
     Right
     HorzCenter
+    HorzCenterVertCenter
     VertCenter
 }
 
@@ -30,7 +31,7 @@ impl IWnd for StackLayoutCtrl
             return
         }
 
-        if layoutKind == .HorzCenter
+        if layoutKind == .HorzCenter or layoutKind == .HorzCenterVertCenter
         {
             totalW := 0'f32
             visit c, i: childs
@@ -39,9 +40,12 @@ impl IWnd for StackLayoutCtrl
 
             x := position.width * 0.5 - totalW * 0.5
             x = Math.max(x, padding.x)
+            y := getClientRectPadding().vertCenter()
             visit c: childs
             {
                 pos := c.position
+                if layoutKind == .HorzCenterVertCenter
+                    pos.y = y - (pos.height * 0.5)
                 pos.x = Math.round(x)
                 c.setPosition(pos)
                 x += c.position.width + spacing

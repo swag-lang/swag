@@ -120,8 +120,8 @@ public impl MessageDlg
     {
         with dlg := create(from, message, icon)
         {
-            .addButton("Cancel", Dialog.BtnCancel, defaultId == Dialog.BtnCancel)
             .addButton("OK", Dialog.BtnOk, defaultId == Dialog.BtnOk)
+            .addButton("Cancel", Dialog.BtnCancel, defaultId == Dialog.BtnCancel)
         }
 
         return dlg.doModal(from)
@@ -132,8 +132,8 @@ public impl MessageDlg
     {
         with dlg := create(from, message, icon.isValid() ? icon : from.app.theme.getIcon64(ThemeIcons64.Question))
         {
-            .addButton("No", Dialog.BtnNo, defaultId == Dialog.BtnNo)
             .addButton("Yes", Dialog.BtnYes, defaultId == Dialog.BtnYes)
+            .addButton("No", Dialog.BtnNo, defaultId == Dialog.BtnNo)
         }
 
         return dlg.doModal(from)
@@ -144,9 +144,9 @@ public impl MessageDlg
     {
         with dlg := create(from, message, icon.isValid() ? icon : from.app.theme.getIcon64(ThemeIcons64.Question))
         {
-            .addButton("Cancel", Dialog.BtnCancel, defaultId == Dialog.BtnCancel)
-            .addButton("No", Dialog.BtnNo, defaultId == Dialog.BtnNo)
             .addButton("Yes", Dialog.BtnYes, defaultId == Dialog.BtnYes)
+            .addButton("No", Dialog.BtnNo, defaultId == Dialog.BtnNo)
+            .addButton("Cancel", Dialog.BtnCancel, defaultId == Dialog.BtnCancel)
         }
 
         return dlg.doModal(from)

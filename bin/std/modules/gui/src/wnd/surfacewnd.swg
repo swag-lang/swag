@@ -289,11 +289,17 @@ impl SurfaceWnd
     private mtd applySurfaceFlags()
     {
         theme := surface.app.theme
+        if !theme.intialized
+            return
+
         if surface.flags & .MinimizeBtn
         {
-            with minimizeBtn = IconButton.create(self, theme.getIcon24(ThemeIcons24.WndMinimize), @{0,0,0,0})
+            if !minimizeBtn
             {
-                .sigPressed += &onMinimize
+                with minimizeBtn = IconButton.create(self, theme.getIcon24(ThemeIcons24.WndMinimize), @{0,0,0,0})
+                {
+                    .sigPressed += &onMinimize
+                }
             }
         }
         elif minimizeBtn
@@ -304,9 +310,12 @@ impl SurfaceWnd
 
         if surface.flags & .MaximizeBtn
         {
-            with maximizeBtn = IconButton.create(self, theme.getIcon24(ThemeIcons24.WndMaximize), @{0,0,0,0})
+            if !maximizeBtn
             {
-                .sigPressed += &onMaximize
+                with maximizeBtn = IconButton.create(self, theme.getIcon24(ThemeIcons24.WndMaximize), @{0,0,0,0})
+                {
+                    .sigPressed += &onMaximize
+                }
             }
         }
         elif maximizeBtn
@@ -317,11 +326,14 @@ impl SurfaceWnd
 
         if surface.flags & .CloseBtn
         {
-            with closeBtn = IconButton.create(self, theme.getIcon24(ThemeIcons24.WndClose), @{0,0,0,0})
+            if !closeBtn
             {
-                .sigPressed += &onClose
-                .style.addStyleSheetColors(@nameof(ThemeColors.btnIcon_HotBk)     ++" $" ++ @nameof(ThemeColors.wnd_BtnCloseBk))
-                .style.addStyleSheetColors(@nameof(ThemeColors.btnIcon_PressedBk) ++" $" ++ @nameof(ThemeColors.wnd_BtnCloseHotBk))
+                with closeBtn = IconButton.create(self, theme.getIcon24(ThemeIcons24.WndClose), @{0,0,0,0})
+                {
+                    .sigPressed += &onClose
+                    .style.addStyleSheetColors(@nameof(ThemeColors.btnIcon_HotBk)     ++" $" ++ @nameof(ThemeColors.wnd_BtnCloseBk))
+                    .style.addStyleSheetColors(@nameof(ThemeColors.btnIcon_PressedBk) ++" $" ++ @nameof(ThemeColors.wnd_BtnCloseHotBk))
+                }
             }
         }
         elif closeBtn
