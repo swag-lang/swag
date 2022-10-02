@@ -766,6 +766,11 @@ impl MainWnd
 
     mtd newImage()
     {
+        w := 512
+        h := 512
+        img := Image.create(w, h, .RGB8)
+        img.fill(Argb.White)
+        newCapture(img)
     }
 
     mtd newCapture(img: Image)
