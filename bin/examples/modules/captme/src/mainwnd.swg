@@ -700,26 +700,26 @@ impl MainWnd
 
     mtd registerShortcuts()
     {
-        registerKeyShortcut(Input.KeyModifiers.Control,   Input.Key.PrintScreen,    CmdIdCapture)
-        registerKeyShortcut(Input.KeyModifiers.Control,   Input.Key.C,              CmdIdCopy)
-        registerKeyShortcut(Input.KeyModifiers.Control,   Input.Key.V,              CmdIdPaste)
-        registerKeyShortcut(Input.KeyModifiers.Control,   Input.Key.Insert,         CmdIdCopy)
-        registerKeyShortcut(Input.KeyModifiers.Shift,     Input.Key.Insert,         CmdIdPaste)
-        registerKeyShortcut(Input.KeyModifiers.Control,   Input.Key.Z,              CmdIdUndo)
-        registerKeyShortcut(Input.KeyModifiers.Control,   Input.Key.Y,              CmdIdRedo)
-        registerKeyShortcut(Input.KeyModifiers.CtrlShift, Input.Key.F,              CmdIdBringForward)
-        registerKeyShortcut(Input.KeyModifiers.CtrlShift, Input.Key.B,              CmdIdSendBackward)
-        registerKeyShortcut(Input.KeyModifiers.None,      Input.Key.Delete,         CmdIdDeleteSelection)
-        registerKeyShortcut(Input.KeyModifiers.CtrlShift, Input.Key.A,              CmdIdCopyAsImage)
-        registerKeyShortcut(Input.KeyModifiers.Control,   Input.Key.A,              CmdIdSelectAll)
-        registerKeyShortcut(Input.KeyModifiers.Control,   Input.Key.D,              CmdIdDeSelectAll)
-        registerKeyShortcut(Input.KeyModifiers.Control,   Input.Key.Add,            CmdIdZoomIn)
-        registerKeyShortcut(Input.KeyModifiers.Control,   Input.Key.Subtract,       CmdIdZoomOut)
-        registerKeyShortcut(Input.KeyModifiers.Control,   Input.Key.NumPad0,        CmdIdZoom1)
-        registerKeyShortcut(Input.KeyModifiers.CtrlShift, Input.Key.D,              CmdIdDupCapture)
-        registerKeyShortcut(Input.KeyModifiers.CtrlShift, Input.Key.I,              CmdIdInvertSelection)
-        registerKeyShortcut(Input.KeyModifiers.CtrlShift, Input.Key.T,              CmdIdFlattenAll)
-        registerKeyShortcut(Input.KeyModifiers.Alt,       Input.Key.F4,             CmdIdExit)
+        registerKeyShortcut(.Control,          .PrintScreen,    CmdIdCapture)
+        registerKeyShortcut(.Control,          .C,              CmdIdCopy)
+        registerKeyShortcut(.Control,          .V,              CmdIdPaste)
+        registerKeyShortcut(.Control,          .Insert,         CmdIdCopy)
+        registerKeyShortcut(.Shift,            .Insert,         CmdIdPaste)
+        registerKeyShortcut(.Control,          .Z,              CmdIdUndo)
+        registerKeyShortcut(.Control,          .Y,              CmdIdRedo)
+        registerKeyShortcut(.CtrlShift,        .F,              CmdIdBringForward)
+        registerKeyShortcut(.CtrlShift,        .B,              CmdIdSendBackward)
+        registerKeyShortcut(.None,             .Delete,         CmdIdDeleteSelection)
+        registerKeyShortcut(.CtrlShift,        .A,              CmdIdCopyAsImage)
+        registerKeyShortcut(.Control,          .A,              CmdIdSelectAll)
+        registerKeyShortcut(.Control,          .D,              CmdIdDeSelectAll)
+        registerKeyShortcut(.Control,          .Add,            CmdIdZoomIn)
+        registerKeyShortcut(.Control,          .Subtract,       CmdIdZoomOut)
+        registerKeyShortcut(.Control,          .NumPad0,        CmdIdZoom1)
+        registerKeyShortcut(.CtrlShift,        .D,              CmdIdDupCapture)
+        registerKeyShortcut(.CtrlShift,        .I,              CmdIdInvertSelection)
+        registerKeyShortcut(.CtrlShift,        .T,              CmdIdFlattenAll)
+        registerKeyShortcut(.Alt,              .F4,             CmdIdExit)
     }
 
     mtd updateState()
@@ -821,8 +821,10 @@ impl MainWnd
         }
 
         // Recent
-        res.recentWnd = RecentWnd.create(res.recentBar, res)
-        res.recentWnd.dockStyle = .Center
+        with res.recentWnd = RecentWnd.create(res.recentBar, res)
+        {
+            .dockStyle = .Center
+        }
 
         // Right bar
         with res.quickStyleBar = StackLayoutCtrl.create(res, .Top, @{0, 0, 300, 0})
@@ -832,16 +834,22 @@ impl MainWnd
             .spacing = 0
         }
 
-        label0 := Label.create(res.quickStyleBar, "Quick Styles", @{0, 0, 0, 30})
-        label0.backgroundStyle = .Window
-        label0.style.addStyleSheetColors("wnd_Bk $dlg_BtnBarBk")
+        with label0 := Label.create(res.quickStyleBar, "Quick Styles", @{0, 0, 0, 30})
+        {
+            .backgroundStyle = .Window
+            .style.addStyleSheetColors("wnd_Bk $dlg_BtnBarBk")
+        }
 
-        res.quickWnd = QuickWnd.create(res.quickStyleBar)
-        res.quickWnd.main = res
+        with res.quickWnd = QuickWnd.create(res.quickStyleBar)
+        {
+            .main = res
+        }
 
-        label1 := Label.create(res.quickStyleBar, "Tool Properties", @{0, 0, 0, 30})
-        label1.backgroundStyle = .Window
-        label1.style.addStyleSheetColors("wnd_Bk $dlg_BtnBarBk")
+        with label1 := Label.create(res.quickStyleBar, "Tool Properties", @{0, 0, 0, 30})
+        {
+            .backgroundStyle = .Window
+            .style.addStyleSheetColors("wnd_Bk $dlg_BtnBarBk")
+        }
 
         with res.propWnd = Wnd.create'PropWnd(res.quickStyleBar, @{0, 0, 0, 300})
         {
