@@ -78,7 +78,7 @@ impl Dialog
     const BtnOk     = "Dialog.ok"
     const BtnCancel = "Dialog.cancel"
 
-    mtd create(from: *Surface, x, y: s32, width = 512, height = 300)->*Surface
+    mtd createSurface(from: *Surface, x, y: s32, width = 512, height = 300)->*Surface
     {
         srf := assume from.app.createSurface(x, y, width, height, SurfaceFlags.Border | SurfaceFlags.Secondary, self)
         srf.wnd.view.backgroundStyle = .Dialog

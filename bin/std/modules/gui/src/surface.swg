@@ -90,6 +90,9 @@ impl Surface
         wnd.destroy()
     }
 
+    // Returns inside view
+    mtd getView() => wnd.view
+
     // Set the surface icon
     mtd setIcon(icon: Icon)
     {

@@ -10,16 +10,16 @@ public struct MessageDlg
 public impl MessageDlg
 {
     // Creates the message box
-    func create(from: *Surface, x, y: s32, message: string, icon: Icon = @{})->*MessageDlg
+    func create(from: *Surface, message: string, icon: Icon = @{})->*MessageDlg
     {
         dlg := Wnd.create'MessageDlg()
-        srf := Dialog.create(dlg, from, x, y, 500, 300)
+        srf := dlg.createSurface(from, 0, 0, 500, 300)
 
         metrics := from.wnd.getThemeMetrics()
 
         with dlg
         {
-            .label = Label.create(srf.wnd.view, message, @{})
+            .label = Label.create(srf.getView(), message, @{})
             .label.dockStyle = .Center
             .label.horzAlignmentText = .Justify
             .label.padding.x = metrics.msgDlg_Padding
@@ -100,7 +100,7 @@ public impl MessageDlg
     // Message box with a 'ok'
     func ok(from: *Surface, message: string, icon: Icon = @{})
     {
-        with dlg := create(from, 0, 0, message, icon)
+        with dlg := create(from, message, icon)
         {
             .addButton("OK", Dialog.BtnOk, true)
         }
@@ -111,7 +111,7 @@ public impl MessageDlg
     // Message box with a 'ok' and 'cancel' button
     func okCancel(from: *Surface, message: string, defaultId = Dialog.BtnCancel, icon: Icon = @{})->WndId
     {
-        with dlg := create(from, 0, 0, message, icon)
+        with dlg := create(from, message, icon)
         {
             .addButton("Cancel", Dialog.BtnCancel, defaultId == Dialog.BtnCancel)
             .addButton("OK", Dialog.BtnOk, defaultId == Dialog.BtnOk)
@@ -123,7 +123,7 @@ public impl MessageDlg
     // Message box with a 'yes' and 'no' button
     func yesNo(from: *Surface, message: string, defaultId = Dialog.BtnNo, icon: Icon = @{})->WndId
     {
-        with dlg := create(from, 0, 0, message, icon.isValid() ? icon : from.app.theme.getIcon64(ThemeIcons64.Question))
+        with dlg := create(from, message, icon.isValid() ? icon : from.app.theme.getIcon64(ThemeIcons64.Question))
         {
             .addButton("No", Dialog.BtnNo, defaultId == Dialog.BtnNo)
             .addButton("Yes", Dialog.BtnYes, defaultId == Dialog.BtnYes)
@@ -135,7 +135,7 @@ public impl MessageDlg
     // Message box with a 'yes' and 'no' button
     func yesNoCancel(from: *Surface, message: string, defaultId = Dialog.BtnCancel, icon: Icon = @{})->WndId
     {
-        with dlg := create(from, 0, 0, message, icon.isValid() ? icon : from.app.theme.getIcon64(ThemeIcons64.Question))
+        with dlg := create(from, message, icon.isValid() ? icon : from.app.theme.getIcon64(ThemeIcons64.Question))
         {
             .addButton("Cancel", Dialog.BtnCancel, defaultId == Dialog.BtnCancel)
             .addButton("No", Dialog.BtnNo, defaultId == Dialog.BtnNo)
