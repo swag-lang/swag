@@ -650,10 +650,13 @@ impl MainWnd
             b.checkedForm = .Bottom
         }
 
-        editToolBar = StackLayoutCtrl.create(topBar, .HorzCenter, @{0, 0, 64, 64})
-        editToolBar.dockStyle = .Top
-        editToolBar.backgroundStyle = .Window
-        editToolBar.style.addStyleSheetColors("wnd_Bk $wnd_Caption")
+        with editToolBar = StackLayoutCtrl.create(topBar, .HorzCenter, @{0, 0, 64, 64})
+        {
+            .dockStyle = .Top
+            .backgroundStyle = .Window
+            .style.addStyleSheetColors("wnd_Bk $wnd_Caption")
+        }
+
         createBtn(CmdIdModeFavorites)
         createBtn(CmdIdModeShape)
         createBtn(CmdIdModeArrow)
@@ -771,11 +774,11 @@ impl MainWnd
         }
     }
 
-    func updateZoomDisplay(res: *MainWnd)
+    mtd updateZoomDisplay()
     {
-        z := cast(s32) (res.editWnd.editView.zoom * 100)
-        res.zoomBtn.name = Format.toString("% %%", z)
-        res.zoomBtn.invalidate()
+        z := cast(s32) (editWnd.editView.zoom * 100)
+        zoomBtn.name = Format.toString("% %%", z)
+        zoomBtn.invalidate()
     }
 
     func create(parent: *Wnd)->*MainWnd
@@ -816,7 +819,7 @@ impl MainWnd
         {
             .dockStyle = .Center
             .sigScrollSizeChanged += @|res|(scroll, old, new) {
-                updateZoomDisplay(res)
+                res.updateZoomDisplay()
             }
         }
 
@@ -895,10 +898,9 @@ impl MainWnd
             }
         }
 
-        updateZoomDisplay(res)
-
         with res
         {
+            .updateZoomDisplay()
             .setBottomSize(.Medium)
             .updateState()
             .libWnd = LibraryWnd.create(res)
