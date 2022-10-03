@@ -353,15 +353,25 @@ impl Capture
 
     mtd paintBackImage(painter: *Painter, x, y: f32, z: f32)
     {
+        renderer := editView.getApp().renderer
+
         // Background image
         if !backTexture.isValid() and backImg.width > 0
-            backTexture = editView.getApp().renderer.addImage(backImg)
+            backTexture = renderer.addImage(backImg)
 
         if backTexture.isValid()
         {
+            // Background image has been changed
             if dirtyBackImg
             {
-                editView.getApp().renderer.updateTexture(&backTexture, backImg.pixels.buffer)
+                if backTexture.pf != backImg.pf
+                {
+                    renderer.removeTexture(&backTexture)
+                    backTexture = renderer.addImage(backImg)
+                }
+                else
+                    renderer.updateTexture(&backTexture, backImg.pixels.buffer)
+
                 dirtyBackImg = false
             }
 
