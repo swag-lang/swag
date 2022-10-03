@@ -29,7 +29,12 @@ impl IWnd for EditCtrl
 impl EditCtrl
 {
     // Create the popup list, but do not display it
-    func create(parent: *Wnd, name: string, text: string, position: Math.Rectangle = @{}, id: WndId = null)->*EditCtrl
+    func create(parent:   *Wnd,
+                name:     string,
+                text:     string,
+                position: Math.Rectangle = @{},
+                id:       WndId = null,
+                flags:    EditBoxFlags = None)->*EditCtrl
     {
         metrics := parent.getThemeMetrics()
         pos := position
@@ -44,6 +49,7 @@ impl EditCtrl
             .label.horzAlignmentText = .Right
 
             .edit = EditBox.create(ctrl, text, @{})
+            .edit.editBoxFlags = flags
 
             .sendResizeEvent()
         }

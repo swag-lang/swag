@@ -85,6 +85,17 @@ impl Dialog
     const BtnOk     = "Dialog.ok"
     const BtnCancel = "Dialog.cancel"
 
+    // Creates a simple dialog box
+    func createDialog(from: *Surface, width = 512, height = 300, title: string = null)->*Dialog
+    {
+        dlg := Wnd.create'Dialog()
+        srf := dlg.createSurface(from, 0, 0, width, height)
+        srf.setTitle(title)
+        srf.center(from)
+        return dlg
+    }
+
+    // Creates an associated surface
     mtd createSurface(from: *Surface, x, y: s32, width = 512, height = 300)->*Surface
     {
         srf := assume from.app.createSurface(x, y, width, height, .BigCaption | .Border | .Secondary, self)

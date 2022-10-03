@@ -766,16 +766,13 @@ impl MainWnd
 
     mtd newImage()
     {
-        dlg := Wnd.create'Dialog()
-        srf := dlg.createSurface(surface, 0, 0, 350, 235)
-        srf.setTitle("New image")
+        dlg := Dialog.createDialog(surface, 350, 235, title: "New Image")
         dlg.addButton("Create", Dialog.BtnOk, true)
         dlg.addButton("Cancel", Dialog.BtnCancel)
-        edit0 := EditCtrl.create(dlg, "Width", "512", @{100, 12})
+        edit0 := EditCtrl.create(dlg, "Width", "512", @{90, 12}, flags: .RightAlign)
+        edit1 := EditCtrl.create(dlg, "Height", "512", @{90, 47}, flags: .RightAlign)
         edit0.edit.setInputU64(16, 4096)
-        edit1 := EditCtrl.create(dlg, "Height", "512", @{100, 47})
         edit1.edit.setInputU64(16, 4096)
-        srf.center(surface)
         if dlg.doModal() != Dialog.BtnOk
             return
 
