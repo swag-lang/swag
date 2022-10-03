@@ -19,8 +19,8 @@ enum DateTimeFormat
 {
     DateTime        // DDDD MMMM D YYYY HH:MM:SS
     DateTimeMs      // DDDD MMMM D YYYY HH:MM:SS.ZZZ
-    Iso             // YYYY-MM-DD YYYY HH:MM:SS
-    IsoMs           // YYYY-MM-DD YYYY HH:MM:SS.ZZZ
+    Iso             // YYYY-MM-DD HH:MM:SS
+    IsoMs           // YYYY-MM-DD HH:MM:SS.ZZZ
 }
 
 // Represents an instant in time, typically expressed as a date and time of day

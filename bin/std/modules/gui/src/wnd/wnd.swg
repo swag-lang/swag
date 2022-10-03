@@ -670,17 +670,17 @@ impl Wnd
     }
 
     // Move and size the wnd
-    mtd setPosition(rect: Math.Rectangle)
+    mtd setPosition(rect: Math.Rectangle, computeLayout = true)
     {
         move(rect.x, rect.y)
-        resize(rect.width, rect.height)
+        resize(rect.width, rect.height, computeLayout)
     }
 
     // Move and size the wnd
-    mtd setPosition(x, y, w, h: f32)
+    mtd setPosition(x, y, w, h: f32, computeLayout = true)
     {
         move(x, y)
-        resize(w, h)
+        resize(w, h, computeLayout)
     }
 
     // Move the wnd
@@ -708,7 +708,7 @@ impl Wnd
     }
 
     // Resize the wnd
-    mtd resize(width, height: f32)
+    mtd resize(width, height: f32, computeLayout = true)
     {
         if position.width == width and position.height == height
             return
@@ -720,7 +720,9 @@ impl Wnd
         clampSize(&position)
 
         sendEvent(&evt)
-        applyLayout(evt.oldSize)
+
+        if computeLayout
+            applyLayout(evt.oldSize)
     }
 
     // Apply the current layout (childs constraints)
@@ -756,7 +758,8 @@ impl Wnd
 
             if c.anchorStyle & .Width and oldSize.x > 0
             {
-                pos.width += position.width - oldSize.x
+                if position.width - oldSize.x
+                    pos.width += position.width - oldSize.x
             }
 
             if c.anchorStyle & .Height and oldSize.y > 0
@@ -764,7 +767,7 @@ impl Wnd
                 pos.height += position.height - oldSize.y
             }
 
-            c.setPosition(pos)
+            c.setPosition(pos, false)
         }
 
         visit c: childs
@@ -781,7 +784,7 @@ impl Wnd
                 pos.setBottom(clientRect.bottom() - c.margin.w)
                 if c.maxSize.y > 0 and c.maxSize.y < pos.height
                     pos.y = pos.vertCenter() - c.maxSize.y * 0.5
-                c.setPosition(pos)
+                c.setPosition(pos, false)
                 diff := c.margin.x + pos.width + c.margin.z
                 clientRect.width -= diff
                 clientRect.x += diff
@@ -793,7 +796,7 @@ impl Wnd
                 pos.setBottom(clientRect.bottom() - c.margin.w)
                 if c.maxSize.y > 0 and c.maxSize.y < pos.height
                     pos.y = pos.vertCenter() - c.maxSize.y * 0.5
-                c.setPosition(pos)
+                c.setPosition(pos, false)
                 diff := c.margin.x + pos.width + c.margin.z
                 clientRect.width -= diff
 
@@ -804,7 +807,7 @@ impl Wnd
                 pos.setRight(clientRect.right() - c.margin.z)
                 if c.maxSize.x > 0 and c.maxSize.x < pos.width
                     pos.x = pos.horzCenter() - c.maxSize.x * 0.5
-                c.setPosition(pos)
+                c.setPosition(pos, false)
                 diff := c.margin.y + pos.height + c.margin.w
                 clientRect.y += diff
                 clientRect.height -= diff
@@ -816,7 +819,7 @@ impl Wnd
                 pos.setRight(clientRect.right() - c.margin.z)
                 if c.maxSize.x > 0 and c.maxSize.x < pos.width
                     pos.x = pos.horzCenter() - c.maxSize.x * 0.5
-                c.setPosition(pos)
+                c.setPosition(pos, false)
                 diff := c.margin.w + pos.height + c.margin.y
                 clientRect.height -= diff
 
@@ -829,7 +832,7 @@ impl Wnd
         {
             pos := clientRect
             pos.applyPadding(c.margin)
-            c.setPosition(pos)
+            c.setPosition(pos, false)
         }
 
         visit c, i: childs

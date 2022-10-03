@@ -168,7 +168,8 @@ private impl ComboBox
 
     mtd hidePopup()
     {
-        Debug.assert(popup != null)
+        if !popup
+            return
         popup.destroy()
         popup = null
     }

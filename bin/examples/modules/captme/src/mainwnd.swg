@@ -94,6 +94,12 @@ impl IWnd for MainWnd
 
         switch evt.id
         {
+        case CmdIdSaveAs:
+            evt.setFlags |= .Name | .Disabled
+            evt.name = "Save As..."
+            evt.disabled = !capture
+            evt.accepted = true
+
         case CmdIdNewImage:
             evt.setFlags |= .Name
             evt.name = "New Image"
@@ -396,6 +402,11 @@ impl IWnd for MainWnd
         var undo: *Undo
         switch evt.id
         {
+        case CmdIdSaveAs:
+            dlg := FileDlg.create(surface)
+            dlg.surface.center(surface)
+            discard dlg.doModal()
+
         case CmdIdExit:
             postQuitEvent()
 
@@ -628,6 +639,8 @@ impl MainWnd
             .addItem(CmdIdNewImage)
             .addItem(CmdIdNewFromClipboard)
             .addSeparator()
+            .addItem(CmdIdSaveAs)
+            .addSeparator()
             .addItem(CmdIdExit)
             topMenu.addPopup("File", fileMenu)
         }
@@ -747,6 +760,7 @@ impl MainWnd
         registerKeyShortcut(.Alt,              .F4,             CmdIdExit)
         registerKeyShortcut(.Control,          .N,              CmdIdNewImage)
         registerKeyShortcut(.CtrlShift,        .N,              CmdIdNewFromClipboard)
+        registerKeyShortcut(.CtrlShift,        .S,              CmdIdSaveAs)
     }
 
     mtd updateState()
