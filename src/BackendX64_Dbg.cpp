@@ -1327,6 +1327,7 @@ bool BackendX64::dbgEmitScope(X64Gen& pp, Concat& concat, CoffFunction& f, Scope
     // Local variables marked as global
     /////////////////////////////////
     auto funcDecl = (AstFuncDecl*) f.node;
+    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(funcDecl->typeInfo, TypeInfoKind::FuncAttr);
     for (int i = 0; i < (int) funcDecl->localGlobalVars.size(); i++)
     {
         auto localVar = funcDecl->localGlobalVars[i];
@@ -1387,7 +1388,7 @@ bool BackendX64::dbgEmitScope(X64Gen& pp, Concat& concat, CoffFunction& f, Scope
         //////////
         dbgStartRecord(pp, concat, S_LOCAL);
         if (overload->flags & OVERLOAD_RETVAL)
-            concat.addU32(dbgGetOrCreatePointerPointerToType(pp, typeInfo)); // Type
+            concat.addU32(dbgGetOrCreatePointerToType(pp, typeInfo)); // Type
         else
             concat.addU32(dbgGetOrCreateType(pp, typeInfo)); // Type
         concat.addU16(0);                                    // CV_LVARFLAGS
@@ -1399,7 +1400,13 @@ bool BackendX64::dbgEmitScope(X64Gen& pp, Concat& concat, CoffFunction& f, Scope
         concat.addU16(R_RDI);                  // Register
         concat.addU16(0);                      // Flags
         if (overload->flags & OVERLOAD_RETVAL) // Offset to register
-            concat.addU32(f.offsetRetVal);
+        {
+            auto cptReg = typeFunc->numParamsRegisters();
+            if (cptReg < 4)
+                concat.addU32((cptReg * sizeof(Register)) + f.offsetParam);
+            else
+                concat.addU32((cptReg * sizeof(Register)) + f.offsetRetVal);
+        }
         else
             concat.addU32(overload->computedValue.storageOffset + f.offsetStack);
 
