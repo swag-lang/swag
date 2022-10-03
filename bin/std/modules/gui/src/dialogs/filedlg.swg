@@ -3,6 +3,7 @@ using Core, File, Directory
 
 enum FileDlgMode
 {
+    CreateFile
     SelectOneFile
     SelectMultiFiles
     SelectFolder
@@ -11,6 +12,7 @@ enum FileDlgMode
 struct FileDlgOptions
 {
     multiSelection: bool
+    btnOkName:      string = "Ok"
     mode:           FileDlgMode = SelectOneFile
 }
 
@@ -63,6 +65,7 @@ impl FileDlg
             .minSize = @{400, 400}
         }
 
+        dlg.addButton(opt.btnOkName, Dialog.BtnOk, true)
         dlg.addButton("Cancel", Dialog.BtnCancel)
 
         // Splitter
@@ -114,6 +117,24 @@ impl FileDlg
                 dlg.editFile.setText(txt)
             }
 
+            .sigSort = @(l1, l2, col, down) {
+                fi1 := cast(*FileInfo) l1.userData0
+                fi2 := cast(*FileInfo) l2.userData0
+                if (fi1.attributes & .Directory) and !(fi2.attributes & .Directory)
+                    return -1
+                if !(fi1.attributes & .Directory) and (fi2.attributes & .Directory)
+                    return 1
+                switch col
+                {
+                case 0:
+                    return (fi1.fullname <=> fi2.fullname) * (down ? -1 : 1)
+                case 1:
+                    return (fi1.lastWriteTime <=> fi2.lastWriteTime) * (down ? -1 : 1)
+                }
+
+                return 0
+            }
+
             splitter.addPane(dlg.listCtrl, 500)
         }
 
@@ -141,6 +162,7 @@ impl FileDlg
 
         dlg.curFolder = "f:/swag-lang/swag"
         dlg.fillList()
+        dlg.listCtrl.sort(0)
 
         return dlg
     }

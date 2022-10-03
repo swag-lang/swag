@@ -403,7 +403,10 @@ impl IWnd for MainWnd
         switch evt.id
         {
         case CmdIdSaveAs:
-            dlg := FileDlg.create(surface)
+            var opt: FileDlgOptions
+            opt.mode = .CreateFile
+            opt.btnOkName = "Save"
+            dlg := FileDlg.create(surface, opt)
             dlg.surface.center(surface)
             discard dlg.doModal()
 
