@@ -404,11 +404,13 @@ impl IWnd for MainWnd
         {
         case CmdIdSaveAs:
             var opt: FileDlgOptions
-            opt.mode = .CreateFile
+            opt.mode = .SelectFolder
             opt.btnOkName = "Save"
             dlg := FileDlg.create(surface, opt)
             dlg.surface.center(surface)
-            discard dlg.doModal()
+            if dlg.doModal() != Dialog.BtnOk
+                break
+            Console.print(dlg.getSelectedFiles(), "\n")
 
         case CmdIdExit:
             postQuitEvent()

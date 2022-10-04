@@ -11,9 +11,8 @@ enum FileDlgMode
 
 struct FileDlgOptions
 {
-    multiSelection: bool
-    btnOkName:      string = "Ok"
-    mode:           FileDlgMode = SelectOneFile
+    btnOkName:  string = "Ok"
+    mode:       FileDlgMode = SelectOneFile
 }
 
 struct FileDlg
@@ -23,6 +22,7 @@ struct FileDlg
     listCtrl:   *ListCtrl
     editFile:   *EditBox
     comboType:  *ComboBox
+    dlgOptions: FileDlgOptions
 
     curFolder:  String
     curList:    Array'FileInfo
@@ -36,7 +36,7 @@ private impl FileDlg
 
         var options: EnumerationOptions
         options.matchPattern = "*.*"
-        options.wantFiles = true
+        options.wantFiles = dlgOptions.mode != .SelectFolder
         options.wantDirectories = true
         options.recurse = false
         curList = catch Directory.enumerate(curFolder, options)
@@ -65,6 +65,7 @@ impl FileDlg
             .minSize = @{400, 400}
         }
 
+        dlg.dlgOptions = opt
         dlg.addButton(opt.btnOkName, Dialog.BtnOk, true)
         dlg.addButton("Cancel", Dialog.BtnCancel)
 
@@ -90,7 +91,7 @@ impl FileDlg
 
         with dlg.listCtrl = ListCtrl.createMultiColumns(splitter)
         {
-            .selectionMode = opt.multiSelection ? .Multi : .Single
+            .selectionMode = opt.mode == .SelectMultiFiles ? .Multi : .Single
             .addColumn("Name")
             .addColumn("Modified")
             .backgroundStyle = .View
@@ -108,9 +109,20 @@ impl FileDlg
                 var txt: String
                 visit l: sel
                 {
+                    fi := cast(const *FileInfo) l.userData0
+                    if fi.attributes & .Directory
+                    {
+                        if dlg.dlgOptions.mode != .SelectFolder
+                            continue
+                    }
+                    else
+                    {
+                        if dlg.dlgOptions.mode == .SelectFolder
+                            continue
+                    }
+
                     if !txt.isEmpty()
                         txt += ";"
-                    fi := cast(const *FileInfo) l.userData0
                     txt += Path.getFileName(fi.fullname)
                 }
 
@@ -151,9 +163,18 @@ impl FileDlg
         with dlg.comboType = ComboBox.create(viewBottom, @{115, 45, 530})
         {
             .anchorStyle = .Width
+            if opt.mode == .SelectFolder
+            {
+                .addItem("Folders")
+                .selectItem(0)
+            }
+            else
+            {
+            }
         }
 
-        label0 := Label.create(viewBottom, "File Name", @{5, 10, 100, dlg.editFile.position.height})
+        nameLbl0 := opt.mode == .SelectFolder ? "Folder Name" : "File Name"
+        label0 := Label.create(viewBottom, nameLbl0, @{5, 10, 100, dlg.editFile.position.height})
         label0.horzAlignmentText = .Right
         label0.vertAlignmentText = .Center
         label1 := Label.create(viewBottom, "Type", @{5, 45, 100, dlg.comboType.position.height})
@@ -165,5 +186,24 @@ impl FileDlg
         dlg.listCtrl.sort(0)
 
         return dlg
+    }
+
+    mtd getSelectedFile()->String
+    {
+        return Path.combine(curFolder, editFile.text.toString())
+    }
+
+    mtd getSelectedFiles()->Array'String
+    {
+        var result: retval
+
+        tokens := Tokenize.split(editFile.text, ";"'rune)
+        visit t: tokens
+        {
+            f := Path.combine(curFolder, t)
+            result.add(f)
+        }
+
+        return result
     }
 }
