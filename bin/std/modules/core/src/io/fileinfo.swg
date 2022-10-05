@@ -15,5 +15,5 @@ struct FileInfo
 impl FileInfo
 {
     #[Swag.Inline]
-    mtd isDirectory() => cast(bool) (attributes & .Directory)
+    mtdc isDirectory() => cast(bool) (attributes & .Directory)
 }

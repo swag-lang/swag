@@ -138,6 +138,12 @@ func getExtensionLowerCase(fullname: string)->String
     return String.toLower(getExtension(fullname))
 }
 
+// Returns true if the given file is of the given extension
+func isExtension(fullname, extension: string)->bool
+{
+    return getExtensionLowerCase(fullname) == String.toLower(extension)
+}
+
 // Returns true if the file name contains an extension
 #[ConstExpr]
 func hasExtension(fullname: string)->bool

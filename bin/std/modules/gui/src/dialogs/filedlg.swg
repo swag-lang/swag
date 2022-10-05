@@ -48,7 +48,7 @@ private impl FileDlg
         visit &fi: curList
         {
             name := Path.getFileName(fi.fullname)
-            if !fi.isDirectory() and Path.getExtension(name) != filter.item1
+            if !fi.isDirectory() and !Path.isExtension(name, filter.item1)
                 continue
             line := listCtrl.createLine(name)
             line.userData0 = fi
@@ -117,7 +117,7 @@ impl FileDlg
                 visit l: sel
                 {
                     fi := cast(const *FileInfo) l.userData0
-                    if fi.attributes & .Directory
+                    if fi.isDirectory()
                     {
                         if dlg.dlgOptions.mode != .SelectFolder
                             continue
@@ -139,10 +139,8 @@ impl FileDlg
             .sigSort = @(l1, l2, col, down) {
                 fi1 := cast(*FileInfo) l1.userData0
                 fi2 := cast(*FileInfo) l2.userData0
-                if (fi1.attributes & .Directory) and !(fi2.attributes & .Directory)
-                    return -1
-                if !(fi1.attributes & .Directory) and (fi2.attributes & .Directory)
-                    return 1
+                if fi1.isDirectory() and !fi2.isDirectory() return -1
+                if !fi1.isDirectory() and fi2.isDirectory()   return 1
                 switch col
                 {
                 case 0:
@@ -201,21 +199,24 @@ impl FileDlg
 
     mtd getSelectedFile()->String
     {
-        val := Path.combine(curFolder, editFile.text.toString())
-        item := comboType.getSelectedItem()
-        fi := dlgOptions.filters[cast(uint) item.userData0]
-        return val
+        sel := getSelectedFiles()
+        return sel.count == 0 ? String.from("") : dref sel[0]
     }
 
     mtd getSelectedFiles()->Array'String
     {
         var result: retval
 
+        item := comboType.getSelectedItem()
+        fi := dlgOptions.filters[cast(uint) item.userData0]
+
         tokens := Tokenize.split(editFile.text, ";"'rune)
         visit t: tokens
         {
-            f := Path.combine(curFolder, t)
-            result.add(f)
+            val := Path.combine(curFolder, t)
+            if dlgOptions.mode != .SelectFolder and !Path.isExtension(val, fi.item1)
+                val += fi.item1
+            result.add(val)
         }
 
         return result

@@ -930,6 +930,9 @@ impl ListCtrl
         lines.clear()
         virtualCount = 0
         idxLineToIdxList.clear()
+        focusIndex = Swag.U32.Max
+        selModel.unselectAll()
+        checkModel.unselectAll()
     }
 
     // Add one column in a multi columns list
