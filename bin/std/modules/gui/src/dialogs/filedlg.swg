@@ -13,6 +13,7 @@ struct FileDlgOptions
 {
     btnOkName:  string = "Ok"
     mode:       FileDlgMode = SelectOneFile
+    selName:    string  // The default name at open
     filters:    Array'{String, String}
 }
 
@@ -198,11 +199,8 @@ impl FileDlg
             .anchorStyle = .Width
             if opt.mode == .SelectFolder
                 .addItem("Folders")
-            else
-            {
-                visit f, idx: opt.filters
-                    .addItem(f.item0, userData0: cast(*void) idx)
-            }
+            else visit f, idx: opt.filters
+                .addItem(f.item0, userData0: cast(*void) idx)
 
             .selectItem(0)
             .sigChanged += @|dlg|(c, idx) {
@@ -222,16 +220,29 @@ impl FileDlg
         dlg.fillList()
         dlg.listCtrl.sort(0)
 
+        // Default name/focus
+        if opt.selName != null
+            dlg.editFile.setText(opt.selName)
+        if opt.mode == .CreateFile
+        {
+            dlg.editFile.setSelection(0, dlg.editFile.text.length)
+            dlg.editFile.setFocus()
+        }
+        else
+            dlg.listCtrl.setFocus()
+
         return dlg
     }
 
-    mtd getSelectedFile()->String
+    // Get the first selection
+    mtd getSelectedName()->String
     {
-        sel := getSelectedFiles()
+        sel := getSelectedNames()
         return sel.count == 0 ? String.from("") : dref sel[0]
     }
 
-    mtd getSelectedFiles()->Array'String
+    // Get all selections
+    mtd getSelectedNames()->Array'String
     {
         var result: retval
 

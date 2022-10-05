@@ -987,6 +987,7 @@ func GET_Y_LPARAM(lp: LPARAM) => cast(s32) HIWORD(lp)
     func ReleaseCapture()->BOOL;
     func SetCursor(hCursor: HCURSOR)->HCURSOR;
     func SetFocus(hWnd: HWND)->HWND;
+    func SetActiveWindow(hWnd: HWND)->HWND;
 
     func BeginPaint(hWnd: HWND, lpPaint: *PAINTSTRUCT)->HDC;
     func EndPaint(hWnd: HWND, lpPaint: const *PAINTSTRUCT)->BOOL;

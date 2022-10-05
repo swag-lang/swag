@@ -406,6 +406,7 @@ impl IWnd for MainWnd
             var opt: FileDlgOptions
             opt.mode = .CreateFile
             opt.btnOkName = "Save"
+            opt.selName   = "toto"
             opt.filters.add(@{String.from("Png (*.png)"), String.from(".png")})
             opt.filters.add(@{String.from("Jpeg (*.jpg)"), String.from(".jpg")})
             opt.filters.add(@{String.from("Bitmap (*.bmp)"), String.from(".bmp")})
@@ -414,7 +415,7 @@ impl IWnd for MainWnd
             dlg.surface.center(surface)
             if dlg.doModal() != Dialog.BtnOk
                 break
-            Console.print(dlg.getSelectedFiles(), "\n")
+            Console.print(dlg.getSelectedNames(), "\n")
 
         case CmdIdExit:
             postQuitEvent()

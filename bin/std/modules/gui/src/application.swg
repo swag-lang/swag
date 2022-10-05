@@ -423,7 +423,10 @@ private impl Application
         defer inModalLoop -= 1
 
         visit s: surfaces
-            s.disable()
+        {
+            if s != surface
+                s.disable()
+        }
 
         if surface
         {

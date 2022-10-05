@@ -261,9 +261,15 @@ impl Surface
             return
         isHidden = false
         invalidate()
+
         wnd.applyLayout(@{position.width, position.height})
         ShowWindow(hWnd, SW_SHOW)
-        wnd.view.setFocus()
+
+        curFocus := wnd.view.getFocus()
+        if !curFocus or !wnd.isParentOf(curFocus)
+            wnd.view.setFocus()
+        SetActiveWindow(hWnd)
+        SetFocus(hWnd)
     }
 
     // Hide the surface
