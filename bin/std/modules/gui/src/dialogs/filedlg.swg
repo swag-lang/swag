@@ -103,12 +103,40 @@ impl FileDlg
             .addColumn("Modified")
             .backgroundStyle = .View
 
+            .sigKeyPressed += @|dlg|(list, evt) {
+                switch evt.key
+                {
+                case Back:
+                    path := Path.getDirectoryName(dlg.curFolder)
+                    if @countof(path)
+                    {
+                        dlg.curFolder = path
+                        dlg.fillList()
+                    }
+
+                case Enter:
+                    line := list.getFocusLine()
+                    if line
+                    {
+                        fi := cast(const *FileInfo) line.userData0
+                        if fi.isDirectory()
+                        {
+                            dlg.curFolder = fi.fullname
+                            dlg.fillList()
+                        }
+                    }
+                }
+            }
+
             .sigLeftDoubleClick += @|dlg|(list, pt) {
                 l := list.getSelectedLine()
                 if !l return
                 fi := cast(const *FileInfo) l.userData0
-                dlg.curFolder = fi.fullname
-                dlg.fillList()
+                if fi.isDirectory()
+                {
+                    dlg.curFolder = fi.fullname
+                    dlg.fillList()
+                }
             }
 
             .sigSelChanged += @|dlg|(list) {

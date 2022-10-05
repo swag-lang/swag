@@ -66,6 +66,7 @@ struct ListCtrl
     sigLeftDoubleClick: SigArray'closure(*Self, Math.Point)
     sigExpand:          SigArray'closure(*Self, *ListLine)
     sigCollapse:        SigArray'closure(*Self, *ListLine)
+    sigKeyPressed:      SigArray'closure(*Self, *KeyEvent)
     sigVirtualFill:     func(*Self, *ListLine, u32)
     sigSort:            func(*ListLine, *ListLine, u32, bool)->s32
 
@@ -153,15 +154,24 @@ impl IWnd for ListView
         if evt.kind != .KeyPressed
             return
 
+        list.sigKeyPressed.call(list, evt)
+
         lineCount := list.getLineCount()
         if !lineCount
             return
-        if list.focusIndex == Swag.U32.Max
-            return
-        focusLine := list.lines[list.focusIndex]
+
+        var focusLine: *ListLine
+        if list.focusIndex < list.lines.count
+            focusLine = list.lines[list.focusIndex]
 
         shift := cast(bool) (evt.modifiers & .Shift)
         ctrl  := cast(bool) (evt.modifiers & .Control)
+
+        if list.focusIndex == Swag.U32.Max
+        {
+            if evt.key != .Down
+                return
+        }
 
         selChanged := false
         var startSelIdx, endSelIdx: u32
@@ -236,6 +246,8 @@ impl IWnd for ListView
         case Down:
             if list.focusIndex == lineCount - 1
                 startSelIdx, endSelIdx = lineCount - 1
+            elif list.focusIndex == Swag.U32.Max
+                list.focusIndex = 0
             else
                 startSelIdx, endSelIdx = list.focusIndex + 1
             selChanged = true
@@ -1002,6 +1014,14 @@ impl ListCtrl
     {
         idxLine := isVirtual ? idx : lines[idx].index
         return selModel.isSelected(idxLine)
+    }
+
+    // Get the line with the keyboard focus
+    mtdc getFocusLine()->*ListLine
+    {
+        if focusIndex >= lines.count
+            return null
+        return lines[focusIndex]
     }
 
     // Get all the selected lines

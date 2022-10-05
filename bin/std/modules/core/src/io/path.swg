@@ -36,7 +36,7 @@ func getFileName(fullname: string)->string
     return fullname
 }
 
-// Returns the directory part of the path, null if not found
+// Returns the root part of the path, null if not found
 #[ConstExpr]
 func getRootName(fullname: string)->string
 {
@@ -47,7 +47,7 @@ func getRootName(fullname: string)->string
 }
 
 // Tests if the given path contains a root. A path is considered rooted
-// if it starts with a directory separatpr or a drive letter and a colon.
+// if it starts with a directory separator or a drive letter and a colon.
 #[ConstExpr]
 func isRooted(fullname: string)->bool
 {
@@ -65,7 +65,8 @@ func isRooted(fullname: string)->bool
 #[ConstExpr]
 func getDirectoryName(fullname: string)->string
 {
-    if fullname == null return null
+    if fullname == null
+        return null
     Debug.assert(isValidPathName(fullname))
 
     countof := @countof(fullname)
@@ -75,7 +76,13 @@ func getDirectoryName(fullname: string)->string
         cpt -= 1
         c := fullname[cpt]
         if isDirectorySeparator(c)
+        {
+            if cpt == 0
+                return null
+            if cpt == 2 and fullname[1] == VolumeSeparatorChar
+                return null
             return acast @mkslice(@dataof(fullname), cast(uint) cpt)
+        }
     }
 
     return null
