@@ -1114,6 +1114,13 @@ impl ListCtrl
         invalidate()
     }
 
+    // Sort list as before
+    mtd sort()
+    {
+        if header and header.sortMark != 0
+            sort(header.sortColumn, header.sortMark == -1 ? true : false)
+    }
+
     // Expand the given line
     mtd expand(line: *ListLine)
     {

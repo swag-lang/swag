@@ -11,3 +11,9 @@ struct FileInfo
     lastWriteTime:  DateTime
     size:           u64
 }
+
+impl FileInfo
+{
+    #[Swag.Inline]
+    mtd isDirectory() => cast(bool) (attributes & .Directory)
+}

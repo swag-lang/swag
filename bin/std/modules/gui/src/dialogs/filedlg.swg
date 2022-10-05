@@ -13,6 +13,7 @@ struct FileDlgOptions
 {
     btnOkName:  string = "Ok"
     mode:       FileDlgMode = SelectOneFile
+    filters:    Array'{String, String}
 }
 
 struct FileDlg
@@ -36,20 +37,27 @@ private impl FileDlg
 
         var options: EnumerationOptions
         options.matchPattern = "*.*"
+        Console.print(options.matchPattern)
         options.wantFiles = dlgOptions.mode != .SelectFolder
         options.wantDirectories = true
         options.recurse = false
         curList = catch Directory.enumerate(curFolder, options)
 
+        item := comboType.items[comboType.selectedIdx]
+        filter := dlgOptions.filters[cast(uint) item.userData]
+
         visit &fi: curList
         {
             name := Path.getFileName(fi.fullname)
+            if !fi.isDirectory() and Path.getExtension(name) != filter.item1
+                continue
             line := listCtrl.createLine(name)
             line.userData0 = fi
             line.setItem(1, fi.lastWriteTime.toString(.Iso))
         }
 
         listCtrl.computeLayout()
+        listCtrl.sort()
     }
 }
 
@@ -164,12 +172,16 @@ impl FileDlg
         {
             .anchorStyle = .Width
             if opt.mode == .SelectFolder
-            {
                 .addItem("Folders")
-                .selectItem(0)
-            }
             else
             {
+                visit f, idx: opt.filters
+                    .addItem(f.item0, userData: cast(*void) idx)
+            }
+
+            .selectItem(0)
+            .sigChanged += @|dlg|(c, idx) {
+                dlg.fillList()
             }
         }
 

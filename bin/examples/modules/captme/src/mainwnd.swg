@@ -404,8 +404,10 @@ impl IWnd for MainWnd
         {
         case CmdIdSaveAs:
             var opt: FileDlgOptions
-            opt.mode = .SelectFolder
+            opt.mode = .CreateFile
             opt.btnOkName = "Save"
+            opt.filters.add(@{String.from("Bitmap (*.bmp)"), String.from(".bmp")})
+            opt.filters.add(@{String.from("Png (*.png)"), String.from(".png")})
             dlg := FileDlg.create(surface, opt)
             dlg.surface.center(surface)
             if dlg.doModal() != Dialog.BtnOk
