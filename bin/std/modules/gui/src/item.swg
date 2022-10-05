@@ -6,5 +6,6 @@ struct Item
     name:       RichString
     icon:       Icon
     id:         WndId
-    userData:   *void
+    userData0:  *void
+    userData1:  *void
 }

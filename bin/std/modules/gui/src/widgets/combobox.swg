@@ -153,7 +153,7 @@ private impl ComboBox
             if item.isSeparator
                 popup.addSeparator()
             else
-                popup.addItem(item.name.raw, item.id, item.icon, item.userData)
+                popup.addItem(item.name.raw, item.id, item.icon, item.userData0, item.userData1)
         }
 
         popup.sigSelected = @|self|(list, idx) {
@@ -205,15 +205,16 @@ impl ComboBox
     }
 
     // Add a new item
-    mtd addItem(name: string, id: WndId = null, icon: Icon = @{}, userData: *void = null)
+    mtd addItem(name: string, id: WndId = null, icon: Icon = @{}, userData0: *void = null, userData1: *void = null)
     {
         item := items.newPtr()
         with item
         {
-            .name     = #self.name
-            .icon     = #self.icon
-            .id       = #self.id
-            .userData = #self.userData
+            .name      = #self.name
+            .icon      = #self.icon
+            .id        = #self.id
+            .userData0 = #self.userData0
+            .userData1 = #self.userData1
         }
 
         if item.icon.isValid()
@@ -227,6 +228,14 @@ impl ComboBox
         item := items.newPtr()
         item.isSeparator = true
         items.add(item)
+    }
+
+    // Returns the selected item
+    mtd getSelectedItem()->*ComboBoxItem
+    {
+        if selectedIdx >= items.count
+            return null
+        return items[selectedIdx]
     }
 
     // Set the selected item index

@@ -406,8 +406,10 @@ impl IWnd for MainWnd
             var opt: FileDlgOptions
             opt.mode = .CreateFile
             opt.btnOkName = "Save"
-            opt.filters.add(@{String.from("Bitmap (*.bmp)"), String.from(".bmp")})
             opt.filters.add(@{String.from("Png (*.png)"), String.from(".png")})
+            opt.filters.add(@{String.from("Jpeg (*.jpg)"), String.from(".jpg")})
+            opt.filters.add(@{String.from("Bitmap (*.bmp)"), String.from(".bmp")})
+            opt.filters.add(@{String.from("Tga (*.tga)"), String.from(".tga")})
             dlg := FileDlg.create(surface, opt)
             dlg.surface.center(surface)
             if dlg.doModal() != Dialog.BtnOk

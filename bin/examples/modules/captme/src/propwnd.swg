@@ -587,7 +587,7 @@ impl PropWnd
         sysFonts = FontFamily.enumerateFromOs()
         visit &fnt: sysFonts
         {
-            combo.addItem(fnt.name, userData: fnt)
+            combo.addItem(fnt.name, userData0: fnt)
             if curSel.typeFace and curSel.typeFace.getFaceName() == fnt.name
                 combo.selectedIdx = cast(u32) combo.items.count - 1
         }
@@ -598,14 +598,14 @@ impl PropWnd
                 return
 
             sel := combo.items[idx]
-            if !sel.userData
+            if !sel.userData0
             {
                 curSel.typeFace = null
                 curSel.isDirty = true
                 return
             }
 
-            p  := cast(*FontFamilyEnumerate) sel.userData
+            p  := cast(*FontFamilyEnumerate) sel.userData0
             tf := catch FontFamily.createTypeFace(p, .Regular)
             if tf
             {

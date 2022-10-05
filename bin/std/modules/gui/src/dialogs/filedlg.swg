@@ -37,14 +37,13 @@ private impl FileDlg
 
         var options: EnumerationOptions
         options.matchPattern = "*.*"
-        Console.print(options.matchPattern)
         options.wantFiles = dlgOptions.mode != .SelectFolder
         options.wantDirectories = true
         options.recurse = false
         curList = catch Directory.enumerate(curFolder, options)
 
-        item := comboType.items[comboType.selectedIdx]
-        filter := dlgOptions.filters[cast(uint) item.userData]
+        item := comboType.getSelectedItem()
+        filter := dlgOptions.filters[cast(uint) item.userData0]
 
         visit &fi: curList
         {
@@ -163,12 +162,12 @@ impl FileDlg
         viewBottom := Wnd.create'Wnd(view, @{0, 0, 0, 90})
         viewBottom.dockStyle = .Bottom
 
-        with dlg.editFile = EditBox.create(viewBottom, "", @{115, 10, 530})
+        with dlg.editFile = EditBox.create(viewBottom, "", @{115, 10, 525})
         {
             .anchorStyle = .Width
         }
 
-        with dlg.comboType = ComboBox.create(viewBottom, @{115, 45, 530})
+        with dlg.comboType = ComboBox.create(viewBottom, @{115, 45, 525})
         {
             .anchorStyle = .Width
             if opt.mode == .SelectFolder
@@ -176,7 +175,7 @@ impl FileDlg
             else
             {
                 visit f, idx: opt.filters
-                    .addItem(f.item0, userData: cast(*void) idx)
+                    .addItem(f.item0, userData0: cast(*void) idx)
             }
 
             .selectItem(0)
@@ -202,7 +201,10 @@ impl FileDlg
 
     mtd getSelectedFile()->String
     {
-        return Path.combine(curFolder, editFile.text.toString())
+        val := Path.combine(curFolder, editFile.text.toString())
+        item := comboType.getSelectedItem()
+        fi := dlgOptions.filters[cast(uint) item.userData0]
+        return val
     }
 
     mtd getSelectedFiles()->Array'String

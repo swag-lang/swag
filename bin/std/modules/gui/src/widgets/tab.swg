@@ -279,7 +279,7 @@ private impl Tab
     {
         popup = PopupListCtrl.create(self)
         visit item: views
-            popup.addItem(item.name.raw, item.id, item.icon, item.userData)
+            popup.addItem(item.name.raw, item.id, item.icon, item.userData0)
 
         popup.sigSelected = @|self|(list, idx) {
             if idx != Swag.U32.Max

@@ -249,15 +249,16 @@ impl PopupListCtrl
     }
 
     // Add a new item in the list
-    mtd addItem(name: string, id: WndId = null, icon: Icon = @{}, userData: *void = null)
+    mtd addItem(name: string, id: WndId = null, icon: Icon = @{}, userData0: *void = null, userData1: *void = null)
     {
         item := items.newPtr()
         with item
         {
-            .name     = #self.name
-            .icon     = #self.icon
-            .id       = #self.id
-            .userData = #self.userData
+            .name      = #self.name
+            .icon      = #self.icon
+            .id        = #self.id
+            .userData0 = #self.userData0
+            .userData1 = #self.userData1
         }
 
         if item.icon.isValid()
