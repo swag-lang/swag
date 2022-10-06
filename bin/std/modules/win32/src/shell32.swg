@@ -66,13 +66,58 @@ const CSIDL_FLAG_NO_ALIAS               = 0x1000        // combine with CSIDL_ v
 const CSIDL_FLAG_PER_USER_INIT          = 0x0800        // combine with CSIDL_ value to indicate per-user init (eg. upgrade)
 const CSIDL_FLAG_MASK                   = 0xFF00        // mask for all possible flag values
 
+const SHGFI_ICON              = 0x000000100     // get icon
+const SHGFI_DISPLAYNAME       = 0x000000200     // get display name
+const SHGFI_TYPENAME          = 0x000000400     // get type name
+const SHGFI_ATTRIBUTES        = 0x000000800     // get attributes
+const SHGFI_ICONLOCATION      = 0x000001000     // get icon location
+const SHGFI_EXETYPE           = 0x000002000     // return exe type
+const SHGFI_SYSICONINDEX      = 0x000004000     // get system icon index
+const SHGFI_LINKOVERLAY       = 0x000008000     // put a link overlay on icon
+const SHGFI_SELECTED          = 0x000010000     // show icon in selected state
+const SHGFI_ATTR_SPECIFIED    = 0x000020000     // get only specified attributes
+const SHGFI_LARGEICON         = 0x000000000     // get large icon
+const SHGFI_SMALLICON         = 0x000000001     // get small icon
+const SHGFI_OPENICON          = 0x000000002     // get open icon
+const SHGFI_SHELLICONSIZE     = 0x000000004     // get shell size icon
+const SHGFI_PIDL              = 0x000000008     // pszPath is a pidl
+const SHGFI_USEFILEATTRIBUTES = 0x000000010     // use passed dwFileAttribute
+const SHGFI_ADDOVERLAYS       = 0x000000020     // apply the appropriate overlays
+const SHGFI_OVERLAYINDEX      = 0x000000040     // Get the index of the overlay
+
+struct SHFILEINFOA
+{
+    hIcon:            HICON
+    iIcon:            s32
+    dwAttributes:     DWORD
+    szDisplayName:    [MAX_PATH] CHAR
+    szTypeName:       [80] CHAR
+}
+
+struct SHFILEINFOW
+{
+    hIcon:            HICON
+    iIcon:            s32
+    dwAttributes:     DWORD
+    szDisplayName:    [MAX_PATH] WCHAR
+    szTypeName:       [80] WCHAR
+}
+
 namespace Shell32Priv
 {
     #[Foreign("shell32")]
     {
         func SHGetSpecialFolderPathA(hwnd: HWND, pszPath: LPSTR, csidl: s32, fCreate: BOOL)->BOOL;
         func SHGetSpecialFolderPathW(hwnd: HWND, pszPath: LPWSTR, csidl: s32, fCreate: BOOL)->BOOL;
+        func ExtractIconExA(lpszFile: LPCSTR, nIconIndex: s32, phiconLarge: *HICON, phiconSmall: *HICON, nIcons: UINT)->UINT;
+        func ExtractIconExW(lpszFile: LPCWSTR, nIconIndex: s32, phiconLarge: *HICON, phiconSmall: *HICON, nIcons: UINT)->UINT;
     }
+}
+
+#[Foreign("shell32")]
+{
+    func SHGetFileInfoA(pszPath: LPCSTR, dwFileAttributes: DWORD, psfi: *SHFILEINFOA, cbFileInfo: UINT, uFlags: UINT)->DWORD_PTR;
+    func SHGetFileInfoW(pszPath: LPCWSTR, dwFileAttributes: DWORD, psfi: *SHFILEINFOW, cbFileInfo: UINT, uFlags: UINT)->DWORD_PTR;
 }
 
 #[Inline]
@@ -87,5 +132,21 @@ namespace Shell32Priv
     {
         if !Shell32Priv.SHGetSpecialFolderPathW(hwnd, pszPath, csidl, fCreate)
             try setError(GetLastError())
+    }
+
+    func ExtractIconExA(lpszFile: LPCSTR, nIconIndex: s32, phiconLarge: *HICON, phiconSmall: *HICON, nIcons: UINT)->UINT throw
+    {
+        res := Shell32Priv.ExtractIconExA(lpszFile, nIconIndex, phiconLarge, phiconSmall, nIcons)
+        if res == Swag.U32.Max
+            try setError(GetLastError())
+        return res
+    }
+
+    func ExtractIconExW(lpszFile: LPCWSTR, nIconIndex: s32, phiconLarge: *HICON, phiconSmall: *HICON, nIcons: UINT)->UINT throw
+    {
+        res := Shell32Priv.ExtractIconExW(lpszFile, nIconIndex, phiconLarge, phiconSmall, nIcons)
+        if res == Swag.U32.Max
+            try setError(GetLastError())
+        return res
     }
 }

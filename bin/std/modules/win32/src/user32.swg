@@ -1027,6 +1027,8 @@ namespace User32Priv
 
         func RegisterClipboardFormatA(lpszFormat: LPCSTR)->UINT;
         func RegisterClipboardFormatW(lpszFormat: LPCWSTR)->UINT;
+
+        func DestroyIcon(hIcon: HICON)->BOOL;
     }
 }
 
@@ -1120,5 +1122,11 @@ namespace User32Priv
         if !res
             try setError(GetLastError())
         return res
+    }
+
+    func DestroyIcon(hIcon: HICON) throw
+    {
+        if !User32Priv.DestroyIcon(hIcon)
+            try setError(GetLastError())
     }
 }
