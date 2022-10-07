@@ -337,6 +337,8 @@ bool TypeManager::castToNativeBool(SemanticContext* context, TypeInfo* fromType,
     if (!(castFlags & CASTFLAG_AUTO_BOOL) && !(castFlags & CASTFLAG_EXPLICIT))
         return castError(context, g_TypeMgr->typeInfoBool, fromType, fromNode, castFlags);
 
+    fromType = TypeManager::concreteType(fromType);
+
     if (fromType->kind == TypeInfoKind::Pointer ||
         fromType->kind == TypeInfoKind::Lambda ||
         fromType->kind == TypeInfoKind::Interface ||
@@ -350,7 +352,6 @@ bool TypeManager::castToNativeBool(SemanticContext* context, TypeInfo* fromType,
         }
     }
 
-    fromType = TypeManager::concreteType(fromType);
     if (fromType->kind == TypeInfoKind::Native)
     {
         switch (fromType->nativeType)
