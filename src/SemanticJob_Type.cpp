@@ -622,6 +622,38 @@ bool SemanticJob::resolveTypeAlias(SemanticContext* context)
     return true;
 }
 
+bool SemanticJob::resolveExplicitBitCast(SemanticContext* context)
+{
+    auto node     = CastAst<AstCast>(context->node, AstNodeKind::BitCast);
+    auto typeNode = node->childs[0];
+    auto exprNode = node->childs[1];
+
+    SWAG_CHECK(checkIsConcrete(context, exprNode));
+
+    auto typeInfo     = TypeManager::concreteType(typeNode->typeInfo);
+    auto exprTypeInfo = TypeManager::concreteType(exprNode->typeInfo);
+
+    if (!(typeInfo->flags & (TYPEINFO_INTEGER | TYPEINFO_FLOAT)) &&
+        (!typeInfo->isNative(NativeTypeKind::Rune)))
+        return context->report(typeNode, Fmt(Err(Err0031), typeInfo->getDisplayNameC()));
+
+    if (!(exprTypeInfo->flags & (TYPEINFO_INTEGER | TYPEINFO_FLOAT)) &&
+        (!exprTypeInfo->isNative(NativeTypeKind::Rune)) &&
+        (exprTypeInfo->kind != TypeInfoKind::Pointer))
+        return context->report(exprNode, Fmt(Err(Err0032), exprTypeInfo->getDisplayNameC()));
+
+    SWAG_VERIFY(typeInfo->sizeOf <= exprTypeInfo->sizeOf, context->report(exprNode, Fmt(Err(Err0033), typeInfo->getDisplayNameC(), exprTypeInfo->getDisplayNameC())));
+
+    node->typeInfo = typeNode->typeInfo;
+    node->setPassThrough();
+    node->inheritOrFlag(exprNode, AST_CONST_EXPR | AST_VALUE_COMPUTED | AST_R_VALUE | AST_L_VALUE | AST_SIDE_EFFECTS);
+    node->inheritComputedValue(exprNode);
+    node->resolvedSymbolName     = exprNode->resolvedSymbolName;
+    node->resolvedSymbolOverload = exprNode->resolvedSymbolOverload;
+
+    return true;
+}
+
 bool SemanticJob::resolveExplicitCast(SemanticContext* context)
 {
     auto node     = CastAst<AstCast>(context->node, AstNodeKind::Cast);
@@ -677,38 +709,6 @@ bool SemanticJob::resolveExplicitCast(SemanticContext* context)
         else
             node->castedTypeInfo = exprNode->castedTypeInfo;
     }
-
-    return true;
-}
-
-bool SemanticJob::resolveExplicitBitCast(SemanticContext* context)
-{
-    auto node     = CastAst<AstCast>(context->node, AstNodeKind::BitCast);
-    auto typeNode = node->childs[0];
-    auto exprNode = node->childs[1];
-
-    SWAG_CHECK(checkIsConcrete(context, exprNode));
-
-    auto typeInfo     = TypeManager::concreteType(typeNode->typeInfo);
-    auto exprTypeInfo = TypeManager::concreteType(exprNode->typeInfo);
-
-    if (!(typeInfo->flags & (TYPEINFO_INTEGER | TYPEINFO_FLOAT)) &&
-        (!typeInfo->isNative(NativeTypeKind::Rune)))
-        return context->report(typeNode, Fmt(Err(Err0031), typeInfo->getDisplayNameC()));
-
-    if (!(exprTypeInfo->flags & (TYPEINFO_INTEGER | TYPEINFO_FLOAT)) &&
-        (!exprTypeInfo->isNative(NativeTypeKind::Rune)) &&
-        (exprTypeInfo->kind != TypeInfoKind::Pointer))
-        return context->report(exprNode, Fmt(Err(Err0032), exprTypeInfo->getDisplayNameC()));
-
-    SWAG_VERIFY(typeInfo->sizeOf <= exprTypeInfo->sizeOf, context->report(exprNode, Fmt(Err(Err0033), typeInfo->getDisplayNameC(), exprTypeInfo->getDisplayNameC())));
-
-    node->typeInfo = typeNode->typeInfo;
-    node->setPassThrough();
-    node->inheritOrFlag(exprNode, AST_CONST_EXPR | AST_VALUE_COMPUTED | AST_R_VALUE | AST_L_VALUE | AST_SIDE_EFFECTS);
-    node->inheritComputedValue(exprNode);
-    node->resolvedSymbolName     = exprNode->resolvedSymbolName;
-    node->resolvedSymbolOverload = exprNode->resolvedSymbolOverload;
 
     return true;
 }

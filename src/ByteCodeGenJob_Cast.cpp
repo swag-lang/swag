@@ -1021,9 +1021,18 @@ bool ByteCodeGenJob::emitExplicitCast(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitExplicitAutoCast(ByteCodeGenContext* context)
 {
-    auto node         = CastAst<AstCast>(context->node, AstNodeKind::AutoCast);
+    auto node     = CastAst<AstCast>(context->node, AstNodeKind::AutoCast);
+    auto exprNode = node->childs[0];
+
+    // Will be done by parent in case of a func call param
+    if (node->parent->kind == AstNodeKind::FuncCallParam)
+    {
+        node->resultRegisterRC   = exprNode->resultRegisterRC;
+        exprNode->castedTypeInfo = nullptr;
+        return true;
+    }
+
     auto typeInfo     = TypeManager::concreteType(node->typeInfo);
-    auto exprNode     = node->childs[0];
     auto fromTypeInfo = TypeManager::concreteType(exprNode->typeInfo);
     SWAG_CHECK(emitCast(context, exprNode, typeInfo, fromTypeInfo));
     node->castedTypeInfo = typeInfo;

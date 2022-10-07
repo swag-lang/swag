@@ -1,0 +1,13 @@
+func toto(a: f32)
+{
+    @assert(a == 1.0)
+}
+
+#test
+{
+    //struct A {}
+//    var a: A
+    x := 0'u64
+    x += 1
+    toto(acast x)
+}
