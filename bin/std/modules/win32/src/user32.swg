@@ -7,6 +7,7 @@ using Swag
     alias HWND = 	    const *void
     alias HMENU = 	    const *void
     alias HICON =	    const *void
+    alias HBITMAP =	    const *void
     alias HCURSOR =	    const *void
     alias HBRUSH =	    const *void
     alias HDC =		    const *void
@@ -924,6 +925,15 @@ const SM_SYSTEMDOCKED           = 0x2004
 const LWA_COLORKEY = 0x00000001
 const LWA_ALPHA    = 0x00000002
 
+struct ICONINFO
+{
+    fIcon:    BOOL
+    xHotspot: DWORD
+    yHotspot: DWORD
+    hbmMask:  HBITMAP
+    hbmColor: HBITMAP
+}
+
 func GET_X_LPARAM(lp: LPARAM) => cast(s32) LOWORD(lp)
 func GET_Y_LPARAM(lp: LPARAM) => cast(s32) HIWORD(lp)
 
@@ -1029,6 +1039,7 @@ namespace User32Priv
         func RegisterClipboardFormatW(lpszFormat: LPCWSTR)->UINT;
 
         func DestroyIcon(hIcon: HICON)->BOOL;
+        func GetIconInfo(hIcon: HICON, piconinfo: *ICONINFO)->BOOL;
     }
 }
 
@@ -1127,6 +1138,12 @@ namespace User32Priv
     func DestroyIcon(hIcon: HICON) throw
     {
         if !User32Priv.DestroyIcon(hIcon)
+            try setError(GetLastError())
+    }
+
+    func GetIconInfo(hIcon: HICON, piconinfo: *ICONINFO) throw
+    {
+        if !User32Priv.GetIconInfo(hIcon, piconinfo)
             try setError(GetLastError())
     }
 }

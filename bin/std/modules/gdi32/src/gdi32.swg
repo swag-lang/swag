@@ -5,7 +5,6 @@ using Swag, Win32
 
 #[Swag.Strict]
 {
-    alias HBITMAP = const *void
     alias HGDIOBJ = const *void
     alias HFONT   = const *void
     alias HPEN    = const *void
@@ -96,6 +95,45 @@ struct BITMAP
     bmPlanes:       WORD
     bmBitsPixel:    WORD
     bmBits:         LPVOID
+}
+
+struct RGBQUAD
+{
+    rgbBlue:        BYTE
+    rgbGreen:       BYTE
+    rgbRed:         BYTE
+    rgbReserved:    BYTE
+}
+
+const BI_RGB        = 0
+const BI_RLE8       = 1
+const BI_RLE4       = 2
+const BI_BITFIELDS  = 3
+const BI_JPEG       = 4
+const BI_PNG        = 5
+
+const DIB_RGB_COLORS = 0
+const DIB_PAL_COLORS = 1
+
+struct BITMAPINFOHEADER
+{
+    biSize:          DWORD
+    biWidth:         LONG
+    biHeight:        LONG
+    biPlanes:        WORD
+    biBitCount:      WORD
+    biCompression:   DWORD
+    biSizeImage:     DWORD
+    biXPelsPerMeter: LONG
+    biYPelsPerMeter: LONG
+    biClrUsed:       DWORD
+    biClrImportant:  DWORD
+}
+
+struct BITMAPINFO
+{
+    bmiHeader: BITMAPINFOHEADER
+    bmiColors: [1] RGBQUAD
 }
 
 const LF_FACESIZE = 32
@@ -253,6 +291,8 @@ func RGB(r,g,b: s32)->COLORREF
 
 #[Foreign("Gdi32"), Swag.Discardable]
 {
+    func GetObjectA(h: HANDLE, c: s32, pv: LPVOID)->s32;
+    func GetObjectW(h: HANDLE, c: s32, pv: LPVOID)->s32;
     func SelectObject(hdc: HDC, h: HGDIOBJ)->HGDIOBJ;
     func EnumFontFamiliesA(hdc: HDC, lpLogfont: LPCSTR, lpProc: FONTENUMPROCA, lParam: LPARAM)->s32;
     func EnumFontFamiliesW(hdc: HDC, lpLogfont: LPCWSTR, lpProc: FONTENUMPROCW, lParam: LPARAM)->s32;
@@ -284,6 +324,7 @@ namespace Gdi32Priv
         func CreateFontIndirectW(lplf: const *LOGFONTW)->HFONT;
         func CreateSolidBrush(color: COLORREF)->HBRUSH;
         func CreatePen(iStyle: s32, cWidth: s32, color: COLORREF)->HPEN;
+        func GetDIBits(hdc: HDC, hbm: HBITMAP, start: UINT, cLines: UINT, lpvBits: LPVOID, lpbmi: *BITMAPINFO, usage: UINT)->s32;
     }
 }
 
@@ -412,6 +453,15 @@ namespace Gdi32Priv
     {
         res := Gdi32Priv.CreatePen(iStyle, cWidth, color)
         if res == null
+            throw "GDI_ERROR"
+        return res
+    }
+
+    #[Discardable]
+    func GetDIBits(hdc: HDC, hbm: HBITMAP, start: UINT, cLines: UINT, lpvBits: LPVOID, lpbmi: *BITMAPINFO, usage: UINT)->s32 throw
+    {
+        res := Gdi32Priv.GetDIBits(hdc, hbm, start, cLines, lpvBits, lpbmi, usage)
+        if res == 0
             throw "GDI_ERROR"
         return res
     }
