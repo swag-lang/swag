@@ -5,6 +5,7 @@ alias FrameCallback = closure(*Application)
 
 struct Application
 {
+    using native:   ApplicationNative
     renderer:       Pixel.RenderOgl
     theme:          *Theme
     style:          ThemeStyle

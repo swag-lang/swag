@@ -12,6 +12,7 @@ enum FileDlgMode
 struct FileDlgOptions
 {
     btnOkName:  string = "Ok"
+    openFolder: string
     mode:       FileDlgMode = SelectOneFile
     selName:    string  // The default name at open
     filters:    Array'{String, String}
@@ -49,9 +50,10 @@ private impl FileDlg
         visit &fi: curList
         {
             name := Path.getFileName(fi.fullname)
-            if !fi.isDirectory() and !Path.isExtension(name, filter.item1)
+            if !fi.isDirectory() and @countof(filter.item1) and !Path.isExtension(name, filter.item1)
                 continue
-            line := listCtrl.createLine(name)
+            icon := catch getApp().getFileFolderIcon(name, fi.isDirectory())
+            line := listCtrl.createLine(name, icon)
             line.userData0 = fi
             line.setItem(1, fi.lastWriteTime.toString(.Iso))
         }
@@ -100,7 +102,7 @@ impl FileDlg
         with dlg.listCtrl = ListCtrl.createMultiColumns(splitter)
         {
             .selectionMode = opt.mode == .SelectMultiFiles ? .Multi : .Single
-            .addColumn("Name")
+            .addColumn("Name", 200)
             .addColumn("Modified")
             .backgroundStyle = .View
 
@@ -216,7 +218,7 @@ impl FileDlg
         label1.horzAlignmentText = .Right
         label1.vertAlignmentText = .Center
 
-        dlg.curFolder = "f:/swag-lang/swag"
+        dlg.curFolder = opt.openFolder
         dlg.fillList()
         dlg.listCtrl.sort(0)
 
