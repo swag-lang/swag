@@ -299,7 +299,7 @@ bool SemanticJob::resolveVarDeclAfter(SemanticContext* context)
     if (node->resolvedSymbolOverload->flags & OVERLOAD_VAR_LOCAL)
     {
         auto id = createTmpId(context, node, node->token.text);
-        SWAG_CHECK(resolveIdentifier(context, id, true));
+        SWAG_CHECK(resolveIdentifier(context, id, RI_FOR_GHOSTING));
         if (context->result != ContextResult::Done)
             return true;
     }

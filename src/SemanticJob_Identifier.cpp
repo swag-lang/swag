@@ -1462,7 +1462,6 @@ bool SemanticJob::isFunctionButNotACall(SemanticContext* context, AstNode* node,
 bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node, uint32_t flags)
 {
     bool  justCheck        = flags & MIP_JUST_CHECK;
-    bool  forGhosting      = flags & MIP_FOR_GHOSTING;
     auto  job              = context->job;
     auto& matches          = job->cacheMatches;
     auto& genericMatches   = job->cacheGenericMatches;
@@ -1781,7 +1780,24 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
 
     // Done !!!
     if (matches.size() == 1)
+    {
+        // We should have no symbol
+        if (flags & MIP_FOR_ZERO_GHOSTING)
+        {
+            if (justCheck)
+                return false;
+            if (!node)
+                node = context->node;
+
+            auto       symbol = overloads[0]->overload->symbol;
+            auto       match  = matches[0];
+            Diagnostic diag{node, Fmt(Err(Err0886), symbol->name.c_str())};
+            auto       note = new Diagnostic{match->symbolOverload->node, Nte(Nte0036), DiagnosticLevel::Note};
+            return context->report(diag, note);
+        }
+
         return true;
+    }
 
     // Ambiguity with generics
     if (genericMatches.size() > 1)
@@ -1875,12 +1891,10 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
     {
         if (justCheck)
             return false;
-
         if (!node)
             node = context->node;
-
         auto symbol = overloads[0]->overload->symbol;
-        if (forGhosting)
+        if (flags & MIP_FOR_GHOSTING)
         {
             Diagnostic  diag{node, Fmt(Err(Err0886), symbol->name.c_str())};
             Diagnostic* note = nullptr;
@@ -3529,7 +3543,7 @@ bool SemanticJob::filterSymbols(SemanticContext* context, AstIdentifier* node)
 bool SemanticJob::resolveIdentifier(SemanticContext* context)
 {
     auto node = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
-    return resolveIdentifier(context, node, false);
+    return resolveIdentifier(context, node, RI_ZERO);
 }
 
 bool SemanticJob::needToWaitForSymbol(SemanticContext* context, AstIdentifier* node, SymbolName* symbol, bool& needToWait)
@@ -3585,7 +3599,7 @@ bool SemanticJob::needToWaitForSymbol(SemanticContext* context, AstIdentifier* n
     return true;
 }
 
-bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* node, bool forGhosting)
+bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* node, uint32_t riFlags)
 {
     auto  job                = context->job;
     auto& scopeHierarchy     = job->cacheScopeHierarchy;
@@ -3627,7 +3641,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
     }
 
     // Compute dependencies if not already done
-    if (node->semanticState == AstNodeResolveState::ProcessingChilds || forGhosting)
+    if (node->semanticState == AstNodeResolveState::ProcessingChilds || (riFlags & RI_FOR_GHOSTING) || (riFlags & RI_FOR_ZERO_GHOSTING))
     {
         scopeHierarchy.clear();
         scopeHierarchyVars.clear();
@@ -3805,7 +3819,12 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
             break;
         }
 
-        SWAG_CHECK(matchIdentifierParameters(context, listTryMatch, node, forGhosting ? MIP_FOR_GHOSTING : 0));
+        uint32_t mipFlags = 0;
+        if (riFlags & RI_FOR_GHOSTING)
+            mipFlags |= MIP_FOR_GHOSTING;
+        if (riFlags & RI_FOR_ZERO_GHOSTING)
+            mipFlags |= MIP_FOR_ZERO_GHOSTING;
+        SWAG_CHECK(matchIdentifierParameters(context, listTryMatch, node, mipFlags));
         if (context->result == ContextResult::Pending)
             return true;
 
@@ -3835,7 +3854,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* nod
         return false;
     }
 
-    if (forGhosting)
+    if (riFlags & (RI_FOR_GHOSTING | RI_FOR_ZERO_GHOSTING))
         return true;
 
     // Deal with ufcs. Now that the match is done, we will change the ast in order to

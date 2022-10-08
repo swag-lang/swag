@@ -570,18 +570,9 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     {
         auto id   = createTmpId(context, node, c.text);
         id->token = c;
-
-        job->cacheDependentSymbols.clear();
-        SWAG_CHECK(findIdentifierInScopes(context, job->tmpIdRef, id));
+        SWAG_CHECK(resolveIdentifier(context, id, RI_FOR_ZERO_GHOSTING));
         if (context->result != ContextResult::Done)
             return true;
-
-        if (job->cacheDependentSymbols.size())
-        {
-            Diagnostic diag{id, Fmt(Err(Err0886), id->token.text.c_str())};
-            auto       note = new Diagnostic{job->cacheDependentSymbols.front().symbol->nodes.front(), Nte(Nte0036), DiagnosticLevel::Note};
-            return context->report(diag, note);
-        }
     }
 
     // Struct type : convert to a opVisit call

@@ -184,10 +184,15 @@ static const uint32_t COLLECT_NO_STRUCT = 0x00000002;
 
 static const uint32_t MIP_JUST_CHECK         = 0x00000001;
 static const uint32_t MIP_FOR_GHOSTING       = 0x00000002;
-static const uint32_t MIP_SECOND_GENERIC_TRY = 0x00000004;
+static const uint32_t MIP_FOR_ZERO_GHOSTING  = 0x00000004;
+static const uint32_t MIP_SECOND_GENERIC_TRY = 0x00000008;
 
 static const uint32_t ROP_JUST_CHECK  = 0x00000001;
 static const uint32_t ROP_SIMPLE_CAST = 0x00000002;
+
+static const uint32_t RI_ZERO              = 0x00000000;
+static const uint32_t RI_FOR_GHOSTING      = 0x00000001;
+static const uint32_t RI_FOR_ZERO_GHOSTING = 0x00000002;
 
 struct SemanticJob : public Job
 {
@@ -315,7 +320,7 @@ struct SemanticJob : public Job
     static bool           fillMatchContextCallParameters(SemanticContext* context, SymbolMatchContext& symMatchContext, AstIdentifier* node, SymbolOverload* overload, AstNode* ufcsFirstParam);
     static bool           fillMatchContextGenericParameters(SemanticContext* context, SymbolMatchContext& symMatchContext, AstIdentifier* node, SymbolOverload* overload);
     static bool           needToWaitForSymbol(SemanticContext* context, AstIdentifier* node, SymbolName* symbol, bool& needToWait);
-    static bool           resolveIdentifier(SemanticContext* context, AstIdentifier* node, bool forGhosting);
+    static bool           resolveIdentifier(SemanticContext* context, AstIdentifier* node, uint32_t riFlags);
     static TypeInfoEnum*  findEnumTypeInContext(SemanticContext* context, TypeInfo* typeInfo);
     static bool           findEnumTypeInContext(SemanticContext* context, AstNode* node, TypeInfoEnum** result, bool genError);
     static void           addDependentSymbol(VectorNative<OneSymbolMatch>& symbols, SymbolName* symName, Scope* scope, uint32_t asflags);
