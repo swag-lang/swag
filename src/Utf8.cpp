@@ -130,14 +130,17 @@ const char* Utf8::c_str() const
     {
         static Mutex mutex;
         ScopedLock   lk(mutex);
-        auto         t = const_cast<Utf8*>(this);
-        t->allocated   = (int) Allocator::alignSize(count + 1);
-        auto buf       = (char*) g_Allocator.alloc(allocated);
-        memcpy(buf, buffer, count);
-        t->buffer     = buf;
-        buffer[count] = 0;
-        if (g_CommandLine->stats)
-            g_Stats.memUtf8 += allocated;
+        if (buffer && buffer[count])
+        {
+            auto t       = const_cast<Utf8*>(this);
+            t->allocated = (int) Allocator::alignSize(count + 1);
+            auto buf     = (char*) g_Allocator.alloc(allocated);
+            memcpy(buf, buffer, count);
+            t->buffer     = buf;
+            buffer[count] = 0;
+            if (g_CommandLine->stats)
+                g_Stats.memUtf8 += allocated;
+        }
     }
 
     return count ? buffer : nullString;
