@@ -275,7 +275,9 @@ impl FileDlg
     mtd getSelectedName()->String
     {
         sel := getSelectedNames()
-        return sel.count == 0 ? String.from("") : dref sel[0]
+        if sel.count == 0
+            return String.from("")
+        return sel.front()
     }
 
     // Get all selections

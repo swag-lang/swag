@@ -403,20 +403,7 @@ impl IWnd for MainWnd
         switch evt.id
         {
         case CmdIdSaveAs:
-            var opt: FileDlgOptions
-            opt.mode = .CreateFile
-            opt.title = "Save As Image"
-            opt.btnOkName = "Save"
-            opt.openFolder = "f:/swag-lang/swag/docs"
-            opt.filters.add(@{String.from("Png (*.png)"), String.from(".png")})
-            opt.filters.add(@{String.from("Jpeg (*.jpg)"), String.from(".jpg")})
-            opt.filters.add(@{String.from("Bitmap (*.bmp)"), String.from(".bmp")})
-            opt.filters.add(@{String.from("Tga (*.tga)"), String.from(".tga")})
-            dlg := FileDlg.create(surface, opt)
-            dlg.surface.center(surface)
-            if dlg.doModal() != Dialog.BtnOk
-                break
-            Console.print(dlg.getSelectedNames(), "\n")
+            saveAs()
 
         case CmdIdExit:
             postQuitEvent()
@@ -711,6 +698,26 @@ impl MainWnd
         createBtn(CmdIdModeText)
         createBtn(CmdIdModeDraw)
         editToolBar.updateCommandState()
+    }
+
+    mtd saveAs()
+    {
+        var opt: FileDlgOptions
+        opt.mode = .CreateFile
+        opt.title = "Save As Image"
+        opt.btnOkName = "Save"
+        opt.openFolder = "f:/swag-lang/swag/docs"
+        opt.filters.add(@{String.from("Png (*.png)"), String.from(".png")})
+        opt.filters.add(@{String.from("Jpeg (*.jpg)"), String.from(".jpg")})
+        opt.filters.add(@{String.from("Bitmap (*.bmp)"), String.from(".bmp")})
+        opt.filters.add(@{String.from("Tga (*.tga)"), String.from(".tga")})
+        dlg := FileDlg.create(surface, opt)
+        dlg.surface.center(surface)
+        if dlg.doModal() != Dialog.BtnOk
+            return
+
+        img := getCapture().toImage()
+        catch img.save(dlg.getSelectedName())
     }
 
     mtd setBottomSize(bottomSize: BottomSize)
