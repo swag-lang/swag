@@ -11,6 +11,7 @@ enum FileDlgMode
 
 struct FileDlgOptions
 {
+    title:      string
     btnOkName:  string = "Ok"
     openFolder: string
     mode:       FileDlgMode = SelectOneFile
@@ -46,14 +47,33 @@ private impl FileDlg
 
         item := comboType.getSelectedItem()
         filter := dlgOptions.filters[cast(uint) item.userData0]
+        tokens := Tokenize.split(filter.item1, ";"'rune)
 
         visit &fi: curList
         {
-            name := Path.getFileName(fi.fullname)
-            if !fi.isDirectory() and @countof(filter.item1) and !Path.isExtension(name, filter.item1)
+            fname := Path.getFileName(fi.fullname)
+
+            // Filter
+            show := true
+            if !fi.isDirectory() and @countof(filter.item1)
+            {
+                show = false
+                visit t: tokens
+                {
+                     if Path.isExtension(fname, t)
+                     {
+                        show = true
+                        break
+                     }
+                }
+            }
+
+            if !show
                 continue
-            icon := catch getApp().getFileFolderIcon(name, fi.isDirectory())
-            line := listCtrl.createLine(name, icon)
+
+            // Content
+            icon := catch getApp().getFileFolderIcon(fname, fi.isDirectory())
+            line := listCtrl.createLine(fname, icon)
             line.userData0 = fi
             line.setItem(1, fi.lastWriteTime.toString(.Iso))
         }
@@ -73,6 +93,20 @@ impl FileDlg
         {
             .setSurfaceFlags(add: .Sizeable)
             .minSize = @{400, 400}
+
+            if opt.title
+                .setTitle(opt.title)
+            else
+            {
+                #[Swag.Complete]
+                switch opt.mode
+                {
+                case CreateFile:        .setTitle("Create File")
+                case SelectOneFile:     .setTitle("Select File")
+                case SelectMultiFiles:  .setTitle("Select Files")
+                case SelectFolder:      .setTitle("Select Folder")
+                }
+            }
         }
 
         dlg.dlgOptions = opt
@@ -103,8 +137,9 @@ impl FileDlg
         {
             .selectionMode = opt.mode == .SelectMultiFiles ? .Multi : .Single
             .addColumn("Name", 200)
-            .addColumn("Modified")
+            .addColumn("Modified", 150)
             .backgroundStyle = .View
+            .header.form = .Transparent
 
             .sigKeyPressed += @|dlg|(list, evt) {
                 switch evt.key

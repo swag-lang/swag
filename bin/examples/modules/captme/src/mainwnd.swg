@@ -405,9 +405,9 @@ impl IWnd for MainWnd
         case CmdIdSaveAs:
             var opt: FileDlgOptions
             opt.mode = .CreateFile
+            opt.title = "Save As Image"
             opt.btnOkName = "Save"
             opt.openFolder = "f:/swag-lang/swag/docs"
-            opt.filters.add(@{String.from("All (*.*)"), String.from("")})
             opt.filters.add(@{String.from("Png (*.png)"), String.from(".png")})
             opt.filters.add(@{String.from("Jpeg (*.jpg)"), String.from(".jpg")})
             opt.filters.add(@{String.from("Bitmap (*.bmp)"), String.from(".bmp")})

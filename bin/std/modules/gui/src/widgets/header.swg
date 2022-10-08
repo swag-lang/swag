@@ -38,7 +38,7 @@ struct Header
     sigLayoutChanged:   closure(*Self)
     sigClicked:         closure(*Self, u32)
 
-    items:          Array'(*HeaderItem)
+    items:          ArrayPtr'HeaderItem
     hotIdx          = Swag.U32.Max
     hotSeparator:   bool
     moving:         bool
@@ -280,12 +280,6 @@ private impl Header
 
 impl Header
 {
-    mtd opDrop()
-    {
-        visit v: items
-            Memory.delete(v)
-    }
-
     #[Swag.Discardable]
     func create(parent: *Wnd, position: Math.Rectangle = @{}, id: WndId = null)->*Header
     {
@@ -305,7 +299,7 @@ impl Header
     #[Swag.Discardable]
     mtd addItem(tabName: string, width = 100'f32, icon: Icon = @{})->*HeaderItem
     {
-        item := Memory.new'HeaderItem()
+        item := items.newPtr()
         item.name = tabName
         item.icon = icon
         item.width = width

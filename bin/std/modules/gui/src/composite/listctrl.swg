@@ -764,6 +764,8 @@ impl ListCtrl
 
             list   := cast(*ListCtrl) wnd
             header := list.header
+            if header.form == .Transparent
+                return false
             switch list.frameForm
             {
             case Round:
@@ -1142,6 +1144,8 @@ impl ListCtrl
     {
         if header and header.sortMark != 0
             sort(header.sortColumn, header.sortMark == -1 ? true : false)
+        else
+            sort(0)
     }
 
     // Expand the given line
