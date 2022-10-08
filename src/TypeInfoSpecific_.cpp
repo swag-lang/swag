@@ -197,7 +197,7 @@ bool TypeInfoPointer::isSame(TypeInfo* to, uint32_t isSameFlags)
     // Anonymous pointers
     if (isSameFlags & ISSAME_CAST)
     {
-        if (other->pointedType == g_TypeMgr->typeInfoVoid)
+        if (other->pointedType == g_TypeMgr->typeInfoVoid && !(isSameFlags & ISSAME_FOR_GENERIC))
             return true;
         if ((to->flags & TYPEINFO_POINTER_ARITHMETIC) && !(flags & TYPEINFO_POINTER_ARITHMETIC))
             return false;

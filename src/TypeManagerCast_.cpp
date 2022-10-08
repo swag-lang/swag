@@ -2264,7 +2264,7 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
         }
 
         // No using ! We're done
-        if (castFlags & CASTFLAG_NO_USING_ST && !(it.typeStruct->flags & TYPEINFO_STRUCT_TYPEINFO))
+        if ((castFlags & CASTFLAG_FOR_GENERIC) && !(it.typeStruct->flags & TYPEINFO_STRUCT_TYPEINFO))
             return true;
 
         auto structNode = CastAst<AstStruct>(it.typeStruct->declNode, AstNodeKind::StructDecl);
@@ -2396,7 +2396,7 @@ bool TypeManager::collectInterface(SemanticContext* context, TypeInfoStruct* fro
 
 bool TypeManager::castToInterface(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint32_t castFlags)
 {
-    if (castFlags & CASTFLAG_NO_ITF)
+    if (castFlags & CASTFLAG_FOR_GENERIC)
         return castError(context, toType, fromType, fromNode, castFlags);
 
     auto toTypeItf = CastTypeInfo<TypeInfoStruct>(toType, TypeInfoKind::Interface);
@@ -2610,6 +2610,11 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
             {
                 if (toType->flags & (TYPEINFO_GENERIC | TYPEINFO_FROM_GENERIC))
                     return castError(context, toType, fromType, fromNode, castFlags);
+            }
+
+            if (castFlags & CASTFLAG_FOR_GENERIC)
+            {
+                return castError(context, toType, fromType, fromNode, castFlags);
             }
 
             return true;
@@ -3565,6 +3570,8 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
         auto isSameFlags = ISSAME_CAST;
         if (castFlags & CASTFLAG_FOR_AFFECT)
             isSameFlags |= ISSAME_FOR_AFFECT;
+        if (castFlags & CASTFLAG_FOR_GENERIC)
+            isSameFlags |= ISSAME_FOR_GENERIC;
         if (fromType->isSame(toType, isSameFlags))
             result = true;
     }

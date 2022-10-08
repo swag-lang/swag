@@ -765,7 +765,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
         if (typeInfo->isNative(NativeTypeKind::Any) && !symbolParameter->typeInfo->isGeneric() && !symbolParameter->typeInfo->isNative(NativeTypeKind::Any))
             same = false;
         else
-            same = TypeManager::makeCompatibles(context.semContext, symbolParameter->typeInfo, typeInfo, nullptr, nullptr, CASTFLAG_NO_USING_ST | CASTFLAG_NO_ITF | CASTFLAG_NO_ERROR | CASTFLAG_ACCEPT_PENDING);
+            same = TypeManager::makeCompatibles(context.semContext, symbolParameter->typeInfo, typeInfo, nullptr, nullptr, CASTFLAG_FOR_GENERIC | CASTFLAG_NO_ERROR | CASTFLAG_ACCEPT_PENDING);
 
         if (context.semContext->result == ContextResult::Pending)
             return;
