@@ -298,20 +298,7 @@ bool SemanticJob::resolveVarDeclAfter(SemanticContext* context)
     // is not used later
     if (node->resolvedSymbolOverload->flags & OVERLOAD_VAR_LOCAL)
     {
-        if (!context->job->tmpIdRef)
-        {
-            context->job->tmpIdRef = Ast::newIdentifierRef(context->sourceFile, node->token.text, nullptr, nullptr);
-            context->job->tmpIdRef->childs.back()->flags |= AST_SILENT_CHECK;
-            context->job->tmpIdRef->flags |= AST_SILENT_CHECK;
-        }
-
-        auto idRef     = context->job->tmpIdRef;
-        idRef->parent  = node;
-        auto id        = CastAst<AstIdentifier>(idRef->childs.back(), AstNodeKind::Identifier);
-        id->sourceFile = context->sourceFile;
-        id->token.text = node->token.text;
-        id->inheritOwners(node);
-        id->inheritTokenLocation(node);
+        auto id = createTmpId(context, node, node->token.text);
         SWAG_CHECK(resolveIdentifier(context, id, true));
         if (context->result != ContextResult::Done)
             return true;

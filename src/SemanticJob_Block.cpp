@@ -565,6 +565,25 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     if (typeInfo->kind != TypeInfoKind::Enum)
         SWAG_CHECK(checkIsConcrete(context, node->expression));
 
+    // Be sure that aliases are not defined elsewhere
+    for (auto c : node->aliasNames)
+    {
+        auto id   = createTmpId(context, node, c.text);
+        id->token = c;
+
+        job->cacheDependentSymbols.clear();
+        SWAG_CHECK(findIdentifierInScopes(context, job->tmpIdRef, id));
+        if (context->result != ContextResult::Done)
+            return true;
+
+        if (job->cacheDependentSymbols.size())
+        {
+            Diagnostic diag{id, Fmt(Err(Err0886), id->token.text.c_str())};
+            auto       note = new Diagnostic{job->cacheDependentSymbols.front().symbol->nodes.front(), Nte(Nte0036), DiagnosticLevel::Note};
+            return context->report(diag, note);
+        }
+    }
+
     // Struct type : convert to a opVisit call
     AstNode* newExpression = nullptr;
     if (typeInfo->kind == TypeInfoKind::Struct)

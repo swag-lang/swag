@@ -357,7 +357,7 @@ impl Painter
         text.boundRect.height = 0
 
         // Layout
-        visit &line, idxLine: lines
+        visit &l, idxLine: lines
         {
             x1 := x
             y1 := y
@@ -365,19 +365,19 @@ impl Painter
             switch format.horzAlignment
             {
             case Left:   break
-            case Right:  x1 = pos.right() - line.width
-            case Center: x1 = pos.horzCenter() - line.width * 0.5
+            case Right:  x1 = pos.right() - l.width
+            case Center: x1 = pos.horzCenter() - l.width * 0.5
             }
 
             text.boundRect.x = Math.min(text.boundRect.x, x1)
-            text.boundRect.width = Math.max(text.boundRect.width, line.width)
+            text.boundRect.width = Math.max(text.boundRect.width, l.width)
 
-            loop idx: line.start..<line.end
+            loop idx: l.start..<l.end
             {
                 c := text.chunks[idx]
                 c.pos.x = x1
-                if c.isSpace and format.horzAlignment == .Justify and idxLine != lines.count - 1 and !line.hasEol
-                    x1 += (pos.width - line.width) / line.countSpaces
+                if c.isSpace and format.horzAlignment == .Justify and idxLine != lines.count - 1 and !l.hasEol
+                    x1 += (pos.width - l.width) / l.countSpaces
                 else
                     x1 += c.boundRect.width
                 c.pos.y = y1

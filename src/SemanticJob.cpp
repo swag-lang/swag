@@ -10,6 +10,26 @@
 #include "Timer.h"
 #include "Allocator.h"
 
+AstIdentifier* SemanticJob::createTmpId(SemanticContext* context, AstNode* node, const Utf8& name)
+{
+    auto job = context->job;
+
+    if (!job->tmpIdRef)
+    {
+        job->tmpIdRef = Ast::newIdentifierRef(context->sourceFile, name, nullptr, nullptr);
+        job->tmpIdRef->childs.back()->flags |= AST_SILENT_CHECK;
+        job->tmpIdRef->flags |= AST_SILENT_CHECK;
+    }
+
+    job->tmpIdRef->parent = node;
+    auto id               = CastAst<AstIdentifier>(job->tmpIdRef->childs.back(), AstNodeKind::Identifier);
+    id->sourceFile        = context->sourceFile;
+    id->token.text        = node->token.text;
+    id->inheritOwners(node);
+    id->inheritTokenLocation(node);
+    return id;
+}
+
 bool SemanticJob::valueEqualsTo(const ComputedValue* value, AstNode* node)
 {
     node->allocateComputedValue();

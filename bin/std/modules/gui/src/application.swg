@@ -308,8 +308,8 @@ private impl Application
     {
         if inModalLoop
             return
-        visit wnd: postDestroy
-            destroyWnd(wnd)
+        visit w: postDestroy
+            destroyWnd(w)
         postDestroy.clear()
     }
 
