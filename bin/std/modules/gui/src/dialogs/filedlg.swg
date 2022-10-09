@@ -24,6 +24,7 @@ struct FileDlg
     using dialog: Dialog
     treeCtrl:   *ListCtrl
     listCtrl:   *ListCtrl
+    comboPath:  *ComboBox
     editFile:   *EditBox
     comboType:  *ComboBox
     dlgOptions: FileDlgOptions
@@ -34,6 +35,17 @@ struct FileDlg
 
 private impl FileDlg
 {
+    mtd fillComboPath()
+    {
+        Path.normalize(&curFolder)
+        all := Tokenize.split(curFolder.toString(), "/"'rune)
+        visit one: all
+        {
+            ic := catch getApp().getFileFolderIcon(one, true)
+            comboPath.addItem(one, icon: ic)
+        }
+    }
+
     mtd fillList()
     {
         listCtrl.clear()
@@ -251,6 +263,16 @@ impl FileDlg
             splitter.addPane(dlg.listCtrl, 500)
         }
 
+        // Top
+        ////////////////////////
+        viewTop := Wnd.create'Wnd(view, @{0, 0, 0, 50})
+        viewTop.dockStyle = .Top
+
+        with dlg.comboPath = ComboBox.create(viewTop, @{115, 10, 525})
+        {
+            .anchorStyle = .Width
+        }
+
         // Bottom
         ////////////////////////
         viewBottom := Wnd.create'Wnd(view, @{0, 0, 0, 90})
@@ -286,6 +308,7 @@ impl FileDlg
         with dlg
         {
             .curFolder = opt.openFolder
+            .fillComboPath()
             .fillList()
             .listCtrl.sort(0)
 

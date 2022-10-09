@@ -726,6 +726,8 @@ private impl ListView
     {
         lc := list.getLineCount()
         res := surfaceToLocal(surfacePos)
+        if res.x < 0 or res.y < 0
+            return Swag.U32.Max
         res.y += scrollPos.y
         idx := cast(u32) (res.y / list.lineHeight)
         if idx >= lc

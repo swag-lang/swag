@@ -17,10 +17,10 @@ struct ComboBox
 
     editBox:        *EditBox
     isHot:          bool
-    hasIcons:       bool
     popup:          *PopupListCtrl
     items:          ArrayPtr'ComboBoxItem
     selectedIdx     = Swag.U32.Max
+    maxIconSize:    s32
 }
 
 impl IWnd for ComboBox
@@ -92,17 +92,9 @@ impl IWnd for ComboBox
             itemRect.moveLeft(metrics.comboBox_Padding)
 
             if item.icon.isValid()
-            {
-                item.icon.sizeX = fntHeight
-                item.icon.sizeY = fntHeight
                 item.icon.paint(painter, itemRect.x, itemRect.vertCenter() - item.icon.sizeY * 0.5, colorText)
-            }
-
-            if hasIcons
-            {
-                itemRect.moveLeft(fntHeight)
-                itemRect.moveLeft(metrics.comboBox_IconTextMargin)
-            }
+            if maxIconSize
+                itemRect.moveLeft(maxIconSize + metrics.comboBox_IconTextMargin)
 
             theme.setTextColors(&format, colorText)
             format.horzAlignment = .Left
@@ -199,13 +191,16 @@ impl ComboBox
     }
 
     // Remove all items
-    mtd removeAllItems()
+    mtd clear()
     {
+        maxIconSize = 0
         items.clear()
+        invalidate()
     }
 
     // Add a new item
-    mtd addItem(name: string, id: WndId = null, icon: Icon = @{}, userData0: *void = null, userData1: *void = null)
+    #[Swag.Discardable]
+    mtd addItem(name: string, id: WndId = null, icon: Icon = @{}, userData0: *void = null, userData1: *void = null)->*ComboBoxItem
     {
         item := items.newPtr()
         with item
@@ -218,8 +213,9 @@ impl ComboBox
         }
 
         if item.icon.isValid()
-            hasIcons = true
+            maxIconSize = Math.max(maxIconSize, cast(s32) item.icon.sizeX)
         items.add(item)
+        return item
     }
 
     // Add a separator

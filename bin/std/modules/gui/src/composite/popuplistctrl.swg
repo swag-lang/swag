@@ -20,7 +20,7 @@ struct PopupListCtrl
     items:          ArrayPtr'PopupListCtrlItem
     selectedIdx     = Swag.U32.Max
     scrollWnd:      *ScrollWnd
-    hasIcons:       bool
+    maxIconSize:    s32
 }
 
 struct PopupListView
@@ -161,23 +161,14 @@ impl IWnd for PopupListView
             labelPos.moveLeft(metrics.popupList_Padding)
 
             // Icon
-            fntHeight := theme.res.fontDefault.regular.height
             if i.icon.isValid()
-            {
-                i.icon.sizeX = fntHeight
-                i.icon.sizeY = fntHeight
                 i.icon.paint(painter, labelPos.x, labelPos.vertCenter() - i.icon.sizeY * 0.5, colorText)
-            }
+            if list.maxIconSize
+                labelPos.moveLeft(list.maxIconSize + metrics.popupList_IconTextMargin)
 
-            if list.hasIcons
-            {
-                labelPos.moveLeft(fntHeight + metrics.popupList_IconTextMargin)
-            }
-
+            fntHeight := theme.res.fontDefault.regular.height
             if idx == list.selectedIdx
-            {
                 labelPos.setRight(labelPos.right() - fntHeight - metrics.popupList_IconTextMargin)
-            }
 
             // Text
             theme.setTextColors(&format, colorText)
@@ -262,7 +253,7 @@ impl PopupListCtrl
         }
 
         if item.icon.isValid()
-            hasIcons = true
+            maxIconSize = Math.max(maxIconSize, cast(s32) item.icon.sizeX)
         items.add(item)
     }
 
