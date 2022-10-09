@@ -317,6 +317,10 @@ impl FileDlg
             t1.trim()
             if t1.isEmpty()
                 continue
+            if dlgOptions.mode == .SelectFolder and !Path.isValidPathName(t1.toString())
+                continue
+            if dlgOptions.mode != .SelectFolder and !Path.isValidFileName(t1.toString())
+                continue
 
             // Get the full name
             val := Path.combine(curFolder, t1.toString())
