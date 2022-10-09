@@ -1261,4 +1261,10 @@ impl ListCtrl
         else
             expand(line)
     }
+
+    // Set focus to the list
+    mtd setFocus()
+    {
+        listView.setFocus()
+    }
 }

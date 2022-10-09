@@ -174,15 +174,18 @@ impl FileDlg
                     }
 
                 case Enter:
-                    line := list.getFocusLine()
-                    if line
+                    l := list.getFocusLine()
+                    if !l break
+                    fi := cast(const *FileInfo) l.userData0
+                    if fi.isDirectory()
                     {
-                        fi := cast(const *FileInfo) line.userData0
-                        if fi.isDirectory()
-                        {
-                            dlg.curFolder = fi.fullname
-                            dlg.fillList()
-                        }
+                        dlg.curFolder = fi.fullname
+                        dlg.fillList()
+                    }
+                    elif dlg.dlgOptions.mode != .SelectFolder
+                    {
+                        dlg.validateId(Dialog.BtnOk)
+                        list.setFocus()
                     }
                 }
             }
@@ -195,6 +198,11 @@ impl FileDlg
                 {
                     dlg.curFolder = fi.fullname
                     dlg.fillList()
+                }
+                elif dlg.dlgOptions.mode != .SelectFolder
+                {
+                    dlg.validateId(Dialog.BtnOk)
+                    list.setFocus()
                 }
             }
 

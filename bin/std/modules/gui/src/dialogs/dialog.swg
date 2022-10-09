@@ -13,11 +13,7 @@ impl IWnd for Dialog
     mtd onSysCommandEvent(evt: *SysCommandEvent)
     {
         if evt.sysKind == .Close
-        {
-            if !self.sigPressedButton or self.sigPressedButton(self, BtnCancel)
-                getApp().exitModal(BtnCancel)
-        }
-
+            validateId(BtnCancel)
         evt.accepted = true
     }
 
@@ -61,8 +57,7 @@ impl IWnd for Dialog
                 {
                     if btn.form == .Default
                     {
-                        if !self.sigPressedButton or self.sigPressedButton(self, btn.id)
-                            getApp().exitModal(btn.id)
+                        validateId(btn.id)
                         break
                     }
                 }
@@ -73,8 +68,7 @@ impl IWnd for Dialog
                 {
                     if btn.id == BtnNo or btn.id == BtnCancel
                     {
-                        if !self.sigPressedButton or self.sigPressedButton(self, btn.id)
-                            getApp().exitModal(btn.id)
+                        validateId(btn.id)
                         break
                     }
                 }
@@ -154,5 +148,11 @@ impl Dialog
             surface.setSurfaceFlags(add: .CloseBtn)
 
         return btn
+    }
+
+    mtd validateId(btnId: WndId)
+    {
+        if !sigPressedButton or sigPressedButton(self, btnId)
+            getApp().exitModal(btnId)
     }
 }
