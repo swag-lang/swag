@@ -81,13 +81,24 @@ private impl FileDlg
 
     mtd fillListFolders()
     {
-        treeCtrl.lineHeight = 48
+        //treeCtrl.lineHeight = 32
 
         c := Env.getSpecialDirectory(.UserDocuments)
-        ic := getApp().getSpecialDirectoryIcon(.UserDocuments, false)
+        ic := getApp().getSpecialDirectoryIcon(.UserDocuments, true)
         l := treeCtrl.createLine("Documents", icon: ic)
         l.userData0 = cast(*void) treePathStr.count
         treePathStr.add(c)
+
+        volumes := catch Directory.getDrives()
+        visit v: volumes
+        {
+            v1 := dref v
+            v1.removeBack()
+            ic := getApp().getDirectoryIcon(v1, true)
+            l := treeCtrl.createLine(v.toString(), icon: ic)
+            l.userData0 = cast(*void) treePathStr.count
+            treePathStr.add(dref v)
+        }
 
         treeCtrl.sigSelChanged += @|self|(list) {
             line := list.getSelectedLine()

@@ -130,3 +130,38 @@ func setCurrent(dirname: string) throw
     winPath := Utf16.toZeroTerminated(dirname)
     try SetCurrentDirectoryW(@dataof(winPath))
 }
+
+// Get the list of logical drives
+func getDrives()->Array'String throw
+{
+    var result: retval
+
+    var volName: [MAX_PATH] u8
+    var driveName: [MAX_PATH] u8
+
+    h := FindFirstVolumeA(volName, acast MAX_PATH)
+    if h == INVALID_HANDLE_VALUE
+        return result
+
+    loop
+    {
+        var ret: DWORD
+        catch GetVolumePathNamesForVolumeNameA(volName, driveName, acast MAX_PATH, &ret)
+        if !@err
+        {
+            len := @strlen(driveName)
+            if len
+            {
+                str := String.from(@mkstring(&driveName[0], len))
+                Path.normalize(&str)
+                result.add(str)
+            }
+        }
+
+        if !FindNextVolumeA(h, volName, acast MAX_PATH)
+            break
+    }
+
+    FindVolumeClose(h)
+    return result
+}

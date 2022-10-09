@@ -32,6 +32,8 @@ alias CHAR =            u8
 alias WCHAR =           u16
 alias LPSTR =           *CHAR
 alias LPWSTR =          *WCHAR
+alias LPCH =            *CHAR
+alias LPWCH =           *WCHAR
 alias SIZE_T =          uint
 alias va_list =         *u8
 
@@ -427,17 +429,26 @@ namespace Win32Priv
         func CreateFileW(lpFileName: LPCWSTR, dwDesiredAccess: DWORD, dwShareMode: DWORD, lpSecurityAttributes: *SECURITY_ATTRIBUTES, dwCreationDisposition: DWORD, dwFlagsAndAttributes: DWORD, hTemplateFile: HANDLE)->HANDLE;
         func SetFilePointer(hFile: HANDLE, lDistanceToMove: LONG, lpDistanceToMoveHigh: PLONG, dwMoveMethod: DWORD)->DWORD;
         func GetFileSize(hFile: HANDLE, lpFileSizeHigh: LPDWORD)->DWORD;
+
         func FileTimeToSystemTime(lpFileTime: const *FILETIME, lpSystemTime: *SYSTEMTIME)->BOOL;
         func SystemTimeToFileTime(lpSystemTime: const *SYSTEMTIME, lpFileTime: *FILETIME)->BOOL;
         func SetFileTime(hFile: HANDLE, lpCreationTime: const *FILETIME, lpLastAccessTime: const *FILETIME, lpLastWriteTime: const *FILETIME)->BOOL;
+
         func FindFirstFileA(lpFileName: LPCSTR, lpFindFileData: *WIN32_FIND_DATAA)->HANDLE;
         func FindFirstFileW(lpFileName: LPCWSTR, lpFindFileData: *WIN32_FIND_DATAW)->HANDLE;
         func FindNextFileA(hFindFile: HANDLE, lpFindFileData: *WIN32_FIND_DATAA)->BOOL;
         func FindNextFileW(hFindFile: HANDLE, lpFindFileData: *WIN32_FIND_DATAW)->BOOL;
         func FindClose(hFindFile: HANDLE)->BOOL;
+        func FindFirstVolumeA(lpszVolumeName: LPSTR, cchBufferLength: DWORD)->HANDLE;
+        func FindFirstVolumeW(lpszVolumeName: LPWSTR, cchBufferLength: DWORD)->HANDLE;
+        func FindNextVolumeA(hFindVolume: HANDLE, lpszVolumeName: LPSTR, cchBufferLength: DWORD)->BOOL;
+        func FindNextVolumeW(hFindVolume: HANDLE, lpszVolumeName: LPWSTR, cchBufferLength: DWORD)->BOOL;
+        func FindVolumeClose(hFindVolume: HANDLE)->BOOL;
+        func GetVolumePathNamesForVolumeNameA(lpszVolumeName: LPCSTR, lpszVolumePathNames: LPCH, cchBufferLength: DWORD, lpcchReturnLength: *DWORD)->BOOL;
+        func GetVolumePathNamesForVolumeNameW(lpszVolumeName: LPCWSTR, lpszVolumePathNames: LPWCH, cchBufferLength: DWORD, lpcchReturnLength: *DWORD)->BOOL;
+
         func CreateDirectoryA(lpPathName: LPCSTR, lpSecurityAttributes: *SECURITY_ATTRIBUTES)->BOOL;
         func CreateDirectoryW(lpPathName: LPCWSTR, lpSecurityAttributes: *SECURITY_ATTRIBUTES)->BOOL;
-
         func GetCurrentDirectoryA(nBufferLength: DWORD, lpBuffer: LPCSTR)->DWORD;
         func GetCurrentDirectoryW(nBufferLength: DWORD, lpBuffer: LPCWSTR)->DWORD;
         func SetCurrentDirectoryA(lpPathName: LPCSTR)->BOOL;
@@ -725,6 +736,56 @@ namespace Win32Priv
     func FindClose(hFindFile: HANDLE) throw
     {
         if !Win32Priv.FindClose(hFindFile)
+            try setError(GetLastError())
+    }
+
+    func FindFirstVolumeA(lpszVolumeName: LPSTR, cchBufferLength: DWORD)->HANDLE throw
+    {
+        res := Win32Priv.FindFirstVolumeA(lpszVolumeName, cchBufferLength)
+        if res == INVALID_HANDLE_VALUE
+            try setError(GetLastError())
+        return res
+    }
+
+    func FindFirstVolumeW(lpszVolumeName: LPWSTR, cchBufferLength: DWORD)->HANDLE throw
+    {
+        res := Win32Priv.FindFirstVolumeW(lpszVolumeName, cchBufferLength)
+        if res == INVALID_HANDLE_VALUE
+            try setError(GetLastError())
+        return res
+    }
+
+    func FindNextVolumeA(hFindVolume: HANDLE, lpszVolumeName: LPSTR, cchBufferLength: DWORD)->BOOL throw
+    {
+        res := Win32Priv.FindNextVolumeA(hFindVolume, lpszVolumeName, cchBufferLength)
+        if !res and GetLastError() != ERROR_NO_MORE_FILES
+            try setError(GetLastError())
+        return res
+    }
+
+    func FindNextVolumeW(hFindVolume: HANDLE, lpszVolumeName: LPWSTR, cchBufferLength: DWORD)->BOOL throw
+    {
+        res := Win32Priv.FindNextVolumeW(hFindVolume, lpszVolumeName, cchBufferLength)
+        if !res and GetLastError() != ERROR_NO_MORE_FILES
+            try setError(GetLastError())
+        return res
+    }
+
+    func FindVolumeClose(hFindVolume: HANDLE) throw
+    {
+        if !Win32Priv.FindVolumeClose(hFindVolume)
+            try setError(GetLastError())
+    }
+
+    func GetVolumePathNamesForVolumeNameA(lpszVolumeName: LPCSTR, lpszVolumePathNames: LPCH, cchBufferLength: DWORD, lpcchReturnLength: *DWORD) throw
+    {
+        if !Win32Priv.GetVolumePathNamesForVolumeNameA(lpszVolumeName, lpszVolumePathNames, cchBufferLength, lpcchReturnLength)
+            try setError(GetLastError())
+    }
+
+    func GetVolumePathNamesForVolumeNameW(lpszVolumeName: LPCWSTR, lpszVolumePathNames: LPWCH, cchBufferLength: DWORD, lpcchReturnLength: *DWORD) throw
+    {
+        if !Win32Priv.GetVolumePathNamesForVolumeNameW(lpszVolumeName, lpszVolumePathNames, cchBufferLength, lpcchReturnLength)
             try setError(GetLastError())
     }
 
