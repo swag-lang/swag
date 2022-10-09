@@ -47,11 +47,25 @@ private impl FileDlg
     {
         curFolder = folder
         Path.normalize(&curFolder)
+        tt := curFolder
+
         if curFolder.back() == "/"'u8
             curFolder.removeBack()
 
         fillList()
         fillComboPath()
+
+        treeCtrl.sigSelChanged.disable()
+        defer treeCtrl.sigSelChanged.enable()
+
+        visit s, idx: treePathStr
+        {
+            if Path.equals(s.toString(), tt)
+            {
+                treeCtrl.selectLine(acast idx)
+                break
+            }
+        }
     }
 
     mtd fillComboPath()
@@ -115,6 +129,7 @@ private impl FileDlg
 
         var options: EnumerationOptions
         options.matchPattern = "*.*"
+        options.skipAttributes = .Hidden
         options.wantFiles = dlgOptions.mode != .SelectFolder
         options.wantDirectories = true
         options.recurse = false
@@ -220,6 +235,7 @@ impl FileDlg
         {
             .backgroundStyle = .View
             .dockStyle = .Center
+            .style.addStyleSheetColors("splitView_Bar $wnd_Bk")
         }
 
         dlg.applyLayout()
@@ -227,6 +243,7 @@ impl FileDlg
         with dlg.treeCtrl = ListCtrl.createSimple(splitter)
         {
             .backgroundStyle = .View
+            .margin.x = 8
             splitter.addPane(dlg.treeCtrl)
             dlg.fillListFolders()
         }

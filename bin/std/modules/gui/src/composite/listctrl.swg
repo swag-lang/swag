@@ -863,6 +863,8 @@ impl ListCtrl
 
         if selectionMode == .None or lineCount == 0
             return
+        if selectionMode == .Single
+            selModel.unselectAll()
 
         idxLine := isVirtual ? idx : lines[idx].index
         selModel.select(idxLine, select)

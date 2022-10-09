@@ -196,6 +196,12 @@ func combine(fullnames: string...)->String
     return result
 }
 
+// Returns true if the two paths are equal
+func equals(path1, path2: string)->bool
+{
+    return Utf8.compare(path1, path2, .Latin1NoCase) == 0
+}
+
 // Normalize path
 // '\' are replaced with '/' as this is the std norm for paths
 func normalize(fullname: *String)

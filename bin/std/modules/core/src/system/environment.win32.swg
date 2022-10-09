@@ -23,7 +23,11 @@ public func getSpecialDirectory(what: SpecialDirectory)->String
     var result: retval
     catch Win32.SHGetSpecialFolderPathA(null, &a[0], v, FALSE)
     if !@err
+    {
         result = cast(string) @mkslice(&a[0], @strlen(&a[0]))
+        Path.normalize(&result)
+    }
+
     return result
 }
 
