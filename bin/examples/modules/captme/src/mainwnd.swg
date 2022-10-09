@@ -421,7 +421,7 @@ impl IWnd for MainWnd
             setBottomSize(.Big)
 
         case CmdIdDeleteCapture:
-            res := MessageDlg.yesNo(surface, "This will delete the capture file.\nAre you sure ?")
+            res := MessageDlg.confirm(surface, "This will delete the capture file.")
             if res == MessageDlg.BtnYes
                 recentWnd.removeRecent()
 

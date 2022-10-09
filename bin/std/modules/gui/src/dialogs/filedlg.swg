@@ -117,7 +117,10 @@ impl FileDlg
             if id == Dialog.BtnOk and dlg.dlgOptions.mode == .CreateFile
             {
                 if File.exists(dlg.getSelectedName())
-                    return MessageDlg.yesNo(dlg.surface, "This file already exists.\nAre you sure you want to overwrite it ?") == Dialog.BtnYes
+                {
+                    res := MessageDlg.confirm(dlg.surface, "This file already exists.", "Do you want to replace it ?")
+                    return res == Dialog.BtnYes
+                }
             }
 
             return true

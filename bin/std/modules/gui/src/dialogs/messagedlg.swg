@@ -128,15 +128,27 @@ public impl MessageDlg
     }
 
     // Message box with a 'yes' and 'no' button
-    func yesNo(from: *Surface, message: string, defaultId = Dialog.BtnNo, icon: Icon = @{})->WndId
+    func yesNo(from: *Surface, message: string, title: string = null, defaultId = Dialog.BtnNo, icon: Icon = @{})->WndId
     {
-        with dlg := create(from, message, icon.isValid() ? icon : from.app.theme.getIcon64(ThemeIcons64.Question))
+        ic := icon.isValid() ? icon : from.app.theme.getIcon64(ThemeIcons64.Question)
+        with dlg := create(from, message, ic)
         {
+            .surface.setTitle(title)
             .addButton("Yes", Dialog.BtnYes, defaultId == Dialog.BtnYes)
             .addButton("No", Dialog.BtnNo, defaultId == Dialog.BtnNo)
         }
 
         return dlg.doModal(from)
+    }
+
+    // Message box to 'confirm' something
+    func confirm(from: *Surface, message: string, question: string = null)->WndId
+    {
+        txt := String.from(message)
+        txt += "\n"
+        txt += question orelse "Do you want to continue ?"
+
+        return yesNo(from, txt.toString(), "Please confirm")
     }
 
     // Message box with a 'yes' and 'no' button

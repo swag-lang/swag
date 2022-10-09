@@ -336,7 +336,7 @@ impl QuickWnd
         if !currentStyle
             return
 
-        res := MessageDlg.yesNo(surface, "This will reset the styles to the default values.\nAre you sure ?")
+        res := MessageDlg.confirm(surface, "This will reset the styles to the default values.")
         if res != MessageDlg.BtnYes
             return
 
