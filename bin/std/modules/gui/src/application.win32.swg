@@ -72,10 +72,15 @@ impl Application
     // Returns the OS icon associated with the given filename
     mtd getFileFolderIcon(name: string, isFolder: bool)->Icon throw
     {
+        if !@countof(name)
+            return @{}
+
         ext := Path.getExtension(name)
 
         extractFromFile := false
-        if isFolder
+        if isFolder and name[@countof(name) - 1] == Path.VolumeSeparatorChar
+            ext = "c:"
+        elif isFolder
             ext = "c:/temp"
         elif ext == ".exe" or ext == ".dll"
         {

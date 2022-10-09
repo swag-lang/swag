@@ -251,12 +251,31 @@ impl String
         buffer[length] = 0;
     }
 
-    // Remove some bytes
-    mtd remove(byteIndex, byteCount: uint)
+    // Get the last byte
+    mtd back()->u8
     {
-        if !byteCount return
+        if !length
+            return 0
+        return buffer[length - 1]
+    }
+
+    // Remove some bytes at the given index
+    mtd remove(byteIndex: uint, byteCount: uint = 1)
+    {
+        if !byteCount
+            return
         Debug.assert(byteIndex + byteCount <= length)
         Memory.copyOver(buffer + byteIndex, buffer + byteIndex + byteCount, length - (byteIndex + byteCount))
+        length -= byteCount
+        buffer[length] = 0
+    }
+
+    // Remove some bytes at the end
+    mtd removeBack(byteCount: uint = 1)
+    {
+        if !byteCount
+            return
+        Debug.assert(byteCount <= length)
         length -= byteCount
         buffer[length] = 0
     }

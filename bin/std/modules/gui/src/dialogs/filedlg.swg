@@ -22,28 +22,60 @@ struct FileDlgOptions
 struct FileDlg
 {
     using dialog: Dialog
-    treeCtrl:   *ListCtrl
-    listCtrl:   *ListCtrl
-    comboPath:  *ComboBox
-    editFile:   *EditBox
-    comboType:  *ComboBox
-    dlgOptions: FileDlgOptions
+    treeCtrl:       *ListCtrl
+    listCtrl:       *ListCtrl
+    comboPath:      *ComboBox
+    comboPathStr:   Array'String
+    editFile:       *EditBox
+    comboType:      *ComboBox
+    dlgOptions:     FileDlgOptions
 
-    curFolder:  String
-    curList:    Array'FileInfo
+    curFolder:      String
+    curList:        Array'FileInfo
 }
 
 private impl FileDlg
 {
+    mtd folderUp()
+    {
+        if comboPathStr.count > 1
+            setCurFolder(comboPathStr[1].toString())
+    }
+
+    mtd setCurFolder(folder: string)
+    {
+        curFolder = folder
+        Path.normalize(&curFolder)
+        if curFolder.back() == "/"'u8
+            curFolder.removeBack()
+
+        fillList()
+        fillComboPath()
+    }
+
     mtd fillComboPath()
     {
-        Path.normalize(&curFolder)
+        comboPath.clear()
+        comboPathStr.clear()
+
         all := Tokenize.split(curFolder.toString(), "/"'rune)
-        visit one: all
+        loop i: all.count-1..0
         {
+            var str: String
+            loop j: i+1
+            {
+                str += all[j]
+                str += "/"'u8
+            }
+
+            comboPathStr.add(str)
+
+            one := all[i]
             ic := catch getApp().getFileFolderIcon(one, true)
             comboPath.addItem(one, icon: ic)
         }
+
+        comboPath.selectItem(0)
     }
 
     mtd fillList()
@@ -179,12 +211,7 @@ impl FileDlg
                 switch evt.key
                 {
                 case Back:
-                    path := Path.getDirectoryName(dlg.curFolder)
-                    if @countof(path)
-                    {
-                        dlg.curFolder = path
-                        dlg.fillList()
-                    }
+                    dlg.folderUp()
 
                 case Enter:
                     l := list.getFocusLine()
@@ -192,8 +219,7 @@ impl FileDlg
                     fi := cast(const *FileInfo) l.userData0
                     if fi.isDirectory()
                     {
-                        dlg.curFolder = fi.fullname
-                        dlg.fillList()
+                        dlg.setCurFolder(fi.fullname)
                     }
                     elif dlg.dlgOptions.mode != .SelectFolder
                     {
@@ -209,8 +235,7 @@ impl FileDlg
                 fi := cast(const *FileInfo) l.userData0
                 if fi.isDirectory()
                 {
-                    dlg.curFolder = fi.fullname
-                    dlg.fillList()
+                    dlg.setCurFolder(fi.fullname)
                 }
                 elif dlg.dlgOptions.mode != .SelectFolder
                 {
@@ -271,6 +296,9 @@ impl FileDlg
         with dlg.comboPath = ComboBox.create(viewTop, @{115, 10, 525})
         {
             .anchorStyle = .Width
+            .sigChanged += @|dlg|(combo, idx) {
+                dlg.setCurFolder(dref dlg.comboPathStr[idx])
+            }
         }
 
         // Bottom
@@ -307,9 +335,7 @@ impl FileDlg
 
         with dlg
         {
-            .curFolder = opt.openFolder
-            .fillComboPath()
-            .fillList()
+            .setCurFolder(opt.openFolder)
             .listCtrl.sort(0)
 
             .editFile.setText(opt.editName)

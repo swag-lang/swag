@@ -185,8 +185,8 @@ func combine(fullnames: string...)->String
 
         if result.length
         {
-            c := result[result.length - 1]
-            if !isDirectorySeparator(c) and c != VolumeSeparatorChar
+            c := result.back()
+            if !isDirectorySeparator(c)
                 result += DirectorySeparatorChar
         }
 

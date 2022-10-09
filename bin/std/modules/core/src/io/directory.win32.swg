@@ -26,13 +26,12 @@ func exists(dirname: string)->bool
 }
 
 // Enumerate a directory
-func enumerate(dirname: string, options: EnumerationOptions)->Array'(File.FileInfo) throw
+func enumerate(dirName: string, options: EnumerationOptions)->Array'(File.FileInfo) throw
 {
     using File
-
     var result: retval
-    if dirname == null return result
-    if options.matchPattern == null return result
+    if dirName == null or options.matchPattern == null
+        return result
 
     var findfile:   WIN32_FIND_DATAW
     var fi:         FileInfo
@@ -41,10 +40,12 @@ func enumerate(dirname: string, options: EnumerationOptions)->Array'(File.FileIn
 
     dataof := cast(const *u16) @dataof(findfile.cFileName)
 
-    stackPath.add(String.from(dirname))
+    stackPath.add(String.from(dirName))
     while !stackPath.isEmpty()
     {
         toScan := stackPath.popBack()
+        if toScan.back() == Path.VolumeSeparatorChar
+            toScan += Path.DirectorySeparatorChar
         searchPath := Path.combine(toScan.toString(), options.matchPattern)
 
         winPath := Utf16.toZeroTerminated(searchPath)
