@@ -69,9 +69,6 @@ impl Application
         return null
     }
 
-    mtd getFileIcon(name: string)      => getFileDirectoryIcon(name, false)
-    mtd getDirectoryIcon(name: string) => getFileDirectoryIcon(name, true)
-
     // Returns the OS icon associated with the given filename
     mtd getFileDirectoryIcon(name: string, isDirectory: bool)->Icon
     {

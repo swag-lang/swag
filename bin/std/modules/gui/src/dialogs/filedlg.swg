@@ -81,9 +81,9 @@ private impl FileDlg
 
     mtd fillListFolders()
     {
-        c := Env.getSpecialDirectory(.Font)
+        c := Env.getSpecialDirectory(.UserDocuments)
         ic := getApp().getDirectoryIcon(c)
-        l := treeCtrl.createLine("Font", icon: ic)
+        l := treeCtrl.createLine("Documents", icon: ic)
         l.userData0 = cast(*void) treePathStr.count
         treePathStr.add(c)
 

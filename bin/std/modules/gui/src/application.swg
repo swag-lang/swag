@@ -731,4 +731,7 @@ impl Application
         endModal = true
         endModalExit = exitId
     }
+
+    mtd getFileIcon(name: string)      => getFileDirectoryIcon(name, false)
+    mtd getDirectoryIcon(name: string) => getFileDirectoryIcon(name, true)
 }
