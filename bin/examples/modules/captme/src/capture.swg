@@ -85,12 +85,12 @@ impl Capture
         render := app.getRenderer()
 
         painter.begin()
-        painter.setParams(.Antialiased)
         painter.setColorMask(false, false, false, true)
         painter.clear(Argb.Zero)
         painter.setColorMask(true, true, true, true)
         paintBackImage(&painter, 0, 0, zoom)
         painter.setColorMask(true, true, true, false)
+        painter.setParams(.Antialiased)
 
         if onlySel
         {
