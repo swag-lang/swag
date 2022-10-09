@@ -122,12 +122,28 @@ impl Application
     // Get a special directory icon
     mtd getSpecialDirectoryIcon(what: Env.SpecialDirectory, small = true)->Icon
     {
+        val  := what
+        name := Reflection.getEnumName(Env.SpecialDirectory, &val).toString()
+
+        if small
+        {
+            here := mapFileSmallIcons.find(name)
+            if here
+                return Icon.from(&fileSmallIconsImageList, here.value)
+        }
+        else
+        {
+            here := mapFileBigIcons.find(name)
+            if here
+                return Icon.from(&fileBigIconsImageList, here.value)
+        }
+
         var sgi: SHSTOCKICONINFO
         sgi.cbSize = @sizeof(SHSTOCKICONINFO)
         catch SHGetStockIconInfo(.SIID_PRINTER, SHGSI_ICON | (small ? SHGSI_SMALLICON : SHGSI_LARGEICON), &sgi)
         if !sgi.hIcon
             return @{}
-        return addIconToImageList("tototo", sgi.hIcon, small)
+        return addIconToImageList(name, sgi.hIcon, small)
     }
 
     // Returns the OS icon associated with the given filename
