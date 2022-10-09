@@ -10,14 +10,16 @@ public func getProcessorCount() => cast(u32) g_SysInfo.dwNumberOfProcessors
 public func getSpecialDirectory(what: SpecialDirectory)->String
 {
     var a: [MAX_PATH] u8
-
     var v: s32
+
+    #[Swag.Complete]
     switch what
     {
     case Font:          v = CSIDL_FONTS
     case UserAppData:   v = CSIDL_APPDATA
     case UserDocuments: v = CSIDL_MYDOCUMENTS
     case CommonAppData: v = CSIDL_COMMON_APPDATA
+    case Desktop:       v = CSIDL_DESKTOP
     }
 
     var result: retval

@@ -95,11 +95,9 @@ private impl FileDlg
 
     mtd fillListFolders()
     {
-        //treeCtrl.lineHeight = 32
-
-        c := Env.getSpecialDirectory(.UserDocuments)
-        ic := getApp().getSpecialDirectoryIcon(.UserDocuments, true)
-        l := treeCtrl.createLine("Documents", icon: ic)
+        c := Env.getSpecialDirectory(.Desktop)
+        ic := getApp().getSpecialDirectoryIcon(.Desktop, true)
+        l := treeCtrl.createLine("Desktop", icon: ic)
         l.userData0 = cast(*void) treePathStr.count
         treePathStr.add(c)
 
@@ -243,7 +241,8 @@ impl FileDlg
         with dlg.treeCtrl = ListCtrl.createSimple(splitter)
         {
             .backgroundStyle = .View
-            .margin.x = 8
+            .leftTextMargin = 8
+            .scrollWnd.style.addStyleSheetColors("scrollBar_Bk $view_Bk")
             splitter.addPane(dlg.treeCtrl)
             dlg.fillListFolders()
         }
@@ -257,6 +256,7 @@ impl FileDlg
             .backgroundStyle = .View
             .header.form = .Transparent
             .header.style.addStyleSheetColors("headerItem_Separator $lighterMedium")
+            .scrollWnd.style.addStyleSheetColors("scrollBar_Bk $view_Bk")
 
             .sigKeyPressed += @|dlg|(list, evt) {
                 switch evt.key

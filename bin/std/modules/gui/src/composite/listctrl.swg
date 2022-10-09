@@ -60,6 +60,7 @@ struct ListCtrl
     iconMarginFirstCol  = true
     listFlags           = ListFlags.None
     selectionMode       = ListSelectionMode.Single
+    leftTextMargin:     f32
 
     sigSelChanged:      SigArray'closure(*Self)
     sigCheckChanged:    SigArray'closure(*Self)
@@ -297,6 +298,14 @@ impl IWnd for ListView
 
     mtd onMouseEvent(evt: *MouseEvent)
     {
+        if evt.kind == .MouseLeave
+        {
+            list.hotIndex = Swag.U32.Max
+            invalidate()
+            evt.accepted = false
+            return
+        }
+
         idx := hitTest(evt.surfacePos)
         if idx != list.hotIndex and (list.listFlags & .HotTrack)
         {
@@ -632,6 +641,7 @@ private impl ListView
             }
 
             labelPos.x -= scrollPos.x
+            labelPos.x += list.leftTextMargin
 
             if idxItem == 0
             {

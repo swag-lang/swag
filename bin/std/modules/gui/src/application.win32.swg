@@ -140,7 +140,14 @@ impl Application
 
         var sgi: SHSTOCKICONINFO
         sgi.cbSize = @sizeof(SHSTOCKICONINFO)
-        catch SHGetStockIconInfo(.SIID_PRINTER, SHGSI_ICON | (small ? SHGSI_SMALLICON : SHGSI_LARGEICON), &sgi)
+
+        whatWin := SHSTOCKICONID.SIID_FOLDER
+        switch what
+        {
+        case Desktop: whatWin = .SIID_DESKTOPPC
+        }
+
+        catch SHGetStockIconInfo(whatWin, SHGSI_ICON | (small ? SHGSI_SMALLICON : SHGSI_LARGEICON), &sgi)
         if !sgi.hIcon
             return @{}
         return addIconToImageList(name, sgi.hIcon, small)
