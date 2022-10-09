@@ -260,8 +260,8 @@ struct ThemeColors
     comboBox_HotBorder:             Color = Gray2
     comboBox_DisabledBorder:        Color = Gray3
     comboBox_SelectedBorder:        Color = Gray2
-    comboBox_Bk:                    Color = Color.getDarker(Color.fromArgb(Gray5), 0.05)
-    comboBox_HotBk:                 Color = Gray6
+    comboBox_Bk:                    Color = Gray6
+    comboBox_HotBk:                 Color = Color.getDarker(Color.fromArgb(Gray5), 0.05)
     comboBox_DisabledBk:            Color = Gray5
     comboBox_SelectedBk:            Color = Gray6
     comboBox_Text:                  Color = Gray1

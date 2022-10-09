@@ -79,7 +79,9 @@ impl Surface
         }
         else
         {
-            wnd.padding = 0
+            wnd.padding.x = 0
+            wnd.padding.z = 0
+            wnd.padding.w = 0
         }
 
         wnd.applySurfaceFlags()

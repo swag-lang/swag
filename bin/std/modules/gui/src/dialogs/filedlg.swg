@@ -238,6 +238,7 @@ impl FileDlg
             .addColumn("Modified", 150)
             .backgroundStyle = .View
             .header.form = .Transparent
+            .header.style.addStyleSheetColors("headerItem_Separator $lighterMedium")
 
             .sigKeyPressed += @|dlg|(list, evt) {
                 switch evt.key

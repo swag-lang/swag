@@ -99,7 +99,7 @@ impl Dialog
     // Creates an associated surface
     mtd createSurface(from: *Surface, x, y: s32, width = 512, height = 300)->*Surface
     {
-        srf := assume from.app.createSurface(x, y, width, height, .BigCaption | .Border | .Secondary, self)
+        srf := assume from.app.createSurface(x, y, width, height, .BigCaption | .Secondary, self)
         srf.wnd.view.backgroundStyle = .Dialog
 
         metrics := getThemeMetrics()
