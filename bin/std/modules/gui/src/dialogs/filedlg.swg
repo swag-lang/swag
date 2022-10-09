@@ -187,6 +187,7 @@ impl FileDlg
         dlg.dlgOptions = opt
         dlg.addButton(opt.btnOkName orelse "Ok", Dialog.BtnOk, true)
         dlg.addButton("Cancel", Dialog.BtnCancel)
+        srf.setSurfaceFlags(remove: .CloseBtn)
 
         dlg.sigPressedButton = @|dlg|(bdlg, id) {
             if id == Dialog.BtnOk
@@ -325,6 +326,7 @@ impl FileDlg
         ////////////////////////
         viewTop := Wnd.create'Wnd(view, @{0, 0, 0, 50})
         viewTop.dockStyle = .Top
+        viewTop.backgroundStyle = .Window
 
         with dlg.comboPath = ComboBox.create(viewTop, @{115, 10, 525})
         {
@@ -338,6 +340,7 @@ impl FileDlg
         ////////////////////////
         viewBottom := Wnd.create'Wnd(view, @{0, 0, 0, 90})
         viewBottom.dockStyle = .Bottom
+        viewBottom.backgroundStyle = .Window
 
         with dlg.editFile = EditBox.create(viewBottom, "", @{115, 10, 525})
         {
