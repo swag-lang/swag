@@ -293,6 +293,7 @@ struct ThemeColors
 
     listItem_FocusSelectedBk:       Color = Blue
     listItem_SelectedBk:            Color = Gray5
+    listItem_HotBk:                 Color = Gray5
     listItem_DisabledText:          Color = Gray3
     listItem_SelectedText:          Color = White
     listItem_Text:                  Color = White

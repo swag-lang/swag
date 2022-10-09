@@ -18,6 +18,7 @@ enum ListFlags
     VertLines
     ForceMarginExpandMark   // Force one margin even if no expand mark
     NoMouseEmptySel         // Click does not clear selection if not on an item
+    HotTrack
 }
 
 struct ListItem
@@ -75,6 +76,7 @@ struct ListCtrl
     selModel:           SelModel
     checkModel:         SelModel
     focusIndex          = Swag.U32.Max
+    hotIndex            = Swag.U32.Max
     scrollWnd:          *ScrollWnd
     listView:           *ListView
     header:             *Header
@@ -295,13 +297,19 @@ impl IWnd for ListView
 
     mtd onMouseEvent(evt: *MouseEvent)
     {
+        idx := hitTest(evt.surfacePos)
+        if idx != list.hotIndex and (list.listFlags & .HotTrack)
+        {
+            list.hotIndex = idx
+            invalidate()
+        }
+
         if evt.kind != .MousePressed and evt.kind != .MouseReleased and evt.kind != .MouseDoubleClick
         {
             evt.accepted = false
             return
         }
 
-        idx := hitTest(evt.surfacePos)
         metrics := getThemeMetrics()
 
         ctrl  := cast(bool) (evt.modifiers & .Control)
@@ -566,6 +574,12 @@ private impl ListView
         {
             colorSel := hasFocus() ? colors.listItem_FocusSelectedBk : colors.listItem_SelectedBk
             painter.fillRect(rect, colorSel)
+        }
+
+        // Hot box
+        elif idx == list.hotIndex and (list.listFlags & .HotTrack)
+        {
+            painter.fillRect(rect, colors.listItem_HotBk)
         }
 
         // User background

@@ -707,10 +707,10 @@ impl MainWnd
         opt.title = "Save As Image"
         opt.btnOkName = "Save"
         opt.openFolder = "f:/swag-lang/swag/docs"
-        opt.filters.add(@{String.from("Png (*.png)"), String.from(".png")})
-        opt.filters.add(@{String.from("Jpeg (*.jpg)"), String.from(".jpg")})
-        opt.filters.add(@{String.from("Bitmap (*.bmp)"), String.from(".bmp")})
-        opt.filters.add(@{String.from("Tga (*.tga)"), String.from(".tga")})
+        opt.filters.add(@{String.from("PNG - Portable Network Graphics (*.png)"), String.from(".png")})
+        opt.filters.add(@{String.from("JPG - JPEG Image (*.jpg)"), String.from(".jpg")})
+        opt.filters.add(@{String.from("BMP - Windows Bitmap (*.bmp)"), String.from(".bmp")})
+        opt.filters.add(@{String.from("TGA - Truevision Targa (*.tga)"), String.from(".tga")})
         dlg := FileDlg.create(surface, opt)
         dlg.surface.center(surface)
         if dlg.doModal() != Dialog.BtnOk

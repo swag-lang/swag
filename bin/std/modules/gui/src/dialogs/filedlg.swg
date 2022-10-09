@@ -157,6 +157,7 @@ impl FileDlg
         with dlg.listCtrl = ListCtrl.createMultiColumns(splitter)
         {
             .selectionMode = opt.mode == .SelectMultiFiles ? .Multi : .Single
+            .listFlags |= .HotTrack
             .addColumn("Name", 200)
             .addColumn("Modified", 150)
             .backgroundStyle = .View
