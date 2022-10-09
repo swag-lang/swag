@@ -134,6 +134,7 @@ namespace Shell32Priv
             try setError(GetLastError())
     }
 
+    #[Swag.Discardable]
     func ExtractIconExA(lpszFile: LPCSTR, nIconIndex: s32, phiconLarge: *HICON, phiconSmall: *HICON, nIcons: UINT)->UINT throw
     {
         res := Shell32Priv.ExtractIconExA(lpszFile, nIconIndex, phiconLarge, phiconSmall, nIcons)
@@ -142,6 +143,7 @@ namespace Shell32Priv
         return res
     }
 
+    #[Swag.Discardable]
     func ExtractIconExW(lpszFile: LPCWSTR, nIconIndex: s32, phiconLarge: *HICON, phiconSmall: *HICON, nIcons: UINT)->UINT throw
     {
         res := Shell32Priv.ExtractIconExW(lpszFile, nIconIndex, phiconLarge, phiconSmall, nIcons)

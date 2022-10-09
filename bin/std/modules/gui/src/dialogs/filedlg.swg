@@ -23,6 +23,7 @@ struct FileDlg
 {
     using dialog: Dialog
     treeCtrl:       *ListCtrl
+    treePathStr:    Array'String
     listCtrl:       *ListCtrl
     comboPath:      *ComboBox
     comboPathStr:   Array'String
@@ -71,11 +72,28 @@ private impl FileDlg
             comboPathStr.add(str)
 
             one := all[i]
-            ic := catch getApp().getFileFolderIcon(one, true)
+            ic := getApp().getFolderIcon(one)
             comboPath.addItem(one, icon: ic)
         }
 
         comboPath.selectItem(0)
+    }
+
+    mtd fillListFolders()
+    {
+        c := Env.getSpecialDirectory(.Font)
+        ic := getApp().getFolderIcon(c)
+        l := treeCtrl.createLine("Font", icon: ic)
+        l.userData0 = cast(*void) treePathStr.count
+        treePathStr.add(c)
+
+        treeCtrl.sigSelChanged += @|self|(list) {
+            line := list.getSelectedLine()
+            if !line
+                return
+            idx := cast(uint) line.userData0
+            self.setCurFolder(self.treePathStr[idx].toString())
+        }
     }
 
     mtd fillList()
@@ -116,7 +134,7 @@ private impl FileDlg
                 continue
 
             // Content
-            icon := catch getApp().getFileFolderIcon(fname, fi.isDirectory())
+            icon := getApp().getFileFolderIcon(fname, fi.isDirectory())
             line := listCtrl.createLine(fname, icon)
             line.userData0 = fi
             line.setItem(1, fi.lastWriteTime.toString(.Iso))
@@ -196,6 +214,7 @@ impl FileDlg
         {
             .backgroundStyle = .View
             splitter.addPane(dlg.treeCtrl)
+            dlg.fillListFolders()
         }
 
         with dlg.listCtrl = ListCtrl.createMultiColumns(splitter)

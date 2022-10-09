@@ -69,11 +69,15 @@ impl Application
         return null
     }
 
+    mtd getFileIcon(name: string)   => getFileFolderIcon(name, false)
+    mtd getFolderIcon(name: string) => getFileFolderIcon(name, true)
+
     // Returns the OS icon associated with the given filename
-    mtd getFileFolderIcon(name: string, isFolder: bool)->Icon throw
+    mtd getFileFolderIcon(name: string, isFolder: bool)->Icon
     {
+        var result: retval
         if !@countof(name)
-            return @{}
+            return result
 
         ext := Path.getExtension(name)
 
@@ -97,7 +101,7 @@ impl Application
         var sfi: SHFILEINFOA
         if extractFromFile
         {
-            discard ExtractIconExA(@dataof(ext), 0, null, &sfi.hIcon, 1)
+            catch ExtractIconExA(@dataof(ext), 0, null, &sfi.hIcon, 1)
             if !sfi.hIcon
             {
                 ext = Path.getExtension(name)
@@ -110,12 +114,14 @@ impl Application
         if !sfi.hIcon
             discard SHGetFileInfoA(@dataof(ext), isFolder ? FILE_ATTRIBUTE_DIRECTORY : FILE_ATTRIBUTE_NORMAL, &sfi, @sizeof(SHFILEINFOA), SHGFI_USEFILEATTRIBUTES | SHGFI_ICON | SHGFI_SMALLICON)
         if !sfi.hIcon
-            throw "invalid"
+            return result
 
         index := cast(s32) mapFileIcons.count
         mapFileIcons.add(ext, index)
 
-        img := Image.from(sfi.hIcon)
+        img := catch Image.from(sfi.hIcon)
+        if @err
+            return result
         img.resize(16, 16)
 
         nimage := Image.create(16 * (index + 1), 16, .BGRA8)
