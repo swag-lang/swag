@@ -22,6 +22,7 @@ struct FileDlgOptions
 struct FileDlg
 {
     using dialog: Dialog
+
     treeCtrl:       *ListCtrl
     treePathStr:    Array'String
     listCtrl:       *ListCtrl
@@ -200,6 +201,7 @@ impl FileDlg
         dlg.dlgOptions = opt
         dlg.addButton(opt.btnOkName orelse "Ok", Dialog.BtnOk, true)
         dlg.addButton("Cancel", Dialog.BtnCancel)
+        dlg.backgroundStyle = .Window
         srf.setSurfaceFlags(remove: .CloseBtn)
 
         dlg.sigPressedButton = @|dlg|(bdlg, id) {
@@ -229,31 +231,28 @@ impl FileDlg
         view := Wnd.create'Wnd(dlg)
         view.dockStyle = .Center
 
-        with splitter := SplitterCtrl.create(view)
-        {
-            .backgroundStyle = .View
-            .dockStyle = .Center
-            .style.addStyleSheetColors("splitView_Bar $wnd_Bk")
-        }
-
         dlg.applyLayout()
 
-        with dlg.treeCtrl = ListCtrl.createSimple(splitter)
+        with dlg.treeCtrl = ListCtrl.createSimple(view, @{0, 0, 150})
         {
-            .backgroundStyle = .View
+            .dockStyle = .Left
+            .listFlags |= .HotTrack
+            .lineHeight = 28
             .leftTextMargin = 8
+            .backgroundStyle = .Dialog
             .scrollWnd.style.addStyleSheetColors("scrollBar_Bk $view_Bk")
-            splitter.addPane(dlg.treeCtrl)
             dlg.fillListFolders()
         }
 
-        with dlg.listCtrl = ListCtrl.createMultiColumns(splitter)
+        with dlg.listCtrl = ListCtrl.createMultiColumns(view)
         {
             .selectionMode = opt.mode == .SelectMultiFiles ? .Multi : .Single
+            .dockStyle = .Center
+            .margin.z = 10
             .listFlags |= .HotTrack
+            .backgroundStyle = .View
             .addColumn("Name", 200)
             .addColumn("Modified", 150)
-            .backgroundStyle = .View
             .header.form = .Transparent
             .header.style.addStyleSheetColors("headerItem_Separator $lighterMedium")
             .scrollWnd.style.addStyleSheetColors("scrollBar_Bk $view_Bk")
@@ -335,8 +334,6 @@ impl FileDlg
 
                 return 0
             }
-
-            splitter.addPane(dlg.listCtrl, 500)
         }
 
         // Top
@@ -345,7 +342,7 @@ impl FileDlg
         viewTop.dockStyle = .Top
         viewTop.backgroundStyle = .Window
 
-        with dlg.comboPath = ComboBox.create(viewTop, @{115, 10, 525})
+        with dlg.comboPath = ComboBox.create(viewTop, @{10, 10, 490})
         {
             .anchorStyle = .Width
             .sigChanged += @|dlg|(combo, idx) {
@@ -359,12 +356,12 @@ impl FileDlg
         viewBottom.dockStyle = .Bottom
         viewBottom.backgroundStyle = .Window
 
-        with dlg.editFile = EditBox.create(viewBottom, "", @{115, 10, 525})
+        with dlg.editFile = EditBox.create(viewBottom, "", @{105, 10, 390})
         {
             .anchorStyle = .Width
         }
 
-        with dlg.comboType = ComboBox.create(viewBottom, @{115, 45, 525})
+        with dlg.comboType = ComboBox.create(viewBottom, @{105, 45, 390})
         {
             .anchorStyle = .Width
             if opt.mode == .SelectFolder
@@ -379,10 +376,10 @@ impl FileDlg
         }
 
         nameLbl0 := opt.mode == .SelectFolder ? "Folder Name" : "File Name"
-        label0 := Label.create(viewBottom, nameLbl0, @{5, 10, 100, dlg.editFile.position.height})
+        label0 := Label.create(viewBottom, nameLbl0, @{5, 10, 80, dlg.editFile.position.height})
         label0.horzAlignmentText = .Right
         label0.vertAlignmentText = .Center
-        label1 := Label.create(viewBottom, "Type", @{5, 45, 100, dlg.comboType.position.height})
+        label1 := Label.create(viewBottom, "Type", @{5, 45, 80, dlg.comboType.position.height})
         label1.horzAlignmentText = .Right
         label1.vertAlignmentText = .Center
 
