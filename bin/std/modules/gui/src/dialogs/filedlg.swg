@@ -55,18 +55,6 @@ private impl FileDlg
 
         fillList()
         fillComboPath()
-
-        treeCtrl.sigSelChanged.disable()
-        defer treeCtrl.sigSelChanged.enable()
-
-        visit s, idx: treePathStr
-        {
-            if Path.equals(s.toString(), tt)
-            {
-                treeCtrl.selectLine(acast idx)
-                break
-            }
-        }
     }
 
     mtd fillComboPath()
@@ -231,8 +219,6 @@ impl FileDlg
         view := Wnd.create'Wnd(dlg)
         view.dockStyle = .Center
 
-        dlg.applyLayout()
-
         with dlg.treeCtrl = ListCtrl.createSimple(view, @{0, 0, 150})
         {
             .dockStyle = .Left
@@ -341,8 +327,9 @@ impl FileDlg
         viewTop := Wnd.create'Wnd(view, @{0, 0, 0, 50})
         viewTop.dockStyle = .Top
         viewTop.backgroundStyle = .Window
+        dlg.applyLayout()
 
-        with dlg.comboPath = ComboBox.create(viewTop, @{10, 10, 490})
+        with dlg.comboPath = ComboBox.create(viewTop, @{10, 10, viewTop.position.width - 20})
         {
             .anchorStyle = .Width
             .sigChanged += @|dlg|(combo, idx) {
@@ -355,13 +342,14 @@ impl FileDlg
         viewBottom := Wnd.create'Wnd(view, @{0, 0, 0, 90})
         viewBottom.dockStyle = .Bottom
         viewBottom.backgroundStyle = .Window
+        dlg.applyLayout()
 
-        with dlg.editFile = EditBox.create(viewBottom, "", @{105, 10, 390})
+        with dlg.editFile = EditBox.create(viewBottom, "", @{105, 10, viewBottom.position.width - (105 + 10)})
         {
             .anchorStyle = .Width
         }
 
-        with dlg.comboType = ComboBox.create(viewBottom, @{105, 45, 390})
+        with dlg.comboType = ComboBox.create(viewBottom, @{105, 45, viewBottom.position.width - (105 + 10)})
         {
             .anchorStyle = .Width
             if opt.mode == .SelectFolder
