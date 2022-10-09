@@ -12,10 +12,10 @@ enum FileDlgMode
 struct FileDlgOptions
 {
     title:      string
-    btnOkName:  string = "Ok"
+    btnOkName:  string
     openFolder: string
+    editName:   string
     mode:       FileDlgMode = SelectOneFile
-    selName:    string  // The default name at open
     filters:    Array'{String, String}
 }
 
@@ -110,7 +110,7 @@ impl FileDlg
         }
 
         dlg.dlgOptions = opt
-        dlg.addButton(opt.btnOkName, Dialog.BtnOk, true)
+        dlg.addButton(opt.btnOkName orelse "Ok", Dialog.BtnOk, true)
         dlg.addButton("Cancel", Dialog.BtnCancel)
 
         dlg.sigPressedButton = @|dlg|(bdlg, id) {
@@ -283,20 +283,21 @@ impl FileDlg
         label1.horzAlignmentText = .Right
         label1.vertAlignmentText = .Center
 
-        dlg.curFolder = opt.openFolder
-        dlg.fillList()
-        dlg.listCtrl.sort(0)
-
-        // Default name/focus
-        if opt.selName != null
-            dlg.editFile.setText(opt.selName)
-        if opt.mode == .CreateFile
+        with dlg
         {
-            dlg.editFile.setSelection(0, dlg.editFile.text.length)
-            dlg.editFile.setFocus()
+            .curFolder = opt.openFolder
+            .fillList()
+            .listCtrl.sort(0)
+
+            .editFile.setText(opt.editName)
+            if opt.mode == .CreateFile
+            {
+                .editFile.selectAll()
+                .editFile.setFocus()
+            }
+            else
+                .listCtrl.setFocus()
         }
-        else
-            dlg.listCtrl.setFocus()
 
         return dlg
     }

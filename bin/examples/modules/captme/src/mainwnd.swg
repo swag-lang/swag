@@ -707,6 +707,7 @@ impl MainWnd
         opt.title = "Save As Image"
         opt.btnOkName = "Save"
         opt.openFolder = "f:/swag-lang/swag/docs"
+        opt.editName = Path.getFileNameWithoutExtension(getCapture().file)
         opt.filters.add(@{String.from("PNG - Portable Network Graphics (*.png)"), String.from(".png")})
         opt.filters.add(@{String.from("JPG - JPEG Image (*.jpg)"), String.from(".jpg")})
         opt.filters.add(@{String.from("BMP - Windows Bitmap (*.bmp)"), String.from(".bmp")})
