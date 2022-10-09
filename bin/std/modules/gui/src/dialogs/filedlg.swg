@@ -113,6 +113,16 @@ impl FileDlg
         dlg.addButton(opt.btnOkName, Dialog.BtnOk, true)
         dlg.addButton("Cancel", Dialog.BtnCancel)
 
+        dlg.sigPressedButton = @|dlg|(bdlg, id) {
+            if id == Dialog.BtnOk and dlg.dlgOptions.mode == .CreateFile
+            {
+                if File.exists(dlg.getSelectedName())
+                    return MessageDlg.yesNo(dlg.surface, "This file already exists.\nAre you sure you want to overwrite it ?") == Dialog.BtnYes
+            }
+
+            return true
+        }
+
         // Splitter
         ////////////////////////
 

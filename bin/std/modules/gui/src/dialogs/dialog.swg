@@ -2,9 +2,10 @@
 
 struct Dialog
 {
-    using wnd: Wnd
-    wndBottom: *StackLayoutCtrl
-    buttons:   Array'(*PushButton)
+    using wnd:          Wnd
+    wndBottom:          *StackLayoutCtrl
+    buttons:            Array'(*PushButton)
+    sigPressedButton:   closure(self, WndId)->bool
 }
 
 impl IWnd for Dialog
@@ -134,7 +135,12 @@ impl Dialog
         with btn := PushButton.create(wndBottom, str, @{}, #self.id)
         {
             .form = isDefault ? .Default : .Strong
-            .sigPressed += @(btn) { btn.getApp().exitModal(btn.id); }
+
+            .sigPressed += @|self|(btn) {
+                if !self.sigPressedButton or self.sigPressedButton(self, btn.id)
+                    btn.getApp().exitModal(btn.id)
+            }
+
             buttons.add(btn)
         }
 
