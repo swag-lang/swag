@@ -114,9 +114,17 @@ impl FileDlg
         dlg.addButton("Cancel", Dialog.BtnCancel)
 
         dlg.sigPressedButton = @|dlg|(bdlg, id) {
-            if id == Dialog.BtnOk and dlg.dlgOptions.mode == .CreateFile
+            if id == Dialog.BtnOk
             {
-                if File.exists(dlg.getSelectedName())
+                selName := dlg.getSelectedName()
+                if selName == null
+                {
+                    dlg.editFile.selectAll()
+                    dlg.editFile.setFocus()
+                    return false
+                }
+
+                if dlg.dlgOptions.mode == .CreateFile and File.exists(selName)
                 {
                     res := MessageDlg.confirm(dlg.surface, "This file already exists.", "Do you want to replace it ?")
                     return res == Dialog.BtnYes
@@ -304,9 +312,22 @@ impl FileDlg
         tokens := Tokenize.split(editFile.text, ";"'rune)
         visit t: tokens
         {
-            val := Path.combine(curFolder, t)
+            // Be sure this is a valid file/folder name
+            t1 := String.from(t)
+            t1.trim()
+            if t1.isEmpty()
+                continue
+
+            // Get the full name
+            val := Path.combine(curFolder, t1.toString())
+
+            // Append extension if not done by the user
             if dlgOptions.mode != .SelectFolder and !Path.isExtension(val, fi.item1)
-                val += fi.item1
+            {
+                exts := Tokenize.split(fi.item1, ";"'rune)
+                val += exts[0]
+            }
+
             result.add(val)
         }
 
