@@ -3,9 +3,13 @@ using Win32, Core, Pixel, Gdi32
 
 public struct ApplicationNative
 {
-    fileIconsImage:     Image
-    fileIconsImageList: ImageList
-    mapFileIcons:       HashTable'(string, s32)
+    fileSmallIconsImage:     Image
+    fileSmallIconsImageList: ImageList
+    mapFileSmallIcons:       HashTable'(string, s32)
+
+    fileBigIconsImage:      Image
+    fileBigIconsImageList:  ImageList
+    mapFileBigIcons:        HashTable'(string, s32)
 }
 
 impl Application
@@ -69,8 +73,65 @@ impl Application
         return null
     }
 
+    private mtd addIconToImageList(name: string, hIcon: HICON, small: bool)->Icon
+    {
+        var result: retval
+
+        var index:      s32
+        var curImg:     *Image
+        var curImgList: *ImageList
+
+        if small
+        {
+            index = cast(s32) mapFileSmallIcons.count
+            mapFileSmallIcons.add(name, index)
+            curImg = &fileSmallIconsImage
+            curImgList = &fileSmallIconsImageList
+        }
+        else
+        {
+            index = cast(s32) mapFileBigIcons.count
+            mapFileBigIcons.add(name, index)
+            curImg = &fileBigIconsImage
+            curImgList = &fileBigIconsImageList
+        }
+
+        sizeIcon := small ? 16 : 32
+
+        // Convert icon to image
+        img := catch Image.from(hIcon)
+        defer catch DestroyIcon(hIcon)
+        if @err
+            return result
+        img.resize(sizeIcon, sizeIcon)
+
+        // Append to the image list
+        nimage := Image.create(sizeIcon * (index + 1), sizeIcon, .BGRA8)
+        if curImg.isValid()
+            nimage.mix(curImg, 0, 0)
+        nimage.mix(img, sizeIcon * index, 0)
+        dref curImg = nimage
+
+        if curImgList.texture.isValid()
+            renderer.removeTexture(&curImgList.texture)
+        curImgList.set(renderer.addImage(curImg), sizeIcon, sizeIcon)
+
+        return Icon.from(curImgList, index)
+    }
+
+    // Get a special directory icon
+    mtd getSpecialDirectoryIcon(what: Env.SpecialDirectory, small = true)->Icon
+    {
+        var sgi: SHSTOCKICONINFO
+        sgi.cbSize = @sizeof(SHSTOCKICONINFO)
+        catch SHGetStockIconInfo(.SIID_PRINTER, SHGSI_ICON | (small ? SHGSI_SMALLICON : SHGSI_LARGEICON), &sgi)
+        if !sgi.hIcon
+            return @{}
+        return addIconToImageList("tototo", sgi.hIcon, small)
+    }
+
     // Returns the OS icon associated with the given filename
-    mtd getFileDirectoryIcon(name: string, isDirectory: bool)->Icon
+    mtd getFileDirectoryIcon(name: string, isDirectory: bool, small = true)->Icon
     {
         var result: retval
         if !@countof(name)
@@ -91,9 +152,18 @@ impl Application
         elif ext == null
             ext = ".txt"
 
-        here := mapFileIcons.find(ext)
-        if here
-            return Icon.from(&fileIconsImageList, here.value)
+        if small
+        {
+            here := mapFileSmallIcons.find(ext)
+            if here
+                return Icon.from(&fileSmallIconsImageList, here.value)
+        }
+        else
+        {
+            here := mapFileBigIcons.find(ext)
+            if here
+                return Icon.from(&fileBigIconsImageList, here.value)
+        }
 
         var sfi: SHFILEINFOA
         if extractFromFile
@@ -102,9 +172,18 @@ impl Application
             if !sfi.hIcon
             {
                 ext = Path.getExtension(name)
-                here = mapFileIcons.find(ext)
-                if here
-                    return Icon.from(&fileIconsImageList, here.value)
+                if small
+                {
+                    here := mapFileSmallIcons.find(ext)
+                    if here
+                        return Icon.from(&fileSmallIconsImageList, here.value)
+                }
+                else
+                {
+                    here := mapFileBigIcons.find(ext)
+                    if here
+                        return Icon.from(&fileBigIconsImageList, here.value)
+                }
             }
         }
 
@@ -113,24 +192,6 @@ impl Application
         if !sfi.hIcon
             return result
 
-        index := cast(s32) mapFileIcons.count
-        mapFileIcons.add(ext, index)
-
-        img := catch Image.from(sfi.hIcon)
-        if @err
-            return result
-        img.resize(16, 16)
-
-        nimage := Image.create(16 * (index + 1), 16, .BGRA8)
-        if fileIconsImage.isValid()
-            nimage.mix(fileIconsImage, 0, 0)
-        nimage.mix(img, 16 * index, 0)
-        fileIconsImage = nimage
-
-        if fileIconsImageList.texture.isValid()
-            renderer.removeTexture(&fileIconsImageList.texture)
-        fileIconsImageList.set(renderer.addImage(fileIconsImage), 16, 16)
-
-        return Icon.from(&fileIconsImageList, index)
+        return addIconToImageList(ext, sfi.hIcon, small)
     }
 }

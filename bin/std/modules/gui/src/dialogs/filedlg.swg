@@ -81,8 +81,10 @@ private impl FileDlg
 
     mtd fillListFolders()
     {
+        treeCtrl.lineHeight = 48
+
         c := Env.getSpecialDirectory(.UserDocuments)
-        ic := getApp().getDirectoryIcon(c)
+        ic := getApp().getSpecialDirectoryIcon(.UserDocuments, false)
         l := treeCtrl.createLine("Documents", icon: ic)
         l.userData0 = cast(*void) treePathStr.count
         treePathStr.add(c)
