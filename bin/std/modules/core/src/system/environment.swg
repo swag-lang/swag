@@ -16,7 +16,7 @@ public func hasArg(arg: string)->bool
     return Slice.contains(g_CmdLineArgs, arg)
 }
 
-public enum SpecialFolder
+public enum SpecialDirectory
 {
     Font
     UserAppData

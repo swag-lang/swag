@@ -69,11 +69,11 @@ impl Application
         return null
     }
 
-    mtd getFileIcon(name: string)   => getFileFolderIcon(name, false)
-    mtd getFolderIcon(name: string) => getFileFolderIcon(name, true)
+    mtd getFileIcon(name: string)      => getFileDirectoryIcon(name, false)
+    mtd getDirectoryIcon(name: string) => getFileDirectoryIcon(name, true)
 
     // Returns the OS icon associated with the given filename
-    mtd getFileFolderIcon(name: string, isFolder: bool)->Icon
+    mtd getFileDirectoryIcon(name: string, isDirectory: bool)->Icon
     {
         var result: retval
         if !@countof(name)
@@ -82,9 +82,9 @@ impl Application
         ext := Path.getExtension(name)
 
         extractFromFile := false
-        if isFolder and name[@countof(name) - 1] == Path.VolumeSeparatorChar
+        if isDirectory and name[@countof(name) - 1] == Path.VolumeSeparatorChar
             ext = "c:"
-        elif isFolder
+        elif isDirectory
             ext = "c:/temp"
         elif ext == ".exe" or ext == ".dll"
         {
@@ -112,7 +112,7 @@ impl Application
         }
 
         if !sfi.hIcon
-            discard SHGetFileInfoA(@dataof(ext), isFolder ? FILE_ATTRIBUTE_DIRECTORY : FILE_ATTRIBUTE_NORMAL, &sfi, @sizeof(SHFILEINFOA), SHGFI_USEFILEATTRIBUTES | SHGFI_ICON | SHGFI_SMALLICON)
+            discard SHGetFileInfoA(@dataof(ext), isDirectory ? FILE_ATTRIBUTE_DIRECTORY : FILE_ATTRIBUTE_NORMAL, &sfi, @sizeof(SHFILEINFOA), SHGFI_USEFILEATTRIBUTES | SHGFI_ICON | SHGFI_SMALLICON)
         if !sfi.hIcon
             return result
 

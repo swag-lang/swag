@@ -72,7 +72,7 @@ private impl FileDlg
             comboPathStr.add(str)
 
             one := all[i]
-            ic := getApp().getFolderIcon(one)
+            ic := getApp().getDirectoryIcon(one)
             comboPath.addItem(one, icon: ic)
         }
 
@@ -82,7 +82,7 @@ private impl FileDlg
     mtd fillListFolders()
     {
         c := Env.getSpecialDirectory(.Font)
-        ic := getApp().getFolderIcon(c)
+        ic := getApp().getDirectoryIcon(c)
         l := treeCtrl.createLine("Font", icon: ic)
         l.userData0 = cast(*void) treePathStr.count
         treePathStr.add(c)
@@ -134,7 +134,7 @@ private impl FileDlg
                 continue
 
             // Content
-            icon := getApp().getFileFolderIcon(fname, fi.isDirectory())
+            icon := getApp().getFileDirectoryIcon(fname, fi.isDirectory())
             line := listCtrl.createLine(fname, icon)
             line.userData0 = fi
             line.setItem(1, fi.lastWriteTime.toString(.Iso))
