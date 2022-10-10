@@ -192,7 +192,6 @@ public impl MessageDlg
         {
             .surface.setTitle("Error")
             .addButton("OK", Dialog.BtnOk, true)
-            .setIconColor(Argb.Red)
         }
 
         discard dlg.doModal(from)
