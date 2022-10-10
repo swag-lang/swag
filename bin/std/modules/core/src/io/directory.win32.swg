@@ -10,11 +10,11 @@ func create(dirname: string) throw
 }
 
 // Returns true if the given directory exists
-func exists(dirname: string)->bool
+func exists(dirName: string)->bool
 {
-    if dirname == null
+    if @countof(dirName) == 0
         return false
-    winPath := Utf16.toZeroTerminated(dirname)
+    winPath := Utf16.toZeroTerminated(dirName)
     attributes := catch GetFileAttributesW(@dataof(winPath))
     if @err
         return false

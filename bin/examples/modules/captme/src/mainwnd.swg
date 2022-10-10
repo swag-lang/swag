@@ -712,14 +712,12 @@ impl MainWnd
         opt.shortcuts.add(@{Env.SpecialDirectory.Desktop, "Desktop"})
         opt.shortcuts.add(@{Env.SpecialDirectory.UserPictures, "My Images"})
         opt.shortcuts.add(@{Env.SpecialDirectory.CommonPictures, "Images"})
-        opt.openFolder = "F:/swag-lang/swag/docs"
         opt.editName = Path.getFileNameWithoutExtension(getCapture().file)
         opt.filters.add(@{"PNG - Portable Network Graphics (*.png)", ".png"})
         opt.filters.add(@{"JPG - JPEG Image (*.jpg)", ".jpg"})
         opt.filters.add(@{"BMP - Windows Bitmap (*.bmp)", ".bmp"})
         opt.filters.add(@{"TGA - Truevision Targa (*.tga)", ".tga"})
         dlg := FileDlg.create(surface, opt)
-        dlg.surface.center(surface)
         if dlg.doModal() != Dialog.BtnOk
             return
 

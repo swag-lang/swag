@@ -70,6 +70,9 @@ private impl FileDlg
 
     mtd setCurFolder(folder: string)
     {
+        if !@countof(folder) or !Directory.exists(folder)
+            return
+
         curFolder = folder
         Path.normalize(&curFolder)
         tt := curFolder
@@ -423,9 +426,19 @@ impl FileDlg
             {
                 if !.position.isEmpty()
                     dlg.surface.setPosition(.position)
+                else
+                    dlg.surface.center(from)
+
                 if !.curFolder.isEmpty()
                     dlg.setCurFolder(.curFolder)
+                else
+                    dlg.treeCtrl.selectLine(0)
             }
+        }
+        else
+        {
+            dlg.surface.center(from)
+            dlg.treeCtrl.selectLine(0)
         }
 
         return dlg
