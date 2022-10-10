@@ -721,6 +721,7 @@ impl MainWnd
         if dlg.doModal() != Dialog.BtnOk
             return
 
+        Cursor.wait()
         img := getCapture().toImage()
         catch img.save(dlg.getSelectedName())
         if @err
