@@ -4292,6 +4292,7 @@ bool SemanticJob::resolveCatch(SemanticContext* context)
     node->byteCodeFct                  = ByteCodeGenJob::emitPassThrough;
     node->typeInfo                     = lastChild->typeInfo;
     node->flags |= identifierRef->flags;
+    node->flags &= ~AST_DISCARD;
     node->inheritComputedValue(identifierRef);
 
     return true;
