@@ -24,6 +24,12 @@ enum SpecialDirectory
     UserDocuments
     CommonAppData
     Desktop
+    UserPictures
+    UserVideos
+    UserMusic
+    CommonPictures
+    CommonVideos
+    CommonMusic
 }
 
 private var g_CmdLineArgs: const [..] string

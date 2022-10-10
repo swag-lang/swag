@@ -144,7 +144,13 @@ impl Application
         whatWin := SHSTOCKICONID.SIID_FOLDER
         switch what
         {
-        case Desktop: whatWin = .SIID_DESKTOPPC
+        case Desktop:           whatWin = .SIID_DESKTOPPC
+        case UserVideos:        whatWin = .SIID_VIDEOFILES
+        case UserPictures:      whatWin = .SIID_IMAGEFILES
+        case UserMusic:         whatWin = .SIID_AUDIOFILES
+        case CommonVideos:      whatWin = .SIID_VIDEOFILES
+        case CommonPictures:    whatWin = .SIID_IMAGEFILES
+        case CommonMusic:       whatWin = .SIID_AUDIOFILES
         }
 
         catch SHGetStockIconInfo(whatWin, SHGSI_ICON | (small ? SHGSI_SMALLICON : SHGSI_LARGEICON), &sgi)

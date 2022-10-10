@@ -706,12 +706,15 @@ impl MainWnd
         opt.mode = .CreateFile
         opt.title = "Save As Image"
         opt.btnOkName = "Save"
-        opt.openFolder = "f:/swag-lang/swag/docs"
+        opt.shortcuts.add(@{Env.SpecialDirectory.Desktop, "Desktop"})
+        opt.shortcuts.add(@{Env.SpecialDirectory.UserPictures, "My Images"})
+        opt.shortcuts.add(@{Env.SpecialDirectory.CommonPictures, "Images"})
+        opt.openFolder = "F:/swag-lang/swag/docs"
         opt.editName = Path.getFileNameWithoutExtension(getCapture().file)
-        opt.filters.add(@{String.from("PNG - Portable Network Graphics (*.png)"), String.from(".png")})
-        opt.filters.add(@{String.from("JPG - JPEG Image (*.jpg)"), String.from(".jpg")})
-        opt.filters.add(@{String.from("BMP - Windows Bitmap (*.bmp)"), String.from(".bmp")})
-        opt.filters.add(@{String.from("TGA - Truevision Targa (*.tga)"), String.from(".tga")})
+        opt.filters.add(@{"PNG - Portable Network Graphics (*.png)", ".png"})
+        opt.filters.add(@{"JPG - JPEG Image (*.jpg)", ".jpg"})
+        opt.filters.add(@{"BMP - Windows Bitmap (*.bmp)", ".bmp"})
+        opt.filters.add(@{"TGA - Truevision Targa (*.tga)", ".tga"})
         dlg := FileDlg.create(surface, opt)
         dlg.surface.center(surface)
         if dlg.doModal() != Dialog.BtnOk

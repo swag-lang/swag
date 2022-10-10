@@ -15,8 +15,10 @@ struct FileDlgOptions
     btnOkName:  string
     openFolder: string
     editName:   string
+    drivePane   = true
     mode:       FileDlgMode = SelectOneFile
-    filters:    Array'{String, String}
+    filters:    Array'{string, string}
+    shortcuts:  Array'{Env.SpecialDirectory, string}
 }
 
 struct FileDlg
@@ -84,11 +86,14 @@ private impl FileDlg
 
     mtd fillListFolders()
     {
-        c := Env.getSpecialDirectory(.Desktop)
-        ic := getApp().getSpecialDirectoryIcon(.Desktop, true)
-        l := treeCtrl.createLine("Desktop", icon: ic)
-        l.userData0 = cast(*void) treePathStr.count
-        treePathStr.add(c)
+        visit v: dlgOptions.shortcuts
+        {
+            c := Env.getSpecialDirectory(v.item0)
+            ic := getApp().getSpecialDirectoryIcon(v.item0, true)
+            l := treeCtrl.createLine(v.item1, icon: ic)
+            l.userData0 = cast(*void) treePathStr.count
+            treePathStr.add(c)
+        }
 
         volumes := catch Directory.getDrives()
         visit v: volumes
@@ -219,15 +224,18 @@ impl FileDlg
         view := Wnd.create'Wnd(dlg)
         view.dockStyle = .Center
 
-        with dlg.treeCtrl = ListCtrl.createSimple(view, @{0, 0, 150})
+        if opt.drivePane
         {
-            .dockStyle = .Left
-            .listFlags |= .HotTrack
-            .lineHeight = 28
-            .leftTextMargin = 8
-            .backgroundStyle = .Dialog
-            .scrollWnd.style.addStyleSheetColors("scrollBar_Bk $view_Bk")
-            dlg.fillListFolders()
+            with dlg.treeCtrl = ListCtrl.createSimple(view, @{0, 0, 170})
+            {
+                .dockStyle = .Left
+                .listFlags |= .HotTrack
+                .lineHeight = 28
+                .leftTextMargin = 8
+                .backgroundStyle = .Dialog
+                .scrollWnd.style.addStyleSheetColors("scrollBar_Bk $view_Bk")
+                dlg.fillListFolders()
+            }
         }
 
         with dlg.listCtrl = ListCtrl.createMultiColumns(view)
