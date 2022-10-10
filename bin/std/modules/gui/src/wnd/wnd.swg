@@ -517,13 +517,25 @@ impl Wnd
     //////////////////////////////////////////////
 
     // Be sure rect is fully inside the parent rectangle (if possible)
-    mtd fitPosInParent(marginW, marginH: f32 = 0)
+    mtd fitPosInParent(marginW, marginH: f32 = 0, simX, simY = false)
     {
         pos := position
         if pos.x + pos.width > parent.position.width - marginW
-            pos.x = parent.position.width - pos.width - marginW
+        {
+            if simX
+                pos.x -= (pos.width + marginH)
+            else
+                pos.x = parent.position.width - pos.width - marginW
+        }
+
         if pos.y + pos.height > parent.position.height - marginH
-            pos.y = parent.position.height - pos.height - marginH
+        {
+            if simY
+                pos.y -= (pos.height + marginH)
+            else
+                pos.y = parent.position.height - pos.height - marginH
+        }
+
         if pos != position
             setPosition(pos)
     }

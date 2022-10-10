@@ -139,6 +139,7 @@ private impl ComboBox
         popup = PopupListCtrl.create(self)
         popup.minWidthPopup = minWidthPopup
         popup.maxHeightPopup = maxHeightPopup
+        popup.simFitY = true
 
         visit item: items
         {

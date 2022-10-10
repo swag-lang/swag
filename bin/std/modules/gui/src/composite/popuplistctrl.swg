@@ -14,6 +14,7 @@ struct PopupListCtrl
     heightSeparator:    f32 = 15
     minWidthPopup:      f32 = 100
     maxHeightPopup:     f32 = 300
+    simFitX, simFitY:   bool
 
     sigSelected:    closure(*Self, u32)
 
@@ -126,7 +127,6 @@ impl IWnd for PopupListView
 
         clientRect := getClientRect()
         clientRect.offset(scrollPos)
-        painter.fillRect(clientRect, colors.popupList_SelectedBk)
 
         var labelPos: Math.Rectangle = ?
         var colorText: Color
@@ -235,7 +235,7 @@ impl PopupListCtrl
         pos.height += padding.y + padding.w
         setPosition(pos)
         sdw := getThemeMetrics().frameWnd_SmallShadowSize
-        fitPosInParent(sdw.z, sdw.w)
+        fitPosInParent(sdw.z, sdw.w, simFitX, simFitY)
         scrollWnd.view.captureMouse()
     }
 

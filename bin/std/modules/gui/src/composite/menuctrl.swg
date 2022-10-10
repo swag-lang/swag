@@ -733,7 +733,7 @@ public impl MenuCtrl
             setFrameForm(.Round)
         }
 
-        fitPosInParent()
+        fitPosInParent(simX: true, simY: true)
 
         bringToTop()
         show()

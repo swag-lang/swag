@@ -276,7 +276,6 @@ struct ThemeColors
 
     popupList_Separator:            Color = Gray4
     popupList_HotBk:                Color = Blue
-    popupList_SelectedBk:           Color = Gray6
     popupList_Text:                 Color = Gray1
     popupList_HotText:              Color = White
     popupList_CheckMark:            Color = Blue

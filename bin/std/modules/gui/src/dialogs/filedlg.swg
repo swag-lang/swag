@@ -329,7 +329,7 @@ impl FileDlg
         viewTop.backgroundStyle = .Window
         dlg.applyLayout()
 
-        with dlg.comboPath = ComboBox.create(viewTop, @{10, 10, viewTop.position.width - 20})
+        with dlg.comboPath = ComboBox.create(viewTop, @{10, 10, viewTop.position.width - (10 + 15)})
         {
             .anchorStyle = .Width
             .sigChanged += @|dlg|(combo, idx) {
@@ -344,12 +344,12 @@ impl FileDlg
         viewBottom.backgroundStyle = .Window
         dlg.applyLayout()
 
-        with dlg.editFile = EditBox.create(viewBottom, "", @{105, 10, viewBottom.position.width - (105 + 10)})
+        with dlg.editFile = EditBox.create(viewBottom, "", @{105, 10, viewBottom.position.width - (105 + 15)})
         {
             .anchorStyle = .Width
         }
 
-        with dlg.comboType = ComboBox.create(viewBottom, @{105, 45, viewBottom.position.width - (105 + 10)})
+        with dlg.comboType = ComboBox.create(viewBottom, @{105, 45, viewBottom.position.width - (105 + 15)})
         {
             .anchorStyle = .Width
             if opt.mode == .SelectFolder
