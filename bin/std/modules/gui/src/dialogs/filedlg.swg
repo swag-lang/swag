@@ -9,6 +9,12 @@ enum FileDlgMode
     SelectFolder
 }
 
+struct FileDlgState
+{
+    position:   Math.Rectangle
+    curFolder:  String
+}
+
 struct FileDlgOptions
 {
     title:      string
@@ -19,6 +25,7 @@ struct FileDlgOptions
     mode:       FileDlgMode = SelectOneFile
     filters:    Array'{string, string}
     shortcuts:  Array'{Env.SpecialDirectory, string}
+    state:      *FileDlgState
 }
 
 struct FileDlg
@@ -36,6 +43,21 @@ struct FileDlg
 
     curFolder:      String
     curList:        Array'FileInfo
+}
+
+impl IWnd for FileDlg
+{
+    mtd onDestroyEvent(evt: *DestroyEvent)
+    {
+        if evt.kind == .Destroy and dlgOptions.state
+        {
+            with dlgOptions.state
+            {
+                .position = surface.position
+                .curFolder = curFolder
+            }
+        }
+    }
 }
 
 private impl FileDlg
@@ -392,6 +414,18 @@ impl FileDlg
             }
             else
                 .listCtrl.setFocus()
+        }
+
+        // Take care of state
+        if opt.state
+        {
+            with opt.state
+            {
+                if !.position.isEmpty()
+                    dlg.surface.setPosition(.position)
+                if !.curFolder.isEmpty()
+                    dlg.setCurFolder(.curFolder)
+            }
         }
 
         return dlg

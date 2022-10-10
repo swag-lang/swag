@@ -41,6 +41,7 @@ struct MainWnd
     bottomSize:     BottomSize = Medium
     snap:           bool
     libraryMode:    bool
+    fileDlgState:   FileDlgState
 
     mdlFormShape:   FormShape
     mdlFormArrow:   FormArrow
@@ -74,6 +75,7 @@ impl IWnd for MainWnd
                 .serialize("MainWnd.editMode", &editMode)
                 .serialize("MainWnd.snap", &snap)
                 .serialize("MainWnd.bottomSize", &bottomSize)
+                .serialize("MainWnd.fileDlgState", &fileDlgState)
             }
         }
 
@@ -703,6 +705,7 @@ impl MainWnd
     mtd saveAs()
     {
         var opt: FileDlgOptions
+        opt.state = &fileDlgState
         opt.mode = .CreateFile
         opt.title = "Save As Image"
         opt.btnOkName = "Save"
