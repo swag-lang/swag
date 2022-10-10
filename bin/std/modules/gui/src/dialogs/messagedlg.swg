@@ -1,4 +1,4 @@
-using Core
+using Core, Pixel
 
 public struct MessageDlg
 {
@@ -45,8 +45,8 @@ public impl MessageDlg
         metrics := getThemeMetrics()
 
         // Evaluate size of text
-        var fake: Pixel.Painter{fake: true}
-        var rsf:  Pixel.RichStringFormat
+        var fake: Painter{fake: true}
+        var rsf:  RichStringFormat
         rsf.font = surface.app.theme.res.fontDefault
         rsf.flags |= .WordWrap
         fake.drawRichString(@{0, 0, 512, 0}, &label.name, rsf)
@@ -85,8 +85,15 @@ public impl MessageDlg
         surface.setPosition(pos)
     }
 
+    // Set big icon color (icon must has been set before)
+    mtd setIconColor(color: Color)
+    {
+        Debug.assert(labelIcon != null)
+        labelIcon.iconColor = color
+    }
+
     // Set big icon
-    mtd setIcon(icon: Icon)
+    mtd setIcon(icon: Icon, color: Color = Argb.Zero)
     {
         if !icon.isValid()
             return
@@ -97,6 +104,7 @@ public impl MessageDlg
         with labelIcon
         {
             .dockStyle = .Top
+            .iconColor = color
             .setAllPaddings(getThemeMetrics().dialog_Padding)
             .icon = icon
             .horzAlignmentIcon = .Center
@@ -141,16 +149,6 @@ public impl MessageDlg
         return dlg.doModal(from)
     }
 
-    // Message box to 'confirm' something
-    func confirm(from: *Surface, message: string, question: string = null)->WndId
-    {
-        txt := String.from(message)
-        txt += "\n"
-        txt += question orelse "Do you want to continue ?"
-
-        return yesNo(from, txt.toString(), "Please confirm")
-    }
-
     // Message box with a 'yes' and 'no' button
     func yesNoCancel(from: *Surface, message: string, defaultId = Dialog.BtnCancel, icon: Icon = @{})->WndId
     {
@@ -162,5 +160,41 @@ public impl MessageDlg
         }
 
         return dlg.doModal(from)
+    }
+
+    // Message box to 'confirm' something
+    func confirm(from: *Surface, message: string, question: string = null)->WndId
+    {
+        txt := String.from(message)
+        txt += "\n"
+        txt += question orelse "Do you want to continue ?"
+
+        return yesNo(from, txt.toString(), "Please confirm")
+    }
+
+    // Message box to show an error
+    func error(from: *Surface, error: string, message: string = null)
+    {
+        var txt: String
+        if message
+        {
+            txt = String.from(message)
+            txt += "\n"
+            txt += error
+        }
+        else
+        {
+            txt = error
+        }
+
+        icon := from.app.theme.getIcon64(.Critical)
+        with dlg := create(from, txt.toString(), icon)
+        {
+            .surface.setTitle("Error")
+            .addButton("OK", Dialog.BtnOk, true)
+            .setIconColor(Argb.Red)
+        }
+
+        discard dlg.doModal(from)
     }
 }

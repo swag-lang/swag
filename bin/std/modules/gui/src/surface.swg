@@ -115,8 +115,8 @@ impl Surface
     {
         if self == app.mainSurface
             catch app.saveState()
-
         wnd.destroy()
+        hide()
     }
 
     // Returns inside view

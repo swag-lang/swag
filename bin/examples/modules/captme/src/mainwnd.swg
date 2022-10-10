@@ -723,6 +723,8 @@ impl MainWnd
 
         img := getCapture().toImage()
         catch img.save(dlg.getSelectedName())
+        if @err
+            MessageDlg.error(surface, @err, "Failed to save file !")
     }
 
     mtd setBottomSize(bottomSize: BottomSize)

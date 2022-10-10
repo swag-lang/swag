@@ -14,6 +14,7 @@ struct Label
     using wnd: Wnd
 
     icon:               Icon
+    iconColor:          Color
     labelFlags          = LabelFlags.None
     horzAlignmentIcon   = StringHorzAlignment.Center
     vertAlignmentIcon   = StringVertAlignment.Center
@@ -58,7 +59,9 @@ impl IWnd for Label
             }
 
             // Icon
-            color := (wndFlags & .Disabled) ? theme.colors.label_DisabledIcon : theme.colors.label_Icon
+            color := iconColor
+            if !color.a
+                color = (wndFlags & .Disabled) ? theme.colors.label_DisabledIcon : theme.colors.label_Icon
             icon.paint(painter, posIcon.x, posIcon.y, color)
         }
 

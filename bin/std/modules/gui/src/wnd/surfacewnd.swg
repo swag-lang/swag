@@ -204,6 +204,8 @@ impl IWnd for SurfaceWnd
 
     mtd onPaintEvent(evt: *PaintEvent)
     {
+        if isPendingDestroy
+            return
         bc     := evt.bc
         theme  := getTheme()
         colors := getThemeColors()
