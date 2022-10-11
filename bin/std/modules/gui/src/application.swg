@@ -448,14 +448,18 @@ private impl Application
             modalSurfaces.removeBack()
         }
 
-        visit s: surfaces
-            s.enable()
-
         if modalSurfaces.count
         {
             back := modalSurfaces.back()
             back.enable()
             back.wnd.view.setFocus()
+        }
+        else
+        {
+            visit s: surfaces
+            {
+                s.enable()
+            }
         }
 
         endModal = false
