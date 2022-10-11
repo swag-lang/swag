@@ -275,8 +275,8 @@ impl Surface
         // Save position and surface state
         if wnd.view != null and wnd.view.id != null
         {
-            ser.serialize(wnd.view.id, &state)
-            if ser.isReading()
+            catch ser.serialize(wnd.view.id, &state)
+            if !@err and ser.isReading()
             {
                 if isMaximized
                 {
