@@ -17,6 +17,7 @@ using Swag
         func isTypeAlias(t: typeinfo)   => t.kind == .Alias
         func isInterface(t: typeinfo)   => t.kind == .Interface
         func isGeneric(t: typeinfo)     => t.flags & .Generic
+        func isAnonymous(t: typeinfo)   => t.flags & .Anonymous
 
         func isSimpleNative(t: typeinfo)->bool
         {

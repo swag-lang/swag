@@ -229,6 +229,7 @@ struct TypeInfo
     bool isGeneric()                        { return (flags & TYPEINFO_GENERIC); }
     bool isSlice()                          { return kind == TypeInfoKind::Slice; }
     bool isInterface()                      { return kind == TypeInfoKind::Interface; }
+    bool isTuple()                          { return (flags & TYPEINFO_STRUCT_IS_TUPLE); }
     // clang-format on
 
     virtual bool        isSame(TypeInfo* from, uint32_t isSameFlags);

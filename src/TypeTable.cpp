@@ -165,6 +165,8 @@ bool TypeTable::makeConcreteTypeInfoNoLock(JobContext* context, ConcreteTypeInfo
         concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::Strict;
     if (typeInfo->isGeneric())
         concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::Generic;
+    if (typeInfo->isTuple())
+        concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::Anonymous;
 
     // True by default, will be removed by struct if necessary
     concreteTypeInfoValue->flags |= (uint16_t) TypeInfoFlags::CanCopy;

@@ -258,6 +258,7 @@ enum class TypeInfoFlags : uint16_t
     Tuple       = 0x0200,
     CString     = 0x0400,
     Generic     = 0x0800,
+    Anonymous   = 0x1000,
 };
 
 struct ConcreteTypeInfo
