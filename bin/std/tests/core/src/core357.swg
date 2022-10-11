@@ -28,7 +28,7 @@ struct Toto
     toto.a.value.y = 2
     toto.a.value.z = 3
 
-    wri.writeAll(&buf, toto)
+    try wri.writeAll(&buf, toto)
 
     str := buf.toString()
     //Console.print(str, "\n")

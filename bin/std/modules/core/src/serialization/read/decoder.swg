@@ -4,29 +4,29 @@ using Swag
 
 interface IDecoder
 {
-    start:          mtd(const [..] u8) throw
-    end:            mtd() throw
+    mtd start(input: const [..] u8) throw
+    mtd end() throw
 
-    beginField:     mtd(TypeValue)->bool throw
-    endField:       mtd() throw
-    beginSection:   mtd(SectionKind) throw
-    endSection:     mtd() throw
+    mtd beginField(val: Swag.TypeValue)->bool throw
+    mtd endField() throw
+    mtd beginSection(kind: SectionKind) throw
+    mtd endSection() throw
+    mtd getVersion()->u32
 
-    getVersion:     mtd()->u32
+    mtd read(data: *void, dataType: typeinfo) throw
+    mtd readBufferU8(count: uint)->*u8 throw
 
-    read:           mtd(*void, typeinfo) throw
-    readBufferU8:   mtd(uint)->*u8 throw
-    readBool:       mtd()->bool throw
-    readS8:         mtd()->s8 throw
-    readS16:        mtd()->s16 throw
-    readS32:        mtd()->s32 throw
-    readS64:        mtd()->s64 throw
-    readU8:         mtd()->u8 throw
-    readU16:        mtd()->u16 throw
-    readU32:        mtd()->u32 throw
-    readU64:        mtd()->u64 throw
-    readF32:        mtd()->f32 throw
-    readF64:        mtd()->f64 throw
+    mtd readBool()->bool throw
+    mtd readS8()->s8 throw
+    mtd readS16()->s16 throw
+    mtd readS32()->s32 throw
+    mtd readS64()->s64 throw
+    mtd readU8()->u8 throw
+    mtd readU16()->u16 throw
+    mtd readU32()->u32 throw
+    mtd readU64()->u64 throw
+    mtd readF32()->f32 throw
+    mtd readF64()->f64 throw
 }
 
 struct(T) Decoder

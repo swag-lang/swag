@@ -10,7 +10,7 @@ using Core, Serialization, Math
     x.y = 2
 
     var buf: ConcatBuffer
-    enc.writeAll(&buf, x)
+    try enc.writeAll(&buf, x)
     buf.makeLinear()
 
     var dec: Decoder'Read.TagBin

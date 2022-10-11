@@ -15,7 +15,7 @@ struct Toto
     toto.arr.add(String.from("titi"))
     toto.arr.add(String.from("tata"))
 
-    wri.writeAll(&buf, toto)
+    try wri.writeAll(&buf, toto)
 
     str := buf.toString()
     //Console.print(str, "\n")

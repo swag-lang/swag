@@ -16,7 +16,7 @@ struct Toto
     toto.v2.add(@{1, 2})
     toto.v2.add(@{3, 4})
 
-    wri.writeAll(&buf, toto)
+    try wri.writeAll(&buf, toto)
 
     str := buf.toString()
     //Console.print(str, "\n")

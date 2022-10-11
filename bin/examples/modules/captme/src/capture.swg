@@ -146,8 +146,9 @@ impl Capture
         var buf:     ConcatBuffer
         var encoder: Encoder'Write.TagBin
 
-        encoder.writeAll(&buf, dref self)
-        catch File.writeAllBytes(file, buf)
+        catch encoder.writeAll(&buf, dref self)
+        if !@err
+            catch File.writeAllBytes(file, buf)
     }
 
     func load(file: string)->*Capture throw
@@ -182,9 +183,16 @@ impl Capture
 
         var buf:    ConcatBuffer
         var encode: Encoder'Write.TagBin
-        encode.start(&buf)
-        encode.writeValue(&arr, @typeof(arr))
-        encode.end()
+
+        catch
+        {
+            encode.start(&buf)
+            if @err return
+            encode.writeValue(&arr, @typeof(arr))
+            if @err return
+            encode.end()
+            if @err return
+        }
 
         buf.makeLinear()
         Clipboard.addData(editView.main.clipFmt, buf.toSlice())

@@ -11,27 +11,28 @@ enum SectionKind
 
 interface IEncoder
 {
-    start:          mtd(*ConcatBuffer)
-    end:            mtd()
+    mtd start(result: *ConcatBuffer) throw
+    mtd end() throw
 
-    beginField:     mtd(TypeValue)
-    endField:       mtd()
-    beginSection:   mtd(SectionKind)
-    endSection:     mtd()
+    mtd beginField(val: Swag.TypeValue) throw
+    mtd endField() throw
+    mtd beginSection(kind: SectionKind) throw
+    mtd endSection() throw
 
-    write:          mtd(const *void, typeinfo)
-    writeBufferU8:  mtd(const *u8, uint)
-    writeBool:      mtd(bool)
-    writeS8:        mtd(s8)
-    writeS16:       mtd(s16)
-    writeS32:       mtd(s32)
-    writeS64:       mtd(s64)
-    writeU8:        mtd(u8)
-    writeU16:       mtd(u16)
-    writeU32:       mtd(u32)
-    writeU64:       mtd(u64)
-    writeF32:       mtd(f32)
-    writeF64:       mtd(f64)
+    mtd write(data: const ^void, type: typeinfo) throw
+    mtd writeBufferU8(data: const ^u8, count: uint) throw
+
+    mtd writeBool(value: bool)
+    mtd writeS8(value: s8)
+    mtd writeS16(value: s16)
+    mtd writeS32(value: s32)
+    mtd writeS64(value: s64)
+    mtd writeU8(value: u8)
+    mtd writeU16(value: u16)
+    mtd writeU32(value: u32)
+    mtd writeU64(value: u64)
+    mtd writeF32(value: f32)
+    mtd writeF64(value: f64)
 }
 
 struct(T) Encoder
@@ -42,26 +43,26 @@ struct(T) Encoder
 impl Encoder
 {
     // Start serialization
-    mtd start(result: *ConcatBuffer)
+    mtd start(result: *ConcatBuffer) throw
     {
         serializer.startWrite(result)
         serializer.beginRoot()
     }
 
     // End serialization
-    mtd end()
+    mtd end() throw
     {
         serializer.endRoot()
     }
 
-    mtd writeTypeValue(typeVal: TypeValue, data: const ^void)
+    mtd writeTypeValue(typeVal: TypeValue, data: const ^void) throw
     {
         serializer.beginElement(typeVal)
         writeValue(data, typeVal.pointedType)
         serializer.endElement()
     }
 
-    mtd writeValue(data: const ^void, dataType: typeinfo)
+    mtd writeValue(data: const ^void, dataType: typeinfo) throw
     {
         type := Reflection.makeConcreteAlias(dataType)
         type = Reflection.makeConcreteEnum(type)
@@ -223,7 +224,7 @@ impl Encoder
     }
 
     // Write a full struct
-    mtd writeAll(result: *ConcatBuffer, value: any)
+    mtd writeAll(result: *ConcatBuffer, value: any) throw
     {
         Debug.assert(Reflection.isStruct(@kindof(value)))
         start(self, result)
@@ -235,46 +236,46 @@ impl Encoder
 impl IEncoder for Encoder
 {
     // Start serialization
-    mtd start(result: *ConcatBuffer)
+    mtd start(result: *ConcatBuffer) throw
     {
         serializer.startWrite(result)
         serializer.beginRoot()
     }
 
     // End serialization
-    mtd end()
+    mtd end() throw
     {
         serializer.endRoot()
     }
 
-    mtd beginField(val: Swag.TypeValue)
+    mtd beginField(val: Swag.TypeValue) throw
     {
         serializer.beginElement(val)
         serializer.beginValue()
     }
 
-    mtd endField()
+    mtd endField() throw
     {
         serializer.endValue()
         serializer.endElement()
     }
 
-    mtd beginSection(kind: SectionKind)
+    mtd beginSection(kind: SectionKind) throw
     {
         serializer.beginSection(kind)
     }
 
-    mtd endSection()
+    mtd endSection() throw
     {
         serializer.endSection()
     }
 
-    mtd write(data: const ^void, type: typeinfo)
+    mtd write(data: const ^void, type: typeinfo) throw
     {
         writeValue(data, type)
     }
 
-    mtd writeBufferU8(data: const ^u8, count: uint)
+    mtd writeBufferU8(data: const ^u8, count: uint) throw
     {
         treated := serializer.beginSequence(u8, data, count)
         defer(noerr) serializer.endSequence()

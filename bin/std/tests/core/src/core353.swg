@@ -16,7 +16,7 @@ struct Toto
     var toto: Toto
     toto.v2.x = 666
 
-    wri.writeAll(&buf, toto)
+    try wri.writeAll(&buf, toto)
 
     str := buf.toString()
     //Console.print(str, "\n")

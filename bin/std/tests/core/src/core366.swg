@@ -19,7 +19,7 @@ struct Toto2
     x.x[0] = 1
     x.x[1] = 2
     var buf: ConcatBuffer
-    enc.writeAll(&buf, x)
+    try enc.writeAll(&buf, x)
     buf.makeLinear()
 
     var dec: Decoder'Read.TagBin

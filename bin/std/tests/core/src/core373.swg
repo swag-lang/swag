@@ -15,7 +15,7 @@ struct Toto1
     loop 1000
         x.x.add(@{1, 2, 3, 4})
     var buf: ConcatBuffer
-    enc.writeAll(&buf, x)
+    try enc.writeAll(&buf, x)
     buf.makeLinear()
 
     var dec: Decoder'Read.TagBin

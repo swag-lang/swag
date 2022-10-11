@@ -22,7 +22,7 @@ struct Toto
     toto.str = "my string"
     toto.arr2.add(@[1, 2, 3])
 
-    wri.writeAll(&buf, toto)
+    try wri.writeAll(&buf, toto)
 
     str := buf.toString()
     //Console.print(str, "\n")

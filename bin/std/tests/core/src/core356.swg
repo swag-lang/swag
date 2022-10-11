@@ -13,7 +13,7 @@ struct Toto
     var toto: Toto
     toto.a = u32
 
-    wri.writeAll(&buf, toto)
+    try wri.writeAll(&buf, toto)
 
     str := buf.toString()
     //Console.print(str, "\n")

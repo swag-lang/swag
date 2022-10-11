@@ -15,7 +15,7 @@ struct Toto
     var toto: Toto
     toto.e = .R
 
-    wri.writeAll(&buf, toto)
+    try wri.writeAll(&buf, toto)
 
     str := buf.toString()
     //Console.print(str, "\n")

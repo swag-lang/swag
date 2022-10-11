@@ -18,7 +18,7 @@ struct Toto2
     var x: Toto1
     var buf: ConcatBuffer
     x.x = 1.5
-    enc.writeAll(&buf, x)
+    try enc.writeAll(&buf, x)
     buf.makeLinear()
 
     var dec: Decoder'Read.TagBin
