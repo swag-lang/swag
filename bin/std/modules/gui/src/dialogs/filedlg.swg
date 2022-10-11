@@ -360,11 +360,22 @@ impl FileDlg
         viewTop := Wnd.create'Wnd(view, @{0, 0, 0, 50})
         viewTop.dockStyle = .Top
         viewTop.backgroundStyle = .Window
+        viewTop.padding.x = 10
+        viewTop.padding.z = 10
+        viewTop.padding.y = 8
+        viewTop.padding.w = 8
         dlg.applyLayout()
 
-        with dlg.comboPath = ComboBox.create(viewTop, @{10, 10, viewTop.position.width - (10 + 15)})
+        btn := PushButton.create(viewTop, "New Folder", @{0, 0, 90})
+        with btn
         {
-            .anchorStyle = .Width
+            .dockStyle = .Right
+            .margin.x = 10
+        }
+
+        with dlg.comboPath = ComboBox.create(viewTop)
+        {
+            .dockStyle = .Center
             .sigChanged += @|dlg|(combo, idx) {
                 dlg.setCurFolder(dref dlg.comboPathStr[idx])
             }
