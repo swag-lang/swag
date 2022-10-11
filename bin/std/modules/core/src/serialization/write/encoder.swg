@@ -140,6 +140,9 @@ impl Encoder
 
         if Reflection.isStruct(type)
         {
+            if Reflection.isAnonymous(type)
+                throw "cannot serialize an anonymous struct"
+
             // Core.String
             if type == String
             {
@@ -221,6 +224,9 @@ impl Encoder
 
             return
         }
+
+        str := Format.toString("cannot serialize type %", type.name)
+        throw str
     }
 
     // Write a full struct

@@ -1,6 +1,13 @@
 #global public
 using Core, Pixel, Serialization
 
+struct SurfaceState
+{
+    position:               Math.Rectangle
+    positionNotMaximized:   Math.Rectangle
+    isMaximized:            bool
+}
+
 struct Surface
 {
     using native:   NativeSurface
@@ -21,12 +28,7 @@ struct Surface
     isHidden:       bool = true
     isDisabled:     bool
 
-    using state: struct
-    {
-        position:               Math.Rectangle
-        positionNotMaximized:   Math.Rectangle
-        isMaximized:            bool
-    }
+    using state: SurfaceState
 }
 
 #[Swag.EnumFlags]
