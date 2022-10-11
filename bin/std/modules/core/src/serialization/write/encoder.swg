@@ -225,8 +225,7 @@ impl Encoder
             return
         }
 
-        str := Format.toString("cannot serialize type %", type.name)
-        throw str
+        throw Format.toString("cannot serialize type '%'", type.name)
     }
 
     // Write a full struct
