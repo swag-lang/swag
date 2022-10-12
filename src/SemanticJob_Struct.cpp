@@ -77,11 +77,19 @@ bool SemanticJob::resolveImplForAfterFor(SemanticContext* context)
 
 bool SemanticJob::resolveImplForType(SemanticContext* context)
 {
-    auto node       = CastAst<AstImpl>(context->node, AstNodeKind::Impl);
-    auto sourceFile = node->sourceFile;
-    auto module     = sourceFile->module;
-    auto first      = node->childs[0];
-    auto back       = node->childs[1];
+    auto     node       = CastAst<AstImpl>(context->node, AstNodeKind::Impl);
+    auto     sourceFile = node->sourceFile;
+    auto     module     = sourceFile->module;
+    AstNode* first;
+    AstNode* back;
+
+    // Race condition in case a templated function is instantiated in the impl block during that access
+    {
+        SharedLock lk(node->mutex);
+        first = node->childs[0];
+        back  = node->childs[1];
+    }
+
     auto typeStruct = CastTypeInfo<TypeInfoStruct>(back->typeInfo, TypeInfoKind::Struct);
 
     if (node->identifierFor->typeInfo->flags & TYPEINFO_GENERIC)
