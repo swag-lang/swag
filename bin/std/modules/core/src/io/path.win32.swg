@@ -6,6 +6,8 @@ using Win32
 // Returns true if the given path name is valid
 func isValidPathName(fullname: string)->bool
 {
+    if @countof(fullname) == 0
+        return false
     visit c: fullname
     {
         if c < 32        return false
@@ -23,6 +25,8 @@ func isValidPathName(fullname: string)->bool
 // Returns true if the given file name is valid
 func isValidFileName(fullname: string)->bool
 {
+    if @countof(fullname) == 0
+        return false
     visit c: fullname
     {
         if c < 32        return false

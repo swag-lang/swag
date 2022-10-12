@@ -17,18 +17,18 @@ public impl MessageDlg
 
         metrics := from.wnd.getThemeMetrics()
 
-        with dlg
+        dlg.label = Label.create(srf.getView(), message, @{})
+        with dlg.label
         {
-            .label = Label.create(srf.getView(), message, @{})
-            .label.dockStyle = .Center
-            .label.horzAlignmentText = .Justify
-            .label.padding.x = metrics.dialog_Padding
-            .label.padding.z = metrics.dialog_Padding
-            .label.padding.w = metrics.dialog_Padding
-            .setIcon(icon)
-            .sendResizeEvent()
+            .dockStyle = .Center
+            .horzAlignmentText = .Justify
+            .padding.x = metrics.dialog_Padding
+            .padding.z = metrics.dialog_Padding
+            .padding.w = metrics.dialog_Padding
         }
 
+        dlg.setIcon(icon)
+        dlg.sendResizeEvent()
         return dlg
     }
 

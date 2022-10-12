@@ -371,6 +371,7 @@ impl FileDlg
         {
             .dockStyle = .Right
             .margin.x = 10
+            .sigPressed += @|dlg|(btn) { dlg.onNewFolder(); }
         }
 
         with dlg.comboPath = ComboBox.create(viewTop)
@@ -499,5 +500,63 @@ impl FileDlg
         }
 
         return result
+    }
+
+    private mtd onNewFolder()
+    {
+        var folderName: String = "New Folder"
+
+        dlg := EditDlg.create(surface)
+        dlg.edit.setText(folderName)
+        dlg.edit.selectAll()
+        dlg.edit.setNote("Folder name")
+        dlg.surface.setTitle("Folder Name")
+        dlg.surface.center(surface)
+
+        dlg.sigPressedButton = @|self, dlg|(fdlg, id) {
+            if id != Dialog.BtnOk
+                return true
+
+            folderName := dlg.edit.text
+            folderName.trim()
+            if folderName.isEmpty()
+            {
+                dlg.edit.selectAll()
+                dlg.edit.setFocus()
+                return false;
+            }
+
+            if !Path.isValidFileName(folderName)
+            {
+                MessageDlg.error(dlg.surface, "Invalid folder name")
+                dlg.edit.selectAll()
+                dlg.edit.setFocus()
+                return false
+            }
+
+            path := Path.combine(self.curFolder, folderName.toString())
+            if Directory.exists(path)
+            {
+                MessageDlg.error(dlg.surface, "Folder already exists")
+                dlg.edit.selectAll()
+                dlg.edit.setFocus()
+                return false
+            }
+
+            return true
+        }
+
+        if dlg.doModal() != Dialog.BtnOk
+            return
+
+        path := Path.combine(curFolder, dlg.edit.text.toString())
+        catch Directory.create(path)
+        if @err
+        {
+            MessageDlg.error(surface, @err, "Cannot create folder")
+            return
+        }
+
+        fillList()
     }
 }

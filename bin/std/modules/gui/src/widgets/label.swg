@@ -114,4 +114,11 @@ impl Label
             pos.height = parent.getThemeMetrics().label_Height
         return Wnd.create'Label(parent, name, pos, id)
     }
+
+    // Change the text
+    mtd setText(text: string)
+    {
+        name = text
+        invalidate()
+    }
 }
