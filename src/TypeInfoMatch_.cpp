@@ -183,7 +183,8 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                             }
 
                             // Associate the generic type with that concrete one
-                            context.genericReplaceTypes[wantedTypeInfo->name] = callTypeInfo;
+                            context.genericReplaceTypes[wantedTypeInfo->name]     = callTypeInfo;
+                            context.genericReplaceTypesFrom[wantedTypeInfo->name] = callParameter;
 
                             // If this is a valid generic argument, register it at the correct call position
                             auto itIdx = context.mapGenericTypesIndex.find(wantedTypeInfo->name);

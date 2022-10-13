@@ -158,6 +158,7 @@ struct SymbolMatchContext
         genericParametersCallTypes.clear();
         genericParametersGenTypes.clear();
         genericReplaceTypes.clear();
+        genericReplaceTypesFrom.clear();
         mapGenericTypesIndex.clear();
         badSignatureInfos.clear();
         flags              = 0;
@@ -180,6 +181,7 @@ struct SymbolMatchContext
     VectorNative<TypeInfo*>                    genericParametersCallTypes;
     VectorNative<TypeInfo*>                    genericParametersGenTypes;
     map<Utf8, TypeInfo*>                       genericReplaceTypes;
+    map<Utf8, AstNode*>                        genericReplaceTypesFrom;
     map<Utf8, uint32_t>                        mapGenericTypesIndex;
     map<Utf8, pair<ComputedValue*, TypeInfo*>> genericReplaceValues;
     BadSignatureInfos                          badSignatureInfos;

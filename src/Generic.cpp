@@ -60,16 +60,30 @@ bool Generic::updateGenericParameters(SemanticContext* context, bool doType, boo
         auto genGen = match.genericParametersGenTypes[i];
         if (genGen->kind == TypeInfoKind::Generic)
         {
-            if (param->typeInfo->flags & TYPEINFO_UNTYPED_INTEGER)
+            if (param->typeInfo->flags & (TYPEINFO_UNTYPED_INTEGER | TYPEINFO_UNTYPED_FLOAT))
             {
-                auto symbol = match.symbolName;
-                return context->report({context->node, Utf8::format(g_E[Err0808], SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())});
-            }
+                auto        symbol  = match.symbolName;
+                auto        errNode = context->node;
+                const char* hint    = nullptr;
 
-            if (param->typeInfo->flags & TYPEINFO_UNTYPED_FLOAT)
-            {
-                auto symbol = match.symbolName;
-                return context->report({context->node, Utf8::format(g_E[Err0809], SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())});
+                for (auto& v : match.genericReplaceTypesFrom)
+                {
+                    if (v.second->typeInfo->flags & TYPEINFO_UNTYPED_INTEGER)
+                    {
+                        hint    = Hnt(Hnt0052);
+                        errNode = v.second;
+                        break;
+                    }
+
+                    if (v.second->typeInfo->flags & TYPEINFO_UNTYPED_FLOAT)
+                    {
+                        hint    = Hnt(Hnt0051);
+                        errNode = v.second;
+                        break;
+                    }
+                }
+
+                return context->report(hint, {errNode, Utf8::format(g_E[Err0808], SymTable::getNakedKindName(symbol->kind), symbol->name.c_str())});
             }
         }
 

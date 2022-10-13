@@ -1655,6 +1655,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                 match->genericParametersCallTypes  = move(oneOverload.symMatchContext.genericParametersCallTypes);
                 match->genericParametersGenTypes   = move(oneOverload.symMatchContext.genericParametersGenTypes);
                 match->genericReplaceTypes         = move(oneOverload.symMatchContext.genericReplaceTypes);
+                match->genericReplaceTypesFrom     = move(oneOverload.symMatchContext.genericReplaceTypesFrom);
                 match->genericReplaceValues        = move(oneOverload.symMatchContext.genericReplaceValues);
                 match->genericParameters           = genericParameters;
                 match->parameters                  = move(oneOverload.symMatchContext.parameters);

@@ -1,6 +1,3 @@
-
-
-//#[Swag.PrintBc]
 #global testerror
 func(T) toto(x: T)->s32
 {
@@ -17,7 +14,7 @@ func(T) toto(x: T)->s32
 //#[Swag.PrintBc]
 #test
 {
-	@assert(toto(0) == 0)
-	@assert(toto(1) == 1)
-	@assert(toto(2) == 2)
+	@assert(toto(0's32) == 0)
+	@assert(toto(1's32) == 1)
+	@assert(toto(2's32) == 2)
 }
