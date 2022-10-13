@@ -31,6 +31,7 @@ struct LibraryView
     selectedItem    = Swag.UInt.Max
     filterYear:     uint
     filterMonth:    uint
+    filterDay:      uint
 }
 
 impl IWnd for LibraryView
@@ -152,7 +153,8 @@ impl LibraryView
         visit fi: g_Library.files
         {
             if (filterYear == 0 or fi.lastWriteTime.year == filterYear) and
-               (filterMonth == 0 or fi.lastWriteTime.month == filterMonth)
+               (filterMonth == 0 or fi.lastWriteTime.month == filterMonth) and
+               (filterDay == 0 or fi.lastWriteTime.day == filterDay)
             {
                 res.add(dref fi)
             }
@@ -237,11 +239,11 @@ impl LibraryWnd
         var lastLine:       *ListLine
         var lastLineYear:   *ListLine
         var lastLineMonth:  *ListLine
+        var lastLineDay:    *ListLine
 
         icon1 := Icon.from(&main.icons24, 3)
 
-        cptYear  := 0
-        cptMonth := 0
+        cptYear, cptMonth, cptDay := 0
 
         #[Swag.Mixin]
         func fillLastYear()
@@ -265,6 +267,17 @@ impl LibraryWnd
             }
         }
 
+        #[Swag.Mixin]
+        func fillLastDay()
+        {
+            if lastLineDay
+            {
+                item = lastLineDay.setItem(1, Format.toString("% ", cptDay))
+                item.horzAlign = .Right
+                cptDay = 0
+            }
+        }
+
         visit fi: g_Library.files
         {
             if !lastDateTime or (fi.lastWriteTime.year != lastDateTime.year)
@@ -284,13 +297,23 @@ impl LibraryWnd
                 lastLineMonth = lastLine
             }
 
+            if !lastDateTime or (fi.lastWriteTime.day != lastDateTime.day)
+            {
+                fillLastDay()
+                lastLine = listCtrl.createLine(Format.toString("%, %", DateTime.dayOfWeekName(fi.lastWriteTime.dayOfWeek()), fi.lastWriteTime.day), icon1, lastLineMonth)
+                lastLine.userData0 = acast cast(uint) fi.lastWriteTime.year
+                lastLine.userData1 = acast cast(uint) fi.lastWriteTime.month
+                lastLine.userData2 = acast cast(uint) fi.lastWriteTime.day
+                lastLineDay = lastLine
+            }
+
             lastDateTime = &fi.lastWriteTime
-            cptYear += 1
-            cptMonth += 1
+            cptYear, cptMonth, cptDay += 1
         }
 
         fillLastYear()
         fillLastMonth()
+        fillLastDay()
 
         listCtrl.computeLayout()
         catch view.fill()
@@ -343,6 +366,7 @@ impl LibraryWnd
                 if !sel return
                 view.filterYear = cast(uint) sel.userData0
                 view.filterMonth = cast(uint) sel.userData1
+                view.filterDay = cast(uint) sel.userData2
                 catch view.fill()
             }
         }

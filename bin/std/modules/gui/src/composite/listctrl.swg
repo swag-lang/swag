@@ -40,6 +40,8 @@ struct ListLine
     iconMargin:         bool
     userData0:          *void
     userData1:          *void
+    userData2:          *void
+    userData3:          *void
 
     lines:      ArrayPtr'ListLine
     items:      ArrayPtr'ListItem
