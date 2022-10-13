@@ -1,6 +1,3 @@
-
-
-
 #global testerror
 func(op: string) toto()
 {
