@@ -478,14 +478,9 @@ bool SemanticJob::resolveType(SemanticContext* context)
         typeNode->flags |= AST_VALUE_COMPUTED | AST_CONST_EXPR | AST_NO_BYTECODE | AST_VALUE_IS_TYPEINFO;
 
     // Is this a const pointer to a typeinfo ?
-    auto typeInfo = typeNode->typeInfo;
-    if (typeInfo->kind == TypeInfoKind::Pointer)
+    if (typeNode->typeInfo->isPointerToTypeInfo())
     {
-        auto typePtr = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
-        if (typePtr->pointedType->flags & TYPEINFO_STRUCT_TYPEINFO)
-        {
-            SWAG_VERIFY(typeInfo->isConst(), context->report(typeNode, Err(Err0024)));
-        }
+        SWAG_VERIFY(typeNode->typeInfo->isConst(), context->report(Hnt(Hnt0053), {typeNode, Err(Err0024)}));
     }
 
     return true;
