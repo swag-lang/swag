@@ -1,8 +1,5 @@
-
-;
-
-#global testerror;
+#global testerror
 #test
 {
-	@assert("toto" > "toto");
+	@assert("toto" > "toto")
 }
