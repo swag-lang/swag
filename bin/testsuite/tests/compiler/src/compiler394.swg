@@ -1,9 +1,7 @@
+#global testerror
 
-;
-
-#global testerror;
-var c = 666;
-var d = {c};
+var c = 666
+var d = @{c}
 
 //#[Swag.PrintBc]
 #test
