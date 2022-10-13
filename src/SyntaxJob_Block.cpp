@@ -350,7 +350,6 @@ bool SyntaxJob::doLoop(AstNode* parent, AstNode** result)
             auto var   = Ast::newVarDecl(sourceFile, name, node, this, AstNodeKind::VarDecl);
             var->token = tokenName;
             var->specFlags |= AST_SPEC_VARDECL_CONSTASSIGN;
-            var->inheritTokenLocation(node->expression);
             node->specificName = var;
 
             auto identifer         = Ast::newNode<AstNode>(this, AstNodeKind::Index, sourceFile, var);
