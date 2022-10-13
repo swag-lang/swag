@@ -1,5 +1,6 @@
 #pragma once
 #include "VectorNative.h"
+#include "Mutex.h"
 
 #define SWAG_IS_DIGIT(__c) (__c >= '0' && __c <= '9')
 #define SWAG_IS_ALPHAHEX(__c) ((__c >= 'a' && __c <= 'f') || (__c >= 'A' && __c <= 'F'))
@@ -13,9 +14,10 @@
 
 struct Utf8
 {
-    char* buffer    = nullptr;
-    int   count     = 0;
-    int   allocated = 0;
+    char*       buffer    = nullptr;
+    int         count     = 0;
+    int         allocated = 0;
+    SharedMutex mutex;
 
     Utf8();
     Utf8(const char* from);

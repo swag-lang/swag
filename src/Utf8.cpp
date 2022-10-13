@@ -126,21 +126,20 @@ const char* Utf8::c_str() const
 {
     static const char* nullString = "";
 
+    auto       t = const_cast<Utf8*>(this);
+    ScopedLock lk(t->mutex);
+
     if (buffer && buffer[count])
     {
-        static Mutex mutex;
-        ScopedLock   lk(mutex);
-        if (buffer && buffer[count])
-        {
-            auto t       = const_cast<Utf8*>(this);
-            t->allocated = (int) Allocator::alignSize(count + 1);
-            auto buf     = (char*) g_Allocator.alloc(allocated);
-            memcpy(buf, buffer, count);
-            t->buffer     = buf;
-            buffer[count] = 0;
-            if (g_CommandLine->stats)
-                g_Stats.memUtf8 += allocated;
-        }
+        SWAG_ASSERT(allocated == 0); // Should be a sllice
+
+        t->allocated = (int) Allocator::alignSize(count + 1);
+        auto buf     = (char*) g_Allocator.alloc(allocated);
+        memcpy(buf, buffer, count);
+        t->buffer     = buf;
+        buffer[count] = 0;
+        if (g_CommandLine->stats)
+            g_Stats.memUtf8 += allocated;
     }
 
     return count ? buffer : nullString;
@@ -174,6 +173,8 @@ void Utf8::operator=(const char* txt)
 
 void Utf8::operator=(Utf8&& from)
 {
+    ScopedLock lk(mutex);
+
     reset();
     count          = from.count;
     allocated      = from.allocated;
