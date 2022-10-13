@@ -456,13 +456,18 @@ private impl Application
         }
         else
         {
-            visit s: surfaces
+            visit s, idx: surfaces
             {
-                s.enable()
+                if s != surface
+                {
+                    s.enable()
+                    s.wnd.view.setFocus()
+                }
             }
         }
 
         endModal = false
+
         return endModalExit
     }
 }
