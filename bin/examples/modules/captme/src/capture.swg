@@ -137,7 +137,7 @@ impl Capture
         editView.main.recentWnd.updateRecent(self)
     }
 
-    mtd save()
+    mtd save() throw
     {
         if !changed
             return
@@ -146,9 +146,8 @@ impl Capture
         var buf:     ConcatBuffer
         var encoder: Encoder'Write.TagBin
 
-        catch encoder.writeAll(&buf, dref self)
-        if !@err
-            catch File.writeAllBytes(file, buf)
+        encoder.writeAll(&buf, dref self)
+        File.writeAllBytes(file, buf)
     }
 
     func load(file: string)->*Capture throw

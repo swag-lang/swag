@@ -47,7 +47,7 @@ impl RecentView
         if capture
         {
             if main.getCapture()
-                main.getCapture().save()
+                catch main.getCapture().save()
             view.setCapture(capture)
             if item.zoom == 0
                 view.zoomToFit(false)
@@ -180,7 +180,7 @@ impl IWnd for RecentWnd
 
         getApp().deleteTimer(evt.timer)
         timer = null
-        capture.save()
+        catch capture.save()
     }
 }
 

@@ -843,7 +843,7 @@ impl MainWnd
         capture.computePreview()
         recentWnd.addRecent(capture.file, capture.preview)
         recentWnd.recentView.selected = 0
-        capture.save()
+        catch capture.save()
         g_Library.addFile(capture.file)
 
         // Force edition mode

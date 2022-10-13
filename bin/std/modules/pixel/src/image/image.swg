@@ -10,6 +10,8 @@ struct Image
     pf:                 PixelFormat = ?
     bpp:                u8  // Bits per pixel
     bpp8:               u8  // Bytes per pixel
+
+    #[Core.Serialization.NoSerialize]
     workingBuffer:      *Image
 }
 

@@ -38,6 +38,7 @@ interface IEncoder
 struct(T) Encoder
 {
     serializer: T
+    errorIfUnknown: bool // If true, raise an error if a type cannot be saved, and just ignore if false
 }
 
 impl Encoder
@@ -141,7 +142,11 @@ impl Encoder
         if Reflection.isStruct(type)
         {
             if Reflection.isAnonymous(type)
-                throw "cannot serialize an anonymous struct"
+            {
+                if errorIfUnknown
+                    throw "cannot serialize an anonymous struct"
+                return
+            }
 
             // Core.String
             if type == String
@@ -225,7 +230,8 @@ impl Encoder
             return
         }
 
-        throw Format.toString("cannot serialize type '%'", type.name)
+        if errorIfUnknown
+            throw Format.toString("cannot serialize type '%'", type.name)
     }
 
     // Write a full struct

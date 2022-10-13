@@ -140,5 +140,7 @@ func duplicate(newName, oldName: string) throw
 func getFileInfo(fullName: string)->FileInfo throw
 {
     file := Directory.enumerateFiles(Path.getDirectoryName(fullName), Path.getFileName(fullName))
+    if file.count == 0
+        throw "cannot find file"
     return dref file[0]
 }
