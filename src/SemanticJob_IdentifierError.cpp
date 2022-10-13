@@ -1061,7 +1061,7 @@ void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* 
                 case AstNodeKind::StructDecl:
                 case AstNodeKind::InterfaceDecl:
                 case AstNodeKind::EnumDecl:
-                    auto note = new Diagnostic{identifierRef->startScope->owner, Fmt(Nte(Nte0029), displayName.c_str()), DiagnosticLevel::NotePack};
+                    auto note = new Diagnostic{identifierRef->startScope->owner, Fmt(Nte(Nte0029), displayName.c_str()), DiagnosticLevel::Note};
                     notes.push_back(note);
                     break;
                 }

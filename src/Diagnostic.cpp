@@ -98,7 +98,6 @@ void Diagnostic::report(bool verboseMode) const
             g_Log.print("warning: ");
         }
         break;
-    case DiagnosticLevel::NotePack:
     case DiagnosticLevel::Note:
         g_Log.setColor(noteColor);
         if (noteHeader.empty())
@@ -159,7 +158,6 @@ void Diagnostic::report(bool verboseMode) const
             errorLevel != DiagnosticLevel::CallStack &&
             errorLevel != DiagnosticLevel::CallStackInlined &&
             errorLevel != DiagnosticLevel::Note &&
-            errorLevel != DiagnosticLevel::NotePack &&
             errorLevel != DiagnosticLevel::Help &&
             errorLevel != DiagnosticLevel::TraceError)
         {
@@ -198,7 +196,6 @@ void Diagnostic::report(bool verboseMode) const
                            !lines.empty() &&
                            errorLevel != DiagnosticLevel::CallStack &&
                            errorLevel != DiagnosticLevel::CallStackInlined &&
-                           errorLevel != DiagnosticLevel::NotePack &&
                            errorLevel != DiagnosticLevel::TraceError;
         auto hilightCodeRange = !verboseMode && reportRange;
 
@@ -340,7 +337,6 @@ void Diagnostic::report(bool verboseMode) const
                         g_Log.setColor(errorColor);
                         break;
                     case DiagnosticLevel::Note:
-                    case DiagnosticLevel::NotePack:
                     case DiagnosticLevel::Help:
                         g_Log.setColor(rangeNoteColor);
                         break;
@@ -377,7 +373,6 @@ void Diagnostic::report(bool verboseMode) const
             if (errorLevel != DiagnosticLevel::CallStack &&
                 errorLevel != DiagnosticLevel::CallStackInlined &&
                 errorLevel != DiagnosticLevel::TraceError &&
-                errorLevel != DiagnosticLevel::NotePack &&
                 showMultipleCodeLines)
             {
                 printMargin(codeColor, true);

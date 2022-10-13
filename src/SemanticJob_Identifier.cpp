@@ -1146,7 +1146,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         if (overload->node->flags & AST_EMPTY_FCT && !(overload->node->attributeFlags & ATTRIBUTE_FOREIGN) && identifier->token.text[0] != '@')
         {
             Diagnostic diag{identifier, Fmt(Err(Err0105), identifier->token.ctext())};
-            Diagnostic note{overload->node, Nte(Nte0033), DiagnosticLevel::NotePack};
+            Diagnostic note{overload->node, Nte(Nte0033), DiagnosticLevel::Note};
             return context->report(diag, &note);
         }
 
@@ -1170,13 +1170,13 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
                 if (!(fctAttributes & ATTRIBUTE_COMPILER) && (overload->node->attributeFlags & ATTRIBUTE_COMPILER) && !(identifier->flags & AST_RUN_BLOCK))
                 {
-                    Diagnostic note{overload->node, Fmt(Nte(Nte0029), overload->node->token.ctext()), DiagnosticLevel::NotePack};
+                    Diagnostic note{overload->node, Fmt(Nte(Nte0029), overload->node->token.ctext()), DiagnosticLevel::Note};
                     return context->report({identifier, Fmt(Err(Err0107), overload->node->token.ctext(), ownerFct->getDisplayNameC())}, &note);
                 }
 
                 if (!(fctAttributes & ATTRIBUTE_TEST_FUNC) && (overload->node->attributeFlags & ATTRIBUTE_TEST_FUNC))
                 {
-                    Diagnostic note{overload->node, Fmt(Nte(Nte0029), overload->node->token.ctext()), DiagnosticLevel::NotePack};
+                    Diagnostic note{overload->node, Fmt(Nte(Nte0029), overload->node->token.ctext()), DiagnosticLevel::Note};
                     return context->report({identifier, Fmt(Err(Err0108), overload->node->token.ctext(), ownerFct->getDisplayNameC())}, &note);
                 }
             }
@@ -1230,7 +1230,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
                 {
                     PushErrHint errh(Hnt(Hnt0023));
                     Diagnostic  diag(identifier, Fmt(Err(Err0109), overload->node->token.ctext()));
-                    Diagnostic  note(overload->node, Nte(Nte0033), DiagnosticLevel::NotePack);
+                    Diagnostic  note(overload->node, Nte(Nte0033), DiagnosticLevel::Note);
                     return context->report(diag, &note);
                 }
                 else
@@ -1242,7 +1242,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
         else if (returnType->isNative(NativeTypeKind::Void) && (identifier->flags & AST_DISCARD))
         {
             Diagnostic diag{identifier, Err(Err0094)};
-            Diagnostic note{overload->node, Nte(Nte0033), DiagnosticLevel::NotePack};
+            Diagnostic note{overload->node, Nte(Nte0033), DiagnosticLevel::Note};
             return context->report(Hint::isType(identifier->typeInfo), diag, &note);
         }
 
@@ -1929,19 +1929,19 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                         auto         orgNode  = funcNode->originalGeneric ? funcNode->originalGeneric : overload->typeInfo->declNode;
                         auto         couldBe  = Fmt(Nte(Nte0045), orgNode->typeInfo->getDisplayNameC());
                         couldBe += Ast::computeGenericParametersReplacement(typeFunc->genericParameters);
-                        note = new Diagnostic{overload->node, couldBe, DiagnosticLevel::NotePack};
+                        note = new Diagnostic{overload->node, couldBe, DiagnosticLevel::Note};
                         note->remarks.push_back(Fmt(Nte(Nte0047), overload->typeInfo->getDisplayNameC()));
                     }
                     else
                     {
                         auto couldBe = Fmt(Nte(Nte0048), overload->typeInfo->getDisplayNameC());
-                        note         = new Diagnostic{overload->node, couldBe, DiagnosticLevel::NotePack};
+                        note         = new Diagnostic{overload->node, couldBe, DiagnosticLevel::Note};
                     }
                 }
                 else if (overload->typeInfo->kind == TypeInfoKind::Struct)
                 {
                     auto couldBe    = Fmt(Nte(Nte0049), overload->typeInfo->getDisplayNameC());
-                    note            = new Diagnostic{overload->node, couldBe, DiagnosticLevel::NotePack};
+                    note            = new Diagnostic{overload->node, couldBe, DiagnosticLevel::Note};
                     auto typeStruct = CastTypeInfo<TypeInfoStruct>(overload->typeInfo, TypeInfoKind::Struct);
                     note->remarks.push_back(Ast::computeGenericParametersReplacement(typeStruct->genericParameters));
                 }
