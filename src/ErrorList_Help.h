@@ -19,6 +19,7 @@ SWAG_ERROR(Hlp0017, "a closure can only be defined in a function")
 SWAG_ERROR(Hlp0018, "a lambda with its parameters deduced must deduce its return type too")
 SWAG_ERROR(Hlp0019, "you cannot mix deduced and specified types in lambda parameters")
 SWAG_ERROR(Hlp0020, "`@mixin` should only be used inside a `Swag.Mixin` function")
+SWAG_ERROR(Hlp0021, "a generic argument must be either a value or a type")
 
 
 

@@ -447,6 +447,7 @@ struct SemanticJob : public Job
     static bool resolveFuncDecl(SemanticContext* context);
     static bool resolveFuncDeclType(SemanticContext* context);
     static bool resolveCaptureFuncCallParams(SemanticContext* context);
+    static bool resolveFuncCallGenParams(SemanticContext* context);
     static bool resolveFuncCallParams(SemanticContext* context);
     static bool resolveFuncCallParam(SemanticContext* context);
     static bool resolveAttrDecl(SemanticContext* context);

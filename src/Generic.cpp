@@ -648,7 +648,7 @@ bool Generic::instantiateDefaultGeneric(SemanticContext* context, AstVarDecl* no
                 auto identifier = CastAst<AstIdentifier>(idRef->childs.back(), AstNodeKind::Identifier);
                 if (!identifier->genericParameters)
                 {
-                    identifier->genericParameters = Ast::newFuncCallParams(context->sourceFile, identifier);
+                    identifier->genericParameters = Ast::newFuncCallGenParams(context->sourceFile, identifier);
                     identifier->genericParameters->flags |= AST_NO_BYTECODE;
 
                     CloneContext cloneContext;

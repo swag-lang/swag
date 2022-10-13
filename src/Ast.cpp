@@ -495,6 +495,13 @@ namespace Ast
         return node;
     }
 
+    AstFuncCallParams* newFuncCallGenParams(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob)
+    {
+        auto node         = Ast::newNode<AstFuncCallParams>(syntaxJob, AstNodeKind::FuncCallParams, sourceFile, parent);
+        node->semanticFct = SemanticJob::resolveFuncCallGenParams;
+        return node;
+    }
+
     AstFuncCallParams* newFuncCallParams(SourceFile* sourceFile, AstNode* parent, SyntaxJob* syntaxJob)
     {
         auto node         = Ast::newNode<AstFuncCallParams>(syntaxJob, AstNodeKind::FuncCallParams, sourceFile, parent);

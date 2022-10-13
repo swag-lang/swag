@@ -2012,7 +2012,7 @@ bool SemanticJob::instantiateGenericSymbol(SemanticContext* context, OneGenericM
         {
             SWAG_ASSERT(!firstMatch.genericParametersCallTypes.empty());
             auto identifier               = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
-            identifier->genericParameters = Ast::newFuncCallParams(node->sourceFile, node);
+            identifier->genericParameters = Ast::newFuncCallGenParams(node->sourceFile, node);
             genericParameters             = identifier->genericParameters;
             for (auto param : firstMatch.genericParametersCallTypes)
             {

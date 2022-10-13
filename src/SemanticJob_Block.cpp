@@ -588,7 +588,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         callVisit->inheritTokenLocation(node);
 
         // Generic parameters
-        callVisit->genericParameters = Ast::newFuncCallParams(sourceFile, callVisit);
+        callVisit->genericParameters = Ast::newFuncCallGenParams(sourceFile, callVisit);
         callVisit->genericParameters->flags |= AST_NO_BYTECODE;
         auto child      = Ast::newFuncCallParam(sourceFile, callVisit->genericParameters);
         child->typeInfo = g_TypeMgr->typeInfoBool;

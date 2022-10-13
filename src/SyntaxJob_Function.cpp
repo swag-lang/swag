@@ -10,7 +10,7 @@
 
 bool SyntaxJob::doGenericFuncCallParameters(AstNode* parent, AstNode** result)
 {
-    auto callParams = Ast::newFuncCallParams(sourceFile, parent, this);
+    auto callParams = Ast::newFuncCallGenParams(sourceFile, parent, this);
     *result         = callParams;
 
     bool multi = false;

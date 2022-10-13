@@ -917,6 +917,36 @@ bool SemanticJob::resolveCaptureFuncCallParams(SemanticContext* context)
     return true;
 }
 
+bool SemanticJob::resolveFuncCallGenParams(SemanticContext* context)
+{
+    auto node = context->node;
+    node->inheritOrFlag(AST_IS_GENERIC);
+    node->inheritAndFlag1(AST_CONST_EXPR);
+
+    if (node->flags & AST_IS_GENERIC)
+        return true;
+
+    for (auto c : node->childs)
+    {
+        if (c->flags & AST_VALUE_COMPUTED)
+            continue;
+
+        auto symbol = c->childs.front()->resolvedSymbolName;
+        if (!symbol)
+            continue;
+
+        if (symbol->kind == SymbolKind::Variable ||
+            symbol->kind == SymbolKind::Namespace ||
+            symbol->kind == SymbolKind::Attribute)
+        {
+            Diagnostic note{Hlp(Hlp0021), DiagnosticLevel::Help};
+            return context->report({c, Fmt(Err(Err0815), SymTable::getArticleKindName(symbol->kind), symbol->name.c_str())}, &note);
+        }
+    }
+
+    return true;
+}
+
 bool SemanticJob::resolveFuncCallParams(SemanticContext* context)
 {
     auto node = context->node;
