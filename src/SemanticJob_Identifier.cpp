@@ -275,7 +275,7 @@ bool SemanticJob::createTmpVarStruct(SemanticContext* context, AstIdentifier* id
 
     // Be sure it's the NAME{} syntax
     if (!(identifier->callParameters->flags & AST_CALL_FOR_STRUCT))
-        return context->report(callP, Fmt(Err(Err0082), identifier->typeInfo->getDisplayNameC()));
+        return context->report(callP, Fmt(Err(Err0082), identifier->typeInfo->name.c_str()));
 
     auto varParent = identifier->identifierRef->parent;
     while (varParent->kind == AstNodeKind::ExpressionList)
@@ -902,7 +902,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
         // Be sure it's the NAME{} syntax
         if (identifier->callParameters && !(identifier->flags & AST_GENERATED) && !(identifier->callParameters->flags & AST_CALL_FOR_STRUCT))
-            return context->report(identifier, Fmt(Err(Err0082), identifier->typeInfo->getDisplayNameC()));
+            return context->report(identifier, Fmt(Err(Err0082), identifier->typeInfo->name.c_str()));
 
         // Need to make all types compatible, in case a cast is necessary
         if (identifier->callParameters)
