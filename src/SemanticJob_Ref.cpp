@@ -707,12 +707,12 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
             if (arrayNode->array->token.text.empty())
             {
                 Utf8 msg = Fmt(Err(Err0226), arrayType->getDisplayNameC());
-                return context->report(arrayNode->access, msg);
+                return context->report(Fmt(Hnt(Hnt0047), g_LangSpec->name_opIndex.c_str()), {arrayNode->access, msg});
             }
             else
             {
                 Utf8 msg = Fmt(Err(Err0227), arrayNode->array->token.ctext(), arrayType->getDisplayNameC());
-                return context->report(arrayNode->access, msg);
+                return context->report(Fmt(Hnt(Hnt0047), g_LangSpec->name_opIndex.c_str()), {arrayNode->access, msg});
             }
         }
 
