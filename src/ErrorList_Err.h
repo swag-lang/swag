@@ -551,7 +551,7 @@ SWAG_ERROR(Err0555, "tuple types in generic parameters are not (yet?) supported"
 SWAG_ERROR(Err0556, "the module `%s` cannot be found in that workspace")
 SWAG_ERROR(Err0557, "dependency module `%s` cannot be found in that workspace")
 SWAG_ERROR(Err0558, "llvm backend cannot create target `%s`")
-SWAG_ERROR(Err0559, "`move` cannot be applied to a constant expression (type is `%s`)")
+SWAG_ERROR(Err0559, "`move` cannot be applied to an immutable expression (type is `%s`)")
 SWAG_ERROR(Err0560, "unexpected `retval` as a function return type")
 SWAG_ERROR(Err0561, "`]` should not be followed by a line break when declaring an array type")
 SWAG_ERROR(Err0562, nullptr)
