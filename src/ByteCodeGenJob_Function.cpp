@@ -1211,9 +1211,19 @@ bool ByteCodeGenJob::checkCatchError(ByteCodeGenContext* context, AstNode* srcNo
     {
         if (!srcNode)
             srcNode = typeInfoFunc->declNode;
-        Diagnostic diag{callNode, Fmt(Err(Err0534), funcNode->token.ctext())};
-        Diagnostic note{srcNode, Fmt(Nte(Nte0040), srcNode->token.ctext()), DiagnosticLevel::Note};
-        return context->report(diag, &note);
+
+        if (callNode->kind == AstNodeKind::Inline)
+        {
+            Diagnostic diag{callNode->sourceFile, callNode->token, Fmt(Err(Err0534), funcNode->token.ctext())};
+            Diagnostic note{srcNode, Fmt(Nte(Nte0040), srcNode->token.ctext()), DiagnosticLevel::Note};
+            return context->report(diag, &note);
+        }
+        else
+        {
+            Diagnostic diag{callNode, Fmt(Err(Err0534), funcNode->token.ctext())};
+            Diagnostic note{srcNode, Fmt(Nte(Nte0040), srcNode->token.ctext()), DiagnosticLevel::Note};
+            return context->report(diag, &note);
+        }
     }
 
     if (!raiseErrors)
