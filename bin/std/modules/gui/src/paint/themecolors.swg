@@ -296,6 +296,7 @@ struct ThemeColors
     listItem_DisabledText:          Color = Gray3
     listItem_SelectedText:          Color = White
     listItem_Text:                  Color = White
+    listItem_Separator:             Color = Color.getDarker(Color.fromArgb(White), 0.3)
     listItem_AlternateBk:           Color = 0x08FFFFFF
     listItem_Line:                  Color = Gray4
 

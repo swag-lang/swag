@@ -705,18 +705,22 @@ impl MainWnd
     mtd saveAs()
     {
         var opt: FileDlgOptions
-        opt.state = &fileDlgState
-        opt.mode = .CreateFile
-        opt.title = "Save As Image"
-        opt.btnOkName = "Save"
-        opt.shortcuts.add(@{Env.SpecialDirectory.Desktop, "Desktop"})
-        opt.shortcuts.add(@{Env.SpecialDirectory.UserPictures, "My Images"})
-        opt.shortcuts.add(@{Env.SpecialDirectory.CommonPictures, "Images"})
-        opt.editName = Path.getFileNameWithoutExtension(getCapture().file)
-        opt.filters.add(@{"PNG - Portable Network Graphics (*.png)", ".png"})
-        opt.filters.add(@{"JPG - JPEG Image (*.jpg)", ".jpg"})
-        opt.filters.add(@{"BMP - Windows Bitmap (*.bmp)", ".bmp"})
-        opt.filters.add(@{"TGA - Truevision Targa (*.tga)", ".tga"})
+        with opt
+        {
+            .state = &fileDlgState
+            .mode = .CreateFile
+            .title = "Save As Image"
+            .btnOkName = "Save"
+            .shortcuts.add(@{Env.SpecialDirectory.Desktop, "Desktop"})
+            .shortcuts.add(@{Env.SpecialDirectory.UserPictures, "My Images"})
+            .shortcuts.add(@{Env.SpecialDirectory.CommonPictures, "Images"})
+            .editName = Path.getFileNameWithoutExtension(getCapture().file)
+            .filters.add(@{"PNG - Portable Network Graphics (*.png)", ".png"})
+            .filters.add(@{"JPG - JPEG Image (*.jpg)", ".jpg"})
+            .filters.add(@{"BMP - Windows Bitmap (*.bmp)", ".bmp"})
+            .filters.add(@{"TGA - Truevision Targa (*.tga)", ".tga"})
+        }
+
         dlg := FileDlg.create(surface, opt)
         if dlg.doModal() != Dialog.BtnOk
             return

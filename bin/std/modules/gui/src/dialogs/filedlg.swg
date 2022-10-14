@@ -111,14 +111,21 @@ private impl FileDlg
 
     mtd fillListFolders()
     {
+        l := treeCtrl.createLine("Shortcuts")
+        l.separator = true
+
         visit v: dlgOptions.shortcuts
         {
             c := Env.getSpecialDirectory(v.item0)
             ic := getApp().getSpecialDirectoryIcon(v.item0, true)
-            l := treeCtrl.createLine(v.item1, icon: ic)
+            l = treeCtrl.createLine(v.item1, icon: ic)
             l.userData0 = cast(*void) treePathStr.count
+            l.leftTextMargin = 10
             treePathStr.add(c)
         }
+
+        l = treeCtrl.createLine("Drives")
+        l.separator = true
 
         volumes := catch Directory.getDrives()
         visit v: volumes
@@ -126,8 +133,9 @@ private impl FileDlg
             v1 := dref v
             v1.removeBack()
             ic := getApp().getDirectoryIcon(v1, true)
-            l := treeCtrl.createLine(v.toString(), icon: ic)
+            l = treeCtrl.createLine(v.toString(), icon: ic)
             l.userData0 = cast(*void) treePathStr.count
+            l.leftTextMargin = 10
             treePathStr.add(dref v)
         }
 
@@ -243,7 +251,7 @@ impl FileDlg
             return true
         }
 
-        // Splitter
+        // Panes
         ////////////////////////
 
         view := Wnd.create'Wnd(dlg)

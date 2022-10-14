@@ -35,20 +35,22 @@ struct ListLine
 {
     colorBk:            Color
     colorFg:            Color
-    forceExpandMark:    bool
-    checkable:          bool
-    iconMargin:         bool
     userData0:          *void
     userData1:          *void
     userData2:          *void
     userData3:          *void
+    leftTextMargin:     f32
+    forceExpandMark:    bool
+    canCheck:           bool
+    separator:          bool
+    iconMargin:         bool
 
-    lines:      ArrayPtr'ListLine
-    items:      ArrayPtr'ListItem
-    parent:     *ListLine
-    index:      u32
-    level:      u32
-    expanded:   bool
+    lines:          ArrayPtr'ListLine
+    items:          ArrayPtr'ListItem
+    parent:         *ListLine
+    index:          u32
+    level:          u32
+    expanded:       bool
 }
 
 struct ListCtrl
@@ -184,12 +186,12 @@ impl IWnd for ListView
         switch evt.key
         {
         case Space:
-            if focusLine.checkable
+            if focusLine.canCheck
             {
                 visit l: list.selModel
                 {
                     idx := list.idxLineToIdxList.find(l).value
-                    if !list.lines[idx].checkable
+                    if !list.lines[idx].canCheck
                         continue
                     checked := !list.checkModel.isSelected(l)
                     list.checkModel.select(l, checked)
@@ -204,12 +206,12 @@ impl IWnd for ListView
             }
 
         case Enter:
-            if focusLine.checkable
+            if focusLine.canCheck
             {
                 visit l: list.selModel
                 {
                     idx := list.idxLineToIdxList.find(l).value
-                    if !list.lines[idx].checkable
+                    if !list.lines[idx].canCheck
                         continue
                     list.checkModel.select(l, true)
                 }
@@ -390,7 +392,7 @@ impl IWnd for ListView
                 // ============================
 
                 // On checkbox
-                if hitLine.checkable
+                if hitLine.canCheck
                 {
                     eatCheck := false
                     if evt.kind == .MouseDoubleClick
@@ -579,7 +581,8 @@ private impl ListView
         font    := theme.res.fontDefault.regular
 
         // Selection box
-        isSelected := list.isLineSelected(idx)
+        isSelected  := list.isLineSelected(idx)
+        canHotTrack := list.isVirtual or !list.lines[idx].separator
         hideSel := cast(bool) (list.listFlags & .HideSelection)
         if isSelected and (!hideSel or hasFocus()) and !bc.isDisabled
         {
@@ -588,7 +591,7 @@ private impl ListView
         }
 
         // Hot box
-        elif idx == list.hotIndex and (list.listFlags & .HotTrack)
+        elif idx == list.hotIndex and (list.listFlags & .HotTrack) and canHotTrack
         {
             painter.fillRect(rect, colors.listItem_HotBk)
         }
@@ -616,7 +619,10 @@ private impl ListView
                 colorText   = line.colorFg
                 colorExpand = colors.listItem_Text
             default:
-                colorText, colorExpand = colors.listItem_Text
+                if line.separator
+                    colorText, colorExpand = colors.listItem_Separator
+                else
+                    colorText, colorExpand = colors.listItem_Text
         }
 
         var format: RichStringFormat
@@ -643,7 +649,7 @@ private impl ListView
             }
 
             labelPos.x -= scrollPos.x
-            labelPos.x += list.leftTextMargin
+            labelPos.x += list.leftTextMargin + line.leftTextMargin
 
             if idxItem == 0
             {
@@ -676,7 +682,7 @@ private impl ListView
             defer painter.popClippingRect()
 
             // Checkbox
-            if idxItem == 0 and line.checkable
+            if idxItem == 0 and line.canCheck
             {
                 var subRectBorder:  *ThemeImageRect
                 var subRectMark:    *ThemeImageRect
@@ -743,6 +749,8 @@ private impl ListView
         res.y += scrollPos.y
         idx := cast(u32) (res.y / list.lineHeight)
         if idx >= lc
+            return Swag.U32.Max
+        if !list.isVirtual or list.lines[idx].separator
             return Swag.U32.Max
         return idx
     }
@@ -864,7 +872,7 @@ impl ListCtrl
             return false
         if isVirtual
             return selModel.isSelected(idx)
-        return selModel.isSelected(lines[idx].index)
+        return !lines[idx].separator and selModel.isSelected(lines[idx].index)
     }
 
     // Select of unselect the given line
@@ -875,6 +883,9 @@ impl ListCtrl
 
         if selectionMode == .None or lineCount == 0
             return
+        if !isVirtual and lines[idx].separator
+            return
+
         if selectionMode == .Single
             selModel.unselectAll()
 
