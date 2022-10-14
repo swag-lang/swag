@@ -964,15 +964,18 @@ bool SyntaxJob::doLambdaExpression(AstNode* parent, AstNode** result)
         // Reference to the function
         AstNode* identifierRef = Ast::newIdentifierRef(sourceFile, lambda->token.text, exprNode, this);
         identifierRef->inheritTokenLocation(lambda);
+        identifierRef->childs.back()->inheritTokenLocation(lambda);
         forceTakeAddress(identifierRef);
 
         // Create the capture block (a tuple)
         auto nameCaptureBlock = Fmt("__captureblock%d", g_UniqueID.fetch_add(1));
         auto block            = Ast::newVarDecl(sourceFile, nameCaptureBlock, exprNode, this);
+        block->inheritTokenLocation(lambdaDecl->captureParameters);
         block->flags |= AST_GENERATED;
         auto exprList         = Ast::newNode<AstExpressionList>(this, AstNodeKind::ExpressionList, sourceFile, block);
         exprList->semanticFct = SemanticJob::resolveExpressionListTuple;
         exprList->specFlags |= AST_SPEC_EXPRLIST_FOR_TUPLE | AST_SPEC_EXPRLIST_FOR_CAPTURE;
+        exprList->inheritTokenLocation(lambdaDecl->captureParameters);
         block->assignment = exprList;
         SemanticJob::setVarDeclResolve(block);
 
@@ -983,6 +986,7 @@ bool SyntaxJob::doLambdaExpression(AstNode* parent, AstNode** result)
 
         // Reference to the captured block
         identifierRef = Ast::newIdentifierRef(sourceFile, nameCaptureBlock, exprNode, this);
+        identifierRef->inheritTokenLocation(lambdaDecl->captureParameters);
         identifierRef->childs.back()->inheritTokenLocation(lambdaDecl->captureParameters);
         forceTakeAddress(identifierRef);
     }
