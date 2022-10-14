@@ -2,10 +2,10 @@ SWAG_ERROR(Hlp0000, "an attribute declaration, unlike function, should not have 
 SWAG_ERROR(Hlp0001, "an attribute declaration, unlike function, cannot be marked with `throw`")
 SWAG_ERROR(Hlp0002, "if you want an array literal and not a type declaration, use `@[` instead of `[`")
 SWAG_ERROR(Hlp0003, "if you want a tuple literal and not a type declaration, use `@{` instead of `{`")
-SWAG_ERROR(Hlp0004, "if you want to declare a lambda, you should use `func(`")
+SWAG_ERROR(Hlp0004, "if you want to declare a lambda, you should use `func(` or `closure(`")
 SWAG_ERROR(Hlp0005, "if you want to dereference variable `%s` like in C, use `dref %s`")
 SWAG_ERROR(Hlp0006, "to access an array with multiple dimensions, the syntax is [x, y], not [x][y]")
-SWAG_ERROR(Hlp0007, "methods (`mtd` and `mtdc`) are reserved for struct`and interface")
+SWAG_ERROR(Hlp0007, "methods (`mtd` and `mtdc`) are reserved for structs and interfaces")
 SWAG_ERROR(Hlp0008, "a function name starting with `@` is reserved for intrinsics")
 SWAG_ERROR(Hlp0009, "a struct member name starting with `item` is reserved by the language")
 SWAG_ERROR(Hlp0010, "`@alias` should only be used inside a `Swag.Macro` or a `Swag.Mixin` function")
@@ -21,6 +21,7 @@ SWAG_ERROR(Hlp0019, "you cannot mix deduced and specified types in lambda parame
 SWAG_ERROR(Hlp0020, "`@mixin` should only be used inside a `Swag.Mixin` function")
 SWAG_ERROR(Hlp0021, "a generic argument must be either a value or a type")
 SWAG_ERROR(Hlp0022, "this kind of constant does not have an associated memory storage")
+SWAG_ERROR(Hlp0023, "valid modes are `defer(err)` and `defer(noerr)`")
 
 
 

@@ -1,4 +1,4 @@
-#global testerror
+//#global testerror
 //#[Swag.PrintBc]
 #test
 {
@@ -11,5 +11,5 @@
 //#[Swag.PrintBc]
 func T(a: s32)-> {s32,s32,s32}
 {
-	return [1,2,3]
+	return @{1,2,3}
 }

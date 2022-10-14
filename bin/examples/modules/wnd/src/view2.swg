@@ -70,7 +70,7 @@ func createTreeMulti(view: *Wnd)->*ListCtrl
                 Format.replaceString(&str, "XX %", k)
                 line2 := tree.createLine(str, parentLine: line1)
                 Format.replaceString(&str, "sub item %", k)
-                line2.checkable = true
+                line2.canCheck = true
                 line2.setItem(1, str)
                 line2.setItem(2, str, icon)
             }

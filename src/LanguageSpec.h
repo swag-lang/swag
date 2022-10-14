@@ -151,6 +151,8 @@ struct LanguageSpec
     Utf8 name_nodrop;
     Utf8 name_move;
     Utf8 name_moveraw;
+    Utf8 name_err;
+    Utf8 name_noerr;
 
     Utf8 name_name;
     Utf8 name_msg;

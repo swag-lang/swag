@@ -38,7 +38,7 @@ func createListMulti(view: *Wnd, checkable: bool = false)->*ListCtrl
         icon := app.theme.getIcon24(ThemeIcons24.Search, 16)
         if i % 2 == 0 icon.clear()
         line := list.createLine(str, icon)
-        line.checkable = checkable
+        line.canCheck = checkable
         line.setItem(1, str)
         line.setItem(2, str, icon)
     }

@@ -1101,12 +1101,12 @@ bool SyntaxJob::doDefer(AstNode* parent, AstNode** result)
     if (token.id == TokenId::SymLeftParen)
     {
         SWAG_CHECK(eatToken());
-        if (token.text == "err")
+        if (token.text == g_LangSpec->name_err)
             node->deferKind = DeferKind::Error;
-        else if (token.text == "noerr")
+        else if (token.text == g_LangSpec->name_noerr)
             node->deferKind = DeferKind::NoError;
         else
-            return error(token, Fmt(Err(Err0256), token.ctext()));
+            return error(token, Fmt(Err(Err0256), token.ctext()), Hlp(Hlp0023));
 
         SWAG_CHECK(eatToken());
         SWAG_CHECK(eatToken(TokenId::SymRightParen));

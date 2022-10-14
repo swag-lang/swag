@@ -129,6 +129,8 @@ void LanguageSpec::setupNames()
     name_nodrop  = "nodrop";
     name_move    = "move";
     name_moveraw = "moveraw";
+    name_err     = "err";
+    name_noerr   = "noerr";
 
     name_name       = "name";
     name_msg        = "msg";
