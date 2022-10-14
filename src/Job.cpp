@@ -393,6 +393,8 @@ bool JobContext::report(const Diagnostic& diag, const vector<const Diagnostic*>&
         return false;
 
     auto copyNotes = notes;
+    if (g_ErrorNote)
+        copyNotes.push_back(g_ErrorNote);
     setErrorContext(diag, copyNotes);
     SWAG_ASSERT(sourceFile);
     return sourceFile->report(diag, copyNotes);

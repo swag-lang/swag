@@ -174,7 +174,7 @@ Utf8 SourceFile::getLine(long lineNo, bool* eof)
             *eof = true;
         return "";
     }
-    
+
     if (eof)
         *eof = false;
     return allLines[lineNo];
@@ -362,6 +362,8 @@ bool SourceFile::report(const Diagnostic& diag, const Diagnostic* note, const Di
         notes.push_back(note);
     if (note1)
         notes.push_back(note1);
+    if (g_ErrorNote)
+        notes.push_back(g_ErrorNote);
 
     return report(diag, notes);
 }

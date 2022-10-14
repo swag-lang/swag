@@ -6,8 +6,9 @@
 #include "TypeInfo.h"
 #include "ErrorIds.h"
 
-thread_local Utf8 g_ErrorHint;
-static int        HEADER_SIZE = 0;
+thread_local Utf8        g_ErrorHint;
+thread_local Diagnostic* g_ErrorNote = nullptr;
+static int               HEADER_SIZE = 0;
 
 Utf8 Hint::isType(TypeInfo* typeInfo)
 {

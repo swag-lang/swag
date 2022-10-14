@@ -521,14 +521,14 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
     SWAG_CHECK(waitUserOp(context, name, left, &symbol));
 
     bool justCheck = ropFlags & ROP_JUST_CHECK;
+    auto leftType  = TypeManager::concreteType(left->typeInfo);
 
     if (!symbol)
     {
         if (justCheck)
             return false;
 
-        auto leftType = TypeManager::concreteType(left->typeInfo);
-        auto note     = new Diagnostic{leftType->declNode, Fmt(Nte(Nte0027), leftType->getDisplayNameC()), DiagnosticLevel::Note};
+        auto note = new Diagnostic{leftType->declNode, Fmt(Nte(Nte0027), leftType->getDisplayNameC()), DiagnosticLevel::Note};
         if (!opConst)
         {
             Diagnostic diag{left->parent->sourceFile, left->parent->token, Fmt(Err(Err0079), name.c_str(), leftType->getDisplayNameC())};
@@ -602,7 +602,12 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
             }
         }
 
-        SWAG_CHECK(matchIdentifierParameters(context, listTryMatch, nullptr, justCheck ? MIP_JUST_CHECK : 0));
+        {
+            Diagnostic  diag{left->parent->sourceFile, left->parent->token, Fmt(Err(Nte0051), name.c_str(), leftType->getDisplayNameC()), DiagnosticLevel::Note};
+            PushErrNote pen(&diag);
+            SWAG_CHECK(matchIdentifierParameters(context, listTryMatch, nullptr, justCheck ? MIP_JUST_CHECK : 0));
+        }
+
         if (context->result == ContextResult::Pending)
             return true;
         if (context->result != ContextResult::NewChilds)
