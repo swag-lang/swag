@@ -930,6 +930,7 @@ bool SyntaxJob::doLambdaExpression(AstNode* parent, AstNode** result)
         ScopedBreakable sb(this, nullptr);
         SWAG_CHECK(doLambdaFuncDecl(currentFct, &lambda, acceptMissingType, &hasMissingType));
         lambda->flags |= AST_IS_LAMBDA_EXPRESSION;
+        lambda->computeEndLocation();
     }
 
     auto lambdaDecl = CastAst<AstFuncDecl>(lambda, AstNodeKind::FuncDecl);
@@ -990,6 +991,7 @@ bool SyntaxJob::doLambdaExpression(AstNode* parent, AstNode** result)
         // Reference to the function
         AstNode* identifierRef = Ast::newIdentifierRef(sourceFile, lambda->token.text, exprNode, this);
         identifierRef->inheritTokenLocation(lambda);
+        identifierRef->childs.back()->inheritTokenLocation(lambda);
         forceTakeAddress(identifierRef);
     }
 

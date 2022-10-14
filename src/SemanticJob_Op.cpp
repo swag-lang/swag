@@ -531,12 +531,12 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
         auto note     = new Diagnostic{leftType->declNode, Fmt(Nte(Nte0027), leftType->getDisplayNameC()), DiagnosticLevel::Note};
         if (!opConst)
         {
-            Diagnostic diag{left->parent, Fmt(Err(Err0079), name.c_str(), leftType->getDisplayNameC())};
+            Diagnostic diag{left->parent->sourceFile, left->parent->token, Fmt(Err(Err0079), name.c_str(), leftType->getDisplayNameC())};
             return context->report(Fmt(Hnt(Hnt0047), name.c_str()), diag, note);
         }
         else
         {
-            Diagnostic diag{left->parent, Fmt(Err(Err0186), name.c_str(), leftType->getDisplayNameC(), opConst)};
+            Diagnostic diag{left->parent->sourceFile, left->parent->token, Fmt(Err(Err0186), name.c_str(), leftType->getDisplayNameC(), opConst)};
             return context->report(Fmt(Hnt(Hnt0047), name.c_str()), diag, note);
         }
     }

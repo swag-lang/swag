@@ -43,7 +43,7 @@ SWAG_ERROR(Nte0041, "`%s` is a variable and variables inside expressions cannot 
 SWAG_ERROR(Nte0042, "`%s` is a function without the `Swag.ConstExpr` attribute")
 SWAG_ERROR(Nte0043, "the symbol `%s` was not found in `%s`")
 SWAG_ERROR(Nte0044, "the symbol `%s` exists in interface scope `%s`")
-SWAG_ERROR(Nte0045, "instance of generic function `%s` ")
+SWAG_ERROR(Nte0045, "an instance of generic function `%s` ")
 SWAG_ERROR(Nte0046, "%s `%s` is waiting for %s `%s` to be solved")
 SWAG_ERROR(Nte0047, "resulting type is `%s`")
 SWAG_ERROR(Nte0048, "function `%s`")
