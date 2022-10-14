@@ -794,10 +794,96 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
     vector<const Diagnostic*> notes;
     int                       overIdx = 1;
 
-    int  badParamIdx        = -1;
-    bool sameBadParamIdx    = true;
-    int  badGenParamIdx     = -1;
-    bool sameBadGenParamIdx = true;
+    int  badParamIdx, bestBadParamIdx;
+    int  badGenParamIdx, bestBadGenParamIdx;
+    bool sameBadParamIdx, sameBadGenParamIdx;
+
+    for (int pass = 0; pass < 2; pass++)
+    {
+        badParamIdx        = -1;
+        bestBadParamIdx    = -1;
+        sameBadParamIdx    = true;
+        badGenParamIdx     = -1;
+        bestBadGenParamIdx = -1;
+        sameBadGenParamIdx = true;
+
+        for (auto& one : overloads)
+        {
+            // If this is the same parameter that fails for every overloads, remember it
+            if (one->symMatchContext.result == MatchResult::BadSignature)
+            {
+                sameBadGenParamIdx = false;
+                auto ep            = getBadParamIdx(*one, callParameters);
+                if (badParamIdx == -1)
+                {
+                    badParamIdx     = ep;
+                    bestBadParamIdx = ep;
+                }
+
+                if (ep != badParamIdx)
+                    sameBadParamIdx = false;
+                if (ep > bestBadParamIdx)
+                    bestBadParamIdx = ep;
+            }
+            else
+                sameBadParamIdx = false;
+
+            if (one->symMatchContext.result == MatchResult::BadGenericSignature)
+            {
+                sameBadParamIdx = false;
+                auto ep         = one->symMatchContext.badSignatureInfos.badSignatureParameterIdx;
+                if (badGenParamIdx == -1)
+                {
+                    badGenParamIdx     = ep;
+                    bestBadGenParamIdx = ep;
+                }
+                if (ep != badGenParamIdx)
+                    sameBadGenParamIdx = false;
+                if (ep > bestBadGenParamIdx)
+                    bestBadGenParamIdx = ep;
+            }
+            else
+                sameBadGenParamIdx = false;
+        }
+
+        if (pass == 1)
+            break;
+
+        // If all fail on the same parameter, we do not display the list of overloads
+        if (sameBadParamIdx || sameBadGenParamIdx)
+        {
+            overloads.clear();
+            break;
+        }
+
+        // Remove overloads with a less accurate match
+        for (int i = 0; i < overloads.size(); i++)
+        {
+            auto one = overloads[i];
+
+            if (one->symMatchContext.result == MatchResult::BadSignature)
+            {
+                auto ep = getBadParamIdx(*one, callParameters);
+                if (ep < bestBadParamIdx)
+                {
+                    overloads.erase(i);
+                    i--;
+                    continue;
+                }
+            }
+
+            if (one->symMatchContext.result == MatchResult::BadGenericSignature)
+            {
+                auto ep = one->symMatchContext.badSignatureInfos.badSignatureParameterIdx;
+                if (ep < bestBadGenParamIdx)
+                {
+                    overloads.erase(i);
+                    i--;
+                    continue;
+                }
+            }
+        }
+    }
 
     for (auto& one : overloads)
     {
@@ -808,31 +894,6 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
         auto note                   = const_cast<Diagnostic*>(errs0[0]);
         note->noteHeader            = Fmt("overload %d", overIdx++);
         note->showMultipleCodeLines = false;
-
-        // If this is the same parameter that fails for every overloads, remember it
-        if (one->symMatchContext.result == MatchResult::BadSignature)
-        {
-            sameBadGenParamIdx = false;
-            auto ep            = getBadParamIdx(*one, callParameters);
-            if (badParamIdx == -1)
-                badParamIdx = ep;
-            if (ep != badParamIdx)
-                sameBadParamIdx = false;
-        }
-        else
-            sameBadParamIdx = false;
-
-        if (one->symMatchContext.result == MatchResult::BadGenericSignature)
-        {
-            sameBadParamIdx = false;
-            auto ep         = one->symMatchContext.badSignatureInfos.badSignatureParameterIdx;
-            if (badGenParamIdx == -1)
-                badGenParamIdx = ep;
-            if (ep != badGenParamIdx)
-                sameBadGenParamIdx = false;
-        }
-        else
-            sameBadGenParamIdx = false;
 
         switch (one->symMatchContext.result)
         {
@@ -870,13 +931,13 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
     {
         diag.startLocation = callParameters->childs[badParamIdx]->token.startLocation;
         diag.endLocation   = callParameters->childs[badParamIdx]->token.endLocation;
-        diag.hint          = Hnt(Hnt0048);
+        diag.hint          = Fmt(Hnt(Hnt0048), callParameters->childs[badParamIdx]->typeInfo->getDisplayNameC());
     }
     else if (sameBadGenParamIdx && badGenParamIdx != -1 && genericParameters && badGenParamIdx < (int) genericParameters->childs.size())
     {
         diag.startLocation = genericParameters->childs[badGenParamIdx]->token.startLocation;
         diag.endLocation   = genericParameters->childs[badGenParamIdx]->token.endLocation;
-        diag.hint          = Hnt(Hnt0048);
+        diag.hint          = Fmt(Hnt(Hnt0048), genericParameters->childs[badGenParamIdx]->typeInfo->getDisplayNameC());
     }
 
     symbolErrorNotes(context, overloads, node, &diag, notes);
