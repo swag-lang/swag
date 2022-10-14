@@ -582,7 +582,7 @@ private impl ListView
 
         // Selection box
         isSelected  := list.isLineSelected(idx)
-        canHotTrack := list.isVirtual or !list.lines[idx].separator
+        canHotTrack := list.isVirtual or !line.separator
         hideSel := cast(bool) (list.listFlags & .HideSelection)
         if isSelected and (!hideSel or hasFocus()) and !bc.isDisabled
         {
@@ -750,7 +750,7 @@ private impl ListView
         idx := cast(u32) (res.y / list.lineHeight)
         if idx >= lc
             return Swag.U32.Max
-        if !list.isVirtual or list.lines[idx].separator
+        if !list.isVirtual and list.lines[idx].separator
             return Swag.U32.Max
         return idx
     }
