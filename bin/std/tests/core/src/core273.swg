@@ -1,4 +1,4 @@
-#global testerror
+//#global testerror
 using Core
 
 func toto()->Array'string

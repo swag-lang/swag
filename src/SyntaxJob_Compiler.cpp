@@ -495,6 +495,15 @@ bool SyntaxJob::doCompilerGlobal(AstNode* parent, AstNode** result)
             auto oldModule  = sourceFile->module;
             oldModule->removeFile(sourceFile);
             newModule->addFile(sourceFile);
+
+            for (auto dep : oldModule->moduleDependencies)
+            {
+                ModuleDependency* newDep = g_Allocator.alloc<ModuleDependency>();
+                *newDep                  = *dep;
+                newDep->importDone       = false;
+                newModule->moduleDependencies.push_back(newDep);
+            }
+
             oldModule->addErrorModule(newModule);
             module = newModule;
         }

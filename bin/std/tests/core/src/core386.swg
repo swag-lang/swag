@@ -11,6 +11,7 @@ struct A
 {
     var enc: Encoder'TagBin
     var buf: ConcatBuffer
+    enc.errorIfUnknown = true
     var v: A
-    try enc.writeAll(&buf, v)
+    assume enc.writeAll(&buf, v)
 }
