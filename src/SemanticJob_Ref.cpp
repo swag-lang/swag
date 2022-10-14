@@ -262,7 +262,7 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
                 return true;
 
             Utf8 msg = Fmt(Err(Err0320), node->array->token.ctext(), typeInfo->getDisplayNameC());
-            return context->report(node->array, msg);
+            return context->report(Fmt(Hnt(Hnt0047), g_LangSpec->name_opSlice.c_str()), {node, msg});
         }
 
         SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opSlice, nullptr, nullptr, node->array, node->structFlatParams));
