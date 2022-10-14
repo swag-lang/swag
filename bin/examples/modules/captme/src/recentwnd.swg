@@ -1,4 +1,4 @@
-const MaxRecent = 10
+const MaxRecent = 15
 
 const RecentPadding = 8.0
 

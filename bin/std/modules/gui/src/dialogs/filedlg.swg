@@ -366,12 +366,15 @@ impl FileDlg
         viewTop.padding.w = 8
         dlg.applyLayout()
 
-        btn := PushButton.create(viewTop, "New Folder", @{0, 0, 90})
-        with btn
+        if opt.mode == .CreateFile or opt.mode == .SelectFolder
         {
-            .dockStyle = .Right
-            .margin.x = 10
-            .sigPressed += @|dlg|(btn) { dlg.onNewFolder(); }
+            btn := PushButton.create(viewTop, "New Folder", @{0, 0, 90})
+            with btn
+            {
+                .dockStyle = .Right
+                .margin.x = 10
+                .sigPressed += @|dlg|(btn) { dlg.onNewFolder(); }
+            }
         }
 
         with dlg.comboPath = ComboBox.create(viewTop)
