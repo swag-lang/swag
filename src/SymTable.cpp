@@ -392,7 +392,7 @@ bool SymTable::checkHiddenSymbolNoLock(JobContext* context, AstNode* node, TypeI
         {
             auto       firstOverload = overload;
             Utf8       msg           = Fmt(Err(Err0886), symbol->name.c_str());
-            Diagnostic diag{node, token, msg};
+            Diagnostic diag{node, msg};
             Utf8       note = Nte(Nte0036);
             Diagnostic diagNote{firstOverload->node, note, DiagnosticLevel::Note};
             if (typeInfo->kind == TypeInfoKind::FuncAttr)

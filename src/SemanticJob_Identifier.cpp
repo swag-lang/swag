@@ -864,7 +864,11 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* par
 
     // Global identifier call. Must be a call to a mixin function, that's it...
     if (identifier->identifierRef && identifier->identifierRef->flags & AST_GLOBAL_CALL)
-        return context->report(identifier, Fmt(Err(Err0087), identifier->token.ctext(), SymTable::getArticleKindName(symbolKind)));
+    {
+        if (identifier->callParameters)
+            return context->report(identifier, Fmt(Err(Err0087), identifier->token.ctext(), SymTable::getArticleKindName(symbolKind)));
+        return context->report(identifier, Fmt(Err(Err0776), identifier->token.ctext(), SymTable::getArticleKindName(symbolKind)));
+    }
 
     checkDeprecated(context, identifier);
 

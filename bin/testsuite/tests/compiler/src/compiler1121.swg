@@ -1,4 +1,5 @@
 #global testerrors
+
 namespace A.B
 {
 	struct Random
