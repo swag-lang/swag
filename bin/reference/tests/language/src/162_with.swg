@@ -70,6 +70,26 @@ impl Point
         @assert(pt.x == 10 and pt.y == 20)
     }
 
+    {
+        with var pt: Point
+        {
+            .x = 10
+            .y = 20
+        }
+
+        @assert(pt.x == 10 and pt.y == 20)
+    }
+
+    {
+        enum RGB{R; G; B;}
+        with var color: RGB
+        {
+            x := .R
+            @assert(x == RGB.R)
+            @assert(x == .R)
+        }
+    }
+
     // Or an affect statement
     {
         var pt: Point

@@ -16,38 +16,50 @@ bool SyntaxJob::doWith(AstNode* parent, AstNode** result)
         *result = node;
     AstNode* id = nullptr;
 
-    SWAG_CHECK(doAffectExpression(node, &id));
-
-    if (id->kind != AstNodeKind::IdentifierRef &&
-        id->kind != AstNodeKind::VarDecl &&
-        id->kind != AstNodeKind::AffectOp)
-        return error(node->token, Err(Err0483));
-
-    id->allocateExtension();
-    if (id->kind == AstNodeKind::IdentifierRef)
+    if (token.id == TokenId::KwdVar)
     {
-        SWAG_ASSERT(!id->extension->semanticAfterFct);
-        id->extension->semanticAfterFct = SemanticJob::resolveWith;
-        for (int i = 0; i < id->childs.size(); i++)
-            node->id.push_back(id->childs[i]->token.text);
-    }
-    else if (id->kind == AstNodeKind::VarDecl)
-    {
+        SWAG_CHECK(doVarDecl(node, &id));
+        SWAG_VERIFY(id->kind == AstNodeKind::VarDecl, error(id->childs.front(), Err(Err0487)));
         SWAG_ASSERT(id->extension->semanticAfterFct == SemanticJob::resolveVarDeclAfter);
         id->extension->semanticAfterFct = SemanticJob::resolveWithVarDeclAfter;
         node->id.push_back(id->token.text);
     }
-    else if (id->kind == AstNodeKind::AffectOp)
-    {
-        id = id->childs.front();
-        SWAG_ASSERT(id->extension->semanticAfterFct == SemanticJob::resolveAfterAffectLeft);
-        id->extension->semanticAfterFct = SemanticJob::resolveWithAfterAffectLeft;
-        for (int i = 0; i < id->childs.size(); i++)
-            node->id.push_back(id->childs[i]->token.text);
-    }
     else
     {
-        SWAG_ASSERT(false);
+        SWAG_CHECK(doAffectExpression(node, &id));
+
+        SWAG_VERIFY(id->kind != AstNodeKind::StatementNoScope, error(id->childs.front(), Err(Err0487)));
+        if (id->kind != AstNodeKind::IdentifierRef &&
+            id->kind != AstNodeKind::VarDecl &&
+            id->kind != AstNodeKind::AffectOp)
+            return error(node->token, Err(Err0483));
+
+        id->allocateExtension();
+        if (id->kind == AstNodeKind::IdentifierRef)
+        {
+            SWAG_ASSERT(!id->extension->semanticAfterFct);
+            id->extension->semanticAfterFct = SemanticJob::resolveWith;
+            for (int i = 0; i < id->childs.size(); i++)
+                node->id.push_back(id->childs[i]->token.text);
+        }
+        else if (id->kind == AstNodeKind::VarDecl)
+        {
+            SWAG_ASSERT(id->extension->semanticAfterFct == SemanticJob::resolveVarDeclAfter);
+            id->extension->semanticAfterFct = SemanticJob::resolveWithVarDeclAfter;
+            node->id.push_back(id->token.text);
+        }
+        else if (id->kind == AstNodeKind::AffectOp)
+        {
+            id = id->childs.front();
+            SWAG_ASSERT(id->extension->semanticAfterFct == SemanticJob::resolveAfterAffectLeft);
+            id->extension->semanticAfterFct = SemanticJob::resolveWithAfterAffectLeft;
+            for (int i = 0; i < id->childs.size(); i++)
+                node->id.push_back(id->childs[i]->token.text);
+        }
+        else
+        {
+            SWAG_ASSERT(false);
+        }
     }
 
     SWAG_CHECK(doEmbeddedStatement(node));

@@ -152,12 +152,15 @@ private impl FileDlg
     {
         listCtrl.clear()
 
-        var options: EnumerationOptions
-        options.matchPattern = "*.*"
-        options.skipAttributes = .Hidden
-        options.wantFiles = dlgOptions.mode != .SelectFolder
-        options.wantDirectories = true
-        options.recurse = false
+        with var options: EnumerationOptions
+        {
+            .matchPattern = "*.*"
+            .skipAttributes = .Hidden
+            .wantFiles = dlgOptions.mode != .SelectFolder
+            .wantDirectories = true
+            .recurse = false
+        }
+
         curList = catch Directory.enumerate(curFolder, options)
 
         item := comboType.getSelectedItem()
