@@ -50,14 +50,16 @@ struct QuickWnd
 
 impl IWnd for QuickWnd
 {
-    mtd onPaintEvent(evt: *PaintEvent)
-    {
-    }
-
     mtd onMouseEvent(evt: *MouseEvent)
     {
         if evt.kind == .MousePressed and evt.button == .Right
+        {
             btnPopup(null, evt.surfacePos)
+            evt.accepted = true
+            return
+        }
+
+        scrollWnd.IWnd.onMouseEvent(evt)
     }
 
     mtd onSerializeStateEvent(evt: *SerializeStateEvent)
@@ -109,13 +111,17 @@ impl QuickWnd
 
     func create(parent: *Wnd)->*QuickWnd
     {
-        quick := Wnd.create'QuickWnd(parent, @{0, 0, 0, 300})
-        quick.backgroundStyle = .Window
+        with quick := Wnd.create'QuickWnd(parent, @{0, 0, 0, 300})
+        {
+            .backgroundStyle = .Window
+            .scrollWndFlags |= .ForceVertical | .SmallBar | .TransparentBar
 
-        quick.layout = WrapLayoutCtrl.create(quick)
-        quick.layout.padding = 6
-        quick.layout.spacing = 10
-        quick.setView(quick.layout)
+            .layout = WrapLayoutCtrl.create(quick)
+            .layout.padding = 6
+            .layout.spacing = 6
+            .setView(quick.layout)
+        }
+
         return quick
     }
 
@@ -564,6 +570,9 @@ impl QuickWnd
         btn1.style.addStyleSheetColors("btnIcon_HotBk       $hilightLight")
         btn1.style.addStyleSheetColors("btnIcon_PressedBk   $hilightDark")
         btn1.setForm(.Round)
+
+        layout.sendResizeEvent()
+        setScrollSize(0, layout.resultHeight)
 
         btn1.sigPressed += @|self, main|(btn) {
             mode := main.getEditMode()

@@ -41,6 +41,9 @@ impl Button
         pos := surfaceToLocal(evt.surfacePos)
         switch evt.kind
         {
+        case MouseWheel:
+            evt.accepted = false
+
         case MouseEnter:
             isHot, isIn = true
             invalidate()

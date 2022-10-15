@@ -7,6 +7,7 @@ struct WrapLayoutCtrl
     spacing:        f32 = 5
     wrapWidth:      f32 = 64
     wrapHeight:     f32 = 64
+    resultHeight:   f32
 }
 
 impl IWnd for WrapLayoutCtrl
@@ -27,6 +28,7 @@ impl IWnd for WrapLayoutCtrl
         {
             if c.wndFlags & .Hidden
                 continue
+            resultHeight = y + wrapHeight
             rect := Math.Rectangle{x, y, wrapWidth, wrapHeight}
             c.setPosition(rect)
             x += wrapWidth + spacing
