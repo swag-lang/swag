@@ -10,15 +10,19 @@ enum SplitterFlags
 
 struct SplitterItem
 {
-    view:       *Wnd
-    size:       f32
-    minSize:    f32 = 5
+    view:               *Wnd
+    size:               f32
+    minSize:            f32 = 5
+    maxSize:            f32 = 0
+    label:              *Label
+    tryPreserveSize:    bool
 }
 
 struct SplitterCtrl
 {
     using frameWnd: FrameWnd
     splitViewFlags  = SplitterFlags.None
+    titleSize:      f32 = 30
 
     items:          ArrayPtr'SplitterItem
     correctMoving:  f32
@@ -56,6 +60,8 @@ impl IWnd for SplitterCtrl
                     diff := local.x - (rect.x + correctMoving)
                     setPaneSize(hotIdx, items[hotIdx].size + diff)
                 }
+
+                invalidate()
             }
             else
             {
@@ -93,11 +99,6 @@ impl IWnd for SplitterCtrl
 
     mtd onResizeEvent(evt: *ResizeEvent)
     {
-        pane0 := childs.count > 0 ? childs[0] : null
-        pane1 := childs.count > 1 ? childs[1] : null
-        if !pane0
-            return
-
         computeLayout()
 
         client := getClientRectPadding()
@@ -111,6 +112,17 @@ impl IWnd for SplitterCtrl
             {
                 paneRect := Math.Rectangle{client.x, y, client.width, item.size}
                 paneRect.applyPadding(item.view.margin)
+
+                if item.label
+                {
+                    labelRect := paneRect
+                    labelRect.height = titleSize
+                    item.label.setPosition(labelRect)
+
+                    paneRect.y += titleSize
+                    paneRect.height -= titleSize
+                }
+
                 item.view.setPosition(paneRect)
                 y += item.size + barSize
             }
@@ -118,6 +130,17 @@ impl IWnd for SplitterCtrl
             {
                 paneRect := Math.Rectangle{x, client.y, item.size, client.height}
                 paneRect.applyPadding(item.view.margin)
+
+                if item.label
+                {
+                    labelRect := paneRect
+                    labelRect.width = titleSize
+                    item.label.setPosition(labelRect)
+
+                    paneRect.x += titleSize
+                    paneRect.width -= titleSize
+                }
+
                 item.view.setPosition(paneRect)
                 x += item.size + barSize
             }
@@ -126,6 +149,9 @@ impl IWnd for SplitterCtrl
 
     mtd onPostPaintEvent(evt: *PaintEvent)
     {
+        if !items.count
+            return
+
         painter := evt.bc.painter
         theme   := getTheme()
         rects   := getThemeRects()
@@ -140,19 +166,11 @@ impl IWnd for SplitterCtrl
             if isVertical()
             {
                 rectBar := isHot ? &rects.splitView_HorzBarHotBk : &rects.splitView_HorzBarBk
-                /*rect.x -= padding.x
-                rect.width += padding.x + padding.z
-                rect.x += 1
-                rect.width -= 2*/
                 theme.drawSubRect(painter, rect, rectBar, colorBar)
             }
             else
             {
                 rectBar := isHot ? &rects.splitView_VertBarHotBk : &rects.splitView_VertBarBk
-                /*rect.y -= padding.y
-                rect.height += padding.y + padding.w
-                rect.y += 1
-                rect.height -= 2*/
                 theme.drawSubRect(painter, rect, rectBar, colorBar)
             }
         }
@@ -166,29 +184,74 @@ private impl SplitterCtrl
     mtd computeLayout()
     {
         rect    := getClientRectPadding()
+        if rect.width <= items.count or rect.height <= items.count
+            return
+
         barSize := getThemeMetrics().splitView_BarSize
 
-        // Compute the current total sizes of panes
         var dispatch: f32
         if items.count > 0
         {
+            // Compute the current total sizes of panes
+            countNotPreserve, countPreserve := 0
             totalSize := 0'f32
             visit item, idx: items
-                totalSize += item.size
-            totalSize += cast(f32) ((items.count - 1) * barSize)
-            if isVertical()
-                dispatch = cast(f32) (totalSize - rect.height)
-            else
-                dispatch = cast(f32) (totalSize - rect.width)
-
-            diff := cast(f32) Math.round(dispatch / items.count)
-            visit item, idx: items
             {
-                if idx == items.count - 1
-                    item.size -= dispatch
-                else
-                    item.size -= diff
-                dispatch -= diff
+                totalSize += item.size
+                countPreserve += item.tryPreserveSize ? 1 : 0
+                countNotPreserve += item.tryPreserveSize ? 0 : 1
+            }
+
+            totalSize += cast(f32) ((items.count - 1) * barSize)
+
+            // Compute the size to adapt
+            if isVertical()
+                dispatch = cast(f32) (rect.height - totalSize)
+            else
+                dispatch = cast(f32) (rect.width - totalSize)
+
+            // Dispatch the size change first to all panoes not marked as 'tryPreserveSize'
+            if countNotPreserve
+            {
+                diff := cast(f32) Math.round(dispatch / countNotPreserve)
+                visit item, idx: items
+                {
+                    if item.tryPreserveSize
+                        continue
+
+                    countNotPreserve -= 1
+
+                    realDiff := countNotPreserve ? diff : dispatch
+                    if item.maxSize > 0 and realDiff > 0 and item.size + realDiff > item.maxSize
+                        realDiff = item.maxSize - item.size
+                    elif realDiff < 0 and item.size + realDiff < item.minSize
+                        realDiff = item.minSize - item.size
+
+                    item.size += realDiff
+                    dispatch -= realDiff
+                }
+            }
+
+            // Dispatch the rest between panes that try to preserved their size
+            if countPreserve
+            {
+                diff := cast(f32) Math.round(dispatch / countPreserve)
+                visit item, idx: items
+                {
+                    if !item.tryPreserveSize
+                        continue
+
+                    countPreserve -= 1
+
+                    realDiff := countNotPreserve ? diff : dispatch
+                    if item.maxSize > 0 and realDiff > 0 and item.size + realDiff > item.maxSize
+                        realDiff = item.maxSize - item.size
+                    elif realDiff < 0 and item.size + realDiff < item.minSize
+                        realDiff = item.minSize - item.size
+
+                    item.size += realDiff
+                    dispatch -= realDiff
+                }
             }
         }
 
@@ -275,6 +338,11 @@ private impl SplitterCtrl
             diff = otherPane.size - otherPane.minSize
             otherPane.size = otherPane.minSize
         }
+        elif otherPane.maxSize > 0 and otherPane.size + diff > otherPane.maxSize
+        {
+            diff = otherPane.maxSize - otherPane.size
+            otherPane.size = otherPane.maxSize
+        }
         else
         {
             otherPane.size -= diff
@@ -305,12 +373,24 @@ impl SplitterCtrl
     mtd isVertical() => cast(bool) (splitViewFlags & .Vertical)
 
     // Add a new pane
-    mtd addPane(pane: *Wnd, paneSize: f32 = 100)
+    #[Swag.Discardable]
+    mtd addPane(pane: *Wnd, paneSize: f32 = 100, title = false)->*SplitterItem
     {
         pane.setParent(self)
 
         item := items.newPtr()
         item.view = pane
+        if title
+        {
+            with label := Label.create(self, "")
+            {
+                .backgroundStyle = .Window
+                .style.addStyleSheetColors("wnd_Bk $dlg_BtnBarBk")
+            }
+
+            item.label = label
+        }
+
         items.add(item)
 
         if items.count == 1
@@ -325,6 +405,8 @@ impl SplitterCtrl
         {
             setPaneSize(cast(u32) items.count - 1, paneSize)
         }
+
+        return item
     }
 
     // Set the pane size (size of the first view)

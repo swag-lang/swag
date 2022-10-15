@@ -308,6 +308,7 @@ struct ThemeColors
     headerItem_Separator:           Color = Color.getLighter(Color.fromArgb(Gray4), 0.2)
     header_Bk:                      Color = Gray4
 
+    splitView_TitleBk:              Color = Gray6
     splitView_Bar:                  Color = Gray4
     splitView_BarHot:               Color = Blue
 

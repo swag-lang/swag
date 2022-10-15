@@ -34,7 +34,7 @@ struct MainWnd
     recentWnd:      *RecentWnd
     recentBar:      *Wnd
     recentSizeBar:  *IconBar
-    quickStyleBar:  *StackLayoutCtrl
+    quickStyleBar:  *SplitterCtrl
     editZoomBar:    *StackLayoutCtrl
 
     editMode:       EditMode = .Shape
@@ -940,17 +940,10 @@ impl MainWnd
         }
 
         // Right bar
-        with res.quickStyleBar = StackLayoutCtrl.create(res, .Top, @{0, 0, 300, 0})
+        with res.quickStyleBar = SplitterCtrl.create(res, @{0, 0, 300, 600}, vertical: true)
         {
             .dockStyle = .Right
             .backgroundStyle = .Window
-            .spacing = 0
-        }
-
-        with label0 := Label.create(res.quickStyleBar, "Quick Styles", @{0, 0, 0, 30})
-        {
-            .backgroundStyle = .Window
-            .style.addStyleSheetColors("wnd_Bk $dlg_BtnBarBk")
         }
 
         with res.quickWnd = QuickWnd.create(res.quickStyleBar)
@@ -958,18 +951,20 @@ impl MainWnd
             .main = res
         }
 
-        with label1 := Label.create(res.quickStyleBar, "Tool Properties", @{0, 0, 0, 30})
-        {
-            .backgroundStyle = .Window
-            .style.addStyleSheetColors("wnd_Bk $dlg_BtnBarBk")
-        }
-
-        with res.propWnd = Wnd.create'PropWnd(res.quickStyleBar, @{0, 0, 0, 300})
+        with res.propWnd = Wnd.create'PropWnd(res.quickStyleBar)
         {
             .main = res
             .backgroundStyle = .Window
             .layoutKind = .TopAutoSize
         }
+
+        item := res.quickStyleBar.addPane(res.quickWnd, title: true)
+        item.tryPreserveSize = true
+        item.label.setText("Quick Styles")
+        item = res.quickStyleBar.addPane(res.propWnd, title: true)
+        item.label.setText("Tool Properties")
+
+        res.quickStyleBar.setPaneSize(0, 300)
 
         // Bottom bar
         with res.editZoomBar = StackLayoutCtrl.create(res, .HorzCenter, @{0, 0, 300, 32})
