@@ -174,7 +174,7 @@ impl IForm for FormPolygon
             gizmo.anchors.clear()
             visit pt: paintPoints
                 gizmo.anchors.add(dref pt)
-            gizmo.paint(painter, flags & .Selected ? false : true)
+            gizmo.paint(null, painter, flags & .Selected ? false : true)
         }
     }
 
@@ -215,7 +215,7 @@ impl IForm for FormPolygon
         return count & 1 ? true : false
     }
 
-    mtd paint(painter: *Painter, z: f32, quickMode: bool)
+    mtd paint(app: *Application, painter: *Painter, z: f32, quickMode: bool)
     {
         bSize := adaptSize(borderSize, MinBorderSize, MaxBorderSize, z, quickMode)
         computePaintCoords(z)

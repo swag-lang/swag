@@ -1,44 +1,31 @@
-enum FormShapeKind
-{
-    Ellipse
-    Rectangle
-    RoundRectangle
-}
-
-struct FormShape
+struct FormImage
 {
     using base: BaseForm
-    kind:   FormShapeKind = Ellipse
+    image: Image
 
     #[Serialization.NoSerialize]
     {
-        gizmo: GizmoRect
+        texture:    Texture
+        gizmo:      GizmoRect
     }
 }
 
-impl IForm for FormShape
+impl IForm for FormImage
 {
     mtd isSame(ptr: *BaseForm)->bool
     {
-        other := cast(*FormShape) ptr
-        return  borderColor == other.borderColor and
-                borderSize  == other.borderSize and
-                backColor   == other.backColor and
-                alpha       == other.alpha and
-                kind        == other.kind and
-                dashStyle   == other.dashStyle
+        return false
     }
 
     mtd copy(dst, src: *BaseForm)
     {
-        dstf := cast(*FormShape) dst
-        srcf := cast(*FormShape) src
+        dstf := cast(*FormImage) dst
+        srcf := cast(*FormImage) src
         dstf.borderColor = srcf.borderColor
         dstf.borderSize  = srcf.borderSize
         dstf.backColor   = srcf.backColor
         dstf.alpha       = srcf.alpha
-        dstf.kind        = srcf.kind
-        dstf.dashStyle   = srcf.dashStyle
+        dstf.image       = srcf.image
     }
 
     mtd edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
@@ -117,23 +104,10 @@ impl IForm for FormShape
 
     mtd hitTest(pt: Math.Point, z: f32)->bool
     {
-        switch kind
-        {
-        case Ellipse:
-            pos := Math.Vector2{pt.x, pt.y}
-            cen := Math.Vector2{paintPos.horzCenter(), paintPos.vertCenter()}
-            if !pos.isInEllipse(cen, paintPos.width * 0.5, paintPos.height * 0.5)
-                return false
-            if backColor.a == 0 and pos.isInEllipse(cen, (paintPos.width * 0.5) - (2*borderSize), (paintPos.height * 0.5) - (2*borderSize))
-                return false
-
-        case Rectangle, RoundRectangle:
-            rect := paintPos
-            rect.inflate(-2*borderSize)
-            if backColor.a == 0 and rect.contains(pt)
-                return false
-        }
-
+        rect := paintPos
+        rect.inflate(-2*borderSize)
+        if backColor.a == 0 and rect.contains(pt)
+            return false
         return true
     }
 
@@ -141,34 +115,21 @@ impl IForm for FormShape
     {
         bSize := adaptSize(borderSize, MinBorderSize, MaxBorderSize, z, quickMode)
         pp    := Math.Rectangle{0, 0, paintPos.width, paintPos.height}
-        pen   := Pen.createDash(dashStyle, borderColor, bSize)
+        pen   := Pen.createSolid(borderColor, bSize)
 
-        #[Swag.Complete]
-        switch kind
+        if !texture.isValid()
+            texture = app.getRenderer().addImage(image)
+
+        if borderColor.a and (pp.width <= 2*bSize or pp.height < 2*bSize)
+            painter.fillRect(pp, borderColor)
+        else
         {
-        case Ellipse:
-            sizeX := pp.width * 0.5
-            sizeY := pp.height * 0.5
-            painter.fillEllipse(pp.x + sizeX, pp.y + sizeY, sizeX, sizeY, backColor)
-            if bSize >= 1
-                painter.drawEllipse(pp.x + sizeX, pp.y + sizeY, sizeX - bSize * 0.5, sizeY - bSize * 0.5, pen)
+            painter.fillRect(pp, backColor)
 
-        case Rectangle:
-            if borderColor.a and (pp.width <= 2*bSize or pp.height < 2*bSize)
-                painter.fillRect(pp, borderColor)
-            else
-            {
-                painter.fillRect(pp, backColor)
-                pp.inflate(-bSize * 0.5)
-                painter.drawRect(pp, pen)
-            }
+            painter.drawTexture(pp, texture)
 
-        case RoundRectangle:
             pp.inflate(-bSize * 0.5)
-            round := Math.max(bSize, 10)
-            painter.fillRoundRect(pp, round, round, backColor)
-            if bSize >= 1
-                painter.drawRoundRect(pp, round, round, pen)
+            painter.drawRect(pp, pen)
         }
     }
 

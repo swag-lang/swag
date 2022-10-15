@@ -123,7 +123,7 @@ impl IForm for FormLine
             computePaintCoords(z)
             gizmo.anchors[0] = @{x0, y0}
             gizmo.anchors[1] = @{x1, y1}
-            gizmo.paint(painter, flags & .Selected ? false : true)
+            gizmo.paint(null, painter, flags & .Selected ? false : true)
         }
     }
 
@@ -149,7 +149,7 @@ impl IForm for FormLine
         return true
     }
 
-    mtd paint(painter: *Painter, z: f32, quickMode: bool)
+    mtd paint(app: *Application, painter: *Painter, z: f32, quickMode: bool)
     {
         bSize := adaptSize(borderSize, MinBorderSize, MaxBorderSize, z, quickMode)
         computePaintCoords(z)

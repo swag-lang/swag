@@ -193,7 +193,7 @@ impl IForm for FormDraw
         return false
     }
 
-    mtd paint(painter: *Painter, z: f32, quickMode: bool)
+    mtd paint(app: *Application, painter: *Painter, z: f32, quickMode: bool)
     {
         bSize := adaptSize(borderSize, MinBorderSize, MaxBorderSize, z, quickMode)
         computePaintCoords(z)

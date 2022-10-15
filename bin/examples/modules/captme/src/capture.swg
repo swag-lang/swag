@@ -199,19 +199,33 @@ impl Capture
 
     mtd paste()
     {
-        arr := Clipboard.getData(editView.main.clipFmt)
-        if !arr.count
-            return
-
         var decode: Decoder'Read.TagBin
         var res:    Array'IForm
 
-        catch decode.start(arr.toSlice())
-        if @err return
-        catch decode.readValue(&res, Array'IForm)
-        if @err or !res.count return
-        catch decode.end()
-        if @err return
+        arr := Clipboard.getData(editView.main.clipFmt)
+        if arr.count
+        {
+            catch decode.start(arr.toSlice())
+            if @err return
+            catch decode.readValue(&res, Array'IForm)
+            if @err or !res.count return
+            catch decode.end()
+            if @err return
+        }
+        else
+        {
+            img := Clipboard.getImage()
+            if img.isValid()
+            {
+                formImg := Memory.new'FormImage()
+                formImg.w = img.width
+                formImg.h = img.height
+                formImg.image = img
+                res.add(cast(IForm) formImg)
+            }
+            else
+                return
+        }
 
         undo := newUndo(.CreateForm)
         selection.clear()
@@ -280,7 +294,7 @@ impl Capture
         painter.bindRenderTarget(rt, true)
         painter.setParams(.Antialiased)
         painter.clear(Argb.Zero)
-        f.paint(painter, zoom, quickMode)
+        f.paint(app, painter, zoom, quickMode)
         painter.unbindRenderTarget()
 
         const Margin = 8
@@ -958,7 +972,7 @@ impl Capture
             #[Swag.Complete]
             switch t
             {
-            case FormShape:
+            case FormShape, FormImage:
                 main.favoriteMdl = main.mdlFormShape
             case FormArrow:
                 main.favoriteMdl = main.mdlFormArrow
@@ -977,7 +991,7 @@ impl Capture
             #[Swag.Complete]
             switch t
             {
-            case FormShape:
+            case FormShape, FormImage:
                 main.editMode = .Shape
             case FormArrow:
                 main.editMode = .Arrow
@@ -1027,6 +1041,9 @@ impl Capture
         case FormDraw:
             b := cast(*FormDraw) @dataof(f)
             editView.main.mdlFormDraw = dref b
+
+        case FormImage:
+            break
         }
     }
 

@@ -246,7 +246,7 @@ impl IWnd for MainWnd
 
         case CmdIdPaste:
             evt.setFlags |= .Disabled | .Name
-            evt.disabled = !capture or !Clipboard.hasFormat(clipFmt)
+            evt.disabled = !capture or (!Clipboard.hasFormat(clipFmt) and !Clipboard.hasImage())
             evt.name = "Paste"
             evt.accepted = true
 

@@ -75,7 +75,7 @@ impl GizmoPoints
         return false
     }
 
-    mtd paint(painter: *Painter, hot: bool)
+    mtd paint(app: *Application, painter: *Painter, hot: bool)
     {
         anchorSize2 := anchorSize * 0.5
         color := Color.getBlend(Argb.Black, Argb.White, hot ? 0.8 : 1)
