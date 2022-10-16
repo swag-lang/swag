@@ -327,27 +327,45 @@ private impl SplitterCtrl
         reqSize := Math.max(curPane.minSize, newSize)
         if curPane.maxSize > 0
             reqSize = Math.min(curPane.maxSize, reqSize)
-        diff     := reqSize - curPane.size
+
+        diff := reqSize - curPane.size
         if items.count == 1
         {
             curPane.size += diff
             return
         }
 
-        otherPane := idx == items.count - 1 ? items[idx - 1] : items[idx + 1]
-        if diff > 0 and otherPane.size - diff < otherPane.minSize
+        scanLeft := idx == items.count - 1
+        i := cast(s32) idx
+
+        loop
         {
-            diff = otherPane.size - otherPane.minSize
-            otherPane.size = otherPane.minSize
-        }
-        elif diff < 0 and otherPane.maxSize > 0 and otherPane.size - diff > otherPane.maxSize
-        {
-            diff = otherPane.maxSize - otherPane.size
-            otherPane.size = otherPane.maxSize
-        }
-        else
-        {
-            otherPane.size -= diff
+            if scanLeft and i == 0
+                break
+            if !scanLeft and i == items.count - 1
+                break
+
+            otherPane := scanLeft ? items[i - 1] : items[i + 1]
+            i += scanLeft ? -1 : 1
+
+            realDiff := diff
+            if realDiff > 0 and otherPane.size - realDiff < otherPane.minSize
+            {
+                realDiff = otherPane.size - otherPane.minSize
+                otherPane.size = otherPane.minSize
+            }
+            elif realDiff < 0 and otherPane.maxSize > 0 and otherPane.size - realDiff > otherPane.maxSize
+            {
+                realDiff = otherPane.maxSize - otherPane.size
+                otherPane.size = otherPane.maxSize
+            }
+            else
+            {
+                otherPane.size -= realDiff
+                break
+            }
+
+            diff -= realDiff
         }
 
         curPane.size += diff
