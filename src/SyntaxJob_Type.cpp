@@ -406,6 +406,8 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
         {
             if (contextFlags & CONTEXT_FLAG_EXPRESSION)
             {
+                if (inTypeVarDecl)
+                    return sourceFile->report({sourceFile, rightSquareToken, Err(Err0561)});
                 Diagnostic diag{sourceFile, rightSquareToken, Err(Err0561)};
                 Diagnostic note{sourceFile, leftSquareToken, Hlp(Hlp0002), DiagnosticLevel::Help};
                 return sourceFile->report(diag, &note);
@@ -416,12 +418,31 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
             }
         }
 
+        if (token.id == TokenId::SymLeftSquare)
+        {
+            if (node->typeFlags & TYPEFLAG_ISSLICE)
+            {
+                Diagnostic diag{sourceFile, token, Fmt(Err(Err0527), token.ctext())};
+                Diagnostic note{sourceFile, leftSquareToken, Hlp(Hlp0025), DiagnosticLevel::Help};
+                return sourceFile->report(diag, &note);
+            }
+            else
+            {
+                Diagnostic diag{sourceFile, token, Fmt(Err(Err0526), token.ctext())};
+                Diagnostic note{sourceFile, leftSquareToken, Hlp(Hlp0024), DiagnosticLevel::Help};
+                return sourceFile->report(diag, &note);
+            }
+        }
+
         if (g_TokenFlags[(int) token.id] & TOKEN_SYM &&
             token.id != TokenId::SymComma &&
             token.id != TokenId::SymLeftCurly &&
             token.id != TokenId::SymAsterisk &&
             token.id != TokenId::SymCircumflex)
         {
+            if (inTypeVarDecl)
+                return sourceFile->report({sourceFile, token, Fmt(Err(Err0343), token.ctext())});
+
             Diagnostic diag{sourceFile, token, Fmt(Err(Err0343), token.ctext())};
             Diagnostic note{sourceFile, leftSquareToken, Hlp(Hlp0002), DiagnosticLevel::Help};
             return sourceFile->report(diag, &note);

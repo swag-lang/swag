@@ -22,6 +22,8 @@ SWAG_ERROR(Hlp0020, "`@mixin` should only be used inside a `Swag.Mixin` function
 SWAG_ERROR(Hlp0021, "a generic argument must be either a value or a type")
 SWAG_ERROR(Hlp0022, "this kind of constant does not have an associated memory storage")
 SWAG_ERROR(Hlp0023, "valid modes are `defer(err)` and `defer(noerr)`")
+SWAG_ERROR(Hlp0024, "to declare a multi dimensional array, syntax is [N1, N2, ...] and not [N1[N2][...]")
+SWAG_ERROR(Hlp0025, "you cannot declare a slice or a static array of another slice or array")
 
 
 
