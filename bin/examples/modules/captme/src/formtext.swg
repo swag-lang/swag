@@ -189,11 +189,14 @@ impl IForm for FormText
     {
         capture = capt
 
-        gizmo.roundShape = true
-        gizmo.anchorSize = 10
-        gizmo.trackChange = true
-        gizmo.paintSimpleBorder = false
-        gizmo.paintBigBorder = true
+        with gizmo
+        {
+            .roundShape = true
+            .anchorSize = 10
+            .trackChange = true
+            .paintSimpleBorder = false
+            .paintBigBorder = true
+        }
 
         gizmo.sigChanged = @|self|(g, first, hitMove) {
             g.apply(self, first, hitMove)
