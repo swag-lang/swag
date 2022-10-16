@@ -6,6 +6,7 @@ enum SplitterFlags
 {
     None
     Vertical
+    HideBars
 }
 
 struct SplitterItem
@@ -21,7 +22,7 @@ struct SplitterItem
 struct SplitterCtrl
 {
     using frameWnd: FrameWnd
-    splitViewFlags  = SplitterFlags.None
+    splitterFlags   = SplitterFlags.None
     titleSize:      f32 = 30
 
     items:          ArrayPtr'SplitterItem
@@ -161,17 +162,19 @@ impl IWnd for SplitterCtrl
         {
             rect := getBarRect(cast(u32) idx)
             isHot := hotIdx == idx
-            colorBar := isHot ? colors.splitView_BarHot : colors.splitView_Bar
-
-            if isVertical()
+            if isHot or !(splitterFlags & .HideBars)
             {
-                rectBar := isHot ? &rects.splitView_HorzBarHotBk : &rects.splitView_HorzBarBk
-                theme.drawSubRect(painter, rect, rectBar, colorBar)
-            }
-            else
-            {
-                rectBar := isHot ? &rects.splitView_VertBarHotBk : &rects.splitView_VertBarBk
-                theme.drawSubRect(painter, rect, rectBar, colorBar)
+                colorBar := isHot ? colors.splitView_BarHot : colors.splitView_Bar
+                if isVertical()
+                {
+                    rectBar := isHot ? &rects.splitView_HorzBarHotBk : &rects.splitView_HorzBarBk
+                    theme.drawSubRect(painter, rect, rectBar, colorBar)
+                }
+                else
+                {
+                    rectBar := isHot ? &rects.splitView_VertBarHotBk : &rects.splitView_VertBarBk
+                    theme.drawSubRect(painter, rect, rectBar, colorBar)
+                }
             }
         }
 
@@ -384,13 +387,13 @@ impl SplitterCtrl
         res.focusStrategy = .None
         res.wndFlags |= .PostChildsPaint
         if vertical
-            res.splitViewFlags |= .Vertical
+            res.splitterFlags |= .Vertical
         return res
     }
 
 
     #[Swag.Inline]
-    mtd isVertical() => cast(bool) (splitViewFlags & .Vertical)
+    mtd isVertical() => cast(bool) (splitterFlags & .Vertical)
 
     // Add a new pane
     #[Swag.Discardable]

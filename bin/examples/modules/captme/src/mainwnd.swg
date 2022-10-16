@@ -945,6 +945,7 @@ impl MainWnd
         with res.quickStyleBar = SplitterCtrl.create(res, @{0, 0, 300, 600}, vertical: true)
         {
             .dockStyle = .Right
+            .splitterFlags |= .HideBars
             .backgroundStyle = .Window
         }
 
