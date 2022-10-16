@@ -153,11 +153,6 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
 
     ptrType->pointedType = typeInfo;
     ptrType->sizeOf      = sizeof(void*);
-    ptrType->computeName();
-
-    // Taking the address of a const is const
-    if (child->flags & AST_IS_CONST)
-        ptrType->setConst();
 
     // :PointerArithmetic
     // Taking the address of an array element is ok for pointer arithmetic
@@ -167,6 +162,12 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
         if (last->kind == AstNodeKind::ArrayPointerIndex)
             ptrType = (TypeInfoPointer*) g_TypeMgr->asPointerArithmetic(ptrType);
     }
+
+    ptrType->computeName();
+
+    // Taking the address of a const is const
+    if (child->flags & AST_IS_CONST)
+        ptrType->setConst();
 
     // Type is constant if we take address of a readonly variable
     if (child->resolvedSymbolOverload)

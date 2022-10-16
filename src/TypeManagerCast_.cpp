@@ -3686,7 +3686,6 @@ TypeInfo* TypeManager::asPointerArithmetic(TypeInfo* typeInfo)
         return typeInfo;
     typeInfo = typeInfo->clone();
     typeInfo->flags |= TYPEINFO_POINTER_ARITHMETIC;
-    typeInfo->forceComputeName();
     return typeInfo;
 }
 
