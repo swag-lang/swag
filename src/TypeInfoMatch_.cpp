@@ -3,6 +3,7 @@
 #include "Ast.h"
 #include "Module.h"
 #include "SemanticJob.h"
+#include "Generic.h"
 
 static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoParam*>& parameters, uint32_t forceCastFlags = 0)
 {
@@ -91,6 +92,39 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
         context.semContext->castErrorToType   = nullptr;
         context.semContext->castErrorFromType = nullptr;
         context.semContext->castErrorFlags    = 0;
+
+        // If we are in a generic context, we need to be sure that this will create a valid type
+        if (context.genericReplaceTypes.size())
+        {
+            bool      invalidType      = false;
+            TypeInfo* concreteTypeInfo = nullptr;
+            switch (wantedTypeInfo->kind)
+            {
+            case TypeInfoKind::Slice:
+            {
+                concreteTypeInfo = Generic::doTypeSubstitution(context.genericReplaceTypes, wantedTypeInfo);
+                auto typeSlice   = CastTypeInfo<TypeInfoSlice>(concreteTypeInfo, TypeInfoKind::Slice);
+                if (typeSlice->pointedType->kind == TypeInfoKind::Array)
+                {
+                    invalidType = true;
+                }
+                break;
+            }
+            }
+
+            if (invalidType)
+            {
+                if (context.result == MatchResult::Ok)
+                {
+                    context.badSignatureInfos.badSignatureParameterIdx  = i;
+                    context.badSignatureInfos.badSignatureRequestedType = concreteTypeInfo;
+                    context.badSignatureInfos.badSignatureGivenType     = wantedTypeInfo;
+                    SWAG_ASSERT(context.badSignatureInfos.badSignatureRequestedType);
+                }
+
+                context.result = MatchResult::BadGenericType;
+            }
+        }
 
         bool same = TypeManager::makeCompatibles(context.semContext, wantedTypeInfo, callTypeInfo, nullptr, nullptr, castFlags);
         if (context.semContext->result != ContextResult::Done)

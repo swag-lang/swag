@@ -214,7 +214,8 @@ TypeInfo* Generic::doTypeSubstitution(map<Utf8, TypeInfo*>& replaceTypes, TypeIn
             typeArray              = CastTypeInfo<TypeInfoArray>(typeArray->clone(), TypeInfoKind::Array);
             typeArray->pointedType = newPointedType;
             typeArray->finalType   = newFinalType;
-            typeArray->removeGenericFlag();
+            if (typeArray->count)
+                typeArray->removeGenericFlag();
             typeArray->forceComputeName();
             return typeArray;
         }
