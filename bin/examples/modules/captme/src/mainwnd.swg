@@ -76,6 +76,8 @@ impl IWnd for MainWnd
                 .serialize("MainWnd.snap", &snap)
                 .serialize("MainWnd.bottomSize", &bottomSize)
                 .serialize("MainWnd.fileDlgState", &fileDlgState)
+                .serialize("MainWnd.RightBar.Pane0", &quickStyleBar.items[0].size)
+                .serialize("MainWnd.RightBar.Pane1", &quickStyleBar.items[1].size)
             }
         }
 

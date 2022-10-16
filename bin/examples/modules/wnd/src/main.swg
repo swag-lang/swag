@@ -39,7 +39,7 @@ var app: Application
     createView5(tab, view5)
     createView6(tab, view6)
 
-    tab.select(0)
+    tab.select(5)
     surface0.show()
 
     //surface1 := try app.createSurface(100+W+10, 100, W, H, SurfaceFlags.Secondary | SurfaceFlags.SmallCaption | SurfaceFlags.CloseBtn)

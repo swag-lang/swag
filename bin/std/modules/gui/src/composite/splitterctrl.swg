@@ -324,7 +324,9 @@ private impl SplitterCtrl
     {
         curPane := items[idx]
 
-        reqSize  := Math.max(curPane.minSize, newSize)
+        reqSize := Math.max(curPane.minSize, newSize)
+        if curPane.maxSize > 0
+            reqSize = Math.min(curPane.maxSize, reqSize)
         diff     := reqSize - curPane.size
         if items.count == 1
         {
@@ -333,12 +335,12 @@ private impl SplitterCtrl
         }
 
         otherPane := idx == items.count - 1 ? items[idx - 1] : items[idx + 1]
-        if otherPane.size - diff < otherPane.minSize
+        if diff > 0 and otherPane.size - diff < otherPane.minSize
         {
             diff = otherPane.size - otherPane.minSize
             otherPane.size = otherPane.minSize
         }
-        elif otherPane.maxSize > 0 and otherPane.size + diff > otherPane.maxSize
+        elif diff < 0 and otherPane.maxSize > 0 and otherPane.size - diff > otherPane.maxSize
         {
             diff = otherPane.maxSize - otherPane.size
             otherPane.size = otherPane.maxSize
