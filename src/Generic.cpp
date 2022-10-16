@@ -129,6 +129,8 @@ TypeInfo* Generic::doTypeSubstitution(map<Utf8, TypeInfo*>& replaceTypes, TypeIn
         // Do not substitute with unconverted TypeList
         if (it->second->kind != TypeInfoKind::TypeListArray)
             return it->second;
+        else if (typeInfo->kind == TypeInfoKind::Generic)
+            return TypeManager::convertTypeListToArray(nullptr, (TypeInfoList*) it->second, true);
     }
 
     // When type is a compound, we do substitution in the raw type
