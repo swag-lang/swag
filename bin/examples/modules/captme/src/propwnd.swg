@@ -18,7 +18,8 @@ const BtnStyleHeight  = 68.0
 
 struct PropWnd
 {
-    using layoutWnd:    StackLayoutCtrl
+    using scrollWnd:    ScrollWnd
+    mainLayout:         *StackLayoutCtrl
     main:               *MainWnd
     sysFonts:           Array'FontFamilyEnumerate
 }
@@ -111,7 +112,7 @@ impl PropWnd
 
     mtd createSlider(name: string, minv, maxv: s64, val: f32)->*SliderCtrl
     {
-        ctrl := SliderCtrl.create(self, #self.name)
+        ctrl := SliderCtrl.create(mainLayout, #self.name)
         ctrl.edit.setForm(.Square)
         ctrl.setMinMaxS64(minv, maxv)
         ctrl.dockStyle = .Top
@@ -573,7 +574,7 @@ impl PropWnd
             return
         curSel := cast(*FormText) getSelectedBaseForm()
 
-        stack := StackLayoutCtrl.create(self, .Top, @{0, 0, 0, 90})
+        stack := StackLayoutCtrl.create(mainLayout, .Top, @{0, 0, 0, 90})
         stack.padding = 8
 
         // Font
@@ -730,19 +731,19 @@ impl PropWnd
 
     mtd selectionHasChanged()
     {
-        while childs.count
-            childs[0].destroyNow()
+        while mainLayout.childs.count
+            mainLayout.childs[0].destroyNow()
         if !getSelectedBaseForm()
             return
 
-        stack0 := StackLayoutCtrl.create(self, .HorzCenter, @{0, 0, 0, BtnColorHeight + 12})
+        stack0 := StackLayoutCtrl.create(mainLayout, .HorzCenter, @{0, 0, 0, BtnColorHeight + 12})
         propBackColor(stack0)
         propBorderColor(stack0)
         propShape(stack0)
         if stack0.childs.count == 0
             stack0.destroyNow()
 
-        stack1 := StackLayoutCtrl.create(self, .HorzCenter, @{0, 0, 0, BtnStyleHeight + 12})
+        stack1 := StackLayoutCtrl.create(mainLayout, .HorzCenter, @{0, 0, 0, BtnStyleHeight + 12})
         propStartCapStyle(stack1)
         propDashStyle(stack1)
         propEndCapStyle(stack1)
@@ -757,12 +758,29 @@ impl PropWnd
         propEndSize()
         propOpactiy()
 
-        layoutWnd.padding = 8
-        layoutWnd.padding.y = 16
-        layoutWnd.computeLayout()
+        mainLayout.computeLayout()
+        setScrollSize(0, mainLayout.childs.back().position.bottom() + 16)
 
         capture := main.getCapture()
         if capture
             capture.editView.setFocus()
+    }
+
+    func create(parent: *Wnd)->*PropWnd
+    {
+        with prop := Wnd.create'PropWnd(parent, @{0, 0, 0, 300})
+        {
+            .backgroundStyle = .Window
+            .scrollWndFlags |= .ForceVertical | .SmallBar | .TransparentBar
+
+            .mainLayout = StackLayoutCtrl.create(prop)
+            .mainLayout.layoutKind = .Top
+            .mainLayout.padding = 8
+            .mainLayout.padding.y = 16
+
+            .setView(.mainLayout)
+        }
+
+        return prop
     }
 }

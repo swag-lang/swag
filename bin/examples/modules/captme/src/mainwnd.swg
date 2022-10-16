@@ -951,11 +951,9 @@ impl MainWnd
             .main = res
         }
 
-        with res.propWnd = Wnd.create'PropWnd(res.quickStyleBar)
+        with res.propWnd = PropWnd.create(res.quickStyleBar)
         {
             .main = res
-            .backgroundStyle = .Window
-            .layoutKind = .TopAutoSize
         }
 
         item := res.quickStyleBar.addPane(res.quickWnd, title: true)
