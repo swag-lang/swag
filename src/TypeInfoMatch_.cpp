@@ -365,9 +365,22 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                     case TypeInfoKind::Array:
                     {
                         auto symbolArray = CastTypeInfo<TypeInfoArray>(wantedTypeInfo, TypeInfoKind::Array);
-                        auto typeArray   = CastTypeInfo<TypeInfoArray>(callTypeInfo, TypeInfoKind::Array);
                         symbolTypeInfos.push_back(symbolArray->finalType);
-                        typeInfos.push_back(typeArray->finalType);
+
+                        uint32_t count = 0;
+                        if (callTypeInfo->kind == TypeInfoKind::Array)
+                        {
+                            auto typeArray = CastTypeInfo<TypeInfoArray>(callTypeInfo, TypeInfoKind::Array);
+                            typeInfos.push_back(typeArray->finalType);
+                            count = typeArray->count;
+                        }
+                        else
+                        {
+                            SWAG_ASSERT(callTypeInfo->kind == TypeInfoKind::TypeListArray);
+                            auto typeArray = CastTypeInfo<TypeInfoList>(callTypeInfo, TypeInfoKind::TypeListArray);
+                            typeInfos.push_back(typeArray->subTypes[0]->typeInfo);
+                            count = typeArray->subTypes.count;
+                        }
 
                         // Array dimension was a generic symbol. Set the corresponding symbol in order to check its value
                         if (symbolArray->flags & TYPEINFO_GENERIC && symbolArray->flags & TYPEINFO_GENERIC_COUNT)
@@ -376,7 +389,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                             SWAG_ASSERT(symbolArray->sizeNode->resolvedSymbolName);
 
                             ComputedValue* cv = g_Allocator.alloc<ComputedValue>();
-                            cv->reg.s64       = typeArray->count;
+                            cv->reg.s64       = count;
 
                             // Constant already defined ?
                             auto& cstName = symbolArray->sizeNode->resolvedSymbolName->name;

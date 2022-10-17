@@ -207,16 +207,20 @@ bool SemanticJob::resolveType(SemanticContext* context)
     // Array with predefined dimensions, we evaluate all dimensions as const
     if (typeNode->arrayDim && typeNode->arrayDim != UINT8_MAX)
     {
-        // If generic, do not evaluate. No type for now
-        if (typeNode->ownerStructScope && typeNode->ownerStructScope->owner->typeInfo->flags & TYPEINFO_GENERIC)
-        {
-            typeNode->typeInfo = g_TypeMgr->typeInfoUndefined;
-            return true;
-        }
-
         for (int i = typeNode->arrayDim - 1; i >= 0; i--)
         {
             auto child = typeNode->childs[i];
+
+            // If generic, do not evaluate. No type for now
+            if (child->kind == AstNodeKind::IdentifierRef &&
+                !(child->flags & AST_CONST_EXPR) &&
+                typeNode->ownerStructScope &&
+                typeNode->ownerStructScope->owner->typeInfo->flags & TYPEINFO_GENERIC)
+            {
+                typeNode->typeInfo = g_TypeMgr->typeInfoUndefined;
+                return true;
+            }
+
             SWAG_CHECK(evaluateConstExpression(context, child));
             if (context->result == ContextResult::Pending)
                 return true;
