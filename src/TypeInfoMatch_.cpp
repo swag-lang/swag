@@ -104,7 +104,19 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
             {
                 concreteTypeInfo = Generic::doTypeSubstitution(context.genericReplaceTypes, wantedTypeInfo);
                 auto typeSlice   = CastTypeInfo<TypeInfoSlice>(concreteTypeInfo, TypeInfoKind::Slice);
-                if (typeSlice->pointedType->kind == TypeInfoKind::Array)
+                if (typeSlice->pointedType->kind == TypeInfoKind::Array ||
+                    typeSlice->pointedType->kind == TypeInfoKind::Slice)
+                {
+                    invalidType = true;
+                }
+                break;
+            }
+
+            case TypeInfoKind::Array:
+            {
+                concreteTypeInfo = Generic::doTypeSubstitution(context.genericReplaceTypes, wantedTypeInfo);
+                auto typeArry    = CastTypeInfo<TypeInfoArray>(concreteTypeInfo, TypeInfoKind::Array);
+                if (typeArry->pointedType->kind == TypeInfoKind::Slice)
                 {
                     invalidType = true;
                 }
@@ -148,7 +160,8 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                 SWAG_ASSERT(context.badSignatureInfos.badSignatureRequestedType);
             }
 
-            context.result = MatchResult::BadSignature;
+            if (context.result != MatchResult::BadGenericType)
+                context.result = MatchResult::BadSignature;
         }
         else
         {
@@ -442,7 +455,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                                 typeParam = typeLambda->parameters[idx];
 
                             if (symbolParam->typeInfo->flags & TYPEINFO_GENERIC &&
-                                !typeParam->typeInfo->isNative(NativeTypeKind::Undefined)) // For lambda literals, with deduced types
+                                !typeParam->typeInfo->isNative(NativeTypeKind::Undefined))
                             {
                                 symbolTypeInfos.push_back(symbolParam->typeInfo);
                                 typeInfos.push_back(typeParam->typeInfo);

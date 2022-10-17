@@ -6,13 +6,13 @@ struct(T) A
 
 impl A
 {
-    mtd toto(x: [2] T)
+    mtd toto(x: [..] T)
     {
     }
 }
 
 #test
 {
-    var a: A'([2] s32)
+    var a: A'([..] s32)
     a.toto(@[1, 2])
 }
