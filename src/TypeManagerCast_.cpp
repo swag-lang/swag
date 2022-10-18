@@ -2793,6 +2793,12 @@ bool TypeManager::castToArray(SemanticContext* context, TypeInfo* toType, TypeIn
         }
 
         SWAG_CHECK(castExpressionList(context, fromTypeList, toTypeArray->pointedType, fromNode, castFlags));
+
+        if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+        {
+            fromType->flags |= TYPEINFO_LISTARRAY_ARRAY;
+        }
+
         return true;
     }
 

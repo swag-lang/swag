@@ -1496,7 +1496,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                             toFree.push_back(param->additionalRegisterRC[r]);
                     }
 
-                    if (param->typeInfo->kind == TypeInfoKind::Array)
+                    if (param->typeInfo->kind == TypeInfoKind::Array || param->typeInfo->flags & TYPEINFO_LISTARRAY_ARRAY)
                         truncRegisterRC(context, param->resultRegisterRC, 1);
 
                     for (int r = param->resultRegisterRC.size() - 1; r >= 0; r--)
@@ -1582,7 +1582,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             if (!param->typeInfo)
                 continue;
 
-            if (param->typeInfo->kind == TypeInfoKind::Array)
+            if (param->typeInfo->kind == TypeInfoKind::Array || param->typeInfo->flags & TYPEINFO_LISTARRAY_ARRAY)
                 truncRegisterRC(context, param->resultRegisterRC, 1);
 
             if (param->typeInfo->kind != TypeInfoKind::Variadic && param->typeInfo->kind != TypeInfoKind::TypedVariadic && !(param->typeInfo->flags & TYPEINFO_SPREAD))
