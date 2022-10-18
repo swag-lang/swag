@@ -428,9 +428,19 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
             }
             else
             {
-                Diagnostic diag{sourceFile, token, Fmt(Err(Err0526), token.ctext())};
-                Diagnostic note{sourceFile, leftSquareToken, Hlp(Hlp0024), DiagnosticLevel::Help};
-                return sourceFile->report(diag, &note);
+                SWAG_CHECK(eatToken());
+                if (token.id == TokenId::SymDotDot)
+                {
+                    node->typeFlags |= TYPEFLAG_ISSLICE;
+                    SWAG_CHECK(eatToken());
+                    SWAG_CHECK(eatToken(TokenId::SymRightSquare));
+                }
+                else
+                {
+                    Diagnostic diag{ sourceFile, token, Fmt(Err(Err0526), token.ctext()) };
+                    Diagnostic note{ sourceFile, leftSquareToken, Hlp(Hlp0024), DiagnosticLevel::Help };
+                    return sourceFile->report(diag, &note);
+                }
             }
         }
 

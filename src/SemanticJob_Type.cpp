@@ -399,6 +399,18 @@ bool SemanticJob::resolveType(SemanticContext* context)
     // In fact, this is an array
     if (typeNode->arrayDim)
     {
+        // Array of slice
+        if (typeNode->typeFlags & TYPEFLAG_ISSLICE)
+        {
+            auto ptrSlice = allocType<TypeInfoSlice>();
+            ptrSlice->pointedType = typeNode->typeInfo;
+            if (typeNode->typeFlags & TYPEFLAG_ISCONST)
+                ptrSlice->flags |= TYPEINFO_CONST;
+            ptrSlice->flags |= (ptrSlice->pointedType->flags & TYPEINFO_GENERIC);
+            typeNode->typeInfo = ptrSlice;
+            ptrSlice->computeName();
+        }
+
         // Array without a specified size
         if (typeNode->arrayDim == UINT8_MAX)
         {
