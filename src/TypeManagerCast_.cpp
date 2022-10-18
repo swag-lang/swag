@@ -3641,7 +3641,12 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     {
         if (!(castFlags & CASTFLAG_PARAMS) || toType->kind != TypeInfoKind::Struct)
         {
-            if (!toType->isConst() && fromType->isConst())
+            bool diff = false;
+            if (castFlags & CASTFLAG_FOR_GENERIC)
+                diff = toType->isConst() != fromType->isConst();
+            else
+                diff = !toType->isConst() && fromType->isConst();
+            if (diff)
             {
                 if (!toType->isNative(NativeTypeKind::String) &&
                     (toType != g_TypeMgr->typeInfoNull) &&

@@ -810,7 +810,7 @@ bool SemanticJob::resolveCompilerSpecialFunction(SemanticContext* context)
 
     case TokenId::CompilerLocation:
     {
-        node->typeInfo = g_Workspace->swagScope.regTypeInfoSourceLoc;
+        node->typeInfo = TypeManager::makeConst(g_Workspace->swagScope.regTypeInfoSourceLoc);
         auto locNode   = node;
 
         if (!node->childs.empty())
