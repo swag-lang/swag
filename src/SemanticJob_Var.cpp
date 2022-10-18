@@ -98,7 +98,7 @@ AstNode* SemanticJob::convertTypeToTypeExpression(SemanticContext* context, AstN
     auto typeExpression = Ast::newTypeExpression(sourceFile, parent);
     typeExpression->flags |= AST_NO_BYTECODE_CHILDS;
     if (childType->isConst())
-        typeExpression->typeFlags |= TYPEFLAG_ISCONST;
+        typeExpression->typeFlags |= TYPEFLAG_IS_CONST;
 
     if (childType->kind == TypeInfoKind::TypeListTuple)
     {

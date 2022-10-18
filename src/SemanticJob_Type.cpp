@@ -193,9 +193,9 @@ void SemanticJob::forceConstType(SemanticContext* context, AstTypeExpression* no
         node->typeInfo->kind == TypeInfoKind::Pointer ||
         node->typeInfo->kind == TypeInfoKind::Slice)
     {
-        if (node->typeFlags & TYPEFLAG_FORCECONST)
-            node->typeFlags |= TYPEFLAG_ISCONST;
-        if (node->typeFlags & TYPEFLAG_ISCONST)
+        if (node->typeFlags & TYPEFLAG_FORCE_CONST)
+            node->typeFlags |= TYPEFLAG_IS_CONST;
+        if (node->typeFlags & TYPEFLAG_IS_CONST)
             node->typeInfo = TypeManager::makeConst(node->typeInfo);
     }
 }
@@ -242,7 +242,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
     }
 
     // Code
-    if (typeNode->typeFlags & TYPEFLAG_ISCODE)
+    if (typeNode->typeFlags & TYPEFLAG_IS_CODE)
     {
         auto typeP = typeNode->findParent(AstNodeKind::FuncDeclParam);
         SWAG_VERIFY(typeP && typeNode->ownerFct, context->report(typeNode, Err(Err0736)));
@@ -354,13 +354,13 @@ bool SemanticJob::resolveType(SemanticContext* context)
 
             if (typeNode->ptrFlags[i] & AstTypeExpression::PTR_CONST)
                 isConst = true;
-            else if (typeNode->typeFlags & TYPEFLAG_ISCONST && i == 0)
+            else if (typeNode->typeFlags & TYPEFLAG_IS_CONST && i == 0)
                 isConst = true;
             if (typeNode->ptrFlags[i] & AstTypeExpression::PTR_ARITMETIC)
                 isArithmetic = true;
 
             auto ptrFlags = (firstType->flags & TYPEINFO_GENERIC);
-            if (typeNode->typeFlags & TYPEFLAG_ISSELF)
+            if (typeNode->typeFlags & TYPEFLAG_IS_SELF)
                 ptrFlags |= TYPEINFO_SELF;
             if (typeNode->typeFlags & TYPEFLAG_USING)
                 ptrFlags |= TYPEINFO_HAS_USING;
@@ -400,15 +400,17 @@ bool SemanticJob::resolveType(SemanticContext* context)
     if (typeNode->arrayDim)
     {
         // Array of slice
-        if (typeNode->typeFlags & TYPEFLAG_ISSLICE)
+        if (typeNode->typeFlags & TYPEFLAG_IS_SLICE)
         {
-            auto ptrSlice = allocType<TypeInfoSlice>();
+            auto ptrSlice         = allocType<TypeInfoSlice>();
             ptrSlice->pointedType = typeNode->typeInfo;
-            if (typeNode->typeFlags & TYPEFLAG_ISCONST)
+            if (typeNode->typeFlags & TYPEFLAG_IS_CONST)
                 ptrSlice->flags |= TYPEINFO_CONST;
             ptrSlice->flags |= (ptrSlice->pointedType->flags & TYPEINFO_GENERIC);
             typeNode->typeInfo = ptrSlice;
             ptrSlice->computeName();
+            if (typeNode->typeFlags & TYPEFLAG_IS_CONST_SLICE)
+                ptrSlice->setConst();
         }
 
         // Array without a specified size
@@ -419,7 +421,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
             ptrArray->totalCount  = UINT32_MAX;
             ptrArray->pointedType = typeNode->typeInfo;
             ptrArray->finalType   = typeNode->typeInfo;
-            if (typeNode->typeFlags & TYPEFLAG_ISCONST)
+            if (typeNode->typeFlags & TYPEFLAG_IS_CONST)
                 ptrArray->flags |= TYPEINFO_CONST;
             ptrArray->flags |= (ptrArray->finalType->flags & TYPEINFO_GENERIC);
             ptrArray->sizeOf = 0;
@@ -460,7 +462,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
                 ptrArray->pointedType = typeNode->typeInfo;
                 ptrArray->finalType   = rawType;
                 ptrArray->sizeOf      = ptrArray->count * ptrArray->pointedType->sizeOf;
-                if (typeNode->typeFlags & TYPEFLAG_ISCONST)
+                if (typeNode->typeFlags & TYPEFLAG_IS_CONST)
                     ptrArray->flags |= TYPEINFO_CONST;
                 ptrArray->flags |= (ptrArray->finalType->flags & TYPEINFO_GENERIC);
 
@@ -477,11 +479,11 @@ bool SemanticJob::resolveType(SemanticContext* context)
     }
 
     // In fact, this is a slice
-    else if (typeNode->typeFlags & TYPEFLAG_ISSLICE)
+    else if (typeNode->typeFlags & TYPEFLAG_IS_SLICE)
     {
         auto ptrSlice         = allocType<TypeInfoSlice>();
         ptrSlice->pointedType = typeNode->typeInfo;
-        if (typeNode->typeFlags & TYPEFLAG_ISCONST)
+        if (typeNode->typeFlags & TYPEFLAG_IS_CONST)
             ptrSlice->flags |= TYPEINFO_CONST;
         ptrSlice->flags |= (ptrSlice->pointedType->flags & TYPEINFO_GENERIC);
         typeNode->typeInfo = ptrSlice;

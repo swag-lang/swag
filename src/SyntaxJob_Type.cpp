@@ -97,7 +97,7 @@ bool SyntaxJob::doTypeExpressionLambdaClosure(AstNode* parent, AstNode** result)
         node->parameters     = params;
         auto typeNode        = Ast::newTypeExpression(sourceFile, params);
         typeNode->ptrCount   = 1;
-        typeNode->typeFlags  = TYPEFLAG_ISSELF;
+        typeNode->typeFlags  = TYPEFLAG_IS_SELF;
         typeNode->identifier = Ast::newIdentifierRef(sourceFile, currentStructScope->name, typeNode, this);
     }
     else if (isMethodC)
@@ -107,8 +107,8 @@ bool SyntaxJob::doTypeExpressionLambdaClosure(AstNode* parent, AstNode** result)
         auto typeNode         = Ast::newTypeExpression(sourceFile, params);
         typeNode->ptrCount    = 1;
         typeNode->ptrFlags[0] = AstTypeExpression::PTR_CONST;
-        typeNode->typeFlags |= TYPEFLAG_ISCONST;
-        typeNode->typeFlags |= TYPEFLAG_ISSELF;
+        typeNode->typeFlags |= TYPEFLAG_IS_CONST;
+        typeNode->typeFlags |= TYPEFLAG_IS_SELF;
         typeNode->identifier = Ast::newIdentifierRef(sourceFile, currentStructScope->name, typeNode, this);
     }
 
@@ -148,8 +148,8 @@ bool SyntaxJob::doTypeExpressionLambdaClosure(AstNode* parent, AstNode** result)
                 auto typeNode         = Ast::newTypeExpression(sourceFile, params);
                 typeNode->ptrCount    = 1;
                 typeNode->ptrFlags[0] = isConst ? AstTypeExpression::PTR_CONST : 0;
-                typeNode->typeFlags |= isConst ? TYPEFLAG_ISCONST : 0;
-                typeNode->typeFlags |= TYPEFLAG_ISSELF;
+                typeNode->typeFlags |= isConst ? TYPEFLAG_IS_CONST : 0;
+                typeNode->typeFlags |= TYPEFLAG_IS_SELF;
                 typeNode->identifier = Ast::newIdentifierRef(sourceFile, currentStructScope->name, typeNode, this);
             }
             // ...
@@ -170,7 +170,7 @@ bool SyntaxJob::doTypeExpressionLambdaClosure(AstNode* parent, AstNode** result)
             {
                 AstNode* typeExpr;
                 SWAG_CHECK(doTypeExpression(params, &typeExpr));
-                ((AstTypeExpression*) typeExpr)->typeFlags |= isConst ? TYPEFLAG_ISCONST : 0;
+                ((AstTypeExpression*) typeExpr)->typeFlags |= isConst ? TYPEFLAG_IS_CONST : 0;
 
                 // type...
                 if (token.id == TokenId::SymDotDotDot)
@@ -308,7 +308,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
             *result = node;
         node->flags |= AST_NO_BYTECODE_CHILDS;
         node->typeInfo = g_TypeMgr->typeInfoCode;
-        node->typeFlags |= TYPEFLAG_ISCODE;
+        node->typeFlags |= TYPEFLAG_IS_CODE;
         SWAG_CHECK(eatToken());
         return true;
     }
@@ -363,7 +363,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
     if (result)
         *result = node;
     node->flags |= AST_NO_BYTECODE_CHILDS;
-    node->typeFlags |= isConst ? TYPEFLAG_ISCONST : 0;
+    node->typeFlags |= isConst ? TYPEFLAG_IS_CONST : 0;
     node->arrayDim = 0;
     node->ptrCount = 0;
 
@@ -386,7 +386,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
             // Slice
             if (token.id == TokenId::SymDotDot)
             {
-                node->typeFlags |= TYPEFLAG_ISSLICE;
+                node->typeFlags |= TYPEFLAG_IS_SLICE;
                 SWAG_CHECK(eatToken());
                 break;
             }
@@ -420,7 +420,7 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
 
         if (token.id == TokenId::SymLeftSquare)
         {
-            if (node->typeFlags & TYPEFLAG_ISSLICE)
+            if (node->typeFlags & TYPEFLAG_IS_SLICE)
             {
                 Diagnostic diag{sourceFile, token, Fmt(Err(Err0527), token.ctext())};
                 Diagnostic note{sourceFile, leftSquareToken, Hlp(Hlp0025), DiagnosticLevel::Help};
@@ -431,14 +431,14 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
                 SWAG_CHECK(eatToken());
                 if (token.id == TokenId::SymDotDot)
                 {
-                    node->typeFlags |= TYPEFLAG_ISSLICE;
+                    node->typeFlags |= TYPEFLAG_IS_SLICE;
                     SWAG_CHECK(eatToken());
                     SWAG_CHECK(eatToken(TokenId::SymRightSquare));
                 }
                 else
                 {
-                    Diagnostic diag{ sourceFile, token, Fmt(Err(Err0526), token.ctext()) };
-                    Diagnostic note{ sourceFile, leftSquareToken, Hlp(Hlp0024), DiagnosticLevel::Help };
+                    Diagnostic diag{sourceFile, token, Fmt(Err(Err0526), token.ctext())};
+                    Diagnostic note{sourceFile, leftSquareToken, Hlp(Hlp0024), DiagnosticLevel::Help};
                     return sourceFile->report(diag, &note);
                 }
             }
@@ -478,9 +478,22 @@ bool SyntaxJob::doTypeExpression(AstNode* parent, AstNode** result, bool inTypeV
     // Const after array
     if (token.id == TokenId::KwdConst)
     {
-        isPtrConst = true;
+        isPtrConst      = true;
+        auto tokenConst = token;
+
         SWAG_CHECK(eatToken());
-        SWAG_VERIFY(token.id == TokenId::SymAsterisk, error(token, Err(Err0339)));
+
+        if (token.id == TokenId::SymLeftSquare)
+        {
+            SWAG_CHECK(eatToken(TokenId::SymLeftSquare));
+            SWAG_CHECK(eatToken(TokenId::SymDotDot));
+            SWAG_CHECK(eatToken(TokenId::SymRightSquare));
+            node->typeFlags |= TYPEFLAG_IS_CONST_SLICE | TYPEFLAG_IS_SLICE;
+        }
+        else
+        {
+            SWAG_VERIFY(token.id == TokenId::SymAsterisk, error(token, Err(Err0339)));
+        }
     }
 
     // Pointers

@@ -185,7 +185,7 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, boo
         if (paramNode->ownerStructScope->kind == ScopeKind::Enum)
         {
             auto typeNode = Ast::newTypeExpression(sourceFile, paramNode);
-            typeNode->typeFlags |= TYPEFLAG_ISSELF;
+            typeNode->typeFlags |= TYPEFLAG_IS_SELF;
             if (paramNode->flags & AST_DECL_USING)
                 typeNode->typeFlags |= TYPEFLAG_USING;
             typeNode->identifier = Ast::newIdentifierRef(sourceFile, paramNode->ownerStructScope->name, typeNode, this);
@@ -197,8 +197,8 @@ bool SyntaxJob::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, boo
             auto typeNode         = Ast::newTypeExpression(sourceFile, paramNode);
             typeNode->ptrCount    = 1;
             typeNode->ptrFlags[0] = isConst ? AstTypeExpression::PTR_CONST : 0;
-            typeNode->typeFlags |= isConst ? TYPEFLAG_ISCONST : 0;
-            typeNode->typeFlags |= TYPEFLAG_ISSELF;
+            typeNode->typeFlags |= isConst ? TYPEFLAG_IS_CONST : 0;
+            typeNode->typeFlags |= TYPEFLAG_IS_SELF;
             if (paramNode->flags & AST_DECL_USING)
                 typeNode->typeFlags |= TYPEFLAG_USING;
             typeNode->identifier = Ast::newIdentifierRef(sourceFile, paramNode->ownerStructScope->name, typeNode, this);
@@ -335,11 +335,11 @@ bool SyntaxJob::doFuncDeclParameters(AstNode* parent, AstNode** result, bool acc
             paramNode->token.text = g_LangSpec->name_self;
             auto typeNode         = Ast::newTypeExpression(sourceFile, paramNode);
             typeNode->ptrCount    = 1;
-            typeNode->typeFlags   = TYPEFLAG_ISSELF;
+            typeNode->typeFlags   = TYPEFLAG_IS_SELF;
             if (!isItfMethod)
                 typeNode->typeFlags |= TYPEFLAG_USING;
             if (isConstMethod)
-                typeNode->typeFlags |= TYPEFLAG_ISCONST;
+                typeNode->typeFlags |= TYPEFLAG_IS_CONST;
             typeNode->identifier = Ast::newIdentifierRef(sourceFile, paramNode->ownerStructScope->name, typeNode, this);
             paramNode->type      = typeNode;
         }

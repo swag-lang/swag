@@ -636,7 +636,7 @@ bool AstOutput::outputVar(OutputContext& context, Concat& concat, AstVarDecl* no
     }
 
     bool isSelf = node->token.text == "self";
-    if (isSelf && node->type && ((AstTypeExpression*) node->type)->typeFlags & TYPEFLAG_ISCONST)
+    if (isSelf && node->type && ((AstTypeExpression*) node->type)->typeFlags & TYPEFLAG_IS_CONST)
         CONCAT_FIXED_STR(concat, "const ");
 
     if (!(node->flags & AST_AUTO_NAME))
@@ -847,10 +847,9 @@ bool AstOutput::outputType(OutputContext& context, Concat& concat, AstTypeExpres
         }
     }
 
-    if (node->typeFlags & TYPEFLAG_ISCONST)
+    if (node->typeFlags & TYPEFLAG_IS_CONST)
         CONCAT_FIXED_STR(concat, "const ");
-    if (node->typeFlags & TYPEFLAG_ISSLICE)
-        CONCAT_FIXED_STR(concat, "[..] ");
+
     if (node->arrayDim == UINT8_MAX)
         CONCAT_FIXED_STR(concat, "[] ");
     else if (node->arrayDim)
@@ -864,7 +863,14 @@ bool AstOutput::outputType(OutputContext& context, Concat& concat, AstTypeExpres
         }
 
         CONCAT_FIXED_STR(concat, "] ");
+
+        if (node->typeFlags & TYPEFLAG_IS_CONST_SLICE)
+            CONCAT_FIXED_STR(concat, "const [..] ");
+        else if (node->typeFlags & TYPEFLAG_IS_SLICE)
+            CONCAT_FIXED_STR(concat, "[..] ");
     }
+    else if (node->typeFlags & TYPEFLAG_IS_SLICE)
+        CONCAT_FIXED_STR(concat, "[..] ");
 
     for (int i = 0; i < node->ptrCount; i++)
         concat.addChar('*');

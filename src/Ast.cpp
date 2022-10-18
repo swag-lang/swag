@@ -357,7 +357,7 @@ namespace Ast
     void setForceConstType(AstNode* node)
     {
         if (node && node->kind == AstNodeKind::TypeExpression)
-            ((AstTypeExpression*) node)->typeFlags |= TYPEFLAG_FORCECONST;
+            ((AstTypeExpression*) node)->typeFlags |= TYPEFLAG_FORCE_CONST;
     }
 
     Scope* newScope(AstNode* owner, const Utf8& name, ScopeKind kind, Scope* parentScope, bool matchName)
