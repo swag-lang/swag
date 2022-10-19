@@ -173,8 +173,6 @@ void Utf8::operator=(const char* txt)
 
 void Utf8::operator=(Utf8&& from)
 {
-    ScopedLock lk(mutex);
-
     reset();
     count          = from.count;
     allocated      = from.allocated;

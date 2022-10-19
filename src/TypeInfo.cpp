@@ -32,6 +32,8 @@ void TypeInfo::getScopedName(Utf8& newName)
 Utf8 TypeInfo::getName()
 {
     ScopedLock lk(mutex);
+    ScopedLock lk1(name.mutex);
+
     computeWhateverNameNoLock(COMPUTE_NAME);
     SWAG_ASSERT(!name.empty());
     return name;
