@@ -19,6 +19,7 @@ void ByteCode::releaseOut()
 {
     auto s = Allocator::alignSize(maxInstructions * sizeof(ByteCodeInstruction));
     g_Allocator.free(out, s);
+    out = nullptr;
 }
 
 void ByteCode::getLocation(ByteCode* bc, ByteCodeInstruction* ip, SourceFile** file, SourceLocation** location, bool force, bool noInline)

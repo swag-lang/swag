@@ -561,6 +561,7 @@ void DataSegment::release()
 {
     for (auto& b : buckets)
         g_Allocator.free(b.buffer, Allocator::alignSize(b.size));
+    buckets.clear();
 }
 
 void DataSegment::makeLinear()
