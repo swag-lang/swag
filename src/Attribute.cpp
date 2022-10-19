@@ -3,6 +3,7 @@
 
 OneAttribute* AttributeList::getAttribute(const Utf8& fullName)
 {
+    SWAG_RACE_CONDITION_READ(raceCond);
     for (auto& it : allAttributes)
     {
         if (it.name == fullName)
@@ -14,6 +15,7 @@ OneAttribute* AttributeList::getAttribute(const Utf8& fullName)
 
 const AttributeParameter* AttributeList::getParam(const Utf8& fullName, const Utf8& parameter)
 {
+    SWAG_RACE_CONDITION_READ(raceCond);
     for (auto& it : allAttributes)
     {
         if (it.name == fullName)
@@ -35,6 +37,7 @@ const AttributeParameter* AttributeList::getParam(const Utf8& fullName, const Ut
 
 const ComputedValue* AttributeList::getValue(const Utf8& fullName, const Utf8& parameter)
 {
+    SWAG_RACE_CONDITION_READ(raceCond);
     for (auto& it : allAttributes)
     {
         if (it.name == fullName)
@@ -56,6 +59,7 @@ const ComputedValue* AttributeList::getValue(const Utf8& fullName, const Utf8& p
 
 bool AttributeList::hasAttribute(const Utf8& fullName)
 {
+    SWAG_RACE_CONDITION_READ(raceCond);
     for (auto& it : allAttributes)
     {
         if (it.name == fullName)
@@ -67,11 +71,15 @@ bool AttributeList::hasAttribute(const Utf8& fullName)
 
 void AttributeList::emplace(OneAttribute& other)
 {
+    SWAG_RACE_CONDITION_WRITE(raceCond);
     allAttributes.emplace_back(move(other));
 }
 
 void AttributeList::add(AttributeList& other)
 {
+    SWAG_RACE_CONDITION_WRITE(raceCond);
+    SWAG_RACE_CONDITION_READ1(other.raceCond);
+
     for (auto& p : other.allAttributes)
         allAttributes.push_back(p);
 }

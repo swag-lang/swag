@@ -2,6 +2,7 @@
 #include "Register.h"
 #include "Runtime.h"
 #include "Tokenizer.h"
+#include "RaceCondition.h"
 struct TypeInfo;
 
 static const uint64_t ATTRIBUTE_CONSTEXPR           = 0x0000000000000001;
@@ -97,5 +98,13 @@ struct AttributeList
         return (uint32_t) allAttributes.size();
     }
 
+    void operator=(const AttributeList& other)
+    {
+        SWAG_RACE_CONDITION_WRITE(raceCond);
+        SWAG_RACE_CONDITION_READ1(other.raceCond);
+        allAttributes = other.allAttributes;
+    }
+
     vector<OneAttribute> allAttributes;
+    SWAG_RACE_CONDITION_INSTANCE(raceCond);
 };
