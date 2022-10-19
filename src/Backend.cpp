@@ -30,11 +30,11 @@ BackendFunctionBodyJobBase* Backend::newFunctionJob()
 
 void Backend::setup()
 {
+    initCallingConventions();
     if (!g_CommandLine->output)
         return;
 
     LLVM::setup();
-    initCallingConventions();
 
     string rtPath;
 
