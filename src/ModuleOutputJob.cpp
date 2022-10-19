@@ -25,6 +25,8 @@ JobResult ModuleOutputJob::execute()
             exportJob->backend      = module->backend;
             exportJob->dependentJob = this;
             jobsToAdd.push_back(exportJob);
+            if (!g_CommandLine->output)
+                return JobResult::KeepJobAlive;
         }
         else
         {
