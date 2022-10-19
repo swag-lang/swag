@@ -875,6 +875,8 @@ int TypeInfoFuncAttr::numTotalRegisters()
 
 TypeInfo* TypeInfoStruct::clone()
 {
+    ScopedLock lk(mutex);
+
     auto newType               = allocType<TypeInfoStruct>();
     newType->scope             = scope;
     newType->opInit            = opInit;

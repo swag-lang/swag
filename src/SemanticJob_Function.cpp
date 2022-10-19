@@ -779,9 +779,14 @@ bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* func
     // Register method
     if (!(symbolFlags & OVERLOAD_INCOMPLETE) && isMethod(funcNode))
     {
-        SWAG_ASSERT(funcNode->methodParam);
-        funcNode->methodParam->attributes = typeFunc->attributes;
-        auto typeStruct                   = CastTypeInfo<TypeInfoStruct>(funcNode->ownerStructScope->owner->typeInfo, TypeInfoKind::Struct);
+        auto typeStruct = CastTypeInfo<TypeInfoStruct>(funcNode->ownerStructScope->owner->typeInfo, TypeInfoKind::Struct);
+
+        {
+            ScopedLock lk(typeStruct->mutex);
+            SWAG_ASSERT(funcNode->methodParam);
+            funcNode->methodParam->attributes = typeFunc->attributes;
+        }
+
         context->job->decreaseMethodCount(funcNode, typeStruct);
     }
 
