@@ -41,7 +41,7 @@ bool TypeTableJob::computeStruct()
         if (realType->opUserInitFct && realType->opUserInitFct->isForeign())
         {
             realType->opUserInitFct->computeFullNameForeign(false);
-            g_ModuleMgr->addPatchFuncAddress(&concreteType->opInit, realType->opUserInitFct);
+            g_ModuleMgr->addPatchFuncAddress(storageSegment, &concreteType->opInit, realType->opUserInitFct);
             storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opInit), realType->opUserInitFct->fullnameForeign);
         }
         else if (realType->opInit)
@@ -64,7 +64,7 @@ bool TypeTableJob::computeStruct()
         if (realType->opUserDropFct && realType->opUserDropFct->isForeign())
         {
             realType->opUserDropFct->computeFullNameForeign(false);
-            g_ModuleMgr->addPatchFuncAddress(&concreteType->opDrop, realType->opUserDropFct);
+            g_ModuleMgr->addPatchFuncAddress(storageSegment, &concreteType->opDrop, realType->opUserDropFct);
             storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opDrop), realType->opUserDropFct->fullnameForeign);
         }
         else if (realType->opDrop)
@@ -87,7 +87,7 @@ bool TypeTableJob::computeStruct()
         if (realType->opUserPostCopyFct && realType->opUserPostCopyFct->isForeign())
         {
             realType->opUserPostCopyFct->computeFullNameForeign(false);
-            g_ModuleMgr->addPatchFuncAddress(&concreteType->opPostCopy, realType->opUserPostCopyFct);
+            g_ModuleMgr->addPatchFuncAddress(storageSegment, &concreteType->opPostCopy, realType->opUserPostCopyFct);
             storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opPostCopy), realType->opUserPostCopyFct->fullnameForeign);
         }
         else if (realType->opPostCopy)
@@ -110,7 +110,7 @@ bool TypeTableJob::computeStruct()
         if (realType->opUserPostMoveFct && realType->opUserPostMoveFct->isForeign())
         {
             realType->opUserPostMoveFct->computeFullNameForeign(false);
-            g_ModuleMgr->addPatchFuncAddress(&concreteType->opPostMove, realType->opUserPostMoveFct);
+            g_ModuleMgr->addPatchFuncAddress(storageSegment, &concreteType->opPostMove, realType->opUserPostMoveFct);
             storageSegment->addInitPtrFunc(OFFSETOF(concreteType->opPostMove), realType->opUserPostMoveFct->fullnameForeign);
         }
         else if (realType->opPostMove)

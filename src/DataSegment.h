@@ -123,6 +123,7 @@ struct DataSegment
     uint32_t    compilerThreadIdx = UINT32_MAX;
 
     bool overflow = false;
+    bool deleted  = false;
 
     SWAG_RACE_CONDITION_INSTANCE(raceC);
 };

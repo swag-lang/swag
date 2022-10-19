@@ -376,7 +376,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
 
             // This will be filled when the module will be loaded, with the real function address
             *ptrITable = nullptr;
-            g_ModuleMgr->addPatchFuncAddress((void**) constSegment->address(offset), funcChild);
+            g_ModuleMgr->addPatchFuncAddress(constSegment, (void**) constSegment->address(offset), funcChild);
         }
         else
         {

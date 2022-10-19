@@ -5,6 +5,7 @@
 struct AstFuncDecl;
 struct ByteCodeRunContext;
 struct ModuleDependency;
+struct DataSegment;
 
 struct ModuleManager
 {
@@ -13,7 +14,7 @@ struct ModuleManager
     bool  isModuleFailedLoaded(const Utf8& moduleName);
     void  resetFailedModule(const Utf8& moduleName);
     void* getFnPointer(const Utf8& moduleName, const Utf8& funcName);
-    void  addPatchFuncAddress(void** patchAddress, AstFuncDecl* func);
+    void  addPatchFuncAddress(DataSegment* seg, void** patchAddress, AstFuncDecl* func);
     bool  applyPatches(const Utf8& moduleName, void* moduleHandle);
 
     static const Utf8& getForeignModuleName(AstFuncDecl* func);
@@ -25,6 +26,7 @@ struct ModuleManager
 
     struct PatchOffset
     {
+        DataSegment* segment;
         void**       patchAddress;
         AstFuncDecl* funcDecl;
     };

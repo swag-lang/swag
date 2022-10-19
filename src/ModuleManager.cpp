@@ -8,6 +8,7 @@
 #include "ByteCode.h"
 #include "Backend.h"
 #include "LanguageSpec.h"
+#include "DataSegment.h"
 
 ModuleManager* g_ModuleMgr = nullptr;
 
@@ -109,7 +110,7 @@ const Utf8& ModuleManager::getForeignModuleName(AstFuncDecl* func)
     return moduleName->text;
 }
 
-void ModuleManager::addPatchFuncAddress(void** patchAddress, AstFuncDecl* func)
+void ModuleManager::addPatchFuncAddress(DataSegment* seg, void** patchAddress, AstFuncDecl* func)
 {
     auto       moduleName = getForeignModuleName(func);
     ScopedLock lk(mutexPatch);
@@ -124,8 +125,12 @@ void ModuleManager::addPatchFuncAddress(void** patchAddress, AstFuncDecl* func)
     else
     {
         PatchOffset newPatch;
+        newPatch.segment      = seg;
         newPatch.patchAddress = patchAddress;
         newPatch.funcDecl     = func;
+#ifdef SWAG_DEV_MODE
+        *(uint64_t*) patchAddress = 0xAABBCCDD00112233;
+#endif
 
         auto it = patchOffsets.find(moduleName);
         if (it == patchOffsets.end())
@@ -145,6 +150,14 @@ bool ModuleManager::applyPatches(const Utf8& moduleName, void* moduleHandle)
 
     for (auto& one : it->second)
     {
+        // Address is no more valid !!!
+        if (one.segment->deleted)
+            continue;
+
+#ifdef SWAG_DEV_MODE
+        SWAG_ASSERT(*(uint64_t*) one.patchAddress == 0xAABBCCDD00112233);
+#endif
+
         auto fnPtr = OS::getProcAddress(moduleHandle, one.funcDecl->fullnameForeign.c_str());
         if (!fnPtr)
         {

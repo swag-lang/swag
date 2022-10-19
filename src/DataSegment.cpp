@@ -6,6 +6,7 @@
 #include "AstNode.h"
 #include "ByteCode.h"
 #include "Diagnostic.h"
+#include "ModuleManager.h"
 
 void DataSegment::setup(SegmentKind _kind, Module* _module)
 {
@@ -559,6 +560,7 @@ void DataSegment::restoreAllValues()
 
 void DataSegment::release()
 {
+    deleted = true;
     for (auto& b : buckets)
         g_Allocator.free(b.buffer, Allocator::alignSize(b.size));
     buckets.clear();
