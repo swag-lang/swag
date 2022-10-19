@@ -12,6 +12,7 @@
 #include "ErrorIds.h"
 #include "Diagnostic.h"
 #include "OS.h"
+#include "RaceCondition.h"
 
 enum class ByteCodeOp : uint16_t;
 struct AstNode;
@@ -230,4 +231,6 @@ struct ByteCode
     bool hasForeignFunctionCalls = false;
 
     atomic<bool> isEmpty;
+
+    SWAG_RACE_CONDITION_INSTANCE(raceCond);
 };

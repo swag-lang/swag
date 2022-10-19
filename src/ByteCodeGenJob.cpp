@@ -263,6 +263,8 @@ ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context
     AstNode* node = context->node;
     auto     bc   = context->bc;
 
+    SWAG_RACE_CONDITION_WRITE(bc->raceCond);
+
     if (bc->numInstructions == bc->maxInstructions)
     {
         auto oldSize        = (int) (bc->maxInstructions * sizeof(ByteCodeInstruction));

@@ -12,6 +12,8 @@
 
 bool ByteCodeOptimizerJob::optimize(ByteCode* bc, bool& restart)
 {
+    SWAG_RACE_CONDITION_WRITE(bc->raceCond);
+
     if (!module->mustOptimizeBC(bc->node))
         return true;
     optContext.bc     = bc;
