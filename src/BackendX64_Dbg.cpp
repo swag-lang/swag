@@ -782,6 +782,13 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo)
         TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
         auto            sname      = dbgGetScopedName(typeStruct->declNode);
 
+        if (typeStruct->flags & TYPEINFO_FROM_GENERIC)
+        {
+            auto pz = strchr(typeStruct->name.c_str(), '\'');
+            if (pz)
+                sname += pz;
+        }
+
         // Create a forward reference, in case a field points to the struct itself
         DbgTypeRecord* tr2        = new DbgTypeRecord;
         tr2->kind                 = LF_STRUCTURE;

@@ -32,6 +32,8 @@ struct RaceCondition
 
 #else
 #define SWAG_RACE_CONDITION_WRITE(__x)
+#define SWAG_RACE_CONDITION_WRITE1(__x)
 #define SWAG_RACE_CONDITION_READ(__x)
+#define SWAG_RACE_CONDITION_READ1(__x)
 #define SWAG_RACE_CONDITION_INSTANCE(__x)
 #endif
