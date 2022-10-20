@@ -962,6 +962,8 @@ func GET_Y_LPARAM(lp: LPARAM) => cast(s32) HIWORD(lp)
     func FindWindowA(lpClassName: LPCSTR, lpWindowName: LPCSTR)->HWND;
     func FindWindowW(lpClassName: LPCWSTR, lpWindowName: LPCWSTR)->HWND;
     func GetDesktopWindow()->HWND;
+    func GetActiveWindow()->HWND;
+    func GetForegroundWindow()->HWND;
 
     func GetDC(hWnd: HWND)->HDC;
 
