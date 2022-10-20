@@ -470,7 +470,9 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     }
 
     // Collect function attributes
-    auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
+    auto       typeInfo = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
+    ScopedLock lkT(typeInfo->mutex);
+
     SWAG_ASSERT(funcNode->semanticState == AstNodeResolveState::ProcessingChilds);
     SWAG_CHECK(collectAttributes(context, funcNode, &typeInfo->attributes));
 
@@ -611,7 +613,9 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         typeInfo->returnType->kind != TypeInfoKind::Pointer)
         return context->report(typeNode->childs.front(), Fmt(Err(Err0764), typeInfo->returnType->getDisplayNameC()));
 
-    typeInfo->forceComputeName();
+    typeInfo->name.clear();
+    typeInfo->displayName.clear();
+    typeInfo->computeWhateverNameNoLock(COMPUTE_NAME);
 
     // Special functions registration
     if (funcNode->parameters && funcNode->parameters->childs.size() == 1)

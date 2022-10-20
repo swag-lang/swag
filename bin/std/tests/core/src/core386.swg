@@ -1,4 +1,4 @@
-#global testerror
+//#global testerror
 using Core.Serialization.Write
 
 struct A
@@ -13,5 +13,6 @@ struct A
     var buf: ConcatBuffer
     enc.errorIfUnknown = true
     var v: A
-    assume enc.writeAll(&buf, v)
+    catch enc.writeAll(&buf, v)
+    @assert(@err != null)
 }

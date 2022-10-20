@@ -508,6 +508,8 @@ bool TypeInfoEnum::isSame(TypeInfo* to, uint32_t isSameFlags)
 
 TypeInfo* TypeInfoFuncAttr::clone()
 {
+    ScopedLock lk(mutex);
+
     auto newType                  = allocType<TypeInfoFuncAttr>();
     newType->firstDefaultValueIdx = firstDefaultValueIdx;
     newType->returnType           = returnType;
