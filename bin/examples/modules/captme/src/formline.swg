@@ -94,7 +94,7 @@ impl IForm for FormLine
     mtd boundRect(raw: bool)->Math.Rectangle
     {
         var result: retval
-        bSize := raw ? 0 : borderSize * 4
+        bSize := raw ? 0 : borderSize * 6
         result.x = Math.min(xa, xb) - bSize
         result.y = Math.min(ya, yb) - bSize
         result.width = Math.abs(xb - xa) + bSize * 2
@@ -129,24 +129,28 @@ impl IForm for FormLine
 
     mtd hitTest(pt: Math.Point, z: f32)->bool
     {
-        bSize := borderSize * z * 0.5
-        v  := Math.Vector2{pt.x, pt.y}
-        p0 := Math.Vector2{x0, y0}
-        p1 := Math.Vector2{x1, y1}
-        computePaintCoords(z)
-        if v.distanceToLine(p0, p1) > bSize
-            return false
+        var painter: Painter{fake: true}
+        painter.begin()
+        paint(null, &painter, z, false)
+        painter.end()
 
-        // Be sure it's not before or after the line
-        v -= p0
-        line := p1 - p0
-        length := line.length()
-        line.normalizeSafe()
-        dot := v.dot(line)
-        if dot < -bSize or dot > length
-            return false
+        pos := Math.Vector2{pt.x - paintPos.x, pt.y - paintPos.y}
+        visit cmd: painter.commandBuffer
+        {
+            if cmd.id != .DrawTriangles
+                continue
+            for i := 0; i < cmd.drawTriangles.count; i += 3
+            {
+                tri := cmd.drawTriangles.start + i
+                x0  := painter.vertexBuffer[tri].pos
+                x1  := painter.vertexBuffer[tri+1].pos
+                x2  := painter.vertexBuffer[tri+2].pos
+                if pos.isInTriangle(x0, x1, x2)
+                    return true
+            }
+        }
 
-        return true
+        return false
     }
 
     mtd paint(app: *Application, painter: *Painter, z: f32, quickMode: bool)

@@ -29,7 +29,7 @@ impl Vector2
         cCROSSap := cx * apy - cy * apx
         bCROSScp := bx * cpy - by * cpx
 
-        return (aCROSSbp >= 0) and (bCROSScp >= 0) and (cCROSSap >= 0)
+        return ((aCROSSbp >= 0) and (bCROSScp >= 0) and (cCROSSap >= 0)) or ((aCROSSbp <= 0) and (bCROSScp <= 0) and (cCROSSap <= 0))
     }
 
     // Returns the distance of the point to the given line
