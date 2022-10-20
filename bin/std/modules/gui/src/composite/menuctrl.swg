@@ -341,6 +341,7 @@ impl MenuCtrl
         {
             hideSubVisible()
             postCommandEvent(result)
+            setFocus()
         }
 
         if p.bar
