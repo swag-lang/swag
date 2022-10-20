@@ -17,14 +17,15 @@ struct Application
     postDestroy:    Array'(*Wnd)
     hookEvents:     Array'(*Wnd)
     cursorStack:    Array'(Cursor)
-    mustQuit:       bool
-    endModal:       bool
-    fadeDisabledSurface: bool
     endModalExit:   WndId
     inModalLoop:    u32
-    isActivated:    bool
     quitCode:       s32
     timing:         Time.FrameTiming
+
+    mustQuit:           bool
+    endModal:           bool
+    fadeDisabledSurface = true
+    isActivated:        bool
 
     mutexPostedEvents:  Sync.Mutex
 

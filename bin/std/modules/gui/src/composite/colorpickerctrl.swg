@@ -160,6 +160,7 @@ impl ColorPickerCtrl
                 app.pushCursor(Cursor.from(.Cross))
 
                 save := v.getColor()
+                sfade := app.fadeDisabledSurface
                 app.fadeDisabledSurface = false
                 discard app.doModalLoop(null, @|v,save|(app) {
                     if app.mouse.isButtonPressed(.Right)
@@ -176,7 +177,7 @@ impl ColorPickerCtrl
                         app.exitModal()
                 })
 
-                app.fadeDisabledSurface = true
+                app.fadeDisabledSurface = sfade
                 app.popCursor()
             }
 
