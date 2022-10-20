@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "Backend.h"
 #include "ByteCodeStack.h"
+#include "ModuleManager.h"
 
 uint64_t                         g_TlsContextId     = 0;
 uint64_t                         g_TlsThreadLocalId = 0;
@@ -16,6 +17,9 @@ static uint32_t                  g_MakeCallbackCount = 0;
 
 static void byteCodeRun(bool forCallback, void* byteCodePtr, va_list valist)
 {
+#ifdef SWAG_DEV_MODE
+    SWAG_ASSERT((uint64_t) byteCodePtr != SWAG_PATCH_MARKER);
+#endif
     ByteCode*         bc       = (ByteCode*) ByteCode::undoByteCodeLambda(byteCodePtr);
     TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(bc->node ? bc->node->typeInfo : bc->typeInfoFunc, TypeInfoKind::FuncAttr);
 
