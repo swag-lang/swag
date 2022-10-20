@@ -19,6 +19,7 @@ struct Application
     cursorStack:    Array'(Cursor)
     mustQuit:       bool
     endModal:       bool
+    fadeDisabledSurface: bool
     endModalExit:   WndId
     inModalLoop:    u32
     isActivated:    bool
@@ -467,7 +468,6 @@ private impl Application
         }
 
         endModal = false
-
         return endModalExit
     }
 }

@@ -232,7 +232,7 @@ impl Surface
 
         // If surface is disabled, blend to disabled blit color
         var color: Color
-        if isDisabled
+        if isDisabled and app.fadeDisabledSurface
         {
             colorDisabled = Color.getBlend(colorDisabled, app.theme.colors.surfaceDisabled, app.getDt())
             color = colorDisabled
