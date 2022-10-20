@@ -545,12 +545,6 @@ impl Tesselate
         finalizationPolygon()
     }
 
-    // Get the result
-    public mtd getTriangles()->const [..] *Triangle
-    {
-        return triangles.toSlice()
-    }
-
     mtd sweepPoints()
     {
         loop i: 1..points.count-1

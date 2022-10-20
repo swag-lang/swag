@@ -755,15 +755,23 @@ impl Painter
         return result
     }
 
-    mtd triangulate(t: *Poly2Tri.Tesselate, bvMin, bvMax: Vector2, brush: Brush)
+    mtd triangulate(t: *Poly2Tri.Tesselate, p: *LinePath, bvMin, bvMax: Vector2, brush: Brush)
     {
         setTexture0(bvMin, bvMax, brush)
         resetTextureFont()
 
-        t.triangulate()
-        res := t.getTriangles()
+        if p.triangles.count == 0
+        {
+            t.triangulate()
+            p.points    = t.points
+            p.triangles = t.triangles
+            t.points.clear()
+            t.map.clear()
+        }
 
-        visit tri: res
+        t.clear()
+
+        visit tri: p.triangles
         {
             v0 := Vector2{cast(f32) tri.points[0].x, cast(f32) tri.points[0].y}
             v1 := Vector2{cast(f32) tri.points[1].x, cast(f32) tri.points[1].y}
@@ -802,8 +810,6 @@ impl Painter
                 }
             }
         }
-
-        t.clear()
     }
 }
 
@@ -1021,21 +1027,22 @@ public impl Painter
         // Flatten all paths
         pathList.flatten(curState.paintQuality)
 
-        var t: Poly2Tri.Tesselate
+        var t:      Poly2Tri.Tesselate
+        var flush:  *LinePath
+
         serial := 0
-        flush  := false
         visit p: pathList.paths
         {
             if (p.polygon.isClockwise or serial != p.serial) and flush
             {
                 serial = p.serial
-                triangulate(&t, pathList.bvMin, pathList.bvMax, brush)
-                flush = false
+                triangulate(&t, flush, pathList.bvMin, pathList.bvMax, brush)
+                flush = null
             }
 
             if p.polygon.points.count >= 3
             {
-                flush = true
+                flush = p
                 t.startPolyLine()
                 loop i: 0..p.polygon.points.count-2
                 {
@@ -1048,6 +1055,6 @@ public impl Painter
         }
 
         if flush
-            triangulate(&t, pathList.bvMin, pathList.bvMax, brush)
+            triangulate(&t, flush, pathList.bvMin, pathList.bvMax, brush)
     }
 }

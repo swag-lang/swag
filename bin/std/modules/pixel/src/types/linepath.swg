@@ -32,10 +32,33 @@ public struct LinePath
     bvMax:          Vector2
     endPosBuffer:   Vector2
     polygon:        Polygon
+    points:         Array'*Poly2Tri.Point
+    triangles:      Array'*Poly2Tri.Triangle
 }
 
 public impl LinePath
 {
+    mtd opDrop()
+    {
+        clearCache()
+    }
+
+    mtd opPostCopy()
+    {
+        points.clear()
+        triangles.clear()
+    }
+
+    // Clear internal cache
+    mtd clearCache()
+    {
+        visit t: points     Memory.delete(t)
+        visit t: triangles  Memory.delete(t)
+        points.clear()
+        triangles.clear()
+        polygon.clear()
+    }
+
     // Reset the path
     mtd start(startX, startY: f32)
     {
@@ -290,7 +313,8 @@ public impl LinePath
         flattenQuality = quality
 
         bvMin, bvMax = startPoint
-        polygon.clear()
+        clearCache()
+
         if !elements.count
             return
 
