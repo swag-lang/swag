@@ -653,94 +653,6 @@ impl MainWnd
         return editMode
     }
 
-    mtd createTopMenu()
-    {
-        with topMenu := MenuCtrl.createBar(parent, owner: self)
-        {
-            .bringToFront()
-            .dockStyle = .Top
-            .margin.y = -parent.padding.y
-            .backgroundStyle = .Transparent
-        }
-
-        with fileMenu := MenuCtrl.createPopup(parent, owner: self)
-        {
-            .addItem(CmdIdNewImage)
-            .addItem(CmdIdNewFromClipboard)
-            .addSeparator()
-            .addItem(CmdIdOpenImage)
-            .addItem(CmdIdSaveAsImage)
-            .addSeparator()
-            .addItem(CmdIdExit)
-            topMenu.addPopup("File", fileMenu)
-        }
-
-        with captureMenu := MenuCtrl.createPopup(parent, owner: self)
-        {
-            .addItem(CmdIdCaptModeArea)
-            .addItem(CmdIdCaptModeScreen)
-            .addSeparator()
-            .addItem(CmdIdCapture)
-            topMenu.addPopup("Capture", captureMenu)
-        }
-
-        with editMenu := MenuCtrl.createPopup(parent, owner: self)
-        {
-            .addItem(CmdIdUndo)
-            .addItem(CmdIdRedo)
-            .addItem(CmdIdRestoreOrg)
-            .addSeparator()
-            .addItem(CmdIdCopy)
-            .addItem(CmdIdPaste)
-            .addItem(CmdIdCopyAsImage)
-            .addSeparator()
-            .addItem(CmdIdSelectAll)
-            .addItem(CmdIdDeSelectAll)
-            .addItem(CmdIdInvertSelection)
-            topMenu.addPopup("Edit", editMenu)
-        }
-
-        with viewMenu := MenuCtrl.createPopup(parent, owner: self)
-        {
-            .addItem(CmdIdZoomIn)
-            .addItem(CmdIdZoomOut)
-            .addItem(CmdIdZoom1)
-            .addItem(CmdIdZoomFit)
-            topMenu.addPopup("View", viewMenu)
-        }
-    }
-
-    mtd createToolbar(topBar: *Wnd)
-    {
-        mtd createBtn(id: WndId)
-        {
-            with b := IconButton.create(editToolBar, position: @{0, 0, 60, 64})
-            {
-                .id = #self.id
-                .style.addStyleSheetColors("btnIcon_CheckedBk    $btnIcon_HotBk")
-                .style.addStyleSheetColors("btnIcon_CheckedHotBk $btnIcon_HotBk")
-                .iconBtnFlags |= .Checkable
-                .checkedForm = .Bottom
-            }
-        }
-
-        with editToolBar = StackLayoutCtrl.create(topBar, .HorzCenter, @{0, 0, 64, 64})
-        {
-            .dockStyle = .Top
-            .backgroundStyle = .Window
-            .style.addStyleSheetColors("wnd_Bk $wnd_Caption")
-        }
-
-        createBtn(CmdIdModeFavorites)
-        createBtn(CmdIdModeShape)
-        createBtn(CmdIdModeArrow)
-        createBtn(CmdIdModeLine)
-        createBtn(CmdIdModePolygon)
-        createBtn(CmdIdModeText)
-        createBtn(CmdIdModeDraw)
-        editToolBar.updateCommandState()
-    }
-
     mtd openImage()
     {
         var opt: FileDlgOptions
@@ -834,35 +746,6 @@ impl MainWnd
         applyLayout()
     }
 
-    mtd registerShortcuts()
-    {
-        registerKeyShortcut(.Control,          .C,              CmdIdCopy)
-        registerKeyShortcut(.Control,          .V,              CmdIdPaste)
-        registerKeyShortcut(.Control,          .Insert,         CmdIdCopy)
-        registerKeyShortcut(.Shift,            .Insert,         CmdIdPaste)
-        registerKeyShortcut(.Control,          .Z,              CmdIdUndo)
-        registerKeyShortcut(.Control,          .Y,              CmdIdRedo)
-        registerKeyShortcut(.CtrlShift,        .F,              CmdIdBringForward)
-        registerKeyShortcut(.CtrlShift,        .B,              CmdIdSendBackward)
-        registerKeyShortcut(.None,             .Delete,         CmdIdDeleteSelection)
-        registerKeyShortcut(.CtrlShift,        .A,              CmdIdCopyAsImage)
-        registerKeyShortcut(.Control,          .A,              CmdIdSelectAll)
-        registerKeyShortcut(.Control,          .D,              CmdIdDeSelectAll)
-        registerKeyShortcut(.Control,          .Add,            CmdIdZoomIn)
-        registerKeyShortcut(.Control,          .Subtract,       CmdIdZoomOut)
-        registerKeyShortcut(.Control,          .NumPad0,        CmdIdZoom1)
-        registerKeyShortcut(.CtrlShift,        .D,              CmdIdDupCapture)
-        registerKeyShortcut(.CtrlShift,        .I,              CmdIdInvertSelection)
-        registerKeyShortcut(.CtrlShift,        .T,              CmdIdFlattenAll)
-        registerKeyShortcut(.Alt,              .F4,             CmdIdExit)
-        registerKeyShortcut(.Control,          .N,              CmdIdNewImage)
-        registerKeyShortcut(.CtrlShift,        .N,              CmdIdNewFromClipboard)
-        registerKeyShortcut(.CtrlShift,        .S,              CmdIdSaveAsImage)
-        registerKeyShortcut(.Control,          .O,              CmdIdOpenImage)
-
-        getApp().registerHotKey(.CtrlShift, .Snapshot, CmdIdCapture, self)
-    }
-
     mtd updateState()
     {
         captureBtn.updateCommandState()
@@ -930,9 +813,16 @@ impl MainWnd
 
     mtd captureScreen()
     {
-        surface.hide()
+        if !surface.isMinimized
+            surface.hide()
+
         img := catch screenShot(captureMode)
-        surface.show()
+
+        if !surface.isMinimized
+            surface.show()
+        else
+            surface.showNormal()
+
         if @err or img.width == 0 or img.height == 0
             return
         newCapture(img)
@@ -945,8 +835,127 @@ impl MainWnd
         zoomBtn.invalidate()
     }
 
+    mtd registerShortcuts()
+    {
+        registerKeyShortcut(.Control,          .C,              CmdIdCopy)
+        registerKeyShortcut(.Control,          .V,              CmdIdPaste)
+        registerKeyShortcut(.Control,          .Insert,         CmdIdCopy)
+        registerKeyShortcut(.Shift,            .Insert,         CmdIdPaste)
+        registerKeyShortcut(.Control,          .Z,              CmdIdUndo)
+        registerKeyShortcut(.Control,          .Y,              CmdIdRedo)
+        registerKeyShortcut(.CtrlShift,        .F,              CmdIdBringForward)
+        registerKeyShortcut(.CtrlShift,        .B,              CmdIdSendBackward)
+        registerKeyShortcut(.None,             .Delete,         CmdIdDeleteSelection)
+        registerKeyShortcut(.CtrlShift,        .A,              CmdIdCopyAsImage)
+        registerKeyShortcut(.Control,          .A,              CmdIdSelectAll)
+        registerKeyShortcut(.Control,          .D,              CmdIdDeSelectAll)
+        registerKeyShortcut(.Control,          .Add,            CmdIdZoomIn)
+        registerKeyShortcut(.Control,          .Subtract,       CmdIdZoomOut)
+        registerKeyShortcut(.Control,          .NumPad0,        CmdIdZoom1)
+        registerKeyShortcut(.CtrlShift,        .D,              CmdIdDupCapture)
+        registerKeyShortcut(.CtrlShift,        .I,              CmdIdInvertSelection)
+        registerKeyShortcut(.CtrlShift,        .T,              CmdIdFlattenAll)
+        registerKeyShortcut(.Alt,              .F4,             CmdIdExit)
+        registerKeyShortcut(.Control,          .N,              CmdIdNewImage)
+        registerKeyShortcut(.CtrlShift,        .N,              CmdIdNewFromClipboard)
+        registerKeyShortcut(.CtrlShift,        .S,              CmdIdSaveAsImage)
+        registerKeyShortcut(.Control,          .O,              CmdIdOpenImage)
+
+        getApp().registerHotKey(.CtrlShift, .Snapshot, CmdIdCapture, self)
+    }
+
+    mtd createTopMenu()
+    {
+        with topMenu := MenuCtrl.createBar(parent, owner: self)
+        {
+            .bringToFront()
+            .dockStyle = .Top
+            .margin.y = -parent.padding.y
+            .backgroundStyle = .Transparent
+        }
+
+        with fileMenu := MenuCtrl.createPopup(parent, owner: self)
+        {
+            .addItem(CmdIdNewImage)
+            .addItem(CmdIdNewFromClipboard)
+            .addSeparator()
+            .addItem(CmdIdOpenImage)
+            .addItem(CmdIdSaveAsImage)
+            .addSeparator()
+            .addItem(CmdIdExit)
+            topMenu.addPopup("File", fileMenu)
+        }
+
+        with captureMenu := MenuCtrl.createPopup(parent, owner: self)
+        {
+            .addItem(CmdIdCaptModeArea)
+            .addItem(CmdIdCaptModeScreen)
+            .addSeparator()
+            .addItem(CmdIdCapture)
+            topMenu.addPopup("Capture", captureMenu)
+        }
+
+        with editMenu := MenuCtrl.createPopup(parent, owner: self)
+        {
+            .addItem(CmdIdUndo)
+            .addItem(CmdIdRedo)
+            .addItem(CmdIdRestoreOrg)
+            .addSeparator()
+            .addItem(CmdIdCopy)
+            .addItem(CmdIdPaste)
+            .addItem(CmdIdCopyAsImage)
+            .addSeparator()
+            .addItem(CmdIdSelectAll)
+            .addItem(CmdIdDeSelectAll)
+            .addItem(CmdIdInvertSelection)
+            topMenu.addPopup("Edit", editMenu)
+        }
+
+        with viewMenu := MenuCtrl.createPopup(parent, owner: self)
+        {
+            .addItem(CmdIdZoomIn)
+            .addItem(CmdIdZoomOut)
+            .addItem(CmdIdZoom1)
+            .addItem(CmdIdZoomFit)
+            topMenu.addPopup("View", viewMenu)
+        }
+    }
+
+    mtd createToolbar(topBar: *Wnd)
+    {
+        mtd createBtn(id: WndId)
+        {
+            with b := IconButton.create(editToolBar, position: @{0, 0, 60, 64})
+            {
+                .id = #self.id
+                .style.addStyleSheetColors("btnIcon_CheckedBk    $btnIcon_HotBk")
+                .style.addStyleSheetColors("btnIcon_CheckedHotBk $btnIcon_HotBk")
+                .iconBtnFlags |= .Checkable
+                .checkedForm = .Bottom
+            }
+        }
+
+        with editToolBar = StackLayoutCtrl.create(topBar, .HorzCenter, @{0, 0, 64, 64})
+        {
+            .dockStyle = .Top
+            .backgroundStyle = .Window
+            .style.addStyleSheetColors("wnd_Bk $wnd_Caption")
+        }
+
+        createBtn(CmdIdModeFavorites)
+        createBtn(CmdIdModeShape)
+        createBtn(CmdIdModeArrow)
+        createBtn(CmdIdModeLine)
+        createBtn(CmdIdModePolygon)
+        createBtn(CmdIdModeText)
+        createBtn(CmdIdModeDraw)
+        editToolBar.updateCommandState()
+    }
+
     func create(parent: *Wnd)->*MainWnd
     {
+        parent.surface.minSize = @{1024, 512}
+
         img24 := assume Image.decode(".png", Icons24)
         img48 := assume Image.decode(".png", Icons48)
         renderer := parent.getApp().getRenderer()

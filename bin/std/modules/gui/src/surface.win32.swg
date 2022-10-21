@@ -91,19 +91,6 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
             return 0
 
         case WM_WINDOWPOSCHANGING:
-            ppos := cast(*WINDOWPOS) cast(uint) lParam
-            ppos.flags |= SWP_NOCOPYBITS | SWP_NOREDRAW
-            if !(ppos.flags & SWP_NOMOVE)
-            {
-                surface.position.x = cast(f32) ppos.x
-                surface.position.y = cast(f32) ppos.y
-            }
-            if !(ppos.flags & SWP_NOSIZE)
-            {
-                surface.position.width = cast(f32) ppos.cx
-                surface.position.height = cast(f32) ppos.cy
-                surface.sendResizeEvent(cast(f32) ppos.cx, cast(f32) ppos.cy)
-            }
             return 0
 
         case WM_GETMINMAXINFO:
@@ -259,6 +246,7 @@ impl Surface
     {
         if !isHidden
             return
+
         isHidden = false
         invalidate()
 
@@ -287,6 +275,7 @@ impl Surface
         if isMaximized
             return
         isMaximized = true
+        isMinimized = false
         positionNotMaximized = position
         ShowWindow(hWnd, SW_SHOWMAXIMIZED)
     }
@@ -294,15 +283,19 @@ impl Surface
     // Show the surface in its default state
     mtd showNormal()
     {
-        if !isMaximized
+        if !isMaximized and !isMinimized
             return
         isMaximized = false
+        isMinimized = false
         ShowWindow(hWnd, SW_RESTORE)
     }
 
     // Show the surface as minimized
     mtd showMinimized()
     {
+        if isMinimized
+            return
+        isMinimized = true
         ShowWindow(hWnd, SW_SHOWMINIMIZED)
     }
 
