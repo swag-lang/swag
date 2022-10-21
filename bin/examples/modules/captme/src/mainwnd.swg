@@ -98,10 +98,15 @@ impl IWnd for MainWnd
 
         switch evt.id
         {
-        case CmdIdSaveAs:
+        case CmdIdSaveAsImage:
             evt.setFlags |= .Name | .Disabled
-            evt.name = "Save As..."
+            evt.name = "Save As Image..."
             evt.disabled = !capture
+            evt.accepted = true
+
+        case CmdIdOpenImage:
+            evt.setFlags |= .Name
+            evt.name = "Open Image..."
             evt.accepted = true
 
         case CmdIdNewImage:
@@ -406,8 +411,10 @@ impl IWnd for MainWnd
         var undo: *Undo
         switch evt.id
         {
-        case CmdIdSaveAs:
-            saveAs()
+        case CmdIdSaveAsImage:
+            saveAsImage()
+        case CmdIdOpenImage:
+            openImage()
 
         case CmdIdExit:
             postQuitEvent()
@@ -641,7 +648,8 @@ impl MainWnd
             .addItem(CmdIdNewImage)
             .addItem(CmdIdNewFromClipboard)
             .addSeparator()
-            .addItem(CmdIdSaveAs)
+            .addItem(CmdIdOpenImage)
+            .addItem(CmdIdSaveAsImage)
             .addSeparator()
             .addItem(CmdIdExit)
             topMenu.addPopup("File", fileMenu)
@@ -704,7 +712,36 @@ impl MainWnd
         editToolBar.updateCommandState()
     }
 
-    mtd saveAs()
+    mtd openImage()
+    {
+        var opt: FileDlgOptions
+        with opt
+        {
+            .state = &fileDlgState
+            .mode = .SelectOneFile
+            .title = "Load Image"
+            .btnOkName = "Load"
+            .shortcuts.add(@{Env.SpecialDirectory.Desktop, "Desktop"})
+            .shortcuts.add(@{Env.SpecialDirectory.UserPictures, "My Images"})
+            .shortcuts.add(@{Env.SpecialDirectory.CommonPictures, "Images"})
+            .filters.add(@{"PNG - Portable Network Graphics (*.png)", ".png"})
+            .filters.add(@{"JPG - JPEG Image (*.jpg)", ".jpg"})
+            .filters.add(@{"BMP - Windows Bitmap (*.bmp)", ".bmp"})
+            .filters.add(@{"TGA - Truevision Targa (*.tga)", ".tga"})
+        }
+
+        dlg := FileDlg.create(surface, opt)
+        if dlg.doModal() != Dialog.BtnOk
+            return
+
+        img := catch Image.load(dlg.getSelectedName())
+        if @err
+            MessageDlg.error(surface, @err, "Failed to load image !")
+        else
+            newCapture(img)
+    }
+
+    mtd saveAsImage()
     {
         var opt: FileDlgOptions
         with opt
@@ -792,7 +829,8 @@ impl MainWnd
         registerKeyShortcut(.Alt,              .F4,             CmdIdExit)
         registerKeyShortcut(.Control,          .N,              CmdIdNewImage)
         registerKeyShortcut(.CtrlShift,        .N,              CmdIdNewFromClipboard)
-        registerKeyShortcut(.CtrlShift,        .S,              CmdIdSaveAs)
+        registerKeyShortcut(.CtrlShift,        .S,              CmdIdSaveAsImage)
+        registerKeyShortcut(.Control,          .O,              CmdIdOpenImage)
     }
 
     mtd updateState()
