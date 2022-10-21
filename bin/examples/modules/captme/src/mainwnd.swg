@@ -7,6 +7,7 @@ enum EditMode
     Text
     Favorites
     Draw
+    Highlight
 }
 
 enum BottomSize
@@ -50,7 +51,8 @@ struct MainWnd
     mdlFormPolygon: FormPolygon
     mdlFormText:    FormText
     mdlFormDraw:    FormDraw
-    favoriteMdl:    IForm
+    mdlHighlight:   IForm
+    mdlFavorite:    IForm
 }
 
 const Icons24 = #include("datas/icons24.png")
@@ -332,6 +334,14 @@ impl IWnd for MainWnd
             evt.checked = editMode == .Draw
             evt.accepted = true
 
+        case CmdIdModeHighlight:
+            evt.setFlags |= .Icon | .Checked | .Name | .ToolTip
+            evt.icon = Icon.from(&icons48, 9)
+            evt.name = "Highlight"
+            evt.toolTip = "Highlight some parts of the capture"
+            evt.checked = editMode == .Highlight
+            evt.accepted = true
+
         case CmdIdModeFavorites:
             evt.setFlags |= .Icon | .Checked | .Name | .ToolTip
             evt.icon = Icon.from(&icons48, 5)
@@ -557,6 +567,11 @@ impl IWnd for MainWnd
             evt.accepted = true
             updateState()
 
+        case CmdIdModeHighlight:
+            editMode = .Highlight
+            evt.accepted = true
+            updateState()
+
         case CmdIdModeFavorites:
             editMode = .Favorites
             evt.accepted = true
@@ -639,7 +654,20 @@ impl MainWnd
         if editMode == .Favorites
         {
             #[Swag.Complete]
-            switch @kindof(favoriteMdl)
+            switch @kindof(mdlFavorite)
+            {
+            case FormShape:     return EditMode.Shape
+            case FormArrow:     return EditMode.Arrow
+            case FormLine:      return EditMode.Line
+            case FormPolygon:   return EditMode.Polygon
+            case FormText:      return EditMode.Text
+            case FormDraw:      return EditMode.Draw
+            }
+        }
+        elif editMode == .Highlight
+        {
+            #[Swag.Complete]
+            switch @kindof(mdlHighlight)
             {
             case FormShape:     return EditMode.Shape
             case FormArrow:     return EditMode.Arrow
@@ -949,6 +977,7 @@ impl MainWnd
         createBtn(CmdIdModePolygon)
         createBtn(CmdIdModeText)
         createBtn(CmdIdModeDraw)
+        createBtn(CmdIdModeHighlight)
         editToolBar.updateCommandState()
     }
 
@@ -966,7 +995,8 @@ impl MainWnd
             .icons48.set(renderer.addImage(img48), 48, 48)
             .clipFmt = catch Clipboard.registerFormat(ClipboardFormat)
             .backgroundStyle = .Window
-            .favoriteMdl = &res.mdlFormShape
+            .mdlFavorite  = &res.mdlFormShape
+            .mdlHighlight = &res.mdlFormShape
             .registerShortcuts()
         }
 

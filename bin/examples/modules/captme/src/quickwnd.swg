@@ -44,6 +44,7 @@ struct QuickWnd
     qsText:         QuickStyle
     qsFavorites:    QuickStyle
     qsDraw:         QuickStyle
+    qsHighlight:    QuickStyle
 
     currentStyle:   *QuickStyle
 }
@@ -75,17 +76,19 @@ impl IWnd for QuickWnd
                 .serialize("QuickWnd.qsText",      &qsText)
                 .serialize("QuickWnd.qsFavorites", &qsFavorites)
                 .serialize("QuickWnd.qsDraw",      &qsDraw)
+                .serialize("QuickWnd.qsHighlight", &qsHighlight)
             }
         }
 
         if evt.ser.isReading()
         {
-            if qsArrow.forms.isEmpty()   defaultQuickStyleArrow()
-            if qsShape.forms.isEmpty()   defaultQuickStyleShape()
-            if qsLine.forms.isEmpty()    defaultQuickStyleLine()
-            if qsPolygon.forms.isEmpty() defaultQuickStylePolygon()
-            if qsText.forms.isEmpty()    defaultQuickStyleText()
-            if qsDraw.forms.isEmpty()    defaultQuickStyleDraw()
+            if qsArrow.forms.isEmpty()      defaultQuickStyleArrow()
+            if qsShape.forms.isEmpty()      defaultQuickStyleShape()
+            if qsLine.forms.isEmpty()       defaultQuickStyleLine()
+            if qsPolygon.forms.isEmpty()    defaultQuickStylePolygon()
+            if qsText.forms.isEmpty()       defaultQuickStyleText()
+            if qsDraw.forms.isEmpty()       defaultQuickStyleDraw()
+            if qsHighlight.forms.isEmpty()  defaultQuickStyleHighlight()
             updateQuickStyles()
         }
     }
@@ -183,9 +186,6 @@ impl QuickWnd
         add(BorderSize, .Rectangle, Argb.Purple, Argb.Zero)
         add(BorderSize, .Rectangle, Argb.White, Argb.Zero)
         add(BorderSize, .Rectangle, Argb.Black, Argb.Zero)
-        add(0, .Rectangle, Argb.Zero, Argb.Yellow)
-        add(0, .Rectangle, Argb.Zero, Argb.Green)
-        add(0, .Rectangle, Argb.Zero, Argb.Red)
         add(0, .Rectangle, Argb.Zero, Argb.White)
         add(0, .Rectangle, Argb.Zero, Argb.Black)
     }
@@ -291,6 +291,45 @@ impl QuickWnd
         add(BorderSize, Argb.Purple)
     }
 
+    mtd defaultQuickStyleHighlight()
+    {
+        #[Swag.Macro]
+        func addDraw(borderSize: f32, color: Color)
+        {
+            form := Memory.new'FormDraw()
+            form.borderSize = borderSize
+            form.borderColor = color
+            it := cast(IForm) form
+            it.setup(null)
+            `qsHighlight.forms.add(it)
+        }
+
+        #[Swag.Macro]
+        func addShape(kind: FormShapeKind, color: Color, backColor: Color)
+        {
+            form := Memory.new'FormShape()
+            form.borderSize = 0
+            form.borderColor = color
+            form.backColor = backColor
+            form.kind = kind
+            it := cast(IForm) form
+            it.setup(null)
+            `qsHighlight.forms.add(it)
+        }
+
+        const Alpha = 0x90
+        addShape(.Rectangle, Argb.Zero, Color.fromArgb(Alpha, Argb.Red))
+        addShape(.Rectangle, Argb.Zero, Color.fromArgb(Alpha, Argb.Blue))
+        addShape(.Rectangle, Argb.Zero, Color.fromArgb(Alpha, Argb.Green))
+        addShape(.Rectangle, Argb.Zero, Color.fromArgb(Alpha, Argb.Yellow))
+
+        const BorderSize = 20.0
+        addDraw(BorderSize, Color.fromArgb(Alpha, Argb.Red))
+        addDraw(BorderSize, Color.fromArgb(Alpha, Argb.Blue))
+        addDraw(BorderSize, Color.fromArgb(Alpha, Argb.Green))
+        addDraw(BorderSize, Color.fromArgb(Alpha, Argb.Yellow))
+    }
+
     mtd updateSelection()
     {
         if !currentStyle
@@ -360,6 +399,7 @@ impl QuickWnd
         case Polygon:   defaultQuickStylePolygon()
         case Text:      defaultQuickStyleText()
         case Draw:      defaultQuickStyleDraw()
+        case Highlight: defaultQuickStyleHighlight()
         case Favorites: break
         }
 
@@ -400,6 +440,7 @@ impl QuickWnd
             Capture.paintForm(btnp.getApp(), painter, @{0, 0, 64, 64}, btnp.formItf, zoom: 1, quickMode: true)
         }
 
+        #[Swag.Complete]
         switch main.editMode
         {
         case Arrow:
@@ -416,8 +457,8 @@ impl QuickWnd
             currentStyle = &qsFavorites
         case Draw:
             currentStyle = &qsDraw
-        default:
-            currentStyle = null
+        case Highlight:
+            currentStyle = &qsHighlight
         }
 
         visit c: layout.childs
@@ -453,30 +494,36 @@ impl QuickWnd
                 case FormShape:
                     b := cast(*FormShape) @dataof(it)
                     self.main.mdlFormShape = dref b
-                    self.main.favoriteMdl = &self.main.mdlFormShape
+                    self.main.mdlFavorite  = &self.main.mdlFormShape
+                    self.main.mdlHighlight = &self.main.mdlFormShape
                 case FormLine:
                     b := cast(*FormLine) @dataof(it)
                     self.main.mdlFormLine = dref b
-                    self.main.favoriteMdl = &self.main.mdlFormLine
+                    self.main.mdlFavorite  = &self.main.mdlFormLine
+                    self.main.mdlHighlight = &self.main.mdlFormLine
                 case FormPolygon:
                     b := cast(*FormPolygon) @dataof(it)
                     self.main.mdlFormPolygon = dref b
-                    self.main.favoriteMdl = &self.main.mdlFormPolygon
+                    self.main.mdlFavorite = &self.main.mdlFormPolygon
+                    self.main.mdlHighlight = &self.main.mdlFormPolygon
                 case FormArrow:
                     b := cast(*FormArrow) @dataof(it)
                     self.main.mdlFormArrow = dref b
-                    self.main.favoriteMdl = &self.main.mdlFormArrow
+                    self.main.mdlFavorite = &self.main.mdlFormArrow
+                    self.main.mdlHighlight = &self.main.mdlFormArrow
                 case FormText:
                     b := cast(*FormText) @dataof(it)
                     self.main.mdlFormText = dref b
-                    self.main.favoriteMdl = &self.main.mdlFormText
+                    self.main.mdlFavorite = &self.main.mdlFormText
+                    self.main.mdlHighlight = &self.main.mdlFormText
                 case FormDraw:
                     b := cast(*FormDraw) @dataof(it)
                     self.main.mdlFormDraw = dref b
-                    self.main.favoriteMdl = &self.main.mdlFormDraw
+                    self.main.mdlFavorite = &self.main.mdlFormDraw
+                    self.main.mdlHighlight = &self.main.mdlFormDraw
                 }
 
-                if self.main.editMode != .Favorites
+                if @kindof(it) == type
                 {
                     var mdlValue: *BaseForm
 
@@ -555,7 +602,9 @@ impl QuickWnd
         case Draw:
             btn.formItf = cast(IForm) main.mdlFormDraw
         case Favorites:
-            btn.formItf = main.favoriteMdl
+            btn.formItf = main.mdlFavorite
+        case Highlight:
+            btn.formItf = main.mdlHighlight
         }
 
         btn.sigPaintIcon = @(btn, bc, pos) {
@@ -606,7 +655,7 @@ impl QuickWnd
                 mdl := Memory.new'FormDraw()
                 mdl.IForm.copy(mdl, &main.mdlFormDraw)
                 self.currentStyle.forms.add(mdl)
-            case Favorites:
+            case Favorites, Highlight:
                 break
             }
 

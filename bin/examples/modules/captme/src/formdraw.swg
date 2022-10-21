@@ -205,6 +205,14 @@ impl IForm for FormDraw
 
         pen := Pen.createSolid(borderColor, bSize)
         pen.joinStyle = .Round
+
+        if quickMode and borderColor.a != 0 and borderColor.a != 255
+        {
+            pen1 := pen
+            pen1.brush = Brush.createHatch(.CheckBoardLarge, Argb.DarkGray)
+            painter.drawPath(&pl, pen1)
+        }
+
         painter.drawPath(&pl, pen)
     }
 

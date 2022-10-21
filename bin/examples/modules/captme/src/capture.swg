@@ -897,7 +897,7 @@ impl Capture
                     dref form = editView.main.mdlFormDraw
                     form.points.clear()
                     itf = cast(IForm) form
-                case Favorites:
+                case Favorites, Highlight:
                     break
                 }
 
@@ -973,17 +973,36 @@ impl Capture
             switch t
             {
             case FormShape, FormImage:
-                main.favoriteMdl = main.mdlFormShape
+                main.mdlFavorite = main.mdlFormShape
             case FormArrow:
-                main.favoriteMdl = main.mdlFormArrow
+                main.mdlFavorite = main.mdlFormArrow
             case FormLine:
-                main.favoriteMdl = main.mdlFormLine
+                main.mdlFavorite = main.mdlFormLine
             case FormPolygon:
-                main.favoriteMdl = main.mdlFormPolygon
+                main.mdlFavorite = main.mdlFormPolygon
             case FormText:
-                main.favoriteMdl = main.mdlFormText
+                main.mdlFavorite = main.mdlFormText
             case FormDraw:
-                main.favoriteMdl = main.mdlFormDraw
+                main.mdlFavorite = main.mdlFormDraw
+            }
+        }
+        elif main.editMode == .Highlight
+        {
+            #[Swag.Complete]
+            switch t
+            {
+            case FormShape, FormImage:
+                main.mdlHighlight = main.mdlFormShape
+            case FormArrow:
+                main.mdlHighlight = main.mdlFormArrow
+            case FormLine:
+                main.mdlHighlight = main.mdlFormLine
+            case FormPolygon:
+                main.mdlHighlight = main.mdlFormPolygon
+            case FormText:
+                main.mdlHighlight = main.mdlFormText
+            case FormDraw:
+                main.mdlHighlight = main.mdlFormDraw
             }
         }
         else
