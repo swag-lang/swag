@@ -141,7 +141,9 @@ impl IForm for FormShape
     {
         bSize := adaptSize(borderSize, MinBorderSize, MaxBorderSize, z, quickMode)
         pp    := Math.Rectangle{0, 0, paintPos.width, paintPos.height}
-        pen   := Pen.createDash(dashStyle, borderColor, bSize)
+
+        pen       := Pen.createDash(dashStyle, borderColor, bSize)
+        backBrush := Brush.createHatch(.CheckBoardLarge, Argb.DarkGray)
 
         #[Swag.Complete]
         switch kind
@@ -149,6 +151,8 @@ impl IForm for FormShape
         case Ellipse:
             sizeX := pp.width * 0.5
             sizeY := pp.height * 0.5
+            if quickMode and backColor.a != 0 and backColor.a != 255
+                painter.fillEllipse(pp.x + sizeX, pp.y + sizeY, sizeX, sizeY, backBrush)
             painter.fillEllipse(pp.x + sizeX, pp.y + sizeY, sizeX, sizeY, backColor)
             if bSize >= 1
                 painter.drawEllipse(pp.x + sizeX, pp.y + sizeY, sizeX - bSize * 0.5, sizeY - bSize * 0.5, pen)
@@ -158,6 +162,8 @@ impl IForm for FormShape
                 painter.fillRect(pp, borderColor)
             else
             {
+                if quickMode and backColor.a != 0 and backColor.a != 255
+                    painter.fillRect(pp, backBrush)
                 painter.fillRect(pp, backColor)
                 pp.inflate(-bSize * 0.5)
                 painter.drawRect(pp, pen)
@@ -166,6 +172,8 @@ impl IForm for FormShape
         case RoundRectangle:
             pp.inflate(-bSize * 0.5)
             round := Math.max(bSize, 10)
+            if quickMode and backColor.a != 0 and backColor.a != 255
+                painter.fillRoundRect(pp, round, round, backBrush)
             painter.fillRoundRect(pp, round, round, backColor)
             if bSize >= 1
                 painter.drawRoundRect(pp, round, round, pen)

@@ -181,10 +181,13 @@ impl QuickWnd
         add(BorderSize, .RoundRectangle, Argb.Purple, Argb.Zero)
         add(BorderSize, .Rectangle, Argb.Red, Argb.Zero)
         add(BorderSize, .Rectangle, Argb.Purple, Argb.Zero)
-        add(0, .Rectangle, Argb.Zero, Argb.White)
-        add(0, .Rectangle, Argb.Zero, Argb.Black)
         add(BorderSize, .Rectangle, Argb.White, Argb.Zero)
         add(BorderSize, .Rectangle, Argb.Black, Argb.Zero)
+        add(0, .Rectangle, Argb.Zero, Argb.Yellow)
+        add(0, .Rectangle, Argb.Zero, Argb.Green)
+        add(0, .Rectangle, Argb.Zero, Argb.Red)
+        add(0, .Rectangle, Argb.Zero, Argb.White)
+        add(0, .Rectangle, Argb.Zero, Argb.Black)
     }
 
     mtd defaultQuickStyleLine()

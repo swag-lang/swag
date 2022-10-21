@@ -57,8 +57,8 @@ impl IForm for FormDraw
         }
         elif evt.kind == .MouseMove
         {
-            xs := cast(s32) Math.abs(((x0 - points.back().x) / zoom))
-            ys := cast(s32) Math.abs(((y0 - points.back().y) / zoom))
+            xs := cast(s32) Math.abs(x0 - points.back().x)
+            ys := cast(s32) Math.abs(y0 - points.back().y)
             if xs > 5 or ys > 5
                 points.add(@{x0, y0})
         }
