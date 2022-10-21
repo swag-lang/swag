@@ -13,7 +13,6 @@ struct Scope;
 struct BackendLLVMDbg
 {
     void                setup(BackendLLVM* m, llvm::Module* module);
-    void                startWrapperFunction(LLVMPerThread& pp, ByteCode* bc, AstFuncDecl* node, llvm::Function* func);
     llvm::DISubprogram* startFunction(ByteCode* bc, AstFuncDecl** resultDecl = nullptr);
     void                startFunction(const BuildParameters& buildParameters, LLVMPerThread& pp, ByteCode* bc, llvm::Function* func, llvm::AllocaInst* stack);
     void                finalize();

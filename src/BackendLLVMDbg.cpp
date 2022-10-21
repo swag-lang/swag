@@ -380,7 +380,8 @@ llvm::DISubprogram* BackendLLVMDbg::startFunction(ByteCode* bc, AstFuncDecl** re
     llvm::DINode::DIFlags diFlags = llvm::DINode::FlagPrototyped | llvm::DINode::FlagStaticMember;
 
     // Register function
-    llvm::DISubprogram* SP = dbgBuilder->createFunction(file, name.c_str(), llvm::StringRef(), file, lineNo, dbgFuncType, lineNo, diFlags, spFlags);
+    auto                mangledName = typeFunc->declNode->getScopedName();
+    llvm::DISubprogram* SP          = dbgBuilder->createFunction(file, name.c_str(), mangledName.c_str(), file, lineNo, dbgFuncType, lineNo, diFlags, spFlags);
     if (decl)
         mapScopes[decl->content->ownerScope] = SP;
 
@@ -543,27 +544,6 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
             dbgBuilder->insertDeclare(v, var, dbgBuilder->createExpression(), debugLocGet(loc.line + 1, loc.column, scope), pp.builder->GetInsertBlock());
         }
     }
-}
-
-void BackendLLVMDbg::startWrapperFunction(LLVMPerThread& pp, ByteCode* bc, AstFuncDecl* node, llvm::Function* func)
-{
-    auto                    file        = exportFile;
-    Utf8                    name        = node->fullnameForeign;
-    auto                    lineNo      = 0;
-    llvm::DISubroutineType* dbgFuncType = getFunctionType(bc->getCallType(), file);
-
-    // Flags
-    llvm::DISubprogram::DISPFlags spFlags = llvm::DISubprogram::SPFlagDefinition;
-    if (isOptimized)
-        spFlags |= llvm::DISubprogram::SPFlagOptimized;
-
-    llvm::DINode::DIFlags diFlags = llvm::DINode::FlagPrototyped | llvm::DINode::FlagStaticMember;
-
-    // Register function
-    llvm::DISubprogram* SP = dbgBuilder->createFunction(file, name.c_str(), llvm::StringRef(), file, lineNo, dbgFuncType, lineNo, diFlags, spFlags);
-    func->setSubprogram(SP);
-
-    pp.builder->SetCurrentDebugLocation(debugLocGet(lineNo, 0, SP));
 }
 
 void BackendLLVMDbg::setLocation(llvm::IRBuilder<>* builder, ByteCode* bc, ByteCodeInstruction* ip)
