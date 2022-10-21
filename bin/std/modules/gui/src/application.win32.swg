@@ -40,13 +40,51 @@ impl Application
         ReleaseCapture()
     }
 
+    mtd registerHotKey(mdf: Input.KeyModifiers, key: Input.Key)
+    {
+        var mod: u32
+        if mdf & .Alt
+            mod |= MOD_ALT
+        if mdf & .Control
+            mod |= MOD_CONTROL
+        if mdf & .Shift
+            mod |= MOD_SHIFT
+        winkey := Input.Keyboard.keyToVirtualKey(key)
+
+        catch Win32.RegisterHotKey(null, 0x66, mod, winkey)
+        if @err
+            @print(@err)
+    }
+
+    mtd sendHotKey(msg: MSG)
+    {
+        using Input
+        var mdf: KeyModifiers
+        if msg.lParam & MOD_ALT
+            mdf |= .Alt
+        if msg.lParam & MOD_CONTROL
+            mdf |= .Control
+        if msg.lParam & MOD_SHIFT
+            mdf |= .Shift
+        key := Keyboard.virtualKeyToKey(acast (msg.lParam >>,safe 16))
+
+        (id, target) := getHotKeyShortcut(mdf, key)
+        if id
+            target.sendWndId(id)
+    }
+
     mtd sendSystemEvents()
     {
         var msg: MSG
         while PeekMessageW(&msg, null, 0, 0, PM_REMOVE) != 0
         {
-            TranslateMessage(&msg)
-            DispatchMessageW(&msg)
+            if msg.message == WM_HOTKEY
+                sendHotKey(msg)
+            else
+            {
+                TranslateMessage(&msg)
+                DispatchMessageW(&msg)
+            }
         }
     }
 

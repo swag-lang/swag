@@ -831,6 +831,8 @@ impl MainWnd
         registerKeyShortcut(.CtrlShift,        .N,              CmdIdNewFromClipboard)
         registerKeyShortcut(.CtrlShift,        .S,              CmdIdSaveAsImage)
         registerKeyShortcut(.Control,          .O,              CmdIdOpenImage)
+
+        getApp().registerHotKey(.CtrlShift, .Snapshot, CmdIdCapture, self)
     }
 
     mtd updateState()

@@ -38,6 +38,7 @@ struct Application
     keybFocusWnd:       *Wnd
     maxRunFrame:        u32
     configPath:         String
+    hotKeys:            Array'KeyShortcut
 }
 
 private impl Application
@@ -238,21 +239,12 @@ private impl Application
                 evt.modifiers = modifiers
                 targetWnd.sendEvent(&evt)
 
+                // Convert key to command (shortcuts)
                 if !evt.accepted
                 {
                     id := targetWnd.getKeyShortcut(modifiers, cast(Input.Key) i)
                     if id != null
-                    {
-                        evtui := CommandUIEvent{}
-                        evtui.id = id
-                        targetWnd.sendEvent(&evtui)
-                        if !evtui.disabled
-                        {
-                            evtc := CommandEvent{}
-                            evtc.id = id
-                            targetWnd.sendEvent(&evtc)
-                        }
-                    }
+                        targetWnd.sendWndId(id)
                 }
             }
             elif lastP and !curP
@@ -744,4 +736,50 @@ impl Application
 
     mtd getFileIcon(name: string, small = true)      => getFileDirectoryIcon(name, false, small)
     mtd getDirectoryIcon(name: string, small = true) => getFileDirectoryIcon(name, true, small)
+
+    // Register a global os key action
+    mtd registerHotKey(mdf: Input.KeyModifiers, key: Input.Key, wndId: WndId, target: *Wnd)
+    {
+        visit &c: hotKeys
+        {
+            if c.mdf == mdf and c.key == key
+            {
+                c.id = wndId
+                c.target = target
+                return
+            }
+        }
+
+        hotKeys.add(@{mdf, key, wndId, target})
+        registerHotKey(mdf, key)
+    }
+
+    // Get the id associated with a shortcut. null if none
+    mtd getHotKeyShortcut(mdf: Input.KeyModifiers, key: Input.Key)->{WndId, *Wnd}
+    {
+        visit c: hotKeys
+        {
+            if c.mdf == mdf and c.key == key
+                return @{c.id, c.target}
+        }
+
+        return @{null, null}
+    }
+
+    // Get the name associated with a given id shortcut
+    mtd getHotKeyShortcutNameFor(wndId: WndId)->String
+    {
+        var result: retval
+        visit c: hotKeys
+        {
+            if c.id == wndId
+            {
+                result = Input.getKeyName(c.mdf, c.key)
+                return result
+            }
+        }
+
+        return result
+    }
+
 }

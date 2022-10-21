@@ -41,9 +41,10 @@ enum FocusStategy
 
 struct KeyShortcut
 {
-    mdf: Input.KeyModifiers = None
-    key: Input.Key = None
-    id:  WndId
+    mdf:    Input.KeyModifiers = None
+    key:    Input.Key = None
+    id:     WndId
+    target: *Wnd
 }
 
 interface IWnd
@@ -1144,6 +1145,19 @@ impl Wnd
         }
 
         return evt
+    }
+
+    mtd sendWndId(wndid: WndId)
+    {
+        evtui := CommandUIEvent{}
+        evtui.id = wndid
+        sendEvent(&evtui)
+        if !(evtui.setFlags & .Disabled) or !evtui.disabled
+        {
+            evtc := CommandEvent{}
+            evtc.id = wndid
+            sendEvent(&evtc)
+        }
     }
 
     mtd processEvent(evt: *Event)

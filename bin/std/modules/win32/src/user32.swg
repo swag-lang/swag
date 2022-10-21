@@ -18,6 +18,12 @@ alias WPARAM =      u64
 alias LPARAM =      u64
 alias COLORREF =    DWORD
 
+const MOD_ALT      = 0x0001
+const MOD_CONTROL  = 0x0002
+const MOD_SHIFT    = 0x0004
+const MOD_WIN      = 0x0008
+const MOD_NOREPEAT = 0x4000
+
 const VK_LBUTTON        = 0x01
 const VK_RBUTTON        = 0x02
 const VK_CANCEL         = 0x03
@@ -1042,11 +1048,26 @@ namespace User32Priv
 
         func DestroyIcon(hIcon: HICON)->BOOL;
         func GetIconInfo(hIcon: HICON, piconinfo: *ICONINFO)->BOOL;
+
+        func RegisterHotKey(hWnd: HWND, id: s32, fsModifiers: UINT, vk: UINT)->BOOL;
+        func UnregisterHotKey(hWnd: HWND, id: s32)->BOOL;
     }
 }
 
 #[Inline]
 {
+    func RegisterHotKey(hWnd: HWND, id: s32, fsModifiers: UINT, vk: UINT) throw
+    {
+        if !User32Priv.RegisterHotKey(hWnd, id, fsModifiers, vk)
+            try setError(GetLastError())
+    }
+
+    func UnregisterHotKey(hWnd: HWND, id: s32) throw
+    {
+        if !User32Priv.UnregisterHotKey(hWnd, id)
+            try setError(GetLastError())
+    }
+
     func PostMessageA(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM) throw
     {
         if !User32Priv.PostMessageA(hWnd, msg, wParam, lParam)
