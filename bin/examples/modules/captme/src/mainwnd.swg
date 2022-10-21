@@ -229,9 +229,10 @@ impl IWnd for MainWnd
             evt.accepted = true
 
         case CmdIdCapture:
-            evt.setFlags |= .Name | .ToolTip
+            evt.setFlags |= .Name | .ToolTip | .Icon
             evt.name = "Capture"
             evt.toolTip = "Start a new capture"
+            evt.icon = Icon.from(&icons48, 6)
             evt.accepted = true
 
         case CmdIdLibrary:
@@ -969,12 +970,7 @@ impl MainWnd
 
         res.createToolbar(topBar)
 
-        with res.captureBtn = IconButton.create(topBar, Icon.from(&res.icons48, 6), @{0, 0, 64, 64}, id: CmdIdCapture)
-        {
-            .style.addStyleSheetColors("btnIcon_Icon    0xFFFF0000")
-            .style.addStyleSheetColors("btnIcon_HotIcon 0xFFFF4444")
-        }
-
+        res.captureBtn = IconButton.create(topBar, Icon.from(&res.icons48, 6), @{0, 0, 64, 64}, id: CmdIdCapture)
         res.libraryBtn = IconButton.create(topBar, Icon.from(&res.icons48, 8), @{64, 0, 64, 64}, id: CmdIdLibrary)
 
         // Main edit area
