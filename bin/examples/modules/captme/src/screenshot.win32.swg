@@ -1,6 +1,12 @@
 #global if #os == Swag.TargetOs.Windows
 using Core, Win32, Gdi32, Pixel
 
+enum CaptureMode
+{
+    Area
+    Screen
+}
+
 scopefile {
 
 var g_StartGrabX: s32
@@ -141,7 +147,7 @@ func createNative(w, h: s32)->HWND throw
 }
 }
 
-func screenShot()->Image throw
+func screenShot(captureMode: CaptureMode)->Image throw
 {
     var result: retval
 
@@ -159,18 +165,28 @@ func screenShot()->Image throw
     // Capture with mouse
     nScreenWidth  := GetSystemMetrics(SM_CXMAXTRACK)
     nScreenHeight := GetSystemMetrics(SM_CYMAXTRACK)
-    hWnd := createNative(nScreenWidth, nScreenHeight)
 
-    var msg: MSG
-    while GetMessageW(&msg, null, 0, 0) != 0
+    if captureMode == .Screen
     {
-        TranslateMessage(&msg)
-        DispatchMessageW(&msg)
+        g_StartGrabX, g_StartGrabY = 0
+        g_EndGrabX = nScreenWidth
+        g_EndGrabY = nScreenHeight
     }
+    else
+    {
+        hWnd := createNative(nScreenWidth, nScreenHeight)
 
-    catch DestroyWindow(hWnd)
-    if !g_GrabDone
-        return result
+        var msg: MSG
+        while GetMessageW(&msg, null, 0, 0) != 0
+        {
+            TranslateMessage(&msg)
+            DispatchMessageW(&msg)
+        }
+
+        catch DestroyWindow(hWnd)
+        if !g_GrabDone
+            return result
+    }
 
     // Grab the portion of the screen
     hDesktopWnd := GetDesktopWindow()

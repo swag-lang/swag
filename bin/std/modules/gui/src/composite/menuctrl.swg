@@ -296,7 +296,7 @@ impl IWnd for MenuCtrl
         }
 
         // On a popup menu, just react to press button
-        elif evt.kind == .MousePressed and evt.button == .Left
+        elif evt.kind == .MouseReleased and evt.button == .Left
         {
             if hotIdx != Swag.U32.Max
             {

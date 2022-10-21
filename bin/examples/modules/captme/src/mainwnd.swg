@@ -36,6 +36,7 @@ struct MainWnd
     recentSizeBar:  *IconBar
     quickStyleBar:  *SplitterCtrl
     editZoomBar:    *StackLayoutCtrl
+    captureMode:    CaptureMode = .Area
 
     editMode:       EditMode = .Shape
     bottomSize:     BottomSize = Medium
@@ -76,6 +77,7 @@ impl IWnd for MainWnd
                 .serialize("MainWnd.snap", &snap)
                 .serialize("MainWnd.bottomSize", &bottomSize)
                 .serialize("MainWnd.fileDlgState", &fileDlgState)
+                .serialize("MainWnd.captureMode", &captureMode)
                 .serialize("MainWnd.RightBar.Pane0", &quickStyleBar.items[0].size)
                 .serialize("MainWnd.RightBar.Pane1", &quickStyleBar.items[1].size)
             }
@@ -98,6 +100,18 @@ impl IWnd for MainWnd
 
         switch evt.id
         {
+        case CmdIdCaptModeArea:
+            evt.setFlags |= .Name | .Checked
+            evt.name = "Area"
+            evt.checked = captureMode == .Area
+            evt.accepted = true
+
+        case CmdIdCaptModeScreen:
+            evt.setFlags |= .Name | .Checked
+            evt.name = "Screen"
+            evt.checked = captureMode == .Screen
+            evt.accepted = true
+
         case CmdIdSaveAsImage:
             evt.setFlags |= .Name | .Disabled
             evt.name = "Save As Image..."
@@ -411,6 +425,11 @@ impl IWnd for MainWnd
         var undo: *Undo
         switch evt.id
         {
+        case CmdIdCaptModeArea:
+            captureMode = .Area
+        case CmdIdCaptModeScreen:
+            captureMode = .Screen
+
         case CmdIdSaveAsImage:
             saveAsImage()
         case CmdIdOpenImage:
@@ -655,6 +674,15 @@ impl MainWnd
             topMenu.addPopup("File", fileMenu)
         }
 
+        with captureMenu := MenuCtrl.createPopup(parent, owner: self)
+        {
+            .addItem(CmdIdCaptModeArea)
+            .addItem(CmdIdCaptModeScreen)
+            .addSeparator()
+            .addItem(CmdIdCapture)
+            topMenu.addPopup("Capture", captureMenu)
+        }
+
         with editMenu := MenuCtrl.createPopup(parent, owner: self)
         {
             .addItem(CmdIdUndo)
@@ -671,13 +699,13 @@ impl MainWnd
             topMenu.addPopup("Edit", editMenu)
         }
 
-        with displayMenu := MenuCtrl.createPopup(parent, owner: self)
+        with viewMenu := MenuCtrl.createPopup(parent, owner: self)
         {
             .addItem(CmdIdZoomIn)
             .addItem(CmdIdZoomOut)
             .addItem(CmdIdZoom1)
             .addItem(CmdIdZoomFit)
-            topMenu.addPopup("View", displayMenu)
+            topMenu.addPopup("View", viewMenu)
         }
     }
 
@@ -807,7 +835,6 @@ impl MainWnd
 
     mtd registerShortcuts()
     {
-        registerKeyShortcut(.Control,          .PrintScreen,    CmdIdCapture)
         registerKeyShortcut(.Control,          .C,              CmdIdCopy)
         registerKeyShortcut(.Control,          .V,              CmdIdPaste)
         registerKeyShortcut(.Control,          .Insert,         CmdIdCopy)
@@ -903,7 +930,7 @@ impl MainWnd
     mtd captureScreen()
     {
         surface.hide()
-        img := catch screenShot()
+        img := catch screenShot(captureMode)
         surface.show()
         if @err or img.width == 0 or img.height == 0
             return

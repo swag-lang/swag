@@ -69,7 +69,7 @@ impl Application
         key := Keyboard.virtualKeyToKey(acast (msg.lParam >>,safe 16))
 
         (id, target) := getHotKeyShortcut(mdf, key)
-        if id
+        if id and target
             target.sendWndId(id)
     }
 

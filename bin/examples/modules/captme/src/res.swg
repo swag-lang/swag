@@ -46,5 +46,7 @@ const CmdIdNewFromClipboard = "CmdIdNewFromClipboard"
 const CmdIdNewImage         = "CmdIdNewImage"
 const CmdIdSaveAsImage      = "CmdIdSaveAsImage"
 const CmdIdOpenImage        = "CmdIdOpenImage"
+const CmdIdCaptModeArea     = "CmdIdCaptModeArea"
+const CmdIdCaptModeScreen   = "CmdIdCaptModeScreen"
 
 const ClipboardFormat = "Swag.CaptMe"
