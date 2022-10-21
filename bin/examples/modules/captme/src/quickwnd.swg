@@ -299,6 +299,7 @@ impl QuickWnd
             form := Memory.new'FormDraw()
             form.borderSize = borderSize
             form.borderColor = color
+            form.alpha = 30
             it := cast(IForm) form
             it.setup(null)
             `qsHighlight.forms.add(it)
@@ -311,23 +312,23 @@ impl QuickWnd
             form.borderSize = 0
             form.borderColor = color
             form.backColor = backColor
+            form.alpha = 30
             form.kind = kind
             it := cast(IForm) form
             it.setup(null)
             `qsHighlight.forms.add(it)
         }
 
-        const Alpha = 0x90
-        addShape(.Rectangle, Argb.Zero, Color.fromArgb(Alpha, Argb.Red))
-        addShape(.Rectangle, Argb.Zero, Color.fromArgb(Alpha, Argb.Blue))
-        addShape(.Rectangle, Argb.Zero, Color.fromArgb(Alpha, Argb.Green))
-        addShape(.Rectangle, Argb.Zero, Color.fromArgb(Alpha, Argb.Yellow))
+        addShape(.Rectangle, Argb.Zero, Argb.Red)
+        addShape(.Rectangle, Argb.Zero, Argb.Blue)
+        addShape(.Rectangle, Argb.Zero, Argb.Green)
+        addShape(.Rectangle, Argb.Zero, Argb.Yellow)
 
         const BorderSize = 20.0
-        addDraw(BorderSize, Color.fromArgb(Alpha, Argb.Red))
-        addDraw(BorderSize, Color.fromArgb(Alpha, Argb.Blue))
-        addDraw(BorderSize, Color.fromArgb(Alpha, Argb.Green))
-        addDraw(BorderSize, Color.fromArgb(Alpha, Argb.Yellow))
+        addDraw(BorderSize, Argb.Red)
+        addDraw(BorderSize, Argb.Blue)
+        addDraw(BorderSize, Argb.Green)
+        addDraw(BorderSize, Argb.Yellow)
     }
 
     mtd updateSelection()

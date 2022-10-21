@@ -360,7 +360,13 @@ impl Capture
         paintShadowRect.x = base.paintPos.x - Margin
         paintShadowRect.y = base.paintPos.y - Margin
         paintShadowRect.offset(base.shadowOffset.x, base.shadowOffset.y)
-        colForm := Color.fromArgb(cast(u8) Math.map(cast(f32) base.alpha, 0, 100, 0, 255), Argb.White)
+
+        var colForm: Color
+        if quickMode and (@kindof(f) == FormShape or @kindof(f) == FormDraw)
+            colForm = Argb.White
+        else
+            colForm = Color.fromArgb(cast(u8) Math.map(cast(f32) base.alpha, 0, 100, 0, 255), Argb.White)
+
         painter.drawTexture(paintShadowRect, dstRect, rt1.colorBuffer, colForm)
         painter.popClippingRect()
 

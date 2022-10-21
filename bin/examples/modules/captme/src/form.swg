@@ -28,12 +28,13 @@ struct BaseForm
     x, y: s32 = 0
     w, h: s32 = 32
 
-    alpha:          u8 = 100
-    shadowOffset:   Math.Vector2 = @{2, 2}
-    borderSize:     f32 = 5
-    borderColor:    Color = Argb.White
-    backColor:      Color = Argb.Red
-    dashStyle:      DashStyle = None
+    alpha:              u8 = 100
+    shadowOffset:       Math.Vector2 = @{2, 2}
+    borderSize:         f32 = 5
+    borderColor:        Color = Argb.White
+    backColor:          Color = Argb.Red
+    dashStyle:          DashStyle = None
+    quickModeOpaque:    bool
 
     #[Serialization.NoSerialize]
     {
