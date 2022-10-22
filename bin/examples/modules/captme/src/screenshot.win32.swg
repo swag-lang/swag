@@ -4,7 +4,7 @@ using Core, Win32, Gdi32, Pixel
 enum CaptureMode
 {
     Area
-    Screen
+    FullScreen
 }
 
 scopefile {
@@ -166,7 +166,7 @@ func screenShot(captureMode: CaptureMode)->Image throw
     nScreenWidth  := GetSystemMetrics(SM_CXMAXTRACK)
     nScreenHeight := GetSystemMetrics(SM_CYMAXTRACK)
 
-    if captureMode == .Screen
+    if captureMode == .FullScreen
     {
         g_StartGrabX, g_StartGrabY = 0
         g_EndGrabX = nScreenWidth

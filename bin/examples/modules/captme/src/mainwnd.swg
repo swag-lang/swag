@@ -102,18 +102,6 @@ impl IWnd for MainWnd
 
         switch evt.id
         {
-        case CmdIdCaptModeArea:
-            evt.setFlags |= .Name | .Checked
-            evt.name = "Area"
-            evt.checked = captureMode == .Area
-            evt.accepted = true
-
-        case CmdIdCaptModeScreen:
-            evt.setFlags |= .Name | .Checked
-            evt.name = "Screen"
-            evt.checked = captureMode == .Screen
-            evt.accepted = true
-
         case CmdIdSaveAsImage:
             evt.setFlags |= .Name | .Disabled
             evt.name = "Save As Image..."
@@ -230,9 +218,29 @@ impl IWnd for MainWnd
             evt.checked = snap
             evt.accepted = true
 
+        case CmdIdCaptModeArea:
+            evt.setFlags |= .Name | .Checked
+            evt.name = "Area"
+            evt.checked = captureMode == .Area
+            evt.accepted = true
+
+        case CmdIdCaptModeFullScreen:
+            evt.setFlags |= .Name | .Checked
+            evt.name = "Full Screen"
+            evt.checked = captureMode == .FullScreen
+            evt.accepted = true
+
         case CmdIdCapture:
             evt.setFlags |= .Name | .ToolTip | .Icon
             evt.name = "Capture"
+
+            #[Swag.Complete]
+            switch captureMode
+            {
+            case Area:          evt.name += " (Area)"
+            case FullScreen:    evt.name += " (Full Screen)"
+            }
+
             evt.toolTip = "Start a new capture"
             evt.icon = Icon.from(&icons48, 6)
             evt.accepted = true
@@ -438,8 +446,8 @@ impl IWnd for MainWnd
         {
         case CmdIdCaptModeArea:
             captureMode = .Area
-        case CmdIdCaptModeScreen:
-            captureMode = .Screen
+        case CmdIdCaptModeFullScreen:
+            captureMode = .FullScreen
 
         case CmdIdSaveAsImage:
             saveAsImage()
@@ -889,7 +897,17 @@ impl MainWnd
         registerKeyShortcut(.CtrlShift,        .S,              CmdIdSaveAsImage)
         registerKeyShortcut(.Control,          .O,              CmdIdOpenImage)
 
-        getApp().registerHotKey(.CtrlShift, .Snapshot, CmdIdCapture, self)
+        mtd registerHotKey(mdf: Input.KeyModifiers, key: Input.Key, wndId: WndId)
+        {
+            catch getApp().registerHotKey(mdf, key, wndId, self)
+            if @err
+            {
+                msg := Format.toString("Cannot register global shortcut '%'.", Input.getKeyName(mdf, key))
+                MessageDlg.error(surface, @err, msg)
+            }
+        }
+
+        registerHotKey(.None, .Snapshot, CmdIdCapture)
     }
 
     mtd createTopMenu()
@@ -917,7 +935,7 @@ impl MainWnd
         with captureMenu := MenuCtrl.createPopup(parent, owner: self)
         {
             .addItem(CmdIdCaptModeArea)
-            .addItem(CmdIdCaptModeScreen)
+            .addItem(CmdIdCaptModeFullScreen)
             .addSeparator()
             .addItem(CmdIdCapture)
             topMenu.addPopup("Capture", captureMenu)

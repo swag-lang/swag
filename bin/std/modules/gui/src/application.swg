@@ -738,7 +738,7 @@ impl Application
     mtd getDirectoryIcon(name: string, small = true) => getFileDirectoryIcon(name, true, small)
 
     // Register a global os key action
-    mtd registerHotKey(mdf: Input.KeyModifiers, key: Input.Key, wndId: WndId, target: *Wnd)
+    mtd registerHotKey(mdf: Input.KeyModifiers, key: Input.Key, wndId: WndId, target: *Wnd) throw
     {
         visit &c: hotKeys
         {

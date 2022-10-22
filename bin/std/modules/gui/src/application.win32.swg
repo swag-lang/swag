@@ -26,21 +26,19 @@ impl Application
         return Color.fromAbgr(col)
     }
 
-    // Capture mouse, on the window and surface
     mtd captureMouse(wnd: *Wnd)
     {
         mouseCaptureWnd = wnd
         SetCapture(wnd.surface.native.hWnd)
     }
 
-    // Release captured mouse
     mtd releaseMouse()
     {
         mouseCaptureWnd = null
         ReleaseCapture()
     }
 
-    mtd registerHotKey(mdf: Input.KeyModifiers, key: Input.Key)
+    mtd registerHotKey(mdf: Input.KeyModifiers, key: Input.Key) throw
     {
         var mod: u32
         if mdf & .Alt
@@ -51,9 +49,7 @@ impl Application
             mod |= MOD_SHIFT
         winkey := Input.Keyboard.keyToVirtualKey(key)
 
-        catch Win32.RegisterHotKey(null, 0x66, mod, winkey)
-        if @err
-            @print(@err)
+        RegisterHotKey(null, 0x66, mod, winkey)
     }
 
     mtd sendHotKey(msg: MSG)
@@ -88,7 +84,6 @@ impl Application
         }
     }
 
-    // Returns the surface under the given point
     mtd getSurfaceAt(x, y: f32)->*Surface
     {
         var pt: POINT
@@ -111,7 +106,7 @@ impl Application
         return null
     }
 
-    private mtd addIconToImageList(name: string, hIcon: HICON, small: bool)->Icon
+    mtd addIconToImageList(name: string, hIcon: HICON, small: bool)->Icon
     {
         var result: retval
 
@@ -157,7 +152,6 @@ impl Application
         return Icon.from(curImgList, index)
     }
 
-    // Get a special directory icon
     mtd getSpecialDirectoryIcon(what: Env.SpecialDirectory, small = true)->Icon
     {
         val  := what
@@ -197,7 +191,6 @@ impl Application
         return addIconToImageList(name, sgi.hIcon, small)
     }
 
-    // Returns the OS icon associated with the given filename
     mtd getFileDirectoryIcon(name: string, isDirectory: bool, small = true)->Icon
     {
         var result: retval
