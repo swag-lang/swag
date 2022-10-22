@@ -962,6 +962,8 @@ impl Tesselate
         prevNode := node.prev
         if !angleExceeds90Degrees(node.point, nextNode.point, prevNode.point)
             return false
+        if angleIsNegative(node.point, nextNode.point, prevNode.point)
+            return true;
 
         next2Node := nextNode.next
         if next2Node and !angleExceedsPlus90DegreesOrIsNegative(node.point, next2Node.point, prevNode.point)
@@ -972,6 +974,12 @@ impl Tesselate
             return false
 
         return true;
+    }
+
+    func angleIsNegative(origin, pa, pb: *Point)->bool
+    {
+        angle := angle(origin, pa, pb)
+        return angle < 0
     }
 
     func angleExceeds90Degrees(origin, pa, pb: *Point)->bool
@@ -1211,7 +1219,7 @@ impl Tesselate
         p := front.head.next.point
         while t and !t.getConstrainedEdgeCW(p)
             t = t.neighborCCW(p)
-        if t 
+        if t
             meshClean(t)
     }
 
@@ -1224,7 +1232,7 @@ impl Tesselate
         while stack.count
         {
             t := stack.popBack()
-            if !t or t.interior 
+            if !t or t.interior
                 continue
 
             t.interior = true

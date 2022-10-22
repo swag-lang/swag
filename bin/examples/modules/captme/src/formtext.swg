@@ -166,7 +166,7 @@ impl IForm for FormText
             if !Math.isZeroEpsilon(sSize)
             {
                 pathl.clean()
-                pathl.offset(sSize, JoinStyle.Round, 0.15)
+                pathl.offset(sSize, JoinStyle.Round, 0.5)
                 pathl.clean()
             }
 
@@ -175,7 +175,7 @@ impl IForm for FormText
             if !Math.isZeroEpsilon(bSize + sSize)
             {
                 pathl1.clean()
-                pathl1.offset(bSize + sSize, JoinStyle.Round, 0.15)
+                pathl1.offset(bSize + sSize, JoinStyle.Round, 0.5)
                 pathl1.clean()
             }
         }
