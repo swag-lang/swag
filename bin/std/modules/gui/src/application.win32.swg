@@ -49,6 +49,7 @@ impl Application
             mod |= MOD_SHIFT
         winkey := Input.Keyboard.keyToVirtualKey(key)
 
+        catch UnregisterHotKey(null, 0x66)
         RegisterHotKey(null, 0x66, mod, winkey)
     }
 

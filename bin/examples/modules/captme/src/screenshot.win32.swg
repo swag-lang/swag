@@ -174,7 +174,7 @@ func screenShot(captureMode: CaptureMode)->Image throw
         g_EndGrabX = nScreenWidth
         g_EndGrabY = nScreenHeight
     }
-    elif captureMode == .LastArea and g_EndGrabX != g_StartGrabX
+    elif captureMode == .LastArea and g_EndGrabX != g_StartGrabX and g_EndGrabY != g_StartGrabY
     {
     }
     else

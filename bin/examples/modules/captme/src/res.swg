@@ -52,7 +52,6 @@ const CmdIdCaptModeLastArea     = "CmdIdCaptModeLastArea"
 const CmdIdCaptModeFullScreen   = "CmdIdCaptModeFullScreen"
 const CmdIdCapture              = "CmdIdCapture"
 const CmdIdCaptureArea          = "CmdIdCaptureArea"
-const CmdIdCaptureLastArea      = "CmdIdCaptureLastArea"
 const CmdIdCaptureFullScreen    = "CmdIdCaptureFullScreen"
 
 const ClipboardFormat = "Swag.CaptMe"

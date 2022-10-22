@@ -241,11 +241,6 @@ impl IWnd for MainWnd
             evt.name = "Capture Area"
             evt.icon = Icon.from(&icons48, 6)
             evt.accepted = true
-        case CmdIdCaptureLastArea:
-            evt.setFlags |= .Name | .Icon
-            evt.name = "Capture Last Area"
-            evt.icon = Icon.from(&icons48, 6)
-            evt.accepted = true
         case CmdIdCaptureFullScreen:
             evt.setFlags |= .Name | .Icon
             evt.name = "Capture Full Screen"
@@ -536,8 +531,6 @@ impl IWnd for MainWnd
 
         case CmdIdCaptureArea:
             captureScreen(.Area)
-        case CmdIdCaptureLastArea:
-            captureScreen(.LastArea)
         case CmdIdCaptureFullScreen:
             captureScreen(.FullScreen)
 
@@ -945,7 +938,9 @@ impl MainWnd
             }
         }
 
-        registerHotKey(.None, .PrintScreen, CmdIdCapture)
+        registerHotKey(.None,      .PrintScreen, CmdIdCapture)
+        registerHotKey(.Control,   .PrintScreen, CmdIdCaptureFullScreen)
+        registerHotKey(.CtrlShift, .PrintScreen, CmdIdCaptureArea)
     }
 
     mtd createTopMenu()
@@ -980,7 +975,6 @@ impl MainWnd
             .addSeparator()
             .addItem(CmdIdCaptureFullScreen)
             .addItem(CmdIdCaptureArea)
-            .addItem(CmdIdCaptureLastArea)
             topMenu.addPopup("Capture", captureMenu)
         }
 
