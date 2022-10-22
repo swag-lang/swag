@@ -38,6 +38,7 @@ struct MainWnd
     quickStyleBar:  *SplitterCtrl
     editZoomBar:    *StackLayoutCtrl
     captureMode:    CaptureMode = .Area
+    monitors:       Array'Env.Monitor
 
     editMode:       EditMode = .Shape
     bottomSize:     BottomSize = Medium
@@ -246,19 +247,38 @@ impl IWnd for MainWnd
             evt.name = "Capture Full Screen"
             evt.icon = Icon.from(&icons48, 6)
             evt.accepted = true
+        case CmdIdCaptureScreen0:
+            evt.setFlags |= .Name | .Icon
+            evt.name = Format.toString("Screen 0 (%x%)", monitors[0].rect.width, monitors[0].rect.height)
+            evt.icon = Icon.from(&icons48, 6)
+            evt.accepted = true
+        case CmdIdCaptureScreen1:
+            evt.setFlags |= .Name | .Icon
+            evt.name = Format.toString("Screen 1 (%x%)", monitors[1].rect.width, monitors[1].rect.height)
+            evt.icon = Icon.from(&icons48, 6)
+            evt.accepted = true
+        case CmdIdCaptureScreen2:
+            evt.setFlags |= .Name | .Icon
+            evt.name = Format.toString("Screen 2 (%x%)", monitors[2].rect.width, monitors[2].rect.height)
+            evt.icon = Icon.from(&icons48, 6)
+            evt.accepted = true
+        case CmdIdCaptureScreen3:
+            evt.setFlags |= .Name | .Icon
+            evt.name = Format.toString("Screen 3 (%x%)", monitors[3].rect.width, monitors[3].rect.height)
+            evt.icon = Icon.from(&icons48, 6)
+            evt.accepted = true
 
         case CmdIdCapture:
             evt.setFlags |= .Name | .LongName | .ToolTip | .Icon
             evt.name = "Capture"
             evt.longName = "Capture"
 
-            #[Swag.Complete]
             switch captureMode
             {
             case Area:          evt.longName += " (Area)"
             case LastArea:      evt.longName += " (Last Area)"
             case FullScreen:    evt.longName += " (Full Screen)"
-            case None:          break
+            default:            break
             }
 
             evt.toolTip = "Start a new capture"
@@ -533,6 +553,14 @@ impl IWnd for MainWnd
             captureScreen(.Area)
         case CmdIdCaptureFullScreen:
             captureScreen(.FullScreen)
+        case CmdIdCaptureScreen0:
+            captureScreen(.Screen0)
+        case CmdIdCaptureScreen1:
+            captureScreen(.Screen1)
+        case CmdIdCaptureScreen2:
+            captureScreen(.Screen2)
+        case CmdIdCaptureScreen3:
+            captureScreen(.Screen3)
 
         case CmdIdCapture:
             captureScreen(.None)
@@ -973,8 +1001,20 @@ impl MainWnd
             .addSeparator()
             .addItem(CmdIdCapture)
             .addSeparator()
-            .addItem(CmdIdCaptureFullScreen)
             .addItem(CmdIdCaptureArea)
+            .addItem(CmdIdCaptureFullScreen)
+
+            visit m, idx: monitors
+            {
+                switch idx
+                {
+                case 0: .addItem(CmdIdCaptureScreen0)
+                case 1: .addItem(CmdIdCaptureScreen1)
+                case 2: .addItem(CmdIdCaptureScreen2)
+                case 3: .addItem(CmdIdCaptureScreen3)
+                }
+            }
+
             topMenu.addPopup("Capture", captureMenu)
         }
 
@@ -1053,6 +1093,7 @@ impl MainWnd
             .mdlFavorite  = &res.mdlFormShape
             .mdlHighlight = &res.mdlFormShape
             .registerShortcuts()
+            .monitors = Env.getMonitors()
         }
 
         with topBar := Wnd.create'Wnd(res, @{0, 0, 64, 68})
@@ -1154,8 +1195,6 @@ impl MainWnd
             .libWnd.hide()
         }
 
-        aa := Env.getMonitors()
-        Console.print(aa)
         return res
     }
 }

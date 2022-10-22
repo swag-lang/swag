@@ -7,6 +7,10 @@ enum CaptureMode
     Area
     LastArea
     FullScreen
+    Screen0
+    Screen1
+    Screen2
+    Screen3
 }
 
 scopefile {
@@ -149,7 +153,7 @@ func createNative(w, h: s32)->HWND throw
 }
 }
 
-func screenShot(captureMode: CaptureMode)->Image throw
+func screenShot(main: *MainWnd, captureMode: CaptureMode)->Image throw
 {
     var result: retval
 
@@ -173,6 +177,14 @@ func screenShot(captureMode: CaptureMode)->Image throw
         g_StartGrabX, g_StartGrabY = 0
         g_EndGrabX = nScreenWidth
         g_EndGrabY = nScreenHeight
+    }
+    elif captureMode >= .Screen0 and captureMode <= .Screen3
+    {
+        idx := cast(s32) captureMode - cast(s32) CaptureMode.Screen0
+        g_StartGrabX = cast(s32) main.monitors[idx].rect.x
+        g_StartGrabY = cast(s32) main.monitors[idx].rect.y
+        g_EndGrabX = g_StartGrabX + cast(s32) main.monitors[idx].rect.width
+        g_EndGrabY = g_StartGrabY + cast(s32) main.monitors[idx].rect.height
     }
     elif captureMode == .LastArea and g_EndGrabX != g_StartGrabX and g_EndGrabY != g_StartGrabY
     {
