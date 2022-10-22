@@ -1154,6 +1154,8 @@ impl MainWnd
             .libWnd.hide()
         }
 
+        aa := Env.getMonitors()
+        Console.print(aa)
         return res
     }
 }

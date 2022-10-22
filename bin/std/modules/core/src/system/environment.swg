@@ -32,6 +32,12 @@ enum SpecialDirectory
     CommonMusic
 }
 
+struct Monitor
+{
+    rect:   Math.Rectangle
+    work:   Math.Rectangle
+}
+
 private var g_CmdLineArgs: const [..] string
 
 #init

@@ -1022,6 +1022,8 @@ func GET_Y_LPARAM(lp: LPARAM) => cast(s32) HIWORD(lp)
 
     func SetWindowLongPtrA(hWnd: HWND, nIndex: s32, dwNewLong: *LONG)->*LONG;
     func SetWindowLongPtrW(hWnd: HWND, nIndex: s32, dwNewLong: *LONG)->*LONG;
+
+    func EnumDisplayMonitors(hdc: HDC, lprcClip: *RECT, lpfnEnum: const *void, dwData: LPARAM)->BOOL;
 }
 
 namespace User32Priv

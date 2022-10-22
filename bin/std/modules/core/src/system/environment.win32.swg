@@ -39,6 +39,38 @@ public func getSpecialDirectory(what: SpecialDirectory)->String
     return result
 }
 
+// Get the list of all monitors
+public func getMonitors()->Array'Monitor
+{
+    var result: retval
+
+    func proc(hMonitor: HMONITOR, hDC: HDC, lpRect: *RECT, lParam: LPARAM)->BOOL
+    {
+        var mi: MONITORINFO
+        catch GetMonitorInfoA(hMonitor, &mi)
+        if @err return TRUE
+
+        var m: Monitor
+        ptr := cast(*Array'Monitor) cast(uint) lParam
+
+        m.rect.x      = mi.rcMonitor.left
+        m.rect.y      = mi.rcMonitor.top
+        m.rect.width  = mi.rcMonitor.right - mi.rcMonitor.left
+        m.rect.height = mi.rcMonitor.bottom - mi.rcMonitor.top
+
+        m.work.x      = mi.rcWork.left
+        m.work.y      = mi.rcWork.top
+        m.work.width  = mi.rcWork.right - mi.rcWork.left
+        m.work.height = mi.rcWork.bottom - mi.rcWork.top
+
+        ptr.add(m)
+        return TRUE
+    }
+
+    EnumDisplayMonitors(null, null, cast(const *void) &proc, cast(LPARAM) cast(uint) &result)
+    return result
+}
+
 var g_SysInfo: SYSTEM_INFO
 #init
 {
