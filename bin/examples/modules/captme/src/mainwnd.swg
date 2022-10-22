@@ -224,10 +224,32 @@ impl IWnd for MainWnd
             evt.checked = captureMode == .Area
             evt.accepted = true
 
+        case CmdIdCaptModeLastArea:
+            evt.setFlags |= .Name | .Checked
+            evt.name = "Last Area"
+            evt.checked = captureMode == .LastArea
+            evt.accepted = true
+
         case CmdIdCaptModeFullScreen:
             evt.setFlags |= .Name | .Checked
             evt.name = "Full Screen"
             evt.checked = captureMode == .FullScreen
+            evt.accepted = true
+
+        case CmdIdCaptureArea:
+            evt.setFlags |= .Name | .Icon
+            evt.name = "Capture Area"
+            evt.icon = Icon.from(&icons48, 6)
+            evt.accepted = true
+        case CmdIdCaptureLastArea:
+            evt.setFlags |= .Name | .Icon
+            evt.name = "Capture Last Area"
+            evt.icon = Icon.from(&icons48, 6)
+            evt.accepted = true
+        case CmdIdCaptureFullScreen:
+            evt.setFlags |= .Name | .Icon
+            evt.name = "Capture Full Screen"
+            evt.icon = Icon.from(&icons48, 6)
             evt.accepted = true
 
         case CmdIdCapture:
@@ -239,7 +261,9 @@ impl IWnd for MainWnd
             switch captureMode
             {
             case Area:          evt.longName += " (Area)"
+            case LastArea:      evt.longName += " (Last Area)"
             case FullScreen:    evt.longName += " (Full Screen)"
+            case None:          break
             }
 
             evt.toolTip = "Start a new capture"
@@ -447,6 +471,8 @@ impl IWnd for MainWnd
         {
         case CmdIdCaptModeArea:
             captureMode = .Area
+        case CmdIdCaptModeLastArea:
+            captureMode = .LastArea
         case CmdIdCaptModeFullScreen:
             captureMode = .FullScreen
 
@@ -508,8 +534,15 @@ impl IWnd for MainWnd
         case CmdIdNewFromClipboard:
             newCapture(Clipboard.getImage())
 
+        case CmdIdCaptureArea:
+            captureScreen(.Area)
+        case CmdIdCaptureLastArea:
+            captureScreen(.LastArea)
+        case CmdIdCaptureFullScreen:
+            captureScreen(.FullScreen)
+
         case CmdIdCapture:
-            captureScreen()
+            captureScreen(.None)
 
         case CmdIdLibrary:
             swapLibraryMode()
@@ -848,12 +881,16 @@ impl MainWnd
         }
     }
 
-    mtd captureScreen()
+    mtd captureScreen(mode: CaptureMode)
     {
         if !surface.isMinimized
             surface.hide()
 
-        img := catch screenShot(captureMode)
+        var img: Image
+        if mode == .None
+            img = catch screenShot(captureMode)
+        else
+            img = catch screenShot(mode)
 
         if !surface.isMinimized
             surface.show()
@@ -935,10 +972,15 @@ impl MainWnd
 
         with captureMenu := MenuCtrl.createPopup(parent, owner: self)
         {
-            .addItem(CmdIdCaptModeArea)
             .addItem(CmdIdCaptModeFullScreen)
+            .addItem(CmdIdCaptModeArea)
+            .addItem(CmdIdCaptModeLastArea)
             .addSeparator()
             .addItem(CmdIdCapture)
+            .addSeparator()
+            .addItem(CmdIdCaptureFullScreen)
+            .addItem(CmdIdCaptureArea)
+            .addItem(CmdIdCaptureLastArea)
             topMenu.addPopup("Capture", captureMenu)
         }
 

@@ -3,7 +3,9 @@ using Core, Win32, Gdi32, Pixel
 
 enum CaptureMode
 {
+    None
     Area
+    LastArea
     FullScreen
 }
 
@@ -171,6 +173,9 @@ func screenShot(captureMode: CaptureMode)->Image throw
         g_StartGrabX, g_StartGrabY = 0
         g_EndGrabX = nScreenWidth
         g_EndGrabY = nScreenHeight
+    }
+    elif captureMode == .LastArea and g_EndGrabX != g_StartGrabX
+    {
     }
     else
     {
