@@ -249,22 +249,22 @@ impl IWnd for MainWnd
             evt.accepted = true
         case CmdIdCaptureScreen0:
             evt.setFlags |= .Name | .Icon
-            evt.name = Format.toString("Monitor 0 (%x%)", monitors[0].rect.width, monitors[0].rect.height)
+            evt.name = Format.toString("Capture Monitor 0 (%x%)", monitors[0].rect.width, monitors[0].rect.height)
             evt.icon = Icon.from(&icons24, 5)
             evt.accepted = true
         case CmdIdCaptureScreen1:
             evt.setFlags |= .Name | .Icon
-            evt.name = Format.toString("Monitor 1 (%x%)", monitors[1].rect.width, monitors[1].rect.height)
+            evt.name = Format.toString("Capture Monitor 1 (%x%)", monitors[1].rect.width, monitors[1].rect.height)
             evt.icon = Icon.from(&icons24, 5)
             evt.accepted = true
         case CmdIdCaptureScreen2:
             evt.setFlags |= .Name | .Icon
-            evt.name = Format.toString("Monitor 2 (%x%)", monitors[2].rect.width, monitors[2].rect.height)
+            evt.name = Format.toString("Capture Monitor 2 (%x%)", monitors[2].rect.width, monitors[2].rect.height)
             evt.icon = Icon.from(&icons24, 5)
             evt.accepted = true
         case CmdIdCaptureScreen3:
             evt.setFlags |= .Name | .Icon
-            evt.name = Format.toString("Monitor 3 (%x%)", monitors[3].rect.width, monitors[3].rect.height)
+            evt.name = Format.toString("Capture Monitor 3 (%x%)", monitors[3].rect.width, monitors[3].rect.height)
             evt.icon = Icon.from(&icons24, 5)
             evt.accepted = true
 

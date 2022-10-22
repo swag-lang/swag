@@ -763,16 +763,33 @@ impl Painter
         if p.triangles.count == 0
         {
             t.triangulate()
+
+            // "Eat" points and triangles
+            // t.triangles only contains 'interior' triangles, so we need to delete all other
+            // allocated triangles to avoid a leak
+
             p.points    = t.points
             p.triangles = t.triangles
+
+            visit tri: t.map
+            {
+                if !tri.interior
+                    Memory.delete(tri)
+            }
+
             t.points.clear()
             t.map.clear()
         }
 
         t.clear()
 
+        var toProcess:  Array'*Poly2Tri.Triangle
+        var done:       HashSet'*Poly2Tri.Triangle
+        toProcess.reserve(p.triangles.count)
+
         visit tri: p.triangles
         {
+            Debug.assert(tri.interior)
             v0 := Vector2{cast(f32) tri.points[0].x, cast(f32) tri.points[0].y}
             v1 := Vector2{cast(f32) tri.points[1].x, cast(f32) tri.points[1].y}
             v2 := Vector2{cast(f32) tri.points[2].x, cast(f32) tri.points[2].y}
@@ -780,31 +797,44 @@ impl Painter
 
             if curState.paintParams & .Antialiased
             {
-                curTri := tri
-                loop triIdx: 4
+                done.clear()
+                toProcess.clear()
+
+                toProcess.add(tri)
+                done.add(tri)
+
+                primPtr := vertexBuffer.buffer + prim
+                for i := 0; i < toProcess.count and primPtr.aanum < 6; i += 1
                 {
-                    if triIdx > 0
-                    {
-                        curTri = tri.neighbors[triIdx-1]
-                        if !curTri
-                            continue
-                        v0 = Vector2{cast(f32) curTri.points[0].x, cast(f32) curTri.points[0].y}
-                        v1 = Vector2{cast(f32) curTri.points[1].x, cast(f32) curTri.points[1].y}
-                        v2 = Vector2{cast(f32) curTri.points[2].x, cast(f32) curTri.points[2].y}
-                    }
+                    tri0 := toProcess[i]
+
+                    v0 = Vector2{cast(f32) tri0.points[0].x, cast(f32) tri0.points[0].y}
+                    v1 = Vector2{cast(f32) tri0.points[1].x, cast(f32) tri0.points[1].y}
+                    v2 = Vector2{cast(f32) tri0.points[2].x, cast(f32) tri0.points[2].y}
 
                     loop e: 3
                     {
-                        if !curTri.constrainedEdge[e]
-                            continue
-                        switch e
+                        neighbor := tri0.neighbors[e]
+                        if neighbor
                         {
-                        case 0:
-                            addEdgeAA(prim, v1, v2)
-                        case 1:
-                            addEdgeAA(prim, v0, v2)
-                        case 2:
-                            addEdgeAA(prim, v0, v1)
+                            if !done.contains(neighbor)
+                            {
+                                toProcess.add(neighbor)
+                                done.add(neighbor)
+                            }
+                        }
+
+                        if tri0.constrainedEdge[e]
+                        {
+                            switch e
+                            {
+                            case 0:
+                                addEdgeAA(prim, v1, v2)
+                            case 1:
+                                addEdgeAA(prim, v0, v2)
+                            case 2:
+                                addEdgeAA(prim, v0, v1)
+                            }
                         }
                     }
                 }

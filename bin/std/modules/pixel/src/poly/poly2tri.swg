@@ -1211,7 +1211,8 @@ impl Tesselate
         p := front.head.next.point
         while t and !t.getConstrainedEdgeCW(p)
             t = t.neighborCCW(p)
-        if t meshClean(t)
+        if t 
+            meshClean(t)
     }
 
     mtd meshClean(triangle: *Triangle)
@@ -1219,16 +1220,30 @@ impl Tesselate
         var stack: Array'*Triangle
         stack.add(triangle)
 
+        triangles.clear()
         while stack.count
         {
             t := stack.popBack()
-            if !t or t.interior continue
+            if !t or t.interior 
+                continue
+
             t.interior = true
             triangles.add(t)
             loop i: 3
             {
                 if !t.constrainedEdge[i]
                     stack.add(t.neighbors[i])
+            }
+        }
+
+        // Remove neighbors which are not part of the mesh
+        visit tri: triangles
+        {
+            loop e: 3
+            {
+                neighbor := tri.neighbors[e]
+                if neighbor and !neighbor.interior
+                    tri.neighbors[e] = null
             }
         }
     }

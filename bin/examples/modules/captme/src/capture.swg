@@ -294,6 +294,8 @@ impl Capture
         painter.bindRenderTarget(rt, true)
         painter.setParams(.Antialiased)
         painter.clear(Argb.Zero)
+        painter.setColorMask(true, true, true, false)
+        painter.setBlendingMode(.Alpha)
         f.paint(app, painter, zoom, quickMode)
         painter.unbindRenderTarget()
 
@@ -310,8 +312,8 @@ impl Capture
         painter.bindRenderTarget(rt1)
         painter.setShader(&render.shaderSimple)
         painter.setBlendingMode(.Copy)
-        painter.setColorMask(true, true, true, true);
-        painter.clear(Color.fromArgb(0,0,0,0))
+        painter.setColorMask(true, true, true, true)
+        painter.clear(Argb.Zero)
         dstRect := Math.Rectangle{Margin, Margin, wt2, ht2}
         painter.drawTexture(dstRect, srcRect, rt.colorBuffer)
         painter.unbindRenderTarget()

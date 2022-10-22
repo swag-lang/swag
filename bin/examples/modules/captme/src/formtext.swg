@@ -165,7 +165,8 @@ impl IForm for FormText
             pathl.flatten(painter.curState.paintQuality)
             if !Math.isZeroEpsilon(sSize)
             {
-                pathl.offset(sSize, JoinStyle.Round, 0.5)
+                pathl.clean()
+                pathl.offset(sSize, JoinStyle.Round, 0.15)
                 pathl.clean()
             }
 
@@ -173,7 +174,8 @@ impl IForm for FormText
             pathl1.flatten(painter.curState.paintQuality)
             if !Math.isZeroEpsilon(bSize + sSize)
             {
-                pathl1.offset(bSize + sSize, JoinStyle.Round, 0.5)
+                pathl1.clean()
+                pathl1.offset(bSize + sSize, JoinStyle.Round, 0.15)
                 pathl1.clean()
             }
         }
