@@ -384,7 +384,9 @@ impl MenuCtrl
                 i.disabled = evt.disabled
             if evt.setFlags & .Icon
                 i.icon = evt.icon
-            if evt.setFlags & .Name
+            if evt.setFlags & .LongName
+                i.name = evt.longName
+            elif evt.setFlags & .Name
                 i.name = evt.name
             if evt.setFlags & .Shortcut
                 i.rightName.set(evt.shortcut)

@@ -80,6 +80,7 @@ struct CommandUIEvent
         Shortcut
         Checked
         Name
+        LongName
         ToolTip
     }
 
@@ -89,6 +90,7 @@ struct CommandUIEvent
 
     icon:       Icon
     name:       String
+    longName:   String
     shortcut:   String
     toolTip:    String
     setFlags:   SetFlags = Zero

@@ -200,7 +200,6 @@ impl Keyboard
     setupArray(Separator,           cast(u8) VK_SEPARATOR)
     setupArray(Shift,               cast(u8) VK_LSHIFT)
     setupArray(Sleep,               cast(u8) VK_SLEEP)
-    setupArray(Snapshot,            cast(u8) VK_SNAPSHOT)
     setupArray(Space,               cast(u8) VK_SPACE)
     setupArray(Subtract,            cast(u8) VK_SUBTRACT)
     setupArray(T,                   cast(u8) "T"'rune)

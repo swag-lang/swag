@@ -188,7 +188,6 @@ public enum Key
     Separator
     Shift
     Sleep
-    Snapshot
     Space
     Subtract
     T

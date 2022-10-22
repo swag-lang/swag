@@ -1136,8 +1136,11 @@ impl Wnd
         evt.source = self
         sendEvent(&evt)
 
-        // Is there a keyboard shortcut ?
+        // Is there a keyboard shortcut or a global hot key ?
         sk := getKeyShortcutNameFor(cmdId)
+        if !sk.length
+            sk = getApp().getHotKeyShortcutNameFor(cmdId)
+
         if sk.length
         {
             evt.setFlags |= .Shortcut
@@ -1149,9 +1152,12 @@ impl Wnd
 
     mtd sendWndId(wndid: WndId)
     {
+        // We first need to be sure that the target can deal with the event
         evtui := CommandUIEvent{}
         evtui.id = wndid
         sendEvent(&evtui)
+
+        // If it's not disabled, then we can send
         if !(evtui.setFlags & .Disabled) or !evtui.disabled
         {
             evtc := CommandEvent{}

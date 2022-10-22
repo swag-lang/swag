@@ -231,14 +231,15 @@ impl IWnd for MainWnd
             evt.accepted = true
 
         case CmdIdCapture:
-            evt.setFlags |= .Name | .ToolTip | .Icon
+            evt.setFlags |= .Name | .LongName | .ToolTip | .Icon
             evt.name = "Capture"
+            evt.longName = "Capture"
 
             #[Swag.Complete]
             switch captureMode
             {
-            case Area:          evt.name += " (Area)"
-            case FullScreen:    evt.name += " (Full Screen)"
+            case Area:          evt.longName += " (Area)"
+            case FullScreen:    evt.longName += " (Full Screen)"
             }
 
             evt.toolTip = "Start a new capture"
@@ -907,7 +908,7 @@ impl MainWnd
             }
         }
 
-        registerHotKey(.None, .Snapshot, CmdIdCapture)
+        registerHotKey(.None, .PrintScreen, CmdIdCapture)
     }
 
     mtd createTopMenu()
