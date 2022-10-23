@@ -250,14 +250,14 @@ bool SemanticJob::resolveConditionalOp(SemanticContext* context)
 bool SemanticJob::resolveNullConditionalOp(SemanticContext* context)
 {
     auto node = context->node;
-    SWAG_ASSERT(node->childs.size() == 2);
+    SWAG_ASSERT(node->childs.size() >= 2);
 
     auto expression = node->childs[0];
-    auto ifTrue     = node->childs[1];
+    auto ifZero     = node->childs[1];
     SWAG_CHECK(checkIsConcrete(context, expression));
-    SWAG_CHECK(checkIsConcrete(context, ifTrue));
+    SWAG_CHECK(checkIsConcrete(context, ifZero));
 
-    SWAG_CHECK(evaluateConstExpression(context, expression, ifTrue));
+    SWAG_CHECK(evaluateConstExpression(context, expression, ifZero));
     if (context->result == ContextResult::Pending)
         return true;
 
@@ -292,8 +292,8 @@ bool SemanticJob::resolveNullConditionalOp(SemanticContext* context)
         }
         else
         {
-            node->inheritComputedValue(ifTrue);
-            node->typeInfo = ifTrue->typeInfo;
+            node->inheritComputedValue(ifZero);
+            node->typeInfo = ifZero->typeInfo;
         }
     }
     else
@@ -315,7 +315,7 @@ bool SemanticJob::resolveNullConditionalOp(SemanticContext* context)
             return context->report(expression, Fmt(Err(Err0332), typeInfo->getDisplayNameC()));
         }
 
-        SWAG_CHECK(TypeManager::makeCompatibles(context, expression, ifTrue, CASTFLAG_COMMUTATIVE | CASTFLAG_STRICT));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, expression, ifZero, CASTFLAG_COMMUTATIVE | CASTFLAG_STRICT));
 
         node->typeInfo    = expression->typeInfo;
         node->byteCodeFct = ByteCodeGenJob::emitNullConditionalOp;
