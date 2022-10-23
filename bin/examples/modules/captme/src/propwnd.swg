@@ -629,6 +629,7 @@ impl PropWnd
                 with dlg := EditDlg.createMultiLine(edt.surface)
                 {
                     .setText(edt.text)
+                    .richEdit.selectAll()
                     .surface.setTitle("Enter Text")
                     .surface.center(edt.surface)
                 }

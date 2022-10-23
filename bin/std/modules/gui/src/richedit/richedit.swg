@@ -272,6 +272,11 @@ impl RichEditCtrl
         return ed
     }
 
+    mtd setFocus()
+    {
+        edView.setFocus()
+    }
+
     // Set richedit flags
     mtd setRichEdFlags(flags: RichEditFlags)
     {

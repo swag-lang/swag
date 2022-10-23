@@ -24,6 +24,7 @@ public impl EditDlg
         {
             .dockStyle = .Bottom
             .margin = metrics.dialog_Padding
+            .setForm(.Round)
             .setFocus()
         }
 
