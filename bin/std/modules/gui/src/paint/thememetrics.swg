@@ -61,7 +61,7 @@ struct ThemeMetrics
     comboBox_Width:             f32 = 150
     comboBox_Height:            f32 = 32
     comboBox_RightMargin:       f32 = 30
-    comboBox_Padding:           f32 = 6
+    comboBox_Padding:           f32 = 10
     comboBox_IconTextMargin:    f32 = 6
 
     popupList_Padding:          f32 = 6
