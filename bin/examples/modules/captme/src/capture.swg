@@ -155,6 +155,7 @@ impl Capture
         res := File.readAllBytes(file)
 
         var decoder: Decoder'Read.TagBin
+        decoder.flags |= .IgnoreStructFieldError
         capture := decoder.readAll'Capture(res.toSlice())
         capture.file = file
 

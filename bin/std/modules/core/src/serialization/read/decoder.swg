@@ -29,9 +29,17 @@ interface IDecoder
     mtd readF64()->f64 throw
 }
 
+#[Swag.EnumFlags]
+enum DecoderFlags
+{
+    Zero
+    IgnoreStructFieldError
+}
+
 struct(T) Decoder
 {
     serializer: T
+    flags:      DecoderFlags = Zero
 }
 
 impl Decoder
@@ -177,7 +185,9 @@ impl Decoder
                 {
                     if serializer.beginElement(field)
                     {
-                        readValue(data + field.offset, field.pointedType)
+                        catch readValue(data + field.offset, field.pointedType)
+                        if @err and !(flags & .IgnoreStructFieldError)
+                            throw @err
                         serializer.endElement()
                     }
                 }
