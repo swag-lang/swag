@@ -300,9 +300,7 @@ bool SemanticJob::resolveNullConditionalOp(SemanticContext* context)
     {
         if (typeInfo->kind == TypeInfoKind::Struct)
         {
-            SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opData, nullptr, nullptr, expression, nullptr));
-            if (context->result == ContextResult::Pending)
-                return true;
+            return context->report(Hint::isType(typeInfo), {expression, Err(Err0342)});
         }
         else if (!typeInfo->isNative(NativeTypeKind::String) &&
                  !typeInfo->isNative(NativeTypeKind::Rune) &&

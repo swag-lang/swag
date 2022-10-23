@@ -8,12 +8,14 @@ impl B
 {
     //#[Swag.Inline]
     mtd opData()->const *u8 => null
+
+    mtd titi()->B => @{}
 }
 
 //#[Swag.PrintBc]
 #test
 {
     var c: B
-    y := c orelse B{}
+    y := c.titi() orelse c.titi()
     @assert(y == null)
 }
