@@ -18,6 +18,7 @@ impl EmbInfoCtrl
     // Create the popup list, but do not display it
     func create(parent: *Wnd, name: string, kind: EmbInfoCtrlKind, height = 40, top = true)->*EmbInfoCtrl
     {
+        theme  := parent.getTheme()
         colors := parent.getThemeColors()
 
         with ctrl := Wnd.create'EmbInfoCtrl(parent, @{0, 0, 0, height})
@@ -29,10 +30,10 @@ impl EmbInfoCtrl
             switch kind
             {
             case Critical:
-                .label.icon = parent.getTheme().getIcon64(.Critical, 28)
+                .label.icon = theme.getIcon64(.Critical, 28)
                 .label.style.addStyleSheetColors(Format.toString("wnd_Bk 0x%{X}", colors.embInfo_CriticalBk.argb))
             case Information:
-                .label.icon = parent.getTheme().getIcon64(.Information, 28)
+                .label.icon = theme.getIcon64(.Information, 28)
                 .label.style.addStyleSheetColors(Format.toString("wnd_Bk 0x%{X}", colors.embInfo_InformationBk.argb))
             }
 
@@ -43,7 +44,7 @@ impl EmbInfoCtrl
             .label.paddingText.y = 4
             .label.dockStyle = .Center
 
-            ic := parent.getTheme().getIcon24(ThemeIcons24.WndClose, 18)
+            ic := theme.getIcon24(.WndClose, 18)
             btn := IconButton.create(.label, ic, @{0, 0, 32, 32})
             btn.margin = 5
             btn.dockStyle = .Right
