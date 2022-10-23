@@ -205,13 +205,15 @@ impl IForm for FormText
         }
 
         y0 := 0'f32
+        addSize := (bSize + sSize)
+
         aV := quickMode ? FormTextAlign.Center : alignVert
         aH := quickMode ? FormTextAlign.Center : alignHorz
         switch aV
         {
-        case LeftTop:       y0 = pp.y
+        case LeftTop:       y0 = pp.y + addSize
         case Center:        y0 = pp.vertCenter() - (totalY * 0.5)
-        case RightBottom:   y0 = pp.bottom()
+        case RightBottom:   y0 = pp.bottom() - addSize
         }
 
         for i := 0; i < paths.count; i += 2
@@ -228,9 +230,9 @@ impl IForm for FormText
             x0 := 0'f32
             switch aH
             {
-            case LeftTop:       x0 = pp.x
+            case LeftTop:       x0 = pp.x + addSize
             case Center:        x0 = pp.horzCenter() - (wt * 0.5)
-            case RightBottom:   x0 = pp.right() - wt
+            case RightBottom:   x0 = pp.right() - (wt + addSize)
             }
 
             painter.pushState()
