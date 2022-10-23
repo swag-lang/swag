@@ -11,6 +11,7 @@ enum RichEditFlags
     DrawBlanks
     TabToSpaces
     WordWrap
+    AutoLoseFocus
 }
 
 enum RichEditForm
@@ -367,6 +368,12 @@ impl RichEditCtrl
     // Simulate a keyboard pressed
     mtd keyPressed(key: Input.Key, mdf: Input.KeyModifiers)
     {
+        if key == .Escape and richEdFlags & .AutoLoseFocus
+        {
+            getTopView().setFocus()
+            return
+        }
+
         cmd := getMappingCommand(key, mdf)
         if cmd == .None
             return

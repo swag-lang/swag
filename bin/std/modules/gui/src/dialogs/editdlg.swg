@@ -46,6 +46,7 @@ public impl EditDlg
         {
             .dockStyle = .Bottom
             .margin = metrics.dialog_Padding
+            .richEdFlags |= .AutoLoseFocus
             .setForm(.Edit)
             .setFrameForm(.Round)
             .setFrameFlags(.FocusBorder)
