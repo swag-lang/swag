@@ -956,13 +956,21 @@ impl MainWnd
         registerKeyShortcut(.CtrlShift,        .S,              CmdIdSaveAsImage)
         registerKeyShortcut(.Control,          .O,              CmdIdOpenImage)
 
-        mtd registerHotKey(mdf: Input.KeyModifiers, key: Input.Key, wndId: WndId)
+        errorReg := false
+        #[Swag.Mixin]
+        func registerHotKey(mdf: Input.KeyModifiers, key: Input.Key, wndId: WndId)
         {
             catch getApp().registerHotKey(mdf, key, wndId, self)
             if @err
             {
-                msg := Format.toString("Cannot register global shortcut '%'.", Input.getKeyName(mdf, key))
-                MessageDlg.error(surface, @err, msg)
+                if !errorReg
+                {
+                    msg := Format.toString("Cannot register global shortcut '%'. ", Input.getKeyName(mdf, key))
+                    msg += "Another running application is probably already using it !"
+                    discard EmbInfoCtrl.create(self.editWnd, msg, .Critical)
+                }
+
+                errorReg = true
             }
         }
 
@@ -1092,7 +1100,6 @@ impl MainWnd
             .backgroundStyle = .Window
             .mdlFavorite  = &res.mdlFormShape
             .mdlHighlight = &res.mdlFormShape
-            .registerShortcuts()
             .monitors = Env.getMonitors()
         }
 
@@ -1188,6 +1195,7 @@ impl MainWnd
 
         with res
         {
+            .registerShortcuts()
             .updateZoomDisplay()
             .setBottomSize(.Medium)
             .updateState()

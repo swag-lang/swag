@@ -258,12 +258,16 @@ impl Wnd
     {
         if isPendingDestroy
             return
+
         wndFlags |= .Hidden
         isPendingDestroy = true
         visit c: childs
             c.destroy()
         surface.app.postDestroy.add(self)
         invalidate()
+
+        if parent and !parent.isPendingDestroy
+            parent.applyLayout()
     }
 
     private mtd firstTopMostIndex()->uint

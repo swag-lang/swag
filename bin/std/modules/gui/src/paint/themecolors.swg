@@ -327,4 +327,7 @@ struct ThemeColors
     colorPicker_Mark:               Color = Gray1
 
     imageRect_Fg:                   Color = White
+
+    embInfo_CriticalBk:             Color = 0xFF8F0000
+    embInfo_InformationBk:          Color = 0xFF303050
 }
