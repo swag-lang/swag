@@ -578,7 +578,7 @@ impl PropWnd
             return
         curSel := cast(*FormText) getSelectedBaseForm()
 
-        stack := StackLayoutCtrl.create(mainLayout, .Top, @{0, 0, 0, 90})
+        stack := StackLayoutCtrl.create(mainLayout, .Top, @{0, 0, 0, 120})
         stack.padding = 8
 
         // Font
@@ -631,6 +631,63 @@ impl PropWnd
                 undo.text = edit.text
                 capture.pushUndo(undo)
             }
+        }
+
+        // Align
+        with bar := IconBar.create(stack, 24)
+        {
+            .addCheckableItem(Icon.from(&main.icons24, 8),  CmdIdTextHLeft)
+            .addCheckableItem(Icon.from(&main.icons24, 9),  CmdIdTextHCenter)
+            .addCheckableItem(Icon.from(&main.icons24, 10), CmdIdTextHRight)
+            .addCheckableItem(Icon.from(&main.icons24, 11), CmdIdTextVTop)
+            .addCheckableItem(Icon.from(&main.icons24, 12), CmdIdTextVCenter)
+            .addCheckableItem(Icon.from(&main.icons24, 13), CmdIdTextVBottom)
+
+            .sigUpdateUI += @|self|(evt) {
+                curSel := cast(*FormText) self.getSelectedBaseForm()
+                evt.setFlags |= .Checked
+                evt.accepted = true
+
+                switch evt.id
+                {
+                case CmdIdTextHLeft:    evt.checked = curSel.alignHorz == .LeftTop
+                case CmdIdTextHCenter:  evt.checked = curSel.alignHorz == .Center
+                case CmdIdTextHRight:   evt.checked = curSel.alignHorz == .RightBottom
+                case CmdIdTextVTop:     evt.checked = curSel.alignVert == .LeftTop
+                case CmdIdTextVCenter:  evt.checked = curSel.alignVert == .Center
+                case CmdIdTextVBottom:  evt.checked = curSel.alignVert == .RightBottom
+                }
+            }
+
+            .sigCheckChanged += @|self|(btn) {
+                capture := self.main.getCapture()
+                var undo: *Undo
+                switch btn.id
+                {
+                case CmdIdTextHLeft:
+                    undo = capture.newUndo(.SetTextHorzAlign)
+                    undo.valU32 = acast FormTextAlign.LeftTop
+                case CmdIdTextHCenter:
+                    undo = capture.newUndo(.SetTextHorzAlign)
+                    undo.valU32 = acast FormTextAlign.Center
+                case CmdIdTextHRight:
+                    undo = capture.newUndo(.SetTextHorzAlign)
+                    undo.valU32 = acast FormTextAlign.RightBottom
+                case CmdIdTextVTop:
+                    undo = capture.newUndo(.SetTextVertAlign)
+                    undo.valU32 = acast FormTextAlign.LeftTop
+                case CmdIdTextVCenter:
+                    undo = capture.newUndo(.SetTextVertAlign)
+                    undo.valU32 = acast FormTextAlign.Center
+                case CmdIdTextVBottom:
+                    undo = capture.newUndo(.SetTextVertAlign)
+                    undo.valU32 = acast FormTextAlign.RightBottom
+                }
+
+                capture.pushUndo(undo)
+            }
+
+            bar.updateCommandState()
         }
     }
 

@@ -19,6 +19,8 @@ enum UndoKind
     SetTypedValue
     SetFormFromModel
     SetText
+    SetTextHorzAlign
+    SetTextVertAlign
     Flatten
     FlattenAll
     RestoreOrg
@@ -37,11 +39,11 @@ struct Undo
 
     selection:      Array'uint
     oldForms:       Array'IForm
-    oldS32:         Array's32
     minP:           s32
     maxP:           s32
     pointIdx:       u32
     valU32:         u32
+    oldS32:         Array's32
     oldU32:         Array'u32
     valRef:         const *Swag.TypeValue
     mdlType:        typeinfo
@@ -82,6 +84,26 @@ impl Undo
                     continue
                 b := cast(*FormText) @dataof(f)
                 oldText.add(b.text)
+            }
+        case SetTextHorzAlign:
+            selection = capture.selection
+            visit s: selection
+            {
+                f := capture.forms[s]
+                if @kindof(f) != FormText
+                    continue
+                b := cast(*FormText) @dataof(f)
+                oldU32.add(cast(u32) b.alignHorz)
+            }
+        case SetTextVertAlign:
+            selection = capture.selection
+            visit s: selection
+            {
+                f := capture.forms[s]
+                if @kindof(f) != FormText
+                    continue
+                b := cast(*FormText) @dataof(f)
+                oldU32.add(cast(u32) b.alignVert)
             }
 
         case SetFormFromModel:
@@ -203,6 +225,26 @@ impl Undo
                     continue
                 b := cast(*FormText) @dataof(f)
                 b.text = text
+                b.isDirty = true
+            }
+        case SetTextHorzAlign:
+            visit s, i: selection
+            {
+                f := capture.forms[s]
+                if @kindof(f) != FormText
+                    continue
+                b := cast(*FormText) @dataof(f)
+                b.alignHorz = acast valU32
+                b.isDirty = true
+            }
+        case SetTextVertAlign:
+            visit s, i: selection
+            {
+                f := capture.forms[s]
+                if @kindof(f) != FormText
+                    continue
+                b := cast(*FormText) @dataof(f)
+                b.alignVert = acast valU32
                 b.isDirty = true
             }
 
@@ -400,6 +442,26 @@ impl Undo
                     continue
                 b := cast(*FormText) @dataof(f)
                 b.text = dref oldText[i]
+                b.isDirty = true
+            }
+        case SetTextHorzAlign:
+            visit s, i: selection
+            {
+                f := capture.forms[s]
+                if @kindof(f) != FormText
+                    continue
+                b := cast(*FormText) @dataof(f)
+                b.alignHorz = acast oldU32[i]
+                b.isDirty = true
+            }
+        case SetTextVertAlign:
+            visit s, i: selection
+            {
+                f := capture.forms[s]
+                if @kindof(f) != FormText
+                    continue
+                b := cast(*FormText) @dataof(f)
+                b.alignVert = acast oldU32[i]
                 b.isDirty = true
             }
 

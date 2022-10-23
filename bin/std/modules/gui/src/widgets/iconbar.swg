@@ -15,6 +15,17 @@ struct IconBar
     iconBarFlags    = IconBarFlags.None
     iconSize:       f32
     iconPadding:    f32 = 4
+
+    sigUpdateUI:        SigArray'closure(*CommandUIEvent)
+    sigCheckChanged:    SigArray'closure(*IconButton)
+}
+
+impl IWnd for IconBar
+{
+    mtd onCommandUIEvent(evt: *CommandUIEvent)
+    {
+        sigUpdateUI.call(evt)
+    }
 }
 
 impl IconBar
@@ -50,17 +61,34 @@ impl IconBar
     }
 
     // Add a new button
-    mtd addItem(icon: Icon, id: WndId, iconBtnFlags = IconButtonFlags.None)
+    #[Swag.Discardable]
+    mtd addItem(icon: Icon, btnId: WndId = null, iconBtnFlags = IconButtonFlags.None)->*IconButton
     {
         iconT := icon
         iconT.sizeX, iconT.sizeY = iconSize
         size := iconSize + 2*iconPadding
         b := IconButton.create(self, iconT, @{0, 0, size, size})
         b.iconBtnFlags = iconBtnFlags
-        b.id = #self.id
+        b.id = btnId
         b.dockStyle = .Left
         computeLayout()
+
+        if iconBtnFlags & .Checkable
+        {
+            b.sigCheckChanged += @|self|(btn) {
+                self.sigCheckChanged.call(btn)
+            }
+        }
+
         updateCommandState()
+        return b
+    }
+
+    // Add a new checkable button
+    #[Swag.Discardable]
+    mtd addCheckableItem(icon: Icon, btnId: WndId = null)->*IconButton
+    {
+        return addItem(icon, btnId, .Checkable)
     }
 
     // Change bar flags
