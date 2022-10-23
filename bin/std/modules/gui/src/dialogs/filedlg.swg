@@ -520,12 +520,14 @@ impl FileDlg
     {
         var folderName: String = "New Folder"
 
-        dlg := EditDlg.create(surface)
-        dlg.edit.setText(folderName)
-        dlg.edit.selectAll()
-        dlg.edit.setNote("Folder name")
-        dlg.surface.setTitle("Folder Name")
-        dlg.surface.center(surface)
+        with dlg := EditDlg.create(surface)
+        {
+            .edit.setText(folderName)
+            .edit.selectAll()
+            .edit.setNote("Folder name")
+            .surface.setTitle("Folder Name")
+            .surface.center(surface)
+        }
 
         dlg.sigPressedButton = @|self, dlg|(fdlg, id) {
             if id != Dialog.BtnOk

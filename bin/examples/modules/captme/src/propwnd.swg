@@ -621,6 +621,26 @@ impl PropWnd
 
         // Text
         edt := EditBox.create(stack, curSel.text)
+        with btnedt := IconButton.create(edt, getTheme().getIcon24(.More, 20), @{0, 0, 20, 20})
+        {
+            .dockStyle = .Right
+            .sigPressed += @|self, edt|(btn) {
+                with dlg := EditDlg.create(edt.surface)
+                {
+                    .edit.setText(edt.text)
+                    .surface.setTitle("Enter Text")
+                    .surface.center(edt.surface)
+                }
+                if dlg.doModal() != Dialog.BtnOk
+                    return
+                capture := self.main.getCapture()
+                undo := capture.newUndo(.SetText)
+                undo.text = dlg.edit.text
+                edt.setText(dlg.edit.text)
+                capture.pushUndo(undo)
+            }
+        }
+
         edt.name = "Enter text"
         edt.sigLoseFocus += @|self|(edit) {
             curSel := cast(*FormText) self.getSelectedBaseForm()

@@ -20,6 +20,7 @@ enum ThemeIcons24
     BringForward
     BringToFront
     Plus
+    More
 }
 
 enum ThemeIcons64
