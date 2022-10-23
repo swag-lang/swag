@@ -86,6 +86,17 @@ impl IWnd for RichEditView
     {
         if evt.kind == .KeyPressed
         {
+            // Lose focus with escape or enter
+            if ed.richEdFlags & .AutoLoseFocus
+            {
+                if evt.key == .Escape or (evt.key == .Enter and evt.modifiers == .None)
+                {
+                    evt.accepted = false
+                    getTopView().setFocus()
+                    return
+                }
+            }
+
             evt.accepted = true
             ed.keyPressed(evt.key, evt.modifiers)
             forceVisibleCaret()

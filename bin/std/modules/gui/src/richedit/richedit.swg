@@ -380,15 +380,6 @@ impl RichEditCtrl
     // Simulate a keyboard pressed
     mtd keyPressed(key: Input.Key, mdf: Input.KeyModifiers)
     {
-        if richEdFlags & .AutoLoseFocus
-        {
-            if key == .Escape or (key == .Enter and mdf == .None)
-            {
-                getTopView().setFocus()
-                return
-            }
-        }
-
         cmd := getMappingCommand(key, mdf)
         if cmd == .None
             return

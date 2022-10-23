@@ -503,6 +503,7 @@ impl Wnd
     {
         rect := getSurfaceRect()
         rect.applyPadding(invalidatePadding)
+        rect.applyPadding(@{-32, -32, -32, -32})
         if surface
             surface.invalidateRect(rect)
     }
