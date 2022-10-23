@@ -351,10 +351,12 @@ impl TagBin
         if crcType == val.pointedType.crc32
             return true
 
-        // Type from the stream is different
         streamType := Reflection.crcToType(crcType)
+
+        // Type from the stream does not exists anymore
         if !streamType
             throw ErrorBadType
+        // Type cannot be converted
         if !canConvertType(val.pointedType, streamType)
             throw ErrorBadType
 

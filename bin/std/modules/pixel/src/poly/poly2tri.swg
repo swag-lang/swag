@@ -501,6 +501,12 @@ impl Tesselate
         @init(self)
     }
 
+    // Returns the list of triangles
+    public mtd getTriangles()->[..] *Triangle
+    {
+        return triangles.toSlice()
+    }
+
     // To call before adding a polyline
     public mtd startPolyLine()
     {

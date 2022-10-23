@@ -205,7 +205,9 @@ impl IForm for FormText
         }
 
         y0 := 0'f32
-        switch alignVert
+        aV := quickMode ? FormTextAlign.Center : alignVert
+        aH := quickMode ? FormTextAlign.Center : alignHorz
+        switch aV
         {
         case LeftTop:       y0 = pp.y
         case Center:        y0 = pp.vertCenter() - (totalY * 0.5)
@@ -224,7 +226,7 @@ impl IForm for FormText
                 y0 -= ht
 
             x0 := 0'f32
-            switch alignHorz
+            switch aH
             {
             case LeftTop:       x0 = pp.x
             case Center:        x0 = pp.horzCenter() - (wt * 0.5)
@@ -237,7 +239,7 @@ impl IForm for FormText
             painter.fillPath(pathl, backColor)
             painter.popState()
 
-            if alignVert != .RightBottom
+            if aV != .RightBottom
                 y0 += (ht + lineSpacing)
         }
     }
