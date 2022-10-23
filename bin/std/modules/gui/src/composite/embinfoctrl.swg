@@ -10,7 +10,7 @@ enum EmbInfoCtrlKind
 struct EmbInfoCtrl
 {
     using frameWnd: FrameWnd
-    label:  *Label
+    label: *Label
 }
 
 impl EmbInfoCtrl
@@ -25,30 +25,34 @@ impl EmbInfoCtrl
         {
             .dockStyle = top ? .Top : .Bottom
             .label = Label.create(ctrl, #self.name, @{})
-            .label.backgroundStyle = .Window
+        }
 
+        with ctrl.label
+        {
+            .backgroundStyle = .Window
             switch kind
             {
             case Critical:
-                .label.icon = theme.getIcon64(.Critical, 28)
-                .label.style.addStyleSheetColors(Format.toString("wnd_Bk 0x%{X}", colors.embInfo_CriticalBk.argb))
+                .icon = theme.getIcon64(.Critical, 28)
+                .style.addStyleSheetColors(Format.toString("wnd_Bk 0x%{X}", colors.embInfo_CriticalBk.argb))
             case Information:
-                .label.icon = theme.getIcon64(.Information, 28)
-                .label.style.addStyleSheetColors(Format.toString("wnd_Bk 0x%{X}", colors.embInfo_InformationBk.argb))
+                .icon = theme.getIcon64(.Information, 28)
+                .style.addStyleSheetColors(Format.toString("wnd_Bk 0x%{X}", colors.embInfo_InformationBk.argb))
             }
 
-            .label.horzAlignmentText = .Left
-            .label.horzAlignmentIcon = .Left
-            .label.paddingIcon.x = 10
-            .label.paddingText.x = 50
-            .label.paddingText.y = 4
-            .label.dockStyle = .Center
+            .horzAlignmentText = .Left
+            .horzAlignmentIcon = .Left
+            .paddingIcon.x = 10
+            .paddingText.x = 50
+            .paddingText.y = 4
+            .dockStyle = .Center
+        }
 
-            ic := theme.getIcon24(.WndClose, 18)
-            btn := IconButton.create(.label, ic, @{0, 0, 32, 32})
-            btn.margin = 5
-            btn.dockStyle = .Right
-            btn.sigPressed += @|ctrl|(btn) {
+        with btn := IconButton.create(ctrl.label, theme.getIcon24(.WndClose, 18), @{0, 0, 32, 32})
+        {
+            .margin = 5
+            .dockStyle = .Right
+            .sigPressed += @|ctrl|(btn) {
                 ctrl.destroy()
             }
         }
