@@ -634,7 +634,8 @@ impl PropWnd
         }
 
         // Align
-        with bar := IconBar.create(stack, 24)
+        stack1 := StackLayoutCtrl.create(stack, .HorzCenter, @{0, 0, 0, 40})
+        with bar := IconBar.create(stack1, 24)
         {
             .addCheckableItem(Icon.from(&main.icons24, 8),  CmdIdTextHLeft)
             .addCheckableItem(Icon.from(&main.icons24, 9),  CmdIdTextHCenter)
