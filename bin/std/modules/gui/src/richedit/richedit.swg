@@ -42,6 +42,7 @@ struct RichEditCtrl
     sigIsReadOnly:  SigArray'closure(*bool)
     sigChanged:     SigArray'closure(*Self)
     sigModified:    SigArray'closure(*Self)
+    bkColorModel:   String
 
     styles:         [256] RichEditRuneStyle
     stylesSelect:   [2] RichEditRuneStyle
@@ -297,12 +298,16 @@ impl RichEditCtrl
         case RichEditCtrl:
             fontFamily = parent.getTheme().res.fontDefaultFs
 
-            frameWnd.style.clearStyleSheetColors()
-            frameWnd.style.addStyleSheetColors("frameWnd_FocusBk $richEdit_Bk")
-            frameWnd.style.addStyleSheetColors("frameWnd_Bk $richEdit_Bk")
+            mdlBk := bkColorModel
+            if bkColorModel.length == 0
+                mdlBk = String.from("$richEdit_Bk")
 
+            frameWnd.style.clearStyleSheetColors()
             scrollWnd.style.clearStyleSheetColors()
-            scrollWnd.style.addStyleSheetColors("scrollBar_Bk $richEdit_Bk")
+
+            frameWnd.style.addStyleSheetColors(Format.toString("frameWnd_FocusBk %", mdlBk))
+            frameWnd.style.addStyleSheetColors(Format.toString("frameWnd_Bk %", mdlBk))
+            scrollWnd.style.addStyleSheetColors(Format.toString("scrollBar_Bk %", mdlBk))
 
             stylesSelect[0].colFg = colors.richEdit_SelText
             stylesSelect[0].colBk = colors.richEdit_SelBk
@@ -312,12 +317,16 @@ impl RichEditCtrl
         case Edit:
             fontFamily = parent.getTheme().res.fontDefault
 
-            frameWnd.style.clearStyleSheetColors()
-            frameWnd.style.addStyleSheetColors("frameWnd_FocusBk $edit_Bk")
-            frameWnd.style.addStyleSheetColors("frameWnd_Bk $edit_Bk")
+            mdlBk := bkColorModel
+            if bkColorModel.length == 0
+                mdlBk = String.from("$edit_Bk")
 
+            frameWnd.style.clearStyleSheetColors()
             scrollWnd.style.clearStyleSheetColors()
-            scrollWnd.style.addStyleSheetColors("scrollBar_Bk $edit_Bk")
+
+            frameWnd.style.addStyleSheetColors(Format.toString("frameWnd_FocusBk %", mdlBk))
+            frameWnd.style.addStyleSheetColors(Format.toString("frameWnd_Bk %", mdlBk))
+            scrollWnd.style.addStyleSheetColors(Format.toString("scrollBar_Bk %", mdlBk))
 
             stylesSelect[0].colFg = colors.edit_SelectedText
             stylesSelect[0].colBk = colors.edit_SelectedBk
@@ -358,6 +367,9 @@ impl RichEditCtrl
         if c == "\r"'rune
             c = "\n"'rune
 
+        if c == "\n"'rune and mdf == .None and richEdFlags & .AutoLoseFocus
+            return
+
         if lexer and lexer.insertRune(self, c)
             return
 
@@ -368,10 +380,13 @@ impl RichEditCtrl
     // Simulate a keyboard pressed
     mtd keyPressed(key: Input.Key, mdf: Input.KeyModifiers)
     {
-        if key == .Escape and richEdFlags & .AutoLoseFocus
+        if richEdFlags & .AutoLoseFocus
         {
-            getTopView().setFocus()
-            return
+            if key == .Escape or (key == .Enter and mdf == .None)
+            {
+                getTopView().setFocus()
+                return
+            }
         }
 
         cmd := getMappingCommand(key, mdf)

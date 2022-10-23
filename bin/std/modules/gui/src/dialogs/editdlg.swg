@@ -14,16 +14,16 @@ public impl EditDlg
     func createSingleLine(from: *Surface, multiLine = false)->*EditDlg
     {
         dlg := Wnd.create'EditDlg()
-
-        srf := dlg.createSurface(from, 0, 0, 450, 210)
-
         metrics := from.wnd.getThemeMetrics()
+        srf := dlg.createSurface(from, 0, 0, 450, 210)
 
         dlg.edit = EditBox.create(srf.getView(), "")
         with dlg.edit
         {
             .dockStyle = .Bottom
             .margin = metrics.dialog_Padding
+            .style.addStyleSheetColors("edit_Bk $dlg_BtnBarBk")
+            .style.addStyleSheetColors("edit_FocusBk $dlg_BtnBarBk")
             .setForm(.Round)
             .setFocus()
         }
@@ -38,8 +38,8 @@ public impl EditDlg
     func createMultiLine(from: *Surface, heightEdit = 100)->*EditDlg
     {
         dlg := Wnd.create'EditDlg()
-        srf := dlg.createSurface(from, 0, 0, 450, 180 + heightEdit)
         metrics := from.wnd.getThemeMetrics()
+        srf := dlg.createSurface(from, 0, 0, 450, 180 + heightEdit)
 
         dlg.richEdit = RichEditCtrl.create(srf.getView(), @{0, 0, 0, heightEdit})
         with dlg.richEdit
@@ -47,6 +47,7 @@ public impl EditDlg
             .dockStyle = .Bottom
             .margin = metrics.dialog_Padding
             .richEdFlags |= .AutoLoseFocus
+            .bkColorModel = "$dlg_BtnBarBk"
             .setForm(.Edit)
             .setFrameForm(.Round)
             .setFrameFlags(.FocusBorder)
@@ -90,7 +91,10 @@ public impl EditDlg
                 .horzAlignmentText = .Center
             }
 
-            edit.margin.y = 0
+            if edit
+                edit.margin.y = 0
+            else
+                richEdit.margin.y = 0
             pos := surface.position
             pos.height += height
             surface.setPosition(pos)

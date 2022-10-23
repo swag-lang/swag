@@ -628,6 +628,7 @@ impl PropWnd
             .sigPressed += @|self, edt|(btn) {
                 with dlg := EditDlg.createMultiLine(edt.surface)
                 {
+                    .setMessage("Press Shift+Enter to add a new line")
                     .setText(edt.text)
                     .richEdit.selectAll()
                     .surface.setTitle("Enter Text")
