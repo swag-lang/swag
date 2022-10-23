@@ -6,5 +6,7 @@ struct RenderTarget
     colorBuffer:    Texture
     depthStencil:   RenderTargetSurfaceHandle
     paintAlpha:     bool
-    tris:           Core.Array'{s32, s32}
+
+    alphaPassTris:  Core.Array'{s32, s32}
+    alphaPassModel: Core.Array'Core.Math.Matrix4x4
 }

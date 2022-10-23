@@ -165,20 +165,17 @@ impl Polygon
         }
 
         var res: Clipper.ClipperPaths
-        Memory.pushTempAllocator()
-        {
-            var off: Clipper.Offset
-            off.arcTolerance = toler * ClipperScaleCoords
+        var off: Clipper.Offset
+        off.arcTolerance = toler * ClipperScaleCoords
 
-            // Register path
-            var path: Clipper.ClipperPath
-            visit pt: points
-                path.add(Clipper.IntPoint{cast(s64) (pt.x * ClipperScaleCoords), cast(s64) (pt.y * ClipperScaleCoords)})
-            off.addPath(path, joinType)
+        // Register path
+        var path: Clipper.ClipperPath
+        visit pt: points
+            path.add(Clipper.IntPoint{cast(s64) (pt.x * ClipperScaleCoords), cast(s64) (pt.y * ClipperScaleCoords)})
+        off.addPath(path, joinType)
 
-            // Compute
-            off.execute(&res, cast(f64) (value * ClipperScaleCoords))
-        }
+        // Compute
+        off.execute(&res, cast(f64) (value * ClipperScaleCoords))
 
         // Get result
         if res.count

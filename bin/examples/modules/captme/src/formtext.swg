@@ -1,9 +1,19 @@
+enum FormTextAlign
+{
+    LeftTop
+    RightBottom
+    Center
+}
+
 struct FormText
 {
     using base: BaseForm
     fontSize:   f32 = 48
     boldSize:   f32 = 0
     text:       String
+    alignHorz   = FormTextAlign.Center
+    alignVert   = FormTextAlign.Center
+    lineSpacing = 14.0
 
     #[Serialization.NoSerialize]
     {
@@ -14,8 +24,9 @@ struct FormText
         cachebSize: f32
         cachesSize: f32
         cachefSize: f32
-
-        pathl, pathl1: LinePathList
+        totalY:     f32
+        tokens:     Array'string
+        paths:      Array'LinePathList
     }
 }
 
@@ -161,28 +172,74 @@ impl IForm for FormText
             cachebSize = bSize
             cachefSize = fSize
 
-            assume face.getStringOutline(&pathl, text, acast fSize)
-            pathl.flatten(painter.curState.paintQuality)
-            if !Math.isZeroEpsilon(sSize)
-            {
-                pathl.offset(sSize, JoinStyle.Round, 0.5)
-                pathl.clean()
-            }
+            tokens.clear()
+            tokens.add(text.toString())
 
-            assume face.getStringOutline(&pathl1, text, acast fSize)
-            pathl1.flatten(painter.curState.paintQuality)
-            if !Math.isZeroEpsilon(bSize + sSize)
+            paths.clear()
+            paths.resize(tokens.count * 2)
+
+            totalY = tokens.count ? cast(f32) ((tokens.count - 1) * lineSpacing) : 0
+            visit t, idx: tokens
             {
-                pathl1.offset(bSize + sSize, JoinStyle.Round, 0.5)
-                pathl1.clean()
+                pathl  := paths[idx * 2]
+                pathl1 := paths[(idx * 2) + 1]
+
+                assume face.getStringOutline(pathl, t, acast fSize)
+                pathl.flatten(painter.curState.paintQuality)
+                if !Math.isZeroEpsilon(sSize)
+                {
+                    pathl.offset(sSize, JoinStyle.Round, 0.5)
+                    pathl.clean()
+                }
+
+                assume face.getStringOutline(pathl1, t, acast fSize)
+                pathl1.flatten(painter.curState.paintQuality)
+                if !Math.isZeroEpsilon(bSize + sSize)
+                {
+                    pathl1.offset(bSize + sSize, JoinStyle.Round, 0.5)
+                    pathl1.clean()
+                }
+
+                totalY += (pathl.bvMax.y - pathl.bvMin.y)
             }
         }
 
-        x0 := pp.horzCenter() - (0.5 * (pathl.bvMin.x + pathl.bvMax.x))
-        y0 := pp.vertCenter() - (0.5 * (pathl.bvMin.y + pathl.bvMax.y))
-        painter.translateTransform(x0, y0)
-        painter.fillPath(&pathl1, borderColor)
-        painter.fillPath(&pathl, backColor)
+        y0 := 0'f32
+        switch alignVert
+        {
+        case LeftTop:       y0 = pp.y
+        case Center:        y0 = pp.vertCenter() - (totalY * 0.5)
+        case RightBottom:   y0 = pp.bottom()
+        }
+
+        for i := 0; i < paths.count; i += 2
+        {
+            pathl  := paths[i]
+            pathl1 := paths[i + 1]
+
+            wt := (pathl1.bvMax.x - pathl1.bvMin.x)
+            ht := (pathl1.bvMax.y - pathl1.bvMin.y)
+
+            if alignVert == .RightBottom
+                y0 -= ht
+
+            x0 := 0'f32
+            switch alignHorz
+            {
+            case LeftTop:       x0 = pp.x
+            case Center:        x0 = pp.horzCenter() - (wt * 0.5)
+            case RightBottom:   x0 = pp.right() - wt
+            }
+
+            painter.pushState()
+            painter.translateTransform(x0, y0 - pathl1.bvMin.y)
+            painter.fillPath(pathl1, borderColor)
+            painter.fillPath(pathl, backColor)
+            painter.popState()
+
+            if alignVert != .RightBottom
+                y0 += (ht + lineSpacing)
+        }
     }
 
     mtd setup(capt: *Capture)

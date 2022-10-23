@@ -330,7 +330,8 @@ impl RenderOgl
             stackRT.add(curRT)
         curRT = rt
         curRT.paintAlpha = paintAlpha
-        curRT.tris.clear()
+        curRT.alphaPassTris.clear()
+        curRT.alphaPassModel.clear()
         glBindFramebuffer(GL_FRAMEBUFFER, cast(GLuint) curRT.handle)
         if vp
             glViewport(acast vp.x, acast vp.y, acast vp.width, acast vp.height)
@@ -630,7 +631,10 @@ impl RenderOgl
 
                 // Remember triangles in case we want a second full pass for the alpha channel
                 if curRT and curRT.paintAlpha
-                    curRT.tris.add(@{params.start, params.count})
+                {
+                    curRT.alphaPassModel.add(modelMatrix)
+                    curRT.alphaPassTris.add(@{params.start, params.count})
+                }
 
                 if !overlapMode
                 {
@@ -744,7 +748,8 @@ impl RenderOgl
 
             case UnbindRenderTarget:
                 Debug.assert(curRT != null)
-                if curRT.tris.count
+
+                if curRT.alphaPassTris.count
                 {
                     glEnable(GL_BLEND)
                     glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_TRUE)
@@ -752,8 +757,12 @@ impl RenderOgl
                     glClear(GL_COLOR_BUFFER_BIT)
                     glBlendFunc(GL_SRC_ALPHA, GL_ZERO)
                     glBlendEquation(GL_MAX)
-                    visit &c: curRT.tris
+                    visit &c, idx: curRT.alphaPassTris
+                    {
+                        mdl := curRT.alphaPassModel[idx]
+                        glUniformMatrix4fv(cast(GLint) curShader.mdl, 1, GL_FALSE, &mdl.m[0, 0])
                         glDrawArrays(GL_TRIANGLES, cast(GLint) c.item0, cast(GLsizei) c.item1)
+                    }
                 }
 
                 unbindRenderTarget()
