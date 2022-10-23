@@ -2202,6 +2202,9 @@ bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node,
         context->silentError++;
 
         auto found = findIdentifierInScopes(context, symbolMatch, idref, id);
+        if (context->result != ContextResult::Done)
+            return true;
+
         context->silentError--;
         if (found && symbolMatch.size() == 1)
         {
