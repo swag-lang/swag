@@ -242,7 +242,13 @@ impl RichEditCtrl
     #[Swag.Discardable]
     func create(parent: *Wnd, position: Math.Rectangle = @{}, id: WndId = null)->*RichEditCtrl
     {
-        ed := Wnd.create'RichEditCtrl(parent, "", position, id)
+        pos := position
+        if pos.height == 0
+            pos.height = parent.getThemeMetrics().editBox_Height
+        if pos.width == 0
+            pos.width = parent.getThemeMetrics().editBox_Width
+
+        ed := Wnd.create'RichEditCtrl(parent, "", pos, id)
 
         with ed
         {

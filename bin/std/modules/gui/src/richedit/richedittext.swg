@@ -414,6 +414,18 @@ public impl RichEditCtrl
         return txt
     }
 
+    // Get the full text
+    mtd getText()->String
+    {
+        var sel0: RichEditCursor
+        var sel1: RichEditCursor
+        moveCursorStartFile(&sel0)
+        moveCursorEndFile(&sel1)
+        res := getTextPrivate(sel0, sel1, false)
+        txt := Utf8.fromUnicode(res.text.toSlice())
+        return txt
+    }
+
     // Set the text content
     mtd setText(text: string)
     {

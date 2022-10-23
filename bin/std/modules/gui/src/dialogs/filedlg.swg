@@ -520,7 +520,7 @@ impl FileDlg
     {
         var folderName: String = "New Folder"
 
-        with dlg := EditDlg.create(surface)
+        with dlg := EditDlg.createSingleLine(surface)
         {
             .edit.setText(folderName)
             .edit.selectAll()

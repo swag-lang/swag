@@ -625,9 +625,9 @@ impl PropWnd
         {
             .dockStyle = .Right
             .sigPressed += @|self, edt|(btn) {
-                with dlg := EditDlg.create(edt.surface)
+                with dlg := EditDlg.createMultiLine(edt.surface)
                 {
-                    .edit.setText(edt.text)
+                    .setText(edt.text)
                     .surface.setTitle("Enter Text")
                     .surface.center(edt.surface)
                 }
@@ -635,8 +635,8 @@ impl PropWnd
                     return
                 capture := self.main.getCapture()
                 undo := capture.newUndo(.SetText)
-                undo.text = dlg.edit.text
-                edt.setText(dlg.edit.text)
+                undo.text = dlg.getText()
+                edt.setText(undo.text)
                 capture.pushUndo(undo)
             }
         }

@@ -79,6 +79,13 @@ private impl RichEditCtrl
 
 impl RichEditCtrl
 {
+    mtd selectAll()
+    {
+        moveCursorStartFile(&selBeg)
+        moveCursorEndFile(&cursorPos)
+        setRectangularSelection(false)
+    }
+
     mtd setRectangularSelection(selRect: bool)
     {
         hasSelRect = selRect

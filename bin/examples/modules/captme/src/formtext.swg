@@ -25,7 +25,6 @@ struct FormText
         cachesSize: f32
         cachefSize: f32
         totalY:     f32
-        tokens:     Array'string
         paths:      Array'LinePathList
     }
 }
@@ -172,9 +171,7 @@ impl IForm for FormText
             cachebSize = bSize
             cachefSize = fSize
 
-            tokens.clear()
-            tokens.add(text.toString())
-
+            tokens := Tokenize.split(text, "\n"'rune)
             paths.clear()
             paths.resize(tokens.count * 2)
 
