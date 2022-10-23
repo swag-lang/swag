@@ -61,10 +61,6 @@ impl RichEditCtrl
 {
     mtd clearUndo()
     {
-        loop i: undoMgr
-            Memory.delete(undoMgr[i])
-        loop i: toUndo
-            Memory.delete(toUndo[i])
         undoMgr.clear()
         toUndo.clear()
         currentUndo = 0
@@ -102,7 +98,7 @@ impl RichEditCtrl
             currentUndo += 1
         }
 
-        toUndo.clear()
+        toUndo.count = 0
     }
 
     mtd canUndo()->bool
