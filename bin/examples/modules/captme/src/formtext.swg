@@ -210,7 +210,7 @@ impl IForm for FormText
         {
         case LeftTop:       y0 = pp.y + addSize
         case Center:        y0 = pp.vertCenter() - (totalY * 0.5)
-        case RightBottom:   y0 = pp.bottom() - addSize
+        case RightBottom:   y0 = pp.bottom() - addSize - totalY
         }
 
         for i := 0; i < paths.count; i += 2
@@ -220,9 +220,6 @@ impl IForm for FormText
 
             wt := (pathl1.bvMax.x - pathl1.bvMin.x)
             ht := (pathl1.bvMax.y - pathl1.bvMin.y)
-
-            if alignVert == .RightBottom
-                y0 -= ht
 
             x0 := 0'f32
             switch aH
@@ -238,8 +235,7 @@ impl IForm for FormText
             painter.fillPath(pathl, backColor)
             painter.popState()
 
-            if aV != .RightBottom
-                y0 += (ht + lineSpacing)
+            y0 += (ht + lineSpacing)
         }
     }
 

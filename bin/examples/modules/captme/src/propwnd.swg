@@ -621,6 +621,7 @@ impl PropWnd
 
         // Text
         edt := EditBox.create(stack, curSel.text)
+        edt.rightMargin = 24
         with btnedt := IconButton.create(edt, getTheme().getIcon24(.More, 20), @{0, 0, 20, 20})
         {
             .dockStyle = .Right
