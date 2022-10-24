@@ -8,6 +8,7 @@ enum EditMode
     Favorites
     Draw
     Highlight
+    Selection
 }
 
 enum BottomSize
@@ -41,6 +42,7 @@ struct MainWnd
     monitors:       Array'Env.Monitor
 
     editMode:       EditMode = .Shape
+    lastEditMode:   EditMode = .Shape
     bottomSize:     BottomSize = Medium
     snap:           bool
     libraryMode:    bool
@@ -406,6 +408,14 @@ impl IWnd for MainWnd
             evt.checked = editMode == .Favorites
             evt.accepted = true
 
+        case CmdIdModeSelection:
+            evt.setFlags |= .Icon | .Checked | .Name | .ToolTip
+            evt.icon = Icon.from(&icons48, 10)
+            evt.name = "Select"
+            evt.toolTip = "Select forms"
+            evt.checked = editMode == .Selection or (capture and capture.drawSelRect)
+            evt.accepted = true
+
         case CmdIdAlignLeft:
             evt.setFlags |= .Disabled | .Name
             evt.name = "Left"
@@ -651,6 +661,12 @@ impl IWnd for MainWnd
             evt.accepted = true
             updateState()
 
+        case CmdIdModeSelection:
+            lastEditMode = editMode
+            editMode = .Selection
+            evt.accepted = true
+            updateState()
+
         case CmdIdRestoreOrg:
             undo = capture.newUndo(.RestoreOrg)
             evt.accepted = true
@@ -725,7 +741,15 @@ impl MainWnd
 {
     mtd getEditMode()->EditMode
     {
-        if editMode == .Favorites
+        if editMode == .Selection
+        {
+            editMode = .Shape
+            getCapture().updateEditModeFromSelection()
+            edMode := editMode
+            editMode = .Selection
+            return edMode
+        }
+        elif editMode == .Favorites
         {
             #[Swag.Complete]
             switch @kindof(mdlFavorite)
@@ -1098,6 +1122,7 @@ impl MainWnd
         }
 
         createBtn(CmdIdModeFavorites)
+        createBtn(CmdIdModeSelection)
         createBtn(CmdIdModeShape)
         createBtn(CmdIdModeArrow)
         createBtn(CmdIdModeLine)

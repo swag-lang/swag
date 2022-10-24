@@ -776,7 +776,7 @@ impl Capture
         {
             if evt.kind == .MousePressed or evt.kind == .MouseDoubleClick
             {
-                if Input.Keyboard.isKeyPressed(.Shift) or Input.Keyboard.isKeyPressed(.RShift)
+                if Input.Keyboard.isKeyPressed(.Shift) or Input.Keyboard.isKeyPressed(.RShift) or view.main.editMode == .Selection
                 {
                     mouseMode = .Selecting
                     firstMouseMove = true
@@ -835,6 +835,7 @@ impl Capture
                 view.invalidate()
                 mouseMode = .None
                 drawSelRect = false
+                view.main.updateState()
             }
 
             if mouseMode == .Moving and hotForm == Swag.UInt.Max
@@ -966,7 +967,7 @@ impl Capture
                     dref form = editView.main.mdlFormDraw
                     form.points.clear()
                     itf = cast(IForm) form
-                case Favorites, Highlight:
+                case Favorites, Highlight, Selection:
                     break
                 }
 
@@ -1032,9 +1033,12 @@ impl Capture
         if !selection.count
             return
 
+        main := editView.main
+        if main.editMode == .Selection
+            return
+
         f := forms[selection.back()]
         t := @kindof(f)
-        main := editView.main
 
         if main.editMode == .Favorites
         {

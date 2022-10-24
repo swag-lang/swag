@@ -402,6 +402,7 @@ impl QuickWnd
         case Draw:      defaultQuickStyleDraw()
         case Highlight: defaultQuickStyleHighlight()
         case Favorites: break
+        case Selection: break
         }
 
         updateQuickStyles()
@@ -442,7 +443,7 @@ impl QuickWnd
         }
 
         #[Swag.Complete]
-        switch main.editMode
+        switch main.getEditMode()
         {
         case Arrow:
             currentStyle = &qsArrow
@@ -460,6 +461,8 @@ impl QuickWnd
             currentStyle = &qsDraw
         case Highlight:
             currentStyle = &qsHighlight
+        case Selection:
+            return
         }
 
         visit c: layout.childs
@@ -604,6 +607,8 @@ impl QuickWnd
             btn.formItf = main.mdlFavorite
         case Highlight:
             btn.formItf = main.mdlHighlight
+        case Selection:
+            break
         }
 
         btn.sigPaintIcon = @(btn, bc, pos) {
@@ -654,7 +659,7 @@ impl QuickWnd
                 mdl := Memory.new'FormDraw()
                 mdl.IForm.copy(mdl, &main.mdlFormDraw)
                 self.currentStyle.forms.add(mdl)
-            case Favorites, Highlight:
+            case Favorites, Highlight, Selection:
                 break
             }
 

@@ -48,7 +48,7 @@ impl PropWnd
                 return cast(*BaseForm) &main.mdlFormDraw
             case Highlight:
                 return @dataof(main.mdlHighlight)
-            case Favorites:
+            case Favorites, Selection:
                 return @dataof(main.mdlFavorite)
             }
         }
@@ -78,7 +78,7 @@ impl PropWnd
                 return FormDraw
             case Highlight:
                 return @kindof(main.mdlHighlight)
-            case Favorites:
+            case Favorites, Selection:
                 return @kindof(main.mdlFavorite)
             }
         }
