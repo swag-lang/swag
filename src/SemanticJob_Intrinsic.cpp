@@ -103,7 +103,7 @@ bool SemanticJob::resolveIntrinsicMakeSlice(SemanticContext* context, AstNode* n
 
     // Must start with a pointer of the same type as the slice
     if (first->typeInfo->kind != TypeInfoKind::Pointer)
-        return context->report(first, Fmt(Err(Err0787), name));
+        return context->report(Hint::isType(first->typeInfo), {first, Fmt(Err(Err0787), name)});
 
     auto ptrPointer = CastTypeInfo<TypeInfoPointer>(first->typeInfo, TypeInfoKind::Pointer);
     if (!ptrPointer->pointedType)

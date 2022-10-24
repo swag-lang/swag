@@ -15,13 +15,18 @@ enum CaptureMode
 
 scopefile {
 
-var g_StartGrabX: s32
-var g_StartGrabY: s32
-var g_EndGrabX:   s32
-var g_EndGrabY:   s32
-var g_StartGrab:  bool
-var g_GrabDone:   bool
-var g_InitDone:   bool
+var g_StartGrabX:       s32
+var g_StartGrabY:       s32
+var g_TryStartGrabX:    s32
+var g_TryStartGrabY:    s32
+var g_EndGrabX:         s32
+var g_EndGrabY:         s32
+
+var g_StartGrab:    bool
+var g_TryStartGrab: bool
+var g_AutoGrab:     bool
+var g_GrabDone:     bool
+var g_InitDone:     bool
 
 var g_BlackBrush:   HBRUSH
 var g_RedBrush:     HBRUSH
@@ -37,6 +42,56 @@ func getGrabRect()->{x1: s32, y1: s32, x2: s32, y2: s32}
     return result
 }
 
+var g_HitTest:  POINT
+var g_Hit:      HWND
+var g_Ignore:   HWND
+func enumProc(hWnd: HWND, lParam: LPARAM)->BOOL
+{
+    if hWnd == g_Ignore
+        return TRUE
+    if !IsWindowVisible(hWnd)
+        return TRUE
+
+    //var az: [128] u8
+    //len := GetWindowTextA(hWnd, &az[0], 128)
+    //@print(@mkstring(&az[0], len), "\n")
+
+    var r: RECT
+    GetWindowRect(hWnd, &r)
+    if  g_HitTest.x >= r.left and
+        g_HitTest.x < r.right and
+        g_HitTest.y >= r.top and
+        g_HitTest.y < r.bottom
+    {
+        g_Hit = hWnd
+        return FALSE
+    }
+
+    return TRUE
+}
+
+func getWndAtPos(hWnd: HWND, pt: POINT)->HWND
+{
+    g_HitTest = pt
+    g_Hit     = null
+    g_Ignore  = hWnd
+    EnumWindows(acast &enumProc, 0)
+    if !g_Hit
+        return null
+
+    loop
+    {
+        pt1 := pt
+        ScreenToClient(g_Hit, &pt1)
+        child := ChildWindowFromPointEx(g_Hit, pt1, CWP_SKIPINVISIBLE | CWP_SKIPDISABLED | CWP_SKIPTRANSPARENT)
+        if !child or child == g_Hit
+            break
+        g_Hit = child
+    }
+
+    return g_Hit
+}
+
 func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
 {
     switch msg
@@ -50,26 +105,55 @@ func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
         PostQuitMessage(0)
 
     case WM_LBUTTONDOWN:
-        g_StartGrabX, g_EndGrabX = GET_X_LPARAM(lParam)
-        g_StartGrabY, g_EndGrabY = GET_Y_LPARAM(lParam)
-        g_StartGrab = true
-        InvalidateRect(hWnd, null, FALSE)
+        g_TryStartGrabX = GET_X_LPARAM(lParam)
+        g_TryStartGrabY = GET_Y_LPARAM(lParam)
+        g_TryStartGrab = true
 
     case WM_LBUTTONUP:
-        if !g_StartGrab
-            break
-        g_StartGrab = false
-        g_GrabDone = true
-        InvalidateRect(hWnd, null, FALSE)
-        PostQuitMessage(0)
+        if g_StartGrab or g_TryStartGrab
+        {
+            g_StartGrab = false
+            g_TryStartGrab = false
+            g_GrabDone = true
+            InvalidateRect(hWnd, null, FALSE)
+            PostQuitMessage(0)
+        }
 
     case WM_MOUSEMOVE:
         g_EndGrabX = GET_X_LPARAM(lParam)
         g_EndGrabY = GET_Y_LPARAM(lParam)
+        if g_TryStartGrab and
+           Math.abs(g_EndGrabX - g_StartGrabX) > 1 and
+           Math.abs(g_EndGrabY - g_StartGrabY) > 1
+        {
+            g_StartGrabX = g_TryStartGrabX
+            g_StartGrabY = g_TryStartGrabY
+            g_TryStartGrab = false
+            g_StartGrab = true
+        }
+
+        g_AutoGrab = false
         if !g_StartGrab
         {
             g_StartGrabX = g_EndGrabX
             g_StartGrabY = g_EndGrabY
+
+            var pp: POINT
+            pp.x = g_EndGrabX
+            pp.y = g_EndGrabY
+            ClientToScreen(hWnd, &pp)
+
+            under := getWndAtPos(hWnd, pp)
+            if under
+            {
+                var r: RECT
+                g_AutoGrab = true
+                GetWindowRect(under, &r)
+                g_StartGrabX = r.left
+                g_StartGrabY = r.top
+                g_EndGrabX = r.right-1
+                g_EndGrabY = r.bottom-1
+            }
         }
 
         InvalidateRect(hWnd, null, FALSE)
@@ -87,7 +171,7 @@ func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
         (x1, y1, x2, y2) := getGrabRect()
 
         // Around grab pos, back transparency
-        if g_StartGrab
+        if g_StartGrab or g_AutoGrab
         {
             rc = RECT{0, 0, rc1.right, y1}
             FillRect(hDC, rc, g_BlackBrush)
@@ -103,9 +187,9 @@ func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
             FillRect(hDC, rc1, g_BlackBrush)
         }
 
-        if g_StartGrab
+        if g_StartGrab or g_AutoGrab
         {
-            rc = RECT{x1, y1, x2, y2}
+            rc = RECT{x1+1, y1+1, x2-2, y2-2}
             FillRect(hDC, rc, g_RedBrush)
 
             SetBkMode(hDC, OPAQUE)

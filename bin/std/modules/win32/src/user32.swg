@@ -931,6 +931,20 @@ const SM_SYSTEMDOCKED           = 0x2004
 const LWA_COLORKEY = 0x00000001
 const LWA_ALPHA    = 0x00000002
 
+const GW_HWNDFIRST        = 0'u32
+const GW_HWNDLAST         = 1'u32
+const GW_HWNDNEXT         = 2'u32
+const GW_HWNDPREV         = 3'u32
+const GW_OWNER            = 4'u32
+const GW_CHILD            = 5'u32
+const GW_ENABLEDPOPUP     = 6'u32
+const GW_MAX              = 6'u32
+
+const CWP_ALL             = 0x0000
+const CWP_SKIPINVISIBLE   = 0x0001
+const CWP_SKIPDISABLED    = 0x0002
+const CWP_SKIPTRANSPARENT = 0x0004
+
 struct ICONINFO
 {
     fIcon:    BOOL
@@ -965,11 +979,17 @@ func GET_Y_LPARAM(lp: LPARAM) => cast(s32) HIWORD(lp)
     func GetWindowLongPtrA(hWnd: HWND, nIndex: s32)->*LONG;
     func GetWindowLongPtrW(hWnd: HWND, nIndex: s32)->*LONG;
     func WindowFromPoint(pt: POINT)->HWND;
+    func ChildWindowFromPoint(hWnd: HWND, pt: POINT)->HWND;
+    func ChildWindowFromPointEx(hwnd: HWND, pt: POINT, flags: UINT)->HWND;
     func FindWindowA(lpClassName: LPCSTR, lpWindowName: LPCSTR)->HWND;
     func FindWindowW(lpClassName: LPCWSTR, lpWindowName: LPCWSTR)->HWND;
     func GetDesktopWindow()->HWND;
+    func GetTopWindow(hWnd: HWND)->HWND;
     func GetActiveWindow()->HWND;
     func GetForegroundWindow()->HWND;
+    func GetWindow(hWnd: HWND, uCmd: UINT)->HWND;
+    func GetNextWindow(hWnd: HWND, wCmd: UINT);
+    func IsWindowVisible(hWnd: HWND)->BOOL;
 
     func GetDC(hWnd: HWND)->HDC;
 
@@ -996,6 +1016,9 @@ func GET_Y_LPARAM(lp: LPARAM) => cast(s32) HIWORD(lp)
 
     func FillRect(hDC: HDC, lprc: const *RECT, hbr: HBRUSH)->s32;
     func GetClientRect(hWnd: HWND, lpRect: *RECT)->BOOL;
+    func GetWindowRect(hWnd: HWND, lpRect: *RECT)->BOOL;
+    func GetWindowTextA(hWnd: HWND, lpString: LPSTR, nMaxCount: s32)->s32;
+    func GetWindowTextW(hWnd: HWND, lpString: LPWSTR, nMaxCount: s32)->s32;
 
     func ShowWindow(hWnd: HWND, nCmdShow: s32)->BOOL;
     func EnableWindow(hWnd: HWND, bEnable: BOOL)->BOOL;
@@ -1024,6 +1047,7 @@ func GET_Y_LPARAM(lp: LPARAM) => cast(s32) HIWORD(lp)
     func SetWindowLongPtrW(hWnd: HWND, nIndex: s32, dwNewLong: *LONG)->*LONG;
 
     func EnumDisplayMonitors(hdc: HDC, lprcClip: *RECT, lpfnEnum: const *void, dwData: LPARAM)->BOOL;
+    func EnumWindows(lpEnumFunc: const *void, lParam: LPARAM)->BOOL;
 }
 
 namespace User32Priv
