@@ -15,12 +15,16 @@ enum CaptureMode
 
 scopefile {
 
-var g_StartGrabX:       s32
-var g_StartGrabY:       s32
 var g_TryStartGrabX:    s32
 var g_TryStartGrabY:    s32
+var g_StartGrabX:       s32
+var g_StartGrabY:       s32
 var g_EndGrabX:         s32
 var g_EndGrabY:         s32
+var g_RStartGrabX:      f32
+var g_RStartGrabY:      f32
+var g_REndGrabX:        f32
+var g_REndGrabY:        f32
 
 var g_StartGrab:    bool
 var g_TryStartGrab: bool
@@ -170,6 +174,23 @@ func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
 
         (x1, y1, x2, y2) := getGrabRect()
 
+        // Lerp
+        if g_AutoGrab
+        {
+            dt := 0.1'f32
+            g_RStartGrabX = Math.lerp(g_RStartGrabX, cast(f32) x1, dt)
+            g_RStartGrabY = Math.lerp(g_RStartGrabY, cast(f32) y1, dt)
+            g_REndGrabX   = Math.lerp(g_REndGrabX, cast(f32) x2, dt)
+            g_REndGrabY   = Math.lerp(g_REndGrabY, cast(f32) y2, dt)
+            xx1 := cast(s32) g_RStartGrabX
+            yy1 := cast(s32) g_RStartGrabY
+            xx2 := cast(s32) g_REndGrabX
+            yy2 := cast(s32) g_REndGrabY
+            if x1 != xx1 or y1 != yy1 or x2 != xx2 or y2 != yy2
+                InvalidateRect(hWnd, null, FALSE)
+            x1 = xx1; x2 = xx2; y1 = yy1; y2 = yy2
+        }
+
         // Around grab pos, back transparency
         if g_StartGrab or g_AutoGrab
         {
@@ -196,7 +217,7 @@ func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
             SetBkColor(hDC, RGB(0, 0, 0))
             SelectObject(hDC, acast g_PenRect)
             SelectObject(hDC, GetStockObject(NULL_BRUSH))
-            Rectangle(hDC, x1, y1, x2-2, y2-2)
+            Rectangle(hDC, x1, y1, x2-1, y2-1)
         }
 
         EndPaint( hWnd, &ps )
@@ -279,6 +300,11 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode)->Image throw
     }
     else
     {
+        g_RStartGrabX = 0
+        g_RStartGrabY = 0
+        g_REndGrabX = 0
+        g_REndGrabY = 0
+
         main.getApp().runFrame()
         hWnd := createNative(nScreenWidth, nScreenHeight)
 
