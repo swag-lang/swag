@@ -195,8 +195,8 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode)->Image throw
     }
     else
     {
-        hWnd := createNative(nScreenWidth, nScreenHeight)
         main.getApp().runFrame()
+        hWnd := createNative(nScreenWidth, nScreenHeight)
 
         var msg: MSG
         while GetMessageW(&msg, null, 0, 0) != 0
