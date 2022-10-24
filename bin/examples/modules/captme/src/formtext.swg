@@ -139,9 +139,9 @@ impl IForm for FormText
 
     mtd paint(app: *Application, painter: *Painter, z: f32, quickMode: bool)
     {
-        bSize := adaptSize(borderSize, MinTextBorderSize, MaxTextBorderSize, z, quickMode, 2, 5)
-        fSize := adaptSize(fontSize, MinFontSize, MaxFontSize, z, quickMode, 24, 48)
-        sSize := adaptSize(boldSize, MinBoldSize, MaxBoldSize, z, quickMode, 1, 2)
+        bSize := adaptSize(borderSize, MinTextBorderSize, MaxTextBorderSize, 1, quickMode, 2, 5)
+        fSize := adaptSize(fontSize, MinFontSize, MaxFontSize, 1, quickMode, 24, 48)
+        sSize := adaptSize(boldSize, MinBoldSize, MaxBoldSize, 1, quickMode, 1, 2)
 
         pp := Math.Rectangle{0, 0, paintPos.width, paintPos.height}
         pp.inflate(-bSize * 0.5)
@@ -175,7 +175,7 @@ impl IForm for FormText
             paths.clear()
             paths.resize(tokens.count * 2)
 
-            totalY = tokens.count ? cast(f32) ((tokens.count - 1) * lineSpacing) : 0
+            totalY = 0
             visit t, idx: tokens
             {
                 pathl  := paths[idx * 2]
@@ -202,15 +202,20 @@ impl IForm for FormText
         }
 
         y0 := 0'f32
-        addSize := (bSize + sSize)
+        addSize := (bSize + sSize) * z
+
+        count := paths.count / 2
+
+        totalYZ := totalY * z
+        totalYZ += cast(f32) ((count - 1) * (lineSpacing * z))
 
         aV := quickMode ? FormTextAlign.Center : alignVert
         aH := quickMode ? FormTextAlign.Center : alignHorz
         switch aV
         {
         case LeftTop:       y0 = pp.y + addSize
-        case Center:        y0 = pp.vertCenter() - (totalY * 0.5)
-        case RightBottom:   y0 = pp.bottom() - addSize - totalY
+        case Center:        y0 = pp.vertCenter() - (totalYZ * 0.5)
+        case RightBottom:   y0 = pp.bottom() - addSize - totalYZ
         }
 
         for i := 0; i < paths.count; i += 2
@@ -218,8 +223,8 @@ impl IForm for FormText
             pathl  := paths[i]
             pathl1 := paths[i + 1]
 
-            wt := (pathl1.bvMax.x - pathl1.bvMin.x)
-            ht := (pathl1.bvMax.y - pathl1.bvMin.y)
+            wt := (pathl1.bvMax.x - pathl1.bvMin.x) * z
+            ht := (pathl1.bvMax.y - pathl1.bvMin.y) * z
 
             x0 := 0'f32
             switch aH
@@ -230,12 +235,13 @@ impl IForm for FormText
             }
 
             painter.pushState()
-            painter.translateTransform(x0, y0 - pathl1.bvMin.y)
+            painter.scaleTransform(z, z)
+            painter.translateTransform(x0, y0 - (pathl1.bvMin.y * z))
             painter.fillPath(pathl1, borderColor)
             painter.fillPath(pathl, backColor)
             painter.popState()
 
-            y0 += (ht + lineSpacing)
+            y0 += ht + (lineSpacing * z)
         }
     }
 
