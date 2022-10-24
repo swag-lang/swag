@@ -35,7 +35,7 @@ impl IWnd for StackLayoutCtrl
         {
             totalW := 0'f32
             visit c, i: childs
-                totalW += c.position.width
+                totalW += c.position.width + c.margin.x + c.margin.z
             totalW += cast(f32) ((childs.count - 1) * spacing)
 
             x := position.width * 0.5 - totalW * 0.5
@@ -46,16 +46,16 @@ impl IWnd for StackLayoutCtrl
                 pos := c.position
                 if layoutKind == .HorzCenterVertCenter
                     pos.y = y - (pos.height * 0.5)
-                pos.x = Math.round(x)
+                pos.x = Math.round(x + c.margin.x)
                 c.setPosition(pos)
-                x += c.position.width + spacing
+                x += c.position.width + spacing + c.margin.z
             }
         }
         elif layoutKind == .VertCenter
         {
             totalH := 0'f32
             visit c, i: childs
-                totalH += c.position.height
+                totalH += c.position.height + c.margin.y + c.margin.w
             totalH += cast(f32) ((childs.count - 1) * spacing)
 
             y := position.height * 0.5 - totalH * 0.5
@@ -63,9 +63,9 @@ impl IWnd for StackLayoutCtrl
             visit c: childs
             {
                 pos := c.position
-                pos.y = Math.round(y)
+                pos.y = Math.round(y + c.margin.y)
                 c.setPosition(pos)
-                y += c.position.height + spacing
+                y += c.position.height + spacing + c.margin.w
             }
         }
         else
