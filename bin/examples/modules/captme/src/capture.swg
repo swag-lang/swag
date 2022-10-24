@@ -8,6 +8,7 @@ enum MouseMode
     None
     Moving
     Creating
+    Selecting
 }
 
 struct Capture
@@ -40,10 +41,12 @@ struct Capture
         snapX:       f32 = -1
         snapY:       f32 = -1
 
+        movingStart:        Math.Point
+        movingEnd:          Math.Point
         firstMouseMove:     bool
         movingCursorSet:    bool
-        movingStart:        Math.Point
         dirtyBackImg:       bool
+        drawSelRect:        bool
     }
 }
 
@@ -444,6 +447,21 @@ impl Capture
             f.paintGizmo(painter, zoom, flags)
         }
 
+        // Selection rectangle
+        if drawSelRect
+        {
+            with var r: Math.Rectangle
+            {
+                .x = movingStart.x
+                .y = movingStart.y
+                .width = movingEnd.x - movingStart.x
+                .height = movingEnd.y - movingStart.y
+            }
+
+            painter.fillRect(r, Color.fromArgb(0x1f, Argb.Cyan))
+            painter.drawRect(r, Argb.Cyan, 2)
+        }
+
         // Snap
         if snapX != -1
             painter.drawLine(rect.x + snapX * zoom, rect.y, rect.x + snapX * zoom, rect.bottom(), Argb.Purple, 2)
@@ -758,37 +776,49 @@ impl Capture
         {
             if evt.kind == .MousePressed or evt.kind == .MouseDoubleClick
             {
-                here := selection.contains(hotForm)
-                if !(evt.modifiers & .Control) and !here
+                if Input.Keyboard.isKeyPressed(.Shift) or Input.Keyboard.isKeyPressed(.RShift)
                 {
-                    if selection.count
-                    {
-                        selection.clear()
-                        selectionHasChanged()
-                    }
-                }
-
-                if hotForm != Swag.UInt.Max
-                {
-                    if !here
-                    {
-                        selection.add(hotForm)
-                        selectionHasChanged()
-                    }
-
-                    mouseMode = .Moving
+                    mouseMode = .Selecting
                     firstMouseMove = true
                     movingStart = localPos
                     view.captureMouse()
                     view.invalidate()
+                    drawSelRect = true
                 }
                 else
                 {
-                    mouseMode = .Creating
-                    firstMouseMove = true
-                    movingStart = localPos
-                    view.captureMouse()
-                    view.invalidate()
+                    here := selection.contains(hotForm)
+                    if !(evt.modifiers & .Control) and !here
+                    {
+                        if selection.count
+                        {
+                            selection.clear()
+                            selectionHasChanged()
+                        }
+                    }
+
+                    if hotForm != Swag.UInt.Max
+                    {
+                        if !here
+                        {
+                            selection.add(hotForm)
+                            selectionHasChanged()
+                        }
+
+                        mouseMode = .Moving
+                        firstMouseMove = true
+                        movingStart = localPos
+                        view.captureMouse()
+                        view.invalidate()
+                    }
+                    else
+                    {
+                        mouseMode = .Creating
+                        firstMouseMove = true
+                        movingStart = localPos
+                        view.captureMouse()
+                        view.invalidate()
+                    }
                 }
             }
         }
@@ -798,6 +828,14 @@ impl Capture
         if evt.kind == .MouseReleased and evt.button == .Left
         {
             snapX, snapY = -1
+
+            if mouseMode == .Selecting
+            {
+                view.releaseMouse()
+                view.invalidate()
+                mouseMode = .None
+                drawSelRect = false
+            }
 
             if mouseMode == .Moving and hotForm == Swag.UInt.Max
             {
@@ -817,6 +855,31 @@ impl Capture
         ///////////////////////
         switch mouseMode
         {
+        case Selecting:
+            var r: Math.Rectangle
+
+            selection.clear()
+            movingEnd = localPos
+
+            r.x = Math.min(movingStart.x, movingEnd.x)
+            r.y = Math.min(movingStart.y, movingEnd.y)
+            r.width = Math.abs(movingEnd.x - movingStart.x)
+            r.height = Math.abs(movingEnd.y - movingStart.y)
+
+            visit f, idx: forms
+            {
+                b := cast(*BaseForm) @dataof(f)
+                if b.paintPos.intersectWith(r)
+                {
+                    selection.add(idx)
+                }
+            }
+
+            firstMouseMove = false
+            view.invalidate()
+            selectionHasChanged()
+            return true
+
         case Moving:
             newPosX := cast(s32) ((localPos.x - movingStart.x) / view.zoom)
             newPosY := cast(s32) ((localPos.y - movingStart.y) / view.zoom)
