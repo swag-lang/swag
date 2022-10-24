@@ -861,10 +861,7 @@ impl Capture
             selection.clear()
             movingEnd = localPos
 
-            r.x = Math.min(movingStart.x, movingEnd.x)
-            r.y = Math.min(movingStart.y, movingEnd.y)
-            r.width = Math.abs(movingEnd.x - movingStart.x)
-            r.height = Math.abs(movingEnd.y - movingStart.y)
+            r.set(movingStart, movingEnd)
 
             visit f, idx: forms
             {

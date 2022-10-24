@@ -21,6 +21,15 @@ impl Rectangle
         return x == other.x and y == other.y and width == other.width and height == other.height
     }
 
+    // Initialize the rectangle with two position
+    mtd set(topLeft, bottomRight: Math.Point)
+    {
+        x = Math.min(topLeft.x, bottomRight.x)
+        y = Math.min(topLeft.y, bottomRight.y)
+        width = Math.abs(bottomRight.x - topLeft.x)
+        height = Math.abs(bottomRight.y - topLeft.y)
+    }
+
     // horizontal center coordinate (x + width / 2)
     #[Swag.Inline]
     mtdc horzCenter()->f32
