@@ -41,6 +41,11 @@ func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
 {
     switch msg
     {
+    case WM_KEYDOWN:
+        if wParam == VK_ESCAPE
+            PostQuitMessage(0)
+        return 0
+
     case WM_RBUTTONDOWN:
         PostQuitMessage(0)
 
@@ -131,7 +136,7 @@ func createNative(w, h: s32)->HWND throw
     catch RegisterClassW(wc)
 
     hWnd := cast(const *void) CreateWindowExW(
-        WS_EX_TOPMOST | WS_EX_LAYERED,
+        WS_EX_TOPMOST | WS_EX_LAYERED | WS_EX_TOOLWINDOW,
         className,
         null,
         WS_POPUP | WS_VISIBLE,
@@ -146,7 +151,6 @@ func createNative(w, h: s32)->HWND throw
     )
 
     SetLayeredWindowAttributes(hWnd, RGB(255, 0, 0), 128, LWA_ALPHA | LWA_COLORKEY)
-    ShowWindow(hWnd, SW_SHOW)
     UpdateWindow(hWnd)
     InvalidateRect(hWnd, null, FALSE)
     return hWnd
@@ -192,6 +196,7 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode)->Image throw
     else
     {
         hWnd := createNative(nScreenWidth, nScreenHeight)
+        main.getApp().runFrame()
 
         var msg: MSG
         while GetMessageW(&msg, null, 0, 0) != 0

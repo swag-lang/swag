@@ -62,5 +62,6 @@ const CmdIdTextHRight           = "CmdIdTextHRight"
 const CmdIdTextVTop             = "CmdIdTextVTop"
 const CmdIdTextVCenter          = "CmdIdTextVCenter"
 const CmdIdTextVBottom          = "CmdIdTextVBottom"
+const CmdIdCaptureHideEditor    = "CmdIdCaptureHideEditor"
 
 const ClipboardFormat = "Swag.CaptMe"

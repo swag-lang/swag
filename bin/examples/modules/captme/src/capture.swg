@@ -995,31 +995,14 @@ impl Capture
                 main.mdlFavorite = main.mdlFormDraw
             }
         }
-        elif main.editMode == .Highlight
-        {
-            #[Swag.Complete]
-            switch t
-            {
-            case FormShape, FormImage:
-                main.mdlHighlight = main.mdlFormShape
-            case FormArrow:
-                main.mdlHighlight = main.mdlFormArrow
-            case FormLine:
-                main.mdlHighlight = main.mdlFormLine
-            case FormPolygon:
-                main.mdlHighlight = main.mdlFormPolygon
-            case FormText:
-                main.mdlHighlight = main.mdlFormText
-            case FormDraw:
-                main.mdlHighlight = main.mdlFormDraw
-            }
-        }
         else
         {
             #[Swag.Complete]
             switch t
             {
-            case FormShape, FormImage:
+            case FormImage:
+                main.editMode = .Shape
+            case FormShape:
                 main.editMode = .Shape
             case FormArrow:
                 main.editMode = .Arrow

@@ -388,7 +388,7 @@ private impl Application
         toDelete.clear()
     }
 
-    mtd runFrame()
+    public mtd runFrame()
     {
         // Auto exit
         if maxRunFrame and timing.frameCount > maxRunFrame

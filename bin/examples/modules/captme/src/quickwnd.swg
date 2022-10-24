@@ -511,12 +511,10 @@ impl QuickWnd
                     b := cast(*FormArrow) @dataof(it)
                     self.main.mdlFormArrow = dref b
                     self.main.mdlFavorite = &self.main.mdlFormArrow
-                    self.main.mdlHighlight = &self.main.mdlFormArrow
                 case FormText:
                     b := cast(*FormText) @dataof(it)
                     self.main.mdlFormText = dref b
                     self.main.mdlFavorite = &self.main.mdlFormText
-                    self.main.mdlHighlight = &self.main.mdlFormText
                 case FormDraw:
                     b := cast(*FormDraw) @dataof(it)
                     self.main.mdlFormDraw = dref b

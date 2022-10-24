@@ -44,6 +44,7 @@ struct MainWnd
     bottomSize:     BottomSize = Medium
     snap:           bool
     libraryMode:    bool
+    hideCaptMe      = true
     fileDlgState:   FileDlgState
 
     mdlFormShape:   FormShape
@@ -80,6 +81,7 @@ impl IWnd for MainWnd
                 .serialize("MainWnd.snap", &snap)
                 .serialize("MainWnd.bottomSize", &bottomSize)
                 .serialize("MainWnd.fileDlgState", &fileDlgState)
+                .serialize("MainWnd.hideCaptMe", &hideCaptMe)
                 .serialize("MainWnd.captureMode", &captureMode)
                 .serialize("MainWnd.RightBar.Pane0", &quickStyleBar.items[0].size)
                 .serialize("MainWnd.RightBar.Pane1", &quickStyleBar.items[1].size)
@@ -103,6 +105,12 @@ impl IWnd for MainWnd
 
         switch evt.id
         {
+        case CmdIdCaptureHideEditor:
+            evt.setFlags |= .Name | .Checked
+            evt.name = "Hide CaptMe Before Capture"
+            evt.checked = hideCaptMe
+            evt.accepted = true
+
         case CmdIdSaveAsImage:
             evt.setFlags |= .Name | .Disabled
             evt.name = "Save As Image..."
@@ -490,6 +498,9 @@ impl IWnd for MainWnd
             captureMode = .LastArea
         case CmdIdCaptModeFullScreen:
             captureMode = .FullScreen
+
+        case CmdIdCaptureHideEditor:
+            hideCaptMe = !hideCaptMe
 
         case CmdIdSaveAsImage:
             saveAsImage()
@@ -904,8 +915,13 @@ impl MainWnd
 
     mtd captureScreen(mode: CaptureMode)
     {
-        if !surface.isMinimized
-            surface.hide()
+        if hideCaptMe
+        {
+            if !surface.isMinimized
+                surface.hide()
+        }
+        else
+            surface.disable()
 
         var img: Image
         if mode == .None
@@ -913,10 +929,15 @@ impl MainWnd
         else
             img = catch screenShot(mode)
 
-        if !surface.isMinimized
-            surface.show()
+        if hideCaptMe
+        {
+            if !surface.isMinimized
+                surface.show()
+            else
+                surface.showNormal()
+        }
         else
-            surface.showNormal()
+            surface.enable()
 
         if @err or img.width == 0 or img.height == 0
             return
@@ -1022,6 +1043,9 @@ impl MainWnd
                 case 3: .addItem(CmdIdCaptureScreen3)
                 }
             }
+
+            .addSeparator()
+            .addItem(CmdIdCaptureHideEditor)
 
             topMenu.addPopup("Capture", captureMenu)
         }
