@@ -550,7 +550,8 @@ impl Capture
         if y
             snapY = -1
 
-        if !editView.main.snap
+        ctrlPressed := Input.Keyboard.isKeyPressed(.Control) or Input.Keyboard.isKeyPressed(.RControl)
+        if !editView.main.snap and !ctrlPressed
             return
 
         nx := x ? dref x : 0
