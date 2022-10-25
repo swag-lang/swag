@@ -25,6 +25,7 @@ impl IWnd for IconBar
     mtd onCommandUIEvent(evt: *CommandUIEvent)
     {
         sigUpdateUI.call(evt)
+        wnd.IWnd.onCommandUIEvent(evt)
     }
 }
 
