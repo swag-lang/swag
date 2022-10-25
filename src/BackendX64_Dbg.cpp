@@ -1146,6 +1146,7 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
 
             // Parameters
             /////////////////////////////////
+            const auto& cc = g_CallConv[typeFunc->callConv];
             if (decl->parameters && !(decl->attributeFlags & ATTRIBUTE_COMPILER_FUNC))
             {
                 auto countParams = decl->parameters->childs.size();
@@ -1158,6 +1159,16 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
                     DbgTypeIndex typeIdx;
                     switch (typeParam->kind)
                     {
+                    case TypeInfoKind::Reference:
+                    {
+                        auto typeRef = TypeManager::concreteReferenceType(typeParam);
+                        if (cc.structByRegister && typeRef->sizeOf <= sizeof(void*))
+                            typeIdx = dbgGetOrCreateType(pp, typeRef);
+                        else
+                            typeIdx = dbgGetOrCreateType(pp, typeParam);
+                        break;
+                    }
+
                     case TypeInfoKind::Array:
                         typeIdx = dbgGetOrCreatePointerToType(pp, typeParam);
                         break;
@@ -1169,7 +1180,10 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
                     //////////
                     dbgStartRecord(pp, concat, S_LOCAL);
                     concat.addU32(typeIdx); // Type
-                    concat.addU16(0);       // CV_LVARFLAGS (do not set IsParameter, because we do not want a dereference, don't know what's going on here)
+
+                    // CV_LVARFLAGS (do not set IsParameter, because we do not want a dereference, don't know what's going on here)
+                    concat.addU16(0);
+
                     dbgEmitTruncatedString(concat, child->token.text);
                     dbgEndRecord(pp, concat);
 
