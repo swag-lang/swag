@@ -796,7 +796,9 @@ impl Capture
         {
             if evt.kind == .MousePressed or evt.kind == .MouseDoubleClick
             {
-                if Input.Keyboard.isKeyPressed(.Shift) or Input.Keyboard.isKeyPressed(.RShift) or view.main.editMode == .Selection
+                shiftPressed := Input.Keyboard.isKeyPressed(.Shift) or Input.Keyboard.isKeyPressed(.RShift)
+                ctrlPressed  := Input.Keyboard.isKeyPressed(.Control) or Input.Keyboard.isKeyPressed(.RControl)
+                if (shiftPressed and ctrlPressed) or view.main.editMode == .Selection
                 {
                     mouseMode = .Selecting
                     firstMouseMove = true

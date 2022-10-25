@@ -24,6 +24,8 @@ impl GizmoRect
 {
     mtd mouse(view: *EditView, pos: Math.Point, evt: *MouseEvent)->bool
     {
+        prop := (evt.modifiers & .Shift) and !(evt.modifiers & .Control)
+
         switch evt.kind
         {
         case MousePressed:
@@ -71,7 +73,7 @@ impl GizmoRect
                 switch hotAnchor
                 {
                 case 0:
-                    if evt.modifiers & .Shift
+                    if prop
                     {
                         if Math.abs(diff.x) > Math.abs(diff.y)
                             diff.y = diff.x
@@ -91,7 +93,7 @@ impl GizmoRect
                     hitMove = 2
 
                 case 2:
-                    if evt.modifiers & .Shift
+                    if prop
                     {
                         if Math.abs(diff.x) > Math.abs(diff.y)
                             diff.y = -diff.x
@@ -114,7 +116,7 @@ impl GizmoRect
                     hitMove = 4
 
                 case 5:
-                    if evt.modifiers & .Shift
+                    if prop
                     {
                         if Math.abs(diff.x) > Math.abs(diff.y)
                             diff.y = -diff.x
@@ -132,7 +134,7 @@ impl GizmoRect
                     hitMove = 8
 
                 case 7:
-                    if evt.modifiers & .Shift
+                    if prop
                     {
                         if Math.abs(diff.x) > Math.abs(diff.y)
                             diff.y = diff.x

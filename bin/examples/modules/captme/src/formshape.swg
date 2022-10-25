@@ -43,6 +43,8 @@ impl IForm for FormShape
 
     mtd edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
     {
+        shiftPressed := Input.Keyboard.isKeyPressed(.Shift) or Input.Keyboard.isKeyPressed(.RShift)
+
         xa := cast(s32) ((movingStart.x - paintRect.x) / zoom)
         ya := cast(s32) ((movingStart.y - paintRect.y) / zoom)
         xb := cast(s32) ((localPos.x - paintRect.x) / zoom)
@@ -54,6 +56,17 @@ impl IForm for FormShape
         capture.snap(&xbu, &ybu, true, true, 0, cast(IForm) self)
         xb += xbu
         yb += ybu
+
+        if shiftPressed
+        {
+            ww := xb - xa
+            hh := yb - ya
+            if ww > hh
+                yb = ya + ww
+            else
+                xb = xa + hh
+        }
+
         setBaseForm(xa, ya, xb - xa, yb - ya)
 
         if evt.kind == .MouseReleased and evt.button == .Left
