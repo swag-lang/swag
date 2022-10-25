@@ -52,6 +52,13 @@ impl IForm for FormLine
         ya = cast(s32) ((movingStart.y - paintRect.y) / zoom)
         xb = cast(s32) ((localPos.x - paintRect.x) / zoom)
         yb = cast(s32) ((localPos.y - paintRect.y) / zoom)
+
+        xbu := 0
+        ybu := 0
+        capture.snap(&xbu, &ybu, true, true, 1, cast(IForm) self)
+        xb += xbu
+        yb += ybu
+
         if evt.kind == .MouseReleased and evt.button == .Left
             return false
         return true

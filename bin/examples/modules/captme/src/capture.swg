@@ -473,12 +473,19 @@ impl Capture
     // SNAP
     //////////////////////////////
 
-    mtd getSnapPoint(bound: Math.Rectangle, right, bottom: bool, nx, ny: s32, idxPt: u32)->Math.Point
+    mtd getSnapPoint(bound: Math.Rectangle, right, bottom: bool, nx, ny: s32, idxPt: u32, editForm: IForm = null)->Math.Point
     {
         var result: retval
 
-        form := forms[selection[0]]
-        type := @kindof(form)
+        var form: IForm
+        var type: typeinfo
+
+        if editForm
+            form = editForm
+        else
+            form = forms[selection[0]]
+
+        type = @kindof(form)
 
         if selection.count == 1 and type == FormPolygon
         {
@@ -487,7 +494,7 @@ impl Capture
             result.x += nx
             result.y += ny
         }
-        elif selection.count == 1 and (type == FormLine or type == FormArrow)
+        elif (selection.count == 1 or editForm) and (type == FormLine or type == FormArrow)
         {
             line := cast(*FormLine) @dataof(form)
             if !right or !bottom
@@ -531,7 +538,7 @@ impl Capture
         return bound
     }
 
-    mtd snap(x, y: *s32, right, bottom: bool, idxPt: u32 = 0)
+    mtd snap(x, y: *s32, right, bottom: bool, idxPt: u32 = 0, editForm: IForm = null)
     {
         const SnapToler = 10
 
@@ -560,18 +567,17 @@ impl Capture
 
         visit f, i: forms
         {
-            autoSel := selection.contains(i)
+            autoSel := selection.contains(i) or @dataof(f) == @dataof(editForm)
             form    := cast(*BaseForm) @dataof(f)
 
             switch @kindof(f)
             {
             case FormLine, FormArrow:
                 form2 := cast(*FormLine) form
-                if !autoSel or idxPt != 0
-                {
+                if !autoSel or (idxPt != 0 and Math.abs(form2.ya - form2.yb) > 25)
                     arrX.add(cast(s32) form2.xa)
+                if !autoSel or (idxPt != 0 and Math.abs(form2.xa - form2.xb) > 25)
                     arrY.add(cast(s32) form2.ya)
-                }
 
                 if !autoSel or idxPt != 1
                 {
@@ -618,7 +624,7 @@ impl Capture
         {
             visit ax: arrX
             {
-                p   := getSnapPoint(bound, right, bottom, nx, ny, idxPt)
+                p   := getSnapPoint(bound, right, bottom, nx, ny, idxPt, editForm)
                 nbX := Math.abs(p.x - ax)
                 if nbX < bestX
                 {
@@ -632,7 +638,7 @@ impl Capture
         {
             visit ay: arrY
             {
-                p   := getSnapPoint(bound, right, bottom, nx, ny, idxPt)
+                p   := getSnapPoint(bound, right, bottom, nx, ny, idxPt, editForm)
                 nbY := Math.abs(p.y - ay)
                 if nbY < bestY
                 {
@@ -645,14 +651,14 @@ impl Capture
         if x and bestX < SnapToler
         {
             snapX = bestCoordX
-            p := getSnapPoint(bound, right, bottom, 0, 0, idxPt)
+            p := getSnapPoint(bound, right, bottom, 0, 0, idxPt, editForm)
             nx = cast(s32) (bestCoordX - p.x)
         }
 
         if y and bestY < SnapToler
         {
             snapY = bestCoordY
-            p := getSnapPoint(bound, right, bottom, 0, 0, idxPt)
+            p := getSnapPoint(bound, right, bottom, 0, 0, idxPt, editForm)
             ny = cast(s32) (bestCoordY - p.y)
         }
 
