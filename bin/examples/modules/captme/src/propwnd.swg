@@ -802,7 +802,7 @@ impl PropWnd
         }
     }
 
-    mtd propOpactiy()
+    mtd propOpacity()
     {
         curSel := getSelectedBaseForm()
         ctrl := createSlider("Opacity", 0, 100, acast curSel.alpha)
@@ -811,6 +811,18 @@ impl PropWnd
         }
         ctrl.slider.sigChanged += @|self|(slider) {
             self.pushTypedValue(cast(u32) slider.getValue(), @typeof(BaseForm), @nameof(BaseForm.alpha), false)
+        }
+    }
+
+    mtd propShadow()
+    {
+        curSel := getSelectedBaseForm()
+        btn := CheckButton.create(mainLayout, "Shadow")
+        if curSel.paintShadow
+            btn.checked = .Checked
+        btn.sigChanged += @|self|(btn) {
+            b := btn.checked == .Checked ? true : false
+            self.pushTypedValue(acast b, @typeof(BaseForm), @nameof(BaseForm.paintShadow), true)
         }
     }
 
@@ -841,7 +853,8 @@ impl PropWnd
         propBoldSize()
         propStartSize()
         propEndSize()
-        propOpactiy()
+        propOpacity()
+        propShadow()
 
         mainLayout.computeLayout()
         setScrollSize(0, mainLayout.childs.back().position.bottom() + 16)

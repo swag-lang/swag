@@ -28,7 +28,8 @@ impl IForm for FormLine
                 dashStyle   == other.dashStyle and
                 startSize   == other.startSize and
                 endSize     == other.endSize and
-                dashCap     == other.dashCap
+                dashCap     == other.dashCap and
+                paintShadow == other.paintShadow
     }
 
     mtd copy(dst, src: *BaseForm)
@@ -44,6 +45,7 @@ impl IForm for FormLine
         dstf.startSize   = srcf.startSize
         dstf.endSize     = srcf.endSize
         dstf.dashCap     = srcf.dashCap
+        dstf.paintShadow = srcf.paintShadow
     }
 
     mtd edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool

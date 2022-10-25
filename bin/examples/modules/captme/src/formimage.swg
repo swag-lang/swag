@@ -26,6 +26,7 @@ impl IForm for FormImage
         dstf.backColor   = srcf.backColor
         dstf.alpha       = srcf.alpha
         dstf.image       = srcf.image
+        dstf.paintShadow = srcf.paintShadow
     }
 
     mtd edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool

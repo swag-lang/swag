@@ -39,7 +39,8 @@ impl IForm for FormText
                 backColor   == other.backColor and
                 alpha       == other.alpha and
                 fontSize    == other.fontSize and
-                boldSize    == other.boldSize
+                boldSize    == other.boldSize and
+                paintShadow == other.paintShadow
     }
 
     mtd copy(dst, src: *BaseForm)
@@ -52,6 +53,7 @@ impl IForm for FormText
         dstf.alpha       = srcf.alpha
         dstf.fontSize    = srcf.fontSize
         dstf.boldSize    = srcf.boldSize
+        dstf.paintShadow = srcf.paintShadow
     }
 
     mtd edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool

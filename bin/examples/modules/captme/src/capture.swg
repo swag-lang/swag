@@ -306,66 +306,69 @@ impl Capture
         const Margin = 8
         wt2 := cast(s32) base.paintPos.width
         ht2 := cast(s32) base.paintPos.height
-        wt  := wt2 + 2*Margin
-        ht  := ht2 + 2*Margin
-        rt1 := render.getRenderTarget(wt, ht)
-        rt2 := render.getRenderTarget(wt, ht)
+        wt  := wt2
+        ht  := ht2
 
-        // Draw the image with a margin around
-        srcRect := Math.Rectangle{0, 0, base.paintPos.width, base.paintPos.height}
-        painter.bindRenderTarget(rt1)
-        painter.setShader(&render.shaderSimple)
-        painter.setBlendingMode(.Copy)
-        painter.setColorMask(true, true, true, true)
-        painter.clear(Argb.Zero)
-        dstRect := Math.Rectangle{Margin, Margin, wt2, ht2}
-        painter.drawTexture(dstRect, srcRect, rt.colorBuffer)
-        painter.unbindRenderTarget()
+        var rt1, rt2: *RenderTarget
+        if base.paintShadow
+        {
+            wt += 2*Margin
+            ht += 2*Margin
 
-        blurRadius := quickMode ? 4.0 : 8.0
+            rt1 = render.getRenderTarget(wt, ht)
+            rt2 = render.getRenderTarget(wt, ht)
 
-        // Blur first pass
-        painter.bindRenderTarget(rt2)
-        painter.setShader(&render.shaderBlur)
-        painter.setShaderParam(render.shaderBlur.axis, 0's32)
-        painter.setShaderParam(render.shaderBlur.radius, blurRadius)
-        painter.setBlendingMode(.Copy)
-        painter.setColorMask(true, true, true, true);
-        painter.clear(Argb.Zero)
-        dstRect = Math.Rectangle{0, 0, wt, ht}
-        painter.drawTexture(dstRect, dstRect, rt1.colorBuffer)
-        painter.setShader()
-        painter.unbindRenderTarget()
+            // Draw the image with a margin around
+            srcRect := Math.Rectangle{0, 0, base.paintPos.width, base.paintPos.height}
+            painter.bindRenderTarget(rt1)
+            painter.setShader(&render.shaderSimple)
+            painter.setBlendingMode(.Copy)
+            painter.setColorMask(true, true, true, true)
+            painter.clear(Argb.Zero)
+            dstRect := Math.Rectangle{Margin, Margin, wt2, ht2}
+            painter.drawTexture(dstRect, srcRect, rt.colorBuffer)
+            painter.unbindRenderTarget()
 
-        // Blur second pass
-        painter.bindRenderTarget(rt1)
-        painter.setShader(&render.shaderBlur)
-        painter.setShaderParam(render.shaderBlur.axis, 1's32)
-        painter.setShaderParam(render.shaderBlur.radius, blurRadius)
-        painter.setBlendingMode(.Copy)
-        painter.setColorMask(true, true, true, true);
-        dstRect = Math.Rectangle{0, 0, wt, ht}
-        painter.drawTexture(dstRect, dstRect, rt2.colorBuffer, Color.fromArgb(150, Argb.Black))
+            blurRadius := quickMode ? 4.0 : 8.0
 
-        // Add the real image at the right place just after
-        imgRect := dstRect
-        imgRect.offset(cast(f32) Margin)
-        imgRect.width = base.paintPos.width
-        imgRect.height = base.paintPos.height
-        imgRect.offset(-base.shadowOffset.x, -base.shadowOffset.y)
-        painter.setShader(&render.shaderSimple)
-        painter.setBlendingMode(.Alpha)
-        painter.drawTexture(imgRect, srcRect, rt.colorBuffer)
-        painter.unbindRenderTarget()
+            // Blur first pass
+            painter.bindRenderTarget(rt2)
+            painter.setShader(&render.shaderBlur)
+            painter.setShaderParam(render.shaderBlur.axis, 0's32)
+            painter.setShaderParam(render.shaderBlur.radius, blurRadius)
+            painter.setBlendingMode(.Copy)
+            painter.setColorMask(true, true, true, true);
+            painter.clear(Argb.Zero)
+            dstRect = Math.Rectangle{0, 0, wt, ht}
+            painter.drawTexture(dstRect, dstRect, rt1.colorBuffer)
+            painter.setShader()
+            painter.unbindRenderTarget()
+
+            // Blur second pass
+            painter.bindRenderTarget(rt1)
+            painter.setShader(&render.shaderBlur)
+            painter.setShaderParam(render.shaderBlur.axis, 1's32)
+            painter.setShaderParam(render.shaderBlur.radius, blurRadius)
+            painter.setBlendingMode(.Copy)
+            painter.setColorMask(true, true, true, true);
+            dstRect = Math.Rectangle{0, 0, wt, ht}
+            painter.drawTexture(dstRect, dstRect, rt2.colorBuffer, Color.fromArgb(150, Argb.Black))
+
+            // Add the real image at the right place just after
+            imgRect := dstRect
+            imgRect.offset(cast(f32) Margin)
+            imgRect.width = base.paintPos.width
+            imgRect.height = base.paintPos.height
+            imgRect.offset(-base.shadowOffset.x, -base.shadowOffset.y)
+            painter.setShader(&render.shaderSimple)
+            painter.setBlendingMode(.Alpha)
+            painter.drawTexture(imgRect, srcRect, rt.colorBuffer)
+            painter.unbindRenderTarget()
+        }
 
         // Paint resulting image
         painter.pushClippingRect(rect)
         painter.setShader()
-
-        paintShadowRect := dstRect
-        paintShadowRect.x = base.paintPos.x - Margin
-        paintShadowRect.y = base.paintPos.y - Margin
-        paintShadowRect.offset(base.shadowOffset.x, base.shadowOffset.y)
 
         var colForm: Color
         if quickMode and (@kindof(f) == FormShape or @kindof(f) == FormDraw)
@@ -373,7 +376,23 @@ impl Capture
         else
             colForm = Color.fromArgb(cast(u8) Math.map(cast(f32) base.alpha, 0, 100, 0, 255), Argb.White)
 
-        painter.drawTexture(paintShadowRect, dstRect, rt1.colorBuffer, colForm)
+        dstRect := Math.Rectangle{0, 0, wt, ht}
+        if base.paintShadow
+        {
+            paintShadowRect := dstRect
+            paintShadowRect.x = base.paintPos.x - Margin
+            paintShadowRect.y = base.paintPos.y - Margin
+            paintShadowRect.offset(base.shadowOffset.x, base.shadowOffset.y)
+            painter.drawTexture(paintShadowRect, dstRect, rt1.colorBuffer, colForm)
+        }
+        else
+        {
+            paintShadowRect := dstRect
+            paintShadowRect.x = base.paintPos.x
+            paintShadowRect.y = base.paintPos.y
+            painter.drawTexture(paintShadowRect, dstRect, rt.colorBuffer, colForm)
+        }
+
         painter.popClippingRect()
 
         painter.releaseRenderTarget(rt)

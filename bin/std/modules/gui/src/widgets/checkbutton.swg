@@ -21,7 +21,7 @@ struct CheckButton
 
     checked             = ButtonCheckState.UnChecked
     checkButtonFlags    = CheckButtonFlags.None
-    sigChanged:         func(*Self)
+    sigChanged:         SigArray'closure(*Self)
 }
 
 impl IWnd for CheckButton
@@ -120,8 +120,7 @@ impl IWnd for CheckButton
                 checked = .UnChecked
             else
                 checked = .Checked
-            if sigChanged
-                sigChanged(self)
+            sigChanged.call(self)
             postCommandEvent(id)
         }
     }

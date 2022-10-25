@@ -35,6 +35,7 @@ struct BaseForm
     backColor:          Color = Argb.Red
     dashStyle:          DashStyle = None
     quickModeOpaque:    bool
+    paintShadow:        bool = true
 
     #[Serialization.NoSerialize]
     {

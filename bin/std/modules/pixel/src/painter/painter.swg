@@ -713,6 +713,8 @@ impl Painter
     // Release the render target
     mtd releaseRenderTarget(tgt: *RenderTarget)
     {
+        if !tgt
+            return
         cmd := newCommand(CommandId.ReleaseRenderTarget)
         cmd.renderTgt.tgt = tgt
     }

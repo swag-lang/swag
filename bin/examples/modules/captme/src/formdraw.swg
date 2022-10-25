@@ -28,7 +28,8 @@ impl IForm for FormDraw
         other := cast(*FormDraw) ptr
         return  borderColor == other.borderColor and
                 borderSize  == other.borderSize and
-                alpha       == other.alpha
+                alpha       == other.alpha and
+                paintShadow == paintShadow
     }
 
     mtd copy(dst, src: *BaseForm)
@@ -38,6 +39,7 @@ impl IForm for FormDraw
         dstf.borderColor = srcf.borderColor
         dstf.borderSize  = srcf.borderSize
         dstf.alpha       = srcf.alpha
+        dstf.paintShadow = srcf.paintShadow
     }
 
     mtd edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool

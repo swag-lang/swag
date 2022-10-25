@@ -29,7 +29,8 @@ impl IForm for FormPolygon
         return  borderColor == other.borderColor and
                 borderSize  == other.borderSize and
                 backColor   == other.backColor and
-                alpha       == other.alpha
+                alpha       == other.alpha and
+                paintShadow == other.paintShadow
     }
 
     mtd copy(dst, src: *BaseForm)
@@ -40,6 +41,7 @@ impl IForm for FormPolygon
         dstf.borderSize  = srcf.borderSize
         dstf.backColor   = srcf.backColor
         dstf.alpha       = srcf.alpha
+        dstf.paintShadow = srcf.paintShadow
     }
 
     mtd edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
