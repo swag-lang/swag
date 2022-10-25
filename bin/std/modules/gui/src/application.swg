@@ -20,6 +20,7 @@ struct Application
     endModalExit:   WndId
     inModalLoop:    u32
     quitCode:       s32
+    appIcon:        Pixel.Image
     timing:         Time.FrameTiming
 
     mustQuit:           bool

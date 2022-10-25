@@ -1074,6 +1074,7 @@ namespace User32Priv
 
         func DestroyIcon(hIcon: HICON)->BOOL;
         func GetIconInfo(hIcon: HICON, piconinfo: *ICONINFO)->BOOL;
+        func CreateIconIndirect(piconinfo: *ICONINFO)->HICON;
 
         func RegisterHotKey(hWnd: HWND, id: s32, fsModifiers: UINT, vk: UINT)->BOOL;
         func UnregisterHotKey(hWnd: HWND, id: s32)->BOOL;
@@ -1194,5 +1195,13 @@ namespace User32Priv
     {
         if !User32Priv.GetIconInfo(hIcon, piconinfo)
             try setError(GetLastError())
+    }
+
+    func CreateIconIndirect(piconinfo: *ICONINFO)->HICON throw
+    {
+        h := User32Priv.CreateIconIndirect(piconinfo)
+        if !h
+            try setError(GetLastError())
+        return h
     }
 }

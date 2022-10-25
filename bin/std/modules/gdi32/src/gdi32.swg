@@ -324,6 +324,7 @@ namespace Gdi32Priv
         func CreateFontIndirectW(lplf: const *LOGFONTW)->HFONT;
         func CreateSolidBrush(color: COLORREF)->HBRUSH;
         func CreatePen(iStyle: s32, cWidth: s32, color: COLORREF)->HPEN;
+        func CreateDIBSection(hdc: HDC, pbmi: const *BITMAPINFO, usage: UINT, ppvBits: **void, hSection: HANDLE, offset: DWORD)->HBITMAP;
         func GetDIBits(hdc: HDC, hbm: HBITMAP, start: UINT, cLines: UINT, lpvBits: LPVOID, lpbmi: *BITMAPINFO, usage: UINT)->s32;
     }
 }
@@ -462,6 +463,14 @@ namespace Gdi32Priv
     {
         res := Gdi32Priv.GetDIBits(hdc, hbm, start, cLines, lpvBits, lpbmi, usage)
         if res == 0
+            throw "GDI_ERROR"
+        return res
+    }
+
+    func CreateDIBSection(hdc: HDC, pbmi: const *BITMAPINFO, usage: UINT, ppvBits: **void, hSection: HANDLE, offset: DWORD)->HBITMAP throw
+    {
+        res := Gdi32Priv.CreateDIBSection(hdc, pbmi, usage, ppvBits, hSection, offset)
+        if res == null
             throw "GDI_ERROR"
         return res
     }

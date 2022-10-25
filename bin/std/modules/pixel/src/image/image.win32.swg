@@ -4,6 +4,30 @@ using Swag, Core, Win32, Gdi32
 
 impl Image
 {
+    // Transform an image to a windows icon
+    mtd toHICON()->HICON throw
+    {
+        var bi: BITMAPINFO
+        bi.bmiHeader.biSize = @sizeof(BITMAPINFOHEADER)
+        bi.bmiHeader.biWidth = width
+        bi.bmiHeader.biHeight = height
+        bi.bmiHeader.biPlanes = 1
+        bi.bmiHeader.biBitCount = bpp
+        bi.bmiHeader.biCompression = BI_RGB
+
+        var ppvBits: *u8
+        hbmp := CreateDIBSection(null, &bi, acast DIB_RGB_COLORS, &ppvBits, null, 0)
+        defer(noerr) DeleteObject(acast hbmp)
+
+        Memory.copy(ppvBits, pixels.buffer, cast(uint) width*height*bpp8)
+
+        var ii: ICONINFO
+        ii.fIcon = TRUE
+        ii.hbmMask  = hbmp
+        ii.hbmColor = hbmp
+        return CreateIconIndirect(&ii)
+    }
+
     // Creates an image from a windows HICON
     func from(hicon: HICON)->Image throw
     {
