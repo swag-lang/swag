@@ -48,6 +48,14 @@ impl IForm for FormShape
         xb := cast(s32) ((localPos.x - paintRect.x) / zoom)
         yb := cast(s32) ((localPos.y - paintRect.y) / zoom)
         setBaseForm(xa, ya, xb - xa, yb - ya)
+
+        xbu := 0
+        ybu := 0
+        capture.snap(&xbu, &ybu, true, true, 0, cast(IForm) self)
+        xb += xbu
+        yb += ybu
+        setBaseForm(xa, ya, xb - xa, yb - ya)
+
         if evt.kind == .MouseReleased and evt.button == .Left
             return false
         return true

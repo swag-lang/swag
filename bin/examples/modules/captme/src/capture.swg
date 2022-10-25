@@ -522,8 +522,11 @@ impl Capture
         return result
     }
 
-    mtd getSelectionBoundRect()->Math.Rectangle
+    mtd getSelectionBoundRect(editForm: IForm = null)->Math.Rectangle
     {
+        if editForm
+            return editForm.boundRect(true)
+
         bound := Math.Rectangle{Swag.F32.Max, Swag.F32.Max, 0, 0}
         visit s: selection
         {
@@ -553,7 +556,7 @@ impl Capture
         nx := x ? dref x : 0
         ny := y ? dref y : 0
 
-        bound := getSelectionBoundRect()
+        bound := getSelectionBoundRect(editForm)
 
         var arrX: Array's32
         var arrY: Array's32
