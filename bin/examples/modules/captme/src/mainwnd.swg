@@ -109,7 +109,7 @@ impl IWnd for MainWnd
         {
         case CmdIdCaptureHideEditor:
             evt.setFlags |= .Name | .Checked
-            evt.name = "Hide CaptMe Before Capture"
+            evt.name = "Hide Editor On Capture"
             evt.checked = hideCaptMe
             evt.accepted = true
 

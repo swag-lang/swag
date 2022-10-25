@@ -442,8 +442,9 @@ impl QuickWnd
             Capture.paintForm(btnp.getApp(), painter, @{0, 0, 64, 64}, btnp.formItf, zoom: 1, quickMode: true)
         }
 
+        edMode := main.editMode == .Selection ? main.getEditMode() : main.editMode
         #[Swag.Complete]
-        switch main.getEditMode()
+        switch edMode 
         {
         case Arrow:
             currentStyle = &qsArrow
