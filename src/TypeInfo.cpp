@@ -255,7 +255,8 @@ bool TypeInfo::isPointerTo(NativeTypeKind pointerKind)
     auto ptr = (TypeInfoPointer*) this;
     if (!ptr->pointedType)
         return false;
-    if (!ptr->pointedType->isNative(pointerKind))
+    auto c = TypeManager::concreteType(ptr->pointedType, CONCRETE_ALIAS);
+    if (!c->isNative(pointerKind))
         return false;
     return true;
 }

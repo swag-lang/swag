@@ -736,6 +736,8 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
     {
         auto expr = node->childs.front();
         SWAG_CHECK(checkIsConcrete(context, expr));
+        if (!expr->typeInfo->isPointerTo(NativeTypeKind::U8))
+            return context->report(Hint::isType(expr->typeInfo), {expr, Err(Err0730)});
         SWAG_CHECK(resolveIntrinsicMakeSlice(context, node, expr->typeInfo, "@mkstring"));
         node->typeInfo = g_TypeMgr->typeInfoString;
         break;

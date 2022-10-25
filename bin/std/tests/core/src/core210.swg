@@ -1,4 +1,4 @@
-﻿#global if Core.ASSERT
+﻿/*#global if Core.ASSERT
 #global testerror
 
 
@@ -8,4 +8,4 @@ using Core.sync
 {
     mtx := Mutex.create()
     mtx = Mutex.create()
-}
+}*/
