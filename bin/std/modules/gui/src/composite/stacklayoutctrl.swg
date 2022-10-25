@@ -72,7 +72,6 @@ impl IWnd for StackLayoutCtrl
         {
             visit c, i: childs
             {
-                c.margin.clear()
                 switch layoutKind
                 {
                 case Top, TopAutoSize:

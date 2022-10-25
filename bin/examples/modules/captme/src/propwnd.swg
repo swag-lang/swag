@@ -817,13 +817,15 @@ impl PropWnd
     mtd propShadow()
     {
         curSel := getSelectedBaseForm()
-        btn := CheckButton.create(mainLayout, "Shadow")
-        if curSel.paintShadow
-            btn.checked = .Checked
-        btn.checkButtonFlags |= .RightAlign
-        btn.sigChanged += @|self|(btn) {
-            b := btn.checked == .Checked ? true : false
-            self.pushTypedValue(acast b, @typeof(BaseForm), @nameof(BaseForm.paintShadow), true)
+        with combo := ComboBox.create(mainLayout)
+        {
+            .addItem("Small Shadow")
+            .addItem("No Shadow")
+            .selectItem(curSel.paintShadow ? 0 : 1)
+            .sigChanged += @|self|(combo, val) {
+                b := val == 0 ? true : false
+                self.pushTypedValue(acast b, @typeof(BaseForm), @nameof(BaseForm.paintShadow), true)
+            }
         }
     }
 
