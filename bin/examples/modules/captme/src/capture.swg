@@ -609,13 +609,14 @@ impl Capture
                 }
 
             case FormPolygon:
-                if autoSel
-                    continue
                 form2 := cast(*FormPolygon) form
-                visit pt: form2.points
+                visit pt, idx: form2.points
                 {
-                    arrX.add(cast(s32) pt.x)
-                    arrY.add(cast(s32) pt.y)
+                    if !autoSel or idx != idxPt
+                    {
+                        arrX.add(cast(s32) pt.x)
+                        arrY.add(cast(s32) pt.y)
+                    }
                 }
 
             case FormDraw:
