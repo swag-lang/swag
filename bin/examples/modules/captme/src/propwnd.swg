@@ -820,6 +820,7 @@ impl PropWnd
         btn := CheckButton.create(mainLayout, "Shadow")
         if curSel.paintShadow
             btn.checked = .Checked
+        btn.checkButtonFlags |= .RightAlign
         btn.sigChanged += @|self|(btn) {
             b := btn.checked == .Checked ? true : false
             self.pushTypedValue(acast b, @typeof(BaseForm), @nameof(BaseForm.paintShadow), true)

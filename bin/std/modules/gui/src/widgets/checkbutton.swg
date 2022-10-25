@@ -13,6 +13,7 @@ enum CheckButtonFlags
 {
     None
     ThreeState
+    RightAlign
 }
 
 struct CheckButton
@@ -93,6 +94,8 @@ impl IWnd for CheckButton
         posBox.height = metrics.btnCheck_Size
         posBox.y = clientRect.vertCenter() - (posBox.height * 0.5)
         posBox.width = posBox.height
+        if checkButtonFlags & .RightAlign
+            posBox.x = clientRect.right() - posBox.width
         theme.drawSubRect(painter, posBox, subRectBk, colorBk)
         theme.drawSubRect(painter, posBox, subRectBorder, colorBorder)
         theme.drawSubRect(painter, posBox, subRectMark, colorMark)
@@ -100,12 +103,16 @@ impl IWnd for CheckButton
         // Content
         var format: RichStringFormat
         theme.setTextColors(&format, colorText)
-        format.horzAlignment = .Left
+        if checkButtonFlags & .RightAlign
+            format.horzAlignment = .Right
+        else
+            format.horzAlignment = .Left
         format.vertAlignment = .Center
         format.flags = .Clip
         format.font = theme.res.fontDefault
         labelPos := clientRect
-        labelPos.x += posBox.width + metrics.btnCheck_Padding
+        if !(checkButtonFlags & .RightAlign)
+            labelPos.x += posBox.width + metrics.btnCheck_Padding
         labelPos.width -= posBox.width + metrics.btnCheck_Padding
         Theme.drawIconText(painter, labelPos, icon, &name, format, metrics.iconText_Margin)
     }
