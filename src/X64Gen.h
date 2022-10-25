@@ -164,9 +164,15 @@ struct DbgTypeRecordFieldList
     vector<DbgTypeField> fields;
 };
 
+struct DbgTypeRecordDerivedList
+{
+    vector<DbgTypeIndex> derived;
+};
+
 struct DbgTypeRecordStructure
 {
     DbgTypeIndex fieldList   = 0;
+    DbgTypeIndex derivedList = 0;
     uint32_t     sizeOf      = 0;
     uint16_t     memberCount = 0;
     bool         forward     = false;
@@ -194,20 +200,21 @@ struct DbgTypeRecordPointer
 
 struct DbgTypeRecord
 {
-    Utf8                   name;
-    AstNode*               node = nullptr;
-    DbgTypeRecordArgList   LF_ArgList;
-    DbgTypeRecordProcedure LF_Procedure;
-    DbgTypeRecordMFunction LF_MFunction;
-    DbgTypeRecordFuncId    LF_FuncId;
-    DbgTypeRecordMFuncId   LF_MFuncId;
-    DbgTypeRecordFieldList LF_FieldList;
-    DbgTypeRecordStructure LF_Structure;
-    DbgTypeRecordArray     LF_Array;
-    DbgTypeRecordPointer   LF_Pointer;
-    DbgTypeRecordEnum      LF_Enum;
-    DbgTypeIndex           index = 0;
-    uint16_t               kind  = 0;
+    Utf8                     name;
+    AstNode*                 node = nullptr;
+    DbgTypeRecordArgList     LF_ArgList;
+    DbgTypeRecordProcedure   LF_Procedure;
+    DbgTypeRecordMFunction   LF_MFunction;
+    DbgTypeRecordFuncId      LF_FuncId;
+    DbgTypeRecordMFuncId     LF_MFuncId;
+    DbgTypeRecordFieldList   LF_FieldList;
+    DbgTypeRecordDerivedList LF_DerivedList;
+    DbgTypeRecordStructure   LF_Structure;
+    DbgTypeRecordArray       LF_Array;
+    DbgTypeRecordPointer     LF_Pointer;
+    DbgTypeRecordEnum        LF_Enum;
+    DbgTypeIndex             index = 0;
+    uint16_t                 kind  = 0;
 };
 
 struct DbgLine

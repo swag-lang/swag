@@ -40,6 +40,7 @@ const uint16_t LF_PROCEDURE    = 0x1008;
 const uint16_t LF_MFUNCTION    = 0x1009;
 const uint16_t LF_ARGLIST      = 0x1201;
 const uint16_t LF_FIELDLIST    = 0x1203;
+const uint16_t LF_DERIVED      = 0x1204;
 const uint16_t LF_ENUMERATE    = 0x1502;
 const uint16_t LF_ARRAY        = 0x1503;
 const uint16_t LF_STRUCTURE    = 0x1505;
@@ -428,6 +429,12 @@ bool BackendX64::dbgEmitDataDebugT(const BuildParameters& buildParameters)
             dbgEmitTruncatedString(concat, "");
             break;
 
+        case LF_DERIVED:
+            concat.addU32((uint16_t) f->LF_DerivedList.derived.size());
+            for (auto& p : f->LF_DerivedList.derived)
+                concat.addU32(p);
+            break;
+
         case LF_FIELDLIST:
             for (auto& p : f->LF_FieldList.fields)
             {
@@ -476,10 +483,10 @@ bool BackendX64::dbgEmitDataDebugT(const BuildParameters& buildParameters)
         case LF_STRUCTURE:
             concat.addU16(f->LF_Structure.memberCount);
             concat.addU16(f->LF_Structure.forward ? 0x80 : 0); // properties
-            concat.addU32(f->LF_Structure.fieldList);
-            concat.addU32(0);        // derivedFrom
-            concat.addU32(0);        // vTableShape
-            concat.addU16(LF_ULONG); // LF_ULONG
+            concat.addU32(f->LF_Structure.fieldList);          // field
+            concat.addU32(f->LF_Structure.derivedList);        // derivedFrom
+            concat.addU32(0);                                  // vTableShape
+            concat.addU16(LF_ULONG);                           // LF_ULONG
             concat.addU32(f->LF_Structure.sizeOf);
             dbgEmitTruncatedString(concat, f->name);
             break;
@@ -611,6 +618,25 @@ DbgTypeIndex BackendX64::dbgEmitTypeSlice(X64Gen& pp, TypeInfo* typeInfo, TypeIn
     dbgAddTypeRecord(pp, tr1);
     pp.dbgMapTypes[typeInfo] = tr1->index;
     return tr1->index;
+}
+
+void BackendX64::dbgRecordFields(X64Gen& pp, DbgTypeRecord* tr, TypeInfoStruct* typeStruct, uint32_t baseOffset)
+{
+    for (auto& p : typeStruct->fields)
+    {
+        DbgTypeField field;
+        field.kind          = LF_MEMBER;
+        field.type          = dbgGetOrCreateType(pp, p->typeInfo);
+        field.name          = p->namedParam;
+        field.value.reg.u32 = p->offset;
+        tr->LF_FieldList.fields.push_back(field);
+
+        if (p->flags & TYPEINFO_HAS_USING && p->typeInfo->kind == TypeInfoKind::Struct)
+        {
+            auto typeStructField = CastTypeInfo<TypeInfoStruct>(p->typeInfo, TypeInfoKind::Struct);
+            dbgRecordFields(pp, tr, typeStructField, p->offset);
+        }
+    }
 }
 
 DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo)
@@ -800,15 +826,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo)
         // List of fields, after the forward ref
         DbgTypeRecord* tr0 = new DbgTypeRecord;
         tr0->kind          = LF_FIELDLIST;
-        for (auto& p : typeStruct->fields)
-        {
-            DbgTypeField field;
-            field.kind          = LF_MEMBER;
-            field.type          = dbgGetOrCreateType(pp, p->typeInfo);
-            field.name          = p->namedParam;
-            field.value.reg.u32 = p->offset;
-            tr0->LF_FieldList.fields.push_back(field);
-        }
+        dbgRecordFields(pp, tr0, typeStruct, 0);
 
         for (auto& p : typeStruct->methods)
         {
