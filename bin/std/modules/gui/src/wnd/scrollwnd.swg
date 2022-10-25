@@ -3,7 +3,7 @@ using Core, Pixel
 #[Swag.EnumFlags]
 public enum ScrollWndFlags
 {
-    None
+    Zero
     SmallBar
     ForceHorizontal
     ForceVertical
@@ -18,7 +18,7 @@ public struct ScrollWnd
     scrollIncrementH: f32 = 50
 
     scrollSize:     Math.Point
-    scrollWndFlags  = ScrollWndFlags.None
+    scrollWndFlags  = ScrollWndFlags.Zero
 
     sigScrollPosChanged:    SigArray'closure(*Self, Math.Point, Math.Point)
     sigScrollSizeChanged:   SigArray'closure(*Self, Math.Point, Math.Point)

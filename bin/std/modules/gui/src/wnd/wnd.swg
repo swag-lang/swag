@@ -72,7 +72,7 @@ interface IWnd
 #[Swag.EnumFlags]
 enum WndFlags
 {
-    None
+    Zero
     NoScroll
     ClipChildren
     Disabled
@@ -240,7 +240,7 @@ impl Wnd
     }
 
     // Set wnd flags
-    mtd setWndFlags(add, remove = WndFlags.None)
+    mtd setWndFlags(add, remove = WndFlags.Zero)
     {
         wndFlags |= add
         wndFlags &= ~remove

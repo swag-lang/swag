@@ -11,7 +11,7 @@ enum FrameWndForm
 #[Swag.EnumFlags]
 enum FrameWndFlags
 {
-    None
+    Zero
     Borders
     FocusBorder
     SmallShadow
@@ -237,7 +237,7 @@ impl FrameWnd
     }
 
     // Set the frame wnd flags
-    mtd setFrameFlags(add, remove = FrameWndFlags.None)
+    mtd setFrameFlags(add, remove = FrameWndFlags.Zero)
     {
         frameFlags |= add
         frameFlags &= ~remove
