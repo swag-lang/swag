@@ -107,6 +107,15 @@ impl IWnd for MainWnd
 
         switch evt.id
         {
+        case CmdIdMoveSelLeft, CmdIdMoveSelTop, CmdIdMoveSelRight, CmdIdMoveSelBottom:
+            evt.setFlags |= .Disabled
+            evt.disabled = !hasSel
+            evt.accepted = true
+        case CmdIdMoveSelLeft1, CmdIdMoveSelTop1, CmdIdMoveSelRight1, CmdIdMoveSelBottom1:
+            evt.setFlags |= .Disabled
+            evt.disabled = !hasSel
+            evt.accepted = true
+
         case CmdIdCaptureHideEditor:
             evt.setFlags |= .Name | .Checked
             evt.name = "Hide Editor On Capture"
@@ -502,6 +511,39 @@ impl IWnd for MainWnd
         var undo: *Undo
         switch evt.id
         {
+        case CmdIdMoveSelLeft1:
+            undo = capture.newUndo(.OffsetSelection)
+            undo.newPosX = -1
+            evt.accepted = true
+        case CmdIdMoveSelTop1:
+            undo = capture.newUndo(.OffsetSelection)
+            undo.newPosY = -1
+            evt.accepted = true
+        case CmdIdMoveSelRight1:
+            undo = capture.newUndo(.OffsetSelection)
+            undo.newPosX = 1
+            evt.accepted = true
+        case CmdIdMoveSelBottom1:
+            undo = capture.newUndo(.OffsetSelection)
+            undo.newPosY = 1
+            evt.accepted = true
+        case CmdIdMoveSelLeft:
+            undo = capture.newUndo(.OffsetSelection)
+            undo.newPosX = -5
+            evt.accepted = true
+        case CmdIdMoveSelTop:
+            undo = capture.newUndo(.OffsetSelection)
+            undo.newPosY = -5
+            evt.accepted = true
+        case CmdIdMoveSelRight:
+            undo = capture.newUndo(.OffsetSelection)
+            undo.newPosX = 5
+            evt.accepted = true
+        case CmdIdMoveSelBottom:
+            undo = capture.newUndo(.OffsetSelection)
+            undo.newPosY = 5
+            evt.accepted = true
+
         case CmdIdCaptModeArea:
             captureMode = .Area
         case CmdIdCaptModeLastArea:
@@ -1000,6 +1042,14 @@ impl MainWnd
         registerKeyShortcut(.CtrlShift,        .N,              CmdIdNewFromClipboard)
         registerKeyShortcut(.CtrlShift,        .S,              CmdIdSaveAsImage)
         registerKeyShortcut(.Control,          .O,              CmdIdOpenImage)
+        registerKeyShortcut(.Shift,            .Left,           CmdIdMoveSelLeft1)
+        registerKeyShortcut(.Shift,            .Up,             CmdIdMoveSelTop1)
+        registerKeyShortcut(.Shift,            .Right,          CmdIdMoveSelRight1)
+        registerKeyShortcut(.Shift,            .Down,           CmdIdMoveSelBottom1)
+        registerKeyShortcut(.None,             .Left,           CmdIdMoveSelLeft)
+        registerKeyShortcut(.None,             .Up,             CmdIdMoveSelTop)
+        registerKeyShortcut(.None,             .Right,          CmdIdMoveSelRight)
+        registerKeyShortcut(.None,             .Down,           CmdIdMoveSelBottom)
 
         errorReg := false
         #[Swag.Mixin]
