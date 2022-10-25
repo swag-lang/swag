@@ -11,6 +11,7 @@ enum CaptureMode
     Screen1
     Screen2
     Screen3
+    ActiveWindow
 }
 
 scopefile {
@@ -51,14 +52,11 @@ var g_Hit:      HWND
 var g_Ignore:   HWND
 func enumProc(hWnd: HWND, lParam: LPARAM)->BOOL
 {
-    if hWnd == g_Ignore
-        return TRUE
     if !IsWindowVisible(hWnd)
         return TRUE
 
-    //var az: [128] u8
-    //len := GetWindowTextA(hWnd, &az[0], 128)
-    //@print(@mkstring(&az[0], len), "\n")
+    if hWnd == g_Ignore
+        return TRUE
 
     var r: RECT
     GetWindowRect(hWnd, &r)
@@ -286,6 +284,18 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode)->Image throw
         g_StartGrabX, g_StartGrabY = 0
         g_EndGrabX = nScreenWidth
         g_EndGrabY = nScreenHeight
+    }
+    elif captureMode == .ActiveWindow
+    {
+        g_Hit = GetForegroundWindow()
+        if !g_Hit
+            return result
+        var r: RECT
+        GetWindowRect(g_Hit, &r)
+        g_StartGrabX = r.left
+        g_StartGrabY = r.top
+        g_EndGrabX   = r.right
+        g_EndGrabY   = r.bottom
     }
     elif captureMode >= .Screen0 and captureMode <= .Screen3
     {

@@ -266,6 +266,11 @@ impl IWnd for MainWnd
             evt.name = "Capture Full Screen"
             evt.icon = Icon.from(&icons24, 6)
             evt.accepted = true
+        case CmdIdCaptureActiveWnd:
+            evt.setFlags |= .Name | .Icon
+            evt.name = "Capture Active Window"
+            evt.icon = Icon.from(&icons24, 14)
+            evt.accepted = true
         case CmdIdCaptureScreen0:
             evt.setFlags |= .Name | .Icon
             evt.name = Format.toString("Capture Monitor 0 (%x%)", monitors[0].rect.width, monitors[0].rect.height)
@@ -616,6 +621,8 @@ impl IWnd for MainWnd
             captureScreen(.Area)
         case CmdIdCaptureFullScreen:
             captureScreen(.FullScreen)
+        case CmdIdCaptureActiveWnd:
+            captureScreen(.ActiveWindow)
         case CmdIdCaptureScreen0:
             captureScreen(.Screen0)
         case CmdIdCaptureScreen1:
@@ -1072,6 +1079,7 @@ impl MainWnd
         registerHotKey(.None,      .PrintScreen, CmdIdCapture)
         registerHotKey(.Control,   .PrintScreen, CmdIdCaptureFullScreen)
         registerHotKey(.CtrlShift, .PrintScreen, CmdIdCaptureArea)
+        registerHotKey(.Alt,       .PrintScreen, CmdIdCaptureActiveWnd)
     }
 
     mtd createTopMenu()
@@ -1106,6 +1114,7 @@ impl MainWnd
             .addSeparator()
             .addItem(CmdIdCaptureArea)
             .addItem(CmdIdCaptureFullScreen)
+            .addItem(CmdIdCaptureActiveWnd)
 
             visit m, idx: monitors
             {
