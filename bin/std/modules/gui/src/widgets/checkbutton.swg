@@ -11,7 +11,7 @@ enum ButtonCheckState
 #[Swag.EnumFlags]
 enum CheckButtonFlags
 {
-    None
+    Zero
     ThreeState
     RightAlign
 }
@@ -21,7 +21,7 @@ struct CheckButton
     using button: Button
 
     checked             = ButtonCheckState.UnChecked
-    checkButtonFlags    = CheckButtonFlags.None
+    checkButtonFlags    = CheckButtonFlags.Zero
     sigChanged:         SigArray'closure(*Self)
 }
 

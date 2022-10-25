@@ -3,9 +3,17 @@ using Core, Pixel
 
 struct RadioButton
 {
-    using button:   Button
-    checked:        bool
-    sigChanged:     SigArray'closure(*Self)
+    using button:       Button
+    checked:            bool
+    radioButtonFlags    = RadioButtonFlags.Zero
+    sigChanged:         SigArray'closure(*Self)
+}
+
+#[Swag.EnumFlags]
+enum RadioButtonFlags
+{
+    Zero
+    RightAlign
 }
 
 impl IWnd for RadioButton
@@ -73,6 +81,8 @@ impl IWnd for RadioButton
         posBox.height = metrics.btnCheck_Size
         posBox.y = clientRect.vertCenter() - (posBox.height * 0.5)
         posBox.width = posBox.height
+        if radioButtonFlags & .RightAlign
+            posBox.x = clientRect.right() - posBox.width
         theme.drawSubRect(bc.painter, posBox, subRectBk, colorBk)
         theme.drawSubRect(bc.painter, posBox, subRectBorder, colorBorder)
         theme.drawSubRect(bc.painter, posBox, subRectMark, colorMark)
@@ -80,12 +90,16 @@ impl IWnd for RadioButton
         // Content
         var format: RichStringFormat
         theme.setTextColors(&format, colorText)
-        format.horzAlignment = .Left
+        if radioButtonFlags & .RightAlign
+            format.horzAlignment = .Right
+        else
+            format.horzAlignment = .Left
         format.vertAlignment = .Center
         format.flags = .Clip
         format.font = theme.res.fontDefault
         labelPos := clientRect
-        labelPos.x += posBox.width + metrics.btnCheck_Padding
+        if !(radioButtonFlags & .RightAlign)
+            labelPos.x += posBox.width + metrics.btnCheck_Padding
         labelPos.width -= posBox.width + metrics.btnCheck_Padding
         Theme.drawIconText(bc.painter, labelPos, icon, &name, format, metrics.iconText_Margin)
     }
