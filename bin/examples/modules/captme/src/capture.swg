@@ -490,7 +490,7 @@ impl Capture
         elif selection.count == 1 and (type == FormLine or type == FormArrow)
         {
             line := cast(*FormLine) @dataof(form)
-            if idxPt == 0
+            if !right or !bottom
             {
                 result.x = line.xa
                 result.y = line.ya
@@ -560,21 +560,28 @@ impl Capture
 
         visit f, i: forms
         {
-            if selection.contains(i)
-                continue
-
-            form := cast(*BaseForm) @dataof(f)
+            autoSel := selection.contains(i)
+            form    := cast(*BaseForm) @dataof(f)
 
             switch @kindof(f)
             {
             case FormLine, FormArrow:
                 form2 := cast(*FormLine) form
-                arrX.add(cast(s32) form2.xa)
-                arrX.add(cast(s32) form2.xb)
-                arrY.add(cast(s32) form2.ya)
-                arrY.add(cast(s32) form2.yb)
+                if !autoSel or idxPt != 0
+                {
+                    arrX.add(cast(s32) form2.xa)
+                    arrY.add(cast(s32) form2.ya)
+                }
+
+                if !autoSel or idxPt != 1
+                {
+                    arrX.add(cast(s32) form2.xb)
+                    arrY.add(cast(s32) form2.yb)
+                }
 
             case FormPolygon:
+                if autoSel
+                    continue
                 form2 := cast(*FormPolygon) form
                 visit pt: form2.points
                 {
@@ -583,6 +590,8 @@ impl Capture
                 }
 
             case FormDraw:
+                if autoSel
+                    continue
                 form2 := cast(*FormDraw) form
                 bound := f.boundRect(false)
                 arrX.add(cast(s32) bound.x)
@@ -591,6 +600,8 @@ impl Capture
                 arrY.add(cast(s32) bound.bottom())
 
             default:
+                if autoSel
+                    continue
                 arrX.add(cast(s32) form.x)
                 arrX.add(cast(s32) (form.x + form.w))
                 arrY.add(cast(s32) form.y)
