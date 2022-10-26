@@ -6,6 +6,8 @@ alias FrameCallback = closure(*Application)
 struct Application
 {
     using native:   ApplicationNative
+
+    appIcon:        Pixel.Image
     renderer:       Pixel.RenderOgl
     theme:          *Theme
     style:          ThemeStyle
@@ -20,13 +22,12 @@ struct Application
     endModalExit:   WndId
     inModalLoop:    u32
     quitCode:       s32
-    appIcon:        Pixel.Image
     timing:         Time.FrameTiming
 
     mustQuit:           bool
     endModal:           bool
-    fadeDisabledSurface = true
     isActivated:        bool
+    fadeDisabledSurface = true
 
     mutexPostedEvents:  Sync.Mutex
 
@@ -534,6 +535,12 @@ impl Application
     mtd setConfigPath(path: string)
     {
         configPath = path
+    }
+
+    // Associate a configuration file
+    mtd setAppIcon(img: Pixel.Image)
+    {
+        appIcon = img
     }
 
     private mtd serializeState(ser: *Serializer) throw

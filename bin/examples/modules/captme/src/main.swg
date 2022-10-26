@@ -10,9 +10,10 @@ var g_App: Application
     path = Path.combine(path, "captme.cfg")
     g_App.setConfigPath(path)
 
-    g_App.appIcon = assume Image.decode(".png", Icons48)
-    g_App.appIcon.crop(48, 48, 48, 48)
-    g_App.appIcon.setPixelFormat(.BGRA8)
+    img := assume Image.decode(".png", Icons48)
+    img.crop(48, 48, 48, 48)
+    img.setPixelFormat(.BGRA8)
+    g_App.setAppIcon(img)
 
     surface := try g_App.createSurface(200, 100, 1200, 1000, SurfaceFlags.OverlappedWindow)
     mainWnd := MainWnd.create(surface.wnd)
