@@ -25,6 +25,8 @@ struct Capture
     forms:          Array'IForm
     nextStepIndex:  u32 = 1
 
+    linkedImage:    String
+
     // Dyn
     #[NoSerialize]
     {

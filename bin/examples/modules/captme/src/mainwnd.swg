@@ -130,9 +130,21 @@ impl IWnd for MainWnd
             evt.disabled = !capture
             evt.accepted = true
 
+        case CmdIdSaveAsLinkedImage:
+            evt.setFlags |= .Name | .Disabled
+            evt.name = "Save As Linked Image..."
+            evt.disabled = !capture
+            evt.accepted = true
+
         case CmdIdOpenImage:
             evt.setFlags |= .Name
             evt.name = "Open Image..."
+            evt.accepted = true
+
+        case CmdIdUpdateLinkedImage:
+            evt.setFlags |= .Name | .Disabled
+            evt.name = "Update Linked Image"
+            evt.disabled = !capture or capture.linkedImage.length == 0
             evt.accepted = true
 
         case CmdIdNewImage:
@@ -571,8 +583,20 @@ impl IWnd for MainWnd
 
         case CmdIdSaveAsImage:
             saveAsImage()
+        case CmdIdSaveAsLinkedImage:
+            saveAsImage(linked: true)
         case CmdIdOpenImage:
             openImage()
+        case CmdIdUpdateLinkedImage:
+            txt := Format.toString("This will overwrite the original image.\n")
+            txt += Format.toString("File is '%'", capture.linkedImage)
+            if MessageDlg.confirm(surface, txt) != Dialog.BtnYes
+                break
+            Cursor.wait()
+            img := capture.toImage()
+            catch img.save(capture.linkedImage)
+            if @err
+                MessageDlg.error(surface, @err, "Failed to update file !")
 
         case CmdIdExit:
             postQuitEvent()
@@ -869,10 +893,10 @@ impl MainWnd
         if @err
             MessageDlg.error(surface, @err, "Failed to load image !")
         else
-            newCapture(img)
+            newCapture(img, dlg.getSelectedName())
     }
 
-    mtd saveAsImage()
+    mtd saveAsImage(linked = false)
     {
         var opt: FileDlgOptions
         with opt
@@ -896,10 +920,21 @@ impl MainWnd
             return
 
         Cursor.wait()
-        img := getCapture().toImage()
+        capture := getCapture()
+        img := capture.toImage()
         catch img.save(dlg.getSelectedName())
         if @err
+        {
             MessageDlg.error(surface, @err, "Failed to save file !")
+            return
+        }
+
+        if linked
+        {
+            capture.linkedImage = dlg.getSelectedName()
+            capture.changed = true
+            catch capture.save()
+        }
     }
 
     mtd setBottomSize(bottomSize: BottomSize)
@@ -970,7 +1005,7 @@ impl MainWnd
         newCapture(img)
     }
 
-    mtd newCapture(img: Image)
+    mtd newCapture(img: Image, linked: string = null)
     {
         if !img.isValid()
             return
@@ -981,6 +1016,7 @@ impl MainWnd
             .width, .widthOrg = img.width
             .height, .heightOrg = img.height
             .backImg, .backImgOrg = img
+            .linkedImage = linked
             .file = Library.newFileName()
         }
 
@@ -1062,7 +1098,8 @@ impl MainWnd
         registerKeyShortcut(.Alt,              .F4,             CmdIdExit)
         registerKeyShortcut(.Control,          .N,              CmdIdNewImage)
         registerKeyShortcut(.CtrlShift,        .N,              CmdIdNewFromClipboard)
-        registerKeyShortcut(.CtrlShift,        .S,              CmdIdSaveAsImage)
+        registerKeyShortcut(.Control,          .S,              CmdIdSaveAsImage)
+        registerKeyShortcut(.CtrlShift,        .S,              CmdIdUpdateLinkedImage)
         registerKeyShortcut(.Control,          .O,              CmdIdOpenImage)
         registerKeyShortcut(.Shift,            .Left,           CmdIdMoveSelLeft1)
         registerKeyShortcut(.Shift,            .Up,             CmdIdMoveSelTop1)
@@ -1114,6 +1151,9 @@ impl MainWnd
             .addSeparator()
             .addItem(CmdIdOpenImage)
             .addItem(CmdIdSaveAsImage)
+            .addItem(CmdIdSaveAsLinkedImage)
+            .addSeparator()
+            .addItem(CmdIdUpdateLinkedImage)
             .addSeparator()
             .addItem(CmdIdExit)
             topMenu.addPopup("File", fileMenu)
