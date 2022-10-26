@@ -1152,6 +1152,8 @@ impl Capture
         case FormStep:
             b := cast(*FormStep) @dataof(f)
             editView.main.mdlFormStep = dref b
+            editView.main.mdlFormStep.ws = b.w
+            editView.main.mdlFormStep.hs = b.h
 
         case FormArrow:
             b := cast(*FormArrow) @dataof(f)

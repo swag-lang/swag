@@ -21,6 +21,7 @@ struct FormStep
 
     #[Serialization.NoSerialize]
     {
+        ws, hs:         s32 = 48
         gizmo:          GizmoRect
         isDirty:        bool
         cachefSize:     f32
@@ -52,23 +53,24 @@ impl IForm for FormStep
         dstf.kind        = srcf.kind
         dstf.paintShadow = srcf.paintShadow
         dstf.typeIndex   = srcf.typeIndex
+        dstf.ws          = srcf.ws
+        dstf.hs          = srcf.hs
     }
 
     mtd edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
     {
-        const DefaultSize = 48
         xa := cast(s32) ((movingStart.x - paintRect.x) / zoom)
         ya := cast(s32) ((movingStart.y - paintRect.y) / zoom)
-        xa -= DefaultSize/2
-        ya -= DefaultSize/2
-        setBaseForm(xa, ya, DefaultSize, DefaultSize)
+        xa -= ws/2
+        ya -= hs/2
+        setBaseForm(xa, ya, ws, hs)
 
         xbu := 0
         ybu := 0
         capture.snap(&xbu, &ybu, true, true, 0, cast(IForm) self)
         xa += xbu
         ya += ybu
-        setBaseForm(xa, ya, DefaultSize, DefaultSize)
+        setBaseForm(xa, ya, ws, hs)
 
         index = capture.nextStepIndex
         capture.nextStepIndex += 1
