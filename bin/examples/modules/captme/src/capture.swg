@@ -831,6 +831,7 @@ impl Capture
                 }
                 else
                 {
+                    hadSelection := selection.count != 0
                     here := selection.contains(hotForm)
                     if !(evt.modifiers & .Control) and !here
                     {
@@ -855,7 +856,7 @@ impl Capture
                         view.captureMouse()
                         view.invalidate()
                     }
-                    else
+                    else if !hadSelection or editView.main.editMode != .Step
                     {
                         mouseMode = .Creating
                         firstMouseMove = true

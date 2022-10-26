@@ -208,11 +208,13 @@ impl QuickWnd
         }
 
         add(.Ellipse, Argb.White, Argb.Red)
-        add(.Ellipse, Argb.White, Argb.Cyan)
+        add(.Ellipse, Argb.White, Argb.Purple)
         add(.Ellipse, Argb.White, Argb.Green)
+        add(.Ellipse, Argb.White, Argb.Orange)
         add(.RoundRectangle, Argb.White, Argb.Red)
-        add(.RoundRectangle, Argb.White, Argb.Cyan)
+        add(.RoundRectangle, Argb.White, Argb.Purple)
         add(.RoundRectangle, Argb.White, Argb.Green)
+        add(.RoundRectangle, Argb.White, Argb.Orange)
     }
 
     mtd defaultQuickStyleLine()
