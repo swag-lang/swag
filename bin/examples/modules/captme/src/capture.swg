@@ -23,6 +23,7 @@ struct Capture
     preview:        Image
     file:           String
     forms:          Array'IForm
+    nextStepIndex:  u32 = 1
 
     // Dyn
     #[NoSerialize]
@@ -973,7 +974,7 @@ impl Capture
 
             if firstMouseMove
             {
-                if Math.abs(newPosX) <= 3 and Math.abs(newPosY) <= 3
+                if Math.abs(newPosX) <= 3 and Math.abs(newPosY) <= 3 and editView.main.editMode != .Step
                     return true
                 firstMouseMove = false
 
@@ -987,6 +988,10 @@ impl Capture
                 case Shape:
                     form := Memory.new'FormShape()
                     dref form = editView.main.mdlFormShape
+                    itf = cast(IForm) form
+                case Step:
+                    form := Memory.new'FormStep()
+                    dref form = editView.main.mdlFormStep
                     itf = cast(IForm) form
                 case Arrow:
                     form := Memory.new'FormArrow()
@@ -1090,6 +1095,8 @@ impl Capture
             {
             case FormShape, FormImage:
                 main.mdlFavorite = main.mdlFormShape
+            case FormStep:
+                main.mdlFavorite = main.mdlFormStep
             case FormArrow:
                 main.mdlFavorite = main.mdlFormArrow
             case FormLine:
@@ -1111,6 +1118,8 @@ impl Capture
                 main.editMode = .Shape
             case FormShape:
                 main.editMode = .Shape
+            case FormStep:
+                main.editMode = .Step
             case FormArrow:
                 main.editMode = .Arrow
             case FormLine:
@@ -1139,6 +1148,10 @@ impl Capture
         case FormShape:
             b := cast(*FormShape) @dataof(f)
             editView.main.mdlFormShape = dref b
+
+        case FormStep:
+            b := cast(*FormStep) @dataof(f)
+            editView.main.mdlFormStep = dref b
 
         case FormArrow:
             b := cast(*FormArrow) @dataof(f)

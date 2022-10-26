@@ -40,6 +40,8 @@ impl PropWnd
                 return cast(*BaseForm) &main.mdlFormLine
             case Shape:
                 return cast(*BaseForm) &main.mdlFormShape
+            case Step:
+                return cast(*BaseForm) &main.mdlFormStep
             case Polygon:
                 return cast(*BaseForm) &main.mdlFormPolygon
             case Text:
@@ -70,6 +72,8 @@ impl PropWnd
                 return FormLine
             case Shape:
                 return FormShape
+            case Step:
+                return FormStep
             case Polygon:
                 return FormPolygon
             case Text:
@@ -228,6 +232,52 @@ impl PropWnd
 
         layout.computeLayout()
     }
+
+    mtd createPopupStepKind(btn: *IconButton)
+    {
+        frame := createPopup(btn, 180, 66)
+        layout := frame.createView'WrapLayoutCtrl()
+        layout.wrapWidth, layout.wrapHeight = 48
+        layout.padding = 4
+
+        loop i: @countof(FormStepKind)
+        {
+            btn0 := IconButton.create(frame.view)
+            btn0.userData = cast(*void) i
+            btn0.setForm(.RoundSquare)
+            me := self
+            btn0.sigPaintIcon = @|me|(btn, bc, pos)
+            {
+                bc.painter.setParams(.Antialiased)
+                curSel := cast(*FormStep) me.getSelectedBaseForm()
+                rect := pos
+                rect.inflate(-9, -9)
+                rect.x = rect.horzCenter() - rect.height * 0.5
+                rect.width = rect.height
+                color := btn.getThemeColors().btnIcon_Icon
+
+                #[Swag.Complete]
+                switch cast(FormStepKind) cast(uint) btn.userData
+                {
+                case Ellipse:
+                    radius := rect.width * 0.5
+                    bc.painter.drawEllipse(pos.horzCenter(), pos.vertCenter(), radius, radius, color, 5)
+                case Rectangle:
+                    bc.painter.drawRect(rect, color, 5)
+                case RoundRectangle:
+                    bc.painter.drawRoundRect(rect, 5, 5, color, 5)
+                }
+            }
+
+            btn0.sigPressed += @|me|(btn) {
+                kind := cast(u32) cast(FormStepKind) cast(uint) btn.userData
+                me.pushTypedValue(kind, @typeof(FormStep), @nameof(FormStep.kind), true)
+            }
+        }
+
+        layout.computeLayout()
+    }
+
 
     mtd createPopupStartCapStyle(btn: *IconButton)
     {
@@ -390,6 +440,8 @@ impl PropWnd
         {
         case FormLine, FormArrow, FormDraw:
             btn.name = "Color"
+        case FormStep:
+            btn.name = "Text"
         default:
             btn.name = "Outline"
         }
@@ -490,6 +542,44 @@ impl PropWnd
         }
     }
 
+    mtd propStep(stack: *Wnd)
+    {
+        curSelType := getSelectedFormType()
+        if curSelType != FormStep
+            return
+
+        btn := createArrowButton(stack, BtnColorWidth, BtnColorHeight)
+        btn.name = "Shape"
+        me := self
+        btn.sigPaintIcon = @|me|(btn, bc, pos)
+        {
+            bc.painter.setParams(.Antialiased)
+            curSel := cast(*FormStep) me.getSelectedBaseForm()
+            rect := pos
+            rect.inflate(-9, -9)
+            rect.x = rect.horzCenter() - rect.height * 0.5
+            rect.width = rect.height
+            color := btn.getThemeColors().btnIcon_Icon
+
+            #[Swag.Complete]
+            switch curSel.kind
+            {
+            case Ellipse:
+                radius := 16.0
+                bc.painter.drawEllipse(pos.horzCenter(), pos.vertCenter(), radius, radius, color, 5)
+            case Rectangle:
+                bc.painter.drawRect(rect, color, 5)
+            case RoundRectangle:
+                bc.painter.drawRoundRect(rect, 5, 5, color, 5)
+            }
+        }
+
+        btn.sigShowPopup += @|me|(btn) {
+            curSel := cast(*FormStep) me.getSelectedBaseForm()
+            me.createPopupStepKind(btn)
+        }
+    }
+
     mtd propStartCapStyle(stack: *Wnd)
     {
         curSelType := getSelectedFormType()
@@ -568,6 +658,25 @@ impl PropWnd
         btn.sigShowPopup += @|me|(btn) {
             curSel := cast(*FormShape) me.getSelectedBaseForm()
             me.createPopupDashStyle(btn)
+        }
+    }
+
+    mtd propNextStep()
+    {
+        curSelType := getSelectedFormType()
+        if curSelType != FormStep
+            return
+
+        curSel := cast(*FormStep) getSelectedBaseForm()
+        with combo := ComboBox.create(mainLayout)
+        {
+            .addItem("1...2...3...")
+            .addItem("A...B...C...")
+            .addItem("a...b...c...")
+            .selectItem(cast(u32) curSel.typeIndex)
+            .sigChanged += @|self|(combo, val) {
+                self.pushTypedValue(acast val, @typeof(FormStep), @nameof(FormStep.typeIndex), true)
+            }
         }
     }
 
@@ -749,6 +858,10 @@ impl PropWnd
 
     mtd propBorderSize()
     {
+        curSelType := getSelectedFormType()
+        if curSelType == FormStep
+            return
+
         curSel := getSelectedBaseForm()
 
         minS := MinBorderSize
@@ -840,6 +953,7 @@ impl PropWnd
         propBackColor(stack0)
         propBorderColor(stack0)
         propShape(stack0)
+        propStep(stack0)
         if stack0.childs.count == 0
             stack0.destroyNow()
 
@@ -850,6 +964,7 @@ impl PropWnd
         if stack1.childs.count == 0
             stack1.destroyNow()
 
+        propNextStep()
         propText()
         propBorderSize()
         propFontSize()

@@ -39,6 +39,7 @@ struct QuickWnd
 
     qsArrow:        QuickStyle
     qsShape:        QuickStyle
+    qsStep:         QuickStyle
     qsLine:         QuickStyle
     qsPolygon:      QuickStyle
     qsText:         QuickStyle
@@ -71,6 +72,7 @@ impl IWnd for QuickWnd
             {
                 .serialize("QuickWnd.qsArrow",     &qsArrow)
                 .serialize("QuickWnd.qsShape",     &qsShape)
+                .serialize("QuickWnd.qsStep",      &qsStep)
                 .serialize("QuickWnd.qsLine",      &qsLine)
                 .serialize("QuickWnd.qsPolygon",   &qsPolygon)
                 .serialize("QuickWnd.qsText",      &qsText)
@@ -84,6 +86,7 @@ impl IWnd for QuickWnd
         {
             if qsArrow.forms.isEmpty()      defaultQuickStyleArrow()
             if qsShape.forms.isEmpty()      defaultQuickStyleShape()
+            if qsStep.forms.isEmpty()       defaultQuickStyleStep()
             if qsLine.forms.isEmpty()       defaultQuickStyleLine()
             if qsPolygon.forms.isEmpty()    defaultQuickStylePolygon()
             if qsText.forms.isEmpty()       defaultQuickStyleText()
@@ -188,6 +191,28 @@ impl QuickWnd
         add(BorderSize, .Rectangle, Argb.Black, Argb.Zero)
         add(0, .Rectangle, Argb.Zero, Argb.White)
         add(0, .Rectangle, Argb.Zero, Argb.Black)
+    }
+
+    mtd defaultQuickStyleStep()
+    {
+        #[Swag.Macro]
+        func add(kind: FormShapeKind, color: Color, backColor: Color)
+        {
+            form := Memory.new'FormStep()
+            form.borderColor = color
+            form.backColor = backColor
+            form.kind = kind
+            it := cast(IForm) form
+            it.setup(null)
+            `qsStep.forms.add(it)
+        }
+
+        add(.Ellipse, Argb.White, Argb.Red)
+        add(.Ellipse, Argb.White, Argb.Cyan)
+        add(.Ellipse, Argb.White, Argb.Green)
+        add(.RoundRectangle, Argb.White, Argb.Red)
+        add(.RoundRectangle, Argb.White, Argb.Cyan)
+        add(.RoundRectangle, Argb.White, Argb.Green)
     }
 
     mtd defaultQuickStyleLine()
@@ -358,6 +383,8 @@ impl QuickWnd
                 btn.isChecked = mode == .Arrow and it.isSame(&main.mdlFormArrow)
             case FormShape:
                 btn.isChecked = mode == .Shape and it.isSame(&main.mdlFormShape)
+            case FormStep:
+                btn.isChecked = mode == .Step and it.isSame(&main.mdlFormStep)
             case FormLine:
                 btn.isChecked = mode == .Line and it.isSame(&main.mdlFormLine)
             case FormPolygon:
@@ -396,6 +423,7 @@ impl QuickWnd
         {
         case Arrow:     defaultQuickStyleArrow()
         case Shape:     defaultQuickStyleShape()
+        case Step:      defaultQuickStyleStep()
         case Line:      defaultQuickStyleLine()
         case Polygon:   defaultQuickStylePolygon()
         case Text:      defaultQuickStyleText()
@@ -444,12 +472,14 @@ impl QuickWnd
 
         edMode := main.editMode == .Selection ? main.getEditMode() : main.editMode
         #[Swag.Complete]
-        switch edMode 
+        switch edMode
         {
         case Arrow:
             currentStyle = &qsArrow
         case Shape:
             currentStyle = &qsShape
+        case Step:
+            currentStyle = &qsStep
         case Line:
             currentStyle = &qsLine
         case Polygon:
@@ -501,6 +531,11 @@ impl QuickWnd
                     self.main.mdlFormShape = dref b
                     self.main.mdlFavorite  = &self.main.mdlFormShape
                     self.main.mdlHighlight = &self.main.mdlFormShape
+                case FormStep:
+                    b := cast(*FormStep) @dataof(it)
+                    self.main.mdlFormStep = dref b
+                    self.main.mdlFavorite  = &self.main.mdlFormStep
+                    self.main.mdlHighlight = &self.main.mdlFormStep
                 case FormLine:
                     b := cast(*FormLine) @dataof(it)
                     self.main.mdlFormLine = dref b
@@ -536,6 +571,10 @@ impl QuickWnd
                     case FormShape:
                         b := cast(*FormShape) @dataof(it)
                         mdlValue = Memory.new'FormShape()
+                        it.copy(mdlValue, b)
+                    case FormStep:
+                        b := cast(*FormStep) @dataof(it)
+                        mdlValue = Memory.new'FormStep()
                         it.copy(mdlValue, b)
                     case FormLine:
                         b := cast(*FormLine) @dataof(it)
@@ -596,6 +635,8 @@ impl QuickWnd
             btn.formItf = cast(IForm) main.mdlFormArrow
         case Shape:
             btn.formItf = cast(IForm) main.mdlFormShape
+        case Step:
+            btn.formItf = cast(IForm) main.mdlFormStep
         case Line:
             btn.formItf = cast(IForm) main.mdlFormLine
         case Polygon:
@@ -643,6 +684,10 @@ impl QuickWnd
             case Shape:
                 mdl := Memory.new'FormShape()
                 mdl.IForm.copy(mdl, &main.mdlFormShape)
+                self.currentStyle.forms.add(mdl)
+            case Step:
+                mdl := Memory.new'FormStep()
+                mdl.IForm.copy(mdl, &main.mdlFormStep)
                 self.currentStyle.forms.add(mdl)
             case Line:
                 mdl := Memory.new'FormLine()

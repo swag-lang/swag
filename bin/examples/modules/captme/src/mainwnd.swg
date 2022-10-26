@@ -9,6 +9,7 @@ enum EditMode
     Draw
     Highlight
     Selection
+    Step
 }
 
 enum BottomSize
@@ -50,6 +51,7 @@ struct MainWnd
     fileDlgState:   FileDlgState
 
     mdlFormShape:   FormShape
+    mdlFormStep:    FormStep
     mdlFormArrow:   FormArrow
     mdlFormLine:    FormLine
     mdlFormPolygon: FormPolygon
@@ -414,6 +416,14 @@ impl IWnd for MainWnd
             evt.checked = editMode == .Highlight
             evt.accepted = true
 
+        case CmdIdModeStep:
+            evt.setFlags |= .Icon | .Checked | .Name | .ToolTip
+            evt.icon = Icon.from(&icons48, 12)
+            evt.name = "Step"
+            evt.toolTip = "Add some steps"
+            evt.checked = editMode == .Step
+            evt.accepted = true
+
         case CmdIdModeFavorites:
             evt.setFlags |= .Icon | .Checked | .Name | .ToolTip
             evt.icon = Icon.from(&icons48, 5)
@@ -702,6 +712,11 @@ impl IWnd for MainWnd
 
         case CmdIdModeHighlight:
             editMode = .Highlight
+            evt.accepted = true
+            updateState()
+
+        case CmdIdModeStep:
+            editMode = .Step
             evt.accepted = true
             updateState()
 
@@ -1189,6 +1204,7 @@ impl MainWnd
         createBtn(CmdIdModeText)
         createBtn(CmdIdModeDraw)
         createBtn(CmdIdModeHighlight)
+        createBtn(CmdIdModeStep)
         editToolBar.updateCommandState()
     }
 
