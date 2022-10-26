@@ -667,15 +667,27 @@ impl PropWnd
         if curSelType != FormStep
             return
 
+        stack := Wnd.create'Wnd(mainLayout, @{0, 0, 0, getThemeMetrics().comboBox_Height})
+
         curSel := cast(*FormStep) getSelectedBaseForm()
-        with combo := ComboBox.create(mainLayout)
+        with combo := ComboBox.create(stack)
         {
+            combo.dockStyle = .Center
             .addItem("1...2...3...")
             .addItem("A...B...C...")
             .addItem("a...b...c...")
             .selectItem(cast(u32) curSel.typeIndex)
             .sigChanged += @|self|(combo, val) {
                 self.pushTypedValue(acast val, @typeof(FormStep), @nameof(FormStep.typeIndex), true)
+            }
+        }
+
+        with btn := PushButton.create(stack, "Reset", @{0, 0, 60})
+        {
+            .margin.x = 5
+            .dockStyle = .Right
+            btn.sigPressed += @|self|(btn) {
+                self.main.getCapture().nextStepIndex = 1
             }
         }
     }
