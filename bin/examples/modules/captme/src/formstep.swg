@@ -183,12 +183,14 @@ impl IForm for FormStep
             pathl.clear()
 
             var t: String
+            curIndex := quickMode ? 1 : index
+
             #[Swag.Complete]
             switch typeIndex
             {
-            case Number:     t = Format.toString("%", index)
-            case LetterUp:   t = Format.toString("%", cast(rune) ("A"'rune + index - 1))
-            case LetterDown: t = Format.toString("%", cast(rune) ("a"'rune + index - 1))
+            case Number:     t = Format.toString("%", curIndex)
+            case LetterUp:   t = Format.toString("%", cast(rune) ("A"'rune + curIndex - 1))
+            case LetterDown: t = Format.toString("%", cast(rune) ("a"'rune + curIndex - 1))
             }
 
             assume face.getStringOutline(&pathl, t, acast fSize)

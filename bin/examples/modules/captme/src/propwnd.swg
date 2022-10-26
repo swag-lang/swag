@@ -686,6 +686,7 @@ impl PropWnd
         {
             .margin.x = 5
             .dockStyle = .Right
+            .toolTip = "Reset the global step count to 1"
             btn.sigPressed += @|self|(btn) {
                 self.main.getCapture().nextStepIndex = 1
             }
