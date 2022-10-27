@@ -369,6 +369,7 @@ struct AstIdentifier : public AstNode
     AstIdentifierRef*  identifierRef     = nullptr;
     AstNode*           genericParameters = nullptr;
     AstFuncCallParams* callParameters    = nullptr;
+    TypeInfo*          alternateEnum     = nullptr;
 };
 
 static const uint32_t FUNC_FLAG_FULL_RESOLVE    = 0x00000001;

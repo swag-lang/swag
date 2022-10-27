@@ -2185,7 +2185,7 @@ TypeInfoEnum* SemanticJob::findEnumTypeInContext(SemanticContext* context, TypeI
     return CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
 }
 
-bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node, TypeInfoEnum** res, bool genError)
+bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node, TypeInfoEnum** res, bool genError, TypeInfoEnum** has)
 {
     bool done   = false;
     auto parent = node->parent;
@@ -2235,6 +2235,7 @@ bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node,
                 for (auto param : typeFunc->parameters)
                 {
                     auto typeEnum = findEnumTypeInContext(context, param->typeInfo);
+                    *has          = typeEnum;
                     if (typeEnum && typeEnum->contains(node->token.text))
                         subResult.push_back_once(typeEnum);
                 }
@@ -2443,7 +2444,8 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, VectorNative<
             if (identifierRef->specFlags & AST_SPEC_IDENTIFIERREF_AUTO_SCOPE && !(identifierRef->doneFlags & AST_DONE_SPEC_SCOPE))
             {
                 TypeInfoEnum* typeEnum = nullptr;
-                SWAG_CHECK(findEnumTypeInContext(context, identifierRef, &typeEnum, true));
+                TypeInfoEnum* hasEnum = nullptr;
+                SWAG_CHECK(findEnumTypeInContext(context, identifierRef, &typeEnum, true, &hasEnum));
                 if (context->result == ContextResult::Pending)
                     return true;
                 if (typeEnum)
@@ -2464,6 +2466,7 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, VectorNative<
                         auto id = Ast::newIdentifier(context->sourceFile, withNode->id[wi], identifierRef, identifierRef);
                         id->flags |= AST_GENERATED;
                         id->specFlags |= AST_SPEC_IDENTIFIER_FROM_WITH;
+                        id->alternateEnum = hasEnum;
                         id->inheritTokenLocation(identifierRef);
                         identifierRef->childs.pop_back();
                         Ast::addChildFront(identifierRef, id);
@@ -3333,7 +3336,8 @@ bool SemanticJob::filterMatchesInContext(SemanticContext* context, VectorNative<
         auto          oneMatch = matches[i];
         auto          over     = oneMatch->symbolOverload;
         TypeInfoEnum* typeEnum = nullptr;
-        SWAG_CHECK(findEnumTypeInContext(context, over->node, &typeEnum, false));
+        TypeInfoEnum* hasEnum = nullptr;
+        SWAG_CHECK(findEnumTypeInContext(context, over->node, &typeEnum, false, &hasEnum));
         if (context->result != ContextResult::Done)
             return true;
 

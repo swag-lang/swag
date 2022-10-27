@@ -1118,6 +1118,9 @@ void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* 
         else
         {
             Utf8 displayName;
+            AstIdentifier* prevIdentifier = nullptr;
+            if (identifierRef->previousResolvedNode && identifierRef->previousResolvedNode->kind == AstNodeKind::Identifier)
+                prevIdentifier = CastAst<AstIdentifier>(identifierRef->previousResolvedNode, AstNodeKind::Identifier);
             if (!(identifierRef->startScope->flags & SCOPE_FILE))
                 displayName = identifierRef->startScope->getDisplayFullName();
             if (displayName.empty() && !identifierRef->startScope->name.empty())
@@ -1129,6 +1132,12 @@ void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* 
                 auto varDecl = node->findParent(AstNodeKind::VarDecl);
                 if (node->identifierRef && node->identifierRef->flags & AST_TUPLE_UNPACK && varDecl)
                     diag = new Diagnostic{node, Fmt(Err(Err0821), varDecl->token.ctext(), displayName.c_str())};
+                else if (prevIdentifier && prevIdentifier->alternateEnum)
+                {
+                    diag = new Diagnostic{node, Fmt(Err(Err0492), node->token.ctext(), prevIdentifier->alternateEnum->getDisplayNameC(), Scope::getNakedKindName(identifierRef->startScope->kind), displayName.c_str())};
+                    auto note = new Diagnostic{prevIdentifier->alternateEnum->declNode, Fmt(Nte(Nte0029), prevIdentifier->alternateEnum->getDisplayNameC()), DiagnosticLevel::Note};
+                    notes.push_back(note);
+                }
                 else
                     diag = new Diagnostic{node, Fmt(Err(Err0110), node->token.ctext(), Scope::getNakedKindName(identifierRef->startScope->kind), displayName.c_str())};
                 switch (identifierRef->startScope->owner->kind)
