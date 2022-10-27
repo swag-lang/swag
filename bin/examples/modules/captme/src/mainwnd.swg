@@ -99,6 +99,14 @@ impl IWnd for MainWnd
         }
     }
 
+    mtd onStateEvent(evt: *StateEvent)
+    {
+        if evt.kind == .Show
+        {
+            quickWnd.setDefault()
+        }
+    }
+
     mtd onCommandUIEvent(evt: *CommandUIEvent)
     {
         editView := editWnd  ? cast(*EditView) editWnd.view : null

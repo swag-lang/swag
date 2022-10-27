@@ -263,6 +263,8 @@ impl Surface
             wnd.view.setFocus()
         SetActiveWindow(hWnd)
         SetFocus(hWnd)
+
+        wnd.view.sendStateEvent(.Show)
     }
 
     // Hide the surface
@@ -271,7 +273,9 @@ impl Surface
         if isHidden
             return
         isHidden = true
+        
         ShowWindow(hWnd, SW_HIDE)
+        wnd.view.sendStateEvent(.Hide)
     }
 
     // Show the surface as maximized

@@ -53,6 +53,7 @@ interface IWnd
     mtd onHookEvent(evt: *Event)
     mtd onCreateEvent(evt: *CreateEvent)
     mtd onDestroyEvent(evt: *DestroyEvent)
+    mtd onStateEvent(evt: *StateEvent)
     mtd onResizeEvent(evt: *ResizeEvent)
     mtd onPrePaintEvent(evt: *PaintEvent)
     mtd onPaintEvent(evt: *PaintEvent)
@@ -136,6 +137,8 @@ impl IWnd for Wnd
             itf.onCreateEvent(cast(*CreateEvent) evt)
         case Destroy:
             itf.onDestroyEvent(cast(*DestroyEvent) evt)
+        case Show, Hide:
+            itf.onStateEvent(cast(*StateEvent) evt)
         case Resize:
             itf.onResizeEvent(cast(*ResizeEvent) evt)
         case PrePaint:
@@ -169,6 +172,7 @@ impl IWnd for Wnd
 
     mtd onCreateEvent(evt: *CreateEvent)                    {}
     mtd onDestroyEvent(evt: *DestroyEvent)                  {}
+    mtd onStateEvent(evt: *StateEvent)                      {}
     mtd onResizeEvent(evt: *ResizeEvent)                    {}
     mtd onPrePaintEvent(evt: *PaintEvent)                   {}
     mtd onPaintEvent(evt: *PaintEvent)                      {}
@@ -1067,6 +1071,12 @@ impl Wnd
     {
         evt.target = self
         surface.app.sendEvent(evt)
+    }
+
+    mtd sendStateEvent(kind: EventKind)
+    {
+        evt := StateEvent{kind: kind}
+        sendEvent(&evt)
     }
 
     mtd sendResizeEvent()

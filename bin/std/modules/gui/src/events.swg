@@ -33,6 +33,8 @@ enum EventKind
     CommandState
     Frame
     SerializeState
+    Show
+    Hide
     Invalidate
 }
 
@@ -112,6 +114,11 @@ struct FrameEvent
 struct CreateEvent
 {
     using base: Event{kind: EventKind.Create}
+}
+
+struct StateEvent
+{
+    using base: Event
 }
 
 struct DestroyEvent

@@ -81,24 +81,24 @@ impl IWnd for QuickWnd
                 .serialize("QuickWnd.qsHighlight", &qsHighlight)
             }
         }
-
-        if evt.ser.isReading()
-        {
-            if qsArrow.forms.isEmpty()      defaultQuickStyleArrow()
-            if qsShape.forms.isEmpty()      defaultQuickStyleShape()
-            if qsStep.forms.isEmpty()       defaultQuickStyleStep()
-            if qsLine.forms.isEmpty()       defaultQuickStyleLine()
-            if qsPolygon.forms.isEmpty()    defaultQuickStylePolygon()
-            if qsText.forms.isEmpty()       defaultQuickStyleText()
-            if qsDraw.forms.isEmpty()       defaultQuickStyleDraw()
-            if qsHighlight.forms.isEmpty()  defaultQuickStyleHighlight()
-            updateQuickStyles()
-        }
     }
 }
 
 impl QuickWnd
 {
+    mtd setDefault()
+    {
+        if qsArrow.forms.isEmpty()      defaultQuickStyleArrow()
+        if qsShape.forms.isEmpty()      defaultQuickStyleShape()
+        if qsStep.forms.isEmpty()       defaultQuickStyleStep()
+        if qsLine.forms.isEmpty()       defaultQuickStyleLine()
+        if qsPolygon.forms.isEmpty()    defaultQuickStylePolygon()
+        if qsText.forms.isEmpty()       defaultQuickStyleText()
+        if qsDraw.forms.isEmpty()       defaultQuickStyleDraw()
+        if qsHighlight.forms.isEmpty()  defaultQuickStyleHighlight()
+        updateQuickStyles()
+    }
+
     mtd btnPopup(btn: *Button, pos: Math.Point)
     {
         menu := MenuCtrl.createPopup(self)

@@ -551,6 +551,7 @@ impl Application
         ser.endSection()
     }
 
+    // Save the application state
     mtd saveState() throw
     {
         if configPath.isEmpty()
@@ -566,6 +567,7 @@ impl Application
         File.writeAllBytes(configPath, buf)
     }
 
+    // Load the application state
     mtd loadState() throw
     {
         if configPath.isEmpty()
