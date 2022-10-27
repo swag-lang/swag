@@ -732,8 +732,17 @@ impl Application
     mtd run()->s32
     {
         catch loadState()
+
+        visit s: surfaces
+        {
+            evt := FrameEvent{}
+            evt.firstFrame = true
+            s.wnd.view.sendEvent(&evt)
+        }
+
         while !mustQuit
             runFrame()
+
         return quitCode
     }
 

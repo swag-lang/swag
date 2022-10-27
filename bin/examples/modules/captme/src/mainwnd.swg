@@ -99,9 +99,9 @@ impl IWnd for MainWnd
         }
     }
 
-    mtd onStateEvent(evt: *StateEvent)
+    mtd onFrameEvent(evt: *FrameEvent)
     {
-        if evt.kind == .Show
+        if evt.firstFrame
         {
             quickWnd.setDefault()
         }

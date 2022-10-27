@@ -151,7 +151,7 @@ impl QuickWnd
         }
 
         const BorderSize = 10.0
-        const ArrowSize  = 3.0
+        const ArrowSize  = 5.0
 
         add(0, BorderSize, ArrowSize, Argb.Red)
         add(0, BorderSize, ArrowSize, Argb.Green)

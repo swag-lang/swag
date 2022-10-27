@@ -67,6 +67,7 @@ interface IWnd
     mtd onCommandEvent(evt: *CommandEvent)
     mtd onCommandUIEvent(evt: *CommandUIEvent)
     mtd onCommandStateEvent(evt: *CommandUIEvent)
+    mtd onFrameEvent(evt: *FrameEvent)
     mtd onSerializeStateEvent(evt: *SerializeStateEvent)
 }
 
@@ -163,6 +164,8 @@ impl IWnd for Wnd
             itf.onCommandEvent(cast(*CommandEvent) evt)
         case CommandUI:
             itf.onCommandUIEvent(cast(*CommandUIEvent) evt)
+        case Frame:
+            itf.onFrameEvent(cast(*FrameEvent) evt)
         case CommandState:
             itf.onCommandStateEvent(cast(*CommandUIEvent) evt)
         case SerializeState:
@@ -181,6 +184,7 @@ impl IWnd for Wnd
     mtd onTimerEvent(evt: *TimerEvent)                      {}
     mtd onHookEvent(evt: *Event)                            {}
     mtd onSerializeStateEvent(evt: *SerializeStateEvent)    {}
+    mtd onFrameEvent(evt: *FrameEvent)                      {}
 
     mtd onSysCommandEvent(evt: *SysCommandEvent)    { evt.accepted = false; }
     mtd onFocusEvent(evt: *FocusEvent)              { evt.accepted = false; }

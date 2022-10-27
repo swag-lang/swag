@@ -109,6 +109,7 @@ struct TimerEvent
 struct FrameEvent
 {
     using base: Event{kind: EventKind.Frame}
+    firstFrame: bool
 }
 
 struct CreateEvent
