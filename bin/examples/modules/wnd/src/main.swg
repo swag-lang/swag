@@ -30,6 +30,8 @@ var app: Application
     tab.addItem("SplitterCtrl", @{}, view5)
     view6 := Wnd.create'Wnd(tab)
     tab.addItem("LayoutCtrl", @{}, view6)
+    view7 := Wnd.create'Wnd(tab)
+    tab.addItem("PropertyCtrl", @{}, view7)
 
     createView0(tab, view0)
     createView1(tab, view1)
@@ -38,8 +40,9 @@ var app: Application
     createView4(tab, view4)
     createView5(tab, view5)
     createView6(tab, view6)
+    createView7(tab, view7)
 
-    tab.select(5)
+    tab.select(7)
     surface0.show()
 
     //surface1 := try app.createSurface(100+W+10, 100, W, H, SurfaceFlags.Secondary | SurfaceFlags.SmallCaption | SurfaceFlags.CloseBtn)

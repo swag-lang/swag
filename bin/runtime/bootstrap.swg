@@ -146,21 +146,25 @@ namespace Swag
 
     namespace U8
     {
+        const Min = 0'u8
         const Max = 0xFF'u8
     }
 
     namespace U16
     {
+        const Min = 0'u16
         const Max = 0xFFFF'u16
     }
 
     namespace U32
     {
+        const Min = 0'u32
         const Max = 0xFFFFFFFF'u32
     }
 
     namespace U64
     {
+        const Min = 0'u64
         const Max = 0xFFFFFFFF_FFFFFFFF'u64
     }
 
