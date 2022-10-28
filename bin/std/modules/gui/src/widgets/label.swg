@@ -6,6 +6,7 @@ enum LabelFlags
 {
     None
     WordWrap
+    WordWrapAutoSize
     LightText
 }
 
@@ -71,33 +72,7 @@ impl IWnd for Label
             posText := pos
             posText.applyPadding(paddingText)
 
-            var sf: RichStringFormat
-            sf.flags |= .Clip
-            if labelFlags & .WordWrap
-                sf.flags |= .WordWrap
-            sf.font = theme.res.fontDefault
-            sf.horzAlignment = horzAlignmentText
-            sf.vertAlignment = vertAlignmentText
-            sf.flags |= .VertCenterBaseLine
-
-            if bc.isDisabled
-            {
-                sf.palette[0] = theme.colors.label_DisabledText
-                sf.palette[1] = theme.colors.label_DisabledText
-                sf.palette[2] = theme.colors.label_DisabledText
-                sf.palette[3] = theme.colors.label_DisabledText
-            }
-            else
-            {
-                if labelFlags & .LightText
-                    sf.palette[0] = theme.colors.label_TextLight
-                else
-                    sf.palette[0] = theme.colors.label_Text
-                sf.palette[1] = theme.colors.label_Text1
-                sf.palette[2] = theme.colors.label_Text2
-                sf.palette[3] = theme.colors.label_Text3
-            }
-
+            sf := getStringFormat(bc.isDisabled)
             painter.drawRichString(posText, &name, sf)
         }
     }
@@ -105,6 +80,40 @@ impl IWnd for Label
 
 impl Label
 {
+    private mtd getStringFormat(isDisabled: bool)->RichStringFormat
+    {
+        theme := getTheme()
+
+        var sf: retval
+        sf.flags |= .Clip
+        if labelFlags & (.WordWrap | .WordWrapAutoSize)
+            sf.flags |= .WordWrap
+        sf.font = theme.res.fontDefault
+        sf.horzAlignment = horzAlignmentText
+        sf.vertAlignment = vertAlignmentText
+        sf.flags |= .VertCenterBaseLine
+
+        if isDisabled
+        {
+            sf.palette[0] = theme.colors.label_DisabledText
+            sf.palette[1] = theme.colors.label_DisabledText
+            sf.palette[2] = theme.colors.label_DisabledText
+            sf.palette[3] = theme.colors.label_DisabledText
+        }
+        else
+        {
+            if labelFlags & .LightText
+                sf.palette[0] = theme.colors.label_TextLight
+            else
+                sf.palette[0] = theme.colors.label_Text
+            sf.palette[1] = theme.colors.label_Text1
+            sf.palette[2] = theme.colors.label_Text2
+            sf.palette[3] = theme.colors.label_Text3
+        }
+
+        return sf
+    }
+
     #[Swag.Discardable]
     func create(parent: *Wnd, name: string, position: Math.Rectangle = @{}, id: WndId = null)->*Label
     {
@@ -120,5 +129,15 @@ impl Label
     {
         name = text
         invalidate()
+
+        // Recompute height
+        if labelFlags & .WordWrapAutoSize
+        {
+            sf := getStringFormat(false)
+            var painter: Painter{fake: true}
+            name.compute()
+            painter.computeLayout(position, &name, sf)
+            position.height = name.boundRect.height + padding.w
+        }
     }
 }
