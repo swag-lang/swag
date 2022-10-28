@@ -4,6 +4,10 @@ using Core, Pixel
 struct PropertyCtrl
 {
     using frameWnd: FrameWnd
+
+    flatModeNameSpacing: s32 = 25
+    flatModeNameHeight:  s32 = 15
+
     scrollWnd:      *ScrollWnd
     edView:         *PropertyView
     items:          ArrayPtr'PropertyItem
@@ -16,21 +20,62 @@ struct PropertyItem
 
 private impl PropertyCtrl
 {
+    mtd addLine(f: Swag.TypeValue, canDesc = true)->*Wnd
+    {
+        line := StackLayoutCtrl.create(edView, .TopAutoSize)
+
+        // Name
+        var dispName: String
+        attrName := Reflection.getAttributeValue(f, Property.Name, "name") 
+        if attrName != null
+            dispName = cast(string) attrName
+        else 
+            dispName = Format.toString("<b>%<b>", f.name)
+        label := Label.create(line, dispName, @{0, 0, 0, flatModeNameHeight})
+        label.horzAlignmentText = .Left
+        label.margin.y = flatModeNameSpacing
+
+        // Description
+        if canDesc
+        {
+            dispDesc := Reflection.getAttributeValue(f, Property.Description, "desc")
+            if dispDesc != null
+            {
+                labelDesc := Label.create(line, "", @{0, 0, position.width, 0})
+                labelDesc.labelFlags |= .WordWrapAutoSize
+                labelDesc.horzAlignmentText = .Justify
+                labelDesc.setText(dispDesc)
+                labelDesc.margin.w = 5
+            }
+        }
+
+        return line
+    }
+
     mtd addStruct(addr: ^u8, typeStruct: const *Swag.TypeInfoStruct)
     {
         visit f: typeStruct.fields
         {       
             ptrData := addr + f.offset
 
-            if Reflection.isInteger(f.pointedType) or Reflection.isFloat(f.pointedType)
+            if Reflection.isBool(f.pointedType)
             {
                 item := items.newPtr()     
                 item.name = f.name
 
-                line := StackLayoutCtrl.create(edView, .Left, @{0, 0, 0, 30})
-                label := Label.create(line, f.name, @{0, 0, 60})
-                label.horzAlignmentText = .Right
-                label.margin.z = 10
+                line := addLine(f, false)
+                dispDesc := Reflection.getAttributeValue(f, Property.Description, "desc")
+
+                ed := CheckButton.create(line, dispDesc)
+                if dref cast(*bool) ptrData
+                    ed.checked = .Checked
+            }
+            elif Reflection.isInteger(f.pointedType) or Reflection.isFloat(f.pointedType)
+            {
+                item := items.newPtr()     
+                item.name = f.name
+
+                line := addLine(f)
                 ed := EditBox.create(line, f.name)
 
                 nativeType := cast(const *Swag.TypeInfoNative) f.pointedType
