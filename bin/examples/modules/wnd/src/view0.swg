@@ -377,7 +377,7 @@ func createView0(tabView: *Tab, view: *Wnd)
         combo.selectItem(0)
         combo.disable()
 
-        combo = ComboBox.create(view, @{360, 520}, editBox: true)
+        combo = ComboBox.create(view, @{360, 520}, kind: .Edit)
         combo.addItem("Coucou", "0")
         combo.addItem("Coucou1", "1")
         combo.addItem("Coucou2", "2")

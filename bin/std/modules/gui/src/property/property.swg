@@ -52,6 +52,96 @@ private impl PropertyCtrl
         return line
     }
 
+    mtd addEnum(f: Swag.TypeValue, typeEnum: const *Swag.TypeInfoEnum, ptrData: *u8)
+    {
+        line := addLine(f)
+        ed := ComboBox.create(line, kind: .CheckBox)
+        ed.maxSize.x = 200
+        ed.anchorStyle = .X
+
+        var val1, val2: u64
+        var val1s, val2s: string
+        switch typeEnum.rawType.sizeof
+        {
+        case 1:  val1 = cast(u64) dref cast(*u8) ptrData
+        case 2:  val1 = cast(u64) dref cast(*u16) ptrData
+        case 4:  val1 = cast(u64) dref cast(*u32) ptrData
+        case 8:  val1 = cast(u64) dref cast(*u64) ptrData
+        case 16: val1s = dref cast(*string) ptrData
+        }
+
+        idxSel := 0'uint
+        visit v, idx: typeEnum.values
+        {
+            switch typeEnum.rawType.sizeof
+            {
+            case 1:  val2 = cast(u64) dref cast(const *u8) v.value
+            case 2:  val2 = cast(u64) dref cast(const *u16) v.value
+            case 4:  val2 = cast(u64) dref cast(const *u32) v.value
+            case 8:  val2 = cast(u64) dref cast(const *u64) v.value
+            case 16: val2s = dref cast(const *string) v.value
+            }
+
+            ed.addItem(v.name)
+            if val1 == val2 and val1s == val2s
+                idxSel = idx
+        }
+
+        ed.selectItem(acast idxSel)
+    }
+
+    mtd addNative(f: Swag.TypeValue, nativeType: const *Swag.TypeInfoNative, ptrData: *u8)
+    {
+        line := addLine(f)
+        ed := EditBox.create(line, f.name)
+        ed.maxSize.x = 200
+        ed.anchorStyle = .X
+
+        switch nativeType.nativeKind
+        {
+        case U8: 
+            p := cast(^u8) ptrData
+            ed.setText(Format.toString("%", dref p))
+            ed.setInputU64(acast Swag.U8.Min, acast Swag.U8.Max)
+        case U16: 
+            p := cast(^u16) ptrData
+            ed.setText(Format.toString("%", dref p))
+            ed.setInputU64(acast Swag.U16.Min, acast Swag.U16.Max)
+        case U32: 
+            p := cast(^u32) ptrData
+            ed.setText(Format.toString("%", dref p))
+            ed.setInputU64(acast Swag.U32.Min, acast Swag.U32.Max)
+        case U64, UInt: 
+            p := cast(^u64) ptrData
+            ed.setText(Format.toString("%", dref p))
+            ed.setInputU64(acast Swag.U64.Min, acast Swag.U64.Max)
+        case S8: 
+            p := cast(^s8) ptrData
+            ed.setText(Format.toString("%", dref p))
+            ed.setInputS64(acast Swag.S8.Min, acast Swag.S8.Max)
+        case S16: 
+            p := cast(^s16) ptrData
+            ed.setText(Format.toString("%", dref p))
+            ed.setInputS64(acast Swag.S16.Min, acast Swag.S16.Max)
+        case S32: 
+            p := cast(^s32) ptrData
+            ed.setText(Format.toString("%", dref p))
+            ed.setInputS64(acast Swag.S32.Min, acast Swag.S32.Max)
+        case S64, Int: 
+            p := cast(^s64) ptrData
+            ed.setText(Format.toString("%", dref p))
+            ed.setInputS64(acast Swag.S64.Min, acast Swag.S64.Max)
+        case F32: 
+            p := cast(^f32) ptrData
+            ed.setText(Format.toString("%", dref p))
+            ed.setInputF64()
+        case F64: 
+            p := cast(^f64) ptrData
+            ed.setText(Format.toString("%", dref p))
+            ed.setInputF64()
+        }
+    }
+
     mtd addStruct(addr: ^u8, typeStruct: const *Swag.TypeInfoStruct)
     {
         visit f: typeStruct.fields
@@ -61,41 +151,7 @@ private impl PropertyCtrl
             if Reflection.isEnum(f.pointedType)
             {
                 typeEnum := cast(const *Swag.TypeInfoEnum) f.pointedType
-
-                line := addLine(f)
-                ed := ComboBox.create(line)
-                ed.maxSize.x = 200
-                ed.anchorStyle = .X
-
-                var val1, val2: u64
-                var val1s, val2s: string
-                switch typeEnum.rawType.sizeof
-                {
-                case 1:  val1 = cast(u64) dref cast(*u8) ptrData
-                case 2:  val1 = cast(u64) dref cast(*u16) ptrData
-                case 4:  val1 = cast(u64) dref cast(*u32) ptrData
-                case 8:  val1 = cast(u64) dref cast(*u64) ptrData
-                case 16: val1s = dref cast(*string) ptrData
-                }
-
-                idxSel := 0'uint
-                visit v, idx: typeEnum.values
-                {
-                    switch typeEnum.rawType.sizeof
-                    {
-                    case 1:  val2 = cast(u64) dref cast(const *u8) v.value
-                    case 2:  val2 = cast(u64) dref cast(const *u16) v.value
-                    case 4:  val2 = cast(u64) dref cast(const *u32) v.value
-                    case 8:  val2 = cast(u64) dref cast(const *u64) v.value
-                    case 16: val2s = dref cast(const *string) v.value
-                    }
-
-                    ed.addItem(v.name)
-                    if val1 == val2 and val1s == val2s
-                        idxSel = idx
-                }
-
-                ed.selectItem(acast idxSel)
+                addEnum(f, typeEnum, ptrData)
             }
             elif f.pointedType == Core.String
             {
@@ -113,55 +169,8 @@ private impl PropertyCtrl
             }
             elif Reflection.isInteger(f.pointedType) or Reflection.isFloat(f.pointedType)
             {
-                line := addLine(f)
-                ed := EditBox.create(line, f.name)
-                ed.maxSize.x = 200
-                ed.anchorStyle = .X
-
                 nativeType := cast(const *Swag.TypeInfoNative) f.pointedType
-                switch nativeType.nativeKind
-                {
-                case U8: 
-                    p := cast(^u8) ptrData
-                    ed.setText(Format.toString("%", dref p))
-                    ed.setInputU64(acast Swag.U8.Min, acast Swag.U8.Max)
-                case U16: 
-                    p := cast(^u16) ptrData
-                    ed.setText(Format.toString("%", dref p))
-                    ed.setInputU64(acast Swag.U16.Min, acast Swag.U16.Max)
-                case U32: 
-                    p := cast(^u32) ptrData
-                    ed.setText(Format.toString("%", dref p))
-                    ed.setInputU64(acast Swag.U32.Min, acast Swag.U32.Max)
-                case U64, UInt: 
-                    p := cast(^u64) ptrData
-                    ed.setText(Format.toString("%", dref p))
-                    ed.setInputU64(acast Swag.U64.Min, acast Swag.U64.Max)
-                case S8: 
-                    p := cast(^s8) ptrData
-                    ed.setText(Format.toString("%", dref p))
-                    ed.setInputS64(acast Swag.S8.Min, acast Swag.S8.Max)
-                case S16: 
-                    p := cast(^s16) ptrData
-                    ed.setText(Format.toString("%", dref p))
-                    ed.setInputS64(acast Swag.S16.Min, acast Swag.S16.Max)
-                case S32: 
-                    p := cast(^s32) ptrData
-                    ed.setText(Format.toString("%", dref p))
-                    ed.setInputS64(acast Swag.S32.Min, acast Swag.S32.Max)
-                case S64, Int: 
-                    p := cast(^s64) ptrData
-                    ed.setText(Format.toString("%", dref p))
-                    ed.setInputS64(acast Swag.S64.Min, acast Swag.S64.Max)
-                case F32: 
-                    p := cast(^f32) ptrData
-                    ed.setText(Format.toString("%", dref p))
-                    ed.setInputF64()
-                case F64: 
-                    p := cast(^f64) ptrData
-                    ed.setText(Format.toString("%", dref p))
-                    ed.setInputF64()
-                }
+                addNative(f, nativeType, ptrData)
             }
         }
     }

@@ -1,6 +1,13 @@
 #global public
 using Core, Pixel
 
+enum ComboBoxKind
+{
+    Select
+    Edit
+    CheckBox
+}
+
 struct ComboBoxItem
 {
     using base: Item
@@ -11,6 +18,7 @@ struct ComboBox
 {
     using wnd: Wnd
 
+    kind            = ComboBoxKind.Select
     minWidthPopup:  f32 = 100
     maxHeightPopup: f32 = 300
     sigChanged:     SigArray'closure(*Self, u32)
@@ -171,7 +179,7 @@ private impl ComboBox
 impl ComboBox
 {
     #[Swag.Discardable]
-    func create(parent: *Wnd, position: Math.Rectangle = @{}, id: WndId = null, editBox = false)->*ComboBox
+    func create(parent: *Wnd, position: Math.Rectangle = @{}, id: WndId = null, kind = ComboBoxKind.Select)->*ComboBox
     {
         Debug.assert(parent != null)
         pos := position
@@ -181,7 +189,8 @@ impl ComboBox
             pos.width = parent.getThemeMetrics().comboBox_Width
         res := Wnd.create'ComboBox(parent, null, pos, id)
 
-        if editBox
+        res.kind = kind
+        if res.kind == .Edit
         {
             res.editBox = EditBox.create(res, null, @{})
             res.editBox.setForm(EditBoxForm.Transparent)
