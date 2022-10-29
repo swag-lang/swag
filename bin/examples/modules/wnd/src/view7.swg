@@ -1,6 +1,13 @@
 using Core, Gui, Pixel
 using Property
 
+enum Enum
+{
+    First
+    Second
+    Third
+}
+
 struct AA
 {
     #[Name("<b>This is a name<b>: <i>italic<i>")]
@@ -12,12 +19,18 @@ struct AA
 
     #[Description("This is something that needs to be done.")]
     xb: bool = true
+
+    #[Description("This is something that needs to be done except if it not has do be done, and this is it.")]
+    str: String
+
+    value: Enum = Third
 }
 
 var aa: AA
 
 func createView7(tabView: *Tab, view: *Wnd)
 {
-    lt := PropertyCtrl.create(view, @{5, 5, 600, 600})
+    lt := PropertyCtrl.create(view, @{5, 5, 400, 600})
+    aa.str = "String content"
     lt.addItem(aa)
 }

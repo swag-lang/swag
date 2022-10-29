@@ -58,11 +58,52 @@ private impl PropertyCtrl
         {       
             ptrData := addr + f.offset
 
-            if Reflection.isBool(f.pointedType)
+            if Reflection.isEnum(f.pointedType)
             {
-                item := items.newPtr()     
-                item.name = f.name
+                typeEnum := cast(const *Swag.TypeInfoEnum) f.pointedType
 
+                line := addLine(f)
+                ed := ComboBox.create(line)
+                ed.maxSize.x = 200
+                ed.anchorStyle = .X
+
+                var val1, val2: u64
+                var val1s, val2s: string
+                switch typeEnum.rawType.sizeof
+                {
+                case 1:  val1 = cast(u64) dref cast(*u8) ptrData
+                case 2:  val1 = cast(u64) dref cast(*u16) ptrData
+                case 4:  val1 = cast(u64) dref cast(*u32) ptrData
+                case 8:  val1 = cast(u64) dref cast(*u64) ptrData
+                case 16: val1s = dref cast(*string) ptrData
+                }
+
+                idxSel := 0'uint
+                visit v, idx: typeEnum.values
+                {
+                    switch typeEnum.rawType.sizeof
+                    {
+                    case 1:  val2 = cast(u64) dref cast(const *u8) v.value
+                    case 2:  val2 = cast(u64) dref cast(const *u16) v.value
+                    case 4:  val2 = cast(u64) dref cast(const *u32) v.value
+                    case 8:  val2 = cast(u64) dref cast(const *u64) v.value
+                    case 16: val2s = dref cast(const *string) v.value
+                    }
+
+                    ed.addItem(v.name)
+                    if val1 == val2 and val1s == val2s
+                        idxSel = idx
+                }
+
+                ed.selectItem(acast idxSel)
+            }
+            elif f.pointedType == Core.String
+            {
+                line := addLine(f)
+                ed := EditBox.create(line, dref cast(*String) ptrData)
+            }
+            elif Reflection.isBool(f.pointedType)
+            {
                 line := addLine(f, false)
                 dispDesc := Reflection.getAttributeValue(f, Property.Description, "desc")
 
@@ -72,11 +113,10 @@ private impl PropertyCtrl
             }
             elif Reflection.isInteger(f.pointedType) or Reflection.isFloat(f.pointedType)
             {
-                item := items.newPtr()     
-                item.name = f.name
-
                 line := addLine(f)
                 ed := EditBox.create(line, f.name)
+                ed.maxSize.x = 200
+                ed.anchorStyle = .X
 
                 nativeType := cast(const *Swag.TypeInfoNative) f.pointedType
                 switch nativeType.nativeKind
