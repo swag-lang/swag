@@ -15,17 +15,25 @@ struct PropertyCtrl
 
 struct PropertyItem
 {
-    filter: String
-    line:   *Wnd
+    filter:     String
+    line:       *Wnd
+    ptrData:    *u8
+    typeValue:  Swag.TypeValue
+
+    editBox:    *EditBox
+    checkBox:   *CheckButton
+    comboBox:   *ComboBox
 }
 
 private impl PropertyCtrl
 {
-    mtd addLine(f: Swag.TypeValue, canDesc = true)->*Wnd
+    mtd addItem(f: Swag.TypeValue, ptrData: *u8, canDesc = true)->*PropertyItem
     {
         line := StackLayoutCtrl.create(edView, .TopAutoSize)
         item := items.addNewPtr()
         item.line = line
+        item.typeValue = f
+        item.ptrData = ptrData
 
         // Name
         var dispName: String
@@ -55,15 +63,12 @@ private impl PropertyCtrl
             }
         }
 
-        return line
+        return item
     }
 
-    mtd addEnum(f: Swag.TypeValue, typeEnum: const *Swag.TypeInfoEnum, ptrData: *u8)
+    mtd refreshEnum(using item: *PropertyItem)
     {
-        line := addLine(f)
-        ed := ComboBox.create(line, kind: .CheckBox)
-        ed.maxSize.x = 200
-        ed.anchorStyle = .X
+        typeEnum := cast(const *Swag.TypeInfoEnum) typeValue.pointedType
 
         var val1, val2: u64
         var val1s, val2s: string
@@ -88,63 +93,125 @@ private impl PropertyCtrl
             case 16: val2s = dref cast(const *string) v.value
             }
 
-            ed.addItem(v.name)
             if val1 == val2 and val1s == val2s
                 idxSel = idx
         }
 
-        ed.selectItem(acast idxSel)
+        comboBox.selectItem(acast idxSel)
     }
 
-    mtd addNative(f: Swag.TypeValue, nativeType: const *Swag.TypeInfoNative, ptrData: *u8)
+    mtd addEnum(f: Swag.TypeValue, typeEnum: const *Swag.TypeInfoEnum, ptrData: *u8)
     {
-        line := addLine(f)
-        ed := EditBox.create(line, f.name)
+        item := addItem(f, ptrData)
+        line := item.line
+        ed := ComboBox.create(line, kind: .CheckBox)
         ed.maxSize.x = 200
         ed.anchorStyle = .X
+        item.comboBox = ed
+
+        visit v, idx: typeEnum.values
+        {
+            ed.addItem(v.name)
+        }
+
+        refreshEnum(item)
+    }
+
+    mtd refreshNative(item: *PropertyItem)
+    {
+        nativeType := cast(const *Swag.TypeInfoNative) item.typeValue.pointedType
+        ptrData    := item.ptrData
+        ed         := item.editBox
 
         switch nativeType.nativeKind
         {
         case U8: 
             p := cast(^u8) ptrData
             ed.setText(Format.toString("%", dref p))
-            ed.setInputU64(acast Swag.U8.Min, acast Swag.U8.Max)
         case U16: 
             p := cast(^u16) ptrData
             ed.setText(Format.toString("%", dref p))
-            ed.setInputU64(acast Swag.U16.Min, acast Swag.U16.Max)
         case U32: 
             p := cast(^u32) ptrData
             ed.setText(Format.toString("%", dref p))
-            ed.setInputU64(acast Swag.U32.Min, acast Swag.U32.Max)
         case U64, UInt: 
             p := cast(^u64) ptrData
             ed.setText(Format.toString("%", dref p))
-            ed.setInputU64(acast Swag.U64.Min, acast Swag.U64.Max)
         case S8: 
             p := cast(^s8) ptrData
             ed.setText(Format.toString("%", dref p))
-            ed.setInputS64(acast Swag.S8.Min, acast Swag.S8.Max)
         case S16: 
             p := cast(^s16) ptrData
             ed.setText(Format.toString("%", dref p))
-            ed.setInputS64(acast Swag.S16.Min, acast Swag.S16.Max)
         case S32: 
             p := cast(^s32) ptrData
             ed.setText(Format.toString("%", dref p))
-            ed.setInputS64(acast Swag.S32.Min, acast Swag.S32.Max)
         case S64, Int: 
             p := cast(^s64) ptrData
             ed.setText(Format.toString("%", dref p))
-            ed.setInputS64(acast Swag.S64.Min, acast Swag.S64.Max)
         case F32: 
             p := cast(^f32) ptrData
             ed.setText(Format.toString("%", dref p))
-            ed.setInputF64()
         case F64: 
             p := cast(^f64) ptrData
             ed.setText(Format.toString("%", dref p))
+        }
+    }
+
+    mtd addNative(f: Swag.TypeValue, nativeType: const *Swag.TypeInfoNative, ptrData: *u8)
+    {
+        item := addItem(f, ptrData)
+        line := item.line
+        ed := EditBox.create(line, f.name)
+        ed.maxSize.x = 200
+        ed.anchorStyle = .X
+        item.editBox = ed
+
+        switch nativeType.nativeKind
+        {
+        case U8: 
+            ed.setInputU64(acast Swag.U8.Min, acast Swag.U8.Max)
+        case U16: 
+            ed.setInputU64(acast Swag.U16.Min, acast Swag.U16.Max)
+        case U32: 
+            ed.setInputU64(acast Swag.U32.Min, acast Swag.U32.Max)
+        case U64, UInt: 
+            ed.setInputU64(acast Swag.U64.Min, acast Swag.U64.Max)
+        case S8: 
+            ed.setInputS64(acast Swag.S8.Min, acast Swag.S8.Max)
+        case S16: 
+            ed.setInputS64(acast Swag.S16.Min, acast Swag.S16.Max)
+        case S32: 
+            ed.setInputS64(acast Swag.S32.Min, acast Swag.S32.Max)
+        case S64, Int: 
+            ed.setInputS64(acast Swag.S64.Min, acast Swag.S64.Max)
+        case F32, F64: 
             ed.setInputF64()
+        }
+
+        refreshNative(item)
+    }
+
+    mtd refreshItem(using item: *PropertyItem)
+    {
+        if Reflection.isEnum(typeValue.pointedType)
+        {
+            refreshEnum(item)
+            comboBox.invalidate()
+        }
+        elif typeValue.pointedType == Core.String
+        {
+            editBox.setText(dref cast(*String) ptrData)
+        }
+        elif Reflection.isBool(typeValue.pointedType)
+        {
+            checkBox.checked = dref cast(*bool) ptrData ? .Checked : .UnChecked
+            checkBox.invalidate()
+        }
+        elif Reflection.isInteger(typeValue.pointedType) or Reflection.isFloat(typeValue.pointedType)
+        {
+            refreshNative(item)
+            editBox.invalidate()
         }
     }
 
@@ -161,15 +228,17 @@ private impl PropertyCtrl
             }
             elif f.pointedType == Core.String
             {
-                line := addLine(f)
-                ed := EditBox.create(line, dref cast(*String) ptrData)
+                item := addItem(f, ptrData)
+                ed := EditBox.create(item.line, dref cast(*String) ptrData)
+                item.editBox = ed
             }
             elif Reflection.isBool(f.pointedType)
             {
-                line := addLine(f, false)
+                item := addItem(f, ptrData, false)
                 dispDesc := Reflection.getAttributeValue(f, Property.Description, "desc")
 
-                ed := CheckButton.create(line, dispDesc)
+                ed := CheckButton.create(item.line, dispDesc)
+                item.checkBox = ed
                 if dref cast(*bool) ptrData
                     ed.checked = .Checked
             }
@@ -212,6 +281,15 @@ impl PropertyCtrl
         typeStruct := cast(const *Swag.TypeInfoStruct) typeof
         addStruct(dataof, typeStruct)
         edView.sendResizeEvent()
+    }
+
+    // Refresh displayed values
+    mtd refresh()
+    {       
+        visit it: items
+        {
+            refreshItem(it)
+        } 
     }
 
     // Show hiden content depending on the input filter

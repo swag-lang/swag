@@ -34,10 +34,21 @@ func createView7(tabView: *Tab, view: *Wnd)
     aa.str = "String content"
     lt.addItem(aa)
 
-    ed := EditBox.create(view, "", @{0, 0, 200})
-    ed.setNote("Search")
-    ed.sigChanged += @|lt|(ed) {
-        lt.setStringFilter(ed.text)
+    {
+        ed := EditBox.create(view, "", @{0, 0, 200})
+        ed.setNote("Search")
+        ed.sigChanged += @|lt|(ed) {
+            lt.setStringFilter(ed.text)
+        }
     }
 
+    {
+        ed := EditBox.create(view, "", @{700, 0})
+        ed.sigLoseFocus += @|lt|(ed) {
+            aa.xf32 = 666  
+            aa.value = .Second
+            lt.refresh()          
+        }
+    }
+    
 }
