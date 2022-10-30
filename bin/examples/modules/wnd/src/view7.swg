@@ -30,7 +30,14 @@ var aa: AA
 
 func createView7(tabView: *Tab, view: *Wnd)
 {
-    lt := PropertyCtrl.create(view, @{5, 5, 400, 600})
+    lt := PropertyCtrl.create(view, @{5, 55, 400, 600})
     aa.str = "String content"
     lt.addItem(aa)
+
+    ed := EditBox.create(view, "", @{0, 0, 200})
+    ed.setNote("Search")
+    ed.sigChanged += @|lt|(ed) {
+        lt.setStringFilter(ed.text)
+    }
+
 }

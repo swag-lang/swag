@@ -15,7 +15,8 @@ struct PropertyCtrl
 
 struct PropertyItem
 {
-    name: string
+    filter: String
+    line:   *Wnd
 }
 
 private impl PropertyCtrl
@@ -23,6 +24,8 @@ private impl PropertyCtrl
     mtd addLine(f: Swag.TypeValue, canDesc = true)->*Wnd
     {
         line := StackLayoutCtrl.create(edView, .TopAutoSize)
+        item := items.addNewPtr()
+        item.line = line
 
         // Name
         var dispName: String
@@ -34,12 +37,15 @@ private impl PropertyCtrl
         label := Label.create(line, dispName, @{0, 0, 0, flatModeNameHeight})
         label.horzAlignmentText = .Left
         label.margin.y = flatModeNameSpacing
+        item.filter = dispName
 
         // Description
-        if canDesc
+        dispDesc := Reflection.getAttributeValue(f, Property.Description, "desc")
+        if dispDesc != null
         {
-            dispDesc := Reflection.getAttributeValue(f, Property.Description, "desc")
-            if dispDesc != null
+            item.filter += " "
+            item.filter += cast(string) dispDesc
+            if canDesc
             {
                 labelDesc := Label.create(line, "", @{0, 0, position.width, 0})
                 labelDesc.labelFlags |= .WordWrapAutoSize
@@ -197,7 +203,7 @@ impl PropertyCtrl
         return ed
     }
 
-    // 
+    // Add a new struct to display
     mtd addItem(val: any)
     {
         dataof := @dataof(val)
@@ -206,5 +212,21 @@ impl PropertyCtrl
         typeStruct := cast(const *Swag.TypeInfoStruct) typeof
         addStruct(dataof, typeStruct)
         edView.sendResizeEvent()
+    }
+
+    // Show hiden content depending on the input filter
+    mtd setStringFilter(filter: string)
+    {        
+        visit it: items
+        {
+            if filter == null or @countof(filter) == 0
+                it.line.show()
+            elif Utf8.indexOf(it.filter.toSlice(), filter, comparisonType: Utf8.ComparisonType.Latin1NoCase) != Swag.UInt.Max
+                it.line.show()
+            else
+                it.line.hide()
+        }
+
+        applyLayout()
     }
 }
