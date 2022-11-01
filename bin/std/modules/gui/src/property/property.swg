@@ -8,6 +8,7 @@ struct PropertyCtrl
     flatModeNameSpacing: s32 = 25
     flatModeNameHeight:  s32 = 15
 
+    fontBig:        FontFamily
     scrollWnd:      *ScrollWnd
     edView:         *PropertyView
     items:          ArrayPtr'PropertyItem
@@ -19,7 +20,9 @@ struct PropertyItem
     line:       *Wnd
     ptrData:    *u8
     typeValue:  Swag.TypeValue
+    forceShow:  *Wnd
 
+    label:      *Label
     editBox:    *EditBox
     checkBox:   *CheckButton
     comboBox:   *ComboBox
@@ -42,9 +45,11 @@ private impl PropertyCtrl
             dispName = cast(string) attrName
         else 
             dispName = Format.toString("<b>%<b>", f.name)
-        label := Label.create(line, dispName, @{0, 0, 0, flatModeNameHeight})
-        label.horzAlignmentText = .Left
+        label := Label.create(line, dispName, @{0, 0, position.width, flatModeNameHeight})
+        label.labelFlags |= .WordWrapAutoSize
+        label.horzAlignmentText = .Justify
         label.margin.y = flatModeNameSpacing
+        item.label = label
         item.filter = dispName
 
         // Description
@@ -129,7 +134,7 @@ private impl PropertyCtrl
 
         if Reflection.hasAttribute(typeEnum, Swag.EnumFlags)
         {
-            visit v, idx: typeEnum.values
+            visit v: typeEnum.values
             {
                 itemB := items.addNewPtr()                    
                 itemB.typeValue = dref v
@@ -139,7 +144,8 @@ private impl PropertyCtrl
                 cb := CheckButton.create(edView, strDesc)
                 itemB.checkBox = cb
                 itemB.filter = dispDesc
-                itemB.line = cb                
+                itemB.line = cb
+                itemB.forceShow = item.line              
                 refreshEnumFlags(itemB)
             }
         }
@@ -297,6 +303,13 @@ private impl PropertyCtrl
                 nativeType := cast(const *Swag.TypeInfoNative) f.pointedType
                 addNative(f, nativeType, ptrData)
             }
+            elif Reflection.isStruct(f.pointedType)
+            {                
+                item := addItem(f, ptrData)
+                item.label.setFont(&fontBig)
+                typeSubStruct := cast(const *Swag.TypeInfoStruct) f.pointedType
+                addStruct(ptrData, typeSubStruct)
+            }
         }
     }
 }
@@ -320,6 +333,13 @@ impl PropertyCtrl
             .edView.wndFlags |= .NoScroll
             .edView.layoutKind = .Top
             .edView.spacing = 0
+
+            const BigFontSize = 35'u32
+            theme := parent.getTheme()
+            .fontBig.regular = Font.create(theme.res.defaultTypeFaceR, BigFontSize)
+            .fontBig.bold = Font.create(theme.res.defaultTypeFaceB, BigFontSize)
+            .fontBig.italic = Font.create(theme.res.defaultTypeFaceI, BigFontSize)
+            .fontBig.boldItalic = Font.create(theme.res.defaultTypeFaceBI, BigFontSize)
         }
 
         return ed
@@ -354,7 +374,11 @@ impl PropertyCtrl
             if filter == null or @countof(filter) == 0
                 it.line.show()
             elif Utf8.indexOf(it.filter.toSlice(), filter, comparisonType: Utf8.ComparisonType.Latin1NoCase) != Swag.UInt.Max
+            {
                 it.line.show()
+                if it.forceShow
+                    it.forceShow.show()
+            }
             else
                 it.line.hide()
         }

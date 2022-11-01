@@ -14,6 +14,7 @@ struct Label
 {
     using wnd: Wnd
 
+    font:               *FontFamily
     icon:               Icon
     iconColor:          Color
     labelFlags          = LabelFlags.None
@@ -88,7 +89,7 @@ impl Label
         sf.flags |= .Clip
         if labelFlags & (.WordWrap | .WordWrapAutoSize)
             sf.flags |= .WordWrap
-        sf.font = theme.res.fontDefault
+        sf.font = font ? dref font : theme.res.fontDefault
         sf.horzAlignment = horzAlignmentText
         sf.vertAlignment = vertAlignmentText
         sf.flags |= .VertCenterBaseLine
@@ -124,20 +125,32 @@ impl Label
         return Wnd.create'Label(parent, name, pos, id)
     }
 
+    private mtd autoHeight()
+    {
+        // Recompute height
+        if labelFlags & .WordWrapAutoSize
+        {
+            var painter: Painter{fake: true}
+            sf := getStringFormat(false)
+            name.compute()
+            painter.computeLayout(position, &name, sf)
+            position.height = name.boundRect.height
+        }
+    }
+
     // Change the text
     mtd setText(text: string)
     {
         name = text
         invalidate()
+        autoHeight()
+    }
 
-        // Recompute height
-        if labelFlags & .WordWrapAutoSize
-        {
-            sf := getStringFormat(false)
-            var painter: Painter{fake: true}
-            name.compute()
-            painter.computeLayout(position, &name, sf)
-            position.height = name.boundRect.height + padding.w
-        }
+    // Change the text
+    mtd setFont(fm: *FontFamily)
+    {
+        font = fm
+        invalidate()
+        autoHeight()
     }
 }

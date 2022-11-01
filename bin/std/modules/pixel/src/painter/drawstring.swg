@@ -354,7 +354,7 @@ impl Painter
         text.boundRect.x = Swag.F32.Max
         text.boundRect.y = y
         text.boundRect.width = 0
-        text.boundRect.height = 0
+        text.boundRect.height = totalHeight
 
         // Layout
         visit &l, idxLine: lines
@@ -384,7 +384,6 @@ impl Painter
             }
 
             y += format.font.regular.height + format.lineGap
-            text.boundRect.height += format.font.regular.height + format.lineGap
         }
     }
 

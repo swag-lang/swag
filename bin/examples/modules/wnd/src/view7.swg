@@ -28,6 +28,9 @@ struct AA
     #[Name("<b>Another name<b>")]
     xf32: f32 = 10//Math.Vector3{11.5, 22, 33}
 
+    #[Name("<b>Another name<b>")]
+    x1: Math.Vector3{11.5, 22, 33}
+
     #[Description("This is something that needs to be done.")]
     xb: bool = true
 
