@@ -66,6 +66,28 @@ private impl PropertyCtrl
         return item
     }
 
+    mtd refreshEnumFlags(using item: *PropertyItem)
+    {
+        var val1, val2: u64
+        switch typeValue.pointedType.sizeof
+        {
+        case 1:  
+            val1 = cast(u64) dref cast(*u8) ptrData
+            val2 = cast(u64) dref cast(const *u8) typeValue.value
+        case 2:  
+            val1 = cast(u64) dref cast(*u16) ptrData
+            val2 = cast(u64) dref cast(const *u16) typeValue.value
+        case 4:  
+            val1 = cast(u64) dref cast(*u32) ptrData
+            val2 = cast(u64) dref cast(const *u32) typeValue.value
+        case 8:  
+            val1 = cast(u64) dref cast(*u64) ptrData
+            val2 = cast(u64) dref cast(const *u64) typeValue.value
+        }
+
+        checkBox.checked = val1 & val2 ? .Checked : .UnChecked
+    }
+
     mtd refreshEnum(using item: *PropertyItem)
     {
         typeEnum := cast(const *Swag.TypeInfoEnum) typeValue.pointedType
@@ -96,7 +118,7 @@ private impl PropertyCtrl
             if val1 == val2 and val1s == val2s
                 idxSel = idx
         }
-
+        
         comboBox.selectItem(acast idxSel)
     }
 
@@ -104,17 +126,37 @@ private impl PropertyCtrl
     {
         item := addItem(f, ptrData)
         line := item.line
-        ed := ComboBox.create(line, kind: .CheckBox)
-        ed.maxSize.x = 200
-        ed.anchorStyle = .X
-        item.comboBox = ed
 
-        visit v, idx: typeEnum.values
+        if Reflection.hasAttribute(typeEnum, Swag.EnumFlags)
         {
-            ed.addItem(v.name)
+            visit v, idx: typeEnum.values
+            {
+                itemB := items.addNewPtr()                    
+                itemB.typeValue = dref v
+                itemB.ptrData = ptrData
+                dispDesc := Reflection.getAttributeValue(v, Property.Description, "desc")
+                strDesc := dispDesc != null ? cast(string) dispDesc : ""
+                cb := CheckButton.create(edView, strDesc)
+                itemB.checkBox = cb
+                itemB.filter = dispDesc
+                itemB.line = cb                
+                refreshEnumFlags(itemB)
+            }
         }
+        else
+        {
+            ed := ComboBox.create(line, kind: .CheckBox)
+            ed.maxSize.x = 200
+            ed.anchorStyle = .X
+            item.comboBox = ed
 
-        refreshEnum(item)
+            visit v, idx: typeEnum.values
+            {
+                ed.addItem(v.name)
+            }
+
+            refreshEnum(item)
+        }
     }
 
     mtd refreshNative(item: *PropertyItem)
@@ -196,8 +238,16 @@ private impl PropertyCtrl
     {
         if Reflection.isEnum(typeValue.pointedType)
         {
-            refreshEnum(item)
-            comboBox.invalidate()
+            if Reflection.hasAttribute(typeValue, Swag.EnumFlags)
+            {
+                refreshEnumFlags(item)
+                checkBox.invalidate()
+            }
+            else
+            {
+                refreshEnum(item)
+                comboBox.invalidate()
+            }
         }
         elif typeValue.pointedType == Core.String
         {
@@ -263,10 +313,13 @@ impl PropertyCtrl
             .scrollWnd = .createView'ScrollWnd()
             .scrollWnd.dockStyle = .Center
             .scrollWnd.focusStrategy = .None
+            .scrollWnd.padding = 10
+            .scrollWnd.scrollWndFlags |= .TransparentBar
             .edView = .scrollWnd.createView'PropertyView()
             .edView.ed = ed
             .edView.wndFlags |= .NoScroll
             .edView.layoutKind = .Top
+            .edView.spacing = 0
         }
 
         return ed
@@ -279,7 +332,8 @@ impl PropertyCtrl
         typeof := @kindof(val) 
         Debug.assert(typeof.kind == .Struct)
         typeStruct := cast(const *Swag.TypeInfoStruct) typeof
-        addStruct(dataof, typeStruct)
+        addStruct(dataof, typeStruct)     
+
         edView.sendResizeEvent()
     }
 

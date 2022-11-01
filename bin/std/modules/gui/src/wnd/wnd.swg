@@ -384,18 +384,22 @@ impl Wnd
     }
 
     // Returns true if window, and all its parents, are visible
-    mtd isVisible()->bool
+    mtd isVisible(onlyMe = false)->bool
     {
         check := self
         while check
         {
             if check.wndFlags & .Hidden
                 return false
+            if onlyMe
+                return true
             check = check.parent
         }
 
         return true
     }
+
+    mtd isVisibleState()->bool => wndFlags & .Hidden ? false : true
 
     // Returns true if window, and all its parents, are enabled
     mtd isEnabled()->bool
@@ -799,7 +803,7 @@ impl Wnd
         visit c: childs
         {
             oldSizes.add(@{c.position.width, c.position.height})
-            if !c.isVisible()
+            if !c.isVisibleState()
                 continue
             switch c.dockStyle
             {

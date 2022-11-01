@@ -8,6 +8,17 @@ enum Enum
     Third
 }
 
+#[Swag.EnumFlags]
+enum EnumFlags
+{
+    #[Description("This is something that needs to be done 1.")]
+    Val1
+    #[Description("This is something that needs to be done 2.")]
+    Val2
+    #[Description("This is something that needs to be done 3.")]
+    Val3
+}
+
 struct AA
 {
     #[Name("<b>This is a name<b>: <i>italic<i>")]
@@ -23,7 +34,10 @@ struct AA
     #[Description("This is something that needs to be done except if it not has do be done, and this is it.")]
     str: String
 
-    value: Enum = Third
+    value:  Enum = Third
+
+    #[Name("<b>Another name<b>")]
+    value2: EnumFlags = Val1 | Val3
 }
 
 var aa: AA
@@ -47,6 +61,7 @@ func createView7(tabView: *Tab, view: *Wnd)
         ed.sigLoseFocus += @|lt|(ed) {
             aa.xf32 = 666  
             aa.value = .Second
+            aa.str = "toto"
             lt.refresh()          
         }
     }
