@@ -224,6 +224,10 @@ impl IWnd for EditBox
         pos := surfaceToLocal(evt.surfacePos)
         switch evt.kind
         {
+        case MouseWheel:
+            evt.accepted = false
+            return
+
         case MouseDoubleClick:
             if evt.button != .Left
                 break

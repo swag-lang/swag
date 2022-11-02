@@ -40,10 +40,10 @@ private impl PropertyCtrl
 
         // Name
         var dispName: String
-        attrName := Reflection.getAttributeValue(f, Property.Name, "name") 
+        attrName := Reflection.getAttributeValue(f, Property.Name, "name")
         if attrName != null
             dispName = cast(string) attrName
-        else 
+        else
             dispName = Format.toString("<b>%<b>", f.name)
         label := Label.create(line, dispName, @{0, 0, position.width, flatModeNameHeight})
         label.labelFlags |= .WordWrapAutoSize
@@ -76,16 +76,16 @@ private impl PropertyCtrl
         var val1, val2: u64
         switch typeValue.pointedType.sizeof
         {
-        case 1:  
+        case 1:
             val1 = cast(u64) dref cast(*u8) ptrData
             val2 = cast(u64) dref cast(const *u8) typeValue.value
-        case 2:  
+        case 2:
             val1 = cast(u64) dref cast(*u16) ptrData
             val2 = cast(u64) dref cast(const *u16) typeValue.value
-        case 4:  
+        case 4:
             val1 = cast(u64) dref cast(*u32) ptrData
             val2 = cast(u64) dref cast(const *u32) typeValue.value
-        case 8:  
+        case 8:
             val1 = cast(u64) dref cast(*u64) ptrData
             val2 = cast(u64) dref cast(const *u64) typeValue.value
         }
@@ -123,7 +123,7 @@ private impl PropertyCtrl
             if val1 == val2 and val1s == val2s
                 idxSel = idx
         }
-        
+
         comboBox.selectItem(acast idxSel)
     }
 
@@ -136,7 +136,7 @@ private impl PropertyCtrl
         {
             visit v: typeEnum.values
             {
-                itemB := items.addNewPtr()                    
+                itemB := items.addNewPtr()
                 itemB.typeValue = dref v
                 itemB.ptrData = ptrData
                 dispDesc := Reflection.getAttributeValue(v, Property.Description, "desc")
@@ -145,7 +145,7 @@ private impl PropertyCtrl
                 itemB.checkBox = cb
                 itemB.filter = dispDesc
                 itemB.line = cb
-                itemB.forceShow = item.line              
+                itemB.forceShow = item.line
                 refreshEnumFlags(itemB)
             }
         }
@@ -173,34 +173,34 @@ private impl PropertyCtrl
 
         switch nativeType.nativeKind
         {
-        case U8: 
+        case U8:
             p := cast(^u8) ptrData
             ed.setText(Format.toString("%", dref p))
-        case U16: 
+        case U16:
             p := cast(^u16) ptrData
             ed.setText(Format.toString("%", dref p))
-        case U32: 
+        case U32:
             p := cast(^u32) ptrData
             ed.setText(Format.toString("%", dref p))
-        case U64, UInt: 
+        case U64, UInt:
             p := cast(^u64) ptrData
             ed.setText(Format.toString("%", dref p))
-        case S8: 
+        case S8:
             p := cast(^s8) ptrData
             ed.setText(Format.toString("%", dref p))
-        case S16: 
+        case S16:
             p := cast(^s16) ptrData
             ed.setText(Format.toString("%", dref p))
-        case S32: 
+        case S32:
             p := cast(^s32) ptrData
             ed.setText(Format.toString("%", dref p))
-        case S64, Int: 
+        case S64, Int:
             p := cast(^s64) ptrData
             ed.setText(Format.toString("%", dref p))
-        case F32: 
+        case F32:
             p := cast(^f32) ptrData
             ed.setText(Format.toString("%", dref p))
-        case F64: 
+        case F64:
             p := cast(^f64) ptrData
             ed.setText(Format.toString("%", dref p))
         }
@@ -217,23 +217,23 @@ private impl PropertyCtrl
 
         switch nativeType.nativeKind
         {
-        case U8: 
+        case U8:
             ed.setInputU64(acast Swag.U8.Min, acast Swag.U8.Max)
-        case U16: 
+        case U16:
             ed.setInputU64(acast Swag.U16.Min, acast Swag.U16.Max)
-        case U32: 
+        case U32:
             ed.setInputU64(acast Swag.U32.Min, acast Swag.U32.Max)
-        case U64, UInt: 
+        case U64, UInt:
             ed.setInputU64(acast Swag.U64.Min, acast Swag.U64.Max)
-        case S8: 
+        case S8:
             ed.setInputS64(acast Swag.S8.Min, acast Swag.S8.Max)
-        case S16: 
+        case S16:
             ed.setInputS64(acast Swag.S16.Min, acast Swag.S16.Max)
-        case S32: 
+        case S32:
             ed.setInputS64(acast Swag.S32.Min, acast Swag.S32.Max)
-        case S64, Int: 
+        case S64, Int:
             ed.setInputS64(acast Swag.S64.Min, acast Swag.S64.Max)
-        case F32, F64: 
+        case F32, F64:
             ed.setInputF64()
         }
 
@@ -274,7 +274,7 @@ private impl PropertyCtrl
     mtd addStruct(addr: ^u8, typeStruct: const *Swag.TypeInfoStruct)
     {
         visit f: typeStruct.fields
-        {       
+        {
             ptrData := addr + f.offset
 
             if Reflection.isEnum(f.pointedType)
@@ -304,7 +304,7 @@ private impl PropertyCtrl
                 addNative(f, nativeType, ptrData)
             }
             elif Reflection.isStruct(f.pointedType)
-            {                
+            {
                 item := addItem(f, ptrData)
                 item.label.setFont(&fontBig)
                 typeSubStruct := cast(const *Swag.TypeInfoStruct) f.pointedType
@@ -334,7 +334,7 @@ impl PropertyCtrl
             .edView.layoutKind = .Top
             .edView.spacing = 0
 
-            const BigFontSize = 35'u32
+            const BigFontSize = 30'u32
             theme := parent.getTheme()
             .fontBig.regular = Font.create(theme.res.defaultTypeFaceR, BigFontSize)
             .fontBig.bold = Font.create(theme.res.defaultTypeFaceB, BigFontSize)
@@ -349,26 +349,26 @@ impl PropertyCtrl
     mtd addItem(val: any)
     {
         dataof := @dataof(val)
-        typeof := @kindof(val) 
+        typeof := @kindof(val)
         Debug.assert(typeof.kind == .Struct)
         typeStruct := cast(const *Swag.TypeInfoStruct) typeof
-        addStruct(dataof, typeStruct)     
+        addStruct(dataof, typeStruct)
 
         edView.sendResizeEvent()
     }
 
     // Refresh displayed values
     mtd refresh()
-    {       
+    {
         visit it: items
         {
             refreshItem(it)
-        } 
+        }
     }
 
     // Show hiden content depending on the input filter
     mtd setStringFilter(filter: string)
-    {        
+    {
         visit it: items
         {
             if filter == null or @countof(filter) == 0

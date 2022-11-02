@@ -118,9 +118,12 @@ impl IWnd for ComboBox
 
     mtd onMouseEvent(evt: *MouseEvent)
     {
-        evt.accepted = true
         switch evt.kind
         {
+        case MouseWheel:
+            evt.accepted = false
+            return
+
         case MousePressed:
             if evt.button != .Left
                 break
