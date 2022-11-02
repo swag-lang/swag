@@ -11,8 +11,8 @@ struct PropertyList
 {
     using frameWnd: FrameWnd
 
-    flatModeNameSpacing: s32 = 25
-    flatModeNameHeight:  s32 = 15
+    nameMarginBefore: s32 = 25
+    nameHeight:       s32 = 25
 
     fontBig:        FontFamily
     scrollWnd:      *ScrollWnd
@@ -51,10 +51,10 @@ private impl PropertyList
             dispName = cast(string) attrName
         else
             dispName = Format.toString("<b>%<b>", f.name)
-        label := Label.create(line, dispName, @{0, 0, position.width, flatModeNameHeight})
-        label.labelFlags |= .WordWrapAutoSize
+        label := Label.create(line, dispName, @{0, 0, position.width, nameHeight})
+        label.labelFlags |= .WordWrap | .AutoHeight
         label.horzAlignmentText = .Justify
-        label.margin.y = flatModeNameSpacing
+        label.margin.y = nameMarginBefore
         item.label = label
         item.filter = dispName
 
@@ -67,7 +67,7 @@ private impl PropertyList
             if canDesc
             {
                 labelDesc := Label.create(line, "", @{0, 0, position.width, 0})
-                labelDesc.labelFlags |= .WordWrapAutoSize
+                labelDesc.labelFlags |= .WordWrap | .AutoHeight
                 labelDesc.horzAlignmentText = .Justify
                 labelDesc.setText(dispDesc)
                 labelDesc.margin.w = 5
@@ -145,13 +145,25 @@ private impl PropertyList
                 itemB := items.addNewPtr()
                 itemB.typeValue = dref v
                 itemB.ptrData = ptrData
+
                 dispDesc := Reflection.getAttributeValue(v, PropertyList.Description, "desc")
-                strDesc := dispDesc != null ? cast(string) dispDesc : ""
-                cb := CheckButton.create(edView, strDesc)
-                itemB.checkBox = cb
+                line1 := Wnd.create'Wnd(edView)
+
+                ed := CheckButton.create(line1, "", @{0, 0, 30, 0})
+                ed.dockStyle = .Left
+
+                label1 := Label.create(line1, "", @{30, 0, position.width - 30})
+                label1.dockStyle = .Center
+                label1.labelFlags |= .WordWrap | .AutoHeight
+                label1.horzAlignmentText = .Justify
+                label1.setText(dispDesc)
+                line1.position.height = Math.max(ed.position.height, label1.position.height)
+
                 itemB.filter = dispDesc
-                itemB.line = cb
+                itemB.line = line1
                 itemB.forceShow = item.line
+                itemB.checkBox = ed
+
                 refreshEnumFlags(itemB)
             }
         }
@@ -210,6 +222,28 @@ private impl PropertyList
             p := cast(^f64) ptrData
             ed.setText(Format.toString("%", dref p))
         }
+    }
+
+    mtd addBool(f: Swag.TypeValue, nativeType: const *Swag.TypeInfoNative, ptrData: *u8)
+    {
+        item := addItem(f, ptrData, false)
+
+        dispDesc := Reflection.getAttributeValue(f, PropertyList.Description, "desc")
+        line1 := Wnd.create'Wnd(item.line)
+
+        ed := CheckButton.create(line1, "", @{0, 0, 30, 0})
+        ed.dockStyle = .Left
+
+        label1 := Label.create(line1, "", @{30, 0, position.width - 30})
+        label1.dockStyle = .Center
+        label1.labelFlags |= .WordWrap | .AutoHeight
+        label1.horzAlignmentText = .Justify
+        label1.setText(dispDesc)
+        line1.position.height = Math.max(ed.position.height, label1.position.height)
+
+        item.checkBox = ed
+        if dref cast(*bool) ptrData
+            ed.checked = .Checked
     }
 
     mtd addNative(f: Swag.TypeValue, nativeType: const *Swag.TypeInfoNative, ptrData: *u8)
@@ -296,12 +330,8 @@ private impl PropertyList
             }
             elif Reflection.isBool(f.pointedType)
             {
-                item := addItem(f, ptrData, false)
-                dispDesc := Reflection.getAttributeValue(f, PropertyList.Description, "desc")
-                ed := CheckButton.create(item.line, dispDesc)
-                item.checkBox = ed
-                if dref cast(*bool) ptrData
-                    ed.checked = .Checked
+                nativeType := cast(const *Swag.TypeInfoNative) f.pointedType
+                addBool(f, nativeType, ptrData)
             }
             elif Reflection.isInteger(f.pointedType) or Reflection.isFloat(f.pointedType)
             {

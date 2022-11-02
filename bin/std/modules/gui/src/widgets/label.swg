@@ -6,8 +6,8 @@ enum LabelFlags
 {
     None
     WordWrap
-    WordWrapAutoSize
     LightText
+    AutoHeight
 }
 
 struct Label
@@ -87,12 +87,13 @@ impl Label
 
         var sf: retval
         sf.flags |= .Clip
-        if labelFlags & (.WordWrap | .WordWrapAutoSize)
+        if labelFlags & .WordWrap
             sf.flags |= .WordWrap
+        else
+            sf.flags |= .VertCenterBaseLine
         sf.font = font ? dref font : theme.res.fontDefault
         sf.horzAlignment = horzAlignmentText
         sf.vertAlignment = vertAlignmentText
-        sf.flags |= .VertCenterBaseLine
 
         if isDisabled
         {
@@ -122,13 +123,14 @@ impl Label
         pos := position
         if pos.height == 0
             pos.height = parent.getThemeMetrics().label_Height
-        return Wnd.create'Label(parent, name, pos, id)
+        lbl := Wnd.create'Label(parent, name, pos, id)
+        return lbl
     }
 
     private mtd autoHeight()
     {
         // Recompute height
-        if labelFlags & .WordWrapAutoSize
+        if labelFlags & .AutoHeight
         {
             var painter: Painter{fake: true}
             sf := getStringFormat(false)

@@ -13,7 +13,7 @@ enum EnumFlags
 {
     #[Description("This is something that needs to be done 1.")]
     Val1
-    #[Description("This is something that needs to be done 2.")]
+    #[Description("This is something that needs to be done except if it not has do be done, and this is it.")]
     Val2
     #[Description("This is something that needs to be done 3.")]
     Val3
@@ -33,6 +33,8 @@ struct AA
 
     #[Description("This is something that needs to be done except if it not has do be done, and this is it.")]
     xb: bool = true
+    #[Description("This is something that needs to be done.")]
+    xb1: bool = true
 
     #[Description("This is something that needs to be done except if it not has do be done, and this is it.")]
     str: String
