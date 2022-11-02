@@ -15,28 +15,34 @@ impl Image
     }
 
     // Resize image
+    // Put 'newWidth' or 'newHeight' to 0 to keep aspect ratio
     public mtd resize(newWidth, newHeight: s32, mode = ResizeMode.Raw)
     {
-        Debug.assert(newWidth > 0 and newHeight > 0)
-        if newWidth == width and newHeight == height return
-        allocWorkingBuffer(newWidth, newHeight, pf)
+        Debug.assert(newWidth > 0 or newHeight > 0)
+        nw := newWidth orelse cast(s32) (newHeight * (width / cast(f32) height))
+        nh := newHeight orelse cast(s32) (newWidth * (height / cast(f32) width))
+        if nw == width and nh == height
+            return
+        allocWorkingBuffer(nw, nh, pf)
         ResizeTools.doResize(self, workingBuffer, mode)
         applyWorkingBuffer()
     }
 
     // Resize image
+    // Put 'newWidth' or 'newHeight' to 0 to keep aspect ratio
     public mtd toResize(newWidth, newHeight: s32, mode = ResizeMode.Raw)->Image
     {
-        using ResizeTools
-        Debug.assert(newWidth > 0 and newHeight > 0)
-
-        if newWidth == width and newHeight == height
+        Debug.assert(newWidth > 0 or newHeight > 0)
+        nw := newWidth orelse cast(s32) (newHeight * (width / cast(f32) height))
+        nh := newHeight orelse cast(s32) (newWidth * (height / cast(f32) width))
+        if nw == width and nh == height
         {
             var result: retval = dref self
             return result
         }
 
-        var result: retval = create(newWidth, newHeight, pf)
+        using ResizeTools
+        var result: retval = create(nw, nh, pf)
         ResizeTools.doResize(self, &result, mode)
         return result
     }

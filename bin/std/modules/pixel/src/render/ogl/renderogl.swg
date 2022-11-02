@@ -339,7 +339,17 @@ impl RenderOgl
             glViewport(0, 0, curRT.colorBuffer.width, curRT.colorBuffer.height)
     }
 
-    // Go back to the frame buffer
+    // Get current render target pixels
+    mtd unbindRenderTargetToImage(x, y, w, h: s32)->Image
+    {
+        var result: retval = Image.create(w, h, .BGRA8)
+        glReadBuffer(GL_COLOR_ATTACHMENT0)
+        glReadPixels(x, curRT.colorBuffer.height - h, w, h, GL_BGRA, GL_UNSIGNED_BYTE, result.pixels.buffer)
+        unbindRenderTarget()
+        return result
+    }
+
+    // Go back to the previous render target, or frame buffer
     mtd unbindRenderTarget()
     {
         if stackRT.count

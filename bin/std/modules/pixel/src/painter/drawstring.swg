@@ -125,6 +125,13 @@ impl Painter
         return result
     }
 
+    // Draw a simple string (centered)
+    mtd drawStringCenter(x, y: f32, text: string, font: *Font, color: Color, under = UnderlineStyle.None)
+    {
+        ms := measureString(text, font)
+        drawString(x - ms.width * 0.5, y - ms.height * 0.5 - ms.y, text, font, color, under)
+    }
+
     // Draw a simple string
     mtd drawString(left, top: f32, text: string, font: *Font, color: Color, under = UnderlineStyle.None)
     {

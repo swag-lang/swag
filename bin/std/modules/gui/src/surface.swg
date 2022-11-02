@@ -15,6 +15,7 @@ struct Surface
     wnd:            *SurfaceWnd
     painter:        Painter
     rt:             RenderTarget
+    userData:       *void
 
     rc:             RenderingContext
     minSize:        Math.Point
