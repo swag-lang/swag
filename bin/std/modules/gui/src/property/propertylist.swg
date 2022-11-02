@@ -11,8 +11,10 @@ struct PropertyList
 {
     using frameWnd: FrameWnd
 
-    nameMarginBefore: s32 = 25
-    nameHeight:       s32 = 25
+    nameMarginBefore:   s32 = 25
+    nameHeight:         s32 = 25
+    maxSizeCombo:       s32 = 200
+    maxSizeEditValue:   s32 = 200
 
     fontBig:        FontFamily
     scrollWnd:      *ScrollWnd
@@ -170,7 +172,7 @@ private impl PropertyList
         else
         {
             ed := ComboBox.create(line, kind: .CheckBox)
-            ed.maxSize.x = 200
+            ed.maxSize.x = maxSizeCombo
             ed.anchorStyle = .X
             item.comboBox = ed
 
@@ -251,7 +253,7 @@ private impl PropertyList
         item := addItem(f, ptrData)
         line := item.line
         ed := EditBox.create(line, f.name)
-        ed.maxSize.x = 200
+        ed.maxSize.x = maxSizeEditValue
         ed.anchorStyle = .X
         item.editBox = ed
 
@@ -286,28 +288,43 @@ private impl PropertyList
         {
             if Reflection.hasAttribute(typeValue, Swag.EnumFlags)
             {
-                refreshEnumFlags(item)
-                checkBox.invalidate()
+                if checkBox
+                {
+                    refreshEnumFlags(item)
+                    checkBox.invalidate()
+                }
             }
             else
             {
-                refreshEnum(item)
-                comboBox.invalidate()
+                if comboBox
+                {
+                    refreshEnum(item)
+                    comboBox.invalidate()
+                }
             }
         }
         elif typeValue.pointedType == Core.String
         {
-            editBox.setText(dref cast(*String) ptrData)
+            if editBox
+            {
+                editBox.setText(dref cast(*String) ptrData)
+            }
         }
         elif Reflection.isBool(typeValue.pointedType)
         {
-            checkBox.checked = dref cast(*bool) ptrData ? .Checked : .UnChecked
-            checkBox.invalidate()
+            if checkBox
+            {
+                checkBox.checked = dref cast(*bool) ptrData ? .Checked : .UnChecked
+                checkBox.invalidate()
+            }
         }
         elif Reflection.isInteger(typeValue.pointedType) or Reflection.isFloat(typeValue.pointedType)
         {
-            refreshNative(item)
-            editBox.invalidate()
+            if editBox
+            {
+                refreshNative(item)
+                editBox.invalidate()
+            }
         }
     }
 
