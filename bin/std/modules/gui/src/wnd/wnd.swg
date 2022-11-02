@@ -1095,6 +1095,14 @@ impl Wnd
         sendEvent(&evt)
     }
 
+    mtd postResizeEvent()
+    {
+        evt := Event.create'ResizeEvent()
+        evt.oldSize.x = position.width
+        evt.oldSize.y = position.height
+        postEvent(evt)
+    }
+
     mtd sendCreateEvent()
     {
         if createEventDone

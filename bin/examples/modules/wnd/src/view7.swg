@@ -1,5 +1,5 @@
 using Core, Gui, Pixel
-using Property
+using PropertyList
 
 enum Enum
 {
@@ -31,7 +31,7 @@ struct AA
     #[Name("<b>Another name<b>")]
     x1: Math.Vector3{11.5, 22, 33}
 
-    #[Description("This is something that needs to be done.")]
+    #[Description("This is something that needs to be done except if it not has do be done, and this is it.")]
     xb: bool = true
 
     #[Description("This is something that needs to be done except if it not has do be done, and this is it.")]

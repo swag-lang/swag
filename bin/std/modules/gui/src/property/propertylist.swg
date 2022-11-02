@@ -1,6 +1,12 @@
 #global public
 using Core, Pixel
 
+impl PropertyList
+{
+    attr Name(name: string)
+    attr Description(desc: string)
+}
+
 struct PropertyList
 {
     using frameWnd: FrameWnd
@@ -40,7 +46,7 @@ private impl PropertyList
 
         // Name
         var dispName: String
-        attrName := Reflection.getAttributeValue(f, Property.Name, "name")
+        attrName := Reflection.getAttributeValue(f, PropertyList.Name, "name")
         if attrName != null
             dispName = cast(string) attrName
         else
@@ -53,7 +59,7 @@ private impl PropertyList
         item.filter = dispName
 
         // Description
-        dispDesc := Reflection.getAttributeValue(f, Property.Description, "desc")
+        dispDesc := Reflection.getAttributeValue(f, PropertyList.Description, "desc")
         if dispDesc != null
         {
             item.filter += " "
@@ -139,7 +145,7 @@ private impl PropertyList
                 itemB := items.addNewPtr()
                 itemB.typeValue = dref v
                 itemB.ptrData = ptrData
-                dispDesc := Reflection.getAttributeValue(v, Property.Description, "desc")
+                dispDesc := Reflection.getAttributeValue(v, PropertyList.Description, "desc")
                 strDesc := dispDesc != null ? cast(string) dispDesc : ""
                 cb := CheckButton.create(edView, strDesc)
                 itemB.checkBox = cb
@@ -291,8 +297,7 @@ private impl PropertyList
             elif Reflection.isBool(f.pointedType)
             {
                 item := addItem(f, ptrData, false)
-                dispDesc := Reflection.getAttributeValue(f, Property.Description, "desc")
-
+                dispDesc := Reflection.getAttributeValue(f, PropertyList.Description, "desc")
                 ed := CheckButton.create(item.line, dispDesc)
                 item.checkBox = ed
                 if dref cast(*bool) ptrData
