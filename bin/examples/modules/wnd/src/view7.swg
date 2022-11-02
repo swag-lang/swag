@@ -47,7 +47,7 @@ var aa: AA
 
 func createView7(tabView: *Tab, view: *Wnd)
 {
-    lt := PropertyCtrl.create(view, @{5, 55, 400, 600})
+    lt := PropertyList.create(view, @{5, 55, 400, 600})
     aa.str = "String content"
     lt.addItem(aa)
 
@@ -62,11 +62,11 @@ func createView7(tabView: *Tab, view: *Wnd)
     {
         ed := EditBox.create(view, "", @{700, 0})
         ed.sigLoseFocus += @|lt|(ed) {
-            aa.xf32 = 666  
+            aa.xf32 = 666
             aa.value = .Second
             aa.str = "toto"
-            lt.refresh()          
+            lt.refresh()
         }
     }
-    
+
 }

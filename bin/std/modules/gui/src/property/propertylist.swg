@@ -1,7 +1,7 @@
 #global public
 using Core, Pixel
 
-struct PropertyCtrl
+struct PropertyList
 {
     using frameWnd: FrameWnd
 
@@ -10,11 +10,11 @@ struct PropertyCtrl
 
     fontBig:        FontFamily
     scrollWnd:      *ScrollWnd
-    edView:         *PropertyView
-    items:          ArrayPtr'PropertyItem
+    edView:         *PropertyListView
+    items:          ArrayPtr'PropertyListItem
 }
 
-struct PropertyItem
+struct PropertyListItem
 {
     filter:     String
     line:       *Wnd
@@ -28,9 +28,9 @@ struct PropertyItem
     comboBox:   *ComboBox
 }
 
-private impl PropertyCtrl
+private impl PropertyList
 {
-    mtd addItem(f: Swag.TypeValue, ptrData: *u8, canDesc = true)->*PropertyItem
+    mtd addItem(f: Swag.TypeValue, ptrData: *u8, canDesc = true)->*PropertyListItem
     {
         line := StackLayoutCtrl.create(edView, .TopAutoSize)
         item := items.addNewPtr()
@@ -71,7 +71,7 @@ private impl PropertyCtrl
         return item
     }
 
-    mtd refreshEnumFlags(using item: *PropertyItem)
+    mtd refreshEnumFlags(using item: *PropertyListItem)
     {
         var val1, val2: u64
         switch typeValue.pointedType.sizeof
@@ -93,7 +93,7 @@ private impl PropertyCtrl
         checkBox.checked = val1 & val2 ? .Checked : .UnChecked
     }
 
-    mtd refreshEnum(using item: *PropertyItem)
+    mtd refreshEnum(using item: *PropertyListItem)
     {
         typeEnum := cast(const *Swag.TypeInfoEnum) typeValue.pointedType
 
@@ -165,7 +165,7 @@ private impl PropertyCtrl
         }
     }
 
-    mtd refreshNative(item: *PropertyItem)
+    mtd refreshNative(item: *PropertyListItem)
     {
         nativeType := cast(const *Swag.TypeInfoNative) item.typeValue.pointedType
         ptrData    := item.ptrData
@@ -240,7 +240,7 @@ private impl PropertyCtrl
         refreshNative(item)
     }
 
-    mtd refreshItem(using item: *PropertyItem)
+    mtd refreshItem(using item: *PropertyListItem)
     {
         if Reflection.isEnum(typeValue.pointedType)
         {
@@ -314,12 +314,12 @@ private impl PropertyCtrl
     }
 }
 
-impl PropertyCtrl
+impl PropertyList
 {
     #[Swag.Discardable]
-    func create(parent: *Wnd, position: Math.Rectangle = @{}, id: WndId = null)->*PropertyCtrl
+    func create(parent: *Wnd, position: Math.Rectangle = @{}, id: WndId = null)->*PropertyList
     {
-        ed := Wnd.create'PropertyCtrl(parent, "", position, id)
+        ed := Wnd.create'PropertyList(parent, "", position, id)
 
         with ed
         {
@@ -328,7 +328,7 @@ impl PropertyCtrl
             .scrollWnd.focusStrategy = .None
             .scrollWnd.padding = 10
             .scrollWnd.scrollWndFlags |= .TransparentBar
-            .edView = .scrollWnd.createView'PropertyView()
+            .edView = .scrollWnd.createView'PropertyListView()
             .edView.ed = ed
             .edView.wndFlags |= .NoScroll
             .edView.layoutKind = .Top

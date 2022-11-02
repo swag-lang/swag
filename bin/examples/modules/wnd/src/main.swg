@@ -31,7 +31,7 @@ var app: Application
     view6 := Wnd.create'Wnd(tab)
     tab.addItem("LayoutCtrl", @{}, view6)
     view7 := Wnd.create'Wnd(tab)
-    tab.addItem("PropertyCtrl", @{}, view7)
+    tab.addItem("PropertyList", @{}, view7)
 
     createView0(tab, view0)
     createView1(tab, view1)
