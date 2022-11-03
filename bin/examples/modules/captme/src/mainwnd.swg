@@ -71,6 +71,8 @@ impl IWnd for MainWnd
         sf := catch surface.app.createSurface(500, 400, 300, 300, .Secondary | .TopMost)
         with menu := Wnd.create'MenuCtrl(sf.wnd.view, null)
         {
+            .addItem(CmdIdShowEditor)
+            .addSeparator()
             .addItem(CmdIdCaptureArea)
             .addItem(CmdIdCaptureFullScreen)
             .addItem(CmdIdCaptureActiveWnd)
@@ -103,14 +105,17 @@ impl IWnd for MainWnd
 
     mtd onSysUserEvent(evt: *SysUserEvent)
     {
-        if evt.param1 == Win32.WM_LBUTTONDBLCLK
+        #if #os == Swag.TargetOs.Windows
         {
-            surface.show()
-            surface.bringToTop()
-        }
-        elif evt.param1 == Win32.WM_RBUTTONDOWN
-        {
-            popupBar()
+            if evt.param1 == Win32.WM_LBUTTONDBLCLK
+            {
+                surface.show()
+                surface.bringToTop()
+            }
+            elif evt.param1 == Win32.WM_RBUTTONDOWN
+            {
+                popupBar()
+            }
         }
     }
 
@@ -174,6 +179,11 @@ impl IWnd for MainWnd
         case CmdIdMoveSelLeft1, CmdIdMoveSelTop1, CmdIdMoveSelRight1, CmdIdMoveSelBottom1:
             evt.setFlags |= .Disabled
             evt.disabled = !hasSel
+            evt.accepted = true
+
+        case CmdIdShowEditor:
+            evt.setFlags |= .Name
+            evt.name = "Show Editor"
             evt.accepted = true
 
         case CmdIdCaptureHideEditor:
@@ -635,6 +645,10 @@ impl IWnd for MainWnd
             captureMode = .LastArea
         case CmdIdCaptModeFullScreen:
             captureMode = .FullScreen
+
+        case CmdIdShowEditor:
+            surface.show()
+            surface.bringToTop()
 
         case CmdIdCaptureHideEditor:
             hideCaptMe = !hideCaptMe

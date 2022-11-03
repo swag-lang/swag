@@ -76,5 +76,6 @@ const CmdIdMoveSelLeft1         = "CmdIdMoveSelLeft1"
 const CmdIdMoveSelTop1          = "CmdIdMoveSelTop1"
 const CmdIdMoveSelRight1        = "CmdIdMoveSelRight1"
 const CmdIdMoveSelBottom1       = "CmdIdMoveSelBottom1"
+const CmdIdShowEditor           = "CmdIdShowEditor"
 
 const ClipboardFormat = "Swag.CaptMe"
