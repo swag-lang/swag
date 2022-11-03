@@ -36,6 +36,16 @@ private func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRE
     surface := cast(*Surface) GetWindowLongPtrW(hWnd, GWLP_USERDATA)
     if surface
     {
+        if msg >= WM_USER
+        {
+            evt := SysUserEvent{}
+            evt.userMsg = msg
+            evt.param0 = wParam
+            evt.param1 = lParam
+            surface.wnd.view.sendEvent(&evt)
+            return TRUE
+        }
+
         switch msg
         {
         case WM_SYSKEYDOWN, WM_SYSKEYUP, WM_SYSCHAR:
@@ -172,6 +182,8 @@ private impl Surface
         winFlagsEx := 0'u32
         if flags & .Secondary
             winFlagsEx |= WS_EX_TOOLWINDOW
+        if flags & .TopMost
+            winFlagsEx |= WS_EX_TOPMOST
 
         // Create window
         result.hWnd = cast(const *void) CreateWindowExW(
@@ -273,7 +285,7 @@ impl Surface
         if isHidden
             return
         isHidden = true
-        
+
         ShowWindow(hWnd, SW_HIDE)
         wnd.view.sendStateEvent(.Hide)
     }

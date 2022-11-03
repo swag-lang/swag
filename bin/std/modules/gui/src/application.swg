@@ -414,7 +414,7 @@ private impl Application
         deletePointers()
     }
 
-    mtd doModalLoop(surface: *Surface, cb: closure(self) = null)->WndId
+    public mtd doModalLoop(surface: *Surface, cb: closure(self) = null)->WndId
     {
         inModalLoop += 1
         defer inModalLoop -= 1

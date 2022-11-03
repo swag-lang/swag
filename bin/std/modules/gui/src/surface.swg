@@ -47,6 +47,7 @@ enum SurfaceFlags
     Sizeable
 
     Secondary
+    TopMost
 
     OverlappedWindow = BigCaption | MinimizeBtn | MaximizeBtn | CloseBtn | Border | Sizeable
 }

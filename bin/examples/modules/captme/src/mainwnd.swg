@@ -66,12 +66,62 @@ const Icons48 = #include("datas/icons48.png")
 
 impl IWnd for MainWnd
 {
+    mtd popupBar()
+    {
+        sf := catch surface.app.createSurface(500, 400, 300, 300, .Secondary | .TopMost)
+        with menu := Wnd.create'MenuCtrl(sf.wnd.view, null)
+        {
+            .addItem(CmdIdCaptureArea)
+            .addItem(CmdIdCaptureFullScreen)
+            .addItem(CmdIdCaptureActiveWnd)
+            .addSeparator()
+            .addItem(CmdIdNewFromClipboard)
+            .addSeparator()
+            .addItem(CmdIdExit)
+
+            .owner = self
+            .paintByFrame = true
+            .dockStyle = .Center
+            .margin = 10
+            .updateState()
+            .computeLayoutPopup()
+        }
+
+        pt := Input.getMousePos()
+        sf.setPosition(@{pt.x, pt.y, menu.position.width + 64, menu.position.height + 64})
+        sf.wnd.view.backgroundStyle = .Window
+        sf.show()
+        sf.bringToTop()
+
+        while !menu.endModal
+            surface.app.runFrame()
+        sf.hide()
+        if menu.endModalResult
+            postCommandEvent(menu.endModalResult)
+        sf.destroy()
+    }
+
+    mtd onSysUserEvent(evt: *SysUserEvent)
+    {
+        if evt.param1 == Win32.WM_LBUTTONDBLCLK
+        {
+            surface.show()
+            surface.bringToTop()
+        }
+        elif evt.param1 == Win32.WM_RBUTTONDOWN
+        {
+            popupBar()
+        }
+    }
+
     mtd onSysCommandEvent(evt: *SysCommandEvent)
     {
         evt.accepted = false
-        if evt.sysKind == .Close
+        switch evt.sysKind
         {
-            libWnd.requestClose()
+        case Close:
+            evt.accepted = true
+            surface.hide()
         }
     }
 
@@ -1047,13 +1097,17 @@ impl MainWnd
 
     mtd captureScreen(mode: CaptureMode)
     {
-        if hideCaptMe
+        wasHidden := surface.isHidden
+        if !wasHidden
         {
-            if !surface.isMinimized
-                surface.hide()
+            if hideCaptMe
+            {
+                if !surface.isMinimized
+                    surface.hide()
+            }
+            else
+                surface.disable()
         }
-        else
-            surface.disable()
 
         var img: Image
         if mode == .None
@@ -1061,19 +1115,23 @@ impl MainWnd
         else
             img = catch screenShot(mode)
 
-        if hideCaptMe
-        {
-            if !surface.isMinimized
-                surface.show()
-            else
-                surface.showNormal()
-        }
-        else
-            surface.enable()
+        isValid := !@err and img.width > 0 and img.height > 0
 
-        if @err or img.width == 0 or img.height == 0
-            return
-        newCapture(img)
+        if !wasHidden or isValid
+        {
+            if hideCaptMe
+            {
+                if !surface.isMinimized
+                    surface.show()
+                else
+                    surface.showNormal()
+            }
+            else
+                surface.enable()
+        }
+
+        if isValid
+            newCapture(img)
     }
 
     mtd updateZoomDisplay()

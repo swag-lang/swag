@@ -61,6 +61,7 @@ interface IWnd
     mtd onKeyEvent(evt: *KeyEvent)
     mtd onMouseEvent(evt: *MouseEvent)
     mtd onSysCommandEvent(evt: *SysCommandEvent)
+    mtd onSysUserEvent(evt: *SysUserEvent)
     mtd onSetThemeEvent(evt: *SetThemeEvent)
     mtd onTimerEvent(evt: *TimerEvent)
     mtd onFocusEvent(evt: *FocusEvent)
@@ -150,6 +151,8 @@ impl IWnd for Wnd
             itf.onPostPaintEvent(cast(*PaintEvent) evt)
         case SysCommand:
             itf.onSysCommandEvent(cast(*SysCommandEvent) evt)
+        case SysUser:
+            itf.onSysUserEvent(cast(*SysUserEvent) evt)
         case KeyPressed, KeyReleased, Rune:
             itf.onKeyEvent(cast(*KeyEvent) evt)
         case MousePressed, MouseReleased, MouseMove, MouseEnter, MouseLeave, MouseDoubleClick, MouseWheel:
@@ -187,6 +190,7 @@ impl IWnd for Wnd
     mtd onFrameEvent(evt: *FrameEvent)                      {}
 
     mtd onSysCommandEvent(evt: *SysCommandEvent)    { evt.accepted = false; }
+    mtd onSysUserEvent(evt: *SysUserEvent)          { evt.accepted = false; }
     mtd onFocusEvent(evt: *FocusEvent)              { evt.accepted = false; }
     mtd onKeyEvent(evt: *KeyEvent)                  { evt.accepted = false; }
     mtd onMouseEvent(evt: *MouseEvent)              { evt.accepted = false; }

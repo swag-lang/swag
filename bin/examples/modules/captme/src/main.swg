@@ -19,9 +19,22 @@ var g_App: Application
     mainWnd := MainWnd.create(surface.wnd)
     surface.setView(mainWnd)
     mainWnd.createTopMenu()
-    surface.show()
-
     if Env.hasArg("swag.test")
         g_App.maxRunFrame = 100
+
+    surface.show()
+
+    using Win32
+    var tnid: NOTIFYICONDATAA
+    tnid.cbSize = @sizeof(NOTIFYICONDATAA)
+    tnid.hWnd = surface.hWnd
+    tnid.uID = 1
+    tnid.uFlags = NIF_ICON | NIF_MESSAGE
+    tnid.uCallbackMessage = WM_USER
+    tnid.hIcon = catch img.toHICON()
+    catch Shell_NotifyIconA(NIM_ADD, &tnid)
+
     g_App.run()
+
+    catch Shell_NotifyIconA(NIM_DELETE, &tnid)
 }

@@ -36,6 +36,7 @@ enum EventKind
     Show
     Hide
     Invalidate
+    SysUser
 }
 
 struct Event
@@ -174,6 +175,14 @@ struct FocusEvent
     other:      *Wnd
 }
 
+struct SysUserEvent
+{
+    using base: Event{kind: EventKind.SysUser}
+    userMsg:    u64
+    param0:     u64
+    param1:     u64
+}
+
 struct SysCommandEvent
 {
     using base: Event{kind: EventKind.SysCommand}
@@ -184,6 +193,7 @@ struct SysCommandEvent
         Maximize
         Restore
         Close
+        User
     }
 
     sysKind: Kind = ?

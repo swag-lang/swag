@@ -46,9 +46,9 @@ public struct MenuCtrl
     paintByFrame:   bool
 }
 
-impl IWnd for MenuCtrl
+public impl IWnd for MenuCtrl
 {
-    mtd paintBar(painter: *Painter)
+    private mtd paintBar(painter: *Painter)
     {
         theme   := getTheme()
         colors  := getThemeColors()
@@ -119,7 +119,7 @@ impl IWnd for MenuCtrl
         }
     }
 
-    mtd paintPopup(painter: *Painter)
+    private mtd paintPopup(painter: *Painter)
     {
         theme   := getTheme()
         colors  := getThemeColors()
@@ -375,7 +375,7 @@ impl MenuCtrl
         timer = null
     }
 
-    mtd updateState()
+    public mtd updateState()
     {
         visit i: items
         {
@@ -545,7 +545,7 @@ impl MenuCtrl
         }
     }
 
-    mtd computeLayoutPopup()
+    public mtd computeLayoutPopup()
     {
         theme   := getTheme()
         metrics := getThemeMetrics()

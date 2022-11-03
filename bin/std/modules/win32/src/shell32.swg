@@ -227,6 +227,75 @@ struct SHSTOCKICONINFO
     szPath:           [MAX_PATH] WCHAR
 }
 
+struct GUID
+{
+    Data1: u32
+    Data2: u16
+    Data3: u16
+    Data4: [8] u8
+}
+
+const NIM_ADD         = 0x00000000
+const NIM_MODIFY      = 0x00000001
+const NIM_DELETE      = 0x00000002
+const NIM_SETFOCUS    = 0x00000003
+const NIM_SETVERSION  = 0x00000004
+
+const NIF_MESSAGE     = 0x00000001
+const NIF_ICON        = 0x00000002
+const NIF_TIP         = 0x00000004
+const NIF_STATE       = 0x00000008
+const NIF_INFO        = 0x00000010
+const NIF_GUID        = 0x00000020
+const NIF_REALTIME    = 0x00000040
+const NIF_SHOWTIP     = 0x00000080
+
+struct NOTIFYICONDATAA
+{
+    cbSize:             DWORD
+    hWnd:               HWND
+    uID:                UINT
+    uFlags:             UINT
+    uCallbackMessage:   UINT
+    hIcon:              HICON
+    szTip:              [128] CHAR
+    dwState:            DWORD
+    dwStateMask:        DWORD
+    szInfo:             [256] CHAR
+    using DUMMYUNIONNAME: union
+    {
+        uTimeout:   UINT
+        uVersion:   UINT
+    }
+    szInfoTitle:    [64] CHAR
+    dwInfoFlags:    DWORD
+    guidItem:       GUID
+    hBalloonIcon:   HICON
+}
+
+struct NOTIFYICONDATAW
+{
+    cbSize:             DWORD
+    hWnd:               HWND
+    uID:                UINT
+    uFlags:             UINT
+    uCallbackMessage:   UINT
+    hIcon:              HICON
+    szTip:              [128] WCHAR
+    dwState:            DWORD
+    dwStateMask:        DWORD
+    szInfo:             [256] WCHAR
+    using DUMMYUNIONNAME: union
+    {
+        uTimeout:   UINT
+        uVersion:   UINT
+    }
+    szInfoTitle:    [64] WCHAR
+    dwInfoFlags:    DWORD
+    guidItem:       GUID
+    hBalloonIcon:   HICON
+}
+
 namespace Shell32Priv
 {
     #[Foreign("shell32")]
@@ -236,6 +305,8 @@ namespace Shell32Priv
         func ExtractIconExA(lpszFile: LPCSTR, nIconIndex: s32, phiconLarge: *HICON, phiconSmall: *HICON, nIcons: UINT)->UINT;
         func ExtractIconExW(lpszFile: LPCWSTR, nIconIndex: s32, phiconLarge: *HICON, phiconSmall: *HICON, nIcons: UINT)->UINT;
         func SHGetStockIconInfo(siid: SHSTOCKICONID, uFlags: UINT, psii: SHSTOCKICONINFO)->SHSTDAPI;
+        func Shell_NotifyIconA(dwMessage: DWORD, lpData: *NOTIFYICONDATAA)->BOOL;
+        func Shell_NotifyIconW(dwMessage: DWORD, lpData: *NOTIFYICONDATAW)->BOOL;
     }
 }
 
@@ -280,6 +351,18 @@ namespace Shell32Priv
     func SHGetStockIconInfo(siid: SHSTOCKICONID, uFlags: UINT, psii: SHSTOCKICONINFO) throw
     {
         if Shell32Priv.SHGetStockIconInfo(siid, uFlags, psii) != S_OK
+            try setError(GetLastError())
+    }
+
+    func Shell_NotifyIconA(dwMessage: DWORD, lpData: *NOTIFYICONDATAA) throw
+    {
+        if !Shell32Priv.Shell_NotifyIconA(dwMessage, lpData)
+            try setError(GetLastError())
+    }
+
+    func Shell_NotifyIconW(dwMessage: DWORD, lpData: *NOTIFYICONDATAW) throw
+    {
+        if !Shell32Priv.Shell_NotifyIconW(dwMessage, lpData)
             try setError(GetLastError())
     }
 }
