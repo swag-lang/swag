@@ -176,6 +176,23 @@ impl Surface
         setPosition(pos)
     }
 
+    // Constraint a window to be inside the closest monitor
+    mtd constaintToScreen()
+    {
+        monitors := Env.getMonitors()
+        visit m: monitors
+        {
+            r1 := position
+            r1.intersect(m.rect)
+            if !r1.isEmpty()
+            {
+                position.constrainIn(m.rect)
+                setPosition(position)
+                break
+            }
+        }
+    }
+
     private mtd createRT()
     {
         if !rt.colorBuffer.valid or rt.colorBuffer.width < rc.width or rt.colorBuffer.height < rc.height

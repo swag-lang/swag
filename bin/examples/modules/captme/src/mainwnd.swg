@@ -91,6 +91,7 @@ impl IWnd for MainWnd
 
         pt := Input.getMousePos()
         sf.setPosition(@{pt.x, pt.y, menu.position.width + 64, menu.position.height + 64})
+        sf.constaintToScreen()
         sf.wnd.view.backgroundStyle = .Window
         sf.show()
         sf.bringToTop()

@@ -22,6 +22,8 @@ var g_App: Application
     if Env.hasArg("swag.test")
         g_App.maxRunFrame = 100
 
+    catch g_App.loadState()
+    surface.constaintToScreen()
     surface.show()
 
     using Win32
@@ -35,6 +37,7 @@ var g_App: Application
     catch Shell_NotifyIconA(NIM_ADD, &tnid)
 
     g_App.run()
+    catch g_App.saveState()
 
     catch Shell_NotifyIconA(NIM_DELETE, &tnid)
 }

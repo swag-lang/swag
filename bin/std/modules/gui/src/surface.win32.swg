@@ -231,6 +231,7 @@ impl Surface
         if maxSize.y > 0
             clampPos.height = Math.min(clampPos.height, maxSize.y)
 
+        position = clampPos
         catch SetWindowPos(hWnd, null, cast(s32) clampPos.x, cast(s32) clampPos.y, cast(s32) clampPos.width, cast(s32) clampPos.height, SWP_NOCOPYBITS | SWP_DEFERERASE | SWP_NOREDRAW | SWP_NOSENDCHANGING)
     }
 

@@ -731,8 +731,6 @@ impl Application
     #[Swag.Discardable]
     mtd run()->s32
     {
-        catch loadState()
-
         visit s: surfaces
         {
             evt := FrameEvent{}
