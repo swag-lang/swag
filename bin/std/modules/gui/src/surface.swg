@@ -118,8 +118,6 @@ impl Surface
     // Destroy the surface
     mtd destroy()
     {
-        if self == app.mainSurface
-            catch app.saveState()
         wnd.destroy()
         hide()
     }

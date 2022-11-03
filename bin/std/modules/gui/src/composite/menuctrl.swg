@@ -168,17 +168,9 @@ public impl IWnd for MenuCtrl
             if hotIdx == idx and !i.disabled
             {
                 backPos := labelPos
-                if !paintByFrame
-                    backPos.x = metrics.menuPopup_ShadowSize
                 backPos.y -= metrics.menuPopup_SpaceLines * 0.5
-                if !paintByFrame
-                {
-                    backPos.width = position.width
-                    backPos.width -= 2 * metrics.menuPopup_ShadowSize
-                }
-
                 backPos.height += metrics.menuPopup_SpaceLines
-                backPos.inflate(-4, 0)
+                backPos.inflate(4, 0)
                 theme.drawSubRect(painter, backPos, &rects.menuPopup_HotBk, colors.popupItem_HotBk)
                 colorText = colors.popupItem_HotText
                 colorRightText = colors.popupItem_HotRightText

@@ -84,13 +84,15 @@ impl IWnd for MainWnd
             .owner = self
             .paintByFrame = true
             .dockStyle = .Center
-            .margin = 10
+            .padding = 10
             .updateState()
             .computeLayoutPopup()
         }
 
         pt := Input.getMousePos()
-        sf.setPosition(@{pt.x, pt.y, menu.position.width + 64, menu.position.height + 64})
+        menu.position.width += 2 * getThemeMetrics().surfaceWnd_ShadowSize
+        menu.position.height += 2 * getThemeMetrics().surfaceWnd_ShadowSize
+        sf.setPosition(@{pt.x, pt.y, menu.position.width, menu.position.height})
         sf.constaintToScreen()
         sf.wnd.view.backgroundStyle = .Window
         sf.show()
