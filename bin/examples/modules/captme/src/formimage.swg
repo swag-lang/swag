@@ -159,7 +159,7 @@ impl IForm for FormImage
                 st := Math.map(cast(f32) strength, 0, 100, 1, 16)
                 nw := Math.max(cast(s32) (img.width / st), 4)
                 nh := Math.max(cast(s32) (img.height / st), 4)
-                img.resize(nw, nh, kind == .Pixelate ? .Raw : .Quadratic)
+                img.resize(nw, nh, .Quadratic)
                 img.resize(w, h, kind == .Pixelate ? .Raw : .Quadratic)
                 texture = app.getRenderer().addImage(img)
             }

@@ -957,6 +957,7 @@ impl PropWnd
             .selectItem(cast(u32) curSel.kind)
             .sigChanged += @|self|(combo, val) {
                 self.pushTypedValue(val, @typeof(FormImage), @nameof(FormImage.kind), true)
+                self.selectionHasChanged()
             }
         }
     }
@@ -966,8 +967,10 @@ impl PropWnd
         curSelType := getSelectedFormType()
         if curSelType != FormImage
             return
-
         curSel := cast(*FormImage) getSelectedBaseForm()
+        if curSel.kind == .Image
+            return
+
         ctrl := createSlider("Strength", 0, 100, acast curSel.strength)
         ctrl.slider.sigStartChange += @|self|(slider) {
             self.pushTypedValue(cast(u32) slider.getValue(), @typeof(FormImage), @nameof(FormImage.strength), true)
