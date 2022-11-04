@@ -327,6 +327,7 @@ namespace Gdi32Priv
         func GetObjectA(h: HANDLE, c: s32, pv: LPVOID)->s32;
         func GetObjectW(h: HANDLE, c: s32, pv: LPVOID)->s32;
         func GetBitmapBits(hbit: HBITMAP, cb: LONG, lpvBits: LPVOID)->LONG;
+        func SetBitmapBits(hbm: HBITMAP, cb: DWORD, pvBits: LPVOID)->LONG;
         func GetFontData(hdc: HDC, dwTable: DWORD, dwOffset: DWORD, pvBuffer: LPVOID, cjBuffer: DWORD)->DWORD;
         func CreateFontIndirectA(lplf: const *LOGFONTA)->HFONT;
         func CreateFontIndirectW(lplf: const *LOGFONTW)->HFONT;
@@ -422,6 +423,13 @@ namespace Gdi32Priv
     func GetBitmapBits(hbit: HBITMAP, cb: LONG, lpvBits: LPVOID) throw
     {
         res := Gdi32Priv.GetBitmapBits(hbit, cb, lpvBits)
+        if !res
+            throw "GDI_ERROR"
+    }
+
+    func SetBitmapBits(hbit: HBITMAP, cb: DWORD, lpvBits: LPVOID) throw
+    {
+        res := Gdi32Priv.SetBitmapBits(hbit, cb, lpvBits)
         if !res
             throw "GDI_ERROR"
     }
