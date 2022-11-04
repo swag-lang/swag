@@ -39,7 +39,6 @@ struct MainWnd
     recentSizeBar:  *IconBar
     quickStyleBar:  *SplitterCtrl
     editZoomBar:    *StackLayoutCtrl
-    captureMode:    CaptureMode = .Area
     monitors:       Array'Env.Monitor
 
     editMode:       EditMode = .Shape
@@ -77,8 +76,8 @@ impl IWnd for MainWnd
         {
             .addItem(CmdIdShowEditor)
             .addSeparator()
-            .addItem(CmdIdCapture)
             .addItem(CmdIdCaptureArea)
+            .addItem(CmdIdCaptureLastArea)
             .addItem(CmdIdCaptureFullScreen)
             .addItem(CmdIdCaptureActiveWnd)
             .addSeparator()
@@ -152,7 +151,6 @@ impl IWnd for MainWnd
                 .serialize("MainWnd.captureShowEditor", &captureShowEditor)
                 .serialize("MainWnd.captureToEditor", &captureToEditor)
                 .serialize("MainWnd.captureToClipbpard", &captureToClipboard)
-                .serialize("MainWnd.captureMode", &captureMode)
                 .serialize("MainWnd.RightBar.Pane0", &quickStyleBar.items[0].size)
                 .serialize("MainWnd.RightBar.Pane1", &quickStyleBar.items[1].size)
             }
@@ -346,27 +344,19 @@ impl IWnd for MainWnd
             evt.checked = snap
             evt.accepted = true
 
-        case CmdIdCaptModeArea:
-            evt.setFlags |= .Name | .Checked
-            evt.name = "Area"
-            evt.checked = captureMode == .Area
+        case CmdIdCapture:
+            evt.setFlags |= .Name | .Icon
+            evt.name = "Capture"
+            evt.icon = Icon.from(&icons48, 6)
             evt.accepted = true
-
-        case CmdIdCaptModeLastArea:
-            evt.setFlags |= .Name | .Checked
-            evt.name = "Last Area"
-            evt.checked = captureMode == .LastArea
-            evt.accepted = true
-
-        case CmdIdCaptModeFullScreen:
-            evt.setFlags |= .Name | .Checked
-            evt.name = "Full Screen"
-            evt.checked = captureMode == .FullScreen
-            evt.accepted = true
-
         case CmdIdCaptureArea:
             evt.setFlags |= .Name | .Icon
             evt.name = "Capture Area"
+            evt.icon = Icon.from(&icons24, 7)
+            evt.accepted = true
+        case CmdIdCaptureLastArea:
+            evt.setFlags |= .Name | .Icon
+            evt.name = "Capture Last Area"
             evt.icon = Icon.from(&icons24, 7)
             evt.accepted = true
         case CmdIdCaptureFullScreen:
@@ -398,23 +388,6 @@ impl IWnd for MainWnd
             evt.setFlags |= .Name | .Icon
             evt.name = Format.toString("Capture Monitor 3 (%x%)", monitors[3].rect.width, monitors[3].rect.height)
             evt.icon = Icon.from(&icons24, 5)
-            evt.accepted = true
-
-        case CmdIdCapture:
-            evt.setFlags |= .Name | .LongName | .ToolTip | .Icon
-            evt.name = "Capture"
-            evt.longName = "Capture"
-
-            switch captureMode
-            {
-            case Area:          evt.longName += " (Area)"
-            case LastArea:      evt.longName += " (Last Area)"
-            case FullScreen:    evt.longName += " (Full Screen)"
-            default:            break
-            }
-
-            evt.toolTip = "Start a new capture"
-            evt.icon = Icon.from(&icons48, 6)
             evt.accepted = true
 
         case CmdIdLibrary:
@@ -665,13 +638,6 @@ impl IWnd for MainWnd
             undo.newPosY = 5
             evt.accepted = true
 
-        case CmdIdCaptModeArea:
-            captureMode = .Area
-        case CmdIdCaptModeLastArea:
-            captureMode = .LastArea
-        case CmdIdCaptModeFullScreen:
-            captureMode = .FullScreen
-
         case CmdIdShowEditor:
             surface.show()
             surface.bringToTop()
@@ -755,8 +721,12 @@ impl IWnd for MainWnd
         case CmdIdNewFromClipboard:
             newCapture(Clipboard.getImage())
 
+        case CmdIdCapture:
+            captureScreen(.Area)
         case CmdIdCaptureArea:
             captureScreen(.Area)
+        case CmdIdCaptureLastArea:
+            captureScreen(.LastArea)
         case CmdIdCaptureFullScreen:
             captureScreen(.FullScreen)
         case CmdIdCaptureActiveWnd:
@@ -769,9 +739,6 @@ impl IWnd for MainWnd
             captureScreen(.Screen2)
         case CmdIdCaptureScreen3:
             captureScreen(.Screen3)
-
-        case CmdIdCapture:
-            captureScreen(.None)
 
         case CmdIdLibrary:
             swapLibraryMode()
@@ -1147,12 +1114,7 @@ impl MainWnd
         if captureHideEditor and !surface.isHidden and !surface.isMinimized
             surface.hide()
 
-        var img: Image
-        if mode == .None
-            img = catch screenShot(captureMode)
-        else
-            img = catch screenShot(mode)
-
+        img := catch screenShot(mode)
         isValid := !@err and img.width > 0 and img.height > 0
 
         if (isValid and captureShowEditor) or !wasHidden
@@ -1232,9 +1194,9 @@ impl MainWnd
             }
         }
 
-        registerHotKey(.None,      .PrintScreen, CmdIdCapture)
+        registerHotKey(.None,      .PrintScreen, CmdIdCaptureArea)
+        registerHotKey(.CtrlShift, .PrintScreen, CmdIdCaptureLastArea)
         registerHotKey(.Control,   .PrintScreen, CmdIdCaptureFullScreen)
-        registerHotKey(.CtrlShift, .PrintScreen, CmdIdCaptureArea)
         registerHotKey(.Alt,       .PrintScreen, CmdIdCaptureActiveWnd)
     }
 
@@ -1265,13 +1227,8 @@ impl MainWnd
 
         with captureMenu := MenuCtrl.createPopup(parent, owner: self)
         {
-            .addItem(CmdIdCaptModeFullScreen)
-            .addItem(CmdIdCaptModeArea)
-            .addItem(CmdIdCaptModeLastArea)
-            .addSeparator()
-            .addItem(CmdIdCapture)
-            .addSeparator()
             .addItem(CmdIdCaptureArea)
+            .addItem(CmdIdCaptureLastArea)
             .addItem(CmdIdCaptureFullScreen)
             .addItem(CmdIdCaptureActiveWnd)
 
