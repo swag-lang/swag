@@ -47,8 +47,12 @@ struct MainWnd
     bottomSize:     BottomSize = Medium
     snap:           bool
     libraryMode:    bool
-    hideCaptMe      = true
     fileDlgState:   FileDlgState
+
+    captureHideEditor   = true
+    captureShowEditor   = true
+    captureToEditor     = true
+    captureToClipboard  = false
 
     mdlFormShape:   FormShape
     mdlFormStep:    FormStep
@@ -73,6 +77,7 @@ impl IWnd for MainWnd
         {
             .addItem(CmdIdShowEditor)
             .addSeparator()
+            .addItem(CmdIdCapture)
             .addItem(CmdIdCaptureArea)
             .addItem(CmdIdCaptureFullScreen)
             .addItem(CmdIdCaptureActiveWnd)
@@ -143,7 +148,10 @@ impl IWnd for MainWnd
                 .serialize("MainWnd.snap", &snap)
                 .serialize("MainWnd.bottomSize", &bottomSize)
                 .serialize("MainWnd.fileDlgState", &fileDlgState)
-                .serialize("MainWnd.hideCaptMe", &hideCaptMe)
+                .serialize("MainWnd.captureHideEditor", &captureHideEditor)
+                .serialize("MainWnd.captureShowEditor", &captureShowEditor)
+                .serialize("MainWnd.captureToEditor", &captureToEditor)
+                .serialize("MainWnd.captureToClipbpard", &captureToClipboard)
                 .serialize("MainWnd.captureMode", &captureMode)
                 .serialize("MainWnd.RightBar.Pane0", &quickStyleBar.items[0].size)
                 .serialize("MainWnd.RightBar.Pane1", &quickStyleBar.items[1].size)
@@ -191,8 +199,23 @@ impl IWnd for MainWnd
 
         case CmdIdCaptureHideEditor:
             evt.setFlags |= .Name | .Checked
-            evt.name = "Hide Editor On Capture"
-            evt.checked = hideCaptMe
+            evt.name = "Hide Editor Before Capture"
+            evt.checked = captureHideEditor
+            evt.accepted = true
+        case CmdIdCaptureShowEditor:
+            evt.setFlags |= .Name | .Checked
+            evt.name = "Show Editor After Capture"
+            evt.checked = captureShowEditor
+            evt.accepted = true
+        case CmdIdCaptureToEditor:
+            evt.setFlags |= .Name | .Checked
+            evt.name = "Send Capture To Editor"
+            evt.checked = captureToEditor
+            evt.accepted = true
+        case CmdIdCaptureToClipboard:
+            evt.setFlags |= .Name | .Checked
+            evt.name = "Send Capture To Clipboard"
+            evt.checked = captureToClipboard
             evt.accepted = true
 
         case CmdIdSaveAsImage:
@@ -654,7 +677,13 @@ impl IWnd for MainWnd
             surface.bringToTop()
 
         case CmdIdCaptureHideEditor:
-            hideCaptMe = !hideCaptMe
+            captureHideEditor = !captureHideEditor
+        case CmdIdCaptureShowEditor:
+            captureShowEditor = !captureShowEditor
+        case CmdIdCaptureToEditor:
+            captureToEditor = !captureToEditor
+        case CmdIdCaptureToClipboard:
+            captureToClipboard = !captureToClipboard
 
         case CmdIdSaveAsImage:
             saveAsImage()
@@ -1115,16 +1144,8 @@ impl MainWnd
     mtd captureScreen(mode: CaptureMode)
     {
         wasHidden := surface.isHidden
-        if !wasHidden
-        {
-            if hideCaptMe
-            {
-                if !surface.isMinimized
-                    surface.hide()
-            }
-            else
-                surface.disable()
-        }
+        if captureHideEditor and !surface.isHidden and !surface.isMinimized
+            surface.hide()
 
         var img: Image
         if mode == .None
@@ -1134,21 +1155,21 @@ impl MainWnd
 
         isValid := !@err and img.width > 0 and img.height > 0
 
-        if !wasHidden or isValid
+        if (isValid and captureShowEditor) or !wasHidden
         {
-            if hideCaptMe
-            {
-                if !surface.isMinimized
-                    surface.show()
-                else
-                    surface.showNormal()
-            }
+            if surface.isMinimized
+                surface.showNormal()
             else
-                surface.enable()
+                surface.show()
         }
 
-        if isValid
+        if !isValid
+            return
+
+        if captureToEditor
             newCapture(img)
+        if captureToClipboard
+            Clipboard.addImage(img)
     }
 
     mtd updateZoomDisplay()
@@ -1267,6 +1288,10 @@ impl MainWnd
 
             .addSeparator()
             .addItem(CmdIdCaptureHideEditor)
+            .addItem(CmdIdCaptureShowEditor)
+            .addSeparator()
+            .addItem(CmdIdCaptureToEditor)
+            .addItem(CmdIdCaptureToClipboard)
 
             topMenu.addPopup("Capture", captureMenu)
         }
