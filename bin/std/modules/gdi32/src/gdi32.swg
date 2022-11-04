@@ -294,16 +294,21 @@ func RGB(r,g,b: s32)->COLORREF
     func GetObjectA(h: HANDLE, c: s32, pv: LPVOID)->s32;
     func GetObjectW(h: HANDLE, c: s32, pv: LPVOID)->s32;
     func SelectObject(hdc: HDC, h: HGDIOBJ)->HGDIOBJ;
+
     func EnumFontFamiliesA(hdc: HDC, lpLogfont: LPCSTR, lpProc: FONTENUMPROCA, lParam: LPARAM)->s32;
     func EnumFontFamiliesW(hdc: HDC, lpLogfont: LPCWSTR, lpProc: FONTENUMPROCW, lParam: LPARAM)->s32;
     func EnumFontFamiliesExA(hdc: HDC, lpLogfont: const *LOGFONTA, lpProc: FONTENUMPROCA, lParam: LPARAM, dwFlags: DWORD)->s32;
     func EnumFontFamiliesExW(hdc: HDC, lpLogfont: const *LOGFONTW, lpProc: FONTENUMPROCW, lParam: LPARAM, dwFlags: DWORD)->s32;
-    func Rectangle(hdc: HDC, left, top, right, bottom: s32)->BOOL;
+
     func SetBkMode(hdc: HDC, mode: s32)->s32;
     func SetBkColor(hdc: HDC, color: COLORREF)->COLORREF;
     func SetTextColor(hdc: HDC, color: COLORREF)->COLORREF;
+
     func TextOutA(hdc: HDC, x: s32, y: s32, lpString: LPCSTR, c: s32)->BOOL;
     func TextOutW(hdc: HDC, x: s32, y: s32, lpString: LPCWSTR, c: s32)->BOOL;
+    func MoveTo(hdc: HDC, x: s32, y: s32)->BOOL;
+    func LineTo(hdc: HDC, x: s32, y: s32)->BOOL;
+    func Rectangle(hdc: HDC, left, top, right, bottom: s32)->BOOL;
 }
 
 namespace Gdi32Priv

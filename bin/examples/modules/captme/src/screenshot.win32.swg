@@ -25,6 +25,8 @@ var g_RStartGrabX:      f32
 var g_RStartGrabY:      f32
 var g_REndGrabX:        f32
 var g_REndGrabY:        f32
+var g_MouseX:           s32
+var g_MouseY:           s32
 
 var g_StartGrab:    bool
 var g_TryStartGrab: bool
@@ -35,6 +37,9 @@ var g_InitDone:     bool
 var g_BlackBrush:   HBRUSH
 var g_RedBrush:     HBRUSH
 var g_PenRect:      HPEN
+
+var g_MemDC:        HDC
+var g_MemBitmap:    HBITMAP
 
 func getGrabRect()->{x1: s32, y1: s32, x2: s32, y2: s32}
 {
@@ -123,6 +128,8 @@ func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
     case WM_MOUSEMOVE:
         g_EndGrabX = GET_X_LPARAM(lParam)
         g_EndGrabY = GET_Y_LPARAM(lParam)
+        g_MouseX = g_EndGrabX
+        g_MouseY = g_EndGrabY
         if g_TryStartGrab and
            Math.abs(g_EndGrabX - g_StartGrabX) > 1 and
            Math.abs(g_EndGrabY - g_StartGrabY) > 1
@@ -169,6 +176,9 @@ func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
         var rc, rc1: RECT
         GetClientRect(hWnd, &rc1)
 
+        nScreenWidth  := GetSystemMetrics(SM_CXMAXTRACK)
+        nScreenHeight := GetSystemMetrics(SM_CYMAXTRACK)
+
         (x1, y1, x2, y2) := getGrabRect()
 
         // Lerp
@@ -188,40 +198,42 @@ func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
             x1 = xx1; x2 = xx2; y1 = yy1; y2 = yy2
         }
 
-        // Around grab pos, back transparency
-        if g_StartGrab or g_AutoGrab
-        {
-            rc = RECT{0, 0, rc1.right, y1}
-            FillRect(hDC, rc, g_BlackBrush)
-            rc = RECT{0, y2, rc1.right, rc1.bottom}
-            FillRect(hDC, rc, g_BlackBrush)
-            rc = RECT{0, y1, x1, y2}
-            FillRect(hDC, rc, g_BlackBrush)
-            rc = RECT{x2, y1, rc1.right, y2}
-            FillRect(hDC, rc, g_BlackBrush)
-        }
-        else
-        {
-            FillRect(hDC, rc1, g_BlackBrush)
-        }
+        // Transparency
+        FillRect(g_MemDC, rc1, g_BlackBrush)
 
         if g_StartGrab or g_AutoGrab
         {
-            rc = RECT{x1+1, y1+1, x2-2, y2-2}
-            FillRect(hDC, rc, g_RedBrush)
+            // Clear background (no alpha)
+            rc = RECT{x1, y1, x2, y2}
+            FillRect(g_MemDC, rc, g_RedBrush)
 
-            SetBkMode(hDC, OPAQUE)
-            SetBkColor(hDC, RGB(0, 0, 0))
-            SelectObject(hDC, acast g_PenRect)
-            SelectObject(hDC, GetStockObject(NULL_BRUSH))
-            Rectangle(hDC, x1, y1, x2-1, y2-1)
+            // Border
+            SetBkMode(g_MemDC, OPAQUE)
+            SetBkColor(g_MemDC, RGB(0, 0, 0))
+            SelectObject(g_MemDC, acast g_PenRect)
+            SelectObject(g_MemDC, GetStockObject(NULL_BRUSH))
+            Rectangle(g_MemDC, x1, y1, x2, y2)
 
-            str := Format.toString("%x%", x2 - x1, y2 - y1)
-            SetTextColor(hDC, RGB(255, 255, 255))
-            TextOutA(hDC, x1 + 4, y1 + 4, @dataof(str), acast @countof(str))
+            Rectangle(g_MemDC, g_MouseX, 0, g_MouseX+1, nScreenHeight)
+            Rectangle(g_MemDC, 0, g_MouseY, nScreenWidth, g_MouseY+1)
+
+            // Capture size
+            str := Format.toString("% x %", x2 - x1, y2 - y1)
+            SetBkColor(g_MemDC, RGB(0, 0, 0))
+            SetTextColor(g_MemDC, RGB(255, 255, 255))
+            xx := x1
+            yy := y1 - 20
+            if xx < 0 or yy < 0
+            {
+                xx = x1 + 4
+                yy = y1 + 4
+            }
+            TextOutA(g_MemDC, xx, yy, @dataof(str), acast @countof(str))
         }
 
-        EndPaint( hWnd, &ps )
+        catch BitBlt(hDC, 0, 0, nScreenWidth, nScreenHeight, g_MemDC, 0, 0, SRCCOPY | CAPTUREBLT)
+
+        EndPaint(hWnd, &ps)
         return 0
     }
 
@@ -256,7 +268,7 @@ func createNative(w, h: s32)->HWND throw
         null
     )
 
-    SetLayeredWindowAttributes(hWnd, RGB(255, 0, 0), 128, LWA_ALPHA | LWA_COLORKEY)
+    SetLayeredWindowAttributes(hWnd, RGB(255, 0, 0), 192, LWA_ALPHA | LWA_COLORKEY)
     UpdateWindow(hWnd)
     InvalidateRect(hWnd, null, FALSE)
     return hWnd
@@ -272,11 +284,14 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode)->Image throw
         g_InitDone = true
         g_BlackBrush = cast(HBRUSH) GetStockObject(BLACK_BRUSH)
         g_RedBrush   = cast(HBRUSH) catch CreateSolidBrush(RGB(255, 0, 0))
-        g_PenRect    = CreatePen(PS_DASH, 1, RGB(255,255,0))
+        g_PenRect    = CreatePen(PS_DOT, 1, RGB(255,255,0))
     }
 
     g_StartGrab  = false
     g_GrabDone   = false
+
+    hDesktopWnd := GetDesktopWindow()
+    hDesktopDC  := GetDC(hDesktopWnd)
 
     // Capture with mouse
     nScreenWidth  := GetSystemMetrics(SM_CXMAXTRACK)
@@ -313,6 +328,10 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode)->Image throw
     }
     else
     {
+        g_MemDC = CreateCompatibleDC(hDesktopDC)
+        g_MemBitmap = CreateCompatibleBitmap(hDesktopDC, nScreenWidth, nScreenHeight)
+        SelectObject(g_MemDC, acast g_MemBitmap)
+
         g_RStartGrabX = 0
         g_RStartGrabY = 0
         g_REndGrabX = 0
@@ -328,14 +347,13 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode)->Image throw
             DispatchMessageW(&msg)
         }
 
+        DeleteDC(g_MemDC)
+        DeleteObject(acast g_MemBitmap)
+
         catch DestroyWindow(hWnd)
         if !g_GrabDone
             return result
     }
-
-    // Grab the portion of the screen
-    hDesktopWnd := GetDesktopWindow()
-    hDesktopDC  := GetDC(hDesktopWnd)
 
     (x1, y1, x2, y2) := getGrabRect()
     wGrab := Math.max(x2 - x1, 8)
