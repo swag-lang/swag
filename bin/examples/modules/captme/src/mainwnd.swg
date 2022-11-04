@@ -192,6 +192,18 @@ impl IWnd for MainWnd
             evt.disabled = !hasSel
             evt.accepted = true
 
+        case CmdIdCaptureDelay:
+            evt.setFlags |= .Name
+            switch captureDelay
+            {
+            case 0:  evt.name = "Delay"
+            case 1:  evt.name = "Delay (1 second)"
+            case 2:  evt.name = "Delay (2 seconds)"
+            case 5:  evt.name = "Delay (5 seconds)"
+            case 10: evt.name = "Delay (10 seconds)"
+            }
+            evt.accepted = true
+
         case CmdIdCaptureDelay0:
             evt.setFlags |= .Name | .Checked
             evt.name = "No Delay"
@@ -1296,7 +1308,7 @@ impl MainWnd
                 .addItem(CmdIdCaptureDelay2)
                 .addItem(CmdIdCaptureDelay5)
                 .addItem(CmdIdCaptureDelay10)
-                captureMenu.addPopup("Delay", delayMenu)
+                captureMenu.addPopup(delayMenu, CmdIdCaptureDelay)
             }
 
             topMenu.addPopup("Capture", captureMenu)

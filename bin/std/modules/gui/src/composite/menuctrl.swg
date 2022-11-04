@@ -655,14 +655,21 @@ public impl MenuCtrl
         dirtyLayout = true
     }
 
-    // Add a new item
-    mtd addPopup(name: string, popup: *MenuCtrl, icon: Icon = @{})
+    // Add a new popup item
+    mtd addPopup(popup: *MenuCtrl, id: WndId)
+    {
+        addPopup(null, popup, id: #self.id)
+    }
+
+    // Add a new popup item
+    mtd addPopup(name: string, popup: *MenuCtrl, icon: Icon = @{}, id: WndId = null)
     {
         with mitem := items.newPtr()
         {
             .name  = #self.name
             .icon  = #self.icon
             .popup = #self.popup
+            .id    = #self.id
         }
 
         popup.ownerMenu = self
