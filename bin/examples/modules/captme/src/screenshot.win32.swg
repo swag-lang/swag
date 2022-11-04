@@ -299,6 +299,12 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode)->Image throw
     hDesktopWnd := GetDesktopWindow()
     hDesktopDC  := GetDC(hDesktopWnd)
 
+    // Make a copy of the desktop
+    g_MemDesktopDC = CreateCompatibleDC(hDesktopDC)
+    g_MemDesktopBitmap = CreateCompatibleBitmap(hDesktopDC, g_ScreenWidth, g_ScreenHeight)
+    SelectObject(g_MemDesktopDC, acast g_MemDesktopBitmap)
+    BitBlt(g_MemDesktopDC, 0, 0, g_ScreenWidth, g_ScreenHeight, hDesktopDC, 0, 0, SRCCOPY | CAPTUREBLT)
+
     if captureMode == .FullScreen
     {
         g_StartGrabX, g_StartGrabY = 0
@@ -330,17 +336,11 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode)->Image throw
     }
     else
     {
-        // Make a copy of the desktop
-        g_MemDesktopDC = CreateCompatibleDC(hDesktopDC)
-        g_MemDesktopBitmap = CreateCompatibleBitmap(hDesktopDC, g_ScreenWidth, g_ScreenHeight)
-        SelectObject(g_MemDesktopDC, acast g_MemDesktopBitmap)
-        BitBlt(g_MemDesktopDC, 0, 0, g_ScreenWidth, g_ScreenHeight, hDesktopDC, 0, 0, SRCCOPY | CAPTUREBLT)
-
         // Make a grayscale copy of the desktop
         g_MemDesktop1DC = CreateCompatibleDC(hDesktopDC)
         g_MemDesktop1Bitmap = CreateCompatibleBitmap(hDesktopDC, g_ScreenWidth, g_ScreenHeight)
         SelectObject(g_MemDesktop1DC, acast g_MemDesktop1Bitmap)
-        BitBlt(g_MemDesktop1DC, 0, 0, g_ScreenWidth, g_ScreenHeight, hDesktopDC, 0, 0, SRCCOPY | CAPTUREBLT)
+        BitBlt(g_MemDesktop1DC, 0, 0, g_ScreenWidth, g_ScreenHeight, g_MemDesktopDC, 0, 0, SRCCOPY | CAPTUREBLT)
         img := Image.from(g_MemDesktop1Bitmap)
         img.grayScale()
         img.fade(Argb.Black, 0.6)
@@ -367,8 +367,6 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode)->Image throw
             DispatchMessageW(&msg)
         }
 
-        DeleteDC(g_MemDesktopDC)
-        DeleteObject(acast g_MemDesktopBitmap)
         DeleteDC(g_MemDC)
         DeleteObject(acast g_MemBitmap)
 
@@ -381,14 +379,15 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode)->Image throw
     wGrab := Math.max(x2 - x1, 8)
     hGrab := Math.max(y2 - y1, 8)
 
+    // Copy the portion of the screen we want
     hCaptureDC     := CreateCompatibleDC(hDesktopDC)
     hCaptureBitmap := CreateCompatibleBitmap(hDesktopDC, wGrab, hGrab)
     SelectObject(hCaptureDC, acast hCaptureBitmap)
-    BitBlt(hCaptureDC, 0, 0, wGrab, hGrab, hDesktopDC, x1, y1, SRCCOPY | CAPTUREBLT)
+    BitBlt(hCaptureDC, 0, 0, wGrab, hGrab, g_MemDesktopDC, x1, y1, SRCCOPY | CAPTUREBLT)
 
+    // Transform that to an image
     var bmp: BITMAP
     GetObjectA(acast hCaptureBitmap, cast(s32) @sizeof(BITMAP), &bmp)
-
     result = Image.create(bmp.bmWidth, bmp.bmHeight, .BGRA8)
     GetBitmapBits(hCaptureBitmap, bmp.bmWidth * bmp.bmHeight * 4, result.pixels.buffer)
     result.flip()
@@ -396,6 +395,8 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode)->Image throw
     ReleaseDC(hDesktopWnd, hDesktopDC)
     DeleteDC(hCaptureDC)
     DeleteObject(acast hCaptureBitmap)
+    DeleteDC(g_MemDesktopDC)
+    DeleteObject(acast g_MemDesktopBitmap)
 
     return result
 }
