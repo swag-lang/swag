@@ -52,6 +52,7 @@ struct MainWnd
     captureShowEditor   = true
     captureToEditor     = true
     captureToClipboard  = false
+    captureDelay        = 0
 
     mdlFormShape:   FormShape
     mdlFormStep:    FormStep
@@ -151,6 +152,7 @@ impl IWnd for MainWnd
                 .serialize("MainWnd.captureShowEditor", &captureShowEditor)
                 .serialize("MainWnd.captureToEditor", &captureToEditor)
                 .serialize("MainWnd.captureToClipbpard", &captureToClipboard)
+                .serialize("MainWnd.captureDelay", &captureDelay)
                 .serialize("MainWnd.RightBar.Pane0", &quickStyleBar.items[0].size)
                 .serialize("MainWnd.RightBar.Pane1", &quickStyleBar.items[1].size)
             }
@@ -188,6 +190,32 @@ impl IWnd for MainWnd
         case CmdIdMoveSelLeft1, CmdIdMoveSelTop1, CmdIdMoveSelRight1, CmdIdMoveSelBottom1:
             evt.setFlags |= .Disabled
             evt.disabled = !hasSel
+            evt.accepted = true
+
+        case CmdIdCaptureDelay0:
+            evt.setFlags |= .Name | .Checked
+            evt.name = "No Delay"
+            evt.checked = captureDelay == 0
+            evt.accepted = true
+        case CmdIdCaptureDelay1:
+            evt.setFlags |= .Name | .Checked
+            evt.name = "1 second"
+            evt.checked = captureDelay == 1
+            evt.accepted = true
+        case CmdIdCaptureDelay2:
+            evt.setFlags |= .Name | .Checked
+            evt.name = "2 seconds"
+            evt.checked = captureDelay == 2
+            evt.accepted = true
+        case CmdIdCaptureDelay5:
+            evt.setFlags |= .Name | .Checked
+            evt.name = "5 seconds"
+            evt.checked = captureDelay == 5
+            evt.accepted = true
+        case CmdIdCaptureDelay10:
+            evt.setFlags |= .Name | .Checked
+            evt.name = "10 seconds"
+            evt.checked = captureDelay == 10
             evt.accepted = true
 
         case CmdIdShowEditor:
@@ -637,6 +665,17 @@ impl IWnd for MainWnd
             undo = capture.newUndo(.OffsetSelection)
             undo.newPosY = 5
             evt.accepted = true
+
+        case CmdIdCaptureDelay0:
+            captureDelay = 0
+        case CmdIdCaptureDelay1:
+            captureDelay = 1
+        case CmdIdCaptureDelay2:
+            captureDelay = 2
+        case CmdIdCaptureDelay5:
+            captureDelay = 5
+        case CmdIdCaptureDelay10:
+            captureDelay = 10
 
         case CmdIdShowEditor:
             surface.show()
@@ -1114,6 +1153,9 @@ impl MainWnd
         if captureHideEditor and !surface.isHidden and !surface.isMinimized
             surface.hide()
 
+        if captureDelay
+            Threading.sleep(captureDelay * 1000)
+
         img := catch screenShot(mode)
         isValid := !@err and img.width > 0 and img.height > 0
 
@@ -1246,11 +1288,22 @@ impl MainWnd
             .addSeparator()
             .addItem(CmdIdCaptureHideEditor)
             .addItem(CmdIdCaptureShowEditor)
+
+            with delayMenu := MenuCtrl.createPopup(captureMenu, owner: self)
+            {
+                .addItem(CmdIdCaptureDelay0)
+                .addItem(CmdIdCaptureDelay1)
+                .addItem(CmdIdCaptureDelay2)
+                .addItem(CmdIdCaptureDelay5)
+                .addItem(CmdIdCaptureDelay10)
+                captureMenu.addPopup("Delay", delayMenu)
+            }
+
+            topMenu.addPopup("Capture", captureMenu)
+
             .addSeparator()
             .addItem(CmdIdCaptureToEditor)
             .addItem(CmdIdCaptureToClipboard)
-
-            topMenu.addPopup("Capture", captureMenu)
         }
 
         with editMenu := MenuCtrl.createPopup(parent, owner: self)

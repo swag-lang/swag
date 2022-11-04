@@ -177,6 +177,9 @@ impl Surface
     // Constraint a window to be inside the closest monitor
     mtd constaintToScreen()
     {
+        if isMaximized or isMinimized
+            return
+
         monitors := Env.getMonitors()
         visit m: monitors
         {
