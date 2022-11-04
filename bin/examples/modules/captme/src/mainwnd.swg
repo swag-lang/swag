@@ -55,6 +55,7 @@ struct MainWnd
     captureDelay        = 0
 
     mdlFormShape:   FormShape
+    mdlFormImage:   FormImage
     mdlFormStep:    FormStep
     mdlFormArrow:   FormArrow
     mdlFormLine:    FormLine

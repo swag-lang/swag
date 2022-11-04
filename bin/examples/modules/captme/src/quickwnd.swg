@@ -533,6 +533,11 @@ impl QuickWnd
                     self.main.mdlFormShape = dref b
                     self.main.mdlFavorite  = &self.main.mdlFormShape
                     self.main.mdlHighlight = &self.main.mdlFormShape
+                case FormImage:
+                    b := cast(*FormImage) @dataof(it)
+                    self.main.mdlFormImage = dref b
+                    self.main.mdlFavorite  = &self.main.mdlFormImage
+                    self.main.mdlHighlight = &self.main.mdlFormImage
                 case FormStep:
                     b := cast(*FormStep) @dataof(it)
                     self.main.mdlFormStep = dref b

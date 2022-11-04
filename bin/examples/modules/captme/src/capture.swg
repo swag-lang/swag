@@ -1096,8 +1096,10 @@ impl Capture
             #[Swag.Complete]
             switch t
             {
-            case FormShape, FormImage:
+            case FormShape:
                 main.mdlFavorite = main.mdlFormShape
+            case FormImage:
+                main.mdlFavorite = main.mdlFormImage
             case FormStep:
                 main.mdlFavorite = main.mdlFormStep
             case FormArrow:
@@ -1152,6 +1154,10 @@ impl Capture
             b := cast(*FormShape) @dataof(f)
             editView.main.mdlFormShape = dref b
 
+        case FormImage:
+            b := cast(*FormImage) @dataof(f)
+            editView.main.mdlFormImage = dref b
+
         case FormStep:
             b := cast(*FormStep) @dataof(f)
             editView.main.mdlFormStep = dref b
@@ -1177,9 +1183,6 @@ impl Capture
         case FormDraw:
             b := cast(*FormDraw) @dataof(f)
             editView.main.mdlFormDraw = dref b
-
-        case FormImage:
-            break
         }
     }
 

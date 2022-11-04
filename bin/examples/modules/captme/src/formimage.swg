@@ -1,7 +1,13 @@
+enum FormImageKind
+{
+    Image
+}
+
 struct FormImage
 {
     using base: BaseForm
     image: Image
+    kind:  FormImageKind = Image
 
     #[Serialization.NoSerialize]
     {
@@ -14,7 +20,13 @@ impl IForm for FormImage
 {
     mtd isSame(ptr: *BaseForm)->bool
     {
-        return false
+        other := cast(*FormImage) ptr
+        return  borderColor == other.borderColor and
+                borderSize  == other.borderSize and
+                backColor   == other.backColor and
+                alpha       == other.alpha and
+                kind        == other.kind and
+                paintShadow == other.paintShadow
     }
 
     mtd copy(dst, src: *BaseForm)
@@ -25,6 +37,7 @@ impl IForm for FormImage
         dstf.borderSize  = srcf.borderSize
         dstf.backColor   = srcf.backColor
         dstf.alpha       = srcf.alpha
+        dstf.kind        = srcf.kind
         dstf.image       = srcf.image
         dstf.paintShadow = srcf.paintShadow
     }
