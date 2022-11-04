@@ -1,18 +1,25 @@
 enum FormImageKind
 {
     Image
+    Blur
+    Pixelate
 }
 
 struct FormImage
 {
     using base: BaseForm
-    image: Image
-    kind:  FormImageKind = Image
+    image:      Image
+    kind:       FormImageKind = .Image
+    strength:   s32 = 50
 
     #[Serialization.NoSerialize]
     {
-        texture:    Texture
-        gizmo:      GizmoRect
+        stc:            s32
+        xc, yc:         s32
+        wc, hc:         s32
+        texture:        Texture
+        gizmo:          GizmoRect
+        textureKind:    FormImageKind = .Image
     }
 }
 
@@ -23,10 +30,10 @@ impl IForm for FormImage
         other := cast(*FormImage) ptr
         return  borderColor == other.borderColor and
                 borderSize  == other.borderSize and
-                backColor   == other.backColor and
                 alpha       == other.alpha and
                 kind        == other.kind and
-                paintShadow == other.paintShadow
+                paintShadow == other.paintShadow and
+                strength    == other.strength
     }
 
     mtd copy(dst, src: *BaseForm)
@@ -35,11 +42,11 @@ impl IForm for FormImage
         srcf := cast(*FormImage) src
         dstf.borderColor = srcf.borderColor
         dstf.borderSize  = srcf.borderSize
-        dstf.backColor   = srcf.backColor
         dstf.alpha       = srcf.alpha
         dstf.kind        = srcf.kind
         dstf.image       = srcf.image
         dstf.paintShadow = srcf.paintShadow
+        dstf.strength    = srcf.strength
     }
 
     mtd edit(evt: *MouseEvent, paintRect: Math.Rectangle, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
@@ -118,10 +125,6 @@ impl IForm for FormImage
 
     mtd hitTest(pt: Math.Point, z: f32)->bool
     {
-        rect := paintPos
-        rect.inflate(-2*borderSize)
-        if backColor.a == 0 and rect.contains(pt)
-            return false
         return true
     }
 
@@ -131,17 +134,42 @@ impl IForm for FormImage
         pp    := Math.Rectangle{0, 0, paintPos.width, paintPos.height}
         pen   := Pen.createSolid(borderColor, bSize)
 
-        if !texture.isValid()
-            texture = app.getRenderer().addImage(image)
+        renderer := app.getRenderer()
+        switch kind
+        {
+        case Image:
+            if !texture.isValid() or textureKind != kind
+            {
+                textureKind = kind
+                renderer.removeTexture(&texture)
+                texture = renderer.addImage(image)
+            }
+
+        case Blur, Pixelate:
+            if !texture.isValid() or
+               xc != x or yc != y or wc != w or hc != h or
+               textureKind != kind or
+               stc != strength
+            {
+                textureKind = kind
+                stc = strength
+                xc = x; yc = y; wc = w; hc = h
+                renderer.removeTexture(&texture)
+                img := capture.backImg.toCrop(x, y, w, h)
+                st := Math.map(cast(f32) strength, 0, 100, 1, 16)
+                nw := Math.max(cast(s32) (img.width / st), 4)
+                nh := Math.max(cast(s32) (img.height / st), 4)
+                img.resize(nw, nh, kind == .Pixelate ? .Raw : .Quadratic)
+                img.resize(w, h, kind == .Pixelate ? .Raw : .Quadratic)
+                texture = app.getRenderer().addImage(img)
+            }
+        }
 
         if borderColor.a and (pp.width <= 2*bSize or pp.height < 2*bSize)
             painter.fillRect(pp, borderColor)
         else
         {
-            painter.fillRect(pp, backColor)
-
             painter.drawTexture(pp, texture)
-
             pp.inflate(-bSize * 0.5)
             painter.drawRect(pp, pen)
         }
